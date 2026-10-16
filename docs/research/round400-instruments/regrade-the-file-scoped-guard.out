@@ -1,0 +1,48 @@
+── known positives for the re-scoped guard, one axis each ──
+  ok   KP-1   his: unguarded stays unguarded under every mode
+  ok   KP-4   his KP-3: guard precedes the site, same binding — cured under every mode
+  ok   G-POS  axis: the guard is AFTER the window site
+  ok   G-BIND axis: the guard tests a DIFFERENT binding of the same name
+  ok   G-INIT control: `guardedAtBinding` is correctly scoped and must survive every mode
+  ok   G-NONE control: no guard anywhere — every mode agrees, and none invents one
+
+── GRADE A: his member list, his key, at the rev his .out names ──
+  his recording: a85b4a1131b60a1a9fd3cd54e08db7beef2f0aa4 — 518 sources, 37 GUARDED, 14 UNGUARDED
+  my drive:      a85b4a1131b60a1a9fd3cd54e08db7beef2f0aa4 — 518 sources, 37 GUARDED, 14 UNGUARDED
+  GRADE A (member lists identical, not counts): true
+
+── GRADE B: subset + invariance across modes (at his rev) ──
+  file  sites 51  GUARDED 37  UNGUARDED 14
+  pos   sites 51  GUARDED 36  UNGUARDED 15
+  bind  sites 51  GUARDED 37  UNGUARDED 14
+  both  sites 51  GUARDED 36  UNGUARDED 15
+  GRADE B (totals invariant, every mode ⊆ file, both = pos ∩ bind): true
+
+── the regrade at a85b4a1131b60a1a9fd3cd54e08db7beef2f0aa4 (his population, his strata, the guard leg re-scoped) ──
+  his  file-scoped:  14 UNGUARDED of 51
+  + position only:   15 UNGUARDED
+  + binding only:    14 UNGUARDED
+  + both:            15 UNGUARDED
+
+  UNGUARDED + FAILS OPEN: 1 under his file-scoped guard, 2 under BOTH:
+    docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:88  (`eol` bound at :87)
+    docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:108  (`idx` bound at :107)
+
+  sites his key called GUARDED that lose their guard under BOTH (1):
+  [FAILS OPEN] docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:108  (`idx` bound at :107) — 2 guard(s) in file, 0 accepted — guard is BELOW the site
+
+  is the bind leg's zero measured or vacuous? guards REJECTED by bind at 8 site(s):
+    packages/server/src/claude/client.ts:287 (`boundaryIdx`) 2 in file, 1 accepted
+    packages/server/src/claude/client.ts:319 (`boundaryIdx`) 2 in file, 1 accepted
+    scripts/backfill-entity-bindings.mts:186 (`eq`) 3 in file, 2 accepted
+    scripts/backfill-entity-bindings.mts:190 (`eq`) 3 in file, 2 accepted
+    scripts/backfill-entity-bindings.mts:234 (`eq`) 3 in file, 1 accepted
+    scripts/probe-round301-the-limbs-partition-by-construction-and-the-price-landed-in-the-instrument-that-priced-it.mts:203 (`i`) 2 in file, 1 accepted
+    scripts/probe-round301-the-limbs-partition-by-construction-and-the-price-landed-in-the-instrument-that-priced-it.mts:219 (`i`) 2 in file, 1 accepted
+    scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts:186 (`i`) 2 in file, 1 accepted
+  (for contrast, the pos leg rejected at least one guard at 8 site(s))
+
+── live at d89d8c7b0b0082aa6b888eee55dd2882c16bb5cd: 518 tracked sources, 51 sites, 15 UNGUARDED under BOTH ──
+  (informational — nothing above gates on this number, which grows as instruments land)
+
+REGRADE OK at a85b4a1131b60a1a9fd3cd54e08db7beef2f0aa4 — his guard leg is file-scoped; re-keying it to straight-line position AND binding identity moves 1 of his 37 GUARDED sites to UNGUARDED, taking the not-cured count from 14 to 15 of 51. His "14 is a floor" is confirmed and quantified. Still a floor: both of my re-keys lean the same way his does.

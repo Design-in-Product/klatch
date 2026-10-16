@@ -1,0 +1,124 @@
+── known positives and controls, one axis each ──
+  ok   KP-1  named binding, unguarded, `.slice(name)`
+  ok   KP-2  axis: guard spelling `=== -1` one statement later
+  ok   KP-3  axis: guard spelling `< 0`
+  ok   KP-4  axis: second slot — `.slice(0, name)` fails the other way (WIDE, his threshold)
+  ok   KP-5  axis: method — `substring` CLAMPS a negative, so it fails WIDE
+  ok   KP-6  axis: arithmetic — `name + 1` refuses to 0, the whole string
+  ok   KP-7  axis: the binding WRAPPED across lines (394)
+  ok   KP-8  axis: the site inside a `${…}` interpolation
+  ok   KP-9  axis: the site AFTER a regex literal carrying `{`, `(` and an apostrophe
+  ok   KP-10 axis: a re-binding SHADOWS the finder binding (341)
+  ok   KP-11 axis: an EARLIER non-finder binding must not shadow the finder one
+  ok   KP-12 axis: the BINDING carries the offset — refusal is 0, so the window is WIDE
+  ok   KP-13 axis: a COMPOUND initializer is published as UNMODELLED, not stratified by guess
+  ok   CONTROL-COMMENT  the whole shape quoted in a comment
+  ok   CONTROL-STRING  the whole shape inside a string literal
+  ok   CONTROL-HIS  the ADJACENT form — his key owns it, mine must not double-count it
+  ok   CONTROL-NOFINDER  a named index that cannot refuse
+
+── live census at d89d8c7b0b0082aa6b888eee55dd2882c16bb5cd: 518 tracked JS/TS sources ──
+
+  UNGUARDED (14) — named, never tested against a refusal, window taken anyway:
+  [UNRESOLVABLE] docs/research/round368-instruments/verdict-line-kind-grade.mts:128  (`loopStart` bound at :126)
+      init:   SRC.indexOf('for (const s of SWEPT) {')
+      window: .slice(loopStart, verdictLog)
+  [UNMODELLED (compound initializer)] docs/research/round382-instruments/grade-the-class-count-and-the-seam.mjs:216  (`abs` bound at :215)
+      init:   m.index + m[0].indexOf(init) + at
+      window: .slice(abs, abs + 13)
+  [FAILS WIDE] docs/research/round383-instruments/grade-the-binding-class.mjs:744  (`cutAt` bound at :738)
+      init:   old.search(OLD_MARKER)
+      window: .slice(0, cutAt)
+  [UNMODELLED (compound initializer)] docs/research/round384-instruments/grade-the-near-miss-attribution.mjs:89  (`abs` bound at :88)
+      init:   m.index + m[0].indexOf(init) + at
+      window: .slice(abs, abs + 13)
+  [UNRESOLVABLE] docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:169  (`c1Name` bound at :161)
+      init:   hisSrc.indexOf(" 'C1',")
+      window: .slice(c1Name, c1Pred)
+  [UNRESOLVABLE] docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:198  (`r1Start` bound at :193)
+      init:   his389.indexOf(" 'R1',")
+      window: .slice(r1Start, r1End)
+  [FAILS WIDE] docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs:133  (`end` bound at :132)
+      init:   rest.indexOf('\n);')
+      window: .slice(0, end)
+  [FAILS WIDE] docs/research/round396-instruments/the-key-counterfactuals.mjs:87  (`i` bound at :86)
+      init:   pristine.indexOf('rather than')
+      window: .slice(0, i)
+  [FAILS PARTIAL (190/200)] docs/research/round396-instruments/the-key-counterfactuals.mjs:87  (`i` bound at :86)
+      init:   pristine.indexOf('rather than')
+      window: .slice(i + 11)
+  [FAILS OPEN] docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:88  (`eol` bound at :87)
+      init:   src.indexOf('\n', at)
+      window: .slice(0, eol + 1)
+  [FAILS WIDE] docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:88  (`eol` bound at :87)
+      init:   src.indexOf('\n', at)
+      window: .slice(eol + 1)
+  [UNRESOLVABLE] scripts/lib/skipped-shape-census.mts:255  (`lineStart` bound at :253)
+      init:   src.lastIndexOf('\n', m.index) + 1
+      window: .slice(lineStart, nl === -1 ? undefined : nl)
+  [UNRESOLVABLE] scripts/probe-round224-a-skip-must-not-summarise-as-a-pass.mts:1931  (`ls` bound at :1929)
+      init:   src.lastIndexOf('\n', mm.index) + 1
+      window: .slice(ls, nlIdx === -1 ? undefined : nlIdx)
+  [UNRESOLVABLE] scripts/probe-round283-the-classification-theseus-asked-for-exists-and-it-has-been-red-since-yesterday.mts:162  (`defStart` bound at :160)
+      init:   stripped.indexOf('export const DEFERRED')
+      window: .slice(defStart, defEnd)
+
+  GUARDED (37) — the cured form, invisible to his key for a GOOD reason:
+  [FAILS WIDE] docs/research/round376-instruments/convert-r375-section-b.mjs:78  (`i` bound at :15)
+  [FAILS OPEN] docs/research/round376-instruments/convert-r375-section-b.mjs:78  (`j` bound at :16)
+  [FAILS OPEN] docs/research/round382-instruments/grade-the-class-count-and-the-seam.mjs:391  (`seamIdx` bound at :389)
+  [UNRESOLVABLE] docs/research/round382-instruments/grade-the-class-count-and-the-seam.mjs:453  (`v2From` bound at :451)
+  [UNRESOLVABLE] docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs:338  (`i` bound at :337)
+  [FAILS PARTIAL (197/200)] docs/research/round393-instruments/counterfactuals-for-the-p2-detector.mjs:14  (`i` bound at :13)
+  [FAILS PARTIAL (197/200)] docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs:136  (`i` bound at :135)
+  [FAILS PARTIAL (197/200)] docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs:170  (`i` bound at :169)
+  [FAILS OPEN] docs/research/round396-instruments/grade-the-grade-that-reddens-on-its-own-routed-cure.mjs:325  (`rekeyBlockAt` bound at :324)
+  [FAILS OPEN] docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:108  (`idx` bound at :107)
+  [UNRESOLVABLE] docs/research/round398-instruments/property-pins.mjs:35  (`at` bound at :31)
+  [FAILS OPEN] docs/research/round398-instruments/the-refusable-anchor-counterfactuals.mjs:129  (`at` bound at :128)
+  [UNRESOLVABLE] packages/client/src/__tests__/round33-typography-contrast.test.ts:91  (`blockStart` bound at :87)
+  [FAILS WIDE] packages/server/src/claude/client.ts:287  (`boundaryIdx` bound at :285)
+  [FAILS WIDE] packages/server/src/claude/client.ts:319  (`boundaryIdx` bound at :317)
+  [FAILS WIDE] scripts/backfill-entity-bindings.mts:186  (`eq` bound at :185)
+  [FAILS OPEN] scripts/backfill-entity-bindings.mts:190  (`eq` bound at :185)
+  [FAILS WIDE] scripts/backfill-entity-bindings.mts:234  (`eq` bound at :233)
+  [FAILS WIDE] scripts/probe-import-multipart-cap.mts:341  (`end` bound at :339)
+  [FAILS WIDE] scripts/probe-recall-tool.mjs:2680  (`firstMarked` bound at :2679)
+  [FAILS OPEN] scripts/probe-round185-what-the-undo-classifier-knows-a-run-by.mts:392  (`at` bound at :390)
+  [FAILS OPEN] scripts/probe-round187-the-binding-rule-at-the-inputs-it-was-argued-from.mts:250  (`at` bound at :248)
+  [UNMODELLED (compound initializer)] scripts/probe-round257-the-scanner-had-no-model-of-interpolation.mts:76  (`start` bound at :72)
+  [FAILS OPEN] scripts/probe-round258-three-readers-are-two-questions-and-the-shared-one-is-already-in-lib.mts:131  (`start` bound at :129)
+  [UNRESOLVABLE] scripts/probe-round259-the-extraction-moved-nothing-and-closed-the-hole-in-the-file-it-moved-into.mts:140  (`a` bound at :138)
+  [FAILS OPEN] scripts/probe-round262-the-population-is-a-tree-not-a-filename-convention.mts:124  (`start` bound at :122)
+  [UNRESOLVABLE] scripts/probe-round263-an-emptiness-claim-over-a-shared-window-is-not-strict-it-is-blind.mts:314  (`fnStart` bound at :303)
+  [FAILS OPEN] scripts/probe-round264-a-census-of-one-spelling-and-the-extraction-that-moved-the-rest-out-of-reach.mts:122  (`start` bound at :120)
+  [FAILS OPEN] scripts/probe-round265-the-census-already-follows-imports-on-the-other-axis.mts:162  (`start` bound at :160)
+  [FAILS OPEN] scripts/probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts:429  (`i` bound at :428)
+  [FAILS WIDE] scripts/probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts:429  (`i` bound at :428)
+  [FAILS WIDE] scripts/probe-round299-admission-is-per-file-and-the-repair-that-missed-its-own-motivating-case.mts:398  (`end` bound at :397)
+  [UNRESOLVABLE] scripts/probe-round301-the-limbs-partition-by-construction-and-the-price-landed-in-the-instrument-that-priced-it.mts:203  (`i` bound at :200)
+  [FAILS OPEN] scripts/probe-round301-the-limbs-partition-by-construction-and-the-price-landed-in-the-instrument-that-priced-it.mts:219  (`i` bound at :218)
+  [FAILS WIDE] scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts:186  (`i` bound at :185)
+  [UNRESOLVABLE] scripts/probe-round327-the-pin-purpose-label-is-a-property-of-the-edge-and-retirability-is-a-property-of-the-target-line.mts:160  (`open` bound at :156)
+  [UNRESOLVABLE] scripts/probe-round328-the-distinct-target-line-figure-is-keyed-on-the-pin-text-so-one-line-pinned-in-two-spellings-reads-as-two.mts:170  (`open` bound at :166)
+
+  named-binding window sites: 51
+    GUARDED:            37  ← cured; his "no longer defective"
+    UNGUARDED:          14  ← his "invisible", and NOT cured
+      of those, OPEN:        1  ← the reported class, in the spelling his key cannot reach
+      WIDE:                  4
+      PARTIAL:               1
+      UNRESOLVABLE (arg):    6
+      UNMODELLED (init):     2  ← compound initializer; a refusal SLIDES the window rather than collapsing it
+
+── collision with his 31 (populations disjoint by construction; this is the cross-check) ──
+  his recorded member list parsed: 31 (want 31) → true
+  my members colliding with his at file:line: 1
+    scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts:186 — my call at byte 11449, his form on that line at 11466 → explained: two distinct calls, one line
+
+── grade ──
+  ok   every KP and control as expected: true
+  ok   his recorded member list parsed as 31, so the collision check is not vacuous: true
+  ok   every file:line collision with his list is two distinct calls, not a double count: true
+
+CENSUS OK at d89d8c7b0b0082aa6b888eee55dd2882c16bb5cd — 51 named-binding window site(s) in 518 tracked sources, invisible to his adjacency key by construction: 37 GUARDED (cured), 14 UNGUARDED (not cured), 1 of those FAIL OPEN. Disjoint from his 31 by construction, 1 file:line collision(s), all explained as two distinct calls on one line. UNGUARDED is a FLOOR: guard detection is file-scoped and over-counts cures.
