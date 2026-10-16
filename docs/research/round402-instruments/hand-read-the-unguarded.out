@@ -1,0 +1,86 @@
+
+── GRADE A: the copied key is byte-identical to round400's, at round400's own commit ──
+  b65a7705:docs/research/round400-instruments/regrade-the-file-scoped-guard.mjs lines 65-257 — 7468 bytes
+  key-from-round400.mjs between the provenance markers — 7468 bytes
+  GRADE A (same key, same population): true
+
+── GRADE B: the population is the one my Round 400 .out published, at the rev it names ──
+  .out says    a85b4a1131b60a1a9fd3cd54e08db7beef2f0aa4 — file 51/37/14, both 51/36/15, 2 FAILS OPEN
+  this drive   a85b4a1131b60a1a9fd3cd54e08db7beef2f0aa4 — file 51/37/14, both 51/36/15, 2 FAILS OPEN
+  GRADE B (same rev, same four figures, same FAILS OPEN rows): true
+
+── GRADE C: the hand reading is complete, un-invented, and on the right lines ──
+  population UNGUARDED rows: 15    hand entries: 15
+  coverage (every row read exactly once, no entry invented): true
+  pinned line text matches at a85b4a11 for all 15 entries: true
+  controls — both must be false, or the legs above grade nothing:
+    one entry dropped      → coverage false
+    one entry text +1 byte → text     false
+  GRADE C: true
+
+── GRADE D: the machine-decidable verdict classes, decided independently of the hand table ──
+  D1 NONNEG (modelled refusal value >= 0, by round400's own initRefusal): 2
+       scripts/lib/skipped-shape-census.mts:255:lineStart
+       scripts/probe-round224-a-skip-must-not-summarise-as-a-pass.mts:1931:ls
+     hand table names 2; exact same rows: true
+     of those, NOT the lastIndexOf('\n', …) + 1 idiom (where 0 is not obviously right): 0
+  D2 FROZEN (receiver reaches a `git show` within the file, depth <= 3): 4
+       docs/research/round383-instruments/grade-the-binding-class.mjs:744:cutAt
+       docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:169:c1Name
+       docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:198:r1Start
+       scripts/probe-round283-the-classification-theseus-asked-for-exists-and-it-has-been-red-since-yesterday.mts:162:defStart
+     hand table names 4; exact same rows: true
+  D3 known negative, axis "no show in the chain" — round368:128 must NOT be FROZEN: true
+  D4 known negative, axis "a show-reaching binding of the same name, BELOW the site" — round393:133 must NOT be FROZEN: true
+  GRADE D: true
+
+── ANCHOR-LIVE: the round368 row, measured at live HEAD rather than at the pin ──
+  HEAD 3f01ceeb · subject scripts/sweep-probes.mjs, 205741 bytes
+  anchor 1 "for (const s of SWEPT) {" → 1 occurrence(s), offset 202286
+  anchor 2 "console.log(`${verdictWord} —" → 0 occurrence(s), offset -1
+  span SRC.slice(202286, -1) is 3454 bytes; the rest of the file from the loop head is 3455
+  C1 accumulators in that span: [red] — the grade asserts [blocked, red]
+  C3 mutation anchor occurrences in that span: 0 — the grade asserts 1
+  ANCHOR-LIVE (the second anchor is gone, and C1 and C3 would both be red on a re-drive): true
+
+── gate ──
+  ok   GRADE A: true
+  ok   GRADE B: true
+  ok   GRADE C: true
+  ok   GRADE D: true
+  ok   ANCHOR-LIVE: true
+
+── the severity read of the 15 at a85b4a11 ──
+
+  REAL — 4 row(s)
+    docs/research/round368-instruments/verdict-line-kind-grade.mts:128  `loopStart`  [HAS ALREADY FIRED — and loudly]
+    docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs:133  `end`  [silent over-span, formatting-dependent]
+    docs/research/round396-instruments/the-key-counterfactuals.mjs:87  `i`  [a counterfactual that can pass for the wrong reason]
+    docs/research/round396-instruments/the-key-counterfactuals.mjs:87  `i`  [a counterfactual that can pass for the wrong reason]
+
+  DELIBERATE — 1 row(s)
+    docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:108  `idx`  [none]
+
+  PRECOND — 2 row(s)
+    docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:88  `eol`  [none]
+    docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:88  `eol`  [none]
+
+  TERM-GUARD — 2 row(s)
+    docs/research/round382-instruments/grade-the-class-count-and-the-seam.mjs:216  `abs`  [none]
+    docs/research/round384-instruments/grade-the-near-miss-attribution.mjs:89  `abs`  [none]
+
+  FROZEN — 4 row(s)
+    docs/research/round383-instruments/grade-the-binding-class.mjs:744  `cutAt`  [none]
+    docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:169  `c1Name`  [none]
+    docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:198  `r1Start`  [none]
+    scripts/probe-round283-the-classification-theseus-asked-for-exists-and-it-has-been-red-since-yesterday.mts:162  `defStart`  [none]
+
+  NONNEG — 2 row(s)
+    scripts/lib/skipped-shape-census.mts:255  `lineStart`  [none]
+    scripts/probe-round224-a-skip-must-not-summarise-as-a-pass.mts:1931  `ls`  [none]
+
+  rows 15 · distinct lines 13 · distinct files 12
+  REAL 4 row(s) at 3 line(s) in 3 file(s); not-a-defect 11
+  the remainder my 400 called "the 11": 12 rows at 11 lines in 11 files
+
+HAND READ OK at a85b4a11 — of the 15 UNGUARDED rows three rounds have now counted and none has read, 4 are defects and 11 are not. The 11 are not cured and never needed curing: 4 read an immutable git blob, 2 map their refusal onto the correct index by a trailing `+ 1`, 2 are compound initializers whose refusable term is guarded under the term's own name, 2 are guarded by an assert-then-mutate precondition that exits, and 1 is the probe that exists to be unguarded. The 4 REAL rows sit at 3 lines in 3 files, and one of them — round368:128 — has ALREADY FIRED at HEAD: its second anchor occurs 0 times in the live subject, so its span is the rest of the file and its own C1 and C3 would be red on a re-drive. The audit instruction after four rounds is not "read the 15" but "read these 4", and the cure for two of them is spelled correctly one round later inside the same 15: assert the anchor count, do not print it.
