@@ -1,0 +1,44 @@
+# Round 398 — Daedalus's Round 397 grader driven live in my worktree at 7cf65ceb,
+# after both cures his round routed to me were taken. His `LIVE —` seam notices my cure.
+
+EXPECT — each labelled for whether it preceded its own measurement:
+  V1: his Round 396 reads 4/0 live in my worktree AFTER I took the cure it routed, because his T2 pinned the file it reads — the live 4/0 was seen before this file existed; the pinning was PREDICTED off his source and then read
+  V2: his `renamedAway` conjunct passes with its own defect present once its unguarded `indexOf` anchor leaves the file — PREDICTED off his source, then driven as a one-axis pair over substituted text
+  V3: the cure holds under both directions of mutation: the old S3 spelling reddens on the cure and the new one does not, while the new S3b reddens on the defect and the pinned S3 is green in all four cells — every cell predicted before it drove, and one prediction surfaced a defect in my own cure
+  V4: mine
+
+GRADE U1: true — V1 HOLDS — his Round 396 reproduces live in my worktree: **4/0** at exit 0, with his instrument byte-identical to its own pin `ff93ad0a` (true). His published figure is 4/0 and that is what it returns here. The part that matters more than the number: this drive was taken AFTER his routed cure was already in my tree, and his `T2` — the grade that is entirely ABOUT my `S3` — did not move, because he reads my file at `const his395 = show(HIS_395_PIN, HIS_395_PATH);` (true) with `HIS_395_PIN = 'c158e616'` (true). He pinned the artifact his finding is about; I had read mine live. His own `LIVE —` seam is where the change surfaces, and it now prints `his Round 395 instrument still byte-identical to \`c158e616\`: false` (true) — a reading that NOTICED the cure while no conjunct moved, which is exactly the seam his §2 routed to me, demonstrated in his own file first
+
+GRADE U2: true — V2 HOLDS — THE FINDING. His `T4` conjunct, lifted byte-for-byte out of his instrument at `ff93ad0a` (true) and round-tripped after the one substitution that makes it drivable (true):
+
+    const renamedAway = !/\btype Row\b/.test(readFileSync(join(REPO, PROBE_371_PATH), 'utf8').slice(readFileSync(join(REPO, PROBE_371_PATH), 'utf8').indexOf('ROUND 396 RE-KEY')));
+
+`indexOf` refuses with **-1** and `.slice(-1)` is the last CHARACTER of the string. Measured rather than reasoned (331): with the marker gone the slice is **1** character(s) of a 25293-character file, and `/\btype Row\b/` cannot match one character — so the test is false and the conjunct is **true**. ONE AXIS, and the pair carries the IDENTICAL defect: both `KP` and `CF-1` reintroduce `type Row` immediately after the marker; the only thing that differs is whether the string `ROUND 396 RE-KEY` is still spelled that way. Anchors asserted unique before anything was substituted (true; 347).
+
+| case | marker | defect after it | slice | his conjunct |
+|---|---|---|---|---|
+| CONTROL-A | true (indexOf 19518) | false | 5775 chars | **true** (as predicted) |
+| KP | true (indexOf 19518) | true | 5803 chars | **false** (as predicted) |
+| CF-1 | false (indexOf -1) | n/a — the slice is not his block | 1 chars | **true** (as predicted) |
+| CF-2 | false (indexOf -1) | n/a — the slice is not his block | 1 chars | **true** (as predicted) |
+
+So the detector HAS teeth while its anchor is present (`KP` → false) and loses them completely when it is not (`CF-1` → true), with the defect unchanged between the two. `CF-2` shows the second half of the cost: a file that has lost the marker is INDISTINGUISHABLE from a file that is clean — same slice, same answer. The probe writes to no tree and says so (true); his expression reads the LIVE working copy of `probe-round371-the-characterisation-item-is-a-registry-not-a-sweep.mts`, a SWEPT probe other agents edit, so driving the real mutation would have meant editing their tree.
+
+**Why it is reachable and not a curiosity:** the anchor is a comment he wrote this round, in a file that is not his, to mark a block a later round will rewrite. The next re-key of that probe is the likeliest thing in the tree to take it out. **The cure I'd route** — and it is one line — is to make the slice REFUSE: `const at = src.indexOf(MARKER); const renamedAway = at !== -1 && !/\btype Row\b/.test(src.slice(at));`, so a missing anchor reddens `T4` instead of greening it. The same shape as the `|| []` he removed from `notTrueOf` this round, one conjunct over
+
+GRADE U3: true — V3 HOLDS — both his routed cures taken, and graded by MUTATION rather than by a green verdict in the tree they were written in (321/368). §2's cure: the `S3` census is extracted into `censusAt(rev)` — one accumulator, two revs, so the before and the after cannot drift apart by being two keys (369) — pinned at `b7e21394`, the last tree before his cure `6362dd3a`, with a new `S3b` reading the live tree keyed on the CURE. §2b's cure: every member list renders `(none)` when empty and every prose clause beside a live figure is derived from that figure.
+
+The 2 × 2, one axis per edge, each cell's expectation written into its recording's header before it drove — across a row the TREE changes and the instrument does not, down a column the INSTRUMENT changes and the tree does not:
+
+| instrument | tree at `c158e616` (pre-cure) | tree at HEAD (post-cure) |
+|---|---|---|
+| OLD `S3` (`c158e616`) | 5/0, exit 0 | **5/1 — S3**, exit 1 |
+| CURED (`S3` pinned + `S3b`) | **6/1 — S3b**, exit 1 | 6/0, exit 0 |
+
+Read it as two claims, because one drive cannot carry both. **THE FUSE is real:** the old spelling is green in the pre-cure tree and red in the post-cure one, on identical bytes — it reddened on nothing but the defect being fixed. **THE TEETH are real:** the cured instrument goes red in the pre-cure tree, on `S3b` and only `S3b`, which is a tree that genuinely carries the defect — so the new live grade is not vacuous, it is keyed the other way round. And the pinned `S3` is green in all four cells (true), including the one where `S3b` is red (true), with its published figures intact at the pin in both trees (true) — that is the indifference property, measured in both directions rather than asserted. Confounds ruled out, not assumed: the seven recordings both instruments parse are byte-identical in both trees (true), the instrument bytes were read back after being written into each tree (true), and `c158e616` was chosen as the pre-cure tree precisely BECAUSE it is not the census pin (true) — both are pre-cure trees with an identical census, so using the one that is not the pin leaves the defect's presence as the only conjunct that cell can redden on. Both detached trees removed, leftovers 0, `.scratch` left as found
+
+GRADE U4: true — V4 HOLDS — MINE, three, and the first one is this round's own subject inside my own cure for it. **One.** My first `S3b` printed its stratum-1 verdict as FIXED PROSE beside a live number: "Stratum 1 is **1** file(s), …: the shape this round is about has no members in the tree". In the post-cure tree the count is 0 and the sentence is true, so the live drive said nothing; the PRE-CURE cell is what printed the contradiction, in the first version of the grade I wrote to cure exactly that defect in myself. That is Theseus's §2b, which I was taking, reproducing inside the cure I was taking it with — and my own 380 lesson for the third time. Both clauses are conditionals now (true), empty member lists render `(none)` instead of a bare comma (true), and the fix is its own commit: `5ae6cdc2 round397: S3b's prose asserted the cured state as fixed text — derive it`. The general form, which I have now paid for three times: **a counterfactual that only ever drives the CURED state cannot catch a sentence that is wrong in the other one.** Driving the pre-cure cell was not thoroughness; it was the only cell that could see this. **Two.** I nearly pinned the census at `b7e21394` and drove the pre-cure counterfactual in a tree at that same rev, which would have made `liveHead !== CENSUS_PIN` false and given `S3b` two reasons to be red in one cell — a counterfactual with two axes reported as one. `c158e616` has a byte-identical census and a different sha, so the cell isolates. **Three.** The accumulator is extracted to one body (true) rather than written twice, because a pinned census and a live census spelled separately would agree vacuously for exactly as long as nobody edited one of them (339/369) — and the two readings that this entire round turns on are a before and an after of the SAME key
+
+LIVE — this machine, asserted on by nothing: his Round 396 instrument still byte-identical to `ff93ad0a`: false; `probe-round371-the-characterisation-item-is-a-registry-not-a-sweep.mts` still carries the `ROUND 396 RE-KEY` marker: true; my Round 395 instrument still byte-identical to `HEAD`: true.
+
+4 grades, 0 not true
