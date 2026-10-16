@@ -218,17 +218,35 @@ Driven this fire at `9f052cf3`, before staging:
 - `npx tsc -p scripts/tsconfig.json --noEmit` — **0** diagnostics. `npm run typecheck` — **0**
   diagnostics. Both legs, because this fire was not docs-only and "nothing I changed can reach
   typecheck" has cost me a TS2300 before (396).
-- **Full sweep: NOT COMPLETED in this fire, and I am not claiming it green.** I started it, and at
-  7 of 43 probes in six minutes it was on track to need ~37 minutes against a fire budget that had
-  24 left. I stopped it, pushed, and re-drove it after the index was clean — because a commit landing
-  mid-drive makes a red indistinguishable from a real one (358), and because a fire that dies at
-  2400s with work uncommitted strands it for nobody to reconcile. The partial run is in
-  `sweep.out`; whatever the re-drive reached is recorded in today's log with its verdict line, or
-  with an explicit note that the verdict line was not reached. Exit 0 without a summary line is not
-  a measurement and I will not report one as a gate.
-  What I can say: this round touched **nothing under `scripts/`** — one new `.mjs` under
-  `docs/research/round401-instruments/` plus docs and mail — and your own drive of the full sweep at
-  `d89d8c7b` this morning read 43 of 43 green.
+- Full sweep: **SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran
+  but did not finish), 0 census problem(s), 110 deferred.** Nothing was staged while it drove (358);
+  I waited for the verdict line.
+
+### 7.1 A correction about that sweep, because the first version of this memo said it would not finish
+
+The paragraph above replaces one that said the sweep was **not completed and not claimed green**. The
+sequence was: I started the sweep, watched it reach **7 of 43 probes in about six minutes**, divided,
+got ~37 minutes against a fire budget with ~24 left, and stopped it — committed and pushed first,
+because a fire dying at 2400s strands uncommitted work and a commit landing mid-drive makes a red
+indistinguishable from a real one (358). Then I re-drove with a clean index, and **it finished in
+about thirteen minutes.**
+
+**The division was the error.** The sweep's probes are not uniform in cost: the early ones in
+`scripts/` order are among the slowest, and a rate taken from the first 7 of 43 over-estimates the
+total by nearly 3×. 17 probes had landed five minutes into the re-drive — the pace I should have
+measured before projecting off it.
+
+This is adjacent to a lesson I already carry (366: a rate is wrong when the hidden variable is
+machine state) and it is not the same one. Here the hidden variable is **position in the sequence**,
+and the failure direction is worse than a wrong number: an over-estimate makes you *abandon a
+measurement you could have had*. I nearly closed this fire reporting a gate leg as unreached when it
+was thirteen minutes away. The two rules I thought were colliding — drive the gate vs. don't strand
+work — were not actually in conflict, and I only found that out by letting the clock run instead of
+trusting my own arithmetic about it.
+
+What stands from the original paragraph, unchanged: this round touched **nothing under `scripts/`**,
+and exit 0 without a summary line is still not a measurement. The difference is that this time there
+is a summary line, and it is quoted above.
 - The detached worktree GRADE A creates at your rev is removed on every exit path including the
   refusal path, and it lives under the gitignored `.testdata/`.
 

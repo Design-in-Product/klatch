@@ -225,14 +225,28 @@ both genuinely cured, lenient default correct.
   count disagreeing with its rows (393).
 - `npx tsc -p scripts/tsconfig.json --noEmit` → **0** diagnostics (`typecheck-scripts.out`, 0 lines).
   `npm run typecheck` → **0** diagnostics. Both legs (396).
-- **Full sweep: NOT COMPLETED, and NOT claimed green.** Started it; at 7 of 43 probes in ~6 minutes
-  it needed ~37 against the ~24 the fire had left. Two rules collided — don't touch the index while
-  the sweep drives (358) vs. a fire dying at 2400s strands uncommitted work — and durability won:
-  stopped the sweep, committed, pushed, then re-drove with a clean index. Partial run in `sweep.out`.
-  **Exit 0 without a summary line is not a measurement and I am not reporting one as a gate.** What
-  is true: this round touched **nothing under `scripts/`** (one new `.mjs` under
-  `docs/research/round401-instruments/`, plus docs and mail), and his own full-sweep drive at
-  `d89d8c7b` this morning read 43 of 43 green.
+- Full sweep: **SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran
+  but did not finish), 0 census problem(s), 110 deferred.** Nothing staged while it drove (358); I
+  waited for the verdict line.
+
+**CORRECTION, same fire — I almost reported that sweep as unreachable, and the arithmetic was mine.**
+I watched the first drive reach **7 of 43 probes in ~6 minutes**, divided, got ~37 minutes against a
+budget with ~24 left, and stopped it. Committed and pushed first — right call on its own terms, since
+a fire dying at 2400s strands work and a commit mid-drive makes a red indistinguishable from a real
+one (358) — and wrote the memo, the log and COORDINATION.md all saying the sweep was **not completed
+and not claimed green**. Then the re-drive **finished in ~13 minutes** and read 43 of 43 green, and I
+rewrote all three.
+
+**The division was the defect.** The sweep's probes are not uniform in cost — the early ones in
+`scripts/` order are among the slowest — so a rate off the first 7 of 43 over-estimates the total by
+nearly 3×. Five minutes into the re-drive, 17 had landed; that was the pace, and it was measurable
+before I projected off the other one.
+
+This is **not** 366 (a rate wrong because the hidden variable is machine state) even though it rhymes
+with it. The hidden variable here is **position in the sequence**, and the failure direction is the
+worse one: an over-estimate makes you abandon a measurement you could have had. The two rules I
+believed were colliding were not in conflict at all. The only reason I found that out is that I let
+the clock run instead of trusting my own arithmetic about the clock.
 
 **Replied in the same fire:**
 `docs/mail/daedalus-to-theseus-…-your-400-reproduces-at-row-level-the-polarity-axis-is-0-and-the-zero-is-measured-2026-10-16.md`.
@@ -247,6 +261,7 @@ Deferrals, each with its blocker named: the three-clause `for` model (**no block
 in the memo and the instrument, no deadline attached); boolean composition for compound conditions
 (**no blocker**, refused rather than approximated, stated as a residual); my Round 389 `R1`/`R4`
 re-key (blocker: the pair needs re-aiming rather than loosening); the full-sweep verdict line
-(blocker: **named and real** — wall-clock, ~37 min of probes against a 2400s fire; re-driven
-post-commit and recorded as reached or not-reached, never guessed); his 11-site severity read and
+(**withdrawn** — I deferred this on a wall-clock blocker I had computed wrong; the re-drive
+completed inside the fire, `SWEEP PASSED` 43/43, so there was never a blocker here at all, and the
+deferral is struck rather than left standing as if it had been real); his 11-site severity read and
 his Round 394 `detachedAt` guard (his, noted not nudged). Nothing here needs xian.
