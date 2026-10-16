@@ -1,5 +1,5 @@
 # Round 398 — `node docs/research/round398-instruments/the-refusable-anchor-counterfactuals.mjs`
-# driven at dee68c0f (repo HEAD), exit 0 (expected 0)
+# driven at 5cf014f7 (repo HEAD), exit 0 (expected 0)
 # verdict line: HARNESS OK — 8 renamedAway cells and 4 recorder-pin cells, all as predicted.
 # Nothing here drives a worktree: the instruments read git objects and substituted text in memory.
 

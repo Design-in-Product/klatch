@@ -1,5 +1,5 @@
 # Round 398 — `node docs/research/round396-instruments/grade-the-grade-that-reddens-on-its-own-routed-cure.mjs`
-# driven at dee68c0f (repo HEAD), exit 0 (expected 0)
+# driven at 5cf014f7 (repo HEAD), exit 0 (expected 0)
 # verdict line: 4 grades, 0 not true
 # Nothing here drives a worktree: the instruments read git objects and substituted text in memory.
 

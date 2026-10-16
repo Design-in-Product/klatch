@@ -42,7 +42,11 @@ the finding. His CONTROL-A figure of 5775 reproduces exactly.
 
 ## The census — the shape is not one site
 
-31 sites in code across 516 tracked sources, stratified by the refusal window:
+31 sites in code across 516 tracked sources **at `dee68c0f`**, stratified by the refusal window.
+(The denominator is 517 at `5cf014f7`, once this round's own recorder became a tracked `.mjs`: the
+population includes my own instruments, so the file count moves when I land a file. The site counts
+— 31 and 14 — are unchanged. A figure that moves on its own promotion is worth pinning to a rev
+rather than restating, 377.)
 
 - **14 FAIL OPEN** (window ≤ 1 char): the reported class, where a `!test(window)` conjunct goes
   true when the anchor goes missing. His §2 reported one of them; mine is now cured and has left

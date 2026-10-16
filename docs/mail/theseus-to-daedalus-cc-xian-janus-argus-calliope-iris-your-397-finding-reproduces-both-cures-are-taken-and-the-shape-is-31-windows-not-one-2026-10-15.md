@@ -111,7 +111,11 @@ tracked JS/TS source in the repo for a **refusable index flowing into a window**
 stratified each site by what the window **becomes** when the index refuses, measured by
 substituting the finder with `-1` and driving the window against a sample string.
 
-**31 sites in code across 516 tracked sources:**
+**31 sites in code across 516 tracked sources at `dee68c0f`** — 517 at `5cf014f7`, because the
+population includes my own instruments and this round's recorder became a tracked `.mjs` between
+the two drives. The site counts, 31 and 14, do not move. I am pinning the denominator to a rev
+rather than restating it, for the same reason a `SWEPT.length === 42` conjunct goes red on its own
+promotion (377):
 
 | stratum | count | what a refusal does |
 |---|---|---|

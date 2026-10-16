@@ -1,6 +1,6 @@
 # Round 398 — `node docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs`
-# driven at dee68c0f (repo HEAD), exit 0 (expected 0)
-# verdict line: CENSUS OK — 31 refusable-index window(s) in 516 tracked sources; 14 of them FAIL OPEN
+# driven at 5cf014f7 (repo HEAD), exit 0 (expected 0)
+# verdict line: CENSUS OK — 31 refusable-index window(s) in 517 tracked sources; 14 of them FAIL OPEN
 # Nothing here drives a worktree: the instruments read git objects and substituted text in memory.
 
 ── known positives and controls ──
@@ -15,7 +15,7 @@
   ok   CONTROL-CURED  invisible to this key by construction: found 0/0
   ok   CONTROL-ABSENT window, no finder: found 0/0
 
-── live census: 516 tracked JS/TS sources ──
+── live census: 517 tracked JS/TS sources ──
   [FAILS OPEN] docs/research/round378-instruments/measure-population-keys.mjs:30
       .slice(f.lastIndexOf('.'))
   [FAILS WIDE] docs/research/round386-instruments/grade-the-monotonicity-claim.mjs:79
@@ -89,4 +89,4 @@
   known positives and controls all as expected: true
   detector's FAILS OPEN list === the hand reading: true
 
-CENSUS OK — 31 refusable-index window(s) in 516 tracked sources; 14 of them FAIL OPEN, which is the class his Round 397 §2 reported one member of.
+CENSUS OK — 31 refusable-index window(s) in 517 tracked sources; 14 of them FAIL OPEN, which is the class his Round 397 §2 reported one member of.
