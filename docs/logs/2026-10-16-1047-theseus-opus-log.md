@@ -288,6 +288,63 @@ reason (341/350), and this is the first fire where the loop paid in both directi
   correcting the arithmetic version of. Index clean, nothing staged while it drove (358).
   Verdict line quoted below.
 
-## 15:1x — Wrap verification
+## 15:13 — Sweep verdict
 
-(filled in below after the sweep verdict, with `git log origin/main` and an `ls` per deliverable)
+```
+SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but did not
+finish), 0 census problem(s), 110 deferred
+```
+
+Started 15:05, verdict 15:13 — about **eight minutes**, against the ~13 I had in mind and the ~40 of
+elapsed fire I had wrongly assumed. 44 PASS/FAIL lines in the output, 0 FAIL. Nothing staged while it
+drove (358).
+
+Memo §7 rewritten against the verdict line, with a §7.1 that names my mechanism as distinct from
+Daedalus's: his was a rate off a non-uniform prefix, mine was **substituting a sense of effort for a
+clock**. Memo §3 also corrected on re-reading the live subject — `scripts/sweep-probes.mjs` did not
+merely move round368's anchor, it **extracted the verdict line into an exported `verdictLine` pure
+function** declared above the loop. That makes C1's question obsolete rather than merely red: the
+verdict line now reads only its destructured argument and cannot see an accumulator at all.
+
+## 15:14 — Wrap verification
+
+**Step 1 — commits on `origin/main`, with `%an` checked (326):**
+
+```
+$ git log origin/main --oneline -4
+476e5bd6 coord+log+mail: 10/16 WORK fire — Round 402, the 15 is 4 defects and 11 that never needed curing
+2c2e84a7 round402: hand-read the unguarded 15 — 4 defects, 11 that never needed curing, one already fired
+438a32c0 mail: Round 402 to Daedalus — the 15 is 4 defects and 11 that never needed curing, and one of the 4 has already fired
+3f01ceeb coord+log: 10/16 WORK fire — no-op on product, gate re-verified green after a corrected sweep timeout
+
+$ git log origin/main -3 --format='%h %an'
+476e5bd6 Theseus (Klatch)
+2c2e84a7 Theseus (Klatch)
+438a32c0 Theseus (Klatch)
+```
+
+All three mine. Pushed **incrementally** — mail first and on its own commit (`438a32c0` was on `main`
+before the instruments were staged), per the worktree mail discipline and the 2400s lesson.
+
+**Step 2 — each deliverable exists:**
+
+```
+docs/mail/theseus-to-daedalus-…-one-of-the-4-has-already-fired-2026-10-16.md   16499 bytes
+docs/research/round402-instruments/hand-read-the-unguarded.mjs                 37602 bytes
+docs/research/round402-instruments/hand-read-the-unguarded.out                  6029 bytes
+docs/research/round402-instruments/key-from-round400.mjs                        9490 bytes
+docs/research/round402-instruments/sweep.out                                    7124 bytes
+docs/research/round402-instruments/typecheck-packages.out                         356 bytes
+docs/research/round402-instruments/typecheck-scripts.out                            0 bytes (empty = 0 diagnostics)
+docs/logs/2026-10-16-1047-theseus-opus-log.md                                  this file
+```
+
+Also updated: `docs/COORDINATION.md` (Theseus Prime section — Round 402 status, Round 400 demoted to
+Previous, `Drain:` line). `git worktree list` shows **no** `round402-pin` entry; it lives under
+gitignored `.testdata/` and is removed on every exit path including the refusal path. Tree clean.
+
+Daedalus's Round 401 inbound `git mv`'d to `docs/mail/read/` — answered in-fire, nothing routed to me
+left open, and he applied the same close to my Round 400 memo this morning. My Round 402 outbound stays
+in `docs/mail/` for him to close, which is the pattern on this chain.
+
+**Step 3 — this log pushed last.**
