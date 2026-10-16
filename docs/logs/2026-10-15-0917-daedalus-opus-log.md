@@ -241,3 +241,79 @@ blind to the shift that reddened `D1`, keyed on anchors rather than on line numb
 second reason not to cure this at the buzzer: the two arms disagree about whether this file has
 gone stale, and which of them is right is the design question I routed, not a spelling.
 Deferral stands as written above, with the same named blocker.
+
+---
+
+## STOP fire, 17:1x–17:4x PT — Round 397
+
+**17:1x — briefing.** Pulled (worktree synced by the wrapper to `c8ece431`). `COORDINATION.md`
+read. `docs/mail/` has one new memo addressed to me: Theseus's Round 396,
+`theseus-to-daedalus-…-your-s3-reddens-on-the-cure-your-own-section2-routed-and-the-gate-is-43-of-43-2026-10-15.md`,
+17:17 yesterday-stamped, two items routed to me. Authorship checked with `%an` before anything
+else (326): six head commits, five Theseus, one Calliope, none mine.
+
+**17:1x — his finding reproduced in my own tree before anything of his was taken (328).**
+`node docs/research/round395-instruments/grade-the-refusal-that-deletes-the-verdict.mjs` →
+**`5 grades, 1 not true — NOT TRUE: S3`**, exit 1. His §2 is right: my `S3` read
+`show('HEAD', f)` and its six census conjuncts asserted the defect was still present, so it
+reddened the moment he took the cure my own §2 had routed to him.
+
+**17:2x — both routed cures taken.** `censusAt(rev)` extracted — one accumulator driven at two
+revs (369). `S3` pinned at `CENSUS_PIN = b7e21394`, the last tree before his cure `6362dd3a`; new
+`S3b` reads the live tree keyed on the **cure**, with floors against an empty census, a
+`liveHead !== CENSUS_PIN` conjunct, and stratum 2 compared only over the pin's cohort so arrival
+cannot redden it (379). §2b's seam: empty member lists render `(none)`, prose clauses beside live
+figures are derived. Commits `fe3a69d9`, `5ae6cdc2`.
+
+**17:2x — the pre-cure counterfactual caught a defect in my own cure.** My first `S3b` printed
+its stratum-1 verdict as FIXED prose beside a live number — in the pre-cure tree it read
+"Stratum 1 is **1** file(s), …: the shape this round is about has no members in the tree". That is
+the §2b defect I was curing, inside my cure for it, and my own 380 lesson for the third time.
+Fixed in its own commit `5ae6cdc2`. **A counterfactual that only ever drives the cured state
+cannot catch a sentence that is wrong in the other one.**
+
+**17:3x — THE FINDING, driven.** His `T4` conjunct `renamedAway` slices a live file at
+`indexOf('ROUND 396 RE-KEY')` with no guard. `indexOf` refuses with `-1`, `.slice(-1)` is the last
+character, and `/\btype Row\b/` cannot match one character. One axis, identical defect on both
+sides, his line lifted byte-for-byte at `ff93ad0a` and compiled with `new Function` after an
+asserted round-tripping substitution: `KP` (marker present, `type Row` reintroduced) **false**;
+`CF-1` (marker reworded, same reintroduction) **true** — green with the defect present, slice 1
+char of 25,293. All four rows as predicted. Probe writes to no tree.
+
+**17:3x — the 2 × 2, every cell's expectation written into its recording's header first.**
+
+| instrument | tree at `c158e616` (pre-cure) | tree at HEAD (post-cure) |
+|---|---|---|
+| OLD `S3` (`c158e616`) | 5/0, exit 0 | **5/1 — `S3`**, exit 1 — the fuse |
+| CURED (`S3` pinned + `S3b`) | **6/1 — `S3b`**, exit 1 — the teeth | 6/0, exit 0 |
+
+Pinned `S3` green in all four cells. Round 397 grader: **4 grades, 0 not true**.
+
+**17:4x — gate, driven here this fire, not cited.**
+
+- `node scripts/sweep-probes.mjs`: **SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0 blocked
+  (0 could not run, 0 ran but did not finish), 0 census problems, 110 deferred.**
+- `npm run typecheck`: all four legs clean — `@klatch/shared`, `@klatch/server`, `@klatch/client`,
+  `typecheck:scripts` — exit 0, no diagnostics.
+- Pre-commit `--census` hook on every commit: **CENSUS OK, 153 probe files, 43 swept / 110
+  deferred.**
+- Two detached worktrees created and removed by the recorder, `leftovers: 0`, and `git worktree
+  list` asserted to carry no `r397-` entry. `.scratch` left exactly as found (absent).
+
+**Coverage, stated honestly.** Everything this fire changed is under `docs/` — `.mjs` and `.md`.
+`scripts/tsconfig.json`'s `include` is `["**/*.mts", "**/*.ts"]` relative to `scripts/`, so **no
+typecheck leg reaches a file I touched**; the coverage that does is the sweep above, plus the
+grader and probe driven directly. Named and not driven: the two unit suites, blocker — nothing
+this fire touched `packages/`. Argus's 10/15 figures for those stand as the second reading and
+are not re-derived here.
+
+**Drain.** Mail: one inbound, read on arrival, answered in this fire with the work done rather
+than promised — reply at
+`docs/mail/daedalus-to-theseus-…-your-396-reproduces-both-cures-are-taken-and-your-renamedaway-goes-green-when-its-anchor-leaves-2026-10-15.md`.
+The Round 394 thread (his 13:17 memo, answered by my Round 395) moved to `docs/mail/read/` as the
+closer. His Round 396 memo stays in `docs/mail/` because my reply routes open items back to him.
+Deferred, with named blockers: (1) the Round 394 recorder's `detachedAt` — **his**, blocked on an
+idempotence guard, his framing and I am not second-guessing it; (2) the rest of his `T4`'s
+verbatim source pins — routed to him in §5, not mine to edit. Nothing else unblocked remains.
+
+**Wrap verification** follows in the next entry.
