@@ -28,3 +28,23 @@ Nothing owed from any. No action needed on this seat's own board.
 Task list of record: blog-series drafting remains the one standing unblocked-but-discuss-first item (held on its named blocker — angle/sequencing talk with xian not yet had). Today's `log.html` STOP entry isn't due until the day's STOP fire.
 
 **Drain:** mail checked (own-seat header grep + mail-diff-since-checkpoint + all four cross-repo mailboxes, each grepped directly); cross-pollination brief attempted and skip-logged per standing ruling; fire-depth report read; rollup/backfill re-checked, nothing moved; gate re-derived fresh and green at every layer (typecheck, census, full sweep). Two consecutive checks found nothing further unblocked. Fire closed bounded — no-op on product, standing blockers unmoved.
+
+## MID fire, ~12:30 PT
+
+`git pull origin main`: already up to date, HEAD matches `origin/main`, clean tree.
+
+`git log 6a5ac265..HEAD --format='%h %an %s'` (own 08:36 START-fire checkpoint) = 9 new commits, none mine: the Round 399/400 chain (Daedalus/Theseus — `a85b4a11`, `681c0331`, `b7b7e96f`, `d89d8c7b`, `65cbe7f1`, `b65a7705`, `be7b2478`), Argus's own START-fire no-op (`0b159654`), and one mail-delivery commit authored `mediajunkie` (`71649214`) carrying a new memo addressed to this seat. `git diff --stat 6a5ac265..HEAD -- packages/` empty — round-track work stayed under `scripts/`/mail/log.
+
+**Mail — one new item, addressed to this seat, actioned:** `docs/mail/janus-to-calliope-cc-xian-api-experiment-discussion-today-2026-10-16.md` (11:27 PT) — Janus relaying xian's 11:3x line, *"I also want to discuss the API experiment with Calliope today,"* noting this seat already said (10-14) the item needs xian's own framing before a plan, and that he'll come to this seat's pane with nothing to prepare beyond having open questions ready. Informational — no question asked of this seat, and the open question it refers to is already the live needs-you item 1 on `docs/operations/attention-rollup.md` (v167, unchanged — "what is the API experiment, in your own words?"). No reply drafted; nothing to prepare beyond what the rollup already states. `git mv`'d to `docs/mail/read/` per close-discipline (informational, nothing further to action this fire).
+
+The two new round-track memos (Daedalus's Round 399, Theseus's Round 400) read in full — both `cc` only, both end "Nothing here needs xian." Left in place, round-chain lane stays Daedalus/Theseus.
+
+All four writable cross-repo mailboxes checked fresh by `find -newer` against this morning's 08:36 log, each grepped directly for `klatch|calliope`: `designinproduct` (7 new files — OAuth/API-credits/Wren-B traffic, Janus/Pard/Terminus/Themis/exec/CIO) zero hits; `mediajunkie` (6 new files — OAuth, palette renders, a crash report) zero hits; `piper-morgan-product/mailboxes` (162 new files excluding `MANIFEST.md`) zero hits; `dispatch/mail` zero new files. Nothing owed from any beyond the one item above.
+
+**Rollup checked directly:** still v167, needs-you unchanged at 4, none of today's commits or mail touch any of the four items. Backfill unchanged (`ls -la backups/`, Aug 4 17:11 mtime).
+
+**Gate re-verified fresh:** `npm run typecheck` — 0 `error TS` lines across all four workspaces; `node scripts/sweep-probes.mjs --census` — **153 probe files, 43 swept/110 deferred, CENSUS OK** — byte-identical to this morning's checkpoint.
+
+Task list of record: blog-series drafting remains the one standing item, held on its named blocker (angle/sequencing talk with xian not yet had); today's `log.html` entry is due at STOP, not this fire.
+
+**Drain:** mail checked (own-seat header grep + mail-diff-since-checkpoint + all four cross-repo mailboxes, grepped directly); the one item addressed to this seat read, found to need no reply, and closed to `read/`; gate re-derived fresh and green; rollup/backfill re-checked, nothing moved. Two consecutive checks found nothing further unblocked. Fire closed bounded.
