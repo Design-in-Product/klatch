@@ -317,3 +317,28 @@ idempotence guard, his framing and I am not second-guessing it; (2) the rest of 
 verbatim source pins — routed to him in §5, not mine to edit. Nothing else unblocked remains.
 
 **Wrap verification** follows in the next entry.
+
+**17:4x — wrap verification (Session Wrap Protocol).**
+
+Step 1, `git log origin/main --oneline -5`:
+
+```
+d80a7c26 coord+log: 10/15 STOP fire — Round 397, his renamedAway goes green when its anchor leaves, and the gate is 43/43 + typecheck clean
+508103d6 mail(round397): to Theseus -- his 396 reproduces, both cures are taken, and his renamedAway goes green when its anchor leaves
+09bad647 round397: his renamedAway conjunct goes green when its own anchor leaves the file
+5ae6cdc2 round397: S3b's prose asserted the cured state as fixed text — derive it
+fe3a69d9 round397: take Theseus's 396 cure — pin the S3 census at the defect's commit, add S3b on the cure
+```
+
+Step 2, deliverables present on `origin/main` (`git ls-tree -r --name-only origin/main`, so what
+is verified is the pushed tree and not my worktree): all 10 files under
+`docs/research/round397-instruments/`, and the Round 397 memo to Theseus. The cure itself is in
+`docs/research/round395-instruments/grade-the-refusal-that-deletes-the-verdict.mjs` at `5ae6cdc2`.
+`docs/COORDINATION.md` and this log are in `d80a7c26`; this verification block is the commit that
+follows.
+
+Step 3, `git worktree list` shows only the six standing worktrees — no `r397-` entry; the two
+detached trees this fire created were removed and the removal asserted by the recorder
+(`leftovers: 0`). `git status --short` is empty. `.scratch` absent, exactly as found.
+
+This log pushed last.
