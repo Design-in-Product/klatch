@@ -170,3 +170,124 @@ Also updated: `docs/COORDINATION.md` (Theseus Prime section, Round 398 status de
 thread carries open items on both sides (§4 here, his §4 and his 389 `R1`/`R4` there), and every
 prior round memo on this chain is still in `docs/mail/` — not a discipline I will change
 unilaterally in a bounded fire.
+
+---
+
+# Theseus session log — 2026-10-16 14:47 PDT (WORK fire, Opus)
+
+Round 402. Appended to the day's existing theseus log rather than opening a second one.
+
+## 14:47 — Briefing
+
+- `git log -6 --format='%h %an …'`: `3f01ceeb` **Argus**, `84a496aa` / `858bc4ef` / `196141f7`
+  **Daedalus**, `9f052cf3` **Calliope**, `71649214` mediajunkie. **None mine.** `--oneline` shows
+  `round401: … the polarity axis is 0, and the zero is measured` at the top — a subject in exactly my
+  own round shape, and the figure 401 following my 400. Round 401 is **his**. Checked `%an` first (326).
+- Tree clean. `docs/COORDINATION.md` read; my section (line 2261) says *available*, Round 400 closed.
+- Mail: one new memo addressed to me —
+  `daedalus-to-theseus-…-your-400-reproduces-at-row-level-the-polarity-axis-is-0-and-the-zero-is-measured-2026-10-16.md`.
+  Read in full, acted on in this fire. My Round 400 memo has been moved to `docs/mail/read/` by him.
+- His §6 and my own 11:01 Drain line agree on what is mine with no blocker: **the severity read of the
+  un-hand-read unguarded rows.** That is this fire.
+
+## 14:50 — The rows, before any key
+
+Extracted the 15 UNGUARDED rows under `both` at `a85b4a11` (the rev my own Round 400 `.out` names) in
+a detached worktree, with the site line and the binding line printed for each. Scratch, under
+gitignored `.testdata/`. The key was taken **verbatim** out of round400's instrument at commit
+`b65a7705` by slicing lines 65–257 programmatically rather than retyping it — a transcribed key is a
+different key.
+
+15 rows at **13 distinct lines in 12 files**: two lines carry two window calls each (round396:87,
+round397:88).
+
+## 14:54 — A structural question the rows raised, measured before hand-reading
+
+Two rows are `src.lastIndexOf('\n', i) + 1`. The `+ 1` maps the refusal −1 onto **0**, which is the
+correct start of the first line — so the "refusal" is the right answer and the window is in range.
+Measured with round400's own `initRefusal`: of the 51 sites, **37** have a negative modelled refusal
+value, **2** non-negative, 12 unmodelled. Both non-negative rows are in the 15.
+
+First regrade in this four-round family that moves a count **down**. Checked the obvious over-reach in
+the same drive: `indexOf(x) + 5` would also be non-negative and would be wrong, so I counted the
+non-negative rows that are **not** the start-of-line idiom — **0**. Representable, not present.
+
+## 14:58 — Hand read, one row at a time, from source at the pin
+
+Six verdict classes, with a stated precedence (FROZEN outranks everything — an immutable haystack is
+not a guard that could be got wrong). Result: **4 REAL · 4 FROZEN · 2 NONNEG · 2 TERM-GUARD ·
+2 PRECOND · 1 DELIBERATE.**
+
+The sharpest pair in the set: **round396:87 computes its anchor count and `console.log`s it;
+round397:88 computes the same kind of count and `process.exit(1)`s on it, citing 347.** One round
+apart, both mine, both in the census's unguarded set — the defect and its own cure.
+
+## 15:01 — The one that is not dormant
+
+`round368:128` reads `scripts/sweep-probes.mjs` by **source text, live, with no rev pin**. Anchor 2
+(`console.log(\`${verdictWord} —`) occurs **0 times** at HEAD — the verdict printer was moved above the
+loop — so `verdictLog` is −1, the span is the rest of the file minus one byte, C1 reads `[red]`
+against an asserted `[blocked, red]`, and C3 reads 0 against an asserted 1. **Its own C1/C3/C4 go red
+on a re-drive.**
+
+Both anchor literals pulled out of round368's own source with a regex and `Function`-evaluated rather
+than retyped (394/395). Labelled LIVE in the instrument, because a claim about now cannot be made at
+a two-day-old pin.
+
+Separated three ways in the memo: the failure is **loud** (so it is the least urgent of the 4); the
+census row names `loopStart` while the thing that drifted is `verdictLog`, a different binding in the
+second slot; and the corpus already fixed this one round over — the 4 FROZEN rows read through
+`git show <pin>:`, round368 does not.
+
+## 15:05 — Both grades caught a real error, in opposite directions
+
+The instrument refused on its first drive, and both failures were real:
+
+- **GRADE C** (verbatim pinned line text, byte-compared at the pin): my hand entry for round383:744
+  had **4** leading spaces where the file has **2**. The exact failure the leg was built for.
+- **GRADE D** returned **5** FROZEN against my hand reading of **3** — two disagreements, two
+  different causes:
+  - `round383:744` — **the hand reading was wrong.** `old` is `prerefactor` is
+    `git(['show','e922394b:…'])`. It is both FROZEN and PRECOND; FROZEN is the stronger reason.
+  - `round393:133` — **the leg was wrong.** `rest` chases to `src`, a **parameter** of `chainsOf(src)`,
+    and the file holds `const src = show(pin, f)` **240 lines below the site**; the file-scoped
+    resolver took it. **341/399 — position-and-scope-blind resolution — in the leg whose job was to
+    corroborate a hand reading of that bug.** Re-keyed to nearest-preceding-by-offset, candidates
+    collected before resolving.
+
+Both are now controls on **different axes**: D3 "no `show` anywhere in the chain" (round368:128),
+D4 "a `show`-reaching binding of the same name, BELOW the site" (round393:133). Only a position-aware
+resolver says no to D4.
+
+A detector-only round would have published 5 FROZEN and 3 REAL. The hand reading is primary for a
+reason (341/350), and this is the first fire where the loop paid in both directions in one drive.
+
+## 15:07 — Corrections to my own Round 400
+
+- **"the 11 unguarded sites neither of us has hand-read" was 12.** It was his 14 minus the 3 round397
+  rows, published in a memo whose own key had already moved 14 → 15. Re-derived mechanically:
+  **12 rows, 11 lines, 11 files.** 11 is also the count of non-defects — a coincidence of this
+  population, named so nobody reconciles the two 11s later.
+- **"your own 51 strata are not exposed to the `indexOf(x, -1)` clamp at all"** was narrowly true and
+  misleading. The clamp cannot create a stratum, but it sits in the **failure path** of one
+  (`round390:194`), and round390's own comment records it firing. It decides whether an unguarded site
+  fails silently or loudly.
+
+## 15:10 — Gate, and a correction to the memo I had already pushed
+
+- Mine: **GRADE A, B, C, D, ANCHOR-LIVE all true**, `HAND READ OK`, exit 0. GRADE C's two controls
+  both **false** as required (one entry dropped; one entry's text +1 byte).
+- `npx tsc -p scripts/tsconfig.json --noEmit` — **0** diagnostics (empty output).
+  `npm run typecheck` — **0** diagnostics (banner lines only). Both legs (396).
+- `git worktree list` after the drive: no `round402-pin` entry; it lives under gitignored `.testdata/`
+  and is removed on every exit path including the refusal path.
+- **Full sweep: driven, after I had already written it off.** The memo pushed at `438a32c0` said the
+  sweep "did not fit" this fire's budget. Then I ran `date`: the fire opened at 14:47 and it was
+  **15:03** — sixteen minutes in, not forty. I had estimated elapsed time from how much work had
+  happened rather than from a clock, in the same fire whose §7.1 I had just praised Daedalus for
+  correcting the arithmetic version of. Index clean, nothing staged while it drove (358).
+  Verdict line quoted below.
+
+## 15:1x — Wrap verification
+
+(filled in below after the sweep verdict, with `git log origin/main` and an `ls` per deliverable)

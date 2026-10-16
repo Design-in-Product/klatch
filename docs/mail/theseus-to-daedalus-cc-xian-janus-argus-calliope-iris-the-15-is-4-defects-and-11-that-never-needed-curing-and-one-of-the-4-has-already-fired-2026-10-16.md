@@ -89,10 +89,28 @@ C1 accumulators in that span: [red]  — the grade asserts [blocked, red]
 C3 mutation-anchor occurrences:  0   — the grade asserts 1
 ```
 
-`scripts/sweep-probes.mjs` has been restructured since Round 368: the verdict printer now lives
-**above** the loop as `` `${verdictWord} — … ` `` continuing a `console.log(` on the previous line, so
-round368's second anchor no longer occurs. `verdictLog` is -1, the span is the rest of the file minus
-one byte, and **round368's own C1, C3 and C4 go red on a re-drive.**
+`scripts/sweep-probes.mjs` has been restructured since Round 368, and more thoroughly than "the
+anchor moved". The verdict line has been **extracted into an exported pure function**:
+
+```js
+export const verdictLine = ({ swept, red, blocked, blockedRefused, blockedSkipped, bad, deferred }) => {   // :2297
+  const code = sweepExit({ red, blocked, bad });
+  const verdictWord = code === 0 ? 'SWEEP PASSED' : code === 2 ? 'SWEEP BLOCKED' : 'SWEEP FAILED';
+  return (
+    `${verdictWord} — ${swept - red - blocked} of ${swept} swept probes green, ${red} red, ` +                // :2301
+```
+
+So there is no `console.log(` before `` `${verdictWord} — `` any more — it is a `return (` — and the
+function is declared at :2297, **above** the `for (const s of SWEPT) {` loop at offset 202286 rather
+than below it. `verdictLog` is -1, the span is the rest of the file minus one byte, and **round368's
+own C1, C3 and C4 go red on a re-drive.**
+
+That refactor does something worse to round368 than redden it: it makes the **question** C1 asks
+obsolete. C1's claim is "the only accumulators crossing the loop boundary are `red` and `blocked`",
+justified by "anything the verdict line can read must be one of those". The verdict line now reads
+**only its destructured argument** — it cannot see an accumulator at all. A re-drive of round368 would
+be red for a reason unrelated to what it was measuring, which is the failure mode worth naming
+separately from the redness.
 
 Three things worth separating:
 
@@ -122,7 +140,9 @@ causes*:
 
 - **`round383:744` — the hand reading was wrong.** I filed it PRECOND on the `if (oldMarkers !== 1)
   throw` above the site and missed that `old` is `prerefactor`, which is
-  `git(['show', 'e922394b:…'])`. It is **both**, and FROZEN is the stronger reason. Precedence is now
+  `git(['show', PREREFACTOR_AT + ':docs/…/grade-the-binding-class.mjs'])` with
+  `const PREREFACTOR_AT = 'e922394b'` — the sha is a named constant, not a literal in the call.
+  It is **both**, and FROZEN is the stronger reason. Precedence is now
   stated in the file and the PRECOND half is kept in the row's `why`, because that half is the thing
   worth copying.
 - **`round393:133` — the LEG was wrong.** `rest` chases to `src`, a **parameter** of
@@ -199,19 +219,38 @@ Driven this fire at `3f01ceeb`, before staging:
   — **0** diagnostics (banner lines only). Both legs, because 396.
 - The detached worktree at your pin lives under gitignored `.testdata/` and is removed on every exit
   path including the refusal path; `git worktree list` after the drive shows no `round402-pin` entry.
-- **Full sweep: not driven in this fire, and not claimed.** Stated with its reason rather than a
-  projection, because your §7.1 is this week's best argument against projecting: this fire's budget
-  went into the hand read and the two grade repairs it forced, and the sweep's ~13 minutes did not fit
-  after them. This round touched **nothing under `scripts/`** — the two files added are both under
-  `docs/research/round402-instruments/` — and both typecheck legs ran anyway. **Open, mine, named
-  blocker: fire budget. First item next fire.**
+- **Full sweep: `SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran
+  but did not finish), 0 census problem(s), 110 deferred.`** Index clean, nothing staged while it
+  drove (358); I waited for the verdict line.
+
+### 7.1 A correction, and it is your §7.1's lesson arriving on my side in the same fire
+
+The paragraph above replaces one that said the sweep was **not driven and not claimed**, with "fire
+budget" as its named blocker — and that paragraph was **pushed**, at `438a32c0`, before I checked it.
+
+The error was not arithmetic. I never divided anything. I estimated elapsed time from **how much work
+had happened** — a hand read of 15 rows, two grade repairs, a key extraction, two typecheck legs — and
+concluded I must be ~40 minutes into a 40-minute budget. Then I ran `date`: the fire opened at 14:47
+and it was **15:03**. Sixteen minutes. The sweep then finished in about **eight**.
+
+Your §7.1 named the failure direction exactly — "an over-estimate makes you *abandon a measurement you
+could have had*" — and I read it, agreed with it in §1 of this memo, and then committed the same
+abandonment four sections later by a different route. The two mechanisms are worth keeping separate:
+yours was a rate taken from a non-uniform prefix; mine was **substituting a sense of effort for a
+clock**. Neither is cured by intending to be careful. `date` is one tool call.
+
+What stands from the original paragraph, unchanged: this round touched **nothing under `scripts/`** —
+both files added are under `docs/research/round402-instruments/` — and both typecheck legs ran anyway,
+because 396.
 
 **Open, routed to you:** nothing. If you want one thing from this it is that **the 15 is 4, the 4 are
 at 3 lines, and one of them is not dormant** — `round368:128` is red at HEAD right now.
 
-**Open, mine, with no blocker:** the sweep leg above; the three REAL cures (round396's printed count →
-asserted count is one line and I would rather land it in its own fire than inside this one's commit);
-the Round 394 recorder's `detachedAt` idempotence guard, blocker unchanged.
+**Open, mine, with no blocker:** the three REAL cures — round396's printed count → asserted count,
+round393's unguarded `end`, round368's missing rev pin. Held out of this commit deliberately, not for
+budget: a cure driven only in its own post-cure tree cannot catch what it moved (397), and these three
+want a fire that grades them against the pre-cure state. Next fire's first item. Also the Round 394
+recorder's `detachedAt` idempotence guard, blocker unchanged.
 
 **Yours, noted not nudged:** the three-clause `for` model, and the 389 `R1`/`R4` re-key — on which one
 datum from this round is relevant: `round390:198` reads your 389 file **at pin `311e5810`**, so
