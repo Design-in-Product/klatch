@@ -100,15 +100,49 @@ const splitArgs = (inner) => {
   return args.map((a) => a.trim());
 };
 
-// An argument's value when the bound name refuses with -1. Only three shapes are evaluated:
-// the bare name, the name plus/minus an integer, and an integer literal. Anything else is
-// UNRESOLVABLE and is reported as such rather than guessed at (his stratum discipline).
-const refusalValue = (arg, name) => {
+/**
+ * The BOUND NAME's value when its own finder refuses — which is not always -1, and assuming it was
+ * is the second modelling error this instrument shipped. Found by hand-reading the two `abs` sites
+ * the census flagged OPEN:
+ *
+ *     const abs = m.index + m[0].indexOf(init) + at;   // round382:215, round384:88
+ *
+ * A refusal there makes `abs` equal `m.index + at - 1` — a position shifted left by one, NOT -1.
+ * So `.slice(abs, abs + 13)` does not collapse to an empty window at all; it returns thirteen real
+ * characters from the wrong offset, which is a third behaviour and arguably a nastier one than
+ * failing open, because the window reads as content. Substituting the name with -1 and printing
+ * `FAILS OPEN` was a stratum I could not defend.
+ *
+ * So: only an initializer that IS a single finder call, optionally offset by an integer, gets a
+ * modelled refusal. Anything compound returns null and the site is published as UNMODELLED rather
+ * than assigned a stratum by guesswork — the same discipline his UNRESOLVABLE stratum applies to
+ * arguments, moved up to the initializer.
+ */
+const initRefusal = (init) => {
+  const m = /\.(?:indexOf|lastIndexOf|search|findIndex)\s*\(/.exec(init);
+  if (!m) return null;
+  const open = m.index + m[0].length - 1;
+  const end = callEnd(init, open);
+  if (end === null) return null;
+  const before = init.slice(0, m.index).trim();
+  const after = init.slice(end).trim();
+  // Any operator on the receiver side means the finder's result is one term among several.
+  if (/[+\-*/%?:]/.test(before)) return null;
+  if (after === '') return -1;
+  const a = /^([+-])\s*(\d+)$/.exec(after);
+  if (!a) return null;
+  return a[1] === '+' ? -1 + Number(a[2]) : -1 - Number(a[2]);
+};
+
+// An argument's value when the bound name takes `nameVal`. Only three shapes are evaluated: the
+// bare name, the name plus/minus an integer, and an integer literal. Anything else is UNRESOLVABLE
+// and is reported as such rather than guessed at (his stratum discipline).
+const refusalValue = (arg, name, nameVal) => {
   const bare = new RegExp(`^${name}$`);
   const arith = new RegExp(`^${name}\\s*([+-])\\s*(\\d+)$`);
-  if (bare.test(arg)) return -1;
+  if (bare.test(arg)) return nameVal;
   const m = arith.exec(arg);
-  if (m) return m[1] === '+' ? -1 + Number(m[2]) : -1 - Number(m[2]);
+  if (m) return m[1] === '+' ? nameVal + Number(m[2]) : nameVal - Number(m[2]);
   if (/^-?\d+$/.test(arg)) return Number(arg);
   return null;
 };
@@ -133,9 +167,28 @@ export const namedBindingSites = (src) => {
   const lineAt = (off) => masked.slice(0, off).split('\n').length;
   const out = [];
 
-  // Bindings whose initializer calls a finder. The initializer runs to the first `;` at depth 0,
-  // which is what makes a binding wrapped across lines reachable (my 394 lesson) — the whole
-  // statement is one span, however many newlines are inside it.
+  // EVERY binding, not only the finder-initialized ones. That distinction is the whole of the
+  // resolver, and getting it wrong is what the first version of this instrument did:
+  //
+  //   Collecting only finder bindings and then taking the FIRST one preceding the window made
+  //   `probe-round260:182` — `src.slice(i, i + 2)`, where `i` is `let i = 0` on :176 inside a
+  //   different function — resolve to `let i = src.indexOf('{', m.index)` on :137, forty lines and
+  //   one function away. It reported a FALSE site in a SWEPT probe, which is the worst direction
+  //   for a census whose headline is "there are more than he found" to fail in.
+  //
+  // So: collect all bindings, resolve a use to the NEAREST preceding binding of that name, and only
+  // then ask whether that binding calls a finder. A re-binding now shadows, which is what the
+  // language does. One-instance fixtures cannot grade a resolver (341), so KP-10 below carries the
+  // shadowing case specifically.
+  //
+  // The residual, stated: there is still no block-scope model, so a binding in a sibling function
+  // earlier in the file can shadow a module-level one. That direction DROPS sites (it resolves to a
+  // nearer non-finder binding and discards the use), so it costs recall and not correctness — the
+  // same direction the file-scoped guard leans. Both of this key's approximations make the
+  // UNGUARDED number smaller.
+  //
+  // The initializer runs to the first `;` at depth 0, which is what makes a binding wrapped across
+  // lines reachable (my 394 lesson) — the whole statement is one span, however many newlines.
   const bindings = [];
   BINDING.lastIndex = 0;
   for (let m = BINDING.exec(masked); m; m = BINDING.exec(masked)) {
@@ -151,14 +204,23 @@ export const namedBindingSites = (src) => {
     }
     if (end === -1) continue;
     const init = masked.slice(eq, end);
-    if (!FINDER.test(init)) continue;
     // Guarded AT the binding: the initializer itself tests the finder's result. Theseus's own cure
     // is this shape one statement later, not here, but `const x = s.indexOf(a) === -1 ? ... ` is a
     // real spelling and it is cured.
     const guardedAtBinding = /(===|!==|==|!=|<|>|<=|>=)\s*-\s*1|-\s*1\s*(===|!==|==|!=)|<\s*0|>=\s*0/.test(init);
-    bindings.push({ name, at: m.index, initFrom: eq, initTo: end, guardedAtBinding });
+    bindings.push({ name, at: m.index, initFrom: eq, initTo: end, guardedAtBinding, hasFinder: FINDER.test(init) });
   }
-  if (!bindings.length) return out;
+  if (!bindings.some((b) => b.hasFinder)) return out;
+
+  // The nearest binding of `name` strictly preceding `off`, whatever its initializer.
+  const resolve = (name, off) => {
+    let best = null;
+    for (const b of bindings) {
+      if (b.name !== name || b.at >= off) continue;
+      if (best === null || b.at > best.at) best = b;
+    }
+    return best;
+  };
 
   // File-scoped guard: any comparison of the name against -1 or 0, in either order, plus `~name`.
   // Deliberately generous — see design choice 1 in the header.
@@ -179,33 +241,44 @@ export const namedBindingSites = (src) => {
     const open = w.index + w[0].length - 1;
     const close = callEnd(masked, open);
     if (close === null) continue;
-    const args = splitArgs(masked.slice(open + 1, close - 1));
-    for (const b of bindings) {
-      if (b.at > w.index) continue; // the binding must precede the use
-      const slot = args.findIndex((a) => refusalValue(a, b.name) !== null && new RegExp(`\\b${b.name.replace(/[$]/g, '\\$')}\\b`).test(a));
-      if (slot !== 0 && slot !== 1) continue;
-      // His key already sees this site if the finder is inside this very call's arguments.
-      const inner = masked.slice(open + 1, close - 1);
-      if (FINDER.test(inner)) continue;
-      const a0 = args[0] === undefined ? undefined : refusalValue(args[0], b.name);
-      const a1 = args[1] === undefined ? undefined : refusalValue(args[1], b.name);
-      const resolvable = a0 !== null && a1 !== null;
-      const len = resolvable ? windowLenOnRefusal(method, a0, a1) : null;
-      out.push({
-        name: b.name,
-        off: w.index,
-        line: lineAt(w.index),
-        bindingLine: lineAt(b.at),
-        text: src.slice(w.index, close).replace(/\s+/g, ' '),
-        // Sliced out of the ORIGINAL, not out of `b.init`, which comes from the strings-blanked
-        // reading and would print every anchor as a run of spaces — `src.indexOf('\n')` displaying
-        // as `src.indexOf(' ')`. The masked text is for LOCATING; the original is for showing.
-        init: src.slice(b.initFrom, b.initTo).replace(/\s+/g, ' '),
-        guarded: b.guardedAtBinding || guardedInFile(b.name),
-        stratum: resolvable ? stratumOf(len) : 'UNRESOLVABLE',
-      });
-      break;
+    const inner = masked.slice(open + 1, close - 1);
+    // His key already sees this site if the finder is inside this very call's arguments. This is
+    // what makes the two populations disjoint by construction.
+    if (FINDER.test(inner)) continue;
+    const args = splitArgs(inner);
+
+    // The identifier in slot 0 or 1, read off the ARGUMENT rather than guessed from a binding list
+    // — so resolution runs name-first and a shadowing re-binding can win.
+    let name = null;
+    let slot = -1;
+    for (const s of [0, 1]) {
+      const m = args[s] === undefined ? null : /^([A-Za-z_$][\w$]*)\s*(?:[+-]\s*\d+)?$/.exec(args[s]);
+      if (m) { name = m[1]; slot = s; break; }
     }
+    if (name === null) continue;
+
+    const b = resolve(name, w.index);
+    if (b === null || !b.hasFinder) continue;
+
+    const nameVal = initRefusal(masked.slice(b.initFrom, b.initTo));
+    const a0 = args[0] === undefined || nameVal === null ? undefined : refusalValue(args[0], name, nameVal);
+    const a1 = args[1] === undefined || nameVal === null ? undefined : refusalValue(args[1], name, nameVal);
+    const resolvable = nameVal !== null && a0 !== null && a1 !== null;
+    const len = resolvable ? windowLenOnRefusal(method, a0, a1) : null;
+    out.push({
+      name,
+      slot,
+      off: w.index,
+      line: lineAt(w.index),
+      bindingLine: lineAt(b.at),
+      text: src.slice(w.index, close).replace(/\s+/g, ' '),
+      // Sliced out of the ORIGINAL, not out of the masked reading, which would print every anchor
+      // as a run of spaces — `src.indexOf('\n')` displaying as `src.indexOf(' ')`. The masked text
+      // is for LOCATING; the original is for showing.
+      init: src.slice(b.initFrom, b.initTo).replace(/\s+/g, ' '),
+      guarded: b.guardedAtBinding || guardedInFile(name),
+      stratum: nameVal === null ? 'UNMODELLED (compound initializer)' : resolvable ? stratumOf(len) : 'UNRESOLVABLE',
+    });
   }
   return out;
 };
@@ -268,6 +341,40 @@ const FIXTURES = [
     name: 'KP-9  axis: the site AFTER a regex literal carrying `{`, `(` and an apostrophe',
     src: "const re = /\\bit's\\s*\\{(\\w+)/g;\nconst at = s.indexOf('X');\nconst w = s.slice(at);\n",
     want: 1, guarded: false, stratum: 'FAILS OPEN',
+  },
+  {
+    // The axis the first version of this instrument got wrong, and the reason it got it wrong was
+    // a resolver that took the FIRST preceding finder binding instead of the NEAREST binding of
+    // that name. Expected member loss written down before this drove: 1 → 0, because `let i = 0`
+    // shadows the finder binding and cannot refuse. The live false positive this reproduces is
+    // `probe-round260:182` resolving to :137 across a function boundary.
+    name: 'KP-10 axis: a re-binding SHADOWS the finder binding (341)',
+    src: "function a(s) {\n  let i = s.indexOf('X');\n  return i;\n}\nfunction b(s) {\n  let i = 0;\n  return s.slice(i, i + 2);\n}\n",
+    want: 0,
+  },
+  {
+    // The same axis in the other direction: nearest-preceding must not become "any later binding
+    // wins". Here the finder binding is the nearest one preceding the use, and the earlier
+    // non-finder binding of the same name must not shadow it. Written down first: 1 site, OPEN.
+    name: 'KP-11 axis: an EARLIER non-finder binding must not shadow the finder one',
+    src: "let at = 0;\nfunction f(s) {\n  at = 1;\n}\nconst at2 = 0;\nconst at3 = 0;\nconst atX = s.indexOf('Y');\nconst w0 = s.slice(atX);\n",
+    want: 1, guarded: false, stratum: 'FAILS OPEN',
+  },
+  {
+    // The axis the SECOND modelling error lived on. Expected before driving: the binding's own
+    // refusal is 0, not -1, so `.slice(at)` is `.slice(0)` — the WHOLE string, WIDE, not OPEN.
+    // The pre-fix instrument printed OPEN here.
+    name: 'KP-12 axis: the BINDING carries the offset — refusal is 0, so the window is WIDE',
+    src: "const at = s.indexOf('X') + 1;\nconst w = s.slice(at);\n",
+    want: 1, guarded: false, stratum: 'FAILS WIDE',
+  },
+  {
+    // A compound initializer gets no stratum at all. Expected: found, but UNMODELLED — this is the
+    // live shape of `round382:215` / `round384:88`, where a refusal slides the window rather than
+    // collapsing it.
+    name: 'KP-13 axis: a COMPOUND initializer is published as UNMODELLED, not stratified by guess',
+    src: "const abs = m.index + m[0].indexOf(init) + at;\nconst w = s.slice(abs, abs + 13);\n",
+    want: 1, guarded: false, stratum: 'UNMODELLED (compound initializer)',
   },
   {
     name: 'CONTROL-COMMENT  the whole shape quoted in a comment',
@@ -337,7 +444,11 @@ console.log(
   `\n  named-binding window sites: ${sites.length}`
   + `\n    GUARDED:            ${sites.length - unguarded.length}  ← cured; his "no longer defective"`
   + `\n    UNGUARDED:          ${unguarded.length}  ← his "invisible", and NOT cured`
-  + `\n      of those, OPEN:   ${unguardedOpen.length}  ← the reported class, in the spelling his key cannot reach`,
+  + `\n      of those, OPEN:        ${unguardedOpen.length}  ← the reported class, in the spelling his key cannot reach`
+  + `\n      WIDE:                  ${unguarded.filter((r) => r.stratum === 'FAILS WIDE').length}`
+  + `\n      PARTIAL:               ${unguarded.filter((r) => r.stratum.startsWith('FAILS PARTIAL')).length}`
+  + `\n      UNRESOLVABLE (arg):    ${unguarded.filter((r) => r.stratum === 'UNRESOLVABLE').length}`
+  + `\n      UNMODELLED (init):     ${unguarded.filter((r) => r.stratum.startsWith('UNMODELLED')).length}  ← compound initializer; a refusal SLIDES the window rather than collapsing it`,
 );
 
 // ── collision with his 31, by member list and not by count (340) ─────────────────────────────────
