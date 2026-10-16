@@ -3160,7 +3160,46 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-10-15 ~19:25 PT (STOP fire). **Status:** available.
+- **Updated:** 2026-10-16 ~07:25 PT (START fire). **Status:** available.
+- **Drain:** `git log --oneline 6528bc53..HEAD` (own 10/15 STOP checkpoint, that commit itself the
+  one asserting `HEAD == 1b40d4f0` just before committing) — 9 new commits, authorship checked
+  with `%an` (Theseus ×6, Calliope ×1, Claude ×1, Pard (Mediajunkie) ×1), none mine — the Round 398
+  Daedalus/Theseus adversarial-verification chain (both Round 397 cures taken — `renamedAway` and
+  `recorderRefusesToAdopt` — and the 31-window/14-fail-open census), Calliope's log.html chronicle,
+  and two brief-publish commits (cross-poll, fire-depth). `git diff --stat 6528bc53..HEAD --
+  packages/` empty — confirmed, not assumed; no product/UX code touched. Mail: one file newer than
+  this seat's last checkpoint (Theseus's Round 398 memo to Daedalus, cc iris), read in full —
+  cc-only, ends "Nothing here needs xian," both routed items already taken by the memo's own
+  account. All four other writable cross-repo mailboxes checked by `find -newer` plus a content
+  grep for `klatch`/`iris` on that set: three hits, all three rows inside old MANIFEST.md indexes
+  (2026-04/05 entries mentioning "Klatch" incidentally in historic cross-poll summaries) — no
+  addressee match, nothing owed. Cross-poll brief: new 2026-10-16 private-source URL, direct read
+  confirmed blocked again this fire (`find` refused outside the session's granted working
+  directories) — Calliope's skip-and-log ruling stands. New `fire-depth-latest.md` (Pard,
+  2026-10-16 06:50 PDT) read in full — informational, not addressed to this seat. Both standing
+  blockers re-checked fresh: day count **68** (+1 from 10/15's 67, by `node` date diff from
+  2026-08-09); `entityGuess` still 6 files/20 (re-grepped directly). Fresh gate re-derived — see
+  below. Two consecutive checks found nothing further unblocked — fire closed bounded.
+- **10/16 fire (START) — no-op on product; no new unblocked UX work.** Worktree synced to
+  `origin/main`, `HEAD == origin/main == 12425a54`. **Verified, not trusted:** `npm run typecheck`
+  clean ×4 workspaces; `npm test -w packages/server` unpiped — **140 files · 2179 passed · 1
+  skipped (2180)**; `npm test -w packages/client` unpiped — **26 passed|13 skipped (39) · 333
+  passed|13 skipped (346)** — both exact matches to the prior checkpoint; `sweep-probes --census`
+  — **CENSUS OK, 153 probe files, 43 swept/110 deferred (34 verdict-bearing, 76
+  no-conclusion-line)** — unchanged; full driving sweep on a free port (`:3001` confirmed clear via
+  `lsof`, run in background, checked via the completion notification rather than polled, verdict
+  read from file, `HEAD` re-read before and after the drive — unchanged at `12425a54` both times,
+  `git status --porcelain` clean during the drive) — **SWEEP PASSED — 43 of 43 swept probes green,
+  0 red, 0 blocked, 0 census problem(s), 110 deferred**. No `packages/` changes this fire. `git
+  status --porcelain` clean apart from this entry and the log (`.scratch/` gate-run logs
+  gitignored, not committed). No port bound at close (`lsof -i :3001` empty again), no database
+  opened, no model called. Two consecutive checks found nothing further unblocked — fire closed
+  bounded. Nothing new needs xian beyond the one standing item (ground-rules question). One
+  self-correction logged: a `ScheduleWakeup` call mid-fire while waiting on the backgrounded sweep
+  was misapplied (this is a duty-cycle fire, not a `/loop` session) and immediately cancelled; the
+  task notification arrived as expected and was used instead — no functional effect. Log:
+  `docs/logs/2026-10-16-0725-iris-log.md`.
+- **Prior update:** 2026-10-15 ~19:25 PT (STOP fire). **Status:** available.
 - **Drain:** `git log --oneline b15462ed..HEAD` (own 10/15 START checkpoint) — 36 new commits,
   authorship checked with `%an` (Daedalus ×15, Theseus ×14, Argus ×4, Calliope ×2, Janus (DinP)
   ×1), none mine — the Rounds 393-397 Daedalus/Theseus adversarial-verification chain (census
