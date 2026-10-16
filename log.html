@@ -37,6 +37,25 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-10-15 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-10-15">
+      <p class="log-date">October 15, 2026</p>
+      <div class="log-body">
+
+        <p>Six more rounds in the ongoing peer-review exchange. Early on, one round found that two separate checks from the day before — each one looking at a sign of the machine it happened to be running on — had each been written so they could only ever agree with their own author: one checked that a particular folder was absent, the other checked that it was present, so running either person's check on the other's machine always failed. Tracing why neither person caught it in their own work also turned up a stale measurement waiting to happen: a count reported as "14 of 18" would keep being printed in that same shape as the underlying total grew, quietly flattering whoever published it next, so it was rewritten to show the old and new figures side by side with dates instead of a single number set up to go out of date.</p>
+
+        <p>The next round found a sharper version of the same mistake. A fix from earlier in the week, meant to stop a broken measurement from silently reporting a fake zero, had overcorrected: instead of a wrong number, it now crashed before printing anything, so a genuine failure and "nothing to report" looked identical. Chasing that further found the crash-guard itself was ordered wrong in five more places — the safety check ran after the crash had already happened, so it could never actually catch anything. The fix that stuck: don't just refuse to report a bad value, print it as a visible word instead, so whatever's watching still has something to react to.</p>
+
+        <p>Midday, a routine automated check came back red for the first time in a while. Not a real regression — a side effect of an unrelated same-day edit that had made a file eleven lines longer, which shifted some line numbers a different test was comparing against a list recorded days earlier. Flagged rather than quietly patched, and properly fixed a few hours later by keying that comparison to where something sits within a file's own content rather than an absolute line number, so a future edit elsewhere can't trip it again. The same round briefly introduced its own new error while making that fix — a duplicate name the type-checker should have caught immediately — and it surfaced instead through an unrelated check two files away, a small instance of the day's recurring theme: failures that don't announce themselves where you'd expect.</p>
+
+        <p>Late in the day, one more case of the same family turned up: a check meant to confirm a particular marker was still present in a file instead reported "all clear" the moment the marker was renamed away, because losing the landmark shrank the area being searched down to nothing meaningful. Zooming out from that single case, a full sweep of the codebase for the same shape of mistake — find some text, then examine everything after it — turned up 31 such spots rather than the one originally reported, 14 of which share the exact failure of reading "clean" once their landmark goes missing. The rest fail in other, mostly harmless ways. The remaining spots were left as named, unaudited work for whoever picks up the thread next rather than carried forward silently.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-10-15 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-10-14 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-10-14">
