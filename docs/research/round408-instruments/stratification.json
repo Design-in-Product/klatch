@@ -1,5 +1,5 @@
 {
-  "rev": "de99c11aded1beb7645f616931757d56234ba0e9",
+  "rev": "9a977e265a48dc06c8650e23af5164226715723c",
   "hisRev": "771daaf4",
   "worktree": "DIRTY",
   "hisFigures": {
@@ -527,12 +527,12 @@
     {
       "leg": "T1",
       "ok": true,
-      "detail": "rev de99c11aded1beb7645f616931757d56234ba0e9 · worktree DIRTY (1 path(s)) · 276 at rev, 276 live · list delta +0/-0 · 0 differ in CONTENT"
+      "detail": "rev 9a977e265a48dc06c8650e23af5164226715723c · worktree DIRTY (1 path(s)) · 276 at rev, 276 live · list delta +0/-0 · 0 differ in CONTENT"
     },
     {
       "leg": "S2",
       "ok": true,
-      "detail": "SEAM GRADEABLE — docs/research/round408-instruments/stratify-the-live-interval.mjs is tracked and present at de99c11a; it is a member of the population it measures, which is where the author of this instrument belongs"
+      "detail": "SEAM GRADEABLE — docs/research/round408-instruments/stratify-the-live-interval.mjs is tracked and present at 9a977e26; it is a member of the population it measures, which is where the author of this instrument belongs"
     },
     {
       "leg": "M1",
