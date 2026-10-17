@@ -1,0 +1,50 @@
+fatal: path 'scripts/sweep-probes.mjs' exists on disk, but not in '0000000000000000000000000000000000000000'
+Round 403 — the live census over all fifteen rows. HEAD 96db8b7d.
+
+── A: his hand table, extracted from his source ──
+  15 rows at 13 lines in 12 files
+  classes: {"REAL":4,"TERM-GUARD":2,"FROZEN":4,"PRECOND":2,"DELIBERATE":1,"NONNEG":2}
+  published: {"REAL":4,"FROZEN":4,"NONNEG":2,"TERM-GUARD":2,"PRECOND":2,"DELIBERATE":1}
+
+── B: every site at its published line, at HEAD ──
+  15 of 15 unmoved; moved: []
+
+── C: his §3 by DRIVE, not by re-derivation ──
+  exit 1 · 12 PASS · FAIL [C1, C3, C4, C5]
+  summary: FAILED — 4 assertion(s) failed
+  he predicted C1, C3, C4 red. The drive reds [C1, C3, C4, C5] — 4, not 3.
+  control (PASS lines present, so "all red" is not a selector artefact): true
+
+── D: the live census ──
+  of 15 rows: 8 admit a live measurement (4 live-read + 4 pinned),
+  7 are structurally non-refusable and get NO live claim (his ANCHOR-LIVE measured 1).
+
+  D1 — the pinned haystacks, and the one way a pin can fail:
+    REACHABLE e922394b · 20100 bytes · needle hits 1 · attested in reader true · round383:744
+    REACHABLE 5ad685d2 · 17159 bytes · needle hits 1 · attested in reader true · round388:169
+    REACHABLE 311e5810 · 22759 bytes · needle hits 1 · attested in reader true · round390:198
+    REACHABLE 047e5f06 · 45762 bytes · needle hits 1 · attested in reader true · probe-round283:162
+    REACHABLE c848dc66 · 21002 bytes · needle hits 8 · attested in reader true · round393:133 (via the chainsOf call site)
+    control (an impossible sha must refuse, not read empty-green): true
+    ATTESTED means both the rev and the path occur in the reading instrument's own source, so a
+    transcribed pair reddens here instead of looking like an unreachable object (394/395).
+
+  D2 — round396:87, the row with real live exposure:
+    subject scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts
+    needle "rather than" → 27 occurrence(s) at HEAD, first at offset 318
+    the cure he names (round397's `!== 1` → exit 1) would REFUSE on this subject today: true
+    control (an absent needle reads 0): true
+
+  D3 — round393:133, resolved one call frame up:
+    chainsOf(src) · 1 call site(s)
+      chainsOf(his392AtPin) at offset 9217 · his392AtPin = "show(HIS_392_PIN, HIS_392_PATH)"
+    every call site's argument reaches `show(`: true — so the haystack is a pinned blob, and the row cannot drift in the live tree
+    control (an uncalled name finds 0 sites): true
+
+── gate ──
+  ok   GRADE A: true
+  ok   GRADE B: true
+  ok   GRADE C: true
+  ok   GRADE D: true
+
+GATE PASSED — all legs true.
