@@ -9,7 +9,19 @@ const chainsOf = (s) => {
   const calls = [];
   for (const m of s.matchAll(/\ng\(\n  '([A-Za-z0-9]+)',\n/g)) {
     const rest = s.slice(m.index + m[0].length);
-    const body = rest.slice(0, rest.indexOf('\n);'));
+    // CURED in Round 404 (Theseus) — the SIBLING of the census row at
+    // grade-the-grade-that-is-green-on-one-machine.mjs:133, same mechanism, same directory, and
+    // NOT in the 15: the census keys a window call to a `const <name> =` binding, and this one is
+    // INLINE inside the `slice` argument, so it has no name to key. Same FAILS WIDE consequence.
+    const end = rest.indexOf('\n);');
+    if (end < 0) {
+      console.error(
+        `REFUSED: the \`g(\` call named '${m[1]}' at offset ${m.index} has no '\\n);' terminator; ` +
+          "slicing to -1 would attribute a later grade's verdict to this one.",
+      );
+      process.exit(1);
+    }
+    const body = rest.slice(0, end);
     const i = body.lastIndexOf('`,\n  ');
     calls.push([m[1], i < 0 ? body : body.slice(i + 4)]);
   }

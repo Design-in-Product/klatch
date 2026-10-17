@@ -1,0 +1,15 @@
+# round393 POST-CURE, guarded g( terminator (inline sibling)
+# argv: npx tsx docs/research/round393-instruments/counterfactuals-for-the-p2-detector.mjs
+
+BASE             -> [Q1.hisFileUnmoved, Q2.scratchHereNow, Q2b.myCureMovedIt]  lost=[]  expected_loss=[]  
+A drop existsSync -> [Q1.hisFileUnmoved, Q2b.myCureMovedIt]  lost=[Q2.scratchHereNow]  expected_loss=[Q2.scratchHereNow]  AS PREDICTED
+B drop readFileSync -> [Q2.scratchHereNow]  lost=[Q1.hisFileUnmoved, Q2b.myCureMovedIt]  expected_loss=[Q1.hisFileUnmoved, Q2b.myCureMovedIt]  AS PREDICTED
+C depth 1        -> [Q2.scratchHereNow]  lost=[Q1.hisFileUnmoved, Q2b.myCureMovedIt]  expected_loss=[Q1.hisFileUnmoved, Q2b.myCureMovedIt]  AS PREDICTED
+D depth 0        -> []  lost=[Q1.hisFileUnmoved, Q2.scratchHereNow, Q2b.myCureMovedIt]  expected_loss=[Q1.hisFileUnmoved, Q2.scratchHereNow, Q2b.myCureMovedIt]  AS PREDICTED
+
+chains: Q1=4 Q2=12 Q2b=5 Q3=4 Q4=8 Q5=1
+total conjuncts: 34
+(node:35925) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+[exit 0] [0s]

@@ -1,0 +1,25 @@
+# workspace typecheck leg
+# npm run typecheck
+
+
+> typecheck
+> npm run typecheck -w packages/shared && npm run typecheck -w packages/server && npm run typecheck -w packages/client && npm run typecheck:scripts
+
+
+> @klatch/shared@0.0.1 typecheck
+> tsc
+
+
+> @klatch/server@0.0.1 typecheck
+> tsc --noEmit
+
+
+> @klatch/client@0.0.1 typecheck
+> tsc --noEmit
+
+
+> typecheck:scripts
+> tsc -p scripts/tsconfig.json
+
+
+[exit 0]

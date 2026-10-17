@@ -31,7 +31,8 @@
  * No edit to the shared gate. He declined to land it in a STOP fire on his own read; I am not
  * landing it on mine either. This prices it.
  */
-import { readFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 import { classify } from '../../../scripts/sweep-probes.mjs';
 
 let failures = 0;
@@ -122,9 +123,44 @@ const alwaysEqual = populations.every((rows) => {
 check('B4', 'over every population tried, declared-count === blocked-count', alwaysEqual, true, 'so no input to the sweep can make his annotation read anything but `n blocked (n declared blocker, clearable)`');
 
 // ── C — what is in scope at the verdict line ────────────────────────────────
-const SRC = readFileSync(new URL('../../../scripts/sweep-probes.mjs', import.meta.url), 'utf8');
+// CURED in Round 404 (Theseus). This read was `readFileSync` of the LIVE file with no rev pin and
+// no guard, and it had already fired: `ecf091ba` (round369) extracted the verdict line into an
+// exported pure function, so `verdictLog` went to -1, `span` became the rest of the file minus a
+// byte, and C1/C3/C4/C5 reddened — `exit 1`, measured at HEAD `7e788af7`
+// (`docs/research/round404-instruments/round368-precure.out`).
+//
+// Section C's claims were written against the file as it stood at round 368, so the repair is the
+// one round383/388/390/probe-round283 already use for exactly this reason: read the subject out of
+// an immutable blob at a pin, and REFUSE if either anchor fails to resolve in order rather than
+// slicing a garbage span. `3664849a` is the newest rev at which both anchors resolve in order —
+// measured, not chosen (`round404-instruments/grade-the-three-cures.mjs`, leg P), and it is the
+// parent of the commit that moved the line.
+//
+// Deliberately NOT pinned: the `classify` import at :35, which is behavioural and whose claim (A)
+// is about today's module. It fails loudly if it drifts; this source read failed wide.
+//
+// Recorded for the reader, and not re-graded here: at HEAD the question C1 asks is obsolete as
+// well as unanswerable at this anchor. The verdict line is now `verdictLine({ swept, red, blocked,
+// ... })` at sweep-probes.mjs:2297 — a pure function that reads only its own destructured argument
+// and cannot see a loop accumulator at all. A re-aimed C1 would be a new round's finding, not a
+// repair of this one.
+const SUBJ_PIN = '3664849a';
+const SUBJ_PATH = 'scripts/sweep-probes.mjs';
+const SRC = execFileSync('git', ['show', `${SUBJ_PIN}:${SUBJ_PATH}`], {
+  cwd: fileURLToPath(new URL('../../..', import.meta.url)),
+  encoding: 'utf8',
+  maxBuffer: 1 << 28,
+});
 const loopStart = SRC.indexOf('for (const s of SWEPT) {');
 const verdictLog = SRC.indexOf('console.log(`${verdictWord} —');
+if (loopStart < 0 || verdictLog < 0 || verdictLog <= loopStart) {
+  console.error(
+    `REFUSED: section C's anchors do not resolve in order in ${SUBJ_PATH} at ${SUBJ_PIN} — ` +
+      `loopStart ${loopStart}, verdictLog ${verdictLog}. Every C figure below would be a slice of ` +
+      'the wrong span.',
+  );
+  process.exit(1);
+}
 const span = SRC.slice(loopStart, verdictLog);
 
 // The detector: accumulators that survive the loop are `let`-declared BEFORE it and `+=`'d

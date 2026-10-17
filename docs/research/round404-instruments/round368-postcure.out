@@ -1,0 +1,49 @@
+# round368 POST-CURE, pinned read at 3664849a
+# argv: npx tsx docs/research/round368-instruments/verdict-line-kind-grade.mts
+
+MEAS [0] the entry this grader runs under
+        process.argv[1] = verdict-line-kind-grade.mts
+PASS [A1] exit 2 WITH the declared refusal is BLOCKED
+        the known positive for the exit-2 limb — got "BLOCKED", want "BLOCKED"
+PASS [A2] exit 2 WITHOUT a declaration is RED, not BLOCKED
+        the control — without it A1 is a detector that cannot see its own negative — got "RED", want "RED"
+PASS [A3] exit 3 WITH the declared skip on a `did not run:` line is BLOCKED
+        the known positive for the exit-3 limb — got "BLOCKED", want "BLOCKED"
+PASS [A4] exit 3 WITHOUT a declaration is RED, not BLOCKED
+        the control for the exit-3 limb — got "RED", want "RED"
+PASS [A5] a declared label NOT on the `did not run:` line does not borrow one
+        classify's same-line requirement, exercised rather than quoted — got "RED", want "RED"
+PASS [A6] exit 0 with the pinned summary is PASS
+        the green branch cell 1 drove for real this fire — got "PASS", want "PASS"
+PASS [B0] the two populations really do have the same blocked count
+        otherwise B1/B2 compare different-sized things and prove nothing — got [1,1], want [1,1]
+MEAS [B] his wording over the two populations
+        setR -> "1 blocked (1 declared blocker, clearable)" · setS -> "1 blocked (1 declared blocker, clearable)"
+PASS [B1] his wording COLLAPSES the exit-2 and exit-3 cases
+        identical strings for the two kinds — the figure is a function of `blocked` alone, which is the agree-vacuously shape he caught in his first draft — got true, want true
+MEAS [B] the kind split over the same two populations
+        setR -> "1 blocked (1 could not run, 0 ran but did not finish)" · setS -> "1 blocked (0 could not run, 1 ran but did not finish)"
+PASS [B2] the kind split SEPARATES them
+        the annotation that actually carries a bit — got true, want true
+PASS [B3] and the split is a function of kind, not of row identity
+        the control — two different refusal rows must annotate identically — got true, want true
+PASS [B4] over every population tried, declared-count === blocked-count
+        so no input to the sweep can make his annotation read anything but `n blocked (n declared blocker, clearable)` — got true, want true
+PASS [C1] the only accumulators crossing the loop boundary are red and blocked
+        read off the real source between the loop head and the verdict log — got ["blocked","red"], want ["blocked","red"]
+PASS [C2] refused/skipped are destructured per-iteration, inside the loop
+        so they are live at :2073 and dead at :2102 — "state the loop already has in hand" is true of the ROW, not of the verdict line — got true, want true
+PASS [C3] the mutation anchor occurs exactly once in the span
+        assert before mutating — a String.replace on a string that appears twice grades the wrong site — got 1, want 1
+PASS [C4] the detector SEES a planted blockedRefused accumulator
+        the known positive — C1 is a reading, not a zero from a selector that matches nothing — got ["blocked","blockedRefused","red"], want ["blocked","blockedRefused","red"]
+PASS [C5] and the plant actually changed the span
+        guards C4 against grading an unmutated copy — got true, want true
+
+MEAS [X] what this prices
+        his cure is NOT a format change — it needs an accumulator the verdict line does not have (C1), and the wording he proposed cannot vary (B4). The kind split is the version that carries a bit.
+All assertions passed — claim A holds with controls; claim B fails as worded; claim C is false at the verdict line.
+(node:35628) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+[exit 0] [1s]

@@ -130,6 +130,19 @@ const chainsOf = (src) => {
   for (const m of src.matchAll(re)) {
     const rest = src.slice(m.index + m[0].length);
     const end = rest.indexOf('\n);');
+    // CURED in Round 404 (Theseus). `end` was unguarded and FAILS WIDE: a `g(` call with no
+    // `\n);` terminator makes `body` the whole rest of the file, the `lastIndexOf` two lines down
+    // then finds some LATER grade's message terminator, and this grade is attributed a verdict
+    // that belongs to another one — silently, with no row lost and no count moved. The tell that
+    // this was an oversight and not a judgement is one line below: `i < 0 ? body : ...` guards its
+    // own refusal. Same shape, same author, two lines apart, one guarded.
+    if (end < 0) {
+      console.error(
+        `REFUSED: the \`g(\` call named '${m[1]}' at offset ${m.index} has no '\\n);' terminator; ` +
+          "slicing to -1 would attribute a later grade's verdict to this one.",
+      );
+      process.exit(1);
+    }
     const body = rest.slice(0, end);
     // The verdict is everything after the message's closing backtick-comma.
     const i = body.lastIndexOf('`,\n  ');

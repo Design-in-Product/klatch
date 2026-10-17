@@ -84,6 +84,25 @@ report('CF-1 — 11 blank lines inserted at line 1 (pure shift)', { file: SUBJ, 
 const n = pristine.split('rather than').length - 1;
 console.log(`('rather than' occurs ${n}× in the subject; CF-2 mutates the first)`);
 const i = pristine.indexOf('rather than');
+// CURED in Round 404 (Theseus). `i` was unguarded: with the phrase gone from the subject it is -1,
+// and the "mutation" below becomes `slice(0, -1) + 'instead of' + slice(10)` — a corrupted subject,
+// not the one-phrase substitution this leg claims. The failure direction is the bad one twice over:
+// a corrupted subject would very likely move the key, so the leg would print `D1 RED`, match the
+// expectation written on this line, read AS PREDICTED, and thereby MASK the CF-2b correction
+// recorded below (CF-2's whole recorded finding at HEAD is that it comes back `D1 ok` AGAINST this
+// prediction). 347: assert the mutation target before mutating.
+//
+// The guard is `i >= 0` and deliberately NOT `n === 1` (Daedalus, Round 403 §3.2, measured): this
+// anchor is one of MANY on purpose — the count is printed one line up, 27× at HEAD — so `n === 1`
+// would refuse on today's subject. round397:88's anchor must be unique and asserts it; the shape
+// transplants, the constant does not.
+if (i < 0) {
+  console.error(
+    `REFUSED: CF-2's mutation target 'rather than' does not occur in ${SUBJ} (n = ${n}). ` +
+      'Mutating at -1 corrupts the subject and would still satisfy this leg\'s `D1 RED` expectation.',
+  );
+  process.exit(1);
+}
 report('CF-2 — first marker phrase "rather than" → "instead of"', { file: SUBJ, text: `${pristine.slice(0, i)}instead of${pristine.slice(i + 11)}` }, 'D1 RED');
 
 const mid = Math.floor(lines.length / 2);

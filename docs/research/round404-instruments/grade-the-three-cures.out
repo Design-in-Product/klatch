@@ -1,0 +1,79 @@
+# Round 404 cure grading, driven at HEAD 7e788af7 with the cures in the working tree
+
+MEAS [P] anchors and pin, read out of the cured file
+        A1 "for (const s of SWEPT) {" · A2 "console.log(`${verdictWord} —" · pin 3664849a · path scripts/sweep-probes.mjs
+MEAS [P] revs touching the subject, newest-first
+        102 rev(s); newest at which both anchors resolve in order: 3664849a
+PASS [P1] the pin in the cured file IS the newest rev at which both anchors resolve in order
+        pin 3664849a, measured 3664849a — got true, want true
+PASS [P2] the pinned object is REACHABLE and its anchors resolve in order
+        blob 160739 bytes, loopStart 157945, verdictLog 160427 — got true, want true
+PASS [P3] CONTROL — the pin is strictly newer than nothing newer resolves: HEAD does NOT resolve
+        at the live tree loopStart 202286, verdictLog -1 — this is the firing the cure repairs — got false, want false
+PASS [P4] CONTROL — a needle that cannot occur finds nothing at the pin, so the scanner is not matching anything
+        an impossible anchor must be absent — got false, want false
+PASS [P5] ATTESTED (403 §4) — the (rev, path) pair both occur in the cured file itself
+        a transcribed pair fails as a transcription error, not as an unreachable blob — got true, want true
+MEAS [S] round368
+        old@pre true · old@post false · new@pre false · new@post true
+MEAS [S] round396
+        old@pre true · old@post false · new@pre false · new@post true
+MEAS [S] round393-named
+        old@pre true · old@post false · new@pre false · new@post true
+MEAS [S] round393-sibling
+        old@pre true · old@post false · new@pre false · new@post true
+PASS [S1] every site: the OLD spelling was PRESENT in the pre-cure tree
+        pre-cure tree 7e788af7 — got [true,true,true,true], want [true,true,true,true]
+PASS [S2] every site: the OLD spelling is GONE in the post-cure tree
+        the cure replaced it rather than annotating it — got [false,false,false,false], want [false,false,false,false]
+PASS [S3] every site: the NEW spelling was ABSENT in the pre-cure tree
+        so the new text is this fire’s, not something that was already there — got [false,false,false,false], want [false,false,false,false]
+PASS [S4] every site: the NEW spelling is PRESENT in the post-cure tree
+        read live, not from the diff — got [true,true,true,true], want [true,true,true,true]
+PASS [S5] CONTROL — a sentinel absent from every file reads absent in all four cells
+        otherwise `includes` is answering true for anything — got [false,false,false,false], want [false,false,false,false]
+PASS [S6] the pre-cure rev is the one named in this file and it is an ANCESTOR of the live tree
+        PRE = 7e788af7 — got true, want true
+MEAS [B] round368, pre-cure vs post-cure
+        pre exit 1, 12 PASS, FAIL [C1, C3, C4, C5] · post exit 0, 16 PASS, FAIL []
+PASS [B1] round368 was RED before the cure, on the four C assertions Daedalus drove in 403
+        his drive and mine agree member-for-member, not just on the count (340) — got [1,["C1","C3","C4","C5"]], want [1,["C1","C3","C4","C5"]]
+PASS [B2] round368 is GREEN after the cure, and the PASS lines are still there
+        exit 0 with no PASS lines would be a selector matching nothing (382) — got [0,0,true], want [0,0,true]
+PASS [B3] round396: the cure moved NOTHING in the live reading — every CF line identical pre and post
+        12 compared line(s); a guard on a refusal that does not occur must be a no-op today — got true, want true
+PASS [B4] round396: CF-2's recorded prediction-mismatch SURVIVES the cure
+        this is the correction the silent failure would have masked — a corrupted subject would very likely print `D1 RED` and read AS PREDICTED — got true, want true
+PASS [B5] round393 and its sibling both still drive green after the cure
+        the guards are no-ops on a well-formed subject — got [0,0], want [0,0]
+PASS [R1] round368: pinned at a rev where the anchor does NOT resolve, the cure refuses instead of slicing a garbage span
+        exit 1; refusal text found — got [true,true], want [true,true]
+PASS [R2] round396: with the mutation target absent from the subject, CF-2 refuses instead of corrupting it
+        exit 1; refusal text found — got [true,true], want [true,true]
+PASS [R3] round393: with no `g(` terminator findable, the parser refuses instead of failing wide
+        exit 1; refusal text found — got [true,true], want [true,true]
+PASS [R4] CONTROL — every counterfactual copy is removed on every exit path
+        3 temp file(s) written and removed — got [], want []
+MEAS [M] inline (unnamed) window calls of the cured spelling, live tree
+        6 site(s) in 3 file(s): docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs:168, docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs:18, docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs:303, docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs:323, docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs:329, scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts:448
+PASS [M1] KNOWN POSITIVE — the detector finds the sibling I cured, read out of the PRE-cure blob
+        the KP has to be the pre-cure text, because the cure removed the live one (the only form that carries the property) — got 1, want 1
+PASS [M2] CONTROL — the same detector finds nothing in a string with the binding form instead
+        the named form is the census’s population, not this one — got 0, want 0
+PASS [M3] the files this fire cured carry ZERO of the inline spelling
+        the cure is complete over its own scope — got [], want []
+MEAS [M] the census's own population, parsed out of round402's hand table
+        12 distinct file(s) across the 15 rows
+PASS [M4] CONTROL — the parse really found the census population (a file known to be in it reads IN)
+        otherwise an empty set would make M5 vacuously true — got true, want true
+PASS [M5] every inline site sits in a file the 15 never names — the class is invisible to the key, not merely unlisted
+        3 file(s) carrying the inline form: docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs, docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs, scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts — got [], want []
+MEAS [M] OPEN AND ROUTED — inline window calls outside the cured scope
+        6 site(s): docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs:168, docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs:18, docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs:303, docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs:323, docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs:329, scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts:448 — unread by eye this fire; each needs the same REAL/NONNEG/FROZEN read the 15 got before any of them is called a defect
+
+ALL CURES GRADED GREEN — 0 assertion(s) failed. Legs: P (pin measured), S (2×2 old/new × pre/post), B (drive direction), R (refusals fire), M (mechanism census).
+REFUSED: section C's anchors do not resolve in order in scripts/sweep-probes.mjs at ecf091ba — loopStart 166577, verdictLog -1. Every C figure below would be a slice of the wrong span.
+REFUSED: CF-2's mutation target 'rather than' does not occur in scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts (n = 27). Mutating at -1 corrupts the subject and would still satisfy this leg's `D1 RED` expectation.
+REFUSED: the `g(` call named 'Q1' at offset 6060 has no '\n);' terminator; slicing to -1 would attribute a later grade's verdict to this one.
+
+[exit 0] [5s]

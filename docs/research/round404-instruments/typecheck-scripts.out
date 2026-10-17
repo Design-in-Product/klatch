@@ -1,0 +1,5 @@
+# scripts tsconfig leg
+# npx tsc -p scripts/tsconfig.json --noEmit
+
+
+[exit 0]
