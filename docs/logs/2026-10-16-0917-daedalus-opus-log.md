@@ -265,3 +265,83 @@ re-key (blocker: the pair needs re-aiming rather than loosening); the full-sweep
 completed inside the fire, `SWEEP PASSED` 43/43, so there was never a blocker here at all, and the
 deferral is struck rather than left standing as if it had been real); his 11-site severity read and
 his Round 394 `detachedAt` guard (his, noted not nudged). Nothing here needs xian.
+
+---
+
+## 17:17–17:5x PT — STOP fire — Round 403: his severity read holds, and only **8 of the 15** can be asked about "now"
+
+**Authorship first (326).** Five head commits on open, **four of them Theseus's** (`438a32c0`,
+`2c2e84a7`, `476e5bd6`, `855db399`) and one Calliope's (`96db8b7d`). Three of his subjects are in
+exactly the shape of my own round subjects; `--oneline` would have let me read Round 402 as mine.
+
+**Mail:** his Round 402 (the severity read on my 15) was the one item addressed to me. Read on
+arrival. He routed **nothing** and named the three REAL cures as his own, unblocked, next-fire item —
+so I did not take them. I took the axis his §3 opens and does not close: his **ANCHOR-LIVE leg
+measured one row** (its own comment: "the one leg that is deliberately about NOW"), keyed to the row
+he already suspected. The other 14 carried no claim about today.
+
+**Instrument:** `docs/research/round403-instruments/live-census-over-all-fifteen.mjs` →
+`live-census.out`. **GATE PASSED**, four legs, each with its own control.
+
+**What reproduced.** His hand table, extracted from his source rather than transcribed (394/395):
+**15 rows at 13 lines in 12 files**, classes `{REAL 4, FROZEN 4, NONNEG 2, TERM-GUARD 2, PRECOND 2,
+DELIBERATE 1}` — his §2 table and his §5 re-derivation exactly. And **15 of 15 site texts still sit
+at the line he published**, so my readings are of the same sites he hand-read at `a85b4a11`.
+
+**His §3, confirmed by DRIVE rather than by re-deriving his arithmetic — and it reds four, not
+three.** `npx tsx docs/research/round368-instruments/verdict-line-kind-grade.mts` → **exit 1, 12
+PASS, FAIL [C1, C3, C4, C5], "FAILED — 4 assertion(s) failed"**. He predicted C1/C3/C4 from a
+re-implementation of the grades. The extra red is **C5**, "and the plant actually changed the span" —
+the 347 guard, failing `got false, want true` because the planted accumulator never lands in the
+drifted span, which is also *why* C4's known positive reads `["red"]`. Without C5, C4 would be a KP
+failing for an unexamined reason.
+
+**THE FINDING — the denominator is not 15, it is 8.** Of the 15 rows: **4 live-read** (haystack is
+`readFileSync` of a working-tree path), **4 pinned** (`git show <rev>:<path>` — the one way they can
+fail is the object going unreachable), and **7 structurally non-refusable** (NONNEG, TERM-GUARD,
+PRECOND, DELIBERATE) which get **no live claim at all** rather than a vacuous green. All four pins
+are **REACHABLE at HEAD** (`e922394b` 20100 B, `5ad685d2` 17159 B, `311e5810` 22759 B, `047e5f06`
+45762 B) with each needle present — so his FROZEN class is sound today on the only axis that could
+have broken it, and nothing in the corpus but this leg checks it.
+
+**Two rows answer differently than his table has them:**
+
+- **`round393:133` is frozen one call frame up.** His §4 re-key (nearest-preceding, not a file-scoped
+  `const src` 240 lines below) is right. But the parameter has **exactly one call site** —
+  `chainsOf(his392AtPin)` at offset 9217, `his392AtPin = show(HIS_392_PIN, HIS_392_PATH)`,
+  `HIS_392_PIN = 'c848dc66'` — so the haystack **is** an immutable blob under his own FROZEN
+  criterion. Still a defect (unguarded, FAILS WIDE); the **severity** moves. "Silent over-span,
+  formatting-dependent" names an exposure the live tree cannot reach. The structural limit:
+  a depth-N alias chase inside a file cannot cross a call boundary.
+- **`round396:87`'s needle occurs 27× live, and the cure he names would refuse on it.** `pristine =
+  readFileSync(SUBJ)`, live and unpinned; `'rather than'` → **27 occurrences at HEAD**, first at
+  offset 318. His memo points at round397's `if (markerHits !== 1 …) process.exit(1)` as "the cure
+  spelled correctly one round later." Transplanted verbatim it **refuses on this subject today**.
+  The two anchors have opposite uniqueness properties *by design* — round396's own line prints
+  "CF-2 mutates the first". The honest cure is `i >= 0`, not `n === 1`. 321/368 on his side: a
+  routed finding does not validate its routed cure.
+
+**My own error, caught by the leg built to catch it.** First drive of D1: `UNREACHABLE 311e5810`,
+`fatal: path 'docs/research/round389-instruments/grade-the-two-lines-and-the-refusal.mjs' does not
+exist in '311e5810'`. For a minute that read as a pin going unreachable — the exact finding the leg
+looks for. It was **my transcription**: round390's `HIS_389_PATH` is
+`grade-the-census-key-and-the-asymmetric-pins.mjs`. I typed a round389 filename from memory inside a
+leg whose header cites 394/395 for not transcribing anchors, and **a wrong path and an unreachable
+object print the same `fatal:`** — with the wrong one being the more alarming finding. Repair is
+mechanical, not intentional: every `(rev, path)` pair is now **ATTESTED** — both literals must occur
+in the reading instrument's own source or the leg reds on the pair, printed per row.
+
+**Elapsed, measured not estimated (402).** I was composing a §5 that deferred the full sweep as a
+judgement call, on an internal sense of being ~35 minutes into the fire. `date` said **17:25** —
+eight minutes. Second consecutive fire where effort read as elapsed; the only reason it cost nothing
+this time is that one tool call came before the deferral instead of after it.
+
+**Gate:**
+- Mine: **GRADE A, B, C, D all true**, `GATE PASSED`. Controls: C's PASS-lines-present (so "all red"
+  is not a selector artefact, 382), D1's impossible-sha (must refuse, not read empty-green: true),
+  D2's absent-needle reads 0, D3's uncalled-name finds 0 sites. **GRADE D was false on the first
+  drive**, and what it caught was my own transcription above.
+- `npx tsc -p scripts/tsconfig.json --noEmit` → **0** diagnostics (`typecheck-scripts.out`, 0 lines).
+  `npm run typecheck` → **0** diagnostics (banner lines only). Both legs, because 396, even though
+  this round touches only `docs/research/`.
+- Nothing staged while anything drove (358).
