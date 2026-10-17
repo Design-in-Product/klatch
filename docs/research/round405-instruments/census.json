@@ -1,0 +1,713 @@
+{
+  "comparableKey": "revs — sorted distinct literal revs. Compare THIS. Never diff a path:line.",
+  "revs": [
+    "02e395f4",
+    "047e5f06",
+    "0c62294a",
+    "0eb3252b",
+    "1059b23c",
+    "1588b85f",
+    "17f25906",
+    "2485ba99",
+    "27c5cac3",
+    "311e5810",
+    "3664849a",
+    "44154365",
+    "495766e4",
+    "50ed611b",
+    "58debe3e",
+    "596dd9a2a2",
+    "5ad685d2",
+    "6362dd3a",
+    "6465346a",
+    "6a2b9f66",
+    "7cd7cd4f",
+    "7e788af7",
+    "88af8540",
+    "8cbd7ea5",
+    "92f780da",
+    "a43a0c21",
+    "b352310f",
+    "b65a7705",
+    "b7e21394",
+    "beb1ab78",
+    "c158e616",
+    "c4bd5307",
+    "c848dc66",
+    "d645157c",
+    "db208018",
+    "e922394b",
+    "e9e64fef",
+    "f56f1be5",
+    "f6bc1f02",
+    "ff93ad0a"
+  ],
+  "counts": {
+    "LITERAL-SHA": 91,
+    "SYMBOLIC": 15,
+    "METADATA": 4,
+    "DEFINITION": 16,
+    "UNMODELLED": 16
+  },
+  "grades": [
+    {
+      "leg": "W1",
+      "claim": "every KP classifies as written (multiset of classes)",
+      "ok": true,
+      "detail": "got {\"DEFINITION\":1,\"LITERAL-SHA\":4,\"SYMBOLIC\":1,\"METADATA\":1,\"UNMODELLED\":1} · want {\"DEFINITION\":1,\"LITERAL-SHA\":4,\"SYMBOLIC\":1,\"METADATA\":1,\"UNMODELLED\":1}"
+    },
+    {
+      "leg": "W2",
+      "claim": "the helper DEFINITION line is DEFINITION, not UNMODELLED and not a literal",
+      "ok": true,
+      "detail": "1 DEFINITION site(s) in the KP"
+    },
+    {
+      "leg": "W3",
+      "claim": "the commented pin and the prose-fence pin are both INVISIBLE",
+      "ok": true,
+      "detail": "revs seen: 3664849a, 3664849a, 495766e4^, HEAD, 3664849a, -s"
+    },
+    {
+      "leg": "W4",
+      "claim": "Theseus's 5 FROZEN revs are all present in my census",
+      "ok": true,
+      "detail": "all 5 present among 40 distinct literal rev(s)"
+    },
+    {
+      "leg": "W5",
+      "claim": "the derived blob-pin population is larger than the handed-down 5",
+      "ok": true,
+      "detail": "91 literal-sha pin site(s) in 35 file(s)"
+    },
+    {
+      "leg": "W6",
+      "claim": "every literal-sha pin resolves at HEAD: rev reachable and, where the path is literal, blob present",
+      "ok": true,
+      "detail": "91 pin(s): 0 unreachable rev(s), 0 missing blob(s), 68 with a COMPUTED path (rev checked, blob UNMODELLED — published, not assumed)"
+    },
+    {
+      "leg": "W7",
+      "claim": "a planted impossible sha is reported UNREACHABLE (so W6 is a reading, not a tautology)",
+      "ok": true,
+      "detail": "4 literal pin(s) in the planted KP, 3 UNREACHABLE"
+    },
+    {
+      "leg": "W7c",
+      "claim": "the scratch directory was removed on every exit path",
+      "ok": true,
+      "detail": "/var/folders/jl/g34tk0xx7nj20xbjvyq6bskc0000gn/T/d405-fZ5Aer"
+    }
+  ],
+  "strata": {
+    "LITERAL-SHA": [
+      "docs/research/round365-instruments/b1.mjs:27",
+      "docs/research/round368-instruments/verdict-line-kind-grade.mts:149",
+      "docs/research/round370-instruments/characterisation-sweep-drive.mjs:28",
+      "docs/research/round382-instruments/grade-the-class-count-and-the-seam.mjs:355",
+      "docs/research/round383-instruments/grade-the-binding-class.mjs:29",
+      "docs/research/round383-instruments/grade-the-binding-class.mjs:676",
+      "docs/research/round383-instruments/grade-the-binding-class.mjs:783",
+      "docs/research/round385-instruments/grade-the-sentence-against-the-literals.mjs:157",
+      "docs/research/round386-instruments/grade-the-monotonicity-claim.mjs:504",
+      "docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs:198",
+      "docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs:260",
+      "docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs:261",
+      "docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs:367",
+      "docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:43",
+      "docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:52",
+      "docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:69",
+      "docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:70",
+      "docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:73",
+      "docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:74",
+      "docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:100",
+      "docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:101",
+      "docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:180",
+      "docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:215",
+      "docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:218",
+      "docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:266",
+      "docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:284",
+      "docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:129",
+      "docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:198",
+      "docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:345",
+      "docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:351",
+      "docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:450",
+      "docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:490",
+      "docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs:124",
+      "docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs:217",
+      "docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs:224",
+      "docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs:239",
+      "docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs:345",
+      "docs/research/round393-instruments/counterfactuals-for-the-p2-detector.mjs:6",
+      "docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs:281",
+      "docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs:336",
+      "docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs:337",
+      "docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs:430",
+      "docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs:444",
+      "docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs:90",
+      "docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs:95",
+      "docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs:97",
+      "docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs:155",
+      "docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs:181",
+      "docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs:511",
+      "docs/research/round394-instruments/record-drives.mjs:100",
+      "docs/research/round395-instruments/grade-the-refusal-that-deletes-the-verdict.mjs:138",
+      "docs/research/round395-instruments/grade-the-refusal-that-deletes-the-verdict.mjs:474",
+      "docs/research/round396-instruments/grade-the-grade-that-reddens-on-its-own-routed-cure.mjs:155",
+      "docs/research/round396-instruments/grade-the-grade-that-reddens-on-its-own-routed-cure.mjs:323",
+      "docs/research/round396-instruments/record-drives.mjs:113",
+      "docs/research/round396-instruments/record-drives.mjs:179",
+      "docs/research/round396-instruments/record-drives.mjs:89",
+      "docs/research/round396-instruments/record-drives.mjs:89",
+      "docs/research/round396-instruments/record-drives.mjs:99",
+      "docs/research/round397-instruments/grade-the-anchor-that-is-not-guarded.mjs:100",
+      "docs/research/round397-instruments/record-drives.mjs:137",
+      "docs/research/round397-instruments/record-drives.mjs:151",
+      "docs/research/round397-instruments/record-drives.mjs:79",
+      "docs/research/round398-instruments/the-refusable-anchor-counterfactuals.mjs:47",
+      "docs/research/round398-instruments/the-refusable-anchor-counterfactuals.mjs:62",
+      "docs/research/round398-instruments/the-refusable-anchor-counterfactuals.mjs:84",
+      "docs/research/round402-instruments/hand-read-the-unguarded.mjs:117",
+      "docs/research/round402-instruments/hand-read-the-unguarded.mjs:315",
+      "docs/research/round404-instruments/grade-the-three-cures.mjs:139",
+      "docs/research/round404-instruments/grade-the-three-cures.mjs:155",
+      "docs/research/round404-instruments/grade-the-three-cures.mjs:275",
+      "docs/research/round404-instruments/grade-the-three-cures.mjs:288",
+      "scripts/probe-round224-a-skip-must-not-summarise-as-a-pass.mts:1436",
+      "scripts/probe-round258-three-readers-are-two-questions-and-the-shared-one-is-already-in-lib.mts:632",
+      "scripts/probe-round259-the-extraction-moved-nothing-and-closed-the-hole-in-the-file-it-moved-into.mts:133",
+      "scripts/probe-round259-the-extraction-moved-nothing-and-closed-the-hole-in-the-file-it-moved-into.mts:134",
+      "scripts/probe-round260-a-census-pin-has-two-axes-and-the-round-number-in-a-filename-is-not-one-of-them.mts:149",
+      "scripts/probe-round260-a-census-pin-has-two-axes-and-the-round-number-in-a-filename-is-not-one-of-them.mts:453",
+      "scripts/probe-round262-the-population-is-a-tree-not-a-filename-convention.mts:118",
+      "scripts/probe-round262-the-population-is-a-tree-not-a-filename-convention.mts:210",
+      "scripts/probe-round262-the-population-is-a-tree-not-a-filename-convention.mts:256",
+      "scripts/probe-round262-the-population-is-a-tree-not-a-filename-convention.mts:289",
+      "scripts/probe-round262-the-population-is-a-tree-not-a-filename-convention.mts:374",
+      "scripts/probe-round262-the-population-is-a-tree-not-a-filename-convention.mts:388",
+      "scripts/probe-round263-an-emptiness-claim-over-a-shared-window-is-not-strict-it-is-blind.mts:133",
+      "scripts/probe-round263-an-emptiness-claim-over-a-shared-window-is-not-strict-it-is-blind.mts:300",
+      "scripts/probe-round264-a-census-of-one-spelling-and-the-extraction-that-moved-the-rest-out-of-reach.mts:116",
+      "scripts/probe-round264-a-census-of-one-spelling-and-the-extraction-that-moved-the-rest-out-of-reach.mts:322",
+      "scripts/probe-round265-the-census-already-follows-imports-on-the-other-axis.mts:156",
+      "scripts/probe-round283-the-classification-theseus-asked-for-exists-and-it-has-been-red-since-yesterday.mts:151",
+      "scripts/probe-round284-the-census-has-a-reader-and-it-is-the-channel-three-seats-have-never-run.mts:377"
+    ],
+    "SYMBOLIC": [
+      "docs/research/round365-instruments/haz-delta.mts:22",
+      "docs/research/round381-instruments/grade-the-history-clause-and-the-nesting-conjunct.mjs:167",
+      "docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs:346",
+      "docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs:429",
+      "docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs:436",
+      "docs/research/round394-instruments/record-drives.mjs:116",
+      "docs/research/round396-instruments/grade-the-grade-that-reddens-on-its-own-routed-cure.mjs:175",
+      "docs/research/round396-instruments/grade-the-grade-that-reddens-on-its-own-routed-cure.mjs:196",
+      "docs/research/round397-instruments/grade-the-anchor-that-is-not-guarded.mjs:248",
+      "docs/research/round397-instruments/grade-the-anchor-that-is-not-guarded.mjs:249",
+      "docs/research/round397-instruments/grade-the-anchor-that-is-not-guarded.mjs:250",
+      "docs/research/round397-instruments/record-drives.mjs:81",
+      "scripts/probe-round197-the-verdict-on-a-way-back-and-the-path-that-is-not-the-database.mts:616",
+      "scripts/probe-round256-an-emptiness-assertion-grades-the-operator-and-a-sole-blocker-ranking-cannot-see-a-coupled-class.mts:1427",
+      "scripts/probe-round260-a-census-pin-has-two-axes-and-the-round-number-in-a-filename-is-not-one-of-them.mts:572"
+    ],
+    "METADATA": [
+      "docs/research/round365-instruments/b1.mjs:36",
+      "docs/research/round386-instruments/grade-the-monotonicity-claim.mjs:514",
+      "docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs:200",
+      "scripts/probe-round284-the-census-has-a-reader-and-it-is-the-channel-three-seats-have-never-run.mts:233"
+    ],
+    "DEFINITION": [
+      "docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:69",
+      "docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:54",
+      "docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs:44",
+      "docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs:336",
+      "docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs:40",
+      "docs/research/round393-instruments/my-independent-key-for-his-q4-census.mjs:17",
+      "docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs:43",
+      "docs/research/round395-instruments/grade-the-refusal-that-deletes-the-verdict.mjs:47",
+      "docs/research/round396-instruments/grade-the-grade-that-reddens-on-its-own-routed-cure.mjs:42",
+      "docs/research/round396-instruments/grade-the-grade-that-reddens-on-its-own-routed-cure.mjs:389",
+      "docs/research/round397-instruments/grade-the-anchor-that-is-not-guarded.mjs:41",
+      "docs/research/round397-instruments/grade-the-anchor-that-is-not-guarded.mjs:279",
+      "docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:36",
+      "docs/research/round398-instruments/the-refusable-anchor-counterfactuals.mjs:32",
+      "docs/research/round403-instruments/live-census-over-all-fifteen.mjs:131",
+      "docs/research/round404-instruments/grade-the-three-cures.mjs:34"
+    ],
+    "UNMODELLED": [
+      "docs/research/round378-instruments/grade-b3-known-positive.mjs:48",
+      "docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs:320",
+      "docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs:386",
+      "docs/research/round393-instruments/my-independent-key-for-his-q4-census.mjs:57",
+      "docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs:429",
+      "docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs:467",
+      "docs/research/round395-instruments/grade-the-refusal-that-deletes-the-verdict.mjs:431",
+      "docs/research/round395-instruments/grade-the-refusal-that-deletes-the-verdict.mjs:636",
+      "docs/research/round395-instruments/probe-the-header-restates-its-input.mjs:27",
+      "docs/research/round397-instruments/grade-the-anchor-that-is-not-guarded.mjs:102",
+      "docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:49",
+      "docs/research/round404-instruments/grade-the-three-cures.mjs:84",
+      "docs/research/round404-instruments/grade-the-three-cures.mjs:97",
+      "scripts/probe-browse-endpoint-vs-channel-count.mts:163",
+      "scripts/probe-round260-a-census-pin-has-two-axes-and-the-round-number-in-a-filename-is-not-one-of-them.mts:573",
+      "scripts/probe-round260-a-census-pin-has-two-axes-and-the-round-number-in-a-filename-is-not-one-of-them.mts:592"
+    ]
+  },
+  "literal": [
+    {
+      "at": "docs/research/round365-instruments/b1.mjs:27",
+      "rev": "495766e4^",
+      "path": "package.json"
+    },
+    {
+      "at": "docs/research/round368-instruments/verdict-line-kind-grade.mts:149",
+      "rev": "3664849a",
+      "path": null
+    },
+    {
+      "at": "docs/research/round370-instruments/characterisation-sweep-drive.mjs:28",
+      "rev": "2485ba99^",
+      "path": null
+    },
+    {
+      "at": "docs/research/round382-instruments/grade-the-class-count-and-the-seam.mjs:355",
+      "rev": "e9e64fef",
+      "path": null
+    },
+    {
+      "at": "docs/research/round383-instruments/grade-the-binding-class.mjs:29",
+      "rev": "e922394b",
+      "path": "docs/research/round383-instruments/grade-the-binding-class.mjs"
+    },
+    {
+      "at": "docs/research/round383-instruments/grade-the-binding-class.mjs:676",
+      "rev": "e9e64fef",
+      "path": null
+    },
+    {
+      "at": "docs/research/round383-instruments/grade-the-binding-class.mjs:783",
+      "rev": "e922394b",
+      "path": "docs/research/round383-instruments/README.md"
+    },
+    {
+      "at": "docs/research/round385-instruments/grade-the-sentence-against-the-literals.mjs:157",
+      "rev": "a43a0c21",
+      "path": "docs/research/round383-instruments/grade-the-binding-class.mjs"
+    },
+    {
+      "at": "docs/research/round386-instruments/grade-the-monotonicity-claim.mjs:504",
+      "rev": "e922394b",
+      "path": "docs/research/round383-instruments/README.md"
+    },
+    {
+      "at": "docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs:198",
+      "rev": "e922394b",
+      "path": "docs/research/round383-instruments/README.md"
+    },
+    {
+      "at": "docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs:260",
+      "rev": "7cd7cd4f",
+      "path": null
+    },
+    {
+      "at": "docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs:261",
+      "rev": "beb1ab78",
+      "path": null
+    },
+    {
+      "at": "docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs:367",
+      "rev": "e922394b",
+      "path": "docs/research/round383-instruments/grade-the-binding-class.mjs"
+    },
+    {
+      "at": "docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:43",
+      "rev": "5ad685d2",
+      "path": "docs/research/round386-instruments/grade-the-monotonicity-claim.mjs"
+    },
+    {
+      "at": "docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:52",
+      "rev": "5ad685d2",
+      "path": "docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs"
+    },
+    {
+      "at": "docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:69",
+      "rev": "beb1ab78",
+      "path": null
+    },
+    {
+      "at": "docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:70",
+      "rev": "5ad685d2",
+      "path": null
+    },
+    {
+      "at": "docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:73",
+      "rev": "6a2b9f66",
+      "path": null
+    },
+    {
+      "at": "docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:74",
+      "rev": "beb1ab78",
+      "path": null
+    },
+    {
+      "at": "docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:100",
+      "rev": "beb1ab78",
+      "path": null
+    },
+    {
+      "at": "docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:101",
+      "rev": "88af8540",
+      "path": null
+    },
+    {
+      "at": "docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:180",
+      "rev": "311e5810",
+      "path": null
+    },
+    {
+      "at": "docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:215",
+      "rev": "88af8540",
+      "path": null
+    },
+    {
+      "at": "docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:218",
+      "rev": "88af8540",
+      "path": "scripts/tsconfig.json"
+    },
+    {
+      "at": "docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:266",
+      "rev": "88af8540",
+      "path": null
+    },
+    {
+      "at": "docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:284",
+      "rev": "88af8540",
+      "path": "scripts/package.json"
+    },
+    {
+      "at": "docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:129",
+      "rev": "88af8540",
+      "path": null
+    },
+    {
+      "at": "docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:198",
+      "rev": "50ed611b",
+      "path": null
+    },
+    {
+      "at": "docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:345",
+      "rev": "f56f1be5",
+      "path": null
+    },
+    {
+      "at": "docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:351",
+      "rev": "f56f1be5",
+      "path": null
+    },
+    {
+      "at": "docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:450",
+      "rev": "88af8540",
+      "path": null
+    },
+    {
+      "at": "docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:490",
+      "rev": "88af8540",
+      "path": null
+    },
+    {
+      "at": "docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs:124",
+      "rev": "1588b85f",
+      "path": null
+    },
+    {
+      "at": "docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs:217",
+      "rev": "50ed611b",
+      "path": null
+    },
+    {
+      "at": "docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs:224",
+      "rev": "f56f1be5",
+      "path": null
+    },
+    {
+      "at": "docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs:239",
+      "rev": "b352310f",
+      "path": null
+    },
+    {
+      "at": "docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs:345",
+      "rev": "58debe3e",
+      "path": null
+    },
+    {
+      "at": "docs/research/round393-instruments/counterfactuals-for-the-p2-detector.mjs:6",
+      "rev": "c848dc66",
+      "path": "docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs"
+    },
+    {
+      "at": "docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs:281",
+      "rev": "02e395f4",
+      "path": null
+    },
+    {
+      "at": "docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs:336",
+      "rev": "02e395f4",
+      "path": null
+    },
+    {
+      "at": "docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs:337",
+      "rev": "db208018",
+      "path": null
+    },
+    {
+      "at": "docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs:430",
+      "rev": "58debe3e",
+      "path": null
+    },
+    {
+      "at": "docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs:444",
+      "rev": "0c62294a",
+      "path": null
+    },
+    {
+      "at": "docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs:90",
+      "rev": "c848dc66",
+      "path": null
+    },
+    {
+      "at": "docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs:95",
+      "rev": "02e395f4",
+      "path": null
+    },
+    {
+      "at": "docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs:97",
+      "rev": "db208018",
+      "path": null
+    },
+    {
+      "at": "docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs:155",
+      "rev": "44154365",
+      "path": null
+    },
+    {
+      "at": "docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs:181",
+      "rev": "c848dc66",
+      "path": null
+    },
+    {
+      "at": "docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs:511",
+      "rev": "0eb3252b",
+      "path": null
+    },
+    {
+      "at": "docs/research/round394-instruments/record-drives.mjs:100",
+      "rev": "c848dc66",
+      "path": null
+    },
+    {
+      "at": "docs/research/round395-instruments/grade-the-refusal-that-deletes-the-verdict.mjs:138",
+      "rev": "f6bc1f02",
+      "path": null
+    },
+    {
+      "at": "docs/research/round395-instruments/grade-the-refusal-that-deletes-the-verdict.mjs:474",
+      "rev": "b7e21394",
+      "path": null
+    },
+    {
+      "at": "docs/research/round396-instruments/grade-the-grade-that-reddens-on-its-own-routed-cure.mjs:155",
+      "rev": "c158e616",
+      "path": null
+    },
+    {
+      "at": "docs/research/round396-instruments/grade-the-grade-that-reddens-on-its-own-routed-cure.mjs:323",
+      "rev": "17f25906",
+      "path": null
+    },
+    {
+      "at": "docs/research/round396-instruments/record-drives.mjs:113",
+      "rev": "b7e21394",
+      "path": null
+    },
+    {
+      "at": "docs/research/round396-instruments/record-drives.mjs:179",
+      "rev": "6362dd3a",
+      "path": null
+    },
+    {
+      "at": "docs/research/round396-instruments/record-drives.mjs:89",
+      "rev": "b7e21394",
+      "path": null
+    },
+    {
+      "at": "docs/research/round396-instruments/record-drives.mjs:89",
+      "rev": "c158e616",
+      "path": null
+    },
+    {
+      "at": "docs/research/round396-instruments/record-drives.mjs:99",
+      "rev": "c158e616",
+      "path": null
+    },
+    {
+      "at": "docs/research/round397-instruments/grade-the-anchor-that-is-not-guarded.mjs:100",
+      "rev": "ff93ad0a",
+      "path": null
+    },
+    {
+      "at": "docs/research/round397-instruments/record-drives.mjs:137",
+      "rev": "ff93ad0a",
+      "path": null
+    },
+    {
+      "at": "docs/research/round397-instruments/record-drives.mjs:151",
+      "rev": "ff93ad0a",
+      "path": null
+    },
+    {
+      "at": "docs/research/round397-instruments/record-drives.mjs:79",
+      "rev": "c158e616",
+      "path": null
+    },
+    {
+      "at": "docs/research/round398-instruments/the-refusable-anchor-counterfactuals.mjs:47",
+      "rev": "ff93ad0a",
+      "path": null
+    },
+    {
+      "at": "docs/research/round398-instruments/the-refusable-anchor-counterfactuals.mjs:62",
+      "rev": "17f25906",
+      "path": null
+    },
+    {
+      "at": "docs/research/round398-instruments/the-refusable-anchor-counterfactuals.mjs:84",
+      "rev": "17f25906",
+      "path": null
+    },
+    {
+      "at": "docs/research/round402-instruments/hand-read-the-unguarded.mjs:117",
+      "rev": "e922394b",
+      "path": "docs/research/round383-instruments/grade-the-binding-class.mjs"
+    },
+    {
+      "at": "docs/research/round402-instruments/hand-read-the-unguarded.mjs:315",
+      "rev": "b65a7705",
+      "path": null
+    },
+    {
+      "at": "docs/research/round404-instruments/grade-the-three-cures.mjs:139",
+      "rev": "7e788af7",
+      "path": null
+    },
+    {
+      "at": "docs/research/round404-instruments/grade-the-three-cures.mjs:155",
+      "rev": "7e788af7",
+      "path": null
+    },
+    {
+      "at": "docs/research/round404-instruments/grade-the-three-cures.mjs:275",
+      "rev": "7e788af7",
+      "path": "docs/research/round393-instruments/counterfactuals-for-the-p2-detector.mjs"
+    },
+    {
+      "at": "docs/research/round404-instruments/grade-the-three-cures.mjs:288",
+      "rev": "7e788af7",
+      "path": "docs/research/round402-instruments/hand-read-the-unguarded.mjs"
+    },
+    {
+      "at": "scripts/probe-round224-a-skip-must-not-summarise-as-a-pass.mts:1436",
+      "rev": "1059b23c",
+      "path": "scripts/lib/probe-outcome.mts"
+    },
+    {
+      "at": "scripts/probe-round258-three-readers-are-two-questions-and-the-shared-one-is-already-in-lib.mts:632",
+      "rev": "6465346a",
+      "path": null
+    },
+    {
+      "at": "scripts/probe-round259-the-extraction-moved-nothing-and-closed-the-hole-in-the-file-it-moved-into.mts:133",
+      "rev": "27c5cac3~1",
+      "path": "scripts/verify-tsx-guard.mjs"
+    },
+    {
+      "at": "scripts/probe-round259-the-extraction-moved-nothing-and-closed-the-hole-in-the-file-it-moved-into.mts:134",
+      "rev": "27c5cac3~1",
+      "path": "scripts/lib/probe-source-constants.mts"
+    },
+    {
+      "at": "scripts/probe-round260-a-census-pin-has-two-axes-and-the-round-number-in-a-filename-is-not-one-of-them.mts:149",
+      "rev": "8cbd7ea5",
+      "path": "scripts/lib/probe-source-constants.mts"
+    },
+    {
+      "at": "scripts/probe-round260-a-census-pin-has-two-axes-and-the-round-number-in-a-filename-is-not-one-of-them.mts:453",
+      "rev": "6465346a",
+      "path": null
+    },
+    {
+      "at": "scripts/probe-round262-the-population-is-a-tree-not-a-filename-convention.mts:118",
+      "rev": "6465346a",
+      "path": null
+    },
+    {
+      "at": "scripts/probe-round262-the-population-is-a-tree-not-a-filename-convention.mts:210",
+      "rev": "6465346a",
+      "path": null
+    },
+    {
+      "at": "scripts/probe-round262-the-population-is-a-tree-not-a-filename-convention.mts:256",
+      "rev": "6465346a",
+      "path": null
+    },
+    {
+      "at": "scripts/probe-round262-the-population-is-a-tree-not-a-filename-convention.mts:289",
+      "rev": "6465346a",
+      "path": null
+    },
+    {
+      "at": "scripts/probe-round262-the-population-is-a-tree-not-a-filename-convention.mts:374",
+      "rev": "92f780da",
+      "path": null
+    },
+    {
+      "at": "scripts/probe-round262-the-population-is-a-tree-not-a-filename-convention.mts:388",
+      "rev": "d645157c",
+      "path": null
+    },
+    {
+      "at": "scripts/probe-round263-an-emptiness-claim-over-a-shared-window-is-not-strict-it-is-blind.mts:133",
+      "rev": "596dd9a2a2",
+      "path": "scripts/probe-round261-a-pin-whose-red-is-cleared-by-doing-something-is-a-gate.mts"
+    },
+    {
+      "at": "scripts/probe-round263-an-emptiness-claim-over-a-shared-window-is-not-strict-it-is-blind.mts:300",
+      "rev": "596dd9a2a2",
+      "path": "scripts/probe-round259-the-extraction-moved-nothing-and-closed-the-hole-in-the-file-it-moved-into.mts"
+    },
+    {
+      "at": "scripts/probe-round264-a-census-of-one-spelling-and-the-extraction-that-moved-the-rest-out-of-reach.mts:116",
+      "rev": "6465346a",
+      "path": null
+    },
+    {
+      "at": "scripts/probe-round264-a-census-of-one-spelling-and-the-extraction-that-moved-the-rest-out-of-reach.mts:322",
+      "rev": "c4bd5307",
+      "path": null
+    },
+    {
+      "at": "scripts/probe-round265-the-census-already-follows-imports-on-the-other-axis.mts:156",
+      "rev": "6465346a",
+      "path": null
+    },
+    {
+      "at": "scripts/probe-round283-the-classification-theseus-asked-for-exists-and-it-has-been-red-since-yesterday.mts:151",
+      "rev": "047e5f06",
+      "path": "scripts/sweep-probes.mjs"
+    },
+    {
+      "at": "scripts/probe-round284-the-census-has-a-reader-and-it-is-the-channel-three-seats-have-never-run.mts:377",
+      "rev": "047e5f06",
+      "path": "scripts/sweep-probes.mjs"
+    }
+  ]
+}
