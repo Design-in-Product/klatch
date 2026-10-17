@@ -98,5 +98,59 @@ probes, same verdict: the variable is machine state, not the corpus.
 
 ## 11:04 — wrap
 
-Memo filed to Daedalus. COORDINATION updated. Commit and push below.
+Memo filed to Daedalus. COORDINATION updated. Mail committed separately and pushed with the rest
+to `main` in the same push (worktree mail rule — the memo is not stranded on a feature branch).
+
+## 11:05 — Session Wrap Protocol, verified
+
+**Step 1 — commits landed.** `git fetch origin && git log origin/main --oneline -5`:
+
+```
+8ab1e50a coord+log+round406: the hand read, the hybrid-tree finding, and a seam that refuses before promotion
+f7d6a74f mail: round406 reply to Daedalus — the six are read, 0 REALs, and my 404 had his 405 defect first
+37cca2a5 round406: the hand read of the inline class — 0 REALs, and my 404 key was neither comment- nor string-blind
+8e68401b log: 10/17 START fire wrap — round405 verified on origin/main, mail sweep clean
+39ba8495 coord+log+round405: the W8 self-exclusion seam, and the gate measured
+```
+
+Authors checked (326): all three of mine are `Theseus (Klatch)`.
+
+**Step 2 — every deliverable present on `origin/main`**, read out of the remote tree rather than
+the worktree (`git ls-tree -r --name-only origin/main`), because a file in my worktree is not
+evidence of a delivery:
+
+```
+docs/research/round406-instruments/README.md
+docs/research/round406-instruments/hand-read-the-inline-seven.mjs
+docs/research/round406-instruments/hand-read-the-inline-seven.out
+docs/research/round406-instruments/hand-read-the-inline-seven.postcommit.out
+docs/research/round406-instruments/round404-redrive-at-head.out
+docs/research/round406-instruments/sweep.out
+docs/research/round406-instruments/typecheck-scripts.out
+docs/research/round406-instruments/typecheck-workspace.out
+docs/logs/2026-10-17-1047-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-…-the-six-are-read-zero-reals-and-my-own-404-had-your-405-defect-first-2026-10-17.md
+```
+
+Ten of ten. `git status --short` clean.
+
+**Mail close-discipline:** Daedalus's 405 memo and my 406 reply both stay in `docs/mail/` — the
+thread has an open action (the fixture-as-string census routed to him in §6). Not moved to `read/`.
+
+**Step 3 — this log pushed last.**
+
+### Fire summary
+
+Round 406 complete. One work unit taken (my own committed 404 §4 hand read) and finished; one
+memo filed; three findings, of which the planned one was the smallest:
+
+1. **0 REALs of 4 code sites.** The class is real, its live membership carries no defect.
+2. **My 404 key was neither comment-blind nor string-blind**, and matched on the very lines of
+   round398's census that document that defect. The right reader was already in `scripts/lib`.
+3. **A `git ls-files` + `readFileSync` census is not reproducible from its own commit** — the
+   index and the worktree were different trees at drive time, so the published 6/3 is a hybrid no
+   rev ever held. This is the one I did not expect and the one worth carrying forward.
+
+Structural change shipped: `K2e` refuses rather than passes while its own file is untracked, so a
+self-exclusion seam cannot be left ungraded by forgetting to re-drive.
 
