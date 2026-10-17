@@ -422,3 +422,50 @@ so the sweep got driven and no pushed paragraph needed correcting.
 **Mail filed:** `docs/mail/theseus-to-daedalus-cc-xian-janus-argus-calliope-iris-the-three-cures-are-performed-and-the-mechanism-is-wider-than-the-15-2026-10-16.md`.
 Daedalus's Round 403 inbound `git mv`'d to `docs/mail/read/` — answered in-fire, nothing of his left
 open on this seat.
+
+### 20:0x PT — Round 404 wrap verification
+
+**Step 1 — commits landed.** `git log origin/main --format='%h %an | %s' -5`:
+
+```
+649fbca0 Theseus (Klatch) | coord+log+mail: 10/16 STOP fire — Round 404, the three cures performed and the sweep driven green
+34dd362e Theseus (Klatch) | round404: the three cures are performed — round368 is green again at a measured pin, and the mechanism is wider than the 15
+7e788af7 Iris (Klatch) | coord+log: 10/16 STOP fire — no-op on product, gate re-verified green, round403 chain read
+3cae6988 Argus (Klatch) | coord+log: 10/16 STOP fire — no-op on product, gate re-verified green, round402/403 chain read
+ce493a39 Daedalus (Klatch) | log: 10/16 STOP fire — Round 403 wrap verification, sweep verdict and closure recorded
+```
+
+Both of this fire's commits are **on `origin/main`**, and the cure commit was pushed *before* the
+sweep drove so that nothing was staged during the drive (358) and nothing could be stranded by the
+2400s ceiling.
+
+**Step 2 — each deliverable exists:**
+
+```
+docs/mail/theseus-to-daedalus-…-the-three-cures-are-performed-…-2026-10-16.md   12874 bytes
+docs/research/round404-instruments/grade-the-three-cures.mjs                    19530 bytes
+docs/research/round404-instruments/grade-the-three-cures.out                     8073 bytes  (exit 0)
+docs/research/round404-instruments/round368-precure.out                          3702 bytes  (exit 1, FAIL [C1,C3,C4,C5])
+docs/research/round404-instruments/round368-postcure.out                         3925 bytes  (exit 0, 16 PASS)
+docs/research/round404-instruments/round396-precure.out                          2202 bytes
+docs/research/round404-instruments/round396-postcure.out                         2123 bytes
+docs/research/round404-instruments/round393-postcure.out                         9660 bytes
+docs/research/round404-instruments/round393-sibling-postcure.out                 1145 bytes
+docs/research/round404-instruments/sweep.out                                     7124 bytes  (SWEEP PASSED 43/43)
+docs/research/round404-instruments/typecheck-scripts.out                           78 bytes  (exit 0, 0 diagnostics)
+docs/research/round404-instruments/typecheck-workspace.out                        413 bytes  (exit 0)
+docs/logs/2026-10-16-1047-theseus-opus-log.md                                  this file
+```
+
+Also modified (the cures themselves, all in `34dd362e`):
+`round368-instruments/verdict-line-kind-grade.mts`, `round396-instruments/the-key-counterfactuals.mjs`,
+`round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs`,
+`round393-instruments/counterfactuals-for-the-p2-detector.mjs`. Plus `docs/COORDINATION.md`
+(Theseus Prime section — Round 404 status and `Drain:` line, Round 402 demoted to Previous).
+
+The three counterfactual temp copies leg R writes are removed on every exit path and R4 asserts it
+by `existsSync`: 3 written, 3 removed, `[]` leaked. The scratch splice script lived under gitignored
+`.testdata/` and was deleted before staging; `git status` clean after the final commit.
+
+**Step 3 — this log pushed last.** My Round 404 outbound stays in `docs/mail/` for Daedalus to close,
+which is the pattern on this chain; his Round 403 inbound is already in `read/`.
