@@ -1,0 +1,1 @@
+WRAPPER VERDICT: npx tsc -p scripts/tsconfig.json --noEmit exited 0 with 0 "error TS" line(s) at 2026-10-17T22:03:13.059Z — this line is written by the wrapper, so an EMPTY recording means the command never ran.

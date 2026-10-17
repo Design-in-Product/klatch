@@ -1,5 +1,5 @@
 {
-  "rev": "eb806bcee90060fc986aef3955b8b894a83ea8fa",
+  "rev": "de99c11aded1beb7645f616931757d56234ba0e9",
   "hisRev": "771daaf4",
   "worktree": "DIRTY",
   "hisFigures": {
@@ -18,11 +18,34 @@
       3,
       27
     ],
-    "measured": [
+    "parseOnly": [
       24,
       28
-    ]
+    ],
+    "withHandRead": 24
   },
+  "handRead": [
+    {
+      "path": "docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs",
+      "verdict": "NOT-A-FIXTURE",
+      "why": "one body: a markdown report line — \"${then.func} function-shaped, ${then.total} total**; at `HEAD`: …\". The `**` and the backticked `HEAD` are prose emphasis, and every code-shaped token in it is an interpolation, i.e. live code in THIS file rather than carried text"
+    },
+    {
+      "path": "scripts/probe-import-large-session.mts",
+      "verdict": "NOT-A-FIXTURE",
+      "why": "two bodies, both messages: \"import succeeded (…)\" and \"${…} files before and after (import is read-only on the source)\". `import` is the English verb in both, which is the exact shape of the false positive Daedalus hand-read at sweep-probes.mjs — technical prose about code satisfies every structural signal a non-parsing predicate has"
+    },
+    {
+      "path": "scripts/probe-turncount-live-http.mts",
+      "verdict": "NOT-A-FIXTURE",
+      "why": "one body: \"      => any session deeper than ${deepest} turns reports a LOWER BOUND, which is where the label matters most\". The `=>` that satisfies his DECL is an ASCII arrow in a report line, not an arrow function"
+    },
+    {
+      "path": "scripts/sweep-probes.mjs",
+      "verdict": "NOT-A-FIXTURE",
+      "why": "three bodies, all `why:` prose. Daedalus hand-read ONE of them in his §2.1 (the 1173-char Round 263 entry, reproduced here by leg P2); the other two are the same shape — \"the pin moved 18 → 8 in Round 376 …\" and \"Rounds 375 and 376 each found the other seat's guard …\". So his hand read generalises to the whole file: this row's membership is unearned on every one of its bodies, not just the one he read"
+    }
+  ],
   "strata": [
     {
       "path": "docs/research/round378-instruments/census-named-source-bindings.mjs",
@@ -504,17 +527,22 @@
     {
       "leg": "T1",
       "ok": true,
-      "detail": "rev eb806bcee90060fc986aef3955b8b894a83ea8fa · worktree DIRTY (1 path(s)) · 276 at rev, 276 live · list delta +0/-0 · 0 differ in CONTENT"
+      "detail": "rev de99c11aded1beb7645f616931757d56234ba0e9 · worktree DIRTY (1 path(s)) · 276 at rev, 276 live · list delta +0/-0 · 0 differ in CONTENT"
     },
     {
       "leg": "S2",
       "ok": true,
-      "detail": "SEAM GRADEABLE — docs/research/round408-instruments/stratify-the-live-interval.mjs is tracked and present at eb806bce; it is a member of the population it measures, which is where the author of this instrument belongs"
+      "detail": "SEAM GRADEABLE — docs/research/round408-instruments/stratify-the-live-interval.mjs is tracked and present at de99c11a; it is a member of the population it measures, which is where the author of this instrument belongs"
     },
     {
       "leg": "M1",
       "ok": true,
       "detail": "24 CONFIRMED + 4 UNMODELLED + 0 REFUTED = 28 of 28 live row(s) (his 25 + 3 = 28) · parser refusals: 0"
+    },
+    {
+      "leg": "H1",
+      "ok": true,
+      "detail": "4 row(s) hand-read, and they are exactly the key's UNMODELLED set · 0 judged FIXTURE, 4 NOT-A-FIXTURE"
     },
     {
       "leg": "M2",

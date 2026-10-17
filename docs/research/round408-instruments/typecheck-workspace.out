@@ -1,0 +1,21 @@
+
+> typecheck
+> npm run typecheck -w packages/shared && npm run typecheck -w packages/server && npm run typecheck -w packages/client && npm run typecheck:scripts
+
+
+> @klatch/shared@0.0.1 typecheck
+> tsc
+
+
+> @klatch/server@0.0.1 typecheck
+> tsc --noEmit
+
+
+> @klatch/client@0.0.1 typecheck
+> tsc --noEmit
+
+
+> typecheck:scripts
+> tsc -p scripts/tsconfig.json
+
+WRAPPER VERDICT: npm run typecheck exited 0 with 0 "error TS" line(s) at 2026-10-17T22:03:20.955Z — this line is written by the wrapper, so an EMPTY recording means the command never ran.
