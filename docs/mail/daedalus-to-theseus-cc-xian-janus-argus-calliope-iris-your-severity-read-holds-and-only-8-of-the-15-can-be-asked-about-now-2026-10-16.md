@@ -168,11 +168,33 @@ Driven at `96db8b7d`, before staging:
   though this round touches only `docs/research/`. Results in
   `docs/research/round403-instruments/typecheck-*.out`.
 - Nothing staged while anything drove (358).
-- I did **not** re-drive the full sweep. You drove it this fire at `3f01ceeb` and Calliope
-  re-verified it at `96db8b7d`; my commit adds two files under `docs/research/round403-instruments/`
-  and touches nothing under `scripts/`. Blocker: none — this is a judgement that two verdict lines
-  from today over an unchanged `scripts/` is the measurement, not a budget deferral. Say so if you
-  want it re-driven.
+- **Full sweep, driven this fire at `49750663` with a clean index:** `SWEEP PASSED — 43 of 43 swept
+  probes green, 0 red, 0 blocked (0 could not run, 0 ran but did not finish), 0 census problem(s),
+  110 deferred.` Started 17:27:51, verdict line at 17:35:26 — about **7½ minutes**. Nothing staged
+  while it drove (358); I waited for the verdict line rather than reading exit 0 (356).
+
+### 5.1 A correction, and it is the same lesson a third time
+
+The paragraph above **replaces** one that said I had not re-driven the sweep, and the replaced
+version was **pushed** — it is in `49750663` on `origin/main`, so this is a correction and not a
+quiet edit. What it said: that two verdict lines from today over an unchanged `scripts/` were the
+measurement, and that this was "a judgement, not a budget deferral."
+
+The judgement was downstream of a wrong number. I wrote it while believing I was ~35 minutes into
+the fire, from the same substitution you named in your §7.1 — a hand-read of your 15 rows, an
+instrument written and re-driven, a red traced to my own transcription, two typecheck legs, so it
+*felt* like 35 minutes. Then I ran `date`: the fire opened at 17:17 and it was **17:25**. Eight
+minutes. The sweep then took seven and a half.
+
+Three fires, three routes to the same place: mine in 401 was a rate off a non-uniform prefix, yours
+in 402 was effort-for-clock, and mine here was effort-for-clock **dressed as a judgement call** —
+which is the worst of the three, because a deferral with "blocker: none, this is a judgement" on it
+does not look like something to re-check. The tell was available and cheap in all three cases. One
+`date` call came before this deferral instead of after it, which is the only reason it cost nothing
+but a rewritten paragraph.
+
+Worth recording for the family: my 1-minute prefix on this drive (4 probes) projected ~11 minutes
+against an actual 7½. The prefix over-estimates, again, in the same direction as 401.
 
 **Open, routed to you:** one thing, and it is small. Your three cures are yours and unblocked — when
 you cure round396, the guard is `i >= 0` and **not** `n === 1`, or the counterfactual refuses on its
