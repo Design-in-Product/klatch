@@ -1,0 +1,335 @@
+─── Round 407 · the fixture-as-string class, censused ──────────────────────────────
+
+rev read: ce482c3ad5742eaf4367694c2a96d32633b88658   worktree: DIRTY   self tracked: true
+
+expectations, written before the drive:
+  E1  the seven known positives classify as written — one per AXIS, each miss isolable to one axis, and the code control survives both readings
+  E2  a code-shaped string inside a COMMENT is invisible on every axis — 0 contribution
+  E3  the four instruments named in published prose land where the prose says: round398 set 1 only, round404 set 2a, round405 set 2b, round406 set 1 only (masked). A MEMBER LIST, not a count, and a miss means MY key has the hole, not theirs
+  E4  the live class is LARGER than the four named — not measured when this was written; the prediction is that set 1 is the big one and set 2 is single digits, because masking is what the lib reader is for and most instruments import it
+  E5  STRINGS-KEPT members are a NON-EMPTY proper subset of set 2 — if set 2b is empty the three-set claim collapses back to Theseus's two and this round found nothing
+  E6  T1: the single-rev reading and the live hybrid reading agree on this drive (clean tree), and the leg prints WHICH rev either way — a recording that cannot say what it read is worth less than it looks (406 §3.1)
+  S2  the self-exclusion seam REFUSES while this file is untracked, rather than passing vacuously — so drive one is red by construction and drive two grades the control
+
+grades:
+  true   E1  every known positive classifies as written, one axis apart
+          7 KPs: RAW=SET2a-live MASKED=SET1-masked-safe KEPT=SET2b-live SELFEX=SET2a-cured NOFIX=SET0-no-fixtures NOTSCAN=null COMMENTED=SET0-no-fixtures
+  true   E2  a code-shaped fixture inside a comment contributes nothing on any axis
+          commented: 0 fixture(s), scanner=true · uncommented: 1 fixture(s)
+  true   E1c  the masked KP is still a scanner and still enumerates — blanking did not delete it
+          masked KP: scanner=true enumerators=[ls-files] fixtures=1
+  true   T1  the single-rev reading and the live hybrid reading are compared BY MEMBER LIST, and the rev each read is printed whether they agree or not
+          rev ce482c3ad5742eaf4367694c2a96d32633b88658 · worktree DIRTY (1 path(s)) · 275 file(s) at rev, 275 live · list delta +0/-0 · 0 file(s) differ in CONTENT between index-list and worktree-contents
+  true   S2  the self-exclusion seam is gradeable AND grades in both directions
+          self tracked at ce482c3ad5742eaf4367694c2a96d32633b88658 · with-self 275 file(s), without-self 274 · this file reads as SET1-masked-safe with 15 fixture string(s) of its own
+  true   E3  the four instruments named in published prose land where the prose says they do
+          round398-instruments=SET1-masked-safe round404-instruments=SET2a-live round405-instruments=SET2b-cured round406-instruments=SET1-masked-safe
+  true   E4  the live class is larger than the four members named in prose
+          114 scanner(s) of 274 executable(s) · set1 25 · set2 70 · set0 19
+  true   E5  STRINGS-KEPT (set 2b) is non-empty and a PROPER subset of set 2 — otherwise the three-set refinement collapses to the two Theseus named
+          set2b 7 of set2 70 (2a: 63)
+
+GRADE: true
+
+─── the partition ──────────────────────────────────────────────────────────────────
+  SET2a-live          39 file(s)
+  SET2b-live           4 file(s)
+  SET2a-cured         24 file(s)
+  SET2b-cured          3 file(s)
+  SET1-masked-safe    25 file(s)
+  SET0-no-fixtures    19 file(s)
+  (scanners)         114 of 274 executable(s) at ce482c3a
+
+─── SET2a-live ───
+  docs/research/round378-instruments/drive-263-arm-e-counterfactual.mjs
+      discipline=RAW fixtures=3 enum=[readdirSync] selfEx=false
+      e.g. "const zBefore = Z_PATHSPECS.map((p) => fingerprint(REPO, p));"
+      e.g. "\\nconst allowlisted = (l: string) => !new RegExp('sweep-probes[.]mjs' + "
+  docs/research/round380-instruments/drive-b1m-history-clause-population.mjs
+      discipline=RAW fixtures=5 enum=[readdirSync] selfEx=false
+      e.g. "const HERE = dirname(fileURLToPath(import.meta.url));"
+      e.g. "const HERE = ${JSON.stringify(POP)};"
+  docs/research/round380-instruments/grade-b1-under-rekeys.mjs
+      discipline=RAW fixtures=14 enum=[readdirSync] selfEx=false
+      e.g. "const HERE = dirname(fileURLToPath(import.meta.url));"
+      e.g. "const REPO = join(HERE, '..');"
+  docs/research/round380-instruments/measure-b1-legs.mjs
+      discipline=RAW fixtures=2 enum=[readdirSync] selfEx=false
+      e.g. "only wide  : ${onlyWide.length}  ${onlyWide.map((f) => f.split('-').slic"
+      e.g. "GRADES NOT TRUE: ${bad.map((g) => g.name).join(' | ')}"
+  docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs
+      discipline=RAW fixtures=2 enum=[ls-files,ls-tree] selfEx=false
+      e.g. "const-arrow and all function-shaped: [${unreachable.join(', ')}]"
+      e.g. "NOT TRUE: ${bad.map(([n]) => n).join(' ')}"
+  docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs
+      discipline=RAW fixtures=2 enum=[ls-tree] selfEx=false
+      e.g. "(383/386): ${cfResults.map(([l, ok, lost]) => `${l} → lost [${lost.join("
+      e.g. "NOT TRUE: ${bad.map(([n]) => n).join(' ')}"
+  docs/research/round393-instruments/my-independent-key-for-his-q4-census.mjs
+      discipline=RAW fixtures=1 enum=[ls-tree] selfEx=false
+      e.g. "const-arrow ${arrow} | export declare function (plain) ${func} | functio"
+  docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs
+      discipline=RAW fixtures=7 enum=[ls-tree] selfEx=false
+      e.g. "const hisMemo = readFileSync(\\n  join(\\n    REPO,"
+      e.g. "const his391Live = readFileSync(join(REPO, HIS_391_PATH), 'utf8');"
+  docs/research/round395-instruments/grade-the-refusal-that-deletes-the-verdict.mjs
+      discipline=RAW fixtures=7 enum=[ls-tree] selfEx=false
+      e.g. "const tallyOf = (out) => {\n  const m = out.match(/^(\\\\d+) grades, (\\\\d+)"
+      e.g. "const g = (name, claim, ok) => {\n  grades.push([name, ok]);"
+  docs/research/round397-instruments/record-drives.mjs
+      discipline=RAW fixtures=1 enum=[readdirSync] selfEx=false
+      e.g. "the cure is the S3 split: old has censusAt: ${OLD.includes('const census"
+  docs/research/round402-instruments/hand-read-the-unguarded.mjs
+      discipline=RAW fixtures=14 enum=[ls-files] selfEx=false
+      e.g. "const span = SRC.slice(loopStart, verdictLog);"
+      e.g. "    const liveRead = at >= 0 && blanked.slice(abs, abs + 13) === 'readFi"
+  docs/research/round404-instruments/grade-the-three-cures.mjs
+      discipline=RAW fixtures=12 enum=[ls-files] selfEx=false
+      e.g. "for (const s of SWEPT_ZZ) {"
+      e.g. "const SRC = readFileSync(new URL('../../../scripts/sweep-probes.mjs', im"
+  scripts/backfill-entity-bindings.mts
+      discipline=RAW fixtures=3 enum=[readdirSync] selfEx=false
+      e.g. "Refusing to run: unexpected argument(s) after the database path: ${stray"
+      e.g. "Refusing to run: ${unread.map((n) => `--${n}`).join(' and ')} cannot nar"
+  scripts/probe-browse-cold-figure-gap.mts
+      discipline=RAW fixtures=1 enum=[readdirSync] selfEx=false
+      e.g. "${ms(warm)} (median of ${WARM_SAMPLES}; ${warmRun.samples.map((s) => s.t"
+  scripts/probe-browse-endpoint-second-corpus.mts
+      discipline=RAW fixtures=2 enum=[readdirSync] selfEx=false
+      e.g. "${ms(warm)} (median of ${WARM_SAMPLES}; ${warmRun.samples.map((s) => s.t"
+      e.g. "LEAKED in ${leaked.map(([n, b]) => `${n} (${b.exportedSessions} sessions"
+  scripts/probe-browse-endpoint-vs-channel-count.mts
+      discipline=RAW fixtures=4 enum=[readdirSync] selfEx=false
+      e.g. "${HOIST_COMMIT}^ would have measured the hoist PLUS all of them:\\n${sinc"
+      e.g. "[${r.samples.map((s) => s.toFixed(0)).join(', ')}], ${r.sessions} sessio"
+  scripts/probe-browse-latency-end-to-end.mts
+      discipline=RAW fixtures=5 enum=[readdirSync] selfEx=false
+      e.g. "cold ${ms(mean(LS.colds))} ± ${ms(stdev(LS.colds))} over ${LS.colds.leng"
+      e.g. "${files.length} files / ${(totalBytes / 1e6).toFixed(1)} MB over ${M_PAS"
+  scripts/probe-fingerprint-cache-endpoint.mts
+      discipline=RAW fixtures=4 enum=[readdirSync] selfEx=false
+      e.g. "${ms(cachedWarm)} median of ${warmSamples.length} — samples [${warmSampl"
+      e.g. "served [${seenExportDirs.map((d) => path.relative(REPO, d)).join(', ')}]"
+  scripts/probe-import-large-session.mts
+      discipline=RAW fixtures=8 enum=[readdirSync] selfEx=false
+      e.g. "${mb(MAX_IMPORT_SIZE)} (routes/import.ts, not hardcoded in this probe)"
+      e.g. "${secondFiles.length} files, ${mb(secondFiles.reduce((s, f) => s + f.siz"
+  scripts/probe-multi-root-browse.mts
+      discipline=RAW fixtures=3 enum=[readdirSync] selfEx=false
+      e.g. "${found.length}/${PM_ROLES.length} present${found.length === PM_ROLES.le"
+      e.g. "${pmPaths.filter((p) => !fs.existsSync(p)).length}/${pmPaths.length} wro"
+  scripts/probe-parse-encoding-confound.mts
+      discipline=RAW fixtures=8 enum=[readdirSync] selfEx=false
+      e.g. "${t.map((x) => x.toFixed(0)).join(' / ')} ms — mean ${msf(mean(t))}, spr"
+      e.g. "per-run slopes: ${perRun.map((s) => s.toFixed(2)).join(' / ')} ms per 1k"
+  scripts/probe-pm-corpus-cap-delta.mts
+      discipline=RAW fixtures=1 enum=[readdirSync] selfEx=false
+      e.g. "${ms(warm)} (median of ${WARM_SAMPLES}; ${warmRun.samples.map((s) => s.t"
+  scripts/probe-round162-preamble-drop-and-roster-live.mts
+      discipline=RAW fixtures=3 enum=[readdirSync] selfEx=false
+      e.g. "participants=${JSON.stringify(dbg.json?.participants?.map((p: any) => p."
+      e.g. "ids=${JSON.stringify(dbg.json?.participants?.map((p: any) => p.id))}"
+  scripts/probe-round178-backfill-operator-error-paths.mts
+      discipline=RAW fixtures=1 enum=[readdirSync] selfEx=false
+      e.g. "exit ${qPartial.code} · ${(qPartial.err.split('\\n').find((l) => l.includ"
+  scripts/probe-round198-a-way-back-has-tables-in-it-and-the-sidecar-is-not-the-database.mts
+      discipline=RAW fixtures=8 enum=[readdirSync] selfEx=false
+      e.g. "quick_check ${verdict.split('\\n').filter((l) => !/^\\*{3}/.test(l))[0] ??"
+      e.g. "const D=require('better-sqlite3');const d=new D(process.argv[1]);d.pragm"
+  scripts/probe-round227-arm-o-on-a-corpus-where-the-cap-fires.mts
+      discipline=RAW fixtures=6 enum=[readdirSync] selfEx=false
+      e.g. "${bigFiles.filter((f) => fpCapped.get(f).capped).length}/${BIG_FILES} bi"
+      e.g. "${smallFiles.filter((f) => fpCapped.get(f).capped).length}/${SMALL_FILES"
+  scripts/probe-round231-the-handler-and-the-signal-are-in-different-processes.mts
+      discipline=RAW fixtures=5 enum=[readdirSync] selfEx=false
+      e.g. "\nfor (const sig of ['SIGINT', 'SIGTERM', 'SIGHUP', 'SIGPIPE']) process.o"
+      e.g. "\nconst reapWith = () => { try { if (server.exitCode === null) server.kil"
+  scripts/probe-round233-arm-m-and-the-endpoint-can-walk-different-corpora.mts
+      discipline=RAW fixtures=3 enum=[readdirSync] selfEx=false
+      e.g. "const projectsDir = path.join(os.homedir(), '.claude', 'projects');"
+      e.g. "(${exported.map((p: string) => path.basename(p)).join(', ') || 'none'});"
+  scripts/probe-round240-a-probe-pinned-to-a-moved-subject-is-failing-silently.mts
+      discipline=RAW fixtures=2 enum=[readdirSync] selfEx=false
+      e.g. "${pinned.length}/${rows.length}: ${pinned.map((p) => `${path.basename(p."
+      e.g. "probe-import-entity-binding (reads ~/.claude/projects by name) classifie"
+  scripts/probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts
+      discipline=RAW fixtures=1 enum=[readdirSync] selfEx=false
+      e.g. "${pinsAll.filter((p) => !p.present).length} resolve to nothing on disk t"
+  scripts/probe-round247-a-mutant-in-the-tree-is-in-the-population.mts
+      discipline=RAW fixtures=4 enum=[readdirSync] selfEx=false
+      e.g. "const LIB = path.join(REPO, 'scripts/lib/probe-outcome.mts');"
+      e.g. "const LIB = ${JSON.stringify(tmpLib)};"
+  scripts/probe-round248-the-dot-guard-is-half-the-repair-and-a-copy-re-admits-the-original.mts
+      discipline=RAW fixtures=4 enum=[ls-files,readdirSync] selfEx=false
+      e.g. "const allMts = fs.readdirSync(SCRIPTS).filter((f) => f.endsWith('.mts') "
+      e.g. "const allMts = fs.readdirSync(SCRIPTS).filter((f) => f.endsWith('.mts'))"
+  scripts/probe-round280-the-client-half-of-the-pair-and-what-it-leaves-behind.mts
+      discipline=RAW fixtures=6 enum=[readdirSync] selfEx=false
+      e.g. "const OUT = ${JSON.stringify(path.resolve(outPath))};"
+      e.g. "const server = net.createServer((socket) => {"
+  scripts/probe-round284-the-census-has-a-reader-and-it-is-the-channel-three-seats-have-never-run.mts
+      discipline=RAW fixtures=2 enum=[ls-tree,readdirSync] selfEx=false
+      e.g. "${[...seatSince.entries()].sort().map(([k, e]) => `${k}=${e.gate}/${e.n}"
+      e.g. "${unclassifiedAtParent.length} unclassified — ${unclassifiedAtParent.map"
+  scripts/probe-round289-the-deferred-breakdown-is-derived-and-the-sidecar-signature-is-not-evidence-of-no-write.mts
+      discipline=RAW fixtures=4 enum=[readdirSync] selfEx=false
+      e.g. "strings blanked loses ${missUnderBlanked.length} known positive(s): ${mi"
+      e.g. "import { summariseAndExit } from './lib/probe-outcome.mts';\\nsummariseAn"
+  scripts/probe-round295-the-promotion-path-reaches-one-of-the-twenty-nine-and-the-refusals-are-its-own-fixtures.mts
+      discipline=RAW fixtures=1 enum=[readdirSync] selfEx=false
+      e.g. "const x = 1;\\nconsole.log(x);\\n"
+  scripts/probe-round296-the-net-split-is-priced-at-zero-and-literal-only-cannot-tell-a-corpus-from-an-argv.mts
+      discipline=RAW fixtures=8 enum=[readdirSync] selfEx=false
+      e.g. "reachable by promote-probes today (hazard-clean, verdict-bearing): ${bea"
+      e.g. "const corpus = [\"import { getDb } from '../packages/server/src/db/index."
+  scripts/probe-scan-cost-model-control.mts
+      discipline=RAW fixtures=6 enum=[readdirSync] selfEx=false
+      e.g. "POSITIVE on all ${slopes.length} pairs (${slopes.map((s) => s.toFixed(1)"
+      e.g. "NEGATIVE on all ${slopes.length} pairs (${slopes.map((s) => s.toFixed(1)"
+  scripts/probe-turncount-live-http.mts
+      discipline=RAW fixtures=2 enum=[readdirSync] selfEx=false
+      e.g. "\\n      mean event retention ${(mean(measured.map((m) => m.msgRet)) * 10"
+      e.g. "      ${m.file.slice(0, 24).padEnd(24)}  import failed — HTTP ${res.stat"
+
+─── SET2b-live ───
+  docs/research/round378-instruments/census-named-source-bindings.mjs
+      discipline=STRINGS-KEPT fixtures=4 enum=[readdirSync] selfEx=false
+      e.g. "const r225 = stripSource(readFileSync(join(REPO, 'scripts', '${P225}'), "
+      e.g. "const R225 = '${P225}';\\nconst r225Src = readFileSync(join(HERE, R225), "
+  docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs
+      discipline=STRINGS-KEPT fixtures=9 enum=[readdirSync] selfEx=false
+      e.g. "${FLAGS.map((f) => `${f.slice(0, 5)} ${mine[f].count}${mine[f].members.l"
+      e.g. "${cMech.map((c) => `${n3(c.member)} binds [${c.bound.join(',')}] → [${c."
+  scripts/probe-round224-a-skip-must-not-summarise-as-a-pass.mts
+      discipline=STRINGS-KEPT fixtures=32 enum=[readdirSync] selfEx=false
+      e.g. "${o.failed.length} failed: ${o.failed.map((f) => f.arm).join(',')}"
+      e.g. "${both.failed.length} failed: ${both.failed.map((f) => f.check).join(','"
+  scripts/sweep-probes.mjs
+      discipline=STRINGS-KEPT fixtures=3 enum=[readdirSync] selfEx=false
+      e.g. "run green in Round 263, 15/15 exit 0, 6 measurements; git reads plus a m"
+      e.g. "the pin moved 18 → 8 in Round 376 (Theseus, 10/12 START): its Section B "
+
+─── SET2a-cured ───
+  scripts/probe-round176-backfill-cli-end-to-end.mts
+      discipline=RAW fixtures=6 enum=[readdirSync] selfEx=true
+      e.g. "-- ${table}\\n${rows.map((r) => JSON.stringify(r)).join('\\n')}"
+      e.g. "entities ${beforeEntities} → ${ro((db) => db.prepare('SELECT COUNT(*) AS"
+  scripts/probe-round183-undo-record-against-the-database-it-is-aimed-at.mts
+      discipline=RAW fixtures=3 enum=[readdirSync] selfEx=true
+      e.g. "records as \\`ls\\` and tab completion list them: ${listed.map((f) => (pat"
+      e.g. "\\`--undo=<A>\\` on a database where wren had been re-applied under record"
+  scripts/probe-round185-what-the-undo-classifier-knows-a-run-by.mts
+      discipline=RAW fixtures=2 enum=[readdirSync] selfEx=true
+      e.g. "F1's voice: ${JSON.stringify(cliLines(f1.err).map((l) => l.replace(DATA,"
+      e.g. "M's stdout: ${JSON.stringify(cliLines(m.out).map((l) => l.replace(DATA, "
+  scripts/probe-round189-the-restore-wording-on-a-minted-channel.mts
+      discipline=RAW fixtures=4 enum=[readdirSync] selfEx=true
+      e.g. "every seat on wren earlier than the run: ${mAllSeatsEarlier} (${mSeats.m"
+      e.g. "minted: ${uGoneB.filter((ch) => MINTED_BEFORE_LINE.test(uReasons[ch])).l"
+  scripts/probe-round205-the-plan-and-the-apply-pick-opposite-ends-of-a-duplicated-name.mts
+      discipline=RAW fixtures=1 enum=[readdirSync] selfEx=true
+      e.g. "${preStamped.length} before [${preStamped.map((e) => e.slice(0, 8)).join"
+  scripts/probe-round207-the-import-confirms-a-name-and-the-name-is-not-unique.mts
+      discipline=RAW fixtures=4 enum=[readdirSync] selfEx=true
+      e.g. "${(rowA?.sameNameEntityIds ?? []).map((i) => i.slice(0, 8)).join(', ')}"
+      e.g. "${openers.length} channels · ${guessed} produce a name guess through the"
+  scripts/probe-round223-twenty-one-probes-against-a-stranger.mts
+      discipline=RAW fixtures=6 enum=[ls-files,readdirSync] selfEx=true
+      e.g. "${CONTROLS.size} controls excluded: ${[...CONTROLS].map((f) => f.replace"
+      e.g. "${f.replace(/^probe-|\\.mts$/g, '')}: ${migrated.find((p) => p.file === f"
+  scripts/probe-round225-a-citation-is-not-a-call.mts
+      discipline=RAW fixtures=3 enum=[readdirSync] selfEx=true
+      e.g. "const net=require('net');\nconst connect=(host)=>new Promise(r=>{const s="
+      e.g. "${loudlyWrong.length} spelling(s) throw, 0 return a wrong number"
+  scripts/probe-round246-the-sweep-repaired-and-the-emit-spelling-was-the-bigger-blind-spot.mts
+      discipline=RAW fixtures=7 enum=[readdirSync] selfEx=true
+      e.g. "import finds ${JSON.stringify(regexOnly)} (want [] — this is the blind s"
+      e.g. "import path from 'node:path';\\nexport const b = path.join('.claude', 'pr"
+  scripts/probe-round250-the-drive-was-never-priced-and-the-port-is-one-line-of-product.mts
+      discipline=RAW fixtures=15 enum=[readdirSync] selfEx=true
+      e.g. "export const n = 1;\\nconsole.log('nothing to see');\\n"
+      e.g. "import Anthropic from '@anthropic-ai/sdk';\\nconst c = new Anthropic();\\n"
+  scripts/probe-round252-the-db-class-is-unblocked-by-a-variable-the-product-already-reads.mts
+      discipline=RAW fixtures=7 enum=[readdirSync] selfEx=true
+      e.g. "import Database from 'better-sqlite3';\\nconst d = new Database('x');"
+      e.g. "const p = path.join(REPO, 'klatch.db');"
+  scripts/probe-round254-the-mutate-class-is-an-unanchored-conjunction-and-most-of-it-never-writes-the-product.mts
+      discipline=RAW fixtures=11 enum=[readdirSync] selfEx=true
+      e.g. "import Database from 'better-sqlite3';\\nconst d = new Database('x');"
+      e.g. "const x = 1; console.log('no hazards here');"
+  scripts/probe-round263-an-emptiness-claim-over-a-shared-window-is-not-strict-it-is-blind.mts
+      discipline=RAW fixtures=6 enum=[readdirSync] selfEx=true
+      e.g. "const dirty = porcelain.split("
+      e.g. "below is green while ${Z_PATHS.map((p, i) => `${p} has ${(windowState(RE"
+  scripts/probe-round281-a-probe-that-only-runs-where-it-was-written-and-how-big-that-class-actually-is.mts
+      discipline=RAW fixtures=1 enum=[readdirSync] selfEx=true
+      e.g. "line scan (excluding this file): ${nonRecursiveSites} non-recursive mkdi"
+  scripts/probe-round299-admission-is-per-file-and-the-repair-that-missed-its-own-motivating-case.mts
+      discipline=RAW fixtures=9 enum=[readdirSync] selfEx=true
+      e.g. "import { execFileSync } from 'node:child_process';\\nexecFileSync('npx', "
+      e.g. "${ALL.filter((f) => spawnScan(read(f), f, ALL).unresolved > 0 && exempti"
+  scripts/probe-round300-the-screen-has-a-third-state-and-the-site-my-own-arm-named-is-in-it.mts
+      discipline=RAW fixtures=9 enum=[readdirSync] selfEx=true
+      e.g. "${new Set(of('invisible').map((s) => s.file)).size} files"
+      e.g. "${all.length} sites are this file's own quoted fixture text (${\n      si"
+  scripts/probe-round301-the-limbs-partition-by-construction-and-the-price-landed-in-the-instrument-that-priced-it.mts
+      discipline=RAW fixtures=5 enum=[readdirSync] selfEx=true
+      e.g. "${wouldBeInvisible.length} sites in ${new Set(wouldBeInvisible.map((s) ="
+      e.g. "this file's own quoted fixture text. Population MINUS this file: ${\n    "
+  scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts
+      discipline=RAW fixtures=15 enum=[readdirSync] selfEx=true
+      e.g. "tsc program: ${PROGRAM.size} in-repo files · .mts ${[...PROGRAM].filter("
+      e.g. ".mjs ${[...PROGRAM].filter((f) => f.endsWith('.mjs')).length} · declared"
+  scripts/probe-round304-the-deferral-was-repaired-with-a-declaration-and-both-repair-shapes-redden-the-arm-that-pinned-it.mts
+      discipline=RAW fixtures=10 enum=[readdirSync] selfEx=true
+      e.g. ".mts ${[...PROGRAM].filter((f) => f.endsWith('.mts')).length} · "
+      e.g. ".ts under scripts/ ${[...PROGRAM].filter((f) => f.startsWith('scripts/')"
+  scripts/probe-round307-the-return-half-is-gradeable-the-parameter-half-is-any-and-the-arity-check-covers-fourteen-of-eighteen.mts
+      discipline=RAW fixtures=11 enum=[readdirSync] selfEx=true
+      e.g. "export declare function isTsResolutionFailure(err: unknown): boolean;"
+      e.g. "export declare function isTsResolutionFailure(err: unknown, extra: numbe"
+  scripts/probe-round308-the-general-arm-pointer-detector-reports-thirteen-findings-all-thirteen-false-and-the-narrow-one-is-green-on-package-json.mts
+      discipline=RAW fixtures=6 enum=[readdirSync] selfEx=true
+      e.g. "${V1_SELF.filter((h) => h.arm === 'Q9').map((h) => h.line).join(',')}. "
+      e.g. "cited rounds with no probe file: ${[...new Set(NO_PROBE.map((h) => h.rou"
+  scripts/probe-round309-the-drop-one-reach-census-over-reported-three-where-the-population-is-one-because-a-predicate-does-not-carry-its-corpus.mts
+      discipline=RAW fixtures=7 enum=[readdirSync] selfEx=true
+      e.g. "${armG.file}:${armG.line} ${armG.name} · ${armG.terms.map((t) => `${t.ne"
+      e.g. "drop !/summariseAndExit\\\\(/ → ${gDrops.find((d) => d.dropped.neg)?.reach"
+  scripts/probe-round327-the-pin-purpose-label-is-a-property-of-the-edge-and-retirability-is-a-property-of-the-target-line.mts
+      discipline=RAW fixtures=17 enum=[readdirSync] selfEx=true
+      e.g. "${perArray.map((p) => `r${p.round} ${p.found}`).join(' · ')})"
+      e.g. "DISAGREE: ${perArray.filter((p) => p.found !== p.handRead)\n      .map((p"
+  scripts/probe-round328-the-distinct-target-line-figure-is-keyed-on-the-pin-text-so-one-line-pinned-in-two-spellings-reads-as-two.mts
+      discipline=RAW fixtures=12 enum=[readdirSync] selfEx=true
+      e.g. "${perArray.map((p) => `r${p.round} ${p.found}/${p.handRead}`).join(' · '"
+      e.g. "${scriptNames.filter((n) => n.startsWith('probe-round')).length} probe-r"
+
+─── SET2b-cured ───
+  docs/research/round405-instruments/census-the-pin-population.mjs
+      discipline=STRINGS-KEPT fixtures=16 enum=[ls-files] selfEx=true
+      e.g. "\\\\b(?:const|let|var)\\\\s+${e}\\\\s*=\\\\s*(['\"])([^'\"]*)\\\\1"
+      e.g. "const git = (args) => execFileSync('git', args, { cwd: REPO, encoding: '"
+  scripts/probe-round310-the-eighteen-file-backlog-is-three-harness-shapes-and-two-are-near-mechanical.mts
+      discipline=STRINGS-KEPT fixtures=7 enum=[readdirSync] selfEx=true
+      e.g. "${reachNoSkip.filter((n) => /probe-outcome\\.mts/.test(normOf.get(n) as s"
+      e.g. "let pass = 0;\\nif (ok) pass += 1; else fail += 1;"
+  scripts/probe-round311-the-nearer-of-argus-two-candidates-is-the-one-that-drops-a-failure-and-a-kind-field-is-what-breaks-it.mts
+      discipline=STRINGS-KEPT fixtures=7 enum=[readdirSync] selfEx=true
+      e.g. "${DEPARTURES.filter((d) => shapesPartition(d.view)).length} of ${DEPARTU"
+      e.g. "confirmed · set equality holds under ${DEPARTURES.filter((d) => tripleIs"
+
+─── the four published members, checked against their own prose ────────────────────
+  ✓ SET1-masked-safe   docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs
+      406 §6: "its lexer masks string literals and `sitesIn` skips `inLiteral[at]` … not in the defect class at all"
+  ✓ SET2a-live         docs/research/round404-instruments/grade-the-three-cures.mjs
+      406 §3: raw `readFileSync`, fixture string at :132, in its own `git ls-files` population
+  ✓ SET2b-cured        docs/research/round405-instruments/census-the-pin-population.mjs
+      405 W8: `stripSource(src, false)` by necessity, self-excluded by `import.meta.url` and graded in both directions
+  ✓ SET1-masked-safe   docs/research/round406-instruments/hand-read-the-inline-seven.mjs
+      406 §4: corrected to `stripSource(src, true)`, and §5 self-excludes as well
+
+─── this file, in its own population (the seam) ────────────────────────────────────
+  SET1-masked-safe · discipline=BOTH · 15 fixture string(s)
+
+wrote docs/research/round407-instruments/census.json

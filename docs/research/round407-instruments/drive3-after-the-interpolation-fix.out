@@ -1,0 +1,37 @@
+─── Round 407 · the fixture-as-string class, censused ──────────────────────────────
+
+rev read: ce482c3ad5742eaf4367694c2a96d32633b88658   worktree: DIRTY   self tracked: true
+
+expectations, written before the drive:
+  E1  the known positives classify as written — one per AXIS, each miss isolable to one axis, and the code control survives both readings
+  F2  ADDED BETWEEN DRIVE 2 AND DRIVE 3, and recorded as such rather than backdated: the interpolation axis, isolated in both directions. A message template whose `${…}` holds code is NOT a fixture; a real fixture carried as a template WITH an interpolation still is. One of these alone would have let the predicate fail closed instead of open
+  E2  a code-shaped string inside a COMMENT is invisible on every axis — 0 contribution
+  E3  the four instruments named in published prose land where the prose says: round398 set 1 only, round404 set 2a, round405 set 2b, round406 set 1 only (masked). A MEMBER LIST, not a count, and a miss means MY key has the hole, not theirs
+  E4  the live class is LARGER than the four named — not measured when this was written; the prediction is that set 1 is the big one and set 2 is single digits, because masking is what the lib reader is for and most instruments import it
+  E5  STRINGS-KEPT members are a NON-EMPTY proper subset of set 2 — if set 2b is empty the three-set claim collapses back to Theseus's two and this round found nothing
+  E6  T1: the single-rev reading and the live hybrid reading agree on this drive (clean tree), and the leg prints WHICH rev either way — a recording that cannot say what it read is worth less than it looks (406 §3.1)
+  S2  the self-exclusion seam REFUSES while this file is untracked, rather than passing vacuously — so drive one is red by construction and drive two grades the control
+
+grades:
+  true   E1  every known positive classifies as written, one axis apart
+          9 KPs: RAW=SET2a-live MASKED=SET1-masked-safe KEPT=SET2b-live SELFEX=SET2a-cured NOFIX=SET0-no-fixtures NOTSCAN=null COMMENTED=SET0-no-fixtures MSGTPL=SET0-no-fixtures TPLFIX=SET2a-live
+  true   F2  a message template with code in its interpolation is NOT a fixture, AND a real fixture carried as a template WITH an interpolation still is
+          message template: 0 fixture(s) (scanner=true) · interpolated fixture: 1 fixture(s) (scanner=true)
+  true   E2  a code-shaped fixture inside a comment contributes nothing on any axis
+          commented: 0 fixture(s), scanner=true · uncommented: 1 fixture(s)
+  true   E1c  the masked KP is still a scanner and still enumerates — blanking did not delete it
+          masked KP: scanner=true enumerators=[ls-files] fixtures=1
+  FALSE  T1  the single-rev reading and the live hybrid reading are compared BY MEMBER LIST, and the rev each read is printed whether they agree or not
+          rev ce482c3ad5742eaf4367694c2a96d32633b88658 · worktree DIRTY (4 path(s)) · 275 file(s) at rev, 275 live · list delta +0/-0 · 1 file(s) differ in CONTENT between index-list and worktree-contents [docs/research/round407-instruments/census-the-fixture-as-string-class.mjs]
+  true   S2  the self-exclusion seam is gradeable AND grades in both directions
+          self tracked at ce482c3ad5742eaf4367694c2a96d32633b88658 · with-self 275 file(s), without-self 274 · this file reads as SET1-masked-safe with 12 fixture string(s) of its own
+  true   E3  the four instruments named in published prose land where the prose says they do
+          round398-instruments=SET1-masked-safe round404-instruments=SET2a-live round405-instruments=SET2b-cured round406-instruments=SET1-masked-safe
+  true   E4  the live class is larger than the four members named in prose
+          114 scanner(s) of 274 executable(s) · set1 26 · set2 44 · set0 44
+  true   E5  STRINGS-KEPT (set 2b) is non-empty and a PROPER subset of set 2 — otherwise the three-set refinement collapses to the two Theseus named
+          set2b 6 of set2 44 (2a: 38)
+
+GRADE: false
+
+REFUSED: a leg is not true, so no figure prints below it.

@@ -87,8 +87,12 @@ const SELF = relative(REPO, fileURLToPath(import.meta.url)).split('\\').join('/'
 // ─── expectations, on paper before anything drives (383/386) ───────────────────────────────────
 // Each one names the move it predicts, so a leg that lands for the wrong reason is still visible.
 const EXPECTED = [
-  ['E1', 'the seven known positives classify as written — one per AXIS, each miss isolable to one '
+  ['E1', 'the known positives classify as written — one per AXIS, each miss isolable to one '
        + 'axis, and the code control survives both readings'],
+  ['F2', 'ADDED BETWEEN DRIVE 2 AND DRIVE 3, and recorded as such rather than backdated: the '
+       + 'interpolation axis, isolated in both directions. A message template whose `${…}` holds '
+       + 'code is NOT a fixture; a real fixture carried as a template WITH an interpolation still '
+       + 'is. One of these alone would have let the predicate fail closed instead of open'],
   ['E2', 'a code-shaped string inside a COMMENT is invisible on every axis — 0 contribution'],
   ['E3', 'the four instruments named in published prose land where the prose says: round398 set 1 '
        + 'only, round404 set 2a, round405 set 2b, round406 set 1 only (masked). A MEMBER LIST, not '
@@ -161,11 +165,73 @@ function literalBodies(src) {
  * Is this literal body a SOURCE FIXTURE — a scrap of code carried as a string? The question set 1
  * membership turns on. A path, a format string, a git subcommand and a line of prose are all
  * strings and none of them is a fixture.
+ *
+ * ── Drive 2 → drive 3: the predicate was failing OPEN, and E4's written prediction is why ──────
+ *
+ * E4 predicted set 2 would be "single digits." Drive 2 measured **70 of 114 scanners**, and a
+ * prediction on paper being wrong is the only reason I read the samples instead of the total
+ * (383/386). The first sample out of the list settled it:
+ *
+ *     "GRADES NOT TRUE: ${bad.map((g) => g.name).join(' | ')}"
+ *
+ * That is a MESSAGE, not a fixture. **A template literal's `${ … }` is live code, not carried
+ * text** — so testing the raw body counts the instrument's own live source as text it carries. The
+ * model defect is interpolation, in the PREDICATE this time rather than in the matcher, which is
+ * round398's lesson arriving one layer in from where I filed it; and it inflates, which is the
+ * direction that reads as a finding.
+ *
+ * Two corrections, both model and neither tuning:
+ *   1. `${ … }` spans are removed, brace-balanced, before the body is tested at all.
+ *   2. `function (`, `for (`, `if (` are not calls. A control keyword before a paren is structure.
+ *
+ * And one widening, because correction 1 alone would have failed CLOSED on a real fixture that
+ * carries an interpolated value — `` `const HERE = ${JSON.stringify(POP)};` `` strips to
+ * `const HERE = ;`, which has no call in it and is still unmistakably code. So the second conjunct
+ * is a declaration keyword AND any one of: a non-keyword call, an assignment, or a statement token
+ * (`;`, `=>`, `) {`).
+ *
+ * **Expected move, written before drive 3 ran, as a member loss and not a count (383/386):**
+ *   - SET2a-live falls from 39 and SET0-no-fixtures rises by about as much; set 2 falls from 70.
+ *   - the four published members in E3 do NOT move — round404's fixture is a plain quoted string,
+ *     round405's `KP_SRC` is an array of plain strings, round398's `KP_A`/`KP_B` carry no `${`.
+ *   - set 2b stays non-empty (E5) and round405 stays `SET2b-cured`, or the round found nothing.
+ *   - this file stays a fixture carrier; its 15 may fall, because some of those 15 were my own
+ *     message templates and they should go.
+ * A leg that lands while one of those four is violated has landed for the wrong reason.
  */
-const CALL = /\b[A-Za-z_$][\w$]*\s*\(/;
+/** `${ … }` spans removed, brace-balanced. Interpolated code is not carried text. */
+function withoutInterpolations(body) {
+  let out = '', i = 0;
+  while (i < body.length) {
+    if (body[i] === '$' && body[i + 1] === '{') {
+      let depth = 1; i += 2;
+      while (i < body.length && depth > 0) {
+        if (body[i] === '{') depth++;
+        else if (body[i] === '}') depth--;
+        i++;
+      }
+      continue;
+    }
+    out += body[i];
+    i++;
+  }
+  return out;
+}
+
+const KEYWORD_BEFORE_PAREN = new Set([
+  'function', 'for', 'if', 'while', 'switch', 'catch', 'return', 'typeof', 'new', 'await', 'do',
+]);
+const callish = (text) => [...text.matchAll(/\b([A-Za-z_$][\w$]*)\s*\(/g)]
+  .some((m) => !KEYWORD_BEFORE_PAREN.has(m[1]));
+const ASSIGN = /\b(?:const|let|var)\s+[A-Za-z_$][\w$]*\s*=/;
+const STMT = /;|=>|\)\s*\{/;
 const DECL = /(?:\b(?:const|let|var|function|return|import|export)\b|=>)/;
-const isFixture = (body) =>
-  body.length >= 12 && CALL.test(body) && DECL.test(body);
+const isFixture = (rawBody) => {
+  const body = withoutInterpolations(rawBody);
+  return body.length >= 12
+    && DECL.test(body)
+    && (callish(body) || ASSIGN.test(body) || STMT.test(body));
+};
 
 // ─── the three axes ────────────────────────────────────────────────────────────────────────────
 
@@ -254,6 +320,16 @@ const KP = {
   COMMENTED: KP_BASE.join('\n')
     .replace('const FIXTURE = "const body = rest.slice(0, rest.indexOf(\'X\'));";',
              '// const FIXTURE = "const body = rest.slice(0, rest.indexOf(\'X\'));";'),
+  // one axis: a MESSAGE template whose INTERPOLATION contains code. Not a fixture — this is the
+  // drive-2 false positive, copied verbatim out of the live sample list rather than minted (341).
+  MSGTPL: KP_BASE.join('\n')
+    .replace('const FIXTURE = "const body = rest.slice(0, rest.indexOf(\'X\'));";',
+             'const MSG = `GRADES NOT TRUE: ${bad.map((g) => g.name).join(\' | \')}`;'),
+  // one axis the OTHER way: a real fixture carried as a template WITH an interpolation. Must stay
+  // a fixture — the control on correction 1, which on its own would fail CLOSED here.
+  TPLFIX: KP_BASE.join('\n')
+    .replace('const FIXTURE = "const body = rest.slice(0, rest.indexOf(\'X\'));";',
+             'const FIXTURE = `const HERE = ${JSON.stringify(POP)};`;'),
 };
 
 const kpRead = Object.fromEntries(
@@ -267,12 +343,26 @@ const KP_WANT = {
   NOFIX: 'SET0-no-fixtures',
   NOTSCAN: null,
   COMMENTED: 'SET0-no-fixtures',
+  MSGTPL: 'SET0-no-fixtures',
+  TPLFIX: 'SET2a-live',
 };
 const kpMiss = Object.keys(KP_WANT).filter((k) => kpSet[k] !== KP_WANT[k]);
 g('E1', 'every known positive classifies as written, one axis apart',
   kpMiss.length === 0,
   kpMiss.length ? `MISCLASSIFIED: ${kpMiss.map((k) => `${k} → ${kpSet[k]} (want ${KP_WANT[k]})`).join(' · ')}`
-                : `7 KPs: ${Object.entries(kpSet).map(([k, v]) => `${k}=${v}`).join(' ')}`);
+                // derived, never typed: a hardcoded KP count goes stale the round a KP is added,
+                // and a figure in my own sentence that I did not add up is the 379 lesson.
+                : `${Object.keys(KP_WANT).length} KPs: ${Object.entries(kpSet).map(([k, v]) => `${k}=${v}`).join(' ')}`);
+
+// The interpolation axis, isolated in BOTH directions. Asserted separately from E1 so that a
+// single KP table miss cannot be read as "the axis is covered" (382: one KP per shape is coverage
+// of one axis).
+g('F2', 'a message template with code in its interpolation is NOT a fixture, AND a real fixture '
+      + 'carried as a template WITH an interpolation still is',
+  kpRead.MSGTPL.fixtures === 0 && kpRead.TPLFIX.fixtures >= 1
+  && kpRead.MSGTPL.scanner === true && kpRead.TPLFIX.scanner === true,
+  `message template: ${kpRead.MSGTPL.fixtures} fixture(s) (scanner=${kpRead.MSGTPL.scanner}) · `
+  + `interpolated fixture: ${kpRead.TPLFIX.fixtures} fixture(s) (scanner=${kpRead.TPLFIX.scanner})`);
 
 g('E2', 'a code-shaped fixture inside a comment contributes nothing on any axis',
   kpRead.COMMENTED.fixtures === 0 && kpRead.RAW.fixtures >= 1
