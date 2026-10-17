@@ -3174,7 +3174,41 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-10-16 ~19:20 PT (STOP fire). **Status:** available.
+- **Updated:** 2026-10-17 ~07:21 PT (START fire). **Status:** available.
+- **Drain:** `git log --oneline b9cef9d4..HEAD` (own 10/16 STOP checkpoint) — 2 new commits,
+  authorship checked with `%an` (Pard (Mediajunkie) ×1, Claude ×1), none mine — today's
+  cross-pollination brief and a fire-depth report Pard published for Calliope. `git diff --stat
+  b9cef9d4..HEAD -- packages/` empty — confirmed, not assumed; no product/UX code touched. `ls
+  docs/mail | grep -i to-iris` empty, no mail newer than this seat's last checkpoint. All four
+  other writable cross-repo mailboxes checked by `find -mmin -1440` plus a content grep for
+  `klatch|iris` on that set: zero hits across all four this time (no incidental mentions even in
+  old index files) — nothing owed. Cross-poll brief: new 2026-10-17 private-source URL; tried
+  `WebFetch` on the public mirror directly this fire given the session preamble's network-access
+  correction — the call required a permission grant that was withheld, not retried per the
+  don't-repeat-a-denied-call rule, net outcome unchanged — Calliope's skip-and-log ruling stands.
+  Both standing blockers re-checked fresh: day count **69** (+1 from 10/16's 68); `entityGuess`
+  still 6 files/20 (re-grepped directly, same split: 5+11+1+1+1+1). Fresh gate re-derived — see
+  below. One self-correction logged (fourth occurrence of the same `ScheduleWakeup`-while-waiting
+  reflex named in the three prior logs; this time the call itself errored before doing anything,
+  so no functional effect). Two consecutive checks found nothing further unblocked — fire closed
+  bounded.
+- **10/17 fire (START) — no-op on product; no new unblocked UX work.** Worktree synced to
+  `origin/main`, `HEAD == origin/main == 7c342506`. **Verified, not trusted:** `npm run typecheck`
+  clean ×4 workspaces; `npm test -w packages/server` unpiped — **140 files · 2179 passed · 1
+  skipped (2180)**; `npm test -w packages/client` unpiped — **26 passed|13 skipped (39) · 333
+  passed|13 skipped (346)** — both exact matches to the prior checkpoint; `sweep-probes --census`
+  — **CENSUS OK, 153 probe files, 43 swept/110 deferred (34 verdict-bearing, 76
+  no-conclusion-line)** — unchanged; full driving sweep on a free port (`:3001` confirmed clear via
+  `lsof`, run in background, checked via the completion notification rather than polled, verdict
+  read from file, `HEAD` re-read before and after the drive — unchanged at `7c342506` both times,
+  `git status --porcelain` clean during the drive) — **SWEEP PASSED — 43 of 43 swept probes green,
+  0 red, 0 blocked, 0 census problem(s), 110 deferred**. No `packages/` changes this fire. `git
+  status --porcelain` clean apart from this entry and the log (`.scratch/` gate-run logs
+  gitignored, not committed). No port bound at close (`lsof -i :3001` empty again), no database
+  opened, no model called. Two consecutive checks found nothing further unblocked — fire closed
+  bounded. Nothing new needs xian beyond the one standing item (ground-rules question). Log:
+  `docs/logs/2026-10-17-0721-iris-log.md`.
+- **Prior update:** 2026-10-16 ~19:20 PT (STOP fire). **Status:** available.
 - **Drain:** `git log --oneline 12425a54..HEAD` (own 10/16 START checkpoint) — 5 new commits,
   authorship checked with `%an` (Theseus ×2, Daedalus ×2, Calliope ×1), none mine — Theseus's
   Round 403 memo to Daedalus (hand-reads Daedalus's unguarded-15 census, finds 4 defects and 11
