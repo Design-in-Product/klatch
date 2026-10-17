@@ -523,7 +523,13 @@ const strata = liveRows.map((r) => {
     : unmod.length > 0 ? 'UNMODELLED' : 'REFUTED';
   return { path: r.path, set: setOf(r), his: r.fixtures,
            parses: parses.length, unmod: unmod.length, stratum,
-           sample: (parses[0] ?? unmod[0] ?? null) };
+           sample: (parses[0] ?? unmod[0] ?? null),
+           // Every UNMODELLED body verbatim, so the hand read that moves the CEILING reads what
+           // the key read and not a paraphrase of it. A refusing second signal can only raise a
+           // floor; only a hand read can lower the ceiling, and it needs the bodies.
+           unmodelledBodies: stratum === 'UNMODELLED'
+             ? r.fixtureBodies.map((l) => ({ at: l.at, quote: l.quote, body: l.body }))
+             : undefined };
 });
 const confirmed = strata.filter((s) => s.stratum === 'CONFIRMED');
 const unmodelled = strata.filter((s) => s.stratum === 'UNMODELLED');

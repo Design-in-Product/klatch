@@ -1,0 +1,477 @@
+{
+  "rev": "24ab92b2faee2b8f06d4d13c16525917e6cf4354",
+  "hisRev": "771daaf4",
+  "worktree": "DIRTY",
+  "hisFigures": {
+    "scanners": 114,
+    "executables": 274,
+    "SET2a-live": 25,
+    "SET2b-live": 3,
+    "SET2a-cured": 13,
+    "SET2b-cured": 3,
+    "SET1-masked-safe": 26,
+    "SET0-no-fixtures": 44
+  },
+  "reproduced": true,
+  "interval": {
+    "his": [
+      3,
+      27
+    ],
+    "measured": [
+      19,
+      28
+    ]
+  },
+  "strata": [
+    {
+      "path": "docs/research/round378-instruments/census-named-source-bindings.mjs",
+      "set": "SET2b-live",
+      "his": 5,
+      "parses": 3,
+      "unmod": 2,
+      "stratum": "CONFIRMED",
+      "sample": {
+        "v": "PARSES",
+        "len": 88,
+        "at": 2484,
+        "head": "const r225 = stripSource(readFileSync(join(REPO, 'scripts', '${P"
+      }
+    },
+    {
+      "path": "docs/research/round378-instruments/drive-263-arm-e-counterfactual.mjs",
+      "set": "SET2a-live",
+      "his": 3,
+      "parses": 1,
+      "unmod": 2,
+      "stratum": "CONFIRMED",
+      "sample": {
+        "v": "PARSES",
+        "len": 61,
+        "at": 3320,
+        "head": "const zBefore = Z_PATHSPECS.map((p) => fingerprint(REPO, p));"
+      }
+    },
+    {
+      "path": "docs/research/round380-instruments/drive-b1m-history-clause-population.mjs",
+      "set": "SET2a-live",
+      "his": 4,
+      "parses": 4,
+      "unmod": 0,
+      "stratum": "CONFIRMED",
+      "sample": {
+        "v": "PARSES",
+        "len": 53,
+        "at": 4743,
+        "head": "const HERE = dirname(fileURLToPath(import.meta.url));"
+      }
+    },
+    {
+      "path": "docs/research/round380-instruments/grade-b1-under-rekeys.mjs",
+      "set": "SET2a-live",
+      "his": 17,
+      "parses": 15,
+      "unmod": 2,
+      "stratum": "CONFIRMED",
+      "sample": {
+        "v": "PARSES",
+        "len": 78,
+        "at": 2680,
+        "head": "import { summariseAndExit, type ProbeVerdict } from './lib/probe"
+      }
+    },
+    {
+      "path": "docs/research/round380-instruments/measure-b1-legs.mjs",
+      "set": "SET2a-live",
+      "his": 2,
+      "parses": 2,
+      "unmod": 0,
+      "stratum": "CONFIRMED",
+      "sample": {
+        "v": "PARSES",
+        "len": 59,
+        "at": 2473,
+        "head": "const R225 = 'probe-round225-a-citation-is-not-a-call.mts';"
+      }
+    },
+    {
+      "path": "docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs",
+      "set": "SET2a-live",
+      "his": 1,
+      "parses": 0,
+      "unmod": 1,
+      "stratum": "UNMODELLED",
+      "sample": {
+        "v": "UNMODELLED",
+        "len": 95,
+        "at": 27321,
+        "head": "${then.func} function-shaped, ${then.total} total**; at \\`HEAD\\`"
+      }
+    },
+    {
+      "path": "docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs",
+      "set": "SET2a-live",
+      "his": 6,
+      "parses": 2,
+      "unmod": 4,
+      "stratum": "CONFIRMED",
+      "sample": {
+        "v": "PARSES",
+        "len": 66,
+        "at": 14640,
+        "head": "const his391Live = readFileSync(join(REPO, HIS_391_PATH), 'utf8'"
+      }
+    },
+    {
+      "path": "docs/research/round395-instruments/grade-the-refusal-that-deletes-the-verdict.mjs",
+      "set": "SET2a-live",
+      "his": 3,
+      "parses": 1,
+      "unmod": 2,
+      "stratum": "CONFIRMED",
+      "sample": {
+        "v": "PARSES",
+        "len": 148,
+        "at": 8599,
+        "head": "const tallyOf = (out) => { const m = out.match(/^(\\\\d+) grades"
+      }
+    },
+    {
+      "path": "docs/research/round402-instruments/hand-read-the-unguarded.mjs",
+      "set": "SET2a-live",
+      "his": 11,
+      "parses": 10,
+      "unmod": 1,
+      "stratum": "CONFIRMED",
+      "sample": {
+        "v": "PARSES",
+        "len": 46,
+        "at": 5710,
+        "head": "const span = SRC.slice(loopStart, verdictLog);"
+      }
+    },
+    {
+      "path": "docs/research/round404-instruments/grade-the-three-cures.mjs",
+      "set": "SET2a-live",
+      "his": 13,
+      "parses": 9,
+      "unmod": 4,
+      "stratum": "CONFIRMED",
+      "sample": {
+        "v": "PARSES",
+        "len": 96,
+        "at": 6643,
+        "head": "const SRC = readFileSync(new URL('../../../scripts/sweep-probes."
+      }
+    },
+    {
+      "path": "scripts/probe-browse-endpoint-vs-channel-count.mts",
+      "set": "SET2a-live",
+      "his": 1,
+      "parses": 1,
+      "unmod": 0,
+      "stratum": "CONFIRMED",
+      "sample": {
+        "v": "PARSES",
+        "len": 66,
+        "at": 9379,
+        "head": "import { findChannelByOriginalSessionId } from '../db/queries.js"
+      }
+    },
+    {
+      "path": "scripts/probe-import-large-session.mts",
+      "set": "SET2a-live",
+      "his": 2,
+      "parses": 0,
+      "unmod": 2,
+      "stratum": "UNMODELLED",
+      "sample": {
+        "v": "UNMODELLED",
+        "len": 112,
+        "at": 17780,
+        "head": "import succeeded (${subject.dir.split('-').pop()}, ${mb(subject."
+      }
+    },
+    {
+      "path": "scripts/probe-round198-a-way-back-has-tables-in-it-and-the-sidecar-is-not-the-database.mts",
+      "set": "SET2a-live",
+      "his": 1,
+      "parses": 1,
+      "unmod": 0,
+      "stratum": "CONFIRMED",
+      "sample": {
+        "v": "PARSES",
+        "len": 94,
+        "at": 9241,
+        "head": "const D=require('better-sqlite3');const d=new D(process.argv[1])"
+      }
+    },
+    {
+      "path": "scripts/probe-round224-a-skip-must-not-summarise-as-a-pass.mts",
+      "set": "SET2b-live",
+      "his": 28,
+      "parses": 8,
+      "unmod": 20,
+      "stratum": "CONFIRMED",
+      "sample": {
+        "v": "PARSES",
+        "len": 57,
+        "at": 77335,
+        "head": "import { summariseAndExit } from \\'./probe-outcome.mjs\\';"
+      }
+    },
+    {
+      "path": "scripts/probe-round227-arm-o-on-a-corpus-where-the-cap-fires.mts",
+      "set": "SET2a-live",
+      "his": 2,
+      "parses": 0,
+      "unmod": 2,
+      "stratum": "UNMODELLED",
+      "sample": {
+        "v": "UNMODELLED",
+        "len": 61,
+        "at": 28729,
+        "head": "const { getDb } = await import(${JSON.stringify(dbIndex)});\\n"
+      }
+    },
+    {
+      "path": "scripts/probe-round231-the-handler-and-the-signal-are-in-different-processes.mts",
+      "set": "SET2a-live",
+      "his": 5,
+      "parses": 5,
+      "unmod": 0,
+      "stratum": "CONFIRMED",
+      "sample": {
+        "v": "PARSES",
+        "len": 234,
+        "at": 9123,
+        "head": " for (const sig of ['SIGINT', 'SIGTERM', 'SIGHUP', 'SIGPIPE']) p"
+      }
+    },
+    {
+      "path": "scripts/probe-round233-arm-m-and-the-endpoint-can-walk-different-corpora.mts",
+      "set": "SET2a-live",
+      "his": 1,
+      "parses": 1,
+      "unmod": 0,
+      "stratum": "CONFIRMED",
+      "sample": {
+        "v": "PARSES",
+        "len": 67,
+        "at": 14230,
+        "head": "const projectsDir = path.join(os.homedir(), '.claude', 'projects"
+      }
+    },
+    {
+      "path": "scripts/probe-round240-a-probe-pinned-to-a-moved-subject-is-failing-silently.mts",
+      "set": "SET2a-live",
+      "his": 3,
+      "parses": 2,
+      "unmod": 1,
+      "stratum": "CONFIRMED",
+      "sample": {
+        "v": "PARSES",
+        "len": 127,
+        "at": 9151,
+        "head": " const p = 'packages/client/src/components/ChannelSidebar.tsx'"
+      }
+    },
+    {
+      "path": "scripts/probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts",
+      "set": "SET2a-live",
+      "his": 1,
+      "parses": 1,
+      "unmod": 0,
+      "stratum": "CONFIRMED",
+      "sample": {
+        "v": "PARSES",
+        "len": 90,
+        "at": 21926,
+        "head": "const a = '${presentSentinel}'; const b = '${absentSentinel}'; c"
+      }
+    },
+    {
+      "path": "scripts/probe-round247-a-mutant-in-the-tree-is-in-the-population.mts",
+      "set": "SET2a-live",
+      "his": 4,
+      "parses": 3,
+      "unmod": 1,
+      "stratum": "CONFIRMED",
+      "sample": {
+        "v": "PARSES",
+        "len": 61,
+        "at": 9184,
+        "head": "const LIB = path.join(REPO, 'scripts/lib/probe-outcome.mts');"
+      }
+    },
+    {
+      "path": "scripts/probe-round248-the-dot-guard-is-half-the-repair-and-a-copy-re-admits-the-original.mts",
+      "set": "SET2a-live",
+      "his": 4,
+      "parses": 4,
+      "unmod": 0,
+      "stratum": "CONFIRMED",
+      "sample": {
+        "v": "PARSES",
+        "len": 102,
+        "at": 13680,
+        "head": "const allMts = fs.readdirSync(SCRIPTS).filter((f) => f.endsWith("
+      }
+    },
+    {
+      "path": "scripts/probe-round280-the-client-half-of-the-pair-and-what-it-leaves-behind.mts",
+      "set": "SET2a-live",
+      "his": 10,
+      "parses": 8,
+      "unmod": 2,
+      "stratum": "CONFIRMED",
+      "sample": {
+        "v": "PARSES",
+        "len": 32,
+        "at": 19848,
+        "head": "import * as net from 'node:net';"
+      }
+    },
+    {
+      "path": "scripts/probe-round284-the-census-has-a-reader-and-it-is-the-channel-three-seats-have-never-run.mts",
+      "set": "SET2a-live",
+      "his": 1,
+      "parses": 0,
+      "unmod": 1,
+      "stratum": "UNMODELLED",
+      "sample": {
+        "v": "UNMODELLED",
+        "len": 12,
+        "at": 20786,
+        "head": "export {};\\n"
+      }
+    },
+    {
+      "path": "scripts/probe-round289-the-deferred-breakdown-is-derived-and-the-sidecar-signature-is-not-evidence-of-no-write.mts",
+      "set": "SET2a-live",
+      "his": 1,
+      "parses": 0,
+      "unmod": 1,
+      "stratum": "UNMODELLED",
+      "sample": {
+        "v": "UNMODELLED",
+        "len": 109,
+        "at": 8664,
+        "head": "import { summariseAndExit } from './lib/probe-outcome.mts';\\nsum"
+      }
+    },
+    {
+      "path": "scripts/probe-round295-the-promotion-path-reaches-one-of-the-twenty-nine-and-the-refusals-are-its-own-fixtures.mts",
+      "set": "SET2a-live",
+      "his": 2,
+      "parses": 0,
+      "unmod": 2,
+      "stratum": "UNMODELLED",
+      "sample": {
+        "v": "UNMODELLED",
+        "len": 31,
+        "at": 11554,
+        "head": "const x = 1;\\nconsole.log(x);\\n"
+      }
+    },
+    {
+      "path": "scripts/probe-round296-the-net-split-is-priced-at-zero-and-literal-only-cannot-tell-a-corpus-from-an-argv.mts",
+      "set": "SET2a-live",
+      "his": 2,
+      "parses": 0,
+      "unmod": 2,
+      "stratum": "UNMODELLED",
+      "sample": {
+        "v": "UNMODELLED",
+        "len": 110,
+        "at": 8004,
+        "head": "const corpus = [\"import { getDb } from '../packages/server/src/d"
+      }
+    },
+    {
+      "path": "scripts/probe-turncount-live-http.mts",
+      "set": "SET2a-live",
+      "his": 1,
+      "parses": 0,
+      "unmod": 1,
+      "stratum": "UNMODELLED",
+      "sample": {
+        "v": "UNMODELLED",
+        "len": 112,
+        "at": 14908,
+        "head": " => any session deeper than ${deepest} turns reports a LOWE"
+      }
+    },
+    {
+      "path": "scripts/sweep-probes.mjs",
+      "set": "SET2b-live",
+      "his": 3,
+      "parses": 0,
+      "unmod": 3,
+      "stratum": "UNMODELLED",
+      "sample": {
+        "v": "UNMODELLED",
+        "len": 1173,
+        "at": 43729,
+        "head": "run green in Round 263, 15/15 exit 0, 6 measurements; git reads "
+      }
+    }
+  ],
+  "grades": [
+    {
+      "leg": "R1",
+      "ok": true,
+      "detail": "rev 771daaf4 · without-self 114 scanner(s) of 274 executable(s) · SET2a-live=25 SET2b-live=3 SET2a-cured=13 SET2b-cured=3 SET1-masked-safe=26 SET0-no-fixtures=44 · all six match his §2 · with-self delta by member list: [docs/research/round407-instruments/census-the-fixture-as-string-class.mjs → SET1-masked-safe]"
+    },
+    {
+      "leg": "R2",
+      "ok": true,
+      "detail": "round398-instruments: SET1-masked-safe ✓ · round404-instruments: SET2a-live ✓ · round405-instruments: SET2b-cured ✓ · round406-instruments: SET1-masked-safe ✓"
+    },
+    {
+      "leg": "P1",
+      "ok": true,
+      "detail": "interpolated fixture: placeholder=0 err, deletion=1 err · plain fixture: placeholder=0 err, deletion=0 err"
+    },
+    {
+      "leg": "P2",
+      "ok": true,
+      "detail": "prose (1173 chars, at offset 43729): his key=true parse=UNMODELLED · plain fixture: his key=true parse=PARSES"
+    },
+    {
+      "leg": "P3",
+      "ok": true,
+      "detail": "fragment (a real fixture truncated at a call boundary): UNMODELLED · the untruncated form: PARSES"
+    },
+    {
+      "leg": "P4",
+      "ok": true,
+      "detail": "escaped-delimiter fixture: unescaped=0 err, as-sliced=3 err"
+    },
+    {
+      "leg": "P5",
+      "ok": true,
+      "detail": "new Function: module=false tsAnnot=false plain=true · ts parse: module=PARSES tsAnnot=PARSES"
+    },
+    {
+      "leg": "T1",
+      "ok": true,
+      "detail": "rev 24ab92b2faee2b8f06d4d13c16525917e6cf4354 · worktree DIRTY (1 path(s)) · 276 at rev, 276 live · list delta +0/-0 · 0 differ in CONTENT"
+    },
+    {
+      "leg": "S2",
+      "ok": true,
+      "detail": "SEAM GRADEABLE — docs/research/round408-instruments/stratify-the-live-interval.mjs is tracked and present at 24ab92b2; it is a member of the population it measures, which is where the author of this instrument belongs"
+    },
+    {
+      "leg": "M1",
+      "ok": true,
+      "detail": "19 CONFIRMED + 9 UNMODELLED + 0 REFUTED = 28 of 28 live row(s) (his 25 + 3 = 28) · parser refusals: 0"
+    },
+    {
+      "leg": "M2",
+      "ok": true,
+      "detail": "all 28 row(s): parses+unmodelled <= his fixture count"
+    }
+  ]
+}
