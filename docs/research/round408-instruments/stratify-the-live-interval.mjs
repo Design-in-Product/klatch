@@ -110,7 +110,12 @@ const EXPECTED = [
        + 'fixture under his key AND parses — so P2 is not vacuous on an always-UNMODELLED parse'],
   ['P3', 'a syntactic fragment is UNMODELLED, not refuted — the stratum exists and is reachable'],
   ['P4', 'the delimiter-escape axis, BOTH directions: a fixture carrying the escaped form of its '
-       + 'own delimiter parses after unescaping and does not before'],
+       + 'own delimiter parses after decoding and does not before'],
+  ['P6', 'ADDED AFTER DRIVE 5, from its hand read, and recorded as added rather than backdated: '
+       + 'the newline-escape axis, both directions. 8 of the 15 UNMODELLED bodies were real '
+       + 'fixtures failing to parse because a slice carries `\\n` as two characters — the code a '
+       + 'fixture carries is the string VALUE, not its source text. The negative is a real '
+       + 'message from the same nine rows, which must stay UNMODELLED'],
   ['P5', '`new Function(body)` — the shape §4 priced — FAILS CLOSED on module syntax and on a TS '
        + 'annotation, while the TS parse admits both. Driven, not asserted'],
   ['M1', 'the stratification PARTITIONS his live rows: confirmed + unmodelled + refuted equals his '
@@ -285,10 +290,59 @@ function withPlaceholders(body) {
   return out;
 }
 
-/** The delimiter's own escape, undone. A property of the SLICE, not of the fixture. Correction 2. */
-function unescapeDelimiter(body, quote) {
-  if (quote !== "'" && quote !== '"' && quote !== '`') return body;
-  return body.split('\\' + quote).join(quote);
+/**
+ * The literal DECODED to its value. Correction 2, generalised after the drive-5 hand read.
+ *
+ * ── drive 5 → drive 6: the hand read found the gap in MY model, not undecided fixtures ─────────
+ *
+ * Drive 5 read 9 UNMODELLED rows and I hand-read all 15 of their bodies. **8 of the 15 are plainly
+ * real fixtures** — `"const { getDb } = await import(${JSON.stringify(dbIndex)});\n"`,
+ * `"export {};\n"`, `"const x = 1;\nconsole.log(x);\n"` and five more. Every one of them failed to
+ * parse for the same reason, and it was not that the fixture was undecidable: a body is sliced out
+ * of SOURCE, so the fixture's `\n` arrives as a literal backslash followed by an `n`, and a stray
+ * backslash at the top level is a syntax error. Measured: the raw slice scores 2 parse errors, the
+ * decoded form scores 0.
+ *
+ * The code a fixture carries is the string's **value**, not its source text. `unescapeDelimiter`
+ * (drive 1–5) was an ad-hoc special case of exactly that, covering one escape of the several a
+ * literal can carry. So the model is now: decode the literal, substitute interpolations, parse.
+ *
+ * This is the third correction that moves bodies INTO the fixture class, so it needs its negative
+ * graded like the other two: leg P6 drives both directions, and the seven message/prose bodies
+ * from the same hand read must stay UNMODELLED or the decoder has become a licence.
+ *
+ * **Expected move, written before drive 6 ran, as a member list and not a count (383/386):**
+ *   - bodies that move to PARSES: the 8 named above — in `probe-round227` (×2, both the
+ *     `await import` shape, and top-level `await` is measured to parse), `probe-round284`,
+ *     `probe-round289`, `probe-round295` (×2), `probe-round296` (×2).
+ *   - bodies that must NOT move: the 7 messages — `round393`'s markdown `**`-bearing template,
+ *     `probe-import-large-session` (×2, "import succeeded …" is English), `probe-turncount`'s
+ *     "=> any session deeper than … reports a LOWER BOUND", and `sweep-probes`'s 3 prose bodies.
+ *   - so FILES: 5 move UNMODELLED → CONFIRMED (round227, 284, 289, 295, 296); 4 stay
+ *     (round393, probe-import-large-session, probe-turncount-live-http, sweep-probes).
+ *   - CONFIRMED 19 → 24, UNMODELLED 9 → 4, REFUTED 0 → 0 — the parse never refutes.
+ *   - M2 still holds: decoding cannot change how many bodies a row has.
+ * A drive that lands the counts while violating one of those member lists has landed for the
+ * wrong reason.
+ */
+const SIMPLE_ESCAPE = { n: '\n', r: '\r', t: '\t', b: '\b', f: '\f', v: '\v', 0: '\0' };
+function decodeLiteral(body) {
+  let out = '', i = 0;
+  while (i < body.length) {
+    if (body[i] !== '\\') { out += body[i]; i++; continue; }
+    const c = body[i + 1];
+    if (c === undefined) { out += '\\'; i++; continue; }      // trailing backslash: keep it
+    if (c === '\n') { i += 2; continue; }                      // line continuation
+    if (c === 'u' || c === 'x') {                              // code-point escape, decoded
+      const m = body.slice(i).match(c === 'x' ? /^\\x([0-9a-fA-F]{2})/
+        : /^\\u\{([0-9a-fA-F]{1,6})\}|^\\u([0-9a-fA-F]{4})/);
+      if (m) { out += String.fromCodePoint(parseInt(m[1] ?? m[2], 16)); i += m[0].length; continue; }
+      out += c; i += 2; continue;
+    }
+    if (Object.hasOwn(SIMPLE_ESCAPE, c)) { out += SIMPLE_ESCAPE[c]; i += 2; continue; }
+    out += c; i += 2;                                          // \\ \' \" \` \$ \/ → the char
+  }
+  return out;
 }
 
 /**
@@ -302,8 +356,8 @@ function parseErrors(text) {
 }
 
 /** `PARSES` | `UNMODELLED`, or `null` if the parser refused. Signal 2 on one literal. */
-function parseVerdict(rawBody, quote) {
-  const n = parseErrors(withPlaceholders(unescapeDelimiter(rawBody, quote)));
+function parseVerdict(rawBody) {
+  const n = parseErrors(withPlaceholders(decodeLiteral(rawBody)));
   if (n === null) return null;
   return n === 0 ? 'PARSES' : 'UNMODELLED';
 }
@@ -314,20 +368,61 @@ function newFunctionAccepts(text) {
 }
 
 // ─── known positives, one per axis, each differing from PLAIN on exactly ONE axis (382/386) ────
-// Copied from real neighbourhoods in this tree, not minted (341). FRAGMENT is a real fixture
-// truncated at a real call boundary, which is what a syntactic fragment IS; labelled as such.
-const KP_PLAIN    = { body: "const files = git(['ls-tree', '-r', rev]).split('\\n');", quote: "'" };
-const KP_MODULE   = { body: "import { readFileSync } from 'node:fs';", quote: "'" };
-const KP_TSANNOT  = { body: 'const rows: Array<string> = xs.map((x) => String(x));', quote: "'" };
-const KP_INTERP   = { body: 'const HERE = ${JSON.stringify(POP)};', quote: '`' };
-// KP_ESCAPED is the body AS SLICED out of a `'`-quoted outer literal whose fixture contains a
-// `'`-quoted inner string: source `'const s = \'x\'; return s;'` slices to `const s = \'x\';…`.
-// Drive 1 had this KP wrong — I wrote a nested APOSTROPHE (`it\'s`) inside a nested single-quoted
-// string, which is unparseable as real code too, so the KP failed for a reason that was not the
-// axis. The axis is the escape introduced by the SLICE; the KP has to carry that and nothing else
-// (355: a known positive must carry the property, not an analogy).
-const KP_ESCAPED  = { body: "const s = \\'x\\'; return s;", quote: "'" };
-const KP_FRAGMENT = { body: "const files = git(['ls-tree', '-r', rev", quote: "'" };
+//
+// Each KP is declared as the **source line it occurs in** and then SLICED OUT with the same
+// `literalBodies` the census uses — so a KP is a slice by construction instead of a hand-typed
+// imitation of one.
+//
+// That construction is drive 6's finding, and it cost two reds to arrive at. A hand-typed body
+// does not carry the one property every real body has: it came out of a quoted literal, so every
+// escape in it was doubled by the author. Twice in this file I typed a KP that looked right and
+// was not a slice:
+//
+//   - drive 1, `KP_ESCAPED`: a nested APOSTROPHE (`it\'s`) inside a nested single-quoted string,
+//     which is unparseable as real code too, so the KP failed for a reason that was not the axis.
+//   - drive 6, `KP_PLAIN`: written with `'\n'` — ONE backslash. A real slice of that fixture
+//     carries `'\\n'`, because the author had to double it. Decoding the one-backslash form turns
+//     the nested literal into a real newline and leaves a string unterminated, so my own control
+//     went UNMODELLED and took P2 and P3 down with it. The decoder was right and the KP was wrong.
+//
+// Both are 355 (a known positive must carry the property, not an analogy) and 341 (copy a real
+// neighbourhood, not a real site). Declaring the neighbourhood and slicing is the mechanical fix:
+// the class of error is unreachable now, rather than guarded against by care.
+/** A KP declared as its own source line, sliced with the census's reader. Refuses with `null`. */
+function kpFromSource(src) {
+  const ls = literalBodies(src);
+  return ls.length > 0 ? ls[0] : null;
+}
+const KP_PLAIN    = kpFromSource(String.raw`const F = "const files = git(['ls-tree', '-r', rev]).split('\\n');";`);
+const KP_MODULE   = kpFromSource(String.raw`const F = "import { readFileSync } from 'node:fs';";`);
+const KP_TSANNOT  = kpFromSource(String.raw`const F = "const rows: Array<string> = xs.map((x) => String(x));";`);
+const KP_ESCAPED  = kpFromSource(String.raw`const F = 'const s = \'x\'; return s;';`);
+const KP_FRAGMENT = kpFromSource(String.raw`const F = "const files = git(['ls-tree', '-r', rev";`);
+// Interpolation-bearing KPs cannot be written with String.raw — `${` interpolates there too — so
+// these two use a cooked template with `\${` and `\``, which produces the same source bytes.
+const KP_INTERP   = kpFromSource(`const F = \`const HERE = \${JSON.stringify(POP)};\`;`);
+// KP_NEWLINE is `probe-round295-…mts:214` verbatim — `const B_CLEAN = 'const x = 1;\nconsole.log
+// (x);\n';` — read out of the file rather than retyped from the hand read's JSON dump, which
+// doubles every backslash and cost drive 7 a red: I declared `\\n` and the real source has `\n`.
+// The two KPs are a genuine pair, not a duplicate. KP_NEWLINE's author wanted the fixture's VALUE
+// to contain real newlines and wrote `\n` once; KP_PLAIN's author wanted the fixture's own source
+// to read `.split('\n')` and wrote `\\n`. Decoding is correct for both, and only one of them
+// parses as sliced, so both directions of the axis are covered by real neighbourhoods (341).
+const KP_NEWLINE  = kpFromSource(String.raw`const B_CLEAN = 'const x = 1;\nconsole.log(x);\n';`);
+const KP_MESSAGE  = kpFromSource(
+  `const F = \`import succeeded (\${subject.dir.split('-').pop()}, \${mb(subject.size)}, `
+  + `\${subject.lines.toLocaleString()} lines)\`;`);
+
+// A KP that failed to slice is a deleted leg, not a passing one (393/395): refuse here, loudly,
+// before any leg reads `.body` off a null and scores `undefined` as a verdict.
+const KP_TABLE = { KP_PLAIN, KP_MODULE, KP_TSANNOT, KP_ESCAPED, KP_FRAGMENT, KP_INTERP,
+                   KP_NEWLINE, KP_MESSAGE };
+const KP_UNSLICED = Object.entries(KP_TABLE).filter(([, v]) => v === null).map(([k]) => k);
+if (KP_UNSLICED.length > 0) {
+  console.log(`REFUSING: ${KP_UNSLICED.join(', ')} did not slice out of its declared source, so `
+    + 'the legs that read them have no known positive at all.');
+  process.exit(2);
+}
 
 // ════════════════════════════════════════════════════════════════════════════════════════════════
 // drive
@@ -431,9 +526,9 @@ const proseLit = sweepLits
   .filter((l) => l.body.includes('E2 keeps the import specifier'))
   .sort((a, b) => b.body.length - a.body.length)[0] ?? null;
 const proseIsFixtureHisKey = proseLit === null ? null : isFixture(proseLit.body);
-const proseParse = proseLit === null ? null : parseVerdict(proseLit.body, proseLit.quote);
+const proseParse = proseLit === null ? null : parseVerdict(proseLit.body);
 const plainIsFixture = isFixture(KP_PLAIN.body);
-const plainParse = parseVerdict(KP_PLAIN.body, KP_PLAIN.quote);
+const plainParse = parseVerdict(KP_PLAIN.body);
 g('P2', 'the prose body is a fixture under HIS key AND UNMODELLED under the parse, while a plain '
       + 'fixture is a fixture under his key AND parses — so this is a discrimination, not an '
       + 'always-UNMODELLED parse',
@@ -447,24 +542,41 @@ g('P2', 'the prose body is a fixture under HIS key AND UNMODELLED under the pars
 // ─── P3: the fragment stratum is reachable ─────────────────────────────────────────────────────
 g('P3', 'a syntactic fragment lands UNMODELLED — the stratum exists and is reachable, and a '
       + 'fragment is NOT the same verdict as a refutation',
-  parseVerdict(KP_FRAGMENT.body, KP_FRAGMENT.quote) === 'UNMODELLED'
-  && parseVerdict(KP_PLAIN.body, KP_PLAIN.quote) === 'PARSES',
-  `fragment (a real fixture truncated at a call boundary): ${parseVerdict(KP_FRAGMENT.body, KP_FRAGMENT.quote)}`
-  + ` · the untruncated form: ${parseVerdict(KP_PLAIN.body, KP_PLAIN.quote)}`);
+  parseVerdict(KP_FRAGMENT.body) === 'UNMODELLED'
+  && parseVerdict(KP_PLAIN.body) === 'PARSES',
+  `fragment (a real fixture truncated at a call boundary): ${parseVerdict(KP_FRAGMENT.body)}`
+  + ` · the untruncated form: ${parseVerdict(KP_PLAIN.body)}`);
 
 // ─── P4: the delimiter-escape axis, both directions ────────────────────────────────────────────
-const escUn = parseErrors(withPlaceholders(unescapeDelimiter(KP_ESCAPED.body, KP_ESCAPED.quote)));
+const escUn = parseErrors(withPlaceholders(decodeLiteral(KP_ESCAPED.body)));
 const escRaw = parseErrors(withPlaceholders(KP_ESCAPED.body));
 g('P4', 'a fixture carrying the escaped form of its own delimiter parses after unescaping and '
       + 'does not before — both directions',
   escUn === 0 && typeof escRaw === 'number' && escRaw > 0,
-  `escaped-delimiter fixture: unescaped=${escUn} err, as-sliced=${escRaw} err`);
+  `escaped-delimiter fixture: decoded=${escUn} err, as-sliced=${escRaw} err`);
+
+// ─── P6: the newline-escape axis, both directions, and the negative is the hand read's own ─────
+// The positive is a real multi-statement fixture copied out of `probe-round295` verbatim; the
+// negative is a real MESSAGE copied out of `probe-import-large-session` verbatim. Both come from
+// the same nine rows the drive-5 hand read covered, so a decoder that admits the second has become
+// a licence and this leg is where that shows (383: key the control on the defect's content).
+const nlDecoded = parseErrors(withPlaceholders(decodeLiteral(KP_NEWLINE.body)));
+const nlRaw = parseErrors(withPlaceholders(KP_NEWLINE.body));
+g('P6', 'a real multi-statement fixture carrying `\\n` parses once the literal is DECODED and not '
+      + 'as sliced, while a real message from the same hand read stays UNMODELLED under the '
+      + 'decoder — the correction that moves bodies in is graded against the bodies it must leave',
+  nlDecoded === 0 && typeof nlRaw === 'number' && nlRaw > 0
+  && parseVerdict(KP_NEWLINE.body) === 'PARSES' && parseVerdict(KP_MESSAGE.body) === 'UNMODELLED'
+  && isFixture(KP_MESSAGE.body) === true,
+  `newline fixture (from probe-round295): decoded=${nlDecoded} err, as-sliced=${nlRaw} err · `
+  + `message (from probe-import-large-session): his key=${isFixture(KP_MESSAGE.body)}, `
+  + `parse=${parseVerdict(KP_MESSAGE.body)}`);
 
 // ─── P5: the shape §4 priced, driven ───────────────────────────────────────────────────────────
 const nfModule = newFunctionAccepts(KP_MODULE.body);
 const nfTs = newFunctionAccepts(KP_TSANNOT.body);
-const tsModule = parseVerdict(KP_MODULE.body, KP_MODULE.quote);
-const tsTs = parseVerdict(KP_TSANNOT.body, KP_TSANNOT.quote);
+const tsModule = parseVerdict(KP_MODULE.body);
+const tsTs = parseVerdict(KP_TSANNOT.body);
 const nfPlain = newFunctionAccepts(KP_PLAIN.body);
 g('P5', '`new Function(body)` fails CLOSED on module syntax and on a TS annotation while the TS '
       + 'parse admits both, and it is not simply broken — it accepts a plain fixture',
@@ -513,7 +625,7 @@ const liveRows = hisReads.filter((r) => liveSets.includes(setOf(r) ?? ''));
 let parserRefused = 0;
 const strata = liveRows.map((r) => {
   const verdicts = r.fixtureBodies.map((l) => {
-    const v = parseVerdict(l.body, l.quote);
+    const v = parseVerdict(l.body);
     if (v === null) parserRefused++;
     return { v, len: l.body.length, at: l.at, head: l.body.slice(0, 64).replace(/\s+/g, ' ') };
   });

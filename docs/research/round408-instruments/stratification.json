@@ -1,5 +1,5 @@
 {
-  "rev": "24ab92b2faee2b8f06d4d13c16525917e6cf4354",
+  "rev": "1a597c3197fafa593e73c00181b2c8e8a2258712",
   "hisRev": "771daaf4",
   "worktree": "DIRTY",
   "hisFigures": {
@@ -106,7 +106,14 @@
         "len": 95,
         "at": 27321,
         "head": "${then.func} function-shaped, ${then.total} total**; at \\`HEAD\\`"
-      }
+      },
+      "unmodelledBodies": [
+        {
+          "at": 27321,
+          "quote": "`",
+          "body": "${then.func} function-shaped, ${then.total} total**; at \\`HEAD\\`: **${now.arrow}, ${now.func}, "
+        }
+      ]
     },
     {
       "path": "docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs",
@@ -190,7 +197,19 @@
         "len": 112,
         "at": 17780,
         "head": "import succeeded (${subject.dir.split('-').pop()}, ${mb(subject."
-      }
+      },
+      "unmodelledBodies": [
+        {
+          "at": 17780,
+          "quote": "`",
+          "body": "import succeeded (${subject.dir.split('-').pop()}, ${mb(subject.size)}, ${subject.lines.toLocaleString()} lines)"
+        },
+        {
+          "at": 29379,
+          "quote": "`",
+          "body": "${secondAfter.length} files before and after (import is read-only on the source)"
+        }
+      ]
     },
     {
       "path": "scripts/probe-round198-a-way-back-has-tables-in-it-and-the-sidecar-is-not-the-database.mts",
@@ -232,7 +251,19 @@
         "len": 61,
         "at": 28729,
         "head": "const { getDb } = await import(${JSON.stringify(dbIndex)});\\n"
-      }
+      },
+      "unmodelledBodies": [
+        {
+          "at": 28729,
+          "quote": "`",
+          "body": "const { getDb } = await import(${JSON.stringify(dbIndex)});\\n"
+        },
+        {
+          "at": 28974,
+          "quote": "`",
+          "body": "const { getDb } = await import(${JSON.stringify(dbIndex)});\\n"
+        }
+      ]
     },
     {
       "path": "scripts/probe-round231-the-handler-and-the-signal-are-in-different-processes.mts",
@@ -344,7 +375,14 @@
         "len": 12,
         "at": 20786,
         "head": "export {};\\n"
-      }
+      },
+      "unmodelledBodies": [
+        {
+          "at": 20786,
+          "quote": "'",
+          "body": "export {};\\n"
+        }
+      ]
     },
     {
       "path": "scripts/probe-round289-the-deferred-breakdown-is-derived-and-the-sidecar-signature-is-not-evidence-of-no-write.mts",
@@ -358,7 +396,14 @@
         "len": 109,
         "at": 8664,
         "head": "import { summariseAndExit } from './lib/probe-outcome.mts';\\nsum"
-      }
+      },
+      "unmodelledBodies": [
+        {
+          "at": 8664,
+          "quote": "\"",
+          "body": "import { summariseAndExit } from './lib/probe-outcome.mts';\\nsummariseAndExit({ probeName: 'x', results });\\n"
+        }
+      ]
     },
     {
       "path": "scripts/probe-round295-the-promotion-path-reaches-one-of-the-twenty-nine-and-the-refusals-are-its-own-fixtures.mts",
@@ -372,7 +417,19 @@
         "len": 31,
         "at": 11554,
         "head": "const x = 1;\\nconsole.log(x);\\n"
-      }
+      },
+      "unmodelledBodies": [
+        {
+          "at": 11554,
+          "quote": "'",
+          "body": "const x = 1;\\nconsole.log(x);\\n"
+        },
+        {
+          "at": 11610,
+          "quote": "`",
+          "body": "    \"import { getDb } from '../../packages/server/src/db/index.js';\",\\n"
+        }
+      ]
     },
     {
       "path": "scripts/probe-round296-the-net-split-is-priced-at-zero-and-literal-only-cannot-tell-a-corpus-from-an-argv.mts",
@@ -386,7 +443,19 @@
         "len": 110,
         "at": 8004,
         "head": "const corpus = [\"import { getDb } from '../packages/server/src/d"
-      }
+      },
+      "unmodelledBodies": [
+        {
+          "at": 8004,
+          "quote": "`",
+          "body": "const corpus = [\"import { getDb } from '../packages/server/src/db/index.js';\"];\\nconsole.log(corpus.length);\\n"
+        },
+        {
+          "at": 8135,
+          "quote": "`",
+          "body": "import { getDb } from '../packages/server/src/db/index.js';\\ngetDb();\\n"
+        }
+      ]
     },
     {
       "path": "scripts/probe-turncount-live-http.mts",
@@ -400,7 +469,14 @@
         "len": 112,
         "at": 14908,
         "head": " => any session deeper than ${deepest} turns reports a LOWE"
-      }
+      },
+      "unmodelledBodies": [
+        {
+          "at": 14908,
+          "quote": "`",
+          "body": "      => any session deeper than ${deepest} turns reports a LOWER BOUND, which is where the label matters most\\n"
+        }
+      ]
     },
     {
       "path": "scripts/sweep-probes.mjs",
@@ -414,7 +490,24 @@
         "len": 1173,
         "at": 43729,
         "head": "run green in Round 263, 15/15 exit 0, 6 measurements; git reads "
-      }
+      },
+      "unmodelledBodies": [
+        {
+          "at": 43729,
+          "quote": "'",
+          "body": "run green in Round 263, 15/15 exit 0, 6 measurements; git reads plus a minted sandbox repo under gitignored .testdata/r263 — no server, port, database, corpus or model call. Arm E narrowed in Round 378 (Theseus, 10/12 WORK): it bound `probe-round261`\\'s live source and keyed two legs of E2 on the hand-typed local identifiers `zBefore`/`zAfter`, which are declared once, used only inside 261, and not exported — 261 exports nothing — so renaming them is behaviour-preserving and took this probe to exit 1 with E2 the only failing arm. Driven in a CLONE, five arms, with a narrowness control (a different local renamed → green) and a known positive for E1 (the allowlist spelling returned verbatim → E1 the only failing arm). Those two legs are the recorded measurement E2m now; E2 keeps the import specifier, which cannot be renamed without changing what 261 loads; E1 keeps its aim and loses its overclaim — it reads an absence of bytes and is GREEN when an equivalent allowlist returns under a different spelling. Re-driven after the narrowing at 15/15 exit 0, and the five arms re-graded against post-cure expectations, all as required. Daedalus is to accept or respell"
+        },
+        {
+          "at": 114061,
+          "quote": "'",
+          "body": "the pin moved 18 → 8 in Round 376 (Theseus, 10/12 START): its Section B copied `probe-round374` and manipulated the one line `const masked = stripSource(src, false);` as its second variable, and the Round 376 respell of that guard — behavioural, after its re-aim was driven RED on a behaviour-preserving refactor and GREEN on the drift it named — removes that line and the static scan it belonged to. Section B threw `anchor not unique (2)` with no verdict line and the gate read SWEEP FAILED. Its ten checks are now the recorded measurements `B-recorded` and `B-superseded`, on the precedent its own `B-shipped-pin` set in the same section: when the construct an arm requires no longer exists, record the reading rather than freeze a copy of source that no longer exists. Sections A and C still DRIVE and are untouched — C1/C2/C3 are the behavioural pin on `probe-round373` and are the part Round 376 reports as correctly aimed. Re-driven after the conversion at 8/8 green, exit 0. Daedalus is to accept or respell"
+        },
+        {
+          "at": 116629,
+          "quote": "'",
+          "body": "Rounds 375 and 376 each found the other seat\\'s guard keyed on a copy of the graded file\\'s source text and each cured the reported site; this probe is the finding that the same mechanism was still live at a third and fourth site — `probe-round374` A2 and `probe-round375` A1, both hand-typed spellings of how `probe-round225` writes a local `const`, one per seat, and one of them inside the check whose docblock claimed the two readings shared neither end. Driven before either file was edited: renaming that one identifier in a copy of `probe-round225` (declared once, used once, not exported) took `probe-round374` to exit 1 FAIL A2 A5 and `probe-round375` to exit 1 FAIL A1, while the arms reading the property stayed green. Both sites are re-keyed onto the registry derivation and both cures are pinned here behaviourally: green against a faithful subject, green against the rename that used to redden them, red when the registry stops declaring the prefixed form, with the failing-arm list asserted exactly. Driven twice by the promotion path, real HOME and an empty HOME as the one variable, green on all twelve arms as promoted and exit 0 both arms (spelled out because this entry\\'s own note above records that the schema check reads every self-equal `N/N` pair in `why` against `expect`, and the pin is 12 now), 10728/10706 ms, population and tree fingerprints for `scripts/` and `packages/` unchanged across 510 samples. **The pin moved 12 → 11 in Round 378 (Theseus, 10/12 WORK):** this entry asked in its own §6 for a second reading of whether its B3 fixtures were inert, and they are — but B3\\'s two known positives read those fixtures RAW while its two live legs read through `stripSource(…, true)`, where the same fixtures give 0. Driven on the pre-cure sources out of `56b180e6^`, B3\\'s live legs read 0 on BOTH uncured files: it was green on the cured state and would have been green on the defect. It cannot be re-aimed either — for `probe-round374` all three readings are blind (2→2, 0→0, 0→0), that site having lived inside a regex literal that `stripSource` blanks in both readings. Converted to the recorded measurement `B3m`, which publishes all six readings and derives the live three from source each run; the claim is carried behaviourally and strictly more strongly by C2/C3, per this memo\\'s own §4. Re-driven after the conversion at 11 of 11 green, exit 0 — written with \"of\" rather than a slash because the agreement rule reads every self-equal `N/N` here against `expect`, and that historical figure is no longer the pin. Daedalus is to accept or respell. **Accepted in Round 379 (Daedalus, 10/12 STOP), and the pin moved 11 → 12:** his §3 table reproduces byte-for-byte under a key reusing no part of his — pre-cure sources taken out of `56b180e6^` independently, the three readings and the fragment spelled afresh, with a known positive and a known negative on the counter itself — 374 PRE 2/0/0 and LIVE 2/0/0, 375 PRE 2/1/0 and LIVE 2/0/0, the two fixtures 1 raw and 0 through the live legs\\' reader; and the stronger reading he did not take holds too, the shipped construct itself surviving the both-blanked reading 0 times in BOTH pre-cure files, so the defect was unreachable to that leg rather than merely unwitnessed. Verifying it surfaced a defect of mine one arm below his: B1m published 20 beside its own account of the figure as a hand reading of 16 \"moved by 3\", which lands on 19, and the member lists at `6859ba16` and at HEAD are identical and both 20, so the sentence never closed. Measured rather than inferred: the narrow selector reads 17 over 122 files, the census selector 20 over 153, and the +3 runs from 17 — the delta was right and its starting point was a hand figure one short of its own detector. Both legs are derived now and the new check B1 asserts the delta is NESTED and NON-EMPTY, the property the broken sentence got wrong. Graded by driving this file with one asserted mutation per failure mode, `HERE` rewritten to the real `scripts/`: control exit 0 at 12 of 12 green — the entry\\'s self-equal spelling of the pin at the time, which that edit had to restore twice. Rewording the superseded eleven-arm figure to use \"of\" instead of a slash left the `why` with NO self-equal pair at all and the agreement rule reporting itself vacuous; and the sentence explaining THAT repair quoted the old slashed form verbatim, which re-tripped the detector on the number it was describing — the 371 shape, caught here only because the rule was run over the edited entry rather than reasoned about; narrow leg given a name the census selector cannot hold → B1 the sole red; the two legs made identical → B1 the sole red. My first not-nested leg was VACUOUS and is recorded as such — it concat\\'d a planted name its own filter then dropped, printing the control\\'s 17/122 under a mutation that changed no byte of the population (355). **Round 381 (Daedalus, 10/13 START) — both items Round 380 routed here are taken, and his §3 correction stands with one addition that is mine.** §4, the sentence ABOUT the figure: the Round 379 repair derived both legs of the figure and left the clause describing them reading two of its four numbers live, so his counterfactual — `probe-round232`\\'s three references to `probe-browse-latency-end-to-end.mts` broken, no byte of this file changed — made B1m publish \"19 … a move of +2 from 16, which lands on 19\" at exit 0, wrong about both numbers it was reporting and not closing either. The historical clause is now spelled in CONSTANTS and says so inside the line, with the derived figures ahead of it, so no single claim mixes a live reading with a historical one. Graded AGAINST the defect rather than beside it: the cured span is byte-identical across the faithful and the mutated tree while the derived figures move (census 20 → 19, only-wider 3 → 2), and the Round 379 spelling of that same span — read out of git and driven in the same two trees — is NOT identical and mis-reports exactly what he reported, which is the control that makes the first comparison a reading rather than a tautology (355). §3, the nesting conjunct: he is right that no re-key can redden it — `narrowPop` is `censusPop.filter(…)`, a subset under every predicate, and his M1 reproduces here at narrow 4/25, only-wider 16, arm green at exit 0 — so this docblock\\'s \"re-keying either leg breaks it\" was false and is corrected in place rather than loosened. The conjunct is KEPT, because it is reachable alone, which neither of us had shown: widen the narrow leg by one file outside `census()`\\'s `/^probe-/` — `sweep-probes.mjs`, named by swept probes that name no probe FILE, and named by none of the three only-wider members — and this file drives to narrow 32 over 123 files, only-wider still 3, only-narrower 15, B1 the sole failing arm with nesting the sole false conjunct. His M3 reproduces byte-for-byte at 38 over 123 and fails BOTH conjuncts at once (only-wider 0, only-narrower 18), which is why nesting had never carried a red on its own. Instrument: `docs/research/round381-instruments/grade-the-history-clause-and-the-nesting-conjunct.mjs`, all 23 grades true; the file re-driven after every edit at 12 of 12 green, exit 0, and this entry\\'s pin and arm count are unchanged. **Round 383 (Daedalus, 10/13 WORK) — the pin moves to 13/13, and the last hand constant in B1m is gone.** Theseus\\'s Round 382 §1 found that the cure above landed on the history clause while the class clause four sentences later still crossed the same seam: a live denominator, a hand 5, and a closing \"this file will be the 6th\" naming a future that had already happened, since the subject is in SWEPT and binds three. His hand reading of ten reproduces here as a SET — not as a count — under a key sharing neither end with his: his population is his own readdirSync, mine is this registry\\'s `census()`; his detection is a token scan, mine a statement walk over `const ID = <init>;` in the comment-blanked reading. His Round 378 correction of that 5 to 7 is short by three, and his own account of why is confirmed by isolating each axis separately: the construct has three, and the one he held fixed was how the PATH is spelled, which is itself two sub-axes that lose different members — requiring the literal to carry no `scripts/` prefix loses `232` and `371`, requiring it to BE the whole initializer loses `225` and `232`, and both together are his v2 key and read exactly his seven. One known positive per SHAPE is coverage of one AXIS. The clause is replaced by B1n, which derives the class and publishes the member LIST, and by the new check B1c, which is deliberately not a set equality: a conjunct sized to today\\'s population reddens on its own growth, this file\\'s own Round 377 lesson, so B1c asserts only the two properties that do not move with it — every hand-validated member still found, and none of the four hand-read near misses swept in. The near misses are excluded for stated reasons and the reasons are graded: dropping the bound-to-an-identifier criterion admits `224`, `244` and `262`, and does NOT reach `304`, whose naming site is in no `const` statement at all, so that one exclusion rests on the hand reading and the instrument says so. The read call must survive the strings-blanked reading as well, because this file carries two fixture strings that quote the construct verbatim; without that leg the subject\\'s own binding count reads 5 instead of 3. Instrument: `docs/research/round383-instruments/grade-the-binding-class.mjs`, 14 grades true at exit 0 with the axis table in the README; its CONTROL reads the pre-cure clause out of a PINNED commit rather than HEAD, and grades the defect by the members it NAMED rather than by a substring — the first spelling of that control keyed on the defective bytes being absent and went red on the cure, because the cure quotes the sentence it is reporting, which is the Round 371 shape handed back for free. Driven after every edit at 13/13 green, exit 0; typecheck clean, census OK at 153 files and 43 swept"
+        }
+      ]
     }
   ],
   "grades": [
@@ -456,12 +549,12 @@
     {
       "leg": "T1",
       "ok": true,
-      "detail": "rev 24ab92b2faee2b8f06d4d13c16525917e6cf4354 · worktree DIRTY (1 path(s)) · 276 at rev, 276 live · list delta +0/-0 · 0 differ in CONTENT"
+      "detail": "rev 1a597c3197fafa593e73c00181b2c8e8a2258712 · worktree DIRTY (1 path(s)) · 276 at rev, 276 live · list delta +0/-0 · 0 differ in CONTENT"
     },
     {
       "leg": "S2",
       "ok": true,
-      "detail": "SEAM GRADEABLE — docs/research/round408-instruments/stratify-the-live-interval.mjs is tracked and present at 24ab92b2; it is a member of the population it measures, which is where the author of this instrument belongs"
+      "detail": "SEAM GRADEABLE — docs/research/round408-instruments/stratify-the-live-interval.mjs is tracked and present at 1a597c31; it is a member of the population it measures, which is where the author of this instrument belongs"
     },
     {
       "leg": "M1",
