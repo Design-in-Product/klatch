@@ -118,6 +118,10 @@ const EXPECTED = [
        + 'message from the same nine rows, which must stay UNMODELLED'],
   ['P5', '`new Function(body)` — the shape §4 priced — FAILS CLOSED on module syntax and on a TS '
        + 'annotation, while the TS parse admits both. Driven, not asserted'],
+  ['H1', 'ADDED AFTER DRIVE 9, and recorded as added: the hand read of every body in the rows the '
+       + 'parse leaves undecided, because a refusing signal can only raise a FLOOR and nothing the '
+       + 'parse does can lower 28. The KEY grades the table — a hand read whose population has '
+       + 'moved under it still prints, which is worse than not having one'],
   ['M1', 'the stratification PARTITIONS his live rows: confirmed + unmodelled + refuted equals his '
        + 'live total, added up in the output rather than asserted (379)'],
   ['M2', 'the second signal is MONOTONE by construction — it filters an existing fixture list, so '
@@ -656,6 +660,51 @@ g('M1', 'the three strata partition his live rows exactly — the total is added
   + `(his 25 + 3 = ${HIS_FIGURES['SET2a-live'] + HIS_FIGURES['SET2b-live']}) · `
   + `parser refusals: ${parserRefused}`);
 
+// ─── H1: the hand read that lowers the CEILING, graded against the key ─────────────────────────
+// A refusing second signal can only raise a floor: UNMODELLED is undecided by construction, so
+// nothing the parse does can take 28 down. Only a hand read can, and this is it — all 7 bodies of
+// the 4 rows the parse leaves undecided, read at drive 5 and recorded here with a verdict each.
+//
+// The key GRADES the hand read rather than the other way round (350/341): if the key's UNMODELLED
+// member list is not exactly the set this table covers, the table is stale and H1 goes red. A hand
+// read of a population that has moved is worth less than no hand read, because it still prints.
+const HAND_READ = [
+  ['docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs',
+   'NOT-A-FIXTURE', 'one body: a markdown report line — "${then.func} function-shaped, '
+   + '${then.total} total**; at `HEAD`: …". The `**` and the backticked `HEAD` are prose emphasis, '
+   + 'and every code-shaped token in it is an interpolation, i.e. live code in THIS file rather '
+   + 'than carried text'],
+  ['scripts/probe-import-large-session.mts',
+   'NOT-A-FIXTURE', 'two bodies, both messages: "import succeeded (…)" and "${…} files before and '
+   + 'after (import is read-only on the source)". `import` is the English verb in both, which is '
+   + 'the exact shape of the false positive Daedalus hand-read at sweep-probes.mjs — technical '
+   + 'prose about code satisfies every structural signal a non-parsing predicate has'],
+  ['scripts/probe-turncount-live-http.mts',
+   'NOT-A-FIXTURE', 'one body: "      => any session deeper than ${deepest} turns reports a LOWER '
+   + 'BOUND, which is where the label matters most". The `=>` that satisfies his DECL is an ASCII '
+   + 'arrow in a report line, not an arrow function'],
+  ['scripts/sweep-probes.mjs',
+   'NOT-A-FIXTURE', 'three bodies, all `why:` prose. Daedalus hand-read ONE of them in his §2.1 '
+   + '(the 1173-char Round 263 entry, reproduced here by leg P2); the other two are the same shape '
+   + '— "the pin moved 18 → 8 in Round 376 …" and "Rounds 375 and 376 each found the other seat\'s '
+   + 'guard …". So his hand read generalises to the whole file: this row\'s membership is unearned '
+   + 'on every one of its bodies, not just the one he read'],
+];
+const handPaths = HAND_READ.map(([p]) => p).sort();
+const keyUnmodelled = unmodelled.map((s) => s.path).sort();
+const handCoversKey = handPaths.length === keyUnmodelled.length
+  && handPaths.every((p, i) => p === keyUnmodelled[i]);
+const handFixtures = HAND_READ.filter(([, v]) => v === 'FIXTURE').length;
+g('H1', 'the hand read covers exactly the rows the parse left undecided — the KEY grades the '
+      + 'table, so a table that has gone stale against the population goes RED rather than '
+      + 'printing beside a figure it no longer describes',
+  handCoversKey,
+  handCoversKey
+    ? `${HAND_READ.length} row(s) hand-read, and they are exactly the key's UNMODELLED set · `
+      + `${handFixtures} judged FIXTURE, ${HAND_READ.length - handFixtures} NOT-A-FIXTURE`
+    : `STALE: hand read covers [${handPaths.join(' | ')}] · key's UNMODELLED is `
+      + `[${keyUnmodelled.join(' | ')}]`);
+
 // M2: monotonicity. Signal 2 filters a list, so no row may gain a fixture and no file may enter.
 const gained = strata.filter((s) => s.parses + s.unmod > s.his);
 g('M2', 'the second signal is monotone by construction — no row gains a fixture under it',
@@ -687,12 +736,22 @@ if (bad.length > 0) {
 
 console.log('');
 console.log(`── the live interval, stratified at ${HIS_REV} ─────────────────────────────────────`);
-console.log(`his published interval: [3, 27]  (floor hand-confirmed, ceiling not claimed)`);
-console.log(`measured here:          [${confirmed.length}, ${confirmed.length + unmodelled.length}]`);
+console.log(`his published interval:      [3, 27]  (floor hand-confirmed, ceiling not claimed)`);
+console.log(`the parse alone:            [${confirmed.length}, ${confirmed.length + unmodelled.length}]`
+  + '  — a signal that REFUSES can only raise a floor');
+console.log(`the parse plus the hand read: ${confirmed.length + handFixtures}`
+  + `  — all ${HAND_READ.length} undecided rows hand-read, ${handFixtures} FIXTURE, `
+  + `${HAND_READ.length - handFixtures} NOT`);
 console.log('');
 console.log(`  CONFIRMED   ${String(confirmed.length).padStart(3)}  at least one fixture body PARSES`);
-console.log(`  UNMODELLED  ${String(unmodelled.length).padStart(3)}  has bodies, none parse — undecided, not refuted`);
+console.log(`  UNMODELLED  ${String(unmodelled.length).padStart(3)}  has bodies, none parse — undecided by the parse, resolved by H1 below`);
 console.log(`  REFUTED     ${String(refuted.length).padStart(3)}  no body survives the second signal; leaves the class`);
+console.log('');
+console.log('── H1, the hand read of the undecided rows ─────────────────────────────────────────');
+for (const [p, verdict, why] of HAND_READ) {
+  console.log(`  ${verdict.padEnd(14)} ${p}`);
+  console.log(`                 ${why}`);
+}
 console.log('');
 for (const s of [...confirmed, ...unmodelled, ...refuted].sort((a, b) =>
   a.stratum.localeCompare(b.stratum) || a.path.localeCompare(b.path))) {
@@ -704,7 +763,9 @@ for (const s of [...confirmed, ...unmodelled, ...refuted].sort((a, b) =>
 writeFileSync(new URL('./stratification.json', import.meta.url), JSON.stringify({
   rev: REV, hisRev: HIS_REV, worktree: DIRTY === '' ? 'CLEAN' : 'DIRTY',
   hisFigures: HIS_FIGURES, reproduced: r1Mismatch.length === 0,
-  interval: { his: [3, 27], measured: [confirmed.length, confirmed.length + unmodelled.length] },
+  interval: { his: [3, 27], parseOnly: [confirmed.length, confirmed.length + unmodelled.length],
+               withHandRead: confirmed.length + handFixtures },
+  handRead: HAND_READ.map(([path, verdict, why]) => ({ path, verdict, why })),
   strata: strata.sort((a, b) => a.path.localeCompare(b.path)),
   grades: GRADES.map(({ leg, ok, detail }) => ({ leg, ok, detail })),
 }, null, 2) + '\n');

@@ -1,0 +1,44 @@
+EXPECTED, on paper before this drove:
+  R1  his key, transcribed verbatim, reproduces his six published set counts and his 114-of-274 AT HIS REV. If it does not, MY transcription diverged and nothing downstream of it means anything — this leg is the licence for every figure below
+  R2  his leg-E3 member list reproduces as a MEMBER LIST under my copy of his key
+  P1  the interpolation axis, BOTH directions: his §3 widening case PARSES under the placeholder model and does NOT parse under his deletion model, and a plain fixture with no interpolation parses under both — so the move is attributable to the axis (382/386)
+  P2  the prose body at `scripts/sweep-probes.mjs` is a fixture under HIS key (the control: the KP carries the property, 355) AND UNMODELLED under the parse. A plain fixture is a fixture under his key AND parses — so P2 is not vacuous on an always-UNMODELLED parse
+  P3  a syntactic fragment is UNMODELLED, not refuted — the stratum exists and is reachable
+  P4  the delimiter-escape axis, BOTH directions: a fixture carrying the escaped form of its own delimiter parses after decoding and does not before
+  P6  ADDED AFTER DRIVE 5, from its hand read, and recorded as added rather than backdated: the newline-escape axis, both directions. 8 of the 15 UNMODELLED bodies were real fixtures failing to parse because a slice carries `\n` as two characters — the code a fixture carries is the string VALUE, not its source text. The negative is a real message from the same nine rows, which must stay UNMODELLED
+  P5  `new Function(body)` — the shape §4 priced — FAILS CLOSED on module syntax and on a TS annotation, while the TS parse admits both. Driven, not asserted
+  M1  the stratification PARTITIONS his live rows: confirmed + unmodelled + refuted equals his live total, added up in the output rather than asserted (379)
+  M2  the second signal is MONOTONE by construction — it filters an existing fixture list, so no file can gain a fixture and the live set is a SUBSET of his. A violation is a defect in my code, not a finding (380/385: assert monotonicity where it is expected)
+  T1  list and contents come from ONE rev, compared with the live hybrid BY MEMBER LIST, and the rev is printed whether they agree or not (406 §3.1, his 407 §5)
+  S2  the self-exclusion seam REFUSES while this file is untracked — drive 1 red by construction, drive 2 grades the control (406 §5)
+
+TRUE   R1  his key transcribed verbatim reproduces his six published set counts and his 114 of 274 at HIS rev under HIS self-exclusion, and the self-included reading differs from it by exactly one MEMBER — his own file, in SET1-masked-safe
+       rev 771daaf4 · without-self 114 scanner(s) of 274 executable(s) · SET2a-live=25 SET2b-live=3 SET2a-cured=13 SET2b-cured=3 SET1-masked-safe=26 SET0-no-fixtures=44 · all six match his §2 · with-self delta by member list: [docs/research/round407-instruments/census-the-fixture-as-string-class.mjs → SET1-masked-safe]
+TRUE   R2  his leg-E3 member list reproduces under my copy of his key, as a member list
+       round398-instruments: SET1-masked-safe ✓ · round404-instruments: SET2a-live ✓ · round405-instruments: SET2b-cured ✓ · round406-instruments: SET1-masked-safe ✓
+TRUE   P1  his §3 widening case parses under the placeholder model and NOT under his deletion model, while a plain fixture parses under both — the move is attributable to the axis
+       interpolated fixture: placeholder=0 err, deletion=1 err · plain fixture: placeholder=0 err, deletion=0 err
+TRUE   P2  the prose body is a fixture under HIS key AND UNMODELLED under the parse, while a plain fixture is a fixture under his key AND parses — so this is a discrimination, not an always-UNMODELLED parse
+       prose (1173 chars, at offset 43729): his key=true parse=UNMODELLED · plain fixture: his key=true parse=PARSES
+TRUE   P3  a syntactic fragment lands UNMODELLED — the stratum exists and is reachable, and a fragment is NOT the same verdict as a refutation
+       fragment (a real fixture truncated at a call boundary): UNMODELLED · the untruncated form: PARSES
+TRUE   P4  a fixture carrying the escaped form of its own delimiter parses after unescaping and does not before — both directions
+       escaped-delimiter fixture: decoded=0 err, as-sliced=3 err
+TRUE   P6  a real multi-statement fixture carrying `\n` parses once the literal is DECODED and not as sliced, while a real message from the same hand read stays UNMODELLED under the decoder — the correction that moves bodies in is graded against the bodies it must leave
+       newline fixture (from probe-round295): decoded=0 err, as-sliced=2 err · message (from probe-import-large-session): his key=true, parse=UNMODELLED
+TRUE   P5  `new Function(body)` fails CLOSED on module syntax and on a TS annotation while the TS parse admits both, and it is not simply broken — it accepts a plain fixture
+       new Function: module=false tsAnnot=false plain=true · ts parse: module=PARSES tsAnnot=PARSES
+FALSE  T1  list and contents come from one rev, compared with the live hybrid by member list, rev printed either way
+       rev ba481c98a6ca12f707c11765193bb80066d32193 · worktree DIRTY (2 path(s)) · 276 at rev, 276 live · list delta +0/-0 · 1 differ in CONTENT [docs/research/round408-instruments/stratify-the-live-interval.mjs]
+TRUE   S2  the seam is gradeable only once this file is in its own population — it REFUSES while untracked rather than passing vacuously
+       SEAM GRADEABLE — docs/research/round408-instruments/stratify-the-live-interval.mjs is tracked and present at ba481c98; it is a member of the population it measures, which is where the author of this instrument belongs
+TRUE   M1  the three strata partition his live rows exactly — the total is added up, not asserted
+       24 CONFIRMED + 4 UNMODELLED + 0 REFUTED = 28 of 28 live row(s) (his 25 + 3 = 28) · parser refusals: 0
+TRUE   H1  the hand read covers exactly the rows the parse left undecided — the KEY grades the table, so a table that has gone stale against the population goes RED rather than printing beside a figure it no longer describes
+       4 row(s) hand-read, and they are exactly the key's UNMODELLED set · 0 judged FIXTURE, 4 NOT-A-FIXTURE
+TRUE   M2  the second signal is monotone by construction — no row gains a fixture under it
+       all 28 row(s): parses+unmodelled <= his fixture count
+
+GRADE: false  (12 of 13 legs true)
+GRADES NOT TRUE: T1
+REFUSING to print the stratification: a figure under a red grade is not a reading.
