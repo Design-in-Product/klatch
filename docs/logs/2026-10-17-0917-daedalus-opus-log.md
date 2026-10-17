@@ -243,3 +243,67 @@ not a measurement, and it is the single case where nothing ever teaches you othe
   memory before counting** — third figure this fire that memory supplied and a tool call corrected.
   `git diff --stat ce493a39..31901ca6 -- packages/` **empty**: nothing in the window can move the
   product gate.
+
+## 09:34 PT — mail sweep, all four writable cross-repo mailboxes
+
+`find` over the four granted paths for anything dated 10/16–17, then
+`grep -rliE 'klatch|daedalus' --include='*2026-10-1[4-7]*'` across all four. 14 hits, every one
+checked:
+
+- `mediajunkie/…/xian-via-janus-to-pard-propose-a-duty-cycle-for-cowork-chat-agents-wren-first-2026-10-15.md`
+  — one incidental line, *"the same parallel model fragments in Code, or makes the cycle invisible
+  to me in Klatch's implementation."* To Pard, about Cowork chat agents. Not an ask of this seat.
+- `designinproduct/…/calliope-to-janus-…-api-experiment-plan-needs-your-own-words-first-2026-10-14.md`
+  — Calliope's own lane; the API-experiment item is parked on xian's own framing by her choice, and
+  she says plainly nothing costly moves before that. No action here.
+- The other 12 are piper-morgan `cxo`/`lead`/`arch`/`web`/`ppm` promotion threads and a dispatch
+  inbox-clean signal — all internal to those projects, none addressed to Daedalus or Klatch.
+
+**Nothing owed from any cross-repo mailbox.** `git fetch origin main` → **0 new commits**, so no
+mail arrived mid-fire. `docs/mail/` holds one open thread for this seat: Theseus's Round 404, whose
+open items are *his* (the 6 inline sites, the `detachedAt` guard) — left visible on purpose.
+
+## 09:35 PT — Session Wrap Protocol
+
+**Step 1 — commits landed.** `git log origin/main --format='%h %an %s' -4`:
+
+```
+39ba8495 Daedalus (Klatch) coord+log+round405: the W8 self-exclusion seam, and the gate measured
+ca29fc8f Daedalus (Klatch) mail: round405 reply to Theseus — the pin population is 91, not 5; close the 402 thread
+31901ca6 Daedalus (Klatch) round405: census the pin population — 91 literal-sha pins, not 5, and all 91 resolve
+9b49cd20 Daedalus (Klatch) log: 10/17 START fire open — round404 read, round405 axis is the pin population
+```
+
+**Step 2 — every deliverable present.** Checked against the **tree on `origin/main`**, not against
+the claim (`git ls-tree -r --name-only origin/main -- …`):
+
+```
+docs/logs/2026-10-17-0917-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-…-the-pin-population-is-91-not-5-and-your-five-are-a-confirmed-subset-2026-10-17.md
+docs/mail/read/theseus-to-daedalus-…-the-15-is-4-defects-and-11-that-never-needed-curing-…-2026-10-16.md
+docs/research/round405-instruments/README.md
+docs/research/round405-instruments/census-the-pin-population.mjs
+docs/research/round405-instruments/census.json
+```
+
+All six present. The `read/` path confirms the 402 close landed as a rename, not a copy.
+
+**Step 3 — this log pushed last.**
+
+### Fire close
+
+Bounded, per Klatch's recorded exception to the duty-cycle drain baseline: checklist done, the one
+thing it surfaced acted on in-fire, state written down, stop. Nothing is deferred without a named
+blocker; the two items not done are Theseus's own and he has claimed them.
+
+No port bound at close (the sweep's probes reap their own; 3001 was free before and nothing of mine
+bound it). No database opened. No model called. `.scratch/` holds five files, all gitignored, never
+staged.
+
+**Nothing needs xian.**
+
+Three figures this fire came out of memory and were corrected by a tool call before they shipped:
+the sweep verdict (fabricated while the sweep was at 11/43 — and *correct*, which is the worst
+case), the 272-file corpus (really 273, and chasing that one-file difference is what found the
+self-promotion defect), and the drain count ("8", really 13). The round's actual finding came from
+the same habit pointed at someone else's number.
