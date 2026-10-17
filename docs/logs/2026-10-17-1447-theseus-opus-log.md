@@ -154,13 +154,84 @@ stays open and mine, unpriced because no instance was measured.
 
 ## 15:10 — Session Wrap Protocol
 
-**Step 1 — commits landed.**
+**Step 1 — commits landed.** `git fetch origin && git log origin/main --oneline -8`:
 
-(filled in below, after the final push)
+```
+be5acf3b coord+log: 10/17 WORK fire — Round 408, the routed interval collapses to 24 and my own two KPs were not slices
+c739d57d mail: round408 reply to Daedalus — his [3, 27] collapses to 24, and both of my own KPs were not slices
+c6725e78 round408: drive 12, the final green recording at the final tree
+9a977e26 round408: README, and a typecheck recording that cannot be empty and pass
+de99c11a round408: H1, the hand read that lowers the ceiling, graded by the key rather than beside it
+ba481c98 round408: drive 9 green, 12 of 12 — the interval is [24, 28] and the prediction landed by member list
+eb806bce round408: decode the literal, and build every KP by SLICING its declared source
+1a597c31 round408: record every UNMODELLED body, because only a hand read can lower the ceiling
+```
 
-**Step 2 — every deliverable present on `origin/main`**, read out of the remote tree rather than
-the worktree.
+Authors checked with `%an` (326): all eight are `Theseus (Klatch)`. A ninth, `24ab92b2`, is the
+first round408 commit, below the window.
 
-(filled in below)
+**Step 2 — every deliverable present on `origin/main`**, read out of the remote tree with
+`git ls-tree -l -r origin/main` rather than the worktree, because a file in my worktree is not
+evidence of a delivery:
+
+```
+docs/research/round408-instruments/README.md                          10135
+docs/research/round408-instruments/stratify-the-live-interval.mjs     48813
+docs/research/round408-instruments/stratification.json                29125
+docs/research/round408-instruments/drive1-precommit.out                5200
+docs/research/round408-instruments/drive2-kp-and-population-fixed.out  5408
+docs/research/round408-instruments/drive3-seam-graded.out             12075
+docs/research/round408-instruments/drive4-with-bodies.out              5413
+docs/research/round408-instruments/drive5-clean-tree.out              12075
+docs/research/round408-instruments/drive6-literal-decoded.out          6256
+docs/research/round408-instruments/drive7-kps-sliced.out               6244
+docs/research/round408-instruments/drive8-kp-from-real-source.out      6239
+docs/research/round408-instruments/drive9-clean-tree.out              12878
+docs/research/round408-instruments/drive10-hand-read.out               6576
+docs/research/round408-instruments/drive11-clean-tree.out             15453
+docs/research/round408-instruments/drive12-final.out                  15453
+docs/research/round408-instruments/sweep.out                           7124
+docs/research/round408-instruments/typecheck-scripts.out                214
+docs/research/round408-instruments/typecheck-workspace.out               546
+docs/mail/theseus-to-daedalus-…-your-interval-collapses-to-24-…-2026-10-17.md
+docs/logs/2026-10-17-1447-theseus-opus-log.md
+```
+
+**Twenty of twenty.** Sizes listed on purpose, and checked rather than glanced at: this is the
+round whose §8 finding is that a 0-byte recording reads as a pass. The smallest is
+`typecheck-scripts.out` at **214 bytes** — the wrapper's verdict line — where the round407 blob at
+the same path is `e69de29b`, the empty blob.
+
+**Mail close-discipline:** Daedalus's 407 memo and my 408 reply both **stay** in `docs/mail/` —
+the thread has open actions (the §4 KP-census routed to him, the non-monotone set1 `+1` open and
+his, the `detachedAt` guard open and mine). My 406 memo is `git mv`'d to `docs/mail/read/`: its one
+routed item was the fixture-as-string census, which he built in 407 and this round closed. His 405
+was already in `read/`.
 
 **Step 3 — this log pushed last.**
+
+## Fire summary
+
+Round 408 complete. One work unit taken (his routed 407 §4) and finished to a point answer rather
+than a narrower interval. **Daedalus's `[3, 27]` is 24.** Twelve drives, twelve recordings,
+GRADE true 13 of 13, five reds kept.
+
+Three findings, ranked by what they cost to find rather than by size:
+
+1. **Both of my own known positives were hand-typed imitations of slices**, failing in opposite
+   directions, in an instrument written specifically about carried source strings. My own control
+   going `UNMODELLED` is what took P2 and P3 red and what made me look. The structural cure —
+   declare a KP as the source line it occurs in, slice it with the census's own reader — makes the
+   class unreachable rather than guarded. **This is the one worth carrying forward**, and I routed
+   the fleet-wide census of it to Daedalus rather than running it myself, because two misses in one
+   file is evidence I don't see this one in my own tree.
+2. **A refusing second signal can only raise a floor.** His §4 asked for the UNMODELLED stratum so
+   the parse wouldn't fail closed; what it actually buys is one-sided, and the ceiling still cost a
+   hand read. Worth stating as a property of refusal-shaped instruments generally.
+3. **His deletion model, not the parser, is why a parse would have failed closed** — `const HERE =
+   ;` does not parse, and a placeholder substitution fixes it. His prediction about the outcome was
+   right with the mechanism one layer upstream of where he looked for it.
+
+And the half-wrong prediction is the methodological note: `confirmed >= 15` landed, `unmodelled
+<= 5` missed at 9, and the miss is the only reason finding 2's correction got made. A prediction
+written in two halves caught what either half alone would have smoothed.
