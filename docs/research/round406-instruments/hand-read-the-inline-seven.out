@@ -1,0 +1,47 @@
+PASS [K0] the key below is Round 404’s own key, lifted from its source rather than retyped
+        a reproduction under a paraphrased key measures the paraphrase (328) — got [true,true], want [true,true]
+PASS [K1a] live tree under 404’s own key — site count
+        published as 6 — got 7, want 7
+PASS [K1b] live tree under 404’s own key — file count
+        published as 3 — got 4, want 4
+PASS [K2a] single-rev tree at 7e788af7 does NOT reproduce the published figure
+        the published 6/3 is not any single rev — see K2a2 — got [7,4], want [7,4]
+PASS [K2a2] the HYBRID reading reproduces the published figure exactly: file LIST at the index rev, file CONTENTS at the worktree rev
+        `git ls-files` lists the INDEX and `readFileSync` reads the WORKING TREE, and at drive time those were different trees — got [6,3], want [6,3]
+PASS [K2a3] the extra member at the single rev is round393’s PRE-CURE sibling, by member list
+        names the cause of the +1 rather than attributing it — got ["docs/research/round393-instruments/counterfactuals-for-the-p2-detector.mjs:12"], want ["docs/research/round393-instruments/counterfactuals-for-the-p2-detector.mjs:12"]
+PASS [K2b] the one arrival is Round 404’s OWN instrument, by member list
+        a count of +1 is consistent with an unrelated site landing in another file — got ["docs/research/round404-instruments/grade-the-three-cures.mjs:132"], want ["docs/research/round404-instruments/grade-the-three-cures.mjs:132"]
+PASS [K2c] nothing departed between the two trees
+        otherwise the +1 is a net of two unrelated moves — got [], want []
+PASS [K2d] the arrival’s file was UNTRACKED at 7e788af7 and added by 34dd362e
+        the mechanism is promotion into its own `git ls-files` population (377), not an edit — got [true,true], want [true,true]
+FAIL [K2e] CONTROL — the self-exclusion seam is load-bearing: this file is tracked, in the corpus, and carries the shape
+        SEAM NOT YET GRADEABLE — this file is UNTRACKED, so it is not in its own `git ls-files` population and the control cannot be driven in either direction. Commit, then re-drive. This refusal is the point (377). — got [false,false,false], want [true,true,true]
+PASS [K2f] CONTROL — the arrival is a fixture STRING, not a live call
+        a live call at :132 would make this a cure to write, not a key defect — got true, want true
+PASS [K3a] live tree under the comment+string-blanked reading — site count
+        the key’s 7 minus 2 comment bodies and 3 fixture strings — got 2, want 2
+PASS [K3b] live tree under the blanked reading — file count
+         — got 2, want 2
+PASS [K3c] the 2 survivors are the two CODE sites, by member list (340)
+        a count of 2 is consistent with the wrong 2 surviving — got ["docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs:168","scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts:448"], want ["docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs:168","scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts:448"]
+PASS [K4:COMMENT (line)] known positive, one axis
+        raw key sees it / blanked reading sees it — got [1,0], want [1,0]
+PASS [K4:COMMENT (block)] known positive, one axis
+        raw key sees it / blanked reading sees it — got [1,0], want [1,0]
+PASS [K4:STRING (double)] known positive, one axis
+        raw key sees it / blanked reading sees it — got [1,0], want [1,0]
+PASS [K4:STRING (template)] known positive, one axis
+        raw key sees it / blanked reading sees it — got [1,0], want [1,0]
+PASS [K4:CODE (must survive)] known positive, one axis
+        raw key sees it / blanked reading sees it — got [1,1], want [1,1]
+PASS [K5a] CONTROL — the widening reaches a parenthesised receiver that 404’s key cannot
+        narrow key blind / widened key sees it — otherwise K5b measures the same thing twice — got [0,1], want [0,1]
+PASS [K5b] CONTROL — the widening is a superset of the narrow key over the blanked corpus
+        checked by member list below — got true, want true
+PASS [K5c] every narrow-key code site is also found by the widening
+        a widening that LOSES a member is a re-key, not a widening (381/385) — got [], want []
+
+GRADE: false
+REFUSED: 1 leg(s) false. No figure prints below a false leg (356).
