@@ -266,6 +266,44 @@ for (const [p, src] of corpusAt(null, true)) wide.push(...widened(stripSource(sr
 const notSuperset = blanked.filter((h) => !wide.includes(h));
 check('K5c', 'every narrow-key code site is also found by the widening', notSuperset, [], 'a widening that LOSES a member is a re-key, not a widening (381/385)');
 
+// ── K6 — the hand reading, machine-corroborated ──────────────────────────────────────────────
+// A 4-member population's hand reading is primary, and the detector's job is to GRADE it rather
+// than to replace it. Each verdict below is checked against the property that assigns it, not
+// against my having typed it.
+//
+// K6a/K6b — the two sites K5 added, which 404's key could not reach. Their refusal value is
+// DRIVEN, not reasoned about: `(w.indexOf(x) + 1 || w.length + 1) - 1` maps a refusing -1 onto
+// `w.length`, which is non-negative, in range, and the RIGHT answer (no next `\nconst ` inside
+// the 800-char window means the window runs to its end). NONNEG, by construction and not accident.
+const R395 = 'docs/research/round395-instruments/grade-the-refusal-that-deletes-the-verdict.mjs';
+const r395src = readFileSync(join(REPO, R395), 'utf8');
+const R395_EXPR = "const cut = w.slice(0, (w.indexOf('\\nconst ') + 1 || w.length + 1) - 1);";
+check('K6a', `the two sites K5 added are this exact expression, twice, in ${R395.split('/').pop()}`, r395src.split('\n').filter((l) => l.trim() === R395_EXPR).length, 2, 'the hand reading below is of a line I verified is there, not of one I remembered');
+{
+  const absent = 'abc def';
+  const present = 'abc\nconst x';
+  const cut = (w) => w.slice(0, (w.indexOf('\nconst ') + 1 || w.length + 1) - 1);
+  check('K6b', 'NONNEG, DRIVEN — on refusal the window is the whole of `w`, not a slice to -1', [cut(absent) === absent, cut(absent).length === absent.length], [true, true], 'the modelled refusal value is `w.length`: non-negative, in range, and correct');
+  check('K6c', 'CONTROL — the same expression is not the identity when the needle IS present', cut(present), 'abc', 'otherwise K6b is green against an expression that does nothing');
+}
+
+// K6d — FROZEN for round394:168. The property is that the finder's haystack is an immutable blob:
+// `chainsOf` has exactly ONE call site in the file and its argument is bound to a `show(<pin>, …)`.
+const R394 = 'docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs';
+const r394src = readFileSync(join(REPO, R394), 'utf8');
+check('K6d', 'FROZEN — `chainsOf` has one call site and its haystack is a pinned blob', [
+  (r394src.match(/\bchainsOf\(/g) || []).length, // 1 definition-adjacent arrow + 1 call = 2 occurrences of `chainsOf(`
+  /const myChains = chainsOf\(my392AtPin\);/.test(r394src),
+  /const my392AtPin = show\(MY_392_PIN_PRE_CURE, MY_392_PATH\);/.test(r394src),
+  /const MY_392_PIN_PRE_CURE = '[0-9a-f]{8}';/.test(r394src),
+], [2, true, true, true], 'an immutable haystack is not a guard that could be got wrong — there is no live input to refuse (round402’s precedence: FROZEN outranks everything)');
+
+// K6e — PRECOND for probe-round303:448. The property is that the guard tests the SAME needle in
+// the SAME receiver as the finder, on the same line, so the refusal branch is unreachable.
+const R303 = 'scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts';
+const r303line = readFileSync(join(REPO, R303), 'utf8').split('\n')[447];
+check('K6e', 'PRECOND — the ternary guards the same needle in the same receiver as the finder', r303line.trim(), "const dir = f.includes('/') ? f.slice(0, f.lastIndexOf('/')) : '';", 'a ternary on a DIFFERENT receiver or needle would not make the refusal unreachable, and the label would be wrong');
+
 // ── verdict ──────────────────────────────────────────────────────────────────────────────────
 console.log(`\nGRADE: ${failed === 0}`);
 if (failed !== 0) {
@@ -278,10 +316,12 @@ meas('F2', 'the same key, read comment- and string-blind', `${blanked.length} si
 meas('F3', 'the receiver-agnostic widening over the blanked corpus', `${wide.length} site(s) in ${files(wide).length} file(s): ${wide.join(', ')}`);
 meas('F4', 'what the widening adds over 404\u2019s key', `${wide.filter((h) => !blanked.includes(h)).length} site(s): ${wide.filter((h) => !blanked.includes(h)).join(', ') || '\u2014'}`);
 meas('HAND', 'the read my 404 \u00a74 routed to itself', [
-  '  round394\u2026:168                 CODE   \u2192 FROZEN   `chainsOf(my392AtPin)`, haystack is show(\'c848dc66\', MY_392_PATH); one call site in the file',
-  '  probe-round303\u2026mts:448        CODE   \u2192 PRECOND  `f.includes(\'/\') ? f.slice(0, f.lastIndexOf(\'/\')) : \'\'` \u2014 ternary on the SAME needle in the SAME receiver',
+  '  round394\u2026:168                 CODE   \u2192 FROZEN   `chainsOf(my392AtPin)`, haystack is show(\'c848dc66\', MY_392_PATH); one call site in the file [K6d]',
+  '  probe-round303\u2026mts:448        CODE   \u2192 PRECOND  `f.includes(\'/\') ? f.slice(0, f.lastIndexOf(\'/\')) : \'\'` \u2014 ternary on the SAME needle in the SAME receiver [K6e]',
+  '  round395\u2026:161, :211           CODE   \u2192 NONNEG   UNREACHABLE TO 404\u2019S KEY \u2014 parenthesised receiver (394/395). `(w.indexOf(x) + 1 || w.length + 1) - 1` maps the refusal onto `w.length`: driven, not reasoned [K6a\u2013K6c]',
   '  round398\u2026:18, :303            \u2014      \u2192 NOT A SITE (comment prose, both describing this very defect)',
   '  round398\u2026:323 (KP_C), :329 (KP_D)    \u2192 NOT A SITE (fixture strings; KP_D is itself a fixture OF a comment)',
   `  ${R404_INSTRUMENT}:132  \u2192 NOT A SITE (fixture string; and the 377 self-inclusion above)`,
-  '  REALs: 0. The CLASS is real \u2014 round394:168 is a genuine inline window call the census\u2019s key cannot see \u2014 and its live membership carries no defect today.',
+  '  REALs: 0 of 4 code sites. The CLASS is real \u2014 round394:168 is a genuine inline window call the census\u2019s key cannot see \u2014 and its live membership carries no defect today.',
+  '  And the published 6 was wrong in BOTH directions at once: 5 phantoms IN (comments and fixture strings) and 2 real code sites OUT (round395\u2019s parenthesised receiver). A key that inflates and deflates together returns a plausible number (328).',
 ].join('\n        '));

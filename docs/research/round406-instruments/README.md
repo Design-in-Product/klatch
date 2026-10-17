@@ -13,20 +13,23 @@ as **6 sites in 3 files, unread by eye** and routed to my own next fire.
 
 ## The three results
 
-**1. The hand reading (the planned work).** Of the sites the key returns, **two are code** and both
-are benign; **five are not code at all**.
+**1. The hand reading (the planned work).** Of the sites the key returns, **two are code** and
+**five are not code at all**. A third and fourth code site exist that the key *cannot reach* —
+see §4. All four are benign, each verdict machine-corroborated at `K6a`–`K6e`.
 
 | site | kind | verdict |
 |---|---|---|
-| `round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs:168` | code | **FROZEN** — `const body = rest.slice(0, rest.indexOf('\n);'));` inside `chainsOf(src)`, whose single call site in the file is `chainsOf(my392AtPin)` with `my392AtPin = show('c848dc66', MY_392_PATH)`. The haystack is an immutable blob at a pinned sha; there is no live input to refuse. |
-| `scripts/probe-round303-…mts:448` | code | **PRECOND** — `const dir = f.includes('/') ? f.slice(0, f.lastIndexOf('/')) : '';`. The guard is a ternary rather than an exit, and it tests the **same needle in the same receiver** as the finder, so the refusal branch is unreachable. |
+| `round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs:168` | code | **FROZEN** [K6d] — `const body = rest.slice(0, rest.indexOf('\n);'));` inside `chainsOf(src)`, whose single call site in the file is `chainsOf(my392AtPin)` with `my392AtPin = show('c848dc66', MY_392_PATH)`. The haystack is an immutable blob at a pinned sha; there is no live input to refuse. |
+| `scripts/probe-round303-…mts:448` | code | **PRECOND** [K6e] — `const dir = f.includes('/') ? f.slice(0, f.lastIndexOf('/')) : '';`. The guard is a ternary rather than an exit, and it tests the **same needle in the same receiver** as the finder, so the refusal branch is unreachable. |
+| `round395-instruments/grade-the-refusal-that-deletes-the-verdict.mjs:161, :211` | code, **unreachable to 404's key** | **NONNEG** [K6a–K6c] — `const cut = w.slice(0, (w.indexOf('\nconst ') + 1 || w.length + 1) - 1);`. The refusal value was **driven, not reasoned about**: `-1` maps onto `w.length`, so the window becomes the whole of `w` — non-negative, in range, and the right answer. |
 | `round398-instruments/census-slice-from-a-refusable-index.mjs:18, :303` | comment prose | **NOT A SITE** |
 | `round398-instruments/census-slice-from-a-refusable-index.mjs:323` (`KP_C`), `:329` (`KP_D`) | fixture strings | **NOT A SITE** |
 | `round404-instruments/grade-the-three-cures.mjs:132` | fixture string | **NOT A SITE** — and §3 below |
 
-**REALs: 0.** The *class* my 404 §4 named is still real — `round394:168` is a genuine inline window
-call that the census's `const <name> =` key cannot see — but its live membership carries no defect
-today. Verdict vocabulary is round402's (`hand-read-the-unguarded.mjs:56-77`), same precedence.
+**REALs: 0 of 4 code sites.** The *class* my 404 §4 named is still real — `round394:168` is a
+genuine inline window call that the census's `const <name> =` key cannot see — but its live
+membership carries no defect today. Verdict vocabulary is round402's
+(`hand-read-the-unguarded.mjs:56-77`), same precedence.
 
 **2. The key was neither comment-blind nor string-blind.** Four of the five non-sites live in
 `round398-instruments/census-slice-from-a-refusable-index.mjs` — a file whose `KP_D` and `KP_F`
@@ -81,14 +84,38 @@ The instrument is therefore **designed to be undriveable-to-green on its first p
 "remember to re-drive after committing" from a discipline into a gate, which is the only form of
 this lesson that has survived three rounds of both of us having it and not applying it.
 
-Both drives are kept in the recording, pre-commit (`GRADE: false`, 1 leg) and post-commit
-(`GRADE: true`), with the rev of each in the header.
+Two recordings are kept: pre-commit (`hand-read-the-inline-seven.out`, `GRADE: false`, K2e only)
+and post-commit (`hand-read-the-inline-seven.postcommit.out`, `GRADE: true`).
+
+**There were four drives and only two recordings.** Each drive was redirected to the same filename,
+so the first drive — the one whose three red legs produced the hybrid-reading finding — was
+overwritten and survives only in `docs/logs/2026-10-17-1047-theseus-opus-log.md` and the Round 406
+memo. Said here rather than left to a reader to notice, since §3.1's whole point is that a
+recording which does not state what it read is worth less than it looks. A later instrument should
+number its drives rather than reuse one path.
+
+## 4. The published 6 was wrong in both directions at once
+
+`K5` widens the key's receiver — 404's demands `[A-Za-z0-9_$.]+\.` immediately before the finder,
+so a parenthesised or wrapped receiver is unreachable to it (394, and 395 where I took that same
+lesson in the *matcher* and left it in the *selector*). Paren-matched over the blanked reading, a
+superset of the narrow key by construction and checked as one (K5c):
+
+```
+404's key, blanked:  2 site(s) in 2 file(s)
+widened, blanked:    4 site(s) in 3 file(s)
+added:               round395…:161, round395…:211   ← parenthesised receiver
+```
+
+So the published **6** carried **5 phantoms in** (comment prose and fixture strings) and left
+**2 real code sites out**. A key that inflates and deflates at the same time returns a figure with
+nothing obviously wrong with it (328) — 6 against a true code population of 4 reads as close
+enough to be unexamined, and it was.
 
 ## Limits, stated rather than smoothed
 
-- **One spelling, still.** `K5` widens the receiver (404's key demands a dotted identifier and so
-  cannot reach `(w.indexOf(…) + 1 || …)` or a wrapped receiver — 394/395), paren-matched over the
-  blanked reading. It is a *superset* check (K5c), not a general census of inline window calls.
+- **One spelling, still.** `K5` is a widening of the *receiver* axis only. It is not a general
+  census of inline window calls, and it is not claimed as one.
 - **`stripSource` is trusted, not re-graded here.** Its own arms live in the server suite
   (`round259-…`); this instrument asserts only length-preservation per file, which is the property
   the offset map depends on.
