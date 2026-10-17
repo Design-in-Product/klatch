@@ -298,8 +298,29 @@ g('W3', 'the commented pin and the prose-fence pin are both INVISIBLE',
   !kpRevs.includes('deadbeef') && !kpRevs.includes('cafef00d'),
   `revs seen: ${kpRevs.join(', ')}`);
 
-// ─── the live census ───────────────────────────────────────────────────────────────────────────
-const FILES = git(['ls-files', 'docs/research', 'scripts']).split('\n').filter((f) => EXEC.test(f));
+// ─── the live census, and the seam this file opens in its own population ───────────────────────
+/**
+ * THE SELF-EXCLUSION, declared as a seam rather than applied quietly (380).
+ *
+ * This instrument reds on its own promotion, and the mechanism is Round 377's exactly: `git
+ * ls-files` lists TRACKED files, so while this file was untracked it was not in its own population
+ * and the first drive measured 91 at a 272-file corpus. The commit that published it made the
+ * corpus 273 — and `KP_SRC` is a STRING ARRAY, so under the strings-kept reading its nine fixture
+ * lines are indistinguishable from live corpus pins. Two of them are `deadbeef` and `cafef00d`,
+ * chosen to be impossible. Driven at HEAD immediately after the commit: 96 sites, 42 distinct
+ * revs, and **W6 FALSE — 2 unreachable rev(s), 1 missing blob** — my own known positives, now
+ * permanently red.
+ *
+ * The seam is `import.meta.url`, not the string `round405`: a name-match would be the fragile
+ * spelling, and it would not catch the next instrument that embeds fixtures the same way. The
+ * exclusion is GRADED IN BOTH DIRECTIONS by W8 below — excluding it must restore the pre-commit
+ * member list, and including it must put the impossible shas back — so this is a control, not a
+ * filter that makes a leg true by construction (380/381: a conjunct a filter makes true cannot be
+ * re-keyed red).
+ */
+const SELF = fileURLToPath(import.meta.url).slice(REPO.length).replace(/^\/+/, '');
+const TRACKED = git(['ls-files', 'docs/research', 'scripts']).split('\n').filter((f) => EXEC.test(f));
+const FILES = TRACKED.filter((f) => f !== SELF);
 const SITES = census(FILES);
 const BY = {};
 for (const s of SITES) (BY[classify(s)] ??= []).push(s);
@@ -318,6 +339,24 @@ g('W4', "Theseus's 5 FROZEN revs are all present in my census",
 g('W5', 'the derived blob-pin population is larger than the handed-down 5',
   LIT.length > 5,
   `${LIT.length} literal-sha pin site(s) in ${new Set(LIT.map((s) => s.path)).size} file(s)`);
+
+// ─── leg W8: the self-exclusion, graded in BOTH directions ─────────────────────────────────────
+// Expected, written before this drove: excluding SELF restores 91 sites / 40 revs; including it
+// gives 96 / 42 and puts `deadbeef` and `cafef00d` into the population. If the "with" leg does NOT
+// carry the impossible shas, the exclusion is cosmetic and W6's green is a filter artefact.
+const WITH_SELF = census(TRACKED);
+const litOf = (xs) => xs.filter((s) => classify(s) === 'LITERAL-SHA');
+const revsOf = (xs) => new Set(litOf(xs).map((s) => s.rev.rev.replace(/[~^]\d*$/g, '')));
+const withRevs = revsOf(WITH_SELF);
+const selfOnly = [...withRevs].filter((r) => !revsOf(SITES).has(r));
+g('W8', 'the self-exclusion is exactly this one file, and INCLUDING it puts the impossible '
+      + 'fixture shas back into the population',
+  TRACKED.length - FILES.length === 1
+  && selfOnly.includes('deadbeef') && selfOnly.includes('cafef00d')
+  && litOf(WITH_SELF).length > litOf(SITES).length,
+  `excluded ${TRACKED.length - FILES.length} file (${SELF}) · with-self `
+  + `${litOf(WITH_SELF).length} site(s)/${withRevs.size} rev(s) · without-self `
+  + `${litOf(SITES).length}/${revsOf(SITES).size} · self contributes rev(s) [${selfOnly.join(', ')}]`);
 
 // ─── leg R: the reachability question, over the derived population ─────────────────────────────
 const reachable = (rev) => spawnSync('git', ['cat-file', '-e', `${rev}^{commit}`],

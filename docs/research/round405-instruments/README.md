@@ -17,8 +17,8 @@ counts** (340).
 ## The instrument
 
 `census-the-pin-population.mjs` — not a probe, no conclusion line, nothing to sweep. It gates:
-every leg must come back `true` or **no figure prints**, and the first drive exercised that (W1 was
-FALSE and the strata never printed).
+every leg must come back `true` or **no figure prints**, and two separate drives exercised that (W1
+false on the first, W6 false after the commit — strata never printed in either).
 
 Selector, over `git ls-files docs/research scripts` filtered to executables (**272 files**), comment
 bodies blanked by `scripts/lib/strip-source.mjs` with strings KEPT — a pin's rev and path *are*
@@ -56,6 +56,37 @@ reported UNMODELLED rather than assumed — the rev is checked, the `rev:path` p
 
 **W7 drives the refusal** rather than reasoning about it: a planted `ffffffff…` sha in the known
 positives is reported UNREACHABLE at 3 sites, so W6's zero is a reading and not a tautology.
+
+## The instrument red on its own promotion, and that is the second finding
+
+The first drive measured **91 at a 272-file corpus** — while this file was still **untracked**.
+`git ls-files` lists tracked files only, so the instrument was not in its own population. The commit
+that published it made the corpus **273**, and `KP_SRC` is a **string array**: under the strings-kept
+reading its nine fixture lines are indistinguishable from live corpus pins, and two of them —
+`deadbeef`, `cafef00d` — were chosen to be impossible. Driven at HEAD immediately after the commit:
+
+```
+96 literal-sha site(s) · 42 distinct rev(s) · W6 FALSE — 2 unreachable rev(s), 1 missing blob
+```
+
+My own known positives, permanently red. This is **Round 377's mechanism exactly** — a figure that
+reddens the moment its own entry joins the population, because the tool drives a candidate before
+that candidate exists in the list it measures.
+
+The cure is a **declared seam** (380) keyed on `import.meta.url`, not on the string `round405`: a
+name-match is the fragile spelling and would not catch the next instrument that embeds fixtures the
+same way. And it is **graded in both directions** by W8, so it is a control rather than a filter
+that makes a leg true by construction (380/381 — a conjunct a filter makes true cannot be re-keyed
+red):
+
+```
+W8  excluded 1 file (…/census-the-pin-population.mjs)
+    with-self 96 site(s)/42 rev(s) · without-self 91/40 · self contributes rev(s) [deadbeef, cafef00d]
+```
+
+If the *with-self* leg ever stops carrying the impossible shas, the exclusion has gone cosmetic and
+W6's green is an artefact. The headline 91 is the same number as the first drive and is now stable
+under promotion — which is the only reason it can be published.
 
 ## UNMODELLED is a limit of mine, not a defect of theirs
 

@@ -81,6 +81,12 @@
       "detail": "91 literal-sha pin site(s) in 35 file(s)"
     },
     {
+      "leg": "W8",
+      "claim": "the self-exclusion is exactly this one file, and INCLUDING it puts the impossible fixture shas back into the population",
+      "ok": true,
+      "detail": "excluded 1 file (docs/research/round405-instruments/census-the-pin-population.mjs) · with-self 96 site(s)/42 rev(s) · without-self 91/40 · self contributes rev(s) [deadbeef, cafef00d]"
+    },
+    {
       "leg": "W6",
       "claim": "every literal-sha pin resolves at HEAD: rev reachable and, where the path is literal, blob present",
       "ok": true,
@@ -96,7 +102,7 @@
       "leg": "W7c",
       "claim": "the scratch directory was removed on every exit path",
       "ok": true,
-      "detail": "/var/folders/jl/g34tk0xx7nj20xbjvyq6bskc0000gn/T/d405-fZ5Aer"
+      "detail": "/var/folders/jl/g34tk0xx7nj20xbjvyq6bskc0000gn/T/d405-jwbvTv"
     }
   ],
   "strata": {
