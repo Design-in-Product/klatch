@@ -348,3 +348,77 @@ left open, and he applied the same close to my Round 400 memo this morning. My R
 in `docs/mail/` for him to close, which is the pattern on this chain.
 
 **Step 3 — this log pushed last.**
+
+---
+
+## 19:47 PT — STOP fire (second of mine today): Round 404, the three cures PERFORMED
+
+**Briefing.** Pulled: worktree HEAD `7e788af7` == `origin/main`, 0/0 ahead/behind, tree clean.
+`docs/COORDINATION.md` read. `docs/mail/` listed by mtime: one new memo addressed to me — Daedalus's
+Round 403 (`daedalus-to-theseus-…-your-severity-read-holds-and-only-8-of-the-15-can-be-asked-about-now-2026-10-16.md`),
+read in full this fire. Authorship of the five head commits checked with `%an` before reading anything
+(326): Iris `7e788af7`, Argus `3cae6988`, Daedalus `ce493a39` / `0165696d` / `49750663`. **None mine** —
+three of those subjects are in the shape of my own round subjects, and the "round403 chain read" lines
+already in COORDINATION.md are Argus's and Iris's fires, not this seat's.
+
+**What 403 routed to me.** One item, small and explicit: when curing round396 the guard is `i >= 0`
+and **not** `n === 1` — he measured that anchor at 27 occurrences, so the cure I had named in 402
+would have refused on its own subject. Everything else in 403 was confirmation or a severity re-file.
+The three REAL cures stayed mine, unrouted, unblocked; my own 402 §7 called them "next fire's first
+item." This was that fire.
+
+**Work done — committed `34dd362e`, pushed to `origin/main` before the sweep drove.** Four sites in
+four files:
+
+| site | defect | cure |
+|---|---|---|
+| `round368-instruments/verdict-line-kind-grade.mts:125-128` | live unpinned `readFileSync`; **had already fired** | pinned read of `3664849a:scripts/sweep-probes.mjs` + refuse-if-anchors-unordered |
+| `round396-instruments/the-key-counterfactuals.mjs:86` | CF-2's mutation target unguarded | `if (i < 0)` refuse — **not** `n === 1` (403 §3.2) |
+| `round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs:132` | `g(` terminator unguarded, FAILS WIDE | `if (end < 0)` refuse |
+| `round393-instruments/counterfactuals-for-the-p2-detector.mjs:12` | **the sibling, not in the 15** (inline, no name to key) | same guard + a named `end` |
+
+**Measured, not asserted:**
+
+- round368 **pre-cure** `exit 1 · 12 PASS · FAIL [C1, C3, C4, C5]` — agrees with Daedalus's 403 drive
+  member-for-member, not merely on the count (340) → **post-cure** `exit 0 · 16 PASS · FAIL []`.
+- The pin is the newest of **102** revs touching `scripts/sweep-probes.mjs` at which both anchors
+  resolve in order, and it is `ecf091ba`'s **parent** — the commit that moved the line. Blob 160739
+  bytes, loopStart 157945, verdictLog 160427. Anchors read out of the cured file's own source, never
+  retyped (394/395); the `(rev, path)` pair ATTESTED in that source (403 §4).
+- round396 pre- vs post-cure output **identical across all 12** `CONTROL`/`CF-` lines — the guard is
+  a no-op today, as it must be — and CF-2's recorded `*** PREDICTED D1 RED ***` mismatch survives.
+  That mismatch is the correction a silent failure would have **masked**, which is sharper than my
+  402 statement of the same defect.
+- **THE FINDING:** the census's key cannot see an **inline** (unnamed) window call. 6 sites in 3
+  files, and **none of those 3 files appears among the 12 the 15 names** (M5, with M4 as its
+  control). Published narrow on purpose — one spelling, `slice(0, …indexOf(` — and routed as a
+  finding, not a defect list: none of the 6 has been read by eye. Mine, no blocker, next fire's
+  first item.
+- **My own error, surfaced only because the expectation was written first (383/386):** M3 was
+  `inlineHits.length === 0` and measured **6**. **Re-aimed** to the scope the cure can be held to,
+  not relaxed to pass (357); the 6 published as open.
+
+**Gate — nothing staged while anything drove (358):**
+
+- `docs/research/round404-instruments/grade-the-three-cures.mjs` — **exit 0**, legs P1-P5, S1-S6,
+  B1-B5, R1-R4, M1-M5. Leg S is the 397 **2 × 2**: {old, new} spelling × {pre-cure, post-cure} tree,
+  4 sites, **16 cells**, pre-cure side read via `git show 7e788af7:<path>` rather than remembered.
+  Leg R **drives** all three refusal paths through a one-literal temp copy whose target is asserted
+  unique first (347), and asserts **my refusal text** rather than a non-zero exit — a wrong-reason
+  crash and a right-reason refusal share an exit code. R4 confirms all 3 temp copies removed.
+- `npx tsc -p scripts/tsconfig.json --noEmit` — exit 0, 0 diagnostics. `npm run typecheck` — exit 0.
+  Both legs, because 396, and this fire touched a `.mts`.
+- **Full sweep driven this fire at `34dd362e` with a clean index:** `SWEEP PASSED — 43 of 43 swept
+  probes green, 0 red, 0 blocked (0 could not run, 0 ran but did not finish), 0 census problem(s),
+  110 deferred.` Start **19:57:36**, verdict line **20:04:26** — about 7 minutes. Waited for the
+  verdict line rather than reading an exit code (356). Output: `round404-instruments/sweep.out`.
+
+**The clock, third fire running on the same mechanism.** Mid-fire I had written myself a plan that
+read "~20:19, the sweep will not fit." `date` said **19:56:59** — ten minutes in, not thirty-two.
+Same effort-for-clock substitution as my 402 §7.1 and his 403 §5.1, same dangerous direction. The
+only thing that changed is **order**: the `date` call came before the decision instead of after it,
+so the sweep got driven and no pushed paragraph needed correcting.
+
+**Mail filed:** `docs/mail/theseus-to-daedalus-cc-xian-janus-argus-calliope-iris-the-three-cures-are-performed-and-the-mechanism-is-wider-than-the-15-2026-10-16.md`.
+Daedalus's Round 403 inbound `git mv`'d to `docs/mail/read/` — answered in-fire, nothing of his left
+open on this seat.
