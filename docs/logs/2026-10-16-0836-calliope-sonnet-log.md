@@ -66,3 +66,30 @@ All four writable cross-repo mailboxes checked fresh by `find -newer` against th
 Task list of record: blog-series drafting remains the one standing item, held on its named blocker (angle/sequencing talk with xian not yet had); today's `log.html` entry is due at STOP, not this fire.
 
 **Drain:** mail checked (own-seat header grep + mail-diff-since-checkpoint + all four cross-repo mailboxes, grepped directly); gate re-derived fresh and green; rollup/backfill re-checked, nothing moved. Two consecutive checks found nothing further unblocked. Fire closed bounded.
+
+## STOP fire, ~21:30 PT
+
+`git fetch origin main`: worktree already synced, HEAD matches `origin/main`, clean tree.
+
+`git log 96db8b7d..HEAD --format='%h %an %s'` (own 15:4x SWEEP-fire checkpoint) = 9 new commits, none mine: Daedalus's Round 403 chain (`db011dbd`, `49750663`, `0165696d`, `ce493a39` — the live census over all 15 unguarded rows, only 8 admitting a live claim at all; the sweep driven and the §5 deferral struck), Argus's own STOP-fire no-op (`3cae6988`), Iris's own STOP-fire no-op (`7e788af7`), and Theseus's Round 404 chain (`34dd362e`, `649fbca0`, `570cb434` — the three real cures performed, including a repair of round368's own check that had quietly stopped working, plus a newly-found six-site blind spot in the census's own pattern-matching, flagged open rather than folded into "done"). `git diff --stat 96db8b7d..HEAD -- packages/` empty — today's six rounds (399–404) stayed under `scripts/`/`docs/`/mail.
+
+**Mail:** `grep -li "^to:.*calliope" docs/mail/*.md` (excluding `read/`) returns nothing. Theseus's Round 404 memo (`649fbca0`) ccs this seat among others — read directly, ends with the cures performed and the new blind spot named as "mine, no blocker, next fire's first item," nothing asked of this seat.
+
+All four writable cross-repo mailboxes checked fresh by `find -newer` against this afternoon's SWEEP-fire log entry: `designinproduct/docs/mail` zero new files; `mediajunkie/docs/mail` one new file (`tessera-to-pard-second-cut-done-2115-0319-row-is-void-2026-10-16.md`) grepped directly for `klatch|calliope` — zero hits, an unrelated internal row-void note; `piper-morgan-product/mailboxes` 130 new files (excluding `MANIFEST.md`) grepped directly — zero hits; `dispatch/mail` zero new files. Nothing owed from any.
+
+**Rollup checked directly:** still v167, needs-you unchanged at 4, none of today's round-track work touches any of the four items. Backfill unchanged (`ls -la backups/`, Aug 4 17:11 mtime, two backup files).
+
+**Gate re-verified fresh, not carried from any round's quoted figures:**
+- `npm run typecheck` — 0 `error TS` lines across all four workspaces.
+- `npm test -w packages/server` (unpiped) — **140 files / 2179 passed / 1 skipped (2180)**.
+- `npm test -w packages/client` (unpiped) — **26 passed | 13 skipped (39) files / 333 passed | 13 skipped (346) tests**.
+- `node scripts/sweep-probes.mjs --census` — **153 probe files, 43 swept / 110 deferred, CENSUS OK**.
+- `node scripts/sweep-probes.mjs` (full drive) — **SWEEP PASSED, 43 of 43 swept probes green, 0 red, 0 blocked, 0 census problems, 110 deferred**.
+
+All five figures match every round's quoted figures today.
+
+**The day's mandatory logbook entry:** read the six round-mail memos (Rounds 399–404: Daedalus's census-blind-spot fix and self-corrections; Theseus's file-vs-position guard re-scope and false-alarm catch; Daedalus's branch-polarity measurement and his own "the sweep did finish" arithmetic correction; Theseus's hand-read of the 15 down to 4 real defects and 11 already-safe, one of the 4 having silently broken; Daedalus's live census narrowing to 8 of 15; Theseus's three cures performed plus the new six-site blind spot) in full, translated to plain-language narrative without house jargon, written to `log.html` (`ENTRY: 2026-10-16`, inserted ahead of 10-15). `docs/operations/duty-cycle/calliope-tasks.md` recurring-items row advanced: `next_due` 10-16 → 10-17, `last_completed` 10-15 → 10-16, logged as landing on time.
+
+`docs/STATE.md` not refreshed — today's six rounds were test-infrastructure hardening on the adversarial sweep-probes round track, no product/roadmap change, same reasoning applied on every prior research-track-only day.
+
+**Drain:** mail checked (own-seat header grep + mail-diff-since-checkpoint + all four cross-repo mailboxes, each grepped directly); gate re-derived fresh and green across typecheck, both full test suites, census, and the full sweep drive; the mandatory logbook entry written on time rather than left for a future lapse; task-list row advanced; rollup/STATE.md/backfill all re-checked, nothing moved. Two consecutive checks found nothing further unblocked. Fire closed bounded — STOP obligations met, needs-you unchanged at 4.

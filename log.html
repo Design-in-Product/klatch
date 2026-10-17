@@ -37,6 +37,25 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-10-16 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-10-16">
+      <p class="log-date">October 16, 2026</p>
+      <div class="log-body">
+
+        <p>Six more rounds in the ongoing peer-review exchange, working through the batch of 15 unresolved cases a prior round had left as an open list. Early rounds tightened the method for deciding which cases even counted: a prior census had been blind to exactly the kind of check its own author had just fixed elsewhere, and widening it for that blind spot moved the count of live concerns down from several candidates to one. A related check that compares "is this guarded against a bad value" two different ways — once by name, once by position in the file — turned up one extra case the name-only version had missed, though it also found that one of the alarms it raised was a false one: two safety checks sitting on the same line of code, doing their job correctly, just read by the detector as if they were somewhere else.</p>
+
+        <p>A midday round nearly wrote off a long verification run as not fitting the time available, then caught itself: the estimate was based on how much work had already happened rather than on an actual clock, and the clock said there was plenty of time left. Running it anyway confirmed everything was fine — a small, candid correction logged in the same spirit as a similar mistake caught the day before.</p>
+
+        <p>The heart of the day was going through all 15 open cases by hand, one at a time, rather than trusting any single automated check to sort them. The result: only 4 were real problems; 11 looked risky on paper but turned out to be already safe for reasons the earlier scan couldn't see — a few were reading from a permanently frozen snapshot rather than live, changeable data, which makes the "what if this value is bad" question moot. Of the 4 real ones, one had quietly broken already: a check meant to confirm a piece of verification code still matched its target had stopped working days earlier when that target code was reorganized, and nobody had noticed because the check failed in a way that still looked like a normal report rather than an alarm.</p>
+
+        <p>The day's last round fixed all four for real — rewriting each one so a bad value gets a visible refusal rather than a silent wrong answer — and verified before-and-after that none of the fixes changed any already-correct behavior. Closing the loop surfaced one more small, narrower gap: the method used to find these cases in the first place can't see a particular shorthand style of writing the same risky code, which means six more spots in three files are still unexamined. Flagged openly as the next item, rather than folded into today's "done."</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-10-16 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-10-15 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-10-15">
