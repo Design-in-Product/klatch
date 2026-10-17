@@ -48,3 +48,21 @@ All four writable cross-repo mailboxes checked fresh by `find -newer` against th
 Task list of record: blog-series drafting remains the one standing item, held on its named blocker (angle/sequencing talk with xian not yet had); today's `log.html` entry is due at STOP, not this fire.
 
 **Drain:** mail checked (own-seat header grep + mail-diff-since-checkpoint + all four cross-repo mailboxes, grepped directly); the one item addressed to this seat read, found to need no reply, and closed to `read/`; gate re-derived fresh and green; rollup/backfill re-checked, nothing moved. Two consecutive checks found nothing further unblocked. Fire closed bounded.
+
+## SWEEP fire, ~15:4x PT
+
+`git pull --ff-only origin main`: already up to date, clean tree.
+
+`git log 9f052cf3..HEAD --format='%h %an %s'` (own 12:34 MID-fire checkpoint) = 8 new commits, none mine: Daedalus's Round 401 chain (`196141f7`, `858bc4ef`, `84a496aa` — the branch-polarity axis measured at 0, then a correction that the Round 401 sweep did finish at 43/43 after a bad-arithmetic write-off), Argus's own WORK-fire no-op (`3f01ceeb`), and Theseus's Round 402 chain (`438a32c0`, `2c2e84a7`, `476e5bd6`, `855db399` — the unguarded 15 hand-read as 4 defects, 11 that never needed curing, one of the 4 already fired). `git diff --stat 9f052cf3..HEAD -- packages/` empty — round-track work stayed under `scripts/`/mail/log.
+
+**Mail:** `grep -li "^to:.*calliope" docs/mail/*.md` (excluding `read/`) returns nothing — no open thread addressed to this seat. Theseus's Round 402 memo to Daedalus (`438a32c0`) ccs this seat among others; read directly, ends with the 4-defects/11-clean finding routed to Daedalus, nothing asked of this seat.
+
+All four writable cross-repo mailboxes checked fresh by `find -newer` against this fire's own MID-checkpoint log and grepped directly for `klatch|calliope`: `designinproduct` (19 new files — Themis/Janus/Pard/exec/CIO traffic on a site-form-401 incident, a Coral build-43 thread, and a rollup-block question) zero hits; `mediajunkie` (9 new files — Pard/CIO/Tessera/Janus/Cairn traffic on a pulled build-10 crash and a freeze-detect wrapper change) zero hits; `piper-morgan-product/mailboxes` (329 new files excluding `MANIFEST.md`) zero hits; `dispatch/mail` zero new files. Nothing owed from any.
+
+**Rollup checked directly:** still v167, needs-you unchanged at 4, none of today's round-track commits touch any of the four items. Backfill unchanged (`ls -la backups/`, Aug 4 17:11 mtime).
+
+**Gate re-verified fresh:** `npm run typecheck` — 0 `error TS` lines across all four workspaces; `node scripts/sweep-probes.mjs --census` — **153 probe files, 43 swept/110 deferred, CENSUS OK** — byte-identical to every checkpoint today.
+
+Task list of record: blog-series drafting remains the one standing item, held on its named blocker (angle/sequencing talk with xian not yet had); today's `log.html` entry is due at STOP, not this fire.
+
+**Drain:** mail checked (own-seat header grep + mail-diff-since-checkpoint + all four cross-repo mailboxes, grepped directly); gate re-derived fresh and green; rollup/backfill re-checked, nothing moved. Two consecutive checks found nothing further unblocked. Fire closed bounded.
