@@ -1,15 +1,15 @@
 {
   "comparableKey": "sets — path → set name. Compare THIS. No line numbers appear anywhere in this file, so a pure comment shift in another instrument cannot stale it (371).",
-  "rev": "ce482c3ad5742eaf4367694c2a96d32633b88658",
+  "rev": "771daaf480b8937cc7c02d3aecf5aed4d6e01d21",
   "worktreeClean": false,
   "readDiscipline": "list AND contents both from `git ls-tree`/`git show` at rev — a single tree, not the `ls-files` + `readFileSync` hybrid this class is built on (406 §3.1)",
   "counts": {
-    "SET2a-live": 39,
-    "SET2b-live": 4,
-    "SET2a-cured": 24,
+    "SET2a-live": 25,
+    "SET2b-live": 3,
+    "SET2a-cured": 13,
     "SET2b-cured": 3,
-    "SET1-masked-safe": 25,
-    "SET0-no-fixtures": 19
+    "SET1-masked-safe": 26,
+    "SET0-no-fixtures": 44
   },
   "sets": {
     "SET2a-live": [
@@ -17,26 +17,13 @@
       "docs/research/round380-instruments/drive-b1m-history-clause-population.mjs",
       "docs/research/round380-instruments/grade-b1-under-rekeys.mjs",
       "docs/research/round380-instruments/measure-b1-legs.mjs",
-      "docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs",
       "docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs",
-      "docs/research/round393-instruments/my-independent-key-for-his-q4-census.mjs",
       "docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs",
       "docs/research/round395-instruments/grade-the-refusal-that-deletes-the-verdict.mjs",
-      "docs/research/round397-instruments/record-drives.mjs",
       "docs/research/round402-instruments/hand-read-the-unguarded.mjs",
       "docs/research/round404-instruments/grade-the-three-cures.mjs",
-      "scripts/backfill-entity-bindings.mts",
-      "scripts/probe-browse-cold-figure-gap.mts",
-      "scripts/probe-browse-endpoint-second-corpus.mts",
       "scripts/probe-browse-endpoint-vs-channel-count.mts",
-      "scripts/probe-browse-latency-end-to-end.mts",
-      "scripts/probe-fingerprint-cache-endpoint.mts",
       "scripts/probe-import-large-session.mts",
-      "scripts/probe-multi-root-browse.mts",
-      "scripts/probe-parse-encoding-confound.mts",
-      "scripts/probe-pm-corpus-cap-delta.mts",
-      "scripts/probe-round162-preamble-drop-and-roster-live.mts",
-      "scripts/probe-round178-backfill-operator-error-paths.mts",
       "scripts/probe-round198-a-way-back-has-tables-in-it-and-the-sidecar-is-not-the-database.mts",
       "scripts/probe-round227-arm-o-on-a-corpus-where-the-cap-fires.mts",
       "scripts/probe-round231-the-handler-and-the-signal-are-in-different-processes.mts",
@@ -50,40 +37,27 @@
       "scripts/probe-round289-the-deferred-breakdown-is-derived-and-the-sidecar-signature-is-not-evidence-of-no-write.mts",
       "scripts/probe-round295-the-promotion-path-reaches-one-of-the-twenty-nine-and-the-refusals-are-its-own-fixtures.mts",
       "scripts/probe-round296-the-net-split-is-priced-at-zero-and-literal-only-cannot-tell-a-corpus-from-an-argv.mts",
-      "scripts/probe-scan-cost-model-control.mts",
       "scripts/probe-turncount-live-http.mts"
     ],
     "SET2b-live": [
       "docs/research/round378-instruments/census-named-source-bindings.mjs",
-      "docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs",
       "scripts/probe-round224-a-skip-must-not-summarise-as-a-pass.mts",
       "scripts/sweep-probes.mjs"
     ],
     "SET2a-cured": [
-      "scripts/probe-round176-backfill-cli-end-to-end.mts",
-      "scripts/probe-round183-undo-record-against-the-database-it-is-aimed-at.mts",
-      "scripts/probe-round185-what-the-undo-classifier-knows-a-run-by.mts",
-      "scripts/probe-round189-the-restore-wording-on-a-minted-channel.mts",
-      "scripts/probe-round205-the-plan-and-the-apply-pick-opposite-ends-of-a-duplicated-name.mts",
-      "scripts/probe-round207-the-import-confirms-a-name-and-the-name-is-not-unique.mts",
-      "scripts/probe-round223-twenty-one-probes-against-a-stranger.mts",
       "scripts/probe-round225-a-citation-is-not-a-call.mts",
       "scripts/probe-round246-the-sweep-repaired-and-the-emit-spelling-was-the-bigger-blind-spot.mts",
       "scripts/probe-round250-the-drive-was-never-priced-and-the-port-is-one-line-of-product.mts",
       "scripts/probe-round252-the-db-class-is-unblocked-by-a-variable-the-product-already-reads.mts",
       "scripts/probe-round254-the-mutate-class-is-an-unanchored-conjunction-and-most-of-it-never-writes-the-product.mts",
       "scripts/probe-round263-an-emptiness-claim-over-a-shared-window-is-not-strict-it-is-blind.mts",
-      "scripts/probe-round281-a-probe-that-only-runs-where-it-was-written-and-how-big-that-class-actually-is.mts",
       "scripts/probe-round299-admission-is-per-file-and-the-repair-that-missed-its-own-motivating-case.mts",
-      "scripts/probe-round300-the-screen-has-a-third-state-and-the-site-my-own-arm-named-is-in-it.mts",
       "scripts/probe-round301-the-limbs-partition-by-construction-and-the-price-landed-in-the-instrument-that-priced-it.mts",
       "scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts",
       "scripts/probe-round304-the-deferral-was-repaired-with-a-declaration-and-both-repair-shapes-redden-the-arm-that-pinned-it.mts",
       "scripts/probe-round307-the-return-half-is-gradeable-the-parameter-half-is-any-and-the-arity-check-covers-fourteen-of-eighteen.mts",
       "scripts/probe-round308-the-general-arm-pointer-detector-reports-thirteen-findings-all-thirteen-false-and-the-narrow-one-is-green-on-package-json.mts",
-      "scripts/probe-round309-the-drop-one-reach-census-over-reported-three-where-the-population-is-one-because-a-predicate-does-not-carry-its-corpus.mts",
-      "scripts/probe-round327-the-pin-purpose-label-is-a-property-of-the-edge-and-retirability-is-a-property-of-the-target-line.mts",
-      "scripts/probe-round328-the-distinct-target-line-figure-is-keyed-on-the-pin-text-so-one-line-pinned-in-two-spellings-reads-as-two.mts"
+      "scripts/probe-round327-the-pin-purpose-label-is-a-property-of-the-edge-and-retirability-is-a-property-of-the-target-line.mts"
     ],
     "SET2b-cured": [
       "docs/research/round405-instruments/census-the-pin-population.mjs",
@@ -102,6 +76,7 @@
       "docs/research/round400-instruments/regrade-the-file-scoped-guard.mjs",
       "docs/research/round401-instruments/census-the-branch-polarity-axis.mjs",
       "docs/research/round406-instruments/hand-read-the-inline-seven.mjs",
+      "scripts/probe-round255-the-comment-shadow-census.mts",
       "scripts/probe-round256-an-emptiness-assertion-grades-the-operator-and-a-sole-blocker-ranking-cannot-see-a-coupled-class.mts",
       "scripts/probe-round257-the-scanner-had-no-model-of-interpolation.mts",
       "scripts/probe-round258-three-readers-are-two-questions-and-the-shared-one-is-already-in-lib.mts",
@@ -120,20 +95,45 @@
     "SET0-no-fixtures": [
       "docs/research/round365-instruments/grade-a1b.mjs",
       "docs/research/round378-instruments/drive-374-a2-degenerate-spelling.mjs",
+      "docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs",
+      "docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs",
+      "docs/research/round393-instruments/my-independent-key-for-his-q4-census.mjs",
+      "docs/research/round397-instruments/record-drives.mjs",
+      "scripts/backfill-entity-bindings.mts",
       "scripts/lib/characterisation-markers.mjs",
       "scripts/lib/db-sentinel.mts",
       "scripts/lib/skipped-shape-census.mts",
       "scripts/lib/tree-fingerprint.mts",
       "scripts/measure-marker-floor.mjs",
+      "scripts/probe-browse-cold-figure-gap.mts",
+      "scripts/probe-browse-endpoint-second-corpus.mts",
+      "scripts/probe-browse-latency-end-to-end.mts",
+      "scripts/probe-fingerprint-cache-endpoint.mts",
       "scripts/probe-import-sites.mjs",
+      "scripts/probe-multi-root-browse.mts",
+      "scripts/probe-parse-encoding-confound.mts",
       "scripts/probe-parse-stage-allocation.mts",
+      "scripts/probe-pm-corpus-cap-delta.mts",
+      "scripts/probe-round162-preamble-drop-and-roster-live.mts",
+      "scripts/probe-round176-backfill-cli-end-to-end.mts",
+      "scripts/probe-round178-backfill-operator-error-paths.mts",
       "scripts/probe-round179-backfill-flag-spellings-and-undo-errors.mts",
       "scripts/probe-round181-unrecognised-flags-and-undo-record-validation.mts",
       "scripts/probe-round182-backfill-every-argv-token-is-read.mts",
+      "scripts/probe-round183-undo-record-against-the-database-it-is-aimed-at.mts",
+      "scripts/probe-round185-what-the-undo-classifier-knows-a-run-by.mts",
       "scripts/probe-round187-the-binding-rule-at-the-inputs-it-was-argued-from.mts",
+      "scripts/probe-round189-the-restore-wording-on-a-minted-channel.mts",
+      "scripts/probe-round205-the-plan-and-the-apply-pick-opposite-ends-of-a-duplicated-name.mts",
+      "scripts/probe-round207-the-import-confirms-a-name-and-the-name-is-not-unique.mts",
+      "scripts/probe-round223-twenty-one-probes-against-a-stranger.mts",
       "scripts/probe-round245-the-shared-lib-coverage-floor.mts",
-      "scripts/probe-round255-the-comment-shadow-census.mts",
+      "scripts/probe-round281-a-probe-that-only-runs-where-it-was-written-and-how-big-that-class-actually-is.mts",
+      "scripts/probe-round300-the-screen-has-a-third-state-and-the-site-my-own-arm-named-is-in-it.mts",
+      "scripts/probe-round309-the-drop-one-reach-census-over-reported-three-where-the-population-is-one-because-a-predicate-does-not-carry-its-corpus.mts",
+      "scripts/probe-round328-the-distinct-target-line-figure-is-keyed-on-the-pin-text-so-one-line-pinned-in-two-spellings-reads-as-two.mts",
       "scripts/probe-round329-the-cure-deletes-the-edge-its-own-pricing-arms-index-into-so-the-one-shot-mechanism-is-a-vanished-subject-and-not-a-double-anchor.mts",
+      "scripts/probe-scan-cost-model-control.mts",
       "scripts/probe-scan-latency-vs-cap.mts",
       "scripts/promote-probes.mts",
       "scripts/refresh-import-fixtures.mjs"
@@ -165,14 +165,20 @@
     "path": "docs/research/round407-instruments/census-the-fixture-as-string-class.mjs",
     "set": "SET1-masked-safe",
     "discipline": "BOTH",
-    "fixtures": 15
+    "fixtures": 16
   },
   "grades": [
     {
       "leg": "E1",
       "claim": "every known positive classifies as written, one axis apart",
       "ok": true,
-      "detail": "7 KPs: RAW=SET2a-live MASKED=SET1-masked-safe KEPT=SET2b-live SELFEX=SET2a-cured NOFIX=SET0-no-fixtures NOTSCAN=null COMMENTED=SET0-no-fixtures"
+      "detail": "9 KPs: RAW=SET2a-live MASKED=SET1-masked-safe KEPT=SET2b-live SELFEX=SET2a-cured NOFIX=SET0-no-fixtures NOTSCAN=null COMMENTED=SET0-no-fixtures MSGTPL=SET0-no-fixtures TPLFIX=SET2a-live"
+    },
+    {
+      "leg": "F2",
+      "claim": "a message template with code in its interpolation is NOT a fixture, AND a real fixture carried as a template WITH an interpolation still is",
+      "ok": true,
+      "detail": "message template: 0 fixture(s) (scanner=true) · interpolated fixture: 1 fixture(s) (scanner=true)"
     },
     {
       "leg": "E2",
@@ -190,13 +196,13 @@
       "leg": "T1",
       "claim": "the single-rev reading and the live hybrid reading are compared BY MEMBER LIST, and the rev each read is printed whether they agree or not",
       "ok": true,
-      "detail": "rev ce482c3ad5742eaf4367694c2a96d32633b88658 · worktree DIRTY (1 path(s)) · 275 file(s) at rev, 275 live · list delta +0/-0 · 0 file(s) differ in CONTENT between index-list and worktree-contents"
+      "detail": "rev 771daaf480b8937cc7c02d3aecf5aed4d6e01d21 · worktree DIRTY (1 path(s)) · 275 file(s) at rev, 275 live · list delta +0/-0 · 0 file(s) differ in CONTENT between index-list and worktree-contents"
     },
     {
       "leg": "S2",
       "claim": "the self-exclusion seam is gradeable AND grades in both directions",
       "ok": true,
-      "detail": "self tracked at ce482c3ad5742eaf4367694c2a96d32633b88658 · with-self 275 file(s), without-self 274 · this file reads as SET1-masked-safe with 15 fixture string(s) of its own"
+      "detail": "self tracked at 771daaf480b8937cc7c02d3aecf5aed4d6e01d21 · with-self 275 file(s), without-self 274 · this file reads as SET1-masked-safe with 16 fixture string(s) of its own"
     },
     {
       "leg": "E3",
@@ -208,13 +214,13 @@
       "leg": "E4",
       "claim": "the live class is larger than the four members named in prose",
       "ok": true,
-      "detail": "114 scanner(s) of 274 executable(s) · set1 25 · set2 70 · set0 19"
+      "detail": "114 scanner(s) of 274 executable(s) · set1 26 · set2 44 · set0 44"
     },
     {
       "leg": "E5",
       "claim": "STRINGS-KEPT (set 2b) is non-empty and a PROPER subset of set 2 — otherwise the three-set refinement collapses to the two Theseus named",
       "ok": true,
-      "detail": "set2b 7 of set2 70 (2a: 63)"
+      "detail": "set2b 6 of set2 44 (2a: 38)"
     }
   ]
 }

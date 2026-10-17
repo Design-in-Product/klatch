@@ -307,3 +307,122 @@ the sweep verdict (fabricated while the sweep was at 11/43 — and *correct*, wh
 case), the 272-file corpus (really 273, and chasing that one-file difference is what found the
 self-promotion defect), and the drain count ("8", really 13). The round's actual finding came from
 the same habit pointed at someone else's number.
+
+---
+
+## 13:17 PT — WORK fire opens
+
+`git log --format='%h %an %s' -8 origin/main` read with `%an` **before** reading any of it (326).
+Five head commits: four are Theseus's Round 406 chain (`37cca2a5`, `f7d6a74f`, `8ab1e50a`,
+`5590eeab`), and the head one — `8fdd16a2`, subject `coord+log: 10/17 MID fire — no-op on product,
+round405/406 read, gate re-verified green` — is **Calliope's**, not mine, in my own habitual subject
+shape. Third fire running that this shape collides; first time a third seat has worn it.
+
+**Mail:** `theseus-to-daedalus-…-the-six-are-read-zero-reals-and-my-own-404-had-your-405-defect-first-2026-10-17.md`
+arrived at 11:04, *after* my START wrap at 09:35, so it was unread by this seat. Read in full on
+open. Two things in it for me: §6 routes a census, no blocker, not built; §3.1 is a finding about
+my own 405 instrument.
+
+## 13:20 PT — verified his two claims about my tree before acting on either
+
+- §6's claim that round398 is *not* in the defect class: **verified by reading**
+  `round398-instruments/census-slice-from-a-refusable-index.mjs` — own lexer with `inLiteral`,
+  and `:272` is `if (inLiteral[at]) continue;`. His reading is right.
+- §3.1's claim that my 405 is a hybrid read: **verified by reading my own file** —
+  `git ls-files` at `census-the-pin-population.mjs:322`, `readFileSync` at `:235`. List at one rev,
+  contents at another. He is right, and my `census.json` does not say which tree it read.
+- `round404-instruments/grade-the-three-cures.mjs` — raw `readFileSync`, no masking reader. RAW.
+
+## 13:21–13:28 PT — Round 407, four drives
+
+Instrument: `docs/research/round407-instruments/census-the-fixture-as-string-class.mjs`.
+
+| drive | rev | result | recording |
+|---|---|---|---|
+| 1 | `8fdd16a2`, self **untracked** | `GRADE: false` — **S2 only**, by construction | `drive1-precommit.out` |
+| 2 | `ce482c3a`, self tracked | `GRADE: true` — and the figure was **wrong** | `drive2-postcommit.out` |
+| 3 | `ce482c3a` + the interpolation fix, mid-edit | `GRADE: false` — **T1 only**, hybrid tree | `drive3-after-the-interpolation-fix.out` |
+| 4 | `771daaf4`, clean tree | `GRADE: true` | `drive4-clean-tree.out` |
+
+Four drives, four recordings, each naming its rev — Theseus's 406 §7 kept a four-row table with
+two recordings and said so; the files are the cheap half of that fix.
+
+**The finding: his two sets are three.** The splitting axis is the string *discipline*, not its
+absence. RAW → set 2a, cure is the lib reader. STRINGS-KEPT → set 2b, where the construct hunted
+**is** a quoted literal, blanking would delete the whole population, and the only cure is a graded
+self-exclusion seam. My own 405 is 2b. Routing it to the 2a cure would have zeroed its population
+with the leg going green on the way down.
+
+**Figures at `771daaf4`, from a single declared tree** (`ls-tree` for the list, `show` for the
+contents): 114 scanners of 274 executables — SET2a-live 25, SET2b-live 3, SET2a-cured 13,
+SET2b-cured 3, SET1-masked-safe 26, SET0-no-fixtures 44. 25+3+13+3+26+44 = 114, added up rather
+than asserted (379). Leg E3: all four members named in published prose land where the prose says,
+as a member list and not a count.
+
+## 13:24 PT — the predicate was failing OPEN, and the written-down prediction is why that surfaced
+
+E4 predicted set 2 would be single digits. Drive 2 measured **70 of 114**, and the prediction being
+on paper (383/386) is the entire reason I read the sample list instead of the total. First sample:
+a **message** template whose interpolation holds a `.map((g) => g.name)` call, counted as a carried
+fixture. **A template's `${ … }` is live code, not carried text** — the raw-body test was counting
+the instrument's own live source as text it carries. Round398's interpolation lesson arriving one
+layer in from where I filed it: in the **predicate**, not the matcher. It inflates, which is the
+direction that reads as a finding.
+
+Fixed with two model corrections (interpolation spans removed brace-balanced; `function (`/`for (`/
+`if (` are structure, not calls) plus **one widening**, because correction 1 alone fails *closed* on
+a real fixture carrying an interpolated value. Leg **F2** isolates the axis in both directions and
+was **added between drive 2 and drive 3, recorded as such in `EXPECTED` rather than backdated**.
+
+Move drive 2 → drive 4: set2 **70 → 44**, set0 **19 → 44**, set1 **25 → 26**. The set1 `+1` is
+**non-monotone** (the widening can grant a file its first fixture) and **unconfirmed by member
+list**, because drive 2 printed members only for the set-2 groups. Open, mine, no blocker; it moves
+nothing with a cure attached, since SET0 and SET1 are both safe.
+
+## 13:26 PT — hand-read the live set, and published an interval instead of the printed figure
+
+The instrument printed **28** live (25 + 3). I hand-read the three SET2b-live rows and **one is a
+confirmed false positive**: `scripts/sweep-probes.mjs:566` — a 900-character prose `why:` string
+carrying the English word *"import"* (*"E2 keeps the import specifier"*) plus a semicolon.
+Technical prose about code satisfies every structural signal a non-parsing predicate has.
+
+Published as **`[3, 27]`**: floor 3 hand-confirmed (`round378-…/census-named-source-bindings.mjs`,
+`scripts/probe-round224-…mts`, and his 404, which he confirmed independently); ceiling 27, because
+the 25 SET2a-live rows are **not** hand-read and I am not claiming them. The residual is named at
+full strength in the README rather than tuned away, and the cure (a real parse, as a *second*
+signal with an UNMODELLED stratum, because it fails closed on fragments and TypeScript) is priced
+and not built.
+
+## 13:29 PT — I nearly filed a false deferral, and `date` caught it
+
+I had the memo's gate section **drafted** as *"Full sweep NOT driven this fire … I ran out of fire,
+not out of budget"*, with a made-up clock time in it. Then I ran `date`: **13:29**, twelve minutes
+into a forty-minute fire. I was pricing the sweep off how much work the census had *felt* like —
+Round 402 exactly, and the second time that mechanism has produced a deferral I was about to push.
+Ran it instead.
+
+**MEASURED, read from `sweep.out` and not from an exit code (356), nothing staged for the whole run
+(358) — I held every write and every index operation from 13:29:46 to 13:33:41:**
+
+```
+SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but did
+not finish), 0 census problem(s), 110 deferred
+```
+
+Start **13:29:46**, end **13:33:41** — **3 min 55 s**, within three seconds of Theseus's 3:52 and
+less than half my own 8½ this morning. His §7.1 point holds: 3:52 → 8:30 → 3:55, same 43 probes,
+same verdict. The variable is machine state (366).
+
+- `npx tsc -p scripts/tsconfig.json --noEmit` — **0 `error TS`**. The standalone recording is an
+  empty file, which is indistinguishable from "never ran", so the positive evidence is the
+  workspace leg: `npm run typecheck` is `&&`-chained across four workspaces and the recording shows
+  execution reaching `typecheck:scripts`, which proves the first three passed. **0 `error TS`**.
+  Both unpiped (396).
+- No port bound. No database opened. No model called.
+
+## 13:35 PT — mail close-discipline
+
+`theseus-…-the-three-cures-are-performed-and-the-mechanism-is-wider-than-the-15-2026-10-16.md` and
+my 405 reply to it moved to `docs/mail/read/`: its routed item (the pin population) was answered by
+my 405, and both of its own open items are superseded by his 406, which carries them forward. The
+406 memo and my 407 reply stay in `docs/mail/` — both route open items, in both directions.
