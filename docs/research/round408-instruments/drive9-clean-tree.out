@@ -1,0 +1,107 @@
+EXPECTED, on paper before this drove:
+  R1  his key, transcribed verbatim, reproduces his six published set counts and his 114-of-274 AT HIS REV. If it does not, MY transcription diverged and nothing downstream of it means anything — this leg is the licence for every figure below
+  R2  his leg-E3 member list reproduces as a MEMBER LIST under my copy of his key
+  P1  the interpolation axis, BOTH directions: his §3 widening case PARSES under the placeholder model and does NOT parse under his deletion model, and a plain fixture with no interpolation parses under both — so the move is attributable to the axis (382/386)
+  P2  the prose body at `scripts/sweep-probes.mjs` is a fixture under HIS key (the control: the KP carries the property, 355) AND UNMODELLED under the parse. A plain fixture is a fixture under his key AND parses — so P2 is not vacuous on an always-UNMODELLED parse
+  P3  a syntactic fragment is UNMODELLED, not refuted — the stratum exists and is reachable
+  P4  the delimiter-escape axis, BOTH directions: a fixture carrying the escaped form of its own delimiter parses after decoding and does not before
+  P6  ADDED AFTER DRIVE 5, from its hand read, and recorded as added rather than backdated: the newline-escape axis, both directions. 8 of the 15 UNMODELLED bodies were real fixtures failing to parse because a slice carries `\n` as two characters — the code a fixture carries is the string VALUE, not its source text. The negative is a real message from the same nine rows, which must stay UNMODELLED
+  P5  `new Function(body)` — the shape §4 priced — FAILS CLOSED on module syntax and on a TS annotation, while the TS parse admits both. Driven, not asserted
+  M1  the stratification PARTITIONS his live rows: confirmed + unmodelled + refuted equals his live total, added up in the output rather than asserted (379)
+  M2  the second signal is MONOTONE by construction — it filters an existing fixture list, so no file can gain a fixture and the live set is a SUBSET of his. A violation is a defect in my code, not a finding (380/385: assert monotonicity where it is expected)
+  T1  list and contents come from ONE rev, compared with the live hybrid BY MEMBER LIST, and the rev is printed whether they agree or not (406 §3.1, his 407 §5)
+  S2  the self-exclusion seam REFUSES while this file is untracked — drive 1 red by construction, drive 2 grades the control (406 §5)
+
+TRUE   R1  his key transcribed verbatim reproduces his six published set counts and his 114 of 274 at HIS rev under HIS self-exclusion, and the self-included reading differs from it by exactly one MEMBER — his own file, in SET1-masked-safe
+       rev 771daaf4 · without-self 114 scanner(s) of 274 executable(s) · SET2a-live=25 SET2b-live=3 SET2a-cured=13 SET2b-cured=3 SET1-masked-safe=26 SET0-no-fixtures=44 · all six match his §2 · with-self delta by member list: [docs/research/round407-instruments/census-the-fixture-as-string-class.mjs → SET1-masked-safe]
+TRUE   R2  his leg-E3 member list reproduces under my copy of his key, as a member list
+       round398-instruments: SET1-masked-safe ✓ · round404-instruments: SET2a-live ✓ · round405-instruments: SET2b-cured ✓ · round406-instruments: SET1-masked-safe ✓
+TRUE   P1  his §3 widening case parses under the placeholder model and NOT under his deletion model, while a plain fixture parses under both — the move is attributable to the axis
+       interpolated fixture: placeholder=0 err, deletion=1 err · plain fixture: placeholder=0 err, deletion=0 err
+TRUE   P2  the prose body is a fixture under HIS key AND UNMODELLED under the parse, while a plain fixture is a fixture under his key AND parses — so this is a discrimination, not an always-UNMODELLED parse
+       prose (1173 chars, at offset 43729): his key=true parse=UNMODELLED · plain fixture: his key=true parse=PARSES
+TRUE   P3  a syntactic fragment lands UNMODELLED — the stratum exists and is reachable, and a fragment is NOT the same verdict as a refutation
+       fragment (a real fixture truncated at a call boundary): UNMODELLED · the untruncated form: PARSES
+TRUE   P4  a fixture carrying the escaped form of its own delimiter parses after unescaping and does not before — both directions
+       escaped-delimiter fixture: decoded=0 err, as-sliced=3 err
+TRUE   P6  a real multi-statement fixture carrying `\n` parses once the literal is DECODED and not as sliced, while a real message from the same hand read stays UNMODELLED under the decoder — the correction that moves bodies in is graded against the bodies it must leave
+       newline fixture (from probe-round295): decoded=0 err, as-sliced=2 err · message (from probe-import-large-session): his key=true, parse=UNMODELLED
+TRUE   P5  `new Function(body)` fails CLOSED on module syntax and on a TS annotation while the TS parse admits both, and it is not simply broken — it accepts a plain fixture
+       new Function: module=false tsAnnot=false plain=true · ts parse: module=PARSES tsAnnot=PARSES
+TRUE   T1  list and contents come from one rev, compared with the live hybrid by member list, rev printed either way
+       rev eb806bcee90060fc986aef3955b8b894a83ea8fa · worktree DIRTY (1 path(s)) · 276 at rev, 276 live · list delta +0/-0 · 0 differ in CONTENT
+TRUE   S2  the seam is gradeable only once this file is in its own population — it REFUSES while untracked rather than passing vacuously
+       SEAM GRADEABLE — docs/research/round408-instruments/stratify-the-live-interval.mjs is tracked and present at eb806bce; it is a member of the population it measures, which is where the author of this instrument belongs
+TRUE   M1  the three strata partition his live rows exactly — the total is added up, not asserted
+       24 CONFIRMED + 4 UNMODELLED + 0 REFUTED = 28 of 28 live row(s) (his 25 + 3 = 28) · parser refusals: 0
+TRUE   M2  the second signal is monotone by construction — no row gains a fixture under it
+       all 28 row(s): parses+unmodelled <= his fixture count
+
+GRADE: true  (12 of 12 legs true)
+
+── the live interval, stratified at 771daaf4 ─────────────────────────────────────
+his published interval: [3, 27]  (floor hand-confirmed, ceiling not claimed)
+measured here:          [24, 28]
+
+  CONFIRMED    24  at least one fixture body PARSES
+  UNMODELLED    4  has bodies, none parse — undecided, not refuted
+  REFUTED       0  no body survives the second signal; leaves the class
+
+  CONFIRMED   SET2b-live  his=  5 parses=  5 unmod=  0  docs/research/round378-instruments/census-named-source-bindings.mjs
+              PARSES @2484 (88c): const r225 = stripSource(readFileSync(join(REPO, 'scripts', '${P
+  CONFIRMED   SET2a-live  his=  3 parses=  3 unmod=  0  docs/research/round378-instruments/drive-263-arm-e-counterfactual.mjs
+              PARSES @3320 (61c): const zBefore = Z_PATHSPECS.map((p) => fingerprint(REPO, p));
+  CONFIRMED   SET2a-live  his=  4 parses=  4 unmod=  0  docs/research/round380-instruments/drive-b1m-history-clause-population.mjs
+              PARSES @4743 (53c): const HERE = dirname(fileURLToPath(import.meta.url));
+  CONFIRMED   SET2a-live  his= 17 parses= 17 unmod=  0  docs/research/round380-instruments/grade-b1-under-rekeys.mjs
+              PARSES @2680 (78c): import { summariseAndExit, type ProbeVerdict } from './lib/probe
+  CONFIRMED   SET2a-live  his=  2 parses=  2 unmod=  0  docs/research/round380-instruments/measure-b1-legs.mjs
+              PARSES @2473 (59c): const R225 = 'probe-round225-a-citation-is-not-a-call.mts';
+  CONFIRMED   SET2a-live  his=  6 parses=  3 unmod=  3  docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs
+              PARSES @9501 (76c): const LIVE_RHS = [\n /existsSync\\(/,\n /readFileSync\\(join\\
+  CONFIRMED   SET2a-live  his=  3 parses=  1 unmod=  2  docs/research/round395-instruments/grade-the-refusal-that-deletes-the-verdict.mjs
+              PARSES @8599 (148c): const tallyOf = (out) => { const m = out.match(/^(\\d+) grades
+  CONFIRMED   SET2a-live  his= 11 parses= 10 unmod=  1  docs/research/round402-instruments/hand-read-the-unguarded.mjs
+              PARSES @5710 (46c): const span = SRC.slice(loopStart, verdictLog);
+  CONFIRMED   SET2a-live  his= 13 parses= 11 unmod=  2  docs/research/round404-instruments/grade-the-three-cures.mjs
+              PARSES @6643 (96c): const SRC = readFileSync(new URL('../../../scripts/sweep-probes.
+  CONFIRMED   SET2a-live  his=  1 parses=  1 unmod=  0  scripts/probe-browse-endpoint-vs-channel-count.mts
+              PARSES @9379 (66c): import { findChannelByOriginalSessionId } from '../db/queries.js
+  CONFIRMED   SET2a-live  his=  1 parses=  1 unmod=  0  scripts/probe-round198-a-way-back-has-tables-in-it-and-the-sidecar-is-not-the-database.mts
+              PARSES @9241 (94c): const D=require('better-sqlite3');const d=new D(process.argv[1])
+  CONFIRMED   SET2b-live  his= 28 parses= 24 unmod=  4  scripts/probe-round224-a-skip-must-not-summarise-as-a-pass.mts
+              PARSES @77335 (57c): import { summariseAndExit } from \'./probe-outcome.mjs\';
+  CONFIRMED   SET2a-live  his=  2 parses=  2 unmod=  0  scripts/probe-round227-arm-o-on-a-corpus-where-the-cap-fires.mts
+              PARSES @28729 (61c): const { getDb } = await import(${JSON.stringify(dbIndex)});\n
+  CONFIRMED   SET2a-live  his=  5 parses=  5 unmod=  0  scripts/probe-round231-the-handler-and-the-signal-are-in-different-processes.mts
+              PARSES @9123 (234c):  for (const sig of ['SIGINT', 'SIGTERM', 'SIGHUP', 'SIGPIPE']) p
+  CONFIRMED   SET2a-live  his=  1 parses=  1 unmod=  0  scripts/probe-round233-arm-m-and-the-endpoint-can-walk-different-corpora.mts
+              PARSES @14230 (67c): const projectsDir = path.join(os.homedir(), '.claude', 'projects
+  CONFIRMED   SET2a-live  his=  3 parses=  2 unmod=  1  scripts/probe-round240-a-probe-pinned-to-a-moved-subject-is-failing-silently.mts
+              PARSES @9151 (127c):  const p = 'packages/client/src/components/ChannelSidebar.tsx'
+  CONFIRMED   SET2a-live  his=  1 parses=  1 unmod=  0  scripts/probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts
+              PARSES @21926 (90c): const a = '${presentSentinel}'; const b = '${absentSentinel}'; c
+  CONFIRMED   SET2a-live  his=  4 parses=  3 unmod=  1  scripts/probe-round247-a-mutant-in-the-tree-is-in-the-population.mts
+              PARSES @9184 (61c): const LIB = path.join(REPO, 'scripts/lib/probe-outcome.mts');
+  CONFIRMED   SET2a-live  his=  4 parses=  4 unmod=  0  scripts/probe-round248-the-dot-guard-is-half-the-repair-and-a-copy-re-admits-the-original.mts
+              PARSES @13680 (102c): const allMts = fs.readdirSync(SCRIPTS).filter((f) => f.endsWith(
+  CONFIRMED   SET2a-live  his= 10 parses=  8 unmod=  2  scripts/probe-round280-the-client-half-of-the-pair-and-what-it-leaves-behind.mts
+              PARSES @19848 (32c): import * as net from 'node:net';
+  CONFIRMED   SET2a-live  his=  1 parses=  1 unmod=  0  scripts/probe-round284-the-census-has-a-reader-and-it-is-the-channel-three-seats-have-never-run.mts
+              PARSES @20786 (12c): export {};\n
+  CONFIRMED   SET2a-live  his=  1 parses=  1 unmod=  0  scripts/probe-round289-the-deferred-breakdown-is-derived-and-the-sidecar-signature-is-not-evidence-of-no-write.mts
+              PARSES @8664 (109c): import { summariseAndExit } from './lib/probe-outcome.mts';\nsum
+  CONFIRMED   SET2a-live  his=  2 parses=  1 unmod=  1  scripts/probe-round295-the-promotion-path-reaches-one-of-the-twenty-nine-and-the-refusals-are-its-own-fixtures.mts
+              PARSES @11554 (31c): const x = 1;\nconsole.log(x);\n
+  CONFIRMED   SET2a-live  his=  2 parses=  2 unmod=  0  scripts/probe-round296-the-net-split-is-priced-at-zero-and-literal-only-cannot-tell-a-corpus-from-an-argv.mts
+              PARSES @8004 (110c): const corpus = ["import { getDb } from '../packages/server/src/d
+  UNMODELLED  SET2a-live  his=  1 parses=  0 unmod=  1  docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs
+              UNMODELLED @27321 (95c): ${then.func} function-shaped, ${then.total} total**; at \`HEAD\`
+  UNMODELLED  SET2a-live  his=  2 parses=  0 unmod=  2  scripts/probe-import-large-session.mts
+              UNMODELLED @17780 (112c): import succeeded (${subject.dir.split('-').pop()}, ${mb(subject.
+  UNMODELLED  SET2a-live  his=  1 parses=  0 unmod=  1  scripts/probe-turncount-live-http.mts
+              UNMODELLED @14908 (112c):  => any session deeper than ${deepest} turns reports a LOWE
+  UNMODELLED  SET2b-live  his=  3 parses=  0 unmod=  3  scripts/sweep-probes.mjs
+              UNMODELLED @43729 (1173c): run green in Round 263, 15/15 exit 0, 6 measurements; git reads 
+
+stratification.json written beside this file.

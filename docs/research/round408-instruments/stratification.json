@@ -1,5 +1,5 @@
 {
-  "rev": "1a597c3197fafa593e73c00181b2c8e8a2258712",
+  "rev": "eb806bcee90060fc986aef3955b8b894a83ea8fa",
   "hisRev": "771daaf4",
   "worktree": "DIRTY",
   "hisFigures": {
@@ -19,7 +19,7 @@
       27
     ],
     "measured": [
-      19,
+      24,
       28
     ]
   },
@@ -28,8 +28,8 @@
       "path": "docs/research/round378-instruments/census-named-source-bindings.mjs",
       "set": "SET2b-live",
       "his": 5,
-      "parses": 3,
-      "unmod": 2,
+      "parses": 5,
+      "unmod": 0,
       "stratum": "CONFIRMED",
       "sample": {
         "v": "PARSES",
@@ -42,8 +42,8 @@
       "path": "docs/research/round378-instruments/drive-263-arm-e-counterfactual.mjs",
       "set": "SET2a-live",
       "his": 3,
-      "parses": 1,
-      "unmod": 2,
+      "parses": 3,
+      "unmod": 0,
       "stratum": "CONFIRMED",
       "sample": {
         "v": "PARSES",
@@ -70,8 +70,8 @@
       "path": "docs/research/round380-instruments/grade-b1-under-rekeys.mjs",
       "set": "SET2a-live",
       "his": 17,
-      "parses": 15,
-      "unmod": 2,
+      "parses": 17,
+      "unmod": 0,
       "stratum": "CONFIRMED",
       "sample": {
         "v": "PARSES",
@@ -119,14 +119,14 @@
       "path": "docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs",
       "set": "SET2a-live",
       "his": 6,
-      "parses": 2,
-      "unmod": 4,
+      "parses": 3,
+      "unmod": 3,
       "stratum": "CONFIRMED",
       "sample": {
         "v": "PARSES",
-        "len": 66,
-        "at": 14640,
-        "head": "const his391Live = readFileSync(join(REPO, HIS_391_PATH), 'utf8'"
+        "len": 76,
+        "at": 9501,
+        "head": "const LIVE_RHS = [\\n /existsSync\\\\(/,\\n /readFileSync\\\\(join\\\\"
       }
     },
     {
@@ -161,8 +161,8 @@
       "path": "docs/research/round404-instruments/grade-the-three-cures.mjs",
       "set": "SET2a-live",
       "his": 13,
-      "parses": 9,
-      "unmod": 4,
+      "parses": 11,
+      "unmod": 2,
       "stratum": "CONFIRMED",
       "sample": {
         "v": "PARSES",
@@ -229,8 +229,8 @@
       "path": "scripts/probe-round224-a-skip-must-not-summarise-as-a-pass.mts",
       "set": "SET2b-live",
       "his": 28,
-      "parses": 8,
-      "unmod": 20,
+      "parses": 24,
+      "unmod": 4,
       "stratum": "CONFIRMED",
       "sample": {
         "v": "PARSES",
@@ -243,27 +243,15 @@
       "path": "scripts/probe-round227-arm-o-on-a-corpus-where-the-cap-fires.mts",
       "set": "SET2a-live",
       "his": 2,
-      "parses": 0,
-      "unmod": 2,
-      "stratum": "UNMODELLED",
+      "parses": 2,
+      "unmod": 0,
+      "stratum": "CONFIRMED",
       "sample": {
-        "v": "UNMODELLED",
+        "v": "PARSES",
         "len": 61,
         "at": 28729,
         "head": "const { getDb } = await import(${JSON.stringify(dbIndex)});\\n"
-      },
-      "unmodelledBodies": [
-        {
-          "at": 28729,
-          "quote": "`",
-          "body": "const { getDb } = await import(${JSON.stringify(dbIndex)});\\n"
-        },
-        {
-          "at": 28974,
-          "quote": "`",
-          "body": "const { getDb } = await import(${JSON.stringify(dbIndex)});\\n"
-        }
-      ]
+      }
     },
     {
       "path": "scripts/probe-round231-the-handler-and-the-signal-are-in-different-processes.mts",
@@ -367,95 +355,57 @@
       "path": "scripts/probe-round284-the-census-has-a-reader-and-it-is-the-channel-three-seats-have-never-run.mts",
       "set": "SET2a-live",
       "his": 1,
-      "parses": 0,
-      "unmod": 1,
-      "stratum": "UNMODELLED",
+      "parses": 1,
+      "unmod": 0,
+      "stratum": "CONFIRMED",
       "sample": {
-        "v": "UNMODELLED",
+        "v": "PARSES",
         "len": 12,
         "at": 20786,
         "head": "export {};\\n"
-      },
-      "unmodelledBodies": [
-        {
-          "at": 20786,
-          "quote": "'",
-          "body": "export {};\\n"
-        }
-      ]
+      }
     },
     {
       "path": "scripts/probe-round289-the-deferred-breakdown-is-derived-and-the-sidecar-signature-is-not-evidence-of-no-write.mts",
       "set": "SET2a-live",
       "his": 1,
-      "parses": 0,
-      "unmod": 1,
-      "stratum": "UNMODELLED",
+      "parses": 1,
+      "unmod": 0,
+      "stratum": "CONFIRMED",
       "sample": {
-        "v": "UNMODELLED",
+        "v": "PARSES",
         "len": 109,
         "at": 8664,
         "head": "import { summariseAndExit } from './lib/probe-outcome.mts';\\nsum"
-      },
-      "unmodelledBodies": [
-        {
-          "at": 8664,
-          "quote": "\"",
-          "body": "import { summariseAndExit } from './lib/probe-outcome.mts';\\nsummariseAndExit({ probeName: 'x', results });\\n"
-        }
-      ]
+      }
     },
     {
       "path": "scripts/probe-round295-the-promotion-path-reaches-one-of-the-twenty-nine-and-the-refusals-are-its-own-fixtures.mts",
       "set": "SET2a-live",
       "his": 2,
-      "parses": 0,
-      "unmod": 2,
-      "stratum": "UNMODELLED",
+      "parses": 1,
+      "unmod": 1,
+      "stratum": "CONFIRMED",
       "sample": {
-        "v": "UNMODELLED",
+        "v": "PARSES",
         "len": 31,
         "at": 11554,
         "head": "const x = 1;\\nconsole.log(x);\\n"
-      },
-      "unmodelledBodies": [
-        {
-          "at": 11554,
-          "quote": "'",
-          "body": "const x = 1;\\nconsole.log(x);\\n"
-        },
-        {
-          "at": 11610,
-          "quote": "`",
-          "body": "    \"import { getDb } from '../../packages/server/src/db/index.js';\",\\n"
-        }
-      ]
+      }
     },
     {
       "path": "scripts/probe-round296-the-net-split-is-priced-at-zero-and-literal-only-cannot-tell-a-corpus-from-an-argv.mts",
       "set": "SET2a-live",
       "his": 2,
-      "parses": 0,
-      "unmod": 2,
-      "stratum": "UNMODELLED",
+      "parses": 2,
+      "unmod": 0,
+      "stratum": "CONFIRMED",
       "sample": {
-        "v": "UNMODELLED",
+        "v": "PARSES",
         "len": 110,
         "at": 8004,
         "head": "const corpus = [\"import { getDb } from '../packages/server/src/d"
-      },
-      "unmodelledBodies": [
-        {
-          "at": 8004,
-          "quote": "`",
-          "body": "const corpus = [\"import { getDb } from '../packages/server/src/db/index.js';\"];\\nconsole.log(corpus.length);\\n"
-        },
-        {
-          "at": 8135,
-          "quote": "`",
-          "body": "import { getDb } from '../packages/server/src/db/index.js';\\ngetDb();\\n"
-        }
-      ]
+      }
     },
     {
       "path": "scripts/probe-turncount-live-http.mts",
@@ -539,7 +489,12 @@
     {
       "leg": "P4",
       "ok": true,
-      "detail": "escaped-delimiter fixture: unescaped=0 err, as-sliced=3 err"
+      "detail": "escaped-delimiter fixture: decoded=0 err, as-sliced=3 err"
+    },
+    {
+      "leg": "P6",
+      "ok": true,
+      "detail": "newline fixture (from probe-round295): decoded=0 err, as-sliced=2 err · message (from probe-import-large-session): his key=true, parse=UNMODELLED"
     },
     {
       "leg": "P5",
@@ -549,17 +504,17 @@
     {
       "leg": "T1",
       "ok": true,
-      "detail": "rev 1a597c3197fafa593e73c00181b2c8e8a2258712 · worktree DIRTY (1 path(s)) · 276 at rev, 276 live · list delta +0/-0 · 0 differ in CONTENT"
+      "detail": "rev eb806bcee90060fc986aef3955b8b894a83ea8fa · worktree DIRTY (1 path(s)) · 276 at rev, 276 live · list delta +0/-0 · 0 differ in CONTENT"
     },
     {
       "leg": "S2",
       "ok": true,
-      "detail": "SEAM GRADEABLE — docs/research/round408-instruments/stratify-the-live-interval.mjs is tracked and present at 1a597c31; it is a member of the population it measures, which is where the author of this instrument belongs"
+      "detail": "SEAM GRADEABLE — docs/research/round408-instruments/stratify-the-live-interval.mjs is tracked and present at eb806bce; it is a member of the population it measures, which is where the author of this instrument belongs"
     },
     {
       "leg": "M1",
       "ok": true,
-      "detail": "19 CONFIRMED + 9 UNMODELLED + 0 REFUTED = 28 of 28 live row(s) (his 25 + 3 = 28) · parser refusals: 0"
+      "detail": "24 CONFIRMED + 4 UNMODELLED + 0 REFUTED = 28 of 28 live row(s) (his 25 + 3 = 28) · parser refusals: 0"
     },
     {
       "leg": "M2",
