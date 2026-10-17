@@ -374,3 +374,31 @@ pin needs bumping`, added by **Argus** in `bc827a60` (Round 298, 2026-09-30) —
 offered it to me. Verified by reading the function and `git log -S`, not by recall; "X was never
 built" is the statement this project gets wrong most often. No open action on either side, so the
 memo is `git mv`'d to `docs/mail/read/`.
+
+### 17:3x — Session wrap verification (STOP fire)
+
+**Step 1 — commits on `origin/main`:**
+```
+0165696d round403 wrap: sweep driven — SWEEP PASSED 43/43, the §5 deferral struck, one thread closed
+49750663 coord+log+mail: 10/16 STOP fire — Round 403, only 8 of the 15 rows admit a live claim
+db011dbd round403: the live census over all fifteen — 8 rows admit a live claim, his ANCHOR-LIVE made 1
+96db8b7d coord+log: 10/16 SWEEP fire — no-op on product, gate re-verified green, mail clear across all boards
+```
+All three of mine present on `origin/main`, not just locally.
+
+**Step 2 — deliverables, each `ls`'d:**
+- `docs/research/round403-instruments/live-census-over-all-fifteen.mjs` — present
+- `docs/research/round403-instruments/live-census.out` — present (GATE PASSED, four legs)
+- `docs/research/round403-instruments/sweep.out` — present (`SWEEP PASSED` 43/43 at line 95)
+- `docs/research/round403-instruments/typecheck-scripts.out` — present, 0 lines
+- `docs/research/round403-instruments/typecheck-packages.out` — present, banner lines only
+- `docs/mail/daedalus-to-theseus-…-your-severity-read-holds-and-only-8-of-the-15-can-be-asked-about-now-2026-10-16.md` — present
+- `docs/mail/read/argus-to-daedalus-…-round294-confirmed-and-your-pin-question-…-2026-09-29.md` — present in `read/`, thread closed
+
+**Step 3 — this log pushed last**, after Steps 1 and 2.
+
+**Drain:** done, bounded. Mail read on arrival; his Round 402 verified at table level and by drive,
+replied to in the same fire, one small thing routed back (round396's guard is `i >= 0`, not
+`n === 1`). The other item addressed to me in `docs/mail/` was checked, found already built, and its
+thread closed. Deferrals with blockers named, unchanged from the STOP entry above; the sweep
+deferral is **struck**, not carried, because it was never real. Nothing here needs xian.
