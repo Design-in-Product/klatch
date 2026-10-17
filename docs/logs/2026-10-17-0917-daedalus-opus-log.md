@@ -426,3 +426,71 @@ same verdict. The variable is machine state (366).
 my 405 reply to it moved to `docs/mail/read/`: its routed item (the pin population) was answered by
 my 405, and both of its own open items are superseded by his 406, which carries them forward. The
 406 memo and my 407 reply stay in `docs/mail/` — both route open items, in both directions.
+
+## 13:40 PT — Session Wrap Protocol
+
+**Step 1 — commits landed.** `git fetch origin main` then `git log origin/main --format='%h %an %s' -5`:
+
+```
+40ecaa86 Daedalus (Klatch) coord+log+round407: the README, four recordings, the measured sweep, and an interval instead of a count
+7b2aabf8 Daedalus (Klatch) mail: round407 reply to Theseus — his two sets are three, and the live class is an interval not a count
+771daaf4 Daedalus (Klatch) round407: the predicate was failing OPEN — a template's interpolation is code, not carried text
+ce482c3a Daedalus (Klatch) round407: census the fixture-as-string class — the routed partition, and a seam that refuses before promotion
+8fdd16a2 Calliope (Klatch) coord+log: 10/17 MID fire — no-op on product, round405/406 read, gate re-verified green
+```
+
+**Step 2 — every deliverable present**, checked against the **tree on `origin/main`** rather than
+against the claim (`git ls-tree -r --name-only origin/main -- …`). 13 of 13:
+
+```
+docs/research/round407-instruments/README.md
+docs/research/round407-instruments/census-the-fixture-as-string-class.mjs
+docs/research/round407-instruments/census.json
+docs/research/round407-instruments/drive1-precommit.out
+docs/research/round407-instruments/drive2-postcommit.out
+docs/research/round407-instruments/drive3-after-the-interpolation-fix.out
+docs/research/round407-instruments/drive4-clean-tree.out
+docs/research/round407-instruments/sweep.out
+docs/research/round407-instruments/typecheck-scripts.out
+docs/research/round407-instruments/typecheck-workspace.out
+docs/mail/daedalus-to-theseus-…-i-built-your-census-and-the-two-sets-are-three-2026-10-17.md
+docs/mail/read/theseus-to-daedalus-…-the-three-cures-are-performed-…-2026-10-16.md
+docs/mail/read/daedalus-to-theseus-…-the-pin-population-is-91-not-5-…-2026-10-17.md
+```
+
+Both `read/` paths confirm the close landed as a **rename**, not a copy.
+
+**One bad check of my own, caught and redone.** My first verification that the 405 reply had *left*
+`docs/mail/` was `git ls-tree -r --name-only origin/main -- docs/mail/ | grep -c …`, which returned
+`1` — because `-r` over `docs/mail/` recursively includes `docs/mail/read/`. The selector could not
+tell the two locations apart, so a correct move would have read as a failed one, and a *failed* move
+would have read identically. Re-keyed on `git ls-tree` without `-r` (top level only): exactly the
+two open memos remain. The pattern is the one I keep paying for — a selector whose two populations
+share a denominator agrees with itself vacuously.
+
+**Step 3 — this log pushed last**, after Steps 1 and 2.
+
+### Fire close
+
+Bounded, per Klatch's recorded exception to the duty-cycle drain baseline: checklist done, the mail
+that arrived after my START wrap read and acted on in-fire, the routed item built and replied to,
+state written down, stop.
+
+**Drain:** mail read on open (his 406); the item it routed built, driven four times, hand-read, and
+replied to; the closed 10-16 pair moved to `read/`; gate re-derived fresh at every layer this fire
+(both typecheck legs, full sweep driven and measured). Deferred, each with a named owner rather than
+a date: the parse-as-second-signal discriminator routed back to Theseus (it needs an UNMODELLED
+stratum or it fails closed), and the non-monotone set1 `+1` by member list, mine, no blocker.
+
+No port bound at close. No database opened. No model called. `.scratch/` holds one file, gitignored,
+never staged.
+
+**Nothing needs xian.**
+
+Three things this fire came out of a feeling rather than a measurement, and all three were corrected
+by a tool call before they shipped: the sweep deferral (drafted at 13:29, twelve minutes into a
+forty-minute fire — `date` caught it); the live-class figure (28 printed, `[3, 27]` after a hand
+read found a prose false positive); and the `docs/mail/` move check (a recursive pathspec that could
+not tell `read/` from its parent). The round's actual finding — that a template's interpolation is
+live code and not carried text — came from the same habit pointed at a number I had predicted in
+writing and then watched miss by a factor of five.
