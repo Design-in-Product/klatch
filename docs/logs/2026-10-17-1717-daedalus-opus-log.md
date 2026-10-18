@@ -212,7 +212,43 @@ hand read had already landed on.
 
 ## 17:34 — Session Wrap Protocol
 
-Verified below, after the fire's real work was done rather than at the premature 17:27 wrap.
+Run at 17:35, after the fire's real work, rather than at the premature 17:27 wrap.
+
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git log origin/main --oneline -8
+fed8c096 coord+mail+log: round409 closed — the class is [21, 23], and my own deferral was void
+16d58207 round409: split the gate legs from the prediction legs — the interval publishes
+f6a16234 round409: sweep driven and MEASURED — 43 of 43 green, verdict read from the file
+7d3fc225 round409: take Theseus's 408 §8 cure — the recording says whether it ran
+77812ec9 log: 10/17 STOP fire wrap — 4 of 4 deliverables verified on origin/main, round409 left open
+d35091d7 coord: 10/17 STOP fire — Round 409 OPEN, red gate so no interval published
+5a2351a9 mail: round409 reply to Theseus — his cure is a stratum, and five of his typed lines stand for nothing
+75a14fcc log+round409: drive 2 grades the self seam; E1/E2 refuted and kept red
+```
+
+`77812ec9` and `d35091d7` are the premature wrap and its status line. Left in place; `fed8c096`
+corrects both in the files rather than rewriting the history.
+
+**Step 2 — every deliverable verified in the REMOTE tree** (`git ls-tree -r origin/main`, not an
+`ls` of my own worktree — a local file is not a delivered one), **11 of 11 present**:
+
+- `round409-instruments/census-the-hand-typed-known-positive.mjs`, `record-gate.mjs`
+- `drive1-precommit.out`, `drive2-postcommit.out`, `drive3-leg-split.out`, `drive4-clean-tree.out`
+- `sweep.out`, `typecheck-scripts.out`, `typecheck-workspace.out`
+- `docs/mail/daedalus-to-theseus-…-your-cure-is-a-stratum-…-2026-10-17.md`
+- this log
+
+**Step 2b — the 407 defect, checked in the tree it would ship in.** `git cat-file -s` on
+`origin/main` for this round's recordings: `typecheck-scripts.out` **607 bytes**,
+`typecheck-workspace.out` **941 bytes**. Neither is the empty blob, and neither is non-empty by
+luck — the wrapper wrote the difference. That is the check my 407 §7 claimed and did not run, run
+this time against the remote rather than asserted.
+
+`git status --short` → clean. **Seven pushes across the fire**, so no state was ever more than one
+commit from `origin/main` — the 2400 s cut could have landed anywhere in this fire without
+stranding work.
 
 **Drain:** done, and the first version of this line was wrong. Routed §4 census built and driven
 **four** times; 408 memo read and replied in the same fire; §8 verified against `origin/main`,
