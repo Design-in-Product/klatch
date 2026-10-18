@@ -1,0 +1,31 @@
+
+Round 409 — the hand-typed known positive, censused at 4cc2c54d
+
+  EXPECTED E1  the three strata are all NON-EMPTY on the live corpus. TYPED-LITERAL is the smaller of the first two, because 408 moved a batch of eight declarations out of it this morning and nothing has moved any in
+  EXPECTED E2  SLICED-FROM-FILE is the SMALLEST of the three and this file is a member of it — if the third stratum is only ever me, the three-way split is a distinction without a population and the round found a naming convention rather than a hazard
+  EXPECTED E3  at least one TYPED-THEN-SLICED KP STANDS FOR NOTHING — its typed source line occurs nowhere in the corpus. This is the residual the cure does not close, and if every typed line turns out to be faithful then the cure is empirically sound and the carry-forward is weaker than 408 §4 claims
+  EXPECTED E4  Theseus's KP_NEWLINE (round408:415) is FAITHFUL — hand-verified before this ran, byte for byte against probe-round295-…mts:214, so a key that calls it STANDS-FOR-NOTHING has the hole rather than his declaration
+  EXPECTED K1  every KP of MINE slices, and each one's declared identifier is still on the line it names — a drifted line refuses instead of grading its neighbour
+  EXPECTED K2  the classifier returns a DIFFERENT stratum for each of my three KPs. One KP per stratum is coverage of one axis (382), so each miss is isolable to one stratum
+  EXPECTED S1  the self row is present and MEASURED under both readings, and the printed figures say which population they came from (408 §5)
+  EXPECTED T1  the rev read and the worktree state are printed, and a DIRTY tree is named as such — this caught Theseus twice and me once on the first edit after each commit
+
+  FALSE E1  all three strata non-empty on the live corpus; TYPED-LITERAL <= TYPED-THEN-SLICED
+        TYPED-LITERAL 14 · TYPED-THEN-SLICED 8 · SLICED-FROM-FILE 0 · OTHER-DERIVED 19 · UNMODELLED 2 — population WITHOUT_SELF, 43 declaration(s)
+  FALSE E2  SLICED-FROM-FILE is the smallest of the three AND has a member that is not this file
+        SLICED-FROM-FILE 0 outside this file; in this file 0 of 0 self row(s)
+  TRUE  E3  at least one in-class KP STANDS FOR NOTHING — its typed source line occurs nowhere else
+        stands-for-nothing 5 · faithful 1 · undecided 15 — stratify-the-live-interval.mjs:400 KP_PLAIN | stratify-the-live-interval.mjs:401 KP_MODULE | stratify-the-live-interval.mjs:402 KP_TSANNOT | stratify-the-live-interval.mjs:403 KP_ESCAPED
+  TRUE  E4  KP_NEWLINE (round408:415) reads FAITHFUL — hand-verified against probe-round295:214
+        occurs: scripts/probe-round295-the-promotion-path-reaches-one-of-the-twenty-nine-and-the-refusals-are-its-own-fixtures.mts · stratum TYPED-THEN-SLICED
+  TRUE  K1  every KP of mine sliced, and each declared identifier is still on the line it names
+        3 sliced, 0 refused
+  TRUE  K2  the classifier returns each KP's predicted stratum, one axis per KP (382)
+        KP_TYPED=TYPED-LITERAL · KP_CURED=TYPED-THEN-SLICED · KP_FAITHFUL=TYPED-THEN-SLICED
+  FALSE S1  the self row is measured and present, and the figures declare their population
+        docs/research/round409-instruments/census-the-hand-typed-known-positive.mjs is NOT in `git ls-files` at 4cc2c54d — drive one is red by construction
+  TRUE  T1  the rev and the worktree state are printed, and a dirty tree is named as such
+        rev 4cc2c54d · worktree DIRTY (2 path(s)) · corpus 274 file(s) · 43 declaration(s) WITH_SELF
+
+GRADE: false
+NOT TRUE: E1 | E2 | S1 — no figure is published below a red leg (356).
