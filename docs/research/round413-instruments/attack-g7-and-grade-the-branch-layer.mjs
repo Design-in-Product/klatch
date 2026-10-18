@@ -72,10 +72,15 @@ const EXPECTED = [
     + 'a `?` in their seven-line window" reconciles against my 2 of 57 on two differences at '
     + 'once — the UNSEAMED population (62) and a LITERAL seven-line window where contRaw stops '
     + 'as soon as the expression is finished'],
+  ['D7', 'ADDED AT DRIVE 6, not pre-registered with the rest, and said so: the `literalBodies` '
+    + 'disagreement he reported as HIS own defect, regraded rather than accepted on his word — a '
+    + 'copy that agrees with me grades neither of us (321/368)'],
+  ['P5', 'ADDED AT DRIVE 6: the consequence — it is a mover under my reader and would not be one '
+    + 'under his described variant, which is why his copy disagreed with my P2 mover list'],
 ];
 
 const RESULTS = [];
-const GATE_LEGS = new Set(['D1', 'D2', 'D3', 'D4', 'D5', 'D6']);
+const GATE_LEGS = new Set(['D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7']);
 const g = (leg, claim, ok, detail) => {
   RESULTS.push({ leg, claim, ok, detail, gate: GATE_LEGS.has(leg) });
 };
@@ -336,6 +341,69 @@ g('P4', 'CORRECTED BY THE GRID: his 10 reconciles on ONE axis, not two — a LIT
   `populations: seamed ${hisP.length} · unseamed ${unseamed.length} (his 62) · `
   + `${Object.entries(grid).map(([k, v]) => `${k} = ${v}`).join(' · ')} · `
   + `cell(s) reproducing his 10: ${matches.length === 0 ? 'NONE — still unreconciled' : matches.join(', ')}`);
+
+// ─── D7 / P5 — the one thing he reported as HIS defect that I do not get to accept on his word ──
+/**
+ * His §3 says his re-implementation of my `literalBodies` disagreed with mine about
+ * `KP_CONST_INDIRECTION` (round382:225) — a member of my own P2 mover list — and he cured his copy
+ * to match my text. **That his copy now agrees with mine grades neither of us** (321/368, and a
+ * copy that agrees with me is not a reading of me). Mine could be the wrong one. So:
+ *
+ * The site is a TWO-LINE template literal. The 409 key reads `d.init` — the FIRST LINE ONLY — where
+ * the backtick is unterminated and a complete `'…'` pair sits INSIDE the unclosed template. Mine
+ * runs left to right and breaks at the unterminated backtick, so it finds no body and the 409 key
+ * refuses (`UNMODELLED`). His described variant tried each quote character and took the first
+ * yielding a pair, so it returned the `'…'` span and the 409 key said `TYPED-LITERAL`.
+ *
+ * **Mine is right, and the reason is not that it is mine:** on one line the literal has no visible
+ * end, so a reader that returns a body is returning a span it cannot delimit — and the span his
+ * variant returns is a NESTED quote belonging to a different literal, not this declaration's value.
+ * Refusing is the correct answer to an undelimitable span. The strata happen to differ too, which
+ * is why it moved his mover list, but the defect is in the BODY, and the body is what feeds
+ * `bodyIsCode`/`bodyCarried` — his variant would have looked the wrong string up in the corpus.
+ *
+ * His original code is gone (he cured it), so the variant below is a counterfactual of the
+ * behaviour he DESCRIBED, labelled as such, not a claim about bytes he wrote.
+ */
+const KPCI = M.ROWS.find((r) => r.ident === 'KP_CONST_INDIRECTION');
+/** The behaviour he described: try each quote character, take the first that yields a pair. */
+const hisDescribedVariant = (src) => {
+  for (const q of ['`', "'", '"']) {
+    const a = src.indexOf(q);
+    if (a === -1) continue;
+    const b = src.indexOf(q, a + 1);
+    if (b !== -1) return [{ body: src.slice(a + 1, b), at: a + 1, quote: q }];
+  }
+  return [];
+};
+const mineOnInit = KPCI === undefined ? null : M.literalBodies(KPCI.d.init);
+const hisOnInit = KPCI === undefined ? null : hisDescribedVariant(KPCI.d.init);
+const mineOnWindow = KPCI === undefined ? null : M.literalBodies(KPCI.raw);
+const backticks = KPCI === undefined ? 0 : (KPCI.d.init.split('`').length - 1);
+g('D7', 'the `literalBodies` disagreement he reported as his own defect, regraded rather than '
+  + 'accepted on his word: on the ONE LINE the 409 key reads, the template is unterminated, so mine '
+  + 'REFUSES and his described variant returns a span belonging to a NESTED literal. Mine is right '
+  + 'because an undelimitable span has no body — not because it is mine',
+  KPCI !== undefined && backticks % 2 === 1 && mineOnInit.length === 0
+  && hisOnInit.length === 1 && mineOnWindow.length > 0,
+  KPCI === undefined ? 'REFUSED: KP_CONST_INDIRECTION not found in the corpus'
+    : `site ${KPCI.path.split('/').pop()}:${KPCI.line} · backticks on the init line ${backticks} `
+      + `(odd = unterminated) · MINE on d.init ${JSON.stringify(mineOnInit.map((s) => s.body))} `
+      + `(refuses) · HIS DESCRIBED VARIANT on d.init `
+      + `${JSON.stringify(hisOnInit.map((s) => `${s.quote}${s.body}${s.quote}`))} `
+      + '<- a span of a NESTED literal, not this declaration\'s value · MINE on the full window '
+      + `${JSON.stringify(mineOnWindow.map((s) => `${s.quote}${s.body.slice(0, 30)}…`))} `
+      + '(the continuation closes the backtick, so the 411 key sees the real body)');
+
+/** And the consequence for the figure he actually noticed: it is a mover under mine, not under his. */
+const moverUnderMine = KPCI === undefined ? null : KPCI.s409 !== KPCI.s411;
+g('P5', 'the consequence: KP_CONST_INDIRECTION is a MOVER under my reader and would not be one '
+  + 'under his described variant, which is exactly why his copy disagreed with my P2 mover list — '
+  + 'so the member-list check (340) is what caught a body defect a stratum count would have hidden',
+  moverUnderMine === true,
+  KPCI === undefined ? 'REFUSED' : `s409 ${KPCI.s409} · s411 ${KPCI.s411} · mover under mine `
+    + `${moverUnderMine} · under his described variant s409 would be TYPED-LITERAL, equal to s411, `
+    + 'so NOT a mover');
 
 // ─── report ────────────────────────────────────────────────────────────────────────────────────
 const rev = git(['rev-parse', 'HEAD']).trim();

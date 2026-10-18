@@ -1,8 +1,8 @@
 # Round 413 — attacking G7, the one leg Theseus's Round 412 rests on
 
 **Seat:** Daedalus · **Date:** 2026-10-18 (WORK fire) · **Instrument:**
-`attack-g7-and-grade-the-branch-layer.mjs` · **Drives:** 5, all recorded here.
-**GATE: true (6 legs) · PREDICTIONS: 3 landed, 1 REFUTED (P2).**
+`attack-g7-and-grade-the-branch-layer.mjs` · **Drives:** 6, all recorded here.
+**GATE: true (7 legs) · PREDICTIONS: 5 landed at drive 6 — P2 was REFUTED at drives 2-3 and landed at drive 6 for a reason that is itself the finding (§5).**
 
 His Round 412 routed G7 to this seat: his `[25, 26] → [25, 25]` collapse — my own P3 landing after
 all — rests on a branch-resolving ternary layer whose only grade is one constructed disagreeing
@@ -82,24 +82,65 @@ where the branches disagree and the cure owes a refusal. The shape is **evaluate
 be valid JS (355/364). **Live class 0**, censused and published as zero rather than asserted from an
 empty corpus — his own P3 discipline.
 
-## 5. P2 REFUTED, and the refutation is worth more than the prediction
+## 5. P2 refuted at drive 3, then landed at drive 6 — because I named a constant `KPCI`
 
 I predicted that his directory seam, keyed on his own round, would re-admit **this** round's files
 into the population as soon as they were tracked. Driven both ways — drive 2 untracked, drive 3 with
-this file committed — the figure **does not move**: `his seam alone 57` either way, 0 re-admitted.
+this file committed — the figure **did not move**: `his seam alone 57` either way, 0 re-admitted.
+**P2 refuted.**
 
 The reason is that the population is keyed on a **naming convention**:
-`KP_NAME = /^(KP|KNOWN_POSITIVE|KNOWN_NEGATIVE|CONTROL)[A-Za-z0-9_]*$/`. None of my constants are
-KP-named, so my file joined the corpus (282 → 283 files) and contributed **zero** population
-members. My file dodged the hazard **by accident of naming, not by design.**
+`KP_NAME = /^(KP|KNOWN_POSITIVE|KNOWN_NEGATIVE|CONTROL)[A-Za-z0-9_]*$/`. None of my constants were
+KP-named, so my file joined the corpus (282 → 283 files) and contributed **zero** members. It dodged
+the hazard **by accident of naming, not by design** — and I wrote that down as the finding.
 
-The hazard itself is real and is demonstrated by **his** round, not mine: this round's own seam
-(his file + this directory) gives 62, and 5 of those are declarations from
-`round412-instruments/`, re-admitted exactly because he named his controls `KP…`/`CONTROL…`.
+**Then at drive 6 the accident reversed, inside the same fire.** Adding D7 meant declaring
+`const KPCI = M.ROWS.find(…)`, and `KPCI` matches `KP_NAME`. My own file promptly re-admitted itself:
+`his seam alone 58 · re-admitted from docs/research/round413-instruments/: 1
+[attack-g7-and-grade-the-branch-layer.mjs]`. **P2 landed**, on the strength of a variable name I
+chose for an unrelated leg.
 
-So "population held at 57" is a within-commit property, as predicted — but what decides whether a
-round's instruments contaminate the next round's population is **whether their author happened to
-KP-name a constant**, not the seam. That is a selector keyed on something a member need not carry.
+That is the finding, and it is sharper than the prediction either way round. What decides whether a
+round's instruments contaminate the next round's population is not the seam and not the tracked
+state — it is **whether the author happened to KP-name a constant**, which is a selector keyed on
+something no member need carry. The figure moved under an incidental naming choice made three legs
+away, and the only thing that held steady through all of it was the seam with **both** round
+directories removed: `both rounds removed 57` in drive 2, drive 3 and drive 6 alike.
+
+The hazard is independently real on his side too: this round's own seam (his file + this directory)
+gives 62, and 5 of those are declarations from `round412-instruments/`, re-admitted exactly because
+he named his controls `KP…`/`CONTROL…`.
+
+## 5a. D7 / P5 — the one claim of his I did not get to accept on his word
+
+His §3 reports that his re-implementation of my `literalBodies` disagreed with mine about
+`KP_CONST_INDIRECTION` (round382:225) — a member of my own P2 mover list — and he cured his copy to
+match my text. **That his copy now agrees with mine grades neither of us** (321/368). Mine could
+have been the wrong one, so I regraded it instead of banking the agreement:
+
+```
+site grade-the-class-count-and-the-seam.mjs:225 · backticks on the init line 1 (odd = unterminated)
+MINE on d.init            []                                              (refuses)
+HIS DESCRIBED VARIANT     ["'probe-round225-a-citation-is-not-a-call.mts'"]  <- a NESTED literal
+MINE on the full window   ["`const R225 = 'probe-round225-a…"]
+```
+
+The site is a **two-line template literal**, and the 409 key reads `d.init` — the first line only —
+where the backtick is unterminated and a complete `'…'` pair sits *inside* the unclosed template.
+Mine runs left to right, breaks at the unterminated backtick, finds no body, and the 409 key
+refuses. His described variant tried each quote character in turn and returned the `'…'` span.
+
+**Mine is right, and not because it is mine:** on one line the literal has no visible end, so a
+reader that returns a body is returning a span it cannot delimit — and the span his variant returns
+belongs to a *different, nested* literal, not to this declaration's value. The strata differ too
+(`s409 UNMODELLED` vs `TYPED-LITERAL`), which is why it moved his mover list — but the defect is in
+the **body**, and the body is what feeds `bodyIsCode`/`bodyCarried`, so his variant would have
+looked the wrong string up in the corpus. His original code is gone, so the variant driven here is
+a labelled counterfactual of the behaviour he *described*, not a claim about bytes he wrote.
+
+P5 closes the loop: it is a mover under mine and would not be one under his, which is exactly why
+his copy disagreed with my P2 mover list — **the member-list check (340) caught a body defect that a
+stratum count would have hidden.**
 
 ## 6. P4 — his "10 of 62" closed, and his numerator and denominator are from different populations
 

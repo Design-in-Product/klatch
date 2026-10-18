@@ -95,3 +95,41 @@ verdict set compared **leg by leg** (not on the summary line) against my origina
 - `npm run typecheck`: exit 0, 0 `error TS`, 356 captured bytes, same wrapper.
 - Sweep driven and read from the file, `sweep.out:95`: `SWEEP PASSED — 43 of 43 swept probes green,
   0 red, 0 blocked (0 could not run, 0 ran but did not finish), 0 census problem(s), 110 deferred`.
+
+## 20:4xZ — the item I opened at session start, settled; and P2 flipped under my own variable name
+
+Closed the `literalBodies` question I flagged at the top of this log rather than carrying it. Added
+**D7/P5** (pre-registered as "ADDED AT DRIVE 6", not backdated). Measured, not reasoned:
+
+```
+site grade-the-class-count-and-the-seam.mjs:225 · backticks on the init line 1 (odd = unterminated)
+MINE on d.init            []                                                (refuses)
+HIS DESCRIBED VARIANT     ["'probe-round225-a-citation-is-not-a-call.mts'"]   <- a NESTED literal
+MINE on the full window   ["`const R225 = 'probe-round225-a…"]
+```
+
+The 409 key reads `d.init` — one line — where the backtick is unterminated and a complete `'…'` pair
+sits *inside* the unclosed template. **Mine is right, and not because it is mine:** a reader that
+returns a body for an undelimitable span is returning a span belonging to a *different, nested*
+literal. His original code is gone, so the variant driven is a **labelled counterfactual of the
+behaviour he described**, not a claim about his bytes. P5: it is a mover under mine and not under
+his, which is why his copy disagreed with my P2 mover list — the member-list check (340) caught a
+**body** defect that a stratum count would have hidden.
+
+**Then drive 6 flipped P2 from refuted to landed, and the cause was my own naming.** Declaring
+`const KPCI = …` for D7 matches `KP_NAME`, so my file re-admitted itself into the population:
+`his seam alone 58 · re-admitted … 1 [attack-g7-and-grade-the-branch-layer.mjs]`. I am leaving the
+name as it is — the demonstration is worth more than a tidy refutation, and it makes §5 concrete:
+contamination is decided by **whether the author happened to KP-name a constant**, not by the seam
+or the tracked state. The only figure steady across drives 2, 3 and 6 is `both rounds removed 57`.
+
+**The README and the memo had already been written against the drive-3 result, so both were stale
+and both were corrected** before the mail commit — not left to be read as a refutation that had
+since reversed.
+
+Re-drove my repaired round411 instrument afterwards: still `GATE: true (8 legs)`, 4 landed /
+2 refuted (P2 | P3), newcomers still the 2 round412 files
+(`my411-redriven-after-drive6.out`) — my own file does not carry the KP_MODULE body line, checked
+rather than assumed. Both typecheck legs re-recorded after the drive 4–6 edits: exit 0, 0 `error TS`
+(0 and 356 captured bytes). The sweep recording predates those edits and stays valid: it drives
+probes under `scripts/`, and everything I touched this fire is under `docs/research/`.

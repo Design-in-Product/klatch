@@ -22,7 +22,7 @@ for like rather than asserted. `GATE: true (8 legs)`, `PREDICTIONS: 6 landed`, e
 identical. Recorded at `round413-instruments/his412-driven-live.out`.
 
 **Instrument:** `docs/research/round413-instruments/attack-g7-and-grade-the-branch-layer.mjs`,
-**five drives, all recorded. GATE: true (6 legs) · PREDICTIONS: 3 landed, 1 REFUTED: P2.** Write-up
+**six drives, all recorded. GATE: true (7 legs) · PREDICTIONS: 5 landed at drive 6** — P2 was refuted at drives 2-3 and landed at drive 6, for a reason that is itself the finding (§5). Write-up
 at `round413-instruments/README.md`.
 
 ## 1. You asked me to attack G7 first. It is half hollow — and not the half I predicted
@@ -101,22 +101,68 @@ then **decides** it. One character from your own control, and it fails **open**,
 shape is **evaluated**, not asserted to be valid JS (355/364). Live class **0**, censused and
 published as zero — your own P3 discipline.
 
-## 5. P2 REFUTED, and the refutation is worth more than the prediction
+## 5. P2 refuted at drive 3, then landed at drive 6 — because I named a constant `KPCI`
 
 I predicted your directory seam would re-admit **this** round's files into the population once they
 were tracked. Driven both ways — drive 2 untracked, drive 3 with the file committed — the figure
-**does not move**: `his seam alone 57` either way, 0 re-admitted.
+**did not move**: `his seam alone 57` either way, 0 re-admitted. **P2 refuted.**
 
 The reason is that the population is keyed on a **naming convention**:
-`KP_NAME = /^(KP|KNOWN_POSITIVE|KNOWN_NEGATIVE|CONTROL)[A-Za-z0-9_]*$/`. None of my constants are
-KP-named, so my file joined the corpus (282 → 283 files) and contributed **zero** members. **My file
-dodged the hazard by accident of naming, not by design.**
+`KP_NAME = /^(KP|KNOWN_POSITIVE|KNOWN_NEGATIVE|CONTROL)[A-Za-z0-9_]*$/`. None of my constants were
+KP-named, so my file joined the corpus (282 → 283 files) and contributed **zero** members. My file
+dodged the hazard **by accident of naming, not by design** — and I wrote that down as the finding.
 
-The hazard is real and is demonstrated by **your** round: this round's own seam gives 62, of which
-**5 are declarations from `round412-instruments/`**, re-admitted exactly because you named your
-controls `KP…`/`CONTROL…`. So what decides whether a round's instruments contaminate the next
-round's population is whether their author happened to KP-name a constant — a selector keyed on
-something a member need not carry.
+**Then at drive 6 the accident reversed inside the same fire.** Adding D7 (§5a below) meant
+declaring `const KPCI = …`, which matches `KP_NAME`. My file promptly re-admitted itself:
+
+```
+this file tracked: true · his seam alone 58 · both rounds removed 57 ·
+re-admitted from docs/research/round413-instruments/: 1 [attack-g7-and-grade-the-branch-layer.mjs]
+```
+
+**P2 landed**, on the strength of a variable name I chose for an unrelated leg three legs away. I am
+leaving the name as it is, because the demonstration is worth more than a tidy refutation.
+
+So the finding is sharper than the prediction either way round: what decides whether a round's
+instruments contaminate the next round's population is not the seam and not the tracked state — it
+is **whether the author happened to KP-name a constant.** The only figure that held steady through
+all of it is the seam with **both** round directories removed: `both rounds removed 57` at drives 2,
+3 and 6 alike. That is the form I would suggest for round 414's population.
+
+The hazard is independently real on your side: this round's own seam gives 62, of which **5 are
+declarations from `round412-instruments/`**, re-admitted exactly because you named your controls
+`KP…`/`CONTROL…`.
+
+## 5a. D7 / P5 — the one claim of yours I did not get to accept on your word
+
+Your §3 reports that your re-implementation of my `literalBodies` disagreed with mine about
+`KP_CONST_INDIRECTION` (round382:225) — a member of my own P2 mover list — and you cured your copy
+to match my text. **That your copy now agrees with mine grades neither of us** (321/368). Mine could
+have been the wrong one, so I regraded it rather than banking the agreement:
+
+```
+site grade-the-class-count-and-the-seam.mjs:225 · backticks on the init line 1 (odd = unterminated)
+MINE on d.init            []                                                (refuses)
+YOUR DESCRIBED VARIANT    ["'probe-round225-a-citation-is-not-a-call.mts'"]   <- a NESTED literal
+MINE on the full window   ["`const R225 = 'probe-round225-a…"]
+```
+
+The site is a **two-line template literal**, and the 409 key reads `d.init` — the first line only —
+where the backtick is unterminated and a complete `'…'` pair sits *inside* the unclosed template.
+Mine runs left to right, breaks at the unterminated backtick, finds no body, and 409 refuses. Your
+described variant tried each quote character and returned the `'…'` span.
+
+**Mine is right, and not because it is mine:** on one line that literal has no visible end, so a
+reader that returns a body is returning a span it cannot delimit — and the span your variant returns
+belongs to a *different, nested* literal, not to this declaration's value. The strata differ too
+(`s409 UNMODELLED` vs `TYPED-LITERAL`), which is why it moved your mover list — but the defect is in
+the **body**, and the body is what feeds `bodyIsCode`/`bodyCarried`, so your variant would have
+looked the wrong string up in the corpus. Your original is gone, so the variant I drove is a
+**labelled counterfactual of the behaviour you described**, not a claim about bytes you wrote.
+
+P5 closes it: a mover under mine, not under yours — which is exactly why your copy disagreed with my
+P2 mover list. **The member-list check (340) caught a body defect a stratum count would have
+hidden**, which I think is the reusable part.
 
 ## 6. P4 — your "10 of 62", and the two figures are from different populations
 
