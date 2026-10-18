@@ -1,0 +1,59 @@
+
+Round 410 — the wrapped call and the body granularity, at c86be65d
+  worktree DIRTY (1 path(s)) · corpus 276 file(s) · 49 declaration(s) WITH his file
+
+  EXPECTED G1  my re-implementation of HIS line-key returns HIS stands-for-nothing member list, parsed out of a LIVE drive of his instrument rather than out of his memo (395)
+  EXPECTED G2  all eight of my round408 KPs resolve, each declared identifier still on its cited line — a drifted citation refuses rather than grading its neighbour (341/399)
+  EXPECTED G3  the body-key is graded both ways: KP_MODULE's body is a known positive (hand-read before this ran: 9 code sites), and an invented control body is a known negative
+  EXPECTED G4  the unescaper is graded on a known positive in each direction, because a doubled escape is exactly what cost 408 drive 7 a red
+  EXPECTED G5  the two keys are not vacuously the same key — typed line != body for all eight (339)
+  EXPECTED G6  the fixtures above are graded against THIS FILE ON DISK, because drive 1 proved a typed fixture can be rewritten between being typed and being read
+  EXPECTED P1  at least one of his five STANDS-FOR-NOTHING rows has a body that DOES occur in the corpus, so five is an overcount at the granularity the cure is spelled in
+  EXPECTED P2  KP_MODULE is one of them, under BOTH readings — as real code and as a carried string
+  EXPECTED P3  KP_FRAGMENT stands for nothing under every key, and that is CORRECT by design: it is a deliberately unterminated fragment, a negative-shape KP with no site to have
+  EXPECTED P4  KP_MESSAGE is classified OTHER-DERIVED by his stratum(), not UNMODELLED — so it sits outside BOTH ends of [21, 23] rather than inside the ceiling
+  EXPECTED P5  the wrapped-reader-call class is non-empty corpus-wide, and I predict at most 3
+  EXPECTED P6  my own 408 §6 \u/\x residual, censused: across 276 corpus files I predict ZERO surviving typed \u inside a String.raw fixture — not because nobody wrote one, but because the write path eats it — and a NON-zero count of typed \x, which survives
+
+  TRUE  G1  [GATE] my re-implementation of his line-key returns his stands-for-nothing member list, parsed out of a live drive of his instrument (395)
+        his 5 · mine 5 · only-his [] · only-mine []
+  TRUE  G2  [GATE] all eight of my round408 KPs resolve at their cited line, or this refuses (341/399)
+        8 of 8 resolved
+  TRUE  G4  [GATE] the unescaper is graded in both directions, on fixtures CONSTRUCTED rather than typed because the write path that produced this file eats a typed \u
+        quote-KP "const s = 'x'; return s;" · newline-KP "a\nb" · \u REFUSED · \x REFUSED
+  TRUE  G6  [GATE] this instrument's own source on disk carries the CONSTRUCTED escape spelling and no typed \u fixture — the fixture is graded against the file, not against my intention
+        constructed spelling present true · interpolated \u fixture present true · typed String.raw \u fixtures 0
+  TRUE  G5  [GATE] the two keys are not the same key — the typed line differs from the body for all eight that have one, so agreement between them could not be vacuous (339)
+        6 with a body · 0 where the two keys coincide
+  TRUE  G3  [GATE] the body-key comes back the right way on a known positive and on a control
+        KP positive: carried=docs/research/round407-instruments/census-the-fixture-as-string-class.mjs asCode=docs/research/round365-instruments/b1.mjs · control: carried=false asCode=false
+  TRUE  P1  [PRED] at least one of his five STANDS-FOR-NOTHING rows has a body that DOES occur — five is an overcount in the unit the cure is spelled in (345)
+        his stands-for-nothing 5 · of those, 1 have a body that occurs: KP_MODULE
+  TRUE  P2  [PRED] KP_MODULE is one of them, under BOTH readings — carried string AND real code
+        carried at docs/research/round407-instruments/census-the-fixture-as-string-class.mjs · as code at docs/research/round365-instruments/b1.mjs
+  TRUE  P3  [PRED] KP_FRAGMENT stands for nothing under every key, and that is correct by design
+        carried=false · asCode=false
+  TRUE  P4  [PRED] KP_MESSAGE is classified OTHER-DERIVED, not UNMODELLED — so it is outside BOTH ends of his [21, 23] rather than inside the ceiling
+        stratum OTHER-DERIVED · inClass false · initCode " kpFromSource("
+  TRUE  P5  [PRED] the wrapped-reader-call class is non-empty corpus-wide, and at most 3
+        1 wrapped reader call(s) in slicing files: stratify-the-live-interval.mjs:416 KP_MESSAGE [OTHER-DERIVED]
+  FALSE P6  [PRED] the \u/\x residual censused over String.raw fixtures: zero surviving typed \u, because the write path eats it, and a non-zero typed \x, which survives
+        typed \u in a String.raw fixture: 0 · typed \x: 0
+
+GATE: true   (6 leg(s) on the key itself)
+PREDICTIONS: 5 landed, 1 REFUTED: P6
+
+── my eight, at BOTH granularities ──
+
+  KP             his line-key    body: carried      body: as code
+  KP_PLAIN       STANDS-FOR-NOTHING no                 no
+  KP_MODULE      STANDS-FOR-NOTHING census-the-fixture-as-string-class b1.mjs
+  KP_TSANNOT     STANDS-FOR-NOTHING no                 no
+  KP_ESCAPED     STANDS-FOR-NOTHING no                 no
+  KP_FRAGMENT    STANDS-FOR-NOTHING no                 no
+  KP_NEWLINE     faithful        probe-round295-the-promotion-path- no
+  KP_INTERP      NO BODY READ — no literal inside the typed line
+  KP_MESSAGE     NO BODY READ — argument not on the declaration line
+
+  his five stands-for-nothing, re-read at body granularity: 1 stand for something, 4 genuinely for nothing
+

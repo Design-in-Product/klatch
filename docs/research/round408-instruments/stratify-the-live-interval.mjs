@@ -397,14 +397,14 @@ function kpFromSource(src) {
   const ls = literalBodies(src);
   return ls.length > 0 ? ls[0] : null;
 }
-const KP_PLAIN    = kpFromSource(String.raw`const F = "const files = git(['ls-tree', '-r', rev]).split('\\n');";`);
-const KP_MODULE   = kpFromSource(String.raw`const F = "import { readFileSync } from 'node:fs';";`);
-const KP_TSANNOT  = kpFromSource(String.raw`const F = "const rows: Array<string> = xs.map((x) => String(x));";`);
-const KP_ESCAPED  = kpFromSource(String.raw`const F = 'const s = \'x\'; return s;';`);
-const KP_FRAGMENT = kpFromSource(String.raw`const F = "const files = git(['ls-tree', '-r', rev";`);
+const KP_PLAIN    = kpFromSource(String.raw`const F = "const files = git(['ls-tree', '-r', rev]).split('\\n');";`); // SHAPE: no site (410)
+const KP_MODULE   = kpFromSource(String.raw`const F = "import { readFileSync } from 'node:fs';";`); // SITE: round365-instruments/b1.mjs:9 as code, round407-instruments/census-the-fixture-as-string-class.mjs:296 as a carried string (410)
+const KP_TSANNOT  = kpFromSource(String.raw`const F = "const rows: Array<string> = xs.map((x) => String(x));";`); // SHAPE: no site (410)
+const KP_ESCAPED  = kpFromSource(String.raw`const F = 'const s = \'x\'; return s;';`); // SHAPE: no site (410)
+const KP_FRAGMENT = kpFromSource(String.raw`const F = "const files = git(['ls-tree', '-r', rev";`); // SHAPE, negative by design: an unterminated fragment has no site to have (410)
 // Interpolation-bearing KPs cannot be written with String.raw — `${` interpolates there too — so
 // these two use a cooked template with `\${` and `\``, which produces the same source bytes.
-const KP_INTERP   = kpFromSource(`const F = \`const HERE = \${JSON.stringify(POP)};\`;`);
+const KP_INTERP   = kpFromSource(`const F = \`const HERE = \${JSON.stringify(POP)};\`;`); // SHAPE: no site; cooked, so neither 409's key nor 410's body key can read it (410)
 // KP_NEWLINE is `probe-round295-…mts:214` verbatim — `const B_CLEAN = 'const x = 1;\nconsole.log
 // (x);\n';` — read out of the file rather than retyped from the hand read's JSON dump, which
 // doubles every backslash and cost drive 7 a red: I declared `\\n` and the real source has `\n`.
@@ -412,8 +412,8 @@ const KP_INTERP   = kpFromSource(`const F = \`const HERE = \${JSON.stringify(POP
 // to contain real newlines and wrote `\n` once; KP_PLAIN's author wanted the fixture's own source
 // to read `.split('\n')` and wrote `\\n`. Decoding is correct for both, and only one of them
 // parses as sliced, so both directions of the axis are covered by real neighbourhoods (341).
-const KP_NEWLINE  = kpFromSource(String.raw`const B_CLEAN = 'const x = 1;\nconsole.log(x);\n';`);
-const KP_MESSAGE  = kpFromSource(
+const KP_NEWLINE  = kpFromSource(String.raw`const B_CLEAN = 'const x = 1;\nconsole.log(x);\n';`); // SITE: probe-round295-...mts:214, verbatim (409 E4, 410)
+const KP_MESSAGE  = kpFromSource( // SITE: scripts/probe-import-large-session.mts:391, hand-read (410 P7) — invisible to 409's stratum() and to 410's body key, because the argument is not on this line
   `const F = \`import succeeded (\${subject.dir.split('-').pop()}, \${mb(subject.size)}, `
   + `\${subject.lines.toLocaleString()} lines)\`;`);
 

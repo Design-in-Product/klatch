@@ -1,0 +1,19 @@
+0000000    c   o   n   s   t       a       =       S   t   r   i   n   g
+0000020    .   r   a   w   `   a   A   b   `   ;  \n   c   o   n   s   t
+0000040        b       =       S   t   r   i   n   g   .   r   a   w   `
+0000060    a   \   n   b   `   ;  \n   c   o   n   s   t       c       =
+0000100        S   t   r   i   n   g   .   r   a   w   `   a   \   x   4
+0000120    1   b   `   ;  \n   c   o   n   s   o   l   e   .   l   o   g
+0000140    (   '   u   :   '   ,       J   S   O   N   .   s   t   r   i
+0000160    n   g   i   f   y   (   a   )   ,       a   .   l   e   n   g
+0000200    t   h   )   ;  \n   c   o   n   s   o   l   e   .   l   o   g
+0000220    (   '   n   :   '   ,       J   S   O   N   .   s   t   r   i
+0000240    n   g   i   f   y   (   b   )   ,       b   .   l   e   n   g
+0000260    t   h   )   ;  \n   c   o   n   s   o   l   e   .   l   o   g
+0000300    (   '   x   :   '   ,       J   S   O   N   .   s   t   r   i
+0000320    n   g   i   f   y   (   c   )   ,       c   .   l   e   n   g
+0000340    t   h   )   ;  \n                                            
+0000345
+u: "aAb" 3
+n: "a\\nb" 4
+x: "a\\x41b" 6
