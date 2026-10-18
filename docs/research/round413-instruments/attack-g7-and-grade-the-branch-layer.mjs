@@ -68,6 +68,10 @@ const EXPECTED = [
     + 'the previous round\'s instruments, so the population under this round\'s seam is larger'],
   ['P3', 'a third shape in his P3 family: `cond ? .5 : 1` is MISSED by isCond (`?` followed by '
     + '`.`) and then decided by its own test. Constructed hit; live class published as measured'],
+  ['P4', 'ADDED AT DRIVE 4, not pre-registered with the rest, and said so: his §1 "10 of 62 carry '
+    + 'a `?` in their seven-line window" reconciles against my 2 of 57 on two differences at '
+    + 'once — the UNSEAMED population (62) and a LITERAL seven-line window where contRaw stops '
+    + 'as soon as the expression is finished'],
 ];
 
 const RESULTS = [];
@@ -297,6 +301,41 @@ g('P3', 'RE-AIMED: `f(x) ?.5 : \'y\'` is a real conditional (`?.` is not optiona
   + `${dd === null ? 'NOT A TERNARY (invisible)' : JSON.stringify(dd)} · so @411=${ddTwo.a} `
   + `@412=${ddTwo.s} MOVES=${ddTwo.moves} — DECIDED, where the branches disagree and the cure owes `
   + `a refusal · live class ${liveDigitDot.length}`);
+
+// ─── P4 — reconcile his 10 of 62 against my 2 of 57 (added at drive 4) ─────────────────────────
+/**
+ * Two differences at once, which is why neither figure alone reads as the other's. His 62 is the
+ * population with HIS OWN directory left IN (57 + the 5 from round412). And "seven-line window" is
+ * literal, where `contRaw` takes `continuationLines(d)` lines and that stops as soon as the
+ * expression is finished — a declaration complete on its own line gets a ONE-line window, so a `?`
+ * two lines below it is outside `contRaw` and inside a literal seven.
+ *
+ * `CONT_CAP = 6`, so init + 6 after-lines IS his seven. Varying both axes rather than one (339: two
+ * keys sharing a denominator agree vacuously), and reported as a 2 x 2 so the figure that matches
+ * his is identified by which pair of choices produces it.
+ */
+const unseamed = M.ROWS.filter((r) => r.path !== M.HIS && !r.path.startsWith(SELF_DIR));
+const literal7 = (r) => [r.d.init, ...r.d.afterRaw.slice(0, 6)].join('\n');
+const qIn = (rows, win) => rows.filter((r) => win(r).includes('?')).length;
+const grid = {
+  'seamed(57) x contRaw': qIn(hisP, (r) => r.raw),
+  'seamed(57) x literal7': qIn(hisP, literal7),
+  'unseamed(62) x contRaw': qIn(unseamed, (r) => r.raw),
+  'unseamed(62) x literal7': qIn(unseamed, literal7),
+};
+const matches = Object.entries(grid).filter(([, v]) => v === 10).map(([k]) => k);
+/** CORRECTED BY THE GRID. I expected both axes to be involved. Only one is: the window accounts for
+ *  the whole 2 -> 10 move, at the SEAMED population of 57. His 10 is therefore measured over 57
+ *  while the 62 he states beside it counts the UNSEAMED set — his numerator and his denominator
+ *  come from different populations. Over one population it is 10 of 57 or 13 of 62, not 10 of 62. */
+g('P4', 'CORRECTED BY THE GRID: his 10 reconciles on ONE axis, not two — a LITERAL seven-line '
+  + 'window over the SEAMED 57. So his stated "10 of 62" pairs a numerator measured over 57 with a '
+  + 'denominator counting the unseamed set; over one population it is 10 of 57 or 13 of 62',
+  unseamed.length === 62 && grid['seamed(57) x literal7'] === 10
+  && grid['unseamed(62) x literal7'] === 13 && matches.length === 1,
+  `populations: seamed ${hisP.length} · unseamed ${unseamed.length} (his 62) · `
+  + `${Object.entries(grid).map(([k, v]) => `${k} = ${v}`).join(' · ')} · `
+  + `cell(s) reproducing his 10: ${matches.length === 0 ? 'NONE — still unreconciled' : matches.join(', ')}`);
 
 // ─── report ────────────────────────────────────────────────────────────────────────────────────
 const rev = git(['rev-parse', 'HEAD']).trim();

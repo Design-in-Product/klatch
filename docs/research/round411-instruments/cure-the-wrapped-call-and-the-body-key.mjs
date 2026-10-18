@@ -68,7 +68,12 @@ const EXPECTED = [
   ['G2', 'every KP resolves at its cited {path, line, ident}, or this exits 2 (341/399)'],
   ['G3', 'the body key is graded on a hand-read known positive (KP_MODULE: 9 code sites and one '
        + 'carried site, hand-read BEFORE this ran and graded against the live corpus, 350) and on '
-       + 'a CONSTRUCTED control that no write path can rewrite (410 §4)'],
+       + 'a CONSTRUCTED control that no write path can rewrite (410 §4) '
+       + '— the 9 is CORRECTED TO 16 by drive 1 of this instrument, and the leg itself was '
+       + 'REPAIRED IN ROUND 413 (the typed count pin reddened when round412 landed; it is now the '
+       + 'hand read\'s member list). The pre-registration is left as written rather than backdated '
+       + '(408 P6); the clause is Theseus 412 §4, who asked that a reader not meet 9 and 16 in one '
+       + 'output with nothing joining them'],
   ['G4', 'the seam does exactly one thing: seam OFF, the TYPED control is found in THIS FILE and '
        + 'only this file; seam ON it vanishes; the known positive survives both (405). The seam is '
        + 'this ROUND\'S DIRECTORY, derived from import.meta.url — re-keyed after drive 3, where a '
@@ -453,14 +458,48 @@ g('G2', 'every KP resolved at its cited {path, line, ident}, and his eight are a
 // My FIRST hand read said nine, and so does his 410 §1. Nine is the number you get from the first
 // twelve lines of that grep — which is what I had typed, `| head -12`. The count is a graded leg
 // here precisely because it was prose in both of our memos and prose is not measured.
-const HAND_READ_CODE_FILES = 16;
+// ─── REPAIRED IN ROUND 413, and the defect was not the clause above it ─────────────────────────
+// `HAND_READ_CODE_FILES = 16` was a typed count pin, and it went RED the moment Theseus's Round 412
+// landed: both of his instruments carry this import line verbatim, so the live figure moved 16 -> 18
+// with nothing in MY round changing. Driven as a counterfactual before it was touched — the clause
+// Theseus's 412 §4 asked for was reverted and the leg was still red — recorded at
+// `round413-instruments/my411-redriven-WITHOUT-the-clause.out`.
+//
+// This is my own 377/405 rule (a pin on a count reddens on its own promotion) in its sharper form:
+// it was not my promotion, it was the NEXT SEAT'S round. And it is the same defect as Round 413's
+// P2 from the other end — his directory seam held his figure stable inside his own commit, and my
+// count pin had no seam against his directory at all.
+//
+// The repair is 340 (compare member lists, not counts): the pin is now the MEMBER LIST, read out of
+// the recorded hand read rather than retyped, and the claim is monotone — every hand-read member is
+// still live, and anything extra is NAMED and must come from a round LATER than this one. A count
+// cannot say which 18 it found; a list can, and growth stops being indistinguishable from drift.
+const HAND_READ_OUT = 'docs/research/round411-instruments/handread-the-body-sites.out';
+const MY_ROUND = 411;
+/** The recorded hand read is `git grep -n` output: `path:line:text`. A CODE member is a row whose
+ *  text is the body verbatim; the carried row is the one where it sits inside a string. */
+const handReadCodeFiles = (body) => {
+  const want = body.trim();
+  const rows = readFileSync(join(REPO, HAND_READ_OUT), 'utf8').split('\n').filter((l) => l !== '');
+  const out = [];
+  for (const row of rows) {
+    const m = row.match(/^([^:]+):(\d+):(.*)$/);
+    if (m !== null && m[3].trim() === want) out.push(m[1]);
+  }
+  return [...new Set(out)].sort();
+};
+const roundOf = (p) => {
+  const m = p.match(/round(\d+)-instruments\//);
+  return m === null ? null : Number(m[1]);
+};
 const HAND_READ_CARRIED = 'docs/research/round407-instruments/census-the-fixture-as-string-class.mjs';
 const kpModule = EIGHT_ROWS.find((r) => r.name === 'KP_MODULE');
-const codeFileCount = (body, skip) => {
+const codeFiles = (body, skip) => {
   const want = body.trim();
   return SOURCES.filter(([p, src]) =>
-    !skip.has(p) && src.split('\n').some((l) => l.trim() === want)).length;
+    !skip.has(p) && src.split('\n').some((l) => l.trim() === want)).map(([p]) => p).sort();
 };
+const codeFileCount = (body, skip) => codeFiles(body, skip).length;
 
 // TWO controls, because one object cannot do both jobs — drive 3 is where that became visible.
 //
@@ -479,16 +518,31 @@ const CONTROL_CONSTRUCTED =
   `const zz_r411_constructed_${BS}u0041 = 'no corpus line is spelled this way';`;
 const CONTROL_TYPED = "const zz_r411_typed_control = 'this line is in exactly one corpus file';";
 
-g('G3', 'the body key reproduces the hand read on a known positive and refuses a constructed control',
+const HR_MEMBERS = kpModule === undefined ? [] : handReadCodeFiles(kpModule.body);
+const LIVE_MEMBERS = kpModule === undefined ? [] : codeFiles(kpModule.body, SKIP);
+const MISSING = HR_MEMBERS.filter((p) => !LIVE_MEMBERS.includes(p));
+const NEWCOMERS = LIVE_MEMBERS.filter((p) => !HR_MEMBERS.includes(p));
+const NEWCOMERS_LATER = NEWCOMERS.every((p) => {
+  const r = roundOf(p);
+  return r !== null && r > MY_ROUND;
+});
+g('G3', 'the body key reproduces the hand read on a known positive and refuses a constructed '
+  + 'control. REPAIRED IN 413: the pin is the hand read\'s MEMBER LIST, read out of the recording, '
+  + 'and the claim is monotone — no member lost, and every newcomer NAMED and from a later round',
   kpModule !== undefined
   && typeof kpModule.asCode === 'string' && typeof kpModule.carried === 'string'
-  && codeFileCount(kpModule.body, SKIP) === HAND_READ_CODE_FILES
+  && HR_MEMBERS.length === 16
+  && MISSING.length === 0
+  && NEWCOMERS_LATER === true
   && kpModule.carried === HAND_READ_CARRIED
   && bodyIsCode(CONTROL_CONSTRUCTED, SKIP) === false
   && bodyCarried(CONTROL_CONSTRUCTED, SKIP) === false,
   `KP_MODULE body ${JSON.stringify(kpModule?.body)} · asCode ${kpModule?.asCode} · `
-  + `code files ${kpModule === undefined ? 'MISSING' : codeFileCount(kpModule.body, SKIP)} `
-  + `(hand read ${HAND_READ_CODE_FILES}, INHERITED corpus) · carried ${kpModule?.carried} · `
+  + `hand-read members ${HR_MEMBERS.length} (read out of ${HAND_READ_OUT.split('/').pop()}, not `
+  + `retyped) · live ${LIVE_MEMBERS.length} · lost 0 of them: ${MISSING.length === 0} · `
+  + `newcomers since round ${MY_ROUND}: ${NEWCOMERS.length} `
+  + `[${NEWCOMERS.map((p) => p.split('/').slice(-2).join('/')).join(' | ')}] all from a later `
+  + `round: ${NEWCOMERS_LATER} · carried ${kpModule?.carried} · `
   + `constructed control asCode ${bodyIsCode(CONTROL_CONSTRUCTED, SKIP)} `
   + `carried ${bodyCarried(CONTROL_CONSTRUCTED, SKIP)}`);
 

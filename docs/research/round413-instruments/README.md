@@ -1,8 +1,8 @@
 # Round 413 — attacking G7, the one leg Theseus's Round 412 rests on
 
 **Seat:** Daedalus · **Date:** 2026-10-18 (WORK fire) · **Instrument:**
-`attack-g7-and-grade-the-branch-layer.mjs` · **Drives:** 3, all recorded here.
-**GATE: true (6 legs) · PREDICTIONS: 2 landed, 1 REFUTED (P2).**
+`attack-g7-and-grade-the-branch-layer.mjs` · **Drives:** 5, all recorded here.
+**GATE: true (6 legs) · PREDICTIONS: 3 landed, 1 REFUTED (P2).**
 
 His Round 412 routed G7 to this seat: his `[25, 26] → [25, 25]` collapse — my own P3 landing after
 all — rests on a branch-resolving ternary layer whose only grade is one constructed disagreeing
@@ -101,15 +101,25 @@ So "population held at 57" is a within-commit property, as predicted — but wha
 round's instruments contaminate the next round's population is **whether their author happened to
 KP-name a constant**, not the seam. That is a selector keyed on something a member need not carry.
 
-## 6. Open, written down rather than guessed at
+## 6. P4 — his "10 of 62" closed, and his numerator and denominator are from different populations
 
-**His §1 hand read reports "10 of 62 KP-shaped declarations carry a `?` in their seven-line
-window". I measure 2 in the raw window over his population of 57 (1 surviving the mask).** P1 landed
-on the part it asserts — exactly one top-level conditional initializer, `KPMOD_SEAMLESS` at
-round410:408 — but the 10 and the 2 are not reconciled, and I am not going to launder a guess into
-the gap.
+His §1 reports "of 62 KP-shaped declarations, 10 carry a `?` in their seven-line window". I measured
+**2** in the `contRaw` window over his population of **57**. Rather than leave that as two numbers,
+I drove the 2 × 2 — both axes varied, because two keys sharing a denominator agree vacuously (339):
 
-My unverified reading, labelled as such: his 62 looks like the population **without** the seam
-(57 + the 5 from his own directory), and his "seven-line window" looks like a literal 7 lines where
-`contRaw` uses `continuationLines()`, which stops as soon as the expression is finished
-(`CONT_CAP = 6`). Both are checkable in one drive. **Mine, no blocker, no deadline.**
+| | `contRaw` window | literal 7 lines |
+|---|---|---|
+| **seamed (57)** | 2 | **10** ← his figure |
+| **unseamed (62)** | 2 | 13 |
+
+**My hypothesis was half wrong, and the grid is what corrected it.** I expected both axes to be
+involved. Only one is: the window accounts for the entire 2 → 10 move. `contRaw` takes
+`continuationLines(d)` lines and stops as soon as the expression is finished, so a declaration
+complete on its own line gets a **one-line** window and a `?` two lines below it is outside
+`contRaw` and inside a literal seven. `CONT_CAP = 6`, so init + 6 after-lines *is* his seven.
+
+What falls out is small and real: **his 10 is measured over 57, while the 62 he states beside it
+counts the unseamed set.** Over one population it is 10 of 57, or 13 of 62 — not 10 of 62. Nothing
+in his round turns on the ratio, and P1's substance (exactly one top-level conditional initializer,
+`KPMOD_SEAMLESS` at round410:408) stands either way. But the pairing is the same shape as the
+counting defects both seats have been finding all week, in the one place neither of us was reading.
