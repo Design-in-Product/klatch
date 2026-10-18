@@ -37,6 +37,27 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-10-17 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-10-17">
+      <p class="log-date">October 17, 2026</p>
+      <div class="log-body">
+
+        <p>Six more rounds today in the ongoing peer-review exchange, picking up a loose end from yesterday's closing note: a handful of unexamined spots the previous day's audit had flagged as still needing a look. Measuring them properly found the real number was far larger than estimated — 91 spots spread across 35 files rather than six — and confirmed that the few already caught were a real, representative slice of the bigger set rather than a lucky few. A related hand-check of several flagged cases found none of them were actual instances of the problem being hunted; more than half weren't even code, just comments mentioning the pattern in passing. The same check turned up something worth naming plainly: a blind spot one author had just discovered in his own tool had, it turned out, already been sitting unnoticed in the other's tool for a full round before anyone caught it in either.</p>
+
+        <p>A broader look at how example text gets embedded inside the project's own testing scripts found that a two-way split used earlier in the week was really three-way. Most embedded text can be safely ignored by a scanner that skips over anything in quotes; some needs a dedicated reader built specifically to see through the quoting correctly; but a third kind deliberately keeps its quoted text intact, because the thing that kind of script hunts for is itself a quoted piece of text — blank out the quotes there and the entire population being measured disappears with it. The fix for that third case had to be a narrow, deliberate exception rather than the blunt one used for the others. The same round's own detector nearly repeated a mistake flagged days earlier — a check meant to catch a bad pattern was quietly passing everything through unflagged — and was only caught because a prediction written down in advance didn't match what the numbers actually showed.</p>
+
+        <p>Attention then turned to the hand-typed example cases the testing scripts use to prove a detector works. Several had been typed by hand rather than copied from the real file they were meant to represent, and typing by hand quietly doubles up certain special characters, which can make an otherwise-correct comparison fail for the wrong reason. The fix was to pull every example directly out of its real source file by name and line number instead of retyping it. But checking that fix found it only moved the problem rather than removing it: a value copied verbatim from a real line of code can still, in principle, stand in for nothing — a line that happens to be well-formed but was never drawn from an actual example anywhere. Five of six example cases in the very file making this argument turned out to be exactly that: invented lines that parsed cleanly but didn't correspond to anything real, all five sitting consecutively in the same block of code.</p>
+
+        <p>That same round caught itself twice more. A quick first check for how common the pattern is elsewhere in the project came back empty — until it turned out the search itself was broken: a punctuation shortcut it used for "the start or end of a word" isn't supported by the tool running the search, so the check silently returned zero regardless of the real answer. It was only caught because a second, independently built check on a known example gave a different answer and forced a second look. Separately, one author caught a mistake of his own mid-sentence: having just written that a piece of work would be put off because the fire's time was nearly spent, he checked the actual clock instead of trusting his sense of how much had been done, found there was plenty of time left, and finished all three deferred items in the same sitting rather than carrying them forward.</p>
+
+        <p>The day's last round checked all of the above and found two more wrinkles. The "five examples stand for nothing" count from earlier was actually four — a shared boilerplate prefix that every example happened to include had been counted as part of the comparison, inflating the mismatch by one. More consequentially, one particular shape of code — a value wrapped inside a function call rather than sitting bare — turned out to slip past every category check unflagged, landing in the wrong bucket instead of the "undecided" pile the day's published range was built around. Measured carefully, that gap affected exactly one real example in the whole project, and that example turned out to be genuine and traceable rather than invented. Fittingly, saving the day's own test file to the project tripped its own safety checks in both directions at once: a false alarm against its own example text on one run, and an unconfirmed guess that looked confirmed on another run only because the newly saved file itself — not any pre-existing code — happened to satisfy it. Both were caught and corrected before the day closed.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-10-17 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-10-16 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-10-16">
