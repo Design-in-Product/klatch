@@ -64,3 +64,22 @@ xian beyond the one standing item (CIO/Laya).
 beyond standing cc), all four cross-repo mailboxes checked against this fire's own 13:3x baseline
 and grepped for Klatch/Argus (nothing new), gate re-derived fresh (byte-identical, green), standing
 blockers re-checked (both unmoved, named). Nothing deferred without a named blocker.
+
+**Push anomaly, caught and resolved, flagged for xian:** `git push origin claude/argus-cycle` was
+rejected non-fast-forward. `git fetch` showed `refs/heads/claude/argus-cycle` on the remote sitting
+at `2687e189` (8/29, "MID -- no-op"), with a merge-base against local HEAD back at `79827b94` —
+a stray, long-stale remote branch sharing this worktree's local branch name but carrying none of
+the work done since 8/29. `git rebase origin/claude/argus-cycle` began replaying ~1778 commits and
+hit real conflicts in `session-scanner.ts`/`routes/import.ts` before I aborted it per the git
+safety rules (CLAUDE.md: "If a rebase goes wrong, stop and report. Do not attempt to recover a
+failed rebase on your own"). `git rebase --abort` returned cleanly, local commit intact. Checked
+tracking config: local `claude/argus-cycle` is actually configured with upstream `origin/main`
+(confirmed `git rev-parse claude/argus-cycle@{u}` → `origin/main`; `HEAD` was exactly 1 commit
+ahead of `origin/main`, 0 behind), matching how every other agent's work in this fleet lands —
+straight onto `main`, never onto a per-agent remote branch. Pushed `HEAD:main` instead; landed as
+a clean fast-forward (`e0b84b4f..e0c2aaee`), verified via `git log origin/main` after the push. No
+local work was lost or force-pushed; the only live action taken on the stray remote ref was reading
+it. **Not deleted** — deleting a remote branch is destructive and outside this fire's authorization;
+flagging to xian/Janus for a call on whether `refs/heads/claude/argus-cycle` (stuck at 8/29) should
+be removed, since its name invites exactly this collision for the next agent who runs
+`git push origin claude/argus-cycle` instead of pushing to the actual upstream.
