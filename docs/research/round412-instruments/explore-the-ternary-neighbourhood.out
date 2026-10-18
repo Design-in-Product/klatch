@@ -1,0 +1,52 @@
+docs/research/round352-valuation-leg-key.mjs:150 KP
+   INIT  " ["
+   +1    "  \"const tag = r.kind === 'measurement' ? 'MEAS' : r.pass ? 'PASS' : 'FAIL';\\nconsole.log(`${tag} [$"
+   +2    "  \"const tag = pass ? 'PASS' : kind === 'measurement' ? 'MEAS' : 'FAIL';\\nconsole.log(`${tag} [${arm"
+   +3    "];"
+docs/research/round365-instruments/haz-delta.mts:16 KP
+   INIT  " hazards('const x = \"npm run test -w packages/server\";');"
+   +1    "console.log(`KP (a file naming the npm-prefixed suite script): [${KP.join(', ')}]`);"
+   +2    "let bad = KP.includes('suite') ? 0 : 1;"
+   +3    "if (bad) console.log('GRADE detector: false — the known positive did not class as `suite`');"
+docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs:348 KP_PROBE_PRINTS
+   INIT  " 18;"
+   +1    "const keyAgreesWithProbe = now.arrow === KP_PROBE_PRINTS;"
+   +2    "const grewBy = Object.entries(now.per)"
+   +3    "  .filter(([f, [a]]) => a !== (then.per[f]?.[0] ?? 0))"
+docs/research/round401-instruments/census-the-branch-polarity-axis.mjs:846 CONTROL
+   INIT  " join(REPO, 'docs/research/round401-instruments/control-pre-label-repair.out');"
+   +1    ""
+   +2    "// Hoisted ABOVE both consumers so the grade and the headline read the SAME accumulator. A grade"
+   +3    "// that recomputes the figure it is grading is hollow (369), and two copies of this filter would be"
+docs/research/round409-instruments/census-the-hand-typed-known-positive.mjs:173 KP_NAME
+   INIT  " /^(KP|KNOWN_POSITIVE|KNOWN_NEGATIVE|CONTROL)[A-Za-z0-9_]*$/;"
+   +1    ""
+   +2    "/** Does this file SLICE SOURCE — read source text and extract spans out of it? The hazard only"
+   +3    " *  bites a KP standing in for a slice, so a file that never slices cannot host the class. */"
+docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs:392 CONTROL_BODY
+   INIT  " 'const zz_no_such_line_in_this_corpus_410 = 1;';"
+   +1    "const CONTROL_CARRIED = bodyCarried(CONTROL_BODY, MINE408);"
+   +2    "const CONTROL_CODE = bodyIsCode(CONTROL_BODY, MINE408);"
+   +3    "g('G3', 'the body-key comes back the right way on a known positive and on a control',"
+docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs:393 CONTROL_CARRIED
+   INIT  " bodyCarried(CONTROL_BODY, MINE408);"
+   +1    "const CONTROL_CODE = bodyIsCode(CONTROL_BODY, MINE408);"
+   +2    "g('G3', 'the body-key comes back the right way on a known positive and on a control',"
+   +3    "  KP_MOD !== undefined && typeof KP_MOD.asCode === 'string' && typeof KP_MOD.carried === 'string'"
+docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs:394 CONTROL_CODE
+   INIT  " bodyIsCode(CONTROL_BODY, MINE408);"
+   +1    "g('G3', 'the body-key comes back the right way on a known positive and on a control',"
+   +2    "  KP_MOD !== undefined && typeof KP_MOD.asCode === 'string' && typeof KP_MOD.carried === 'string'"
+   +3    "    && CONTROL_CARRIED === false && CONTROL_CODE === false,"
+docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs:408 KPMOD_SEAMLESS
+   INIT  " KP_MOD === undefined ? null : bodyCarried(KP_MOD.body, MINE408, false);"
+   +1    "g('G7', 'the self seam does exactly one thing — with it OFF the control is found in THIS FILE '"
+   +2    "      + 'and only there, with it ON the control vanishes, and the known positive survives both',"
+   +3    "  CTRL_SEAMLESS === SELF410 && CONTROL_CARRIED === false"
+docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs:433 KP_FRAG
+   INIT  " READ.find((r) => r.ident === 'KP_FRAGMENT');"
+   +1    "g('P3', 'KP_FRAGMENT stands for nothing under every key, and that is correct by design',"
+   +2    "  KP_FRAG !== undefined && KP_FRAG.carried === false"
+   +3    "    && (KP_FRAG.asCode === false || KP_FRAG.asCode === 'UNDECODABLE'),"
+
+scanned 62 KP-shaped declaration(s); 10 have a "?" in the window

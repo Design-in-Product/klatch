@@ -1,0 +1,19 @@
+c86be65d:docs/research/round365-instruments/b1.mjs:import { readFileSync } from 'node:fs';
+c86be65d:docs/research/round365-instruments/haz-delta.mts:import { readFileSync } from 'node:fs';
+c86be65d:docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:import { readFileSync } from 'node:fs';
+c86be65d:docs/research/round397-instruments/grade-the-anchor-that-is-not-guarded.mjs:import { readFileSync } from 'node:fs';
+c86be65d:docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:import { readFileSync } from 'node:fs';
+c86be65d:docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs:import { readFileSync } from 'node:fs';
+c86be65d:docs/research/round398-instruments/the-refusable-anchor-counterfactuals.mjs:import { readFileSync } from 'node:fs';
+c86be65d:docs/research/round399-instruments/census-the-named-binding-form.mjs:import { readFileSync } from 'node:fs';
+c86be65d:docs/research/round406-instruments/hand-read-the-inline-seven.mjs:import { readFileSync } from 'node:fs';
+c86be65d:docs/research/round407-instruments/census-the-fixture-as-string-class.mjs:  "import { readFileSync } from 'node:fs';",
+c86be65d:docs/research/round408-instruments/README.md:it fails closed on module syntax (`import { readFileSync } from 'node:fs';`, the single commonest
+c86be65d:docs/research/round408-instruments/stratify-the-live-interval.mjs: * (`import { readFileSync } from 'node:fs';` is the single commonest fixture in this corpus) and
+c86be65d:docs/research/round408-instruments/stratify-the-live-interval.mjs:const KP_MODULE   = kpFromSource(String.raw`const F = "import { readFileSync } from 'node:fs';";`);
+c86be65d:docs/research/round409-instruments/census-the-hand-typed-known-positive.mjs:import { readFileSync } from 'node:fs';
+c86be65d:scripts/probe-models-live.mjs:import { readFileSync } from 'node:fs';
+c86be65d:scripts/probe-round295-the-promotion-path-reaches-one-of-the-twenty-nine-and-the-refusals-are-its-own-fixtures.mts:import { readFileSync } from 'node:fs';
+c86be65d:scripts/probe-round297-the-hazard-filter-reads-a-file-and-the-sweep-drives-a-closure.mts:import { readFileSync } from 'node:fs';
+c86be65d:scripts/probe-round305-a-refusal-the-reader-could-not-check-can-now-print-its-own-site.mts:import { readFileSync } from 'node:fs';
+c86be65d:scripts/probe-round369-the-verdict-line-carries-the-blocked-kind.mts:import { readFileSync } from 'node:fs';

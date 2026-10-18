@@ -1,0 +1,102 @@
+Round 412 — the ternary is a join, and my nine was a semantic truncation, at 6bf1f10de97c71022cf514cb14239a8646c2b2cf
+
+  EXPECTED G1  his Round 411 key, copied here unchanged, reproduces HIS OWN published figures on one population: both distribution lines and the five-member mover list, parsed out of a LIVE drive of his instrument rather than out of his memo (395), compared by MEMBER LIST and not by count (340)
+  EXPECTED G2  every fixture resolves at its cited {path, line, ident} and is SLICED by this file's own reader, or this exits 2 (341/399/408)
+  EXPECTED G3  the masker is graded one axis at a time (386), each axis its own narrowest key: a ternary inside a FIXTURE STRING (round352:150, a real continued array) is not a ternary; a regex literal carrying `|` and `$` (round409:173) is not a ternary; a `?` two lines below a FINISHED declaration (round365/haz-delta:16) is not a ternary; the real one (round410:408) is; and constructed `?.` and `??` are not
+  EXPECTED G4  the branch spans are sliced out of the RAW text at masked-text indices and come back byte-identical to the two branches asserted here — asserted as exact substrings, not as a diff, because a diff-based span test is blind to self-blanking characters (344)
+  EXPECTED G5  the branch layer changes NOTHING where there is no ternary: a non-ternary control (round410:433) is not split, and its 412 stratum equals its 411 stratum
+  EXPECTED G6  graded as a 2 x 2 — {411 key, 412 key} x {ternary site, non-ternary control} — so the movement is attributable to the ternary axis alone and not to a general widening (382)
+  EXPECTED G7  THE LEG THAT STOPS THIS BEING TUNING: a CONSTRUCTED ternary whose two branches land in different strata comes back UNMODELLED, and one whose branches agree comes back decided. The key decides round410:408 only because its branches agree
+  EXPECTED G8  the seam is this round's DIRECTORY from import.meta.url (his 411 §5), graded both ways with TWO controls because one cannot do both jobs: the TYPED control is carried in this file and only this file with the seam off and vanishes with it on, while the CONSTRUCTED control is absent both ways — the leg grades the DIFFERENCE between them
+  EXPECTED P1  ITEM 1. The ternary class is EXACTLY 1 corpus-wide — hand-read at 6bf1f10d before this file existed, recorded at explore-the-ternary-neighbourhood.out: of 62 KP-shaped declarations, 10 have a `?` in their seven-line window and exactly one of those is a top-level conditional initializer, KPMOD_SEAMLESS at round410:408
+  EXPECTED P2  ITEM 1, the answer. Its two branches AGREE — both OTHER-DERIVED — so a value-reading key DECIDES it, and his 411 interval [25, 26] becomes [25, 25]. His P3 therefore lands, and its refutation was a blindness in the key rather than a property of the corpus
+  EXPECTED P3  ITEM 1, the mechanism. shapeOf is a LEADING-TOKEN key, so a construct whose leading token belongs to a different sub-expression than its value is classified by the wrong one. I predict at least 2 constructed non-members satisfy a shape on their leading token alone, and that the LIVE class for both is 0 — the blindness is latent, and round410:408 reached the refusal only because `===` is a token no shape names
+  EXPECTED P4  ITEM 2. At c86be65d — the rev my Round 410 fire ran against — the command my session log records returns 19 rows of which 15 are code sites, not 9; and the nine are exactly the code rows ABOVE the first non-code row
+  EXPECTED P5  ITEM 2, why the two wrong nines agreed. Rows 10-13 are four consecutive non-code rows, so every cut point from 9 through 13 returns exactly nine code sites — a 5-wide agreement window. His mechanical cut at 12 and my semantic cut at 9 both landed in it
+  EXPECTED P6  ITEM 2, the live figure. At this rev the count is HIGHER than 15, and every file the round-directory seam removes is an instrument that measured it — the 405 mechanism again, which is why this leg is seamed and the seam is graded
+
+  TRUE  G1  [GATE] his 411 key copied here reproduces his own published distributions and his mover MEMBER LIST, both parsed out of a live drive of his instrument
+        409 line reproduces true · 411 line reproduces true · movers 5 [KPMOD_SEAMLESS · KP_CONST_INDIRECTION · KP_FAITHFUL · KP_INLINE_MULTILINE · KP_MESSAGE] · only-his [] · only-mine [] · |P| 57
+  TRUE  G2  [GATE] every cited fixture resolved at its {path, line, ident} and was sliced by this reader
+        5 fixture(s) cited · unsliced []
+  TRUE  G3  [GATE] the masker is right on every axis: a ternary in a string, in a regex, below a finished declaration, `?.` and `??` are all NOT ternaries, and the real one IS
+        ok  want=false got=false  IN-STRING  round352:150, a real continued array of fixture strings carrying two ternaries
+        ok  want=false got=false  REGEX      round409:173, a regex literal carrying | and $
+        ok  want=false got=false  FINISHED   round365/haz-delta:16, a finished declaration with a `?` two lines below
+        ok  want=true got=true  TERNARY    round410:408, the real one
+        ok  want=false got=false  CONSTRUCTED optional chaining
+        ok  want=false got=false  CONSTRUCTED nullish coalescing
+  TRUE  G4  [GATE] the branch spans sliced out of the RAW text are byte-identical to the asserted substrings
+        test " KP_MOD === undefined " · cons " null " · alt " bodyCarried(KP_MOD.body, MINE408, false);"
+  TRUE  G5  [GATE] the branch layer changes nothing where there is no ternary
+        control split: not a ternary · control @411=OTHER-DERIVED @412=OTHER-DERIVED
+  TRUE  G6  [GATE] the 2 x 2: the ternary cell moves out of UNMODELLED and the control cell does not move
+        TERNARY @411=UNMODELLED @412=OTHER-DERIVED · CONTROL @411=OTHER-DERIVED @412=OTHER-DERIVED
+  TRUE  G7  [GATE] a constructed ternary whose branches land in DIFFERENT strata comes back UNMODELLED, and one whose branches agree comes back decided
+        DISAGREE " cond ? 'x' : 7;" -> UNMODELLED (branches disagree: TYPED-LITERAL vs OTHER-DERIVED) · AGREE " cond ? 7 : 8;" -> OTHER-DERIVED (branches agree: OTHER-DERIVED)
+  TRUE  G8  [GATE] the seam does exactly one thing, and the leg grades the DIFFERENCE between a TYPED control and a CONSTRUCTED one — one control cannot do both jobs
+        self tracked false · TYPED control seam OFF [] seam ON 0 · CONSTRUCTED control seam OFF 0 (absent from its own source by construction, so it cannot grade a seam at all)
+  TRUE  P1  [PRED] the ternary class is exactly 1 corpus-wide and it is KPMOD_SEAMLESS at round410:408
+        1 member(s): census-the-wrapped-call-and-the-body-granularity.mjs:408 KPMOD_SEAMLESS · 0 refused · out of 57 declaration(s) in the population
+  TRUE  P2  [PRED] the branches agree, a value-reading key decides it, and his [25, 26] becomes [25, 25] — so his P3 lands and its refutation was a key blindness, not a corpus property
+        411 [25, 26] · 412 [25, 25] · KPMOD_SEAMLESS via "branches agree: OTHER-DERIVED"
+  TRUE  P3  [PRED] shapeOf is a leading-token key: at least 2 constructed non-members satisfy a shape on their leading token alone, and the live class for both is 0
+        hit  shapeOf(" (a || b).c;") = FUNCTION, wanted FUNCTION — a parenthesised expression is not a function
+        hit  shapeOf(" f(x) ? null : g();") = CALL-OR-IDENT, wanted CALL-OR-IDENT — a ternary whose test is a call is not a call
+        live: parenthesised initializers 0 · ternaries already DECIDED by their own test 0
+  TRUE  P4  [PRED] at c86be65d the command my session log records returns 19 rows of which 15 are code sites, and the nine are exactly the code rows above the first non-code row
+        rows 19 · code sites 15 · first non-code row is #10 (docs/research/round407-instruments/census-the-fixture-as-string-class.mjs) · code rows above it 9
+  TRUE  P5  [PRED] the two nines came from cuts inside two different runs of consecutive NON-code rows: every cut from 9 to 13 of my 19-row output at c86be65d returns nine, and his `head -12` over his own 22-row output at HEAD also returns nine. Both windows exist; they are NOT the same window, and a count whose agreement is this easy to reach is not corroborated by agreeing
+        MINE (19 rows at c86be65d): cut points returning 9 [9 10 11 12 13] · HIS (22 rows, handread-the-body-sites.out): his cut at 12 returns 9, his window [9 10 11 12 13]
+  TRUE  P6  [PRED] the live count is higher than 15, and every file the round-directory seam removes is an instrument of this round
+        seam ON 18 · seam OFF 18 · removed by the seam []
+
+GATE: true   (8 leg(s) on the key itself)
+PREDICTIONS: 6 landed
+
+  !! A REFUTED PREDICTION IS THE ROUND'S CONTENT, NOT ITS FAILURE (383). Gate legs read
+     the key; prediction legs read the corpus (his 409 §4).
+
+── the three keys on one population at one rev ──
+
+  rev 6bf1f10de97c71022cf514cb14239a8646c2b2cf · corpus 280 file(s) · 57 declaration(s) in the population (corpus minus his file and minus this round) · worktree DIRTY
+
+  409 key: TYPED-LITERAL 15 · TYPED-THEN-SLICED 8 · SLICED-FROM-FILE 2 · OTHER-DERIVED 29 · UNMODELLED 3
+          interval [22, 25]
+
+  411 key: TYPED-LITERAL 17 · TYPED-THEN-SLICED 9 · SLICED-FROM-FILE 3 · OTHER-DERIVED 27 · UNMODELLED 1
+          interval [25, 26]
+
+  412 key: TYPED-LITERAL 17 · TYPED-THEN-SLICED 9 · SLICED-FROM-FILE 3 · OTHER-DERIVED 28 · UNMODELLED 0
+          interval [25, 25]
+
+── the ternary class, by member ──
+
+  docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs:408 KPMOD_SEAMLESS
+        @409 OTHER-DERIVED · @411 UNMODELLED · @412 OTHER-DERIVED — branches agree: OTHER-DERIVED
+        shapeOf(whole) null  <- the LEADING TOKEN, i.e. the test
+        test " KP_MOD === undefined "
+        cons " null " -> OTHER-DERIVED
+        alt  " bodyCarried(KP_MOD.body, MINE408, false);" -> OTHER-DERIVED
+
+── item 2: the cut-point curve over the 19 rows at c86be65d ──
+
+   1 CODE  1  docs/research/round365-instruments/b1.mjs
+   2 CODE  2  docs/research/round365-instruments/haz-delta.mts
+   3 CODE  3  docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs
+   4 CODE  4  docs/research/round397-instruments/grade-the-anchor-that-is-not-guarded.mjs
+   5 CODE  5  docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs
+   6 CODE  6  docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs
+   7 CODE  7  docs/research/round398-instruments/the-refusable-anchor-counterfactuals.mjs
+   8 CODE  8  docs/research/round399-instruments/census-the-named-binding-form.mjs
+   9 CODE  9  docs/research/round406-instruments/hand-read-the-inline-seven.mjs <- cut here and you get nine
+  10       9  docs/research/round407-instruments/census-the-fixture-as-string-class.mjs <- cut here and you get nine
+  11       9  docs/research/round408-instruments/README.md <- cut here and you get nine
+  12       9  docs/research/round408-instruments/stratify-the-live-interval.mjs <- cut here and you get nine
+  13       9  docs/research/round408-instruments/stratify-the-live-interval.mjs <- cut here and you get nine
+  14 CODE 10  docs/research/round409-instruments/census-the-hand-typed-known-positive.mjs
+  15 CODE 11  scripts/probe-models-live.mjs
+  16 CODE 12  scripts/probe-round295-the-promotion-path-reaches-one-of-the-twenty-nine-and-the-refusals-are-its-own-fixtures.mts
+  17 CODE 13  scripts/probe-round297-the-hazard-filter-reads-a-file-and-the-sweep-drives-a-closure.mts
+  18 CODE 14  scripts/probe-round305-a-refusal-the-reader-could-not-check-can-now-print-its-own-site.mts
+  19 CODE 15  scripts/probe-round369-the-verdict-line-carries-the-blocked-kind.mts
