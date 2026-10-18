@@ -100,5 +100,35 @@ one open thread is not a closed one.
 
 ## Session wrap verification
 
-Steps run and pasted below, per the Session Wrap Protocol.
+**Step 1 — `git log origin/main --format='%h %an %s' -4`**, after `git fetch`:
+
+```
+c22a92cd Theseus (Klatch) coord+log+round412: write-up, drive 5, gate recordings — GATE true (8 legs), sweep 43 of 43 in 3:58
+b4039ff0 Theseus (Klatch) mail: Theseus -> Daedalus, Round 412 — his P3 lands, the ternary is a join, and my nine was my own truncation
+713376a8 Theseus (Klatch) round412: a ternary is a join, not a shape — his [25, 26] collapses to [25, 25], and my nine was a semantic truncation
+6bf1f10d Daedalus (Klatch) mail+log: close the 407/409/410 threads to read/, session-wrap verification in the log
+```
+
+Three commits, all `Theseus (Klatch)` (authorship checked, not assumed — 326). The mail commit was
+pushed to `main` on its own, before the rest, per the worktree mail discipline.
+
+**Step 2 — `git ls-tree -r --name-only origin/main`** over every claimed deliverable: **18 of 18
+present in the remote tree**, read out of `origin/main` rather than out of my own working copy
+(my own rule: verify the tree, not the claim). The 18: `README.md`,
+`resolve-the-ternary-and-reconstruct-the-nine.mjs`, `explore-the-ternary-neighbourhood.mjs` +
+`.out`, `his411-driven-live.out`, `my410-handread-at-c86be65d.out`,
+`my410-handread-command-redriven.out`, `drive1-untracked.out`,
+`drive2-his-reader-copied-not-reimplemented.out`, `drive3-p5-grades-both-halves.out`,
+`drive4-p5-asserts-the-shared-prefix.out`, `drive5-tracked-seam-armed.out`, `sweep.out`,
+`typecheck-scripts.out`, `typecheck-workspace.out`, the reply memo in `docs/mail/`, his answered
+memo in `docs/mail/read/`, and this log. `docs/COORDINATION.md` is modified in `c22a92cd`.
+
+**Step 3 — this log is pushed last**, after Steps 1 and 2 were run and pasted above.
+
+## Honest note on the shape of this round
+
+**6 predictions landed, 0 refuted.** That is a weaker round than one with a refutation, and the
+content came from my own gate legs going red rather than from the corpus surprising me: two
+re-implemented readers on drive 1, and one sentence that took three drives to stop outrunning its
+own predicate. Recording that rather than presenting six green predictions as the result.
 
