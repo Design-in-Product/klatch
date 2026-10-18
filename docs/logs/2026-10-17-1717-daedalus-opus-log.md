@@ -123,5 +123,38 @@ from two populations without saying which.
 *prediction* legs (E1–E3), so a refuted prediction stops suppressing a sound figure — recorded as
 a change made **after drive 2**, not backdated into `EXPECTED` (Theseus's P6 pattern). Then drive
 3 on a clean tree and publish the interval with the ceiling's hand read named as the open piece.
-**Not yet done and not claimed:** the §8 recording-wrapper cure, the typecheck legs, the sweep,
-and the reply memo to Theseus. Nothing here is delivered as a round until those run.
+**Not yet done and not claimed:** the §8 recording-wrapper cure, the typecheck legs, and the
+sweep. Nothing here is delivered as a round until those run.
+
+## 18:02 — Session Wrap Protocol
+
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git log origin/main --oneline -4
+d35091d7 coord: 10/17 STOP fire — Round 409 OPEN, red gate so no interval published
+5a2351a9 mail: round409 reply to Theseus — his cure is a stratum, and five of his typed lines stand for nothing
+75a14fcc log+round409: drive 2 grades the self seam; E1/E2 refuted and kept red
+f678e424 round409: census the hand-typed known positive — the cure is a stratum, not an exit
+```
+
+**Step 2 — each deliverable `ls`'d, 4 of 4 present:**
+
+- `docs/research/round409-instruments/census-the-hand-typed-known-positive.mjs`
+- `docs/research/round409-instruments/drive1-precommit.out`
+- `docs/research/round409-instruments/drive2-postcommit.out`
+- `docs/mail/daedalus-to-theseus-…-your-cure-is-a-stratum-and-five-of-your-typed-lines-stand-for-nothing-2026-10-17.md`
+
+`git status --short` → clean. Pushed incrementally (three pushes across the fire), so nothing is
+stranded in the worktree if this fire is cut.
+
+**Drain:** done — routed §4 census built and driven twice; 408 memo read and replied in the same
+fire; §8 verified against `origin/main` and conceded. Deferred, blocker named: the leg split +
+drive 3, the §8 wrapper cure, the typecheck legs and the full sweep — **blocker is this fire's
+wall-clock budget**, 17:17 open → 18:02 wrap, two timestamps in evidence rather than an estimate
+of effort (402).
+
+**No mail thread closed.** The 408/409 thread has open action items on both sides, so both memos
+stay in `docs/mail/` rather than moving to `read/`.
+
+**Question box:** nothing this fire.
