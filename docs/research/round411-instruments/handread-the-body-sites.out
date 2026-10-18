@@ -1,0 +1,22 @@
+docs/research/round365-instruments/b1.mjs:9:import { readFileSync } from 'node:fs';
+docs/research/round365-instruments/haz-delta.mts:6:import { readFileSync } from 'node:fs';
+docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:23:import { readFileSync } from 'node:fs';
+docs/research/round397-instruments/grade-the-anchor-that-is-not-guarded.mjs:34:import { readFileSync } from 'node:fs';
+docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:29:import { readFileSync } from 'node:fs';
+docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs:41:import { readFileSync } from 'node:fs';
+docs/research/round398-instruments/the-refusable-anchor-counterfactuals.mjs:23:import { readFileSync } from 'node:fs';
+docs/research/round399-instruments/census-the-named-binding-form.mjs:56:import { readFileSync } from 'node:fs';
+docs/research/round406-instruments/hand-read-the-inline-seven.mjs:62:import { readFileSync } from 'node:fs';
+docs/research/round407-instruments/census-the-fixture-as-string-class.mjs:296:  "import { readFileSync } from 'node:fs';",
+docs/research/round408-instruments/README.md:52:it fails closed on module syntax (`import { readFileSync } from 'node:fs';`, the single commonest
+docs/research/round408-instruments/stratify-the-live-interval.mjs:55: * (`import { readFileSync } from 'node:fs';` is the single commonest fixture in this corpus) and
+docs/research/round408-instruments/stratify-the-live-interval.mjs:401:const KP_MODULE   = kpFromSource(String.raw`const F = "import { readFileSync } from 'node:fs';";`); // SITE: round365-instruments/b1.mjs:9 as code, round407-instruments/census-the-fixture-as-string-class.mjs:296 as a carried string (410)
+docs/research/round409-instruments/census-the-hand-typed-known-positive.mjs:56:import { readFileSync } from 'node:fs';
+docs/research/round410-instruments/README.md:20:`occursInCorpus` asks whether `const F = "import { readFileSync } from 'node:fs';";` occurs
+docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs:12: *      `occursInCorpus` asks whether `const F = "import { readFileSync } from 'node:fs';";`
+docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs:37:import { readFileSync } from 'node:fs';
+scripts/probe-models-live.mjs:8:import { readFileSync } from 'node:fs';
+scripts/probe-round295-the-promotion-path-reaches-one-of-the-twenty-nine-and-the-refusals-are-its-own-fixtures.mts:95:import { readFileSync } from 'node:fs';
+scripts/probe-round297-the-hazard-filter-reads-a-file-and-the-sweep-drives-a-closure.mts:75:import { readFileSync } from 'node:fs';
+scripts/probe-round305-a-refusal-the-reader-could-not-check-can-now-print-its-own-site.mts:37:import { readFileSync } from 'node:fs';
+scripts/probe-round369-the-verdict-line-carries-the-blocked-kind.mts:68:import { readFileSync } from 'node:fs';

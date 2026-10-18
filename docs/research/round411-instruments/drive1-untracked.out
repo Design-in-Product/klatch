@@ -1,0 +1,46 @@
+
+Round 411 — the wrapped call and the body key, at ea153fb7
+
+  EXPECTED G1  my re-implementation of HIS body key returns HIS §1 member list over the eight Round 408 KPs — set equality, only-his and only-mine both empty (328/340)
+  EXPECTED G2  every KP resolves at its cited {path, line, ident}, or this exits 2 (341/399)
+  EXPECTED G3  the body key is graded on a hand-read known positive (KP_MODULE: 9 code sites and one carried site, hand-read BEFORE this ran and graded against the live corpus, 350) and on a CONSTRUCTED control that no write path can rewrite (410 §4)
+  EXPECTED G4  the self seam does exactly one thing: seam OFF, the control is found in THIS FILE and only this file; seam ON it vanishes; the known positive survives both (405)
+  EXPECTED G5  the continuation does not over-reach: a declaration that is already finished consumes ZERO continuation lines, graded on a number-initializer control, so FROM_FILE cannot be matched against unrelated code below a short declaration
+  EXPECTED G6  the cure is graded as a 2 x 2 — {409 key, 411 key} x {wrapped site, adjacent site} — so the movement is attributable to the wrapped axis alone and not to a general widening (382/386: one KP per shape is coverage of one axis)
+  EXPECTED G7  every count printed beside a member list is that list's own length, and the old `slice(0, 4)` spelling is driven as a CONTROL and goes red (380/397: grade the cure against the old spelling, not only the new one)
+  EXPECTED P1  the wrapped-reader-call class is EXACTLY 1 corpus-wide — his 410 P5 said at most 3 — and the member is KP_MESSAGE at round408:416
+  EXPECTED P2  curing the mechanism moves MORE than his one site: I predict 4 declarations change stratum, 3 of them INTO the class, and the three extra come from UNMODELLED rather than from OTHER-DERIVED
+  EXPECTED P3  the published interval therefore COLLAPSES: every UNMODELLED row in a slicing file was undecided for the same reason, so the 411 ceiling equals the 411 floor
+  EXPECTED P4  OTHER-DERIVED is a DEFAULT, not a classification: I predict at least 3 of its members are regex literals, which is none of the three shapes its gloss names
+  EXPECTED P5  under the corrected body key the eight Round 408 KPs partition 4 stands-for-nothing / 2 with a site / 2 refused — and my own Round 409 memo tail published 4 / 1 / 3
+  EXPECTED P6  his hand-read provenance partition (3 SITE / 5 SHAPE) and my automated body key AGREE on every member where both can speak, with zero disagreements
+
+  TRUE  G1  [GATE] my re-implementation of his body key returns his §1 member list — set equality (328/340)
+        mine [KP_ESCAPED KP_FRAGMENT KP_PLAIN KP_TSANNOT] · only-his [] · only-mine [] · his moved member KP_MODULE: asCode=docs/research/round365-instruments/b1.mjs carried=docs/research/round407-instruments/census-the-fixture-as-string-class.mjs
+  TRUE  G2  [GATE] every KP resolved at its cited {path, line, ident}, and his eight are all singly declared
+        4 cited KP(s) sliced, 0 refused · his eight: 8 of 8 singly declared
+  FALSE G3  [GATE] the body key reproduces the hand read on a known positive and refuses a constructed control
+        KP_MODULE body "import { readFileSync } from 'node:fs';" · asCode docs/research/round365-instruments/b1.mjs · code files 16 (hand read 9) · carried docs/research/round407-instruments/census-the-fixture-as-string-class.mjs · control asCode false carried false
+  FALSE G4  [GATE] the self seam does exactly one thing, graded both ways (405)
+        docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs is NOT in `git ls-files` at ea153fb7 — drive one cannot grade the seam
+  TRUE  G5  [GATE] a finished declaration consumes ZERO continuation lines; the wrapped one consumes at least 1
+        WRAPPED=2 · ADJACENT=0 · NUMBER=0 · REGEX=0
+  TRUE  G6  [GATE] the cure moves the WRAPPED cell and leaves the ADJACENT cell and both controls alone
+        WRAPPED@409=OTHER-DERIVED · WRAPPED@411=TYPED-THEN-SLICED · ADJACENT@409=TYPED-THEN-SLICED · ADJACENT@411=TYPED-THEN-SLICED · controls NUMBER@411=OTHER-DERIVED REGEX@411=OTHER-DERIVED
+  TRUE  G7  [GATE] the printed count equals its own member list, and the old slice(0, 4) spelling goes red
+        cured: count 4 beside 4 name(s) · CONTROL, old spelling: count 4 beside 4 name(s) — AGREE on this population
+  TRUE  P1  [PRED] the wrapped-reader-call class is exactly 1 corpus-wide, and it is KP_MESSAGE
+        1 member(s): stratify-the-live-interval.mjs:416 KP_MESSAGE
+  FALSE P2  [PRED] curing the mechanism moves 4 declarations, 3 into the class, 3 of them out of UNMODELLED
+        8 mover(s), 3 into the class, 3 out of UNMODELLED · grade-the-class-count-and-the-seam.mjs:225 KP_CONST_INDIRECTION | grade-the-class-count-and-the-seam.mjs:227 KP_INLINE_MULTILINE | census-the-pin-population.mjs:251 KP_SRC | census-the-fixture-as-string-class.mjs:295 KP_BASE | census-the-fixture-as-string-class.mjs:302 KP | stratify-the-live-interval.mjs:416 KP_MESSAGE | census-the-hand-typed-known-positive.mjs:281 KP_FAITHFUL | census-the-wrapped-call-and-the-body-granularity.mjs:408 KPMOD_SEAMLESS
+  FALSE P3  [PRED] the interval collapses: the 411 ceiling equals the 411 floor
+        409: [22, 25] · 411: [25, 26] · undecided-in-a-slicing-file 3 -> 1 · still undecided: census-the-wrapped-call-and-the-body-granularity.mjs:408 KPMOD_SEAMLESS
+  TRUE  P4  [PRED] OTHER-DERIVED is a default: at least 3 of its members are regex literals, which its gloss does not name
+        OTHER-DERIVED(409) 28 · REGEX 3 · by shape: ARRAY 7 · REGEX 3 · OBJECT 7 · CALL-OR-IDENT 8 · NUMBER 1 · UNRECOGNISED 1 · NEW 1
+  TRUE  P5  [PRED] the eight partition 4 stands-for-nothing / 2 with a site / 2 refused under the body key
+        4 nothing [KP_ESCAPED KP_FRAGMENT KP_PLAIN KP_TSANNOT] · 2 site [KP_MODULE KP_NEWLINE] · 2 refused [KP_INTERP KP_MESSAGE]
+  TRUE  P6  [PRED] his hand-read partition and my body key agree on every member where both can speak
+        his 3 SITE [KP_MODULE KP_NEWLINE KP_MESSAGE] / 5 SHAPE · mine decides 6 of 8 · disagreements 0
+
+GATE: false   (7 leg(s) on the key itself)
+GATE NOT TRUE: G3 | G4 — the key is not sound, so no figure is published below it (356).

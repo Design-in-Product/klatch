@@ -1,0 +1,155 @@
+listing at ea153fb7 — 56 declaration(s) outside this file, 278 corpus file(s)
+
+
+── TYPED-LITERAL: 15 ──
+  non-sl docs/research/round370-instruments/characterisation-sweep-drive.mjs:25 KP_FILE
+         init: "'packages/server/src/__tests__/round247-the-exit-code-is-driven-not-read"
+  slicer docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs:321 KP_A
+         init: "`const renamedAway = !/  btype Row  b/.test(readFileSync(join(REPO, PROB"
+  slicer docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs:322 KP_B
+         init: "`const renamedAway = !/  btype Row  b/.test(    readFileSync(join(REPO, "
+  slicer docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs:323 KP_C
+         init: "`const head = rest.slice(0, rest.indexOf('  n);'));`;"
+  slicer docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs:329 KP_D
+         init: "`// quoting the defect: rest.slice(0, rest.indexOf('x'))  const n = 1;`;"
+  slicer docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs:330 KP_E
+         init: "`/** Daedalus's note — don't adopt a pre-existing tree. */  const w = s."
+  slicer docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs:331 KP_F
+         init: "`const FIXTURE = \"const w = s.slice(s.indexOf('MARK'));\";`;"
+  slicer docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs:337 KP_G
+         init: "'const claim = `the window holds ${count(src.slice(src.indexOf(  ANCHOR "
+  slicer docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs:338 KP_H
+         init: "'const TRY = /  btry  s*  {/g;  const x = `${a}`;  const w = s.slice(s.i"
+  slicer docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs:339 CONTROL_CURED
+         init: "`const at = src.indexOf('MARKER');  const ok = at !== -1 && !/x/.test(sr"
+  slicer docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs:340 CONTROL_ABSENT
+         init: "`const head = src.slice(0, 80);  const tail = other.substring(4, 9);`;"
+  slicer docs/research/round406-instruments/hand-read-the-inline-seven.mjs:226 KP
+         init: "`const head = rest.slice(0, rest.indexOf(  x  ));`;', 1, 0],"
+  slicer docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs:392 CONTROL_BODY
+         init: "'const zz_no_such_line_in_this_corpus_410 = 1;';"
+  slicer scripts/probe-round223-twenty-one-probes-against-a-stranger.mts:492 CONTROL_PROBE
+         init: "'probe-round213-reassign-live-http.mts';"
+  slicer scripts/probe-round372-the-rows-are-keyed-on-the-limb-and-the-contradiction-is-latent.mts:354 KP
+         init: "\"summariseAndExit({ probeName: 'probe-round225', results, skipped });\";"
+
+── TYPED-THEN-SLICED: 8 ──
+  slicer docs/research/round365-instruments/haz-delta.mts:16 KP
+         init: "hazards('const x = \"npm run test -w packages/server\";');"
+  slicer docs/research/round408-instruments/stratify-the-live-interval.mjs:400 KP_PLAIN
+         init: "kpFromSource(String.raw`const F = \"const files = git(['ls-tree', '-r', r"
+  slicer docs/research/round408-instruments/stratify-the-live-interval.mjs:401 KP_MODULE
+         init: "kpFromSource(String.raw`const F = \"import { readFileSync } from 'node:fs"
+  slicer docs/research/round408-instruments/stratify-the-live-interval.mjs:402 KP_TSANNOT
+         init: "kpFromSource(String.raw`const F = \"const rows: Array<string> = xs.map((x"
+  slicer docs/research/round408-instruments/stratify-the-live-interval.mjs:403 KP_ESCAPED
+         init: "kpFromSource(String.raw`const F = 'const s =   x  ; return s;';`);"
+  slicer docs/research/round408-instruments/stratify-the-live-interval.mjs:404 KP_FRAGMENT
+         init: "kpFromSource(String.raw`const F = \"const files = git(['ls-tree', '-r', r"
+  slicer docs/research/round408-instruments/stratify-the-live-interval.mjs:407 KP_INTERP
+         init: "kpFromSource(`const F =   const HERE =   {JSON.stringify(POP)};  ;`);"
+  slicer docs/research/round408-instruments/stratify-the-live-interval.mjs:415 KP_NEWLINE
+         init: "kpFromSource(String.raw`const B_CLEAN = 'const x = 1;  console.log(x);  "
+
+── SLICED-FROM-FILE: 2 ──
+  slicer docs/research/round409-instruments/census-the-hand-typed-known-positive.mjs:279 KP_TYPED
+         init: "declAt(readFileSync(join(REPO, KP_SITES.TYPED.path), 'utf8'), KP_SITES.T"
+  slicer docs/research/round409-instruments/census-the-hand-typed-known-positive.mjs:280 KP_CURED
+         init: "declAt(readFileSync(join(REPO, KP_SITES.CURED.path), 'utf8'), KP_SITES.C"
+
+── OTHER-DERIVED: 28 ──
+  slicer docs/research/round352-valuation-leg-key.mjs:150 KP
+         init: "["
+         after: ["\"const tag = r.kind === 'measurement' ? 'MEAS' : r.pass ","\"const tag = pass ? 'PASS' : kind === 'measurement' ? 'M","];"]
+  non-sl docs/research/round370-instruments/characterisation-sweep-drive.mjs:26 KP_SENTENCE
+         init: ";"
+         after: ["","const kpSrc = execFileSync('git', ['show', `2485ba99^:${","encoding: 'utf8',"]
+  non-sl docs/research/round370-instruments/characterisation-sweep-drive.mjs:44 CONTROL
+         init: "{"
+         after: ["'KP block found': Boolean(kpTarget),","'KP block spans >1 line': Boolean(kpTarget && kpTarget.s","'KP carries shape-rather-than-intent': kpMarkers.include"]
+  slicer docs/research/round380-instruments/measure-b1-legs.mjs:50 KP_SRC
+         init: "["
+         after: ["\"const R225 = 'probe-round225-a-citation-is-not-a-call.m","\"  copyFileSync(join(HERE, R374), join(SANDBOX, 'probe-r","'// prose naming probe-round232 with no extension at all"]
+  slicer docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:279 KP
+         init: "join(REPO, '.testdata', 'r390-kp-graded');"
+         after: ["rmSync(KP, { recursive: true, force: true });","mkdirSync(join(KP, 'lib'), { recursive: true });","writeFileSync(join(KP, 'lib', 'strip-source.mjs'), readF"]
+  slicer docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:285 KP_FILES
+         init: "{"
+         after: ["'kp-noarg.mts': \"import { stripSource } from './lib/stri","'kp-object.mts':","\"import { stripSource } from './lib/strip-source.mjs';  "]
+  slicer docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs:348 KP_PROBE_PRINTS
+         init: "18;"
+         after: ["const keyAgreesWithProbe = now.arrow === KP_PROBE_PRINTS","const grewBy = Object.entries(now.per)",".filter(([f, [a]]) => a !== (then.per[f]?.[0] ?? 0))"]
+  slicer docs/research/round401-instruments/census-the-branch-polarity-axis.mjs:846 CONTROL
+         init: "join(REPO, 'docs/research/round401-instruments/control-pre-label-repair."
+         after: ["","",""]
+  slicer docs/research/round405-instruments/census-the-pin-population.mjs:251 KP_SRC
+         init: "["
+         after: ["\"const git = (args) => execFileSync('git', args, { cwd: ","\"const show = (rev, path) => git(['show', `${rev}:${path","\"const PIN = '3664849a';\","]
+  slicer docs/research/round405-instruments/census-the-pin-population.mjs:270 KP_EXPECT
+         init: "["
+         after: ["['DEFINITION', 'the `show` helper definition'],","['LITERAL-SHA', 'a kind-B helper call at a bound literal","['LITERAL-SHA', 'a kind-A template at a bound literal'],"]
+  slicer docs/research/round407-instruments/census-the-fixture-as-string-class.mjs:295 KP_BASE
+         init: "["
+         after: ["\"import { readFileSync } from 'node:fs';\",","\"const git = (args) => execFileSync('git', args, { cwd: ","\"const files = git(['ls-files', 'docs/research', 'script"]
+  slicer docs/research/round407-instruments/census-the-fixture-as-string-class.mjs:302 KP
+         init: "{"
+         after: ["","RAW: KP_BASE.join('  '),",""]
+  slicer docs/research/round407-instruments/census-the-fixture-as-string-class.mjs:338 KP_WANT
+         init: "{"
+         after: ["RAW: 'SET2a-live',","MASKED: 'SET1-masked-safe',","KEPT: 'SET2b-live',"]
+  slicer docs/research/round408-instruments/stratify-the-live-interval.mjs:416 KP_MESSAGE
+         init: "kpFromSource("
+         after: ["`const F =   import succeeded (  {subject.dir.split('-')","+ `  {subject.lines.toLocaleString()} lines)  ;`);",""]
+  slicer docs/research/round408-instruments/stratify-the-live-interval.mjs:422 KP_TABLE
+         init: "{ KP_PLAIN, KP_MODULE, KP_TSANNOT, KP_ESCAPED, KP_FRAGMENT, KP_INTERP,"
+         after: ["KP_NEWLINE, KP_MESSAGE };","const KP_UNSLICED = Object.entries(KP_TABLE).filter(([, ","if (KP_UNSLICED.length > 0) {"]
+  slicer docs/research/round408-instruments/stratify-the-live-interval.mjs:424 KP_UNSLICED
+         init: "Object.entries(KP_TABLE).filter(([, v]) => v === null).map(([k]) => k);"
+         after: ["if (KP_UNSLICED.length > 0) {","console.log(`REFUSING: ${KP_UNSLICED.join(', ')} did not","+ 'the legs that read them have no known positive at all"]
+  slicer docs/research/round409-instruments/census-the-hand-typed-known-positive.mjs:173 KP_NAME
+         init: ";"
+         after: ["","",""]
+  slicer docs/research/round409-instruments/census-the-hand-typed-known-positive.mjs:265 KP_SITES
+         init: "{"
+         after: ["TYPED: { path: 'scripts/probe-round372-the-rows-are-keye","line: 354, ident: 'KP', want: 'TYPED-LITERAL' },","CURED: { path: 'docs/research/round408-instruments/strat"]
+  slicer docs/research/round409-instruments/census-the-hand-typed-known-positive.mjs:286 KP_TABLE
+         init: "{ KP_TYPED, KP_CURED, KP_FAITHFUL };"
+         after: ["const UNSLICED = Object.entries(KP_TABLE).filter(([, v])","if (UNSLICED.length > 0) {","console.error(`KP DID NOT SLICE: ${UNSLICED.join(', ')} "]
+  slicer docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs:133 KP_NAME
+         init: ";"
+         after: ["","function slicesSource(src) {","const code = stripSource(src, true);"]
+  slicer docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs:391 KP_MOD
+         init: "READ.find((r) => r.ident === 'KP_MODULE');"
+         after: ["const CONTROL_BODY = 'const zz_no_such_line_in_this_corp","const CONTROL_CARRIED = bodyCarried(CONTROL_BODY, MINE40","const CONTROL_CODE = bodyIsCode(CONTROL_BODY, MINE408);"]
+  slicer docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs:393 CONTROL_CARRIED
+         init: "bodyCarried(CONTROL_BODY, MINE408);"
+         after: ["const CONTROL_CODE = bodyIsCode(CONTROL_BODY, MINE408);","g('G3', 'the body-key comes back the right way on a know","KP_MOD !== undefined && typeof KP_MOD.asCode === 'string"]
+  slicer docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs:394 CONTROL_CODE
+         init: "bodyIsCode(CONTROL_BODY, MINE408);"
+         after: ["g('G3', 'the body-key comes back the right way on a know","KP_MOD !== undefined && typeof KP_MOD.asCode === 'string","&& CONTROL_CARRIED === false && CONTROL_CODE === false,"]
+  slicer docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs:408 KPMOD_SEAMLESS
+         init: "KP_MOD === undefined ? null : bodyCarried(KP_MOD.body, MINE408, false);"
+         after: ["g('G7', 'the self seam does exactly one thing — with it ","+ 'and only there, with it ON the control vanishes, and ","CTRL_SEAMLESS === SELF410 && CONTROL_CARRIED === false"]
+  slicer docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs:433 KP_FRAG
+         init: "READ.find((r) => r.ident === 'KP_FRAGMENT');"
+         after: ["g('P3', 'KP_FRAGMENT stands for nothing under every key,","KP_FRAG !== undefined && KP_FRAG.carried === false","&& (KP_FRAG.asCode === false || KP_FRAG.asCode === 'UNDE"]
+  slicer scripts/probe-round223-twenty-one-probes-against-a-stranger.mts:141 CONTROLS
+         init: "new Set([SELF, 'probe-round222-port-ownership-hoist.mts', 'probe-round22"
+         after: ["","",""]
+  non-sl scripts/probe-round291-the-sentinel-did-not-grade-the-backups-that-are-the-recovery-path.mts:197 KNOWN_POSITIVES
+         init: "["
+         after: ["'klatch.db',","'klatch.db-wal',","'sizing-copy.db-shm',"]
+  non-sl scripts/probe-round291-the-sentinel-did-not-grade-the-backups-that-are-the-recovery-path.mts:231 KNOWN_NEGATIVES
+         init: "["
+         after: ["'klatch.db.backfill-2026-09-11T00-26-15-660Z.json',","'fixture.db.backfill-2026-09-09T16-26-40-321Z.json',","'klatch.db.backfill-r187-g1.json',"]
+
+── UNMODELLED: 3 ──
+  slicer docs/research/round382-instruments/grade-the-class-count-and-the-seam.mjs:225 KP_CONST_INDIRECTION
+         init: "`const R225 = 'probe-round225-a-citation-is-not-a-call.mts';"
+         after: ["const r225Src = readFileSync(join(HERE, R225), 'utf8');`","const KP_INLINE_MULTILINE = `const r261Now = fs.readFile","path.join(REPO, 'scripts', 'probe-round261-a-pin-whose-r"]
+  slicer docs/research/round382-instruments/grade-the-class-count-and-the-seam.mjs:227 KP_INLINE_MULTILINE
+         init: "`const r261Now = fs.readFileSync("
+         after: ["path.join(REPO, 'scripts', 'probe-round261-a-pin-whose-r","'utf8',",");`;"]
+  slicer docs/research/round409-instruments/census-the-hand-typed-known-positive.mjs:281 KP_FAITHFUL
+         init: ""
+         after: ["declAt(readFileSync(join(REPO, KP_SITES.FAITHFUL.path), ","",""]
