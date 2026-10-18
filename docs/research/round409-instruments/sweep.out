@@ -1,0 +1,107 @@
+sweep-probes — 153 probe files under scripts/
+  swept:    43
+  deferred: 110  (not cleared — most open ports, databases, corpora or model calls)
+            verdict-bearing: 34 · no conclusion line: 76  (derived from source each run, not recorded; a no-conclusion-line file cannot go red, so it is an investigation, not a probe awaiting a drive)
+
+CENSUS OK — every probe under scripts/ is in exactly one list, and every entry is well-formed.
+
+  PASS    exit   0  probe-round241-a-corpus-cast-is-resolved-not-pinned.mts
+          All 19 regression checks passed
+  PASS    exit   0  probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts
+          All 5 regression checks passed
+  PASS    exit   0  probe-round255-the-comment-shadow-census.mts
+          All 3 regression checks passed
+  PASS    exit   0  probe-round232-the-remainder-verdict-can-go-red.mts
+          All 7 regression checks passed
+  PASS    exit   0  probe-round224-a-skip-must-not-summarise-as-a-pass.mts
+          All 192 regression checks passed
+  PASS    exit   0  probe-round225-a-citation-is-not-a-call.mts
+          All 33 regression checks passed
+  PASS    exit   0  probe-round245-the-shared-lib-coverage-floor.mts
+          All 4 regression checks passed
+  PASS    exit   0  probe-round256-an-emptiness-assertion-grades-the-operator-and-a-sole-blocker-ranking-cannot-see-a-coupled-class.mts
+          All 27 regression checks passed
+  PASS    exit   0  probe-round257-the-scanner-had-no-model-of-interpolation.mts
+          All 9 regression checks passed
+  PASS    exit   0  probe-round258-three-readers-are-two-questions-and-the-shared-one-is-already-in-lib.mts
+          All 20 regression checks passed
+  PASS    exit   0  probe-round259-the-extraction-moved-nothing-and-closed-the-hole-in-the-file-it-moved-into.mts
+          All 17 regression checks passed
+  PASS    exit   0  probe-round260-a-census-pin-has-two-axes-and-the-round-number-in-a-filename-is-not-one-of-them.mts
+          All 18 regression checks passed
+  PASS    exit   0  probe-round261-a-pin-whose-red-is-cleared-by-doing-something-is-a-gate.mts
+          All 17 regression checks passed
+  PASS    exit   0  probe-round262-the-population-is-a-tree-not-a-filename-convention.mts
+          All 12 regression checks passed
+  PASS    exit   0  probe-round263-an-emptiness-claim-over-a-shared-window-is-not-strict-it-is-blind.mts
+          All 15 regression checks passed
+  PASS    exit   0  probe-round264-a-census-of-one-spelling-and-the-extraction-that-moved-the-rest-out-of-reach.mts
+          All 14 regression checks passed
+  PASS    exit   0  probe-round265-the-census-already-follows-imports-on-the-other-axis.mts
+          All 18 regression checks passed
+  PASS    exit   0  probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts
+          All 56 regression checks passed
+  PASS    exit   0  probe-round246-the-sweep-repaired-and-the-emit-spelling-was-the-bigger-blind-spot.mts
+          All 4 regression checks passed
+  PASS    exit   0  probe-round297-the-hazard-filter-reads-a-file-and-the-sweep-drives-a-closure.mts
+          All 10 regression checks passed
+  PASS    exit   0  probe-round298-a-stale-pin-and-a-genuine-break-used-to-read-identically.mts
+          All 20 regression checks passed
+  PASS    exit   0  probe-round299-admission-is-per-file-and-the-repair-that-missed-its-own-motivating-case.mts
+          All 20 regression checks passed
+  PASS    exit   0  probe-round300-the-screen-has-a-third-state-and-the-site-my-own-arm-named-is-in-it.mts
+          All 13 regression checks passed
+  PASS    exit   0  probe-round301-the-limbs-partition-by-construction-and-the-price-landed-in-the-instrument-that-priced-it.mts
+          All 13 regression checks passed
+  PASS    exit   0  probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts
+          All 18 regression checks passed
+  PASS    exit   0  probe-round304-the-deferral-was-repaired-with-a-declaration-and-both-repair-shapes-redden-the-arm-that-pinned-it.mts
+          All 21 regression checks passed
+  PASS    exit   0  probe-round307-the-return-half-is-gradeable-the-parameter-half-is-any-and-the-arity-check-covers-fourteen-of-eighteen.mts
+          All 17 regression checks passed
+  PASS    exit   0  probe-round308-the-general-arm-pointer-detector-reports-thirteen-findings-all-thirteen-false-and-the-narrow-one-is-green-on-package-json.mts
+          All 23 regression checks passed
+  PASS    exit   0  probe-round309-the-drop-one-reach-census-over-reported-three-where-the-population-is-one-because-a-predicate-does-not-carry-its-corpus.mts
+          All 17 regression checks passed
+  PASS    exit   0  probe-round311-the-nearer-of-argus-two-candidates-is-the-one-that-drops-a-failure-and-a-kind-field-is-what-breaks-it.mts
+          All 18 regression checks passed
+  PASS    exit   0  probe-round322-the-deferred-magnitude-audit-is-clean-and-eight-censused-probes-freeze-the-one-figure-they-cannot-report.mts
+          All 13 regression checks passed
+  PASS    exit   0  probe-round323-the-cheap-cure-for-a-frozen-figure-empties-the-tripwire-and-leaves-the-exit-code-lying.mts
+          All 14 regression checks passed
+  PASS    exit   0  probe-round324-the-skips-figure-has-four-states-and-the-two-no-arm-claims-are-where-a-lowercase-channel-lands.mts
+          All 15 regression checks passed
+  PASS    exit   0  probe-round325-the-fourth-exit-shape-returns-zero-and-restaging-an-inflated-pin-promotes-measurements-to-hard-checks.mts
+          All 15 regression checks passed
+  PASS    exit   0  probe-round327-the-pin-purpose-label-is-a-property-of-the-edge-and-retirability-is-a-property-of-the-target-line.mts
+          All 12 regression checks passed
+  PASS    exit   0  probe-round328-the-distinct-target-line-figure-is-keyed-on-the-pin-text-so-one-line-pinned-in-two-spellings-reads-as-two.mts
+          All 15 regression checks passed
+  PASS    exit   0  probe-round369-the-verdict-line-carries-the-blocked-kind.mts
+          All 29 regression checks passed
+  PASS    exit   0  probe-round371-the-characterisation-item-is-a-registry-not-a-sweep.mts
+          All 12 regression checks passed
+  PASS    exit   0  probe-round372-the-rows-are-keyed-on-the-limb-and-the-contradiction-is-latent.mts
+          All 26 regression checks passed
+  PASS    exit   0  probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts
+          All 15 regression checks passed
+  PASS    exit   0  probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts
+          All 8 regression checks passed
+  PASS    exit   0  probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts
+          All 8 regression checks passed
+  PASS    exit   0  probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts
+          All 13 regression checks passed
+
+SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but did not finish), 0 census problem(s), 110 deferred
+
+── recorded by record-gate.mjs (round409, taking Theseus 408 §8) ──
+command:      node scripts/sweep-probes.mjs
+status:       exit 0
+error TS:     0 line(s)
+captured:     7115 byte(s) of tool output
+started:      2026-10-18T00:28:25.523Z
+finished:     2026-10-18T00:32:20.518Z
+NOTE:         a clean `tsc --noEmit` prints NOTHING, so 0 captured bytes is what passing looks
+              like. This block is the difference between "passed" and "never ran": if a
+              recording has no block, the command did not run under this wrapper and its
+              emptiness means nothing.
