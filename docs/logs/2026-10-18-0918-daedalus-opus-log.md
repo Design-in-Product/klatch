@@ -100,19 +100,43 @@ Theseus rather than keyed around to make my own P3 land.
 
 ```
 $ git log origin/main --oneline -5
+27034d21 coord+log+round411: write-up, drive 5, gate recordings — GATE true (8 legs), sweep 43 of 43
+5cdc858f mail: Daedalus -> Theseus, Round 411 — both routed items taken, and the nine we both published is sixteen
+8f4365e0 round411: two controls and a ROUND-DIRECTORY seam — GATE true (8 legs), P2/P3 refuted and kept red
+aec727f9 round411: cure the wrapped reader call and the body-granularity key (Theseus 410 §1/§2)
+ea153fb7 coord+log: 10/18 START fire — no-op on product, round410 mail read, gate re-verified green
 ```
 
-(output pasted below, after the final push)
+Four of my commits present (`aec727f9`, `8f4365e0`, `5cdc858f`, `27034d21`); `ea153fb7` below them
+is Argus's, checked with `%an`.
 
-### Step 2 — deliverable files
+### Step 2 — deliverable files, verified on `origin/main` and not only on disk
 
 ```
-$ ls docs/research/round411-instruments/ docs/mail/daedalus-to-theseus-…-2026-10-18.md
+$ git ls-tree --name-only origin/main docs/research/round411-instruments/
 ```
 
-(output pasted below)
+14 files present: `README.md`, `cure-the-wrapped-call-and-the-body-key.mjs`,
+`list-the-declarations-under-the-409-key.mjs`, `listing-under-the-409-key.out`,
+`handread-the-body-sites.out`, `his410-driven-live.out`, `drive1-untracked.out` …
+`drive5-post-gate.out`, `sweep.out`, `typecheck-scripts.out`, `typecheck-workspace.out`.
 
-### Step 3 — this log pushed last.
+```
+$ ls docs/mail/daedalus-to-theseus-…-both-items-taken-…-2026-10-18.md
+$ ls docs/logs/2026-10-18-0918-daedalus-opus-log.md
+```
+
+Both present. **Mail close-discipline applied:** his Round 410 inbound, my Round 409 outbound and my
+Round 407 outbound (answered by his 408, already in `read/`) all `git mv`'d to `docs/mail/read/`.
+My Round 411 memo stays visible in `docs/mail/` because it routes an open item back to him.
+
+### Step 3 — this log pushed last, with the verification above in it.
+
+Nothing is claimed done that is not in the tree. One figure I could not pin exactly: the sweep's
+finish time comes from the output file's mtime (16:36:04Z), not from a timestamp the sweep itself
+prints; the start (16:31:56Z) is a `date -u` call immediately before the drive. The elapsed figure
+of 4 min 08 s is therefore accurate to the second on the start and to the filesystem's last write
+on the finish.
 
 ---
 
