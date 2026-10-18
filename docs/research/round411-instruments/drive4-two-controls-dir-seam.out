@@ -1,0 +1,128 @@
+
+Round 411 — the wrapped call and the body key, at aec727f9
+
+  EXPECTED G1  my re-implementation of HIS body key returns HIS §1 member list over the eight Round 408 KPs — set equality, only-his and only-mine both empty (328/340)
+  EXPECTED G2  every KP resolves at its cited {path, line, ident}, or this exits 2 (341/399)
+  EXPECTED G3  the body key is graded on a hand-read known positive (KP_MODULE: 9 code sites and one carried site, hand-read BEFORE this ran and graded against the live corpus, 350) and on a CONSTRUCTED control that no write path can rewrite (410 §4)
+  EXPECTED G4  the seam does exactly one thing: seam OFF, the TYPED control is found in THIS FILE and only this file; seam ON it vanishes; the known positive survives both (405). The seam is this ROUND'S DIRECTORY, derived from import.meta.url — re-keyed after drive 3, where a file-level seam let this round's SIBLING file move the figure (410 §5 adopted)
+  EXPECTED G5  the continuation does not over-reach: a declaration that is already finished consumes ZERO continuation lines, graded on a number-initializer control, so FROM_FILE cannot be matched against unrelated code below a short declaration
+  EXPECTED G6  the cure is graded as a 2 x 2 — {409 key, 411 key} x {wrapped site, adjacent site} — so the movement is attributable to the wrapped axis alone and not to a general widening (382/386: one KP per shape is coverage of one axis)
+  EXPECTED G7  every count printed beside a member list is that list's own length, and the old `slice(0, 4)` spelling is driven as a CONTROL and goes red (380/397: grade the cure against the old spelling, not only the new one)
+  EXPECTED G8  ADDED AFTER DRIVE 1, not backdated (408 P6): FROM_FILE reads the strings-blanked continuation, so a reader MENTIONED inside a fixture string cannot move a typed array to SLICED-FROM-FILE, while a declaration that really calls one still lands there
+  EXPECTED P1  the wrapped-reader-call class is EXACTLY 1 corpus-wide — his 410 P5 said at most 3 — and the member is KP_MESSAGE at round408:416
+  EXPECTED P2  curing the mechanism moves MORE than his one site: I predict 4 declarations change stratum, 3 of them INTO the class, and the three extra come from UNMODELLED rather than from OTHER-DERIVED
+  EXPECTED P3  the published interval therefore COLLAPSES: every UNMODELLED row in a slicing file was undecided for the same reason, so the 411 ceiling equals the 411 floor
+  EXPECTED P4  OTHER-DERIVED is a DEFAULT, not a classification: I predict at least 3 of its members are regex literals, which is none of the three shapes its gloss names
+  EXPECTED P5  under the corrected body key the eight Round 408 KPs partition 4 stands-for-nothing / 2 with a site / 2 refused — and my own Round 409 memo tail published 4 / 1 / 3
+  EXPECTED P6  his hand-read provenance partition (3 SITE / 5 SHAPE) and my automated body key AGREE on every member where both can speak, with zero disagreements
+
+  TRUE  G1  [GATE] my re-implementation of his body key returns his §1 member list — set equality (328/340)
+        mine [KP_ESCAPED KP_FRAGMENT KP_PLAIN KP_TSANNOT] · only-his [] · only-mine [] · his moved member KP_MODULE: asCode=docs/research/round365-instruments/b1.mjs carried=docs/research/round407-instruments/census-the-fixture-as-string-class.mjs
+  TRUE  G2  [GATE] every KP resolved at its cited {path, line, ident}, and his eight are all singly declared
+        6 cited KP(s) sliced, 0 refused · his eight: 8 of 8 singly declared
+  TRUE  G3  [GATE] the body key reproduces the hand read on a known positive and refuses a constructed control
+        KP_MODULE body "import { readFileSync } from 'node:fs';" · asCode docs/research/round365-instruments/b1.mjs · code files 16 (hand read 16, INHERITED corpus) · carried docs/research/round407-instruments/census-the-fixture-as-string-class.mjs · constructed control asCode false carried false
+  TRUE  G4  [GATE] the seam does exactly one thing, graded both ways with a TYPED control (405)
+        typed control: seam OFF -> cure-the-wrapped-call-and-the-body-key.mjs · seam ON -> false · known positive survives both: b1.mjs / b1.mjs · constructed control with the seam OFF -> false (absent from its own file by construction, so it cannot grade a seam)
+  TRUE  G5  [GATE] a finished declaration consumes ZERO continuation lines; the wrapped one consumes at least 1
+        WRAPPED=2 · ADJACENT=0 · NUMBER=0 · REGEX=0 · MENTION=6 · NAME=1
+  TRUE  G6  [GATE] the cure moves the WRAPPED cell and leaves the ADJACENT cell and both controls alone
+        WRAPPED@409=OTHER-DERIVED · WRAPPED@411=TYPED-THEN-SLICED · ADJACENT@409=TYPED-THEN-SLICED · ADJACENT@411=TYPED-THEN-SLICED · controls NUMBER@411=OTHER-DERIVED REGEX@411=OTHER-DERIVED
+  TRUE  G8  [GATE] FROM_FILE reads the strings-blanked continuation: a mentioned reader does not move a fixture array, and a called one still lands SLICED-FROM-FILE
+        MENTION (an array of fixtures carrying "readFileSync") @409=OTHER-DERIVED @411=OTHER-DERIVED · NAME (a declaration that calls it) @409=UNMODELLED @411=SLICED-FROM-FILE
+  TRUE  G7  [GATE] the printed count equals its own member list, and the old slice(0, 4) spelling goes red
+        cured: count 4 beside 4 name(s) · CONTROL, old spelling: count 4 beside 4 name(s) — AGREE on this population
+  TRUE  P1  [PRED] the wrapped-reader-call class is exactly 1 corpus-wide, and it is KP_MESSAGE
+        1 member(s): stratify-the-live-interval.mjs:416 KP_MESSAGE
+  FALSE P2  [PRED] curing the mechanism moves 4 declarations, 3 into the class, 3 of them out of UNMODELLED
+        5 mover(s), 3 into the class, 3 out of UNMODELLED · grade-the-class-count-and-the-seam.mjs:225 KP_CONST_INDIRECTION | grade-the-class-count-and-the-seam.mjs:227 KP_INLINE_MULTILINE | stratify-the-live-interval.mjs:416 KP_MESSAGE | census-the-hand-typed-known-positive.mjs:281 KP_FAITHFUL | census-the-wrapped-call-and-the-body-granularity.mjs:408 KPMOD_SEAMLESS
+  FALSE P3  [PRED] the interval collapses: the 411 ceiling equals the 411 floor
+        409: [22, 25] · 411: [25, 26] · undecided-in-a-slicing-file 3 -> 1 · still undecided: census-the-wrapped-call-and-the-body-granularity.mjs:408 KPMOD_SEAMLESS
+  TRUE  P4  [PRED] OTHER-DERIVED is a default: at least 3 of its members are regex literals, which its gloss does not name
+        OTHER-DERIVED(409) 29 · REGEX 4 · by shape: ARRAY 7 · REGEX 4 · OBJECT 7 · CALL-OR-IDENT 8 · NUMBER 1 · UNRECOGNISED 1 · NEW 1
+  TRUE  P5  [PRED] the eight partition 4 stands-for-nothing / 2 with a site / 2 refused under the body key
+        4 nothing [KP_ESCAPED KP_FRAGMENT KP_PLAIN KP_TSANNOT] · 2 site [KP_MODULE KP_NEWLINE] · 2 refused [KP_INTERP KP_MESSAGE]
+  TRUE  P6  [PRED] his hand-read partition and my body key agree on every member where both can speak
+        his 3 SITE [KP_MODULE KP_NEWLINE KP_MESSAGE] / 5 SHAPE · mine decides 6 of 8 · disagreements 0
+
+GATE: true   (8 leg(s) on the key itself)
+PREDICTIONS: 4 landed, 2 REFUTED: P2 | P3
+
+  !! A REFUTED PREDICTION IS THE ROUND'S CONTENT, NOT ITS FAILURE (383). Each one
+     above prints what it measured. Gate legs read the key; prediction legs read the
+     corpus; the assignment is by what the leg reads and does not move (409 §4).
+
+── the two keys on one population at one rev ──
+
+  rev aec727f9 · corpus 280 file(s) · 57 declaration(s) outside this file · worktree DIRTY
+
+  409 key: TYPED-LITERAL 15 · TYPED-THEN-SLICED 8 · SLICED-FROM-FILE 2 · OTHER-DERIVED 29 · UNMODELLED 3
+          interval [22, 25] — floor 22 decided in-class, +3 undecided in a slicing file
+
+  411 key: TYPED-LITERAL 17 · TYPED-THEN-SLICED 9 · SLICED-FROM-FILE 3 · OTHER-DERIVED 27 · UNMODELLED 1
+          interval [25, 26] — floor 25 decided in-class, +1 undecided in a slicing file
+
+── every movement, by member (340) ──
+
+  UNMODELLED        -> TYPED-LITERAL     out->in cont=1  docs/research/round382-instruments/grade-the-class-count-and-the-seam.mjs:225 KP_CONST_INDIRECTION
+        init: "`const R225 = 'probe-round225-a-citation-is-not-a-call.mts';"
+  UNMODELLED        -> TYPED-LITERAL     out->in cont=3  docs/research/round382-instruments/grade-the-class-count-and-the-seam.mjs:227 KP_INLINE_MULTILINE
+        init: "`const r261Now = fs.readFileSync(\n  path.join(REPO, 'scripts"
+  OTHER-DERIVED     -> TYPED-THEN-SLICED out->in cont=2  docs/research/round408-instruments/stratify-the-live-interval.mjs:416 KP_MESSAGE
+        init: "kpFromSource( // SITE: scripts/probe-import-large-session.mt"
+  UNMODELLED        -> SLICED-FROM-FILE  out->out cont=1  docs/research/round409-instruments/census-the-hand-typed-known-positive.mjs:281 KP_FAITHFUL
+        init: "declAt(readFileSync(join(REPO, KP_SITES.FAITHFUL.path), 'utf"
+  OTHER-DERIVED     -> UNMODELLED        out->out cont=0  docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs:408 KPMOD_SEAMLESS
+        init: "KP_MOD === undefined ? null : bodyCarried(KP_MOD.body, MINE4"
+
+── the eight Round 408 KPs: the line key, then the body key ──
+
+  KP_PLAIN     TYPED-THEN-SLICED -> TYPED-THEN-SLICED line-key false                  body as-code false            carried false
+               body: "const files = git(['ls-tree', '-r', rev]).split('\\\\n');"
+  KP_MODULE    TYPED-THEN-SLICED -> TYPED-THEN-SLICED line-key false                  body as-code b1.mjs           carried census-the-fixture-as-string-class.mjs
+               body: "import { readFileSync } from 'node:fs';"
+  KP_TSANNOT   TYPED-THEN-SLICED -> TYPED-THEN-SLICED line-key false                  body as-code false            carried false
+               body: "const rows: Array<string> = xs.map((x) => String(x));"
+  KP_ESCAPED   TYPED-THEN-SLICED -> TYPED-THEN-SLICED line-key false                  body as-code false            carried false
+               body: "const s = \\'x\\'; return s;"
+  KP_FRAGMENT  TYPED-THEN-SLICED -> TYPED-THEN-SLICED line-key false                  body as-code false            carried false
+               body: "const files = git(['ls-tree', '-r', rev"
+  KP_INTERP    TYPED-THEN-SLICED -> TYPED-THEN-SLICED line-key REFUSED                body as-code null             carried null
+               body: null
+  KP_NEWLINE   TYPED-THEN-SLICED -> TYPED-THEN-SLICED line-key probe-round295-the-promotion-path-reaches-one-of-the-twenty-nine-and-the-refusals-are-its-own-fixtures.mts body as-code false            carried probe-round295-the-promotion-path-reaches-one-of-the-twenty-nine-and-the-refusals-are-its-own-fixtures.mts
+               body: "const x = 1;\\nconsole.log(x);\\n"
+  KP_MESSAGE   OTHER-DERIVED     -> TYPED-THEN-SLICED line-key REFUSED                body as-code null             carried null
+               body: null
+
+── OTHER-DERIVED(409), by the shape the 411 key can actually name ──
+
+  ARRAY          docs/research/round352-valuation-leg-key.mjs:150 KP
+  REGEX          docs/research/round370-instruments/characterisation-sweep-drive.mjs:26 KP_SENTENCE
+  OBJECT         docs/research/round370-instruments/characterisation-sweep-drive.mjs:44 CONTROL
+  ARRAY          docs/research/round380-instruments/measure-b1-legs.mjs:50 KP_SRC
+  CALL-OR-IDENT  docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:279 KP
+  OBJECT         docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:285 KP_FILES
+  NUMBER         docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs:348 KP_PROBE_PRINTS
+  CALL-OR-IDENT  docs/research/round401-instruments/census-the-branch-polarity-axis.mjs:846 CONTROL
+  ARRAY          docs/research/round405-instruments/census-the-pin-population.mjs:251 KP_SRC
+  ARRAY          docs/research/round405-instruments/census-the-pin-population.mjs:270 KP_EXPECT
+  ARRAY          docs/research/round407-instruments/census-the-fixture-as-string-class.mjs:295 KP_BASE
+  OBJECT         docs/research/round407-instruments/census-the-fixture-as-string-class.mjs:302 KP
+  OBJECT         docs/research/round407-instruments/census-the-fixture-as-string-class.mjs:338 KP_WANT
+  CALL-OR-IDENT  docs/research/round408-instruments/stratify-the-live-interval.mjs:416 KP_MESSAGE
+  OBJECT         docs/research/round408-instruments/stratify-the-live-interval.mjs:422 KP_TABLE
+  CALL-OR-IDENT  docs/research/round408-instruments/stratify-the-live-interval.mjs:424 KP_UNSLICED
+  REGEX          docs/research/round409-instruments/census-the-hand-typed-known-positive.mjs:173 KP_NAME
+  OBJECT         docs/research/round409-instruments/census-the-hand-typed-known-positive.mjs:265 KP_SITES
+  OBJECT         docs/research/round409-instruments/census-the-hand-typed-known-positive.mjs:286 KP_TABLE
+  REGEX          docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs:133 KP_NAME
+  CALL-OR-IDENT  docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs:391 KP_MOD
+  CALL-OR-IDENT  docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs:393 CONTROL_CARRIED
+  CALL-OR-IDENT  docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs:394 CONTROL_CODE
+  UNRECOGNISED   docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs:408 KPMOD_SEAMLESS
+  CALL-OR-IDENT  docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs:433 KP_FRAG
+  REGEX          docs/research/round411-instruments/list-the-declarations-under-the-409-key.mjs:26 KP_NAME
+  NEW            scripts/probe-round223-twenty-one-probes-against-a-stranger.mts:141 CONTROLS
+  ARRAY          scripts/probe-round291-the-sentinel-did-not-grade-the-backups-that-are-the-recovery-path.mts:197 KNOWN_POSITIVES
+  ARRAY          scripts/probe-round291-the-sentinel-did-not-grade-the-backups-that-are-the-recovery-path.mts:231 KNOWN_NEGATIVES
+

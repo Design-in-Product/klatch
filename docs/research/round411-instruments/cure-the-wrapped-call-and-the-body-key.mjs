@@ -69,8 +69,10 @@ const EXPECTED = [
   ['G3', 'the body key is graded on a hand-read known positive (KP_MODULE: 9 code sites and one '
        + 'carried site, hand-read BEFORE this ran and graded against the live corpus, 350) and on '
        + 'a CONSTRUCTED control that no write path can rewrite (410 §4)'],
-  ['G4', 'the self seam does exactly one thing: seam OFF, the control is found in THIS FILE and '
-       + 'only this file; seam ON it vanishes; the known positive survives both (405)'],
+  ['G4', 'the seam does exactly one thing: seam OFF, the TYPED control is found in THIS FILE and '
+       + 'only this file; seam ON it vanishes; the known positive survives both (405). The seam is '
+       + 'this ROUND\'S DIRECTORY, derived from import.meta.url — re-keyed after drive 3, where a '
+       + 'file-level seam let this round\'s SIBLING file move the figure (410 §5 adopted)'],
   ['G5', 'the continuation does not over-reach: a declaration that is already finished consumes '
        + 'ZERO continuation lines, graded on a number-initializer control, so FROM_FILE cannot be '
        + 'matched against unrelated code below a short declaration'],
@@ -380,7 +382,19 @@ if (UNSLICED.length > 0) {
 const EIGHT = ['KP_PLAIN', 'KP_MODULE', 'KP_TSANNOT', 'KP_ESCAPED', 'KP_FRAGMENT', 'KP_INTERP',
                'KP_NEWLINE', 'KP_MESSAGE'];
 const R408_DECLS = declarations(readFileSync(join(REPO, R408), 'utf8'));
-const SKIP = new Set([SELF, R408]);                     // the seam (405), graded both ways in G4
+/**
+ * The seam (405), graded both ways in G4 — and keyed on this round's own **directory**, derived
+ * from `import.meta.url` rather than typed, which is Theseus's 410 §5 cure adopted.
+ *
+ * Drive 3 is why it is the directory and not the file. A file-level seam excluded this file and
+ * the count still moved 16 -> 17, because the 17th site is `list-the-declarations-under-the-409-key
+ * .mjs` — **the sibling instrument from this same round**, committed in the same commit. A seam
+ * keyed on `import.meta.url` cannot see its own sibling. The thing contaminating the corpus is
+ * the ROUND, not the file.
+ */
+const SELF_DIR = `${SELF.split('/').slice(0, -1).join('/')}/`;
+const MINE = CORPUS.filter((p) => p.startsWith(SELF_DIR));
+const SKIP = new Set([...MINE, R408]);
 const EIGHT_ROWS = EIGHT.map((name) => {
   const ds = R408_DECLS.filter((d) => d.name === name);
   if (ds.length !== 1) return { name, refused: `declared ${ds.length} time(s) in his file` };
@@ -448,36 +462,57 @@ const codeFileCount = (body, skip) => {
     !skip.has(p) && src.split('\n').some((l) => l.trim() === want)).length;
 };
 
-// The control is CONSTRUCTED, never typed: 410 §4 measured an agent write path decoding a typed
-// backslash before the file existed. `String.fromCharCode(92)` is the one spelling it cannot eat.
+// TWO controls, because one object cannot do both jobs — drive 3 is where that became visible.
+//
+//   CONTROL_CONSTRUCTED is built at runtime from `String.fromCharCode(92)`, which is the one
+//   spelling no write path can rewrite (his 410 §4, and it is his). Precisely because it is
+//   constructed, its bytes are NOT in this file's source — so it is absent with the seam off too,
+//   and it therefore cannot grade the seam at all.
+//
+//   CONTROL_TYPED is typed, so it IS in this file verbatim: seam off finds it HERE and only here,
+//   seam on makes it vanish. That is the grade 405 asks for, and only a typed control can give it.
+//
+// A constructed control cannot grade a seam; a typed control cannot grade the write path. Drive 3
+// had one control trying to be both and G4 read `false` on a leg whose failure mode is `false`.
 const BS = String.fromCharCode(92);
-const CONTROL_BODY = `const zz_r411_control_${BS}u0041 = 'no corpus line is spelled this way';`;
+const CONTROL_CONSTRUCTED =
+  `const zz_r411_constructed_${BS}u0041 = 'no corpus line is spelled this way';`;
+const CONTROL_TYPED = "const zz_r411_typed_control = 'this line is in exactly one corpus file';";
 
 g('G3', 'the body key reproduces the hand read on a known positive and refuses a constructed control',
   kpModule !== undefined
   && typeof kpModule.asCode === 'string' && typeof kpModule.carried === 'string'
   && codeFileCount(kpModule.body, SKIP) === HAND_READ_CODE_FILES
   && kpModule.carried === HAND_READ_CARRIED
-  && bodyIsCode(CONTROL_BODY, SKIP) === false && bodyCarried(CONTROL_BODY, SKIP) === false,
+  && bodyIsCode(CONTROL_CONSTRUCTED, SKIP) === false
+  && bodyCarried(CONTROL_CONSTRUCTED, SKIP) === false,
   `KP_MODULE body ${JSON.stringify(kpModule?.body)} · asCode ${kpModule?.asCode} · `
   + `code files ${kpModule === undefined ? 'MISSING' : codeFileCount(kpModule.body, SKIP)} `
-  + `(hand read ${HAND_READ_CODE_FILES}) · carried ${kpModule?.carried} · `
-  + `control asCode ${bodyIsCode(CONTROL_BODY, SKIP)} carried ${bodyCarried(CONTROL_BODY, SKIP)}`);
+  + `(hand read ${HAND_READ_CODE_FILES}, INHERITED corpus) · carried ${kpModule?.carried} · `
+  + `constructed control asCode ${bodyIsCode(CONTROL_CONSTRUCTED, SKIP)} `
+  + `carried ${bodyCarried(CONTROL_CONSTRUCTED, SKIP)}`);
 
-const NO_SEAM = new Set([R408]);                         // SELF no longer skipped
-const ctrlSeamOff = bodyCarried(CONTROL_BODY, NO_SEAM);
-const ctrlSeamOn = bodyCarried(CONTROL_BODY, SKIP);
+const NO_SEAM = new Set([R408]);                         // my round's own files no longer skipped
+const ctrlSeamOff = bodyCarried(CONTROL_TYPED, NO_SEAM);
+const ctrlSeamOn = bodyCarried(CONTROL_TYPED, SKIP);
 const kpSeamOff = kpModule === undefined ? null : bodyIsCode(kpModule.body, NO_SEAM);
 const kpSeamOn = kpModule === undefined ? null : bodyIsCode(kpModule.body, SKIP);
+const constrSeamOff = bodyCarried(CONTROL_CONSTRUCTED, NO_SEAM);
 const SELF_TRACKED = git(['ls-files', '--', SELF]).trim() !== '';
-g('G4', 'the self seam does exactly one thing, graded both ways (405)',
+g('G4', 'the seam does exactly one thing, graded both ways with a TYPED control (405)',
   SELF_TRACKED
     ? ctrlSeamOff === SELF && ctrlSeamOn === false
       && typeof kpSeamOff === 'string' && typeof kpSeamOn === 'string'
+      // and the constructed control is absent with the seam OFF as well, which is why it is a
+      // known negative for the write path and NOT an instrument for the seam
+      && constrSeamOff === false
     : 'REFUSES — this file is untracked, so it is not in the corpus and the seam has nothing to do',
   SELF_TRACKED
-    ? `control: seam OFF -> ${ctrlSeamOff} · seam ON -> ${ctrlSeamOn} · `
-      + `known positive survives both: ${kpSeamOff} / ${kpSeamOn}`
+    ? `typed control: seam OFF -> ${String(ctrlSeamOff).split('/').pop()} · seam ON -> `
+      + `${ctrlSeamOn} · known positive survives both: `
+      + `${String(kpSeamOff).split('/').pop()} / ${String(kpSeamOn).split('/').pop()} · `
+      + `constructed control with the seam OFF -> ${constrSeamOff} (absent from its own file by `
+      + `construction, so it cannot grade a seam)`
     : `${SELF} is NOT in \`git ls-files\` at ${REV.slice(0, 8)} — drive one cannot grade the seam`);
 
 // ─── G5: the continuation does not over-reach ──────────────────────────────────────────────────
