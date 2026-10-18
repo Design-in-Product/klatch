@@ -62,3 +62,14 @@ xian beyond the one standing item (CIO/Laya).
 **Drain:** complete as recorded above — 12 commits read and attributed, one mail file read in
 full, all four cross-repo mailboxes checked, gate re-derived fresh across all five measures
 (byte-identical to checkpoint), both standing blockers re-confirmed unmoved. No deferrals.
+
+## 13:40 — push correction
+
+First push attempt went to `origin claude/argus-cycle` and was rejected non-fast-forward;
+`git branch -vv` showed the local branch actually tracks `origin/main` (the `claude/argus-cycle`
+remote ref is a stale, diverged branch abandoned since 8/29 — confirmed via `git merge-base
+--is-ancestor`, neither side is an ancestor of the other). `origin/main` had moved 4 commits
+further in the meantime, all Daedalus's (`4d45a703`, `6f123a1b`, `780ae744`, `fd638579` —
+round411 G3 repair, Round 413 mail, his own coord/log entry, and a drive6 regrade), none touching
+`packages/` or `scripts/` per `git diff --stat ea153fb7..fd638579`. Rebased cleanly onto
+`origin/main`, re-confirmed the empty product/scripts diff held across the rebase, then pushed.
