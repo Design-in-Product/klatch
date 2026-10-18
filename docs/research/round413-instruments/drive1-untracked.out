@@ -1,0 +1,38 @@
+Round 413 — attacking G7: the agreeing half is satisfied by the key it was meant to grade, at 14dab294fe10c5a1f7ab1666dd3967528d7d8a4d
+
+  EXPECTED D1  the slice is his lines 1..422 byte-for-byte and the export tail is the only addition
+  EXPECTED D2  known positive: the SLICED topLevelTernary splits round410:408 into the three spans his own recorded output prints, parsed out of that output rather than retyped (395)
+  EXPECTED D3  THE ATTACK: his G7 as a 2 x 2 against the OLD key. His DISAGREE control moves 411 -> 412; his AGREE control DOES NOT MOVE, so the agreeing half of G7 passes with the whole branch layer deleted
+  EXPECTED D4  the repair: an agreeing ternary whose agreed stratum differs from the test's own shape moves OTHER-DERIVED -> TYPED-LITERAL, so it grades the agreeing direction non-vacuously
+  EXPECTED D5  controls for D4: the branches without the ternary, and the test alone, are each UNMOVED between the two keys — so D4's move is the branch layer and not the literal
+  EXPECTED D6  his two isCond exclusions (`?.`, `??`) are driven as constructed known positives AND censused live, so the exclusion is priced on text that occurs
+  EXPECTED P1  his P1 regraded by hand under HIS seam: of the declarations whose window carries a `?`, exactly one is a top-level conditional initializer
+  EXPECTED P2  his "population held at 57" is a WITHIN-COMMIT property. The directory seam re-admits the previous round's instruments, so the population under this round's seam is larger
+  EXPECTED P3  a third shape in his P3 family: `cond ? .5 : 1` is MISSED by isCond (`?` followed by `.`) and then decided by its own test. Constructed hit; live class published as measured
+
+  TRUE  D1  [GATE] the slice is his lines 1..422 byte-for-byte and the export tail is the only addition
+        sliced 422 line(s) of 763 · prefix byte-identical: true · remainder is exactly the declared tail: true · cut line 423 is "// ─── G1 — his own figures, parsed out of a live drive of H"
+  TRUE  D2  [GATE] known positive: the SLICED topLevelTernary splits round410:408 into the three spans his own recorded output prints, parsed out of that output rather than retyped
+        test true · cons true · alt true · site census-the-wrapped-call-and-the-body-granularity.mjs:408
+  FALSE D3  [GATE] THE ATTACK: his G7 as a 2 x 2 against the OLD key — his DISAGREE control moves and his AGREE control does not, so the agreeing half of G7 passes with the branch layer deleted
+        DISAGREE " cond ? 'x' : 7;" @411=UNMODELLED @412=UNMODELLED MOVES=false · AGREE " cond ? 7 : 8;" @411=UNMODELLED @412=OTHER-DERIVED MOVES=true [branches agree: OTHER-DERIVED] <- the agreeing half is satisfied by the OLD key alone
+  FALSE D4  [GATE] the repair: an agreeing ternary whose agreed stratum differs from the test's own shape moves OTHER-DERIVED -> TYPED-LITERAL, so it grades the agreeing direction non-vacuously
+        AGREE-REPAIRED " cond ? 'x' : 'y';" @411=UNMODELLED @412=TYPED-LITERAL MOVES=true [branches agree: TYPED-LITERAL]
+  TRUE  D5  [GATE] controls for D4: the branches without the ternary, and the test alone, are each UNMOVED between the two keys — so D4's move is the branch layer and not the literal
+        BRANCH-ALONE " 'x';" @411=TYPED-LITERAL @412=TYPED-LITERAL MOVES=false · TEST-ALONE " cond;" @411=OTHER-DERIVED @412=OTHER-DERIVED MOVES=false
+  TRUE  D6  [GATE] his two isCond exclusions (`?.`, `??`) are driven as constructed known positives AND censused live, so the exclusion is priced on text that occurs
+        constructed: " a?.b;" -> not a ternary · " a ?? b;" -> not a ternary · live: 1 window(s) carry a masked `?`, of which 0 carry `?.` or `??`
+  TRUE  P1  [PRED] his P1 regraded by hand under HIS seam: of the declarations whose window carries a `?`, exactly one is a top-level conditional initializer
+        his population 57 · windows with a masked `?` 1 · top-level conditional initializers 1 [census-the-wrapped-call-and-the-body-granularity.mjs:408 KPMOD_SEAMLESS] · refused 0
+  TRUE  P2  [PRED] his "population held at 57" is a WITHIN-COMMIT property — the directory seam re-admits the previous round's instruments, so the population under this round's seam is larger
+        under HIS seam 57 (he published 57) · under THIS round's seam 62 · re-admitted from docs/research/round412-instruments/: 5 [resolve-the-ternary-and-reconstruct-the-nine.mjs]
+  FALSE P3  [PRED] a third shape in his P3 family: `cond ? .5 : 1` is MISSED by isCond (`?` followed by `.`) and then decided by its own test. Constructed hit; live class published as measured
+        constructed " cond ? .5 : 1;" -> {"test":" cond ","cons":" .5 ","alt":" 1;"}, so @411=UNMODELLED @412=UNMODELLED MOVES=false — DECIDED by its test · live class 0
+
+GATE: false   (6 leg(s) on the key itself)
+PREDICTIONS: 2 landed, 1 REFUTED: P3
+
+  !! A REFUTED PREDICTION IS THE ROUND'S CONTENT, NOT ITS FAILURE (383).
+
+  rev 14dab294fe10c5a1f7ab1666dd3967528d7d8a4d · 282 file(s) in the corpus · worktree DIRTY
+  interval under his 412 key, this round's seam: [27,27]
