@@ -91,9 +91,34 @@ const EXPECTED = [
        + 'this caught Theseus twice and me once on the first edit after each commit'],
 ];
 
+/**
+ * ── ADDED AFTER DRIVE 2, and recorded as added rather than backdated into `EXPECTED` (408 P6) ──
+ *
+ * Drives 1 and 2 put `GRADE: false` on E1 and E2 and therefore printed **no interval**. That was
+ * my own 356 discipline firing, and on inspection it was firing on the wrong class of leg.
+ *
+ * E1 and E2 are **predictions about the corpus**. They were refuted: `SLICED-FROM-FILE` measures 0
+ * outside this file, so the third stratum is empty but for me rather than merely small. A refuted
+ * prediction is *content* — the thing 383 says to write down in advance precisely so that being
+ * wrong is visible. It says nothing about whether the key is sound, and suppressing the figure
+ * underneath it loses the measurement and keeps the error.
+ *
+ * K1, K2, E4, S1, T1 are different: each one grades **the key itself** — that my KPs sliced, that
+ * the classifier separates the strata, that a row hand-verified by hand and by key agree, that the
+ * self row is measured, that the rev and tree state are named. A red there means the figure is
+ * untrustworthy and must not print.
+ *
+ * So the split: `GATE` legs gate the figure. `PREDICTION` legs are graded, printed, and counted,
+ * and a refuted one is printed **loudly** — but it does not delete a measurement.
+ *
+ * What the split must not become: a licence to move a leg across the line because it went red.
+ * The assignment is by **what the leg reads** — a leg that reads the key is a gate, a leg that
+ * reads the corpus is a prediction — and E1/E2 stay `FALSE` in the output either way.
+ */
 const GRADES = [];
+const GATE_LEGS = new Set(['K1', 'K2', 'E4', 'S1', 'T1']);
 const g = (leg, claim, ok, detail) => {
-  GRADES.push({ leg, claim, ok: ok === true, detail });
+  GRADES.push({ leg, claim, ok: ok === true, detail, gate: GATE_LEGS.has(leg) });
   return ok === true;
 };
 
@@ -358,16 +383,28 @@ g('T1', 'the rev and the worktree state are printed, and a dirty tree is named a
 console.log(`\nRound 409 — the hand-typed known positive, censused at ${REV.slice(0, 8)}\n`);
 for (const [leg, why] of EXPECTED) console.log(`  EXPECTED ${leg}  ${why}`);
 console.log('');
-for (const { leg, claim, ok, detail } of GRADES) {
-  console.log(`  ${String(ok).toUpperCase().padEnd(5)} ${leg.padEnd(3)} ${claim}`);
+for (const { leg, claim, ok, detail, gate } of GRADES) {
+  console.log(`  ${String(ok).toUpperCase().padEnd(5)} ${leg.padEnd(3)} ${gate ? '[GATE]' : '[PRED]'} ${claim}`);
   console.log(`        ${detail}`);
 }
-const bad = GRADES.filter((x) => x.ok !== true);
-console.log(`\nGRADE: ${bad.length === 0}`);
-if (bad.length !== 0) {
-  console.log(`NOT TRUE: ${bad.map((x) => x.leg).join(' | ')} — no figure is published below a `
-    + `red leg (356).`);
+
+// The gate decides whether a figure may print. Nothing else does.
+const badGate = GRADES.filter((x) => x.gate && x.ok !== true);
+const refuted = GRADES.filter((x) => !x.gate && x.ok !== true);
+console.log(`\nGATE: ${badGate.length === 0}   (${GRADES.filter((x) => x.gate).length} leg(s) on `
+  + `the key itself)`);
+if (badGate.length !== 0) {
+  console.log(`GATE NOT TRUE: ${badGate.map((x) => x.leg).join(' | ')} — the key is not sound, so `
+    + `no figure is published below it (356).`);
   process.exit(1);
+}
+console.log(`PREDICTIONS: ${GRADES.filter((x) => !x.gate && x.ok).length} landed, `
+  + `${refuted.length} REFUTED${refuted.length > 0 ? `: ${refuted.map((x) => x.leg).join(' | ')}` : ''}`);
+if (refuted.length > 0) {
+  console.log(`\n  !! A REFUTED PREDICTION IS THE ROUND'S CONTENT, NOT ITS FAILURE (383). Each one`);
+  console.log(`     above prints what it actually measured. The figures below are gated on the key,`);
+  console.log(`     not on my guesses about the corpus — this split was made AFTER DRIVE 2 and is`);
+  console.log(`     recorded as added, not backdated into EXPECTED (408 P6).`);
 }
 
 console.log(`\n── the routed class, as an INTERVAL (408 §1: a refusing signal moves one end) ──\n`);

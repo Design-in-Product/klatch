@@ -1,0 +1,69 @@
+
+Round 409 — the hand-typed known positive, censused at f6a16234
+
+  EXPECTED E1  the three strata are all NON-EMPTY on the live corpus. TYPED-LITERAL is the smaller of the first two, because 408 moved a batch of eight declarations out of it this morning and nothing has moved any in
+  EXPECTED E2  SLICED-FROM-FILE is the SMALLEST of the three and this file is a member of it — if the third stratum is only ever me, the three-way split is a distinction without a population and the round found a naming convention rather than a hazard
+  EXPECTED E3  at least one TYPED-THEN-SLICED KP STANDS FOR NOTHING — its typed source line occurs nowhere in the corpus. This is the residual the cure does not close, and if every typed line turns out to be faithful then the cure is empirically sound and the carry-forward is weaker than 408 §4 claims
+  EXPECTED E4  Theseus's KP_NEWLINE (round408:415) is FAITHFUL — hand-verified before this ran, byte for byte against probe-round295-…mts:214, so a key that calls it STANDS-FOR-NOTHING has the hole rather than his declaration
+  EXPECTED K1  every KP of MINE slices, and each one's declared identifier is still on the line it names — a drifted line refuses instead of grading its neighbour
+  EXPECTED K2  the classifier returns a DIFFERENT stratum for each of my three KPs. One KP per stratum is coverage of one axis (382), so each miss is isolable to one stratum
+  EXPECTED S1  the self row is present and MEASURED under both readings, and the printed figures say which population they came from (408 §5)
+  EXPECTED T1  the rev read and the worktree state are printed, and a DIRTY tree is named as such — this caught Theseus twice and me once on the first edit after each commit
+
+  FALSE E1  [PRED] all three strata non-empty on the live corpus; TYPED-LITERAL <= TYPED-THEN-SLICED
+        TYPED-LITERAL 14 · TYPED-THEN-SLICED 8 · SLICED-FROM-FILE 0 · OTHER-DERIVED 19 · UNMODELLED 2 — population WITHOUT_SELF, 43 declaration(s)
+  FALSE E2  [PRED] SLICED-FROM-FILE is the smallest of the three AND has a member that is not this file
+        SLICED-FROM-FILE 0 outside this file; in this file 2 of 6 self row(s)
+  TRUE  E3  [PRED] at least one in-class KP STANDS FOR NOTHING — its typed source line occurs nowhere else
+        stands-for-nothing 5 · faithful 1 · undecided 15 — stratify-the-live-interval.mjs:400 KP_PLAIN | stratify-the-live-interval.mjs:401 KP_MODULE | stratify-the-live-interval.mjs:402 KP_TSANNOT | stratify-the-live-interval.mjs:403 KP_ESCAPED
+  TRUE  E4  [GATE] KP_NEWLINE (round408:415) reads FAITHFUL — hand-verified against probe-round295:214
+        occurs: scripts/probe-round295-the-promotion-path-reaches-one-of-the-twenty-nine-and-the-refusals-are-its-own-fixtures.mts · stratum TYPED-THEN-SLICED
+  TRUE  K1  [GATE] every KP of mine sliced, and each declared identifier is still on the line it names
+        3 sliced, 0 refused
+  TRUE  K2  [GATE] the classifier returns each KP's predicted stratum, one axis per KP (382)
+        KP_TYPED=TYPED-LITERAL · KP_CURED=TYPED-THEN-SLICED · KP_FAITHFUL=TYPED-THEN-SLICED
+  TRUE  S1  [GATE] the self row is measured and present, and the figures declare their population
+        self contributes 6 row(s): WITH_SELF 49 vs WITHOUT_SELF 43 · self strata OTHER-DERIVED/SLICED-FROM-FILE/UNMODELLED
+  TRUE  T1  [GATE] the rev and the worktree state are printed, and a dirty tree is named as such
+        rev f6a16234 · worktree DIRTY (2 path(s)) · corpus 276 file(s) · 49 declaration(s) WITH_SELF
+
+GATE: true   (5 leg(s) on the key itself)
+PREDICTIONS: 1 landed, 2 REFUTED: E1 | E2
+
+  !! A REFUTED PREDICTION IS THE ROUND'S CONTENT, NOT ITS FAILURE (383). Each one
+     above prints what it actually measured. The figures below are gated on the key,
+     not on my guesses about the corpus — this split was made AFTER DRIVE 2 and is
+     recorded as added, not backdated into EXPECTED (408 P6).
+
+── the routed class, as an INTERVAL (408 §1: a refusing signal moves one end) ──
+
+  floor   21  in-class declarations the key DECIDES (population WITHOUT_SELF, 43 declaration(s) in 16 file(s))
+  ceiling 23  adding the 2 UNMODELLED row(s) in slicing files, which are undecided rather than out
+
+  the cure's residual: 5 stands-for-nothing, 1 faithful, 15 undecided-occurrence
+
+  TYPED-THEN-SLICED  UNMODELLED-OCC docs/research/round365-instruments/haz-delta.mts:16 KP
+  TYPED-LITERAL      UNMODELLED-OCC docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs:321 KP_A
+  TYPED-LITERAL      UNMODELLED-OCC docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs:322 KP_B
+  TYPED-LITERAL      UNMODELLED-OCC docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs:323 KP_C
+  TYPED-LITERAL      UNMODELLED-OCC docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs:329 KP_D
+  TYPED-LITERAL      UNMODELLED-OCC docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs:330 KP_E
+  TYPED-LITERAL      UNMODELLED-OCC docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs:331 KP_F
+  TYPED-LITERAL      UNMODELLED-OCC docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs:337 KP_G
+  TYPED-LITERAL      UNMODELLED-OCC docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs:338 KP_H
+  TYPED-LITERAL      UNMODELLED-OCC docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs:339 CONTROL_CURED
+  TYPED-LITERAL      UNMODELLED-OCC docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs:340 CONTROL_ABSENT
+  TYPED-LITERAL      UNMODELLED-OCC docs/research/round406-instruments/hand-read-the-inline-seven.mjs:226 KP
+  TYPED-THEN-SLICED  false          docs/research/round408-instruments/stratify-the-live-interval.mjs:400 KP_PLAIN
+  TYPED-THEN-SLICED  false          docs/research/round408-instruments/stratify-the-live-interval.mjs:401 KP_MODULE
+  TYPED-THEN-SLICED  false          docs/research/round408-instruments/stratify-the-live-interval.mjs:402 KP_TSANNOT
+  TYPED-THEN-SLICED  false          docs/research/round408-instruments/stratify-the-live-interval.mjs:403 KP_ESCAPED
+  TYPED-THEN-SLICED  false          docs/research/round408-instruments/stratify-the-live-interval.mjs:404 KP_FRAGMENT
+  TYPED-THEN-SLICED  UNMODELLED-OCC docs/research/round408-instruments/stratify-the-live-interval.mjs:407 KP_INTERP
+  TYPED-THEN-SLICED  scripts/probe- docs/research/round408-instruments/stratify-the-live-interval.mjs:415 KP_NEWLINE
+  TYPED-LITERAL      UNMODELLED-OCC scripts/probe-round223-twenty-one-probes-against-a-stranger.mts:492 CONTROL_PROBE
+  TYPED-LITERAL      UNMODELLED-OCC scripts/probe-round372-the-rows-are-keyed-on-the-limb-and-the-contradiction-is-latent.mts:354 KP
+
+  UNMODELLED in a slicing file — the hand read that would close the ceiling:
+  docs/research/round382-instruments/grade-the-class-count-and-the-seam.mjs:225 KP_CONST_INDIRECTION
+  docs/research/round382-instruments/grade-the-class-count-and-the-seam.mjs:227 KP_INLINE_MULTILINE
