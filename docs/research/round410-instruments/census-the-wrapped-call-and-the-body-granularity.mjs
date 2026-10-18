@@ -35,7 +35,7 @@
  */
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { stripSource } from '../../../scripts/lib/strip-source.mjs';
 
@@ -60,6 +60,8 @@ const EXPECTED = [
   ['G5', 'the two keys are not vacuously the same key — typed line != body for all eight (339)'],
   ['G6', 'the fixtures above are graded against THIS FILE ON DISK, because drive 1 proved a '
        + 'typed fixture can be rewritten between being typed and being read'],
+  ['G7', 'the self seam does exactly one thing, graded with the seam OFF and ON — added after '
+       + 'drive 4, where committing this file put its own control string into the corpus (405)'],
   ['P1', 'at least one of his five STANDS-FOR-NOTHING rows has a body that DOES occur in the '
        + 'corpus, so five is an overcount at the granularity the cure is spelled in'],
   ['P2', 'KP_MODULE is one of them, under BOTH readings — as real code and as a carried string'],
@@ -76,7 +78,7 @@ const EXPECTED = [
 ];
 
 const GRADES = [];
-const GATE = new Set(['G1', 'G2', 'G3', 'G4', 'G5', 'G6']);
+const GATE = new Set(['G1', 'G2', 'G3', 'G4', 'G5', 'G6', 'G7']);
 const g = (leg, claim, ok, detail) => {
   GRADES.push({ leg, claim, ok: ok === true, detail, gate: GATE.has(leg) });
   return ok === true;
@@ -215,23 +217,35 @@ function unescape(body) {
   return out;
 }
 
+/**
+ * THE SELF SEAM, and it is here because drive 4 went red on it.
+ *
+ * Drives 1-3 ran with this instrument untracked. The moment it was committed, its own fixture
+ * strings entered the live corpus and `CONTROL_BODY` — the known negative whose whole job is to
+ * occur NOWHERE — was found, in this file. G3 went red on its own promotion. That is Round 405
+ * exactly: `committing the instrument put its own fixture STRINGS into the live corpus`, and 405's
+ * cure is the one taken here — seam on `import.meta.url` rather than a typed path, and graded
+ * BOTH ways, so the exclusion is shown to do exactly one thing rather than quietly widening.
+ */
+const SELF410 = relative(REPO, fileURLToPath(import.meta.url));
+
 /** Does this exact body occur as the body of a string literal in another file? (carried string) */
-function bodyCarried(body, self) {
+function bodyCarried(body, self, skipSelf410 = true) {
   for (const [p, src] of SOURCES) {
-    if (p === self) continue;
+    if (p === self || (skipSelf410 && p === SELF410)) continue;
     for (const l of literalBodies(src)) if (l.body === body) return p;
   }
   return false;
 }
 
 /** Does the body's VALUE occur as a source line of another file? (real code) */
-function bodyIsCode(body, self) {
+function bodyIsCode(body, self, skipSelf410 = true) {
   const v = unescape(body);
   if (v === null) return 'UNDECODABLE';
   const want = v.trim();
   if (want === '') return null;
   for (const [p, src] of SOURCES) {
-    if (p === self) continue;
+    if (p === self || (skipSelf410 && p === SELF410)) continue;
     for (const l of src.split('\n')) if (l.trim() === want) return p;
   }
   return false;
@@ -385,6 +399,20 @@ g('G3', 'the body-key comes back the right way on a known positive and on a cont
     : `KP positive: carried=${KP_MOD.carried} asCode=${KP_MOD.asCode} · `
       + `control: carried=${CONTROL_CARRIED} asCode=${CONTROL_CODE}`);
 
+// G7 grades the SEAM, both ways (405). Excluding self must do exactly one thing: remove this
+// file. With the seam OFF the control must be found in THIS FILE and nowhere else — if it were
+// found anywhere else the control was never a known negative. With the seam ON it must vanish.
+// And the known positive must be reachable under BOTH, because a seam that also hides a real
+// member is a widening, not an exclusion.
+const CTRL_SEAMLESS = bodyCarried(CONTROL_BODY, MINE408, false);
+const KPMOD_SEAMLESS = KP_MOD === undefined ? null : bodyCarried(KP_MOD.body, MINE408, false);
+g('G7', 'the self seam does exactly one thing — with it OFF the control is found in THIS FILE '
+      + 'and only there, with it ON the control vanishes, and the known positive survives both',
+  CTRL_SEAMLESS === SELF410 && CONTROL_CARRIED === false
+    && typeof KPMOD_SEAMLESS === 'string' && KPMOD_SEAMLESS !== SELF410,
+  `self ${SELF410} · control seam-off ${CTRL_SEAMLESS} · control seam-on ${CONTROL_CARRIED} · `
+  + `known-positive seam-off ${KPMOD_SEAMLESS}`);
+
 // ─── predictions ───────────────────────────────────────────────────────────────────────────────
 const HIS_SFN_SET = new Set(HIS_SFN === null ? [] : HIS_SFN);
 const RESCUED = READ.filter((r) => HIS_SFN_SET.has(`${MINE408}:${r.line}:${r.ident}`)
@@ -426,25 +454,40 @@ g('P5', 'the wrapped-reader-call class is non-empty corpus-wide, and at most 3',
 // Keyed on String.raw fixtures only: that is the spelling whose whole purpose is "these bytes,
 // verbatim", so an escape the reader cannot model is a defect there in a way it is not in
 // ordinary cooked code. Counted per SITE, and the member lists are printed, not just the counts.
+// THE POPULATION EXCLUDES THIS ROUND'S OWN DIRECTORY, and that is the second thing drive 5
+// taught. P6 first read `typed \x: 1`, which flipped it from REFUTED to LANDED — and the single
+// member was `round410-instruments/rawprobe-…mjs:3`, the evidence file THIS ROUND committed. A
+// prediction about the pre-existing corpus cannot be confirmed by a member the round supplied.
+// 377/405 a third time in one fire, and greening rather than reddening, which is worse: a red
+// prediction gets investigated and a green one gets believed. Directory derived from the self
+// seam, not typed, and the figure is reported BOTH ways so the exclusion is visible.
+const SELF_DIR = `${SELF410.split('/').slice(0, -1).join('/')}/`;
 const RAW_FIXTURE = /String\.raw`([^`]*)`/g;
-const rawU = [], rawX = [];
-for (const [p, src] of SOURCES) {
-  if (p === HIS) continue;
-  const lines = src.split('\n');
-  for (let n = 0; n < lines.length; n++) {
-    RAW_FIXTURE.lastIndex = 0;
-    let m;
-    while ((m = RAW_FIXTURE.exec(lines[n])) !== null) {
-      if (/\\u/.test(m[1])) rawU.push(`${p.split('/').pop()}:${n + 1}`);
-      if (/\\x/.test(m[1])) rawX.push(`${p.split('/').pop()}:${n + 1}`);
+const scanRaw = (skipSelfDir) => {
+  const u = [], x = [];
+  for (const [p, src] of SOURCES) {
+    if (p === HIS) continue;
+    if (skipSelfDir && p.startsWith(SELF_DIR)) continue;
+    const lines = src.split('\n');
+    for (let n = 0; n < lines.length; n++) {
+      RAW_FIXTURE.lastIndex = 0;
+      let m;
+      while ((m = RAW_FIXTURE.exec(lines[n])) !== null) {
+        if (/\\u/.test(m[1])) u.push(`${p.split('/').pop()}:${n + 1}`);
+        if (/\\x/.test(m[1])) x.push(`${p.split('/').pop()}:${n + 1}`);
+      }
     }
   }
-}
-g('P6', 'the \\u/\\x residual censused over String.raw fixtures: zero surviving typed \\u, '
-      + 'because the write path eats it, and a non-zero typed \\x, which survives',
-  rawU.length === 0 && rawX.length > 0,
-  `typed \\u in a String.raw fixture: ${rawU.length}${rawU.length === 0 ? '' : ` [${rawU.join(' ')}]`}`
-  + ` · typed \\x: ${rawX.length}${rawX.length === 0 ? '' : ` [${rawX.slice(0, 6).join(' ')}]`}`);
+  return { u, x };
+};
+const INHERITED = scanRaw(true);                     // the corpus as it stood before this round
+const WITH_MINE = scanRaw(false);                    // and with this round's own files in it
+g('P6', 'the \\u/\\x residual censused over String.raw fixtures in the INHERITED corpus: zero '
+      + 'surviving typed \\u, because the write path eats it, and a non-zero typed \\x',
+  INHERITED.u.length === 0 && INHERITED.x.length > 0,
+  `INHERITED (excluding ${SELF_DIR}): \\u ${INHERITED.u.length} · \\x ${INHERITED.x.length}`
+  + ` — WITH this round's own files: \\u ${WITH_MINE.u.length} · \\x ${WITH_MINE.x.length}`
+  + `${WITH_MINE.x.length === 0 ? '' : ` [${WITH_MINE.x.join(' ')}]`}`);
 
 // ─── P7: the hand read of KP_MESSAGE, GRADED (350 — the key grades the hand reading) ──────────
 // KP_MESSAGE is invisible to BOTH automated keys: his stratum() files it under OTHER-DERIVED, and
