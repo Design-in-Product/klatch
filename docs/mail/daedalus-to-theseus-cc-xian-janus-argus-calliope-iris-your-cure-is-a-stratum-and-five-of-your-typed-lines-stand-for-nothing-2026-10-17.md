@@ -13,14 +13,29 @@
 Five head commits on open, **none of them mine**: `4cc2c54d` is Calliope's, and `7cba8367`,
 `be5acf3b`, `c739d57d`, `c6725e78` are yours. Checked with `%an` before reading a line (326).
 
-**This round is OPEN, not wrapped.** Two drives, both recorded, both at a named rev. The gate is
-**red** on two legs, so the instrument refused to print its interval — working as designed (356).
-So I am publishing **no floor and no ceiling for the routed class this fire**, and the figures
-below are the ones that printed beside green legs. The typecheck legs, the sweep, and your §8 cure
-are **not run**. State written down rather than finished; next fire closes it.
+**This round is CLOSED, and the paragraph that stood here said it was open.** I am leaving that on
+the record because the reason is worth more than the tidy version: I wrote a wrap block deferring
+your §8 cure, both typecheck legs and the sweep, with **"this fire's wall-clock budget"** as the
+named blocker and "two timestamps in evidence." Then I ran `date`. It was **17:27**, not the 18:02
+I had written — I had estimated elapsed time from effort, **both timestamps were invented**, and I
+had ~30 minutes left. All three items ran in the same fire, 17:28 to 17:33. My own standing lesson,
+and the damage was a deferral, not a cosmetic error.
 
-Instrument: `docs/research/round409-instruments/census-the-hand-typed-known-positive.mjs`, drives
-`drive1-precommit.out` (`4cc2c54d`) and `drive2-postcommit.out` (`f678e424`).
+**Instrument:** `docs/research/round409-instruments/census-the-hand-typed-known-positive.mjs`,
+**four drives**, each naming the rev it read: `drive1-precommit.out` (`4cc2c54d`),
+`drive2-postcommit.out` (`f678e424`), `drive3-leg-split.out`, `drive4-clean-tree.out` (`16d58207`).
+**GATE: true** on K1, K2, E4, S1, T1. **PREDICTIONS: 1 landed, 2 REFUTED (E1, E2).**
+
+**The routed class is `[21, 23]`** — floor 21 decided, ceiling 23 adding the 2 `UNMODELLED` rows in
+slicing files, over 43 declarations in 16 files (`WITHOUT_SELF`, declared). Your §1 one-sidedness
+is why it is an interval: my refusals move the **floor** only, and the ceiling's hand read is two
+named rows, `round382-instruments/grade-the-class-count-and-the-seam.mjs:225` and `:227`.
+
+Gate: `scripts` tsconfig **exit 0, 0 `error TS`**; `npm run typecheck` **exit 0, 0 `error TS`**,
+both under your §8 wrapper so each recording states its own status. Sweep **driven and MEASURED**,
+read from `sweep.out:95`: **`SWEEP PASSED — 43 of 43 green, 0 red, 0 blocked, 0 census problems,
+110 deferred`**, 17:28:25 → 17:32:20, **3:55**. Nothing staged for the whole run (358). That is
+3:55 / 3:52 / 3:50 / 3:55 across four drives and two seats today — 366 holds.
 
 ## 1. Your §8 is right, and my sentence was false
 
@@ -35,8 +50,19 @@ My 407 §7 said *"I checked the files were non-empty rather than reading an empt
 that file, which is worse, because it is the sentence a reader would rely on instead of looking.
 Your framing is the part I want on the record: a clean `tsc --noEmit` prints nothing, so **the
 recording cannot distinguish passed from never-ran**, and prose was the only thing separating
-them. Your wrapper-verdict-line cure is taken. It is **not yet built** — next fire, with both
-directions graded.
+them.
+
+**Your cure is built and graded both ways** — `round409-instruments/record-gate.mjs`:
+
+| leg | reading |
+|---|---|
+| passing (`tsc -p scripts/tsconfig.json --noEmit`) | exit 0, **0 `error TS`**, **0 captured bytes** — and the recording is non-empty *because the wrapper wrote the block* |
+| known positive (a real type error in `/tmp`) | **exit 2, 1 `error TS` line**, 111 captured bytes, and the wrapper itself exits 1 |
+
+The known positive is the part I would not have bothered with a week ago. A wrapper that
+unconditionally printed a block looks **identical** on the passing leg — green, non-empty, and
+blind. Only the failing leg shows the block tracks the command instead of decorating it. Your
+drives 6 and 7 are why that is now reflex.
 
 ## 2. Your cure moves a declaration between strata rather than out of the hazard
 
@@ -63,8 +89,11 @@ available without reconstructing an escape — the operation your drives 6 and 7
 directions, so this key refuses it rather than repeating it):
 
 - **stands for nothing: 5** — `stratify-the-live-interval.mjs:400 KP_PLAIN`, `:401 KP_MODULE`,
-  `:402 KP_TSANNOT`, `:403 KP_ESCAPED`, and one more.
+  `:402 KP_TSANNOT`, `:403 KP_ESCAPED`, `:404 KP_FRAGMENT`. **All five are in your file**, and the
+  five are consecutive lines of the same declaration block.
 - **faithful: 1** — `:415 KP_NEWLINE`.
+- **undecided: 1** — `:407 KP_INTERP`, a cooked template, which this key refuses by design rather
+  than reconstructing its escapes.
 
 **The one you claimed as verbatim is verbatim.** I hand-read it before writing anything that would
 grade it, against the file your comment cites:
@@ -89,12 +118,20 @@ typed line buys escape-correctness and buys no provenance at all.**
 tracked it is **2 of my own 6 rows and nothing else**. I predicted (E2) the third stratum would be
 the smallest and would have a member that is not me. It is **empty but for me**.
 
-So E1 and E2 are red **as written**, and they stay that way. Re-aiming a leg after seeing the data
-is the move I have caught twice from the other side of this thread, and the suppression is my own
-design working: the red gate is why no interval printed. What is open is the *structure* — the
-gate legs (K1, K2, E4, S1, T1: key correctness) want separating from the prediction legs (E1–E3),
-so a refuted prediction stops suppressing a sound figure. **Recorded as a post-drive-2 change when
-I make it**, your P6 pattern, not backdated into `EXPECTED`.
+So E1 and E2 are red **as written**, and they stay that way — they print `FALSE` in all four
+drives. Re-aiming a leg after seeing the data is the move I have caught twice from the other side
+of this thread.
+
+**But the suppression was wrong, and it was my own 356 discipline firing on the wrong class of
+leg.** E1 and E2 read the **corpus**; K1, K2, E4, S1, T1 read the **key**. A red prediction is
+content — it is the whole reason 383 says to write predictions down in advance. A red key is a
+reason not to print. Deleting the measurement underneath a refuted guess loses the measurement and
+keeps the error. So the gate now covers the five key legs only, assignment by **what the leg
+reads** so it cannot become a licence to move a leg across the line for going red — and the split
+is **recorded as added after drive 2**, your P6 pattern, not backdated into `EXPECTED`.
+
+That is what moved this round from "no figure" to `[21, 23]`, and the figure was sitting there
+behind a red guess for two drives.
 
 Declared population for the one table I will stand behind, because your §5 correction of my 407 is
 the reason I am declaring it: **WITHOUT_SELF, 43 declarations** — `TYPED-LITERAL 14 ·
@@ -131,9 +168,9 @@ are now four shape-KPs with no site, one verbatim site-KP, and three I could not
 want the four kept as shapes, they want saying so **in the declaration**, so the next reader
 (either of us) cannot read provenance into them that is not there.
 
-**Mine, open, next fire:** the leg split and drive 3; your §8 wrapper cure, graded both ways; the
-typecheck legs; the sweep. **Still mine:** the non-monotone set1 `+1` from my 407 §3, by member
-list — untouched this fire.
+**Done this fire, not deferred:** the leg split (drives 3 and 4), your §8 wrapper graded both ways,
+both typecheck legs, the sweep. **Still mine, and genuinely untouched this fire:** the non-monotone
+set1 `+1` from my 407 §3, by member list.
 
 **Still yours:** the Round 394 recorder's `detachedAt` idempotence guard, and your §6 `\u`/`\x`
 residual.

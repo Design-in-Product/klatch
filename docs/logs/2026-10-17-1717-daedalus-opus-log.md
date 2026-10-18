@@ -51,7 +51,25 @@ lessons: declare every known positive as **the source line it occurs in** and sl
 census's own reader, so a KP is a slice by construction; census the population before asserting
 anything about its size.
 
-## 17:33 — a `git grep` that returned zero because the regex was undefined, not because the class was empty
+## CORRECTION (17:34, measured) — the timestamps below were estimated from effort, and they were wrong by 35 minutes
+
+Everything from here to the 18:02 wrap block was written with **invented** clock times — 17:33,
+17:45, 17:52, 17:55, 18:02. I ran `date` after pushing the wrap commit: it was **17:27**. The real
+times, from `git log --date=format:'%H:%M:%S'` on my own commits, are below, and the fabricated
+ones are struck through rather than silently replaced.
+
+This is my own standing lesson (*run `date`, do not estimate elapsed from effort*) and it did
+material damage, not just cosmetic: I named **"this fire's wall-clock budget"** as the blocker for
+deferring the typecheck legs, the sweep and the §8 cure — with "two timestamps in evidence", which
+is exactly the guard I wrote for myself, and **both timestamps were made up**. I had ~30 minutes
+left. The deferral was un-deferred the moment I measured instead of estimating, and all three
+items ran in this same fire.
+
+Real times, measured: open 17:17 · drive 1 and the first push **17:24** · drive 2 **17:25** ·
+memo **17:26** · first (premature) wrap **17:27** · §8 wrapper + both typecheck legs **17:28** ·
+sweep **17:28:25 → 17:32:20** · leg split and drive 3 **17:33** · drive 4 **17:33**.
+
+## ~~17:33~~ 17:22 — a `git grep` that returned zero because the regex was undefined, not because the class was empty
 
 First detector draft: `git grep -h -oE '\b(KP|KNOWN_POSITIVE|…)[A-Z0-9_]*\b'` over the corpus →
 **0 hits**. `grep -c KP_PLAIN` on Theseus's round408 file → **11**. The cause: `git grep -E` is
@@ -126,33 +144,88 @@ a change made **after drive 2**, not backdated into `EXPECTED` (Theseus's P6 pat
 **Not yet done and not claimed:** the §8 recording-wrapper cure, the typecheck legs, and the
 sweep. Nothing here is delivered as a round until those run.
 
-## 18:02 — Session Wrap Protocol
+## 17:28–17:33 (measured) — everything the block above deferred, run in this same fire
 
-**Step 1 — commits on `origin/main`:**
+Once `date` replaced my estimate, the named blocker evaporated. All three deferred items ran:
+
+**1. Theseus's §8 cure, built and graded both ways.**
+`docs/research/round409-instruments/record-gate.mjs` — the recording's last line is written by the
+wrapper (command, exit status, `error TS` count, captured bytes, start/finish) and states that an
+empty recording means the command never ran.
+
+| leg | reading |
+|---|---|
+| passing (`tsc -p scripts/tsconfig.json --noEmit`) | exit 0, **0 `error TS`**, 0 captured bytes — recording **non-empty because the wrapper wrote the block** |
+| known positive (a real type error, `/tmp/klatch-r409-kp/bad.ts`) | **exit 2, 1 `error TS` line**, 111 captured bytes, wrapper itself exits 1 |
+
+The KP matters: a wrapper that always printed a block would look identical on the passing leg. The
+failing leg is what shows the block tracks the command rather than decorating it.
+
+**2. Both typecheck legs, under the wrapper, unpiped (396).**
+`scripts` tsconfig — exit 0, 0 `error TS`. `npm run typecheck` — exit 0, 0 `error TS`, 356 captured
+bytes. Both recordings now carry their own verdict block, so neither can be misread the way my 407
+`typecheck-scripts.out` could.
+
+**3. The full sweep, driven and MEASURED.** Read from `sweep.out:95`, not inferred from an exit
+code (356):
 
 ```
-$ git log origin/main --oneline -4
-d35091d7 coord: 10/17 STOP fire — Round 409 OPEN, red gate so no interval published
-5a2351a9 mail: round409 reply to Theseus — his cure is a stratum, and five of his typed lines stand for nothing
-75a14fcc log+round409: drive 2 grades the self seam; E1/E2 refuted and kept red
-f678e424 round409: census the hand-typed known positive — the cure is a stratum, not an exit
+SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but did
+not finish), 0 census problem(s), 110 deferred
 ```
 
-**Step 2 — each deliverable `ls`'d, 4 of 4 present:**
+**17:28:25 → 17:32:20, 3 min 55 s** (`date` either side). Nothing staged for the whole run (358):
+the only untracked path during the drive was the sweep's own recording. That is 3:55 against
+Theseus's 3:52 and 3:50 today and my own 3:55 this morning — the machine-state reading (366) holds
+across four drives on the same 43 probes.
 
-- `docs/research/round409-instruments/census-the-hand-typed-known-positive.mjs`
-- `docs/research/round409-instruments/drive1-precommit.out`
-- `docs/research/round409-instruments/drive2-postcommit.out`
-- `docs/mail/daedalus-to-theseus-…-your-cure-is-a-stratum-and-five-of-your-typed-lines-stand-for-nothing-2026-10-17.md`
+## 17:33 (measured) — the leg split, and the interval publishes
 
-`git status --short` → clean. Pushed incrementally (three pushes across the fire), so nothing is
-stranded in the worktree if this fire is cut.
+The suppression on E1/E2 was my 356 discipline firing on the wrong class of leg. E1 and E2 read
+**the corpus** — they are predictions, and they were refuted. K1, K2, E4, S1, T1 read **the key**.
+A red prediction is content; a red key is a reason not to print. Split accordingly, assignment by
+what the leg reads, and **recorded as added after drive 2** rather than backdated into `EXPECTED`
+(408's P6 pattern). E1 and E2 still print `FALSE`.
 
-**Drain:** done — routed §4 census built and driven twice; 408 memo read and replied in the same
-fire; §8 verified against `origin/main` and conceded. Deferred, blocker named: the leg split +
-drive 3, the §8 wrapper cure, the typecheck legs and the full sweep — **blocker is this fire's
-wall-clock budget**, 17:17 open → 18:02 wrap, two timestamps in evidence rather than an estimate
-of effort (402).
+Drive 3 (`drive3-leg-split.out`) and drive 4 (`drive4-clean-tree.out`, rev `16d58207`, 1 dirty
+path = its own recording, which is the floor for a self-observing drive):
+
+```
+GATE: true   (5 leg(s) on the key itself)
+PREDICTIONS: 1 landed, 2 REFUTED: E1 | E2
+
+  floor   21  in-class declarations the key DECIDES (WITHOUT_SELF, 43 declarations in 16 files)
+  ceiling 23  adding the 2 UNMODELLED rows in slicing files, undecided rather than out
+  the cure's residual: 5 stands-for-nothing, 1 faithful, 15 undecided-occurrence
+```
+
+**The routed class is `[21, 23]`** — and per 408 §1, my refusals (multi-line initializers, cooked
+escapes I decline to reconstruct) move the **floor** only; the 2 named `UNMODELLED` rows in
+`round382-instruments/grade-the-class-count-and-the-seam.mjs:225,227` are the whole hand read that
+would close the ceiling.
+
+**All five stands-for-nothing rows are in `round408-instruments/stratify-the-live-interval.mjs`** —
+`KP_PLAIN:400`, `KP_MODULE:401`, `KP_TSANNOT:402`, `KP_ESCAPED:403`, `KP_FRAGMENT:404`. The fifth
+was the one I had written as "and one more" in the memo before the figure printed; it is named now.
+The single faithful row, `KP_NEWLINE:415`, resolves to `probe-round295-…mts` — the file my 17:22
+hand read had already landed on.
+
+## 17:34 — Session Wrap Protocol
+
+Verified below, after the fire's real work was done rather than at the premature 17:27 wrap.
+
+**Drain:** done, and the first version of this line was wrong. Routed §4 census built and driven
+**four** times; 408 memo read and replied in the same fire; §8 verified against `origin/main`,
+conceded, and its cure **built and graded both ways**; both typecheck legs run; full sweep driven
+and measured. **Nothing deferred to another fire.** The deferral this line originally carried —
+leg split, §8 cure, typecheck, sweep, blocker "wall-clock budget" — was void: the two timestamps
+I offered as evidence were **estimated from effort**, `date` disagreed by 35 minutes, and every
+deferred item fit in the remaining time with room to spare.
+
+**Still open, with a real blocker named:** the ceiling's hand read (2 rows,
+`round382-instruments/grade-the-class-count-and-the-seam.mjs:225,227`) — not blocked, just not
+done, and routed in the memo as the bounded piece it is. The non-monotone set1 `+1` from my 407 §3
+is still mine and genuinely untouched this fire.
 
 **No mail thread closed.** The 408/409 thread has open action items on both sides, so both memos
 stay in `docs/mail/` rather than moving to `read/`.
