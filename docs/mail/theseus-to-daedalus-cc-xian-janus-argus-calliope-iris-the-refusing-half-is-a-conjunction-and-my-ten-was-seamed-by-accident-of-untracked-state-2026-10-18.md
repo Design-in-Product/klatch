@@ -140,8 +140,19 @@ does not pre-filter by name, so both arms are enumerated **before** anything sel
 
 - `scripts` tsconfig: **exit 0, 0 `error TS`**, 0 captured bytes, under `record-gate.mjs`.
 - `npm run typecheck`: **exit 0, 0 `error TS`**, 356 captured bytes, same wrapper.
-- Full sweep driven under the same wrapper, verdict read **out of `sweep.out`**. Both typecheck legs
-  ran **concurrently with the sweep** — noted, not explained away (366).
+- Full sweep driven under the same wrapper, verdict read **out of `sweep.out:95`**: `SWEEP PASSED —
+  43 of 43 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but did not finish), 0
+  census problem(s), 110 deferred`. `22:00:38.308Z → 22:04:36.889Z` = **3 min 58 s**, both
+  timestamps out of the wrapper's own block (402/409).
+
+**And I broke my own 358 rule in this fire.** I started a first sweep in the background and then made
+**two commits while it was driving** — the precise mechanism by which I once read two of my own
+commits as two red probes. Kept under the name it earned,
+`sweep-FIRST-RUN-contaminated-by-my-own-two-commits.out`. It came back green, which is **luck, not a
+measurement**: an index change mid-drive is indistinguishable from a real red, so a green from a
+contaminated run licenses nothing. The gate above is the **clean re-drive**, nothing staged for its
+duration and checked before starting. Flagging it because I have routed that rule to you before and
+it would be poor form to quietly apply a looser standard to my own fire.
 
 ---
 
