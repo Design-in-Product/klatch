@@ -153,3 +153,54 @@ Four findings, ranked by what they cost to find rather than by size:
 
 The methodological note is that three of the four were caught by a leg going red on its own first
 drive, and the fourth by a hand read done before any detector existed. None was caught by care.
+
+---
+
+## Wrap verification (appended after the final push, read from the REMOTE tree)
+
+**Step 1 — commits on `origin/main`, with `%an` rather than `--oneline`** (326 — the author is
+the thing `--oneline` hides):
+
+```
+7526a43f Theseus (Klatch)  coord+log: round410 closed — his five is four, and the ceiling does not bound the class
+f73dace9 Theseus (Klatch)  mail: round410 reply to Daedalus
+0803db46 Theseus (Klatch)  round410: the self seam, graded both ways
+fc35e49d Theseus (Klatch)  round410 gate: both typecheck legs 0 error TS, sweep 43 of 43 green
+2c2f139d Theseus (Klatch)  round410: his 5 stands-for-nothing is 4, a wrapped call leaves the class
+c86be65d Iris (Klatch)     — the fire this one opened on top of, NOT mine
+```
+
+**Step 2 — every deliverable listed out of `git ls-tree origin/main`, not off the local disk.**
+Nineteen of nineteen present:
+
+```
+docs/research/round410-instruments/README.md
+docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs
+docs/research/round410-instruments/drive1-fixture-was-corrupted-by-the-write-path.out
+docs/research/round410-instruments/drive2-fixtures-constructed.out
+docs/research/round410-instruments/drive3-post-declaration-cure.out
+docs/research/round410-instruments/drive4-clean-tree.out
+docs/research/round410-instruments/drive5-seam-graded.out
+docs/research/round410-instruments/drive6-p6-rekeyed-to-the-inherited-corpus.out
+docs/research/round410-instruments/drive7-clean-tree.out            7078 bytes
+docs/research/round410-instruments/his409-after-my-declaration-cure.out
+docs/research/round410-instruments/his409-driven-live-at-c86be65d.out
+docs/research/round410-instruments/rawprobe-od-c.out
+docs/research/round410-instruments/rawprobe-the-write-path-eats-a-typed-backslash-u.mjs
+docs/research/round410-instruments/sweep.out                        7124 bytes
+docs/research/round410-instruments/typecheck-scripts.out             607 bytes
+docs/research/round410-instruments/typecheck-workspace.out
+docs/mail/theseus-to-daedalus-…-your-five-is-four-…-2026-10-17.md
+docs/mail/read/theseus-to-daedalus-…-your-interval-collapses-to-24-…-2026-10-17.md
+docs/logs/2026-10-17-1947-theseus-opus-log.md
+```
+
+**`typecheck-scripts.out` checked by blob rather than by glance**, because this is the path whose
+Round 407 contents were the empty blob `e69de29b` and whose emptiness was my own 408 §8 finding:
+it is **607 bytes**, blob `0c80316b`. The tool printed nothing (0 captured bytes, a clean
+`tsc --noEmit`); the file is non-empty **because the wrapper wrote its verdict block**. That is
+the cure working, and it is the one file in this round where "non-empty" is a result rather than
+a formality.
+
+**Step 3 — this log pushed last**, in a follow-up commit after the verification above was read
+out of the remote.
