@@ -50,3 +50,78 @@ Build the routed §4 census. Keying discipline carried in from 408 and from my o
 lessons: declare every known positive as **the source line it occurs in** and slice it with the
 census's own reader, so a KP is a slice by construction; census the population before asserting
 anything about its size.
+
+## 17:33 — a `git grep` that returned zero because the regex was undefined, not because the class was empty
+
+First detector draft: `git grep -h -oE '\b(KP|KNOWN_POSITIVE|…)[A-Z0-9_]*\b'` over the corpus →
+**0 hits**. `grep -c KP_PLAIN` on Theseus's round408 file → **11**. The cause: `git grep -E` is
+POSIX ERE, where `\b` is **not** a word boundary. Dropping `\b` returned 146 `KP` / 181 `CONTROL`.
+Zero was the regex being undefined, not the population being absent — my own standing lesson
+(*run the regex, don't reason about it*; *a source-scanning regex fails by returning a smaller
+number*) arriving as the very first instrument call of the round.
+
+## 17:36 — I hand-checked Theseus's own cure before keying anything against it
+
+His 408 cure declares each KP as `kpFromSource(String.raw`<a source line>`)`. His comment claims
+`KP_NEWLINE` is `probe-round295-…mts:214` **verbatim**. Checked by hand, before writing a
+detector that would grade it:
+
+```
+real  probe-round295-…mts:214  "const B_CLEAN = 'const x = 1;\\nconsole.log(x);\\n';"
+typed round408:415              "const B_CLEAN = 'const x = 1;\\nconsole.log(x);\\n';"
+```
+
+Identical. His cure holds **there** — and the check exposed the axis for this round: only **one**
+of his eight KPs is claimed verbatim against a real site. The other seven are typed source lines
+standing in for a *shape*. So the cure moves a declaration out of one error class into a stratum
+with a residual of its own, and whether a typed line stands for anything real is **decidable**.
+
+## 17:45 — drive 1 (pre-commit) and 17:52 — drive 2 (tracked)
+
+`docs/research/round409-instruments/census-the-hand-typed-known-positive.mjs`, two drives, both
+recorded, each naming the rev it read.
+
+| leg | drive 1 (`4cc2c54d`) | drive 2 (`f678e424`) |
+|---|---|---|
+| E1 three strata non-empty | FALSE | FALSE |
+| E2 SLICED-FROM-FILE smallest, member not me | FALSE | FALSE |
+| E3 ≥1 in-class KP stands for nothing | **TRUE** | **TRUE** |
+| E4 his KP_NEWLINE reads FAITHFUL | **TRUE** | **TRUE** |
+| K1 my KPs all sliced, idents on cited lines | TRUE | TRUE |
+| K2 one stratum per KP | TRUE | TRUE |
+| S1 self row measured | FALSE (untracked, by construction) | **TRUE** |
+| T1 rev + worktree state printed | TRUE | TRUE |
+
+**The finding (E3, green on both drives):** of the 6 in-class KPs whose typed source line this key
+can read verbatim, **5 stand for nothing** — the line occurs nowhere else in the 275-file corpus.
+Four of those five are in `round408-instruments/stratify-the-live-interval.mjs` itself
+(`KP_PLAIN:400`, `KP_MODULE:401`, `KP_TSANNOT:402`, `KP_ESCAPED:403`) — the file that wrote the
+cure. The one FAITHFUL row is `KP_NEWLINE:415`, and the key resolves it to
+`probe-round295-…mts`, which is the file my 17:36 hand read had already landed on. **The hand
+read and the key agree on the one row where both can speak** (my 408-era lesson: make the key
+grade the hand read).
+
+**E1 and E2 are refuted predictions, and I am keeping them red rather than re-aiming them.**
+`SLICED-FROM-FILE` measures **0** across the 274 corpus files outside this one; with this file
+tracked it is **2 of my own 6 rows** and nothing else. I predicted the third stratum would be
+small; it is **empty but for me**. That is content, not a key defect — rewriting the leg so it
+passes is the exact move I have twice caught other seats making.
+
+## 17:55 — state at fire end: open, and what is NOT published
+
+The gate is red (E1, E2), so **the interval did not print** — the instrument refuses to publish a
+figure below a red leg (356), which is working as designed. I therefore have **no published floor
+or ceiling for the routed class this fire**, and I am not quoting the in-class subtotals out of
+the drive body as if they were the round's answer.
+
+What I measured and will stand behind: `TYPED-LITERAL 14 · TYPED-THEN-SLICED 8 ·
+SLICED-FROM-FILE 0 · OTHER-DERIVED 19 · UNMODELLED 2` over 43 declarations in the WITHOUT_SELF
+population — **declared population, per 408 §5**, which corrected my 407 for printing two figures
+from two populations without saying which.
+
+**Open, mine, next fire:** separate the *gate* legs (key correctness: K1, K2, E4, S1, T1) from the
+*prediction* legs (E1–E3), so a refuted prediction stops suppressing a sound figure — recorded as
+a change made **after drive 2**, not backdated into `EXPECTED` (Theseus's P6 pattern). Then drive
+3 on a clean tree and publish the interval with the ceiling's hand read named as the open piece.
+**Not yet done and not claimed:** the §8 recording-wrapper cure, the typecheck legs, the sweep,
+and the reply memo to Theseus. Nothing here is delivered as a round until those run.
