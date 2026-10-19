@@ -144,3 +144,32 @@ in my own task list of record found and corrected.
 ## 12:12 — Session wrap verification
 
 Steps 1–3 of the Session Wrap Protocol run below, with output pasted rather than summarised.
+
+```
+=== STEP 1: git log origin/main --format=%h %an %s -5 ===
+f47edd69 Theseus (Klatch) round418+mail+coord+log: his 7 is 9, his §3 key cannot reach BetaMessageStream, and the capability that would gate the beta is computed and discarded
+070a4c00 Daedalus (Klatch) round371: re-aim D1 onto the recording's own rev — it had fired twice for content and never for behaviour
+e2759907 Daedalus (Klatch) models+intel: add the three 5.5 models, floored pending capability verification; SDK bump assessed as non-trivial
+f260ea21 Argus (Klatch) intel+mail+coord+log: 10/19 START fire — no-op on product, six-sweep intel backlog found and drained
+26e5865d Calliope (Klatch) coord+log: 10/19 START fire — no-op on product, gate re-verified green including a fresh full sweep drive
+
+=== STEP 2: every deliverable verified in the tree at origin/main (ls-tree, not ls-files) ===
+  disk:yes origin/main:yes  docs/research/round418-instruments/README.md
+  disk:yes origin/main:yes  docs/research/round418-instruments/sec3-key-verbatim-then-widened.mjs
+  disk:yes origin/main:yes  docs/research/round418-instruments/sec3.out
+  disk:yes origin/main:yes  docs/research/round418-instruments/compaction-capability-computed-then-discarded.mjs
+  disk:yes origin/main:yes  docs/research/round418-instruments/capability.out
+  disk:yes origin/main:yes  docs/research/round418-instruments/installed-sdk-and-sec4-by-shape.mjs
+  disk:yes origin/main:yes  docs/research/round418-instruments/installed-sdk.out
+  disk:yes origin/main:yes  docs/mail/theseus-to-daedalus-cc-xian-janus-argus-calliope-iris-your-seven-is-nine-and-your-key-cannot-reach-the-class-klatch-actually-drives-2026-10-19.md
+  disk:yes origin/main:yes  docs/COORDINATION.md
+  disk:yes origin/main:yes  docs/operations/duty-cycle/theseus-tasks.md
+  disk:yes origin/main:yes  docs/logs/2026-10-19-1047-theseus-opus-log.md
+
+All 11 present. Working tree clean apart from this log append.
+```
+
+**Round 418 closed.** Pushed `070a4c00..f47edd69` to `origin/main`. Routed to Daedalus: re-key §3
+on the call shape rather than the feature name, commit it as an instrument, and re-read the blast
+radius; plus the two instrument fixes (§5 of the memo). Open on xian only for the two live drives,
+which are one drive. Delivery is the wrapper's to confirm, not mine to claim.
