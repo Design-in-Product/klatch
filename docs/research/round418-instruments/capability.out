@@ -1,0 +1,46 @@
+REV STAMP: 070a4c0038fb9377b150c6bb15e6c9a3e8792c56 (resolved from "HEAD")
+tracked packages/ source files at that rev: 251 | non-test: 68 | test: 183
+
+=== CONTROLS: each key fires on its own role and refuses the other two ===
+  DECLARES  fires on own shape: true | leaks onto: none OK
+  WRITES    fires on own shape: true | leaks onto: none OK
+  READS     fires on own shape: true | leaks onto: none OK
+
+=== CONTROLS are slices of the tree at this rev ===
+  DECLARES  occurs verbatim in 1 tracked file(s): packages/shared/src/types.ts
+  WRITES    occurs verbatim in 1 tracked file(s): packages/shared/src/types.ts
+  READS     occurs verbatim in 1 tracked file(s): packages/server/src/__tests__/round13-models-api.test.ts
+
+=== CENSUS of capabilities.compaction, by role ===
+
+DECLARES: 1 total | 1 in NON-TEST source | 0 in tests
+   SRC  packages/shared/src/types.ts:265  compaction: boolean;
+
+WRITES: 12 total | 2 in NON-TEST source | 10 in tests
+   test packages/client/src/__tests__/round167-entity-edit-omits-unchanged.test.tsx:42  { id: 'claude-opus-5', displayName: 'Claude Opus 5', maxOutputTokens: 16384, capabilities: { thinking: true, effort
+   test packages/client/src/__tests__/round42-entity-manager-aaxt.test.tsx:53  { id: 'claude-opus-5', displayName: 'Claude Opus 5', maxOutputTokens: 16384, capabilities: { thinking: true, effort
+   test packages/client/src/__tests__/round42-entity-manager-aaxt.test.tsx:54  { id: 'claude-opus-4-7', displayName: 'Claude Opus 4.7', maxOutputTokens: 16384, capabilities: { thinking: true, ef
+   test packages/client/src/__tests__/round42-entity-manager-aaxt.test.tsx:55  { id: 'claude-opus-4-6', displayName: 'Claude Opus', maxOutputTokens: 16384, capabilities: { thinking: true, effort
+   test packages/client/src/__tests__/round42-entity-manager-aaxt.test.tsx:56  { id: 'claude-sonnet-4-6', displayName: 'Claude Sonnet', maxOutputTokens: 16384, capabilities: { thinking: false, e
+   test packages/client/src/__tests__/round42-entity-manager-aaxt.test.tsx:57  { id: 'claude-haiku-4-5-20251001', displayName: 'Claude Haiku', maxOutputTokens: 8192, capabilities: { thinking: fa
+   test packages/client/src/__tests__/round43-message-list-aaxt.test.tsx:54  { id: 'claude-opus-4-7', displayName: 'Claude Opus 4.7', maxOutputTokens: 16384, capabilities: { thinking: true, ef
+   test packages/client/src/__tests__/round43-message-list-aaxt.test.tsx:55  { id: 'claude-opus-4-6', displayName: 'Claude Opus', maxOutputTokens: 16384, capabilities: { thinking: true, effort
+   test packages/client/src/__tests__/round43-message-list-aaxt.test.tsx:56  { id: 'claude-sonnet-4-6', displayName: 'Claude Sonnet', maxOutputTokens: 16384, capabilities: { thinking: false, e
+   test packages/server/src/__tests__/model-validation.test.ts:45  capabilities: { thinking: true, effort, compaction: false },
+   SRC  packages/server/src/routes/models.ts:70  compaction: caps.context_management?.compact_20260112?.supported ?? false,
+   SRC  packages/shared/src/types.ts:285  compaction: false,
+
+READS: 2 total | 0 in NON-TEST source | 2 in tests
+   test packages/server/src/__tests__/round13-models-api.test.ts:182  expect(opus.capabilities.compaction).toBe(true);
+   test packages/server/src/__tests__/round13-models-api.test.ts:187  expect(haiku.capabilities.compaction).toBe(false);
+
+=== what gates the beta call, at this rev ===
+   packages/server/src/claude/client.ts:1091  const compactionEnabled = channel?.source !== 'native';
+   packages/server/src/claude/client.ts:1151  const compactionEnabled = channel?.source !== 'native';
+   packages/server/src/claude/client.ts:894  if (options?.compactionEnabled) {
+   packages/server/src/claude/client.ts:904  betas: ['compact-2026-01-12'],
+   does any gate expression consult a model capability? false
+   CONTROL — gate key refuses a near-miss line: true
+
+SUMMARY: rev 070a4c00 | capabilities.compaction DECLARED 1×, WRITTEN 2× in non-test source, READ 0× in non-test source | beta gate expressions found: 2, none consulting capability: true
+VERDICT: COMPUTED AND DISCARDED — the capability is written in non-test source and read nowhere in it.

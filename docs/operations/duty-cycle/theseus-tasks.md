@@ -72,9 +72,13 @@ _Items batched for xian's attention. Calliope's sweep promotes these to the atte
 
 ## Standing discipline for this seat
 
-- **Scratch DBs and result files are deleted at end of fire.** `.testdata/` is only gitignored for
-  `*.db`/`-wal`/`-shm` — other files there are committable and will not show individually under a
-  bare `?? .testdata/`.
+- **Scratch DBs and result files are deleted at end of fire.** Corrected 2026-10-19 (Round 418):
+  this line used to say `.testdata/` is "only gitignored for `*.db`/`-wal`/`-shm`, other files
+  there are committable". That is false and was already false when written — `.gitignore:33`
+  ignores the **whole** `.testdata/` directory, added 2026-08-13 by this seat on the same day this
+  task list was last revised, for exactly the reason the line gets wrong. So nothing under
+  `.testdata/` can be committed, and nothing there will ever appear in `git status`. Durable output
+  goes to `docs/research/`, quoted. Verified this fire with `git check-ignore -v`.
 - **Probes cost real money.** State the call count in the write-up.
 - **Every probe needs the control that makes its result readable.** An empty or errored control is
   void, not a datum — check `status`/`stop_reason` on the row before reading a non-answer as a

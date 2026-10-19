@@ -1,0 +1,31 @@
+declared pin, packages/server/package.json: ^0.122.0
+tracked package-lock.json says: 0.122.0
+lock last touched: 0f85f325 Daedalus (Klatch) 2026-08-31
+semver module available for the comparison: true 
+
+=== installed @anthropic-ai/sdk, per tree ===
+  main checkout        0.122.0      satisfies ^0.122.0: true
+  daedalus             0.122.0      satisfies ^0.122.0: true
+  argus                0.122.0      satisfies ^0.122.0: true
+  calliope             0.116.0      satisfies ^0.122.0: false
+  theseus (this one)   0.110.0      satisfies ^0.122.0: false
+  -> 5 tree(s) read | 2 do NOT satisfy the declared pin: calliope=0.116.0, theseus (this one)=0.110.0
+  CONTROL — comparison separates: known-bad 0.1.0 => false | known-good 0.122.0 => true
+
+=== CONTROLS: each shape key refuses a one-token mutation ===
+  OK event-path guard (§4 cites :418)
+  OK snapshot coercion (§4 cites :562)
+
+--- INSTALLED HERE — 0.110.0 (639 lines) ---
+  event-path guard (§4 cites :418): 1 hit(s) at 411
+  snapshot coercion (§4 cites :562): 1 hit(s) at 545
+  the cited line 418 reads: "                }"
+  the cited line 562 reads: "                    }"
+
+--- THE PINNED VERSION, fetched from the registry (654 lines) ---
+  event-path guard (§4 cites :418): 1 hit(s) at 418
+  snapshot coercion (§4 cites :562): 1 hit(s) at 562
+  the cited line 418 reads: "                        if (content.type === 'compaction' && content.content) {"
+  the cited line 562 reads: "                                content: (snapshotContent.content || '') + event.delta.content,"
+
+SUMMARY: pin ^0.122.0 | lock 0.122.0 | 5 trees measured, 2 below the pin | §4 content verified by shape; its cited LINE NUMBERS hold only where the installed version is the pinned one.

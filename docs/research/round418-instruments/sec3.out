@@ -1,0 +1,47 @@
+changelog lines: 3524
+segment lines: 427 (Round 417 published 427)
+KP (slice, occurs==1 && key fires): occurs=1 fires=true OK  * **api:** compaction instructions replace the server's summarization pr…
+KP (slice, occurs==1 && key fires): occurs=1 fires=true OK  * **docs:** correct the compaction beta's parameter descriptions ([eb9ab…
+KP negative (must refuse): OK (refused)
+
+=== HIS §3 KEY, VERBATIM, over the same segment ===
+matching lines: 9 | of which bullets: 9
+   0.129.0 | * **api:** deprecate the betas param on GA models and completions methods ([5c74e45](https://github.com/anthropics/anthr
+   0.129.0 | * **tools:** remove client-side compaction control ([#802](https://github.com/anthropics/anthropic-sdk-typescript/issues
+   0.128.0 | * **tools:** leave reply-only params off the tool runner's compaction request ([#769](https://github.com/anthropics/anth
+   0.127.0 | * **BetaMessageStream:** stop coercing a null compaction_delta content into "null" ([#655](https://github.com/anthropics
+   0.127.0 | * **middleware:** echo a streamed compaction summary in the fallback continuation ([#657](https://github.com/anthropics/
+   0.127.0 | * **docs:** clarify the compaction tool_changes and tool change descriptions ([5a695eb](https://github.com/anthropics/an
+   0.126.0 | * **api:** add compaction parameter and signed compaction blocks (beta) ([05fd878](https://github.com/anthropics/anthrop
+   0.126.0 | * **docs:** correct the compaction beta's parameter descriptions ([eb9abd2](https://github.com/anthropics/anthropic-sdk-
+   0.126.0 | * **api:** compaction instructions replace the server's summarization prompt ([941aaea](https://github.com/anthropics/an
+PUBLISHED IN §3: 7 | HIS OWN KEY RETURNS: 9 (DISAGREE — §3 declares no filter)
+of the difference, lines scoped docs:/internal:: 2
+   dropped: 0.127.0 | * **docs:** clarify the compaction tool_changes and tool change descriptions ([5a695eb](https://github.com/ant
+   dropped: 0.126.0 | * **docs:** correct the compaction beta's parameter descriptions ([eb9abd2](https://github.com/anthropics/anth
+
+=== WIDENED KEYS — control first ===
+  CONTROL BetaMessageStream (the class Klatch drives): KP occurs=1 fires=true OK
+  CONTROL streaming: scope: KP occurs=1 fires=true OK
+  CONTROL context management, any separator: UNMODELLED — no slice carries this shape, so its count is a floor, not a reading
+  CONTROL context editing, any separator: UNMODELLED — no slice carries this shape, so its count is a floor, not a reading
+
+  BetaMessageStream (the class Klatch drives): 3 in segment, 2 INVISIBLE to his key
+      0.134.0 | * **streaming:** tolerate unknown event types in MessageStream and BetaMessageStream
+      0.134.0 | * **streaming:** yield events that arrive before message_start when iterating MessageStream and BetaMessageStream
+
+  streaming: scope: 6 in segment, 6 INVISIBLE to his key
+      0.134.0 | * **streaming:** tolerate unknown event types in MessageStream and BetaMessageStream
+      0.134.0 | * **streaming:** stop throwing "Unexpected event order" for an event before message_start
+      0.134.0 | * **streaming:** yield events that arrive before message_start when iterating MessageStream and BetaMessageStream
+      0.129.0 | * **streaming:** show every complete array item and hold back unfinished numbers in partial tool input ([#781](https://github
+      0.129.0 | * **streaming:** drop the redundant iterSSEChunks layer ([0357f81](https://github.com/anthropics/anthropic-sdk-typescript/com
+      0.129.0 | * **streaming:** take each string token as one slice in the partial JSON tokenizer ([#255](https://github.com/anthropics/anth
+
+  context management, any separator: 0 in segment, 0 INVISIBLE to his key
+
+  context editing, any separator: 0 in segment, 0 INVISIBLE to his key
+
+distinct segment lines his §3 key cannot reach: 6
+
+SUMMARY: §3 published 7 | his own key returns 9 | 2 of the difference are docs:/internal:-scoped | 6 further segment lines are invisible to that key, of which 3 name BetaMessageStream itself
