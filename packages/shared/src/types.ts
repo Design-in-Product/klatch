@@ -1,13 +1,16 @@
 export const AVAILABLE_MODELS = {
-  'claude-opus-5': { label: 'Opus 5', description: 'Newest Opus — most capable, highest quality' },
+  'claude-opus-5-5': { label: 'Opus 5.5', description: 'Newest Opus — most capable, highest quality' },
+  'claude-opus-5': { label: 'Opus 5', description: 'Prior-generation Opus 5' },
   'claude-opus-4-8': { label: 'Opus 4.8', description: 'Long-horizon agentic work, warmer prose' },
   'claude-opus-4-7': { label: 'Opus 4.7', description: 'Adds xhigh effort + thinking summaries' },
   'claude-opus-4-6': { label: 'Opus 4.6', description: 'Prior-generation Opus' },
-  'claude-sonnet-5': { label: 'Sonnet 5', description: 'Newest Sonnet — balanced speed and quality (new tokenizer: ~1.3× tokens vs 4.6)' },
+  'claude-sonnet-5-5': { label: 'Sonnet 5.5', description: 'Newest Sonnet — balanced speed and quality' },
+  'claude-sonnet-5': { label: 'Sonnet 5', description: 'Prior-generation Sonnet 5 (new tokenizer: ~1.3× tokens vs 4.6)' },
   'claude-sonnet-4-6': { label: 'Sonnet', description: 'Balanced speed and quality' },
   'claude-fable-5-1': { label: 'Fable 5.1', description: 'Newest Fable — frontier capability, export-control-cleared' },
   'claude-fable-5': { label: 'Fable 5', description: 'Frontier capability, export-control-cleared' },
-  'claude-haiku-4-5-20251001': { label: 'Haiku', description: 'Fastest, most compact' },
+  'claude-haiku-5-5': { label: 'Haiku 5.5', description: 'Newest Haiku — fastest, most compact' },
+  'claude-haiku-4-5-20251001': { label: 'Haiku 4.5', description: 'Prior-generation Haiku — legacy, EOL announced' },
 } as const;
 
 // `ModelId` is a readable alias for a Claude model id, validated at RUNTIME
@@ -164,6 +167,21 @@ export function fallbackEffortLevels(modelId: string): EffortLevel[] {
     // inferred from Fable 5: `capabilities.effort` reports all five supported.
     // The comment above is the reason to check rather than assume — a
     // wrong-but-present entry here disables real levels in the offline picker.
+    //
+    // DELIBERATELY ABSENT: `claude-opus-5-5`, `claude-sonnet-5-5`,
+    // `claude-haiku-5-5`. Their *ids* are verified (Argus, live `GET /v1/models`
+    // 2026-10-19) but their `capabilities.effort` arrays are NOT — the fire that
+    // added them to `AVAILABLE_MODELS` could not reach an API key, so promoting
+    // them here on the family-resemblance of Opus 5 / Sonnet 5 would be exactly
+    // the assumption the Fable note above exists to forbid. They therefore take
+    // the documented unknown-model floor (`['low','medium','high']`, pinned by
+    // round39's "floors an unrecognised model at three levels rather than
+    // inventing capability"). This is offline-only and fails closed: the picker
+    // greys out levels the model may in fact support, rather than offering
+    // levels the API would reject. Online, the discovered set already carries
+    // the real arrays, so the live picker is correct today either way. Move each
+    // id up into this set as its own `capabilities.effort` is read from the live
+    // API — one id per reading, not all three on one.
     'claude-fable-5-1',
     'claude-fable-5',
     'claude-opus-5',

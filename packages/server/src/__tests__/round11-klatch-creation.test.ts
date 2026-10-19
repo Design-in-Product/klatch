@@ -245,7 +245,11 @@ describe('Model provenance', () => {
     expect(modelLabel('claude-opus-5')).toBe('Opus 5');
     expect(modelLabel('claude-opus-4-6')).toBe('Opus 4.6');
     expect(modelLabel('claude-sonnet-4-6')).toBe('Sonnet');
-    expect(modelLabel('claude-haiku-4-5-20251001')).toBe('Haiku');
+    // Relabelled 'Haiku' → 'Haiku 4.5' when `claude-haiku-5-5` joined the
+    // overlay: the picker renders the label and nothing else (no description),
+    // so a bare 'Haiku' beside 'Haiku 5.5' read as the current one rather than
+    // the legacy, EOL-announced one.
+    expect(modelLabel('claude-haiku-4-5-20251001')).toBe('Haiku 4.5');
   });
 
   it('returns undefined for unknown model IDs', () => {

@@ -1,0 +1,23 @@
+--- REAL ids (expect inOverlay=true, floorsAt3=true) ---
+claude-opus-5-5 | inOverlay: true | floorsAt3: true
+claude-sonnet-5-5 | inOverlay: true | floorsAt3: true
+claude-haiku-5-5 | inOverlay: true | floorsAt3: true
+--- TYPO ids (CONTROL: expect inOverlay=FALSE, floorsAt3=true) ---
+claude-opus-55 | inOverlay: false | floorsAt3: true
+claude-opus-5-5- | inOverlay: false | floorsAt3: true
+claude-sonnet-5.5 | inOverlay: false | floorsAt3: true
+claude-haiku-5-5-20260101 | inOverlay: false | floorsAt3: true
+--- verdicts ---
+LADDER leg alone separates real from typo: false (false => vacuous alone)
+MEMBERSHIP leg separates real from typo: true (true => control load-bearing)
+overlay size: 12 | fallback set size: 12
+claude-opus-5-5 | in fallback set: true | displayName: Claude Opus 5.5 | effort: ["low","medium","high"]
+claude-sonnet-5-5 | in fallback set: true | displayName: Claude Sonnet 5.5 | effort: ["low","medium","high"]
+claude-haiku-5-5 | in fallback set: true | displayName: Claude Haiku 5.5 | effort: ["low","medium","high"]
+CONTROL 2 — known five-level models do NOT floor: true
+  claude-opus-5 | effort: ["low","medium","high","xhigh","max"]
+  claude-sonnet-5 | effort: ["low","medium","high","xhigh","max"]
+  claude-fable-5-1 | effort: ["low","medium","high","xhigh","max"]
+CONTROL VERDICT: PASS — membership is the only separating leg, and the floor is not universal
+(node:66694) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)

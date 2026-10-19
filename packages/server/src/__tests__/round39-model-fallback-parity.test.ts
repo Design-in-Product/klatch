@@ -118,6 +118,43 @@ describe('offline fallback effort ladders', () => {
     expect(fallbackEffortLevels('claude-opus-9')).toEqual(['low', 'medium', 'high']);
   });
 
+  // The three 5.5 ids are in the overlay (verified against the live Models API
+  // 2026-10-19) but NOT in `fallbackEffortLevels`' five-level set, because their
+  // `capabilities.effort` has not been read. The floor is the deliberate state,
+  // not an oversight — see the DELIBERATELY ABSENT note in `types.ts`.
+  //
+  // The `AVAILABLE_MODELS` assertion is the control, and it is the whole reason
+  // this test is worth writing: `fallbackEffortLevels` returns the three-level
+  // floor for *any* string, so a typo'd id ('claude-opus-5-5-' or
+  // 'claude-opus-55') would satisfy the ladder assertion alone and the test
+  // would pass for the wrong reason. Membership is what makes the floor
+  // attributable to a recognised-but-unverified model.
+  describe('5.5 models: recognised by the overlay, floored pending capability verification', () => {
+    const UNVERIFIED_LADDER = ['claude-opus-5-5', 'claude-sonnet-5-5', 'claude-haiku-5-5'];
+
+    for (const id of UNVERIFIED_LADDER) {
+      it(`${id} is in the overlay and takes the three-level floor`, () => {
+        expect(id in AVAILABLE_MODELS, `${id} is not an AVAILABLE_MODELS key`).toBe(true);
+        expect(fallbackEffortLevels(id)).toEqual(['low', 'medium', 'high']);
+      });
+    }
+
+    // When someone reads a real `capabilities.effort` for one of these and
+    // promotes it, this is the assertion that should send them to the note in
+    // `types.ts` rather than letting the promotion land silently.
+    it('promoting one of them is a deliberate edit, not a silent one', () => {
+      const floored = UNVERIFIED_LADDER.filter(
+        (id) => fallbackEffortLevels(id).length === 3
+      );
+      expect(
+        floored,
+        'An id was promoted out of the floor. That is correct ONLY if its ' +
+          'capabilities.effort was read from the live Models API — if so, drop it ' +
+          'from UNVERIFIED_LADDER here and from the DELIBERATELY ABSENT note in types.ts.'
+      ).toEqual(UNVERIFIED_LADDER);
+    });
+  });
+
   it('never offers a level outside the EffortLevel union', () => {
     const union = new Set(['low', 'medium', 'high', 'xhigh', 'max']);
     for (const m of buildFallbackModels()) {

@@ -1,0 +1,33 @@
+KP linked shape -> 0.135.0 OK
+KP bare shape   -> 0.132.0 OK
+KP negative     -> undefined OK (refused)
+KP linked occurs in changelog exactly once: true (1)
+KP bare occurs in changelog exactly once: true (1)
+total version headings: 212
+index of 0.135.0: 0 | index of 0.122.0: 14
+versions strictly above the pin: 14
+0.135.0, 0.134.0, 0.133.0, 0.132.1, 0.132.0, 0.131.0, 0.130.0, 0.129.0, 0.128.0, 0.127.0, 0.126.0, 0.125.0, 0.124.0, 0.123.0
+segment lines: 427
+--- breaking: 2 line(s) ---
+    * **ci:** speed up breaking change detection
+    * **internal:** bundle the mock server spec and update breaking-change detection ([8752d02](https://github.com/anthropics/anthropic-sdk-typescript/commit/8752d0242274ddec
+--- removed: 6 line(s) ---
+    * **internal:** remove `@internal` tag from a type that public types reference
+    * **internal:** remove file-level `@internal` tags from toolset modules
+    * **internal:** remove the next branch rule from CLAUDE.md
+    * **docs:** remove placeholder enum descriptions ([04f0812](https://github.com/anthropics/anthropic-sdk-typescript/commit/04f0812ca0c7e761fa58bffdfd95b9cf1f24887c))
+    * **tools:** remove client-side compaction control ([#802](https://github.com/anthropics/anthropic-sdk-typescript/issues/802)) ([9c3e8a5](https://github.com/anthropics/an
+    * **api:** beta user profiles: add external_user_onboarded_at, remove relationship in favor of access_type ([3efb1a1](https://github.com/anthropics/anthropic-sdk-typescri
+--- renamed: 1 line(s) ---
+    * **api:** rename telemetry destination test response model
+--- deprecated: 8 line(s) ---
+    * **api:** add display_name to RBAC roles and deprecate name ([7735ac3](https://github.com/anthropics/anthropic-sdk-typescript/commit/7735ac3d2823c6d74377269772a5ae2b1ed9
+    * **api:** mark the Text Completions API as deprecated ([2b75b49](https://github.com/anthropics/anthropic-sdk-typescript/commit/2b75b497792ab23c7cac350829354a0027a93246))
+    * **internal:** refactor deprecated models ([5927033](https://github.com/anthropics/anthropic-sdk-typescript/commit/59270330d1a1d68e469b06ece5e0819263e17877))
+    * **client:** deprecate sonnet 4.5 ([d72cfaf](https://github.com/anthropics/anthropic-sdk-typescript/commit/d72cfaf6a551c75d54fad0538fb5fd65fb2346d1))
+    * **api:** deprecate the betas param on GA models and completions methods ([5c74e45](https://github.com/anthropics/anthropic-sdk-typescript/commit/5c74e4532bb69f22afa3e08
+    * **api:** add group with display_name to rate limits, deprecate group_type ([2575d97](https://github.com/anthropics/anthropic-sdk-typescript/commit/2575d977be0508d0bd3e3
+    * **internal:** move tsconfig off settings deprecated in TypeScript 6 ([e0d58f6](https://github.com/anthropics/anthropic-sdk-typescript/commit/e0d58f60a4261d5620af2a1496b
+    * **api:** fix typo in temperature deprecation message ([4a8b49b](https://github.com/anthropics/anthropic-sdk-typescript/commit/4a8b49be58c8c13d90c2cf63baeb38b0a9427c18))
+CONTROL — keys fire on driven text: true true true true
+SUMMARY: pin 0.122.0 -> latest 0.135.0 | 14 releases | 2 breaking, 6 removed, 1 renamed, 8 deprecated
