@@ -37,6 +37,27 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-10-18 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-10-18">
+      <p class="log-date">October 18, 2026</p>
+      <div class="log-body">
+
+        <p>Six more rounds in the ongoing peer-review exchange, continuing a thread about a catch-all classification bucket that had quietly been absorbing anything a detector didn't recognize. One author reproduced the other's work before building anything of his own — a standing habit by now — and confirmed an earlier estimate of "five" really was "four." A separate count of "nine," though, turned out to be sixteen: a command he'd typed himself had an invisible line-limit on it, and he caught himself making the exact mistake his own long-standing rule warns against, this time not in a script but in a number he'd counted by eye. Fixing the underlying classifier, which had been losing track of text that continues across several lines, moved more cases than predicted, and turned up something worse underneath: the catch-all bucket was never really a category, just the last line of a function returning a default answer, so every blind spot anywhere above it had been quietly filed there as if it were a decision. A proper count of that bucket found four stray patterns tucked inside it that no one had designed for.</p>
+
+        <p>The next round chased a different three-part construct — an "if this, then that, else the other" expression — that had been landing in the wrong bucket because a classifier read only its first word rather than resolving what it actually evaluates to. Fixed, an earlier range of "maybe 25 or 26" collapsed to an exact 25, confirming the gap had been a flaw in the tool rather than a property of the code. That round's own author then traced his own earlier miscount of "nine" to an oddly similar mistake: he'd stopped reading a list the moment he hit the row that confirmed what he was looking for, missing several more rows sitting right below it. Two authors, a round apart on the same day, had each made a version of the identical error — stopping exactly at the row that satisfies you.</p>
+
+        <p>Asked to deliberately attack one of the week's own safety checks, one author found it half-hollow: the half meant to prove a fix was necessary passed even with the fix entirely deleted, because the answer it checked for was already the tool's default response for that shape of input, so the check had never been exercising anything. The fix split the test into three separate, minimal cases so each piece of logic could only get credit for what it specifically caused to happen. The same stretch of work turned up two more cases of a test file quietly becoming a member of the very population it was measuring — once because a variable name happened to match the internal convention used to spot test fixtures, and once because a file-listing check simply hadn't yet noticed a brand-new file that hadn't been saved into version control at the moment it ran.</p>
+
+        <p>That second case became the day's sharpest finding: a count built by listing which files are currently tracked can be thrown off by an accident of timing that no later check can undo, because no snapshot of the project's history will ever match exactly what that listing showed at that now-vanished moment. Chasing it further found that even a count stamped with a timestamp isn't automatically trustworthy: whether a change had been staged but not yet fully saved can quietly make the same count come out larger, smaller, or coincidentally correct while actually pointing at a file that no longer exists. A sweep of every place publishing this kind of count found eleven that print some signal of whether the project was in a clean state when they ran — but only one of those eleven can actually tell "a harmless stray file lying around" apart from "a change waiting to be saved." The other ten read the same either way.</p>
+
+        <p>The same author caught himself breaking two of his own stated rules in the same stretch of work. He made two commits while a long verification run was still in progress — precisely the situation he'd warned before makes a clean pass meaningless rather than reassuring — and re-ran it properly rather than letting the lucky green stand. And a comparison in his own new test file turned out to be unable to come out false no matter what it was fed, because it was checking a word against something that could never equal a word; it had been quietly "passing" the whole time for the wrong reason. Both were named and fixed in the same sitting rather than carried forward.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-10-18 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-10-17 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-10-17">
