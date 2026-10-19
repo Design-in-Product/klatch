@@ -1,0 +1,145 @@
+# Round 419 — Round 417 §3, re-keyed on the call shape
+
+rev stamp: 6e9ba87e4b047d6f26e22f0847c266d7bdaa4aac
+driven at: 2026-10-19T20:23:29.288Z
+cwd:       /Users/xian/Development/klatch-worktrees/daedalus
+changelog: /Users/xian/Development/klatch-worktrees/daedalus/.testdata/round419-sdk-changelog.md
+
+==============================================================================
+## 1. Klatch's SDK call surface, censused from tracked non-test source
+
+tracked packages/ ts|tsx at 6e9ba87e: 251 (non-test 68, test 183)
+non-test files importing @anthropic-ai/sdk: 5
+   packages/server/src/aaxt/runner.ts
+   packages/server/src/claude/client.ts
+   packages/server/src/export/briefing.ts
+   packages/server/src/routes/export.ts
+   packages/server/src/routes/models.ts
+
+SDK call chains found (chain -> sites):
+   beta.messages.stream               1×  packages/server/src/claude/client.ts:895
+   messages.create                    1×  packages/server/src/aaxt/runner.ts:77
+   messages.stream                    1×  packages/server/src/claude/client.ts:929
+   models.list                        1×  packages/server/src/routes/models.ts:41
+   stream.abort                       1×  packages/server/src/claude/client.ts:90
+   stream.finalMessage                2×  packages/server/src/claude/client.ts:927 packages/server/src/claude/client.ts:947
+   stream.on                          3×  packages/server/src/claude/client.ts:921 packages/server/src/claude/client.ts:923 packages/server/src/claude/client.ts:945
+stream events handled:
+   'compaction'                       1×  packages/server/src/claude/client.ts:923
+   'text'                             2×  packages/server/src/claude/client.ts:921 packages/server/src/claude/client.ts:945
+
+  [GATE] OK   census found beta.messages.stream  — packages/server/src/claude/client.ts:895
+  [GATE] OK   census found messages.stream (native path)  — packages/server/src/claude/client.ts:929
+  [GATE] OK   census found the 'compaction' stream event  — packages/server/src/claude/client.ts:923
+  [GATE] OK   census found stream.finalMessage()  — packages/server/src/claude/client.ts:927 packages/server/src/claude/client.ts:947
+  [GATE] OK   CONTROL chain key refuses a surface Klatch does not drive (completions.create)
+
+==============================================================================
+## 2. The 0.122.0 -> 0.135.0 segment
+
+  [GATE] OK   both span endpoints present in the changelog  — iLatest=0 iPin=14
+segment lines: 427 | releases above the pin: 14
+releases: 0.135.0, 0.134.0, 0.133.0, 0.132.1, 0.132.0, 0.131.0, 0.130.0, 0.129.0, 0.128.0, 0.127.0, 0.126.0, 0.125.0, 0.124.0, 0.123.0
+bullet lines in the segment (the DENOMINATOR): 191
+
+==============================================================================
+## 3. Known positives — slices of the fetched changelog, not hand-typed
+
+  [GATE] OK   KP_STREAM_CLASS occurs exactly once in the segment  — occurs=1
+  [GATE] OK   KP_STREAM_SCOPE occurs exactly once in the segment  — occurs=1
+  [GATE] OK   KP_BETA_PARAM occurs exactly once in the segment  — occurs=1
+  [GATE] OK   KP_COMPACTION occurs exactly once in the segment  — occurs=1
+  [GATE] OK   KP_TOOL_INPUT occurs exactly once in the segment  — occurs=1
+  KP_NEG candidates (chore(internal)): 0
+
+==============================================================================
+## 4. Blast radius — every bullet classified, UNMODELLED keyed positively
+
+STREAM-CLASS                3
+STREAM-SCOPE                4
+COMPACTION                  7
+BETA-MESSAGES               2
+TOOL-SURFACE                8
+MODELS-SURFACE              0
+STREAM-EVENT-NAME           0
+FOREIGN-SURFACE             5
+NON-BEHAVIOURAL-SCOPE      64
+UNMODELLED                 98
+TOTAL                     191   (denominator 191)
+  [GATE] OK   buckets partition the denominator (every bullet in exactly one)  — 191 vs 191
+
+KLATCH-REACHABLE bullets: 24 of 191
+  of which behavioural (not docs:/internal:/chore:): 21
+
+--- the behavioural, Klatch-reachable set, by release ---
+  0.134.0
+     [STREAM-CLASS+STREAM-SCOPE] * **streaming:** tolerate unknown event types in MessageStream and BetaMessageStream
+     [STREAM-SCOPE] * **streaming:** stop throwing "Unexpected event order" for an event before message_start
+     [STREAM-CLASS+STREAM-SCOPE] * **streaming:** yield events that arrive before message_start when iterating MessageStream and BetaMessageStream
+  0.132.0
+     [TOOL-SURFACE] * **tools:** keep a local edit made after a memory upload whose response was lost
+  0.130.0
+     [TOOL-SURFACE] * **tool-runner:** only send API fields for runnable tools
+     [TOOL-SURFACE] * **tools:** stop the session tool runner after any idle that ends the turn
+  0.129.0
+     [TOOL-SURFACE] * **tools:** optionally start tool calls while the reply streams
+     [STREAM-SCOPE+TOOL-SURFACE] * **streaming:** show every complete array item and hold back unfinished numbers in partial tool input
+     [STREAM-SCOPE] * **streaming:** drop the redundant iterSSEChunks layer
+     [STREAM-SCOPE] * **streaming:** take each string token as one slice in the partial JSON tokenizer
+     [BETA-MESSAGES+FOREIGN-SURFACE] * **api:** deprecate the betas param on GA models and completions methods
+     [COMPACTION+TOOL-SURFACE+STREAM-EVENT-NAME] * **tools:** remove client-side compaction control
+  0.128.0
+     [TOOL-SURFACE] * **tools:** addTools() takes effect straight away
+     [COMPACTION+TOOL-SURFACE+STREAM-EVENT-NAME] * **tools:** leave reply-only params off the tool runner's compaction request
+  0.127.0
+     [TOOL-SURFACE] * **tools:** add compactBeforeNextTurn() to the tool runner
+     [STREAM-CLASS+COMPACTION] * **BetaMessageStream:** stop coercing a null compaction_delta content into "null"
+     [COMPACTION+STREAM-EVENT-NAME] * **middleware:** echo a streamed compaction summary in the fallback continuation
+     [TOOL-SURFACE] * **tools:** keep $defs when transformJSONSchema root is a $ref
+  0.126.0
+     [COMPACTION+STREAM-EVENT-NAME] * **api:** add compaction parameter and signed compaction blocks (beta)
+     [COMPACTION+STREAM-EVENT-NAME] * **api:** compaction instructions replace the server's summarization prompt
+  0.124.0
+     [TOOL-SURFACE+FOREIGN-SURFACE] * **tools:** create agent-toolset files and directories owner-only
+
+--- UNMODELLED: this key's declared blindness, published as a floor ---
+  98 bullet(s) match no bucket key:
+     0.135.0 | * **api:** add between_tools to thinking types in model capabilities
+     0.135.0 | * **api:** add the speed parameter and usage.speed to Messages
+     0.135.0 | * **api:** return a Console organization's usage-tier spend cap as a read-only spend limit
+     0.135.0 | * **client:** close streams dropped without being read to the end
+     0.135.0 | * **client:** keep an unread JSONL response open while it is held
+     0.135.0 | * **api:** note that some models need a beta header to use speed
+     0.134.0 | * **api:** add execution_identity to Managed Agents agents
+     0.134.0 | * **api:** add organization_type_not_supported error to spend limit lists
+     0.134.0 | * **api:** add telemetry destination test endpoint
+     0.134.0 | * **api:** add telemetry destinations to the Admin API
+     0.134.0 | * **client:** add native support for OpenTelemetry tracing
+     0.134.0 | * **api:** rename telemetry destination test response model
+     … and 86 more
+
+==============================================================================
+## 5. Grading the published figures
+
+(a) Round 417 §3's declared key over the segment: 9 bullets
+    of those, behavioural (the undeclared filter §3 actually applied): 7
+  [PRED] LANDED   my 417 §3 key returns 9, not the 7 published: expected 9, measured 9
+  [PRED] LANDED   the 7 published = the key minus its undeclared scope filter: expected 7, measured 7
+
+(b) bullets reachable-by-call-shape but INVISIBLE to the 417 key: 15
+    BetaMessageStream/MessageStream bullets in the segment: 3
+    of those, invisible to the 417 key: 2
+       INVIS   0.134.0 | * **streaming:** tolerate unknown event types in MessageStream and BetaMessageStream
+       INVIS   0.134.0 | * **streaming:** yield events that arrive before message_start when iterating MessageStream and BetaMess
+       SEEN    0.127.0 | * **BetaMessageStream:** stop coercing a null compaction_delta content into "null"
+  [PRED] REFUTED  his "6 invisible" reproduces: expected 6, measured 15
+  [PRED] REFUTED  his prose "3 of which name BetaMessageStream" reproduces: expected 3, measured 2
+
+(c) test files mocking @anthropic-ai/sdk wholesale (no importActual): 17
+    test files reaching the real module via importActual:            9
+  [GATE] OK   CONTROL the two mock keys separate (no file in both sets)
+
+==============================================================================
+GATE: true
+PREDICTIONS: 2 landed, 2 refuted
+SUMMARY: rev 6e9ba87e | denominator 191 bullets over 14 releases | Klatch-reachable 24, behavioural 21 | 417-key 9 (behavioural 7) | invisible-to-417 15 | UNMODELLED 98 (FLOOR on blindness, not a measurement of irrelevance)

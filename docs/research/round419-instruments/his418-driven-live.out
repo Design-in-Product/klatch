@@ -1,0 +1,152 @@
+# Round 419 — Theseus's Round 418 instruments, driven unmodified
+
+repo root: /Users/xian/Development/klatch-worktrees/daedalus
+driven at: 2026-10-19T20:19:09.401Z
+HEAD: 6e9ba87e4b047d6f26e22f0847c266d7bdaa4aac
+
+==============================================================================
+## compaction-capability-computed-then-discarded.mjs  [cwd: repo-root]
+exit: 0   stdout bytes: 4120   stderr bytes: 0
+------------------------------------------------------------------------------
+REV STAMP: 6e9ba87e4b047d6f26e22f0847c266d7bdaa4aac (resolved from "HEAD")
+tracked packages/ source files at that rev: 251 | non-test: 68 | test: 183
+
+=== CONTROLS: each key fires on its own role and refuses the other two ===
+  DECLARES  fires on own shape: true | leaks onto: none OK
+  WRITES    fires on own shape: true | leaks onto: none OK
+  READS     fires on own shape: true | leaks onto: none OK
+
+=== CONTROLS are slices of the tree at this rev ===
+  DECLARES  occurs verbatim in 1 tracked file(s): packages/shared/src/types.ts
+  WRITES    occurs verbatim in 1 tracked file(s): packages/shared/src/types.ts
+  READS     occurs verbatim in 1 tracked file(s): packages/server/src/__tests__/round13-models-api.test.ts
+
+=== CENSUS of capabilities.compaction, by role ===
+
+DECLARES: 1 total | 1 in NON-TEST source | 0 in tests
+   SRC  packages/shared/src/types.ts:265  compaction: boolean;
+
+WRITES: 12 total | 2 in NON-TEST source | 10 in tests
+   test packages/client/src/__tests__/round167-entity-edit-omits-unchanged.test.tsx:42  { id: 'claude-opus-5', displayName: 'Claude Opus 5', maxOutputTokens: 16384, capabilities: { thinking: true, effort
+   test packages/client/src/__tests__/round42-entity-manager-aaxt.test.tsx:53  { id: 'claude-opus-5', displayName: 'Claude Opus 5', maxOutputTokens: 16384, capabilities: { thinking: true, effort
+   test packages/client/src/__tests__/round42-entity-manager-aaxt.test.tsx:54  { id: 'claude-opus-4-7', displayName: 'Claude Opus 4.7', maxOutputTokens: 16384, capabilities: { thinking: true, ef
+   test packages/client/src/__tests__/round42-entity-manager-aaxt.test.tsx:55  { id: 'claude-opus-4-6', displayName: 'Claude Opus', maxOutputTokens: 16384, capabilities: { thinking: true, effort
+   test packages/client/src/__tests__/round42-entity-manager-aaxt.test.tsx:56  { id: 'claude-sonnet-4-6', displayName: 'Claude Sonnet', maxOutputTokens: 16384, capabilities: { thinking: false, e
+   test packages/client/src/__tests__/round42-entity-manager-aaxt.test.tsx:57  { id: 'claude-haiku-4-5-20251001', displayName: 'Claude Haiku', maxOutputTokens: 8192, capabilities: { thinking: fa
+   test packages/client/src/__tests__/round43-message-list-aaxt.test.tsx:54  { id: 'claude-opus-4-7', displayName: 'Claude Opus 4.7', maxOutputTokens: 16384, capabilities: { thinking: true, ef
+   test packages/client/src/__tests__/round43-message-list-aaxt.test.tsx:55  { id: 'claude-opus-4-6', displayName: 'Claude Opus', maxOutputTokens: 16384, capabilities: { thinking: true, effort
+   test packages/client/src/__tests__/round43-message-list-aaxt.test.tsx:56  { id: 'claude-sonnet-4-6', displayName: 'Claude Sonnet', maxOutputTokens: 16384, capabilities: { thinking: false, e
+   test packages/server/src/__tests__/model-validation.test.ts:45  capabilities: { thinking: true, effort, compaction: false },
+   SRC  packages/server/src/routes/models.ts:70  compaction: caps.context_management?.compact_20260112?.supported ?? false,
+   SRC  packages/shared/src/types.ts:285  compaction: false,
+
+READS: 2 total | 0 in NON-TEST source | 2 in tests
+   test packages/server/src/__tests__/round13-models-api.test.ts:182  expect(opus.capabilities.compaction).toBe(true);
+   test packages/server/src/__tests__/round13-models-api.test.ts:187  expect(haiku.capabilities.compaction).toBe(false);
+
+=== what gates the beta call, at this rev ===
+   packages/server/src/claude/client.ts:1091  const compactionEnabled = channel?.source !== 'native';
+   packages/server/src/claude/client.ts:1151  const compactionEnabled = channel?.source !== 'native';
+   packages/server/src/claude/client.ts:894  if (options?.compactionEnabled) {
+   packages/server/src/claude/client.ts:904  betas: ['compact-2026-01-12'],
+   does any gate expression consult a model capability? false
+   CONTROL — gate key refuses a near-miss line: true
+
+SUMMARY: rev 6e9ba87e | capabilities.compaction DECLARED 1×, WRITTEN 2× in non-test source, READ 0× in non-test source | beta gate expressions found: 2, none consulting capability: true
+VERDICT: COMPUTED AND DISCARDED — the capability is written in non-test source and read nowhere in it.
+
+==============================================================================
+## compaction-capability-computed-then-discarded.mjs  [cwd: own-directory]
+exit: 1   stdout bytes: 744   stderr bytes: 0
+------------------------------------------------------------------------------
+REV STAMP: 6e9ba87e4b047d6f26e22f0847c266d7bdaa4aac (resolved from "HEAD")
+tracked packages/ source files at that rev: 0 | non-test: 0 | test: 0
+
+=== CONTROLS: each key fires on its own role and refuses the other two ===
+  DECLARES  fires on own shape: true | leaks onto: none OK
+  WRITES    fires on own shape: true | leaks onto: none OK
+  READS     fires on own shape: true | leaks onto: none OK
+
+=== CONTROLS are slices of the tree at this rev ===
+  DECLARES  occurs verbatim in 0 tracked file(s): <NONE — not a slice>
+  WRITES    occurs verbatim in 0 tracked file(s): <NONE — not a slice>
+  READS     occurs verbatim in 0 tracked file(s): <NONE — not a slice>
+
+VERDICT: REFUSED — a key or a control failed; not publishing a census from it.
+
+==============================================================================
+## installed-sdk-and-sec4-by-shape.mjs  [cwd: repo-root]
+exit: 0   stdout bytes: 1536   stderr bytes: 0
+------------------------------------------------------------------------------
+declared pin, packages/server/package.json: ^0.122.0
+tracked package-lock.json says: 0.122.0
+lock last touched: 0f85f325 Daedalus (Klatch) 2026-08-31
+semver module available for the comparison: true 
+
+=== installed @anthropic-ai/sdk, per tree ===
+  main checkout        0.122.0      satisfies ^0.122.0: true
+  daedalus             0.122.0      satisfies ^0.122.0: true
+  argus                0.122.0      satisfies ^0.122.0: true
+  calliope             0.116.0      satisfies ^0.122.0: false
+  theseus (this one)   0.110.0      satisfies ^0.122.0: false
+  -> 5 tree(s) read | 2 do NOT satisfy the declared pin: calliope=0.116.0, theseus (this one)=0.110.0
+  CONTROL — comparison separates: known-bad 0.1.0 => false | known-good 0.122.0 => true
+
+=== CONTROLS: each shape key refuses a one-token mutation ===
+  OK event-path guard (§4 cites :418)
+  OK snapshot coercion (§4 cites :562)
+
+--- INSTALLED HERE — 0.110.0 (654 lines) ---
+  event-path guard (§4 cites :418): 1 hit(s) at 418
+  snapshot coercion (§4 cites :562): 1 hit(s) at 562
+  the cited line 418 reads: "                        if (content.type === 'compaction' && content.content) {"
+  the cited line 562 reads: "                                content: (snapshotContent.content || '') + event.delta.content,"
+
+--- pinned version: UNMEASURED (pass its BetaMessageStream.js as argv[2]) ---
+
+SUMMARY: pin ^0.122.0 | lock 0.122.0 | 5 trees measured, 2 below the pin | §4 content verified by shape; its cited LINE NUMBERS hold only where the installed version is the pinned one.
+
+==============================================================================
+## installed-sdk-and-sec4-by-shape.mjs  [cwd: own-directory]
+exit: 1   stdout bytes: 0   stderr bytes: 679
+------------------------------------------------------------------------------
+node:fs:539
+    return binding.readFileUtf8(path, stringToFlags(options.flag));
+                   ^
+
+Error: ENOENT: no such file or directory, open 'packages/server/package.json'
+    at Object.readFileSync (node:fs:539:20)
+    at file:///Users/xian/Development/klatch-worktrees/daedalus/docs/research/round418-instruments/installed-sdk-and-sec4-by-shape.mjs:33:33
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'packages/server/package.json'
+}
+
+Node.js v26.5.0
+
+==============================================================================
+## sec3-key-verbatim-then-widened.mjs  [cwd: repo-root]
+exit: 2   stdout bytes: 72   stderr bytes: 0
+------------------------------------------------------------------------------
+REFUSED — pass a changelog path as argv[2] (got undefined). See header.
+
+==============================================================================
+## sec3-key-verbatim-then-widened.mjs  [cwd: own-directory]
+exit: 2   stdout bytes: 72   stderr bytes: 0
+------------------------------------------------------------------------------
+REFUSED — pass a changelog path as argv[2] (got undefined). See header.
+
+==============================================================================
+## VERDICTS (computed from the captured output above)
+V1 his §4 census reproduces (VERDICT: COMPUTED AND DISCARDED): true
+V2 his §4 census still reads 0× in non-test source:          true
+V3 his §3 grader ran to completion (exit 0):                 false
+V4 his §3 output mentions a 9:                               false
+V5 his §1/§2 shape instrument ran to completion (exit 0):    true
+V6 compaction-capability-computed-then-discarded.mjs: root exit 0, own-dir exit 1, same: false
+V6 installed-sdk-and-sec4-by-shape.mjs: root exit 0, own-dir exit 1, same: false
+V6 sec3-key-verbatim-then-widened.mjs: root exit 2, own-dir exit 2, same: true
