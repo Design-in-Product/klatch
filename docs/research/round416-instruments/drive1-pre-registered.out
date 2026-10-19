@@ -1,0 +1,38 @@
+Round 416 — grading his 415 §2 against an index that is not clean, at f03d4a9b80a9134901b7b87fd8cf1ab3d98a801f
+  START 2026-10-19T02:53:24.000Z
+
+  TRUE  D1  [GATE] both selector argv shapes SLICED out of docs/research/round415-instruments/census-the-index-keyed-population.mjs:85-94 and the population filter out of round411:155-157, asserted by content, not retyped
+        slice ok true · tree argv ["ls-tree","-r","--name-only"] · index argv ["ls-files"] · EXEC \.(mjs|mts)$ · pathspecs ["docs/research","scripts"]
+  TRUE  D2  [GATE] known positive at its own narrowest key: his M3 reading reproduces on the live tree under the sliced keys — the two agree HERE, which is the state his reading was taken in
+        ls-files 285 · ls-tree(HEAD) 285 · member-for-member true · worktree DIRTY true
+        M1  [MEAS] his two keys — the index selector and the tree-at-the-stamped-rev selector — in four index states of a scratch repo, compared as MEMBER LISTS and not as counts (340)
+            S1_CLEAN                 ls-files 3 · ls-tree(own rev) 3 · agree true · index-only [] · tree-only [] · listed-but-absent-on-disk []  (nothing staged, nothing untracked)
+    S2_STAGED_ADD            ls-files 4 · ls-tree(own rev) 3 · agree false · index-only ["pop/d.mjs"] · tree-only [] · listed-but-absent-on-disk []  (pop/d.mjs added to the index, never committed)
+    S3_STAGED_DEL            ls-files 2 · ls-tree(own rev) 3 · agree false · index-only [] · tree-only ["pop/a.mjs"] · listed-but-absent-on-disk []  (pop/a.mjs removed from the index, still in HEAD)
+    S4_WORKTREE_DEL_UNSTAGED ls-files 3 · ls-tree(own rev) 3 · agree true · index-only [] · tree-only [] · listed-but-absent-on-disk ["pop/b.mjs"]  (pop/b.mjs deleted on disk, index entry untouched)
+  TRUE  P1  [PRED] CONTROL: with a clean index his two keys agree member-for-member — so a DISAGREE in any other state is the index state and not my harness
+        agree true · 3 both ways
+  TRUE  P2  [PRED] STAGED ADDITION: the index selector returns a member the stamped rev cannot recover, so a rev-stamped `ls-files` figure is LARGER than its own rev — refuting "the index and the stamped rev's tree differ only by untracked files"
+        index-only ["pop/d.mjs"] (want exactly ["pop/d.mjs"]) · 4 vs 3
+  TRUE  P3  [PRED] STAGED DELETION: the stamped rev's tree carries a member the index does not, so the published figure is SMALLER than its own rev — indistinguishable from a deliberate seam
+        tree-only ["pop/a.mjs"] (want exactly ["pop/a.mjs"]) · 2 vs 3
+  TRUE  P4  [PRED] UNSTAGED WORKTREE DELETION: the two COUNTS agree while the index names a path that does not exist on disk — so count-agreement is not evidence the index was clean
+        counts agree true · listed-but-absent ["pop/b.mjs"] (want exactly ["pop/b.mjs"])
+  TRUE  D3  [GATE] the index selector pointed at a counterfactual that MOVES it: substituting `ls-tree HEAD` for `ls-files` must flip S2 from DISAGREE to AGREE, which attributes the disagreement to the selector reading the INDEX rather than to this harness
+        S2 real key agree false (want false) · S2 crippled key agree true (want true) · selector load-bearing true
+        M2  [MEAS] over every source file carrying an `ls-files` token (a superset of his 24 POPULATION files), how many print an INDEX WITNESS — anything that would let a reader check the precondition his §2 rests on
+        token-carrying files 25 · of which print an index witness 11 ["docs/research/round407-instruments/census-the-fixture-as-string-class.mjs","docs/research/round408-instruments/stratify-the-live-interval.mjs","docs/research/round409-instruments/census-the-hand-typed-known-positive.mjs","docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs","docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs","docs/research/round412-instruments/resolve-the-ternary-and-reconstruct-the-nine.mjs","docs/research/round414-instruments/grade-the-refusing-half-and-reconcile-the-ten.mjs","docs/research/round415-instruments/census-the-index-keyed-population.mjs","scripts/lib/tree-fingerprint.mts","scripts/probe-round223-twenty-one-probes-against-a-stranger.mts","scripts/probe-round291-the-sentinel-did-not-grade-the-backups-that-are-the-recovery-path.mts"]
+  FALSE P5  [PRED] that number is 0 — the index state his narrowing depends on is recorded nowhere, so a reader holding a rev-stamped `ls-files` figure cannot tell S1 from S2
+        index witnesses 11 (predicted 0: false)
+        M3  [MEAS] his own stamp key — sliced by content from his OUT_RE, refusing if that line moved — applied to EVERY recorded `.out` in the round4xx instrument directories, not only the ones carrying a corpus header
+        recorded outputs 129 · carry a run-time rev stamp 35 · carry none 94
+    unstamped: ["docs/research/round400-instruments/his399-live.out","docs/research/round400-instruments/regrade-the-file-scoped-guard.out","docs/research/round400-instruments/sweep.out","docs/research/round400-instruments/typecheck-packages.out","docs/research/round400-instruments/typecheck-scripts.out","docs/research/round401-instruments/census-the-branch-polarity-axis.out","docs/research/round401-instruments/control-pre-label-repair.out","docs/research/round401-instruments/sweep.out","docs/research/round401-instruments/typecheck-packages.out","docs/research/round401-instruments/typecheck-scripts.out","docs/research/round402-instruments/hand-read-the-unguarded.out","docs/research/round402-instruments/sweep.out"] … and 82 more
+  TRUE  P6  [PRED] his class has live members besides my `62/10` — at least one recorded output publishes with no run-time rev stamp
+        unstamped 94 (predicted >= 1: true)
+
+GATE: true (3 leg(s): D1 D2 D3)
+PREDICTIONS: 5 landed (P1 P2 P3 P4 P6), 1 refuted (P5)
+  !! A REFUTED PREDICTION IS THE ROUND'S CONTENT, NOT ITS FAILURE (383).
+
+  rev f03d4a9b80a9134901b7b87fd8cf1ab3d98a801f · 285 file(s) in the ls-tree corpus · 285 in the ls-files corpus · worktree DIRTY
+  END 2026-10-19T02:53:24.001Z
