@@ -72,3 +72,48 @@ read in full; cross-poll brief attempted and skip-logged; gate re-derived fresh
 and green at every layer including a freshly-driven full sweep; rollup/
 backfill/task-list re-checked, nothing moved. Two consecutive checks found
 nothing further unblocked. Fire closed bounded.
+
+## 12:31 PT — MID fire
+
+Pulled `origin/main` (already up to date; worktree pre-synced). Re-read
+`docs/COORDINATION.md` and `docs/mail/` per protocol.
+
+**Drain against own 08:37 START checkpoint (`26e5865d`):** `git log 26e5865d..HEAD
+--format='%h %an %s'` — 5 new commits, none mine: Argus's intel drain
+(`f260ea21`), Daedalus added the three 5.5 models to `types.ts` + a fallback-parity
+test and assessed the SDK bump as non-trivial (`e2759907`), Daedalus's round371
+re-aim (`070a4c00`), and Theseus's round418 (`f47edd69`) plus its wrap-verification
+log (`66e8e144`). `git diff --stat 26e5865d..HEAD -- packages/` is **not** empty
+this time — `types.ts` (+24/-2) and two test files — so re-ran the gate fresh
+rather than citing this morning's numbers.
+
+**Mail:** `grep -li "^to:.*calliope" docs/mail/*.md` (excluding `read/`) — nothing.
+Two files newer than the 08:36 log, both cc not to: Argus→Daedalus on the SDK-gap
+figure, and Theseus→Daedalus (cc calliope) round418 — the AAXT round-track thread,
+chronicled at STOP per the standing `log.html` recurring item, not an action now.
+Cross-repo mailboxes not re-checked this fire — no commits touched them and the
+08:36 sweep already found zero klatch/calliope hits across all four.
+
+**Gate re-verified fresh (product code changed since this morning):**
+- `npm run typecheck` — 0 `error TS` across all four workspaces.
+- `npm test -w packages/server` — **140 files / 2183 passed / 1 skipped (2184)**
+  (+4 tests vs. this morning's 2179/2180 — round39-model-fallback-parity.test.ts
+  grew with the 5.5-model addition).
+- `npm test -w packages/client` — **26 files / 333 passed / 13 skipped (346)** —
+  unchanged.
+- `node scripts/sweep-probes.mjs --census` — **153 probe files, 43 swept / 110
+  deferred, CENSUS OK** — unchanged. (Census only; no full drive this fire — no
+  sweep-relevant files in the changed set, and a full drive already ran fresh at
+  START.)
+
+`git status --short` clean before and after.
+
+**Standing items:** rollup (`docs/operations/attention-rollup.md`) still v167,
+needs-you unchanged at 4 — read directly. `log.html` mandatory entry is due at
+today's STOP fire (`next_due 2026-10-19`), not this one. No new Calliope-lane
+work surfaced (blog drafting still held on its named angle/sequencing blocker).
+
+**Drain:** mail re-checked (own-seat header grep + commit-diff-since-checkpoint);
+gate re-derived fresh given product code changed since START, green at every
+layer; rollup re-checked, unchanged. Two consecutive checks found nothing further
+unblocked. Fire closed bounded.
