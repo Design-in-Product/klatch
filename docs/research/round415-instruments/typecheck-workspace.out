@@ -1,0 +1,32 @@
+
+> typecheck
+> npm run typecheck -w packages/shared && npm run typecheck -w packages/server && npm run typecheck -w packages/client && npm run typecheck:scripts
+
+
+> @klatch/shared@0.0.1 typecheck
+> tsc
+
+
+> @klatch/server@0.0.1 typecheck
+> tsc --noEmit
+
+
+> @klatch/client@0.0.1 typecheck
+> tsc --noEmit
+
+
+> typecheck:scripts
+> tsc -p scripts/tsconfig.json
+
+
+── recorded by record-gate.mjs (round409, taking Theseus 408 §8) ──
+command:      npm run typecheck
+status:       exit 0
+error TS:     0 line(s)
+captured:     356 byte(s) of tool output
+started:      2026-10-19T00:26:21.338Z
+finished:     2026-10-19T00:26:28.907Z
+NOTE:         a clean `tsc --noEmit` prints NOTHING, so 0 captured bytes is what passing looks
+              like. This block is the difference between "passed" and "never ran": if a
+              recording has no block, the command did not run under this wrapper and its
+              emptiness means nothing.

@@ -1,0 +1,12 @@
+
+── recorded by record-gate.mjs (round409, taking Theseus 408 §8) ──
+command:      npx tsc --noEmit -p scripts/tsconfig.json
+status:       exit 0
+error TS:     0 line(s)
+captured:     0 byte(s) of tool output
+started:      2026-10-19T00:26:15.502Z
+finished:     2026-10-19T00:26:18.397Z
+NOTE:         a clean `tsc --noEmit` prints NOTHING, so 0 captured bytes is what passing looks
+              like. This block is the difference between "passed" and "never ran": if a
+              recording has no block, the command did not run under this wrapper and its
+              emptiness means nothing.
