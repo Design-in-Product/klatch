@@ -370,14 +370,111 @@ const his = new Set(indexKeys(recorded));
 const now = new Set(indexKeys(nowRows));
 const lost = [...his].filter((k) => !now.has(k));
 const gained = [...now].filter((k) => !his.has(k));
-check('D1', 'the relocated detector reproduces Round 370\'s recorded member list over the files that '
-  + 'list covers, member-for-member and not by count — so the relocation to `scripts/lib/` is '
-  + 'behaviour-preserving, graded against an artifact recorded before it existed. Keyed on file + '
-  + 'per-file occurrence index + markers (Round 396): multiplicity and order kept, absolute line '
-  + 'numbers dropped, because a reflow of an unrelated comment in a swept file is not a change in '
-  + 'what this detector finds',
-  lost.length === 0 && gained.length === 0,
-  `${his.size} recorded / ${now.size} now :: lost ${JSON.stringify(lost.slice(0, 4))} gained ${JSON.stringify(gained.slice(0, 4))}`);
+
+/**
+ * ROUND 417 RE-AIM — pin the INPUT, not the output's tolerance.
+ *
+ * D1 graded `recording (at 72886c0b) vs detector over the LIVE tree`, which conflates the two
+ * things it needs to tell apart: the detector's behaviour changing (what "behaviour-preserving"
+ * means) and the tree's CONTENT changing (someone writing a new comment). Any new marker-carrying
+ * comment in any of the 181 covered files reddens it, and the markers are `rather than` and
+ * `silently` — which, as this probe's own header says, is "how this team writes."
+ *
+ * It has now fired twice for content, never for behaviour. Round 396 was the first: a +11 line
+ * shift in `probe-round303` read as two lost and two gained. The re-key to a per-file occurrence
+ * index fixed THAT spelling and left the class open. The second is this fire's, and it is the
+ * purer case — Round 417 added a genuinely new characterising comment to
+ * `round39-model-fallback-parity.test.ts` (a file the recording covers) and D1 read
+ * `585 recorded / 586 now :: lost [] gained ["…:#1:silently+rather-than"]`. Nothing lost, one
+ * gained, and the gained member was new prose written forty minutes earlier.
+ *
+ * Loosening D1 to `lost.length === 0` was the first repair I wrote and I threw it away: it would
+ * stay green while the detector over-reported without limit (Round 357/375 — re-aim the pin, don't
+ * loosen it). The property actually wanted is the detector's, so pin its INPUT: run today's
+ * relocated detector over the files AS THEY WERE at the recording's rev and require exact equality.
+ * New authorship then cannot reach it — the input is a frozen tree — while any change in what the
+ * detector FINDS still moves the list. The live-tree comparison is kept below as a measurement,
+ * because `lost` against the live tree is a genuinely useful thing to see; it just is not this
+ * probe's gate.
+ *
+ * Two controls, and D1's FIGURE refuses rather than only the guard firing beside it (Round 353):
+ *   - D0a: `git show <rev>:<file>` must actually return old content for at least one file. If it
+ *     silently returned the live file, D1 would be comparing the recording to today and the re-aim
+ *     would be a no-op dressed as a fix.
+ *   - D0b: a crippled detector (one marker dropped) over the SAME pinned input must DISAGREE with
+ *     the recording. Without it, "reproduces exactly" could hold vacuously.
+ */
+const REC_REV = '72886c0b';
+
+function atRev(file: string): string | null {
+  try {
+    return execFileSync('git', ['-C', REPO, 'show', `${REC_REV}:${file}`],
+      { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+  } catch {
+    return null;
+  }
+}
+
+const detect = (src: string, markers: (text: string) => string[]) => {
+  const rows: MemberRow[] = [];
+  for (const b of commentBlocks(src)) {
+    const ms = markers(b.text);
+    if (ms.length) rows.push({ file: '', line: b.line, markers: ms });
+  }
+  return rows;
+};
+
+const unreadableAtRev: string[] = [];
+const pinnedRows: MemberRow[] = [];
+const crippledRows: MemberRow[] = [];
+let revDiffersFromLive = 0;
+for (const f of [...recordedFiles].sort()) {
+  const src = atRev(f);
+  if (src === null) { unreadableAtRev.push(f); continue; }
+  if (!existsSync(join(REPO, f)) || readFileSync(join(REPO, f), 'utf8') !== src) revDiffersFromLive++;
+  for (const r of detect(src, markersIn)) pinnedRows.push({ ...r, file: f });
+  // The cripple drops one marker key, standing in for detector drift.
+  for (const r of detect(src, (t) => markersIn(t).filter((m) => m !== 'rather-than'))) {
+    crippledRows.push({ ...r, file: f });
+  }
+}
+
+const D0a = unreadableAtRev.length === 0 && revDiffersFromLive > 0;
+check('D0a', 'CONTROL: the pinned input is genuinely the OLD tree — every recorded file is readable '
+  + `at ${REC_REV} and at least one differs from its live copy, so \`git show\` is not handing back `
+  + 'today\'s content and calling it the recording', D0a,
+  `${unreadableAtRev.length} unreadable, ${revDiffersFromLive} of ${recordedFiles.size} differ from live`);
+
+const pinned = new Set(indexKeys(pinnedRows));
+const crippled = new Set(indexKeys(crippledRows));
+const cDelta = [...his].filter((k) => !crippled.has(k)).length + [...crippled].filter((k) => !his.has(k)).length;
+const D0b = cDelta > 0;
+check('D0b', 'CONTROL: a crippled detector (marker `rather-than` dropped) over the SAME pinned input '
+  + 'DISAGREES with the recording — so D1\'s exact reproduction is a reading and not a vacuous '
+  + 'identity', D0b, `crippled ${crippled.size} member(s) vs recorded ${his.size}, delta ${cDelta}`);
+
+const pLost = [...his].filter((k) => !pinned.has(k));
+const pGained = [...pinned].filter((k) => !his.has(k));
+if (!(D0a && D0b)) {
+  check('D1', 'REFUSED — D0a/D0b did not hold, so no reproduction figure is published from this '
+    + 'drive (a guard that fires beside a figure that still prints is Round 353)', false,
+    `D0a=${D0a} D0b=${D0b}`);
+} else {
+  check('D1', 'the relocated detector reproduces Round 370\'s recorded member list over the files '
+    + 'that list covers, member-for-member and not by count, with the INPUT PINNED to the tree at '
+    + `${REC_REV} — so the relocation to \`scripts/lib/\` is behaviour-preserving, graded against an `
+    + 'artifact recorded before it existed. Keyed on file + per-file occurrence index + markers '
+    + '(Round 396). Round 417 re-aimed this off the live tree: new prose in a covered file is not a '
+    + 'change in what this detector finds',
+    pLost.length === 0 && pGained.length === 0,
+    `${his.size} recorded / ${pinned.size} detector-over-pinned :: lost ${JSON.stringify(pLost.slice(0, 4))} gained ${JSON.stringify(pGained.slice(0, 4))}`);
+}
+
+meas('D1b', `against the LIVE tree the same key reads ${now.size} member(s) — lost `
+  + `${JSON.stringify(lost.slice(0, 4))} gained ${JSON.stringify(gained.slice(0, 4))}. Diagnostic, `
+  + 'not a gate: a gain here is new prose in a covered file and a loss is a comment someone '
+  + 'deleted, and neither is the detector behaving differently. Read it when D1 is green and the '
+  + 'live number surprises you');
 
 // The drop, stated rather than silent: under the OLD key the same two lists disagree, and the
 // disagreement is exactly the file whose length moved. If this ever reads 0 under both keys the

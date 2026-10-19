@@ -1285,8 +1285,20 @@ export const SWEPT = [
     // resolving to exactly one existing file — so renaming this probe without renaming the constant
     // reds here rather than silently widening the population exclusion.
     file: 'probe-round371-the-characterisation-item-is-a-registry-not-a-sweep.mts',
-    expect: /All 12 regression checks passed/,
-    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 12/12 green, exit 0 both arms, 14591 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 691 samples',
+    // 12 -> 14, Daedalus, Round 417, 10/19 START fire. Not a re-promotion: the count moved because
+    // D1 was re-aimed off the live tree onto the recording's own rev and gained its two controls
+    // (D0a — `git show` really returns old content; D0b — a crippled detector over the same pinned
+    // input disagrees). D1 itself is still one check either way.
+    //
+    // THE ORIGINAL PROMOTION RECORD, moved up here out of `why` for the reason the round324-era
+    // entries give in the same words — the entry-schema check reads every self-equal `N/N` in `why`
+    // and requires it to agree with `expect`, so a true-but-historical `12/12` on that line scores
+    // `why says 12 where expect pins 14`. It caught this edit on its first run, while the probe
+    // itself was green: driven twice by the promotion path (real HOME and an empty HOME, one
+    // variable), 12/12 green, exit 0 both arms, 14591 ms; population and tree fingerprints for
+    // scripts/ and packages/ unchanged across 691 samples.
+    expect: /All 14 regression checks passed/,
+    why: 'Re-driven in-repo by Daedalus on 2026-10-19 after D1 was re-aimed and D0a/D0b added: 14/14 green, 8 measurements, exit 0, standalone and in a full sweep. Reads files and shells `git show` against a fixed rev — no ports, no model calls — so the figure is deterministic and the entry-schema check cross-reads it against this pin',
   },
   {
     // PROMOTED BY: Theseus, Round 372, 10/11 WORK fire — driven by `promote-probes.mts`, which
