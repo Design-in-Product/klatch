@@ -1,0 +1,144 @@
+# Round 420 — his 29, hand-read, and the bucket keyed on a scope label
+
+rev stamp: 501710c38937637487892d84482a8c7458914c91
+driven at: 2026-10-19T22:01:33.998Z
+cwd:       /Users/xian/Development/klatch-worktrees/theseus
+changelog: /Users/xian/Development/klatch-worktrees/theseus/.testdata/round419-sdk-changelog.md
+
+  [GATE] OK   his instrument reads from 501710c3  — 391 lines
+
+==============================================================================
+## 0. My transcription of his key must reproduce his published figures first
+
+  [GATE] OK   denominator reproduces (191)  — 191
+  [GATE] OK   reachable reproduces (32)  — 32
+  [GATE] OK   behavioural reproduces (29)  — 29
+
+==============================================================================
+## 1. My over-report hypothesis about `text` — refuted at his key, by one missing flag
+
+  I expected his hasEventName key to over-report: it is built from the censused stream event
+  names, and one of them is `text`, an ordinary English word. Measured over the segment, at
+  HIS spelling (case-sensitive) and at the case-insensitive variant my own first transcription
+  of it used:
+    /\btext\b/  (his spelling)      over 191 bullets: 0 hit(s)
+    /\btext\b/i (my transcription)  over 191 bullets: 1 hit(s)
+    /\bcompaction\b/i                over 191 bullets: 7 hit(s)
+      0.132.0 | * **api:** mark the Text Completions API as deprecated ([2b75b49](https://github.com/anthropics/anth
+  [PRED] LANDED   his `text` leg over-reports AT HIS OWN SPELLING (my hypothesis): expected 0, measured 0
+  [GATE] OK   CONTROL the /\btext\b/ key can fire at all (driven on a known positive, his spelling)
+  -> REFUTED. His figure is not inflated by that leg, and the reason is one character:
+     hasEventName is the ONE key in his instrument built without an `i` flag
+     (`new RegExp(`\\b${e}\\b`)`), while every sibling key carries one.
+
+  But the near-miss is worth the sentence, because his own exclusion could not have caught it.
+  The single case-insensitive hit is an `**api:**` bullet about the Text Completions API — a
+  surface his FOREIGN-SURFACE bucket keys `\bcompletions\b` specifically to exclude. That
+  bucket sits at precedence 9; STREAM-EVENT-NAME sits at 7. So with an `i` flag the row would
+  be claimed as Klatch-reachable BEFORE the exclusion that exists for it is ever consulted:
+    row: * **api:** mark the Text Completions API as deprecated ([2b75b49](https://github.com/anthropics/
+      hasEventName (his, case-sensitive):   false
+      hasEventName (case-insensitive):      true
+      hasForeignSurface (the exclusion):    true
+      is it behavioural (not docs:/chore:)? true
+  [PRED] LANDED   the exclusion that exists for this row is unreachable once an earlier bucket claims it: expected claimed-first=true, excluded=true, measured claimed-first=true, excluded=true
+  [GATE] OK   CONTROL STREAM-EVENT-NAME precedes FOREIGN-SURFACE in his declared bucket order  — event-name at 13251, foreign at 13300
+
+==============================================================================
+## 2. The 29, hand-read: which bucket claims each, and via which leg
+
+   1 0.135.0 [STREAM-LIFECYCLE] * **client:** close streams dropped without being read to the end
+   2 0.135.0 [STREAM-LIFECYCLE] * **client:** keep an unread JSONL response open while it is held
+   3 0.134.0 [STREAM-LIFECYCLE] * **client:** close an unread stream that was dropped while tracing is on
+   4 0.134.0 [STREAM-CLASS] * **streaming:** tolerate unknown event types in MessageStream and BetaMessageStream
+   5 0.134.0 [STREAM-SCOPE] * **streaming:** stop throwing "Unexpected event order" for an event before message_start
+   6 0.134.0 [STREAM-CLASS] * **streaming:** yield events that arrive before message_start when iterating MessageStream 
+   7 0.132.0 [TOOL-SURFACE] {tools: SCOPE LEG ONLY} * **tools:** keep a local edit made after a memory upload whose response was lost
+   8 0.130.0 [TOOL-SURFACE] * **tool-runner:** only send API fields for runnable tools
+   9 0.130.0 [TOOL-SURFACE] * **tools:** stop the session tool runner after any idle that ends the turn
+  10 0.129.0 [TOOL-SURFACE] {tools: SCOPE LEG ONLY} * **tools:** optionally start tool calls while the reply streams
+  11 0.129.0 [STREAM-SCOPE] * **streaming:** show every complete array item and hold back unfinished numbers in partial 
+  12 0.129.0 [STREAM-SCOPE] * **streaming:** drop the redundant iterSSEChunks layer
+  13 0.129.0 [STREAM-SCOPE] * **streaming:** take each string token as one slice in the partial JSON tokenizer
+  14 0.129.0 [BETA-MESSAGES] * **api:** deprecate the betas param on GA models and completions methods
+  15 0.129.0 [COMPACTION] {tools: SCOPE LEG ONLY} * **tools:** remove client-side compaction control
+  16 0.128.0 [TOOL-SURFACE] {tools: SCOPE LEG ONLY} * **tools:** addTools() takes effect straight away
+  17 0.128.0 [COMPACTION] * **tools:** leave reply-only params off the tool runner's compaction request
+  18 0.127.0 [TOOL-SURFACE] * **tools:** add compactBeforeNextTurn() to the tool runner
+  19 0.127.0 [STREAM-CLASS] * **BetaMessageStream:** stop coercing a null compaction_delta content into "null"
+  20 0.127.0 [STREAM-LIFECYCLE] * **client:** don't retry requests whose body is a stream or iterator
+  21 0.127.0 [COMPACTION] * **middleware:** echo a streamed compaction summary in the fallback continuation
+  22 0.127.0 [TOOL-SURFACE] {tools: SCOPE LEG ONLY} * **tools:** keep $defs when transformJSONSchema root is a $ref
+  23 0.126.0 [COMPACTION] * **api:** add compaction parameter and signed compaction blocks (beta)
+  24 0.126.0 [STREAM-LIFECYCLE] * **client:** ignore invalid Retry-After values and validate maxRetries
+  25 0.126.0 [STREAM-LIFECYCLE] * **client:** retry connection errors in the async client and stop blocking in the coroutine
+  26 0.126.0 [STREAM-LIFECYCLE] * **client:** stop waiting for a retry as soon as the request is aborted
+  27 0.126.0 [STREAM-LIFECYCLE] * **client:** use the default backoff when Retry-After is out of range
+  28 0.126.0 [COMPACTION] * **api:** compaction instructions replace the server's summarization prompt
+  29 0.124.0 [TOOL-SURFACE] {tools: SCOPE LEG ONLY} * **tools:** create agent-toolset files and directories owner-only
+
+  first-bucket distribution of the 29:
+    STREAM-LIFECYCLE       8
+    TOOL-SURFACE           8
+    COMPACTION             5
+    STREAM-SCOPE           4
+    STREAM-CLASS           3
+    BETA-MESSAGES          1
+
+  --- counterfactual: the TOOL-SURFACE scope leg removed, census-adjacent legs kept ---
+    reachable:   32 -> 27
+    behavioural: 29 -> 24
+      LOST  0.132.0 | * **tools:** keep a local edit made after a memory upload whose response was lost
+      LOST  0.129.0 | * **tools:** optionally start tool calls while the reply streams
+      LOST  0.128.0 | * **tools:** addTools() takes effect straight away
+      LOST  0.127.0 | * **tools:** keep $defs when transformJSONSchema root is a $ref
+      LOST  0.124.0 | * **tools:** create agent-toolset files and directories owner-only
+  [GATE] OK   the counterfactual is a real counterfactual (it moves the figure)  — 29 -> 24
+
+  reconciliation: 6 row(s) of the 29 are scope-leg-only, 5 are lost, 1 survive because another bucket also claims them:
+      SURVIVES via [COMPACTION+TOOL-SURFACE+STREAM-EVENT-NAME]  * **tools:** remove client-side compaction control ([#802](https://github.com/anthropics
+  [GATE] OK   the scope-only count reconciles with the lost count  — 6 = 5 + 1
+
+==============================================================================
+## 3. Do the identifiers those rows name occur anywhere in Klatch source?
+
+  tracked packages/ ts|tsx at 501710c3: 251 (non-test 68)
+    "tool runner"              0 hit(s)
+    "tool-runner"              0 hit(s)
+    "addTools"                 0 hit(s)
+    "compactBeforeNextTurn"    0 hit(s)
+    "agent-toolset"            0 hit(s)
+    "transformJSONSchema"      0 hit(s)
+    "betaTool"                 0 hit(s)
+    "runTools"                 0 hit(s)
+    "toolRunner"               0 hit(s)
+  [PRED] LANDED   no SDK tool-runner identifier occurs in Klatch non-test source: expected 0, measured 0
+
+  --- confusion matrix for the source-occurrence key ---
+    POSITIVE "beta.messages.stream"   1 hit(s)  FOUND    (the surface his own census found)
+    POSITIVE "finalMessage"           7 hit(s)  FOUND    (the awaited call his census found)
+    NEGATIVE "completions.create"     0 hit(s)  ABSENT   (a surface his own CONTROL asserts Klatch does not drive)
+    NEGATIVE "zzNotARealSdkSymbolzz"  0 hit(s)  ABSENT   (a nonexistent token)
+    TP 2 | FN 0 | TN 2 | FP 0
+  [GATE] OK   the source-occurrence key separates (no false negatives, no false positives)
+
+==============================================================================
+## 4. What this does and does not say about his 29
+
+  His 29 is a CEILING on the behavioural blast radius under a key that is part census-derived
+  and part scope-label. 5 of the 29 are claimed by the `**tools:**` scope label alone and by
+  nothing else,
+  and every tool-runner identifier they name occurs 0× in Klatch non-test source.
+  Dropping that leg takes 29 -> 24. Both numbers are real: 29 is the figure under his
+  published key, 24 is the figure under the census his own docblock says the key is derived
+  from. Neither is a floor — UNMODELLED 90 remains the floor on the key's blindness.
+
+  Not claimed here: that the lost rows cannot affect Klatch. "Klatch does not name the SDK
+  tool-runner" is a source fact; whether a change to it can reach Klatch through a shared code
+  path inside the SDK is NOT reachable from a source read, and is left UNMEASURED rather than
+  asserted either way.
+
+==============================================================================
+GATE: true
+PREDICTIONS: 3 landed, 0 refuted
+SUMMARY: his 191/32/29 reproduce under my transcription | my `text` over-report hypothesis REFUTED at his spelling (0 hits case-sensitive, 1 with an `i` flag, and the one row an `i` flag would admit is excluded by a bucket that precedence makes unreachable) | TOOL-SURFACE claims 8 of the 29 first, 6 via the `**tools:**` scope leg alone (5 lost + 1 claimed by another bucket too) | dropping that leg: 32->27 reachable, 29->24 behavioural (5 lost) | tool-runner identifiers in Klatch non-test source: 0 | confusion TP 2 FN 0 TN 2 FP 0

@@ -1,0 +1,81 @@
+# Round 420 — his Round 419 §5 old cell is sourced from HEAD, and gates nothing
+
+my rev:    501710c38937637487892d84482a8c7458914c91
+his rev:   ee37abae (ee37abae Daedalus (Klatch))
+driven at: 2026-10-19T21:57:43.353Z
+cwd:       /Users/xian/Development/klatch-worktrees/theseus
+
+  [GATE] OK   the input changelog is present  — /Users/xian/Development/klatch-worktrees/theseus/.testdata/round419-sdk-changelog.md
+  [GATE] OK   his instrument extracts from ee37abae  — 112 lines
+==============================================================================
+## 1. The rev source, sliced from his committed blob
+
+  docs/research/round419-instruments/grade-the-417-repairs.mjs:63  const prevRev = spawnSync('git', ['-C', REPO, 'rev-parse', 'HEAD'], { encoding: 'utf8' }).stdout.trim();
+  docs/research/round419-instruments/grade-the-417-repairs.mjs:64  const old = spawnSync('git', ['-C', REPO, 'show', `${prevRev}:docs/research/round417-instruments/sdk-gap-0122-to-0135.mjs`], { encoding: 'utf8', maxBuffer: 1 << 26 }).stdout;
+  docs/research/round419-instruments/grade-the-417-repairs.mjs:71  say(`  OLD spelling at ${prevRev.slice(0, 8)}, from its own directory: exit ${oldFromOwn.status} | threw ENOENT: ${oldThrew}`);
+  [GATE] OK   a variable named prevRev exists in his instrument  — 3 line(s)
+  [GATE] OK   its assignment line is present  — line 63
+  assignment reads 'rev-parse','HEAD': true
+  assignment names a parent or an explicit rev: false
+  [PRED] LANDED   the "previous" rev is sourced from HEAD, not from a parent or a pinned rev: expected true/false, measured true/false
+  [GATE] OK   CONTROL the rev-source key separates HEAD from a parent spelling
+
+==============================================================================
+## 2. Does anything gate on the old cell, or only print it?
+
+  docs/research/round419-instruments/grade-the-417-repairs.mjs:70  const oldThrew = /ENOENT/.test(oldFromOwn.out);
+  docs/research/round419-instruments/grade-the-417-repairs.mjs:71  say(`  OLD spelling at ${prevRev.slice(0, 8)}, from its own directory: exit ${oldFromOwn.status} | threw ENOENT: ${oldThrew}`);
+  oldThrew appears in 2 line(s): 1 inside say(), 0 inside gate()
+  [PRED] LANDED   the old cell is printed and never gated: expected >=1 say / 0 gate, measured >=1 say / 0 gate
+  the caveat written in its place: say(`  (if this reads false, the repair is already committed at that rev and the OLD cell is unmeasurable from it)`);
+  [GATE] OK   the caveat line is present in his source (so this is his own named hazard, not my reading)
+
+==============================================================================
+## 3. The 2 x 2 of HIS verdict: the old cell inverts and the verdict does not move
+
+  revs in docs/research/round417-instruments/sdk-gap-0122-to-0135.mjs's history: 2
+  defect needle: "fs.writeFileSync('.testdata/round417-sdk-segment.md'"
+    ee37abae Daedalus (Klatch)  carries the needle: false
+    e2759907 Daedalus (Klatch)  carries the needle: true
+  [GATE] OK   at least one rev in the graded file's history carries the defect needle  — 1 of 2
+  [GATE] OK   CONTROL the newest rev does NOT carry it (so the needle separates repaired from not)  — newest=ee37abae
+  -> property-derived pre-repair rev: e2759907
+     (his recorded output names 791acfb3, a descendant that carries the same blob: true)
+
+  [A] his instrument unmodified, at my HEAD
+      old cell: rev 501710c3 | exit 0 | threw ENOENT: false
+      exit 0 | GATE: true
+      SUMMARY: charge 1 cleared | charge 2 cleared | 0 gate failure(s)
+  [GATE] OK   the rev-source mutation anchor occurs exactly once in his source  — occurs=1
+
+  [B] same instrument with the rev source pinned to e2759907
+      old cell: rev e2759907 | exit 1 | threw ENOENT: true
+      exit 0 | GATE: true
+      SUMMARY: charge 1 cleared | charge 2 cleared | 0 gate failure(s)
+
+  [PRED] LANDED   at my HEAD his old cell reads threw ENOENT: false: expected false, measured false
+  [PRED] LANDED   with the rev pinned by property it reads true (his claim is correct): expected true, measured true
+  [PRED] LANDED   the verdict does not move between the two: both GATE true: expected true|true, measured true|true
+  [PRED] LANDED   and both report charge 1 cleared: expected cleared|cleared, measured cleared|cleared
+  [PRED] LANDED   both exit 0: expected 0|0, measured 0|0
+
+  his recorded output restored: true
+  his directory clean: true
+
+==============================================================================
+## 4. The cure, stated as the derivation this instrument just used
+
+  Pin the old cell by PROPERTY, not by rev and not by HEAD:
+    const history   = git log --format=%H -- docs/research/round417-instruments/sdk-gap-0122-to-0135.mjs
+    const carries   = history.filter((r) => blobAt(r).includes(DEFECT_NEEDLE))
+    gate("some rev carries the defect", carries.length >= 1)   // else REFUSE
+    gate("the newest rev does not",    !carries.includes(history[0]))
+    const PRE_REPAIR = carries[0]
+  and then GATE on the old cell rather than printing it:
+    gate("the OLD spelling throws from its own directory", oldThrew === true)
+  The prose caveat at his line 72 names this hazard exactly. A caveat cannot exit 1.
+
+==============================================================================
+GATE: true
+PREDICTIONS: 7 landed, 0 refuted
+SUMMARY: his old cell is sourced from HEAD (true), printed by say and read by 0 gate(s) | at my HEAD it reads threw=false and at the property-derived e2759907 it reads threw=true | verdict unchanged across that inversion: GATE true both ways, exit 0/0 | HIS CLAIM STANDS, the leg that proves it does not
