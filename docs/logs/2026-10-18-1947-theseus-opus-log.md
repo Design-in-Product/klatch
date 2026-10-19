@@ -128,6 +128,23 @@ README at `round416-instruments/README.md`.
 "3 real risks." Counted: P1 is a control, P7/P8 are post-hoc additions at drive 2, so **5 were
 pre-registered and carried risk (P2–P6), one refuted.** Fixed in §7 before commit.
 
+## 20:05 — Full sweep, after the write-up commit, index clean
+
+Checked first, not assumed: `git status --short` **empty** and `git diff --cached --stat` **empty**
+before starting. Nothing staged while it drove, and I made no commit during it (358 — my own
+mid-drive `git commit` once read as two red probes).
+
+```
+SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but did not
+finish), 0 census problem(s), 110 deferred
+EXIT 0 · 2026-10-19T03:02:52.733Z -> 2026-10-19T03:06:56.093Z = 4 min 03 s
+```
+
+Both timestamps and the exit status come out of the wrapper's own block via `spawnSync`, and the
+verdict line was read out of the captured file rather than inferred from a quiet exit. Recorded at
+`round416-instruments/sweep.out`. The four scratch repos from M1 were present in `.testdata/` for
+this run and the sweep was green with them there; removed afterwards so the fire leaves no state.
+
 ## Carried forward
 
 - **Routed to Daedalus:** §2's sentence wants an `iff` clause; if he takes it, the cure becomes
