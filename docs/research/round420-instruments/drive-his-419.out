@@ -1,0 +1,105 @@
+# Round 420 — Daedalus's Round 419 instruments, driven unmodified
+
+my rev:    9aa2ffca771793bb2f34e7f5c790459722a80214
+his rev:   ee37abae (ee37abae Daedalus (Klatch) round419+intel: §3's 7 is 29 behavioural of 191, both §5 repairs graded 2x2, and my own cure hid a class in UNMODELLED)
+driven at: 2026-10-19T21:49:43.917Z
+
+  [GATE] OK   the input changelog is present  — /Users/xian/Development/klatch-worktrees/theseus/.testdata/round419-sdk-changelog.md
+
+normalisation rules applied to BOTH sides before diffing:
+   /\d{4}-\d{2}-\d{2}T[\d:.]+Z/g  ->  <TIMESTAMP>
+   /^(cwd:\s*).*$/gm  ->  $1<CWD>
+   /^(repo root:\s*).*$/gm  ->  $1<REPO>
+   /^(changelog:\s*).*$/gm  ->  $1<CHANGELOG>
+   /^(HEAD:\s*).*$/gm  ->  $1<HEAD>
+   /^(rev stamp:\s*).*$/gm  ->  $1<REV>
+   /^(\s*SUMMARY: rev )[0-9a-f]{8}/gm  ->  $1<REV8>
+   /^(SUMMARY: rev )[0-9a-f]{8}/gm  ->  $1<REV8>
+   /\/Users\/[^\s'"]+/g  ->  <ABSPATH>
+   /stderr bytes: \d+/g  ->  stderr bytes: <N>
+  [GATE] OK   CONTROL normaliser erases the volatile line
+  [GATE] OK   CONTROL normaliser preserves a non-volatile difference
+  [GATE] OK   baseline grade-the-417-repairs.out extracted from ee37abae  — 30 lines
+  [GATE] OK   baseline sec3-rekeyed.out extracted from ee37abae  — 173 lines
+  [GATE] OK   baseline his418-driven-live.out extracted from ee37abae  — 153 lines
+
+==============================================================================
+## grade-the-417-repairs.mjs  [cwd: repo-root]
+exit: 0  stdout bytes: 1553  stderr bytes: 0
+
+==============================================================================
+## grade-the-417-repairs.mjs  [cwd: own-directory]
+exit: 0  stdout bytes: 1553  stderr bytes: 0
+
+==============================================================================
+## sec3-rekeyed-on-the-call-shape.mjs  [cwd: repo-root]
+exit: 0  stdout bytes: 11491  stderr bytes: 0
+
+==============================================================================
+## sec3-rekeyed-on-the-call-shape.mjs  [cwd: own-directory]
+exit: 0  stdout bytes: 11526  stderr bytes: 0
+
+==============================================================================
+## drive-his-418.mjs  [cwd: repo-root]
+exit: 0  stdout bytes: 9628  stderr bytes: 0
+
+==============================================================================
+## drive-his-418.mjs  [cwd: own-directory]
+exit: 0  stdout bytes: 9628  stderr bytes: 0
+
+==============================================================================
+## fetch-changelog.mjs  [cwd: repo-root]
+exit: 0  stdout bytes: 554  stderr bytes: 0
+
+==============================================================================
+## fetch-changelog.mjs  [cwd: own-directory]
+exit: 0  stdout bytes: 554  stderr bytes: 0
+
+==============================================================================
+## Reproduction — live output vs the output he committed
+
+grade-the-417-repairs.mjs
+   exit 0 | his grade-the-417-repairs.out: 29 lines | mine: 29 lines | DIFFS: 1
+     L14 his:    OLD spelling at 791acfb3, from its own directory: exit 1 | threw ENOENT: true
+     L14 mine:   OLD spelling at 9aa2ffca, from its own directory: exit 0 | threw ENOENT: false
+sec3-rekeyed-on-the-call-shape.mjs
+   exit 0 | his sec3-rekeyed.out: 172 lines | mine: 172 lines | DIFFS: 1
+     L11 his:  tracked packages/ ts|tsx at 791acfb3: 251 (non-test 68, test 183)
+     L11 mine: tracked packages/ ts|tsx at 9aa2ffca: 251 (non-test 68, test 183)
+drive-his-418.mjs
+   exit 0 | his his418-driven-live.out: 152 lines | mine: 152 lines | DIFFS: 8
+     L11 his:  REV STAMP: 6e9ba87e4b047d6f26e22f0847c266d7bdaa4aac (resolved from "HEAD")
+     L11 mine: REV STAMP: 9aa2ffca771793bb2f34e7f5c790459722a80214 (resolved from "HEAD")
+     L62 his:  REV STAMP: 6e9ba87e4b047d6f26e22f0847c266d7bdaa4aac (resolved from "HEAD")
+     L62 mine: REV STAMP: 9aa2ffca771793bb2f34e7f5c790459722a80214 (resolved from "HEAD")
+     L79 his:  exit: 0   stdout bytes: 1536   stderr bytes: <N>
+     L79 mine: exit: 0   stdout bytes: 1400   stderr bytes: <N>
+     L99 his:  --- INSTALLED HERE — 0.110.0 (654 lines) ---
+     L99 mine: --- INSTALLED HERE — 0.110.0 (639 lines) ---
+     L100 his:    event-path guard (§4 cites :418): 1 hit(s) at 418
+     L100 mine:   event-path guard (§4 cites :418): 1 hit(s) at 411
+     L101 his:    snapshot coercion (§4 cites :562): 1 hit(s) at 562
+     L101 mine:   snapshot coercion (§4 cites :562): 1 hit(s) at 545
+     L102 his:    the cited line 418 reads: "                        if (content.type === 'compaction' && content.content) {"
+     L102 mine:   the cited line 418 reads: "                }"
+     L103 his:    the cited line 562 reads: "                                content: (snapshotContent.content || '') + event.delta.content,"
+     L103 mine:   the cited line 562 reads: "                    }"
+
+## Cwd-independence (his own §5 property, applied to his own four)
+   grade-the-417-repairs.mjs            root exit   0 | own-dir exit   0 | same: true (own-dir text contains a throw/ENOENT)
+   sec3-rekeyed-on-the-call-shape.mjs   root exit   0 | own-dir exit   0 | same: true
+   drive-his-418.mjs                    root exit   0 | own-dir exit   0 | same: true (own-dir text contains a throw/ENOENT)
+   fetch-changelog.mjs                  root exit   0 | own-dir exit   0 | same: true
+
+## His headline figures, read out of this fire's own drive
+   denominator (bullet lines in segment):     191
+   KLATCH-REACHABLE:                          32
+   …behavioural:                              29
+   UNMODELLED V1 -> V2:                       98 -> 90
+   GATE line:                                 GATE: true
+   PREDICTIONS line:                          PREDICTIONS: 3 landed, 1 refuted
+
+==============================================================================
+  [GATE] FAIL every recorded output reproduces after normalisation  — grade-the-417-repairs.mjs=1 sec3-rekeyed-on-the-call-shape.mjs=1 drive-his-418.mjs=8
+GATE: FALSE (every recorded output reproduces after normalisation)
+SUMMARY: his ee37abae driven at my 9aa2ffca | grade-the-417-repairs exit 0 diffs 1 | sec3-rekeyed-on-the-call-shape exit 0 diffs 1 | drive-his-418 exit 0 diffs 8

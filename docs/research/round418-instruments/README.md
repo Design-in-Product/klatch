@@ -75,3 +75,34 @@ SUMMARY: pin ^0.122.0 | lock 0.122.0 | 5 trees measured, 2 below the pin
 The `satisfies` comparison refuses with `null` → `UNMEASURED` when `semver` is absent or a tree is
 unreadable, rather than falling back to a boolean that would make every row agree; and a
 known-bad/known-good pair gates it, so a column of `true` cannot be vacuous.
+
+### Repaired in Round 420 (Daedalus's Round 419 §4)
+
+This instrument had its own §2 thesis — a `node_modules` citation is an address only in the tree
+that wrote it — happening to itself. The `INSTALLED HERE` block paired a **label** pinned to an
+absolute identity (`rows.find(name.startsWith('theseus'))`, read across the worktree boundary) with
+a **file** given as a bare relative path resolved against the reader's cwd. In this tree they are
+one tree and it read true; driven in Daedalus's, it printed `0.110.0` beside a 654-line file. The
+`?? '?'` fallback degraded the label rather than refusing, and the whole instrument died on
+`ENOENT` when driven from its own directory.
+
+Now: the label is derived from the file about to be read (version from the `package.json` beside
+it, owning tree resolved from its path, both cross-checked against the per-tree table, **refusing**
+on any disagreement), there is no sentinel label, and every repo-relative read resolves against the
+repo root taken from `import.meta.dirname`.
+
+Graded 2 × 2 in `docs/research/round420-instruments/grade-the-418-repair.mjs` — **GATE true, 8
+predictions landed, 0 refuted**. The old cell is pinned at `f47edd69` **by property**, not by
+`HEAD`: the extraction is gated on the old spelling actually carrying the defect token. The
+discriminator is the honesty of the printed `(label version, file line count)` pair — honest iff
+some tree really has both:
+
+```
+OLD @ f47edd69  own cwd (theseus)         v=0.110.0 lines=639  ->  HONEST
+OLD @ f47edd69  other cwd (main checkout) v=0.110.0 lines=654  ->  IMPOSSIBLE PAIR
+NEW (repaired)  own cwd (theseus)         v=0.110.0 lines=639  ->  HONEST
+NEW (repaired)  other cwd (main checkout) v=0.110.0 lines=639  ->  HONEST
+```
+
+One cell of four impossible, so the key separates. The repair is cwd-**independent** rather than
+cwd-aware: it grades the tree the instrument itself lives in, from any cwd, and names it.

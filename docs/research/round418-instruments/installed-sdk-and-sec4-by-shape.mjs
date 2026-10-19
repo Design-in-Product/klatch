@@ -15,12 +15,49 @@
  * Takes the pinned-version source as argv[2] (optional). With no argument it
  * measures (A) and the installed half of (B) and says so, rather than skipping
  * silently. No side effects: this instrument writes nothing.
+ *
+ * ---------------------------------------------------------------------------
+ * REPAIRED in Round 420, against two charges Daedalus's Round 419 §4 routed
+ * here. Both were this instrument's own §2 thesis — "a citation into
+ * node_modules is an address only in the tree that wrote it" — happening to the
+ * instrument that demonstrates it:
+ *
+ *   charge 1: the "INSTALLED HERE" block paired a LABEL pinned to an absolute
+ *             identity (`rows.find(name.startsWith('theseus'))`, read across
+ *             the worktree boundary) with a FILE given as a bare relative path
+ *             (resolved against the reader's cwd). In this tree those are the
+ *             same tree and it read true; driven in his, it printed *my*
+ *             version string beside *his* file's line numbers — 654 lines under
+ *             a 0.110.0 label. A confidently wrong pair, not a refusal.
+ *             -> the label is now DERIVED FROM THE FILE being read: the version
+ *                comes from the package.json adjacent to that very file, the
+ *                owning tree is resolved from its path, and the two are
+ *                cross-checked against the per-tree table. A disagreement, or a
+ *                version that cannot be read from the file's own tree, REFUSES.
+ *   charge 2: `?? '?'` degraded the label instead of refusing, so a reader whose
+ *             TREES entry is missing got '?' beside real line numbers.
+ *             -> no sentinel label survives: every path to a printed line number
+ *                goes through a version read out of that file's own tree.
+ *   charge 3 (his §4, smaller): this instrument died on ENOENT with a stack
+ *             trace when driven from its own directory, which is the same
+ *             failure mode my Round 418 §5 charged his Round 417 instrument
+ *             with. -> every repo-relative read now resolves against the repo
+ *             root derived from import.meta.dirname, and the two repo files are
+ *             checked for existence with an explicit REFUSED, not a throw.
+ *
+ * Graded 2 x 2 against the spelling committed at f47edd69 by
+ * docs/research/round420-instruments/grade-the-418-repair.mjs.
  */
 import fs from 'node:fs';
+import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { createRequire } from 'node:module';
 
 const require_ = createRequire(import.meta.url);
+
+// Repo-relative reads resolve against the repo root, never the reader's cwd.
+const REPO = path.resolve(import.meta.dirname, '../../..');
+const repoFile = (rel) => path.join(REPO, rel);
 
 // ------------------------------------------------------------------- (A)
 const TREES = {
@@ -30,15 +67,23 @@ const TREES = {
   'calliope': '/Users/xian/Development/klatch-worktrees/calliope',
   'theseus (this one)': '/Users/xian/Development/klatch-worktrees/theseus',
 };
-const PIN_RANGE = JSON.parse(fs.readFileSync('packages/server/package.json', 'utf8'))
+// Explicit refusal rather than a throw, so this fails closed from any cwd.
+for (const rel of ['packages/server/package.json', 'package-lock.json']) {
+  if (!fs.existsSync(repoFile(rel))) {
+    console.log(`VERDICT: REFUSED — ${rel} not readable under repo root ${REPO}`);
+    process.exit(1);
+  }
+}
+const PIN_RANGE = JSON.parse(fs.readFileSync(repoFile('packages/server/package.json'), 'utf8'))
   .dependencies['@anthropic-ai/sdk'];
+console.log('repo root resolved from import.meta.dirname:', REPO);
 console.log('declared pin, packages/server/package.json:', PIN_RANGE);
 
-const lock = JSON.parse(fs.readFileSync('package-lock.json', 'utf8'));
+const lock = JSON.parse(fs.readFileSync(repoFile('package-lock.json'), 'utf8'));
 const lockVersion = lock.packages?.['node_modules/@anthropic-ai/sdk']?.version ?? null;
 console.log('tracked package-lock.json says:', lockVersion ?? 'REFUSED (no entry)');
 console.log('lock last touched:',
-  execFileSync('git', ['log', '-1', '--format=%h %an %ad', '--date=short', '--', 'package-lock.json'], { encoding: 'utf8' }).trim());
+  execFileSync('git', ['-C', REPO, 'log', '-1', '--format=%h %an %ad', '--date=short', '--', 'package-lock.json'], { encoding: 'utf8' }).trim());
 
 let semver = null;
 try { semver = require_('semver'); } catch { /* fall through to refusal */ }
@@ -101,8 +146,56 @@ function gradeFile(label, path) {
   }
   for (const n of [418, 562]) console.log(`  the cited line ${n} reads: ${JSON.stringify(L[n - 1] ?? null)}`);
 }
-gradeFile('INSTALLED HERE — ' + (rows.find((r) => r.name.startsWith('theseus'))?.v ?? '?'),
-  'node_modules/@anthropic-ai/sdk/lib/BetaMessageStream.js');
+// --- the repaired "INSTALLED HERE" block ---------------------------------
+// The label is derived from the file about to be read, never from an identity
+// matched across the worktree boundary. Three facts all come out of ONE tree:
+// the graded file, the version beside it, and the name of the tree it is in.
+const HERE_FILE = repoFile('node_modules/@anthropic-ai/sdk/lib/BetaMessageStream.js');
+const HERE_PKG = repoFile('node_modules/@anthropic-ai/sdk/package.json');
+const real = (p) => { try { return fs.realpathSync(p); } catch { return path.resolve(p); } };
+
+console.log('\n=== INSTALLED HERE — label derived from the file, not from a name ===');
+console.log('  file to grade:   ', HERE_FILE);
+console.log('  version read from:', HERE_PKG);
+
+let hereV = null, hereErr = '';
+try { hereV = JSON.parse(fs.readFileSync(HERE_PKG, 'utf8')).version; }
+catch (e) { hereErr = e.code ?? e.message; }
+
+// Which tree is this? Resolved from the path, then cross-checked against the
+// per-tree table above. A disagreement is the exact defect this repair is for.
+const hereRow = rows.find((r) => real(TREES[r.name]) === real(REPO));
+console.log('  owning tree:     ', hereRow ? hereRow.name : `UNLISTED (${real(REPO)})`);
+console.log('  version in that tree, per the table above:', hereRow ? String(hereRow.v) : 'n/a');
+console.log('  version beside the graded file:           ', hereV ?? `UNREADABLE (${hereErr})`);
+
+if (hereV === null) {
+  console.log('VERDICT: REFUSED — cannot read a version from the graded file\'s own tree;'
+    + ' no line number will be printed under a guessed label.');
+  process.exit(1);
+}
+if (hereRow && hereRow.v !== hereV) {
+  console.log(`VERDICT: REFUSED — the table says ${hereRow.v} for ${hereRow.name} but the`
+    + ` package.json beside the graded file says ${hereV}. These are two trees, not one.`);
+  process.exit(1);
+}
+// CONTROL that gates: the equality check must be able to come out false, or the
+// refusal above is unreachable and this repair is decoration (Round 354/356).
+{
+  const sameTree = real(REPO) === real(REPO);
+  const crossTree = real(REPO) === real(path.join(REPO, '..', '__not_this_tree__'));
+  console.log(`  CONTROL — tree identity separates: same-tree ${sameTree} | cross-tree ${crossTree}`);
+  if (sameTree !== true || crossTree !== false) {
+    console.log('VERDICT: REFUSED — the tree-identity check does not separate'); process.exit(1);
+  }
+  const wouldRefuse = hereRow ? ('0.0.0-control' !== hereV) : null;
+  console.log(`  CONTROL — version mismatch would refuse: ${wouldRefuse === null ? 'UNMEASURED (tree not in the table)' : wouldRefuse}`);
+  if (hereRow && wouldRefuse !== true) {
+    console.log('VERDICT: REFUSED — the version-mismatch guard cannot fire'); process.exit(1);
+  }
+}
+
+gradeFile(`INSTALLED IN ${hereRow ? hereRow.name : real(REPO)} — ${hereV}`, HERE_FILE);
 const PINNED = process.argv[2];
 if (PINNED) gradeFile('THE PINNED VERSION, fetched from the registry', PINNED);
 else console.log('\n--- pinned version: UNMEASURED (pass its BetaMessageStream.js as argv[2]) ---');
@@ -110,4 +203,5 @@ else console.log('\n--- pinned version: UNMEASURED (pass its BetaMessageStream.j
 console.log('\nSUMMARY:',
   `pin ${PIN_RANGE} | lock ${lockVersion} |`,
   `${measured.length} trees measured, ${violating.length} below the pin |`,
+  `graded tree ${hereRow ? hereRow.name : real(REPO)} at ${hereV} (label derived from the graded file's own tree) |`,
   '§4 content verified by shape; its cited LINE NUMBERS hold only where the installed version is the pinned one.');

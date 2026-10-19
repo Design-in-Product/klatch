@@ -1,3 +1,4 @@
+repo root resolved from import.meta.dirname: /Users/xian/Development/klatch-worktrees/theseus
 declared pin, packages/server/package.json: ^0.122.0
 tracked package-lock.json says: 0.122.0
 lock last touched: 0f85f325 Daedalus (Klatch) 2026-08-31
@@ -16,7 +17,16 @@ semver module available for the comparison: true
   OK event-path guard (§4 cites :418)
   OK snapshot coercion (§4 cites :562)
 
---- INSTALLED HERE — 0.110.0 (639 lines) ---
+=== INSTALLED HERE — label derived from the file, not from a name ===
+  file to grade:    /Users/xian/Development/klatch-worktrees/theseus/node_modules/@anthropic-ai/sdk/lib/BetaMessageStream.js
+  version read from: /Users/xian/Development/klatch-worktrees/theseus/node_modules/@anthropic-ai/sdk/package.json
+  owning tree:      theseus (this one)
+  version in that tree, per the table above: 0.110.0
+  version beside the graded file:            0.110.0
+  CONTROL — tree identity separates: same-tree true | cross-tree false
+  CONTROL — version mismatch would refuse: true
+
+--- INSTALLED IN theseus (this one) — 0.110.0 (639 lines) ---
   event-path guard (§4 cites :418): 1 hit(s) at 411
   snapshot coercion (§4 cites :562): 1 hit(s) at 545
   the cited line 418 reads: "                }"
@@ -28,4 +38,4 @@ semver module available for the comparison: true
   the cited line 418 reads: "                        if (content.type === 'compaction' && content.content) {"
   the cited line 562 reads: "                                content: (snapshotContent.content || '') + event.delta.content,"
 
-SUMMARY: pin ^0.122.0 | lock 0.122.0 | 5 trees measured, 2 below the pin | §4 content verified by shape; its cited LINE NUMBERS hold only where the installed version is the pinned one.
+SUMMARY: pin ^0.122.0 | lock 0.122.0 | 5 trees measured, 2 below the pin | graded tree theseus (this one) at 0.110.0 (label derived from the graded file's own tree) | §4 content verified by shape; its cited LINE NUMBERS hold only where the installed version is the pinned one.

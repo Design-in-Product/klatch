@@ -1,0 +1,79 @@
+# Round 420 — the Round 419 §4 repair, graded 2 x 2 against the f47edd69 spelling
+
+rev stamp:  9aa2ffca771793bb2f34e7f5c790459722a80214
+old rev:    f47edd69 (f47edd69 Theseus (Klatch) round418+mail+coord+log: his 7 is 9, his §3 key cannot reach BetaMessageStream, and )
+driven at:  2026-10-19T21:55:11.165Z
+cwd:        /Users/xian/Development/klatch-worktrees/theseus
+
+==============================================================================
+## 1. The OLD cell, pinned by property rather than by HEAD
+
+  [GATE] OK   the old spelling extracts from f47edd69  — 114 lines
+  [GATE] OK   the new spelling exists on disk  — 208 lines
+  defect token: "rows.find((r) => r.name.startsWith('theseus'))?.v ?? '?'"
+  occurrences — old 1 | new 0
+  [GATE] OK   the OLD spelling carries the defect token exactly once  — occurs=1
+  [GATE] OK   the NEW spelling does not carry it  — occurs=0
+  bare-literal-argument shape ",'node_modules/@anthropic-ai/sdk/lib/BetaMessageStream.js')" — old 1 | new 0
+  repo-rooted shape "repoFile('node_modules/@anthropic-ai/sdk/lib/BetaMessageStream.js')" — old 0 | new 1
+  [GATE] OK   the OLD spelling passes the graded file to gradeFile as a bare relative literal  — occurs=1
+  [GATE] OK   the NEW spelling does not  — occurs=0
+  [GATE] OK   CONTROL the key separates the two shapes (it is not matching the path string alone)
+  [GATE] OK   neither spelling writes to disk (no writeFileSync/mkdirSync in either)
+  old spelling written to /Users/xian/Development/klatch-worktrees/theseus/.testdata/round420-418-counterfactual/old-installed-sdk-and-sec4-by-shape.mjs
+
+==============================================================================
+## 2. The discriminator — a tree whose installed SDK version differs from this one's
+
+  this tree (/Users/xian/Development/klatch-worktrees/theseus): 0.110.0
+  main checkout        0.122.0
+  daedalus             0.122.0
+  argus                0.122.0
+  calliope             0.116.0
+  [GATE] OK   a second tree with a DIFFERENT installed SDK version exists to drive from  — main checkout = 0.122.0 vs mine 0.110.0
+
+==============================================================================
+## 3. The 2 x 2 — {old spelling, new spelling} x {own cwd, other-tree cwd}
+
+  OLD @ f47edd69   own cwd (theseus)        exit   0 | label "— 0.110.0" | file lines 639 | :418 hit at 411 | refused false | threw false
+  OLD @ f47edd69   other cwd (main checkout) exit   0 | label "— 0.110.0" | file lines 654 | :418 hit at 418 | refused false | threw false
+  NEW (repaired)   own cwd (theseus)        exit   0 | label "theseus (this one) — 0.110.0" | file lines 639 | :418 hit at 411 | refused false | threw false
+  NEW (repaired)   other cwd (main checkout) exit   0 | label "theseus (this one) — 0.110.0" | file lines 639 | :418 hit at 411 | refused false | threw false
+
+--- what each cell says about the pair (label, line numbers) ---
+  OLD, other cwd: label "— 0.110.0" vs that tree's real version 0.122.0
+  [PRED] LANDED   the OLD spelling labels the other tree's file with THIS tree's version: expected true, measured true
+  [PRED] LANDED   the OLD spelling prints line numbers under that wrong label (does not refuse): expected true, measured true
+
+--- tree inventory: the (version, BetaMessageStream.js line count) pairs that really exist ---
+    theseus (this one)   version 0.110.0    lines 639
+    main checkout        version 0.122.0    lines 654
+    daedalus             version 0.122.0    lines 654
+    argus                version 0.122.0    lines 654
+    calliope             version 0.116.0    lines 642
+
+--- is each printed (label version, file line count) pair one that any tree actually has? ---
+    OLD @ f47edd69|own cwd (theseus)                 v=0.110.0 lines=639  ->  HONEST
+    OLD @ f47edd69|other cwd (main checkout)         v=0.110.0 lines=654  ->  IMPOSSIBLE PAIR
+    NEW (repaired)|own cwd (theseus)                 v=0.110.0 lines=639  ->  HONEST
+    NEW (repaired)|other cwd (main checkout)         v=0.110.0 lines=639  ->  HONEST
+  [GATE] OK   CONTROL the honesty key separates (it does not call every cell the same)  — impossible=1 of 4
+  [PRED] LANDED   the OLD spelling, driven from the other tree, prints a pair NO tree has: expected IMPOSSIBLE PAIR, measured IMPOSSIBLE PAIR
+  [PRED] LANDED   the OLD spelling is HONEST from the cwd that wrote it (the defect is invisible there): expected HONEST, measured HONEST
+  [PRED] LANDED   the NEW spelling prints an honest pair from BOTH cwds: expected HONEST,HONEST, measured HONEST,HONEST
+  [PRED] LANDED   the NEW spelling still works unchanged from its own cwd (exit 0 + SUMMARY): expected true, measured true
+
+  OLD, driven from docs/research/round418-instruments: exit 1 | threw true | SUMMARY false
+  NEW, driven from docs/research/round418-instruments: exit 0 | threw false | SUMMARY true
+  [PRED] LANDED   the OLD spelling threw from its own directory: expected true, measured true
+  [PRED] LANDED   the NEW spelling does not, and prints a SUMMARY: expected true, measured true
+
+--- the guard, broken on a scratch copy (a repair that cannot fire is not a repair) ---
+  [GATE] OK   the mutation anchor occurs exactly once in the new spelling  — occurs=1
+  mutant [forced tree/version mismatch]: exit 1 | refused true | SUMMARY suppressed true | printed a line number false
+  [GATE] OK   a forced tree/version mismatch makes the new spelling REFUSE and print no line number
+
+==============================================================================
+GATE: true
+PREDICTIONS: 8 landed, 0 refuted
+SUMMARY: old cell pinned by property at f47edd69 (defect token occurs 1× old / 0× new) | discriminator main checkout@0.122.0 vs this tree@0.110.0 | OLD other-cwd label "— 0.110.0" over a 654-line file | NEW other-cwd label "theseus (this one) — 0.110.0" refused=false | honesty of the four cells: HONEST / IMPOSSIBLE PAIR / HONEST / HONEST | charge 1+2 cleared | charge 3 cleared
