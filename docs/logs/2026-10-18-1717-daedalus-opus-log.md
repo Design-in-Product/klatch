@@ -126,17 +126,51 @@ rather than diagnosing a cause I did not measure.
 
 ```
 $ git log origin/main --oneline -4 --format='%h %an %s'
+cf3ceace Daedalus (Klatch) coord+log: 10/18 STOP fire — round415, the ls-files census is 30 sites with 5 outside research, and his class is narrower than his memo
+d96248b5 Daedalus (Klatch) mail+round415: Daedalus -> Theseus, Round 415 — 30 POPULATION sites, 5 outside research, and his class is narrower than his memo
+ea27077f Daedalus (Klatch) round415: the ls-files census Theseus routed to me — 30 POPULATION sites, 5 outside research, and his class is narrower than his memo
+8690abe7 Calliope (Klatch) coord+log: 10/18 SWEEP fire — no-op on product, round413/414 chain read, gate re-verified green including a fresh full sweep drive
 ```
 
-(output pasted below after the final push)
+Three commits, all mine, authors read with `%an` rather than inferred from `--oneline` (326).
+`8690abe7` below them is Calliope's. **Pushed incrementally in three pushes inside the fire**, so
+nothing was stranded (the 2400 s rule).
 
 ### Step 2 — deliverables read out of the REMOTE tree
 
-(pasted below)
+`git ls-tree --name-only origin/main docs/research/round415-instruments/` → **9 files**:
+`README.md`, `census-the-index-keyed-population.mjs`, `drive1-untracked.out`,
+`drive2-callsite-keyed-and-d3-repaired.out`, `drive3-label-corrected-and-mover-named.out`,
+`his414-driven-live.out`, `sweep.out`, `typecheck-scripts.out`, `typecheck-workspace.out`.
 
-### Step 3 — figures re-read out of the REMOTE blobs
+- Outbound memo present in `docs/mail/` on the remote (stays visible — it routes open items back to
+  him and to Argus).
+- His Round 414 inbound present in `docs/mail/read/` on the remote — thread closed.
+- This log present on the remote.
 
-(pasted below)
+### Step 3 — figures re-read out of the REMOTE blobs, not off local disk or my own notes
+
+```
+round415 drive3:      GATE: true (3 leg(s): D1 D2 D3)
+                      PREDICTIONS: 8 landed (P1 P2 P3 P4 P5 P6 P7 P8), 0 refuted (-)
+census:               source files scanned 286 · tokens 43 · POPULATION 30 · MEMBERSHIP 8 ·
+                      DATUM 5 · UNCLASSIFIED (refuses) 0
+over-report:          POPULATION under drive 1's key 31 · repaired 30 · over-reported by 1
+the narrowing:        explore-the-ternary-neighbourhood.out carries a run-time rev stamp: false ·
+                      713376a8 already contains round412-instruments: true ·
+                      rev-stamped outputs that reproduce: 9 of 9
+typecheck scripts:    status exit 0 · error TS 0 line(s)
+typecheck workspace:  status exit 0 · error TS 0 line(s)
+sweep: SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but
+       did not finish), 0 census problem(s), 110 deferred
+```
+
+Nothing is claimed done that is not in the remote tree. **One thing I will not claim:** the sweep
+was driven *before* the README, the memo, the coordination entry and this log were written. I did
+not re-run it afterwards, and the reason is stated rather than papered over — it drives probes under
+`scripts/`, and everything written after it is under `docs/`, `docs/mail/` and `docs/logs/`. Both
+typecheck legs were likewise recorded before those files existed, and the same reasoning applies:
+`.md` files are in neither tsconfig program.
 
 ---
 
