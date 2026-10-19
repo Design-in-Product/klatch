@@ -79,8 +79,18 @@ Two facts that together set the blast radius:
 2. **`as any` means typecheck cannot see a type-level change here**, and the route tests mock
    `claude/client.js` wholesale, so neither gate would redden on a semantic change to this call.
 
+> **CORRECTED 2026-10-19 (WORK fire, Round 419), after Theseus's Round 418 §3.** The table below
+> was published as the output of the key `compaction|context_management|compact-2026|compact_2026|betas`
+> and is **not** that key's output: the key returns **9** bullets, and the 7 here are the 9 minus an
+> **undeclared** `docs:`-scope filter that §2 declares and §3 did not. The two dropped rows are named
+> in §3a. Worse, the key is named for the *feature* and so cannot reach the *class Klatch drives* —
+> `BetaMessageStream`. The corrected blast radius is **§3a**, which supersedes this table's role as
+> the basis for §5 step 3. The table is kept, unedited, because §5's recommendation was written
+> against it and a reader needs to see what that recommendation actually rested on.
+
 Changelog entries landing *inside* that surface, attributed to the release that carried each
-(key: `compaction|context_management|compact-2026|compact_2026|betas`):
+(key as published — see the correction above:
+`compaction|context_management|compact-2026|compact_2026|betas`):
 
 | version | entry |
 |---|---|
@@ -106,7 +116,80 @@ Reading each against Klatch:
   semantics of that field changed. **This is the entry I would want driven before bumping**, because
   it governs whether the attribution instruction still does what it did.
 
+## 3a. The corrected blast radius — keyed on the call shape, not the feature name
+
+Instrument: `docs/research/round419-instruments/sec3-rekeyed-on-the-call-shape.mjs`, recorded output
+`sec3-rekeyed.out`, rev-stamped, **GATE true (11 legs), PREDICTIONS 3 landed / 1 refuted**. The key
+is not hand-named: it is built from a census of the **5 non-test files that import the SDK** at a
+stamped rev, so it is a measurement of Klatch's surface rather than my guess about it. If the census
+misses the surfaces §3 and §4 walked by hand, the instrument refuses instead of printing a figure.
+
+What the census found Klatch actually drives:
+
+| chain | site |
+|---|---|
+| `beta.messages.stream` | `client.ts:895` |
+| `messages.stream` | `client.ts:929` |
+| `messages.create` | `aaxt/runner.ts:77` |
+| `models.list` | `routes/models.ts:41` |
+| `stream.on('text')` ×2, `stream.on('compaction')` | `client.ts:921`, `:945`, `:923` |
+| `stream.finalMessage()` ×2 | `client.ts:927`, `:947` |
+| `stream.abort()` | `client.ts:90` (inside `abortStream`, which also cancels the whole roundtable) |
+
+Against the same 427-line segment, with a **denominator §3 never published**:
+
+| | count |
+|---|---|
+| bullet lines in the segment (**denominator**) | **191** |
+| Klatch-reachable by call shape | **32** |
+| …of those, behavioural (not `docs:`/`internal:`/`chore:`) | **29** |
+| the §3 key's own output | 9 (7 after its undeclared filter) |
+| invisible to the §3 key — under Theseus's `streaming:` key | 6 |
+| invisible to the §3 key — under this call-shape key | 23 |
+| `UNMODELLED` — this key's declared blindness, a **floor** | 90 |
+
+**So the figure §5 step 3 was written against is 7, and the behavioural, Klatch-reachable count is
+29.** Three classes §3 could not name:
+
+1. **Event ordering and unknown events in the class Klatch attaches handlers to** (0.134.0, ×3):
+   tolerate unknown event types in `MessageStream`/`BetaMessageStream`; yield events arriving before
+   `message_start`; stop throwing `"Unexpected event order"` for an event before `message_start`.
+   Klatch's handlers are `stream.on('text')` and `stream.on('compaction')` — this is that object.
+2. **Stream and retry lifecycle** (×8 across 0.126.0–0.135.0): close streams dropped without being
+   read to the end; keep an unread JSONL response open; stop waiting for a retry as soon as the
+   request is aborted; `Retry-After` validation and backoff. Klatch's `abortStream` (`client.ts:87-91`)
+   calls `stream.abort()` and cancels a whole roundtable — that is the user-visible cancel path.
+   **This class was in my own `UNMODELLED` bucket on drive 1 of the instrument**; the census had
+   already found `stream.abort` and my bucket keys were not using it. Added as `STREAM-LIFECYCLE`
+   and graded as a 2 × 2 against the drive-1 spelling: reachable 24 → 32 (+8 / **−0**),
+   `UNMODELLED` 98 → 90.
+3. **Partial tool-input parsing** (0.129.0, ×2): every complete array item shown and unfinished
+   numbers held back in partial tool input; each string token taken as one slice in the partial JSON
+   tokenizer. Klatch hand-rolls its tool loop and consumes `finalMessage.content` tool-use blocks,
+   so the tokenizer is upstream of its own parsing.
+
+**`UNMODELLED` is 90 and is published as a floor on this key's blindness, not as a count of things
+that do not matter** — drive 1 proved exactly that by hiding class 2 inside it. The 90 are
+dominated by Admin API, telemetry, Managed Agents and spend-limit entries, which this key has no
+evidence Klatch reaches; it also has no evidence it does not.
+
+Two measurements that explain why none of this would redden a gate:
+
+- **17** test files mock `@anthropic-ai/sdk` wholesale with no `importActual`; **9** reach the real
+  module. Event ordering, abort lifecycle and partial-JSON parsing are all behind the wholesale
+  mocks.
+- Combined with §3's `as any` and the `claude/client.js` mock in the route tests, the three classes
+  above are invisible to both gates by construction, not by accident.
+
 ## 4. One latent defect found in the *pinned* version — reachable path, unverified trigger
+
+> **Addressed 2026-10-19 (Round 419), after Theseus's Round 418 §2.** The two line numbers cited
+> below are in `node_modules`, which is gitignored, per-worktree and pinned by no revision — so they
+> are addresses **only in the tree that wrote them**. In Theseus's tree (installed 0.110.0) `:418`
+> and `:562` are two closing braces. He re-graded both by **shape** against the registry's 0.122.0
+> and **confirmed this section** at the version it claims: `:418` is the event-path guard, `:562` is
+> the snapshot coercion, and both shapes are present in 0.110.0 too (at `:411` and `:545`). The
+> finding stands; the *citation form* was wrong, and the cure is to cite the shape, not the line.
 
 Chasing 0.127.0's null-coercion fix into the installed 0.122.0 source rather than taking the
 changelog's word for it:
@@ -147,12 +230,45 @@ edit folded into another fire.** Specifically:
    compaction trigger and confirm (a) a compaction summary is still produced, (b) the
    `instructions:` attribution string still preserves `[EntityName responded]` markers given
    0.126.0's change to that field. This needs a key and a large channel.
+   **Widened by §3a (Round 419) — the same sitting should also exercise:** (c) **cancel mid-stream**,
+   to cover the 8 abort/retry-lifecycle entries that land on `abortStream` → `stream.abort()`,
+   including a roundtable cancel; (d) a **tool-use round**, to cover the two partial-JSON tokenizer
+   changes on the path Klatch's hand-rolled loop consumes. The 0.134.0 event-ordering entries
+   (unknown event types, events before `message_start`) are *loosenings* — the SDK throwing less —
+   so they are unlikely to break Klatch and are not worth gating the bump on; they are listed so the
+   bump's blast radius is not understated.
 4. Free side-benefit once it lands: §4's coercion stops being reachable.
 
 I did not take step 1 this fire, and the reason is step 3, not caution in general: bumping without
 the driven check would move the product's core path behind two gates that are structurally blind to
 it. That is a named blocker, not a deferral — the blocker is "a key plus a channel large enough to
 trigger compaction," and whoever has both can close this in one pass.
+
+**Round 419 note on that recommendation:** §3a quadruples the blast radius §5 was written against
+(7 → 29 behavioural, Klatch-reachable entries) and the recommendation does **not** change — "bump as
+its own piece of work with a driven check" is, if anything, better supported at 29 than at 7. What
+changes is the *content* of step 3, widened above. The one thing §3a would have changed had it been
+measured first: the undeclared `docs:` filter dropped
+`docs: correct the compaction beta's parameter descriptions` (0.126.0) — the same release that
+changed `instructions:` semantics, which is the single entry §3 flagged as most wanting a driven
+check. If anything in the window documents what `instructions:` now means, it is the row the
+undeclared filter removed.
+
+**Also unresolved and separable, from Theseus's Round 418 §4 (his finding, confirmed in this tree
+by driving his instrument):** `capabilities.compaction` is **declared once, written twice in
+non-test source, and read zero times** — `routes/models.ts:70` discovers it per model from the live
+API, `types.ts:285` hardcodes it `false` in the offline fallback, and nothing in `packages/` outside
+tests ever reads it. The beta gate (`client.ts:894`, `:1091`, `:1151`) branches on **channel
+provenance alone**, so an imported channel holding a Haiku entity sends `betas: ['compact-2026-01-12']`
+for a model this repo's own test pins as non-compaction-capable (`round13-models-api.test.ts:187`) —
+and this morning's 5.5-model addition enlarged the set of selectable models for which that can
+happen. Two pieces: **(a)** thread the selected model's capability into the gate — not a one-line
+change, and a naive `&& model.capabilities.compaction` would disable compaction entirely whenever
+the Models API is unreachable, because the offline fallback hardcodes `false`, so whoever takes it
+has to decide what offline means here; **(b)** a field computed in one file and hardcoded in
+another with no consumer is the condition under which it drifted unnoticed. **Verified from source;
+the API's response to the ungated beta is not** — same named blocker as step 3, and the same sitting
+would close it.
 
 **Tangent worth one line:** two `MODEL_ALIASES` entries point at `claude-haiku-4-5-20251001`
 (`types.ts:63-64`), which Argus reports is now labelled legacy with a Nov 30 2026 EOL. When that id

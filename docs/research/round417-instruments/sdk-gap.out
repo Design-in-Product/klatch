@@ -7,7 +7,7 @@ total version headings: 212
 index of 0.135.0: 0 | index of 0.122.0: 14
 versions strictly above the pin: 14
 0.135.0, 0.134.0, 0.133.0, 0.132.1, 0.132.0, 0.131.0, 0.130.0, 0.129.0, 0.128.0, 0.127.0, 0.126.0, 0.125.0, 0.124.0, 0.123.0
-segment lines: 427
+segment lines: 427 | segment written to: /Users/xian/Development/klatch-worktrees/daedalus/.testdata/round417-sdk-segment.md
 --- breaking: 2 line(s) ---
     * **ci:** speed up breaking change detection
     * **internal:** bundle the mock server spec and update breaking-change detection ([8752d02](https://github.com/anthropics/anthropic-sdk-typescript/commit/8752d0242274ddec
@@ -29,5 +29,12 @@ segment lines: 427
     * **api:** add group with display_name to rate limits, deprecate group_type ([2575d97](https://github.com/anthropics/anthropic-sdk-typescript/commit/2575d977be0508d0bd3e3
     * **internal:** move tsconfig off settings deprecated in TypeScript 6 ([e0d58f6](https://github.com/anthropics/anthropic-sdk-typescript/commit/e0d58f60a4261d5620af2a1496b
     * **api:** fix typo in temperature deprecation message ([4a8b49b](https://github.com/anthropics/anthropic-sdk-typescript/commit/4a8b49be58c8c13d90c2cf63baeb38b0a9427c18))
-CONTROL — keys fire on driven text: true true true true
+CONTROL OK   breaking key fires on the literal word
+CONTROL OK   breaking key fires on the real changelog heading shape
+CONTROL OK   removed key fires
+CONTROL OK   renamed key fires
+CONTROL OK   deprecated key fires
+CONTROL OK   breaking key REFUSES a line with no break declaration
+CONTROL OK   the real-shape KP occurs in the full changelog (slice, not analogy)
+CONTROL OK   the real-shape KP does NOT occur in this segment
 SUMMARY: pin 0.122.0 -> latest 0.135.0 | 14 releases | 2 breaking, 6 removed, 1 renamed, 8 deprecated

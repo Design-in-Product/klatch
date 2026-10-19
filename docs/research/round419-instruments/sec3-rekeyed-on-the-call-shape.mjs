@@ -228,7 +228,18 @@ const hasForeignSurface = (l) => /\bvertex\b|\bbedrock\b|\bcompletions\b|\bbatch
 // Non-behavioural scopes, positively keyed.
 const isNonBehavioural = (l) => /^\s*\*\s+\*\*(docs|internal|chore|ci|test|build|deps|readme)[^*]*:\*\*/i.test(l);
 
-const BUCKETS = [
+// Drive 1 of this instrument published UNMODELLED = 98 and I read the rows rather than trusting
+// the label — which is the only reason this is here. Three 0.135.0 `client:` entries in that
+// bucket name stream lifecycle ("close streams dropped without being read to the end", "keep an
+// unread JSONL response open"), and step 1's own census had already found `stream.abort` at
+// packages/server/src/claude/client.ts:90. So the census found the surface and my bucket keys did
+// not use it: the same failure as the one I am grading Theseus's §3 for, one layer in, in my own
+// cure. The bucket is added here and the move is graded as a 2 x 2 against the OLD spelling
+// rather than silently replacing it.
+const LIFECYCLE_RE = /\babort(ed|s|ing)?\b|close[sd]? streams?\b|\bunread\b|\bread to the end\b|\bretr(y|ies|ied)\b|\brequest timeout\b/i;
+const hasStreamLifecycle = (l) => LIFECYCLE_RE.test(l);
+
+const BUCKETS_V1 = [
   ['STREAM-CLASS', (l) => hasStreamClass(l)],
   ['STREAM-SCOPE', (l) => hasStreamScope(l)],
   ['COMPACTION', (l) => hasCompaction(l)],
@@ -239,14 +250,24 @@ const BUCKETS = [
   ['FOREIGN-SURFACE', (l) => hasForeignSurface(l)],
   ['NON-BEHAVIOURAL-SCOPE', (l) => isNonBehavioural(l)],
 ];
+// The added bucket sits AFTER the specific surfaces and BEFORE the foreign/non-behavioural ones,
+// so it can only claim bullets that were UNMODELLED or foreign under V1, never ones already
+// attributed to a named surface.
+const BUCKETS = [
+  ...BUCKETS_V1.slice(0, 7),
+  ['STREAM-LIFECYCLE', (l) => hasStreamLifecycle(l)],
+  ...BUCKETS_V1.slice(7),
+];
 
-const classify = (l) => {
-  const hit = BUCKETS.filter(([, f]) => f(l)).map(([n]) => n);
+const classifyWith = (buckets) => (l) => {
+  const hit = buckets.filter(([, f]) => f(l)).map(([n]) => n);
   // UNMODELLED is reached by its own positive test — "no bucket key fires" — and is published as
   // a floor on this key's blindness. It is NOT a fall-through default (Round 411).
   if (hit.length === 0) return { bucket: 'UNMODELLED', all: [] };
   return { bucket: hit[0], all: hit };
 };
+const classify = classifyWith(BUCKETS);
+const classifyV1 = classifyWith(BUCKETS_V1);
 
 const byBucket = new Map();
 for (const b of [...BUCKETS.map(([n]) => n), 'UNMODELLED']) byBucket.set(b, []);
@@ -261,12 +282,36 @@ say(`${'TOTAL'.padEnd(24)} ${String(sum).padStart(4)}   (denominator ${bullets.l
 gate('buckets partition the denominator (every bullet in exactly one)', sum === bullets.length, `${sum} vs ${bullets.length}`);
 
 // KLATCH-REACHABLE = the union of the censused-surface buckets, minus the non-behavioural scopes.
-const REACHABLE_BUCKETS = ['STREAM-CLASS', 'STREAM-SCOPE', 'COMPACTION', 'BETA-MESSAGES', 'TOOL-SURFACE', 'MODELS-SURFACE', 'STREAM-EVENT-NAME'];
+const REACHABLE_V1 = ['STREAM-CLASS', 'STREAM-SCOPE', 'COMPACTION', 'BETA-MESSAGES', 'TOOL-SURFACE', 'MODELS-SURFACE', 'STREAM-EVENT-NAME'];
+const REACHABLE_BUCKETS = [...REACHABLE_V1, 'STREAM-LIFECYCLE'];
 const reachable = bullets.filter((r) => REACHABLE_BUCKETS.includes(classify(r.l).bucket));
 const reachableBehavioural = reachable.filter((r) => !isNonBehavioural(r.l));
 say('');
 say(`KLATCH-REACHABLE bullets: ${reachable.length} of ${bullets.length}`);
 say(`  of which behavioural (not docs:/internal:/chore:): ${reachableBehavioural.length}`);
+
+// --- the 2 x 2 for the STREAM-LIFECYCLE addition, graded against the OLD spelling ---
+const reachableV1 = bullets.filter((r) => REACHABLE_V1.includes(classifyV1(r.l).bucket));
+const unmodV1 = bullets.filter((r) => classifyV1(r.l).bucket === 'UNMODELLED');
+const unmodV2 = bullets.filter((r) => classify(r.l).bucket === 'UNMODELLED');
+const gained = bullets.filter((r) => REACHABLE_BUCKETS.includes(classify(r.l).bucket) && !REACHABLE_V1.includes(classifyV1(r.l).bucket));
+const lost = bullets.filter((r) => REACHABLE_V1.includes(classifyV1(r.l).bucket) && !REACHABLE_BUCKETS.includes(classify(r.l).bucket));
+say('');
+say('--- the STREAM-LIFECYCLE addition, as a 2 x 2 against the drive-1 spelling ---');
+say(`  reachable:  V1 ${reachableV1.length}  ->  V2 ${reachable.length}   (+${gained.length} / -${lost.length})`);
+say(`  UNMODELLED: V1 ${unmodV1.length}  ->  V2 ${unmodV2.length}`);
+gained.forEach((r) => say(`    GAINED  ${r.v} | [${classify(r.l).all.join('+')}] ${r.l.trim().replace(/\s*\(\[.*$/, '').slice(0, 96)}`));
+lost.forEach((r) => say(`    LOST    ${r.v} | ${r.l.trim().replace(/\s*\(\[.*$/, '').slice(0, 96)}`));
+// The addition must be monotone on the reachable set: it may only move bullets INTO it.
+gate('the added bucket loses no bullet already attributed to a named surface', lost.length === 0, `lost=${lost.length}`);
+// And it must actually move something, or it is a bucket with no live member.
+gate('the added bucket has at least one live member', gained.length > 0, `gained=${gained.length}`);
+// CONTROL: the lifecycle key must refuse a bullet that is about neither streams nor lifecycle.
+const CTRL_NEG = '* **api:** add telemetry destinations to the Admin API';
+gate('CONTROL lifecycle key refuses a non-lifecycle bullet', !hasStreamLifecycle(CTRL_NEG));
+const CTRL_POS = unmodV1.find((r) => hasStreamLifecycle(r.l))?.l ?? null;
+gate('CONTROL lifecycle key has a known positive that is a slice of the segment', CTRL_POS !== null,
+  CTRL_POS ? CTRL_POS.trim().slice(0, 72) : 'none');
 say('');
 say('--- the behavioural, Klatch-reachable set, by release ---');
 for (const v of releases) {
@@ -301,15 +346,21 @@ const pA = predict('my 417 §3 key returns 9, not the 7 published', 9, my417.len
 const pB = predict('the 7 published = the key minus its undeclared scope filter', 7, my417Behavioural.length);
 
 // (b) His §3 prose: "6 segment lines are invisible to it, 3 of which name BetaMessageStream".
-const invisibleToMine = bullets.filter((r) => !MY_417_KEY.test(r.l) && REACHABLE_BUCKETS.includes(classify(r.l).bucket));
+// His §3's "6 invisible" is a figure under HIS OWN key — the `streaming:` scope — and it is graded
+// here under that key, not under my wider one. Grading his number with my key would be refuting
+// him for a denominator he never claimed (Round 339: two keys sharing a denominator agree
+// vacuously; the inverse is just as wrong).
+const invisibleHisKey = bullets.filter((r) => !MY_417_KEY.test(r.l) && hasStreamScope(r.l));
+const invisibleMyKey = bullets.filter((r) => !MY_417_KEY.test(r.l) && REACHABLE_BUCKETS.includes(classify(r.l).bucket));
 const streamClassAll = bullets.filter((r) => hasStreamClass(r.l));
 const streamClassInvisible = streamClassAll.filter((r) => !MY_417_KEY.test(r.l));
 say('');
-say(`(b) bullets reachable-by-call-shape but INVISIBLE to the 417 key: ${invisibleToMine.length}`);
+say(`(b) under HIS key (\`streaming:\` scope), invisible to the 417 key: ${invisibleHisKey.length}`);
+say(`    under MY wider call-shape key, invisible to the 417 key:      ${invisibleMyKey.length}`);
 say(`    BetaMessageStream/MessageStream bullets in the segment: ${streamClassAll.length}`);
 say(`    of those, invisible to the 417 key: ${streamClassInvisible.length}`);
 streamClassAll.forEach((r) => say(`       ${MY_417_KEY.test(r.l) ? 'SEEN   ' : 'INVIS  '} ${r.v} | ${r.l.trim().replace(/\s*\(\[.*$/, '').slice(0, 104)}`));
-const pC = predict('his "6 invisible" reproduces', 6, invisibleToMine.length);
+const pC = predict('his "6 invisible" reproduces under his own key', 6, invisibleHisKey.length);
 const pD = predict('his prose "3 of which name BetaMessageStream" reproduces', 3, streamClassInvisible.length);
 
 // (c) The mock-blindness claim: the route tests mock the SDK away, so none of this is covered.
@@ -331,9 +382,9 @@ const landed = [pA, pB, pC, pD].filter(Boolean).length;
 say(`GATE: ${fails.length === 0 ? 'true' : 'FALSE (' + fails.join(', ') + ')'}`);
 say(`PREDICTIONS: ${landed} landed, ${4 - landed} refuted`);
 say(`SUMMARY: rev ${REV.slice(0, 8)} | denominator ${bullets.length} bullets over ${releases.length} releases | ` +
-  `Klatch-reachable ${reachable.length}, behavioural ${reachableBehavioural.length} | ` +
-  `417-key ${my417.length} (behavioural ${my417Behavioural.length}) | invisible-to-417 ${invisibleToMine.length} | ` +
-  `UNMODELLED ${unmod.length} (FLOOR on blindness, not a measurement of irrelevance)`);
+  `Klatch-reachable ${reachableV1.length} -> ${reachable.length} after the STREAM-LIFECYCLE addition, behavioural ${reachableBehavioural.length} | ` +
+  `417-key ${my417.length} (behavioural ${my417Behavioural.length}) | invisible-to-417: ${invisibleHisKey.length} under his key, ${invisibleMyKey.length} under mine | ` +
+  `UNMODELLED ${unmodV1.length} -> ${unmod.length} (FLOOR on blindness, not a measurement of irrelevance)`);
 
 writeFileSync(path.join(import.meta.dirname, 'sec3-rekeyed.out'), out.join('\n') + '\n');
 if (fails.length) process.exit(1);

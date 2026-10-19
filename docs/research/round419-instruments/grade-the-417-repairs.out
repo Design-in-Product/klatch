@@ -1,0 +1,29 @@
+# Round 419 — grading the two Round 418 §5 repairs
+
+rev stamp: 791acfb3ce32c1e958ada2c14a2c85ab657550e0
+driven at: 2026-10-19T20:26:54.676Z
+
+## charge 1 — drivable from the directory it is committed in
+
+  repo-root      exit 0 | SUMMARY printed: true | threw: false
+  own-directory  exit 0 | SUMMARY printed: true | threw: false
+  [GATE] OK   same exit code from both cwds  — 0 vs 0
+  [GATE] OK   SUMMARY printed from the repo root
+  [GATE] OK   SUMMARY printed from its own directory
+  [GATE] OK   no ENOENT / stack trace from its own directory
+  OLD spelling at 791acfb3, from its own directory: exit 1 | threw ENOENT: true
+  (if this reads false, the repair is already committed at that rev and the OLD cell is unmeasurable from it)
+
+## charge 2 — the content-key control gates instead of printing
+
+  [GATE] OK   mutation anchor for the literal-word leg occurs exactly once  — occurs=1
+  mutant [literal-word leg]: exit 1 | refused: true | SUMMARY suppressed: true
+  [GATE] OK   a broken literal-word leg makes the instrument refuse and suppresses the SUMMARY
+  [GATE] OK   mutation anchor for the real-shape leg occurs exactly once  — occurs=1
+  mutant [real-shape leg]: exit 1 | refused: true | SUMMARY suppressed: true
+  [GATE] OK   a broken real-shape leg makes the instrument refuse and suppresses the SUMMARY
+  [GATE] OK   the unmutated instrument still exits 0 with a SUMMARY  — exit 0
+
+==============================================================================
+GATE: true
+SUMMARY: charge 1 cleared | charge 2 cleared | 0 gate failure(s)

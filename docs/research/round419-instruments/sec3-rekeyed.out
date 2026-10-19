@@ -1,14 +1,14 @@
 # Round 419 — Round 417 §3, re-keyed on the call shape
 
-rev stamp: 6e9ba87e4b047d6f26e22f0847c266d7bdaa4aac
-driven at: 2026-10-19T20:23:29.288Z
+rev stamp: 791acfb3ce32c1e958ada2c14a2c85ab657550e0
+driven at: 2026-10-19T20:25:26.195Z
 cwd:       /Users/xian/Development/klatch-worktrees/daedalus
 changelog: /Users/xian/Development/klatch-worktrees/daedalus/.testdata/round419-sdk-changelog.md
 
 ==============================================================================
 ## 1. Klatch's SDK call surface, censused from tracked non-test source
 
-tracked packages/ ts|tsx at 6e9ba87e: 251 (non-test 68, test 183)
+tracked packages/ ts|tsx at 791acfb3: 251 (non-test 68, test 183)
 non-test files importing @anthropic-ai/sdk: 5
    packages/server/src/aaxt/runner.ts
    packages/server/src/claude/client.ts
@@ -62,17 +62,38 @@ BETA-MESSAGES               2
 TOOL-SURFACE                8
 MODELS-SURFACE              0
 STREAM-EVENT-NAME           0
+STREAM-LIFECYCLE            8
 FOREIGN-SURFACE             5
 NON-BEHAVIOURAL-SCOPE      64
-UNMODELLED                 98
+UNMODELLED                 90
 TOTAL                     191   (denominator 191)
   [GATE] OK   buckets partition the denominator (every bullet in exactly one)  — 191 vs 191
 
-KLATCH-REACHABLE bullets: 24 of 191
-  of which behavioural (not docs:/internal:/chore:): 21
+KLATCH-REACHABLE bullets: 32 of 191
+  of which behavioural (not docs:/internal:/chore:): 29
+
+--- the STREAM-LIFECYCLE addition, as a 2 x 2 against the drive-1 spelling ---
+  reachable:  V1 24  ->  V2 32   (+8 / -0)
+  UNMODELLED: V1 98  ->  V2 90
+    GAINED  0.135.0 | [STREAM-LIFECYCLE] * **client:** close streams dropped without being read to the end
+    GAINED  0.135.0 | [STREAM-LIFECYCLE] * **client:** keep an unread JSONL response open while it is held
+    GAINED  0.134.0 | [STREAM-LIFECYCLE] * **client:** close an unread stream that was dropped while tracing is on
+    GAINED  0.127.0 | [STREAM-LIFECYCLE] * **client:** don't retry requests whose body is a stream or iterator
+    GAINED  0.126.0 | [STREAM-LIFECYCLE] * **client:** ignore invalid Retry-After values and validate maxRetries
+    GAINED  0.126.0 | [STREAM-LIFECYCLE] * **client:** retry connection errors in the async client and stop blocking in the coroutine ret
+    GAINED  0.126.0 | [STREAM-LIFECYCLE] * **client:** stop waiting for a retry as soon as the request is aborted
+    GAINED  0.126.0 | [STREAM-LIFECYCLE] * **client:** use the default backoff when Retry-After is out of range
+  [GATE] OK   the added bucket loses no bullet already attributed to a named surface  — lost=0
+  [GATE] OK   the added bucket has at least one live member  — gained=8
+  [GATE] OK   CONTROL lifecycle key refuses a non-lifecycle bullet
+  [GATE] OK   CONTROL lifecycle key has a known positive that is a slice of the segment  — * **client:** close streams dropped without being read to the end
 
 --- the behavioural, Klatch-reachable set, by release ---
+  0.135.0
+     [STREAM-LIFECYCLE] * **client:** close streams dropped without being read to the end
+     [STREAM-LIFECYCLE] * **client:** keep an unread JSONL response open while it is held
   0.134.0
+     [STREAM-LIFECYCLE] * **client:** close an unread stream that was dropped while tracing is on
      [STREAM-CLASS+STREAM-SCOPE] * **streaming:** tolerate unknown event types in MessageStream and BetaMessageStream
      [STREAM-SCOPE] * **streaming:** stop throwing "Unexpected event order" for an event before message_start
      [STREAM-CLASS+STREAM-SCOPE] * **streaming:** yield events that arrive before message_start when iterating MessageStream and BetaMessageStream
@@ -94,21 +115,24 @@ KLATCH-REACHABLE bullets: 24 of 191
   0.127.0
      [TOOL-SURFACE] * **tools:** add compactBeforeNextTurn() to the tool runner
      [STREAM-CLASS+COMPACTION] * **BetaMessageStream:** stop coercing a null compaction_delta content into "null"
+     [STREAM-LIFECYCLE] * **client:** don't retry requests whose body is a stream or iterator
      [COMPACTION+STREAM-EVENT-NAME] * **middleware:** echo a streamed compaction summary in the fallback continuation
      [TOOL-SURFACE] * **tools:** keep $defs when transformJSONSchema root is a $ref
   0.126.0
      [COMPACTION+STREAM-EVENT-NAME] * **api:** add compaction parameter and signed compaction blocks (beta)
+     [STREAM-LIFECYCLE] * **client:** ignore invalid Retry-After values and validate maxRetries
+     [STREAM-LIFECYCLE] * **client:** retry connection errors in the async client and stop blocking in the coroutine retry loop
+     [STREAM-LIFECYCLE] * **client:** stop waiting for a retry as soon as the request is aborted
+     [STREAM-LIFECYCLE] * **client:** use the default backoff when Retry-After is out of range
      [COMPACTION+STREAM-EVENT-NAME] * **api:** compaction instructions replace the server's summarization prompt
   0.124.0
      [TOOL-SURFACE+FOREIGN-SURFACE] * **tools:** create agent-toolset files and directories owner-only
 
 --- UNMODELLED: this key's declared blindness, published as a floor ---
-  98 bullet(s) match no bucket key:
+  90 bullet(s) match no bucket key:
      0.135.0 | * **api:** add between_tools to thinking types in model capabilities
      0.135.0 | * **api:** add the speed parameter and usage.speed to Messages
      0.135.0 | * **api:** return a Console organization's usage-tier spend cap as a read-only spend limit
-     0.135.0 | * **client:** close streams dropped without being read to the end
-     0.135.0 | * **client:** keep an unread JSONL response open while it is held
      0.135.0 | * **api:** note that some models need a beta header to use speed
      0.134.0 | * **api:** add execution_identity to Managed Agents agents
      0.134.0 | * **api:** add organization_type_not_supported error to spend limit lists
@@ -116,7 +140,9 @@ KLATCH-REACHABLE bullets: 24 of 191
      0.134.0 | * **api:** add telemetry destinations to the Admin API
      0.134.0 | * **client:** add native support for OpenTelemetry tracing
      0.134.0 | * **api:** rename telemetry destination test response model
-     … and 86 more
+     0.134.0 | * **client:** don't follow redirects on token requests
+     0.134.0 | * **client:** treat proxy-authorization as a sensitive header
+     … and 78 more
 
 ==============================================================================
 ## 5. Grading the published figures
@@ -126,13 +152,14 @@ KLATCH-REACHABLE bullets: 24 of 191
   [PRED] LANDED   my 417 §3 key returns 9, not the 7 published: expected 9, measured 9
   [PRED] LANDED   the 7 published = the key minus its undeclared scope filter: expected 7, measured 7
 
-(b) bullets reachable-by-call-shape but INVISIBLE to the 417 key: 15
+(b) under HIS key (`streaming:` scope), invisible to the 417 key: 6
+    under MY wider call-shape key, invisible to the 417 key:      23
     BetaMessageStream/MessageStream bullets in the segment: 3
     of those, invisible to the 417 key: 2
        INVIS   0.134.0 | * **streaming:** tolerate unknown event types in MessageStream and BetaMessageStream
        INVIS   0.134.0 | * **streaming:** yield events that arrive before message_start when iterating MessageStream and BetaMess
        SEEN    0.127.0 | * **BetaMessageStream:** stop coercing a null compaction_delta content into "null"
-  [PRED] REFUTED  his "6 invisible" reproduces: expected 6, measured 15
+  [PRED] LANDED   his "6 invisible" reproduces under his own key: expected 6, measured 6
   [PRED] REFUTED  his prose "3 of which name BetaMessageStream" reproduces: expected 3, measured 2
 
 (c) test files mocking @anthropic-ai/sdk wholesale (no importActual): 17
@@ -141,5 +168,5 @@ KLATCH-REACHABLE bullets: 24 of 191
 
 ==============================================================================
 GATE: true
-PREDICTIONS: 2 landed, 2 refuted
-SUMMARY: rev 6e9ba87e | denominator 191 bullets over 14 releases | Klatch-reachable 24, behavioural 21 | 417-key 9 (behavioural 7) | invisible-to-417 15 | UNMODELLED 98 (FLOOR on blindness, not a measurement of irrelevance)
+PREDICTIONS: 3 landed, 1 refuted
+SUMMARY: rev 791acfb3 | denominator 191 bullets over 14 releases | Klatch-reachable 24 -> 32 after the STREAM-LIFECYCLE addition, behavioural 29 | 417-key 9 (behavioural 7) | invisible-to-417: 6 under his key, 23 under mine | UNMODELLED 98 -> 90 (FLOOR on blindness, not a measurement of irrelevance)
