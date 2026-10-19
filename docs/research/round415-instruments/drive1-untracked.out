@@ -1,0 +1,45 @@
+Round 415 — the ls-files selector census Theseus routed to me, at 8690abe7b3335f1bbb6b5c50d1b925df20341c3f
+  START 2026-10-19T00:22:41.218Z
+
+  TRUE  D1  [GATE] the population filter and its two pathspecs are SLICED out of docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs:155-157 and asserted by content, not retyped
+        slice ok true · EXEC \.(mjs|mts)$ · pathspecs ["docs/research","scripts"]
+        M1  [MEAS] each recorded (rev, count) pair re-derived with `ls-tree <rev>` under the sliced filter — does the rev printed beside the figure recover the figure?
+            round413 drive1-untracked.out rev 14dab294 recorded 282 · at that rev 282 · reproduces true
+    round413 drive2-untracked-repaired.out rev 14dab294 recorded 282 · at that rev 282 · reproduces true
+    round413 drive3-tracked-seam-graded.out rev 4a80777c recorded 283 · at that rev 283 · reproduces true
+    round413 drive4-reconcile-his-ten.out rev 3487b679 recorded 283 · at that rev 283 · reproduces true
+    round413 drive5-p4-corrected.out rev 3487b679 recorded 283 · at that rev 283 · reproduces true
+    round413 drive6-literalbodies-regraded.out rev 780ae744 recorded 283 · at that rev 283 · reproduces true
+    round414 drive1-untracked.out rev 45a6cd78 recorded 283 · at that rev 283 · reproduces true
+    round414 drive2-cell-fixed-p4-added.out rev 45a6cd78 recorded 283 · at that rev 283 · reproduces true
+    round414 his413-driven-live.out rev 45a6cd78 recorded 283 · at that rev 283 · reproduces true
+  TRUE  P1  [PRED] my six round413 pairs all reproduce from their own rev — the hazard is a commit interleaving, not the selector alone
+        round413 pairs 6 · reproduce 6 · fail 0 · refused 0
+  TRUE  P4  [PRED] his three round414 pairs reproduce too, which would put his irreproducibility in the HAND READ output rather than in the instrument corpus header
+        round414 pairs 3 · reproduce 3 · fail 0
+        M2  [MEAS] every `ls-files` argv token in the tree, bucketed by its CONSUMING expression, with the terminal bucket positively keyed and refusing
+        source files scanned 286 · tokens 43 · POPULATION 31 · MEMBERSHIP 8 · UNCLASSIFIED (refuses) 4
+    POPULATION files: 24
+    UNCLASSIFIED docs/research/round407-instruments/census-the-fixture-as-string-class.mjs:241
+    UNCLASSIFIED docs/research/round407-instruments/census-the-fixture-as-string-class.mjs:318
+    UNCLASSIFIED docs/research/round407-instruments/census-the-fixture-as-string-class.mjs:377
+    UNCLASSIFIED docs/research/round407-instruments/census-the-fixture-as-string-class.mjs:537
+  TRUE  P2  [PRED] 10 or more POPULATION sites across my instruments
+        POPULATION sites 31 (predicted >= 10: true)
+  TRUE  D2  [GATE] three known positives, each sliced as the source line it occurs in, and each carrying the property rather than resembling it — the two POPULATION ones differ in call shape and the MEMBERSHIP one shares an argv shape with one of them, so the key cannot be passing on the argv alone
+            ok  list-the-declarations-under-the-409-key.mjs:24 want POPULATION got POPULATION · carries token true · the CORPUS selector — a published population
+    ok  cure-the-wrapped-call-and-the-body-key.mjs:555 want MEMBERSHIP got MEMBERSHIP · carries token true · a one-file tracked test: `.trim() !== ''`
+    ok  tree-fingerprint.mts:160 want POPULATION got POPULATION · carries token true · a COUNT under a pathspec in SHARED LIB — same argv `--` as the membership KP
+  FALS  D3  [GATE] each conjunct of the key pointed at a crippled copy: comment-blindness OFF must ADMIT prose mentions, and whitespace-stripping OFF must LOSE wrapped calls to UNCLASSIFIED
+        comment-blind off: 44 tokens vs 43 live (delta +1, must be > 0) · strip off: UNCLASSIFIED 4 vs 4 live (must be > 4)
+  TRUE  P5  [PRED] round413 publishes a corpus figure, reaches the selector through an import, and carries no token — so the token key under-reports by at least this file
+        round413 carries token false (expect false) · publishes a corpus figure true · reads CORPUS true · so under-report >= 1: true
+        M3  [MEAS] the two selectors on the same pathspecs today, and whether this file is in them
+        ls-files 284 · ls-tree(HEAD) 284 · agree true · this file in the index: false · worktree DIRTY true
+
+GATE: false (3 leg(s): D1 D2 D3)
+PREDICTIONS: 5 landed (P1 P2 P3 P4 P5), 0 refuted (-)
+  !! A REFUTED PREDICTION IS THE ROUND'S CONTENT, NOT ITS FAILURE (383).
+
+  rev 8690abe7b3335f1bbb6b5c50d1b925df20341c3f · 284 file(s) in the ls-tree corpus · 284 in the ls-files corpus · worktree DIRTY
+  END 2026-10-19T00:22:41.219Z

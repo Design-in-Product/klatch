@@ -1,0 +1,56 @@
+Round 415 — the ls-files selector census Theseus routed to me, at 8690abe7b3335f1bbb6b5c50d1b925df20341c3f
+  START 2026-10-19T00:25:34.495Z
+
+  TRUE  D1  [GATE] the population filter and its two pathspecs are SLICED out of docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs:155-157 and asserted by content, not retyped
+        slice ok true · EXEC \.(mjs|mts)$ · pathspecs ["docs/research","scripts"]
+        M1  [MEAS] each recorded (rev, count) pair re-derived with `ls-tree <rev>` under the sliced filter — does the rev printed beside the figure recover the figure?
+            round413 drive1-untracked.out rev 14dab294 recorded 282 · at that rev 282 · reproduces true
+    round413 drive2-untracked-repaired.out rev 14dab294 recorded 282 · at that rev 282 · reproduces true
+    round413 drive3-tracked-seam-graded.out rev 4a80777c recorded 283 · at that rev 283 · reproduces true
+    round413 drive4-reconcile-his-ten.out rev 3487b679 recorded 283 · at that rev 283 · reproduces true
+    round413 drive5-p4-corrected.out rev 3487b679 recorded 283 · at that rev 283 · reproduces true
+    round413 drive6-literalbodies-regraded.out rev 780ae744 recorded 283 · at that rev 283 · reproduces true
+    round414 drive1-untracked.out rev 45a6cd78 recorded 283 · at that rev 283 · reproduces true
+    round414 drive2-cell-fixed-p4-added.out rev 45a6cd78 recorded 283 · at that rev 283 · reproduces true
+    round414 his413-driven-live.out rev 45a6cd78 recorded 283 · at that rev 283 · reproduces true
+  TRUE  P1  [PRED] my six round413 pairs all reproduce from their own rev — the hazard is a commit interleaving, not the selector alone
+        round413 pairs 6 · reproduce 6 · fail 0 · refused 0
+  TRUE  P4  [PRED] his three round414 pairs reproduce too, which would put his irreproducibility in the HAND READ output rather than in the instrument corpus header
+        round414 pairs 3 · reproduce 3 · fail 0
+        M2  [MEAS] every `ls-files` token in the tree, keyed FIRST on call-site-ness and then bucketed by its CONSUMING expression, with the terminal bucket positively keyed and refusing
+        source files scanned 286 · tokens 43 · POPULATION 30 · MEMBERSHIP 8 · DATUM 5 · UNCLASSIFIED (refuses) 0
+    POPULATION files 24 · of which NOT round instruments: ["scripts/lib/tree-fingerprint.mts","scripts/probe-round223-twenty-one-probes-against-a-stranger.mts","scripts/probe-round276-the-address-census-and-the-sentinel-that-hid-its-own-file.mts","scripts/probe-round285-the-promotion-path-and-the-two-detectors-that-were-returning-a-smaller-number.mts","scripts/probe-round291-the-sentinel-did-not-grade-the-backups-that-are-the-recovery-path.mts"]
+        under drive 2's own spelling /round4\d\d-instruments/ the same label printed 9 file(s), of which 4 WERE round instruments — the over-claim, measured
+
+        M4  [MEAS] ADDED AT DRIVE 2, not pre-registered: what the call-site precondition cost. Drive 1 had no such precondition, so its POPULATION figure was a PROXIMITY reading
+        POPULATION under drive 1's key 31 · under the repaired key 30 · over-reported by 1 · moved to DATUM 5
+        the site(s) drive 1 over-reported: ["docs/research/round408-instruments/stratify-the-live-interval.mjs:230 -> DATUM"]
+  TRUE  P2  [PRED] 10 or more POPULATION sites across my instruments
+        POPULATION sites 30 (predicted >= 10: true)
+  TRUE  P6  [PRED] ADDED AT DRIVE 2, not pre-registered with the rest, and said so: the call-site precondition STRICTLY REDUCES the POPULATION count — drive 1's proximity key over-reported
+        drive 1 31 > repaired 30: true
+  TRUE  P7  [PRED] ADDED AT DRIVE 2: the four drive-1 UNCLASSIFIED refusals are all `ls-files` as a DATUM, so positively keying that bucket takes UNCLASSIFIED to 0 with nothing swept
+        UNCLASSIFIED now 0 (want 0) · DATUM 5 (want >= 4)
+        M5  [MEAS] ADDED AT DRIVE 2: why HIS figure does not reproduce while his instrument headers do — the output carrying it stamps no rev at run time
+        explore-the-ternary-neighbourhood.out carries a run-time rev stamp: false · 713376a8 (the rev it is cited at) already contains round412-instruments: true · rev-stamped outputs that reproduce: 9 of 9
+  TRUE  P8  [PRED] ADDED AT DRIVE 2: the class is narrower than his memo states — not "a figure whose population comes from `git ls-files`", but "a figure published with NO run-time rev stamp", with `ls-files` the reason the mis-attribution is unrecoverable rather than merely off
+        his hand-read output has no rev stamp: true · and every rev-stamped pair reproduces: true
+  TRUE  D2  [GATE] three known positives, each sliced as the source line it occurs in, and each carrying the property rather than resembling it — the two POPULATION ones differ in call shape and the MEMBERSHIP one shares an argv shape with one of them, so the key cannot be passing on the argv alone
+            ok  list-the-declarations-under-the-409-key.mjs:24 want POPULATION got POPULATION · carries token true · the CORPUS selector — a published population
+    ok  cure-the-wrapped-call-and-the-body-key.mjs:555 want MEMBERSHIP got MEMBERSHIP · carries token true · a one-file tracked test: `.trim() !== ''`
+    ok  tree-fingerprint.mts:160 want POPULATION got POPULATION · carries token true · a COUNT under a pathspec in SHARED LIB — same argv `--` as the membership KP
+  TRUE  D3  [GATE] REPAIRED AT DRIVE 2 — each conjunct pointed at a counterfactual that can MOVE it: comment-blindness OFF must ADMIT prose mentions, and whitespace-stripping OFF must lose a WRAPPED control call out of POPULATION. Drive 1 graded the strip conjunct against the live tree, which contains no wrapped call, so it was vacuous
+        comment-blind off: 44 tokens vs 43 live (delta +1, must be > 0)
+        CONTROL_WRAPPED: real key POPULATION · strip off DATUM · strip load-bearing true
+        CONTROL_DATUM:   real key DATUM (want DATUM) true
+  TRUE  P5  [PRED] round413 publishes a corpus figure, reaches the selector through an import, and carries no token — so the token key under-reports by at least this file
+        round413 carries token false (expect false) · publishes a corpus figure true · reads CORPUS true · so under-report >= 1: true
+        M3  [MEAS] the two selectors on the same pathspecs today, and whether this file is in them
+        ls-files 284 · ls-tree(HEAD) 284 · agree true · this file in the index: false · worktree DIRTY true
+
+GATE: true (3 leg(s): D1 D2 D3)
+PREDICTIONS: 8 landed (P1 P2 P3 P4 P5 P6 P7 P8), 0 refuted (-)
+  !! A REFUTED PREDICTION IS THE ROUND'S CONTENT, NOT ITS FAILURE (383).
+
+  rev 8690abe7b3335f1bbb6b5c50d1b925df20341c3f · 284 file(s) in the ls-tree corpus · 284 in the ls-files corpus · worktree DIRTY
+  END 2026-10-19T00:25:34.496Z
