@@ -3193,34 +3193,40 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-10-18 ~07:24 PT (START fire). **Status:** available.
-- **Drain:** `git log --oneline c86be65d..HEAD` (own 10/17 STOP checkpoint) — 9 new commits,
-  authorship not relevant to crediting here (Theseus's Round 410 chain plus Calliope's/Daedalus's
-  10/17 STOP no-op, plus two briefs commits), none mine, none touching `packages/` (`git diff
-  --stat` confirmed empty). Mail: one new file since this seat's own 10/17 STOP checkpoint
-  (`theseus-to-daedalus-...-your-five-is-four-and-the-ceiling-does-not-bound-the-class-2026-10-17.md`,
-  committed 20:10 PT after this seat's close) — read in full, a line-key granularity correction
-  and a wrapped-call classification hole in Daedalus's Round 409 census; ends "Nothing here needs
-  xian," routes to Daedalus, no action for this seat. Cross-pollination brief points to a private
-  source with no public mirror this time — unreadable from this sandbox as expected, skip-and-log
-  ruling stands (not re-attempting `WebFetch` with nothing to fetch). Fire-depth brief read,
-  informational only. All four cross-repo mailboxes checked (last 24h + content grep for
-  `klatch|\biris\b`): designinproduct/mediajunkie zero hits, piper-morgan-product one incidental
-  hit ("Klatch" as an unrelated test-fixture string in a Piper Morgan test), dispatch zero —
-  nothing owed. Both standing blockers re-checked fresh: day count **70** (+1 from 10/17's 69, by
-  `node` date diff from 2026-08-09); `entityGuess` still **6 files/20** (re-grepped directly by
-  line-count to match prior methodology — same split: 5+11+1+1+1+1). **Verified, not trusted:**
+- **Updated:** 2026-10-18 ~19:24 PT (STOP fire). **Status:** available.
+- **Drain:** `git log --oneline 1f594c3b..HEAD` (own 07:25 PT START checkpoint) — 30 new commits,
+  none mine: the research round-track's 411→415 chain (Daedalus ×15, Theseus ×9, Argus ×4,
+  Calliope ×2 — census/sweep/gate no-ops and mail-close commits), none touching `packages/` (`git
+  diff --stat` confirmed empty). Mail: two new files, both cc this seat only (Argus answering
+  Daedalus's Round 415 routed `trackedCount`-callers question — one deferred probe publishes the
+  count as unstamped diagnostic text, already mis-cited once in a round336 doc by accident of
+  timing; and Daedalus's Round 415 to Theseus narrowing the `ls-files`-unrecoverability class to
+  "unstamped figures only," 9 of 9 rev-stamped figures reproduced), both ending "Nothing here needs
+  xian," neither routed to this seat. Cross-pollination and fire-depth briefs unchanged since this
+  morning. All four cross-repo mailboxes re-checked (last 24h + content grep for `klatch|\biris\b`):
+  designinproduct/mediajunkie/dispatch zero hits, piper-morgan-product same incidental test-fixture
+  string as this morning — nothing owed. Both standing blockers re-checked fresh: day count **70**
+  (unchanged, same calendar day); `entityGuess` still **6 files/20** (re-scoped to `packages/*/src`
+  only, excluding `dist/` and `scripts/` — same split: 5+11+1+1+1+1). **Verified, not trusted:**
   `npm run typecheck` clean ×4 workspaces; `npm test -w packages/server` unpiped — **140 files ·
   2179 passed · 1 skipped (2180)**; `npm test -w packages/client` unpiped — **26 passed|13 skipped
-  (39) · 333 passed|13 skipped (346)** — both exact matches to the 10/17 checkpoint;
+  (39) · 333 passed|13 skipped (346)** — both exact matches to this morning's checkpoint;
   `sweep-probes --census` — **CENSUS OK, 153 probe files, 43 swept/110 deferred** — unchanged; full
   driving sweep (`:3001` confirmed clear, run backgrounded and picked up via completion
-  notification rather than polled, `HEAD` unchanged at `b4ab3e91` before/after, tree clean
+  notification rather than polled, `HEAD` unchanged at `dfc0ab30` before/after, tree clean
   throughout) — **SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0 blocked, 0 census
   problem(s), 110 deferred**. No `packages/` changes this fire. No port bound at close, no
   database opened, no model called. Two consecutive checks found nothing further unblocked — fire
   closed bounded. Nothing new needs xian beyond the one standing item (ground-rules question, now
   at 70 days). Log: `docs/logs/2026-10-18-0717-iris-log.md`.
+- **Prior update:** 2026-10-18 ~07:24 PT (START fire). **Status:** available.
+- **10/18 fire (START) — no-op on product; no new unblocked UX work.** Drain against own 10/17
+  STOP checkpoint (`c86be65d`): 9 new commits (Theseus's Round 410 chain plus Calliope's/Daedalus's
+  10/17 STOP no-op, plus two briefs commits), none mine, none touching `packages/`. One new mail
+  file read in full (Theseus's 410 line-key granularity correction to Daedalus, ends "Nothing here
+  needs xian," no action for this seat). Standing blockers: day count **70** (+1 from 10/17's 69);
+  `entityGuess` **6 files/20** unchanged. Gate verified green (typecheck, both test suites, census,
+  full sweep drive — 43 of 43 green).
 - **Prior update:** 2026-10-17 ~19:24 PT (STOP fire). **Status:** available.
 - **10/17 fire (STOP) — no-op on product; no new unblocked UX work.** Worktree synced to
   `origin/main`. **Drain:** `git log --oneline b9cef9d4..origin/main` (own START checkpoint) — 32
