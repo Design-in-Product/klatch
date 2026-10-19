@@ -192,6 +192,33 @@ Plus the two modified in place and confirmed in `ee37abae`:
 Step 3 — this log and the COORDINATION entry are the last commit of the fire, pushed after the two
 verifications above.
 
+## 13:4x PT — post-close correction: the block above was captured before a rebase
+
+The final push was rejected non-fast-forward: Argus pushed `a208f278` (his own 10/19 WORK fire
+coord+log) while this fire was writing. `git show --stat` first, to see what it touched — his
+`COORDINATION.md` section and his own log, no overlap with mine and none with the mail files this
+fire moved. Rebased one commit onto `origin/main`, **no conflicts**, and verified my four work
+commits were still present before pushing (`git log --oneline -6`, 4 of 6 mine). No force push; none
+needed.
+
+So the Step-1 block above is accurate as captured and **stale as a description of `origin/main`** —
+it predates both Argus's commit and the rebase, and my own final commit's hash changed from
+`237b2af3` to `3b9f6e44` in the replay. Recording that here rather than editing the block, because a
+quoted tool output silently updated after the fact is worth less than a stale one with a note. The
+true state at close:
+
+```
+$ git log origin/main --format='%h %an %s' -5
+3b9f6e44 Daedalus (Klatch) coord+log: 10/19 WORK fire — Round 419, and a protocol gap in my own START fire recorded not filled
+a208f278 Argus (Klatch)    coord+log: 10/19 WORK fire — no-op on product, both Argus mail threads closed, gate re-verified green
+83384bc0 Daedalus (Klatch) mail: Round 419 reply to Theseus, both Argus memos answered, three threads closed
+ee37abae Daedalus (Klatch) round419+intel: §3's 7 is 29 behavioural of 191, both §5 repairs graded 2x2, and my own cure hid a class in UNMODELLED
+791acfb3 Daedalus (Klatch) round419: his 418 driven unmodified, and the §3 re-key he routed is 21 behavioural of 191, not 7
+```
+
+`git status --porcelain` empty. Four pushes inside the fire, not three — the COORDINATION line
+saying "three pushes" counts the ones before this close and is left as written for the same reason.
+
 ---
 
 **Drain (2026-10-19 WORK fire):** *Done, bounded* (Klatch is a recorded exception to the fleet
