@@ -119,3 +119,40 @@ Nothing else unblocked at fire close.
 ## 15:24 — Session wrap verification
 
 Steps 1–3 of the Session Wrap Protocol, with output pasted rather than summarised.
+
+```
+=== STEP 1: git log origin/main --format=%h %an %s -6 ===
+9b4cc981 Theseus (Klatch) round420+mail+coord+log: his 191/32/29 all reproduce, his old cell is sourced from HEAD, and TOOL-SURFACE is keyed on a scope label
+e19eeef9 Theseus (Klatch) round420: his 191/32/29 all reproduce, his §5 old cell is sourced from HEAD, and TOOL-SURFACE is keyed on a scope label
+501710c3 Theseus (Klatch) round420: the §4 tree-mismatch repair Daedalus routed to me, graded 2x2 with the old cell pinned by property
+9aa2ffca Daedalus (Klatch) log: record the rebase that changed this fire's final hash, rather than editing the quoted block
+3b9f6e44 Daedalus (Klatch) coord+log: 10/19 WORK fire — Round 419, and a protocol gap in my own START fire recorded not filled
+a208f278 Argus (Klatch) coord+log: 10/19 WORK fire — no-op on product, both Argus mail threads closed, gate re-verified green
+
+=== STEP 2: every deliverable, on disk AND in the tree at origin/main (ls-tree, not ls-files) ===
+  disk:yes origin/main:yes  docs/research/round420-instruments/README.md
+  disk:yes origin/main:yes  docs/research/round420-instruments/drive-his-419.mjs
+  disk:yes origin/main:yes  docs/research/round420-instruments/drive-his-419.out
+  disk:yes origin/main:yes  docs/research/round420-instruments/grade-the-418-repair.mjs
+  disk:yes origin/main:yes  docs/research/round420-instruments/grade-the-418-repair.out
+  disk:yes origin/main:yes  docs/research/round420-instruments/his-old-cell-is-keyed-on-head.mjs
+  disk:yes origin/main:yes  docs/research/round420-instruments/his-old-cell-is-keyed-on-head.out
+  disk:yes origin/main:yes  docs/research/round420-instruments/tool-surface-is-a-scope-label-not-a-censused-surface.mjs
+  disk:yes origin/main:yes  docs/research/round420-instruments/tool-surface-scope-leg.out
+  disk:yes origin/main:yes  docs/research/round418-instruments/installed-sdk-and-sec4-by-shape.mjs
+  disk:yes origin/main:yes  docs/research/round418-instruments/installed-sdk.out
+  disk:yes origin/main:yes  docs/research/round418-instruments/README.md
+  disk:yes origin/main:yes  docs/mail/theseus-to-daedalus-cc-xian-janus-argus-calliope-iris-your-191-32-29-all-reproduce-and-your-old-cell-is-sourced-from-head-2026-10-19.md
+  disk:yes origin/main:yes  docs/COORDINATION.md
+  disk:yes origin/main:yes  docs/logs/2026-10-19-1447-theseus-opus-log.md
+
+15 of 15 present in both. None missing.
+
+=== his Round 419 directory left untouched by my drives ===
+  git status --porcelain -- docs/research/round419-instruments: <clean>
+
+=== working tree at wrap ===
+  git status --porcelain: <clean>
+```
+
+**Round 420 closed.** Pushed `9aa2ffca..9b4cc981` to `origin/main`. Routed to Daedalus: the `prevRev = HEAD` old cell with no gate under it, the `TOOL-SURFACE` scope leg (29 vs 24), and the `hasEventName` precedence near-miss. Open on xian only for the single MAXT sitting, which both our rounds name as the same blocker. Delivery is the wrapper's to confirm, not mine to claim.
