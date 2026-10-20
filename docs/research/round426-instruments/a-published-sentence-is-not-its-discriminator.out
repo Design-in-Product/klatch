@@ -1,0 +1,142 @@
+# Round 426 — a published sentence keyed on a subset of its own discriminator
+
+REPO: /Users/xian/Development/klatch-worktrees/theseus
+HEAD at open: abc1424795f3c12b99607f7cb39b7e7ded31fbcb
+subjects: docs/research/round425-instruments/a-crash-cannot-print-separates.mjs
+          docs/research/round425-instruments/position-vs-property-confusion-matrix.mjs
+driven at: 2026-10-20T21:57:54.029Z
+
+  [GATE] OK   present: docs/research/round425-instruments/a-crash-cannot-print-separates.mjs
+  [GATE] OK   present: docs/research/round425-instruments/a-crash-cannot-print-separates.out
+  [GATE] OK   present: docs/research/round425-instruments/position-vs-property-confusion-matrix.mjs
+  [GATE] OK   present: docs/research/round425-instruments/position-vs-property-confusion-matrix.out
+
+## 1. The four published sentences and their three named discriminators, sliced from his source
+
+  [GATE] OK   sliced exactly once: I1 — the §1/A2 published sentence  — 1 match(es)
+  [GATE] OK   sliced exactly once: I1 — the §1/A3 published sentence  — 1 match(es)
+  [GATE] OK   sliced exactly once: I1 — the §2 published sentence  — 1 match(es)
+  [GATE] OK   sliced exactly once: I2 — the §3 published sentence (the control)  — 1 match(es)
+  [GATE] OK   sliced exactly once: I2 — the published sentence about my Round 424 §3  — 1 match(es)
+  [GATE] OK   sliced exactly once: I1 — THE DISCRIMINATOR (§1/A2)  — 1 match(es)
+  [GATE] OK   sliced exactly once: I1 — THE DISCRIMINATOR (§1/A3)  — 1 match(es)
+  [GATE] OK   sliced exactly once: I1 — THE DISCRIMINATOR (§2)  — 1 match(es)
+  [GATE] OK   sliced exactly once: I2 — THE DISCRIMINATOR (§3)  — 1 match(es)
+  [GATE] OK   sliced exactly once: I2 — the LATENT gate that guards the R424 §3 figures  — 1 match(es)
+  sentence   I1 §1/A2         4 lines, 304 bytes
+  sentence   I1 §1/A3         4 lines, 222 bytes
+  sentence   I1 §2            4 lines, 270 bytes
+  sentence   I2 §3 (CONTROL)  6 lines, 442 bytes
+  sentence   I2 R424§3        4 lines, 266 bytes
+  discrimin. I1 §1/A2         2 lines, 192 bytes
+  discrimin. I1 §1/A3         1 lines, 72 bytes
+  discrimin. I1 §2            2 lines, 135 bytes
+  discrimin. I2 §3 (CONTROL)  3 lines, 244 bytes
+  discrimin. I2 R424§3        1 lines, 101 bytes
+  [GATE] OK   [I1 §1/A2] the sliced discriminator is an EXPRESSION, not a region — no `gate(`, `predict(` or `say(` inside it  —   D1.summary1 === 'SEPARATES' && D4.summary1 === 'SEPARATES' && D3.summa…
+  [GATE] OK   [I1 §1/A3] the sliced discriminator is an EXPRESSION, not a region — no `gate(`, `predict(` or `say(` inside it  —   D1.a3 === 'OK' && D4.a3 === 'OK' && D6.a3 === 'OK' && D5.a3 === 'FAIL'…
+  [GATE] OK   [I1 §2] the sliced discriminator is an EXPRESSION, not a region — no `gate(`, `predict(` or `say(` inside it  —   D7.walkStray === 'FAIL' && D8.porcStray === 'OK' && D1.walkStray === '…
+  [GATE] OK   [I2 §3 (CONTROL)] the sliced discriminator is an EXPRESSION, not a region — no `gate(`, `predict(` or `say(` inside it  —   M['inline + anchor'].cured === true && M['hoisted + anchor'].cured ===…
+  [GATE] OK   [I2 R424§3] the sliced discriminator is an EXPRESSION, not a region — no `gate(`, `predict(` or `say(` inside it  —   popOk && litGlobal !== null && multi.length === 0 && litAndHoist.lengt…
+  [GATE] OK   [I1 §1/A2] both branch literals sliced out of the sentence, and they differ  — yes="SEPARATES — his R2 shape pri" no="NOT shown to separate"
+  [GATE] OK   [I1 §1/A3] both branch literals sliced out of the sentence, and they differ  — yes="SEPARATES — his R3 shape pas" no="NOT shown to separate"
+  [GATE] OK   [I1 §2] both branch literals sliced out of the sentence, and they differ  — yes="SEPARATES — his R4 shape is " no="NOT shown to separate"
+  [GATE] OK   [I2 §3 (CONTROL)] both branch literals sliced out of the sentence, and they differ  — yes="SEPARATES — property-keyed i" no="NOT shown to separate"
+
+## 2. The baseline — his own run, parsed out of his `.out`, not re-typed
+
+  [GATE] OK   his CELL_SPEC region was sliced, and every entry in it yielded a name (not a count I typed: entry-starts vs names-read)  — 8 entry starts, 8 names: D1-new-clean, D2-new-A2-crashes, D3-old-A2-crashes, D4-old-clean, D5-new-A3-exits-2, D6-old-A3-exits-2, D7-new-cells-leak, D8-old-cells-leak
+  [GATE] OK   every cell of his CELL_SPEC has a row in his `.out` — member lists, not counts (Round 340)  — parsed [D1-new-clean, D2-new-A2-crashes, D3-old-A2-crashes, D4-old-clean, D5-new-A3-exits-2, D6-old-A3-exits-2, D7-new-cells-leak, D8-old-cells-leak] vs spec [D1-new-clean, D2-new-A2-crashes, D3-old-A2-crashes, D4-old-clean, D5-new-A3-exits-2, D6-old-A3-exits-2, D7-new-cells-leak, D8-old-cells-leak]
+  [GATE] OK   the parsed table is not uniform — a parser that read the same thing eight times would make every kill below agree  — 5 distinct rows of 8
+  D1-new-clean         {"exit":1,"summary1":"SEPARATES","disc1":"OK","a3":"OK","removed":"OK","walkStray":"OK","porcStray":null,"innerLeft":null}
+  D2-new-A2-crashes    {"exit":1,"summary1":"NOT shown to separate","disc1":"FAIL","a3":"OK","removed":"OK","walkStray":"OK","porcStray":null,"innerLeft":null}
+  D3-old-A2-crashes    {"exit":1,"summary1":"SEPARATES","disc1":"OK","a3":"OK","removed":"OK","walkStray":"OK","porcStray":null,"innerLeft":null}
+  D4-old-clean         {"exit":1,"summary1":"SEPARATES","disc1":"OK","a3":"OK","removed":"OK","walkStray":"OK","porcStray":null,"innerLeft":null}
+  D5-new-A3-exits-2    {"exit":1,"summary1":"SEPARATES","disc1":"OK","a3":"FAIL","removed":"OK","walkStray":"OK","porcStray":null,"innerLeft":null}
+  D6-old-A3-exits-2    {"exit":1,"summary1":"SEPARATES","disc1":"OK","a3":"OK","removed":"OK","walkStray":"OK","porcStray":null,"innerLeft":null}
+  D7-new-cells-leak    {"exit":1,"summary1":"SEPARATES","disc1":"OK","a3":"OK","removed":"FAIL","walkStray":"FAIL","porcStray":null,"innerLeft":["A1-cured-grader","A2-old-cell-from-HEAD","A3-token-no-rev-carries"]}
+  D8-old-cells-leak    {"exit":1,"summary1":"SEPARATES","disc1":"OK","a3":"OK","removed":"FAIL","walkStray":null,"porcStray":"OK","innerLeft":["A1-cured-grader","A2-old-cell-from-HEAD","A3-token-no-rev-carries"]}
+
+## 3. Known positive — the sliced sentences reproduce his published `.out` byte-for-byte
+
+  [GATE] OK   [I1 §1/A2] my evaluation of his sliced sentence === the line in his `.out`  — §1/A2 cure (a red must name the gate that fired): SEPARATES …
+  [GATE] OK   [I1 §1/A3] my evaluation of his sliced sentence === the line in his `.out`  — §1/A3 cure (the refusal must name itself): SEPARATES — his R…
+  [GATE] OK   [I1 §2] my evaluation of his sliced sentence === the line in his `.out`  — §2 cure (walk both trees instead of porcelain over docs/rese…
+  [GATE] OK   [I1 §1/A2] his discriminator evaluates TRUE over his own recorded table
+  [GATE] OK   [I1 §1/A2] …and my verdict predicate reads that published line as the SEPARATES branch
+  [GATE] OK   [I1 §1/A3] his discriminator evaluates TRUE over his own recorded table
+  [GATE] OK   [I1 §1/A3] …and my verdict predicate reads that published line as the SEPARATES branch
+  [GATE] OK   [I1 §2] his discriminator evaluates TRUE over his own recorded table
+  [GATE] OK   [I1 §2] …and my verdict predicate reads that published line as the SEPARATES branch
+
+## 4. Expected, written down before the kills are driven
+
+  Each kill replaces ONE of his cells with `{}` — the value his own `D = (n) => R[n] || {}`
+  hands every leg when a cell is SKIPPED (anchor miss) or refused (wrong depth).
+
+  I1 §1/A2  — kill D4-old-clean: discriminator FALSE (the clean/old control is gone), sentence
+              still SEPARATES. D4 is the cell that makes the crippled column attributable.
+  I1 §1/A3  — kill D4-old-clean: same shape, same cell, second sentence.
+  I1 §2     — no CELL kill separates them; the dropped conjunct is a FIELD (D7.innerLeft), so
+              it needs the field kill in §6.
+  I2 §3     — CONTROL: keyed on exactly its discriminator; no kill may separate them.
+
+## 5. The kill matrix — one cell of his run missing at a time
+
+  kill                 | I1 §1/A2 G/S      | I1 §1/A3 G/S      | I1 §2 G/S         
+  D1-new-clean         | FALSE / NOT       | FALSE / NOT       | FALSE / NOT       
+  D2-new-A2-crashes    | FALSE / NOT       | true  / SEPARATES | true  / SEPARATES 
+  D3-old-A2-crashes    | FALSE / NOT       | true  / SEPARATES | true  / SEPARATES 
+  D4-old-clean         | FALSE / SEPARATES | FALSE / SEPARATES | true  / SEPARATES 
+  D5-new-A3-exits-2    | true  / SEPARATES | FALSE / NOT       | true  / SEPARATES 
+  D6-old-A3-exits-2    | true  / SEPARATES | FALSE / NOT       | true  / SEPARATES 
+  D7-new-cells-leak    | true  / SEPARATES | true  / SEPARATES | FALSE / NOT       
+  D8-old-cells-leak    | true  / SEPARATES | true  / SEPARATES | FALSE / NOT       
+
+  [PRED] LANDED   kill D4-old-clean separates §1/A2: its discriminator refuses and its sentence still publishes — expected true, got true
+  [PRED] LANDED   kill D4-old-clean separates §1/A3 the same way — expected true, got true
+  [PRED] LANDED   no CELL kill separates §2 — its dropped conjunct is a field, not a cell — expected 0, got 0
+  [PRED] LANDED   a kill that BOTH read moves both (control: the matrix is not "the sentence never changes") — killing D1-new-clean makes §1/A2 publish NOT — expected false, got false
+
+## 6. Two field kills — the states his own §1 cure is about
+
+  (a) D2 prints its discriminator line and dies before its verdict:
+      discriminator false · sentence "  §1/A2 cure (a red must name the gate that fired): SEPARATES — his R2 shape prints SEPARATES under the old spelling and is refused under the new"
+  [PRED] LANDED   (a) his discriminator refuses it (its `D2.summary1 !== null` conjunct) — expected false, got false
+  [PRED] LANDED   (a) his published sentence still says the cure SEPARATES — expected true, got true
+  (b) the leaked cell tree was never measurably on disk:
+      discriminator false · sentence "  §2 cure (walk both trees instead of porcelain over docs/research): SEPARATES — his R4 shape is silent under the old spelling and named under the new"
+  [PRED] LANDED   (b) his discriminator refuses it (its `Array.isArray(D7.innerLeft)` conjunct) — expected false, got false
+  [PRED] LANDED   (b) his published sentence still says the cure SEPARATES — expected true, got true
+  [GATE] OK   THE DISCRIMINATOR (§1): three of his published sentences print `SEPARATES` over a table their own named discriminator refuses — and each dropped conjunct is the control for that sentence  — cell kills: I1 §1/A2@D4-old-clean, I1 §1/A3@D4-old-clean · field kills: (a) false/true (b) false/true
+
+## 7. CONTROL — his one sentence that IS keyed on its whole discriminator
+
+  [GATE] OK   his §3 matrix was parsed out of his `.out` — all six rows  — inline + anchor | hoisted + anchor | inline + no anchor | hoisted + no anchor | two literals, anchor FIRST | two literals, anchor SECOND
+  [GATE] OK   his live figures were parsed out of his `.out`  — live=10 multi=0 litAndHoist=0
+  [GATE] OK   [CONTROL] his §3 sentence reproduces his published line byte-for-byte  — "  §3 cure (resolve the pattern instead of keying on its position): SE…
+  [PRED] LANDED   [CONTROL] no flip of any cell of his §3 matrix makes that sentence publish while its discriminator refuses — so the finding above is about those three sentences, not about my harness — expected 0, got 0
+
+## 8. The same shape in his second instrument: a figure that refuses in the predict and prints in the sentence
+
+  His §4 reports catching `0 of 0` on an empty population and curing it. The cure went into the
+  two PREDICTS (they refuse with null when `popOk` is false) and into the GATE. The published
+  sentence interpolates `${multi.length} of ${live.length}` with no refusal at all.
+
+  [GATE] OK   [KP] his R424§3 sentence over his own figures reproduces his published line byte-for-byte  — "  his Round 424 §3 (one pattern per body): REPRODUCES in my rig, and is LATENT: 0 of 10 live instances"
+  on an empty population: gate false · sentence "  his Round 424 §3 (one pattern per body): REPRODUCES in my rig, and is LATENT: 0 of 0 live instances"
+  [PRED] LANDED   his LATENT gate refuses an empty population (the guard works) — expected false, got false
+  [PRED] LANDED   …and his published sentence prints `0 of 0 live instances` anyway — expected true, got true
+  [GATE] OK   THE DISCRIMINATOR (§2): the empty-population vacuity he cured in the predicts is still live in the sentence — same table, gate FALSE and sentence publishing `LATENT: 0 of 0`  — baseline gate true · empty gate false
+
+  [GATE] OK   no stray cell file beside this instrument (the running file excluded by its own path — his Round 425 lesson, taken here)  — (none)
+  [GATE] OK   his four files were not modified by this instrument  — (unmodified)
+
+==============================================================================
+GATE: true
+PREDICTIONS: 11 landed, 0 refuted
+
+SUMMARY:
+  §1 (three sentences keyed on a subset of their own discriminator): FINDING — 2 of his sentences separate under a CELL kill (D4-old-clean) and a 3rd under a FIELD kill; all three green on his own table
+  §2 (the empty-population figure, cured in the predicts, live in the sentence): FINDING — his gate refuses `0 of 0` and his published sentence prints it
+  CONTROL (his §3 sentence, keyed on its whole discriminator): HOLDS — 0 of 12 single-cell flips separate it, so the finding is about those sentences and not about this harness
