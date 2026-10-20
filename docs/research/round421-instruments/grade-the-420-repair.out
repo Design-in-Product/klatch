@@ -1,0 +1,66 @@
+# Round 421 — grading the Round 420 §2 repair (charge 1's OLD cell)
+
+REPO: /Users/xian/Development/klatch-worktrees/daedalus
+HEAD at open: 7c2208ae17541048c4d386a0911b555986335941
+driven at: 2026-10-20T00:22:49.268Z
+
+  [GATE] OK   CELLS is depth 3 under REPO, so ../../.. from a cell resolves to REPO  — /Users/xian/Development/klatch-worktrees/daedalus vs /Users/xian/Development/klatch-worktrees/daedalus
+  [GATE] OK   the changelog fixture both spellings need is present  — /Users/xian/Development/klatch-worktrees/daedalus/.testdata/round419-sdk-changelog.md
+  [GATE] OK   the OLD spelling was extracted from the commit, non-empty  — 6375 bytes
+  [GATE] OK   OLD and NEW differ (there is something to grade)  — old 6375B vs new 10462B
+  defect token "const prevRev = … rev-parse HEAD…":  OLD 1x · NEW 0x
+  [GATE] OK   the defect token occurs exactly once in the OLD spelling  — occurs=1
+  [GATE] OK   the defect token occurs zero times in the NEW spelling  — occurs=0
+
+## 0. His §2 figure, reproduced under his own key
+
+  rev history of the graded file: ee37abae, e2759907
+  needle-carrying: e2759907
+  [PRED] LANDED   his "2 revs" for the graded file  — expected 2, got 2
+  [PRED] LANDED   his e2759907 is the derived pre-repair rev  — expected "e2759907", got "e2759907"
+  [PRED] LANDED   his ee37abae is the newest rev and does not carry the needle  — expected true, got true
+  [PRED] LANDED   his "791acfb3 is a descendant carrying the same blob" as e2759907  — expected true, got true
+  [PRED] LANDED   HEAD is past the repair, so a HEAD-sourced old cell reads the REPAIRED blob  — expected true, got true
+
+## 1. The four cells
+
+  [GATE] OK   mutation anchor for cell C occurs exactly once  — occurs=1
+  [GATE] OK   mutation anchor for cell D occurs exactly once  — occurs=1
+  A  OLD spelling, unmodified
+      exit 0 | oldThrew false | charge-1 cleared: true
+      SUMMARY: charge 1 cleared | charge 2 cleared | 0 gate failure(s)
+  B  NEW spelling, unmodified
+      exit 0 | oldThrew true | charge-1 cleared: true
+      SUMMARY: charge 1 cleared | charge 2 cleared | 0 gate failure(s)
+  C  NEW spelling, PRE_REPAIR forced to the newest rev
+      exit 1 | oldThrew false | charge-1 cleared: false
+      SUMMARY: charge 1 NOT CLEARED | charge 2 cleared | 1 gate failure(s)
+      GATE: FALSE (c1:the OLD spelling throws ENOENT from its own directory (charge 1 has a real OLD cell))
+  D  NEW spelling, needle made non-separating
+      exit 1 | oldThrew false | charge-1 cleared: false
+      SUMMARY: charge 1 NOT CLEARED | charge 2 cleared | 2 gate failure(s) | charge 1 is NOT CLEARED because its OLD cell could not be derived
+      GATE: FALSE (c0:the NEWEST rev does not carry it (else the needle does not separate); c1:the OLD spelling throws ENOENT from i
+
+## 2. Does the key separate?
+
+  [PRED] LANDED   A: the OLD spelling reads a FALSE old cell at this HEAD (his finding)  — expected false, got false
+  [PRED] LANDED   A: …and still exits 0  — expected 0, got 0
+  [PRED] LANDED   A: …and still reports charge 1 cleared — vacuously green  — expected true, got true
+  [PRED] LANDED   B: the NEW spelling derives a pre-repair rev and reads a TRUE old cell  — expected true, got true
+  [PRED] LANDED   B: …and exits 0  — expected 0, got 0
+  [PRED] LANDED   B: …and reports charge 1 cleared, on a measured cell this time  — expected true, got true
+  [PRED] LANDED   C: restoring the old derivation makes the NEW spelling read a FALSE old cell  — expected false, got false
+  [PRED] LANDED   C: …and the gate catches it — exit 1  — expected 1, got 1
+  [PRED] LANDED   C: …and charge 1 is reported NOT CLEARED  — expected false, got false
+  [PRED] LANDED   D: a non-separating needle makes the NEW spelling refuse at a precondition  — expected true, got true
+  [PRED] LANDED   D: …and exit 1  — expected 1, got 1
+  [GATE] OK   THE DISCRIMINATOR: the same false old cell is `cleared` under OLD and a FAILURE under NEW  — A(cleared=true, exit 0) vs C(cleared=false, exit 1)
+  [GATE] OK   the repaired spelling is not merely strict: unmutated, it still exits 0 with charge 1 cleared  — exit 0
+  [GATE] OK   the derivation itself is load-bearing: cell D refuses rather than guessing a rev  — exit 1
+
+  [GATE] OK   no cell leaked into a tracked path  — (clean)
+
+==============================================================================
+GATE: true
+PREDICTIONS: 16 landed, 0 refuted
+SUMMARY: the Round 420 §2 charge REPRODUCES | the repair HOLDS and its key separates

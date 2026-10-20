@@ -1,28 +1,38 @@
-# Round 419 — grading the two Round 418 §5 repairs
+# Round 419 — grading the two Round 418 §5 repairs  (OLD cell repaired, Round 421)
 
-rev stamp: 791acfb3ce32c1e958ada2c14a2c85ab657550e0
-driven at: 2026-10-19T20:26:54.676Z
+rev stamp (HEAD): 7c2208ae17541048c4d386a0911b555986335941
+driven at: 2026-10-20T00:22:59.608Z
 
 ## charge 1 — drivable from the directory it is committed in
 
   repo-root      exit 0 | SUMMARY printed: true | threw: false
   own-directory  exit 0 | SUMMARY printed: true | threw: false
-  [GATE] OK   same exit code from both cwds  — 0 vs 0
-  [GATE] OK   SUMMARY printed from the repo root
-  [GATE] OK   SUMMARY printed from its own directory
-  [GATE] OK   no ENOENT / stack trace from its own directory
-  OLD spelling at 791acfb3, from its own directory: exit 1 | threw ENOENT: true
-  (if this reads false, the repair is already committed at that rev and the OLD cell is unmeasurable from it)
+  [GATE c1] OK   same exit code from both cwds  — 0 vs 0
+  [GATE c1] OK   SUMMARY printed from the repo root
+  [GATE c1] OK   SUMMARY printed from its own directory
+  [GATE c1] OK   no ENOENT / stack trace from its own directory
+
+  --- the OLD cell: pre-repair rev derived from the defect needle, not from HEAD ---
+  rev history of the graded file: 2 rev(s) — ee37abae, e2759907
+  needle-carrying revs: e2759907
+  [GATE c0] OK   the graded file has >= 2 revs, so a pre-repair rev can exist  — revs=2
+  [GATE c0] OK   some rev carries the defect needle  — carrying=1
+  [GATE c0] OK   the NEWEST rev does not carry it (else the needle does not separate)  — newest=ee37abae
+  [GATE c0] OK   a pre-repair rev was derived, not assumed  — e2759907
+  [GATE c0] OK   the pre-repair blob is non-empty  — 4698 bytes
+  OLD spelling at e2759907 (derived, not HEAD), from its own directory: exit 1 | threw ENOENT: true
+  for contrast, HEAD is 7c2208ae and its blob of the graded file is the REPAIRED one (does not carry the needle)
+  [GATE c1] OK   the OLD spelling throws ENOENT from its own directory (charge 1 has a real OLD cell)
 
 ## charge 2 — the content-key control gates instead of printing
 
-  [GATE] OK   mutation anchor for the literal-word leg occurs exactly once  — occurs=1
+  [GATE c2] OK   mutation anchor for the literal-word leg occurs exactly once  — occurs=1
   mutant [literal-word leg]: exit 1 | refused: true | SUMMARY suppressed: true
-  [GATE] OK   a broken literal-word leg makes the instrument refuse and suppresses the SUMMARY
-  [GATE] OK   mutation anchor for the real-shape leg occurs exactly once  — occurs=1
+  [GATE c2] OK   a broken literal-word leg makes the instrument refuse and suppresses the SUMMARY
+  [GATE c2] OK   mutation anchor for the real-shape leg occurs exactly once  — occurs=1
   mutant [real-shape leg]: exit 1 | refused: true | SUMMARY suppressed: true
-  [GATE] OK   a broken real-shape leg makes the instrument refuse and suppresses the SUMMARY
-  [GATE] OK   the unmutated instrument still exits 0 with a SUMMARY  — exit 0
+  [GATE c2] OK   a broken real-shape leg makes the instrument refuse and suppresses the SUMMARY
+  [GATE c2] OK   the unmutated instrument still exits 0 with a SUMMARY  — exit 0
 
 ==============================================================================
 GATE: true
