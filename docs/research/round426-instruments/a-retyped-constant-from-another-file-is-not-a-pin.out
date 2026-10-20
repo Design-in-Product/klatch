@@ -1,0 +1,71 @@
+# Round 426 — a constant re-typed out of another file is not a pin
+
+REPO: /Users/xian/Development/klatch-worktrees/theseus
+HEAD at open: 5f91a5dda2439c7506dafc7372af84a1f15bb8a4
+driven at: 2026-10-20T22:01:54.388Z
+
+  [GATE] OK   present: docs/research/round425-instruments/a-crash-cannot-print-separates.mjs
+  [GATE] OK   present: docs/research/round423-instruments/grade-the-422-cures.mjs
+  [GATE] OK   present: docs/research/round421-instruments/grade-the-420-repair.mjs
+  [GATE] OK   present: docs/research/round425-instruments/position-vs-property-confusion-matrix.mjs
+  [GATE] OK   present: docs/research/round421-instruments/scope-label-legs-are-a-class-of-three.mjs
+
+## 1. His mutation constants, evaluated out of his source (not re-typed here either)
+
+  [GATE] OK   his mutation-constant region was sliced out of his file  — 61 lines
+  [GATE] OK   evaluated A2CRASH_FROM (83 bytes)  — "const A2_TO = 'const PRE_CURE = HEAD; // MUTANT: the Round 422 §"…
+  [GATE] OK   evaluated A2CRASH_TO (262 bytes)  — "const A2_TO = \"const PRE_CURE = gradedCarriers.length ? gradedCa"…
+  [GATE] OK   evaluated A3CRASH_FROM (100 bytes)  — "const A3_TO = `const DEFECT_TOKEN = \"ZZZ_TOKEN_NO_REV_CARRIES\"; "…
+  [GATE] OK   evaluated A3CRASH_TO (192 bytes)  — "const A3_TO = \"process.exit(2); // MUTANT (Round 425): an unrela"…
+  [GATE] OK   subject A carries exactly one `const PRE_CURE =` line  — const PRE_CURE = gradedCarriers.length ? gradedCarriers[0] : null;
+  [GATE] OK   subject A carries exactly one `const DEFECT_TOKEN =` line  — const DEFECT_TOKEN = "const prevRev = spawnSync('git', ['-C', REPO, 'rev-parse', 'HEAD']";
+  [GATE] OK   the rename target `gradedCarriers` occurs in subject A  — 6 occurrences
+  [GATE] OK   the rename is carried into my grader exactly once (its A2_FROM)  — 1 occurrence(s) in docs/research/round423-instruments/grade-the-422-cures.mjs
+  [GATE] OK   CONTROL PRECONDITION: the renamed subject A no longer contains the old cured line  — const PRE_CURE = carrierRevs.length ? carrierRevs[0] : null;
+
+## 2. Expected, written down before the pipeline is run
+
+  row 1  today's tree, A2 and A3           — his anchor 1, mine 1, the cure SURVIVES (known positive)
+  row 2  rename carried into my grader, A2 — his anchor 1, mine 1, the cure does NOT survive
+  row 3  rename NOT carried, A2            — his anchor 1, MINE 0 → refused (the control: he is not blind to everything)
+
+## 3. The pipeline, run over the three trees
+
+  today / A2                         his anchor 1     my anchor 1     cure survives into the cell: true
+  today / A3                         his anchor 1     my anchor 1     cure survives into the cell: true
+  rename carried / A2                his anchor 1     my anchor 1     cure survives into the cell: false
+  rename NOT carried / A2 (CONTROL)  his anchor 1     my anchor 0     cure survives into the cell: null
+
+  [PRED] LANDED   today / A2: the cure survives into the cell — his claim, true on this tree — expected true, got true
+  [PRED] LANDED   today / A3: the defect token survives into the cell — same, true on this tree — expected true, got true
+  [PRED] LANDED   rename carried / A2: EVERY anchor still occurs exactly once (his, and mine) — expected [1,1], got [1,1]
+  [PRED] LANDED   rename carried / A2: …and the cure does NOT survive into the cell — expected false, got false
+  [PRED] LANDED   rename carried / A2: the cell carries the STALE identifier instead — expected true, got true
+  [PRED] LANDED   rename carried / A2: and that identifier is undefined in the cell it now sits in — expected 0, got 0
+  [PRED] LANDED   CONTROL rename NOT carried / A2: MY anchor misses, so the cell is refused and reddens — expected [1,0,null], got [1,0,null]
+  [GATE] OK   THE DISCRIMINATOR (§1): a rename carried through my grader the only way my grader permits leaves his hand-typed copy stale, the cure absent from the cell, and every anchor in both files still at exactly one — while the UNCARRIED rename is caught, so this is a blindness to one specific edit and not a blanket claim  — today true · carried false (anchors 1/1) · control my-anchor 0
+
+## 4. The same class in `position-vs-property-confusion-matrix.mjs`, measured rather than asserted
+
+  Its header says BOTH KEYS ARE SLICED FROM SOURCE, NEVER RE-TYPED. The OLD key is a pair —
+  a SELECTOR (which lines are subjects) and a CLASSIFIER (`hasScope`). The classifier is
+  sliced out of the derived rev. The selector, in his `oldKey`, is typed into his file.
+
+  [GATE] OK   his derived PRE_CURE rev was read out of his `.out`  — 5bf46753
+  [GATE] OK   that rev's blob of the subject is readable  — 18549 bytes
+  [GATE] OK   his hand-typed selector was sliced out of his file  — l) => /^const has[A-Z]\w* = \(l\) =>/.test(l) || /^const is[A-Z]\w* = \(l\) =>/.test(l)
+  [GATE] OK   the real selector was sliced out of the PRE_CURE rev  — /^const has[A-Z]\w* = \(l\) =>/.test(l) || /^const is[A-Z]\w* = \(l\) =>/.test(l)
+  [GATE] OK   …and out of the live subject  — /^const has[A-Z]\w* = \(l\) =>/.test(l) || /^const is[A-Z]\w* = \(l\) =>/.test(l)
+  [PRED] LANDED   his hand-typed selector is, today, the same predicate as the one in the rev he derived — expected "/^const has[A-Z]\\w* = \\(l\\) =>/.test(l) || /^const is[A-Z]\\w* = \\(l\\) =>/.test(l)", got "/^const has[A-Z]\\w* = \\(l\\) =>/.test(l) || /^const is[A-Z]\\w* = \\(l\\) =>/.test(l)"
+  [PRED] LANDED   …and the cure did not change the selector, so the live one matches too — expected "/^const has[A-Z]\\w* = \\(l\\) =>/.test(l) || /^const is[A-Z]\\w* = \\(l\\) =>/.test(l)", got "/^const has[A-Z]\\w* = \\(l\\) =>/.test(l) || /^const is[A-Z]\\w* = \\(l\\) =>/.test(l)"
+  [GATE] OK   so this one is LATENT, not a defect — his copy is faithful on this tree; what is missing is the assertion that it stays faithful, which is two lines (`includes` against both blobs)  — his="/^const has[A-Z]\\w* = \\(l\\) =>/.test(l) || /^const is[A-Z]\\w* = \\(l\\) =>/.test(l)"
+
+  [GATE] OK   nothing was written to any of the five files this reads (every tree was in memory)  — (unmodified)
+
+==============================================================================
+GATE: true
+PREDICTIONS: 9 landed, 0 refuted
+
+SUMMARY:
+  §1 (his hand-typed copy of my grader's A2_FROM / A3_FROM): LATENT, UNPINNED — faithful today; a carried rename makes the load-bearing claim false with every anchor still at one, and the uncarried rename is caught
+  §2 (the "both keys sliced" claim in the second instrument): LATENT — the selector half is hand-typed and measured faithful against both the derived rev and the live file; only the assertion is missing
