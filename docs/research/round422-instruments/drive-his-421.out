@@ -1,0 +1,68 @@
+# Round 422 §1 — his two Round 421 instruments, driven unmodified
+
+REPO: /Users/xian/Development/klatch-worktrees/theseus
+my HEAD: 490b218f3e1222fe54591f7d78f14be36271ddcc
+driven at: 2026-10-20T03:09:29.162Z
+
+  [GATE] OK   SCRATCH is depth 3 under REPO, so ../../.. from a copy resolves to REPO  — /Users/xian/Development/klatch-worktrees/theseus vs /Users/xian/Development/klatch-worktrees/theseus
+  [GATE] OK   the changelog fixture his second instrument needs is present IN MY TREE  — /Users/xian/Development/klatch-worktrees/theseus/.testdata/round419-sdk-changelog.md
+  [GATE] OK   the file his FIRST instrument grades is present in my tree  — docs/research/round419-instruments/grade-the-417-repairs.mjs
+
+## 0. Provenance — commit blob vs disk, for each instrument and its published .out
+
+  grade-the-420-repair
+      .mjs at 4adcc0bf: 13068B sha256 5f47abd9132e362c…
+      .out at 4adcc0bf: 4472B sha256 d81f14f14272d80f…
+  [GATE] OK   [grade-the-420-repair] the .mjs blob at 4adcc0bf is non-empty  — 13068B
+  [GATE] OK   [grade-the-420-repair] the .out blob at 4adcc0bf is non-empty  — 4472B
+      disk matches commit:  .mjs true · .out true
+  scope-label-legs-are-a-class-of-three
+      .mjs at 5bf46753: 18549B sha256 9e5a6435030e7d8c…
+      .out at 5bf46753: 6986B sha256 7e6c1d4f11484506…
+  [GATE] OK   [scope-label-legs-are-a-class-of-three] the .mjs blob at 5bf46753 is non-empty  — 18549B
+  [GATE] OK   [scope-label-legs-are-a-class-of-three] the .out blob at 5bf46753 is non-empty  — 6986B
+      disk matches commit:  .mjs true · .out true
+
+## 1. Instrument 1's OLD cell, read off ITS OWN source and the graded file's history
+
+  his line "const OLD_SRC = git('show', `${HEAD}:${GRADED_REL}`)…" occurs 1x in his source
+  [GATE] OK   instrument 1 really does source its OLD cell from HEAD (the charge, pinned on the call shape)  — occurs=1
+  rev history of the file it grades: 4adcc0bf, ee37abae
+  rev history of the grader itself:  4adcc0bf
+  [PRED] LANDED   the cure and the grader that grades it landed in exactly ONE shared commit — expected true, got true
+  [PRED] LANDED   his published .out was driven at a HEAD that is NOT an ancestor-or-self of the cure — expected true, got true
+  [PRED] LANDED   at my HEAD his OLD cell and his NEW cell are the SAME blob — the 2 x 2 has collapsed — expected true, got true
+
+## 2. Driven from a copy at depth 3, his directory never written to
+
+  grade-the-420-repair  (copy driven at <REPO>/.testdata/round422/drive/grade-the-420-repair.mjs)
+      live      exit 1 | GATE FALSE (OLD and NEW differ (there is something to grade); the defect to
+      live      15 landed, 1 refuted
+      published GATE true
+      published 16 landed, 0 refuted
+  scope-label-legs-are-a-class-of-three  (copy driven at <REPO>/.testdata/round422/drive/scope-label-legs-are-a-class-of-three.mjs)
+      live      exit 0 | GATE true
+      live      9 landed, 0 refuted
+      published GATE true
+      published 9 landed, 0 refuted
+
+## 3. Reproduction, against the .out extracted from his own commit
+
+  [PRED] LANDED   [grade-the-420-repair] reproduces his published GATE and PREDICTIONS lines — expected false, got false
+  [PRED] LANDED   [scope-label-legs-are-a-class-of-three] reproduces his published GATE and PREDICTIONS lines — expected true, got true
+  [PRED] LANDED   instrument 1 fails LOUDLY — non-zero exit, not a vacuous green — expected true, got true
+  [PRED] LANDED   …and the gate that catches it is his own "OLD and NEW differ" — expected true, got true
+  [GATE] OK   CONTROL: instrument 2 is green in the same drive, so a red above is about instrument 1 and not about this rig, this tree, or a missing fixture  — instrument 2 reproduced: true
+
+  [GATE] OK   HIS directory docs/research/round421-instruments is untouched by this drive (keyed on his dir, not a parent)  — (clean)
+  [GATE] OK   the round419 directory his instruments READ is also untouched  — (clean)
+
+==============================================================================
+GATE: true
+PREDICTIONS: 7 landed, 0 refuted
+
+SUMMARY:
+  grade-the-420-repair                   reproduces: false (expected false)
+      live GATE: FALSE (OLD and NEW differ (there is something to grade); the defect token occurs exactly once in the OLD spelling; THE DISCRIMINATOR: the same false old cell is `cleared` under OLD and a FAILURE under NEW)
+  scope-label-legs-are-a-class-of-three  reproduces: true (expected true)
+      live GATE: true

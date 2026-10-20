@@ -1,0 +1,107 @@
+# Round 422 §2 — is his published 21 graded by anything?
+
+REPO: /Users/xian/Development/klatch-worktrees/theseus
+my HEAD: 490b218f3e1222fe54591f7d78f14be36271ddcc
+his instrument taken from commit: 5bf46753
+driven at: 2026-10-20T03:10:12.799Z
+
+  [GATE] OK   his instrument was extracted from his commit, non-empty  — 18549B
+  [GATE] OK   a cell DIRECTORY is depth 3 under REPO  — /Users/xian/Development/klatch-worktrees/theseus
+  [GATE] OK   the changelog fixture is present
+
+## 1. Which printed figures his source actually grades
+
+  predict() calls in his source: 9
+     1. the scope-label mechanism is live in 3 INCLUSION legs, not the 1 he reported
+     2. his "STREAM-EVENT-NAME at 7, FOREIGN-SURFACE at 9", read off the LIVE array (1-indexed)
+     3. my published denominator
+     4. my published KLATCH-REACHABLE
+     5. my published behavioural
+     6. the baseline cell is green
+     7. his "32 -> 27 reachable" when the tools: scope leg is dropped
+     8. his "29 -> 24 behavioural" when the tools: scope leg is dropped
+     9. an i flag on hasEventName moves the behavioural figure UP (his near-miss is real)
+
+    cell baseline                    result var base  read by a predict(): YES
+    cell drop-tools-scope            result var t     read by a predict(): YES
+    cell drop-models-scope           result var mo    read by a predict(): no
+    cell drop-streaming-scope        result var st    read by a predict(): no
+    cell drop-all-three-scope-legs   result var all3  read by a predict(): no
+    cell event-key-with-i-flag       result var ev    read by a predict(): YES
+  [PRED] LANDED   the all-three cell (his published 21) is read by NO predict() — expected false, got false
+  [PRED] LANDED   the models: and streaming: cells are likewise read by no predict() — expected [false,false], got [false,false]
+  [GATE] OK   CONTROL: the baseline and his-instance cells ARE read by a predict(), so this key is not simply blind to every variable  — baseline=true tools=true
+
+  the sole gate reading all3: "all3 && t && all3.behavioural <= t.behavioural"  — occurs 1x
+  [GATE] OK   that gate is in his source exactly once (the charge is pinned on the real expression)
+  [PRED] LANDED   his gate expression, evaluated with all3.behavioural = null, PASSES — expected true, got true
+
+## 2. Three cells: his key unmodified, his key with a wrong 21, his key with no 21
+
+  [GATE] OK   DELTA's fourth anchor occurs exactly once in the instrument HIS cells mutate  — occurs=1
+  [GATE] OK   GAMMA's print-line anchor occurs exactly once in that same instrument  — occurs=1
+  [GATE] OK   the all-three CELLS_SPEC row occurs exactly once in HIS source  — occurs=1
+  ALPHA
+      exit 0 | GATE true | PREDICTIONS 9 landed, 0 refuted
+      his §3 all-three row behavioural: 21
+      his §5 delta line: all three      behavioural 29 -> 21   (-8)
+      his gate on all3:  [GATE] OK   dropping all three scope legs is at least as large a move as dropping his one  — all3=21 tools-only=24
+      his SUMMARY "census-only … behavioural": 21
+  BETA
+      exit 0 | GATE true | PREDICTIONS 9 landed, 0 refuted
+      his §3 all-three row behavioural: 24
+      his §5 delta line: all three      behavioural 29 -> 24   (-5)
+      his gate on all3:  [GATE] OK   dropping all three scope legs is at least as large a move as dropping his one  — all3=24 tools-only=24
+      his SUMMARY "census-only … behavioural": 24
+  GAMMA
+      exit 0 | GATE true | PREDICTIONS 9 landed, 0 refuted
+      his §3 all-three row behavioural: null
+      his §5 delta line: all three      behavioural 29 -> null   (-29)
+      his gate on all3:  [GATE] OK   dropping all three scope legs is at least as large a move as dropping his one  — all3=null tools-only=24
+      his SUMMARY "census-only … behavioural": null
+  DELTA
+      exit 0 | GATE true | PREDICTIONS 9 landed, 0 refuted
+      his §3 all-three row behavioural: 21
+      his §5 delta line: all three      behavioural 29 -> 21   (-8)
+      his gate on all3:  [GATE] OK   dropping all three scope legs is at least as large a move as dropping his one  — all3=21 tools-only=24
+      his SUMMARY "census-only … behavioural": 21
+
+## 3. CONTROL first: did the mutations actually bite?
+
+  [GATE] OK   ALPHA reproduces his published 21 — without this, nothing below is about his figure  — censusOnly=21
+  [GATE] OK   CONTROL: BETA's all-three figure DIFFERS from ALPHA's, so BETA's mutation bit  — ALPHA 21 vs BETA 24
+  [GATE] OK   CONTROL: GAMMA's all-three figure became unreadable, so GAMMA's mutation bit  — GAMMA null
+  DELTA (incidental, not a discriminator): dropping hasCompaction on TOP of the three scope
+    legs leaves the figure at 21 — i.e. worth 0 there. This was my first BETA; my own
+    control refused it, which is the only reason this instrument has a real BETA.
+
+## 4. Does his verdict line notice?
+
+  [PRED] LANDED   ALPHA: his instrument is green and publishes 21 — expected ["true","9 landed, 0 refuted","21"], got ["true","9 landed, 0 refuted","21"]
+  [PRED] LANDED   BETA: the number published under the sentence "all three scope legs dropped" is NOT 21 — expected true, got true
+  [PRED] LANDED   BETA: …and his GATE is still true — expected "true", got "true"
+  [PRED] LANDED   BETA: …and that number is his tools-only 24, because his models: leg is worth 0 — expected "24", got "24"
+  [PRED] LANDED   BETA: …with every one of his predictions still landing — expected "9 landed, 0 refuted", got "9 landed, 0 refuted"
+  [PRED] LANDED   BETA: …and exit 0 — expected 0, got 0
+  [PRED] LANDED   GAMMA: the figure cannot be read at all, and his GATE is STILL true — expected "true", got "true"
+  [PRED] LANDED   GAMMA: …with every one of his predictions still landing — expected "9 landed, 0 refuted", got "9 landed, 0 refuted"
+  [PRED] LANDED   GAMMA: …and exit 0 — expected 0, got 0
+  [PRED] LANDED   GAMMA: …and his sole gate on all3 reports OK on a null figure — expected true, got true
+  [PRED] LANDED   DELTA: hasCompaction is worth 0 on top of the three scope legs (re-measured, not guessed) — expected "21", got "21"
+  [GATE] OK   THE DISCRIMINATOR: a wrong 21 (BETA) and an absent 21 (GAMMA) are both published green, so no leg of his instrument grades that figure  — ALPHA 21 / BETA 24 / GAMMA null, all GATE true
+  [GATE] OK   CONTROL: his instrument is not lax everywhere — ALPHA green AND the figures he does predict are the ones that moved nothing in BETA/GAMMA  — ALPHA 9 landed, 0 refuted
+
+  [GATE] OK   the cell tree was removed  — /Users/xian/Development/klatch-worktrees/theseus/.testdata/round422cells
+  [GATE] OK   docs/research/round421-instruments untouched by this drive  — (clean)
+  [GATE] OK   docs/research/round419-instruments untouched by this drive  — (clean)
+
+==============================================================================
+GATE: true
+PREDICTIONS: 14 landed, 0 refuted
+
+SUMMARY:
+  his published census-only figure, reproduced:       21
+  BETA  — cell named "all three", drops two:          24  (his GATE: true)
+  GAMMA — the same figure made unreadable:            null  (his GATE: true)
+  DELTA — incidental: +hasCompaction dropped:         21  (so that leg is worth 0 there)
+  => his 21 is reproducible but UNGRADED: his instrument publishes any value, or none, green.

@@ -1,0 +1,88 @@
+# Round 422 §3 — what his scope-label census is structurally unable to see
+
+REPO: /Users/xian/Development/klatch-worktrees/theseus
+my HEAD: 490b218f3e1222fe54591f7d78f14be36271ddcc
+his instrument from commit 5bf46753; the instrument it censuses from the working tree
+driven at: 2026-10-20T03:12:54.473Z
+
+  [GATE] OK   his instrument was extracted from his commit, non-empty  — 18549B
+  [GATE] OK   the instrument he censuses is present  — 22485B
+  [GATE] OK   a cell DIRECTORY is depth 3 under REPO
+
+## 1. Which of his ten subjects declare their pattern on their own definition line
+
+  [GATE] OK   his keyLines selector is in his source exactly once (so the pin below is on HIS key)  — occurs=1
+  his scope-label test, as it appears in his source: occurs 2x
+  [GATE] OK   his scope-label test reads a single line variable `l` and occurs more than once (§1 and the scopeKeyed re-filter)  — occurs=2
+  his census subjects: 10
+    line 219  hasStreamClass       regex literal on its own line: yes
+    line 220  hasStreamScope       regex literal on its own line: yes
+    line 221  hasBetaMessages      regex literal on its own line: yes
+    line 222  hasCompaction        regex literal on its own line: yes
+    line 223  hasToolSurface       regex literal on its own line: yes
+    line 224  hasModelsSurface     regex literal on its own line: yes
+    line 225  hasEventName         regex literal on its own line: NO  <- his line-text key is blind here
+    line 227  hasForeignSurface    regex literal on its own line: yes
+    line 229  isNonBehavioural     regex literal on its own line: yes
+    line 240  hasStreamLifecycle   regex literal on its own line: NO  <- his line-text key is blind here
+
+  subjects his line-text key cannot read: hasEventName, hasStreamLifecycle
+  [PRED] LANDED   exactly two of his ten subjects declare no regex literal on their own definition line — expected ["hasEventName","hasStreamLifecycle"], got ["hasEventName","hasStreamLifecycle"]
+  [GATE] OK   CONTROL: this key is not simply calling every subject unreadable  — 2 of 10
+  [PRED] LANDED   his own published .out reports those same two as "(built with new RegExp)" in §2 — expected true, got true
+
+## 2. His line 93/98 SCOPE_SHAPE and scopeLegs: assigned, never read
+
+  identifier SCOPE_SHAPE occurs 2x · scopeLegs occurs 1x in his source
+  [PRED] LANDED   scopeLegs is declared once and read zero times (dead) — expected 1, got 1
+  [PRED] LANDED   SCOPE_SHAPE is read only by that dead line — expected 2, got 2
+  its declaration: const SCOPE_SHAPE = /\^\\s\*\\\*\\s\+\\\*\\\*[a-z?|]+:\\\*\\\*/g;
+  [PRED] LANDED   and it is a /g literal, whose lastIndex advances across .test() calls — expected true, got true
+  a /g literal .test()ed four times on the same matching input: [true,false,true,false]
+  [PRED] LANDED   …which alternates true/false on identical input — expected [true,false,true,false], got [true,false,true,false]
+
+## 3. The same property in two positions
+
+  [GATE] OK   the hoisted-constant anchor occurs exactly once in the censused instrument  — occurs=1
+  [GATE] OK   the definition-line anchor occurs exactly once in the censused instrument  — occurs=1
+  [GATE] OK   his INSTR_REL declaration occurs exactly once in HIS source  — occurs=1
+  [GATE] OK   the two mutants differ from the original and from each other
+  [GATE] OK   [KP-HOISTED] carries the `**lifecycle:**` scope-label alternative somewhere in its source  — property present
+  [GATE] OK   [CONTROL-INLINE] carries the `**lifecycle:**` scope-label alternative somewhere in its source  — property present
+  KP-HOISTED
+      his §1 row for hasStreamLifecycle:  scope-label leg: no
+      his scope-label-keyed legs:         hasStreamScope, hasToolSurface, hasModelsSurface, isNonBehavioural
+      his own 3-leg prediction:           LANDED
+      his baseline denom/reach/behav:     191/32/29
+      exit 0 | GATE true | PREDICTIONS 9 landed, 0 refuted
+  CONTROL-INLINE
+      his §1 row for hasStreamLifecycle:  scope-label leg: YES
+      his scope-label-keyed legs:         hasStreamScope, hasToolSurface, hasModelsSurface, isNonBehavioural, hasStreamLifecycle
+      his own 3-leg prediction:           REFUTED
+      his baseline denom/reach/behav:     191/32/29
+      exit 1 | GATE true | PREDICTIONS 8 landed, 1 refuted
+
+## 4. The matrix
+
+  [GATE] OK   the scope label is inert: both subjects still produce his baseline 191/32/29, so position is the ONLY difference between the two cells  — KP 191/32/29 · CONTROL 191/32/29
+  [PRED] LANDED   KP-HOISTED: his census MISSES the property — hasStreamLifecycle still "no" — expected "no", got "no"
+  [PRED] LANDED   KP-HOISTED: …so his 3-leg prediction still LANDS — expected "LANDED", got "LANDED"
+  [PRED] LANDED   KP-HOISTED: …and his instrument is green end to end — expected ["true","9 landed, 0 refuted",0], got ["true","9 landed, 0 refuted",0]
+  [PRED] LANDED   CONTROL-INLINE: the identical property on the definition line IS caught — expected "YES", got "YES"
+  [PRED] LANDED   CONTROL-INLINE: …so his own 3-leg prediction REFUTES — expected "REFUTED", got "REFUTED"
+  [PRED] LANDED   CONTROL-INLINE: …and his instrument exits non-zero — expected true, got true
+  [GATE] OK   THE DISCRIMINATOR: the same scope-label alternative is invisible when hoisted and visible when inline, so his census keys on POSITION, not on the property it names  — hoisted:no/LANDED · inline:YES/REFUTED
+
+  [GATE] OK   the subject and cell trees were removed
+  [GATE] OK   docs/research/round421-instruments untouched by this drive  — (clean)
+  [GATE] OK   docs/research/round419-instruments untouched by this drive  — (clean)
+
+==============================================================================
+GATE: true
+PREDICTIONS: 12 landed, 0 refuted
+
+SUMMARY:
+  subjects his line-text census cannot read:  hasEventName, hasStreamLifecycle  (2 of 10)
+  property hoisted into a constant:           his census says "no", his own prediction LANDED, exit 0
+  identical property on the definition line:  his census says "YES", his own prediction REFUTED, exit 1
+  => his "three inclusion legs" is a FLOOR on the class, not a count of it.
