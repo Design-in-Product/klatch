@@ -266,7 +266,12 @@ gate('neither subject was mutated in place (every cell was a copy)', dirty === '
 // beside the published `.out`).
 const walk = (root) => (existsSync(root) ? readdirSync(root, { recursive: true, withFileTypes: true })
   .filter((d) => d.isFile()).map((d) => path.join(d.parentPath ?? d.path, d.name)) : []);
-const strays = [...walk(CELLS), ...walk(import.meta.dirname).filter((f) => /cell/i.test(path.basename(f)))];
+// The running file is excluded by its own path: when THIS instrument is itself driven as a cell of
+// a meta-grader, its entry file is named `cell.mjs` and would match the /cell/i key — the gate
+// would then be red for every copy of itself, which grades the rig and not the hygiene (Round 421).
+// Inert in the published tree, where the entry file is `grade-the-422-cures.mjs`.
+const strays = [...walk(CELLS), ...walk(import.meta.dirname)
+  .filter((f) => /cell/i.test(path.basename(f)) && f !== import.meta.filename)];
 gate('no cell file survives anywhere a cell of mine can land (walked, not `git status` — '
   + '`.testdata/` is gitignored and porcelain is blind to it)',
   strays.length === 0, strays.map((f) => path.relative(REPO, f)).join(' | ') || '(none)');

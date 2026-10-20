@@ -1,0 +1,126 @@
+# Round 425 — a crash in the A2 cell can no longer print `SEPARATES`
+
+REPO: /Users/xian/Development/klatch-worktrees/daedalus
+HEAD at open: 1dba7a08dc3a1e341bc30920ad36d7e8a5b960e1
+subject: docs/research/round423-instruments/grade-the-422-cures.mjs
+driven at: 2026-10-20T20:29:07.268Z
+
+  [GATE] OK   the subject (my Round 423 grader) is present  — docs/research/round423-instruments/grade-the-422-cures.mjs
+  [GATE] OK   the changelog fixture the subject needs is present  — /Users/xian/Development/klatch-worktrees/daedalus/.testdata/round419-sdk-changelog.md
+  [GATE] OK   a cell DIRECTORY is depth 3 under REPO  — /Users/xian/Development/klatch-worktrees/daedalus
+## 0. Expected member loss, written down before the drive
+
+  D1 new/clean      — §1 SUMMARY SEPARATES · discriminator OK · A3 gate OK · stray gate OK
+  D2 new/A2 crash   — §1 SUMMARY NOT · discriminator FAIL · A2 state `absent`, names-its-gate false
+  D3 old/A2 crash   — §1 SUMMARY SEPARATES · discriminator OK   <-- his R2, reproduced on my tree
+  D4 old/clean      — §1 SUMMARY SEPARATES · discriminator OK   <-- the un-cure alone changes nothing
+  D5 new/A3 exit 2  — A3 gate FAIL (state `absent`, refusal not named)
+  D6 old/A3 exit 2  — A3 gate OK                                 <-- his R3, reproduced on my tree
+  D7 new/leak       — walk gate FAIL, naming leaked files; `cell tree was removed` FAIL
+  D8 old/leak       — porcelain gate OK (silent) with a cell tree on disk; `removed` FAIL  <-- his R4
+
+  REVISED after the first drive, and recorded as revised rather than quietly re-predicted:
+  the first drive refuted `D1 new/no leak: walk OK` — the cured walk searched its own
+  directory for /cell/i and a cell of this grader IS named `cell.mjs`, so it reddened in all
+  eight cells, including the clean ones. That is a real flaw in the cure (it graded the rig,
+  Round 421), fixed by excluding the running file by its own path, and the leg is inert in
+  the published tree where the entry file is `grade-the-422-cures.mjs`. D1 is now OK.
+
+## 1. The cells
+
+  [GATE] OK   [D1-new-clean] anchor occurs exactly once:   ['B0-cured-control', B_SRC, []],⏎  ['B1-ga…  — occurs=1
+  D1-new-clean: exit 1 | §1 SUMMARY "SEPARATES" | disc §1 OK | A3 OK | removed OK | walk OK | porcelain null
+      inner cells left on disk afterwards: (tree gone)
+      the subject's own cell lines: exit 0 | GATE true |  ·  exit 1 | GATE false |  ·  exit 2 | GATE false |
+  [GATE] OK   [D2-new-A2-crashes] anchor occurs exactly once:   ['B0-cured-control', B_SRC, []],⏎  ['B1-ga…  — occurs=1
+  [GATE] OK   [D2-new-A2-crashes] anchor occurs exactly once: const A2_TO = 'const PRE_CURE = HEAD; // MUT…  — occurs=1
+  D2-new-A2-crashes: exit 1 | §1 SUMMARY "NOT shown to separate" | disc §1 FAIL | A3 OK | removed OK | walk OK | porcelain null
+      inner cells left on disk afterwards: (tree gone)
+      the subject's own cell lines: exit 0 | GATE true |  ·  exit 1 | GATE absent |  ·  exit 2 | GATE false |
+  [GATE] OK   [D3-old-A2-crashes] anchor occurs exactly once:   ['B0-cured-control', B_SRC, []],⏎  ['B1-ga…  — occurs=1
+  [GATE] OK   [D3-old-A2-crashes] anchor occurs exactly once: const A2_TO = 'const PRE_CURE = HEAD; // MUT…  — occurs=1
+  [GATE] OK   [D3-old-A2-crashes] anchor occurs exactly once:   !!A1 && !!A2 && A1.gateState === 'true' &&…  — occurs=1
+  [GATE] OK   [D3-old-A2-crashes] anchor occurs exactly once:   `${A1 && A2 && A1.gateState === 'true' && …  — occurs=1
+  D3-old-A2-crashes: exit 1 | §1 SUMMARY "SEPARATES" | disc §1 OK | A3 OK | removed OK | walk OK | porcelain null
+      inner cells left on disk afterwards: (tree gone)
+      the subject's own cell lines: exit 0 | GATE true |  ·  exit 1 | GATE absent |  ·  exit 2 | GATE false |
+  [GATE] OK   [D4-old-clean] anchor occurs exactly once:   ['B0-cured-control', B_SRC, []],⏎  ['B1-ga…  — occurs=1
+  [GATE] OK   [D4-old-clean] anchor occurs exactly once:   !!A1 && !!A2 && A1.gateState === 'true' &&…  — occurs=1
+  [GATE] OK   [D4-old-clean] anchor occurs exactly once:   `${A1 && A2 && A1.gateState === 'true' && …  — occurs=1
+  D4-old-clean: exit 1 | §1 SUMMARY "SEPARATES" | disc §1 OK | A3 OK | removed OK | walk OK | porcelain null
+      inner cells left on disk afterwards: (tree gone)
+      the subject's own cell lines: exit 0 | GATE true |  ·  exit 1 | GATE false |  ·  exit 2 | GATE false |
+  [GATE] OK   [D5-new-A3-exits-2] anchor occurs exactly once:   ['B0-cured-control', B_SRC, []],⏎  ['B1-ga…  — occurs=1
+  [GATE] OK   [D5-new-A3-exits-2] anchor occurs exactly once: const A3_TO = `const DEFECT_TOKEN = "ZZZ_TOK…  — occurs=1
+  D5-new-A3-exits-2: exit 1 | §1 SUMMARY "SEPARATES" | disc §1 OK | A3 FAIL | removed OK | walk OK | porcelain null
+      inner cells left on disk afterwards: (tree gone)
+      the subject's own cell lines: exit 0 | GATE true |  ·  exit 1 | GATE false |  ·  exit 2 | GATE absent |
+  [GATE] OK   [D6-old-A3-exits-2] anchor occurs exactly once:   ['B0-cured-control', B_SRC, []],⏎  ['B1-ga…  — occurs=1
+  [GATE] OK   [D6-old-A3-exits-2] anchor occurs exactly once: const A3_TO = `const DEFECT_TOKEN = "ZZZ_TOK…  — occurs=1
+  [GATE] OK   [D6-old-A3-exits-2] anchor occurs exactly once:   !!A3 && A3.exit === 2 && A3.gateState === …  — occurs=1
+  D6-old-A3-exits-2: exit 1 | §1 SUMMARY "SEPARATES" | disc §1 OK | A3 OK | removed OK | walk OK | porcelain null
+      inner cells left on disk afterwards: (tree gone)
+      the subject's own cell lines: exit 0 | GATE true |  ·  exit 1 | GATE false |  ·  exit 2 | GATE absent |
+  [GATE] OK   [D7-new-cells-leak] anchor occurs exactly once:   ['B0-cured-control', B_SRC, []],⏎  ['B1-ga…  — occurs=1
+  [GATE] OK   [D7-new-cells-leak] anchor occurs exactly once: rmSync(CELLS, { recursive: true, force: true…  — occurs=1
+  D7-new-cells-leak: exit 1 | §1 SUMMARY "SEPARATES" | disc §1 OK | A3 OK | removed FAIL | walk FAIL | porcelain null
+      inner cells left on disk afterwards: A1-cured-grader, A2-old-cell-from-HEAD, A3-token-no-rev-carries
+      the subject's own cell lines: exit 0 | GATE true |  ·  exit 1 | GATE false |  ·  exit 2 | GATE false |
+  [GATE] OK   [D8-old-cells-leak] anchor occurs exactly once:   ['B0-cured-control', B_SRC, []],⏎  ['B1-ga…  — occurs=1
+  [GATE] OK   [D8-old-cells-leak] anchor occurs exactly once: rmSync(CELLS, { recursive: true, force: true…  — occurs=1
+  [GATE] OK   [D8-old-cells-leak] anchor occurs exactly once: const strays = [...walk(CELLS), ...walk(impo…  — occurs=1
+  D8-old-cells-leak: exit 1 | §1 SUMMARY "SEPARATES" | disc §1 OK | A3 OK | removed FAIL | walk null | porcelain OK
+      inner cells left on disk afterwards: A1-cured-grader, A2-old-cell-from-HEAD, A3-token-no-rev-carries
+      the subject's own cell lines: exit 0 | GATE true |  ·  exit 1 | GATE false |  ·  exit 2 | GATE false |
+
+## 2. The readers read something — a refusing reader would make every cell below agree
+
+  [GATE] OK   [D1] the §1 SUMMARY sentence and the §1 discriminator gate were both found  — summary="SEPARATES" disc=OK
+  [GATE] OK   [D2] the §1 SUMMARY sentence and the §1 discriminator gate were both found  — summary="NOT shown to separate" disc=FAIL
+  [GATE] OK   [D3] the §1 SUMMARY sentence and the §1 discriminator gate were both found  — summary="SEPARATES" disc=OK
+  [GATE] OK   [D4] the §1 SUMMARY sentence and the §1 discriminator gate were both found  — summary="SEPARATES" disc=OK
+  [GATE] OK   [D5/D6] the A3 refusal gate was found in both  — D5=FAIL D6=OK
+  [GATE] OK   [D7] the cured walk gate was found, and the un-cured porcelain gate is absent from it  — walk=FAIL porcelain=null
+  [GATE] OK   [D8] the un-cured porcelain gate was found, and the cured walk gate is absent from it  — porcelain=OK walk=null
+
+## 3. §1 — the A2 2 × 2: can a crash still print `SEPARATES`?
+
+  [PRED] LANDED   D1 new/clean: publishes SEPARATES — expected "SEPARATES", got "SEPARATES"
+  [PRED] LANDED   D1 new/clean: §1 discriminator OK — expected "OK", got "OK"
+  [PRED] LANDED   D4 old/clean: publishes SEPARATES too — the un-cure alone moves nothing — expected "SEPARATES", got "SEPARATES"
+  [PRED] LANDED   D4 old/clean: §1 discriminator OK — expected "OK", got "OK"
+  [PRED] LANDED   D3 old/A2 crash: HIS FINDING — the old spelling prints SEPARATES for a crashed cell — expected "SEPARATES", got "SEPARATES"
+  [PRED] LANDED   D3 old/A2 crash: …and its discriminator passes — expected "OK", got "OK"
+  [PRED] LANDED   D2 new/A2 crash: the cured spelling does NOT publish SEPARATES — expected true, got true
+  [PRED] LANDED   D2 new/A2 crash: …and its discriminator FAILS — expected "FAIL", got "FAIL"
+  [GATE] OK   THE DISCRIMINATOR (§1/A2): the cure separates a crash from the cure — identical crippled tree, SEPARATES under the old spelling and NOT under the new, while the un-cure alone leaves the clean verdict untouched in both rows  — clean: new "SEPARATES" / old "SEPARATES" — crashed: new "NOT shown to separate" / old "SEPARATES"
+
+## 4. §1 — the A3 2 × 2: is an unrelated exit 2 still read as the refusal?
+
+  [PRED] LANDED   D1 new/clean: A3 gate OK — expected "OK", got "OK"
+  [PRED] LANDED   D4 old/clean: A3 gate OK — expected "OK", got "OK"
+  [PRED] LANDED   D6 old/A3 exit 2: HIS FINDING — the old spelling accepts an unrelated exit 2 — expected "OK", got "OK"
+  [PRED] LANDED   D5 new/A3 exit 2: the cured spelling FAILS it — expected "FAIL", got "FAIL"
+  [GATE] OK   THE DISCRIMINATOR (§1/A3): same crippled tree, the A3 gate passes under the old spelling and fails under the new, and both spellings pass on a clean tree  — clean: new OK / old OK — exit-2: new FAIL / old OK
+
+## 5. §2 — the stray-file 2 × 2: does the check see the tree the cells are in?
+
+  [PRED] LANDED   D7 new/leak: the walk FAILS and names the leak — expected "FAIL", got "FAIL"
+  [PRED] LANDED   D7 new/leak: …and the cell tree really was on disk when it was checked — expected true, got true
+  [PRED] LANDED   D8 old/leak: HIS FINDING — the porcelain check stays silent with a cell tree on disk — expected "OK", got "OK"
+  [PRED] LANDED   D8 old/leak: …with the same tree on disk — expected true, got true
+  [PRED] LANDED   D1 new/no leak: the walk passes when there is nothing to find — expected "OK", got "OK"
+  [GATE] OK   THE DISCRIMINATOR (§2): the same leaked cell tree is FAILED by the walk and passed by the porcelain check it replaced, and the walk still passes with no leak  — leak: walk FAIL / porcelain OK (tree ["A1-cured-grader","A2-old-cell-from-HEAD","A3-token-no-rev-carries"]) — no leak: walk OK
+
+  [GATE] OK   no cell file survives, in either cell tree or beside this instrument (walked, not `git status`)  — (none)
+  [GATE] FAIL the subject was never mutated in place (every cell was a copy)  — docs/research/round423-instruments/grade-the-422-cures.mjs | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+==============================================================================
+GATE: FALSE (the subject was never mutated in place (every cell was a copy))
+PREDICTIONS: 17 landed, 0 refuted
+
+SUMMARY:
+  §1/A2 cure (a red must name the gate that fired): SEPARATES — his R2 shape prints SEPARATES under the old spelling and is refused under the new
+  §1/A3 cure (the refusal must name itself): SEPARATES — his R3 shape passes under the old spelling and fails under the new
+  §2 cure (walk both trees instead of porcelain over docs/research): SEPARATES — his R4 shape is silent under the old spelling and named under the new

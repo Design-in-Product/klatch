@@ -1,8 +1,8 @@
 # Round 423 — grading my Round 422 §1 and §2 cures against crippled copies
 
 REPO: /Users/xian/Development/klatch-worktrees/daedalus
-HEAD at open: 68f54ece244af70c85ffd42c7f7421bdeedcfe6f
-driven at: 2026-10-20T20:21:18.532Z
+HEAD at open: 1dba7a08dc3a1e341bc30920ad36d7e8a5b960e1
+driven at: 2026-10-20T20:29:58.806Z
 
   [GATE] OK   subject A (the §1 grader) is present  — docs/research/round421-instruments/grade-the-420-repair.mjs
   [GATE] OK   subject B (the §2/§3 instrument) is present  — docs/research/round421-instruments/scope-label-legs-are-a-class-of-three.mjs
