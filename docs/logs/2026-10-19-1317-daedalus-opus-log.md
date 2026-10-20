@@ -244,3 +244,122 @@ named blocker or explicitly none:
 imported channel past the 160 000-token compaction trigger, a Haiku entity, plus a mid-stream cancel
 and a tool-use round. Both our rounds named the same blocker; Theseus offered to queue it and I said
 yes.
+
+---
+
+## 17:17–17:4x PT — STOP fire (Round 421). Three routed items: two cured, one measured and parked.
+
+**Session start, in order.** `git fetch` clean, local `0 0` against `origin/main` at `7c2208ae`.
+Read `docs/COORDINATION.md`, `docs/briefs/cross-pollination/current.md` (a pointer only — the brief
+lives in a private repo because Klatch is public), and `ls docs/mail/`.
+
+**Authorship read before a line of his content (326).** `7c2208ae` Calliope ·
+`b46e03dd`/`9b4cc981`/`e19eeef9`/`501710c3` Theseus. None mine. One memo addressed to this seat and
+unanswered at open: `theseus-to-daedalus-…-your-191-32-29-all-reproduce-and-your-old-cell-is-sourced-from-head-2026-10-19.md`,
+added in his own `9b4cc981` at 15:06 PT. Its mtime reads 17:17 — that is the wrapper's sync time,
+not a send time (326), so the commit is the provenance I used.
+
+**His three charges, all correct.**
+
+### §2 — the old cell sourced from `HEAD` (CURED, graded 2 × 2)
+
+Confirmed by reading before driving: `grade-the-417-repairs.mjs:63` is
+`const prevRev = spawnSync('git', ['-C', REPO, 'rev-parse', 'HEAD'])` — named `prevRev`, reads
+`HEAD` — and `oldThrew` at line 70 was printed by `say()` with the hazard written out as prose at
+line 72 where the gate belonged. A caveat cannot exit 1.
+
+Re-derived his whole §2 rather than quoting it. The graded file has **2 revs**; `e2759907` carries
+the defect needle and `ee37abae` does not; `791acfb3` is a descendant carrying `e2759907`'s blob
+(`37e68338` for both, checked with `rev-parse <rev>:<path>`); `ee37abae` is an ancestor of HEAD.
+So at his drive the cell read `true` by coincidence of commit ordering, and from the repair onward
+it compares the repaired spelling with itself.
+
+**Cure:** pre-repair rev derived from the defect needle (the bare-relative segment write), keyed on
+the **call shape** not the path string — his own Round 420 §1 self-correction was that a
+path-string key still matches a correctly repaired file that mentions the path, and the same trap
+was live in mine. Both directions of the needle gated (`some rev carries it` / `the newest does
+not`). `oldThrew` is now a `gate()`.
+
+**Graded over 4 cells** (`round421-instruments/grade-the-420-repair.mjs`, **GATE true, 16 landed /
+0 refuted**), because a re-read of the repaired spelling proves nothing — it would report `cleared`
+too, for the right reason, and the two are indistinguishable from the output:
+
+| cell | oldThrew | exit | charge 1 |
+|---|---|---|---|
+| A  OLD spelling, unmodified, @ HEAD | **false** | 0 | **cleared** ← the defect, vacuously green |
+| B  NEW spelling, unmodified | true | 0 | cleared |
+| C  NEW, `PRE_REPAIR` forced to `history[0]` | **false** | **1** | **NOT CLEARED** ← discriminator |
+| D  NEW, needle made non-separating | — | 1 | refuses at a precondition gate |
+
+A and C are the *same* underlying situation. The old spelling calls it `cleared`; the repaired one
+exits 1. Without C this would be decoration (356).
+
+**Repaired beyond what he asked:** the charge-1/charge-2 verdict line was keyed on a *regex over
+gate-name English* (`/cwd|SUMMARY printed|ENOENT/`). His new derivation gates would have matched
+neither charge, so the SUMMARY would have under-reported while `GATE` went false. Each gate now
+declares its charge number and the verdict keys on the declaration — the Round 411/351 shape, and I
+would rather not meet it a third time.
+
+### §3 — the scope-label leg is a class of three (MEASURED; figure decided)
+
+`round421-instruments/scope-label-legs-are-a-class-of-three.mjs` — **GATE true, 9 landed / 0
+refuted**, gated on the baseline reproducing my published **191/32/29** before any counterfactual
+is read.
+
+Cells are **mutated copies of my committed instrument, driven**, with figures read back out of
+their own output — my real key with one leg changed, never my transcription of it (408/412).
+
+His instance reproduces to the row: `tools:` scope leg dropped → **32/29 → 27/24**.
+
+Then the census of the mechanism, keyed on the bullet-scope shape over my own source (355):
+4 scope-keyed legs of 10 keys — `hasStreamScope` (its ONLY leg), `hasToolSurface` (his),
+`hasModelsSurface` (same shape, **unreported**), and `isNonBehavioural`, which I exclude from the
+charge on purpose because it is an *exclusion* and a scope label is the right evidence for "this
+entry is `docs:`". **Three inclusion legs carry the mechanism he found in one.**
+
+| leg dropped | behavioural | delta |
+|---|---|---|
+| `tools:` (his) | 24 | −5 |
+| `streaming:` | 26 | −3 |
+| `models:` | 29 | **0** |
+| all three | **21** | **−8** |
+
+`models:` is worth nothing — every row it claims is already taken by an earlier bucket or by its own
+non-scope alternatives. **Decision: I carry 29 as the published ceiling and 21 as the census-only
+ceiling. Not his 24**, which drops one of three scope legs and keeps two; it answers his question
+exactly but no stated principle picks that line out, and publishing it would import his instance as
+if it were the class. `UNMODELLED 90` remains the floor, as he said.
+
+### §4 — the `i` flag (MEASURED, deliberately NOT applied)
+
+An `i` flag on `hasEventName` moves the figure **32/29 → 33/30**. His near-miss is real.
+
+**Two of my own errors this round, both caught by gates rather than by thinking.**
+1. My cell directories were depth **4** under `.testdata/` when the instrument derives `REPO` as
+   `import.meta.dirname/../../..`. **Every cell refused.** The per-cell depth gate named it — which
+   is exactly why it is a gate and not a comment.
+2. My precedence prediction read `BUCKETS_V1`, measured `[7, 8]`, and **briefly refuted him**. The
+   refutation was mine: his claim is about the live `BUCKETS` array, which splices
+   `STREAM-LIFECYCLE` in at 7 and pushes `FOREIGN-SURFACE` to **9**. His 7-and-9 is exact. Both
+   orders are now derived from the splice in source and printed side by side (350).
+
+**Why the flag is parked:** flag + exclusion-precedence are one unit. Alone, the flag moves my
+published figure to 30 on the strength of precisely the foreign row he predicted —
+`* **api:** mark the Text Completions API as deprecated`, claimed by `STREAM-EVENT-NAME` at 7
+before its own `\bcompletions\b` exclusion at 9 is ever consulted, and `**api:**`-scoped so it
+lands behavioural. Round 422, as one change, measurement in hand and cure shape named.
+
+**Gate, measured not assumed.** `npm run typecheck` **exit 0, 0 `error TS`, 356 captured bytes** off
+`spawnSync().status`, **with a driven known positive for the `/error TS/` key in the same breath**
+(355/364 — a live 0 beside no KP is not a reading). `npm test` **not re-run and not claimed**:
+`git diff --stat 7c2208ae..HEAD -- packages scripts` is **empty**, verified in the same node call,
+and both instruments are under `docs/research/`. A pre-commit census hook ran on both commits and
+printed `census PASSED` / `CENSUS OK`.
+
+**Pushed incrementally inside the fire** rather than held to the end (fires die at 2400 s with work
+stranded): `4adcc0bf` (§2 cure + grader) and `5bf46753` (§3/§4 measurement), each verified with
+`git log --oneline -1` and a push line showing the ref move.
+
+**Drain:** bounded, per Klatch's recorded exception. Mail read on arrival and answered in the same
+fire with the work done. One deferral added, with its cause measured rather than asserted (the §4
+unit). Needs xian: still 1, the single MAXT — unchanged, nothing added to it.
