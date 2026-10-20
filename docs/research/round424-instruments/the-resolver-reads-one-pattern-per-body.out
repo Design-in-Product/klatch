@@ -1,0 +1,71 @@
+# Round 424 §3/§4 — the resolver reads one pattern per body, and his denominator under a wider key
+
+REPO: /Users/xian/Development/klatch-worktrees/theseus
+HEAD at open: 0d1ad987d34b678935671977430ba6f8362e2a37
+driven at: 2026-10-20T18:01:16.891Z
+
+  [GATE] OK   slice start anchor occurs exactly once in his file  — occurs=1
+  [GATE] OK   slice end anchor occurs exactly once in his file  — occurs=1
+  [GATE] OK   the graded instrument his resolver reads is present  — docs/research/round419-instruments/sec3-rekeyed-on-the-call-shape.mjs
+  sliced 1673 bytes of his resolver, executed as written (not re-typed)
+  [GATE] OK   the slice executes and reproduces his published subject count of 10  — 10 subjects
+  [GATE] OK   …and reproduces his published UNRESOLVED member list  — hasEventName
+
+## 1. §3 — the resolver returns on the FIRST pattern it finds
+
+  his RE_LITERAL.source: \/(?:[^/\\\n[]|\\.|\[(?:[^\]\\]|\\.)*\])+\/([a-z]*)
+  his SCOPE_IN_PATTERN.source: \^\\s\*\\\*\\s\+\\\*\\\*
+
+    line 219  hasStreamClass       literals=1  capsRef=-              inline                               scope: resolved=false anyLiteral=false
+    line 220  hasStreamScope       literals=1  capsRef=-              inline                               scope: resolved=true anyLiteral=true
+    line 221  hasBetaMessages      literals=1  capsRef=-              inline                               scope: resolved=false anyLiteral=false
+    line 222  hasCompaction        literals=1  capsRef=-              inline                               scope: resolved=false anyLiteral=false
+    line 223  hasToolSurface       literals=1  capsRef=-              inline                               scope: resolved=true anyLiteral=true
+    line 224  hasModelsSurface     literals=1  capsRef=-              inline                               scope: resolved=true anyLiteral=true
+    line 225  hasEventName         literals=0  capsRef=-              UNRESOLVED (built with new RegExp)   scope: resolved=null anyLiteral=false
+    line 227  hasForeignSurface    literals=1  capsRef=-              inline                               scope: resolved=false anyLiteral=false
+    line 229  isNonBehavioural     literals=1  capsRef=-              inline                               scope: resolved=true anyLiteral=true
+    line 240  hasStreamLifecycle   literals=0  capsRef=LIFECYCLE_RE   hoisted via LIFECYCLE_RE             scope: resolved=false anyLiteral=false
+
+  bodies carrying more than one regex literal: 0 
+  bodies carrying a literal AND a hoisted ref:  0 
+  [PRED] LANDED   the one-pattern-per-body limit is LATENT in this file, not live: zero bodies carry two patterns — expected [0,0], got [0,0]
+  [GATE] OK   so no published figure of his moves on this account — the charge is latent and is reported as latent  — 0 multi-literal, 0 literal+ref
+
+  KNOWN POSITIVE — a key in his own call shape whose scope anchor is its SECOND literal:
+    KP:      const hasKpSecondLiteral = (l) => /\bzebra\b/.test(l) || /^\s*\*\s+\*\*zebra:\*\*/.test(l);
+    CONTROL: const hasKpFirstLiteral = (l) => /^\s*\*\s+\*\*zebra:\*\*/.test(l) || /\bzebra\b/.test(l);
+  [GATE] OK   the KP injection anchor occurs exactly once: const hasStreamScope = (l) =>  — occurs=1
+  [GATE] OK   the KP injection anchor occurs exactly once: const hasStreamScope = (l) =>  — occurs=1
+    KP      → resolved "/\\bzebra\\b/"  hasScope=false
+    CONTROL → resolved "/^\\s*\\*\\s+\\*\\*zebra:\\*\\*/"  hasScope=true
+  [PRED] LANDED   KP: a scope anchor in the SECOND literal is read as NOT a scope-label leg — expected false, got false
+  [PRED] LANDED   CONTROL: the SAME two literals in the other order ARE read as a scope-label leg — expected true, got true
+  [GATE] OK   THE DISCRIMINATOR (§3): two keys with the identical pair of patterns classify differently by the ORDER of the literals — so the limit is real, and only the file`s current contents keep it latent  — KP false vs CONTROL true
+  [GATE] OK   CONTROL on the injection itself: both injected keys were actually censused as subjects  — KP found · CONTROL found
+
+## 2. §4 — his 10-subject denominator under a wider selector
+
+  his key:   10 members — hasStreamClass, hasStreamScope, hasBetaMessages, hasCompaction, hasToolSurface, hasModelsSurface, hasEventName, hasForeignSurface, isNonBehavioural, hasStreamLifecycle
+  wide key:  10 members — hasStreamClass, hasStreamScope, hasBetaMessages, hasCompaction, hasToolSurface, hasModelsSurface, hasEventName, hasForeignSurface, isNonBehavioural, hasStreamLifecycle
+  [PRED] LANDED   on the real file the two member LISTS agree exactly — his denominator of 10 survives a wider key — expected [[],[]], got [[],[]]
+
+  variant-spelled key injected into a COPY (indented, parameter named `line`):
+    const hasVariantSpelling = (line) => /^\s*\*\s+\*\*zebra:\*\*/.test(line);
+  [GATE] OK   the KP injection anchor occurs exactly once: const hasStreamScope = (l) =>  — occurs=1
+    his key  → 10 members, hasVariantSpelling present: false
+    wide key → 11 members, hasVariantSpelling present: true
+  [PRED] LANDED   his key does NOT see the variant-spelled key — expected false, got false
+  [PRED] LANDED   the wide key DOES see it — so the agreement above is a measurement, not a vacuity — expected true, got true
+  [GATE] OK   THE DISCRIMINATOR (§4): the two keys agree on the real file and DISAGREE on a copy with one variant-spelled key — so "the denominator is 10" is confirmed by a key that could have refuted it  — real: wide-only 0, his-only 0 | variant: his false, wide true
+
+  [GATE] OK   neither of his files was modified, staged or unstaged (every cell was an in-memory copy)  — (unmodified vs HEAD)
+
+==============================================================================
+GATE: true
+PREDICTIONS: 6 landed, 0 refuted
+
+SUMMARY:
+  §3 one-pattern-per-body: REAL (KP false vs CONTROL true) but LATENT here — 0 multi-literal and 0 literal+ref bodies of 10
+  §3 direction of error: can only UNDER-read scope legs, so the FLOOR of 3 stands; what it qualifies is "measured over 9 of 10 subjects"
+  §4 his denominator of 10: CONFIRMED under a wider key that is shown able to refute it
