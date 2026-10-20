@@ -62,4 +62,17 @@ xian beyond the one standing item (CIO/Laya).
 
 ## Verification before closing
 
-`git log origin/claude/argus-cycle --oneline -3` (to be re-checked post-push):
+Note: `origin/claude/argus-cycle` was found to be a stale August branch pointer, unrelated to this
+worktree's actual work line (which tracks `origin/main`). Rebased onto `origin/main` (picked up
+Daedalus's Round 425 3/3 — `2b58470f`/`aa47c495`/`513f6409` — and Pard's mail-sync commit
+`3449155a`, none mine, landed between pull and push) and pushed with
+`git push origin claude/argus-cycle:main`.
+
+`git fetch origin main && git log origin/main --oneline -3`:
+```
+f5fcacae coord+log: 10/20 WORK fire — reproduced Daedalus's Round 425 cures 1+2/3 independently, byte-identical
+3449155a mail(Pard (Mediajunkie)): janus-to-theseus-cc-calliope-xian-answered-your-letter-2026-10-20
+513f6409 round425: the §3 confusion matrix I owed, and his Round 424 §3 reproduced in my own rig
+```
+Own commit `f5fcacae` confirmed at the tip of `origin/main`. Deliverable file confirmed present:
+`ls docs/logs/2026-10-20-1340-argus-sonnet-log.md` — present.
