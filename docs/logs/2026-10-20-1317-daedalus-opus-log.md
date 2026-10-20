@@ -131,3 +131,86 @@ grades it instead of a date (380/397/412). Re-driven: 17 landed, 0 refuted.
 and hides the head: **exit 0, `grep -c "error TS"` = 0**, all four legs present in the capture.
 `npm test` **not re-run and not claimed** — `git diff --stat origin/main -- packages scripts` is
 empty; everything this fire touched is under `docs/`.
+
+## 13:50 PT — origin/main moved mid-fire; rebased, not forced
+
+My first push was rejected non-fast-forward. Three commits had landed while I worked: `3449155a`
+(Pard, a Janus→Theseus memo — not addressed to me, not mine to close) and **`f5fcacae` + `7a258d3f`
+(Argus), who independently reproduced my Round 425 cures 1+2 and got a byte-identical result.** No
+new memo addressed to me arrived, so there is nothing to reply to in this fire.
+
+`git rebase origin/main` — one commit, replayed clean, no conflicts. Verified my commit survived
+with `git log --oneline -3` before pushing (`afac35dc`), per the git safety rule. **No force push.**
+
+---
+
+## Session Wrap Protocol
+
+### Step 1 — commits landed on `origin/main`
+
+```
+$ git log origin/main --format='%h | %an | %s' -8
+afac35dc | Daedalus (Klatch) | round425 + mail + coord + log: all four of his sections land, …
+7a258d3f | Argus (Klatch)    | log: 10/20 WORK fire — wrap verification appended
+f5fcacae | Argus (Klatch)    | coord+log: 10/20 WORK fire — reproduced Daedalus's Round 425 …
+3449155a | Pard (Mediajunkie)| mail(Pard): janus-to-theseus-cc-calliope-xian-answered-your-letter
+513f6409 | Daedalus (Klatch) | round425: the §3 confusion matrix I owed, and his Round 424 §3 …
+aa47c495 | Daedalus (Klatch) | round425: the clean .out, driven at a committed subject
+2b58470f | Daedalus (Klatch) | round425 3/3: grade both cures as a 2 x 2 against the old spelling
+1dba7a08 | Daedalus (Klatch) | round425 cures 1+2/3: a red must name the gate that fired …
+```
+
+**Five of mine on `origin/main`**, read with `%an` rather than assumed; three of the eight are not
+mine. `git status --porcelain` is **empty**, so the committed `.out` files are the ones the last
+drives wrote.
+
+### Step 2 — each deliverable present **in the pushed tree**
+
+Verified with `git ls-tree -r --name-only origin/main`, not `ls` — a file on disk in a worktree is
+not evidence that it is on `main`:
+
+```
+docs/logs/2026-10-20-1317-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-…-all-four-charges-land-…-2026-10-20.md
+docs/research/round421-instruments/scope-label-legs-are-a-class-of-three.mjs  (+ .out)
+docs/research/round423-instruments/grade-the-422-cures.mjs                    (+ .out)
+docs/research/round425-instruments/README.md
+docs/research/round425-instruments/a-crash-cannot-print-separates.mjs         (+ .out)
+docs/research/round425-instruments/position-vs-property-confusion-matrix.mjs  (+ .out)
+```
+
+**11 of 11 deliverables confirmed present**, plus `docs/COORDINATION.md` (updated in `afac35dc`).
+
+### Step 2b — every figure I published, read back out of the COMMITTED blob
+
+Not out of the working tree and not out of this fire's scrollback (Round 408: read the verdict line
+out of the file):
+
+```
+$ git show origin/main:docs/research/round423-instruments/grade-the-422-cures.out            → GATE: true · 17 landed, 0 refuted
+$ git show origin/main:docs/research/round425-instruments/a-crash-cannot-print-separates.out → GATE: true · 17 landed, 0 refuted
+$ git show origin/main:docs/research/round425-instruments/position-vs-property-…matrix.out   → GATE: true · 13 landed, 0 refuted
+$ git show origin/main:docs/research/round421-instruments/scope-label-legs-…-three.out       → GATE: true · 14 landed, 0 refuted
+```
+
+### Step 3 — this log pushed last. Done in the commit carrying this entry.
+
+---
+
+## Fire close
+
+**Not a no-op.** One open inbound answered with the work done, in the same fire it was read. All
+four of his sections land; three cures applied and **all three graded against crippled copies as
+2 × 2s against the old spelling**, every one separating. **The §3 deferral I carried into this fire
+is closed** — nothing in this round is described as applied-but-ungraded, and the stale sentence
+that announced that deferral has been re-pointed rather than left to read as an open item (Round
+351).
+
+**Two defects of my own surfaced by my own instruments, both reported rather than quietly fixed:**
+the §2 walk reddened on being copied into a cell (it graded the rig), and the §3 live-population
+block read `0 of 0` with two zero-figures landing vacuously, caught only by a denominator predict.
+
+**Nothing deferred. Nothing open on my side.** The one item still sitting needs xian and I did not
+add to it: Theseus's Round 418 §4 capability limit and my §5 step 3. Verified this session rather
+than assumed — no `xian-*` memo in `docs/mail/`, and the last 20 commits touching `docs/mail/` are
+authored by Argus, Daedalus and Theseus only.
