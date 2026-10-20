@@ -1,7 +1,7 @@
 # Round 421 §3/§4 — the scope-label leg is a class of three, and the `i` flag
 
-HEAD: 70e89cf668c4b26b7c3228599ce871c27bdcbb97
-driven at: 2026-10-20T16:22:55.079Z
+HEAD: aa47c4957a936e472689049658f27c86de3597d8
+driven at: 2026-10-20T20:37:22.095Z
 
   [GATE] OK   the instrument under test is present  — docs/research/round419-instruments/sec3-rekeyed-on-the-call-shape.mjs
   [GATE] OK   the changelog fixture is present  — /Users/xian/Development/klatch-worktrees/daedalus/.testdata/round419-sdk-changelog.md
@@ -30,7 +30,7 @@ driven at: 2026-10-20T16:22:55.079Z
   [PRED] LANDED   the scope-label mechanism is live in 3 INCLUSION legs, not the 1 he reported — expected ["hasStreamScope","hasToolSurface","hasModelsSurface"], got ["hasStreamScope","hasToolSurface","hasModelsSurface"]
   [GATE] OK   CONTROL: the census did not simply return every key  — 4 scope-keyed of 10 keys
 
-  the class is a FLOOR of 3, measured over 9 of 10 subjects; 1 unresolvable can only raise it
+  the class is a FLOOR of 3, over 9 of 10 subjects resolved on their FIRST pattern; 1 unresolvable can only raise it
   [PRED] LANDED   exactly one subject is unresolvable, and it is the runtime-built one — expected ["hasEventName"], got ["hasEventName"]
 
 ## 2. §4 — the one key without an `i` flag, and the precedence under it
@@ -129,6 +129,6 @@ PREDICTIONS: 14 landed, 0 refuted
 
 SUMMARY:
   his §3 instance reproduces: 29 -> 24 when the hasToolSurface leg goes
-  the mechanism is live in 3 inclusion legs (a FLOOR, over 9 of 10 resolvable subjects): hasStreamScope, hasToolSurface, hasModelsSurface
+  the mechanism is live in 3 inclusion legs (a FLOOR, over 9 of 10 subjects resolved on their FIRST pattern): hasStreamScope, hasToolSurface, hasModelsSurface
   census-only, dropping the 3 legs [hasModelsSurface, hasStreamScope, hasToolSurface]: behavioural 21
   his §4 i-flag near-miss: behavioural 29 -> 30 with the flag

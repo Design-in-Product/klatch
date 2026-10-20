@@ -191,9 +191,17 @@ gate('CONTROL: the census did not simply return every key', keyLines.length > sc
 // the class is a CEILING. With `hasEventName` unresolvable, the honest statement is "3 of the 9
 // resolvable legs, 1 unresolvable", not "3 of 10".
 say('');
-say(`  the class is a FLOOR of ${INCLUSION_SCOPE_LEGS.length}, measured over ` +
-  `${subjects.length - unresolved.length} of ${subjects.length} subjects; ` +
-  `${unresolved.length} unresolvable can only raise it`);
+// "RESOLVED ON THEIR FIRST PATTERN", not "measured over" — his Round 424 §3, taken as a word.
+// `RE_LITERAL` is non-global and the hoisted branch is only reached when there is no inline literal
+// at all, so a body carrying two patterns is classified on its first alone: a subject can be
+// resolved and still have an unread pattern. Latent in this population (0 of 10 bodies carry two
+// literals, and 0 carry a literal beside a hoisted ref — re-measured in
+// `docs/research/round425-instruments/position-vs-property-confusion-matrix.mjs`, which also
+// reproduces the order-dependence as a known positive), and its direction can only read FEWER
+// scope legs, so the FLOOR language is unaffected. The sentence should not claim more than that.
+say(`  the class is a FLOOR of ${INCLUSION_SCOPE_LEGS.length}, over ` +
+  `${subjects.length - unresolved.length} of ${subjects.length} subjects resolved on their FIRST ` +
+  `pattern; ${unresolved.length} unresolvable can only raise it`);
 predict('exactly one subject is unresolvable, and it is the runtime-built one',
   ['hasEventName'], unresolved);
 
@@ -426,7 +434,8 @@ say('');
 say('SUMMARY:');
 say(`  his §3 instance reproduces: 29 -> ${t ? t.behavioural : '?'} when the ${t ? t.droppedLegs.join('+') : '?'} leg goes`);
 say(`  the mechanism is live in ${INCLUSION_SCOPE_LEGS.length} inclusion legs (a FLOOR, over ` +
-  `${subjects.length - unresolved.length} of ${subjects.length} resolvable subjects): ${INCLUSION_SCOPE_LEGS.join(', ')}`);
+  `${subjects.length - unresolved.length} of ${subjects.length} subjects resolved on their FIRST ` +
+  `pattern): ${INCLUSION_SCOPE_LEGS.join(', ')}`);
 // The sentence names the legs the cell MEASURABLY dropped, so a cell that drops a different set
 // cannot publish its figure in this slot (Round 422 §2 BETA).
 say(`  census-only, dropping the ${all3 ? all3.droppedLegs.length : '?'} legs ` +

@@ -1,0 +1,82 @@
+# Round 425 — position vs property: the confusion matrix the §3 cure was owed
+
+REPO: /Users/xian/Development/klatch-worktrees/daedalus
+HEAD at open: aa47c4957a936e472689049658f27c86de3597d8
+subject: docs/research/round421-instruments/scope-label-legs-are-a-class-of-three.mjs
+driven at: 2026-10-20T20:36:25.620Z
+
+## 1. The two keys, sliced out of source
+
+  [GATE] OK   the cured key sliced out of the live instrument as one contiguous region  — 19 lines, 1151 bytes
+  [GATE] OK   …and the slice carries `const resolvePattern = (body) =>`
+  [GATE] OK   …and the slice carries `const SCOPE_IN_PATTERN =`
+  [GATE] OK   …and the slice carries `const keyLines = SRC.split`
+  the subject's rev history (newest first): 6224ff56, 5bf46753
+  revs whose blob carries the position-keyed token: 5bf46753
+  PRE_CURE (derived, the OLD key's source): 5bf46753
+  [GATE] OK   a rev carries the position-keyed token (there IS an old key to grade)  — 1 of 2 revs carry it
+  [GATE] OK   the NEWEST rev does NOT carry it (the cure has landed and is committed)  — newest=6224ff56
+  [GATE] OK   the OLD key sliced out of the derived rev  — const hasScope = /\^\\s\*\\\*\\s\+\\\*\\\*/.test(l);
+  OLD key:   const hasScope = /\^\\s\*\\\*\\s\+\\\*\\\*/.test(l);
+  CURED key: resolvePattern() + SCOPE_IN_PATTERN, 19 lines as sliced
+
+## 2. Expected, written down before the cells are driven
+
+  cured key: YES · YES · no · no   — the left column agrees across rows (property-keyed)
+  old key:   YES · no  · no · no   — the hoisted/anchored cell is the one that moves
+  his §3:    both order cells carry the anchor, so a property-keyed resolver owes YES to both;
+             a first-pattern-only resolver says YES to the first and `no` to the second.
+
+## 3. The matrix
+
+  [GATE] OK   [inline + anchor] exactly one key was found by each reader (a reader that found none would make every cell below agree vacuously)  — cured 1, old 1
+  inline + anchor              cured true   old true   (property says true)   resolved: inline
+  [GATE] OK   [hoisted + anchor] exactly one key was found by each reader (a reader that found none would make every cell below agree vacuously)  — cured 1, old 1
+  hoisted + anchor             cured true   old false  (property says true)   resolved: hoisted via CELL_RE_A
+  [GATE] OK   [inline + no anchor] exactly one key was found by each reader (a reader that found none would make every cell below agree vacuously)  — cured 1, old 1
+  inline + no anchor           cured false  old false  (property says false)   resolved: inline
+  [GATE] OK   [hoisted + no anchor] exactly one key was found by each reader (a reader that found none would make every cell below agree vacuously)  — cured 1, old 1
+  hoisted + no anchor          cured false  old false  (property says false)   resolved: hoisted via CELL_RE_B
+  [GATE] OK   [two literals, anchor FIRST] exactly one key was found by each reader (a reader that found none would make every cell below agree vacuously)  — cured 1, old 1
+  two literals, anchor FIRST   cured true   old true   (property says true)   resolved: inline
+  [GATE] OK   [two literals, anchor SECOND] exactly one key was found by each reader (a reader that found none would make every cell below agree vacuously)  — cured 1, old 1
+  two literals, anchor SECOND  cured false  old true   (property says true)   resolved: inline
+
+## 4. The readings
+
+  [PRED] LANDED   cured key on `inline + anchor` answers the PROPERTY — expected true, got true
+  [PRED] LANDED   cured key on `hoisted + anchor` answers the PROPERTY — expected true, got true
+  [PRED] LANDED   cured key on `inline + no anchor` answers the PROPERTY — expected false, got false
+  [PRED] LANDED   cured key on `hoisted + no anchor` answers the PROPERTY — expected false, got false
+  [PRED] LANDED   OLD key: inline + anchor — YES — expected true, got true
+  [PRED] LANDED   OLD key: hoisted + anchor — HIS FINDING, the same property read as `no` because the literal moved — expected false, got false
+  [PRED] LANDED   OLD key: inline + no anchor — no — expected false, got false
+  [PRED] LANDED   OLD key: hoisted + no anchor — no — expected false, got false
+  [GATE] OK   THE DISCRIMINATOR (§3): the cured key agrees across POSITIONS and separates on PROPERTY, while the old key disagrees across positions on the identical property — so the cure is a property key and not a wider position key  — cured [true, true, false, false] vs old [true, false, false, false]
+  [GATE] OK   CONTROL: the cured key did not simply answer YES to everything — the no-anchor column is false in both positions
+  [GATE] OK   CONTROL: the matrix is not vacuous — the two keys DISAGREE on exactly one of the four cells  — disagree on: hoisted + anchor
+
+## 5. His Round 424 §3, reproduced rather than granted
+
+  [PRED] LANDED   two literals, anchor FIRST: the cured key says YES — expected true, got true
+  [PRED] LANDED   two literals, anchor SECOND: the cured key says `no` on the IDENTICAL pair of patterns — his finding, in my own rig — expected false, got false
+  [GATE] OK   HIS §3 REPRODUCES: the same two patterns classify differently by their order alone  — first true · second false
+  [GATE] OK   the censused population's path was sliced out of the subject  — docs/research/round419-instruments/sec3-rekeyed-on-the-call-shape.mjs
+  [GATE] OK   …and that file is readable and non-empty  — docs/research/round419-instruments/sec3-rekeyed-on-the-call-shape.mjs — 22485 bytes
+  the subject censuses: docs/research/round419-instruments/sec3-rekeyed-on-the-call-shape.mjs
+  live population (the subject's own keyLines over that file): 10 subjects
+  [GATE] OK   the population is non-empty — otherwise every figure below is 0 for the wrong reason  — 10 subjects
+  [GATE] OK   RE_LITERAL was sliced out of the subject for the per-body count  — /\/(?:[^/\\\n[]|\\.|\[(?:[^\]\\]|\\.)*\])+\/([a-z]*)/
+  literals per body: hasStreamClass=1, hasStreamScope=1, hasBetaMessages=1, hasCompaction=1, hasToolSurface=1, hasModelsSurface=1, hasEventName=0, hasForeignSurface=1, isNonBehavioural=1, hasStreamLifecycle=0
+  [PRED] LANDED   …and the population he measured it over is the one I publish — expected 10, got 10
+  [PRED] LANDED   his figure: bodies carrying more than one regex literal, live — expected 0, got 0
+  [PRED] LANDED   his figure: bodies carrying a literal AND resolving via a hoisted ref, live — expected 0, got 0
+  [GATE] OK   so his §3 is LATENT here: real in the resolver, zero instances in the live population, and its direction can only read FEWER scope legs — the FLOOR language stands  — 0 multi-literal, 0 literal+hoisted, of 10
+
+==============================================================================
+GATE: true
+PREDICTIONS: 13 landed, 0 refuted
+
+SUMMARY:
+  §3 cure (resolve the pattern instead of keying on its position): SEPARATES — property-keyed in all four cells, where the old key moved with the literal
+  his Round 424 §3 (one pattern per body): REPRODUCES in my rig, and is LATENT: 0 of 10 live instances
