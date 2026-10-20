@@ -1,0 +1,106 @@
+# Round 421 §3/§4 — the scope-label leg is a class of three, and the `i` flag
+
+HEAD: 4adcc0bf850c149feacd707b72674b303419224c
+driven at: 2026-10-20T00:27:49.568Z
+
+  [GATE] OK   the instrument under test is present  — docs/research/round419-instruments/sec3-rekeyed-on-the-call-shape.mjs
+  [GATE] OK   the changelog fixture is present  — /Users/xian/Development/klatch-worktrees/daedalus/.testdata/round419-sdk-changelog.md
+  [GATE] OK   a cell DIRECTORY is depth 3 under REPO (the instrument derives REPO from its own dirname)  — /Users/xian/Development/klatch-worktrees/daedalus
+
+## 1. The mechanism, censused from my own source
+
+  bucket-key definitions found in source: 10
+    line 219  hasStreamClass       scope-label leg: no 
+    line 220  hasStreamScope       scope-label leg: YES  (its ONLY leg)
+    line 221  hasBetaMessages      scope-label leg: no 
+    line 222  hasCompaction        scope-label leg: no 
+    line 223  hasToolSurface       scope-label leg: YES  (first of several)
+    line 224  hasModelsSurface     scope-label leg: YES  (first of several)
+    line 225  hasEventName         scope-label leg: no 
+    line 227  hasForeignSurface    scope-label leg: no 
+    line 229  isNonBehavioural     scope-label leg: YES  (its ONLY leg)
+    line 240  hasStreamLifecycle   scope-label leg: no 
+
+  scope-label-keyed legs: hasStreamScope, hasToolSurface, hasModelsSurface, isNonBehavioural
+  [PRED] LANDED   the scope-label mechanism is live in 3 INCLUSION legs, not the 1 he reported — expected ["hasStreamScope","hasToolSurface","hasModelsSurface"], got ["hasStreamScope","hasToolSurface","hasModelsSurface"]
+  [GATE] OK   CONTROL: the census did not simply return every key  — 4 scope-keyed of 10 keys
+
+## 2. §4 — the one key without an `i` flag, and the precedence under it
+
+    line 219  hasStreamClass       flags: (none)
+    line 220  hasStreamScope       flags: (none)
+    line 221  hasBetaMessages      flags: i
+    line 222  hasCompaction        flags: i
+    line 223  hasToolSurface       flags: i
+    line 224  hasModelsSurface     flags: i
+    line 225  hasEventName         flags: (built with new RegExp)
+    line 227  hasForeignSurface    flags: i
+    line 229  isNonBehavioural     flags: i
+    line 240  hasStreamLifecycle   flags: (built with new RegExp)
+
+  literal-regex keys WITHOUT an i flag: hasStreamClass, hasStreamScope
+  keys built with new RegExp (flags not visible in the literal): hasEventName, hasStreamLifecycle
+  [GATE] OK   hasEventName is built with new RegExp and carries no flags argument  — anchor found, no i flag
+
+  BUCKETS_V1 declared order: STREAM-CLASS > STREAM-SCOPE > COMPACTION > BETA-MESSAGES > TOOL-SURFACE > MODELS-SURFACE > STREAM-EVENT-NAME > FOREIGN-SURFACE > NON-BEHAVIOURAL-SCOPE
+  BUCKETS (live, used by classify) : STREAM-CLASS > STREAM-SCOPE > COMPACTION > BETA-MESSAGES > TOOL-SURFACE > MODELS-SURFACE > STREAM-EVENT-NAME > STREAM-LIFECYCLE > FOREIGN-SURFACE > NON-BEHAVIOURAL-SCOPE
+  [GATE] OK   the live order was derived from the splice in source, not assumed  — slice(0,7) inserting STREAM-LIFECYCLE
+  [PRED] LANDED   his "STREAM-EVENT-NAME at 7, FOREIGN-SURFACE at 9", read off the LIVE array (1-indexed) — expected [7,9], got [7,9]
+  [GATE] OK   the inclusion bucket really does precede the exclusion written for its rows  — 7 < 9
+
+## 3. The cells — my real key, one leg changed per cell, each driven
+
+  baseline                     denom  191 | reachable  32 | behavioural  29 | exit 0 | GATE true
+  [GATE] OK   [drop-tools-scope] anchor occurs exactly once: const hasToolSurface = (l) => /^\s*\*\s+\*\*…  — occurs=1
+  drop-tools-scope             denom  191 | reachable  27 | behavioural  24 | exit 0 | GATE true
+  [GATE] OK   [drop-models-scope] anchor occurs exactly once: const hasModelsSurface = (l) => /^\s*\*\s+\*…  — occurs=1
+  drop-models-scope            denom  191 | reachable  32 | behavioural  29 | exit 0 | GATE true
+  [GATE] OK   [drop-streaming-scope] anchor occurs exactly once: const hasStreamScope = (l) => /^\s*\*\s+\*\*…  — occurs=1
+  drop-streaming-scope         denom  191 | reachable  29 | behavioural  26 | exit 0 | GATE true
+  [GATE] OK   [drop-all-three-scope-legs] anchor occurs exactly once: const hasToolSurface = (l) => /^\s*\*\s+\*\*…  — occurs=1
+  [GATE] OK   [drop-all-three-scope-legs] anchor occurs exactly once: const hasModelsSurface = (l) => /^\s*\*\s+\*…  — occurs=1
+  [GATE] OK   [drop-all-three-scope-legs] anchor occurs exactly once: const hasStreamScope = (l) => /^\s*\*\s+\*\*…  — occurs=1
+  drop-all-three-scope-legs    denom  191 | reachable  24 | behavioural  21 | exit 0 | GATE true
+  [GATE] OK   [event-key-with-i-flag] anchor occurs exactly once: const hasEventName = (l) => [...events.keys(…  — occurs=1
+  event-key-with-i-flag        denom  191 | reachable  33 | behavioural  30 | exit 0 | GATE true
+
+## 4. Baseline reproduces my published key before any counterfactual is believed
+
+  [PRED] LANDED   my published denominator — expected 191, got 191
+  [PRED] LANDED   my published KLATCH-REACHABLE — expected 32, got 32
+  [PRED] LANDED   my published behavioural — expected 29, got 29
+  [PRED] LANDED   the baseline cell is green — expected "true", got "true"
+  [GATE] OK   the baseline reproduces 191/32/29 — without this, no cell below means anything  — 191/32/29
+
+## 5. His 27/24, and the two legs he did not report
+
+  [PRED] LANDED   his "32 -> 27 reachable" when the tools: scope leg is dropped — expected 27, got 27
+  [PRED] LANDED   his "29 -> 24 behavioural" when the tools: scope leg is dropped — expected 24, got 24
+
+  what each scope leg is worth, as a delta on the behavioural figure:
+    tools: (his)   behavioural 29 -> 24   (-5)
+    models:        behavioural 29 -> 29   (+0)
+    streaming:     behavioural 29 -> 26   (-3)
+    all three      behavioural 29 -> 21   (-8)
+  [GATE] OK   dropping all three scope legs is at least as large a move as dropping his one  — all3=21 tools-only=24
+  [GATE] OK   CONTROL: the baseline and the committed instrument agree, so the rig moves no number  — rig baseline 32
+
+## 6. §4 — what the `i` flag actually does to the figure
+
+  reachable  32 -> 33
+  behavioural 29 -> 30
+  [PRED] LANDED   an i flag on hasEventName moves the behavioural figure UP (his near-miss is real) — expected true, got true
+
+  [GATE] OK   the cell tree was removed  — /Users/xian/Development/klatch-worktrees/daedalus/.testdata/round421cells
+  [GATE] OK   the instrument under test was NOT mutated in place (every cell was a copy)  — (unmodified)
+  [GATE] OK   no cell file leaked into docs/research  — (none)
+
+==============================================================================
+GATE: true
+PREDICTIONS: 9 landed, 0 refuted
+
+SUMMARY:
+  his §3 instance reproduces: 29 -> 24 when the tools: scope leg goes
+  the mechanism is live in 3 inclusion legs: hasStreamScope, hasToolSurface, hasModelsSurface
+  census-only (all three scope legs dropped): behavioural 21
+  his §4 i-flag near-miss: behavioural 29 -> 30 with the flag
