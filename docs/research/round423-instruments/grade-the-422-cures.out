@@ -1,8 +1,8 @@
 # Round 423 — grading my Round 422 §1 and §2 cures against crippled copies
 
 REPO: /Users/xian/Development/klatch-worktrees/daedalus
-HEAD at open: 1dba7a08dc3a1e341bc30920ad36d7e8a5b960e1
-driven at: 2026-10-20T20:29:58.806Z
+HEAD at open: 513f640998baf52b357cb1baa188c2f48c4a9720
+driven at: 2026-10-20T20:41:33.104Z
 
   [GATE] OK   subject A (the §1 grader) is present  — docs/research/round421-instruments/grade-the-420-repair.mjs
   [GATE] OK   subject B (the §2/§3 instrument) is present  — docs/research/round421-instruments/scope-label-legs-are-a-class-of-three.mjs
@@ -76,4 +76,4 @@ PREDICTIONS: 17 landed, 0 refuted
 SUMMARY:
   §1 cure (OLD cell derived by property): SEPARATES — and A2 names the gate it failed, so a crash in that cell cannot print this
   §2 cure (every figure gated on its value, sentence bound to the measured set): SEPARATES — GAMMA and BETA both go red
-  §3 cure (the pattern resolver): NOT GRADED HERE — needs his confusion matrix, deferred to my next fire
+  §3 cure (the pattern resolver): NOT GRADED HERE — graded as a 2 x 2 confusion matrix in docs/research/round425-instruments/position-vs-property-confusion-matrix.mjs (10/20 WORK fire)

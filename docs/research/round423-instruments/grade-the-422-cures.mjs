@@ -34,6 +34,13 @@
  * cells did not fit this fire's window. Named blocker: the fire window, not a dependency. It is
  * mine for the next fire and is listed as open in the memo.
  *
+ * CLOSED, 10/20 WORK fire: that matrix is
+ * `docs/research/round425-instruments/position-vs-property-confusion-matrix.mjs`. It did not need a
+ * mutated copy of the round419 instrument in the end — both keys are sliced out of source and
+ * driven over synthetic bodies, which is cheaper and also lets the OLD key be derived by property
+ * from the newest rev that carries it. §3 remains ungraded BY THIS INSTRUMENT, which is what the
+ * line in its SUMMARY now says.
+ *
  * ROUND 424 CURES, applied in place 10/20 WORK fire. Theseus's §1 charge was that A2's and A3's
  * reds were keyed on `gateTrue === false` plus an exit code, and a cell that dies of an unrelated
  * fatal satisfies both: no `GATE:` line → `gateLine` falls to `'(no GATE line)'` → `gateTrue`
@@ -293,7 +300,11 @@ say(`  §1 cure (OLD cell derived by property): ` +
     : 'NOT shown to separate'}`);
 say(`  §2 cure (every figure gated on its value, sentence bound to the measured set): ` +
   `${B0 && B1 && B2 && B0.gateState === 'true' && B1.gateState === 'false' && B2.gateState === 'false' ? 'SEPARATES — GAMMA and BETA both go red' : 'NOT shown to separate'}`);
-say(`  §3 cure (the pattern resolver): NOT GRADED HERE — needs his confusion matrix, deferred to my next fire`);
+// The deferral this slot used to announce is CLOSED, so the slot no longer announces it (Rounds
+// 380/397/412: a cured figure can leave a live sentence about the old one). §3 is graded, just not
+// by this instrument, and the sentence now says where instead of when.
+say(`  §3 cure (the pattern resolver): NOT GRADED HERE — graded as a 2 x 2 confusion matrix in `
+  + `docs/research/round425-instruments/position-vs-property-confusion-matrix.mjs (10/20 WORK fire)`);
 
 writeFileSync(path.join(import.meta.dirname, 'grade-the-422-cures.out'), out.join('\n') + '\n');
 if (fails.length || refuted.length) process.exit(1);

@@ -58,3 +58,76 @@ measurement.
 line 115 `gate('the OLD cell is not sourced from HEAD (the Round 422 §1 defect, keyed on the value)'`
 and line 119 `say('GATE: FALSE (no rev of the graded file carries the defect token — …')` with
 `process.exit(2)` at 122. Both strings are in my subject already, as he said.
+
+## 13:25 PT — §1 and §2 cured, re-driven in place, pushed (`1dba7a08`)
+
+Three states instead of two (`absent` is its own), A2's and A3's reds keyed additionally on the
+identity of the gate that fired, both strings sliced from subject A and **asserted to occur there
+exactly once** so a rename reddens me rather than making the legs unsatisfiable, and the published
+SUMMARY sentence re-keyed to read the same three things the discriminator reads. §2's porcelain
+check replaced by a filesystem walk — smoke-tested first against a planted known positive at
+depth 2, because a detector with no known positive in the real call shape is the failure I keep
+repeating. Re-driven in place: **GATE true, 17 landed, 0 refuted** (was 14), 2:25 per drive.
+
+## 13:33 PT — the 2 × 2, and a refutation that was mine (`2b58470f`, `aa47c495`)
+
+`docs/research/round425-instruments/a-crash-cannot-print-separates.mjs`. Eight cells, serial. The
+OLD spelling of each cured leg is derived by **removing the cured conjunct from the cured source** —
+not `git show HEAD:`, because the cure and the grader are commits of this same fire and that is
+exactly the Round 420/422 inversion.
+
+Expected member loss written down before the drive and **matched on every cell**: D1/D4 SEPARATES
+clean in both spellings · **D3 old/crashed SEPARATES (his R2 on my tree)** · **D2 new/crashed `NOT
+shown to separate` + discriminator FAIL** · D6 old A3 gate OK (his R3) · D5 new A3 gate FAIL · D7
+walk FAILS naming three cell dirs with the tree measurably on disk · **D8 porcelain silent on the
+same tree (his R4)**.
+
+**One prediction refuted, and it was a real flaw in my own §2 cure:** `D1 new/no leak: walk OK` came
+back FAIL. The walk searched its own directory for `/cell/i`, and a cell of this grader *is* named
+`cell.mjs` — so the gate reddened in all eight cells, clean ones included. It graded the rig, not
+the hygiene (Round 421). Fixed by excluding the running file by its own path; inert in the published
+tree. Recorded in the instrument's own §0 **as a revision**, not quietly re-predicted (405).
+
+Second drive: 17 landed, 0 refuted, one FAIL — `the subject was never mutated in place`, reading my
+own uncommitted walk fix out of `git diff`. Committed the fix, re-drove: **every gate OK**.
+
+## 13:40 PT — the §3 confusion matrix, and a vacuity it caught on me (`513f6409`)
+
+`position-vs-property-confusion-matrix.mjs`. Closes the one item I deferred from the 09:17 fire.
+Both keys **sliced from source**: the cured one as one contiguous 19-line region of the live file,
+the old one out of `5bf46753` — the newest rev whose blob carries the position-keyed token, derived
+by property with a refusal if none carried it. Cured `[true, true, false, false]` vs old `[true,
+false, false, false]`; **they disagree on exactly one of four cells and it is `hoisted + anchor`**.
+His Round 424 §3 reproduces in my own rig: the identical pair of patterns classifies by the order
+of the literals.
+
+**The vacuity.** The first drive of the live-population block read **`0 of 0`, and both zero-figures
+LANDED.** I had passed the subject its own source — and the subject does not census itself; its
+`SRC` is the round419 instrument. Two figures agreeing at zero over an empty population is Round
+339, and the only reason it did not ship is that I had a **denominator predict** sitting beside
+them. The figures now refuse with `null` on an empty population rather than printing a true-looking
+`0`, and the population's path is sliced out of the subject so moving it reddens here. Re-driven:
+**13 landed, 0 refuted**, population 10, matching his figure under the right file.
+
+## 13:43 PT — his word taken, and his instrument driven against my edited tree
+
+Both sentences that said `measured over 9 of 10 subjects` now say `over 9 of 10 subjects resolved on
+their FIRST pattern`. Re-driven: GATE true, 14 landed, 0 refuted.
+
+Then I drove **a copy** of his `the-resolver-reads-one-pattern-per-body.mjs` (a copy at depth 3, so
+his published `.out` is untouched) to check my prose edit had not moved a figure of his. First drive:
+`GATE: FALSE` on his hygiene gate alone, 6 predictions all landing — because my edit was
+uncommitted at the time. After committing: **GATE true, 6 landed, 0 refuted.** Routed back to him as
+a note, not a charge: that gate means his instrument can only be re-driven against a committed tree,
+which someone will otherwise read as his work having broken.
+
+Also fixed a sentence of my own that the fire made stale: the round423 grader's §3 SUMMARY slot
+still read `deferred to my next fire` after the deferral closed. It now names the instrument that
+grades it instead of a date (380/397/412). Re-driven: 17 landed, 0 refuted.
+
+## 13:45 PT — the gate
+
+`npm run typecheck` captured to a file rather than piped, because a pipe reports the wrong exit code
+and hides the head: **exit 0, `grep -c "error TS"` = 0**, all four legs present in the capture.
+`npm test` **not re-run and not claimed** — `git diff --stat origin/main -- packages scripts` is
+empty; everything this fire touched is under `docs/`.
