@@ -179,3 +179,82 @@ the 12:33 checkpoint); three round-mail memos read in full, none addressed to
 this seat, nothing owed; gate re-derived fresh and green at every layer including
 a freshly-driven full sweep; rollup/backfill re-checked, nothing moved. Two
 consecutive checks found nothing further unblocked. Fire closed bounded.
+
+## 21:35 PT — STOP fire
+
+`git fetch origin` + `git log origin/main --oneline -5`: HEAD (`ffcf4809`)
+already matches `origin/main`, clean tree (worktree pre-synced by the wrapper).
+Re-read `docs/COORDINATION.md` and `docs/mail/` per protocol.
+
+**Drain against own 17:08 SWEEP checkpoint (`7c2208ae`):** `git log
+7c2208ae..HEAD --format='%h %an %s'` — 9 new commits, none mine: Daedalus's
+round421 chain (`4adcc0bf`, `5bf46753`, mail+coord+log `c9df9e11`,
+wrap-verification log `a902035c`), Argus's own STOP-fire no-op (`51e72113`),
+Iris's own STOP-fire no-op (`490b218f`), Theseus's round422 chain
+(mail+coord+log `e4dd8767`, wrap-verification log `ffcf4809`). `git diff --stat
+7c2208ae..HEAD -- packages/ scripts/` **empty** — the round track stayed under
+`docs/research/`, `docs/mail/`, `docs/COORDINATION.md`, and session logs. No-op
+on product.
+
+**Mail:** `grep -li "^\*\*To:\*\* Calliope\|^to:.*calliope" docs/mail/*.md`
+(excluding `read/`) — nothing. Three dated-today round-mail files sit in
+`docs/mail/`; checked each by `git log -1 --format='%h %ad' --date=format:'%H:%M'
+-- <file>` rather than assumed new: round420 (Theseus→Daedalus, `9b4cc981`
+15:06, already read in full at the 17:00 SWEEP fire, not reopened); round421
+(Daedalus→Theseus, `c9df9e11` 17:32 — after the SWEEP checkpoint, new);
+round422 (Theseus→Daedalus, `e4dd8767` 20:14 — also new). Round421 and 422
+both read in full this fire. Neither addressed to this seat (both `to:`
+each other, `cc:` this seat among others); AAXT round-track thread,
+chronicled below per the standing `log.html` recurring item, not an action
+now beyond the chronicle. All four writable cross-repo mailboxes checked via
+`find -newer`, baselined on `docs/COORDINATION.md`'s own mtime (reflects the
+most recent commit touching it): `designinproduct/docs/mail`,
+`mediajunkie/docs/mail`, `piper-morgan-product/mailboxes`, `dispatch/mail` —
+**zero files newer** in any of the four. Nothing owed from any.
+
+**Gate re-verified fresh** (diff against own last checkpoint is empty, so this
+re-derives rather than trusts either memo):
+- `npm run typecheck` — 0 `error TS` lines across all four workspaces.
+- `node scripts/sweep-probes.mjs --census` — **153 probe files, 43 swept / 110
+  deferred, CENSUS OK** — unchanged. Census only, no full drive — nothing
+  sweep-relevant changed since the 17:00 SWEEP fire's own fresh full drive.
+
+**Standing items re-checked:** rollup (`docs/operations/attention-rollup.md`)
+still v167, needs-you unchanged at 4 — read directly. Backfill unchanged
+(`ls -la backups/`, both files still Aug 4 17:11 mtime). Standing MAXT-session
+blocker (Theseus's §4 capability limit + Daedalus's §5 step 3 compaction
+check) unchanged by this round — both rounds 421 and 422 name it as still
+xian's call, not a new ask.
+
+**Mandatory `log.html` entry, due this fire — written, not lapsed.** Read all
+four round-mail memos dated today in full (419 — already archived, read for
+context; 420, 421, 422) plus the Daedalus→Argus model-landing/SDK-bump/citation
+memo, and translated the day's work into plain-language narrative: three new
+5.5 models added with a conservative offline capability floor; a
+declared-but-never-read `capabilities.compaction` flag found live, widened in
+risk by the new lightweight model; the SDK-bump blast radius re-keyed from 7
+to 29 of 191 by call shape, then to a corrected 32/29-plus-8 after a
+stream-lifecycle/abort bucket was found hiding inside the "doesn't apply"
+catch-all; an un-stamped file-count citation shown to have already silently
+drifted (200 → 212); the same before-snapshot-sourced-from-HEAD defect found
+twice in two layers — a grader, then the instrument built to grade that
+grader's own repair; a scope-label miscount shown to be three legs not one,
+with the strictest resulting count ("21") shown to be printed but ungated by
+any `predict()`; two of ten detector patterns shown invisible to the
+scanner's own position-based check; and a shared precedence lesson about an
+exclusion rule placed after the inclusions it's meant to override. Appended as
+the `2026-10-19` entry at the top of `log.html`'s entries block, newest-first.
+`docs/operations/duty-cycle/calliope-tasks.md`'s recurring-item row updated
+(`next_due` 2026-10-20, `last_completed` 2026-10-19, note describing today's
+content and sources).
+
+`docs/STATE.md` not refreshed — today's work was research-track/process-only
+plus a product-adjacent model addition already covered in the round-mail
+narrative; no roadmap-level state change to pair it with.
+
+**Drain:** mail checked (own-seat header grep + commit-diff-since-checkpoint +
+all four cross-repo mailboxes, grepped/filename-checked directly); the
+mandatory logbook entry was due this fire and was written this fire, not
+deferred; gate re-derived fresh and green at every layer; rollup/backfill/
+blocker re-checked, nothing moved. Two consecutive checks found nothing
+further unblocked. Fire closed bounded.
