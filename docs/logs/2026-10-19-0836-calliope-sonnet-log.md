@@ -117,3 +117,65 @@ work surfaced (blog drafting still held on its named angle/sequencing blocker).
 gate re-derived fresh given product code changed since START, green at every
 layer; rollup re-checked, unchanged. Two consecutive checks found nothing further
 unblocked. Fire closed bounded.
+
+## 17:00 PT — SWEEP fire
+
+Pulled `origin/main` (already up to date; worktree pre-synced). Re-read
+`docs/COORDINATION.md` and `docs/mail/` per protocol.
+
+**Drain against own 12:33 MID checkpoint (`6e9ba87e`):** `git log 6e9ba87e..HEAD
+--format='%h %an %s'` — 10 new commits, none mine: Daedalus's round419 chain
+(`791acfb3`, `ee37abae`, mail reply `83384bc0`), Argus's own WORK-fire no-op
+(`a208f278`), Daedalus's WORK-fire coord+log (`3b9f6e44`) and a rebase-record log
+(`9aa2ffca`), Theseus's round420 chain (`501710c3`, `e19eeef9`, mail+coord+log
+`9b4cc981`, wrap-verification log `b46e03dd`). `git diff --stat 6e9ba87e..HEAD --
+packages/` empty — the round-track stayed under `docs/research/` and
+`docs/mail/`/`docs/COORDINATION.md` (32 files, +3992/-26, all research instruments
+and outputs). No-op on product.
+
+**Mail:** `grep -li "^to:.*calliope" docs/mail/*.md` (excluding `read/`) — nothing.
+Three new round-mail files since the MID checkpoint, all cc this seat, none
+addressed to it: Daedalus→Argus ("both your memos answered"), Daedalus→Theseus
+(round419), Theseus→Daedalus (round420) — read in full. All three close with
+"nothing here needs xian" except the standing MAXT-session blocker both Daedalus
+and Theseus separately named as already xian's call, unchanged by this round.
+AAXT round-track thread, chronicled at STOP per the standing `log.html` recurring
+item, not an action now. All four writable cross-repo mailboxes checked fresh via
+`find -newer` baselined on the 12:33 PT checkpoint: `designinproduct/docs/mail`
+newest file 10:22 today (Coral→Janus drain-guard memo, pre-checkpoint, already
+covered) — no post-checkpoint files; `mediajunkie/docs/mail` 4 new files (PPM
+exec/cio/cxo-to-pard default-workspace-keys and CI traffic), grepped
+`klatch|calliope` — zero hits; `piper-morgan-product/mailboxes` new files are a
+#2082/#2067 closure notice fanned across lead/web/cxo/arch/pa/exec/ppm — grep hit
+only in two `MANIFEST.md` index files (historical April–June rows) and one memo
+using "Klatch2"/"Klatch3" as example project names in an unrelated feature test,
+not addressed to this project; `dispatch/mail` no new files since checkpoint.
+Nothing owed from any.
+
+**Gate re-verified fresh, including a freshly-driven full sweep:**
+- `npm run typecheck` — 0 `error TS` lines across all four workspaces.
+- `npm test -w packages/server` — **140 files / 2183 passed / 1 skipped (2184)**
+  — unchanged from MID.
+- `npm test -w packages/client` — **26 files / 333 passed / 13 skipped (346)** —
+  unchanged.
+- `node scripts/sweep-probes.mjs --census` — **153 probe files, 43 swept / 110
+  deferred, CENSUS OK** — unchanged.
+- Full driving sweep (ran in background owing to runtime, output to
+  `.scratch/sweep-sweepfire-20261019-1700.out`, gitignored) — **SWEEP PASSED, 43
+  of 43 green, 0 red, 0 blocked, 0 census problems, 110 deferred.**
+
+`git diff --cached --stat` empty before the drive (358); `git status --short`
+clean before and after.
+
+**Standing items re-checked:** rollup (`docs/operations/attention-rollup.md`)
+still v167, needs-you unchanged at 4 — read directly. Backfill unchanged
+(`ls -la backups/`, both files still Aug 4 17:11 mtime). `log.html` mandatory
+recurring row unchanged — due at today's STOP fire, not this one. Blog-series
+drafting still held on its named angle/sequencing blocker.
+
+**Drain:** mail checked (own-seat header grep + commit-diff-since-checkpoint +
+all four cross-repo mailboxes, grepped/filename-checked directly, baselined on
+the 12:33 checkpoint); three round-mail memos read in full, none addressed to
+this seat, nothing owed; gate re-derived fresh and green at every layer including
+a freshly-driven full sweep; rollup/backfill re-checked, nothing moved. Two
+consecutive checks found nothing further unblocked. Fire closed bounded.
