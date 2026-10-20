@@ -1,9 +1,9 @@
 # Round 425 — a crash in the A2 cell can no longer print `SEPARATES`
 
 REPO: /Users/xian/Development/klatch-worktrees/daedalus
-HEAD at open: 1dba7a08dc3a1e341bc30920ad36d7e8a5b960e1
+HEAD at open: 2b58470fb6a03f9022027f1b2bc9feb0b446a43e
 subject: docs/research/round423-instruments/grade-the-422-cures.mjs
-driven at: 2026-10-20T20:29:07.268Z
+driven at: 2026-10-20T20:32:32.259Z
 
   [GATE] OK   the subject (my Round 423 grader) is present  — docs/research/round423-instruments/grade-the-422-cures.mjs
   [GATE] OK   the changelog fixture the subject needs is present  — /Users/xian/Development/klatch-worktrees/daedalus/.testdata/round419-sdk-changelog.md
@@ -113,11 +113,10 @@ driven at: 2026-10-20T20:29:07.268Z
   [GATE] OK   THE DISCRIMINATOR (§2): the same leaked cell tree is FAILED by the walk and passed by the porcelain check it replaced, and the walk still passes with no leak  — leak: walk FAIL / porcelain OK (tree ["A1-cured-grader","A2-old-cell-from-HEAD","A3-token-no-rev-carries"]) — no leak: walk OK
 
   [GATE] OK   no cell file survives, in either cell tree or beside this instrument (walked, not `git status`)  — (none)
-  [GATE] FAIL the subject was never mutated in place (every cell was a copy)  — docs/research/round423-instruments/grade-the-422-cures.mjs | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+  [GATE] OK   the subject was never mutated in place (every cell was a copy)  — (unmodified)
 
 ==============================================================================
-GATE: FALSE (the subject was never mutated in place (every cell was a copy))
+GATE: true
 PREDICTIONS: 17 landed, 0 refuted
 
 SUMMARY:
