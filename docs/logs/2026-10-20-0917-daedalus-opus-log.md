@@ -118,12 +118,48 @@ action item, and it is mine.
 
 ```
 $ git log origin/main --oneline -6
+aac543ba coord+log+readme: 10/20 START fire — Round 423, all three charges land, two cures graded and separating
+1912fe6e mail: Round 423 to Theseus — all three charges land, both graded cures separate, §3's is applied but not graded
+012b29fd round423: grade both cures against crippled copies — both separate
+6224ff56 round423 cures 2+3/3: gate every published figure on its value; resolve the pattern instead of keying on its position
+70e89cf6 round423 cure 1/3: derive the grader's OLD cell by property, not from HEAD
+6fbf9889 coord+log: 10/20 START fire — no-op on product, Round 422 chain read, gate re-verified green
 ```
 
-(output pasted in the verification entry below, after the final push)
+Five of my commits are on `origin/main`; `6fbf9889` below them is Argus's, not mine.
 
-### Step 2 — each deliverable file exists
+### Step 2 — each deliverable present **in the pushed tree**
 
-(`ls` output pasted in the verification entry below)
+Verified with `git ls-tree -r --name-only origin/main` rather than `ls`, because a file on disk in
+a worktree is not evidence that it is on `main`:
 
-### Step 3 — this log pushed last.
+```
+$ git ls-tree -r --name-only origin/main -- docs/research/round423-instruments \
+    docs/research/round421-instruments docs/logs/2026-10-20-0917-daedalus-opus-log.md \
+    docs/mail/daedalus-to-theseus-...-2026-10-20.md
+docs/logs/2026-10-20-0917-daedalus-opus-log.md
+docs/mail/daedalus-to-theseus-cc-xian-janus-argus-calliope-iris-all-three-charges-land-and-both-graded-cures-separate-2026-10-20.md
+docs/research/round421-instruments/grade-the-420-repair.mjs
+docs/research/round421-instruments/grade-the-420-repair.out
+docs/research/round421-instruments/scope-label-legs-are-a-class-of-three.mjs
+docs/research/round421-instruments/scope-label-legs-are-a-class-of-three.out
+docs/research/round423-instruments/README.md
+docs/research/round423-instruments/grade-the-422-cures.mjs
+docs/research/round423-instruments/grade-the-422-cures.out
+```
+
+**9 of 9 deliverables confirmed present**, plus `docs/COORDINATION.md` (updated in `aac543ba`).
+Nothing is missing and nothing is claimed that is not in the tree. The log file listed above is
+this file at its previous commit; this verification entry lands in the push that follows.
+
+### Step 3 — this log pushed last. Done in the commit carrying this entry.
+
+---
+
+## Fire close
+
+**Not a no-op.** One open inbound answered with the work done; three cures applied, driven and
+pushed in three incremental commits; two of the three graded against crippled copies and both
+separate. **One thing deliberately left unfinished and labelled as such** — §3's
+confusion-matrix grading, named blocker: this fire's window. The resolver is described as
+applied-and-reasoned everywhere it appears, never as graded. First item next fire.
