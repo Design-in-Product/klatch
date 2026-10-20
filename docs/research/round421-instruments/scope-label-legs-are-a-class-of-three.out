@@ -1,7 +1,7 @@
 # Round 421 §3/§4 — the scope-label leg is a class of three, and the `i` flag
 
-HEAD: 4adcc0bf850c149feacd707b72674b303419224c
-driven at: 2026-10-20T00:27:49.568Z
+HEAD: 70e89cf668c4b26b7c3228599ce871c27bdcbb97
+driven at: 2026-10-20T16:22:55.079Z
 
   [GATE] OK   the instrument under test is present  — docs/research/round419-instruments/sec3-rekeyed-on-the-call-shape.mjs
   [GATE] OK   the changelog fixture is present  — /Users/xian/Development/klatch-worktrees/daedalus/.testdata/round419-sdk-changelog.md
@@ -16,14 +16,22 @@ driven at: 2026-10-20T00:27:49.568Z
     line 222  hasCompaction        scope-label leg: no 
     line 223  hasToolSurface       scope-label leg: YES  (first of several)
     line 224  hasModelsSurface     scope-label leg: YES  (first of several)
-    line 225  hasEventName         scope-label leg: no 
+    line 225  hasEventName         scope-label leg: UNRESOLVED  UNRESOLVED (built with new RegExp)
     line 227  hasForeignSurface    scope-label leg: no 
     line 229  isNonBehavioural     scope-label leg: YES  (its ONLY leg)
     line 240  hasStreamLifecycle   scope-label leg: no 
+                            ^ resolved hoisted via LIFECYCLE_RE
 
+  resolvable subjects: 9 of 10   UNRESOLVED: hasEventName
   scope-label-keyed legs: hasStreamScope, hasToolSurface, hasModelsSurface, isNonBehavioural
+  [GATE] OK   the resolver follows the hoisted identifier: hasStreamLifecycle resolves via LIFECYCLE_RE  — hoisted via LIFECYCLE_RE → hasScope=false
+  [GATE] OK   the resolver REFUSES on the runtime-built pattern rather than calling it `no`  — hasEventName → null · UNRESOLVED (built with new RegExp)
+  [GATE] OK   CONTROL: the resolver did not resolve everything to UNRESOLVED  — 1 unresolved of 10
   [PRED] LANDED   the scope-label mechanism is live in 3 INCLUSION legs, not the 1 he reported — expected ["hasStreamScope","hasToolSurface","hasModelsSurface"], got ["hasStreamScope","hasToolSurface","hasModelsSurface"]
   [GATE] OK   CONTROL: the census did not simply return every key  — 4 scope-keyed of 10 keys
+
+  the class is a FLOOR of 3, measured over 9 of 10 subjects; 1 unresolvable can only raise it
+  [PRED] LANDED   exactly one subject is unresolvable, and it is the runtime-built one — expected ["hasEventName"], got ["hasEventName"]
 
 ## 2. §4 — the one key without an `i` flag, and the precedence under it
 
@@ -33,13 +41,14 @@ driven at: 2026-10-20T00:27:49.568Z
     line 222  hasCompaction        flags: i
     line 223  hasToolSurface       flags: i
     line 224  hasModelsSurface     flags: i
-    line 225  hasEventName         flags: (built with new RegExp)
+    line 225  hasEventName         flags: UNRESOLVED   UNRESOLVED (built with new RegExp)
     line 227  hasForeignSurface    flags: i
     line 229  isNonBehavioural     flags: i
-    line 240  hasStreamLifecycle   flags: (built with new RegExp)
+    line 240  hasStreamLifecycle   flags: i   hoisted via LIFECYCLE_RE
 
-  literal-regex keys WITHOUT an i flag: hasStreamClass, hasStreamScope
-  keys built with new RegExp (flags not visible in the literal): hasEventName, hasStreamLifecycle
+  resolvable keys WITHOUT an i flag: hasStreamClass, hasStreamScope
+  keys whose pattern is UNRESOLVED (flags unreadable from source): hasEventName
+  [GATE] OK   the flag read agrees with the §1 resolver on how each pattern is obtained  — 1 unresolved here vs 1 in §1
   [GATE] OK   hasEventName is built with new RegExp and carries no flags argument  — anchor found, no i flag
 
   BUCKETS_V1 declared order: STREAM-CLASS > STREAM-SCOPE > COMPACTION > BETA-MESSAGES > TOOL-SURFACE > MODELS-SURFACE > STREAM-EVENT-NAME > FOREIGN-SURFACE > NON-BEHAVIOURAL-SCOPE
@@ -51,18 +60,31 @@ driven at: 2026-10-20T00:27:49.568Z
 ## 3. The cells — my real key, one leg changed per cell, each driven
 
   baseline                     denom  191 | reachable  32 | behavioural  29 | exit 0 | GATE true
+                              scope legs this cell actually dropped (measured from its source): (none)
   [GATE] OK   [drop-tools-scope] anchor occurs exactly once: const hasToolSurface = (l) => /^\s*\*\s+\*\*…  — occurs=1
   drop-tools-scope             denom  191 | reachable  27 | behavioural  24 | exit 0 | GATE true
+                              scope legs this cell actually dropped (measured from its source): hasToolSurface
   [GATE] OK   [drop-models-scope] anchor occurs exactly once: const hasModelsSurface = (l) => /^\s*\*\s+\*…  — occurs=1
   drop-models-scope            denom  191 | reachable  32 | behavioural  29 | exit 0 | GATE true
+                              scope legs this cell actually dropped (measured from its source): hasModelsSurface
   [GATE] OK   [drop-streaming-scope] anchor occurs exactly once: const hasStreamScope = (l) => /^\s*\*\s+\*\*…  — occurs=1
   drop-streaming-scope         denom  191 | reachable  29 | behavioural  26 | exit 0 | GATE true
+                              scope legs this cell actually dropped (measured from its source): hasStreamScope
   [GATE] OK   [drop-all-three-scope-legs] anchor occurs exactly once: const hasToolSurface = (l) => /^\s*\*\s+\*\*…  — occurs=1
   [GATE] OK   [drop-all-three-scope-legs] anchor occurs exactly once: const hasModelsSurface = (l) => /^\s*\*\s+\*…  — occurs=1
   [GATE] OK   [drop-all-three-scope-legs] anchor occurs exactly once: const hasStreamScope = (l) => /^\s*\*\s+\*\*…  — occurs=1
   drop-all-three-scope-legs    denom  191 | reachable  24 | behavioural  21 | exit 0 | GATE true
+                              scope legs this cell actually dropped (measured from its source): hasToolSurface, hasModelsSurface, hasStreamScope
   [GATE] OK   [event-key-with-i-flag] anchor occurs exactly once: const hasEventName = (l) => [...events.keys(…  — occurs=1
   event-key-with-i-flag        denom  191 | reachable  33 | behavioural  30 | exit 0 | GATE true
+                              scope legs this cell actually dropped (measured from its source): (none)
+
+  [GATE] OK   [baseline] read() returned a number for every figure this instrument publishes  — denom=191 reachable=32 behavioural=29
+  [GATE] OK   [drop-tools-scope] read() returned a number for every figure this instrument publishes  — denom=191 reachable=27 behavioural=24
+  [GATE] OK   [drop-models-scope] read() returned a number for every figure this instrument publishes  — denom=191 reachable=32 behavioural=29
+  [GATE] OK   [drop-streaming-scope] read() returned a number for every figure this instrument publishes  — denom=191 reachable=29 behavioural=26
+  [GATE] OK   [drop-all-three-scope-legs] read() returned a number for every figure this instrument publishes  — denom=191 reachable=24 behavioural=21
+  [GATE] OK   [event-key-with-i-flag] read() returned a number for every figure this instrument publishes  — denom=191 reachable=33 behavioural=30
 
 ## 4. Baseline reproduces my published key before any counterfactual is believed
 
@@ -82,7 +104,13 @@ driven at: 2026-10-20T00:27:49.568Z
     models:        behavioural 29 -> 29   (+0)
     streaming:     behavioural 29 -> 26   (-3)
     all three      behavioural 29 -> 21   (-8)
-  [GATE] OK   dropping all three scope legs is at least as large a move as dropping his one  — all3=21 tools-only=24
+  [PRED] LANDED   the streaming: scope leg dropped -> behavioural — expected 26, got 26
+  [PRED] LANDED   the models: scope leg dropped -> behavioural (the leg is worth nothing) — expected 29, got 29
+  [PRED] LANDED   all three scope legs dropped -> the census-only behavioural figure — expected 21, got 21
+  [PRED] LANDED   …and `models:` is worth exactly 0, so the figure is not a sum of three non-zero legs — expected 0, got 0
+  [GATE] OK   the census-only cell dropped exactly the inclusion scope legs §1 censused  — dropped [hasModelsSurface, hasStreamScope, hasToolSurface] vs censused [hasModelsSurface, hasStreamScope, hasToolSurface]
+  [GATE] OK   his cell dropped exactly the one leg he reported, and no other  — dropped [hasToolSurface]
+  [GATE] OK   the baseline cell dropped nothing (its figures are my published key, unmutated)  — dropped []
   [GATE] OK   CONTROL: the baseline and the committed instrument agree, so the rig moves no number  — rig baseline 32
 
 ## 6. §4 — what the `i` flag actually does to the figure
@@ -97,10 +125,10 @@ driven at: 2026-10-20T00:27:49.568Z
 
 ==============================================================================
 GATE: true
-PREDICTIONS: 9 landed, 0 refuted
+PREDICTIONS: 14 landed, 0 refuted
 
 SUMMARY:
-  his §3 instance reproduces: 29 -> 24 when the tools: scope leg goes
-  the mechanism is live in 3 inclusion legs: hasStreamScope, hasToolSurface, hasModelsSurface
-  census-only (all three scope legs dropped): behavioural 21
+  his §3 instance reproduces: 29 -> 24 when the hasToolSurface leg goes
+  the mechanism is live in 3 inclusion legs (a FLOOR, over 9 of 10 resolvable subjects): hasStreamScope, hasToolSurface, hasModelsSurface
+  census-only, dropping the 3 legs [hasModelsSurface, hasStreamScope, hasToolSurface]: behavioural 21
   his §4 i-flag near-miss: behavioural 29 -> 30 with the flag

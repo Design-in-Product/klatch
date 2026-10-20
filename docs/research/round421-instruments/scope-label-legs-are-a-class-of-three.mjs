@@ -34,6 +34,20 @@
  * (`FOREIGN-SURFACE`, keyed `\bcompletions\b`) sits at precedence 9, AFTER `STREAM-EVENT-NAME` at
  * 7 — so the row would be claimed reachable before its own exclusion is ever consulted. Both the
  * flag and the ordering are measured here.
+ *
+ * ROUND 422 §2 AND §3 — both taken, both cured in place, and both correct. Neither said a number
+ * of mine was wrong; both said an instrument of mine would have published a different number just
+ * as green, which is what makes a number unverified rather than verified.
+ *   §2  `26`, `29` and `21` were `say()`-only, and the one gate touching the census-only figure was
+ *       an inequality that `null <= 24` satisfies. All three are now `predict()`ed on their value,
+ *       every published figure is gated non-null first, and the SUMMARY sentence is bound to the
+ *       set of legs each cell MEASURABLY dropped rather than to the cell's name.
+ *   §3  the §1 census keyed on each key's DEFINITION LINE, so the two subjects that declare no
+ *       regex literal there (`hasEventName`, built at runtime; `hasStreamLifecycle`, hoisted into
+ *       `LIFECYCLE_RE`) returned `no` for any input. Replaced with one pattern RESOLVER, shared by
+ *       §1 and §2, that follows a hoisted identifier and publishes UNRESOLVED for a runtime-built
+ *       one. `3 inclusion legs` is reported as a FLOOR with its direction of error named.
+ * The dead `SCOPE_SHAPE` / `scopeLegs` pair he found is deleted, not repaired.
  */
 import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
@@ -88,23 +102,81 @@ const A_EVENT = 'const hasEventName = (l) => [...events.keys()].some((e) => new 
 say('');
 say('## 1. The mechanism, censused from my own source');
 say('');
-// A scope-label leg is one whose pattern anchors a markdown bullet with a **word:** scope. Keyed
-// on that shape over the source, so the census finds legs I did not think to list.
-const SCOPE_SHAPE = /\^\\s\*\\\*\\s\+\\\*\\\*[a-z?|]+:\\\*\\\*/g;
+// ROUND 422 §3, TAKEN. The spelling under this banner used to test each key's DEFINITION LINE for
+// the literal text `^\s*\*\s+\*\*`. Two of the ten subjects declare no regex literal on that line:
+// `hasEventName` builds its pattern at runtime from `events.keys()`, and `hasStreamLifecycle`
+// delegates to `LIFECYCLE_RE`, hoisted to the previous line. For those two, `scope-label leg: no`
+// was not a measurement — it was what the key returns for any input. He graded it as a confusion
+// matrix rather than a known positive (right, because the claim is about position and one cell
+// cannot separate position from property): with an inert `**lifecycle:**` alternative HOISTED into
+// `LIFECYCLE_RE` the census said `no` and the whole instrument was green end to end; with the
+// identical alternative INLINE it said `YES`. Position was the only difference.
+//
+// Also his, also correct, also fixed here: the two bindings that used to sit at the head of this
+// block — `SCOPE_SHAPE` (a /g literal driven by .test(), which alternates true/false on identical
+// input) and `scopeLegs` (assigned and read zero times) — were dead, and the comment above them
+// described that dead regex rather than the live looser key below it. They are gone rather than
+// repaired: the live key is the resolver.
+//
+// THE CURE, in the words I used one layer down in Round 421: key on the CALL SHAPE, not on the
+// path string. Here that means resolving each key's pattern — following a hoisted identifier to
+// its declaration — and REFUSING on a runtime-built one instead of silently calling it `no`
+// (Round 411: a terminal bucket reached by fall-through absorbs every blindness; Round 399: a
+// refusal value is not the sentinel — publish UNRESOLVED). One resolver, feeding both §1 and §2,
+// because the old spelling's §2 output already knew about these two and §1 never read it.
+const RE_LITERAL = /\/(?:[^/\\\n[]|\\.|\[(?:[^\]\\]|\\.)*\])+\/([a-z]*)/;
+const declOf = (ident) => (SRC.match(new RegExp(`^const ${ident} = (.*)$`, 'm')) || [, null])[1];
+const resolvePattern = (body) => {
+  const inline = body.match(RE_LITERAL);
+  if (inline) return { src: inline[0], flags: inline[1], how: 'inline' };
+  const ref = body.match(/\b([A-Z][A-Z0-9_]*)\s*\.test\(/);
+  if (ref) {
+    const lit = (declOf(ref[1]) || '').match(RE_LITERAL);
+    if (lit) return { src: lit[0], flags: lit[1], how: `hoisted via ${ref[1]}` };
+    return { src: null, flags: null, how: `UNRESOLVED (${ref[1]} declares no regex literal)` };
+  }
+  if (/new RegExp\(/.test(body)) return { src: null, flags: null, how: 'UNRESOLVED (built with new RegExp)' };
+  return { src: null, flags: null, how: 'UNRESOLVED (no pattern found)' };
+};
+// A scope-label leg is one whose RESOLVED pattern anchors a markdown bullet with a **word:** scope.
+const SCOPE_IN_PATTERN = /\^\\s\*\\\*\\s\+\\\*\\\*/;
 const keyLines = SRC.split('\n')
   .map((l, i) => ({ n: i + 1, l }))
   .filter(({ l }) => /^const has[A-Z]\w* = \(l\) =>/.test(l) || /^const is[A-Z]\w* = \(l\) =>/.test(l));
 say(`  bucket-key definitions found in source: ${keyLines.length}`);
-const scopeLegs = keyLines.filter(({ l }) => SCOPE_SHAPE.test(l.replace(/\\\\/g, '\\')) || /\\\*\\\*\(?\w/.test(l));
-for (const { n, l } of keyLines) {
+const subjects = keyLines.map(({ n, l }) => {
   const name = l.match(/^const (\w+)/)[1];
-  const hasScope = /\^\\s\*\\\*\\s\+\\\*\\\*/.test(l);
-  const soleLeg = hasScope && !/\|/.test(l.replace(/\(docs\|internal\|chore\|ci\|test\|build\|deps\|readme\)[^)]*/, 'X'));
-  say(`    line ${String(n).padStart(3)}  ${name.padEnd(20)} scope-label leg: ${hasScope ? 'YES' : 'no '}${hasScope ? (soleLeg ? '  (its ONLY leg)' : '  (first of several)') : ''}`);
+  const body = l.replace(/^const \w+ = \(l\) =>\s*/, '');
+  const pat = resolvePattern(body);
+  const hasScope = pat.src === null ? null : SCOPE_IN_PATTERN.test(pat.src);
+  const soleLeg = hasScope === true &&
+    !/\|/.test(pat.src.replace(/\(docs\|internal\|chore\|ci\|test\|build\|deps\|readme\)[^)]*/, 'X'));
+  return { n, name, pat, hasScope, soleLeg };
+});
+for (const s of subjects) {
+  const verdict = s.hasScope === null ? 'UNRESOLVED' : s.hasScope ? 'YES' : 'no ';
+  const note = s.hasScope === true ? (s.soleLeg ? '  (its ONLY leg)' : '  (first of several)')
+    : s.hasScope === null ? `  ${s.pat.how}` : '';
+  say(`    line ${String(s.n).padStart(3)}  ${s.name.padEnd(20)} scope-label leg: ${verdict}${note}`);
+  if (s.pat.how.startsWith('hoisted')) say(`${' '.repeat(26)}  ^ resolved ${s.pat.how}`);
 }
-const scopeKeyed = keyLines.filter(({ l }) => /\^\\s\*\\\*\\s\+\\\*\\\*/.test(l)).map(({ l }) => l.match(/^const (\w+)/)[1]);
+const unresolved = subjects.filter((s) => s.hasScope === null).map((s) => s.name);
+const scopeKeyed = subjects.filter((s) => s.hasScope === true).map((s) => s.name);
 say('');
+say(`  resolvable subjects: ${subjects.length - unresolved.length} of ${subjects.length}` +
+  `   UNRESOLVED: ${unresolved.join(', ') || '(none)'}`);
 say(`  scope-label-keyed legs: ${scopeKeyed.join(', ')}`);
+// The resolver must actually resolve the two subjects the old position key could not see, and it
+// must NOT silently bucket a runtime-built pattern as `no` (Round 411). Both directions gated.
+const byName = Object.fromEntries(subjects.map((s) => [s.name, s]));
+gate('the resolver follows the hoisted identifier: hasStreamLifecycle resolves via LIFECYCLE_RE',
+  byName.hasStreamLifecycle?.pat.how === 'hoisted via LIFECYCLE_RE' && byName.hasStreamLifecycle.hasScope === false,
+  `${byName.hasStreamLifecycle?.pat.how} → hasScope=${byName.hasStreamLifecycle?.hasScope}`);
+gate('the resolver REFUSES on the runtime-built pattern rather than calling it `no`',
+  byName.hasEventName?.hasScope === null && /new RegExp/.test(byName.hasEventName.pat.how),
+  `hasEventName → ${byName.hasEventName?.hasScope} · ${byName.hasEventName?.pat.how}`);
+gate('CONTROL: the resolver did not resolve everything to UNRESOLVED', unresolved.length < subjects.length,
+  `${unresolved.length} unresolved of ${subjects.length}`);
 // His report named one. The census finds how many there are. isNonBehavioural is scope-keyed too,
 // but it is an EXCLUSION — a scope label is the right evidence for "this entry is docs:", because
 // the claim being made there is about the changelog's own taxonomy, not about Klatch's surface.
@@ -113,21 +185,37 @@ predict('the scope-label mechanism is live in 3 INCLUSION legs, not the 1 he rep
   ['hasStreamScope', 'hasToolSurface', 'hasModelsSurface'], INCLUSION_SCOPE_LEGS);
 gate('CONTROL: the census did not simply return every key', keyLines.length > scopeKeyed.length,
   `${scopeKeyed.length} scope-keyed of ${keyLines.length} keys`);
+// The direction of error, stated rather than left implicit (Round 408: a refusing signal only
+// raises a floor, so say which end it can move). An UNRESOLVED subject can only ADD a scope leg if
+// resolved, never remove one — so 3 is a FLOOR on the class and every figure derived from dropping
+// the class is a CEILING. With `hasEventName` unresolvable, the honest statement is "3 of the 9
+// resolvable legs, 1 unresolvable", not "3 of 10".
+say('');
+say(`  the class is a FLOOR of ${INCLUSION_SCOPE_LEGS.length}, measured over ` +
+  `${subjects.length - unresolved.length} of ${subjects.length} subjects; ` +
+  `${unresolved.length} unresolvable can only raise it`);
+predict('exactly one subject is unresolvable, and it is the runtime-built one',
+  ['hasEventName'], unresolved);
 
 // --- §4: the i-flag asymmetry, read off source ------------------------------
 say('');
 say('## 2. §4 — the one key without an `i` flag, and the precedence under it');
 say('');
-const flagged = keyLines.map(({ n, l }) => {
-  const name = l.match(/^const (\w+)/)[1];
-  const re = l.match(/\/(?:[^/\\\n]|\\.)+\/([a-z]*)/);
-  return { n, name, flags: re ? re[1] : '(built with new RegExp)' };
-});
-for (const f of flagged) say(`    line ${String(f.n).padStart(3)}  ${f.name.padEnd(20)} flags: ${f.flags || '(none)'}`);
-const noI = flagged.filter((f) => !/i/.test(f.flags) && f.flags !== '(built with new RegExp)');
+// Reads the SAME resolver §1 reads. The old spelling had its own definition-line scan here, which
+// is how it came to print `(built with new RegExp)` for `hasStreamLifecycle` — hoisted, not built —
+// in a section §1 never consulted. One resolver means the two sections cannot disagree again.
+const flagged = subjects.map((s) => ({ n: s.n, name: s.name, flags: s.pat.flags, how: s.pat.how }));
+for (const f of flagged) {
+  say(`    line ${String(f.n).padStart(3)}  ${f.name.padEnd(20)} flags: ${f.flags === null ? 'UNRESOLVED' : (f.flags || '(none)')}` +
+    `${f.how === 'inline' ? '' : '   ' + f.how}`);
+}
+const noI = flagged.filter((f) => f.flags !== null && !/i/.test(f.flags));
 say('');
-say(`  literal-regex keys WITHOUT an i flag: ${noI.map((f) => f.name).join(', ') || '(none)'}`);
-say(`  keys built with new RegExp (flags not visible in the literal): ${flagged.filter((f) => f.flags === '(built with new RegExp)').map((f) => f.name).join(', ') || '(none)'}`);
+say(`  resolvable keys WITHOUT an i flag: ${noI.map((f) => f.name).join(', ') || '(none)'}`);
+say(`  keys whose pattern is UNRESOLVED (flags unreadable from source): ${flagged.filter((f) => f.flags === null).map((f) => f.name).join(', ') || '(none)'}`);
+gate('the flag read agrees with the §1 resolver on how each pattern is obtained',
+  flagged.every((f) => (f.flags === null) === (byName[f.name].hasScope === null)),
+  `${flagged.filter((f) => f.flags === null).length} unresolved here vs ${unresolved.length} in §1`);
 gate('hasEventName is built with new RegExp and carries no flags argument',
   SRC.includes(A_EVENT) && !/new RegExp\(`\\\\b\$\{e\}\\\\b`, *'i'\)/.test(SRC),
   SRC.includes(A_EVENT) ? 'anchor found, no i flag' : 'ANCHOR NOT FOUND');
@@ -205,10 +293,19 @@ const read = (text) => {
   };
 };
 
+// ROUND 422 §2, TAKEN — the half of it that is about the cell's NAME. His BETA cell left the cell
+// still *named* `drop-all-three-scope-legs` while dropping two, and my SUMMARY published its 24 in
+// the slot reserved for 21, green, because the sentence was bound to the cell's name and not to
+// what the cell did. So the dropped set is now MEASURED out of each cell's own source — which of
+// the three scope anchors survive in it — and the published sentence names the measured set and is
+// gated against the size of the class §1 censused.
+const SCOPE_ANCHORS = { hasToolSurface: A_TOOL, hasModelsSurface: A_MODELS, hasStreamScope: A_STREAM_SCOPE };
+
 const cellResults = {};
 for (const [name, pairs] of CELLS_SPEC) {
   const src = pairs.length ? mutate(SRC, pairs, name) : SRC;
   if (src === null) { say(`  ${name}: SKIPPED — anchor miss`); cellResults[name] = null; continue; }
+  const droppedLegs = Object.keys(SCOPE_ANCHORS).filter((k) => !src.includes(SCOPE_ANCHORS[k]));
   const dir = path.join(CELLS, name);
   mkdirSync(dir, { recursive: true });
   const file = path.join(dir, 'cell.mjs');
@@ -218,8 +315,26 @@ for (const [name, pairs] of CELLS_SPEC) {
   const r = spawnSync('node', [file, CHANGELOG], { cwd: dir, encoding: 'utf8', timeout: 300000 });
   const text = (r.stdout || '') + (r.stderr || '');
   const m = read(text);
-  cellResults[name] = { ...m, exit: r.status };
+  cellResults[name] = { ...m, exit: r.status, droppedLegs };
   say(`  ${name.padEnd(28)} denom ${String(m.denom).padStart(4)} | reachable ${String(m.reachable).padStart(3)} | behavioural ${String(m.behavioural).padStart(3)} | exit ${r.status} | GATE ${m.gate.slice(0, 40)}`);
+  say(`${' '.repeat(30)}scope legs this cell actually dropped (measured from its source): ${droppedLegs.join(', ') || '(none)'}`);
+}
+
+// ROUND 422 §2, the other half: `read()` returns null when its regex misses, and the one gate
+// touching the census-only figure was `all3.behavioural <= t.behavioural` — an inequality, not a
+// value. His GAMMA cell reworded the behavioural print line so `read()` missed; the expression
+// became `null <= 24`, which JavaScript coerces to `0 <= 24`, and the whole instrument published
+// `behavioural null` green. Every figure this instrument publishes is now (a) gated non-null
+// before it is read and (b) bound to a `predict()` on its VALUE (Rounds 393/395/409: refuse with
+// null, gate the figure on the key, and never print a refusable value beside a guard on identity).
+const FIGURE_CELLS = ['baseline', 'drop-tools-scope', 'drop-models-scope', 'drop-streaming-scope',
+  'drop-all-three-scope-legs', 'event-key-with-i-flag'];
+say('');
+for (const n of FIGURE_CELLS) {
+  const c = cellResults[n];
+  gate(`[${n}] read() returned a number for every figure this instrument publishes`,
+    !!c && c.denom !== null && c.reachable !== null && c.behavioural !== null,
+    c ? `denom=${c.denom} reachable=${c.reachable} behavioural=${c.behavioural}` : 'cell did not run');
 }
 
 // --- the baseline must reproduce my published figures FIRST -----------------
@@ -252,8 +367,23 @@ for (const [label, c] of [['tools: (his)', t], ['models:', mo], ['streaming:', s
   if (!c || base == null) { say(`    ${label.padEnd(14)} (cell did not run)`); continue; }
   say(`    ${label.padEnd(14)} behavioural ${base.behavioural} -> ${c.behavioural}   (${c.behavioural - base.behavioural >= 0 ? '+' : ''}${c.behavioural - base.behavioural})`);
 }
-gate('dropping all three scope legs is at least as large a move as dropping his one',
-  all3 && t && all3.behavioural <= t.behavioural, all3 && t ? `all3=${all3.behavioural} tools-only=${t.behavioural}` : 'cell missing');
+// Each of these three was `say()`-only in the spelling he graded. They are the figures the memo
+// publishes as findings, so they are predicted on their VALUE here.
+predict('the streaming: scope leg dropped -> behavioural', 26, st && st.behavioural);
+predict('the models: scope leg dropped -> behavioural (the leg is worth nothing)', 29, mo && mo.behavioural);
+predict('all three scope legs dropped -> the census-only behavioural figure', 21, all3 && all3.behavioural);
+predict('…and `models:` is worth exactly 0, so the figure is not a sum of three non-zero legs',
+  0, mo && base ? mo.behavioural - base.behavioural : null);
+// The census-only cell must have dropped the whole censused class — measured from its source, not
+// taken from its name. This is the gate his BETA cell walked through.
+gate('the census-only cell dropped exactly the inclusion scope legs §1 censused',
+  !!all3 && JSON.stringify([...all3.droppedLegs].sort()) === JSON.stringify([...INCLUSION_SCOPE_LEGS].sort()),
+  all3 ? `dropped [${[...all3.droppedLegs].sort().join(', ')}] vs censused [${[...INCLUSION_SCOPE_LEGS].sort().join(', ')}]` : 'cell missing');
+gate('his cell dropped exactly the one leg he reported, and no other',
+  !!t && JSON.stringify(t.droppedLegs) === JSON.stringify(['hasToolSurface']),
+  t ? `dropped [${t.droppedLegs.join(', ')}]` : 'cell missing');
+gate('the baseline cell dropped nothing (its figures are my published key, unmutated)',
+  !!base && base.droppedLegs.length === 0, base ? `dropped [${base.droppedLegs.join(', ')}]` : 'cell missing');
 // CONTROL: a cell that changes nothing must not move the figure — otherwise the harness, not the
 // leg, is moving numbers (Round 411: one control cannot grade two things; this one grades the rig).
 gate('CONTROL: the baseline and the committed instrument agree, so the rig moves no number',
@@ -294,9 +424,13 @@ say(`PREDICTIONS: ${preds.length - refuted.length} landed, ${refuted.length} ref
 refuted.forEach((p) => say(`  REFUTED: ${p.name} — expected ${JSON.stringify(p.expected)}, got ${JSON.stringify(p.actual)}`));
 say('');
 say('SUMMARY:');
-say(`  his §3 instance reproduces: 29 -> ${t ? t.behavioural : '?'} when the tools: scope leg goes`);
-say(`  the mechanism is live in ${INCLUSION_SCOPE_LEGS.length} inclusion legs: ${INCLUSION_SCOPE_LEGS.join(', ')}`);
-say(`  census-only (all three scope legs dropped): behavioural ${all3 ? all3.behavioural : '?'}`);
+say(`  his §3 instance reproduces: 29 -> ${t ? t.behavioural : '?'} when the ${t ? t.droppedLegs.join('+') : '?'} leg goes`);
+say(`  the mechanism is live in ${INCLUSION_SCOPE_LEGS.length} inclusion legs (a FLOOR, over ` +
+  `${subjects.length - unresolved.length} of ${subjects.length} resolvable subjects): ${INCLUSION_SCOPE_LEGS.join(', ')}`);
+// The sentence names the legs the cell MEASURABLY dropped, so a cell that drops a different set
+// cannot publish its figure in this slot (Round 422 §2 BETA).
+say(`  census-only, dropping the ${all3 ? all3.droppedLegs.length : '?'} legs ` +
+  `[${all3 ? [...all3.droppedLegs].sort().join(', ') : '?'}]: behavioural ${all3 ? all3.behavioural : '?'}`);
 say(`  his §4 i-flag near-miss: behavioural ${base ? base.behavioural : '?'} -> ${ev ? ev.behavioural : '?'} with the flag`);
 
 writeFileSync(path.join(import.meta.dirname, 'scope-label-legs-are-a-class-of-three.out'), out.join('\n') + '\n');
