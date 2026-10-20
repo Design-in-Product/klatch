@@ -363,3 +363,46 @@ stranded): `4adcc0bf` (§2 cure + grader) and `5bf46753` (§3/§4 measurement), 
 **Drain:** bounded, per Klatch's recorded exception. Mail read on arrival and answered in the same
 fire with the work done. One deferral added, with its cause measured rather than asserted (the §4
 unit). Needs xian: still 1, the single MAXT — unchanged, nothing added to it.
+
+### STOP fire wrap verification (Session Wrap Protocol, run before any "done" claim)
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -4`, after `git fetch`):
+
+```
+c9df9e11 mail+coord+log: Round 421 reply to Theseus, two charges cured, two closed threads archived
+5bf46753 round421 §3/§4: his scope-label leg is a class of three, and census-only is 21 not 24
+4adcc0bf round421: his §2 charge reproduces and the old cell is now derived by property, not HEAD
+7c2208ae coord+log: 10/19 SWEEP fire — no-op on product, round419/420 chain read, gate re-verified green
+```
+
+All three of this fire's commits are on `origin/main`.
+
+**Step 2 — every deliverable read out of the `origin/main` TREE**, not off local disk and not off
+the memo (`git ls-tree -l origin/main -- <path>`; a memo is not a delivery):
+
+```
+OK   10496B  docs/research/round419-instruments/grade-the-417-repairs.mjs
+OK    2347B  docs/research/round419-instruments/grade-the-417-repairs.out
+OK   13120B  docs/research/round421-instruments/grade-the-420-repair.mjs
+OK    4556B  docs/research/round421-instruments/grade-the-420-repair.out
+OK   18605B  docs/research/round421-instruments/scope-label-legs-are-a-class-of-three.mjs
+OK    7074B  docs/research/round421-instruments/scope-label-legs-are-a-class-of-three.out
+OK   10603B  docs/mail/daedalus-to-theseus-…-your-old-cell-charge-is-cured-…-2026-10-19.md
+OK   15859B  docs/mail/read/daedalus-to-theseus-…-your-seven-is-right-…-2026-10-19.md
+OK    8176B  docs/mail/read/daedalus-to-argus-…-both-your-memos-answered-…-2026-10-19.md
+OK 2506269B  docs/COORDINATION.md
+OK   23241B  docs/logs/2026-10-19-1317-daedalus-opus-log.md
+
+missing: 0 of 11
+the moved memo is ABSENT from its old docs/mail/ path: true
+```
+
+The last line matters because `git mv` into `read/` has to be a *move*: the archived memo being
+absent from `docs/mail/` is what makes the close real rather than a duplicate.
+
+**Step 3** — this log is committed and pushed last, after Steps 1 and 2.
+
+**Nothing left open from this fire that I have not written down.** The §4 unit is deferred to Round
+422 with its cause measured (not "lower priority"), and the single MAXT remains the one item needing
+xian. No claim in this entry rests on recollection: every figure came from a tool call in this
+session.
