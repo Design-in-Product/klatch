@@ -1,0 +1,74 @@
+# Round 423 — grading my Round 422 §1 and §2 cures against crippled copies
+
+REPO: /Users/xian/Development/klatch-worktrees/daedalus
+HEAD at open: 6224ff563534c778be488bb056867bd9cb2a2130
+driven at: 2026-10-20T16:26:03.847Z
+
+  [GATE] OK   subject A (the §1 grader) is present  — docs/research/round421-instruments/grade-the-420-repair.mjs
+  [GATE] OK   subject B (the §2/§3 instrument) is present  — docs/research/round421-instruments/scope-label-legs-are-a-class-of-three.mjs
+  [GATE] OK   the changelog fixture subject B needs is present  — /Users/xian/Development/klatch-worktrees/daedalus/.testdata/round419-sdk-changelog.md
+  [GATE] OK   a cell DIRECTORY is depth 3 under REPO  — /Users/xian/Development/klatch-worktrees/daedalus
+
+## 1. The cells — each a copy of a cured instrument with exactly one cure undone
+
+  A1-cured-grader
+      exit 0 | GATE true | 16 landed, 0 refuted
+  [GATE] OK   [A2-old-cell-from-HEAD] anchor occurs exactly once: const PRE_CURE = gradedCarriers.length ? gradedC…  — occurs=1
+  A2-old-cell-from-HEAD
+      exit 1 | GATE FALSE | 15 landed, 1 refuted
+      GATE: FALSE (the OLD cell is not sourced from HEAD (the Round 422 §1 defect, keyed on the value); OLD and NEW differ (there is something to grade); the defe
+  [GATE] OK   [A3-token-no-rev-carries] anchor occurs exactly once: const DEFECT_TOKEN = "const prevRev = spawnSync(…  — occurs=1
+  A3-token-no-rev-carries
+      exit 2 | GATE FALSE | null landed, null refuted
+      GATE: FALSE (no rev of the graded file carries the defect token — the OLD cell is unobtainable)
+  B0-cured-control
+      exit 0 | GATE true | 14 landed, 0 refuted
+       census-only, dropping the 3 legs [hasModelsSurface, hasStreamScope, hasToolSurface]: behavioural 21
+  [GATE] OK   [B1-gamma-read-misses] anchor occurs exactly once: const b = text.match(/of which behavioural \(not…  — occurs=1
+  B1-gamma-read-misses
+      exit 1 | GATE FALSE | 8 landed, 6 refuted
+      GATE: FALSE ([baseline] read() returned a number for every figure this instrument publishes; [drop-tools-scope] read() returned a number for every figure th
+       census-only, dropping the 3 legs [hasModelsSurface, hasStreamScope, hasToolSurface]: behavioural null
+  [GATE] OK   [B2-beta-named-three-drops-two] anchor occurs exactly once:   ['drop-all-three-scope-legs', [[A_TOOL, TOOL_N…  — occurs=1
+  B2-beta-named-three-drops-two
+      exit 1 | GATE FALSE | 13 landed, 1 refuted
+      GATE: FALSE (the census-only cell dropped exactly the inclusion scope legs §1 censused)
+       census-only, dropping the 2 legs [hasModelsSurface, hasToolSurface]: behavioural 24
+
+## 2. §1 — the OLD cell derived by property vs sourced from HEAD
+
+  [PRED] LANDED   A1: the cured grader is green at a HEAD past its own cure — expected true, got true
+  [PRED] LANDED   A1: …exit 0 — expected 0, got 0
+  [PRED] LANDED   A1: …with its published prediction count — expected 16, got 16
+  [PRED] LANDED   A2: restoring the HEAD-sourced OLD cell makes the grader REFUSE — expected false, got false
+  [PRED] LANDED   A2: …exit 1 — expected 1, got 1
+  [PRED] LANDED   A3: a token no rev carries refuses at the derivation, rather than falling back to HEAD — expected 2, got 2
+  [GATE] OK   THE DISCRIMINATOR (§1): the same tree is green under the derived OLD cell and RED under the HEAD-sourced one — so the cure is load-bearing, not decoration  — A1(gate true, exit 0) vs A2(gate false, exit 1)
+  [GATE] OK   the refusal is a refusal and not a different green: A3 exits 2 at the precondition  — exit 2, gate false
+
+## 3. §2 — his GAMMA and BETA, re-driven against the cured spelling
+
+  [PRED] LANDED   B0 CONTROL: the cured instrument is green in this same rig — expected true, got true
+  [PRED] LANDED   B0: …exit 0 — expected 0, got 0
+  [PRED] LANDED   B0: …with its published prediction count — expected 14, got 14
+  [PRED] LANDED   B1 GAMMA: a read() miss is now caught — GATE FALSE, not a green `all3=null` — expected false, got false
+  [PRED] LANDED   B1: …exit 1 — expected 1, got 1
+  [PRED] LANDED   B1: …and the value predicts REFUTE rather than being absent — expected true, got true
+  [PRED] LANDED   B2 BETA: a cell named for three legs that drops two is now caught — expected false, got false
+  [PRED] LANDED   B2: …exit 1 — expected 1, got 1
+  [GATE] OK   THE DISCRIMINATOR (§2): B0 green beside B1 and B2 red, same rig, same fixtures, same drive — so the two reds are the cripplings and not my tree  — B0 true | B1 false | B2 false
+  [GATE] OK   the cured SUMMARY sentence tells on the BETA cell: it names 2 legs, not 3  — census-only, dropping the 2 legs [hasModelsSurface, hasToolSurface]: behavioural 24
+  [GATE] OK   …and the control`s sentence still names 3  — census-only, dropping the 3 legs [hasModelsSurface, hasStreamScope, hasToolSurface]: behavioural 21
+
+  [GATE] OK   the cell tree was removed  — /Users/xian/Development/klatch-worktrees/daedalus/.testdata/round423cells
+  [GATE] OK   neither subject was mutated in place (every cell was a copy)  — (unmodified)
+  [GATE] OK   no cell file leaked into docs/research  — (none)
+
+==============================================================================
+GATE: true
+PREDICTIONS: 14 landed, 0 refuted
+
+SUMMARY:
+  §1 cure (OLD cell derived by property): SEPARATES
+  §2 cure (every figure gated on its value, sentence bound to the measured set): SEPARATES — GAMMA and BETA both go red
+  §3 cure (the pattern resolver): NOT GRADED HERE — needs his confusion matrix, deferred to my next fire
