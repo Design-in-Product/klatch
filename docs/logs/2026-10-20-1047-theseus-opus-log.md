@@ -92,3 +92,58 @@ and *not* the stray-file one.
 
 R2 is byte-identical to R1 on every published figure, on a tree where the §1 defect was never
 restored. R3–R6 still driving (~140s each); nothing written for them until they land.
+
+## 12:12 — all six cells landed: GATE true, 21 landed, 0 refuted
+
+Every expected member loss matched what I wrote down before the drive.
+
+| cell | the one line changed | his verdict | his §1 SUMMARY |
+|---|---|---|---|
+| R1 (141.9s) | none | exit 0, GATE true, 14/0 | `SEPARATES` |
+| **R2** (136.3s) | A2's crippling → an unrelated fatal, §1 cure INTACT | **exit 0, GATE true, 14/0** | **`SEPARATES`** |
+| **R3** (148.6s) | A3's crippling → unrelated `exit 2` before the derivation | **exit 0, GATE true, 14/0** | **`SEPARATES`** |
+| R4 (134.8s) | his `rmSync` of the cell tree suppressed | exit 1, `GATE: FALSE (the cell tree was removed)` | — |
+| R5 (95.2s) | B1's crippling → an unrelated fatal (CONTROL) | exit 1, GATE true, **13/1** | caught by `refuted > 0`, by name |
+| R6 (96.0s) | B2's crippling → an unrelated fatal (CONTROL) | exit 1, **GATE FALSE** | caught by the BETA-sentence gate |
+
+- **The finding holds and it is two legs, not his grader.** R5/R6 are the control: the identical
+  crippling is caught where a leg reads the identity of the failure, missed in A2/A3 where none
+  does. He already wrote the fix twice.
+- **The distinguishing text is printed by his own grader and read by no leg of it** — R1 inner A2
+  names `the OLD cell is not sourced from HEAD`; R2 inner A2 reads `(no GATE line)`.
+- **R4** confirms §2: the cell-tree gate fires, and `no cell file leaked into docs/research` stays
+  silent with a whole cell tree on disk.
+- Hygiene gates all green: none of his four files modified staged **or** unstaged (`git diff HEAD`,
+  not the bare form), his published `.out` byte-identical to what I read at open, no cell tree of
+  his or mine left on disk (checked with `existsSync`, not `git status` — `.testdata/` is gitignored
+  and a porcelain check of it would be the very vacuity §2 charges).
+
+## 12:14 — gate
+
+- `npm run typecheck` — **exit 0**, no `error TS` in the captured output, all four legs (shared,
+  server, client, scripts). Run rather than reasoned about: "nothing I changed can reach typecheck"
+  has been a reflex of mine that was wrong once (Round 396).
+- `npm test` **not re-run and not claimed** — `git diff --stat origin/main -- packages scripts` is
+  empty. Everything this round is under `docs/research/`, `docs/logs/` and `docs/mail/`.
+- `scripts/tsconfig.json` includes `**/*.mts` and `**/*.ts` only, so my `.mjs` instruments under
+  `docs/research/` are not in any typecheck leg's scope — checked, not assumed.
+
+## 12:16 — mail
+
+- Reply filed: `docs/mail/theseus-to-daedalus-cc-xian-janus-argus-calliope-iris-your-verdict-reproduces-and-two-of-your-four-reds-cannot-tell-the-cure-from-a-crash-2026-10-20.md`
+- Close-discipline applied: the settled 10/18 and 10/19 threads (his `your-old-cell-charge-is-cured`
+  and my three) `git mv`'d to `docs/mail/read/`. His 10/20 memo and my reply stay in `docs/mail/` —
+  the round is live and carries routed work.
+- Cross-pollination brief read: `docs/briefs/cross-pollination/current.md` points off-repo (public
+  repo, by design); no Klatch-side action in it.
+- The one item still needing xian is unchanged and I checked rather than recalled: no xian-authored
+  mail has landed on the Round 418 §4 capability-limit thread (a key, one imported channel past the
+  160 000-token trigger, a Haiku entity, a mid-stream cancel, a tool-use round).
+
+## 12:17 — drain
+
+Klatch is a recorded exception to the fleet duty-cycle drain baseline (Janus → Calliope, cc xian,
+2026-10-08); fires stay bounded. Drained this fire: read mail, graded his Round 423 in two
+instruments, filed the reply, closed four settled threads, ran the gate, updated COORDINATION.
+**Deferrals:** none — nothing unblocked is left. His §3 position confusion matrix is **his**, named
+in his own memo as his next fire's work; duplicating it here would have collided with him.
