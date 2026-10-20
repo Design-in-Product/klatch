@@ -141,6 +141,47 @@ past the 160 000-token trigger, a Haiku entity, a mid-stream cancel, a tool-use 
 this session: no xian-authored memo in `docs/mail/`, and the last 20 commits touching `docs/mail/`
 are Argus, Daedalus, Theseus and one by Pard.
 
-## Wrap verification
+## 15:09 — wrap verification
 
-(Appended below after Steps 1–3 of the Session Wrap Protocol.)
+**Step 1 — commits on the remote.** `git log origin/main --format='%h %an %s' -5`:
+
+```
+cefd7e7c Theseus (Klatch) coord+log+mail: 10/20 WORK fire — Round 426 graded and published, Janus thread closed
+e2341eac Theseus (Klatch) mail(Daedalus): Round 426 — all three cures land; three of four published sentences are keyed on a subset of their own discriminator
+d7c330c6 Theseus (Klatch) round426 2/2: a constant re-typed out of another file is not a pin, plus the README
+5f91a5dd Theseus (Klatch) round426 1/2: his published sentences are keyed on a subset of their own discriminators
+abc14247 Daedalus (Klatch) log: 10/20 WORK fire — Round 425 wrap verification, 11 of 11 deliverables and all four figures read out of the committed blobs
+```
+
+All four of this fire's commits are mine by `%an` and are on `origin/main`.
+
+**Step 2 — deliverables, listed with `git ls-tree -r origin/main` rather than `ls` of the working
+tree, so the check reads the pushed tree.** 8 of 8 present:
+
+```
+docs/logs/2026-10-20-1447-theseus-opus-log.md
+docs/mail/read/janus-to-theseus-cc-calliope-xian-answered-your-letter-2026-10-20.md
+docs/mail/theseus-to-daedalus-cc-xian-janus-argus-calliope-iris-all-three-cures-land-…-2026-10-20.md
+docs/research/round426-instruments/README.md
+docs/research/round426-instruments/a-published-sentence-is-not-its-discriminator.mjs
+docs/research/round426-instruments/a-published-sentence-is-not-its-discriminator.out
+docs/research/round426-instruments/a-retyped-constant-from-another-file-is-not-a-pin.mjs
+docs/research/round426-instruments/a-retyped-constant-from-another-file-is-not-a-pin.out
+```
+
+The closed Janus memo appears only under `docs/mail/read/` — the `git mv` landed as a move, not a
+copy.
+
+**Both figures read out of the committed blobs**, not the working tree
+(`git show origin/main:<path>`):
+
+- `a-published-sentence-is-not-its-discriminator.out` — `GATE: true` · `PREDICTIONS: 11 landed, 0 refuted`
+- `a-retyped-constant-from-another-file-is-not-a-pin.out` — `GATE: true` · `PREDICTIONS: 9 landed, 0 refuted`
+
+**Cross-repo delivery verified at the remote, not in the memo:** `git -C …/dispatch log origin/main`
+shows `b8ccfb1 mail(xian, cc Janus): Theseus replies to xian's answer on the recurrence letter`, so
+`mail/reply-theseus-2026-10-20-shared-discovery-or-caught-out.md` is on `mediajunkie/dispatch`'s
+`main`, not only committed locally.
+
+**Not run and not claimed:** `npm test`, `npm run typecheck`. Nothing this fire touched `packages/`
+or `scripts/` — `git diff --stat origin/main -- packages scripts` was empty at open and at close.
