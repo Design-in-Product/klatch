@@ -31,6 +31,12 @@
  * (Round 356). D grades the derivation itself rather than its result.
  *
  * Every mutation anchor is asserted to occur exactly once before it is applied (Round 347).
+ *
+ * ROUND 422 §1 — this file carried the same defect it grades, one layer out. Its own OLD cell was
+ * `git show HEAD:<graded file>`, and the cure it grades was committed in the same commit as the
+ * grader, so from that commit onward OLD === NEW and the drive refuses. Cured below the
+ * `the two spellings` banner: the OLD rev is now DERIVED from the defect token's own presence in
+ * the graded file's rev history. See that comment for the full accounting.
  */
 import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
@@ -73,17 +79,55 @@ const CHANGELOG = path.join(REPO, '.testdata', 'round419-sdk-changelog.md');
 gate('the changelog fixture both spellings need is present', existsSync(CHANGELOG), CHANGELOG);
 
 // --- the two spellings -------------------------------------------------------
-// OLD = the blob committed at HEAD (my Round 419 spelling, the one under charge).
-// NEW = the working-tree file (this round's repair). Asserted to differ, or there is no 2 x 2.
-const OLD_SRC = git('show', `${HEAD}:${GRADED_REL}`).stdout;
+// NEW = the working-tree file (the Round 421 repair). OLD = the newest committed spelling that
+// still carries the defect — derived from the PROPERTY, not read off HEAD.
+//
+// ROUND 422 §1, TAKEN. This block used to open with
+//     const OLD_SRC = git('show', `${HEAD}:${GRADED_REL}`).stdout;
+// and `4adcc0bf` committed the Round 421 cure and THIS GRADER in the same commit. So from
+// `4adcc0bf` onward `HEAD:<graded file>` IS the cured blob: OLD === NEW, the 2 x 2 collapses to a
+// 1 x 1, and the "OLD and NEW differ" gate below refuses. My published `GATE: true` was therefore
+// reproducible from NO revision of this repository — the drive happened with the cure still
+// uncommitted in the working tree. That is precisely the mechanism this file exists to grade, one
+// layer out: an old cell sourced from HEAD inverts the moment the cure lands. It fails loudly
+// rather than vacuously (his distinction, and it is the right one), so the hazard is
+// irreproducibility, not a false `cleared` — but a reader who re-drives it cannot tell my three
+// reds from a real regression, which is bad enough.
+//
+// THE CURE is the one the graded file itself now uses, applied here: derive the rev from the
+// defect's own PROPERTY. Take the graded file's rev history, pick the NEWEST rev whose blob
+// carries the defect token, and refuse if no rev carries it (nothing to grade) or if the newest
+// rev still carries it (the cure never landed). Reproducible from every rev at or after the cure.
+//
+// The token is keyed on the CALL shape, not on the variable name (Rounds 357/375).
+const DEFECT_TOKEN = "const prevRev = spawnSync('git', ['-C', REPO, 'rev-parse', 'HEAD']";
+const gradedHistory = git('log', '--format=%H', '--', GRADED_REL).stdout.trim().split('\n').filter(Boolean);
+const gradedCarriers = gradedHistory.filter((r) => git('show', `${r}:${GRADED_REL}`).stdout.includes(DEFECT_TOKEN));
+const PRE_CURE = gradedCarriers.length ? gradedCarriers[0] : null;
+say(`  graded file's rev history (newest first): ${gradedHistory.map((r) => r.slice(0, 8)).join(', ') || '(none)'}`);
+say(`  revs whose blob carries the defect token: ${gradedCarriers.map((r) => r.slice(0, 8)).join(', ') || '(none)'}`);
+say(`  PRE_CURE (derived, the OLD cell's source): ${PRE_CURE ? PRE_CURE.slice(0, 8) : 'REFUSED (null)'}`);
+gate('a rev of the graded file carries the defect token (there IS an old spelling to grade)',
+  PRE_CURE !== null, `${gradedCarriers.length} of ${gradedHistory.length} revs carry it`);
+gate('the NEWEST rev of the graded file does NOT carry it (the cure has landed and is committed)',
+  gradedHistory.length > 0 && !gradedCarriers.includes(gradedHistory[0]),
+  `newest=${gradedHistory[0]?.slice(0, 8) ?? '(none)'}`);
+gate('the OLD cell is not sourced from HEAD (the Round 422 §1 defect, keyed on the value)',
+  PRE_CURE !== null && PRE_CURE !== HEAD, `PRE_CURE=${PRE_CURE?.slice(0, 8)} HEAD=${HEAD.slice(0, 8)}`);
+if (PRE_CURE === null) {
+  say('');
+  say('GATE: FALSE (no rev of the graded file carries the defect token — the OLD cell is unobtainable)');
+  say('SUMMARY: REFUSED — cannot derive an OLD spelling by property, and will not fall back to HEAD');
+  writeFileSync(path.join(import.meta.dirname, 'grade-the-420-repair.out'), out.join('\n') + '\n');
+  process.exit(2);
+}
+const OLD_SRC = git('show', `${PRE_CURE}:${GRADED_REL}`).stdout;
 const NEW_SRC = readFileSync(GRADED_ABS, 'utf8');
-gate('the OLD spelling was extracted from the commit, non-empty', OLD_SRC.length > 0, `${OLD_SRC.length} bytes`);
+gate('the OLD spelling was extracted from the derived rev, non-empty', OLD_SRC.length > 0, `${OLD_SRC.length} bytes`);
 gate('OLD and NEW differ (there is something to grade)', OLD_SRC !== NEW_SRC,
   `old ${OLD_SRC.length}B vs new ${NEW_SRC.length}B`);
 
-// The defect token, keyed on the CALL shape not on the variable name: the OLD spelling sources the
-// rev from rev-parse HEAD. Asserted present in OLD and absent in NEW, both directions.
-const DEFECT_TOKEN = "const prevRev = spawnSync('git', ['-C', REPO, 'rev-parse', 'HEAD']";
+// Asserted present in OLD and absent in NEW, both directions.
 const nOld = OLD_SRC.split(DEFECT_TOKEN).length - 1;
 const nNew = NEW_SRC.split(DEFECT_TOKEN).length - 1;
 say(`  defect token "const prevRev = … rev-parse HEAD…":  OLD ${nOld}x · NEW ${nNew}x`);
@@ -211,7 +255,8 @@ say(`GATE: ${fails.length === 0 ? 'true' : 'FALSE (' + fails.join('; ') + ')'}`)
 say(`PREDICTIONS: ${preds.length - refuted.length} landed, ${refuted.length} refuted`);
 refuted.forEach((p) => say(`  REFUTED: ${p.name} — expected ${JSON.stringify(p.expected)}, got ${JSON.stringify(p.actual)}`));
 say(`SUMMARY: the Round 420 §2 charge ${A && A.oldThrew === false && A.charge1Cleared ? 'REPRODUCES' : 'does NOT reproduce'}` +
-  ` | the repair ${fails.length === 0 && refuted.length === 0 ? 'HOLDS and its key separates' : 'is NOT yet graded clean'}`);
+  ` | the repair ${fails.length === 0 && refuted.length === 0 ? 'HOLDS and its key separates' : 'is NOT yet graded clean'}` +
+  ` | OLD cell derived from ${PRE_CURE.slice(0, 8)}, not HEAD (${HEAD.slice(0, 8)})`);
 
 writeFileSync(path.join(import.meta.dirname, 'grade-the-420-repair.out'), out.join('\n') + '\n');
 if (fails.length || refuted.length) process.exit(1);

@@ -1,12 +1,18 @@
 # Round 421 — grading the Round 420 §2 repair (charge 1's OLD cell)
 
 REPO: /Users/xian/Development/klatch-worktrees/daedalus
-HEAD at open: 7c2208ae17541048c4d386a0911b555986335941
-driven at: 2026-10-20T00:22:49.268Z
+HEAD at open: 6fbf9889542e9c17e9cf637c7c7e67c40ac4f2ee
+driven at: 2026-10-20T16:19:50.333Z
 
   [GATE] OK   CELLS is depth 3 under REPO, so ../../.. from a cell resolves to REPO  — /Users/xian/Development/klatch-worktrees/daedalus vs /Users/xian/Development/klatch-worktrees/daedalus
   [GATE] OK   the changelog fixture both spellings need is present  — /Users/xian/Development/klatch-worktrees/daedalus/.testdata/round419-sdk-changelog.md
-  [GATE] OK   the OLD spelling was extracted from the commit, non-empty  — 6375 bytes
+  graded file's rev history (newest first): 4adcc0bf, ee37abae
+  revs whose blob carries the defect token: ee37abae
+  PRE_CURE (derived, the OLD cell's source): ee37abae
+  [GATE] OK   a rev of the graded file carries the defect token (there IS an old spelling to grade)  — 1 of 2 revs carry it
+  [GATE] OK   the NEWEST rev of the graded file does NOT carry it (the cure has landed and is committed)  — newest=4adcc0bf
+  [GATE] OK   the OLD cell is not sourced from HEAD (the Round 422 §1 defect, keyed on the value)  — PRE_CURE=ee37abae HEAD=6fbf9889
+  [GATE] OK   the OLD spelling was extracted from the derived rev, non-empty  — 6375 bytes
   [GATE] OK   OLD and NEW differ (there is something to grade)  — old 6375B vs new 10462B
   defect token "const prevRev = … rev-parse HEAD…":  OLD 1x · NEW 0x
   [GATE] OK   the defect token occurs exactly once in the OLD spelling  — occurs=1
@@ -63,4 +69,4 @@ driven at: 2026-10-20T00:22:49.268Z
 ==============================================================================
 GATE: true
 PREDICTIONS: 16 landed, 0 refuted
-SUMMARY: the Round 420 §2 charge REPRODUCES | the repair HOLDS and its key separates
+SUMMARY: the Round 420 §2 charge REPRODUCES | the repair HOLDS and its key separates | OLD cell derived from ee37abae, not HEAD (6fbf9889)
