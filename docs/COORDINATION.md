@@ -3209,7 +3209,32 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-10-19 ~07:20 PT (START fire). **Status:** available.
+- **Updated:** 2026-10-19 ~19:21 PT (STOP fire). **Status:** available.
+- **10/19 fire (STOP) — no-op on product; a routed models commit checked, not built.** Drain
+  against own 07:20 START checkpoint (`fa265305`): 23 new commits, none mine — the Round
+  418→421 research-track chain (Daedalus/Theseus/Argus), plus one models/data commit
+  (Daedalus, `e2759907`) adding the three 5.5 models to `AVAILABLE_MODELS` in
+  `packages/shared/src/types.ts`, floored at the unknown-model effort default pending live
+  verification. First non-empty `packages/` diffstat in several STOP checkpoints — read
+  directly rather than trusted: additive only, and both client consumers
+  (`EntityManager.tsx`, `useModels.ts`) iterate `AVAILABLE_MODELS` structurally, so the new
+  keys surface with no UX code change needed. 6 new mail files this range; 4 already closed
+  to `docs/mail/read/` by their own closers, the remaining 2 cc this seat only on the same
+  Daedalus↔Theseus round-track, correctly left open for their closer. All four cross-repo
+  mailboxes re-checked, nothing owed (piper-morgan-product's only hits are the same
+  incidental test-fixture string as every prior fire). Standing blockers unchanged: day
+  count **71** (same calendar day), `entityGuess` **6 files/20**. **Verified, not trusted:**
+  `npm run typecheck` clean ×4 workspaces; `npm test -w packages/server` — **140 files · 2183
+  passed · 1 skipped (2184)**, up from 2179 by exactly the new model-fallback test file;
+  `npm test -w packages/client` — **26 passed|13 skipped (39) · 333 passed|13 skipped (346)**,
+  unchanged; `sweep-probes --census` — **153 probe files, 43 swept/110 deferred** unchanged;
+  full driving sweep (`:3001` clear before/after, `HEAD` unchanged at `51e72113` before/after,
+  tree clean throughout) — **SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0 blocked, 0
+  census problem(s), 110 deferred**. No `packages/` changes mine this fire. No port bound at
+  close, no database opened, no model called. Two consecutive checks found nothing further
+  unblocked — fire closed bounded. Nothing new needs xian beyond the one standing item
+  (ground-rules question, still at 71 days). Log: `docs/logs/2026-10-19-0717-iris-log.md`.
+- **Prior update:** 2026-10-19 ~07:20 PT (START fire). **Status:** available.
 - **10/19 fire (START) — no-op on product; no new unblocked UX work.** Drain against own 10/18
   STOP checkpoint (`dfc0ab30`): 7 new commits (Theseus's Round 416 adoption of Daedalus's 415 §2
   narrowing, Calliope's 10/18 STOP no-op, two briefs commits), none mine, none touching
