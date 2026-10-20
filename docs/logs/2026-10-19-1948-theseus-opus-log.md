@@ -144,3 +144,75 @@ threads with open action items. His 421 memo now has three items routed back to 
 (Round 420) memo's third item is parked by him as his Round 422 unit. And my 10-18 memo carries a
 routed `iff`-clause item plus a Theseus+Argus item that his Round 421 did not reach — checked by
 reading that memo's own Open-items section, not from memory.
+
+## 20:11 — Drain
+
+Klatch is a recorded exception to the fleet drain baseline; this fire stays bounded.
+
+**Drained:** nine head commits author-checked with `%an` before anything was read, which is how I
+established this round was mine and not Iris's or Argus's; mail read at open and replied to in the
+same fire; his Round 421 graded end to end across both instruments; three findings routed back,
+each with a driven counterfactual and a control; one mutation of my own refused by my own control
+and republished as a measurement rather than deleted; the gate re-measured; all three instruments
+re-driven a second time with the real exit status captured, deterministic both times.
+
+**Deferred, with named blockers:**
+
+1. Driving the compaction trigger at the API — **blocker: xian's key plus an imported channel past
+   the 160 000-token trigger.** Same single sitting that closes Daedalus's §5 step 3; it also wants
+   a Haiku entity, a mid-stream cancel and a tool-use round. He has said yes to me driving it.
+2. `npm install` in this worktree to clear the 0.110.0 pin drift — **blocker: it is a per-tree
+   install**, and running it destroys the five-tree measurement from Round 420 before anyone has
+   acted on it.
+3. Archiving any mail thread to `docs/mail/read/` — **blocker: every thread in `docs/mail/`
+   addressed to me still carries an open routed item.**
+
+Nothing else unblocked at fire close.
+
+## 20:12 — Session wrap verification
+
+Steps 1–3 of the Session Wrap Protocol, output pasted rather than summarised.
+
+```
+=== STEP 1: git log origin/main --format='%h %an %s' -4 ===
+e4dd8767 Theseus (Klatch) round422+mail+coord+log: his two cures hold, his grader sources its own old cell from HEAD, and his published 21 is graded by nothing
+490b218f Iris (Klatch) coord+log: 10/19 STOP fire — no-op on product, Daedalus's 5.5-model commit checked not built, gate re-verified green including a fresh full sweep drive
+51e72113 Argus (Klatch) coord+log: 10/19 STOP fire — no-op on product, round420/421 chain read, gate re-verified green including a fresh full sweep drive
+a902035c Daedalus (Klatch) log: Round 421 wrap verification — all 11 deliverables confirmed in the tree at origin/main
+
+=== STEP 2: every deliverable, on disk AND in the tree at origin/main (ls-tree, not ls-files) ===
+  disk:yes origin/main:yes  docs/research/round422-instruments/README.md
+  disk:yes origin/main:yes  docs/research/round422-instruments/drive-his-421.mjs
+  disk:yes origin/main:yes  docs/research/round422-instruments/drive-his-421.out
+  disk:yes origin/main:yes  docs/research/round422-instruments/his-census-only-21-is-ungated.mjs
+  disk:yes origin/main:yes  docs/research/round422-instruments/his-census-only-21-is-ungated.out
+  disk:yes origin/main:yes  docs/research/round422-instruments/his-scope-census-cannot-see-a-hoisted-pattern.mjs
+  disk:yes origin/main:yes  docs/research/round422-instruments/his-scope-census-cannot-see-a-hoisted-pattern.out
+  disk:yes origin/main:yes  docs/mail/theseus-to-daedalus-...-your-two-cures-hold-and-your-grader-sources-its-own-old-cell-from-head-2026-10-19.md
+  disk:yes origin/main:yes  docs/COORDINATION.md
+  disk:yes origin/main:yes  docs/logs/2026-10-19-1948-theseus-opus-log.md
+
+10 of 10 present in both. None missing.
+
+=== his Round 421 directory left untouched by my drives ===
+  git status --porcelain -- docs/research/round421-instruments: <clean>
+
+=== verdict lines read OUT OF the recorded .out files, and exit status from a second drive ===
+  drive-his-421                                  status=0 | GATE: true | PREDICTIONS: 7 landed, 0 refuted
+  his-census-only-21-is-ungated                  status=0 | GATE: true | PREDICTIONS: 14 landed, 0 refuted
+  his-scope-census-cannot-see-a-hoisted-pattern  status=0 | GATE: true | PREDICTIONS: 12 landed, 0 refuted
+
+=== working tree at wrap ===
+  git status --porcelain: <clean>
+```
+
+One note on the commit shape, so the record is accurate rather than tidy: I intended two commits
+(instruments, then mail+coord+log) and got one, because a `git add -A` ahead of the first commit
+staged everything. The message was amended to describe everything the commit actually contains
+rather than left describing only the instruments. Single commit `e4dd8767`.
+
+**Round 422 closed.** Pushed `490b218f..e4dd8767` to `origin/main`. Routed to Daedalus: the
+HEAD-sourced OLD cell in `grade-the-420-repair.mjs`, the three `say()`-only cells of which the
+published 21 is one, and the position-keyed scope census that cannot read 2 of its 10 subjects.
+Open on xian only for the single MAXT sitting, which both our rounds name as the same blocker.
+Delivery is the wrapper's to confirm, not mine to claim.
