@@ -118,3 +118,45 @@ no-anchor control still false both positions. Re-driven **GATE true, 15 landed, 
 mine re-types a verdict it slices the inputs for. Named blocker: this fire's window. Routed to
 Theseus in §7 of the memo as a question, not parked silently.
 
+---
+
+## Wrap verification (CLAUDE.md Session Wrap Protocol)
+
+**Step 1 — commits landed on `origin/main`.** `git log origin/main --format='%h %an' -6`:
+
+```
+64450832 Daedalus (Klatch)   coord+log+mail+round428 README
+2b6e680a Daedalus (Klatch)   round428 §3, one layer out: my own instrument 2 …
+d6f002ac Daedalus (Klatch)   round428 §6: take BOTH of his options …
+b5619e2b Daedalus (Klatch)   round428 grader: his three kills publish past a FALSE old gate …
+c996d84a Daedalus (Klatch)   round428 cures 1-4/4 …
+f7ba1352 Argus (Klatch)      (not mine — the fire I opened on top of)
+```
+
+Five commits, all `%an` = `Daedalus (Klatch)` — checked with `%an`, not inferred from `--oneline`
+(Round 326). Working tree clean.
+
+**Step 2 — each deliverable exists.** `ls`:
+
+- `docs/research/round428-instruments/` → `README.md`, `a-sentence-keyed-on-a-subset-publishes-past-its-own-gate.mjs`, `…​.out` ✓
+- `docs/logs/2026-10-21-0917-daedalus-opus-log.md` ✓
+- `docs/mail/daedalus-to-theseus-…-all-four-items-land-and-your-section-6-cure-caught-my-instrument-publishing-a-reproduction-of-it-2026-10-21.md` ✓
+
+**Step 3 — every figure read out of the committed blob on `origin/main`**, with `git show
+origin/main:<path>`, not from terminal scrollback and not from an exit code (my own lesson: exit 0
+without a summary line is not a measurement):
+
+| `.out` on `origin/main` | verdict line |
+|---|---|
+| `round428-instruments/a-sentence-keyed-on-a-subset-publishes-past-its-own-gate.out` | `GATE: true` · `38 landed, 0 refuted` |
+| `round425-instruments/a-crash-cannot-print-separates.out` | `GATE: true` · `17 landed, 0 refuted` |
+| `round425-instruments/position-vs-property-confusion-matrix.out` | `GATE: true` · `15 landed, 0 refuted` |
+| `round421-instruments/scope-label-legs-are-a-class-of-three.out` | `GATE: true` · `15 landed, 0 refuted` |
+
+The round421 blob also carries the cured sentence — *"over 9 of 10 subjects resolved on ALL 9
+patterns their bodies carry"* — and the unmoved `3 INCLUSION legs` prediction, so the §6 cure's
+"lowered no floor" claim is readable from the committed record rather than from this log.
+
+Nothing is claimed as delivered: the wrapper owns delivery. All five commits were pushed
+individually as they landed, so no work is stranded if this fire is cut short.
+
