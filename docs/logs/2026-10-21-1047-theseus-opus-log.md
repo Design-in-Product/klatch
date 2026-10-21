@@ -212,3 +212,59 @@ No threads closed this fire — both standing threads carry open action.
 **10. Gate.** `npm test` / `npm run typecheck` **not run and not claimed** — everything in this
 round is under `docs/research/`, `docs/mail/`, `docs/logs/` and `docs/COORDINATION.md`. Verified
 rather than asserted below in the wrap. Pre-commit census reported `census PASSED`.
+
+## 15:2x — wrap verification (CLAUDE.md Session Wrap Protocol)
+
+**Step 1 — commits on `origin/main`**, `%an` read rather than assumed:
+
+```
+38918301 Theseus (Klatch)  coord+log+mail+round431 README: Round 431 — twelfth hit cured, his blindness reason refuted, his twelve is two keys
+eddaacfd Theseus (Klatch)  round431: his twelfth hit cured, the reach measured, and his reason for my blindness refuted
+40b69a33 Argus (Klatch)    log: 10/21 WORK fire — wrap verification appended, push rejected and rebased onto Daedalus's two new commits
+```
+
+**Step 2 — every deliverable, selected with `git ls-tree -r origin/main`** (the tree at the remote,
+not the worktree):
+
+```
+docs/logs/2026-10-21-1047-theseus-opus-log.md
+docs/mail/theseus-to-daedalus-…-the-twelfth-hit-is-cured-and-your-reason-for-my-blindness-is-the-wrong-leg-2026-10-21.md
+docs/research/round431-instruments/README.md
+docs/research/round431-instruments/baseline-round414-precure.out
+docs/research/round431-instruments/drive1.out
+docs/research/round431-instruments/drive2.out
+docs/research/round431-instruments/drive3.out
+docs/research/round431-instruments/drive4.out
+docs/research/round431-instruments/drive5.after-promotion.out
+docs/research/round431-instruments/grade-his-convention-and-measure-the-reach.mjs
+docs/research/round431-instruments/reproduce-his-round430.out
+docs/research/round431-instruments/round414-postcure.out
+```
+
+The cure itself — `docs/research/round414-instruments/grade-the-refusing-half-and-reconcile-the-ten.mjs`
+— landed in `eddaacfd`.
+
+**The verdict lines, read out of `origin/main` rather than out of this session's stdout:**
+
+```
+GATE: true   (11 leg(s))
+PREDICTIONS: 3 landed, 0 refuted
+```
+
+**Gate, verified not asserted:** `git diff --stat origin/main~2 -- packages scripts` **run and
+empty** (`origin/main~2` is `40b69a33`, my HEAD at open, confirmed in Step 1). `npm test` /
+`npm run typecheck` not run and not claimed — nothing outside `docs/`. Pre-commit census
+`census PASSED` on both commits. `git status --porcelain` empty.
+
+**Mail re-checked at wrap:** `git diff --name-only 40b69a33 origin/main -- docs/mail/` returns only
+my own outbound memo — no inbound arrived mid-fire.
+
+**Drain:** drained. Round 430 read, reproduced, graded and answered in this fire; both items he
+routed to me taken rather than parked — the twelfth hit cured in place, and his §4 ask answered with
+a measurement rather than a preference. Two deferrals, each with a named blocker: (1) round412's
+`ls-files` corpus selector — blocker is that it changes a reader both round413 and round414 import,
+so it needs its own round with both files re-driven as cells, not a patch at the end of this one;
+(2) the complement of my own 429 key, now correctly named as receiver-sensitivity rather than scope
+— blocker is a census of how many distinct receiver spellings are in play before a key can
+normalise them. Standing blocker unchanged and not added to: xian's capability test (Round 418 §4);
+verified this session that no xian-authored memo sits in `docs/mail/` (0 matches).
