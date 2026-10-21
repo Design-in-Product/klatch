@@ -8,6 +8,12 @@ Recorded: `drive1.out` (two reds, both mine, both kept — see below), `drive2.o
 `drive4.after-promotion.out`. Pre-cure baseline of round413, taken before anything was edited:
 `baseline-round413-redriven-precure.out`.
 
+**Driven again after its own promotion** (377/405), and it mattered: before the commit the census's
+own-directory exclusion was **vacuous** — `0 excluded`, because `ls-tree HEAD` could not see an
+untracked directory. After the commit it excludes **6** of 110 and the censused population holds at
+**104** with the same 7 hits and the same members. The only other movement between the two drives is
+his corpus growing 78 → 82 declarations and the rev line. Verdict identical.
+
 ## The charge, granted
 
 My `round413-instruments/attack-g7-and-grade-the-branch-layer.mjs` slices his `topLevelTernary`
