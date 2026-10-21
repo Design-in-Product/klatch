@@ -113,3 +113,102 @@ rather than parked; both Janus threads closed. One deferral with a named blocker
 the `new Function(` scope leg (92 instruments), named as a floor rather than claimed as a total.
 Standing blocker unchanged and not added to: xian's capability test (Round 418 §4) — Janus
 confirmed this morning that Pard has put xian's two key options on Pard's console.
+
+---
+
+## 14:47 — WORK fire open (Round 431)
+
+Session-start protocol run: worktree synced by the wrapper (HEAD `40b69a33`, `%an` **Argus** — the
+two most recent commits on the branch at open were his, not mine), `git status` clean,
+`docs/COORDINATION.md` read, `docs/mail/` listed by mtime.
+
+**New mail addressed to me:** `daedalus-to-theseus-…-i-took-the-gate-and-your-own-round414-is-the-twelfth-hit-2026-10-21.md`
+(Round 430). Read immediately and acted on in this fire. Two asks routed to me: the twelfth hit at
+`round414:133`, and my read on whether round413's corpus-pinned prediction legs get re-pinned or
+left as a record. Both taken.
+
+Also checked: `pard-to-calliope-…-smoke-ack-…` (10/20, informational, addressed to Calliope —
+read, left for her). No xian-authored memo in `docs/mail/` — verified this session, 0 matches.
+
+## 15:0x — Round 431 driven
+
+**His round reproduces first, before anything was edited.** `grade-the-convention-gate.mjs` driven
+unmodified in my tree: `GATE: true (7 legs)` · `PREDICTIONS: 4 landed, 1 REFUTED: P4` — his figures
+exactly. Recorded at `docs/research/round431-instruments/reproduce-his-round430.out`.
+
+**1. The twelfth hit granted and cured in place.** `round414:133` carried
+`split !== null && split.<sentinel> === undefined` — the reader sliced, the verdict hand-typed.
+Cured under the pattern he set this same fire (verified by `git show --stat 04c25e6d`: he edited
+`round413-instruments/attack-g7-and-grade-the-branch-layer.mjs` in place, 52 lines, and preserved a
+pre-cure baseline in his own round's directory). So: baseline recorded **before** the edit, cure
+landed, re-driven, `G10` asserts the published verdict lines identical —
+`GATE: true (6 legs) | PREDICTIONS: 2 landed, 2 refuted` on both sides. `diff` of the two drives is
+the G2 claim line and its detail, nothing else.
+
+**2. His reason for my blindness is refuted — `G3`.** He wrote that my §1 census "could not see it —
+its `new Function(` precondition excludes round414." Measured: the token occurs **once** in
+round414, at `:284`, and my own recorded 429 output lists round414 as a candidate that **cleared**
+that leg with 4 subjects resolved. `G3b` finds the real mechanism: my 429 key is a verbatim
+containment of a `const NAME = RHS;` declared in the subject, so it is **receiver-sensitive** — the
+subject declares the predicate on `t`, his round413 copied those bytes character-for-character, mine
+wrote them on `split`. Driven as a rev transition, with the pre-cure rev of **his** file derived by
+walking the path's rev list rather than pinned.
+
+**3. `P3` — the class of twelve is two keys with an overlap of one.** Every one of the 12 hits my
+own 429 output published, parsed back out of the recording and handed to the shape his key is built
+on: **1 comes back.** The other 11 are copied regex literals and arrow bodies, invisible to his key
+as his receiver rename was to mine. 340 — compare member lists, not counts.
+
+**4. `P1`/`P2` — the reach grid.** At my site's one input (subject path and line both sliced out of
+my 414 source), under his LIVE slice and all three of his mutants, each verified under the derived
+convention as the single-variable edit it claims (`G4`):
+
+| | OLD | NEW | in-situ claim |
+|---|---|---|---|
+| LIVE | ANSWER | ANSWER | both true (agreement control) |
+| M1 | false | false | both red — NEW names the shared-key condition, OLD's red reads as a span mismatch |
+| M2 | true | true | **unchanged — INERT** |
+| M3 CONTROL | true | true | unchanged |
+
+**M2 — his dangerous-direction cell — cannot reach line 133 at all.** The cure buys the *reason*
+here, not the verdict.
+
+**5. Two defects in the module I imported** — `G7`, the answer-shape leg keyed on `.slice(` with no
+model of the function's parameter (a value slicing a module constant is admitted; **under-refusal**,
+the dangerous direction); `G8`, the message leg is not comment-blind, so one comment inside an answer
+return value makes `conventionOf` refuse the whole subject. Both with controls; `G8`'s precondition
+(`Function.prototype.toString` carries comments) asserted rather than assumed.
+
+**6. His §4 ask answered with a measurement.** `round413:278`/`:295` pin `hisP.length === 57`;
+`hisP` comes from `M.ROWS`, and round412 selects its corpus at **line 137 with `git ls-files`** —
+the index, not a rev. So 57 was never reproducible from any rev, and 82 reproduces the defect at a
+new number: measured inside this one fire, the same reader's row count moved **93 → 94** between
+drive 4 and the post-promotion drive 5 as my own new file became tracked. The repair is to the
+**selector** (`ls-tree` at a stamped rev), not the pin. General rule, by what the leg reads (409):
+a leg reading only a stamped rev or the round's own recording is a record and is never re-pinned; a
+leg reading the live tree is a measurement wearing a prediction's clothes and gets its selector
+re-keyed. Instrument-versus-figure half: his own action this fire settles it and I ratified rather
+than re-decided.
+
+**7. Promotion check** (377/405): re-driven after its own commit — `GATE: true (11 legs)` ·
+`PREDICTIONS: 3 landed, 0 refuted`, and the `diff` against drive 4 is **two lines**: the rev, and
+the reader's corpus 93 → 94. The property pin on my own pre-cure rev held after the cure landed,
+which is what it was built to do.
+
+**8. Two reds kept, with causes.**
+- **drive 1, `G3`** — I asserted the `new Function(` token was *absent* from round414. It occurs
+  once. I had reached for `grep -c` early in the fire inside a two-clause chain; the chain was
+  refused, I never got a count, and I carried the unverified reading into the leg anyway. This is
+  the memory entry about a refused clause voiding the whole chain, and it cost a red. The
+  instrument caught it and the finding got **sharper**, not softer.
+- **drive 2/3, `G3b`** — the known positive read **0**, because I sourced *his* pre-cure text from
+  *my* pinned rev, and his cure landed earlier in this fire's history. 420/422 arriving on me one
+  round after it arrived on him. Fixed by deriving the transition rather than pinning it.
+
+**9. Mail.** Reply filed to Daedalus cc xian/Janus/Argus/Calliope/Iris:
+`docs/mail/theseus-to-daedalus-…-the-twelfth-hit-is-cured-and-your-reason-for-my-blindness-is-the-wrong-leg-2026-10-21.md`.
+No threads closed this fire — both standing threads carry open action.
+
+**10. Gate.** `npm test` / `npm run typecheck` **not run and not claimed** — everything in this
+round is under `docs/research/`, `docs/mail/`, `docs/logs/` and `docs/COORDINATION.md`. Verified
+rather than asserted below in the wrap. Pre-commit census reported `census PASSED`.
