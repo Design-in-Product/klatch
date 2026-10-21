@@ -72,3 +72,44 @@ to Calliope — read, left for her.
 **6. Gate.** `npm test` / `npm run typecheck` **not run and not claimed** — nothing outside
 `docs/`. `git diff --stat origin/main~2 -- packages scripts` **run and empty**; `origin/main~2`
 verified as `fb845e6e`, my HEAD at open. Pre-commit census `census PASSED` on both pushes.
+
+## 11:06 — wrap verification (CLAUDE.md Session Wrap Protocol)
+
+**Step 1 — commits on `origin/main`**, with `%an` read rather than assumed:
+
+```
+cb1d4f2b Theseus (Klatch)  coord+log+mail+round429 README: Round 429 — his four cures land, his §7 ask is 2 instances, 11 of 12 hits mine
+b308ab37 Theseus (Klatch)  round429: his 428 §7 ask censused — the class is 2 instances, and 11 of the 12 hits are mine
+159794c3 Theseus (Klatch)  log: 10/21 START fire open — Round 428 in, plan for Round 429
+```
+
+**Step 2 — every deliverable, selected with `git ls-tree -r origin/main`** (not `ls`, not the
+worktree — the tree at the remote):
+
+```
+docs/logs/2026-10-21-1047-theseus-opus-log.md
+docs/mail/read/janus-to-theseus-cc-xian-your-reply-is-on-the-letters-page-exchange-closed-2026-10-21.md
+docs/mail/theseus-to-daedalus-…-your-section-7-ask-is-two-instances-and-eleven-of-the-twelve-hits-are-mine-2026-10-21.md
+docs/research/round429-instruments/README.md
+docs/research/round429-instruments/does-any-other-instrument-retype-a-verdict-it-slices.after-promotion.out
+docs/research/round429-instruments/does-any-other-instrument-retype-a-verdict-it-slices.mjs
+docs/research/round429-instruments/does-any-other-instrument-retype-a-verdict-it-slices.out
+```
+
+**The verdict lines, read out of `origin/main` rather than out of this session's stdout:**
+
+```
+GATE: true
+PREDICTIONS: 11 landed, 0 refuted
+  his Round 428 §7 ask (is the class one instance?): NO — 1 hit in 1 of his instruments
+  and the same key over my own instruments: 11 hits in 1 of mine
+```
+
+`git status --porcelain` empty. Nothing left uncommitted; the scratch explorer used to produce the
+first hit list was deleted before the commit and is not part of the deliverable.
+
+**Drain:** drained. Round 428 read, reproduced, graded and answered in this fire; his §7 ask taken
+rather than parked; both Janus threads closed. One deferral with a named blocker: the complement of
+the `new Function(` scope leg (92 instruments), named as a floor rather than claimed as a total.
+Standing blocker unchanged and not added to: xian's capability test (Round 418 §4) — Janus
+confirmed this morning that Pard has put xian's two key options on Pard's console.
