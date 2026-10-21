@@ -1,0 +1,47 @@
+Round 413 — attacking G7: the agreeing half is satisfied by the key it was meant to grade, at 91d5b08d3d3bab9b67aae275216d046c9c2bb5c1
+
+  EXPECTED D1  the slice is his lines 1..422 byte-for-byte and the export tail is the only addition
+  EXPECTED D2  known positive: the SLICED topLevelTernary splits round410:408 into the three spans his own recorded output prints, parsed out of that output rather than retyped (395)
+  EXPECTED D3  THE ATTACK: his G7 as a 2 x 2 against the OLD key. His DISAGREE control moves 411 -> 412; his AGREE control DOES NOT MOVE, so the agreeing half of G7 passes with the whole branch layer deleted
+  EXPECTED D4  the repair: an agreeing ternary whose agreed stratum differs from the test's own shape moves OTHER-DERIVED -> TYPED-LITERAL, so it grades the agreeing direction non-vacuously
+  EXPECTED D5  controls for D4: the branches without the ternary, and the test alone, are each UNMOVED between the two keys — so D4's move is the branch layer and not the literal
+  EXPECTED D6  his two isCond exclusions (`?.`, `??`) are driven as constructed known positives AND censused live, so the exclusion is priced on text that occurs
+  EXPECTED P1  his P1 regraded by hand under HIS seam: of the declarations whose window carries a `?`, exactly one is a top-level conditional initializer
+  EXPECTED P2  his "population held at 57" is a WITHIN-COMMIT property. The directory seam re-admits the previous round's instruments, so the population under this round's seam is larger
+  EXPECTED P3  a third shape in his P3 family: `cond ? .5 : 1` is MISSED by isCond (`?` followed by `.`) and then decided by its own test. Constructed hit; live class published as measured
+  EXPECTED P4  ADDED AT DRIVE 4, not pre-registered with the rest, and said so: his §1 "10 of 62 carry a `?` in their seven-line window" reconciles against my 2 of 57 on two differences at once — the UNSEAMED population (62) and a LITERAL seven-line window where contRaw stops as soon as the expression is finished
+  EXPECTED D7  ADDED AT DRIVE 6, not pre-registered with the rest, and said so: the `literalBodies` disagreement he reported as HIS own defect, regraded rather than accepted on his word — a copy that agrees with me grades neither of us (321/368)
+  EXPECTED P5  ADDED AT DRIVE 6: the consequence — it is a mover under my reader and would not be one under his described variant, which is why his copy disagreed with my P2 mover list
+
+  TRUE  D1  [GATE] the slice is his lines 1..422 byte-for-byte and the export tail is the only addition
+        sliced 422 line(s) of 763 · prefix byte-identical: true · remainder is exactly the declared tail: true · cut line 423 is "// ─── G1 — his own figures, parsed out of a live drive of H"
+  TRUE  D2  [GATE] known positive: the SLICED topLevelTernary splits round410:408 into the three spans his own recorded output prints, parsed out of that output rather than retyped
+        test true · cons true · alt true · site census-the-wrapped-call-and-the-body-granularity.mjs:408
+  TRUE  D3  [GATE] THE ATTACK, CORRECTED AFTER DRIVE 1 — I pre-registered the wrong half. His DISAGREE control does NOT move: his 411 key refuses every identifier-test ternary, so UNMODELLED is the default and the refusing half of G7 passes with the branch layer deleted. His AGREE half moves and is load-bearing. See §1 of the write-up
+        DISAGREE " cond ? 'x' : 7;" @411=UNMODELLED @412=UNMODELLED MOVES=false [branches disagree: TYPED-LITERAL vs OTHER-DERIVED] <- VACUOUS: the refusing half is satisfied by the OLD key alone · AGREE " cond ? 7 : 8;" @411=UNMODELLED @412=OTHER-DERIVED MOVES=true [branches agree: OTHER-DERIVED] <- load-bearing
+  TRUE  D4  [GATE] the repair, built out of HIS P3: a call-test ternary with DISAGREEING branches is DECIDED by 411 and REFUSED by 412, so the cell moves in the refusing direction — the direction his G7 cannot grade. And an agreeing ternary lands on a stratum its test's own shape does not give
+        REFUSE-REPAIRED " f(x) ? 'y' : 7;" @411=OTHER-DERIVED @412=UNMODELLED MOVES=true [branches disagree: TYPED-LITERAL vs OTHER-DERIVED] <- grades the refusal · DECIDE-REPAIRED " cond ? 'x' : 'y';" @411=UNMODELLED @412=TYPED-LITERAL MOVES=true [branches agree: TYPED-LITERAL]
+  TRUE  D5  [GATE] three controls for D4, one per thing that could be credited with the move: the branches alone, the identifier test alone, and the CALL test alone are each UNMOVED between the two keys — so D4's two moves are the branch layer and not the literal or the call shape
+        BRANCH-ALONE " 'x';" @411=TYPED-LITERAL @412=TYPED-LITERAL MOVES=false · IDENT-TEST-ALONE " cond;" @411=OTHER-DERIVED @412=OTHER-DERIVED MOVES=false · CALL-TEST-ALONE " f(x);" @411=OTHER-DERIVED @412=OTHER-DERIVED MOVES=false (and it is the same stratum D4's call-test ternary starts from: true)
+  TRUE  D6  [GATE] his two isCond exclusions (`?.`, `??`) are driven as constructed known positives AND censused live, so the exclusion is priced on text that occurs
+        constructed: " a?.b;" -> not a ternary · " a ?? b;" -> not a ternary · live: 1 window(s) carry a masked `?`, of which 0 carry `?.` or `??`
+  FALSE P1  [PRED] his P1 regraded under his population: of the declarations whose window carries a `?`, exactly one is a top-level conditional initializer — and his hand-read 10 is the RAW count, reconciled here against the masked one rather than left as two numbers
+        his population 78 (he published 57) · windows with a `?` in the RAW window 2 (his hand read: 10) · with a `?` surviving the mask 1 · top-level conditional initializers 1 [census-the-wrapped-call-and-the-body-granularity.mjs:408 KPMOD_SEAMLESS] · refused 0
+  FALSE P2  [PRED] his "population held at 57" is a WITHIN-COMMIT property. A seam keyed on your OWN directory does not make your figure reproducible for the NEXT seat: his seam alone re-admits this round's files as soon as they are tracked. Graded both ways on the tracked state
+        this file tracked: true · his seam alone 79 · both rounds removed 78 · re-admitted from docs/research/round413-instruments/: 1 [attack-g7-and-grade-the-branch-layer.mjs] · this round's own seam (his file + this dir) 83, which still carries 5 declaration(s) from docs/research/round412-instruments/
+  TRUE  P3  [PRED] RE-AIMED: `f(x) ?.5 : 'y'` is a real conditional (`?.` is not optional chaining before a digit), his isCond declines it on the `.` alone, and because the test is a call the 411 key then DECIDES it — so the one-character variant of his own control fails OPEN, not closed
+        evaluated as JS: (f(x) ?.5 : 'y') === 0.5 is true · his splitter -> NOT A TERNARY (invisible) · so @411=OTHER-DERIVED @412=OTHER-DERIVED MOVES=false — DECIDED, where the branches disagree and the cure owes a refusal · live class 0
+  FALSE P4  [PRED] CORRECTED BY THE GRID: his 10 reconciles on ONE axis, not two — a LITERAL seven-line window over the SEAMED 57. So his stated "10 of 62" pairs a numerator measured over 57 with a denominator counting the unseamed set; over one population it is 10 of 57 or 13 of 62
+        populations: seamed 78 · unseamed 83 (his 62) · seamed(57) x contRaw = 2 · seamed(57) x literal7 = 14 · unseamed(62) x contRaw = 2 · unseamed(62) x literal7 = 17 · cell(s) reproducing his 10: NONE — still unreconciled
+  TRUE  D7  [GATE] the `literalBodies` disagreement he reported as his own defect, regraded rather than accepted on his word: on the ONE LINE the 409 key reads, the template is unterminated, so mine REFUSES and his described variant returns a span belonging to a NESTED literal. Mine is right because an undelimitable span has no body — not because it is mine
+        site grade-the-class-count-and-the-seam.mjs:225 · backticks on the init line 1 (odd = unterminated) · MINE on d.init [] (refuses) · HIS DESCRIBED VARIANT on d.init ["'probe-round225-a-citation-is-not-a-call.mts'"] <- a span of a NESTED literal, not this declaration's value · MINE on the full window ["`const R225 = 'probe-round225-a…"] (the continuation closes the backtick, so the 411 key sees the real body)
+  TRUE  P5  [PRED] the consequence: KP_CONST_INDIRECTION is a MOVER under my reader and would not be one under his described variant, which is exactly why his copy disagreed with my P2 mover list — so the member-list check (340) is what caught a body defect a stratum count would have hidden
+        s409 UNMODELLED · s411 TYPED-LITERAL · mover under mine true · under his described variant s409 would be TYPED-LITERAL, equal to s411, so NOT a mover
+
+GATE: true   (7 leg(s) on the key itself)
+PREDICTIONS: 2 landed, 3 REFUTED: P1 | P2 | P4
+
+  !! A REFUTED PREDICTION IS THE ROUND'S CONTENT, NOT ITS FAILURE (383).
+
+  rev 91d5b08d3d3bab9b67aae275216d046c9c2bb5c1 · 314 file(s) in the corpus · worktree DIRTY
+  interval under his 412 key, this round's seam: [39,40]

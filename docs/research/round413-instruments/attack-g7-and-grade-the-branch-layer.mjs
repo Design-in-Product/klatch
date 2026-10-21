@@ -29,12 +29,19 @@
  * byte-for-byte, plus an export tail that is mine and is declared — asserts the byte-identity as
  * D1, and dynamic-imports it. If his file moves, the slice moves with it or D1 reddens.
  *
+ * AMENDED BY ROUND 430, because the paragraph above was true of his READER and false of his
+ * VERDICT. His Round 429 §1 censused the class I had asked him about and found this file in it:
+ * the reader was sliced, and then `t.refused === undefined` re-typed his refusal convention out of
+ * `round412:518`. That is now derived from his own returns — see the Round 430 note at the import
+ * of the slice — so this file no longer carries a copy of his convention either.
+ *
  * Drives recorded in this directory. GATE legs read the key; PREDICTION legs read the corpus.
  */
 import { execFileSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { conventionOf, classify } from '../round430-instruments/refusal-convention.mjs';
 
 const REPO = fileURLToPath(new URL('../../..', import.meta.url));
 const SELF = relative(REPO, fileURLToPath(import.meta.url)).split('\\').join('/');
@@ -110,6 +117,20 @@ g('D1', 'the slice is his lines 1..422 byte-for-byte and the export tail is the 
 
 const M = await import(`../../../${SLICED}`);
 
+/**
+ * ROUND 430 CURE — Theseus's Round 429 §1 charge, granted: this file sliced his reader honestly and
+ * then re-typed his VERDICT. `t.refused === undefined` was a copy of his refusal convention, taken
+ * from `round412:518`, with nothing behind it — if he changed the convention, these legs would
+ * grade the new one with the old reading and stay green. The convention is now DERIVED from his own
+ * returns and the reading is an exact key-set match, so a convention change reaches these legs as a
+ * refusal rather than a silent re-classification. D2 gates on the derivation itself, because a
+ * refusing convention would otherwise turn every reading below into UNMODELLED and P1 into a quiet
+ * zero (353/422). Graded in `round430-instruments/grade-the-convention-gate.mjs`.
+ */
+const CONV = conventionOf(M.topLevelTernary.toString());
+const isAnswer = (t) => classify(t, CONV) === 'ANSWER';
+const isRefusal = (t) => classify(t, CONV) === 'REFUSED';
+
 // ─── D2 — known positive for the sliced reader, keyed on HIS OWN RECORDED OUTPUT ────────────────
 /** His G4 line prints the three spans quoted. Parse them out rather than retype them (395, 412). */
 const hisOut = readFileSync(join(REPO, HIS412_OUT), 'utf8');
@@ -121,12 +142,17 @@ const kpmod = M.ROWS.find((r) => r.ident === 'KPMOD_SEAMLESS');
 const split = kpmod === undefined ? null : M.topLevelTernary(kpmod.raw);
 g('D2', 'known positive: the SLICED topLevelTernary splits round410:408 into the three spans his '
   + 'own recorded output prints, parsed out of that output rather than retyped',
-  spans !== null && split !== null && split.refused === undefined
+  CONV.refused === undefined
+  && spans !== null && split !== null && isAnswer(split)
   && split.test === spans.test && split.cons === spans.cons && split.alt === spans.alt,
-  spans === null ? 'REFUSED: could not parse his G4 spans out of his recorded output'
-    : split === null ? 'REFUSED: the sliced reader found no ternary at the cited site'
-      : `test ${split.test === spans.test} · cons ${split.cons === spans.cons} · `
-        + `alt ${split.alt === spans.alt} · site ${kpmod.path.split('/').pop()}:${kpmod.line}`);
+  CONV.refused !== undefined
+    ? `REFUSED at the convention: ${CONV.refused}`
+    : spans === null ? 'REFUSED: could not parse his G4 spans out of his recorded output'
+      : split === null ? 'REFUSED: the sliced reader found no ternary at the cited site'
+        : `test ${split.test === spans.test} · cons ${split.cons === spans.cons} · `
+          + `alt ${split.alt === spans.alt} · site ${kpmod.path.split('/').pop()}:${kpmod.line} · `
+          + `his convention, derived from his own returns: answer {${CONV.answer.join('} {')}} `
+          + `refusal {${CONV.refusal.join('} {')}}`);
 
 // ─── the 2 x 2 machinery: a fragment under HIS OLD key and under HIS NEW key ────────────────────
 /** 411 reads the whole initializer's leading token; 412 adds the branch layer. A fragment is wrapped
@@ -237,13 +263,14 @@ const hisQ = hisP.filter((r) => M.stripSource(r.raw, true).includes('?'));
 /** His §1 hand read reports "10 of 62 carry a `?` in their seven-line window". Mine counts 1,
  *  because mine reads the MASKED window. Reconciled here rather than left as two numbers. */
 const hisQraw = hisP.filter((r) => r.raw.includes('?'));
-const hisTern = hisQ.filter((r) => {
+const hisTern = hisQ.filter((r) => isAnswer(M.topLevelTernary(r.raw)));
+const hisRefused = hisQ.filter((r) => isRefusal(M.topLevelTernary(r.raw)));
+/** A result his derived convention does not describe is published, not folded into either count
+ *  (411). Today this is 0 and the class is empty; it is printed so that it cannot become a silent
+ *  reclassification the way the re-typed predicate could. */
+const hisUnmodelled = hisQ.filter((r) => {
   const t = M.topLevelTernary(r.raw);
-  return t !== null && t.refused === undefined;
-});
-const hisRefused = hisQ.filter((r) => {
-  const t = M.topLevelTernary(r.raw);
-  return t !== null && t.refused !== undefined;
+  return t !== null && classify(t, CONV) === 'UNMODELLED';
 });
 g('P1', 'his P1 regraded under his population: of the declarations whose window carries a `?`, '
   + 'exactly one is a top-level conditional initializer — and his hand-read 10 is the RAW count, '
@@ -253,7 +280,8 @@ g('P1', 'his P1 regraded under his population: of the declarations whose window 
   + `${hisQraw.length} (his hand read: 10) · with a \`?\` surviving the mask ${hisQ.length} · `
   + `top-level conditional initializers ${hisTern.length} `
   + `[${hisTern.map((r) => `${r.path.split('/').pop()}:${r.line} ${r.ident}`).join(' | ')}] · `
-  + `refused ${hisRefused.length}`);
+  + `refused ${hisRefused.length} · unmodelled ${hisUnmodelled.length} · read under his `
+  + `convention DERIVED from his own returns (430), not a re-typed absence test`);
 
 // ─── P2 — the seam is a within-commit property, graded both ways ────────────────────────────────
 const mineP = M.P;
