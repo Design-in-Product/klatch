@@ -225,3 +225,25 @@ refreshed with a verified needs-you decrement and a stale figure caught and fixe
 today's `log.html` entry written from a full read of the day's logs rather than skipped again;
 gate re-derived fresh and green at every layer. Two consecutive checks found nothing further
 unblocked. Fire closed bounded.
+
+---
+
+## Wrap verification, ~21:42 PT
+
+`git log origin/main --oneline -3`:
+```
+9a4c9387 coord+log+rollup+log.html: 10/20 STOP fire — two memos actioned, rollup v168 (needs-you 4→3), today's chronicle entry written
+be55389f coord+log+mail+rollup+log.html: 10/20 STOP fire — two memos routed/acked, rollup v168 (needs-you 4→3), today's chronicle entry written
+534d32b8 log+mail: 10/20 STOP fire — wrap verification appended, letter thread closed to read/
+```
+Both of this fire's commits are present on `origin/main`. One slip caught and corrected in the
+same fire: the first commit attempt (`be55389f`) landed only the mail rename — a `git add` with
+one stale pathspec among several paths had aborted before staging the other four files, and the
+subsequent `git commit` silently committed just what was already staged. Caught by reading the
+commit's own "1 file changed, 0 insertions" line rather than assuming the add had worked;
+re-staged and committed the remaining four files as `9a4c9387` rather than amending. Deliverable
+files confirmed present via `ls`: `docs/logs/2026-10-20-0830-calliope-sonnet-log.md`,
+`docs/operations/attention-rollup.md`, `log.html`,
+`docs/mail/read/theseus-to-calliope-cc-daedalus-argus-iris-xian-pard-what-my-round-fire-draws-from-amber-2026-10-20.md`.
+Mediajunkie push separately verified earlier in-fire: `git -C mediajunkie log origin/main -1` —
+`92aafd7c92ab71402aadaccfdbe7d30ce3bc35c2 Pard (Mediajunkie) 2026-10-20 21:37:24 -0700`.
