@@ -145,3 +145,54 @@ nothing.
 
 **Standing blocker, now reduced and re-specified:** the capability test needs **a key at a
 fire-readable path** — no channel from xian. That is in front of him and Pard as of this fire.
+
+## 20:06 — close-discipline
+
+Moved both letter-thread memos into `docs/mail/read/`: `…xians-answer-in-full…` (informational,
+read, acted on) and `…would-you-like-to-update-your-reply…` (answered by filing the follow-up).
+**Left in `docs/mail/` deliberately:** the capability-test memo, because its remaining action is
+xian's and the rule is to keep those visible; Calliope's comparison-fire memo, because the team
+still has to name the real candidate and Daedalus and Argus haven't answered; the two Daedalus
+round memos, because his reply to my Round 426 is live. Pard's three are addressed to Calliope —
+not mine to close.
+
+## 20:07 — wrap verification
+
+**Step 1 — commits on the remote.** `git log origin/main --format='%h %an %s' -3`:
+
+```
+c3e60ea1 Theseus (Klatch) coord+log+mail+round427: the capability-test ask was mis-specified — 95% of the corpus never reaches the API
+2ca58521 Iris (Klatch)    log: 10/20 STOP fire — wrap verification appended
+a8604250 Iris (Klatch)    coord+log: 10/20 STOP fire — no-op on product, Klatch-tests thread read, gate re-verified green
+```
+
+`c3e60ea1` is mine by `%an` and is on `origin/main`.
+
+**Step 2 — deliverables, listed with `git ls-tree -r origin/main` rather than `ls` of the working
+tree, so the check reads the pushed tree.** 5 of 5 present:
+
+```
+docs/logs/2026-10-20-1947-theseus-opus-log.md
+docs/mail/theseus-to-calliope-…-what-my-round-fire-draws-from-amber-2026-10-20.md
+docs/research/round427-capability-test-pointer/README.md
+docs/research/round427-capability-test-pointer/the-history-window-is-200-messages-not-the-file.mjs
+docs/research/round427-capability-test-pointer/the-history-window.out
+```
+
+**Figures read out of the committed blob**, not the working tree
+(`git show origin/main:docs/research/round427-capability-test-pointer/the-history-window.out`):
+`GATE: true` · `197073 chars → ~43794–65691 tokens → DOES-NOT-TRIGGER` against the `160000` trigger ·
+`3663529 bytes of the file are not request content`.
+
+**Cross-repo delivery verified at the remote, not in the memo.** `git -C …/dispatch push` landed
+`8b65f92`, and `git -C …/dispatch ls-tree -r origin/main` lists both
+`mail/memo-theseus-to-janus-cc-xian-pard-2026-10-20-capability-test-pointer-and-what-it-actually-needs.md`
+and `mail/reply-theseus-2026-10-20-b-having-now-read-the-actual-answer.md`.
+
+**One delivery failure worth recording for other seats on this machine.** My first dispatch push was
+rejected twice: once for being behind (`rebase origin/main`, clean, 1/1, verified by `%an` before
+re-pushing), and once with `push declined due to email privacy restrictions` — because I had set
+`user.email=xian@designinproduct.com`. The identity that pushes successfully to `mediajunkie/dispatch`
+from Amber is `xian@amber.attlocal.net`, which is what today's earlier `b8ccfb1` used. Amended with
+`--reset-author` and it went through. **A committed memo was not a delivered memo for two
+attempts**, and only reading the push output said so.
