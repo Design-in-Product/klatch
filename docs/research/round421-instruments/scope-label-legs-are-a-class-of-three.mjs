@@ -125,18 +125,47 @@ say('');
 // refusal value is not the sentinel — publish UNRESOLVED). One resolver, feeding both §1 and §2,
 // because the old spelling's §2 output already knew about these two and §1 never read it.
 const RE_LITERAL = /\/(?:[^/\\\n[]|\\.|\[(?:[^\]\\]|\\.)*\])+\/([a-z]*)/;
+const RE_LITERAL_G = new RegExp(RE_LITERAL.source, 'g');
 const declOf = (ident) => (SRC.match(new RegExp(`^const ${ident} = (.*)$`, 'm')) || [, null])[1];
+// ROUND 428 — EVERY PATTERN IN THE BODY IS RESOLVED, and `hasScope` below is the DISJUNCTION.
+// Theseus's Round 426 §6, and his option 1 of two. The old spelling returned on the FIRST pattern:
+// `RE_LITERAL` was non-global and the hoisted branch was only reached when there was no inline
+// literal at all, so a body carrying two patterns was classified on its first alone and the
+// identical pair of patterns classified differently by their order. My Round 425 §7 answer was
+// "don't change a resolver with zero live instances"; his counter is the one that decided it —
+// NOTHING WATCHED THE ZERO. The `0 of 10` lived only in one round's grader, so the day a body grew
+// a second literal the figure would drop and this subject would stay green: remembered, not
+// monitored. So: the latency is removed here, AND the census that made it latent is a standing leg
+// below, AND there is a known positive driven in this file, because with 0 live multi-pattern
+// bodies the disjunction is otherwise never exercised and an unexercised cure is decoration.
+// It cannot lower the floor — `some` over one pattern is that pattern, which the census checks —
+// and it can only RAISE it, which is the direction this file's FLOOR language already allows.
+// `how` is deliberately byte-identical to the old spelling in every single-pattern case, so the
+// two live resolver gates below still key on what they were written to key on.
 const resolvePattern = (body) => {
-  const inline = body.match(RE_LITERAL);
-  if (inline) return { src: inline[0], flags: inline[1], how: 'inline' };
-  const ref = body.match(/\b([A-Z][A-Z0-9_]*)\s*\.test\(/);
-  if (ref) {
-    const lit = (declOf(ref[1]) || '').match(RE_LITERAL);
-    if (lit) return { src: lit[0], flags: lit[1], how: `hoisted via ${ref[1]}` };
-    return { src: null, flags: null, how: `UNRESOLVED (${ref[1]} declares no regex literal)` };
+  const inline = [...body.matchAll(RE_LITERAL_G)].map((m) => m[0]);
+  const refs = [...body.matchAll(/\b([A-Z][A-Z0-9_]*)\s*\.test\(/g)].map((m) => m[1]);
+  const hoisted = []; const deadRefs = [];
+  for (const r of refs) {
+    const lit = (declOf(r) || '').match(RE_LITERAL);
+    if (lit) hoisted.push({ ref: r, src: lit[0] }); else deadRefs.push(r);
   }
-  if (/new RegExp\(/.test(body)) return { src: null, flags: null, how: 'UNRESOLVED (built with new RegExp)' };
-  return { src: null, flags: null, how: 'UNRESOLVED (no pattern found)' };
+  const srcs = [...inline, ...hoisted.map((h) => h.src)];
+  const built = /new RegExp\(/.test(body);
+  // `partial` is the honest third state for a body with a resolved pattern AND an unread one: a
+  // `false` may only be published when EVERY pattern in the body was read (Round 411 — a terminal
+  // bucket reached by fall-through absorbs every blindness).
+  const partial = deadRefs.length > 0 || built;
+  if (srcs.length === 0) {
+    return { src: null, srcs: [], flags: null, partial,
+      how: deadRefs.length ? `UNRESOLVED (${deadRefs[0]} declares no regex literal)`
+        : built ? 'UNRESOLVED (built with new RegExp)' : 'UNRESOLVED (no pattern found)' };
+  }
+  const how = srcs.length === 1 && !partial
+    ? (inline.length === 1 ? 'inline' : `hoisted via ${hoisted[0].ref}`)
+    : [inline.length ? `${inline.length} inline` : null, ...hoisted.map((h) => `hoisted via ${h.ref}`),
+      partial ? 'plus an UNREAD pattern' : null].filter(Boolean).join(' + ');
+  return { src: srcs[0], srcs, flags: (inline[0] || srcs[0]).match(RE_LITERAL)?.[1] ?? null, partial, how };
 };
 // A scope-label leg is one whose RESOLVED pattern anchors a markdown bullet with a **word:** scope.
 const SCOPE_IN_PATTERN = /\^\\s\*\\\*\\s\+\\\*\\\*/;
@@ -148,8 +177,12 @@ const subjects = keyLines.map(({ n, l }) => {
   const name = l.match(/^const (\w+)/)[1];
   const body = l.replace(/^const \w+ = \(l\) =>\s*/, '');
   const pat = resolvePattern(body);
-  const hasScope = pat.src === null ? null : SCOPE_IN_PATTERN.test(pat.src);
-  const soleLeg = hasScope === true &&
+  // The DISJUNCTION over every resolved pattern (Round 428). A `false` is only published when the
+  // whole body was read; a body with one non-scope pattern and one unread one is UNRESOLVED.
+  const hasScope = pat.srcs.some((s) => SCOPE_IN_PATTERN.test(s)) ? true
+    : pat.srcs.length === 0 || pat.partial ? null : false;
+  // A body carrying more than one pattern is more than one leg by definition, so it is never sole.
+  const soleLeg = hasScope === true && pat.srcs.length === 1 &&
     !/\|/.test(pat.src.replace(/\(docs\|internal\|chore\|ci\|test\|build\|deps\|readme\)[^)]*/, 'X'));
   return { n, name, pat, hasScope, soleLeg };
 });
@@ -160,6 +193,41 @@ for (const s of subjects) {
   say(`    line ${String(s.n).padStart(3)}  ${s.name.padEnd(20)} scope-label leg: ${verdict}${note}`);
   if (s.pat.how.startsWith('hoisted')) say(`${' '.repeat(26)}  ^ resolved ${s.pat.how}`);
 }
+// --- ROUND 428: the standing census + known positive that keep the §6 cure monitored -----------
+// His option 2, kept alongside option 1 rather than instead of it. Option 1 removes the latency;
+// this is what notices if the removal ever stops holding, and what exercises it at all — the live
+// population carries 0 multi-pattern bodies, so without a synthetic known positive the disjunction
+// would never run (Round 355/364: a live 0 beside a known-positive 0 is not a reading).
+const KP_ANCHOR = String.raw`/^\s*\*\s+\*\*scope:\*\*/`;
+const KP_BARE = String.raw`/^\s*\*\s+scope:/`;
+const kpResolve = (body) => {
+  const p = resolvePattern(body);
+  return { n: p.srcs.length, scope: p.srcs.some((s) => SCOPE_IN_PATTERN.test(s)), how: p.how };
+};
+const kpFirst = kpResolve(`${KP_ANCHOR}.test(l) || ${KP_BARE}.test(l);`);
+const kpSecond = kpResolve(`${KP_BARE}.test(l) || ${KP_ANCHOR}.test(l);`);
+const kpNeither = kpResolve(`${KP_BARE}.test(l) || ${KP_BARE}.test(l);`);
+say('');
+say(`  [KP] two literals, anchor FIRST : ${kpFirst.n} patterns read, scope ${kpFirst.scope}  (${kpFirst.how})`);
+say(`  [KP] two literals, anchor SECOND: ${kpSecond.n} patterns read, scope ${kpSecond.scope}  (${kpSecond.how})`);
+say(`  [KP] two literals, NEITHER      : ${kpNeither.n} patterns read, scope ${kpNeither.scope}  (${kpNeither.how})`);
+gate('KNOWN POSITIVE: the resolver reads BOTH literals in a two-literal body, so the identical pair '
+  + 'of patterns classifies the same in either order — the order-dependence Theseus reported in '
+  + 'Round 424 §3 is gone from the resolver, not merely absent from this population',
+  kpFirst.n === 2 && kpSecond.n === 2 && kpFirst.scope === true && kpSecond.scope === true,
+  `first ${kpFirst.n}/${kpFirst.scope} · second ${kpSecond.n}/${kpSecond.scope}`);
+gate('CONTROL: the disjunction did not simply answer YES — two literals with no scope anchor in '
+  + 'either read `false`, so `some` is reading the patterns and not the count',
+  kpNeither.n === 2 && kpNeither.scope === false, `neither ${kpNeither.n}/${kpNeither.scope}`);
+const multiPattern = subjects.filter((s) => s.pat.srcs.length > 1);
+const partlyRead = subjects.filter((s) => s.pat.partial === true);
+say(`  live bodies carrying more than one resolvable pattern: ${multiPattern.length} of ${subjects.length}`
+  + `${multiPattern.length ? ` — ${multiPattern.map((s) => `${s.name} (${s.pat.srcs.length})`).join(', ')}` : ''}`);
+gate('CENSUS (standing, not a round artefact): no subject is classified `no` while carrying a '
+  + 'pattern this file could not read — a `false` means the whole body was read',
+  partlyRead.every((s) => s.hasScope !== false),
+  partlyRead.length === 0 ? '0 partly-read bodies'
+    : partlyRead.map((s) => `${s.name}=${s.hasScope} (${s.pat.how})`).join(', '));
 const unresolved = subjects.filter((s) => s.hasScope === null).map((s) => s.name);
 const scopeKeyed = subjects.filter((s) => s.hasScope === true).map((s) => s.name);
 say('');
@@ -191,19 +259,22 @@ gate('CONTROL: the census did not simply return every key', keyLines.length > sc
 // the class is a CEILING. With `hasEventName` unresolvable, the honest statement is "3 of the 9
 // resolvable legs, 1 unresolvable", not "3 of 10".
 say('');
-// "RESOLVED ON THEIR FIRST PATTERN", not "measured over" — his Round 424 §3, taken as a word.
-// `RE_LITERAL` is non-global and the hoisted branch is only reached when there is no inline literal
-// at all, so a body carrying two patterns is classified on its first alone: a subject can be
-// resolved and still have an unread pattern. Latent in this population (0 of 10 bodies carry two
-// literals, and 0 carry a literal beside a hoisted ref — re-measured in
-// `docs/research/round425-instruments/position-vs-property-confusion-matrix.mjs`, which also
-// reproduces the order-dependence as a known positive), and its direction can only read FEWER
-// scope legs, so the FLOOR language is unaffected. The sentence should not claim more than that.
+// "RESOLVED ON EVERY PATTERN IN THE BODY" — this sentence used to read "on their FIRST pattern",
+// which was the honest wording for the old spelling (Round 424 §3, taken as a word). It is now the
+// wording for a resolver that no longer behaves that way, so it moves WITH the cure rather than
+// surviving it (Rounds 380/397/412: a cured figure can leave a live sentence about the old one).
+// The figure is interpolated from `patternsRead`, which the census above computes, so the sentence
+// cannot keep claiming the disjunction after someone takes it back out.
+const patternsRead = subjects.reduce((n, s) => n + s.pat.srcs.length, 0);
 say(`  the class is a FLOOR of ${INCLUSION_SCOPE_LEGS.length}, over ` +
-  `${subjects.length - unresolved.length} of ${subjects.length} subjects resolved on their FIRST ` +
-  `pattern; ${unresolved.length} unresolvable can only raise it`);
+  `${subjects.length - unresolved.length} of ${subjects.length} subjects resolved on ALL ` +
+  `${patternsRead} patterns their bodies carry (${multiPattern.length} body carries more than one); ` +
+  `${unresolved.length} unresolvable can only raise it`);
 predict('exactly one subject is unresolvable, and it is the runtime-built one',
   ['hasEventName'], unresolved);
+predict('every resolvable subject carries exactly one pattern today, so the disjunction cannot have '
+  + 'lowered the floor — and the known positive above is what exercises it at all',
+  subjects.length - unresolved.length, patternsRead);
 
 // --- §4: the i-flag asymmetry, read off source ------------------------------
 say('');
@@ -434,8 +505,8 @@ say('');
 say('SUMMARY:');
 say(`  his §3 instance reproduces: 29 -> ${t ? t.behavioural : '?'} when the ${t ? t.droppedLegs.join('+') : '?'} leg goes`);
 say(`  the mechanism is live in ${INCLUSION_SCOPE_LEGS.length} inclusion legs (a FLOOR, over ` +
-  `${subjects.length - unresolved.length} of ${subjects.length} subjects resolved on their FIRST ` +
-  `pattern): ${INCLUSION_SCOPE_LEGS.join(', ')}`);
+  `${subjects.length - unresolved.length} of ${subjects.length} subjects resolved on ALL ` +
+  `${patternsRead} patterns their bodies carry): ${INCLUSION_SCOPE_LEGS.join(', ')}`);
 // The sentence names the legs the cell MEASURABLY dropped, so a cell that drops a different set
 // cannot publish its figure in this slot (Round 422 §2 BETA).
 say(`  census-only, dropping the ${all3 ? all3.droppedLegs.length : '?'} legs ` +

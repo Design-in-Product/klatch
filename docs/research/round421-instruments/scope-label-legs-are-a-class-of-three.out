@@ -1,7 +1,7 @@
 # Round 421 §3/§4 — the scope-label leg is a class of three, and the `i` flag
 
-HEAD: aa47c4957a936e472689049658f27c86de3597d8
-driven at: 2026-10-20T20:37:22.095Z
+HEAD: b5619e2b33226d298effcf21572d79a538c447c2
+driven at: 2026-10-21T16:29:35.473Z
 
   [GATE] OK   the instrument under test is present  — docs/research/round419-instruments/sec3-rekeyed-on-the-call-shape.mjs
   [GATE] OK   the changelog fixture is present  — /Users/xian/Development/klatch-worktrees/daedalus/.testdata/round419-sdk-changelog.md
@@ -22,6 +22,14 @@ driven at: 2026-10-20T20:37:22.095Z
     line 240  hasStreamLifecycle   scope-label leg: no 
                             ^ resolved hoisted via LIFECYCLE_RE
 
+  [KP] two literals, anchor FIRST : 2 patterns read, scope true  (2 inline)
+  [KP] two literals, anchor SECOND: 2 patterns read, scope true  (2 inline)
+  [KP] two literals, NEITHER      : 2 patterns read, scope false  (2 inline)
+  [GATE] OK   KNOWN POSITIVE: the resolver reads BOTH literals in a two-literal body, so the identical pair of patterns classifies the same in either order — the order-dependence Theseus reported in Round 424 §3 is gone from the resolver, not merely absent from this population  — first 2/true · second 2/true
+  [GATE] OK   CONTROL: the disjunction did not simply answer YES — two literals with no scope anchor in either read `false`, so `some` is reading the patterns and not the count  — neither 2/false
+  live bodies carrying more than one resolvable pattern: 0 of 10
+  [GATE] OK   CENSUS (standing, not a round artefact): no subject is classified `no` while carrying a pattern this file could not read — a `false` means the whole body was read  — hasEventName=null (UNRESOLVED (built with new RegExp))
+
   resolvable subjects: 9 of 10   UNRESOLVED: hasEventName
   scope-label-keyed legs: hasStreamScope, hasToolSurface, hasModelsSurface, isNonBehavioural
   [GATE] OK   the resolver follows the hoisted identifier: hasStreamLifecycle resolves via LIFECYCLE_RE  — hoisted via LIFECYCLE_RE → hasScope=false
@@ -30,8 +38,9 @@ driven at: 2026-10-20T20:37:22.095Z
   [PRED] LANDED   the scope-label mechanism is live in 3 INCLUSION legs, not the 1 he reported — expected ["hasStreamScope","hasToolSurface","hasModelsSurface"], got ["hasStreamScope","hasToolSurface","hasModelsSurface"]
   [GATE] OK   CONTROL: the census did not simply return every key  — 4 scope-keyed of 10 keys
 
-  the class is a FLOOR of 3, over 9 of 10 subjects resolved on their FIRST pattern; 1 unresolvable can only raise it
+  the class is a FLOOR of 3, over 9 of 10 subjects resolved on ALL 9 patterns their bodies carry (0 body carries more than one); 1 unresolvable can only raise it
   [PRED] LANDED   exactly one subject is unresolvable, and it is the runtime-built one — expected ["hasEventName"], got ["hasEventName"]
+  [PRED] LANDED   every resolvable subject carries exactly one pattern today, so the disjunction cannot have lowered the floor — and the known positive above is what exercises it at all — expected 9, got 9
 
 ## 2. §4 — the one key without an `i` flag, and the precedence under it
 
@@ -125,10 +134,10 @@ driven at: 2026-10-20T20:37:22.095Z
 
 ==============================================================================
 GATE: true
-PREDICTIONS: 14 landed, 0 refuted
+PREDICTIONS: 15 landed, 0 refuted
 
 SUMMARY:
   his §3 instance reproduces: 29 -> 24 when the hasToolSurface leg goes
-  the mechanism is live in 3 inclusion legs (a FLOOR, over 9 of 10 subjects resolved on their FIRST pattern): hasStreamScope, hasToolSurface, hasModelsSurface
+  the mechanism is live in 3 inclusion legs (a FLOOR, over 9 of 10 subjects resolved on ALL 9 patterns their bodies carry): hasStreamScope, hasToolSurface, hasModelsSurface
   census-only, dropping the 3 legs [hasModelsSurface, hasStreamScope, hasToolSurface]: behavioural 21
   his §4 i-flag near-miss: behavioural 29 -> 30 with the flag
