@@ -1,13 +1,19 @@
 # Round 425 — a crash in the A2 cell can no longer print `SEPARATES`
 
 REPO: /Users/xian/Development/klatch-worktrees/daedalus
-HEAD at open: 2b58470fb6a03f9022027f1b2bc9feb0b446a43e
+HEAD at open: f7ba13526fce5edd9142a367fd82d97974a51456
 subject: docs/research/round423-instruments/grade-the-422-cures.mjs
-driven at: 2026-10-20T20:32:32.259Z
+driven at: 2026-10-21T16:22:56.929Z
 
   [GATE] OK   the subject (my Round 423 grader) is present  — docs/research/round423-instruments/grade-the-422-cures.mjs
   [GATE] OK   the changelog fixture the subject needs is present  — /Users/xian/Development/klatch-worktrees/daedalus/.testdata/round419-sdk-changelog.md
   [GATE] OK   a cell DIRECTORY is depth 3 under REPO  — /Users/xian/Development/klatch-worktrees/daedalus
+  [GATE] OK   subject A's path was sliced out of the subject, not typed  — docs/research/round421-instruments/grade-the-420-repair.mjs
+  [GATE] OK   …and subject A is readable  — docs/research/round421-instruments/grade-the-420-repair.mjs — 16519 bytes
+  [GATE] OK   the subject's `A2_FROM (the §1 cured line)` was sliced out of the subject  — const PRE_CURE = gradedCarriers.length ? gradedCarriers[0] : null;
+  [GATE] OK   …and THE SLICED TEXT occurs in subject A exactly once — the pin his §3 asked for  — occurs=1 in docs/research/round421-instruments/grade-the-420-repair.mjs
+  [GATE] OK   the subject's `A3_FROM (DEFECT_TOKEN)` was sliced out of the subject  — const DEFECT_TOKEN = "const prevRev = spawnSync('git', ['-C', REPO, 'rev
+  [GATE] OK   …and THE SLICED TEXT occurs in subject A exactly once — the pin his §3 asked for  — occurs=1 in docs/research/round421-instruments/grade-the-420-repair.mjs
 ## 0. Expected member loss, written down before the drive
 
   D1 new/clean      — §1 SUMMARY SEPARATES · discriminator OK · A3 gate OK · stray gate OK
@@ -110,7 +116,7 @@ driven at: 2026-10-20T20:32:32.259Z
   [PRED] LANDED   D8 old/leak: HIS FINDING — the porcelain check stays silent with a cell tree on disk — expected "OK", got "OK"
   [PRED] LANDED   D8 old/leak: …with the same tree on disk — expected true, got true
   [PRED] LANDED   D1 new/no leak: the walk passes when there is nothing to find — expected "OK", got "OK"
-  [GATE] OK   THE DISCRIMINATOR (§2): the same leaked cell tree is FAILED by the walk and passed by the porcelain check it replaced, and the walk still passes with no leak  — leak: walk FAIL / porcelain OK (tree ["A1-cured-grader","A2-old-cell-from-HEAD","A3-token-no-rev-carries"]) — no leak: walk OK
+  [GATE] OK   THE DISCRIMINATOR (§2): the same leaked cell tree is FAILED by the walk and passed by the porcelain check it replaced, and the walk still passes with no leak  — leak: walk FAIL (tree ["A1-cured-grader","A2-old-cell-from-HEAD","A3-token-no-rev-carries"]) / porcelain OK (tree ["A1-cured-grader","A2-old-cell-from-HEAD","A3-token-no-rev-carries"]) — no leak: walk OK
 
   [GATE] OK   no cell file survives, in either cell tree or beside this instrument (walked, not `git status`)  — (none)
   [GATE] OK   the subject was never mutated in place (every cell was a copy)  — (unmodified)

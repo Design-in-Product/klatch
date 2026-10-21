@@ -1,0 +1,136 @@
+# Round 428 — a published sentence must read its own discriminator, not a subset of it
+
+REPO: /Users/xian/Development/klatch-worktrees/daedalus
+HEAD at open: c996d84a6b18db5f199ad539bc1133920c228fd8
+subject: docs/research/round425-instruments/a-crash-cannot-print-separates.mjs
+driven at: 2026-10-21T16:26:40.175Z
+
+## 1. The two spellings, both sliced — neither re-typed here
+
+  [GATE] OK   the subject is present  — docs/research/round425-instruments/a-crash-cannot-print-separates.mjs
+  [GATE] OK   the subject's recorded .out is present  — docs/research/round425-instruments/a-crash-cannot-print-separates.out
+  the subject's rev history (newest first): c996d84a, 2b58470f
+  [GATE] OK   the NEWEST rev carries the cure (so the cure is committed and the OLD row is really old)  — newest=c996d84a
+  [GATE] OK   a rev of this file predates the cure (there IS an old spelling to grade)  — PRE_CURE=2b58470f
+  [GATE] OK   …and it is NOT the rev this grader will land in (cure and grader do not share a commit)  — PRE_CURE=2b58470f HEAD=c996d84a
+  [GATE] OK   [§1/A2] the NEW key `SEPARATES_1_A2` was sliced out of the live subject  — 3 lines
+  [GATE] OK   [§1/A2] …and the slice stopped inside the declaration (no second `const` swallowed)
+  [GATE] OK   [§1/A2] the live SUMMARY sentence interpolates a BARE IDENTIFIER, and it is `SEPARATES_1_A2`  — SEPARATES_1_A2
+  [GATE] OK   [§1/A2] …and the live gate reads the same identifier
+  [GATE] OK   [§1/A2] the OLD SENTENCE key was sliced out of 2b58470f  — D1.summary1 === 'SEPARATES' && D3.summary1 === 'SEPARATES' && D2…
+  [GATE] OK   [§1/A2] the OLD GATE key was sliced out of 2b58470f, separately  — D1.summary1 === 'SEPARATES' && D4.summary1 === 'SEPARATES' && D3…
+  [GATE] OK   [§1/A2] HIS FINDING, read as text: every conjunct of the OLD sentence is a conjunct of the OLD gate, and the gate has MORE — a proper subset  — dropped by the sentence: D4.summary1 === 'SEPARATES' | D2.summary1 !== null | D3.disc1 === 'OK'
+  [GATE] OK   [§1/A3] the NEW key `SEPARATES_1_A3` was sliced out of the live subject  — 1 lines
+  [GATE] OK   [§1/A3] …and the slice stopped inside the declaration (no second `const` swallowed)
+  [GATE] OK   [§1/A3] the live SUMMARY sentence interpolates a BARE IDENTIFIER, and it is `SEPARATES_1_A3`  — SEPARATES_1_A3
+  [GATE] OK   [§1/A3] …and the live gate reads the same identifier
+  [GATE] OK   [§1/A3] the OLD SENTENCE key was sliced out of 2b58470f  — D1.a3 === 'OK' && D6.a3 === 'OK' && D5.a3 === 'FAIL'…
+  [GATE] OK   [§1/A3] the OLD GATE key was sliced out of 2b58470f, separately  — D1.a3 === 'OK' && D4.a3 === 'OK' && D6.a3 === 'OK' && D5.a3 === …
+  [GATE] OK   [§1/A3] HIS FINDING, read as text: every conjunct of the OLD sentence is a conjunct of the OLD gate, and the gate has MORE — a proper subset  — dropped by the sentence: D4.a3 === 'OK'
+  [GATE] OK   [§2] the NEW key `SEPARATES_2` was sliced out of the live subject  — 3 lines
+  [GATE] OK   [§2] …and the slice stopped inside the declaration (no second `const` swallowed)
+  [GATE] OK   [§2] the live SUMMARY sentence interpolates a BARE IDENTIFIER, and it is `SEPARATES_2`  — SEPARATES_2
+  [GATE] OK   [§2] …and the live gate reads the same identifier
+  [GATE] OK   [§2] the OLD SENTENCE key was sliced out of 2b58470f  — D7.walkStray === 'FAIL' && D8.porcStray === 'OK' && D1.walkStray…
+  [GATE] OK   [§2] the OLD GATE key was sliced out of 2b58470f, separately  — D7.walkStray === 'FAIL' && D8.porcStray === 'OK' && D1.walkStray…
+  [GATE] OK   [§2] HIS FINDING, read as text: every conjunct of the OLD sentence is a conjunct of the OLD gate, and the gate has MORE — a proper subset  — dropped by the sentence: Array.isArray(D7.innerLeft) | D7.innerLeft.length > 0
+
+## 2. The REAL table, parsed out of the subject's recorded `.out`
+
+  [GATE] OK   all eight of the subject's cells were parsed, by name  — 8 parsed: D1-new-clean, D2-new-A2-crashes, D3-old-A2-crashes, D4-old-clean, D5-new-A3-exits-2, D6-old-A3-exits-2, D7-new-cells-leak, D8-old-cells-leak
+  [GATE] OK   CONTROL: the parse is not uniform — the eight cells do not all carry the same §1 SUMMARY  — "SEPARATES" | "NOT shown to separate"
+  [GATE] OK   CONTROL: `innerLeft` parsed as a non-empty array for at least one cell and as null for another (an all-undefined column would make the §2 kill vacuous)  — D1=null D2=null D3=null D4=null D5=null D6=null D7=3 D8=3
+
+## 3. KNOWN POSITIVE — the sliced keys, over the parsed table, reproduce the subject's own
+   published SUMMARY lines byte-for-byte
+
+  [GATE] OK   [§1/A2] the reconstructed line is byte-identical to the published one  — §1/A2 cure (a red must name the gate that fired): SEPARATES — his R2 sha…
+  [GATE] OK   [§1/A3] the reconstructed line is byte-identical to the published one  — §1/A3 cure (the refusal must name itself): SEPARATES — his R3 shape pass…
+  [GATE] OK   [§2] the reconstructed line is byte-identical to the published one  — §2 cure (walk both trees instead of porcelain over docs/research): SEPAR…
+
+## 4. Expected, written down before the matrix is evaluated
+
+  REAL column (the control): OLD sentence publishes, OLD gate true, NEW publishes — all three
+  readings. If this column moves, the cure has become a blanket refusal and nothing below is
+  a reading.
+
+  KILL column, for each reading the kill hits:
+    K1, K2, K3 — OLD sentence PUBLISHES while its OWN OLD GATE is FALSE (his finding), and the
+                 NEW key is FALSE, so gate and sentence agree.
+    K4         — OLD sentence publishes AND the OLD GATE passes too (it never carried D8), so
+                 this row is strictly worse than the three he named, and the NEW key is FALSE.
+  KILL column, for each reading the kill does NOT hit: nothing moves, in either spelling. That
+  is what makes each kill specific to the conjunct it removes rather than a blanket crippling.
+
+## 5. The matrix
+
+  §1/A2   REAL      old-sentence true   old-gate true   NEW true
+  §1/A2   K1 D4-old old-sentence true   old-gate false  NEW false   <-- this kill hits this reading
+  §1/A2   K2 D2 die old-sentence true   old-gate false  NEW false   <-- this kill hits this reading
+  §1/A2   K3 D7.inn old-sentence true   old-gate true   NEW true   (not this reading's kill)
+  §1/A2   K4 D8.inn old-sentence true   old-gate true   NEW true   (not this reading's kill)
+  §1/A3   REAL      old-sentence true   old-gate true   NEW true
+  §1/A3   K1 D4-old old-sentence true   old-gate false  NEW false   <-- this kill hits this reading
+  §1/A3   K2 D2 die old-sentence true   old-gate true   NEW true   (not this reading's kill)
+  §1/A3   K3 D7.inn old-sentence true   old-gate true   NEW true   (not this reading's kill)
+  §1/A3   K4 D8.inn old-sentence true   old-gate true   NEW true   (not this reading's kill)
+  §2      REAL      old-sentence true   old-gate true   NEW true
+  §2      K1 D4-old old-sentence true   old-gate true   NEW true   (not this reading's kill)
+  §2      K2 D2 die old-sentence true   old-gate true   NEW true   (not this reading's kill)
+  §2      K3 D7.inn old-sentence true   old-gate false  NEW false   <-- this kill hits this reading
+  §2      K4 D8.inn old-sentence true   old-gate true   NEW false   <-- this kill hits this reading
+
+## 6. The readings
+
+  [PRED] LANDED   [§1/A2] CONTROL, real table: the OLD sentence publishes — expected true, got true
+  [PRED] LANDED   [§1/A2] CONTROL, real table: the OLD gate passes too — expected true, got true
+  [PRED] LANDED   [§1/A2] CONTROL, real table: the NEW key publishes — the cure is not a blanket refusal — expected true, got true
+  [PRED] LANDED   [§1/A3] CONTROL, real table: the OLD sentence publishes — expected true, got true
+  [PRED] LANDED   [§1/A3] CONTROL, real table: the OLD gate passes too — expected true, got true
+  [PRED] LANDED   [§1/A3] CONTROL, real table: the NEW key publishes — the cure is not a blanket refusal — expected true, got true
+  [PRED] LANDED   [§2] CONTROL, real table: the OLD sentence publishes — expected true, got true
+  [PRED] LANDED   [§2] CONTROL, real table: the OLD gate passes too — expected true, got true
+  [PRED] LANDED   [§2] CONTROL, real table: the NEW key publishes — the cure is not a blanket refusal — expected true, got true
+
+  [PRED] LANDED   [§1/A2] K1 D4-old-clean dies: HIS FINDING — the OLD sentence still publishes — expected true, got true
+  [PRED] LANDED   [§1/A2] K1 D4-old-clean dies: …and the OLD gate is FALSE, so the sentence published past it — expected true, got true
+  [PRED] LANDED   [§1/A2] K1 D4-old-clean dies: THE CURE — the NEW key is false, so gate and sentence agree — expected false, got false
+  [PRED] LANDED   [§1/A3] K1 D4-old-clean dies: HIS FINDING — the OLD sentence still publishes — expected true, got true
+  [PRED] LANDED   [§1/A3] K1 D4-old-clean dies: …and the OLD gate is FALSE, so the sentence published past it — expected true, got true
+  [PRED] LANDED   [§1/A3] K1 D4-old-clean dies: THE CURE — the NEW key is false, so gate and sentence agree — expected false, got false
+  [PRED] LANDED   [§2] K1 D4-old-clean dies: CONTROL — not this reading's kill, nothing moves (old) — expected true, got true
+  [PRED] LANDED   [§2] K1 D4-old-clean dies: CONTROL — not this reading's kill, nothing moves (new) — expected true, got true
+  [PRED] LANDED   [§1/A2] K2 D2 dies between its gate line and its verdict: HIS FINDING — the OLD sentence still publishes — expected true, got true
+  [PRED] LANDED   [§1/A2] K2 D2 dies between its gate line and its verdict: …and the OLD gate is FALSE, so the sentence published past it — expected true, got true
+  [PRED] LANDED   [§1/A2] K2 D2 dies between its gate line and its verdict: THE CURE — the NEW key is false, so gate and sentence agree — expected false, got false
+  [PRED] LANDED   [§1/A3] K2 D2 dies between its gate line and its verdict: CONTROL — not this reading's kill, nothing moves (old) — expected true, got true
+  [PRED] LANDED   [§1/A3] K2 D2 dies between its gate line and its verdict: CONTROL — not this reading's kill, nothing moves (new) — expected true, got true
+  [PRED] LANDED   [§2] K2 D2 dies between its gate line and its verdict: CONTROL — not this reading's kill, nothing moves (old) — expected true, got true
+  [PRED] LANDED   [§2] K2 D2 dies between its gate line and its verdict: CONTROL — not this reading's kill, nothing moves (new) — expected true, got true
+  [PRED] LANDED   [§1/A2] K3 D7.innerLeft empty (the leak never reached disk): CONTROL — not this reading's kill, nothing moves (old) — expected true, got true
+  [PRED] LANDED   [§1/A2] K3 D7.innerLeft empty (the leak never reached disk): CONTROL — not this reading's kill, nothing moves (new) — expected true, got true
+  [PRED] LANDED   [§1/A3] K3 D7.innerLeft empty (the leak never reached disk): CONTROL — not this reading's kill, nothing moves (old) — expected true, got true
+  [PRED] LANDED   [§1/A3] K3 D7.innerLeft empty (the leak never reached disk): CONTROL — not this reading's kill, nothing moves (new) — expected true, got true
+  [PRED] LANDED   [§2] K3 D7.innerLeft empty (the leak never reached disk): HIS FINDING — the OLD sentence still publishes — expected true, got true
+  [PRED] LANDED   [§2] K3 D7.innerLeft empty (the leak never reached disk): …and the OLD gate is FALSE, so the sentence published past it — expected true, got true
+  [PRED] LANDED   [§2] K3 D7.innerLeft empty (the leak never reached disk): THE CURE — the NEW key is false, so gate and sentence agree — expected false, got false
+  [PRED] LANDED   [§1/A2] K4 D8.innerLeft empty: CONTROL — not this reading's kill, nothing moves (old) — expected true, got true
+  [PRED] LANDED   [§1/A2] K4 D8.innerLeft empty: CONTROL — not this reading's kill, nothing moves (new) — expected true, got true
+  [PRED] LANDED   [§1/A3] K4 D8.innerLeft empty: CONTROL — not this reading's kill, nothing moves (old) — expected true, got true
+  [PRED] LANDED   [§1/A3] K4 D8.innerLeft empty: CONTROL — not this reading's kill, nothing moves (new) — expected true, got true
+  [PRED] LANDED   [§2] K4 D8.innerLeft empty: HIS FINDING — the OLD sentence still publishes — expected true, got true
+  [PRED] LANDED   [§2] K4 D8.innerLeft empty: …and the OLD gate ALSO passes (it never carried this conjunct either) — expected false, got false
+  [PRED] LANDED   [§2] K4 D8.innerLeft empty: THE CURE — the NEW key is false, so gate and sentence agree — expected false, got false
+
+  [GATE] OK   THE DISCRIMINATOR (Round 426 §1): under each of his three kills the OLD sentence publishes while its own OLD gate is FALSE, the NEW key refuses, a kill aimed at another reading moves neither spelling, the REAL column publishes in both spellings, and every live sentence interpolates the bare identifier its gate reads  — real [§1/A2:true/true/true §1/A3:true/true/true §2:true/true/true]
+  [GATE] OK   THE DISCRIMINATOR (my added D8 conjunct): the D8 kill passes the OLD GATE as well as the OLD sentence and is refused only by the NEW key — so the conjunct I added beyond his charge is load-bearing and not decoration  — §2/K4 old-sentence true old-gate true NEW false
+  [GATE] OK   CONTROL: the matrix is not vacuous — at least one cell of it is TRUE and at least one FALSE in the NEW column
+
+==============================================================================
+GATE: true
+PREDICTIONS: 38 landed, 0 refuted
+
+SUMMARY:
+  §1 cure (a sentence must read its own discriminator): SEPARATES — his three kills each publish past a FALSE old gate and are each refused by the new key
+  the D8 conjunct I added beyond his charge: LOAD-BEARING — the D8 kill passes the old gate too and only the new key refuses it
+  dropped conjuncts, per reading, read as text: §1/A2 dropped 3 · §1/A3 dropped 1 · §2 dropped 2
