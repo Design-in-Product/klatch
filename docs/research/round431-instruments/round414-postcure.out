@@ -1,0 +1,41 @@
+Round 414 — the refusing half graded conjunct by conjunct, and my ten reconciled, at 40b69a33d1aea187a6cf659c45a0527c4ff4ea84
+
+  EXPECTED G1  the 412 key is SLICED from my own file, lines 1..422 byte-for-byte, with a declared export tail as the only addition
+  EXPECTED G2  known positive that the slice is live and is MINE: it splits round410:408 into the three spans my own recorded drive 5 prints, parsed out of that output rather than retyped
+  EXPECTED G3  THE ATTACK, one level finer than his memo: G7 is a CONJUNCTION and its two conjuncts have different vacuity. Against a branch-layer-DELETED counterfactual the stratum conjunct is TRUE (vacuous — his finding confirmed) and the via conjunct is FALSE (load-bearing), so the LEG fails where the VERDICT does not. The leg's one real guard reads a trace string
+  EXPECTED G4  the repair, driven under MY sliced key and not banked from his memo: a call-test ternary with disagreeing branches is DECIDED at 411 and REFUSED at 412, so the cell moves in the refusing direction
+  EXPECTED G5  three controls for G4, one per thing that could otherwise be credited with the move (411/412): the branches alone, the identifier test alone, and the CALL test alone are each UNMOVED, and the call test alone sits on the stratum G4 starts from
+  EXPECTED G6  the repaired leg is non-vacuous in BOTH conjuncts, graded as a 2 x 2 against the same deleted-layer counterfactual that convicted the old one: live TRUE, counterfactual FALSE
+  EXPECTED P1  his §6 is wrong about my instrument, and my own recorded summary line is the evidence: my hand read carries NO seam and uses a LITERAL seven-line window, so its 62 and its 10 are one population, which is the cell his grid puts at 13
+  EXPECTED P2  so the two figures part on the READER, not on the population and not on the window: his grid counts with the graded `declarations()` reader, mine with a line-wise regex, and the 2 x 2 that separates them varies what SELECTS the population (339)
+  EXPECTED P4  ADDED AT DRIVE 2, not pre-registered with the rest: 62/10 is irreproducible from any rev because the selector is `git ls-files`, which reads the INDEX — and it reproduces exactly as the recorded rev's tree with the round412 directory removed, so the figure was self-directory-seamed by accident of untracked state
+  EXPECTED P3  his §5 naming accident, converted into a control pair: two constants declared here, identical in shape and differing only in NAME, and exactly the KP-named one is re-admitted into an unseamed population — so the hazard is driven, not reported as luck
+
+  TRUE  G1  [GATE] the slice is my lines 1..422 byte-for-byte and the export tail is the only addition
+        sliced 422 line(s) of 763 · prefix byte-identical: true · remainder is exactly the declared tail: true · cut line 423 is "// ─── G1 — his own figures, parsed out of a live drive of"
+  TRUE  G2  [GATE] the sliced reader splits round410:408 into the three spans my own drive 5 recorded, and its verdict is DERIVED from the reader's own returns rather than re-typed (430/431)
+        test true · cons true · alt true · spans read out of docs/research/round412-instruments/drive5-tracked-seam-armed.out · derived convention: answer [alt,cons,test] refusal [refused] · this result classifies as ANSWER
+  TRUE  G3  [GATE] G7 is a conjunction whose conjuncts differ in vacuity: the stratum conjunct survives the branch layer being deleted (vacuous), the via conjunct does not (load-bearing), so the LEG fails under the counterfactual while the VERDICT is unchanged by it
+        DISAGREE " cond ? 'x' : 7;" · verdict live UNMODELLED / layer-deleted UNMODELLED (UNCHANGED: true) · stratum conjunct live true / deleted true <- VACUOUS · via conjunct live true / deleted false <- load-bearing · whole leg live true / deleted false
+  TRUE  G4  [GATE] the repair out of my own P3: a CALL-test ternary with disagreeing branches is DECIDED at 411 and REFUSED at 412, so the cell moves in the direction G7 could not grade
+        REFUSE-REPAIRED " f(x) ? 'y' : 7;" @411=OTHER-DERIVED @412=UNMODELLED MOVES=true [branches disagree: TYPED-LITERAL vs OTHER-DERIVED] <- grades the refusal · DECIDE-REPAIRED " f(x) ? 'y' : 'z';" @411=OTHER-DERIVED @412=TYPED-LITERAL MOVES=true [branches agree: TYPED-LITERAL]
+  TRUE  G5  [GATE] three controls, one per thing that could be credited with G4's move: the branches alone, the identifier test alone and the CALL test alone are each UNMOVED between the two keys, and the call test alone is the stratum G4 starts from
+        BRANCH-ALONE " 'x';" @411=TYPED-LITERAL @412=TYPED-LITERAL MOVES=false · IDENT-TEST-ALONE " cond;" @411=OTHER-DERIVED @412=OTHER-DERIVED MOVES=false · CALL-TEST-ALONE " f(x);" @411=OTHER-DERIVED @412=OTHER-DERIVED MOVES=false (same stratum G4 starts from: true)
+  TRUE  G6  [GATE] the repaired leg is non-vacuous in BOTH conjuncts: against the deleted-layer counterfactual the MOVEMENT conjunct fails too, not just the trace conjunct — which is what the old leg could not say
+        live {moved true, traced true} · layer-deleted {moved false, traced false} · so the repaired leg reddens on the counterfactual by VALUE and not only by trace string (354)
+  FALSE P1  [PRED] my hand read carries NO seam and uses a LITERAL seven-line window, so its 62 and its 10 are ONE population — re-driven with its own sliced reader at the rev that recorded it, and again at HEAD, where the unseamed figure has since moved
+        recorded (read out of explore-the-ternary-neighbourhood.out, not retyped) scanned 62 withQ 10 · re-driven @713376a8 scanned 67 withQ 13 (reproduces: false) · @HEAD unseamed scanned 93 withQ 19 · @HEAD seamed scanned 87 withQ 17 · slices asserted: true
+  FALSE P2  [PRED] the two figures part on the READER, not the population and not the window: held at one population and one window definition, the line-wise regex and the graded `declarations()` reader return different counts
+        [scanned, litQ, contQ] graded unseamed [93, 19, 2] · graded seamed [87, 17, 2] · [scanned, withQ] hand unseamed [93, 19] · hand seamed [87, 17] · readers disagree at one population + one window: false
+  TRUE  P4  [PRED] ADDED AT DRIVE 2, not pre-registered with the rest, and said so: 62/10 is irreproducible from any rev because the selector is `git ls-files`, which reads the INDEX — and it reproduces EXACTLY as the recorded rev's tree with the round412 directory removed. So my figure was the self-directory-seamed population by accident of UNTRACKED STATE, the mirror of his §5 naming accident
+        recorded 62/10 · ls-tree(713376a8) whole 67/13 · ls-tree(713376a8) minus docs/research/round412-instruments/ 62/10 <- reproduces the recording: true · selector today: ls-files 320 file(s) vs ls-tree(HEAD) 320
+  TRUE  P3  [PRED] the pair differs only in name, and exactly the KP-named one is admitted — so the re-admission hazard is a property of the NAMING CONVENTION, driven rather than reported as an accident of what a constant happened to be called
+        pair found 2 · admitted 1 [KP_R414_NAMING_CONTROL] · rejected 1 [plain_r414_naming_control] · values identical: true · this file tracked: true · so admission is decided by the NAME alone
+
+GATE: true   (6 leg(s) on the key itself)
+PREDICTIONS: 2 landed, 2 refuted
+
+  !! A REFUTED PREDICTION IS THE ROUND'S CONTENT, NOT ITS FAILURE (383).
+
+  rev 40b69a33d1aea187a6cf659c45a0527c4ff4ea84 · 320 file(s) in the corpus · worktree DIRTY
+  his round413 instrument present: true

@@ -34,6 +34,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { conventionOf, classify } from '../round430-instruments/refusal-convention.mjs';
 
 const REPO = fileURLToPath(new URL('../../..', import.meta.url));
 const git = (a) => execFileSync('git', ['-C', REPO, ...a], { encoding: 'utf8' });
@@ -128,15 +129,32 @@ const spanOf = (tag) => {
 const want = { test: spanOf('test'), cons: spanOf('cons'), alt: spanOf('alt') };
 const site = M.ROWS.find((r) => r.path === R410 && r.line === 408);
 const split = site === undefined ? null : M.topLevelTernary(M.contRaw(site.d));
-g('G2', 'the sliced reader splits round410:408 into the three spans my own drive 5 recorded',
+/**
+ * CURED in Round 431 (was: a hand-typed absence test on the sliced reader's own refusal sentinel).
+ * The reader was sliced here from the first drive; its VERDICT was not — it was a copy of the
+ * convention declared in round412, with nothing behind it. Daedalus's Round 430 census found this
+ * line as the twelfth member of the class and offered the gate; this is the gate taken.
+ * `conventionOf` derives the reader's convention from its own `return` forms and types no key name,
+ * so a rename re-derives and a success value that starts carrying the sentinel REFUSES at the
+ * convention with its reason instead of flipping this leg silently.
+ * Round 431 measures what the cure buys AT THIS SITE and it is the reason, not the verdict:
+ * `docs/research/round431-instruments/`, grid P1/P2.
+ */
+const CONV = conventionOf(M.topLevelTernary.toString());
+g('G2', 'the sliced reader splits round410:408 into the three spans my own drive 5 recorded, and '
+  + 'its verdict is DERIVED from the reader\'s own returns rather than re-typed (430/431)',
   want.test !== null && want.cons !== null && want.alt !== null
-  && split !== null && split.refused === undefined
+  && Array.isArray(CONV.answer) && Array.isArray(CONV.refusal)
+  && classify(split, CONV) === 'ANSWER'
   && split.test === want.test && split.cons === want.cons && split.alt === want.alt,
   want.test === null
     ? 'REFUSED: could not parse the three spans out of the recorded drive 5 output'
     : `test ${split !== null && split.test === want.test} · `
       + `cons ${split !== null && split.cons === want.cons} · `
-      + `alt ${split !== null && split.alt === want.alt} · spans read out of ${DRIVE5_OUT}`);
+      + `alt ${split !== null && split.alt === want.alt} · spans read out of ${DRIVE5_OUT}`
+      + ` · derived convention: answer [${CONV.answer ?? '—'}] refusal [${CONV.refusal ?? '—'}]`
+      + `${CONV.answer === undefined ? ` REFUSED: ${CONV.refused}` : ''}`
+      + ` · this result classifies as ${classify(split, CONV)}`);
 
 // ─── the branch-layer-DELETED counterfactual ───────────────────────────────────────────────────
 /**
