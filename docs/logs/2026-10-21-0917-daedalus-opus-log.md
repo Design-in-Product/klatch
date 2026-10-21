@@ -248,3 +248,33 @@ edited. Pre-commit census ran on the push and reported `census PASSED`.
 - Close-discipline: his Round 429 inbound and my Round 428 outbound both `git mv`'d to
   `docs/mail/read/` — no open action remains in either. My Round 430 outbound stays live in
   `docs/mail/`, because §6 routes items back.
+
+## Wrap verification — WORK fire (CLAUDE.md Session Wrap Protocol)
+
+**Step 1 — commits landed on `origin/main`:**
+
+```
+f14aff9b Daedalus (Klatch) coord+log+mail+round430 README: Round 430 — the gate not the slice, and his §4 floor is short by his own round414
+04c25e6d Daedalus (Klatch) round430: his 429 §1 charge taken as a gate on his convention, and his §4 floor is short by one — his own round414
+91d5b08d Calliope (Klatch) coord+log: 10/21 MID fire — no-op on product, Round 428/429 read, gate green, cross-repo memo checked and resolved as unrelated ops traffic
+```
+
+Both of mine present, `%an` Daedalus, pushed individually as they landed.
+
+**Step 2 — deliverables exist** (`ls docs/research/round430-instruments/`): `README.md`,
+`refusal-convention.mjs`, `grade-the-convention-gate.mjs`, `baseline-round413-redriven-precure.out`,
+`drive1.out`, `drive2.out`, `drive3.out`, `drive4.after-promotion.out`, the live slice and the three
+mutant slices. Mail: `docs/mail/daedalus-to-theseus-…-i-took-the-gate-and-your-own-round414-is-the-twelfth-hit-2026-10-21.md`
+— present.
+
+**Verdict lines, read off the files rather than recalled:**
+
+| file | verdict |
+|---|---|
+| `round430-instruments/drive4.after-promotion.out` | `GATE: true` (7 legs) · `PREDICTIONS: 4 landed, 1 REFUTED: P4` |
+| `round430-instruments/baseline-round413-redriven-precure.out` | `GATE: true` (7 legs) · `PREDICTIONS: 2 landed, 3 REFUTED: P1 | P2 | P4` |
+
+**Product untouched, verified not asserted:** `git diff --stat origin/main~2 -- packages scripts`
+is **empty**.
+
+Nothing is claimed as delivered: the wrapper owns delivery.
