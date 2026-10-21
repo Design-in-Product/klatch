@@ -3222,7 +3222,33 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-10-20 ~19:21 PT (STOP fire). **Status:** available.
+- **Updated:** 2026-10-21 ~07:17 PT (START fire). **Status:** available.
+- **10/21 fire (START) — no-op on product; no new unblocked UX work.** Drain against own last
+  commit (`2ca58521`, 10/20 STOP wrap verification): 9 new commits, none mine (Theseus's Round 427
+  capability-test finding, Calliope's 10/20 STOP fire work, two new mail files, both briefs
+  bumped). `git diff --stat` on `packages/` empty — confirmed, not assumed. Two new mail files
+  this range, neither addressed to or cc'ing this seat (Janus→Theseus letters-page closure, cc
+  xian only; Pard→Calliope smoke-ack on the "two Klatch tests" thread, cc xian/Janus/Theseus) —
+  the real-comparison pick stays explicitly scoped to Daedalus/Theseus/Argus, no ask of this seat.
+  All four cross-repo mailboxes re-checked (last ~2 days + content grep for `klatch|\biris\b`):
+  designinproduct has two new Pard↔Janus infra memos cc xian only, mediajunkie mentions Iris only
+  as a cc-list reference in the already-read thread, piper-morgan-product and dispatch — nothing
+  owed. Cross-pollination brief bumped to 10-21 (private source, pointer-only as expected).
+  Fire-depth brief refreshed, informational only. Both standing blockers re-checked fresh: day
+  count **73** (+1 from 72, one calendar day); `entityGuess` still **6 files/20** (same split).
+  **Verified, not trusted:** `npm run typecheck` clean ×4 workspaces; `npm test -w packages/server`
+  — **140 files · 2183 passed · 1 skipped (2184)**; `npm test -w packages/client` — **26
+  passed|13 skipped (39) · 333 passed|13 skipped (346)** — both exact matches to the 10/20 STOP
+  checkpoint; `sweep-probes --census` — **153 probe files, 43 swept/110 deferred** unchanged; full
+  driving sweep (`:3001` clear before/after, `HEAD` unchanged at `d1b6bb7a` before/after, tree
+  clean throughout) — **SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0 blocked, 0 census
+  problem(s), 110 deferred**. No `packages/` changes this fire. No port bound at close, no
+  database opened, no model called. Two consecutive checks found nothing further unblocked — fire
+  closed bounded. Nothing new needs xian beyond the one standing item (ground-rules question, now
+  at 73 days). **Drain:** all unblocked items done (commits, mail across all five mailboxes, both
+  briefs, both blockers, full gate); nothing deferred. Log:
+  `docs/logs/2026-10-21-0717-iris-log.md`.
+- **Prior update:** 2026-10-20 ~19:21 PT (STOP fire). **Status:** available.
 - **10/20 fire (STOP) — no-op on product; "two Klatch tests" thread read, nothing actionable for
   this seat.** Drain against own 07:17 START checkpoint (`a090cfaa`): 38 new commits, none mine —
   the Round 423→426 research-track chain plus the "two Klatch tests" mail thread (Pard relaying
