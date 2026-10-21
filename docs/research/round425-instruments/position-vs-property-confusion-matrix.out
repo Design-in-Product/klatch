@@ -1,9 +1,9 @@
 # Round 425 — position vs property: the confusion matrix the §3 cure was owed
 
 REPO: /Users/xian/Development/klatch-worktrees/daedalus
-HEAD at open: aa47c4957a936e472689049658f27c86de3597d8
+HEAD at open: f7ba13526fce5edd9142a367fd82d97974a51456
 subject: docs/research/round421-instruments/scope-label-legs-are-a-class-of-three.mjs
-driven at: 2026-10-20T20:36:25.620Z
+driven at: 2026-10-21T16:22:51.167Z
 
 ## 1. The two keys, sliced out of source
 
@@ -11,14 +11,17 @@ driven at: 2026-10-20T20:36:25.620Z
   [GATE] OK   …and the slice carries `const resolvePattern = (body) =>`
   [GATE] OK   …and the slice carries `const SCOPE_IN_PATTERN =`
   [GATE] OK   …and the slice carries `const keyLines = SRC.split`
-  the subject's rev history (newest first): 6224ff56, 5bf46753
+  the subject's rev history (newest first): 513f6409, 6224ff56, 5bf46753
   revs whose blob carries the position-keyed token: 5bf46753
   PRE_CURE (derived, the OLD key's source): 5bf46753
-  [GATE] OK   a rev carries the position-keyed token (there IS an old key to grade)  — 1 of 2 revs carry it
-  [GATE] OK   the NEWEST rev does NOT carry it (the cure has landed and is committed)  — newest=6224ff56
+  [GATE] OK   a rev carries the position-keyed token (there IS an old key to grade)  — 1 of 3 revs carry it
+  [GATE] OK   the NEWEST rev does NOT carry it (the cure has landed and is committed)  — newest=513f6409
   [GATE] OK   the OLD key sliced out of the derived rev  — const hasScope = /\^\\s\*\\\*\\s\+\\\*\\\*/.test(l);
   OLD key:   const hasScope = /\^\\s\*\\\*\\s\+\\\*\\\*/.test(l);
   CURED key: resolvePattern() + SCOPE_IN_PATTERN, 19 lines as sliced
+  [GATE] OK   the OLD key's SELECTOR was sliced out of the derived rev too, not typed in this file  — 3 lines, 173 bytes
+  [GATE] OK   …and it occurs in that rev exactly once  — occurs=1
+  [GATE] OK   KNOWN POSITIVE: the sliced OLD selector finds exactly one key in a synthetic one-key source
 
 ## 2. Expected, written down before the cells are driven
 
@@ -71,7 +74,7 @@ driven at: 2026-10-20T20:36:25.620Z
   [PRED] LANDED   …and the population he measured it over is the one I publish — expected 10, got 10
   [PRED] LANDED   his figure: bodies carrying more than one regex literal, live — expected 0, got 0
   [PRED] LANDED   his figure: bodies carrying a literal AND resolving via a hoisted ref, live — expected 0, got 0
-  [GATE] OK   so his §3 is LATENT here: real in the resolver, zero instances in the live population, and its direction can only read FEWER scope legs — the FLOOR language stands  — 0 multi-literal, 0 literal+hoisted, of 10
+  [GATE] OK   so his §3 is LATENT here: real in the resolver, zero instances in the live population, and its direction can only read FEWER scope legs — the FLOOR language stands  — 0 of 10 multi-literal, 0 literal+hoisted
 
 ==============================================================================
 GATE: true

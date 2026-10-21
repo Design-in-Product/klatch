@@ -118,12 +118,28 @@ const curedKey = (src) => {
     return { n, name, how: pat.how, hasScope: pat.src === null ? null : SCOPE_IN_PATTERN.test(pat.src) };
   });
 };
-const oldKey = (src) => src.split('\n')
-  .filter((l) => /^const has[A-Z]\w* = \(l\) =>/.test(l) || /^const is[A-Z]\w* = \(l\) =>/.test(l))
-  .map((l) => ({
-    name: l.match(/^const (\w+)/)[1],
-    hasScope: new Function('l', `${oldSlice}\nreturn hasScope;`)(l),
-  }));
+// CURED (Round 428, his Round 426 §3, second half): this file's §3 header claims *both keys are
+// sliced from source, never re-typed*. The old key is a PAIR — a SELECTOR (which lines are
+// subjects) and a CLASSIFIER (`hasScope`) — and only the classifier was sliced; the selector was
+// typed here. He measured the typed one byte-identical to `5bf46753`'s, so no figure had moved —
+// latent, and the header was stronger than the code. Now the selector is sliced out of the same
+// derived rev as the classifier, and asserted to occur there exactly once, so the header is true
+// of the code rather than of this tree.
+const OLD_SELECTOR_RE = /^const keyLines = SRC\.split\('\\n'\)\n(?:.*\n)*?.*\.test\(l\)\);$/m;
+const oldSelector = (OLD_SRC.match(OLD_SELECTOR_RE) || [null])[0];
+gate('the OLD key\'s SELECTOR was sliced out of the derived rev too, not typed in this file',
+  oldSelector !== null, oldSelector === null ? '(no match)' : `${oldSelector.split('\n').length} lines, ${oldSelector.length} bytes`);
+gate('…and it occurs in that rev exactly once',
+  oldSelector !== null && OLD_SRC.split(oldSelector).length - 1 === 1,
+  `occurs=${oldSelector === null ? -1 : OLD_SRC.split(oldSelector).length - 1}`);
+const oldSelect = (src) => (oldSelector === null ? null
+  : new Function('SRC', `${oldSelector}\nreturn keyLines;`)(src));
+gate('KNOWN POSITIVE: the sliced OLD selector finds exactly one key in a synthetic one-key source',
+  (oldSelect('const hasKP = (l) => /x/.test(l);\nconst notAKey = 1;') || []).length === 1);
+const oldKey = (src) => (oldSelect(src) || []).map(({ l }) => ({
+  name: l.match(/^const (\w+)/)[1],
+  hasScope: new Function('l', `${oldSlice}\nreturn hasScope;`)(l),
+}));
 
 // --- the four cells of the matrix, plus his order pair ----------------------
 // `ANCHOR` is the source text the subject's SCOPE_IN_PATTERN looks for; `BARE` is the same bullet
@@ -237,10 +253,21 @@ predict('his figure: bodies carrying more than one regex literal, live', 0,
   popOk && litGlobal !== null ? multi.length : null);
 predict('his figure: bodies carrying a literal AND resolving via a hoisted ref, live', 0,
   popOk && litGlobal !== null ? litAndHoist.length : null);
+// CURED (Round 428, his Round 426 §2): the LATENT reading is named ONCE here and the published
+// sentence reads THIS CONST and THIS FIGURE — it no longer re-interpolates `multi.length` and
+// `live.length` raw. My own §4 last round was about catching `0 of 0` on an empty population; the
+// cure went into the two predicts and into the gate and NOT into the sentence, which over an
+// empty population printed exactly the line I had written §4 to say I would not ship. Two of
+// three places took the cure; this is the third. The figure itself refuses with `null` rather
+// than printing a true-looking 0 (Rounds 393/408).
+const LIVE_FIGURE = popOk && litGlobal !== null ? `${multi.length} of ${live.length}` : null;
+const LATENT_3 = popOk && litGlobal !== null && multi.length === 0 && litAndHoist.length === 0
+  && live.length === 10;
 gate('so his §3 is LATENT here: real in the resolver, zero instances in the live population, and '
   + 'its direction can only read FEWER scope legs — the FLOOR language stands',
-  popOk && litGlobal !== null && multi.length === 0 && litAndHoist.length === 0 && live.length === 10,
-  `${multi.length} multi-literal, ${litAndHoist.length} literal+hoisted, of ${live.length}`);
+  LATENT_3, `${LIVE_FIGURE === null ? 'REFUSED' : LIVE_FIGURE} multi-literal, ${litAndHoist.length} literal+hoisted`);
+const REPRODUCES_424_3 = M['two literals, anchor FIRST'].cured === true
+  && M['two literals, anchor SECOND'].cured === false;
 
 say('');
 say('='.repeat(78));
@@ -256,10 +283,12 @@ say(`  §3 cure (resolve the pattern instead of keying on its position): ${
   && M['inline + anchor'].old === true && M['hoisted + anchor'].old === false
     ? 'SEPARATES — property-keyed in all four cells, where the old key moved with the literal'
     : 'NOT shown to separate'}`);
-say(`  his Round 424 §3 (one pattern per body): ${
-  M['two literals, anchor FIRST'].cured === true && M['two literals, anchor SECOND'].cured === false
-    ? `REPRODUCES in my rig, and is LATENT: ${multi.length} of ${live.length} live instances`
-    : 'NOT reproduced'}`);
+// Two claims, two discriminators, each the same const its gate above reads — and the LATENT
+// clause cannot print a figure the census refused.
+say(`  his Round 424 §3 (one pattern per body): ${!REPRODUCES_424_3 ? 'NOT reproduced'
+  : LATENT_3 && LIVE_FIGURE !== null ? `REPRODUCES in my rig, and is LATENT: ${LIVE_FIGURE} live instances`
+  : 'REPRODUCES in my rig; the live-instance reading is REFUSED (empty population, or RE_LITERAL did '
+    + 'not slice, or the census moved) — latency NOT established this drive'}`);
 
 writeFileSync(path.join(import.meta.dirname, 'position-vs-property-confusion-matrix.out'), out.join('\n') + '\n');
 if (fails.length || refuted.length) process.exit(1);

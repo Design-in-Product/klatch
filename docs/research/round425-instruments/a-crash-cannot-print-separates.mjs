@@ -91,12 +91,38 @@ const AONLY_FROM = `  ['B0-cured-control', B_SRC, []],
   ['B2-beta-named-three-drops-two', B_SRC, [[B2_FROM, B2_TO]]],`;
 const AONLY_TO = `  // A-ONLY (Round 425 meta-grader): the three B cells cost ~2 minutes and no leg under charge reads them.`;
 
+// CURED (Round 428, his Round 426 §3) — THE TWO LINES BELOW ARE SLICED, NOT TYPED.
+// What carried my load-bearing claim — *"the §1 cure left textually intact … no rev-sourced defect
+// restored anywhere"* — used to be a string I had TYPED into this file: a copy of the subject's
+// `A2_FROM`, which is itself a copy of a line of subject A. Nothing asserted the copy still
+// equalled the original, and no `occurs === 1` can see it: an anchor is the text you SEARCH for,
+// this is the text you WRITE (Round 347 applied correctly and still blind to this). His control is
+// the third row of his table — a rename a maintainer is FORCED to carry into the subject's
+// `A2_FROM` leaves both anchors at 1 and silently stops restoring the cure, so D2's red would mean
+// *the cured spelling refused a restored defect* rather than *refused a crash*. Both lines are now
+// sliced out of the subject and asserted to occur in subject A exactly once (Round 408/412: a
+// hand-typed reader is not a slice), so the carried rename reddens here instead of passing.
+const A_REL_PIN = (S_SRC.match(/^const A_REL = '(.*)';$/m) || [, null])[1];
+gate('subject A\'s path was sliced out of the subject, not typed', A_REL_PIN !== null, A_REL_PIN || '(no match)');
+const A_SRC_PIN = A_REL_PIN !== null && existsSync(path.join(REPO, A_REL_PIN))
+  ? readFileSync(path.join(REPO, A_REL_PIN), 'utf8') : null;
+gate('…and subject A is readable', A_SRC_PIN !== null, A_REL_PIN ? `${A_REL_PIN} — ${A_SRC_PIN?.length ?? 0} bytes` : '(no path)');
+const A2_CURED_LINE = (S_SRC.match(/^const A2_FROM = '(.*)';$/m) || [, null])[1];
+const A3_DEFECT_LINE = (S_SRC.match(/^const A3_FROM = `(.*)`;$/m) || [, null])[1];
+for (const [label, line] of [['A2_FROM (the §1 cured line)', A2_CURED_LINE], ['A3_FROM (DEFECT_TOKEN)', A3_DEFECT_LINE]]) {
+  gate(`the subject's \`${label}\` was sliced out of the subject`, line !== null, (line || '(no match)').slice(0, 72));
+  const n = line === null || A_SRC_PIN === null ? -1 : A_SRC_PIN.split(line).length - 1;
+  gate(`…and THE SLICED TEXT occurs in subject A exactly once — the pin his §3 asked for`,
+    n === 1, `occurs=${n} in ${A_REL_PIN}`);
+}
+if (fails.length) { say(''); say(`GATE: FALSE (${fails.join('; ')})`); say('SUMMARY: REFUSED at the §3 pin'); process.exit(2); }
+
 // (1) A2 CRASHES, with the §1 cure in subject A left TEXTUALLY INTACT. His R2 shape. The cured
 // derived-PRE_CURE line is kept verbatim and a throw is appended after it, so no rev-sourced
 // defect is restored anywhere: the cell simply dies before printing a verdict.
 const A2CRASH_FROM = `const A2_TO = 'const PRE_CURE = HEAD; // MUTANT: the Round 422 §1 defect restored';`;
 const A2CRASH_TO = `const A2_TO = ${JSON.stringify(
-  'const PRE_CURE = gradedCarriers.length ? gradedCarriers[0] : null;\n'
+  `${A2_CURED_LINE}\n`
   + 'throw new Error("UNRELATED FATAL: this cell dies before printing any verdict; the §1 cure above is intact");',
 )}; // MUTANT (Round 425): an unrelated fatal, the §1 cure left intact`;
 
@@ -105,7 +131,7 @@ const A2CRASH_TO = `const A2_TO = ${JSON.stringify(
 const A3CRASH_FROM = `const A3_TO = \`const DEFECT_TOKEN = "ZZZ_TOKEN_NO_REV_CARRIES"; // MUTANT: token present in no rev\`;`;
 const A3CRASH_TO = `const A3_TO = ${JSON.stringify(
   'process.exit(2); // MUTANT (Round 425): an unrelated exit 2 before the derivation\n'
-  + 'const DEFECT_TOKEN = "const prevRev = spawnSync(\'git\', [\'-C\', REPO, \'rev-parse\', \'HEAD\']";',
+  + A3_DEFECT_LINE,
 )};`;
 
 // (3) UN-CURE the §1 discriminator: remove the `whyA2` conjunct, restoring the four-conjunct gate
@@ -239,6 +265,32 @@ const D = (n) => R[n] || {};
 const [D1, D2, D3, D4, D5, D6, D7, D8] = ['D1-new-clean', 'D2-new-A2-crashes', 'D3-old-A2-crashes',
   'D4-old-clean', 'D5-new-A3-exits-2', 'D6-old-A3-exits-2', 'D7-new-cells-leak', 'D8-old-cells-leak'].map(D);
 
+// --- CURED (Round 428, Theseus's Round 426 §1): each discriminator is named ONCE and read by
+// BOTH its gate and its published sentence ----------------------------------------------------
+// His charge, verified against my own source and not his memo: three of the four sentences this
+// file published were keyed on a PROPER SUBSET of the conjuncts of their own named discriminator,
+// and each dropped conjunct was the control that makes the reading a reading —
+//   §1/A2 dropped `D4.summary1 === 'SEPARATES'` (the un-cure-alone column, which is what makes the
+//          crippled column attributable) and `D2.summary1 !== null` (the did-it-print guard, so a
+//          cell dying between its gate line and its verdict read as a cell that refused to publish
+//          one — the Round 424 charge I had just cured, happening in the sentence instead of the
+//          gate) and `D3.disc1 === 'OK'`;
+//   §1/A3 dropped `D4.a3 === 'OK'`, the same clean/old control;
+//   §2     dropped `D7.innerLeft.length > 0`, the only evidence that D8's silence was silence
+//          ABOUT something rather than about an empty disk.
+// A red overall `GATE:` line does not unprint a sentence, and the sentence is what gets quoted
+// into a memo — Round 353 and Round 422, one layer out. The cure is deliberately STRUCTURAL and
+// not three edits: there is now exactly one expression per reading, so a conjunct added to the
+// gate cannot be missed by the sentence. `D(n)` hands `{}` to every leg of a SKIPPED or
+// depth-refused cell, so each predicate is written to be false on `{}` rather than to throw.
+const SEPARATES_1_A2 = D1.summary1 === 'SEPARATES' && D4.summary1 === 'SEPARATES'
+  && D3.summary1 === 'SEPARATES' && D3.disc1 === 'OK'
+  && D2.summary1 !== null && D2.summary1 !== 'SEPARATES' && D2.disc1 === 'FAIL';
+const SEPARATES_1_A3 = D1.a3 === 'OK' && D4.a3 === 'OK' && D6.a3 === 'OK' && D5.a3 === 'FAIL';
+const SEPARATES_2 = D7.walkStray === 'FAIL' && D8.porcStray === 'OK' && D1.walkStray === 'OK'
+  && Array.isArray(D7.innerLeft) && D7.innerLeft.length > 0
+  && Array.isArray(D8.innerLeft) && D8.innerLeft.length > 0;
+
 // --- every leg needs its reader shown to work ------------------------------
 say('');
 say('## 2. The readers read something — a refusing reader would make every cell below agree');
@@ -270,8 +322,7 @@ predict('D2 new/A2 crash: …and its discriminator FAILS', 'FAIL', D2.disc1);
 gate('THE DISCRIMINATOR (§1/A2): the cure separates a crash from the cure — identical crippled '
   + 'tree, SEPARATES under the old spelling and NOT under the new, while the un-cure alone leaves '
   + 'the clean verdict untouched in both rows',
-  D1.summary1 === 'SEPARATES' && D4.summary1 === 'SEPARATES' && D3.summary1 === 'SEPARATES'
-  && D2.summary1 !== null && D2.summary1 !== 'SEPARATES' && D2.disc1 === 'FAIL' && D3.disc1 === 'OK',
+  SEPARATES_1_A2,
   `clean: new ${JSON.stringify(D1.summary1)} / old ${JSON.stringify(D4.summary1)} — crashed: new ${JSON.stringify(D2.summary1)} / old ${JSON.stringify(D3.summary1)}`);
 
 // --- §1 / A3 ---------------------------------------------------------------
@@ -284,7 +335,7 @@ predict('D6 old/A3 exit 2: HIS FINDING — the old spelling accepts an unrelated
 predict('D5 new/A3 exit 2: the cured spelling FAILS it', 'FAIL', D5.a3);
 gate('THE DISCRIMINATOR (§1/A3): same crippled tree, the A3 gate passes under the old spelling and '
   + 'fails under the new, and both spellings pass on a clean tree',
-  D1.a3 === 'OK' && D4.a3 === 'OK' && D6.a3 === 'OK' && D5.a3 === 'FAIL',
+  SEPARATES_1_A3,
   `clean: new ${D1.a3} / old ${D4.a3} — exit-2: new ${D5.a3} / old ${D6.a3}`);
 
 // --- §2 --------------------------------------------------------------------
@@ -301,9 +352,8 @@ predict('D8 old/leak: …with the same tree on disk', true,
 predict('D1 new/no leak: the walk passes when there is nothing to find', 'OK', D1.walkStray);
 gate('THE DISCRIMINATOR (§2): the same leaked cell tree is FAILED by the walk and passed by the '
   + 'porcelain check it replaced, and the walk still passes with no leak',
-  D7.walkStray === 'FAIL' && D8.porcStray === 'OK' && D1.walkStray === 'OK'
-  && Array.isArray(D7.innerLeft) && D7.innerLeft.length > 0,
-  `leak: walk ${D7.walkStray} / porcelain ${D8.porcStray} (tree ${JSON.stringify(D7.innerLeft)}) — no leak: walk ${D1.walkStray}`);
+  SEPARATES_2,
+  `leak: walk ${D7.walkStray} (tree ${JSON.stringify(D7.innerLeft)}) / porcelain ${D8.porcStray} (tree ${JSON.stringify(D8.innerLeft)}) — no leak: walk ${D1.walkStray}`);
 
 // --- hygiene ---------------------------------------------------------------
 say('');
@@ -325,18 +375,16 @@ say(`PREDICTIONS: ${preds.length - refuted.length} landed, ${refuted.length} ref
 refuted.forEach((p) => say(`  REFUTED: ${p.name} — expected ${JSON.stringify(p.expected)}, got ${JSON.stringify(p.actual)}`));
 say('');
 say('SUMMARY:');
-say(`  §1/A2 cure (a red must name the gate that fired): ${
-  D1.summary1 === 'SEPARATES' && D3.summary1 === 'SEPARATES' && D2.summary1 !== 'SEPARATES' && D2.disc1 === 'FAIL'
-    ? 'SEPARATES — his R2 shape prints SEPARATES under the old spelling and is refused under the new'
-    : 'NOT shown to separate'}`);
-say(`  §1/A3 cure (the refusal must name itself): ${
-  D1.a3 === 'OK' && D6.a3 === 'OK' && D5.a3 === 'FAIL'
-    ? 'SEPARATES — his R3 shape passes under the old spelling and fails under the new'
-    : 'NOT shown to separate'}`);
-say(`  §2 cure (walk both trees instead of porcelain over docs/research): ${
-  D7.walkStray === 'FAIL' && D8.porcStray === 'OK' && D1.walkStray === 'OK'
-    ? 'SEPARATES — his R4 shape is silent under the old spelling and named under the new'
-    : 'NOT shown to separate'}`);
+// Each sentence reads the SAME const its `THE DISCRIMINATOR` gate above reads — nothing else.
+say(`  §1/A2 cure (a red must name the gate that fired): ${SEPARATES_1_A2
+  ? 'SEPARATES — his R2 shape prints SEPARATES under the old spelling and is refused under the new'
+  : 'NOT shown to separate'}`);
+say(`  §1/A3 cure (the refusal must name itself): ${SEPARATES_1_A3
+  ? 'SEPARATES — his R3 shape passes under the old spelling and fails under the new'
+  : 'NOT shown to separate'}`);
+say(`  §2 cure (walk both trees instead of porcelain over docs/research): ${SEPARATES_2
+  ? 'SEPARATES — his R4 shape is silent under the old spelling and named under the new'
+  : 'NOT shown to separate'}`);
 
 writeFileSync(path.join(import.meta.dirname, 'a-crash-cannot-print-separates.out'), out.join('\n') + '\n');
 if (fails.length || refuted.length) process.exit(1);
