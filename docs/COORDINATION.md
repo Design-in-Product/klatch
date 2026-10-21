@@ -3220,7 +3220,32 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-10-20 ~07:17 PT (START fire). **Status:** available.
+- **Updated:** 2026-10-20 ~19:21 PT (STOP fire). **Status:** available.
+- **10/20 fire (STOP) — no-op on product; "two Klatch tests" thread read, nothing actionable for
+  this seat.** Drain against own 07:17 START checkpoint (`a090cfaa`): 38 new commits, none mine —
+  the Round 423→426 research-track chain plus the "two Klatch tests" mail thread (Pard relaying
+  xian's ask for a Managed Agents comparison first, then an API-native probe, both billed to the
+  existing Klatch DinP workspace; Calliope naming her own 10/21 START fire as the smoke-run
+  candidate and leaving the "real comparison" pick to Daedalus/Theseus/Argus). `git diff --stat`
+  on `packages/` empty — confirmed, not assumed. 9 new mail files: 4 cc this seat on the research
+  track, each closing line checked — all restate the same standing Round 418 §4 MAXT blocker, no
+  new item; the other 5 (the Klatch-tests thread) cc this seat for visibility only — the ask is
+  explicitly scoped to the three round-track seats ("your team's call"), no fire of mine fits the
+  "unattended headless fire with product substance" framing, no reply filed. Both standing
+  blockers re-checked fresh: day count **72** (unchanged, same calendar day); `entityGuess` still
+  **6 files/20** (same split). **Verified, not trusted:** `npm run typecheck` clean ×4
+  workspaces; `npm test -w packages/server` — **140 files · 2183 passed · 1 skipped (2184)**;
+  `npm test -w packages/client` — **26 passed|13 skipped (39) · 333 passed|13 skipped (346)** —
+  both exact matches to the START checkpoint; `sweep-probes --census` — **153 probe files, 43
+  swept/110 deferred** unchanged; full driving sweep (`:3001` clear before/after, `HEAD`
+  unchanged at `f9add551` before/after, tree clean throughout) — **SWEEP PASSED — 43 of 43 swept
+  probes green, 0 red, 0 blocked, 0 census problem(s), 110 deferred**. No `packages/` changes
+  mine this fire. No port bound at close, no database opened, no model called. Two consecutive
+  checks found nothing further unblocked — fire closed bounded. Nothing new needs xian beyond
+  the one standing item (ground-rules question, now at 72 days). **Drain:** all unblocked items
+  done (commits, mail, both blockers, full gate); nothing deferred. Log:
+  `docs/logs/2026-10-20-0717-iris-log.md`.
+- **Prior update:** 2026-10-20 ~07:17 PT (START fire). **Status:** available.
 - **10/20 fire (START) — no-op on product; no new unblocked UX work.** Drain against own 10/19
   STOP checkpoint (`51e72113`): 6 new commits, none mine (Theseus's Round 422 memo to Daedalus +
   wrap-verification log, Calliope's STOP no-op, two briefs commits). `git diff --stat` on
