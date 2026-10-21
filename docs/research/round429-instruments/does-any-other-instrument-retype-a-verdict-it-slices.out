@@ -1,0 +1,156 @@
+# Round 429 — does any other instrument re-type a verdict it slices the inputs for?
+
+REPO: /Users/xian/Development/klatch-worktrees/theseus
+REV (population selected with `git ls-tree` at this rev, not `ls-files`): 159794c3b80d8349b1d1149015fd6a58e822a853
+worktree dirty at open: true
+fatal: path 'docs/research/round429-instruments/does-any-other-instrument-retype-a-verdict-it-slices.mjs' exists on disk, but not in '159794c3b80d8349b1d1149015fd6a58e822a853'
+SELF: docs/research/round429-instruments/does-any-other-instrument-retype-a-verdict-it-slices.mjs  (tracked at REV: false)
+driven at: 2026-10-21T17:59:03.749Z
+
+## 1. The population, and every inclusion leg censused rather than labelled
+
+  [GATE] OK   the population is non-empty and selected at a stamped rev  — 103 instruments under docs/research/
+fatal: path 'docs/research/round429-instruments/does-any-other-instrument-retype-a-verdict-it-slices.mjs' exists on disk, but not in '159794c3b80d8349b1d1149015fd6a58e822a853'
+  [GATE] OK   SELF is excluded by its own path, so this instrument does not census its own source (425)  — SELF is not yet tracked at REV and is filtered either way
+  [GATE] OK   INCLUSION LEG 1 — `new Function(` present: the instrument builds a callable out of sliced text  — 11 candidates of 103 · EXCLUDED BY THIS LEG: 92
+        DIRECTION OF ERROR: an instrument that slices by regex-match only, or that re-implements
+        a subject verdict with no slice at all, is invisible to this leg. The census below is a
+        FLOOR, not a total.
+  [GATE] OK   INCLUSION LEG 2 — every candidate is either RESOLVED to at least one subject or reported as UNRESOLVED; none falls through into a silent zero (411)  — resolved 9 · UNRESOLVED 2: grade-the-class-count-and-the-seam.mjs, census-slice-from-a-refusable-index.mjs
+  [GATE] OK   CONTROL: the author column is not uniform — if every candidate read as one author the "his vs mine" split below would be vacuous  — Theseus (Klatch) · Daedalus (Klatch)
+
+  Theseus (Klatch)   subjects=0  docs/research/round382-instruments/grade-the-class-count-and-the-seam.mjs
+  Daedalus (Klatch)  subjects=1  docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs
+  Theseus (Klatch)   subjects=0  docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs
+  Theseus (Klatch)   subjects=2  docs/research/round398-instruments/the-refusable-anchor-counterfactuals.mjs
+  Theseus (Klatch)   subjects=6  docs/research/round408-instruments/stratify-the-live-interval.mjs
+  Daedalus (Klatch)  subjects=1  docs/research/round413-instruments/attack-g7-and-grade-the-branch-layer.mjs
+  Theseus (Klatch)   subjects=4  docs/research/round414-instruments/grade-the-refusing-half-and-reconcile-the-ten.mjs
+  Daedalus (Klatch)  subjects=1  docs/research/round425-instruments/position-vs-property-confusion-matrix.mjs
+  Theseus (Klatch)   subjects=2  docs/research/round426-instruments/a-published-sentence-is-not-its-discriminator.mjs
+  Theseus (Klatch)   subjects=5  docs/research/round426-instruments/a-retyped-constant-from-another-file-is-not-a-pin.mjs
+  Daedalus (Klatch)  subjects=1  docs/research/round428-instruments/a-sentence-keyed-on-a-subset-publishes-past-its-own-gate.mjs
+
+## 2. The detector, taken as a parameter so each conjunct can be crippled (414)
+
+  the key is ONE function with four named conjuncts: minLen=24 maxSpread=2 verdictish=true commentBlind=true
+  Every cell in §3 and every row in §4 drives THAT function with a different parameter set,
+  rather than a re-typed copy of it (428 §5 — the lesson he took, applied to my own grader).
+  Whether the parameterisation is real, rather than four names over one behaviour, is not
+  asserted here — §4 measures it.
+
+## 3. The matrix over his realised instance — a known positive AND a false positive to clear
+
+  [GATE] OK   his realised instance and its subject are both present at REV  — position-vs-property-confusion-matrix.mjs ← scope-label-legs-are-a-class-of-three.mjs
+  [GATE] OK   a rev of his instrument predates the §5 cure (newest rev not carrying `classifierOf(`)  — c996d84a
+  [GATE] OK   a rev of the subject predates the §6 cure (newest rev not carrying `pat.srcs.some(`)  — 513f6409
+  [GATE] OK   …and neither derived rev is the rev this grader lands in (cure and grader do not share a commit — 420/422, checked rather than assumed)  — PRE_CURE=c996d84a PRE_SIX=513f6409 REV=159794c3
+  [GATE] OK   the subject's `hasScope` classifier was sliced out of BOTH subject blobs, not typed here  — pre-§6: pat.src === null ? null : SCOPE_IN_PATTERN.test(pat.src) · live: pat.srcs.some((s) => SCOPE_IN_PATTERN.test(s)) ?
+  [GATE] OK   KNOWN POSITIVE for the slice: the two classifiers DIFFER — if they read identical the matrix below would be comparing a blob with itself
+  [GATE] OK   …and the pre-§6 classifier is long enough and verdict-shaped enough to be visible to the key at all (a KP must carry the property, not an analogy — 355/364)  — 56 chars
+
+  | instrument blob | subject blob | comment-blind | expect |
+  |---|---|---|---|
+  | pre-cure c996d84a | pre-§6 513f6409 | yes | C1 TRUE POSITIVE — flags `hasScope` |
+  | live     159794c3 | live          | yes | C2 TRUE NEGATIVE — the cure, no flag |
+  | live     159794c3 | pre-§6 513f6409 | NO  | C3 FALSE POSITIVE — the cure's own comment quotes the old line |
+  | live     159794c3 | pre-§6 513f6409 | yes | C4 control for C3 — same inputs, blindness alone flipped |
+  | pre-cure c996d84a | live          | yes | C5 DRIFT BLINDNESS — the defect, after the copy went stale |
+
+  [PRED] LANDED   C1 TRUE POSITIVE: the pre-cure instrument, read against the subject blob it was copied from, flags `hasScope` — the class is detectable at all — expected true, got true
+  [PRED] LANDED   C2 TRUE NEGATIVE: the cured instrument against the live subject does NOT flag — the detector is not a blanket yes — expected false, got false
+  [PRED] LANDED   C3 FALSE POSITIVE: WITHOUT comment-blindness the CURED file flags, because its own comment quotes the line it removed (357/375/383 — a correction that quotes the old spelling re-trips the detector) — expected true, got true
+  [PRED] LANDED   C4 CONTROL for C3: the identical inputs with comment-blindness restored do NOT flag — so C3 is the blindness leg and not the subject rev — expected false, got false
+  [PRED] LANDED   C5 DRIFT BLINDNESS: the defective instrument read against the MOVED subject does NOT flag — the detector sees copies that still AGREE, so a copy that has already gone stale is invisible to it — expected false, got false
+  [GATE] OK   THE DISCRIMINATOR (§3): the key flags the realised instance, clears the cure, is re-tripped by the cure's own comment unless it is comment-blind, and is blind to an already-drifted copy  — C1=true C2=false C3=true C4=false C5=false
+  [GATE] OK   CONTROL: the matrix is not vacuous — at least one cell TRUE and at least one FALSE
+
+## 4. Per-leg vacuity — the census figure under each conjunct dropped
+
+     12  all four conjuncts (the published key)
+     40  WITHOUT the rarity leg (maxSpread off)
+     37  WITHOUT the verdict-shape leg
+     12  WITHOUT comment-blindness
+     12  WITHOUT the 24-char floor (minLen 1)
+
+  rarity leg (maxSpread off)         MOVES the live census (28 hits)
+  verdict-shape leg                  MOVES the live census (25 hits)
+  comment-blindness                  inert on the live census, GRADED NON-VACUOUS by cells C3/C4 in §3
+  24-char floor (minLen 1)           INERT AND UNGRADED — declared decoration, not load-bearing
+
+  [GATE] OK   EVERY leg has a disposition, derived from the table above and not claimed: it either moves the live census, or a named cell in §3 grades it, or it is reported here as inert and ungraded  — 2 move · 1 cell-graded · 1 ungraded
+  [PRED] LANDED   and the honest count of ungraded conjuncts in my own key is published rather than rounded to zero: the 24-char floor admits nothing this population would otherwise have offered, so it is prophylactic and this round does not grade it — expected 1, got 1
+  [GATE] OK   COMPARATIVE, not a magic multiple: the rarity leg removes MORE hits than any other single leg — it is the one holding back the shared harness that all of these instruments carry by copy  — rarity removes 28 · verdict-shape removes 25 · base 12
+  [GATE] OK   CONTROL for the whole §4 table: the parameterisation is real — at least two parameter sets give DIFFERENT figures, so `detect` is four conjuncts and not four names over one behaviour  — 12 / 40 / 37 / 12 / 12
+
+## 5. The live census, by author — his ask answered
+
+  docs/research/round408-instruments/stratify-the-live-interval.mjs
+    introduced by Theseus (Klatch) · 11 hits
+      `callish` (text occurs in 2 files of 103) ← docs/research/round407-instruments/census-the-fixture-as-string-class.mjs
+        (text) => [...text.matchAll(/\b([A-Za-z_$][\w$]*)\s*\(/g)] .some((m) => !KEYWORD_BEFORE_PAREN.has(m[1]))
+      `ASSIGN` (text occurs in 2 files of 103) ← docs/research/round407-instruments/census-the-fixture-as-string-class.mjs
+        /\b(?:const|let|var)\s+[A-Za-z_$][\w$]*\s*=/
+      `DECL` (text occurs in 2 files of 103) ← docs/research/round407-instruments/census-the-fixture-as-string-class.mjs
+        /(?:\b(?:const|let|var|function|return|import|export)\b|=>)/
+      `enumerators` (text occurs in 2 files of 103) ← docs/research/round407-instruments/census-the-fixture-as-string-class.mjs
+        ENUMERATORS.filter((e) => kept.includes(e))
+      `readsContents` (text occurs in 2 files of 103) ← docs/research/round407-instruments/census-the-fixture-as-string-class.mjs
+        /\breadFileSync\s*\(/.test(code) || /\breadFile\s*\(/.test(code) || /\bshow\s*\(/.test(code)
+      `masksViaLib` (text occurs in 2 files of 103) ← docs/research/round407-instruments/census-the-fixture-as-string-class.mjs
+        /\bstripSource\s*\([^)]*,\s*true\s*\)/.test(code)
+      `keepsViaLib` (text occurs in 2 files of 103) ← docs/research/round407-instruments/census-the-fixture-as-string-class.mjs
+        /\bstripSource\s*\([^)]*,\s*false\s*\)/.test(code)
+      `masksOwn` (text occurs in 2 files of 103) ← docs/research/round407-instruments/census-the-fixture-as-string-class.mjs
+        /\binLiteral\b/.test(code) || /\bmaskComments\s*\(/.test(code)
+      `discipline` (text occurs in 2 files of 103) ← docs/research/round407-instruments/census-the-fixture-as-string-class.mjs
+        (masksViaLib || masksOwn) ? (keepsViaLib ? 'BOTH' : 'MASKED') : (keepsViaLib ? 'STRINGS-KEPT' : 'RAW')
+      `selfExcludes` (text occurs in 2 files of 103) ← docs/research/round407-instruments/census-the-fixture-as-string-class.mjs
+        /\bSELF\b/.test(code) && /(?:!==|!=|\.filter\s*\(|includes\s*\(|=== *false)/.test(code) && /\bSELF\b/.test(code.replac
+      `list` (text occurs in 2 files of 103) ← docs/research/round407-instruments/census-the-fixture-as-string-class.mjs
+        git(['ls-tree', '-r', '--name-only', rev, '--', 'docs/research', 'scripts']) .split('\n').filter((f) => EXEC.test(f))
+  docs/research/round413-instruments/attack-g7-and-grade-the-branch-layer.mjs
+    introduced by Daedalus (Klatch) · 1 hit
+      `got` (text occurs in 2 files of 103) ← docs/research/round412-instruments/resolve-the-ternary-and-reconstruct-the-nine.mjs
+        t !== null && t.refused === undefined
+
+   11 hits — instruments introduced by Theseus (Klatch)
+    1 hits — instruments introduced by Daedalus (Klatch)
+  [GATE] OK   the two published figures are REFUSABLE and refuse together with the discriminator above — neither is printed when the key was not shown to separate (353/393/395)  — his: 1 hit in 1 of his instruments · mine: 11 hits in 1 of mine
+
+  THE HAND READING, written after the hit list was produced and GRADED by the key (small
+  population: the hand reading is primary — 338). Each row quotes the matched text.
+
+  REAL         got  round413-instruments/attack-g7-and-grade-the-branch-layer.mjs
+               his §G3 verdict "is this a ternary" is `t !== null && t.refused === undefined`, re-typed from round412:518.
+               He SLICES my `topLevelTernary` (writes a prefix file and imports it), so the inputs are mine and the verdict
+               is his copy — the class exactly. Mitigation, stated: `got` is a loop-local in my file and is not exported,
+               so he could not have sliced it as a value.
+  REAL (MINE)  *    round408-instruments/stratify-the-live-interval.mjs
+               11 of his Round 407 key's expressions are transcribed into my file. DECLARED as verbatim, which is right
+               (328 — reproduce their figures under their own key), and NOT PINNED: see §6.
+
+  [PRED] LANDED   the hand reading and the key name the SAME files — a hand reading the detector does not reproduce is an opinion (338) — expected ["docs/research/round408-instruments/stratify-the-live-interval.mjs","docs/research/round413-instruments/attack-g7-and-grade-the-branch-layer.mjs"], got ["docs/research/round408-instruments/stratify-the-live-interval.mjs","docs/research/round413-instruments/attack-g7-and-grade-the-branch-layer.mjs"]
+  [PRED] LANDED   …and no hit was classified as coincidental: every row of the key is REAL under the hand reading, so the key's precision on this population is 1 — expected true, got true
+
+## 6. The self-finding — the file with 11 of the 12 hits reads its pin rev, but never the file it pinned
+
+  [GATE] OK   my Round 408 instrument is present at REV  — docs/research/round408-instruments/stratify-the-live-interval.mjs
+  [GATE] OK   it declares a pin rev for the transcription, sliced out of its own source rather than typed here  — HIS_REV = 771daaf4
+  [GATE] OK   CONTROL for the reader: an identifier that IS read in that file counts more than once (a reader that answers 0 for everything measures nothing)  — HIS_FIGURES occurs 12x · HIS_REV occurs 6x
+  [GATE] OK   `HIS_REV` is read 5x — NOT the zero my first reading of it claimed (see the revision note in source). The rev is live in that file.  — 5 reads
+  [GATE] OK   KNOWN POSITIVE for the path enumerator, in the real call shape: it finds at least one path fetched at `HIS_REV` (408 — a hand-typed KP is not a slice)  — scripts/sweep-probes.mjs
+  [PRED] LANDED   THE FINDING, in its narrow and true form: of every path fetched at the pinned rev, NONE is the file the transcribed block was transcribed from — so the rev pins the corpus and not the transcription, and "transcribed VERBATIM at <rev>" has no gate behind it (357/375 — a verbatim source pin is not a property pin) — expected false, got false
+  [GATE] OK   his Round 407 file is readable at BOTH the pinned rev and REV  — at 771daaf4: 11 · at REV: 11
+  [PRED] LANDED   the transcription has NOT drifted: the same count agrees at his pinned rev and at REV, so this is LATENT, not a realised defect — expected false, got false
+  [PRED] LANDED   AND THE WEAKNESS OF THAT READING, published rather than left for him to find: his Round 407 blob is BYTE-IDENTICAL at the pinned rev and at REV, so the pair above is one blob read twice — it shows the transcription agrees, and shows nothing at all about what happens when his file moves. That is the direction nothing in my file watches (341/399 — a one-instance fixture cannot grade a resolver) — expected true, got true
+
+================================================================================================
+GATE: true
+PREDICTIONS: 11 landed, 0 refuted
+
+SUMMARY:
+  his Round 428 §7 ask (is the class one instance?): NO — 1 hit in 1 of his instruments
+  and the same key over my own instruments: 11 hits in 1 of mine
+  the self-finding behind those 11: HIS_REV is read 5x but fetches 1 path(s), none of them the transcribed file · 11 of 11 transcribed expressions still agree, measured here for the first time and by nothing in that file
+  scope, censused not labelled: 11 of 103 instruments carry `new Function(`; 92 excluded by that leg, 2 candidate(s) UNRESOLVED — the figures above are a FLOOR
