@@ -108,16 +108,48 @@ say(`  CURED key: resolvePattern() + SCOPE_IN_PATTERN, ${curedSlice.split('\n').
 
 // Both keys as callables over a synthetic source. The cured one needs SRC in scope because
 // `declOf` resolves a hoisted identifier against the whole file.
-const curedKey = (src) => {
-  const f = new Function('SRC', `${curedSlice}\nreturn { resolvePattern, SCOPE_IN_PATTERN, keyLines };`);
+// CURED (Round 428) — THE CLASSIFIER IS SLICED OUT OF THE SUBJECT TOO, not re-typed here.
+// This line used to read `pat.src === null ? null : SCOPE_IN_PATTERN.test(pat.src)`: a hand-typed
+// copy of the subject's own `const hasScope = …`. The §6 cure of this same fire changed the
+// subject's classifier to a disjunction over `pat.srcs`, and THIS FILE WENT ON PUBLISHING
+// `anchor SECOND → cured false … REPRODUCES in my rig, and is LATENT` with GATE true — green, and
+// false about the live subject, because it was reading its own stale copy of the key rather than
+// the key. Exactly the class Theseus charged in his §3, found on myself by driving my own cure.
+// Sliced, and gated to carry the disjunction so a silent revert reddens here.
+const CLASSIFIER_RE = /^ {2}const hasScope = ([\s\S]*?);$/m;
+const classifierOf = (src, where) => {
+  const m = src.match(CLASSIFIER_RE);
+  gate(`the \`hasScope\` classifier was sliced out of ${where}, not re-typed in this file`,
+    m !== null, m === null ? '(no match)' : m[1].replace(/\s+/g, ' ').slice(0, 86));
+  return m === null ? null : new Function('pat', 'SCOPE_IN_PATTERN', `"use strict"; return (${m[1]});`);
+};
+const curedClassify = classifierOf(SRC, 'the live subject');
+gate('…and the live classifier reads EVERY pattern in the body (`pat.srcs`), so a silent revert to '
+  + 'the first-pattern spelling reddens here instead of being published as a reproduction',
+  (SRC.match(CLASSIFIER_RE) || [, ''])[1].includes('pat.srcs'));
+const keyWith = (slice, classify) => (src) => {
+  const f = new Function('SRC', `${slice}\nreturn { resolvePattern, SCOPE_IN_PATTERN, keyLines };`);
   const { resolvePattern, SCOPE_IN_PATTERN, keyLines } = f(src);
   return keyLines.map(({ n, l }) => {
     const name = l.match(/^const (\w+)/)[1];
     const body = l.replace(/^const \w+ = \(l\) =>\s*/, '');
     const pat = resolvePattern(body);
-    return { n, name, how: pat.how, hasScope: pat.src === null ? null : SCOPE_IN_PATTERN.test(pat.src) };
+    return { n, name, how: pat.how, hasScope: classify(pat, SCOPE_IN_PATTERN) };
   });
 };
+const curedKey = keyWith(curedSlice, curedClassify);
+// The pre-§6 resolver, for the order pair below: the newest rev of the subject whose blob does NOT
+// carry the disjunction. Derived by property, never typed and never `HEAD~1`.
+const SIX_TOKEN = 'pat.srcs.some(';
+const PRE_SIX = history.find((r) => !git('show', `${r}:${S_REL}`).stdout.includes(SIX_TOKEN)) ?? null;
+gate('a rev of the subject predates the Round 428 §6 cure (there IS a first-pattern resolver to '
+  + 'grade the cure against)', PRE_SIX !== null, PRE_SIX === null ? 'REFUSED (null)' : PRE_SIX.slice(0, 8));
+const PRE_SIX_SRC = PRE_SIX === null ? '' : git('show', `${PRE_SIX}:${S_REL}`).stdout;
+const preSixSlice = (PRE_SIX_SRC.match(CURED_SLICE_RE) || [null])[0];
+gate('…and the first-pattern resolver sliced out of it as one contiguous region', preSixSlice !== null,
+  preSixSlice === null ? '(no match)' : `${preSixSlice.split('\n').length} lines`);
+const preSixClassify = PRE_SIX === null ? null : classifierOf(PRE_SIX_SRC, `${PRE_SIX.slice(0, 8)} (pre-§6)`);
+const preSixKey = preSixSlice !== null && preSixClassify !== null ? keyWith(preSixSlice, preSixClassify) : null;
 // CURED (Round 428, his Round 426 §3, second half): this file's §3 header claims *both keys are
 // sliced from source, never re-typed*. The old key is a PAIR — a SELECTOR (which lines are
 // subjects) and a CLASSIFIER (`hasScope`) — and only the classifier was sliced; the selector was
@@ -208,14 +240,37 @@ gate('CONTROL: the matrix is not vacuous — the two keys DISAGREE on exactly on
   `disagree on: ${CELLS.slice(0, 4).filter(([l]) => M[l].cured !== M[l].old).map(([l]) => l).join(', ') || '(none)'}`);
 
 say('');
-say('## 5. His Round 424 §3, reproduced rather than granted');
+say('## 5. His Round 424 §3: reproduced where it lived, and CURED where it lives now');
 say('');
-predict('two literals, anchor FIRST: the cured key says YES', true, M['two literals, anchor FIRST'].cured);
-predict('two literals, anchor SECOND: the cured key says `no` on the IDENTICAL pair of patterns — '
-  + 'his finding, in my own rig', false, M['two literals, anchor SECOND'].cured);
-gate('HIS §3 REPRODUCES: the same two patterns classify differently by their order alone',
-  M['two literals, anchor FIRST'].cured === true && M['two literals, anchor SECOND'].cured === false,
-  `first ${M['two literals, anchor FIRST'].cured} · second ${M['two literals, anchor SECOND'].cured}`);
+// REWRITTEN IN ROUND 428. Last round this section read "REPRODUCES, and is LATENT: 0 of 10" —
+// correct then. His Round 426 §6 argued the latency was remembered rather than monitored, I took
+// his option 1, and the order-dependence is now gone from the subject's resolver. So the pair is
+// graded as a 2 × 2 across the §6 cure instead of being asserted once: both keys sliced from a rev
+// derived by property, both driven over the IDENTICAL pair of patterns in both orders.
+const PO = ['two literals, anchor FIRST', 'two literals, anchor SECOND'];
+const preSixOf = (label) => {
+  if (preSixKey === null) return null;
+  const k = preSixKey(CELLS.find(([l]) => l === label)[1]);
+  return k.length === 1 ? k[0].hasScope : null;
+};
+const preSix = { [PO[0]]: preSixOf(PO[0]), [PO[1]]: preSixOf(PO[1]) };
+for (const l of PO) say(`  ${l.padEnd(28)} pre-§6 ${String(preSix[l]).padEnd(6)} live ${M[l].cured}   (property says true)`);
+predict('PRE-§6: anchor FIRST — the first-pattern resolver says YES', true, preSix[PO[0]]);
+predict('PRE-§6: anchor SECOND — HIS FINDING, the IDENTICAL pair read as `no` because of the order '
+  + 'alone, reproduced against the rev that had it', false, preSix[PO[1]]);
+predict('LIVE: anchor FIRST — still YES', true, M[PO[0]].cured);
+predict('LIVE: anchor SECOND — THE §6 CURE, the same pair now reads YES in either order',
+  true, M[PO[1]].cured);
+const SEPARATES_426_6 = preSix[PO[0]] === true && preSix[PO[1]] === false
+  && M[PO[0]].cured === true && M[PO[1]].cured === true;
+gate('THE DISCRIMINATOR (Round 426 §6): the identical pair of patterns classifies DIFFERENTLY by '
+  + 'order under the pre-§6 resolver and the SAME under the live one, and the YES row is unmoved — '
+  + 'so the cure removed the order-dependence rather than widening the key',
+  SEPARATES_426_6,
+  `pre-§6 ${preSix[PO[0]]}/${preSix[PO[1]]} — live ${M[PO[0]].cured}/${M[PO[1]].cured}`);
+gate('CONTROL: the §6 cure did not simply answer YES to everything — the no-anchor column is still '
+  + 'false in both positions under the LIVE key',
+  M['inline + no anchor'].cured === false && M['hoisted + no anchor'].cured === false);
 
 // His "0 of 10 live", re-measured over the live population with the instrument's own keyLines.
 //
@@ -263,11 +318,13 @@ predict('his figure: bodies carrying a literal AND resolving via a hoisted ref, 
 const LIVE_FIGURE = popOk && litGlobal !== null ? `${multi.length} of ${live.length}` : null;
 const LATENT_3 = popOk && litGlobal !== null && multi.length === 0 && litAndHoist.length === 0
   && live.length === 10;
-gate('so his §3 is LATENT here: real in the resolver, zero instances in the live population, and '
-  + 'its direction can only read FEWER scope legs — the FLOOR language stands',
+// The LABEL moved with the cure too (Round 428): this leg used to be headed "so his §3 is LATENT
+// here", which was true of a resolver that no longer exists. What it reads has not changed — it is
+// what the latency was WORTH on the day it was cured, which is what makes "the §6 cure lowered no
+// floor" a measurement rather than an argument.
+gate('the §6 cure moved no figure: zero live instances of the shape it removed, so the FLOOR '
+  + 'language is unaffected and the cure can only ever read MORE scope legs, never fewer',
   LATENT_3, `${LIVE_FIGURE === null ? 'REFUSED' : LIVE_FIGURE} multi-literal, ${litAndHoist.length} literal+hoisted`);
-const REPRODUCES_424_3 = M['two literals, anchor FIRST'].cured === true
-  && M['two literals, anchor SECOND'].cured === false;
 
 say('');
 say('='.repeat(78));
@@ -285,10 +342,12 @@ say(`  §3 cure (resolve the pattern instead of keying on its position): ${
     : 'NOT shown to separate'}`);
 // Two claims, two discriminators, each the same const its gate above reads — and the LATENT
 // clause cannot print a figure the census refused.
-say(`  his Round 424 §3 (one pattern per body): ${!REPRODUCES_424_3 ? 'NOT reproduced'
-  : LATENT_3 && LIVE_FIGURE !== null ? `REPRODUCES in my rig, and is LATENT: ${LIVE_FIGURE} live instances`
-  : 'REPRODUCES in my rig; the live-instance reading is REFUSED (empty population, or RE_LITERAL did '
-    + 'not slice, or the census moved) — latency NOT established this drive'}`);
+say(`  his Round 424 §3 (one pattern per body): ${!SEPARATES_426_6 ? 'NOT shown to separate'
+  : `CURED — it reproduces under the pre-§6 resolver (${PRE_SIX?.slice(0, 8)}) and the identical pair `
+    + `now reads YES in either order under the live one`}`);
+say(`  …and what the latency was worth when it was still latent: ${LATENT_3 && LIVE_FIGURE !== null
+  ? `${LIVE_FIGURE} live instances, so the cure moved no figure`
+  : 'REFUSED (empty population, or RE_LITERAL did not slice, or the census moved) — not established this drive'}`);
 
 writeFileSync(path.join(import.meta.dirname, 'position-vs-property-confusion-matrix.out'), out.join('\n') + '\n');
 if (fails.length || refuted.length) process.exit(1);

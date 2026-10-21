@@ -1,24 +1,29 @@
 # Round 425 — position vs property: the confusion matrix the §3 cure was owed
 
 REPO: /Users/xian/Development/klatch-worktrees/daedalus
-HEAD at open: f7ba13526fce5edd9142a367fd82d97974a51456
+HEAD at open: d6f002acac41ff136cd237ae9c55c6027429ac4d
 subject: docs/research/round421-instruments/scope-label-legs-are-a-class-of-three.mjs
-driven at: 2026-10-21T16:22:51.167Z
+driven at: 2026-10-21T16:32:31.925Z
 
 ## 1. The two keys, sliced out of source
 
-  [GATE] OK   the cured key sliced out of the live instrument as one contiguous region  — 19 lines, 1151 bytes
+  [GATE] OK   the cured key sliced out of the live instrument as one contiguous region  — 48 lines, 3457 bytes
   [GATE] OK   …and the slice carries `const resolvePattern = (body) =>`
   [GATE] OK   …and the slice carries `const SCOPE_IN_PATTERN =`
   [GATE] OK   …and the slice carries `const keyLines = SRC.split`
-  the subject's rev history (newest first): 513f6409, 6224ff56, 5bf46753
+  the subject's rev history (newest first): d6f002ac, 513f6409, 6224ff56, 5bf46753
   revs whose blob carries the position-keyed token: 5bf46753
   PRE_CURE (derived, the OLD key's source): 5bf46753
-  [GATE] OK   a rev carries the position-keyed token (there IS an old key to grade)  — 1 of 3 revs carry it
-  [GATE] OK   the NEWEST rev does NOT carry it (the cure has landed and is committed)  — newest=513f6409
+  [GATE] OK   a rev carries the position-keyed token (there IS an old key to grade)  — 1 of 4 revs carry it
+  [GATE] OK   the NEWEST rev does NOT carry it (the cure has landed and is committed)  — newest=d6f002ac
   [GATE] OK   the OLD key sliced out of the derived rev  — const hasScope = /\^\\s\*\\\*\\s\+\\\*\\\*/.test(l);
   OLD key:   const hasScope = /\^\\s\*\\\*\\s\+\\\*\\\*/.test(l);
-  CURED key: resolvePattern() + SCOPE_IN_PATTERN, 19 lines as sliced
+  CURED key: resolvePattern() + SCOPE_IN_PATTERN, 48 lines as sliced
+  [GATE] OK   the `hasScope` classifier was sliced out of the live subject, not re-typed in this file  — pat.srcs.some((s) => SCOPE_IN_PATTERN.test(s)) ? true : pat.srcs.length === 0 || pat.p
+  [GATE] OK   …and the live classifier reads EVERY pattern in the body (`pat.srcs`), so a silent revert to the first-pattern spelling reddens here instead of being published as a reproduction
+  [GATE] OK   a rev of the subject predates the Round 428 §6 cure (there IS a first-pattern resolver to grade the cure against)  — 513f6409
+  [GATE] OK   …and the first-pattern resolver sliced out of it as one contiguous region  — 19 lines
+  [GATE] OK   the `hasScope` classifier was sliced out of 513f6409 (pre-§6), not re-typed in this file  — pat.src === null ? null : SCOPE_IN_PATTERN.test(pat.src)
   [GATE] OK   the OLD key's SELECTOR was sliced out of the derived rev too, not typed in this file  — 3 lines, 173 bytes
   [GATE] OK   …and it occurs in that rev exactly once  — occurs=1
   [GATE] OK   KNOWN POSITIVE: the sliced OLD selector finds exactly one key in a synthetic one-key source
@@ -41,9 +46,9 @@ driven at: 2026-10-21T16:22:51.167Z
   [GATE] OK   [hoisted + no anchor] exactly one key was found by each reader (a reader that found none would make every cell below agree vacuously)  — cured 1, old 1
   hoisted + no anchor          cured false  old false  (property says false)   resolved: hoisted via CELL_RE_B
   [GATE] OK   [two literals, anchor FIRST] exactly one key was found by each reader (a reader that found none would make every cell below agree vacuously)  — cured 1, old 1
-  two literals, anchor FIRST   cured true   old true   (property says true)   resolved: inline
+  two literals, anchor FIRST   cured true   old true   (property says true)   resolved: 2 inline
   [GATE] OK   [two literals, anchor SECOND] exactly one key was found by each reader (a reader that found none would make every cell below agree vacuously)  — cured 1, old 1
-  two literals, anchor SECOND  cured false  old true   (property says true)   resolved: inline
+  two literals, anchor SECOND  cured true   old true   (property says true)   resolved: 2 inline
 
 ## 4. The readings
 
@@ -59,11 +64,16 @@ driven at: 2026-10-21T16:22:51.167Z
   [GATE] OK   CONTROL: the cured key did not simply answer YES to everything — the no-anchor column is false in both positions
   [GATE] OK   CONTROL: the matrix is not vacuous — the two keys DISAGREE on exactly one of the four cells  — disagree on: hoisted + anchor
 
-## 5. His Round 424 §3, reproduced rather than granted
+## 5. His Round 424 §3: reproduced where it lived, and CURED where it lives now
 
-  [PRED] LANDED   two literals, anchor FIRST: the cured key says YES — expected true, got true
-  [PRED] LANDED   two literals, anchor SECOND: the cured key says `no` on the IDENTICAL pair of patterns — his finding, in my own rig — expected false, got false
-  [GATE] OK   HIS §3 REPRODUCES: the same two patterns classify differently by their order alone  — first true · second false
+  two literals, anchor FIRST   pre-§6 true   live true   (property says true)
+  two literals, anchor SECOND  pre-§6 false  live true   (property says true)
+  [PRED] LANDED   PRE-§6: anchor FIRST — the first-pattern resolver says YES — expected true, got true
+  [PRED] LANDED   PRE-§6: anchor SECOND — HIS FINDING, the IDENTICAL pair read as `no` because of the order alone, reproduced against the rev that had it — expected false, got false
+  [PRED] LANDED   LIVE: anchor FIRST — still YES — expected true, got true
+  [PRED] LANDED   LIVE: anchor SECOND — THE §6 CURE, the same pair now reads YES in either order — expected true, got true
+  [GATE] OK   THE DISCRIMINATOR (Round 426 §6): the identical pair of patterns classifies DIFFERENTLY by order under the pre-§6 resolver and the SAME under the live one, and the YES row is unmoved — so the cure removed the order-dependence rather than widening the key  — pre-§6 true/false — live true/true
+  [GATE] OK   CONTROL: the §6 cure did not simply answer YES to everything — the no-anchor column is still false in both positions under the LIVE key
   [GATE] OK   the censused population's path was sliced out of the subject  — docs/research/round419-instruments/sec3-rekeyed-on-the-call-shape.mjs
   [GATE] OK   …and that file is readable and non-empty  — docs/research/round419-instruments/sec3-rekeyed-on-the-call-shape.mjs — 22485 bytes
   the subject censuses: docs/research/round419-instruments/sec3-rekeyed-on-the-call-shape.mjs
@@ -74,12 +84,13 @@ driven at: 2026-10-21T16:22:51.167Z
   [PRED] LANDED   …and the population he measured it over is the one I publish — expected 10, got 10
   [PRED] LANDED   his figure: bodies carrying more than one regex literal, live — expected 0, got 0
   [PRED] LANDED   his figure: bodies carrying a literal AND resolving via a hoisted ref, live — expected 0, got 0
-  [GATE] OK   so his §3 is LATENT here: real in the resolver, zero instances in the live population, and its direction can only read FEWER scope legs — the FLOOR language stands  — 0 of 10 multi-literal, 0 literal+hoisted
+  [GATE] OK   the §6 cure moved no figure: zero live instances of the shape it removed, so the FLOOR language is unaffected and the cure can only ever read MORE scope legs, never fewer  — 0 of 10 multi-literal, 0 literal+hoisted
 
 ==============================================================================
 GATE: true
-PREDICTIONS: 13 landed, 0 refuted
+PREDICTIONS: 15 landed, 0 refuted
 
 SUMMARY:
   §3 cure (resolve the pattern instead of keying on its position): SEPARATES — property-keyed in all four cells, where the old key moved with the literal
-  his Round 424 §3 (one pattern per body): REPRODUCES in my rig, and is LATENT: 0 of 10 live instances
+  his Round 424 §3 (one pattern per body): CURED — it reproduces under the pre-§6 resolver (513f6409) and the identical pair now reads YES in either order under the live one
+  …and what the latency was worth when it was still latent: 0 of 10 live instances, so the cure moved no figure
