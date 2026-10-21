@@ -1,0 +1,56 @@
+# Round 427 — the compaction trigger is reached by the history window, not by the file
+
+rev: 2ca58521a3152452be5cdd6fae96742cc32ed479
+run: 2026-10-21T02:54:01.111Z
+
+## GATE
+  ok  client.ts readable — /Users/xian/Development/klatch-worktrees/theseus/packages/server/src/claude/client.ts
+  ok  MAX_HISTORY_MESSAGES sliced exactly once — = 200
+  ok  compaction trigger sliced exactly once — = 160000
+  ok  the window is applied by .slice(-MAX_HISTORY_MESSAGES) — 2 call site(s)
+  ok  history drops empty-content messages — m.content.trim().length > 0
+  ok  KP: 3 turns insert 5 message rows — 5
+  ok  KP: the empty-content row is dropped from history (5 → 4) — 4
+  ok  KP: unwindowed sum is 42 — 42
+  ok  CONTROL: a window of 2 bites, keeping the last 2 eligible (7 + 5 = 12 chars) — 2 msgs / 12 chars
+  ok  at least one in-repo .jsonl corpus exists — 1: theseus-2026-03-22.jsonl
+  ok  every corpus file measured without refusing — theseus-2026-03-22.jsonl:ok
+
+GATE: true
+
+## Constants, sliced from packages/server/src/claude/client.ts
+  MAX_HISTORY_MESSAGES = 200
+  compaction trigger   = 160000 input_tokens
+
+## Measurements
+  theseus-2026-03-22.jsonl — 3860602 bytes on disk
+    parser: 66 turns from 1001 events (skipped lines: null), model claude-opus-4-6
+    rows the importer would insert into messages: 132
+    messages eligible for history (non-empty content): 132
+    WHOLE channel  : 197073 chars → ~43794–65691 tokens → DOES-NOT-TRIGGER
+    WINDOWED (last 200): 132 messages, 197073 chars → ~43794–65691 tokens → DOES-NOT-TRIGGER
+    does the window bite on this corpus? NO (132 eligible vs 132 sent)
+    artifact rows excluded from history content: 3663529 bytes of the file are not request content
+
+## Asymmetry, published rather than buried
+  The windowed char count is a FLOOR on the request: system prompt, tools and carried
+  context are unmodelled here and can only ADD input tokens. So a TRIGGERS verdict off
+  this floor is sound; a DOES-NOT-TRIGGER verdict only says "not from message content
+  alone" and can be overturned by the unmodelled additions. Only a live call with a key
+  returns the real input_tokens — which is the blocked part of the capability test.
+
+## SUMMARY
+  The repo's one reachable corpus is 3860602 bytes and yields 132
+  history-eligible messages. The request carries at most the last 200 of them.
+  Whole channel: ~43794–65691 tokens (DOES-NOT-TRIGGER).
+  What is actually sent: ~43794–65691 tokens (DOES-NOT-TRIGGER) against a 160000 trigger.
+
+  => The in-repo corpus is NOT large enough once the window is applied. "Bring a big
+     channel" is the wrong instruction twice over: the binding quantity is message
+     CONTENT in the last 200 messages, and here the window does not even bite.
+     Content needed, as a band: >= 720000 chars GUARANTEES the trigger at the
+     sparse end of the bracket; < 480000 chars guarantees it is NOT reached on
+     content alone; between the two is undetermined without a live call.
+     This corpus has 197073 — short of the lower figure by
+     2.4x, and of the upper by 3.7x.
+     Floor caveat above applies: the unmodelled additions can only help.
