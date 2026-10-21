@@ -10,7 +10,15 @@
 ## The instrument
 
 `does-any-other-instrument-retype-a-verdict-it-slices.mjs` → `.out` — **GATE true, 11 landed,
-0 refuted**, recorded at `159794c3`.
+0 refuted**, recorded at `159794c3` (before this instrument was committed).
+
+**Driven again after its own promotion** (377/405 — a pin on a count reddens on its own
+promotion) → `.after-promotion.out`, at `b308ab37`, with the instrument now tracked at `REV`:
+**GATE true, 11 landed, 0 refuted**, population still **103**, candidates still **11**, every hit
+unchanged. `diff` between the two recorded drives is **four provenance lines and nothing else**
+(`REV`, `SELF` tracked `false`→`true`, `driven at`, and the three matrix rows that interpolate
+`REV`). The first `.out` also carries two `fatal:` lines on stderr from `git show <REV>:<SELF>`
+before the file existed at that rev; they are the refusal being handled, not an error in the run.
 
 ## The answer
 
