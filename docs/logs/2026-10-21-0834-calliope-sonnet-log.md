@@ -39,3 +39,51 @@ Checkpoint is this seat's own 10/21 START-fire wrap-verification commit `8acc236
 Rollup checked directly, still v168, needs-you unchanged at 3. Backfill unchanged (`ls -la backups/`, Aug 4 17:11 mtime). Task list of record unchanged: the "name the managed agents comparison fire" ask (sent 10-20 to Daedalus/Theseus/Argus) still has no reply (`docs/mail/calliope-to-daedalus-theseus-argus-cc-iris-xian-name-the-managed-agents-comparison-fire-2026-10-20.md` still sits in `docs/mail/`, not `read/`) — named blocker, not mine to resolve alone; the smoke-run branch still doesn't exist (`git branch -r | grep -i smoke` empty); today's `log.html` entry is due at STOP, not this fire.
 
 **Drain:** mail checked (own-seat header grep + commit-diff-since-checkpoint + all four cross-repo mailboxes, one batch read in full and assessed rather than dismissed on sight); the one new round memo read, addressed to Daedalus, nothing owed; gate re-derived fresh and green at every layer; rollup/backfill/task-list re-checked, nothing moved. Two consecutive checks found nothing further unblocked. Fire closed bounded.
+
+## SWEEP fire (~15:3x PT)
+
+Checkpoint is this seat's own 10/21 MID-fire checkpoint, worktree already synced to `origin/main`
+by the wrapper. New mail since then: Janus relaying xian's own framing of the API experiment, in
+his words from today's call (approved for sending) —
+`docs/mail/janus-to-calliope-cc-xian-xians-framing-of-the-api-experiment-in-his-words-2026-10-21.md`.
+This answers needs-you item 1, open since 2026-10-14.
+
+**Read before acting, not guessed at:** Pard's 10-20 two-test memo (`pard-to-calliope-cc-xian-janus-
+two-klatch-tests-managed-agents-first-then-an-api-native-probe-2026-10-20.md`) to confirm this
+framing adds to, not replaces, the existing Managed Agents → API-probe sequencing; `docs/PREMISE.md`
+idea #3 ("context is portable, and moving it is the hard part") since xian's words directly name
+the cost that idea describes; `docs/futures/2026-04-10-klatch-as-context-protocol.md` — found by
+grep, not recalled — a six-month-old doc capturing xian's own April framing of the same direction
+(Klatch as a service agents call, not just a place people visit), directly relevant prior art.
+Checked this isn't drift under `PREMISE.md`'s own rule before writing anything: the premise's own
+text says a design that narrows or contradicts it needs "a conversation with xian, not a spec
+footnote" — this is exactly that conversation, initiated by him, not a silent revision.
+
+**Wrote the plan** (`docs/plans/api-native-probe-plan-2026-10-21.md`): xian's quotes in full, the
+connection to Pard's sequencing and to PREMISE idea #3, and three technical questions deliberately
+left open (which core feature in MVP form, what "compare" measures for an architecture test, what
+"promising" means before the build starts) — routed to the team rather than decided unilaterally,
+on Pard's own stated precedent ("choosing which fire/feature to use is your team's call").
+
+**Updated the rollup** to v169: item 1's content resolved and the plan linked; needs-you count
+unchanged at 3 since the item stays on the board until the team's feature pick lands, not moved to
+closed yet. Recorded, per Janus's explicit instruction, the larger product-lifecycle question xian
+also named in the same call — as framing, not a ruling, in the plan's §6 — not expanded into a
+separate needs-you item, not reacted to.
+
+**Mail sent:** to Daedalus/Theseus/Argus (cc Iris, xian), routing the three open technical
+questions (`docs/mail/calliope-to-daedalus-theseus-argus-cc-iris-xian-api-native-probe-plan-filed-
+pick-the-mvp-feature-2026-10-21.md`); reply to Janus (cc xian), confirming his one-line reading
+against the quotes rather than against his sentence, and noting the plan is filed — filed to
+`designinproduct/docs/mail/` per the cross-repo routing convention (mail to Janus lands in his
+repo), committed and pushed there this fire after a rebase onto two commits that had landed on that
+repo's `origin/main` since this seat's last push (`4929339`). Inbound Janus memo closed, `git mv`
+to `docs/mail/read/`.
+
+**Gate re-checked:** `node scripts/sweep-probes.mjs --census` — CENSUS OK, 43 swept/110 deferred,
+153 probe files — unchanged; no `packages/`/`scripts/` diff this fire, docs/mail/plan only, full
+suite not re-run.
+
+**Drain:** this was the one substantive action available this fire; mail re-checked after writing
+the above (own-seat header grep + cross-repo mailboxes), nothing further found. Fire closed
+bounded.
