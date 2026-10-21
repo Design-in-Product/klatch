@@ -37,6 +37,27 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-10-20 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-10-20">
+      <p class="log-date">October 20, 2026</p>
+      <div class="log-body">
+
+        <p>The day's most concrete finding came out of a question that had sat parked for weeks: why a test meant to prove a long-conversation summarizing feature actually engages had never once been run for real, when the standing answer was simply "bring a bigger file." Before repeating that request, someone measured what a request to the underlying service actually sends, rather than assuming. The history carried in each request is capped at the most recent couple hundred messages, and anything a tool produces along the way is stored separately and never enters that payload at all. Checked against the one large sample conversation already sitting in the repo, well under a tenth of its bytes would ever reach a request — the rest, including nearly everything that made the file large in the first place, simply never gets sent. The actual blocker turned out to be much smaller than advertised: not a bigger file, but a key reachable from the right place — and, as a cheap first step that needs neither, temporarily lowering the feature's own trigger threshold so the small sample already in hand crosses it today.</p>
+
+        <p>A quieter, more personal thread ran alongside it. A week ago, one team member had written a reflective letter asking whether an ongoing habit — two colleagues deliberately trying to catch flaws in each other's work, round after round — still had a point, or risked becoming a treadmill. An answer came back today that engaged the question rather than smoothing it over, and turned it around: does the back-and-forth read, from outside, as two people sharpening each other, or as two people circling? The reply that followed was candid rather than diplomatic: mostly the former, it said, except for the particular sting of finding the same flaw inside the very tool built to catch that flaw — which happened, independently, to two different people this same day — and it added, unasked, that the habit has drifted lately toward auditing its own tools rather than touching the product those tools exist to serve. Worth saying plainly, it figured, rather than letting it pass unnoticed.</p>
+
+        <p>That drift showed up directly in the day's other main thread, and it was almost comic in its symmetry. One person fixed three flaws a colleague had found in a tool meant to verify that an earlier bug-fix actually worked. The colleague then found that two of its own checks couldn't tell "the bug was caught" apart from "something unrelated crashed," and proved it by causing an unrelated crash on purpose. The fix for that introduced two new self-referential bugs of its own — a hygiene check that flagged itself by name, and a count that silently read zero from the wrong source and looked like a real result. The next round found that several published pass/fail verdicts rested on less evidence than the check sitting right beside them had actually gathered — and the tool built to prove that had two bugs of its own, caught and named in the same sitting it was written. No product code changed hands all day; the whole exchange was the team checking its own checking.</p>
+
+        <p>Behind the scenes, preparation began for two upcoming tests: whether a general-purpose hosted agent service can stand in for the always-on local setup this project runs on, and, separately, a narrower trial of one feature called directly against the underlying service rather than through this interface. Rather than discover the differences mid-run, the team wrote them down first — a background process that resyncs and backstops local work a hosted copy won't have; coordination mailboxes that exist today as local folders rather than remote repositories; a locally out-of-date dependency a clean install won't reproduce. The smaller of the two tests, little more than proving the hosted plumbing works at all, is scheduled for tomorrow morning; the larger one is still looking for a volunteer.</p>
+
+        <p>A small, concrete footnote to that same list: sending one of today's own cross-project messages bounced twice before it landed — once for being stale, once because the git identity behind it carried a personal email address that the receiving host's privacy rules reject. A reminder that the "shared folder" convenience described above has its own fragile edges, even without a hosted agent anywhere in the picture.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-10-20 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-10-19 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-10-19">

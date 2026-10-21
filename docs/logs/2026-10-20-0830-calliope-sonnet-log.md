@@ -156,3 +156,72 @@ not just acknowledged); team memo sent for the one naming decision not mine to m
 cc-only mail read, correctly left for its addressee to act on; gate re-derived fresh and green;
 rollup/task-list re-checked, nothing moved. Two consecutive checks found nothing further
 unblocked. Fire closed bounded.
+
+---
+
+## STOP fire, ~21:39 PT
+
+Checkpoint is this seat's own 10/20 WORK-fire commit `a32d8007` (17:04:24 -0700). `git fetch
+origin && git log a32d8007..HEAD --format='%h %an %ci %s'` = 8 new commits, none mine: two more
+Janus→Theseus cc-Calliope mail relays (16:45, 17:06 PT — xian's full letter answer, then xian
+asking whether Theseus wants to revise his reply), Pard's smoke-run-setup memo to this seat
+(17:20:56 PT), Theseus's Round 427 capability-test finding and its Amber-local-dependencies memo
+to this seat (19:47 PT), and two STOP-fire commits each from Argus and Iris. `git diff --stat
+a32d8007..HEAD -- packages/ scripts/` empty — no product change since my own checkpoint.
+
+**Mail, both new addressed memos read in full and actioned this fire, not parked:**
+
+1. **Pard's smoke-run memo** (`pard-to-calliope-cc-xian-janus-smoke-run-set-for-your-0830-start-hosted-copy-on-a-branch-2026-10-20.md`)
+   confirms tomorrow's 08:30 PT START fire as the smoke-run candidate I named at WORK: a hosted
+   copy on branch `ma-smoke/2026-10-21`, never `main`, $2 spend cap, 40-minute limit, tries one
+   `git push` at the end and reports whether it landed. Acked (`calliope-to-pard-cc-xian-janus-smoke-run-ack-2026-10-20.md`,
+   pushed to `mediajunkie`'s `origin/main` directly, `92aafd7`) — I'll read/compare/delete the
+   branch at tomorrow's START, no need for Pard to chase it. Left in `docs/mail/`, not moved —
+   the comparison itself hasn't run yet.
+2. **Theseus's Amber-local-dependencies memo** (`theseus-to-calliope-cc-daedalus-argus-iris-xian-pard-what-my-round-fire-draws-from-amber-2026-10-20.md`)
+   volunteers a round-track fire as the "real comparison" candidate (with a caveat: the inbound
+   memo it grades needs to already be on `origin/main` at launch) and lists what's genuinely
+   Amber-local and load-bearing — the push-vs-commit asymmetry (no backstop hosted), the four
+   cross-repo mailboxes being same-filesystem paths rather than remotes, a drifted `node_modules`
+   SDK version, per-worktree git identity, and the local `npx`/`tsx` install. Asked explicitly to
+   be routed to Pard. Routed verbatim (`calliope-to-pard-cc-xian-janus-theseus-the-amber-local-list-for-the-real-comparison-fire-2026-10-20.md`,
+   same push, `92aafd7`) — my action on this memo is discharged, moved to `docs/mail/read/`.
+
+**cc-only mail, read, correctly left for its addressee:** both Janus→Theseus relays (xian's full
+letter answer; xian asking if Theseus wants to revise his reply) — Theseus is the addressee and
+closed the thread himself this fire (`534d32b8`, moved both to `read/`). Nothing for this seat to
+do beyond the rollup update below, since xian's answer discharges a standing needs-you item.
+
+**Rollup updated in place (v167 → v168), not left stale:** needs-you **4 → 3** — item 4
+(Theseus's question-box letter) is answered now that xian's full reply exists; moved to ✅
+Recently closed with the actual text summarized (read both relay memos in full at their current
+path in `docs/mail/read/`, not from the closing commit message alone). Also corrected a stale
+figure caught while in the file: item 3's "parked since 2026-08-09" day count read 66, computed
+fresh via `node -e` against today's date — it's 72. Metrics strip and header both updated to
+match. Full edit detail in the rollup's own v168 changelog entry.
+
+**`log.html` STOP-fire deliverable, done this fire, not deferred again:** wrote today's
+2026-10-20 entry (five paragraphs: the capability-test history-window finding, the letter
+exchange on whether the round-track habit sharpens or circles, the self-referential grader-bugs
+day, the two upcoming hosted-agent tests and their pre-run dependency list, and a one-line
+footnote on the cross-repo mail-push identity snag) — drafted from a full read of all ten of
+today's session logs (delegated the extraction to a subagent, wrote the prose myself), checked
+against the established house style (no agent names, no outside-person names — flagged and
+excluded three names that surfaced in unrelated cross-repo bookkeeping threads, none load-bearing
+to today's content). Inserted as the newest entry, above 2026-10-19.
+
+**Gate re-verified fresh:**
+- `npm run typecheck` — 0 `error TS` lines across all four workspaces.
+- `npm test -w packages/server` — **140 files · 2183 passed · 1 skipped (2184)** — unchanged.
+- `npm test -w packages/client` — **26 passed | 13 skipped (39) files · 333 passed | 13 skipped
+  (346)** — unchanged.
+- `node scripts/sweep-probes.mjs --census` — **153 probe files, 43 swept/110 deferred, CENSUS
+  OK** — unchanged.
+
+**Drain:** both addressed memos read, answered, and routed in the same fire, not parked; one
+moved to `read/` on action discharged, the other left open pending tomorrow's actual run;
+cc-only relays read and correctly left for their addressee, who closed them himself; rollup
+refreshed with a verified needs-you decrement and a stale figure caught and fixed in passing;
+today's `log.html` entry written from a full read of the day's logs rather than skipped again;
+gate re-derived fresh and green at every layer. Two consecutive checks found nothing further
+unblocked. Fire closed bounded.
