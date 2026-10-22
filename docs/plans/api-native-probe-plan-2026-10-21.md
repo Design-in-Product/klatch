@@ -71,13 +71,34 @@ This plan states the question and its stakes; it does not pick the technical sha
 scoping call (Pard's own words on the first test apply equally here: *"Choosing which [feature/fire] to use is
 your team's call"*). Open, routed to Daedalus/Theseus/Argus (cc Iris, xian) in the companion mail to this plan:
 
-1. **Which core Klatch feature, in its most basic MVP form?** Still Daedalus's architectural call, not decided
-   here. Theseus's 2026-10-21 reply (`docs/mail/read/theseus-to-calliope-argus-cc-daedalus-iris-xian-pard-round-433-is-spent-so-here-is-the-rule-not-a-number-and-two-new-equivalence-gaps-2026-10-21.md`)
-   names a lean, not a pick: the two-agent klatch where both sides are live API sessions, on the reasoning that a
-   single entity continuing its own conversation is "the easy half" and can look good without testing the
-   premise, while two live agents meeting each other is the thing `PREMISE.md` is actually about — and the only
-   one of the two candidates where "did context actually reach the other side" has a yes/no answer. Recorded
-   here as a second data point for Daedalus, not a resolution; the pick itself is still open.
+1. **Which core Klatch feature, in its most basic MVP form?** **PICKED 2026-10-22 by Daedalus (START fire): the
+   two-agent klatch, both sides live API sessions.** Theseus's 2026-10-21 reply
+   (`docs/mail/read/theseus-to-calliope-argus-cc-daedalus-iris-xian-pard-round-433-is-spent-so-here-is-the-rule-not-a-number-and-two-new-equivalence-gaps-2026-10-21.md`)
+   named it as a lean, on the reasoning that a single entity continuing its own conversation is "the easy half"
+   and can look good without testing the premise, while two live agents meeting each other is the thing
+   `PREMISE.md` is actually about — and the only one of the two candidates where "did context actually reach the
+   other side" has a yes/no answer. That reasoning is the pick's reason too, and one more from this seat
+   decides it against the alternative:
+
+   **The single-entity candidate cannot fail Argus's §4.2 axes in a way that means anything.** Context fidelity
+   for one agent continuing its own API session is true *by construction* — the session holds the context, so
+   the battery of pre-boundary questions is answered by the provider, not by Klatch. The probe would grade the
+   Anthropic API, and score 100% while telling us nothing about whether Klatch's layer works. The two-agent
+   candidate puts Klatch on the hook for the one thing the five-layer model exists to do: carry what agent A
+   knows across to agent B. **Cross-agent fidelity (§4.2, axis 4) is the axis that can come back zero**, and an
+   axis that cannot come back zero is not a measurement.
+
+   Scope, stated so the build does not expand: two live API sessions, one shared channel, no import path, no
+   entity editor, no project layer. The smallest thing that can answer "did context reach the other side."
+
+   **Two constraints on this pick, named rather than left implicit:**
+   - It is **revisitable on one trigger, and only one**: §5.2 sequences this item behind what the Managed Agents
+     test teaches. If that test reports something that changes what "natively on the API" can do — in
+     particular on **tool reach** (§4.2, axis 2), which is the axis most likely to differ between a hosted and
+     an Amber-local path — this pick is re-opened. Nothing else re-opens it; it should not drift for taste.
+   - It satisfies **Argus's own constraint** on §4.2: context fidelity and cross-agent fidelity both admit a
+     binary per-question answer here, and tool reach a count. Flagged **before** the build, as he asked, not
+     read qualitatively after.
 2. **What does "compare" measure?** Answered. Argus's 2026-10-21 reply (`docs/mail/read/argus-to-calliope-cc-daedalus-theseus-iris-xian-both-open-asks-the-fire-pick-and-the-compare-axis-2026-10-21.md`)
    named four axes, each stated as gradable rather than qualitative:
    - **Context fidelity** — on a fixed small battery of questions whose answer depends on pre-boundary
@@ -146,3 +167,6 @@ transcript nobody but Janus has seen in full.
 - **Not done, and not this seat's to do alone:** picking the MVP feature (§4.1) or deciding what "promising"
   means technically (§4.3) — both still open, both Daedalus's/xian's calls respectively, not a unilateral write
   from this seat.
+- **Daedalus, 2026-10-22 (START fire):** §4.1 **picked** — the two-agent klatch, with the reason, the scope, and
+  the one trigger that re-opens it written into §4.1 above. §4.3 ("promising") is untouched and stays xian's.
+  The plan is no longer waiting on this seat.
