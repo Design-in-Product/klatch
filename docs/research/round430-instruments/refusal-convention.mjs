@@ -27,10 +27,36 @@
  *   - an object literal carrying a value derived from the input  -> an ANSWER shape
  *
  * The partition is derived, not assumed. "Every value is a message" is read with the shared
- * `stripSource` masker: a string or template body is blanked in the masked reading, so a value
- * span whose masked text differs from its raw text *contains a literal message*, and one whose
- * masked text is identical does not. The answer shape is then the one carrying a value that slices
- * the function's own input. No key name is typed in this file.
+ * `stripSource` masker, in BOTH of its readings: a value span whose strings-blanked text differs
+ * from its strings-KEPT text contains a literal message, and one where the two agree does not.
+ * Comment bodies are blanked in both readings, so a comment inside a value cancels and the leg is
+ * comment-blind. The answer shape is then the one carrying a value that mentions the function's
+ * own parameter. No key name is typed in this file.
+ *
+ * ## Round 432 — the two defects Theseus's Round 431 §4 reported, both cured here
+ *
+ * He imported this module and graded it in use. Both of his cells reproduce in my tree, as his
+ * own recorded `round431-instruments/*.out` and my `round432-instruments/reproduce-his-round431.out`:
+ *
+ * **G8, the message leg was not comment-blind.** It read `maskedValue !== rawValue`, and the masker
+ * blanks comment bodies as well as string bodies — so one block comment inside an answer return
+ * value made that value read as a message, flipped the shape to a refusal, and left the subject with no
+ * answer shape at all, refusing the whole function. Direction of error: OVER-refusal, the safe one.
+ * Cured by comparing the two READINGS of the same masker against each other rather than the masked
+ * text against the raw text — the difference between them is string bodies and nothing else.
+ *
+ * **G7, the answer-shape leg had no model of the function's input.** It was keyed on a `.slice(`
+ * call appearing in a value, so it was wrong in both directions at once: a value slicing a module
+ * constant and touching the input nowhere was admitted as the answer shape (UNDER-refusal — the
+ * dangerous one, because this module's whole value is refusing when no absence test can work), and
+ * a value derived from the input by any other means (`charAt`) was refused. Cured by reading the
+ * function's own parameter list out of its source and asking whether a value mentions a parameter
+ * as a free identifier in the code reading. `paramsOf` REFUSES on a form it does not model
+ * (destructured or rest parameters), and `conventionOf` refuses with it rather than falling back to
+ * the looser leg — a weaker key reached by fall-through is the shape 411 is about.
+ *
+ * Residual, named rather than discovered later: the parameter leg is a MENTION test, not a dataflow
+ * test. A value mentioning the parameter inside a call that discards it would still read as derived.
  *
  * `conventionOf` REFUSES — returns `{ refused }` rather than a convention — when the partition is
  * not total (a return form it does not model), when there is no answer shape or no refusal shape,
@@ -62,7 +88,11 @@ const CLOSE = new Set([')', ']', '}']);
  */
 export const returnExprs = (src) => {
   const masked = stripSource(src, true);
-  if (masked.length !== src.length) return null;
+  // Round 432 / G8: the SAME masker's other reading — comments blanked, string bodies KEPT. The
+  // two readings differ at string bodies and nowhere else, which is what makes the message leg
+  // below comment-blind without a second scanner that could disagree about where a comment ends.
+  const kept = stripSource(src, false);
+  if (masked.length !== src.length || kept.length !== src.length) return null;
   const out = [];
   const re = /\breturn\b/g;
   let m = re.exec(masked);
@@ -78,7 +108,12 @@ export const returnExprs = (src) => {
         depth -= 1;
       } else if (depth === 0 && c === ';') { end = i; break; }
     }
-    out.push({ raw: src.slice(from, end), masked: masked.slice(from, end), at: from });
+    out.push({
+      raw: src.slice(from, end),
+      masked: masked.slice(from, end),
+      kept: kept.slice(from, end),
+      at: from,
+    });
     re.lastIndex = end;
     m = re.exec(masked);
   }
@@ -86,7 +121,7 @@ export const returnExprs = (src) => {
 };
 
 /** The top-level `key: value` entries of an object literal, or null if it is not one. */
-const entriesOf = (rawExpr, maskedExpr) => {
+const entriesOf = (rawExpr, maskedExpr, keptExpr) => {
   const rawT = rawExpr.trim();
   const lead = rawExpr.indexOf(rawT[0]);
   if (rawT[0] !== '{' || rawT[rawT.length - 1] !== '}') return null;
@@ -117,6 +152,7 @@ const entriesOf = (rawExpr, maskedExpr) => {
       key: rawExpr.slice(p.from, colon).trim(),
       rawValue: rawExpr.slice(colon + 1, p.to),
       maskedValue: maskedExpr.slice(colon + 1, p.to),
+      keptValue: keptExpr.slice(colon + 1, p.to),
     });
   }
   return entries;
@@ -124,6 +160,77 @@ const entriesOf = (rawExpr, maskedExpr) => {
 
 const IDENT = /^[A-Za-z_$][\w$]*$/;
 const keyOfShape = (keys) => [...keys].sort().join(',');
+
+/**
+ * Round 432 / G7 — the function's own parameter names, read off its source.
+ *
+ * `{ params: [...] }`, or `{ refused }` on a parameter form this reader does not model. Refusing
+ * is the point: the leg it feeds decides whether a value is derived from the INPUT, and a reader
+ * that cannot name the input has no business answering that question with a weaker key.
+ *
+ * Scanned in the masked reading so a `(` inside a comment or a string is not the parameter list.
+ * Four declaration forms are modelled, each with a known positive in the Round 432 grader:
+ * `function f(a, b) {…}`, `(a, b) => …`, `a => …`, and the method shorthand `f(a, b) {…}`.
+ */
+export const paramsOf = (fnSource) => {
+  const masked = stripSource(fnSource, true);
+  if (masked.length !== fnSource.length) {
+    return { refused: 'the masker was not length-preserving on this source' };
+  }
+  // Every step below strips a PREFIX, so `head` stays a suffix of `masked` and its start offset is
+  // recoverable by length alone — which is how the parameter list is located in the masked text.
+  let head = masked.replace(/^\s+/, '');
+  head = head.replace(/^async\s+/, '');
+  head = head.replace(/^function\s*\*?\s*(?:[A-Za-z_$][\w$]*)?\s*/, '');
+  const bare = /^([A-Za-z_$][\w$]*)\s*=>/.exec(head);
+  if (bare !== null) return { params: [bare[1]] };
+  const method = /^[A-Za-z_$][\w$]*\s*(?=\()/.exec(head);
+  if (method !== null) head = head.slice(method[0].length);
+  if (head[0] !== '(') {
+    return { refused: `no parameter list found at the head of "${head.slice(0, 40).trim()}"` };
+  }
+  const openAt = masked.length - head.length;
+  let depth = 0;
+  let closeAt = -1;
+  for (let i = openAt; i < masked.length; i += 1) {
+    const c = masked[i];
+    if (OPEN.has(c)) depth += 1;
+    else if (CLOSE.has(c)) { depth -= 1; if (depth === 0) { closeAt = i; break; } }
+  }
+  if (closeAt === -1) return { refused: 'the parameter list does not close' };
+  const inner = masked.slice(openAt + 1, closeAt);
+  if (inner.trim() === '') return { params: [] };
+  const parts = [];
+  let d = 0;
+  let start = 0;
+  for (let i = 0; i < inner.length; i += 1) {
+    const c = inner[i];
+    if (OPEN.has(c)) d += 1;
+    else if (CLOSE.has(c)) d -= 1;
+    else if (d === 0 && c === ',') { parts.push(inner.slice(start, i)); start = i + 1; }
+  }
+  parts.push(inner.slice(start));
+  const params = [];
+  for (const p of parts) {
+    const t = p.trim();
+    const name = /^([A-Za-z_$][\w$]*)\s*(=|$)/.exec(t);
+    if (name === null) {
+      return { refused: `a parameter form this reader does not model: "${t.slice(0, 30)}"` };
+    }
+    params.push(name[1]);
+  }
+  return { params };
+};
+
+/**
+ * Does this value span mention one of `params` as a FREE identifier?
+ *
+ * Read in the masked span, so a parameter name occurring inside a string body or a comment is not
+ * a mention. A name preceded by `.` is a property of something else (`opts.src` is not `src`), and
+ * a name that continues into a longer identifier (`srcPath`) is not it either.
+ */
+export const mentionsParam = (maskedValue, params) =>
+  params.some((p) => new RegExp(`(^|[^.\\w$])${p}(?![\\w$])`).test(maskedValue));
 
 /** The key set of a runtime object, in the same spelling the derived shapes use. */
 export const keyOf = (value) => keyOfShape(Object.keys(value));
@@ -138,10 +245,16 @@ export const conventionOf = (fnSource) => {
   const rets = returnExprs(fnSource);
   if (rets === null) return { refused: 'the masker was not length-preserving on this source' };
   if (rets.length === 0) return { refused: 'no `return` site in the source' };
+  // Round 432 / G7: refuse WITH the parameter reader rather than falling back to a looser leg.
+  const p = paramsOf(fnSource);
+  if (p.refused !== undefined) return { refused: `the input is not nameable: ${p.refused}` };
+  if (p.params.length === 0) {
+    return { refused: 'the function takes no parameter, so no value can be derived from an input' };
+  }
   const forms = [];
   for (const r of rets) {
     if (r.masked.trim() === 'null') { forms.push({ kind: 'NONE', at: r.at }); continue; }
-    const entries = entriesOf(r.raw, r.masked);
+    const entries = entriesOf(r.raw, r.masked, r.kept);
     if (entries === null) {
       return { refused: `a return form this reader does not model at offset ${r.at}: `
         + `"${r.raw.trim().slice(0, 40)}"` };
@@ -151,10 +264,12 @@ export const conventionOf = (fnSource) => {
         return { refused: `a non-identifier key "${e.key.slice(0, 20)}" at offset ${r.at}` };
       }
     }
-    // A value whose masked span differs from its raw span contains a literal message.
-    const messages = entries.filter((e) => e.maskedValue !== e.rawValue);
-    // A value that slices the function's own input is derived from the subject text.
-    const derived = entries.filter((e) => /\.slice\s*\(/.test(e.rawValue));
+    // A value whose strings-BLANKED span differs from its strings-KEPT span contains a literal
+    // message. Comments are blanked in both, so they cancel and this leg is comment-blind (G8).
+    const messages = entries.filter((e) => e.maskedValue !== e.keptValue);
+    // A value mentioning the function's own parameter is derived from the input (G7). Read in the
+    // masked span, so the parameter's name occurring inside a message is not a mention.
+    const derived = entries.filter((e) => mentionsParam(e.maskedValue, p.params));
     const shape = keyOfShape(entries.map((e) => e.key));
     if (messages.length === entries.length) forms.push({ kind: 'REFUSAL', shape, at: r.at });
     else if (derived.length > 0 && messages.length === 0) {

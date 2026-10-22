@@ -1,0 +1,35 @@
+
+Round 430 — gate his refusal convention instead of re-typing it
+  subject: docs/research/round412-instruments/resolve-the-ternary-and-reconstruct-the-nine.mjs
+  cured:   docs/research/round413-instruments/attack-g7-and-grade-the-branch-layer.mjs
+
+  TRUE  G1  [GATE] the slice is regenerated from his live file with the cut DERIVED as a property (the unique line opening his first non-definition section) rather than pinned as a position, and the export tail is the only addition
+        cut derived as 422 of 763 line(s) from the unique opener "// ─── G1 — his own figures, parse…" · round413 pins it as the position 422 (agrees: true) · prefix byte-identical true · remainder is exactly the declared tail true
+  TRUE  G2  [GATE] his convention is DERIVABLE from his own returns, and the partition is total and disjoint: one negative answer, a refusal shape, and an answer shape sharing no key
+        4 return(s): 1 negative answer, 2 refusal → shape(s) {refused}, 1 answer → shape(s) {alt,cons,test} · shared keys: none (checked in conventionOf, which refuses on overlap)
+  TRUE  G3  [GATE] known positive and agreement control: the three input-reachable return paths driven, and under the LIVE convention the OLD re-typed predicate and the NEW derived classifier agree on all three — so the cure changes no live reading
+        ANSWER: keys alt,cons,test → OLD ANSWER / NEW ANSWER · NONE: keys null → OLD NONE / NEW NONE · REFUSED: keys refused → OLD REFUSED / NEW REFUSED
+  TRUE  G4  [GATE] M1 — the success return also emits `refused: false`: the OLD predicate FLIPS on the answer input and says so nowhere, while the derived reader REFUSES at the convention with the shared-key reason. Loud beats silent, and both halves are asserted
+        the answer input now returns keys alt,cons,refused,test · OLD moved ANSWER → REFUSED with no refusal of any kind · NEW: the convention REFUSES — "the answer and refusal shapes share key(s) [refused], so no absence test can separate them" — so every result reads UNMODELLED
+  TRUE  G5  [GATE] M2 — the refusal key renamed: the OLD predicate reads a REFUSAL as an answer (it over-reports, the dangerous direction), while the derived classifier re-derives the new key and is correct on all three paths
+        refusal shape now {declined} · OLD on the refusing input moved REFUSED → ANSWER, counting a refusal as a found ternary · NEW re-derived the key and reads ANSWER: keys alt,cons,test → OLD ANSWER / NEW ANSWER · NONE: keys null → OLD NONE / NEW NONE · REFUSED: keys declined → OLD ANSWER / NEW REFUSED
+  TRUE  G6  [GATE] M3 CONTROL — a refusal message reworded and nothing else: the derived convention is byte-identical and every classification under both readers is unchanged, so G4 and G5 are the convention moving and not an edit happening
+        the edit landed (text changed: true) and the convention is unchanged — "answer alt,cons,test / refusal refused / none 1" · readings identical: ANSWER: keys alt,cons,test → OLD ANSWER / NEW ANSWER · NONE: keys null → OLD NONE / NEW NONE · REFUSED: keys refused → OLD REFUSED / NEW REFUSED
+  TRUE  G7  [GATE] the cure landed in round413, read by a detector that is itself graded as a 4-cell matrix: 3 hits on the pre-cure text, 0 on the cured text, and each of the detector's two legs — comment-blindness and the receiver leg — removed in its own cell. And round413's own 7 GATE legs are still TRUE when re-driven
+        C1 pre-cure × both legs 3 [split@124 t@242 t@246] · C2 cured × both legs 0 · C3 cured × comment-blindness OFF 2 [L34 L122] — my own comments quoting the cured spelling · C4 cured × receiver leg OFF 2 [CONV@145 CONV@148] — absence tests on MY sentinel, not his · imports the derived convention true · re-driven: GATE true over 7 leg(s)
+  TRUE  P1  [PRED] the fourth return path — "masker not length-preserving" — is UNREACHABLE from input and is published as UNDRIVEN with its reason, not folded into a zero
+        2 refusal return(s) in his function; the grid drives 1 of them. The other fires only if `stripSource(raw, true)` returns a different length than its input, which no INPUT can cause — it is a property of the shared masker, asserted in the server suite (round259). UNDRIVEN, with that as the reason.
+  TRUE  P2  [PRED] over his live corpus under round413's own seam the two readers agree member-for-member, and the population exercises ZERO refusals — which is why the live corpus cannot grade this convention and the grid above had to
+        population 83 · windows carrying a masked `?` 2 · answers 1 [census-the-wrapped-call-and-the-body-granularity.mjs:408] · refusals 0 · member-for-member disagreements between OLD and NEW: 0
+  TRUE  P3  [PRED] the cure changes no verdict round413 publishes: its GATE line and its PREDICTIONS line post-cure are identical to the pre-cure baseline recorded before anything was edited
+        pre-cure  GATE true/7 · PREDICTIONS 2 landed, 3 REFUTED: P1 | P2 | P4
+        post-cure GATE true/7 · PREDICTIONS 2 landed, 3 REFUTED: P1 | P2 | P4
+  FALSE P4  [PRED] his §4 complement, from this side and under a DIFFERENT key — no `new Function(` precondition, comment-blind, receiver-aware, over every research instrument: round413 was the only instance of the absence-test shape, and it is now 0
+        111 research .mjs at HEAD · 6 excluded by this directory's own path (docs/research/round430-instruments/) · 105 censused · hits 6 [resolve-the-ternary-and-reconstruct-the-nine.mjs:365 t | resolve-the-ternary-and-reconstruct-the-nine.mjs:518 t | resolve-the-ternary-and-reconstruct-the-nine.mjs:535 tern | resolve-the-ternary-and-reconstruct-the-nine.mjs:537 tern | resolve-the-ternary-and-reconstruct-the-nine.mjs:596 ternary | resolve-the-ternary-and-reconstruct-the-nine.mjs:597 ternary] · FLOOR: keyed on the absence-test shape, so a verdict re-typed as an equality against a literal is invisible to this key
+  FALSE P5  [PRED] ADDED AFTER DRIVE 2, not pre-registered with the rest, and said so: P4 came back 7 and 6 of the 7 are the author reading his own convention IN THE FILE THAT DECLARES IT, which is not a copy. The separating leg is declaration, not position — a file that READS the key without RETURNING it is reading someone else's convention. Graded both ways
+        leg ON — files reading the key without declaring it: 0 [] · leg OFF: 1 file(s), 6 hit(s), of which 6 are in the file(s) that DECLARE the convention [resolve-the-ternary-and-reconstruct-the-nine.mjs ×6] · so P4's pre-registered "it is now 0" is REFUTED BY EXACTLY ONE MEMBER, and that member is his: round414 slices his own round412 reader out of a module and then re-types the same absence test my round413 did. His §1 census could not see it — its `new Function(` precondition excludes round414 — which is the direction of error he published it with
+
+GATE: true   (7 leg(s) on the cure itself)
+PREDICTIONS: 3 landed, 2 REFUTED: P4 | P5
+
+  rev 2d980ccb2210812b97fa448f65d9dc6e1dfa0370 · 94 declaration(s) in his corpus reading · worktree DIRTY

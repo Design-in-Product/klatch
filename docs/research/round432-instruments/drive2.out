@@ -1,0 +1,26 @@
+Round 432 — the two defects Theseus routed, cured and graded
+
+  TRUE  G1  the pre-cure module graded below is the committed text at a stamped rev, not a hand-typed copy — byte-identical to `git show`, and pinned by PROPERTY (its text lacks the cure's marker) so a wrong rev reddens rather than inverting now that the cure exists
+        rev 2d980ccb · byte-identical: true · slice lacks the marker: true · live module carries it: true
+  TRUE  G2  G7 CURED — the answer-shape leg now has a model of the function's input. Three probes, one variable each, each driven against the pre-cure rev AND the cure: the module constant was ADMITTED pre-cure (under-refusal, the dangerous direction — this module's whole value is refusing when no absence test can work) and is REFUSED now; the charAt value was REFUSED pre-cure (over-refusal) and is ADMITTED now; the input slice is admitted in both
+        slices THE INPUT → pre ADMITTED · post ADMITTED ║ slices A MODULE CONSTANT, input untouched → pre ADMITTED · post refused ║ derived from the input by charAt, no slice call → pre refused · post ADMITTED
+  TRUE  G2b  and the cured refusal NAMES the condition rather than returning a bare false — the module's value is the reason it gives, not the boolean
+        REFUSED: a return shape {span} at offset 88 that is neither all-message nor input-derived (0 message value(s), 0 derived)
+  TRUE  G3  G8 CURED — the message leg is comment-blind. One block comment INSIDE the answer return value made the whole function refuse pre-cure; cured, it reads identically to the uncommented probe. The CONTROL — the same comment one line ABOVE the return — moved nothing in either module, so the cell is reading comment POSITION and not the presence of a comment
+        comment present in the probe source: true · INSIDE: pre "REFUSED: no answer shape among the returns" → post "answer [span] refusal [tooShort]" · identical to the uncommented probe: true · CONTROL above the return: pre "answer [span] refusal [tooShort]" → post "answer [span] refusal [tooShort]"
+  TRUE  G4  the parameter reader has a known positive in EACH declaration form it claims to model — not one positive and an analogy (355/364) — and REFUSES on the two forms it does not model rather than returning a shorter list that would silently weaken the leg above
+        arrow, parenthesised: ok · arrow, bare identifier: ok · function declaration: ok · method shorthand: ok · async arrow: ok · default value: ok · comment inside the parameter list: ok ║ refuses: destructured true, rest true ║ zero-parameter function refuses: true
+  TRUE  G5  the mention leg is a SEPARATOR and not a containment test: a property of another object and a longer identifier sharing the prefix are both excluded, two true mentions are admitted — and the leg is fed the MASKED span, graded both ways, so the parameter's name occurring inside a string body is not a mention (it would be under the raw text)
+        the parameter itself → true (want true) · concatenated with the parameter → true (want true) · a PROPERTY of another object with the same name → false (want false) · a LONGER identifier with the same prefix → false (want false) ║ name inside a string body: masked false · raw true
+  TRUE  G6  the cure changes no verdict round430 publishes — its GATE and PREDICTIONS lines are identical to a baseline recorded in this fire BEFORE the edit was written. Read out of the two recordings rather than retyped (412)
+        pre-cure: GATE: true   (7 leg(s) on the cure itself) | PREDICTIONS: 3 landed, 2 REFUTED: P4 | P5 · post-cure: GATE: true   (7 leg(s) on the cure itself) | PREDICTIONS: 3 landed, 2 REFUTED: P4 | P5 · identical: true
+  TRUE  G7  HIS instrument, not mine, is the grader of record for his own findings: `round431`'s grader driven unmodified in my tree before and after the cure moves EXACTLY G7 and G8, both TRUE→FALSE, and leaves every other leg and every prediction where it was. A cure that moved a third leg would be scope I did not report
+        14 legs read out of both recordings · moved: [G7, G8] · unchanged: 12 · directions: G7 TRUE→FALSE, G8 TRUE→FALSE
+
+  TRUE  P1  NOT PRE-REGISTERED, and said so: this was read off the baseline drive I took before editing anything, not predicted before it. ROUND 430'S OWN P5 IS A MEASUREMENT WEARING A PREDICTION'S CLOTHES, and it inverted inside one day. P5 walked the LIVE tree for files reading the sentinel without declaring it; the one member it found was his round414, and his Round 431 cured it. Same instrument, same code, no edit of mine between the two recordings — the published line and today's differ. That is his §5 taxonomy arriving on me from the other side: his was a pin on a live count, mine is a pin on a live MEMBERSHIP, and both are unreproducible for the same reason
+        published 2026-10-21 (drive4.after-promotion.out): "PREDICTIONS: 4 landed, 1 REFUTED: P4" · re-driven this fire at the same rev: "PREDICTIONS: 3 landed, 2 REFUTED: P4 | P5" · differ: true
+
+GATE: true   (8 leg(s))
+PREDICTIONS: 1 landed, 0 refuted
+
+  pre-cure rev 2d980ccb · HEAD 2d980ccb · worktree DIRTY
