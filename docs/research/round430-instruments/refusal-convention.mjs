@@ -29,9 +29,16 @@
  * The partition is derived, not assumed. "Every value is a message" is read with the shared
  * `stripSource` masker, in BOTH of its readings: a value span whose strings-blanked text differs
  * from its strings-KEPT text contains a literal message, and one where the two agree does not.
- * Comment bodies are blanked in both readings, so a comment inside a value cancels and the leg is
- * comment-blind. The answer shape is then the one carrying a value that mentions the function's
- * own parameter. No key name is typed in this file.
+ * Comment bodies are blanked in both readings, so the message leg cannot see a comment inside a
+ * value. **That is a property of that one leg**, and this header claimed it for the module until
+ * Round 434 (his 433 §2): the KEY leg read its text out of the RAW expression, so a doc comment
+ * above a key landed inside the key and refused the whole function — over-refusal, the safe
+ * direction, but a sentence about the module that was true of one leg. `entriesOf` now takes every
+ * structural read from the masked text; see its own docblock.
+ *
+ * The answer shape is then the one carrying a value that mentions the function's own parameter —
+ * as a free identifier, and **not in a key position** (Round 434, his 433 §1). No key name is
+ * typed in this file.
  *
  * ## Round 432 — the two defects Theseus's Round 431 §4 reported, both cured here
  *
@@ -57,6 +64,20 @@
  *
  * Residual, named rather than discovered later: the parameter leg is a MENTION test, not a dataflow
  * test. A value mentioning the parameter inside a call that discards it would still read as derived.
+ *
+ * ## Round 434 — the two items Theseus's Round 433 routed, both cured here
+ *
+ * **§1, the fourth cell, and in the under-refusal direction.** My Round 432 matrix varied how the
+ * value's *expression* reached the input (slices the input, slices a module constant, `charAt`) and
+ * left out the cell that varies what the parameter's NAME is doing: a nested object KEY spelled
+ * like the parameter, reading the input nowhere — `return { span: { src: 1 } }`. The `.slice(` key
+ * it replaced REFUSED that return; the Round 432 cure admitted it as the answer shape, so the cure
+ * closed two directions and opened a third underneath. `mentionsParam`'s own docblock calls it a
+ * free-identifier test, and an object-literal key is not a free identifier. Cured with
+ * `maskKeyPositions`, inside `mentionsParam` rather than at its call site.
+ *
+ * **§2, the key leg and this header's sentence about it.** Both in `entriesOf`'s docblock and in
+ * the partition paragraph above. One edit: structural reads come out of the masked text.
  *
  * `conventionOf` REFUSES — returns `{ refused }` rather than a convention — when the partition is
  * not total (a return form it does not model), when there is no answer shape or no refusal shape,
@@ -120,12 +141,23 @@ export const returnExprs = (src) => {
   return out;
 };
 
-/** The top-level `key: value` entries of an object literal, or null if it is not one. */
+/**
+ * The top-level `key: value` entries of an object literal, or null if it is not one.
+ *
+ * Round 434 / his 433 §2: every STRUCTURAL read here is taken from the masked text — the
+ * object-literal test, the inner span's offset, and the key — because `stripSource` blanks comment
+ * delimiters along with comment bodies, and the raw text does not. Reading the key out of the raw
+ * text put a doc comment above a key *inside* the key, so one `/** … *` + `/` above one key refused
+ * the whole function with `a non-identifier key "/** the slice the ca…"`. The same confusion was
+ * live one level up: `lead` was the offset of the first non-space character of the RAW span, so a
+ * comment before the opening brace both failed the brace test and would have mislocated the inner
+ * span. `rawExpr` is now read for nothing structural — only for the informational `rawValue`.
+ */
 const entriesOf = (rawExpr, maskedExpr, keptExpr) => {
-  const rawT = rawExpr.trim();
-  const lead = rawExpr.indexOf(rawT[0]);
-  if (rawT[0] !== '{' || rawT[rawT.length - 1] !== '}') return null;
-  const inner = { from: lead + 1, to: lead + rawT.length - 1 };
+  const maskedT = maskedExpr.trim();
+  if (maskedT === '' || maskedT[0] !== '{' || maskedT[maskedT.length - 1] !== '}') return null;
+  const lead = maskedExpr.indexOf(maskedT[0]);
+  const inner = { from: lead + 1, to: lead + maskedT.length - 1 };
   const parts = [];
   let depth = 0;
   let start = inner.from;
@@ -149,7 +181,7 @@ const entriesOf = (rawExpr, maskedExpr, keptExpr) => {
     }
     if (colon === -1) return null; // shorthand or spread: a form this reader does not model
     entries.push({
-      key: rawExpr.slice(p.from, colon).trim(),
+      key: maskedExpr.slice(p.from, colon).trim(),
       rawValue: rawExpr.slice(colon + 1, p.to),
       maskedValue: maskedExpr.slice(colon + 1, p.to),
       keptValue: keptExpr.slice(colon + 1, p.to),
@@ -223,14 +255,58 @@ export const paramsOf = (fnSource) => {
 };
 
 /**
+ * Round 434 / his 433 §1 — the KEY positions of a span's own object literals, blanked.
+ *
+ * Length-preserving, like the masker it composes with. One frame per open bracket; only a `{` frame
+ * has entries, and only an entry's FIRST token can be a key. That is what separates a key from a
+ * ternary's second colon — in `{ a: ok ? src : 1 }` the entry begins at `a`, so `a` is blanked and
+ * `src` is not. A computed key (`{ [k]: src }`) is not an identifier head, so `k` survives, which
+ * is correct: it IS a reference. A `{` reached in statement position (an arrow body,
+ * `{ f: (x) => { return src; } }`) has no depth-0 colon inside it, so nothing in it is blanked.
+ *
+ * Residual, stated rather than discovered later: a labelled statement inside such a block
+ * (`{ f: () => { src: for (;;) break src; } }`) would have its label blanked. Valid JS, absent from
+ * this corpus, and the direction is over-refusal.
+ */
+export const maskKeyPositions = (maskedValue) => {
+  const out = maskedValue.split('');
+  const stack = [];
+  for (let i = 0; i < maskedValue.length; i += 1) {
+    const c = maskedValue[i];
+    if (c === '{') { stack.push({ brace: true, entryFrom: i + 1, keyed: false }); continue; }
+    if (c === '(' || c === '[') { stack.push({ brace: false }); continue; }
+    if (CLOSE.has(c)) { stack.pop(); continue; }
+    const top = stack[stack.length - 1];
+    if (top === undefined || top.brace !== true) continue;
+    if (c === ',') { top.entryFrom = i + 1; top.keyed = false; continue; }
+    if (c === ':' && top.keyed === false) {
+      top.keyed = true;
+      if (IDENT.test(maskedValue.slice(top.entryFrom, i).trim())) {
+        for (let j = top.entryFrom; j < i; j += 1) out[j] = ' ';
+      }
+    }
+  }
+  return out.join('');
+};
+
+/**
  * Does this value span mention one of `params` as a FREE identifier?
  *
  * Read in the masked span, so a parameter name occurring inside a string body or a comment is not
  * a mention. A name preceded by `.` is a property of something else (`opts.src` is not `src`), and
  * a name that continues into a longer identifier (`srcPath`) is not it either.
+ *
+ * Round 434 / his 433 §1: the span's own object-literal KEY positions are blanked first. A key
+ * spelled like the parameter is not a reference to it at all — `return { span: { src: 1 } }` reads
+ * the input nowhere — and the Round 432 cure ADMITTED that return as the answer shape, in the
+ * under-refusal direction, which is the one this module exists to avoid. The masking lives inside
+ * this function rather than at its one call site so that the property travels with the exported
+ * test: the docblock is what the next importer reads.
  */
-export const mentionsParam = (maskedValue, params) =>
-  params.some((p) => new RegExp(`(^|[^.\\w$])${p}(?![\\w$])`).test(maskedValue));
+export const mentionsParam = (maskedValue, params) => {
+  const noKeys = maskKeyPositions(maskedValue);
+  return params.some((p) => new RegExp(`(^|[^.\\w$])${p}(?![\\w$])`).test(noKeys));
+};
 
 /** The key set of a runtime object, in the same spelling the derived shapes use. */
 export const keyOf = (value) => keyOfShape(Object.keys(value));
