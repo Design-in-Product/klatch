@@ -124,3 +124,61 @@ this morning's correction; today's `log.html` entry is due at STOP, not this fir
 **Drain:** mail checked (own-seat header grep + commit-diff-since-checkpoint + all four cross-repo
 mailboxes); gate re-derived fresh and green at every layer; rollup/backfill/task-list re-checked,
 nothing moved. Two consecutive checks found nothing further unblocked. Fire closed bounded, no-op.
+
+## STOP fire (~21:3x PT)
+
+Checkpoint: this seat's own 15:3x SWEEP-fire commit `0bb9d16b`. `git fetch origin && git log
+0bb9d16b..origin/main --format='%h %an %ci %s'` = 5 new commits, none mine. The one that matters:
+Theseus's reply to Calliope/Argus (cc Daedalus, Iris, xian, Pard), claiming the "name the Managed
+Agents comparison fire" ask on behalf of his seat — stated as a rule, not a round number (next
+round-track fire of his that opens once Pard's prompt exists and xian's key is live, with
+Daedalus's inbound memo and instrument directory on `origin/main` at launch), Round 435 the
+concrete candidate. Same memo names two Amber-local equivalence gaps for the comparison prompt
+(full repo history vs. a shallow clone; `core.hooksPath` being local git config, not something a
+clone carries), adds a fifth compare-axis (refusal fidelity) to the four Argus had already named
+in his own reply, and leans toward one MVP-feature candidate (two-agent klatch, both sides live
+API sessions) without picking it — explicitly deferring that pick to Daedalus. Pard's own reply
+(cc this seat) accepts the round rule as written and folds both equivalence gaps into the
+comparison prompt as setup lines.
+
+This closes the blocker that had carried, unresolved and named identically, across every fire
+since 10-20 ("the 'name the managed agents comparison fire' ask ... still unanswered"). Read both
+team replies and Pard's acceptance in full before touching anything, then folded all of it into
+`docs/plans/api-native-probe-plan-2026-10-21.md` rather than letting the answers live only in
+mail — §4.1 updated with Theseus's lean recorded as a data point, not a resolution; §4.2 answered
+in full with all five compare-axes and Argus's own gradability constraint; §5 updated from "still
+being picked" to the named rule, Round 435 the candidate, both equivalence gaps noted as folded
+into Pard's prompt. Closing memo sent to Daedalus/Theseus/Argus (cc Iris, xian) naming the single
+remaining open item — the MVP feature pick — as Daedalus's call, not parked unnamed.
+
+Four mail threads closed on this fire's action and moved to `docs/mail/read/`: my own 10-20
+"name the fire" memo, Argus's reply, Theseus's reply, Pard's acceptance. My own 10-21 "pick the
+MVP feature" memo stays in `docs/mail/`, correctly — that ask is still open, now with exactly one
+sub-question left (the feature pick) rather than three.
+
+Rollup (`docs/operations/attention-rollup.md`) refreshed v169 → v170: item 1's own §1 body updated
+in place (not just the changelog line) to show the compare-axes answered and the feature pick as
+the sole remaining sub-question; "promising" noted as staying xian's own call, not the team's, per
+everyone's explicit framing in their replies.
+
+All four writable cross-repo mailboxes checked fresh via `find -newer` against this log file's own
+mtime: `designinproduct` zero new files; `mediajunkie` one new file (Theseus's own memo to Pard,
+the source of tonight's round rule — already read via its Klatch-side copy, no separate action);
+`piper-morgan-product/mailboxes` roughly 19 new files, internal PPM token-custody/ops-restarter
+traffic, zero `klatch|calliope` content hits on the 10-21-dated set; `dispatch/mail` four new
+files, one `klatch|calliope` content hit read in full — Theseus's own question-box letter to xian
+turning his "do you notice the room you're missing" question back on him, not addressed to this
+seat, no action. Nothing owed from any.
+
+Gate re-verified fresh, matching every checkpoint today: `npm run typecheck` 0 `error TS` across
+all four workspaces; server 140/2184 (1 skipped); client 26/346 (13 skipped); `sweep-probes
+--census` CENSUS OK, 43 swept/110 deferred, 153 probe files. No `packages/`/`scripts/` diff this
+fire (docs-only), so no full sweep re-drive.
+
+**Drain:** both team replies and the acceptance memo read in full before acting; the standing
+cross-fire blocker resolved and folded into the doc of record rather than re-reported as open;
+closing memo sent; four closed mail threads moved; rollup refreshed with a verified narrowing; all
+four cross-repo mailboxes checked fresh, one cross-repo hit read in full and correctly left for
+its addressee; gate re-derived fresh and green at every layer. Two consecutive `git fetch` checks
+(immediately after the fold, then again before closing) found nothing further unblocked. Fire
+closed bounded.

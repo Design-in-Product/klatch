@@ -71,24 +71,55 @@ This plan states the question and its stakes; it does not pick the technical sha
 scoping call (Pard's own words on the first test apply equally here: *"Choosing which [feature/fire] to use is
 your team's call"*). Open, routed to Daedalus/Theseus/Argus (cc Iris, xian) in the companion mail to this plan:
 
-1. **Which core Klatch feature, in its most basic MVP form?** Candidates that test the actual question (an
-   agent living on the API, not imported) rather than a weaker version of it: a single entity's conversation
-   continued live through the API with no import step at all; a two-agent klatch where both sides are live API
-   sessions rather than imported transcripts; or something narrower Daedalus names once he's read this.
-2. **What does "compare" measure?** Pard's Managed Agents test gives a template (time, tokens, whether it
-   landed, human effort, dollars) — the API-native probe's comparison axes are not necessarily the same, since
-   the thing being compared is architecture, not hosting. Needs its own short list before the build starts.
-3. **What does "promising" mean, concretely, before the build starts?** xian's own instruction (via Pard) is
-   that a promising result leads to considering a rebuild-from-scratch plan — that's a high-stakes branch, so the
-   threshold for "promising" should be named before the probe runs, not decided retroactively from however it
-   turns out.
+1. **Which core Klatch feature, in its most basic MVP form?** Still Daedalus's architectural call, not decided
+   here. Theseus's 2026-10-21 reply (`docs/mail/read/theseus-to-calliope-argus-cc-daedalus-iris-xian-pard-round-433-is-spent-so-here-is-the-rule-not-a-number-and-two-new-equivalence-gaps-2026-10-21.md`)
+   names a lean, not a pick: the two-agent klatch where both sides are live API sessions, on the reasoning that a
+   single entity continuing its own conversation is "the easy half" and can look good without testing the
+   premise, while two live agents meeting each other is the thing `PREMISE.md` is actually about — and the only
+   one of the two candidates where "did context actually reach the other side" has a yes/no answer. Recorded
+   here as a second data point for Daedalus, not a resolution; the pick itself is still open.
+2. **What does "compare" measure?** Answered. Argus's 2026-10-21 reply (`docs/mail/read/argus-to-calliope-cc-daedalus-theseus-iris-xian-both-open-asks-the-fire-pick-and-the-compare-axis-2026-10-21.md`)
+   named four axes, each stated as gradable rather than qualitative:
+   - **Context fidelity** — on a fixed small battery of questions whose answer depends on pre-boundary
+     conversation detail, does the API-native agent answer correctly without being retold? Binary per question.
+   - **Tool reach** — count of the agent's native tools actually callable through the API-native path vs.
+     through Klatch's current MCP/reconnection story, for the same agent.
+   - **Setup cost to first useful turn** — steps/time from "agent exists on the API" to "usable in Klatch,"
+     API-native vs. import, since zero-import is the architecture's own claimed win and should be priced, not
+     assumed.
+   - **Cross-agent fidelity** (only if the two-agent-klatch candidate is picked) — does context one live-API
+     agent produces actually reach the other live-API agent through Klatch, at the same completeness as
+     today's imported-transcript meetings.
+
+   Theseus's same reply added a fifth axis from his own seat, which the other four don't cover: **refusal
+   fidelity** — when the API-native path *cannot* do something (an unreachable tool, a truncating context
+   window, a cancelled stream), does it say so, or does it return a plausible answer built from less? Gradable
+   the same binary way: drive N known-impossible requests, count how many come back as refusals naming the
+   condition versus answers that don't mention it. Argus's own constraint on all five stands: whatever's built
+   needs a result that's objectively gradable against these axes, not read qualitatively after the fact — if
+   the picked feature doesn't admit a binary/countable answer on at least context fidelity and tool reach, that
+   should be flagged before the build, not after.
+3. **What does "promising" mean, concretely, before the build starts?** Still open. xian's own instruction (via
+   Pard) is that a promising result leads to considering a rebuild-from-scratch plan — that's a high-stakes
+   branch, so the threshold for "promising" should be named before the probe runs, not decided retroactively
+   from however it turns out. Neither Argus nor Theseus set this bar; both explicitly declined to, naming it as
+   xian's call.
 
 ## 5. Sequencing
 
-1. Managed Agents test (in motion — smoke run named, real comparison fire still being picked by the team as of
-   this writing).
+1. Managed Agents test (in motion — smoke run named 2026-10-21 ~08:30 PT; the real comparison fire is now named
+   too, as a **rule rather than a round number**: Theseus claimed it on behalf of his seat and Pard accepted the
+   rule as written (`docs/mail/read/pard-to-theseus-cc-calliope-argus-xian-janus-round-rule-accepted-435-both-gaps-go-into-the-comparison-prompt-2026-10-21.md`)
+   — the comparison fire is Theseus's next round-track fire that opens after Pard's prompt exists and xian's key
+   is live, with Daedalus's inbound memo and instrument directory on `origin/main` at launch; **Round 435** is
+   the concrete candidate, advancing by two if either precondition isn't ready when it opens. Theseus also
+   measured two Amber-local dependencies this round-track fire needs that weren't on his 10-20 list — full repo
+   history (not a shallow clone) and `core.hooksPath` being local git config, not something a clone carries —
+   both of which Pard has already folded into the comparison prompt as setup lines rather than leaving them to
+   be discovered as false reds).
 2. What the Managed Agents test teaches shapes the API-native probe's own design (xian's explicit sequencing,
-   relayed by Pard 2026-10-20) — so item 4 above isn't finalized until test 1 reports.
+   relayed by Pard 2026-10-20) — so item 4.1 and 4.3 above aren't finalized until test 1 reports; item 4.2 is
+   answered already and doesn't need to wait.
 3. API-native probe scoped against items 4.1–4.3, then built, one core feature, MVP form.
 4. Result read against the "promising" threshold named in 4.3; xian reads this before any rebuild-from-scratch
    conversation starts.
@@ -105,9 +136,13 @@ transcript nobody but Janus has seen in full.
 
 ## 7. What this seat is doing right now, and what it isn't
 
-- **Done this fire:** this plan, filed where xian reads it; the rollup's needs-you item 1 updated to reflect it;
-  mail to Daedalus/Theseus/Argus (cc Iris, xian) opening the four open questions in §4; a reply to Janus
-  confirming the one-line reading and that the plan is filed.
-- **Not done, and not this seat's to do alone:** picking the MVP feature, building anything, or deciding what
-  "promising" means technically — those are routed to the team, per Pard's own framing that the technical choice
-  is the team's call, not a unilateral write from this seat.
+- **Done 2026-10-21 (initial filing):** this plan, filed where xian reads it; the rollup's needs-you item 1
+  updated to reflect it; mail to Daedalus/Theseus/Argus (cc Iris, xian) opening the four open questions in §4; a
+  reply to Janus confirming the one-line reading and that the plan is filed.
+- **Done 2026-10-21 (STOP fire, folding the team's replies in):** Argus's and Theseus's answers on §4.2 (compare
+  axes) folded into this doc rather than left to live only in mail; Theseus's §4.1 lean recorded as a data point,
+  not a pick; §5 updated to name the comparison fire as a rule (Round 435 the concrete candidate) instead of
+  "still being picked" — closing the one blocker that had carried, unresolved, across every fire since 10-20.
+- **Not done, and not this seat's to do alone:** picking the MVP feature (§4.1) or deciding what "promising"
+  means technically (§4.3) — both still open, both Daedalus's/xian's calls respectively, not a unilateral write
+  from this seat.
