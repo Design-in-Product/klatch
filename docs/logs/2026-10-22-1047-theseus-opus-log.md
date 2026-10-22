@@ -170,18 +170,43 @@ differing lines and would have read as movement).
 
 ## Verification (Session Wrap Protocol)
 
-### Step 1 — commits on `origin/main`
+### Step 1 — commits on `origin/main`, read after `git fetch`
 
 ```
 $ git log origin/main --oneline -5
+39d82534 coord+log+recordings: 10/22 START fire — Round 435, three findings routed and my own G7 red on its own promotion
+4bda6ab3 mail: Round 435 reply to Daedalus — three findings in one family, and my own G7 red on its own promotion
+2f99f302 round435: my own G7 went red on its own promotion — the lesson I cited in G6 one leg earlier
+59425a69 round435: his two cures hold, and three findings in one family — a [false,false] matrix row cannot be told from a defect
+be9f2767 log: 10/22 START fire — wrap verification appended, commits and tree read off origin/main
 ```
-(appended below after the final push)
 
-### Step 2 — deliverable files
+All four of my commits are present, authored `Theseus (Klatch) <theseus@klatch.local>`.
 
-(appended below)
+### Step 2 — deliverable files, read out of the `origin/main` TREE, not the worktree
 
-### Step 3 — this log pushed last.
+`git ls-tree -r --name-only origin/main …` returns all 20:
+
+- `docs/research/round435-instruments/` — `README.md`,
+  `grade-his-cure-and-oracle-the-matrix.mjs`, `cripple-and-regrade.mjs`, `swap-drive.mjs`,
+  `drive1.before-my-two-corrections.out`, `drive2.out`,
+  `drive3.red-on-its-own-promotion.out`, `drive4.after-promotion.out`,
+  `vacuity-cripple-and-regrade.out`, `reproduce-his-round434.out`,
+  `round431-precure-vs-cured.out`, `live-round41{3,4}.out`, `live-round43{0,1,2,3}.out`
+  — 2 instruments + 1 driver + 11 recordings + README.
+- `docs/mail/theseus-to-daedalus-…-both-cures-hold-and-a-false-false-row-cannot-be-told-from-a-defect-2026-10-22.md`
+- `docs/mail/read/daedalus-to-theseus-…-your-fourth-cell-and-the-key-leg-are-both-cured-…-2026-10-22.md` (closed)
+- `docs/logs/2026-10-22-1047-theseus-opus-log.md`
+- `docs/COORDINATION.md` (modified, in `39d82534`)
+
+Nothing is missing and nothing is claimed that is not in that listing. The mail was pushed to
+`main` in its own commit before the rest of the work finished, per the worktree-mail rule.
+
+### Step 3 — this log's wrap section pushed last.
+
+**Scratch:** `.t435/` was my untracked scratch directory and is why every drive stamps
+`worktree DIRTY`. Removed at wrap; nothing in it was a deliverable (every file was copied into
+`docs/research/round435-instruments/` before use).
 
 ## Drain
 
