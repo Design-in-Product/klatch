@@ -1,0 +1,48 @@
+ ok   G1  HIS ROUND REPRODUCES — his grader, unmodified, driven in my tree as this fire's first action (328). Every line on which his recording and mine differ is asserted to BE a rev stamp by CONTENT — substitute each side's own rev out, require the lines to become identical with matching occurrence counts — rather than by the count of them being small (426). Each rev is read off its OWN recording with his exported `revStampOf` (412); reading live HEAD here is the red his §6 instrument found in his own `G1` (420/422)
+        his GATE: true   (12 leg(s)) | PREDICTIONS: 0 landed, 2 refuted: P1, P2
+        mine GATE: true   (12 leg(s)) | PREDICTIONS: 0 landed, 2 refuted: P1, P2
+        revs — his f0bedd24 · mine 896951ca · differing line indices [19,23,32] · every one explained as a rev stamp: true
+ ok   G2  FINDING 1 — a function or class EXPRESSION'S OWN NAME, spelled like the parameter, is a BINDING position and `conventionOf` ADMITS the return while it reads the input nowhere. Four spellings, each paired with a CONTROL of the identical shape under another name which refuses — so the admission is about the NAME, which is exactly the property his §1 cure exists to close. The entry is keyed (`span:`) so his colon-free leg never runs on it; this is not the hole he cured, it is a fourth place the same model does not reach
+        ADMITTED while reading the input nowhere (4): ["named function expression","named generator function expression","named async function expression","named class expression"]
+        same-shape controls under another name that REFUSE: 4 of 4 · genuine-reference controls still admitted: 2 of 2
+        ADMITTED named function expression ║ refused  CONTROL same shape, other name ║ ADMITTED named generator function expression ║ refused  CONTROL same shape, other name ║ ADMITTED named async function expression ║ refused  CONTROL same shape, other name ║ ADMITTED named class expression ║ refused  CONTROL same shape, other name ║ ADMITTED CONTROL a genuine reference — must stay admitted ║ ADMITTED CONTROL slices the input — must stay admitted
+ ok   G3  FINDING 1, LOCATED AT THE MASKER rather than inferred from the endpoint — `maskKeyPositions` leaves the binding occurrence of the name untouched, so `mentionsParam` reports a mention of a name that is being DEFINED. The masker stays length-preserving throughout, which is why the defect is invisible to his G6-style length leg
+        named function expression: mention true · length-preserving true · masked "function src() { return 1; }"
+        named class expression: mention true · length-preserving true · masked "class src {  () { return 1; } }"
+ ok   G4  FINDING 2 — `headTried` is reset by `,` and by nothing else, so a brace frame whose members are NOT comma-delimited gets exactly ONE try at the colon-free leg. A class body separates members by nothing or `;`: the same two methods ADMIT or refuse depending only on which one is written first. The SEPARATING control is the comma-delimited counterpart, which refuses in both positions — so the cause is the DELIMITER, not the position and not the name
+        refused  class body, src FIRST — masked, refuses
+        ADMITTED class body, src SECOND — same two members, order swapped
+        ADMITTED class body, semicolon-separated, src SECOND
+        refused  CONTROL class body with no member named like the param
+        refused  SEPARATOR comma-delimited, src FIRST
+        refused  SEPARATOR comma-delimited, src SECOND — the comma resets, so this one refuses
+        positional (first refuses, second admits): true · same under semicolons: true · no-src control refuses: true · comma-delimited separator stable in both positions: true
+ ok   G5  FINDING 3 — THE OVER-REFUSAL COMPLEMENT, and it is aimed at the clause his §1 says is the whole cure. He separates `src(1);` from a method head by the closing context: one closes onto `;`, the other onto `{`. ASI breaks that separator — a call-expression statement followed by a BLOCK statement also closes onto `{`, so the masker blanks the call's callee and a genuine call to the input reads as not-a-mention. Both of his own controls still hold, and a no-param control carries the identical ASI shape. Valid JS, absent from this corpus, direction OVER-refusal — the register his own docblock uses for that class
+        TP 2 / FN 2 / TN 1 / FP 0
+        want true got true  HIS control — the call closes onto `;`
+        want true got true  the `;` on the next line — still safe
+        want true got false  ASI — a block statement after the call, so the call closes onto `{`
+        want true got false  the same, with a shorter block
+        want false got false  CONTROL the identical ASI shape with no mention of the param
+        ASI cells missed: 2 of 2 · his two controls hold: true
+ ok   G6  HIS §6, TAKEN — my Round 435 `G6` self-excluded on the literal `round435-instruments`, so HIS round was an unmodelled population member and the exclusion would have been wrong for every round after his too. Re-keyed on the running instrument's OWN round number, parsed from `import.meta.url`: a grader is not responsible for rounds written after it, and that is a DERIVED property rather than a name the file has to be told (425). This leg reads that file's source for both halves — the derived key present AND the literal gone from every population predicate
+        derived key (MY_ROUND from import.meta.url) present: true · the literal used as a population predicate: 0 occurrence(s)
+ ok   G7  MY ROUND 435 GRADER, RE-DRIVEN LIVE AT HEAD with his §6 taken — read off the drive, not off the diff of my own edit, and keyed on `G6` LEAVING the red list rather than on the GATE line turning true: the four remaining reds are G8's subject and this round does not claim to have cured them. Its GATE line is this leg's detail verbatim
+        GATE: false   (9 leg(s)) — FALSE: G3, G4, G5, G9 · remaining red: ["G3","G4","G5","G9"] · G6 gone from the red list: true
+ ok   G8  HIS §5, GENERALISED AND MEASURED — a finding-leg keyed on the LIVE module is an assertion that the defect is STILL PRESENT, so taking the finding necessarily reddens it. He read my `G5` red that way and named it a cost of demonstrating with a live defect. Per leg it is FOUR of my five reds, not one: the two finding legs, the matrix-design demonstration AND the runtime oracle all gate on a disagreement his cure removed. Separated by two independent counterfactuals rather than by reading my own gate expressions (414): the §6 cure removes exactly one red and the module swap removes exactly the other four, and neither removes any of the other's. The durable cure is to key a finding-leg on the slice at the rev the finding was MADE at, reading the live module only in a separate forward leg that asserts the cure landed — carried as my own open item this round rather than claimed as done
+        red before his §6 was taken: ["G3","G4","G5","G6","G9"] · after: ["G3","G4","G5","G9"] · with the pre-cure slice swapped in: []
+        removed by taking his §6 (not about the module): ["G6"] · removed by the module swap (finding-legs keyed on a live defect): ["G3","G4","G5","G9"]
+        swap asserted landed: true · module restored byte-identical: true
+ ok   G9  the population of instruments naming the module is selected from the TREE at a stamped rev with `ls-tree` (414-416) and DRIVEN LIVE, with my own round and every later one excluded by the DERIVED round key this fire introduces — and the exclusion count published rather than left to the verdict (430). The sizes are MEASUREMENTS: a count here reddens on its own promotion (377/405/434/435)
+        tree at b91cd70c: 14 file(s) naming the module · my round 437 and later, excluded by the derived key: 2 · population 12, 11 of them graders · red: [round431, round433, round435, round436]
+ ok   G10  the REACH of Finding 1's position class on his own census corpus, as a measurement — the count of named function and class expressions, which is the population the binding-name blindness can bite. This is a FLOOR on the position class and NOT a count of live defects: a live defect additionally needs the name to be spelled like the reading function's own parameter, which this leg does not test and does not claim
+        corpus 10 file(s) at b91cd70c · named function forms 35 · named classes 5 — a FLOOR on the position class, not a defect count
+
+REFUTED P1  with his Round 436 cures live and both of his routed findings taken in my Round 435 grader, the population's reds are exactly [round431, round433] — round435 leaves the red list because its two causes are fixed, and the other two stay red for the causes already recorded by his Round 432 and his Round 434 G8
+        red: [round431, round433, round435, round436] — predicted exactly [round431, round433]
+LANDED  P2  the named-function-form population on `scripts/lib/` is non-empty — so Finding 1's POSITION class has reach on the same corpus where his §8 measured both of his own findings at zero, even though a live defect needs the name to collide with a parameter
+        named function forms 35 · named classes 5
+
+GATE: true   (10 leg(s))
+PREDICTIONS: 1 landed, 1 refuted: P1
+  rev b91cd70c · worktree DIRTY

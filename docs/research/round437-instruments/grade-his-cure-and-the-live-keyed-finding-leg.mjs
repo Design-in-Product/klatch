@@ -362,10 +362,29 @@ const R435 = 'docs/research/round435-instruments/grade-his-cure-and-oracle-the-m
 // ---------------------------------------------------------------------------------------------
 // G7 — and the fix has to be driven, not read. My Round 435 grader re-driven live at HEAD.
 // ---------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------
+// DEPTH GUARD — found by this fire, the hard way. His round436 population leg excludes only the
+// LITERAL `round436-instruments`, so it drives THIS file; this file's own population leg drives
+// his; and the two recurse without bound. Measured: five concurrent copies of this grader and
+// four of his, each with its own `cripple-and-regrade.mjs` mutating the SAME committed module in
+// place at the same time, which is what corrupted `refusal-convention.mjs` earlier in the fire.
+//
+// The guard: every child is spawned with `KLATCH_DRIVE_DEPTH` incremented, and the population leg
+// REFUSES at depth > 0 rather than returning a smaller figure. One instrument honouring this is
+// enough to terminate the mutual recursion at depth 2, because the recursion needs a cycle and
+// this breaks it. The refusal is published as the leg's detail (411 — a refusal is not a verdict).
+const DEPTH = Number(process.env.KLATCH_DRIVE_DEPTH ?? '0');
 const driveOf = (p) => {
   let out;
-  try { out = execFileSync('node', [p], { cwd: REPO, encoding: 'utf8', maxBuffer: 1 << 28 }); }
-  catch (e) { out = `${e.stdout ?? ''}${e.stderr ?? ''}`; }
+  try {
+    out = execFileSync('node', [p], {
+      cwd: REPO,
+      encoding: 'utf8',
+      maxBuffer: 1 << 28,
+      timeout: 120_000,
+      env: { ...process.env, KLATCH_DRIVE_DEPTH: String(DEPTH + 1) },
+    });
+  } catch (e) { out = `${e.stdout ?? ''}${e.stderr ?? ''}`; }
   const gl = out.split('\n').find((l) => l.startsWith('GATE:')) ?? null;
   return { out, gate: gl, green: gl !== null && gl.includes('true') };
 };
@@ -459,8 +478,11 @@ const driveOf = (p) => {
   const later = all.filter((f) => !(roundOf(f) < MY_ROUND));
   const population = all.filter((f) => roundOf(f) < MY_ROUND);
   const graders = population.filter((f) => /grade|attack/.test(f));
-  const results = graders.map((p) => ({ p, ...driveOf(p) }));
-  const red = [...new Set(results.filter((r) => !r.green)
+  // At depth > 0 this leg REFUSES rather than driving. See the depth-guard note above: driving here
+  // is what makes the mutual recursion with his round436 population leg unbounded, and a refusal
+  // that says so is worth more than a figure computed from a smaller population (411, 408).
+  const results = DEPTH > 0 ? null : graders.map((p) => ({ p, ...driveOf(p) }));
+  const red = results === null ? null : [...new Set(results.filter((r) => !r.green)
     .map((r) => r.p.split('/')[2].replace('-instruments', '')))].sort();
   leg('G9', 'the population of instruments naming the module is selected from the TREE at a stamped '
     + 'rev with `ls-tree` (414-416) and DRIVEN LIVE, with my own round and every later one excluded '
@@ -469,14 +491,16 @@ const driveOf = (p) => {
     + 'promotion (377/405/434/435)',
     `tree at ${REV.slice(0, 8)}: ${all.length} file(s) naming the module · my round ${MY_ROUND} `
     + `and later, excluded by the derived key: ${later.length} · population ${population.length}, `
-    + `${graders.length} of them graders · red: [${red.join(', ')}]`,
+    + `${graders.length} of them graders · red: `
+    + `${red === null ? `REFUSED at drive depth ${DEPTH} — see the depth guard` : `[${red.join(', ')}]`}`,
     graders.length > 0 && Number.isFinite(MY_ROUND) && later.length > 0);
   pred('P1', 'with his Round 436 cures live and both of his routed findings taken in my Round 435 '
     + 'grader, the population\'s reds are exactly [round431, round433] — round435 leaves the red '
     + 'list because its two causes are fixed, and the other two stay red for the causes already '
     + 'recorded by his Round 432 and his Round 434 G8',
-    `red: [${red.join(', ')}] — predicted exactly [round431, round433]`,
-    JSON.stringify(red) === JSON.stringify(['round431', 'round433']));
+    red === null ? `REFUSED at drive depth ${DEPTH}`
+      : `red: [${red.join(', ')}] — predicted exactly [round431, round433]`,
+    red !== null && JSON.stringify(red) === JSON.stringify(['round431', 'round433']));
 }
 {
   // P2: declared before the biteable-population measurement was driven. His §8 measured the reach
