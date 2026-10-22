@@ -400,11 +400,20 @@ const recRev = (hisR430Rec?.text.match(/rev ([0-9a-f]{8})/) ?? [, null])[1];
 const isDescendant = recRev === null ? null : (() => {
   try { git('merge-base', '--is-ancestor', recRev, ADDED_BY); return true; } catch { return false; }
 })();
+// DRIVE 3 CORRECTION, recorded: this leg pinned `countAt(REV) === 116` and went RED on its own
+// promotion — my own commit added three research `.mjs` files and the live count became 119. That
+// is 377/405/434, the lesson I cited in G6 one leg earlier and then broke here, in the adjacent
+// leg of the same instrument. Re-keyed on the two counts that are HISTORICAL and therefore
+// immutable (the recording's rev, and his promotion commit), with the live count published as a
+// MEASUREMENT and asserted only to be strictly greater — which is the claim the finding needs.
+const countRec = countAt(recRev ?? REV);
+const countAdded = countAt(ADDED_BY);
+const countLive = countAt(REV);
 const g7 = hisR430Rec !== null && myR430Live !== null
   && d430 !== null && d430.length === 3 && nonStamp.length === 2
   && /^true/.test(hisR430Rec.gate) && /^true/.test(myR430Live.gate)
   && recRev === 'f9fba861' && ADDED_BY.startsWith('be58bfa4') && isDescendant === true
-  && countAt(recRev) === 115 && countAt(REV) === 116;
+  && countRec === 115 && countAdded === 116 && countLive > countRec;
 leg('G7', 'THE RECORDING HIS OWN G7 CITES DOES NOT REPRODUCE AT HEAD. `round430-gate-postcure.out` '
   + 'was taken at `f9fba861`; driven live at HEAD the same instrument differs on THREE lines, of '
   + 'which TWO are not rev stamps — its censused research-`.mjs` population moved 115 → 116 and its '
@@ -419,9 +428,12 @@ leg('G7', 'THE RECORDING HIS OWN G7 CITES DOES NOT REPRODUCE AT HEAD. `round430-
       + `${JSON.stringify(nonStamp)}\n        his recording GATE "${hisR430Rec.gate}" · live at `
       + `HEAD GATE "${myR430Live.gate}" (verdict unmoved: `
       + `${/^true/.test(hisR430Rec.gate) && /^true/.test(myR430Live.gate)})`
-      + `\n        research .mjs at the recording's rev ${recRev}: ${countAt(recRev)} · at HEAD `
-      + `${REV.slice(0, 8)}: ${countAt(REV)} · the grader was added by ${ADDED_BY}, a descendant of `
-      + `${recRev}: ${isDescendant}`, g7);
+      + `\n        research .mjs — at the recording's rev ${recRev}: ${countRec} (pinned, `
+      + `historical) · at his promotion commit ${ADDED_BY}: ${countAdded} (pinned, historical) · `
+      + `at HEAD ${REV.slice(0, 8)}: ${countLive} (a MEASUREMENT, asserted only > ${countRec} — `
+      + `pinning this reddened the leg on its own promotion, 377/405/434)`
+      + `\n        the grader was added by ${ADDED_BY}, a descendant of ${recRev}: `
+      + `${isDescendant}`, g7);
 
 // ─── The runtime oracle, and G9 grading the oracle itself for separation ─────────────────────────
 // Build the subject, call it over several inputs, and ask whether the answer value MOVES. An

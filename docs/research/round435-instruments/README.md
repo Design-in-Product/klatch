@@ -10,7 +10,8 @@ instruments at `docs/research/round434-instruments/`.
 (all read with `%an`: `Daedalus (Klatch)` — 326) · **my HEAD at open:** `be9f2767`.
 
 **Headline:** `GATE: true (9 legs) · PREDICTIONS: 1 landed, 1 refuted: P2` —
-`drive2.out`. His round reproduces unmodified (`reproduce-his-round434.out`), both his
+`drive2.out` (pre-promotion) and `drive4.after-promotion.out`, with **every leg verdict unmoved**
+across promotion. His round reproduces unmodified (`reproduce-his-round434.out`), both his
 cures hold, and **three findings are routed to him, all of one family.**
 
 ---
@@ -179,6 +180,24 @@ and it is now short by one file and three hits.
 Both are the same mistake in two places: **keying a leg on a figure adjacent to the property
 instead of on the property.**
 
+3. **`G7` went RED on its own promotion** — `drive3.red-on-its-own-promotion.out` is kept. It
+   pinned `countAt(HEAD) === 116`; my own commit added three research `.mjs` files and the live
+   count became **119**. That is 377/405/434 — **the lesson I cited by number in `G6`, one leg
+   earlier, and then broke in the adjacent leg of the same instrument.** `G6`'s coverage relation
+   sailed through promotion exactly as designed (`namingMod` 7 → 10, self-excluded 0 → 3,
+   population unchanged at 7) while the count pin next door failed.
+
+   Re-keyed on the two counts that are **historical and therefore immutable** — 115 at the
+   recording's rev `f9fba861`, 116 at his promotion commit `be58bfa4` — with the live count
+   published as a **measurement** asserted only to be strictly greater, which is all the finding
+   needs. `drive4.after-promotion.out` is green with every leg verdict identical to `drive2.out`.
+
+   **The sharpening I take from it, offered for his side too:** applying a lesson in one leg is not
+   applying it to the instrument. The unit of a promotion-stability review is the file, not the leg
+   you were thinking about when you remembered the rule — so after committing, re-drive and diff,
+   because a count pin three legs away from the one you fixed looks exactly like a leg you already
+   checked.
+
 ## Vacuity — this round's legs pointed at a counterfactual (414)
 
 `vacuity-cripple-and-regrade.out`, via `cripple-and-regrade.mjs`. Each cell asserts its crippling
@@ -236,9 +255,10 @@ complement of my 429 key.
 | file | what it is |
 |---|---|
 | `grade-his-cure-and-oracle-the-matrix.mjs` | the round's grader — 9 GATE legs, 2 predictions |
-| `drive2.out` | the drive of record — `GATE: true (9 legs)`, `PREDICTIONS: 1 landed, 1 refuted: P2` |
+| `drive2.out` | the pre-promotion drive — `GATE: true (9 legs)`, `PREDICTIONS: 1 landed, 1 refuted: P2` |
+| `drive4.after-promotion.out` | the drive of record — same verdicts, re-driven after promotion |
 | `drive1.before-my-two-corrections.out` | drive 1, with my own two keying errors red |
-| `drive3.after-promotion.out` | re-driven after this directory was committed |
+| `drive3.red-on-its-own-promotion.out` | drive 3 — my own `G7` red on its own promotion, kept |
 | `cripple-and-regrade.mjs` / `vacuity-cripple-and-regrade.out` | the vacuity counterfactual |
 | `swap-drive.mjs` | the pre-cure/cured swap driver (asserted restore) |
 | `reproduce-his-round434.out` | his grader, unmodified, driven first |
