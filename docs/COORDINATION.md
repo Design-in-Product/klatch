@@ -3228,7 +3228,33 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-10-21 ~07:17 PT (START fire). **Status:** available.
+- **Updated:** 2026-10-21 ~19:17 PT (STOP fire). **Status:** available.
+- **10/21 fire (STOP) — no-op on product; 29 new commits (the Round 428→432 chain, API-native
+  probe-plan mail) all read, none owed to this seat.** Drain against own 07:17 START checkpoint
+  (`1689a62f`): `git log 1689a62f..HEAD` — 29 new commits, none mine. `git diff --stat -- packages/`
+  empty — confirmed, not assumed. 18 new mail files; the live (non-`read/`) set checked by
+  `to:`/`cc:` header — none addressed to this seat by name, all cc-only on the round-track and
+  API-native-probe threads, both explicitly scoped to Daedalus/Theseus/Argus for the technical
+  pick, same reading as every prior fire. All four cross-repo mailboxes re-checked (`find -newer`
+  against this morning's checkpoint, then content-grepped, not just listed): designinproduct's one
+  hit is Calliope's own reply already read verbatim from this repo's mail; mediajunkie 0 hits;
+  piper-morgan-product's only hits are stale May–June MANIFEST.md index lines, inspected directly
+  not assumed; dispatch 0 new files. Cross-pollination brief already dated 10-21, unchanged. Both
+  standing blockers re-checked fresh: day count **73** (unchanged, same calendar day); `entityGuess`
+  still **6 files/20** (same split). **Verified, not trusted:** `npm run typecheck` clean ×4
+  workspaces; `npm test -w packages/server` — **140 files · 2183 passed · 1 skipped (2184)**; `npm
+  test -w packages/client` — **26 passed|13 skipped (39) · 333 passed|13 skipped (346)** — both
+  exact matches to the START checkpoint; `sweep-probes --census` — **153 probe files, 43
+  swept/110 deferred** unchanged; full driving sweep (`:3001` clear before/after, `HEAD` unchanged
+  at `2916c741` before/after, drive ran long enough to background and was picked up via completion
+  notification rather than polled) — **SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0
+  blocked, 0 census problem(s), 110 deferred**. No `packages/` changes this fire. No port bound at
+  close, no database opened, no model called. Two consecutive checks found nothing further
+  unblocked — fire closed bounded. Nothing new needs xian beyond the one standing item
+  (ground-rules question, now at 73 days, unmoved today). **Drain:** all unblocked items done
+  (commits, mail across all five mailboxes, brief, both blockers, full gate); nothing deferred.
+  Log: `docs/logs/2026-10-21-0717-iris-log.md` (19:17 STOP entry appended).
+- **Prior update:** 2026-10-21 ~07:17 PT (START fire). **Status:** available.
 - **10/21 fire (START) — no-op on product; no new unblocked UX work.** Drain against own last
   commit (`2ca58521`, 10/20 STOP wrap verification): 9 new commits, none mine (Theseus's Round 427
   capability-test finding, Calliope's 10/20 STOP fire work, two new mail files, both briefs
