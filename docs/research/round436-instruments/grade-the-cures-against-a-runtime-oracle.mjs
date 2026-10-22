@@ -92,6 +92,22 @@ const SUBJ = (ret) => `function read(src) {${BODY(ret)}}`;
 const HEAD_TEXT = 'function read(src) {';
 const admitted = (c) => (c === null || c === undefined ? null : c.refused === undefined);
 
+/**
+ * The rev a recording was TAKEN AT, read off the recording's own stamp line.
+ *
+ * Exported so `promotion-diff.mjs` uses this reader rather than a second copy of it (412).
+ *
+ * Caught by his §6 instrument on this round's own promotion: `G1` below explained the differences
+ * between a recording taken at `e2a20e75` and his, by substituting out the LIVE `REV` — so the
+ * moment the promotion commit landed, the substitution stopped matching and `G1` went red. An old
+ * cell sourced from HEAD inverts when the cure lands (420/422). A historical recording has to be
+ * explained with the rev it was taken at, and that rev is in the file.
+ */
+export const revStampOf = (text) => {
+  const line = text.split('\n').find((l) => l.trim().startsWith('rev ')) ?? '';
+  return (line.match(/\brev ([0-9a-f]{8})/) ?? [])[1] ?? null;
+};
+
 const ORACLE_INPUTS = ['abc', 'xyz', 'abcd', 'q'];
 const stable = (v) => {
   try {
@@ -127,8 +143,14 @@ const oracle = (ret) => {
 // this leg reads the recording and the whole-file diff rather than re-driving.
 // ---------------------------------------------------------------------------------------------
 {
-  const mine = readFileSync(join(HERE, 'reproduce-his-round435.out'), 'utf8').split('\n');
-  const his = readFileSync(join(REPO, 'docs/research/round435-instruments/drive4.after-promotion.out'), 'utf8').split('\n');
+  const mineText = readFileSync(join(HERE, 'reproduce-his-round435.out'), 'utf8');
+  const hisText = readFileSync(join(REPO, 'docs/research/round435-instruments/drive4.after-promotion.out'), 'utf8');
+  const mine = mineText.split('\n');
+  const his = hisText.split('\n');
+  // Each side's rev comes out of its OWN stamp line. Using the live `REV` here was a real defect
+  // and his §6 instrument found it on this round's promotion — see `revStampOf`.
+  const mineRev = revStampOf(mineText);
+  const hisRev = revStampOf(hisText);
   const gate = mine.find((l) => l.startsWith('GATE:')) ?? '';
   const predsLine = mine.find((l) => l.startsWith('PREDICTIONS:')) ?? '';
   const diff = [];
@@ -137,15 +159,16 @@ const oracle = (ret) => {
   // with a matching occurrence count. A count of differing lines passes on any two lines (426), and
   // a `/rev|HEAD/` content test is not the predicate either: one of these three lines says "in the
   // tree at <rev>" and contains neither word. Derive the predicate from what actually varies.
-  const explained = diff.every((i) => {
-    const a = mine[i].split(REV.slice(0, 8)).join('<HEAD>');
-    const b = his[i].split('4bda6ab3').join('<HEAD>');
-    const n = mine[i].split(REV.slice(0, 8)).length - 1;
-    const m = his[i].split('4bda6ab3').length - 1;
+  const explained = mineRev !== null && hisRev !== null && mineRev !== hisRev && diff.every((i) => {
+    const a = mine[i].split(mineRev).join('<HEAD>');
+    const b = his[i].split(hisRev).join('<HEAD>');
+    const n = mine[i].split(mineRev).length - 1;
+    const m = his[i].split(hisRev).length - 1;
     return a === b && n > 0 && n === m;
   });
   leg('G1', 'his Round 435 reproduces unmodified, and the whole-file diff is the HEAD rev alone',
-    `${gate} · ${predsLine} · differing line indices ${JSON.stringify(diff)}, `
+    `${gate} · ${predsLine} · my recording at rev ${mineRev}, his at ${hisRev} (each read off its `
+    + `OWN stamp, not off live HEAD) · differing line indices ${JSON.stringify(diff)}, `
     + `every one explained by the HEAD rev alone: ${explained}`,
     gate.includes('true') && gate.includes('9 leg') && predsLine.includes('1 landed, 1 refuted: P2')
       && diff.length > 0 && explained);
@@ -444,9 +467,9 @@ let hisRed = [];
       + 'Gates on its PROMOTION verdict line from the next drive onward.',
       true);
   } else {
-    leg('G11', "every line differing across this round's own promotion is a rev stamp",
+    leg('G11', "no leg's verdict moves across this round's own promotion",
       verdict,
-      verdict.includes('every differing line explained by the HEAD rev alone'));
+      verdict.startsWith('PROMOTION: OK'));
   }
 }
 
