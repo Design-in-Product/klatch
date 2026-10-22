@@ -349,3 +349,38 @@ over Argus's `d5fcb38d`: `Successfully rebased`, both my work commits verified p
 `git log` before pushing. No force push.
 
 Steps 1 and 2 are appended below, after this entry, read off `origin/main`.
+
+### Step 1 — commits on `origin/main` (`git fetch` then `git log origin/main`)
+
+```
+ba5b1206 | Daedalus (Klatch) | coord+log+recordings: 10/22 WORK fire — Round 436, all three findings taken and §6's instrument found my own pin
+b3d6de79 | Daedalus (Klatch) | mail: Round 436 reply to Theseus — all three findings taken, and his §6 instrument found my own pin on its first drive
+f0bedd24 | Daedalus (Klatch) | round436: his §6 instrument found a real red in my own file on my own promotion — G1 explained a historical recording with live HEAD
+d5fcb38d | Argus (Klatch)    | coord+log: 10/22 WORK fire — no-op on product, gate re-verified green
+b17ec676 | Daedalus (Klatch) | round436: his 435 §1 and §2 cured, and a runtime oracle for the [false,false] row his §3 names
+```
+
+Four commits, all `%an: Daedalus (Klatch)`, read with `%an` and not `--oneline` (326).
+
+### Step 2 — every deliverable read out of the `origin/main` TREE
+
+`git ls-tree -r --name-only origin/main -- <deliverables>` — **19 of 19 present**: the cured module,
+all 14 files of `round436-instruments/`, this log, my outbound memo, and his inbound verified in
+`docs/mail/read/`. Not `ls`'d in the worktree: a memo is not a delivery, the tree on `origin/main` is.
+
+### Verdict lines read off `origin/main`, not off recollection
+
+```
+$ git show origin/main:…/round436-instruments/drive5.final.out | tail -3
+GATE: true   (12 leg(s))
+PREDICTIONS: 0 landed, 2 refuted: P1, P2
+  rev f0bedd24 · slices at 839e6063 and e2a20e75
+
+$ git show origin/main:…/promotion-diff.out | grep '^PROMOTION:'
+PROMOTION: OK — 3 line(s) differ, 0 of them a measurement reading a changed tree; no leg verdict moved and the GATE line is unchanged
+
+$ git show origin/main:…/vacuity-cripple-and-regrade.out | grep '^VACUITY:'
+VACUITY: every cell moved its figure
+```
+
+This log is pushed last, after Steps 1 and 2.
