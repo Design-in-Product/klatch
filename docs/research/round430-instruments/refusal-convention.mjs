@@ -191,6 +191,10 @@ const entriesOf = (rawExpr, maskedExpr, keptExpr) => {
 };
 
 const IDENT = /^[A-Za-z_$][\w$]*$/;
+// Round 436 / his 435 §1. The `d` flag is load-bearing: `indices[1]` is how the NAME's own offset
+// is recovered, rather than re-derived by arithmetic over the optional prefixes.
+const METHOD_HEAD = /^(?:(?:get|set|async)\s+)?\*?\s*([A-Za-z_$][\w$]*)\s*\(/d;
+const IDENT_TOKEN = /[A-Za-z_$][\w$]*/g;
 const keyOfShape = (keys) => [...keys].sort().join(',');
 
 /**
@@ -261,51 +265,139 @@ export const paramsOf = (fnSource) => {
  * has entries, and only an entry's FIRST token can be a key. That is what separates a key from a
  * ternary's second colon — in `{ a: ok ? src : 1 }` the entry begins at `a`, so `a` is blanked and
  * `src` is not. A computed key (`{ [k]: src }`) is not an identifier head, so `k` survives, which
- * is correct: it IS a reference. A `{` reached in statement position (an arrow body,
- * `{ f: (x) => { return src; } }`) has no depth-0 colon inside it, so nothing in it is blanked.
+ * is correct: it IS a reference.
  *
- * Residual, stated rather than discovered later: a labelled statement inside such a block
- * (`{ f: () => { src: for (;;) break src; } }`) would have its label blanked. Valid JS, absent from
- * this corpus, and the direction is over-refusal.
+ * ## Round 436 / his 435 §1 — a property name does not need a colon
+ *
+ * Keying only on a depth-0 `:` left every COLON-FREE property name a free identifier: method
+ * shorthand, getter, setter, async method, generator method. Five spellings, measured, and
+ * `conventionOf` ADMITTED `return { span: { src() { return 1; } } }` as the answer shape while it
+ * read the input nowhere — the under-refusal direction this module exists to avoid.
+ *
+ * The second leg below is keyed on the **method-definition shape** — an entry-head identifier (with
+ * an optional `get`/`set`/`async` prefix and an optional `*`) whose parameter list's matching `)` is
+ * followed by `{`. The trailing `{` is the whole separator and it is not decoration: the colon
+ * requirement was what previously protected a `{` reached in STATEMENT position (an arrow body,
+ * `{ f: () => { src(1); } }`), which has no depth-0 colon and whose entry head really is a call.
+ * Keying on `ident (` alone would blank that `src` and reintroduce the same under-refusal as the
+ * fix for it. `src(1);` closes onto `;`, a method head closes onto `{`.
+ *
+ * `{ async() {} }` keeps `async` as its NAME, not a prefix, because the prefix branch requires
+ * `\s+` after the keyword.
+ *
+ * Residuals, stated rather than discovered later:
+ *   - a labelled statement inside a statement block (`{ f: () => { src: for (;;) break src; } }`)
+ *     has its label blanked. Valid JS, absent from this corpus, direction over-refusal.
+ *   - a function's own parameter SHADOWING the subject's parameter (`{ f(src) { return src; } }`,
+ *     `{ f: (src) => src }`) still reads as a mention — measured, both forms, in the UNDER-refusal
+ *     direction. Blanking the parameter list wholesale would be wrong in the other direction: in
+ *     `{ f: (a = src) => a }` the default value genuinely IS the outer reference. Curing it needs a
+ *     scope model over every function form, which the method-name key above is not and does not
+ *     pretend to be.
  */
 export const maskKeyPositions = (maskedValue) => {
   const out = maskedValue.split('');
   const stack = [];
   for (let i = 0; i < maskedValue.length; i += 1) {
     const c = maskedValue[i];
-    if (c === '{') { stack.push({ brace: true, entryFrom: i + 1, keyed: false }); continue; }
+    if (c === '{') {
+      stack.push({ brace: true, entryFrom: i + 1, keyed: false, headTried: false });
+      continue;
+    }
     if (c === '(' || c === '[') { stack.push({ brace: false }); continue; }
     if (CLOSE.has(c)) { stack.pop(); continue; }
     const top = stack[stack.length - 1];
     if (top === undefined || top.brace !== true) continue;
-    if (c === ',') { top.entryFrom = i + 1; top.keyed = false; continue; }
+    if (c === ',') { top.entryFrom = i + 1; top.keyed = false; top.headTried = false; continue; }
     if (c === ':' && top.keyed === false) {
       top.keyed = true;
       if (IDENT.test(maskedValue.slice(top.entryFrom, i).trim())) {
         for (let j = top.entryFrom; j < i; j += 1) out[j] = ' ';
       }
+      continue;
     }
+    // The colon-free leg. Tried once per entry, at the entry's first non-whitespace character.
+    if (/\s/.test(c) || top.keyed === true || top.headTried === true) continue;
+    top.headTried = true;
+    const m = METHOD_HEAD.exec(maskedValue.slice(i));
+    if (m === null) continue;
+    const openAt = i + m[0].length - 1; // the `(` the pattern ends on
+    let depth = 0;
+    let closeAt = -1;
+    for (let j = openAt; j < maskedValue.length; j += 1) {
+      const k = maskedValue[j];
+      if (OPEN.has(k)) depth += 1;
+      else if (CLOSE.has(k)) { depth -= 1; if (depth === 0) { closeAt = j; break; } }
+    }
+    if (closeAt === -1) continue;
+    const after = /\S/.exec(maskedValue.slice(closeAt + 1));
+    if (after === null || after[0] !== '{') continue; // a call in statement position, not a method
+    const [from, to] = m.indices[1];
+    for (let j = i + from; j < i + to; j += 1) out[j] = ' ';
   }
   return out.join('');
+};
+
+/**
+ * Is the identifier token starting at `at` a FREE identifier, or a property of something else?
+ *
+ * Round 436 / his 435 §2. The predicate this replaces was the one-character lookbehind
+ * `(^|[^.\w$])`, and **a spread's third dot satisfied the `.`** — so `{ ...src }`, `[...src]` and
+ * `f(...src)` all read as property accesses and `conventionOf` REFUSED a return genuinely spreading
+ * the input. Over-refusal, and present on both sides of a pre-vs-cured matrix, which is why no
+ * movement reading could have found it.
+ *
+ * Re-keyed as a token read with a model of what a dot can be, rather than a wider character class:
+ *
+ *   - no preceding non-whitespace character, or one that is not `.` or `#` → FREE.
+ *   - `.` whose own two predecessors are both `.` → the last dot of a `...` spread. The operand of
+ *     a spread is a genuine reference, so → FREE.
+ *   - any other `.` → a property access → NOT free. This now also catches `opts . src` and
+ *     `opts?.src`; the first of those read as a mention under the lookbehind (the character before
+ *     the name was a space), an under-refusal in the same family as the spread and not reported.
+ *   - `#` → a private field name → NOT free.
+ *
+ * Tokens are taken MAXIMALLY by the caller's scanner, which is what makes `srcPath` not a mention
+ * of `src` without a trailing lookahead here.
+ */
+const freeAt = (text, at) => {
+  let i = at - 1;
+  while (i >= 0 && /\s/.test(text[i])) i -= 1;
+  if (i < 0) return true;
+  if (text[i] === '#') return false;
+  if (text[i] !== '.') return true;
+  return text[i - 1] === '.' && text[i - 2] === '.';
 };
 
 /**
  * Does this value span mention one of `params` as a FREE identifier?
  *
  * Read in the masked span, so a parameter name occurring inside a string body or a comment is not
- * a mention. A name preceded by `.` is a property of something else (`opts.src` is not `src`), and
- * a name that continues into a longer identifier (`srcPath`) is not it either.
+ * a mention. Scanned as maximal identifier TOKENS rather than matched as a pattern per parameter:
+ * a name that continues into a longer identifier (`srcPath`) is a different token and so is not a
+ * mention, and whether a token is free or a property is decided by `freeAt` above.
  *
  * Round 434 / his 433 §1: the span's own object-literal KEY positions are blanked first. A key
  * spelled like the parameter is not a reference to it at all — `return { span: { src: 1 } }` reads
  * the input nowhere — and the Round 432 cure ADMITTED that return as the answer shape, in the
  * under-refusal direction, which is the one this module exists to avoid. The masking lives inside
  * this function rather than at its one call site so that the property travels with the exported
- * test: the docblock is what the next importer reads.
+ * test: the docblock is what the next importer reads. Round 436 extends that masking to property
+ * names written without a colon; see `maskKeyPositions`.
+ *
+ * The token regex is instantiated per call rather than shared: a `g`-flagged literal at module
+ * scope carries `lastIndex` between calls, and this function is called once per object entry.
  */
 export const mentionsParam = (maskedValue, params) => {
   const noKeys = maskKeyPositions(maskedValue);
-  return params.some((p) => new RegExp(`(^|[^.\\w$])${p}(?![\\w$])`).test(noKeys));
+  const wanted = new Set(params);
+  const re = new RegExp(IDENT_TOKEN.source, 'g');
+  let m = re.exec(noKeys);
+  while (m !== null) {
+    if (wanted.has(m[0]) && freeAt(noKeys, m.index)) return true;
+    m = re.exec(noKeys);
+  }
+  return false;
 };
 
 /** The key set of a runtime object, in the same spelling the derived shapes use. */

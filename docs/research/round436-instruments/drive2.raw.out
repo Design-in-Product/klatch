@@ -1,0 +1,33 @@
+ ok   G1  his Round 435 reproduces unmodified, and the whole-file diff is the HEAD rev alone
+        GATE: true   (9 leg(s)) · PREDICTIONS: 1 landed, 1 refuted: P2 · differing line indices [33,42,65], every one explained by the HEAD rev alone: true
+ ok   G2  each pre-cure slice IS the module blob at its stamped rev
+        839e6063: identical · e2a20e75: identical
+ ok   G3  every colon-free property spelling is masked, and all six controls hold
+        cured: TP 6 / FN 0 / TN 8 / FP 0 — clean: true · PRE-cure on the same cells: TP 6 / FN 0 / TN 2 / FP 6 — clean: false (false is what makes this leg non-vacuous) · wrong now: none · moved by the cure (a MEASUREMENT, not pinned): 6 — method shorthand, getter, setter, async method, generator method, async generator method
+ ok   G4  conventionOf no longer admits a method-shorthand property named like the input
+        { span: { src() { return 1; } } }: pre ADMITTED -> cured REFUSED · CONTROL { span: { q() { return 1; } } }: refused -> refused (refused both sides: the admission was about the NAME, not the shape)
+ ok   G5  the dot model separates spread from property access, both ways
+        cured: TP 6 / FN 0 / TN 5 / FP 0 — clean: true · PRE-cure on the same cells: FN 4 (the spreads) / FP 1 (the spaced member access) — clean: false · moved by the cure (a MEASUREMENT, not pinned): 5 — spread, spread beside an entry, array spread, call spread, member access with a space — the unreported third member
+ ok   G6  conventionOf no longer over-refuses a return that spreads the input
+        pre: refused "a return shape {span} at offset 141 that is neither all-messag…" · cured: ADMITTED
+ ok   G7  the oracle runs the same bytes, separates both ways, and agrees with the cured module
+        subject text identical to conventionOf's on 8/8 cells · oracle verdicts seen: true/false · derived 4 / not-derived 4 · disagreements with the cured module: 0
+ ok   G8  a [refused, refused] row in my Round 434 matrix held both a control and a defect
+        rows not moving under Round 434's cure: 3 (spreads the input, reads the input nowhere, slices a module constant) · of those, correct under the oracle: 2 (reads the input nowhere, slices a module constant) · DEFECTS indistinguishable from them by movement alone: 1 (spreads the input)
+ ok   G9  his grader goes RED against the cured module, and my reader of his verdict agrees with his own per-leg lines
+        his GATE now: GATE: false   (9 leg(s)) — FALSE: G3, G4, G5, G9 · red legs off the GATE line: [G3, G4, G5, G9] · off his per-leg FALSE lines: [G3, G4, G5, G9] · reader agrees: true
+ ok   G10  my Round 430 gate is green at HEAD and re-recorded, and the drift he reported is real
+        GATE: true   (7 leg(s) on the cure itself) · lines differing from the Round 434 recording: 3 (his §5 reported 3) · fresh recording written at rev e2a20e75
+ ok   G11  every line differing across this round's own promotion is a rev stamp
+        VACUOUS this drive: drive1.before-promotion.out does not exist yet. This leg can only be read on the post-promotion drive — a self-exclusion leg is vacuous before promotion (430).
+ ok   G12  the population of instruments naming the module is driven live, not recalled
+        population from the tree at e2a20e75: 10 file(s) naming the module, 9 of them graders (a MEASUREMENT, not a pin — a count here reddens on its own promotion, 377/405/434/435) · red: [round431, round433, round435]
+
+REFUTED P1  his grader will redden on exactly G3, G4 and G9 — G5, his matrix-design leg, holds
+        red legs measured: [G3, G4, G5, G9] — predicted [G3, G4, G9]
+REFUTED P2  no NEW reds in the population under my cures: round431 and round433 stay red, the rest green
+        red: [round431, round433, round435] — predicted exactly [round431, round433]
+
+GATE: true   (12 leg(s))
+PREDICTIONS: 0 landed, 2 refuted: P1, P2
+  rev e2a20e75 · slices at 839e6063 and e2a20e75 · worktree DIRTY

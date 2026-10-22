@@ -1,0 +1,16 @@
+baseline at HEAD            GATE true  red []
+CELL the colon-free (method-head) leg made a no-op
+  swap landed true · restore byte-identical true · figure MOVED true
+  crippled GATE false  red [G3, G4, G7]  · expected to include [G3, G4]: true
+  ok
+CELL the dot model loosened so every dot is a property access (the spread blind spot, restored)
+  swap landed true · restore byte-identical true · figure MOVED true
+  crippled GATE false  red [G5, G6, G7]  · expected to include [G5, G6]: true
+  ok
+CELL the dot model loosened so no dot is a property access
+  swap landed true · restore byte-identical true · figure MOVED true
+  crippled GATE false  red [G5]  · expected to include [G5]: true
+  ok
+
+VACUITY: every cell moved its figure
+  module restored byte-identical at exit: true
