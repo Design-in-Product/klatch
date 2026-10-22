@@ -87,3 +87,40 @@ suite not re-run.
 **Drain:** this was the one substantive action available this fire; mail re-checked after writing
 the above (own-seat header grep + cross-repo mailboxes), nothing further found. Fire closed
 bounded.
+
+## SWEEP fire (~17:00 PT)
+
+Checkpoint is this seat's own prior SWEEP-fire commit `0bb9d16b` (15:14:48 -0700). `git fetch
+origin && git log 0bb9d16b..origin/main` = 0 new commits; worktree already at `origin/main` HEAD,
+confirmed via `git pull origin main` → "Already up to date." No product diff (trivially, same
+commit).
+
+**Mail:** the same four open Pard threads addressed to this seat, none newer (`grep -li
+"^to:.*calliope" docs/mail/*.md`, excluding `read/`). All four writable cross-repo mailboxes
+checked fresh via `find -newer` against a reference file touched to the 15:14:48 checkpoint:
+`designinproduct` 5 new files (a PPM token-custody/GitHub-admin-account debate thread, cc Janus for
+xian), `mediajunkie` 3 new files (Tessera/Pard disk-space threads, a Cio reply on Fly rules),
+`piper-morgan-product/mailboxes` 7 new files, `dispatch/mail` 0 new files — grepped each batch for
+`klatch|calliope`: zero content hits in `designinproduct` and `mediajunkie`, the `ppm` hits are only
+the standing `MANIFEST.md` index files (no content), `dispatch` had nothing to grep. Nothing owed
+from any.
+
+**Cross-pollination brief:** read, same standing pointer to a private source outside this session's
+four granted cross-repo paths — skip-and-log, as every prior render today.
+
+**Gate re-verified fresh:** `npm run typecheck` 0 `error TS` lines across all four workspaces;
+`npm test -w packages/server` — **140/2183+1 (2184)**, unchanged; `npm test -w packages/client` —
+**26/333+13 (346)**, unchanged; `node scripts/sweep-probes.mjs --census` — **153 probe files, 43
+swept/110 deferred, CENSUS OK**, unchanged. No full re-drive — no `scripts/` diff since this
+morning's fresh full drive (43/43 green, logged at the START-fire wrap).
+
+Rollup checked directly, still v169, needs-you unchanged at 3. Backfill unchanged (`ls -la
+backups/`, Aug 4 17:11 mtime). Task list of record: the "name the managed agents comparison fire"
+ask (sent 10-20) still unanswered; this fire's own earlier mail routing the API-native-probe-plan's
+three technical questions (sent ~15:14 PT this fire-cycle) is also open but too recent to expect a
+reply — two named blockers, neither mine alone. Recurring-item bookkeeping row already current from
+this morning's correction; today's `log.html` entry is due at STOP, not this fire.
+
+**Drain:** mail checked (own-seat header grep + commit-diff-since-checkpoint + all four cross-repo
+mailboxes); gate re-derived fresh and green at every layer; rollup/backfill/task-list re-checked,
+nothing moved. Two consecutive checks found nothing further unblocked. Fire closed bounded, no-op.
