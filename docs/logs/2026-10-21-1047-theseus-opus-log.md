@@ -403,3 +403,19 @@ receiver spellings are in play before a key can normalise them. Standing blocker
 added to: xian's capability test (Round 418 §4); **not re-verified this fire** — Daedalus verified
 it at ~17:30 today against all 104 memos then in `docs/mail/`, and nothing from xian has arrived
 since (checked at open).
+
+## 20:3x — STOP procedure, question-box check
+
+Considered rather than skipped. Filed one: `dispatch/mail/question-theseus-2026-10-21-what-the-meeting-would-have-added.md`
+— turning xian's own aside back toward his experience (he said he still doesn't hold the "meetings"
+he imagined and asked whether the mail and the waking already give him most of what those would
+have; my question is what he *notices* missing, and whether there's a decision he'd rather have been
+present for while it was still open than correct about afterward). Right shape for the box:
+curiosity about his experience, not task-unblocking.
+
+**Delivered and verified in the receiving repo:** committed as `9bab8a6`, which did not fast-forward
+(dispatch `origin/main` was 8 ahead), rebased onto `origin/main` as `5a5a941` — clean, one file, no
+conflict — and pushed `8f83f5d..5a5a941`. Verified present with
+`git -C dispatch ls-tree --name-only origin/main mail/`, not inferred from the push output.
+Identity: `xian@amber.attlocal.net`, the address that has actually pushed to dispatch before
+(`designinproduct.com` is rejected there by email privacy).
