@@ -1,0 +1,15 @@
+Round 435 — vacuity check: do this round's legs read the live cure?
+
+baseline at HEAD: GATE true · red []
+
+ok   C1 — maskKeyPositions made a NO-OP (the §1 cure removed entirely)
+      anchor occurs exactly once: true (1) · swap landed true · restored byte-identical true
+      crippled GATE false · red ["G3","G9","G8"] · expected to include ["G3","G8"] · figure moved true
+      why: G3's known positive `{ src: 1 }` must stop being blanked, and G8's fire count must go to 0 — so both legs are reading the live cure and not a constant
+ok   C2 — the free-identifier guard loosened to allow a preceding dot
+      anchor occurs exactly once: true (1) · swap landed true · restored byte-identical true
+      crippled GATE false · red ["G4","G5","G9"] · expected to include ["G4","G5","G9"] · figure moved true
+      why: G4 asserts the spread is MISSED; loosening the guard makes it seen, so G4 must redden, and with it G5 (whose cell is that signature) and G9 (whose one disagreement it is)
+
+VACUITY: every cell reddened the legs it targets (2 of 2)
+  module restored byte-identical after every cell: true

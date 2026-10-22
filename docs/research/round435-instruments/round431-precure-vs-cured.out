@@ -1,0 +1,6 @@
+target            docs/research/round431-instruments/grade-his-convention-and-measure-the-reach.mjs
+swap landed       true (orig sha 8a241a98b2c01267, slice sha cbe172758b133624)
+restored exactly  true
+PRE-cure module   GATE false   (11 leg(s), RED: G7 | G8) | PREDICTIONS 3 landed, 0 refuted
+LIVE (cured)      GATE false   (11 leg(s), RED: G7 | G8) | PREDICTIONS 3 landed, 0 refuted
+figure MOVED      false
