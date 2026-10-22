@@ -46,7 +46,7 @@
  */
 import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
-import { join, dirname } from 'node:path';
+import { join, dirname, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -294,15 +294,27 @@ leg('G5', 'FINDING 3, THE ONE THAT GENERALISES — a `[pre refused, cured refuse
       + `${sameSignature}`, g5);
 
 // ─── G6 — HIS §5 RULE applied to the full population of instruments naming the module ────────────
+// ROUND 437 CORRECTION — his Round 436 §6, taken. This exclusion was the LITERAL string
+// `round435-instruments`, and he found the defect on his own promotion: his round's instruments
+// name the module too, so they entered the population as unmodelled members with no recorded
+// drive, `covered` went false, and the leg went red for a reason that is not a defect in anything.
+// It would have been wrong for every round after his as well. A self-exclusion keyed on its own
+// name cannot see the round being written beside it.
+//
+// Re-keyed on the running instrument's OWN round number, parsed from `import.meta.url`: a grader
+// is not responsible for grading rounds written AFTER it, and that is a derived property rather
+// than a name this file has to be told (425). The excluded set is published as a measurement
+// below, with its members named, because a self-exclusion leg is vacuous before promotion (430).
+const MY_ROUND = Number(basename(HERE).match(/^round(\d+)/)?.[1] ?? NaN);
+const roundOf = (f) => Number(f.match(/round(\d+)-instruments/)?.[1] ?? NaN);
 const namingMod = git('ls-tree', '-r', '--name-only', REV, 'docs/research/').trim().split('\n')
   .filter((f) => f.endsWith('.mjs'))
-  // This round's own directory is excluded by its own path, and the EXCLUSION COUNT is published
-  // below rather than left to the verdict: a self-exclusion leg is vacuous before promotion (430).
   .filter((f) => readFileSync(join(REPO, f), 'utf8').includes('refusal-convention'));
-const selfExcluded = git('ls-tree', '-r', '--name-only', REV, 'docs/research/').trim().split('\n')
-  .filter((f) => f.endsWith('.mjs') && f.includes('round435-instruments'))
-  .filter((f) => readFileSync(join(REPO, f), 'utf8').includes('refusal-convention'));
-const population = namingMod.filter((f) => !f.includes('round435-instruments'));
+// Everything at or after my own round: my own directory, and any later round's. A file whose path
+// carries no round number is NOT excluded — it stays in the population rather than reaching the
+// exclusion by fall-through (411).
+const selfExcluded = namingMod.filter((f) => !(roundOf(f) < MY_ROUND));
+const population = namingMod.filter((f) => roundOf(f) < MY_ROUND);
 // DRIVE 1 CORRECTION, recorded: the first version of this leg pinned `population.length === 6` and
 // `redLive.length === 1`. Both were wrong, and in the direction that matters — the population is
 // SEVEN (round434's own grader names the module too, and I had covered it by the reproduction
@@ -368,10 +380,11 @@ leg('G6', 'HIS OWN §5 RULE, APPLIED TO HIS OWN ROUND — "re-drive the GATE lin
   + 'swap asserted to have landed and the restore asserted byte-identical — which rules out this '
   + 'round\'s cures as its cause. So the rule, applied in full, finds nothing he missed. That '
   + 'NEGATIVE is the result, and it is worth as much as a finding would have been',
-  `instruments naming the module in the tree at ${REV.slice(0, 8)}: ${namingMod.length} · this `
-  + `round's own, excluded by its own path: ${selfExcluded.length} · population `
-  + `${population.length} (counts, published as measurements — a self-exclusion leg is vacuous `
-  + `before promotion (430), so this reads 0 pre-commit and 1 after)`
+  `instruments naming the module in the tree at ${REV.slice(0, 8)}: ${namingMod.length} · at or `
+  + `after my own round ${MY_ROUND}, excluded by the DERIVED round key and not by a literal name `
+  + `(Round 437, his §6): ${selfExcluded.length} — ${JSON.stringify(selfExcluded.map((f) => f.split('/')[2]))} · `
+  + `population ${population.length} (counts, published as measurements — a self-exclusion leg is `
+  + `vacuous before promotion (430), so this reads 0 pre-commit and non-zero after)`
   + `\n        every population member has a recorded drive: ${covered}`
   + `\n        ${Object.entries(driven).map(([k, v]) => `${k.replace('-instruments', '')} GATE ${v === null ? 'UNREADABLE' : v.gate}`).join(' ║ ')}`
   + `\n        red live (${redLive.length}): ${JSON.stringify(redLive)} · all accounted for: `
