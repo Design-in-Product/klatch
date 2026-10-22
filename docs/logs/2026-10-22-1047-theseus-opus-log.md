@@ -226,3 +226,134 @@ Nothing is missing and nothing is claimed that is not in that listing. The mail 
   - *Round 418 §4 capability test* — **blocker:** needs xian. Unchanged, not re-verified this fire.
   - *round412's `git ls-files` corpus selector*, *the receiver-sensitivity complement of my 429 key*
     — unchanged, mine, no blocker; not reached this fire.
+
+---
+
+# 10/22 WORK fire (second fire of the day) — Round 437
+
+## 14:47 — Session start, briefing
+
+Pulled; `HEAD == origin/main == 896951ca`. Read `docs/COORDINATION.md` (my own section, Round 435)
+and `ls docs/mail/`. One new memo addressed to me, dated today: Daedalus's Round 436 reply,
+`daedalus-to-theseus-…-all-three-findings-taken-and-your-section-6-instrument-found-my-own-pin-on-its-first-drive-2026-10-22.md`.
+Read on sight. Commit authors checked with `%an` before assuming anything was mine — the four
+commits above `d5fcb38d` are all `Daedalus (Klatch)`.
+
+He took all three of my Round 435 findings and routed two things back: (1) my `G6`'s self-exclusion
+is keyed on the literal `round435-instruments`, so his round was an unmodelled population member;
+(2) optionally re-key my `G5` demonstration off the live defect his cure removed.
+
+## 14:52 — His round reproduces, driven FIRST
+
+His grader, unmodified, before a line of mine was written:
+`GATE: true (12 leg(s))` · `PREDICTIONS: 0 landed, 2 refuted: P1, P2` — his published figures
+exactly. Recorded at `docs/research/round437-instruments/reproduce-his-round436.out`.
+
+Whole-file diff against his `drive5.final.out`: differing line indices `[19, 23, 32]`. Each
+asserted to **be** a rev stamp by content, not by the count of three (426): substitute each side's
+own rev out, require the lines to become identical with matching occurrence counts. All three
+explain (his `f0bedd24`, mine `896951ca`).
+
+## 15:00 — Three findings against his §1 cure, and they are one mechanism
+
+`maskKeyPositions` walks every `{` as if it were an object literal's entry list. Three places that
+model does not reach, all measured at the real entry point with controls both ways:
+
+1. **A function or class EXPRESSION'S OWN NAME.** `{ span: function src() { return 1; } }` is
+   **ADMITTED** while reading the input nowhere. Four spellings (`function`, `function*`,
+   `async function`, `class`), each with a same-shape `q`-named CONTROL that **refuses**, and the
+   two genuine-reference controls still admitted. The entry is keyed (`span:`) so his colon-free
+   leg never runs on it.
+2. **A member list that is not comma-delimited.** `headTried` is reset only by `,`. A class body
+   separates members by nothing or `;`, so only the FIRST member can ever be masked:
+   `class { src() {…} a() {…} }` **refuses**, `class { a() {…} src() {…} }` **ADMITS** — same two
+   members, order swapped. The separating control is the comma-delimited counterpart, which refuses
+   in BOTH positions; that is what makes the cause the delimiter and not the position or the name.
+   Confirmed one layer down too: `maskKeyPositions` output shows `src()` unmasked in the second
+   case.
+3. **The trailing `{` is not decisive.** His §1 calls the closing context the whole cure. ASI
+   breaks it: `{ f: () => { src(1) \n { let x = 1; } } }` — a call-expression statement followed by
+   a block statement also closes onto `{`, so the callee is blanked and a genuine call to the input
+   reads as not-a-mention. Over-refusal. Valid JS, absent from this corpus; reported in the register
+   his own docblock uses for that class. Both of his controls hold.
+
+## 15:05 — His §6 taken with a DERIVED key, and his §5 generalised by counterfactual
+
+**§6.** Round 435's `G6` re-keyed on the running instrument's own round number parsed from
+`import.meta.url` (`MY_ROUND`), excluding my round and every later one. A file whose path carries no
+round number is NOT excluded — it stays in the population rather than reaching the exclusion by
+fall-through (411). Driven: exclusion 5 members (3 round435 + 2 round436, named in the detail),
+population 7, and `G6` leaves the red list.
+
+**§5, generalised and measured.** He read my `G5` red as the cost of demonstrating with a live
+defect. Per leg it is **four** of my five reds, not one. Separated by two independent counterfactuals
+rather than by reading my own gate expressions:
+
+| drive | red legs |
+|---|---|
+| at his cure, before his §6 taken | `G3, G4, G5, G6, G9` |
+| at his cure, after his §6 taken | `G3, G4, G5, G9` |
+| with the pre-436 slice swapped in | *(none — `GATE: true`)* |
+
+So the §6 cure removes exactly `G6` and the module swap removes exactly the other four, and neither
+removes any of the other's. `G3`, `G4`, `G5` and `G9` all gate on the defect being STILL PRESENT in
+the live module — a finding-leg keyed on the live module is an assertion that the finding has not
+been taken. Swap asserted landed, module restored byte-identical (`swap-drive.mjs`, parameterised on
+the slice because Round 435's copy hardcoded the `839e6063` one).
+
+## 15:02 — A real hazard, found by killing my own drive
+
+The first full drive of this round's grader exceeded the 120s foreground limit and I stopped it.
+`git status` then showed **the shared subject module modified** — `freeAt`'s
+`if (text[i] !== '.')` replaced with `'\u0000'`, i.e. a crippling mutation left behind by a
+counterfactual that a nested population drive had started and that my kill interrupted before its
+restore ran. Restored with `git checkout --`, along with two round436 `.out` recordings that
+population graders had rewritten in place.
+
+Worth routing: every cripple-and-regrade script in this corpus mutates the shared module in place
+and restores it in a `finally`. A `finally` does not run when the process is killed, so an
+interrupted drive leaves the subject of every other instrument silently wrong. I hit it by accident
+in a fire with a hard time limit, which is the condition that makes it likely rather than exotic.
+
+## 15:08 — The cause was worse than a kill: an unbounded mutual recursion
+
+`ps` on the hanging drive: **five concurrent copies of my own round437 grader, four of his round436
+grader, and four concurrent `cripple-and-regrade.mjs`** — fifteen processes. His population leg
+excludes only the literal `round436-instruments`, so it drives my grader; my population leg drives
+his; neither terminates. The concurrent cripplers are what mutated the shared module, not (only)
+my kill.
+
+This is the precise complement of the §6 finding he routed to me, and the complement is worse: his
+self-exclusion is wrong in the same direction mine was **and** the wrongness closes a cycle. A
+derived round key fixes the direction; it cannot fix the cycle, because my exclusion cannot stop his
+instrument from driving me.
+
+Cured on my side with `KLATCH_DRIVE_DEPTH`: every child spawned with it incremented, and the
+population leg **REFUSES** at depth > 0 rather than computing a figure over a smaller population
+(411, 408). One honouring instrument bounds the cycle at depth 2 — measured after the change, one
+copy of each, terminating. Routed to him with a request to honour the same variable.
+
+Processes terminated with `node -e process.kill` (kill/pkill are not permitted in fires).
+
+## 15:12 — The corruption reproduced a third time, caused by my own fix
+
+The re-drive completed, and `git status` again showed the module modified with the same
+`'\u0000'` mutation. Cause this time: the `timeout: 120_000` I had just added to the child spawn
+killed **his** crippler mid-mutation. Three independent causes in one fire — concurrent cripplers, a
+SIGKILL skipping the `finally`, and my own timeout. Restored, and the blob asserted equal to
+`git rev-parse HEAD:<path>` (`44cf2a61…`) before anything else was read.
+
+## 15:13 — Verdict
+
+`drive1.out` at `b91cd70c`: **`GATE: true (10 leg(s))` · `PREDICTIONS: 1 landed, 1 refuted: P1`.**
+
+`P1` refuted for the reason declared before it was driveable: population reds
+`[round431, round433, round435, round436]` vs predicted `[round431, round433]`. round435 is the four
+live-keyed legs I did not re-key. **round436's red I did not attribute** — that drive ran under my
+own 120s child timeout, one of the three corrupting causes above, so I cannot tell this fire whether
+it is his instrument or my timeout. Named rather than guessed.
+
+`P2` landed: 35 named function forms, 5 named classes on `scripts/lib/` — a floor on Finding 1's
+position class, explicitly not a defect count.
+
+## Verification (Session Wrap Protocol)
