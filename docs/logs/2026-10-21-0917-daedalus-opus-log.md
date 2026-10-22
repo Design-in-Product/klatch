@@ -278,3 +278,101 @@ mutant slices. Mail: `docs/mail/daedalus-to-theseus-…-i-took-the-gate-and-your
 is **empty**.
 
 Nothing is claimed as delivered: the wrapper owns delivery.
+
+---
+
+## 17:17 PT — STOP fire open, briefing
+
+- `date` → 2026-10-21 17:17 PDT. Worktree clean, synced by wrapper. Branch `claude/daedalus-cycle`.
+- **Authorship checked first (326):** HEAD at open `2d980ccb`, `%an` **Calliope** (10/21 SWEEP
+  fire). The five most recent commits read Calliope ×2, Pard ×1, Theseus ×2 — **none mine**. My
+  last were `04c25e6d` / `f14aff9b` (Round 430, 10/21 WORK fire).
+- **Round numbering, verified not recalled:** `ls docs/research/` shows `round431-instruments`,
+  authored by Theseus. **My next round is 432.**
+- Mail read: his Round 431 inbound, and Calliope's 10/21 API-native probe memo (three questions to
+  the team; see the deferral at the end of this entry).
+
+## 17:2x PT — his round reproduces before anything is touched
+
+Drove his `round431-instruments/grade-his-convention-and-measure-the-reach.mjs` unmodified in my
+tree → `round432-instruments/reproduce-his-round431.out`: **`GATE: true (11 legs)` ·
+`PREDICTIONS: 3 landed, 0 refuted`** — his published figures. His G7 and G8 cells both read TRUE
+against my live module. Neither defect argued; both taken.
+
+Also took the pre-cure baseline of my own round430 grader before editing anything
+(`baseline-round430-precure.out`) — and it did **not** match what round430 published this morning.
+That became P1; see below.
+
+## 17:3x PT — the two cures
+
+- **G8** — the message leg read `maskedValue !== rawValue` and the shared masker blanks comment
+  bodies as well as string bodies. Cured by comparing the masker's **two readings** against each
+  other (strings-blanked vs strings-kept, comments blanked in both), so comments cancel. One
+  scanner still. Over-refusal, the safe direction.
+- **G7** — the answer-shape leg was keyed on a `.slice(` call with no model of the input, and was
+  wrong in **both** directions: module-constant slice admitted (under-refusal — the dangerous one,
+  since the module's whole value is refusing when no absence test can work), `charAt` value
+  refused. Cured with `paramsOf`, reading the parameter list off the function's own source and
+  **refusing** on an unmodelled form rather than letting `conventionOf` fall back to the old leg
+  (411).
+
+Re-drove round430's grader: verdict lines **identical** to the baseline taken this fire.
+
+## 17:4x PT — the leg that carries the round is his
+
+His round431 grader, unmodified, before and after the cure: of its **14** legs, **exactly G7 and
+G8** move, both TRUE→FALSE; every other leg and every prediction unchanged. Read out of the two
+recordings by regex rather than retyped (412). A cure that moved a third leg would be scope I did
+not report, and his instrument says so rather than mine.
+
+Grader: `round432-instruments/grade-the-two-cures.mjs` — **GATE true, 9 legs · PREDICTIONS 1
+landed, 0 refuted** (`drive3.out`). Drive 1 was all-green, which I did not take at face value: two
+honesty repairs followed before drive 2 — dead code removed from G4, and P1 relabelled as **not
+pre-registered**, since it came off the baseline drive rather than being predicted (405).
+
+## 17:4x PT — his §0 recommendation taken, and the 371/383 trap caught in the cell
+
+round413's `CONV.refused === undefined` → `Array.isArray(CONV.answer) && Array.isArray(CONV.refusal)`.
+Output **byte-identical** pre/post (`diff` → no output). My own fix comment quotes the spelling it
+removes, so the detector is graded **comment-blind and raw**: comment-blind **0** · raw **1** ·
+CONTROL **4** live elsewhere, so the key is not vacuously zero. Third time 371/383 has landed; this
+round the cell caught it rather than Theseus.
+
+## 17:4x PT — P1: my own P5 inverted inside the day
+
+| | |
+|---|---|
+| round430 published this morning (`drive4.after-promotion.out`) | `PREDICTIONS: 4 landed, 1 REFUTED: P4` |
+| same instrument, same rev, re-driven this fire, no edit of mine between | `PREDICTIONS: 3 landed, 2 REFUTED: P4 \| P5` |
+
+P5 walked the **live tree**; the one member it found was his round414, which his Round 431 cured.
+His §5 taxonomy arriving from the other side — his was a pin on a live count, mine on a live
+**membership**. The sharpening sent back: the test is what the leg's **selector** reads, not what
+its figure counts. Recorded `.out` files and memos not rewritten; the re-key is my open item.
+
+## The gate
+
+`npm test` / `npm run typecheck` **not run and not claimed** — this round is entirely under
+`docs/research/`, `docs/mail/`, `docs/logs/`, `docs/COORDINATION.md`. Verified:
+`git diff --stat origin/main~2 -- packages scripts` **empty** (recorded below). The pre-commit
+census ran on both pushes and reported `census PASSED`.
+
+## Mail
+
+- Reply filed: `docs/mail/daedalus-to-theseus-…-both-your-defects-are-cured-and-my-own-p5-inverted-inside-a-day-2026-10-21.md`.
+- Close-discipline: his Round 431 inbound and my Round 430 outbound both `git mv`'d to
+  `docs/mail/read/` — no open action remains in either; §6 items are each held by their own author.
+- **Calliope's 10/21 API-native probe memo** (`calliope-to-daedalus-theseus-argus-cc-iris-xian-…`)
+  asks the team for three calls: the MVP feature pick, the comparison axes, and the "promising"
+  bar. **Deferred with a named blocker, not a deadline:** her own memo states the Managed Agents
+  test comes first and is meant to shape this probe's design, per xian's instruction relayed by
+  Pard, and that test has a smoke run named but **no comparison fire picked yet** — her 10-20 memo
+  to the same list is still open on exactly that. The blocker is that unnamed comparison fire.
+  Left in `docs/mail/`, not moved to `read/`.
+
+**Drain:** drained — Round 431 inbound answered and cured in the same fire (two cures plus his §0
+recommendation, all three graded); Round 430/431 thread closed to `read/`; coordination and log
+written. Deferred: Calliope's three API-native questions, blocker = the Managed Agents comparison
+fire is unpicked and is the designated input. Deferred: re-key of round430's P5, blocker = none —
+it is scoped as its own round because round430's grader is imported downstream and wants a pre/post
+baseline, not because it is waiting on anything.
