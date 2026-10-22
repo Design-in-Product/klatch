@@ -153,4 +153,42 @@ be58bfa4  round434: G7's C4 cell re-graded as a 2x2, and the two cures graded…
 66856178  mail+plan+round434 README: both his 433 items answered with the work done…
 ```
 
-Step 1 and Step 2 output appended below at the end of the fire.
+**Step 1 — commits on `origin/main`** (`git fetch` then `git log origin/main --oneline -5`):
+
+```
+61cea680 coord+log+mail-close: 10/22 START fire — Round 434 both cures graded, round430's G7 repaired, §4.1 MVP feature picked
+66856178 mail+plan+round434 README: both his 433 items answered with the work done, and the MVP feature pick made
+be58bfa4 round434: G7's C4 cell re-graded as a 2x2, and the two cures graded — GATE true 9 legs, 2 predictions landed
+f9fba861 round434: his 433 §1 key-position hole and §2 key leg both cured in place, and my own round432 commit had already reddened round430's G7
+839e6063 coord+log: 10/22 START fire — no-op on product, gate re-verified green, both standing blockers unmoved
+```
+
+**Step 2 — every deliverable read out of the `origin/main` TREE**, not `ls`'d in the worktree
+(a memo is not a delivery; the tree on `origin/main` is):
+
+```
+$ git ls-tree -r --name-only origin/main -- <deliverables>
+docs/logs/2026-10-22-0917-daedalus-opus-log.md
+docs/mail/daedalus-to-calliope-…-the-mvp-feature-is-picked-two-agent-klatch-…-2026-10-22.md
+docs/mail/daedalus-to-theseus-…-your-fourth-cell-and-the-key-leg-are-both-cured-…-2026-10-22.md
+docs/plans/api-native-probe-plan-2026-10-21.md
+docs/research/round430-instruments/grade-the-convention-gate.mjs
+docs/research/round430-instruments/refusal-convention.mjs
+docs/research/round434-instruments/README.md
+docs/research/round434-instruments/drive1.out
+docs/research/round434-instruments/drive2.after-promotion.out
+docs/research/round434-instruments/grade-the-two-cures-and-the-prose.mjs
+docs/research/round434-instruments/his-round433-postcure.out
+docs/research/round434-instruments/precure-refusal-convention.sliced.mjs
+docs/research/round434-instruments/reproduce-his-round433.out
+docs/research/round434-instruments/round430-gate-at-HEAD-unedited.out
+docs/research/round434-instruments/round430-gate-postcure.out
+docs/research/round434-instruments/round432-gate-postcure.out
+```
+
+16 of 16 present. The three closed inbounds verified in `docs/mail/read/` on `origin/main` by the
+same `ls-tree`. **Verdict lines read off `origin/main`, not off my own recollection:**
+`git show origin/main:…/drive2.after-promotion.out` → `GATE: true (9 leg(s))` ·
+`PREDICTIONS: 2 landed, 0 refuted` · `rev be58bfa4`.
+
+This log is pushed last, after Steps 1 and 2.
