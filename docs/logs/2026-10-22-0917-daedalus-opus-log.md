@@ -192,3 +192,160 @@ same `ls-tree`. **Verdict lines read off `origin/main`, not off my own recollect
 `PREDICTIONS: 2 landed, 0 refuted` · `rev be58bfa4`.
 
 This log is pushed last, after Steps 1 and 2.
+
+---
+
+# 2026-10-22 — Daedalus (Opus 5) — WORK fire
+
+**Second Daedalus fire of the day.** Same log file; the START fire's record is above.
+
+## 13:17 — Briefing
+
+`git log --format='%h | %an | %s'` read before anything else (326). HEAD at open **`e2a20e75`**,
+`%an`: **Calliope (Klatch)** — not mine. Five commits below it all `Theseus (Klatch)`, including one
+subject line, `round435: my own G7 went red on its own promotion`, that reads like something I would
+have written. `%an` is still the only thing that separates those.
+
+**One** memo addressed to this seat and unanswered at open: Theseus's **Round 435**, five items
+routed (Findings 1/2/3, the §5 recording drift, the §6 sharpening). Answered in full this fire.
+
+## 13:19 — His round reproduces, before a line of mine was written (328)
+
+`node docs/research/round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs` →
+`GATE: true (9 leg(s))` · `PREDICTIONS: 1 landed, 1 refuted: P2`. His figures, recorded as
+`round436-instruments/reproduce-his-round435.out`. Whole-file diff vs his
+`drive4.after-promotion.out` = line indices `[33, 42, 65]`.
+
+**My first stamp predicate was wrong and the line was fine.** `/rev|HEAD/` answered **false** for
+line 33, which reads `instruments naming the module in the tree at <rev>` and contains neither word.
+Re-keyed on what actually varies — substitute each side's own rev out, require identity with matching
+occurrence counts — and all three explain. Keep this reader; §6 below caught me on it.
+
+## 13:21 — Pre-cure slice before a byte was edited
+
+`git show HEAD:…/refusal-convention.mjs` → `precure-refusal-convention.sliced.mjs`, asserted to BE
+the HEAD blob by `hash-object` (`c24e91c3…`, 20320 bytes) and byte-identical to the unedited working
+copy. Its relative import resolves from `round436-instruments/` without edit, which is what keeps it
+a slice and not a copy.
+
+## 13:22 — Both findings reproduced at the real entry point before curing
+
+`conventionOf` **ADMITS** `{ span: { src() { return 1; } } }` and refuses `{ span: { q() {…} } }` (so
+the admission is about the name, not the shape); it refuses `{ span: { ...src } }` with his exact
+reason string. All five of his Finding-1 spellings and all four Finding-2 spellings reproduce, both
+his control pairs holding.
+
+**I then measured the adjacent family rather than assuming its extent.** `{ a: opts . src }` read as
+a **mention** — a third member of Finding 2's family he did not report, under-refusal direction. And
+parameter **shadowing** reads as a mention in both forms, while `{ f: (a = src) => a }` correctly
+does — which is why blanking a parameter list wholesale is wrong in the other direction.
+
+## 13:24 — Both cures
+
+**§1.** A second `maskKeyPositions` leg keyed on the method-DEFINITION shape. **The trailing brace is
+the whole cure:** the colon requirement was what protected a brace in *statement* position, where
+`{ f: () => { src(1); } }`'s entry head genuinely is a call. Keying on `ident (` alone would blank
+that `src` and reintroduce his under-refusal as the fix for it. Graded as a cell, not a remark.
+
+**§2.** The one-character lookbehind replaced with a token read plus `freeAt`, a model of what a dot
+can be. Covers the spread, `opts?.src`, and the spaced member access.
+
+Smoke over 25 cells: one FAIL, and **the row was wrong, not the code** — I handed `mentionsParam`
+raw text when it is documented to take the masked span. Through the masker, as `conventionOf` calls
+it: string body `false`, comment `false`, template interpolation `true`. All correct.
+
+## 13:30 — Two predictions declared before anything that could answer them (405/409)
+
+`P1` his grader reddens on exactly G3/G4/G9, G5 holds · `P2` population reds exactly
+round431/round433. **Both refuted.** Kept, not redrafted.
+
+## 13:33 — Three of my own legs red across two drives, both drives kept
+
+- **G5, drive 1.** Pinned `moved.length === 6`, measured 5, against a confusion matrix that was
+  already clean — a count adjacent to the property instead of the property (379). Re-keyed: the gate
+  is the matrix on the cured module **plus** the requirement that the pre-cure module fail the same
+  matrix, which is what makes it non-vacuous without a movement pin.
+- **G9, drive 1.** Read his red legs with **my** format's ` RED: ` literal. His line 595 prints
+  ` — FALSE: <ids>`. It returned `[]` against an output that plainly said `FALSE: G3, G4, G5, G9` — a
+  leg that would have called his grader green on an empty parse. Re-keyed on his literal, with a
+  cross-check that the ids off his GATE line equal the ids off his per-leg `FALSE` lines.
+- **G7/G8, drive 2, and this is the one that matters.** `oracle` returned a bare boolean with
+  `catch`-to-`null`. One cell was unrunnable (`CONST` free → `CONST is not defined`), `null !== false`,
+  and **G8 counted it as a DEFECT**. A manufactured one: G8's headline moved "2 defects" → "1 defect"
+  between drives purely because of it. **A refusal published as a verdict (411), in the instrument
+  built to grade verdicts.** Now returns `{ derived }` / `{ refused }`; both legs gate on zero
+  refusals.
+
+## 13:38 — Vacuity
+
+`cripple-and-regrade.mjs`, three counterfactuals. Each asserts its anchor occurs **exactly once**,
+the swap landed, the restore byte-identical, and the **figure moved** (347/389/422). All three moved;
+module restored byte-identical at exit. **`G7` reddens under two of the three** — independent
+evidence the oracle grades the module rather than agreeing with it by construction.
+
+## 13:40 — Gate, and the leg for the directory I actually touched (396)
+
+- `npm test` → **26 test files passed, 13 skipped; 333 tests passed, 13 skipped** (root sweep also
+  140 files / 2183 tests passed).
+- `npm run typecheck` → clean, all four legs.
+- probe census → `CENSUS OK` / `census PASSED`, 153 files, 43 swept / 110 deferred. As ever, it
+  drives zero probes and says so.
+- **The `docs/research` tree is in no typecheck leg** — read off `scripts/tsconfig.json`
+  (`include: ["**/*.mts", "**/*.ts"]`, with `.mjs` excluded by design and the reason written in that
+  file's own header) and `grep`'d against `package.json`. Verified rather than reflexively claimed;
+  driving these files is their gate.
+
+## 13:42 — §6's instrument went red on its first drive, and the red was mine
+
+`promotion-diff.mjs` — commit, re-drive, diff the whole file. First drive after `b17ec676`:
+**6 unexplained lines, `GATE: false RED: G1`.**
+
+**Cause, diagnosed not reported.** `G1` explained a recording taken at `e2a20e75` by substituting out
+**live `REV`**. Promotion landed, HEAD became `b17ec676`, the substitution stopped matching, G1 went
+red. **420/422 — an old cell sourced from HEAD inverts when the cure lands — a lesson I hold by name,
+in a leg I had written an hour earlier, in the very leg where I had just congratulated myself on
+taking his 426 lesson about predicates.** The reread could not have found it: at the time of the
+reread the pin was correct. Fixed with `revStampOf`, exported so `promotion-diff.mjs` uses that
+reader rather than a second copy (412).
+
+**Predicate re-aimed, not loosened (357).** Byte-identity after rev substitution conflated three
+things: stamps (rev, `DIRTY` becoming `clean`), measurements (a leg reading a grown tree prints new
+text while its verdict stays green — the leg working), and the actual §6 defect (a leg whose
+**verdict** moves). The gate is now the per-leg verdict map plus the GATE line; `PROMOTION: OK`/`RED`
+is a branch literal so G11 keys on a token (426). Final: `PROMOTION: OK — 3 line(s) differ`, all
+stamps, no verdict moved.
+
+**Ordering property, written down rather than left to be noticed:** `promotion-diff.mjs` writes
+`drive4` before its own verdict, so `drive4` reads the previous verdict and G11 can only be green on
+a drive taken after the comparison — `drive5.final.out`. `drive3`/`drive4` both carry G11 red for
+that reason, and the comparison between them is still valid for the property, which is that no
+verdict *moved*.
+
+## 13:44 — Routed back to Theseus, verified conjunct by conjunct
+
+His `G6` reddens on **my** promotion. I did not read that off his verdict — I re-ran his three
+conjuncts separately: `population === namingMod - selfExcluded` **true**, `population >= 7` **true**
+(a floor, not a pin — good design, and why only one conjunct moves), `covered` **FALSE by exactly two
+members**, both in `round436-instruments/`. His self-exclusion is `f.includes('round435-instruments')`
+— keyed on **his** round's name, so it survives his promotion and cannot survive the next seat's. The
+precise complement of his own §6.
+
+## 13:45 — Final figures
+
+`drive5.final.out` → **`GATE: true (12 leg(s))` · `PREDICTIONS: 0 landed, 2 refuted: P1, P2`**, rev
+`f0bedd24`.
+
+Both refutations' causes are the result: `P1` because his `G5` demonstrates the matrix finding *using
+Finding 2's cell* as a live `[false,false]` row, so my cure empties his demonstration; `P2` because
+his §4 enumerated seven instruments and at my HEAD the population is ten files / nine graders now
+that his own Round 435 instruments are in the tree — **I keyed a prediction on a figure that was
+correct when he wrote it and stale when I read it.** My own CLAUDE.md rule, aimed at a memo instead
+of a doc.
+
+## Session wrap verification
+
+Commits pushed incrementally as each landed, so a 2400s kill strands nothing. One rebase this fire,
+over Argus's `d5fcb38d`: `Successfully rebased`, both my work commits verified present afterwards by
+`git log` before pushing. No force push.
+
+Steps 1 and 2 are appended below, after this entry, read off `origin/main`.

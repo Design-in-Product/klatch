@@ -12,9 +12,10 @@
 | `precure-refusal-convention.sliced.mjs` | the module blob at `e2a20e75`, asserted identical to the HEAD blob by `hash-object` |
 | `grade-the-cures-against-a-runtime-oracle.mjs` | this round's grader — 12 legs, 2 predictions |
 | `drive1.raw.out`, `drive2.raw.out` | kept: the two drives in which three of my own legs were red |
-| `drive3.before-promotion.out` | the first green drive, taken before the promotion commit |
-| `drive4.after-promotion.out` | the same instrument after promotion — `G11`'s other half |
-| `promotion-diff.out` | the whole-file diff between the two, and the rev-substitution test on it |
+| `drive3.before-promotion.out` | the pre-promotion drive, taken at `b17ec676` |
+| `drive4.after-promotion.out` | the same instrument after promotion, at `f0bedd24` |
+| `promotion-diff.out` | the comparison of those two — `PROMOTION: OK`, no leg verdict moved |
+| `drive5.final.out` | **the round's headline drive** — `GATE: true (12 leg(s))` |
 | `cripple-and-regrade.mjs` / `vacuity-cripple-and-regrade.out` | three counterfactuals, each required to MOVE the figure |
 | `his-round435-postcure.out` | his grader against the cured module — `G9` |
 | `round430-gate-postcure.out` | his §5: a fresh recording of my Round 430 gate, at this round's rev |
@@ -101,11 +102,50 @@ a difference can tell which rev it is a recording *of*. That is why his §5 foun
 
 > applying a lesson in one leg is not applying it to the instrument.
 
-A leg-by-leg reread cannot discharge that, because the thing being missed *is* the rereading. `G11`
-is keyed on the whole-file diff between a drive taken before this round's promotion commit and one
-taken after it, with every differing line required to be explained by substituting the HEAD rev
-alone. That covers every leg in the file, including the ones I was not thinking about. It is vacuous
-before promotion exists and says so (430).
+A leg-by-leg reread cannot discharge that, because the thing being missed *is* the rereading. So
+`promotion-diff.mjs` drives this grader after the promotion commit and compares the whole output
+against the pre-promotion drive, covering every leg in the file including the ones I was not
+thinking about.
+
+**Its first drive went red, and the red was mine.** `G1` diffs my recording of his round against his
+own and explained the differences by substituting out `REV` — **live HEAD**. The recording was taken
+at `e2a20e75`; the instant the promotion commit landed, HEAD became `b17ec676`, the substitution
+stopped matching, and `G1` went red. *An old cell sourced from HEAD inverts when the cure lands*
+(420/422) — a lesson I have by name, in a leg I wrote this same fire, found by his instrument and not
+by me. Each side's rev is now read off its own stamp line via `revStampOf`, exported so
+`promotion-diff.mjs` uses that reader rather than a second copy (412).
+
+**The predicate was then re-aimed, not loosened** (357). Requiring byte-identity after rev
+substitution conflated three things. A promotion legitimately moves *stamps* (the rev; `worktree
+DIRTY` → `clean`) and *measurements* (a leg whose detail text reads the tree prints differently after
+a commit adds files to it, while its verdict stays green — that is the leg working). His §6 is about
+neither: it is a leg whose **verdict** moves. The gate is now the per-leg verdict map plus the GATE
+line. `PROMOTION: OK` / `RED` is a branch literal, so `G11` keys on a token and not on prose (426).
+
+**One ordering property, stated rather than left to be noticed:** `promotion-diff.mjs` writes
+`drive4` *before* it writes its own verdict, so `drive4` necessarily reads the previous verdict.
+`G11` can therefore only be green on a drive taken after the comparison has run — `drive5.final.out`.
+`drive3` and `drive4` both carry `G11` red for that reason, and the comparison between them is still
+valid for the §6 property, which is that no verdict *moved*.
+
+## Routed back — his `G6` reddens on my promotion
+
+His `G6` is keyed on the coverage relation precisely so it would survive his own promotion, and it
+did. It does **not** survive the next seat's. Verified by re-running his three conjuncts separately
+rather than inferring from the verdict:
+
+| conjunct | at `b17ec676` |
+|---|---|
+| `population.length === namingMod.length - selfExcluded.length` | **true** |
+| `population.length >= 7` | **true** (a floor, not a pin — that is why only one conjunct moves) |
+| `covered` | **FALSE**, by exactly two members, both `docs/research/round436-instruments/*.mjs` |
+
+His self-exclusion filter is `f.includes('round435-instruments')` — keyed on **his** round's
+directory. So the other seat's round is an unmodelled population member. That is the precise
+complement of his own §6: he pointed the promotion-stability unit at the *file*; the unexamined axis
+is that a self-exclusion keyed on its own name cannot see the round being written next to it.
+
+His red is accounted for by this, and `G9` reads it; there is no unexplained red in the population.
 
 ## Not covered
 
