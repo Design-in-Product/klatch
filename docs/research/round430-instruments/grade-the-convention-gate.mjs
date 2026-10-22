@@ -76,10 +76,12 @@ const EXPECTED = [
   ['G6', 'M3 CONTROL — a refusal message reworded and nothing else: the derived convention is '
     + 'byte-identical and every classification under both readers is unchanged, so G4 and G5 are '
     + 'the convention moving and not an edit happening'],
-  ['G7', 'the cure landed in round413, read by a detector that is itself graded as a 4-cell '
-    + 'matrix: 3 hits on the pre-cure text, 0 on the cured text, and each of the detector\'s two '
-    + 'legs — comment-blindness and the receiver leg — removed in its own cell. And round413\'s '
-    + 'own 7 GATE legs are still TRUE when re-driven'],
+  ['G7', 'the cure landed in round413, read by a detector that is itself graded as a matrix: 3 '
+    + 'hits on the pre-cure text, 0 on the cured text, the comment-blindness leg removed in its '
+    + 'own cell, and the RECEIVER leg graded by a 2 × 2 against an injected known positive and a '
+    + 'non-convention control rather than by a count over a population that no longer contains '
+    + 'one (Round 434 — the live member was removed by the Round 432 commit this cell grades). '
+    + 'And round413\'s own 7 GATE legs are still TRUE when re-driven'],
   ['P1', 'the fourth return path — "masker not length-preserving" — is UNREACHABLE from input and '
     + 'is published as UNDRIVEN with its reason, not folded into a zero'],
   ['P2', 'over his live corpus under round413\'s own seam the two readers agree member-for-member, '
@@ -303,6 +305,34 @@ const C = {
   c3: retyped(my413, { commentBlind: false }),
   c4: retyped(my413, { receiverLeg: false }),
 };
+/**
+ * Round 434 — C4 was a PINNED COUNT (`=== 2`) over this file's live absence tests, and it went
+ * vacuous on its own promotion. Round 432's commit `8f412aaa` took Theseus's 431 §0 recommendation
+ * and rewrote the last `CONV.refused === undefined` in round413 into a positive read; the two
+ * remaining `CONV.refused` occurrences are a comment and a template interpolation, neither of which
+ * this detector matches. So the cell that grades the receiver leg had **no member carrying the
+ * property**, and the recording that says GATE true (`../round432-instruments/round430-postcure.out`)
+ * was committed at `4186708a`, an ancestor of `8f412aaa`. The red was live and unread for a day.
+ *
+ * The leg is re-graded as a 2 × 2 against text this cell constructs, which is what a separating key
+ * needs (418) and what a count over a moving population cannot provide: a known positive with the
+ * convention receiver, and a control with a non-convention receiver that BOTH readings must count.
+ * The live member count is published as a measurement, not pinned, so re-adding one cannot redden.
+ */
+const C4_KP = '\nconst _c4KnownPositive = CONV.refused === undefined;\n';
+const C4_CTL = '\nconst _c4Control = t.refused === undefined;\n';
+const c4 = {
+  kpOn: retyped(my413 + C4_KP),
+  kpOff: retyped(my413 + C4_KP, { receiverLeg: false }),
+  ctlOn: retyped(my413 + C4_CTL),
+  ctlOff: retyped(my413 + C4_CTL, { receiverLeg: false }),
+};
+const c4Separates = c4.kpOn.length === C.c2.length
+  && c4.kpOff.length === C.c2.length + 1
+  && c4.kpOff.some((h) => h.receiver === 'CONV')
+  && !c4.kpOn.some((h) => h.receiver === 'CONV')
+  && c4.ctlOn.length === C.c2.length + 1
+  && c4.ctlOff.length === C.c2.length + 1;
 const retypedHits = C.c2.length === 0 ? null : C.c2;
 const importsCure = my413.includes(CURE_IMPORT);
 const preIsPreCure = preCure !== null && !preCure.includes(CURE_IMPORT);
@@ -324,16 +354,18 @@ const base = verdictOf(readFileSync(join(REPO, BASELINE), 'utf8'));
 const cellN = (c) => (c === null ? 'n/a' : c.length);
 g('G7', EXPECTED[6][1],
   preIsPreCure && C.c1.length === 3 && C.c2.length === 0
-  && C.c3.length === 2 && C.c4.length === 2
+  && C.c3.length === 2 && c4Separates
   && importsCure && post !== null && post.gate === 'true' && post.legs === 7,
   !preIsPreCure ? `REFUSED: the text at ${PRE_REV.slice(0, 8)} is not pre-cure (the cure's import `
     + `is ${preCure === null ? 'unreadable' : 'already present'}), so C1 is not a known positive`
     : `C1 pre-cure × both legs ${cellN(C.c1)} [${C.c1.map((h) => `${h.receiver}@${h.line}`).join(' ')}]`
       + ` · C2 cured × both legs ${cellN(C.c2)} · C3 cured × comment-blindness OFF ${cellN(C.c3)} `
       + `[${C.c3.map((h) => `L${h.line}`).join(' ')}] — my own comments quoting the cured spelling `
-      + `· C4 cured × receiver leg OFF ${cellN(C.c4)} `
-      + `[${C.c4.map((h) => `${h.receiver}@${h.line}`).join(' ')}] — absence tests on MY sentinel, `
-      + `not his · imports the derived convention ${importsCure} · re-driven: `
+      + `· C4 receiver leg, 2 × 2 on constructed text (Round 434 — the live cell is MEASURED at `
+      + `${cellN(C.c4)} members, not pinned): KP(CONV) leg ON ${c4.kpOn.length} / OFF `
+      + `${c4.kpOff.length} · CONTROL(non-CONV) leg ON ${c4.ctlOn.length} / OFF `
+      + `${c4.ctlOff.length} · separates ${c4Separates}`
+      + ` · imports the derived convention ${importsCure} · re-driven: `
       + (post === null ? `REFUSED: could not read its verdict lines — ${drive.slice(0, 120)}`
         : `GATE ${post.gate} over ${post.legs} leg(s)`));
 
