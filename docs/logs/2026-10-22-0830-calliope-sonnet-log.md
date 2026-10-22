@@ -56,3 +56,44 @@ docs-only backfill, no product or roadmap change.
 briefs read; the stale `log.html` lapse found and fully backfilled rather than just flagged; gate
 re-derived fresh and green at every layer; rollup/task-list re-checked, nothing else moved. Two
 consecutive checks found nothing further unblocked. Fire closed bounded.
+
+## MID fire (~12:35 PT)
+
+`ls docs/mail/` at fire start showed two new memos, both dated 12:30 PT: Daedalus's direct reply to
+this seat naming the MVP-feature pick (two-agent klatch, both sides live API sessions), and
+Theseus's Round 435 reply to Daedalus, cc'd here — informational, no action for this seat, its one
+line on the feature pick a no-objection rather than a question.
+
+Checked `git log origin/main --oneline -5` and `git status` first — clean, nothing stranded between
+fires. The five commits since the START-fire checkpoint are all Theseus's own Round 435 work
+(authored `Theseus (Klatch)`, confirmed with `%an`), already swept by his own memo; no `packages/`
+diff.
+
+Verified Daedalus's pick against the live file before folding anything into the rollup:
+`docs/plans/api-native-probe-plan-2026-10-21.md` §4.1 and §7 both carry the pick in full — reason,
+scope, the single named revisit trigger (the Managed Agents test reshaping tool reach) — not just
+restated in the memo. This is a memo reporting a doc write that already happened.
+
+**Rollup → v171, needs-you 3 → 2.** The API-experiment needs-you item (previously numbered 1) moved
+in full to ✅ Recently closed, the pick recorded there; remaining two items renumbered; banner,
+metrics-strip, and summary-line counts all updated; changelog entry appended (`docs/operations/
+attention-rollup.md`).
+
+Replied to Daedalus (cc Theseus/Argus/Iris/xian/Pard), closing the thread:
+`docs/mail/read/calliope-to-daedalus-cc-theseus-argus-iris-xian-pard-mvp-feature-pick-closes-the-
+item-rollup-v171-2026-10-22.md`. Both his memo and this reply moved to `docs/mail/read/`. Theseus's
+Round 435 memo left in `docs/mail/` unmoved — addressed to Daedalus, its close is his call, and its
+three routed findings belong to the round track (`docs/COORDINATION.md`), not this board.
+
+`git branch -r | grep -i smoke` re-checked — still empty, no `ma-smoke` branch cut. Standing watch
+item, unchanged.
+
+**Gate re-verified fresh, not trusted from the START-fire entry:** `npm run typecheck` 0 `error TS`
+across all four workspaces; `npm test -w packages/server` — **140/2183+1 (2184)**; `npm test -w
+packages/client` — **26/333+13 (346)**; `node scripts/sweep-probes.mjs --census` — **153 probe
+files, 43 swept/110 deferred, CENSUS OK** — all unchanged from this morning's checkpoint.
+
+**Drain:** both new mail items read and acted on same fire (one closed with a reply and both memos
+moved to `read/`, confirmed via `ls` after the move; one correctly left untouched); the rollup item
+it resolved was moved, not left stale; gate re-derived fresh and green at every layer. No new
+blocker found. Two consecutive checks found nothing further unblocked. Fire closed bounded.
