@@ -346,3 +346,60 @@ verified this session that no xian-authored memo sits in `docs/mail/` (0 matches
 - **Mail close-discipline:** his answered Round 432 inbound `git mv`'d to `docs/mail/read/`. The four
   other threads stay open and visible: each has an open action that is not mine to close (Daedalus's
   own claim, xian's "promising" bar, the pending smoke run, Calliope's own thread).
+
+## 20:2x — wrap verification (Session Wrap Protocol)
+
+**Step 1 — commits on `origin/main`,** after `git fetch -q origin`, read with `%an`:
+
+```
+6be04a6c Theseus (Klatch) coord+log+mail: 10/21 STOP fire — Round 433 graded and answered, comparison-fire pick given as a rule, two new equivalence gaps
+aa7a84b4 Theseus (Klatch) mail+round433 drive2: Round 433 memo to Daedalus, round-pick rule and two new equivalence gaps to Calliope/Argus
+07183b4c Theseus (Klatch) round433: his Round 432 graded — a fourth cell the cure moves the wrong way, the key leg comment-blind by claim only, reach 0 of 30
+2db45c65 Iris (Klatch) log: 10/21 STOP fire — wrap verification appended, verdict lines read off origin/main
+```
+
+**Step 2 — deliverables, listed from the tree on `origin/main` (`git ls-tree -r origin/main`),
+not from this worktree:**
+
+```
+docs/research/round433-instruments/README.md
+docs/research/round433-instruments/drive1.out
+docs/research/round433-instruments/drive2.after-promotion.out
+docs/research/round433-instruments/grade-his-cure-and-census-its-reach.mjs
+docs/research/round433-instruments/reproduce-his-round432.out
+docs/mail/theseus-to-daedalus-…-both-cures-hold-and-the-g7-cure-opened-a-fourth-cell-in-the-dangerous-direction-2026-10-21.md
+docs/mail/theseus-to-calliope-argus-…-round-433-is-spent-so-here-is-the-rule-not-a-number-and-two-new-equivalence-gaps-2026-10-21.md
+docs/mail/read/daedalus-to-theseus-…-both-your-defects-are-cured-and-my-own-p5-inverted-inside-a-day-2026-10-21.md
+```
+
+**Cross-repo delivery, verified in the receiving repo rather than claimed from the write:**
+`git -C /Users/xian/Development/mediajunkie log origin/main -1` → `ad69064 Theseus (Klatch)
+mail(Theseus (Klatch)): two equivalence gaps for the comparison prompt, and the round pick as a
+rule`. On `origin/main` there, not only committed locally (memory: a memo is not a delivery).
+
+**The verdict lines, read out of `origin/main` with `git show` rather than out of this session's
+stdout:**
+
+```
+GATE: true   (9 leg(s))
+PREDICTIONS: 2 landed, 1 refuted: P2
+```
+
+**Gate, verified not asserted:** `git diff --stat 2db45c65 origin/main -- packages scripts`
+**run and empty** (`2db45c65` is my HEAD at open, `%an` Iris, confirmed at open). `npm test` /
+`npm run typecheck` **not run and not claimed** — nothing outside `docs/`. Pre-commit census
+`census PASSED` on all three commits. One push was **rejected** mid-fire ("email privacy
+restrictions") because I had passed `-c user.email=xian@designinproduct.com` on a commit; amended
+back to this worktree's own `theseus@klatch.local`, which pushed (memory: reuse the address that has
+actually pushed). `git status --porcelain` empty before this entry.
+
+**Drain:** drained. Daedalus's Round 432 read, reproduced, graded and answered in this fire; both
+open team asks (the comparison-fire pick, the API-probe compare axis) answered in the same fire
+rather than passed to a fourth; the Pard-facing half delivered to his own repo. Two deferrals, each
+with a named blocker: (1) round412's `git ls-files` corpus selector — blocker is that it changes a
+reader both round413 and round414 import, so it needs its own round with both re-driven as cells;
+(2) the receiver-sensitivity complement of my 429 key — blocker is a census of how many distinct
+receiver spellings are in play before a key can normalise them. Standing blocker unchanged and not
+added to: xian's capability test (Round 418 §4); **not re-verified this fire** — Daedalus verified
+it at ~17:30 today against all 104 memos then in `docs/mail/`, and nothing from xian has arrived
+since (checked at open).
