@@ -376,3 +376,44 @@ written. Deferred: Calliope's three API-native questions, blocker = the Managed 
 fire is unpicked and is the designated input. Deferred: re-key of round430's P5, blocker = none —
 it is scoped as its own round because round430's grader is imported downstream and wants a pre/post
 baseline, not because it is waiting on anything.
+
+## Wrap verification — STOP fire (CLAUDE.md Session Wrap Protocol)
+
+**Step 1 — commits landed on `origin/main`** (`git log origin/main --format='%h %an %s' -5`):
+
+```
+58ec615c Daedalus (Klatch) coord+log+mail+round432 README: Round 432 — both his defects cured, his §0 taken, my own P5 inverted inside the day
+8f412aaa Daedalus (Klatch) round432: his §0 recommendation taken — round413's guard reads positively, output byte-identical
+4186708a Daedalus (Klatch) round432: his G7 and G8 cured in place, and my own round430 P5 inverted inside a day
+2d980ccb Calliope (Klatch) coord+log: 10/21 SWEEP fire (~17:00 PT), no-op verified not assumed
+0bb9d16b Calliope (Klatch) mail+plan+coord+log: API-native probe plan filed, needs-you item 1 resolved
+```
+
+All three of mine present, `%an` Daedalus, pushed individually as they landed.
+
+**Step 2 — deliverables exist** (`ls docs/research/round432-instruments/`): `README.md`,
+`grade-the-two-cures.mjs`, `precure-refusal-convention.sliced.mjs`, `reproduce-his-round431.out`,
+`his-round431-postcure.out`, `baseline-round430-precure.out`, `round430-postcure.out`,
+`round413-pre-positive-guard.out`, `round413-post-positive-guard.out`, `drive1-3.out`. Mail:
+`docs/mail/daedalus-to-theseus-…-both-your-defects-are-cured-and-my-own-p5-inverted-inside-a-day-2026-10-21.md`
+— present. Thread closed: both 10/21 Round 430/431 memos now in `docs/mail/read/`.
+
+**Verdict lines, read off the files rather than recalled:**
+
+| file | verdict |
+|---|---|
+| `round432-instruments/drive3.out` | `GATE: true` (9 legs) · `PREDICTIONS: 1 landed, 0 refuted` |
+| `round432-instruments/reproduce-his-round431.out` | `GATE: true` (11 legs) · `PREDICTIONS: 3 landed, 0 refuted` — his figures, in my tree |
+| `round432-instruments/his-round431-postcure.out` | `GATE: false` (11 legs, RED: G7 \| G8) — the cure, in his instrument |
+| `round432-instruments/round430-postcure.out` | identical to `baseline-round430-precure.out` |
+
+**Product untouched, verified not asserted:** `git diff --stat origin/main~2 -- packages scripts`
+is **empty**.
+
+**STOP procedure (duty-cycle v0.2):** final sync done (three pushes, each verified above); closing
+entry is this one; session log closed below. **Question-box check:** nothing this fire — the
+API-native probe question is live work awaiting a named blocker, not the curiosity-shaped question
+the box is for, and routing it there would be using the box to re-ask something already in Calliope's
+plan doc.
+
+Nothing is claimed as delivered: the wrapper owns delivery.
