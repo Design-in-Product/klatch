@@ -203,6 +203,31 @@ const P_COMMENT_OUT = probe('{ span: src.slice(0, 3) }', '  /* just the head */\
     + `${same.length} · directions: ${moved.map((k) => `${k} ${before.get(k)}→${after.get(k)}`).join(', ')}`);
 }
 
+// ── G8 — his §0 recommendation taken: the consumer guard reads positively ─────────────────────
+{
+  const p = '../round413-instruments/attack-g7-and-grade-the-branch-layer.mjs';
+  const src = read(p);
+  const masked = stripSource(src, false); // comments blanked, strings kept
+  const OLD = /CONV\.refused\s*(===|!==)\s*undefined/g;
+  const rawHits = [...src.matchAll(OLD)].length;
+  const blindHits = [...masked.matchAll(OLD)].length;
+  // CONTROL: the detector is not vacuously zero. The same shape on a different receiver is still
+  // live in this tree, so a key that found nothing anywhere would be measuring its own blindness.
+  const control = [...read('../round430-instruments/refusal-convention.mjs')
+    .matchAll(/\.refused\s*(===|!==)\s*undefined/g)].length;
+  const out = read('round413-post-positive-guard.out') === read('round413-pre-positive-guard.out');
+  leg('G8', blindHits === 0 && rawHits > 0 && control > 0 && out,
+    'HIS §0 RECOMMENDATION TAKEN, not just acknowledged: round413\'s consumer guard was '
+    + 'an absence test on my own module\'s sentinel — 2 of the 4 false positives my own round430 §2 '
+    + 'detector reported — and now reads positively off the shapes the convention must carry. '
+    + 'Output byte-identical pre and post. The detector is COMMENT-BLIND and graded both ways '
+    + 'because my fix comment quotes the spelling it removes, which is 371/383 arriving on me a '
+    + 'third time; and a CONTROL confirms the key is not vacuously zero',
+    `comment-blind in round413: ${blindHits} · RAW (my own fix comment quotes it): ${rawHits} · `
+    + `CONTROL, same shape live elsewhere in the tree: ${control} · round413 output identical `
+    + `pre/post: ${out}`);
+}
+
 // ── P1 — not his question: round430's own P5 reads the live tree, and it has already inverted ──
 {
   const line = (p) => {

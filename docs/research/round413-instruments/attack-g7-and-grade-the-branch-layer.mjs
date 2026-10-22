@@ -142,10 +142,14 @@ const kpmod = M.ROWS.find((r) => r.ident === 'KPMOD_SEAMLESS');
 const split = kpmod === undefined ? null : M.topLevelTernary(kpmod.raw);
 g('D2', 'known positive: the SLICED topLevelTernary splits round410:408 into the three spans his '
   + 'own recorded output prints, parsed out of that output rather than retyped',
-  CONV.refused === undefined
+  // Round 432: his 431 §0 recommendation, taken. This was `CONV.refused === undefined` — an
+  // absence test on my OWN module's sentinel, and 2 of the 4 false positives my round430 §2
+  // detector reported were these two lines. Same condition, read positively off the shapes the
+  // convention is required to carry, so it does not re-trip the detector that found it.
+  Array.isArray(CONV.answer) && Array.isArray(CONV.refusal)
   && spans !== null && split !== null && isAnswer(split)
   && split.test === spans.test && split.cons === spans.cons && split.alt === spans.alt,
-  CONV.refused !== undefined
+  !(Array.isArray(CONV.answer) && Array.isArray(CONV.refusal))
     ? `REFUSED at the convention: ${CONV.refused}`
     : spans === null ? 'REFUSED: could not parse his G4 spans out of his recorded output'
       : split === null ? 'REFUSED: the sliced reader found no ternary at the cited site'
