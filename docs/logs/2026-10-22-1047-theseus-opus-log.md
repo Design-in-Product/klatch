@@ -357,3 +357,67 @@ it is his instrument or my timeout. Named rather than guessed.
 position class, explicitly not a defect count.
 
 ## Verification (Session Wrap Protocol)
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -5`, with `%an`):
+
+```
+40ad196f Theseus (Klatch)  coord+log+mail: 10/22 WORK fire — Round 437, three findings and an unbounded population recursion
+ac130cf3 Theseus (Klatch)  round437: three findings on his masker, and his population leg and mine recurse without bound
+b91cd70c Theseus (Klatch)  round437: his 436 §6 taken with a DERIVED round key, and his §5 generalised to four legs by counterfactual
+ce1361bb Theseus (Klatch)  round437: his Round 436 reproduces, and three probes against his §1 cure
+896951ca Daedalus (Klatch) log: 10/22 WORK fire — wrap verification appended …
+```
+
+Authors read with `%an`, not inferred from the subject line. Pushed incrementally in four commits
+rather than one at the end.
+
+**Step 2 — deliverables, read off the TREE at `origin/main`** (`git ls-tree -r --name-only`, not
+`ls` on the worktree):
+
+```
+docs/research/round437-instruments/README.md
+docs/research/round437-instruments/drive1.out
+docs/research/round437-instruments/grade-his-cure-and-the-live-keyed-finding-leg.mjs
+docs/research/round437-instruments/my-round435-after-his-section-6-taken.out
+docs/research/round437-instruments/my-round435-at-his-cure.out
+docs/research/round437-instruments/my-round435-at-the-precure-slice.out
+docs/research/round437-instruments/reproduce-his-round436.out
+docs/research/round437-instruments/swap-drive.mjs
+docs/mail/theseus-to-daedalus-…-both-cures-hold-and-your-masker-models-one-delimiter-out-of-three-2026-10-22.md
+docs/mail/read/daedalus-to-theseus-…-all-three-findings-taken-and-your-section-6-instrument-found-my-own-pin-on-its-first-drive-2026-10-22.md
+```
+
+**Module integrity on `origin/main`:** `git rev-parse origin/main:docs/research/round430-instruments/refusal-convention.mjs`
+→ `44cf2a61639d02921dc019a956de6a882d576bff`, equal to the blob before this fire. The three crippling
+corruptions were restored and none of them shipped.
+
+**Not claimed:** my Round 435 `G3`/`G4`/`G5`/`G9` are still keyed on the live module, so that
+grader's GATE is still `false` on origin/main (red: `G3, G4, G5, G9`). `G6` is green. That is stated
+in the memo as an open item of mine, not as done.
+
+## Drain
+
+- **Drained and done:** session briefing (pull, COORDINATION, mail); his Round 436 memo read on
+  sight and answered in the same fire; his round reproduced as the fire's first action with all
+  three differing lines asserted as rev stamps by content; three findings against his §1 cure, each
+  with controls both ways and one located at the masker; both of his routed findings taken (§6
+  cured with a derived round key, §5 generalised from one leg to four by two independent
+  counterfactuals); the unbounded population recursion found, measured at 15 processes, and cured on
+  my side with `KLATCH_DRIVE_DEPTH`; three module corruptions restored and the blob re-asserted;
+  grader driven to `GATE: true (10 legs)`; reply memo filed; his inbound closed to `docs/mail/read/`;
+  COORDINATION.md updated; four pushes to `origin/main`; wrap verification above.
+- **Deferred, with named blockers:**
+  - *Re-keying Round 435's `G3`/`G4`/`G5`/`G9` onto the slice at the rev the findings were made at*
+    — **no blocker**; not attempted this fire because it changes the semantics of four legs in a
+    published instrument and the fire had ~10 minutes left. Named in the memo as mine.
+  - *Attributing round436's red in my `G9`* — **blocker:** that drive ran under my own 120s child
+    timeout, which is one of the three module-corrupting causes, so the red is not separable from
+    my instrument this fire. Needs a drive with the timeout removed and the blob asserted per
+    population member.
+  - *Finding 1's live-instance reach* — **blocker:** needs the parameter list, so it needs the
+    child-process census harness with a per-file timeout that is still missing. The position-class
+    floor (35 named function forms, 5 named classes) is measured and published instead.
+  - *Vacuity of `G1`, `G6`–`G10`* — **blocker:** they read recordings, other instruments' output and
+    the git tree, so grading them needs a counterfactual over the recordings, a different
+    instrument. Declared in the grader's docblock rather than implied.
+  - *Round 418 §4 capability test* — **blocker:** needs xian. Unchanged, not re-verified this fire.
