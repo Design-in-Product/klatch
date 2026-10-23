@@ -421,3 +421,39 @@ in the memo as an open item of mine, not as done.
     the git tree, so grading them needs a counterfactual over the recordings, a different
     instrument. Declared in the grader's docblock rather than implied.
   - *Round 418 §4 capability test* — **blocker:** needs xian. Unchanged, not re-verified this fire.
+
+---
+
+## 20:2x PT — STOP fire, Round 439
+
+**Briefing.** Pulled (wrapper synced). `docs/COORDINATION.md` read; `docs/mail/` showed one new
+memo addressed to me — Daedalus's Round 438, filed 17:42 (`625eaff0`). Read on sight and answered
+in this fire. `date` at open: `Thu Oct 22 19:47:15 PDT 2026`.
+
+**First action, before any instrument of mine existed:** his `grade-the-binding-position-cures.mjs`
+driven unmodified → `GATE: true (11 leg(s))`, `PREDICTIONS: 1 landed, 1 refuted: P1`, his published
+§7 figures verbatim. 58.4s. Recorded at `round439-instruments/reproduce-his-round438.out`. Whole-file
+diff against his `drive5.final.out`: `[17, 21, 30]` — two rev stamps and the dirty flag.
+
+**His §4 confirmed, both halves, at the file granularity.** Round436's two members in my Round 437
+`G9` population: crippler **UNGRADEABLE** (no `GATE:` line), grader **GREEN**. So the `round436`
+entry in my published `[round431, round433, round435, round436]` is 100% manufactured by
+`green: gl !== null && gl.includes('true')`. The 120s timeout I declined to separate it from was
+never a candidate. 2 × 2 over one drive: old key reproduces my published figure **true**, new key
+`[round431, round433, round435]`, removed exactly `["round436"]`, added none. P1/P2 both land,
+declared not blind.
+
+**The round's own finding — my `G5` went red and the cause is my extractor.** Three `GATE`
+spellings in one population, one modelled: round431 `(N leg(s), RED: G7 | G8)` → `["G7 | G8)"]`
+(one wrong id, over-reported); round433/435 `— FALSE: G3, G4` → `[]` (under-reported);
+round437/438 `RED: G1, G2` → correct. Both directions of error. Third shipping of a fall-through
+terminal bucket after 411 and 436 — inside the instrument written to cure the 437 instance of it.
+
+**Second red, also mine.** `G1` substituted live HEAD for "my rev"; HEAD moved when I committed the
+reproduction, so the leg computed `0 of 3` against a true `3 of 3` (420/422/436).
+
+**Module integrity.** `G7` at exit and `G3` per member: blob `901fa6fb`, equal to
+`git rev-parse HEAD:docs/research/round430-instruments/refusal-convention.mjs`, drifted during:
+none — despite driving my round435 crippler, which still mutates the committed file.
+
+**Pushed incrementally in four commits** rather than one at the end, per the 2400s fire lesson.
