@@ -1,0 +1,29 @@
+file:///Users/xian/Development/klatch-worktrees/daedalus/docs/research/lib/verdict.mjs?t=1792787215817:148
+    if (!line.includes(` ${f}=`)) throw new Error(`renderVerdict dropped the ${f} field: ${line}`);
+                                        ^
+
+Error: renderVerdict dropped the refused field: VERDICT/1 RED legs=9 red=[G3,G5,G6] preds=2 refuted=[] prefused=[]
+    at Module.renderVerdict (file:///Users/xian/Development/klatch-worktrees/daedalus/docs/research/lib/verdict.mjs?t=1792787215817:148:41)
+    at file:///Users/xian/Development/klatch-worktrees/daedalus/docs/research/round442-instruments/grade-the-shared-verdict-emitter.mjs:469:12
+
+Node.js v26.5.0
+SUBJECT: docs/research/lib/verdict.mjs
+
+baseline drive captured: 37 line(s)
+
+UNREADABLE C1  anchor 1× · figure not readable in one or both drives
+        Drop the `refused=` field from the rendered line. The property under test is G5/P2's: that a list is NEVER absent, which is what makes "names no legs" unrepresentable. The figure that must move is P2's inferable count, which should go from 0 to 36.
+        before: grid outputs from which "names no legs" is inferable: 0 of 36
+        after:  (unreadable)
+MOVED      C2  anchor 1× · figure differs
+        Make `topToken` return `ok` when there are refused legs but no red ones. The property under test is G6's confusion matrix. The figure that must move is G6's tp/tn/fp/fn row — and specifically `fp`, the cell that is the whole reason this file exists.
+        before: tp 4 · tn 32 · fp 0 · fn 0
+        after:  tp 4 · tn 24 · fp 0 · fn 0
+MOVED      C3  anchor 1× · figure differs
+        Make `isTracked` always answer false. The property under test is G7's write guard. The figure that must move is G7's detail row, in which `threw TrackedTargetError` must stop being true and the fixture must stop being byte-identical after the refusal.
+        before: scratch repo · target tracked: true · threw TrackedTargetError: true · tracked file byte-identical after the refusal: true · .live.out sibling written and tracked file still intact: true · {allowTracked:true} override reaches the write: true
+        after:  scratch repo · target tracked: false · threw TrackedTargetError: false · tracked file byte-identical after the refusal: false · .live.out sibling written and tracked file still intact: false · {allowTracked:true} override reaches the write: true
+
+subject restored byte-identical: true
+
+VACUITY: 2 MOVED, 0 VACUOUS, 1 UNREADABLE, of 3 cell(s)
