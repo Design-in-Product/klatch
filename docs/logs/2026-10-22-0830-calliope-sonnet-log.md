@@ -144,3 +144,76 @@ items row: cadence "daily, at STOP fire") — not written here, correctly deferr
 checkpoint + all four cross-repo mailboxes, including a full grep of the PPM batch rather than
 skipping it on volume); gate re-derived fresh and green at every layer; rollup/task-list re-checked,
 nothing moved. Two consecutive checks found nothing further unblocked. Fire closed bounded.
+
+## STOP fire (~21:4x PT)
+
+Checkpoint is this seat's own 17:04:28 PT SWEEP-fire commit `e797a859`. `git fetch origin && git
+log e797a859..HEAD --format='%h %an %ci %s'` — 11 new commits, none mine: Daedalus's Round 438
+chain (`8939ca5c`/`fb8a12c5`/`625eaff0`/`0332a688`/`79f705da`), Argus's own STOP-fire no-op
+(`c43be250`), Iris's own STOP-fire no-op pair (`a1988a03`/`ed72a5cc`), Theseus's Round 439 chain
+(`99768c95`/`d56fcb5f`/`7360c60e`/`b6e2a04e`/`1d8deb87`). `git diff --stat e797a859..HEAD --
+packages/ scripts/` empty — all eleven commits under `docs/research/round438-instruments/` and
+`round439-instruments/` plus mail/coord/log.
+
+**Mail:** `grep -li "^to:.*calliope" docs/mail/*.md` (excluding `read/`) returns the same four
+standing Pard threads as every prior fire this week, none newer. Two new mail files since
+checkpoint via `git log -- docs/mail/`: Daedalus's Round 438 reply to Theseus (already moved to
+`read/`) and Theseus's Round 439 reply to Daedalus (still open in `docs/mail/`, read in full) —
+both cc this seat, addressed to each other, neither asking action; the Round 439 thread's close is
+Daedalus's/Theseus's call, correctly left open. All four writable cross-repo mailboxes checked via
+`find -newermt "2026-10-22 17:04:28 -0700"` — zero new files in any. Cross-pollination brief and
+fire-depth report both unchanged since this morning (checked via `git log -1 --format='%ci'` on
+each, both predate the checkpoint). Nothing owed from any.
+
+**Round 436–439, read in full** (both memos already in `read/` plus the two above) to write
+today's mandatory `log.html` entry: Daedalus's Round 436 (both of Theseus's Round 435 findings
+cured — a method-shape leg and a dot-reading fix with a third, previously unreported member found
+mid-cure; a promotion-stability check built at Theseus's request immediately caught Daedalus's own
+freshly-written leg, pinned to a value that only holds at the moment of commit; both predictions
+refuted — one because curing a bug emptied the demonstration built on it as a live example, one
+because a population figure read off a memo was stale by the time it was read); Theseus's Round 437
+(three new reference-detector holes — a function/class's own name, a non-comma-delimited member
+list checking only its first entry, an ASI edge case — plus Daedalus's self-exclusion diagnosed as
+symmetric: both sides' population-counting legs were spawning each other without bound, fixed with
+a round-number-derived key and a depth guard); Daedalus's Round 438 (depth guard adopted, two of
+the three findings cured, the third documented as a named residual; the previously-unattributed
+Round 436 red traced to a crippler script that prints no verdict line at all, which Theseus's own
+extractor's catch-all default silently counted as a failure); Theseus's Round 439 (confirmed
+Daedalus's attribution at file granularity, then found the identical catch-all-default mistake one
+level deeper in his own extractor's failing-leg detail — the third time this category of mistake
+has been caught in this stretch, each time one level further down — plus a recurring live-HEAD
+stamp-pin defect in a brand-new same-day file).
+
+**Mandatory `log.html` entry, due this fire, written on time — not a lapse.** Translated the
+MID-fire MVP-feature pick and the Round 436–439 chain above into plain-language, name-free
+narrative (five paragraphs): the feature pick and its reasoning; two reference-detector cures plus
+the promotion-check catching a freshly-written leg; two wrong predictions and why each was
+instructive; the circular self-exclusion/depth-guard fix plus a crippler found mutating the real
+tracked file instead of a scratch copy; three more detector holes (two cured, one left named); and
+the repeated catch-all-default mistake caught at two levels plus the recurring stamp-pin defect.
+Inserted above the 10-21 entry, `id="2026-10-22"`. Checked tag balance for the inserted block
+specifically (one `log-entry` div, one matching `end entry` comment) — the file-wide div/comment
+count has a pre-existing mismatch of 3 unrelated to this edit, confirmed by diffing the pre-edit
+`HEAD:log.html` count against the post-edit count (both off by exactly 3). `calliope-tasks.md`'s
+recurring-items row updated (`next_due` 2026-10-23, `last_completed` 2026-10-22) with a content
+summary appended, same pattern as every prior on-time entry.
+
+**Gate re-verified fresh:** `npm run typecheck` 0 `error TS` across all four workspaces; `npm test
+-w packages/server` — **140/2183+1 (2184)**, unchanged; `npm test -w packages/client` —
+**26/333+13 (346)**, unchanged; `node scripts/sweep-probes.mjs --census` — **153 probe files, 43
+swept/110 deferred, CENSUS OK**, unchanged. No full sweep re-drive — `packages/`/`scripts/` diff
+against the last fresh drive is empty. `git status --short` clean before and after; `lsof -i :3001`
+port free. Rollup checked directly, still v171, needs-you unchanged at 2, neither item touched by
+today's eleven commits.
+
+Task list of record unchanged: smoke-run branch still doesn't exist; no named blocker moved. The
+standing "Round 418 §4 capability test" research-track item stays needs-xian per every round's own
+header, unchanged this fire too — it has never been a rollup-tracked needs-you item and is not
+newly surfaced today, so not added to `log.html`.
+
+**Drain:** mail checked (own-seat header grep + commit-diff-since-checkpoint + all four cross-repo
+mailboxes); the two new round-mail memos read in full, neither owed action, one correctly left
+open for its addressees; the mandatory logbook entry was due this fire and written this fire, from
+a full read of all four round memos rather than summarized from headers; task-list bookkeeping
+updated alongside it; gate re-derived fresh and green at every layer; rollup re-checked, nothing
+moved. Two consecutive checks found nothing further unblocked. Fire closed bounded.
