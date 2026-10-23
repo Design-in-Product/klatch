@@ -33,3 +33,20 @@ No-op on product. Gate re-verified fresh and green, byte-identical to the 09:07 
 - Two consecutive checks (round-chain/cc mail + all four cross-repo mailboxes) found nothing further unblocked — fire closed bounded.
 
 Nothing new needs xian beyond the one standing item (CIO/Laya).
+
+## ~18:03 PT — STOP fire
+
+No-op on product. Gate re-verified fresh and green, byte-identical to the 13:33 PT checkpoint.
+
+**Drain:**
+- Last Argus checkpoint: `d5fcb38d` (10/22 13:39 PT WORK fire).
+- `git log d5fcb38d..HEAD --format='%h %an %s'` — 15 new commits, none mine: Daedalus's Round 436 chain (`f0bedd24`, `b3d6de79`, `ba5b1206`, `896951ca` — his §6 instrument found a real red in his own file on his own promotion), Theseus's Round 437 chain (`ce1361bb`, `b91cd70c`, `ac130cf3`, `40ad196f`, `48d486f7` — his 436 §6 taken with a derived round key, §5 generalised, three findings routed to Daedalus, an unbounded population recursion named), Calliope's SWEEP fire (`e797a859`, no-op, gate re-verified byte-identical), and Daedalus's Round 438 chain (`8939ca5c`, `fb8a12c5`, `625eaff0`, `0332a688`, `79f705da` — his 437 §4 taken, Findings 1 and 2 cured, Finding 3 taken as a docblock correction, his own population leg found to be manufacturing reds, his reply to Theseus identifying Theseus's unattributed round436 red as a crippler with no GATE line). All author-checked with `%an`.
+- `git diff --stat d5fcb38d..HEAD -- packages/ scripts/` — empty. No product or instrument code touched.
+- Mail: `grep -l "^\*\*To:\*\* Argus" docs/mail/*.md` — no hits. One new mail file today: `daedalus-to-theseus-cc-xian-janus-argus-calliope-iris-...-2026-10-22.md`, addressed to Theseus, cc this seat. Read in full — closes the round436/437/438 chain's open attribution question (the red was `round436-instruments/cripple-and-regrade.mjs`, a file with no `GATE:` line, not Theseus's timeout or instrument). Nothing routed to this seat; its own "Needs xian" line is unchanged from prior rounds (Round 418 §4 capability test).
+- All four writable cross-repo mailboxes checked by `find -newer` against this log's own 07:19 PT mtime: designinproduct (4 new — a household-money-agent registry thread, a start-mode/mailbox memo, a GitHub-app forensics memo, and a memo-timestamp correction — grepped clean, 0 klatch/argus hits), mediajunkie (0 new), piper-morgan-product/mailboxes (dozens of new PM-internal thread files, grepped clean, 0 klatch/argus hits), dispatch/mail (0 new). Nothing owed from any.
+- **Gate re-derived fresh, not taken from any memo:** `lsof -i :3001` — port free. `npm run typecheck` all four workspaces — exit clean, 0 `error TS`. `npm test -w packages/server` unpiped — **140 files/2183 passed/1 skipped (2184)**, byte-identical. `npm test -w packages/client` unpiped — **26 passed|13 skipped (39) / 333 passed|13 skipped (346)**, byte-identical. Full driving sweep (backgrounded, exit 0), verdict read from the file's own printed line — **SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but did not finish), 0 census problem(s), 110 deferred**, byte-identical.
+- `git status --short` clean before and after (scratch sweep-output file removed, never staged).
+- Standing blockers re-checked, both unmoved: CIO Laya/AAXT thread, last touch still own 10/6 reply, parked on xian's scheduling call; intel sweep cadence, `docs/intel/2026-10-19-sweep-curated.md` remains latest, next due ~10/26, not due this fire.
+- Two consecutive checks (round-chain/cc mail + all four cross-repo mailboxes) found nothing further unblocked — fire closed bounded.
+
+Nothing new needs xian beyond the one standing item (CIO/Laya).
