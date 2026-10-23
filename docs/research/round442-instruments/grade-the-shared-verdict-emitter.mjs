@@ -211,17 +211,33 @@ let CONTROL_N = null;
   // CONTROL — real emitted lines, from committed recordings, at the rev.
   const outs = git('ls-tree', '-r', '--name-only', REV, 'docs/research/').split('\n')
     .filter((f) => f.endsWith('.out'));
-  const withGate = [];
+  // The control is "recordings that have NOT adopted the emitter", and that must be keyed
+  // POSITIVELY on the absence of a `VERDICT/` line rather than assumed from the population's name.
+  //
+  // Drive 2 went red here and P1 was REFUTED at `148 gate-bearing · 147 refused`, on its own
+  // promotion: the 148th was this round's own committed `drive1.out`, which carries both the old
+  // prose line AND the new `VERDICT/1` line, so the reader PARSED it — correctly. A control keyed
+  // only on `GATE: ` is contaminated by the subject's own output the moment it is committed
+  // (377/405/434/435 — a pin on a count reddens on its own promotion; 425 — an instrument does not
+  // census its own source). The partition below is the cure, and the ADOPTED count is printed so
+  // the exclusion cannot be vacuous without showing it (430 — read the exclusion count, not the
+  // verdict).
+  const adopted = []; const unadopted = [];
   for (const f of outs) {
     const blob = git('show', `${REV}:${f}`);
-    if (blob.split('\n').some((l) => l.startsWith('GATE: '))) withGate.push({ f, blob });
+    const lines = blob.split('\n');
+    if (!lines.some((l) => l.startsWith('GATE: '))) continue;
+    (lines.some((l) => l.startsWith('VERDICT/')) ? adopted : unadopted).push({ f, blob });
   }
-  CONTROL_N = withGate.length;
-  const notRefused = withGate.filter(({ blob }) => V.readVerdict(blob).ok !== false);
-  const refusalCodes = [...new Set(withGate.map(({ blob }) => V.readVerdict(blob).refusal))];
+  CONTROL_N = unadopted.length;
+  const notRefused = unadopted.filter(({ blob }) => V.readVerdict(blob).ok !== false);
+  const refusalCodes = [...new Set(unadopted.map(({ blob }) => V.readVerdict(blob).refusal))];
+  // The other half of the 2 × 2: an ADOPTED recording must PARSE, not refuse. Without this, a
+  // reader that refused everything would pass the control half by itself.
+  const adoptedNotParsed = adopted.filter(({ blob }) => V.readVerdict(blob).ok !== true);
 
   const ok = missing.length === 0 && notRoundTripped.length === 0
-    && CONTROL_N > 0 && notRefused.length === 0;
+    && CONTROL_N > 0 && notRefused.length === 0 && adoptedNotParsed.length === 0;
   leg('G5', 'A LIST IS NEVER ABSENT, AND THE OLD LINES ARE NEVER MISTAKEN FOR THE NEW GRAMMAR — '
     + 'this is the leg that grades the cure for the defect Theseus found in my Round 440 G9. '
     + 'Positive half: all 36 grid cases carry every one of the six fields and round-trip. Control '
@@ -229,9 +245,11 @@ let CONTROL_N = null;
     + 'reader that said `ok` to everything cannot pass this leg on the positive half alone',
     `grid ${GRID.length} · field-dropping ${missing.length} ${JSON.stringify(missing.slice(0, 2))} · `
     + `round-trip failures ${notRoundTripped.length} ${JSON.stringify(notRoundTripped.slice(0, 2))}\n`
-    + `        CONTROL: ${CONTROL_N} committed recording(s) under docs/research/ carrying a real `
-    + `emitted \`GATE: \` line at ${SHORT}, selected with ls-tree · not refused: ${notRefused.length} `
-    + `${JSON.stringify(notRefused.slice(0, 2).map((x) => x.f))} · refusal codes observed: `
+    + `        CONTROL 2 × 2 over committed recordings under docs/research/ at ${SHORT}, selected `
+    + `with ls-tree: UNADOPTED (a \`GATE: \` line and no \`VERDICT/\` line) ${CONTROL_N}, of which `
+    + `not refused ${notRefused.length} ${JSON.stringify(notRefused.slice(0, 2).map((x) => x.f))} · `
+    + `ADOPTED (both lines) ${adopted.length} ${JSON.stringify(adopted.map((x) => x.f))}, of which `
+    + `not parsed ${adoptedNotParsed.length} · refusal codes observed on the unadopted half: `
     + `${JSON.stringify(refusalCodes)}`, ok);
 }
 
@@ -240,11 +258,21 @@ let CONTROL_N = null;
 // confusion matrix rather than against a known positive (418 — a separating key needs a matrix).
 // ═════════════════════════════════════════════════════════════════════════════════════════════════
 {
-  let tp = 0; let tn = 0; let fp = 0; let fn = 0;
+  let tp = 0; let tn = 0; let fp = 0; let fn = 0; let threw = 0;
   const offenders = [];
+  const throwers = [];
   for (const c of GRID) {
     let line;
-    try { line = V.renderVerdict(c); } catch { continue; }
+    // A case that throws is counted in its OWN cell, not skipped.
+    //
+    // Drive 1 of this leg had `catch { continue; }` here, and the vacuity cell C2 exposed what
+    // that costs: crippling `topToken` made 8 of 36 cases throw, they vanished from the matrix,
+    // and the cells came back `tp 4 · tn 24 · fp 0 · fn 0` — summing to 28 against a grid of 36,
+    // with `fp` still 0 and this leg still GREEN. The `catch` was a filter making the leg's own
+    // conjunct true (380/381/385/386), and the numbers in the printed sentence did not add up
+    // (379). The matrix sum is now asserted against the grid size, so a case cannot leave the
+    // population by throwing.
+    try { line = V.renderVerdict(c); } catch (e) { threw += 1; throwers.push(e.message.slice(0, 90)); continue; }
     const claimsGreen = line.startsWith(`${V.SCHEMA} ok `);
     const isGreen = c.r === 0 && c.f === 0;
     if (claimsGreen && isGreen) tp += 1;
@@ -252,12 +280,17 @@ let CONTROL_N = null;
     else if (claimsGreen && !isGreen) { fp += 1; offenders.push(line); }
     else { fn += 1; offenders.push(line); }
   }
-  const ok = fp === 0 && fn === 0 && tp > 0 && tn > 0;
-  leg('G6', 'THE GREEN TOKEN TRACKS THE LISTS EXACTLY — confusion matrix over the grid. `fp` is '
-    + 'the failure this file exists to prevent (a non-green run quoted green); `fn` is the one '
-    + 'that would make the token useless in the other direction. Both cells must be 0 AND both '
-    + 'true cells non-empty, so an emitter that never printed `ok` at all could not pass',
-    `tp ${tp} · tn ${tn} · fp ${fp} · fn ${fn}${offenders.length ? ` · offenders ${JSON.stringify(offenders.slice(0, 3))}` : ''}`,
+  const sum = tp + tn + fp + fn + threw;
+  const ok = fp === 0 && fn === 0 && threw === 0 && tp > 0 && tn > 0 && sum === GRID.length;
+  leg('G6', 'THE GREEN TOKEN TRACKS THE LISTS EXACTLY — confusion matrix over the grid, WITH its '
+    + 'cells asserted to sum to the grid size. `fp` is the failure this file exists to prevent (a '
+    + 'non-green run quoted green); `fn` is the one that would make the token useless in the other '
+    + 'direction; `threw` is the cell whose absence kept this leg green at tp 4 / tn 24 / fp 0 / '
+    + 'fn 0 — 28 of 36 — under drive 1\'s `catch { continue }`. All three must be 0, both true '
+    + 'cells non-empty, and the sum exact, so no case can leave the population by throwing',
+    `tp ${tp} · tn ${tn} · fp ${fp} · fn ${fn} · threw ${threw} · sum ${sum} of grid ${GRID.length}`
+    + `${offenders.length ? ` · offenders ${JSON.stringify(offenders.slice(0, 3))}` : ''}`
+    + `${throwers.length ? ` · throwers ${JSON.stringify(throwers.slice(0, 2))}` : ''}`,
     ok);
 }
 
@@ -399,21 +432,29 @@ const g9 = () => {
   // P1 — adoption cannot be silently partial.
   const outs = git('ls-tree', '-r', '--name-only', REV, 'docs/research/').split('\n')
     .filter((f) => f.endsWith('.out'));
-  let gateBearing = 0; let refusedByName = 0;
+  let unadopted = 0; let refusedByName = 0; let adoptedN = 0; let adoptedParsed = 0;
   for (const f of outs) {
     const blob = git('show', `${REV}:${f}`);
-    if (!blob.split('\n').some((l) => l.startsWith('GATE: '))) continue;
-    gateBearing += 1;
+    const lines = blob.split('\n');
+    if (!lines.some((l) => l.startsWith('GATE: '))) continue;
     const r = V.readVerdict(blob);
-    if (r.ok === false && V.REFUSALS.includes(r.refusal)) refusedByName += 1;
+    if (lines.some((l) => l.startsWith('VERDICT/'))) {
+      adoptedN += 1;
+      if (r.ok === true) adoptedParsed += 1;
+    } else {
+      unadopted += 1;
+      if (r.ok === false && V.REFUSALS.includes(r.refusal)) refusedByName += 1;
+    }
   }
-  pred('P1', 'ADOPTION IS DETECTABLE RATHER THAN SILENTLY PARTIAL. Every committed recording that '
-    + 'carries a real emitted `GATE: ` line is refused by the new reader with a DECLARED refusal '
-    + 'code — so an instrument half-migrated to the emitter reads as absent, not as green. The '
-    + 'failure mode this predicts against is the one that has cost this chain the most: a reader '
-    + 'that is silently empty on the slice that has not adopted',
-    `gate-bearing recordings ${gateBearing} · refused with a declared code ${refusedByName}`,
-    gateBearing > 0 && refusedByName === gateBearing);
+  pred('P1', 'ADOPTION IS DETECTABLE RATHER THAN SILENTLY PARTIAL, BOTH WAYS. An UNADOPTED '
+    + 'recording is refused by a DECLARED code, and an ADOPTED one PARSES — so a half-migrated '
+    + 'instrument reads as absent rather than as green, and a reader that refused everything could '
+    + 'not pass this by refusing. Drive 2 scored this REFUTED at 148 gate-bearing / 147 refused, '
+    + 'and the 148th was this round\'s own committed drive1.out: the prediction reddened on its own '
+    + 'promotion, which is the behaviour, not a defect in it. Re-keyed as the partition',
+    `UNADOPTED ${unadopted}, refused with a declared code ${refusedByName} · `
+    + `ADOPTED ${adoptedN}, parsed ${adoptedParsed}`,
+    unadopted > 0 && refusedByName === unadopted && adoptedParsed === adoptedN);
 
   // P2 — the ambiguity has no image under the new grammar.
   let inferable = 0;

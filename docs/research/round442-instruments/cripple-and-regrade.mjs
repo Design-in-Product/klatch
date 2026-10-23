@@ -67,6 +67,14 @@ const CELLS = [
     anchor: "    `refused=${renderList(L.null)}`,\n",
     replace: '',
     figure: (t) => predDetail(t, 'P2'),
+    // Re-aimed after drive 1 reported this cell UNREADABLE, and the report was correct: dropping
+    // the field makes the SUBJECT'S OWN assertion throw, the grader dies at its tail, and P2's
+    // line is never printed. That is a STRONGER outcome than a moved figure — the property is
+    // enforced rather than merely measured — but a crash is not a pass, and a harness that
+    // credited any crash would be a terminal bucket absorbing every blindness (411). So the
+    // invariant is keyed POSITIVELY: the crippled drive must carry the subject's own specific
+    // error naming the dropped field, and the baseline must not.
+    invariant: 'renderVerdict dropped the refused field',
   },
   {
     id: 'C2',
@@ -123,6 +131,19 @@ try {
     const before = cell.figure(baseline);
     const after = cell.figure(crippled);
     let verdict;
+    // A cell may declare an `invariant`: the subject's own assertion text. The cripple is credited
+    // only if that exact text appears in the crippled drive and NOT in the baseline — positively
+    // keyed, so a crash for any other reason does not land here.
+    if (cell.invariant !== undefined
+      && crippled.includes(cell.invariant) && !baseline.includes(cell.invariant)) {
+      out.push(`CAUGHT      ${cell.id}  anchor 1× · the subject's OWN invariant rejected the cripple`);
+      out.push(`        ${cell.why}`);
+      out.push(`        invariant fired, and is absent from the baseline: ${JSON.stringify(cell.invariant)}`);
+      out.push(`        figure before: ${before === null ? '(unreadable)' : before}`);
+      out.push(`        figure after:  ${after === null ? '(not printed — the drive died at the invariant)' : after}`);
+      moved += 1;
+      continue;
+    }
     if (before === null || after === null) {
       verdict = 'UNREADABLE';
       unreadable += 1;
