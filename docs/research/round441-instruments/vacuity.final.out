@@ -1,0 +1,15 @@
+Round 441 — vacuity: every cell must move a NAMED FIGURE, not just the verdict
+
+baseline  GATE: true   (9 leg(s))
+
+MOVED   C1  aimed at G3 → G4 — the quote-style model: KLATCH_R441_QUOTES=backtick-only, the key I would have written first. round433 emits its gate line by single-quote concatenation, so under that key its emit-site count must fall 1 → 0 — the member goes INVISIBLE rather than mis-read, which is the 398 shape by name — G3 must name it as a declared emitter with no emit site, and G4 must then REFUSE rather than publish a matrix over a red hand reading
+        round433 emit sites 1 → 0 · G3 ok → FAIL · G4 ok → REF · named as a declared emitter with no emit site: true
+MOVED   C2  aimed at G2 — the population key: the round cut moved to 433. The grader COUNT must move and the agreement with his published tail must fail — a leg that stayed green under a different population was never reading the population (414)
+        G2 ok → FAIL · population 11 → 5 · KEY CRIPPLED reported: true
+MOVED   C3  aimed at G4 → G5 — the hand reading itself: round432 re-declared `capable: false` in a pid-stamped copy. The detector still reads it as capable, so G4 must name it a FALSE POSITIVE — the first version of this cell asserted a false NEGATIVE and was grading the wrong direction of its own matrix — and G5 must then lose its capable-among-his-five figure entirely, which is what shows G5 reads G4 rather than re-typing a conclusion (428)
+        anchor occurs 1× · G4 ok → FAIL · G5 ok → REF · capable-among-his-five 2 → REFUSED (G5 keyed on a red G4) · round432 named a false positive: true
+MOVED   C4  aimed at G7 → G8 — the write-site model: the census restricted to `join(REPO, …)` in a pid-stamped copy, dropping every `HERE`-relative target. The tracked-target COUNT must fall and the coverage of the two paths his own G10 found must break — a census that still covered them under a crippled model was not keyed on the model
+        anchor occurs 1× · G7 ok → FAIL · G8 ok → ok · tracked targets 9 → 2 · covers his two: true → false
+
+VACUITY: 4/4 cell(s) moved their figure
+  subject byte-identical at exit: true · tracked files dirty vs HEAD: 0 []

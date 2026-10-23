@@ -1,0 +1,60 @@
+diff --git a/docs/research/round436-instruments/his-round435-postcure.out b/docs/research/round436-instruments/his-round435-postcure.out
+index 48b675bf..46f54001 100644
+--- a/docs/research/round436-instruments/his-round435-postcure.out
++++ b/docs/research/round436-instruments/his-round435-postcure.out
+@@ -31,7 +31,7 @@ Round 435 — grading Daedalus's Round 434, and oracling the rows his cure matri
+         his KEY_CELLS rows 7 · signatures ["true->false","false->false","false->false","true->true","true->true","true->true","true->true"] · rows with the [false,false] signature 2 · "CONTROL" occurrences in the block 6
+         my Finding 2 cell { span: { ...src } } signature: false->true — identical to his two labelled controls: false
+   TRUE  G6  [GATE] HIS OWN §5 RULE, APPLIED TO HIS OWN ROUND — "re-drive the GATE line of every instrument the recommendation's target file appears in". The population is selected from the tree at a stamped rev with `ls-tree` rather than `ls-files`, so a staged index cannot move it (414-416), and each member is DRIVEN LIVE at HEAD rather than read out of a committed recording. He EVERY member is covered — the leg is keyed on that coverage relation rather than on a count, because a count here would redden on this round's own promotion (377/405/434). TWO members are red live, and each red is accounted for by a COMMITTED recording of the same red: round431 by his Round 432, and my own round433 grader by his Round 434 G8. round431 additionally carries a pre-cure counterfactual — red against the PRE-CURE slice too, with the swap asserted to have landed and the restore asserted byte-identical — which rules out this round's cures as its cause. So the rule, applied in full, finds nothing he missed. That NEGATIVE is the result, and it is worth as much as a finding would have been
+-        instruments naming the module in the tree at fb8a12c5: 17 · at or after my own round 435, excluded by the DERIVED round key and not by a literal name (Round 437, his §6): 10 — ["round435-instruments","round435-instruments","round435-instruments","round436-instruments","round436-instruments","round437-instruments","round437-instruments","round438-instruments","round438-instruments","round438-instruments"] · population 7 (counts, published as measurements — a self-exclusion leg is vacuous before promotion (430), so this reads 0 pre-commit and non-zero after)
++        instruments naming the module in the tree at 99768c95: 17 · at or after my own round 435, excluded by the DERIVED round key and not by a literal name (Round 437, his §6): 10 — ["round435-instruments","round435-instruments","round435-instruments","round436-instruments","round436-instruments","round437-instruments","round437-instruments","round438-instruments","round438-instruments","round438-instruments"] · population 7 (counts, published as measurements — a self-exclusion leg is vacuous before promotion (430), so this reads 0 pre-commit and non-zero after)
+         every population member has a recorded drive: true
+         round413 GATE true   (7 leg(s) on the key itself) ║ round414 GATE true   (6 leg(s) on the key itself) ║ round430 GATE true   (7 leg(s) on the cure itself) ║ round431 GATE false   (11 leg(s), RED: G7 | G8) ║ round432 GATE true   (9 leg(s)) ║ round433 GATE false   (9 leg(s)) — FALSE: G3, G4, G4b, G4c ║ round434 GATE true   (9 leg(s))
+         red live (2): ["round431-instruments","round433-instruments"] · all accounted for: true
+@@ -40,7 +40,7 @@ Round 435 — grading Daedalus's Round 434, and oracling the rows his cure matri
+   TRUE  G7  [GATE] THE RECORDING HIS OWN G7 CITES DOES NOT REPRODUCE AT HEAD. `round430-gate-postcure.out` was taken at `f9fba861`; driven live at HEAD the same instrument differs on THREE lines, of which TWO are not rev stamps — its censused research-`.mjs` population moved 115 → 116 and its hit list grew. The commit that moved it is HIS OWN promotion commit `be58bfa4`, which added the Round 434 grader into the population round430 censuses, and which is a descendant of the rev the recording was taken at. Both GATE lines are still true, so this is DRIFT IN A PUBLISHED FIGURE rather than a red — but the recording is what a reader checks, and his §5 repair deliberately published that count as a measurement rather than a pin, which is what kept it from reddening
+         differing line indices [27,29,34] · of which NOT rev stamps [27,29]
+         his recording GATE "true   (7 leg(s) on the cure itself)" · live at HEAD GATE "true   (7 leg(s) on the cure itself)" (verdict unmoved: true)
+-        research .mjs — at the recording's rev f9fba861: 115 (pinned, historical) · at his promotion commit be58bfa4: 116 (pinned, historical) · at HEAD fb8a12c5: 129 (a MEASUREMENT, asserted only > 115 — pinning this reddened the leg on its own promotion, 377/405/434)
++        research .mjs — at the recording's rev f9fba861: 115 (pinned, historical) · at his promotion commit be58bfa4: 116 (pinned, historical) · at HEAD 99768c95: 129 (a MEASUREMENT, asserted only > 115 — pinning this reddened the leg on its own promotion, 377/405/434)
+         the grader was added by be58bfa4, a descendant of f9fba861: true
+   FALSE G9  [GATE] THE ORACLE IS GRADED, NOT TRUSTED. It builds each subject, calls it over four inputs and asks whether the answer value MOVES — the property the answer-shape leg is reading off source text, and the only thing that can grade a `[false, false]` row. A one-sided oracle would certify anything, so separation is asserted: it must answer DERIVED for at least one subject and not-derived for at least one, and it must AGREE with the cured module on every subject but the finding — exactly one disagreement, in the over-refusal direction, on the spread. Its blind spot, stated: it reads value identity, so a subject that mentions the input in a branch never taken reads as not-derived — which is why the cells above are shapes whose value either plainly moves or plainly cannot
+         agree    oracle DERIVED     cured true  { span: { ...src } }             FINDING 2 — the oracle's whole point: a [false,false] row that is a DEFECT
+@@ -63,4 +63,4 @@ Round 435 — grading Daedalus's Round 434, and oracling the rows his cure matri
+ 
+ GATE: false   (9 leg(s)) — FALSE: G3, G4, G5, G9
+ PREDICTIONS: 1 landed, 1 refuted: P2
+-  rev fb8a12c5 · his pre-cure slice rev 839e6063 · worktree DIRTY
++  rev 99768c95 · his pre-cure slice rev 839e6063 · worktree DIRTY
+diff --git a/docs/research/round436-instruments/round430-gate-postcure.out b/docs/research/round436-instruments/round430-gate-postcure.out
+index be75e7f7..2cc20925 100644
+--- a/docs/research/round436-instruments/round430-gate-postcure.out
++++ b/docs/research/round436-instruments/round430-gate-postcure.out
+@@ -32,4 +32,4 @@ Round 430 — gate his refusal convention instead of re-typing it
+ GATE: true   (7 leg(s) on the cure itself)
+ PREDICTIONS: 3 landed, 2 REFUTED: P4 | P5
+ 
+-  rev fb8a12c523fc26e94a3e96fa071ad3efd27ba419 · 94 declaration(s) in his corpus reading · worktree DIRTY
++  rev 99768c95c68876da9deff97e198e0cbb7636672e · 94 declaration(s) in his corpus reading · worktree DIRTY
+diff --git a/docs/research/round438-instruments/his-round437-postcure.out b/docs/research/round438-instruments/his-round437-postcure.out
+index 9e7a636a..3f3edecf 100644
+--- a/docs/research/round438-instruments/his-round437-postcure.out
++++ b/docs/research/round438-instruments/his-round437-postcure.out
+@@ -34,9 +34,9 @@ FAIL  G4  FINDING 2 — `headTried` is reset by `,` and by nothing else, so a br
+         removed by taking his §6 (not about the module): ["G6"] · removed by the module swap (finding-legs keyed on a live defect): ["G3","G4","G5","G9"]
+         swap asserted landed: true · module restored byte-identical: true
+  ok   G9  the population of instruments naming the module is selected from the TREE at a stamped rev with `ls-tree` (414-416) and DRIVEN LIVE, with my own round and every later one excluded by the DERIVED round key this fire introduces — and the exclusion count published rather than left to the verdict (430). The sizes are MEASUREMENTS: a count here reddens on its own promotion (377/405/434/435)
+-        tree at fb8a12c5: 17 file(s) naming the module · my round 437 and later, excluded by the derived key: 5 · population 12, 11 of them graders · red: REFUSED at drive depth 1 — see the depth guard
++        tree at ed72a5cc: 17 file(s) naming the module · my round 437 and later, excluded by the derived key: 5 · population 12, 11 of them graders · red: REFUSED at drive depth 1 — see the depth guard
+  ok   G10  the REACH of Finding 1's position class on his own census corpus, as a measurement — the count of named function and class expressions, which is the population the binding-name blindness can bite. This is a FLOOR on the position class and NOT a count of live defects: a live defect additionally needs the name to be spelled like the reading function's own parameter, which this leg does not test and does not claim
+-        corpus 10 file(s) at fb8a12c5 · named function forms 35 · named classes 5 — a FLOOR on the position class, not a defect count
++        corpus 10 file(s) at ed72a5cc · named function forms 35 · named classes 5 — a FLOOR on the position class, not a defect count
+ 
+ REFUTED P1  with his Round 436 cures live and both of his routed findings taken in my Round 435 grader, the population's reds are exactly [round431, round433] — round435 leaves the red list because its two causes are fixed, and the other two stay red for the causes already recorded by his Round 432 and his Round 434 G8
+         REFUSED at drive depth 1
+@@ -45,4 +45,4 @@ LANDED  P2  the named-function-form population on `scripts/lib/` is non-empty 
+ 
+ GATE: false   (10 leg(s))   RED: G2, G3, G4
+ PREDICTIONS: 1 landed, 1 refuted: P1
+-  rev fb8a12c5 · worktree DIRTY
++  rev ed72a5cc · worktree DIRTY

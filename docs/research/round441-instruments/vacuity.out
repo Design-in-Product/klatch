@@ -1,0 +1,15 @@
+Round 441 — vacuity: every cell must move a NAMED FIGURE, not just the verdict
+
+baseline  GATE: true   (9 leg(s))
+
+VACUOUS C1  aimed at G4 — the quote-style model: KLATCH_R441_QUOTES=backtick-only, the key I would have written first. It must not merely redden G4 — tp must FALL and round433 must appear as a false negative, because that is the 398 failure mode by name
+        G4 null → REF · tp 6 → null · fn null · round433 named a false negative: false
+VACUOUS C2  aimed at G2 — the population key: the round cut moved to 433. The grader COUNT must move and the agreement with his published tail must fail — a leg that stayed green under a different population was never reading the population (414)
+        G2 null → FAIL · population 11 → 5 · KEY CRIPPLED reported: true
+VACUOUS C3  aimed at G4 → G5 — the hand reading itself: round432 re-declared `capable: false` in a pid-stamped copy. G4 must name it a FALSE NEGATIVE (the detector still says capable, the declaration now says not) and G5's capable-among-his-five count must FALL — a green G5 under a crippled G3 would mean G5 re-typed its conclusion instead of reading G4 (428)
+        anchor occurs 1× · G4 null → FAIL · G5 null → REF · capable-among-his-five 2 → REFUSED (G5 keyed on a red G4) · round432 named a false negative: false
+MOVED   C4  aimed at G7 → G8 — the write-site model: the census restricted to `join(REPO, …)` in a pid-stamped copy, dropping every `HERE`-relative target. The tracked-target COUNT must fall and the coverage of the two paths his own G10 found must break — a census that still covered them under a crippled model was not keyed on the model
+        anchor occurs 1× · G7 null → FAIL · G8 null → null · tracked targets 9 → 2 · covers his two: true → false
+
+VACUITY: 1/4 cell(s) moved their figure
+  subject byte-identical at exit: true · tracked files dirty vs HEAD: 0 []

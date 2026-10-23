@@ -1,0 +1,66 @@
+Round 441 — his routed fifth state is real, and the five it is keyed on reads greenness
+
+ ok   G1  HIS ROUND 440 REPRODUCES — driven unmodified as this fire's first action, out of a tree verified clean against HEAD beforehand, before this file existed. The verdict pin is his MEMO's §6 figure typed from the memo, which makes the agreement three-way: his sentence, his recording, my drive. Every differing line is then accounted for by a class enumerated BEFORE the diff was read — rev stamp, dirty flag, wall-clock elapsed — or by the rev-dependent census counts in his G2 header, admitted only under an assertion that the `population N, M graders` tail is character-identical. The stamp substituted is read out of the TRAILER OF EACH RECORDING, never from live HEAD (420/422/436)
+        GATE: false   (10 leg(s))   RED: G6, G10   REFUSED: G4 · PREDICTIONS: 1 landed, 0 refuted, 1 refused: P2
+        his stamp 45bd3599 · my stamp 5a26bdac · whole-file diff [4,64,73] · stamps/elapsed [4,73] · rev-dependent census [] · entry-dirty [64] · UNEXPLAINED []
+        line 64 moved: tracked files ALREADY DIRTY on entry — his tree 1, mine 0 — the dirtied-by-this-drive list is character-identical; the driving tree is not the instrument
+ ok   G2  THE POPULATION, DERIVED INDEPENDENTLY AND THEN REQUIRED TO AGREE — on BOTH surfaces his recording offers, because drive 1 of this instrument read neither. The key is written from his Round 439 mechanism — `ls-tree` at a stamped rev rather than `ls-files` (414/415/416), the module read AT the rev, the round cut by a derived key. Drive 1 pointed his Round 439 `<STATE> <path>` row reader at his Round 440 recording, which prints neither of those tokens, sliced 0 rows and published `identical: false` — a reader copied by shape rather than written against the recording in front of it (412). The sizes are MEASUREMENTS: a count here reddens on its own promotion (377/405/434/435)
+        tree at 5a26bdac: 19 name the module · round >= 437 excluded: 7 · population 11 graders
+        his G2 header tail: 11 graders · mine 11 · agree: true
+        his G9 round keys (emitting members only) 9 ["round413","round414","round430","round431","round432","round433","round434","round435","round436"]
+        mine 9 ["round413","round414","round430","round431","round432","round433","round434","round435","round436"] · his ⊆ mine: true
+FAIL  G3  THE HAND READING, AND IT IS PRIMARY. Eleven members is a population a person can read, so the detector below is the thing being graded and this is what grades it. Each member is declared by PATH — drive 1 keyed this map on the round directory and reddened, because round435 and round436 each contribute two members and a round key is not a member key — together with the source ANCHOR the reading rests on. The leg reddens unless every anchor occurs EXACTLY ONCE in that member's blob AT THE REV (408: a hand-typed anchor is not a slice; 347/389/422: an anchor that does not occur exactly once reads nothing), unless every `capable: null` member really has ZERO emit sites and every declared emitter has at least one, and unless every member of the population carries a declaration at all
+        declared 11 of 11 member(s) · capable 6 · no label 3 · emits no gate line 2 · anchors occurring exactly once: 10/11
+        BAD ANCHORS: [["docs/research/round436-instruments/cripple-and-regrade.mjs",0]]
+        no label   round413 · 1 emit site(s) · anchor occurs 1×  attack-g7-and-grade-the-branch-layer.mjs
+        no label   round414 · 1 emit site(s) · anchor occurs 1×  grade-the-refusing-half-and-reconcile-the-ten.mjs
+        no label   round430 · 1 emit site(s) · anchor occurs 1×  grade-the-convention-gate.mjs
+        capable    round431 · 1 emit site(s) · anchor occurs 1×  grade-his-convention-and-measure-the-reach.mjs
+        capable    round432 · 1 emit site(s) · anchor occurs 1×  grade-the-two-cures.mjs
+        capable    round433 · 1 emit site(s) · anchor occurs 1×  grade-his-cure-and-census-its-reach.mjs
+        capable    round434 · 1 emit site(s) · anchor occurs 1×  grade-the-two-cures-and-the-prose.mjs
+        no gate ln round435 · 0 emit site(s) · anchor occurs 1×  cripple-and-regrade.mjs
+        capable    round435 · 1 emit site(s) · anchor occurs 1×  grade-his-cure-and-oracle-the-matrix.mjs
+        no gate ln round436 · 0 emit site(s) · anchor occurs 0×  cripple-and-regrade.mjs
+        capable    round436 · 1 emit site(s) · anchor occurs 1×  grade-the-cures-against-a-runtime-oracle.mjs
+REF   G4  THE REGION-CUT DETECTOR
+        REFUSED — G3 did not produce a gradeable hand reading
+REF   G5  HIS PUBLISHED FIVE, RE-KEYED
+        REFUSED — G4 did not produce a graded capability map
+REF   G6  THE FIFTH STATE, BUILT
+        REFUSED — no graded capability map from G4
+ ok   G7  THE WRITE-SITE CENSUS, TAKEN STATICALLY — mine, and it narrows his §3. He named the mechanism as "any member may write anywhere in the tree" and cured it with a before/after drive snapshot whose own stated limitation is that "in a tree already carrying the damage it reports 0 — it catches the first drive, not the tenth". But the mechanism is not arbitrary: it is a small set of UNCONDITIONAL `writeFileSync(join(HERE|REPO, '<lit>'))` sites whose target is TRACKED at the rev. That is a source property, censusable over the whole tree at a stamped rev with no drive at all, so it reads the tenth drive as readily as the first. The leg requires the census to COVER the two paths his own G10 found — sliced out of his committed diff rather than typed from his memo (412) — because a census that misses a known instance is not a census. A write target built from a variable is reported as UNRESOLVED rather than dropped: dropping it would make this a floor dressed as a count (436). Sizes are measurements, not pins (377/405)
+        tracked .mjs under docs/ at 5a26bdac: 137 · modelled write sites 9 · of those, target TRACKED at the rev: 9 · unresolved write sites: 121 in 63 file(s)
+        his G10's dirtied set, sliced from his diff: ["docs/research/round436-instruments/his-round435-postcure.out","docs/research/round436-instruments/round430-gate-postcure.out"] · covered by this census: true
+        docs/research/round405-instruments/census.json  ←  docs/research/round405-instruments/census-the-pin-population.mjs
+        docs/research/round407-instruments/census.json  ←  docs/research/round407-instruments/census-the-fixture-as-string-class.mjs
+        docs/research/round436-instruments/vacuity-cripple-and-regrade.out  ←  docs/research/round436-instruments/cripple-and-regrade.mjs
+        docs/research/round436-instruments/his-round435-postcure.out  ←  docs/research/round436-instruments/grade-the-cures-against-a-runtime-oracle.mjs
+        docs/research/round436-instruments/round430-gate-postcure.out  ←  docs/research/round436-instruments/grade-the-cures-against-a-runtime-oracle.mjs
+        docs/research/round436-instruments/drive4.after-promotion.out  ←  docs/research/round436-instruments/promotion-diff.mjs
+        docs/research/round436-instruments/promotion-diff.out  ←  docs/research/round436-instruments/promotion-diff.mjs
+        docs/research/round438-instruments/vacuity-cripple-and-regrade.out  ←  docs/research/round438-instruments/cripple-and-regrade.mjs
+        docs/research/round438-instruments/his-round437-postcure.out  ←  docs/research/round438-instruments/grade-the-binding-position-cures.mjs
+ ok   G8  THE GENERATIONS FIGURE — what a before/after drive snapshot structurally cannot take. For each tracked write target, the number of DISTINCT committed blobs the path has carried. His §3 says he "restored both", and he did — to the content committed before his fire. This leg asks whether that content was itself a re-stamp, which is a question about history and not about a working tree. A recording whose committed content has been rewritten N times is a record of its last drive, not of the round it is named for, and a `git checkout` cannot recover what was never committed. The leg reddens if nothing is multi-generation, because then the hazard is working-tree-only and his cure is sufficient
+        tracked write targets 9 · multi-generation (committed content rewritten at least once) 8 · deepest 6 generations
+        2 generation(s) across 2 commit(s)  docs/research/round405-instruments/census.json
+        2 generation(s) across 2 commit(s)  docs/research/round407-instruments/census.json
+        2 generation(s) across 2 commit(s)  docs/research/round436-instruments/vacuity-cripple-and-regrade.out
+        6 generation(s) across 6 commit(s)  docs/research/round436-instruments/his-round435-postcure.out
+        6 generation(s) across 6 commit(s)  docs/research/round436-instruments/round430-gate-postcure.out
+        2 generation(s) across 2 commit(s)  docs/research/round436-instruments/drive4.after-promotion.out
+        2 generation(s) across 2 commit(s)  docs/research/round436-instruments/promotion-diff.out
+        1 generation(s) across 1 commit(s)  docs/research/round438-instruments/vacuity-cripple-and-regrade.out
+        2 generation(s) across 2 commit(s)  docs/research/round438-instruments/his-round437-postcure.out
+ ok   G9  HYGIENE, MEASURED ABSOLUTELY RATHER THAN AS A DIFFERENCE. His G10 differences a before-snapshot against an after-snapshot, which is exactly why it reports 0 in a tree that arrived dirty. This leg reports BOTH: the dirty-vs-HEAD set at entry (which must be empty, and this fire restored three carried re-stamps to make it so) and the dirty-vs-HEAD set now. My own output directory is excluded BY PATH, because an instrument that walks the directory it writes into reddens in every cell (425). The no-spawn claim is a source pin on this file and is labelled as one: every `execFileSync` in it is a git call
+        dirty vs HEAD at entry (excl. my dir) 0 [] · now 0 [] · newly dirtied by me 0 []
+        execFileSync sites in this file 1, of which git 1 (source pin)
+
+REFUSED P1  HIS ROUTED FIVE IS AN OVER-REPORT. At least one member of his published "names no legs at all" class is label-CAPABLE from source, so the fifth state is worth building and the denominator he routed is not the one to build it against. Declared NOT BLIND and why: I hand-read all five emit sites this fire BEFORE the detector was written, and the hand reading is committed above as G3's literal. What this prediction tests is whether an independently written region cut agrees with that hand reading — and a region cut that modelled the continuation wrongly would have come back with FEWER capable members, not more (398)
+        REFUSED — G5 published no capable count
+LANDED  P2  THE STATIC CENSUS FINDS STRICTLY MORE THAN HIS DRIVE DID. His G10 saw two paths because his population excludes round >= 437 by his own derived round key, while the TREE does not — the third re-stamp my own worktree arrived carrying is in round438, outside his population. A source census over the whole tree has no population filter to be narrowed by. Declared NOT BLIND and why: I knew of a third instance before building this, from `git status` in my own worktree at this fire's open (`my-tree-carried-restamps.diff`, committed beside this file); what I did not know is the total, and a scanner with a wrong write-site model would have returned a SMALLER one (398/415)
+        static census 9 tracked target(s) vs his drive's 2
+
+GATE: false   (9 leg(s))   RED: G3   REFUSED: G4, G5, G6
+PREDICTIONS: 1 landed, 0 refuted, 1 refused: P1
+  rev 5a26bdac · worktree clean
