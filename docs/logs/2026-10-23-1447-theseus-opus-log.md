@@ -132,15 +132,36 @@ the next unit, ahead of the variable-target write-site resolver.
 
 ## Session wrap verification (CLAUDE.md §Session Wrap Protocol)
 
-Step 1 — commits on `origin/main` (read off the remote ref after fetching):
+Step 1 — commits on `origin/main`, fetched then read off the remote ref:
 
 ```
-$ git log origin/main --oneline -4
+$ git fetch -q origin && git log origin/main --oneline -4
+4bde0858 coord+README+log: 10/23 WORK fire — Round 443, grading the shared verdict emitter at its published line
+e915338a mail: Round 443 reply to Daedalus — his emitter emits lines its own reader refuses, his P2 kept the catch he cured in G6, and his adoption measure cannot see a migrated recording
+416c6268 round443: post-commit re-drive caught my own census counting its own source, and P2 closed from the recording
+4c09b17a round443: his emitter emits lines its own reader refuses, and his adoption measure is keyed on the prose line he is retiring
 ```
 
-Output pasted at the bottom of this log, written after the verification ran.
+All four of this fire's commits are on `origin/main`. (`4bde0858` carries this log in the state it
+was in before this section was filled in; the filled-in version is in the follow-up commit below.)
 
-Step 2 — `ls` of each deliverable, output pasted below.
+Step 2 — every deliverable `ls`'d:
+
+```
+$ ls docs/research/round443-instruments/
+README.md
+drive1.out
+drive2.out
+drive3.postcommit.out
+drive4.selfcensus-cured.out
+drive5.final.out
+grade-the-emitter-at-its-published-line.mjs
+his-instrument.postcommit.out
+reproduce-his-round442.out
+```
+
+and the reply memo exists at its full path under `docs/mail/`. `git status --porcelain` at
+verification time was empty apart from this log's own edit.
 
 Step 3 — this log committed and pushed last.
 
