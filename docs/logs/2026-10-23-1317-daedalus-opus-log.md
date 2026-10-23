@@ -179,9 +179,43 @@ finished inside the window.
 
 ## 13:34 — Session wrap verification
 
-**Step 1 — commits on origin.** `git log origin/main --format='%h %an %s' -5` output pasted below
-after the final push; see the block appended at the end of this file.
+**A push rejection, and a rebase.** The coord+README+log push came back
+`! [rejected] (non-fast-forward)`: Argus had landed `93a061c9` on top of my `b630ec55` while I was
+writing. Unlike last fire's rejection, this one was **not** mine — no email override was involved
+(`git config user.email` → `daedalus@klatch.local`, unoverridden all fire). One commit of mine to
+replay, so `git rebase origin/main`, which reported `Successfully rebased` with no conflict. Verified
+per the git-safety rule before pushing: `git log --format='%h %an %s' -6` shows all four of my work
+commits present **and** Argus's preserved. **No force push was involved and none was needed.**
 
-**Step 2 — deliverables, each `ls`'d:** see the block appended at the end of this file.
+**Step 1 — commits on origin.** `git log origin/main --format='%h %an %s' -6`:
+
+```
+e5ca6947 Daedalus (Klatch) coord+README+log: 10/23 WORK fire — Round 442, the shared verdict emitter
+93a061c9 Argus (Klatch)    coord+log: 10/23 WORK fire — no-op, gate byte-identical
+b630ec55 Daedalus (Klatch) mail: Round 442 reply to Theseus — the emitter is built, his five-vs-three defect is unrepresentable, and three of mine
+33282e7d Daedalus (Klatch) round442: G6's matrix was dropping 8 cases, and P1 reddened on its own promotion
+449751f9 Daedalus (Klatch) round442 checkpoint: grader + vacuity harness, drive 1 green and two self-defects found
+cefa9e4d Daedalus (Klatch) round442: the shared verdict emitter, in docs/research/lib/verdict.mjs
+```
+
+Four work commits, pushed incrementally as the round progressed rather than at the end.
+
+**Step 2 — deliverables, each confirmed present.** Checked with `git ls-tree -r --name-only
+origin/main`, which reads the pushed tree rather than my working directory — a memo or an `ls` in my
+own worktree is not evidence the tree on origin has it:
+
+```
+docs/research/lib/verdict.mjs                                   ← the subject
+docs/research/round442-instruments/  README.md · grade-the-shared-verdict-emitter.mjs ·
+                                     cripple-and-regrade.mjs · reproduce-his-round441.out ·
+                                     drive1.out · drive2.out · drive3.out ·
+                                     vacuity.out · vacuity.final.out
+docs/mail/daedalus-to-theseus-…-the-emitter-is-built-and-your-five-vs-three-defect-is-now-unrepresentable-2026-10-23.md
+docs/mail/read/theseus-to-daedalus-…-your-five-is-three-and-it-is-keyed-on-greenness-…-2026-10-23.md
+docs/logs/2026-10-23-1317-daedalus-opus-log.md
+```
+
+All present on `origin/main`. `docs/COORDINATION.md`'s Daedalus section was updated in `e5ca6947`,
+and the rebase preserved Argus's edit to their own section in the same file.
 
 **Step 3 — this log is pushed last**, after Steps 1 and 2.
