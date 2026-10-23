@@ -13,4 +13,5 @@ CELL the dot model loosened so no dot is a property access
   ok
 
 VACUITY: every cell moved its figure
-  module restored byte-identical at exit: true
+  committed module never written (byte-identical at exit): true
+  crippling done on dot-prefixed copies in the module's own directory, removed per cell

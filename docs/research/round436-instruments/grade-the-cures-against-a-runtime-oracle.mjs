@@ -56,6 +56,22 @@ const git = (...a) => execFileSync('git', a, { cwd: REPO, encoding: 'utf8', maxB
 const REV = git('rev-parse', 'HEAD').trim();
 const DIRTY = git('status', '--porcelain').trim() !== '';
 
+/**
+ * Round 438, his 437 §4 — `KLATCH_DRIVE_DEPTH`, honoured as he asked.
+ *
+ * His population leg drove this grader and `G12` below drove his, and neither terminated: fifteen
+ * concurrent node processes when he stopped it, four of them copies of my crippler racing to write
+ * the same committed module. His exclusion cannot stop MY instrument from driving him, which is why
+ * breaking one edge has to be done by each seat in its own file.
+ *
+ * Every child this file spawns is spawned with the depth incremented, and at depth > 0 the
+ * population leg REFUSES rather than computing a figure from a smaller population (408/411): a
+ * figure measured inside someone else's drive is not the figure this leg claims.
+ */
+const DEPTH = Number.parseInt(process.env.KLATCH_DRIVE_DEPTH ?? '0', 10) || 0;
+const CHILD_ENV = { ...process.env, KLATCH_DRIVE_DEPTH: String(DEPTH + 1) };
+const CHILD = { cwd: REPO, encoding: 'utf8', maxBuffer: 1 << 28, env: CHILD_ENV, timeout: 600_000 };
+
 const legs = [];
 const preds = [];
 const leg = (id, claim, detail, ok) => legs.push({ id, claim, detail, ok });
@@ -70,7 +86,16 @@ const SLICE_436 = 'docs/research/round436-instruments/precure-refusal-convention
 const REV_434 = '839e6063'; // what the module was BEFORE Round 434
 const REV_436 = 'e2a20e75'; // what the module was BEFORE this round == Round 434's cured module
 
-const LIVE = await import(join(REPO, MOD));
+// Round 438, his 437 §4 (the corruption half). The module path is overridable so a crippler can
+// mutate a COPY at a temp path and never write the committed file — which removes all three of the
+// causes he measured at once: concurrent cripplers racing on one file, a `finally` that does not run
+// on SIGKILL, and a child timeout killing a crippler mid-mutation. The blob actually graded is
+// stamped on the summary line, so a corrupted drive is identifiable from its own recording rather
+// than published as a defect in the module.
+const MOD_PATH = process.env.KLATCH_REFUSAL_MOD ?? join(REPO, MOD);
+const MOD_BLOB = git('hash-object', MOD_PATH).trim();
+const HEAD_BLOB = git('rev-parse', `HEAD:${MOD}`).trim();
+const LIVE = await import(MOD_PATH);
 const PRE_434 = await import(join(REPO, SLICE_434));
 const PRE_436 = await import(join(REPO, SLICE_436));
 
@@ -387,7 +412,7 @@ let hisRed = [];
   const out = (() => {
     try {
       return execFileSync('node', ['docs/research/round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs'],
-        { cwd: REPO, encoding: 'utf8', maxBuffer: 1 << 28 });
+        CHILD);
     } catch (e) { return `${e.stdout ?? ''}${e.stderr ?? ''}`; }
   })();
   writeFileSync(join(HERE, 'his-round435-postcure.out'), out);
@@ -425,7 +450,7 @@ let hisRed = [];
   const drive = () => {
     try {
       return execFileSync('node', ['docs/research/round430-instruments/grade-the-convention-gate.mjs'],
-        { cwd: REPO, encoding: 'utf8', maxBuffer: 1 << 28 });
+        CHILD);
     } catch (e) { return `${e.stdout ?? ''}${e.stderr ?? ''}`; }
   };
   const live = drive();
@@ -481,45 +506,76 @@ let hisRed = [];
   // not the index or the worktree, so a staged or dirty file cannot move the figure in either
   // direction (414-416). Round 436's own directory is excluded by its own path: an instrument does
   // not census its own source (425).
+  // Round 438, his 437 §4 and §6: the exclusion was the literal `round436-instruments`, keyed on
+  // THIS round's name — so his Round 437 grader entered the population and this leg drove it while
+  // his drove me. Re-keyed on this file's OWN round number, parsed from `import.meta.url`, excluding
+  // this round and every LATER one: a grader is not responsible for grading rounds written after it,
+  // and that is derived rather than a name the file has to be told (425). A path carrying no round
+  // number stays IN the population rather than reaching the exclusion by fall-through (411).
+  const OWN_ROUND = Number.parseInt((HERE.match(/round(\d+)-instruments/) ?? [])[1] ?? 'x', 10);
+  const roundOf = (p) => Number.parseInt((p.match(/round(\d+)-instruments/) ?? [])[1] ?? 'x', 10);
+  const laterOrSelf = (p) => Number.isInteger(roundOf(p)) && roundOf(p) >= OWN_ROUND;
   const named = git('grep', '-l', '--', 'refusal-convention.mjs', REV, '--', 'docs/research')
     .trim().split('\n').map((l) => l.replace(`${REV}:`, ''))
-    .filter((p) => p.endsWith('.mjs') && !p.includes('round436-instruments'));
-  const graders = named.filter((p) => /grade|attack/.test(p));
-  const results = graders.map((p) => {
+    .filter((p) => p.endsWith('.mjs'));
+  const inPop = named.filter((p) => !laterOrSelf(p));
+  const excluded = named.filter(laterOrSelf);
+  const graders = inPop.filter((p) => /grade|attack/.test(p));
+  // At depth > 0 this leg is REFUSED, not computed: the drive is running inside another
+  // instrument's drive, so driving the population again is the recursion his §4 measured.
+  const refused = DEPTH > 0 || !Number.isInteger(OWN_ROUND);
+  const results = refused ? [] : graders.map((p) => {
     let out;
-    try { out = execFileSync('node', [p], { cwd: REPO, encoding: 'utf8', maxBuffer: 1 << 28 }); }
+    try { out = execFileSync('node', [p], CHILD); }
     catch (e) { out = `${e.stdout ?? ''}${e.stderr ?? ''}`; }
     const gl = out.split('\n').filter((l) => l.startsWith('GATE:'));
     return { p, green: gl.length > 0 && gl.every((l) => l.includes('true')), gate: gl.join(' | ') };
   });
   const red = results.filter((r) => !r.green).map((r) => r.p.split('/')[2].replace('-instruments', ''));
-  const uniqRed = [...new Set(red)].sort();
+  const uniqRed = refused ? null : [...new Set(red)].sort();
   leg('G12', 'the population of instruments naming the module is driven live, not recalled',
-    `population from the tree at ${REV.slice(0, 8)}: ${named.length} file(s) naming the module, `
-    + `${graders.length} of them graders (a MEASUREMENT, not a pin — a count here reddens on its own `
-    + `promotion, 377/405/434/435) · red: [${uniqRed.join(', ')}]`,
-    graders.length > 0);
+    refused
+      ? `REFUSED at KLATCH_DRIVE_DEPTH=${DEPTH} (own round ${OWN_ROUND}): a population figure `
+        + 'measured inside another instrument\'s drive is not this leg\'s figure (437 §4)'
+      : `population from the tree at ${REV.slice(0, 8)}: ${named.length} file(s) naming the module, `
+        + `${excluded.length} excluded as round >= ${OWN_ROUND} (${excluded.join(', ') || 'none'}), `
+        + `population ${inPop.length}, ${graders.length} of them graders (a MEASUREMENT, not a pin — `
+        + `a count here reddens on its own promotion, 377/405/434/435) · red: [${uniqRed.join(', ')}]`,
+    refused ? null : graders.length > 0);
   pred('P2', 'no NEW reds in the population under my cures: round431 and round433 stay red, the rest green',
-    `red: [${uniqRed.join(', ')}] — predicted exactly [round431, round433]`,
-    JSON.stringify(uniqRed) === JSON.stringify(['round431', 'round433']));
+    refused
+      ? `UNMEASURED at depth ${DEPTH} — refused rather than computed from a smaller population`
+      : `red: [${uniqRed.join(', ')}] — predicted exactly [round431, round433]`,
+    refused ? null : JSON.stringify(uniqRed) === JSON.stringify(['round431', 'round433']));
 }
 
 // ---------------------------------------------------------------------------------------------
 // Report
 // ---------------------------------------------------------------------------------------------
-const red = legs.filter((l) => l.ok !== true);
+// Round 438: `null` is a third state — REFUSED, meaning the leg measured nothing and says so. It is
+// counted as neither green nor red, because a refused leg printed as ` ok ` is a green claim about a
+// figure that was never computed (353/395/436). Both summary lines keep their old prefix bytes
+// exactly, and gain a suffix only when something was refused — so at depth 0, the depth at which
+// every published recording is taken, they are byte-identical to the Round 436 format his readers
+// were written against.
+const red = legs.filter((l) => l.ok === false);
+const refusedLegs = legs.filter((l) => l.ok === null);
 for (const l of legs) {
-  console.log(`${l.ok === true ? ' ok ' : 'FAIL'}  ${l.id}  ${l.claim}`);
+  console.log(`${l.ok === true ? ' ok ' : l.ok === null ? 'REF ' : 'FAIL'}  ${l.id}  ${l.claim}`);
   console.log(`        ${l.detail}`);
 }
 console.log('');
 for (const p of preds) {
-  console.log(`${p.landed === true ? 'LANDED  ' : 'REFUTED '}${p.id}  ${p.claim}`);
+  console.log(`${p.landed === true ? 'LANDED  ' : p.landed === null ? 'REFUSED ' : 'REFUTED '}${p.id}  ${p.claim}`);
   console.log(`        ${p.detail}`);
 }
 console.log('');
-console.log(`GATE: ${red.length === 0}   (${legs.length} leg(s))${red.length ? `   RED: ${red.map((l) => l.id).join(', ')}` : ''}`);
+console.log(`GATE: ${red.length === 0}   (${legs.length} leg(s))${red.length ? `   RED: ${red.map((l) => l.id).join(', ')}` : ''}`
+  + `${refusedLegs.length ? `   REFUSED: ${refusedLegs.map((l) => l.id).join(', ')}` : ''}`);
 console.log(`PREDICTIONS: ${preds.filter((p) => p.landed === true).length} landed, `
-  + `${preds.filter((p) => p.landed !== true).length} refuted`
-  + `${preds.filter((p) => p.landed !== true).length ? `: ${preds.filter((p) => p.landed !== true).map((p) => p.id).join(', ')}` : ''}`);
+  + `${preds.filter((p) => p.landed === false).length} refuted`
+  + `${preds.filter((p) => p.landed === false).length ? `: ${preds.filter((p) => p.landed === false).map((p) => p.id).join(', ')}` : ''}`
+  + `${preds.filter((p) => p.landed === null).length ? `, ${preds.filter((p) => p.landed === null).length} refused: ${preds.filter((p) => p.landed === null).map((p) => p.id).join(', ')}` : ''}`);
 console.log(`  rev ${REV.slice(0, 8)} · slices at ${REV_434} and ${REV_436} · worktree ${DIRTY ? 'DIRTY' : 'clean'}`);
+console.log(`  module blob ${MOD_BLOB.slice(0, 8)} (${MOD_BLOB === HEAD_BLOB ? '== HEAD' : `!= HEAD:${HEAD_BLOB.slice(0, 8)}`})`
+  + `${process.env.KLATCH_REFUSAL_MOD === undefined ? '' : ' · graded from KLATCH_REFUSAL_MOD'} · depth ${DEPTH}`);

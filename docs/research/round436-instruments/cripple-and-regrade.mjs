@@ -11,9 +11,10 @@
  * `refusal-convention.mjs` can move them. Their vacuity is unmeasured this round — the same gap
  * Theseus's Round 435 §7 declared for his `G1/G2/G6/G7`.
  */
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdtempSync, rmSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { join, dirname } from 'node:path';
+import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -23,13 +24,43 @@ const GRADER = 'docs/research/round436-instruments/grade-the-cures-against-a-run
 
 const original = readFileSync(MOD, 'utf8');
 
-const drive = () => {
+/**
+ * Round 438, his 437 §4. This file used to write the CRIPPLED text over the committed module and
+ * restore it in a `finally`. He measured what that costs: four concurrent copies of this crippler
+ * racing on one file, a `finally` that does not run on SIGKILL, and his own 120s child timeout
+ * killing one of these mid-mutation — three ways for a crippling mutation to be left live in the
+ * tree, after which the next instrument to run grades a crippled module and publishes it as a
+ * defect in the module.
+ *
+ * The committed file is now never written. Each cell writes its crippled text to a COPY and points
+ * the grader at it with `KLATCH_REFUSAL_MOD`, so a kill at any point leaves the tree untouched.
+ * Children also carry `KLATCH_DRIVE_DEPTH` incremented, so the grader's population leg refuses
+ * instead of recursing.
+ *
+ * The copy lives in the module's OWN directory under a dot-prefixed, pid-stamped name, not under
+ * `os.tmpdir()`: the module imports `../../../scripts/lib/strip-source.mjs`, so a copy at any other
+ * depth fails to resolve and every cell refuses (421 — measured again here, first drive). The copy
+ * is untracked, so the worst a kill can leave is an untracked file rather than a mutated tracked
+ * one, and each cell's name carries the pid so two concurrent cripplers cannot collide.
+ */
+const COPY_DIR = dirname(MOD);
+const DEPTH = Number.parseInt(process.env.KLATCH_DRIVE_DEPTH ?? '0', 10) || 0;
+
+const drive = (modPath) => {
+  const env = { ...process.env, KLATCH_DRIVE_DEPTH: String(DEPTH + 1) };
+  if (modPath === undefined) delete env.KLATCH_REFUSAL_MOD;
+  else env.KLATCH_REFUSAL_MOD = modPath;
   let out;
-  try { out = execFileSync('node', [GRADER], { cwd: REPO, encoding: 'utf8', maxBuffer: 1 << 28 }); }
-  catch (e) { out = `${e.stdout ?? ''}${e.stderr ?? ''}`; }
+  try {
+    out = execFileSync('node', [GRADER],
+      { cwd: REPO, encoding: 'utf8', maxBuffer: 1 << 28, env, timeout: 600_000 });
+  } catch (e) { out = `${e.stdout ?? ''}${e.stderr ?? ''}`; }
   const gate = out.split('\n').find((l) => l.startsWith('GATE:')) ?? '(no GATE line)';
-  const m = /RED: (.+)$/.exec(gate);
-  return { gate: gate.includes('true'), red: m === null ? [] : m[1].split(/,\s*/).sort() };
+  // The GATE line can now carry a ` REFUSED: <ids>` suffix (Round 438), so the red list is read up
+  // to that marker rather than to end-of-line — `(.+)$` would have swallowed the refused ids into
+  // the red set, which is the one direction this reader must not get wrong.
+  const m = /RED: (.+?)(?:\s{2,}REFUSED:|$)/.exec(gate);
+  return { gate: gate.includes('true'), red: m === null ? [] : m[1].trim().split(/,\s*/).sort() };
 };
 
 const CELLS = [
@@ -57,7 +88,7 @@ const CELLS = [
 const lines = [];
 const say = (s) => { lines.push(s); console.log(s); };
 
-const base = drive();
+const base = drive(undefined);
 say(`baseline at HEAD            GATE ${base.gate}  red [${base.red.join(', ')}]`);
 let allOk = base.gate === true && base.red.length === 0;
 if (!allOk) say('  !! baseline is not green — every cell below is uninterpretable');
@@ -70,10 +101,13 @@ for (const c of CELLS) {
     continue;
   }
   const crippled = original.split(c.anchor).join(c.with);
-  writeFileSync(MOD, crippled);
-  const landed = readFileSync(MOD, 'utf8') === crippled && crippled !== original;
-  const r = drive();
-  writeFileSync(MOD, original);
+  const copy = join(COPY_DIR, `.cripple-${process.pid}-${CELLS.indexOf(c)}.mjs`);
+  writeFileSync(copy, crippled);
+  const landed = readFileSync(copy, 'utf8') === crippled && crippled !== original;
+  const r = drive(copy);
+  rmSync(copy, { force: true });
+  // `restored` is now a statement about the COMMITTED file never having been written, which is a
+  // stronger claim than restoring it afterwards and is checked the same way.
   const restored = readFileSync(MOD, 'utf8') === original;
   // The gate is that the FIGURE moved, not that the edit landed.
   const moved = r.gate !== base.gate || JSON.stringify(r.red) !== JSON.stringify(base.red);
@@ -88,5 +122,6 @@ for (const c of CELLS) {
 
 say('');
 say(`VACUITY: ${allOk ? 'every cell moved its figure' : 'AT LEAST ONE CELL DID NOT'}`);
-say(`  module restored byte-identical at exit: ${readFileSync(MOD, 'utf8') === original}`);
+say(`  committed module never written (byte-identical at exit): ${readFileSync(MOD, 'utf8') === original}`);
+say('  crippling done on dot-prefixed copies in the module\'s own directory, removed per cell');
 writeFileSync(join(HERE, 'vacuity-cripple-and-regrade.out'), `${lines.join('\n')}\n`);
