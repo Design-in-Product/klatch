@@ -97,3 +97,50 @@ files, 43 swept/110 deferred, CENSUS OK** — all unchanged from this morning's 
 moved to `read/`, confirmed via `ls` after the move; one correctly left untouched); the rollup item
 it resolved was moved, not left stale; gate re-derived fresh and green at every layer. No new
 blocker found. Two consecutive checks found nothing further unblocked. Fire closed bounded.
+
+## SWEEP fire (~17:0x PT)
+
+Own checkpoint: this seat's own MID-fire commit `e2a20e75` (12:34:38 PT). `git log
+e2a20e75..HEAD --format='%h %an %ci %s'` = 10 new commits, none mine: Daedalus's Round 436 chain
+(cures 1–2/2 for Theseus's §1/§2, a runtime oracle for the `[false,false]` row, his §6 instrument
+catching a real red in his own file, mail+coord+log), Argus's own WORK-fire no-op, and Theseus's
+Round 437 chain (reproduced Round 436, three findings on Daedalus's masker routed back, a §5
+generalization and a §6 reply, mail+coord+log). `git diff --stat e2a20e75..HEAD -- packages/
+scripts/` **empty** — all of it under `docs/research/round436-instruments/` and
+`round437-instruments/`, no product or instrument code touched.
+
+**Mail:** one new file since the checkpoint,
+`docs/mail/theseus-to-daedalus-cc-xian-janus-argus-calliope-iris-both-cures-hold-and-your-masker-
+models-one-delimiter-out-of-three-2026-10-22.md` (part of Theseus's Round 437 commit,
+confirmed via `git log -- <file>`) — addressed to Daedalus, cc only to this seat, nothing owed.
+All four writable cross-repo mailboxes checked via `find -newermt` against the MID-fire checkpoint
+time: `designinproduct` (5 new files — a household-money-agent thread and a GitHub-app-forensics
+thread, both unrelated ops traffic), `mediajunkie` (2 new files — a model-limit note and the same
+household-money-agent thread), `piper-morgan-product/mailboxes` (many new files, internal PPM
+exec-inbox traffic), `dispatch/mail` (0 new). Grepped all seven non-PPM files for `klatch|calliope`
+— zero hits; grepped the new PPM files too (not skipped on volume this time) — zero content hits
+outside the standing `MANIFEST.md` boilerplate pattern seen at every prior checkpoint. Nothing
+owed from any.
+
+`git branch -r | grep -i smoke` — still empty, no `ma-smoke` branch. Standing watch item unchanged.
+
+**Rollup checked directly:** still v171, needs-you unchanged at 2 (blog-series angle/sequencing;
+the 72+-day ground-rules question) — nothing in the ten new commits touches either, both still
+blocked on xian with no new input.
+
+**Gate re-verified fresh:** `npm run typecheck` 0 `error TS` across all four workspaces; `npm test
+-w packages/server` — **140/2183+1 (2184)**, unchanged; `npm test -w packages/client` —
+**26/333+13 (346)**, unchanged; `node scripts/sweep-probes.mjs --census` — **153 probe files, 43
+swept/110 deferred, CENSUS OK**, unchanged. No full sweep re-drive — `packages/`/`scripts/` diff
+against the last fresh drive is empty, so a re-drive would measure nothing new. `lsof -i :3001` —
+port free. `git status --short` clean.
+
+Task list of record unchanged: smoke-run branch still doesn't exist; no named blocker moved.
+`log.html`'s 10-22 entry is due at the STOP fire, not this one (`calliope-tasks.md`'s recurring-
+items row: cadence "daily, at STOP fire") — not written here, correctly deferred to that fire.
+`docs/STATE.md` not refreshed — no product or roadmap change this fire.
+
+**Drain:** mail checked (own-seat header grep across the one new file + commit-diff-since-
+checkpoint + all four cross-repo mailboxes, including a full grep of the PPM batch rather than
+skipping it on volume); gate re-derived fresh and green at every layer; rollup/task-list re-checked,
+nothing moved. Two consecutive checks found nothing further unblocked. Fire closed bounded.
