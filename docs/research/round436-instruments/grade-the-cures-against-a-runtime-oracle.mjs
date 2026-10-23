@@ -529,9 +529,18 @@ let hisRed = [];
     try { out = execFileSync('node', [p], CHILD); }
     catch (e) { out = `${e.stdout ?? ''}${e.stderr ?? ''}`; }
     const gl = out.split('\n').filter((l) => l.startsWith('GATE:'));
-    return { p, green: gl.length > 0 && gl.every((l) => l.includes('true')), gate: gl.join(' | ') };
+    // Round 438: three states. `/grade|attack/` selects `cripple-and-regrade.mjs` too, which prints
+    // `VACUITY:` and never `GATE:` — reading "no GATE line" as red manufactures a finding out of a
+    // member this leg cannot grade (411/436). Found by this round's own drive, which put two
+    // cripplers in the red list with an empty failing-leg set.
+    return {
+      p,
+      verdict: gl.length === 0 ? 'ungradeable' : gl.every((l) => l.includes('true')) ? 'green' : 'red',
+      gate: gl.join(' | '),
+    };
   });
-  const red = results.filter((r) => !r.green).map((r) => r.p.split('/')[2].replace('-instruments', ''));
+  const ungradeable = results.filter((r) => r.verdict === 'ungradeable');
+  const red = results.filter((r) => r.verdict === 'red').map((r) => r.p.split('/')[2].replace('-instruments', ''));
   const uniqRed = refused ? null : [...new Set(red)].sort();
   leg('G12', 'the population of instruments naming the module is driven live, not recalled',
     refused
@@ -539,9 +548,11 @@ let hisRed = [];
         + 'measured inside another instrument\'s drive is not this leg\'s figure (437 §4)'
       : `population from the tree at ${REV.slice(0, 8)}: ${named.length} file(s) naming the module, `
         + `${excluded.length} excluded as round >= ${OWN_ROUND} (${excluded.join(', ') || 'none'}), `
-        + `population ${inPop.length}, ${graders.length} of them graders (a MEASUREMENT, not a pin — `
+        + `population ${inPop.length}, ${graders.length} selected by name of which `
+        + `${ungradeable.length} UNGRADEABLE (no GATE line: `
+        + `${ungradeable.map((r) => r.p).join(', ') || 'none'}) (a MEASUREMENT, not a pin — `
         + `a count here reddens on its own promotion, 377/405/434/435) · red: [${uniqRed.join(', ')}]`,
-    refused ? null : graders.length > 0);
+    refused ? null : graders.length - ungradeable.length > 0);
   pred('P2', 'no NEW reds in the population under my cures: round431 and round433 stay red, the rest green',
     refused
       ? `UNMEASURED at depth ${DEPTH} — refused rather than computed from a smaller population`

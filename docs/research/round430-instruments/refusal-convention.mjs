@@ -285,6 +285,37 @@ export const paramsOf = (fnSource) => {
  * `{ async() {} }` keeps `async` as its NAME, not a prefix, because the prefix branch requires
  * `\s+` after the keyword.
  *
+ * ## Round 438 / his 437 §1 — one frame model, three delimiter regimes
+ *
+ * His reading of the model above is the right one and it is sharper than the one I wrote: this walks
+ * every `{` as an object literal's entry list — an entry starts after `{` or a depth-0 `,`, the key
+ * is what precedes the entry's first depth-0 `:`, and the colon-free leg is tried once per entry.
+ * JavaScript puts identifier **binding** positions in places that model does not reach, and he found
+ * two of them plus a correction to how the paragraph above describes its own key.
+ *
+ * **His Finding 1 — a function or class EXPRESSION's own name** (`{ span: function src() {…} }`,
+ * `function*`, `async function`, `class src {…}`). The entry is KEYED, so the colon-free leg never
+ * runs on it, and the name is a free identifier in a binding position: all four spellings were
+ * ADMITTED while reading the input nowhere. Cured by `BINDING_NAME` below — a pass over the whole
+ * text rather than a leg of the frame walk, because a binding name's position is fixed relative to
+ * its own keyword and has nothing to do with what kind of `{` encloses it.
+ *
+ * **His Finding 2 — a member list that is not comma-delimited got exactly one try.** `headTried` was
+ * reset by `,` and by nothing else, and a class body separates members by nothing or by `;`, so only
+ * a class body's FIRST member could ever be masked: `{ span: class { a() {…} src() {…} } }` was
+ * ADMITTED where the same two members comma-delimited refuse in BOTH orders. That the
+ * comma-delimited counterpart refuses either way is what makes the cause the delimiter and not the
+ * position and not the name. Cured by resetting `headTried` on `;` and after a successful method
+ * head — deliberately NOT resetting `entryFrom`/`keyed`, which are the object-literal key model and
+ * have no business being re-based by a class-body or statement-block separator.
+ *
+ * **His Finding 3, taken as a correction to this docblock and not cured.** The paragraph above calls
+ * the trailing `{` "the whole separator". It is not a separator, it is a **heuristic**: ASI breaks
+ * it. A call-expression statement followed by a block statement also closes onto `{` —
+ * `{ f: () => { src(1)\n { let x = 1; } } }` reads as not-a-mention. Valid JS, absent from this
+ * corpus, direction over-refusal, and left named: reaching it needs the frame to know what kind of
+ * `{` it is, which is a different instrument from this one.
+ *
  * Residuals, stated rather than discovered later:
  *   - a labelled statement inside a statement block (`{ f: () => { src: for (;;) break src; } }`)
  *     has its label blanked. Valid JS, absent from this corpus, direction over-refusal.
@@ -293,8 +324,24 @@ export const paramsOf = (fnSource) => {
  *     direction. Blanking the parameter list wholesale would be wrong in the other direction: in
  *     `{ f: (a = src) => a }` the default value genuinely IS the outer reference. Curing it needs a
  *     scope model over every function form, which the method-name key above is not and does not
- *     pretend to be.
+ *     pretend to be. His 437 §5 agrees it wants the same cure as his Finding 1 and is not the same
+ *     defect; Finding 1 is cured here because the name after `function`/`class` is a single token in
+ *     a fixed position, which a parameter list is not.
+ *   - a block-statement body reached through ASI, as above (his Finding 3).
+ *   - an UNDELIMITED class body whose earlier member's head is not a method head still consumes the
+ *     single try: `{ span: class { 1() {…} src() {…} } }` and `{ span: class { f = 1 src() {…} } }`
+ *     stay ADMITTED. Measured, both directions. A `;` after such a member cures it (which is the
+ *     only work the `;` branch does that the reset-after-a-successful-head does not — the Round 438
+ *     vacuity drive crippled the `;` branch and nothing moved until a field row was built for it).
+ *     A COMPUTED head does not consume the try, because `[` opens a frame before the colon-free leg
+ *     is reached. Direction under-refusal; the cure is a frame-kind model, i.e. Finding 3's cure.
  */
+// The identifier bound by a function or class expression's own name. `extends` is excluded by name:
+// `class extends Base {}` is anonymous, and its next token is a keyword, not a binding. The
+// preceding character is required not to be an identifier character (so `myfunction x` does not
+// match) and not to be `.` or `#` (a reserved word is a legal property name, so `o.function` is a
+// property access and whatever follows it is not a binding position).
+const BINDING_NAME = /(?:^|[^.#\w$])(?:function|class)\b(?:\s*\*)?\s*([A-Za-z_$][\w$]*)/dg;
 export const maskKeyPositions = (maskedValue) => {
   const out = maskedValue.split('');
   const stack = [];
@@ -309,6 +356,9 @@ export const maskKeyPositions = (maskedValue) => {
     const top = stack[stack.length - 1];
     if (top === undefined || top.brace !== true) continue;
     if (c === ',') { top.entryFrom = i + 1; top.keyed = false; top.headTried = false; continue; }
+    // His 437 Finding 2. A `;` separates class-body members and statements, neither of which is an
+    // object-literal entry, so it re-arms the colon-free leg WITHOUT re-basing `entryFrom`/`keyed`.
+    if (c === ';') { top.headTried = false; continue; }
     if (c === ':' && top.keyed === false) {
       top.keyed = true;
       if (IDENT.test(maskedValue.slice(top.entryFrom, i).trim())) {
@@ -334,6 +384,17 @@ export const maskKeyPositions = (maskedValue) => {
     if (after === null || after[0] !== '{') continue; // a call in statement position, not a method
     const [from, to] = m.indices[1];
     for (let j = i + from; j < i + to; j += 1) out[j] = ' ';
+    // His 437 Finding 2, the undelimited half: a class body may separate members by NOTHING, so a
+    // member head that masked successfully re-arms the leg for the next one.
+    top.headTried = false;
+  }
+  // His 437 Finding 1 — binding names, over the whole text rather than per frame. Length-preserving
+  // like everything above. `out` is written, not `maskedValue`, so the two passes compose and a name
+  // already blanked by the frame walk is simply blanked again.
+  for (const m of maskedValue.matchAll(BINDING_NAME)) {
+    const [from, to] = m.indices[1];
+    if (maskedValue.slice(from, to) === 'extends') continue;
+    for (let j = from; j < to; j += 1) out[j] = ' ';
   }
   return out.join('');
 };

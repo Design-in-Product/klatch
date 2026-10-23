@@ -1,0 +1,30 @@
+ ok   G1  the pre-cure side is the committed module at e797a859, read with git
+        slice blob 44cf2a61 · tree blob at e797a859 44cf2a61 · equal: true
+ ok   G2  FINDING 1 CURED — a function or class expression's own name, spelled like the input, no longer reads as a reference
+        4/4 spellings moved ADMITTED → refused (function expression name: true→false · generator expression name: true→false · async function expr name: true→false · class expression name: true→false) · 4/4 same-shape controls under another name refused on BOTH sides · 3/3 genuine references ADMITTED on both
+ ok   G3  FINDING 1 LOCATED AT THE MASKER — the binding name is blanked, length-preserving, and blanked for a control name too
+        8/8 rows: kept pre-cure, blanked live, length preserved · failures: [none]
+ ok   G4  FINDING 2 CURED — a class body whose members are separated by nothing or by `;` no longer gets exactly one try, and the comma-delimited counterpart is unchanged
+        6/6 rows as specified BEFORE the drive · class, input first: refuse-both · class, input second: move · class, input second, `;`: move · class, input absent: refuse-both · object, input first: refuse-both · object, input second: refuse-both
+ ok   G5  FINDING 2 LOCATED AT THE MASKER — pre-cure exactly the first member is blanked, live every member is, in both orders
+        order [a, src]: pre [a] → live [a, src] · order [src, a]: pre [src] → live [a, src]
+ ok   G6  FINDING 3 is a NAMED RESIDUAL, not a cure — a call closing onto a block statement through ASI still reads as not-a-mention, in the over-refusal direction
+        ASI row mentionsParam: pre false → live false (unchanged, as declared) · the `;` control true (holds) · a row mentioning nothing false
+ ok   G7  the instruments that grade the module FORWARD stay green under this round's cures
+        round436 grader: GATE: true   (12 leg(s))   REFUSED: G12 · round430 gate: GATE: true   (7 leg(s) on the cure itself)
+ ok   G8  the cures move no verdict on the live corpus — a blast-radius measurement, not a pin
+        10 file(s) under scripts/lib at 8939ca5c driven through conventionOf · verdicts that moved: 0 [none]
+ ok   G9  the module graded is HEAD's blob, or a declaration says why it is not
+        graded blob 7646871b · HEAD blob 44cf2a61 · equal false · declared true (declared pre-commit cure drive)
+ ok   G10  the population of instruments naming the module is driven live, not recalled
+        14 file(s) name the module at 8939ca5c, 0 excluded as round >= 438, population 14, 12 graders · red: [round431, round433, round435, round436, round437] · why: round431/grade-his-convention-and-measure-the-reach.mjs [G7, G8] · round433/grade-his-cure-and-census-its-reach.mjs [G3, G4] · round435/cripple-and-regrade.mjs [] · round435/grade-his-cure-and-oracle-the-matrix.mjs [G3, G4, G5, G9] · round436/cripple-and-regrade.mjs [] · round437/grade-his-cure-and-the-live-keyed-finding-leg.mjs [G2, G3, G4]
+
+REFUTED P2  the population's reds under my cures are exactly [round431, round433, round435, round437] — round435 for the four live-keyed legs he declined to re-key, round437 because its finding-legs assert MY findings are still live
+        red: [round431, round433, round435, round436, round437]
+REFUTED P1  his Round 437 grader reddens on exactly G1, G2, G3 and G4 — G2/G3/G4 because they assert Findings 1 and 2 are live and I have taken both, and G1 because my §4 repair adds a stamp line to my grader's output that his whole-file diff has no rev model for. G5 (his Finding 3) stays green: I left it named rather than cured
+        his GATE: GATE: false   (10 leg(s))   RED: G2, G3, G4 · red legs off his per-leg FAIL lines: [G2, G3, G4]
+
+GATE: true   (10 leg(s))
+PREDICTIONS: 0 landed, 2 refuted: P2, P1
+  rev 8939ca5c · slice at e797a859 · worktree DIRTY
+  module blob 7646871b (!= HEAD:44cf2a61) · declared · depth 0

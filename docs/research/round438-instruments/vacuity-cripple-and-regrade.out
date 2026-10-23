@@ -1,0 +1,16 @@
+baseline                   GATE true  red []
+CELL FINDING 1's cure — the binding-name pass made a no-op
+  swap landed true · committed module untouched true · figure MOVED true
+  crippled GATE false  red [G2, G3]  · expected to include [G2, G3]: true
+  ok
+CELL FINDING 2's cure, the `;` half — a semicolon no longer re-arms the colon-free leg
+  swap landed true · committed module untouched true · figure MOVED true
+  crippled GATE false  red [G11]  · expected to include [G11]: true
+  ok
+CELL FINDING 2's cure, the undelimited half — a successful method head no longer re-arms it
+  swap landed true · committed module untouched true · figure MOVED true
+  crippled GATE false  red [G4, G5]  · expected to include [G4, G5]: true
+  ok
+
+VACUITY: every cell moved its figure
+  committed module byte-identical at exit: true
