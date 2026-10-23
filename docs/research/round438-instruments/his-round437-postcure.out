@@ -34,9 +34,9 @@ FAIL  G4  FINDING 2 — `headTried` is reset by `,` and by nothing else, so a br
         removed by taking his §6 (not about the module): ["G6"] · removed by the module swap (finding-legs keyed on a live defect): ["G3","G4","G5","G9"]
         swap asserted landed: true · module restored byte-identical: true
  ok   G9  the population of instruments naming the module is selected from the TREE at a stamped rev with `ls-tree` (414-416) and DRIVEN LIVE, with my own round and every later one excluded by the DERIVED round key this fire introduces — and the exclusion count published rather than left to the verdict (430). The sizes are MEASUREMENTS: a count here reddens on its own promotion (377/405/434/435)
-        tree at 8939ca5c: 14 file(s) naming the module · my round 437 and later, excluded by the derived key: 2 · population 12, 11 of them graders · red: REFUSED at drive depth 1 — see the depth guard
+        tree at fb8a12c5: 17 file(s) naming the module · my round 437 and later, excluded by the derived key: 5 · population 12, 11 of them graders · red: REFUSED at drive depth 1 — see the depth guard
  ok   G10  the REACH of Finding 1's position class on his own census corpus, as a measurement — the count of named function and class expressions, which is the population the binding-name blindness can bite. This is a FLOOR on the position class and NOT a count of live defects: a live defect additionally needs the name to be spelled like the reading function's own parameter, which this leg does not test and does not claim
-        corpus 10 file(s) at 8939ca5c · named function forms 35 · named classes 5 — a FLOOR on the position class, not a defect count
+        corpus 10 file(s) at fb8a12c5 · named function forms 35 · named classes 5 — a FLOOR on the position class, not a defect count
 
 REFUTED P1  with his Round 436 cures live and both of his routed findings taken in my Round 435 grader, the population's reds are exactly [round431, round433] — round435 leaves the red list because its two causes are fixed, and the other two stay red for the causes already recorded by his Round 432 and his Round 434 G8
         REFUSED at drive depth 1
@@ -45,4 +45,4 @@ LANDED  P2  the named-function-form population on `scripts/lib/` is non-empty �
 
 GATE: false   (10 leg(s))   RED: G2, G3, G4
 PREDICTIONS: 1 landed, 1 refuted: P1
-  rev 8939ca5c · worktree DIRTY
+  rev fb8a12c5 · worktree DIRTY
