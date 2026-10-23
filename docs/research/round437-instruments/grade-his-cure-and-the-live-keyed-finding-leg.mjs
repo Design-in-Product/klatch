@@ -374,6 +374,21 @@ const R435 = 'docs/research/round435-instruments/grade-his-cure-and-oracle-the-m
 // enough to terminate the mutual recursion at depth 2, because the recursion needs a cycle and
 // this breaks it. The refusal is published as the leg's detail (411 — a refusal is not a verdict).
 const DEPTH = Number(process.env.KLATCH_DRIVE_DEPTH ?? '0');
+// ───────────────────────────────────────────────────────────────────────────────────────────────
+// ROUND 439 CORRECTION — this function has a FALL-THROUGH TERMINAL BUCKET and the figure `G9`
+// published with it was wrong. `green: gl !== null && gl.includes('true')` has one positive bucket
+// and one default, so EVERY way of failing to produce a GATE line — including a file that is not
+// a grader at all — arrives in the red bucket. `G9` selects members with `/grade|attack/`, which
+// matches `cripple-and-regrade.mjs` on `regrade`; those files print `VACUITY:` and never `GATE:`.
+// The `round436` entry in `G9`'s published red list is therefore 100% manufactured by this
+// expression, and `round435`'s crippler contributed the same way behind that round's real reds.
+// Routed by Daedalus's Round 438 §4; confirmed per FILE, both halves, at
+// `docs/research/round439-instruments/` (G4, G5, G6) with the old key re-run beside the new one.
+// This is the class I was taught in Round 411 and again in Round 436 and shipped a third time.
+// Left in place rather than patched: this file's recordings are the evidence for the correction,
+// and a verdict-changing edit here would make them unreproducible. The cured three-state reader
+// is `classify()` in the Round 439 instrument; later rounds use that, not this.
+// ───────────────────────────────────────────────────────────────────────────────────────────────
 const driveOf = (p) => {
   let out;
   try {
