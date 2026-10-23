@@ -1,0 +1,74 @@
+ ok   G1  HIS ROUND 439 REPRODUCES — his instrument driven unmodified as this fire's first action, before this file existed. The verdict pin is his MEMO's published §5 figure, typed from the memo, which makes the agreement three-way: his sentence, his recording, my drive. Every differing line must then be accounted for by a class enumerated BEFORE the diff was read — rev stamp, dirty flag, wall-clock elapsed — or by the rev-dependent census counts in his G3 header, which are admitted only under an assertion that the `population N, M selected` tail is character-identical. The stamp substituted is read out of the TRAILER OF EACH RECORDING, never from live HEAD: his own G1 went red this round for sourcing it from HEAD after HEAD moved mid-fire (420/422/436), and a leg of mine that repeated that would agree with his §3 without demonstrating it. A recording with no stamp line REFUSES
+        GATE: false   (8 leg(s))   RED: G1, G5 · PREDICTIONS: 2 landed, 0 refuted · his stamp 99768c95 · my stamp bed2c3eb · whole-file diff [8,9,10,11,12,13,14,15,16,17,18,19,41] · stamps/elapsed [9,10,11,12,13,14,15,16,17,18,19,41] · rev-dependent census [8] · UNEXPLAINED []
+        line 8 moved: name the module 17→18, excluded 5→6 — population tail identical
+ ok   G2  THE POPULATION, DERIVED INDEPENDENTLY AND THEN REQUIRED TO AGREE. The key is written from his mechanism rather than copied from his line, and the member list it produces is graded against the member rows parsed out of my recording of HIS drive. An independent reader with nothing checking it is a second guess; a copy of his list is not a reader at all (412). The agreement is what makes the shape census below be about his population
+        tree at 45bd3599: 19 name the module · round >= 437 excluded: 7 · population 12, 11 graders
+        his drive named 11 · mine 11 · identical: true
+ ok   G3  THE GATE-LINE GRAMMAR OF HIS POPULATION, read off each member's OWN emitted line over one drive. His §1 censused three spellings over the three members that were RED. The population is eleven, and a member that is green today still has a spelling — his extractor will meet it the first time that member fails. Leg ids are masked before digit runs so two lines differing only in leg COUNT collapse and two differing in DELIMITER do not
+        9 of 11 members emit a GATE line · 6 distinct shape(s)
+        "GATE: true   (N leg(s) on the key itself)"
+          ← round413:GREEN, round414:GREEN
+        "GATE: true   (N leg(s) on the cure itself)"
+          ← round430:GREEN
+        "GATE: false   (N leg(s), RED: Gid | Gid)"
+          ← round431:RED
+        "GATE: true   (N leg(s))"
+          ← round432:GREEN, round434:GREEN
+        "GATE: false   (N leg(s)) — FALSE: Gid, Gid, Gid, Gid"
+          ← round433:RED, round435:RED
+        "(NO GATE LINE)"
+          ← round435:none, round436:none
+        "GATE: true   (N leg(s))   REFUSED: Gid"
+          ← round436:GREEN
+REF   G4  WHETHER A MEMBER NAMES ITS FAILING LEGS ON THE GATE LINE AT ALL — source-derived, and REFUSED this round because the confusion matrix caught the detector failing. A GREEN member's emitted line cannot show what its `false` line would carry, so source is the only reachable reading of the half G3 cannot see; but the cut is per-STATEMENT and these instruments assemble the gate line across several, which the `fn` cell measures rather than my supposing it. Publishing the count anyway would be a lower bound dressed as a census. The direction it can err is named: under-reporting only
+        REFUSED — detector not clean. confusion over 2 member(s) with both readings: tp 1 tn 0 fp 0 fn 1 · statements that would not cut: 3
+        the fn is round435's grader: emitted "— FALSE: G3, G4, G5, G9", source cut says no label
+        source-says-NO (unreliable, >= this many wrong): ["round413:GREEN","round414:GREEN","round434:GREEN","round435:RED","round436:UNGRADEABLE","round436:GREEN"]
+        source-says-YES (a floor, 2 of them): ["round431:RED","round435:UNGRADEABLE"]
+ ok   G5  HIS §1 TABLE, REPRODUCED RATHER THAN QUOTED. His shipped `RED: ` key re-run here over the real red gate lines of this drive. His three rows are a claim about his own instrument, and a memo is not a measurement (389/412). The leg requires every red member to come back either over-reported (an id that is not a leg id) or empty — which is what his table says and what makes the defect a grammar defect rather than one bad member
+        3 red member(s) · over-reported 1 · under-reported (empty) 2
+        round431 → ["G7 | G8)"]   from "GATE: false   (11 leg(s), RED: G7 | G8)"
+        round433 → []   from "GATE: false   (9 leg(s)) — FALSE: G3, G4, G4b, G4c"
+        round435 → []   from "GATE: false   (9 leg(s)) — FALSE: G3, G4, G5, G9"
+ ok   G9  THE SAME QUESTION AT THE CURE'S GRANULARITY (345): not how many line shapes exist, but how many LABEL SUFFIXES introduce a leg-id list — the unit his extractor is keyed on. G3's shape count includes differences his cure is indifferent to, so routing it as the number his cure must cover would be a figure keyed on the wrong unit. Measured from emitted lines with no source model, each form positively keyed, and a `GATE:` line carrying a label-shaped token that matches NO form reported as its own class rather than as "no label" — a distinction a single refusing bucket cannot make (411). The leg reddens if any line is unrecognised or matches two forms at once
+        3 label form(s) observed in the population: [", RED: … )",") — FALSE: …",")   REFUSED: …"]
+        members with NO label at all (5): ["round413:GREEN","round414:GREEN","round430:GREEN","round432:GREEN","round434:GREEN"]
+        label-shaped but matching no form: 0 · matching two forms: 0
+        GREEN round413 → (no label)
+        GREEN round414 → (no label)
+        GREEN round430 → (no label)
+        RED   round431 → [", RED: … )"]
+        GREEN round432 → (no label)
+        RED   round433 → [") — FALSE: …"]
+        GREEN round434 → (no label)
+        RED   round435 → [") — FALSE: …"]
+        GREEN round436 → [")   REFUSED: …"]
+FAIL  G6  THE SHAPE-INDEPENDENT READER, CENSUSED. My Round 438 G7 already reads failing legs off per-leg `FAIL  G<n>` rows rather than off the gate line, which is immune to every spelling G3 found. Whether that is a recommendation or a preference depends on whether the row grammar is universal across this population, so it is measured here. Graded in BOTH directions over the same drive: non-empty on every RED member, empty on every GREEN one — a reader returning [] everywhere passes the green half by itself
+        RED members with legs recovered off the rows: 0/3 · GREEN members yielding an empty set: 6/6
+        distinct per-leg VERDICT-TOKEN sets in the population: 4 — ["EXPECTED","TRUE"] / ["TRUE"] / ["FALSE","TRUE"] / ["REF","ok"]
+        GREEN       round413 → mine [] · its tokens []
+        GREEN       round414 → mine [] · its tokens ["EXPECTED","TRUE"]
+        GREEN       round430 → mine [] · its tokens ["TRUE"]
+        RED         round431 → mine [] · its tokens ["FALSE","TRUE"]
+        GREEN       round432 → mine [] · its tokens ["TRUE"]
+        RED         round433 → mine [] · its tokens ["FALSE","TRUE"]
+        GREEN       round434 → mine [] · its tokens ["TRUE"]
+        UNGRADEABLE round435 → mine [] · its tokens []
+        RED         round435 → mine [] · its tokens ["FALSE","TRUE"]
+        UNGRADEABLE round436 → mine [] · its tokens []
+        GREEN       round436 → mine [] · its tokens ["REF","ok"]
+ ok   G7  THE DEPTH GUARD, both halves: the driving leg refuses above depth 0 (source pin, named as one) and a fixture child reports the KLATCH_DRIVE_DEPTH it was ACTUALLY handed rather than this leg asserting a regex over the same source that spawns it (369). His 437 measured 15 concurrent processes from this population driving itself
+        running at depth 0 · refusal pin present: true · child reported DEPTH=1 (expected 1)
+ ok   G8  THE SHARED SUBJECT MODULE IS BYTE-IDENTICAL TO HEAD's BLOB AT EXIT. This population contains two cripplers and his §5 says one of them still mutates the committed file rather than a copy, so this drive wrote to a tracked file. A drive that left it corrupt would silently change the verdict of every later instrument in the tree
+        docs/research/round430-instruments/refusal-convention.mjs · HEAD blob 901fa6fb · at exit 901fa6fb · identical: true
+FAIL  G10  WHAT THE DRIVE WROTE, over the whole TRACKED tree and not only the file his §5 names. The set is differenced against a snapshot taken before any member ran, so it is what THIS drive dirtied and not what the worktree arrived carrying. This leg is here because G8 was green and too narrow: the first drive of this instrument left two committed round436 recordings modified — a rev stamp and a corpus count, verdicts intact, which is the version that does damage without looking like it. The recordings are the evidence earlier findings rest on, and re-stamping one to the current rev makes it a record of nothing. Diff kept at `drive-rewrote-committed-recordings.diff`
+        tracked files dirtied by this drive: 2 ["docs/research/round436-instruments/his-round435-postcure.out","docs/research/round436-instruments/round430-gate-postcure.out"] · tracked already dirty on entry (not this drive's): 1
+
+REFUSED P2  THE SHAPE HIS CENSUS COULD NOT SEE IS GREEN — every member whose gate-print site names no failing legs is GREEN in this drive. Declared NOT BLIND and why: I read these print sites from source before writing this leg (`raw-gate-line-sites.txt`, committed); the half unknown to me was their STATE. It is REFUSED rather than scored, and the refusal is the point: the first drive scored it REFUTED off the same reading G4 then measured as having a false negative, and the member that refuted it — round435, RED — is exactly the one the false negative is on. A prediction scored from a reading its own gate calls unreliable is a figure printed beside a guard that fired (353/422)
+        REFUSED — keyed on G4, which is not gradeable (fn 1). For the record, the reading it would have been scored from: 6 silent member(s), states ["GREEN","GREEN","GREEN","RED","UNGRADEABLE","GREEN"] — the RED one is the known false negative
+LANDED  P1  THE GRAMMAR IS WIDER THAN THREE, UNDER EITHER KEY. The number of distinct gate-line shapes emitted by his population exceeds the three spellings his §1 names, so a three-spelling extractor with a refusing fourth state refuses on members it could have read. Scored under both shape keys: the under-masked one this instrument first shipped and the corrected one, so the prediction cannot be carried by my own masking defect. Declared NOT BLIND and why: I grepped the print sites from source this fire before building this and the recording is committed beside this file (`raw-gate-line-sites.txt`); what the drive tests is whether the EMITTED lines agree with that source reading, and a scanner that modelled interpolation wrongly would have returned a SMALLER number (398)
+        undermasked key: 7 shape(s) · corrected key: 6 shape(s) · both vs 3 spellings named · the two keys differ by round433's suffixed ids G4b/G4c
+
+GATE: false   (10 leg(s))   RED: G6, G10   REFUSED: G4
+PREDICTIONS: 1 landed, 0 refuted, 1 refused: P2
+  rev 45bd3599 · worktree DIRTY · depth 0

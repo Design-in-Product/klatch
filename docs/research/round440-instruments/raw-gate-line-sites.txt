@@ -1,0 +1,131 @@
+docs/research/round433-instruments/grade-his-cure-and-census-its-reach.mjs:56:  const gate = /^GATE:.*$/m.exec(text);
+docs/research/round433-instruments/grade-his-cure-and-census-its-reach.mjs:373:    const g = /^GATE:.*$/m.exec(out);
+docs/research/round433-instruments/grade-his-cure-and-census-its-reach.mjs:378:    const g = /^GATE:.*$/m.exec(out);
+docs/research/round433-instruments/grade-his-cure-and-census-its-reach.mjs:413:console.log('\nGATE: ' + (failed.length === 0) + '   (' + legs.length + ' leg(s))'
+docs/research/round414-instruments/grade-the-refusing-half-and-reconcile-the-ten.mjs:495:console.log(`\nGATE: ${gateOk}   (${gateLegs.length} leg(s) on the key itself)`);
+docs/research/round426-instruments/a-retyped-constant-from-another-file-is-not-a-pin.mjs:76:if (fails.length) { say(''); say(`GATE: FALSE (${fails.join('; ')})`); say('SUMMARY: REFUSED at a precondition'); process.exit(2); }
+docs/research/round426-instruments/a-retyped-constant-from-another-file-is-not-a-pin.mjs:90:if (MUT_REGION === null) { say(''); say('GATE: FALSE'); say('SUMMARY: REFUSED — could not slice his constants'); process.exit(2); }
+docs/research/round426-instruments/a-retyped-constant-from-another-file-is-not-a-pin.mjs:237:say(`GATE: ${fails.length === 0 ? 'true' : 'FALSE (' + fails.join('; ') + ')'}`);
+docs/research/round426-instruments/a-published-sentence-is-not-its-discriminator.mjs:77:if (fails.length) { say(''); say(`GATE: FALSE (${fails.join('; ')})`); say('SUMMARY: REFUSED at a precondition'); process.exit(2); }
+docs/research/round426-instruments/a-published-sentence-is-not-its-discriminator.mjs:121:  say(''); say(`GATE: FALSE (${fails.join('; ')})`);
+docs/research/round426-instruments/a-published-sentence-is-not-its-discriminator.mjs:360:say(`GATE: ${fails.length === 0 ? 'true' : 'FALSE (' + fails.join('; ') + ')'}`);
+docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs:704:console.log(`\nGATE: ${badGate.length === 0}   (${GRADES.filter((x) => x.gate).length} leg(s) on `
+docs/research/round436-instruments/grade-the-cures-against-a-runtime-oracle.mjs:179:  const gate = mine.find((l) => l.startsWith('GATE:')) ?? '';
+docs/research/round436-instruments/grade-the-cures-against-a-runtime-oracle.mjs:419:  const gate = out.split('\n').find((l) => l.startsWith('GATE:')) ?? '';
+docs/research/round436-instruments/grade-the-cures-against-a-runtime-oracle.mjs:458:  const gate = live.split('\n').filter((l) => l.startsWith('GATE:'));
+docs/research/round436-instruments/grade-the-cures-against-a-runtime-oracle.mjs:531:    const gl = out.split('\n').filter((l) => l.startsWith('GATE:'));
+docs/research/round436-instruments/grade-the-cures-against-a-runtime-oracle.mjs:533:    // `VACUITY:` and never `GATE:` — reading "no GATE line" as red manufactures a finding out of a
+docs/research/round436-instruments/grade-the-cures-against-a-runtime-oracle.mjs:584:console.log(`GATE: ${red.length === 0}   (${legs.length} leg(s))${red.length ? `   RED: ${red.map((l) => l.id).join(', ')}` : ''}`
+docs/research/round436-instruments/promotion-diff.mjs:104:  const gateBefore = before.find((l) => l.startsWith('GATE:')) ?? '';
+docs/research/round436-instruments/promotion-diff.mjs:105:  const gateAfter = after.find((l) => l.startsWith('GATE:')) ?? '';
+docs/research/round423-instruments/grade-the-422-cures.mjs:46: * fatal satisfies both: no `GATE:` line → `gateLine` falls to `'(no GATE line)'` → `gateTrue`
+docs/research/round423-instruments/grade-the-422-cures.mjs:103:if (fails.length) { say(''); say(`GATE: FALSE (${fails.join('; ')})`); say('SUMMARY: REFUSED at a precondition'); process.exit(2); }
+docs/research/round423-instruments/grade-the-422-cures.mjs:145:if (fails.length) { say(''); say(`GATE: FALSE (${fails.join('; ')})`); say('SUMMARY: REFUSED at a precondition'); process.exit(2); }
+docs/research/round423-instruments/grade-the-422-cures.mjs:177:  const gateMatch = text.match(/^GATE: (.*)$/m);
+docs/research/round423-instruments/grade-the-422-cures.mjs:195:  if (gateState !== 'true') say(`      GATE: ${results[name].gateLine}`);
+docs/research/round423-instruments/grade-the-422-cures.mjs:289:say(`GATE: ${fails.length === 0 ? 'true' : 'FALSE (' + fails.join('; ') + ')'}`);
+docs/research/round436-instruments/cripple-and-regrade.mjs:58:  const gate = out.split('\n').find((l) => l.startsWith('GATE:')) ?? '(no GATE line)';
+docs/research/round429-instruments/does-any-other-instrument-retype-a-verdict-it-slices.mjs:482:say(`GATE: ${GATE}`);
+docs/research/round429-instruments/does-any-other-instrument-retype-a-verdict-it-slices.mjs:484:if (failed.length) for (const f of failed) say(`  FAILED GATE: ${f.name}`);
+docs/research/round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs:103:  const g = t.match(/^GATE: (.+)$/m);
+docs/research/round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs:607:out.push(`GATE: ${failed.length === 0 ? 'true' : 'false'}   (${legs.length} leg(s))`
+docs/research/round420-instruments/drive-his-419.mjs:173:say(`   GATE line:                                 ${grab(/^(GATE: .*)$/m)}`);
+docs/research/round420-instruments/drive-his-419.mjs:181:say(`GATE: ${fails.length === 0 ? 'true' : 'FALSE (' + fails.join(', ') + ')'}`);
+docs/research/round435-instruments/cripple-and-regrade.mjs:29:  const g = t.match(/^GATE: (\w+)[^\n]*?(?:— FALSE: (.+))?$/m);
+docs/research/round420-instruments/grade-the-418-repair.mjs:273:say(`GATE: ${fails.length === 0 ? 'true' : 'FALSE (' + fails.join('; ') + ')'}`);
+docs/research/round420-instruments/his-old-cell-is-keyed-on-head.mjs:20: *     `GATE: true` and `SUMMARY: charge 1 cleared`.
+docs/research/round420-instruments/his-old-cell-is-keyed-on-head.mjs:162:    gateLine: (/^GATE: (.*)$/m.exec(text) || [, null])[1],
+docs/research/round420-instruments/his-old-cell-is-keyed-on-head.mjs:172:say(`      exit ${cellA.status} | GATE: ${cellA.gateLine}`);
+docs/research/round420-instruments/his-old-cell-is-keyed-on-head.mjs:193:  say(`      exit ${cellB.status} | GATE: ${cellB.gateLine}`);
+docs/research/round420-instruments/his-old-cell-is-keyed-on-head.mjs:231:say(`GATE: ${fails.length === 0 ? 'true' : 'FALSE (' + fails.join('; ') + ')'}`);
+docs/research/round412-instruments/resolve-the-ternary-and-reconstruct-the-nine.mjs:488:  console.log(`\nGATE: ${ok}   (${gateLegs.length} leg(s) on the key itself)`);
+docs/research/round435-instruments/swap-drive.mjs:20:  const g = t.match(/^GATE: (.+)$/m);
+docs/research/round425-instruments/position-vs-property-confusion-matrix.mjs:98:  say(`GATE: FALSE (${fails.join('; ')})`);
+docs/research/round425-instruments/position-vs-property-confusion-matrix.mjs:332:say(`GATE: ${fails.length === 0 ? 'true' : 'FALSE (' + fails.join('; ') + ')'}`);
+docs/research/round425-instruments/a-crash-cannot-print-separates.mjs:34: * absent the subject's overall `GATE:` goes FALSE and it exits 1 in every cell below. Every leg
+docs/research/round425-instruments/a-crash-cannot-print-separates.mjs:80:if (fails.length) { say(''); say(`GATE: FALSE (${fails.join('; ')})`); say('SUMMARY: REFUSED at a precondition'); process.exit(2); }
+docs/research/round425-instruments/a-crash-cannot-print-separates.mjs:118:if (fails.length) { say(''); say(`GATE: FALSE (${fails.join('; ')})`); say('SUMMARY: REFUSED at the §3 pin'); process.exit(2); }
+docs/research/round425-instruments/a-crash-cannot-print-separates.mjs:281:// A red overall `GATE:` line does not unprint a sentence, and the sentence is what gets quoted
+docs/research/round425-instruments/a-crash-cannot-print-separates.mjs:373:say(`GATE: ${fails.length === 0 ? 'true' : 'FALSE (' + fails.join('; ') + ')'}`);
+docs/research/round420-instruments/tool-surface-is-a-scope-label-not-a-censused-surface.mjs:106:// GATE: my transcription must reproduce HIS published figures, or everything below grades my copy
+docs/research/round420-instruments/tool-surface-is-a-scope-label-not-a-censused-surface.mjs:284:say(`GATE: ${fails.length === 0 ? 'true' : 'FALSE (' + fails.join('; ') + ')'}`);
+docs/research/round439-instruments/fixture-gate-false.mjs:4:console.log('GATE: false   (1 leg(s))   RED: X1');
+docs/research/round439-instruments/fixture-echo-depth.mjs:4:console.log(`GATE: true   (1 leg(s))   DEPTH=${process.env.KLATCH_DRIVE_DEPTH ?? 'unset'}`);
+docs/research/round439-instruments/fixture-gate-true.mjs:3:console.log('GATE: true   (1 leg(s))');
+docs/research/round439-instruments/attribute-the-ungradeable-red.mjs:7: * `VACUITY:` and never `GATE:`; and my `driveOf` returned
+docs/research/round439-instruments/attribute-the-ungradeable-red.mjs:18: *   - classifies every member with a POSITIVELY KEYED three-state reader — `GATE: true` → green,
+docs/research/round439-instruments/attribute-the-ungradeable-red.mjs:19: *     `GATE: false` → red with its leg ids, no GATE line → UNGRADEABLE, anything else → REFUSED —
+docs/research/round439-instruments/attribute-the-ungradeable-red.mjs:94:  const gate = out.split('\n').find((l) => l.startsWith('GATE:')) ?? null;
+docs/research/round439-instruments/attribute-the-ungradeable-red.mjs:98:  else if (gate.startsWith('GATE: true')) state = 'GREEN';
+docs/research/round439-instruments/attribute-the-ungradeable-red.mjs:99:  else if (gate.startsWith('GATE: false')) {
+docs/research/round439-instruments/attribute-the-ungradeable-red.mjs:137:  const gl = mine === null ? null : mine.split('\n').find((l) => l.startsWith('GATE:'));
+docs/research/round439-instruments/attribute-the-ungradeable-red.mjs:147:      && gl === 'GATE: true   (11 leg(s))'
+docs/research/round439-instruments/attribute-the-ungradeable-red.mjs:352:console.log(`GATE: ${red.length === 0}   (${legs.length} leg(s))`
+docs/research/round396-instruments/grade-the-grade-that-reddens-on-its-own-routed-cure.mjs:237:const probe371Gate = /^GATE: PASSED/m.test(R.probe371);
+docs/research/round430-instruments/grade-the-convention-gate.mjs:346:  const gate = text.match(/^GATE: (\S+)\s+\((\d+) leg\(s\)/m);
+docs/research/round430-instruments/grade-the-convention-gate.mjs:495:console.log(`\nGATE: ${gateOk}   (${gateLegs.length} leg(s) on the cure itself)`);
+docs/research/round437-instruments/swap-drive.mjs:26:  const l = t.split('\n').find((x) => x.startsWith('GATE:')) ?? '';
+docs/research/round419-instruments/sec3-rekeyed-on-the-call-shape.mjs:130:// GATE: the census must find the surface Round 418 §3 and my own §4 both walked by hand. If it
+docs/research/round419-instruments/sec3-rekeyed-on-the-call-shape.mjs:382:say(`GATE: ${fails.length === 0 ? 'true' : 'FALSE (' + fails.join(', ') + ')'}`);
+docs/research/round422-instruments/his-scope-census-cannot-see-a-hoisted-pattern.mjs:216:    gate: (text.match(/^GATE: (.*)$/m) || [, '(none)'])[1],
+docs/research/round422-instruments/his-scope-census-cannot-see-a-hoisted-pattern.mjs:270:say(`GATE: ${fails.length === 0 ? 'true' : 'FALSE (' + fails.join('; ') + ')'}`);
+docs/research/round422-instruments/his-census-only-21-is-ungated.mjs:194:    gate: (text.match(/^GATE: (.*)$/m) || [, '(none)'])[1],
+docs/research/round422-instruments/his-census-only-21-is-ungated.mjs:279:say(`GATE: ${fails.length === 0 ? 'true' : 'FALSE (' + fails.join('; ') + ')'}`);
+docs/research/round422-instruments/his-census-only-21-is-ungated.mjs:285:say(`  BETA  — cell named "all three", drops two:          ${B ? B.censusOnly : '?'}  (his GATE: ${B ? B.gate : '?'})`);
+docs/research/round422-instruments/his-census-only-21-is-ungated.mjs:286:say(`  GAMMA — the same figure made unreadable:            ${G ? G.censusOnly : '?'}  (his GATE: ${G ? G.gate : '?'})`);
+docs/research/round419-instruments/grade-the-417-repairs.mjs:160:say(`GATE: ${fails.length === 0 ? 'true' : 'FALSE (' + fails.map((f) => `c${f.charge}:${f.name}`).join('; ') + ')'}`);
+docs/research/round422-instruments/drive-his-421.mjs:147:  gate: (text.match(/^GATE: (.*)$/m) || [, '(no GATE line)'])[1],
+docs/research/round422-instruments/drive-his-421.mjs:200:say(`GATE: ${fails.length === 0 ? 'true' : 'FALSE (' + fails.join('; ') + ')'}`);
+docs/research/round422-instruments/drive-his-421.mjs:207:  say(`      live GATE: ${s.live.gate}`);
+docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs:523:console.log(`\nGATE: ${gateOk}   (${GRADES.filter((r) => r.gate).length} leg(s) on the key itself)`);
+docs/research/round437-instruments/grade-his-cure-and-the-live-keyed-finding-leg.mjs:10: * line of mine was written (328): `GATE: true (12 leg(s)) · PREDICTIONS 0 landed, 2 refuted: P1, P2`,
+docs/research/round437-instruments/grade-his-cure-and-the-live-keyed-finding-leg.mjs:126:  const gate = (t) => (t === null ? null : (t.split('\n').find((l) => l.startsWith('GATE:')) ?? null));
+docs/research/round437-instruments/grade-his-cure-and-the-live-keyed-finding-leg.mjs:382:// matches `cripple-and-regrade.mjs` on `regrade`; those files print `VACUITY:` and never `GATE:`.
+docs/research/round437-instruments/grade-his-cure-and-the-live-keyed-finding-leg.mjs:403:  const gl = out.split('\n').find((l) => l.startsWith('GATE:')) ?? null;
+docs/research/round437-instruments/grade-his-cure-and-the-live-keyed-finding-leg.mjs:438:    : redsOfGate(t.split('\n').find((x) => x.startsWith('GATE:'))));
+docs/research/round437-instruments/grade-his-cure-and-the-live-keyed-finding-leg.mjs:569:console.log(`GATE: ${red.length === 0}   (${legs.length} leg(s))`
+docs/research/round409-instruments/census-the-hand-typed-known-positive.mjs:394:console.log(`\nGATE: ${badGate.length === 0}   (${GRADES.filter((x) => x.gate).length} leg(s) on `
+docs/research/round427-capability-test-pointer/the-history-window-is-200-messages-not-the-file.mjs:249:lines.push(`GATE: ${GATE}`);
+docs/research/round415-instruments/census-the-index-keyed-population.mjs:384:console.log(`GATE: ${gate} (${gateLegs.length} leg(s): ${gateLegs.join(' ')})`);
+docs/research/round432-instruments/grade-the-two-cures.mjs:170:    const g = /^GATE: .*$/m.exec(t);
+docs/research/round432-instruments/grade-the-two-cures.mjs:263:console.log(`\nGATE: ${red.length === 0}   (${legs.length} leg(s)${red.length ? `, RED: ${red.join(' | ')}` : ''})`);
+docs/research/round431-instruments/grade-his-convention-and-measure-the-reach.mjs:510:say(`GATE: ${gateOK}   (${legs.length} leg(s)`
+docs/research/round416-instruments/grade-the-rev-stamp-against-a-dirty-index.mjs:398:console.log(`\nGATE: ${gate} (${gateLegs.length} leg(s): ${gateLegs.join(' ')})`);
+docs/research/round438-instruments/grade-the-binding-position-cures.mjs:288:    const gate = out.split('\n').filter((l) => l.startsWith('GATE:'));
+docs/research/round438-instruments/grade-the-binding-position-cures.mjs:348:    const gl = out.split('\n').filter((l) => l.startsWith('GATE:'));
+docs/research/round438-instruments/grade-the-binding-position-cures.mjs:353:    // Three states, not two. A member with NO `GATE:` line has not failed — it is UNGRADEABLE by
+docs/research/round438-instruments/grade-the-binding-position-cures.mjs:356:    // prints `VACUITY:`, never `GATE:`. Its own first drive put two such files in the red list with
+docs/research/round438-instruments/grade-the-binding-position-cures.mjs:396:  const gate = out.split('\n').find((l) => l.startsWith('GATE:')) ?? '';
+docs/research/round438-instruments/grade-the-binding-position-cures.mjs:403:    `his GATE: ${gate || '(not found)'} · red legs off his per-leg FAIL lines: [${perLeg.join(', ')}]`,
+docs/research/round438-instruments/grade-the-binding-position-cures.mjs:422:console.log(`GATE: ${red.length === 0}   (${legs.length} leg(s))${red.length ? `   RED: ${red.map((l) => l.id).join(', ')}` : ''}`
+docs/research/round424-instruments/the-resolver-reads-one-pattern-per-body.mjs:83:if (fails.length) { say(''); say(`GATE: FALSE (${fails.join('; ')})`); say('SUMMARY: REFUSED at a precondition'); process.exit(2); }
+docs/research/round424-instruments/the-resolver-reads-one-pattern-per-body.mjs:217:say(`GATE: ${fails.length === 0 ? 'true' : 'FALSE (' + fails.join('; ') + ')'}`);
+docs/research/round438-instruments/cripple-and-regrade.mjs:43:  const gate = out.split('\n').find((l) => l.startsWith('GATE:')) ?? '(no GATE line)';
+docs/research/round424-instruments/an-exit-code-is-not-the-gate-that-fired.mjs:17: * A cell that dies for a reason unrelated to the cure under test exits 1 with no `GATE:` line, so
+docs/research/round424-instruments/an-exit-code-is-not-the-gate-that-fired.mjs:98:if (fails.length) { say(''); say(`GATE: FALSE (${fails.join('; ')})`); say('SUMMARY: REFUSED at a precondition'); flush(); process.exit(2); }
+docs/research/round424-instruments/an-exit-code-is-not-the-gate-that-fired.mjs:176:  const gateLine = (text.match(/^GATE: (.*)$/m) || [, '(no GATE line)'])[1];
+docs/research/round424-instruments/an-exit-code-is-not-the-gate-that-fired.mjs:182:    const m = text.match(new RegExp(`^ {2}${cell}\\n(?: {6}.*\\n)*?(?: {6}GATE: (.*)$)`, 'm'));
+docs/research/round424-instruments/an-exit-code-is-not-the-gate-that-fired.mjs:200:  if (!R.gateTrue) say(`      his GATE: ${R.gateLine.slice(0, 160)}`);
+docs/research/round424-instruments/an-exit-code-is-not-the-gate-that-fired.mjs:216:const pubGate = (G_OUT_PUBLISHED.match(/^GATE: (.*)$/m) || [, null])[1];
+docs/research/round424-instruments/an-exit-code-is-not-the-gate-that-fired.mjs:257:say(`    R1 inner A2 GATE: ${String(R1 && R1.innerA2).slice(0, 120)}`);
+docs/research/round424-instruments/an-exit-code-is-not-the-gate-that-fired.mjs:258:say(`    R2 inner A2 GATE: ${String(R2 && R2.innerA2).slice(0, 120)}`);
+docs/research/round424-instruments/an-exit-code-is-not-the-gate-that-fired.mjs:259:say(`    R1 inner A3 GATE: ${String(R1 && R1.innerA3).slice(0, 120)}`);
+docs/research/round424-instruments/an-exit-code-is-not-the-gate-that-fired.mjs:260:say(`    R3 inner A3 GATE: ${String(R3 && R3.innerA3).slice(0, 120)}`);
+docs/research/round424-instruments/an-exit-code-is-not-the-gate-that-fired.mjs:324:say(`GATE: ${fails.length === 0 ? 'true' : 'FALSE (' + fails.join('; ') + ')'}`);
+docs/research/round413-instruments/attack-g7-and-grade-the-branch-layer.mjs:456:console.log(`\nGATE: ${gateOk}   (${gateLegs.length} leg(s) on the key itself)`);
+docs/research/round421-instruments/grade-the-420-repair.mjs:89:// 1 x 1, and the "OLD and NEW differ" gate below refuses. My published `GATE: true` was therefore
+docs/research/round421-instruments/grade-the-420-repair.mjs:119:  say('GATE: FALSE (no rev of the graded file carries the defect token — the OLD cell is unobtainable)');
+docs/research/round421-instruments/grade-the-420-repair.mjs:197:  const gateLine = (text.match(/^GATE: (.*)$/m) || [, '(no GATE line)'])[1];
+docs/research/round421-instruments/grade-the-420-repair.mjs:209:  if (!/^true$/.test(gateLine)) say(`      GATE: ${results[key].gateLine}`);
+docs/research/round421-instruments/grade-the-420-repair.mjs:254:say(`GATE: ${fails.length === 0 ? 'true' : 'FALSE (' + fails.join('; ') + ')'}`);
+docs/research/round421-instruments/scope-label-legs-are-a-class-of-three.mjs:366:  const g = text.match(/^GATE: (.*)$/m);
+docs/research/round421-instruments/scope-label-legs-are-a-class-of-three.mjs:501:say(`GATE: ${fails.length === 0 ? 'true' : 'FALSE (' + fails.join('; ') + ')'}`);
+docs/research/round434-instruments/grade-the-two-cures-and-the-prose.mjs:79:  const g = t.match(/^GATE: (.+)$/m);
+docs/research/round434-instruments/grade-the-two-cures-and-the-prose.mjs:410:out.push(`GATE: ${failed.length === 0 ? 'true' : 'false'}   (${legs.length} leg(s))`
+docs/research/round428-instruments/a-sentence-keyed-on-a-subset-publishes-past-its-own-gate.mjs:11: * control that makes the reading a reading. A red overall `GATE:` line does not unprint a
+docs/research/round428-instruments/a-sentence-keyed-on-a-subset-publishes-past-its-own-gate.mjs:79:if (fails.length) { say(''); say(`GATE: FALSE (${fails.join('; ')})`); say('SUMMARY: REFUSED at a precondition'); process.exit(2); }
+docs/research/round428-instruments/a-sentence-keyed-on-a-subset-publishes-past-its-own-gate.mjs:96:if (fails.length) { say(''); say(`GATE: FALSE (${fails.join('; ')})`); say('SUMMARY: REFUSED — no gradeable old spelling'); process.exit(2); }
+docs/research/round428-instruments/a-sentence-keyed-on-a-subset-publishes-past-its-own-gate.mjs:157:if (fails.length) { say(''); say(`GATE: FALSE (${fails.join('; ')})`); say('SUMMARY: REFUSED — a key did not slice'); process.exit(2); }
+docs/research/round428-instruments/a-sentence-keyed-on-a-subset-publishes-past-its-own-gate.mjs:194:if (fails.length) { say(''); say(`GATE: FALSE (${fails.join('; ')})`); say('SUMMARY: REFUSED — the table did not parse'); process.exit(2); }
+docs/research/round428-instruments/a-sentence-keyed-on-a-subset-publishes-past-its-own-gate.mjs:209:if (fails.length) { say(''); say(`GATE: FALSE (${fails.join('; ')})`); say('SUMMARY: REFUSED — the slices do not reproduce the published lines'); process.exit(2); }
+docs/research/round428-instruments/a-sentence-keyed-on-a-subset-publishes-past-its-own-gate.mjs:320:say(`GATE: ${fails.length === 0 ? 'true' : 'FALSE (' + fails.join('; ') + ')'}`);

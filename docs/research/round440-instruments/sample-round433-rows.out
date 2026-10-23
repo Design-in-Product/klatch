@@ -1,0 +1,44 @@
+Round 433 — his Round 432 graded, and the cure's reach censused
+
+  TRUE  G1  HIS round432 grader, driven unmodified in my tree, prints the verdict lines he published — both sides SLICED out of the two recordings with one reader, not retyped (412)
+        his drive3.out: "GATE: true   (9 leg(s))" | "PREDICTIONS: 1 landed, 0 refuted" · my reproduction: "GATE: true   (9 leg(s))" | "PREDICTIONS: 1 landed, 0 refuted" · identical: true
+  TRUE  G1b  and the ONLY line that differs between his recording and mine is the HEAD stamp — derived by diffing the two files in this instrument, so a second difference would redden rather than pass unseen
+        differing line index/indices: [27] · that line in mine: "pre-cure rev 2d980ccb · HEAD 2db45c65 · worktree DIRTY"
+  TRUE  G2  his committed pre-cure slice IS the module text at the rev he stamped — byte-identical to `git show`, re-run here under my own checkout rather than taken from his cell — and the PROPERTY pin holds in both directions (420/422)
+        byte-identical to git show 2d980ccb: true · slice lacks "paramsOf": true · live module carries it: true
+  FALSE G3  THE FOURTH CELL HIS 3 × 2 DOES NOT HAVE, AND THE CURE MOVES IT THE WRONG WAY: a returned object whose NESTED KEY is spelled like the parameter, and whose value reads the input nowhere, was REFUSED pre-cure and is ADMITTED as the answer shape now. That is the UNDER-refusal direction he named as the dangerous one, and the cure introduced it. CONTROL: the same probe with the nested key renamed refuses in BOTH modules, so the cell is reading the key's NAME and not the probe's shape; and the same name as a string VALUE refuses in both, so his masked reading does hold where he claimed it
+        KEY_PROBE { span: { src: 1 } } → pre REFUSED: a return shape {span} at offset 140 that is neither all-message nor input-derived (0 message value(s), 0 derived) ║ cured REFUSED: a return shape {span} at offset 140 that is neither all-message nor input-derived (0 message value(s), 0 derived)
+        CONTROL { span: { q: 1 } } → pre refused ║ cured refused
+        STRING CELL { span: { nope: 'src' } } → pre refused ║ cured refused
+  FALSE G4  G8 CURED THE MESSAGE LEG AND LEFT THE KEY LEG: one doc comment above a key in the returned object makes the key read as "/** … */ span" and refuses the whole function — in the CURED module as well as the pre-cure one. The CONTROL is the identical probe with the comment deleted, which derives the full convention in both. Over-refusal, the safe direction, but the module's own docblock sentence is written as a property of the module and is a property of one leg
+        comment present in the probe source: true · WITH the comment → pre REFUSED: a non-identifier key "/** the slice the ca" at offset 140 ║ cured CONVENTION answer=[span] refusal=[how,why]
+        CONTROL comment deleted → pre CONVENTION answer=[span] refusal=[how,why] ║ cured CONVENTION answer=[span] refusal=[how,why]
+  FALSE G4b  and the sentence G4 is measured against is IN the live module — located by running the pattern over the file in this instrument (329-331/367/409/429), not quoted from reading it
+        REFUSED: the sentence is not in the live module under this pattern
+  FALSE G4c  NOT PRE-REGISTERED (written after P2 came back refuted, and read at the granularity P2 should have been keyed at — 345): the key leg has a LIVE member outside the round-track — `scripts/lib/recall-tap.mjs#tapSummary` — and the comment is its CAUSE: deleting the comment spans moves the REASON off the key leg while leaving the member refused for a different return
+        with its own comments: REFUSED: a return shape {droppedExpandCalls,flaggedCalls,incoherentCalls,notADv,offset,quietDropCalls,reason,resolvedByTap,status,trueEmptySearches,unreadableSummaryCalls,unresolvedCalls,verdicts} at offset 1277 that is neither all-message nor input-derived (1 message value(s), 4 derived)
+        comment spans deleted (13 spans): REFUSED: a return form this reader does not model at offset 436: "{
+    notADv: 'instrument health, not a "
+  TRUE  G5  REACH, MEASURED: the module is a general reader of a subject's refusal convention by its own docblock. Over every function export of `scripts/lib/` at a stamped rev — a population it is not aimed at but is now importable by — the transition matrix pre-cure → cured is a SINGLE cell. Each member is asserted byte-identical to its blob at the rev, the reason classes are positively keyed, and an UNCLASSIFIED reason reddens this leg rather than falling into a terminal bucket (411)
+        rev bed2c3eb · files 10 (all byte-identical to their blobs: true) · import failures 0 · function exports 30
+        transitions: refused->refused 30
+        refusal reasons: 25× a return form this reader does not model ║ 2× the input is not nameable (paramsOf refused) ║ 2× neither all-message nor input-derived ║ 1× no `return` site in the source
+  TRUE  G5b  and his G4 refusal legs are NOT vacuous in a real population — `paramsOf` refuses on live members here, and their declaration lines are read out of the files rather than described, so the form that tripped it is visible
+        2 member(s) refused by paramsOf: scripts/lib/marker-floor.mjs#buildFloorClassifier, scripts/lib/offer-choice.mjs#scoreOfferChoice
+        export function buildFloorClassifier(P, CAP, { GAP_LINE, EDGE_LINE }) {
+        export function scoreOfferChoice({ calls, markingSeqs = [], markingConversation = null }) {
+
+  TRUE  P1  the G3 under-admission is reachable only while the value carries NO literal message: add a string anywhere in the same value and the all-message leg takes it back to a refusal
+        { span: { src: 1, note: 'constant' } } → cured REFUSED: no answer shape among the returns
+  FALSE P2  COMMENTS, not shapes, account for exactly ONE of the population's refusals: deleting every comment span from each member's own source (located with the shared `commentSpans`) moves exactly one member's verdict, and it is the one the key leg refused. LEFT RED: the prediction was keyed on the VERDICT and the comment moves only the REASON — 18 members carry a comment and none of their verdicts move, because every one of them refuses for a second reason as well. G4c above reads it at the granularity this should have had
+        members carrying a comment: 18 · verdict moved for 0: [none] · members refused with "a non-identifier key": 0
+  TRUE  P3  HIS P1 REPRODUCES HERE, in a third fire and a different worktree: round430's published PREDICTIONS line and the same instrument re-driven at the same code differ, and today's reading matches the one HE recorded this fire. All three lines sliced out of files
+        published (round430 drive4.after-promotion.out): "PREDICTIONS: 4 landed, 1 REFUTED: P4"
+        his round432 re-drive (round430-postcure.out): "PREDICTIONS: 3 landed, 2 REFUTED: P4 | P5"
+        my re-drive, this fire, same code: "PREDICTIONS: 3 landed, 2 REFUTED: P4 | P5"
+        published differs from today: true · my reading matches his: true
+
+GATE: false   (9 leg(s)) — FALSE: G3, G4, G4b, G4c
+PREDICTIONS: 2 landed, 1 refuted: P2
+
+  rev bed2c3eb · his pre-cure rev 2d980ccb · worktree DIRTY

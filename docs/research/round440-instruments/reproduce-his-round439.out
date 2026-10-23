@@ -1,0 +1,42 @@
+FAIL  G1  HIS ROUND 438 REPRODUCES IN MY TREE — his grader driven unmodified as this fire's first action, before any instrument of mine existed. The differing lines are not eyeballed: each is asserted to BE a rev/dirty stamp by substituting his stamp for mine and requiring character identity (426/420/422). His §7 figures are this leg's detail verbatim
+        GATE: true   (11 leg(s)) · PREDICTIONS: 1 landed, 1 refuted: P1 · whole-file diff [17,21,30] · explained as rev stamps: []
+ ok   G2  THE THREE-STATE READER IS GRADED BY A CONFUSION MATRIX. A single known positive would show only that a VACUITY-only file can be detected; what has to be separated is UNGRADEABLE from a REAL failure, in both directions. Four fixtures: a passing gate, a FAILING gate with a named leg, a VACUITY-only file, and a SILENT file — the last so that UNGRADEABLE is not keyed on the string `VACUITY:` by accident (355/364/418). The old key's verdict is printed on every row: it calls three of the four not-green, which is the defect
+        fixture-gate-true.mjs → GREEN (wanted GREEN) · old key: green
+        fixture-gate-false.mjs → RED (wanted RED, legs ["X1"]) · old key: not-green
+        fixture-no-gate.mjs → UNGRADEABLE (wanted UNGRADEABLE) · old key: not-green
+        fixture-silent.mjs → UNGRADEABLE (wanted UNGRADEABLE) · old key: not-green
+ ok   G3  THE PER-FILE ATTRIBUTION MAP over my Round 437 G9 population, re-driven at a stamped rev with the same key (names from `ls-tree`, the module named by CONTENT READ AT THE REV rather than from the worktree, my round and later excluded by a derived key). Published per FILE with failing-leg sets and elapsed, because the per-ROUND unit my §8 published is what hid a green grader behind an unreportable crippler in the same directory
+        tree at bed2c3eb: 18 name the module · round >= 437 excluded: 6 · population 12, 11 selected as graders
+        GREEN       docs/research/round413-instruments/attack-g7-and-grade-the-branch-layer.mjs · 672ms
+        GREEN       docs/research/round414-instruments/grade-the-refusing-half-and-reconcile-the-ten.mjs · 25405ms
+        GREEN       docs/research/round430-instruments/grade-the-convention-gate.mjs · 2640ms
+        RED         docs/research/round431-instruments/grade-his-convention-and-measure-the-reach.mjs ["G7 | G8)"] · 2511ms
+        GREEN       docs/research/round432-instruments/grade-the-two-cures.mjs · 109ms
+        RED         docs/research/round433-instruments/grade-his-cure-and-census-its-reach.mjs [] · 2996ms
+        GREEN       docs/research/round434-instruments/grade-the-two-cures-and-the-prose.mjs · 318ms
+        UNGRADEABLE docs/research/round435-instruments/cripple-and-regrade.mjs · 1257ms
+        RED         docs/research/round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs [] · 591ms
+        UNGRADEABLE docs/research/round436-instruments/cripple-and-regrade.mjs · 14869ms
+        GREEN       docs/research/round436-instruments/grade-the-cures-against-a-runtime-oracle.mjs · 3507ms
+        GREEN 6 · RED 3 · UNGRADEABLE 2 · REFUSED 0 · module blob drifted during: none
+ ok   G4  HIS §4 ATTRIBUTION, CONFIRMED OR NOT AT ROUND436'S GRANULARITY (345): round436 has two members in this population, and the claim "the red is entirely the crippler" requires the crippler UNGRADEABLE **and** the grader GREEN. Either half alone leaves the red partly real
+        cripple-and-regrade.mjs → UNGRADEABLE · grade-the-cures-against-a-runtime-oracle.mjs → GREEN — his §4 CONFIRMED: the round436 red is 100% manufactured by my fall-through bucket
+FAIL  G5  HIS MASKING CLAIM, GRADED SEPARATELY: round435's crippler is UNGRADEABLE in exactly the same way, and its contribution to my published red list was invisible because that round's grader is red for REAL legs. The real legs are named here rather than counted — they are the live-module-keyed legs I carried forward as my own open item, so this leg also says what my round435 red actually is
+        crippler → UNGRADEABLE · grader → RED on real legs [] — masking NOT confirmed as stated
+ ok   G6  THE SEAM, DECLARED AND GRADED AS A 2 x 2: old key (`gate.includes("true")`, everything else red) and new key (three states) computed over the SAME drive, so nothing but the key can differ (339). The old key must still reproduce my PUBLISHED `[round431, round433, round435, round436]` — if it does not, the thing being cured is not the thing I shipped — and the cure must remove exactly round436 and add nothing
+        old key red: [round431, round433, round435, round436] · reproduces my published figure: true
+        new key red: [round431, round433, round435] · UNGRADEABLE: [round435, round436]
+        removed by the third state: ["round436"] · added: []
+ ok   G7  THE SHARED SUBJECT MODULE IS ASSERTED, NOT ASSUMED — blob at exit against `HEAD:`'s blob. Round 437 found this file MODIFIED twice mid-fire from driving this very population, and my round435 crippler mutates the committed file rather than a copy (his Round 438 §1 cured that for his). A drive that silently graded a corrupted module publishes a figure about a file that does not exist in the tree
+        docs/research/round430-instruments/refusal-convention.mjs · HEAD blob 901fa6fb · at exit 901fa6fb · identical: true
+ ok   G8  THE DEPTH GUARD, both halves — and the spawn half BEHAVIOURALLY: a fixture child reports the `KLATCH_DRIVE_DEPTH` it was actually handed, rather than this leg asserting a regex over the same source that spawns it (369). The refusal half is a source pin, named as such. His Round 438 §1 honours the same variable from his side, so the cycle my Round 437 measured at 15 concurrent processes is broken at both ends
+        running at depth 0 · child reported DEPTH=1 (expected 1) · driving legs refuse at depth > 0: true · driving legs ran
+
+LANDED  P1  NOT BLIND, and said so: with the third state in, my Round 437 G9 population's red list is exactly [round431, round433, round435] — round436 leaves entirely, round435 stays for its own real legs. The test is agreement between two independent readers over populations differing by one member, not the value
+        new key red: [round431, round433, round435] — predicted exactly [round431, round433, round435]
+LANDED  P2  the UNGRADEABLE members are exactly two, and both are named `cripple-and-regrade.mjs` — so the mechanism is a FILENAME CLASS my selector was never keyed to exclude, not one misbehaving file. Also not blind, same reason
+        2 ungradeable: ["docs/research/round435-instruments/cripple-and-regrade.mjs","docs/research/round436-instruments/cripple-and-regrade.mjs"]
+
+GATE: false   (8 leg(s))   RED: G1, G5
+PREDICTIONS: 2 landed, 0 refuted
+  rev bed2c3eb · worktree DIRTY · depth 0 · module blob 901fa6fb

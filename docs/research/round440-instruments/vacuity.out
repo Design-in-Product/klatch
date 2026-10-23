@@ -1,0 +1,13 @@
+BASE  GATE: false   (9 leg(s))   RED: G6   REFUSED: G4
+ ok   C1 → G2  the POPULATION key, by env: only `attack` selects, so 1 member instead of 11 and the member list cannot agree with the one parsed out of his drive
+        anchor occurrences: n/a (env cripple) · figure moved: true · aimed leg hit: true
+        GATE: false   (9 leg(s))   RED: G2, G5, G9, G6
+ ok   C2 → G9  ONE of G9's four label forms is deleted, so the two members that carry `) — FALSE: …` become label-shaped-but-matching-no-form. G9 must redden on its unrecognised count — the state it exists to distinguish from "no label at all"
+        anchor occurrences: 1 · figure moved: true · aimed leg hit: true
+        GATE: false   (9 leg(s))   RED: G9, G6   REFUSED: G4
+ ok   C3 → G6  G6's per-leg reader is re-keyed from `FAIL` to `FALSE` — the token round431/433/435 actually print. This is the one cell whose movement is a MEASUREMENT and not only a vacuity check: if G6 goes GREEN, the 0/3 in the live drive is about the token my Round 438 reader was keyed to and not about the rows being unreadable
+        anchor occurrences: 1 · figure moved: true · aimed leg hit: true
+        GATE: true   (9 leg(s))   REFUSED: G4
+
+VACUITY: 3/3 cells move on the leg aimed at
+  subject blob ca1b0061 · subject unchanged on disk: true
