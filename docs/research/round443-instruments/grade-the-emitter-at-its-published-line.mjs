@@ -467,8 +467,17 @@ const stripComments = (src) => src
   .replace(/\/\*[\s\S]*?\*\//g, (m) => m.replace(/[^\n]/g, ' '))
   .replace(/(^|[^:])\/\/[^\n]*/g, (m, p) => p + ' '.repeat(m.length - p.length));
 {
-  const mjs = git('ls-tree', '-r', '--name-only', REV, 'docs/').trim().split('\n')
+  // An instrument does not census its own source (425). Drive 3 of this leg — the post-commit
+  // re-drive — moved `comments accounted for` from 3 to 6 and the raw count from 140 to 149, and
+  // every one of those 9 tokens was in THIS file: its own live calls, its own prose, and its own
+  // `TOKEN` key, which is a string literal containing the very token it scans for. The population
+  // path is sliced out of the subject by its own repo-relative path, and the exclusion is COUNTED
+  // and printed, so it cannot be vacuous without showing it (430).
+  const SELF_REL = relative(REPO, fileURLToPath(import.meta.url));
+  const all = git('ls-tree', '-r', '--name-only', REV, 'docs/').trim().split('\n')
     .filter((f) => f.endsWith('.mjs'));
+  const mjs = all.filter((f) => f !== SELF_REL);
+  const excluded = all.length - mjs.length;
   const TOKEN = 'writeFileSync(';
   let rawSites = 0; let blindSites = 0;
   const rawFiles = new Set(); const blindFiles = new Set();
@@ -486,7 +495,11 @@ const stripComments = (src) => src
   const kpRaw = KP.split(TOKEN).length - 1;
   const kpBlind = stripComments(KP).split(TOKEN).length - 1;
   const kpOk = kpRaw === 3 && kpBlind === 1;
-  const ok = kpOk && blindSites <= rawSites && blindFiles.size <= rawFiles.size && blindSites > 0;
+  // The exclusion must have BITTEN once this file is committed, and must not bite before it is —
+  // so the leg reads the exclusion count rather than trusting the filter (430).
+  const selfTracked = git('ls-tree', '-r', '--name-only', REV, SELF_REL).trim() === SELF_REL;
+  const ok = kpOk && blindSites <= rawSites && blindFiles.size <= rawFiles.size && blindSites > 0
+    && excluded === (selfTracked ? 1 : 0);
   leg('G7', 'MY WRITE-SITE TOKEN CENSUS, RE-DERIVED COMMENT-BLIND — his §3 flagged that my Round '
     + '441 `G7` counted the `writeFileSync(` token textually, including in comments and leg prose, '
     + 'so my 125 was an UPPER bound, and I guessed in that memo that "four of the 125 are my own '
@@ -496,7 +509,9 @@ const stripComments = (src) => src
     + 'here; this leg measures the comment-blindness alone. Known positive for the stripper is '
     + 'carried in the real call shape: a commented-out call must disappear and a live one beside '
     + 'it must survive. The variable-target resolver is the next unit and is NOT in this round',
-    `tracked .mjs under docs/ at ${SHORT}: ${mjs.length} · raw token count ${rawSites} in `
+    `tracked .mjs under docs/ at ${SHORT}: ${all.length}, of which EXCLUDED as this instrument's `
+    + `own source ${excluded} (tracked at the rev: ${selfTracked}) · population ${mjs.length} · `
+    + `raw token count ${rawSites} in `
     + `${rawFiles.size} file(s) · COMMENT-BLIND ${blindSites} in ${blindFiles.size} file(s) · `
     + `comments accounted for ${rawSites - blindSites} of the raw count\n`
     + `        stripper known positive (3 tokens, 2 commented): raw ${kpRaw} → blind ${kpBlind} `
@@ -543,14 +558,29 @@ const g8 = () => {
   // P2 — my own promotion will move his ADOPTED cell, and that is the behaviour, not a defect.
   // Stated BEFORE the commit, driven after it (405 — never draft the slot for a running
   // measurement; this slot is a PREDICTION and its post-commit drive is a separate recording).
+  // Read out of the post-commit recording if it exists, and OPEN if it does not. The slot is
+  // never drafted for a measurement that has not run (405 — a guess that lands teaches nothing).
   const adoptedNow = 3;
+  const pcRel = 'docs/research/round443-instruments/his-instrument.postcommit.out';
+  const pcPath = join(REPO, pcRel);
+  let adoptedAfter = null; let pcGate = null;
+  if (existsSync(pcPath)) {
+    const pc = readFileSync(pcPath, 'utf8');
+    const m = pc.match(/· ADOPTED (\d+)/);
+    adoptedAfter = m === null ? null : Number(m[1]);
+    pcGate = lineStarting(pc, 'GATE: ')[0] ?? null;
+  }
   pred('P2', 'MY OWN PROMOTION MOVES HIS ADOPTED CELL — this round commits recordings that carry '
     + 'both the prose gate line and a `VERDICT/1` line, so a post-commit drive of HIS unmodified '
     + 'instrument must report an ADOPTED count strictly greater than the 3 my pre-commit '
     + 'reproduction read. Recorded in `his-instrument.postcommit.out`, not asserted here, because '
-    + 'a slot drafted for a measurement that has not run is a fabrication even when it lands',
-    `ADOPTED at ${SHORT}, read off my reproduction drive: ${adoptedNow} · the post-commit figure `
-    + 'is in the separate recording', null);
+    + 'a slot drafted for a measurement that has not run is a fabrication even when it lands. His '
+    + 'gate must also still be GREEN under my promotion — drive 2 of HIS round went red on exactly '
+    + 'this, so the re-key is what is being tested',
+    `ADOPTED at ${SHORT}, read off my pre-commit reproduction: ${adoptedNow} · post-commit, read `
+    + `off ${pcRel.split('/').pop()}: ${adoptedAfter === null ? 'OPEN — recording absent' : adoptedAfter}`
+    + `${pcGate === null ? '' : ` · his gate under my promotion: "${pcGate}"`}`,
+    adoptedAfter === null ? null : (adoptedAfter > adoptedNow && pcGate === 'GATE: true   (9 leg(s))'));
 }
 
 // ═════════════════════════════════════════════════════════════════════════════════════════════════
