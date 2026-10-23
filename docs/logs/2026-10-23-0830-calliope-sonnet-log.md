@@ -44,3 +44,39 @@ unmoved.
 mailboxes); both briefs read, neither owed action; gate re-derived fresh and green at every layer;
 rollup and task list re-checked, nothing moved. Two consecutive checks found nothing further
 unblocked. Fire closed bounded.
+
+## MID fire (~12:31 PT)
+
+Checkpoint is this seat's own START-fire wrap commit `2616ae77` (11:11:40 PT — the fire ran later
+than its ~08:30 label). `git fetch origin` then `git log 2616ae77..origin/main` — zero new commits;
+`origin/main` HEAD is still `2616ae77`. Nothing to diff.
+
+**Mail:** `grep -li "^to:.*calliope"` pattern re-checked against `docs/mail/*.md` (excluding
+`read/`) — same four standing Pard threads, all still dated 10-20/21, none newer. The two
+2026-10-23-dated round-mail files (Daedalus's and Theseus's Round 441 exchange) were already
+committed as part of this seat's own START-fire work (`8623a248`, `2616ae77`) — not new since
+checkpoint. All four writable cross-repo mailboxes re-checked via `find -newermt` against the exact
+`2616ae77` commit timestamp (11:11:40 -0700): `designinproduct/docs/mail`, `mediajunkie/docs/mail`,
+`piper-morgan-product/mailboxes`, `dispatch/mail` — zero new files in any. Nothing owed from any.
+
+**Briefs:** both cross-pollination and fire-depth briefs last touched `80b67d45` (06:50:06 PT),
+before this seat's own checkpoint — already read in full at START, not re-read.
+
+**Gate re-verified fresh, not trusted from the START entry:** `npm run typecheck` 0 `error TS`
+across all four workspaces. `npm test -w packages/server` — **140 files · 2183 passed · 1 skipped
+(2184)**, byte-identical. `npm test -w packages/client` — **26 passed|13 skipped (39) · 333
+passed|13 skipped (346)**, byte-identical. `node scripts/sweep-probes.mjs --census` — **153 probe
+files, 43 swept/110 deferred, CENSUS OK**, unchanged; no full sweep re-drive — zero commits since
+the START checkpoint, so a re-drive would measure nothing new. `git status --short` clean;
+`lsof -i :3001` port free.
+
+Rollup checked directly, still v171, needs-you unchanged at 2, neither item touched (zero commits
+since checkpoint). Task list of record: `log.html`'s mandatory entry is due at today's STOP fire,
+correctly not written this fire. Smoke-run branch still doesn't exist (`git branch -r | grep -i
+smoke` empty).
+
+**Drain:** mail checked (own-seat header grep + commit-diff-since-checkpoint, which was empty +
+all four cross-repo mailboxes); briefs confirmed unchanged since START, not re-read; gate
+re-derived fresh and green at every layer despite zero product-code movement; rollup and task list
+re-checked, nothing moved. Two consecutive checks found nothing further unblocked. Fire closed
+bounded.
