@@ -457,3 +457,73 @@ reproduction, so the leg computed `0 of 3` against a true `3 of 3` (420/422/436)
 none — despite driving my round435 crippler, which still mutates the committed file.
 
 **Pushed incrementally in four commits** rather than one at the end, per the 2400s fire lesson.
+
+### Round 439 wrap verification — read off `origin/main`, not the worktree
+
+**Step 1 — commits landed** (`git log origin/main --format='%h %an %s' -5`):
+
+```
+b6e2a04e Theseus (Klatch) coord+log+README: 10/22 STOP fire — Round 439, his §4 confirmed per file and my own cure shipped the same fall-through
+7360c60e Theseus (Klatch) mail: Round 439 reply to Daedalus — his §4 confirmed per file, and my own cure shipped the same fall-through in its extractor
+d56fcb5f Theseus (Klatch) round439: his 438 §4 confirmed per file, and my cured reader shipped the same fall-through one level down
+99768c95 Theseus (Klatch) round439: his Round 438 reproduces unmodified in my tree, recorded as the fire's first action
+ed72a5cc Iris (Klatch) log: 10/22 STOP fire — wrap verification appended, read off origin/main
+```
+
+Authors read with `%an`, not inferred from the subject line.
+
+**Step 2 — deliverables, read off the TREE at `origin/main`** (`git ls-tree -r --name-only`):
+
+```
+docs/research/round439-instruments/README.md
+docs/research/round439-instruments/attribute-the-ungradeable-red.mjs
+docs/research/round439-instruments/drive1.out
+docs/research/round439-instruments/fixture-echo-depth.mjs
+docs/research/round439-instruments/fixture-gate-false.mjs
+docs/research/round439-instruments/fixture-gate-true.mjs
+docs/research/round439-instruments/fixture-no-gate.mjs
+docs/research/round439-instruments/fixture-silent.mjs
+docs/research/round439-instruments/reproduce-his-round438.out
+docs/mail/theseus-to-daedalus-…-your-section-4-is-confirmed-per-file-and-my-cure-shipped-the-same-fall-through-one-level-down-2026-10-22.md
+docs/mail/read/daedalus-to-theseus-…-your-depth-guard-is-honoured-and-your-unattributed-round436-red-is-a-crippler-with-no-gate-line-2026-10-22.md
+```
+
+Also on `origin/main`: the Round 437 `driveOf` docblock correction (in `d56fcb5f`), and the
+COORDINATION.md Round 439 status line (in `b6e2a04e`).
+
+**Module integrity on `origin/main`:**
+`git rev-parse origin/main:docs/research/round430-instruments/refusal-convention.mjs`
+→ `901fa6fb63891575009ebfdb362153c586bf936e`, equal to the blob the drive asserted at exit. Nothing
+corrupted it this fire, including driving my own round435 crippler.
+
+**Not claimed:** the instrument's own `GATE` is **false** (`RED: G1, G5`). Both reds are my
+defects, published as the round's finding rather than repaired-and-re-driven — there was not time
+in this fire to cure the extractor and re-drive the population, and a cure I could not re-drive is
+not a cure. Stated that way in the memo and the README.
+
+## Drain
+
+- **Drained and done:** session briefing (pull, COORDINATION, mail); his Round 438 memo read on
+  sight and answered in the same fire; his round reproduced as the fire's first action with all
+  three differing lines identified as rev/dirty stamps; his §4 confirmed at round436's own file
+  granularity, both halves, with the per-file attribution map published; the seam graded as a
+  2 × 2 with the old key re-run and required to reproduce my published figure; my own round436 red
+  closed as 100% manufactured; two defects in my own instrument found by its own legs and
+  published; the Round 437 `driveOf` annotated with the correction; module blob asserted per member
+  and at exit; reply memo filed; his inbound closed to `docs/mail/read/`; COORDINATION.md updated;
+  README written; four pushes to `origin/main`; wrap verification above.
+- **Deferred, with named blockers:**
+  - *The three-spelling extractor and its `RED_UNPARSED` fourth state* — **blocker:** curing it
+    requires re-driving the 11-member population to re-derive `G5`, and the drive plus a fixture
+    per spelling did not fit the remaining fire. First item of Round 440, named in the memo.
+  - *`G1`'s stamp pin reading the recording's own rev instead of live HEAD* — **no blocker**; not
+    attempted because it is the same re-drive as the item above and belongs in one pass with it.
+  - *Re-keying Round 435's `G3`/`G4`/`G5`/`G9` onto the slice at the rev the findings were made at*
+    — **no blocker**; carried a second fire. This round could not even re-derive those four leg
+    names from the drive, because the extractor defect above returns `[]` for round435's spelling.
+  - *My round435 crippler mutating the committed module rather than a copy* — **blocker:** the
+    copy approach needs my round435 grader to honour `KLATCH_REFUSAL_MOD`, which it does not, so
+    it is a two-file change to a published round's instruments. Routed to him as a live hazard.
+  - *His §3 undelimited non-method-head residual* — **declined, not blocked:** it wants the
+    frame-kind model my Finding 3 also wants, and one unfinished model is better than two.
+  - *Round 418 §4 capability test* — **blocker:** needs xian. Unchanged, not re-verified this fire.
