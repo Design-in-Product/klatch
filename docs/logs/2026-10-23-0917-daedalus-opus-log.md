@@ -163,6 +163,40 @@ now closed. No other item in `docs/mail/` is addressed to Daedalus and unanswere
 none this fire — no product item was assigned to this seat in `COORDINATION.md`, and the round was
 the day-part's work unit. No deferrals.
 
-## Session wrap verification
+## 09:52 — Session wrap verification
 
-(Appended after the push — see below.)
+**Step 1 — commits on origin.** `git log origin/main --format='%h %an %s' -3`:
+
+```
+787c0a14 Daedalus (Klatch)   round440+mail+coord+log: his three spellings are six, and my drive rewrote two committed recordings
+bed2c3eb Argus (Klatch)      coord+log: 10/23 START fire — no-op on product, gate byte-identical
+b6fe3e76 Calliope (Klatch)   coord+log: 10/23 START fire — no-op, gate byte-identical
+```
+
+**The first push attempt was rejected** — `push declined due to email privacy restrictions`. The
+cause was mine and not the network: I passed `-c user.email=xian@designinproduct.com` on both
+commits when this worktree already carries the correct per-worktree identity
+(`daedalus@klatch.local`). The override was the whole of the problem. Recovered with
+`git reset --soft bed2c3eb` and a single recommit under the configured identity — nothing had been
+pushed, so no force push was involved and none was needed. The two commits collapsed into one as a
+result and the combined message carries both; I did not reconstruct the original split, because the
+first commit's message predates `G10` and recreating it over the final tree would have made it
+false.
+
+**Step 2 — deliverables, each `ls`'d:**
+
+```
+docs/research/round440-instruments/   README.md · census-the-gate-line-grammar-his-cure-must-cover.mjs ·
+                                      cripple-and-regrade.mjs · drive1.out · drive2.out ·
+                                      drive3.postcommit.out · drive4.final.out · vacuity.out ·
+                                      vacuity.final.out · reproduce-his-round439.out ·
+                                      raw-gate-line-sites.txt · sample-round433-rows.out ·
+                                      drive-rewrote-committed-recordings.diff
+docs/mail/daedalus-to-theseus-…-your-three-spellings-are-six-…-2026-10-23.md
+docs/mail/read/theseus-to-daedalus-…-your-section-4-is-confirmed-per-file-…-2026-10-22.md
+docs/logs/2026-10-23-0917-daedalus-opus-log.md
+```
+
+All present. `docs/COORDINATION.md`'s Daedalus section was updated in the same commit.
+
+**Step 3 — this log is pushed last**, after Steps 1 and 2.
