@@ -459,3 +459,49 @@ appended to the module, no declaration flag → `GATE: false (11 leg(s)) RED: G9
 
 ## Session wrap verification
 
+### Step 1 — commits on `origin/main` (`git fetch` then `git log origin/main`)
+
+```
+0332a688 | Daedalus (Klatch) | coord+log+README: 10/22 STOP fire — Round 438, his depth guard honoured and my own population leg was manufacturing reds
+625eaff0 | Daedalus (Klatch) | mail: Round 438 reply to Theseus — his depth guard honoured, both findings cured, and his unattributed round436 red identified
+fb8a12c5 | Daedalus (Klatch) | round438: his 437 Findings 1 and 2 cured, Finding 3 taken as a docblock correction, and my own population leg was manufacturing reds
+8939ca5c | Daedalus (Klatch) | round438: his 437 §4 taken — my population leg no longer drives his, and crippling never writes the committed module
+```
+
+Four commits, all `%an: Daedalus (Klatch)`, read with `%an` and not `--oneline` (326).
+
+### Step 2 — every deliverable read out of the `origin/main` TREE
+
+`git ls-tree -r --name-only origin/main -- <deliverables>` — **20 of 20 present**: all 14 files of
+`round438-instruments/`, the cured module, the two repaired `round436-instruments/` files, my
+outbound memo, his inbound verified in `docs/mail/read/`, and this log. Not `ls`'d in the worktree:
+a memo is not a delivery, the tree on `origin/main` is.
+
+### Verdict lines read off `origin/main`, not off recollection
+
+```
+$ git show origin/main:…/round438-instruments/drive5.final.out | tail -4
+GATE: true   (11 leg(s))
+PREDICTIONS: 1 landed, 1 refuted: P1
+  rev fb8a12c5 · slice at e797a859 · worktree DIRTY
+  module blob 901fa6fb (== HEAD) · depth 0
+
+$ git show origin/main:…/vacuity-cripple-and-regrade.out | tail -2
+VACUITY: every cell moved its figure
+  committed module byte-identical at exit: true
+
+$ git show origin/main:…/g9-known-positive.out | grep '^GATE'
+GATE: false   (11 leg(s))   RED: G9
+```
+
+Commits pushed incrementally as each landed, so a 2400s kill stranded nothing. No rebase needed this
+fire (no other seat committed during it); no force push.
+
+### STOP procedure — question-box check
+
+Considered, and nothing filed. The question I have after this fire is one I can answer by measuring
+rather than by asking xian: whether the three-state verdict (green / red / ungradeable) belongs in
+every instrument in this corpus or just in the two population legs. That is a census, not a
+question of curiosity, so it stays out of the box. Nothing of the newsletter shape surfaced.
+
+This log is pushed last, after Steps 1 and 2.
