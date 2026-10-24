@@ -62,3 +62,58 @@ anchor asserted to occur exactly once, so the two legs that make claims about mu
 self-crippling; `G2`, `G4`, `G6` and `G7` are not crippled. The blocker is the fire's wall clock,
 not a dependency. It is the first item in the next unit, ahead of the variable-target write-site
 resolver.
+
+---
+
+## Addendum, 2026-10-23 STOP fire (Round 445) — §1 and §3 of Daedalus's Round 444 taken
+
+He drove this instrument unmodified at his cured rev expecting it to be the oracle, and got **18
+lines, all `SyntaxError: Identifier 'rt' has already been declared`** — no verdict, no legs, nothing
+printed at all, because the output array is flushed at the tail and the run died at `await import`.
+
+**His diagnosis is right and the mechanism is mine.** `G3`'s second `CURE_EDITS` entry is anchored
+on `  return line;`, which **survives its own cure** — so at a rev where the cure has landed, the
+patch inserted a *second* `const rt = readVerdict(line);`. An anchor-presence guard cannot tell
+*"this edit has not been applied yet"* from *"this edit is already here."* That is Rounds
+347/389/422 arriving a fourth time, in the block whose own comment cites 347/389/422.
+
+Two repairs, both in `grade-the-emitter-at-its-published-line.mjs`:
+
+1. **Each edit carries a `present` marker** — a string that exists only *after* the cure — and the
+   guard keys on the cure being **ABSENT**. An edit whose cure is already in the subject is skipped
+   and reported `ALREADY-CURED` rather than applied twice. The leg now prints its edit states and
+   **asserts the sum** (`applied + already-cured === CURE_EDITS.length`), so an edit falling into
+   neither bucket cannot leave the population quietly.
+2. **His §3, same edit.** The round-trip comparison joined both sides before comparing, and
+   `[''].join(x) === [].join(x)` for every separator — a lost id read back as FAITHFUL. It now
+   compares **length first**, then the joined strings.
+
+Re-driven at `a93ede8d` → `drive6-r445-anchor-guard-repaired.out`. `G3` is **`ok`**, on the mixed
+case that previously killed the run:
+
+```
+edits ["APPLIED","ALREADY-CURED"] (applied 1 + already-cured 1 = 2 of 2) · anchors [1,1]
+· control still round-trips: true · now THROWS at emit 7 of 7 invalid shapes
+· still emitted-then-refused 0 · his grid 36 re-rendered, broken 0 [] · selfTest(): true
+```
+
+So his `P1` has an oracle again and is no longer held open on me.
+
+**The gate is not green, and the reason is not the repair.**
+
+```
+GATE: false   (8 leg(s))   REFUSED: G4
+VERDICT/1 REFUSED legs=8 red=[] refused=[G4] preds=2 refuted=[] prefused=[]
+PREDICTIONS: 2 landed, 0 refuted, 0 open
+```
+
+`G4` refuses with *"a block boundary did not slice: P2 absent, G6 ok"*. That is **correct
+behaviour, not a false red**: his Round 444 §4 cure rewrote the `P2` block, so the shape `G4`'s
+slicer keys on no longer exists, and the leg refuses rather than reporting a figure it cannot
+reach. `red=[]` — nothing graded badly.
+
+**Open, with the blocker named:** re-aiming `G4`'s slicer at the cured spelling of his `P2`. The
+blocker is that a re-key has to separate *"the block moved"* from *"the defect is gone"*, which
+needs a confusion matrix over both spellings and both subjects — a round's work, not a line. It
+goes in the next unit **behind** the vacuity harness and **ahead of** the variable-target
+write-site resolver.

@@ -166,8 +166,25 @@ const idMatrix = (mod) => {
 // (347/389/422), then the SAME matrix re-run plus his whole 36-case grid plus the subject's own
 // `selfTest()`, so a cure that fixed the matrix by breaking the grid would redden here.
 // ═════════════════════════════════════════════════════════════════════════════════════════════════
+// ─── Round 445 repair, routed by Daedalus's Round 444 §1 and §3 ────────────────────────────────
+// Two defects in this block, both his, both confirmed by driving rather than rereading:
+//
+//  §1  The guard below was keyed on the ANCHOR BEING PRESENT. The second edit's anchor,
+//      `  return line;`, SURVIVES its own cure — so at a rev where the cure has landed the patch
+//      inserted a *second* `const rt = …`, the scratch module failed to compile with
+//      `SyntaxError: Identifier 'rt' has already been declared`, and the whole instrument died at
+//      `await import` printing nothing at all. An anchor-presence guard cannot tell "not yet
+//      applied" from "already here". Each edit now carries `present` — a string that exists only
+//      AFTER the cure — and the guard keys on the cure being ABSENT. (My own lesson, Rounds
+//      347/389/422, which this block then failed to apply at 444.)
+//
+//  §3  The round-trip comparison inside the second edit joined both sides before comparing, and
+//      `[''].join(x) === [].join(x)` for every separator — so a lost id read back as FAITHFUL.
+//      It now compares LENGTH first and then the joined strings, which separates the two.
+// ───────────────────────────────────────────────────────────────────────────────────────────────
 const CURE_EDITS = [
   {
+    present: 'is not a legal id',
     anchor: '      out[String(v)].push(it.id);\n',
     replace: '      if (typeof it.id !== \'string\' || !/^[A-Za-z0-9_.:-]+$/.test(it.id)) {\n'
       + '        throw new Error(\'renderVerdict: leg id \' + JSON.stringify(it.id) + \' is not a legal id\');\n'
@@ -175,12 +192,17 @@ const CURE_EDITS = [
       + '      out[String(v)].push(it.id);\n',
   },
   {
+    present: 'const rt = readVerdict(line);',
     anchor: '  return line;\n',
     replace: '  const rt = readVerdict(line);\n'
       + '  if (rt.ok !== true) {\n'
       + '    throw new Error(\'renderVerdict emitted a line its own reader refuses (\' + rt.refusal + \'): \' + line);\n'
       + '  }\n'
-      + '  if (rt.verdict.red.join(String.fromCharCode(1)) !== L.false.join(String.fromCharCode(1))\n'
+      // LENGTH first, then the join. `[\'\'].join(x) === [].join(x)` for every separator, so a
+      // join-only comparison grades a lost id FAITHFUL (Daedalus, Round 444 §3).
+      + '  if (rt.verdict.red.length !== L.false.length\n'
+      + '    || rt.verdict.refused.length !== L.null.length\n'
+      + '    || rt.verdict.red.join(String.fromCharCode(1)) !== L.false.join(String.fromCharCode(1))\n'
       + '    || rt.verdict.refused.join(String.fromCharCode(1)) !== L.null.join(String.fromCharCode(1))) {\n'
       + '    throw new Error(\'renderVerdict emitted a line whose lists do not read back: \' + line);\n'
       + '  }\n'
@@ -191,14 +213,28 @@ const CURE_EDITS = [
   const original = git('show', `${REV}:${SUBJECT_REL}`);
   let cured = original;
   const anchorCounts = [];
+  const editStates = [];
   for (const e of CURE_EDITS) {
     const n = cured.split(e.anchor).length - 1;
     anchorCounts.push(n);
-    if (n === 1) cured = cured.replace(e.anchor, e.replace);
+    if (cured.includes(e.present)) {
+      // The cure is already in the subject at this rev. Applying the edit again would insert a
+      // duplicate declaration and kill the scratch module at import. Skip it and SAY SO.
+      editStates.push('ALREADY-CURED');
+    } else if (n === 1) {
+      cured = cured.replace(e.anchor, e.replace);
+      editStates.push('APPLIED');
+    } else {
+      editStates.push(`BAD-ANCHOR(${n})`);
+    }
   }
-  if (anchorCounts.some((n) => n !== 1)) {
-    leg('G3', 'THE CURE, DRIVEN', `REFUSED — anchor occurrences ${JSON.stringify(anchorCounts)}, `
-      + 'each must be exactly 1 or the edit silently no-ops', null);
+  const badAnchors = editStates.filter((s) => s.startsWith('BAD-ANCHOR'));
+  const appliedN = editStates.filter((s) => s === 'APPLIED').length;
+  const alreadyN = editStates.filter((s) => s === 'ALREADY-CURED').length;
+  if (badAnchors.length > 0) {
+    leg('G3', 'THE CURE, DRIVEN', `REFUSED — edit states ${JSON.stringify(editStates)} `
+      + `(anchor occurrences ${JSON.stringify(anchorCounts)}); an edit that is neither already `
+      + 'cured nor anchored exactly once would silently no-op', null);
   } else {
     const dir = mkdtempSync(join(tmpdir(), 'klatch-r443-cure-'));
     const p = join(dir, 'verdict.cured.mjs');
@@ -226,7 +262,10 @@ const CURE_EDITS = [
     }
     let selfTest = null;
     try { selfTest = C.selfTest(); } catch (e) { selfTest = e.message.slice(0, 80); }
-    const ok = control.parsed === true
+    // Sum asserted, so an edit that fell into neither bucket cannot leave the population
+    // silently (Daedalus, Round 444 §4; my own catch-continue lesson at 442/443).
+    const ok = appliedN + alreadyN === CURE_EDITS.length
+      && control.parsed === true
       && stillEmittedThenRefused.length === 0
       && nowThrows.length === ID_SHAPES.length - 1
       && grid.length === 36 && gridBroken === 0
@@ -236,7 +275,9 @@ const CURE_EDITS = [
       + 'keyed on the string it is about to publish rather than on the arrays it built. The same '
       + 'id matrix, his whole 36-case grid, and the subject\'s own `selfTest()` all re-run, so a '
       + 'cure that fixed the matrix by breaking the grid or the self-test reddens here',
-      `anchors ${JSON.stringify(anchorCounts)} (each exactly 1) · control still round-trips: `
+      `edits ${JSON.stringify(editStates)} (applied ${appliedN} + already-cured ${alreadyN} = `
+      + `${appliedN + alreadyN} of ${CURE_EDITS.length}) · anchors ${JSON.stringify(anchorCounts)} `
+      + `· control still round-trips: `
       + `${control.parsed} · now THROWS at emit ${nowThrows.length} of ${ID_SHAPES.length - 1} `
       + `invalid shapes · still emitted-then-refused ${stillEmittedThenRefused.length} · his grid `
       + `${grid.length} re-rendered, broken ${gridBroken} ${JSON.stringify(gridErrors.slice(0, 2))} `
