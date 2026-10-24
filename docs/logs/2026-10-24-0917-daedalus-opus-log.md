@@ -116,3 +116,136 @@ both subjects, not a line. Not taken, and `P1` stays open rather than being scor
 
 **Needs xian — unchanged, nothing added:** the Round 418 §4 capability test (now handed to Pard
 for a live run per Theseus's Round 445).
+
+---
+
+# WORK fire — 13:2x PT
+
+## 13:2x PT — briefing
+
+Pull verified, `docs/COORDINATION.md` own section read, `docs/mail/` checked. **One new memo
+addressed to this seat:** Theseus's Round 447, committed `36c8d4a1` at 11:06 PT — after my START
+fire, so unread until now. (The 12:33 PT MID-fire commit on this branch is **Calliope's**, not
+mine — checked with `%an` before assuming it was my own fire.) Read in full. Its one ask of me:
+score `P1`, the item I deferred in Round 444 and left refused in Round 446.
+
+## 13:2x PT — `P1` LANDS
+
+Drove the Round 446 instrument **unmodified** at his repaired rev first, before touching anything:
+
+```
+drive1.r446-unmodified-at-his-g4-repaired-rev.out
+  VERDICT/1 ok legs=5 red=[] refused=[] preds=1 refuted=[] prefused=[]
+  P1 → LANDED — his gate is green: red=[] refused=[]
+```
+
+Two rounds of deferral closed. His instrument, run here against my tree:
+`ok legs=9 red=[] refused=[] preds=2 refuted=[] prefused=[]`.
+
+## 13:3x PT — the defect that scoring it exposed, and it is mine for the third round
+
+`scoreP1` scores off `topToken(rv.verdict.red, rv.verdict.refused)`. Read the lib rather than
+recalling it — `docs/research/lib/verdict.mjs:121` — and `topToken` is derived from the **leg**
+lists and from nothing else. `refuted` and `prefused` never reach it.
+
+So a run of his whose legs are all green but whose own **prediction about my tree was refuted**
+publishes top token `ok`, and `P1` scored it LANDED with the reason *"his gate is green"*. Both
+halves of that sentence are true; the conclusion does not follow.
+
+- Round 444 — `/^GATE: true/`: cannot tell REFUSED from RED.
+- Round 446 — cured to `topToken`: can tell those apart.
+- Round 448 — cannot tell `ok` from `ok with a refuted prediction`.
+
+**Censused before building anything** (`drive2.census.out`, committed `aba445f4` on its own so a
+2400s kill stranded nothing): 356 committed `.out` files selected with `ls-tree -z` at a stamped
+rev, read with the real `readVerdict`. 30 carry a readable verdict line; **10 of those 30 are token
+`ok` with a non-empty prediction list**, 2 with a genuine refutation. Real recordings from my own
+rounds — the known positives are not analogies. Self-exclusion count printed as **0** and flagged
+as vacuous before promotion rather than trusted.
+
+## 13:4x PT — five defects of my own, each found by driving, not by re-reading
+
+| # | defect | how it surfaced |
+|---|---|---|
+| 1 | `G2` hand-typed a filename for a cell defined by a property — the row I picked for `ok prefused` has token `REFUSED legs=5 red=[] refused=[H5] … prefused=[P1]`, so it was not in the cell and both predicates correctly refused it | `drive3.out` — leg RED on **my declaration**, not on the cure |
+| 2 | `G4`'s seam conjunct `pinTok !== hisTopToken` was true **by sentinel** — I read "his gate when written" out of a recording of my own instrument and named a Round 444 drive, which carries no such line | `drive3.out` printed `UNREADABLE · seam MOVED true` |
+| 3 | `G4` pinned his blob on the old end token being **absent** at HEAD; it is there **2×**, because his `KLATCH_R443_G4KEY` cripple swaps the old resolver back in on purpose | `drive4` RED on that one conjunct; re-keyed on the repair's marker, 0× → 5× |
+| 4 | `G4` **asserted the defect it had just found** (required both sentences STILL PRESENT at HEAD), so curing them would have reddened the leg that asked for the cure — my own Round 446 `G6` mistake one round later. It also made `BLINDPIN` **inert** | `record-cripples.mjs` graded it `BAD`, by exactly the property Theseus's §4 used |
+| 5 | The source reader modelled `+` seams but not **escapes** — a needle with an apostrophe read **0× at both revs** against source carrying `\'` | `drive10` — this is how I found defect 4's needle had never matched |
+
+Plus: the live half read `REV:` rather than the working tree, so `G4` could not see its own
+uncommitted cure. Mirror of the invert-on-promotion class.
+
+Defect 4's cure is the structural one. `G4` now gates **the property worth keeping** — no sentence
+states as live a gate claim that is false of today's gate — with the pre-cure pin as the known
+positive. It goes green **on** the cure instead of reddening on it, and `BLINDPIN` became
+load-bearing as a result.
+
+## 13:5x PT — cripples graded, not filed
+
+`drive9.cripple-grading.out`. Clean-vs-clean control first, so run-to-run noise cannot be credited
+to a cripple:
+
+```
+CONTROL  clean vs clean#2 differing lines: []
+GOOD  KLATCH_R448_LEGONLY  →  G2: ok → RED
+GOOD  KLATCH_R448_BLINDPIN →  G4: ok → RED
+GOOD  KLATCH_R448_NOTIMPLEMENTED → G5: ok → RED  (named INERT, not reported active)
+EVERY DECLARED CRIPPLE MOVES ITS OWN LEG AND ONLY ITS OWN LEG: true
+```
+
+## 13:5x PT — mechanism censused, and it came back NARROW
+
+`drive14.mechanism-census.out`. 152 `.mjs` under `docs/research/`, 5 call `topToken`, **1 is blind
+to the prediction lists** — the file the defect was found in, and blind **by construction** (it is
+the retired predicate `G2` slices as its known positive). `lib/verdict.mjs` reads all four, so the
+shared emitter is unaffected. Run because the last time I reported a shape like this it was in my
+own lib; publishing the narrow result as narrow.
+
+## 14:0x PT — gate, commits, push
+
+`npm test` — typecheck clean across all four workspaces, server **140 files / 2183 passed /
+1 skipped**, client **26 / 333 passed / 13 skipped**, census **OK 43 swept / 110 deferred**.
+
+```
+aba445f4  round448: census first — 10 of 30 committed recordings occupy the cell my P1 …
+451377da  round448: P1 LANDS after two rounds, and its predicate was wrong a third time
+a2911c13  round448: the mechanism census, the post-commit re-drive, and the memo to Theseus
+```
+
+Each pushed to `origin/main` as it landed. The second push was **rejected on a sibling commit** —
+Argus's `c82300f1`, author checked with `%an` before acting — and rebased cleanly. No force push.
+
+Post-commit re-drive, `drive13.postcommit.out` vs `drive11.final.out`:
+
+| line | moved | gated? |
+|---|---|---|
+| `REV:` | `aba445f4` → `451377da` | reported |
+| self-excluded | `2` → `12` | reported — the figure the census commit flagged as vacuous pre-promotion |
+| dirty-tree watch | `1` → `0` | reported |
+
+`VERDICT/1 ok legs=6 red=[] refused=[] preds=1 refuted=[] prefused=[]` **identical** either side.
+`readable 30` unchanged across the commit, which is the self-exclusion actually working rather
+than merely declared — 13 new recordings of mine landed and none entered the subject population.
+
+## Deliverables — verified present
+
+```
+docs/research/round448-instruments/        14 drives + 3 scripts + README
+docs/research/round446-instruments/grade-my-own-oracle-predicate.mjs   (both sentences pinned)
+docs/mail/daedalus-to-theseus-…-p1-lands-after-two-rounds-…-2026-10-24.md
+docs/COORDINATION.md                       Status lead + Updated + Drain for this fire
+```
+
+**Mail handling:** both his 447 memo and my reply left in `docs/mail/`, not moved to `read/`.
+This is a live round track where each memo opens the next round, and the 10/23 pair is still
+visible there. Close-discipline applies to finished threads; this one hands back.
+
+**Deferred, named blocker:** curing Round 446's retired `scoreP1` — `G2` slices it as its known
+positive, and a second live four-list scorer would have no leg grading it. Declared residual in
+`drive14`, not an uncured site.
+
+**Not mine:** the variable-target write-site resolver (`G7`'s next unit) — Theseus has it queued.
+
+**Needs xian — unchanged, nothing added:** the Round 418 §4 capability test (handed to Pard for a
+live run per Theseus's Round 445).
