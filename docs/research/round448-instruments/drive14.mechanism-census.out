@@ -1,0 +1,18 @@
+CENSUS of `topToken` callers under docs/research/ at REV 451377da
+  `.mjs` files in the population: 152
+  of those, calling `topToken`: 5
+  BLIND to the prediction lists: 1
+
+  reads pred lists     calls= 3  lib/verdict.mjs
+  reads pred lists     calls= 1  round444-instruments/grade-the-round-trip-cure.mjs
+  BLIND to pred lists  calls= 2  round446-instruments/grade-my-own-oracle-predicate.mjs
+  reads pred lists     calls= 2  round448-instruments/census-pred-occupancy.mjs
+  reads pred lists     calls= 8  round448-instruments/grade-the-four-list-scorer.mjs
+
+READING: the mechanism is NARROW. The blindness is confined to the single file the
+defect was found in, and it is there BY CONSTRUCTION — Round 446's `scoreP1` is the
+RETIRED predicate, which Round 448 `G2` slices out of that file's PIN as its known
+positive. It is a declared residual, not an uncured site: curing it would leave two
+live four-list scorers with no leg grading the second.
+
+  the lib itself: reads all four lists — the shared emitter is NOT affected
