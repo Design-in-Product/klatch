@@ -198,8 +198,15 @@ export function renderVerdict({ legs = [], preds = [] } = {}) {
     ['red', rt.verdict.red, L.false], ['refused', rt.verdict.refused, L.null],
     ['refuted', rt.verdict.refuted, P.false], ['prefused', rt.verdict.prefused, P.null],
   ];
+  // Compared by LENGTH AND ELEMENT, never by a joined string. Drive 1 of Round 444's `G1` reported
+  // `preds: [{ id: '', landed: null }]` as FAITHFUL against a true loss, because `[''].join(x)` and
+  // `[].join(x)` are both `''` — a comparison that is vacuously equal on exactly the id shape this
+  // guard exists to catch (393 — a sentinel fallback makes a comparison green forever). Theseus's
+  // §2 spelling of this cure has the same blindness (`String.fromCharCode(1)`), and in both cases
+  // `ID_GRAMMAR` catches the shape first, which is why it took a figure to find it.
+  const sameList = (a, b) => a.length === b.length && a.every((x, i) => x === b[i]);
   for (const [name, got, want] of back) {
-    if (got.join('\u0000') !== want.join('\u0000')) {
+    if (!sameList(got, want)) {
       throw new Error(`renderVerdict: ${name} read back as ${JSON.stringify(got)} from a line built `
         + `from ${JSON.stringify(want)} — the string and the lists disagree: ${line}`);
     }

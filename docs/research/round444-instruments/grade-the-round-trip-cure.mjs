@@ -1,0 +1,610 @@
+/**
+ * Round 444 — grade the three cures Theseus routed to this seat in Round 443 §7.
+ *
+ * Subjects: `docs/research/lib/verdict.mjs` (§1 — round-trip closure and a declared id grammar) and
+ * `docs/research/round442-instruments/grade-the-shared-verdict-emitter.mjs` (§3 — P2's thrower cell;
+ * §4 — the adoption population re-key).
+ *
+ * THE BEFORE STATE IS PINNED TO A REV, NOT RE-DERIVED. Every cell that compares pre-cure with
+ * post-cure reads the pre-cure subject as a BLOB at `PRE_REV` and imports it beside the working
+ * tree's copy. An old cell sourced from HEAD inverts the moment the cure lands, and that has now
+ * happened three times on this project (420/422/436), which is also why the cure was committed
+ * BEFORE this instrument was driven rather than after.
+ *
+ * Driving it: `node docs/research/round444-instruments/grade-the-round-trip-cure.mjs`
+ */
+
+import { execFileSync } from 'child_process';
+import { readFileSync, writeFileSync, mkdtempSync, existsSync } from 'fs';
+import { tmpdir } from 'os';
+import { dirname, join, relative } from 'path';
+import { fileURLToPath } from 'url';
+
+const HERE = dirname(fileURLToPath(import.meta.url));
+const REPO = join(HERE, '..', '..', '..');
+const git = (...a) => execFileSync('git', ['-C', REPO, ...a], { encoding: 'utf8', maxBuffer: 1 << 28 });
+const REV = git('rev-parse', 'HEAD').trim();
+const SHORT = REV.slice(0, 8);
+
+// ── Depth guard, keyed on THIS file's own directory (421). ──────────────────────────────────────
+const DEPTH = Number(process.env.KLATCH_R444_DEPTH ?? '0');
+if (DEPTH > 1) { console.log('REFUSED: crippler recursion depth exceeded'); process.exit(0); }
+
+const SUBJECT_REL = 'docs/research/lib/verdict.mjs';
+const GRADER_REL = 'docs/research/round442-instruments/grade-the-shared-verdict-emitter.mjs';
+const HIS_REL = 'docs/research/round443-instruments/grade-the-emitter-at-its-published-line.mjs';
+const HIS_DRIVE5_REL = 'docs/research/round443-instruments/drive5.final.out';
+
+/**
+ * The rev the cure landed ON TOP OF. `626ab6fe` is the last commit before Round 444's first edit;
+ * its `verdict.mjs` is the 327-line pre-cure file (asserted below by a property, not by its length:
+ * the pre-cure copy must have no `ID_GRAMMAR` and must EMIT for the shapes the cured one throws on).
+ */
+const PRE_REV = '626ab6fe';
+
+// ── Tracked-tree watch. Snapshot BEFORE anything runs; status codes read as a FIELD (412). ───────
+const statusLines = () => git('status', '--porcelain').split('\n')
+  .map((l) => l.match(/^(..) (.*)$/)).filter((m) => m !== null)
+  .map((m) => ({ code: m[1], path: m[2] }));
+const trackedModified = () => {
+  const out = {};
+  for (const { code, path } of statusLines()) if (/[MARCD]/.test(code)) out[path] = code;
+  return out;
+};
+const DIRTY_AT_ENTRY = trackedModified();
+const BYTES_AT_ENTRY = Object.fromEntries([SUBJECT_REL, GRADER_REL, HIS_REL]
+  .map((r) => [r, readFileSync(join(REPO, r), 'utf8')]));
+
+const legs = [];
+const preds = [];
+const leg = (id, what, detail, ok) => legs.push({ id, what, detail, ok });
+const pred = (id, what, detail, landed) => preds.push({ id, what, detail, landed });
+
+const SCRATCH = mkdtempSync(join(tmpdir(), 'klatch-r444-'));
+let seq = 0;
+/** Import a module from source text. Fresh path per call, so no import cache collision. */
+const importSource = async (src, tag) => {
+  seq += 1;
+  const p = join(SCRATCH, `${tag}-${seq}.mjs`);
+  writeFileSync(p, src);
+  return import(`file://${p}`);
+};
+
+const NEW_SRC = readFileSync(join(REPO, SUBJECT_REL), 'utf8');
+const OLD_SRC = git('show', `${PRE_REV}:${SUBJECT_REL}`);
+const NEW = await importSource(NEW_SRC, 'new');
+const OLD = await importSource(OLD_SRC, 'old');
+
+// ═════════════════════════════════════════════════════════════════════════════════════════════════
+// THE SHAPE POPULATION. His Round 443 §1 table verbatim as the eight shapes he drove — including
+// his plain-id CONTROL row — plus three PREDICATION shapes his matrix did not reach, because his
+// axis was leg ids and `preds` feeds `refuted=`/`prefused=` through the same unvalidated path.
+//
+// Each shape carries its own EXPECTED lists, computed here from the shape itself rather than from
+// the module under test, so the oracle is not the thing being graded.
+// ═════════════════════════════════════════════════════════════════════════════════════════════════
+const SHAPES = [
+  { k: 'control: id "G1"', c: { legs: [{ id: 'G1', ok: false }] }, control: true },
+  { k: 'id key absent', c: { legs: [{ name: 'G1', ok: false }] } },
+  { k: 'id: undefined', c: { legs: [{ id: undefined, ok: false }] } },
+  { k: "id: ''", c: { legs: [{ id: '', ok: false }] } },
+  { k: "id: 'A,B'", c: { legs: [{ id: 'A,B', ok: false }] } },
+  { k: "id: 'G4 b'", c: { legs: [{ id: 'G4 b', ok: false }] } },
+  { k: "id: 'a=b'", c: { legs: [{ id: 'a=b', ok: false }] } },
+  { k: "id: 'x]y'", c: { legs: [{ id: 'x]y', ok: false }] } },
+  // Mine. The first two PARSE under the reader and are refused only by comparing the parsed list to
+  // the one that went in; the third is caught by the count check.
+  { k: "PRED id: 'A,B' beside a green pred", c: { legs: [{ id: 'G1', ok: true }], preds: [{ id: 'A,B', landed: false }, { id: 'Pok', landed: true }] } },
+  { k: "PRED id: '' (prefused)", c: { legs: [{ id: 'G1', ok: true }], preds: [{ id: '', landed: null }] } },
+  { k: "PRED id: 'A,B' alone", c: { legs: [{ id: 'G1', ok: true }], preds: [{ id: 'A,B', landed: false }] } },
+];
+const expected = (c) => ({
+  red: (c.legs ?? []).filter((l) => l.ok === false).map((l) => l.id),
+  refused: (c.legs ?? []).filter((l) => l.ok === null).map((l) => l.id),
+  refuted: (c.preds ?? []).filter((p) => p.landed === false).map((p) => p.id),
+  prefused: (c.preds ?? []).filter((p) => p.landed === null).map((p) => p.id),
+});
+
+/**
+ * Classify one (module, shape) pair into exactly one positively-keyed outcome. No fall-through
+ * bucket: an unrecognised state is `UNCLASSIFIED` and is counted, so a blindness cannot be absorbed
+ * by the last branch (411/439).
+ */
+const classify = (M, shape) => {
+  let line;
+  try { line = M.renderVerdict(shape.c); } catch (e) { return { o: 'THREW', line: null, why: e.message.slice(0, 80) }; }
+  const r = M.readVerdict(line);
+  if (r.ok === false) return { o: 'EMITTED_REFUSED', line, why: r.refusal };
+  if (r.ok === true) {
+    const w = expected(shape.c);
+    // Length AND element, never a joined string: drive 1 of this instrument graded
+    // `preds: [{ id: '', landed: null }]` FAITHFUL against a true loss of the id, because
+    // `[''].join(x) === [].join(x)`. The oracle had the same defect as the subject it grades.
+    const same = (a, b) => a.length === b.length && a.every((x, i) => x === b[i]);
+    const bad = ['red', 'refused', 'refuted', 'prefused']
+      .filter((f) => !same(r.verdict[f], w[f]));
+    if (bad.length) return { o: 'EMITTED_MISREAD', line, why: `${bad.join(',')} read back wrong` };
+    return { o: 'EMITTED_FAITHFUL', line, why: '' };
+  }
+  return { o: 'UNCLASSIFIED', line, why: JSON.stringify(r).slice(0, 60) };
+};
+
+const tally = (M) => {
+  const t = { THREW: 0, EMITTED_REFUSED: 0, EMITTED_MISREAD: 0, EMITTED_FAITHFUL: 0, UNCLASSIFIED: 0 };
+  const rows = [];
+  for (const s of SHAPES) { const r = classify(M, s); t[r.o] += 1; rows.push({ k: s.k, ...r, control: s.control === true }); }
+  return { t, rows };
+};
+
+// ═════════════════════════════════════════════════════════════════════════════════════════════════
+// G1 — THE DEFECT REPRODUCES AGAINST THE PINNED PRE-CURE BLOB AND IS CLOSED AGAINST THE TREE.
+//
+// A confusion matrix over id SHAPE × subject VERSION. The OLD row must CARRY the defect — without
+// that conjunct this leg would be green against a version that never had it, which is a cure graded
+// against itself (355/364 — a known positive must carry the property, not an analogy).
+//
+// The published-STRING key is separate from the counts, because the artifact a consumer reads is
+// the string: his §1 headline was not "7 refuse" but that three shapes publish a red run with an
+// empty red list (443 — guard the published string, not the arrays it came from).
+// ═════════════════════════════════════════════════════════════════════════════════════════════════
+const RED_EMPTY_RED = 'VERDICT/1 RED legs=1 red=[] refused=[] preds=0 refuted=[] prefused=[]';
+let OLD_TALLY = null; let NEW_TALLY = null;
+{
+  const o = tally(OLD); const n = tally(NEW);
+  OLD_TALLY = o; NEW_TALLY = n;
+  const oldPublishedRedEmpty = o.rows.filter((r) => r.line === RED_EMPTY_RED).map((r) => r.k);
+  const newPublishedRedEmpty = n.rows.filter((r) => r.line === RED_EMPTY_RED).map((r) => r.k);
+  const oldControl = o.rows.find((r) => r.control);
+  const newControl = n.rows.find((r) => r.control);
+  const preIsPreCure = !/ID_GRAMMAR/.test(OLD_SRC);
+  const oldBroken = o.t.EMITTED_REFUSED + o.t.EMITTED_MISREAD;
+  const newBroken = n.t.EMITTED_REFUSED + n.t.EMITTED_MISREAD;
+  const ok = preIsPreCure
+    && oldBroken > 0 && o.t.THREW === 0 && oldPublishedRedEmpty.length > 0
+    && newBroken === 0 && n.t.UNCLASSIFIED === 0 && newPublishedRedEmpty.length === 0
+    && n.t.THREW === SHAPES.length - 1
+    && oldControl.o === 'EMITTED_FAITHFUL' && newControl.o === 'EMITTED_FAITHFUL';
+  leg('G1', 'HIS ROUND 443 §1 DEFECT REPRODUCES AGAINST THE PINNED PRE-CURE BLOB AND IS CLOSED '
+    + 'AGAINST THE TREE — one matrix, 11 id shapes × 2 subject versions, the pre-cure version read '
+    + `as a blob at ${PRE_REV} and not re-derived from HEAD. The OLD row must carry the defect and `
+    + 'the control row must round-trip under BOTH, so the cure cannot be graded against a version '
+    + 'that never had the property or by a throw-everything emitter',
+    `OLD (${PRE_REV}, no ID_GRAMMAR: ${preIsPreCure}): threw ${o.t.THREW} · emitted-then-refused `
+    + `${o.t.EMITTED_REFUSED} · emitted-then-MISREAD ${o.t.EMITTED_MISREAD} · faithful `
+    + `${o.t.EMITTED_FAITHFUL} · unclassified ${o.t.UNCLASSIFIED}\n`
+    + `        NEW (${SHORT}): threw ${n.t.THREW} · emitted-then-refused ${n.t.EMITTED_REFUSED} · `
+    + `emitted-then-MISREAD ${n.t.EMITTED_MISREAD} · faithful ${n.t.EMITTED_FAITHFUL} · `
+    + `unclassified ${n.t.UNCLASSIFIED}\n`
+    + `        PUBLISHED STRING \`RED legs=1 red=[]\` — a red run with an empty red list — occurs `
+    + `OLD ${oldPublishedRedEmpty.length}× ${JSON.stringify(oldPublishedRedEmpty)}, NEW `
+    + `${newPublishedRedEmpty.length}× ${JSON.stringify(newPublishedRedEmpty)}\n`
+    + `        control row OLD ${oldControl.o} / NEW ${newControl.o}\n`
+    + `        OLD outcome by shape: ${JSON.stringify(o.rows.map((r) => `${r.k}=${r.o}${r.why ? `(${r.why})` : ''}`))}`,
+    ok);
+}
+
+// ═════════════════════════════════════════════════════════════════════════════════════════════════
+// G2 — THE TWO EDITS ARE EACH GRADED WITH THE OTHER REMOVED, and the widening past his spec is
+// MEASURED rather than argued.
+//
+// Four variants of the cured subject, each built by removing a named anchor from it and each anchor
+// asserted to occur EXACTLY ONCE (347/389/422). `TWO_LIST` is his §2 spelling of the cure — "its
+// parsed `red`/`refused` must equal `L.false`/`L.null`" — and the cell reports how many shapes it
+// ADMITS, which is the whole content of the claim that four lists were needed.
+// ═════════════════════════════════════════════════════════════════════════════════════════════════
+{
+  const A_GRAMMAR = `      if (typeof it.id !== 'string' || !ID_GRAMMAR.test(it.id)) {`;
+  const A_FOURTH = `    ['refuted', rt.verdict.refuted, P.false], ['prefused', rt.verdict.prefused, P.null],`;
+  const A_RT = '  const rt = readVerdict(line);';
+  const counts = {
+    grammar: NEW_SRC.split(A_GRAMMAR).length - 1,
+    fourth: NEW_SRC.split(A_FOURTH).length - 1,
+    rt: NEW_SRC.split(A_RT).length - 1,
+  };
+  const anchorsOk = counts.grammar === 1 && counts.fourth === 1 && counts.rt === 1;
+
+  // Removals. The grammar block is four lines from its `if`; the round-trip block runs from its
+  // first line to `  return line;`, and the slice is gated STRUCTURALLY on what it removed rather
+  // than on "it occurred once" (426 — gate the slice structurally).
+  const dropGrammar = (s) => {
+    const i = s.indexOf(A_GRAMMAR);
+    const j = s.indexOf('      }\n', i);
+    return s.slice(0, i) + s.slice(j + '      }\n'.length);
+  };
+  const dropRoundTrip = (s) => {
+    const i = s.indexOf(A_RT);
+    const j = s.indexOf('  return line;', i);
+    return { src: s.slice(0, i) + s.slice(j), cut: s.slice(i, j) };
+  };
+  const rtCut = dropRoundTrip(NEW_SRC);
+  const cutLooksRight = rtCut.cut.includes('rt.ok !== true') && rtCut.cut.includes('read back as')
+    && !dropGrammar(NEW_SRC).includes('ID_GRAMMAR.test');
+
+  const VARIANTS = {
+    BOTH: NEW_SRC,
+    GRAMMAR_ONLY: rtCut.src,
+    ROUNDTRIP_ONLY: dropGrammar(NEW_SRC),
+    TWO_LIST: dropGrammar(NEW_SRC).split(A_FOURTH + '\n').join(''),
+    NEITHER: dropRoundTrip(dropGrammar(NEW_SRC)).src,
+  };
+  const results = {};
+  for (const [name, src] of Object.entries(VARIANTS)) {
+    // eslint-disable-next-line no-await-in-loop
+    const M = await importSource(src, name.toLowerCase());
+    const t = tally(M);
+    results[name] = t;
+  }
+  const admits = (name) => results[name].t.EMITTED_REFUSED + results[name].t.EMITTED_MISREAD;
+  const controlFaithful = Object.keys(VARIANTS)
+    .filter((n) => results[n].rows.find((r) => r.control).o !== 'EMITTED_FAITHFUL');
+  // The claim being graded, stated as an inequality rather than as a pair of adjectives: the
+  // four-list spelling admits strictly fewer shapes than the two-list one, and NEITHER must admit
+  // the most, which is what makes this a matrix rather than a known positive.
+  const ok = anchorsOk && cutLooksRight
+    && admits('BOTH') === 0 && admits('GRAMMAR_ONLY') === 0 && admits('ROUNDTRIP_ONLY') === 0
+    && admits('TWO_LIST') > 0 && admits('NEITHER') >= admits('TWO_LIST')
+    && controlFaithful.length === 0;
+  leg('G2', 'EACH EDIT IS SUFFICIENT ON ITS OWN, AND THE FOUR-LIST WIDENING PAST HIS SPEC IS WORTH '
+    + `${admits('TWO_LIST')} SHAPES — five variants of the cured subject, each anchor asserted to `
+    + 'occur exactly once and each slice gated on what it removed. `TWO_LIST` is his §2 spelling '
+    + '(`red`/`refused` only); the count it admits is the entire content of my claim that the pred '
+    + 'lists had to be compared too. `NEITHER` reproduces the pre-cure behaviour from the CURED '
+    + 'source, which is a second, independent reading of G1\'s OLD row',
+    `anchors grammar ${counts.grammar} · fourth-list ${counts.fourth} · round-trip ${counts.rt} `
+    + `(each exactly 1: ${anchorsOk}) · removed slice carries the guard it claims to: ${cutLooksRight}\n`
+    + `        shapes ADMITTED (emitted-then-refused + emitted-then-misread), of ${SHAPES.length}: `
+    + Object.keys(VARIANTS).map((n) => `${n} ${admits(n)}`).join(' · ') + '\n'
+    + `        throws by variant: ` + Object.keys(VARIANTS).map((n) => `${n} ${results[n].t.THREW}`).join(' · ')
+    + `\n        TWO_LIST admits: `
+    + JSON.stringify(results.TWO_LIST.rows.filter((r) => r.o === 'EMITTED_REFUSED' || r.o === 'EMITTED_MISREAD')
+      .map((r) => `${r.k} → ${r.o}(${r.why})`))
+    + `\n        control round-trips under every variant: ${controlFaithful.length === 0} `
+    + `${JSON.stringify(controlFaithful)}`,
+    ok);
+}
+
+// ═════════════════════════════════════════════════════════════════════════════════════════════════
+// G3 — WHAT THE ROUND-TRIP GUARD IS WORTH TODAY, stated as the measurement and not as a boast.
+//
+// Given `ID_GRAMMAR`, is the round-trip reachable at all? This cell searches the space of ids the
+// grammar ADMITS for one that breaks the correspondence, and reports the count. A guard whose
+// reachable set is empty is belt-and-braces, and saying so is the honest version of "both edits
+// hold" (408 — a refusing signal only raises a floor; say which end it can move).
+// ═════════════════════════════════════════════════════════════════════════════════════════════════
+{
+  const ALPHABET = ['G1', 'a', 'Z', '0', '_', '.', ':', '-', 'G.1', 'a:b', 'x-y', 'A_1', '9.9', '-:.', 'G1'.repeat(20)];
+  let searched = 0; let broke = 0; const breakers = [];
+  const M = NEW;
+  for (const a of ALPHABET) for (const b of ALPHABET) {
+    for (const shape of [
+      { legs: [{ id: a, ok: false }, { id: b, ok: null }], preds: [] },
+      { legs: [{ id: a, ok: true }], preds: [{ id: b, landed: false }, { id: a, landed: null }] },
+    ]) {
+      searched += 1;
+      const r = classify(M, { c: shape, k: `${a}/${b}` });
+      if (r.o === 'EMITTED_REFUSED' || r.o === 'EMITTED_MISREAD' || r.o === 'UNCLASSIFIED') {
+        broke += 1; breakers.push(`${a}/${b} → ${r.o}(${r.why})`);
+      } else if (r.o === 'THREW') { broke += 1; breakers.push(`${a}/${b} → THREW(${r.why})`); }
+    }
+  }
+  // This leg is a MEASUREMENT with a stated direction, so it is green when the search is wide
+  // enough to be worth reporting and every grammar-legal id round-trips. A non-zero `broke` would
+  // mean the grammar admits an id the reader cannot carry, which is a defect in the grammar.
+  const ok = searched >= 400 && broke === 0;
+  leg('G3', 'EVERY ID THE GRAMMAR ADMITS ROUND-TRIPS, SO THE ROUND-TRIP GUARD IS CURRENTLY '
+    + 'UNREACHABLE AND I AM NOT CLAIMING IT CATCHES ANYTHING TODAY — a search over grammar-legal '
+    + 'ids, in both the leg and the pred position, for one that breaks the string/list '
+    + 'correspondence. Its value is closure under a FUTURE widening of the grammar or a change to '
+    + 'the reader, not a live catch; the edit that bites today is the grammar, and G2 shows each is '
+    + 'sufficient alone',
+    `grammar-legal id pairs searched ${searched} · that break the correspondence ${broke} `
+    + `${JSON.stringify(breakers.slice(0, 3))}`,
+    ok);
+}
+
+// ═════════════════════════════════════════════════════════════════════════════════════════════════
+// G4 — HIS LITERAL SPELLING OF THE §3 CURE REFUTES P2 AGAINST A TRUE LANDED STATE, graded both
+// ways in the same scratch copy (431 — a routed diagnosis needs the leg run; 345 — check a routed
+// figure at the cure's granularity).
+//
+// His §3 cure line: "count the throwers in their own cell and assert `inferable + threw ===
+// GRID.length`". `inferable` is the count of RENDERED outputs that LACK a list token, which is 0
+// exactly when P2's own claim holds — so his conjunct is `0 === 36` in the healthy state. The cell
+// below drives his spelling and mine in the same copy of the grader and requires them to DISAGREE,
+// with mine landing.
+// ═════════════════════════════════════════════════════════════════════════════════════════════════
+{
+  const NEW_GRADER = readFileSync(join(REPO, GRADER_REL), 'utf8');
+  const OLD_GRADER = git('show', `${PRE_REV}:${GRADER_REL}`);
+  const HARNESS = readFileSync(join(REPO, 'docs/research/round442-instruments/cripple-and-regrade.mjs'), 'utf8');
+
+  /** Slice between two anchors, each asserted to occur exactly once, or `null`. */
+  const slice = (src, from, to) => {
+    if (src.split(from).length - 1 !== 1 || src.split(to).length - 1 !== 1) return null;
+    const i = src.indexOf(from); const j = src.indexOf(to, i);
+    return j === -1 ? null : src.slice(i, j + to.length);
+  };
+  const GRID_SRC = slice(NEW_GRADER, 'const GRID = [];', '    r, f,\n  });\n}');
+  const P2_NEW = slice(NEW_GRADER, '  // P2 — the ambiguity has no image under the new grammar.', 'GRID.length);');
+  const P2_OLD = slice(OLD_GRADER, '  // P2 — the ambiguity has no image under the new grammar.', 'inferable === 0);');
+
+  // The cripple is SLICED out of my own vacuity harness's C2 cell, not retyped — his §3 drove this
+  // same cripple against my grader and I am not going to re-type the one line it turns on
+  // (412 — a hand-typed reader is not a slice; 355 — his shape had inverted an exit code in my own
+  // shared lib).
+  // His own regex over my harness, reused rather than re-derived — it is the reader that has
+  // already been driven against this cell once (431 — a routed diagnosis needs the leg run).
+  const c2 = HARNESS.match(/id: 'C2',[\s\S]*?anchor: ("(?:[^"\\]|\\.)*"),[\s\S]*?replace: ("(?:[^"\\]|\\.)*"),/);
+  const A = c2 === null ? null : JSON.parse(c2[1]);
+  const B = c2 === null ? null : JSON.parse(c2[2]);
+  const crippleSites = A === null ? -1 : NEW_SRC.split(A).length - 1;
+
+  const MINE = 'p2rendered + p2threw === GRID.length';
+  const HIS = 'inferable + p2threw === GRID.length';
+  const mineSites = P2_NEW === null ? -1 : P2_NEW.split(MINE).length - 1;
+
+  /**
+   * Run one P2 spelling against one subject module and return its landed value. The predicate is
+   * the SLICED source's own, never re-typed here; `pred` captures what the block publishes.
+   */
+  const runP2 = async (p2src, V) => {
+    const mod = `export default async function (V) {
+      ${GRID_SRC}
+      let landed = null; let detail = null;
+      const pred = (id, what, d, l) => { landed = l; detail = d; };
+      { ${p2src} }
+      return { landed, detail, grid: GRID.length };
+    }`;
+    const m = await importSource(mod, 'p2');
+    return m.default(V);
+  };
+
+  const ready = GRID_SRC !== null && P2_NEW !== null && P2_OLD !== null
+    && A !== null && B !== null && crippleSites === 1 && mineSites === 1;
+  let cells = {};
+  if (ready) {
+    const V_OK = NEW;
+    const V_CRIPPLED = await importSource(NEW_SRC.split(A).join(B), 'crippled');
+    const SPELLINGS = {
+      'PRE-CURE (his §3 subject)': P2_OLD,
+      MINE: P2_NEW,
+      'HIS LITERAL': P2_NEW.split(MINE).join(HIS),
+    };
+    for (const [name, src] of Object.entries(SPELLINGS)) {
+      for (const [vname, V] of [['sound', V_OK], ['crippled', V_CRIPPLED]]) {
+        // eslint-disable-next-line no-await-in-loop
+        const r = await runP2(src, V);
+        cells[`${name} / ${vname}`] = r;
+      }
+    }
+  }
+  const got = (k) => (cells[k] === undefined ? null : cells[k].landed);
+  // The four claims, each a named cell. The PRE-CURE row is his §3 finding reproduced from the
+  // pinned blob: 8 of 36 cases leave the enumeration and the prediction still LANDS.
+  const ok = !ready ? null
+    : got('PRE-CURE (his §3 subject) / sound') === true
+      && got('PRE-CURE (his §3 subject) / crippled') === true
+      && got('MINE / sound') === true
+      && got('MINE / crippled') === false
+      && got('HIS LITERAL / sound') === false;
+  leg('G4', 'HIS §3 DEFECT REPRODUCES FROM THE PINNED PRE-CURE BLOCK, MY CURE CATCHES IT, AND HIS '
+    + 'LITERAL SPELLING OF THE CURE REFUTES P2 AGAINST A TRUE LANDED STATE — three spellings of '
+    + 'the P2 block, each SLICED from a grader source rather than retyped, × two subjects, the '
+    + 'crippled one built with the C2 cripple sliced out of my own vacuity harness. The pre-cure '
+    + 'row is the known positive: it must LAND under the cripple, which is the defect. His literal '
+    + '`inferable + threw === GRID.length` is `0 + 0` against a grid of 36 whenever P2 is true',
+    `slices: GRID ${GRID_SRC === null ? 'ABSENT' : `${GRID_SRC.length}B`} · P2 new `
+    + `${P2_NEW === null ? 'ABSENT' : `${P2_NEW.length}B`} · P2 pre-cure `
+    + `${P2_OLD === null ? 'ABSENT' : `${P2_OLD.length}B`} · C2 cripple anchor occurs `
+    + `${crippleSites}× in the subject (exactly 1 required) · my conjunct occurs ${mineSites}× in `
+    + `the sliced block\n        `
+    + Object.entries(cells).map(([k, v]) => `${k}: ${v.landed === true ? 'LANDED' : v.landed === false ? 'REFUTED' : 'UNREAD'}`).join(' · ')
+    + '\n        ' + Object.entries(cells).map(([k, v]) => `${k} → ${v.detail}`).join('\n        '),
+    ok);
+}
+
+// ═════════════════════════════════════════════════════════════════════════════════════════════════
+// G5 — WHAT THE §4 RE-KEY MOVED IN THE LIVE TREE: NOTHING, and the figure that DID move is
+// population growth. Member lists, not counts (340).
+//
+// His §4 live datum was `3 → 6`; my post-cure drive reads 10. None of that is the re-key: the
+// re-key only ADDS recordings that carry a `VERDICT/` line and NO prose gate line, and there are
+// zero of those at this rev, counted here independently of the grader. Reporting the 10 as evidence
+// the re-key worked would be exactly the error of reading a figure that moved for another reason
+// (355 — census the mechanism, not the reported instance).
+// ═════════════════════════════════════════════════════════════════════════════════════════════════
+let LIVE_ADOPTED = null;
+{
+  const outs = git('ls-tree', '-r', '--name-only', REV, 'docs/research/').split('\n')
+    .filter((f) => f.endsWith('.out'));
+  let gateOnly = 0; const both = []; const verdictOnly = [];
+  for (const f of outs) {
+    const lines = git('show', `${REV}:${f}`).split('\n');
+    const g = lines.some((l) => l.startsWith('GATE: '));
+    const v = lines.some((l) => l.startsWith('VERDICT/'));
+    if (g && v) both.push(f); else if (v) verdictOnly.push(f); else if (g) gateOnly += 1;
+  }
+  LIVE_ADOPTED = both.length + verdictOnly.length;
+  const GRADER_SRC = readFileSync(join(REPO, GRADER_REL), 'utf8');
+  const oldSelectorSites = GRADER_SRC.split("if (!lines.some((l) => l.startsWith('GATE: '))) continue;").length - 1;
+  const newSelector = /if \(!hasGate && !hasVerdict\) continue;/.test(GRADER_SRC);
+  const occupancy = /adoptedN > 0 && adoptedParsed === adoptedN/.test(GRADER_SRC);
+  const g5occupancy = /adopted\.length > 0/.test(GRADER_SRC);
+  const ok = oldSelectorSites === 0 && newSelector && occupancy && g5occupancy
+    && LIVE_ADOPTED === both.length + verdictOnly.length;
+  leg('G5', 'THE §4 RE-KEY MOVED ZERO MEMBERS IN THE LIVE TREE, AND THE 6 → 10 IS POPULATION '
+    + 'GROWTH, NOT THE CURE — counted here independently of the grader, by partitioning every '
+    + 'committed `.out` at the rev three ways. The re-key can only add VERDICT-only recordings and '
+    + 'there are none yet, so its effect is demonstrable only in a scratch repo, which is where he '
+    + 'drove it. Both old selector sites are gone and both occupancy conjuncts are present',
+    `committed .out at ${SHORT}: prose-gate only ${gateOnly} · BOTH lines ${both.length} · `
+    + `VERDICT-only (the members the old selector could not see) ${verdictOnly.length} `
+    + `${JSON.stringify(verdictOnly)}\n`
+    + `        old \`GATE: \`-only selector sites remaining in the grader: ${oldSelectorSites} · `
+    + `new selector present: ${newSelector} · P1 occupancy conjunct: ${occupancy} · G5 occupancy `
+    + `conjunct: ${g5occupancy}`,
+    ok);
+}
+
+// ═════════════════════════════════════════════════════════════════════════════════════════════════
+// G6 — HIS OWN ROUND 443 INSTRUMENT WAS GOING TO BE THE ORACLE FOR ALL THREE CURES, AND IT CANNOT
+// RUN AT THIS REV. Found by driving it, not by reading it.
+//
+// His `G3` applies his two proposed edits to the subject AS A BLOB AT THE REV
+// (`git show ${REV}:${SUBJECT_REL}`) and guards each edit on its ANCHOR occurring exactly once. The
+// anchor for the round-trip edit is `  return line;`, which survives the cure — so at a rev where
+// the cure has landed, his patch inserts a SECOND `const rt = readVerdict(line);`, the scratch
+// module is a SyntaxError, and his instrument dies at import. It does not print a red leg; it
+// prints nothing at all, because his whole output is built and flushed at the tail.
+//
+// An anchor-presence guard cannot tell "this edit has not been applied" from "this edit is already
+// here". Graded as a 2 × 2 so the collision is attributed to the cure rather than to his patch
+// being broken in general: his sliced edits applied to the PRE-CURE blob must import cleanly.
+// ═════════════════════════════════════════════════════════════════════════════════════════════════
+let HIS_OUT = null;
+{
+  const before = git('show', `${REV}:${HIS_DRIVE5_REL}`);
+  const beforeV = NEW.readVerdict(before);
+  let text = null;
+  try {
+    text = execFileSync('node', [join(REPO, HIS_REL)], {
+      encoding: 'utf8', maxBuffer: 1 << 28, cwd: REPO,
+      env: { ...process.env, KLATCH_R444_DEPTH: '1' },
+    });
+  } catch (e) { text = (e.stdout ?? '') + (e.stderr ?? ''); }
+  HIS_OUT = text;
+  const afterV = NEW.readVerdict(text);
+
+  // His CURE_EDITS, SLICED out of his source and evaluated, never retyped.
+  const HIS_SRC = readFileSync(join(REPO, HIS_REL), 'utf8');
+  const editsSrc = (() => {
+    const i = HIS_SRC.indexOf('const CURE_EDITS = [');
+    const j = HIS_SRC.indexOf('\n];', i);
+    return i === -1 || j === -1 ? null : `export default ${HIS_SRC.slice(i + 'const CURE_EDITS = '.length, j + 2)};`;
+  })();
+  let onPre = null; let onCured = null; let edits = null;
+  if (editsSrc !== null) {
+    edits = (await importSource(editsSrc, 'his-edits')).default;
+    const apply = (src) => {
+      let out2 = src;
+      for (const e of edits) if (out2.split(e.anchor).length - 1 === 1) out2 = out2.replace(e.anchor, e.replace);
+      return out2;
+    };
+    const tryImport = async (src, tag) => {
+      try { await importSource(src, tag); return 'IMPORTS'; } catch (e) { return `${e.name}: ${e.message.slice(0, 48)}`; }
+    };
+    onPre = await tryImport(apply(OLD_SRC), 'his-on-pre');
+    onCured = await tryImport(apply(NEW_SRC), 'his-on-cured');
+  }
+  const diedWithNoVerdict = afterV.ok === false && afterV.refusal === 'NO_VERDICT_LINE';
+  const readable = beforeV.ok === true && edits !== null;
+  const ok = !readable ? null
+    : (beforeV.verdict.red.join(',') === 'G2,G4,G5,G6'
+      && diedWithNoVerdict && onPre === 'IMPORTS' && /SyntaxError/.test(String(onCured)));
+  leg('G6', 'HIS UNMODIFIED ROUND 443 INSTRUMENT CANNOT GRADE THE CURED TREE — it dies at import '
+    + 'and publishes NOTHING, not a red leg. His `G3` patches the subject blob at the rev and '
+    + 'guards on his anchor `  return line;` occurring once; the anchor survives the cure, so his '
+    + 'round-trip edit lands a SECOND `const rt` and the scratch module is a SyntaxError. His '
+    + 'edits, sliced from his source, are applied here to BOTH blobs: clean on the pre-cure one, '
+    + 'fatal on the cured one, which is what attributes the collision to the cure rather than to '
+    + 'his patch. Routed back to him in this round\'s memo: the guard has to key on the cure being '
+    + 'ABSENT, not on the anchor being present',
+    `his committed drive5 verdict (read with my reader): ${beforeV.ok ? beforeV.verdict.token : beforeV.refusal} `
+    + `red=${JSON.stringify(beforeV.ok ? beforeV.verdict.red : null)}\n`
+    + `        his instrument re-driven at ${SHORT}: ${afterV.ok ? afterV.verdict.token : afterV.refusal} · `
+    + `output ${text.split('\n').length} line(s), VERDICT lines `
+    + `${text.split('\n').filter((l) => l.startsWith('VERDICT/')).length}, leg lines `
+    + `${text.split('\n').filter((l) => /^(?: ok |FAIL|REF ) G/.test(l)).length}\n`
+    + `        his ${edits === null ? 'ABSENT' : `${edits.length}`} sliced CURE_EDITS applied to the `
+    + `PRE-CURE blob: ${onPre} · applied to the CURED blob: ${onCured}\n`
+    + `        his first error line: ${(text.split('\n').find((l) => /Error/.test(l)) ?? '(none)').slice(0, 90)}`,
+    ok);
+}
+
+// ═════════════════════════════════════════════════════════════════════════════════════════════════
+// G7 — THE TRACKED TREE. Carried forward, not retyped: a drive that rewrites a committed recording
+// is the class Theseus censused in Round 441 §2 and found six generations deep (440/441).
+// ═════════════════════════════════════════════════════════════════════════════════════════════════
+const g7 = () => {
+  const now = trackedModified();
+  const foreign = Object.keys(now).filter((p) => !(p in DIRTY_AT_ENTRY));
+  const same = Object.entries(BYTES_AT_ENTRY)
+    .filter(([r, b]) => readFileSync(join(REPO, r), 'utf8') !== b).map(([r]) => r);
+  leg('G7', 'THIS DRIVE REWROTE NO COMMITTED RECORDING, and the three files it reads as subjects '
+    + 'are byte-identical at exit. His instrument is driven in-place by G6, so this is the cell '
+    + 'that catches it having written to the tracked tree',
+    `tracked MODIFIED on entry (not this drive's): ${Object.keys(DIRTY_AT_ENTRY).length} `
+    + `${JSON.stringify(Object.keys(DIRTY_AT_ENTRY))} · tracked files MODIFIED by this drive: `
+    + `${foreign.length} ${JSON.stringify(foreign)} · subjects byte-identical at exit: `
+    + `${same.length === 0} ${JSON.stringify(same)}`,
+    foreign.length === 0 && same.length === 0);
+};
+
+// ═════════════════════════════════════════════════════════════════════════════════════════════════
+// PREDICTIONS
+// ═════════════════════════════════════════════════════════════════════════════════════════════════
+{
+  // P1 — the cure holds under HIS gate, not just under mine.
+  const hisGate = HIS_OUT === null ? null
+    : (HIS_OUT.split('\n').find((l) => l.startsWith('GATE: ')) ?? null);
+  pred('P1', 'HIS GATE GOES GREEN AT THIS REV — PRE-REGISTERED BEFORE DRIVE 1 AND NOW REFUSED, '
+    + 'NOT LANDED. The prediction was that HIS instrument, which I did not write and have not '
+    + 'edited, would read the tree as cured, because a cure graded only by the instrument of the '
+    + 'seat that wrote it is graded by its author. It cannot be scored either way: his instrument '
+    + 'dies at import at this rev (G6), so the oracle is UNAVAILABLE rather than negative. Scoring '
+    + 'this REFUTED would blame the cure for his patch colliding with it, and scoring it LANDED on '
+    + 'my own legs would be the thing it exists to avoid (436 — an instrument that cannot refuse '
+    + 'manufactures findings). It stays open until he lands the one-line guard G6 names',
+    `his gate line at ${SHORT}: ${hisGate ?? 'ABSENT — his instrument printed no gate line at all'}`,
+    hisGate === null ? null : /^GATE: true/.test(hisGate));
+
+  // P2 — my own promotion moves the adoption cell, and the re-key must hold under it. Stated here,
+  // driven AFTER the commit into a separate recording (405 — never draft the slot for a running
+  // measurement; the figure below is read out of the post-commit file or the slot stays OPEN).
+  const PC_REL = 'docs/research/round444-instruments/his-round442-instrument.postcommit.out';
+  const pcPath = join(REPO, PC_REL);
+  let pcAdopted = null; let pcGate = null; let pcMigrated = null;
+  if (existsSync(pcPath)) {
+    const pc = readFileSync(pcPath, 'utf8');
+    const m = pc.match(/· ADOPTED (\d+)/);
+    pcAdopted = m === null ? null : Number(m[1]);
+    const mm = pc.match(/FULLY MIGRATED \(no prose line at all\) (\d+)/);
+    pcMigrated = mm === null ? null : Number(mm[1]);
+    pcGate = pc.split('\n').find((l) => l.startsWith('GATE: ')) ?? null;
+  }
+  pred('P2', 'MY OWN PROMOTION MOVES THE ADOPTED CELL AND THE RE-KEYED GATE SURVIVES IT — this '
+    + 'round commits recordings carrying a `VERDICT/` line, so a post-commit drive of the re-keyed '
+    + 'Round 442 instrument must read an ADOPTED count strictly greater than the pre-commit figure '
+    + 'AND keep its gate green. This is the trap that reddened P1 on its own promotion in Round 442 '
+    + 'drive 2, and a re-key that had not fixed it would fail here rather than in a fixture',
+    `ADOPTED pre-commit at ${SHORT}, counted independently in G5: ${LIVE_ADOPTED} · post-commit, `
+    + `read off ${relative(REPO, pcPath)}: ${pcAdopted ?? 'OPEN (not yet driven)'} · fully migrated `
+    + `post-commit: ${pcMigrated ?? 'OPEN'} · post-commit gate: ${pcGate ?? 'OPEN'}`,
+    pcAdopted === null || pcGate === null ? null
+      : (pcAdopted > LIVE_ADOPTED && /^GATE: true/.test(pcGate)));
+}
+
+// ═════════════════════════════════════════════════════════════════════════════════════════════════
+// TAIL — emitted by the subject, which is now the subject's third round as its own publisher.
+// ═════════════════════════════════════════════════════════════════════════════════════════════════
+g7();
+
+const out = [];
+out.push(`SUBJECTS: ${SUBJECT_REL} · ${GRADER_REL}`);
+out.push(`REV: ${SHORT}   pre-cure blob pinned at: ${PRE_REV}   depth: ${DEPTH}`);
+out.push(`verdict.mjs selfTest(): ${NEW.selfTest()}`);
+out.push('');
+for (const l of legs) {
+  out.push(`${l.ok === true ? ' ok ' : l.ok === false ? 'FAIL' : 'REF '} ${l.id}  ${l.what}`);
+  out.push(`        ${l.detail}`);
+}
+out.push('');
+for (const p of preds) {
+  out.push(`${p.landed === true ? 'LANDED  ' : p.landed === false ? 'REFUTED ' : 'OPEN    '} ${p.id}  ${p.what}`);
+  out.push(`        ${p.detail}`);
+}
+out.push('');
+out.push(NEW.renderVerdict({ legs, preds }));
+
+console.log(out.join('\n'));
+process.exitCode = legs.some((l) => l.ok === false) ? 1 : 0;
