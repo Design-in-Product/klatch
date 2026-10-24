@@ -42,6 +42,16 @@
  *    Round 441 printed `GATE: true` with zero refusals, so no existing published verdict changes
  *    sign under it.
  *
+ * 3b. **Round-trip closure: no argument renders a line this module's own reader refuses, or one
+ *    whose lists read back different from the ones that went in.** Added in Round 444 as the cure
+ *    for Theseus's Round 443 §1, which is the strongest finding made against this file: properties
+ *    1 and 2 are keyed on the *lists*, and the artifact published is the *string*, so an id could
+ *    break the correspondence between them below the level either guard checked. 7 of 8 id shapes
+ *    emitted a line `readVerdict` refused, three of them publishing `RED … red=[]` — a red run with
+ *    an empty red list. Enforced at the tail of `renderVerdict` by reading its own output back, and
+ *    by `ID_GRAMMAR` in `bucket`; `selfTest()` drives both, so this paragraph cannot outlive the
+ *    mechanism it describes (357/359 — prose written beside its own cure needs a pin).
+ *
  * 3. **The reader refuses by name and never by sentinel.** `readVerdict` returns either
  *    `{ ok: true, verdict }` or `{ ok: false, refusal: <one of REFUSALS> }`. It never returns a
  *    zero, a `-1`, an empty list or a `false` that a caller could compare its way past
@@ -84,6 +94,14 @@ export const REFUSALS = [
 
 const FIELDS = ['legs', 'red', 'refused', 'preds', 'refuted', 'prefused'];
 
+/**
+ * The declared id grammar, enforced in `bucket` (Theseus's Round 443 §2, edit 1). The characters
+ * excluded are exactly the ones the reader's own grammar is sensitive to: a space and `=` split
+ * fields, a `,` splits a list, `[`/`]` delimit one, and the empty string renders to nothing because
+ * `[''].join(',')` is `''`.
+ */
+export const ID_GRAMMAR = /^[A-Za-z0-9_.:-]+$/;
+
 const refuse = (code) => {
   if (!REFUSALS.includes(code)) throw new Error(`refuse() called with an undeclared code: ${code}`);
   return { ok: false, refusal: code, verdict: null };
@@ -119,6 +137,10 @@ export function renderVerdict({ legs = [], preds = [] } = {}) {
       if (v !== true && v !== false && v !== null) {
         throw new Error(`renderVerdict: ${it.id} has a ${key} of ${JSON.stringify(v)}, which is not true/false/null`);
       }
+      if (typeof it.id !== 'string' || !ID_GRAMMAR.test(it.id)) {
+        throw new Error(`renderVerdict: id ${JSON.stringify(it.id)} is not ${ID_GRAMMAR} — an id that renders `
+          + 'to nothing or to two members breaks the line\'s correspondence with its own lists');
+      }
       out[String(v)].push(it.id);
     }
     return out;
@@ -147,6 +169,40 @@ export function renderVerdict({ legs = [], preds = [] } = {}) {
   // Both lists are present in every output. This is property 1, asserted, not documented.
   for (const f of FIELDS) {
     if (!line.includes(` ${f}=`)) throw new Error(`renderVerdict dropped the ${f} field: ${line}`);
+  }
+
+  // Property 4 — ROUND-TRIP CLOSURE. There is no argument to this function that renders a line this
+  // module's own reader refuses, or that reads back with lists other than the ones that went in.
+  //
+  // Theseus's Round 443 §1 is why this is here, and it is the sharpest finding either of us has
+  // made against this file. The invariant above is keyed on the LISTS (`isGreen`) while the artifact
+  // published is the STRING, and an id can break the correspondence between them *below* the level
+  // the invariant checks: `{ name: 'G1', ok: false }` — a typo away in every adopting instrument —
+  // rendered `VERDICT/1 RED legs=1 red=[] refused=[] …`, a run with a red leg whose published red
+  // list is empty, which is the one thing this file exists to prevent, in the mirror direction. His
+  // confusion matrix over id SHAPE (the axis his grid varied cardinality instead of) found 7 of 8
+  // shapes emitting a line `readVerdict` refuses by name, 0 of them throwing at emit
+  // (354 — a guard on identity does not guard value; 443 — guard the published string, not the
+  // arrays it came from).
+  //
+  // WIDER THAN HE SPECIFIED, and the widening is measured rather than assumed, in Round 444 `G3`:
+  // he named `red`/`refused`; this checks all FOUR lists. A PREDICATION id of `'A,B'` renders
+  // `refuted=[A,B]` with `preds=2`, which satisfies every count check and PARSES — so the
+  // two-list spelling of this cure admits a line whose parsed list has two members where one went
+  // in, and only the four-list spelling refuses it.
+  const rt = readVerdict(line);
+  if (rt.ok !== true) {
+    throw new Error(`renderVerdict rendered a line its own reader refuses as ${rt.refusal}: ${line}`);
+  }
+  const back = [
+    ['red', rt.verdict.red, L.false], ['refused', rt.verdict.refused, L.null],
+    ['refuted', rt.verdict.refuted, P.false], ['prefused', rt.verdict.prefused, P.null],
+  ];
+  for (const [name, got, want] of back) {
+    if (got.join('\u0000') !== want.join('\u0000')) {
+      throw new Error(`renderVerdict: ${name} read back as ${JSON.stringify(got)} from a line built `
+        + `from ${JSON.stringify(want)} — the string and the lists disagree: ${line}`);
+    }
   }
   return line;
 }
@@ -287,6 +343,35 @@ export function selfTest() {
   let threw = false;
   try { renderVerdict({ legs: [{ id: 'G1', ok: 'yes' }] }); } catch { threw = true; }
   must(threw, 'a non-tri-state leg did not throw');
+
+  // ROUND-TRIP CLOSURE (property 3b). Theseus's Round 443 §1 matrix, verbatim as the eight shapes
+  // he drove, plus the two PREDICATION shapes his matrix did not reach — one of which PARSES under
+  // the two-list spelling of this cure and is caught only by the four-list one. Each must throw at
+  // EMIT, and the control must still round-trip, so this case cannot pass by throwing on everything.
+  const badIds = [
+    { legs: [{ name: 'G1', ok: false }] },                     // id key absent
+    { legs: [{ id: undefined, ok: false }] },
+    { legs: [{ id: '', ok: false }] },
+    { legs: [{ id: 'A,B', ok: false }] },
+    { legs: [{ id: 'G4 b', ok: false }] },
+    { legs: [{ id: 'a=b', ok: false }] },
+    { legs: [{ id: 'x]y', ok: false }] },
+    { legs: [{ id: 'G1', ok: true }], preds: [{ id: 'A,B', landed: false }] },
+    // The two shapes the two-list spelling of this cure ADMITS, measured in Round 444 `G3`: both
+    // satisfy every count and token check, so `readVerdict` says `ok` and only comparing the
+    // refuted/prefused lists to what went in refuses them.
+    { legs: [{ id: 'G1', ok: true }], preds: [{ id: 'A,B', landed: false }, { id: 'Pok', landed: true }] },
+    { legs: [{ id: 'G1', ok: true }], preds: [{ id: '', landed: null }] },
+  ];
+  for (const c of badIds) {
+    let emitted = null;
+    try { emitted = renderVerdict(c); } catch { /* the required outcome */ }
+    must(emitted === null, `an invalid id emitted instead of throwing: ${emitted} ← ${JSON.stringify(c)}`);
+  }
+  const control = renderVerdict({ legs: [{ id: 'G1', ok: false }], preds: [{ id: 'P1', landed: false }] });
+  must(readVerdict(control).ok === true, `the round-trip control stopped parsing: ${control}`);
+  must(readVerdict(control).verdict.red.join(',') === 'G1' && readVerdict(control).verdict.refuted.join(',') === 'P1',
+    `the round-trip control's lists drifted: ${control}`);
 
   // Every refusal is reachable and named; none is a sentinel.
   const bad = {
