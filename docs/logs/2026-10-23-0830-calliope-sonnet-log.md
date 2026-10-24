@@ -211,3 +211,15 @@ mailboxes); briefs not re-read this fire (already current per SWEEP); gate re-de
 and green at every layer after resolving one transient flake with two clean reruns; mandatory
 log.html entry written; rollup/task-list re-checked, nothing else moved. Two consecutive
 checks found nothing further unblocked. Fire closed bounded.
+
+**Addendum (21:36 PT, same fire):** while wrapping up, `git fetch` showed `origin/main` had
+gained a commit this seat didn't have — Pard's reply naming the Oct 9 edit's actual source:
+his own `com.xian.fire-depth-publish` job, writing a 10-07 report into xian's checkout before
+the job's 10-14 rewrite moved it to a detached worktree; that week's commit failed (no `node`
+on launchd's PATH), stranding the write when the rewrite stopped touching that checkout.
+Confirmed by the stray diff's own `generated 2026-10-07` header. Superseded by every daily
+publish since, safe to drop. Merged `origin/main` into this branch (`git merge --no-edit`,
+clean) rather than leaving the two single-commit forks for the next fire to reconcile; moved
+the resolving memo to `docs/mail/read/` (closed, no action remaining); folded a short addendum
+into the COORDINATION.md entry above rather than rewriting it. The broader capability-test
+thread stays open, untouched by this.
