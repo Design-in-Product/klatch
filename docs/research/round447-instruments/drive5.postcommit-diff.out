@@ -1,0 +1,25 @@
+HEAD is now e2d70405
+
+── drive1.clean.out
+   pre : VERDICT/1 ok legs=9 red=[] refused=[] preds=2 refuted=[] prefused=[]
+   post: VERDICT/1 ok legs=9 red=[] refused=[] preds=2 refuted=[] prefused=[]
+   VERDICT identical: true · GATE identical: true · matrix rows identical (rev labels normalised): true · true
+   REV field (expected to move): pre REV: 53f4cbc2   de → post REV: e2d70405   de
+
+── drive2.g4key-crippled.out
+   pre : VERDICT/1 RED legs=9 red=[G4] refused=[] preds=2 refuted=[] prefused=[]
+   post: VERDICT/1 RED legs=9 red=[G4] refused=[] preds=2 refuted=[] prefused=[]
+   VERDICT identical: true · GATE identical: true · matrix rows identical (rev labels normalised): true · true
+   REV field (expected to move): pre REV: 53f4cbc2   de → post REV: e2d70405   de
+
+── drive3.inert-name.out
+   pre : VERDICT/1 RED legs=9 red=[G9] refused=[] preds=2 refuted=[] prefused=[]
+   post: VERDICT/1 RED legs=9 red=[G9] refused=[] preds=2 refuted=[] prefused=[]
+   VERDICT identical: true · GATE identical: true · matrix rows identical (rev labels normalised): true · true
+   REV field (expected to move): pre REV: 53f4cbc2   de → post REV: e2d70405   de
+
+R1 pinned row, pre : R1  his P2 @ 33282e7d (pre-cure)   bare=true  closes=false healthy=false = declared
+R1 pinned row, post: R1  his P2 @ 33282e7d (pre-cure)   bare=true  closes=false healthy=false = declared
+R1 pin did NOT move across the commit: true
+
+ALL verdict maps identical across the commit: true
