@@ -670,8 +670,13 @@ const scoreFourList = (text) => {
   const dirtyNow = trackedModified();
   const newlyDirty = Object.keys(dirtyNow).filter((p) => !(p in DIRTY_AT_ENTRY));
   const changed = WATCHED.filter((r) => readFileSync(join(REPO, r), 'utf8') !== BYTES_AT_ENTRY[r]);
+  // Keyed on ANY dotfile in this directory, not on the `.scratch-` prefix. The narrow key let
+  // `.g4-replacement.txt` — a scratch file this fire used to splice this very leg, and which a
+  // refused `rm` in a shell chain left behind — reach `origin/main` with `G6` green. A hygiene
+  // check keyed on one spelling of "temporary" only sees that spelling (403).
   const leftovers = git('status', '--porcelain', '--untracked-files=all', '--', relative(REPO, HERE))
-    .split('\n').map((l) => l.trim()).filter((l) => /\.scratch-/.test(l));
+    .split('\n').map((l) => l.trim()).filter((l) => l !== '')
+    .filter((l) => /(^|\/)\.[^/]+$/.test(l.replace(/^\S+\s+/, '')));
   const ok = newlyDirty.length === 0 && changed.length === 0 && leftovers.length === 0;
 
   leg('G6', 'THIS DRIVE REWROTE NOTHING TRACKED AND LEFT NO SCRATCH FILE BEHIND. The `G3` '
