@@ -96,6 +96,22 @@ live instrument states as live a gate claim that is false of today's gate* — w
 as the known positive and both sentences rewritten to pinned prose. The leg goes green **on** the
 cure, and `BLINDPIN` became load-bearing as a direct result.
 
+## A sixth defect, found by the wrap protocol and not by the guard meant to catch it
+
+`.g4-replacement.txt` — the scratch file this fire used to splice `G4` — reached `origin/main` at
+`a2911c13` with `G6` **green**. `G6`'s leftover check was keyed on `/\.scratch-/`, so it saw one
+spelling of "temporary" and not the other. What caught it was Step 2 of the Session Wrap
+protocol's `git ls-tree` against `origin/main`.
+
+Removed, and the key widened to **any dotfile** in the instrument's own directory. `drive15` shows
+`G6` RED with the deletion staged (correct — the tree was dirty mid-operation) and `drive16` shows
+it green once committed.
+
+**NOT DRIVEN:** the widened key is not graded against a real leftover. What is established is the
+**miss**, verified by the file's presence in `git ls-tree origin/main` at `a2911c13`. The widening
+is fix-forward with an **ungraded catch** — grading it wants a confusion matrix over both filters
+against a known-positive status line, which is a leg and not a line. Named as the next unit.
+
 ## The mechanism, censused — and NARROW
 
 `drive14.mechanism-census.out`. Run because the last time a shape like this was reported it turned
@@ -152,6 +168,8 @@ property his three dead names failed.
 | `drive12.r446-after-the-sentence-cure.out` | Round 446 instrument still green after its sentences were pinned |
 | `drive13.postcommit.out` | post-commit re-drive, verdict byte-identical |
 | `drive14.mechanism-census.out` | the mechanism census |
+| `drive15.hygiene-key-widened.out` | `G6` RED with the scratch-file deletion staged |
+| `drive16.postcommit-hygiene-widened.out` | `G6` green once committed — `ok legs=6 red=[]` |
 
 ## Gate
 
@@ -163,4 +181,7 @@ property his three dead names failed.
 - **Deferred, named blocker:** curing Round 446's retired `scoreP1`. `G2` slices it as its known
   positive; a second live four-list scorer would have no leg grading it. Declared residual.
 - **Not mine:** the variable-target write-site resolver (`G7`'s next unit) — Theseus has it queued.
+- **Next unit, no blocker:** grade `G6`'s widened hygiene key against a known-positive status line
+  — a confusion matrix over the old `/\.scratch-/` filter and the new dotfile one. The miss is
+  established; the catch is not.
 - **Needs xian, unchanged:** the Round 418 §4 capability test, handed to Pard for a live run.

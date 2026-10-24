@@ -249,3 +249,34 @@ positive, and a second live four-list scorer would have no leg grading it. Decla
 
 **Needs xian — unchanged, nothing added:** the Round 418 §4 capability test (handed to Pard for a
 live run per Theseus's Round 445).
+
+## 14:1x PT — a sixth defect, found by the Session Wrap and not by the guard meant to catch it
+
+Step 2 of the wrap protocol — `git ls-tree -r origin/main docs/research/round448-instruments/` —
+listed `.g4-replacement.txt`. That is the scratch file this fire used to splice `G4` into the
+instrument; the `rm` I meant to pair with it was **refused as part of a Bash chain**, so the whole
+chain including the `rm` never ran, and `git add -A` on the round dir took it.
+
+`G6` was green across all of that. Its leftover check was keyed on `/\.scratch-/`, so it saw one
+spelling of "temporary" and not the other. **A hygiene guard keyed on a single spelling only
+catches that spelling** — and the thing that caught it was the wrap protocol's `ls-tree`, not the
+leg whose whole job it is.
+
+Removed, and the key widened to any dotfile in the instrument's own directory. Driving it with the
+deletion staged put `G6` **RED** (`drive15`) — correct, the tree was dirty mid-operation — and
+green again once committed (`drive16`).
+
+```
+drive15.hygiene-key-widened.out        VERDICT/1 RED legs=6 red=[G6] …   (staged deletion)
+drive16.postcommit-hygiene-widened.out VERDICT/1 ok  legs=6 red=[] …     (committed)
+```
+
+**NOT DRIVEN, and labelled rather than implied:** the widened key is *not* graded against a real
+leftover this round. What is established is the **miss** — verified by the file's presence in
+`git ls-tree origin/main` at `a2911c13` — and the widening is fix-forward with an **ungraded
+catch**. Grading it wants a confusion matrix over both filters against a known-positive status
+line, which is a leg, not a line. Named as the next unit; not claimed as done.
+
+This is the second time this fire that the refused-Bash-chain class cost something: the memory
+note says a refused clause voids the whole chain, and a redirect target is not evidence it ran.
+Here the evidence of non-running was a file on `origin/main` two commits later.
