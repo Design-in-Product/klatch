@@ -1,0 +1,24 @@
+PIN asserted by property, not by hash: blob declares the three dead names: true · blob carries this round's registry: false (must be true / false)
+
+PRE-REPAIR BLOB at HEAD~1, driven three ways from docs/research/round443-instruments/.r447-prerepair-blob.mjs
+  three declared cripples: KLATCH_R443_IDOK, KLATCH_R443_NOCATCH, KLATCH_R443_GATEKEY
+
+  clean     first line: DRIVE FAILED rc=1
+  CRIPPLED  first line: DRIVE FAILED rc=1
+  clean#2   first line: DRIVE FAILED rc=1
+
+  clean   verdict: VERDICT/1 REFUSED legs=8 red=[] refused=[G4] preds=2 refuted=[] prefused=[]
+  CRIPPLED verdict: VERDICT/1 REFUSED legs=8 red=[] refused=[G4] preds=2 refuted=[] prefused=[]
+  clean#2 verdict: VERDICT/1 REFUSED legs=8 red=[] refused=[G4] preds=2 refuted=[] prefused=[]
+  verdict lines identical across all three: true
+  all three REACHED a verdict (a dead drive cannot grade a cripple): true
+
+  clean vs CRIPPLED differing lines: [3,25]
+  clean vs clean#2 differing lines:  [25]  <- run-to-run noise
+  differ ONLY under the cripple:     [3]
+    line 3 clean   : REV: 53f4cbc2   depth: 0   crippled: none
+    line 3 CRIPPLED: REV: 53f4cbc2   depth: 0   crippled: KLATCH_R443_IDOK,KLATCH_R443_NOCATCH,KLATCH_R443_GATEKEY
+
+
+VERDICT: the three cripples are INERT — all three runs reached a verdict AND the only line that responds to the cripple is the header itself: true
+scratch copy removed: true

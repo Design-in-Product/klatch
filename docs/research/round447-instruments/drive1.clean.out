@@ -1,0 +1,60 @@
+SUBJECTS: docs/research/lib/verdict.mjs · docs/research/round442-instruments/grade-the-shared-verdict-emitter.mjs
+REV: 53f4cbc2   depth: 0   crippled: none
+
+ ok  G1  HIS ROUND 442 REPRODUCES — his §5 figures AND the line his own subject emitted, typed from his memo, against my drive of his unmodified instrument as this fire's first action. Three-way: his sentence, his recording, my drive
+        pinned 3 line(s) · got ["GATE: true   (9 leg(s))","PREDICTIONS: 2 landed, 0 refuted","VERDICT/1 ok legs=9 red=[] refused=[] preds=2 refuted=[] prefused=[]"]
+ ok  G2  ROUND-TRIP CLOSURE — no argument renders a line the subject's OWN reader refuses. His 36-case grid varies list CARDINALITY with every id generated, so it covers one axis; this matrix varies id SHAPE. `renderVerdict` validates a leg's `ok` totally (a non-tri-state value throws) and does not validate `id` at all, while the reader splits on space, `=`, `,` and `[]`. The internal assertion at the tail of `renderVerdict` compares the ARRAYS `L.false`/`L.null`, not the rendered STRING, so it cannot see a member that rendered to nothing
+        id shapes 8 · control round-trips: true · threw at emit 7 · EMITTED THEN REFUSED 0 []
+        SEVERITY — a RED run whose published red list is EMPTY: 0 []
+        e.g. null ← one red leg, written { name, ok } instead of { id, ok }
+ ok  G3  THE CURE, DRIVEN — two edits to a scratch copy: a declared id grammar enforced in `bucket`, and a round-trip of the rendered LINE inside `renderVerdict` before it returns, keyed on the string it is about to publish rather than on the arrays it built. The same id matrix, his whole 36-case grid, and the subject's own `selfTest()` all re-run, so a cure that fixed the matrix by breaking the grid or the self-test reddens here
+        edits ["APPLIED","ALREADY-CURED"] (applied 1 + already-cured 1 = 2 of 2) · anchors [1,1] · control still round-trips: true · now THROWS at emit 7 of 7 invalid shapes · still emitted-then-refused 0 · his grid 36 re-rendered, broken 0 [] · selfTest(): true
+ ok  G4  HIS P2 CLOSES ITS POPULATION OVER THROWERS — re-keyed at the CURED spelling after Round 445 left this REFUSED, because his Round 444 cure rewrote the conjunct the old slicer used as its END token (0 occurrences at HEAD). Separates "the block moved" from "the defect is gone": a 5-row matrix over both spellings and both subjects, all four (bare, closes) pairs occupied, every expectation declared before the run. Re-aiming the slicer alone would NOT have been enough: the old `/sum === GRID.length/` key was a TEXT PIN on his G6 spelling, and it answers false for the cured P2, so this leg would have gone RED against a correctly cured subject — see the `KLATCH_R443_G4KEY` drive, where exactly one row disagrees and it is R2. And comment-blindness alone scored G6 `bare=true` off his own leg PROSE quoting the spelling he retired (371/383)
+        blinder graded both ways: true — his G6 block raw 2 → code-blind 0 (a `//` comment and a leg STRING, 0 in code); his pre-cure P2 block raw 1 → code-blind 1 (LIVE CODE, must survive)
+        reader: scripts/lib/strip-source.mjs `stripSource(src, true)` · length-preserving on all 5 rows: true
+        mutation anchors occur exactly once: M1 1× · M2 1× → true
+        R1  his P2 @ 33282e7d (pre-cure)   bare=true  closes=false healthy=false = declared
+                                             how: no thrower counter
+        R2  his P2 @ 53f4cbc2 (THE SUBJECT) bare=false closes=true  healthy=true  = declared
+                                             how: direct: `p2rendered + p2threw === GRID.length`
+        R3  his G6 @ 53f4cbc2 (other spelling) bare=false closes=true  healthy=true  = declared
+                                             how: indirect: `sum = tp + tn + fp + fn + threw` === GRID.length
+        R4  R2 minus its closing sum       bare=false closes=false healthy=false = declared
+                                             how: counter `p2threw`, no `=== GRID.length`
+        R5  his G6 + a 2nd bare catch      bare=true  closes=true  healthy=false = declared
+                                             how: indirect: `sum = tp + tn + fp + fn + threw` === GRID.length
+        rows agreeing with their declaration: 5 of 5 []
+        REPORTED, never a conjunct — prints `of ${GRID.length}`: pre-cure true · cured true (true at BOTH revs, so it cannot separate)
+ ok  G5  HIS P2 LANDS ON A SHRUNKEN ENUMERATION, DRIVEN — his own C2 cripple applied to a scratch copy at the right depth, anchor asserted to occur exactly once, sliced from his harness. `G6` counts the throwers because he cured it; `P2`'s sentence is unmoved and its verdict unmoved, because the cases that throw leave its enumeration and its denominator is the grid size. The leg asserts the HEALTHY state — that no case throws unnoticed — so it reddens on the live defect
+        cripple: "if (refused.length > 0) return 'REFUSED';" → "if (refused.length > 0) return 'ok';" · 1×
+        G6 before:         tp 4 · tn 32 · fp 0 · fn 0 · threw 0 · sum 36 of grid 36
+        G6 after:          tp 4 · tn 24 · fp 0 · fn 0 · threw 8 · sum 36 of grid 36 · throwers ["renderVerdict would have quoted a run with the wrong token: VERDICT/1 ok legs=2 red=[] ref","renderVerdict would have quoted a run with the wrong token: VERDICT/1 ok legs=2 red=[] ref"]
+        P2 before:         grid outputs from which "names no legs" is inferable: 0 of 36 · rendered 36 · threw 0 · rendered+threw 36 of 36
+        P2 after:          grid outputs from which "names no legs" is inferable: 0 of 36 · rendered 28 · threw 8 · rendered+threw 36 of 36 · throwers ["renderVerdict would have quoted a run with the wrong token: VERDICT/1 ok legs=2 red=[] ref","renderVerdict would have quoted a run with the wrong token: VERDICT/1 ok legs=2 red=[] ref"]  → P2 REFUTED
+        cripple bit (cases threw AND G6's row moved): true · cases that threw and so left P2's enumeration while its printed denominator stayed 36: 8
+ ok  G6  HIS ADOPTION MEASURE IS KEYED ON THE PROSE LINE HE IS RETIRING, AND ZERO ADOPTION IS GREEN — his §6 names `ADOPTED` as "the real measure of this item… not a cure until it moves". Both populations are selected on the presence of the OLD `GATE: ` line, so a fully migrated recording is in neither cell; and `P1`'s predicate has no occupancy conjunct on the ADOPTED side. Driven in a scratch repo with every double-printing recording omitted and one fully migrated recording committed in its place
+        `GATE: ` population selector sites in his instrument: 0 · P1 carries an `adoptedN > 0` occupancy conjunct: true
+        scratch repo: omitted 3 double-printing recording(s) ["drive1.out","drive2.out","drive3.out"], committed 1 fully migrated + 1 old-grammar fixture
+        his G5 control read:         CONTROL 2 × 2 over committed recordings under docs/research/ at 488043a4, selected with ls-tree, SELECTED on `GATE: ` OR `VERDICT/` and PARTITIONED on `VERDICT/` alone: UNADOPTED 2, of which not refused 0 [] · ADOPTED 1 ["docs/research/round443-fixture/fully-migrated.out"], of which not parsed 0 · of the adopted, FULLY MIGRATED (no prose line at all) 1 ["docs/research/round443-fixture/fully-migrated.out"] · refusal codes observed on the unadopted half: ["NO_VERDICT_LINE"]
+        his P1 read:         UNADOPTED 2, refused with a declared code 2 · ADOPTED 1, parsed 1, of which fully migrated 1  → P1 LANDED
+        the fully migrated recording parses under his reader: true · is named anywhere in his output: true · ADOPTED cell: 1
+ ok  G7  MY WRITE-SITE TOKEN CENSUS, RE-DERIVED COMMENT-BLIND — his §3 flagged that my Round 441 `G7` counted the `writeFileSync(` token textually, including in comments and leg prose, so my 125 was an UPPER bound, and I guessed in that memo that "four of the 125 are my own documentation of the pattern". Measured here instead of guessed: comments account for the number below, at THIS rev, over a population that grew since `8d891c70`, so the figure is not the same 125 and is not compared to it. The modelled-target subtraction is not redone here; this leg measures the comment-blindness alone. Known positive for the stripper is carried in the real call shape: a commented-out call must disappear and a live one beside it must survive. The variable-target resolver is the next unit and is NOT in this round
+        tracked .mjs under docs/ at 53f4cbc2: 147, of which EXCLUDED as this instrument's own source 1 (tracked at the rev: true) · population 146 · raw token count 144 in 76 file(s) · COMMENT-BLIND 141 in 75 file(s) · comments accounted for 3 of the raw count
+        stripper known positive (3 tokens, 2 commented): raw 3 → blind 1 · expected 3 → 1: true
+ ok  G9  EVERY CRIPPLE THIS RUN REPORTS IS ONE A HOOK ACTUALLY IMPLEMENTS — the registry used to name three (`IDOK`, `NOCATCH`, `GATEKEY`) that nothing read, each occurring exactly once in the file, at the declaration itself. Setting one printed `crippled: …` over a run whose every leg verdict was byte-identical to the clean one, so a recording filed as a crippled control was not one (356). A requested var that no hook implements is now named as INERT and reddens this leg instead of being reported as active
+        implemented 1 ["KLATCH_R443_G4KEY×5"] (each must occur >1× — i.e. somewhere other than its own declaration) · not wired 0 []
+        requested this run: 0 [] · of which ACTIVE 0 [] · INERT 0 []
+        kept visible as never-implemented: ["KLATCH_R443_IDOK","KLATCH_R443_NOCATCH","KLATCH_R443_GATEKEY"] · still claimed as implemented: 0 []
+ ok  G8  THIS DRIVE MODIFIED NO TRACKED FILE AND BOTH SUBJECTS ARE BYTE-IDENTICAL AT EXIT — the whole tracked tree, status code read as a FIELD and `/[MARCD]/` filtered, with the modified-tracked and created-untracked populations reported separately. Every cripple in this round runs against a copy under `os.tmpdir()`, so his tree and mine are never the subject of a mutation (332/440)
+        tracked MODIFIED on entry (not this drive's): 1 ["docs/research/round443-instruments/grade-the-emitter-at-its-published-line.mjs"] · untracked on entry: 2 · tracked files MODIFIED by this drive: 0 [] · untracked files created by this drive: 0 [] · emitter byte-identical: true · his grader byte-identical at the rev: true
+
+LANDED   P1  THE CURE IS COMPLETE OVER BOTH AXES — every invalid id shape throws at emit, the control still round-trips, all 36 of his grid cases still render and still read back, and the subject's own self-test still returns exactly `true`. A cure that only fixed the shape that found it would refute this
+        G3 is true
+LANDED   P2  MY OWN PROMOTION MOVES HIS ADOPTED CELL — this round commits recordings that carry both the prose gate line and a `VERDICT/1` line, so a post-commit drive of HIS unmodified instrument must report an ADOPTED count strictly greater than the 3 my pre-commit reproduction read. Recorded in `his-instrument.postcommit.out`, not asserted here, because a slot drafted for a measurement that has not run is a fabrication even when it lands. His gate must also still be GREEN under my promotion — drive 2 of HIS round went red on exactly this, so the re-key is what is being tested
+        ADOPTED at 53f4cbc2, read off my pre-commit reproduction: 3 · post-commit, read off his-instrument.postcommit.out: 6 · his gate under my promotion: "GATE: true   (9 leg(s))"
+
+GATE: true   (9 leg(s))
+PREDICTIONS: 2 landed, 0 refuted, 0 open
+
+— and the same run under his Round 442 grammar, emitted by his subject:
+VERDICT/1 ok legs=9 red=[] refused=[] preds=2 refuted=[] prefused=[]

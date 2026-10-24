@@ -22,6 +22,11 @@ import { readFileSync, writeFileSync, mkdirSync, mkdtempSync, existsSync } from 
 import { dirname, join, relative } from 'path';
 import { tmpdir } from 'os';
 import { fileURLToPath } from 'url';
+// The shared 'which bytes of this source are code?' reader — comments AND string bodies blanked,
+// length-preserving, with a model of interpolation and regex literals. `G4` needs the
+// strings-blanked reading, because his leg PROSE quotes the spelling his cure retired. Not
+// hand-rolled: the correct instrument was already in `scripts/lib`.
+import { stripSource } from '../../../scripts/lib/strip-source.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = join(HERE, '..', '..', '..');
@@ -58,8 +63,27 @@ const preds = [];
 const leg = (id, what, detail, ok) => legs.push({ id, what, detail, ok });
 const pred = (id, what, detail, landed) => preds.push({ id, what, detail, landed });
 
-const CRIPPLED = ['KLATCH_R443_IDOK', 'KLATCH_R443_NOCATCH', 'KLATCH_R443_GATEKEY']
-  .filter((k) => process.env[k] !== undefined);
+// ── Cripple registry (Round 447) ────────────────────────────────────────────────────────────────
+//
+// This list used to be `['KLATCH_R443_IDOK', 'KLATCH_R443_NOCATCH', 'KLATCH_R443_GATEKEY']` and
+// **nothing in the file read any of the three.** Each name occurred exactly once — here. So
+// `KLATCH_R443_NOCATCH=1 node <this>` printed `crippled: KLATCH_R443_NOCATCH` in the header of a run
+// that was byte-identical, in every leg verdict, to the uncrippled one. Driven rather than argued:
+// clean vs crippled differ on the header line and nothing else, with a clean-vs-clean control
+// separating that from the one line that moves run-to-run anyway (a fresh scratch-repo hash). A
+// recording filed as a crippled control was not a crippled control. 356 — a printed self-test that
+// gates nothing; and this is the vacuity-harness item, found in its concrete form.
+//
+// Fixed two ways. `IMPLEMENTED` is the registry each hook actually reads, and `G9` reddens if any
+// `KLATCH_R443_*` var is set that no hook implements — so an inert cripple can never again be
+// reported as an active one. `NEVER_IMPLEMENTED` keeps the three dead names visible rather than
+// quietly deleting the record that they were once claimed.
+const IMPLEMENTED = ['KLATCH_R443_G4KEY'];
+const NEVER_IMPLEMENTED = ['KLATCH_R443_IDOK', 'KLATCH_R443_NOCATCH', 'KLATCH_R443_GATEKEY'];
+const REQUESTED = Object.keys(process.env)
+  .filter((k) => k.startsWith('KLATCH_R443_') && k !== 'KLATCH_R443_DEPTH').sort();
+const CRIPPLED = REQUESTED.filter((k) => IMPLEMENTED.includes(k));
+const INERT = REQUESTED.filter((k) => !IMPLEMENTED.includes(k));
 
 // The emitter, imported (never re-derived from source text — 369).
 const V = await import(`file://${SUBJECT}?t=${Date.now()}`);
@@ -286,13 +310,73 @@ const CURE_EDITS = [
 }
 
 // ═════════════════════════════════════════════════════════════════════════════════════════════════
-// G4 — HIS P2 STILL CARRIES THE `catch { continue }` HE CURED IN G6 THIS ROUND, and its printed
-// denominator is `GRID.length` rather than the number of cases it enumerated.
+// G4 — HIS P2 CLOSES ITS POPULATION OVER THROWERS, re-keyed at the CURED spelling.
 //
-// Static half: a 2 × 2 over {his P2 block, his cured G6 block} × {uncounted catch, sum asserted
-// against the grid}. A detector that answered "uncounted catch" for both blocks would be graded by
-// the G6 row, which is the cured one (418 — a separating key needs a confusion matrix). Blocks are
-// SLICED out of his source at the rev with the boundaries asserted, never hand-typed (412/426).
+// ── Round 447: why this leg was REFUSED and what the re-key had to separate ──────────────────────
+//
+// Round 445 left this leg `REFUSED` and Round 446 §"P1, re-scored" routed it back here. The cause
+// was mechanical: his Round 444 cure (`74958a70`) rewrote the very conjunct this slicer used as its
+// END token. `inferable === 0);` occurs 0 times at HEAD, so `sliceBlock` returned null and the leg
+// could not reach its figure. A correct refusal, not a false red — but a refusal is not a reading,
+// and Daedalus's `P1` cannot be scored until this grades (446 §2: `red=[]` with a refused leg is
+// not evidence his cure is wrong).
+//
+// His framing of the re-key is the one adopted here: it has to separate **"the block moved"** from
+// **"the defect is gone"**, which is a confusion matrix over both spellings and both subjects, not a
+// line. Absence of the old end token is only the former.
+//
+// Three defects of mine were found building it, all before anything was published:
+//
+//  1. **`printsGridLengthDenominator` cannot separate.** It is `true` for his P2 block at BOTH
+//     revs — the cured block still prints `inferable ${n} of ${GRID.length}` and now prints the
+//     closing sum beside it. Kept as a REPORTED field, never a conjunct (350).
+//  2. **`sumAssertedAgainstGrid` was a text pin wearing a property's name, and re-aiming the
+//     slicer alone would have published a RED against a correctly cured subject.** It was
+//     `/sum === GRID\.length/` — which is **his G6 spelling** (`const sum = tp+tn+fp+fn+threw; …
+//     sum === GRID.length`), not a property. His cured P2 closes the identical population as
+//     `p2rendered + p2threw === GRID.length`, which that pattern does not match, so the old key
+//     answers **`false` for the cure it was supposed to detect**. I first wrote this defect up with
+//     the direction of the error inverted — claiming the pin was P2's spelling and that it misread
+//     G6 — and the cripple drive is what corrected me: under `KLATCH_R443_G4KEY` exactly one row
+//     disagrees and it is **R2, the subject**, not R3 (431 — a routed diagnosis of your own
+//     blindness needs the leg run, and my first account named the wrong direction).
+//     Replaced by a resolver: find the catch's counter variable, then find a `=== GRID.length`
+//     whose left side contains it, directly or through one assignment. Both spellings resolve, and
+//     the leg PRINTS which (`how:`).
+//  3. **Comment-blindness is not enough, and only the CONTROL row showed it.** The spelling
+//     `catch { continue }` survives into his G6 block twice: once in a `//` comment (line 292) and
+//     once in **leg prose inside a string literal** (line 313, "under drive 1's `catch { continue }`").
+//     A comment-blind reading still scores G6 `bare=true` — against a true `false` — and I would
+//     have published "the defect is still live in G6" off one line of his own description of having
+//     fixed it. 371/383 arriving again, and it bit Daedalus one leg over in his own `drive6` this
+//     same round. For his P2 block comment-blindness alone WOULD have sufficed; the asymmetry is
+//     the argument for the control row being real source rather than an analogy.
+//
+// The reader is `scripts/lib/strip-source.mjs` — `stripSource(src, true)`, comments AND string
+// bodies blanked, length-preserving, with a model of interpolation and regex literals. Not
+// hand-rolled: the correct instrument was already in lib, and hand-rolling it is a logged lesson.
+// It is graded BOTH WAYS below, because a blinder that blanked everything would read every row
+// `bare=false` and this leg green on a defect.
+//
+// ── The matrix ──────────────────────────────────────────────────────────────────────────────────
+//
+// Five rows over {his P2 pre-cure, his P2 cured, his G6, two mutants}, each expectation DECLARED in
+// `MATRIX` below before the run, the leg red if any row disagrees. All four `(bare, closes)` pair
+// values are occupied, so neither key is the other's negation:
+//
+//   R1 P2 @ pinned pre-cure rev  (true,  false)  the defect, from a rev BEFORE the cure was written
+//   R2 P2 @ HEAD — the subject   (false, true )  the cure, DIRECT spelling — the row the old text
+//                                                pin fails, because it only ever matched G6's
+//   R3 G6 @ HEAD                 (false, true )  the same property, INDIRECT spelling — the row
+//                                                that shows the new key is not keyed on P2 either
+//   R4 R2 minus its closing sum  (false, false)  the cure key is load-bearing on the real subject
+//   R5 G6 + a 2nd bare catch     (true,  true )  a closed population with a SECOND uncounted site —
+//                                                the declared blindness of any static key here; it
+//                                                is the DRIVEN half (`G5`) that covers it
+//
+// R1 is sliced at a rev pinned BEFORE the cure, so curing the subject cannot empty the cell that
+// proves the defect (420/422/436/444). Both mutation anchors are asserted to occur exactly once
+// (347/389/422/444). Blocks are SLICED from source at a rev, never hand-typed (412/426).
 // ═════════════════════════════════════════════════════════════════════════════════════════════════
 const sliceBlock = (src, startTok, endTok) => {
   const a = src.indexOf(startTok);
@@ -302,43 +386,146 @@ const sliceBlock = (src, startTok, endTok) => {
   return src.slice(a, b + endTok.length);
 };
 {
-  const p2 = sliceBlock(GRADER_SRC, '  // P2 — the ambiguity has no image', 'inferable === 0);');
-  const g6 = sliceBlock(GRADER_SRC, '  let tp = 0; let tn = 0;', '    ok);');
-  if (p2 === null || g6 === null) {
-    leg('G4', 'HIS P2 DROPS CASES BY THROWING', 'REFUSED — a block boundary did not slice: '
-      + `P2 ${p2 === null ? 'absent' : 'ok'}, G6 ${g6 === null ? 'absent' : 'ok'}`, null);
+  // The rev his P2 block was last read at BEFORE the Round 444 cure landed. Asserted by the R1 row
+  // carrying the defect, not by this hash being correct.
+  const PRECURE_REV = '33282e7d';
+  const P2_START = '  // P2 — the ambiguity has no image';
+  const G6_START = '  let tp = 0; let tn = 0;';
+  const G6_END = '    ok);';
+  // One end token per SPELLING, declared. Exactly one must slice at each rev — a structural gate,
+  // not a fall-through, so "neither matched" and "both matched" are distinguishable from a hit (426,
+  // 411/439).
+  const P2_ENDS = {
+    'pre-cure': 'inferable === 0);',
+    cured: 'p2rendered + p2threw === GRID.length);',
+  };
+  const sliceP2 = (src) => {
+    const hits = Object.entries(P2_ENDS)
+      .map(([spelling, end]) => ({ spelling, end, blk: sliceBlock(src, P2_START, end) }))
+      .filter((h) => h.blk !== null);
+    return hits.length === 1 ? hits[0] : { spelling: `AMBIGUOUS(${hits.length})`, blk: null };
+  };
+
+  const PRECURE_SRC = git('show', `${PRECURE_REV}:${GRADER_REL}`);
+  const p2old = sliceP2(PRECURE_SRC);
+  const p2new = sliceP2(GRADER_SRC);
+  const g6 = sliceBlock(GRADER_SRC, G6_START, G6_END);
+
+  // ── the two keys, both read off the CODE of the block ────────────────────────────────────────
+  const BARE = /catch\s*(?:\([^)]*\))?\s*\{\s*continue;?\s*\}/g;
+  const COUNTER = /catch\s*\([^)]*\)\s*\{[^}]*?(\w+)\s*\+=\s*1/;
+  const wordRx = (v) => new RegExp(`\\b${v}\\b`);
+  const bareSites = (code) => [...code.matchAll(BARE)].length;
+  // Does the block close its population against the grid size, over the counter its OWN catch
+  // increments? Spelling-independent by construction: direct sum, or through one assignment.
+  // `KLATCH_R443_G4KEY=1` swaps the property resolver back for the TEXT PIN this round replaced
+  // (`/sum === GRID\.length/` — his P2 spelling). It is the vacuity grade for the exact conjunct
+  // that changed: under it, R3 (his G6, which closes the same population in the INDIRECT spelling)
+  // must flip to `closes=false` and this leg must go RED. A key whose replacement changes nothing
+  // was not load-bearing (414 — take the key as a parameter and grade it against a crippled copy).
+  const OLD_TEXT_PIN = (code) => ({
+    closes: /sum === GRID\.length/.test(code), how: 'CRIPPLED: old text pin /sum === GRID\\.length/',
+  });
+  const closesPopulation = process.env.KLATCH_R443_G4KEY !== undefined ? OLD_TEXT_PIN : (code) => {
+    const cm = COUNTER.exec(code);
+    if (cm === null) return { closes: false, how: 'no thrower counter' };
+    const v = cm[1];
+    const sites = [...code.matchAll(/===\s*GRID\.length/g)];
+    if (sites.length === 0) return { closes: false, how: `counter \`${v}\`, no \`=== GRID.length\`` };
+    for (const s of sites) {
+      const before = code.slice(0, s.index);
+      const lhs = before.slice(before.search(/[^;]*$/)).split(/&&|\|\||\(|=(?!=)/).pop().trim();
+      if (wordRx(v).test(lhs)) return { closes: true, how: `direct: \`${lhs} === GRID.length\`` };
+      if (/^[\w$]+$/.test(lhs)) {
+        const asg = new RegExp(`\\b${lhs}\\s*=\\s*([^;]*)`).exec(code);
+        if (asg !== null && wordRx(v).test(asg[1])) {
+          return { closes: true, how: `indirect: \`${lhs} = ${asg[1].trim()}\` === GRID.length` };
+        }
+      }
+    }
+    return { closes: false, how: `counter \`${v}\`, no closing sum` };
+  };
+  const keyOf = (raw) => {
+    const code = stripSource(raw, true);
+    const bare = bareSites(code) > 0;
+    const cp = closesPopulation(code);
+    return {
+      bare, closes: cp.closes, how: cp.how, lenPreserved: code.length === raw.length,
+      healthy: bare === false && cp.closes === true,
+      printsGridLengthDenominator: raw.includes('of ${GRID.length}'),
+    };
+  };
+
+  if (p2old.blk === null || p2new.blk === null || g6 === null) {
+    leg('G4', 'HIS P2 CLOSES ITS POPULATION OVER THROWERS', 'REFUSED — a block boundary did not '
+      + `slice: P2@${PRECURE_REV} ${p2old.spelling}, P2@${SHORT} ${p2new.spelling}, `
+      + `G6 ${g6 === null ? 'absent' : 'ok'}`, null);
   } else {
-    const UNCOUNTED_CATCH = '} catch { continue; }';
-    const key = (blk) => ({
-      uncountedCatch: blk.includes(UNCOUNTED_CATCH),
-      sumAssertedAgainstGrid: /sum === GRID\.length/.test(blk),
-      printsGridLengthDenominator: blk.includes('of ${GRID.length}'),
+    // ── mutants, anchors asserted to occur exactly once ───────────────────────────────────────
+    const M1_ANCHOR = ' && p2rendered + p2threw === GRID.length';
+    const M2_ANCHOR = '  const sum = tp + tn + fp + fn + threw;';
+    const m1n = p2new.blk.split(M1_ANCHOR).length - 1;
+    const m2n = g6.split(M2_ANCHOR).length - 1;
+    const m1 = p2new.blk.split(M1_ANCHOR).join('');
+    const m2 = g6.split(M2_ANCHOR).join(`  try { extra(); } catch { continue; }\n${M2_ANCHOR}`);
+    const anchorsOnce = m1n === 1 && m2n === 1;
+
+    // ── the blinder, graded BOTH WAYS on real source ──────────────────────────────────────────
+    // His G6 block carries the spelling twice in prose (a `//` comment and a leg STRING) and zero
+    // times in code: raw 2 → blind 0. His pre-cure P2 block carries it once, in LIVE CODE: raw
+    // 1 → blind 1. A blinder that blanked too much fails the second; one that blanked too little
+    // fails the first.
+    const g6Raw = bareSites(g6); const g6Blind = bareSites(stripSource(g6, true));
+    const p2oRaw = bareSites(p2old.blk); const p2oBlind = bareSites(stripSource(p2old.blk, true));
+    const blinderGradesBothWays = g6Raw === 2 && g6Blind === 0 && p2oRaw === 1 && p2oBlind === 1;
+
+    // ── expectations DECLARED before the run (382/383/386) ────────────────────────────────────
+    const MATRIX = [
+      ['R1  his P2 @ ' + PRECURE_REV + ' (pre-cure)', p2old.blk, { bare: true, closes: false }],
+      ['R2  his P2 @ ' + SHORT + ' (THE SUBJECT)', p2new.blk, { bare: false, closes: true }],
+      ['R3  his G6 @ ' + SHORT + ' (other spelling)', g6, { bare: false, closes: true }],
+      ['R4  R2 minus its closing sum', m1, { bare: false, closes: false }],
+      ['R5  his G6 + a 2nd bare catch', m2, { bare: true, closes: true }],
+    ];
+    const rows = MATRIX.map(([name, raw, exp]) => {
+      const k = keyOf(raw);
+      return { name, k, exp, agrees: k.bare === exp.bare && k.closes === exp.closes };
     });
-    const kp2 = key(p2); const kg6 = key(g6);
-    // The detector has to be shown to answer BOTH ways before its answer about P2 means anything,
-    // and neither grading row may be the subject itself. The negative row is his CURED G6 block,
-    // from real source; the positive row is a known positive carried in the real call shape
-    // (355/364), not an analogy.
-    const KP_UNCOUNTED = '    let line;\n    try { line = V.renderVerdict(c); } catch { continue; }\n';
-    const detectorGradesBothWays = key(KP_UNCOUNTED).uncountedCatch === true
-      && kg6.uncountedCatch === false && kg6.sumAssertedAgainstGrid === true;
-    // The leg asserts the HEALTHY state — P2 counts every case and asserts its sum — so it
-    // reddens on the live defect and goes green on his cure rather than on its absence.
-    const ok = detectorGradesBothWays
-      && kp2.uncountedCatch === false && kp2.sumAssertedAgainstGrid === true;
-    leg('G4', 'HIS P2 ENUMERATES ONLY THE CASES THAT DID NOT THROW, AND PRINTS THE GRID SIZE AS '
-      + 'ITS DENOMINATOR — the defect he found and cured in `G6` this round, one leg over, in the '
-      + 'prediction that carries his §2 headline ("0 of 36 — not rare, absent"). Graded as a 2 × 2 '
-      + 'against his CURED G6 block, so a detector that answered the same for both would fail on '
-      + 'the G6 row',
-      `P2 block ${p2.length}B: uncounted catch ${kp2.uncountedCatch} · sum asserted `
-      + `${kp2.sumAssertedAgainstGrid} · prints \`of \${GRID.length}\` `
-      + `${kp2.printsGridLengthDenominator}\n`
-      + `        G6 block ${g6.length}B (his cure, the NEGATIVE row): uncounted catch `
-      + `${kg6.uncountedCatch} · sum asserted ${kg6.sumAssertedAgainstGrid}\n`
-      + `        known positive in the real call shape: uncounted catch `
-      + `${key(KP_UNCOUNTED).uncountedCatch} · detector grades both ways: `
-      + `${detectorGradesBothWays}`, ok);
+    const disagreed = rows.filter((r) => !r.agrees).map((r) => r.name.slice(0, 2));
+    const lenAllPreserved = rows.every((r) => r.k.lenPreserved);
+    const subject = rows[1];
+
+    // The leg asserts the HEALTHY state of the SUBJECT — his P2 has no uncounted throw site and
+    // closes its population — so it goes green on his cure rather than on the old spelling's
+    // absence, and it reddens if the cure is reverted or weakened.
+    const ok = blinderGradesBothWays && anchorsOnce && lenAllPreserved
+      && disagreed.length === 0 && subject.k.healthy === true;
+
+    leg('G4', 'HIS P2 CLOSES ITS POPULATION OVER THROWERS — re-keyed at the CURED spelling after '
+      + 'Round 445 left this REFUSED, because his Round 444 cure rewrote the conjunct the old '
+      + 'slicer used as its END token (0 occurrences at HEAD). Separates "the block moved" from '
+      + '"the defect is gone": a 5-row matrix over both spellings and both subjects, all four '
+      + '(bare, closes) pairs occupied, every expectation declared before the run. Re-aiming the '
+      + 'slicer alone would NOT have been enough: the old `/sum === GRID.length/` key was a TEXT '
+      + 'PIN on his G6 spelling, and it answers false for the cured P2, so this leg would have '
+      + 'gone RED against a correctly cured subject — see the `KLATCH_R443_G4KEY` drive, where '
+      + 'exactly one row disagrees and it is R2. And comment-blindness alone scored G6 '
+      + '`bare=true` off his own leg PROSE quoting the spelling he retired (371/383)',
+      `blinder graded both ways: ${blinderGradesBothWays} — his G6 block raw ${g6Raw} → `
+      + `code-blind ${g6Blind} (a \`//\` comment and a leg STRING, 0 in code); his pre-cure P2 `
+      + `block raw ${p2oRaw} → code-blind ${p2oBlind} (LIVE CODE, must survive)\n`
+      + `        reader: scripts/lib/strip-source.mjs \`stripSource(src, true)\` · `
+      + `length-preserving on all 5 rows: ${lenAllPreserved}\n`
+      + `        mutation anchors occur exactly once: M1 ${m1n}× · M2 ${m2n}× → ${anchorsOnce}\n`
+      + rows.map((r) => `        ${r.name.padEnd(34)} bare=${String(r.k.bare).padEnd(5)} `
+        + `closes=${String(r.k.closes).padEnd(5)} healthy=${String(r.k.healthy).padEnd(5)} `
+        + `${r.agrees ? '= declared' : `≠ DECLARED (${r.exp.bare},${r.exp.closes})`}\n`
+        + `        ${' '.repeat(34)}   how: ${r.k.how}`).join('\n') + '\n'
+      + `        rows agreeing with their declaration: ${rows.length - disagreed.length} of `
+      + `${rows.length} ${JSON.stringify(disagreed)}\n`
+      + `        REPORTED, never a conjunct — prints \`of \${GRID.length}\`: pre-cure `
+      + `${rows[0].k.printsGridLengthDenominator} · cured `
+      + `${subject.k.printsGridLengthDenominator} (true at BOTH revs, so it cannot separate)`, ok);
   }
 }
 
@@ -585,6 +772,40 @@ const g8 = () => {
 };
 
 // ═════════════════════════════════════════════════════════════════════════════════════════════════
+// G9 — EVERY CRIPPLE THIS RUN REPORTS IS ONE A HOOK ACTUALLY IMPLEMENTS.
+//
+// The header used to name three cripples that no hook read, so a run announcing itself crippled was
+// byte-identical to a clean one in every leg. This leg makes that unrepresentable: if a
+// `KLATCH_R443_*` var is set that nothing implements, it reddens by name rather than printing it as
+// active. Graded both ways — the registry must be non-empty (a registry of nothing would make this
+// leg green by having no cripples to get wrong) and each implemented name must occur more than once
+// in this file's own source, i.e. somewhere other than the registry line that declares it.
+// ═════════════════════════════════════════════════════════════════════════════════════════════════
+{
+  const SELF = readFileSync(fileURLToPath(import.meta.url), 'utf8');
+  const occurrences = (name) => SELF.split(name).length - 1;
+  const wired = IMPLEMENTED.map((n) => ({ name: n, sites: occurrences(n) }));
+  const unwired = wired.filter((w) => w.sites < 2).map((w) => w.name);
+  const deadStillClaimed = NEVER_IMPLEMENTED.filter((n) => IMPLEMENTED.includes(n));
+  const ok = IMPLEMENTED.length > 0 && unwired.length === 0 && INERT.length === 0
+    && deadStillClaimed.length === 0;
+  leg('G9', 'EVERY CRIPPLE THIS RUN REPORTS IS ONE A HOOK ACTUALLY IMPLEMENTS — the registry used '
+    + 'to name three (`IDOK`, `NOCATCH`, `GATEKEY`) that nothing read, each occurring exactly once '
+    + 'in the file, at the declaration itself. Setting one printed `crippled: …` over a run whose '
+    + 'every leg verdict was byte-identical to the clean one, so a recording filed as a crippled '
+    + 'control was not one (356). A requested var that no hook implements is now named as INERT and '
+    + 'reddens this leg instead of being reported as active',
+    `implemented ${IMPLEMENTED.length} ${JSON.stringify(wired.map((w) => `${w.name}×${w.sites}`))} `
+    + `(each must occur >1× — i.e. somewhere other than its own declaration) · not wired `
+    + `${unwired.length} ${JSON.stringify(unwired)}\n`
+    + `        requested this run: ${REQUESTED.length} ${JSON.stringify(REQUESTED)} · of which `
+    + `ACTIVE ${CRIPPLED.length} ${JSON.stringify(CRIPPLED)} · INERT ${INERT.length} `
+    + `${JSON.stringify(INERT)}\n`
+    + `        kept visible as never-implemented: ${JSON.stringify(NEVER_IMPLEMENTED)} · still `
+    + `claimed as implemented: ${deadStillClaimed.length} ${JSON.stringify(deadStillClaimed)}`, ok);
+}
+
+// ═════════════════════════════════════════════════════════════════════════════════════════════════
 // PREDICTIONS
 // ═════════════════════════════════════════════════════════════════════════════════════════════════
 {
@@ -633,7 +854,8 @@ g8();
 
 const out = [];
 out.push(`SUBJECTS: ${SUBJECT_REL} · ${GRADER_REL}`);
-out.push(`REV: ${SHORT}   depth: ${DEPTH}   crippled: ${CRIPPLED.length ? CRIPPLED.join(',') : 'none'}`);
+out.push(`REV: ${SHORT}   depth: ${DEPTH}   crippled: ${CRIPPLED.length ? CRIPPLED.join(',') : 'none'}`
+  + (INERT.length ? `   INERT (requested, no hook implements): ${INERT.join(',')}` : ''));
 out.push('');
 for (const l of legs) {
   out.push(` ${l.ok === true ? 'ok ' : l.ok === false ? 'RED' : 'REF'} ${l.id}  ${l.what}`);
