@@ -3254,7 +3254,42 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-10-23 ~07:17 PT (START fire). **Status:** available.
+- **Updated:** 2026-10-23 ~19:17 PT (STOP fire). **Status:** available.
+- **10/23 fire (STOP) — no-op on product; Round 440→444 chain read, nothing owed to this seat.**
+  Drain against own 07:17 START checkpoint (`7e29c14e`): 27 new commits, none mine, none touching
+  `packages/` or `scripts/` (`git diff --stat` confirmed empty) — the Round 440→444 research-track
+  chain (Daedalus's shared verdict emitter in `docs/research/lib/verdict.mjs`, Theseus's Round
+  441/443 replies finding his own instrument blind to migrated/wrapped recordings, Daedalus's
+  Round 444 cures landing against all three of Theseus's routed findings) plus Argus's/Calliope's
+  own no-op checkpoints and one Pard mail delivery. Six new mail files, all cc this seat only on
+  that thread (two already closed to `docs/mail/read/` by their own closers) — standing "needs
+  xian" lines checked directly, same two restated items as every prior fire (the `round436`
+  trailers, the Round 418 §4 MAXT blocker), nothing new; a seventh new file (Janus→Theseus) does
+  not cc this seat. All four cross-repo mailboxes re-checked (`find -newer` against this morning's
+  log, then content-grepped for `klatch|\biris\b`): designinproduct 7 new files/1 incidental hit
+  (token-helper memo listing Klatch as an org repo, infra-only); mediajunkie 11 new files/3
+  incidental hits (seat-count/SSH-key memos listing "Klatch"/"Iris" as fleet-roster entries,
+  infra-only); piper-morgan-product 1021 new files (unrelated internal review thread); dispatch 0
+  new files — nothing owed across any of the five. Cross-pollination brief unchanged since this
+  morning (private source, pointer-only as expected). Both standing blockers re-checked fresh: day
+  count **75** (unchanged, same calendar day); `entityGuess` still **6 files/20** (re-grepped
+  directly, same split). **Verified, not trusted:** `npm run typecheck` clean ×4 workspaces; `npm
+  test -w packages/server` — **140 files · 2183 passed · 1 skipped (2184)**; `npm test -w
+  packages/client` — **26 passed|13 skipped (39) · 333 passed|13 skipped (346)** — both exact
+  matches to this morning's checkpoint; `sweep-probes --census` — **153 probe files, 43
+  swept/110 deferred** unchanged; full driving sweep (`:3001` clear before/after, `HEAD` unchanged
+  at `ad21b38c` before/after, tree clean throughout apart from gitignored `.scratch/`, backgrounded
+  and picked up via completion notification rather than polled) — **SWEEP PASSED — 43 of 43 swept
+  probes green, 0 red, 0 blocked, 0 census problem(s), 110 deferred**. No `packages/` changes this
+  fire. No port bound at close, no database opened, no model called. One self-correction logged (a
+  `ScheduleWakeup` call for background-wait, same named reflex already logged this morning in this
+  same day's log and on multiple prior days — this time it fired a second time today before being
+  caught and stopped, no functional effect, flagged explicitly as a same-day recurrence). Two
+  consecutive checks found nothing further unblocked — fire closed bounded. Nothing new needs xian
+  beyond the one standing item (ground-rules question, now at 75 days, unmoved today). **Drain:**
+  all unblocked items done (commits, mail across all five mailboxes, brief, both blockers, full
+  gate); nothing deferred. Log: `docs/logs/2026-10-23-0717-iris-log.md`.
+- **Prior update:** 2026-10-23 ~07:17 PT (START fire). **Status:** available.
 - **10/23 fire (START) — no-op on product; Round 439 thread read, nothing owed to this seat.**
   Drain against own 10/22 STOP checkpoint (`ed72a5cc`): 8 new commits, none mine, none touching
   `packages/` or `scripts/` (`git diff --stat` confirmed empty) — the Round 439 chain (Theseus
