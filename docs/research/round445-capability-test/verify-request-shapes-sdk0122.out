@@ -1,0 +1,108 @@
+--- satisfiesCaret, both directions -------------------------------------
+  ok    pin=^0.122.0   ver=0.122.0  want=true  got=true   exact pin
+  ok    pin=^0.122.0   ver=0.122.3  want=true  got=true   patch above pin, same minor
+  ok    pin=^0.122.0   ver=0.123.0  want=false got=false  0.x caret pins the MINOR — 0.123 is out
+  ok    pin=^0.122.0   ver=0.121.9  want=false got=false  below pin
+  ok    pin=^0.122.0   ver=0.110.0  want=false got=false  this worktree, the real mismatch that prompted the guard
+  ok    pin=^0.122.0   ver=1.0.0    want=false got=false  major bump
+  ok    pin=^1.2.0     ver=1.9.0    want=true  got=true   non-zero major: caret allows minor growth
+  ok    pin=^1.2.0     ver=2.0.0    want=false got=false  non-zero major: caret stops at the major
+  ok    pin=~0.122.0   ver=0.122.0  want=null  got=null   unmodelled range form must say CANNOT-JUDGE, not pass
+  ok    pin=null       ver=0.122.0  want=null  got=null   unreadable pin must say CANNOT-JUDGE, not pass
+  ok    pin=^0.122.0   ver=null     want=null  got=null   unresolvable version must say CANNOT-JUDGE, not pass
+  => 11/11 legs pass (3 true / 5 false / 3 cannot-judge — all three answers exercised)
+
+--- request shapes against the live API, invalid key, sdk 0.122.0 ---
+  ok    CELL01-COMPACTION    status=401   type=authentication_error
+  ok    CELL03-CANCEL        status=401   type=authentication_error
+  ok    CELL04-TOOLUSE       status=401   type=authentication_error
+  ok    CELL05-HAIKU         status=401   type=authentication_error
+  ok    CELL00-MODELSLIST    status=401   type=authentication_error
+
+--- section 2: probe request vs packages/server/src/claude/client.ts ------
+  ok      instructions byte-identical the probe's instructions string occurs 1x in client.ts (want exactly 1), 140 chars
+  ok      betas id present           'compact-2026-01-12' occurs 1x in client.ts
+  ok      edit type present          'compact_20260112' occurs 1x in client.ts
+  ok      source trigger literal     client.ts says 160000; the probe deliberately uses 2000 (declared divergence)
+  ok      max_tokens matches         client.ts first max_tokens=16384, probe=16384
+  ok      CONTROL: mutated string    a one-word mutation of the instructions string occurs 0x (want 0)
+  => 6/6 source legs pass, 0 fail, 0 refused
+
+--------------------------------------------------------------------------
+SHAPES/1 ALL-WELL-FORMED caret_legs=11 caret_fail=0 shapes=5 shape_401=5 shape_fail=0 failed=[] src_legs=6 src_fail=0 src_refused=0 sdk=0.122.0
+--------------------------------------------------------------------------
+
+{
+  "sdkVersion": "0.122.0",
+  "caretFails": 0,
+  "results": [
+    {
+      "name": "CELL00-MODELSLIST",
+      "status": 401,
+      "type": "authentication_error",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "CELL01-COMPACTION",
+      "status": 401,
+      "type": "authentication_error",
+      "ok": true,
+      "detail": "401 {\"type\":\"error\",\"error\":{\"type\":\"authentication_error\",\"message\":\"invalid x-api-key\"},\"request_id\":\"req_011CgLJuF5vr9zXDRj2iyeU6\"}"
+    },
+    {
+      "name": "CELL03-CANCEL",
+      "status": 401,
+      "type": "authentication_error",
+      "ok": true,
+      "detail": "401 {\"type\":\"error\",\"error\":{\"type\":\"authentication_error\",\"message\":\"invalid x-api-key\"},\"request_id\":\"req_011CgLJuFah8RysNQYWdmn3Q\"}"
+    },
+    {
+      "name": "CELL04-TOOLUSE",
+      "status": 401,
+      "type": "authentication_error",
+      "ok": true,
+      "detail": "401 {\"type\":\"error\",\"error\":{\"type\":\"authentication_error\",\"message\":\"invalid x-api-key\"},\"request_id\":\"req_011CgLJuG8SG1xZ73LAQXAbm\"}"
+    },
+    {
+      "name": "CELL05-HAIKU",
+      "status": 401,
+      "type": "authentication_error",
+      "ok": true,
+      "detail": "401 {\"type\":\"error\",\"error\":{\"type\":\"authentication_error\",\"message\":\"invalid x-api-key\"},\"request_id\":\"req_011CgLJuGaUF1Ydv5xz93Kno\"}"
+    }
+  ],
+  "srcLegs": [
+    {
+      "name": "instructions byte-identical",
+      "verdict": true,
+      "detail": "the probe's instructions string occurs 1x in client.ts (want exactly 1), 140 chars"
+    },
+    {
+      "name": "betas id present",
+      "verdict": true,
+      "detail": "'compact-2026-01-12' occurs 1x in client.ts"
+    },
+    {
+      "name": "edit type present",
+      "verdict": true,
+      "detail": "'compact_20260112' occurs 1x in client.ts"
+    },
+    {
+      "name": "source trigger literal",
+      "verdict": true,
+      "detail": "client.ts says 160000; the probe deliberately uses 2000 (declared divergence)"
+    },
+    {
+      "name": "max_tokens matches",
+      "verdict": true,
+      "detail": "client.ts first max_tokens=16384, probe=16384"
+    },
+    {
+      "name": "CONTROL: mutated string",
+      "verdict": true,
+      "detail": "a one-word mutation of the instructions string occurs 0x (want 0)"
+    }
+  ]
+}
+EXIT_CODE=0

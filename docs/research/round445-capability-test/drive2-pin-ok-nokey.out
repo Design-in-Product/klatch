@@ -1,0 +1,25 @@
+==============================================================================
+KLATCH CAPABILITY TEST — Round 445 probe
+==============================================================================
+started        2026-10-24T02:53:38.274Z
+node           v26.5.0
+probe file     /Users/xian/Development/klatch-worktrees/theseus/docs/research/round445-capability-test/klatch-capability-test.mjs
+repo rev       fc501bca
+sdk dir        /Users/xian/Development/klatch/node_modules/@anthropic-ai/sdk
+sdk version    0.122.0
+sdk pin        ^0.122.0   (packages/server/package.json)
+pin satisfied  true
+model          claude-opus-5
+haiku model    claude-haiku-5-5
+trigger        2000 input_tokens  (source literal is 160000; see header)
+history        49 messages, 15013 chars
+==============================================================================
+
+ABORT: ANTHROPIC_API_KEY is not set in this shell.
+       Export it first, then re-run. This probe never reads a .env file,
+       on purpose: the key should live in the shell for the sitting and be
+       unset afterwards.
+
+VERDICT/1 ABORT reason=no-key cells=0
+
+EXIT_CODE=2

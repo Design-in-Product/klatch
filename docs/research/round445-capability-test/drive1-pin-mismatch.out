@@ -1,0 +1,27 @@
+==============================================================================
+KLATCH CAPABILITY TEST — Round 445 probe
+==============================================================================
+started        2026-10-24T02:53:38.219Z
+node           v26.5.0
+probe file     /Users/xian/Development/klatch-worktrees/theseus/docs/research/round445-capability-test/klatch-capability-test.mjs
+repo rev       fc501bca
+sdk dir        /Users/xian/Development/klatch-worktrees/theseus/node_modules/@anthropic-ai/sdk
+sdk version    0.110.0
+sdk pin        ^0.122.0   (packages/server/package.json)
+pin satisfied  false
+model          claude-opus-5
+haiku model    claude-haiku-5-5
+trigger        2000 input_tokens  (source literal is 160000; see header)
+history        49 messages, 15013 chars
+==============================================================================
+
+ABORT: the resolved SDK (0.110.0) does not satisfy the repo's pin (^0.122.0).
+       Resolved from: /Users/xian/Development/klatch-worktrees/theseus/node_modules/@anthropic-ai/sdk
+       node_modules is gitignored and per-worktree, so a stale worktree will
+       happily record a baseline at the wrong version. Run `npm install` in
+       this tree, or point KLATCH_SDK_DIR at a tree installed at the pin.
+       To record a deliberate off-pin run anyway: KLATCH_ALLOW_SDK_MISMATCH=1
+
+VERDICT/1 ABORT reason=sdk-pin-mismatch installed=0.110.0 pin=^0.122.0 cells=0
+
+EXIT_CODE=2
