@@ -1,0 +1,112 @@
+  /**
+   * Run an instrument SOURCE against today's tree and return its top token. Written into THIS
+   * directory, which is the same depth as his own file, so a relative import inside it resolves
+   * (421 — a scratch copy at the wrong depth refuses every cell).
+   */
+  const tokenOf = (src, tag) => {
+    const p = join(HERE, `.scratch-${tag}.mjs`);
+    writeFileSync(p, src);
+    const read = (text) => {
+      const rv = readVerdict(text);
+      return rv.ok === true
+        ? { tok: topToken(rv.verdict.red, rv.verdict.refused), why: null }
+        : { tok: null, why: rv.refusal };
+    };
+    try {
+      return read(execFileSync('node', [p], {
+        encoding: 'utf8', cwd: REPO, maxBuffer: 1 << 28, stdio: ['ignore', 'pipe', 'pipe'],
+        env: { ...process.env, KLATCH_R448_DEPTH: String(DEPTH + 1) },
+      }));
+    } catch (e) {
+      // His instrument exits 0 even when a leg reddens, so a throw here means it failed to RUN.
+      // Its stdout is still read, because a run that printed a verdict and then died has one.
+      const r = read(String(e.stdout ?? ''));
+      return r.tok !== null ? r : { tok: null, why: `DID NOT RUN: ${String(e.message).slice(0, 60)}` };
+    } finally { rmSync(p, { force: true }); }
+  };
+
+  // THE 2 × 2, both ends DRIVEN against today's tree — no recording archaeology. Drive 3 is why:
+  // I tried to read "his gate when the sentence was written" out of a committed recording of MY
+  // OWN instrument, named the wrong file (a Round 444 drive, which carries no such line), and the
+  // reader returned null — which then made the seam conjunct `pinTok !== hisTopToken` TRUE BY
+  // SENTINEL, green on an unreadable pin (433 — a sentinel fallback makes a comparison green
+  // forever). Both ends are instrument runs now, and both are required non-null before comparison.
+  const hisHeadSrc = readFileSync(join(REPO, HIS_REL), 'utf8');
+  const hisPreSrc = git('show', `${HIS_PRE_G4_REV}:${HIS_REL}`);
+  const atPin = tokenOf(hisPreSrc, 'his-pre-g4');
+  const atHead = tokenOf(hisHeadSrc, 'his-head');
+
+  // His pre-`G4` blob asserted by PROPERTY, not by its hash (445): it must carry the end token my
+  // own §4 cure rewrote — the reason his slicer could not reach its figure — and HEAD must not.
+  const OLD_END_TOKEN = 'inferable === 0);';
+  const pinHasOldKey = hisPreSrc.includes(OLD_END_TOKEN);
+  const headHasOldKey = hisHeadSrc.includes(OLD_END_TOKEN);
+
+  /**
+   * A leg description is a `+`-concatenation of string literals, so a claim that spans a line
+   * break does not occur contiguously in the file. Collapsing the seams keys each needle on the
+   * SENTENCE AS PUBLISHED rather than on where the author happened to break the line — drive 3's
+   * `H1-desc` needle read 0× at BOTH revs for exactly this reason, and a needle re-chosen to fit
+   * the line breaks would have keyed this leg on bytes instead of on the claim (445/446).
+   */
+  const collapseSeams = (src) => src.replace(/'\s*\n\s*\+\s*'/g, '');
+  const pinSrc = collapseSeams(whenWritten);
+  const headSrc = collapseSeams(MINE_NOW_SRC);
+
+  // The collapser graded both ways, because one that mangled the text would read every needle 0×
+  // and this leg would go green on a destroyed reader rather than on a cured sentence.
+  const collapseMoved = pinSrc !== whenWritten && headSrc !== MINE_NOW_SRC;
+  const CONTROL_NEEDLE = 'MY `P1` PREDICATE CANNOT TELL A REFUSED LEG FROM A RED ONE';
+  const controlSurvives = whenWritten.includes(CONTROL_NEEDLE) && pinSrc.includes(CONTROL_NEEDLE);
+
+  // The two sentences, each keyed on the CLAIM it makes about the live tree and paired with the
+  // predicate that decides whether that claim is true of a given gate.
+  const SENTENCES = [
+    {
+      id: 'P1-desc',
+      needle: 'the answer is REFUSED for a SECOND, different reason',
+      claims: 'his gate is REFUSED against the live tree',
+      trueWhen: (tok) => tok === 'REFUSED',
+    },
+    {
+      id: 'H1-desc',
+      needle: 'the row it is wrong about is the one his repaired instrument actually produces',
+      claims: 'his live run occupies the REFUSED row',
+      trueWhen: (tok) => tok === 'REFUSED',
+    },
+  ];
+
+  const sent = SENTENCES.map((s) => {
+    const nPin = pinSrc.split(s.needle).length - 1;
+    const nHead = headSrc.split(s.needle).length - 1;
+    return { ...s, nPin, nHead, presentAtPin: nPin === 1, stillAtHead: nHead >= 1 };
+  });
+
+  const trueAtPin = atPin.tok === null ? null : sent.every((s) => s.trueWhen(atPin.tok));
+  const falseAtHead = atHead.tok === null ? null : sent.every((s) => !s.trueWhen(atHead.tok));
+  const bothStillLive = sent.every((s) => s.stillAtHead);
+  const seamMoved = atPin.tok !== null && atHead.tok !== null && atPin.tok !== atHead.tok;
+
+  const ok = sent.every((s) => s.presentAtPin) && bothStillLive
+    && collapseMoved && controlSurvives && pinHasOldKey && !headHasOldKey
+    && trueAtPin === true && falseAtHead === true && seamMoved;
+
+  leg('G4', 'TWO LEG DESCRIPTIONS IN MY ROUND 446 INSTRUMENT ASSERT A LIVE-TREE OUTCOME THAT IS '
+    + 'NOW FALSE. Both legs are green and both figures are right — they are keyed on PINS. The '
+    + 'sentences are keyed on the live tree and nothing gates them: `P1`\'s says his gate is '
+    + '"REFUSED for a SECOND, different reason", `H1`\'s says the REFUSED row "is the one his '
+    + 'repaired instrument actually produces". His Round 447 re-aim made both false and neither '
+    + 'moved. Graded as a 2 × 2 with BOTH ENDS DRIVEN — his pre-`G4` blob and his working tree, '
+    + 'each run against today\'s tree — so the cell cannot invert on its own promotion and an '
+    + 'unreadable end cannot satisfy the seam by sentinel. The needles are matched against a '
+    + 'SEAM-COLLAPSED reading of the source, so a claim spanning a `+` line break is still found',
+    `his pre-\`G4\` blob ${HIS_PRE_G4_REV} vs today's tree: ${atPin.tok ?? `UNREADABLE (${atPin.why})`} · `
+    + `his working tree vs the same tree: ${atHead.tok ?? `UNREADABLE (${atHead.why})`} · seam MOVED ${seamMoved} (true required)\n`
+    + `        blob by property, not hash: old end token \`${OLD_END_TOKEN}\` in the pin ${pinHasOldKey} (true required) · at HEAD ${headHasOldKey} (false required)\n`
+    + `        seam-collapsing reader: text MOVED ${collapseMoved} (true required) · CONTROL needle survives the collapse `
+    + `${controlSurvives} (true required — a reader that mangled the source would read every needle 0× and this leg green)\n`
+    + sent.map((s) => `        ${s.id.padEnd(8)} present at the pin ${s.nPin}× (1 required) · still at HEAD ${s.nHead}× `
+      + `(>= 1 required — this is the defect, not a pass) · claims: ${s.claims}`).join('\n')
+    + `\n        every sentence TRUE of the gate at the pin ${trueAtPin} (true required) · `
+    + `FALSE of the gate at HEAD ${falseAtHead} (true required)`,
+    ok);

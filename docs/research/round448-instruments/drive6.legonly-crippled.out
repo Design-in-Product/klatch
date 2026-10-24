@@ -1,0 +1,57 @@
+SUBJECTS: docs/research/round446-instruments/grade-my-own-oracle-predicate.mjs (my own Round 446 predicate) · docs/research/round443-instruments/grade-the-emitter-at-its-published-line.mjs (his oracle)
+REV: aba445f4   my pin: 16c0e797   his pre-G4-repair rev: 62e023ca   depth: 0
+CRIPPLED: KLATCH_R448_LEGONLY
+
+ ok  G1  THE CELL `P1` CANNOT SEE IS OCCUPIED BY REAL COMMITTED RECORDINGS, not by a constructed line. `topToken(red, refused)` is derived from the LEG lists and from nothing else, so a run whose legs are all green publishes token `ok` however its PREDICTION lists read. Population selected with `ls-tree -z` at this rev and read with the real `readVerdict`; this instrument's own directory is excluded and the exclusion is COUNTED, because a self-exclusion conjunct is vacuous until the directory is committed (434) — it read 0 in the pre-commit census and must read > 0 here
+        population 356 `.out` file(s) · self-excluded 2 (> 0 required) · readable verdict line 30
+        token `ok` with a DIRTY prediction list: 10 (> 0 required)
+        of those, with a genuinely REFUTED prediction: 2 (> 0 required) ["round444-instruments/drive3.refuted-on-a-head-sourced-baseline.out","round444-instruments/drive4.baseline-reader-crossed-a-newline.out"]
+        with an OPEN prediction and nothing refuted: 8 (> 0 required)
+        the other cells, for contrast: ok-clean 7 · REFUSED 4 · RED 9
+RED  G2  THE RETIRED LEG-ONLY PREDICATE AND THE FOUR-LIST CURE, over six real committed recordings, one per cell. Each row is SELECTED BY THE CELL'S OWN PREDICATE out of the census above, not typed as a filename — drive 3 is why: I hand-picked a `prefused` row whose token was `REFUSED`, so it was not in the cell at all and this leg reddened on my declaration instead of on the cure (415). The retired predicate is sliced out of my own Round 446 source at its PIN and evaluated — not retyped, and not regex-matched — and both predicates are handed the same `readVerdict`, so they cannot differ because of their reader. Exactly the two declared cells must disagree, compared as a MEMBER LIST and not as a count (397)
+        retired predicate SLICED true (start 1× required)
+        pin 16c0e797 by property: leg-only scorer in the pin true (true required) · four-list cure in the pin false (false required)
+        every row present at this rev true · every selected cell non-empty true · control still REFUSES the reader true (true required)
+        retired predicate matches its declaration on every row true · cure matches on every row true
+        ok   preds-clean       legOnly=true    fourList=true    agree    · cell= 7 round442-instruments/drive1.out
+                                the cure must not move a genuinely green run
+        ok   REFUTED           legOnly=true    fourList=false   DISAGREE · cell= 2 round444-instruments/drive3.refuted-on-a-head-sourced-baseline.out
+                                THE DEFECT — his prediction about my tree failed, token is `ok`
+        ok   prefused          legOnly=true    fourList=null    DISAGREE · cell= 8 round444-instruments/drive2.out
+                                THE DEFECT, refusing arm — his prediction is OPEN, token is `ok`
+        REFUSED                legOnly=null    fourList=null    agree    · cell= 4 round443-instruments/drive6-r445-anchor-guard-repaired.out
+                                the Round 446 cure must survive — a leg could not reach its figure
+        RED                    legOnly=false   fourList=false   agree    · cell= 9 round442-instruments/drive2.out
+                                a leg GRADED the tree badly
+        no verdict (control)   legOnly=null    fourList=null    agree    · named  round444-instruments/his-r443-instrument-dies-at-this-rev.out
+                                CONTROL — unreadable output must refuse under both (436)
+        disagreeing cells: ["ok   REFUTED","ok   prefused"]
+        declared:          ["ok   REFUTED","ok   prefused"] — same members
+ ok  G3  THE CURE BELONGS IN THE SCORER, NOT IN `topToken` — driven, not asserted. A prediction-aware `topToken` (plus the reader passing all four lists) makes `readVerdict` REFUSE every blind-cell recording as `TOKEN_LIST_CONTRADICTION`, because the reader checks the token is derivable from its own lists — a property worth keeping, and the reason the lib is left alone. Run against a SCRATCH import of the lib source; the real file is never edited (`G6` checks that). The clean-prediction row is the CONTROL: a mutant that refused everything would make the figure above meaningless
+        mutation target occurs 1× (1 required) · text MOVED true (true required) · reader call site 1× (1 required)
+        blind-cell rows refused by the PRED-AWARE mutant: 2/2 (all required)
+        the same rows accepted by the REAL lib:           2/2 (all required)
+        CONTROL — clean-prediction row survives the mutant: true (true required; a mutant that refuses every row cannot separate)
+ ok  G4  TWO LEG DESCRIPTIONS IN MY ROUND 446 INSTRUMENT STATED A LIVE-TREE OUTCOME THAT HIS ROUND 447 RE-AIM MADE FALSE, AND BOTH ARE NOW PINNED. Both legs were green and both figures were right — they are keyed on PINS. The SENTENCES were keyed on the live tree and nothing gated them: `P1`'s said his gate is "REFUSED for a SECOND, different reason", `H1`'s said the REFUSED row "is the one his repaired instrument actually produces". What is gated here is the property worth keeping — NO sentence states as live a gate claim that is false of today's gate — with the PRE-CURE PIN as the known positive, so the leg goes green ON THE CURE rather than reddening on it. Both ends of the 2 × 2 are DRIVEN (his pre-`G4` blob and his working tree, each run against today's tree), both are required non-null before the seam is compared, and the needles are matched against a SEAM-COLLAPSED reading of the source so a claim spanning a `+` line break is still found
+        his pre-`G4` blob 62e023ca vs today's tree: REFUSED · his working tree vs the same tree: ok · seam MOVED true (true required)
+        blob by property, not hash — keyed on the REPAIR's own marker `KLATCH_R443_G4KEY`: in the pin 0× (0 required) · at HEAD 5× (> 1 required)
+        (drive 4 keyed this on the OLD end token being gone from his file; it is there 2×, because his crippled control swaps the old resolver back in on purpose — the defect's spelling cannot date the file)
+        source→published reader: text MOVED true (true required) · SEAM control true · ESCAPE control true (both required — the escape control carries an apostrophe, so it is absent from the raw source and present only after the escapes resolve; a reader that mangled the source, or one modelling seams alone, would read every needle 0× and this leg green)
+        P1-desc  UNQUALIFIED pin 1× → HEAD 0× (0 at HEAD required) · QUALIFIED pin 0× → HEAD 1× (>= 1 at HEAD required — pinned, not deleted) · claims: his gate is REFUSED against the live tree
+        H1-desc  UNQUALIFIED pin 1× → HEAD 0× (0 at HEAD required) · QUALIFIED pin 0× → HEAD 1× (>= 1 at HEAD required — pinned, not deleted) · claims: his live run occupies the REFUSED row
+        stated as LIVE and false of today's gate: at the pin 2/2 (all required — the KNOWN POSITIVE) · at HEAD 0/2 (0 required — the CURE)
+        every sentence TRUE of the gate at the pin true (true required) · FALSE of the gate at HEAD true (true required) · still SAID at HEAD, qualified: 2/2
+ ok  G5  EVERY DECLARED CRIPPLE IS READ BY A HOOK, and any requested `KLATCH_R448_*` that no hook implements reddens this leg and is named INERT rather than reported active. The property is that an implemented name occurs MORE THAN ONCE in this file — at its declaration and at least one read — which is exactly what three dead names in his Round 443 instrument failed
+        occurrences in this file (> 1 each required): {"KLATCH_R448_LEGONLY":5,"KLATCH_R448_BLINDPIN":5}
+        requested this run: ["KLATCH_R448_LEGONLY"] · INERT (requested, nothing implements): [] (empty required)
+        active: ["KLATCH_R448_LEGONLY"]
+ ok  G6  THIS DRIVE REWROTE NOTHING TRACKED AND LEFT NO SCRATCH FILE BEHIND. The `G3` counterfactual mutates the lib as a SOURCE STRING imported from a scratch path, so the real `verdict.mjs` is byte-identical at exit — checked here rather than intended
+        tracked MODIFIED on entry (not this drive's): 1 ["docs/research/round446-instruments/grade-my-own-oracle-predicate.mjs"] · newly MODIFIED by this drive: 0 []
+        watched files byte-identical at exit: true [] · scratch files left: 0 []
+
+LANDED   P1  ROUND 444 `P1` — "the cure holds under HIS gate, not just under mine" — SCORED, and the two-round deferral closes. Round 444 deferred it on his `G3` anchor-presence guard; Round 446 found my own predicate could not tell his REFUSED leg from a RED one and left it refused a second time, on `G4` being unable to reach its figure. His Round 447 re-aim (`e2d70405`) lifted that. Scored here on ALL FOUR lists: every leg of his is green and both his prediction lists are empty. On this row the retired predicate agrees — the cure is not load-bearing here, and `G1`/`G2` carry the defect off pinned recordings instead
+        his live verdict: ok legs=9 red=[] refused=[] preds=2 refuted=[] prefused=[]
+        FOUR-LIST predicate → LANDED — RETIRED PREDICATE — his gate is green: red=[] refused=[]
+        (cripple active: the CURE would say LANDED — all four lists empty: legs=9 preds=2)
+
+VERDICT/1 RED legs=6 red=[G2] refused=[] preds=1 refuted=[] prefused=[]

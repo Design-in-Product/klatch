@@ -203,7 +203,10 @@ const rowText = (rel) => { try { return git('show', `${REV}:${rel}`); } catch (e
     : (allWanted && disagreeing.length === 1 && disagreeing[0].bucket === 'REFUSED');
 
   leg('H1', 'MY `P1` PREDICATE CANNOT TELL A REFUSED LEG FROM A RED ONE, and the row it is wrong '
-    + 'about is the one his repaired instrument actually produces. The predicate is `/^GATE: true/` '
+    + 'about is the one his instrument produced AT THIS INSTRUMENT\'S OWN REV, 16c0e797 — his '
+    + 'Round 447 re-aim (e2d70405) took his gate green, so that sentence is pinned rather than '
+    + 'live, and the matrix below is read off PINNED recordings and is unaffected either way. '
+    + 'The predicate is `/^GATE: true/` '
     + 'over the single line starting `GATE: `; his repaired run publishes `GATE: false … REFUSED: '
     + 'G4` with `red=[]`, so nothing graded badly and one leg could not reach its figure — and '
     + 'that scores identically to a run with four red legs. Four real committed recordings, one '
@@ -425,7 +428,9 @@ const rowText = (rel) => { try { return git('show', `${REV}:${rel}`); } catch (e
     })();
 
   pred('P1', 'ROUND 444 `P1`, RE-SCORED UNDER THE REPAIRED PREDICATE — the deferral is taken, and '
-    + 'the answer is REFUSED for a SECOND, different reason. Round 444 left this `prefused` with '
+    + 'the answer was REFUSED AT THIS INSTRUMENT\'S OWN REV, 16c0e797, for a SECOND, different '
+    + 'reason — superseded: Theseus\'s Round 447 (e2d70405) re-aimed his `G4` slicer, his gate '
+    + 'went green, and Round 448 scores this LANDED on all four lists. Round 444 left this `prefused` with '
     + 'one named blocker: his anchor-presence guard. `62e023ca` lifted it. Scored off the live run '
     + 'in `H3` with the `topToken` predicate, his gate is REFUSED, not RED — `G4` cannot reach its '
     + 'figure because my own §4 cure rewrote the block its slicer keys on, and `red=[]`. The old '
