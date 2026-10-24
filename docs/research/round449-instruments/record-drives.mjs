@@ -21,13 +21,22 @@ import { writeRecording, TrackedTargetError } from '../lib/verdict.mjs';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const SUBJECT = join(HERE, 'resolve-the-variable-write-targets.mjs');
 
+/**
+ * `drive7`–`drive12` were recorded by an EARLIER state of the instrument inside this same fire and
+ * are committed: `drive9` carries the dead FALLTHROUGH run that printed no verdict line, and
+ * `drive11` carries the TOKENONLY cripple going green, i.e. inert. They are the evidence for
+ * defect 5 and they stay. `writeRecording` refused to overwrite any of them on the second pass —
+ * the cure for the re-stamping class this round measures, firing on this round's own recorder,
+ * which is the only demonstration of it worth having. The final state is recorded below under its
+ * own names, so the chain is pre-fix → post-fix rather than one file silently re-stamped.
+ */
 const DRIVES = process.argv.slice(2).length > 0 ? null : [
-  ['drive7.clean.out', {}],
-  ['drive8.clean-again.out', {}], // the clean-vs-clean CONTROL: run-to-run noise cannot be
-  ['drive9.fallthrough-crippled.out', { KLATCH_R449_FALLTHROUGH: '1' }], // credited to a cripple
-  ['drive10.novar-crippled.out', { KLATCH_R449_NOVAR: '1' }],
-  ['drive11.tokenonly-crippled.out', { KLATCH_R449_TOKENONLY: '1' }],
-  ['drive12.inert-name.out', { KLATCH_R449_NOSUCHHOOK: '1' }],
+  ['drive15.final-clean.out', {}],
+  ['drive16.final-clean-again.out', {}], // the clean-vs-clean CONTROL
+  ['drive17.final-fallthrough-crippled.out', { KLATCH_R449_FALLTHROUGH: '1' }],
+  ['drive18.final-novar-crippled.out', { KLATCH_R449_NOVAR: '1' }],
+  ['drive19.final-tokenonly-crippled.out', { KLATCH_R449_TOKENONLY: '1' }],
+  ['drive20.final-inert-name.out', { KLATCH_R449_NOSUCHHOOK: '1' }],
 ];
 
 const run = (env) => {

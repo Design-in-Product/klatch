@@ -43,9 +43,15 @@ const CELLS = [
   {
     env: { KLATCH_R449_FALLTHROUGH: '1' },
     label: 'KLATCH_R449_FALLTHROUGH',
-    expect: ['W2'],
+    expect: ['W2', 'W6'],
     why: 'drop an UNMODELLED site instead of naming it — the bucket sum must stop matching the '
-      + 'independently recomputed blind token count',
+      + 'independently recomputed blind token count. DECLARED AS TWO after the first grading run '
+      + 'came back BAD with `W6` moving as well, which was right and my declaration was not: the '
+      + 'lib\'s own write site passes `abs`, a function PARAMETER, which is UNMODELLED — so under '
+      + 'this cripple the one site `W6` asserts the presence of is exactly one of the sites that '
+      + 'silently vanishes. That is the blindness this cripple simulates reaching a second leg, not '
+      + 'a leak, and the honest move is to declare the set rather than decouple the leg to make a '
+      + 'single-leg claim true',
   },
   {
     env: { KLATCH_R449_NOVAR: '1' },

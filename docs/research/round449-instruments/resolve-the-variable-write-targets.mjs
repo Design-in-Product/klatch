@@ -473,9 +473,18 @@ const trackedMembers = [...new Set(byBucket.get('TRACKED').map((s) => relative(R
     + `        TRACKED targets: ${size('TRACKED')} site(s) → ${trackedMembers.length} distinct path(s)\n`
     + trackedMembers.map((p) => `          ${p}`).join('\n')
     + `\n        UNMODELLED by form: ${JSON.stringify([...unmodelledWhy.entries()])}`,
-    // The leg grades the MEASUREMENT being takeable, not a direction: it requires the classifier to
-    // have produced a non-degenerate partition and the tracked members to be real repo paths.
-    sites.length > 0 && trackedMembers.every((p) => TRACKED_AT_REV.has(p)));
+    // The leg grades the MEASUREMENT being takeable, not a direction. The second conjunct used to
+    // be `trackedMembers.every((p) => TRACKED_AT_REV.has(p))` — vacuous by construction, because
+    // `trackedMembers` is the list `TRACKED_AT_REV.has(…)` SELECTED (417). A conjunct a filter makes
+    // true cannot be re-keyed red. Re-keyed on an INDEPENDENT oracle: every tracked target must be
+    // readable as a blob at the rev via `cat-file -e`, which is a different question asked of a
+    // different command than the set membership that chose the members.
+    sites.length > 0 && trackedMembers.length > 0 && trackedMembers.every((p) => {
+      try {
+        execFileSync('git', ['-C', REPO, 'cat-file', '-e', `${REV}:${p}`], { stdio: ['ignore', 'ignore', 'ignore'] });
+        return true;
+      } catch { return false; }
+    }));
 }
 
 // ═══ W4 — DIRECTION AGAINST THE OLD FIGURE, THE OLD REGEX SLICED FROM ITS PIN ════════════════════
@@ -778,7 +787,10 @@ leg('W7', 'THIS INSTRUMENT IS EXCLUDED FROM ITS OWN POPULATION, AND THE EXCLUSIO
   const ok = readable
     // The matrix must be SEPARATING: both the agreeing and the disagreeing cell occupied, or this
     // leg is a known positive with no control (424).
-    && agree448.length > 0 && disagree448.length >= 0
+    // SEPARATING: both cells occupied. This conjunct was `disagree448.length >= 0` — which is true
+    // of every possible value, i.e. dead code printed beside the figure it was supposed to guard
+    // (409). A matrix with an empty disagreeing cell is a known positive with no finding in it.
+    && agree448.length > 0 && disagree448.length > 0
     // The lib's own grammar must be unreadable to at least one of the two row readers, which is
     // the defect; and the lib must publish a leg's detail but not a prediction's, which is (a).
     && libBy448 === 0 && legDetailPublished && !predDetailPublished && predIdInVerdict;

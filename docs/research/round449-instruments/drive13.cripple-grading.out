@@ -1,0 +1,17 @@
+CONTROL  clean vs clean#2 verdict maps identical: true
+         clean: {"legs":10,"map":{},"token":"ok"}
+
+GOOD  KLATCH_R449_FALLTHROUGH
+        declared ["W2","W6"] · moved ["W2","W6"] · legs 10 → 10 · also-unmoved-from-clean []
+        why: drop an UNMODELLED site instead of naming it — the bucket sum must stop matching the independently recomputed blind token count. DECLARED AS TWO after the first grading run came back BAD with `W6` moving as well, which was right and my declaration was not: the lib's own write site passes `abs`, a function PARAMETER, which is UNMODELLED — so under this cripple the one site `W6` asserts the presence of is exactly one of the sites that silently vanishes. That is the blindness this cripple simulates reaching a second leg, not a leak, and the honest move is to declare the set rather than decouple the leg to make a single-leg claim true
+GOOD  KLATCH_R449_NOVAR
+        declared ["W1","W4"] · moved ["W1","W4"] · legs 10 → 10 · also-unmoved-from-clean []
+        why: disable identifier resolution — the KP row that resolves through a variable must fail, AND the old resolver's tracked set must stop being a subset of mine. Two legs, declared as two: a cripple that moves a SET is honest; claiming single-leg isolation it does not have is not
+GOOD  KLATCH_R449_TOKENONLY
+        declared ["W5"] · moved ["W5"] · legs 10 → 10 · also-unmoved-from-clean []
+        why: empty the other-write-token list — a census that scans no other mechanism cannot tell a narrow result from an unscanned one
+GOOD  an INERT name nothing implements
+        declared ["W9"] · moved ["W9"] · legs 10 → 10 · also-unmoved-from-clean []
+        why: W9 must redden by name rather than printing an unimplemented cripple as active
+
+ALL CRIPPLES MOVE EXACTLY THEIR DECLARED LEGS, WITH A CLEAN CONTROL: true
