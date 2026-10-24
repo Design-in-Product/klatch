@@ -1,0 +1,39 @@
+CENSUS of committed `.out` recordings under docs/ at REV 9d7c71be
+  selected with ls-tree -z: 356 `.out` file(s)
+  EXCLUDED (this instrument's own dir docs/research/round448-instruments/): 0
+  subject population: 356
+  carrying a verdict line readVerdict accepts: 30
+  refused by readVerdict: 326 {"NO_VERDICT_LINE":323,"MALFORMED_FIELDS":3}
+
+  cell occupancy (token re-derived from the lists):
+    RED × preds-dirty=false         3
+    RED × preds-dirty=true          6
+    REFUSED × preds-dirty=false     1
+    REFUSED × preds-dirty=true      3
+    ok × preds-dirty=false          7
+    ok × preds-dirty=true          10
+
+  THE CELL P1 CANNOT SEE — token `ok` with a non-empty prediction list:
+    members: 10
+      docs/research/round444-instruments/drive2.out
+        refuted=[] prefused=["P1","P2"]
+      docs/research/round444-instruments/drive3.refuted-on-a-head-sourced-baseline.out
+        refuted=["P2"] prefused=["P1"]
+      docs/research/round444-instruments/drive4.baseline-reader-crossed-a-newline.out
+        refuted=["P2"] prefused=["P1"]
+      docs/research/round444-instruments/drive5.final.out
+        refuted=[] prefused=["P1"]
+      docs/research/round446-instruments/drive2.child-stderr-leaked-into-the-recording.out
+        refuted=[] prefused=["P1"]
+      docs/research/round446-instruments/drive3.final.out
+        refuted=[] prefused=["P1"]
+      docs/research/round446-instruments/drive6.out
+        refuted=[] prefused=["P1"]
+      docs/research/round446-instruments/drive7.r444-cured-and-re-driven.out
+        refuted=[] prefused=["P1"]
+      docs/research/round446-instruments/drive8.postcommit.out
+        refuted=[] prefused=["P1"]
+      docs/research/round446-instruments/drive9.r444-postcommit.out
+        refuted=[] prefused=["P1"]
+
+SUM CHECK: 30 filed + 326 refused = 356, population 356 — OK
