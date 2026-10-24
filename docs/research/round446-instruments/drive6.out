@@ -1,0 +1,46 @@
+SUBJECTS: docs/research/round444-instruments/grade-the-round-trip-cure.mjs (the defective instrument) · docs/research/round443-instruments/grade-the-emitter-at-its-published-line.mjs
+REV: c3c6ec49   his pre-repair blob pinned at: 416c6268   pre-cure subject blob: 626ab6fe   depth: 0
+
+ ok  H1  MY `P1` PREDICATE CANNOT TELL A REFUSED LEG FROM A RED ONE, and the row it is wrong about is the one his repaired instrument actually produces. The predicate is `/^GATE: true/` over the single line starting `GATE: `; his repaired run publishes `GATE: false … REFUSED: G4` with `red=[]`, so nothing graded badly and one leg could not reach its figure — and that scores identically to a run with four red legs. Four real committed recordings, one per bucket plus a no-verdict control, each read as a blob at the rev and scored by BOTH predicates; the old one is sliced out of my own `P1` block, not retyped
+        slice of my own P1 block, PINNED at c3c6ec49: OK (start 1×, end 1× in the blob; `startsWith('GATE: ')` 1× and `/^GATE: true/` 1× INSIDE the block, 1 each required)
+        pin by property: defective predicate in the pin true (true required) · cured predicate in the pin false (false required) · cure live at c3c6ec49: false (REPORTED, not gated — H5 grades it)
+        GREEN                 round444-instruments/his-round442-instrument.postcommit.out
+          read back as: ok red=[] refused=[]
+          OLD /^GATE: true/ → true  (want true) · NEW topToken → true  (want true) · agree
+        REFUSED               round443-instruments/drive6-r445-anchor-guard-repaired.out
+          read back as: REFUSED red=[] refused=["G4"]
+          OLD /^GATE: true/ → false (want false) · NEW topToken → null  (want null) · DISAGREE
+        RED                   round443-instruments/drive5.final.out
+          read back as: RED red=["G2","G4","G5","G6"] refused=[]
+          OLD /^GATE: true/ → false (want false) · NEW topToken → false (want false) · agree
+        NO-VERDICT (control)  round444-instruments/his-r443-instrument-dies-at-this-rev.out
+          read back as: NO_VERDICT_LINE
+          OLD /^GATE: true/ → null  (want null) · NEW topToken → null  (want null) · agree
+        disagreements: 1 ["REFUSED"] (exactly 1, at REFUSED, required)
+ ok  H2  ROUND 444 `G6` SLICED HIS DATA AND RETYPED HIS GUARD, which is why it still reports `SyntaxError` on the cured blob one rev after he repaired it. His Round 445 fix is in the GUARD — each edit carries a `present` marker and an already-cured edit is skipped — and my hand-written loop has no model of `present` at all, so the cell cannot move no matter what he does to it. Both loops are SLICED here, mine from my source and his from his, and run over the same two pinned subject blobs. The blindness is keyed on `present` being ABSENT from my loop text, not on an anchor being present in it
+        slices: his CURE_EDITS OK · his loop OK · my apply OK
+        his edits: 2, of which carrying a non-empty `present`: 2 (all required) · my sliced loop mentions `present`: false (false required) · his sliced loop mentions it: true (true required)
+        MINE (retyped, anchor-only)  × PRE-CURE verdict.mjs @626ab6fe   → IMPORTS
+        HIS (sliced, present-keyed)  × PRE-CURE verdict.mjs @626ab6fe   → IMPORTS ["APPLIED","APPLIED"]
+        MINE (retyped, anchor-only)  × CURED verdict.mjs @c3c6ec49      → SyntaxError: Identifier 'rt' has already been declared
+        HIS (sliced, present-keyed)  × CURED verdict.mjs @c3c6ec49      → IMPORTS ["APPLIED","ALREADY-CURED"]
+ ok  H3  HIS REPAIR IS REAL, GRADED AS A 2 × 2 AGAINST THE PINNED PRE-REPAIR BLOB rather than by asserting the defect. Round 444 `G6` required his instrument to die with no verdict, so it reddens on the repair it asked for — drive 1 of this round reads `red=[G6]` against a tree where cure and repair are both in and both correct. This leg instead runs his instrument twice against TODAY's cured tree: his pre-repair blob must still publish NOTHING (no verdict line AND no leg lines, both read), and his working-tree copy must publish a verdict line my reader accepts. That is what attributes the change to the repair rather than to the tree moving under both
+        pin 416c6268 asserted by property, not hash: `present:` key in the pin false (false required) · anchor-only guard in the pin true (true required) · `present:` in the working tree true (true required)
+        HIS PRE-REPAIR BLOB vs today's cured tree: NO_VERDICT_LINE · 18 line(s), 0 leg line(s) · first error: SyntaxError: Identifier 'rt' has already been declared
+        HIS WORKING TREE vs the same tree: REFUSED red=[] refused=["G4"] · 43 line(s), 7 leg line(s)
+ ok  H5  THE CURED PREDICATE IS IN THE SUBJECT AND SCORES THE REFUSED ROW AS REFUSED — sliced out of the Round 444 instrument's WORKING-TREE copy and run over the same four recordings `H1` grades the old one against, so the two legs cannot disagree about the population. The cure is recognised by the predicate READING `readVerdict` and `topToken` and no longer containing `/^GATE: true/` — by what it does, not by a comment saying it was fixed. While the cure is absent this leg REFUSES; it does not redden
+        cure in the working-tree copy of docs/research/round444-instruments/grade-the-round-trip-cure.mjs: evaluable block sliced true (start 1×, 1 required) · P1 REGION sliced true (P2 anchor 1×, 1 required; the region spans the `pred(` call, the block does not — drive 4's `stillHasOld` was read off the block and was false with the cure ABSENT) · reads `readVerdict` true · reads `topToken` true
+        the value P1 is SCORED on (final argument of the `pred` call, not a quote of the old spelling anywhere in the region): "hisVerdict" · is the retired predicate false (false required) · sliced and evaluated
+        GREEN                 cured predicate → true  (want true) · agree
+        REFUSED               cured predicate → null  (want null) · agree
+        RED                   cured predicate → false (want false) · agree
+        NO-VERDICT (control)  cured predicate → null  (want null) · agree
+ ok  H4  THIS DRIVE REWROTE NO COMMITTED RECORDING AND LEFT NO SCRATCH FILE BEHIND. His instrument is executed in place twice and his pre-repair blob is written into this directory at the depth its own `HERE` needs, so both are caught here
+        tracked MODIFIED on entry (not this drive's): 1 ["docs/research/round444-instruments/grade-the-round-trip-cure.mjs"] · MODIFIED by this drive: 0 [] · subjects byte-identical at exit: true [] · scratch files left: 0 []
+
+REFUSED  P1  ROUND 444 `P1`, RE-SCORED UNDER THE REPAIRED PREDICATE — the deferral is taken, and the answer is REFUSED for a SECOND, different reason. Round 444 left this `prefused` with one named blocker: his anchor-presence guard. `62e023ca` lifted it. Scored off the live run in `H3` with the `topToken` predicate, his gate is REFUSED, not RED — `G4` cannot reach its figure because my own §4 cure rewrote the block its slicer keys on, and `red=[]`. The old `/^GATE: true/` predicate scores the same output REFUTED, which is Round 444's prose ("scoring this REFUTED would blame the cure") violated by the predicate printed below it
+        his live verdict: REFUSED
+        NEW predicate → REFUSED (open) — his gate is REFUSED on ["G4"] with red=[] — no leg graded the tree badly; the figure was unreachable
+        OLD predicate → REFUTED ← THE DEFECT: a manufactured refutation
+
+VERDICT/1 ok legs=5 red=[] refused=[] preds=1 refuted=[] prefused=[P1]

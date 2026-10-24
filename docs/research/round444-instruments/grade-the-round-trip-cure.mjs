@@ -497,41 +497,101 @@ let HIS_OUT = null;
     const j = HIS_SRC.indexOf('\n];', i);
     return i === -1 || j === -1 ? null : `export default ${HIS_SRC.slice(i + 'const CURE_EDITS = '.length, j + 2)};`;
   })();
+  // ─── Round 446 cure, routed by this seat against its own instrument ─────────────────────────
+  // TWO defects here, both found by driving this leg one rev after his repair landed.
+  //
+  //  (a) THIS LEG SLICED HIS DATA AND RETYPED HIS GUARD. `CURE_EDITS` is lifted out of his source
+  //      and never retyped — and then consumed by a hand-written `apply` keyed on
+  //      `split(anchor).length - 1 === 1`. His Round 445 repair is IN THE GUARD, not the data:
+  //      each edit now carries a `present` marker and an already-cured edit is skipped. A loop
+  //      with no model of `present` reports `SyntaxError` on the cured blob forever, whatever he
+  //      does to it. Slicing the inputs and retyping the consumer (428/412). His loop is sliced
+  //      here too, now, and asserted to be the present-keyed one.
+  //
+  //  (b) THIS LEG ASSERTED THE DEFECT IT ROUTED AWAY. Its `ok` required his instrument to die
+  //      with no verdict, so his repair REDDENED it — the probe that found the defect was
+  //      asserting it. The cell is now a 2 × 2 whose known positive is the PINNED anchor-only
+  //      loop out of this file's own pre-cure blob: that loop must still die on the cured blob,
+  //      his repaired loop must not, and his live instrument must publish a readable verdict.
+  //      Defect PRESENT at the pin, ABSENT in the tree — so the leg grades the repair.
+  //
+  // Graded in Round 446 `H2` (the 2 × 2 over both loops) and `H3` (his instrument at the pinned
+  // pre-repair rev beside his working-tree copy). `docs/research/round446-instruments/`.
+  // ────────────────────────────────────────────────────────────────────────────────────────────
+  const sliceOnce = (src, start, endTok) => {
+    const a = src.indexOf(start);
+    if (a === -1 || src.split(start).length - 1 !== 1) return null;
+    const b = src.indexOf(endTok, a);
+    return b === -1 ? null : src.slice(a, b + endTok.length);
+  };
+  /** HIS guard, sliced — the loop, not just the data it eats. */
+  const hisLoopSrc = sliceOnce(HIS_SRC, '  for (const e of CURE_EDITS) {', '\n  }');
+  /**
+   * MY retyped anchor-only loop, out of THIS FILE's own pre-cure blob. It is the known positive:
+   * a cell with only his repaired loop in it could not tell "the guard was fixed" from "the tree
+   * stopped tripping it" (355/364 — a known positive must carry the property).
+   */
+  const PINNED_SELF_REV = 'c3c6ec49';
+  const oldLoopSrc = sliceOnce(git('show', `${PINNED_SELF_REV}:${relative(REPO, join(REPO, 'docs/research/round444-instruments/grade-the-round-trip-cure.mjs'))}`),
+    '    const apply = (src) => {', '\n    };');
+
   let onPre = null; let onCured = null; let edits = null;
-  if (editsSrc !== null) {
+  let oldOnPre = null; let oldOnCured = null; let hisStates = null;
+  const hisLoopIsPresentKeyed = hisLoopSrc !== null && /\bpresent\b/.test(hisLoopSrc);
+  const oldLoopIsAnchorOnly = oldLoopSrc !== null && !/\bpresent\b/.test(oldLoopSrc);
+  if (editsSrc !== null && hisLoopSrc !== null && oldLoopSrc !== null) {
     edits = (await importSource(editsSrc, 'his-edits')).default;
-    const apply = (src) => {
-      let out2 = src;
-      for (const e of edits) if (out2.split(e.anchor).length - 1 === 1) out2 = out2.replace(e.anchor, e.replace);
-      return out2;
-    };
+    // Both loops rebuilt from their own sliced text; each parameter named with the free variable
+    // its own slice uses, so neither slice is edited to fit this harness.
+    const loops = await importSource(
+      'export const his = (CURE_EDITS, original) => {\n  let cured = original;\n'
+      + '  const editStates = [];\n  const anchorCounts = [];\n'
+      + `${hisLoopSrc}\n  return { cured, editStates };\n};\n`
+      + 'export const old = (edits, src) => {\n'
+      + `${oldLoopSrc.replace('    const apply = (src) => {', '  const apply = (src) => {')}\n`
+      + '  return apply(src);\n};\n', 'loops');
     const tryImport = async (src, tag) => {
       try { await importSource(src, tag); return 'IMPORTS'; } catch (e) { return `${e.name}: ${e.message.slice(0, 48)}`; }
     };
-    onPre = await tryImport(apply(OLD_SRC), 'his-on-pre');
-    onCured = await tryImport(apply(NEW_SRC), 'his-on-cured');
+    const hPre = loops.his(edits, OLD_SRC);
+    const hCur = loops.his(edits, NEW_SRC);
+    hisStates = { pre: hPre.editStates, cured: hCur.editStates };
+    onPre = await tryImport(hPre.cured, 'his-on-pre');
+    onCured = await tryImport(hCur.cured, 'his-on-cured');
+    oldOnPre = await tryImport(loops.old(edits, OLD_SRC), 'old-on-pre');
+    oldOnCured = await tryImport(loops.old(edits, NEW_SRC), 'old-on-cured');
   }
-  const diedWithNoVerdict = afterV.ok === false && afterV.refusal === 'NO_VERDICT_LINE';
   const readable = beforeV.ok === true && edits !== null;
   const ok = !readable ? null
-    : (beforeV.verdict.red.join(',') === 'G2,G4,G5,G6'
-      && diedWithNoVerdict && onPre === 'IMPORTS' && /SyntaxError/.test(String(onCured)));
-  leg('G6', 'HIS UNMODIFIED ROUND 443 INSTRUMENT CANNOT GRADE THE CURED TREE — it dies at import '
-    + 'and publishes NOTHING, not a red leg. His `G3` patches the subject blob at the rev and '
-    + 'guards on his anchor `  return line;` occurring once; the anchor survives the cure, so his '
-    + 'round-trip edit lands a SECOND `const rt` and the scratch module is a SyntaxError. His '
-    + 'edits, sliced from his source, are applied here to BOTH blobs: clean on the pre-cure one, '
-    + 'fatal on the cured one, which is what attributes the collision to the cure rather than to '
-    + 'his patch. Routed back to him in this round\'s memo: the guard has to key on the cure being '
-    + 'ABSENT, not on the anchor being present',
+    : (hisLoopIsPresentKeyed && oldLoopIsAnchorOnly
+      // His repaired guard survives BOTH blobs …
+      && onPre === 'IMPORTS' && onCured === 'IMPORTS'
+      // … the pinned anchor-only one survives only the pre-cure blob (the known positive) …
+      && oldOnPre === 'IMPORTS' && /SyntaxError/.test(String(oldOnCured))
+      // … and his live instrument publishes a verdict this reader accepts, green or refused.
+      && afterV.ok === true);
+  leg('G6', 'HIS ROUND 445 GUARD REPAIR HOLDS AGAINST THE CURED TREE, graded against the PINNED '
+    + 'anchor-only loop rather than by asserting the defect. Round 444 reported that his `G3` '
+    + 'guarded each edit on its ANCHOR occurring once, that the anchor `  return line;` survives '
+    + 'its own cure, and that his instrument therefore died at import publishing nothing. He '
+    + 'repaired it in `62e023ca`: each edit carries a `present` marker and the guard keys on the '
+    + 'cure being ABSENT. Both loops are SLICED — his from his source, the retired one from this '
+    + 'file\'s own pre-cure blob — and run over both subject blobs. The retired loop is the known '
+    + 'positive: it must STILL die on the cured blob, or this cell could not tell a repaired '
+    + 'guard from a tree that stopped tripping the old one',
     `his committed drive5 verdict (read with my reader): ${beforeV.ok ? beforeV.verdict.token : beforeV.refusal} `
     + `red=${JSON.stringify(beforeV.ok ? beforeV.verdict.red : null)}\n`
-    + `        his instrument re-driven at ${SHORT}: ${afterV.ok ? afterV.verdict.token : afterV.refusal} · `
+    + `        his instrument re-driven at ${SHORT}: ${afterV.ok ? `${afterV.verdict.token} red=${JSON.stringify(afterV.verdict.red)} refused=${JSON.stringify(afterV.verdict.refused)}` : afterV.refusal} · `
     + `output ${text.split('\n').length} line(s), VERDICT lines `
     + `${text.split('\n').filter((l) => l.startsWith('VERDICT/')).length}, leg lines `
     + `${text.split('\n').filter((l) => /^(?: ok |FAIL|REF ) G/.test(l)).length}\n`
-    + `        his ${edits === null ? 'ABSENT' : `${edits.length}`} sliced CURE_EDITS applied to the `
-    + `PRE-CURE blob: ${onPre} · applied to the CURED blob: ${onCured}\n`
+    + `        loops, both sliced: his is present-keyed ${hisLoopIsPresentKeyed} (true required) · `
+    + `the pinned ${PINNED_SELF_REV} loop is anchor-only ${oldLoopIsAnchorOnly} (true required)\n`
+    + `        HIS REPAIRED GUARD × ${edits === null ? 'ABSENT' : `${edits.length}`} sliced edits → `
+    + `PRE-CURE blob: ${onPre}${hisStates === null ? '' : ` ${JSON.stringify(hisStates.pre)}`} · `
+    + `CURED blob: ${onCured}${hisStates === null ? '' : ` ${JSON.stringify(hisStates.cured)}`}\n`
+    + `        RETIRED ANCHOR-ONLY LOOP (known positive) → PRE-CURE blob: ${oldOnPre} · `
+    + `CURED blob: ${oldOnCured}\n`
     + `        his first error line: ${(text.split('\n').find((l) => /Error/.test(l)) ?? '(none)').slice(0, 90)}`,
     ok);
 }
@@ -560,18 +620,43 @@ const g7 = () => {
 // ═════════════════════════════════════════════════════════════════════════════════════════════════
 {
   // P1 — the cure holds under HIS gate, not just under mine.
-  const hisGate = HIS_OUT === null ? null
-    : (HIS_OUT.split('\n').find((l) => l.startsWith('GATE: ')) ?? null);
-  pred('P1', 'HIS GATE GOES GREEN AT THIS REV — PRE-REGISTERED BEFORE DRIVE 1 AND NOW REFUSED, '
-    + 'NOT LANDED. The prediction was that HIS instrument, which I did not write and have not '
-    + 'edited, would read the tree as cured, because a cure graded only by the instrument of the '
-    + 'seat that wrote it is graded by its author. It cannot be scored either way: his instrument '
-    + 'dies at import at this rev (G6), so the oracle is UNAVAILABLE rather than negative. Scoring '
-    + 'this REFUTED would blame the cure for his patch colliding with it, and scoring it LANDED on '
-    + 'my own legs would be the thing it exists to avoid (436 — an instrument that cannot refuse '
-    + 'manufactures findings). It stays open until he lands the one-line guard G6 names',
-    `his gate line at ${SHORT}: ${hisGate ?? 'ABSENT — his instrument printed no gate line at all'}`,
-    hisGate === null ? null : /^GATE: true/.test(hisGate));
+  //
+  // ─── Round 446 cure, routed by this seat against its own instrument ───────────────────────────
+  // This was `/^GATE: true/` over the one line of his output starting `GATE: `. His REPAIRED
+  // instrument (Round 445, `62e023ca`) publishes `GATE: false   (8 leg(s))   REFUSED: G4` — with
+  // `red=[]`. Nothing graded badly; one leg could not REACH its figure, because this round's own
+  // §4 cure rewrote the `P2` block his slicer keys on. Under the old predicate that is
+  // indistinguishable from `GATE: false … RED: G2, G4, G5, G6`, so the moment the blocker named
+  // below was lifted this prediction scored REFUTED — publishing "his instrument says my cure is
+  // wrong" off a leg that said nothing at all, which is the exact outcome the sentence below
+  // forbids. The prose was right and the predicate four lines under it was not.
+  //
+  // Scored now off the shared reader, with the mapping taken from `topToken`'s own branch
+  // literals rather than a regex over prose (426): `ok` → LANDED, `RED` → REFUTED, `REFUSED` →
+  // open. Graded in Round 446 `H1` (the old predicate, over four real recordings, one per bucket)
+  // and `H5` (this spelling, over the same four).
+  // ──────────────────────────────────────────────────────────────────────────────────────────────
+  const hisRead = HIS_OUT === null ? null : NEW.readVerdict(HIS_OUT);
+  const hisTop = hisRead === null || hisRead.ok !== true ? null
+    : NEW.topToken(hisRead.verdict.red, hisRead.verdict.refused);
+  const hisVerdict = hisTop === null ? null : hisTop === 'ok' ? true : hisTop === 'RED' ? false : null;
+  pred('P1', 'HIS GATE GOES GREEN AT THIS REV — PRE-REGISTERED BEFORE DRIVE 1. Round 444 left this '
+    + 'REFUSED with one named blocker: his `G3` guard keyed on his patch ANCHOR being present '
+    + 'rather than on the cure being ABSENT, so his instrument died at import against a cured tree '
+    + 'and the oracle was unavailable. Round 445 (`62e023ca`) lifted it. It is now scorable, and '
+    + 'the answer is REFUSED AGAIN FOR A SECOND, DIFFERENT REASON: his gate is false because `G4` '
+    + 'cannot reach its figure — `red=[]`, no leg graded the tree badly — and a refusing signal '
+    + 'only raises a floor (408). Scoring it REFUTED would blame the cure for his slicer keying on '
+    + 'the spelling the cure replaced; scoring it LANDED on my own legs would be the thing it '
+    + 'exists to avoid (436). Open until he re-aims `G4` at the cured `P2` spelling — his own next '
+    + 'unit, behind his vacuity harness',
+    `his verdict at ${SHORT}, read with the shared reader: `
+    + `${hisRead === null ? 'NOT RUN' : hisRead.ok ? `${hisRead.verdict.token} red=${JSON.stringify(hisRead.verdict.red)} refused=${JSON.stringify(hisRead.verdict.refused)}` : hisRead.refusal}`
+    + ` · topToken → ${hisTop ?? 'UNREADABLE'} · scored `
+    + `${hisVerdict === null ? 'REFUSED (open)' : hisVerdict ? 'LANDED' : 'REFUTED'}`
+    + ` · the retired \`/^GATE: true/\` predicate would score this `
+    + `${(() => { const l = HIS_OUT === null ? null : (HIS_OUT.split('\n').find((x) => x.startsWith('GATE: ')) ?? null); return l === null ? 'open' : /^GATE: true/.test(l) ? 'LANDED' : 'REFUTED'; })()}`,
+    hisVerdict);
 
   // P2 — my own promotion moves the adoption cell, and the re-key must hold under it. Stated here,
   // driven AFTER the commit into a separate recording (405 — never draft the slot for a running
