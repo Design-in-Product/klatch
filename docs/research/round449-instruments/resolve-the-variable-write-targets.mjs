@@ -330,12 +330,19 @@ const sites = [];
 const lenPreserved = [];
 let unbalanced = 0;
 let viaWriteRecording = 0;
+let viaWriteRecordingOthers = 0;
 for (const f of POP) {
   const raw = git('show', `${REV}:${f}`);
   const blind = stripSource(raw, true);
   lenPreserved.push(blind.length === raw.length);
   const ctx = { dir: presolve(REPO, dirname(f)), abs: presolve(REPO, f), assign: assignmentsOf(raw, blind) };
-  viaWriteRecording += blind.split('writeRecording(').length - 1;
+  const n = blind.split('writeRecording(').length - 1;
+  viaWriteRecording += n;
+  // Adoption BY OTHERS. This round's own directory contributes its recorder and its re-diff script
+  // to the figure above, so the whole-population number is partly self-inflated — the post-commit
+  // drive moved it 5 -> 6 for exactly that reason. Both are published; a cure's adoption measured
+  // over a population that includes the cure's own round is not a measure of adoption (443 §6).
+  if (!f.startsWith('docs/research/round449-instruments/')) viaWriteRecordingOthers += n;
   let from = 0;
   for (;;) {
     const at = blind.indexOf(TOKEN, from);
@@ -589,14 +596,20 @@ const trackedMembers = [...new Set(byBucket.get('TRACKED').map((s) => relative(R
     + 'measures how many of the write sites in this population route through it rather than calling '
     + '`writeFileSync` directly. A cure that exists and is not adopted leaves the surface exactly '
     + 'as wide as it was; that is a figure, and it is taken here rather than asserted',
-    `\`writeRecording(\` call sites in the population: ${viaWriteRecording} · direct `
+    `\`writeRecording(\` call sites in the population: ${viaWriteRecording}, of which OUTSIDE this `
+    + `round's own directory ${viaWriteRecordingOthers} — the whole-population figure is partly `
+    + `self-inflated and the post-commit drive moved it by 1 for exactly that reason · direct `
     + `\`${TOKEN}\` sites: ${sites.length} · adoption `
     + `${((viaWriteRecording / (viaWriteRecording + sites.length)) * 100).toFixed(1)}%\n`
     + `        the lib's own site (correct by construction, inside \`writeRecording\` itself): `
     + `${libSites.length} — ${JSON.stringify(libSites.map((s) => s.arg))}`,
     // Graded on the figure being READABLE, not on its value: a leg that required adoption to be
     // high would redden on a true measurement of a low one.
-    viaWriteRecording >= 0 && libSites.length >= 1);
+    // `viaWriteRecording >= 0` was a second dead conjunct — true of every count. Dropped. What is
+    // left is the one thing this leg needs in order to have measured anything: the lib's own write
+    // site is present in the census. The adoption percentage is REPORTED, never gated, because a
+    // leg that required adoption to be high would redden on a true measurement of a low one.
+    libSites.length >= 1);
 }
 
 // ═══ W7 — SELF-EXCLUSION, COUNTED AND READ ═══════════════════════════════════════════════════════

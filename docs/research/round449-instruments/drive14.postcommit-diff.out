@@ -1,0 +1,23 @@
+PRE  recording: docs/research/round449-instruments/drive15.final-clean.out
+PRE  verdict:  VERDICT/1 ok legs=10 red=[] refused=[] preds=2 refuted=[Q1] prefused=[]
+POST verdict:  VERDICT/1 ok legs=10 red=[] refused=[] preds=2 refuted=[Q1] prefused=[]
+
+VERDICT MAPS IDENTICAL ACROSS THE COMMIT: true
+  pre:  {"token":"ok","legs":10,"red":[],"refused":[],"refuted":["Q1"],"prefused":[]}
+  post: {"token":"ok","legs":10,"red":[],"refused":[],"refuted":["Q1"],"prefused":[]}
+
+lines that moved: 9 · of those UNEXPECTED: 1
+
+expected   line 1  [REV:]
+expected   line 4  [population ]
+expected   line 55  [old tracked set at]
+UNEXPECTED line 63
+    pre :         `writeRecording(` call sites in the population: 5 · direct `writeFileSync(` sites: 148 · adoption 3.3%
+    post:         `writeRecording(` call sites in the population: 6 · direct `writeFileSync(` sites: 148 · adoption 3.9%
+expected   line 66  [EXCLUDED as this instrument]
+expected   line 68  [tracked MODIFIED on entry]
+expected   line 75  [committed .out recordings]
+expected   line 78  [AGREEMENT WITH THE RECORDING]
+expected   line 79  [cell [448 row count]
+
+GATE: the verdict map must be identical and no UNEXPECTED line may move → false

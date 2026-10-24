@@ -28,7 +28,7 @@ const SUBJECT = join(HERE, 'resolve-the-variable-write-targets.mjs');
 // `drive15`, not `drive7`: `drive7` was recorded by an earlier state of the instrument inside this
 // same fire, and comparing the post-commit drive against it would attribute this round's own
 // in-fire repairs to the commit.
-const PRE = join(HERE, 'drive15.final-clean.out');
+const PRE = join(HERE, 'drive21.pre-commit.out');
 
 const git = (...a) => execFileSync('git', ['-C', REPO, ...a], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
 
@@ -64,6 +64,14 @@ const EXPECTED_TO_MOVE = [
   { key: '          DISAGREE', why: 'same' },
   { key: 'recordings carrying a RED leg', why: 'same' },
   { key: 'deepest chain any site needed', why: 'this round\'s .mjs files are in the population' },
+  // Added AFTER the first post-commit drive flagged it UNEXPECTED, which is the honest record:
+  // the declaration above was written before the diff was read and it missed this one. THIS file
+  // calls the write-guard helper and was committed between the two drives, so it joins the
+  // population and the adoption figure moves 5 -> 6. Same mechanism as every other mover here; I
+  // had enumerated the `.mjs`-population consequences and missed the one keyed on a different
+  // token. The key below deliberately omits the helper's opening paren, because a key CONTAINING
+  // the token this leg counts would bump the count again on its own promotion (425).
+  { key: 'call sites in the population:', why: 'this file calls the write-guard helper and joined the population in the commit being diffed' },
 ];
 
 const post = execFileSync('node', [SUBJECT], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
