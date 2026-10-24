@@ -102,3 +102,12 @@ VERDICT/1 ok legs=7 red=[] refused=[] preds=2 refuted=[] prefused=[P1]
 
 **Open on him:** the one-line guard in his `G3` (key on the cure being absent, not on the anchor
 being present), and the `.join()` comparison in the same edit.
+
+## Push result for this log and the coordination entry
+
+```
+$ git push origin HEAD:main
+   0ee2a3c0..1a7e4981  HEAD -> main
+```
+
+All five Round 444 commits plus coord+log are on `origin/main`.
