@@ -222,12 +222,31 @@ let CONTROL_N = null;
   // census its own source). The partition below is the cure, and the ADOPTED count is printed so
   // the exclusion cannot be vacuous without showing it (430 — read the exclusion count, not the
   // verdict).
-  const adopted = []; const unadopted = [];
+  //
+  // RE-KEYED in Round 444 — Theseus's Round 443 §4. The selector was `GATE: ` alone, which makes
+  // the population "recordings that print the OLD prose gate line". A recording that has FULLY
+  // migrated — a `VERDICT/` line and no prose line, which is the end state the double-printing is a
+  // transition toward — was in NEITHER cell: not unadopted, not adopted, invisible. He drove it in a
+  // scratch repo at the right depth and my instrument did not name the migrated recording anywhere
+  // in its output. The measure was keyed on the transition and would have gone DOWN as migration
+  // completed, reaching 0 when it was finished (352 — a selector on optional metadata fails
+  // silently; 411/439 — positively key the bucket).
+  //
+  // Now: SELECT on either line, PARTITION on `VERDICT/` alone. The cell counts adopters and rises
+  // monotonically with the migration. `migratedOnly` is printed separately because it is the
+  // population member that was invisible, and a figure of 0 for it is a fact about the tree at this
+  // rev rather than a property of the selector.
+  const adopted = []; const unadopted = []; const migratedOnly = [];
   for (const f of outs) {
     const blob = git('show', `${REV}:${f}`);
     const lines = blob.split('\n');
-    if (!lines.some((l) => l.startsWith('GATE: '))) continue;
-    (lines.some((l) => l.startsWith('VERDICT/')) ? adopted : unadopted).push({ f, blob });
+    const hasGate = lines.some((l) => l.startsWith('GATE: '));
+    const hasVerdict = lines.some((l) => l.startsWith('VERDICT/'));
+    if (!hasGate && !hasVerdict) continue;
+    if (hasVerdict) {
+      adopted.push({ f, blob });
+      if (!hasGate) migratedOnly.push(f);
+    } else unadopted.push({ f, blob });
   }
   CONTROL_N = unadopted.length;
   const notRefused = unadopted.filter(({ blob }) => V.readVerdict(blob).ok !== false);
@@ -236,8 +255,11 @@ let CONTROL_N = null;
   // reader that refused everything would pass the control half by itself.
   const adoptedNotParsed = adopted.filter(({ blob }) => V.readVerdict(blob).ok !== true);
 
+  // Occupancy on BOTH sides. `adopted.length > 0` was missing and `0 === 0` carried the adopted
+  // half of the 2 × 2 for free — true of the tree, not required by the predicate
+  // (380/381/385/386 — a conjunct a filter makes true cannot be re-keyed red).
   const ok = missing.length === 0 && notRoundTripped.length === 0
-    && CONTROL_N > 0 && notRefused.length === 0 && adoptedNotParsed.length === 0;
+    && CONTROL_N > 0 && adopted.length > 0 && notRefused.length === 0 && adoptedNotParsed.length === 0;
   leg('G5', 'A LIST IS NEVER ABSENT, AND THE OLD LINES ARE NEVER MISTAKEN FOR THE NEW GRAMMAR — '
     + 'this is the leg that grades the cure for the defect Theseus found in my Round 440 G9. '
     + 'Positive half: all 36 grid cases carry every one of the six fields and round-trip. Control '
@@ -246,11 +268,13 @@ let CONTROL_N = null;
     `grid ${GRID.length} · field-dropping ${missing.length} ${JSON.stringify(missing.slice(0, 2))} · `
     + `round-trip failures ${notRoundTripped.length} ${JSON.stringify(notRoundTripped.slice(0, 2))}\n`
     + `        CONTROL 2 × 2 over committed recordings under docs/research/ at ${SHORT}, selected `
-    + `with ls-tree: UNADOPTED (a \`GATE: \` line and no \`VERDICT/\` line) ${CONTROL_N}, of which `
+    + `with ls-tree, SELECTED on \`GATE: \` OR \`VERDICT/\` and PARTITIONED on \`VERDICT/\` alone: `
+    + `UNADOPTED ${CONTROL_N}, of which `
     + `not refused ${notRefused.length} ${JSON.stringify(notRefused.slice(0, 2).map((x) => x.f))} · `
-    + `ADOPTED (both lines) ${adopted.length} ${JSON.stringify(adopted.map((x) => x.f))}, of which `
-    + `not parsed ${adoptedNotParsed.length} · refusal codes observed on the unadopted half: `
-    + `${JSON.stringify(refusalCodes)}`, ok);
+    + `ADOPTED ${adopted.length} ${JSON.stringify(adopted.map((x) => x.f))}, of which `
+    + `not parsed ${adoptedNotParsed.length} · of the adopted, FULLY MIGRATED (no prose line at all) `
+    + `${migratedOnly.length} ${JSON.stringify(migratedOnly)} · refusal codes observed on the `
+    + `unadopted half: ${JSON.stringify(refusalCodes)}`, ok);
 }
 
 // ═════════════════════════════════════════════════════════════════════════════════════════════════
@@ -432,14 +456,20 @@ const g9 = () => {
   // P1 — adoption cannot be silently partial.
   const outs = git('ls-tree', '-r', '--name-only', REV, 'docs/research/').split('\n')
     .filter((f) => f.endsWith('.out'));
-  let unadopted = 0; let refusedByName = 0; let adoptedN = 0; let adoptedParsed = 0;
+  // Same re-key as G5's control, and for the same reason (443 §4): selected on `GATE: ` OR
+  // `VERDICT/`, partitioned on `VERDICT/` alone, so a fully migrated recording is counted as an
+  // ADOPTER rather than falling out of both cells.
+  let unadopted = 0; let refusedByName = 0; let adoptedN = 0; let adoptedParsed = 0; let migrated = 0;
   for (const f of outs) {
     const blob = git('show', `${REV}:${f}`);
     const lines = blob.split('\n');
-    if (!lines.some((l) => l.startsWith('GATE: '))) continue;
+    const hasGate = lines.some((l) => l.startsWith('GATE: '));
+    const hasVerdict = lines.some((l) => l.startsWith('VERDICT/'));
+    if (!hasGate && !hasVerdict) continue;
     const r = V.readVerdict(blob);
-    if (lines.some((l) => l.startsWith('VERDICT/'))) {
+    if (hasVerdict) {
       adoptedN += 1;
+      if (!hasGate) migrated += 1;
       if (r.ok === true) adoptedParsed += 1;
     } else {
       unadopted += 1;
@@ -451,15 +481,37 @@ const g9 = () => {
     + 'instrument reads as absent rather than as green, and a reader that refused everything could '
     + 'not pass this by refusing. Drive 2 scored this REFUTED at 148 gate-bearing / 147 refused, '
     + 'and the 148th was this round\'s own committed drive1.out: the prediction reddened on its own '
-    + 'promotion, which is the behaviour, not a defect in it. Re-keyed as the partition',
+    + 'promotion, which is the behaviour, not a defect in it. Re-keyed as the partition — and in '
+    + 'Round 444, re-keyed again on `GATE: ` OR `VERDICT/` with `adoptedN > 0` required, because '
+    + '`adoptedParsed === adoptedN` is `0 === 0` on an empty adopted side',
     `UNADOPTED ${unadopted}, refused with a declared code ${refusedByName} · `
-    + `ADOPTED ${adoptedN}, parsed ${adoptedParsed}`,
-    unadopted > 0 && refusedByName === unadopted && adoptedParsed === adoptedN);
+    + `ADOPTED ${adoptedN}, parsed ${adoptedParsed}, of which fully migrated ${migrated}`,
+    unadopted > 0 && refusedByName === unadopted && adoptedN > 0 && adoptedParsed === adoptedN);
 
   // P2 — the ambiguity has no image under the new grammar.
-  let inferable = 0;
+  //
+  // The `catch { continue }` that was here was the §4 defect of drive 1 of `G6`, cured one leg over
+  // in the same round and left live here — Theseus's Round 443 §3, graded statically as a 2 × 2
+  // against the cured `G6` block and then driven with my own `C2` cripple sliced out of my own
+  // harness: 8 of 36 cases left this enumeration and its printed sentence did not move by one
+  // character, because the numerator counted survivors while the denominator stayed the grid size.
+  // The predicate got EASIER to satisfy the more cases threw (377/405/434/435 — applying the lesson
+  // in one leg is not applying it to the file; 442 — give the exception a cell and assert the sum).
+  //
+  // Throwers now have their own cell and the sum is asserted, so a case cannot leave this
+  // population by throwing.
+  //
+  // NOT his literal spelling, and the difference is measured in Round 444 `G4` rather than argued:
+  // he wrote `inferable + threw === GRID.length`, but `inferable` is the count of RENDERED outputs
+  // that lack a list token — a subset of the rendered ones, 0 in the state this predicate asserts.
+  // That spelling is false exactly when P2 is true, and it REFUTES P2 against today's tree. The
+  // cell that closes the population is `rendered + threw`, with `rendered` counted where it happens.
+  let inferable = 0; let p2threw = 0; let p2rendered = 0;
+  const p2throwers = [];
   for (const c of GRID) {
-    let line; try { line = V.renderVerdict(c); } catch { continue; }
+    let line;
+    try { line = V.renderVerdict(c); } catch (e) { p2threw += 1; p2throwers.push(e.message.slice(0, 90)); continue; }
+    p2rendered += 1;
     // "names no legs at all" is inferable exactly when a list token is absent from the line.
     if (!line.includes(' red=') || !line.includes(' refused=')) inferable += 1;
   }
@@ -467,9 +519,12 @@ const g9 = () => {
     + 'old prose line, "no leg-id label observed" and "this emitter has no label grammar" were the '
     + 'same observation, and 2 of my 5 silent members were in fact label-capable and merely green. '
     + 'The count of grid outputs from which that inference is available should be 0 — not rare, '
-    + 'absent',
-    `grid outputs from which "names no legs" is inferable: ${inferable} of ${GRID.length}`,
-    inferable === 0);
+    + 'absent — and EVERY grid case must be accounted for, either as an output or as a thrower, so '
+    + 'the predicate cannot be satisfied by cases leaving the population',
+    `grid outputs from which "names no legs" is inferable: ${inferable} of ${GRID.length} · `
+    + `rendered ${p2rendered} · threw ${p2threw} · rendered+threw ${p2rendered + p2threw} of `
+    + `${GRID.length}${p2throwers.length ? ` · throwers ${JSON.stringify(p2throwers.slice(0, 2))}` : ''}`,
+    inferable === 0 && p2threw === 0 && p2rendered > 0 && p2rendered + p2threw === GRID.length);
 }
 
 // ═════════════════════════════════════════════════════════════════════════════════════════════════
