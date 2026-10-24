@@ -1,0 +1,87 @@
+REV: 5c2aae1f   crippled: KLATCH_R449_TOKENONLY
+
+LEG W1 ok THE EXTRACTOR READS CALL SITES, NOT TOKENS — the first argument is sliced by paren balance over the string-and-comment-blinded text and taken out of the raw, which is sound only because `stripSource` preserves length; that is asserted per file here rather than taken from its docstring. The KP bundle carries one positive per model AND a control per blinding stage: a commented-out call and a call inside a string literal must both vanish, because a scanner that fails does so by returning a SMALLER number (344) and only a control row shows the difference between comment-blind and string-blind (371/383)
+        population 153 file(s) · length preserved in all of them: true · unbalanced argument lists: 0
+        KP: raw `writeFileSync(` tokens 7, of which blinded away 2 (expected 2: one comment, one string literal)
+        KP kinds got  ["PATH:/tmp/kpdir/live.out","UNMODELLED","PATH:/tmp/kpdir/via-var.out","OUTSIDE","AMBIGUOUS"]
+        KP kinds WANT ["PATH:/tmp/kpdir/live.out","UNMODELLED","PATH:/tmp/kpdir/via-var.out","OUTSIDE","AMBIGUOUS"]  → true
+LEG W2 ok EVERY BUCKET IS POSITIVELY KEYED AND THE BUCKETS SUM TO THE POPULATION — `UNMODELLED` is entered by its own branch at the end of a chain of named forms, not by a `default:`, and its members' raw argument text is printed below. A terminal bucket reached by fall-through absorbs every blindness (439): the figure gets SMALLER and nothing says so. The sum is checked against the independently recomputed blind TOKEN count, so a dropped site cannot hide inside a self-consistent set of buckets (383)
+        blind `writeFileSync(` token count 148 = sites 148 + unbalanced 0 · bucket sum 148
+        TRACKED       41
+        UNTRACKED     24
+        OUTSIDE        2
+        AMBIGUOUS     16
+        UNMODELLED    65
+LEG W3 ok THE 148 SITES, RESOLVED AND CLASSIFIED — the damage class is a target that is TRACKED at the rev, because a drive that rewrites a committed recording destroys the provenance of what it recorded, and Round 441 `G8` measured that already happening to a depth of six generations. A site whose target is unresolved is a site whose tracked-ness is UNKNOWN, not a site that is safe, which is why the residue is reported as its own figure and not rolled into `UNTRACKED`
+        resolved 67 of 148 · residue (UNMODELLED+AMBIGUOUS) 81 · deepest chain any site needed: 12 (cap 64, published so the cap is a measurement and not a guess)
+        TRACKED targets: 41 site(s) → 34 distinct path(s)
+          docs/research/lib/verdict.mjs
+          docs/research/round405-instruments/census.json
+          docs/research/round407-instruments/census.json
+          docs/research/round408-instruments/stratification.json
+          docs/research/round419-instruments/grade-the-417-repairs.out
+          docs/research/round419-instruments/his418-driven-live.out
+          docs/research/round419-instruments/sec3-rekeyed.out
+          docs/research/round420-instruments/drive-his-419.out
+          docs/research/round420-instruments/grade-the-418-repair.out
+          docs/research/round420-instruments/his-old-cell-is-keyed-on-head.out
+          docs/research/round420-instruments/tool-surface-scope-leg.out
+          docs/research/round421-instruments/grade-the-420-repair.out
+          docs/research/round421-instruments/scope-label-legs-are-a-class-of-three.out
+          docs/research/round422-instruments/drive-his-421.out
+          docs/research/round422-instruments/his-census-only-21-is-ungated.out
+          docs/research/round422-instruments/his-scope-census-cannot-see-a-hoisted-pattern.out
+          docs/research/round423-instruments/grade-the-422-cures.out
+          docs/research/round424-instruments/an-exit-code-is-not-the-gate-that-fired.out
+          docs/research/round424-instruments/the-resolver-reads-one-pattern-per-body.out
+          docs/research/round425-instruments/a-crash-cannot-print-separates.out
+          docs/research/round425-instruments/position-vs-property-confusion-matrix.out
+          docs/research/round426-instruments/a-published-sentence-is-not-its-discriminator.out
+          docs/research/round426-instruments/a-retyped-constant-from-another-file-is-not-a-pin.out
+          docs/research/round428-instruments/a-sentence-keyed-on-a-subset-publishes-past-its-own-gate.out
+          docs/research/round430-instruments/refusal-convention.mjs
+          docs/research/round436-instruments/drive4.after-promotion.out
+          docs/research/round436-instruments/his-round435-postcure.out
+          docs/research/round436-instruments/promotion-diff.out
+          docs/research/round436-instruments/round430-gate-postcure.out
+          docs/research/round436-instruments/vacuity-cripple-and-regrade.out
+          docs/research/round438-instruments/his-round437-postcure.out
+          docs/research/round438-instruments/vacuity-cripple-and-regrade.out
+          docs/research/round447-instruments/drive4.cripple-inertness.out
+          docs/research/round448-instruments/drive9.cripple-grading.out
+        UNMODELLED by form: [["identifier abs with no assignment in this file",1],["unrecognised form",26],["interpolated template",23],["identifier file with no assignment in this file",4],["identifier f with no assignment in this file",1],["identifier label with no assignment in this file",2],["identifier name with no assignment in this file",7],["concatenation with a resolvable prefix (varying basename)",1]]
+LEG W4 ok THE OLD RESOLVER'S TRACKED SET IS A SUBSET OF THIS ONE — the Round 441 regex is SLICED out of its own pinned source by its anchor and compiled, never retyped, so my copy cannot drift from his (447/363); and it is re-run over the SAME population at the SAME rev, because the published 9 was taken at `8d891c70` and a figure compared across revs is comparing two populations (349). Compared as MEMBER LISTS: equal counts have hidden a non-empty symmetric difference here before (414)
+        old regex sliced from docs/research/round441-instruments/key-the-silent-class-from-source.mjs: /writeFileSync\(\s*join\(\s*(HERE|REPO)\s*,\s*(['"`])([^'"`]+)\2\s*\)/g
+        old tracked set at 5c2aae1f: 10 · mine: 34
+        in his and NOT mine (must be empty): []
+        in mine and not his: 24 ["docs/research/lib/verdict.mjs","docs/research/round408-instruments/stratification.json","docs/research/round419-instruments/grade-the-417-repairs.out","docs/research/round419-instruments/his418-driven-live.out","docs/research/round419-instruments/sec3-rekeyed.out","docs/research/round420-instruments/drive-his-419.out","docs/research/round420-instruments/grade-the-418-repair.out","docs/research/round420-instruments/his-old-cell-is-keyed-on-head.out"]
+LEG W5 ok THE PUBLISHED FIGURE IS KEYED ON ONE TOKEN, AND THIS IS THE REST OF THE WRITE SURFACE — `writeFileSync(` is one of several ways to put bytes over a tracked path. Reported as measured, narrow or wide, with a known positive for the token list itself so a zero cannot mean "scanned nothing" (344/423). These sites are NOT added to the figures above; the population this instrument resolves is still the one token, and that scope is now a measurement rather than an unstated choice (415)
+        other write tokens found: 0 occurrence(s) across 0 spelling(s)
+        []
+        token-list KP (1 live + 1 comment + 1 string each): appendFileSync 1, renameSync 1 · expected 1,1: true
+LEG W6 ok ADOPTION OF `writeRecording`, WHICH ALREADY REFUSES A TRACKED TARGET — the cure for this class is in `docs/research/lib/verdict.mjs` and has been since Round 444. This leg measures how many of the write sites in this population route through it rather than calling `writeFileSync` directly. A cure that exists and is not adopted leaves the surface exactly as wide as it was; that is a figure, and it is taken here rather than asserted
+        `writeRecording(` call sites in the population: 4 · direct `writeFileSync(` sites: 148 · adoption 2.6%
+        the lib's own site (correct by construction, inside `writeRecording` itself): 1 — ["abs"]
+LEG W7 ok THIS INSTRUMENT IS EXCLUDED FROM ITS OWN POPULATION, AND THE EXCLUSION IS READ RATHER THAN TRUSTED — an instrument does not census its own source (425): this file contains the token it scans for, in its own live calls and in its own prose. The count is printed and gated against whether this file is tracked at the rev, because a self-exclusion leg is VACUOUS before promotion and green either way if it only reads the verdict (434)
+        tracked .mjs under docs/ at 5c2aae1f: 153 · EXCLUDED as this instrument's own source: 0 · this file tracked at the rev: false · censused: 153
+LEG W8 ok THIS DRIVE MODIFIED NO TRACKED FILE — read as a FIELD over the whole tracked tree. This instrument only ever reads blobs at a rev; it opens no file for writing. The one thing it would be most embarrassing to get wrong in a round about write sites
+        tracked MODIFIED on entry (not this drive's): 0 [] · untracked on entry: 1 · tracked files MODIFIED by this drive: 0 []
+LEG W9 ok EVERY CRIPPLE THIS RUN REPORTS IS ONE A HOOK ACTUALLY IMPLEMENTS — Round 447 found three names in my own registry that nothing read, so a run announcing itself crippled was byte-identical to a clean one in every leg (356). Each implemented name must occur MORE THAN ONCE in this file — i.e. somewhere other than the line declaring it — which is the property the dead three failed, and a requested name nothing implements reddens by name rather than printing as active
+        registry 3 · occurrences ["KLATCH_R449_FALLTHROUGH×5","KLATCH_R449_NOVAR×2","KLATCH_R449_TOKENONLY×2"] · declared-but-unwired [] · requested-but-INERT []
+LEG W10 ok THE ROW VOCABULARY IS WIDER THAN EITHER OF ITS TWO READERS, AND `renderTail` DROPS A PREDICTION'S DETAIL — found by being the first caller of the lib's own convenience function. MY FIRST WRITE-UP OF THIS LEG SAID "three spellings, and 446 is keyed on `FAIL` which neither emitter produces"; the census below refutes both halves and is what is published. `FAIL` IS live, in 2 recordings. MY SECOND WRITE-UP WAS WRONG TOO — it said "each reader is blind to a spelling the other reads", and running both against real exemplar lines makes 448's coverage a SUBSET of 446's rather than a mirror of it. So what this leg publishes is the one figure that does not depend on which recording happened to supply an exemplar: each reader's row count against the leg count THE SAME RECORDING'S OWN verdict line publishes, read end to end over every member. Both readers are also blind to the lib's own unpadded `LEG <id> <tok>`, which is what an adopting round emits. Both are SLICED from their pinned sources and compiled, never retyped (447/363), and every member is selected by the cell's own predicate over committed recordings (448 §4.1)
+        files in the population that IMPORT renderTail (this one excluded as self): 0 [] · leg detail published by renderTail: true · PREDICTION detail published: false · but the prediction id reaches the verdict line: true
+        446 reader sliced: /^(?: ok |FAIL|REF ) G/
+        448 reader sliced: /^(?: ok |RED |REF ) ([A-Z][A-Z0-9]*)  /
+        committed .out recordings with a readable verdict line: 43
+        ROW-TOKEN VOCABULARY, censused over those recordings: 8 spelling(s) ["FAIL(2 rec)","LANDED(33 rec)","OPEN(11 rec)","RED(14 rec)","REF(4 rec)","REFUSED(6 rec)","REFUTED(4 rec)","ok(43 rec)"]
+        spellings each reader matches ON ONE REAL EXEMPLAR LINE (suggestive only — which recording supplied the exemplar is a confound): 446 ["ok","FAIL"] · 448 ["ok"]
+        AGREEMENT WITH THE RECORDING'S OWN PUBLISHED LEG COUNT, read end to end over all 43: 446 agrees 20 · 448 agrees 33 · both 18 · NEITHER 8
+        cell [448 row count === verdict legs]  AGREE 33  DISAGREE 10
+          AGREE    legs=9 by448=9 by446=9  docs/research/round442-instruments/drive1.out
+          AGREE    legs=9 by448=9 by446=9  docs/research/round442-instruments/drive3.out
+          DISAGREE legs=9 by448=8 by446=9  docs/research/round442-instruments/drive2.out
+          DISAGREE legs=8 by448=4 by446=4  docs/research/round443-instruments/drive1.out
+        THE LIB'S OWN ROWS, rendered by renderRows and read by both: by446=0 by448=0 of 3 rows — a recording that adopts the lib is INVISIBLE to the cripple grader that reads rows
+        recordings carrying a RED leg, as counted by the 446 reader (which spells it `FAIL`): [{"f":"docs/research/round442-instruments/drive2.out","legs":9,"by446":9},{"f":"docs/research/round443-instruments/drive1.out","legs":8,"by446":4},{"f":"docs/research/round443-instruments/drive2.out","legs":8,"by446":4}]
+
+VERDICT/1 ok legs=10 red=[] refused=[] preds=2 refuted=[Q1] prefused=[]

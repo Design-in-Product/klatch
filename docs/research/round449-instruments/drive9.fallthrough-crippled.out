@@ -1,0 +1,20 @@
+
+CHILD EXITED NON-ZERO: 1
+CHILD STDERR:
+file:///Users/xian/Development/klatch-worktrees/theseus/docs/research/round449-instruments/resolve-the-variable-write-targets.mjs:283
+    const bad = rs.find((r) => r.kind !== 'PATH');
+                                 ^
+
+TypeError: Cannot read properties of null (reading 'kind')
+    at file:///Users/xian/Development/klatch-worktrees/theseus/docs/research/round449-instruments/resolve-the-variable-write-targets.mjs:283:34
+    at Array.find (<anonymous>)
+    at resolveExpr (file:///Users/xian/Development/klatch-worktrees/theseus/docs/research/round449-instruments/resolve-the-variable-write-targets.mjs:283:20)
+    at resolveExpr (file:///Users/xian/Development/klatch-worktrees/theseus/docs/research/round449-instruments/resolve-the-variable-write-targets.mjs:303:12)
+    at file:///Users/xian/Development/klatch-worktrees/theseus/docs/research/round449-instruments/resolve-the-variable-write-targets.mjs:282:33
+    at Array.map (<anonymous>)
+    at resolveExpr (file:///Users/xian/Development/klatch-worktrees/theseus/docs/research/round449-instruments/resolve-the-variable-write-targets.mjs:282:22)
+    at resolveExpr (file:///Users/xian/Development/klatch-worktrees/theseus/docs/research/round449-instruments/resolve-the-variable-write-targets.mjs:303:12)
+    at file:///Users/xian/Development/klatch-worktrees/theseus/docs/research/round449-instruments/resolve-the-variable-write-targets.mjs:350:15
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+
+Node.js v26.5.0

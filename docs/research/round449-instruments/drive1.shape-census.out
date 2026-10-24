@@ -1,0 +1,49 @@
+REV: 5c2aae1f
+population: tracked .mjs under docs/ at the rev = 153, self-excluded 0, censused 153
+STRING-AND-COMMENT-BLIND `writeFileSync(` call sites: 148 in 78 file(s)
+distinct first-argument SHAPES: 16
+
+  78×  ID
+        e.g. abs   [docs/research/lib/verdict.mjs]
+        e.g. PLANT_CFG   [docs/research/round365-instruments/grade-a1b.mjs]
+  21×  ID.ID(ID.ID.ID, '…')
+        e.g. path.join(import.meta.dirname, 'his418-driven-live.out')   [docs/research/round419-instruments/drive-his-418.mjs]
+        e.g. path.join(import.meta.dirname, 'grade-the-417-repairs.out')   [docs/research/round419-instruments/grade-the-417-repairs.mjs]
+  19×  ID(ID, '…')
+        e.g. join(WORK, 'drive.out')   [docs/research/round380-instruments/drive-b1m-history-clause-population.mjs]
+        e.g. join(WORK, 'drive-caseB.out')   [docs/research/round380-instruments/drive-b1m-history-clause-population.mjs]
+  12×  ID(ID, ID)
+        e.g. join(scripts, SUBJECT)   [docs/research/round381-instruments/grade-the-history-clause-and-the-nesting-conjunct.mjs]
+        e.g. join(scripts, CARRIER)   [docs/research/round381-instruments/grade-the-history-clause-and-the-nesting-conjunct.mjs]
+   2×  ID(ID, '…' + ID.ID(ID) + '…')
+        e.g. join(ROOT, 'out-' + ARMS.indexOf(arm) + '.txt')   [docs/research/round378-instruments/drive-263-arm-e-counterfactual.mjs]
+        e.g. join(ROOT, 'out-' + ARMS.indexOf(arm) + '.txt')   [docs/research/round378-instruments/drive-374-a2-degenerate-spelling.mjs]
+   2×  ID(ID, `…`)
+        e.g. join(WORK, `${label}.out`)   [docs/research/round380-instruments/grade-b1-under-rekeys.mjs]
+        e.g. join(WORK, `${label}.out`)   [docs/research/round381-instruments/grade-the-history-clause-and-the-nesting-conjunct.mjs]
+   2×  ID(ID, '…', '…')
+        e.g. join(KP, 'lib', 'strip-source.mjs')   [docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs]
+        e.g. join(KP, 'lib', 'strip-source.d.mts')   [docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs]
+   2×  ID(ID.ID, ID)
+        e.g. join(cfTree.path, MY_394)   [docs/research/round396-instruments/record-drives.mjs]
+        e.g. join(tree.p, MY_395)   [docs/research/round397-instruments/record-drives.mjs]
+   2×  ID(ID, ID.ID)
+        e.g. join(HERE, d.out)   [docs/research/round398-instruments/record-drives.mjs]
+        e.g. join(HERE, r.file)   [docs/research/round448-instruments/record-cripples.mjs]
+   2×  `…`
+        e.g. `${d}/pop/${f}.mjs`   [docs/research/round416-instruments/grade-the-rev-stamp-against-a-dirty-index.mjs]
+        e.g. `${d}/pop/d.mjs`   [docs/research/round416-instruments/grade-the-rev-stamp-against-a-dirty-index.mjs]
+   1×  ID.ID(ID, '…')
+        e.g. path.join(ROOT, 'docs/research/round370-instruments/characterisation-sweep-rows.json')   [docs/research/round370-instruments/characterisation-sweep-drive.mjs]
+   1×  '…'
+        e.g. '/Users/xian/Development/klatch-worktrees/daedalus/.testdata/r393/my393-detached-scratch-planted.out'   [docs/research/round393-instruments/record-my393-in-three-trees.mjs]
+   1×  ID ID('…', ID.ID.ID)
+        e.g. new URL('./stratification.json', import.meta.url)   [docs/research/round408-instruments/stratify-the-live-interval.mjs]
+   1×  ID.ID(ID, ID)
+        e.g. path.join(REPO, subjRel)   [docs/research/round422-instruments/his-scope-census-cannot-see-a-hoisted-pattern.mjs]
+   1×  ID(ID, ID.ID.ID || '…')
+        e.g. join(HERE, process.env.KLATCH_SHAPES_OUT || 'verify-request-shapes.out')   [docs/research/round445-capability-test/verify-request-shapes.mjs]
+   1×  '…' + ID
+        e.g. '.scratch-r447/post.' + file   [docs/research/round447-instruments/postcommit-diff.mjs]
+
+comment-blind only (strings KEPT): 159 · and string-blind too: 148 · strings account for 11
