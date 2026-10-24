@@ -404,14 +404,22 @@ let OLD_TALLY = null; let NEW_TALLY = null;
 }
 
 // ═════════════════════════════════════════════════════════════════════════════════════════════════
-// G5 — WHAT THE §4 RE-KEY MOVED IN THE LIVE TREE: NOTHING, and the figure that DID move is
-// population growth. Member lists, not counts (340).
+// G5 — WHAT THE §4 RE-KEY ACTUALLY MOVED, counted independently of the grader. Member lists, not
+// counts (340).
 //
-// His §4 live datum was `3 → 6`; my post-cure drive reads 10. None of that is the re-key: the
-// re-key only ADDS recordings that carry a `VERDICT/` line and NO prose gate line, and there are
-// zero of those at this rev, counted here independently of the grader. Reporting the 10 as evidence
-// the re-key worked would be exactly the error of reading a figure that moved for another reason
-// (355 — census the mechanism, not the reported instance).
+// Drive 2 of this leg read `VERDICT-only 0` and its sentence said the re-key had moved nothing in
+// the live tree and was demonstrable only in a fixture. That was true of the tree and false one
+// commit later: THIS round's own recordings print the `VERDICT/` line and no prose gate line, so
+// they are the first fully migrated recordings in the repo and the first live members the old
+// `GATE: `-only selector would have dropped — not unadopted, not adopted, invisible. The figure
+// moved on my own promotion, which is the behaviour and not a defect in it
+// (377/405/434/435; 380/397/412 — a cured figure can leave a live sentence about the old one, so
+// this one is keyed on the partition rather than on either number).
+//
+// His §4 live datum was `3 → 6`; mine reads 13 post-commit. Most of that is population growth, NOT
+// the re-key, and saying so is the point of the three-way partition: the re-key's own contribution
+// is exactly the VERDICT-only column, and each member of it is re-verified here against its own
+// blob rather than trusted from the partition that produced it.
 // ═════════════════════════════════════════════════════════════════════════════════════════════════
 let LIVE_ADOPTED = null;
 {
@@ -430,16 +438,23 @@ let LIVE_ADOPTED = null;
   const newSelector = /if \(!hasGate && !hasVerdict\) continue;/.test(GRADER_SRC);
   const occupancy = /adoptedN > 0 && adoptedParsed === adoptedN/.test(GRADER_SRC);
   const g5occupancy = /adopted\.length > 0/.test(GRADER_SRC);
+  // Each VERDICT-only member re-verified against its own blob: no line may START with `GATE: `,
+  // which is the property that made it invisible. A member that failed this would mean the
+  // partition above, not the selector, is what is wrong.
+  const misfiled = verdictOnly.filter((f) => git('show', `${REV}:${f}`).split('\n')
+    .some((l) => l.startsWith('GATE: ')));
   const ok = oldSelectorSites === 0 && newSelector && occupancy && g5occupancy
-    && LIVE_ADOPTED === both.length + verdictOnly.length;
-  leg('G5', 'THE §4 RE-KEY MOVED ZERO MEMBERS IN THE LIVE TREE, AND THE 6 → 10 IS POPULATION '
-    + 'GROWTH, NOT THE CURE — counted here independently of the grader, by partitioning every '
-    + 'committed `.out` at the rev three ways. The re-key can only add VERDICT-only recordings and '
-    + 'there are none yet, so its effect is demonstrable only in a scratch repo, which is where he '
-    + 'drove it. Both old selector sites are gone and both occupancy conjuncts are present',
+    && misfiled.length === 0;
+  leg('G5', 'THE §4 RE-KEY\'S OWN CONTRIBUTION IS THE VERDICT-ONLY COLUMN, AND THIS ROUND PUT THE '
+    + 'FIRST MEMBERS IN IT — every committed `.out` at the rev partitioned three ways, '
+    + 'independently of the grader. Most of the 6 → 13 is population growth and is NOT the cure; '
+    + 'the re-key\'s effect is the third column alone, which his §4 could only demonstrate in a '
+    + 'fixture and which my own recordings now occupy for real. Each member of it is re-verified '
+    + 'against its own blob, so a misfiled member would redden this rather than inflate it',
     `committed .out at ${SHORT}: prose-gate only ${gateOnly} · BOTH lines ${both.length} · `
-    + `VERDICT-only (the members the old selector could not see) ${verdictOnly.length} `
-    + `${JSON.stringify(verdictOnly)}\n`
+    + `VERDICT-only — the members the old selector could not see — ${verdictOnly.length} `
+    + `${JSON.stringify(verdictOnly)} · of those, misfiled (a prose gate line after all) `
+    + `${misfiled.length} ${JSON.stringify(misfiled)}\n`
     + `        old \`GATE: \`-only selector sites remaining in the grader: ${oldSelectorSites} · `
     + `new selector present: ${newSelector} · P1 occupancy conjunct: ${occupancy} · G5 occupancy `
     + `conjunct: ${g5occupancy}`,
@@ -561,6 +576,34 @@ const g7 = () => {
   // P2 — my own promotion moves the adoption cell, and the re-key must hold under it. Stated here,
   // driven AFTER the commit into a separate recording (405 — never draft the slot for a running
   // measurement; the figure below is read out of the post-commit file or the slot stays OPEN).
+  // THE BASELINE IS PINNED TO A COMMITTED RECORDING, NOT RECOMPUTED. Drive 3 scored this REFUTED
+  // against a true LANDED: the baseline was `LIVE_ADOPTED`, counted in `G5` at HEAD, so committing
+  // this round's recordings moved the baseline and the post-commit figure by the same 3 and
+  // `13 > 13` is false. A cell sourced from HEAD inverts when the thing it measures lands, and this
+  // is the fourth instance of that class on this project (420/422/436). Read now out of `drive2.out`
+  // — the committed recording of the pre-commit drive — with both fields asserted to have matched,
+  // so a missing field REFUSES rather than reading as a zero (393).
+  const BASE_REL = 'docs/research/round444-instruments/drive2.out';
+  let base = null; let baseWhy = 'unread';
+  //
+  // Read out of ONE asserted line, with a class that cannot cross a newline. Drive 4 read a
+  // baseline of 74968: `/VERDICT-only[^0-9]*(\d+)/` over the whole file matched an earlier
+  // occurrence of the label and then ran `[^0-9]*` ACROSS the newline to the first digits it could
+  // find, which were in a rev hash on a later line (415 — a proximity-window key over-reports;
+  // 412 — the row you are looking for becomes a terminator). The line is isolated first and
+  // asserted to occur exactly once.
+  try {
+    const rows = git('show', `${REV}:${BASE_REL}`).split('\n')
+      .filter((l) => l.trimStart().startsWith('committed .out at '));
+    if (rows.length !== 1) baseWhy = `${rows.length} \`committed .out at\` rows in ${BASE_REL}, not 1`;
+    else {
+      const mb = rows[0].match(/BOTH lines (\d+)/);
+      const mv = rows[0].match(/VERDICT-only[^0-9\n]*?(\d+)/);
+      if (mb === null || mv === null) baseWhy = `fields absent in the ${BASE_REL} row`;
+      else { base = Number(mb[1]) + Number(mv[1]); baseWhy = `BOTH ${mb[1]} + VERDICT-only ${mv[1]}`; }
+    }
+  } catch (e) { baseWhy = `${BASE_REL} not committed at ${SHORT}`; }
+
   const PC_REL = 'docs/research/round444-instruments/his-round442-instrument.postcommit.out';
   const pcPath = join(REPO, PC_REL);
   let pcAdopted = null; let pcGate = null; let pcMigrated = null;
@@ -576,12 +619,14 @@ const g7 = () => {
     + 'round commits recordings carrying a `VERDICT/` line, so a post-commit drive of the re-keyed '
     + 'Round 442 instrument must read an ADOPTED count strictly greater than the pre-commit figure '
     + 'AND keep its gate green. This is the trap that reddened P1 on its own promotion in Round 442 '
-    + 'drive 2, and a re-key that had not fixed it would fail here rather than in a fixture',
-    `ADOPTED pre-commit at ${SHORT}, counted independently in G5: ${LIVE_ADOPTED} · post-commit, `
-    + `read off ${relative(REPO, pcPath)}: ${pcAdopted ?? 'OPEN (not yet driven)'} · fully migrated `
-    + `post-commit: ${pcMigrated ?? 'OPEN'} · post-commit gate: ${pcGate ?? 'OPEN'}`,
-    pcAdopted === null || pcGate === null ? null
-      : (pcAdopted > LIVE_ADOPTED && /^GATE: true/.test(pcGate)));
+    + 'drive 2, and a re-key that had not fixed it would fail here rather than in a fixture. Drive '
+    + '3 scored it REFUTED off a baseline recomputed at HEAD — see the comment on the baseline',
+    `ADOPTED baseline, PINNED to ${BASE_REL} at ${SHORT} (${baseWhy}): ${base ?? 'UNREADABLE'} · `
+    + `live count at this rev, for contrast and NOT used as the baseline: ${LIVE_ADOPTED} · `
+    + `post-commit, read off ${relative(REPO, pcPath)}: ${pcAdopted ?? 'OPEN (not yet driven)'} · `
+    + `fully migrated post-commit: ${pcMigrated ?? 'OPEN'} · post-commit gate: ${pcGate ?? 'OPEN'}`,
+    pcAdopted === null || pcGate === null || base === null ? null
+      : (pcAdopted > base && pcMigrated > 0 && /^GATE: true/.test(pcGate)));
 }
 
 // ═════════════════════════════════════════════════════════════════════════════════════════════════

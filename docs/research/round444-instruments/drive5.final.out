@@ -1,0 +1,61 @@
+file:///private/var/folders/jl/g34tk0xx7nj20xbjvyq6bskc0000gn/T/klatch-r443-cure-635dP6/verdict.cured.mjs?t=1792802043550:217
+  const rt = readVerdict(line);
+        ^
+
+SyntaxError: Identifier 'rt' has already been declared
+    at compileSourceTextModule (node:internal/modules/esm/utils:355:16)
+    at ModuleLoader.moduleStrategy (node:internal/modules/esm/translators:90:18)
+    at #translate (node:internal/modules/esm/loader:441:20)
+    at afterLoad (node:internal/modules/esm/loader:509:29)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:514:12)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:567:36)
+    at afterResolve (node:internal/modules/esm/loader:614:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:620:12)
+    at node:internal/modules/esm/loader:639:32
+    at TracingChannel.tracePromise (node:diagnostics_channel:539:22)
+
+Node.js v26.5.0
+SUBJECTS: docs/research/lib/verdict.mjs · docs/research/round442-instruments/grade-the-shared-verdict-emitter.mjs
+REV: 7459d6a3   pre-cure blob pinned at: 626ab6fe   depth: 0
+verdict.mjs selfTest(): true
+
+ ok  G1  HIS ROUND 443 §1 DEFECT REPRODUCES AGAINST THE PINNED PRE-CURE BLOB AND IS CLOSED AGAINST THE TREE — one matrix, 11 id shapes × 2 subject versions, the pre-cure version read as a blob at 626ab6fe and not re-derived from HEAD. The OLD row must carry the defect and the control row must round-trip under BOTH, so the cure cannot be graded against a version that never had the property or by a throw-everything emitter
+        OLD (626ab6fe, no ID_GRAMMAR: true): threw 0 · emitted-then-refused 8 · emitted-then-MISREAD 2 · faithful 1 · unclassified 0
+        NEW (7459d6a3): threw 10 · emitted-then-refused 0 · emitted-then-MISREAD 0 · faithful 1 · unclassified 0
+        PUBLISHED STRING `RED legs=1 red=[]` — a red run with an empty red list — occurs OLD 3× ["id key absent","id: undefined","id: ''"], NEW 0× []
+        control row OLD EMITTED_FAITHFUL / NEW EMITTED_FAITHFUL
+        OLD outcome by shape: ["control: id \"G1\"=EMITTED_FAITHFUL","id key absent=EMITTED_REFUSED(TOKEN_LIST_CONTRADICTION)","id: undefined=EMITTED_REFUSED(TOKEN_LIST_CONTRADICTION)","id: ''=EMITTED_REFUSED(TOKEN_LIST_CONTRADICTION)","id: 'A,B'=EMITTED_REFUSED(COUNT_LIST_CONTRADICTION)","id: 'G4 b'=EMITTED_REFUSED(MALFORMED_FIELDS)","id: 'a=b'=EMITTED_REFUSED(MALFORMED_FIELDS)","id: 'x]y'=EMITTED_REFUSED(MALFORMED_FIELDS)","PRED id: 'A,B' beside a green pred=EMITTED_MISREAD(refuted read back wrong)","PRED id: '' (prefused)=EMITTED_MISREAD(prefused read back wrong)","PRED id: 'A,B' alone=EMITTED_REFUSED(COUNT_LIST_CONTRADICTION)"]
+ ok  G2  EACH EDIT IS SUFFICIENT ON ITS OWN, AND THE FOUR-LIST WIDENING PAST HIS SPEC IS WORTH 2 SHAPES — five variants of the cured subject, each anchor asserted to occur exactly once and each slice gated on what it removed. `TWO_LIST` is his §2 spelling (`red`/`refused` only); the count it admits is the entire content of my claim that the pred lists had to be compared too. `NEITHER` reproduces the pre-cure behaviour from the CURED source, which is a second, independent reading of G1's OLD row
+        anchors grammar 1 · fourth-list 1 · round-trip 1 (each exactly 1: true) · removed slice carries the guard it claims to: true
+        shapes ADMITTED (emitted-then-refused + emitted-then-misread), of 11: BOTH 0 · GRAMMAR_ONLY 0 · ROUNDTRIP_ONLY 0 · TWO_LIST 2 · NEITHER 10
+        throws by variant: BOTH 10 · GRAMMAR_ONLY 10 · ROUNDTRIP_ONLY 10 · TWO_LIST 8 · NEITHER 0
+        TWO_LIST admits: ["PRED id: 'A,B' beside a green pred → EMITTED_MISREAD(refuted read back wrong)","PRED id: '' (prefused) → EMITTED_MISREAD(prefused read back wrong)"]
+        control round-trips under every variant: true []
+ ok  G3  EVERY ID THE GRAMMAR ADMITS ROUND-TRIPS, SO THE ROUND-TRIP GUARD IS CURRENTLY UNREACHABLE AND I AM NOT CLAIMING IT CATCHES ANYTHING TODAY — a search over grammar-legal ids, in both the leg and the pred position, for one that breaks the string/list correspondence. Its value is closure under a FUTURE widening of the grammar or a change to the reader, not a live catch; the edit that bites today is the grammar, and G2 shows each is sufficient alone
+        grammar-legal id pairs searched 450 · that break the correspondence 0 []
+ ok  G4  HIS §3 DEFECT REPRODUCES FROM THE PINNED PRE-CURE BLOCK, MY CURE CATCHES IT, AND HIS LITERAL SPELLING OF THE CURE REFUTES P2 AGAINST A TRUE LANDED STATE — three spellings of the P2 block, each SLICED from a grader source rather than retyped, × two subjects, the crippled one built with the C2 cripple sliced out of my own vacuity harness. The pre-cure row is the known positive: it must LAND under the cripple, which is the defect. His literal `inferable + threw === GRID.length` is `0 + 0` against a grid of 36 whenever P2 is true
+        slices: GRID 497B · P2 new 2794B · P2 pre-cure 884B · C2 cripple anchor occurs 1× in the subject (exactly 1 required) · my conjunct occurs 1× in the sliced block
+        PRE-CURE (his §3 subject) / sound: LANDED · PRE-CURE (his §3 subject) / crippled: LANDED · MINE / sound: LANDED · MINE / crippled: REFUTED · HIS LITERAL / sound: REFUTED · HIS LITERAL / crippled: REFUTED
+        PRE-CURE (his §3 subject) / sound → grid outputs from which "names no legs" is inferable: 0 of 36
+        PRE-CURE (his §3 subject) / crippled → grid outputs from which "names no legs" is inferable: 0 of 36
+        MINE / sound → grid outputs from which "names no legs" is inferable: 0 of 36 · rendered 36 · threw 0 · rendered+threw 36 of 36
+        MINE / crippled → grid outputs from which "names no legs" is inferable: 0 of 36 · rendered 28 · threw 8 · rendered+threw 36 of 36 · throwers ["renderVerdict would have quoted a run with the wrong token: VERDICT/1 ok legs=2 red=[] ref","renderVerdict would have quoted a run with the wrong token: VERDICT/1 ok legs=2 red=[] ref"]
+        HIS LITERAL / sound → grid outputs from which "names no legs" is inferable: 0 of 36 · rendered 36 · threw 0 · rendered+threw 36 of 36
+        HIS LITERAL / crippled → grid outputs from which "names no legs" is inferable: 0 of 36 · rendered 28 · threw 8 · rendered+threw 36 of 36 · throwers ["renderVerdict would have quoted a run with the wrong token: VERDICT/1 ok legs=2 red=[] ref","renderVerdict would have quoted a run with the wrong token: VERDICT/1 ok legs=2 red=[] ref"]
+ ok  G5  THE §4 RE-KEY'S OWN CONTRIBUTION IS THE VERDICT-ONLY COLUMN, AND THIS ROUND PUT THE FIRST MEMBERS IN IT — every committed `.out` at the rev partitioned three ways, independently of the grader. Most of the 6 → 13 is population growth and is NOT the cure; the re-key's effect is the third column alone, which his §4 could only demonstrate in a fixture and which my own recordings now occupy for real. Each member of it is re-verified against its own blob, so a misfiled member would redden this rather than inflate it
+        committed .out at 7459d6a3: prose-gate only 147 · BOTH lines 11 · VERDICT-only — the members the old selector could not see — 2 ["docs/research/round444-instruments/drive1.out","docs/research/round444-instruments/drive2.out"] · of those, misfiled (a prose gate line after all) 0 []
+        old `GATE: `-only selector sites remaining in the grader: 0 · new selector present: true · P1 occupancy conjunct: true · G5 occupancy conjunct: true
+ ok  G6  HIS UNMODIFIED ROUND 443 INSTRUMENT CANNOT GRADE THE CURED TREE — it dies at import and publishes NOTHING, not a red leg. His `G3` patches the subject blob at the rev and guards on his anchor `  return line;` occurring once; the anchor survives the cure, so his round-trip edit lands a SECOND `const rt` and the scratch module is a SyntaxError. His edits, sliced from his source, are applied here to BOTH blobs: clean on the pre-cure one, fatal on the cured one, which is what attributes the collision to the cure rather than to his patch. Routed back to him in this round's memo: the guard has to key on the cure being ABSENT, not on the anchor being present
+        his committed drive5 verdict (read with my reader): RED red=["G2","G4","G5","G6"]
+        his instrument re-driven at 7459d6a3: NO_VERDICT_LINE · output 18 line(s), VERDICT lines 0, leg lines 0
+        his 2 sliced CURE_EDITS applied to the PRE-CURE blob: IMPORTS · applied to the CURED blob: SyntaxError: Identifier 'rt' has already been declared
+        his first error line: SyntaxError: Identifier 'rt' has already been declared
+ ok  G7  THIS DRIVE REWROTE NO COMMITTED RECORDING, and the three files it reads as subjects are byte-identical at exit. His instrument is driven in-place by G6, so this is the cell that catches it having written to the tracked tree
+        tracked MODIFIED on entry (not this drive's): 1 ["docs/research/round444-instruments/grade-the-round-trip-cure.mjs"] · tracked files MODIFIED by this drive: 0 [] · subjects byte-identical at exit: true []
+
+OPEN     P1  HIS GATE GOES GREEN AT THIS REV — PRE-REGISTERED BEFORE DRIVE 1 AND NOW REFUSED, NOT LANDED. The prediction was that HIS instrument, which I did not write and have not edited, would read the tree as cured, because a cure graded only by the instrument of the seat that wrote it is graded by its author. It cannot be scored either way: his instrument dies at import at this rev (G6), so the oracle is UNAVAILABLE rather than negative. Scoring this REFUTED would blame the cure for his patch colliding with it, and scoring it LANDED on my own legs would be the thing it exists to avoid (436 — an instrument that cannot refuse manufactures findings). It stays open until he lands the one-line guard G6 names
+        his gate line at 7459d6a3: ABSENT — his instrument printed no gate line at all
+LANDED   P2  MY OWN PROMOTION MOVES THE ADOPTED CELL AND THE RE-KEYED GATE SURVIVES IT — this round commits recordings carrying a `VERDICT/` line, so a post-commit drive of the re-keyed Round 442 instrument must read an ADOPTED count strictly greater than the pre-commit figure AND keep its gate green. This is the trap that reddened P1 on its own promotion in Round 442 drive 2, and a re-key that had not fixed it would fail here rather than in a fixture. Drive 3 scored it REFUTED off a baseline recomputed at HEAD — see the comment on the baseline
+        ADOPTED baseline, PINNED to docs/research/round444-instruments/drive2.out at 7459d6a3 (BOTH 10 + VERDICT-only 0): 10 · live count at this rev, for contrast and NOT used as the baseline: 13 · post-commit, read off docs/research/round444-instruments/his-round442-instrument.postcommit.out: 13 · fully migrated post-commit: 2 · post-commit gate: GATE: true   (9 leg(s))
+
+VERDICT/1 ok legs=7 red=[] refused=[] preds=2 refuted=[] prefused=[P1]
