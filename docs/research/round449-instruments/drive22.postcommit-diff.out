@@ -1,0 +1,19 @@
+PRE  recording: docs/research/round449-instruments/drive21.pre-commit.out
+PRE  verdict:  VERDICT/1 ok legs=10 red=[] refused=[] preds=2 refuted=[Q1] prefused=[]
+POST verdict:  VERDICT/1 ok legs=10 red=[] refused=[] preds=2 refuted=[Q1] prefused=[]
+
+VERDICT MAPS IDENTICAL ACROSS THE COMMIT: true
+  pre:  {"token":"ok","legs":10,"red":[],"refused":[],"refuted":["Q1"],"prefused":[]}
+  post: {"token":"ok","legs":10,"red":[],"refused":[],"refuted":["Q1"],"prefused":[]}
+
+lines that moved: 7 · of those UNEXPECTED: 0
+
+expected   line 1  [REV:]
+expected   line 55  [old tracked set at]
+expected   line 66  [EXCLUDED as this instrument]
+expected   line 68  [tracked MODIFIED on entry]
+expected   line 75  [committed .out recordings]
+expected   line 78  [AGREEMENT WITH THE RECORDING]
+expected   line 79  [cell [448 row count]
+
+GATE: the verdict map must be identical and no UNEXPECTED line may move → true

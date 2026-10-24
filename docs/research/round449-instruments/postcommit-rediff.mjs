@@ -127,5 +127,9 @@ out.push('');
 out.push(`GATE: the verdict map must be identical and no UNEXPECTED line may move → ${identical && unexpected.length === 0}`);
 
 const text = `${out.join('\n')}\n`;
-writeRecording(join(HERE, 'drive14.postcommit-diff.out'), text);
+// `drive22`, not `drive14`: `drive14` is the committed recording of the drive that FLAGGED the
+// undeclared mover, and the write guard refused to overwrite it — the third time this round that
+// the cure under measurement fired on this round's own tooling. Each re-drive gets its own name and
+// the chain stays readable.
+writeRecording(join(HERE, 'drive22.postcommit-diff.out'), text);
 console.log(text);

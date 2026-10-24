@@ -84,7 +84,26 @@ that are function **parameters** (no in-file assignment — genuinely not static
 call site), 16 AMBIGUOUS (a name with more than one assignment, published as a refusal rather than
 resolved last-wins), and 1 concatenation with a varying basename.
 
-## Five defects of mine, every one found by driving
+## The post-commit re-drive
+
+`drive22.postcommit-diff.out`, against `drive21.pre-commit.out`:
+
+```
+VERDICT MAPS IDENTICAL ACROSS THE COMMIT: true
+lines that moved: 7 · of those UNEXPECTED: 0
+GATE: the verdict map must be identical and no UNEXPECTED line may move → true
+```
+
+The self-exclusion count moved **0 → 1** — the figure that is vacuous before promotion, and this is
+the drive that reads it rather than trusting the filter. The site figures (148 sites, 41 tracked, 34
+distinct paths) did not move at all: this round's `.mjs` files add no `writeFileSync(` sites.
+
+An earlier post-commit drive, `drive14.postcommit-diff.out`, is kept because it went **red**: it
+flagged one UNEXPECTED mover, `writeRecording(` call sites 5 → 6. That was legitimate and my
+declaration was the thing at fault — this round's own re-diff script calls the helper and joined the
+population in the commit being diffed. Declaring it is also where defect 6 came from.
+
+## Six defects of mine, every one found by driving
 
 1. **The two tracked sets were DISJOINT, not nested** — and a count gate would have passed them.
    `drive2.pre-cure-disjoint-sets.out`: mine 21, his 10, **and all 10 of his missing from mine**.
@@ -121,6 +140,24 @@ resolved last-wins), and 1 concatenation with a varying basename.
    sites that vanishes. Declared as a set rather than decoupling the leg to make a single-leg claim
    true.
 
+   Worth its own line: under FALLTHROUGH, `drive17` publishes `refuted=[]` — **`Q1` LANDS.**
+   Dropping the UNMODELLED sites instead of naming them makes the residue small enough that my own
+   prediction comes out true. A terminal bucket reached by fall-through does not merely absorb a
+   blindness; here it would have manufactured a landed prediction out of one.
+6. **Three dead conjuncts in my own gate**, two found by reading the gate against its own cripple
+   results and one by the post-commit drive:
+   - `W10`: `disagree448.length >= 0` — true of every possible value. The intent was "the matrix is
+     separating". Re-keyed `> 0`.
+   - `W3`: `trackedMembers.every((p) => TRACKED_AT_REV.has(p))` — vacuous by construction, because
+     `trackedMembers` **is** the list `TRACKED_AT_REV.has(…)` selected (417). Re-keyed on an
+     independent oracle: `git cat-file -e <rev>:<path>` for every tracked target, a different
+     question asked of a different command than the membership test that chose the members.
+   - `W6`: `viaWriteRecording >= 0` — true of every count. Dropped.
+
+   And the figure under `W6` was partly **self-inflated**: adoption was counted over a population
+   containing this round's own recorder and re-diff script. Both are published now — 6 sites in the
+   population, **4 outside this round's own directory**, against 148 direct `writeFileSync(` sites.
+
 ## `W10` — a second finding, against the shared lib
 
 Found by being the first importer of `renderTail`, censused on the import rather than on the token
@@ -156,6 +193,13 @@ against the leg count *the same recording's own verdict line* publishes, read en
 
 And the lib's own `renderRows` output: **0 of 3 rows read by either**. A round that adopts the
 shared emitter is invisible to the cripple grader that reads rows.
+
+**The promotion of this round is itself the strongest evidence for it, and it was declared before
+the drive that showed it.** `postcommit-rediff.mjs` named `AGREEMENT WITH THE RECORDING` as a field
+that MUST move on promotion, because this round's own recordings use the lib grammar. Across the
+commit, the population went 43 → 56 recordings and the **"neither agrees" cell went 8 → 21**: all
+13 of this round's new recordings land in it, and the two readers' agreement counts (20 and 33) did
+not move at all. Reported, gated nowhere — a pin on that count would redden on its own promotion.
 
 **My own first two accounts of this leg were wrong and both corrections are in the leg text.** I
 wrote "three spellings" (it is 8) and "446 is keyed on `FAIL`, which neither emitter produces"
