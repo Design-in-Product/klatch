@@ -134,3 +134,80 @@ field + all four cross-repo mailboxes); both briefs' commit hashes confirmed unc
 re-read-gap named rather than glossed; gate re-derived fresh and green at every layer; rollup and
 task list re-checked, nothing moved. Two consecutive checks found nothing further unblocked. Fire
 closed bounded.
+
+## STOP fire (~21:30 PT)
+
+Checkpoint: this seat's own SWEEP-fire commit `626ab6fe` (17:04:43 PT). `git log
+626ab6fe..HEAD --format='%h %an %ci %s'` — 13 new commits, none mine: Daedalus's Round 444
+chain (took all three cures Theseus routed in Round 443 §7, graded against the pinned
+pre-cure blob rather than HEAD, found Theseus's two-list spelling admits 2 of 11 shapes, and
+found Theseus's own Round 443 instrument dies at import against the cured tree because an
+anchor-presence guard can't tell "not yet applied" from "already here" — Rounds 347/389/422
+recurring a fourth time); Theseus's Round 445 chain (built the capability-test probe and
+handed the exact command to Pard, with a pin guard that caught his own worktree two minors
+below the SDK pin; took Daedalus's 444 §1/§3, repaired the anchor-presence guard by having
+each edit mark itself, and fixed his own `.join()`-based round-trip comparison that couldn't
+tell `['']` from `[]`); Pard's reply confirming the pull-into-xian's-checkout snag (589
+commits behind, plus an uncommitted Oct 9 hand-edit to `docs/briefs/fire-depth-latest.md`
+colliding with an upstream change — stash-and-don't-pop, not popped, not discarded); Argus's
+own STOP-fire sweep (independent re-verification, all byte-identical); Iris's own STOP-fire
+no-op. `git diff --stat 626ab6fe..HEAD -- packages/ scripts/` empty — all thirteen are
+`docs/research/`, mail, coordination, and log commits.
+
+**Mail — one direct question answered, one thread left open on purpose.** Pard's memo
+asked directly: "Calliope, if that [Oct 9] edit is yours or a fire's, it's in `git stash
+list`." Checked rather than assumed: grepped every Calliope session log for
+`fire-depth-latest` — every hit is this seat *reading* the file (published automatically by
+Pard's `com.xian.fire-depth-publish` launchd job), never a hand-edit; that job was itself
+broken 10-07 through 10-14 (per this seat's own 10-14 log), so a hand-edit around Oct 9 would
+have landed during the outage window, not through the path this seat relies on. Also
+confirmed every Calliope fire runs in the dedicated worktree, never in xian's bare checkout
+at `/Users/xian/Development/klatch` — true back to this seat's earliest logs (March) and true
+of this fire's own environment. Replied in full:
+`mediajunkie:docs/mail/calliope-to-pard-cc-theseus-janus-xian-oct9-fire-depth-edit-not-mine-2026-10-23.md`,
+committed (`c9830bc`, mediajunkie's commit hook flagged a missing `Claude-Session:` trailer —
+non-blocking, no session URL to supply, left as `Co-Authored-By` only per this session's own
+attribution instructions) and pushed to `mediajunkie` main. **Did not** move the Pard-to-Theseus
+thread to `read/` — tried it, then reverted (`git mv` back) on recognizing the thread still
+carries an open item (xian's attended sitting, not yet scheduled) that isn't this seat's to
+close; per CLAUDE.md's close-discipline, an open thread stays visible even with a direct
+question inside it answered. Read Theseus's two follow-ups (to Pard, to Janus) confirming
+the same plan and noting xian may want to talk with Calliope before the sitting — informational,
+no action this fire, nothing scheduled. All four standing Pard threads (10-20/21) unchanged.
+All four writable cross-repo mailboxes checked fresh via `find -newermt` against the exact
+`626ab6fe` checkpoint: `designinproduct` 2 new (both capability-test cc-only, no action);
+`mediajunkie` 4 new (2 capability-test cc-only plus two unrelated Mediajunkie-internal ops
+memos, checked by header, not addressed to this seat); `dispatch/mail` 0 new;
+`piper-morgan-product/mailboxes` 364 new, grepped for `klatch|calliope` excluding
+`MANIFEST.md` — one hit, a spend-figures reply noting Klatch's workspace wasn't read
+(correctly out of scope for that report), informational.
+
+**Gate re-verified fresh:** `npm run typecheck` 0 `error TS` across all four workspaces.
+`npm test -w packages/server` unpiped — first run showed **1 failed test, 139/140 files**;
+reran twice more, both **140/2183+1 (2184)**, byte-identical to the standing baseline — port
+3001 confirmed free before the reruns, and `packages/`/`scripts/` diff is empty since the
+last verified-green checkpoint, so this reads as a transient timing flake in one of the
+real-server-spawning tests (several carry 300ms–2200ms waits), not a regression; not chased
+further given 2/3 clean and zero code movement. `npm test -w packages/client` — **26/333+13
+(346)**, byte-identical. `node scripts/sweep-probes.mjs --census` — **153 probe files,
+43 swept/110 deferred, CENSUS OK**, unchanged. `git status --short` clean before and after
+scratch-file cleanup (`.tmp_test_run.txt`, `.tmp_test_run2.txt`, removed, never staged); one
+stash created and dropped same-fire while diagnosing a pre-existing (not fire-caused)
+divergence between `log-entry` div count and `end entry` comment count in `log.html` — confirmed
+via the stash that the 3-entry gap predates this fire's edit, unrelated to today's work.
+
+Rollup checked directly, still v171, needs-you unchanged at 2 — today's capability-test
+coordination is operational, not a product decision awaiting xian, so it doesn't belong on
+the rollup. **Task list of record: today's mandatory `log.html` entry written this fire** —
+`docs/COORDINATION.md`'s Round 444/445 translated to plain-language narrative plus the
+capability-test/Oct-9-edit thread, covering Daedalus's and Theseus's mail/coordination entries
+read in full. `docs/STATE.md` not refreshed — no product-level state change today (operational
+mail plus research-track defect-hunting only), consistent with every STOP fire since its 9-29
+refresh. Smoke-run branch still doesn't exist, the one named blocker unmoved.
+
+**Drain:** mail checked and one direct question answered in the same fire (own-seat header
+grep + commit-diff-since-checkpoint with explicit author field + all four cross-repo
+mailboxes); briefs not re-read this fire (already current per SWEEP); gate re-derived fresh
+and green at every layer after resolving one transient flake with two clean reruns; mandatory
+log.html entry written; rollup/task-list re-checked, nothing else moved. Two consecutive
+checks found nothing further unblocked. Fire closed bounded.

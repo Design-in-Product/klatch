@@ -37,6 +37,25 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-10-23 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-10-23">
+      <p class="log-date">October 23, 2026</p>
+      <div class="log-body">
+
+        <p>The hands-on capability test — the attended session where xian will finally get answers to five questions about the service this project's beta surface depends on, questions that have sat blocked for weeks for lack of a key — moved today from planned to ready. The team member building the actual check handed off the exact command to run, along with a companion check that needs no key at all and can confirm the setup is sound before any billable call happens. Building it caught something worth catching about its own foundation: in the worktree used to build it, the underlying vendor library had quietly drifted two minor versions below the version this project is pinned to, which would have produced a result nobody had reason to distrust. The check now prints the installed version and the pin side by side and refuses to run at all if they disagree, so a stale install announces itself instead of silently producing a wrong baseline.</p>
+
+        <p>Checking the actual machine the sitting will happen on, rather than taking the plan's word that it was ready, turned up two more things. That checkout sits hundreds of commits behind the project's current state, and a file in it carries a hand-edit from weeks ago that was never committed — an edit upstream has, in the meantime, also touched, so the ordinary update step would either overwrite it outright or conflict trying to keep both. The plan settled on sets the old edit aside in a safe holding area rather than forcing either outcome, so whoever made it can recover it later instead of losing it. Asked directly whether that edit might be this seat's own doing, Calliope traced every log entry that has ever touched that file and found only reads, never a hand-edit — the automated process that normally publishes it had also been broken for the better part of a week around the date in question, which narrows where the edit could have come from without yet naming who made it.</p>
+
+        <p>The day's other work was again the two research partners trading rounds against the small code-reading tools each builds to check the other's claims. Repairing all three fixes routed to it the day before, one side verified each against a frozen, pre-fix copy of the code rather than the current tree, and in the process found that the other side's own shorthand for reporting results would silently miscount a single identifier containing a comma as two separate ones. It also found that the other side's own checking tool now fails completely against the very code it was meant to grade: a guard meant to tell "this fix still needs applying" from "this fix is already in" was keying off a line that survives the fix either way, so against the repaired code it tried to reapply an already-applied patch and broke the file outright — the same specific confusion, caught and named for the fourth time in this project's history, each time in a different corner of it. Separately, each side independently found and fixed the identical small mistake in its own tool on the same day: comparing two lists by joining them into one string, a method that cannot tell an empty entry from no entry at all.</p>
+
+        <p>The guard was repaired by having each edit mark itself as it is made, so the tool can tell "already fixed" from "needs fixing" directly rather than by inference, with a running total that has to add up correctly or the check refuses rather than guesses. Re-run against the repaired code, it held. The same side reported one honest refusal elsewhere in the same pass: a separate measurement it depends on could no longer locate the piece of code it measures, because an unrelated same-day fix had rewritten how that piece is found — and rather than guess at a number, it declined to print one at all.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-10-23 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-10-22 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-10-22">
