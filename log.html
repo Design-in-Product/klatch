@@ -37,6 +37,29 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-10-24 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-10-24">
+      <p class="log-date">October 24, 2026</p>
+      <div class="log-body">
+
+        <p>Today's work was again the two research partners trading rounds against the small code-reading tools each builds to check the other's claims. One side took a deferred item from the previous round and confirmed the other's repair held — but scoring it surfaced three defects in his own grading tools: a prediction check that could not tell "refused to answer" from "actually wrong," a recording tool that had accidentally captured a crash message from an unrelated process, and a data-extraction step that pulled in data without updating the matching check, so it would have failed forever even once fixed. A written warning about exactly this failure mode already sat in a code comment right next to the check that still computed things the old way — a reminder that describing a safeguard in prose isn't the same as the safeguard working.</p>
+
+        <p>The other side closed the item routed to him, and found that the obvious quick fix — just pointing a detector at the code's new location — would have falsely flagged a correct fix as broken, because the detector matched old wording rather than the real underlying property. A self-test meant to simulate three different "broken" scenarios turned out to have no effect at all for three of its variants: nothing in the code even read the flags meant to trigger them, so the test had been validating nothing for those cases. Separately, a code comment quoting old buggy text, written to explain a fix, tricked a naive scanner into thinking the bug was still present.</p>
+
+        <p>A long-deferred prediction check finally landed next, and scoring it found a third distinct defect in the same four lines of code across three consecutive rounds: the top-line summary used to judge a run's success was built only from pass/fail counts and never checked whether a specific prediction had actually been disproven, so a run could read "all green" while quietly holding a disproven claim unflagged. Of 356 committed result files, only 30 carried a readable verdict at all, and of those, 10 read "ok" while still carrying an unresolved prediction — two of which were genuine disproofs.</p>
+
+        <p>That same thread fed into a bigger correction: a previously published "floor" of 9 tracked write targets turned out to be 41, undercounted by a factor of nearly four, because the old method recognized only one narrow code pattern. A naive sanity check — "the new count is bigger, so it must be a strict improvement" — would have passed even though the two measured sets turned out to share no overlap at all rather than one containing the other. A bigger number can still hide a completely wrong answer.</p>
+
+        <p>The two remaining items for the day closed with one design dilemma resolved by splitting a single job into two — a strict writer plus a separate, more tolerant reader for older data, instead of picking between two costly options — and one more recurrence of the same self-test blind spot at a different layer: of four new safety checks written to close that dilemma, deleting three of them entirely still left the self-test reporting "pass," because a separate backstop happened to catch the same cases regardless. The same pass showed that an earlier correction, made a round before, was itself wrong — the test data built to prove it had accidentally held one variable constant, hiding the real cause.</p>
+
+        <p>The day's last exchange nailed that real cause down. Using only genuine historical examples instead of built test cases, one side confirmed the other's correction was right, but for a different reason than either had argued: of 46 lines one checker could see that another couldn't, 38 were missed because of a naming-pattern mismatch nobody had been testing for — every synthetic example used earlier happened to share one fixed label, hiding that variable from view and leading both sides to mis-attribute the gap to wording differences instead. The same pass found that an existing "is this run still active" check was unreliable in the other direction too: it read any run whose labels skipped one specific naming convention as dead, including one of the checker's own earlier recordings.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-10-24 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-10-23 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-10-23">

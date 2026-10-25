@@ -155,3 +155,65 @@ cc-only confirmation on both new round-track memos, all four cross-repo mailboxe
 re-confirmed unchanged by hash; rollup re-checked, nothing to move; gate re-derived fresh and green
 at every layer, one transient test flake caught and resolved by re-run rather than reported as a
 regression. Two consecutive checks found nothing further unblocked. Fire closed bounded.
+
+## STOP fire — ~21:35 PT
+
+Checkpoint is this seat's own SWEEP-fire commit `9ddc9d17` (17:05:09 PT). `git log
+9ddc9d17..HEAD --format='%h %an %ci %s'` = 10 new commits, none mine: Daedalus's Round 450 chain
+(rows get the three guards the verdict line has had since 444 and prediction rows exist; the
+cripple grading found three guards his own self-test couldn't tell from their backstop; README,
+post-commit re-drive, memo to Theseus; coord+log noting his own coord write landed in Argus's
+section before he caught it), Argus's and Iris's own STOP-fire no-ops, and Theseus's Round 451
+chain (the real-exemplar key settles the subset question and agrees with Daedalus's verdict — 38
+of 46 lines were an axis his key held constant, not the wording difference everyone had argued;
+post-commit re-drive; memo to Daedalus; coord+log). `git diff --stat 9ddc9d17..HEAD -- packages/
+scripts/` — **empty**, confirmed not assumed — all ten commits under `docs/research/`
+round450/451-instruments plus mail/coord/log.
+
+**Mail:** two new memos since checkpoint (Round 450/451, Daedalus↔Theseus, cc this seat only) —
+headers and bodies read in full, cc-only confirmed, neither asks anything of this seat. All four
+standing Pard threads (10-20/21) unchanged; `git branch -r | grep -i smoke` still empty, no
+smoke-run branch cut. All four writable cross-repo mailboxes re-checked fresh via `find -newer`
+against a scratch reference file stamped to the exact checkpoint timestamp (created and removed
+within this fire, never committed): `designinproduct` 7 new (all one Tally-onboarding/mail-routing
+thread among Janus/Themis/Pard/Wedge, zero `klatch|calliope` content hits), `mediajunkie` 2 new
+(the same Tally-mail-routing thread's mediajunkie-side half, zero hits), `dispatch` 0 new,
+`piper-morgan-product/mailboxes` 352 new, content-grepped excluding `MANIFEST.md` — zero hits.
+Nothing owed from any.
+
+**Both briefs** checked by commit date rather than a truncated hash string this fire: the
+designinproduct brief (`657d179`, 2026-10-24 04:13:51 PT) and the fire-depth report (`85a737d7`,
+06:50:11 PT) both predate this seat's own 17:05:09 PT checkpoint — unchanged, no re-read needed.
+
+**Rollup:** still v171, needs-you unchanged at 2 — the two new memos are cc-only research-track
+findings, not a rollup-tracked item.
+
+**Gate re-verified fresh:** `npm run typecheck` 0 `error TS` across all four workspaces; `npm test
+-w packages/server` — **140 files · 2183 passed · 1 skipped (2184)**, byte-identical, clean on the
+first run this time; `npm test -w packages/client` — **26 passed|13 skipped (39) · 333
+passed|13 skipped (346)**, byte-identical; `node scripts/sweep-probes.mjs --census` — **153 probe
+files, 43 swept/110 deferred, CENSUS OK**, unchanged. No full driving sweep re-run — zero
+`packages/`/`scripts/` diff since the SWEEP fire. `lsof -i :3001` port free. `git status --short`
+clean before and after (one scratch checkpoint-reference file created and removed within this
+fire, never committed).
+
+**Mandatory `log.html` entry written this fire, on time** — the Round 446–451 chain (`next_due`
+2026-10-24), translated to plain-language narrative. Source-gathering for the six memos (446
+through 451) delegated to an Explore subagent for factual extraction; prose written directly
+against house style from that extraction, not from the agent's own wording. Inserted above the
+10-23 entry; div/comment-tag count checked before and after (66/63, the same pre-existing gap of 3
+as every prior render, unaffected by this edit — one `log-entry` div and one matching `end entry`
+comment added by this insertion). `calliope-tasks.md`'s recurring-items row updated (`next_due`
+2026-10-25, `last_completed` 2026-10-24) with a content summary appended, same pattern as every
+prior on-time render. `docs/STATE.md` not refreshed — no product or roadmap change today, docs/
+research-track only.
+
+Task list of record: smoke-run branch still doesn't exist; all four standing Pard threads
+(10-20/21) unchanged — the one named blocker unmoved, not mine to resolve alone.
+
+**Drain:** mail checked (commit-diff-since-checkpoint with explicit author field, header-and-body
+cc-only confirmation on both new round-track memos, all four cross-repo mailboxes); both briefs
+confirmed unchanged by commit date against the exact checkpoint; rollup re-checked, nothing to
+move; gate re-derived fresh and green at every layer; the mandatory `log.html` entry written from
+a full read (via delegated extraction) rather than summarized from headers; task-list bookkeeping
+updated alongside it. Two consecutive checks found nothing further unblocked. Fire closed bounded.
