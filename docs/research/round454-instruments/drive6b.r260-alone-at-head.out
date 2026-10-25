@@ -1,0 +1,76 @@
+
+Round 260 — a census pin has two axes, and the round number in a filename is not one of them
+Repo: /Users/xian/Development/klatch-worktrees/daedalus
+
+§1 — structure preservation: a masker may DELETE a bracket, never INVENT one
+
+  [A1] PASS  the extracted stripSource imports from scripts/lib/strip-source.mjs and is not fooled
+        Imported from its new home, not sliced out of verify-tsx-guard. Fed the apostrophe-in-regex input that fooled two of the three readers at Round 258: the line comment does NOT survive into the code reading. Re-derived from the input, not quoted from Round 259 §1.
+  [A2] PASS  stripSource INVENTS no bracket over the live population — the property the span finder needs
+        206 files under scripts/ (readdirSync walk, not grep). Offsets where the mask holds ( or ) but the original does not: 0, in 0 files. Length mismatches: 0. Round 259 arm C1 measured length and line count over 139 modules; this is the NEXT property along, the one his own §2 rule names and the one assertionArgumentSpansDelegated's depth count actually rests on.
+  [A2b] PASS  that comparison CAN come out non-zero — a length-preserving masker that invents a bracket is caught
+        A minted masker that blanks string bodies to '(' instead of ' ' is length-preserving (44 === 44) and scores 13 violations. So length preservation does NOT imply structure preservation, and A2's zero is a real measurement rather than a tautology.
+  [A3] MEAS  the property is non-vacuous — stripSource does delete brackets, in most files
+        Brackets deleted by masking (the legal direction): 18759 across 204 of 206 files. If this were 0 the mask would be doing nothing and A2 would pass vacuously.
+  [A4] PASS  the Round 259 §2 arithmetic defect does not reach the delegated span finder
+        His defect was an offset derived by SUBTRACTING a capture's length off a match end, which backtracking can move. The delegated finder derives its start from a match TAIL with no capture subtraction and then walks forward, so the same input — a regex literal whose body is blanked, directly above a check() — yields 1 span(s) and the span is the argument list: "'Q', 'a claim', dirty === '', 'detail'". Driven, not reasoned.
+
+§2 — the C2 ruling: a lone post-repair assertion is not a finding
+
+  [B1] PASS  post-move maskComments is NOT fooled — Daedalus's flipped C2, re-derived
+        The shared lib reader after Round 259 delegated it to stripSource: comment survives into the code reading = false. This is the arm he rewrote in my probe, and its direction is right — as filed it asserted a defect and would have reddened on the repair it asked for.
+  [B2] PASS  pre-move maskComments IS fooled — restored from git, so the finding stays re-derivable
+        `git show 8cbd7ea5:scripts/lib/probe-source-constants.mts`, maskComments extracted by declaration and evaluated through the tsx loader: comment survives = true. B1 alone cannot distinguish a repaired defect from one that was never there; B1+B2 can. His own §8 item 1 hands Argus exactly this remedy for exactly this function — it belonged in my arm too.
+  [B3] PASS  delete the regex literal and pre- and post-move agree — so the regex is the cause
+        Same fixture with the regex line removed: neither reader is fooled. So B2's result is caused by the regex literal's apostrophe and not by the comment, the layout, or the restore path.
+
+§3 — the G4 ruling: which files, and what they said
+
+  [C1] MEAS  the heuristic cannot parse half the population
+        87 of 206 files under scripts/ score roundOf = 0, and 0 <= 256, so every one of them is admitted to the "what Round 256 could see" population regardless of when it arrived. 4 of those carry a porcelain call and so can actually reach the census: lib/db-sentinel.mts, lib/tree-fingerprint.mts, probe-round223b-db-existence-is-not-identity.mts, probe-round224b-the-migrated-probes-against-a-stranger.mts.
+  [C2] PASS  the two files that reach the census are admitted because the parser FAILED, not because they are old
+        probe-round223b-db-existence-is-not-identity.mts and probe-round224b-the-migrated-probes-against-a-stranger.mts — rounds 223 and 224, which Round 256 genuinely could see, so their inclusion is CORRECT. The mechanism is not: `^probe-round(\d+)-` requires a hyphen directly after the digits and these carry a 'b', so roundOf returns 0/0 and they pass the <= 256 test as unparsed rather than as old. Right answer, wrong reason — the shape my own Round 258 arm G4 found in my own published figure.
+  [C3] PASS  the fuse is not defused — any future non-conventional filename re-lights it
+        A Round 261 artifact named with a 'b' suffix, or any verify-*.mjs, scores 0 and is admitted to a population defined as "files Round 256 could see". Round 259 added scripts/lib/strip-source.mjs, which scores 0 too; it does not move the figure only because it carries no porcelain call. The gate that is holding is the PORCELAIN test, not the fix.
+  [C4] PASS  the git-tree pin AGREES WITH the roundOf heuristic over the same bytes — a relation, not a literal
+        Population = git ls-tree at 6465346a (the commit that ADDED probe-round256), minus that probe itself — 137 files, 137 still present today. Reading today's bytes: tree pin 13 comparing / 10 asserting, heuristic 13 / 10. The two instruments agree, which is the argument; the figure itself is today's and is NOT pinned — C5 says why, and C6 holds the literal over the population where a literal survives. This arm read "13 / 10" until 2026-09-24, when the fleet moved underneath it exactly as C5 predicted.
+  [C5] MEAS  the second axis is live and unpinned
+        Of the 137 files Round 256 could see, 19 have different bytes today and 0 are gone. Pinning WHICH FILES while reading TODAY'S BYTES is half a pin: every one of those 19 files could add or remove a porcelain comparison without the population changing at all.
+  [C6] PASS  pinning BOTH axes also reproduces 13 / 10 — so half a pin is currently enough, by luck
+        Same population, read at 6465346a instead of today: 13 comparing, 10 asserting. The two-axis pin and the one-axis pin agree, which is the honest headline: Daedalus's repair is not wrong today, it is UNGUARDED. Nothing in the fleet would notice when those 19 drifting files start to disagree.
+  [C7] MEAS  the two populations are not the same set, even though the figures match
+        roundOf heuristic admits 152 files; the tree pin admits 137. Admitted by the heuristic and NOT by the tree — i.e. files that arrived after Round 256 and were let in anyway: gate.mts, lib/characterisation-markers.d.mts, lib/characterisation-markers.mjs, lib/db-sentinel.mts, lib/gate-line.mts, lib/round361-pin-grade.mts, lib/skipped-shape-census.mts, lib/strip-source.d.mts, lib/strip-source.mjs, lib/tree-fingerprint.mts, lib/tsx-required.d.mts, probe-round374b-the-subject-reaches-the-state-itself-on-a-held-port.mts, promote-probes.mts, sweep-probes.d.mts, sweep-probes.mjs. The other way: (none). Heuristic census: 13 / 10. Two different sets reaching one figure is exactly the condition under which a wrong instrument looks right.
+
+§4 — the repair, measured before the file changes
+
+  [E1] MEAS  the repaired detector's live figure, known before probe-round256 is touched
+        Over today's tree with probe-round256 SELF-excluded (204 files): unrepaired reader 14 / 11, repaired reader 14 / 10. Round 256 published 13 / 10 over a smaller tree; these are LIVE figures over a bigger one and are not comparable to it — quoting them as "13 / 10 moved" would be the error C4 exists to prevent.
+  [E2] MEAS  which files the repair changes its mind about
+        Asserting under the old reader but not the new: probe-round258-three-readers-are-two-questions-and-the-shared-one-is-already-in-lib.mts. Asserting under the new but not the old: (none). Round 258 arm G2 measured exactly one verdict flip and arm J named the mechanism — a probe that MINTS a check() fixture as a string has its own test data read as a real assertion.
+  [E3] PASS  the repair is a strict improvement on the flip Round 258 located, not a re-baseline
+        The repaired reader adds 0 new assertions and removes 1. A repair to a masker should only ever REMOVE sites it was wrong to see (fixture text read as code); a site appearing only under the new reader would mean the delegation lost coverage, which is the failure mode this whole extraction was exposed to.
+
+§5 — the same defect in his probe, and it is a moving reference not a bad measurement
+
+  [F1] PASS  probe-round259's `git show HEAD:` no longer names a file containing the scanner it slices
+        `const stripSource` present in scripts/verify-tsx-guard.mjs at HEAD: false; at 27c5cac3~1 (what HEAD was while he ran it): true. His arm A0 asserts the slice is non-empty and it is now 0 bytes, so the probe throws at the data: URL before measuring. Re-derived from the two trees, not from reading his output.
+  [F2] FAIL  the red is caused by his commit landing, not by anything Round 260 touched
+        Neither scripts/verify-tsx-guard.mjs nor scripts/lib/strip-source.mjs is modified in this working tree — this round touched probe-round256 and added this file. The only event between his green run and this red one is 27c5cac3 becoming HEAD.
+  [F3] PASS  a pinned hash is the instrument that survives the commit
+        The same slice taken at `27c5cac3~1:` instead of `HEAD:` still finds the scanner and will keep finding it for every future commit. One character class of change — a symbolic reference for a fixed one — and the arm stops having a fuse. Same remedy as C4/C6.
+
+§6 — this probe grading itself
+
+  [D1] PASS  this probe does not enrol itself in anyone else's census
+        Round 258 arm J found probe-round258 had entered probe-round256's census through fixture strings. This file carries a porcelain call (the arm-Z fingerprint) but mints no comparison-to-empty-string fixture, so the detector finds 0 sites in it. Checked, not assumed — the check is cheap and the mistake was live one round ago.
+  [D2] PASS  the restored pre-move reader is the real one, not a stub the extractor invented
+        Extracted declaration is 1133 chars and carries the Round 255 state machine ('line' mode). The pre-move file makes no reference to strip-source, confirming the commit predates the extraction. If declTextFrom had truncated, B2's red would be an artefact of the extractor rather than a property of the reader.
+  [Z] PASS  packages/ is byte-identical across this run
+        Content fingerprint (Round 256's remedy: porcelain names paths, sha256 names contents) identical at open and close. This probe reads 206 files under scripts/ and writes exactly one, under gitignored .testdata/r260/ — nothing in packages/ or scripts/.
+  [Z0] MEAS  state of packages/ at fire open is a measurement, not a grade
+        Round 256's rule: an emptiness assertion over a shared window grades whoever touched it. Fingerprint at open: P:e3b0c44298fc1c149afbf4c8996fb92427ae41… — not this run's doing either way.
+
+REGRESSIONS:
+  [F2] the red is caused by his commit landing, not by anything Round 260 touched
+
+1 of 18 regression check(s) FAILED.

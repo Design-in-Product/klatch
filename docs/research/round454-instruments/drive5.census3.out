@@ -1,0 +1,163 @@
+  SLICE GATE  ok   firstArg slice starts at its own declaration
+  SLICE GATE  ok   firstArg slice ends at a closing brace
+  SLICE GATE  ok   firstArg slice carries its unbalanced refusal
+  SLICE GATE  ok   classify slice starts at its own declaration
+  SLICE GATE  ok   classify slice ends at a closing brace
+  SLICE GATE  ok   classify slice carries the BUFFER bucket name
+  SLICE GATE  ok   classify slice carries the positively-keyed terminal bucket
+
+census3 — census2's UNMODELLED arguments, resolved ONE level.   rev = daac6b13c6d022bd1caa0cc5019b4eb37ac2246c
+  population 640 tracked source file(s) · 351 call site(s)
+
+     3  (census2) STRING:child-process-helper
+     2  (census2) STRING:literal
+    22  (census2) STRING:readFileSync-encoded
+    69  AMBIGUOUS:multiple-bindings
+          docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs:289  2 `const/let/var c =` in file
+          docs/research/round412-instruments/resolve-the-ternary-and-reconstruct-the-nine.mjs:218  2 `const/let/var t =` in file
+          docs/research/round412-instruments/resolve-the-ternary-and-reconstruct-the-nine.mjs:227  2 `const/let/var t =` in file
+          docs/research/round412-instruments/resolve-the-ternary-and-reconstruct-the-nine.mjs:285  4 `const/let/var c =` in file
+          docs/research/round415-instruments/census-the-index-keyed-population.mjs:147  2 `const/let/var raw =` in file
+          docs/research/round430-instruments/his412-prefix.sliced.mjs:285  4 `const/let/var c =` in file
+          docs/research/round430-instruments/mutant-m1-refused-false-on-success.sliced.mjs:285  4 `const/let/var c =` in file
+          docs/research/round430-instruments/mutant-m2-refusal-key-renamed.sliced.mjs:285  4 `const/let/var c =` in file
+          docs/research/round430-instruments/mutant-m3-control-message-reworded.sliced.mjs:285  4 `const/let/var c =` in file
+          docs/research/round449-instruments/probe-the-argument-shapes.mjs:73  2 `const/let/var raw =` in file
+          docs/research/round449-instruments/probe-the-argument-shapes.mjs:113  2 `const/let/var raw =` in file
+          docs/research/round449-instruments/resolve-the-variable-write-targets.mjs:271  2 `const/let/var inner =` in file
+          docs/research/round449-instruments/resolve-the-variable-write-targets.mjs:280  2 `const/let/var inner =` in file
+          docs/research/round449-instruments/resolve-the-variable-write-targets.mjs:698  3 `const/let/var src =` in file
+          packages/server/src/__tests__/round259-the-shared-source-reader.test.ts:53  8 `const/let/var src =` in file
+          packages/server/src/__tests__/round259-the-shared-source-reader.test.ts:61  8 `const/let/var src =` in file
+          packages/server/src/__tests__/round259-the-shared-source-reader.test.ts:62  8 `const/let/var src =` in file
+          packages/server/src/__tests__/round259-the-shared-source-reader.test.ts:79  8 `const/let/var src =` in file
+          packages/server/src/__tests__/round259-the-shared-source-reader.test.ts:89  8 `const/let/var src =` in file
+          packages/server/src/__tests__/round259-the-shared-source-reader.test.ts:91  8 `const/let/var src =` in file
+          packages/server/src/__tests__/round259-the-shared-source-reader.test.ts:97  8 `const/let/var src =` in file
+          packages/server/src/__tests__/round259-the-shared-source-reader.test.ts:102  8 `const/let/var src =` in file
+          packages/server/src/__tests__/round259-the-shared-source-reader.test.ts:103  8 `const/let/var src =` in file
+          packages/server/src/__tests__/round259-the-shared-source-reader.test.ts:112  8 `const/let/var src =` in file
+          packages/server/src/__tests__/round259-the-shared-source-reader.test.ts:113  8 `const/let/var src =` in file
+          packages/server/src/__tests__/round259-the-shared-source-reader.test.ts:138  8 `const/let/var src =` in file
+          packages/server/src/__tests__/round259-the-shared-source-reader.test.ts:139  8 `const/let/var src =` in file
+          scripts/probe-round256-an-emptiness-assertion-grades-the-operator-and-a-sole-blocker-ranking-cannot-see-a-coupled-class.mts:78  3 `const/let/var s =` in file
+          scripts/probe-round256-an-emptiness-assertion-grades-the-operator-and-a-sole-blocker-ranking-cannot-see-a-coupled-class.mts:693  4 `const/let/var src =` in file
+          scripts/probe-round256-an-emptiness-assertion-grades-the-operator-and-a-sole-blocker-ranking-cannot-see-a-coupled-class.mts:758  3 `const/let/var code =` in file
+          scripts/probe-round256-an-emptiness-assertion-grades-the-operator-and-a-sole-blocker-ranking-cannot-see-a-coupled-class.mts:776  4 `const/let/var src =` in file
+          scripts/probe-round256-an-emptiness-assertion-grades-the-operator-and-a-sole-blocker-ranking-cannot-see-a-coupled-class.mts:866  4 `const/let/var src =` in file
+          scripts/probe-round256-an-emptiness-assertion-grades-the-operator-and-a-sole-blocker-ranking-cannot-see-a-coupled-class.mts:914  4 `const/let/var src =` in file
+          scripts/probe-round256-an-emptiness-assertion-grades-the-operator-and-a-sole-blocker-ranking-cannot-see-a-coupled-class.mts:1130  3 `const/let/var s =` in file
+          scripts/probe-round256-an-emptiness-assertion-grades-the-operator-and-a-sole-blocker-ranking-cannot-see-a-coupled-class.mts:1237  4 `const/let/var src =` in file
+          scripts/probe-round257-the-scanner-had-no-model-of-interpolation.mts:146  2 `const/let/var src =` in file
+          scripts/probe-round257-the-scanner-had-no-model-of-interpolation.mts:146  2 `const/let/var src =` in file
+          scripts/probe-round257-the-scanner-had-no-model-of-interpolation.mts:270  2 `const/let/var src =` in file
+          scripts/probe-round257-the-scanner-had-no-model-of-interpolation.mts:270  2 `const/let/var src =` in file
+          scripts/probe-round257-the-scanner-had-no-model-of-interpolation.mts:272  2 `const/let/var src =` in file
+          … and 29 more
+    14  NOT-A-SIMPLE-IDENTIFIER
+          docs/research/round443-instruments/grade-the-emitter-at-its-published-line.mjs:479  p2old.blk
+          scripts/probe-round224-a-skip-must-not-summarise-as-a-pass.mts:1157  ['import { summariseAndExit } from \'./probe-outcome.mjs\';',
+      'summariseAndExit({ pr
+          scripts/probe-round224-a-skip-must-not-summarise-as-a-pass.mts:1159  ['export function summariseAndExit(input) {',
+      '  console.log(`All ${n} regression ch
+          scripts/probe-round289-the-deferred-breakdown-is-derived-and-the-sidecar-signature-is-not-evidence-of-no-write.mts:133  readProbe(f)
+          scripts/probe-round296-the-net-split-is-priced-at-zero-and-literal-only-cannot-tell-a-corpus-from-an-argv.mts:218  read(f)
+          scripts/probe-round296-the-net-split-is-priced-at-zero-and-literal-only-cannot-tell-a-corpus-from-an-argv.mts:231  read(f)
+          scripts/probe-round309-the-drop-one-reach-census-over-reported-three-where-the-population-is-one-because-a-predicate-does-not-carry-its-corpus.mts:156  rawOf.get(n) as string
+          scripts/probe-round323-the-cheap-cure-for-a-frozen-figure-empties-the-tripwire-and-leaves-the-exit-code-lying.mts:106  raw(n)
+          scripts/probe-round323-the-cheap-cure-for-a-frozen-figure-empties-the-tripwire-and-leaves-the-exit-code-lying.mts:107  raw(n)
+          scripts/probe-round324-the-skips-figure-has-four-states-and-the-two-no-arm-claims-are-where-a-lowercase-channel-lands.mts:111  raw(n)
+          scripts/probe-round324-the-skips-figure-has-four-states-and-the-two-no-arm-claims-are-where-a-lowercase-channel-lands.mts:112  raw(n)
+          scripts/probe-round325-the-fourth-exit-shape-returns-zero-and-restaging-an-inflated-pin-promotes-measurements-to-hard-checks.mts:129  raw(n)
+          scripts/probe-round325-the-fourth-exit-shape-returns-zero-and-restaging-an-inflated-pin-promotes-measurements-to-hard-checks.mts:130  raw(n)
+          scripts/verify-tsx-guard.mjs:1170  srcOf(f)
+    84  PARAM:caller-supplied
+          docs/research/round370-instruments/characterisation-sweep-lib.mjs:44  src — value comes from a caller this census does not follow
+          docs/research/round378-instruments/census-named-source-bindings.mjs:21  src — value comes from a caller this census does not follow
+          docs/research/round384-instruments/grade-the-near-miss-attribution.mjs:70  src — value comes from a caller this census does not follow
+          docs/research/round384-instruments/grade-the-near-miss-attribution.mjs:71  src — value comes from a caller this census does not follow
+          docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs:263  src — value comes from a caller this census does not follow
+          docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:171  src — value comes from a caller this census does not follow
+          docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:172  src — value comes from a caller this census does not follow
+          docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:242  s — value comes from a caller this census does not follow
+          docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:112  src — value comes from a caller this census does not follow
+          docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:439  src — value comes from a caller this census does not follow
+          docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:440  src — value comes from a caller this census does not follow
+          docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:442  src — value comes from a caller this census does not follow
+          docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:443  src — value comes from a caller this census does not follow
+          docs/research/round399-instruments/census-the-named-binding-form.mjs:166  src — value comes from a caller this census does not follow
+          docs/research/round399-instruments/census-the-named-binding-form.mjs:489  src — value comes from a caller this census does not follow
+          docs/research/round400-instruments/regrade-the-file-scoped-guard.mjs:162  src — value comes from a caller this census does not follow
+          docs/research/round401-instruments/census-the-branch-polarity-axis.mjs:411  src — value comes from a caller this census does not follow
+          docs/research/round402-instruments/key-from-round400.mjs:118  src — value comes from a caller this census does not follow
+          docs/research/round405-instruments/census-the-pin-population.mjs:203  src — value comes from a caller this census does not follow
+          docs/research/round406-instruments/hand-read-the-inline-seven.mjs:208  src — value comes from a caller this census does not follow
+          docs/research/round406-instruments/hand-read-the-inline-seven.mjs:231  fixture — value comes from a caller this census does not follow
+          docs/research/round406-instruments/hand-read-the-inline-seven.mjs:265  src — value comes from a caller this census does not follow
+          docs/research/round407-instruments/census-the-fixture-as-string-class.mjs:127  src — value comes from a caller this census does not follow
+          docs/research/round407-instruments/census-the-fixture-as-string-class.mjs:251  src — value comes from a caller this census does not follow
+          docs/research/round407-instruments/census-the-fixture-as-string-class.mjs:252  src — value comes from a caller this census does not follow
+          docs/research/round408-instruments/stratify-the-live-interval.mjs:158  src — value comes from a caller this census does not follow
+          docs/research/round408-instruments/stratify-the-live-interval.mjs:233  src — value comes from a caller this census does not follow
+          docs/research/round408-instruments/stratify-the-live-interval.mjs:234  src — value comes from a caller this census does not follow
+          docs/research/round409-instruments/census-the-hand-typed-known-positive.mjs:129  src — value comes from a caller this census does not follow
+          docs/research/round409-instruments/census-the-hand-typed-known-positive.mjs:178  src — value comes from a caller this census does not follow
+          docs/research/round409-instruments/census-the-hand-typed-known-positive.mjs:190  src — value comes from a caller this census does not follow
+          docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs:89  src — value comes from a caller this census does not follow
+          docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs:136  src — value comes from a caller this census does not follow
+          docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs:142  src — value comes from a caller this census does not follow
+          docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs:117  src — value comes from a caller this census does not follow
+          docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs:161  src — value comes from a caller this census does not follow
+          docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs:173  src — value comes from a caller this census does not follow
+          docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs:207  t — value comes from a caller this census does not follow
+          docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs:216  t — value comes from a caller this census does not follow
+          docs/research/round411-instruments/list-the-declarations-under-the-409-key.mjs:29  src — value comes from a caller this census does not follow
+          … and 44 more
+     8  RESOLVED-TO-STRING (child-process-helper)
+    27  RESOLVED-TO-STRING (literal)
+    33  RESOLVED-TO-STRING (readFileSync-encoded)
+    66  RESOLVED-TO-UNMODELLED
+    23  UNRESOLVED:no-declaration-found
+          docs/research/round454-instruments/probe0-why-449s-two-reader-slices-return-null.mjs:86  src (site offset 5047)
+          scripts/lib/probe-source-constants.mts:159  src (site offset 9737)
+          scripts/probe-round322-the-deferred-magnitude-audit-is-clean-and-eight-censused-probes-freeze-the-one-figure-they-cannot-report.mts:335  fixture (site offset 19987)
+          scripts/probe-round322-the-deferred-magnitude-audit-is-clean-and-eight-censused-probes-freeze-the-one-figure-they-cannot-report.mts:335  fixture (site offset 20016)
+          scripts/probe-round323-the-cheap-cure-for-a-frozen-figure-empties-the-tripwire-and-leaves-the-exit-code-lying.mts:151  fixture (site offset 8366)
+          scripts/probe-round323-the-cheap-cure-for-a-frozen-figure-empties-the-tripwire-and-leaves-the-exit-code-lying.mts:151  fixture (site offset 8395)
+          scripts/probe-round323-the-cheap-cure-for-a-frozen-figure-empties-the-tripwire-and-leaves-the-exit-code-lying.mts:279  fixture (site offset 16287)
+          scripts/probe-round324-the-skips-figure-has-four-states-and-the-two-no-arm-claims-are-where-a-lowercase-channel-lands.mts:161  fx (site offset 9136)
+          scripts/probe-round324-the-skips-figure-has-four-states-and-the-two-no-arm-claims-are-where-a-lowercase-channel-lands.mts:161  fx (site offset 9160)
+          scripts/probe-round324-the-skips-figure-has-four-states-and-the-two-no-arm-claims-are-where-a-lowercase-channel-lands.mts:162  fx (site offset 9239)
+          scripts/probe-round324-the-skips-figure-has-four-states-and-the-two-no-arm-claims-are-where-a-lowercase-channel-lands.mts:163  fx (site offset 9317)
+          scripts/probe-round324-the-skips-figure-has-four-states-and-the-two-no-arm-claims-are-where-a-lowercase-channel-lands.mts:164  fx (site offset 9386)
+          scripts/probe-round324-the-skips-figure-has-four-states-and-the-two-no-arm-claims-are-where-a-lowercase-channel-lands.mts:165  fx (site offset 9469)
+          scripts/probe-round324-the-skips-figure-has-four-states-and-the-two-no-arm-claims-are-where-a-lowercase-channel-lands.mts:187  fx (site offset 10874)
+          scripts/probe-round324-the-skips-figure-has-four-states-and-the-two-no-arm-claims-are-where-a-lowercase-channel-lands.mts:187  fx (site offset 10898)
+          scripts/probe-round325-the-fourth-exit-shape-returns-zero-and-restaging-an-inflated-pin-promotes-measurements-to-hard-checks.mts:187  fx (site offset 11162)
+          scripts/probe-round325-the-fourth-exit-shape-returns-zero-and-restaging-an-inflated-pin-promotes-measurements-to-hard-checks.mts:187  fx (site offset 11186)
+          scripts/probe-round325-the-fourth-exit-shape-returns-zero-and-restaging-an-inflated-pin-promotes-measurements-to-hard-checks.mts:188  fx (site offset 11265)
+          scripts/probe-round325-the-fourth-exit-shape-returns-zero-and-restaging-an-inflated-pin-promotes-measurements-to-hard-checks.mts:189  fx (site offset 11339)
+          scripts/probe-round325-the-fourth-exit-shape-returns-zero-and-restaging-an-inflated-pin-promotes-measurements-to-hard-checks.mts:190  fx (site offset 11419)
+          scripts/probe-round325-the-fourth-exit-shape-returns-zero-and-restaging-an-inflated-pin-promotes-measurements-to-hard-checks.mts:191  fx (site offset 11501)
+          scripts/probe-round325-the-fourth-exit-shape-returns-zero-and-restaging-an-inflated-pin-promotes-measurements-to-hard-checks.mts:204  fx (site offset 12294)
+          scripts/probe-round325-the-fourth-exit-shape-returns-zero-and-restaging-an-inflated-pin-promotes-measurements-to-hard-checks.mts:204  fx (site offset 12318)
+
+KP BUNDLE for the resolver (graded before the figures above stand)
+   ok   want RESOLVED-TO-BUFFER                           got RESOLVED-TO-BUFFER
+   ok   want RESOLVED-TO-STRING (readFileSync-encoded)    got RESOLVED-TO-STRING (readFileSync-encoded)
+   ok   want RESOLVED-TO-STRING (child-process-helper)    got RESOLVED-TO-STRING (child-process-helper)
+   ok   want RESOLVED-TO-UNMODELLED                       got RESOLVED-TO-UNMODELLED
+   ok   want PARAM:caller-supplied                        got PARAM:caller-supplied
+   ok   want DESTRUCTURED                                 got DESTRUCTURED
+   ok   want LOOP-BINDING                                 got LOOP-BINDING
+   ok   want IMPORTED-BINDING                             got IMPORTED-BINDING
+   ok   want UNRESOLVED:no-declaration-found              got UNRESOLVED:no-declaration-found
+   ok   want AMBIGUOUS:multiple-bindings                  got AMBIGUOUS:multiple-bindings
+
+GATE
+  ok   every resolver KP row resolves as declared
+  ok   the resolver CAN say RESOLVED-TO-BUFFER (its KP row does), so a 0 here is a measurement
+  ok   the buckets sum to the call-site count
+  ok   the population is non-empty and carries sites
+
+census3 verdict: ok · 351 site(s) · RESOLVED-TO-BUFFER 0 · PARAM 84 · still not known 256

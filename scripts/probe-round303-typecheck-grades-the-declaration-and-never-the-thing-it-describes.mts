@@ -384,14 +384,56 @@ const exportedNames = (src: string): Set<string> => {
     }
   return out;
 };
+// Round 454, Daedalus: `class` was missing, and B2 reddened on a correctly declared export.
+//
+// `exportedNames` above has modelled `const|let|function|class` since this probe was written; this
+// reader modelled `const|function`. So a `.mjs` exporting a class and a `.d.mts` declaring it —
+// which is exactly what `scripts/lib/strip-source.mjs` and its `.d.mts` became when Round 454 gave
+// `stripSource` a named refusal — came out of B2 as `exported but not declared`, with `tsc
+// --noEmit` reporting 0 errors across all four workspaces. **The declaration was right and the
+// guard was blind**, which is the more dangerous of the two directions: a drift guard that reddens
+// on a correct tree gets read as noise, and the next person turns it down rather than widening it.
+//
+// `class` is added because it has a victim. The remaining declaration kinds are NOT added on
+// speculation — a guard that silently grew a model it was never tested against is how this probe's
+// own B3 counter came to report 4 arity mismatches that were all its own. Instead they are named,
+// and `B2b` below asserts that no declaration file in `DECLARED_PAIRS` currently exports a kind
+// this reader has no model of. So the blindness is keyed positively: the day someone declares an
+// `interface`, B2b reddens by name instead of B2 mislabelling it as undeclared.
+const DECLARED_KINDS_MODELLED = ['const', 'function', 'class'] as const;
+const DECLARED_KINDS_UNMODELLED = ['let', 'var', 'type', 'interface', 'enum', 'namespace'] as const;
 const declaredNames = (src: string): Set<string> => {
   const out = new Set<string>();
-  for (const m of src.matchAll(/^export\s+declare\s+(?:const|function)\s+([A-Za-z0-9_$]+)/gm)) out.add(m[1]!);
+  const re = new RegExp(`^export\\s+declare\\s+(?:${DECLARED_KINDS_MODELLED.join('|')})\\s+([A-Za-z0-9_$]+)`, 'gm');
+  for (const m of src.matchAll(re)) out.add(m[1]!);
   return out;
 };
+const declaredUnmodelledKinds = (src: string): string[] => {
+  const hits: string[] = [];
+  for (const k of DECLARED_KINDS_UNMODELLED) {
+    const re = new RegExp(`^export\\s+declare\\s+${k}\\s+([A-Za-z0-9_$]+)`, 'gm');
+    for (const m of src.matchAll(re)) hits.push(`${k} ${m[1]!}`);
+  }
+  return hits;
+};
+// KP/KN on this reader, before it is used on the tree. A reader widened without a positive for the
+// kind it was widened for is a change nothing grades; a reader widened without a NEGATIVE for the
+// kinds it still cannot see is a blindness that has stopped being declared.
+const DECL_READER_KP: [string, string[]][] = [
+  ['export declare const a: number;', ['a']],
+  ['export declare function b(x: number): string;', ['b']],
+  ['export declare class C extends TypeError {}', ['C']],
+  ['export declare const a: number;\nexport declare class C extends Error {}\n', ['a', 'C']],
+  ['  export declare class Indented {}', []], // not at line start — same as the pre-454 reader
+];
+const DECL_READER_KN: [string, string][] = [
+  ['export declare interface I { x: number }', 'interface I'],
+  ['export declare type T = string;', 'type T'],
+];
 
 const nameProblems: string[] = [];
 const arityProblems: string[] = [];
+const unmodelledKindHits: string[] = [];
 let signaturesChecked = 0;
 let namesChecked = 0;
 for (const mjs of DECLARED_PAIRS) {
@@ -399,6 +441,7 @@ for (const mjs of DECLARED_PAIRS) {
   const decl = read(mjs.replace(/\.mjs$/, '.d.mts'));
   const e = exportedNames(impl);
   const d = declaredNames(decl);
+  for (const h of declaredUnmodelledKinds(decl)) unmodelledKindHits.push(`${mjs.replace(/\.mjs$/, '.d.mts')}: ${h}`);
   namesChecked += d.size;
   for (const n of d) if (!e.has(n)) nameProblems.push(`${mjs}: declared but not exported — ${n}`);
   for (const n of e) if (!d.has(n)) nameProblems.push(`${mjs}: exported but not declared — ${n}`);
@@ -429,6 +472,43 @@ check(
   nameProblems.length === 0
     ? `${namesChecked} declared names across ${DECLARED_PAIRS.length} pairs, 0 problems in either direction.`
     : nameProblems.join(' | '),
+);
+
+// Round 454: B2's reader is graded, and the kinds it still cannot see are keyed positively.
+const kpRows = DECL_READER_KP.map(([src, want]) => {
+  const got = [...declaredNames(src)];
+  return { src, want, got, ok: got.length === want.length && want.every((n) => got.includes(n)) };
+});
+const knRows = DECL_READER_KN.map(([src, want]) => {
+  const names = [...declaredNames(src)];
+  const hits = declaredUnmodelledKinds(src);
+  return { src, want, ok: names.length === 0 && hits.length === 1 && hits[0] === want };
+});
+check(
+  'B2a',
+  `B2's declared-name reader sees every kind it claims to model (${DECLARED_KINDS_MODELLED.join('/')}) and reports the ones it does not`,
+  kpRows.every((r) => r.ok) && knRows.every((r) => r.ok),
+  [
+    ...kpRows.map((r) => `${r.ok ? 'ok' : 'BAD'} ${JSON.stringify(r.src.slice(0, 44))} want [${r.want}] got [${r.got}]`),
+    ...knRows.map((r) => `${r.ok ? 'ok' : 'BAD'} unmodelled-kind row ${JSON.stringify(r.src.slice(0, 44))} want "${r.want}"`),
+  ].join(' | ')
+    + '. `class` was added in Round 454 after B2 reddened on a correctly declared '
+    + '`export declare class StripSourceInputError` with tsc clean — the declaration was right and '
+    + 'this reader was blind. Both readers are line-anchored, so an INDENTED top-level declaration '
+    + 'is invisible to each of them symmetrically; that limit is pinned by the fifth KP row rather '
+    + 'than repaired, because repairing one side alone would turn it into a false `declared but not '
+    + 'exported`.',
+);
+
+check(
+  'B2b',
+  `no declaration file in the pairs exports a kind B2's reader has no model of (${DECLARED_KINDS_UNMODELLED.join('/')})`,
+  unmodelledKindHits.length === 0,
+  unmodelledKindHits.length === 0
+    ? `0 hits across ${DECLARED_PAIRS.length} declaration file(s). This is the row that keeps the `
+      + `blindness declared: without it, the first \`export declare interface\` to land would be `
+      + `reported by B2 as "exported but not declared", which is a true red for a false reason.`
+    : unmodelledKindHits.join(' | '),
 );
 
 check(

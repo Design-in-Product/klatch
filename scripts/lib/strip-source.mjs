@@ -152,7 +152,56 @@ export const regexLiteralEnd = (src, i) => {
   return -1;
 };
 
+// ── Round 454, Daedalus: it refuses a non-string now, and the reason is the Buffer ──────────────
+//
+// Theseus's Round 453 §7 verified at this module that `stripSource` had no model of its own input
+// type, and named three behaviours. Round 454's runtime oracle found there are **three distinct
+// ones, not one, and only two of them are silent** (`drive4.census2.out`):
+//
+//   42                                 -> ""                              silent, empty
+//   {}                                 -> ""                              silent, empty
+//   ["a","b"]                          -> "ab"                            silent, nonsense
+//   Buffer.from("const x = 1; // c")   -> "991111101151163212032613249593…" silent, and INVERTED
+//   null / undefined                   -> THROW on `.length`              already loud
+//   new String("…")                    -> behaves exactly like the string control
+//
+// The Buffer row is the dangerous one and not because it is wrong — because it is wrong in the
+// *opposite direction*. `src[i]` on a Buffer is a NUMBER, so `out += c` concatenates decimal digits
+// and the comment's bytes **survive into the output as digits**. A caller asking "which bytes of
+// this source are code?" gets a non-empty answer in which the comment is still present, and then
+// keys a regex over it. Every source scanner in this repo fails by returning a SMALLER number, and
+// this is the input that does it silently while staying plausible.
+//
+// Why a throw rather than a coercion. Round 454's `census2`/`census3` censused all 351 call sites
+// over the 640 tracked source files at the rev: **0 of them pass a non-string**, at the call and
+// after one level of same-file resolution. So the refusal costs nothing today — but 84 of the 351
+// take their argument as a **function parameter**, i.e. from a caller this census does not follow,
+// and that is the only shape through which a Buffer can still arrive. A refusal is the one cure
+// that covers all 84 without tracing any of them. Coercing with `String(src)` would be worse than
+// the status quo: it would make the Buffer case *permanently* silent.
+//
+// `null` and `undefined` already threw, so this makes the module's behaviour uniform rather than
+// introducing a new failure mode for them. The message names the type and the caller's likely
+// mistake, because the realistic origin is `readFileSync(p)` with the encoding argument forgotten.
+export class StripSourceInputError extends TypeError {}
+
 export const stripSource = (src, blankStrings) => {
+  if (typeof src !== 'string') {
+    const kind = src === null ? 'null'
+      : Buffer.isBuffer(src) ? 'a Buffer'
+        : Array.isArray(src) ? 'an Array'
+          : `a ${typeof src}`;
+    throw new StripSourceInputError(
+      `stripSource: source must be a string, got ${kind}`
+      + (Buffer.isBuffer(src)
+        ? ' — a Buffer indexes to NUMBERS, so the comment bytes would survive into the output as '
+          + 'decimal digits and every key over the result would be reading a LARGER, wrong string. '
+          + 'The usual cause is `readFileSync(p)` with the encoding argument omitted; pass '
+          + '`readFileSync(p, \'utf8\')` or `src.toString(\'utf8\')`.'
+        : ' — this would return "" or nonsense silently, and a source key over "" reports zero '
+          + 'rather than refusing (Round 454 §6).'),
+    );
+  }
   let out = '';
   let i = 0;
   let quote = null;

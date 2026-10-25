@@ -6,6 +6,19 @@
  * `scripts/tsconfig.json` existed nothing told them the import was untyped.
  */
 
+/**
+ * Round 454: `stripSource` refuses a non-string source rather than returning `""` or, for a
+ * Buffer, a digit string in which the comment bytes survive. The declaration below has said
+ * `src: string` since Round 279, so this throw is unreachable from a `.mts` caller that
+ * typechecks — it exists for the `.mjs` callers, which are not in `scripts/tsconfig.json`'s
+ * program at all, and that is the whole population the refusal is for.
+ *
+ * Declared here because this file can drift from the implementation silently: `.d.mts` is not
+ * checked against `.mjs`, and a previous round shipped three exports that existed in one and not
+ * the other with typecheck green throughout.
+ */
+export declare class StripSourceInputError extends TypeError {}
+
 /** A character after which a `/` opens a regex literal rather than dividing. */
 export declare const REGEX_MAY_OPEN_AFTER: RegExp;
 

@@ -1,0 +1,57 @@
+
+Round 303 — typecheck grades the declaration, never the thing it describes
+
+── A. the program boundary, read off tsc rather than off the glob ──
+  [A0] MEAS  tsc program: 182 in-repo files · .mts 157 · .mjs 0 · declared pairs found on disk 4
+  [A1] PASS  every .mjs implementation that has a hand-written .d.mts is OUTSIDE the typechecked program, and every one of those .d.mts declarations is INSIDE it
+        lib/characterisation-markers.mjs: impl OUT · decl IN | lib/strip-source.mjs: impl OUT · decl IN | lib/tsx-required.mjs: impl OUT · decl IN | sweep-probes.mjs: impl OUT · decl IN
+  [A1b] PASS  and A1 is not the vacuous reading of an empty program: EVERY .mts file on disk under scripts/ is IN the program, held as a member list rather than a count, and the program holds no scripts/ .mts the disk census does not
+        157 .mts on disk · 157 .mts in the program · missing from the program 0 · in the program but not on disk 0 — so "OUT" in A1 is a fact about .mjs and not about a config that matched nothing, AND a narrowing that drops any covered file reddens here rather than passing on a surviving count.
+  [A2] PASS  the program contains zero .mjs files at all, so the exclusion is by extension and not a per-file omission someone could have fixed by naming a file
+        include is ["**/*.mts","**/*.ts"] — extension-scoped, so no .mjs can enter except as a resolution target, and a resolution target is served by the .d.mts rather than read.
+  [A3] PASS  a .ts file under scripts/ is in the program if and only if this config’s own include globs claim it — the agreement, not the deferral, because Round 304 repaired the deferral this arm used to pin
+        globs ["**/*.mts","**/*.ts"] · .ts on disk aaxt-mcp-live-probe.ts · record-demo.ts · claimed 2 · in program 2 — and A2 is the other half: .mjs is claimed by no glob and is in the program 0 times.
+
+── B. the declaration surface: complete today, checked by nothing ──
+  [B0] PASS  the parameter counter is proven against 10 known answers BEFORE it is used to measure anything, including the trailing comma and the arrow-in-a-parameter-type that made my first version report four false mismatches
+        10/10 fixtures — 0-arity, nested braces, nested angles, nested parens, a curried callback, a trailing comma.
+  [B1] MEAS  declared pairs 4: lib/characterisation-markers.mjs · lib/strip-source.mjs · lib/tsx-required.mjs · sweep-probes.mjs — 43 declared names, 18 function signatures
+  [B2] FAIL  no declared export is absent from its implementation, and no export is undeclared: the declaration surface is name-complete in both directions today
+        lib/strip-source.mjs: exported but not declared — StripSourceInputError
+  [B3] PASS  no declared signature is wider or narrower than its implementation, measured with the counter B0 proved
+        18 signatures, 0 arity mismatches. My first counter reported 4 here and all 4 were its own.
+  [B4] MEAS  .mjs modules statically imported by a .mts, resolved against disk: 4 — lib/characterisation-markers.mjs ←1 · lib/strip-source.mjs ←21 · lib/tsx-required.mjs ←1 · sweep-probes.mjs ←25
+  [B4b] MEAS  specifiers discarded because no such file exists: 17 total · 3 this file’s own Section C fixtures · 14 elsewhere in the corpus — probe-round259-the-extraction-moved-nothing-and-closed-the-hole-in-the-file-it-moved-into.mts → ./strip-source.mjs · probe-round307-the-return-half-is-gradeable-the-parameter-half-is-any-and-the-arity-check-covers-fourteen-of-eighteen.mts → ./decl/${p.base}.mjs · probe-round307-the-return-half-is-gradeable-the-parameter-half-is-any-and-the-arity-check-covers-fourteen-of-eighteen.mts → ./decl/${p.base}.mjs · probe-round307-the-return-half-is-gradeable-the-parameter-half-is-any-and-the-arity-check-covers-fourteen-of-eighteen.mts → ./decl/${p.base}-relaxed.mjs · probe-round307-the-return-half-is-gradeable-the-parameter-half-is-any-and-the-arity-check-covers-fourteen-of-eighteen.mts → ./liar/impl.mjs · probe-round307-the-return-half-is-gradeable-the-parameter-half-is-any-and-the-arity-check-covers-fourteen-of-eighteen.mts → ./liar/strict.mjs · probe-round307-the-return-half-is-gradeable-the-parameter-half-is-any-and-the-arity-check-covers-fourteen-of-eighteen.mts → ./liar/impl.mjs · probe-round307-the-return-half-is-gradeable-the-parameter-half-is-any-and-the-arity-check-covers-fourteen-of-eighteen.mts → ./liar/relaxed.mjs · probe-round307-the-return-half-is-gradeable-the-parameter-half-is-any-and-the-arity-check-covers-fourteen-of-eighteen.mts → ./shapes/impl.mjs · probe-round307-the-return-half-is-gradeable-the-parameter-half-is-any-and-the-arity-check-covers-fourteen-of-eighteen.mts → ./shapes/impl.mjs · probe-round307-the-return-half-is-gradeable-the-parameter-half-is-any-and-the-arity-check-covers-fourteen-of-eighteen.mts → ./vacuous/impl.mjs · probe-round307-the-return-half-is-gradeable-the-parameter-half-is-any-and-the-arity-check-covers-fourteen-of-eighteen.mts → ./vacuous/decl.mjs · probe-round307-the-return-half-is-gradeable-the-parameter-half-is-any-and-the-arity-check-covers-fourteen-of-eighteen.mts → ./vacuous/impl.mjs · probe-round307-the-return-half-is-gradeable-the-parameter-half-is-any-and-the-arity-check-covers-fourteen-of-eighteen.mts → ./vacuous/decl-return.mjs
+  [B5] PASS  every .mjs module a .mts actually imports has a hand-written .d.mts — so the declaration surface is complete, and by A1 not one of those implementations is graded
+        lib/characterisation-markers.mjs: has .d.mts | lib/strip-source.mjs: has .d.mts | lib/tsx-required.mjs: has .d.mts | sweep-probes.mjs: has .d.mts
+  [B5b] PASS  and B5 is not green by an over-permissive resolver: a specifier naming no file on disk is rejected rather than counted — asserted on the corpus-minus-self count, so this file’s own fixtures cannot be what makes the arm green
+        14 discarded specifier(s) outside this file (plus 3 of its own); scripts/strip-source.mjs does not exist, and the string that names it lives inside a quoted assertion in probe-round259 rather than an import — the self-scanning-corpus class, third consecutive round, this time in a measurement rather than a probe arm.
+  [B6] MEAS  .mjs total 47 · directly under scripts/ 37 · nested 10 · named probe-* 13
+  [B7] PASS  the config's "37 .mjs probes" is an exact count of the flat directory and a wrong label for it: the excluded nested modules hold more of the import-target set than the 37 do
+        37 flat · 10 nested · 47 total; import targets split 1 flat / 3 nested.
+
+── C. what the gap buys, driven on fixtures built from this config’s own options ──
+  [C1] PASS  a .d.mts that declares an export its .mjs does not have typechecks CLEAN under this config’s own compilerOptions
+        tsc said: (nothing)
+  [C2] PASS  and the same tree fails at runtime naming the export the declaration invented, so C1’s green is a blind spot rather than a safety result
+        SyntaxError: The requested module './mod.mjs' does not provide an export named 'gone'
+  [C3] PASS  the control: remove the .d.mts and tsc DOES error on the same import — so the silence in C1 is bought by the declaration file specifically, not by tsc ignoring .mjs imports altogether
+        .testdata/r303-probe/no-declaration/user.mts(1,22): error TS7016: Could not find a declaration file for module './mod.mjs'. '/Users/xian/Development/klatch-worktrees/daedalus/.testdata/r303-probe/no-declaration/mod.mjs' implicitly has an 'any' type.
+  [C4] PASS  a declared arity wider than the implementation’s typechecks clean AND runs without complaint — the silent half of the gap, and the half B3 exists to watch
+        tsc: (clean) · runtime: 1
+
+── D. the widening the config defers, priced ──
+  [D1] MEAS  widening include to **/*.ts: exit 0 · 0 error line(s) — 
+  [D2] PASS  the widening price was an artefact of the extension rule and not a defect in the files, and Round 304 paid it with a module-format declaration rather than a rename: the root manifest still declares no "type", scripts/package.json declares "module", and the widened program is clean
+        root package.json "type": absent · scripts/package.json "type": "module" · widening errors now 0 (was 2 × TS1470, the import.meta-under-CommonJS diagnostic) · compiler exit 0 — the clean reading is only accepted from a compiler that RAN, and the known negative beside it (a binary that does not exist: exit null, 0 error lines) confirms that guard rejects a child which never ran rather than being an unexercised conjunct.
+  [D3] PASS  TS1470 was reporting something real rather than a phantom, and the repair did not make it go away by removing the construct: both .ts files still use import.meta, and the widened program is clean because the declaration makes them ESM
+        aaxt-mcp-live-probe.ts: import.meta still present · record-demo.ts: import.meta still present — widening errors 0 at compiler exit 0, so the construct stayed and the diagnostic went; D2 carries the known negative for the exit-status guard this arm shares.
+
+── Z. discipline ──
+  [Z1] PASS  this probe writes nothing under scripts/ or packages/ — asserted as a before/after delta of the same git reading, because "the tree is clean" is a fact about the fire and not about this probe
+        git status over scripts/ and packages/ is byte-identical to the reading taken before arm A0 (2 entries, unchanged).
+  [Z2] PASS  the scratch tree this probe minted is inside .testdata/, which is gitignored, and is removed before exit
+        ./.testdata/r303-probe · .gitignore names .testdata
+  [Z3] MEAS  no port bound · no database opened · no corpus read · no model called
+
+1 of 18 FAILED, 7 measurements, 0 skips

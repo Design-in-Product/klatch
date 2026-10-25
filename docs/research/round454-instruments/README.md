@@ -203,6 +203,97 @@ All three commits are his. I took the repair anyway, because the *guard* that ki
 (450) and a mechanical one-line revival needs no judgement about his claims. The part that does need
 that judgement — what W10 should now say, given §2 — I have deliberately left to him.
 
+## 6. His §7 lead, traced — the direct surface is zero and the live one is 84 parameters
+
+He verified at the module and handed the dataflow over explicitly unpriced, naming the trap in his
+own sentence: *"an import is not a call site."*
+
+### A. The runtime oracle — three behaviours, not one
+
+`census2` drives his three rows plus the four he did not list, through the real module
+(`drive4.census2.out`):
+
+| input | result |
+|---|---|
+| `42` | `""` — silent, empty |
+| `{}` | `""` — silent, empty |
+| `["a","b"]` | `"ab"` — silent, nonsense |
+| `Buffer.from("const x = 1; // c")` | `"991111101151163212032613249593…"` — silent, and **inverted**: the comment bytes survive |
+| `null` | **THROWS** `Cannot read properties of null (reading 'length')` |
+| `undefined` | **THROWS** |
+| `new String("const x = 1; // c")` | `"const x = 1;     "` — identical to the string control |
+
+So the module has **three** behaviours on non-strings and only two of them are silent — his §7
+listed the silent ones. The `String`-object row is the one I would have guessed wrong: it works,
+because `src[i]` and `src.length` are both defined on it.
+
+### B. The call-site census — 351 sites, 0 direct, and 95 provably strings
+
+`census2`: every `stripSource(` **call** in blinded code over all 640 tracked source files at the
+rev — not imports, not mentions in prose or strings — first argument sliced by paren balance.
+`census3`: each unmodelled argument resolved **one level** against its own same-file declaration,
+using `firstArg` and `classify` **sliced out of `census2`'s source** rather than retyped, so the
+two censuses cannot disagree about a key.
+
+```
+351 call sites · 58 files import it          (census2 drive4 / census3 drive5)
+
+known STRING at the call                           27     readFileSync+encoding 22 · child-process 3 · literal 2
+known STRING after one level                       68     readFileSync+encoding 33 · literal 27 · child-process 8
+BUFFER, at the call or after one level              0
+──── still not known: 256 ─────────────────────────────
+  PARAM:caller-supplied                            84     ← the only shape a Buffer can still enter through
+  AMBIGUOUS:multiple-bindings                       69
+  RESOLVED-TO-UNMODELLED (a const whose RHS is itself unmodelled)  66
+  UNRESOLVED:no-declaration-found                   23
+  NOT-A-SIMPLE-IDENTIFIER (a member expression, a call)            14
+                                                   ───
+                       27 + 68 + 256 =            351     (buckets sum; gated, not eyeballed)
+```
+
+**The answer to his lead: no call site feeds it a non-string, at the call or one level up.** That
+is a measurement and not a clearance, and the gate row that makes it one is *the resolver's own
+`RESOLVED-TO-BUFFER` KP* — a resolver that could never say `BUFFER` would report 0 against any tree
+and read as good news. It can, and it does on its KP row, so the 0 is a measurement.
+
+**His `importers=33` is not contradicted.** His denominator is `scripts/lib` importers inside his
+own 168-instrument sweep population; mine is every tracked source file in the repo. Different
+populations, and his 12-site figure in §7 is a third one again (`readFileSync` sites, not
+`stripSource` sites). I reproduced none of his three under his own keys and am not correcting any
+of them.
+
+## 7. The cure: it refuses now, and the reason is the 84
+
+One change, in `scripts/lib/strip-source.mjs`: `stripSource` throws `StripSourceInputError` on a
+non-string, with a message that names the type and the likely cause (`readFileSync(p)` with the
+encoding argument forgotten).
+
+Why a refusal rather than a coercion, and why now given a direct surface of 0:
+
+* **84 of the 351 sites take their argument as a function parameter** — from a caller this census
+  does not follow. A refusal is the one cure that covers all 84 **without tracing any of them**,
+  which is the whole reason it is worth doing on a zero measurement.
+* `String(src)` would be *worse than the status quo*: it would make the Buffer case permanently
+  silent instead of merely currently silent.
+* `null` and `undefined` **already** threw, on `.length`. This makes the module uniform rather than
+  adding a new failure direction.
+* The cost today is zero by measurement, not by argument: 0 of 351.
+
+Declared in `strip-source.d.mts` too, with a note that `.d.mts` can drift from `.mjs` silently —
+a previous round shipped three exports present in one and not the other with typecheck green
+throughout, so the drift is not hypothetical.
+
+| gate | result |
+|---|---|
+| `npm run typecheck` | 0 `error TS` across all four workspaces |
+| `node scripts/sweep-probes.mjs` (the full driving sweep, not `--census`) | `drive6.probe-sweep-after-the-refusal.out` |
+| `npm test` | `drive7.npmtest.out` |
+
+The driving sweep is the gate that matters here and the census is not: `npm test`'s census reads
+source and bookkeeping only and drives zero probes, so a probe that started throwing on this change
+would report `CENSUS OK`. 58 importers and 351 call sites is exactly the population a census cannot
+clear.
+
 ## 5. Open, each with a named blocker
 
 1. **The verdict-drift census (§2).** Blocker: cost, and it is a real decision rather than a

@@ -1,0 +1,20 @@
+probe1 — the B2a counterfactual.   subject scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts
+  modelled kinds POST-454: [const, function, class]
+  modelled kinds PRE-454 : [const, function]   (derived by dropping `class`, not typed)
+  KP rows sliced from the subject: 5
+
+   row 0 POST ok   PRE ok   "export declare const a: number;" want [a]
+   row 1 POST ok   PRE ok   "export declare function b(x: number): string;" want [b]
+   row 2 POST ok   PRE BAD  "export declare class C extends TypeError {}" want [C]
+   row 3 POST ok   PRE BAD  "export declare const a: number;\nexport declare class" want [a,C]
+   row 4 POST ok   PRE ok   "  export declare class Indented {}" want []
+
+GATE
+  ok   both arms reached a verdict on every row
+  ok   the POST arm is all-ok (which is what B2a reports)
+  ok   the PRE arm is NOT all-ok — so B2a would have been RED before the widening
+  ok   every row that MOVED is a row mentioning `export declare class`
+  ok   at least one row moved (the figure is not identical across arms)
+  ok   the indentation row did NOT move (it pins a limit both lists share)
+
+probe1 verdict: ok · rows 5 · POST ok 5 · PRE ok 3 · moved 2
