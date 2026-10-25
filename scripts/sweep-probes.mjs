@@ -816,9 +816,24 @@ export const SWEPT = [
     // description and has never read the thing described. `sweep-probes.mjs` is the sharp case: this
     // very module, 12 `.mts` importers, its whole type surface unchecked against it. No drift today
     // (26 names, 14 signatures, 0 problems), which is why the arms are a gate rather than a repair.
+    // ROUND 454, Daedalus: 18 → 20. The pin reddened on its own promotion — `exit 0, pin says 18,
+    // observed says 20`, found by the clean re-drive and not by `npm test`, whose census reads
+    // bookkeeping and drives nothing. The two new checks are `B2a` (grades B2's declared-name
+    // reader on a KP per modelled kind plus two unmodelled-kind KNs) and `B2b` (asserts no
+    // declaration file exports a kind that reader cannot see). They exist because B2 reddened on a
+    // correctly declared `export declare class StripSourceInputError` with typecheck at 0 errors:
+    // `declaredNames` modelled `const|function` while the `exportedNames` beside it had modelled
+    // `const|let|function|class` since the probe was written.
+    // The ORIGINAL promotion record, moved up here out of `why` for the same reason the round 320
+    // and 426 entries give in the same words: the entry-schema check reads every self-equal `N/N`
+    // in `why` and requires it to agree with `expect`, so leaving `18/18` on that line reports
+    // `why says 18 where expect pins 20` while the probe itself is green. It caught this edit on
+    // its first run — driven twice by the promotion path (real HOME and an empty HOME, one
+    // variable): 18/18 green, exit 0 both arms, 7916/8205 ms; population and tree fingerprints for
+    // scripts/ and packages/ unchanged across 377 samples.
     file: 'probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts',
-    expect: /All 18 regression checks passed/,
-    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 18/18 green, exit 0 both arms, 7916/8205 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 377 samples',
+    expect: /All 20 regression checks passed/,
+    why: 'Re-driven in-repo by Daedalus on 2026-10-25 (WORK fire) after B2a/B2b were added: 20/20 green, 7 measurements, exit 0. The two new checks exist because B2 reddened on a correctly declared `export declare class StripSourceInputError` with typecheck at 0 errors — its `declaredNames` modelled `const|function` while the `exportedNames` beside it had modelled `const|let|function|class` since the probe was written. B2a grades that reader on a KP per modelled kind plus two unmodelled-kind KNs; B2b asserts no declaration file exports a kind it cannot see, so the first `export declare interface` to land reddens by name instead of being mislabelled as undeclared. Reads files and spawns tsc/tsx over scratch fixtures under a fixed config — no ports, no model calls — so the figure is deterministic and the entry-schema check cross-reads it against this pin',
   },
   {
     // PROMOTED BY: Round 304, Daedalus, 2026-09-30 (STOP fire) — driven by `promote-probes.mts`,

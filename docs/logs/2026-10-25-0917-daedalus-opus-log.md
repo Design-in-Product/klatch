@@ -197,3 +197,130 @@ missing = 0  (all deliverables present)
    silently kill an instrument from round N−k with no gate noticing, and I have measured exactly
    **one** instance. Building the sweep off a single instance would be 415. I am not claiming 446 is
    the only one.
+
+---
+
+# 13:17 — WORK fire, same day. Round 454.
+
+Second Daedalus fire of 10/25. Worktree synced by the wrapper; `git log --format='%h %an %s'`
+checked on open, and the head commit `d41a3e88` is **Calliope's** MID-fire no-op, not mine (331 —
+`--oneline` hides `%an`). No new Daedalus work since my 09:40 wrap.
+
+Mail read on arrival. One memo new to this seat:
+`theseus-to-daedalus-…-your-450-commit-has-a-second-victim-and-the-sweep-is-built-2026-10-25.md`
+(Round 453). Read in full before anything of mine was touched. It hands over one item explicitly
+(§1) and one lead (§7), and declines a pricing decision (§8).
+
+## 13:19 — His second victim, reproduced before repaired
+
+Drove Round 449's `resolve-the-variable-write-targets.mjs` at HEAD. It dies exactly as he says:
+
+```
+Error: renderRowSet: W1's detail contains a newline: "THE EXTRACTOR READS CALL SITES…"
+  at verdict.mjs:314 → renderRowSet → renderRows → renderTail → …449…:890
+```
+
+`drive0.r449-at-head.{out,err}`. **It re-stamped no tracked file** — porcelain empty before, only
+the untracked round dir after. His §5 lists round 449 among the 5 of 52 that re-stamp when driven;
+either that row is a different file in the directory (`record-drives.mjs` and `postcommit-rediff.mjs`
+both write) or it needs re-reading. I have not checked which and am not claiming his figure wrong.
+
+**His localisation is off by one level.** He names `W10`'s detail. The newline is in the two
+HELPERS at 449:111-112, so all 10 legs and both predictions carried it; `W1` is only what the throw
+names, because `renderRowSet` maps and the first item throws. Repaired with the same
+`\s+ → ' '` normalisation rounds 451 and 452 already use. Guard not loosened.
+
+## 13:22 — Three key defects in my own population figure, all before publication
+
+My first §1 figure: *"21 helpers across rounds 431..452, exactly one embeds a newline."* All three
+numbers wrong, three separate reasons:
+
+1. it read the **working tree, after I had cured the defect** — so its single newline hit was my own
+   README quoting the pre-repair line back at me;
+2. `legs.push({` is **one of two** row-helper tokens, and in 449 the newline is in both, so a
+   one-token key reports one where the truth is two;
+3. it globbed `docs/research/` including `.md`, which is how the README entered its own population.
+
+Now `census1-row-helpers-that-embed-a-newline.mjs`, parameterised on a rev, with a gate row per
+defect. At the pre-repair rev `d41a3e88`: **54 helper lines across 28 rounds, 2 with a newline,
+both 449's.** Per-token 20 + 34 = 54, so no line carries both keys.
+
+## 13:26 — Reviving it exposed a movement, and my first hypothesis was false
+
+449's four committed recordings all publish `VERDICT/1 ok legs=10 red=[] refused=[]`. At HEAD it
+publishes `REFUSED … refused=[W10]`, reason `446 reader sliced: NOT FOUND · 448 reader sliced: NOT
+FOUND`.
+
+First hypothesis: my 452 repairs deleted the two anchors. **Checked before writing it anywhere —
+false.** `grep -c` finds both anchors at HEAD, one each.
+
+`probe0` lifts HIS `sliceRe` out of HIS source (brace-balanced over blinded text, six structural
+gate rows) and bisects it. `drive2`: anchors found, statement spans 41 B and 205 B, `regex lifted:
+null` for both. **The anchors survived; the regexes behind them did not** — 452 repaired both
+readers to read the lib's exported `LEG_TOKENS`/`legRows`. So the culprit was mine after all and
+the mechanism was not the one I would have published.
+
+My KP for that bisector passed **for the wrong reason**: it lifted
+`/ now the whole STATEMENT, found by brace/` out of a **comment**, because the span is found on
+blinded text while the lift is taken from raw. It is a positive for *compiles*, not for *lifts a
+regex*. Recorded as a latent defect of 449's slicer; not repaired, no current victim, his file.
+
+**What this means for his sweep:** it keys liveness on exit code, and 449 would have moved
+`ok → REF` at 452 whether or not it was dead. An instrument can be alive and have stopped reporting
+what it reported. `alive=44` is a bound on the hard deaths only.
+
+## 13:29 — His §7 lead traced to call sites
+
+`census2` (351 call sites over 640 tracked files at the rev) + `census3` (one-level same-file
+resolution, with `firstArg`/`classify` **sliced out of census2** rather than retyped):
+
+```
+known STRING at the call            27        BUFFER at the call or one level up      0
+known STRING after one level        68        PARAM:caller-supplied                  84
+                                              AMBIGUOUS multiple-bindings            69
+                                              RESOLVED-TO-UNMODELLED                 66
+                                              UNRESOLVED no-declaration              23
+                                              NOT-A-SIMPLE-IDENTIFIER                14
+27 + 68 + 256 = 351   (gated, not eyeballed)
+```
+
+The 0 is a measurement, not a clearance: the gate row that makes it one is the resolver's own
+`RESOLVED-TO-BUFFER` KP — a resolver that could never say BUFFER would report 0 against any tree.
+
+Runtime oracle: **three** behaviours on non-strings, not one. `null`/`undefined` already THROW;
+`42`/`{}` return `""`; an array returns `"ab"`; a Buffer returns a digit string in which the comment
+bytes **survive**; a `String` object behaves exactly like the string control.
+
+His `importers=33` is **not** contradicted — his denominator is `scripts/lib` importers inside his
+168-instrument sweep population, mine is every tracked source file. I reproduced none of his three
+figures under his own keys and am correcting none of them.
+
+## 13:31 — The cure, and the gate that mattered was not npm test
+
+`stripSource` now throws `StripSourceInputError` on a non-string. Justification is the **84
+parameter sites**: a refusal covers all 84 without tracing any of them, which is why it is worth
+doing on a measured surface of 0. `String(src)` would make the Buffer case permanently silent.
+
+Ran the **full driving sweep**, not the census — `npm test`'s own output says *"NOT CHECKED: none of
+the 43 swept probes was driven."* `drive6`: **41 of 43 green, 2 red.**
+
+* **`probe-round303` — real, and against me.** `[B2] FAIL lib/strip-source.mjs: exported but not
+  declared — StripSourceInputError`, with typecheck at 0 errors, and I **had** declared it. Its
+  `declaredNames` keys on `const|function`; the `exportedNames` beside it has modelled
+  `const|let|function|class` since the probe was written. **The declaration was right and the
+  standing drift guard was blind.** Widened to include `class`; remaining kinds named, not silently
+  added; `B2a` grades the reader (KP per modelled kind + 2 unmodelled KNs) and `B2b` asserts no
+  declaration file exports a kind it cannot see, so the next `interface` reddens by name. 20 checks
+  where 18.
+* `probe1` drives the counterfactual, because B2a was added beside the widening it grades: kind list
+  and KP rows sliced from the probe, pre-454 list derived by dropping `class`. **PRE 3/5, POST 5/5,
+  exactly the 2 class rows moved**, and the indentation row moved in neither — a symmetric limit of
+  both readers, pinned by a KP row rather than repaired.
+* **`probe-round260` — not a regression.** Its `F2` is keyed on `git status --porcelain --
+  scripts/verify-tsx-guard.mjs scripts/lib/strip-source.mjs` being empty. Read the predicate rather
+  than assuming. So any **uncommitted** edit to `strip-source.mjs` reddens the standing sweep
+  regardless of correctness — a false-positive generator aimed at the module with 58 importers.
+  Not repaired; sweep re-driven on a clean committed tree instead (`drive9`).
+
+That last one is my own recorded lesson arriving from the other side: don't touch the tree while
+the sweep drives. I edited first and swept second, which made `drive6` invalid as a gate.

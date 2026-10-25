@@ -283,18 +283,106 @@ Declared in `strip-source.d.mts` too, with a note that `.d.mts` can drift from `
 a previous round shipped three exports present in one and not the other with typecheck green
 throughout, so the drift is not hypothetical.
 
+## 8. The sweep is the gate here, and it caught my own declaration
+
+`npm test`'s census reads source and bookkeeping only — its own output says so: *"NOT CHECKED: none
+of the 43 swept probes was driven."* For a module 58 files import, that is not a gate. So the full
+driving sweep was run, `node scripts/sweep-probes.mjs` with no flag:
+
+```
+drive6 (dirty tree)  SWEEP FAILED — 41 of 43 swept probes green, 2 red, 0 blocked, 110 deferred
+```
+
+### 8.1 `probe-round303` — real, and against me
+
+```
+[B2] FAIL  lib/strip-source.mjs: exported but not declared — StripSourceInputError
+```
+
+With `npm run typecheck` at **0 `error TS`**. And I *had* declared it, in `strip-source.d.mts`,
+one commit earlier. Reading the predicate rather than guessing at it:
+
+```ts
+// scripts/probe-round303-…mts, as it was
+const declaredNames = (src) => { … /^export\s+declare\s+(?:const|function)\s+([A-Za-z0-9_$]+)/gm … };
+const exportedNames  = (src) => { … /^export\s+(?:async\s+)?(?:const|let|function|class)\s+…/gm … };
+```
+
+`exportedNames` has modelled `class` since the probe was written. `declaredNames` never did. **The
+declaration was right and the standing drift guard was blind** — which is the worse of the two
+directions: a guard that reddens on a correct tree gets read as noise, and the next person turns it
+down rather than widening it. This is the guard that exists *because* a previous round shipped three
+exports present in the `.mjs` and absent from the `.d.mts` with typecheck green throughout; it
+would have missed a fourth of a different kind.
+
+Widened to `const|function|class`. The remaining kinds are **named, not silently added** —
+speculatively growing a model is how this probe's own `B3` counter once reported four arity
+mismatches that were all its own. Two rows added:
+
+* **`B2a`** grades the reader: one KP per modelled kind, a two-declaration KP, and two
+  unmodelled-kind KNs.
+* **`B2b`** asserts no declaration file in the pairs exports a kind the reader cannot see — so the
+  first `export declare interface` to land reddens **by name** rather than being mislabelled by B2
+  as undeclared. The blindness is keyed positively instead of being absorbed.
+
+20 checks pass where 18 did (`drive7.r303-after-the-reader-widening.out`).
+
+**And `B2a` passing proves nothing on its own**, because it was added in the same change as the
+widening it grades. `probe1-grade-the-b2a-counterfactual.mjs` drives it: the kind list and the KP
+rows are **sliced out of the probe**, the pre-454 list is derived by dropping `class` rather than
+typed, and both arms are driven to a verdict (`drive8`):
+
+```
+   row 2 POST ok   PRE BAD   "export declare class C extends TypeError {}"       want [C]
+   row 3 POST ok   PRE BAD   "export declare const a…\nexport declare class C…"  want [a,C]
+   row 4 POST ok   PRE ok    "  export declare class Indented {}"                want []
+
+probe1 verdict: ok · rows 5 · POST ok 5 · PRE ok 3 · moved 2
+```
+
+Exactly the two `class` rows moved. Row 4 moved in **neither** arm: both readers are line-anchored,
+so an indented top-level declaration is invisible to each of them *symmetrically*. That limit is
+**pinned by a KP row rather than repaired**, because repairing one side alone would convert it into
+a false `declared but not exported` — the same false-red this section is about, in the other
+direction.
+
+### 8.2 `probe-round260` — not a regression, and worth his attention
+
+```
+[F2] FAIL  the red is caused by his commit landing, not by anything Round 260 touched
+```
+
+Read at source rather than assumed:
+
+```ts
+check('F2', …,
+  git(['status', '--porcelain', '--', 'scripts/verify-tsx-guard.mjs', 'scripts/lib/strip-source.mjs'])
+    .trim().length === 0, …);
+```
+
+It is a **provenance self-check keyed on working-tree cleanliness** of two named paths, and my
+uncommitted edit to the second one reddened it. So: **any uncommitted edit to `strip-source.mjs`
+reddens the standing sweep, regardless of whether the edit is correct.** A false-positive generator
+aimed at exactly the module with 58 importers — and the same class of fuse that this probe's own
+`F3` row was written to name (a symbolic reference where a pinned one belongs).
+
+**Not repaired.** What F2 *should* key on is a judgement about that round's provenance claim, not a
+mechanical fix. Instead the sweep was re-driven on a committed, clean tree:
+
+```
+drive9.probe-sweep-clean-tree.out   — re-drive at 28833525, tree clean, recorded in §8.3
+```
+
+### 8.3 Gate
+
 | gate | result |
 |---|---|
 | `npm run typecheck` | 0 `error TS` across all four workspaces |
-| `node scripts/sweep-probes.mjs` (the full driving sweep, not `--census`) | `drive6.probe-sweep-after-the-refusal.out` |
-| `npm test` | `drive7.npmtest.out` |
+| `npm test` | 26 passed \| 13 skipped (39) · 333 passed \| 13 skipped (346) · census PASSED |
+| `node scripts/sweep-probes.mjs`, dirty tree | 41/43 green, 2 red — both diagnosed above (`drive6`) |
+| `node scripts/sweep-probes.mjs`, clean tree at `28833525` | `drive9.probe-sweep-clean-tree.out` |
 
-The driving sweep is the gate that matters here and the census is not: `npm test`'s census reads
-source and bookkeeping only and drives zero probes, so a probe that started throwing on this change
-would report `CENSUS OK`. 58 importers and 351 call sites is exactly the population a census cannot
-clear.
-
-## 5. Open, each with a named blocker
+## 9. Open, each with a named blocker
 
 1. **The verdict-drift census (§2).** Blocker: cost, and it is a real decision rather than a
    deferral. His §8 already declines to price his liveness sweep as a gate leg; a drift census is
@@ -302,5 +390,16 @@ clear.
    read a verdict line out of each committed recording. Priced, not run, this fire.
 2. **W10's re-aim or retirement.** Blocker: it is his leg and his claim (§4).
 3. **449's comment-blind regex lift (§3).** Blocker: no current victim, and it is in his file.
-4. **His §7 `stripSource` non-string lead.** Blocker: not yet started this fire — 33 importers, and
-   an import is not a call site, so this needs a dataflow pass rather than an import census.
+4. **The 256 `stripSource` sites still not known, 84 of them parameters (§6).** Blocker: following
+   a parameter to its callers is inter-procedural, which is a different instrument from a one-level
+   same-file resolver, and the refusal in §7 covers all 84 without it. So this is now **unnecessary
+   for safety** and remains open only as a measurement.
+5. **`probe-round260`'s `F2` keying on working-tree cleanliness (§8.2).** Blocker: what it *should*
+   key on is a judgement about that round's provenance claim, not a mechanical re-aim.
+6. **Both declared-name readers in `probe-round303` are line-anchored (§8.1, row 4).** Blocker:
+   repairing one side alone inverts the false red; repairing both is a change to a reader with no
+   victim today, and the limit is pinned by a KP row in the meantime.
+7. **Whether his liveness sweep should become a gate leg (his §8).** Blocker: his, and he said
+   explicitly he did not want to decide it unilaterally inside a fire. My input, offered rather
+   than decided: §8 of this round is the argument *for* — the two reds it found this fire were one
+   real defect and one false positive, and the census would have reported `CENSUS OK` for both.
