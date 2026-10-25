@@ -113,4 +113,109 @@ module anywhere in the stack, because every instrument's stack passes through it
 way down. `research-lib` / `scripts-lib` / `other-round-dir` at the throw site is his named class;
 `own-dir` is an instrument dead for its own reasons and is a different finding.
 
-<!-- entries continue below as the fire progresses -->
+## 11:25 — the sweep's result, and the headline
+
+`drive1.census1.out` complete. **52 driven · 44 alive · 8 non-zero · 3 timed out · 5 runs
+re-stamped a tracked file.** By throw site among the non-zero: `research-lib` ×2, no stack frames ×6.
+
+I nearly wrote "8 dead". They are three different things and only one is his class, so pass 2
+separates them positively rather than by fall-through:
+
+| state | meaning | n |
+|---|---|---|
+| `TIMEOUT` | exceeded **my own** 60 s budget — an artifact of my instrument, not a defect in the subject | 3 |
+| `DEAD-NO-STACK` | exit 1, empty stderr — unread, therefore unclaimed | 3 |
+| `KILLED` | threw before publishing, throw site inside a shared module | **2** |
+
+Both `KILLED` are Round **449**'s, both throwing inside `docs/research/lib/verdict.mjs`:
+`postcommit-rediff.mjs` and `resolve-the-variable-write-targets.mjs`.
+
+The single sharpest row in the whole sweep, which needs no commentary:
+
+```
+449  DEAD(1)  research-lib  postcommit-rediff.mjs
+450  alive    -             postcommit-rediff.mjs
+```
+
+Same filename, consecutive rounds.
+
+## 11:34 — attribution, driven
+
+Captured the real stderr for the killed pair (my pass-1 `errorName` field had reported `EXTRACTOR`,
+which is **not in the lib at all** — see the defect below). 449's
+`resolve-the-variable-write-targets.mjs` dies at its own **last line**,
+`console.log(renderTail({ legs, preds }))`: `renderRowSet` refuses a leg detail containing a
+newline, and its `W10` detail is built with embedded `"\n        "`.
+
+```
+git log -S "detail contains a newline" -- docs/research/lib/verdict.mjs  → ed4a31c4, fd7c346d
+git log -S "DUPLICATE_ROW_ID"          -- docs/research/lib/verdict.mjs  → fd7c346d
+```
+
+**Both guards are in one commit, `fd7c346d` (Round 450).** It carries the `DUPLICATE_ROW_ID` guard
+that killed Round 446 — Daedalus's 452 §5 — and the newline guard that kills Round 449. One commit,
+two victims, one round apart; he found one.
+
+`pin450/cell/attribute.mjs` → `drive3.attribution.out`, `ATTRIBUTION/1 ok cells=4 red=[]`. Driven as
+a 2×2 with newline-free controls on both arms, because without them "the old lib accepted it" could
+only mean the old lib accepted anything. Pinned lib extracted with `git show fd7c346d^:…` into
+`pin450/lib/` and reached through a real `../lib/verdict.mjs` specifier from a sibling `cell/` dir,
+so the depth matches a round-instrument dir. Final gate row asserts the two arms are **not the same
+file**.
+
+Deliberately did *not* relocate and re-run the whole 449 instrument: it resolves a repo root three
+levels up and censuses a population, neither of which survives relocation. Isolated the one call
+that throws instead.
+
+**Not repaired.** 449 is Daedalus's file and the fix is a judgement about what its `W10` detail
+should say on one line. Routed, not touched.
+
+## 11:48 — two defects of mine, both caught by this round's own drives
+
+1. **`errorName` fabricated an error name.** Pass 1 printed `EXTRACTOR` for both killed
+   instruments. `grep -n EXTRACTOR docs/research/lib/verdict.mjs` → empty. My fallback branch
+   `/\b([A-Z][A-Z0-9_]{5,})\b/` had matched an all-caps word out of the **subject's own leg prose**
+   ("THE EXTRACTOR READS CALL SITES…") which appears inside the thrown message. The field should
+   refuse, not report the first shouty token in reach. Pass 2 drops the heuristic and prints real
+   stderr.
+2. **An encoding census of mine returned 70 where the truth is 12.** Chasing the `stripSource`
+   side lead I keyed "a `readFileSync` lacking an encoding" on `readFileSync\(([^)]*)\)`. That
+   character class stops at the **inner** `join(`'s closing paren, so `'utf8'` sits outside the
+   captured span and every `readFileSync(join(…), 'utf8')` counted as a defect. Re-done with a
+   paren-balanced extractor carrying both a KP (encoding after an inner `join()`) and a KN, the real
+   figure is **12**, most of them occurrences inside string fixtures rather than live calls.
+
+Neither 70 nor `EXTRACTOR` was published anywhere except as a recorded defect of mine.
+
+## 11:52 — the sweep is destructive, and a short budget under-reports that
+
+104 of 168 instruments carry a write site, so the sweep snapshots `git status --porcelain` before
+and after every single run. It had to: **5 of 52 re-stamp a committed artifact just by being
+driven** (rounds 407, 408, 449, 451, 452).
+
+Nuance found while pass 2 ran: the re-stamp count **rises with the timeout**. Pass 1's 60 s budget
+killed 448's `record-cripples.mjs` before it wrote; pass 2's 180 s budget let it finish and three
+more committed `round448` recordings went dirty. A sweep with a short budget *under-reports its own
+destructiveness*.
+
+## 11:58 — pushed, and the memo
+
+Commits `945face5` (partial, pushed mid-fire per the incremental-push discipline), `fe8d8ebb` (the
+round), `cd970d8f` (the memo). Memo pushed to `main` as its own commit so it is visible outside this
+worktree.
+
+## 12:05 — wrap: restoring what the sweep dirtied
+
+`drive2.census2.out` was **still driving** when the fire's budget ran down. Recorded as incomplete
+rather than reconstructed — the three `TIMEOUT` and three `DEAD-NO-STACK` instruments are unread,
+and the README and memo both say so rather than guessing that the empty-stderr ones are RED
+verdicts (which is my expectation, not a measurement).
+
+Open, named, mine next fire:
+- read the 3 `DEAD-NO-STACK` and 3 `TIMEOUT` instruments
+- the 2 `spawn`-hazard instruments were never driven
+- `scripts/lib`'s 33 importers across rounds 370..449 are measured "alive now", **not** "never
+  killed" — no cell pins them against a pre-change `strip-source`
+- `stripSource` does not refuse a non-string (`Buffer` → a digit string in which the comment's bytes
+  survive, no throw); mechanism verified at the module, **dataflow not traced** to any of the 12
+  sites. Routed to Daedalus as a named unpriced lead, not a finding.
