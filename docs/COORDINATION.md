@@ -3277,7 +3277,39 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-10-24 ~07:17 PT (START fire). **Status:** available.
+- **Updated:** 2026-10-24 ~19:17 PT (STOP fire). **Status:** available.
+- **10/24 fire (STOP) — no-op on product; Round 446→450 chain read, nothing owed to this seat.**
+  Drain against own 07:23 START checkpoint (`7281c78e`): 24 new commits, none mine (checked `%an`
+  per commit — the top commit's subject line read as a "STOP fire" entry but its author was Argus,
+  not this seat; caught before citing it as a self-checkpoint), none touching `packages/` or
+  `scripts/` (`git diff --stat` confirmed empty) — the Round 446→450 research-track chain
+  (Daedalus's P1-predicate fix, cripple grading, and hygiene widening; Theseus's Round 447/449 G4
+  re-key and write-site resolver; Calliope's SWEEP no-op; two no-op checkpoints from Argus). Five
+  new mail files, all Daedalus↔Theseus round-track memos cc'ing this seat only (body-grepped, not
+  just filename — no "Iris" outside the cc line in any) — no action routed here. All four
+  cross-repo mailboxes re-checked (`find -newer` against this morning's log, then content-grepped
+  for `klatch|\biris\b`): designinproduct 10 new files/0 hits (Tally-onboarding and crossword-ops
+  threads); mediajunkie 6 new files/0 hits (same Tally thread plus a build-ready memo); dispatch 1
+  new file/0 hits (inbox-check-clean signal); piper-morgan-product 476 new files/6 hits, same stale
+  `MANIFEST.md` boilerplate (a May 2026 Klatch-pause-framing line) as every prior fire — nothing
+  owed across any of the five. Both standing blockers re-checked fresh: day count **76** (unchanged,
+  same calendar day, re-derived via `node` date arithmetic not carried from memory); `entityGuess`
+  still **6 files/20** matching lines (a first `-o` pass returned 23 — total regex matches, not
+  lines, since several lines carry two occurrences; recounted with `-n` and hand-verified against
+  the prior per-file breakdown before publishing 20). **Verified, not trusted:** `npm run
+  typecheck` clean ×4 workspaces; `npm test -w packages/server` — **140 files · 2183 passed · 1
+  skipped (2184)**; `npm test -w packages/client` — **26 passed|13 skipped (39) · 333 passed|13
+  skipped (346)** — both exact matches to this morning's checkpoint; `sweep-probes --census` —
+  **153 probe files, 43 swept/110 deferred** unchanged; full driving sweep (`:3001` clear
+  before/after, `HEAD` unchanged at `5264f54b` before/after, tree clean throughout, backgrounded and
+  picked up via completion notification rather than polled) — **SWEEP PASSED — 43 of 43 swept
+  probes green, 0 red, 0 blocked, 0 census problem(s), 110 deferred**. No `packages/` changes this
+  fire. No port bound at close, no database opened, no model called. Two consecutive checks found
+  nothing further unblocked — fire closed bounded. Nothing new needs xian beyond the one standing
+  item (ground-rules question, now at 76 days, unmoved today). **Drain:** all unblocked items done
+  (commits read with author verified, mail across all five mailboxes, both blockers, full gate);
+  nothing deferred. Log: `docs/logs/2026-10-24-0717-iris-log.md`.
+- **Prior update:** 2026-10-24 ~07:17 PT (START fire). **Status:** available.
 - **10/24 fire (START) — no-op on product; Round 445 capability-test chain read, nothing owed to
   this seat.** Drain against own 10/23 ~19:17 PT STOP checkpoint (`ad21b38c`): 11 new commits, none
   mine, none touching `packages/` or `scripts/` (`git diff --stat` confirmed empty) — the Round 445
