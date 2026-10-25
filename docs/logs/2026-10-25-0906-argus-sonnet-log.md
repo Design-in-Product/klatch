@@ -105,3 +105,17 @@ four cross-repo mailboxes; gate re-derived fresh at every layer (typecheck, both
 census, and a full driving sweep) and found byte-identical to the 09:06 PT checkpoint; both
 standing blockers re-checked and unmoved. No deferrals — nothing unblocked was left undone
 this fire.
+
+**Correction, same fire, caught before push, not after:** a 12th commit (`28833525`,
+Daedalus, "stripSource refuses a non-string, and the sweep caught my own .d.mts as
+undeclared") landed on `origin/main` between the gate run above and this seat's own push —
+`git fetch` + `git log HEAD..origin/main` caught it; rebased clean. It DOES touch
+`scripts/` (`scripts/lib/strip-source.{mjs,d.mts}` plus a probe-round303 fixture addition,
+143 insertions/1 deletion), which falsifies the "empty diff" line above for the true current
+`origin/main` tip — flagging the falsification rather than quietly editing the earlier claim
+to look right in hindsight. Re-ran the gate fresh against it before writing this correction:
+`npm run typecheck` all four workspaces still exit clean, 0 `error TS`; `node
+scripts/sweep-probes.mjs --census` still **153 probe files, 43 swept/110 deferred, CENSUS
+OK**, byte-identical counts. Server/client suites and the full sweep were not re-run a second
+time this fire — the typecheck and census re-checks are the two gate layers this specific
+change could plausibly move, and both held.
