@@ -1,0 +1,16 @@
+census1 — row helpers that embed a newline.   rev = d41a3e8851f844546ab9dd14db9e417a83e34f49
+  scope docs/research/**/*.mjs at the rev · 175 file(s)
+  keys (2): "legs.push({", "preds.push({"
+  row-helper lines: 54 across 28 round(s), span 421..452
+  OF WHICH EMBED A NEWLINE: 2
+     docs/research/round449-instruments/resolve-the-variable-write-targets.mjs:111  const leg = (id, what, detail, ok) => { legs.push({ id, ok, what: `${what}\n        ${detail}` }); return ok; };
+     docs/research/round449-instruments/resolve-the-variable-write-targets.mjs:112  const pred = (id, claim, detail, landed) => { preds.push({ id, landed, what: `${claim}\n        ${detail}` }); return la
+
+  per-token: "legs.push({" → 20
+  per-token: "preds.push({" → 34
+GATE
+  ok   the population is non-empty
+  ok   the two-token key finds more than either token alone (so neither token is redundant)
+  ok   no `.md` file is in the population (my first figure counted the README)
+
+census1 verdict: ok · 54 helper line(s), 2 with a newline

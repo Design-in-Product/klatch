@@ -108,8 +108,16 @@ const Q2_CLAIM = 'the TRACKED-target set found here is a strict SUPERSET of the 
 
 const legs = [];
 const preds = [];
-const leg = (id, what, detail, ok) => { legs.push({ id, ok, what: `${what}\n        ${detail}` }); return ok; };
-const pred = (id, claim, detail, landed) => { preds.push({ id, landed, what: `${claim}\n        ${detail}` }); return landed; };
+// ONE LINE PER ROW (454). These two helpers used to join the claim and its figures with
+// `\n        `, which published one row as two lines — and the second line can be a well-formed row
+// for a leg that does not exist. Round 450's `renderRowSet` refuses that, which is why this file
+// exited 1 publishing nothing from `fd7c346d` until now (Theseus's Round 453 §1 found it; his memo
+// named `W10`, but the newline is in the *helpers*, so it was all 10 legs and both predictions).
+// The guard is right and is not loosened here: the fix is to collapse the join, which is the same
+// `\s+ → ' '` normalisation rounds 451 and 452 already use.
+const oneLine = (s) => String(s).replace(/\s+/g, ' ').trim();
+const leg = (id, what, detail, ok) => { legs.push({ id, ok, what: oneLine(`${what} ${detail}`) }); return ok; };
+const pred = (id, claim, detail, landed) => { preds.push({ id, landed, what: oneLine(`${claim} ${detail}`) }); return landed; };
 
 const DIRTY_AT_ENTRY = git('status', '--porcelain=v1').split('\n')
   .filter((l) => l !== '' && /^.?[MARCD]/.test(l.slice(0, 2)))

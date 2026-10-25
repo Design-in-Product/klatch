@@ -1,0 +1,40 @@
+  SLICE GATE  ok   starts at the anchor
+  SLICE GATE  ok   anchor occurs exactly once in the subject
+  SLICE GATE  ok   carries the indexOf step
+  SLICE GATE  ok   carries the stripSource step
+  SLICE GATE  ok   carries the regex-literal lift
+  SLICE GATE  ok   carries the new Function compile
+
+probe0 — why 449's two reader slices return null.  REV = d41a3e8851f844546ab9dd14db9e417a83e34f49
+
+KP (449 itself)  docs/research/round449-instruments/resolve-the-variable-write-targets.mjs
+    anchor "const sliceRe = " found=true occurrences=1
+    source 54513 B · stripSource length-preserved=true
+    statement span 1220 B · ran to EOF=false
+    span first line: "const sliceRe = (rel, anchor) => {"
+    regex lifted: "/ now the whole STATEMENT, found by brace/"
+    STEP REACHED: compiles — slice SUCCEEDS
+
+reader 1  docs/research/round446-instruments/grade-my-own-oracle-predicate.mjs
+    anchor "const legLines = " found=true occurrences=1
+    source 39362 B · stripSource length-preserved=true
+    statement span 41 B · ran to EOF=false
+    span first line: "const legLines = (t) => legRows(t).length"
+    regex lifted: null
+    STEP REACHED: no regex literal in the statement span
+
+reader 2  docs/research/round448-instruments/record-cripples.mjs
+    anchor "const legTokens = " found=true occurrences=1
+    source 7963 B · stripSource length-preserved=true
+    statement span 205 B · ran to EOF=false
+    span first line: "const legTokens = (text) => {"
+    regex lifted: null
+    STEP REACHED: no regex literal in the statement span
+
+GATE
+  ok   the KP slice succeeds (so "no regex literal" is not this bisector answering no to everything)
+  ok   both readers are reached through a real `git show` at REV (no missing file)
+  ok   both reader anchors are present at HEAD — so the NOT FOUND is NOT a vanished anchor
+  ok   both readers fail, which is what his row published
+
+probe0 verdict: ok · failing step, reader 1: no regex literal in the statement span · reader 2: no regex literal in the statement span

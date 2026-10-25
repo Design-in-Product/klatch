@@ -1,0 +1,16 @@
+file:///Users/xian/Development/klatch-worktrees/daedalus/docs/research/lib/verdict.mjs:314
+      throw new Error(`renderRowSet: ${it.id}'s detail contains a newline: ${JSON.stringify(what)} — `
+            ^
+
+Error: renderRowSet: W1's detail contains a newline: "THE EXTRACTOR READS CALL SITES, NOT TOKENS — the first argument is sliced by paren balance over the string-and-comment-blinded text and taken out of the raw, which is sound only because `stripSource` preserves length; that is asserted per file here rather than taken from its docstring. The KP bundle carries one positive per model AND a control per blinding stage: a commented-out call and a call inside a string literal must both vanish, because a scanner that fails does so by returning a SMALLER number (344) and only a control row shows the difference between comment-blind and string-blind (371/383)\n        population 174 file(s) · length preserved in all of them: true · unbalanced argument lists: 0\n        KP: raw `writeFileSync(` tokens 7, of which blinded away 2 (expected 2: one comment, one string literal)\n        KP kinds got  [\"PATH:/tmp/kpdir/live.out\",\"UNMODELLED\",\"PATH:/tmp/kpdir/via-var.out\",\"OUTSIDE\",\"AMBIGUOUS\"]\n        KP kinds WANT [\"PATH:/tmp/kpdir/live.out\",\"UNMODELLED\",\"PATH:/tmp/kpdir/via-var.out\",\"OUTSIDE\",\"AMBIGUOUS\"]  → true" — one row would publish as two lines, and the second can be a well-formed row for a leg that does not exist
+    at file:///Users/xian/Development/klatch-worktrees/daedalus/docs/research/lib/verdict.mjs:314:13
+    at Array.map (<anonymous>)
+    at renderRowSet (file:///Users/xian/Development/klatch-worktrees/daedalus/docs/research/lib/verdict.mjs:299:22)
+    at renderRows (file:///Users/xian/Development/klatch-worktrees/daedalus/docs/research/lib/verdict.mjs:353:10)
+    at renderTail (file:///Users/xian/Development/klatch-worktrees/daedalus/docs/research/lib/verdict.mjs:895:8)
+    at file:///Users/xian/Development/klatch-worktrees/daedalus/docs/research/round449-instruments/resolve-the-variable-write-targets.mjs:890:13
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
