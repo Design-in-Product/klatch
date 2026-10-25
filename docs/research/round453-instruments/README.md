@@ -43,6 +43,18 @@ not reapable inside a fire, so they are named here, not silently dropped).
 driven: 52 · alive (exit 0): 44 · non-zero: 8
 ```
 
+> **CORRECTION, added by Round 455 at Daedalus's 454 §2 request. `alive=44` is a bound on the HARD
+> deaths only.** This sweep keys liveness on **exit code**, and an instrument can be alive and have
+> stopped reporting what it reported: Round 449's `W10` moved `ok → REFUSED` when Round 452 re-pointed
+> the readers it slices, and no exit code changed. Round 455 found a second way past it — `W10`'s
+> predicate *asserts its defect is present*, so restoring its readers makes it publish **RED on a
+> cured tree** (`round455/drive2`, leg `B3`). So an instrument can be alive and (a) silent about what
+> it used to report, or (b) reporting the opposite of the truth, and **this figure sees neither**. The
+> measurable version is the **verdict-drift census** Daedalus prices in his 454 §2: re-drive every
+> instrument with a committed recording carrying a readable verdict line, and diff the published line
+> against the committed one. Not built. Blocker: cost, and it is a decision — strictly more than this
+> sweep.
+
 "Non-zero" is not "killed", and conflating them would have manufactured findings. Pass 2
 (`census2-separate-the-eight.mjs`) separates the 8 positively — no fall-through bucket:
 
@@ -120,6 +132,27 @@ runs that modified a tracked file: 5
 Five of 52 re-stamp a committed artifact just by being driven (441 is this class). Any sweep built
 for this job without a per-run snapshot would quietly rewrite five committed recordings' provenance
 and report nothing. The five are restored from HEAD at the end of the fire.
+
+> **CORRECTION, Round 455. This row is WITHDRAWN: the supported figure is 2, not 5.** Daedalus's 454
+> §1 could not match the 449 row, and he was right to doubt it. Driven one at a time on a clean tree
+> with a per-FILE snapshot (`round455/drive1`, leg `A1`), **3 of the 5 stamp nothing** — only
+> `round407` (`census.json`) and `round408` (`stratification.json`) reproduce, which are exactly the
+> two rounds whose files appear in `drive4` below. Two defects, both structural:
+>
+> 1. **The list above names DRIVERS; `drive4` names FILES; nothing joins them.** `census1` pushes
+>    `p.path` into `restamped`. Driver rounds are `[407,408,449,451,452]`, stamped-file rounds are
+>    `[407,408]` (and `drive4` additionally holds three `round448` files). A reader given "449" cannot
+>    tell which of the two it is, so **the row was true and unverifiable at the same time**.
+> 2. **`census1` never restores between runs**, so `before` for driver N is the accumulated dirt of
+>    drivers 1..N−1 compared as a single global porcelain string; a later driver that rewrites an
+>    already-dirty file to different content is credited with the stamp. That is the named mechanism
+>    for the non-reproduction, **not driven** — reproducing it needs the 52-drive population in
+>    order, not the 5. Blocker: 52 drives.
+>
+> The paragraph below it — that a sweep for this job needs a per-run snapshot — stands on the 2, and
+> `round455/drive1` adds that **the restore needs a bounded write surface too**: this round's restore
+> was indiscriminate about authorship and Round 455's first drive reverted 130 lines of a session log
+> with it.
 
 This is also why **`writeRecording`'s `TrackedTargetError` guard is the right shape** and these five
 sites have not adopted it.

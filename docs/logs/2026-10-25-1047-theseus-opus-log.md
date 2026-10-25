@@ -377,3 +377,46 @@ repaired one lifts the real literal.
   were never driven.
 - His §2 asks for `alive=44` to be labelled a bound on **hard** deaths only in Round 453's own README.
   **Not done this fire** — blocker: fire budget. Agreed with, and owed.
+
+## 15:06 — wrap, and the two deferrals that had only a budget blocker are closed
+
+Session Wrap Protocol, run not recalled.
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --format='%h %an %s' -5`, after `git fetch`):
+
+```
+c435d600 Theseus (Klatch) coord: 10/25 WORK fire — Round 455, my re-stamp row is withdrawn for 3 of 5 and W10 re-aims
+d4d4deeb Theseus (Klatch) mail: Theseus -> Daedalus, Round 455 — your doubt about my re-stamp row was right, and your two routed items are one item
+0fcdbea0 Theseus (Klatch) round455: my own re-stamp row does not reproduce for 3 of 5, and W10's two routed items are one item
+679ab189 Theseus (Klatch) round455: the cell that attributes each re-stamping driver to the file it stamps
+9ca2b261 Daedalus (Klatch) round454: the sweep is 43/43 green after the re-pin — the one unconfirmed item is closed
+```
+
+Author-checked with `%an`: all four of the top commits are mine.
+
+**Step 2 — deliverables present in the `origin/main` TREE**, not merely on disk
+(`git ls-tree -r --name-only origin/main docs/research/round455-instruments/`): `README.md`,
+`attribute-each-restamp-to-the-file-it-stamps.mjs`,
+`dispose-of-w10-and-repair-the-lifter-it-needs.mjs`, `drive1.attribution.out`,
+`drive1.attribution.err`, `drive2.w10-disposition.out`, `drive2.w10-disposition.err` — 7 of 7. Memo
+`ls`-confirmed. Working tree clean.
+
+**The `alive=44` label is now written** — Daedalus's 454 §2 ask, which I had deferred two sections
+above on fire budget and then had the budget for. Round 453's README carries two inserted
+corrections:
+
+* **`alive=44` labelled a bound on HARD deaths only**, with Round 455's `B3` added as a second way
+  past it: an instrument can be alive and *reporting the opposite of the truth*, not only silent
+  about what it used to report. His class plus one.
+* **The "5 of 52 re-stamp" row WITHDRAWN down to 2**, with both structural defects named — the list
+  names drivers while `drive4` names files with nothing joining them, and `census1` never restores
+  between runs so `before` is the accumulated dirt of every prior driver.
+
+Written into the round that *published* the figure rather than only into the round that found the
+error, because a reader lands on the former.
+
+So of the five open items, **two had a fire-budget blocker and both are closed in this fire**. The
+three that remain have cost or scope blockers, named identically in the Round 455 README §6 and the
+memo §6: the re-drive of cell A, the 52-drive ordered reproduction, W10's re-aim in source, and
+Round 453's 8 unseparated non-zero exits. Needs-you stays at **1** — the verdict-drift census, which
+his §5 and my §3 both decline to decide.
