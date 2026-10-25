@@ -324,3 +324,67 @@ the 43 swept probes was driven."* `drive6`: **41 of 43 green, 2 red.**
 
 That last one is my own recorded lesson arriving from the other side: don't touch the tree while
 the sweep drives. I edited first and swept second, which made `drive6` invalid as a gate.
+
+## 13:40 — Clean re-drive, and a pin that reddened on its own promotion
+
+`drive9` on a clean committed tree at `28833525`: **42 of 43 green, 1 red.**
+
+* **`probe-round260` PASSES.** That is the dirty-tree diagnosis driven rather than argued.
+* **`probe-round303` red at exit 0:** `pin says 18, observed says 20 — the pin needs bumping`. My
+  two new checks moved the count and `sweep-probes.mjs` pins it. Re-pinned at 20.
+
+**And the re-pin was itself caught**, by the entry-schema check this repo already has:
+
+```
+CENSUS RED — schema  probe-round303…mts: why says 18 where expect pins 20
+```
+
+Leaving `18/18` in the `why` line reports a mismatch while the probe is green. The remedy is the one
+the round 320 and 426 entries record in the same words: move the original promotion figure up into
+a comment, leave only the current `N/N` on the `why` line. `--census` green after the fix.
+
+## 13:46 — Push collision, caught by fetch
+
+First `git push origin HEAD:main` **rejected, non-fast-forward.** `git fetch` showed two Argus
+commits (`306eccbc`, `8dc53936`) landed while I was driving. Compared the touched file lists before
+rebasing — no overlap (he touched `COORDINATION.md` and his own log; I touched research, my log,
+mail and `scripts/`) — then `git rebase origin/main`, clean, and verified my commit present with
+`%an` before pushing. Pushed as `a4f42fc7`.
+
+## Session Wrap verification
+
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git log origin/main --format='%h %an %s' -5
+a4f42fc7 Daedalus (Klatch)  round454: re-pin probe-round303 at 20 checks, and the clean re-drive confirms the 260 diagnosis
+8dc53936 Argus (Klatch)     coord+log: 10/25 WORK fire correction — a 12th commit falsified the empty-diff claim
+306eccbc Argus (Klatch)     coord+log: 10/25 WORK fire — no-op, gate byte-identical, needs-you unchanged at 1
+28833525 Daedalus (Klatch)  round454: stripSource refuses a non-string, and the sweep caught my own .d.mts as undeclared
+daac6b13 Daedalus (Klatch)  round454: his §7 lead traced to call sites — the direct-Buffer surface is 0 and 92% of sites are a variable
+```
+
+Four Daedalus commits this fire (`4a05dbf8`, `daac6b13`, `28833525`, `a4f42fc7`), all authored
+`Daedalus (Klatch)`, author checked rather than assumed.
+
+**Step 2 — deliverables, each stat'd.** Listed in the commit bodies; `docs/research/round454-
+instruments/` carries README, `census1`/`census2`/`census3`, `probe0`/`probe1`, and drives 0–10.
+
+**Step 3 —** this log entry and `COORDINATION.md` are committed last.
+
+## NOT CONFIRMED — stated rather than claimed
+
+The post-re-pin sweep drive (`drive10.probe-sweep-after-the-repin.out`) was **still running when
+this fire's budget ran down**, at 7 of 43 result rows. So:
+
+* `probe-round303` is green **standalone** — `drive7`, `All 20 regression checks passed`, exit 0.
+* `node scripts/sweep-probes.mjs --census` is green after the `why` fix.
+* **I have not seen a 43/43 driving sweep.** The next Daedalus fire should run
+  `node scripts/sweep-probes.mjs` first and read its verdict line before anything else.
+
+## Open, named, each with a blocker
+
+Carried in `round454-instruments/README.md` §9 — seven items, each with a named blocker. The two
+that are mine and unblocked by anyone else: the **verdict-drift census** (blocker: cost, and it is a
+decision rather than a deferral) and **confirming the sweep at 43/43** (blocker: this fire's
+budget, nothing else).
