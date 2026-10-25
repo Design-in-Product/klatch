@@ -1,0 +1,16 @@
+LEG T1 ok population = 400 committed .out files / 21702 lines at pinned rev 38bc4927 · at HEAD: 402 .out, 2 excluded as this round's own, 400 kept · self-exclusion leg VACUOUS pre-promotion: false
+LEG T2 ok 446: anchor lines=1 compiled=true era=round444-instruments/ (8 files, 67 ROWISH lines) reads=53 | 448: anchor lines=1 compiled=true era=round447-instruments/ (5 files, 33 ROWISH lines) reads=25 · real prose control refused by both: true · distinguishing token present in each slice: true
+LEG T3 ok token sets off the slices: 446=[" ok ","FAIL","REF "] 448=[" ok ","RED ","REF "] · 446-only=["FAIL"] 448-only=["RED "] · INCOMPARABLE by construction, needing no exemplar at all
+LEG T4 ok both=227 only446=2 only448=46 neither=21427 · sum===lines: true (21702/21702) · on REAL exemplars the two readers are INCOMPARABLE, so his W6 conclusion holds and my 448 §4 correction was wrong on both keys
+LEG T5 ok only448 by cause (minimal length-preserving id mutation on the real line): ID=38 TOKEN=8 NOT_ROWISH=0 · sum===only448: true (46/46)
+LEG T6 ok ROWISH reads 707 lines and is a superset of both subjects' union (275 lines, 0 missed) · per-spelling realized counts {"REFUSED":12,"REFUTED":30,"LANDED":68,"FAIL":29,"OPEN":13,"RED":30,"REF":15,"ok":510} · UNMODELLED on real data (0 occurrences): [] · canonical LEG/PRED rows: 184
+LEG T7 ok 707 ROWISH rows carry 3 distinct id initials {"G":546,"P":123,"H":38} · 161 of them are NOT G-prefixed, and 446's reader requires ` G` · his W6 fixed every exemplar's id at G9, so this axis was invisible to it
+LEG T8 ok 26 committed recordings publish a VERDICT line AND >0 rows AND are read by 446 as ZERO leg lines · so 446's `legLines(x) === 0` conjunct cannot tell a run that DIED from a live run whose legs are not G-prefixed · first: docs/research/round446-instruments/drive2.child-stderr-leaked-into-the-recording.out (5 rows)
+LEG T9 ok readCorpusRows reads 338 corpus lines ROWISH refuses that are not canonical rows, and the gap runs BOTH ways: ROWISH_TOO_NARROW=184 (genuine rows in a single-space or hyphenated-id shape, e.g. " ok KP-A mine, unwrapped: found 1/1, stratum FAILS OPEN") · READER_TOO_WIDE=154 (prose claimed as a row, e.g. " ok every KP and control as expected: true") · sum===read: true
+PRED P1 LANDED of only448, cause=ID outnumbers cause=TOKEN — ID=38 vs TOKEN=8
+PRED P2 REFUTED the RED spelling has 0 realized occurrences in the pinned corpus — realized RED count = 30
+
+VERDICT/1 ok legs=9 red=[] refused=[] preds=2 refuted=[P2] prefused=[]
+     HEAD = 01f23130; gated figures are off the pinned rev, so they do not move when this round commits
+     slices: 446 "/^(?: ok |FAIL|REF ) G/" · 448 "/^(?: ok |RED |REF ) ([A-Z][A-Z0-9]*)  /"
+     so T7's 161 non-G rows is a FLOOR, not a total: ROWISH is measurably narrower than the row population by at least 184 lines, and every one of those is a row 446 cannot read either (437 — a refusing signal only raises a floor; say which end it can move)
