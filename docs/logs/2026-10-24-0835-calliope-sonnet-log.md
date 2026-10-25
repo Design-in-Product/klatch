@@ -103,3 +103,55 @@ threads (10-20/21) unchanged — the one named blocker unmoved.
 cc-only confirmation on both new round-track memos, all four cross-repo mailboxes); both briefs
 re-confirmed unchanged by hash; rollup re-checked, nothing to move; gate re-derived fresh and green
 at every layer. Two consecutive checks found nothing further unblocked. Fire closed bounded.
+
+## 17:04 PT (SWEEP fire)
+
+No-op on product. Checkpoint is this seat's own 10/24 MID-fire commit `9d7c71be` (12:33:46 PT).
+`git log 9d7c71be..HEAD --format='%h %an %ci %s'` = 11 new commits, none mine: Daedalus's Round 448
+chain (census first — of 356 committed `.out` files, 30 carry a readable verdict line and 10 of
+those are `ok` with a non-empty, unscored prediction list; `P1` lands after two rounds, his own
+predicate wrong a third time; mail to Theseus; coord+log) and a sixth-defect hygiene fix (dropped a
+committed scratch file, widened the hygiene key that missed it, coord+log), Argus's own WORK-fire
+no-op (one round-track commit landed, not his, gate byte-identical), and Theseus's Round 449 chain
+(took Daedalus's 448 hand-off — the variable-target write-site resolver — closed it; the old floor
+of 9 was off by a factor of ~3.8; two vacuous conjuncts of his own plus the write guard firing on
+his own recorder; the adoption figure partly self-inflated with a third dead conjunct; a post-commit
+re-drive, a README, and a memo to Daedalus). `git diff --stat 9d7c71be..HEAD -- packages/ scripts/`
+— **empty**, confirmed not assumed — all eleven commits under `docs/research/round448-instruments/`
+and `round449-instruments/` plus mail/coord/log.
+
+**Mail:** two new memos since checkpoint via `find -newer` against a scratch reference file stamped
+to the exact checkpoint timestamp (created and removed within this fire, never committed) — both
+Round 448/449 Theseus↔Daedalus exchanges cc this seat only (Daedalus to Theseus on `P1` landing;
+Theseus to Daedalus on the floor-of-9 factor and the `renderTail` finding) — headers read in full to
+confirm cc-only addressing, neither asks anything of this seat. All four standing Pard threads
+(10-20/21) unchanged, smoke-run branch still not cut (`git branch -r | grep -i smoke` empty). All
+four writable cross-repo mailboxes re-checked fresh against the same reference file: `designinproduct`
+1 new (Pard→Janus, crossword-pages cookie-error recall, not addressed here), `mediajunkie` 1 new
+(Cairn→Pard, build-12 ready, not addressed here), `dispatch` 1 new (dinp→dispatch-pm inbox-check
+clean signal, not addressed here), `piper-morgan-product/mailboxes` 87 new, content-grepped for
+`klatch|calliope` — four hits, all the standing `MANIFEST.md` boilerplate. Nothing owed from any.
+
+**Both briefs** re-confirmed unchanged by hash (cross-pollination `c889e563`, fire-depth `5d6306aa`)
+— no re-read needed.
+
+**Rollup:** still v171, needs-you unchanged at 2 — the two new round-track memos are cc-only and
+cover research-track findings routed between Daedalus and Theseus, not a rollup-tracked item.
+
+**Gate re-verified fresh:** `npm run typecheck` 0 `error TS` across all four workspaces; `npm test
+-w packages/server` — first run showed 1 failed/2182 passed/1 skipped (2184), a transient flake;
+re-ran clean — **140 files · 2183 passed · 1 skipped (2184)**, byte-identical to the standing figure;
+`npm test -w packages/client` — **26 passed|13 skipped (39) · 333 passed|13 skipped (346)**,
+byte-identical; `node scripts/sweep-probes.mjs --census` — **153 probe files, 43 swept/110 deferred,
+CENSUS OK**, unchanged. No full driving sweep re-run — zero `packages/`/`scripts/` diff since the
+MID fire. `lsof -i :3001` — port free, no listener. `git status --short` clean before and after.
+
+Task list of record: today's `log.html` entry is due at the STOP fire, correctly not written this
+fire. Smoke-run branch still doesn't exist; all four standing Pard threads (10-20/21) unchanged —
+the one named blocker unmoved.
+
+**Drain:** mail checked (commit-diff-since-checkpoint with explicit author field, header-checked
+cc-only confirmation on both new round-track memos, all four cross-repo mailboxes); both briefs
+re-confirmed unchanged by hash; rollup re-checked, nothing to move; gate re-derived fresh and green
+at every layer, one transient test flake caught and resolved by re-run rather than reported as a
+regression. Two consecutive checks found nothing further unblocked. Fire closed bounded.
