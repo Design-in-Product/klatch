@@ -1,0 +1,370 @@
+census2 — does any call site feed stripSource a non-string?   rev = 4a05dbf874eeb6f85a6d56c8f6515134246aebdb
+  population: 640 tracked source file(s) at the rev, scripts/lib/strip-source.mjs and docs/research/round454-instruments/census2-does-any-call-site-feed-stripsource-a-non-string.mjs excluded by path
+
+A. RUNTIME ORACLE through the real module
+   a number                   -> string len=0 commentBytesSurvive=false ""
+   an empty object            -> string len=0 commentBytesSurvive=false ""
+   a Buffer of real source    -> string len=39 commentBytesSurvive=true "991111101151163212032613249593247473299"
+   null                       THREW Cannot read properties of null (reading 'length')
+   undefined                  THREW Cannot read properties of undefined (reading 'length')
+   an array of chars          -> string len=2 commentBytesSurvive=false "ab"
+   a String object            -> string len=17 commentBytesSurvive=false "const x = 1;     "
+   a real string (control)    -> string len=17 commentBytesSurvive=false "const x = 1;     "
+
+B. CALL SITES
+     3  STRING:child-process-helper
+     2  STRING:literal
+    22  STRING:readFileSync-encoded
+   311  UNMODELLED:identifier-or-member
+          docs/research/round352-valuation-leg-key.mjs:38  raw
+          docs/research/round352-valuation-leg-key.mjs:39  raw
+          docs/research/round370-instruments/characterisation-sweep-lib.mjs:44  src
+          docs/research/round378-instruments/census-named-source-bindings.mjs:21  src
+          docs/research/round378-instruments/grade-b3-known-positive.mjs:57  before
+          docs/research/round378-instruments/grade-b3-known-positive.mjs:58  before
+          docs/research/round378-instruments/grade-b3-known-positive.mjs:59  live
+          docs/research/round378-instruments/grade-b3-known-positive.mjs:67  PRECURE_374
+          docs/research/round378-instruments/grade-b3-known-positive.mjs:68  PRECURE_375
+          docs/research/round378-instruments/grade-b3-known-positive.mjs:79  PRECURE_374
+          docs/research/round378-instruments/grade-b3-known-positive.mjs:80  PRECURE_375
+          docs/research/round382-instruments/grade-the-class-count-and-the-seam.mjs:199  src
+          docs/research/round382-instruments/grade-the-class-count-and-the-seam.mjs:200  src
+          docs/research/round382-instruments/grade-the-class-count-and-the-seam.mjs:316  subjectSrc
+          docs/research/round382-instruments/grade-the-class-count-and-the-seam.mjs:360  preCureSrc
+          docs/research/round383-instruments/grade-the-binding-class.mjs:120  raw
+          docs/research/round383-instruments/grade-the-binding-class.mjs:123  raw
+          docs/research/round384-instruments/grade-the-near-miss-attribution.mjs:70  src
+          docs/research/round384-instruments/grade-the-near-miss-attribution.mjs:71  src
+          docs/research/round384-instruments/grade-the-near-miss-attribution.mjs:248  src224
+          docs/research/round384-instruments/grade-the-near-miss-attribution.mjs:249  src224
+          docs/research/round384-instruments/grade-the-near-miss-attribution.mjs:289  src297
+          docs/research/round384-instruments/grade-the-near-miss-attribution.mjs:290  src297
+          docs/research/round385-instruments/grade-the-sentence-against-the-literals.mjs:89  raw
+          docs/research/round385-instruments/grade-the-sentence-against-the-literals.mjs:90  raw
+          docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs:263  src
+          docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:93  mineShipped
+          docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:94  mineNow
+          docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:137  hisSrc
+          docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:138  hisSrc
+          docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:123  his386Shipped
+          docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:171  src
+          docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:172  src
+          docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:184  his388AtPin
+          docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:242  s
+          docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:286  his388AtPin
+          docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:95  src
+          docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:97  src
+          docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:109  my388AtPin
+          docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:158  src
+          docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:184  his389
+          docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:267  src
+          docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:357  p303
+          docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:362  sample
+          docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:362  sample
+          docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:363  sample
+          docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:363  sample
+          docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:391  sample
+          docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:391  sample
+          docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:392  sample
+          docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:392  sample
+          docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:394  src
+          docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:404  src
+          docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:463  my388Live
+          docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:468  my388AtPin
+          docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:112  src
+          docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:164  SAMPLE
+          docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:164  SAMPLE
+          docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:165  SAMPLE
+          docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:165  SAMPLE
+          docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:166  SAMPLE
+          docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:166  SAMPLE
+          docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:167  SAMPLE
+          docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:167  SAMPLE
+          docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:394  s
+          docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:395  SAMPLE
+          docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:395  SAMPLE
+          docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:396  SAMPLE
+          docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:396  SAMPLE
+          docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:439  src
+          docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:440  src
+          docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:442  src
+          docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:443  src
+          docs/research/round399-instruments/census-the-named-binding-form.mjs:166  src
+          docs/research/round399-instruments/census-the-named-binding-form.mjs:489  src
+          docs/research/round400-instruments/regrade-the-file-scoped-guard.mjs:162  src
+          docs/research/round401-instruments/census-the-branch-polarity-axis.mjs:411  src
+          docs/research/round402-instruments/key-from-round400.mjs:118  src
+          docs/research/round405-instruments/census-the-pin-population.mjs:203  src
+          docs/research/round406-instruments/hand-read-the-inline-seven.mjs:208  src
+          docs/research/round406-instruments/hand-read-the-inline-seven.mjs:231  fixture
+          docs/research/round406-instruments/hand-read-the-inline-seven.mjs:265  src
+          docs/research/round407-instruments/census-the-fixture-as-string-class.mjs:127  src
+          docs/research/round407-instruments/census-the-fixture-as-string-class.mjs:251  src
+          docs/research/round407-instruments/census-the-fixture-as-string-class.mjs:252  src
+          docs/research/round408-instruments/stratify-the-live-interval.mjs:158  src
+          docs/research/round408-instruments/stratify-the-live-interval.mjs:233  src
+          docs/research/round408-instruments/stratify-the-live-interval.mjs:234  src
+          docs/research/round409-instruments/census-the-hand-typed-known-positive.mjs:129  src
+          docs/research/round409-instruments/census-the-hand-typed-known-positive.mjs:178  src
+          docs/research/round409-instruments/census-the-hand-typed-known-positive.mjs:190  src
+          docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs:89  src
+          docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs:136  src
+          docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs:142  src
+          docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs:117  src
+          docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs:161  src
+          docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs:173  src
+          docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs:207  t
+          docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs:216  t
+          docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs:289  c
+          docs/research/round411-instruments/list-the-declarations-under-the-409-key.mjs:29  src
+          docs/research/round411-instruments/list-the-declarations-under-the-409-key.mjs:67  src
+          docs/research/round411-instruments/list-the-declarations-under-the-409-key.mjs:73  src
+          docs/research/round412-instruments/resolve-the-ternary-and-reconstruct-the-nine.mjs:155  src
+          docs/research/round412-instruments/resolve-the-ternary-and-reconstruct-the-nine.mjs:193  src
+          docs/research/round412-instruments/resolve-the-ternary-and-reconstruct-the-nine.mjs:218  t
+          docs/research/round412-instruments/resolve-the-ternary-and-reconstruct-the-nine.mjs:227  t
+          docs/research/round412-instruments/resolve-the-ternary-and-reconstruct-the-nine.mjs:285  c
+          docs/research/round412-instruments/resolve-the-ternary-and-reconstruct-the-nine.mjs:308  rawText
+          docs/research/round412-instruments/resolve-the-ternary-and-reconstruct-the-nine.mjs:345  raw
+          docs/research/round412-instruments/resolve-the-ternary-and-reconstruct-the-nine.mjs:383  src
+          docs/research/round415-instruments/census-the-index-keyed-population.mjs:147  raw
+          docs/research/round415-instruments/census-the-index-keyed-population.mjs:331  r413src
+          docs/research/round430-instruments/his412-prefix.sliced.mjs:155  src
+          docs/research/round430-instruments/his412-prefix.sliced.mjs:193  src
+          docs/research/round430-instruments/his412-prefix.sliced.mjs:218  t
+          docs/research/round430-instruments/his412-prefix.sliced.mjs:227  t
+          docs/research/round430-instruments/his412-prefix.sliced.mjs:285  c
+          docs/research/round430-instruments/his412-prefix.sliced.mjs:308  rawText
+          docs/research/round430-instruments/his412-prefix.sliced.mjs:345  raw
+          docs/research/round430-instruments/his412-prefix.sliced.mjs:383  src
+          docs/research/round430-instruments/mutant-m1-refused-false-on-success.sliced.mjs:155  src
+          docs/research/round430-instruments/mutant-m1-refused-false-on-success.sliced.mjs:193  src
+          docs/research/round430-instruments/mutant-m1-refused-false-on-success.sliced.mjs:218  t
+          docs/research/round430-instruments/mutant-m1-refused-false-on-success.sliced.mjs:227  t
+          docs/research/round430-instruments/mutant-m1-refused-false-on-success.sliced.mjs:285  c
+          docs/research/round430-instruments/mutant-m1-refused-false-on-success.sliced.mjs:308  rawText
+          docs/research/round430-instruments/mutant-m1-refused-false-on-success.sliced.mjs:345  raw
+          docs/research/round430-instruments/mutant-m1-refused-false-on-success.sliced.mjs:383  src
+          docs/research/round430-instruments/mutant-m2-refusal-key-renamed.sliced.mjs:155  src
+          docs/research/round430-instruments/mutant-m2-refusal-key-renamed.sliced.mjs:193  src
+          docs/research/round430-instruments/mutant-m2-refusal-key-renamed.sliced.mjs:218  t
+          docs/research/round430-instruments/mutant-m2-refusal-key-renamed.sliced.mjs:227  t
+          docs/research/round430-instruments/mutant-m2-refusal-key-renamed.sliced.mjs:285  c
+          docs/research/round430-instruments/mutant-m2-refusal-key-renamed.sliced.mjs:308  rawText
+          docs/research/round430-instruments/mutant-m2-refusal-key-renamed.sliced.mjs:345  raw
+          docs/research/round430-instruments/mutant-m2-refusal-key-renamed.sliced.mjs:383  src
+          docs/research/round430-instruments/mutant-m3-control-message-reworded.sliced.mjs:155  src
+          docs/research/round430-instruments/mutant-m3-control-message-reworded.sliced.mjs:193  src
+          docs/research/round430-instruments/mutant-m3-control-message-reworded.sliced.mjs:218  t
+          docs/research/round430-instruments/mutant-m3-control-message-reworded.sliced.mjs:227  t
+          docs/research/round430-instruments/mutant-m3-control-message-reworded.sliced.mjs:285  c
+          docs/research/round430-instruments/mutant-m3-control-message-reworded.sliced.mjs:308  rawText
+          docs/research/round430-instruments/mutant-m3-control-message-reworded.sliced.mjs:345  raw
+          docs/research/round430-instruments/mutant-m3-control-message-reworded.sliced.mjs:383  src
+          docs/research/round430-instruments/refusal-convention.mjs:111  src
+          docs/research/round430-instruments/refusal-convention.mjs:115  src
+          docs/research/round430-instruments/refusal-convention.mjs:212  fnSource
+          docs/research/round431-instruments/grade-his-convention-and-measure-the-reach.mjs:117  tail
+          docs/research/round431-instruments/grade-his-convention-and-measure-the-reach.mjs:482  text
+          docs/research/round432-instruments/grade-the-two-cures.mjs:155  inString
+          docs/research/round432-instruments/grade-the-two-cures.mjs:210  src
+          docs/research/round432-instruments/precure-refusal-convention.sliced.mjs:64  src
+          docs/research/round434-instruments/precure-refusal-convention.sliced.mjs:90  src
+          docs/research/round434-instruments/precure-refusal-convention.sliced.mjs:94  src
+          docs/research/round434-instruments/precure-refusal-convention.sliced.mjs:176  fnSource
+          docs/research/round436-instruments/precure-refusal-convention.sliced.mjs:111  src
+          docs/research/round436-instruments/precure-refusal-convention.sliced.mjs:115  src
+          docs/research/round436-instruments/precure-refusal-convention.sliced.mjs:208  fnSource
+          docs/research/round438-instruments/precure-refusal-convention.sliced.mjs:111  src
+          docs/research/round438-instruments/precure-refusal-convention.sliced.mjs:115  src
+          docs/research/round438-instruments/precure-refusal-convention.sliced.mjs:212  fnSource
+          docs/research/round443-instruments/grade-the-emitter-at-its-published-line.mjs:449  raw
+          docs/research/round443-instruments/grade-the-emitter-at-its-published-line.mjs:478  g6
+          docs/research/round443-instruments/grade-the-emitter-at-its-published-line.mjs:479  p2old.blk
+          docs/research/round449-instruments/probe-the-argument-shapes.mjs:73  raw
+          docs/research/round449-instruments/probe-the-argument-shapes.mjs:113  raw
+          docs/research/round449-instruments/resolve-the-variable-write-targets.mjs:271  inner
+          docs/research/round449-instruments/resolve-the-variable-write-targets.mjs:280  inner
+          docs/research/round449-instruments/resolve-the-variable-write-targets.mjs:316  t
+          docs/research/round449-instruments/resolve-the-variable-write-targets.mjs:344  raw
+          docs/research/round449-instruments/resolve-the-variable-write-targets.mjs:407  KP_SRC
+          docs/research/round449-instruments/resolve-the-variable-write-targets.mjs:574  KP
+          docs/research/round449-instruments/resolve-the-variable-write-targets.mjs:698  src
+          docs/research/round454-instruments/probe0-why-449s-two-reader-slices-return-null.mjs:40  subjSrc
+          docs/research/round454-instruments/probe0-why-449s-two-reader-slices-return-null.mjs:86  src
+          packages/server/src/__tests__/round259-the-shared-source-reader.test.ts:53  src
+          packages/server/src/__tests__/round259-the-shared-source-reader.test.ts:61  src
+          packages/server/src/__tests__/round259-the-shared-source-reader.test.ts:62  src
+          packages/server/src/__tests__/round259-the-shared-source-reader.test.ts:79  src
+          packages/server/src/__tests__/round259-the-shared-source-reader.test.ts:89  src
+          packages/server/src/__tests__/round259-the-shared-source-reader.test.ts:91  src
+          packages/server/src/__tests__/round259-the-shared-source-reader.test.ts:97  src
+          packages/server/src/__tests__/round259-the-shared-source-reader.test.ts:102  src
+          packages/server/src/__tests__/round259-the-shared-source-reader.test.ts:103  src
+          packages/server/src/__tests__/round259-the-shared-source-reader.test.ts:112  src
+          packages/server/src/__tests__/round259-the-shared-source-reader.test.ts:113  src
+          packages/server/src/__tests__/round259-the-shared-source-reader.test.ts:138  src
+          packages/server/src/__tests__/round259-the-shared-source-reader.test.ts:139  src
+          scripts/lib/characterisation-markers.mjs:80  src
+          scripts/lib/characterisation-markers.mjs:209  src
+          scripts/lib/probe-source-constants.mts:159  src
+          scripts/probe-round224-a-skip-must-not-summarise-as-a-pass.mts:1178  OFFENDER
+          scripts/probe-round224-a-skip-must-not-summarise-as-a-pass.mts:1181  COMMENT_ONLY
+          scripts/probe-round256-an-emptiness-assertion-grades-the-operator-and-a-sole-blocker-ranking-cannot-see-a-coupled-class.mts:78  s
+          scripts/probe-round256-an-emptiness-assertion-grades-the-operator-and-a-sole-blocker-ranking-cannot-see-a-coupled-class.mts:693  src
+          scripts/probe-round256-an-emptiness-assertion-grades-the-operator-and-a-sole-blocker-ranking-cannot-see-a-coupled-class.mts:758  code
+          scripts/probe-round256-an-emptiness-assertion-grades-the-operator-and-a-sole-blocker-ranking-cannot-see-a-coupled-class.mts:776  src
+          scripts/probe-round256-an-emptiness-assertion-grades-the-operator-and-a-sole-blocker-ranking-cannot-see-a-coupled-class.mts:866  src
+          scripts/probe-round256-an-emptiness-assertion-grades-the-operator-and-a-sole-blocker-ranking-cannot-see-a-coupled-class.mts:914  src
+          scripts/probe-round256-an-emptiness-assertion-grades-the-operator-and-a-sole-blocker-ranking-cannot-see-a-coupled-class.mts:1130  s
+          scripts/probe-round256-an-emptiness-assertion-grades-the-operator-and-a-sole-blocker-ranking-cannot-see-a-coupled-class.mts:1237  src
+          scripts/probe-round257-the-scanner-had-no-model-of-interpolation.mts:146  src
+          scripts/probe-round257-the-scanner-had-no-model-of-interpolation.mts:146  src
+          scripts/probe-round257-the-scanner-had-no-model-of-interpolation.mts:270  src
+          scripts/probe-round257-the-scanner-had-no-model-of-interpolation.mts:270  src
+          scripts/probe-round257-the-scanner-had-no-model-of-interpolation.mts:272  src
+          scripts/probe-round258-three-readers-are-two-questions-and-the-shared-one-is-already-in-lib.mts:221  src
+          scripts/probe-round258-three-readers-are-two-questions-and-the-shared-one-is-already-in-lib.mts:222  src
+          scripts/probe-round258-three-readers-are-two-questions-and-the-shared-one-is-already-in-lib.mts:260  code
+          scripts/probe-round258-three-readers-are-two-questions-and-the-shared-one-is-already-in-lib.mts:314  s
+          scripts/probe-round258-three-readers-are-two-questions-and-the-shared-one-is-already-in-lib.mts:347  s
+          scripts/probe-round258-three-readers-are-two-questions-and-the-shared-one-is-already-in-lib.mts:347  s
+          scripts/probe-round258-three-readers-are-two-questions-and-the-shared-one-is-already-in-lib.mts:731  r256src
+          scripts/probe-round259-the-extraction-moved-nothing-and-closed-the-hole-in-the-file-it-moved-into.mts:184  src
+          scripts/probe-round259-the-extraction-moved-nothing-and-closed-the-hole-in-the-file-it-moved-into.mts:211  sample
+          scripts/probe-round260-a-census-pin-has-two-axes-and-the-round-number-in-a-filename-is-not-one-of-them.mts:231  code
+          scripts/probe-round260-a-census-pin-has-two-axes-and-the-round-number-in-a-filename-is-not-one-of-them.mts:285  s
+          scripts/probe-round260-a-census-pin-has-two-axes-and-the-round-number-in-a-filename-is-not-one-of-them.mts:311  C_SRC
+          scripts/probe-round260-a-census-pin-has-two-axes-and-the-round-number-in-a-filename-is-not-one-of-them.mts:338  src
+          scripts/probe-round265-the-census-already-follows-imports-on-the-other-axis.mts:282  code
+          scripts/probe-round265-the-census-already-follows-imports-on-the-other-axis.mts:535  code
+          scripts/probe-round265-the-census-already-follows-imports-on-the-other-axis.mts:551  LIVE_LIB
+          scripts/probe-round265-the-census-already-follows-imports-on-the-other-axis.mts:605  s
+          scripts/probe-round265-the-census-already-follows-imports-on-the-other-axis.mts:605  s
+          scripts/probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts:424  raw
+          scripts/probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts:425  raw
+          scripts/probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts:447  raw
+          scripts/probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts:447  raw
+          scripts/probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts:450  raw
+          scripts/probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts:634  raw
+          scripts/probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts:641  HOISTED_TERNARY_SITE
+          scripts/probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts:767  raw
+          scripts/probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts:768  raw
+          scripts/probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts:1003  raw
+          scripts/probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts:1004  raw
+          scripts/probe-round283-the-classification-theseus-asked-for-exists-and-it-has-been-red-since-yesterday.mts:159  atTip
+          scripts/probe-round283-the-classification-theseus-asked-for-exists-and-it-has-been-red-since-yesterday.mts:257  gateSrc
+          scripts/probe-round283-the-classification-theseus-asked-for-exists-and-it-has-been-red-since-yesterday.mts:324  src
+          scripts/probe-round285-the-promotion-path-and-the-two-detectors-that-were-returning-a-smaller-number.mts:211  src
+          scripts/probe-round285-the-promotion-path-and-the-two-detectors-that-were-returning-a-smaller-number.mts:212  src
+          scripts/probe-round310-the-eighteen-file-backlog-is-three-harness-shapes-and-two-are-near-mechanical.mts:128  OFFENDER
+          scripts/probe-round310-the-eighteen-file-backlog-is-three-harness-shapes-and-two-are-near-mechanical.mts:128  OFFENDER
+          scripts/probe-round311-the-nearer-of-argus-two-candidates-is-the-one-that-drops-a-failure-and-a-kind-field-is-what-breaks-it.mts:218  OFFENDER
+          scripts/probe-round311-the-nearer-of-argus-two-candidates-is-the-one-that-drops-a-failure-and-a-kind-field-is-what-breaks-it.mts:218  MIGRATED
+          scripts/probe-round322-the-deferred-magnitude-audit-is-clean-and-eight-censused-probes-freeze-the-one-figure-they-cannot-report.mts:207  PIN_POSITIVE
+          scripts/probe-round322-the-deferred-magnitude-audit-is-clean-and-eight-censused-probes-freeze-the-one-figure-they-cannot-report.mts:208  PIN_NEGATIVE
+          scripts/probe-round322-the-deferred-magnitude-audit-is-clean-and-eight-censused-probes-freeze-the-one-figure-they-cannot-report.mts:209  PIN_POSITIVE
+          scripts/probe-round322-the-deferred-magnitude-audit-is-clean-and-eight-censused-probes-freeze-the-one-figure-they-cannot-report.mts:210  PIN_NEGATIVE
+          scripts/probe-round322-the-deferred-magnitude-audit-is-clean-and-eight-censused-probes-freeze-the-one-figure-they-cannot-report.mts:335  fixture
+          scripts/probe-round322-the-deferred-magnitude-audit-is-clean-and-eight-censused-probes-freeze-the-one-figure-they-cannot-report.mts:335  fixture
+          scripts/probe-round322-the-deferred-magnitude-audit-is-clean-and-eight-censused-probes-freeze-the-one-figure-they-cannot-report.mts:339  LIAR_POSITIVE
+          scripts/probe-round322-the-deferred-magnitude-audit-is-clean-and-eight-censused-probes-freeze-the-one-figure-they-cannot-report.mts:341  LIAR_POSITIVE
+          scripts/probe-round322-the-deferred-magnitude-audit-is-clean-and-eight-censused-probes-freeze-the-one-figure-they-cannot-report.mts:354  LIAR_POSITIVE
+          scripts/probe-round322-the-deferred-magnitude-audit-is-clean-and-eight-censused-probes-freeze-the-one-figure-they-cannot-report.mts:356  LIAR_POSITIVE
+          scripts/probe-round322-the-deferred-magnitude-audit-is-clean-and-eight-censused-probes-freeze-the-one-figure-they-cannot-report.mts:417  CHANNEL_DECOY
+          scripts/probe-round322-the-deferred-magnitude-audit-is-clean-and-eight-censused-probes-freeze-the-one-figure-they-cannot-report.mts:417  LIAR_POSITIVE
+          scripts/probe-round322-the-deferred-magnitude-audit-is-clean-and-eight-censused-probes-freeze-the-one-figure-they-cannot-report.mts:418  CHANNEL_DECOY
+          scripts/probe-round322-the-deferred-magnitude-audit-is-clean-and-eight-censused-probes-freeze-the-one-figure-they-cannot-report.mts:419  LIAR_POSITIVE
+          scripts/probe-round323-the-cheap-cure-for-a-frozen-figure-empties-the-tripwire-and-leaves-the-exit-code-lying.mts:151  fixture
+          scripts/probe-round323-the-cheap-cure-for-a-frozen-figure-empties-the-tripwire-and-leaves-the-exit-code-lying.mts:151  fixture
+          scripts/probe-round323-the-cheap-cure-for-a-frozen-figure-empties-the-tripwire-and-leaves-the-exit-code-lying.mts:279  fixture
+          scripts/probe-round323-the-cheap-cure-for-a-frozen-figure-empties-the-tripwire-and-leaves-the-exit-code-lying.mts:284  CHEAP_CURED
+          scripts/probe-round323-the-cheap-cure-for-a-frozen-figure-empties-the-tripwire-and-leaves-the-exit-code-lying.mts:299  CHEAP_CURED
+          scripts/probe-round323-the-cheap-cure-for-a-frozen-figure-empties-the-tripwire-and-leaves-the-exit-code-lying.mts:303  CHEAP_CURED
+          scripts/probe-round323-the-cheap-cure-for-a-frozen-figure-empties-the-tripwire-and-leaves-the-exit-code-lying.mts:305  CHEAP_CURED
+          scripts/probe-round323-the-cheap-cure-for-a-frozen-figure-empties-the-tripwire-and-leaves-the-exit-code-lying.mts:367  src
+          scripts/probe-round323-the-cheap-cure-for-a-frozen-figure-empties-the-tripwire-and-leaves-the-exit-code-lying.mts:368  src
+          scripts/probe-round324-the-skips-figure-has-four-states-and-the-two-no-arm-claims-are-where-a-lowercase-channel-lands.mts:161  fx
+          scripts/probe-round324-the-skips-figure-has-four-states-and-the-two-no-arm-claims-are-where-a-lowercase-channel-lands.mts:161  fx
+          scripts/probe-round324-the-skips-figure-has-four-states-and-the-two-no-arm-claims-are-where-a-lowercase-channel-lands.mts:162  fx
+          scripts/probe-round324-the-skips-figure-has-four-states-and-the-two-no-arm-claims-are-where-a-lowercase-channel-lands.mts:163  fx
+          scripts/probe-round324-the-skips-figure-has-four-states-and-the-two-no-arm-claims-are-where-a-lowercase-channel-lands.mts:164  fx
+          scripts/probe-round324-the-skips-figure-has-four-states-and-the-two-no-arm-claims-are-where-a-lowercase-channel-lands.mts:165  fx
+          scripts/probe-round324-the-skips-figure-has-four-states-and-the-two-no-arm-claims-are-where-a-lowercase-channel-lands.mts:187  fx
+          scripts/probe-round324-the-skips-figure-has-four-states-and-the-two-no-arm-claims-are-where-a-lowercase-channel-lands.mts:187  fx
+          scripts/probe-round325-the-fourth-exit-shape-returns-zero-and-restaging-an-inflated-pin-promotes-measurements-to-hard-checks.mts:187  fx
+          scripts/probe-round325-the-fourth-exit-shape-returns-zero-and-restaging-an-inflated-pin-promotes-measurements-to-hard-checks.mts:187  fx
+          scripts/probe-round325-the-fourth-exit-shape-returns-zero-and-restaging-an-inflated-pin-promotes-measurements-to-hard-checks.mts:188  fx
+          scripts/probe-round325-the-fourth-exit-shape-returns-zero-and-restaging-an-inflated-pin-promotes-measurements-to-hard-checks.mts:189  fx
+          scripts/probe-round325-the-fourth-exit-shape-returns-zero-and-restaging-an-inflated-pin-promotes-measurements-to-hard-checks.mts:190  fx
+          scripts/probe-round325-the-fourth-exit-shape-returns-zero-and-restaging-an-inflated-pin-promotes-measurements-to-hard-checks.mts:191  fx
+          scripts/probe-round325-the-fourth-exit-shape-returns-zero-and-restaging-an-inflated-pin-promotes-measurements-to-hard-checks.mts:204  fx
+          scripts/probe-round325-the-fourth-exit-shape-returns-zero-and-restaging-an-inflated-pin-promotes-measurements-to-hard-checks.mts:204  fx
+          scripts/probe-round372-the-rows-are-keyed-on-the-limb-and-the-contradiction-is-latent.mts:94  sweepSrc
+          scripts/probe-round372-the-rows-are-keyed-on-the-limb-and-the-contradiction-is-latent.mts:353  r225Src
+          scripts/probe-round372-the-rows-are-keyed-on-the-limb-and-the-contradiction-is-latent.mts:362  KP
+          scripts/probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts:153  raw
+          scripts/probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts:196  r225Src
+          scripts/probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts:197  r225Src
+          scripts/probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts:400  raw
+          scripts/probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts:401  raw
+          scripts/probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts:544  r374Src
+          scripts/probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts:545  r374Src
+          scripts/probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts:546  r375Src
+          scripts/probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts:547  r375Src
+          scripts/probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts:551  PRECURE_374
+          scripts/probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts:552  PRECURE_375
+          scripts/promote-probes.mts:209  src
+          scripts/promote-probes.mts:209  src
+          scripts/promote-probes.mts:259  src
+          scripts/promote-probes.mts:265  src
+          scripts/promote-probes.mts:278  src
+          scripts/sweep-probes.mjs:1953  src
+          scripts/verify-tsx-guard.mjs:902  src
+          scripts/verify-tsx-guard.mjs:949  src
+          scripts/verify-tsx-guard.mjs:950  src
+          scripts/verify-tsx-guard.mjs:1150  src
+          scripts/verify-tsx-guard.mjs:1150  src
+          scripts/verify-tsx-guard.mjs:1257  src
+          scripts/verify-tsx-guard.mjs:1262  code
+    13  UNMODELLED:other-expression
+          scripts/probe-round224-a-skip-must-not-summarise-as-a-pass.mts:1157  ['import { summariseAndExit } from \'./probe-outcome.mjs\';', 'summariseAndExit({ probeName: \'x\', results });'].join('
+          scripts/probe-round224-a-skip-must-not-summarise-as-a-pass.mts:1159  ['export function summariseAndExit(input) {', ' console.log(`All ${n} regression checks passed.`);', '}'].join('\n')
+          scripts/probe-round289-the-deferred-breakdown-is-derived-and-the-sidecar-signature-is-not-evidence-of-no-write.mts:133  readProbe(f)
+          scripts/probe-round296-the-net-split-is-priced-at-zero-and-literal-only-cannot-tell-a-corpus-from-an-argv.mts:218  read(f)
+          scripts/probe-round296-the-net-split-is-priced-at-zero-and-literal-only-cannot-tell-a-corpus-from-an-argv.mts:231  read(f)
+          scripts/probe-round309-the-drop-one-reach-census-over-reported-three-where-the-population-is-one-because-a-predicate-does-not-carry-its-corpus.mts:156  rawOf.get(n) as string
+          scripts/probe-round323-the-cheap-cure-for-a-frozen-figure-empties-the-tripwire-and-leaves-the-exit-code-lying.mts:106  raw(n)
+          scripts/probe-round323-the-cheap-cure-for-a-frozen-figure-empties-the-tripwire-and-leaves-the-exit-code-lying.mts:107  raw(n)
+          scripts/probe-round324-the-skips-figure-has-four-states-and-the-two-no-arm-claims-are-where-a-lowercase-channel-lands.mts:111  raw(n)
+          scripts/probe-round324-the-skips-figure-has-four-states-and-the-two-no-arm-claims-are-where-a-lowercase-channel-lands.mts:112  raw(n)
+          scripts/probe-round325-the-fourth-exit-shape-returns-zero-and-restaging-an-inflated-pin-promotes-measurements-to-hard-checks.mts:129  raw(n)
+          scripts/probe-round325-the-fourth-exit-shape-returns-zero-and-restaging-an-inflated-pin-promotes-measurements-to-hard-checks.mts:130  raw(n)
+          scripts/verify-tsx-guard.mjs:1170  srcOf(f)
+
+   call sites: 351   ·   files that IMPORT stripSource: 58
+   (an import is not a call site — his §3 figure is an importer count, not this)
+   buckets sum to the population: 351 === 351
+
+KP / KN BUNDLE (graded before the figure above is allowed to stand)
+   ok   want BUFFER:readFileSync-no-encoding              got BUFFER:readFileSync-no-encoding   stripSource(readFileSync(p), true)
+   ok   want STRING:readFileSync-encoded                  got STRING:readFileSync-encoded   stripSource(readFileSync(p, "utf8"), true)
+   ok   want STRING:readFileSync-encoded                  got STRING:readFileSync-encoded   stripSource(readFileSync(join(a, b), { encoding: "utf8" }), true)
+   ok   want STRING:child-process-helper                  got STRING:child-process-helper   stripSource(git("show", `${REV}:${f}`), true)
+   ok   want STRING:literal                               got STRING:literal   stripSource("const x = 1", true)
+   ok   want UNMODELLED:identifier-or-member              got UNMODELLED:identifier-or-member   stripSource(src, true)
+   ok   want UNMODELLED:identifier-or-member              got UNMODELLED:identifier-or-member   stripSource(obj.src, true)
+   ok   want UNMODELLED:other-expression                  got UNMODELLED:other-expression   stripSource(readSomehow(f) ?? "", true)
+   ok   invisible through the comment        "// stripSource(readFileSync(p), true)"
+   ok   invisible through the string literal "const s = \"stripSource(readFileSync(p), true)\";"
+
+GATE
+  ok   every KP row classifies as declared
+  ok   both KN stages are invisible (comment-blind AND string-blind, separately)
+  ok   stripSource preserved length on every file it read
+  ok   the population is non-empty
+  ok   at least one call site was found (so a zero BUFFER count is not a zero-site artifact)
+  ok   the buckets sum to the call-site count
+  ok   the control oracle row (a real string) does NOT leak its comment body
+
+census2 verdict: ok · 351 call site(s) · BUFFER-hazard 0 · UNMODELLED 324
