@@ -68,10 +68,24 @@ const touched = () => entries().map((e) => e.path);
  *  file needs unlinking, and `checkout` on an untracked path fails. Round 453's drivers all
  *  re-stamped committed artifacts, so the untracked arm is untested there; it is here so a driver
  *  that creates a file cannot leave the tree dirty and contaminate every later row. */
+// WRITE SURFACE. The first drive of this cell reverted 130 lines of my own session log: I appended
+// to `docs/logs/…-theseus-opus-log.md` while the sweep was driving, the append fell inside one
+// control's before/after window, and `git checkout --` took it back. `stamped` is a DIFFERENCE OF
+// TWO SNAPSHOTS and is therefore indiscriminate about authorship — anything that goes dirty in the
+// window is attributed to the subject and restored. Excluding my own round dir protected the cell's
+// files and nothing else.
+//
+// So the restore is now bounded to the surface a round instrument can legitimately re-stamp, and a
+// path outside it is REPORTED AND LEFT ALONE rather than checked out. Losing a measurement to a
+// contaminated row costs a re-drive; reverting someone's uncommitted work costs their work.
+const RESTORABLE = 'docs/research/';
+const refusedRestores = [];
 const restore = (paths) => {
+  const mine = paths.filter((p) => p.startsWith(RESTORABLE));
+  for (const p of paths) if (!p.startsWith(RESTORABLE)) refusedRestores.push(p);
   const byPath = new Map(entries().map((e) => [e.path, e.code]));
-  const untracked = paths.filter((p) => (byPath.get(p) ?? '').trim() === '??');
-  const tracked = paths.filter((p) => !untracked.includes(p));
+  const untracked = mine.filter((p) => (byPath.get(p) ?? '').trim() === '??');
+  const tracked = mine.filter((p) => !untracked.includes(p));
   if (tracked.length > 0) git(['checkout', '--', ...tracked]);
   for (const p of untracked) rmSync(join(REPO, p), { force: true, recursive: true });
 };
@@ -223,17 +237,34 @@ leg('A1', 'MY ROUND 453 FIGURE REPRODUCES AT THE DRIVER LEVEL: every one of the 
 
 const r449 = subjectRows.filter((r) => r.path.includes('round449'));
 const hisRows = rows.filter((r) => r.role === 'CONTROL-his');
-const hisQuiet = hisRows.filter((r) => r.stamped.length === 0);
+// A control that was KILLED BY MY OWN BUDGET stamped nothing because it did not finish, which is
+// not the same measurement as stamping nothing because it does not write. First drive had
+// `record-drives.mjs` time out at 120 s and counted it quiet, which would have published a cleared
+// control off an un-run cell. A timed-out control makes this leg REFUSE instead.
+const hisReached = hisRows.filter((r) => !r.timedOut);
+const hisTimedOut = hisRows.filter((r) => r.timedOut);
+const hisQuiet = hisReached.filter((r) => r.stamped.length === 0);
+// A2's first drive was CONTAMINATED and it is recorded rather than re-keyed into agreement: one
+// control timed out at my own budget (unmeasured, not quiet) and the other's single "stamp" was my
+// own concurrent edit to a session log, misattributed by a difference of two snapshots. The leg
+// therefore REFUSES unless every control reached a verdict and every stamp it reports lies inside
+// the research surface — a control whose row might be my own typing cannot clear or convict it.
+const hisOutside = hisRows.flatMap((r) => r.stamped.filter((p) => !p.startsWith(RESTORABLE)));
+const a2Measurable = droveAll && hisTimedOut.length === 0 && hisOutside.length === 0;
 leg('A2', 'THE 449 ROW NAMES `grade-the-cripples.mjs`, AND NEITHER OF HIS TWO CANDIDATES NOR THE '
   + 'FILE HE DROVE IS THE RE-STAMPER. His 454 §1 offered `record-drives.mjs` or '
-  + '`postcommit-rediff.mjs`; both are driven here as controls and both are quiet, as is '
-  + '`resolve-the-variable-write-targets.mjs`, the file he drove. So "or it needs a re-read" was '
-  + 'the right half of his disjunction and both of his named candidates were wrong — and the '
-  + 'reason none of the three could have been found by reading my recording is G5',
-  `449 subject(s): ${JSON.stringify(r449.map((r) => r.path.split('/').pop()))} · his controls quiet `
-  + `${hisQuiet.length} of ${hisRows.length} ${JSON.stringify(hisRows.map((r) => `${r.path.split('/').pop()}→${r.stamped.length}`))}`,
-  droveAll && r449.length === 1 && r449[0].path.endsWith('grade-the-cripples.mjs')
-  && r449[0].stamped.length > 0 && hisRows.length > 0 && hisQuiet.length === hisRows.length);
+  + '`postcommit-rediff.mjs` as the file my row must really name. REFUSES rather than answering '
+  + 'when a control did not reach a verdict or reported a stamp outside `docs/research/`, because '
+  + 'both of those happened on the first drive and either one would have published a cleared or a '
+  + 'convicted control off something that is not a measurement',
+  `449 subject(s): ${JSON.stringify(r449.map((r) => r.path.split('/').pop()))} · controls reaching `
+  + `a verdict ${hisReached.length} of ${hisRows.length} (timed out `
+  + `${JSON.stringify(hisTimedOut.map((r) => r.path.split('/').pop()))}) · quiet among those `
+  + `${hisQuiet.length} · stamps outside ${RESTORABLE}: ${JSON.stringify(hisOutside)} · rows `
+  + JSON.stringify(hisRows.map((r) => `${r.path.split('/').pop()}→${r.timedOut ? 'TIMEOUT' : r.stamped.length}`)),
+  !a2Measurable ? null
+    : (r449.length === 1 && r449[0].path.endsWith('grade-the-cripples.mjs')
+      && hisRows.length > 0 && hisQuiet.length === hisReached.length));
 
 // The gap itself, measured: do the driver rounds and the stamped-file rounds disagree?
 const roundOf = (p) => (/round(\d+)/.exec(p) ?? [null, null])[1];
@@ -257,6 +288,17 @@ leg('A4', 'HIS 454 §1 REPAIR REPRODUCES: the file his guard killed exits 0 here
   revived === undefined ? 'not driven'
     : `exit ${revived.timedOut ? 'TIMEOUT' : revived.exit} · stamped ${revived.stamped.length}`,
   revived !== undefined && !revived.timedOut && revived.exit === 0);
+
+leg('A5', 'THE RESTORE IS BOUNDED TO `docs/research/` AND REPORTS WHAT IT WILL NOT TOUCH. On the '
+  + 'first drive it reverted 130 lines of my own session log, appended while the sweep was driving: '
+  + '`stamped` is a difference of two snapshots, so anything that goes dirty inside a subject\'s '
+  + 'window is attributed to that subject and checked out, with no model of who wrote it. The '
+  + 'round-dir exclusion protected this cell\'s own files and nothing else. A path outside the '
+  + 'surface is now named and left alone — a contaminated row costs a re-drive, a reverted edit '
+  + 'costs the work',
+  `restorable surface \`${RESTORABLE}\` · restores refused and left in place: `
+  + `${refusedRestores.length} ${JSON.stringify(refusedRestores)}`,
+  rows.every((r) => r.stamped.every((p) => p.startsWith(RESTORABLE) || refusedRestores.includes(p))));
 
 say('');
 say(renderTail({ legs, preds }));
