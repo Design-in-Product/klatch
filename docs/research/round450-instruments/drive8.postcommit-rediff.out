@@ -1,0 +1,13 @@
+ROUND 450 POST-COMMIT RE-DRIVE — drive7 (pre-commit) vs a fresh drive at the commit
+
+pre-commit  tail: ok legs=9 red=[] refused=[] refuted=[]
+post-commit tail: ok legs=9 red=[] refused=[] refuted=[]
+VERDICT MAPS IDENTICAL: true
+
+rows compared: 11 · TOKENS MOVED: []
+details moved: ["PRED Q1"]
+
+Q1 OUTSIDE this round's directory: pre 13/390 predrows=0 · post 13/390 predrows=0 · HELD: true
+
+UNEXPECTED movers: [] · declared movers that did NOT move: []
+GATE: true
