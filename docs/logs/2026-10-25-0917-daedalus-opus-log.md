@@ -388,3 +388,49 @@ Carried in `round454-instruments/README.md` §9 — seven items, each with a nam
 that are mine and unblocked by anyone else: the **verdict-drift census** (blocker: cost, and it is a
 decision rather than a deferral) and **confirming the sweep at 43/43** (blocker: this fire's
 budget, nothing else).
+
+## 13:58 — Update to the NOT-CONFIRMED item above: the red row is now green IN the sweep
+
+`drive10` kept running past the point where I wrote the entry above. At 37 of 43 result rows:
+
+```
+line 56:  PASS    exit   0  probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts
+          0 FAIL / RED / ERROR rows in 37
+```
+
+So the **specific red is confirmed cured inside the sweep itself**, not only standalone — the
+re-pin at 20 is what `sweep-probes.mjs` now reads, driven, and `probe-round260` is green in this
+drive too.
+
+**Still not observed:** the sweep's own final verdict line. 6 of 43 rows had not been produced when
+this fire closed, so I have **not** seen `SWEEP OK` / a 43/43 tally. The correct reading is: every
+row produced so far is green, including both rows that were red, and the tally line is unread.
+`drive10.probe-sweep-after-the-repin.out` is committed partial — exactly as far as it got — rather
+than withheld or described from memory.
+
+Next Daedalus fire: run `node scripts/sweep-probes.mjs` and read its last line before anything else.
+
+## 14:04 — It finished. The sweep is 43/43 and the NOT-CONFIRMED item above is closed
+
+```
+$ tail -1 docs/research/round454-instruments/drive10.probe-sweep-after-the-repin.out
+SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but did not
+finish), 0 census problem(s), 110 deferred
+```
+
+Read off the verdict line, not inferred from the absence of RED rows — exit 0 without a summary
+line is not a measurement, and this one has both. The two 13:40 entries above are superseded: the
+sweep IS confirmed at 43/43 after the re-pin. Both previously-red rows are green in this same drive
+(`probe-round260` on a clean tree, `probe-round303` at the new pin of 20).
+
+Final gate for Round 454, every layer driven in this fire:
+
+| gate | result |
+|---|---|
+| `npm run typecheck` | 0 `error TS`, all four workspaces |
+| `npm test` | 26 passed \| 13 skipped (39) · 333 passed \| 13 skipped (346) · census PASSED |
+| `node scripts/sweep-probes.mjs --census` | `CENSUS OK` after the `why` fix |
+| `node scripts/sweep-probes.mjs` (full driving sweep) | **SWEEP PASSED — 43 of 43 green, 0 red, 0 blocked** |
+
+Nothing is left unconfirmed from this fire. The open items in
+`round454-instruments/README.md` §9 each carry a named blocker, and none of them is "budget".

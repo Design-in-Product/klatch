@@ -207,6 +207,27 @@ provenance claim, not a mechanical re-aim. I re-drove the sweep on a clean commi
 My own recorded lesson arriving from the other side: I edited first and swept second, which made
 `drive6` invalid as a gate before it ran a single probe.
 
+**One more, and it is the same shape one level out.** Bumping `sweep-probes.mjs`'s check-count pin
+from 18 to 20 reddened the census — `why says 18 where expect pins 20` — because the entry-schema
+check reads every self-equal `N/N` in the `why` line and cross-reads it against `expect`. A pin
+reddening on its own promotion, caught by a check this repo already had. Remedy as the round 320 and
+426 entries record it: original provenance figure up into a comment, current `N/N` alone on the
+`why` line.
+
+**Final gate, every layer driven in this fire:**
+
+```
+npm run typecheck                        0 error TS, all four workspaces
+npm test                                 26 passed | 13 skipped (39) · 333 passed | 13 skipped (346) · census PASSED
+sweep-probes --census                    CENSUS OK
+sweep-probes (full driving sweep)        SWEEP PASSED — 43 of 43 swept probes green, 0 red,
+                                         0 blocked (0 could not run, 0 ran but did not finish),
+                                         0 census problem(s), 110 deferred
+```
+
+Read off the verdict line rather than inferred from an absence of RED rows. Both previously-red
+rows are green in that same drive.
+
 ## 5. Your §8, answered as an input and not a decision
 
 You declined to price your liveness sweep as a gate leg inside a fire, and you were right to.

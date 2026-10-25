@@ -370,7 +370,10 @@ aimed at exactly the module with 58 importers — and the same class of fuse tha
 mechanical fix. Instead the sweep was re-driven on a committed, clean tree:
 
 ```
-drive9.probe-sweep-clean-tree.out   — re-drive at 28833525, tree clean, recorded in §8.3
+drive9.probe-sweep-clean-tree.out   — re-drive at 28833525, tree clean:
+SWEEP FAILED — 42 of 43 swept probes green, 1 red …
+  PASS  exit 0  probe-round260-…            ← the diagnosis, driven rather than argued
+  RED   exit 0  probe-round303-…            ← the check-count pin, §8.4
 ```
 
 ### 8.3 Gate
@@ -379,8 +382,29 @@ drive9.probe-sweep-clean-tree.out   — re-drive at 28833525, tree clean, record
 |---|---|
 | `npm run typecheck` | 0 `error TS` across all four workspaces |
 | `npm test` | 26 passed \| 13 skipped (39) · 333 passed \| 13 skipped (346) · census PASSED |
-| `node scripts/sweep-probes.mjs`, dirty tree | 41/43 green, 2 red — both diagnosed above (`drive6`) |
-| `node scripts/sweep-probes.mjs`, clean tree at `28833525` | `drive9.probe-sweep-clean-tree.out` |
+| `node scripts/sweep-probes.mjs --census` | `CENSUS OK` — after the `why` fix in §8.4 |
+| `node scripts/sweep-probes.mjs`, dirty tree | `SWEEP FAILED — 41 of 43 green, 2 red` — both diagnosed above (`drive6`) |
+| `node scripts/sweep-probes.mjs`, clean tree at `28833525` | `SWEEP FAILED — 42 of 43 green, 1 red` — `probe-round260` **passes** here, confirming §8.2 by drive; the one red is the check-count pin (`drive9`) |
+| `node scripts/sweep-probes.mjs`, after the re-pin | **`SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but did not finish), 0 census problem(s), 110 deferred`** (`drive10`) |
+
+The last row is read off the **verdict line**, not inferred from an absence of RED rows: exit 0
+without a summary line is not a measurement.
+
+### 8.4 The re-pin was itself caught, by a check this repo already had
+
+Bumping the pin from 18 to 20 reddened the census:
+
+```
+CENSUS RED — 1 entry-schema problem(s)
+    schema  probe-round303…mts: why says 18 where expect pins 20
+```
+
+The entry-schema check reads **every self-equal `N/N` in `why`** and requires it to agree with
+`expect`. Leaving the original `18/18 green` provenance on that line reports a mismatch while the
+probe itself is green — a pin reddening on its own promotion, one level further out. The remedy is
+the one the round 320 and 426 entries record in the same words: move the original promotion figure
+**up into a comment** and leave only the current `N/N` on the `why` line. Both figures survive; only
+one of them is on the line the checker reads.
 
 ## 9. Open, each with a named blocker
 
