@@ -1,0 +1,39 @@
+POPULATION 404 committed .out at 255d9180 · 22219 lines
+
+Q1  legacy-branch rows in the corpus       = 1045
+Q1  of those, ids ID_GRAMMAR would REJECT  = 0
+Q1  ID_GRAMMAR source                      = /^[A-Za-z0-9_.:-]+$/
+Q1  legacy inline id class                 = [A-Za-z0-9_.:-]+
+Q1  sample rejected: (none)
+
+Q2  K0_id_grammar              keeps 1045  drops    0
+Q2  K1_has_upper_or_digit      keeps  910  drops  135
+Q2  K2_upper_initial           keeps  852  drops  193
+Q2  K3_upper_initial_no_lower  keeps  852  drops  193
+Q2  K4_two_space_detail        keeps  930  drops  115
+
+Q2  K2 DROPS (sample of 193) — is this prose?
+      "  ok   every KP and control as expected: true"
+      "  ok   his recorded member list parsed as 31, so the collision check is not vacuous: true"
+      "  ok   every file:line collision with his list is two distinct calls, not a double count: true"
+      "  ok   every KP and control as expected: true"
+      "  ok   his recorded member list parsed as 31, so the collision check is not vacuous: true"
+      "  ok   every file:line collision with his list is two distinct calls, not a double count: true"
+      "  REFUTED       0  no body survives the second signal; leaves the class"
+      "  REFUTED       0  no body survives the second signal; leaves the class"
+      "  REFUTED       0  no body survives the second signal; leaves the class"
+      "  REFUTED       0  no body survives the second signal; leaves the class"
+      "  REFUTED       0  no body survives the second signal; leaves the class"
+      "            ok  list-the-declarations-under-the-409-key.mjs:24 want POPULATION got POPULATION · "
+Q2  K2 keeps but K3 drops (sample of 0):
+
+Q3  committed .out with a VERDICT line AND >0 rows on which 446 reads ZERO leg lines
+Q3  = 28 of 404
+      docs/research/round446-instruments/drive2.child-stderr-leaked-into-the-recording.out (5 rows, ids H1,H2,H3,H4)
+      docs/research/round446-instruments/drive3.final.out (5 rows, ids H1,H2,H3,H4)
+      docs/research/round446-instruments/drive4.h5-refuses-before-the-cure.out (6 rows, ids H1,H2,H3,H5)
+
+Q3  legacy-row id initials: G:558 P:123 p:73 K:39 H:38 S:31 r:27 C:25 s:25 D:25 c:14 R:11 1:8 b:8 e:6 m:6 0:5 t:5 l:4 h:3 2:2 3:2 5:2 a:2 A:1 M:1 i:1
+Q3  non-G share = 487 of 1045
+
+CENSUS COMPLETE — no cure built in this file by design.

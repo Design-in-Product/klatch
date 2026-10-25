@@ -41,7 +41,7 @@ import { readFileSync, writeFileSync, rmSync, existsSync } from 'fs';
 import { dirname, join, relative } from 'path';
 import { fileURLToPath } from 'url';
 
-import { readVerdict, renderVerdict, renderRows, topToken } from '../lib/verdict.mjs';
+import { readVerdict, renderVerdict, readCorpusRows, LEG_TOKENS, topToken } from '../lib/verdict.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = join(HERE, '..', '..', '..');
@@ -378,7 +378,31 @@ const rowText = (rel) => { try { return git('show', `${REV}:${rel}`); } catch (e
   const pinV = rd(pinOut);
   const treeV = rd(treeOut);
   const lines = (t) => (t === null ? 0 : t.split('\n').length);
-  const legLines = (t) => (t === null ? 0 : t.split('\n').filter((l) => /^(?: ok |FAIL|REF ) G/.test(l)).length);
+  /**
+   * Re-keyed off the lib in Round 452. The regex this replaced was `/^(?: ok |FAIL|REF ) G/`, and
+   * that trailing ` G` is an ID-PREFIX constraint, not a token-spelling one — so
+   * `legLines(pinOut) === 0` was satisfied by any LIVE run whose legs are not `G`-prefixed, and
+   * `legLines(treeOut) > 0` was the same constraint pointed the other way, green only because its
+   * subjects were Rounds 443/444 and those happen to name legs `G*`.
+   *
+   * Theseus's Round 451 §4 measured what that cost: of 400 committed `.out` files, 26 publish a
+   * `VERDICT` line AND >0 rows — demonstrably alive — and still read ZERO leg lines here. The
+   * first file on his list is THIS round's own `drive2`, whose legs are `H1`–`H4`: the reader
+   * could not read the rows in the recording the same round produced. The conjunct was never
+   * evidence of death; it was evidence of a naming convention.
+   *
+   * `readCorpusRows` is deliberately wide (it reads the padded historical shape Rounds 443/444
+   * emit, which a canonical-only reader would miss entirely), and Round 452 `A4` measures the
+   * price of that width: it also admits table rows and the occasional sentence. So `legIds` prints
+   * what was counted alongside the count, making an over-read visible in the recording rather
+   * than silent inside a boolean.
+   */
+  const legRows = (t) => (t === null ? [] : readCorpusRows(t).rows);
+  const legLines = (t) => legRows(t).length;
+  const legIds = (t) => {
+    const ids = [...new Set(legRows(t).map((r) => r.id))];
+    return ids.length === 0 ? '(none)' : `${ids.slice(0, 6).join(',')}${ids.length > 6 ? `,+${ids.length - 6}` : ''}`;
+  };
 
   // The defect is "publishes NOTHING at all": no verdict line AND no leg lines. Both conjuncts
   // read, so a run that printed legs but lost its tail cannot pass as the same defect.
@@ -398,10 +422,10 @@ const rowText = (rel) => { try { return git('show', `${REV}:${rel}`); } catch (e
     + `${pinHasPresent} (false required) · anchor-only guard in the pin ${pinHasAnchorGuard} `
     + `(true required) · \`present:\` in the working tree ${treeHasPresent} (true required)\n`
     + `        HIS PRE-REPAIR BLOB vs today's cured tree: ${pinV === null ? 'NOT RUN' : (pinV.ok ? pinV.verdict.token : pinV.refusal)} · `
-    + `${lines(pinOut)} line(s), ${legLines(pinOut)} leg line(s) · first error: `
+    + `${lines(pinOut)} line(s), ${legLines(pinOut)} leg line(s) [ids ${legIds(pinOut)}] · first error: `
     + `${(pinOut ?? '').split('\n').find((l) => /Error/.test(l))?.slice(0, 72) ?? '(none)'}\n`
     + `        HIS WORKING TREE vs the same tree: ${treeV === null ? 'NOT RUN' : (treeV.ok ? `${treeV.verdict.token} red=${JSON.stringify(treeV.verdict.red)} refused=${JSON.stringify(treeV.verdict.refused)}` : treeV.refusal)} · `
-    + `${lines(treeOut)} line(s), ${legLines(treeOut)} leg line(s)`,
+    + `${lines(treeOut)} line(s), ${legLines(treeOut)} leg line(s) [ids ${legIds(treeOut)}]`,
     ok);
 
   // ═══════════════════════════════════════════════════════════════════════════════════════════════
@@ -570,9 +594,25 @@ out.push(`REV: ${SHORT}   his pre-repair blob pinned at: ${HIS_PRE_REPAIR_REV}  
 out.push('');
 // Rows in the same grammar Rounds 443/444 print, so `legLines` above and the row reader downstream
 // see the shape they key on. `renderRows` drops the detail, which is the evidence, so the rows are
-// emitted here and the lib call is kept beside them as the token source.
-const TOKEN = Object.fromEntries(renderRows([{ id: 'x', ok: true }, { id: 'x', ok: false }, { id: 'x', ok: null }])
-  .map((r, i) => [String([true, false, null][i]), r.split(' ')[2]]));
+// emitted here and the lib is kept beside them as the token source.
+//
+// ── Round 452: THIS LINE HAD BEEN KILLING THE WHOLE INSTRUMENT ──
+// It used to read the three token spellings off
+// `renderRows([{id:'x',ok:true},{id:'x',ok:false},{id:'x',ok:null}])` — three rows deliberately
+// sharing one id, called purely as a vocabulary lookup, with the spellings scraped out of column 3.
+// Round 450 then gave `renderRowSet` a round-trip closure guard whose refusal list includes
+// `DUPLICATE_ROW_ID`, and from the moment that guard landed this line THREW: the instrument exited
+// non-zero having published nothing at all, no verdict line and no rows. It went unnoticed because
+// nothing re-drives 446 — the guard and its victim are in the same repo and were never run
+// together until Theseus's Round 451 §4 sent me back to this call site for a different reason.
+// Verified against the PINNED pre-round source as well as this one, so the breakage is attributed
+// to the Round 450 guard and not to Round 452's edits (`drive6.r446-PINNED-source.out`).
+//
+// The repair is not to loosen the guard. The guard is right: a row set with a duplicate id is not
+// publishable. Asking a RENDERER for a vocabulary was the error — the lib exports the vocabulary
+// itself, so the lookup now reads the declared table instead of round-tripping fake rows through
+// a writer that validates them.
+const TOKEN = { ...LEG_TOKENS };
 for (const l of legs) {
   const t = TOKEN[String(l.ok)];
   out.push(`${t === 'ok' ? ' ok ' : t === 'RED' ? 'FAIL' : 'REF '} ${l.id}  ${l.what}`);

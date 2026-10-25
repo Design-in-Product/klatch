@@ -480,6 +480,38 @@ export const LEGACY_ROW_TOKENS = {
  * Deliberately tolerant of padding on input and intolerant of unknown spellings: a token outside
  * `LEGACY_ROW_TOKENS` is REPORTED in `unknown`, never bucketed as a pass or a fail
  * (411/439 — positively key the last bucket; 399 — publish the refusal rather than guess).
+ *
+ * ── WHAT THE LEGACY BRANCH'S `id` IS NOT (Round 452; read this before keying anything on it) ──
+ *
+ * On a `shape: 'tokenfirst'` row, `id` is **the second column, whatever that happened to be** —
+ * it is not an identifier, and this branch **cannot distinguish a leg row from a table cell or
+ * from an English sentence.** Hand-read over all 1045 legacy rows in the committed corpus, reduced
+ * to their 116 distinct id spellings, the three kinds present are:
+ *
+ *   LEGROW  the capture really does identify a leg or prediction — `G1`, `S-14`, `CELL03-CANCEL`
+ *   TABLE   the capture is DATA in a record's second column — `ok 110 906`, `RED round431 → []`,
+ *           `REFUTED 0 no body survives the second signal`, `ok pre false live false { ...src }`
+ *   PROSE   the capture is the second word of a sentence that begins with a token spelling —
+ *           `ok every KP and control as expected: true`, `ok MAX_HISTORY_MESSAGES sliced once`
+ *
+ * Theseus's Round 451 §6.1 routed "apply `ID_GRAMMAR` to the legacy branch" as the repair. It is a
+ * no-op: `ID_GRAMMAR` is `/^[A-Za-z0-9_.:-]+$/` and this branch's inline capture is
+ * `([A-Za-z0-9_.:-]+)` — the same class, bounded by the surrounding regex, so every id it produces
+ * satisfies `ID_GRAMMAR` by construction. Measured: it rejects **0 of 1045**.
+ *
+ * And no tighter class works either, which Round 452 `A2` settles with two non-empty sets out of
+ * one population: LEGROWs whose id is a **lowercase file address** (`tree-fingerprint.mts:160`,
+ * `cure-the-wrapped-call-and-the-body-key.mjs:555`), and TABLE/PROSE whose id is an **uppercase
+ * word** (`DEFECT` ×25, `REFUTED` ×11, `GRADE` ×8, `MAX_HISTORY_MESSAGES`) or a **bare number**
+ * (`0`, `110`, `52`). Any class that keeps the first admits the second; any class that rejects the
+ * second loses the first.
+ *
+ * So the constraint is stated here rather than enforced by a regex that cannot hold it. If you
+ * need rows whose `id` is genuinely an identifier, filter on `shape === 'canonical'` — the
+ * renderer guarantees that grammar — and reach for the legacy branch only for liveness and
+ * historical counting, where an over-read is visible in the count rather than silent in a boolean.
+ * Round 446's `legLines` and Round 448's `legTokens` were both keyed on this branch's `id` as if
+ * it were an identifier; 446's was wrong about 26 of 400 committed recordings.
  */
 export function readCorpusRows(text) {
   const rows = [];
@@ -808,6 +840,33 @@ export function selfTest() {
   for (const tok of Object.keys(LEGACY_ROW_TOKENS)) {
     const got = readCorpusRows(`${tok} G9  detail`).rows;
     must(got.length === 1 && got[0].token === tok, `declared spelling ${tok} does not read back`);
+  }
+
+  // Round 452 — PIN THE DOCUMENTED WIDTH, both directions, so the paragraph above cannot outlive
+  // the behaviour it describes. Prose written beside its own subject needs a pin (430): the
+  // docblock says this branch cannot tell a leg row from a table cell or a sentence, and these
+  // three lines are real ones lifted out of the committed corpus, so if a later tightening makes
+  // the claim false it fails HERE rather than going stale in a comment.
+  const PROSE_LINE = '  ok   every KP and control as expected: true';
+  const TABLE_LINE = '  REFUTED       0  no body survives the second signal; leaves the class';
+  const ADDRESS_LINE = '    ok  tree-fingerprint.mts:160 want POPULATION got POPULATION';
+  const prose = readCorpusRows(PROSE_LINE).rows;
+  const table = readCorpusRows(TABLE_LINE).rows;
+  const address = readCorpusRows(ADDRESS_LINE).rows;
+  must(prose.length === 1 && prose[0].id === 'every',
+    `the legacy branch stopped admitting prose; the docblock's PROSE claim is now false: ${JSON.stringify(prose)}`);
+  must(table.length === 1 && table[0].id === '0',
+    `the legacy branch stopped admitting a table cell; the docblock's TABLE claim is now false: ${JSON.stringify(table)}`);
+  // The other direction, and the reason no tighter class is available: a genuine leg id that is a
+  // lowercase file address. Any class that rejected `every` above would reject this one too.
+  must(address.length === 1 && address[0].id === 'tree-fingerprint.mts:160',
+    `the lowercase-file-address leg id stopped reading; A2's counterexample is gone: ${JSON.stringify(address)}`);
+  must(prose.every((r) => r.shape === 'tokenfirst') && address.every((r) => r.shape === 'tokenfirst'),
+    'the legacy rows above are no longer labelled tokenfirst, so shape is no longer the exact filter');
+  // And the canonical filter the docblock points callers at must exclude all three.
+  for (const line of [PROSE_LINE, TABLE_LINE, ADDRESS_LINE]) {
+    must(readCorpusRows(line).rows.every((r) => r.shape !== 'canonical'),
+      `a legacy line read as canonical, so shape === 'canonical' is not the exact filter: ${line}`);
   }
 
   // The write guard refuses a tracked target. This file is tracked once committed; before that it

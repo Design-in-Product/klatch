@@ -1,0 +1,17 @@
+CRIPPLE GRADING — subject docs/research/round448-instruments/grade-the-four-list-scorer.mjs
+clean run: ok · leg tokens {}
+
+CONTROL  clean vs clean#2 differing lines: [] — anything here moves run-to-run and cannot be credited to a cripple
+
+BAD   KLATCH_R448_LEGONLY  →  G2: (absent) → (absent) · verdict RED · other legs that also moved [] (empty required)
+        score the matrix with the RETIRED leg-only predicate — the two defect cells must stop disagreeing
+        recorded: drive6.legonly-crippled.out
+BAD   KLATCH_R448_BLINDPIN  →  G4: (absent) → (absent) · verdict RED · other legs that also moved [] (empty required)
+        source the "was true when written" half from HEAD instead of the pin — both halves then read the same tree
+        recorded: drive7.blindpin-crippled.out
+BAD   KLATCH_R448_NOTIMPLEMENTED  →  G5: (absent) → (absent) · verdict RED · other legs that also moved [] (empty required)
+        request a KLATCH_R448_* name no hook implements — it must be named INERT, not reported active
+        recorded: drive8.inert-name.out
+
+EVERY DECLARED CRIPPLE MOVES ITS OWN LEG AND ONLY ITS OWN LEG: false
+FAILED

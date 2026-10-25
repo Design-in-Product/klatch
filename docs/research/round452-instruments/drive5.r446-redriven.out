@@ -1,0 +1,10 @@
+file:///Users/xian/Development/klatch-worktrees/daedalus/docs/research/lib/verdict.mjs:331
+    throw new Error(`renderRowSet rendered rows its own reader refuses as ${rt.refusal}`
+          ^
+
+Error: renderRowSet rendered rows its own reader refuses as DUPLICATE_ROW_ID (LEG x): ["LEG x ok","LEG x RED","LEG x REF"]
+    at renderRowSet (file:///Users/xian/Development/klatch-worktrees/daedalus/docs/research/lib/verdict.mjs:331:11)
+    at renderRows (file:///Users/xian/Development/klatch-worktrees/daedalus/docs/research/lib/verdict.mjs:353:10)
+    at file:///Users/xian/Development/klatch-worktrees/daedalus/docs/research/round446-instruments/grade-my-own-oracle-predicate.mjs:598:34
+
+Node.js v26.5.0

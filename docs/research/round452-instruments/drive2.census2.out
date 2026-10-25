@@ -1,0 +1,23 @@
+R1  mine, whole corpus            = 28 of 404
+R1  of those, in HIS round dir    = 2  ["drive2.real-exemplar-key-t9-decomposed.out","drive3.postcommit-self-exclusion-live.out"]
+R1  excluding his dir (his denom) = 26 of 400
+R1  agrees with his published 26 of 400: true
+
+R2  1045 legacy-branch rows reduce to 116 distinct id spellings
+
+R2  K1_has_upper_or_digit                ROW-kept=  5 ROW-lost=  0 PROSE-let-in=  0 PROSE-kept-out=  8  separating=true
+R2  K2_upper_initial                     ROW-kept=  0 ROW-lost=  5 PROSE-let-in=  0 PROSE-kept-out=  8  separating=false
+R2  K5_upper_initial_or_digit_or_address ROW-kept=  5 ROW-lost=  0 PROSE-let-in=  0 PROSE-kept-out=  8  separating=true
+
+R2  ids the candidates disagree about = 16; of those unclassified by hand = 15
+R2  unclassified: ["list-the-declarations-under-the-409-key.mjs:24","cure-the-wrapped-call-and-the-body-key.mjs:555","tree-fingerprint.mts:160","client.ts","round431","round433","round435","110","52","30","26","16","15","11","10"]
+
+R2  hand-classified PROSE rows in the corpus = 8 across 3 files
+      "  ok   every KP and control as expected: true"
+      "  ok   his recorded member list parsed as 31, so the collision check is not vacuous: true"
+      "  ok   every file:line collision with his list is two distinct calls, not a double count: tr"
+      "  ok   every KP and control as expected: true"
+      "  ok   his recorded member list parsed as 31, so the collision check is not vacuous: true"
+      "  ok   every file:line collision with his list is two distinct calls, not a double count: tr"
+
+CENSUS PASS 2 COMPLETE — still no cure in this file.

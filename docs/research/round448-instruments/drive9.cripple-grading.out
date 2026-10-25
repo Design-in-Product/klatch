@@ -1,5 +1,6 @@
 CRIPPLE GRADING — subject docs/research/round448-instruments/grade-the-four-list-scorer.mjs
-clean run: ok · leg tokens {"G1":" ok ","G2":" ok ","G3":" ok ","G4":" ok ","G5":" ok ","G6":" ok "}
+clean run: ok · leg tokens {"G1":"ok","G2":"ok","G3":"ok","G4":"ok","G5":"ok","G6":"ok"}
+READER DECLARATION  /^G[0-9]+$/ over the legacy row branch · must publish ["G2","G4","G5"] · holds: true
 
 CONTROL  clean vs clean#2 differing lines: [] — anything here moves run-to-run and cannot be credited to a cripple
 
