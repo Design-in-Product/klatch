@@ -1,0 +1,24 @@
+ROUND 450 CRIPPLE GRADING — subject docs/research/lib/verdict.mjs, mutated at the source
+
+CONTROL  clean: RESULT true  · depth ok: true
+CONTROL  clean run twice identical: true
+
+GOOD  TRISTATE   moved: true  names its declared assertion: true  died: false depth ok: true
+      why: delete the tri-state throw in renderRowSet — a non-true/false/null state then renders the literal token "undefined", the fall-through this file says it does not have
+      got: THREW verdict.mjs selfTest: a non-tri-state ok rendered the token "undefined": it threw, but for the wrong reason — wanted "is not true/false/null", got "renderRowSet rendered rows
+
+GOOD  NEWLINE    moved: true  names its declared assertion: true  died: false depth ok: true
+      why: delete the newline check — one leg's detail then publishes as two lines, the second a well-formed row for a leg that does not exist
+      got: THREW verdict.mjs selfTest: a newline in a detail FORGED a second row: it threw, but for the wrong reason — wanted "detail contains a newline", got "renderRowSet: 1 item(s) read ba
+
+GOOD  TRAILWS    moved: true  names its declared assertion: true  died: false depth ok: true
+      why: delete the trailing-whitespace check — a detail then reads back different from the one that went in, which is the row-level version of the 443 defect
+      got: THREW verdict.mjs selfTest: a trailing space in a detail did not survive the round trip: it threw, but for the wrong reason — wanted "has trailing whitespace", got "renderRowSet: r
+
+GOOD  WRONGKIND  moved: true  names its declared assertion: true  died: false depth ok: true
+      why: collapse WRONG_KIND_TOKEN into UNKNOWN_ROW_TOKEN — a LEG row carrying LANDED is then refused for the wrong reason, which is the cost of two vocabularies going unmeasured
+      got: THREW verdict.mjs selfTest: WRONG_KIND_TOKEN refused as UNKNOWN_ROW_TOKEN
+
+anchors asserted exactly-once per cripple: 4/4 · name-occurrence check deliberately absent (see the note in this file: wrong architecture)
+
+ALL CRIPPLES CAUGHT BY NAME, WITH A CLEAN CONTROL: true

@@ -1,0 +1,18 @@
+ROUND 450 — grade the row guards · rev fd7c346dac96e901e944962dd46f169a93e160d6 · subject docs/research/lib/verdict.mjs
+
+     canonical rows read: mine 3/3 · 446 0/3 · 448 0/3   (§4 measured 0/3 for both, pre-cure)
+     slices compiled from pinned source: 446 "/^(?: ok |FAIL|REF ) G/" · 448 "/^(?: ok |RED |REF ) ([A-Z][A-Z0-9]*)  /"
+
+LEG W1 ok renderTail publishes a prediction's detail: leg=true pred=true id-in-line=true pred-row-readable=true
+LEG W2 ok 5/5 unguarded shapes now throw at emit · still emitting: [] · control survives: true
+LEG W3 ok round-trip over 216 (id × state × detail × kind) cases: 0 failure(s)
+LEG W4 ok legs=0 reads clean: true · a foreign grammar at legs=2 reads ROW_GRAMMAR_ABSENT · 1 row at legs=2 reads ROW_COUNT_DISAGREEMENT
+LEG W5 RED ROW_REFUSALS declares 6, source calls refuseRow with 4 distinct · undeclared-in-source: [] · declared-but-never-called: ["UNKNOWN_ROW_TOKEN","WRONG_KIND_TOKEN"]
+LEG W6 ok one shared reader over the censused 8: mine reads 8/8, 446 reads 0/8 (missing ["ok","RED","REF","FAIL","REFUSED","LANDED","REFUTED","OPEN"]), 448 reads 0/8 (missing ["ok","RED","REF","FAIL","REFUSED","LANDED","REFUTED","OPEN"])
+LEG W7 ok selfTest() returned true
+LEG W8 ok vocabularies disjoint: [] · LEG+LANDED → WRONG_KIND_TOKEN · PRED+ok → WRONG_KIND_TOKEN · an unknown spelling → UNKNOWN_ROW_TOKEN
+LEG W9 ok the verdict line over 4 cases is byte-identical to fd7c346d~1: true
+PRED Q1 LANDED canonical rows in 13/391 committed recordings, PRED rows in 0 — a prediction row has never been published, because the lib could not render one
+PRED Q2 LANDED of the censused 8 spellings, 6 are canonical and 2 are legacy-only: ["FAIL","REFUSED"] — so the canonical grammar is not a rename of the corpus
+
+VERDICT/1 RED legs=9 red=[W5] refused=[] preds=2 refuted=[] prefused=[]

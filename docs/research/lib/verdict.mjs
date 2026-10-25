@@ -695,19 +695,36 @@ export function selfTest() {
   // `renderRows` did not. Each must throw at EMIT, and the control after them must still round-trip,
   // so this block cannot pass by throwing on everything (344 — a known positive must carry the
   // property, and a population-level KP needs a CONTROL).
+  // Each case asserts the REASON and not merely that something threw. That is not fastidiousness:
+  // Round 450's cripple grading deleted the tri-state throw, the newline check and the
+  // trailing-whitespace check from the real source one at a time, and `selfTest()` returned `true`
+  // for all three — because the round-trip closure at the tail of `renderRowSet` catches those
+  // shapes too, with a different message. The BEHAVIOUR was guarded twice and the DIAGNOSIS once,
+  // and a self-test keyed on "did it throw" cannot tell a guard from its own backstop
+  // (438 — a saturated verdict hides a reason-level cause: key the reason, not refused-vs-admitted).
   const badRows = [
-    [{ id: 'G1', ok: 'yes', what: 'x' }, 'a non-tri-state ok rendered the token "undefined"'],
-    [{ id: 'G1 ok hello', ok: true, what: 'x' }, 'an id with a space rendered a second token'],
-    [{ id: '', ok: true, what: 'x' }, 'an empty id rendered no id'],
-    [{ name: 'G1', ok: false, what: 'x' }, 'an absent id key rendered "undefined" as the id'],
-    [{ id: 'G1', ok: true, what: 'one\nLEG G2 ok forged' }, 'a newline in a detail FORGED a second row'],
-    [{ id: 'G1', ok: true, what: 'x ' }, 'a trailing space in a detail did not survive the round trip'],
-    [{ id: 'G1', ok: true, what: 42 }, 'a non-string detail'],
+    [{ id: 'G1', ok: 'yes', what: 'x' }, 'a non-tri-state ok rendered the token "undefined"',
+      'is not true/false/null'],
+    [{ id: 'G1 ok hello', ok: true, what: 'x' }, 'an id with a space rendered a second token',
+      'an id with a space renders a second token'],
+    [{ id: '', ok: true, what: 'x' }, 'an empty id rendered no id',
+      'an id with a space renders a second token'],
+    [{ name: 'G1', ok: false, what: 'x' }, 'an absent id key rendered "undefined" as the id',
+      'an id with a space renders a second token'],
+    [{ id: 'G1', ok: true, what: 'one\nLEG G2 ok forged' }, 'a newline in a detail FORGED a second row',
+      'detail contains a newline'],
+    [{ id: 'G1', ok: true, what: 'x ' }, 'a trailing space in a detail did not survive the round trip',
+      'has trailing whitespace'],
+    [{ id: 'G1', ok: true, what: 42 }, 'a non-string detail', 'has a non-string what'],
   ];
-  for (const [item, why] of badRows) {
+  for (const [item, why, because] of badRows) {
     let emitted = null;
-    try { emitted = renderRows([item]); } catch { /* the required outcome */ }
+    let message = null;
+    try { emitted = renderRows([item]); } catch (e) { message = e.message; }
     must(emitted === null, `${why}: ${JSON.stringify(emitted)} ← ${JSON.stringify(item)}`);
+    must(message !== null && message.includes(because),
+      `${why}: it threw, but for the wrong reason — wanted ${JSON.stringify(because)}, got `
+      + `${JSON.stringify(message)}. A guard and its backstop are not interchangeable.`);
   }
   const rowControl = renderRows([{ id: 'G1', ok: true, what: 'internal  spacing  kept' }]);
   must(rowControl.length === 1 && rowControl[0] === 'LEG G1 ok internal  spacing  kept',
