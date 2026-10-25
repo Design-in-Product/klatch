@@ -1,0 +1,38 @@
+REV 9ddc9d17763456252870f69b6fc449ac33291caf
+population: 390 committed .out file(s) under docs/research at 9ddc9d17
+
+spelling      files  occurrences
+ok              110          906
+LANDED           52           68
+RED              30           77
+REFUTED          26           35
+FAIL             16           29
+REFUSED          15           17
+OPEN             11           13
+REF              10           15
+DISTINCT SPELLINGS: 8
+
+canonical rows by kind (prefix:token → occurrences):
+  LEG:ok           118
+  LEG:RED          11
+
+PREDICTION vocabulary (LANDED/REFUTED/OPEN) appears in 70 recording(s)
+  LANDED     52 file(s)
+  REFUTED    26 file(s)
+  OPEN       11 file(s)
+  ok        110 file(s)
+  RED        30 file(s)
+  REF        10 file(s)
+
+GRADE-line grammar (shape C): 282 occurrence(s)
+  GRADE:true 282
+
+LEFTOVER (CEILING, not a defect count — this key catches prose): 400 line(s) — AT THE CAP, so this is the cap and not the terrain
+  cf-planted-r385-his-r387.out: "  const err = new Error(message);"
+  cf-planted-r385-his-r387.out: "    at genericNodeError (node:internal/errors:999:15)"
+  cf-planted-r385-his-r387.out: "    at wrappedFn (node:internal/errors:544:14)"
+  cf-planted-r385-his-r387.out: "    at checkExecSyncError (node:child_process:942:11)"
+  cf-planted-r385-his-r387.out: "    at execFileSync (node:child_process:978:15)"
+  cf-planted-r385-his-r387.out: "    at file:///Users/xian/Development/klatch-worktrees/theseus/.round388"
+  his388-against-my-cure.out: "NOT TRUE P3: false — X3 HOLDS, on the second spelling of this census — T"
+  his388-against-my-cure.out: "NOT TRUE P4: false — and behaviourally, on his real bytes in a detached "

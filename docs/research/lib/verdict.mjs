@@ -78,6 +78,19 @@ export const SCHEMA = 'VERDICT/1';
 export const LEG_TOKENS = { true: 'ok', false: 'RED', null: 'REF' };
 
 /**
+ * Per-prediction token. A SECOND vocabulary, and the choice is keyed on a census rather than on
+ * taste (Round 450 `drive1.census-row-vocabulary.out`, 390 committed `.out` files at `9ddc9d17`):
+ * `LANDED` appears in **52** recordings, more than `RED` (30) or `REF` (10), and `REFUTED` in 26,
+ * `OPEN` in 11 — 70 recordings use this vocabulary for a prediction's outcome. Spelling a
+ * prediction `ok`/`RED`/`REF` would have invented a ninth and tenth spelling in the same file that
+ * exists to stop spelling drift.
+ *
+ * The cost of two vocabularies is that a row can carry the right token for the wrong kind, so that
+ * is refused by name (`WRONG_KIND_TOKEN`) rather than left to a reader to notice.
+ */
+export const PRED_TOKENS = { true: 'LANDED', false: 'REFUTED', null: 'OPEN' };
+
+/**
  * The named refusals `readVerdict` can return. Exported so a grader can check it against the
  * `refuse('…')` call sites in this file's own source rather than against a hand-typed copy
  * (426 — derive the predicate from the branch literals).
@@ -90,6 +103,20 @@ export const REFUSALS = [
   'UNKNOWN_TOP_TOKEN',
   'TOKEN_LIST_CONTRADICTION',
   'COUNT_LIST_CONTRADICTION',
+];
+
+/**
+ * The named refusals the ROW readers can return. Same discipline as `REFUSALS`: exported so a
+ * grader can check it against this file's own `refuseRow('…')` call sites instead of a hand-typed
+ * copy (426 — derive the predicate from the branch literals).
+ */
+export const ROW_REFUSALS = [
+  'MALFORMED_ROW',
+  'UNKNOWN_ROW_TOKEN',
+  'WRONG_KIND_TOKEN',
+  'DUPLICATE_ROW_ID',
+  'ROW_GRAMMAR_ABSENT',
+  'ROW_COUNT_DISAGREEMENT',
 ];
 
 const FIELDS = ['legs', 'red', 'refused', 'preds', 'refuted', 'prefused'];
@@ -105,6 +132,13 @@ export const ID_GRAMMAR = /^[A-Za-z0-9_.:-]+$/;
 const refuse = (code) => {
   if (!REFUSALS.includes(code)) throw new Error(`refuse() called with an undeclared code: ${code}`);
   return { ok: false, refusal: code, verdict: null };
+};
+
+const refuseRow = (code, detail = null) => {
+  if (!ROW_REFUSALS.includes(code)) {
+    throw new Error(`refuseRow() called with an undeclared code: ${code}`);
+  }
+  return { ok: false, refusal: code, detail, rows: null };
 };
 
 const renderList = (ids) => `[${ids.join(',')}]`;
@@ -214,9 +248,262 @@ export function renderVerdict({ legs = [], preds = [] } = {}) {
   return line;
 }
 
-/** Per-leg rows, one grammar, unpadded. */
+// ─────────────────────────────────────────────────────────────────────────────────────────────────
+// ROWS — the other artifact in this file, and until Round 450 the unguarded one.
+//
+// Theseus's Round 449 §4 measured that `renderRows`' output is read by **0 of 3** rows by either of
+// the two row readers in my own Rounds 446 and 448, and asked for a decision between making this
+// the one grammar and widening those readers. Driving it first (Round 450 `probe0`) found the
+// reason the question had never come up: of `renderVerdict`'s three guards — `ID_GRAMMAR`, the
+// tri-state throw, and round-trip closure — `renderRows` had **none**, because every guard in this
+// file was keyed on the VERDICT LINE, the artifact declared machine-readable. Rows were a
+// convenience. Five shapes, all five of which `renderVerdict` throws on, emitted happily:
+//
+//     ok: 'yes'            → "LEG G1 undefined x"        a fall-through to the string "undefined",
+//                                                        in the file whose docstring says there is
+//                                                        no fall-through bucket
+//     id: 'G1 ok hello'    → "LEG G1 ok hello ok x"      TWO tokens; a positional reader takes the
+//                                                        wrong one
+//     id: ''               → "LEG  ok x"
+//     { name: 'G1' }       → "LEG undefined RED x"       Theseus's Round 443 §1 shape, the sharpest
+//                                                        finding ever made against this file, still
+//                                                        live here one artifact over
+//     what: 'one\nLEG G2 ok injected'
+//                          → TWO LINES, the second a well-formed row for a leg THAT DOES NOT EXIST
+//
+// The last one is why rows are not merely a weaker version of the same problem. A verdict is one
+// line, so a bad field malforms it; a row set is a multi-line string, so one leg's free text can
+// FORGE another leg's row — and the reader that would believe it is `record-cripples.mjs`, the tool
+// that grades whether a cripple moved the leg it declared.
+//
+// So the guards below are the verdict line's three, plus the one rows need and it does not: `what`
+// is single-line and carries no trailing whitespace, enforced, because those are exactly the
+// characters that break the correspondence between a row and the leg it reports
+// (443 — guard the published string, not the arrays it came from).
+// ─────────────────────────────────────────────────────────────────────────────────────────────────
+
+/** Row kinds. The prefix and the token vocabulary move together; neither is a default. */
+const ROW_KINDS = {
+  LEG: { key: 'ok', tokens: LEG_TOKENS },
+  PRED: { key: 'landed', tokens: PRED_TOKENS },
+};
+
+/**
+ * `LEG G1 ok detail` / `PRED Q1 REFUTED detail`. The remainder after the token is captured
+ * verbatim rather than split, so internal spacing in a detail survives the round trip.
+ */
+const ROW_SHAPE = /^(LEG|PRED) (\S+) (\S+)(?: (.*))?$/;
+
+function renderRowSet(items, kind) {
+  const { key, tokens } = ROW_KINDS[kind];
+  const rows = items.map((it) => {
+    const v = it[key];
+    if (v !== true && v !== false && v !== null) {
+      throw new Error(`renderRowSet: ${it.id} has a ${key} of ${JSON.stringify(v)}, which is not `
+        + 'true/false/null — the token would render as "undefined"');
+    }
+    if (typeof it.id !== 'string' || !ID_GRAMMAR.test(it.id)) {
+      throw new Error(`renderRowSet: id ${JSON.stringify(it.id)} is not ${ID_GRAMMAR} — an id with a `
+        + 'space renders a second token into the row, and an empty one renders none');
+    }
+    const what = it.what ?? '';
+    if (typeof what !== 'string') {
+      throw new Error(`renderRowSet: ${it.id} has a non-string what: ${JSON.stringify(what)}`);
+    }
+    if (/[\n\r]/.test(what)) {
+      throw new Error(`renderRowSet: ${it.id}'s detail contains a newline: ${JSON.stringify(what)} — `
+        + 'one row would publish as two lines, and the second can be a well-formed row for a leg '
+        + 'that does not exist');
+    }
+    if (what !== what.trimEnd()) {
+      throw new Error(`renderRowSet: ${it.id}'s detail has trailing whitespace: ${JSON.stringify(what)}`
+        + ' — it would not survive the round trip, and a detail that reads back different from the'
+        + ' one that went in is the row-level version of the defect property 3b exists to prevent');
+    }
+    return `${kind} ${it.id} ${tokens[String(v)]} ${what}`.trimEnd();
+  });
+
+  // ROUND-TRIP CLOSURE for rows, the same property 3b the verdict line has had since Round 444 and
+  // rows never did. No argument renders a row set this module's own reader refuses, or one that
+  // reads back with an id, token or detail other than what went in.
+  const rt = readRows(rows.join('\n'));
+  if (rt.ok !== true) {
+    throw new Error(`renderRowSet rendered rows its own reader refuses as ${rt.refusal}`
+      + `${rt.detail === null ? '' : ` (${rt.detail})`}: ${JSON.stringify(rows)}`);
+  }
+  const mine = rt.rows.filter((r) => r.kind === kind);
+  if (mine.length !== items.length) {
+    throw new Error(`renderRowSet: ${items.length} item(s) read back as ${mine.length} row(s) — `
+      + `the string and the list disagree: ${JSON.stringify(rows)}`);
+  }
+  for (let i = 0; i < items.length; i += 1) {
+    const want = items[i];
+    const got = mine[i];
+    const wantWhat = want.what ?? '';
+    if (got.id !== want.id || got.state !== want[key] || got.what !== wantWhat) {
+      throw new Error(`renderRowSet: row ${i} read back as ${JSON.stringify(got)} from `
+        + `${JSON.stringify({ id: want.id, [key]: want[key], what: wantWhat })}`);
+    }
+  }
+  return rows;
+}
+
+/** Per-leg rows, one grammar, unpadded, every input guarded. */
 export function renderRows(legs = []) {
-  return legs.map((l) => `LEG ${l.id} ${LEG_TOKENS[String(l.ok)]} ${l.what ?? ''}`.trimEnd());
+  return renderRowSet(legs, 'LEG');
+}
+
+/**
+ * Per-prediction rows. These did not exist before Round 450, which is why `renderTail` accepted a
+ * prediction's `what` and dropped it (Theseus's Round 449 §3): `preds` reached `renderVerdict`, so
+ * a prediction's **id** reached the verdict line's lists, and its **reason** reached nothing. His
+ * `drive4` published `refuted=[Q1]` with the figure it was scored on appearing nowhere in the
+ * recording — "a refuted prediction with no reason is the reason-level version of 437."
+ *
+ * The census says this was never once published: of 390 committed `.out` files, canonical rows
+ * appear 129 times and **not one** is a `PRED` row, because the lib could not render one.
+ */
+export function renderPredRows(preds = []) {
+  return renderRowSet(preds, 'PRED');
+}
+
+/**
+ * Read canonical rows out of arbitrary text. `{ok:true, rows}` or `{ok:false, refusal, detail}`.
+ * Never throws, for the same reason `readVerdict` never throws.
+ *
+ * Zero rows in text that has none is `{ok:true, rows:[]}` and NOT a refusal — a run with no legs
+ * must be expressible, which is property 1's argument. Telling that apart from "this recording uses
+ * another grammar" is `readTail`'s job, and it is the whole reason `readTail` exists.
+ */
+export function readRows(text) {
+  const rows = [];
+  const seen = new Set();
+  for (const line of String(text ?? '').split('\n')) {
+    if (!/^(?:LEG|PRED) /.test(line)) continue;
+    const m = line.match(ROW_SHAPE);
+    if (m === null) return refuseRow('MALFORMED_ROW', line);
+    const [, kind, id, token, rest] = m;
+    const { tokens } = ROW_KINDS[kind];
+    const state = Object.keys(tokens).find((k) => tokens[k] === token);
+    if (state === undefined) {
+      // Known token, wrong kind, told apart from an unknown one by name — this is the cost of two
+      // vocabularies, mechanised rather than left to a reader to spot.
+      const otherKind = Object.keys(ROW_KINDS).find(
+        (k) => k !== kind && Object.values(ROW_KINDS[k].tokens).includes(token),
+      );
+      return refuseRow(otherKind === undefined ? 'UNKNOWN_ROW_TOKEN' : 'WRONG_KIND_TOKEN', line);
+    }
+    if (!ID_GRAMMAR.test(id)) return refuseRow('MALFORMED_ROW', line);
+    const dedup = `${kind} ${id}`;
+    if (seen.has(dedup)) return refuseRow('DUPLICATE_ROW_ID', dedup);
+    seen.add(dedup);
+    rows.push({
+      kind,
+      id,
+      token,
+      state: state === 'true' ? true : state === 'false' ? false : null,
+      what: rest ?? '',
+    });
+  }
+  return { ok: true, refusal: null, detail: null, rows };
+}
+
+/**
+ * Read a whole tail: the verdict line AND its rows, with the one check neither reader can make
+ * alone.
+ *
+ * This exists because of the defect shape that cost Round 441 §1: a green instrument prints no
+ * leg-id label *because it is green*, so "no label observed" and "no label grammar" were the same
+ * observation, and my five was his three. Rows have the same trap and it is worse, because a round
+ * that adopts another grammar and a round with nothing to report both read as zero rows. The
+ * verdict line's `legs=N` breaks the tie: 0 rows with `legs=0` is a green empty run, and 0 rows
+ * with `legs=5` is `ROW_GRAMMAR_ABSENT` — not this grammar, said by name.
+ *
+ * This is also the figure Theseus's §4 reported and gated nowhere: each reader's row count against
+ * the leg count the same recording's own verdict line publishes.
+ */
+export function readTail(text) {
+  const v = readVerdict(text);
+  const r = readRows(text);
+  if (v.ok !== true) return { ok: false, refusal: v.refusal, detail: null, verdict: null, rows: null };
+  if (r.ok !== true) return { ok: false, refusal: r.refusal, detail: r.detail, verdict: v.verdict, rows: null };
+  const legRows = r.rows.filter((x) => x.kind === 'LEG');
+  if (legRows.length === 0 && v.verdict.legs > 0) {
+    return {
+      ...refuseRow('ROW_GRAMMAR_ABSENT', `verdict says legs=${v.verdict.legs}, 0 canonical LEG rows`),
+      verdict: v.verdict,
+    };
+  }
+  if (legRows.length !== v.verdict.legs) {
+    return {
+      ...refuseRow('ROW_COUNT_DISAGREEMENT', `${legRows.length} LEG row(s) vs legs=${v.verdict.legs}`),
+      verdict: v.verdict,
+    };
+  }
+  return { ok: true, refusal: null, detail: null, verdict: v.verdict, rows: r.rows };
+}
+
+/**
+ * The historical row vocabulary, declared because it is measured and because the alternative is
+ * each round hand-rolling a regex for it — which is what both existing readers are, and both are
+ * narrower than the corpus they read.
+ *
+ * Censused in Round 450 over 390 committed `.out` files at `9ddc9d17`, as (distinct recordings
+ * containing the spelling): `ok` 110, `LANDED` 52, `RED` 30, `REFUTED` 26, `FAIL` 16, `REFUSED` 15,
+ * `OPEN` 11, `REF` 10. Eight spellings — the same EIGHT Theseus's independent key found in Round
+ * 449 §4 with different counts off a different population, which is the agreement worth having.
+ *
+ * Six of the eight are the canonical vocabularies above. The two that are not are legacy-only
+ * aliases, mapped here rather than alive in six separate regexes.
+ */
+export const LEGACY_ROW_TOKENS = {
+  ok: { state: true, kind: 'LEG' },
+  RED: { state: false, kind: 'LEG' },
+  REF: { state: null, kind: 'LEG' },
+  FAIL: { state: false, kind: 'LEG' },
+  REFUSED: { state: null, kind: 'LEG' },
+  LANDED: { state: true, kind: 'PRED' },
+  REFUTED: { state: false, kind: 'PRED' },
+  OPEN: { state: null, kind: 'PRED' },
+};
+
+/**
+ * One wide reader for the historical corpus, replacing the per-round hand-rolled regex.
+ *
+ * The two readers it replaces are mine, and both were measured narrower than the corpus: Round
+ * 446's `legLines` is `/^(?: ok |FAIL|REF ) G/` and Round 448's `legTokens` is
+ * `/^(?: ok |RED |REF ) ([A-Z][A-Z0-9]*)  /` — both keyed on the PADDED, column-aligned spelling
+ * that this file dropped on purpose, and the second one takes its token with `l.slice(0, 4)`, a
+ * hard-coded width. Round 441 §3's third defect was exactly a four-character spelling of a
+ * five-character tag grading 3 of 4 cells wrong.
+ *
+ * Deliberately tolerant of padding on input and intolerant of unknown spellings: a token outside
+ * `LEGACY_ROW_TOKENS` is REPORTED in `unknown`, never bucketed as a pass or a fail
+ * (411/439 — positively key the last bucket; 399 — publish the refusal rather than guess).
+ */
+export function readCorpusRows(text) {
+  const rows = [];
+  const unknown = [];
+  for (const line of String(text ?? '').split('\n')) {
+    const canon = line.match(ROW_SHAPE);
+    if (canon !== null) {
+      const [, kind, id, token, rest] = canon;
+      const entry = LEGACY_ROW_TOKENS[token];
+      if (entry === undefined) { unknown.push(line); continue; }
+      rows.push({ kind, id, token, state: entry.state, what: rest ?? '', shape: 'canonical' });
+      continue;
+    }
+    // The historical, token-first, possibly padded shape: `[ ok ] G1  detail`.
+    const m = line.match(/^ *([A-Za-z][A-Za-z0-9_]*) +([A-Za-z0-9_.:-]+)(?: +(.*))?$/);
+    if (m === null) continue;
+    const [, token, id, rest] = m;
+    const entry = LEGACY_ROW_TOKENS[token];
+    if (entry === undefined) continue; // prose; not a row and not claimed as one
+    rows.push({
+      kind: entry.kind, id, token, state: entry.state, what: (rest ?? '').trim(), shape: 'tokenfirst',
+    });
+  }
+  return { rows, unknown };
 }
 
 /**
@@ -402,6 +689,110 @@ export function selfTest() {
   const rows = renderRows([{ id: 'G1', ok: true, what: 'X' }, { id: 'G2', ok: null, what: 'Y' }]);
   must(rows[0] === 'LEG G1 ok X' && rows[1] === 'LEG G2 REF Y', `row grammar drifted: ${JSON.stringify(rows)}`);
 
+  // ── Round 450: the row guards. Every case below emitted happily before this round. ──────────────
+
+  // The five shapes Round 450 `probe0` drove, each of which `renderVerdict` already threw on and
+  // `renderRows` did not. Each must throw at EMIT, and the control after them must still round-trip,
+  // so this block cannot pass by throwing on everything (344 — a known positive must carry the
+  // property, and a population-level KP needs a CONTROL).
+  const badRows = [
+    [{ id: 'G1', ok: 'yes', what: 'x' }, 'a non-tri-state ok rendered the token "undefined"'],
+    [{ id: 'G1 ok hello', ok: true, what: 'x' }, 'an id with a space rendered a second token'],
+    [{ id: '', ok: true, what: 'x' }, 'an empty id rendered no id'],
+    [{ name: 'G1', ok: false, what: 'x' }, 'an absent id key rendered "undefined" as the id'],
+    [{ id: 'G1', ok: true, what: 'one\nLEG G2 ok forged' }, 'a newline in a detail FORGED a second row'],
+    [{ id: 'G1', ok: true, what: 'x ' }, 'a trailing space in a detail did not survive the round trip'],
+    [{ id: 'G1', ok: true, what: 42 }, 'a non-string detail'],
+  ];
+  for (const [item, why] of badRows) {
+    let emitted = null;
+    try { emitted = renderRows([item]); } catch { /* the required outcome */ }
+    must(emitted === null, `${why}: ${JSON.stringify(emitted)} ← ${JSON.stringify(item)}`);
+  }
+  const rowControl = renderRows([{ id: 'G1', ok: true, what: 'internal  spacing  kept' }]);
+  must(rowControl.length === 1 && rowControl[0] === 'LEG G1 ok internal  spacing  kept',
+    `the row control drifted: ${JSON.stringify(rowControl)}`);
+  const rowBack = readRows(rowControl.join('\n'));
+  must(rowBack.ok === true && rowBack.rows.length === 1
+    && rowBack.rows[0].what === 'internal  spacing  kept',
+  `the row control stopped round-tripping: ${JSON.stringify(rowBack)}`);
+
+  // Prediction rows exist, carry the prediction vocabulary, and are told apart from leg rows.
+  const predRows = renderPredRows([
+    { id: 'Q1', landed: false, what: '81 of 148' }, { id: 'Q2', landed: true }, { id: 'Q3', landed: null },
+  ]);
+  must(predRows.join('|') === 'PRED Q1 REFUTED 81 of 148|PRED Q2 LANDED|PRED Q3 OPEN',
+    `prediction row grammar drifted: ${JSON.stringify(predRows)}`);
+
+  // THE §3 CURE, pinned so this file's prose cannot outlive it (357/359): a prediction's detail
+  // reaches the published artifact. Driven with a sentinel through the real function, not read off
+  // the source.
+  const tail = renderTail({
+    legs: [{ id: 'G1', ok: true, what: 'LEGDETAIL' }],
+    preds: [{ id: 'Q1', landed: false, what: 'PREDDETAIL' }],
+  });
+  must(tail.includes('LEGDETAIL'), `renderTail dropped a leg detail: ${tail}`);
+  must(tail.includes('PREDDETAIL'), `renderTail dropped a PREDICTION detail — Round 449 §3: ${tail}`);
+  must(tail.includes('refuted=[Q1]'), `renderTail lost the prediction's id: ${tail}`);
+  const tailBack = readTail(tail);
+  must(tailBack.ok === true, `renderTail emitted a tail readTail refuses (${tailBack.refusal}): ${tail}`);
+  must(tailBack.rows.filter((r) => r.kind === 'PRED').length === 1, `the PRED row did not read back: ${tail}`);
+
+  // `readTail` tells a green empty run apart from another grammar — the row-level cure for the
+  // Round 441 §1 defect, where "no label observed" and "no label grammar" were one observation.
+  const emptyTail = renderTail({ legs: [], preds: [] });
+  must(readTail(emptyTail).ok === true, `a legs=0 tail was refused: ${JSON.stringify(emptyTail)}`);
+  must(readTail(emptyTail).rows.length === 0, 'a legs=0 tail read rows that are not there');
+  const foreign = `GATE: false   (2 leg(s))   RED: G6\n${renderVerdict({ legs: [{ id: 'G6', ok: false }, { id: 'G7', ok: true }] })}`;
+  must(readTail(foreign).refusal === 'ROW_GRAMMAR_ABSENT',
+    `a foreign row grammar read as ${readTail(foreign).refusal} rather than ROW_GRAMMAR_ABSENT`);
+
+  // Every declared row refusal is reachable and named; none is a sentinel.
+  const badRowText = {
+    MALFORMED_ROW: 'LEG G1',
+    UNKNOWN_ROW_TOKEN: 'LEG G1 PASSED detail',
+    WRONG_KIND_TOKEN: 'LEG G1 LANDED detail',
+    DUPLICATE_ROW_ID: 'LEG G1 ok one\nLEG G1 RED two',
+  };
+  for (const [code, text] of Object.entries(badRowText)) {
+    const r = readRows(text);
+    must(r.ok === false, `${code} parsed instead of refusing: ${text}`);
+    must(r.refusal === code, `${code} refused as ${r.refusal}`);
+    must(r.rows === null, `${code} returned rows beside its refusal`);
+  }
+  // The two that only `readTail` can reach, since they need the verdict line to disagree with.
+  must(readTail(foreign).refusal === 'ROW_GRAMMAR_ABSENT', 'ROW_GRAMMAR_ABSENT unreachable');
+  const shortTail = `LEG G6 RED x\n${renderVerdict({ legs: [{ id: 'G6', ok: false }, { id: 'G7', ok: true }] })}`;
+  must(readTail(shortTail).refusal === 'ROW_COUNT_DISAGREEMENT',
+    `a 1-row/2-leg tail read as ${readTail(shortTail).refusal}`);
+  const reachedRow = [...Object.keys(badRowText), 'ROW_GRAMMAR_ABSENT', 'ROW_COUNT_DISAGREEMENT'];
+  must(reachedRow.length === ROW_REFUSALS.length,
+    `selfTest reaches ${reachedRow.length} of ${ROW_REFUSALS.length} declared row refusals`);
+  for (const code of ROW_REFUSALS) must(reachedRow.includes(code), `row refusal never driven: ${code}`);
+
+  // The corpus reader reads BOTH the canonical grammar and the padded historical one, which is the
+  // thing neither hand-rolled reader could do. The padded exemplars are the shape Round 448's
+  // `legTokens` keys on, so a reader that only handles one of the two fails this case.
+  const corpus = readCorpusRows([
+    'LEG G1 ok canonical',
+    ' ok  G2  padded historical',
+    'FAIL G3  a legacy-only spelling',
+    'LANDED P1  a prediction',
+    'Running the thing that was never a row',
+  ].join('\n'));
+  must(corpus.rows.length === 4, `readCorpusRows read ${corpus.rows.length} of 4: ${JSON.stringify(corpus)}`);
+  must(corpus.rows.map((r) => r.id).join(',') === 'G1,G2,G3,P1', `corpus ids drifted: ${JSON.stringify(corpus.rows)}`);
+  must(corpus.rows.map((r) => String(r.state)).join(',') === 'true,true,false,true',
+    `corpus states drifted: ${JSON.stringify(corpus.rows.map((r) => r.state))}`);
+  must(corpus.rows.filter((r) => r.kind === 'PRED').length === 1, 'the legacy prediction row lost its kind');
+  // Eight spellings, declared, and every one of them readable — the census figure and the table
+  // cannot drift apart without this failing.
+  must(Object.keys(LEGACY_ROW_TOKENS).length === 8, 'LEGACY_ROW_TOKENS is no longer the censused 8');
+  for (const tok of Object.keys(LEGACY_ROW_TOKENS)) {
+    const got = readCorpusRows(`${tok} G9  detail`).rows;
+    must(got.length === 1 && got[0].token === tok, `declared spelling ${tok} does not read back`);
+  }
+
   // The write guard refuses a tracked target. This file is tracked once committed; before that it
   // is not, so the case is driven against a path asserted tracked rather than against this one.
   must(typeof liveSibling('/a/b/c.out') === 'string' && liveSibling('/a/b/c.out').endsWith('c.live.out'),
@@ -411,9 +802,25 @@ export function selfTest() {
   return true;
 }
 
-/** Convenience: the whole tail a round prints. Rows, then the one machine-readable line. */
+/**
+ * Convenience: the whole tail a round prints. Leg rows, prediction rows, then the one
+ * machine-readable line.
+ *
+ * The prediction rows are Theseus's Round 449 §3, and they are the reason this function was wrong
+ * rather than merely thin: it took `{legs, preds}`, passed `preds` to `renderVerdict` — so a
+ * prediction's id reached the verdict line — and then called `renderRows(legs)`. A prediction's
+ * `what` was therefore ACCEPTED by the API and silently discarded, which is the worst of the three
+ * possible behaviours. Rejecting it would have been honest; publishing it is what a caller expects;
+ * taking it and dropping it is how his `drive4` came to publish `refuted=[Q1]` with the figure it
+ * was scored on appearing nowhere in the recording.
+ */
 export function renderTail({ legs = [], preds = [] } = {}) {
-  return [...renderRows(legs), '', renderVerdict({ legs, preds })].join('\n');
+  return [
+    ...renderRows(legs),
+    ...renderPredRows(preds),
+    '',
+    renderVerdict({ legs, preds }),
+  ].join('\n');
 }
 
 export const _internals = { REPO_ROOT, FIELDS, existsSign: existsSync };
