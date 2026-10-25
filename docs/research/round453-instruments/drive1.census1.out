@@ -1,0 +1,102 @@
+rev abb7bc8b
+instruments tracked at rev: 166
+at-risk (reach a shared module across a round boundary): 54
+
+SHARED-DEPENDENCY SURFACE
+  scripts-lib       importers=33  rounds=25  span=370..449
+  research-lib      importers=18  rounds=6  span=446..452
+  other-round-dir   importers= 7  rounds=7  span=396..433
+
+DRIVE: 52 drivable · 2 deferred with a named hazard (spawn/listen — a leaked server is not reapable inside a fire)
+
+--- per instrument ---
+370  alive     -                -                               characterisation-sweep-lib.mjs
+378  alive     -                -                               census-named-source-bindings.mjs
+378  alive     -                -                               grade-b3-known-positive.mjs
+396  alive     -                -                               the-key-counterfactuals.mjs
+399  alive     -                -                               census-the-named-binding-form.mjs
+400  alive     -                -                               regrade-the-file-scoped-guard.mjs
+401  alive     -                -                               census-the-branch-polarity-axis.mjs
+402  alive     -                -                               key-from-round400.mjs
+406  DEAD(1)   -                -                               hand-read-the-inline-seven.mjs
+407  alive     -                -                        DIRTY  census-the-fixture-as-string-class.mjs
+408  alive     -                -                        DIRTY  stratify-the-live-interval.mjs
+409  alive     -                -                               census-the-hand-typed-known-positive.mjs
+410  alive     -                -                               census-the-wrapped-call-and-the-body-granularity.mjs
+411  alive     -                -                               cure-the-wrapped-call-and-the-body-key.mjs
+411  alive     -                -                               list-the-declarations-under-the-409-key.mjs
+412  DEAD(1)   -                -                               resolve-the-ternary-and-reconstruct-the-nine.mjs
+413  alive     -                -                               attack-g7-and-grade-the-branch-layer.mjs
+414  alive     -                -                               grade-the-refusing-half-and-reconcile-the-ten.mjs
+415  alive     -                -                               census-the-index-keyed-population.mjs
+430  alive     -                -                               grade-the-convention-gate.mjs
+430  alive     -                -                               his412-prefix.sliced.mjs
+430  alive     -                -                               mutant-m1-refused-false-on-success.sliced.mjs
+430  alive     -                -                               mutant-m2-refusal-key-renamed.sliced.mjs
+430  alive     -                -                               mutant-m3-control-message-reworded.sliced.mjs
+430  alive     -                -                               refusal-convention.mjs
+431  DEAD(1)   -                -                               grade-his-convention-and-measure-the-reach.mjs
+432  alive     -                -                               grade-the-two-cures.mjs
+432  alive     -                -                               precure-refusal-convention.sliced.mjs
+433  alive     -                -                               grade-his-cure-and-census-its-reach.mjs
+434  alive     -                -                               precure-refusal-convention.sliced.mjs
+436  alive     -                -                               precure-refusal-convention.sliced.mjs
+438  alive     -                -                               precure-refusal-convention.sliced.mjs
+443  alive     -                -                               grade-the-emitter-at-its-published-line.mjs
+446  alive     -                -                               grade-my-own-oracle-predicate.mjs
+448  alive     -                -                               census-pred-occupancy.mjs
+448  alive     -                -                               grade-the-four-list-scorer.mjs
+448  TIMEOUT   -                -                               record-cripples.mjs
+449  TIMEOUT   -                -                        DIRTY  grade-the-cripples.mjs
+449  DEAD(1)   research-lib     EXTRACTOR                       postcommit-rediff.mjs
+449  alive     -                -                               probe-the-argument-shapes.mjs
+449  TIMEOUT   -                -                               record-drives.mjs
+449  DEAD(1)   research-lib     EXTRACTOR                       resolve-the-variable-write-targets.mjs
+450  alive     -                -                               drive-the-selftest.mjs
+450  alive     -                -                               grade-the-row-guards.mjs
+450  alive     -                -                               postcommit-rediff.mjs
+450  alive     -                -                               probe0-what-the-row-emitter-does-not-guard.mjs
+450  alive     -                -                               record-cripples.mjs
+451  alive     -                -                        DIRTY  settle-the-subset-question-on-real-exemplars.mjs
+452  alive     -                -                        DIRTY  census-the-legacy-id-grammar-and-the-liveness-reader.mjs
+452  alive     -                -                               census2-reconcile-his-26-and-hand-read-the-drops.mjs
+452  alive     -                -                               census3-dump-all-116-distinct-ids.mjs
+452  alive     -                -                               no-id-class-separates-and-the-liveness-reader-is-cured.mjs
+
+--- totals ---
+driven: 52
+alive (exit 0): 44
+DEAD (exit != 0): 8
+  by throw site: {"no-frames":6,"research-lib":2}
+timed out: 3
+runs that modified a tracked file: 5 ["docs/research/round407-instruments/census-the-fixture-as-string-class.mjs","docs/research/round408-instruments/stratify-the-live-interval.mjs","docs/research/round449-instruments/grade-the-cripples.mjs","docs/research/round451-instruments/settle-the-subset-question-on-real-exemplars.mjs","docs/research/round452-instruments/census-the-legacy-id-grammar-and-the-liveness-reader.mjs"]
+
+error names among the dead: [null,"EXTRACTOR"]
+
+--- dead, with first frames ---
+406 hand-read-the-inline-seven.mjs
+   err=null origin=null exit=1
+412 resolve-the-ternary-and-reconstruct-the-nine.mjs
+   err=null origin=null exit=1
+431 grade-his-convention-and-measure-the-reach.mjs
+   err=null origin=null exit=1
+448 record-cripples.mjs
+   err=null origin=null exit=-1
+449 grade-the-cripples.mjs
+   err=null origin=null exit=-1
+449 postcommit-rediff.mjs
+   err=EXTRACTOR origin=research-lib exit=1
+   @ docs/research/lib/verdict.mjs
+   @ docs/research/lib/verdict.mjs
+   @ docs/research/lib/verdict.mjs
+449 record-drives.mjs
+   err=null origin=null exit=-1
+449 resolve-the-variable-write-targets.mjs
+   err=EXTRACTOR origin=research-lib exit=1
+   @ docs/research/lib/verdict.mjs
+   @ docs/research/lib/verdict.mjs
+   @ docs/research/lib/verdict.mjs
+
+--- deferred (spawn hazard), named ---
+  396 grade-the-grade-that-reddens-on-its-own-routed-cure.mjs
+  405 census-the-pin-population.mjs

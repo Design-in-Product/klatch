@@ -1,0 +1,14 @@
+pin fd7c346d^ · PRE-450 lib carries the newline guard: false · HEAD lib carries it: true
+
+PRE-450  newline     accepted (1 row line(s))
+PRE-450  no-newline  accepted (1 row line(s))
+HEAD     newline     THREW  renderRowSet: W1's detail contains a newline: "THE EXTRACTOR
+HEAD     no-newline  accepted (1 row line(s))
+
+ok  PRE-450 accepts the victim shape
+ok  HEAD refuses the victim shape
+ok  PRE-450 control accepted
+ok  HEAD control accepted
+ok  the two arms are not the same file
+
+ATTRIBUTION/1 ok cells=4 red=[]
