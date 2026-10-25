@@ -3287,7 +3287,37 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-10-24 ~19:17 PT (STOP fire). **Status:** available.
+- **Updated:** 2026-10-25 ~07:21 PT (START fire). **Status:** available.
+- **10/25 fire (START) — no-op on product; Round 451 close read, nothing owed to this seat.** Drain
+  against own 10/24 ~19:25 PT STOP checkpoint (`38bc4927`): 7 new commits, none mine (checked `%an`
+  per commit) — Theseus's Round 451 close (the real-exemplar key settles the subset question, 38 of
+  his own 46 are an axis his key held constant; the recorded `npm test` gate; memo to Daedalus),
+  Calliope's 10/24 STOP-fire mandatory `log.html` entry, and two briefs commits bumped to 10/25.
+  `git diff --stat 38bc4927..HEAD -- packages/ scripts/` **empty** — no product or instrument code
+  touched. No mail addressed to this seat by name (`grep -rl '^\*\*To:\*\*.*Iris' docs/mail/*.md` —
+  no hits); the newest top-level memo cc's this seat only, already covered by the commit-author
+  check. All four writable cross-repo mailboxes re-checked (`find -newer` against this seat's own
+  10/24 ~07:17 log, then content-grepped for `klatch|\biris\b`): designinproduct 0 new; mediajunkie
+  0 new; dispatch 2 new/0 hits (daily DinP↔PM sync pair); piper-morgan-product 87 new/3 hits, same
+  stale `MANIFEST.md` boilerplate as every prior fire. Nothing owed across any of the five. Both
+  briefs re-checked: cross-pollination bumped to 10/25, private source, pointer-only as expected;
+  fire-depth bumped to 10/25 06:50 PDT, informational only, same one unmatched entry carried for
+  several days. Both standing blockers re-checked fresh: day count **77** (+1 from 76, re-derived
+  via `node` date arithmetic, not incremented from memory); `entityGuess` still **6 files/20**
+  matching lines (re-grepped directly, excluding `dist/` build artifacts). **Verified, not
+  trusted:** `npm run typecheck` clean ×4 workspaces; `npm test -w packages/server` — **140 files ·
+  2183 passed · 1 skipped (2184)**; `npm test -w packages/client` — **26 passed|13 skipped (39) ·
+  333 passed|13 skipped (346)** — both exact matches to the 10/24 STOP checkpoint; `sweep-probes
+  --census` — **153 probe files, 43 swept/110 deferred** unchanged; full driving sweep (`:3001`
+  clear before/after, `HEAD` unchanged at `eabdee33` before/after, tree clean throughout,
+  backgrounded and picked up via completion notification rather than polled) — **SWEEP PASSED — 43
+  of 43 swept probes green, 0 red, 0 blocked, 0 census problem(s), 110 deferred**. No `packages/`
+  changes this fire. No port bound at close, no database opened, no model called. Two consecutive
+  checks found nothing further unblocked — fire closed bounded. Nothing new needs xian beyond the
+  one standing item (ground-rules question, now at 77 days, unmoved today). **Drain:** all
+  unblocked items done (commits read with author verified, mail across all five mailboxes, both
+  briefs, both blockers, full gate); nothing deferred. Log: `docs/logs/2026-10-25-0721-iris-log.md`.
+- **Prior update:** 2026-10-24 ~19:17 PT (STOP fire). **Status:** available.
 - **10/24 fire (STOP) — no-op on product; Round 446→450 chain read, nothing owed to this seat.**
   Drain against own 07:23 START checkpoint (`7281c78e`): 24 new commits, none mine (checked `%an`
   per commit — the top commit's subject line read as a "STOP fire" entry but its author was Argus,
