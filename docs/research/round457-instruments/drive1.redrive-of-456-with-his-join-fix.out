@@ -1,0 +1,87 @@
+═══ ROUND 456 — VERDICT-DRIFT CENSUS OVER THE PUBLISHING POPULATION ═══
+rev df5a27cc58166b6f5c620bd5799ed4b863957bbb
+
+POPULATION  12 member(s) call the emitter and are not the emitter:
+   docs/research/round442-instruments/grade-the-shared-verdict-emitter.mjs
+   docs/research/round443-instruments/grade-the-emitter-at-its-published-line.mjs
+   docs/research/round444-instruments/grade-the-round-trip-cure.mjs
+   docs/research/round446-instruments/grade-my-own-oracle-predicate.mjs
+   docs/research/round448-instruments/grade-the-four-list-scorer.mjs
+   docs/research/round449-instruments/resolve-the-variable-write-targets.mjs
+   docs/research/round450-instruments/grade-the-row-guards.mjs
+   docs/research/round450-instruments/probe0-what-the-row-emitter-does-not-guard.mjs
+   docs/research/round451-instruments/settle-the-subset-question-on-real-exemplars.mjs
+   docs/research/round452-instruments/no-id-class-separates-and-the-liveness-reader-is-cured.mjs
+   docs/research/round455-instruments/attribute-each-restamp-to-the-file-it-stamps.mjs
+   docs/research/round455-instruments/dispose-of-w10-and-repair-the-lifter-it-needs.mjs
+
+EXCLUDED  1 member(s), keyed on a 'checkout' call in the member's own source:
+   docs/research/round455-instruments/attribute-each-restamp-to-the-file-it-stamps.mjs
+
+DRIVE   16076 ms  IDENTICAL           round442-instruments/grade-the-shared-verdict-emitter.mjs
+                            exit 1; reproduces 1 of 3 baseline(s): drive2.out
+DRIVE    5195 ms  IDENTICAL           round443-instruments/grade-the-emitter-at-its-published-line.mjs
+                            reproduces 2 of 8 baseline(s): his-instrument.postcommit.out+reproduce-his-round442.out
+DRIVE   12649 ms  DRIFTED             round444-instruments/grade-the-round-trip-cure.mjs
+                            exit 1; reproduces 0 of 7 baseline(s), 4 distinct comparison(s): drive1.out=[rows-equal fields:token,red,refused,prefused] drive2.out=[rows-equal fields:token,red,prefused] drive3.refuted-on-a-head-sourced-baseline.out=[rows-equal fields:token,red,refuted,prefused] drive4.baseline-reader-crossed-a-newline.out=[rows-equal fields:token,red,refuted,prefused] drive5.final.out=[rows-equal fields:token,red,prefused] his-round442-instrument.postcommit.out=[rows-equal fields:token,legs,red] his-round442-instrument.recured.out=[rows-equal fields:token,legs,red]
+DRIVE    5580 ms  DRIFTED             round446-instruments/grade-my-own-oracle-predicate.mjs
+                            reproduces 0 of 9 baseline(s), 5 distinct comparison(s): drive1.r444-unmodified-at-his-repaired-rev.out=[rows-equal fields:token,legs,red,preds,refuted] drive2.child-stderr-leaked-into-the-recording.out=[rows-equal fields:legs,prefused] drive3.final.out=[rows-equal fields:legs,prefused] drive4.h5-refuses-before-the-cure.out=[rows-equal fields:token,refused,prefused] drive5.h5-conjunct-re-keyed.out=[rows-equal fields:token,refused,prefused] drive6.out=[rows-equal fields:prefused] drive7.r444-cured-and-re-driven.out=[rows-equal fields:legs,preds,prefused] drive8.postcommit.out=[rows-equal fields:prefused] drive9.r444-postcommit.out=[rows-equal fields:legs,preds,prefused]
+DRIVE   22277 ms  IDENTICAL           round448-instruments/grade-the-four-list-scorer.mjs
+                            reproduces 4 of 13 baseline(s): drive11.final.out+drive13.postcommit.out+drive16.postcommit-hygiene-widened.out+drive5.pin-keyed-on-the-repair-marker.out
+DRIVE   25115 ms  DRIFTED             round449-instruments/resolve-the-variable-write-targets.mjs
+                            moved: LEG W10 true→null; PRED Q1 ABSENT→false; PRED Q2 ABSENT→true
+                            reproduces 0 of 12 baseline(s), 5 distinct comparison(s): drive10.novar-crippled.out=[LEG W1 false→true;LEG W10 true→null;LEG W4 false→true;PRED Q1 ABSENT→false;PRED Q2 ABSENT→true fields:token,red,refused] drive11.tokenonly-crippled.out=[LEG W10 true→null;PRED Q1 ABSENT→false;PRED Q2 ABSENT→true fields:token,refused] drive12.inert-name.out=[LEG W10 true→null;LEG W9 false→true;PRED Q1 ABSENT→false;PRED Q2 ABSENT→true fields:token,red,refused] drive15.final-clean.out=[LEG W10 true→null;PRED Q1 ABSENT→false;PRED Q2 ABSENT→true fields:token,refused] drive16.final-clean-again.out=[LEG W10 true→null;PRED Q1 ABSENT→false;PRED Q2 ABSENT→true fields:token,refused] drive17.final-fallthrough-crippled.out=[LEG W10 true→null;LEG W2 false→true;LEG W6 false→true;PRED Q1 ABSENT→false;PRED Q2 ABSENT→true fields:token,red,refused,refuted] drive18.final-novar-crippled.out=[LEG W1 false→true;LEG W10 true→null;LEG W4 false→true;PRED Q1 ABSENT→false;PRED Q2 ABSENT→true fields:token,red,refused] drive19.final-tokenonly-crippled.out=[LEG W10 true→null;LEG W5 false→true;PRED Q1 ABSENT→false;PRED Q2 ABSENT→true fields:token,red,refused] drive20.final-inert-name.out=[LEG W10 true→null;LEG W9 false→true;PRED Q1 ABSENT→false;PRED Q2 ABSENT→true fields:token,red,refused] drive21.pre-commit.out=[LEG W10 true→null;PRED Q1 ABSENT→false;PRED Q2 ABSENT→true fields:token,refused] drive7.clean.out=[LEG W10 true→null;PRED Q1 ABSENT→false;PRED Q2 ABSENT→true fields:token,refused] drive8.clean-again.out=[LEG W10 true→null;PRED Q1 ABSENT→false;PRED Q2 ABSENT→true fields:token,refused]
+DRIVE     244 ms  DRIFTED             round450-instruments/grade-the-row-guards.mjs
+                            moved: LEG W6 true→false; PRED Q1 true→false
+                            reproduces 0 of 5 baseline(s), 2 distinct comparison(s): drive10.postcommit-final.out=[LEG W6 true→false;PRED Q1 true→false fields:token,red,refuted] drive2.first-full-drive.out=[LEG W5 false→true;LEG W6 true→false;PRED Q1 true→false fields:red,refuted] drive3.w5-rekeyed-q1-deflated.out=[LEG W6 true→false;PRED Q1 true→false fields:token,red,refuted] drive4.w6-exemplar-in-the-padded-shape.out=[LEG W6 true→false;PRED Q1 true→false fields:token,red,refuted] drive7.pre-commit-final.out=[LEG W6 true→false;PRED Q1 true→false fields:token,red,refuted]
+DRIVE      40 ms  NO_BASELINE         round450-instruments/probe0-what-the-row-emitter-does-not-guard.mjs
+                            10 sibling .out, 0 with this LEG id set (1 leg ids)
+DRIVE   11796 ms  DRIFTED             round451-instruments/settle-the-subset-question-on-real-exemplars.mjs
+                            moved: LEG T2 true→false; LEG T3 true→false; LEG T4 true→false; LEG T8 true→false; PRED P1 true→false
+                            reproduces 0 of 2 baseline(s), 1 distinct comparison(s): drive2.real-exemplar-key-t9-decomposed.out=[LEG T2 true→false;LEG T3 true→false;LEG T4 true→false;LEG T8 true→false;PRED P1 true→false fields:token,red,refuted] drive3.postcommit-self-exclusion-live.out=[LEG T2 true→false;LEG T3 true→false;LEG T4 true→false;LEG T8 true→false;PRED P1 true→false fields:token,red,refuted]
+DRIVE   17443 ms  IDENTICAL           round452-instruments/no-id-class-separates-and-the-liveness-reader-is-cured.mjs
+                            reproduces 3 of 3 baseline(s): drive11.graded-after-448-rerecord.out+drive12.postcommit.out+drive8.graded-final.out
+DRIVE     171 ms  IDENTICAL           round455-instruments/dispose-of-w10-and-repair-the-lifter-it-needs.mjs
+                            reproduces 1 of 1 baseline(s): drive2.w10-disposition.out
+
+BUCKETS  {"IDENTICAL":5,"DRIFTED":5,"NO_BASELINE":1,"TIMEOUT":0,"NO_VERDICT":0}  sum=11  subjects=11
+FIGURE  drifted 5 of 10 MEASURED member(s) (population 12, subjects 11, unmeasured 1)
+
+UNMEASURED  1:
+   NO_BASELINE         round450-instruments/probe0-what-the-row-emitter-does-not-guard.mjs — 10 sibling .out, 0 with this LEG id set (1 leg ids)
+
+DRIFTED, per member:
+   round444-instruments/grade-the-round-trip-cure.mjs
+      common: NONE — the drift is per-baseline or field-only
+      exit 1; reproduces 0 of 7 baseline(s), 4 distinct comparison(s): drive1.out=[rows-equal fields:token,red,refused,prefused] drive2.out=[rows-equal fields:token,red,prefused] drive3.refuted-on-a-head-sourced-baseline.out=[rows-equal fields:token,red,refuted,prefused] drive4.baseline-reader-crossed-a-newline.out=[rows-equal fields:token,red,refuted,prefused] drive5.final.out=[rows-equal fields:token,red,prefused] his-round442-instrument.postcommit.out=[rows-equal fields:token,legs,red] his-round442-instrument.recured.out=[rows-equal fields:token,legs,red]
+   round446-instruments/grade-my-own-oracle-predicate.mjs
+      common: NONE — the drift is per-baseline or field-only
+      reproduces 0 of 9 baseline(s), 5 distinct comparison(s): drive1.r444-unmodified-at-his-repaired-rev.out=[rows-equal fields:token,legs,red,preds,refuted] drive2.child-stderr-leaked-into-the-recording.out=[rows-equal fields:legs,prefused] drive3.final.out=[rows-equal fields:legs,prefused] drive4.h5-refuses-before-the-cure.out=[rows-equal fields:token,refused,prefused] drive5.h5-conjunct-re-keyed.out=[rows-equal fields:token,refused,prefused] drive6.out=[rows-equal fields:prefused] drive7.r444-cured-and-re-driven.out=[rows-equal fields:legs,preds,prefused] drive8.postcommit.out=[rows-equal fields:prefused] drive9.r444-postcommit.out=[rows-equal fields:legs,preds,prefused]
+   round449-instruments/resolve-the-variable-write-targets.mjs
+      common: LEG W10 true→null
+      common: PRED Q1 ABSENT→false
+      common: PRED Q2 ABSENT→true
+      reproduces 0 of 12 baseline(s), 5 distinct comparison(s): drive10.novar-crippled.out=[LEG W1 false→true;LEG W10 true→null;LEG W4 false→true;PRED Q1 ABSENT→false;PRED Q2 ABSENT→true fields:token,red,refused] drive11.tokenonly-crippled.out=[LEG W10 true→null;PRED Q1 ABSENT→false;PRED Q2 ABSENT→true fields:token,refused] drive12.inert-name.out=[LEG W10 true→null;LEG W9 false→true;PRED Q1 ABSENT→false;PRED Q2 ABSENT→true fields:token,red,refused] drive15.final-clean.out=[LEG W10 true→null;PRED Q1 ABSENT→false;PRED Q2 ABSENT→true fields:token,refused] drive16.final-clean-again.out=[LEG W10 true→null;PRED Q1 ABSENT→false;PRED Q2 ABSENT→true fields:token,refused] drive17.final-fallthrough-crippled.out=[LEG W10 true→null;LEG W2 false→true;LEG W6 false→true;PRED Q1 ABSENT→false;PRED Q2 ABSENT→true fields:token,red,refused,refuted] drive18.final-novar-crippled.out=[LEG W1 false→true;LEG W10 true→null;LEG W4 false→true;PRED Q1 ABSENT→false;PRED Q2 ABSENT→true fields:token,red,refused] drive19.final-tokenonly-crippled.out=[LEG W10 true→null;LEG W5 false→true;PRED Q1 ABSENT→false;PRED Q2 ABSENT→true fields:token,red,refused] drive20.final-inert-name.out=[LEG W10 true→null;LEG W9 false→true;PRED Q1 ABSENT→false;PRED Q2 ABSENT→true fields:token,red,refused] drive21.pre-commit.out=[LEG W10 true→null;PRED Q1 ABSENT→false;PRED Q2 ABSENT→true fields:token,refused] drive7.clean.out=[LEG W10 true→null;PRED Q1 ABSENT→false;PRED Q2 ABSENT→true fields:token,refused] drive8.clean-again.out=[LEG W10 true→null;PRED Q1 ABSENT→false;PRED Q2 ABSENT→true fields:token,refused]
+   round450-instruments/grade-the-row-guards.mjs
+      common: LEG W6 true→false
+      common: PRED Q1 true→false
+      reproduces 0 of 5 baseline(s), 2 distinct comparison(s): drive10.postcommit-final.out=[LEG W6 true→false;PRED Q1 true→false fields:token,red,refuted] drive2.first-full-drive.out=[LEG W5 false→true;LEG W6 true→false;PRED Q1 true→false fields:red,refuted] drive3.w5-rekeyed-q1-deflated.out=[LEG W6 true→false;PRED Q1 true→false fields:token,red,refuted] drive4.w6-exemplar-in-the-padded-shape.out=[LEG W6 true→false;PRED Q1 true→false fields:token,red,refuted] drive7.pre-commit-final.out=[LEG W6 true→false;PRED Q1 true→false fields:token,red,refuted]
+   round451-instruments/settle-the-subset-question-on-real-exemplars.mjs
+      common: LEG T2 true→false
+      common: LEG T3 true→false
+      common: LEG T4 true→false
+      common: LEG T8 true→false
+      common: PRED P1 true→false
+      reproduces 0 of 2 baseline(s), 1 distinct comparison(s): drive2.real-exemplar-key-t9-decomposed.out=[LEG T2 true→false;LEG T3 true→false;LEG T4 true→false;LEG T8 true→false;PRED P1 true→false fields:token,red,refuted] drive3.postcommit-self-exclusion-live.out=[LEG T2 true→false;LEG T3 true→false;LEG T4 true→false;LEG T8 true→false;PRED P1 true→false fields:token,red,refuted]
+
+LEG D0 ok declared exclusion: 1 member(s) run 'checkout' (expect 1: docs/research/round455-instruments/attribute-each-restamp-to-the-file-it-stamps.mjs); subjects 11 = population 12 - excluded 1
+LEG D1 ok population 12 selected with ls-tree at df5a27cc58166b6f5c620bd5799ed4b863957bbb
+LEG D2 ok comparator control: docs/research/round449-instruments/drive10.novar-crippled.out vs itself → IDENTICAL
+LEG D4 ok bucket sizes {"IDENTICAL":5,"DRIFTED":5,"NO_BASELINE":1,"TIMEOUT":0,"NO_VERDICT":0} sum to 11; subjects 11; detail rows 11
+LEG D5 ok tracked paths dirtied outside docs/research/: 0
+LEG D3 ok KP round449-instruments/resolve-the-variable-write-targets.mjs: bucket DRIFTED, moved [LEG W10 true→null; PRED Q1 ABSENT→false; PRED Q2 ABSENT→true] — expect DRIFTED carrying 'W10 true→null'
+LEG D6 ok drifted 5 / measured 10 — denominator is the measured subset, not the population (12) and not the subjects (11)
+LEG D7 ok 1 unmeasured, each named with a reason; subjects 11 - measured 10 = 1
+PRED P1 LANDED drifted members beyond the W10 KP: 4 — round444-instruments/grade-the-round-trip-cure.mjs, round446-instruments/grade-my-own-oracle-predicate.mjs, round450-instruments/grade-the-row-guards.mjs, round451-instruments/settle-the-subset-question-on-real-exemplars.mjs
+
+VERDICT/1 ok legs=8 red=[] refused=[] preds=1 refuted=[] prefused=[]
