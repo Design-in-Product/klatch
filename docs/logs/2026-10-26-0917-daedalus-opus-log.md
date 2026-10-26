@@ -169,3 +169,144 @@ per Step 3.
   round432).
 - **Needs xian — unchanged at 1:** the drift census over the full 52 (cost, plus a decision neither
   of us will take unilaterally).
+
+---
+
+# 10/26 WORK fire — 13:17–13:5x PT — Round 460, the `readTail` PRED gate
+
+## 13:17 — session start
+
+Pulled (wrapper synced the worktree). `git log -8 --format='%h | %an | %ad | %s'` — author-checked
+rather than read off `--oneline`: the three commits since my own START fire are Theseus's Round 459
+(`dc59866c`, `8e551e8e`, `d78aae80`) and Calliope's MID-fire no-op (`172b547f`). None mine.
+
+`COORDINATION.md` read. `docs/mail/` read — two items addressed to me:
+
+1. Theseus's Round 459 reply (`theseus-to-daedalus-…-both-routed-sites-are-not-defects-…-2026-10-26.md`).
+   Its §6 names my unit: the `readTail` PRED gate "as specified." That is this fire.
+2. Argus's intel memo. Handled this morning in `9c22ee17`; no open action; replied and closed.
+
+## 13:20 — what the unit actually was, read rather than recalled
+
+Theseus's §5.1 routed the gate with one hazard (`postcommit-rediff.mjs`). My Round 458 §5 found the
+second: round450 `W5` conjoins `ROW_REFUSALS.length === 6`, so a seventh code reddens it on its own
+promotion. His §6 agreed the landing is one commit: gate + driving case + literal replaced by a
+derived length.
+
+Read before writing anything: `lib/verdict.mjs`'s `readTail` and `ROW_REFUSALS`, round450's `W4`/`W5`,
+round457's `C5`/`C6` and its drive2 recording, every `readTail` caller. Three things that reading
+established and recall would not have:
+
+- **round457's `C5` is a tripwire aimed at exactly this cure**, and its REV is `git rev-parse HEAD`,
+  live — so it reddens on a correct tree the moment the cure commits. The re-key has to be in the
+  curing commit.
+- **The class is live, not latent.** His `Q2`: 13 committed recordings, all in `round449-instruments/`.
+- **The named hazard's file is complete**: `round450-instruments/drive7.pre-commit-final.out` prints
+  2 PRED rows against `preds=2`. Checked before pre-registering a gate leg on it.
+
+## 13:25 — the cell, driven BEFORE the cure
+
+`docs/research/round460-instruments/grade-the-pred-gate-landing.mjs` — 7 gate legs, 2 predictions.
+Pre-cure arm = the lib **imported from `PRE_REV`, a 40-character literal**, not from `HEAD`: sourcing
+it from `HEAD` would make the A/B collapse to "no effect" the moment the cure commits.
+
+```
+drive1.precure   VERDICT/1 RED legs=7 red=[G2,G7] refused=[] preds=2 refuted=[] prefused=[P1,P2]
+                 MOVED 0 · OTHER TRANSITIONS 0
+```
+
+`G2` (the seam) and `G7` (the KP) red, `P1`/`P2` unscored. The instrument can tell the two worlds
+apart before the cure exists, and the predictions are not scored off a measurement that did not
+happen.
+
+## 13:30 — the cure, three files
+
+`lib/verdict.mjs`: `PRED_ROW_COUNT_DISAGREEMENT` declared; `readTail` gates the `PRED` row count
+after both LEG gates, verdict returned beside the refusal. Three design choices argued at the gate.
+`selfTest` drives the new code by name **with a control** — the same tail carrying its `PRED` row
+must still read clean, or the case would pass on a reader that refused every tail with a `preds=N`.
+
+`round450`: `W4` gains the PRED arm and its own control; `W5` gains the driving input and the literal
+becomes `ROW_REFUSALS.length === Object.keys(inputs).length`.
+
+`round457`: `C5` re-keyed as a 2 × 2 across the seam; the seam declared in the docblock; three output
+strings that claimed the gap as live behaviour now name the rev they were true at.
+
+```
+drive2.postcure      ok legs=7 red=[] refused=[] preds=2 refuted=[] prefused=[]
+                     MOVED 13 (all under round449-instruments/) · OTHER TRANSITIONS 0
+                     P1 LANDED  MOVED ∩ (439 at df5a27cc) = 13 · my 448 also gives 13, 0 postdating
+                     P2 LANDED  outside round449: 0
+drive3.r450-regrade  REFUSED legs=9 refused=[W6] refuted=[Q1] — W4/W5 ok, W6/Q1 pre-existing
+drive4.r457-precommit RED red=[C5] — see below
+npm test             26 files / 333 tests passed, 13 skipped · census OK
+```
+
+`drive4` is round457 re-driven **pre-commit** and `C5` is RED there for a declared reason: that cell
+reads the lib at `git rev-parse HEAD` and the cure was still in the worktree. Kept in the directory
+as the evidence that `C5` reads committed bytes and not mine.
+
+## 13:40 — commit, then re-drive, then diff
+
+`ef487c70` (the landing). Post-commit:
+
+```
+drive5.r457-postcommit  ok legs=6 red=[] — C5 ok on BOTH cells of the seam
+                        C6's slice 1659 → 4084 bytes
+                        Q1 44 · Q2 13 · buckets UNCHANGED — the prediction the re-key carried
+drive6.r460-postcommit  ok legs=7 red=[] — population 448 → 452 (the four .out this commit added),
+                        every other figure byte-identical. MOVED 13, OTHER TRANSITIONS 0.
+```
+
+`ed305551` (the re-drives + README). The post-commit re-drive moved only its declared movers.
+
+## Two of my own, both from this fire
+
+**(a) A lib docblock sentence that was false when I wrote it.** I pinned the `readTail` tie paragraph
+with "which round450's `W4` drives by name in both vocabularies" — and `W4` drove only the LEG half.
+The 430 shape, in the same keystroke-batch as its own subject. I made the sentence true rather than
+softening it. Caught by re-reading my own prose, which is not a mechanism; the next one I will not
+catch that way.
+
+**(b) `drive1` and `drive2` differ in two ways, not one.** `drive1`'s `P1` scored his 13 against
+**my** 448-recording population — two populations as one number. Fixed before the post-cure drive, so
+`drive1` carries the pre-fix key. The gate legs `G1`–`G7` are byte-identical code in both arms so
+that A/B is clean, and `P1` was OPEN in both so nothing was scored off the bad key — but a reader
+diffing the two drives has to be told which difference is the cure. `drive1` kept, not replaced: the
+superseded key is the evidence.
+
+## Session Wrap Protocol
+
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git log origin/main --oneline -6
+a8e3d312 mail: Round 460 reply to Theseus — the gate landed, and I re-keyed C5 in his cell
+bde0079c mail: reply to Argus on the three intel items, thread closed
+ed305551 round460: post-commit re-drives — C5 green on both cells of the seam, and the README
+ef487c70 round460: the readTail PRED gate lands, 13 recordings move, nothing else does
+172b547f coord+log: 10/26 MID fire — no-op, gate byte-identical, needs-you unchanged at 2
+d78aae80 coord+log+drive: 10/26 START fire — Round 459, post-commit re-drive moved only its 3 declared movers
+```
+
+**Step 2 — each deliverable, `ls`-confirmed:** `docs/research/round460-instruments/` holds `README.md`,
+`grade-the-pred-gate-landing.mjs`, and `drive1`–`drive6` (`.out` + `.err` each, 12 files);
+`docs/mail/daedalus-to-theseus-…-i-re-keyed-a-leg-in-your-cell-2026-10-26.md` and
+`docs/mail/read/daedalus-to-argus-…-tracked-at-1-3-0-2026-10-26.md` both present. The three cured
+sources are in `ef487c70`.
+
+**Step 3 —** this log and the `COORDINATION.md` entries are the one commit still local at the time of
+writing; pushed next, per Step 3.
+
+## Declared limits and what I did not do
+
+- **I edited a leg in Theseus's cell.** `C5`'s own docblock asked for it, and the alternative was
+  leaving a red on a correct tree in the drift census until his next fire. Flagged to him explicitly
+  as the thing to object to. His call, and I will revert the shape if he wants it flipped instead.
+- **`round456` `D2`/`D3` not reached** — released by him this round with no blocker. Named as first
+  next fire, with fire budget as the reason and not as a deferral.
+- **My 13 is not a count of bad records.** Every one is a fossil of an emitter cured in Round 450.
+  Nothing here re-renders them; the claim is only that a reader can now name what is missing.
+- **The SDK major bump deferred on a named blocker**: `0.122 → 1.3.0` changes the running server's
+  dependency surface and wants its own unit with the streaming path driven.
+- **Needs xian — unchanged at 1:** the drift census over the full 52.
