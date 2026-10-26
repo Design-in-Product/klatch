@@ -159,6 +159,88 @@ export function topToken(red, refused) {
 }
 
 /**
+ * Three-state conjunction for a leg's value — **Kleene strong AND**, and the fix for Round 456 §3.
+ *
+ * The defect it exists to remove: the three-state discipline (`LEG_TOKENS`) was applied at the LEG
+ * and never at the CONJUNCT. Five of Round 450/451's legs computed a refusal and then conjoined it
+ * away, because the idiom for "did my slice compile" is `re !== null && …` — and `!==` turns the
+ * refusal into `false`, which `leg()` then publishes as **RED**. A RED says *"I measured this and
+ * it is bad"*. The honest answer when a slice will not compile is **REF**: *"I could not reach this
+ * figure."* The information is destroyed at the comparison, so no amount of care downstream in
+ * `leg()` or `renderVerdict` can recover it — it has to be fixed where the value is read.
+ *
+ *   `allOf(false, null)` is **false**, not null.
+ *
+ * That is the one choice in here worth arguing with, because it is NOT the literal reading of
+ * Theseus's Round 457 §5 phrasing ("make a refused conjunct refuse its leg"). Refusal-dominant
+ * would return `null`. Kleene is chosen because the two directions fail differently and only one of
+ * them fails quietly:
+ *
+ *   - Kleene errs toward **reporting**: a leg with one genuinely-false conjunct stays RED even
+ *     though another conjunct could not be measured. The defect keeps getting published.
+ *   - Refusal-dominant errs toward **silence**: a real, measured, independent failure is downgraded
+ *     to REF and stops being reported, because something unrelated to it would not compile.
+ *
+ * For an instrument whose whole job is to not lose findings, losing a RED is the worse error. The
+ * cost of this choice is that a RED from `allOf` must still NAME the refusal in its detail string —
+ * `allOf` returns a token, it cannot write the detail, and a RED whose detail is silent about an
+ * unmeasured conjunct is the 409 shape (a guard that fires beside a figure that still prints).
+ *
+ * **The limit, and it is the sharp one.** Kleene is sound only when the conjuncts are INDEPENDENT
+ * measurements. It is wrong when a conjunct is *derived from* the refused value — then its `false`
+ * is not a measurement at all, it is the refusal wearing a boolean's clothes. Round 451's `T4` is
+ * exactly this: the slices refused, so the 2×2 was never populated, so `cell.only446.length > 0`
+ * read `false`, and Kleene would publish RED on the strength of a cell that was empty because
+ * nothing was ever put in it. `T8` is the same shape one step further out — a refusal excluded its
+ * members from a population, deflating a count to 0, and the leg printed `0 committed recordings…`
+ * as a substantive finding.
+ *
+ * `allOf` CANNOT detect that; the dependency is not visible in the values. Use `measured()` below to
+ * carry the refusal through the derivation so that what reaches `allOf` is `null` and not `false`.
+ * Which conjuncts are derived is per-site hand work, and this comment is not a substitute for it.
+ *
+ * Total, like `renderVerdict`: a value outside `{true, false, null}` throws rather than being
+ * coerced, because coercion is the bug. `allOf()` with no arguments is `true` (the empty
+ * conjunction), which is correct and is also a vacuity hazard — a leg built by spreading a list
+ * that turns out to be empty publishes `ok` having checked nothing (437).
+ */
+export function allOf(...values) {
+  for (const v of values) {
+    if (v !== true && v !== false && v !== null) {
+      throw new Error(`allOf() got a value outside {true,false,null}: ${JSON.stringify(v)}`);
+    }
+  }
+  if (values.includes(false)) return false;
+  if (values.includes(null)) return null;
+  return true;
+}
+
+/**
+ * Carry a refusal THROUGH a derivation instead of laundering it into a boolean — the companion to
+ * `allOf` and the half that fixes `T4`/`T8`.
+ *
+ * `measured(x, f)` is `null` when `x` is `null` (the refusal propagates, unmeasured stays
+ * unmeasured), and `f(x)` otherwise. It replaces the idiom that caused the bug:
+ *
+ *   `re !== null && re.test(line)`        ← a refused slice reads as "does not match"
+ *   `measured(re, (r) => r.test(line))`   ← a refused slice reads as "not measured"
+ *
+ * `f` must return a strict boolean or `null`. Anything else throws: returning a count, a length or
+ * an array from here is how `0` and `[]` become `false` and the refusal disappears again. The
+ * sentinel is `null` and only `null` — `undefined`, `NaN` and `''` are NOT refusals and are passed
+ * to `f`, because guessing which falsy value someone meant as a refusal is 425 (a refusal value is
+ * not always the sentinel; publish the refusal rather than guess).
+ */
+export function measured(value, f) {
+  if (value === null) return null;
+  const r = f(value);
+  if (r !== true && r !== false && r !== null) {
+    throw new Error(`measured() predicate returned a non-tri-state value: ${JSON.stringify(r)}`);
+  }
+  return r;
+}
+
+/**
  * `legs` is `[{ id, ok }]` with `ok` in `{true, false, null}`; `preds` is `[{ id, landed }]` with
  * `landed` in the same three. Total function: any leg whose `ok` is not one of the three throws
  * here rather than landing in a bucket.
@@ -874,6 +956,81 @@ export function selfTest() {
   must(typeof liveSibling('/a/b/c.out') === 'string' && liveSibling('/a/b/c.out').endsWith('c.live.out'),
     'liveSibling spelling drifted');
   must(liveSibling('/a/b/noext') .endsWith('noext.live'), 'liveSibling on an extensionless path drifted');
+
+  // ── allOf / measured (Round 458, curing Round 456 §3) ─────────────────────────────────────────
+  // The full 3×3 of `allOf`, written out as a table rather than as spot checks, because the whole
+  // defect being cured was one cell of this table being wrong in live code. Every pair is asserted,
+  // so a re-implementation cannot pass by getting the diagonal right.
+  const A = [true, false, null];
+  const EXPECT_ALL_OF = {
+    'true,true': true, 'true,false': false, 'true,null': null,
+    'false,true': false, 'false,false': false, 'false,null': false,
+    'null,true': null, 'null,false': false, 'null,null': null,
+  };
+  for (const x of A) {
+    for (const y of A) {
+      const key = `${x},${y}`;
+      const got = allOf(x, y);
+      must(got === EXPECT_ALL_OF[key],
+        `allOf(${x},${y}) = ${got}, expected ${EXPECT_ALL_OF[key]}`);
+    }
+  }
+  // The two cells that ARE the finding, named individually so a failure says which rule broke
+  // rather than just "a cell moved". These are the ones a refusal-dominant rewrite would flip.
+  must(allOf(false, null) === false, 'allOf: a measured failure must survive an unmeasured conjunct');
+  must(allOf(true, null) === null, 'allOf: an unmeasured conjunct must not be earned into ok');
+  must(allOf(true, true, true) === true, 'allOf: all-measured-true must still be ok');
+  // Associativity across arities — `allOf(a,b,c)` must equal the nested pairs, or a caller
+  // splitting a long conjunction across two calls gets a different answer than one call.
+  for (const x of A) {
+    for (const y of A) {
+      for (const z of A) {
+        must(allOf(x, y, z) === allOf(allOf(x, y), z),
+          `allOf is not associative at (${x},${y},${z})`);
+      }
+    }
+  }
+  // Totality: coercion is the bug, so a non-tri-state throws rather than being bucketed. `0` and
+  // `''` are the two that the old `&&` idiom would have silently accepted as false.
+  for (const bad of [0, 1, '', 'ok', undefined, NaN, [], {}]) {
+    let threwAllOf = false;
+    try { allOf(true, bad); } catch { threwAllOf = true; }
+    must(threwAllOf, `allOf accepted a non-tri-state value: ${JSON.stringify(bad)}`);
+  }
+  // The empty conjunction is `true` and that is a documented vacuity hazard, not an accident.
+  must(allOf() === true, 'the empty conjunction changed value');
+
+  // `measured` propagates the refusal and does NOT treat other falsy values as refusals (425).
+  must(measured(null, () => true) === null, 'measured: a null value must stay unmeasured');
+  must(measured(null, () => { throw new Error('predicate must not run on a refusal'); }) === null,
+    'measured: the predicate ran on a refused value');
+  must(measured(5, (n) => n > 1) === true, 'measured: a real value must reach the predicate');
+  must(measured(5, (n) => n > 9) === false, 'measured: a real false must stay false');
+  must(measured(0, (n) => n === 0) === true, 'measured: 0 is a value, not a refusal');
+  must(measured('', (s) => s === '') === true, 'measured: the empty string is a value, not a refusal');
+  must(measured(undefined, (u) => u === undefined) === true, 'measured: undefined is not the sentinel');
+  // A predicate that returns a count or an array is the exact route by which a refusal became a
+  // boolean in the first place, so it throws instead of being coerced.
+  for (const badReturn of [0, 1, '', 'ok', undefined, NaN, [], {}]) {
+    let threwMeasured = false;
+    try { measured(1, () => badReturn); } catch { threwMeasured = true; }
+    must(threwMeasured, `measured accepted a non-tri-state return: ${JSON.stringify(badReturn)}`);
+  }
+  // The composition that is the actual cure, driven end to end: a refused slice must reach
+  // `renderVerdict` as REF and must NOT appear in the red list.
+  const refusedSlice = null;
+  const curedLeg = allOf(measured(refusedSlice, (r) => r.test('x')), true);
+  must(curedLeg === null, 'the cured idiom did not produce a refusal');
+  const curedLine = renderVerdict({ legs: [{ id: 'G1', ok: curedLeg }] });
+  must(curedLine.includes('refused=[G1]') && curedLine.includes('red=[]'),
+    `the cured idiom did not publish as REFUSED: ${curedLine}`);
+  // And the control: the OLD idiom on the same refused slice publishes RED. This is what makes the
+  // assertion above a measurement of the cure rather than a restatement of it (424 — a known
+  // positive needs a control).
+  const oldIdiomLeg = refusedSlice !== null && true;
+  const oldLine = renderVerdict({ legs: [{ id: 'G1', ok: oldIdiomLeg }] });
+  must(oldLine.includes('red=[G1]'),
+    `the old idiom stopped publishing RED, so this control no longer separates: ${oldLine}`);
 
   return true;
 }

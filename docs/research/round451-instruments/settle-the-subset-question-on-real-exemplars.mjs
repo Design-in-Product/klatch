@@ -33,10 +33,21 @@ import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { renderTail, readCorpusRows, LEGACY_ROW_TOKENS } from '../lib/verdict.mjs';
+import {
+  renderTail, readCorpusRows, LEGACY_ROW_TOKENS, allOf, measured,
+} from '../lib/verdict.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
-const git = (args) => execFileSync('git', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+// `-C REPO`, added in Round 458. This was bare `execFileSync('git', args)`, which inherits
+// `process.cwd()` — and `git ls-tree -r --name-only <rev>` is CWD-SENSITIVE: run from a
+// subdirectory it lists only the paths under that subdirectory. Driven rather than reasoned:
+// the same rev gives 400 `.out` files from the repo root and **0** from
+// `docs/research/round458-instruments`. So this instrument silently measured an EMPTY population
+// whenever it was driven from anywhere but the root, which reddened `T1` and `T7` and reddened
+// T2/T3/T4/T8 for a cause that had nothing to do with what they grade. A population must not be a
+// function of the caller's working directory.
+const REPO = join(HERE, '..', '..', '..');
+const git = (args) => execFileSync('git', ['-C', REPO, ...args], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
 
 /**
  * The population rev is a LITERAL, not `HEAD` and not `HEAD~1`. Round 450 §7.2 is the reason: a
@@ -137,14 +148,23 @@ const sliced = {};
   // control chosen only by "ROWISH refuses it" could still be read by a subject.
   const prose = POP.filter((l) => l.length > 80 && !ROWISH.test(l)
     && !TOKENS.includes(l.trim().split(' ')[0]))[0] ?? '';
-  const proseRefused = Object.values(sliced).every((s) => s.re !== null && s.re.test(prose) === false);
-  const bothCompiled = Object.values(sliced).every((s) => s.re !== null);
-  const bothReadOwnEra = Object.values(sliced).every((s) => s.kpHits !== null && s.kpHits > 0);
+  // CURED in Round 458 (Round 456 §3). Every one of these four conjuncts spelled a REFUSAL as
+  // `x !== null && …`, which makes a slice that would not compile read as a slice that compiled
+  // and FAILED. Round 452 cured both hand-rolled readers, so both slices now refuse by design and
+  // this leg inverted to RED against a tree where the reference answer was right. `measured()`
+  // carries the refusal through instead of comparing it away; `allOf` is Kleene, so a slice that
+  // DID compile and then genuinely failed its check still publishes RED.
+  const proseRefused = allOf(...Object.values(sliced)
+    .map((s) => measured(s.re, (re) => re.test(prose) === false)));
+  const bothCompiled = allOf(...Object.values(sliced).map((s) => measured(s.re, () => true)));
+  const bothReadOwnEra = allOf(...Object.values(sliced).map((s) => measured(s.kpHits, (n) => n > 0)));
   // A property pin, not a verbatim source pin (438): each slice must carry the token that is the
   // whole point of the comparison. A re-aimed slice that lost `FAIL` would pass a "compiles" gate.
-  const propPin = sliced[446].source !== null && sliced[446].source.includes('FAIL')
-    && sliced[448].source !== null && sliced[448].source.includes('RED');
-  leg('T2', bothCompiled && bothReadOwnEra && proseRefused && propPin,
+  const propPin = allOf(
+    measured(sliced[446].source, (src) => src.includes('FAIL')),
+    measured(sliced[448].source, (src) => src.includes('RED')),
+  );
+  leg('T2', allOf(bothCompiled, bothReadOwnEra, proseRefused, propPin),
     `${rows.join(' | ')} · real prose control refused by both: ${proseRefused} · distinguishing `
     + `token present in each slice: ${propPin}`);
   say(`     slices: 446 ${JSON.stringify(sliced[446].source)} · 448 ${JSON.stringify(sliced[448].source)}`);
@@ -162,7 +182,12 @@ const re448 = sliced[448].re;
   const a448 = alts(sliced[448].source);
   const only446 = a446 === null || a448 === null ? null : a446.filter((t) => !a448.includes(t));
   const only448 = a446 === null || a448 === null ? null : a448.filter((t) => !a446.includes(t));
-  leg('T3', only446 !== null && only446.length > 0 && only448 !== null && only448.length > 0,
+  // CURED in Round 458: `only446` is `null` exactly when a slice refused, and `!== null &&` turned
+  // "I could not read the token sets" into "the token sets are not disjoint".
+  leg('T3', allOf(
+    measured(only446, (a) => a.length > 0),
+    measured(only448, (a) => a.length > 0),
+  ),
     `token sets off the slices: 446=${JSON.stringify(a446)} 448=${JSON.stringify(a448)} · `
     + `446-only=${JSON.stringify(only446)} 448-only=${JSON.stringify(only448)} · INCOMPARABLE by `
     + 'construction, needing no exemplar at all');
@@ -180,7 +205,21 @@ const cell = { both: [], only446: [], only448: [], neither: 0 };
     else cell.neither += 1;
   }
   const sum = cell.both.length + cell.only446.length + cell.only448.length + cell.neither;
-  leg('T4', sum === POP.length && cell.only446.length > 0 && cell.only448.length > 0,
+  // CURED in Round 458, and this is the variant `allOf` alone CANNOT fix. There is no null
+  // comparison in the old leg expression at all — it read
+  // `sum === POP.length && cell.only446.length > 0 && cell.only448.length > 0`, three honest-looking
+  // booleans. But the loop above spells a refused slice as `re446 !== null && re446.test(l)`, so
+  // when the slice refuses every line falls into `neither`, both `only*` cells are empty, and
+  // `length > 0` reads `false`. That `false` is not a measurement: it is the refusal wearing a
+  // boolean's clothes, and Kleene would have published RED on the strength of a cell that was empty
+  // because nothing was ever put in it. The conjuncts have to be keyed on the SLICE they are
+  // derived from. `sum === POP.length` stays a plain boolean because it is genuinely independent —
+  // the partition is total whether or not either regex compiled.
+  leg('T4', allOf(
+    sum === POP.length,
+    measured(re446, () => cell.only446.length > 0),
+    measured(re448, () => cell.only448.length > 0),
+  ),
     `both=${cell.both.length} only446=${cell.only446.length} only448=${cell.only448.length} `
     + `neither=${cell.neither} · sum===lines: ${sum === POP.length} (${sum}/${POP.length}) · on REAL `
     + 'exemplars the two readers are INCOMPARABLE, so his W6 conclusion holds and my 448 §4 '
@@ -205,12 +244,30 @@ const cause = { ID: [], TOKEN: [], NOT_ROWISH: [] };
     if (re446.test(mutated)) cause.ID.push(l); else cause.TOKEN.push(l);
   }
   const sum = cause.ID.length + cause.TOKEN.length + cause.NOT_ROWISH.length;
-  leg('T5', sum === cell.only448.length && cause.NOT_ROWISH.length === 0,
-    `only448 by cause (minimal length-preserving id mutation on the real line): `
-    + `ID=${cause.ID.length} TOKEN=${cause.TOKEN.length} NOT_ROWISH=${cause.NOT_ROWISH.length} · `
-    + `sum===only448: ${sum === cell.only448.length} (${sum}/${cell.only448.length})`);
-  pred('P1', cause.ID.length > cause.TOKEN.length,
-    `${P1_TEXT} — ID=${cause.ID.length} vs TOKEN=${cause.TOKEN.length}`);
+  // CURED in Round 458, and this one was publishing **ok** — the worst variant of the class, found
+  // only by reading every leg in the file rather than the ones that had gone red. `cell.only448` is
+  // empty when the 448 slice refuses, so `sum === cell.only448.length` is `0 === 0` → true, and
+  // `cause.NOT_ROWISH.length === 0` is `0 === 0` → true. A sum gate over an empty partition is
+  // satisfied by arithmetic rather than by evidence: the leg reported a clean decomposition of a
+  // population that had no members (437 — a vacuous conjunct is dead code beside the figure it is
+  // supposed to guard). A RED that should be REF is a wrong answer; a GREEN that should be REF is a
+  // wrong answer nobody goes looking for.
+  leg('T5', measured(re448, () => sum === cell.only448.length && cause.NOT_ROWISH.length === 0),
+    re448 === null
+      ? 'UNMEASURED — the 448 slice refused, so `only448` is empty and this leg\'s sum gate would '
+        + 'read 0 === 0 and publish ok having decomposed nothing'
+      : `only448 by cause (minimal length-preserving id mutation on the real line): `
+        + `ID=${cause.ID.length} TOKEN=${cause.TOKEN.length} NOT_ROWISH=${cause.NOT_ROWISH.length} · `
+        + `sum===only448: ${sum === cell.only448.length} (${sum}/${cell.only448.length})`);
+  // And the PREDICTION, scored on the same empty cell. `cause.ID.length > cause.TOKEN.length` is
+  // `0 > 0` → false → REFUTED: a prediction recorded as disproven by a measurement that was never
+  // taken. `OPEN` is the honest token, and `PRED_TOKENS` already had it. This is the prediction
+  // vocabulary's instance of the same defect, which is why curing it at the leg alone would have
+  // left a false REFUTED in the recording.
+  pred('P1', measured(re448, () => cause.ID.length > cause.TOKEN.length),
+    re448 === null
+      ? `${P1_TEXT} — UNMEASURABLE: the 448 slice refused, so only448 is empty and both causes are 0`
+      : `${P1_TEXT} — ID=${cause.ID.length} vs TOKEN=${cause.TOKEN.length}`);
 }
 
 // ── T6 — realized occurrence per declared spelling, with 0-occurrence spellings named ───────────
@@ -267,10 +324,21 @@ const occ = {};
     const read446 = re446 === null ? null : text.split('\n').filter((l) => re446.test(l)).length;
     if (hasVerdict && rows.length > 0 && read446 === 0) alive.push([p, rows.length]);
   }
-  leg('T8', alive.length > 0,
-    `${alive.length} committed recordings publish a VERDICT line AND >0 rows AND are read by 446 as `
-    + `ZERO leg lines · so 446's \`legLines(x) === 0\` conjunct cannot tell a run that DIED from a `
-    + `live run whose legs are not G-prefixed · first: ${alive.length === 0 ? 'n/a' : `${alive[0][0]} (${alive[0][1]} rows)`}`);
+  // CURED in Round 458, the same derived-conjunct shape as `T4` and the clearest case of why the
+  // detail string matters as much as the token. `read446` is `null` when the slice refused, and
+  // `read446 === 0` is FALSE for null — so a refused slice admitted NO member to `alive`, the count
+  // deflated to 0, and the leg published RED while printing "0 committed recordings publish a
+  // VERDICT line AND >0 rows AND are read by 446 as ZERO leg lines" as a substantive finding about
+  // the corpus. It is not a finding about the corpus; it is a count of a population that was never
+  // built. Keyed on the slice now, so it refuses.
+  const t8Detail = re446 === null
+    ? 'UNMEASURED — the 446 slice refused, so `read446` was null, `read446 === 0` was false for '
+      + 'every recording, and NO member could enter this population. The old leg printed "0 '
+      + 'committed recordings…" here, which is a count of a population that was never built.'
+    : `${alive.length} committed recordings publish a VERDICT line AND >0 rows AND are read by 446 as `
+      + `ZERO leg lines · so 446's \`legLines(x) === 0\` conjunct cannot tell a run that DIED from a `
+      + `live run whose legs are not G-prefixed · first: ${alive.length === 0 ? 'n/a' : `${alive[0][0]} (${alive[0][1]} rows)`}`;
+  leg('T8', measured(re446, () => alive.length > 0), t8Detail);
 }
 
 // ── T9 — the new shared reader over-reads real prose ────────────────────────────────────────────
@@ -303,7 +371,12 @@ const occ = {};
   } catch { read = null; }
   const sum = read === null ? null : gap.ROWISH_TOO_NARROW.length + gap.READER_TOO_WIDE.length;
   const ex = (a) => (a.length === 0 ? 'none' : JSON.stringify(a[0].slice(0, 68)));
-  leg('T9', read !== null && sum === read,
+  // CURED in Round 458 as a LATENT site, not a live one. `read` is non-null at this rev, so this
+  // leg publishes `ok` either way and the verdict line does not move. It carries the identical
+  // `x !== null &&` shape, and the only thing keeping it green is that its `try` has not yet
+  // thrown — the same was true of `W6` and `T2` until Round 452 cured the readers under them. A
+  // site that inverts only when its input starts refusing is cured now or found later by inverting.
+  leg('T9', measured(read, () => sum === read),
     `readCorpusRows reads ${read} corpus lines ROWISH refuses that are not canonical rows, and the `
     + `gap runs BOTH ways: ROWISH_TOO_NARROW=${gap.ROWISH_TOO_NARROW.length} (genuine rows in a `
     + `single-space or hyphenated-id shape, e.g. ${ex(gap.ROWISH_TOO_NARROW)}) · `

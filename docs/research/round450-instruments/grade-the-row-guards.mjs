@@ -25,6 +25,7 @@ import {
   LEGACY_ROW_TOKENS, ROW_REFUSALS, PRED_TOKENS, LEG_TOKENS,
   renderRows, renderPredRows, renderTail, readRows, readTail, readCorpusRows,
   renderVerdict, selfTest, writeRecording, TrackedTargetError,
+  allOf, measured,
 } from '../lib/verdict.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -243,8 +244,19 @@ const pred = (id, landed, what) => preds.push({ id, landed, what });
     tok, mine: mineReads(line), r446: reads(re446, line), r448: reads(re448, line),
   }));
   const mineAll = table.every((r) => r.mine === true);
-  const oldMissed446 = table.filter((r) => r.r446 !== true).map((r) => r.tok);
-  const oldMissed448 = table.filter((r) => r.r448 !== true).map((r) => r.tok);
+  // CURED in Round 458 (the Round 456 §3 class). `oldMissed446` counts the tokens the old reader
+  // did NOT read — but `r446` is `null` when the SLICE REFUSED, and `!== true` folds that into
+  // "missed". Round 452 cured both hand-rolled readers, so both slices now correctly refuse, and
+  // this read out as `446 reads 0/8 (missing [all eight])`: a false substantive finding about a
+  // reader that is not failing but ABSENT. A refused slice must report UNMEASURED, not zero.
+  const coverage = (key) => measured(key === 446 ? re446 : re448, () => true) === null
+    ? null
+    : table.filter((r) => r[`r${key}`] === true).map((r) => r.tok);
+  const read446 = coverage(446);
+  const read448 = coverage(448);
+  const fig = (readToks) => (readToks === null
+    ? 'UNMEASURED (slice refused — the reader was cured away, not found failing)'
+    : `${readToks.length}/8 (missing ${JSON.stringify(table.filter((r) => !readToks.includes(r.tok)).map((r) => r.tok))})`);
 
   // And the canonical rows, which §4 measured as read by 0 of 3 by either.
   const canon = renderRows([{ id: 'G1', ok: true, what: 'a' }, { id: 'G2', ok: false, what: 'b' },
@@ -253,10 +265,19 @@ const pred = (id, landed, what) => preds.push({ id, landed, what });
   const canon446 = re446 === null ? null : canon.filter((l) => re446.test(l)).length;
   const canon448 = re448 === null ? null : canon.filter((l) => re448.test(l)).length;
 
-  leg('W6', re446 !== null && re448 !== null && mineAll && canonMine === 3,
-    `one shared reader over the censused 8: mine reads ${table.filter((r) => r.mine).length}/8, `
-    + `446 reads ${8 - oldMissed446.length}/8 (missing ${JSON.stringify(oldMissed446)}), `
-    + `448 reads ${8 - oldMissed448.length}/8 (missing ${JSON.stringify(oldMissed448)})`);
+  // The leg's claim is a COMPARISON: the one shared reader reads what the two hand-rolled ones
+  // could not. If either old reader cannot be sliced, the comparison is unmakeable and the honest
+  // token is REF. `measured(re, () => true)` is the refusal carried through rather than compared
+  // away; `allOf` is Kleene, so a genuinely-false `mineAll` would still publish RED and keep that
+  // finding visible.
+  leg('W6', allOf(
+    measured(re446, () => true),
+    measured(re448, () => true),
+    mineAll,
+    canonMine === 3,
+  ),
+  `one shared reader over the censused 8: mine reads ${table.filter((r) => r.mine).length}/8, `
+    + `446 reads ${fig(read446)}, 448 reads ${fig(read448)}`);
   say(`     canonical rows read: mine ${canonMine}/3 · 446 ${canon446}/3 · 448 ${canon448}/3`
     + '   (§4 measured 0/3 for both, pre-cure)');
   say(`     slices compiled from pinned source: 446 ${JSON.stringify(src446)} · 448 ${JSON.stringify(src448)}`);

@@ -1,0 +1,27 @@
+REV: 9c22ee1798222bb10283e2eeebcfa2db6fc0bb41
+DIRTY: true
+
+     allOf-refusal-dominant: edited=true caught=true (verdict.mjs selfTest: allOf(false,null) = null, expected false)
+     allOf-null-becomes-true: edited=true caught=true (verdict.mjs selfTest: allOf(true,null) = true, expected null)
+     allOf-accepts-non-tristate: edited=true caught=true (verdict.mjs selfTest: allOf accepted a non-tri-state value: 0)
+     measured-does-not-propagate: edited=true caught=true (verdict.mjs selfTest: measured: a null value must stay unmeasured)
+     measured-coerces-return: edited=true caught=true (verdict.mjs selfTest: measured accepted a non-tri-state return: 0)
+     round432-instruments/grade-the-two-cures.mjs  G6  pre !== null && post !== null && pre === post
+     round455-instruments/dispose-of-w10-and-repair-the-lifter-it-needs.mjs  G3  `the repaired lifter is graded against a declared case table before it is used on any ` + `subje
+     round456-instruments/drift-census-over-the-verdict-publishing-population.mjs  D2  controlResult !== null && controlResult.identical === true
+     round456-instruments/drift-census-over-the-verdict-publishing-population.mjs  D3  kpRow !== null && kpRow.bucket === 'DRIFTED' && kpMovedW10
+     round457-instruments/grade-recording-completeness-across-the-whole-corpus.mjs  C3  controlRow !== null && controlRow.bucket === 'COMPLETE'
+     round450-instruments: red=[] refused=["W6"] · expected REF ["W6"] → now REF ["W6"], still RED []
+     round451-instruments: red=[] refused=["T2","T3","T4","T5","T8"] · expected REF ["T2","T3","T4","T5","T8"] → now REF ["T2","T3","T4","T5","T8"], still RED []
+
+LEG C1 ok selfTest() returned true
+LEG C2 ok 5/5 cripples caught by selfTest · clean control passes: true · anchor problems: none
+LEG C2b ok dotfile leftovers in this instrument dir: []
+LEG C3 ok lib REPO_ROOT="/Users/xian/Development/klatch-worktrees/daedalus" · same three-'..' walk from THIS dir="/Users/xian/Development/klatch-worktrees/daedalus" · so a crippled copy written here resolves the repo identically
+LEG C4 ok 227 leg() call sites parsed across 186 instrument files · 5 launder a refusal AT the leg · uncured KP D3 flagged: true · control W7 unflagged: true · cured-at-leg still flagged: [] (expected []) · FLOOR, not a count: the five upstream instances this round cured were invisible to this detector and were found by hand
+LEG C5 ok 2 cured instrument(s) re-driven against today's tree with cwd pinned to the repo root
+LEG C6 ok the subject's verdict is now INDEPENDENT of the caller's cwd: from repo root refused=["T2","T3","T4","T5","T8"] red=[] · from this instrument dir refused=["T2","T3","T4","T5","T8"] red=[] · agree: true · population leg T1 ok in BOTH arms: true · pre-cure these disagreed, recorded in drive1.precure.out (red=[T1,T2,T3,T4,T7,T8] from a subdirectory)
+PRED Q2 LANDED leg-level laundering sites fall 8 → 5 (losing exactly ["W6","T3","T9"]) · measured 5
+PRED Q1 LANDED Round 456 §3: the inverting legs are a refusal conjoined into a false RED, so the cure moves each to REF and leaves red EMPTY in both subjects
+
+VERDICT/1 ok legs=7 red=[] refused=[] preds=2 refuted=[] prefused=[]

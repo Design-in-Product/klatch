@@ -1,0 +1,28 @@
+REV: 9c22ee1798222bb10283e2eeebcfa2db6fc0bb41
+DIRTY: true
+
+     allOf-refusal-dominant: edited=true caught=true (verdict.mjs selfTest: allOf(false,null) = null, expected false)
+     allOf-null-becomes-true: edited=true caught=true (verdict.mjs selfTest: allOf(true,null) = true, expected null)
+     allOf-accepts-non-tristate: edited=true caught=true (verdict.mjs selfTest: allOf accepted a non-tri-state value: 0)
+     measured-does-not-propagate: edited=true caught=true (verdict.mjs selfTest: measured: a null value must stay unmeasured)
+     measured-coerces-return: edited=true caught=true (verdict.mjs selfTest: measured accepted a non-tri-state return: 0)
+     round432-instruments/grade-the-two-cures.mjs  G6  pre !== null && post !== null && pre === post
+     round450-instruments/grade-the-row-guards.mjs  W6  re446 !== null && re448 !== null && mineAll && canonMine === 3
+     round451-instruments/settle-the-subset-question-on-real-exemplars.mjs  T3  only446 !== null && only446.length > 0 && only448 !== null && only448.length > 0
+     round451-instruments/settle-the-subset-question-on-real-exemplars.mjs  T9  read !== null && sum === read
+     round455-instruments/dispose-of-w10-and-repair-the-lifter-it-needs.mjs  G3  `the repaired lifter is graded against a declared case table before it is used on any ` + `subje
+     round456-instruments/drift-census-over-the-verdict-publishing-population.mjs  D2  controlResult !== null && controlResult.identical === true
+     round456-instruments/drift-census-over-the-verdict-publishing-population.mjs  D3  kpRow !== null && kpRow.bucket === 'DRIFTED' && kpMovedW10
+     round457-instruments/grade-recording-completeness-across-the-whole-corpus.mjs  C3  controlRow !== null && controlRow.bucket === 'COMPLETE'
+     round450-instruments: red=["W6"] refused=[] · expected REF ["W6"] → now REF [], still RED ["W6"]
+     round451-instruments: red=["T2","T3","T4","T8"] refused=[] · expected REF ["T2","T3","T4","T8"] → now REF [], still RED ["T2","T3","T4","T8"]
+
+LEG C1 ok selfTest() returned true
+LEG C2 ok 5/5 cripples caught by selfTest · clean control passes: true · anchor problems: none
+LEG C2b ok dotfile leftovers in this instrument dir: []
+LEG C3 ok lib REPO_ROOT="/Users/xian/Development/klatch-worktrees/daedalus" · same three-'..' walk from THIS dir="/Users/xian/Development/klatch-worktrees/daedalus" · so a crippled copy written here resolves the repo identically
+LEG C4 RED 226 leg() call sites parsed across 186 instrument files · 8 launder a refusal AT the leg · KPs flagged ["W6","T3"]/3 · control W7 unflagged: true · FLOOR, not a count: T8-shaped upstream laundering is invisible here
+LEG C5 RED 2 cured instrument(s) re-driven against today's tree
+PRED Q1 REFUTED Round 456 §3: the six inverting legs are a refusal conjoined into a false RED, so the cure moves each to REF and adds nothing to red
+
+VERDICT/1 RED legs=6 red=[C4,C5] refused=[] preds=1 refuted=[Q1] prefused=[]
