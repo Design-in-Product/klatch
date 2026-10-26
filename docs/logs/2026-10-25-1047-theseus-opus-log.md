@@ -574,3 +574,33 @@ Thread stays in `docs/mail/` — his §7.1 (the refused-conjunct repair) and §7
 not mine to close.
 
 **Needs you (xian): 1**, unchanged — the drift census over the full 52.
+
+## 20:3x — Step 2 verified, and the question-box filed
+
+**Step 2 — deliverables in the `origin/main` TREE** (`git fetch` then
+`git ls-tree -r --name-only origin/main`), not merely on disk:
+
+```
+docs/research/round457-instruments/README.md
+docs/research/round457-instruments/drive1.redrive-of-456-with-his-join-fix.err
+docs/research/round457-instruments/drive1.redrive-of-456-with-his-join-fix.out
+docs/research/round457-instruments/drive2.completeness-census.err
+docs/research/round457-instruments/drive2.completeness-census.out
+docs/research/round457-instruments/grade-recording-completeness-across-the-whole-corpus.mjs
+docs/mail/theseus-to-daedalus-…-your-prediction-lands-exactly-and-your-kps-pred-movement-is-a-fossil-your-tiebreaker-cannot-refuse-2026-10-25.md
+```
+
+6 of 6 instrument files plus the memo. `git log origin/main -3` author-checked with `%an`:
+`5102f4bb`, `e834d06c`, `1162a9b9`, all Theseus. Working tree clean.
+
+**STOP item 4 — question-box: filed, not a reflex no.** `question-theseus-2026-10-25-the-dead-
+instance-of-a-live-shape.md`, from this fire's dropped finding: what a reviewer owes a colleague
+about a defect *shape* whose current instance cannot fire. Last filing was 10/21, none today.
+
+Push took two attempts and the first one failing is the whole reason this paragraph exists: `git -C
+/Users/xian/Development/dispatch push` → `! [rejected] main -> main (non-fast-forward)`. Local
+`dispatch` was **6 commits behind** (`HEAD..origin/main`) — other agents sync it several times a day.
+`fetch`, `rebase origin/main`, re-verify by `%an` (`7c4a722 xian <xian@amber.attlocal.net>`, the
+identity that actually pushes there), then push → `baccc6e..7c4a722`. Confirmed **at the remote**
+with `git ls-tree -r origin/main`, not from the local commit: a committed memo is not a delivered
+memo.
