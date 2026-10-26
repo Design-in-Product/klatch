@@ -117,6 +117,7 @@ export const ROW_REFUSALS = [
   'DUPLICATE_ROW_ID',
   'ROW_GRAMMAR_ABSENT',
   'ROW_COUNT_DISAGREEMENT',
+  'PRED_ROW_COUNT_DISAGREEMENT',
 ];
 
 const FIELDS = ['legs', 'red', 'refused', 'preds', 'refuted', 'prefused'];
@@ -503,6 +504,13 @@ export function readRows(text) {
  *
  * This is also the figure Theseus's §4 reported and gated nowhere: each reader's row count against
  * the leg count the same recording's own verdict line publishes.
+ *
+ * Since Round 460 the SAME tie is broken for predictions, by `preds=N` against the `PRED` row count,
+ * under a refusal code of its own. Until then this function gated the LEG half and read `ok` on the
+ * PRED half — a gap Theseus's Round 457 `C5` read off this source and his `Q2` measured as live over
+ * 13 committed recordings. The three choices that shape the PRED gate are argued at the gate itself;
+ * the claim this paragraph is pinned on is just that BOTH halves are now gated, which round450's
+ * `W4` drives by name in both vocabularies.
  */
 export function readTail(text) {
   const v = readVerdict(text);
@@ -519,6 +527,40 @@ export function readTail(text) {
   if (legRows.length !== v.verdict.legs) {
     return {
       ...refuseRow('ROW_COUNT_DISAGREEMENT', `${legRows.length} LEG row(s) vs legs=${v.verdict.legs}`),
+      verdict: v.verdict,
+    };
+  }
+  // THE PRED HALF OF THE SAME TIE, added in Round 460. Theseus's Round 457 `C5` read off this
+  // function's own source that the LEG count was gated and the PRED count was not, and his `Q2`
+  // measured the class as LIVE rather than latent: 13 of the 439 recordings committed at `df5a27cc`
+  // print a `PRED` row count that disagrees with their own `preds=N`, and every one of them read
+  // `ok` here. The cause is dated — `renderTail` reached the verdict line with a prediction's id and
+  // dropped its row until `renderPredRows` existed (Round 449 §3, Round 450) — so the 13 are fossils
+  // of a cured emitter, which is exactly why a reader must be able to name them rather than treat
+  // them as complete.
+  //
+  // THREE DESIGN CHOICES, each one of them a decision a reader could reasonably have made the other
+  // way, so each is written down rather than left in the code:
+  //
+  //   1. A DISTINCT CODE, not a reuse of `ROW_COUNT_DISAGREEMENT`. This was the decision Theseus's
+  //      §5.1 said the cure needed before it could land. A caller whose question is per-LEG
+  //      attribution — `postcommit-rediff.mjs` is the live one — is entitled to proceed on a
+  //      recording whose LEG rows are complete and whose PRED rows are fossils, and it can only do
+  //      that if the two cases arrive under different names. One code for both would have forced
+  //      every such caller to choose between believing an incomplete recording and refusing a
+  //      complete one.
+  //   2. NO PRED ANALOGUE OF `ROW_GRAMMAR_ABSENT`. The LEG gate above already establishes that this
+  //      recording uses the row grammar, so reaching this line with zero PRED rows at `preds>0` is
+  //      an under-print and not an absent grammar. The Round 441 §1 tie — "no label observed" and
+  //      "no label grammar" being one observation — is broken upstream for us, which is why one code
+  //      suffices here and two were needed there.
+  //   3. THE VERDICT IS RETURNED BESIDE THE REFUSAL, as the two gates above do. A caller that wants
+  //      the declared counts in order to report what disagreed must not have to re-read the text.
+  const predRows = r.rows.filter((x) => x.kind === 'PRED');
+  if (predRows.length !== v.verdict.preds) {
+    return {
+      ...refuseRow('PRED_ROW_COUNT_DISAGREEMENT',
+        `${predRows.length} PRED row(s) vs preds=${v.verdict.preds}`),
       verdict: v.verdict,
     };
   }
@@ -896,7 +938,21 @@ export function selfTest() {
   const shortTail = `LEG G6 RED x\n${renderVerdict({ legs: [{ id: 'G6', ok: false }, { id: 'G7', ok: true }] })}`;
   must(readTail(shortTail).refusal === 'ROW_COUNT_DISAGREEMENT',
     `a 1-row/2-leg tail read as ${readTail(shortTail).refusal}`);
-  const reachedRow = [...Object.keys(badRowText), 'ROW_GRAMMAR_ABSENT', 'ROW_COUNT_DISAGREEMENT'];
+  // Round 460's PRED half of the same tie, and its control. The refusing tail's LEG count AGREES
+  // with its own `legs=1`, so it is past both LEG gates and only the PRED gate can refuse it; the
+  // control is the same tail carrying its prediction row, which must still read clean, or this case
+  // would pass on a reader that refused every tail with a `preds=N` (424).
+  const onePred = renderVerdict({ legs: [{ id: 'G6', ok: false }], preds: [{ id: 'Q1', landed: true }] });
+  const predShort = readTail(`LEG G6 RED x\n${onePred}`);
+  must(predShort.refusal === 'PRED_ROW_COUNT_DISAGREEMENT',
+    `0 PRED rows at preds=1 read as ${predShort.refusal} rather than PRED_ROW_COUNT_DISAGREEMENT`);
+  must(predShort.verdict !== null && predShort.verdict.preds === 1,
+    'the PRED gate refused without returning the verdict its caller needs to report the disagreement');
+  const predFull = readTail(`LEG G6 RED x\nPRED Q1 LANDED y\n${onePred}`);
+  must(predFull.ok === true,
+    `a tail whose PRED rows account for preds=1 was refused as ${predFull.refusal}`);
+  const reachedRow = [...Object.keys(badRowText), 'ROW_GRAMMAR_ABSENT', 'ROW_COUNT_DISAGREEMENT',
+    'PRED_ROW_COUNT_DISAGREEMENT'];
   must(reachedRow.length === ROW_REFUSALS.length,
     `selfTest reaches ${reachedRow.length} of ${ROW_REFUSALS.length} declared row refusals`);
   for (const code of ROW_REFUSALS) must(reachedRow.includes(code), `row refusal never driven: ${code}`);

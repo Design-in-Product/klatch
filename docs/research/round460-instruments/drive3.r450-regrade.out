@@ -1,0 +1,18 @@
+ROUND 450 — grade the row guards · rev 172b547f81db597542b6c3344e683ff371b01d6a · subject docs/research/lib/verdict.mjs
+
+     canonical rows read: mine 3/3 · 446 null/3 · 448 null/3   (§4 measured 0/3 for both, pre-cure)
+     slices compiled from pinned source: 446 null · 448 null
+
+LEG W1 ok renderTail publishes a prediction's detail: leg=true pred=true id-in-line=true pred-row-readable=true
+LEG W2 ok 5/5 unguarded shapes now throw at emit · still emitting: [] · control survives: true
+LEG W3 ok round-trip over 216 (id × state × detail × kind) cases: 0 failure(s)
+LEG W4 ok legs=0 reads clean: true · a foreign grammar at legs=2 reads ROW_GRAMMAR_ABSENT · 1 row at legs=2 reads ROW_COUNT_DISAGREEMENT · 0 PRED rows at preds=1 (LEG count agreeing) reads PRED_ROW_COUNT_DISAGREEMENT · the same tail WITH its PRED row reads ok
+LEG W5 ok all 7 declared row refusals DRIVEN by name: true · undeclared codes in source: [] · wrapped-call KP found: true · control clean: true · declared 7 vs driving inputs 7 (derived, not a literal — the only leg that sees a code deleted from the declaration)
+LEG W6 REF one shared reader over the censused 8: mine reads 8/8, 446 reads UNMEASURED (slice refused — the reader was cured away, not found failing), 448 reads UNMEASURED (slice refused — the reader was cured away, not found failing)
+LEG W7 ok selfTest() returned true
+LEG W8 ok vocabularies disjoint: [] · LEG+LANDED → WRONG_KIND_TOKEN · PRED+ok → WRONG_KIND_TOKEN · an unknown spelling → UNKNOWN_ROW_TOKEN
+LEG W9 ok the verdict line over 4 cases is byte-identical to the pre-round rev 9ddc9d17: true
+PRED Q1 REFUTED canonical rows in 35/438 committed recordings OUTSIDE this round's directory (40/448 including it) · PRED rows outside: 20 — a prediction row has never been published, because the lib could not render one
+PRED Q2 LANDED of the censused 8 spellings, 6 are canonical and 2 are legacy-only: ["FAIL","REFUSED"] — so the canonical grammar is not a rename of the corpus
+
+VERDICT/1 REFUSED legs=9 red=[] refused=[W6] preds=2 refuted=[Q1] prefused=[]

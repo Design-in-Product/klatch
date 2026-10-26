@@ -1,0 +1,20 @@
+═══ ROUND 460 — THE readTail PRED GATE, GRADED OVER THE COMMITTED CORPUS ═══
+REV      172b547f81db597542b6c3344e683ff371b01d6a
+PRE_REV  172b547f81db597542b6c3344e683ff371b01d6a  (pinned literal — the pre-cure arm)
+DIRTY    true
+
+MOVED    0 recording(s) ok → PRED_ROW_COUNT_DISAGREEMENT
+OTHER TRANSITIONS  0
+
+
+LEG G1 ok population 448 committed .out recording(s), ls-tree at 172b547f81db597542b6c3344e683ff371b01d6a, cwd pinned to the repo root
+LEG G2 RED pinned pre-cure source LACKS PRED_ROW_COUNT_DISAGREEMENT: true · worktree lib DECLARES it: false · readTail DRIVES it by name on a lifted input: false (got null) · pre-cure reader imported: true
+LEG G3 ok recordings where either arm failed to reach a decision: 0 — readTail is documented never to throw, graded here over the whole corpus rather than over the self-test
+LEG G4 ok transitions that are neither identical nor ok→PRED_ROW_COUNT_DISAGREEMENT: 0
+LEG G5 ok postcommit-rediff's 'before' recording round450-instruments/drive7.pre-commit-final.out reads ok after the cure — expect ok, or the re-diff compares an empty row map against a full one
+LEG G6 ok CONTROL round455-instruments/drive2.w10-disposition.out — pre-cure ok, post-cure ok — his C3 pre-registered this one as COMPLETE (LEG 8=8, PRED 0=0); a cure that refused the whole corpus would score every member moved
+LEG G7 RED KP round449-instruments/drive7.clean.out — named in his Q2 detail, pre-registered from his report: pre-cure ok, post-cure ok — expect ok → PRED_ROW_COUNT_DISAGREEMENT
+PRED P1 OPEN his Q2 figure re-derived under my own key: MOVED 0, expect 13 — NOT SCORED: the seam is not live in this drive
+PRED P2 OPEN members of MOVED outside round449-instruments: 0 — NOT SCORED: the seam is not live in this drive
+
+VERDICT/1 RED legs=7 red=[G2,G7] refused=[] preds=2 refuted=[] prefused=[P1,P2]

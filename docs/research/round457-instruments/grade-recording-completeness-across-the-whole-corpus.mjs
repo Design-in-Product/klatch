@@ -24,6 +24,15 @@
  *      again, one vocabulary over: a missing row and an absent grammar read the same, and the field
  *      that breaks the tie is read for LEG and not for PRED.
  *
+ * THE SEAM, declared rather than written over (Daedalus, Round 460). Everything above describes the
+ * lib as it stood at `df5a27cc`, where this cell was first driven, and it was true there — `C5`
+ * measured it and `Q2` found the class live over 13 recordings. Round 460 cured it:
+ * `PRED_ROW_COUNT_DISAGREEMENT` is now a declared row refusal and `readTail` gates the PRED count
+ * after both LEG gates. So read paragraph 2 and `Q2`'s own wording below as a statement about
+ * `df5a27cc`, which is what they are. `C5` is re-keyed to grade BOTH sides of that seam; the
+ * measurement `Q2` scores is unchanged, because it keys on `predRows` against `preds=N` directly and
+ * never asked `readTail`.
+ *
  * Population: every `.out` tracked at REV under `docs/research/`, selected with `ls-tree` at the
  * rev and read with `git show` at the rev — never the worktree, so the population is reproducible
  * from the rev alone. This cell's own recordings are therefore excluded by construction at the rev
@@ -48,6 +57,11 @@
  *     C5  the PRED-count check is MINE and not the lib's — assert `readTail` does not contain a
  *         PRED-count comparison, read off the lib's source, so that a cure to the lib reddens this
  *         leg instead of leaving a stale sentence behind.
+ *         RE-KEYED IN ROUND 460, in the commit that cured the gap, which is what the sentence above
+ *         asked for. It is now a 2 × 2 across the seam — the gap at the pre-cure rev AND the cure at
+ *         REV — rather than a flip to `=== true`, because a flip would have deleted the finding: it
+ *         would be satisfied by a lib that had always gated the PRED count. The argument is at the
+ *         leg.
  *     C6  CONTROL for C5's slicer: the same slice must FIND the LEG-count comparison it is keyed
  *         to miss for PRED. A source key that finds nothing proves nothing.
  *
@@ -63,7 +77,7 @@
 import { execFileSync } from 'node:child_process';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { readVerdict, readRows, readTail, renderTail } from '../lib/verdict.mjs';
+import { readVerdict, readRows, readTail, renderTail, ROW_REFUSALS } from '../lib/verdict.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = join(HERE, '..', '..', '..');
@@ -130,8 +144,11 @@ for (const p of corpus) {
       bucket = 'LEG_UNDER_PRINTED';
       note = `${legRows} LEG row(s) vs legs=${v.verdict.legs}`;
     } else if (legOk && !predOk) {
-      // The class `readTail` cannot refuse: the LEG count agrees, so `readTail` returns ok, while
-      // the PRED rows do not account for the recording's own `preds=N`.
+      // The LEG count agrees while the PRED rows do not account for the recording's own `preds=N`.
+      // At `df5a27cc` this was the class `readTail` could not refuse, and the note printed
+      // `readTail says ok` for every member; since Round 460 it prints the refusal by name. The
+      // bucket is keyed on `readRows`/`readVerdict` and not on `readTail`, so the PARTITION is
+      // unchanged by that cure and only the note moves.
       bucket = 'PRED_COUNT_MISMATCH';
       note = `${predRows} PRED row(s) vs preds=${v.verdict.preds}; readTail says `
         + `${t.ok === true ? 'ok' : t.refusal}`;
@@ -156,8 +173,8 @@ say(`BUCKETS  ${JSON.stringify(sizes)}  sum=${sum}  corpus=${corpus.length}`);
 const incomplete = [...buckets.LEG_UNDER_PRINTED, ...buckets.LEG_GRAMMAR_ABSENT,
   ...buckets.PRED_COUNT_MISMATCH];
 say(`FIGURE   ${incomplete.length} of ${corpus.length} committed recording(s) cannot support `
-  + `complete per-row attribution; of those, ${buckets.PRED_COUNT_MISMATCH.length} are in the class `
-  + `readTail cannot refuse`);
+  + `complete per-row attribution; of those, ${buckets.PRED_COUNT_MISMATCH.length} are the PRED half `
+  + '— the class readTail could not refuse at df5a27cc, refused by name since Round 460');
 say('');
 
 leg('C2', sum === corpus.length && rows.length === corpus.length && sizes.UNMODELLED === 0,
@@ -211,10 +228,35 @@ leg('C6', sliceOk && legCountCheck,
   + `the LEG-count comparison the same key shape looks for is `
   + `${legCountCheck ? 'FOUND' : 'ABSENT — the key finds nothing and so proves nothing about PRED'}`);
 
-leg('C5', sliceOk && legCountCheck && predCountCheck === false,
-  `readTail gates LEG count (${legCountCheck}) and references verdict.preds (${predCountCheck}) — `
-  + `expect false: a PRED row-count disagreement is unrepresentable in readTail's refusal set, so `
-  + `the tie-breaker his §5 would have called cannot see the PRED half of the same defect`);
+// ── C5, RE-KEYED IN ROUND 460 (Daedalus), in the commit that cured the gap ─────────────────────
+// This leg was written to assert the gap — `predCountCheck === false` — explicitly so that a cure
+// would redden it rather than leave a stale sentence behind. Daedalus landed the cure in Round 460:
+// `PRED_ROW_COUNT_DISAGREEMENT`, a declared row refusal of its own, gated in `readTail` after both
+// LEG gates. So the leg reddens exactly as designed, and re-keying it in the curing commit is what
+// the docblock above asked for.
+//
+// Re-keyed as a 2 × 2 ACROSS THE SEAM rather than simply flipped to `=== true`. Flipping it would
+// delete the finding: the leg would then be satisfied by a lib that had always gated the PRED count,
+// and nothing in the cell would any longer assert that the gap was real. Both cells of the seam are
+// read from committed bytes — the pre-cure lib at `PRE_CURE_REV`, a literal, and the lib at REV —
+// so a re-drive at any later rev reproduces both halves (441).
+const PRE_CURE_REV = '172b547f81db597542b6c3344e683ff371b01d6a';
+const preCureTailSrc = (() => {
+  const src = git(['show', `${PRE_CURE_REV}:docs/research/lib/verdict.mjs`]);
+  const i = src.indexOf(ANCHOR);
+  if (i < 0 || src.indexOf(ANCHOR, i + ANCHOR.length) !== -1) return null;
+  const j = src.indexOf('\nexport ', i + ANCHOR.length);
+  return j > i ? src.slice(i, j) : null;
+})();
+const preCureGated = preCureTailSrc === null ? null : /\bpreds\b/.test(preCureTailSrc);
+const CODE = 'PRED_ROW_COUNT_DISAGREEMENT';
+const codeDeclared = ROW_REFUSALS.includes(CODE) && tailSrc.includes(CODE);
+
+leg('C5', sliceOk && legCountCheck && preCureGated === false && predCountCheck === true && codeDeclared,
+  `THE SEAM: readTail at ${PRE_CURE_REV.slice(0, 8)} references verdict.preds: ${preCureGated} `
+  + `(expect false — the gap this cell found) · at ${REV.slice(0, 8)}: ${predCountCheck} (expect true `
+  + `— Round 460's cure) · the refusal is named ${CODE} and declared: ${codeDeclared} · LEG-count `
+  + `comparison still found by the same key shape: ${legCountCheck}`);
 
 // ── the baselines his census actually joins against ─────────────────────────────────────────────
 // The sub-figure that bears directly on his §5: incompleteness anywhere in the corpus is a lib
@@ -235,7 +277,9 @@ pred('Q1', buckets.LEG_UNDER_PRINTED.length + buckets.LEG_GRAMMAR_ABSENT.length 
   `recordings failing readTail on a LEG count/grammar disagreement: `
   + `${buckets.LEG_UNDER_PRINTED.length + buckets.LEG_GRAMMAR_ABSENT.length}`);
 pred('Q2', buckets.PRED_COUNT_MISMATCH.length > 0,
-  `recordings in the class readTail cannot refuse (PRED rows vs preds=N): `
+  `recordings whose PRED rows disagree with their own preds=N — the class readTail could not refuse `
+  + `at df5a27cc, refused as PRED_ROW_COUNT_DISAGREEMENT since Round 460; the predicate here keys on `
+  + `the counts directly and is unchanged by that cure: `
   + `${buckets.PRED_COUNT_MISMATCH.length}`
   + `${buckets.PRED_COUNT_MISMATCH.length ? ` — ${buckets.PRED_COUNT_MISMATCH.map((p) => relative('docs/research', p)).join(', ')}` : ''}`);
 

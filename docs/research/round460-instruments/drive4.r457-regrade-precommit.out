@@ -1,0 +1,525 @@
+═══ ROUND 457 — RECORDING COMPLETENESS ACROSS THE WHOLE COMMITTED CORPUS ═══
+rev 172b547f81db597542b6c3344e683ff371b01d6a
+
+BUCKETS  {"COMPLETE":27,"LEG_UNDER_PRINTED":0,"LEG_GRAMMAR_ABSENT":44,"PRED_COUNT_MISMATCH":13,"ROWS_UNREADABLE":0,"NO_VERDICT":364,"UNMODELLED":0}  sum=448  corpus=448
+FIGURE   57 of 448 committed recording(s) cannot support complete per-row attribution; of those, 13 are the PRED half — the class readTail could not refuse at df5a27cc, refused by name since Round 460
+
+SUBFIGURE  of 94 recording(s) in the 10 round directories his census joins in, 80 are not COMPLETE
+   LEG_GRAMMAR_ABSENT   round442-instruments/drive1.out — 0 LEG rows vs legs=9
+   LEG_GRAMMAR_ABSENT   round442-instruments/drive2.out — 0 LEG rows vs legs=9
+   LEG_GRAMMAR_ABSENT   round442-instruments/drive3.out — 0 LEG rows vs legs=9
+   NO_VERDICT           round442-instruments/reproduce-his-round441.out — verdict NO_VERDICT_LINE
+   NO_VERDICT           round442-instruments/vacuity.final.out — verdict NO_VERDICT_LINE
+   NO_VERDICT           round442-instruments/vacuity.out — verdict NO_VERDICT_LINE
+   LEG_GRAMMAR_ABSENT   round443-instruments/drive1.out — 0 LEG rows vs legs=8
+   LEG_GRAMMAR_ABSENT   round443-instruments/drive2.out — 0 LEG rows vs legs=8
+   LEG_GRAMMAR_ABSENT   round443-instruments/drive3.postcommit.out — 0 LEG rows vs legs=8
+   LEG_GRAMMAR_ABSENT   round443-instruments/drive4.selfcensus-cured.out — 0 LEG rows vs legs=8
+   LEG_GRAMMAR_ABSENT   round443-instruments/drive5.final.out — 0 LEG rows vs legs=8
+   LEG_GRAMMAR_ABSENT   round443-instruments/drive6-r445-anchor-guard-repaired.out — 0 LEG rows vs legs=8
+   LEG_GRAMMAR_ABSENT   round443-instruments/his-instrument.postcommit.out — 0 LEG rows vs legs=9
+   LEG_GRAMMAR_ABSENT   round443-instruments/reproduce-his-round442.out — 0 LEG rows vs legs=9
+   LEG_GRAMMAR_ABSENT   round444-instruments/drive1.out — 0 LEG rows vs legs=7
+   LEG_GRAMMAR_ABSENT   round444-instruments/drive2.out — 0 LEG rows vs legs=7
+   LEG_GRAMMAR_ABSENT   round444-instruments/drive3.refuted-on-a-head-sourced-baseline.out — 0 LEG rows vs legs=7
+   LEG_GRAMMAR_ABSENT   round444-instruments/drive4.baseline-reader-crossed-a-newline.out — 0 LEG rows vs legs=7
+   LEG_GRAMMAR_ABSENT   round444-instruments/drive5.final.out — 0 LEG rows vs legs=7
+   NO_VERDICT           round444-instruments/his-r443-instrument-dies-at-this-rev.out — verdict NO_VERDICT_LINE
+   LEG_GRAMMAR_ABSENT   round444-instruments/his-round442-instrument.postcommit.out — 0 LEG rows vs legs=9
+   LEG_GRAMMAR_ABSENT   round444-instruments/his-round442-instrument.recured.out — 0 LEG rows vs legs=9
+   LEG_GRAMMAR_ABSENT   round446-instruments/drive1.r444-unmodified-at-his-repaired-rev.out — 0 LEG rows vs legs=7
+   LEG_GRAMMAR_ABSENT   round446-instruments/drive2.child-stderr-leaked-into-the-recording.out — 0 LEG rows vs legs=4
+   LEG_GRAMMAR_ABSENT   round446-instruments/drive3.final.out — 0 LEG rows vs legs=4
+   LEG_GRAMMAR_ABSENT   round446-instruments/drive4.h5-refuses-before-the-cure.out — 0 LEG rows vs legs=5
+   LEG_GRAMMAR_ABSENT   round446-instruments/drive5.h5-conjunct-re-keyed.out — 0 LEG rows vs legs=5
+   LEG_GRAMMAR_ABSENT   round446-instruments/drive6.out — 0 LEG rows vs legs=5
+   LEG_GRAMMAR_ABSENT   round446-instruments/drive7.r444-cured-and-re-driven.out — 0 LEG rows vs legs=7
+   LEG_GRAMMAR_ABSENT   round446-instruments/drive8.postcommit.out — 0 LEG rows vs legs=5
+   LEG_GRAMMAR_ABSENT   round446-instruments/drive9.r444-postcommit.out — 0 LEG rows vs legs=7
+   LEG_GRAMMAR_ABSENT   round448-instruments/drive1.r446-unmodified-at-his-g4-repaired-rev.out — 0 LEG rows vs legs=5
+   LEG_GRAMMAR_ABSENT   round448-instruments/drive10.live.out — 0 LEG rows vs legs=6
+   LEG_GRAMMAR_ABSENT   round448-instruments/drive11.final.out — 0 LEG rows vs legs=6
+   LEG_GRAMMAR_ABSENT   round448-instruments/drive12.r446-after-the-sentence-cure.out — 0 LEG rows vs legs=5
+   LEG_GRAMMAR_ABSENT   round448-instruments/drive13.postcommit.out — 0 LEG rows vs legs=6
+   NO_VERDICT           round448-instruments/drive14.mechanism-census.out — verdict NO_VERDICT_LINE
+   LEG_GRAMMAR_ABSENT   round448-instruments/drive15.hygiene-key-widened.out — 0 LEG rows vs legs=6
+   LEG_GRAMMAR_ABSENT   round448-instruments/drive16.postcommit-hygiene-widened.out — 0 LEG rows vs legs=6
+   NO_VERDICT           round448-instruments/drive2.census.out — verdict NO_VERDICT_LINE
+   LEG_GRAMMAR_ABSENT   round448-instruments/drive3.out — 0 LEG rows vs legs=6
+   LEG_GRAMMAR_ABSENT   round448-instruments/drive4.rows-selected-and-seams-collapsed.out — 0 LEG rows vs legs=6
+   LEG_GRAMMAR_ABSENT   round448-instruments/drive5.pin-keyed-on-the-repair-marker.out — 0 LEG rows vs legs=6
+   LEG_GRAMMAR_ABSENT   round448-instruments/drive6.legonly-crippled.out — 0 LEG rows vs legs=6
+   LEG_GRAMMAR_ABSENT   round448-instruments/drive7.blindpin-crippled.out — 0 LEG rows vs legs=6
+   LEG_GRAMMAR_ABSENT   round448-instruments/drive8.inert-name.out — 0 LEG rows vs legs=6
+   NO_VERDICT           round448-instruments/drive9.cripple-grading.out — verdict NO_VERDICT_LINE
+   NO_VERDICT           round449-instruments/drive1.shape-census.out — verdict NO_VERDICT_LINE
+   PRED_COUNT_MISMATCH  round449-instruments/drive10.novar-crippled.out — 0 PRED row(s) vs preds=2; readTail says PRED_ROW_COUNT_DISAGREEMENT
+   PRED_COUNT_MISMATCH  round449-instruments/drive11.tokenonly-crippled.out — 0 PRED row(s) vs preds=2; readTail says PRED_ROW_COUNT_DISAGREEMENT
+   PRED_COUNT_MISMATCH  round449-instruments/drive12.inert-name.out — 0 PRED row(s) vs preds=2; readTail says PRED_ROW_COUNT_DISAGREEMENT
+   NO_VERDICT           round449-instruments/drive13.cripple-grading.out — verdict NO_VERDICT_LINE
+   NO_VERDICT           round449-instruments/drive14.postcommit-diff.out — verdict NO_VERDICT_LINE
+   PRED_COUNT_MISMATCH  round449-instruments/drive15.final-clean.out — 0 PRED row(s) vs preds=2; readTail says PRED_ROW_COUNT_DISAGREEMENT
+   PRED_COUNT_MISMATCH  round449-instruments/drive16.final-clean-again.out — 0 PRED row(s) vs preds=2; readTail says PRED_ROW_COUNT_DISAGREEMENT
+   PRED_COUNT_MISMATCH  round449-instruments/drive17.final-fallthrough-crippled.out — 0 PRED row(s) vs preds=2; readTail says PRED_ROW_COUNT_DISAGREEMENT
+   PRED_COUNT_MISMATCH  round449-instruments/drive18.final-novar-crippled.out — 0 PRED row(s) vs preds=2; readTail says PRED_ROW_COUNT_DISAGREEMENT
+   PRED_COUNT_MISMATCH  round449-instruments/drive19.final-tokenonly-crippled.out — 0 PRED row(s) vs preds=2; readTail says PRED_ROW_COUNT_DISAGREEMENT
+   PRED_COUNT_MISMATCH  round449-instruments/drive2.pre-cure-disjoint-sets.out — 0 PRED row(s) vs preds=2; readTail says PRED_ROW_COUNT_DISAGREEMENT
+   PRED_COUNT_MISMATCH  round449-instruments/drive20.final-inert-name.out — 0 PRED row(s) vs preds=2; readTail says PRED_ROW_COUNT_DISAGREEMENT
+   PRED_COUNT_MISMATCH  round449-instruments/drive21.pre-commit.out — 0 PRED row(s) vs preds=2; readTail says PRED_ROW_COUNT_DISAGREEMENT
+   NO_VERDICT           round449-instruments/drive22.postcommit-diff.out — verdict NO_VERDICT_LINE
+   PRED_COUNT_MISMATCH  round449-instruments/drive7.clean.out — 0 PRED row(s) vs preds=2; readTail says PRED_ROW_COUNT_DISAGREEMENT
+   PRED_COUNT_MISMATCH  round449-instruments/drive8.clean-again.out — 0 PRED row(s) vs preds=2; readTail says PRED_ROW_COUNT_DISAGREEMENT
+   NO_VERDICT           round449-instruments/drive9.fallthrough-crippled.out — verdict NO_VERDICT_LINE
+   NO_VERDICT           round450-instruments/drive1.census-row-vocabulary.out — verdict NO_VERDICT_LINE
+   NO_VERDICT           round450-instruments/drive5.cripple-grading.out — verdict NO_VERDICT_LINE
+   NO_VERDICT           round450-instruments/drive6.cripple-grading-reason-keyed.out — verdict NO_VERDICT_LINE
+   NO_VERDICT           round450-instruments/drive8.postcommit-rediff.out — verdict NO_VERDICT_LINE
+   NO_VERDICT           round450-instruments/drive9.npm-test-gate.out — verdict NO_VERDICT_LINE
+   NO_VERDICT           round451-instruments/drive1.recon-the-out-corpus.out — verdict NO_VERDICT_LINE
+   NO_VERDICT           round451-instruments/drive4.npm-test-gate.out — verdict NO_VERDICT_LINE
+   NO_VERDICT           round452-instruments/drive1.census.out — verdict NO_VERDICT_LINE
+   NO_VERDICT           round452-instruments/drive10.r448-cripples-rerecorded.out — verdict NO_VERDICT_LINE
+   NO_VERDICT           round452-instruments/drive2.census2.out — verdict NO_VERDICT_LINE
+   NO_VERDICT           round452-instruments/drive3.all-ids.out — verdict NO_VERDICT_LINE
+   NO_VERDICT           round452-instruments/drive5.r446-redriven.out — verdict NO_VERDICT_LINE
+   NO_VERDICT           round452-instruments/drive6.r446-PINNED-source.out — verdict NO_VERDICT_LINE
+   LEG_GRAMMAR_ABSENT   round452-instruments/drive7.r446-alive-again.out — 0 LEG rows vs legs=5
+   NO_VERDICT           round452-instruments/drive9.r448-cripples-rerecorded.out — verdict NO_VERDICT_LINE
+
+LEG_GRAMMAR_ABSENT  44:
+   round442-instruments/drive1.out — 0 LEG rows vs legs=9
+   round442-instruments/drive2.out — 0 LEG rows vs legs=9
+   round442-instruments/drive3.out — 0 LEG rows vs legs=9
+   round443-instruments/drive1.out — 0 LEG rows vs legs=8
+   round443-instruments/drive2.out — 0 LEG rows vs legs=8
+   round443-instruments/drive3.postcommit.out — 0 LEG rows vs legs=8
+   round443-instruments/drive4.selfcensus-cured.out — 0 LEG rows vs legs=8
+   round443-instruments/drive5.final.out — 0 LEG rows vs legs=8
+   round443-instruments/drive6-r445-anchor-guard-repaired.out — 0 LEG rows vs legs=8
+   round443-instruments/his-instrument.postcommit.out — 0 LEG rows vs legs=9
+   round443-instruments/reproduce-his-round442.out — 0 LEG rows vs legs=9
+   round444-instruments/drive1.out — 0 LEG rows vs legs=7
+   round444-instruments/drive2.out — 0 LEG rows vs legs=7
+   round444-instruments/drive3.refuted-on-a-head-sourced-baseline.out — 0 LEG rows vs legs=7
+   round444-instruments/drive4.baseline-reader-crossed-a-newline.out — 0 LEG rows vs legs=7
+   round444-instruments/drive5.final.out — 0 LEG rows vs legs=7
+   round444-instruments/his-round442-instrument.postcommit.out — 0 LEG rows vs legs=9
+   round444-instruments/his-round442-instrument.recured.out — 0 LEG rows vs legs=9
+   round446-instruments/drive1.r444-unmodified-at-his-repaired-rev.out — 0 LEG rows vs legs=7
+   round446-instruments/drive2.child-stderr-leaked-into-the-recording.out — 0 LEG rows vs legs=4
+   round446-instruments/drive3.final.out — 0 LEG rows vs legs=4
+   round446-instruments/drive4.h5-refuses-before-the-cure.out — 0 LEG rows vs legs=5
+   round446-instruments/drive5.h5-conjunct-re-keyed.out — 0 LEG rows vs legs=5
+   round446-instruments/drive6.out — 0 LEG rows vs legs=5
+   round446-instruments/drive7.r444-cured-and-re-driven.out — 0 LEG rows vs legs=7
+   round446-instruments/drive8.postcommit.out — 0 LEG rows vs legs=5
+   round446-instruments/drive9.r444-postcommit.out — 0 LEG rows vs legs=7
+   round447-instruments/drive1.clean.out — 0 LEG rows vs legs=9
+   round447-instruments/drive2.g4key-crippled.out — 0 LEG rows vs legs=9
+   round447-instruments/drive3.inert-name.out — 0 LEG rows vs legs=9
+   round448-instruments/drive1.r446-unmodified-at-his-g4-repaired-rev.out — 0 LEG rows vs legs=5
+   round448-instruments/drive10.live.out — 0 LEG rows vs legs=6
+   round448-instruments/drive11.final.out — 0 LEG rows vs legs=6
+   round448-instruments/drive12.r446-after-the-sentence-cure.out — 0 LEG rows vs legs=5
+   round448-instruments/drive13.postcommit.out — 0 LEG rows vs legs=6
+   round448-instruments/drive15.hygiene-key-widened.out — 0 LEG rows vs legs=6
+   round448-instruments/drive16.postcommit-hygiene-widened.out — 0 LEG rows vs legs=6
+   round448-instruments/drive3.out — 0 LEG rows vs legs=6
+   round448-instruments/drive4.rows-selected-and-seams-collapsed.out — 0 LEG rows vs legs=6
+   round448-instruments/drive5.pin-keyed-on-the-repair-marker.out — 0 LEG rows vs legs=6
+   round448-instruments/drive6.legonly-crippled.out — 0 LEG rows vs legs=6
+   round448-instruments/drive7.blindpin-crippled.out — 0 LEG rows vs legs=6
+   round448-instruments/drive8.inert-name.out — 0 LEG rows vs legs=6
+   round452-instruments/drive7.r446-alive-again.out — 0 LEG rows vs legs=5
+
+PRED_COUNT_MISMATCH  13:
+   round449-instruments/drive10.novar-crippled.out — 0 PRED row(s) vs preds=2; readTail says PRED_ROW_COUNT_DISAGREEMENT
+   round449-instruments/drive11.tokenonly-crippled.out — 0 PRED row(s) vs preds=2; readTail says PRED_ROW_COUNT_DISAGREEMENT
+   round449-instruments/drive12.inert-name.out — 0 PRED row(s) vs preds=2; readTail says PRED_ROW_COUNT_DISAGREEMENT
+   round449-instruments/drive15.final-clean.out — 0 PRED row(s) vs preds=2; readTail says PRED_ROW_COUNT_DISAGREEMENT
+   round449-instruments/drive16.final-clean-again.out — 0 PRED row(s) vs preds=2; readTail says PRED_ROW_COUNT_DISAGREEMENT
+   round449-instruments/drive17.final-fallthrough-crippled.out — 0 PRED row(s) vs preds=2; readTail says PRED_ROW_COUNT_DISAGREEMENT
+   round449-instruments/drive18.final-novar-crippled.out — 0 PRED row(s) vs preds=2; readTail says PRED_ROW_COUNT_DISAGREEMENT
+   round449-instruments/drive19.final-tokenonly-crippled.out — 0 PRED row(s) vs preds=2; readTail says PRED_ROW_COUNT_DISAGREEMENT
+   round449-instruments/drive2.pre-cure-disjoint-sets.out — 0 PRED row(s) vs preds=2; readTail says PRED_ROW_COUNT_DISAGREEMENT
+   round449-instruments/drive20.final-inert-name.out — 0 PRED row(s) vs preds=2; readTail says PRED_ROW_COUNT_DISAGREEMENT
+   round449-instruments/drive21.pre-commit.out — 0 PRED row(s) vs preds=2; readTail says PRED_ROW_COUNT_DISAGREEMENT
+   round449-instruments/drive7.clean.out — 0 PRED row(s) vs preds=2; readTail says PRED_ROW_COUNT_DISAGREEMENT
+   round449-instruments/drive8.clean-again.out — 0 PRED row(s) vs preds=2; readTail says PRED_ROW_COUNT_DISAGREEMENT
+
+NO_VERDICT  364:
+   round388-instruments/cf-control-r385-his-r387.out — verdict NO_VERDICT_LINE
+   round388-instruments/cf-planted-r385-his-r387.out — verdict NO_VERDICT_LINE
+   round389-instruments/his388-against-my-cure.out — verdict NO_VERDICT_LINE
+   round389-instruments/his388-at-his-own-commit.out — verdict NO_VERDICT_LINE
+   round389-instruments/mine387-postcure.out — verdict NO_VERDICT_LINE
+   round389-instruments/mine387-precure-against-his-cure.out — verdict NO_VERDICT_LINE
+   round391-instruments/his390-at-50ed611b-detached-no-scratch.out — verdict NO_VERDICT_LINE
+   round391-instruments/his390-at-50ed611b-detached-scratch-planted.out — verdict NO_VERDICT_LINE
+   round391-instruments/his390-at-c0e0fc46-before-my-cure.out — verdict NO_VERDICT_LINE
+   round392-instruments/his391-in-a-detached-worktree-with-scratch-planted.out — verdict NO_VERDICT_LINE
+   round392-instruments/his391-in-a-scratch-free-detached-worktree-at-08a13b81.out — verdict NO_VERDICT_LINE
+   round392-instruments/his391-in-my-worktree-at-08a13b81.out — verdict NO_VERDICT_LINE
+   round392-instruments/my390-cured-in-a-scratch-free-detached-worktree.out — verdict NO_VERDICT_LINE
+   round392-instruments/my390-cured-live.out — verdict NO_VERDICT_LINE
+   round393-instruments/his392-detached-at-c848dc66.out — verdict NO_VERDICT_LINE
+   round393-instruments/his392-live-after-my-cure.out — verdict NO_VERDICT_LINE
+   round393-instruments/my391-cured-detached.out — verdict NO_VERDICT_LINE
+   round393-instruments/my391-cured-live.out — verdict NO_VERDICT_LINE
+   round393-instruments/my391-precure-detached.out — verdict NO_VERDICT_LINE
+   round393-instruments/my393-detached-scratch-planted.out — verdict NO_VERDICT_LINE
+   round393-instruments/my393-detached.out — verdict NO_VERDICT_LINE
+   round393-instruments/probe-round303-arm-b3.out — verdict NO_VERDICT_LINE
+   round394-instruments/his393-detached-at-his-own-commit.out — verdict NO_VERDICT_LINE
+   round394-instruments/his393-live-in-my-worktree.out — verdict NO_VERDICT_LINE
+   round394-instruments/my392-cured-detached.out — verdict NO_VERDICT_LINE
+   round394-instruments/my392-cured-live.out — verdict NO_VERDICT_LINE
+   round394-instruments/my392-precure-detached-at-c848dc66.out — verdict NO_VERDICT_LINE
+   round394-instruments/my392-precure-in-a-tree-after-the-mail-move.out — verdict NO_VERDICT_LINE
+   round395-instruments/cf-a-verdict-line-deleted.out — verdict NO_VERDICT_LINE
+   round395-instruments/cf-b-verdict-line-present-but-wrong.out — verdict NO_VERDICT_LINE
+   round395-instruments/cf-c-unmodified-copy.out — verdict NO_VERDICT_LINE
+   round395-instruments/header-probe.out — verdict NO_VERDICT_LINE
+   round395-instruments/his394-detached-at-his-own-commit.out — verdict NO_VERDICT_LINE
+   round395-instruments/his394-live-in-my-worktree.out — verdict NO_VERDICT_LINE
+   round395-instruments/my395-live.out — verdict NO_VERDICT_LINE
+   round396-instruments/his395-detached-before-my-cure.out — verdict NO_VERDICT_LINE
+   round396-instruments/his395-live-after-my-cure.out — verdict NO_VERDICT_LINE
+   round396-instruments/my394-cured-cf-a-verdict-line-deleted.out — verdict NO_VERDICT_LINE
+   round396-instruments/my394-cured-control-b-verdict-present-but-wrong.out — verdict NO_VERDICT_LINE
+   round396-instruments/my394-cured-control-c-unmodified.out — verdict NO_VERDICT_LINE
+   round396-instruments/my394-precure-cf-a-verdict-line-deleted.out — verdict NO_VERDICT_LINE
+   round396-instruments/my394-precure-control-b-verdict-present-but-wrong.out — verdict NO_VERDICT_LINE
+   round396-instruments/my394-precure-control-c-unmodified.out — verdict NO_VERDICT_LINE
+   round396-instruments/probe224-live-after-the-rename.out — verdict NO_VERDICT_LINE
+   round396-instruments/probe371-live-after-the-rekey.out — verdict NO_VERDICT_LINE
+   round396-instruments/sweep-at-the-rekey-commit.out — verdict NO_VERDICT_LINE
+   round396-instruments/the-key-counterfactuals.out — verdict NO_VERDICT_LINE
+   round396-instruments/typecheck-scripts.out — verdict NO_VERDICT_LINE
+   round397-instruments/cured-in-the-postcure-tree.out — verdict NO_VERDICT_LINE
+   round397-instruments/cured-in-the-precure-tree.out — verdict NO_VERDICT_LINE
+   round397-instruments/his396-anchor-vacuity.out — verdict NO_VERDICT_LINE
+   round397-instruments/his396-live-in-my-worktree.out — verdict NO_VERDICT_LINE
+   round397-instruments/old-spelling-in-the-postcure-tree.out — verdict NO_VERDICT_LINE
+   round397-instruments/old-spelling-in-the-precure-tree.out — verdict NO_VERDICT_LINE
+   round398-instruments/census-refusable-index-windows.out — verdict NO_VERDICT_LINE
+   round398-instruments/his395-cured-instrument-live.out — verdict NO_VERDICT_LINE
+   round398-instruments/his397-grader-live-after-my-cures.out — verdict NO_VERDICT_LINE
+   round398-instruments/my396-instrument-after-both-cures.out — verdict NO_VERDICT_LINE
+   round398-instruments/sweep-at-both-cures.out — verdict NO_VERDICT_LINE
+   round398-instruments/the-refusable-anchor-counterfactuals.out — verdict NO_VERDICT_LINE
+   round398-instruments/typecheck-packages.out — verdict NO_VERDICT_LINE
+   round398-instruments/typecheck-scripts.out — verdict NO_VERDICT_LINE
+   round399-instruments/census-the-named-binding-form.out — verdict NO_VERDICT_LINE
+   round399-instruments/sweep.out — verdict NO_VERDICT_LINE
+   round399-instruments/typecheck-packages.out — verdict NO_VERDICT_LINE
+   round399-instruments/typecheck-scripts.out — verdict NO_VERDICT_LINE
+   round400-instruments/his399-live.out — verdict NO_VERDICT_LINE
+   round400-instruments/regrade-the-file-scoped-guard.out — verdict NO_VERDICT_LINE
+   round400-instruments/sweep.out — verdict NO_VERDICT_LINE
+   round400-instruments/typecheck-packages.out — verdict NO_VERDICT_LINE
+   round400-instruments/typecheck-scripts.out — verdict NO_VERDICT_LINE
+   round401-instruments/census-the-branch-polarity-axis.out — verdict NO_VERDICT_LINE
+   round401-instruments/control-pre-label-repair.out — verdict NO_VERDICT_LINE
+   round401-instruments/sweep.out — verdict NO_VERDICT_LINE
+   round401-instruments/typecheck-packages.out — verdict NO_VERDICT_LINE
+   round401-instruments/typecheck-scripts.out — verdict NO_VERDICT_LINE
+   round402-instruments/hand-read-the-unguarded.out — verdict NO_VERDICT_LINE
+   round402-instruments/sweep.out — verdict NO_VERDICT_LINE
+   round402-instruments/typecheck-packages.out — verdict NO_VERDICT_LINE
+   round402-instruments/typecheck-scripts.out — verdict NO_VERDICT_LINE
+   round403-instruments/live-census.out — verdict NO_VERDICT_LINE
+   round403-instruments/sweep.out — verdict NO_VERDICT_LINE
+   round403-instruments/typecheck-packages.out — verdict NO_VERDICT_LINE
+   round403-instruments/typecheck-scripts.out — verdict NO_VERDICT_LINE
+   round404-instruments/grade-the-three-cures.out — verdict NO_VERDICT_LINE
+   round404-instruments/round368-postcure.out — verdict NO_VERDICT_LINE
+   round404-instruments/round368-precure.out — verdict NO_VERDICT_LINE
+   round404-instruments/round393-postcure.out — verdict NO_VERDICT_LINE
+   round404-instruments/round393-sibling-postcure.out — verdict NO_VERDICT_LINE
+   round404-instruments/round396-postcure.out — verdict NO_VERDICT_LINE
+   round404-instruments/round396-precure.out — verdict NO_VERDICT_LINE
+   round404-instruments/sweep.out — verdict NO_VERDICT_LINE
+   round404-instruments/typecheck-scripts.out — verdict NO_VERDICT_LINE
+   round404-instruments/typecheck-workspace.out — verdict NO_VERDICT_LINE
+   round406-instruments/hand-read-the-inline-seven.out — verdict NO_VERDICT_LINE
+   round406-instruments/hand-read-the-inline-seven.postcommit.out — verdict NO_VERDICT_LINE
+   round406-instruments/round404-redrive-at-head.out — verdict NO_VERDICT_LINE
+   round406-instruments/sweep.out — verdict NO_VERDICT_LINE
+   round406-instruments/typecheck-scripts.out — verdict NO_VERDICT_LINE
+   round406-instruments/typecheck-workspace.out — verdict NO_VERDICT_LINE
+   round407-instruments/drive1-precommit.out — verdict NO_VERDICT_LINE
+   round407-instruments/drive2-postcommit.out — verdict NO_VERDICT_LINE
+   round407-instruments/drive3-after-the-interpolation-fix.out — verdict NO_VERDICT_LINE
+   round407-instruments/drive4-clean-tree.out — verdict NO_VERDICT_LINE
+   round407-instruments/sweep.out — verdict NO_VERDICT_LINE
+   round407-instruments/typecheck-scripts.out — verdict NO_VERDICT_LINE
+   round407-instruments/typecheck-workspace.out — verdict NO_VERDICT_LINE
+   round408-instruments/drive1-precommit.out — verdict NO_VERDICT_LINE
+   round408-instruments/drive10-hand-read.out — verdict NO_VERDICT_LINE
+   round408-instruments/drive11-clean-tree.out — verdict NO_VERDICT_LINE
+   round408-instruments/drive12-final.out — verdict NO_VERDICT_LINE
+   round408-instruments/drive2-kp-and-population-fixed.out — verdict NO_VERDICT_LINE
+   round408-instruments/drive3-seam-graded.out — verdict NO_VERDICT_LINE
+   round408-instruments/drive4-with-bodies.out — verdict NO_VERDICT_LINE
+   round408-instruments/drive5-clean-tree.out — verdict NO_VERDICT_LINE
+   round408-instruments/drive6-literal-decoded.out — verdict NO_VERDICT_LINE
+   round408-instruments/drive7-kps-sliced.out — verdict NO_VERDICT_LINE
+   round408-instruments/drive8-kp-from-real-source.out — verdict NO_VERDICT_LINE
+   round408-instruments/drive9-clean-tree.out — verdict NO_VERDICT_LINE
+   round408-instruments/sweep.out — verdict NO_VERDICT_LINE
+   round408-instruments/typecheck-scripts.out — verdict NO_VERDICT_LINE
+   round408-instruments/typecheck-workspace.out — verdict NO_VERDICT_LINE
+   round409-instruments/drive1-precommit.out — verdict NO_VERDICT_LINE
+   round409-instruments/drive2-postcommit.out — verdict NO_VERDICT_LINE
+   round409-instruments/drive3-leg-split.out — verdict NO_VERDICT_LINE
+   round409-instruments/drive4-clean-tree.out — verdict NO_VERDICT_LINE
+   round409-instruments/sweep.out — verdict NO_VERDICT_LINE
+   round409-instruments/typecheck-scripts.out — verdict NO_VERDICT_LINE
+   round409-instruments/typecheck-workspace.out — verdict NO_VERDICT_LINE
+   round410-instruments/drive1-fixture-was-corrupted-by-the-write-path.out — verdict NO_VERDICT_LINE
+   round410-instruments/drive2-fixtures-constructed.out — verdict NO_VERDICT_LINE
+   round410-instruments/drive3-post-declaration-cure.out — verdict NO_VERDICT_LINE
+   round410-instruments/drive4-clean-tree.out — verdict NO_VERDICT_LINE
+   round410-instruments/drive5-seam-graded.out — verdict NO_VERDICT_LINE
+   round410-instruments/drive6-p6-rekeyed-to-the-inherited-corpus.out — verdict NO_VERDICT_LINE
+   round410-instruments/drive7-clean-tree.out — verdict NO_VERDICT_LINE
+   round410-instruments/his409-after-my-declaration-cure.out — verdict NO_VERDICT_LINE
+   round410-instruments/his409-driven-live-at-c86be65d.out — verdict NO_VERDICT_LINE
+   round410-instruments/rawprobe-od-c.out — verdict NO_VERDICT_LINE
+   round410-instruments/sweep.out — verdict NO_VERDICT_LINE
+   round410-instruments/typecheck-scripts.out — verdict NO_VERDICT_LINE
+   round410-instruments/typecheck-workspace.out — verdict NO_VERDICT_LINE
+   round411-instruments/drive1-untracked.out — verdict NO_VERDICT_LINE
+   round411-instruments/drive2-mention-vs-name.out — verdict NO_VERDICT_LINE
+   round411-instruments/drive3-tracked-seam-graded.out — verdict NO_VERDICT_LINE
+   round411-instruments/drive4-two-controls-dir-seam.out — verdict NO_VERDICT_LINE
+   round411-instruments/drive5-post-gate.out — verdict NO_VERDICT_LINE
+   round411-instruments/handread-the-body-sites.out — verdict NO_VERDICT_LINE
+   round411-instruments/his410-driven-live.out — verdict NO_VERDICT_LINE
+   round411-instruments/listing-under-the-409-key.out — verdict NO_VERDICT_LINE
+   round411-instruments/sweep.out — verdict NO_VERDICT_LINE
+   round411-instruments/typecheck-scripts.out — verdict NO_VERDICT_LINE
+   round411-instruments/typecheck-workspace.out — verdict NO_VERDICT_LINE
+   round412-instruments/drive1-untracked.out — verdict NO_VERDICT_LINE
+   round412-instruments/drive2-his-reader-copied-not-reimplemented.out — verdict NO_VERDICT_LINE
+   round412-instruments/drive3-p5-grades-both-halves.out — verdict NO_VERDICT_LINE
+   round412-instruments/drive4-p5-asserts-the-shared-prefix.out — verdict NO_VERDICT_LINE
+   round412-instruments/drive5-tracked-seam-armed.out — verdict NO_VERDICT_LINE
+   round412-instruments/explore-the-ternary-neighbourhood.out — verdict NO_VERDICT_LINE
+   round412-instruments/his411-driven-live.out — verdict NO_VERDICT_LINE
+   round412-instruments/my410-handread-at-c86be65d.out — verdict NO_VERDICT_LINE
+   round412-instruments/my410-handread-command-redriven.out — verdict NO_VERDICT_LINE
+   round412-instruments/sweep.out — verdict NO_VERDICT_LINE
+   round412-instruments/typecheck-scripts.out — verdict NO_VERDICT_LINE
+   round412-instruments/typecheck-workspace.out — verdict NO_VERDICT_LINE
+   round413-instruments/drive1-untracked.out — verdict NO_VERDICT_LINE
+   round413-instruments/drive2-untracked-repaired.out — verdict NO_VERDICT_LINE
+   round413-instruments/drive3-tracked-seam-graded.out — verdict NO_VERDICT_LINE
+   round413-instruments/drive4-reconcile-his-ten.out — verdict NO_VERDICT_LINE
+   round413-instruments/drive5-p4-corrected.out — verdict NO_VERDICT_LINE
+   round413-instruments/drive6-literalbodies-regraded.out — verdict NO_VERDICT_LINE
+   round413-instruments/his412-driven-live.out — verdict NO_VERDICT_LINE
+   round413-instruments/my411-redriven-G3-repaired.out — verdict NO_VERDICT_LINE
+   round413-instruments/my411-redriven-WITHOUT-the-clause.out — verdict NO_VERDICT_LINE
+   round413-instruments/my411-redriven-after-drive6.out — verdict NO_VERDICT_LINE
+   round413-instruments/my411-redriven-with-the-412-clause.out — verdict NO_VERDICT_LINE
+   round413-instruments/sweep.out — verdict NO_VERDICT_LINE
+   round413-instruments/typecheck-scripts.out — verdict NO_VERDICT_LINE
+   round413-instruments/typecheck-workspace.out — verdict NO_VERDICT_LINE
+   round414-instruments/drive1-untracked.out — verdict NO_VERDICT_LINE
+   round414-instruments/drive2-cell-fixed-p4-added.out — verdict NO_VERDICT_LINE
+   round414-instruments/his413-driven-live.out — verdict NO_VERDICT_LINE
+   round414-instruments/sweep-FIRST-RUN-contaminated-by-my-own-two-commits.out — verdict NO_VERDICT_LINE
+   round414-instruments/sweep-FIRST-RUN-wrapper.out — verdict NO_VERDICT_LINE
+   round414-instruments/sweep-wrapper.out — verdict NO_VERDICT_LINE
+   round414-instruments/sweep.out — verdict NO_VERDICT_LINE
+   round414-instruments/typecheck-scripts.out — verdict NO_VERDICT_LINE
+   round414-instruments/typecheck-workspace.out — verdict NO_VERDICT_LINE
+   round415-instruments/drive1-untracked.out — verdict NO_VERDICT_LINE
+   round415-instruments/drive2-callsite-keyed-and-d3-repaired.out — verdict NO_VERDICT_LINE
+   round415-instruments/drive3-label-corrected-and-mover-named.out — verdict NO_VERDICT_LINE
+   round415-instruments/his414-driven-live.out — verdict NO_VERDICT_LINE
+   round415-instruments/sweep.out — verdict NO_VERDICT_LINE
+   round415-instruments/typecheck-scripts.out — verdict NO_VERDICT_LINE
+   round415-instruments/typecheck-workspace.out — verdict NO_VERDICT_LINE
+   round416-instruments/drive1-pre-registered.out — verdict NO_VERDICT_LINE
+   round416-instruments/drive2-witness-regraded-at-the-cures-granularity.out — verdict NO_VERDICT_LINE
+   round416-instruments/drive3-class-size-narrowed.out — verdict NO_VERDICT_LINE
+   round416-instruments/drive4-figure-key-repaired.out — verdict NO_VERDICT_LINE
+   round416-instruments/his415-driven-live.out — verdict NO_VERDICT_LINE
+   round416-instruments/sweep.out — verdict NO_VERDICT_LINE
+   round416-instruments/typecheck-workspace.out — verdict NO_VERDICT_LINE
+   round417-instruments/control.out — verdict NO_VERDICT_LINE
+   round417-instruments/sdk-gap.out — verdict NO_VERDICT_LINE
+   round418-instruments/capability.out — verdict NO_VERDICT_LINE
+   round418-instruments/installed-sdk.out — verdict NO_VERDICT_LINE
+   round418-instruments/sec3.out — verdict NO_VERDICT_LINE
+   round419-instruments/grade-the-417-repairs.out — verdict NO_VERDICT_LINE
+   round419-instruments/his418-driven-live.out — verdict NO_VERDICT_LINE
+   round419-instruments/sec3-rekeyed.out — verdict NO_VERDICT_LINE
+   round420-instruments/drive-his-419.out — verdict NO_VERDICT_LINE
+   round420-instruments/grade-the-418-repair.out — verdict NO_VERDICT_LINE
+   round420-instruments/his-old-cell-is-keyed-on-head.out — verdict NO_VERDICT_LINE
+   round420-instruments/tool-surface-scope-leg.out — verdict NO_VERDICT_LINE
+   round421-instruments/grade-the-420-repair.out — verdict NO_VERDICT_LINE
+   round421-instruments/scope-label-legs-are-a-class-of-three.out — verdict NO_VERDICT_LINE
+   round422-instruments/drive-his-421.out — verdict NO_VERDICT_LINE
+   round422-instruments/his-census-only-21-is-ungated.out — verdict NO_VERDICT_LINE
+   round422-instruments/his-scope-census-cannot-see-a-hoisted-pattern.out — verdict NO_VERDICT_LINE
+   round423-instruments/grade-the-422-cures.out — verdict NO_VERDICT_LINE
+   round424-instruments/an-exit-code-is-not-the-gate-that-fired.out — verdict NO_VERDICT_LINE
+   round424-instruments/the-resolver-reads-one-pattern-per-body.out — verdict NO_VERDICT_LINE
+   round425-instruments/a-crash-cannot-print-separates.out — verdict NO_VERDICT_LINE
+   round425-instruments/position-vs-property-confusion-matrix.out — verdict NO_VERDICT_LINE
+   round426-instruments/a-published-sentence-is-not-its-discriminator.out — verdict NO_VERDICT_LINE
+   round426-instruments/a-retyped-constant-from-another-file-is-not-a-pin.out — verdict NO_VERDICT_LINE
+   round427-capability-test-pointer/the-history-window.out — verdict NO_VERDICT_LINE
+   round428-instruments/a-sentence-keyed-on-a-subset-publishes-past-its-own-gate.out — verdict NO_VERDICT_LINE
+   round429-instruments/does-any-other-instrument-retype-a-verdict-it-slices.after-promotion.out — verdict NO_VERDICT_LINE
+   round429-instruments/does-any-other-instrument-retype-a-verdict-it-slices.out — verdict NO_VERDICT_LINE
+   round430-instruments/baseline-round413-redriven-precure.out — verdict NO_VERDICT_LINE
+   round430-instruments/drive1.out — verdict NO_VERDICT_LINE
+   round430-instruments/drive2.out — verdict NO_VERDICT_LINE
+   round430-instruments/drive3.out — verdict NO_VERDICT_LINE
+   round430-instruments/drive4.after-promotion.out — verdict NO_VERDICT_LINE
+   round431-instruments/baseline-round414-precure.out — verdict NO_VERDICT_LINE
+   round431-instruments/drive1.out — verdict NO_VERDICT_LINE
+   round431-instruments/drive2.out — verdict NO_VERDICT_LINE
+   round431-instruments/drive3.out — verdict NO_VERDICT_LINE
+   round431-instruments/drive4.out — verdict NO_VERDICT_LINE
+   round431-instruments/drive5.after-promotion.out — verdict NO_VERDICT_LINE
+   round431-instruments/reproduce-his-round430.out — verdict NO_VERDICT_LINE
+   round431-instruments/round414-postcure.out — verdict NO_VERDICT_LINE
+   round432-instruments/baseline-round430-precure.out — verdict NO_VERDICT_LINE
+   round432-instruments/drive1.out — verdict NO_VERDICT_LINE
+   round432-instruments/drive2.out — verdict NO_VERDICT_LINE
+   round432-instruments/drive3.out — verdict NO_VERDICT_LINE
+   round432-instruments/his-round431-postcure.out — verdict NO_VERDICT_LINE
+   round432-instruments/reproduce-his-round431.out — verdict NO_VERDICT_LINE
+   round432-instruments/round413-post-positive-guard.out — verdict NO_VERDICT_LINE
+   round432-instruments/round413-pre-positive-guard.out — verdict NO_VERDICT_LINE
+   round432-instruments/round430-postcure.out — verdict NO_VERDICT_LINE
+   round433-instruments/drive1.out — verdict NO_VERDICT_LINE
+   round433-instruments/drive2.after-promotion.out — verdict NO_VERDICT_LINE
+   round433-instruments/reproduce-his-round432.out — verdict NO_VERDICT_LINE
+   round434-instruments/drive1.out — verdict NO_VERDICT_LINE
+   round434-instruments/drive2.after-promotion.out — verdict NO_VERDICT_LINE
+   round434-instruments/his-round433-postcure.out — verdict NO_VERDICT_LINE
+   round434-instruments/reproduce-his-round433.out — verdict NO_VERDICT_LINE
+   round434-instruments/round430-gate-at-HEAD-unedited.out — verdict NO_VERDICT_LINE
+   round434-instruments/round430-gate-postcure.out — verdict NO_VERDICT_LINE
+   round434-instruments/round432-gate-postcure.out — verdict NO_VERDICT_LINE
+   round435-instruments/drive1.before-my-two-corrections.out — verdict NO_VERDICT_LINE
+   round435-instruments/drive2.out — verdict NO_VERDICT_LINE
+   round435-instruments/drive3.red-on-its-own-promotion.out — verdict NO_VERDICT_LINE
+   round435-instruments/drive4.after-promotion.out — verdict NO_VERDICT_LINE
+   round435-instruments/live-round413.out — verdict NO_VERDICT_LINE
+   round435-instruments/live-round414.out — verdict NO_VERDICT_LINE
+   round435-instruments/live-round430.out — verdict NO_VERDICT_LINE
+   round435-instruments/live-round431.out — verdict NO_VERDICT_LINE
+   round435-instruments/live-round432.out — verdict NO_VERDICT_LINE
+   round435-instruments/live-round433.out — verdict NO_VERDICT_LINE
+   round435-instruments/reproduce-his-round434.out — verdict NO_VERDICT_LINE
+   round435-instruments/round431-precure-vs-cured.out — verdict NO_VERDICT_LINE
+   round435-instruments/vacuity-cripple-and-regrade.out — verdict NO_VERDICT_LINE
+   round436-instruments/drive1.raw.out — verdict NO_VERDICT_LINE
+   round436-instruments/drive2.raw.out — verdict NO_VERDICT_LINE
+   round436-instruments/drive3.before-promotion.out — verdict NO_VERDICT_LINE
+   round436-instruments/drive4.after-promotion.out — verdict NO_VERDICT_LINE
+   round436-instruments/drive5.final.out — verdict NO_VERDICT_LINE
+   round436-instruments/his-round435-postcure.out — verdict NO_VERDICT_LINE
+   round436-instruments/promotion-diff.out — verdict NO_VERDICT_LINE
+   round436-instruments/reproduce-his-round435.out — verdict NO_VERDICT_LINE
+   round436-instruments/round430-gate-postcure.out — verdict NO_VERDICT_LINE
+   round436-instruments/vacuity-cripple-and-regrade.out — verdict NO_VERDICT_LINE
+   round437-instruments/drive1.out — verdict NO_VERDICT_LINE
+   round437-instruments/my-round435-after-his-section-6-taken.out — verdict NO_VERDICT_LINE
+   round437-instruments/my-round435-at-his-cure.out — verdict NO_VERDICT_LINE
+   round437-instruments/my-round435-at-the-precure-slice.out — verdict NO_VERDICT_LINE
+   round437-instruments/reproduce-his-round436.out — verdict NO_VERDICT_LINE
+   round438-instruments/drive1.raw.out — verdict NO_VERDICT_LINE
+   round438-instruments/drive2.out — verdict NO_VERDICT_LINE
+   round438-instruments/drive3.out — verdict NO_VERDICT_LINE
+   round438-instruments/drive4.precommit.out — verdict NO_VERDICT_LINE
+   round438-instruments/drive5.final.out — verdict NO_VERDICT_LINE
+   round438-instruments/g9-known-positive.out — verdict NO_VERDICT_LINE
+   round438-instruments/his-round437-postcure.out — verdict NO_VERDICT_LINE
+   round438-instruments/round436-grader-after-repair.out — verdict NO_VERDICT_LINE
+   round438-instruments/vacuity-cripple-and-regrade.out — verdict NO_VERDICT_LINE
+   round439-instruments/drive1.out — verdict NO_VERDICT_LINE
+   round439-instruments/reproduce-his-round438.out — verdict NO_VERDICT_LINE
+   round440-instruments/drive1.out — verdict NO_VERDICT_LINE
+   round440-instruments/drive2.out — verdict NO_VERDICT_LINE
+   round440-instruments/drive3.postcommit.out — verdict NO_VERDICT_LINE
+   round440-instruments/drive4.final.out — verdict NO_VERDICT_LINE
+   round440-instruments/reproduce-his-round439.out — verdict NO_VERDICT_LINE
+   round440-instruments/sample-round433-rows.out — verdict NO_VERDICT_LINE
+   round440-instruments/vacuity.final.out — verdict NO_VERDICT_LINE
+   round440-instruments/vacuity.out — verdict NO_VERDICT_LINE
+   round441-instruments/drive1.out — verdict NO_VERDICT_LINE
+   round441-instruments/drive2.out — verdict NO_VERDICT_LINE
+   round441-instruments/drive3.out — verdict NO_VERDICT_LINE
+   round441-instruments/drive4.postcommit.out — verdict NO_VERDICT_LINE
+   round441-instruments/reproduce-his-round440.out — verdict NO_VERDICT_LINE
+   round441-instruments/vacuity.final.out — verdict NO_VERDICT_LINE
+   round441-instruments/vacuity.out — verdict NO_VERDICT_LINE
+   round442-instruments/reproduce-his-round441.out — verdict NO_VERDICT_LINE
+   round442-instruments/vacuity.final.out — verdict NO_VERDICT_LINE
+   round442-instruments/vacuity.out — verdict NO_VERDICT_LINE
+   round444-instruments/his-r443-instrument-dies-at-this-rev.out — verdict NO_VERDICT_LINE
+   round445-capability-test/drive1-nokey.out — verdict MALFORMED_FIELDS
+   round445-capability-test/drive1-pin-mismatch.out — verdict MALFORMED_FIELDS
+   round445-capability-test/drive2-pin-ok-nokey.out — verdict MALFORMED_FIELDS
+   round445-capability-test/verify-request-shapes-sdk0122.out — verdict NO_VERDICT_LINE
+   round447-instruments/drive4.cripple-inertness.out — verdict NO_VERDICT_LINE
+   round447-instruments/drive5.postcommit-diff.out — verdict NO_VERDICT_LINE
+   round448-instruments/drive14.mechanism-census.out — verdict NO_VERDICT_LINE
+   round448-instruments/drive2.census.out — verdict NO_VERDICT_LINE
+   round448-instruments/drive9.cripple-grading.out — verdict NO_VERDICT_LINE
+   round449-instruments/drive1.shape-census.out — verdict NO_VERDICT_LINE
+   round449-instruments/drive13.cripple-grading.out — verdict NO_VERDICT_LINE
+   round449-instruments/drive14.postcommit-diff.out — verdict NO_VERDICT_LINE
+   round449-instruments/drive22.postcommit-diff.out — verdict NO_VERDICT_LINE
+   round449-instruments/drive9.fallthrough-crippled.out — verdict NO_VERDICT_LINE
+   round450-instruments/drive1.census-row-vocabulary.out — verdict NO_VERDICT_LINE
+   round450-instruments/drive5.cripple-grading.out — verdict NO_VERDICT_LINE
+   round450-instruments/drive6.cripple-grading-reason-keyed.out — verdict NO_VERDICT_LINE
+   round450-instruments/drive8.postcommit-rediff.out — verdict NO_VERDICT_LINE
+   round450-instruments/drive9.npm-test-gate.out — verdict NO_VERDICT_LINE
+   round451-instruments/drive1.recon-the-out-corpus.out — verdict NO_VERDICT_LINE
+   round451-instruments/drive4.npm-test-gate.out — verdict NO_VERDICT_LINE
+   round452-instruments/drive1.census.out — verdict NO_VERDICT_LINE
+   round452-instruments/drive10.r448-cripples-rerecorded.out — verdict NO_VERDICT_LINE
+   round452-instruments/drive2.census2.out — verdict NO_VERDICT_LINE
+   round452-instruments/drive3.all-ids.out — verdict NO_VERDICT_LINE
+   round452-instruments/drive5.r446-redriven.out — verdict NO_VERDICT_LINE
+   round452-instruments/drive6.r446-PINNED-source.out — verdict NO_VERDICT_LINE
+   round452-instruments/drive9.r448-cripples-rerecorded.out — verdict NO_VERDICT_LINE
+   round453-instruments/drive1.census1.out — verdict NO_VERDICT_LINE
+   round453-instruments/drive2.census2.out — verdict NO_VERDICT_LINE
+   round453-instruments/drive3.attribution.out — verdict NO_VERDICT_LINE
+   round453-instruments/drive5.npmtest.out — verdict NO_VERDICT_LINE
+   round454-instruments/drive0.r449-at-head.out — verdict NO_VERDICT_LINE
+   round454-instruments/drive10.probe-sweep-after-the-repin.out — verdict NO_VERDICT_LINE
+   round454-instruments/drive2.probe0.out — verdict NO_VERDICT_LINE
+   round454-instruments/drive3.census1-at-pre-repair-rev.out — verdict NO_VERDICT_LINE
+   round454-instruments/drive4.census2.out — verdict NO_VERDICT_LINE
+   round454-instruments/drive5.census3.out — verdict NO_VERDICT_LINE
+   round454-instruments/drive6.probe-sweep-after-the-refusal.out — verdict NO_VERDICT_LINE
+   round454-instruments/drive6b.r260-alone-at-head.out — verdict NO_VERDICT_LINE
+   round454-instruments/drive6c.r303-alone.out — verdict NO_VERDICT_LINE
+   round454-instruments/drive7.r303-after-the-reader-widening.out — verdict NO_VERDICT_LINE
+   round454-instruments/drive8.probe1-b2a-counterfactual.out — verdict NO_VERDICT_LINE
+   round454-instruments/drive9.probe-sweep-clean-tree.out — verdict NO_VERDICT_LINE
+
+LEG C1 ok population 448 committed .out recording(s) selected with ls-tree at 172b547f81db597542b6c3344e683ff371b01d6a
+LEG C2 ok buckets sum to 448; corpus 448; detail rows 448; UNMODELLED 0 (a non-zero UNMODELLED means a recording no bucket claims)
+LEG C3 ok CONTROL round455-instruments/drive2.w10-disposition.out → COMPLETE (LEG 8=8, PRED 0=0) — expect COMPLETE
+LEG C4 ok KP round444-instruments/his-round442-instrument.postcommit.out → LEG_GRAMMAR_ABSENT (0 LEG rows vs legs=9) — expect LEG_UNDER_PRINTED or LEG_GRAMMAR_ABSENT, inferred from his drive2 naming it a join match on the LEG id set with 'legs' among the differing fields
+LEG C6 ok CONTROL for the slicer: readTail slice 1659 bytes; the LEG-count comparison the same key shape looks for is FOUND
+LEG C5 RED THE SEAM: readTail at 172b547f references verdict.preds: false (expect false — the gap this cell found) · at 172b547f: false (expect true — Round 460's cure) · the refusal is named PRED_ROW_COUNT_DISAGREEMENT and declared: false · LEG-count comparison still found by the same key shape: true
+PRED Q1 LANDED recordings failing readTail on a LEG count/grammar disagreement: 44
+PRED Q2 LANDED recordings whose PRED rows disagree with their own preds=N — the class readTail could not refuse at df5a27cc, refused as PRED_ROW_COUNT_DISAGREEMENT since Round 460; the predicate here keys on the counts directly and is unchanged by that cure: 13 — round449-instruments/drive10.novar-crippled.out, round449-instruments/drive11.tokenonly-crippled.out, round449-instruments/drive12.inert-name.out, round449-instruments/drive15.final-clean.out, round449-instruments/drive16.final-clean-again.out, round449-instruments/drive17.final-fallthrough-crippled.out, round449-instruments/drive18.final-novar-crippled.out, round449-instruments/drive19.final-tokenonly-crippled.out, round449-instruments/drive2.pre-cure-disjoint-sets.out, round449-instruments/drive20.final-inert-name.out, round449-instruments/drive21.pre-commit.out, round449-instruments/drive7.clean.out, round449-instruments/drive8.clean-again.out
+
+VERDICT/1 RED legs=6 red=[C5] refused=[] preds=2 refuted=[] prefused=[]

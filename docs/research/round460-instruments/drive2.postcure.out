@@ -1,0 +1,33 @@
+═══ ROUND 460 — THE readTail PRED GATE, GRADED OVER THE COMMITTED CORPUS ═══
+REV      172b547f81db597542b6c3344e683ff371b01d6a
+PRE_REV  172b547f81db597542b6c3344e683ff371b01d6a  (pinned literal — the pre-cure arm)
+DIRTY    true
+
+MOVED    13 recording(s) ok → PRED_ROW_COUNT_DISAGREEMENT
+   docs/research/round449-instruments/drive10.novar-crippled.out
+   docs/research/round449-instruments/drive11.tokenonly-crippled.out
+   docs/research/round449-instruments/drive12.inert-name.out
+   docs/research/round449-instruments/drive15.final-clean.out
+   docs/research/round449-instruments/drive16.final-clean-again.out
+   docs/research/round449-instruments/drive17.final-fallthrough-crippled.out
+   docs/research/round449-instruments/drive18.final-novar-crippled.out
+   docs/research/round449-instruments/drive19.final-tokenonly-crippled.out
+   docs/research/round449-instruments/drive2.pre-cure-disjoint-sets.out
+   docs/research/round449-instruments/drive20.final-inert-name.out
+   docs/research/round449-instruments/drive21.pre-commit.out
+   docs/research/round449-instruments/drive7.clean.out
+   docs/research/round449-instruments/drive8.clean-again.out
+OTHER TRANSITIONS  0
+
+
+LEG G1 ok population 448 committed .out recording(s), ls-tree at 172b547f81db597542b6c3344e683ff371b01d6a, cwd pinned to the repo root
+LEG G2 ok pinned pre-cure source LACKS PRED_ROW_COUNT_DISAGREEMENT: true · worktree lib DECLARES it: true · readTail DRIVES it by name on a lifted input: true (got PRED_ROW_COUNT_DISAGREEMENT) · pre-cure reader imported: true
+LEG G3 ok recordings where either arm failed to reach a decision: 0 — readTail is documented never to throw, graded here over the whole corpus rather than over the self-test
+LEG G4 ok transitions that are neither identical nor ok→PRED_ROW_COUNT_DISAGREEMENT: 0
+LEG G5 ok postcommit-rediff's 'before' recording round450-instruments/drive7.pre-commit-final.out reads ok after the cure — expect ok, or the re-diff compares an empty row map against a full one
+LEG G6 ok CONTROL round455-instruments/drive2.w10-disposition.out — pre-cure ok, post-cure ok — his C3 pre-registered this one as COMPLETE (LEG 8=8, PRED 0=0); a cure that refused the whole corpus would score every member moved
+LEG G7 ok KP round449-instruments/drive7.clean.out — named in his Q2 detail, pre-registered from his report: pre-cure ok, post-cure PRED_ROW_COUNT_DISAGREEMENT — expect ok → PRED_ROW_COUNT_DISAGREEMENT
+PRED P1 LANDED his Q2 figure under HIS key: MOVED ∩ (439 recordings at df5a27cc) = 13, expect 13 · my own population at 172b547f is 448 and gives MOVED 13, of which 0 postdate his rev
+PRED P2 LANDED members of MOVED outside round449-instruments: 0
+
+VERDICT/1 ok legs=7 red=[] refused=[] preds=2 refuted=[] prefused=[]

@@ -132,16 +132,33 @@ const pred = (id, landed, what) => preds.push({ id, landed, what });
 // ── W4 — a foreign row grammar is told apart from a run with nothing to report ──────────────────
 // The row-level cure for Round 441 §1. Both arms are needed: without the legs=0 arm the leg would
 // pass by refusing everything, which is the shape 356 warns about.
+//
+// Round 460 adds the PRED arm. `readTail` now breaks the same tie in the prediction vocabulary, and
+// the lib's docblock for `readTail` says so — a sentence written beside its own cure needs a pin or
+// it outlives the behaviour (430). The arm is a tail whose LEG count AGREES with its own `legs=N`,
+// so it is past the two LEG gates and can only be refused by the new one; and the control for it is
+// the `emptyOk` arm already here, where `preds=0` and zero PRED rows must stay clean.
 {
   const emptyRun = renderTail({ legs: [], preds: [] });
   const emptyOk = readTail(emptyRun).ok === true && readTail(emptyRun).rows.length === 0;
   const twoLegs = renderVerdict({ legs: [{ id: 'G6', ok: false }, { id: 'G7', ok: true }] });
   const foreign = readTail(`GATE: false   (2 leg(s))   RED: G6\n${twoLegs}`);
   const shortRows = readTail(`LEG G6 RED x\n${twoLegs}`);
+  const oneLegOnePred = renderVerdict({
+    legs: [{ id: 'G6', ok: false }], preds: [{ id: 'Q1', landed: true }],
+  });
+  const shortPreds = readTail(`LEG G6 RED x\n${oneLegOnePred}`);
+  // The PRED arm's own control: the same tail WITH its prediction row must read clean, or the arm
+  // above would pass on a reader that refused every tail carrying a `preds=N` at all.
+  const fullPreds = readTail(`LEG G6 RED x\nPRED Q1 LANDED y\n${oneLegOnePred}`);
   leg('W4', emptyOk && foreign.refusal === 'ROW_GRAMMAR_ABSENT'
-    && shortRows.refusal === 'ROW_COUNT_DISAGREEMENT',
+    && shortRows.refusal === 'ROW_COUNT_DISAGREEMENT'
+    && shortPreds.refusal === 'PRED_ROW_COUNT_DISAGREEMENT'
+    && fullPreds.ok === true,
   `legs=0 reads clean: ${emptyOk} · a foreign grammar at legs=2 reads ${foreign.refusal} · `
-  + `1 row at legs=2 reads ${shortRows.refusal}`);
+  + `1 row at legs=2 reads ${shortRows.refusal} · 0 PRED rows at preds=1 (LEG count agreeing) reads `
+  + `${shortPreds.refusal} · the same tail WITH its PRED row reads `
+  + `${fullPreds.ok === true ? 'ok' : fullPreds.refusal}`);
 }
 
 // ── W5 — every declared refusal is REACHED BY DRIVING, and no undeclared code hides in source ───
@@ -170,6 +187,11 @@ const pred = (id, landed, what) => preds.push({ id, landed, what });
     ROW_COUNT_DISAGREEMENT: () => readTail(
       `LEG G6 RED x\n${renderVerdict({ legs: [{ id: 'G6', ok: false }, { id: 'G7', ok: true }] })}`,
     ).refusal,
+    // Round 460. One LEG row against `legs=1` puts this past both LEG gates, so the only refusal it
+    // can reach is the PRED one.
+    PRED_ROW_COUNT_DISAGREEMENT: () => readTail(
+      `LEG G6 RED x\n${renderVerdict({ legs: [{ id: 'G6', ok: false }], preds: [{ id: 'Q1', landed: true }] })}`,
+    ).refusal,
   };
   const unreached = [];
   for (const code of ROW_REFUSALS) {
@@ -192,12 +214,21 @@ const pred = (id, landed, what) => preds.push({ id, landed, what });
   // CONTROL: a code that is not in the file must NOT be found, or the key is matching the universe.
   const controlClean = !inSource.has('NOT_A_REAL_ROW_REFUSAL');
 
+  // The last conjunct was `ROW_REFUSALS.length === 6` until Round 460, and the literal was the
+  // reason the PRED-gate cure could not land as a standalone edit: a population size pinned in a
+  // guard reddens on its own promotion (Round 458 §5). Derived now, and NOT vacuous — the loop above
+  // establishes `ROW_REFUSALS ⊆ inputs` by iterating the declaration, so the equality is the only
+  // thing in this leg that sees the OTHER direction: a code deleted from the lib's declared set with
+  // its driving input left behind here. That deletion is invisible to `unreached` (which never
+  // iterates it), invisible to `strays` (the source still has no stray), and invisible to the lib's
+  // own self-test (which derives its count the same way).
   leg('W5', unreached.length === 0 && strays.length === 0 && wrappedKP.length === 0
-    && controlClean && ROW_REFUSALS.length === 6,
+    && controlClean && ROW_REFUSALS.length === Object.keys(inputs).length,
   `all ${ROW_REFUSALS.length} declared row refusals DRIVEN by name: ${unreached.length === 0}`
   + `${unreached.length === 0 ? '' : ` (${JSON.stringify(unreached)})`} · undeclared codes in source: `
   + `${JSON.stringify(strays)} · wrapped-call KP found: ${wrappedKP.length === 0} · control clean: `
-  + `${controlClean}`);
+  + `${controlClean} · declared ${ROW_REFUSALS.length} vs driving inputs ${Object.keys(inputs).length} `
+  + '(derived, not a literal — the only leg that sees a code deleted from the declaration)');
 }
 
 // ── W6 — the corpus reader reads the whole censused vocabulary, and both shapes ──────────────────
