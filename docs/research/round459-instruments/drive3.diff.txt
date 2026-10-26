@@ -1,0 +1,10 @@
+2c2
+< rev 9275ba6ae84948cd20202a8cfb7a2cb9a8f41925
+---
+> rev 8e551e8e3edce9aaa529cae4d212d2bbe90e0b0b
+9,10c9,10
+< LEG S1 ok population: tracked instrument sources at a stamped REV, read with a `-C`-pinned reader, this cell's own directory excluded by name with the EXCLUSION COUNT printed rather than inferred from a green verdict (before this cell is committed the exclusion matches nothing, and a self-exclusion that is vacuous today becomes load-bearing on the re-drive) — population 395 · excluded by `docs/research/round459-instruments/`: 0 [] · REV 9275ba6a
+< LEG S2 ok CONTROL, both directions: the `-C`-pinned reader this cell uses must give the SAME population from the repo root and from this instrument's own directory, and the unpinned form must give a DIFFERENT one. The second arm is the one that matters — two agreeing arms with nothing that disagrees would pass this leg on a reader that ignores cwd for an unrelated reason, which is a self-portrait — pinned root=445 here=445 agree:true · UNPINNED root=445 here=0 differ:true (his 458 §4b measured 400 vs 0)
+---
+> LEG S1 ok population: tracked instrument sources at a stamped REV, read with a `-C`-pinned reader, this cell's own directory excluded by name with the EXCLUSION COUNT printed rather than inferred from a green verdict (before this cell is committed the exclusion matches nothing, and a self-exclusion that is vacuous today becomes load-bearing on the re-drive) — population 395 · excluded by `docs/research/round459-instruments/`: 1 ["docs/research/round459-instruments/grade-the-two-routed-sites-and-census-the-laundering-idioms.mjs"] · REV 8e551e8e
+> LEG S2 ok CONTROL, both directions: the `-C`-pinned reader this cell uses must give the SAME population from the repo root and from this instrument's own directory, and the unpinned form must give a DIFFERENT one. The second arm is the one that matters — two agreeing arms with nothing that disagrees would pass this leg on a reader that ignores cwd for an unrelated reason, which is a self-portrait — pinned root=447 here=447 agree:true · UNPINNED root=447 here=0 differ:true (his 458 §4b measured 400 vs 0)

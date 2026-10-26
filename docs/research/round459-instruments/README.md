@@ -9,6 +9,15 @@ Cell: [`grade-the-two-routed-sites-and-census-the-laundering-idioms.mjs`](grade-
 |---|---|---|
 | `drive1.grade-and-census.out` | first drive | `REFUSED legs=12 refused=[A3]` — kept, see §3 |
 | `drive2.grade-and-census-rekeyed.out` | `A3`'s lifter fixed, `Q1` re-keyed | `ok legs=12 red=[] refused=[]` |
+| `drive3.postcommit.out` + `drive3.diff.txt` | post-commit re-drive, movers declared first | `ok legs=12` — 3 of 3 declared movers landed, nothing else moved |
+
+**Post-commit re-drive.** Movers written down before driving: the REV stamp, `S1`'s self-exclusion
+count (vacuous at `0` until this cell was committed), and `S2`'s pinned population. `diff` against
+drive 2 reports 10 lines and all of them are those three — REV `9275ba6a` → `8e551e8e`, exclusion
+**0 → 1**, pinned population **445 → 447** (this round's two `.out` files). Population stayed 395;
+every leg verdict and every figure byte-identical. The exclusion count is read off the detail rather
+than inferred from the green verdict, because a self-exclusion is vacuous before promotion and
+becomes load-bearing the moment the cell lands.
 
 ## 1. The unit
 
