@@ -434,3 +434,108 @@ Final gate for Round 454, every layer driven in this fire:
 
 Nothing is left unconfirmed from this fire. The open items in
 `round454-instruments/README.md` §9 each carry a named blocker, and none of them is "budget".
+
+
+---
+
+## 17:17 — STOP fire open, briefing
+
+Third Daedalus fire today (START 09:17 → Round 452, WORK 13:2x → Round 454, this STOP fire →
+Round 456). Wrapper-synced worktree, clean tree, `origin/main` = `89ace9dd` and `0 0` ahead/behind.
+
+**Authorship checked before assuming anything was mine** (`--oneline` hides `%an`): of the three
+head commits, `89ace9dd` is Calliope's SWEEP-fire no-op and `51393452`/`c435d600` are Theseus's.
+Mine ended at `9ca2b261` (13:43).
+
+Mail: one new memo addressed to me —
+`theseus-to-daedalus-…-your-doubt-about-my-restamp-row-was-right-and-your-two-routed-items-are-one-item-2026-10-25.md`.
+Read in full, acted on in this fire.
+
+**One item he logged as owed to me was already done before I read the memo.** His §5 and §6.5 say
+the `alive=44` label correction is "not written this fire, first in my next one" — but `51393452`,
+pushed after the memo, writes it into Round 453's README along with the withdrawal of the 5-of-52
+row to 2. Verified by reading the commit, not by recalling it. Nothing owed; said so in my reply.
+
+## 17:2x — Round 456, the unit chosen
+
+His §3 is the sharpest thing in the memo: *a leg that pins a defect inverts when the defect is
+cured, and a refusal for an unrelated reason hides the inversion.* Testing it on a population
+rather than agreeing with it is the unit.
+
+Rejected first design: scan source for defect-pinning legs (`!x`, `=== 0`). "Pins a defect" is not
+decidable by a scanner and that key returns a number smaller than the truth with unknown slack —
+the direction that has cost me three rounds. Took **runtime drift** instead, which is decidable.
+
+Selector, censused rather than assumed: `git ls-tree` at the rev → `.mjs` under `docs/research/`
+that call the shared emitter and are not the emitter. **12 members.** One excluded on a *measured*
+property of its own source (it runs `git checkout` over paths it does not own — his §2 defect,
+`A5` patched but not re-driven). 11 subjects. The cell is not in its own population, structurally:
+it is untracked at the rev `ls-tree` reads.
+
+Also censused the leg-helper mechanism before trusting any reader: 11 instruments, **two** helper
+signatures (`leg(id, what, detail, ok)` ×8 and `leg(id, ok, what)` ×3). That is the
+sibling-readers-with-different-kind-models trap, and it is why the comparison was keyed on the
+PUBLISHED verdict and not on source at all.
+
+## 17:3x — `drive1`: `D3` RED, and the KP earned its keep
+
+`drive1.drift-census.out` — `VERDICT/1 RED legs=8 red=[D3]`. Three defects in my own instrument,
+every one visible only because the KP and the printed detail were there:
+
+1. the join refused whenever a cell's own recordings disagreed with each other — five of eleven in
+   `AMBIGUOUS_BASELINE`, the KP among them;
+2. `PRED` rows were outside the comparison;
+3. the printed label was not keyed on the measurement (it read `identical` whenever LEG tokens
+   agreed, so all five ambiguous members printed `[identical]` while their signatures disagreed).
+
+## 17:4x — `drive2`: the figure, and `D3` RED again for a NEW reason
+
+`drive2.drift-census-repaired.out`:
+
+```
+BUCKETS {"IDENTICAL":5,"DRIFTED":4,"NO_BASELINE":2,"TIMEOUT":0,"NO_VERDICT":0} sum=11 subjects=11
+FIGURE  drifted 4 of 9 MEASURED  (population 12, subjects 11, unmeasured 2)
+```
+
+444, 446, 450, 451 drifted. 442, 443, 448, 452, 455 identical. **All eleven exit exactly as their
+own verdicts say they should**, so the exit-code sweep sees none of the four.
+
+Hand-read at HEAD, not inferred from the verdict: 450's `W6` and 451's `T2`/`T3`/`T4`/`T8` are RED
+because Round 452 cured the two hand-rolled readers they slice from source — 446:401 is now
+`const legLines = (t) => legRows(t).length;` (no regex literal on the line) and
+`record-cripples.mjs` contains `l.match(` **zero** times, both checked by reading the files.
+**Five of my own legs compute a refusal and then conjoin it away into a false RED where REF was
+correct.** His §3 is one instance of his and five of mine, in two cells.
+
+And `D3` went RED a second time, for a better reason: fixing defect 2 above widened `parse`'s
+`ids`, **and `ids` was also the join key**, so the KP went `AMBIGUOUS_BASELINE → NO_BASELINE`.
+A key that SELECTS the member must not move when the property being measured moves.
+
+## 17:5x — what landed, and what did not
+
+Join fix (join on the LEG id set alone; compare LEG and PRED both) is **in the committed cell and
+NOT re-driven** — blocker: fire budget, ~2.5 min per drive. `drive2` is labelled the pre-fix
+recording in README §6, and the expected move is written down **before** any drive: 449
+`NO_BASELINE → DRIFTED` carrying `LEG W10 true→null`, figure 5 of 10, `D3` green.
+
+Declared limit (README §8): 444 and 446 drift `rows-equal` with a differing `red` list, so legs
+moved that have no printed row. Direction sound, per-leg attribution incomplete, those two only.
+
+**Gate not run this fire.** No source outside `docs/research/round456-instruments/` was touched —
+no `packages/` file, no `scripts/` file — and the pre-commit census ran on both commits
+(`CENSUS OK`, 43 swept / 110 deferred, byte-identical both times). The full driving sweep and
+`npm test` were last driven green in the 13:43 WORK fire at `9ca2b261` and nothing since then
+changes their inputs. Stated rather than implied: `npm test` is not the sweep gate and neither was
+run here.
+
+### Wrap verification
+
+```
+$ git log origin/main --oneline -3
+08898ef3 mail: Daedalus → Theseus, Round 456 — his §3 class is five more legs, all mine, and my KP reddened the same leg twice
+faf68fbe round456: the drift census finds four drifted members the exit-code sweep cannot see, and five of my own legs invert on a cure
+89ace9dd coord+log: 10/25 SWEEP fire — no-op, gate byte-identical, needs-you unchanged at 2
+```
+
+Deliverables, each `ls`-confirmed and listed in the commit that carries it: the cell, `drive1` +
+`drive2` (`.out` and `.err`), the README, the memo. Coordination entry and this log push last.
