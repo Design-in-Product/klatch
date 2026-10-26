@@ -154,3 +154,71 @@ re-derived fresh and byte-identical at every layer; sync confirmed against `orig
 directly. Two consecutive checks found nothing further unblocked. Fire closed bounded, per
 Klatch's recorded exception to the platform duty-cycle-drain baseline (the day-part checklist is
 the job here, not the floor for an unbounded drain).
+
+## 21:3x — STOP fire
+
+Checkpoint is this seat's own 10/25 SWEEP-fire commit `89ace9dd` (17:04:45 PT). `git log
+89ace9dd..HEAD --format='%h %an %ci %s'` = 10 new commits, none mine: Daedalus's Round 454 close
+(`4a05dbf8`…`9ca2b261`), Argus's own STOP-fire no-op (`9deef39f`), Daedalus's Round 456 chain
+(`faf68fbe`, `08898ef3`, `0983082c` — the drift census finds four drifted members the exit-code
+sweep cannot see, five of his own legs invert on a cure), Iris's own STOP-fire no-op
+(`df5a27cc`), and Theseus's Round 457 chain (`1162a9b9`, `e834d06c`, `5102f4bb`, `7417320c` — his
+456 prediction lands at 5 of 10, a vocabulary gap in a tail-reading helper, and a question-box
+memo pushed to the dispatch remote) — author-checked with `%an`. `git diff --stat
+89ace9dd..HEAD -- packages/ scripts/` **empty**, confirmed not assumed — all ten commits land
+under `docs/research/round454-instruments/`, `docs/research/round455-instruments/`,
+`docs/research/round456-instruments/`, `docs/research/round457-instruments/`, `docs/mail/`,
+coord, and logs.
+
+**Mail:** two new local memos since the SWEEP checkpoint (Daedalus→Theseus Round 456 "your 3-class
+is five more legs," Theseus→Daedalus Round 457 "your prediction lands exactly") read in full via
+their headers — both `**To:** Theseus`/`**To:** Daedalus`, `**Cc:** ... Calliope ...` — cc-only,
+neither asks anything of this seat. `grep -rl "^\*\*To:\*\* Calliope" docs/mail/*.md` — no hits;
+the four open Pard-to-Calliope threads from 10-20 remain the only standing Calliope-addressed
+mail, unchanged (smoke-run branch still doesn't exist — checked fresh via `git branch -a` and
+`git ls-remote origin`, no `smoke` hits — the one named blocker, not mine alone, unmoved). All
+four writable cross-repo mailboxes re-checked fresh via `find -newer` against a scratch
+reference file stamped to the exact checkpoint timestamp (created inside this worktree, deleted
+after reading, never staged): `designinproduct` 0 new, `mediajunkie` 0 new, `dispatch` 4 new (the
+daily DinP↔PM sync pair, an inbox-check-clean signal, and Theseus's own question-box memo —
+content-grepped, zero `klatch|calliope` hits across all four), `piper-morgan-product/mailboxes`
+216 new, content-grepped excluding `MANIFEST.md` — zero hits. Nothing owed from any.
+
+**Briefs unchanged:** `docs/briefs/cross-pollination/current.md` last touched `410cae30`
+(2026-10-25 13:06:45 +0000), predates this seat's SWEEP checkpoint. **Rollup:** still v171
+(`docs/operations/attention-rollup.md` last touched `e34f15e2`, 2026-10-24), needs-you unchanged
+at 2 — neither new round chain is rollup-tracked content.
+
+**Gate re-verified fresh:** `npm run typecheck` 0 `error TS` across all four workspaces; `npm
+test -w packages/server` unpiped — **140 files · 2183 passed · 1 skipped (2184)**,
+byte-identical; `npm test -w packages/client` unpiped — **26 passed|13 skipped (39) · 333
+passed|13 skipped (346)**, byte-identical; `node scripts/sweep-probes.mjs --census` — **153
+probe files, 43 swept/110 deferred, CENSUS OK**, byte-identical; `lsof -i :3001` — exit 1, port
+free; `git status --short` clean before and after.
+
+**Mandatory `log.html` entry written this fire, on time** — the Round 452–457 chain translated
+to plain-language narrative. Source-gathering for the six memos delegated to a subagent for
+factual extraction (all six read in full by the subagent, headers checked directly by this seat
+to confirm cc-only addressing); prose written directly against house style from that extraction,
+not copied from the subagent's own phrasing. Inserted immediately above the 10-24 entry;
+div-open/div-close count checked before and after via a short Node one-liner (137/137, balanced)
+rather than eyeballed; `grep -c "ENTRY: 2026-10-25" log.html` = 1, confirmed no duplicate.
+`calliope-tasks.md`'s recurring-items row updated (`next_due` 2026-10-26, `last_completed`
+2026-10-25) with a content summary appended ahead of the existing 10-24 text. `docs/STATE.md`
+not refreshed — today's commits are all research-track diagnostic-tooling findings, no product
+or roadmap change, consistent with every prior day in this chain.
+
+Task list of record: no other mandatory items beyond the logbook entry on a STOP fire;
+blog-series drafting remains gated on the angle/sequencing conversation with xian — checked
+`docs/drafts/` fresh (newest file mtime still 2026-09-28), no untouched discussion to act on,
+correctly left deferred. The four standing Pard threads (10-20) unchanged.
+
+**Drain:** commits read with author verified via `git log --format='%an'`; both new round-track
+memos read in full with headers confirmed cc-only; mail checked across local (grep for
+`**To:** Calliope`) plus all four cross-repo mailboxes with manifest re-touches distinguished
+from new content; briefs and rollup re-checked by commit hash/date rather than assumed
+unchanged; gate re-derived fresh and byte-identical at every layer; the mandatory `log.html`
+entry written from a full read (via delegated extraction) rather than summarized from mail
+subject lines; task-list bookkeeping updated alongside it. Two consecutive checks found nothing
+further unblocked. Fire closed bounded, per Klatch's recorded exception to the platform
+duty-cycle-drain baseline.

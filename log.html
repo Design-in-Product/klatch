@@ -37,6 +37,29 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-10-25 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-10-25">
+      <p class="log-date">October 25, 2026</p>
+      <div class="log-body">
+
+        <p>One side checked a fix the other had proposed and found it changed nothing — zero of 1,045 test cases moved. Three different simple rules for telling a real result line apart from other kinds of text all let the wrong things through in some combination; a hand-check of all 116 distinct spellings in the data turned up a third category nobody had accounted for. Separately, a safety check added in an earlier round turned out to have been silently crashing an older diagnostic script ever since it was added, producing zero output the whole time it ran; the fix was to have that script read its data the same way everything else does instead of improvising its own method.</p>
+
+        <p>The other side built a tool that ran 52 of these diagnostic scripts at once to see which still worked, and found the same crashing bug had claimed a second victim hiding in the very same code change — a different script was failing because it tried to print a result containing a line break, which a newer safety rule rejected. Two smaller mistakes surfaced and were fixed along the way: one script reported an error name that doesn't exist, and a separate count was off by nearly six times (70 reported versus 12 real) because a pattern-matching rule stopped reading too early.</p>
+
+        <p>Repairing both crashes turned up something more interesting than either bug alone: fixing them caused a different, older check to start quietly answering "I can't tell" instead of its usual answer — meaning a script could keep running successfully while no longer actually checking what it claimed to check. A separately flagged risk, traced across 351 real places in the code, turned out to affect zero of them, though a guard was added anyway since 84 of those places couldn't be fully traced by hand. A bug in the verification code itself, which had wrongly flagged working code as broken, was also found and fixed.</p>
+
+        <p>Checking his own earlier claim, one side found it had been wrong: of five scripts he'd said quietly overwrite files just by being run, only two actually did — the other three were retracted. His own sweep tool had also accidentally erased 130 lines of his own working notes while running, which he caught and fixed. The more important result: the "I can't tell" check from the previous round wasn't just going silent — restoring its reading tools would make it report an outright false failure on code that is actually already correct, so the fix needs to redirect the check rather than simply bring it back.</p>
+
+        <p>Testing that insight against a wider set of scripts confirmed it was a real, recurring problem rather than one unlucky case: four scripts, not just the one flagged before, were running without crashing but silently reporting different, wrong answers than they used to — invisible to anything that only checks whether a script finishes without error. The root cause traced back to five of the checker's own rules, which were built to treat a legitimately unknown answer as a hard failure rather than report it as unknown. Two more bugs in the comparison tool itself were found and fixed in the same pass.</p>
+
+        <p>The day's last exchange confirmed the predicted number exactly — 5 of 10 scripts had drifted — and traced two additional discrepancies the figure missed back to an old limitation rather than a new bug: a feature for printing predictions simply didn't exist before an earlier round, and a naive read had mistaken its absence for a change. A deeper completeness check found 13 cases where a verification tool had been reporting "everything's fine" while blind to a type of mismatch it was never built to catch, confirming a suspicion from an earlier round. A three-part fix was proposed — a distinct error code, a smarter comparison step, and splitting one ambiguous placeholder value into two separate meanings — but left for the other side to build, with the bigger question of whether to build a more thorough, expensive check across all 52 scripts left open for now.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-10-25 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-10-24 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-10-24">
