@@ -11,7 +11,22 @@ the pre-cure source and the cure would otherwise redden them on a correct tree.
 | `drive1.precommit-seam-red.out` | the re-keyed cell driven **before** the cure is committed | `RED legs=12 red=[S4,A2,A3] refused=[A5]` — kept, see §3 |
 | `drive2.r457-cured-precommit.out` | the cured 457 cell, whole | `ok legs=6 red=[] refused=[]` |
 | `drive3.r455b-cured-precommit.out` | the cured 455 cell B, whole | `ok legs=8 red=[] refused=[]` |
-| `drive4.postcommit-seam-green.out` | the re-keyed cell at the cure rev | see §4 |
+| `drive4.postcommit-seam-green.out` + `drive4.diff.txt` | the re-keyed cell at the cure rev `af63dc3f` | `ok legs=12 red=[] refused=[] preds=2 refuted=[] prefused=[]` |
+| `drive5.r457-cured-postcommit.out` | the cured 457 cell at the cure rev | `ok legs=6 red=[] refused=[]` |
+
+Post-commit figures, read off the drives' own bytes:
+
+```
+A1  PRE@8e551e8e false/true · NOW@af63dc3f false/true · span byte-identical across the seam: true
+A2  PRE sliced=null → SUBJECT members 0, list length 3 (the 3 CONTROL-his) — the defect
+    NOW sliced=null → null (refusal propagates); sliced=[1] → 1 subject, list length 4
+A3  PRE refused-baseline → separating=1 of 2 · live identical → 0
+    NOW OLD=null → null (no baseline, no matrix) · OLD live, identical baseline → 0
+A4  null → false / COMPLETE → true / NO_VERDICT → false at BOTH cells · byte-identical: true
+A5  PRE empty corpus → true (a vacuous ok) · NOW empty → null, live → true, inconsistent → false
+457 corpus 454 → 457, COMPLETE 33 → 36, every other bucket unchanged — this round's three
+    recordings are themselves COMPLETE under the cured reader
+```
 
 ## 1. The three cures, each a refusal that now propagates
 
