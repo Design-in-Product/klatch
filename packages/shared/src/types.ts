@@ -10,7 +10,17 @@ export const AVAILABLE_MODELS = {
   'claude-fable-5-1': { label: 'Fable 5.1', description: 'Newest Fable — frontier capability, export-control-cleared' },
   'claude-fable-5': { label: 'Fable 5', description: 'Frontier capability, export-control-cleared' },
   'claude-haiku-5-5': { label: 'Haiku 5.5', description: 'Newest Haiku — fastest, most compact' },
-  'claude-haiku-4-5-20251001': { label: 'Haiku 4.5', description: 'Prior-generation Haiku — legacy, EOL announced' },
+  // "EOL announced" was dropped 2026-10-26: it was never backed. The live
+  // deprecations page lists this id Active / Deprecated N/A with no entry in
+  // the deprecation history at all; the Nov 30 2026 retirement that three
+  // sweeps pinned here belongs to `claude-sonnet-4-5-20250929`, which Klatch
+  // does not carry. "Legacy" is the official lifecycle term for exactly this
+  // state ("no longer receives updates and might be deprecated in future") and
+  // is the accurate word — Haiku 5.5 is the default now. Its tentative floor
+  // ("not sooner than October 15, 2026") has elapsed, so a real deprecation
+  // could be announced at any time with 60 days' notice; re-check the page
+  // before adding a date, and do not re-derive one from a sweep summary.
+  'claude-haiku-4-5-20251001': { label: 'Haiku 4.5', description: 'Prior-generation Haiku — legacy' },
 } as const;
 
 // `ModelId` is a readable alias for a Claude model id, validated at RUNTIME
@@ -168,20 +178,28 @@ export function fallbackEffortLevels(modelId: string): EffortLevel[] {
     // The comment above is the reason to check rather than assume — a
     // wrong-but-present entry here disables real levels in the offline picker.
     //
-    // DELIBERATELY ABSENT: `claude-opus-5-5`, `claude-sonnet-5-5`,
-    // `claude-haiku-5-5`. Their *ids* are verified (Argus, live `GET /v1/models`
-    // 2026-10-19) but their `capabilities.effort` arrays are NOT — the fire that
-    // added them to `AVAILABLE_MODELS` could not reach an API key, so promoting
-    // them here on the family-resemblance of Opus 5 / Sonnet 5 would be exactly
-    // the assumption the Fable note above exists to forbid. They therefore take
-    // the documented unknown-model floor (`['low','medium','high']`, pinned by
-    // round39's "floors an unrecognised model at three levels rather than
-    // inventing capability"). This is offline-only and fails closed: the picker
-    // greys out levels the model may in fact support, rather than offering
-    // levels the API would reject. Online, the discovered set already carries
-    // the real arrays, so the live picker is correct today either way. Move each
-    // id up into this set as its own `capabilities.effort` is read from the live
-    // API — one id per reading, not all three on one.
+    // The three 5.5 ids below were DELIBERATELY ABSENT from 2026-10-19 to
+    // 2026-10-26: their ids were verified but their `capabilities.effort`
+    // arrays were not, because the fire that added them to `AVAILABLE_MODELS`
+    // could not reach an API key. Promoting them on the family-resemblance of
+    // Opus 5 / Sonnet 5 would have been exactly the assumption the Fable note
+    // above exists to forbid, so they took the unknown-model floor instead.
+    //
+    // PROMOTED 2026-10-26 on the bar this comment set — "one id per reading,
+    // not all three on one". `GET /v1/models/{id}` called once per id, twice
+    // over: Argus (10/26 intel sweep) and independently reproduced by Daedalus
+    // the same day, three separate requests each time, no id inferred from
+    // another. All three answer `effort.supported: true` with all five of
+    // low/medium/high/xhigh/max `supported: true`.
+    //
+    // The floor itself is unchanged and still the right default for an id
+    // nobody has read: `['low','medium','high']`, pinned by round39's "floors
+    // an unrecognised model at three levels rather than inventing capability".
+    // It fails closed — the offline picker greys out levels a model may in
+    // fact support, rather than offering levels the API would reject.
+    'claude-opus-5-5',
+    'claude-sonnet-5-5',
+    'claude-haiku-5-5',
     'claude-fable-5-1',
     'claude-fable-5',
     'claude-opus-5',

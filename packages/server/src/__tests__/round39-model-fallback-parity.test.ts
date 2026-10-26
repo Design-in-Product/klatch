@@ -118,40 +118,54 @@ describe('offline fallback effort ladders', () => {
     expect(fallbackEffortLevels('claude-opus-9')).toEqual(['low', 'medium', 'high']);
   });
 
-  // The three 5.5 ids are in the overlay (verified against the live Models API
-  // 2026-10-19) but NOT in `fallbackEffortLevels`' five-level set, because their
-  // `capabilities.effort` has not been read. The floor is the deliberate state,
-  // not an oversight — see the DELIBERATELY ABSENT note in `types.ts`.
+  // PROMOTED 2026-10-26. These three ids sat on the three-level floor from
+  // 10/19 to 10/26 because their `capabilities.effort` had not been read; the
+  // block that used to live here asserted that floor and told whoever promoted
+  // them to come edit it. `GET /v1/models/{id}` has now been called once per
+  // id, twice independently (Argus's intel sweep, reproduced by Daedalus the
+  // same day), and all three report all five levels. So the assertion flips
+  // from floored to five-level.
   //
-  // The `AVAILABLE_MODELS` assertion is the control, and it is the whole reason
-  // this test is worth writing: `fallbackEffortLevels` returns the three-level
-  // floor for *any* string, so a typo'd id ('claude-opus-5-5-' or
-  // 'claude-opus-55') would satisfy the ladder assertion alone and the test
-  // would pass for the wrong reason. Membership is what makes the floor
-  // attributable to a recognised-but-unverified model.
-  describe('5.5 models: recognised by the overlay, floored pending capability verification', () => {
-    const UNVERIFIED_LADDER = ['claude-opus-5-5', 'claude-sonnet-5-5', 'claude-haiku-5-5'];
+  // The `AVAILABLE_MODELS` assertion is the control, and it is still the whole
+  // reason this block is worth writing — but note the control now does MORE
+  // work than it did, not less. Under the old floor assertion a typo'd id
+  // ('claude-opus-55') would have passed, because the floor is what
+  // `fallbackEffortLevels` returns for any unrecognised string. Under the new
+  // five-level assertion a typo'd id FAILS on the ladder by itself. Membership
+  // is kept anyway: it is what makes a passing ladder attributable to the
+  // overlay entry rather than to a hardcoded set that happens to agree.
+  //
+  // DELIBERATELY NOT KEPT: an `UNVERIFIED_LADDER` list, now that it would be
+  // empty. `expect([].filter(...)).toEqual([])` passes no matter what
+  // `fallbackEffortLevels` does, so carrying the old guard forward with an
+  // empty array would leave a leg that can never go red — a guard in name
+  // only. The floor itself stays covered by the unrecognised-id assertion
+  // above ('claude-opus-9'), which is keyed on a string that is genuinely not
+  // in the overlay and so can actually fail.
+  describe('5.5 models: verified against the live Models API, five-level ladder', () => {
+    const VERIFIED_FIVE_LEVEL = ['claude-opus-5-5', 'claude-sonnet-5-5', 'claude-haiku-5-5'];
 
-    for (const id of UNVERIFIED_LADDER) {
-      it(`${id} is in the overlay and takes the three-level floor`, () => {
+    for (const id of VERIFIED_FIVE_LEVEL) {
+      it(`${id} is in the overlay and carries all five effort levels`, () => {
         expect(id in AVAILABLE_MODELS, `${id} is not an AVAILABLE_MODELS key`).toBe(true);
-        expect(fallbackEffortLevels(id)).toEqual(['low', 'medium', 'high']);
+        expect(fallbackEffortLevels(id)).toEqual(['low', 'medium', 'high', 'xhigh', 'max']);
       });
     }
 
-    // When someone reads a real `capabilities.effort` for one of these and
-    // promotes it, this is the assertion that should send them to the note in
-    // `types.ts` rather than letting the promotion land silently.
-    it('promoting one of them is a deliberate edit, not a silent one', () => {
-      const floored = UNVERIFIED_LADDER.filter(
-        (id) => fallbackEffortLevels(id).length === 3
+    // The inverse of the old guard: a demotion back to the floor is now the
+    // edit that would be silent. If one of these regresses, say why loudly —
+    // the live API is the only thing that should settle it either way.
+    it('demoting one of them back to the floor is a deliberate edit, not a silent one', () => {
+      const demoted = VERIFIED_FIVE_LEVEL.filter(
+        (id) => fallbackEffortLevels(id).length !== 5
       );
       expect(
-        floored,
-        'An id was promoted out of the floor. That is correct ONLY if its ' +
-          'capabilities.effort was read from the live Models API — if so, drop it ' +
-          'from UNVERIFIED_LADDER here and from the DELIBERATELY ABSENT note in types.ts.'
-      ).toEqual(UNVERIFIED_LADDER);
+        demoted,
+        'An id lost its five-level ladder. Each of these was read from the live ' +
+          'Models API on 2026-10-26 (one request per id). Re-read it before ' +
+          'demoting, and update the promotion note in types.ts if the API now ' +
+          'reports fewer levels.'
+      ).toEqual([]);
     });
   });
 
