@@ -1,0 +1,75 @@
+═══ ROUND 456 — VERDICT-DRIFT CENSUS OVER THE PUBLISHING POPULATION ═══
+rev 89ace9dd70ff5904d239754925e0601e55f8811e
+
+POPULATION  12 member(s) call the emitter and are not the emitter:
+   docs/research/round442-instruments/grade-the-shared-verdict-emitter.mjs
+   docs/research/round443-instruments/grade-the-emitter-at-its-published-line.mjs
+   docs/research/round444-instruments/grade-the-round-trip-cure.mjs
+   docs/research/round446-instruments/grade-my-own-oracle-predicate.mjs
+   docs/research/round448-instruments/grade-the-four-list-scorer.mjs
+   docs/research/round449-instruments/resolve-the-variable-write-targets.mjs
+   docs/research/round450-instruments/grade-the-row-guards.mjs
+   docs/research/round450-instruments/probe0-what-the-row-emitter-does-not-guard.mjs
+   docs/research/round451-instruments/settle-the-subset-question-on-real-exemplars.mjs
+   docs/research/round452-instruments/no-id-class-separates-and-the-liveness-reader-is-cured.mjs
+   docs/research/round455-instruments/attribute-each-restamp-to-the-file-it-stamps.mjs
+   docs/research/round455-instruments/dispose-of-w10-and-repair-the-lifter-it-needs.mjs
+
+EXCLUDED  1 member(s), keyed on a 'checkout' call in the member's own source:
+   docs/research/round455-instruments/attribute-each-restamp-to-the-file-it-stamps.mjs
+
+DRIVE   16127 ms  AMBIGUOUS_BASELINE  round442-instruments/grade-the-shared-verdict-emitter.mjs
+                            exit 1; 3 baselines disagree: drive1.out=[identical] drive2.out=[identical] drive3.out=[identical]
+DRIVE    5187 ms  AMBIGUOUS_BASELINE  round443-instruments/grade-the-emitter-at-its-published-line.mjs
+                            8 baselines disagree: drive1.out=[identical] drive2.out=[identical] drive3.postcommit.out=[identical] drive4.selfcensus-cured.out=[identical] drive5.final.out=[identical] drive6-r445-anchor-guard-repaired.out=[identical] his-instrument.postcommit.out=[identical] reproduce-his-round442.out=[identical]
+DRIVE   12868 ms  DRIFTED             round444-instruments/grade-the-round-trip-cure.mjs
+                            exit 1; baseline drive1.out+drive2.out+drive3.refuted-on-a-head-sourced-baseline.out+drive4.baseline-reader-crossed-a-newline.out+drive5.final.out+his-round442-instrument.postcommit.out+his-round442-instrument.recured.out
+DRIVE    5655 ms  DRIFTED             round446-instruments/grade-my-own-oracle-predicate.mjs
+                            baseline drive1.r444-unmodified-at-his-repaired-rev.out+drive2.child-stderr-leaked-into-the-recording.out+drive3.final.out+drive4.h5-refuses-before-the-cure.out+drive5.h5-conjunct-re-keyed.out+drive6.out+drive7.r444-cured-and-re-driven.out+drive8.postcommit.out+drive9.r444-postcommit.out
+DRIVE   21996 ms  AMBIGUOUS_BASELINE  round448-instruments/grade-the-four-list-scorer.mjs
+                            13 baselines disagree: drive1.r446-unmodified-at-his-g4-repaired-rev.out=[identical] drive10.live.out=[identical] drive11.final.out=[identical] drive12.r446-after-the-sentence-cure.out=[identical] drive13.postcommit.out=[identical] drive15.hygiene-key-widened.out=[identical] drive16.postcommit-hygiene-widened.out=[identical] drive3.out=[identical] drive4.rows-selected-and-seams-collapsed.out=[identical] drive5.pin-keyed-on-the-repair-marker.out=[identical] drive6.legonly-crippled.out=[identical] drive7.blindpin-crippled.out=[identical] drive8.inert-name.out=[identical]
+DRIVE   24501 ms  AMBIGUOUS_BASELINE  round449-instruments/resolve-the-variable-write-targets.mjs
+                            12 baselines disagree: drive10.novar-crippled.out=[W1 false→true;W10 true→null;W4 false→true] drive11.tokenonly-crippled.out=[W10 true→null] drive12.inert-name.out=[W10 true→null;W9 false→true] drive15.final-clean.out=[W10 true→null] drive16.final-clean-again.out=[W10 true→null] drive17.final-fallthrough-crippled.out=[W10 true→null;W2 false→true;W6 false→true] drive18.final-novar-crippled.out=[W1 false→true;W10 true→null;W4 false→true] drive19.final-tokenonly-crippled.out=[W10 true→null;W5 false→true] drive20.final-inert-name.out=[W10 true→null;W9 false→true] drive21.pre-commit.out=[W10 true→null] drive7.clean.out=[W10 true→null] drive8.clean-again.out=[W10 true→null]
+DRIVE     234 ms  AMBIGUOUS_BASELINE  round450-instruments/grade-the-row-guards.mjs
+                            5 baselines disagree: drive10.postcommit-final.out=[W6 true→false] drive2.first-full-drive.out=[W5 false→true;W6 true→false] drive3.w5-rekeyed-q1-deflated.out=[W6 true→false] drive4.w6-exemplar-in-the-padded-shape.out=[W6 true→false] drive7.pre-commit-final.out=[W6 true→false]
+DRIVE      40 ms  NO_BASELINE         round450-instruments/probe0-what-the-row-emitter-does-not-guard.mjs
+                            10 sibling .out, 0 with this LEG-id set (1 ids)
+DRIVE   11980 ms  DRIFTED             round451-instruments/settle-the-subset-question-on-real-exemplars.mjs
+                            moved: T2 true→false; T3 true→false; T4 true→false; T8 true→false
+                            baseline drive2.real-exemplar-key-t9-decomposed.out+drive3.postcommit-self-exclusion-live.out
+DRIVE   17325 ms  IDENTICAL           round452-instruments/no-id-class-separates-and-the-liveness-reader-is-cured.mjs
+                            baseline drive11.graded-after-448-rerecord.out+drive12.postcommit.out+drive8.graded-final.out
+DRIVE     171 ms  IDENTICAL           round455-instruments/dispose-of-w10-and-repair-the-lifter-it-needs.mjs
+                            baseline drive2.w10-disposition.out
+
+BUCKETS  {"IDENTICAL":2,"DRIFTED":3,"NO_BASELINE":1,"AMBIGUOUS_BASELINE":5,"TIMEOUT":0,"NO_VERDICT":0}  sum=11  subjects=11
+FIGURE  drifted 3 of 5 MEASURED member(s) (population 12, subjects 11, unmeasured 6)
+
+UNMEASURED  6:
+   AMBIGUOUS_BASELINE  round442-instruments/grade-the-shared-verdict-emitter.mjs — exit 1; 3 baselines disagree: drive1.out=[identical] drive2.out=[identical] drive3.out=[identical]
+   AMBIGUOUS_BASELINE  round443-instruments/grade-the-emitter-at-its-published-line.mjs — 8 baselines disagree: drive1.out=[identical] drive2.out=[identical] drive3.postcommit.out=[identical] drive4.selfcensus-cured.out=[identical] drive5.final.out=[identical] drive6-r445-anchor-guard-repaired.out=[identical] his-instrument.postcommit.out=[identical] reproduce-his-round442.out=[identical]
+   AMBIGUOUS_BASELINE  round448-instruments/grade-the-four-list-scorer.mjs — 13 baselines disagree: drive1.r446-unmodified-at-his-g4-repaired-rev.out=[identical] drive10.live.out=[identical] drive11.final.out=[identical] drive12.r446-after-the-sentence-cure.out=[identical] drive13.postcommit.out=[identical] drive15.hygiene-key-widened.out=[identical] drive16.postcommit-hygiene-widened.out=[identical] drive3.out=[identical] drive4.rows-selected-and-seams-collapsed.out=[identical] drive5.pin-keyed-on-the-repair-marker.out=[identical] drive6.legonly-crippled.out=[identical] drive7.blindpin-crippled.out=[identical] drive8.inert-name.out=[identical]
+   AMBIGUOUS_BASELINE  round449-instruments/resolve-the-variable-write-targets.mjs — 12 baselines disagree: drive10.novar-crippled.out=[W1 false→true;W10 true→null;W4 false→true] drive11.tokenonly-crippled.out=[W10 true→null] drive12.inert-name.out=[W10 true→null;W9 false→true] drive15.final-clean.out=[W10 true→null] drive16.final-clean-again.out=[W10 true→null] drive17.final-fallthrough-crippled.out=[W10 true→null;W2 false→true;W6 false→true] drive18.final-novar-crippled.out=[W1 false→true;W10 true→null;W4 false→true] drive19.final-tokenonly-crippled.out=[W10 true→null;W5 false→true] drive20.final-inert-name.out=[W10 true→null;W9 false→true] drive21.pre-commit.out=[W10 true→null] drive7.clean.out=[W10 true→null] drive8.clean-again.out=[W10 true→null]
+   AMBIGUOUS_BASELINE  round450-instruments/grade-the-row-guards.mjs — 5 baselines disagree: drive10.postcommit-final.out=[W6 true→false] drive2.first-full-drive.out=[W5 false→true;W6 true→false] drive3.w5-rekeyed-q1-deflated.out=[W6 true→false] drive4.w6-exemplar-in-the-padded-shape.out=[W6 true→false] drive7.pre-commit-final.out=[W6 true→false]
+   NO_BASELINE         round450-instruments/probe0-what-the-row-emitter-does-not-guard.mjs — 10 sibling .out, 0 with this LEG-id set (1 ids)
+
+DRIFTED, per member:
+   round444-instruments/grade-the-round-trip-cure.mjs
+   round446-instruments/grade-my-own-oracle-predicate.mjs
+   round451-instruments/settle-the-subset-question-on-real-exemplars.mjs
+      T2 true→false
+      T3 true→false
+      T4 true→false
+      T8 true→false
+
+LEG D0 ok declared exclusion: 1 member(s) run 'checkout' (expect 1: docs/research/round455-instruments/attribute-each-restamp-to-the-file-it-stamps.mjs); subjects 11 = population 12 - excluded 1
+LEG D1 ok population 12 selected with ls-tree at 89ace9dd70ff5904d239754925e0601e55f8811e
+LEG D2 ok comparator control: docs/research/round449-instruments/drive10.novar-crippled.out vs itself → IDENTICAL
+LEG D4 ok bucket sizes {"IDENTICAL":2,"DRIFTED":3,"NO_BASELINE":1,"AMBIGUOUS_BASELINE":5,"TIMEOUT":0,"NO_VERDICT":0} sum to 11; subjects 11; detail rows 11
+LEG D5 ok tracked paths dirtied outside docs/research/: 0
+LEG D3 RED KP round449-instruments/resolve-the-variable-write-targets.mjs: bucket AMBIGUOUS_BASELINE, moved [] — expect DRIFTED carrying 'W10 true→null'
+LEG D6 ok drifted 3 / measured 5 — denominator is the measured subset, not the population (12) and not the subjects (11)
+LEG D7 ok 6 unmeasured, each named with a reason; subjects 11 - measured 5 = 6
+PRED P1 LANDED drifted members beyond the W10 KP: 3 — round444-instruments/grade-the-round-trip-cure.mjs, round446-instruments/grade-my-own-oracle-predicate.mjs, round451-instruments/settle-the-subset-question-on-real-exemplars.mjs
+
+VERDICT/1 RED legs=8 red=[D3] refused=[] preds=1 refuted=[] prefused=[]
