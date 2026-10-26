@@ -58,3 +58,54 @@ mid-check before trusting the zero); both briefs re-read; rollup re-checked with
 re-derived day count, nothing moved; gate re-derived fresh and byte-identical at every layer;
 `log.html` continuity confirmed, nothing owed at a START fire. Two consecutive checks found
 nothing further unblocked. Fire closed bounded.
+
+## 12:3x PT — MID fire
+
+No-op, verified not assumed; gate byte-identical; needs-you unchanged at 2.
+
+Checkpoint is this seat's own 10/26 START-fire commit `c8097183` (08:35:25 PT). `git log
+c8097183..HEAD --format='%h %an %ci %s'` = 8 new commits, none mine: Argus's intel sweep
+(`43ec1caa`, three items routed to Daedalus — model/SDK label fixes), Daedalus's `types.ts` fix
+from that intel (`9c22ee17`), Daedalus's Round 458 chain (`c1291f07`, `77c359cf`, `9275ba6a` — a
+refused conjunct refuses its leg, 7 sites cured, 2 of them not red), and Theseus's Round 459 chain
+(`dc59866c`, `8e551e8e`, `d78aae80` — the two sites Daedalus routed are not defects, grading them
+found three that are). `git diff --stat c8097183..HEAD -- packages/ scripts/` shows two files: a
+server test file (`round39-model-fallback-parity.test.ts`) and `packages/shared/src/types.ts` —
+both from the routed intel fix (`9c22ee17`), checked directly rather than assumed from the commit
+subject.
+
+**Mail:** three new memos since checkpoint — Argus→Daedalus (intel sweep, cc xian only, no
+Calliope cc), Daedalus→Theseus (Round 458 reply, cc xian/Janus/Argus/Calliope/Iris), Theseus→
+Daedalus (Round 459 reply, same cc list) — all read in full via headers; all cc-only, none address
+this seat, consistent with the standing round-track pattern. `grep -rl '\*\*To:\*\* Calliope\|^to:
+Calliope' docs/mail/*.md` — same standing threads as this morning (the four Pard memos from 10-20,
+older closed ones), no new file. All four writable cross-repo mailboxes re-checked fresh via
+`find -newermt "2026-10-26 08:35:25 -0700"`: `designinproduct/docs/mail` 0 new, `mediajunkie/docs/mail`
+0 new, `dispatch/mail` 0 new, `piper-morgan-product/mailboxes` 0 new. Nothing owed from any.
+
+**Briefs:** unchanged since this morning's read (`57dc28a1`, `e066d699`) — no new commit touches
+either.
+
+**Rollup:** still v171, needs-you unchanged at 2 — same two items (blog-series angle/sequencing
+gated on xian; the ground-rules day-count question) as this morning, nothing moved since. Not
+re-deriving the day count a second time today — no new information since the START-fire read.
+
+**Gate re-verified fresh:** `npm run typecheck` 0 `error TS` across all four workspaces; `npm test
+-w packages/server` — **140 files · 2183 passed · 1 skipped (2184)**, byte-identical; `npm test -w
+packages/client` — **26 passed|13 skipped (39) · 333 passed|13 skipped (346)**, byte-identical;
+`node scripts/sweep-probes.mjs --census` — **153 probe files, 43 swept/110 deferred, CENSUS OK**,
+unchanged; `lsof -i :3001` port free; `git status --short` clean before and after. The `types.ts`
+diff landed since checkpoint is covered by the test file in the same commit (`9c22ee17`) and the
+gate passing fresh confirms it — no separate drive needed.
+
+**`log.html`:** 10-26 correctly not yet due — mandatory entry is a STOP-fire obligation.
+
+Task list of record: no mandatory items due on a MID fire; blog-series drafting remains gated on
+xian; the four standing Pard threads unchanged (smoke-run branch still doesn't exist, checked via
+`git branch -a` / `git ls-remote origin`).
+
+**Drain:** commits read with author verified and the one `packages/scripts` diff since checkpoint
+checked directly rather than assumed from commit subjects; mail checked across local plus all four
+cross-repo mailboxes; both briefs re-checked by commit hash, unchanged; rollup re-checked, nothing
+moved; gate re-derived fresh and byte-identical at every layer. Two consecutive checks found
+nothing further unblocked. Fire closed bounded.
