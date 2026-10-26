@@ -420,3 +420,157 @@ three that remain have cost or scope blockers, named identically in the Round 45
 memo §6: the re-drive of cell A, the 52-drive ordered reproduction, W10's re-aim in source, and
 Round 453's 8 unseparated non-zero exits. Needs-you stays at **1** — the verdict-drift census, which
 his §5 and my §3 both decline to decide.
+
+---
+
+## 19:47 — STOP fire opens: one unanswered memo, and it has two items with only a budget blocker
+
+`date` at fire open: **2026-10-25 19:47**. Worktree synced by the wrapper, tree clean, branch
+`claude/theseus-cycle` at `df5a27cc`.
+
+Briefing run, not recalled. `git log origin/main` after `git fetch`: the top five are Iris's and
+Argus's STOP no-ops, then Daedalus's Round 456 chain (`0983082c`, `08898ef3`, `faf68fbe`),
+author-checked with `%an` — **none mine**. My own last commit is `51393452` at 15:05.
+
+Mail: `ls -lt docs/mail/*.md` puts
+`daedalus-to-theseus-…-your-3-class-is-five-more-legs-and-all-five-are-mine-2026-10-25.md` at the
+top. `git log` on the path: committed by **Daedalus at 17:29**, i.e. after my 15:05 wrap, and there
+is no reply from me. **Unanswered inbound addressed to this seat** — read in full before any other
+work, per the mail discipline.
+
+His §7 leaves five items, each with a blocker. Two of them name **fire budget** and nothing else:
+§7.2 (re-drive the census with the join fix) and §7.3 (completeness-classify each comparison with
+`readTail`). I have the budget. Those are the fire.
+
+## 19:5x — his §4 prediction, driven
+
+He committed the join fix in source, did **not** drive it, and wrote the expected move down first —
+"449 `NO_BASELINE → DRIFTED` carrying `LEG W10 true→null` … makes the figure **5 of 10** and `D3`
+green."
+
+Checked his cell's write sites statically before driving it (`grep` for `writeFileSync`,
+`execFileSync`, `checkout`, `rmSync`) rather than trusting the directory to be inert: its only write
+is a restore of dirtied paths under `docs/research/` from `${REV}`'s own bytes, and `REV` is `HEAD`.
+My tree was clean, so a restore lands on committed bytes. Recorded to my **own** round dir, never
+over his `drive1`/`drive2`.
+
+`drive1.redrive-of-456-with-his-join-fix.out`:
+
+```
+BUCKETS  {"IDENTICAL":5,"DRIFTED":5,"NO_BASELINE":1,"TIMEOUT":0,"NO_VERDICT":0}  sum=11  subjects=11
+FIGURE  drifted 5 of 10 MEASURED member(s) (population 12, subjects 11, unmeasured 1)
+LEG D3 ok KP round449: bucket DRIFTED, moved [LEG W10 true→null; PRED Q1 ABSENT→false; PRED Q2 ABSENT→true]
+VERDICT/1 ok legs=8 red=[] refused=[] preds=1 refuted=[] prefused=[]
+```
+
+**Every number he named.** 5 of 10, `D3` green, the `W10` movement carried, `NO_BASELINE` 2 → 1.
+
+## 20:0x — a candidate finding of mine, dropped before publishing it
+
+Reading his `compare` adversarially rather than reading his verdict: the row diff is keyed on
+`new Set([...bm.keys(), ...hm.keys()])` and the **field** diff on `Object.keys(base.verdict)` alone
+— the exact mirror of the bug he had just fixed in his own join. A field present only in HEAD's
+verdict would be invisible.
+
+Checked the lib instead of writing it up: `readVerdict` returns
+`{ token, legs, red, refused, preds, refuted, prefused }` — a **fixed 7-key literal**. The key sets
+cannot differ, so the asymmetry **cannot miss anything**. Vacuous, not a defect. Not reported to him
+as one. Latent only: it goes live silently if `readVerdict` ever gains an optional field, which is
+exactly the kind of evolution this corpus has already had once.
+
+Cost of checking: two tool calls. Cost of not checking: a false accusation in a memo.
+
+## 20:0x–20:2x — his §5, and the half of it his own tie-breaker cannot refuse
+
+Before hand-rolling anything, checked `lib/` — `readTail` **already** implements his §5 check
+(`ROW_GRAMMAR_ABSENT`, `ROW_COUNT_DISAGREEMENT`). So §7.3 needed no detector; it needed driving over
+the corpus, and the corpus is committed bytes, so **his fire-budget blocker does not apply to this
+shape**. Said that explicitly rather than quietly doing it.
+
+Reading `readTail` to use it surfaced the real finding: it compares
+`legRows.length !== v.verdict.legs` and **never looks at `preds`**. A recording that under-prints its
+PRED rows is a completeness defect the tie-breaker he would have called **cannot refuse**.
+
+Cell: `grade-recording-completeness-across-the-whole-corpus.mjs`. 439 committed `.out` at the rev,
+selected with `ls-tree` and read with `git show` — never the worktree, so my own untracked recordings
+are excluded by construction at this rev and the count is rev-stamped. Buckets positively keyed
+including the last (`legOk && predOk`, not `else`), so an unclaimed recording lands in `UNMODELLED`
+and `C2` reddens rather than being absorbed as COMPLETE.
+
+`drive2.completeness-census.out`, `.err` empty (`grep -c .` = 0):
+
+```
+BUCKETS  {"COMPLETE":18,"LEG_UNDER_PRINTED":0,"LEG_GRAMMAR_ABSENT":44,
+          "PRED_COUNT_MISMATCH":13,"ROWS_UNREADABLE":0,"NO_VERDICT":364,"UNMODELLED":0}  sum=439
+FIGURE   57 of 439 cannot support complete per-row attribution; 13 in the class readTail cannot refuse
+VERDICT/1 ok legs=6 red=[] refused=[] preds=2 refuted=[] prefused=[]
+```
+
+All six gate legs green; `Q1` LANDED at 44; **`Q2` LANDED at 13, and I did not know the answer when
+I wrote it.**
+
+**The 13 are the finding, and they explain his KP's extra movement.** Every one is in round449,
+every one reads `0 PRED row(s) vs preds=2`, and **`readTail` says ok for all thirteen**. Those are
+precisely the twelve baselines his census joined 449's HEAD output against, plus one. Cause, from
+the lib's own comment on `renderPredRows`: PRED rows did not exist before Round 450, and `renderTail`
+accepted a prediction's `what` and **dropped** it. So his comparator's `'ABSENT'` sentinel is
+reporting an emitter-dropped row as a drift.
+
+One sentinel, two facts: *no such prediction* vs *declared and not printed*. Only the first is drift,
+and `preds=N` is published in the recording to tell them apart.
+
+**Direction, written down because it runs against him:** this *inflates* movement, the opposite of
+the conservative direction his §4 claims for the figure. At this rev it changes **no member's
+bucket** — checked each of the five DRIFTED members in `drive1`: 450 and 451 carry real
+`true→false` transitions, 444 and 446 are field-only, and 449 moves on `W10` regardless. So **his
+5 of 10 stands**, on the facts of this rev rather than on the construction. Said that way round
+deliberately.
+
+**`C4`'s KP came from his report, not from my measurement** —
+`round444-instruments/his-round442-instrument.postcommit.out`, which *his* drive2 named as a join
+match on the LEG id set with `legs` among the differing fields. Equal id set plus differing `legs`
+is only possible if a side under-prints. It buckets `LEG_GRAMMAR_ABSENT`, `0 LEG rows vs legs=9`.
+A KP chosen on independent grounds, then verified to carry the property.
+
+**`C6` before `C5`.** `C5` claims a source key answers false; a key that finds nothing proves
+nothing, so `C6` asserts the same key shape **finds** the LEG comparison it is keyed to miss for
+PRED. `C6` ok, slice 1659 bytes. The slice is bisected on the declaration and the next top-level
+`export` rather than grepped file-wide, because a file-wide key would hit `readVerdict`'s own
+`refuted.length + prefused.length > preds` and answer a different question.
+
+**The repair, and why it must not land alone — verified in source, not recalled.** Two live
+`readTail` callers outside my cell (`grep -rln`), both in round450. `postcommit-rediff.mjs` is the
+hazard: its `rowsOf` does `if (r.ok) for (...)` and otherwise returns an **empty map** — a refusal
+becomes *every row absent*, i.e. total drift, in an instrument whose job is reporting drift. Checked
+its own input (`drive7.pre-commit-final.out`): buckets COMPLETE at this rev, so a PRED gate would not
+refuse it **today**. Wrote it that way — the defect is that nothing there would tell us if it ever
+did — rather than the stronger claim I first drafted from memory.
+
+## 20:2x — wrap
+
+Session Wrap Protocol, run not recalled.
+
+**Step 1 — commits on `origin/main`** (`git push origin HEAD:main` → `df5a27cc..e834d06c`, then
+`git log origin/main --format='%h %an %s'`):
+
+```
+e834d06c Theseus (Klatch) mail: Theseus -> Daedalus, Round 457 — his prediction lands exactly, and his KP's PRED movement is a fossil his own tie-breaker cannot refuse
+1162a9b9 Theseus (Klatch) round457: his 456 prediction lands at 5 of 10, and his KP's PRED movement is an emitter fossil
+df5a27cc Iris (Klatch) coord+log: 10/25 STOP fire — no-op, Round 452/453/454/455/456 chain landed not mine, gate byte-identical
+```
+
+Author-checked with `%an`: both new commits are mine.
+
+**Step 2 — deliverables present in the `origin/main` tree** (`git ls-tree -r --name-only`), not
+merely on disk — recorded in the next log entry together with the coord commit.
+
+**Drain:** mail to inbox-zero for this seat (one inbound, read and answered in-fire). Unblocked work
+drained: his §4 re-drive, the completeness census, README, memo, coord entry, this log. Deferred,
+each with a named blocker — re-run his join with completeness attached (fire budget; mine, next
+unit); the comparator's sentinel split and the `readTail` PRED gate (routed to him — his cell, and
+the gate needs the refusal-code decision first); Round 453's 8 unseparated non-zero exits and 2
+undriven `spawn`-hazard instruments (cost); the 52-member drift census (cost + a decision).
+Thread stays in `docs/mail/` — his §7.1 (the refused-conjunct repair) and §7.4/§7.5 are open and
+not mine to close.
+
+**Needs you (xian): 1**, unchanged — the drift census over the full 52.
