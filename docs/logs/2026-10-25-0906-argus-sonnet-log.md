@@ -119,3 +119,73 @@ scripts/sweep-probes.mjs --census` still **153 probe files, 43 swept/110 deferre
 OK**, byte-identical counts. Server/client suites and the full sweep were not re-run a second
 time this fire — the typecheck and census re-checks are the two gate layers this specific
 change could plausibly move, and both held.
+
+## 18:05 PT (STOP fire) — no-op on product; Round 454/455/456 chain plus a SWEEP no-op landed,
+none mine; gate re-verified fresh and green, probe-round303's pin moved 18→20 (not mine,
+already landed) and the full drive confirms 20/20 and 43/43 green
+
+Checkpoint is this seat's own 10/25 WORK-fire correction commit `8dc53936` (13:38:55 PT).
+`git log 8dc53936..HEAD --format='%h %an %ci %s'` — 11 new commits, none mine: Daedalus's
+Round 454 close (`a4f42fc7` re-pins `probe-round303` at 20 checks after his own clean re-drive
+confirmed the 260 diagnosis and caught the pin reddening on its own promotion — `exit 0, pin
+says 18, observed says 20`, found by the drive and not by `npm test`, whose census reads
+bookkeeping and drives nothing; `9b577d27` coord+log; `9ca2b261` sweep 43/43 green after the
+re-pin) and his coord+log; Theseus's Round 455 chain (`679ab189` the re-stamping attribution
+cell, `0fcdbea0` his own re-stamp row does not reproduce for 3 of 5, `d4d4deeb` mail to
+Daedalus, `c435d600` coord, `51393452` the corrections written into Round 453's README —
+alive=44 is a hard-death bound and the 5-of-52 row withdrawn to 2); Calliope's 10/25 SWEEP
+fire (`89ace9dd`, no-op, gate byte-identical, needs-you unchanged at 2); and Daedalus's Round
+456 chain (`faf68fbe` the drift census finds four drifted members the exit-code sweep cannot
+see and five of his own legs invert on a cure, `08898ef3` mail to Theseus, `0983082c`
+coord+log) — author-checked with `%an`, none mine.
+
+`git diff --stat 8dc53936..HEAD -- packages/ scripts/` — **not empty this time**: one file,
+`scripts/sweep-probes.mjs`, 17 insertions/2 deletions, all from Daedalus's `a4f42fc7`
+probe-round303 re-pin (18→20 regression checks, plus the comment documenting the B2a/B2b
+checks that caused the bump). Read the diff directly rather than trusting the stat line —
+it's a pin-count and comment change inside the `SWEPT` array, not a new probe or a behaviour
+change to the sweep runner itself.
+
+**Mail:** `grep -rl '^\*\*To:\*\* Argus' docs/mail/*.md` — no hits. Three new local mail files
+since the 13:38 PT checkpoint (`git diff --name-only 8dc53936..HEAD -- docs/mail/` excluding
+`read/`): Daedalus's "your second victim is repaired" and "your 3-class is five more legs"
+memos to Theseus, and Theseus's "your doubt about my re-stamp row was right" memo to
+Daedalus — all three cc this seat only, already reflected in the drain above, nothing owed.
+
+All four writable cross-repo mailboxes checked by `find -newer` against the 09:06-stamped
+reference log: `designinproduct` 4 new (Palo Alto Slack-invite thread plus a Tally heartbeat
+memo, zero klatch/argus content hits); `mediajunkie` 2 new (Cairn→Pard shots 1/2/6 rerun,
+Themis→Pard Tally heartbeat, zero hits); `dispatch` 0 new;
+`piper-morgan-product/mailboxes` 276 new, case-insensitive `klatch|argus` grep across all new
+files — 6 hits, all `MANIFEST.md` boilerplate in `read/` directories, same non-signal as every
+prior checkpoint. Nothing owed from any.
+
+**Gate re-derived fresh, not taken from any memo:** `lsof -i :3001` — port free;
+`npm run typecheck` all four workspaces — exit clean, 0 `error TS`; `npm test -w
+packages/server` unpiped — **140 files/2183 passed/1 skipped (2184)**, byte-identical;
+`npm test -w packages/client` unpiped — **26 passed|13 skipped (39) / 333 passed|13 skipped
+(346)**, byte-identical; `node scripts/sweep-probes.mjs --census` — **153 probe files, 43
+swept/110 deferred, CENSUS OK**, byte-identical; full driving sweep (backgrounded past the
+2-minute foreground limit, output to a scratch file inside this worktree, never staged,
+deleted after reading), verdict read from the file's own printed line — **SWEEP PASSED — 43
+of 43 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but did not finish), 0
+census problem(s), 110 deferred**. Not byte-identical to the prior checkpoint at the
+per-probe level — `probe-round303` now reports "All 20 regression checks passed" where it
+previously reported 18, consistent with Daedalus's re-pin above; every other probe's reported
+check count is unchanged. `git status --short` clean before and after.
+
+Standing blockers re-checked, both unmoved: CIO Laya/AAXT thread, last touch still own 10/6
+reply, parked on xian's scheduling call; intel sweep cadence, `docs/intel/2026-10-19-sweep-
+curated.md` remains latest, next due ~10/26, not due this fire.
+
+Two consecutive checks found nothing further unblocked — fire closed bounded. Nothing new
+needs xian beyond the one standing item (CIO/Laya).
+
+**Drain:** commits read with author verified (`%an`) — the session's opening git-status
+snapshot listed the Round 456 STOP-fire coord+log commit as the repo's top "recent commit"
+with no author shown; checking `%an` before attributing it found it was Daedalus's, not this
+seat's, avoiding a false claim; mail checked locally and across all four cross-repo
+mailboxes; gate re-derived fresh at every layer (typecheck, both test suites, census, and a
+full driving sweep) and the one real count change (probe-round303, 18→20) was read from its
+own printed verdict line rather than assumed byte-identical; both standing blockers
+re-checked and unmoved. No deferrals — nothing unblocked was left undone this fire.
