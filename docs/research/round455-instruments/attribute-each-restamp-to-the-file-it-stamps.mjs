@@ -31,7 +31,7 @@ import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { renderTail } from '../lib/verdict.mjs';
+import { measured, renderTail } from '../lib/verdict.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = join(HERE, '..', '..', '..');
@@ -153,26 +153,39 @@ const HIS = [
   'docs/research/round449-instruments/postcommit-rediff.mjs',
 ];
 
-const subjects = [
-  ...(sliced ?? []).map((p) => ({ path: p, role: 'SUBJECT', budget: 200_000 })),
-  ...HIS.filter((p) => !(sliced ?? []).includes(p)).map((p) => ({ path: p, role: 'CONTROL-his', budget: 120_000 })),
+// CURED IN ROUND 461. This was `[...(sliced ?? []).map(…), ...HIS.filter(…)]`, and the `??` was
+// the defect Round 459 `A2` drove: on a REFUSED slice the list held the 3 `CONTROL-his` members and
+// ZERO `SUBJECT`s, and `G3`'s predicate `present.length === subjects.length` is satisfiable by
+// those controls alone — so the leg published `ok` for "every subject and control is present" over
+// a list with no subject in it. The refusal now PROPAGATES: `subjects` is `null` when the slice
+// refused, and the two legs that quantify over it refuse with it. `??` never mentions null, so no
+// `!== null` scan reaches this shape; the cure is the same one `measured()` exists for.
+const subjects = sliced === null ? null : [
+  ...sliced.map((p) => ({ path: p, role: 'SUBJECT', budget: 200_000 })),
+  ...HIS.filter((p) => !sliced.includes(p)).map((p) => ({ path: p, role: 'CONTROL-his', budget: 120_000 })),
 ];
 
-const present = subjects.filter((s) => {
+const present = subjects === null ? null : subjects.filter((s) => {
   try { git(['cat-file', '-e', `${REV}:${s.path}`]); return true; } catch { return false; }
 });
 leg('G3', 'every subject and control is present at the stamped rev, so a row reading "stamps '
-  + 'nothing" cannot be a missing file misread as a quiet one',
-  `subjects+controls ${subjects.length} · present at ${REV.slice(0, 8)}: ${present.length}`,
-  present.length === subjects.length);
+  + 'nothing" cannot be a missing file misread as a quiet one. On a refused slice this REFUSES: '
+  + 'the population it quantifies over would be the controls alone, and `present.length === '
+  + 'subjects.length` is satisfiable by those controls with no subject in the list (459 A2)',
+  subjects === null
+    ? `slice REFUSED — subject population unmeasured, so this leg is unmeasured too`
+    : `subjects+controls ${subjects.length} · present at ${REV.slice(0, 8)}: ${present.length}`,
+  measured(subjects, (ss) => present.length === ss.length));
 
-const ownDirSubjects = subjects.filter((s) => s.path.startsWith(OWN_DIR));
+const ownDirSubjects = subjects === null ? null
+  : subjects.filter((s) => s.path.startsWith(OWN_DIR));
 leg('G3a', 'the self-exclusion that keeps this cell\'s own directory out of the hygiene snapshot '
   + 'is NON-VACUOUS and does not reach any subject: the exclusion counter is read rather than the '
   + 'verdict, because an exclusion that matched nothing would make G0 and G1 pass for the wrong '
   + 'reason, and a subject inside the excluded dir would be unable to report a stamp at all',
   `entries excluded by \`${OWN_DIR}\` so far: ${excluded} · subjects inside it: `
-  + `${ownDirSubjects.length}`, excluded > 0 && ownDirSubjects.length === 0);
+  + `${ownDirSubjects === null ? 'UNMEASURED (slice refused)' : ownDirSubjects.length}`,
+  measured(ownDirSubjects, (o) => excluded > 0 && o.length === 0));
 
 // ─── drive ───────────────────────────────────────────────────────────────────────────────────────
 const rows = [];
@@ -216,14 +229,17 @@ if (clean && sliceOk) {
 }
 
 // ─── the findings ────────────────────────────────────────────────────────────────────────────────
-const droveAll = rows.length === subjects.length;
+// Also cured in Round 461: `subjects` is `null` on a refused slice, so the denominator here is
+// unmeasured and `rows.every(…)` over an empty `rows` is vacuously true (437). Both halves refuse
+// together rather than one of them carrying the leg.
+const droveAll = measured(subjects, (ss) => rows.length === ss.length);
 leg('G4', 'every subject and control was driven to a verdict and the tree was restored after each '
   + 'one, so no row below is an un-run cell reported as a quiet one, and no later row is '
   + 'contaminated by an earlier run\'s stamp',
-  `driven ${rows.length} of ${subjects.length} · restores verified `
-  + `${rows.filter((r) => r.restoreOk).length} of ${rows.length} · timeouts `
+  `driven ${rows.length} of ${subjects === null ? 'UNMEASURED (slice refused)' : subjects.length} · `
+  + `restores verified ${rows.filter((r) => r.restoreOk).length} of ${rows.length} · timeouts `
   + `${rows.filter((r) => r.timedOut).length}`,
-  droveAll && rows.every((r) => r.restoreOk));
+  measured(droveAll, (d) => d && rows.every((r) => r.restoreOk)));
 
 const subjectRows = rows.filter((r) => r.role === 'SUBJECT');
 const stampers = subjectRows.filter((r) => r.stamped.length > 0);

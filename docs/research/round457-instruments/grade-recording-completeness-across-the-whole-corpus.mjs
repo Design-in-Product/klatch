@@ -77,7 +77,7 @@
 import { execFileSync } from 'node:child_process';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { readVerdict, readRows, readTail, renderTail, ROW_REFUSALS } from '../lib/verdict.mjs';
+import { allOf, measured, readVerdict, readRows, readTail, renderTail, ROW_REFUSALS } from '../lib/verdict.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = join(HERE, '..', '..', '..');
@@ -177,8 +177,17 @@ say(`FIGURE   ${incomplete.length} of ${corpus.length} committed recording(s) ca
   + '— the class readTail could not refuse at df5a27cc, refused by name since Round 460');
 say('');
 
-leg('C2', sum === corpus.length && rows.length === corpus.length && sizes.UNMODELLED === 0,
-  `buckets sum to ${sum}; corpus ${corpus.length}; detail rows ${rows.length}; `
+// CURED IN ROUND 461. All three conjuncts are `0 === 0` on an empty corpus, so this leg published
+// `ok` for a clean partition of a population with no members — Daedalus's 458 §1 `T5` shape, found
+// by Round 459 `A5` while grading `C3` rather than by following a red. The population is now the
+// thing that must be measured: an empty corpus is UNMEASURED here, not a pass. `C1` goes RED on the
+// same run, which is why this was a false sentence in a recording rather than a lost finding — and
+// why the cure is a REF rather than a second RED.
+const c2 = measured(corpus.length > 0 ? corpus : null,
+  (c) => sum === c.length && rows.length === c.length && sizes.UNMODELLED === 0);
+leg('C2', c2,
+  `${corpus.length === 0 ? 'EMPTY POPULATION — unmeasured, not a clean partition; ' : ''}`
+  + `buckets sum to ${sum}; corpus ${corpus.length}; detail rows ${rows.length}; `
   + `UNMODELLED ${sizes.UNMODELLED} (a non-zero UNMODELLED means a recording no bucket claims)`);
 
 // ── C3 — CONTROL, known negative ────────────────────────────────────────────────────────────────
@@ -242,7 +251,11 @@ leg('C6', sliceOk && legCountCheck,
 // so a re-drive at any later rev reproduces both halves (441).
 const PRE_CURE_REV = '172b547f81db597542b6c3344e683ff371b01d6a';
 const preCureTailSrc = (() => {
-  const src = git(['show', `${PRE_CURE_REV}:docs/research/lib/verdict.mjs`]);
+  // ROUND 461: `git show` THROWS on an unreachable rev, which killed the whole cell instead of
+  // refusing one leg. A pre-cure cell of a seam is exactly the thing a later clone can fail to
+  // reach, so the fetch is a measurement like any other and refuses by name.
+  let src = null;
+  try { src = git(['show', `${PRE_CURE_REV}:docs/research/lib/verdict.mjs`]); } catch { return null; }
   const i = src.indexOf(ANCHOR);
   if (i < 0 || src.indexOf(ANCHOR, i + ANCHOR.length) !== -1) return null;
   const j = src.indexOf('\nexport ', i + ANCHOR.length);
@@ -252,8 +265,20 @@ const preCureGated = preCureTailSrc === null ? null : /\bpreds\b/.test(preCureTa
 const CODE = 'PRED_ROW_COUNT_DISAGREEMENT';
 const codeDeclared = ROW_REFUSALS.includes(CODE) && tailSrc.includes(CODE);
 
-leg('C5', sliceOk && legCountCheck && preCureGated === false && predCountCheck === true && codeDeclared,
-  `THE SEAM: readTail at ${PRE_CURE_REV.slice(0, 8)} references verdict.preds: ${preCureGated} `
+// ROUND 461 (Theseus, on his own invitation to object): the 2 × 2 is the right shape and stands.
+// What did not stand is the spelling of the pre-cure cell. `preCureGated === false` turned a
+// REFUSAL into a RED: with the pre-cure bytes unreadable `preCureGated` is `null`, `null === false`
+// is `false`, and the leg would publish RED — an affirmative claim that the gap was NOT real at the
+// pre-cure rev, made out of a measurement that did not happen. It is the mirror of the three sites
+// Round 461 cures, and in the one direction that deletes the finding rather than inflating it.
+// Carried through `measured`/`allOf` instead, so an unreachable pre-cure cell refuses this leg and
+// leaves the other three conjuncts' evidence legible beside it.
+leg('C5', allOf(
+  sliceOk && legCountCheck,
+  measured(preCureGated, (g) => g === false),
+  predCountCheck === true && codeDeclared),
+  `THE SEAM: readTail at ${PRE_CURE_REV.slice(0, 8)} references verdict.preds: `
+  + `${preCureGated === null ? 'UNMEASURED (pre-cure bytes unreadable)' : preCureGated} `
   + `(expect false — the gap this cell found) · at ${REV.slice(0, 8)}: ${predCountCheck} (expect true `
   + `— Round 460's cure) · the refusal is named ${CODE} and declared: ${codeDeclared} · LEG-count `
   + `comparison still found by the same key shape: ${legCountCheck}`);

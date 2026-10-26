@@ -32,7 +32,7 @@ import { execFileSync } from 'node:child_process';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { stripSource, regexLiteralEnd } from '../../../scripts/lib/strip-source.mjs';
-import { renderTail, renderRows } from '../lib/verdict.mjs';
+import { measured, renderTail, renderRows } from '../lib/verdict.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = join(HERE, '..', '..', '..');
@@ -189,12 +189,22 @@ leg('G3', `the repaired lifter is graded against a declared case table before it
   liftRows.map((r) => `${r.id}: new=${JSON.stringify(r.got)} ${r.pass ? 'PASS' : 'FAIL'} old=${JSON.stringify(r.oldGot)}`).join(' | '),
   liftRows.every((r) => r.pass));
 
-const separating = liftRows.filter((r) => r.got !== r.oldGot);
+// CURED IN ROUND 461, and this is the laundering in the direction that FLATTERS THE AUTHOR, which
+// is why it is worth more than its size. `oldGot` is `OLD === null ? null : …`, so when the old
+// lifter refuses to compile every `oldGot` is `null`, every passing row's `got` is a string, and
+// `r.got !== r.oldGot` reads TRUE on every row — the leg then collects affirmative evidence that
+// the repair SEPARATES on the strength of the baseline not existing (459 `A3`: 1 of 2 separating
+// against a refused baseline, 0 against a live identical one). The baseline's refusal now
+// propagates: with no `OLD` there is no confusion matrix to read, so the leg is UNMEASURED.
+const separating = OLD === null ? null : liftRows.filter((r) => r.got !== r.oldGot);
 leg('G3a', 'the two lifters DISAGREE on at least one row, so G3 is a separating table rather than '
   + 'two readers that happen to agree everywhere — without this row a repair that changed nothing '
-  + 'would pass G3 and read as a fix',
-  `rows where new ≠ old: ${separating.length} of ${liftRows.length} `
-  + JSON.stringify(separating.map((r) => r.id)), separating.length > 0);
+  + 'would pass G3 and read as a fix. REFUSES when the OLD lifter did not compile: a baseline that '
+  + 'is absent makes every row "disagree", which is a refusal read as affirmative evidence',
+  `old lifter compiled: ${OLD instanceof RegExp} · rows where new ≠ old: `
+  + `${separating === null ? 'UNMEASURED (baseline refused — G1 is RED on the same run)'
+    : `${separating.length} of ${liftRows.length} ${JSON.stringify(separating.map((r) => r.id))}`}`,
+  measured(separating, (s) => s.length > 0));
 
 // ─── B1: the three anchors at HEAD, both lifters ─────────────────────────────────────────────────
 const ANCHORS = [

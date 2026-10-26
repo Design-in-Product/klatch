@@ -144,7 +144,7 @@ leg('S2', 'CONTROL, both directions: the `-C`-pinned reader this cell uses must 
   allOf(pinAgrees, unpinDiffers));
 
 // ── the source readers ──────────────────────────────────────────────────────────────────────────
-const srcAt = (p) => { try { return git(['show', `${REV}:${p}`]); } catch { return null; } };
+const srcAt = (p, rev = REV) => { try { return git(['show', `${rev}:${p}`]); } catch { return null; } };
 /** From the index of a `(`, the paren-balanced argument text. `null` if unbalanced. Prior art:
  *  `argsAt` in `scripts/lib/skipped-shape-census.mts` — private to that module and tsx-only, so it
  *  cannot be imported from a `.mjs` cell. Named rather than silently re-invented. */
@@ -312,12 +312,25 @@ leg('N3', 'the figure: committed `git` shell sites that pin neither `-C` nor `cw
 const F455A = 'docs/research/round455-instruments/attribute-each-restamp-to-the-file-it-stamps.mjs';
 const F455B = 'docs/research/round455-instruments/dispose-of-w10-and-repair-the-lifter-it-needs.mjs';
 const F457 = 'docs/research/round457-instruments/grade-recording-completeness-across-the-whole-corpus.mjs';
+// ── RE-KEYED IN ROUND 461, IN THE COMMIT THAT CURES THE THREE DEFECTS ──────────────────────────
+// A2/A3/A5 were keyed on the PRE-CURE source at live `REV`, so the cure would have reddened them
+// on a correct tree — the hazard §6 of this round's README named and the one Daedalus paid twice in
+// Round 460. Keyed as a 2 × 2 ACROSS THE SEAM instead of flipped: the PRE cell reproduces the
+// laundering from committed bytes at a literal rev, the NOW cell drives the cured spelling at live
+// REV. A flip to "it refuses now" would have deleted the finding — the leg would then be satisfied
+// by an instrument that had never laundered, and nothing here would any longer assert that the
+// defect was real. Both cells read committed bytes, so this reproduces at any later rev (441).
+// A1 and A4 are the two sites graded NOT defects, and they are keyed across the same seam for a
+// reason of their own: their spans must be BYTE-IDENTICAL at both revs, which is the only thing in
+// this cell that would catch me "curing" a site I had just argued needed no cure.
+const PRE = '8e551e8e3edce9aaa529cae4d212d2bbe90e0b0b';   // Round 459's own landing
 const src = Object.fromEntries([F455A, F455B, F457].map((p) => [p, srcAt(p)]));
+const srcPre = Object.fromEntries([F455A, F455B, F457].map((p) => [p, srcAt(p, PRE)]));
 
 /** Lift a span from a file by a start anchor and an end anchor, refusing unless the START anchor
  *  occurs EXACTLY ONCE. `sliced exactly once` on the whole span does not pin the start (439). */
-const lift = (file, startAnchor, endAnchor) => {
-  const raw = src[file];
+const liftFrom = (sources, file, startAnchor, endAnchor) => {
+  const raw = sources[file];
   if (raw === null || raw === undefined) return null;
   const occ = raw.split(startAnchor).length - 1;
   if (occ !== 1) return { ok: false, why: `start anchor occurs ${occ}×`, text: null, occ };
@@ -326,45 +339,81 @@ const lift = (file, startAnchor, endAnchor) => {
   if (b === -1) return { ok: false, why: 'end anchor not found after start', text: null, occ };
   return { ok: true, why: null, text: raw.slice(a, b + endAnchor.length), occ };
 };
+const lift = (file, startAnchor, endAnchor) => liftFrom(src, file, startAnchor, endAnchor);
+const liftPre = (file, startAnchor, endAnchor) => liftFrom(srcPre, file, startAnchor, endAnchor);
 
-const LIFTS = {
-  // A1 — 455's G2 predicate: the gate leg whose job IS to report the refused slice.
-  g2: lift(F455A, 'const sliceOk = sliced !== null', 'p.length > 0);'),
+// The PRE cell: the three defective spans exactly as Round 459 lifted them, at Round 459's own rev.
+const PRE_LIFTS = {
+  g2: liftPre(F455A, 'const sliceOk = sliced !== null', 'p.length > 0);'),
   // A2 — 455's subjects initializer: the `?? []` that empties the population G3 quantifies over.
-  subjects: lift(F455A, 'const subjects = [', '];'),
+  subjects: liftPre(F455A, 'const subjects = [', '];'),
   // A3 — 455's oldGot assignment and the separating filter that reads its refusal as disagreement.
-  oldGot: lift(F455B, 'const oldGot = OLD === null', '?? null);'),
-  separating: lift(F455B, 'const separating = liftRows.filter(', ');'),
+  oldGot: liftPre(F455B, 'const oldGot = OLD === null', '?? null);'),
+  separating: liftPre(F455B, 'const separating = liftRows.filter(', ');'),
   // A4/A5 — 457's C3 predicate and C2 predicate.
-  c3: lift(F457, "leg('C3', controlRow !== null", "=== 'COMPLETE',"),
-  c2: lift(F457, "leg('C2', sum === corpus.length", 'sizes.UNMODELLED === 0,'),
+  c3: liftPre(F457, "leg('C3', controlRow !== null", "=== 'COMPLETE',"),
+  c2: liftPre(F457, "leg('C2', sum === corpus.length", 'sizes.UNMODELLED === 0,'),
 };
-leg('S4', 'CONTROL on the lifter A2/A3/A5 depend on: every span is lifted from the committed '
-  + 'source at REV by a start anchor that must occur EXACTLY ONCE, because an anchor that matches '
-  + 'twice lifts the wrong span and a grade written against the wrong span is confident and wrong. '
-  + 'The one-occurrence requirement is on the START anchor specifically — "the span was sliced '
-  + 'once" does not pin where it begins',
-  Object.entries(LIFTS).map(([k, v]) => `${k}: ${v === null ? 'FILE UNREADABLE'
-    : v.ok ? `ok (${v.text.length}B)` : `REFUSED ${v.why}`}`).join(' | '),
-  Object.values(LIFTS).every((v) => v !== null && v.ok === true));
+// The NOW cell: the same six sites at live REV. `g2` and `c3` keep their PRE anchors on purpose —
+// if the cure had moved either one, the anchor would stop matching and S4 would refuse rather than
+// let A1/A4 quietly re-grade a different span.
+const LIFTS = {
+  g2: lift(F455A, 'const sliceOk = sliced !== null', 'p.length > 0);'),
+  subjects: lift(F455A, 'const subjects = sliced === null ? null : [', '];'),
+  oldGot: lift(F455B, 'const oldGot = OLD === null', '?? null);'),
+  separating: lift(F455B, 'const separating = OLD === null ? null :', 'oldGot);'),
+  c3: lift(F457, "leg('C3', controlRow !== null", "=== 'COMPLETE',"),
+  c2: lift(F457, 'const c2 = measured(corpus.length > 0', 'sizes.UNMODELLED === 0);'),
+};
+const renderLifts = (m) => Object.entries(m).map(([k, v]) => `${k}: ${v === null ? 'FILE UNREADABLE'
+  : v.ok ? `ok (${v.text.length}B)` : `REFUSED ${v.why}`}`).join(' | ');
+const liftsOk = (m) => Object.values(m).every((v) => v !== null && v.ok === true);
+leg('S4', 'CONTROL on the lifter A1–A5 depend on, now on BOTH cells of the seam: every span is '
+  + 'lifted from committed source — the pre-cure file at a literal rev and the cured file at REV — '
+  + 'by a start anchor that must occur EXACTLY ONCE, because an anchor that matches twice lifts the '
+  + 'wrong span and a grade written against the wrong span is confident and wrong. The '
+  + 'one-occurrence requirement is on the START anchor specifically (439). A refused lift on either '
+  + 'side refuses the leg that depends on it rather than grading half a seam',
+  `PRE@${PRE.slice(0, 8)} ${renderLifts(PRE_LIFTS)} || NOW@${REV.slice(0, 8)} ${renderLifts(LIFTS)}`,
+  liftsOk(PRE_LIFTS) && liftsOk(LIFTS));
 
-// Every number in A1/A2/A3's detail strings is read off these, not typed beside the measurement.
-const a1Obs = { refused: null, live: null };
-const a2Obs = { refusedSubjects: null, refusedLen: null, liveSubjects: null };
-const a3Counts = { refused: null, live: null };
+// Every number in A1–A5's detail strings is read off these, not typed beside the measurement (409).
+const a1Obs = { preRefused: null, preLive: null, nowRefused: null, nowLive: null, same: null };
+const a2Obs = {
+  preSubjects: null, preLen: null, nowRefused: 'UNREAD', nowLiveSubjects: null, nowLiveLen: null,
+};
+const a3Counts = { preRefused: null, preLive: null, nowRefused: 'UNREAD', nowLive: null };
+const a4Obs = { same: null };
+const a5Obs = { preEmpty: null, nowEmpty: 'UNREAD', nowLive: null, nowBroken: null };
 
 // A1 — 455 G2. NOT a defect: the leg's own job is to publish the refused slice as a RED, and its
 // detail string prints the refusal DISTINCTLY from a zero-length parse. Driven: evaluate the
 // lifted predicate with the refusal substituted and confirm it is false (a RED), and confirm the
 // detail branch that names it exists in the source.
-const g2Drive = measured(LIFTS.g2.ok ? LIFTS.g2.text : null, (text) => {
+const g2Of = (text) => {
   const expr = text.replace(/^const sliceOk = /, '').replace(/;?\s*$/, '');
   const f = new Function('sliced', 'slicedCount', `return (${expr});`);
-  a1Obs.refused = f(null, null);
-  a1Obs.live = f(['a/b.mjs'], 1);
-  const names = /PARSE FAILED/.test(src[F455A]);
-  return a1Obs.refused === false && a1Obs.live === true && names;
-});
+  return { refused: f(null, null), live: f(['a/b.mjs'], 1) };
+};
+const g2Drive = allOf(
+  measured(PRE_LIFTS.g2.ok ? PRE_LIFTS.g2.text : null, (text) => {
+    const r = g2Of(text);
+    a1Obs.preRefused = r.refused; a1Obs.preLive = r.live;
+    return r.refused === false && r.live === true;
+  }),
+  measured(LIFTS.g2.ok ? LIFTS.g2.text : null, (text) => {
+    const r = g2Of(text);
+    a1Obs.nowRefused = r.refused; a1Obs.nowLive = r.live;
+    return r.refused === false && r.live === true;
+  }),
+  // The surgical-cure control: this site was graded NOT a defect, so Round 461 must not have
+  // touched it. Byte-identity across the seam is the assertion; the behavioural rows above would
+  // not catch a rewrite that preserved both answers.
+  measured(PRE_LIFTS.g2.ok && LIFTS.g2.ok ? [PRE_LIFTS.g2.text, LIFTS.g2.text] : null, ([a, b]) => {
+    a1Obs.same = a === b;
+    return a === b;
+  }),
+  measured(src[F455A], (s) => /PARSE FAILED/.test(s)));
 leg('A1', 'ROUTED SITE 1 of 2 (his §6) — 455 `G2`, `sliced !== null && …`: **not a defect.** This '
   + 'is the GATE leg, and a gate leg is the one place in an instrument where a refusal MUST become '
   + 'a RED rather than a REF: if `null` refused here, a cell whose slice failed would publish '
@@ -372,25 +421,47 @@ leg('A1', 'ROUTED SITE 1 of 2 (his §6) — 455 `G2`, `sliced !== null && …`: 
   + 'applied at the only leg that can see the silence. It also NAMES the refusal distinctly '
   + '(`PARSE FAILED`), which is the condition his §2 attaches to a RED beside an unmeasured '
   + 'conjunct. Driven on the lifted predicate, both directions',
-  `refused slice (sliced=null) → ${JSON.stringify(a1Obs.refused)} (false is a RED, which is the `
-  + `right answer here) · live slice → ${JSON.stringify(a1Obs.live)} · detail names PARSE FAILED: `
+  `PRE@${PRE.slice(0, 8)}: sliced=null → ${JSON.stringify(a1Obs.preRefused)} (false is a RED, `
+  + `which is the right answer here), live → ${JSON.stringify(a1Obs.preLive)} · NOW@`
+  + `${REV.slice(0, 8)}: ${JSON.stringify(a1Obs.nowRefused)} / ${JSON.stringify(a1Obs.nowLive)} · `
+  + `span byte-identical across the seam (the cure did NOT touch this site): `
+  + `${JSON.stringify(a1Obs.same)} · detail names PARSE FAILED: `
   + `${/PARSE FAILED/.test(src[F455A] ?? '')}`,
   g2Drive);
 
 // A2 — 455 G3. DEFECT: `?? []`.
-const a2 = measured(LIFTS.subjects.ok ? LIFTS.subjects.text : null, (text) => {
+const HIS3 = ['x/a.mjs', 'x/b.mjs', 'x/c.mjs'];
+const subjectsOf = (text) => {
   const expr = text.replace(/^const subjects = /, '').replace(/;?\s*$/, '');
-  const f = new Function('sliced', 'HIS', `return (${expr});`);
-  const HIS3 = ['x/a.mjs', 'x/b.mjs', 'x/c.mjs'];
-  const refusedList = f(null, HIS3);
-  const liveList = f(['y/s.mjs'], HIS3);
-  a2Obs.refusedSubjects = refusedList.filter((s) => s.role === 'SUBJECT').length;
-  a2Obs.refusedLen = refusedList.length;
-  a2Obs.liveSubjects = liveList.filter((s) => s.role === 'SUBJECT').length;
-  // The leg's predicate is `present.length === subjects.length`, which is satisfiable by the
-  // controls alone — so the laundered list can carry the leg to `ok` with no SUBJECT in it.
-  return a2Obs.refusedSubjects === 0 && a2Obs.refusedLen === 3 && a2Obs.liveSubjects === 1;
-});
+  return new Function('sliced', 'HIS', `return (${expr});`);
+};
+const a2 = allOf(
+  // PRE — the defect, reproduced from Round 459's own committed bytes. The leg's predicate is
+  // `present.length === subjects.length`, satisfiable by the controls alone, so the laundered list
+  // carries `G3` to `ok` with no SUBJECT in it.
+  measured(PRE_LIFTS.subjects.ok ? PRE_LIFTS.subjects.text : null, (text) => {
+    const refusedList = subjectsOf(text)(null, HIS3);
+    a2Obs.preSubjects = refusedList.filter((s) => s.role === 'SUBJECT').length;
+    a2Obs.preLen = refusedList.length;
+    return a2Obs.preSubjects === 0 && a2Obs.preLen === 3;
+  }),
+  // NOW — the cure, driven not described: the initializer itself must return the refusal, and the
+  // live path must still build the full population. `null` here is a VALUE under test, so it is
+  // read into an observation rather than compared with `===` at the leg (a refusal that looked
+  // like the sentinel would otherwise be indistinguishable from a lift that never ran).
+  measured(LIFTS.subjects.ok ? LIFTS.subjects.text : null, (text) => {
+    const f = subjectsOf(text);
+    const refused = f(null, HIS3);
+    const liveList = f(['y/s.mjs'], HIS3);
+    a2Obs.nowRefused = refused === null ? 'null (refusal propagates)' : `LIST len=${refused.length}`;
+    a2Obs.nowLiveSubjects = liveList.filter((s) => s.role === 'SUBJECT').length;
+    a2Obs.nowLiveLen = liveList.length;
+    return refused === null && a2Obs.nowLiveSubjects === 1 && a2Obs.nowLiveLen === 4;
+  }),
+  // …and the leg that quantifies over it must carry the refusal rather than re-launder it. A
+  // source pin, named as the weaker conjunct it is: it says the cured spelling is in use at the
+  // two legs, beside two driven rows that say what the spelling does.
+  measured(src[F455A], (s) => /measured\(subjects, /.test(s) && /measured\(ownDirSubjects, /.test(s)));
 leg('A2', 'NEW, and his detector cannot see it — 455 `G3`, spelled `(sliced ?? [])`: **a defect of '
   + 'mine.** On a refused slice the subjects list the leg quantifies over contains the 3 `CONTROL-'
   + 'his` members and ZERO `SUBJECT`s, and the leg\'s predicate `present.length === '
@@ -401,8 +472,11 @@ leg('A2', 'NEW, and his detector cannot see it — 455 `G3`, spelled `(sliced ??
   + 'scan reaches it. Driven by evaluating the committed initializer with `sliced = null`. What I '
   + 'do NOT claim: the green is not SILENT — `G2` is RED on the same run, so the loss is a false '
   + 'sentence in the recording, the severity of his `P1`, not a lost finding',
-  `sliced=null → SUBJECT members ${a2Obs.refusedSubjects}, list length ${a2Obs.refusedLen} `
-  + `(the 3 CONTROL-his) · sliced=[1 member] → SUBJECT members ${a2Obs.liveSubjects}`,
+  `PRE@${PRE.slice(0, 8)} sliced=null → SUBJECT members ${a2Obs.preSubjects}, list length `
+  + `${a2Obs.preLen} (the 3 CONTROL-his) — the defect · NOW@${REV.slice(0, 8)} sliced=null → `
+  + `${a2Obs.nowRefused}; sliced=[1 member] → SUBJECT members ${a2Obs.nowLiveSubjects}, list length `
+  + `${a2Obs.nowLiveLen} · both legs that quantify over it pass through measured(): `
+  + `${/measured\(subjects, /.test(src[F455A] ?? '') && /measured\(ownDirSubjects, /.test(src[F455A] ?? '')}`,
   a2);
 
 // A3 — 455 G3a. DEFECT: a refusal read as affirmative evidence.
@@ -411,21 +485,36 @@ leg('A2', 'NEW, and his detector cannot see it — 455 `G3`, spelled `(sliced ??
 // `/filter\((.*)\)$/s` is anchored at end-of-string, so the predicate never compiled. Both halves
 // fixed — the `;` is trimmed before the match, and every value in the detail string below is now
 // READ OFF the measurement rather than written beside it (409: make the figure refuse too).
-const a3Drive = measured(LIFTS.separating.ok ? LIFTS.separating.text : null, (text) => {
-  const body = text.replace(/^const separating = liftRows\./, '').replace(/;\s*$/, '');
-  const m = /^filter\((.*)\)$/s.exec(body);
-  if (m === null) return null;
-  const f = new Function('liftRows', `return liftRows.filter(${m[1]});`);
-  // The real case table's shape: the new lifter passing (`got` = the declared `want`) and the
-  // OLD lifter refused, so every `oldGot` is null. This is the state `G1` goes RED in.
-  const rowsRefused = [{ got: '/abc/g', oldGot: null }, { got: null, oldGot: null }];
-  const rowsLive = [{ got: '/abc/g', oldGot: '/abc/g' }, { got: null, oldGot: null }];
-  a3Counts.refused = f(rowsRefused).length;
-  a3Counts.live = f(rowsLive).length;
-  return a3Counts.refused > 0 && a3Counts.live === 0;
-});
+// The real case table's shape: the new lifter passing (`got` = the declared `want`) and the OLD
+// lifter refused, so every `oldGot` is null. This is the state `G1` goes RED in.
+const ROWS_REFUSED = [{ got: '/abc/g', oldGot: null }, { got: null, oldGot: null }];
+const ROWS_LIVE = [{ got: '/abc/g', oldGot: '/abc/g' }, { got: null, oldGot: null }];
+const a3Drive = allOf(
+  // PRE — the defect: the committed filter over a refused-baseline row set reports disagreement.
+  measured(PRE_LIFTS.separating.ok ? PRE_LIFTS.separating.text : null, (text) => {
+    const body = text.replace(/^const separating = liftRows\./, '').replace(/;\s*$/, '');
+    const m = /^filter\((.*)\)$/s.exec(body);
+    if (m === null) return null;
+    const f = new Function('liftRows', `return liftRows.filter(${m[1]});`);
+    a3Counts.preRefused = f(ROWS_REFUSED).length;
+    a3Counts.preLive = f(ROWS_LIVE).length;
+    return a3Counts.preRefused > 0 && a3Counts.preLive === 0;
+  }),
+  // NOW — the cure: with the baseline refused there is no confusion matrix, so the derivation
+  // itself is `null` and the laundering path is not merely wrong but unreachable. The live arm is
+  // driven too, or an expression that returned `null` unconditionally would pass this row.
+  measured(LIFTS.separating.ok ? LIFTS.separating.text : null, (text) => {
+    const expr = text.replace(/^const separating = /, '').replace(/;?\s*$/, '');
+    const f = new Function('OLD', 'liftRows', `return (${expr});`);
+    const refused = f(null, ROWS_REFUSED);
+    const live = f(/x/, ROWS_LIVE);
+    a3Counts.nowRefused = refused === null ? 'null (no baseline, no matrix)' : `LIST len=${refused.length}`;
+    a3Counts.nowLive = live === null ? null : live.length;
+    return refused === null && a3Counts.nowLive === 0;
+  }),
+  measured(src[F455B], (s) => /measured\(separating, /.test(s)));
 const a3 = allOf(
-  measured(LIFTS.oldGot.ok ? LIFTS.oldGot.text : null, (text) =>
+  measured(PRE_LIFTS.oldGot.ok ? PRE_LIFTS.oldGot.text : null, (text) =>
     /^const oldGot = OLD === null \? null :/.test(text)),
   a3Drive);
 leg('A3', 'NEW — 455 `G3a`, spelled `OLD === null ? null : …`: **a defect of mine, and the worse '
@@ -437,24 +526,32 @@ leg('A3', 'NEW — 455 `G3a`, spelled `OLD === null ? null : …`: **a defect of
   + 'flatters the author. Driven: the committed filter predicate evaluated over a refused-baseline '
   + 'row set and a live one. Same caveat: `G1` is RED when `OLD` is null, so it is a false sentence '
   + 'rather than a lost finding. The cure is `measured(OLD, …)` and `G3a` refusing',
-  `oldGot span carries the refusal ternary: ${LIFTS.oldGot.ok} · committed filter over a `
-  + `REFUSED-baseline row set → separating=${a3Counts.refused} of 2 (a refusal reading as `
-  + `disagreement) · over a LIVE identical-baseline row set → separating=${a3Counts.live} · `
-  + `drive ${a3Drive === null ? 'REFUSED (predicate did not compile)' : 'measured'}`,
+  `PRE@${PRE.slice(0, 8)}: committed filter over a REFUSED-baseline row set → separating=`
+  + `${a3Counts.preRefused} of 2 (a refusal reading as disagreement), over a LIVE `
+  + `identical-baseline set → ${a3Counts.preLive} · NOW@${REV.slice(0, 8)}: OLD=null → `
+  + `${a3Counts.nowRefused}, OLD live over an identical-baseline set → ${a3Counts.nowLive} · the `
+  + `leg passes it through measured(): ${/measured\(separating, /.test(src[F455B] ?? '')} · drive `
+  + `${a3Drive === null ? 'REFUSED (a predicate did not compile)' : 'measured'}`,
   a3);
 
 // A4 — 457 C3. NOT a defect.
-const a4 = measured(LIFTS.c3.ok ? LIFTS.c3.text : null, (text) => {
+const c3Answers = (text) => {
   const m = /^leg\('C3', (.*),$/s.exec(text.trim());
   if (m === null) return null;
   const f = new Function('controlRow', `return (${m[1]});`);
-  const absent = f(null) === false;
-  const complete = f({ bucket: 'COMPLETE' }) === true;
-  const wrongBucket = f({ bucket: 'NO_VERDICT' }) === false;
-  const namesAbsence = /ABSENT FROM POPULATION/.test(src[F457]);
-  const popLeg = /leg\('C1', corpus\.length > 0/.test(src[F457]);
-  return absent && complete && wrongBucket && namesAbsence && popLeg;
-});
+  return f(null) === false && f({ bucket: 'COMPLETE' }) === true
+    && f({ bucket: 'NO_VERDICT' }) === false;
+};
+const a4 = allOf(
+  measured(PRE_LIFTS.c3.ok ? PRE_LIFTS.c3.text : null, (text) => c3Answers(text)),
+  measured(LIFTS.c3.ok ? LIFTS.c3.text : null, (text) => c3Answers(text)),
+  // Same surgical-cure control as A1: graded NOT a defect, so the span must not have moved.
+  measured(PRE_LIFTS.c3.ok && LIFTS.c3.ok ? [PRE_LIFTS.c3.text, LIFTS.c3.text] : null, ([a, b]) => {
+    a4Obs.same = a === b;
+    return a === b;
+  }),
+  measured(src[F457], (s) => /ABSENT FROM POPULATION/.test(s)
+    && /leg\('C1', corpus\.length > 0/.test(s)));
 leg('A4', 'ROUTED SITE 2 of 2 (his §6) — 457 `C3`, `controlRow !== null && …`: **not a defect.** '
   + '`controlRow` is `rows.find(…) ?? null` over a population, so `null` means the control is '
   + 'ABSENT FROM THE POPULATION, which is itself the finding and is exactly what the detail string '
@@ -463,21 +560,39 @@ leg('A4', 'ROUTED SITE 2 of 2 (his §6) — 457 `C3`, `controlRow !== null && �
   + 'because `C1` is a live population leg (`corpus.length > 0`) that goes RED on it — which is '
   + 'his own general repair ("gate on the subject\'s own population leg") already present in the '
   + 'cell. Driven: the lifted predicate at absent / COMPLETE / wrong-bucket, plus both source pins',
-  `null → false · COMPLETE → true · NO_VERDICT → false · detail names ABSENT FROM POPULATION: `
+  `null → false · COMPLETE → true · NO_VERDICT → false, at BOTH cells of the seam · span `
+  + `byte-identical across the seam (the cure did NOT touch this site): `
+  + `${JSON.stringify(a4Obs.same)} · detail names ABSENT FROM POPULATION: `
   + `${/ABSENT FROM POPULATION/.test(src[F457] ?? '')} · population leg C1 present: `
   + `${/leg\('C1', corpus\.length > 0/.test(src[F457] ?? '')}`,
   a4);
 
 // A5 — 457 C2. DEFECT, the T5 shape.
-const a5 = measured(LIFTS.c2.ok ? LIFTS.c2.text : null, (text) => {
-  const m = /^leg\('C2', (.*),$/s.exec(text.trim());
-  if (m === null) return null;
-  const f = new Function('sum', 'corpus', 'rows', 'sizes', `return (${m[1]});`);
-  const empty = f(0, [], [], { UNMODELLED: 0 }) === true;
-  const live = f(3, [1, 2, 3], [1, 2, 3], { UNMODELLED: 0 }) === true;
-  const broken = f(2, [1, 2, 3], [1, 2, 3], { UNMODELLED: 0 }) === false;
-  return empty && live && broken;
-});
+const a5 = allOf(
+  // PRE — the defect: all three conjuncts are `0 === 0`, so an empty population reads as a clean
+  // partition.
+  measured(PRE_LIFTS.c2.ok ? PRE_LIFTS.c2.text : null, (text) => {
+    const m = /^leg\('C2', (.*),$/s.exec(text.trim());
+    if (m === null) return null;
+    const f = new Function('sum', 'corpus', 'rows', 'sizes', `return (${m[1]});`);
+    a5Obs.preEmpty = f(0, [], [], { UNMODELLED: 0 });
+    return a5Obs.preEmpty === true
+      && f(3, [1, 2, 3], [1, 2, 3], { UNMODELLED: 0 }) === true
+      && f(2, [1, 2, 3], [1, 2, 3], { UNMODELLED: 0 }) === false;
+  }),
+  // NOW — the cure, driven with the REAL `measured` from the lib rather than a stand-in, because
+  // the cure IS the lib call: a stand-in that returned `null` would make this row pass against a
+  // cell that never imported it. The live and inconsistent arms are driven too, or an expression
+  // refusing unconditionally would pass.
+  measured(LIFTS.c2.ok ? LIFTS.c2.text : null, (text) => {
+    const expr = text.replace(/^const c2 = /, '').replace(/;?\s*$/, '');
+    const f = new Function('measured', 'sum', 'corpus', 'rows', 'sizes', `return (${expr});`);
+    const empty = f(measured, 0, [], [], { UNMODELLED: 0 });
+    a5Obs.nowEmpty = empty === null ? 'null (empty population is unmeasured)' : JSON.stringify(empty);
+    a5Obs.nowLive = f(measured, 3, [1, 2, 3], [1, 2, 3], { UNMODELLED: 0 });
+    a5Obs.nowBroken = f(measured, 2, [1, 2, 3], [1, 2, 3], { UNMODELLED: 0 });
+    return empty === null && a5Obs.nowLive === true && a5Obs.nowBroken === false;
+  }));
 leg('A5', 'NEW, found by grading `C3` rather than by following a red — 457 `C2`: **the 458 §1 `T5` '
   + 'shape in my own tree.** `C2` is `sum === corpus.length && rows.length === corpus.length && '
   + 'sizes.UNMODELLED === 0`, and on an empty corpus all three conjuncts are `0 === 0`, so the leg '
@@ -486,8 +601,9 @@ leg('A5', 'NEW, found by grading `C3` rather than by following a red — 457 `C2
   + 'by `C1` going RED, so again a false sentence rather than a lost finding — but it is the '
   + 'vacuous green he says nothing goes looking for, and it was in the file whose OTHER leg he '
   + 'routed here',
-  `empty corpus → ${a5 === null ? 'LIFT REFUSED' : 'true (vacuous ok)'} · consistent live → true `
-  + '· inconsistent live → false',
+  `PRE@${PRE.slice(0, 8)} empty corpus → ${JSON.stringify(a5Obs.preEmpty)} (a vacuous ok) · `
+  + `NOW@${REV.slice(0, 8)} empty corpus → ${a5Obs.nowEmpty}, consistent live → `
+  + `${JSON.stringify(a5Obs.nowLive)}, inconsistent live → ${JSON.stringify(a5Obs.nowBroken)}`,
   a5);
 
 // ── the predictions, scored ─────────────────────────────────────────────────────────────────────
