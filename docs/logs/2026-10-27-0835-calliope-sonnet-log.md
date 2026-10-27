@@ -69,3 +69,92 @@ Two consecutive checks found nothing further unblocked. Fire closed bounded.
 **Verify step (Session Wrap Protocol):** commits not yet pushed as of this log entry — pushing
 immediately after this entry lands; will confirm `git log origin/main --oneline -5` and file
 existence in the same push.
+
+## 12:3x PT (MID fire) — my own 10-26 proportionality thread closes: stop condition exists in writing, fires at its current value; thread closed, four files moved to `read/`
+
+True checkpoint is this seat's own START-fire commit `29f4e3f8` (08:36:47 PT) — not `f7fec4c5`,
+which is Theseus's, despite its `coord+log: 10/27 START fire` message; checked `%an` explicitly
+before citing a checkpoint.
+
+**Drain against checkpoint:** `git log 29f4e3f8..HEAD --format='%h %an %ci %s'` — 16 new commits,
+none mine, author-checked: Pard relayed two Janus mail turns on the round249 CI diagnosis;
+Daedalus diagnosed and fixed it (`a4fbeedd` — BSD-vs-Linux bind semantics, CI red 24 consecutive
+runs on `ubuntu-latest` since 09-22, not an environment-shift mystery as this seat's own START-fire
+entry above had to leave open) and recorded the Linux row (`6ac4e914`), closing the thread this
+seat routed this morning; Argus declined both proportionality asks and added an independent
+flat-14-days figure; Daedalus answered both of this seat's 10-26 asks in full; Theseus graded and
+repaired Daedalus's proposed stop condition and adopted it. `git diff --stat 29f4e3f8..HEAD --
+packages/ scripts/` — two files, both the round249 CI fix (test file + `probe-server-ownership.mts`),
+checked directly.
+
+**My own 10-26 ask, answered and closed — read all three replies in full, not summarized from
+subject lines:**
+
+- **Ask 2 (api-native probe owner):** Daedalus names himself owner of §4.1, and states the build is
+  correctly not started — xian's own §5.2 sequencing (test 1 must report before §4.1/§4.3 finalize),
+  not an ownership gap. Verified rather than taken on his word: `docs/plans/api-native-probe-plan-2026-10-21.md`
+  §5.2 does say this; `git ls-remote --heads origin` shows no `smoke`/`ma-smoke`/`managed` branch,
+  so test 1 hasn't run. Two of three links in the chain are xian's (the test-1 trigger, the §4.3
+  threshold) — correctly not a rollup needs-you item on its own, since it's restating the existing
+  smoke-run blocker rather than a new ask.
+- **Ask 1 (stop condition):** proposed by Daedalus to Theseus rather than declared unilaterally.
+  Theseus graded it, found three defects (unspecified `N`; a second free variable in the
+  attribution key, with both asymmetric cells occupied — this morning's own CI fix is the concrete
+  case that inverts under a subject-keyed reading; "gated surfaces" not itself a censused surface,
+  since `scripts/**/*.mjs` — including `sweep-probes.mjs`, the file Argus's own census comes out of
+  — carries no type program), repaired and adopted it with `N = 5`, and reports its current value
+  (**10, already fired** under either attribution key) **in his own COORDINATION.md entry every
+  fire going forward**. First written stop condition for this track since Round 138 (09-02).
+
+No action owed back from this seat — both asks answered, the condition is now a standing,
+self-reporting artifact rather than something this seat has to keep re-flagging. **Thread closed:**
+`git mv` all four thread files (this seat's original 10-26 memo, Argus's reply, Daedalus's reply,
+Theseus's reply) to `docs/mail/read/` — the closer is the party who filed the original ask and
+received satisfactory answers to both parts, per the close-discipline convention.
+
+**Not re-litigating Theseus's repaired condition or its current value independently this fire** —
+his three defects are each grounded in a specific `git`/file citation (committed-memo byte slice for
+`N`; a 12-commit confusion matrix for the attribution key; `scripts/tsconfig.json`'s own `include`
+list and comment for the gate-coverage claim), which is the standard this seat's own CLAUDE.md
+"Verify Before Asserting" asks for when *making* a claim, not when *receiving* one already verified
+this specifically; re-deriving all three from scratch is round-track work, not this seat's lane,
+and would duplicate a check already done in the same tree at the same commit.
+
+**Rollup:** still v171, needs-you unchanged at 2 — neither the CI fix nor the proportionality
+thread's close is a rollup-tracked item (engineering triage and a research-track resolution,
+neither a decision only xian can make); re-derived the ground-rules day count independently
+(`Math.round((2026-10-27 − 2026-08-09)/day)` = **79**, matches the +1-per-day progression); `docs/drafts/`
+mtime still 2026-09-28, blog-series item unmoved.
+
+**Mail — local and cross-repo, all checked fresh:** the three thread-closing files above were the
+only ones addressed to or cc'ing this seat since checkpoint; no other local file is new. All four
+writable cross-repo mailboxes checked via `find -newermt` against the exact checkpoint timestamp
+(a `touch -t` reference file was sandbox-denied even inside this worktree this fire — used
+`-newermt` directly instead, the same fallback prior entries describe): `designinproduct` 5 new,
+two of them cc this seat (Daedalus↔Janus on the same CI fix, already covered above by the local
+commits); `mediajunkie` 1 new, unrelated (Janus→Cairn, Build 13); `dispatch` 0 new;
+`piper-morgan-product/mailboxes` 41 new, content-grepped for `klatch|calliope` — zero hits. Nothing
+owed from any.
+
+**Gate re-verified fresh, one figure moved for a real reason:** `npm run typecheck` 0 `error TS`
+across all four workspaces; `npm test -w packages/server` — **140 files · 2185 passed · 1 skipped
+(2186)**, **+2 tests vs. the standing 2184** — this is Daedalus's round249 CI fix landing two new
+Linux-row assertions, not a regression, cross-checked against his own commit; `npm test -w
+packages/client` — **26 passed|13 skipped (39) · 333 passed|13 skipped (346)**, byte-identical;
+`node scripts/sweep-probes.mjs --census` — **153 probe files, 43 swept/110 deferred, CENSUS OK**,
+unchanged. `lsof -i :3001` port free; `git status --short` clean before and after (apart from this
+fire's own four-file mail move, now committed). Task list of record: no mandatory items due on a
+MID fire; blog-series drafting remains gated on xian; the four standing Pard threads (10-20)
+unchanged — smoke-run branch still doesn't exist, same named blocker.
+
+**Drain:** sixteen new commits read with author verified and the `packages/scripts` diff checked
+directly; this seat's own 10-26 proportionality ask read to its full resolution across three
+replies (not summarized) and closed with the four-file move it earned; mail checked across local +
+all four cross-repo mailboxes; rollup re-checked with an independently re-derived day count, nothing
+moved; gate re-derived fresh, one expected figure delta explained rather than asserted
+byte-identical by reflex. Two consecutive checks found nothing further unblocked. Fire closed
+bounded.
+
+**Verify step (Session Wrap Protocol):** pushing immediately after the COORDINATION.md entry lands;
+will confirm `git log origin/main --oneline -5` and the moved files' presence under `docs/mail/read/`
+in the same push.
