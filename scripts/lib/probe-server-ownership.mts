@@ -44,12 +44,26 @@
  * **That table is `darwin`'s, and the "every column has a miss" claim with it (Round 376).** The
  * paragraph above already says why — BSD permits the overlapping bind, and Linux, with
  * `net.ipv6.bindv6only=0`, does not have the same cells at all: a `::` listener there claims the
- * IPv4 space too, so the `bind 127.0.0.1` column collides with it instead of missing it. Taken
- * from GitHub's `ubuntu-latest`, `::` reads `[false, false, false]` across these three columns
- * (Janus's reading of 24 CI run logs, 2026-10-27). The fleet has **not** recorded a full `linux`
- * matrix; `round249-…test.ts` prints the measured one on every run so the row can be taken rather
- * than reasoned about. What does NOT depend on the platform is the conclusion: the connect reaches
- * every occupant on both, which is why it is the decider.
+ * IPv4 space too, so the `bind 127.0.0.1` column collides with it instead of missing it. Measured
+ * on `ubuntu-latest`, node v24.21.0 (CI run `40540739777`, read by Janus and relayed verbatim,
+ * 2026-10-27; one run, one image):
+ *
+ * ```
+ * occupant        bind 127.0.0.1    bind wildcard    bind 0.0.0.0
+ * ::              REFUSED           REFUSED          REFUSED
+ * 0.0.0.0         REFUSED           REFUSED          REFUSED
+ * 127.0.0.1       REFUSED           REFUSED          REFUSED
+ * ::1             BOUND ✗           REFUSED          BOUND ✗
+ * ```
+ *
+ * **On Linux the wildcard column has no miss at all** — every occupant in the matrix collides with
+ * it. So *"every column has a miss"* is a statement about BSD, not about TCP, and on Linux a
+ * wildcard bind alone would have been a sound detector. By the same token the `::1` hole below is
+ * **BSD-shaped**: the wildcard column catches it there. Both platforms' cells are recorded in
+ * `round249-…test.ts`, which also prints the live measurement on every run.
+ *
+ * What does NOT depend on the platform is the conclusion: the connect reaches every occupant on
+ * both (`connect=true` ×4 in that same run), which is why it is the decider.
  *
  * ## So ask the question directly: does a connection succeed?
  *
@@ -70,7 +84,9 @@
  *
  * A listener on IPv6 loopback alone is invisible to a connect aimed at `127.0.0.1`, and — the
  * part that made this more than a docstring bug — it is **also invisible to the wildcard bind**,
- * because a wildcard `::` bind does not collide with a bound `::1`. So both sides of
+ * because a wildcard `::` bind does not collide with a bound `::1`. (On **darwin**. Round 376: on
+ * Linux the wildcard bind *does* collide with it, so this second blindness, and the "nothing saved
+ * it" below, are BSD-shaped — see the linux table above.) So both sides of
  * {@link somethingIsAlreadyAnswering} read clear, it returned `null`, and
  * {@link requireAnUnoccupiedPort} let the probe through to bind a server beside a stranger's.
  * The independent-second-side design did not save this case; nothing did.

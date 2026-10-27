@@ -182,12 +182,41 @@ type MatrixRow = {
  * permits.
  *
  * So the table is keyed by platform, and the measurement is **printed on every run** rather than
- * only asserted: the `linux` row has never been recorded here, and the CI log is the instrument
- * that can record it. Until it is, the gated test below is SKIPPED on linux — stated as unmeasured
- * rather than laundered into a pass. What stays unconditional is the only claim that is about the
- * module instead of the kernel: the connect detects every occupant.
+ * only asserted — the CI log being the only instrument that can reach a Linux kernel from here.
+ * What stays unconditional is the only claim that is about the module instead of the kernel: the
+ * connect detects every occupant.
+ *
+ * ## The linux row, and what it costs the module's justification
+ *
+ * Taken from the first green run on `main` since 09-21 — `ci.yml` run `40540739777` at `a4fbeedd`,
+ * `platform=linux node=v24.21.0`, read by Janus with `gh run view --log` and relayed verbatim,
+ * 2026-10-27. **One run, one `ubuntu-latest` image, not re-run and not checked against a second
+ * image** — his caveat, kept. Recording it here is also the test of it: if the transcription is
+ * wrong, the gated test below goes red on the next CI run, which is the right failure mode.
+ *
+ * It falsifies the module's headline on Linux, and that is the interesting part:
+ *
+ * - **The wildcard column has NO miss on linux.** All four occupants collide with a wildcard bind,
+ *   so *"every column has a miss"* is a **darwin** claim, not a fact about TCP. On Linux a wildcard
+ *   bind alone would detect every occupant in this matrix.
+ * - **`::1` is not missed by every column on linux** — the wildcard column catches it. So the Round
+ *   273 hole is **BSD-shaped**. Still real, still worth the repair that shipped; narrower than the
+ *   module comment implied.
+ *
+ * Which is why `everyBindColumnHasAMiss` is a **recorded, per-platform** field rather than a
+ * universal assertion: the property is the module's whole justification, it is declared where it
+ * was measured, and it reddens if a future edit to the cells changes it without saying so.
  */
-const RECORDED_BIND_MATRICES: Record<string, Record<string, boolean[]>> = {
+type RecordedPlatform = {
+  /** occupant -> one cell per `BINDS` column; `true` = bound anyway = a miss. */
+  cells: Record<string, boolean[]>;
+  /** *"No single bind address detects every occupant"* — true HERE? The module's justification. */
+  everyBindColumnHasAMiss: boolean;
+  /** The Round 273 occupant missed by every bind column — true HERE? */
+  colon1MissedByEveryColumn: boolean;
+};
+
+const RECORDED_BIND_MATRICES: Record<string, RecordedPlatform> = {
   // Measured this worktree, darwin, node v26.5.0. `true` = bound anyway = a miss.
   //   occupant       bind 127.0.0.1   bind wildcard   bind 0.0.0.0
   //   ::             BOUND ✗          REFUSED         REFUSED
@@ -195,14 +224,34 @@ const RECORDED_BIND_MATRICES: Record<string, Record<string, boolean[]>> = {
   //   127.0.0.1      REFUSED          BOUND ✗         BOUND ✗
   //   ::1            BOUND ✗          BOUND ✗         BOUND ✗   ← Round 273; misses EVERY column
   darwin: {
-    '::': [true, false, false],
-    '0.0.0.0': [true, true, false],
-    '127.0.0.1': [false, true, true],
-    '::1': [true, true, true],
+    cells: {
+      '::': [true, false, false],
+      '0.0.0.0': [true, true, false],
+      '127.0.0.1': [false, true, true],
+      '::1': [true, true, true],
+    },
+    everyBindColumnHasAMiss: true,
+    colon1MissedByEveryColumn: true,
+  },
+  // CI run 40540739777, ubuntu-latest, node v24.21.0 — see the docblock above for provenance.
+  //   occupant       bind 127.0.0.1   bind wildcard   bind 0.0.0.0
+  //   ::             REFUSED          REFUSED         REFUSED   ← bindv6only=0: `::` claims IPv4 too
+  //   0.0.0.0        REFUSED          REFUSED         REFUSED
+  //   127.0.0.1      REFUSED          REFUSED         REFUSED   ← no wildcard-beside-specific here
+  //   ::1            BOUND ✗          REFUSED         BOUND ✗   ← the wildcard column CATCHES it
+  linux: {
+    cells: {
+      '::': [false, false, false],
+      '0.0.0.0': [false, false, false],
+      '127.0.0.1': [false, false, false],
+      '::1': [true, false, true],
+    },
+    everyBindColumnHasAMiss: false,
+    colon1MissedByEveryColumn: false,
   },
 };
 
-const recorded: Record<string, boolean[]> | undefined = RECORDED_BIND_MATRICES[process.platform];
+const recorded: RecordedPlatform | undefined = RECORDED_BIND_MATRICES[process.platform];
 
 /** Taken once and shared, so the gated table grades the same numbers the log printed. */
 let measuring: Promise<Record<string, MatrixRow>> | undefined;
@@ -265,31 +314,35 @@ describe('the bind matrix the module decided on is re-taken here, not quoted', (
     for (const h of OCCUPANTS) expect(matrix[h].wildcardHelper).toBe(matrix[h].binds[1]);
   }, 30_000);
 
-  // Non-vacuity for the gate below: if the key ever stops matching, this fails on our own
-  // machines instead of silently skipping the whole table.
-  it('has a recorded table for darwin, so the gate below cannot skip on this fleet', () => {
-    expect(Object.keys(RECORDED_BIND_MATRICES)).toContain('darwin');
+  // Non-vacuity for the gate below: if a key ever stops matching, this fails instead of the gate
+  // silently skipping the whole table. Both platforms this test actually runs on are named —
+  // `darwin` is the fleet, `linux` is CI, and a skip on either is a regression, not a state.
+  it('has a recorded table for both platforms this suite runs on, so the gate cannot skip', () => {
+    expect(Object.keys(RECORDED_BIND_MATRICES).sort()).toEqual(['darwin', 'linux']);
   });
 
-  it.runIf(recorded !== undefined)('the recorded cells for this platform still reproduce, and every bind column has a miss', async () => {
+  it.runIf(recorded !== undefined)('the recorded cells for this platform still reproduce, and the module\'s justification holds exactly where it was recorded', async () => {
     const matrix = await theMatrix();
-    const table = recorded as Record<string, boolean[]>;
+    const table = recorded as RecordedPlatform;
 
-    for (const h of OCCUPANTS) expect(matrix[h].binds, `occupant ${h}`).toEqual(table[h]);
+    for (const h of OCCUPANTS) expect(matrix[h].binds, `occupant ${h}`).toEqual(table.cells[h]);
 
     // The claim the whole module rests on, stated as a property rather than a table: there is
-    // no address you can bind that detects all of the occupants. True of darwin's semantics;
-    // NOT known to be true of linux's, which is why it sits behind the platform gate.
-    for (let col = 0; col < BINDS.length; col++) {
-      const misses = OCCUPANTS.filter((h) => matrix[h].binds[col]);
-      expect(misses.length, `bind column ${col} has no miss`).toBeGreaterThan(0);
-    }
+    // no address you can bind that detects all of the occupants. It is TRUE on darwin and FALSE
+    // on linux, where the wildcard column catches every occupant in this matrix — so it is
+    // graded against the value recorded for the platform, not asserted as a fact about TCP.
+    const columnsWithAMiss = BINDS.filter((_b, col) => OCCUPANTS.some((h) => matrix[h].binds[col]));
+    expect(columnsWithAMiss.length === BINDS.length, 'every bind column has a miss').toBe(
+      table.everyBindColumnHasAMiss,
+    );
 
-    // `::1` makes that claim strictly stronger than a column-wise one: it is missed by every bind
-    // column at once, so no CONJUNCTION of bind tests detects it either. Before Round 273 the
-    // module's second side was a wildcard bind, and this row is why that side could not be the
-    // thing that caught the hole in the first side.
-    expect(matrix['::1'].binds.every(Boolean)).toBe(true);
+    // On darwin `::1` makes that claim strictly stronger than a column-wise one: it is missed by
+    // every bind column at once, so no CONJUNCTION of bind tests detects it either, which is why
+    // the module's wildcard second side could not be the thing that caught the hole in its first
+    // side. On linux the wildcard column DOES catch it, so the Round 273 hole is BSD-shaped.
+    expect(matrix['::1'].binds.every(Boolean), 'the Round 273 occupant misses every column').toBe(
+      table.colon1MissedByEveryColumn,
+    );
   }, 30_000);
 
   // The regression guard at the level a probe actually calls. The matrix test above asserts the
