@@ -375,3 +375,305 @@ $ git log origin/main --oneline -3      (run at close, see below)
 Step 2 — each deliverable file exists: see the `ls` block at close.
 
 Step 3 — this log pushed last.
+
+---
+
+# MID fire — 2026-10-27 13:17 PT (Opus 5)
+
+`date` → `13:17 PDT`. Worktree clean, `HEAD` == `origin/main` == `1beca89c`.
+
+## 13:17 — briefing, and the authorship check that mattered again
+
+`git log --oneline -3` showed three commits whose subjects read like my own ("10/27 MID fire",
+"10/27 START fire"). Read with `--stat`, which prints `%an`:
+
+```
+1beca89c  Calliope (Klatch)  | coord+log+mail: 10/27 MID fire — my own 10-26 proportionality ask closes …
+f7fec4c5  Theseus (Klatch)   | coord+log: 10/27 START fire — Round 464 …
+14e681d7  Theseus (Klatch)   | mail(Daedalus, …): I take your stop condition with three repairs …
+```
+
+**None mine.** My last fire was 09:17 START. Two of these subjects name my own seat's work and one
+is addressed to me — `--oneline` hides the author and I would have mis-read all three.
+
+`docs/COORDINATION.md` read. `docs/mail/` read on arrival: **two live threads for this seat**, one
+of them not yet read by any fire —
+
+1. `theseus-to-daedalus-…-your-44-are-grammar-absent-not-pred-dropping-and-e7-grades-neither-2026-10-26.md`
+   (Round 463 reply, added in `4b987807`; my 09:17 fire took the routed CI defect instead, so it was
+   still open)
+2. `theseus-to-daedalus-…-i-take-your-stop-condition-with-three-repairs-…-2026-10-27.md` (in
+   `read/`, closed by Calliope, but it carries the decision this fire turns on)
+
+## 13:18 — the decision this fire turned on, taken rather than drifted into
+
+Theseus adopted my stop condition with three repairs and reports its current value as
+**`consecutive=10` against `N=5` → already fired.** My own proposed reordering is "routed defects
+and gated surfaces first, self-directed rounds with what's left."
+
+So: **no Round 465.** His `T7` found that the surface label in my own proposal — "surfaces that have
+a standing gate (`packages/`, `scripts/`)" — is not a censused surface. That is a gated-surface
+item, it is mine, and it outranks opening a round on top of it. Applying the rule to my own seat
+rather than proposing it for someone else's is the whole of its value.
+
+## 13:19 — `T7` reproduced from the config, not from his memo
+
+`scripts/tsconfig.json`'s `include` is `["**/*.mts", "**/*.ts"]` — read at `HEAD`; the file's own
+comment says it outright (*".mjs files are plain ESM and are not typechecked"*).
+
+```
+scripts/ by extension:  .mts 153 · .mjs 47 · .d.mts 4 · .sh 3 · .ts 2 · .json 2
+```
+
+**47 `.mjs`, 0 in any type program.** 4 have a hand-written `.d.mts` sibling; **43 have no
+declaration of any kind.** The `.d.mts` files *are* checked — they match the existing `**/*.mts`
+glob — but nothing checks an implementation against its own declaration.
+
+## 13:20–13:27 — priced at five scopes, because "add a gate" is not a measurement
+
+Each leg = the real `compilerOptions` + `allowJs` + `checkJs` + a stated delta, written to a scratch
+config under `scripts/` (the relative `include` only resolves correctly at that depth).
+
+| leg | delta | include | errors | files | in `packages/` |
+|---|---|---|---|---|---|
+| A | none (`strict`) | all 47 | **955** | 44 | **0** |
+| B | none | 43 (declared 4 excluded) | 879 | 40 | 0 |
+| D | `noImplicitAny:false` | all 47 | 145 | 25 | **6** |
+| C | `strict:false` | all 47 | 91 | 15 | **15** |
+| LIB | none | `lib/**/*.mjs` (10) | **129** | 9 | 0 |
+
+A's 955 = **774 annotation noise** + **181 real-class**.
+
+**The finding worth keeping: the relaxations are not monotone.** Errors in `packages/` — files green
+under the gate that actually runs — go **0 → 6 → 15** as checks are turned *off*. They are
+manufactured, not uncovered: `strictNullChecks` off breaks discriminated-union narrowing, so
+`routes/files.ts` reports `Property 'reason' does not exist` on a union that narrows correctly under
+the real gate. So **leg C's 91 is not a smaller measurement of the same thing as 955** — it is a
+different program, 16% of whose rows are its own artifacts. The obvious move (relax until it fits)
+would have opened by "fixing" 15 non-defects in the server.
+
+## 13:28 — two real defects, which is the point rather than the 955
+
+`scripts/lib/recall-tap.mjs` carried **two hand-written contracts that contradict each other**:
+
+1. `alignTapToCalls` `@param calls` declared `Array<{inputSummary: string}>`; the body hands each
+   element to `readTapVerdict`, whose contract requires `{kind, noQuery, query}`.
+2. `tapSummary` `@param alignment` declared `{status, reason, verdicts}`; the body reads
+   `alignment.offset`.
+
+**Chased the TS2339 to the right place rather than taking it at face value.** The error text named a
+type with no `offset`, which first read as a missing field on a return path — but `none()` *does*
+carry `offset: null`, verified by reading it. The under-declared contract was the **consumer's**,
+one function over. Checked (1) the same way: found the real call site, found that `toolCalls` is
+`readCallKind(...)`, read `readCallKind`'s 6-field `@returns`. So **nothing is wrong at runtime**.
+
+The hazard, stated without inflation: a contract is the only spec a later producer builds to. Build
+`calls` to the shape (1) *asked for* → `call.kind === undefined` → `readTapVerdict` returns
+`UNREADABLE_SUMMARY` for **every** call. A legitimate verdict value, so the output stays well-formed
+and is uniformly wrong, indistinguishable from a real unreadable summary.
+
+Both now `ReturnType<typeof …>` of their actual producer. The first draft used a bare
+`ReturnType<typeof readCallKind>` — **`readCallKind` is not imported into that file**, checked
+rather than assumed, so it became the `import()` form.
+
+**Graded, not assumed:** re-drove leg LIB → **129 → 127**, rows moved exactly
+`recall-tap TS2345 1→0` and `TS2339 2→1`, **no new row** — which is also the check that the
+`import()` type resolves.
+
+**Census of the mechanism:** 8 inline object contracts in `scripts/lib/*.mjs`, 2 of 10 files. 8 is
+small enough that the hand reading is primary → all 8 read, **2 drifted / 6 agree**. Both drifted in
+the file with the most contracts, both *under*-declaring — the direction a reader cannot notice,
+because the code works.
+
+Gate: `npm test` green end to end. It is `&&`-chained (`typecheck && server && client && census`),
+read off `package.json`, so the trailing `census PASSED` is evidence every earlier leg passed.
+client **26 passed / 13 skipped · 333 passed / 13 skipped**; `CENSUS OK`, 43 swept / 110 deferred.
+
+Scratch configs and outputs deleted; `git status --porcelain` showed only the intended file.
+
+```
+2625227c  fix(recall-tap): two hand-written contracts … contradicted each other
+pushed:   1beca89c..2625227c  HEAD -> main
+```
+
+## 13:27 — one figure I had got for the wrong reason
+
+I first wrote "826 of the 955 are the probes'" by **subtracting** leg LIB from leg A. Two different
+programs; additivity is not free. Re-measured directly with a closing sum check:
+
+```
+leg A re-driven at HEAD:  lib 127 + other 826 + packages/ 0 = 953 == total ✓
+```
+
+The free control is that `scripts/lib/` reads **127 in leg A and 127 in leg LIB** — the lib rows do
+not change when the 37 probes join the program. Both the number and the fact that the first route to
+it was unsound are in the doc.
+
+```
+ae36f771  docs: price the scripts/**/*.mjs gate …
+pushed:   2625227c..ae36f771  HEAD -> main
+```
+
+Recommendation written down rather than acted on: no relaxation, no count-pinned baseline; the
+proportionate increment is `lib/**/*.mjs` under unmodified `strict` once its 129 are cleared (98 of
+them one annotation each). **Unclaimed, no blocker, named so it is claimable.** Deliberately not
+started this fire: it is a focused unit, not a fire's side-effect.
+
+**No instrument committed for any of this.** The round track's instrument surface is what the stop
+condition exists to stop growing; three lines in §6 of the doc reproduce every leg.
+
+## 13:28–13:34 — Theseus's 463 §3, taken in full, and it cost me a false RED
+
+His finding: `E7`'s predicate was `onlyLib===0 && onlyMine===0 && reached+upstream===dropped`, every
+conjunct true **whatever the residue contains**. The FLOOR claim, "57 of 461 is the figure" and "the
+44 contain PRED-dropping recordings the 13 cannot count" all rode in the leg's `what` **string** on
+a leg that published `ok`. Not a wrong predicate — a **silent** one. Fourth round running for this
+shape in my work, and §1 of my own 462 memo named it in someone else's.
+
+And the sentence was *backwards*, not merely unsupported: 44/44 declare `legs>0` and `preds>0`,
+44/44 print zero canonical LEG rows by the identical arithmetic, 44/44 print no raw row of either
+vocabulary. I would not publish a 44-member LEG-dropping class off that figure. Reproduced at the
+current corpus: **45 of 45**.
+
+Repair: his wording for the leg text, plus the conjunct that grades it — every residue member's
+canonical LEG row count against its own `legs>0`, using the lib's own `readRows`/`readVerdict`.
+
+**THE FALSE RED.** First version read `v.legs`. `readVerdict` returns its counts nested under
+`.verdict`, so `v.legs` is `undefined` and `undefined > 0` is false for all 45 members. The leg
+published:
+
+```
+E7  residue 45 members · readable 45 · zero canonical LEG rows at legs>0 in 0 · unseparated=false
+VERDICT/1 RED legs=8 red=[E7] refused=[] preds=2 refuted=[] prefused=[]      .err empty
+```
+
+A clean RED with an empty `.err` — it looked exactly like a discovery. **Caught only because his
+`T3` had already measured the answer and my `0 of 45` disagreed with his `44 of 44`.** A hand-typed
+reader is not a slice, hit inside the very leg built to stop a sentence outrunning its predicate.
+Without his figure in hand it would have shipped. Recorded in README §6a, not only in the commit.
+
+After the fix: `45 of 45 · unseparated=true · VERDICT/1 ok`.
+
+**Both outcomes driven under cripples** — separately, because first-failure-wins would have left the
+second ungraded:
+
+```
+one residue member with legRows=1   → E7 RED  · VERDICT/1 RED      red=[E7]
+one unreadable residue member       → E7 REF  · VERDICT/1 REFUSED  refused=[E7]
+```
+
+Each cripple's anchor asserted to occur **exactly once** before the edit, and the replacement
+asserted to have applied. **The first copy was written at the repo root and would have refused every
+cell** — the instrument imports `../lib/verdict.mjs` relative to its own directory; rewritten at
+instrument depth. Both deleted afterwards.
+
+The cripples also exposed a defect in my own print: `residue ${mineUpstream.length} members` beside
+a predicate walking `residue` — equal on the real corpus, **46 graded against "45 members" printed**
+under the cripple. Re-keyed onto `residue.length`.
+
+`drive3` and `drive4` carry **identical verdict tokens**, which is exactly why the cripples are the
+evidence and the token is not.
+
+```
+2cd3a4aa  round462: E7's sentence was carried by a `what` string …
+pushed:   ae36f771..2cd3a4aa  HEAD -> main
+```
+
+## 13:34 — the standing stop-condition line, read by driving his cell
+
+Took his offer. Drove `docs/research/round464-instruments/grade-the-stop-condition.mjs` rather than
+retyping his number. At `ae36f771`:
+
+```
+VERDICT/1 RED legs=9 red=[T1] refused=[T6] preds=3 refuted=[] prefused=[]
+  T1  detail: scripts 8 vs 8; research-mjs 171 vs 169
+  T6  detail: memo unreadable at REV
+  T2  last gated-curing round 454, highest 464, consecutive 10
+  T8  dir key consecutive=10 · union key consecutive=10
+```
+
+**His cell no longer reports `ok`, for two reasons that are not about the stop condition:**
+
+1. **`T1` reddened on its own promotion.** It pins `docs/research/*.mjs` distinct-files-since-10-13
+   at 169; now 171. Diffed as member **lists** rather than counts — and the two added are
+   `round464-instruments/grade-the-stop-condition.mjs` and `recon.mjs`, **his own instrument files**.
+   The commit that published the pin broke it. Checking the lists is what kept me from attributing
+   it to my own `recall-tap` edit, which was the obvious guess and is in `scripts/`, not
+   `docs/research/`.
+2. **`T6` refuses "memo unreadable at `REV`"** because it slices a path under `docs/mail/`, and the
+   memo it reads was `git mv`'d to `docs/mail/read/` when Calliope closed the thread this morning.
+   The close-discipline is a documented convention, so **no path-keyed slice on `docs/mail/` can
+   survive thread closure** — this recurs for every such slice.
+
+**The value is unaffected:** `T2` and `T8` both compute `consecutive=10` under both attribution
+keys. So the standing line must quote **`T2`'s figure**, not the cell's verdict token — otherwise a
+fire reports `RED` and a reader cannot tell a stop-condition finding from a stale pin. Written that
+way in my entry, and routed to him as the same change in his.
+
+**`T7` is live:** it now reads **3** out-of-type-program members against the 2 in his memo, the third
+being `scripts/lib/recall-tap.mjs` — this fire's own edit, caught by his leg.
+
+## 13:35 — retraction placed where the false claim lived
+
+The sentence *"The finding that runs against me: Theseus's 13 is a FLOOR on a class of 57"* was still
+live in this seat's `COORDINATION.md` Status line. **Struck through rather than deleted**, with the
+retraction above it, so the correction has something to point at — a cured figure leaving a live
+sentence about the old one is a shape this seat has shipped before.
+
+## Open at close
+
+- **`lib/**/*.mjs` gate** — unclaimed, **no blocker**, 129 to clear (98 one-line annotations). Named
+  rather than deferred to a vague later.
+- **Routed to Theseus:** quote `T2`'s figure rather than the cell's token in his standing line;
+  `T1` and `T6` both want re-keying off a moving window and a moving path.
+- **The stop condition itself is not mine to declare fired.** Two seats proposed, one measured; the
+  decision is xian's and Calliope's. This fire acted on it as a **priority rule** (gated surface
+  before a new round), which needs nobody's permission, and did not declare the track stopped.
+- **Unchanged deferrals, each with a named blocker:** round456 whole-cell re-drive (wants a window,
+  not a fire); the 8 non-zero exits and 2 `spawn`-hazard instruments from 453 (neither seat's); the
+  SDK `0.122 → 1.3.0` bump (wants its own unit); a second `ubuntu-latest` image (cannot reach a
+  Linux kernel from this seat). **Needs-you unchanged at 1:** the drift census over the full 52.
+- **api-native probe build** — still this seat's, still correctly unstarted: test 1 has not run,
+  blocker is xian's key/trigger plus the §4.3 threshold. Unchanged from 09:17.
+
+## Drain (2026-10-27 MID fire)
+
+*Done, bounded* (Klatch is a recorded exception to the fleet duty-cycle-drain baseline). Pull
+verified clean; authorship of the 3 head commits read with `%an` before assuming any was mine, none
+were. `COORDINATION.md` read; `docs/mail/` read on arrival and **the one unread inbound to this seat
+was acted on in full in the same fire** (463 §3 — leg text, conjunct, README, both cripples), not
+queued. The closed-but-decisive stop-condition memo was read too rather than skipped for being in
+`read/`. Three units drained: the `T7` gated surface (priced + 2 defects fixed), the 463 repair, and
+the standing stop-condition line (which found 2 defects in his cell). *Deferred, each with a named
+blocker:* as listed above. **The one thing I chose not to do and why:** no Round 465 — the stop
+condition's current value is 10 against an N of 5, and a gated-surface item routed to this seat was
+open. That is a named reason, not a priority feeling.
+
+## Session wrap verification (MID fire)
+
+**Step 1 — commits landed.** `git fetch origin && git log origin/main --oneline -5 --pretty='%h %an | %s'`,
+run at close, authors printed rather than assumed:
+
+```
+c91420d2 Argus (Klatch)    | coord+log: 10/27 WORK fire — no-op on product, gate re-verified fresh …
+2cd3a4aa Daedalus (Klatch) | round462: E7's sentence was carried by a `what` string …
+ae36f771 Daedalus (Klatch) | docs: price the scripts/**/*.mjs gate — 47 files in no type program …
+2625227c Daedalus (Klatch) | fix(recall-tap): two hand-written contracts in the same file contradicted each other …
+1beca89c Calliope (Klatch) | coord+log+mail: 10/27 MID fire — my own 10-26 proportionality ask closes …
+```
+
+**All three of this fire's commits are on `origin/main` and all three are mine by `%an`.** Argus's
+WORK-fire commit landed after my last push, so this seat is one behind and the coord+log+mail commit
+below rebases over it.
+
+**Step 2 — each deliverable exists** (`ls`, not inferred from the commit):
+
+```
+scripts/lib/recall-tap.mjs                                       28789  13:24
+docs/research/scripts-mjs-gate-price-2026-10-27.md                8747  13:27
+docs/research/round462-instruments/grade-the-pred-half-refusal.mjs 27316 13:30
+docs/research/round462-instruments/drive4.e7-residue-graded.out    4695  13:30
+docs/mail/daedalus-to-theseus-…-your-own-cell-has-reddened-2026-10-27.md 12708 13:35
+```
+
+**Step 3 — this log pushed last**, in the coord+log+mail commit, after Steps 1 and 2 were run.
