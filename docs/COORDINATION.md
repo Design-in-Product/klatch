@@ -3359,7 +3359,46 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-10-26 ~07:22 PT (START fire). **Status:** available.
+- **Updated:** 2026-10-26 ~19:19 PT (STOP fire). **Status:** available.
+- **10/26 fire (STOP) — no-op on product; Round 458→462 chain read, nothing owed to this seat.**
+  Drain against own 07:23 PT START checkpoint (`5d89114d`): 26 new commits, none mine (checked
+  `%an` per commit) — Daedalus's Round 458/460/462 chain (7 sites cured, the `readTail` PRED gate
+  landing 13 recordings, the PRED half of 456's comparator refusing with the 13 standing as a
+  floor on a class of 57), Theseus's Round 459/461 chain (two routed sites found not to be
+  defects while grading found three that are; three laundering defects cured, A1–A5 re-keyed), a
+  `types.ts` commit promoting all three Claude 5.5 model ids to `FIVE_LEVEL`, and three no-op
+  coord+log checkpoints (Argus ×2, Calliope ×1). `git diff --stat 5d89114d..HEAD -- packages/
+  scripts/` shows two files — `packages/shared/src/types.ts` and a research-instrument test
+  (`round39-model-fallback-parity.test.ts`) — neither in this seat's UX/front-end lane; full gate
+  below confirms nothing broke downstream. No mail addressed to this seat by name (`grep -rl
+  '^\*\*To:\*\*.*Iris' docs/mail/*.md` — no hits); five new local memos all cc-only on the same
+  thread already covered by the commit check. All four cross-repo mailboxes re-checked
+  (`find -newer` against this morning's log, then content-grepped for `klatch|\biris\b`):
+  designinproduct 3 new/0 hits; mediajunkie 0 new; dispatch 2 new/1 hit (Daedalus's own curiosity
+  question to xian's newsletter question-box, mentions Klatch by name only, explicitly "no answer
+  needed"); piper-morgan-product 124 new/6 hits, same stale `MANIFEST.md` boilerplate as every
+  prior fire. Nothing owed across any of the five. Both briefs re-checked: cross-pollination
+  unchanged since this morning (10-26 private source); fire-depth unchanged (10-26 06:50 PDT,
+  one unmatched entry carried for several days, informational only). Both standing blockers
+  re-derived fresh: day count **78** (unchanged, same calendar day, via `node` date arithmetic);
+  `entityGuess` still **6 files/20** matching lines (re-grepped directly). **Verified, not
+  trusted:** `npm run typecheck` clean ×4 workspaces; server **140 files · 2183 passed · 1 skipped
+  (2184)**; client **26 passed|13 skipped (39) · 333 passed|13 skipped (346)** — both exact
+  matches to this morning's checkpoint; `sweep-probes --census` **153 probe files, 43 swept/110
+  deferred** unchanged; full driving sweep (`:3001` clear before/after, `HEAD` unchanged at
+  `aa2fa9c0` before/after, tree clean throughout, backgrounded and picked up via completion
+  notification rather than polled) — **SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0
+  blocked, 0 census problem(s), 110 deferred**. No `packages/` changes this fire. No port bound at
+  close, no database opened, no model called. One self-correction logged: called `ScheduleWakeup`
+  (wrong tool outside `/loop`, immediately cancelled) and one filler Bash call while waiting on the
+  backgrounded sweep — the same reflex already flagged in this morning's log, recurred same-day;
+  noted as needing not-re-reading-the-note but not-calling-any-tool-at-all as the actual fix. Two
+  consecutive checks found nothing further unblocked — fire closed bounded. Nothing new needs
+  xian beyond the one standing item (ground-rules question, now at 78 days, unmoved today).
+  **Drain:** all unblocked items done (commits, mail across all five mailboxes, both briefs, both
+  blockers, full gate); nothing deferred. Log: `docs/logs/2026-10-26-0722-iris-log.md` (STOP
+  section appended).
+- **Prior update:** 2026-10-26 ~07:22 PT (START fire). **Status:** available.
 - **10/26 fire (START) — no-op on product; Round 457/dispatch thread read, nothing owed to this
   seat.** Drain against own 10/25 STOP checkpoint (`df5a27cc`): 8 new commits, none mine (checked
   `%an` per commit) — Theseus's Round 457 reply chain (prediction lands at 5/10, 13 incomplete
