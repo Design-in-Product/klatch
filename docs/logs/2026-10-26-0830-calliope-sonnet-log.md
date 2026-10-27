@@ -161,3 +161,58 @@ packages); mail checked across local plus all four cross-repo mailboxes; both br
 by commit hash, unchanged; rollup re-checked, nothing moved; gate re-derived fresh and
 byte-identical at every layer; `log.html` continuity confirmed, nothing owed at a SWEEP fire.
 Two consecutive checks found nothing further unblocked. Fire closed bounded.
+
+## 21:4x PT — STOP fire
+
+Checkpoint is this seat's own 10/26 SWEEP-fire commit `c57d7603`. `git log c57d7603..HEAD` —
+nothing landed between checkpoint and this fire's start.
+
+**Substantive this fire, not a no-op.** Reading `docs/COORDINATION.md` surfaced the round track
+now at Round 463 — 325+ rounds past the 09-02 closure at Round 137, with no fresh stop condition
+filed since. Rather than carry the 09-14 proportionality figure (the last time anyone ran this
+census), re-derived it live: since 09-14 (42 days, ~253 rounds), **1608 commits, 44 touching
+`packages/` (2.7%)**, against the 09-14 check's own ~1-in-7 (14%) for the prior window — a
+sustained ~5x drop, confirmed in narrower windows too (1 of 284 since 10/19; 5 of 958 since
+10/01), not a stale average. Checked the file list behind the 44, not just the count, before
+calling anything — 27 distinct non-test source files, genuine feature work, so the number isn't
+hollow, just a small minority of a very large stream.
+
+**What makes this worth a memo rather than a filed observation:** re-reading the standing Pard
+mail (still open, 10-20) for this fire's mail check surfaced xian's own words — via Pard — asking
+whether Klatch is "still a product he'll ship, or just use himself, or ... becoming more of a
+research shop for the larger team." That's the exact question the proportionality figure bears
+on, and nobody had connected the two. Checked the concrete instance rather than stopping at the
+ratio: the api-native probe (the deliverable that same 10-20 memo asked for) had its MVP feature
+picked 10-22; `find . -iname "*api-native*"` this fire shows no build exists four days later — no
+branch, no `scripts/`/`packages/` diff, only the plan doc and the two mail threads that produced
+it. In the same four days the round track ran Round 435 → 463.
+
+**Filed:** mail to Daedalus/Theseus/Argus (cc Iris, Janus, xian), same two asks as 09-02 — a
+stated stop condition for the current track, and whoever's picking up the api-native build named
+explicitly (or a deliberate decision that it isn't being built yet). COORDINATION.md's Calliope
+section carries the full writeup. Not added to the rollup as a needs-you item — it isn't a
+decision only xian can make, and the board's two open items are unrelated.
+
+**Mail otherwise:** the two new round-track memos since checkpoint (Round 462/463) are cc-only,
+already covered by the SWEEP-fire entry. The four standing Pard threads unchanged — smoke-run
+branch still doesn't exist.
+
+**Briefs:** cross-pollination brief's actual content (`mediajunkie/src/internal/briefs/
+2026-10-26-brief.md`) is outside this session's granted working directories (only `mediajunkie/
+docs/mail` is reachable) — noted as a gap rather than silently skipped.
+
+**Gate re-verified fresh:** `npm run typecheck` 0 `error TS` across all four workspaces; `npm test
+-w packages/server` — **140 files · 2183 passed · 1 skipped (2184)**, byte-identical; `npm test -w
+packages/client` — **26 passed|13 skipped (39) · 333 passed|13 skipped (346)**, byte-identical;
+`node scripts/sweep-probes.mjs --census` — **153 probe files, 43 swept/110 deferred, CENSUS OK**,
+unchanged.
+
+**`log.html`:** today's mandatory STOP-fire entry written below, covering the Round 458–463 chain
+in plain language plus a short, non-alarmist note on the proportionality finding.
+
+**Drain:** mail checked and acted on (new memo filed, not parked); the proportionality census
+re-run live rather than recalled, including the file-list check behind the headline number; the
+api-native-probe build status verified by direct `find`, not assumed from the rollup's
+now-4-day-stale "hasn't been built yet" line; gate re-derived fresh and byte-identical at every
+layer; `log.html` entry written and task-list row updated. Two consecutive checks found nothing
+further unblocked. Fire closed bounded.

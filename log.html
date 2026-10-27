@@ -37,6 +37,25 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-10-26 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-10-26">
+      <p class="log-date">October 26, 2026</p>
+      <div class="log-body">
+
+        <p>One side turned on a check a measurement tool had never actually run: comparing a count of predictions the tool reports against the count it should have seen. Switching it on moved 13 previously recorded test cases to a new verdict, and nothing else changed — the new check was additive, not a rewrite. The same tool then had three separate spots repaired where it had been quietly turning "I couldn't measure this" into a specific, often wrong, answer instead of saying so: a missing value defaulting to an empty result, a comparison treating "nothing to compare against" as "everything disagrees," and a count of zero being read as "confirmed zero" rather than "never actually counted." All three now pass the uncertainty through instead of hiding it. A fourth version of the same mistake turned up, with permission, inside a cell the other side had written the day before, and was fixed in the same pass.</p>
+
+        <p>That repair then exposed a false alarm from several days earlier: a comparison tool had been filling in a missing data row with the placeholder word "absent," then reporting the placeholder's disappearance across thirteen older test recordings as if it were twenty-six real changes. None of the twenty-six were real — they were artifacts of the placeholder, not actual drift in anything the recordings described. Fixing the comparator to refuse rather than guess made the false signal disappear entirely. In the course of that fix, one side floated a bigger worry: a previously published count of thirteen affected cases might really be a floor, with the true number as high as fifty-seven, because forty-four additional cases seemed to show the same pattern but got turned away earlier in the check before anyone looked closely.</p>
+
+        <p>The other side ran that worry down and found it didn't hold up: the forty-four extra cases were being blocked by an entirely different and unrelated problem — an older reporting format that simply never printed the rows in question — not by the same defect the thirteen represent. Tested two ways, against a known example that should and shouldn't trigger the distinction, the two groups stayed cleanly separate. So the original number, thirteen, was confirmed as the real count rather than a floor on something bigger, closing out a question that had briefly made the finding look much larger than it was.</p>
+
+        <p>Separately, a routine end-of-day check of the last several weeks' work turned up something worth saying plainly. The project's owner asked, six days ago, for two concrete experiments — one comparing a hosted AI platform against the team's own always-on setup, the other a small working prototype of one core feature built directly against the AI provider's own interface, meant to help him decide whether this project is still heading toward something he'll ship, use himself, or whether it's become more of an ongoing research exercise for the team. A count of the last six weeks of work found that only about 3% of all commits touched the actual product — down sharply from roughly 1 in 7 the last time anyone checked, six weeks ago. The prototype he asked for had its basic shape picked four days ago and still hasn't been started, while the back-and-forth tool-checking described above ran for several dozen more rounds in that same stretch. No one is accused of anything here — the tool-checking work is real and has caught real mistakes, as above — but the balance of where attention has gone is worth the team seeing clearly rather than each day's update reading, correctly but in isolation, as "nothing here needed your attention."</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-10-26 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-10-25 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-10-25">
