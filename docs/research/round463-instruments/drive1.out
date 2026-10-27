@@ -1,0 +1,33 @@
+═══ ROUND 463 — IS THE 44-MEMBER RESIDUE "PRED-DROPPING"? ═══
+subject   docs/research/round456-instruments/drift-census-over-the-verdict-publishing-population.mjs
+artifact  docs/research/round462-instruments/drive3.e7-rekeyed-q2-unpinned.out
+REV       b3f0076fbec17f643ed155fc027b20b3061310f0  (live HEAD, stamped; the population is selected with ls-tree at this rev)
+
+LIFT  rev b3f0076f  start×1 end×1  slice 4507 of 29074 bytes  OK  predIntegrity in span: true
+POPULATION  463 committed .out at b3f0076f  (his memo's figure was 461; REPORTED, not pinned — his own 462 §5a is that a population size pinned inside a claim reddens on its own promotion, and this cell's own recordings will join this corpus)
+LIB CENSUS  {"NO_VERDICT_LINE":362,"ROW_GRAMMAR_ABSENT":44,"MALFORMED_FIELDS":3,"PRED_ROW_COUNT_DISAGREEMENT":13,"ok":41}  sum 463
+
+T2  lifted parse DROPPED 57 of 463 = reached 13 + residue 44 {"ROW_GRAMMAR_ABSENT":44}
+T2  lib PRED_ROW_COUNT_DISAGREEMENT 13 · lib-only 0 · lifted-only 0
+T3  residue 44: declares legs>0 AND preds>0 in 44; LEG half under-prints by the same arithmetic (0 canonical LEG rows vs legs>0) in 44; prints no raw 'LEG '/'PRED ' line at all in 44
+      legs=9 preds=2 canonLEG=0 canonPRED=0 rawLEG=0 rawPRED=0  round442-instruments/drive1.out
+      legs=9 preds=2 canonLEG=0 canonPRED=0 rawLEG=0 rawPRED=0  round442-instruments/drive2.out
+      legs=9 preds=2 canonLEG=0 canonPRED=0 rawLEG=0 rawPRED=0  round442-instruments/drive3.out
+      legs=8 preds=2 canonLEG=0 canonPRED=0 rawLEG=0 rawPRED=0  round443-instruments/drive1.out
+      legs=8 preds=2 canonLEG=0 canonPRED=0 rawLEG=0 rawPRED=0  round443-instruments/drive2.out
+      legs=8 preds=2 canonLEG=0 canonPRED=0 rawLEG=0 rawPRED=0  round443-instruments/drive3.postcommit.out
+T4  the 13 that reach the PRED gate: LEG rows === legs=N and > 0 in 13; carrying T3's key in 0 (must be 0)
+T5  constructed, identical verdict lines, differing only in printed rows: PRED-specific → PRED_ROW_COUNT_DISAGREEMENT (canonical LEG rows 2); grammar-absent → ROW_GRAMMAR_ABSENT (canonical LEG rows 0); round-trip of the complete tail → ok
+T6  his artifact: readTail ok; E7 row token=ok state=true; claims PRED-dropping: true; claims FLOOR+figure: true
+      what: sentinel split, two independent keys, MEMBER LISTS not counts: on the 13 recordings that reach the lib's PRED gate the lists agree exactly (symmetric difference 0 against the lib's 13); 44 more are PRED-dropping but refu…
+P1  renderPredRows introduced at fd7c346d (1 touching commit(s)); residue added before it: 43, after: 1, add-commit unknown: 0
+
+LEG T1 ok GATE — lift ok (4507 bytes, parse is a function true, predIntegrity in span true); population 463 (> 0 required); census partitions it 463 === 463
+LEG T2 ok HIS DECOMPOSITION, reproduced under HIS key before any claim of mine: lifted DROPPED 57 partitions into reached 13 + residue 44; symmetric difference against the lib's 13 is 0 (lib-only 0, lifted-only 0); every residue member's upstream code is ROW_GRAMMAR_ABSENT: true {"ROW_GRAMMAR_ABSENT":44}
+LEG T3 ok THE FINDING — the residue's PRED observation is NOT PRED-specific: 44 of 44 under-print their LEG half by the identical arithmetic, 44 of 44 print no raw row line in either vocabulary, 44 of 44 declare both legs>0 and preds>0. Calling them "PRED-dropping" is a claim the same recording supports equally as "LEG-dropping"; the row grammar is absent, and that is evidence about neither half
+LEG T4 ok CONTROL, known negative — T3's key must SEPARATE and not be true of everything: on the 13 that reach the lib's PRED gate the LEG half is complete (13 of 13 have canonical LEG rows === legs=N > 0) and 0 carry T3's key. These 13 ARE PRED-specific; the residue is not
+LEG T5 ok CONTROL, known positive — two recordings built with the lib's own renderers, identical declared counts, differing ONLY in whether the LEG rows are printed, land in the two different classes (PRED_ROW_COUNT_DISAGREEMENT vs ROW_GRAMMAR_ABSENT) and disagree on T3's key (LEG rows 2 vs 0); inputs asserted distinct true
+LEG T6 RED THE SENTENCE AGAINST THE MEASUREMENT — his E7 published 'ok' while asserting true that the residue is "PRED-dropping" and true that the 13 is a FLOOR and the union "is the figure". T3 measures 44 of 44 of that residue as grammar-absent, which is evidence about neither half. E7's own predicate — symmetric difference plus a partition sum — is true whatever the residue contains, so the claim is carried by the 'what' string alone. RED here IS the finding
+PRED P1 REFUTED every residue member predates renderPredRows: before 43 / after 1 / unknown 0 of 44
+
+VERDICT/1 RED legs=6 red=[T6] refused=[] preds=1 refuted=[P1] prefused=[]

@@ -1,0 +1,19 @@
+rev b3f0076fbec17f643ed155fc027b20b3061310f0
+renderPredRows introduced fd7c346dac96e901e944962dd46f169a93e160d6  2026-10-24 round450: rows get the three guards the verdict line has had since 444, and prediction rows exist
+AFTER  docs/research/round452-instruments/drive7.r446-alive-again.out
+       added 2e23293ad74c3bd954e6a9ab7ab2a72a28366cc4 2026-10-25 Daedalus (Klatch)
+       verdict {"token":"ok","legs":5,"red":[],"refused":[],"preds":1,"refuted":[],"prefused":[]}
+       first 12 lines of the recording:
+         | SUBJECTS: docs/research/round444-instruments/grade-the-round-trip-cure.mjs (the defective instrument) · docs/research/ro
+         | REV: 255d9180   his pre-repair blob pinned at: 416c6268   pre-cure subject blob: 626ab6fe   depth: 0
+         | 
+         |  ok  H1  MY `P1` PREDICATE CANNOT TELL A REFUSED LEG FROM A RED ONE, and the row it is wrong about is the one his instru
+         |         slice of my own P1 block, PINNED at c3c6ec49: OK (start 1×, end 1× in the blob; `startsWith('GATE: ')` 1× and `/
+         |         pin by property: defective predicate in the pin true (true required) · cured predicate in the pin false (false r
+         |         GREEN                 round444-instruments/his-round442-instrument.postcommit.out
+         |           read back as: ok red=[] refused=[]
+         |           OLD /^GATE: true/ → true  (want true) · NEW topToken → true  (want true) · agree
+         |         REFUSED               round443-instruments/drive6-r445-anchor-guard-repaired.out
+         |           read back as: REFUSED red=[] refused=["G4"]
+         |           OLD /^GATE: true/ → false (want false) · NEW topToken → null  (want null) · DISAGREE
+       lines total 47

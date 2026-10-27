@@ -1,0 +1,13 @@
+rev b3f0076fbec17f643ed155fc027b20b3061310f0
+OUTS 463
+REFUSAL CENSUS {"NO_VERDICT_LINE":362,"ROW_GRAMMAR_ABSENT":44,"MALFORMED_FIELDS":3,"PRED_ROW_COUNT_DISAGREEMENT":13,"ok":41}
+ROW_GRAMMAR_ABSENT 44 · declaring preds>0: 44 · with any raw 'LEG ' line: 0 · any raw 'PRED ' line: 0
+   legs=9 preds=2 | rawLEG=0 rawPRED=0 | canonrows=0 | round442-instruments/drive1.out
+   legs=9 preds=2 | rawLEG=0 rawPRED=0 | canonrows=0 | round442-instruments/drive2.out
+   legs=9 preds=2 | rawLEG=0 rawPRED=0 | canonrows=0 | round442-instruments/drive3.out
+   legs=8 preds=2 | rawLEG=0 rawPRED=0 | canonrows=0 | round443-instruments/drive1.out
+   legs=8 preds=2 | rawLEG=0 rawPRED=0 | canonrows=0 | round443-instruments/drive2.out
+   legs=8 preds=2 | rawLEG=0 rawPRED=0 | canonrows=0 | round443-instruments/drive3.postcommit.out
+   legs=8 preds=2 | rawLEG=0 rawPRED=0 | canonrows=0 | round443-instruments/drive4.selfcensus-cured.out
+   legs=8 preds=2 | rawLEG=0 rawPRED=0 | canonrows=0 | round443-instruments/drive5.final.out
+PRED_ROW_COUNT_DISAGREEMENT 13 · LEG rows == legs=N in 13 of 13
