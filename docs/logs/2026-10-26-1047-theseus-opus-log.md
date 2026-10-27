@@ -166,3 +166,91 @@ after each push. Pre-commit census on each: `CENSUS OK · census PASSED`.
 **Next unit, no blocker:** the 67 unpinned `git` sites — reading which run a cwd-sensitive
 subcommand. **Deferred with a named blocker:** the whole-cell drive of `455` cell A, which needs a
 window where losing the tree to a restore costs nothing.
+
+## 19:4x–20:0x PT — STOP fire: Round 463, grading his 462 §4
+
+Session-start checklist: fetched, worktree at `origin/main` (`b3f0076f`). Checked authors before
+assuming — the two "no-op STOP fire" commits above mine are **Iris's** and **Argus's**, not mine.
+Daedalus's Round 462 landed at 17:31 (`af06e760`) and was unanswered. Read it in this fire and
+answered it in this fire.
+
+**Unit:** grade his §4 — "44 more are PRED-dropping but refused upstream, so the lib's 13 is a FLOOR
+on the class and 57 of 461 is the figure."
+
+**Recon first, under his key, before forming a claim** (`recon.mjs` → `recon.out`): the lib's own
+`readTail` over 463 committed `.out` at a stamped rev, `ls-tree` with `-C` pinned.
+`{"NO_VERDICT_LINE":362,"ROW_GRAMMAR_ABSENT":44,"MALFORMED_FIELDS":3,"PRED_ROW_COUNT_DISAGREEMENT":13,"ok":41}`,
+sum 463. The residue: **44 of 44 declare preds>0, 0 of 44 print any raw `LEG ` line, 0 of 44 any raw
+`PRED ` line.** The 13: LEG rows `=== legs=N` in 13 of 13. That decided the round before the cell
+existed.
+
+**The cell** (`grade-the-57-of-461-class.mjs`, `drive1.out`):
+`VERDICT/1 RED legs=6 red=[T6] refused=[] preds=1 refuted=[P1] prefused=[]`.
+
+* `T1` gate — lift of round456's `parse` at HEAD, anchors ×1, compiles, `predIntegrity` *inside the
+  span* (a present anchor is not an intact span); population > 0; census **partitions** it
+  (463 === 463 — a census whose buckets don't sum has dropped members).
+* `T2` — his decomposition reproduced, member lists not counts: `57 = 13 + 44`, symmetric difference
+  0 both ways. Population **463**, not his 461; reported and not pinned, which is his own §5a.
+* `T3` the finding — 44 of 44 under-print the LEG half by the identical arithmetic and print no raw
+  row of either kind. Grammar-absence is evidence about neither half.
+* `T4` known negative — the 13 do **not** carry `T3`'s key (0 of 13). Without this, `T3`'s key could
+  be true of the whole corpus and would separate nothing.
+* `T5` known positive, **constructed with the lib's own renderers** — two recordings with identical
+  verdict lines differing only in printed rows land in the two classes; inputs asserted distinct
+  before either is relied on; the complete tail round-trips `ok`.
+* `T6` **RED, and the RED is the finding** — read off his **committed artifact** via `readRows`, not
+  his source and not my memory of the memo. `E7` published token `ok` while its `what` asserts
+  PRED-dropping + FLOOR + "is the figure"; its predicate (symmetric difference + partition sum) is
+  true whatever the residue contains. Refusal propagates: unreachable recording → `null`.
+
+**`P1` REFUTED, and it runs against me.** Pre-registered before the drive: all 44 predate
+`renderPredRows`. **43 before / 1 after / 0 unknown.** Named rather than left as a count
+(`drive2.which-postdates.out`): `round452-instruments/drive7.r446-alive-again.out`, added 2026-10-25
+by Daedalus, one day after `fd7c346d`, rendering a canonical verdict line and its own row format.
+Two mechanisms, not one. Routed to him — that cell is invisible to every row-level reader while its
+verdict line reads `ok`.
+
+**His two asks, both answered.** §3's LEG-half-identity row: holds **non-vacuously** — his `drive3`
+prints `LEG moves` 1–3 on all 13 pairs, so the `join('|')` is comparing non-empty strings, not `''`
+to `''`. §4's routed ladder decision: **taken, no** — nothing sits behind a LEG refusal on this
+corpus to report, and a PRED code there would publish grammar-absence as a PRED fact.
+
+**Mail close-discipline:** the round461 pair moved to `docs/mail/read/` (closed in writing by his 462
+§1, which I read this fire). The 462/463 pair stays open — the `E7` wording is an action on him. The
+inbox still carries 64 other round-pair memos against 374 already in `read/`; I did not sweep those,
+because I have not read them this session and declaring a thread closed I haven't read is the
+failure mode the discipline exists to prevent.
+
+**Not run:** `npm test`, `npm run typecheck`, the driving sweep — nothing under `packages/` touched.
+Pre-commit census on both commits: `CENSUS OK · census PASSED`.
+
+**Drain:** mail read and answered in-fire; the round graded end to end; one closed thread archived;
+two items routed to Daedalus. **Deferred with a named blocker:** the whole-cell drive of 455 cell A,
+which needs a window where losing the tree to a restore costs nothing. **Next unit, no blocker:** the
+67 unpinned `git` sites.
+
+### Wrap verification
+
+Step 1 — commits on `origin/main` (`git log origin/main --oneline -4`, run this fire):
+
+```
+4b987807 mail: Round 463 reply to Daedalus — his 44 are grammar-absent, not PRED-dropping, and E7 grades neither
+390f7056 round463: the 44-member residue is grammar-absent, not PRED-dropping, and his E7 grades neither
+b3f0076f coord+log: 10/26 STOP fire — no-op, Round 458 through 462 chain landed not mine, gate byte-identical
+aa2fa9c0 coord+log: 10/26 STOP fire — no-op, gate byte-identical, needs-you unchanged at 1
+```
+
+Both of mine present, author-checked `Theseus (Klatch)` with `--format='%h %an %s'` and not
+`--oneline`, which hides the author.
+
+Step 2 — every deliverable `ls`-ed and present: `docs/research/round463-instruments/` (README.md,
+recon.mjs, recon.out, recon.err, grade-the-57-of-461-class.mjs, drive1.out, drive1.err,
+which-residue-member-postdates.mjs, drive2.which-postdates.out, drive2.which-postdates.err); the
+memo at `docs/mail/theseus-to-daedalus-…-your-44-are-grammar-absent-…-2026-10-26.md`; the archived
+inbound at `docs/mail/read/daedalus-to-theseus-…-the-pred-gate-lands-…-2026-10-26.md`. All three
+`.err` files 0 bytes (`wc -c`, read directly, not piped).
+
+Step 3 — this log and the COORDINATION entry commit and push last.
+
+**Question box:** nothing this fire.
