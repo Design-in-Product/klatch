@@ -124,3 +124,40 @@ Standing blockers re-checked, both unmoved: CIO Laya/AAXT thread, parked on xian
 intel sweep cadence, handled this morning's START fire, next due ~11/2, not due this fire. Two
 consecutive checks found nothing further unblocked — fire closed bounded. Nothing new needs xian
 beyond the one standing item (CIO/Laya).
+
+## STOP fire, ~18:05 PT
+
+**Checkpoint:** own 10/26 WORK-fire commit `aa1dfaa7` (13:37:14 PT).
+
+**Commits since checkpoint:** `git log aa1dfaa7..HEAD --format='%h %an %ci %s'` — 9 new commits, none
+mine: Theseus's Round 461 chain (`af63dc3f`, `714dc12c`, `b94bfa5f`, `d0b3aada` — the three laundering
+defects are cured and A1–A5 re-key across the seam, post-commit re-drives, his memo to Daedalus, his
+coord+log) and Calliope's 10/26 SWEEP-fire no-op (`80d503c4`), and Daedalus's Round 462 chain
+(`439f8c22`, `3f3d140e`, `af06e760`, `f20f5081` — the PRED half of round456's comparator refuses, post-
+cure drives with E7 re-keyed and Q2 unpinned, his reply to Theseus, his coord+log) — author-checked
+with `%an`. `git diff --stat aa1dfaa7..HEAD -- packages/ scripts/` — **empty**; the full diff (35
+files, 3050 insertions/147 deletions) lands entirely under `docs/research/round461-instruments/`,
+`docs/research/round462-instruments/`, `docs/mail/`, coord, and logs — confirmed by reading the
+`--stat` output directly, not assumed from the empty package/scripts filter alone.
+
+**Mail:** `grep -l '^\*\*To:\*\* Argus' docs/mail/*.md` — no hits. All four writable cross-repo
+mailboxes checked via `find -newer` against this seat's own last log timestamp (13:37 PT):
+`designinproduct` 0 new, `mediajunkie` 0 new, `dispatch` 2 new (Daedalus's own curiosity question-box
+memo to xian about prose-before-predicate, addressed to xian not this seat; Dispatch-DinP's routine
+EOD sync to Dispatch-PM) — both read in full, neither addressed here, nothing owed; `piper-morgan-
+product/mailboxes` ~46 new excluding `MANIFEST.md`, all internal PM-team role mail (host/comms/exec/
+lead/pa/arch/cxo/ppm) — same role set as every prior checkpoint, disjoint from Klatch's roster, 0
+hits. Nothing owed from any.
+
+**Gate re-derived fresh, not taken from any memo; no full driving sweep re-run — the diff above is
+empty, consistent with the WORK-fire pattern of skipping the sweep when `packages/`/`scripts/` hasn't
+moved:** `lsof -i :3001` — port free; `npm run typecheck` all four workspaces — exit clean, 0
+`error TS`; `npm test -w packages/server` unpiped — **140 files/2183 passed/1 skipped (2184)**, byte-
+identical; `npm test -w packages/client` unpiped — **26 passed|13 skipped (39) / 333 passed|13
+skipped (346)**, byte-identical; `node scripts/sweep-probes.mjs --census` — **153 probe files, 43
+swept/110 deferred, CENSUS OK**, byte-identical. `git status --short` clean before and after.
+
+Standing blockers re-checked, both unmoved: CIO Laya/AAXT thread, parked on xian's scheduling call;
+intel sweep cadence, `docs/intel/2026-10-26-sweep-curated.md` remains latest, next due ~11/2, not due
+this fire. Two consecutive checks found nothing further unblocked — fire closed bounded. Nothing new
+needs xian beyond the one standing item (CIO/Laya).
