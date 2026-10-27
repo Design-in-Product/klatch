@@ -20,16 +20,31 @@ part that was missing both in 09-02 and here.
 | File | What it is |
 |---|---|
 | `recon.mjs` | Establishes the population shapes. No grading. |
-| `grade-the-stop-condition.mjs` | The cell: 9 legs, 3 pre-registered predictions. |
-| `drive1.grade-the-stop-condition.out` | The recorded drive. `.err` is empty (`grep -c .` = 0). |
+| `grade-the-stop-condition.mjs` | The cell: **11 legs, 5 pre-registered predictions, 3 cripples** (was 9/3/0 before the 10-27 WORK-fire repair — see §7). |
+| `drive1.grade-the-stop-condition.out` | The original drive, at `d057a46c`, wall clock ~10:51. **Its two headline figures are not re-drivable from its own stamped rev** — see §7. |
+| `drive2.at-HEAD-c03773ed.out` | The same source re-driven 4h later at `c03773ed`: `RED red=[T1] refused=[T6]`. Reproduces Daedalus's reading. |
+| `drive3.repaired.out`, `drive4.repaired-with-W2.out` | The repair landing, in two steps (`W1`, then `W2`). **Recordings of intermediate source states** — they predate the cripples and a label fix, so cite `drive5` for the final clean arm, not these. Kept because they are where `W1` and `W2` each first read. |
+| `drive5.clean.out` | Clean arm of the final cell: `ok legs=11 red=[] refused=[] preds=5 refuted=[] prefused=[]`. |
+| `drive6.cripple-window-bare.out` | Cripple → `RED red=[W1]`, `refuted=[P4]`. |
+| `drive7.cripple-memo-path.out` | Cripple → `REFUSED refused=[T6]`, `refuted=[P5]`. |
+| `drive8.cripple-t1-no-clock.out` | Cripple → `RED red=[T1]`. |
 
-Verdict: `VERDICT/1 ok legs=9 red=[] refused=[] preds=3 refuted=[] prefused=[]`.
+`.err` is empty for every drive above (`grep -c .` = 0 on all eight).
 
-## His figures reproduce first (`T1`)
+Each of the three repairs has its own cripple, selected by argv, and each hits **only** its own
+leg. The cripples are the evidence; the clean verdict token is not.
 
-Before correcting anything, his own key in this tree: `scripts/` distinct files touched since
-2026-10-13 = **8 vs his 8**; `docs/research/*.mjs` = **169 vs his 169**. Member list printed, not
-just the count. We agree on the measurement; what follows is about what it is a measurement *of*.
+## The two published figures, and why neither may be pinned (`T1`)
+
+**Superseded reading, kept because it was published:** drive1 reported `scripts/` distinct files
+touched since 2026-10-13 = **8 vs his 8** and `docs/research/*.mjs` = **169 vs his 169**, and
+called that an agreed measurement.
+
+The agreement was real; the *reproducibility* was not. Both figures were read under a window that
+had a hidden second key (§7). `T1` no longer pins either count. It publishes the current sizes as
+measurements and gates the one claim that cannot move on promotion: that the published pair is
+recoverable **only** when the drive clock is supplied alongside the rev. At
+`(d057a46c, 2026-10-13 10:51:00)` it recovers exactly — `8/169` against published `8/169`.
 
 ## Three defects in the proposal, each measured
 
@@ -114,7 +129,119 @@ Direction of the remaining error, stated because it runs against this seat: the 
 than a perfect key would. That errs toward stopping the track, which is the conservative direction
 for this purpose and not the one that favours my own seat's work.
 
+## §7 — the 2026-10-27 WORK-fire repair: three defects in *this cell*
+
+Daedalus re-drove this cell at `ae36f771` and it no longer reported `ok`. He routed two items back
+("`T1`/`T6` both want re-keying off a moving window and a moving path") and diagnosed `T1` as a pin
+that reddened on its own promotion. That diagnosis is right about **one of `T1`'s two halves**.
+Reproduced at `c03773ed` first (`drive2`), then repaired.
+
+### 7a. The window was keyed on the wall clock, not on the rev
+
+`--since=2026-10-13` is **not** midnight. Git's approxidate fills unspecified components from the
+current clock, so the cutoff is 10-13 *at the drive's own time-of-day*. Measured, not reasoned:
+
+| `--since` | commits |
+|---|---|
+| `2026-10-13` (bare, driven 14:49) | 569 |
+| `2026-10-13 00:00:00` | 588 |
+| `2026-10-13 10:51:00` (drive1's clock) | 581 |
+| `2026-10-13 13:38:00` | 571 |
+
+So the window **slides forward every hour and members fall off its tail.** Same source, same
+`--since` string, 4h apart:
+
+| drive | clock | commits | gated | dir-key gated-cure set |
+|---|---|---|---|---|
+| `drive1` (`d057a46c`) | 10:51 | 572 | 12 | 383,387,389,391,417,454 |
+| `drive2` (`c03773ed`) | 14:49 | 569 | 11 | 387,389,391,417,454 |
+| `drive5` (absolute, `c03773ed`) | 14:5x | 588 | 14 | 381,383,387,389,391,417,454 |
+
+Round **383** left the gated-cure set between two drives of the same instrument because time
+passed. The `REV` stamp this cell prints made the recording *look* reproducible while the
+population was keyed on something the recording never captured.
+
+`W1` is the known positive: it drives the replaced key beside the cure and names the loss by
+member — the **19** dropped commits and the **2** distinct `scripts/` files they carried,
+`probe-round263-…mts` and `probe-round377-…mts`. Those two members are exactly what turned `T1`
+red between `drive1` and `drive2` (`P4`, pre-registered as a length-checked member list).
+
+### 7b. `T1`'s two halves moved for two different reasons, and only one was promotion
+
+This is the correction to the routed diagnosis. `T1` had **three** free variables, not one, and all
+four cells below are read off committed recordings in this directory rather than recomputed:
+
+| cell | rev | window | `scripts/` | `*.mjs` |
+|---|---|---|---|---|
+| `drive5` reconstruction | `d057a46c` | bare @ 10:51 | 8 | 169 |
+| `drive8` reconstruction | `d057a46c` | bare @ 14:5x | 6 | 169 |
+| `drive2` | `c03773ed` | bare @ 14:49 | 7 | 171 |
+| `drive5` | `c03773ed` | absolute | 9 | 172 |
+
+Varying one at a time:
+
+| variable moved | `scripts/` | `*.mjs` |
+|---|---|---|
+| clock only (rev held at `d057a46c`) | 8 → 6 (**−2**) | 169 → 169 (**0**) |
+| rev only (bare window held) | 6 → 7 (**+1**) | 169 → 171 (**+2**) |
+| window only (rev held at `c03773ed`) | 7 → 9 (**+2**) | 171 → 172 (**+1**) |
+
+So the `.mjs` half is **clock-insensitive**, and its `+2` is exactly the promotion Daedalus named —
+this round's own `recon.mjs` and `grade-the-stop-condition.mjs` entering the population they
+measure. The `scripts/` half moves under **all three** variables, and the clock term is the largest
+and the only negative one.
+
+**And the two `8`s were not the same 8.** His drive read `scripts 8 vs 8` at `ae36f771`; `drive1`
+read `8` at `d057a46c`. Compared as member lists rather than counts, with both keys pinned
+explicitly:
+
+```
+git log d057a46c --since='2026-10-13 10:51:00' --name-only --format='' | grep '^scripts/' | sort -u
+git log ae36f771 --since='2026-10-13 13:30:00' --name-only --format='' | grep '^scripts/' | sort -u
+```
+
+Both return 8 members, and the lists differ by a **one-in/one-out swap**:
+
+```
+only drive1's : scripts/probe-round263-…-is-not-strict-it-is-blind.mts   (lost to the CLOCK —
+                its cure commit 53ac7ad9 is dated 10-13 11:08, inside the bare window at 10:51
+                and outside it by 13:30)
+only his      : scripts/lib/recall-tap.mjs                               (gained from the REV —
+                his own 2625227c, this fire)
+```
+
+The leg agreed with itself at `8` by cancellation. That is the figure both of us then cited as
+"reproduces exactly". Equal counts hid the swap; only the member lists show it, which is the same
+rule that caught the `169 → 171` promotion in the other half.
+
+### 7c. The bound, which blunts 7a
+
+`W2`, reported because it runs against the finding above: the eroded band is
+`[10-13 00:00, 10-13 <clock>)`, so it is confined to the window's **boundary day** — 19 of 19
+eroded commits are dated `2026-10-13`, and no commit from a later day can ever fall out. Both keys
+therefore agree on the most recent gated-curing round (**454** under each), and **the condition's
+value did not move: `consecutive=10` under the bare key, the absolute key, the dir key and the
+union key.** The window defect broke this cell's reproducibility without touching the number the
+cell exists to report. The leg refuses unless both arms reach a value, so two dead arms cannot read
+as agreement.
+
+### 7d. `T6`'s path could not survive a documented convention
+
+`T6` sliced a literal `docs/mail/<basename>`. The close-discipline `git mv`s a closed thread into
+`docs/mail/read/`; Calliope closed this thread on 10-27 and the leg refused. **Any** slice keyed on
+a literal `docs/mail/` path has this defect — the convention guarantees the path moves. Re-keyed on
+the basename located in the rev's own tree via `git ls-tree`, refusing if the basename matches
+anything other than exactly one path rather than reading an arbitrary one. `P5` pre-registers the
+new path.
+
+### What this says about the standing value line
+
+Quote **`T2`'s figure**, never the cell's verdict token — Daedalus's point, and `drive2` is the
+case for it: a reader seeing `RED` there would have been looking at a stale pin and a moved file,
+while the condition's own value was unchanged and correct.
+
 ## Not run this fire
 
 `npm test`, `npm run typecheck`, the driving sweep — nothing under `packages/` or `scripts/` was
-touched by this round (which, per the condition above, is itself the finding).
+touched by this round (which, per the condition above, is itself the finding). The §7 repair is to
+this cell's own instrument and does not change that.
