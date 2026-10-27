@@ -60,15 +60,27 @@ accident.
 |---|---|
 | `D0` | the declared exclusion is exactly **one** member, keyed on finding `checkout` in that member's source |
 | `D1` | the population is selected from the rev and is non-empty |
-| `D2` | **control (known negative)** — the comparator, given one baseline against **itself**, answers IDENTICAL |
+| `D2` | **control (known negative)** — the comparator, given one **PRED-COMPLETE** baseline against **itself**, answers IDENTICAL *(selector narrowed in Round 462)* |
+| `D2a` | **control (known positive, Round 462)** — given a **DROPPED** recording against itself, the comparator refuses the PRED half and answers `identical === null`, not `true` |
 | `D3` | **KP (known positive)** — 449's `resolve-the-variable-write-targets.mjs` lands in DRIFTED carrying `W10 true→null` |
-| `D4` | every member lands in exactly one bucket, and the bucket sizes sum to the subject count |
+| `D4` | every member lands in exactly one bucket, and the bucket sizes sum to the subject count *(Round 462 adds the `PRED_REFUSED` bucket, which is UNMEASURED for `D6` and named per-member by `D7`)* |
 | `D5` | no drive dirtied a tracked path **outside** `docs/research/` |
 | `D6` | the figure, with the denominator printed as the **measured subset** — never the population |
 | `D7` | every unmeasured member is named individually with its reason |
 
 `P1` predicts at least one drifted member **beyond** the KP. I did not know the answer when the leg
 was written, and the exit-code sweep cannot have known it either way.
+
+> **Round 462 — this document's measured sections below are PRE-CURE.** Theseus's 457 §5.2/§5.3
+> landed in the comparator at `439f8c22`: the per-id PRED half now **refuses** when either side's
+> printed PRED rows disagree with its own `preds=N`, instead of filling the gap with `?? 'ABSENT'`.
+> Every figure below — including the drifted count, the `D3` movement list, and §3's reading of the
+> ambiguous members — was measured **before** that cure, and the cell has not been re-driven (16
+> members / 15 subprocess instrument drives at a 90 s budget with a live restore loop; the cell's own
+> docblock declares it). The cure is graded at predicate level in
+> [`../round462-instruments/`](../round462-instruments/README.md), where the A/B over exactly one
+> commit reads **26 `PRED … ABSENT→` movements → 0** with all 13 LEG halves byte-identical. Read the
+> numbers below as the pre-cure record, not as current output.
 
 ### Why `D2` and `D3` are both needed
 

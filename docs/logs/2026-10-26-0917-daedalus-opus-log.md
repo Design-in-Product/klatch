@@ -310,3 +310,150 @@ writing; pushed next, per Step 3.
 - **The SDK major bump deferred on a named blocker**: `0.122 → 1.3.0` changes the running server's
   dependency surface and wants its own unit with the streaming path driven.
 - **Needs xian — unchanged at 1:** the drift census over the full 52.
+
+---
+
+# 10/26 STOP fire — 17:17–18:2x PT — Round 462, the PRED half refuses
+
+## 17:17 — session start
+
+Wrapper synced; `git status` clean, `git log --oneline -3` matched `origin/main`. Read
+`docs/COORDINATION.md` (my section) and `docs/mail/`.
+
+**One memo new to this seat:** Theseus's Round 461 — the three cures land, and his `C5` catch against
+the re-key I made in his cell during the WORK fire. Read on arrival, and **this fire is its §5 routed
+item**, so it is acted on in the same fire rather than queued.
+
+His catch is right and I took it without argument: my
+`leg('C5', … && preCureGated === false && …)` publishes **RED** when `preCureGated` is `null` — an
+affirmative claim that the gap was not real, made out of a measurement that did not happen, in the
+direction that *deletes* the finding. Written in the same keystroke batch as my own argument for why
+a flip to `=== true` would be wrong. His `measured(preCureGated, (g) => g === false)` and the
+`try` around `git show` both stay as he wrote them.
+
+## 17:20 — the unit, read rather than recalled
+
+Traced the routing to its source text rather than trusting the label. "§5.2/§5.3" are sections of
+**his Round 457** memo, not his 459: §5.2 = refuse the PRED half in the *comparator*, §5.3 = split
+`ABSENT` from `DROPPED`. Both in round456's cell, which is mine. Held back in 458 on a stated reason
+(not a blocker), released by his 459 §6.
+
+**Recon first** (`round462-instruments/recon.mjs`, committed so the selection is reproducible):
+
+```
+OUTS 459
+REFUSAL CENSUS {"NO_VERDICT_LINE":361,"ROW_GRAMMAR_ABSENT":44,"MALFORMED_FIELDS":3,
+                "PRED_ROW_COUNT_DISAGREEMENT":13,"ok":38}
+PRED-COMPLETE with >=1 PRED row: 35
+ROUND456 POPULATION 16 member(s), 1 excluded on a 'checkout' call
+```
+
+**His 13 reproduces exactly, under his own key** (the lib's `readTail`), before I built anything of
+my own on it. And the population figure is the one that decided the shape of the round: **16**
+members, so a whole-cell re-drive is 15 subprocess instrument drives at a 90 s budget with a live
+restore loop. Not inside a fire.
+
+## 17:30 — the cure (commit `439f8c22`)
+
+One thing his §5.3 left open that the implementation had to settle: **`preds=N` is a count.** The
+verdict line names prediction ids only in `refuted`/`prefused`, so for `preds=2 refuted=[]
+prefused=[]` with zero printed rows the dropped ids are not recoverable. `DROPPED` is therefore a
+property of the **recording**, and the per-id comparison it poisons has to **refuse** rather than
+relabel — a per-id `DROPPED` sentinel would have been the same error one word over.
+
+- `parse`: `predIntegrity` keyed positively on all three arithmetic cases.
+- `compare`: `predRefusal` names the side and its counts; `identical` three-state — `false` whenever
+  a disagreement was *observed* even beside a refused half, `null` only when nothing moved and the
+  PRED half was never measured.
+- The verdict **line's** own `preds`/`refuted`/`prefused` stay in the comparison; they are printed
+  whatever the rows did.
+- `bucketFromComparisons` extracted as a pure function, `PRED_REFUSED` keyed **positively**.
+- `D2` split in two — `D2` COMPLETE-vs-itself (known negative), `D2a` DROPPED-vs-itself (known
+  positive). One control could not grade both directions.
+
+## 17:35 — the seam, driven before the cure committed
+
+`grade-the-pred-half-refusal.mjs` **lifts** `parse`/`compare`/`sig`/`show`/`bucketFromComparisons`
+from round456's committed bytes at two revs — `PRE_REV` a 40-character literal, `NOW_REV` live
+`HEAD`. Slicer gated **structurally**: each anchor exactly once, start before end, the slice must
+compile and yield four functions. A present anchor is not an intact span.
+
+```
+drive1.precure  RED red=[E2,E4,E7] refused=[E8] preds=2 refuted=[] prefused=[Q1,Q2]
+                PRE 26 PRED movements, 26 of them 'ABSENT→'  ·  NOW 26 (same bytes)
+```
+
+Red by construction, and that is the evidence the seam is load-bearing.
+
+## 17:45 — post-cure, and two of my own
+
+```
+drive2.postcure  RED red=[E7] refuted=[Q2]
+drive3.e7-rekeyed-q2-unpinned  ok legs=8 red=[] refused=[] preds=2 refuted=[] prefused=[]
+```
+
+**(a) `E7` compared two keys at different granularities — and the finding is a floor.** `drive2` gave
+lifted **57** vs lib **13**, 44 lifted-only. `readTail` is a **first-refusal-wins ladder**: it gates
+`ROW_GRAMMAR_ABSENT` on the LEG rows *before* it looks at the PRED count, so 44 recordings never
+reach the PRED gate. Decomposition exact:
+
+```
+57 of 461 = reached-the-PRED-gate 13 + refused-upstream 44 {"ROW_GRAMMAR_ABSENT":44}
+lib-only 0 · lifted-only 0   (on the 13 that reach it, the member lists agree exactly)
+```
+
+So the **13** — his 457 §3, the lib's own code, my own Round 460 `Q2` — is a **FLOOR** on the
+PRED-dropping class. Nothing published was wrong: his bucket census printed `LEG_GRAMMAR_ABSENT 44`
+as its own bucket and my 460 memo labelled the 13 as fossils. What is new is that the two numbers are
+**not disjoint**. Re-keying the lib's ladder is **named, not taken** — his call as much as mine.
+
+**(b) I pinned a population size inside a prediction and my own commit broke it.** `Q2` was
+pre-registered `35 of 35 and 0 refusals`; `drive2` published **REFUTED at 36 of 36 with 0 refusals**
+— the claim held in every respect and the *pin* broke, because this round's own `drive1.precure.out`
+joined the corpus as a 36th PRED-COMPLETE recording (459 → 461 `.out`). Denominator reported, not
+pinned. `drive2` kept rather than replaced: the REFUTED is the evidence.
+
+**(c) `drive1` scored both predictions against an A/B that had not happened** — `Q1` REFUTED and `Q2`
+a vacuous LANDED, the latter because "0 refusals" is true when the mechanism is *absent*. Both now
+gated on `E2` and going **OPEN**. Gate legs and prediction legs, kept apart.
+
+**(d) Caught by `node --check` and nothing else:** importing the lib's `measured` into round456
+collided with a local `const measured` in `D6`. `SyntaxError` — the cell would not have run at all.
+Renamed `measuredCount`. Nothing in the repo gate reaches these instruments; the only thing between
+that and a committed dead cell was a syntax check run out of habit, not a leg.
+
+## 18:0x — gate, verified fresh this fire
+
+| leg | result |
+|---|---|
+| `npm run typecheck` | **0** `error TS` |
+| `npm test` | **26 files / 333 passed, 13 skipped (346)** |
+| `sweep-probes --census` | `CENSUS OK`, 43 swept / 110 deferred |
+| Round 462 cell | `VERDICT/1 ok legs=8 red=[] refused=[] preds=2 refuted=[] prefused=[]` |
+
+## Session Wrap Protocol
+
+**Step 1 — commits on `origin/main`:** see the verification block appended below, pasted from the
+command output rather than retyped.
+
+**Step 2 — deliverables confirmed against the tree on `origin/main`:** below.
+
+**Step 3 —** this log and the `COORDINATION.md` entries are the one commit still local at the time of
+writing; pushed next.
+
+## Declared limits and what I did not do
+
+- **round456 is cured and NOT re-driven.** 16 members / 15 subjects, a 90 s budget each, a live
+  restore loop under `docs/research/`. Its `drive1`/`drive2` are now **pre-cure** recordings and its
+  docblock says so. `PRED_REFUSED` and `D2a` have been exercised against lifted bytes and constructed
+  inputs only, never a live population — that difference is real and is not a technicality.
+- **57 of 461 is a count of recordings, not of misleadings.** Every one is a fossil of the emitter
+  cured in Round 450. The claim is what a reader can now name, plus the 44 not being disjoint from
+  the 13.
+- **`E5`/`E6` are green in both arms**, which is correct and is not evidence — the pre-cure
+  comparator has no `predRefusal`, so "0 refusals" is satisfied by an absent mechanism. What
+  separates the arms is `E2`, `E4`, `E7`.
+- **The lib's ladder not re-keyed** — named in the memo as a decision, not a unit.
+- **SDK major bump** `0.122 → 1.3.0` — blocker unchanged, wants its own unit with the streaming path
+  driven.
+- **Needs xian — unchanged at 1:** the drift census over the full 52.
