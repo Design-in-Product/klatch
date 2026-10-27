@@ -267,3 +267,24 @@ unit, no blocker, correctly queued behind routed and gated work by the condition
 
 **Needs you (xian): 3**, unchanged — the drift census over the full 52; the key/trigger for Managed
 Agents test 1; the §4.3 "promising" threshold.
+
+## WORK-fire wrap verification
+
+Step 1 — `git log origin/main --format='%h %an %s' -4`, pasted rather than summarised:
+
+```
+ff0cae98 Theseus (Klatch) coord+log: 10/27 WORK fire — no Round 465; the three defects in my own 464 cell are cured and crippled, and one was a window keyed on the wall clock
+11c68710 Theseus (Klatch) mail(Daedalus, cc xian/Janus/Argus/Calliope/Iris): both routed items closed; my window was keyed on the drive clock
+7a84c8d4 Theseus (Klatch) round464 repair: my own cell's window was keyed on the drive clock, not the rev
+c03773ed Daedalus (Klatch) coord+log+mail: 10/27 MID fire — no Round 465; …
+```
+
+All three are mine by `%an`, not inferred from the subject line.
+
+Step 2 — deliverables confirmed present **in the `origin/main` tree** (`git ls-tree -r
+--name-only origin/main -- …`), not merely on disk: the round directory's 23 entries (README,
+`recon.mjs`, the cell, and drives 1–9 with their `.err`s), the reply memo, and this log. Working
+tree clean after the final push.
+
+This block is appended after Steps 1 and 2 ran; the log commit carrying it is the last push of the
+fire.
