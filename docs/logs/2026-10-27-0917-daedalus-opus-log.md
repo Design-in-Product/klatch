@@ -268,8 +268,96 @@ force push).
 **Thread closed.** All three inbounds `git mv`'d to `docs/mail/read/`: Calliope's routing memo,
 Janus's correction, Janus's linux row. Nothing open from my side.
 
+## 09:35 — budget checked with `date`, not estimated, and a third memo found
+
+`date` → `09:35:49`. **18 minutes elapsed, not the ~40 I would have guessed from the amount of work
+done.** Checked because a time-based deferral needs two tool-call timestamps, not a feeling. So
+there was budget for the second unit, and I took it.
+
+The wrap's `ls-tree` over `docs/mail/` showed **1** memo dated 10-27 still live after my three moves:
+`argus-to-daedalus-theseus-cc-calliope-iris-janus-xian-neither-ask-is-mine-but-the-sweep-census-has-been-flat-14-days-2026-10-27.md`
+— addressed to this seat and **not yet read**. Read it then rather than closing the fire on it.
+
+## 09:36 — Argus's number reproduces; the inference does not
+
+He declines both asks in Calliope's proportionality memo (correctly — neither is a quality-and-test
+call) and adds one independent figure: the sweep census has been flat at `153 probe files, 43
+swept/110 deferred` for 14 days, ~90 rounds.
+
+**Reproduced under his own command**, not recomputed under mine:
+
+```
+$ grep -oE '[0-9]+ probe files, [0-9]+ swept/[0-9]+ deferred' docs/COORDINATION.md | sort | uniq -c
+ 114 153 probe files, 43 swept/110 deferred
+   7 145 probe files, 36 swept/109 deferred
+   2 151 probe files, 41 swept/110 deferred
+   …
+```
+
+114 against his 112 — the delta is **my own two commits today** quoting the same figure, so we
+agree. Flat confirmed.
+
+**What the number is about is the problem.** The census population is *probe files under `scripts/`*.
+The round track writes to `docs/research/round*-instruments/`. Measured, both paths, his window:
+
+```
+since 2026-10-13:
+  distinct scripts/ files touched        : 8
+  of those, scripts/probe-* (census pop) : 4
+  distinct docs/research/ files touched  : 755
+  docs/research/*.mjs touched            : 169
+```
+
+169 instruments written or changed, **none in the counted population**. The figure could not have
+moved whatever the track produced. It is not a second axis agreeing with Calliope's commit ratio;
+it is a number whose population excludes the subject — the shape I have been caught by before (a
+corpus scope label is not a censused surface; two keys sharing a denominator agree vacuously).
+
+**The correction hands his point back sharper, which is why it was worth making.** Those 169
+instruments sit in a surface with **no standing gate**: not in any typecheck leg, not in `npm test`,
+not in the census. Driving them is their gate and nothing re-drives them — which is how my own Round
+450 guard killed Round 446 outright, found by hand. "Ungated by construction" is a more serious
+finding than "no coverage conversion".
+
+## 09:4x — Calliope's two asks, both answered
+
+Read her 10/26 memo in full. **Ask 2 (who owns the api-native probe build):** owner is this seat —
+named, not left implicit. And it is correctly **not started**, by xian's own sequencing, each link
+verified rather than recalled:
+
+- Plan `§5.2`: *"item 4.1 and 4.3 aren't finalized until test 1 reports"* — read off
+  `docs/plans/api-native-probe-plan-2026-10-21.md` this session.
+- Test 1 has not run: `git ls-remote --heads origin` → **0** heads matching `smoke|ma-smoke|managed`.
+  Calliope's own 10/26 log reaches the same conclusion and names the blocker as xian's key/trigger.
+- `§4.3` ("what 'promising' means") still open and still xian's, declined by Argus and Theseus.
+- Her absence finding reproduced: `git ls-files | grep -i api-native` → the plan doc and three mail
+  files, no code.
+
+So two of the three links are xian's, and both are small. Committed in the memo: when test 1
+reports, the probe build is this seat's next unit, ahead of a round.
+
+**Ask 1 (a stop condition):** proposed, not declared, because it binds Theseus's seat too — the
+track continues while its rounds cure defects in surfaces with a standing gate (`packages/`,
+`scripts/`), and stops when N consecutive rounds cure only round-track instruments. Computable per
+round from `git`, which is the property that matters: it can't be argued.
+
+**And this fire is the counterexample I built the re-scoping argument on.** A routed defect arrived
+in mail; `main` had been red for 24 runs across rounds 373→463; one fire cured it in `packages/` +
+`scripts/lib` and `main` is green for the first time in 36 days. Nothing in the round track found
+it, and the gate the track reports every fire was green on it throughout — because the gate runs on
+darwin. The re-scoping I argued for is a reordering, not a cap: routed defects and gated surfaces
+first, self-directed rounds with what's left. One data point, labelled as one.
+
+Memo: `docs/mail/daedalus-to-calliope-argus-theseus-cc-iris-janus-xian-both-asks-answered-…-2026-10-27.md`.
+**Both inbounds left in `docs/mail/`** — ask 1 is open on Theseus's side, so the thread is not closed
+even though it is closed on mine.
+
 ## Open at close
 
+- **Ask 1 is open on Theseus's side** — a stop condition proposed, his to accept or replace. Named
+  rather than left to lapse, which is what happened after the 09-02 filing of the same flag.
+- **Two links of the api-native probe chain are xian's** — the key/trigger for the Managed Agents
+  test, and the §4.3 "promising" threshold. Both small, both blocking a deliverable he asked for.
 - **A second `ubuntu-latest` image, or a re-run of the linux row** — blocker unchanged: I cannot
   reach a Linux kernel from this seat. Mitigated rather than parked: the recorded row is now graded
   by every CI run, so a wrong cell reddens rather than sitting there.
