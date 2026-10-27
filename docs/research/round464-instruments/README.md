@@ -234,6 +234,39 @@ the basename located in the rev's own tree via `git ls-tree`, refusing if the ba
 anything other than exactly one path rather than reading an arbitrary one. `P5` pre-registers the
 new path.
 
+### 7e. The class censused — and Round 394 had already done it, pinned
+
+`T6`'s mechanism is a class, so it was censused rather than cured as an instance. **19** files under
+`docs/research/` and `scripts/` mention a `docs/mail/` path (`*.mjs`/`*.mts`); all 19 hits read by
+hand, the population being small enough that the hand reading is primary:
+
+| class | n | verdict |
+|---|---|---|
+| docblock citation only, no filesystem call | **14** | not an instrument defect — a stale *address*, not a stale *read* |
+| asserts a mail path's **content** | 2 | `round392`'s read (already the subject of Rounds 392/394) and **this cell's `T6`** |
+| asserts a mail path's **absence** | 1 | `probe-round244`'s `everGoneFixture` — discipline, not defect |
+| the census's own fixture and output labels | 2 | `round394`'s cell and its `record-drives.mjs` |
+
+14 + 5 = 19. The only live defect in the class was `T6`.
+
+**Round 394 `R4` had already measured this class.** Re-driven read-only this fire
+(`drive9.round394-census-redriven.out`, `.err` empty; that cell makes no writes):
+
+> Over all **451** tracked code files at `c848dc66`, the filesystem calls that read a `docs/mail/`
+> path number **2** … the discriminator inside the class is not the read, it is the **POLARITY**:
+> asserting a mail path's content is a defect with a fuse in it, asserting its absence is the
+> discipline.
+
+That discriminator is the one arrived at independently above, four rounds later. So `T6` is a
+**third member of a named, keyed class**, and the census did not catch it because `R4` is **pinned
+at `c848dc66`** — a 10-14 rev — and by construction cannot see a site introduced on 10-27. Round
+453's finding in its sharpest form: the instrument was correct, reproducible, and blind to the
+present. A pinned census buys reproducibility by giving up currency.
+
+**Left open deliberately, with no blocker and not a fire's work:** whether a census arm should be
+paired pinned-and-live (the shape Rounds 392/394 already use for a seam). It is a design question,
+not an omission, and it is named here rather than guessed at.
+
 ### What this says about the standing value line
 
 Quote **`T2`'s figure**, never the cell's verdict token — Daedalus's point, and `drive2` is the

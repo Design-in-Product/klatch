@@ -129,3 +129,141 @@ blocker — and under the condition I just filed, a self-directed unit is the th
 Daedalus named this morning that are genuinely small and both block a deliverable xian asked for:
 the key/trigger for Managed Agents test 1, and the §4.3 "promising" threshold. I'm not re-deciding
 either; recording that they're what the probe build is waiting on.
+
+---
+
+# WORK fire — 2026-10-27, 14:47 PT
+
+## 14:47 — fire open, briefing
+
+`date` → `Tue Oct 27 14:47:08 PDT 2026`. Worktree clean at `c03773ed`. Today's log for this seat
+already exists (the 10:47 START fire above), so this is an **append**, not a new file.
+
+Mail swept at open. **One new memo in the window, addressed to this seat:**
+`daedalus-to-theseus-cc-xian-janus-argus-calliope-iris-your-e7-repair-is-in-and-grading-it-published-a-false-red-of-mine-plus-your-own-cell-has-reddened-2026-10-27.md`
+(his 13:4x). Read in full before any work. Its §6 routes two items here: quote `T2`'s figure rather
+than the cell's verdict token in the standing line, and re-key `T1`/`T6` "off a moving window and a
+moving path." **No Round 465** — his fire didn't open one either, and under this seat's own repaired
+condition (`consecutive=10` vs `N=5`) a self-directed round queues behind routed work. The routed
+work here was a defect report against my own instrument.
+
+## 14:4x — reproduced his RED before touching anything
+
+Recorded `drive2.at-HEAD-c03773ed.out` from the **unmodified** source at `c03773ed`:
+`VERDICT/1 RED legs=9 red=[T1] refused=[T6] preds=3 refuted=[] prefused=[]` — byte-for-byte his
+verdict. `drive1.*.out` deliberately not re-stamped.
+
+But one line disagreed with what he reported, and it turned out to be the whole fire:
+
+```
+  scripts/ distinct files      : mine=7  his=8      <- he read 8 vs 8
+  docs/research/*.mjs distinct : mine=171  his=169   <- he read 171 vs 169
+```
+
+A `--since`-windowed distinct-file count cannot *shrink* as commits are added. So either his figure
+or mine was wrong. **Measured rather than reasoned** (the member lists first, per the rule that
+equal counts hide swaps): drive1's 8 and drive2's 7 differ by `+recall-tap.mjs`,
+`−probe-round263-…mts`, `−probe-round377-…mts`.
+
+## 14:5x — the cause: `--since=2026-10-13` is not midnight
+
+Git's approxidate fills unspecified components from the **current clock**. Pinned it by sweeping the
+cutoff, not by reading docs:
+
+```
+--since=2026-10-13            -> 569 commits   (bare, driven 14:49)
+--since='2026-10-13 00:00:00' -> 588
+--since='2026-10-13 10:51:00' -> 581           (drive1's wall clock)
+--since='2026-10-13 13:38:00' -> 571
+```
+
+So the window **slides forward every hour and members fall off its tail**. Round **383** left the
+dir-key gated-cure set between two drives of the same source four hours apart. The `REV` stamp this
+cell prints is what makes it bad rather than sloppy: it made the recording look reproducible while
+the population was keyed on something no recording captured. Same family as the `ls-files` rule,
+except the stamp was *present* and was a false assurance.
+
+## 15:0x — the repair, and `T1` having three free variables not one
+
+His diagnosis (a pin that reddened on its own promotion) is right about **one of `T1`'s two
+halves**. Holding one variable at a time, all four cells off committed recordings: clock only
+`scripts/` 8→6 and `*.mjs` 169→169; rev only 6→7 and 169→171; window only 7→9 and 171→172. The
+`.mjs` half is clock-insensitive and its `+2` *is* his promotion (this round's own two `.mjs` files
+entering the population they measure); the `scripts/` half moves under all three.
+
+**And the two `8`s were not the same 8.** His at `ae36f771` and drive1's at `d057a46c` are both
+8-member lists, differing by a one-in/one-out swap (`probe-round263` lost to the clock, his own
+`recall-tap.mjs` gained from the rev). The leg agreed with itself **by cancellation**, and that is
+the figure we both cited as "reproduces exactly". I printed the member list and then compared the
+counts.
+
+Repairs landed: absolute cutoff; `T1` publishes sizes as measurements and gates the one claim that
+can't move on promotion (the published pair recovers only when the drive clock is supplied
+alongside the rev — exactly `8/169` at `(d057a46c, 10:51)`); `T6` re-keyed onto the basename located
+in the rev's own tree via `git ls-tree -r`, refusing unless exactly one path matches.
+
+**Each repair graded by being made to fail**, three argv cripples, each hitting only its own leg:
+
+```
+clean         ok      legs=11 red=[]     refused=[]   preds=5 refuted=[]
+window-bare   RED     red=[W1]                                refuted=[P4]   (tailLoss=0)
+memo-path     REFUSED refused=[T6]                            refuted=[P5]
+t1-no-clock   RED     red=[T1]                                               (recon 6/169 vs 8/169)
+```
+
+Caught and fixed one of my own along the way: the `t1-no-clock` arm printed `clock=10:51` while
+using the bare window — a label naming a key it didn't use. Fixed and all four arms re-driven, so
+every recording matches the committed source.
+
+**`W2`, which blunts the whole finding and is reported anyway:** the eroded band is confined to the
+window's boundary day (19 of 19 eroded commits dated 2026-10-13), both keys agree the most recent
+gated-curing round is **454**, and **the condition's value did not move — `consecutive=10` under the
+bare, absolute, dir and union keys.** The defect broke this cell's reproducibility without touching
+the number the cell exists to report.
+
+## 15:1x — the class censused, and the census already existed
+
+Was about to offer Daedalus a grep "as part of my next unit." That was wrong twice: it's a grep, so
+deferring it is indefensible, and the census already existed. Ran it. 19 files mention a `docs/mail/`
+path; all 19 hits read by hand: 14 docblock citations with no filesystem call, 2 content-asserting
+(round392's, and my `T6`), 1 absence-asserting (`probe-round244`'s `everGoneFixture` — discipline),
+2 the census's own fixture/labels. 14 + 5 = 19; **the only live defect was mine.**
+
+Round 394 `R4` had already measured it — re-driven read-only (`drive9`, checked for writes first,
+`.err` empty): *2 of 451 tracked code files at `c848dc66`*, with the discriminator being **polarity**
+(content = defect with a fuse; absence = discipline), which is the same discriminator I'd just
+reached by hand four rounds later. It missed `T6` because `R4` is **pinned at `c848dc66`** and
+cannot see a site added on 10-27 — Round 453's finding at its sharpest: correct, reproducible, blind
+to the present. Named as an open design question rather than cured in a fire's tail.
+
+## 15:2x — landed
+
+- `7a84c8d4` — the round464 repair (source, README §7, drives 2–8).
+- `11c68710` — the memo, its own commit, pushed straight to `main` per the worktree mail rule.
+- Pre-commit census ran on both: `CENSUS OK · census PASSED`.
+
+**Not taken, named with its reason:** Daedalus's `lib/**/*.mjs` gate (129 errors, 98 one-annotation
+fixes), unclaimed and no blocker. Leaving it for his own stated reason — a focused unit, not a
+fire's side-effect. A partial pass in the back half of a fire would leave the gate un-wirable and
+the count un-citable, which is worse than leaving it legible. It's the strongest unclaimed gated
+unit on the board.
+
+**Not run this fire:** `npm test`, `npm run typecheck`, the driving sweep — nothing under
+`packages/` or `scripts/` was touched; the repair is to this cell's own instrument.
+
+**Drain:** one inbound at open, read in full before any work; both routed items closed in-fire, plus
+the third defect grading them exposed, plus the class census that was going to be deferred.
+Reply memo filed and pushed. Mail re-checked at close — `find docs/mail -maxdepth 1 -newermt
+'2026-10-27 14:40:00'` returns exactly two files, his inbound and my own reply, and `origin/main` is
+at my own `11c68710`: **nothing new arrived during the fire.** (One check, not the platform
+baseline's drain-to-two — Klatch is a recorded exception and its fires stay bounded.)
+**Thread left open in `docs/mail/` deliberately,** not moved to `read/`: his two routed items are
+closed and I routed nothing back, but my §4b names a design question (should a census arm be paired
+pinned-and-live) that wants someone to weigh in, and the convention is to leave a parked question
+visible rather than archive it.
+**Deferred with named blockers,** unchanged: the whole-cell drive of `455` cell A (needs a window
+where losing the tree to a restore costs nothing); the 67 unpinned `git` sites (next self-directed
+unit, no blocker, correctly queued behind routed and gated work by the condition above).
+
+**Needs you (xian): 3**, unchanged — the drift census over the full 52; the key/trigger for Managed
+Agents test 1; the §4.3 "promising" threshold.
