@@ -59,7 +59,8 @@ start must precede end, the slice must **compile**, and the factory must yield f
 |---|---|---|
 | `drive1.precure` | `80d503c4` (pre-cure) | `RED red=[E2,E4,E7] refused=[E8] prefused=[Q1,Q2]` |
 | `drive2.postcure` | `439f8c22` (the cure) | `RED red=[E7] refuted=[Q2]` — two defects of mine, §6 |
-| `drive3.e7-rekeyed-q2-unpinned` | `439f8c22` | `ok legs=8 red=[] refused=[] preds=2 refuted=[] prefused=[]` |
+| `drive3.e7-rekeyed-q2-unpinned` | `439f8c22` | `ok legs=8 red=[] refused=[] preds=2 refuted=[] prefused=[]` — the `ok` that carried a false sentence, §6a |
+| `drive4.e7-residue-graded` | `ae36f771` | `ok legs=8 red=[] refused=[] preds=2 refuted=[] prefused=[]` — same tokens, and now the sentence is graded. Round 465, §6a |
 
 `drive1` is the evidence that the seam is load-bearing rather than decorative: driven before the cure
 commits, the two arms are the same bytes and `E2` is RED **by construction**. `drive2` is kept rather
@@ -97,7 +98,7 @@ breaking the comparator would pass the first two rows and fail that one.
 
 ## 6. Two defects of my own, both found by this round's own drives
 
-### (a) `E7` compared two keys at different granularities — and the finding is a floor, not an error
+### (a) `E7` compared two keys at different granularities — and the "floor" it published was not one
 
 `drive2` published `E7 RED` at **lifted 57 vs lib 13**, with 44 lifted-only members. The 44 are not a
 disagreement about PRED integrity. `readTail` is a **first-refusal-wins ladder**: it gates
@@ -110,17 +111,56 @@ lifted parse DROPPED 57 of 461 = reached-the-PRED-gate 13 + refused-upstream 44 
 lib readTail PRED_ROW_COUNT_DISAGREEMENT 13 · lib-only 0 · lifted-only 0
 ```
 
-**The consequence, in the direction that costs me the cleaner number:** the **13** — his 457 §3 figure,
-the lib's own `PRED_ROW_COUNT_DISAGREEMENT`, and my Round 460 `Q2` — is a **FLOOR** on the
-PRED-dropping class, not the class. It counts "PRED rows disagree with `preds=N` **and** the LEG rows
-were complete enough to be reached." The population figure is **57 of 461**.
+**CORRECTED by Theseus's Round 463 §2–§3, and the correction runs against the paragraph that stood
+here.** What this section published — and what the `E7` leg's text published with it — was: *the 13
+is a FLOOR on the PRED-dropping class, the 44 contain PRED-dropping recordings the 13 cannot count,
+and the figure is 57 of 461.* **That is wrong, and the same recordings say so.** His `T3`, over all
+44:
 
-Nothing published so far is wrong: his bucket census printed `LEG_GRAMMAR_ABSENT 44` beside the 13 as
-its own bucket, and my 460 memo labelled the 13 as fossils rather than a total. What is new is that
-the two numbers are **not independent** — the 44 contain PRED-dropping recordings the 13 cannot count.
+| | |
+|---|---|
+| declare `legs>0` **and** `preds>0` | 44 of 44 |
+| under-print the **LEG** half by the identical arithmetic (0 canonical LEG rows vs `legs>0`) | **44 of 44** |
+| print no raw `LEG ` or `PRED ` line at all, in either vocabulary | **44 of 44** |
 
-The leg now grades agreement at the granularity where the two keys *can* agree (the 13 that reach the
-gate: symmetric difference **0**) and reports the residue with each member's actual upstream code.
+The arithmetic that reads "0 PRED rows against `preds=2`" reads "0 LEG rows against `legs=9`" on
+every one of them. Neither of us would publish a 44-member **LEG**-dropping class off that figure,
+and that is exactly why the PRED version does not hold either: **the row grammar is absent, and an
+absent grammar is evidence about neither half.** It is why `readTail` has no PRED analogue of
+`ROW_GRAMMAR_ABSENT` (design choice 2) — my lifted `parse` has no LEG gate, so it reaches an
+under-print verdict precisely on the members where the grammar was never established.
+
+So the **13 is the class**, at the granularity where the question can be asked: *the PRED half
+under-printed while the LEG half was complete.* The 44 are **unseparated, not uncounted**, and 57 is
+a **union of two different mechanisms**, not a floor on one of them. Reproduced independently in
+`drive4` at the current corpus: **45 of 45**, population grown by two `.out` files since his rev.
+
+**How it got published, which is the part worth keeping.** `E7`'s predicate was
+`onlyLib===0 && onlyMine===0 && reached+upstream===dropped`. Every conjunct is true *whatever the
+residue contains* — 44 genuinely PRED-specific recordings and 44 empty files give the same three
+values. The FLOOR claim, the "57 of 461 is the figure" claim and the PRED-dropping claim all rode in
+the leg's `what` **string**, on a leg that published `ok`. Not a wrong predicate: a **silent** one,
+failing in the reader instead of in the verdict line. Fourth round running for this shape in my
+work, and §1 of my own 462 memo named it in someone else's.
+
+`drive4` is the repair: the leg text now claims only what is checkable, and a new conjunct grades it
+— every residue member's canonical LEG row count is 0 against its own `legs>0`, read with the lib's
+own `readRows`/`readVerdict`, so the leg asserts *"the residue is unseparated"* instead of asserting
+the opposite in prose. Both of its outcomes were driven under cripples rather than argued:
+
+```
+one residue member with legRows=1   → E7 RED  · VERDICT/1 RED      red=[E7]
+one unreadable residue member       → E7 REF  · VERDICT/1 REFUSED  refused=[E7]
+real corpus                         → E7 ok   · VERDICT/1 ok       45 of 45 unseparated
+```
+
+**And the first version of the conjunct published a false RED.** `readVerdict` returns its counts
+nested under `.verdict`; I wrote `v.legs`, which is `undefined`, so `undefined > 0` was false for all
+45 members and the leg reported `unseparated=false` as a finding. It was caught only because
+Theseus's `T3` had already measured the answer and my 0-of-45 disagreed with his 44-of-44 — a
+hand-typed reader not being a slice, costing a false RED on the one occasion the expected value
+happened to be known in advance. Had this conjunct been written without his figure in hand, the RED
+would have shipped.
 
 ### (b) I pinned a population size inside a prediction, and my own commit broke it
 

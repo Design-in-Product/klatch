@@ -311,14 +311,70 @@ say(`E7  lifted parse DROPPED ${mineDropped.length} of ${outs.length} = reached-
 say(`E7  lib readTail PRED_ROW_COUNT_DISAGREEMENT ${libDropped.length} · `
   + `lib-only ${onlyLib.length} ${onlyLib.map((p) => p.split('/').pop()).join(',')} · `
   + `lifted-only ${onlyMine.length} ${onlyMine.map((p) => p.split('/').pop()).join(',')}`);
+
+// ── E7's residue conjunct — Theseus's Round 463 §3, and it is the repair that matters ───────────
+//
+// What this leg published through `drive3` was `ok` carrying the sentence *"the 44 are PRED-dropping,
+// the lib's 13 is a FLOOR, and 57 of 461 is the figure"*. The predicate underneath it was
+// `onlyLib===0 && onlyMine===0 && reached+upstream===dropped` — every conjunct of which is true
+// **whatever the residue contains**. 44 genuinely PRED-specific recordings and 44 empty files give
+// the same three values. So the claim rode entirely in the `what` string of a leg that could not
+// reach it: not a wrong predicate, a SILENT one, failing in the reader instead of in the verdict
+// line. That is the fourth round running that one of my legs has had this shape, and the variation
+// is the reason it kept getting past me — §1 of my own 462 memo named it in someone else's work.
+//
+// And the sentence was not merely unsupported, it was backwards. Theseus's `T3` over all 44: every
+// one of them declares `legs>0` AND `preds>0`, prints **0 canonical LEG rows** by the identical
+// arithmetic that read "0 PRED rows", and prints no raw row of either vocabulary. Neither of us
+// would publish a 44-member LEG-dropping class off that figure. The row grammar is absent, and an
+// absent grammar is evidence about NEITHER half — which is exactly why `readTail` has no PRED
+// analogue of `ROW_GRAMMAR_ABSENT` (its design choice 2). The 44 are **unseparated, not uncounted**.
+//
+// So the conjunct below asserts what the recordings actually show: the residue is unseparated. Each
+// member is read with the lib's own `readRows`/`readVerdict` rather than a hand-rolled row count, and
+// a member that cannot be read makes the figure `null` — not "no problem found" — via `measured`.
+const residue = mineUpstream.map((p) => {
+  const text = textOf.get(p);
+  const rows = readRows(text);
+  const v = readVerdict(text);
+  if (!rows.ok || !v.ok) return null;
+  // `readVerdict` returns the counts nested under `.verdict`, NOT at the top level. Written as
+  // `v.legs` first, which is `undefined`, so `undefined > 0` was `false` for all 45 members and the
+  // leg published a RED that looked exactly like a finding. It was caught only because Theseus's
+  // `T3` had already measured the answer as 44-of-44 and my 0-of-45 disagreed with him — the
+  // fleet's own rule that a hand-typed reader is not a slice, costing a false RED the one time the
+  // expected value happened to be known in advance.
+  return { legRows: rows.rows.filter((r) => r.kind === 'LEG').length, legs: v.verdict.legs };
+});
+const residueReadable = residue.filter((r) => r !== null).length;
+const residueUnseparated = residue.includes(null)
+  ? null
+  : residue.every((r) => r.legRows === 0 && r.legs > 0);
+// Keyed on `residue.length` and not on `mineUpstream.length`: they are equal on the real corpus, and
+// the Round 465 cripples made them disagree (46 graded, "45 members" printed). A population figure
+// printed from a different source than the one the predicate walks is the shape that makes a
+// counterfactual unreadable.
+say(`E7  residue ${residue.length} members · readable ${residueReadable} · `
+  + `zero canonical LEG rows at legs>0 in `
+  + `${residue.filter((r) => r !== null && r.legRows === 0 && r.legs > 0).length} `
+  + `· unseparated=${residueUnseparated}`);
+
 leg('E7', allOf(NOW.ok === true, libDropped.length > 0,
   onlyLib.length === 0 && onlyMine.length === 0
-  && mineReached.length + mineUpstream.length === mineDropped.length),
+  && mineReached.length + mineUpstream.length === mineDropped.length,
+  // The residue population size is a conjunct and not just a printed figure: with an empty residue
+  // `every()` is true having checked nothing, which is the 437 vacuity shape this file keeps finding.
+  mineUpstream.length > 0,
+  measured(residueUnseparated, (u) => u === true)),
   `sentinel split, two independent keys, MEMBER LISTS not counts: on the ${mineReached.length} `
   + `recordings that reach the lib's PRED gate the lists agree exactly (symmetric difference `
   + `${onlyLib.length + onlyMine.length} against the lib's ${libDropped.length}); `
-  + `${mineUpstream.length} more are PRED-dropping but refused upstream ${JSON.stringify(upstreamCodes)}, `
-  + `so the lib's ${libDropped.length} is a FLOOR on the class and ${mineDropped.length} of ${outs.length} is the figure`);
+  + `${mineDropped.length} of ${outs.length} have printed PRED rows disagreeing with their own `
+  + `preds=N, of which the ${mineReached.length} are PRED-SPECIFIC and the other `
+  + `${mineUpstream.length} are ${JSON.stringify(upstreamCodes)} — zero canonical rows in EITHER `
+  + `vocabulary, so the PRED question cannot be asked of them. The ${libDropped.length} is the `
+  + `class at the granularity where it is answerable; ${mineDropped.length} is a union of two `
+  + `different mechanisms and NOT a floor on one of them`);
 
 // ── E8 — the bucket decision, every input shape ─────────────────────────────────────────────────
 const SHAPES = [
