@@ -41,6 +41,16 @@
  * The shipped guard's column misses the one that matters most: a real Klatch server, which
  * binds `::`.
  *
+ * **That table is `darwin`'s, and the "every column has a miss" claim with it (Round 376).** The
+ * paragraph above already says why — BSD permits the overlapping bind, and Linux, with
+ * `net.ipv6.bindv6only=0`, does not have the same cells at all: a `::` listener there claims the
+ * IPv4 space too, so the `bind 127.0.0.1` column collides with it instead of missing it. Taken
+ * from GitHub's `ubuntu-latest`, `::` reads `[false, false, false]` across these three columns
+ * (Janus's reading of 24 CI run logs, 2026-10-27). The fleet has **not** recorded a full `linux`
+ * matrix; `round249-…test.ts` prints the measured one on every run so the row can be taken rather
+ * than reasoned about. What does NOT depend on the platform is the conclusion: the connect reaches
+ * every occupant on both, which is why it is the decider.
+ *
  * ## So ask the question directly: does a connection succeed?
  *
  * A TCP connect to `127.0.0.1:<port>` reaches whichever socket claims that address — the

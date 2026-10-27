@@ -23,6 +23,13 @@
  * than carried by a comment — Theseus's Round 248 §4 rule (a hardcoded total becomes a thing
  * people edit to match) applied to a hardcoded *matrix*.
  *
+ * **Round 376.** Re-taking it on *this* machine was not enough: the cells are a property of the
+ * host's TCP stack, and they are not the same on Linux. This file has been red on GitHub's
+ * `ubuntu-latest` since the commit that added it, for 24 consecutive runs, on a cell the module
+ * comment's own first paragraph already marks as BSD-specific. The table is now keyed by platform,
+ * only `darwin` is recorded, and the measurement prints on every run so the `linux` row can be
+ * taken from a CI log instead of guessed at. See `RECORDED_BIND_MATRICES` below.
+ *
  * ## 2 — Exit 2 had no assertion anywhere
  *
  * `requireAnUnoccupiedPort` is the module's only caller-visible refusal, and `process.exit(2)` is
@@ -146,6 +153,89 @@ function aBindWouldSucceed(port: number, host?: string): Promise<boolean> {
   });
 }
 
+const OCCUPANTS = ['::', '0.0.0.0', '127.0.0.1', '::1'] as const;
+const BINDS = ['127.0.0.1', undefined /* wildcard */, '0.0.0.0'] as const;
+
+type MatrixRow = {
+  /** `portAcceptsAConnection` — the module's decider. */
+  connect: boolean;
+  /** One cell per `BINDS` column; `true` = bound anyway = a miss. */
+  binds: boolean[];
+  /** The module's own second side, to be checked against `binds[1]`. */
+  wildcardHelper: boolean;
+};
+
+/**
+ * Round 376, Daedalus: **the cells below are a property of the host's TCP stack, not of this
+ * module, and they differ between BSD and Linux.** The module comment says so in its own first
+ * paragraph — *"Node sets `SO_REUSEADDR`, and BSD/macOS permits a specific-address bind alongside
+ * a wildcard one"* — and this test then asserted the darwin cells unconditionally. Every CI run on
+ * `main` since `eaf0c023` (09-22), the commit that added this file, has been red on GitHub's
+ * `ubuntu-latest`, with `matrix['::'].binds` reading `[false, false, false]` against the
+ * `[true, false, false]` below (Janus's reading of 24 run logs, 2026-10-27; `gh` is not available
+ * from a duty-cycle fire, so that figure is his measurement, not one I re-took).
+ *
+ * `[false, false, false]` is what Linux's `net.ipv6.bindv6only=0` produces: a `::` listener claims
+ * the IPv4 space too, so all three columns collide with it, where on darwin the v6-only default
+ * leaves `127.0.0.1` free. The same difference is why the `::1` row cannot be assumed either —
+ * Linux refuses a wildcard bind beside a specific-address listener, which darwin's `SO_REUSEADDR`
+ * permits.
+ *
+ * So the table is keyed by platform, and the measurement is **printed on every run** rather than
+ * only asserted: the `linux` row has never been recorded here, and the CI log is the instrument
+ * that can record it. Until it is, the gated test below is SKIPPED on linux — stated as unmeasured
+ * rather than laundered into a pass. What stays unconditional is the only claim that is about the
+ * module instead of the kernel: the connect detects every occupant.
+ */
+const RECORDED_BIND_MATRICES: Record<string, Record<string, boolean[]>> = {
+  // Measured this worktree, darwin, node v26.5.0. `true` = bound anyway = a miss.
+  //   occupant       bind 127.0.0.1   bind wildcard   bind 0.0.0.0
+  //   ::             BOUND ✗          REFUSED         REFUSED
+  //   0.0.0.0        BOUND ✗          BOUND ✗         REFUSED
+  //   127.0.0.1      REFUSED          BOUND ✗         BOUND ✗
+  //   ::1            BOUND ✗          BOUND ✗         BOUND ✗   ← Round 273; misses EVERY column
+  darwin: {
+    '::': [true, false, false],
+    '0.0.0.0': [true, true, false],
+    '127.0.0.1': [false, true, true],
+    '::1': [true, true, true],
+  },
+};
+
+const recorded: Record<string, boolean[]> | undefined = RECORDED_BIND_MATRICES[process.platform];
+
+/** Taken once and shared, so the gated table grades the same numbers the log printed. */
+let measuring: Promise<Record<string, MatrixRow>> | undefined;
+function theMatrix(): Promise<Record<string, MatrixRow>> {
+  measuring ??= (async () => {
+    const matrix: Record<string, MatrixRow> = {};
+    for (const host of OCCUPANTS) {
+      const port = await anEphemeralPort();
+      const occupant = await occupyRaw(port, host);
+      strays.push(occupant);
+      const connect = await portAcceptsAConnection(port, 1000);
+      const binds: boolean[] = [];
+      for (const b of BINDS) binds.push(await aBindWouldSucceed(port, b));
+      const wildcardHelper = await aWildcardBindWouldSucceed(port);
+      matrix[host] = { connect, binds, wildcardHelper };
+      await close(occupant);
+      strays.pop();
+    }
+    // Printed, not just asserted — this is how the unmeasured platform gets its row. Greppable
+    // in a CI log by its prefix, including on a run that goes red for some other reason.
+    const rows = OCCUPANTS.map(
+      (h) => `${h.padEnd(10)} connect=${matrix[h].connect} binds=[${matrix[h].binds.join(',')}]`,
+    );
+    console.log(
+      `R249-MATRIX platform=${process.platform} node=${process.version} ` +
+        `recorded=${recorded ? 'yes' : 'NO — unmeasured platform'}\n` +
+        rows.map((r) => `R249-MATRIX ${r}`).join('\n'),
+    );
+    return matrix;
+  })();
+  return measuring;
+}
+
 describe('the bind matrix the module decided on is re-taken here, not quoted', () => {
   // `::` is what a real Klatch server binds — the occupant the shipped guard used to miss.
   //
@@ -159,44 +249,40 @@ describe('the bind matrix the module decided on is re-taken here, not quoted', (
   //
   // This is Round 249's own §1 rule turned on Round 249: a matrix in a comment is a measurement
   // nothing re-takes, and a matrix in a test is a measurement nothing re-takes OVER NEW ROWS. The
-  // enumeration is the assumption, and it was the part no one was checking.
-  it('reproduces all cells, and every bind column still has a miss', async () => {
-    const OCCUPANTS = ['::', '0.0.0.0', '127.0.0.1', '::1'] as const;
-    const BINDS = ['127.0.0.1', undefined /* wildcard */, '0.0.0.0'] as const;
+  // enumeration is the assumption, and it was the part no one was checking. Round 376 found the
+  // next layer of the same mistake: the PLATFORM was the axis held constant, and the enumeration
+  // of platforms is one row long.
+  it('the connect detects every occupant, on every platform', async () => {
+    const matrix = await theMatrix();
 
-    // [occupant] -> { connect, binds: [loopback, wildcard, 0.0.0.0] }
-    const matrix: Record<string, { connect: boolean; binds: boolean[] }> = {};
+    // The claim this module exists to make, and the only cell here that is about the module
+    // rather than about the host's TCP stack. Round 273 turned this red by adding `::1`; it
+    // passes because the connect asks both loopback families instead of one.
+    expect(OCCUPANTS.map((h) => matrix[h].connect)).toEqual([true, true, true, true]);
 
-    for (const host of OCCUPANTS) {
-      const port = await anEphemeralPort();
-      const occupant = await occupyRaw(port, host);
-      strays.push(occupant);
-      const connect = await portAcceptsAConnection(port, 1000);
-      const binds: boolean[] = [];
-      for (const b of BINDS) binds.push(await aBindWouldSucceed(port, b));
-      // The module's own second side is the wildcard column; assert they agree.
-      expect(await aWildcardBindWouldSucceed(port)).toBe(binds[1]);
-      matrix[host] = { connect, binds };
-      await close(occupant);
-      strays.pop();
-    }
+    // The module's second side against a local reimplementation of the same bind. Platform-free:
+    // whatever the kernel does with a wildcard bind, the two must agree about it.
+    for (const h of OCCUPANTS) expect(matrix[h].wildcardHelper).toBe(matrix[h].binds[1]);
+  }, 30_000);
 
-    // The table in the module comment, re-measured. `true` = bound anyway = a miss.
-    //   occupant       bind 127.0.0.1   bind wildcard   bind 0.0.0.0
-    //   ::             BOUND ✗          REFUSED         REFUSED
-    //   0.0.0.0        BOUND ✗          BOUND ✗         REFUSED
-    //   127.0.0.1      REFUSED          BOUND ✗         BOUND ✗
-    //   ::1            BOUND ✗          BOUND ✗         BOUND ✗   ← Round 273; misses EVERY column
-    expect(matrix['::'].binds).toEqual([true, false, false]);
-    expect(matrix['0.0.0.0'].binds).toEqual([true, true, false]);
-    expect(matrix['127.0.0.1'].binds).toEqual([false, true, true]);
-    expect(matrix['::1'].binds).toEqual([true, true, true]);
+  // Non-vacuity for the gate below: if the key ever stops matching, this fails on our own
+  // machines instead of silently skipping the whole table.
+  it('has a recorded table for darwin, so the gate below cannot skip on this fleet', () => {
+    expect(Object.keys(RECORDED_BIND_MATRICES)).toContain('darwin');
+  });
+
+  it.runIf(recorded !== undefined)('the recorded cells for this platform still reproduce, and every bind column has a miss', async () => {
+    const matrix = await theMatrix();
+    const table = recorded as Record<string, boolean[]>;
+
+    for (const h of OCCUPANTS) expect(matrix[h].binds, `occupant ${h}`).toEqual(table[h]);
 
     // The claim the whole module rests on, stated as a property rather than a table: there is
-    // no address you can bind that detects all of the occupants.
+    // no address you can bind that detects all of the occupants. True of darwin's semantics;
+    // NOT known to be true of linux's, which is why it sits behind the platform gate.
     for (let col = 0; col < BINDS.length; col++) {
       const misses = OCCUPANTS.filter((h) => matrix[h].binds[col]);
-      expect(misses.length).toBeGreaterThan(0);
+      expect(misses.length, `bind column ${col} has no miss`).toBeGreaterThan(0);
     }
 
     // `::1` makes that claim strictly stronger than a column-wise one: it is missed by every bind
@@ -204,27 +290,33 @@ describe('the bind matrix the module decided on is re-taken here, not quoted', (
     // module's second side was a wildcard bind, and this row is why that side could not be the
     // thing that caught the hole in the first side.
     expect(matrix['::1'].binds.every(Boolean)).toBe(true);
-
-    // And the primary test has no misses: every occupant is detected by a connect. This is the
-    // line Round 273 turned red by adding `::1`, and it passes now because the connect asks both
-    // loopback families instead of one.
-    expect(OCCUPANTS.map((h) => matrix[h].connect)).toEqual([true, true, true, true]);
   }, 30_000);
 
   // The regression guard at the level a probe actually calls. The matrix test above asserts the
   // primitive; this asserts the DECISION, which is the thing that was wrong: with a `::1`-only
   // occupant, `somethingIsAlreadyAnswering` returned null ("genuinely clear") and
   // `requireAnUnoccupiedPort` therefore returned instead of exiting 2.
+  //
+  // Round 376: the `aWildcardBindWouldSucceed` leg that used to sit in the middle of this test is
+  // a matrix cell (the `::1` row, wildcard column) and moved behind the platform gate with the
+  // rest of them. Both legs kept here hold on either platform, and both print what they measured
+  // — Janus's CI summary gave `expected false to be true` without naming which leg it was, and
+  // this is so the next run's log names it.
   it('a ::1-only occupant is not a clear port — the Round 273 hole, at the decision', async () => {
     const port = await anEphemeralPort();
     const occupant = await occupyRaw(port, '::1');
     strays.push(occupant);
     try {
-      expect(await portAcceptsAConnection(port, 1000)).toBe(true);
-      // The second side genuinely does NOT see this occupant. Asserted rather than glossed: it is
-      // why widening the connect was the only available repair.
-      expect(await aWildcardBindWouldSucceed(port)).toBe(true);
-      expect(await somethingIsAlreadyAnswering(port, 1000)).toMatch(/accepts connections|answers HTTP/);
+      const connect = await portAcceptsAConnection(port, 1000);
+      const wildcard = await aWildcardBindWouldSucceed(port);
+      const decision = await somethingIsAlreadyAnswering(port, 1000);
+      console.log(
+        `R249-COLON1 platform=${process.platform} connect=${connect} ` +
+          `wildcardBind=${wildcard} decision=${JSON.stringify(decision)}`,
+      );
+
+      expect(connect).toBe(true);
+      expect(decision).toMatch(/accepts connections|answers HTTP/);
     } finally {
       await close(occupant);
       strays.pop();
