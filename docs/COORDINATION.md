@@ -3368,7 +3368,40 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-10-26 ~19:19 PT (STOP fire). **Status:** available.
+- **Updated:** 2026-10-27 ~07:26 PT (START fire). **Status:** available.
+- **10/27 fire (START) — no-op on product; CI-failure report and proportionality flag read,
+  nothing routed to this seat.** Drain against own 10/26 ~19:19 PT STOP checkpoint (`b3f0076f`):
+  7 new commits, none mine (checked `%an` per commit) — Theseus's Round 463 reply chain, Calliope's
+  10/26 STOP coord+log+mail+log.html translation, a mail commit relaying Janus's CI-failure
+  report, and two automated brief commits. `git diff --stat b3f0076f..HEAD -- packages/ scripts/`
+  **empty** — confirmed, not assumed. **Mail:** 3 new local files, none addressed to this seat by
+  name — Janus's report that GH Actions on `main` has failed its last 3 runs (10-10/10-19/10-26),
+  the 10-26 failure being 2 tests in `round249-...-bind-matrix.test.ts` tied to 127.0.0.1/::1
+  binds on the GH runner (addressed to Calliope, cc Daedalus/xian, outside this seat's UX/
+  front-end lane — my own local run this fire passed all 2184 server tests clean, consistent
+  with Janus's unchecked GH-runner-specific theory, but not independently verified by me);
+  Calliope's round-track-proportionality-recurrence flag (cc-only, asks Daedalus/Theseus/Argus
+  to name a stop condition and an api-native-probe owner, no ask of this seat); Theseus's Round
+  463 reply (cc-only, same thread as the commit check). All four cross-repo mailboxes re-checked
+  (`find -newer` + content grep for `klatch|\biris\b`): designinproduct 0 new; mediajunkie 0 new;
+  dispatch 2 new/0 hits; piper-morgan-product 37 new/4 hits, same stale `MANIFEST.md` boilerplate
+  as every prior fire. Nothing owed across any of the four. Both briefs re-checked: cross-poll
+  pointer updated to today's (private) URL, fire-depth report informational, no UX signal in
+  either. Standing blockers re-derived fresh, both unmoved: ground-rules question parked on xian
+  since 8/9, now **79 days** (`node` date arithmetic); `entityGuess` still **6 files/20 hits**
+  (re-grepped excluding `dist/` build artifacts). **Verified, not trusted:** `npm run typecheck`
+  clean ×4 workspaces; server **140 files · 2183 passed · 1 skipped (2184)**; client
+  **26 passed|13 skipped (39) · 333 passed|13 skipped (346)** — exact match to 10/26's closing
+  figures; `sweep-probes --census` 153 probe files, 43 swept/110 deferred, CENSUS OK; full
+  driving sweep (`:3001` clear before/after, HEAD unchanged at `9456918b` before/after, tree
+  clean throughout, backgrounded and picked up via completion notification) —
+  **SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0 blocked, 0 census problem(s),
+  110 deferred**. No `packages/` changes this fire. Nothing new needs xian beyond the one
+  standing item (ground-rules question, now at 79 days, unmoved today). **Drain:** all unblocked
+  items done (commits, mail across all four mailboxes plus local, both briefs, both blockers,
+  full gate); nothing deferred. Two consecutive checks found nothing further unblocked — fire
+  closed bounded. Log: `docs/logs/2026-10-27-0726-iris-log.md`.
+- **Prior update:** 2026-10-26 ~19:19 PT (STOP fire).
 - **10/26 fire (STOP) — no-op on product; Round 458→462 chain read, nothing owed to this seat.**
   Drain against own 07:23 PT START checkpoint (`5d89114d`): 26 new commits, none mine (checked
   `%an` per commit) — Daedalus's Round 458/460/462 chain (7 sites cured, the `readTail` PRED gate
