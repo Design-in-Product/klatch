@@ -32,12 +32,20 @@
  *       §2 defect, patched by his `A5` but not re-driven), not on its name.
  *   D1  the population is selected from the REV with `ls-tree`, so it is reproducible from the rev
  *       alone, and it is non-empty.
- *   D2  CONTROL (known negative): the comparator, given one baseline recording against ITSELF,
- *       answers IDENTICAL. A comparator that cannot answer IDENTICAL cannot report drift.
+ *   D2  CONTROL (known negative): the comparator, given one PRED-COMPLETE baseline recording
+ *       against ITSELF, answers IDENTICAL. A comparator that cannot answer IDENTICAL cannot report
+ *       drift. Selector keyed on the measured `predIntegrity`, and the leg REFUSES if the
+ *       population holds no such recording.
+ *   D2a CONTROL (known positive, added Round 462): the comparator, given a DROPPED recording
+ *       against ITSELF, refuses the PRED half and answers `identical === null` — not `true`. D2
+ *       alone cannot grade this: a comparator that refused every comparison would pass D2's
+ *       negation and a comparator that refused none would pass D2.
  *   D3  KP (known positive, carrying the property): 449's `resolve-the-variable-write-targets.mjs`
  *       lands in DRIFTED with `W10` moving `ok → REF`. Established independently of this cell — my
  *       454 §2 `probe0` and his 455 `B1` both reach it, from different lifters.
  *   D4  every member lands in exactly one bucket, and the bucket sizes sum to the population.
+ *       Round 462 adds the `PRED_REFUSED` bucket; it is UNMEASURED for D6's denominator and is
+ *       named per-member by D7.
  *   D5  no drive dirtied a tracked path OUTSIDE `docs/research/`. Shaped on his `A5`: paths are
  *       NAMED, and a path outside that surface makes this leg RED rather than being checked out.
  *   D6  the figure. Drifted-member count over the MEASURED subset, with the denominator printed as
@@ -48,12 +56,23 @@
  * Prediction
  *   P1  the census finds at least one drifted member BEYOND the `W10` KP. I do not know the answer
  *       when writing this; the sweep's exit-code key cannot have seen it either way.
+ *
+ * ROUND 462 — THIS CELL IS CURED AND NOT RE-DRIVEN, declared rather than left to be noticed.
+ * `drive1.drift-census.out` and `drive2.drift-census-repaired.out` are PRE-CURE recordings: they
+ * report the two spurious `PRED … ABSENT→` movements this cure removes, and `D2`'s detail names a
+ * single control where there are now two legs. A whole-cell re-drive costs 15 subprocess drives of
+ * other people's instruments at a 90 s budget each, and the loop restores tracked paths under
+ * `docs/research/` as it goes — not a thing to run inside a fire with uncommitted work in the tree.
+ * What carries the cure instead is `docs/research/round462-instruments/`, which lifts `parse`,
+ * `compare`, `sig`, `show` and `bucketFromComparisons` from THIS FILE'S COMMITTED BYTES at two revs
+ * and drives them over real recordings and over all four bucket input shapes. That is a
+ * predicate-level drive, not a whole-cell one, and the difference is real.
  */
 import { execFileSync } from 'node:child_process';
 import { writeFileSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { renderTail, readVerdict, readRows } from '../lib/verdict.mjs';
+import { renderTail, readVerdict, readRows, measured } from '../lib/verdict.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = join(HERE, '..', '..', '..');
@@ -120,6 +139,30 @@ leg('D1', population.length > 0 && REV.length === 40,
 // which is a label that is not keyed on the measurement: the signature disagreed on the VERDICT
 // LINE while the LEG rows matched, and PRED rows were outside the comparison entirely. A prediction
 // that flipped was therefore drift this cell could see and could not name. Both fixed here.
+// ROUND 462 — THE PRED HALF REFUSES. Theseus's Round 457 §5.2/§5.3, routed here and taken as
+// specified. His §2 read the defect off this cell's own drive1/drive2: `D3` reported THREE movements
+// for the KP where I predicted one, and the other two — `PRED Q1 ABSENT→false; PRED Q2 ABSENT→true`
+// — held against ALL TWELVE of 449's baselines. They are not drift. Every one of those baselines
+// declares `preds=2` in its verdict line and prints ZERO `PRED` rows, because `renderTail` reached
+// the line with a prediction's id and dropped its row until `renderPredRows` existed (Round 449 §3,
+// cured in Round 450). The sentinel `?? 'ABSENT'` filled the missing row and the cell published a
+// movement against a recording that never had the row to move.
+//
+// ONE SENTINEL WAS CARRYING TWO FACTS, in his words: `ABSENT` meant both *this recording did not
+// have this prediction* and *this recording declared this prediction and the emitter dropped its
+// row*. Only the first is drift.
+//
+// WHY THE SPLIT CANNOT BE PER-ID, which is the part that decides the shape of the cure. `preds=N` is
+// a COUNT. The verdict line names prediction ids only in `refuted` and `prefused`; a LANDED
+// prediction is unnamed. So for a recording with `preds=2 refuted=[] prefused=[]` and zero printed
+// rows, the two dropped predictions have no recoverable ids, and no amount of reading decides
+// whether a given missing id is ABSENT-by-declaration or DROPPED. `DROPPED` is therefore a property
+// of the RECORDING (§5.3), and the per-id comparison it poisons is REFUSED rather than relabelled
+// (§5.2) — three-state at the vocabulary, the same discipline Round 458 applied at the conjunct.
+//
+// WHAT STAYS IN THE COMPARISON: the verdict LINE's own prediction fields (`preds`, `refuted`,
+// `prefused`). Those are printed and readable whatever the rows did, so a difference in them is an
+// OBSERVED difference and is reported. Only the per-id PRED ROW half refuses.
 const parse = (text) => {
   const v = readVerdict(text);
   if (v.ok !== true) return { ok: false, why: `verdict ${v.refusal}` };
@@ -128,19 +171,37 @@ const parse = (text) => {
   const legTokens = new Map(rows.filter((x) => x.kind === 'LEG').map((x) => [x.id, String(x.state)]));
   const predTokens = new Map(rows.filter((x) => x.kind === 'PRED').map((x) => [x.id, String(x.state)]));
   const ids = [...[...legTokens.keys()].map((i) => `LEG ${i}`), ...[...predTokens.keys()].map((i) => `PRED ${i}`)].sort();
+  // §5.3 — the split, keyed POSITIVELY on each of the three arithmetic cases rather than letting
+  // one of them be the fall-through. `COMPLETE` is the only state in which a missing PRED id is
+  // readable as a genuine absence.
+  const predDeclared = v.verdict.preds;
+  const predPrinted = predTokens.size;
+  const predIntegrity = predPrinted === predDeclared ? 'COMPLETE'
+    : predPrinted < predDeclared ? 'DROPPED' : 'OVER_PRINTED';
   return {
     ok: true, verdict: v.verdict, ids, legTokens, predTokens,
+    predDeclared, predPrinted, predIntegrity,
     rowsRefusal: r.ok === true ? null : r.refusal,
   };
 };
 
 const compare = (base, head) => {
   const moved = [];
-  for (const [kind, bm, hm] of [['LEG', base.legTokens, head.legTokens], ['PRED', base.predTokens, head.predTokens]]) {
-    for (const id of new Set([...bm.keys(), ...hm.keys()])) {
-      const b = bm.get(id) ?? 'ABSENT';
-      const h = hm.get(id) ?? 'ABSENT';
-      if (b !== h) moved.push(`${kind} ${id} ${b}→${h}`);
+  for (const id of new Set([...base.legTokens.keys(), ...head.legTokens.keys()])) {
+    const b = base.legTokens.get(id) ?? 'ABSENT';
+    const h = head.legTokens.get(id) ?? 'ABSENT';
+    if (b !== h) moved.push(`LEG ${id} ${b}→${h}`);
+  }
+  // §5.2 — refuse the PRED half, and NAME which side and by how much. A refusal a reader cannot
+  // attribute to a side is a refusal they cannot act on.
+  const predRefusal = [['baseline', base], ['head', head]]
+    .filter(([, s]) => s.predIntegrity !== 'COMPLETE')
+    .map(([which, s]) => `${which} ${s.predIntegrity} ${s.predPrinted} PRED row(s) vs preds=${s.predDeclared}`);
+  if (predRefusal.length === 0) {
+    for (const id of new Set([...base.predTokens.keys(), ...head.predTokens.keys()])) {
+      const b = base.predTokens.get(id) ?? 'ABSENT';
+      const h = head.predTokens.get(id) ?? 'ABSENT';
+      if (b !== h) moved.push(`PRED ${id} ${b}→${h}`);
     }
   }
   // When the line differs, NAME the fields. A boolean `lineSame` is the thing that made drive1's
@@ -148,28 +209,72 @@ const compare = (base, head) => {
   const fields = Object.keys(base.verdict).filter(
     (k) => JSON.stringify(base.verdict[k]) !== JSON.stringify(head.verdict[k]),
   );
-  return { identical: moved.length === 0 && fields.length === 0, moved: moved.sort(), fields };
+  // THREE-STATE, and the direction it errs is stated: `false` whenever a disagreement was OBSERVED,
+  // even beside a refused PRED half — a refusal on one half cannot rescue a disagreement on the
+  // other. `null` only when nothing moved AND the PRED half was never measured, i.e. the one case
+  // where `identical: true` would have been a claim about a comparison that did not happen. Same
+  // asymmetry as Round 458's `allOf`: for an instrument whose job is not losing findings, losing a
+  // disagreement is the worse error.
+  const identical = (moved.length > 0 || fields.length > 0) ? false
+    : (predRefusal.length > 0 ? null : true);
+  return { identical, moved: moved.sort(), fields, predRefusal };
 };
-const sig = (c) => `${c.moved.join('|')}#${c.fields.join('|')}`;
-const show = (c) => (c.identical ? 'identical'
-  : `${c.moved.join(';') || 'rows-equal'}${c.fields.length ? ` fields:${c.fields.join(',')}` : ''}`);
+const sig = (c) => `${c.moved.join('|')}#${c.fields.join('|')}#${c.predRefusal.join('|')}`;
+const show = (c) => (c.identical === true ? 'identical'
+  : `${c.moved.join(';') || 'rows-equal'}${c.fields.length ? ` fields:${c.fields.join(',')}` : ''}`
+    + `${c.predRefusal.length ? ` PRED-REFUSED:${c.predRefusal.join(' + ')}` : ''}`);
 
-// ── D2 — CONTROL: the comparator must answer IDENTICAL on a recording against itself ────────────
-// Known negative. If this is not IDENTICAL, every DRIFTED verdict below is a comparator artifact.
+// The bucket decision, lifted out of the drive loop into a pure function in the same commit — not
+// cosmetic. The census cannot be driven inside a fire (15 subjects, each a subprocess instrument at
+// a 90 s budget), so the only way to GRADE this change is to evaluate it on constructed inputs, and
+// a decision buried in a loop body cannot be evaluated at all. Round 462's cell lifts this from
+// this file's committed bytes and drives all four input shapes.
+//
+// `DRIFTED` is keyed POSITIVELY on every comparison having reached a verdict. "Reproduces none of
+// them" is a claim, and a refused comparison has not reproduced and has not failed to reproduce; a
+// terminal bucket reached by fall-through would absorb exactly that blindness.
+const bucketFromComparisons = (cmps) => {
+  const hits = cmps.filter(({ c }) => c.identical === true);
+  if (hits.length > 0) return { bucket: 'IDENTICAL', hits };
+  if (cmps.length > 0 && cmps.every(({ c }) => c.identical === false)) return { bucket: 'DRIFTED', hits };
+  return { bucket: 'PRED_REFUSED', hits };
+};
+
+// ── D2 / D2a — TWO CONTROLS, because one cannot grade both directions of the cure ───────────────
+// Known negative (D2): the comparator answers IDENTICAL on a PRED-COMPLETE recording against
+// itself. If this is not IDENTICAL, every DRIFTED verdict below is a comparator artifact.
+// Known positive (D2a): the comparator REFUSES the PRED half on a DROPPED recording against itself,
+// and does NOT answer identical. A single control cannot carry both: before Round 462 the selector
+// picked the first parseable recording whatever its PRED integrity, so a DROPPED pick would now
+// make D2 red on a correct tree, and a COMPLETE pick proves nothing about the refusal.
+//
+// Each selector is keyed on the MEASURED property (`predIntegrity`), not on a filename, and each
+// leg REFUSES when the population holds no such recording rather than greening on an empty search —
+// an absence here is itself the finding.
 const anyOut = tracked.filter((p) => p.startsWith('docs/research/') && p.endsWith('.out'));
-let controlPath = null;
-let controlResult = null;
-for (const p of anyOut) {
-  const parsed = parse(git(['show', `${REV}:${p}`]));
-  if (parsed.ok === true && parsed.ids.length >= 3) {
-    controlPath = p;
-    controlResult = compare(parsed, parsed);
-    break;
+const pickControl = (want) => {
+  for (const p of anyOut) {
+    const parsed = parse(git(['show', `${REV}:${p}`]));
+    if (parsed.ok === true && parsed.ids.length >= 3 && parsed.predIntegrity === want) {
+      return { p, parsed, c: compare(parsed, parsed) };
+    }
   }
-}
-leg('D2', controlResult !== null && controlResult.identical === true,
-  `comparator control: ${controlPath ?? 'NO PARSEABLE RECORDING FOUND'} vs itself → `
-  + `${controlResult === null ? 'UNMEASURED' : (controlResult.identical ? 'IDENTICAL' : `MOVED ${show(controlResult)}`)}`);
+  return null;
+};
+const ctlComplete = pickControl('COMPLETE');
+const ctlDropped = pickControl('DROPPED');
+
+leg('D2', measured(ctlComplete, (k) => k.c.identical === true && k.c.predRefusal.length === 0),
+  `comparator control, COMPLETE vs itself: ${ctlComplete === null ? 'NO PRED-COMPLETE RECORDING IN POPULATION — unmeasured'
+    : `${ctlComplete.p} (preds=${ctlComplete.parsed.predDeclared}, rows=${ctlComplete.parsed.predPrinted}) → `
+      + `${ctlComplete.c.identical === true ? 'IDENTICAL' : `NOT IDENTICAL: ${show(ctlComplete.c)}`}`}`);
+
+leg('D2a', measured(ctlDropped, (k) => k.c.identical === null && k.c.predRefusal.length === 2
+  && k.c.moved.every((m) => m.startsWith('LEG '))),
+  `comparator control, DROPPED vs itself: ${ctlDropped === null ? 'NO DROPPED RECORDING IN POPULATION — unmeasured'
+    : `${ctlDropped.p} (preds=${ctlDropped.parsed.predDeclared}, rows=${ctlDropped.parsed.predPrinted}) → `
+      + `identical=${String(ctlDropped.c.identical)}, ${ctlDropped.c.predRefusal.length} side(s) refused, `
+      + `${ctlDropped.c.moved.length} movement(s) — expect identical=null, 2 sides, 0 PRED movements`}`);
 
 // ── the drive ───────────────────────────────────────────────────────────────────────────────────
 const dirtyTracked = () => git(['status', '--porcelain', '--untracked-files=no']).trim()
@@ -181,7 +286,7 @@ if (dirtyTracked().length > 0) {
   process.exit(2);
 }
 
-const buckets = { IDENTICAL: [], DRIFTED: [], NO_BASELINE: [], TIMEOUT: [], NO_VERDICT: [] };
+const buckets = { IDENTICAL: [], DRIFTED: [], PRED_REFUSED: [], NO_BASELINE: [], TIMEOUT: [], NO_VERDICT: [] };
 const detail = [];
 const strayPaths = [];
 
@@ -244,17 +349,32 @@ for (const p of subjects) {
       // deliberately CRIPPLED arms. `drive1` refused whenever they disagreed with each other, which
       // threw away four measurable members. The rule here instead, stated rather than implied:
       //
-      //   IDENTICAL  HEAD's verdict reproduces AT LEAST ONE of the round's own recordings.
-      //   DRIFTED    it reproduces NONE of them.
+      //   IDENTICAL     HEAD's verdict reproduces AT LEAST ONE of the round's own recordings.
+      //   DRIFTED       it reproduces NONE of them, and every comparison reached a verdict.
+      //   PRED_REFUSED  it reproduces none, and at least one comparison did not reach one.
       //
       // Conservative in a named direction: a cell whose crippled arm happens to match HEAD reads
       // IDENTICAL, so the drifted count is a FLOOR and can only be under-reported, never over.
+      // Round 462 adds a second reason the same figure is a floor, running the same way: a member
+      // whose every baseline dropped its PRED rows now lands in `PRED_REFUSED` and leaves the
+      // denominator, instead of being counted as drifted on the strength of a `ABSENT→` sentinel.
       const cmps = matches.map(({ o, b }) => ({ o: o.split('/').pop(), c: compare(b, head) }));
-      const hits = cmps.filter(({ c }) => c.identical);
+      const decided = bucketFromComparisons(cmps);
+      const hits = decided.hits;
       const sigs = new Set(cmps.map(({ c }) => sig(c)));
-      if (hits.length > 0) {
+      const halvesRefused = cmps.filter(({ c }) => c.predRefusal.length > 0).length;
+      if (halvesRefused > 0) note += `${note ? '; ' : ''}PRED half refused in ${halvesRefused} of ${cmps.length} comparison(s)`;
+      if (decided.bucket === 'IDENTICAL') {
         bucket = 'IDENTICAL';
         note += `${note ? '; ' : ''}reproduces ${hits.length} of ${cmps.length} baseline(s): ${hits.map(({ o }) => o).join('+')}`;
+      } else if (decided.bucket === 'PRED_REFUSED') {
+        // Round 462: no baseline reproduced AND at least one comparison never reached a verdict.
+        // Reporting this as DRIFTED would be the old sentinel's error one level up — an affirmative
+        // claim of drift resting on a comparison that did not happen.
+        bucket = 'PRED_REFUSED';
+        note += `${note ? '; ' : ''}reproduces 0 of ${cmps.length} baseline(s) but `
+          + `${cmps.filter(({ c }) => c.identical === null).length} comparison(s) refused the PRED half: `
+          + cmps.map(({ o, c }) => `${o}=[${show(c)}]`).join(' ');
       } else {
         bucket = 'DRIFTED';
         // The movement common to EVERY baseline — the strongest form of the claim. The per-baseline
@@ -294,20 +414,21 @@ leg('D3', kpRow !== null && kpRow.bucket === 'DRIFTED' && kpMovedW10,
   + `moved [${kpRow === null ? '' : kpRow.moved.join('; ')}] — expect DRIFTED carrying 'W10 true→null'`);
 
 // ── D6 — the figure, over the measured subset ───────────────────────────────────────────────────
-const measured = sizes.IDENTICAL + sizes.DRIFTED;
+// `measuredCount`, not `measured` — the lib's three-state conjunction helper now shares this scope.
+const measuredCount = sizes.IDENTICAL + sizes.DRIFTED;
 const unmeasured = detail.filter((d) => !['IDENTICAL', 'DRIFTED'].includes(d.bucket));
-say(`FIGURE  drifted ${sizes.DRIFTED} of ${measured} MEASURED member(s) `
+say(`FIGURE  drifted ${sizes.DRIFTED} of ${measuredCount} MEASURED member(s) `
   + `(population ${population.length}, subjects ${subjects.length}, unmeasured ${unmeasured.length})`);
-leg('D6', measured > 0,
-  `drifted ${sizes.DRIFTED} / measured ${measured} — denominator is the measured subset, not the population `
+leg('D6', measuredCount > 0,
+  `drifted ${sizes.DRIFTED} / measured ${measuredCount} — denominator is the measured subset, not the population `
   + `(${population.length}) and not the subjects (${subjects.length})`);
 
 // ── D7 — every unmeasured member named ──────────────────────────────────────────────────────────
 say('');
 say(`UNMEASURED  ${unmeasured.length}:`);
 for (const d of unmeasured) say(`   ${d.bucket.padEnd(19)} ${relative('docs/research', d.p)} — ${d.note}`);
-leg('D7', unmeasured.length === subjects.length - measured && unmeasured.every((d) => d.note.length > 0),
-  `${unmeasured.length} unmeasured, each named with a reason; subjects ${subjects.length} - measured ${measured} = ${subjects.length - measured}`);
+leg('D7', unmeasured.length === subjects.length - measuredCount && unmeasured.every((d) => d.note.length > 0),
+  `${unmeasured.length} unmeasured, each named with a reason; subjects ${subjects.length} - measured ${measuredCount} = ${subjects.length - measuredCount}`);
 
 // ── the drifted members, per leg ────────────────────────────────────────────────────────────────
 say('');

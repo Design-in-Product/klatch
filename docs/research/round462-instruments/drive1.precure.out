@@ -1,0 +1,42 @@
+═══ ROUND 462 — GRADE THE PRED-HALF REFUSAL IN ROUND456'S COMPARATOR ═══
+subject  docs/research/round456-instruments/drift-census-over-the-verdict-publishing-population.mjs
+PRE_REV  80d503c4df169469d3dacf10ce420d8d0680e3eb  (40-char literal, NOT HEAD)
+NOW_REV  80d503c4df169469d3dacf10ce420d8d0680e3eb  (live HEAD)
+
+LIFT PRE  rev 80d503c4  start×1 end×1  slice 1637 of 19631 bytes  OK  bucketFn ABSENT
+LIFT NOW  rev 80d503c4  start×1 end×1  slice 1637 of 19631 bytes  OK  bucketFn ABSENT
+
+SEPARATION  {"predRefusal@PRE":false,"predRefusal@NOW":false,"bucketFn@PRE":false,"bucketFn@NOW":false}
+INPUTS  459 committed .out; lib readTail: DROPPED 13, COMPLETE-with-PRED-rows 35
+HEAD-SIDE INPUT  docs/research/round450-instruments/drive10.postcommit-final.out
+
+A/B OVER 13 DROPPED BASELINE(S) vs docs/research/round450-instruments/drive10.postcommit-final.out:
+   PRE pred-moves  2 · NOW  2 · LEG moves  3 · drive10.novar-crippled.out
+   PRE pred-moves  2 · NOW  2 · LEG moves  1 · drive11.tokenonly-crippled.out
+   PRE pred-moves  2 · NOW  2 · LEG moves  2 · drive12.inert-name.out
+   PRE pred-moves  2 · NOW  2 · LEG moves  1 · drive15.final-clean.out
+   PRE pred-moves  2 · NOW  2 · LEG moves  1 · drive16.final-clean-again.out
+   PRE pred-moves  2 · NOW  2 · LEG moves  3 · drive17.final-fallthrough-crippled.out
+   PRE pred-moves  2 · NOW  2 · LEG moves  3 · drive18.final-novar-crippled.out
+   PRE pred-moves  2 · NOW  2 · LEG moves  2 · drive19.final-tokenonly-crippled.out
+   PRE pred-moves  2 · NOW  2 · LEG moves  2 · drive2.pre-cure-disjoint-sets.out
+   PRE pred-moves  2 · NOW  2 · LEG moves  2 · drive20.final-inert-name.out
+   PRE pred-moves  2 · NOW  2 · LEG moves  1 · drive21.pre-commit.out
+   PRE pred-moves  2 · NOW  2 · LEG moves  1 · drive7.clean.out
+   PRE pred-moves  2 · NOW  2 · LEG moves  1 · drive8.clean-again.out
+   NOW refusal, first row: NONE
+
+E7  lib readTail DROPPED 13 · lifted parse DROPPED 0 · lib-only 13 drive10.novar-crippled.out,drive11.tokenonly-crippled.out,drive12.inert-name.out,drive15.final-clean.out,drive16.final-clean-again.out,drive17.final-fallthrough-crippled.out,drive18.final-novar-crippled.out,drive19.final-tokenonly-crippled.out,drive2.pre-cure-disjoint-sets.out,drive20.final-inert-name.out,drive21.pre-commit.out,drive7.clean.out,drive8.clean-again.out · lifted-only 0 
+
+LEG E1 ok lift gate — PRE ok (1637 bytes, 4 fns true); NOW ok (1637 bytes, 4 fns true)
+LEG E2 RED the arms must differ in the cure's own property, both ways: {"predRefusal@PRE":false,"predRefusal@NOW":false,"bucketFn@PRE":false,"bucketFn@NOW":false} — expect PRE false / NOW true on both rows (a pre-commit drive of this cell is RED here BY CONSTRUCTION)
+LEG E3 ok THE DEFECT at PRE: 26 PRED movement(s) across 13 comparison(s), 26 of them 'ABSENT→' — expect > 0 on both, over all 13 DROPPED recordings
+LEG E4 RED THE CURE at NOW: 26 PRED movement(s) (expect 0); 0 of 13 name the baseline's DROPPED counts; 13 of 13 LEG halves byte-identical to the PRE arm
+LEG E5 ok CONTROL, the cure must not blind the PRED half: mutated PRED Q1 LANDED→REFUTED (target found 1×): moved [PRED Q1 true→false], predRefusal 0, identical false — expect exactly 1 PRED movement, 0 refusals, identical=false
+LEG E6 ok CONTROL, COMPLETE vs itself at NOW: identical=true, moved 0, refusals 0 — expect true / 0 / 0
+LEG E7 RED sentinel split under two independent keys over 459 recordings: lib 13, lifted 0, symmetric difference 13 — member lists, not counts
+LEG E8 REF bucket decision over 5 input shapes: UNMEASURED — no bucketFromComparisons at NOW — [null,false] is the one that matters: a fall-through terminal bucket calls it DRIFTED
+PRED Q1 OPEN PRE 26 PRED movement(s) → NOW 26, LEG half unchanged in 13 of 13 — OPEN: the arms are not separated (E2), so this A/B did not happen
+PRED Q2 OPEN every PRED-COMPLETE recording vs itself at NOW: identical 35 of 35, refusals 0 — pre-registered 35 of 35 and 0 — OPEN: at the pre-cure rev "0 refusals" is true because the mechanism is ABSENT
+
+VERDICT/1 RED legs=8 red=[E2,E4,E7] refused=[E8] preds=2 refuted=[] prefused=[Q1,Q2]

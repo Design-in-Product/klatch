@@ -1,0 +1,50 @@
+rev 80d503c4df169469d3dacf10ce420d8d0680e3eb
+OUTS 459
+REFUSAL CENSUS {"NO_VERDICT_LINE":361,"ROW_GRAMMAR_ABSENT":44,"MALFORMED_FIELDS":3,"PRED_ROW_COUNT_DISAGREEMENT":13,"ok":38}
+PRED_ROW_COUNT_DISAGREEMENT 13:
+   preds=2  docs/research/round449-instruments/drive10.novar-crippled.out
+   preds=2  docs/research/round449-instruments/drive11.tokenonly-crippled.out
+   preds=2  docs/research/round449-instruments/drive12.inert-name.out
+   preds=2  docs/research/round449-instruments/drive15.final-clean.out
+   preds=2  docs/research/round449-instruments/drive16.final-clean-again.out
+   preds=2  docs/research/round449-instruments/drive17.final-fallthrough-crippled.out
+   preds=2  docs/research/round449-instruments/drive18.final-novar-crippled.out
+   preds=2  docs/research/round449-instruments/drive19.final-tokenonly-crippled.out
+   preds=2  docs/research/round449-instruments/drive2.pre-cure-disjoint-sets.out
+   preds=2  docs/research/round449-instruments/drive20.final-inert-name.out
+   preds=2  docs/research/round449-instruments/drive21.pre-commit.out
+   preds=2  docs/research/round449-instruments/drive7.clean.out
+   preds=2  docs/research/round449-instruments/drive8.clean-again.out
+PRED-COMPLETE with >=1 PRED row: 35
+   preds=2 rows=2  docs/research/round450-instruments/drive10.postcommit-final.out
+   preds=2 rows=2  docs/research/round450-instruments/drive2.first-full-drive.out
+   preds=2 rows=2  docs/research/round450-instruments/drive3.w5-rekeyed-q1-deflated.out
+   preds=2 rows=2  docs/research/round450-instruments/drive4.w6-exemplar-in-the-padded-shape.out
+   preds=2 rows=2  docs/research/round450-instruments/drive7.pre-commit-final.out
+   preds=2 rows=2  docs/research/round451-instruments/drive2.real-exemplar-key-t9-decomposed.out
+   preds=2 rows=2  docs/research/round451-instruments/drive3.postcommit-self-exclusion-live.out
+   preds=2 rows=2  docs/research/round452-instruments/drive0.his-451-redriven-here.out
+   preds=2 rows=2  docs/research/round452-instruments/drive11.graded-after-448-rerecord.out
+   preds=2 rows=2  docs/research/round452-instruments/drive12.postcommit.out
+   preds=2 rows=2  docs/research/round452-instruments/drive4.graded.out
+   preds=2 rows=2  docs/research/round452-instruments/drive8.graded-final.out
+ROUND456 POPULATION 16 member(s), 1 excluded on a 'checkout' call
+KP DIR siblings 18
+   REFUSED NO_VERDICT_LINE  PREDrows=0 LEGrows=0  drive1.shape-census.out
+   preds=2 legs=10  PREDrows=0 LEGrows=10  drive10.novar-crippled.out
+   preds=2 legs=10  PREDrows=0 LEGrows=10  drive11.tokenonly-crippled.out
+   preds=2 legs=10  PREDrows=0 LEGrows=10  drive12.inert-name.out
+   REFUSED NO_VERDICT_LINE  PREDrows=0 LEGrows=0  drive13.cripple-grading.out
+   REFUSED NO_VERDICT_LINE  PREDrows=0 LEGrows=0  drive14.postcommit-diff.out
+   preds=2 legs=10  PREDrows=0 LEGrows=10  drive15.final-clean.out
+   preds=2 legs=10  PREDrows=0 LEGrows=10  drive16.final-clean-again.out
+   preds=2 legs=10  PREDrows=0 LEGrows=10  drive17.final-fallthrough-crippled.out
+   preds=2 legs=10  PREDrows=0 LEGrows=10  drive18.final-novar-crippled.out
+   preds=2 legs=10  PREDrows=0 LEGrows=10  drive19.final-tokenonly-crippled.out
+   preds=2 legs=9  PREDrows=0 LEGrows=9  drive2.pre-cure-disjoint-sets.out
+   preds=2 legs=10  PREDrows=0 LEGrows=10  drive20.final-inert-name.out
+   preds=2 legs=10  PREDrows=0 LEGrows=10  drive21.pre-commit.out
+   REFUSED NO_VERDICT_LINE  PREDrows=0 LEGrows=0  drive22.postcommit-diff.out
+   preds=2 legs=10  PREDrows=0 LEGrows=10  drive7.clean.out
+   preds=2 legs=10  PREDrows=0 LEGrows=10  drive8.clean-again.out
+   REFUSED NO_VERDICT_LINE  PREDrows=0 LEGrows=0  drive9.fallthrough-crippled.out
