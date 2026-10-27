@@ -109,3 +109,55 @@ checked directly rather than assumed from commit subjects; mail checked across l
 cross-repo mailboxes; both briefs re-checked by commit hash, unchanged; rollup re-checked, nothing
 moved; gate re-derived fresh and byte-identical at every layer. Two consecutive checks found
 nothing further unblocked. Fire closed bounded.
+
+## 17:0x PT — SWEEP fire
+
+No-op, verified not assumed; gate byte-identical; needs-you unchanged at 2.
+
+Checkpoint is this seat's own 10/26 MID-fire commit `c8097183` (the commit cited by that entry;
+no Calliope commit landed between MID and this fire). `git log c8097183..HEAD --format='%h %an
+%ci %s'` = 20 new commits, none mine: Argus's intel sweep and Daedalus's `types.ts` fix already
+covered by the MID-fire entry above, plus Daedalus's Round 460 chain (`ef487c70`, `a8e3d312`,
+`9a7d6a5c` — the `readTail` PRED gate lands, 13 recordings move, nothing else does) and Round 461
+chain (`af63dc3f`, `714dc12c`, `b94bfa5f`, `d0b3aada` — three laundering defects cured, A1–A5
+re-key across the seam, a fourth defect found in Daedalus's own C5 pre-cure cell), with one
+Calliope-authored no-op coord+log commit (`aa1dfaa7`) already accounted for before this fire
+started. `git diff --stat c8097183..HEAD -- packages/ scripts/` — 6 files beyond the two already
+covered: round460/round461 round-mail READMEs and their source files under `scripts/`, all
+round-track instrument code, checked directly rather than assumed from commit subjects.
+
+**Mail:** four new memos since checkpoint, all round-track reply chains (Daedalus↔Theseus, Round
+460 and 461) — cc list is xian/Janus/Argus/Calliope/Iris throughout, none addressed to this seat
+by name. `grep -rl '\*\*To:\*\* Calliope\|^to: Calliope' docs/mail/*.md` — same four standing
+Pard threads from 10-20 plus older closed ones, no new file. All four writable cross-repo
+mailboxes re-checked fresh via `find -newermt "2026-10-26 12:30:00 -0700"` (MID-fire checkpoint
+time): `designinproduct/docs/mail` 0 new, `mediajunkie/docs/mail` 0 new, `dispatch/mail` 0 new,
+`piper-morgan-product/mailboxes` 0 new (excluding `MANIFEST.md`). Nothing owed from any.
+
+**Briefs:** unchanged since this morning's read (`57dc28a1`, `e066d699`) — no new commit touches
+either.
+
+**Rollup:** still v171, needs-you unchanged at 2 — same two items (blog-series angle/sequencing
+gated on xian; the ground-rules day-count question) as earlier today, nothing moved. Not
+re-deriving the day count a third time today — no new information since the MID-fire read.
+
+**Gate re-verified fresh:** `npm run typecheck` 0 `error TS` across all four workspaces; `npm test
+-w packages/server` — **140 files · 2183 passed · 1 skipped (2184)**, byte-identical; `npm test -w
+packages/client` — **26 passed|13 skipped (39) · 333 passed|13 skipped (346)**, byte-identical;
+`node scripts/sweep-probes.mjs --census` — **153 probe files, 43 swept/110 deferred, CENSUS OK**,
+unchanged; `lsof -i :3001` port free; `git status --short` clean before and after.
+
+**`log.html`:** 10-26 correctly not yet due — mandatory entry is a STOP-fire obligation, not
+owed on a SWEEP fire.
+
+Task list of record: no mandatory items due on a SWEEP fire; blog-series drafting remains gated
+on xian; the four standing Pard threads unchanged — smoke-run branch still doesn't exist
+(`git branch -a` / `git ls-remote origin`, no `smoke`/`ma-smoke` hits), the one named blocker
+(xian's key/trigger), not mine alone to clear.
+
+**Drain:** commits read with author verified and the `packages/scripts` diff since checkpoint
+checked directly (6 files, all round-track instrument/README code, none touching product
+packages); mail checked across local plus all four cross-repo mailboxes; both briefs re-checked
+by commit hash, unchanged; rollup re-checked, nothing moved; gate re-derived fresh and
+byte-identical at every layer; `log.html` continuity confirmed, nothing owed at a SWEEP fire.
+Two consecutive checks found nothing further unblocked. Fire closed bounded.
