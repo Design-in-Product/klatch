@@ -1,0 +1,48 @@
+═══ ROUND 462 — GRADE THE PRED-HALF REFUSAL IN ROUND456'S COMPARATOR ═══
+subject  docs/research/round456-instruments/drift-census-over-the-verdict-publishing-population.mjs
+PRE_REV  80d503c4df169469d3dacf10ce420d8d0680e3eb  (40-char literal, NOT HEAD)
+NOW_REV  439f8c22598c9ecbe5f3f89462043036e2c51bba  (live HEAD)
+
+LIFT PRE  rev 80d503c4  start×1 end×1  slice 1637 of 19631 bytes  OK  bucketFn ABSENT
+LIFT NOW  rev 439f8c22  start×1 end×1  slice 4507 of 29074 bytes  OK  bucketFn PRESENT
+
+SEPARATION  {"predRefusal@PRE":false,"predRefusal@NOW":true,"bucketFn@PRE":false,"bucketFn@NOW":true}
+INPUTS  461 committed .out; lib readTail: DROPPED 13, COMPLETE-with-PRED-rows 36
+HEAD-SIDE INPUT  docs/research/round450-instruments/drive10.postcommit-final.out
+
+A/B OVER 13 DROPPED BASELINE(S) vs docs/research/round450-instruments/drive10.postcommit-final.out:
+   PRE pred-moves  2 · NOW  0 · LEG moves  3 · drive10.novar-crippled.out
+   PRE pred-moves  2 · NOW  0 · LEG moves  1 · drive11.tokenonly-crippled.out
+   PRE pred-moves  2 · NOW  0 · LEG moves  2 · drive12.inert-name.out
+   PRE pred-moves  2 · NOW  0 · LEG moves  1 · drive15.final-clean.out
+   PRE pred-moves  2 · NOW  0 · LEG moves  1 · drive16.final-clean-again.out
+   PRE pred-moves  2 · NOW  0 · LEG moves  3 · drive17.final-fallthrough-crippled.out
+   PRE pred-moves  2 · NOW  0 · LEG moves  3 · drive18.final-novar-crippled.out
+   PRE pred-moves  2 · NOW  0 · LEG moves  2 · drive19.final-tokenonly-crippled.out
+   PRE pred-moves  2 · NOW  0 · LEG moves  2 · drive2.pre-cure-disjoint-sets.out
+   PRE pred-moves  2 · NOW  0 · LEG moves  2 · drive20.final-inert-name.out
+   PRE pred-moves  2 · NOW  0 · LEG moves  1 · drive21.pre-commit.out
+   PRE pred-moves  2 · NOW  0 · LEG moves  1 · drive7.clean.out
+   PRE pred-moves  2 · NOW  0 · LEG moves  1 · drive8.clean-again.out
+   NOW refusal, first row: baseline DROPPED 0 PRED row(s) vs preds=2
+
+E7  lifted parse DROPPED 57 of 461 = reached-the-PRED-gate 13 + refused-upstream 44 {"ROW_GRAMMAR_ABSENT":44}
+E7  lib readTail PRED_ROW_COUNT_DISAGREEMENT 13 · lib-only 0  · lifted-only 0 
+E8  [true,false]           want IDENTICAL    got IDENTICAL    ok
+E8  [false,false]          want DRIFTED      got DRIFTED      ok
+E8  [null,false]           want PRED_REFUSED got PRED_REFUSED ok
+E8  [null,null]            want PRED_REFUSED got PRED_REFUSED ok
+E8  [] (no baseline cmps)  want PRED_REFUSED got PRED_REFUSED ok
+
+LEG E1 ok lift gate — PRE ok (1637 bytes, 4 fns true); NOW ok (4507 bytes, 4 fns true)
+LEG E2 ok the arms must differ in the cure's own property, both ways: {"predRefusal@PRE":false,"predRefusal@NOW":true,"bucketFn@PRE":false,"bucketFn@NOW":true} — expect PRE false / NOW true on both rows (a pre-commit drive of this cell is RED here BY CONSTRUCTION)
+LEG E3 ok THE DEFECT at PRE: 26 PRED movement(s) across 13 comparison(s), 26 of them 'ABSENT→' — expect > 0 on both, over all 13 DROPPED recordings
+LEG E4 ok THE CURE at NOW: 0 PRED movement(s) (expect 0); 13 of 13 name the baseline's DROPPED counts; 13 of 13 LEG halves byte-identical to the PRE arm
+LEG E5 ok CONTROL, the cure must not blind the PRED half: mutated PRED Q1 LANDED→REFUTED (target found 1×): moved [PRED Q1 true→false], predRefusal 0, identical false — expect exactly 1 PRED movement, 0 refusals, identical=false
+LEG E6 ok CONTROL, COMPLETE vs itself at NOW: identical=true, moved 0, refusals 0 — expect true / 0 / 0
+LEG E7 ok sentinel split, two independent keys, MEMBER LISTS not counts: on the 13 recordings that reach the lib's PRED gate the lists agree exactly (symmetric difference 0 against the lib's 13); 44 more are PRED-dropping but refused upstream {"ROW_GRAMMAR_ABSENT":44}, so the lib's 13 is a FLOOR on the class and 57 of 461 is the figure
+LEG E8 ok bucket decision over 5 input shapes: 5 of 5 correct — [null,false] is the one that matters: a fall-through terminal bucket calls it DRIFTED
+PRED Q1 LANDED PRE 26 PRED movement(s) → NOW 0, LEG half unchanged in 13 of 13
+PRED Q2 LANDED every PRED-COMPLETE recording vs itself at NOW: identical 36 of 36, refusals 0 — claim is ALL and ZERO; the denominator is reported, not pinned (recon said 35 before this round's own two recordings joined the corpus)
+
+VERDICT/1 ok legs=8 red=[] refused=[] preds=2 refuted=[] prefused=[]

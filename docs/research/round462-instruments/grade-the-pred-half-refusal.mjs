@@ -267,6 +267,25 @@ leg('E6', measured(e6, (z) => z.c.identical === true && z.c.moved.length === 0 &
     + `moved ${e6.c.moved.length}, refusals ${e6.refusal.length}`} — expect true / 0 / 0`);
 
 // ── E7 — the split, two independent keys, MEMBER LISTS compared ─────────────────────────────────
+// RE-KEYED AFTER `drive2`, and the re-key is the finding. `drive2` published `E7 RED` at lifted 57
+// vs lib 13 with 44 lifted-only members — and the 44 are not a disagreement about PRED integrity.
+// `readTail` is a FIRST-REFUSAL-WINS LADDER: it gates `ROW_GRAMMAR_ABSENT` and
+// `ROW_COUNT_DISAGREEMENT` on the LEG rows BEFORE it ever looks at the PRED count, so a recording
+// with zero readable LEG rows is refused upstream and never reaches the PRED gate. Those 44 are
+// exactly the `ROW_GRAMMAR_ABSENT` bucket. My lifted `parse` has no LEG gate, so it reads their PRED
+// half too — and finds it dropped.
+//
+// SO THE CONSEQUENCE, stated in the direction that costs me the cleaner number: Theseus's 13 — and
+// the 13 the lib's own `PRED_ROW_COUNT_DISAGREEMENT` names, and the 13 in Round 460's `Q2` — is a
+// FLOOR on the PRED-dropping class, not the class. It is "recordings whose PRED rows disagree with
+// their own `preds=N` AND whose LEG rows are complete enough to be reached". The population-level
+// figure is 57 of 461. Nothing published so far is wrong: his bucket census printed
+// `LEG_GRAMMAR_ABSENT 44` beside the 13 as its own bucket, and my own Round 460 memo labelled the 13
+// as fossils of a cured emitter rather than a total. What is new is that the two numbers are not
+// independent — the 44 CONTAIN PRED-dropping recordings the 13 cannot count.
+//
+// The leg therefore grades agreement at the granularity where the two keys CAN agree, and reports
+// the residue with each member's actual upstream refusal code rather than burying it.
 const mineDropped = [];
 if (NOW.ok === true) {
   for (const p of outs) {
@@ -274,15 +293,32 @@ if (NOW.ok === true) {
     if (b.ok === true && b.predIntegrity === 'DROPPED') mineDropped.push(p);
   }
 }
-const onlyLib = libDropped.filter((p) => !mineDropped.includes(p));
-const onlyMine = mineDropped.filter((p) => !libDropped.includes(p));
-say(`E7  lib readTail DROPPED ${libDropped.length} · lifted parse DROPPED ${mineDropped.length} · `
+const reachedPredGate = (p) => {
+  const r = readTail(textOf.get(p));
+  return r.ok === true || r.refusal === 'PRED_ROW_COUNT_DISAGREEMENT';
+};
+const mineReached = mineDropped.filter(reachedPredGate);
+const mineUpstream = mineDropped.filter((p) => !reachedPredGate(p));
+const onlyLib = libDropped.filter((p) => !mineReached.includes(p));
+const onlyMine = mineReached.filter((p) => !libDropped.includes(p));
+const upstreamCodes = {};
+for (const p of mineUpstream) {
+  const c = String(readTail(textOf.get(p)).refusal);
+  upstreamCodes[c] = (upstreamCodes[c] ?? 0) + 1;
+}
+say(`E7  lifted parse DROPPED ${mineDropped.length} of ${outs.length} = reached-the-PRED-gate `
+  + `${mineReached.length} + refused-upstream ${mineUpstream.length} ${JSON.stringify(upstreamCodes)}`);
+say(`E7  lib readTail PRED_ROW_COUNT_DISAGREEMENT ${libDropped.length} · `
   + `lib-only ${onlyLib.length} ${onlyLib.map((p) => p.split('/').pop()).join(',')} · `
   + `lifted-only ${onlyMine.length} ${onlyMine.map((p) => p.split('/').pop()).join(',')}`);
 leg('E7', allOf(NOW.ok === true, libDropped.length > 0,
-  onlyLib.length === 0 && onlyMine.length === 0 && mineDropped.length === libDropped.length),
-  `sentinel split under two independent keys over ${outs.length} recordings: lib ${libDropped.length}, `
-  + `lifted ${mineDropped.length}, symmetric difference ${onlyLib.length + onlyMine.length} — member lists, not counts`);
+  onlyLib.length === 0 && onlyMine.length === 0
+  && mineReached.length + mineUpstream.length === mineDropped.length),
+  `sentinel split, two independent keys, MEMBER LISTS not counts: on the ${mineReached.length} `
+  + `recordings that reach the lib's PRED gate the lists agree exactly (symmetric difference `
+  + `${onlyLib.length + onlyMine.length} against the lib's ${libDropped.length}); `
+  + `${mineUpstream.length} more are PRED-dropping but refused upstream ${JSON.stringify(upstreamCodes)}, `
+  + `so the lib's ${libDropped.length} is a FLOOR on the class and ${mineDropped.length} of ${outs.length} is the figure`);
 
 // ── E8 — the bucket decision, every input shape ─────────────────────────────────────────────────
 const SHAPES = [
@@ -315,10 +351,21 @@ if (NOW.ok === true) {
     if (z.refusal.length > 0) q2ref += 1;
   }
 }
+// RE-KEYED AFTER `drive2`, and this one is mine twice over. I pre-registered `libComplete.length
+// === 35` off this fire's own recon — and `drive2` published `Q2 REFUTED` at **36 of 36 with 0
+// refusals**, i.e. the claim held in every respect and the PIN broke. The 36th is
+// `round462-instruments/drive1.precure.out`: my own commit added two recordings to the corpus
+// (459 → 461 `.out` files), one of which prints two `PRED … OPEN` rows against `preds=2` and is
+// therefore PRED-COMPLETE. A population size pinned inside a prediction reddens on its own
+// promotion — which is a lesson I had already written down once and walked into anyway.
+//
+// The claim was never about the size. The size is REPORTED; the claim is the ratio and the zero.
+// `drive2` is kept rather than replaced: the REFUTED is the evidence for this paragraph.
 pred('Q2', armsSeparated === false ? null
-  : (q2ok === libComplete.length && q2ref === 0 && libComplete.length === 35),
+  : (libComplete.length > 0 && q2ok === libComplete.length && q2ref === 0),
   `every PRED-COMPLETE recording vs itself at NOW: identical ${q2ok} of ${libComplete.length}, `
-  + `refusals ${q2ref} — pre-registered 35 of 35 and 0`
+  + `refusals ${q2ref} — claim is ALL and ZERO; the denominator is reported, not pinned `
+  + `(recon said 35 before this round's own two recordings joined the corpus)`
   + `${armsSeparated ? '' : ' — OPEN: at the pre-cure rev "0 refusals" is true because the mechanism is ABSENT'}`);
 
 say('');

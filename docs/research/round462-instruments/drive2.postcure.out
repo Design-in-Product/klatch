@@ -1,0 +1,47 @@
+═══ ROUND 462 — GRADE THE PRED-HALF REFUSAL IN ROUND456'S COMPARATOR ═══
+subject  docs/research/round456-instruments/drift-census-over-the-verdict-publishing-population.mjs
+PRE_REV  80d503c4df169469d3dacf10ce420d8d0680e3eb  (40-char literal, NOT HEAD)
+NOW_REV  439f8c22598c9ecbe5f3f89462043036e2c51bba  (live HEAD)
+
+LIFT PRE  rev 80d503c4  start×1 end×1  slice 1637 of 19631 bytes  OK  bucketFn ABSENT
+LIFT NOW  rev 439f8c22  start×1 end×1  slice 4507 of 29074 bytes  OK  bucketFn PRESENT
+
+SEPARATION  {"predRefusal@PRE":false,"predRefusal@NOW":true,"bucketFn@PRE":false,"bucketFn@NOW":true}
+INPUTS  461 committed .out; lib readTail: DROPPED 13, COMPLETE-with-PRED-rows 36
+HEAD-SIDE INPUT  docs/research/round450-instruments/drive10.postcommit-final.out
+
+A/B OVER 13 DROPPED BASELINE(S) vs docs/research/round450-instruments/drive10.postcommit-final.out:
+   PRE pred-moves  2 · NOW  0 · LEG moves  3 · drive10.novar-crippled.out
+   PRE pred-moves  2 · NOW  0 · LEG moves  1 · drive11.tokenonly-crippled.out
+   PRE pred-moves  2 · NOW  0 · LEG moves  2 · drive12.inert-name.out
+   PRE pred-moves  2 · NOW  0 · LEG moves  1 · drive15.final-clean.out
+   PRE pred-moves  2 · NOW  0 · LEG moves  1 · drive16.final-clean-again.out
+   PRE pred-moves  2 · NOW  0 · LEG moves  3 · drive17.final-fallthrough-crippled.out
+   PRE pred-moves  2 · NOW  0 · LEG moves  3 · drive18.final-novar-crippled.out
+   PRE pred-moves  2 · NOW  0 · LEG moves  2 · drive19.final-tokenonly-crippled.out
+   PRE pred-moves  2 · NOW  0 · LEG moves  2 · drive2.pre-cure-disjoint-sets.out
+   PRE pred-moves  2 · NOW  0 · LEG moves  2 · drive20.final-inert-name.out
+   PRE pred-moves  2 · NOW  0 · LEG moves  1 · drive21.pre-commit.out
+   PRE pred-moves  2 · NOW  0 · LEG moves  1 · drive7.clean.out
+   PRE pred-moves  2 · NOW  0 · LEG moves  1 · drive8.clean-again.out
+   NOW refusal, first row: baseline DROPPED 0 PRED row(s) vs preds=2
+
+E7  lib readTail DROPPED 13 · lifted parse DROPPED 57 · lib-only 0  · lifted-only 44 drive1.out,drive2.out,drive3.out,drive1.out,drive2.out,drive3.postcommit.out,drive4.selfcensus-cured.out,drive5.final.out,drive6-r445-anchor-guard-repaired.out,his-instrument.postcommit.out,reproduce-his-round442.out,drive1.out,drive2.out,drive3.refuted-on-a-head-sourced-baseline.out,drive4.baseline-reader-crossed-a-newline.out,drive5.final.out,his-round442-instrument.postcommit.out,his-round442-instrument.recured.out,drive1.r444-unmodified-at-his-repaired-rev.out,drive2.child-stderr-leaked-into-the-recording.out,drive3.final.out,drive4.h5-refuses-before-the-cure.out,drive5.h5-conjunct-re-keyed.out,drive6.out,drive7.r444-cured-and-re-driven.out,drive8.postcommit.out,drive9.r444-postcommit.out,drive1.clean.out,drive2.g4key-crippled.out,drive3.inert-name.out,drive1.r446-unmodified-at-his-g4-repaired-rev.out,drive10.live.out,drive11.final.out,drive12.r446-after-the-sentence-cure.out,drive13.postcommit.out,drive15.hygiene-key-widened.out,drive16.postcommit-hygiene-widened.out,drive3.out,drive4.rows-selected-and-seams-collapsed.out,drive5.pin-keyed-on-the-repair-marker.out,drive6.legonly-crippled.out,drive7.blindpin-crippled.out,drive8.inert-name.out,drive7.r446-alive-again.out
+E8  [true,false]           want IDENTICAL    got IDENTICAL    ok
+E8  [false,false]          want DRIFTED      got DRIFTED      ok
+E8  [null,false]           want PRED_REFUSED got PRED_REFUSED ok
+E8  [null,null]            want PRED_REFUSED got PRED_REFUSED ok
+E8  [] (no baseline cmps)  want PRED_REFUSED got PRED_REFUSED ok
+
+LEG E1 ok lift gate — PRE ok (1637 bytes, 4 fns true); NOW ok (4507 bytes, 4 fns true)
+LEG E2 ok the arms must differ in the cure's own property, both ways: {"predRefusal@PRE":false,"predRefusal@NOW":true,"bucketFn@PRE":false,"bucketFn@NOW":true} — expect PRE false / NOW true on both rows (a pre-commit drive of this cell is RED here BY CONSTRUCTION)
+LEG E3 ok THE DEFECT at PRE: 26 PRED movement(s) across 13 comparison(s), 26 of them 'ABSENT→' — expect > 0 on both, over all 13 DROPPED recordings
+LEG E4 ok THE CURE at NOW: 0 PRED movement(s) (expect 0); 13 of 13 name the baseline's DROPPED counts; 13 of 13 LEG halves byte-identical to the PRE arm
+LEG E5 ok CONTROL, the cure must not blind the PRED half: mutated PRED Q1 LANDED→REFUTED (target found 1×): moved [PRED Q1 true→false], predRefusal 0, identical false — expect exactly 1 PRED movement, 0 refusals, identical=false
+LEG E6 ok CONTROL, COMPLETE vs itself at NOW: identical=true, moved 0, refusals 0 — expect true / 0 / 0
+LEG E7 RED sentinel split under two independent keys over 461 recordings: lib 13, lifted 57, symmetric difference 44 — member lists, not counts
+LEG E8 ok bucket decision over 5 input shapes: 5 of 5 correct — [null,false] is the one that matters: a fall-through terminal bucket calls it DRIFTED
+PRED Q1 LANDED PRE 26 PRED movement(s) → NOW 0, LEG half unchanged in 13 of 13
+PRED Q2 REFUTED every PRED-COMPLETE recording vs itself at NOW: identical 36 of 36, refusals 0 — pre-registered 35 of 35 and 0
+
+VERDICT/1 RED legs=8 red=[E7] refused=[] preds=2 refuted=[Q2] prefused=[]
