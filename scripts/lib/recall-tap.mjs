@@ -266,7 +266,20 @@ export function startRecallTap(opts) {
  * before this file existed.
  *
  * @param {any[]} frames tool_use frames, wire order, already filtered to the recall tool
- * @param {Array<{inputSummary: string}>} calls artifact-derived calls, route-write order
+ * @param {ReturnType<typeof import('./recall-call-kind.mjs').readCallKind>[]} calls
+ *   artifact-derived calls, route-write order.
+ *   Declared as `readCallKind`'s return and not as `{inputSummary: string}`, which is what this
+ *   line said until Round 465: `inputSummary` is the only field *this* function reads directly,
+ *   but the body hands each element to `readTapVerdict`, whose own contract one screen down
+ *   requires `{kind, noQuery, query}`. The two hand-written contracts in this file contradicted
+ *   each other and nothing read either one, because `scripts/**\/*.mjs` is in no type program
+ *   (`scripts/tsconfig.json` includes `.mts`/`.ts` only — Theseus, Round 464 `T7`).
+ *
+ *   Why that mattered more than a doc nit: a caller that builds `calls` to the shape this line
+ *   *asked for* gets `call.kind === undefined`, and `readTapVerdict` then returns
+ *   `UNREADABLE_SUMMARY` for every call. That is a legitimate member of the verdict vocabulary,
+ *   so the output stays well-formed and is uniformly wrong — a refusal value standing in for a
+ *   measurement, with nothing to distinguish it from a real unreadable summary.
  * @param {{captureFailed?: boolean, captureReason?: string|null}} [capture]
  * @returns {{status: string, reason: string|null, offset: number|null, verdicts: string[], inputs: (any|null)[]}}
  */
@@ -380,7 +393,12 @@ export function readTapVerdict(call, toolInput) {
  * *reason a number should not be quoted*, not a dependent variable, and `notADv` says so
  * inside the artifact itself so a later reader cannot mistake it for one.
  *
- * @param {{status: string, reason: string|null, verdicts: string[]}} alignment
+ * @param {ReturnType<typeof alignTapToCalls>} alignment the alignment this summarises, which is
+ *   always `alignTapToCalls`'s return. This line read `{status, reason, verdicts}` until Round
+ *   465, omitting `offset` — which the body below reads at `offset: alignment.offset`. A
+ *   contract that under-declares a field its own body consumes is the second of the two
+ *   contradictions in this file; see `alignTapToCalls`'s `calls` param for the first and for
+ *   why neither was caught.
  * @param {Array<{noQuery: boolean, kind: string}>} calls
  */
 export function tapSummary(alignment, calls) {
