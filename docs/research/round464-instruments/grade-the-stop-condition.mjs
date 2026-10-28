@@ -962,7 +962,17 @@ for (const p of preds) {
   console.log(`      expected=${JSON.stringify(p.expected)} actual=${JSON.stringify(p.actual)}`);
 }
 
+// The `/N` token and the exit status are derived from ONE value. Until 2026-10-28 this
+// line printed a hardcoded `VERDICT/1` and the file had no verdict-keyed `process.exit`
+// at all, so this cell — whose figure the standing COORDINATION line quotes every fire —
+// exited 0 on every RED it ever published. Anything keying on `$?` read those REDs as
+// passes. Measured, not reasoned: unit-464t2-surface-2026-10-28/drive6, which drove this
+// cell and recorded `word=RED status=0 printedToken=1`.
+// Fixing only the exit would leave the printed token free to drift back out of step, and
+// fixing only the token would leave the gate dead; so both come off `code`.
 const status = red.length > 0 ? 'RED' : refused.length > 0 ? 'REFUSED' : 'ok';
+const code = red.length > 0 || refused.length > 0 ? 1 : 0;
 console.log(
-  `\nVERDICT/1 ${status} legs=${legs.length} red=[${red}] refused=[${refused}] preds=${preds.length} refuted=[${refuted}] prefused=[${prefused}]`
+  `\nVERDICT/${code} ${status} legs=${legs.length} red=[${red}] refused=[${refused}] preds=${preds.length} refuted=[${refuted}] prefused=[${prefused}]`
 );
+process.exit(code);

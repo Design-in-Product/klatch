@@ -67,6 +67,14 @@ console.log(`=== ZW-SCAN/464-T2 ===`);
 console.log(`DIRS ${DIRS.join(' ')}`);
 console.log(`CODEPOINTS ${ZW_CODES.map((c) => 'U+' + c.toString(16).toUpperCase()).join(' ')}`);
 for (const h of hits) console.log(`HIT ${h}`);
+// This cell's GATE was always live (`if (!ok) process.exit(1)`), but it printed a
+// hardcoded `VERDICT/1` even on the pass path, where it exits 0 — so the printed token
+// disagreed with the status on every clean run. Derived from one value now. The
+// distinction matters beyond cosmetics: a source scan keyed on the argument of
+// `process.exit(...)` classified this cell as ungated, which is the false positive
+// recorded in unit-464t2-surface-2026-10-28 (S2, drive6) and the reason the legs there
+// are keyed on a live drive rather than on source.
 const ok = files > 0 && zeroWidthLines === 0;
-console.log(`\nVERDICT/1 ${ok ? 'ok' : 'RED'} files=${files} zeroWidthLines=${zeroWidthLines}`);
-if (!ok) process.exit(1);
+const code = ok ? 0 : 1;
+console.log(`\nVERDICT/${code} ${ok ? 'ok' : 'RED'} files=${files} zeroWidthLines=${zeroWidthLines}`);
+process.exit(code);

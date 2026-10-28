@@ -147,26 +147,81 @@ const EXIT_ARG_RE = /process\.(?:exit\(|exitCode\s*=\s*)[^;\n]*\b(?:red|refused|
 const LITERAL_TOKEN_RE = /VERDICT\/\d+\s/;
 const DERIVED_TOKEN_RE = /VERDICT\/\$\{/;
 
+// The literal test must be COMMENT-BLIND, and finding that out cost a leg. The cure I
+// wrote into each repaired cell explains the defect in prose — and that prose contains
+// the string `VERDICT/1`, so a key that tests the raw blob reports the cured files as
+// still printing a literal. A correction that quotes the wrong spelling re-trips the
+// detector that found it. So: consider only lines that are not comment lines, and ask
+// whether any of THOSE carries the literal form.
+function literalPrintLines(blob) {
+  return blob
+    .split('\n')
+    .filter((l) => !/^\s*(\/\/|\*|\/\*)/.test(l))
+    .filter((l) => /VERDICT\//.test(l))
+    .filter((l) => LITERAL_TOKEN_RE.test(l) && !DERIVED_TOKEN_RE.test(l));
+}
 function sourceKeyOf(blob) {
   if (blob === null) return null;
-  const literal = LITERAL_TOKEN_RE.test(blob);
+  const literalLines = literalPrintLines(blob);
+  const literal = literalLines.length > 0;
   const derived = DERIVED_TOKEN_RE.test(blob);
   const exitsOnArg = EXIT_ARG_RE.test(blob);
-  return { silent: literal && !derived && !exitsOnArg, literal, derived, exitsOnArg };
+  return { silent: literal && !derived && !exitsOnArg, literal, derived, exitsOnArg, literalLines };
 }
-function sourceKey(rel, rev = REV) {
+// TWO readers, deliberately, because drive7 published a RED caused by my own uncommitted
+// state rather than by the subject. The drive key runs the WORKING TREE (node executes
+// the file on disk); the source key was reading `git show REV:<path>`, i.e. the COMMITTED
+// tree. With the cure in the working tree and not yet committed, the two keys were reading
+// two different trees and T1 reddened against a cell that was already fixed. A comparison
+// between two keys is only a comparison if both read the same tree.
+//   sourceKeyNow  — the working tree, which is what the drive key runs. Use for anything
+//                   compared against a drive.
+//   sourceKeyAt   — a pinned rev, for the historical pre-repair population only.
+// `M5` records whether the declared cells are dirty against HEAD, so a reader can always
+// tell which tree produced which figure.
+function sourceKeyNow(rel) {
+  try {
+    return sourceKeyOf(readFileSync(`${REPO}/${rel}`, 'utf8'));
+  } catch {
+    return null;
+  }
+}
+function sourceKeyAt(rel, rev) {
   return sourceKeyOf(git(['show', `${rev}:${rel}`]));
 }
 
-const sourceRows = DRIVEABLE.map((rel) => ({ rel, k: sourceKey(rel) }));
-const sourceSilent = sourceRows.filter((r) => r.k && r.k.silent).map((r) => r.rel);
+const sourceRows = DRIVEABLE.map((rel) => ({ rel, k: sourceKeyNow(rel) }));
 const driveSilent = dishonest.map((d) => d.rel);
-const sourceFalsePositives = sourceSilent.filter((p) => !driveSilent.includes(p));
-const sourceFalseNegatives = driveSilent.filter((p) => !sourceSilent.includes(p));
-console.log('--- KEY A ([MEAS] only): the source scan, and its confusion matrix against Key B');
-console.log(`  sourceSaysSilent=${sourceSilent.length} driveSaysSilent=${driveSilent.length}`);
-console.log(`  falsePositives=${sourceFalsePositives.length} → ${sourceFalsePositives.map((p) => p.split('/').pop()).join(', ') || '(none)'}`);
-console.log(`  falseNegatives=${sourceFalseNegatives.length} → ${sourceFalseNegatives.map((p) => p.split('/').pop()).join(', ') || '(none)'}`);
+
+// The source key's confusion matrix is computed against the PRE-REPAIR tree, not against
+// this one. Post-cure there are no silent cells, so a matrix over HEAD has an empty
+// positive class and every leg over it is vacuously green — following the reds would
+// never show that. The population is the pinned pre-repair rev; the ground truth is the
+// SILENT lines parsed out of drive6's own committed recording with a reader, rather than
+// a list of paths hand-typed here, because a hand-typed reader is not a slice.
+const PRE_DRIVE_RECORD =
+  'docs/research/unit-464t2-surface-2026-10-28/drive6.exitcode-prerepair.out';
+const preRecord = git(['show', `${REV}:${PRE_DRIVE_RECORD}`]);
+const preDriveSilent =
+  preRecord === null
+    ? null
+    : preRecord
+        .split('\n')
+        .map((l) => /^\s{2}SILENT\s+(\S+)\s/.exec(l))
+        .filter(Boolean)
+        .map((m) => `docs/research/${m[1]}`);
+const preSourceRows = DRIVEABLE.map((rel) => ({ rel, k: sourceKeyAt(rel, PRE_REPAIR_REV) }));
+const preSourceSilent = preSourceRows.filter((r) => r.k && r.k.silent).map((r) => r.rel);
+const sourceFalsePositives =
+  preDriveSilent === null ? null : preSourceSilent.filter((p) => !preDriveSilent.includes(p));
+const sourceFalseNegatives =
+  preDriveSilent === null ? null : preDriveSilent.filter((p) => !preSourceSilent.includes(p));
+console.log('--- KEY A ([MEAS] only): the source scan over the PRE-REPAIR rev, vs drive6 as ground truth');
+console.log(`  groundTruth from ${PRE_DRIVE_RECORD.split('/').pop()}: ${preDriveSilent === null ? 'UNREADABLE — refusing' : preDriveSilent.map((p) => p.split('/').pop()).join(', ')}`);
+console.log(`  sourceSaysSilent=${preSourceSilent.length} driveSaidSilent=${preDriveSilent?.length ?? 'n/a'}`);
+console.log(`  falsePositives=${sourceFalsePositives?.length ?? 'n/a'} → ${sourceFalsePositives?.map((p) => p.split('/').pop()).join(', ') || '(none)'}`);
+console.log(`  falseNegatives=${sourceFalseNegatives?.length ?? 'n/a'} → ${sourceFalseNegatives?.map((p) => p.split('/').pop()).join(', ') || '(none)'}`);
+console.log(`  and over THIS rev, post-cure: sourceSilent=${sourceRows.filter((r) => r.k && r.k.silent).length} driveSilent=${driveSilent.length} (both expected 0 — an empty positive class, which is why the matrix above is keyed on the pinned rev)`);
 console.log('');
 
 // ---------------------------------------------------------------------------
@@ -176,7 +231,7 @@ console.log('');
 //     not an analogy to it.
 // KN: Daedalus's grader at this rev — a cell that really does exit on its verdict.
 // ---------------------------------------------------------------------------
-import { mkdtempSync, writeFileSync, rmSync } from 'node:fs';
+import { mkdtempSync, writeFileSync, rmSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -240,12 +295,18 @@ console.log('');
 // LEGS
 // ---------------------------------------------------------------------------
 const legs = [];
-const MEAS_IDS = ['M1', 'M2', 'M3'];
+const MEAS_IDS = ['M1', 'M2', 'M3', 'M4', 'M5'];
 function leg(id, text, value, detail) {
   legs.push({ id, text, value, detail: detail ?? '' });
 }
 const USE_SOURCE_KEY = CRIPPLE === 'source-as-truth';
-const silentSet = USE_SOURCE_KEY ? sourceSilent : driveSilent;
+// `sourceSilentNow` is read off the same tree the drive key runs, so the `source-as-truth`
+// arm swaps the KEY and holds the TREE constant. drive13 crashed here on a dead
+// `sourceSilent` reference left behind when the two readers were split: the arm had been
+// UNRUNNABLE, and the clean arm never evaluates this line, so its green said nothing
+// about it. Only driving the cripple found it.
+const sourceSilentNow = sourceRows.filter((r) => r.k && r.k.silent).map((r) => r.rel);
+const silentSet = USE_SOURCE_KEY ? sourceSilentNow : driveSilent;
 
 leg(
   'G1',
@@ -277,63 +338,113 @@ leg(
   `preRepairRev=${PRE_REPAIR_REV.slice(0, 8)} silent=${preSourceKey?.silent} literal=${preSourceKey?.literal} derived=${preSourceKey?.derived}`
 );
 
+// E1/E2/E3 were written against the PRE-repair tree and landed green there (drive6:
+// silent=2, the standing cell among them). They are RE-AIMED at the cure rather than
+// left live or deleted: a leg that still asserts "at least one cell is silent" reddens
+// the moment its own finding is fixed, and a leg deleted takes the finding with it. The
+// pre-repair values are carried in `M4`, with the drive that recorded them named, so the
+// defect stays on the record at a figure nothing recomputes.
 leg(
   'E1',
-  'at least one cell in the declared set exits 0 while its own verdict line says RED or REFUSED — the defect this unit reports, measured by driving rather than by reading source',
-  measured.length === 0 ? null : silentSet.length > 0,
+  'every cell in the declared set now agrees with itself: no cell exits 0 while its own verdict line says RED or REFUSED. Pre-repair this read silent=2 (drive6)',
+  measured.length === 0 ? null : silentSet.length === 0,
   `silent=${silentSet.length} → ${silentSet.map((p) => p.split('/').pop()).join(', ') || '(none)'}`
 );
 
 leg(
   'E2',
-  'the defect is a CLASS and not one instance: strictly more than one cell in the declared set is silent, so repairing only the cell that surfaced it would leave the mechanism live',
-  measured.length === 0 ? null : silentSet.length > 1,
-  `silent=${silentSet.length}`
+  'the cure covers the whole CLASS, not the one instance that surfaced it: both cells drive6 recorded as silent — grade-the-credit-key.mjs and round464-instruments/grade-the-stop-condition.mjs — are honest on this drive',
+  measured.length === 0
+    ? null
+    : ['grade-the-credit-key', 'grade-the-stop-condition'].every((name) => {
+        const d = driven.find((x) => x.rel.includes(name));
+        return d !== undefined && d.agrees === true;
+      }),
+  ['grade-the-credit-key', 'grade-the-stop-condition']
+    .map((name) => {
+      const d = driven.find((x) => x.rel.includes(name));
+      return `${name}:${d === undefined ? 'ABSENT' : `word=${d.word} status=${d.status} honest=${d.agrees}`}`;
+    })
+    .join(' | ')
 );
 
 leg(
   'E3',
-  'the standing stop-condition cell — the one whose figure this seat quotes in COORDINATION every fire — is among the silent, which is why this is not a cosmetic finding',
-  measured.length === 0
-    ? null
-    : silentSet.some((p) => p.includes('round464-instruments/grade-the-stop-condition')),
-  `silent set contains the standing cell: ${silentSet.some((p) => p.includes('grade-the-stop-condition'))}`
-);
-
-leg(
-  'S1',
-  'the source scan OVER-reports relative to the drive: it has at least one false positive, which is why the legs above are keyed on the drive and the scan is published as a measurement only',
-  sourceRows.some((r) => r.k === null) ? null : sourceFalsePositives.length > 0,
-  `falsePositives=${sourceFalsePositives.length} → ${sourceFalsePositives.map((p) => p.split('/').pop()).join(', ') || '(none)'}; falseNegatives=${sourceFalseNegatives.length}`
-);
-
-leg(
-  'S2',
-  "zw-scan.mjs specifically is a source-key false positive — its gate IS live (`if (!ok) process.exit(1)`), so the memo sentence that called it a gate was right even though a source scan of exit arguments cannot see it",
+  'the standing stop-condition cell specifically — the one whose figure this seat quotes in COORDINATION every fire — now exits non-zero on its own RED, so the line the seat publishes is backed by a cell that can fail',
   (() => {
-    const d = driven.find((x) => x.rel.includes('zw-scan'));
+    const d = driven.find((x) => x.rel.includes('grade-the-stop-condition'));
     if (!d || d.agrees === null) return null;
-    const s = sourceRows.find((x) => x.rel.includes('zw-scan'));
-    if (!s || s.k === null) return null;
-    return d.agrees === true && s.k.silent === true;
+    return d.agrees === true && d.tokenAgrees === true;
   })(),
   (() => {
-    const d = driven.find((x) => x.rel.includes('zw-scan'));
-    const s = sourceRows.find((x) => x.rel.includes('zw-scan'));
-    return `drive says honest=${d?.agrees}; source says silent=${s?.k?.silent}`;
+    const d = driven.find((x) => x.rel.includes('grade-the-stop-condition'));
+    return `word=${d?.word} status=${d?.status} token=${d?.token} tokenMatchesStatus=${d?.tokenAgrees}`;
   })()
 );
 
 leg(
-  'T1',
-  'in every cell whose printed /N token disagrees with its exit status, the token is a LITERAL rather than an interpolation — so the repair is to derive the token from the same value, not to edit the number',
-  tokenWrong.length === 0
+  'E4',
+  'the printed /N token agrees with the exit status in EVERY declared cell, including zw-scan.mjs, whose gate was already live but whose token was a literal — so the cure closed the token axis as well as the exit axis',
+  measured.length === 0 ? null : tokenWrong.length === 0,
+  `printedTokenWrong=${tokenWrong.length} → ${tokenWrong.map((d) => `${d.rel.split('/').pop()}(token=${d.token},status=${d.status})`).join(', ') || '(none)'}`
+);
+
+leg(
+  'S1',
+  'over the pinned pre-repair rev, the source scan OVER-reports relative to the drive — at least one false positive and no false negatives — which is why the graded legs are keyed on a live drive and the scan is published as a measurement only',
+  preDriveSilent === null || preSourceRows.some((r) => r.k === null)
     ? null
-    : tokenWrong.every((d) => {
-        const s = sourceRows.find((x) => x.rel === d.rel);
-        return s && s.k !== null && s.k.literal && !s.k.derived;
-      }),
-  `tokenWrong=${tokenWrong.length} → ${tokenWrong.map((d) => `${d.rel.split('/').pop()}(token=${d.token},status=${d.status})`).join(', ') || '(none)'}`
+    : sourceFalsePositives.length > 0 && sourceFalseNegatives.length === 0,
+  `fp=${sourceFalsePositives?.length} → ${sourceFalsePositives?.map((p) => p.split('/').pop()).join(', ') || '(none)'}; fn=${sourceFalseNegatives?.length}`
+);
+
+leg(
+  'S2',
+  "zw-scan.mjs is the named false positive: at the pre-repair rev the source key called it silent while drive6 recorded it honest, because its gate lived in `if (!ok) process.exit(1)` where no exit-ARGUMENT regex can see it. So the memo sentence that called it a gate was right",
+  preDriveSilent === null
+    ? null
+    : (() => {
+        const s = preSourceRows.find((x) => x.rel.includes('zw-scan'));
+        if (!s || s.k === null) return null;
+        return s.k.silent === true && !preDriveSilent.some((p) => p.includes('zw-scan'));
+      })(),
+  (() => {
+    const s = preSourceRows.find((x) => x.rel.includes('zw-scan'));
+    return `pre-repair source silent=${s?.k?.silent}; drive6 ground truth lists it silent=${preDriveSilent === null ? 'UNREADABLE' : preDriveSilent.some((p) => p.includes('zw-scan'))}`;
+  })()
+);
+
+leg(
+  'S3',
+  'the ground truth for S1/S2 was READ out of drive6\'s committed recording rather than hand-typed here, and it names exactly the two cells the cure targeted — a reader that silently matched nothing would refuse rather than report a clean matrix',
+  preDriveSilent === null
+    ? null
+    : preDriveSilent.length === 2 &&
+      ['grade-the-credit-key', 'grade-the-stop-condition'].every((n) =>
+        preDriveSilent.some((p) => p.includes(n))
+      ),
+  `parsed ${preDriveSilent?.length ?? 'UNREADABLE'} SILENT lines → ${preDriveSilent?.map((p) => p.split('/').pop()).join(', ') ?? 'n/a'}`
+);
+
+leg(
+  'T1',
+  'no declared cell still prints the token as a LITERAL: every one interpolates it, so the token cannot drift back out of step with the status by an edit that changes only one of the two',
+  sourceRows.some((r) => r.k === null)
+    ? null
+    : sourceRows.every((r) => r.k.derived && r.k.literalLines.length === 0),
+  sourceRows
+    .map(
+      (r) =>
+        `${r.rel.split('/').pop()}:derived=${r.k?.derived} literalPrintLines=${r.k?.literalLines.length}`
+    )
+    .join(' | ')
+);
+
+leg(
+  'M4',
+  '[MEAS] the PRE-repair figures, retired here rather than left in a live leg — drive6 at rev 96028336, before the cure in this fire',
+  'silent=2 (grade-the-credit-key.mjs, round464-instruments/grade-the-stop-condition.mjs) · printedTokenWrong=3 (those two plus zw-scan.mjs) · honest=3 · sourceKeySilent=3 with 1 false positive (zw-scan.mjs)',
+  'recorded in docs/research/unit-464t2-surface-2026-10-28/drive6.exitcode-prerepair.out; E1/E2/E3 landed green against that tree and were re-aimed at the cure in the same file'
 );
 
 leg(
@@ -365,8 +476,21 @@ leg(
 leg(
   'M3',
   '[MEAS] the source scan against the drive, as a confusion matrix rather than a count',
-  `sourceSilent=${sourceSilent.length} driveSilent=${driveSilent.length} fp=${sourceFalsePositives.length} fn=${sourceFalseNegatives.length}`,
-  `fp: ${sourceFalsePositives.map((p) => p.split('/').pop()).join(',') || '(none)'} | fn: ${sourceFalseNegatives.map((p) => p.split('/').pop()).join(',') || '(none)'}`
+  `at the pinned pre-repair rev: sourceSilent=${preSourceSilent.length} driveSilent=${preDriveSilent?.length ?? 'UNREADABLE'} fp=${sourceFalsePositives?.length ?? 'n/a'} fn=${sourceFalseNegatives?.length ?? 'n/a'} · at this rev, post-cure: sourceSilent=${sourceRows.filter((r) => r.k && r.k.silent).length} driveSilent=${driveSilent.length}`,
+  `fp: ${sourceFalsePositives?.map((p) => p.split('/').pop()).join(',') || '(none)'} | fn: ${sourceFalseNegatives?.map((p) => p.split('/').pop()).join(',') || '(none)'}`
+);
+
+leg(
+  'M5',
+  '[MEAS] which TREE each key read, and whether the declared cells are dirty against HEAD — drive7 published a RED caused entirely by this gap (the drive key ran the working tree while the source key read git show REV:, with the cure uncommitted), so the answer is printed in every arm rather than left to be inferred',
+  (() => {
+    const dirty = git(['diff', '--name-only', 'HEAD', '--', ...DRIVEABLE]);
+    const staged = git(['diff', '--cached', '--name-only', 'HEAD', '--', ...DRIVEABLE]);
+    const d = (dirty ?? '').split('\n').filter(Boolean);
+    const s = (staged ?? '').split('\n').filter(Boolean);
+    return `driveKey=workingTree sourceKeyNow=workingTree sourceKeyAt=${PRE_REPAIR_REV.slice(0, 8)} · declaredCellsDirtyVsHEAD=${d.length} staged=${s.length} → ${[...new Set([...d, ...s])].map((p) => p.split('/').pop()).join(',') || '(none)'}`;
+  })(),
+  'a dirty declared cell is not itself a defect; a key that reads a different tree from the one it grades is'
 );
 
 leg(
@@ -399,11 +523,26 @@ function predict(id, text, expected, fn) {
   preds.push({ id, text, expected, actual });
 }
 
+// Q1 and Q3 were pre-registered against the pre-repair tree and both LANDED there
+// (drive6: silent=2, tokenWrong=3 > silent=2). They are retired into M4 rather than
+// re-expected against the cured tree, because a prediction bent to the value it now
+// holds grades nothing — and left live, each would assert the OLD value every drive.
+// Q4/Q5 below are pre-registered for the cure, before this cell's first post-cure drive.
 predict(
-  'Q1',
-  'exactly 2 cells in the declared set are silent by the drive key: grade-the-credit-key.mjs and round464-instruments/grade-the-stop-condition.mjs. Stated as a prediction because the only two I have READ are those two, and the recons may well be a third and fourth',
-  2,
-  () => (measured.length === 0 ? null : driveSilent.length)
+  'Q4',
+  'after the cure, every one of the 5 declared cells is honest AND its printed token equals its status — so the cure closed both axes in the same edit rather than one of them',
+  '5|5',
+  () =>
+    measured.length === 0
+      ? null
+      : `${driven.filter((d) => d.agrees === true).length}|${driven.filter((d) => d.tokenAgrees === true).length}`
+);
+
+predict(
+  'Q5',
+  'the source key, re-run over the CURED tree, now finds zero silent cells — so the two keys agree once the positive class is empty, which is exactly why S1/S2 had to be keyed on the pinned pre-repair rev instead',
+  0,
+  () => (sourceRows.some((r) => r.k === null) ? null : sourceRows.filter((r) => r.k.silent).length)
 );
 
 predict(
@@ -417,12 +556,6 @@ predict(
   }
 );
 
-predict(
-  'Q3',
-  'the printed /N token is wrong in strictly MORE cells than the exit status is, because a cell can gate correctly (zw-scan) while still printing a literal token',
-  true,
-  () => (measured.length === 0 ? null : tokenWrong.length > driveSilent.length)
-);
 
 // ---------------------------------------------------------------------------
 // VERDICT

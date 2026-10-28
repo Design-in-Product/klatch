@@ -510,7 +510,16 @@ for (const p of preds) {
   console.log(`      expected=${JSON.stringify(p.expected)} actual=${JSON.stringify(p.actual)}`);
 }
 
+// The `/N` token and the exit status are derived from ONE value. Until 2026-10-28 this
+// line printed a hardcoded `VERDICT/1` and the file had no `process.exit` at all, so this
+// cell exited 0 on every RED it published — including the `red=[C3,C6]` that routed the
+// key question to Daedalus. Measured by driving it and reading the status, not by reading
+// the source: unit-464t2-surface-2026-10-28/drive4 and drive6
+// (`word=RED status=0 printedToken=1`). It never bit only because Daedalus's `D2`
+// cross-check compares this cell's stdout member lists rather than its exit code.
 const status = red.length > 0 ? 'RED' : refused.length > 0 ? 'REFUSED' : 'ok';
+const code = red.length > 0 || refused.length > 0 ? 1 : 0;
 console.log(
-  `\nVERDICT/1 ${status} legs=${legs.length} red=[${red}] refused=[${refused}] preds=${preds.length} refuted=[${refuted}] prefused=[${prefused}]`
+  `\nVERDICT/${code} ${status} legs=${legs.length} red=[${red}] refused=[${refused}] preds=${preds.length} refuted=[${refuted}] prefused=[${prefused}]`
 );
+process.exit(code);

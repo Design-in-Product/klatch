@@ -1,0 +1,75 @@
+=== GRADE/464-T2-surface — the printed /N token against the actual exit status ===
+REV 2fdd3ccc2eee4f4e889eb449451ed110db6eec0d
+CLOCK 2026-10-28T22:04:22.906Z
+CRIPPLE none (clean)
+
+--- KEY B (graded): live drive — printed verdict word vs actual exit status
+  honest unit-464t2-reaim-2026-10-28/grade-the-credit-key.mjs  word=RED status=1 printedToken=1 tokenMatchesStatus=true
+  honest unit-464t2-reaim-2026-10-28/zw-scan.mjs  word=ok status=0 printedToken=0 tokenMatchesStatus=true
+  honest round464-instruments/grade-the-stop-condition.mjs  word=RED status=1 printedToken=1 tokenMatchesStatus=true
+  honest unit-464t2-keychoice-2026-10-28/grade-the-surface-predicate.mjs  word=RED status=1 printedToken=1 tokenMatchesStatus=true
+  honest unit-464t2-keychoice-2026-10-28/recon2-the-last-round-that-cured-product-source.mjs  word=ok status=0 printedToken=0 tokenMatchesStatus=true
+  driven=5 measured=5 SILENT=0 printedTokenWrong=0
+
+--- KEY A ([MEAS] only): the source scan over the PRE-REPAIR rev, vs drive6 as ground truth
+  groundTruth from drive6.exitcode-prerepair.out: grade-the-credit-key.mjs, grade-the-stop-condition.mjs
+  sourceSaysSilent=3 driveSaidSilent=2
+  falsePositives=1 → zw-scan.mjs
+  falseNegatives=0 → (none)
+  and over THIS rev, post-cure: sourceSilent=3 driveSilent=0 (both expected 0 — an empty positive class, which is why the matrix above is keyed on the pinned rev)
+
+--- KP / KN for the drive key
+  KP synthetic (prints RED, exits 0) word=RED status=0 agrees=false (want false)
+  KN synthetic (prints RED, exits 1) word=RED status=1 agrees=true (want true)
+  KN real (Daedalus's grader)        word=RED status=1 agrees=true (want true)
+  pre-repair blob under the SOURCE key: silent=true literal=true derived=false
+
+--- LEGS ---
+ ok  G1: GATE: the declared driveable set is non-empty and every member reached a verdict line — a census that drove nothing, or whose members printed no verdict, must RED here rather than report zero silent cells
+      detail: declared=5 measured=5 noVerdictLine=(none)
+ ok  K1: the drive key separates a synthetic cell that prints RED and exits 0 from one that prints RED and exits 1 — the two bodies differ in exactly the variable the key reads, so a key that stops separating reddens instead of reporting a smaller number
+      detail: KP agrees=false (want false); KN-synthetic agrees=true (want true)
+ ok  K2: the key also separates on a REAL cell, not only on synthetic ones: Daedalus's grader prints RED and exits non-zero and is classified honest
+      detail: KN-real word=RED status=1 agrees=true
+ ok  K3: the pre-repair blob of the subject is pinned by hash and still classified SILENT by the SOURCE key, so the historical defect stays anchored to a real artifact even after the live cell is cured
+      detail: preRepairRev=41ae8657 silent=true literal=true derived=false
+ ok  E1: every cell in the declared set now agrees with itself: no cell exits 0 while its own verdict line says RED or REFUSED. Pre-repair this read silent=2 (drive6)
+      detail: silent=0 → (none)
+ ok  E2: the cure covers the whole CLASS, not the one instance that surfaced it: both cells drive6 recorded as silent — grade-the-credit-key.mjs and round464-instruments/grade-the-stop-condition.mjs — are honest on this drive
+      detail: grade-the-credit-key:word=RED status=1 honest=true | grade-the-stop-condition:word=RED status=1 honest=true
+ ok  E3: the standing stop-condition cell specifically — the one whose figure this seat quotes in COORDINATION every fire — now exits non-zero on its own RED, so the line the seat publishes is backed by a cell that can fail
+      detail: word=RED status=1 token=1 tokenMatchesStatus=true
+ ok  E4: the printed /N token agrees with the exit status in EVERY declared cell, including zw-scan.mjs, whose gate was already live but whose token was a literal — so the cure closed the token axis as well as the exit axis
+      detail: printedTokenWrong=0 → (none)
+ ok  S1: over the pinned pre-repair rev, the source scan OVER-reports relative to the drive — at least one false positive and no false negatives — which is why the graded legs are keyed on a live drive and the scan is published as a measurement only
+      detail: fp=1 → zw-scan.mjs; fn=0
+ ok  S2: zw-scan.mjs is the named false positive: at the pre-repair rev the source key called it silent while drive6 recorded it honest, because its gate lived in `if (!ok) process.exit(1)` where no exit-ARGUMENT regex can see it. So the memo sentence that called it a gate was right
+      detail: pre-repair source silent=true; drive6 ground truth lists it silent=false
+ ok  S3: the ground truth for S1/S2 was READ out of drive6's committed recording rather than hand-typed here, and it names exactly the two cells the cure targeted — a reader that silently matched nothing would refuse rather than report a clean matrix
+      detail: parsed 2 SILENT lines → grade-the-credit-key.mjs, grade-the-stop-condition.mjs
+RED  T1: no declared cell still prints the token as a LITERAL: every one interpolates it, so the token cannot drift back out of step with the status by an edit that changes only one of the two
+      detail: grade-the-credit-key.mjs:derived=false literalPrintLines=1 | zw-scan.mjs:derived=false literalPrintLines=1 | grade-the-stop-condition.mjs:derived=false literalPrintLines=1 | grade-the-surface-predicate.mjs:derived=true literalPrintLines=0 | recon2-the-last-round-that-cured-product-source.mjs:derived=true literalPrintLines=0
+MEAS M4: [MEAS] the PRE-repair figures, retired here rather than left in a live leg — drive6 at rev 96028336, before the cure in this fire
+      detail: silent=2 (grade-the-credit-key.mjs, round464-instruments/grade-the-stop-condition.mjs) · printedTokenWrong=3 (those two plus zw-scan.mjs) · honest=3 · sourceKeySilent=3 with 1 false positive (zw-scan.mjs)
+      also  : recorded in docs/research/unit-464t2-surface-2026-10-28/drive6.exitcode-prerepair.out; E1/E2/E3 landed green against that tree and were re-aimed at the cure in the same file
+MEAS M1: [MEAS] the drive census, no assertion
+      detail: driven=5 measured=5 silentByDrive=0 printedTokenWrong=0
+      also  : grade-the-credit-key.mjs:RED/1 zw-scan.mjs:ok/0 grade-the-stop-condition.mjs:RED/1 grade-the-surface-predicate.mjs:RED/1 recon2-the-last-round-that-cured-product-source.mjs:ok/0
+MEAS M2: [MEAS] the SCOPE of the answer — how many verdict-printing research cells were NOT driven, so this reads as a bounded census and not as "every cell in the tree"
+      detail: verdictPrintingCellsInTree=30 declaredDriveable=5 notDriven=25
+      also  : not driven because a blind sweep would spawn whatever a probe spawns; several open ports and databases
+MEAS M3: [MEAS] the source scan against the drive, as a confusion matrix rather than a count
+      detail: at the pinned pre-repair rev: sourceSilent=3 driveSilent=2 fp=1 fn=0 · at this rev, post-cure: sourceSilent=3 driveSilent=0
+      also  : fp: zw-scan.mjs | fn: (none)
+ ok  M0: the [MEAS] exclusion from the refusal set is keyed on a declared id list, and reddens if a declared MEAS leg carries a boolean or an undeclared leg calls itself [MEAS] — otherwise any leg could opt out of the verdict by editing its own first six characters
+      detail: MEAS_IDS=[M1,M2,M3,M4]
+
+--- PREDICTIONS ---
+LAND Q4: after the cure, every one of the 5 declared cells is honest AND its printed token equals its status — so the cure closed both axes in the same edit rather than one of them
+      expected="5|5" actual="5|5"
+REFU Q5: the source key, re-run over the CURED tree, now finds zero silent cells — so the two keys agree once the positive class is empty, which is exactly why S1/S2 had to be keyed on the pinned pre-repair rev instead
+      expected=0 actual=3
+LAND Q2: Daedalus's two cells are both honest, so the convention is not shared and the defect is this seat's alone
+      expected=true actual=true
+
+VERDICT/1 RED legs=17 red=[T1] refused=[] preds=3 refuted=[Q5] prefused=[]
