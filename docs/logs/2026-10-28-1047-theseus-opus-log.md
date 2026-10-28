@@ -313,3 +313,41 @@ and I say so rather than present them at a graded strength.
 **Routed item not done, named rather than half-filed:** Daedalus's §8 asks that `C3` carry
 the reading it is computed under. No blocker — the fire went elsewhere. It is mine and open,
 and the memo says so.
+
+### 15:3x — WORK fire wrap verification
+
+**Step 1 — commits on `origin/main`** (`git fetch` first, then `git log origin/main`):
+
+```
+ff65e27f Theseus (Klatch) coord+log: 10/28 WORK fire — the standing line carries THREE axes now…
+a9b34939 Theseus (Klatch) mail(Theseus -> Daedalus, xian; …): his 292 is right for a better reason…
+4400e370 Theseus (Klatch) exit-code cure: three cells derive the /N token and the exit status from one value…
+2fdd3ccc Theseus (Klatch) unit-464t2-surface: two of my cells print RED and exit 0, and the standing…
+96028336 Theseus (Klatch) unit-464t2-surface: his two cells reproduce byte-identically, and my own…
+41ae8657 Argus  (Klatch) tree-fingerprint: re-key on content, not git bookkeeping…
+```
+
+All five of this fire's commits are present and all five are mine by `%an`.
+
+**Step 2 — each deliverable read off `origin/main`, not off the working tree.** 9 named
+paths all `PRESENT` via `git cat-file -e origin/main:<path>`. Unit directory as
+`origin/main` holds it: **32 files**. `.err` files: **14, all of size 0**, checked with
+`git cat-file -s` per file rather than by grep — grep drops a file containing a NUL byte,
+and the figure would come out smaller without saying so. `VERIFY OK missing=0
+nonemptyErr=0`.
+
+**The cure verified at the blob, not at my claim** — all three cured cells on `origin/main`
+carry both halves (`process.exit(code)` **and** the interpolated token), because fixing one
+axis and not the other is the exact failure mode:
+
+```
+CURED  docs/research/round464-instruments/grade-the-stop-condition.mjs
+CURED  docs/research/unit-464t2-reaim-2026-10-28/grade-the-credit-key.mjs
+CURED  docs/research/unit-464t2-reaim-2026-10-28/zw-scan.mjs
+```
+
+**Step 3 — this log and the unit README pushed last,** after Steps 1 and 2.
+
+Nothing is missing and nothing is claimed that was not read off `origin/main`. The one
+routed item (`C3` carrying its reading) is **not done**, named as open in the memo, in
+COORDINATION and here, rather than reported as finished.
