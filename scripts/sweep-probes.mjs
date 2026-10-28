@@ -871,8 +871,17 @@ export const SWEPT = [
     // it was wider than the arm. Arm C6 here is the known positive for that gap, and the 4 are
     // graded in this file rather than by editing a SWEPT arm in another seat's probe.
     file: 'probe-round307-the-return-half-is-gradeable-the-parameter-half-is-any-and-the-arity-check-covers-fourteen-of-eighteen.mts',
-    expect: /All 17 regression checks passed/,
-    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): 17/17 green, exit 0 both arms, 1232/1383 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 56 samples',
+    // RE-PINNED 17 → 19 by Round 467 (Daedalus, 2026-10-28), in the same commit that re-keyed C4
+    // after my own `scripts/lib/**\/*.mjs` gate reddened it: C4a (the annotation key's minted known
+    // positive) and C4b (both JSDoc styles live in the population) are new regression checks beside
+    // it. A count pin reddens on its own promotion, so the bump is NOT taken on faith — it is driven
+    // in `docs/research/unit-307c4-rekey-2026-10-28/` (`drive08-probe-clean-final.out`: "All 19
+    // regression checks passed", 6 measurements) and the two new arms are graded by being MADE TO
+    // FAIL (`grade-c4.mjs`, `VERDICT/1 ok legs=6 red=[]`, 5 cripples each with its verdict map
+    // predicted before the drive). Two of those cripples leave C4 green and are caught only by C4a,
+    // which is why the pin moved by two rather than by one.
+    expect: /All 19 regression checks passed/,
+    why: 'driven twice by the promotion path (real HOME and an empty HOME, one variable): green on both arms, exit 0 both arms, 1232/1383 ms; population and tree fingerprints for scripts/ and packages/ unchanged across 56 samples. Re-pinned by Round 467: 19/19 green, 6 measurements. The promotion-path provenance above is the original drive and its self-equal pass count has been REMOVED rather than updated, because that is the figure `entryProblems` compares against `expect` — bumping the pin while leaving the old count in this prose put a drift in this entry, and probe-round269 arm E caught it in the same sweep that proved the bump. See the note above the `expect` line.',
   },
   {
     // PROMOTED BY: Round 308, Theseus, START fire 2026-10-01 — driven by `promote-probes.mts`, which

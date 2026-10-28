@@ -1,0 +1,19 @@
+  [G0] PASS  THE READER is proved before any drive is read: it answers true on a minted PASS line, false on a minted FAIL line, and null for an arm that is absent from the output — never green by default
+        minted PASS → true · minted FAIL → false · absent arm → null · a MEAS line is not a verdict → null. The `[C4]` key must not also match `[C4a]`, which `\b` after the bracket contents is what buys.
+  [G0b] PASS  and the reader does not confuse a longer arm id for a shorter one — `[C4]` must not be answered by `[C4a]`’s line
+        output holding only [C4a] PASS, asked for C4 → null (want null). Without this, the two cripples below that are PREDICTED to leave C4 green would have read their own C4a red as C4’s verdict — i.e. the reader would have manufactured G3’s finding instead of measuring it.
+  [G1] PASS  every cripple’s anchor occurs EXACTLY ONCE in the probe’s own source — a zero-occurrence anchor is a no-op whose output is indistinguishable from "the cripple did not redden"
+        k-inline-blind 1× · k-block-blind 1× · k-inline-per-module 1× · k-refuse-as-none 1× · k-count-not-set 1×
+  [G2] PASS  THE GATE: every cripple’s measured verdict map equals the map predicted in this file BEFORE it was driven — including the two predicted to leave C4 green and the one predicted not to separate at all
+        k-inline-blind → C4a false · C4 false · C4b false (exit 1) · k-block-blind → C4a false · C4 false · C4b false (exit 1) · k-inline-per-module → C4a false · C4 true · C4b true (exit 1) · k-refuse-as-none → C4a false · C4 true · C4b true (exit 1) · k-count-not-set → C4a true · C4 true · C4b true (exit 0)
+  [G3] PASS  THE FINDING, stated as its own leg: the per-signature slice and the refusal/`none` distinction are each caught by C4a and MISSED by C4 — so C4a is load-bearing rather than decorative, and C4’s live green is not evidence about either
+        k-inline-per-module: C4 true (green — blind) · C4a false (red — caught) · k-refuse-as-none: C4 true (green — blind) · C4a false (red — caught). Both cripples still exit non-zero overall, because C4a is a regression check; a reader following only C4 would have called each of them clean.
+  [G4] PASS  the probe is byte-identical to the baseline captured BEFORE the first mutation — a restoration leg keyed on anything else reads this fire’s own work as residue
+        baseline sha256/16 223d70e13e5e28ec · after restore 223d70e13e5e28ec · 5 mutations applied and reverted, 5 driven.
+
+VERDICT/1 ok legs=6 red=[]
+  k-inline-blind: 3 of 19 regression check(s) FAILED.
+  k-block-blind: 3 of 19 regression check(s) FAILED.
+  k-inline-per-module: 1 of 19 regression check(s) FAILED.
+  k-refuse-as-none: 1 of 19 regression check(s) FAILED.
+  k-count-not-set: All 19 regression checks passed.

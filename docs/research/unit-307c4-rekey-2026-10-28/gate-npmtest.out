@@ -1,0 +1,477 @@
+
+> test
+> npm run typecheck && npm run test -w packages/server && npm run test -w packages/client && node scripts/sweep-probes.mjs --census
+
+
+> typecheck
+> npm run typecheck -w packages/shared && npm run typecheck -w packages/server && npm run typecheck -w packages/client && npm run typecheck:scripts
+
+
+> @klatch/shared@0.0.1 typecheck
+> tsc
+
+
+> @klatch/server@0.0.1 typecheck
+> tsc --noEmit
+
+
+> @klatch/client@0.0.1 typecheck
+> tsc --noEmit
+
+
+> typecheck:scripts
+> tsc -p scripts/tsconfig.json && tsc -p scripts/tsconfig.lib-mjs.json
+
+
+> @klatch/server@0.0.1 test
+> vitest run
+
+
+[1m[46m RUN [49m[22m [36mv4.0.18 [39m[90m/Users/xian/Development/klatch-worktrees/daedalus/packages/server[39m
+
+[90mstdout[2m | src/__tests__/round249-the-ownership-guard-drives-its-own-matrix.test.ts[2m > [22m[2mthe bind matrix the module decided on is re-taken here, not quoted[2m > [22m[2mthe connect detects every occupant, on every platform
+[22m[39mR249-MATRIX platform=darwin node=v26.5.0 recorded=yes
+R249-MATRIX ::         connect=true binds=[true,false,false]
+R249-MATRIX 0.0.0.0    connect=true binds=[true,true,false]
+R249-MATRIX 127.0.0.1  connect=true binds=[false,true,true]
+R249-MATRIX ::1        connect=true binds=[true,true,true]
+
+[90mstdout[2m | src/__tests__/round249-the-ownership-guard-drives-its-own-matrix.test.ts[2m > [22m[2mthe bind matrix the module decided on is re-taken here, not quoted[2m > [22m[2ma ::1-only occupant is not a clear port — the Round 273 hole, at the decision
+[22m[39mR249-COLON1 platform=darwin connect=true wildcardBind=true decision="something accepts connections on 61116 without answering HTTP"
+
+ [32m✓[39m src/__tests__/selective-import.test.ts [2m([22m[2m23 tests[22m[2m)[22m[32m 72[2mms[22m[39m
+ [32m✓[39m src/__tests__/round239-the-fingerprint-cache-takes-an-override.test.ts [2m([22m[2m34 tests[22m[2m)[22m[32m 74[2mms[22m[39m
+ [32m✓[39m src/__tests__/round154-cap-checks-file-size-not-the-copy.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 221[2mms[22m[39m
+ [32m✓[39m src/__tests__/round33-session-fingerprint.test.ts [2m([22m[2m19 tests[22m[2m)[22m[32m 133[2mms[22m[39m
+ [32m✓[39m src/__tests__/round143-scan-cap-latency.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 192[2mms[22m[39m
+ [32m✓[39m src/__tests__/round31b-import-klatch-extended.test.ts [2m([22m[2m30 tests[22m[2m)[22m[32m 119[2mms[22m[39m
+[90mstderr[2m | src/__tests__/round3-expansion.test.ts[2m > [22m[2mentity handle and model validation[2m > [22m[2mcreates entity with handle
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/round3-expansion.test.ts[2m > [22m[2mentity handle and model validation[2m > [22m[2mallows multiple entities with same handle (no uniqueness constraint)
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/round3-expansion.test.ts[2m > [22m[2mentity handle and model validation[2m > [22m[2mallows multiple entities with same handle (no uniqueness constraint)
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/round3-expansion.test.ts[2m > [22m[2mentity handle and model validation[2m > [22m[2mrejects invalid model on create
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/round3-expansion.test.ts[2m > [22m[2mentity handle and model validation[2m > [22m[2mrejects invalid model on update
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+ [32m✓[39m src/__tests__/round3-expansion.test.ts [2m([22m[2m33 tests[22m[2m)[22m[32m 111[2mms[22m[39m
+ [32m✓[39m src/__tests__/round247-the-exit-code-is-driven-not-read.test.ts [2m([22m[2m16 tests[22m[2m)[22m[33m 979[2mms[22m[39m
+ [32m✓[39m src/__tests__/round257-the-tsx-guard-predicates.test.ts [2m([22m[2m28 tests[22m[2m)[22m[32m 94[2mms[22m[39m
+ [32m✓[39m src/__tests__/round27b-mcp-server-5c-i-extended.test.ts [2m([22m[2m27 tests[22m[2m)[22m[32m 89[2mms[22m[39m
+ [32m✓[39m src/__tests__/round56-recall-expand.test.ts [2m([22m[2m32 tests[22m[2m)[22m[32m 61[2mms[22m[39m
+ [32m✓[39m src/__tests__/import-hardening-r2.test.ts [2m([22m[2m22 tests[22m[2m)[22m[32m 77[2mms[22m[39m
+ [32m✓[39m src/__tests__/round25b-mcp-server-extended.test.ts [2m([22m[2m29 tests[22m[2m)[22m[32m 82[2mms[22m[39m
+ [32m✓[39m src/__tests__/session-scanner.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 61[2mms[22m[39m
+ [32m✓[39m src/__tests__/round23-claude-code-transport.test.ts [2m([22m[2m27 tests[22m[2m)[22m[32m 62[2mms[22m[39m
+ [32m✓[39m src/__tests__/round18-export.test.ts [2m([22m[2m23 tests[22m[2m)[22m[32m 73[2mms[22m[39m
+ [32m✓[39m src/__tests__/round5-project-assignment.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 65[2mms[22m[39m
+ [32m✓[39m src/__tests__/round31-import-klatch.test.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 59[2mms[22m[39m
+ [32m✓[39m src/__tests__/round26b-mcp-tools-extended.test.ts [2m([22m[2m18 tests[22m[2m)[22m[32m 62[2mms[22m[39m
+ [32m✓[39m src/__tests__/round218-one-mount-list-and-the-uncapped-routes-answer.test.ts [2m([22m[2m24 tests[22m[2m)[22m[32m 60[2mms[22m[39m
+ [32m✓[39m src/__tests__/round243-the-empty-session-400-names-its-cause.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 63[2mms[22m[39m
+ [32m✓[39m src/__tests__/round6-project-reassignment.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 63[2mms[22m[39m
+ [32m✓[39m src/__tests__/import.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 61[2mms[22m[39m
+ [32m✓[39m src/__tests__/round11-aaxt-harness.test.ts [2m([22m[2m21 tests[22m[2m)[22m[32m 61[2mms[22m[39m
+ [32m✓[39m src/__tests__/round175-entity-backfill.test.ts [2m([22m[2m66 tests[22m[2m)[22m[32m 64[2mms[22m[39m
+ [32m✓[39m src/__tests__/round28-aaxt-export.test.ts [2m([22m[2m25 tests[22m[2m)[22m[32m 62[2mms[22m[39m
+ [32m✓[39m src/__tests__/round24-claude-ai-transport.test.ts [2m([22m[2m23 tests[22m[2m)[22m[32m 54[2mms[22m[39m
+[90mstderr[2m | src/__tests__/entities.test.ts[2m > [22m[2mPOST /api/entities[2m > [22m[2mcreates entity with name, model, systemPrompt, color
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/entities.test.ts[2m > [22m[2mPOST /api/entities[2m > [22m[2mdefaults model and systemPrompt
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/entities.test.ts[2m > [22m[2mPOST /api/entities[2m > [22m[2mauto-picks color when not provided
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/entities.test.ts[2m > [22m[2mPOST /api/entities (handle)[2m > [22m[2mcreates entity with handle
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/entities.test.ts[2m > [22m[2mPOST /api/entities (handle)[2m > [22m[2mhandle defaults to undefined when not provided
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/entities.test.ts[2m > [22m[2mPATCH /api/entities/:id (handle)[2m > [22m[2mupdates handle
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/entities.test.ts[2m > [22m[2mPATCH /api/entities/:id (handle)[2m > [22m[2mclears handle when set to null
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/entities.test.ts[2m > [22m[2mPATCH /api/entities/:id (handle)[2m > [22m[2mclears handle when set to empty string
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/entities.test.ts[2m > [22m[2mPATCH /api/entities/:id[2m > [22m[2mupdates entity fields
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+ [32m✓[39m src/__tests__/import-context.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 51[2mms[22m[39m
+[90mstderr[2m | src/__tests__/entities.test.ts[2m > [22m[2mPATCH /api/entities/:id[2m > [22m[2mrejects invalid model (400)
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/entities.test.ts[2m > [22m[2mPATCH /api/entities/:id[2m > [22m[2mrejects invalid model (400)
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/entities.test.ts[2m > [22m[2mDELETE /api/entities/:id[2m > [22m[2mdeletes an entity
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/entities.test.ts[2m > [22m[2mPOST /api/channels/:id/entities[2m > [22m[2massigns an entity to a channel
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/entities.test.ts[2m > [22m[2mPOST /api/channels/:id/entities[2m > [22m[2menforces max entities per channel
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/entities.test.ts[2m > [22m[2mPOST /api/channels/:id/entities[2m > [22m[2menforces max entities per channel
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/entities.test.ts[2m > [22m[2mPOST /api/channels/:id/entities[2m > [22m[2menforces max entities per channel
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/entities.test.ts[2m > [22m[2mPOST /api/channels/:id/entities[2m > [22m[2menforces max entities per channel
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/entities.test.ts[2m > [22m[2mPOST /api/channels/:id/entities[2m > [22m[2menforces max entities per channel
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/entities.test.ts[2m > [22m[2mDELETE /api/channels/:id/entities/:entityId[2m > [22m[2munassigns an entity from a channel
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/entities.test.ts[2m > [22m[2mDELETE /api/channels/:id/entities/:entityId[2m > [22m[2mreturns 404 if entity not assigned
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/entities.test.ts[2m > [22m[2mDELETE /api/channels/:id/entities/:entityId[2m > [22m[2mreturns 404 if entity not assigned
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/entities.test.ts[2m > [22m[2mMulti-entity streaming response format[2m > [22m[2mreturns assistants array with N elements for multi-entity channel
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+ [32m✓[39m src/__tests__/entities.test.ts [2m([22m[2m32 tests[22m[2m)[22m[32m 53[2mms[22m[39m
+ [32m✓[39m src/__tests__/project-instructions.test.ts [2m([22m[2m34 tests[22m[2m)[22m[32m 59[2mms[22m[39m
+ [32m✓[39m src/__tests__/round21-phase35-calibration.test.ts [2m([22m[2m19 tests[22m[2m)[22m[32m 54[2mms[22m[39m
+ [32m✓[39m src/__tests__/round37-incomplete-stop-reason.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 49[2mms[22m[39m
+[90mstderr[2m | src/__tests__/round216-form-body-guard.test.ts[2m > [22m[2mRound 216 — malformed multipart bodies refuse with a sentence[2m > [22m[2mthe helper does not swallow a genuine internal error into a 400
+[22m[39mError: genuine internal failure
+    at Array.<anonymous> [90m(/Users/xian/Development/klatch-worktrees/daedalus/packages/server/[39msrc/__tests__/round216-form-body-guard.test.ts:288:13[90m)[39m
+    at [90m/Users/xian/Development/klatch-worktrees/daedalus/packages/server/[39msrc/__tests__/round216-form-body-guard.test.ts:295:17
+    at file:///Users/xian/Development/klatch-worktrees/daedalus/node_modules/[4m@vitest/runner[24m/dist/index.js:915:20
+
+ [32m✓[39m src/__tests__/round216-form-body-guard.test.ts [2m([22m[2m29 tests[22m[2m)[22m[32m 55[2mms[22m[39m
+ [32m✓[39m src/__tests__/project-match-reporting.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 48[2mms[22m[39m
+ [32m✓[39m src/__tests__/round50-recall-tool.test.ts [2m([22m[2m31 tests[22m[2m)[22m[32m 49[2mms[22m[39m
+ [32m✓[39m src/__tests__/round37-status-check-migration.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 51[2mms[22m[39m
+ [32m✓[39m src/__tests__/round8-project-memory.test.ts [2m([22m[2m24 tests[22m[2m)[22m[32m 48[2mms[22m[39m
+ [32m✓[39m src/__tests__/round149-multi-root-session-scan.test.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 49[2mms[22m[39m
+ [32m✓[39m src/__tests__/round18-aaxt-fdm.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 52[2mms[22m[39m
+ [32m✓[39m src/__tests__/round251-the-port-is-a-lever-not-a-literal.test.ts [2m([22m[2m27 tests[22m[2m)[22m[33m 2825[2mms[22m[39m
+     [33m[2m✓[22m[39m binds the port it was handed, and leaves 3001 exactly as it found it [33m 635[2mms[22m[39m
+     [33m[2m✓[22m[39m runs two real servers at once — the property that did not exist before [33m 623[2mms[22m[39m
+     [33m[2m✓[22m[39m PORT=0 binds a real port and reports it in the banner, not the 0 it was asked for [33m 459[2mms[22m[39m
+     [33m[2m✓[22m[39m refuses, names PORT, and does NOT create the database [33m 442[2mms[22m[39m
+     [33m[2m✓[22m[39m and the same spawn with a valid port DOES create it — so the arm above is not vacuous [33m 452[2mms[22m[39m
+ [32m✓[39m src/__tests__/round147-fingerprint-cache.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ [32m✓[39m src/__tests__/round237-the-fingerprint-cap-takes-an-override.test.ts [2m([22m[2m18 tests[22m[2m)[22m[32m 50[2mms[22m[39m
+ [32m✓[39m src/__tests__/round51-recall-neighbourhood.test.ts [2m([22m[2m22 tests[22m[2m)[22m[32m 45[2mms[22m[39m
+[90mstderr[2m | src/__tests__/round17-compaction-effort.test.ts[2m > [22m[2mEffort parameter — API validation[2m > [22m[2mPOST /entities with effort max + Opus → 201
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/round17-compaction-effort.test.ts[2m > [22m[2mEffort parameter — API validation[2m > [22m[2mPOST /entities with effort max + Opus → 201
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/round17-compaction-effort.test.ts[2m > [22m[2mEffort parameter — API validation[2m > [22m[2mPOST /entities with effort max + Sonnet → 400
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/round17-compaction-effort.test.ts[2m > [22m[2mEffort parameter — API validation[2m > [22m[2mPOST /entities with effort max + Sonnet → 400
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/round17-compaction-effort.test.ts[2m > [22m[2mEffort parameter — API validation[2m > [22m[2mPOST /entities with invalid effort → 400
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/round17-compaction-effort.test.ts[2m > [22m[2mEffort parameter — API validation[2m > [22m[2mPATCH /entities/:id with effort max + non-Opus → 400
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/round17-compaction-effort.test.ts[2m > [22m[2mEffort parameter — API validation[2m > [22m[2mPATCH /entities/:id with effort max + model change to Sonnet → 400
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/round17-compaction-effort.test.ts[2m > [22m[2mEffort parameter — API validation[2m > [22m[2mPATCH /entities/:id with effort max + model change to Sonnet → 400
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/round17-compaction-effort.test.ts[2m > [22m[2mEffort parameter — API validation[2m > [22m[2mPOST /entities without effort defaults uniformly, regardless of model
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/round17-compaction-effort.test.ts[2m > [22m[2mEffort parameter — API validation[2m > [22m[2mPOST /entities without effort defaults uniformly, regardless of model
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+ [32m✓[39m src/__tests__/round17-compaction-effort.test.ts [2m([22m[2m18 tests[22m[2m)[22m[32m 39[2mms[22m[39m
+ [32m✓[39m src/__tests__/import-hardening.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 45[2mms[22m[39m
+ [32m✓[39m src/__tests__/round141-browse-count-predicts-import.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 33[2mms[22m[39m
+[90mstderr[2m | src/__tests__/round214-json-body-guard.test.ts[2m > [22m[2mRound 214 — malformed JSON bodies refuse with a sentence[2m > [22m[2ma valid body still works — the guard is not in the way
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/round214-json-body-guard.test.ts[2m > [22m[2mRound 214 — malformed JSON bodies refuse with a sentence[2m > [22m[2mthe helper does not swallow a genuine internal error into a 400
+[22m[39mError: genuine internal failure
+    at Array.<anonymous> [90m(/Users/xian/Development/klatch-worktrees/daedalus/packages/server/[39msrc/__tests__/round214-json-body-guard.test.ts:193:13[90m)[39m
+    at [90m/Users/xian/Development/klatch-worktrees/daedalus/packages/server/[39msrc/__tests__/round214-json-body-guard.test.ts:198:17
+    at file:///Users/xian/Development/klatch-worktrees/daedalus/node_modules/[4m@vitest/runner[24m/dist/index.js:915:20
+
+ [32m✓[39m src/__tests__/round214-json-body-guard.test.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 44[2mms[22m[39m
+ [32m✓[39m src/__tests__/import-hardening-2026-08-28.test.ts [2m([22m[2m26 tests[22m[2m)[22m[32m 46[2mms[22m[39m
+[90mstderr[2m | src/__tests__/channels.test.ts[2m > [22m[2mPOST /api/channels[2m > [22m[2mrejects invalid model (400)
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/channels.test.ts[2m > [22m[2mPOST /api/channels[2m > [22m[2maccepts valid model
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/channels.test.ts[2m > [22m[2mPATCH /api/channels/:id[2m > [22m[2mrejects invalid model (400)
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/channels.test.ts[2m > [22m[2mGET /api/channels entityCount for sidebar grouping[2m > [22m[2mchannel with 2 entities has entityCount of 2 (Channels group)
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/channels.test.ts[2m > [22m[2mGET /api/channels entityCount for sidebar grouping[2m > [22m[2mentityCount updates when entity is removed (2→1 transitions Channels→Roles)
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/channels.test.ts[2m > [22m[2mGET /api/channels entityCount for sidebar grouping[2m > [22m[2mentityCount updates when entity is added (1→2 transitions Roles→Channels)
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+ [32m✓[39m src/__tests__/channels.test.ts [2m([22m[2m27 tests[22m[2m)[22m[32m 43[2mms[22m[39m
+ [32m✓[39m src/__tests__/messages.test.ts [2m([22m[2m28 tests[22m[2m)[22m[32m 44[2mms[22m[39m
+ [32m✓[39m src/__tests__/round166-empty-prompt-writers-and-the-terminal-floor.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 46[2mms[22m[39m
+[90mstderr[2m | src/__tests__/round13-features.test.ts[2m > [22m[2mGET /api/models[2m > [22m[2mfalls back to hardcoded models when API fails
+[22m[39mModels API fetch failed, using fallback: API unavailable
+
+ [32m✓[39m src/__tests__/round13-features.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 44[2mms[22m[39m
+ [32m✓[39m src/__tests__/round40-carried-context-disclosure-and-visibility.test.ts [2m([22m[2m22 tests[22m[2m)[22m[32m 44[2mms[22m[39m
+ [32m✓[39m src/__tests__/round71-probe-tap-joins-the-wire-to-the-artifact.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 43[2mms[22m[39m
+ [32m✓[39m src/__tests__/claude-ai-import.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 42[2mms[22m[39m
+ [32m✓[39m src/__tests__/round41-carried-context-lossy-window.test.ts [2m([22m[2m18 tests[22m[2m)[22m[32m 43[2mms[22m[39m
+ [32m✓[39m src/__tests__/round212-reassign-moves-the-stamps-with-the-seat.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 32[2mms[22m[39m
+ [32m✓[39m src/__tests__/round11-klatch-creation.test.ts [2m([22m[2m21 tests[22m[2m)[22m[32m 38[2mms[22m[39m
+ [32m✓[39m src/__tests__/round235-the-export-scan-takes-a-root-override.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 33[2mms[22m[39m
+ [32m✓[39m src/__tests__/round32-import-gating.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 40[2mms[22m[39m
+ [32m✓[39m src/__tests__/round263-the-tree-fingerprint.test.ts [2m([22m[2m17 tests[22m[2m)[22m[33m 3789[2mms[22m[39m
+     [33m[2m✓[22m[39m moves on a SECOND write into an already-modified tracked file, where porcelain is byte-identical [33m 319[2mms[22m[39m
+     [33m[2m✓[22m[39m moves on a write into an already-present UNTRACKED file, which `git diff HEAD` never contains [33m 318[2mms[22m[39m
+     [33m[2m✓[22m[39m is the ONLY one of the reported columns that moves: on a clean window the others do not [33m 406[2mms[22m[39m
+ [32m✓[39m src/__tests__/fixture-provenance.test.ts [2m([22m[2m17 tests[22m[2m | [22m[33m1 skipped[39m[2m)[22m[32m 38[2mms[22m[39m
+ [32m✓[39m src/__tests__/round245-the-minted-fixture-is-pinned-to-the-real-parser.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 31[2mms[22m[39m
+ [32m✓[39m src/__tests__/claude-ai-zip.test.ts [2m([22m[2m18 tests[22m[2m)[22m[32m 28[2mms[22m[39m
+ [32m✓[39m src/__tests__/round14-file-domain-model.test.ts [2m([22m[2m31 tests[22m[2m)[22m[32m 39[2mms[22m[39m
+ [32m✓[39m src/__tests__/composition-gesture-extended.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 30[2mms[22m[39m
+ [32m✓[39m src/__tests__/round22-export-review.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 35[2mms[22m[39m
+ [32m✓[39m src/__tests__/round255-a-comment-is-not-a-declaration.test.ts [2m([22m[2m17 tests[22m[2m)[22m[32m 36[2mms[22m[39m
+ [32m✓[39m src/__tests__/round49-carried-context-room-count-and-wire.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 37[2mms[22m[39m
+ [32m✓[39m src/__tests__/round52b-tool-use-stream-event.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 21[2mms[22m[39m
+ [32m✓[39m src/__tests__/round200-entity-guess-real-corpus-defects.test.ts [2m([22m[2m23 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32m✓[39m src/__tests__/round162-boilerplate-preamble-and-distinct-roster.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 33[2mms[22m[39m
+ [32m✓[39m src/__tests__/round15-file-domain-phase2-3.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 31[2mms[22m[39m
+ [32m✓[39m src/__tests__/round275-the-describer-cannot-crash-the-process.test.ts [2m([22m[2m9 tests[22m[2m)[22m[33m 4132[2mms[22m[39m
+     [33m[2m✓[22m[39m the OLD fetch body answers `null` about a live server AND raises an uncaught exception [33m 1724[2mms[22m[39m
+     [33m[2m✓[22m[39m the shipped body answers HTTP 200 through the same broken syscall and survives [33m 721[2mms[22m[39m
+     [33m[2m✓[22m[39m says null for an occupant that accepts and never speaks, within its budget [33m 402[2mms[22m[39m
+     [33m[2m✓[22m[39m still fails loudly when the banner is there but nothing answers [33m 1263[2mms[22m[39m
+ [32m✓[39m src/__tests__/round245-the-corpus-refusal-stays-two-valued.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 32[2mms[22m[39m
+ [32m✓[39m src/__tests__/round70-tool-input-on-the-sse-wire.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 34[2mms[22m[39m
+ [32m✓[39m src/__tests__/round54-recall-excerpt-edges.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 31[2mms[22m[39m
+[90mstderr[2m | src/__tests__/model-validation.test.ts[2m > [22m[2mModel validation — discovered-set unification (new behavior)[2m > [22m[2moffline fallback: with no discovered cache, only AVAILABLE_MODELS keys validate
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/model-validation.test.ts[2m > [22m[2mModel validation — discovered-set unification (new behavior)[2m > [22m[2moffline fallback: with no discovered cache, only AVAILABLE_MODELS keys validate
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+ [32m✓[39m src/__tests__/model-validation.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 38[2mms[22m[39m
+ [32m✓[39m src/__tests__/composition-gesture.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 28[2mms[22m[39m
+ [32m✓[39m src/__tests__/round167-floor-reported-and-null-prompt.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 33[2mms[22m[39m
+ [32m✓[39m src/__tests__/error-paths.test.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 32[2mms[22m[39m
+ [32m✓[39m src/__tests__/round13-kit-briefing-updates.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+ [32m✓[39m src/__tests__/metadata.test.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ [32m✓[39m src/__tests__/round20-ux-evaluation-fixes.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 26[2mms[22m[39m
+ [32m✓[39m src/__tests__/round58-recall-marker-phrases.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32m✓[39m src/__tests__/round7-sidebar-redesign.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ [32m✓[39m src/__tests__/round16-file-domain-phase4-5.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ [32m✓[39m src/__tests__/round277-a-cleanup-that-can-hang-withholds-the-answer.test.ts [2m([22m[2m9 tests[22m[2m)[22m[33m 4556[2mms[22m[39m
+     [33m[2m✓[22m[39m net.createServer() with NO connection handler accepts, and close(cb) never fires [33m 1521[2mms[22m[39m
+     [33m[2m✓[22m[39m a silent net.Server hangs — Theseus’s row 3, reproduced independently [33m 1503[2mms[22m[39m
+     [33m[2m✓[22m[39m an http.Server whose handler never responds DOES hang [33m 1506[2mms[22m[39m
+[90mstderr[2m | src/__tests__/round164-layer5-is-terminal.test.ts[2m > [22m[2mRound 164 — layer 5 is terminal, so the predicate stops at layer 4[2m > [22m[2mthe entities route stores the boilerplate for a blank prompt — deliberate, not drift
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+[90mstderr[2m | src/__tests__/round164-layer5-is-terminal.test.ts[2m > [22m[2mRound 164 — layer 5 is terminal, so the predicate stops at layer 4[2m > [22m[2ma chat bound to a blank-prompt agent assembles to the boilerplate, not to nothing
+[22m[39mModels API fetch failed, using fallback: Could not resolve authentication method. Expected one of apiKey, authToken, credentials, config, or profile to be set. Or for one of the "X-Api-Key" or "Authorization" headers to be explicitly omitted
+
+ [32m✓[39m src/__tests__/round164-layer5-is-terminal.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ [32m✓[39m src/__tests__/project-injection.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 33[2mms[22m[39m
+ [32m✓[39m src/__tests__/round19-aaxt-phase2.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 30[2mms[22m[39m
+ [32m✓[39m src/__tests__/round253-the-database-path-is-resolved-when-it-is-opened.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ [32m✓[39m src/__tests__/queries.test.ts [2m([22m[2m49 tests[22m[2m)[22m[32m 29[2mms[22m[39m
+ [32m✓[39m src/__tests__/parser.test.ts [2m([22m[2m31 tests[22m[2m)[22m[32m 28[2mms[22m[39m
+ [32m✓[39m src/__tests__/memories-container-regression.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 25[2mms[22m[39m
+ [32m✓[39m src/__tests__/fork-continuity.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 26[2mms[22m[39m
+ [32m✓[39m src/__tests__/round13-streaming-params.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 26[2mms[22m[39m
+ [32m✓[39m src/__tests__/drift-canary.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 34[2mms[22m[39m
+[90mstderr[2m | src/__tests__/round13-models-api.test.ts[2m > [22m[2mGET /api/models[2m > [22m[2mfalls back to hardcoded models when API fails
+[22m[39mModels API fetch failed, using fallback: API key invalid
+
+ [32m✓[39m src/__tests__/round13-models-api.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 28[2mms[22m[39m
+ [32m✓[39m src/__tests__/round151-multipart-cap-rejects-before-read.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 30[2mms[22m[39m
+ [32m✓[39m src/__tests__/memories-parsing.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 28[2mms[22m[39m
+[90mstderr[2m | src/__tests__/round39-model-fallback-parity.test.ts[2m > [22m[2mGET /api/models — recommendedEffort[2m > [22m[2mpublishes what the server would actually assign a new entity
+[22m[39mModels API fetch failed, using fallback: API unavailable
+
+[90mstderr[2m | src/__tests__/round39-model-fallback-parity.test.ts[2m > [22m[2mGET /api/models — recommendedEffort[2m > [22m[2mis a level the picker can actually offer
+[22m[39mModels API fetch failed, using fallback: API unavailable
+
+[90mstderr[2m | src/__tests__/round39-model-fallback-parity.test.ts[2m > [22m[2moffline fallback effort ladders[2m > [22m[2mserver fallback is the shared derivation, model for model
+[22m[39mModels API fetch failed, using fallback: API unavailable
+
+[90mstderr[2m | src/__tests__/round39-model-fallback-parity.test.ts[2m > [22m[2moffline fallback effort ladders[2m > [22m[2mgives 4.7+ flagships the full five-level ladder
+[22m[39mModels API fetch failed, using fallback: API unavailable
+
+[90mstderr[2m | src/__tests__/round39-model-fallback-parity.test.ts[2m > [22m[2moffline fallback effort ladders[2m > [22m[2mstops Opus 4.6 at max and older tiers at high
+[22m[39mModels API fetch failed, using fallback: API unavailable
+
+[90mstderr[2m | src/__tests__/round39-model-fallback-parity.test.ts[2m > [22m[2moffline fallback effort ladders[2m > [22m[2mcovers every model in the AVAILABLE_MODELS overlay
+[22m[39mModels API fetch failed, using fallback: API unavailable
+
+ [32m✓[39m src/__tests__/round39-model-fallback-parity.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 25[2mms[22m[39m
+ [32m✓[39m src/__tests__/round52-recall-scope-gap.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+ [32m✓[39m src/__tests__/round220-one-cap-three-enforcers.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 28[2mms[22m[39m
+ [32m✓[39m src/__tests__/round34-reflection-validity.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 23[2mms[22m[39m
+ [32m✓[39m src/__tests__/round234-export-scan-resolves-repo-root-not-cwd.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 26[2mms[22m[39m
+ [32m✓[39m src/__tests__/kit-briefing.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 26[2mms[22m[39m
+ [32m✓[39m src/__tests__/round25-mcp-server-5a.test.ts [2m([22m[2m17 tests[22m[2m)[22m[32m 21[2mms[22m[39m
+ [32m✓[39m src/__tests__/round202-role-title-basis-and-subordinate-clauses.test.ts [2m([22m[2m27 tests[22m[2m)[22m[32m 27[2mms[22m[39m
+ [32m✓[39m src/__tests__/round38-carried-context.test.ts [2m([22m[2m21 tests[22m[2m)[22m[32m 23[2mms[22m[39m
+ [32m✓[39m src/__tests__/turn-boundary-regression.test.ts [2m([22m[2m19 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+ [32m✓[39m src/__tests__/round214-real-seed-path.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32m✓[39m src/__tests__/round26-mcp-server-5b-tools.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+ [32m✓[39m src/__tests__/round4-sidebar-grouping.test.ts [2m([22m[2m17 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m src/__tests__/projects.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m src/__tests__/round168-floor-report-single-source.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 26[2mms[22m[39m
+ [32m✓[39m src/__tests__/round204-undo-over-a-role-apply.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32m✓[39m src/__tests__/round35-imports-mint-entities.test.ts [2m([22m[2m19 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [32m✓[39m src/__tests__/claude-ai-parser.test.ts [2m([22m[2m30 tests[22m[2m)[22m[32m 21[2mms[22m[39m
+ [32m✓[39m src/__tests__/round36-entity-transcript-assembly.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m src/__tests__/round210-what-retiring-the-round205-probe-arms-would-have-thrown-away.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m src/__tests__/round206-the-plan-pins-the-id-and-refuses-an-ambiguous-name.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m src/__tests__/recall-position-numbering-scope.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32m✓[39m src/__tests__/migration.test.ts [2m([22m[2m19 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m src/__tests__/round29-json-extract.test.ts [2m([22m[2m21 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m src/__tests__/mentions.test.ts [2m([22m[2m24 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32m✓[39m src/__tests__/round27-mcp-server-5c-i.test.ts [2m([22m[2m9 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32m✓[39m src/__tests__/round145-dedup-resolver.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m src/__tests__/round208-the-import-names-the-record-it-bound.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m src/__tests__/round38b-entity-transcript-user-messages.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32m✓[39m src/__tests__/round89-opaque-containers.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m src/__tests__/round35-claude-ai-roundtrip-uuid.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+ [32m✓[39m src/__tests__/round259-the-shared-source-reader.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32m✓[39m src/__tests__/round30-probe-threshold.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+ [32m✓[39m src/__tests__/round85-marker-floor.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m src/__tests__/round214-seeded-preamble-drops-end-to-end.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m src/__tests__/round33b-channel-count-per-entity.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32m✓[39m src/__tests__/model-aliases.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32m✓[39m src/__tests__/round275-a-gate-quotation-that-cannot-print-green-for-a-red-run.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32m✓[39m src/__tests__/round249-the-ownership-guard-drives-its-own-matrix.test.ts [2m([22m[2m17 tests[22m[2m)[22m[33m 7032[2mms[22m[39m
+     [33m[2m✓[22m[39m reports a silent occupant as accepting connections without answering HTTP [33m 303[2mms[22m[39m
+     [33m[2m✓[22m[39m exits 2 and names the occupant when the port is taken [33m 1742[2mms[22m[39m
+     [33m[2m✓[22m[39m returns once the occupant actually goes away [33m 405[2mms[22m[39m
+     [33m[2m✓[22m[39m throws with the last occupant it saw when the port never clears [33m 2213[2mms[22m[39m
+     [33m[2m✓[22m[39m is NOT satisfied by a real 200 with no banner in this child's log [33m 1519[2mms[22m[39m
+     [33m[2m✓[22m[39m without it, the child outlives the parent — the defect the module exists to prevent [33m 308[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m140 passed[39m[22m[90m (140)[39m
+[2m      Tests [22m [1m[32m2185 passed[39m[22m[2m | [22m[33m1 skipped[39m[90m (2186)[39m
+[2m   Start at [22m 09:26:44
+[2m   Duration [22m 7.28s[2m (transform 2.49s, setup 1.94s, import 9.77s, tests 28.73s, environment 10ms)[22m
+
+
+> @klatch/client@0.0.1 test
+> vitest run
+
+
+[1m[46m RUN [49m[22m [36mv4.0.18 [39m[90m/Users/xian/Development/klatch-worktrees/daedalus/packages/client[39m
+
+ [32m✓[39m src/__tests__/ImportDialog.test.tsx [2m([22m[2m66 tests[22m[2m)[22m[33m 6394[2mms[22m[39m
+ [32m✓[39m src/__tests__/round173-import-identity-on-every-route.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[33m 1732[2mms[22m[39m
+     [33m[2m✓[22m[39m submit · typed path — carries the name (Theseus drove this one at the endpoint) [33m 317[2mms[22m[39m
+ [32m✓[39m src/__tests__/composition-path-b-jit-import.test.tsx [2m([22m[2m16 tests[22m[2m)[22m[33m 1159[2mms[22m[39m
+ [32m✓[39m src/__tests__/round171-manual-import-identity.test.tsx [2m([22m[2m13 tests[22m[2m)[22m[33m 1091[2mms[22m[39m
+ [32m✓[39m src/__tests__/round174-browse-done-seating.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[33m 505[2mms[22m[39m
+ [32m✓[39m src/__tests__/ChannelSidebar.test.tsx [2m([22m[2m22 tests[22m[2m)[22m[33m 639[2mms[22m[39m
+ [32m✓[39m src/__tests__/useModels-offline-fallback.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[33m 672[2mms[22m[39m
+     [33m[2m✓[22m[39m offers the full ladder on the default model (Opus 5 supports xhigh and max) [33m 318[2mms[22m[39m
+ [32m✓[39m src/__tests__/composition-picker-extended.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[33m 486[2mms[22m[39m
+ [32m✓[39m src/__tests__/composition-path-c-continue-existing-role.test.tsx [2m([22m[2m13 tests[22m[2m)[22m[33m 450[2mms[22m[39m
+ [32m✓[39m src/__tests__/MessageInput.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[33m 372[2mms[22m[39m
+[90mstderr[2m | src/__tests__/round33b-remaining-ui.test.tsx[2m > [22m[2mRound 33b T2.1 — EntityManager surfaces "in N conversations" with pluralization[2m > [22m[2msingular: channelCount === 1 renders "in 1 conversation"
+[22m[39mModels API unavailable, using fallback
+
+[90mstderr[2m | src/__tests__/round33b-remaining-ui.test.tsx[2m > [22m[2mRound 33b T2.1 — EntityManager surfaces "in N conversations" with pluralization[2m > [22m[2msingular: channelCount === 1 renders "in 1 conversation"
+[22m[39mAn update to EntityCard inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to EntityCard inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ [32m✓[39m src/__tests__/round33b-remaining-ui.test.tsx [2m([22m[2m17 tests[22m[2m)[22m[33m 349[2mms[22m[39m
+ [32m✓[39m src/__tests__/ChannelSettings.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[33m 329[2mms[22m[39m
+ [32m✓[39m src/__tests__/ExportReviewPanel.test.tsx [2m([22m[2m21 tests[22m[2m)[22m[32m 240[2mms[22m[39m
+ [32m✓[39m src/__tests__/SidebarRedesign.test.tsx [2m([22m[2m11 tests[22m[2m)[22m[32m 275[2mms[22m[39m
+ [32m✓[39m src/__tests__/clone-from-klatch.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 165[2mms[22m[39m
+ [32m✓[39m src/__tests__/round167-entity-edit-omits-unchanged.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[32m 92[2mms[22m[39m
+ [32m✓[39m src/__tests__/MessageList.test.tsx [2m([22m[2m19 tests[22m[2m)[22m[32m 75[2mms[22m[39m
+ [32m✓[39m src/__tests__/round48-carried-context-chip.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[32m 51[2mms[22m[39m
+ [32m✓[39m src/__tests__/round220-attach-gate-reads-the-shared-cap.test.tsx [2m([22m[2m7 tests[22m[2m)[22m[32m 37[2mms[22m[39m
+ [32m✓[39m src/__tests__/CrossRefStrip.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 26[2mms[22m[39m
+ [32m✓[39m src/__tests__/useStreams.test.ts [2m([22m[2m18 tests[22m[2m)[22m[32m 25[2mms[22m[39m
+ [32m✓[39m src/__tests__/useStream.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32m✓[39m src/__tests__/useMessages.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m src/__tests__/round33-typography-contrast.test.ts [2m([22m[2m18 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+ [32m✓[39m src/__tests__/extractFilename.test.ts [2m([22m[2m23 tests[22m[2m)[22m[32m 3[2mms[22m[39m
+ [32m✓[39m src/__tests__/import-claude-ai-export-409.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 3[2mms[22m[39m
+ [2m[90m↓[39m[22m src/__tests__/exp-fixture-randomization.test.tsx [2m([22m[2m1 test[22m[2m | [22m[33m1 skipped[39m[2m)[22m
+ [2m[90m↓[39m[22m src/__tests__/round36-ui-context-aaxt.test.tsx [2m([22m[2m1 test[22m[2m | [22m[33m1 skipped[39m[2m)[22m
+ [2m[90m↓[39m[22m src/__tests__/round37-ui-context-aaxt-export-review.test.tsx [2m([22m[2m1 test[22m[2m | [22m[33m1 skipped[39m[2m)[22m
+ [2m[90m↓[39m[22m src/__tests__/round38-ui-context-aaxt-import-browser.test.tsx [2m([22m[2m1 test[22m[2m | [22m[33m1 skipped[39m[2m)[22m
+ [2m[90m↓[39m[22m src/__tests__/round39-ui-context-aaxt-channel-settings.test.tsx [2m([22m[2m1 test[22m[2m | [22m[33m1 skipped[39m[2m)[22m
+ [2m[90m↓[39m[22m src/__tests__/round40-ui-context-aaxt-channel-settings-reprobe.test.tsx [2m([22m[2m1 test[22m[2m | [22m[33m1 skipped[39m[2m)[22m
+ [2m[90m↓[39m[22m src/__tests__/round41-composition-surface-aaxt.test.tsx [2m([22m[2m1 test[22m[2m | [22m[33m1 skipped[39m[2m)[22m
+ [2m[90m↓[39m[22m src/__tests__/round42-entity-manager-aaxt.test.tsx [2m([22m[2m1 test[22m[2m | [22m[33m1 skipped[39m[2m)[22m
+ [2m[90m↓[39m[22m src/__tests__/round43-message-list-aaxt.test.tsx [2m([22m[2m1 test[22m[2m | [22m[33m1 skipped[39m[2m)[22m
+ [2m[90m↓[39m[22m src/__tests__/round44-project-settings-aaxt.test.tsx [2m([22m[2m1 test[22m[2m | [22m[33m1 skipped[39m[2m)[22m
+ [2m[90m↓[39m[22m src/__tests__/round45-crossref-strip-aaxt.test.tsx [2m([22m[2m1 test[22m[2m | [22m[33m1 skipped[39m[2m)[22m
+ [2m[90m↓[39m[22m src/__tests__/round46-clone-from-klatch-aaxt.test.tsx [2m([22m[2m1 test[22m[2m | [22m[33m1 skipped[39m[2m)[22m
+ [2m[90m↓[39m[22m src/__tests__/round47-mention-override-aaxt.test.tsx [2m([22m[2m1 test[22m[2m | [22m[33m1 skipped[39m[2m)[22m
+
+[2m Test Files [22m [1m[32m26 passed[39m[22m[2m | [22m[33m13 skipped[39m[90m (39)[39m
+[2m      Tests [22m [1m[32m333 passed[39m[22m[2m | [22m[33m13 skipped[39m[90m (346)[39m
+[2m   Start at [22m 09:26:51
+[2m   Duration [22m 32.15s[2m (transform 587ms, setup 1.14s, import 3.05s, tests 15.21s, environment 10.51s)[22m
+
+sweep-probes — 153 probe files under scripts/
+  swept:    43
+  deferred: 110  (not cleared — most open ports, databases, corpora or model calls)
+            verdict-bearing: 34 · no conclusion line: 76  (derived from source each run, not recorded; a no-conclusion-line file cannot go red, so it is an investigation, not a probe awaiting a drive)
+
+CENSUS OK — every probe under scripts/ is in exactly one list, and every entry is well-formed.
+
+census PASSED
+  NOT CHECKED: none of the 43 swept probes was driven. The census reads source and bookkeeping only, so a probe that has started failing still reports OK here.
+  To drive them: `node scripts/sweep-probes.mjs` (no flag).

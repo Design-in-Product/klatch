@@ -39,6 +39,17 @@
  * known rather than guessed: a JSDoc block on the implementation. Section D proves the vacuity by
  * declaring an absurd parameter type and watching the check stay green.
  *
+ * **Amendment, 2026-10-28 (Round 467).** Every figure in the paragraph above is as of 2026-10-01 and
+ * the population has since moved; the live figures are the `[MEAS]` arms A0, C3 and C4m, which is
+ * where to read them. What changed: `scripts/lib/characterisation-markers.mjs` gained a `.d.mts`, so
+ * the population is **4** pairs / 43 declared value exports / **30** signatures, not 3 / 26 / 18.
+ * And the price named above was PAID — the 10/27 `scripts/lib/**\/*.mjs` typecheck gate annotated
+ * nine lib modules, so **14** of the 27 readable signatures are now gradeable rather than 1. The
+ * remaining 13 are every readable signature of `sweep-probes.mjs`, the one module here that is not
+ * under `scripts/lib/` and so was never reached by that gate. The sentence "the only `@param`/
+ * `@returns` tags in all three implementations" is still literally true of the BLOCK spelling and is
+ * no longer the mechanism: see C4's own header for why the key is now per-signature and style-blind.
+ *
  * **3. "The arity half is covered" is false for 4 of the 18 signatures.** `probe-round303` B3 is
  * SWEPT, reads `0 arity mismatches`, and is the arm all three of us have cited. Its loop keys on
  * `export declare const <name>: (` — so the **4** declarations in `tsx-required.d.mts` written as
@@ -98,8 +109,15 @@
  *     known negative on a minted liar; B3/B4 the literal-widening discriminator with its own
  *     positive and negative, and the check that the relaxation is not a no-op.
  * C — the parameter half. C1 the `IsAny` self-test in both directions; C2 the `Parameters<> !==
- *     never` readability gate; C3 the JSDoc correspondence, two-sided rather than a count; C4 the
- *     two-line repro; C5 the known positive for finding 3's 4-signature hole.
+ *     never` readability gate; C3 the population [MEAS]; C4a the annotation key's minted known
+ *     positive; C4 the annotation correspondence, two-sided as a SET rather than a count; C4b that
+ *     both JSDoc styles are live in the population; C4m the style census; C5 the two-line repro of
+ *     the destructured third state; C6 the known positive for finding 3's 4-signature hole.
+ *
+ *     (The arm letters above were off by one against the code from this file's first commit until
+ *     2026-10-28 — the list said C3 was the correspondence and C4 the repro, while the code had C3
+ *     as a [MEAS], C4 the correspondence, C5 the repro and C6 the known positive. Corrected here
+ *     rather than in the code, because every memo that cites an arm cites the code's letter.)
  * D — the vacuity, proven rather than argued: a declaration whose parameter type is absurd still
  *     passes the guard, because the implementation's parameter is `any`.
  * Z — discipline and the tree.
@@ -496,23 +514,194 @@ measure(
     `signatures with NO \`any\` parameter — i.e. the only ones whose declared parameter types are graded by anything: ${gradeable.length} (${gradeable.join(', ') || 'none'})`,
 );
 
-/** The JSDoc tags in each implementation — the thing that makes a parameter gradeable. */
+/** The JSDoc tags in each implementation, block spelling only — kept as a [MEAS] because it is the
+ *  figure the 10/27 memos quote, and because it is no longer the key. */
 const jsdocTags = new Map<string, number>();
 for (const p of PAIRS) {
   const src = read(join(SCRIPTS, p.impl));
   jsdocTags.set(p.base, (src.match(/@param\b|@returns\b/g) ?? []).length);
 }
+
+/**
+ * ── C4, re-keyed in Round 467 (Daedalus) ──────────────────────────────────────
+ *
+ * Until 10/27 this arm pinned a MODULE-LEVEL correlation: the one gradeable signature sat in the one
+ * module carrying `@param`/`@returns` blocks, and the zero-tag modules contributed zero gradeable
+ * signatures. My own `scripts/lib/**\/*.mjs` typecheck gate (`87270c6f`) falsified it by annotating
+ * nine lib modules with INLINE `/** @type {T} *\/` in the parameter list instead of block tags:
+ * `gradeable.length` went 1 → 14, the `@param\b|@returns\b` count over `characterisation-markers`
+ * and `strip-source` stayed at **0**, and this arm reddened. Argus routed it (10/27 memo) rather
+ * than patching it; Theseus reproduced the red byte-for-byte and killed the other candidate repair —
+ * scoping the pin to the three original modules by name cannot work, because **3 of the 13** newly
+ * gradeable signatures are in `tsx-required`, which already carried 8 block tags and gained none, so
+ * the correlation is falsified INSIDE a tag-carrying module.
+ *
+ * What survives is the mechanism the old arm was reaching for, which never depended on the style: a
+ * parameter is gradeable exactly when the implementation annotates it. So the key is now
+ * **per-signature and style-blind**, and the arm is SET equality in both directions rather than a
+ * count — a signature that becomes gradeable without an annotation reddens it, and so does an
+ * annotated signature that stays `any`. A count would have been green today by cancellation
+ * (annotated 14, gradeable 14).
+ *
+ * **The live population cannot grade the per-signature half of that key, and that is why C4a is
+ * minted rather than measured.** All four modules are uniformly annotated or uniformly bare —
+ * `characterisation-markers` (inline, 8/8), `strip-source` (inline, 2/2), `tsx-required` (block,
+ * 4/4), `sweep-probes` (nothing at all, 0 of 13 readable). So a key that read the WHOLE MODULE
+ * source and credited every signature in it would publish the identical set equality here. The
+ * per-signature slice is therefore proved on a minted source with a deliberately mixed module (C4a)
+ * before any live figure is read, in the same shape as this file's B0 and C1 — and the one cripple
+ * worth driving is the one that widens the span to the whole file, which C4a catches and C4 cannot.
+ */
+const escRe = (s: string): string => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const IMPL_SRC = new Map(PAIRS.map((p) => [p.base, read(join(SCRIPTS, p.impl))] as const));
+
+/**
+ * The declaration anchor for one exported signature, in both spellings this tree uses. `null` means
+ * the anchor was not found, which travels as a REFUSAL the arm reddens on — never as "unannotated".
+ */
+const anchorOf = (src: string, name: string): { index: number; openParen: number } | null => {
+  for (const re of [
+    new RegExp(`^export\\s+function\\s+${escRe(name)}\\s*\\(`, 'm'),
+    new RegExp(`^export\\s+const\\s+${escRe(name)}\\s*=\\s*(?:async\\s*)?\\(`, 'm'),
+  ]) {
+    const m = re.exec(src);
+    if (m) return { index: m.index, openParen: m.index + m[0].length - 1 };
+  }
+  return null;
+};
+
+/**
+ * The signature's parameter list, sliced by a balanced-paren scan from its own `(` rather than by a
+ * regex — a character class stops at the first delimiter, and these spans carry `(`, `)`, `{`, `}`
+ * and `/** *\/` comments. `null` on an unfound anchor or an unbalanced scan: refuse, do not guess.
+ */
+const paramSpanOf = (src: string, name: string): string | null => {
+  const a = anchorOf(src, name);
+  if (!a) return null;
+  let depth = 0;
+  for (let i = a.openParen; i < src.length; i++) {
+    const ch = src[i]!;
+    if (ch === '(') depth += 1;
+    else if (ch === ')') {
+      depth -= 1;
+      if (depth === 0) return src.slice(a.openParen + 1, i);
+    }
+  }
+  return null;
+};
+
+/** The JSDoc block IMMEDIATELY above the declaration — contiguous, so a `@param` four declarations
+ *  up cannot credit this one. `''` when there is no such block. */
+const blockAboveOf = (src: string, name: string): string => {
+  const a = anchorOf(src, name);
+  if (!a) return '';
+  return (/\/\*\*[\s\S]*?\*\/\s*$/.exec(src.slice(0, a.index)) ?? [''])[0];
+};
+
+type Annot = 'inline' | 'block' | 'both' | 'none';
+/** `null` is the refusal, kept distinct from `'none'`: one means the key could not look, the other
+ *  means it looked and found nothing. Collapsing them would make every unanchorable signature read
+ *  as evidence for the claim. */
+const annotationOf = (src: string, name: string): Annot | null => {
+  const span = paramSpanOf(src, name);
+  if (span === null) return null;
+  const inline = /@type\b/.test(span);
+  const block = /@param\b/.test(blockAboveOf(src, name));
+  return inline && block ? 'both' : inline ? 'inline' : block ? 'block' : 'none';
+};
+
+// ── C4a: the key's own known positive, on a minted source, before any live figure is read ────────
+const MINTED = [
+  '/** @param {string} tagged */',
+  'export function blockTagged(tagged) { return tagged; }',
+  '',
+  'export function inlineTagged(/** @type {string} */ typed) { return typed; }',
+  '',
+  'export function bare(loose) { return loose; }',
+  '',
+  'export const bareArrow = (also) => also;',
+].join('\n');
+const mintedSpanLeak = paramSpanOf(MINTED, 'bare');
+check(
+  'C4a',
+  'THE KNOWN POSITIVE for the re-keyed C4: on a minted source holding all three states in ONE module, the annotation key answers `block`, `inline` and `none` per SIGNATURE — and it REFUSES on a name it cannot anchor rather than answering "unannotated"',
+  annotationOf(MINTED, 'blockTagged') === 'block' &&
+    annotationOf(MINTED, 'inlineTagged') === 'inline' &&
+    annotationOf(MINTED, 'bare') === 'none' &&
+    annotationOf(MINTED, 'bareArrow') === 'none' &&
+    annotationOf(MINTED, 'noSuchFunction') === null &&
+    mintedSpanLeak !== null &&
+    !/@type\b|@param\b/.test(mintedSpanLeak),
+  `blockTagged ${annotationOf(MINTED, 'blockTagged')} (want block) · inlineTagged ${annotationOf(MINTED, 'inlineTagged')} (want inline) · ` +
+    `bare ${annotationOf(MINTED, 'bare')} · bareArrow ${annotationOf(MINTED, 'bareArrow')} (want none) · ` +
+    `absent name ${String(annotationOf(MINTED, 'noSuchFunction'))} (want null, the refusal) · ` +
+    `\`bare\`'s own span is ${JSON.stringify(mintedSpanLeak)} — it must not reach the annotations two declarations above it. ` +
+    'This arm is minted and not measured on purpose: every real module in this tree is uniformly annotated or uniformly bare, so a key that credited a whole module would publish the same live set equality C4 does.',
+);
+
+const annot = new Map<string, Annot | null>(
+  readable.map((k) => {
+    const [b, n] = k.split('::') as [string, string];
+    return [k, annotationOf(IMPL_SRC.get(b) ?? '', n)];
+  }),
+);
+const unresolved = readable.filter((k) => annot.get(k) === null);
+const spans = new Map(
+  readable.map((k) => {
+    const [b, n] = k.split('::') as [string, string];
+    return [k, paramSpanOf(IMPL_SRC.get(b) ?? '', n)];
+  }),
+);
+/** A zero-arity signature is gradeable by vacuity, not by annotation; it would break the
+ *  correspondence for a reason that is not a defect, so it is NAMED rather than absorbed. */
+const emptyParams = readable.filter((k) => (spans.get(k) ?? 'x').trim() === '');
+/** The balanced scan running past its own declaration would silently widen every span. */
+const overrunSpans = readable.filter((k) => /^\s*export\s/m.test(spans.get(k) ?? ''));
+const annotatedSet = readable.filter((k) => {
+  const a = annot.get(k);
+  return a !== null && a !== 'none';
+});
+const sortedAnnotated = [...annotatedSet].sort();
+const sortedGradeable = [...gradeable].sort();
+const sameSet =
+  sortedAnnotated.length === sortedGradeable.length && sortedAnnotated.every((k, i) => k === sortedGradeable[i]);
+const onlyAnnotated = sortedAnnotated.filter((k) => !sortedGradeable.includes(k));
+const onlyGradeable = sortedGradeable.filter((k) => !sortedAnnotated.includes(k));
+
 check(
   'C4',
-  'the parameter half is gradeable exactly where the IMPLEMENTATION annotates: the one signature with no `any` parameter sits in the one module carrying JSDoc tags, and the modules with zero tags contribute zero gradeable signatures',
-  gradeable.length === 1 &&
-    gradeable[0] === 'tsx-required::explainTsxRequirement' &&
-    (jsdocTags.get('tsx-required') ?? 0) > 0 &&
-    (jsdocTags.get('sweep-probes') ?? 1) === 0 &&
-    (jsdocTags.get('strip-source') ?? 1) === 0,
-  `JSDoc @param/@returns per implementation: ${[...jsdocTags].map(([b, c]) => `${b} ${c}`).join(' · ')}. ` +
-    `Gradeable: ${gradeable.join(', ') || 'none'}. So ${readable.length - gradeable.length} of ${readable.length} readable signatures have a declared parameter list that nothing checks, ` +
-    'and the price of changing that is known rather than guessed: a JSDoc block on the implementation.',
+  'the parameter half is gradeable exactly where the IMPLEMENTATION annotates THAT signature, in either JSDoc style: the gradeable set and the annotated set are EQUAL as sets, both directions, over every readable signature — and a signature whose anchor or parameter span cannot be read is named rather than counted as unannotated',
+  unresolved.length === 0 && emptyParams.length === 0 && overrunSpans.length === 0 && sameSet,
+  `annotated ${sortedAnnotated.length} · gradeable ${sortedGradeable.length} · sets ${sameSet ? 'EQUAL' : 'DIFFER'}` +
+    `${sameSet ? '' : ` — annotated-but-not-gradeable: ${onlyAnnotated.join(', ') || 'none'}; gradeable-but-not-annotated: ${onlyGradeable.join(', ') || 'none'}`}. ` +
+    `Refused (no anchor / unbalanced span): ${unresolved.length} — ${unresolved.join(', ') || 'none'}. ` +
+    `Zero-arity (gradeable by vacuity): ${emptyParams.length} — ${emptyParams.join(', ') || 'none'}. ` +
+    `Span overran its declaration: ${overrunSpans.length} — ${overrunSpans.join(', ') || 'none'}. ` +
+    `So ${readable.length - sortedGradeable.length} of ${readable.length} readable signatures have a declared parameter list that nothing checks, ` +
+    'and the price of changing that is known rather than guessed, because it has now been paid nine times: an annotation on the implementation, in either style.',
+);
+
+check(
+  'C4b',
+  'and the style-blindness of C4’s key is EXERCISED by the live population rather than merely written: both JSDoc styles occur among the gradeable signatures, so neither branch of the key is dead code',
+  annotatedSet.some((k) => annot.get(k) === 'inline' || annot.get(k) === 'both') &&
+    annotatedSet.some((k) => annot.get(k) === 'block' || annot.get(k) === 'both'),
+  `styles among the ${annotatedSet.length} annotated: ` +
+    `inline ${annotatedSet.filter((k) => annot.get(k) === 'inline').length} · block ${annotatedSet.filter((k) => annot.get(k) === 'block').length} · ` +
+    `both ${annotatedSet.filter((k) => annot.get(k) === 'both').length}. ` +
+    'Two-sided with a stated reason: if one style stopped occurring, C4 would stay green while half its key went untested by anything but C4a’s minted source — which is a human’s call to make, not a silence.',
+);
+
+measure(
+  'C4m',
+  `annotation style per implementation — ` +
+    `${PAIRS.map((p) => {
+      const mine = readable.filter((k) => k.startsWith(`${p.base}::`));
+      const styled = (s: Annot): number => mine.filter((k) => annot.get(k) === s).length;
+      return `${p.base} ${mine.length} readable [inline ${styled('inline')} · block ${styled('block')} · both ${styled('both')} · none ${styled('none')}] block-tags ${jsdocTags.get(p.base) ?? 0}`;
+    }).join(' · ')}. ` +
+    'The block-tag counts are the figures Argus’s and Theseus’s 10/27 memos quote; they are kept printed and are no longer the key. ' +
+    '`sweep-probes.mjs` is the one module here outside `scripts/lib/`, so the 10/27 gate never reached it — it carries 0 annotations and contributes 0 gradeable signatures, which is the whole of the remaining vacuity.',
 );
 
 check(
