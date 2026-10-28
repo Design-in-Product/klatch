@@ -1,0 +1,5 @@
+=== ZW-SCAN/464-T2 ===
+DIRS docs/research/unit-464t2-reaim-2026-10-28 docs/research/round464-instruments docs/mail
+CODEPOINTS U+200B U+200C U+200D U+2060 U+FEFF
+
+VERDICT/1 ok files=198 zeroWidthLines=0
