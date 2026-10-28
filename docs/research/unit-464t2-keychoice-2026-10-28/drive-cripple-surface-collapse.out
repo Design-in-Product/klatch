@@ -1,0 +1,72 @@
+=== GRADE/464-T2-keychoice — the surface predicate under the stop condition ===
+REV 5b7b8449f3764dac4d299ae7214c1dc5f8819d62
+WINDOW --since="2026-10-13 00:00:00"
+CRIPPLE surface-collapse
+N_PROPOSED 5
+CLOCK 2026-10-28T20:26:00.584Z
+POPULATION commits=627 edges=9 roundDirs=91
+
+ ok  D1: GATE: the commit population, the round-directory list and the credit-edge list all loaded non-empty
+      detail: commits=627 roundDirs=91 edges=9 popError=none
+
+D3 the credit union, classified:
+  product-source packages/server/src/__tests__/round11-klatch-creation.test.ts
+  product-source packages/server/src/__tests__/round39-model-fallback-parity.test.ts
+  product-source packages/shared/src/types.ts
+  product-source scripts/lib/characterisation-markers.mjs
+  product-source scripts/lib/offer-choice.mjs
+  product-source scripts/lib/strip-source.d.mts
+  product-source scripts/lib/strip-source.mjs
+  product-source scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts
+  product-source scripts/probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts
+  product-source scripts/sweep-probes.mjs
+ ok  D3: every gated file in the credit union classifies positively (no path falls through into a terminal bucket)
+      detail: union=10 unclassified=0
+REF  D3m: [MEAS] the credit union by kind, and the whole-window gated set by kind
+      detail: union={"product-source":10} windowGatedFiles=22
+
+D4 the 3 surface readings × 2 keys:
+  AS-FILED        dir            set=[381,383,387,389,391,417,454,464] last=464 consecutive=0 fired=false
+  AS-FILED        self-attested  set=[381,383,391,417,454] last=454 consecutive=10 fired=true
+  PRODUCT-ANY     dir            set=[381,383,387,389,391,417,454,464] last=464 consecutive=0 fired=false
+  PRODUCT-ANY     self-attested  set=[381,383,391,417,454] last=454 consecutive=10 fired=true
+  PRODUCT-SOURCE  dir            set=[381,383,387,389,391,417,454,464] last=464 consecutive=0 fired=false
+  PRODUCT-SOURCE  self-attested  set=[381,383,391,417,454] last=454 consecutive=10 fired=true
+REF  D4: [MEAS] the 3 × 2 table of (surface reading, credit key) → whether the condition has fired at N=5
+      detail: AS-FILED|dir=not AS-FILED|self-attested=FIRED PRODUCT-ANY|dir=not PRODUCT-ANY|self-attested=FIRED PRODUCT-SOURCE|dir=not PRODUCT-SOURCE|self-attested=FIRED
+ ok  D4a: the fired/not verdict is INVARIANT across the three surface readings under each key — a RED means the surface predicate decides it too, so the choice has two axes
+      detail: dirKeyInvariant=true selfAttestedInvariant=true
+REF  D4b: [MEAS] key-invariance per reading (Theseus C3, re-asked once per surface reading)
+      detail: AS-FILED=false PRODUCT-ANY=false PRODUCT-SOURCE=false
+RED  D5: the stop condition has NOT fired under PRODUCT-SOURCE × self-attested — a RED means the consecutive self-only run has reached N=5 and the track should stop and re-scope
+      detail: set=[381,383,391,417,454] last=454 consecutive=10 N=5 fired=true
+
+D6 classifier known positives (and the test/source known negative):
+  in-tree want=product-source got=product-source packages/shared/src/types.ts
+  in-tree want=instrument     got=product-source scripts/lib/strip-source.mjs
+  in-tree want=product-test   got=product-source packages/server/src/__tests__/round11-klatch-creation.test.ts
+  in-tree want=instrument     got=product-source scripts/sweep-probes.mjs
+  in-tree want=operator       got=product-source scripts/inspect-klatch-db.mjs
+RED  D6: every classifier known positive is a path present in this rev tree AND classifies as stated — including that a packages/ __tests__ file is product-test, NOT product-source
+      detail: kps=5 inTree=5 correct=1 tracked=4299
+
+D2 cross-check against his cell (run as a child process):
+  his  dir=[381,383,387,389,391,417,454,464] self=[381,383,391,417,454]
+  mine dir=[381,383,387,389,391,417,454,464] self=[381,383,391,417,454]
+ ok  D2: this cell's independently written edge enumeration agrees with Theseus's cell on BOTH cure sets, compared as member lists in both directions
+      detail: hisRead=true dirSame=true selfSame=true mineDir=[381,383,387,389,391,417,454,464] hisDir=[381,383,387,389,391,417,454,464]
+ ok  D7: every cripple declared in this file occurs more than once in its own source (declaration plus at least one hook)
+      detail: surface-collapse=3 tests-as-product-source=3 xcheck-swap-member=3 classifier-refuses=4 kp-drop-product=3 no-edges=3
+ ok  D8: every declared [MEAS] leg carries no value and says so, and no undeclared leg calls itself a [MEAS]
+      detail: declared=3 carryingValue=[] undeclaredSaysMeas=[] declaredNotSaying=[]
+
+LAND Q1: exactly ONE of the credit edges carries a packages/ file at all, and its round is 417
+      got=1|417 want=1|417
+REFU Q2: under PRODUCT-SOURCE the two keys AGREE (417 is admitted by clause (b), so the key does not reach the verdict there)
+      got=false want=true
+REFU Q3: AS-FILED is the ONLY one of the three readings under which the condition has not fired, under the dir key
+      got=AS-FILED:not PRODUCT-ANY:not PRODUCT-SOURCE:not want=AS-FILED:not PRODUCT-ANY:FIRED PRODUCT-SOURCE:FIRED
+REFU Q4: the consecutive run under PRODUCT-SOURCE × dir is at least 11 (round dirs above 417)
+      got=false want=true
+
+VERDICT/1 RED legs=8 red=[D5,D6] refused=[] preds=4 refuted=[Q2,Q3,Q4] prefused=[]

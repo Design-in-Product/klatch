@@ -1,0 +1,53 @@
+=== RECON2/464-T2-keychoice — the last ROUND that cured product source ===
+REV 5b7b8449f3764dac4d299ae7214c1dc5f8819d62
+CLOCK 2026-10-28T20:28:26.176Z
+roundDirs=91 highest=464
+N_PROPOSED=5
+
+product source := under packages/ and NOT under a __tests__/ directory (3 of the 4 packages/ files touched in the 15-day window are roundNNN-*.test.ts, which are the round track's own instruments living in the product tree)
+
+--- --since="2026-10-13 00:00:00"
+  commits touching product source      : 2
+  of those, carrying a round label     : 0
+  last ROUND that cured product source : NONE
+  round dirs above it (consecutive)    : UNMEASURED
+  fired at N=5                         : UNMEASURED
+  newest product-source commit of ANY kind: 9c22ee17 Daedalus (Klatch) 2026-10-26T09:22
+    subject: types: promote all three 5.5 ids to FIVE_LEVEL, drop unbacked Haiku 4.5 EOL claim
+
+--- --since="2026-09-13 00:00:00"
+  commits touching product source      : 29
+  of those, carrying a round label     : 19
+  last ROUND that cured product source : 292
+  round dirs above it (consecutive)    : 91
+  fired at N=5                         : true
+  that round's commit                  : 3c66489d Iris (Klatch) 2026-09-29T07:22
+    subject: fix(reassign-picker): disable candidates already bound to the channel (Round 292 G4)
+    files  : packages/client/src/components/ImportDialog.tsx
+  newest product-source commit of ANY kind: 9c22ee17 Daedalus (Klatch) 2026-10-26T09:22
+    subject: types: promote all three 5.5 ids to FIVE_LEVEL, drop unbacked Haiku 4.5 EOL claim
+
+--- --since="2026-07-01 00:00:00"
+  commits touching product source      : 109
+  of those, carrying a round label     : 64
+  last ROUND that cured product source : 292
+  round dirs above it (consecutive)    : 91
+  fired at N=5                         : true
+  that round's commit                  : 3c66489d Iris (Klatch) 2026-09-29T07:22
+    subject: fix(reassign-picker): disable candidates already bound to the channel (Round 292 G4)
+    files  : packages/client/src/components/ImportDialog.tsx
+  newest product-source commit of ANY kind: 9c22ee17 Daedalus (Klatch) 2026-10-26T09:22
+    subject: types: promote all three 5.5 ids to FIVE_LEVEL, drop unbacked Haiku 4.5 EOL claim
+
+SUMMARY (window → last round that cured product source → consecutive since):
+  2026-10-13 00:00:00  commits=  2  lastRound=NONE  consecutive=UNMEASURED
+  2026-09-13 00:00:00  commits= 29  lastRound=292  consecutive=91
+  2026-07-01 00:00:00  commits=109  lastRound=292  consecutive=91
+
+WIDENED-WINDOW AGREEMENT: every window that reports a last product-source round reports the SAME one: true (2026-10-13→NONE, 2026-09-13→292, 2026-07-01→292)
+WINDOWS THAT CANNOT ANSWER: 1 (2026-10-13) — a window with no round-labelled product-source commit cannot report a last round. This is not a disagreement with the wider windows; it is the condition failing to be answerable inside the very window it was filed with.
+GATE roundDirs>0 and every window selected at least one product-source commit of ANY kind: true
+FLOOR NOTE window 2026-09-13: consecutive=91 counts round DIRECTORIES above 292; dirs span 365..464, so by round NUMBER the run is 172 and the directory figure is a FLOOR — and here it has saturated at the entire dir population
+FLOOR NOTE window 2026-07-01: consecutive=91 counts round DIRECTORIES above 292; dirs span 365..464, so by round NUMBER the run is 172 and the directory figure is a FLOOR — and here it has saturated at the entire dir population
+
+VERDICT/0 ok gate=true widenedAgree=true windowsSilent=1
