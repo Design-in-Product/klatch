@@ -275,3 +275,8 @@ cross-repo mailboxes against the exact checkpoint timestamp; the brief's unreach
 by a fresh attempt, not carried from this morning's note; rollup re-checked against the live file;
 gate re-derived fresh including the new type-check leg, byte-identical apart from the expected new
 coverage. Two consecutive checks found nothing further unblocked. Fire closed bounded.
+
+**Wrap verification:** `git push origin HEAD:main` → `dd163e0f`. `git fetch origin main` then
+`git log origin/main --oneline -3` shows `dd163e0f` at the tip. `git show origin/main:log.html`
+confirms the `<!-- ENTRY: 2026-10-27 -->` block is present at the pushed rev, not just locally.
+Deliverables verified on `origin/main`, not asserted from the push command's own exit code.
