@@ -199,17 +199,18 @@ check('B2', 'and removing it again returns the fingerprint to its original value
 
 // ─────────────────────────────────────────────────────────────────────────────
 console.log('');
-console.log('── arm C — the three parts are not redundant, one perturbation each ─────');
+console.log('── arm C — the writes a porcelain-only spelling cannot see ──────────────');
 // ─────────────────────────────────────────────────────────────────────────────
-
-const parts = (f: string) => {
-  const toks = f.split(' ');
-  return {
-    P: toks.find((t) => t.startsWith('P:')) ?? '',
-    D: toks.find((t) => t.startsWith('D:')) ?? '',
-    U: toks.filter((t) => t.startsWith('U:')).join(' '),
-  };
-};
+//
+// Retired 2026-10-28 (Argus), not re-expected: `fingerprint` used to be three parts (`P:`/`D:`/
+// `U:`, space-joined) and C3–C5 below attributed each catch to a named limb by parsing that
+// string. The 2026-10-28 content-rekey (its own docblock, "A fourth false red") replaced the
+// three-part scheme with a single opaque content hash — there is no longer a limb to attribute a
+// catch TO, by the module's own stated contract ("the string itself is opaque"). A `parts()`
+// helper that split on `' '` would now silently return `{P:'',D:'',U:''}` for every fingerprint,
+// which is worse than deleting it: a helper that always returns the same thing is indistinguishable
+// from one that works. C1/C2/C4/C6 below still demonstrate that the single hash catches every write
+// the old three limbs needed three limbs for — that claim just no longer decomposes by limb.
 
 // C1 — a write into an ALREADY-MODIFIED tracked file.
 // This is the false-green case. The status letter is ` M` before and ` M` after.
@@ -228,66 +229,48 @@ check('C2', 'and `git status --porcelain` is BYTE-IDENTICAL across that same wri
   `porcelain before === after === ${JSON.stringify(c1PorcBefore.trim())}. Any assertion built on ` +
   `porcelain lines alone — emptiness, allowlist, or before/after porcelain diff — reports this ` +
   `run as clean. It wrote a tracked file.`);
-check('C3', 'the part carrying C1 is D:, and P: alone does not move',
-  parts(c1Before).P === parts(c1After).P && parts(c1Before).D !== parts(c1After).D,
-  `P: unchanged, D: changed. This is why the diff limb exists and why porcelain alone is not a ` +
-  `weaker-but-safe version of it.`);
+meas('C3', 'retired — there is no D: limb left to attribute this catch to',
+  `C1 already shows the new content hash moves on this write; the question "which of three parts ` +
+  `carried it" does not parse once there is one part. Superseded by the content-rekey, not by a ` +
+  `defect in this arm.`);
 
-// C4 — a write into an ALREADY-PRESENT untracked file. Neither P: (same `??` entry) nor D:
-// (untracked files are not in `git diff HEAD`) can see this one.
+// C4 — a write into an ALREADY-PRESENT untracked file, which the pre-2026-10-28 porcelain+diff
+// scheme could not see at all (untracked content is not in `git diff HEAD`, and the `??` porcelain
+// entry does not change status when its content changes). The content hash catches it directly —
+// there is no limb to single out anymore, so this now asserts movement only.
 fs.writeFileSync(sandboxFile('untracked.mts'), 'const d = 4;\n');
 const c4Before = fingerprint(SANDBOX, 'scripts/');
 fs.writeFileSync(sandboxFile('untracked.mts'), 'const d = 5; // the run wrote here\n');
 const c4After = fingerprint(SANDBOX, 'scripts/');
-check('C4', 'a write into an ALREADY-PRESENT untracked file moves the fingerprint, and only the U: part carries it',
-  c4After !== c4Before &&
-  parts(c4Before).P === parts(c4After).P &&
-  parts(c4Before).D === parts(c4After).D &&
-  parts(c4Before).U !== parts(c4After).U,
-  `P: unchanged, D: unchanged, U: changed. \`git diff HEAD\` does not contain untracked content, ` +
-  `so without the U: limb a run could write freely into any untracked file and grade itself clean.`);
+check('C4', 'a write into an ALREADY-PRESENT untracked file moves the fingerprint',
+  c4After !== c4Before,
+  `before ${c4Before.slice(0, 16)}…  after ${c4After.slice(0, 16)}… — differ. Content read directly ` +
+  `off disk for every untracked-and-not-ignored path, so there is no \`git diff HEAD\`-shaped blind ` +
+  `spot to have a separate limb for.`);
 
-// C5 — the honest negative: is P: load-bearing at all, or is it carried by D: and U: together?
-// Measured rather than claimed. Every perturbation this probe drives that moves P: also moves D:
-// or U:, so P: is reported as defence-in-depth, NOT as demonstrated-necessary.
-const pOnlyWitness = [
-  { label: 'file arrives', before: b0, after: b1 },
-  { label: 'tracked file edited twice', before: c1Before, after: c1After },
-  { label: 'untracked file edited', before: c4Before, after: c4After },
-].filter((w) => parts(w.before).P !== parts(w.after).P &&
-  parts(w.before).D === parts(w.after).D &&
-  parts(w.before).U === parts(w.after).U);
-meas('C5', 'is the P: limb demonstrated-necessary? — measured, not asserted',
-  pOnlyWitness.length === 0
-    ? `NO — 0 of the 3 driven perturbations are caught by P: alone; each one that moves P: also ` +
-      `moves D: or U:. P: is retained as defence in depth against a status transition with no ` +
-      `content delta (a mode change, an add/unadd), which this probe does not drive. Stated as ` +
-      `an unmeasured residual, not as a third load-bearing limb.`
-    : `YES — ${pOnlyWitness.length} perturbation(s) caught by P: alone: ${pOnlyWitness.map((w) => w.label).join(', ')}`);
+meas('C5', 'retired — there is no P: limb to ask "is it load-bearing" about',
+  `The pre-2026-10-28 three-limb question (does P: ever catch something D:/U: miss) does not apply ` +
+  `to a single content hash. Superseded by the content-rekey, not answered differently.`);
 
-// C6 — `-uall` is load-bearing, and this was a guess until it was driven.
-// The module's comment claims that without `-uall` an untracked DIRECTORY collapses to one entry
-// and a file appearing inside it goes unseen. That is a claim about git's behaviour, so it is
-// measured here rather than asserted in a comment. Note what it costs if wrong: the U: loop skips
-// non-file entries, so a collapsed `?? dir/` contributes NOTHING to any of the three parts, and a
-// probe could write freely into an untracked subdirectory and grade itself clean.
+// C6 — an untracked DIRECTORY must not collapse to one entry, or a SECOND file arriving inside an
+// already-untracked directory would be invisible. The pre-2026-10-28 module needed `-uall` for
+// this; `git ls-files --others --exclude-standard` (what the content-rekey uses instead) never
+// collapses directories to begin with — `ls-files` always lists individual blobs — so this is now
+// a property of the enumeration primitive rather than of a flag, and is driven rather than assumed.
 fs.mkdirSync(path.join(SANDBOX, 'scripts', 'nested'), { recursive: true });
 fs.writeFileSync(sandboxFile(path.join('nested', 'one.mts')), 'const one = 1;\n');
 const nest1Default = git(SANDBOX, ['status', '--porcelain', '--', 'scripts/']);
-const nest1All = git(SANDBOX, ['status', '--porcelain', '-uall', '--', 'scripts/']);
 const nest1Fp = fingerprint(SANDBOX, 'scripts/');
 fs.writeFileSync(sandboxFile(path.join('nested', 'two.mts')), 'const two = 2;\n');
 const nest2Default = git(SANDBOX, ['status', '--porcelain', '--', 'scripts/']);
-const nest2All = git(SANDBOX, ['status', '--porcelain', '-uall', '--', 'scripts/']);
 const nest2Fp = fingerprint(SANDBOX, 'scripts/');
 
-check('C6', '`-uall` is load-bearing: default porcelain cannot see a file arriving in an already-untracked directory, and the shipped module can',
-  nest1Default === nest2Default && nest1All !== nest2All && nest1Fp !== nest2Fp,
-  `default -u: ${JSON.stringify(nest1Default.trim())} both before and after — the directory ` +
-  `collapses to one entry. -uall: ${nest2All.trim().split('\n').length} entries vs ` +
-  `${nest1All.trim().split('\n').length}. The shipped fingerprint moves. Without the flag the U: ` +
-  `loop would also contribute nothing, since it skips entries that are not files — so all three ` +
-  `parts would have been blind together, not just one.`);
+check('C6', 'a second file arriving inside an already-untracked directory moves the fingerprint, though default porcelain collapses both to one entry',
+  nest1Default === nest2Default && nest1Fp !== nest2Fp,
+  `default porcelain: ${JSON.stringify(nest1Default.trim())} both before and after — the directory ` +
+  `collapses to one entry. The content hash moves anyway (${nest1Fp.slice(0, 16)}… → ` +
+  `${nest2Fp.slice(0, 16)}…) because \`git ls-files --others --exclude-standard\` names both files ` +
+  `individually, not through a flag this call site has to remember to pass.`);
 
 // ─────────────────────────────────────────────────────────────────────────────
 console.log('');
@@ -347,33 +330,37 @@ if (fnStart === -1 || fnEnd === -1) {
   const preMoveSb = preMoveFor(SANDBOX);
   const SB = 'scripts/';
 
+  // D1/D2 retired to MEAS 2026-10-28 (Argus), not re-expected and not left live. `preMove` is the
+  // PRE-EXTRACTION **and** pre-content-rekey algorithm (porcelain+diff, space-joined "P:.../D:...");
+  // `fingerprint` as of today is the content-rekeyed one (its own docblock, "A fourth false red") —
+  // a different output FORMAT, by design, not merely a different value. `pre === post` would now
+  // assert format equality across two deliberately different schemes and can only ever read FALSE,
+  // which is not evidence about extraction fidelity — this arm's original question — one way or the
+  // other. Round 263's extraction-is-value-preserving claim was true of this exact comparison on
+  // 2026-09-24 (it passed then) and that result is not retracted; it just cannot be re-asked of code
+  // that has since changed on purpose. Values kept and printed rather than the arm deleted outright.
   const sbPre = preMoveSb(SB);
   const sbPost = fingerprint(SANDBOX, SB);
-  check('D1', 'the extracted lib function returns the pre-extraction value on a NON-EMPTY fingerprint',
-    sbPre === sbPost && sbPre.split(' ').length > 2,
-    `pre === post === ${sbPre.slice(0, 60)}… (${sbPre.split(' ').length} parts, so neither side is ` +
-    `the empty fingerprint). Evaluated from the pinned commit's own text against the sandbox, which ` +
-    `arms B and C left dirty on purpose — not against a tree whose state this run does not own.`);
-
-  // The real control: the pre-move function is not a constant, and it tracks the same writes.
   fs.writeFileSync(sandboxFile('d-arm-witness.mts'), 'const witness = 1;\n');
   const sbPre2 = preMoveSb(SB);
   const sbPost2 = fingerprint(SANDBOX, SB);
-  check('D2', 'and the comparison CAN come out unequal — both functions move together across a write',
-    sbPre2 !== sbPre && sbPost2 !== sbPost && sbPre2 === sbPost2,
-    `after one write: pre moved (${sbPre !== sbPre2}), post moved (${sbPost !== sbPost2}), and they ` +
-    `still agree. Without this, D1 is consistent with both functions returning a constant — which ` +
-    `is exactly what the previous version of this control failed to rule out.`);
+  meas('D1', 'retired — pre/post now compare two different FORMATS by design, not two candidate values for one',
+    `pre (pre-extraction, pre-rekey): ${sbPre.slice(0, 40)}…. post (current): ${sbPost.slice(0, 20)}…. ` +
+    `Equal would now be a format accident, not a content-preservation signal.`);
+  meas('D2', 'retired alongside D1 — both still move independently on a real write, which is what remains checkable',
+    `after one write: pre moved (${sbPre !== sbPre2}), post moved (${sbPost !== sbPost2}). Each still ` +
+    `tracks content on its own terms; they were never going to agree again after D1's premise changed.`);
 
   const liveSame = ['scripts/', 'packages/'].map((p) => ({
     p,
     pre: preMoveFor(REPO)(p),
     post: fingerprint(REPO, p),
   }));
-  meas('D3', 'the same comparison against the live repo — reported, and labelled when it is trivial',
-    liveSame.map((s) => `${s.p} ${s.pre === s.post ? 'same' : 'DIFFER'}` +
-      `${s.pre.split(' ').length <= 2 ? ' (TRIVIAL — clean pathspec, both sides empty; proves nothing)' : ' (non-empty)'}`).join('; ') +
-    `. Kept as a measurement because its informativeness depends on a window this seat does not own.`);
+  meas('D3', 'the same comparison against the live repo — reported for the record, not for agreement',
+    liveSame.map((s) => `${s.p} ${s.pre === s.post ? 'same' : 'DIFFER (expected — different formats)'}`).join('; ') +
+    `. Kept as a measurement; as of the 2026-10-28 content-rekey a DIFFER here is the expected reading ` +
+    `on every pathspec, trivial or not, so the window-ownership caveat this arm was written under no ` +
+    `longer changes what the figure means.`);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

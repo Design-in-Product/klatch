@@ -52,3 +52,80 @@ diff empty since checkpoint:**
 needs-you item; nothing new surfaced this fire.
 
 Two consecutive checks found nothing further unblocked — fire closed bounded.
+
+---
+
+## 13:3x PT — Session resumed (WORK fire)
+
+Pulled `origin/main` — already up to date, clean tree.
+
+**Mail:** two new memos since checkpoint, both today: Daedalus → Argus/Theseus (`...your-c4-red-is-
+repaired-and-two-cripples-leave-my-own-new-key-green-2026-10-28.md`) and Theseus → Daedalus cc Argus
+(`...your-t2-item-is-taken...`). Read in full. Daedalus's §6b/§7 offers this seat one unclaimed
+item: a false-red class in `scripts/lib/tree-fingerprint.mts` — a commit mid-window moves the
+`P:`/`D:` porcelain+diff fingerprint even though the file's content on disk never changed, because
+both halves are keyed on HEAD/the index rather than on content. Measured and unrepaired by him;
+offered, not assigned.
+
+**Took it.** Reproduced first in a scratch git repo (`.testdata/`, gitignored, removed after):
+dirty a tracked file, fingerprint, commit with no further edit, fingerprint again —
+`P:1a29fa97f6686913 D:667091dd291d3b5f` → `P:e3b0c44298fc1c14 D:e3b0c44298fc1c14`, matching
+Daedalus's reported shape exactly before any edit.
+
+**Fix:** re-keyed `fingerprint()` to hash actual file content directly — `git ls-files` (tracked,
+regardless of dirty status) + `git ls-files --others --exclude-standard` (untracked, gitignore-
+respecting), content-hash each path, sort, hash the joined list. One opaque sha, no more `P:`/`D:`/
+`U:` limbs. Verified in the scratch repo: a mid-window commit with no further edit now reads stable
+(PASS); a real content change still moves it (PASS); reverting restores the original value (PASS).
+Separately verified untracked create/edit/delete, tracked-file deletion, and a second file arriving
+in an already-untracked nested directory (no `-uall` needed — `git ls-files` never collapses
+directories). Side effect, not the goal: also closes Theseus's Round 334/335 clean-window collision
+in `trackedCount`'s own docblock (a 200-file clean match and a 0-file match no longer both hash to
+`sha256("")`).
+
+**Consumer check before landing:** grepped all 37 non-self consumers of `fingerprint()` — every one
+only compares two fingerprints for equality (the module's own documented contract), except
+`probe-round263` (Daedalus's own), which parses the returned string's `P:`/`D:` tokens structurally
+in arms C3–C5 and compares byte-for-byte against a pre-extraction historical function in arm D.
+
+**What broke on landing, and the repair for each — not a flaw in the fix, each a stale assumption
+about the old three-limb format:**
+- `probe-round263` arms C3/C4/C5 (which limb carried a catch) and D1/D2 (does the current function
+  equal the pre-extraction one) — retired to `MEAS` with the reason stated, not re-expected, not
+  left live. C1/C2/C4/C6 kept as checks, simplified to what the single hash still demonstrates.
+- `probe-round265` arm C4 — a census of `scripts/lib/` exports that call `--porcelain`, pinned to
+  `['fingerprint','windowState']`. `fingerprint` genuinely left that set (no more `--porcelain`
+  call); re-pinned to `['windowState']` with the date and cause.
+- `probe-round256` arm E4d — used the real `fingerprint` body as a live witness of a character-cap
+  blind spot; the witness evaporated along with the subject's eligibility, not the detector. Retired
+  to `MEAS`; the general class still has a live synthetic witness in Round 265's own `C6`.
+- `sweep-probes.mjs`'s own `why`/`expect` schema check — fixing the three probes above changed each
+  one's regression-check count and MEAS-line count. Bumped both pins (round256 27→26 checks, 9→10
+  measurements; round263 15→12 checks, 6→9 measurements) and — having just read Daedalus's §4c in
+  the same mail thread — removed the superseded self-equal counts from the historical prose rather
+  than updating them in place, so `entryProblems` wasn't reading two different `N/N` claims out of
+  one `why` string.
+
+**Drove the full sweep three times**, each read before moving on: (1) first pass after the lib fix
+alone — 40/43 green, 3 red (round256, round263, round265, each the stale-assumption class above);
+(2) after fixing all three probes — 39/43 green, 4 red (round256 and round263 now SCHEMA RED on the
+stale `why`/`expect` pins, the count change caused by fixing them); (3) after bumping the pins —
+**`SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0 blocked, 0 census problem(s), 110
+deferred`**.
+
+**Gate, final:** `npm run typecheck` exit 0 all four programs; `npm test -w packages/server`
+**140 files / 2186 passed / 1 skipped (2187)** — one more than the standing 2186, the new
+commit-moves-the-bracket regression test added to the unit-test file; `npm test -w packages/client`
+**26 passed|13 skipped (39) / 333 passed|13 skipped (346)**, byte-identical; `node
+scripts/sweep-probes.mjs --census` **153 probe files, 43 swept/110 deferred, CENSUS OK**,
+byte-identical.
+
+**Files touched:** `scripts/lib/tree-fingerprint.mts`, `scripts/sweep-probes.mjs`,
+`scripts/probe-round256-...mts`, `scripts/probe-round263-...mts`, `scripts/probe-round265-...mts`,
+`packages/server/src/__tests__/round263-the-tree-fingerprint.test.ts`. Sent
+`docs/mail/argus-to-daedalus-theseus-cc-xian-janus-calliope-iris-your-routed-tree-fingerprint-false-red-is-fixed-content-not-bookkeeping-2026-10-28.md`.
+
+Not claimed: did not re-touch the operational rule from Daedalus's §6b (don't commit under a
+pathspec a concurrently-driving probe brackets) beyond noting in the module's docblock that it's
+now redundant with the fix rather than a substitute for it. Did not drive any of the 110 deferred
+probes.

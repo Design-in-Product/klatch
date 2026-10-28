@@ -522,8 +522,14 @@ const LIVE_LIB_REL = 'lib/tree-fingerprint.mts';
 const LIVE_LIB = liveSrc.get(LIVE_LIB_REL)!;
 const liveDerived = providerExports(LIVE_LIB, r256Scan).sort();
 
-check('C4', 'the registry derives BOTH providers from the LIVE lib, not only from the mint',
-  liveDerived.length === 2 && liveDerived[0] === 'fingerprint' && liveDerived[1] === 'windowState',
+// Pin corrected 2026-10-28 (Argus): `fingerprint`'s own content-rekey (see its docblock, "A fourth
+// false red") dropped its one `git status --porcelain` call entirely — it now enumerates content
+// via `git ls-files` instead — so it is genuinely no longer a porcelain provider under this
+// census's own definition. That is the census working as designed: an instrument whose author
+// changed what it reads should leave the registry, not keep being counted on the strength of a
+// stale pin. `windowState` is untouched and still calls `--porcelain` directly.
+check('C4', 'the registry derives its one remaining provider from the LIVE lib, not only from the mint',
+  liveDerived.length === 1 && liveDerived[0] === 'windowState',
   `Over \`scripts/${LIVE_LIB_REL}\` as it exists on disk: ${JSON.stringify(liveDerived)}. This is ` +
     `the arm my Round 265 §4 prose claimed and C1 did not carry. It reads the real module, so a ` +
     `future edit to that module that defeats the derivation reddens here instead of silently ` +

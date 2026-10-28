@@ -39,15 +39,27 @@
  * run did**, not **what the window contained**, so a third party's in-flight work is invisible to
  * it and a write into an already-dirty file is not.
  *
- * Three parts, and they are not redundant — `probe-round263` drives one perturbation per part that
- * the other two miss:
+ * Enumerate every path the pathspec names — tracked (`git ls-files`) and untracked-but-not-ignored
+ * (`git ls-files --others --exclude-standard`) — and hash each one's **actual file content on
+ * disk**, or a deletion marker if a tracked path no longer exists there. The fingerprint is a sha
+ * of that sorted `path:contentHash` list. Content, not git bookkeeping, is what moves it.
  *
- *   `P:` sha of the porcelain entries — catches a path arriving, leaving, or changing status.
- *   `D:` sha of `git diff HEAD` — catches content moving inside an ALREADY-dirty tracked file,
- *        which `P:` cannot see because the status letter does not move.
- *   `U:` per-untracked-file content sha — catches content moving inside an already-present
- *        untracked file, which neither `P:` (same entry) nor `D:` (untracked is not in the diff)
- *        can see.
+ * ── A fourth false red, found 2026-10-28, and why the fix is content not bookkeeping ─────
+ *
+ * The original three-part scheme (`P:` sha of `git status --porcelain` entries, `D:` sha of
+ * `git diff HEAD`, `U:` per-untracked-file content sha) graded content indirectly, through git's
+ * index/HEAD bookkeeping. A `git commit` under the pathspec mid-window moves that bookkeeping —
+ * `git diff HEAD` goes from showing the dirty hunk to showing nothing, because HEAD just absorbed
+ * it — even though the file's bytes on disk never changed. `P:`/`D:` both collapse to
+ * `sha256("")` and the bracket reads a mismatch for a run that wrote nothing (Daedalus, 10-28,
+ * `docs/research/unit-307c4-rekey-2026-10-28/`, driven in a scratch git repo: dirty a tracked
+ * file, fingerprint, commit it with no further edit, fingerprint again — `P:1a29fa97f6686913
+ * D:667091dd291d3b5f` → `P:e3b0c44298fc1c14 D:e3b0c44298fc1c14`, reproduced here before this fix
+ * and gone after it). Reading file content directly removes the dependency on HEAD/the index
+ * entirely, so a commit under the pathspec mid-bracket is no longer a special case to avoid — the
+ * operational rule ("don't commit under a pathspec a concurrently-driving probe brackets") is now
+ * redundant with the fix rather than a substitute for it, and is kept below only as a note on what
+ * used to be required.
  *
  * ── The pre-existing window is REPORTED, never GRADED ────────────────────────
  *
@@ -91,20 +103,25 @@ const git = (repo: string, args: string[]): string =>
  * @param pathspec a git pathspec, e.g. `'scripts/'`
  */
 export function fingerprint(repo: string, pathspec: string): string {
-  // `-z` so a path containing a newline cannot forge an entry boundary; `-uall` so an untracked
-  // DIRECTORY is listed as its individual files rather than collapsed to one `dir/` entry — a
-  // collapsed entry would hide a file appearing inside an already-untracked directory.
-  const raw = git(repo, ['status', '--porcelain', '-z', '-uall', '--', pathspec]);
-  const entries = raw.split('\0').filter((s) => s.length > 0);
-  const diff = git(repo, ['diff', 'HEAD', '--', pathspec]);
-  const parts = [`P:${sha(entries.join('\n'))}`, `D:${sha(diff)}`];
-  for (const e of entries) {
-    if (!e.startsWith('?? ')) continue;
-    const rel = e.slice(3);
+  // `-z` so a path containing a newline cannot forge an entry boundary. Tracked paths come from
+  // the index regardless of on-disk status (so a deleted tracked file still names a path to check
+  // for); untracked paths are filtered through `--exclude-standard` so a `.gitignore`d file stays
+  // the one documented blind spot (probe-round287) rather than a new one.
+  const tracked = git(repo, ['ls-files', '-z', '--', pathspec]).split('\0').filter((s) => s.length > 0);
+  const untracked = git(repo, ['ls-files', '-z', '--others', '--exclude-standard', '--', pathspec])
+    .split('\0')
+    .filter((s) => s.length > 0);
+  const parts: string[] = [];
+  for (const rel of [...tracked, ...untracked].sort()) {
     const abs = path.join(repo, rel);
-    if (fs.existsSync(abs) && fs.statSync(abs).isFile()) parts.push(`U:${rel}:${sha(fs.readFileSync(abs))}`);
+    if (!fs.existsSync(abs)) {
+      parts.push(`-:${rel}`); // tracked in the index, absent on disk
+      continue;
+    }
+    if (!fs.statSync(abs).isFile()) continue;
+    parts.push(`${rel}:${sha(fs.readFileSync(abs))}`);
   }
-  return parts.join(' ');
+  return sha(parts.join('\n'));
 }
 
 /**
@@ -125,26 +142,23 @@ export function windowState(repo: string, pathspec: string): string {
  * ── Why this exists ─────────────────────────────────────────────────────────
  *
  * Theseus's Round 334 §4 drove the blind spot that {@link windowState} and the fingerprint detail
- * line share, and the figure below is the one that closes it. A probe's Z-arm detail typically
- * prints the fingerprint, whether it moved, its component count and the porcelain entry count.
- * On a CLEAN window — the state an unattended fire is normally in — all four of those are
- * byte-identical for a pathspec that names 200 files, a pathspec that names 1, and a MISSPELLED
- * pathspec that names none:
+ * line shared **under the pre-2026-10-28 porcelain-based `fingerprint`**: on a CLEAN window, a
+ * pathspec naming 200 files, a pathspec naming 1, and a MISSPELLED pathspec naming none all
+ * produced the identical `P:e69de29b… D:e69de29b…` — both halves `sha256("")`, because an empty
+ * porcelain list and an empty diff hash the same no matter how much the pathspec covers. So the
+ * evidence line could not distinguish *fingerprinted the tree and it did not move* from
+ * *fingerprinted nothing at all*, and a typo'd pathspec read as a clean pass.
  *
- *     pathspec "scripts"                → P:e69de29b… D:e69de29b… · components 2 · porcelain 0
- *     pathspec "scriptz-does-not-exist" → P:e69de29b… D:e69de29b… · components 2 · porcelain 0
- *     pathspec "packages/shared/src"    → P:e69de29b… D:e69de29b… · components 2 · porcelain 0
+ * The content-keyed `fingerprint` below (2026-10-28) no longer has that collision — a clean
+ * 200-file match and a 0-file match now hash different things, because every clean file's content
+ * is itself part of the hash rather than only its porcelain delta. `trackedCount` is kept anyway:
+ * it is still the more direct figure for "how many files does this pathspec actually name", it is
+ * cheaper to read than diffing two fingerprints to infer a count, and it remains true that
+ * `windowState`'s *porcelain* text is empty on both a 200-file clean match and a typo'd pathspec —
+ * that half of the original blind spot is `windowState`'s, not `fingerprint`'s, and is unchanged.
  *
- * Both halves are `sha256("")`, because an empty entry list and an empty diff hash to the same
- * constant no matter how much the pathspec covers. So the evidence line cannot distinguish
- * *fingerprinted the tree and it did not move* from *fingerprinted nothing at all* — and a
- * typo'd pathspec reads as a clean pass. The CHECK was never affected: before/after equality still
- * grades what the run did. This is about whether a reader can tell which of those two a green run
- * was, and on the common window state they could not.
- *
- * `git ls-files` separates them — 200 / 0 / 1 on the rows above — and it does so in BOTH window
- * states, because it does not depend on anything being dirty. That is the property that makes it
- * the right figure rather than a second emptiness proxy.
+ * `git ls-files` separates the three cases — 200 / 0 / 1 — and does so regardless of dirty state,
+ * which is what makes it the right figure for this rather than a second emptiness proxy.
  *
  * Deliberately a separate function rather than folded into {@link windowState}'s return: that
  * returns porcelain text and 37 probe files read it as text today (40 files reference this module;

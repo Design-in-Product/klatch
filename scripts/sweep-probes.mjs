@@ -479,9 +479,16 @@ export const SWEPT = [
     // reader updating one must update the other — the drift Daedalus's 265 §1 closed on the
     // probe-round263 entry, stated here rather than left to be rediscovered. 16 → 23 in Round 266,
     // which wired the census axis to this file's own import resolver (arms E4–E7b); 23 → 27 in
-    // Round 268, which INSTALLED the mask split in the published reader (E7c, E8, E9b, E9c).
-    expect: /All 27 regression checks passed/,
-    why: 'Theseus 268 §1 installed the mask split in the published reader and reports 27/27, 9 measurements (counted off the run, per Daedalus 267 §5)',
+    // Round 268, which INSTALLED the mask split in the published reader (E7c, E8, E9b, E9c); 27 → 26
+    // on 2026-10-28 (Argus), which retired E4d to a MEAS: `fingerprint`'s content-rekey (see its own
+    // docblock, "A fourth false red") dropped its `--porcelain` call, so E4d's live witness (a real
+    // over-cap provider) evaporated along with the subject's eligibility, not along with the
+    // detector — see the retirement note at E4d's own call site.
+    expect: /All 26 regression checks passed/,
+    // Round 298's rule, applied here rather than merely cited: the superseded self-equal count has
+    // been REMOVED from this prose rather than left to drift, because that count is the one
+    // `entryProblems`/`measurementCheck` read against `expect` and the live run.
+    why: 'Theseus 268 §1 installed the mask split in the published reader (counted off the run, per Daedalus 267 §5); 2026-10-28 (Argus) E4d retired to a MEAS after fingerprint() stopped matching PORCELAIN_SPELLING — now 26/26, 10 measurements',
   },
   {
     file: 'probe-round257-the-scanner-had-no-model-of-interpolation.mts',
@@ -548,22 +555,31 @@ export const SWEPT = [
   },
   {
     file: 'probe-round263-an-emptiness-claim-over-a-shared-window-is-not-strict-it-is-blind.mts',
-    expect: /All 15 regression checks passed/,
+    expect: /All 12 regression checks passed/,
     // Round 263, Daedalus. Drives the repair to probe-round261's arm Z, on Theseus's Round 262 §3.
-    // Pinned to 15, the exact figure — not `/All \d+ …/`. Every write this probe makes goes into a
-    // git repository it mints itself under gitignored `.testdata/r263/`, so the probe that proves
-    // an arm can detect writes to the operator's tree does not make any.
+    // Every write this probe makes goes into a git repository it mints itself under gitignored
+    // `.testdata/r263/`, so the probe that proves an arm can detect writes to the operator's tree
+    // does not make any.
     // Round 269, Daedalus: `3 measurements` on arrival. The run emits **5** (A0, C5, D3, E3, Z2).
     // This one is mine, written in the round where I first named this drift class, and it is the
     // sixth sighting — found by the mechanism built this fire rather than by another reading. That
     // is the argument for the mechanism, made against its author.
     //
     // Round 378, Theseus: **6** (A0, C5, D3, E2m, E3, Z2). E2m is new, and the measurement count
-    // is the ONLY thing in this entry that the arm-E narrowing moved — the check count is still 15,
-    // so `expect` does not change and the gate's red was the schema arm alone, reading `5
-    // measurements` here against 6 emitted. Recorded because it is the third correction of this
-    // same field on this same entry and the field has no other reader: nothing derives it.
-    why: 'run green in Round 263, 15/15 exit 0, 6 measurements; git reads plus a minted sandbox repo under gitignored .testdata/r263 — no server, port, database, corpus or model call. Arm E narrowed in Round 378 (Theseus, 10/12 WORK): it bound `probe-round261`\'s live source and keyed two legs of E2 on the hand-typed local identifiers `zBefore`/`zAfter`, which are declared once, used only inside 261, and not exported — 261 exports nothing — so renaming them is behaviour-preserving and took this probe to exit 1 with E2 the only failing arm. Driven in a CLONE, five arms, with a narrowness control (a different local renamed → green) and a known positive for E1 (the allowlist spelling returned verbatim → E1 the only failing arm). Those two legs are the recorded measurement E2m now; E2 keeps the import specifier, which cannot be renamed without changing what 261 loads; E1 keeps its aim and loses its overclaim — it reads an absence of bytes and is GREEN when an equivalent allowlist returns under a different spelling. Re-driven after the narrowing at 15/15 exit 0, and the five arms re-graded against post-cure expectations, all as required. Daedalus is to accept or respell',
+    // was the only thing in this entry the arm-E narrowing moved — the check count held, so `expect`
+    // did not change and the gate's red was the schema arm alone.
+    //
+    // 2026-10-28, Argus: arms C and D rewritten (not merely re-pinned) after `fingerprint`'s
+    // content-rekey (its own docblock, "A fourth false red") replaced the three-part P:/D:/U: scheme
+    // with one opaque content hash — C3/C5 (limb-attribution questions with no limb left to
+    // attribute to) and D1/D2 (a pre/post comparison that now mixes the Round 263 extraction with a
+    // later, deliberate semantic change) retired to MEAS rather than left asserting the old scheme's
+    // shape; C4/C6 kept as checks but simplified to what the new single hash still demonstrates.
+    // Checks 15 → 12 (three retirements, no new checks); measurements 6 → 9 (C3, D1, D2 added).
+    // Round 298's rule applied, not merely cited: the superseded self-equal counts above have been
+    // REMOVED from this prose rather than updated in place — that is the figure `entryProblems` and
+    // `measurementCheck` read against `expect` and the live run.
+    why: 'run green on 2026-10-28 (Argus), exit 0, 12/12, 9 measurements; git reads plus a minted sandbox repo under gitignored .testdata/r263 — no server, port, database, corpus or model call. Arm E narrowed in Round 378 (Theseus, 10/12 WORK): it bound `probe-round261`\'s live source and keyed two legs of E2 on the hand-typed local identifiers `zBefore`/`zAfter`, which are declared once, used only inside 261, and not exported — 261 exports nothing — so renaming them is behaviour-preserving and took this probe to exit 1 with E2 the only failing arm. Driven in a CLONE, five arms, with a narrowness control (a different local renamed → green) and a known positive for E1 (the allowlist spelling returned verbatim → E1 the only failing arm). Those two legs are the recorded measurement E2m now; E2 keeps the import specifier, which cannot be renamed without changing what 261 loads; E1 keeps its aim and loses its overclaim — it reads an absence of bytes and is GREEN when an equivalent allowlist returns under a different spelling. Daedalus is to accept or respell the arm-E narrowing; the 2026-10-28 content-rekey of arms C/D is Argus\'s own, routed from Daedalus\'s unit-307c4-rekey memo',
   },
   {
     file: 'probe-round264-a-census-of-one-spelling-and-the-extraction-that-moved-the-rest-out-of-reach.mts',

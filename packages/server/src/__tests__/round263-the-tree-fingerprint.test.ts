@@ -93,6 +93,26 @@ describe('fingerprint — stability', () => {
     fs.writeFileSync(path.join(scoped, 'docs', 'note.md'), '# elsewhere\n');
     expect(fingerprint(scoped, 'scripts/')).toBe(before);
   });
+
+  it('does NOT move when a dirty file is staged — staging changes git bookkeeping, not content', () => {
+    const repo = mintRepo('staging');
+    write(repo, 'new.mts', 'const n = 1;\n');
+    const before = fingerprint(repo, 'scripts/');
+    git(repo, ['add', 'scripts/new.mts']);
+    expect(fingerprint(repo, 'scripts/')).toBe(before);
+  });
+
+  it('does NOT move when a dirty tracked file is committed with no further edit (2026-10-28 regression)', () => {
+    // Daedalus, docs/research/unit-307c4-rekey-2026-10-28/: the pre-fix `fingerprint` read
+    // `git diff HEAD`, so a commit mid-window moved it to `sha256("")` even though the file's
+    // bytes on disk never changed between the two calls. Reproduced and fixed the same day.
+    const repo = mintRepo('mid-window-commit');
+    write(repo, 'tracked.mts', 'const a = 1; // dirtied before the window opens\n');
+    const before = fingerprint(repo, 'scripts/');
+    git(repo, ['add', '-A']);
+    git(repo, ['commit', '-qm', 'absorb the dirty file, no content change']);
+    expect(fingerprint(repo, 'scripts/')).toBe(before);
+  });
 });
 
 describe('fingerprint — the writes porcelain cannot see', () => {
@@ -167,14 +187,6 @@ describe('fingerprint — the writes porcelain CAN see', () => {
     fs.rmSync(path.join(repo, 'scripts', 'tracked.mts'));
     expect(fingerprint(repo, 'scripts/')).not.toBe(before);
   });
-
-  it('moves when a file is staged, even though its content on disk did not change', () => {
-    const repo = mintRepo('staging');
-    write(repo, 'new.mts', 'const n = 1;\n');
-    const before = fingerprint(repo, 'scripts/');
-    git(repo, ['add', 'scripts/new.mts']);
-    expect(fingerprint(repo, 'scripts/')).not.toBe(before);
-  });
 });
 
 describe('windowState — reported, never graded', () => {
@@ -206,14 +218,16 @@ describe('windowState — reported, never graded', () => {
 
 describe('trackedCount — the figure that separates a clean window from a wrong pathspec', () => {
   /**
-   * Round 335, driving Theseus's Round 334 §4. The three cases below are the ones he measured on
-   * the live repo, reproduced here at size instead of transcribed: on a CLEAN window the whole
-   * fingerprint detail line is byte-identical for a pathspec that names files and one that names
-   * none, so a typo'd pathspec reads as a clean pass. The first test states the DEFECT so that a
-   * future change which makes those columns diverge fails here rather than silently retiring the
-   * reason this function exists.
+   * Round 335 drove Theseus's Round 334 §4: under the pre-2026-10-28 porcelain-based
+   * `fingerprint`, a CLEAN window made the whole detail line byte-identical for a pathspec that
+   * names files and one that names none, so a typo'd pathspec read as a clean pass.
+   * `fingerprint`'s 2026-10-28 content-keyed rewrite (see its own docblock, "A fourth false red")
+   * removes that specific collision — asserted below, not assumed. `trackedCount` stays the more
+   * direct figure regardless: cheaper than diffing two fingerprints to infer a count, and
+   * `windowState`'s *porcelain text* is still blind to the distinction on a clean window, which is
+   * its own half of the original blind spot and is unchanged by the rewrite.
    */
-  it('is the ONLY one of the reported columns that moves: on a clean window the others do not', () => {
+  it('fingerprint itself now separates a real pathspec from a typo on a clean window', () => {
     const repo = mintRepo('clean-window-blindspec');
     fs.mkdirSync(path.join(repo, 'packages', 'shared', 'src'), { recursive: true });
     fs.writeFileSync(path.join(repo, 'packages', 'shared', 'src', 'one.ts'), 'export const x = 1;\n');
@@ -224,14 +238,17 @@ describe('trackedCount — the figure that separates a clean window from a wrong
     const typo = fingerprint(repo, 'scriptz-does-not-exist');
     const other = fingerprint(repo, 'packages/shared/src');
 
-    // The defect, asserted: fingerprint, its component count and the porcelain entry count are all
-    // identical across a pathspec naming 1 file, one naming 0, and one naming a different 1.
-    expect(typo).toBe(real);
-    expect(other).toBe(real);
+    // Content-keyed fingerprint distinguishes all three now — no more clean-window collision.
+    expect(typo).not.toBe(real);
+    expect(other).not.toBe(real);
+    expect(typo).not.toBe(other);
+
+    // windowState's porcelain text is still empty on a clean match AND a typo — that half of the
+    // original blind spot belongs to windowState, not to fingerprint, and is unchanged.
     expect(windowState(repo, 'scripts')).toBe('');
     expect(windowState(repo, 'scriptz-does-not-exist')).toBe('');
 
-    // And the figure that separates them, in the same clean window.
+    // trackedCount remains the direct figure for "how many files does this pathspec actually name".
     expect(trackedCount(repo, 'scripts')).toBe(1);
     expect(trackedCount(repo, 'scriptz-does-not-exist')).toBe(0);
     expect(trackedCount(repo, 'packages/shared/src')).toBe(1);

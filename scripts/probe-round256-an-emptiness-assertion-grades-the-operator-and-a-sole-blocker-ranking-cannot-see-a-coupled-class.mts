@@ -1104,17 +1104,21 @@ const fingerprintBodyLen = ((): number => {
   return m ? m[1].length : -1;
 })();
 
-check('E4d', 'a CHARACTER CAP on the body window already drops a provider from the live lib',
-  fingerprintBodyLen > 600 && !cappedProviders.includes('fingerprint') &&
-    providerExports(LIVE_LIB).includes('fingerprint') && providerExports(LIVE_LIB).includes('windowState'),
-  `Over the real scripts/lib/tree-fingerprint.mts, not a mint: fingerprint's body is ` +
-    `${fingerprintBodyLen} characters. Round 265's \`[\\s\\S]{0,600}?\` window therefore derives ` +
-    `${JSON.stringify(cappedProviders)} — a ONE-entry registry — while brace-matching the body ` +
-    `derives ${JSON.stringify(providerExports(LIVE_LIB))}. Round 265 arm C1 asserts the two-name ` +
-    `set and passes, because it runs on a MINTED lib whose bodies are short: the fixture is smaller ` +
-    `than the thing it stands for, so it cannot exercise the limit. **Rule: a mint that cannot ` +
-    `straddle a detector's size cap cannot test it.** This file's own §"two settings of a tuning ` +
-    `parameter" note applies to itself — a body is a brace-matching question, not a distance one.`);
+// Retired to a MEAS 2026-10-28 (Argus), not re-expected: `fingerprint`'s content-rekey (see its
+// own docblock, "A fourth false red") removed its one `git status --porcelain` call entirely, so
+// under EITHER detector — windowed or brace-matched — it no longer matches `PORCELAIN_SPELLING`
+// and is no longer a provider at all. This check's live witness (a real over-cap provider the
+// windowed detector drops) evaporated because the SUBJECT changed, not because the detector
+// regressed; the general class it demonstrated is still real and still has a witness — Round 265's
+// `fingerprintWide` synthetic fixture (arm C6) straddles the cap on purpose and does not depend on
+// what the real file's body happens to contain on a given day.
+meas('E4d', 'a CHARACTER CAP on the body window would drop an over-cap provider — no live witness remains',
+  `fingerprint's post-mask body is now ${fingerprintBodyLen} characters and is not a provider under ` +
+    `either detector (windowed: ${JSON.stringify(cappedProviders)}; brace-matched: ` +
+    `${JSON.stringify(providerExports(LIVE_LIB))}) — it dropped its \`--porcelain\` call entirely. ` +
+    `The class this arm demonstrated is not retired; its live instance is, and the synthetic witness ` +
+    `in Round 265's arm C6 (\`fingerprintWide\`) remains the standing proof that does not depend on ` +
+    `a real file's body length.`);
 
 const MINT_CARRIER = `const FIXTURE = \`import { windowState } from './lib/tree-fingerprint.mts';\\n\` +\n` +
   `  \`const w = windowState(REPO, 'scripts/');\\n\` +\n` +
