@@ -57,3 +57,84 @@
 **Needs-you:** unchanged — nothing new raised to xian.
 
 **Drain:** twelve new commits read with author verified and the `packages/`+`scripts/` diff checked directly; the one domain-adjacent item (the gate-pricing recommendation) recognized as Daedalus's own active thread and left to him rather than duplicated; mail checked locally and across all four cross-repo mailboxes, nothing new addressed to this seat; gate re-derived fresh and byte-identical (one expected delta explained by citation, not re-litigated). Two consecutive checks found nothing further unblocked. Fire closed bounded.
+
+---
+
+## 2026-10-27 ~18:0x PT — STOP fire
+
+**Checkpoint:** own last commit `c91420d2` (13:34:17 PT WORK fire).
+
+**Drain:** `git log c91420d2..HEAD --format='%h %an %ci %s'` — 19 new commits since own last
+checkpoint, none mine (author-checked with `%an`): Daedalus's round462 reply to Theseus closing
+a false RED of his own, Theseus's Round 464 close (three laundering defects cured, cripple
+gating confirms three of his own guards were invisible to his self-test, mail to Daedalus),
+Calliope's MID-fire thread closure (round-track proportionality stop condition fires at its
+current value, thread closed), Daedalus's round464 verification reply, and Daedalus's STOP-fire
+gate chain — `scripts/lib/**/*.mjs` (the 10 library modules every probe imports) wired into a
+type program for the first time and into `npm run typecheck:scripts`, landed at 127 → 0 errors
+across three commits, plus a mail to Theseus and coord+log wrap, plus Theseus's own wrap
+verification of his WORK fire.
+
+`git diff --stat c91420d2..HEAD -- packages/ scripts/` **not empty**: 10 files under
+`scripts/lib/*.mjs` plus a new `scripts/tsconfig.lib-mjs.json` and a one-line `package.json`
+change wiring it into `typecheck:scripts`. Read directly rather than taken from the commit
+messages. Because this diff was non-empty, ran the full driving sweep rather than census-only.
+
+**Mail:** no new memo `To: Argus` (`grep -rl` — no hits); three new local memos since own last
+log timestamp, all Daedalus↔Theseus round-track, cc this seat only — read, nothing owed beyond
+what's reflected in the drain above. All four writable cross-repo mailboxes checked via
+`find -newer` against this seat's own last log: designinproduct (0 new), mediajunkie (2 new,
+Cairn→Pard build/shot memos, 0 klatch|argus relevance), dispatch (0 new),
+piper-morgan-product/mailboxes (86 new excluding `MANIFEST.md`, grepped for `klatch|argus` —
+exit 1, 0 hits). Nothing owed from any.
+
+**Gate re-derived fresh, full driving sweep run because the `scripts/` diff was non-empty:**
+`lsof -i :3001` — port free; `npm run typecheck` — exit clean, 0 `error TS` across all four
+workspaces including the new `scripts/tsconfig.lib-mjs.json` program; `npm test -w
+packages/server` unpiped — **140 files/2185 passed/1 skipped (2186)**, byte-identical; `npm test
+-w packages/client` unpiped — **26 passed|13 skipped (39) / 333 passed|13 skipped (346)**,
+byte-identical; `node scripts/sweep-probes.mjs --census` — **153 probe files, 43 swept/110
+deferred, CENSUS OK**, byte-identical.
+
+**Full drive — NOT byte-identical, one new red:**
+
+```
+SWEEP FAILED — 42 of 43 swept probes green, 1 red, 0 blocked (0 could not run,
+               0 ran but did not finish), 0 census problem(s), 110 deferred
+```
+
+`probe-round307-the-return-half-is-gradeable-...` — arm `[C4]` FAILED. Diagnosed directly, not
+guessed: C4 pins `gradeable.length === 1` (only `tsx-required::explainTsxRequirement`, graded via
+an actual `@param`/`@returns` JSDoc block) as proof that gradeable-ness correlates 1:1 with
+`@param`/`@returns` tags. Daedalus's `87270c6f`/`d5205b76` this same fire cured
+`characterisation-markers.mjs` and `strip-source.mjs` under the new `checkJs` program by adding
+inline `/** @type {T} */` parameter annotations — a different JSDoc tag than `@param`/`@returns`
+— which gives TypeScript concrete (non-`any`) parameter types for 13 more functions in those two
+*zero*-`@param`-tag modules. The probe's own re-run prints `gradeable.length` 14 and
+`jsdocTags` unchanged at `characterisation-markers 0 · strip-source 0`: the regex genuinely found
+no `@param`/`@returns`, because the new annotations aren't that tag. C4's correlation is now
+false by construction, not by a defect in the reader. `git fetch origin main` +
+`git log HEAD..origin/main` confirmed empty before drafting — not already cured upstream.
+
+Routed, not fixed — it's Daedalus's probe (authored 10/1–10/11) and his own commit that moved
+the ground under it; which repair is correct (re-key C4 off "has a typed signature" vs. scope
+the pin to the three original modules by name) is a call about what the probe should mean, which
+isn't this seat's call to make unilaterally. Sent
+`docs/mail/argus-to-daedalus-cc-theseus-xian-janus-calliope-iris-your-lib-mjs-gate-landed-and-it-reddened-round307s-c4-2026-10-27.md`.
+
+Not claimed: did not check whether any of the 110 deferred probes reference these two files'
+signatures in a way that would also move — out of scope for a sweep that only drives the 43
+swept probes.
+
+**Standing blockers re-checked, both unmoved:** CIO Laya/AAXT thread, parked on xian's scheduling
+call; intel sweep cadence, `docs/intel/2026-10-26-sweep-curated.md` (confirmed via `ls -la`,
+still the newest file) remains latest, next due ~11/2, not due this fire.
+
+**Needs-you:** unchanged at the one standing item (CIO/Laya) — the round307 find is routed to
+Daedalus, not a needs-you item.
+
+**Drain:** nineteen new commits read with author verified and the `scripts/` diff checked
+directly; mail checked locally and across all four cross-repo mailboxes, nothing new addressed
+to this seat; gate re-derived fresh with a full driving sweep (triggered by the non-empty
+`scripts/` diff) that found one new red, diagnosed to its exact mechanism, and routed to its
+owner with a memo. Two consecutive checks found nothing further unblocked. Fire closed bounded.
