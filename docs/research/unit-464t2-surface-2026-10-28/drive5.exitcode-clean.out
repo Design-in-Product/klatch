@@ -1,0 +1,62 @@
+=== GRADE/464-T2-surface — the printed /N token against the actual exit status ===
+REV 96028336843fca0c884c8efc94ea2f0d95ced82b
+CLOCK 2026-10-28T21:58:41.949Z
+CRIPPLE none (clean)
+
+--- KEY B (graded): live drive — printed verdict word vs actual exit status
+  SILENT unit-464t2-reaim-2026-10-28/grade-the-credit-key.mjs  word=RED status=0 printedToken=1 tokenMatchesStatus=false
+  honest unit-464t2-reaim-2026-10-28/zw-scan.mjs  word=ok status=0 printedToken=1 tokenMatchesStatus=false
+  UNMEAS unit-464t2-reaim-2026-10-28/recon-credit-provenance.mjs  word=NONE status=0 printedToken=n/a tokenMatchesStatus=undefined
+  SILENT round464-instruments/grade-the-stop-condition.mjs  word=RED status=0 printedToken=1 tokenMatchesStatus=false
+  honest unit-464t2-keychoice-2026-10-28/grade-the-surface-predicate.mjs  word=RED status=1 printedToken=1 tokenMatchesStatus=true
+  honest unit-464t2-keychoice-2026-10-28/recon2-the-last-round-that-cured-product-source.mjs  word=ok status=0 printedToken=0 tokenMatchesStatus=true
+  UNMEAS unit-464t2-keychoice-2026-10-28/recon-what-the-credits-are-made-of.mjs  word=NONE status=0 printedToken=n/a tokenMatchesStatus=undefined
+  driven=7 measured=5 SILENT=2 printedTokenWrong=3
+
+--- KEY A ([MEAS] only): the source scan, and its confusion matrix against Key B
+  sourceSaysSilent=3 driveSaysSilent=2
+  falsePositives=1 → zw-scan.mjs
+  falseNegatives=0 → (none)
+
+--- KP / KN for the drive key
+  KP word=null status=1 agrees=null (want agrees=false)
+  KN word=RED status=1 agrees=true (want agrees=true)
+
+--- LEGS ---
+RED  G1: GATE: the declared driveable set is non-empty and every member reached a verdict line — a census that drove nothing, or whose members printed no verdict, must RED here rather than report zero silent cells
+      detail: declared=7 measured=5 noVerdictLine=recon-credit-provenance.mjs,recon-what-the-credits-are-made-of.mjs
+RED  K1: the drive key carries a known positive that CARRIES the property (the pre-repair blob, driven, printing RED while exiting 0) and a known negative that does not — so a key that stops separating reddens instead of reporting a smaller number
+      detail: KP agrees=null (want false); KN agrees=true (want true)
+ ok  E1: at least one cell in the declared set exits 0 while its own verdict line says RED or REFUSED — the defect this unit reports, measured by driving rather than by reading source
+      detail: silent=2 → grade-the-credit-key.mjs, grade-the-stop-condition.mjs
+ ok  E2: the defect is a CLASS and not one instance: strictly more than one cell in the declared set is silent, so repairing only the cell that surfaced it would leave the mechanism live
+      detail: silent=2
+ ok  E3: the standing stop-condition cell — the one whose figure this seat quotes in COORDINATION every fire — is among the silent, which is why this is not a cosmetic finding
+      detail: silent set contains the standing cell: true
+ ok  S1: the source scan OVER-reports relative to the drive: it has at least one false positive, which is why the legs above are keyed on the drive and the scan is published as a measurement only
+      detail: falsePositives=1 → zw-scan.mjs; falseNegatives=0
+ ok  S2: zw-scan.mjs specifically is a source-key false positive — its gate IS live (`if (!ok) process.exit(1)`), so the memo sentence that called it a gate was right even though a source scan of exit arguments cannot see it
+      detail: drive says honest=true; source says silent=true
+ ok  T1: in every cell whose printed /N token disagrees with its exit status, the token is a LITERAL rather than an interpolation — so the repair is to derive the token from the same value, not to edit the number
+      detail: tokenWrong=3 → grade-the-credit-key.mjs(token=1,status=0), zw-scan.mjs(token=1,status=0), grade-the-stop-condition.mjs(token=1,status=0)
+MEAS M1: [MEAS] the drive census, no assertion
+      detail: driven=7 measured=5 silentByDrive=2 printedTokenWrong=3
+      also  : grade-the-credit-key.mjs:RED/0 zw-scan.mjs:ok/0 recon-credit-provenance.mjs:null/0 grade-the-stop-condition.mjs:RED/0 grade-the-surface-predicate.mjs:RED/1 recon2-the-last-round-that-cured-product-source.mjs:ok/0 recon-what-the-credits-are-made-of.mjs:null/0
+MEAS M2: [MEAS] the SCOPE of the answer — how many verdict-printing research cells were NOT driven, so this reads as a bounded census and not as "every cell in the tree"
+      detail: verdictPrintingCellsInTree=30 declaredDriveable=7 notDriven=23
+      also  : not driven because a blind sweep would spawn whatever a probe spawns; several open ports and databases
+MEAS M3: [MEAS] the source scan against the drive, as a confusion matrix rather than a count
+      detail: sourceSilent=3 driveSilent=2 fp=1 fn=0
+      also  : fp: zw-scan.mjs | fn: (none)
+ ok  M0: the [MEAS] exclusion from the refusal set is keyed on a declared id list, and reddens if a declared MEAS leg carries a boolean or an undeclared leg calls itself [MEAS] — otherwise any leg could opt out of the verdict by editing its own first six characters
+      detail: MEAS_IDS=[M1,M2,M3]
+
+--- PREDICTIONS ---
+LAND Q1: exactly 2 cells in the declared set are silent by the drive key: grade-the-credit-key.mjs and round464-instruments/grade-the-stop-condition.mjs. Stated as a prediction because the only two I have READ are those two, and the recons may well be a third and fourth
+      expected=2 actual=2
+PREF Q2: Daedalus's two cells are both honest, so the convention is not shared and the defect is this seat's alone
+      expected=true actual=null
+LAND Q3: the printed /N token is wrong in strictly MORE cells than the exit status is, because a cell can gate correctly (zw-scan) while still printing a literal token
+      expected=true actual=true
+
+VERDICT/1 RED legs=12 red=[G1,K1] refused=[] preds=3 refuted=[] prefused=[Q2]
