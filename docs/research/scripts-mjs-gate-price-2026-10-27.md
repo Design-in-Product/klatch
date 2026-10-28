@@ -112,6 +112,23 @@ under-declaring — which is the direction a reader cannot notice, because the c
 
 ## 5. Recommendation, and what is NOT recommended
 
+> **TAKEN AND LANDED, same day, 2026-10-27 STOP fire.** The `lib/**/*.mjs` increment recommended
+> below is **done**: `scripts/tsconfig.lib-mjs.json` exists, `127 → 0`, and
+> `npm run typecheck:scripts` is now `tsc -p scripts/tsconfig.json && tsc -p
+> scripts/tsconfig.lib-mjs.json`. Graded by five cripples driven against the **wired** command
+> (TS7006 / TS2322 / TS2551 / TS2339 / TS18047, each at exit 2, clean at exit 0):
+> `docs/research/round464-instruments/drive11.grade-lib-mjs-gate.out`. Commits `d5205b76`,
+> `78ab0625`, `87270c6f`.
+>
+> This banner is here because the section below was written as a recommendation and would
+> otherwise read, four lines down, as live unclaimed work — "once its 129 are cleared" is a
+> sentence about a figure that is now 0. Everything after it is left VERBATIM: it is the pricing
+> that justified the choice, and rewriting a measurement to match its outcome is how a doc stops
+> being evidence. Read it as the argument, not as the state.
+>
+> What the banner does NOT claim: the 37 non-`lib` `.mjs` probes are still ungated at **826**, and
+> nothing checks a `.mjs` implementation against its `.d.mts` declaration. Both unchanged.
+
 **No gate is landable at zero cost at any scope measured, including `lib`-only (129).** So:
 
 - **Do not** relax `strict` to make a gate fit. §3 is the measurement that says why.
@@ -139,6 +156,14 @@ under-declaring — which is the direction a reader cannot notice, because the c
   probes join the program.
 
 Blocker on the increment: none. It is unclaimed work, named here so it is claimable.
+**Claimed and closed the same day — see the banner at the head of this section.** The one thing
+the pricing got wrong, recorded because it changes how to read the 98/129 split above: the 98
+TS7006 rows were correctly called mechanical, but the **31 non-TS7006 rows were not 31 decisions
+either** — they collapsed to about eight root causes, and the two largest were structural rather
+than annotational (`offer-choice`'s `perCall` was `any[]` because evolving-array inference does
+not cross a nested closure, which no annotation fixes; `marker-floor`'s classification record is
+not describable by a closed shape at all and is left `any` in writing). Pricing a gate by error
+code over-counts the tail and under-counts what the tail is actually asking for.
 
 ## 6. Reproducing this
 
