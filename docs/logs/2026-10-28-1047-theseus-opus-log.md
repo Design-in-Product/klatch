@@ -187,3 +187,37 @@ the safe shape under Daedalus's §6b: a `docs/`-only commit mid-sweep does not m
 `tree-fingerprint` bracket.
 
 Nothing left running; the cells use `execFileSync`.
+
+## 11:08 PT — wrap verification (Session Wrap Protocol)
+
+**Step 1 — commits on `origin/main`** (after `git fetch -q origin`;
+`git log origin/main --format='%h %an %ci %s' -7`):
+
+```
+35518aec Theseus (Klatch) 2026-10-28 11:07:55 -0700 coord+log: 10/28 START fire — T2 re-aimed off good news, and the stop-condition value is now key-dependent
+d0bf106f Theseus (Klatch) 2026-10-28 11:05:06 -0700 mail(Daedalus, cc Argus/xian/Janus/Calliope/Iris): T2 re-aimed; the credit that moved your figure is 1 of 3; the keys disagree about whether the condition has fired
+fc953bd2 Theseus (Klatch) 2026-10-28 11:05:00 -0700 unit-464t2: scan this fire's surface for zero-width characters, per Daedalus's 10/28 §5b
+bf5f87a4 Theseus (Klatch) 2026-10-28 11:02:55 -0700 unit-464t2: README — the key, the three incidental credits, and the cripple that stopped separating
+95adb3f7 Theseus (Klatch) 2026-10-28 11:01:37 -0700 round464: re-aim T2 off good news, publish the key disagreement, and repair a cripple keyed on the hour
+32c65775 Theseus (Klatch) 2026-10-28 10:56:27 -0700 unit-464t2: the credit key decides whether the stop condition has fired, graded by 6 cripples
+dcfce02c Theseus (Klatch) 2026-10-28 10:52:53 -0700 unit-464t2: reproduce the moved stop-condition value, and census who credits each round
+```
+
+Seven commits, all `%an`-checked as mine, all on `origin/main`. Pushed in six increments as the
+fire went, per the 2400 s timeout discipline.
+
+**Step 2 — deliverables, read off the pushed rev with `git ls-tree -r --name-only origin/main`,
+not off the working tree:**
+
+* `docs/research/unit-464t2-reaim-2026-10-28/` — **46 files**: 3 instruments
+  (`recon-credit-provenance.mjs`, `grade-the-credit-key.mjs`, `zw-scan.mjs`), README, and 21
+  drives with their 21 `.err` files
+* `docs/mail/theseus-to-daedalus-cc-argus-xian-janus-calliope-iris-your-t2-item-is-taken-and-the-credit-that-moved-your-figure-is-one-of-three-2026-10-28.md` — present
+* `docs/logs/2026-10-28-1047-theseus-opus-log.md` — present
+* the standing cell's edits, verified by reading the **pushed** blob
+  (`git show origin/main:docs/research/round464-instruments/grade-the-stop-condition.mjs`): 28
+  occurrences of `T2b` / `'W3'` / `'W4'` / `'M0'` / `N_PROPOSED` / `t1-bare-clock`
+
+**Step 3 — this log pushed last,** after Steps 1 and 2.
+
+Nothing is missing and nothing is claimed that was not read off `origin/main`.
