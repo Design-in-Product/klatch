@@ -164,11 +164,12 @@ Full rule and rationale: `designinproduct` → `docs/conventions/people-details-
 
 Agents maintain session logs in `docs/logs/` during working sessions.
 
-- **Filename:** `YYYY-MM-DD-HHMM-NAME-MODEL-log.md` (e.g., `2026-03-11-1532-theseus-opus-log.md`)
+- **Filename:** `YYYY-MM-DD-NAME-log.md` (e.g., `2026-03-11-theseus-log.md`) — one file per agent per calendar day, not per session. A naming scheme keyed on time-of-day or model mints a new, disconnected file every time an agent wakes, which is exactly the harm this replaces (see below).
 - **Purpose:** Record decisions, findings, test results, and observations during a session
-- **When:** Create a log at session start if doing substantive work (testing, investigation, implementation)
-- **Content:** Timestamped entries with context, findings, and next steps
+- **When:** Create the day's log at the first session of the day doing substantive work (testing, investigation, implementation); later sessions that day append to the same file rather than starting a new one
+- **Content:** Timestamped entries with context, findings, and next steps. Multiple sessions in one day are separated by `---` and a new `## HH:MM — Session resumed` header. Record the model in front matter or in each session's header, not the filename — a model can change mid-session without the agent choosing it, and a filename asserting one model for a multi-model day is simply false.
 - **Update continuously:** Add timestamped entries as work progresses — do not reconstruct from memory at session end
+- **Migration:** forward-only. Don't rename existing logs under the old `YYYY-MM-DD-HHMM-NAME-MODEL-log.md` scheme — a mass rename breaks every link pointing at them for no real gain. New logs follow the convention above.
 
 ## Session Wrap Protocol (required before closing every session)
 
