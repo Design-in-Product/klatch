@@ -1,0 +1,70 @@
+=== RECON/464-T2 credit provenance over the dir key's cure set ===
+REV 26f3a062766eeb1fd358293fe5c7bba2d47a14c9
+WINDOW --since="2026-10-13 00:00:00"  (absolute)
+CLOCK 2026-10-28T17:50:55.600Z
+POPULATION commits=616 gated=18 roundDirsExisting=91
+CURE SET (dir key): 381,383,387,389,391,417,454,464
+MOST RECENT: 464
+CONSECUTIVE since: 0
+
+--- round 381 ---
+  dir created by : 4d58eee3 Daedalus (Klatch) 2026-10-13 :: round381: his 380 §4 taken, and the conjunct he showed unreachable by 
+  credited by    : 4d58eee3 Daedalus (Klatch) 2026-10-13 [SAME-AUTHOR SELF-CREATING]
+      subject    : round381: his 380 §4 taken, and the conjunct he showed unreachable by re-key is reachable 
+      gatedFiles : scripts/probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts scripts/sweep-probes.mjs
+      dirRounds  : 381
+
+--- round 383 ---
+  dir created by : 8b08f3e9 Daedalus (Klatch) 2026-10-13 :: round383: his 382 class reading reproduces as a SET, and my control fo
+  credited by    : 8b08f3e9 Daedalus (Klatch) 2026-10-13 [SAME-AUTHOR SELF-CREATING]
+      subject    : round383: his 382 class reading reproduces as a SET, and my control for the cure went red 
+      gatedFiles : scripts/probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts scripts/sweep-probes.mjs
+      dirRounds  : 383
+
+--- round 387 ---
+  dir created by : beb1ab78 Daedalus (Klatch) 2026-10-14 :: round387: his three routed items taken, and the instrument that routed
+  credited by    : 1588b85f Daedalus (Klatch) 2026-10-14 [SAME-AUTHOR]
+      subject    : round391: the declaration takes the `?` AND the seven callers take the boolean, because th
+      gatedFiles : scripts/lib/strip-source.d.mts
+      dirRounds  : 387,389,391
+
+--- round 389 ---
+  dir created by : b0f5965c Daedalus (Klatch) 2026-10-14 :: round389: his 388 taken, the census key his memo published is not the 
+  credited by    : 1588b85f Daedalus (Klatch) 2026-10-14 [SAME-AUTHOR]
+      subject    : round391: the declaration takes the `?` AND the seven callers take the boolean, because th
+      gatedFiles : scripts/lib/strip-source.d.mts
+      dirRounds  : 387,389,391
+
+--- round 391 ---
+  dir created by : 1588b85f Daedalus (Klatch) 2026-10-14 :: round391: the declaration takes the `?` AND the seven callers take the
+  credited by    : 1588b85f Daedalus (Klatch) 2026-10-14 [SAME-AUTHOR SELF-CREATING]
+      subject    : round391: the declaration takes the `?` AND the seven callers take the boolean, because th
+      gatedFiles : scripts/lib/strip-source.d.mts
+      dirRounds  : 387,389,391
+
+--- round 417 ---
+  dir created by : e2759907 Daedalus (Klatch) 2026-10-19 :: models+intel: add the three 5.5 models, floored pending capability ver
+  credited by    : e2759907 Daedalus (Klatch) 2026-10-19 [SAME-AUTHOR SELF-CREATING]
+      subject    : models+intel: add the three 5.5 models, floored pending capability verification; SDK bump 
+      gatedFiles : packages/server/src/__tests__/round11-klatch-creation.test.ts packages/server/src/__tests__/round39-model-fallback-parity.test.ts packages/shared/src/types.ts
+      dirRounds  : 417
+
+--- round 454 ---
+  dir created by : 4a05dbf8 Daedalus (Klatch) 2026-10-25 :: round454: his second victim is repaired, and reviving it exposed a mov
+  credited by    : a4f42fc7 Daedalus (Klatch) 2026-10-25 [SAME-AUTHOR]
+      subject    : round454: re-pin probe-round303 at 20 checks, and the clean re-drive confirms the 260 diag
+      gatedFiles : scripts/sweep-probes.mjs
+      dirRounds  : 454
+  credited by    : 28833525 Daedalus (Klatch) 2026-10-25 [SAME-AUTHOR]
+      subject    : round454: stripSource refuses a non-string, and the sweep caught my own .d.mts as undeclar
+      gatedFiles : scripts/lib/strip-source.d.mts scripts/lib/strip-source.mjs scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts
+      dirRounds  : 454
+
+--- round 464 ---
+  dir created by : 725f97ee Theseus (Klatch) 2026-10-27 :: round464: grade the proposed stop condition — N is unspecified, the at
+  credited by    : 87270c6f Daedalus (Klatch) 2026-10-27 [CROSS-AUTHOR]
+      subject    : gate(scripts/lib/*.mjs) 3/3: 127 → 0, wired into typecheck:scripts, and graded by 5 crippl
+      gatedFiles : scripts/lib/characterisation-markers.mjs scripts/lib/offer-choice.mjs
+      dirRounds  : 464
+
+SUMMARY credit-edges: same-author=8 cross-author=1 unknown=0 sum=9
