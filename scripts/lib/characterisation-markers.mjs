@@ -48,7 +48,11 @@ import { stripSource } from './strip-source.mjs';
 const SKIP = new Set(['node_modules', '.git', '.testdata', 'dist', 'build', '.scratch-theseus']);
 
 /** Every file under `root`, from a readdirSync walk — never grep (NO ROW for a NUL-containing file). */
-export function walk(root, dir = root, acc = []) {
+export function walk(
+  /** @type {string} */ root,
+  /** @type {string} */ dir = root,
+  /** @type {string[]} */ acc = [],
+) {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
     if (SKIP.has(e.name)) continue;
     const p = path.join(dir, e.name);
@@ -58,7 +62,7 @@ export function walk(root, dir = root, acc = []) {
   return acc;
 }
 
-export function population(root) {
+export function population(/** @type {string} */ root) {
   const all = walk(root);
   const tests = all.filter((f) => /\.test\.(ts|tsx|mts|js|mjs)$/.test(f));
   const probes = all.filter((f) => /(^|\/)probe-[^/]*\.(mts|mjs|ts)$/.test(f) && f.startsWith('scripts/'));
@@ -76,11 +80,11 @@ export function population(root) {
  * stripSource blanks regex bodies too — measured, not assumed — so this discriminator is
  * load-bearing rather than defensive.
  */
-export function commentSpans(src) {
+export function commentSpans(/** @type {string} */ src) {
   const masked = stripSource(src, false);
   if (masked.length !== src.length) throw new Error('stripSource broke length-preservation');
 
-  const blankedOrSpace = (i) => masked[i] === ' ' && src[i] !== '\n';
+  const blankedOrSpace = (/** @type {number} */ i) => masked[i] === ' ' && src[i] !== '\n';
   const spans = [];
   let i = 0;
   while (i < src.length) {
@@ -108,7 +112,7 @@ export function commentSpans(src) {
  * THREE spans, and a multi-word marker straddling a wrap is UNREPRESENTABLE against per-line spans —
  * no normalisation inside a span can reach text in a different span.
  */
-export function commentBlocks(src) {
+export function commentBlocks(/** @type {string} */ src) {
   const spans = commentSpans(src);
   const blocks = [];
   for (const s of spans) {
@@ -133,7 +137,7 @@ export function commentBlocks(src) {
  * marker written with a literal space between its words MISSES every instance the wrap happens to
  * split — and misses it by returning a SMALLER number, silently.
  */
-export function commentProse(raw) {
+export function commentProse(/** @type {string} */ raw) {
   return raw
     .split('\n')
     .map((l) => l.replace(/^[ \t]*(?:\/\/+|\/\*+|\*+\/|\*)[ \t]*/, '').replace(/\*\/[ \t]*$/, ''))
@@ -162,13 +166,13 @@ export const MARKERS = [
   { key: 'rather-than', re: /\brather\s+than\b/i },
 ];
 
-export function markersIn(text) {
+export function markersIn(/** @type {string} */ text) {
   const prose = commentProse(text);
   return MARKERS.filter((m) => m.re.test(prose)).map((m) => m.key);
 }
 
 /** The same predicate WITHOUT normalisation — the counterfactual, driven rather than described. */
-export function markersInRaw(text) {
+export function markersInRaw(/** @type {string} */ text) {
   return MARKERS.filter((m) => m.re.test(text)).map((m) => m.key);
 }
 
@@ -182,7 +186,7 @@ export function markersInRaw(text) {
  */
 export const PRECISE_MARKERS = new Set(['shape-rather-than-intent', 'characterising']);
 
-const preciseOnly = (keys) => keys.filter((k) => PRECISE_MARKERS.has(k));
+const preciseOnly = (/** @type {string[]} */ keys) => keys.filter((k) => PRECISE_MARKERS.has(k));
 
 /**
  * The two surfaces a characterisation can declare itself on, each a `(src) => {line, text}[]`.
@@ -201,11 +205,11 @@ const preciseOnly = (keys) => keys.filter((k) => PRECISE_MARKERS.has(k));
  * own subject and stale before it shipped.
  */
 export const SURFACES = {
-  comment: (src) => commentBlocks(src)
+  comment: (/** @type {string} */ src) => commentBlocks(src)
     .filter((b) => preciseOnly(markersIn(b.text)).length > 0)
     .map((b) => ({ line: b.line, text: commentProse(b.text), markers: preciseOnly(markersIn(b.text)) })),
 
-  code: (src) => {
+  code: (/** @type {string} */ src) => {
     const masked = stripSource(src, false);
     if (masked.length !== src.length) throw new Error('stripSource broke length-preservation');
     // A code-surface member is one STATEMENT's worth of text, not one line: a `check()` name is
@@ -363,8 +367,9 @@ export const SELF_EXCLUDED = 'scripts/probe-round371-the-characterisation-item-i
  * Both sides of the pin, over one surface-keyed census. Returns a member list, never a count:
  * two keys sharing a denominator agree vacuously, and a count hides which member moved.
  */
-export function reconcile(root, registry = REGISTRY) {
+export function reconcile(/** @type {string} */ root, registry = REGISTRY) {
   const pop = population(root).files.filter((f) => f !== SELF_EXCLUDED);
+  /** @type {Array<{file: string, surface: string, line: number, text: string, markers: string[]}>} */
   const found = [];
   for (const f of pop) {
     const src = fs.readFileSync(path.join(root, f), 'utf8');
@@ -372,7 +377,10 @@ export function reconcile(root, registry = REGISTRY) {
       for (const m of read(src)) found.push({ file: f, surface, ...m });
     }
   }
-  const matches = (e, m) => e.file === m.file && e.surface === m.surface && m.text.includes(e.anchor);
+  const matches = (
+    /** @type {{file: string, surface: string, anchor: string}} */ e,
+    /** @type {{file: string, surface: string, text: string}} */ m,
+  ) => e.file === m.file && e.surface === m.surface && m.text.includes(e.anchor);
   const ambiguous = registry
     .map((e) => ({ id: e.id, hits: found.filter((m) => matches(e, m)).length }))
     .filter((r) => r.hits > 1);

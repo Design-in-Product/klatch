@@ -38,9 +38,15 @@
  * arm on record seeds one conversation, so this has never yet mattered — which is
  * exactly when it is cheap to get right.
  */
-const width = (a) => a.to - a.from + 1;
-const same = (a, b) => a.conversation === b.conversation && a.from === b.from && a.to === b.to;
-const contains = (outer, inner) =>
+/**
+ * @typedef {{conversation: string|null, from: number, to: number}} Address
+ * @typedef {Address & {offeredByCall: number}} OfferedAddress
+ */
+
+const width = (/** @type {Address} */ a) => a.to - a.from + 1;
+const same = (/** @type {Address} */ a, /** @type {Address} */ b) =>
+  a.conversation === b.conversation && a.from === b.from && a.to === b.to;
+const contains = (/** @type {Address} */ outer, /** @type {Address} */ inner) =>
   outer.conversation === inner.conversation && inner.from >= outer.from && inner.to <= outer.to;
 
 /**
@@ -54,24 +60,52 @@ const contains = (outer, inner) =>
  * @param markingSeqs   scoped ordinals of the rows holding the restriction (`structural.markingSeqs`).
  * @param markingConversation  the conversation those ordinals are numbered in.
  */
-export function scoreOfferChoice({ calls, markingSeqs = [], markingConversation = null }) {
+export function scoreOfferChoice(
+  /**
+   * @type {{
+   *   calls: Array<{kind: string, expand?: Address|null, offeredAddresses?: Address[]|null}>,
+   *   markingSeqs?: number[],
+   *   markingConversation?: string|null,
+   * }}
+   */
+  { calls, markingSeqs = [], markingConversation = null },
+) {
   // A range "covers" the restriction if reading it would put the restriction in front of
   // the model. Stated as offer/ask geometry, deliberately independent of
   // `expansionHeldTheMarking`, which reads the *result text*. Two independent routes to
   // the same number is the point: on arm M both must read 2/5, and a disagreement is a
   // render-vs-geometry mismatch worth stopping for rather than a scoring detail.
-  const covers = (a) =>
+  const covers = (/** @type {Address} */ a) =>
     markingConversation !== null &&
     a.conversation === markingConversation &&
     markingSeqs.some((m) => m >= a.from && m <= a.to);
 
-  const offersBefore = (i) =>
+  const offersBefore = (/** @type {number} */ i) =>
     calls.slice(0, i).flatMap((c, j) =>
       (c.offeredAddresses || []).map((a) => ({ ...a, offeredByCall: j + 1 })));
 
-  const perCall = [];
-  calls.forEach((c, i) => {
-    if (c.kind !== 'expand' || !c.expand) return;
+  // Round 466, and the shape of this is the whole point rather than a style preference.
+  //
+  // This was `const perCall = []` plus `perCall.push(…)` inside a `forEach`, and under the new
+  // `scripts/lib/**/*.mjs` gate that array is `any[]` no matter what: TypeScript's evolving-array
+  // inference does not cross a nested closure, so EVERY run-level field below — eleven of them,
+  // each reading a named field off this record — was unchecked against the record it reads. Two
+  // ways out: hand-write the 17-field record as a typedef, or make the element type inferable.
+  // Hand-writing it is the duplicated-contract shape that has drifted three times in
+  // `recall-tap.mjs` alone and twice more this fire, so: `map` + `filter`, which infers.
+  //
+  // Behaviour-identical, point by point. `map` visits the same array in the same order, so the
+  // `someEarlierAskCovered` accumulator sees the same sequence; a skipped call returns `null` and
+  // is filtered, so `perCall` holds the same records in the same order; and `filter(p => p !==
+  // null)` is a narrowing where `filter(Boolean)` would not be.
+  //
+  // The accumulator itself replaces `perCall.some((p) => p.askedCoversTheMarking)` read one line
+  // ABOVE the push — i.e. over the earlier calls only, which is exactly what this flag means and
+  // what the accumulator holds, being set after the record is built. It also removes a quadratic
+  // rescan, which is incidental and not the reason.
+  let someEarlierAskCovered = false;
+  const perCall = calls.map((c, i) => {
+    if (c.kind !== 'expand' || !c.expand) return null;
     const asked = c.expand;
     const onTable = offersBefore(i);
     const matched = onTable.find((a) => same(a, asked)) ?? null;
@@ -91,8 +125,10 @@ export function scoreOfferChoice({ calls, markingSeqs = [], markingConversation 
     // one call earlier. `declinedACoveringOfferHere` is left untouched — it is per-call and
     // its name says "here", so it was never the field that lied; the *report* was. This is
     // the fact the report needed and did not have.
-    const coveringAlreadyReadBefore = perCall.some((p) => p.askedCoversTheMarking);
-    perCall.push({
+    const coveringAlreadyReadBefore = someEarlierAskCovered;
+    // After the record is built, matching the read above — see the accumulator's note.
+    if (covers(asked)) someEarlierAskCovered = true;
+    return {
       call: i + 1,
       asked,
       widthAsked: width(asked),
@@ -120,8 +156,8 @@ export function scoreOfferChoice({ calls, markingSeqs = [], markingConversation 
       // the start was never offered, because "offered start + N" is then undefined rather
       // than zero, and a zero would pool into any average taken over the column.
       startPlusN: startsOffered.length > 0 ? asked.to - asked.from : null,
-    });
-  });
+    };
+  }).filter((p) => p !== null);
 
   // A run that never expands still faced the offers its last render printed, so the
   // choice-point set for the run-level fields is the per-call one when it expanded and
@@ -181,7 +217,9 @@ export function scoreOfferChoice({ calls, markingSeqs = [], markingConversation 
  * against what was on the table. A reporting change, not a capture change — every value
  * here was already in `expandAction.offeredAddresses`/`expandArgs`, unattributed.
  */
-export function formatOfferChoice(scored) {
+export function formatOfferChoice(
+  /** @type {ReturnType<typeof scoreOfferChoice>} */ scored,
+) {
   if (scored.perCall.length === 0) {
     return `      no expand call; ${scored.offersEverOnTable} address(es) offered across the run` +
       (scored.coveringOfferEverOffered ? ', at least one of which covered the restriction' : '');

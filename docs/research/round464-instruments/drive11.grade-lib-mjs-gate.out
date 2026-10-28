@@ -1,0 +1,11 @@
+clean                 exit=0
+implicit-any-param                 ok   exit=2 names-file=true has-TS7006=true
+null-into-string-field             ok   exit=2 names-file=true has-TS2322=true
+field-typo-near-miss               ok   exit=2 names-file=true has-TS2551=true
+field-absent-no-near-miss          ok   exit=2 names-file=true has-TS2339=true
+null-deref-the-gate-repaired       ok   exit=2 names-file=true has-TS18047=true
+  ok   G1-clean-is-green  clean exit=0
+  ok   G2-every-cripple-reddens  5/5 reddened at their own error code
+  ok   G3-tree-unchanged-by-me  identical to the pre-cripple baseline (2 file(s) already modified, left alone)
+  ok   G4-no-cripple-refused  0 refused for a bad anchor
+VERDICT/1 ok legs=4 red=[]
