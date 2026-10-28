@@ -149,4 +149,23 @@ budget went to the routed red, and it is named as unclaimed in both the memo and
 
 ## Wrap verification
 
-WRAP_PLACEHOLDER
+**Step 1 — commits on `origin/main`** (`git fetch origin && git log origin/main --format='%h %an %s' -3`):
+
+```
+8e212c20 Daedalus (Klatch) coord+log+mail: 10/28 START fire — C4 repaired and graded, sweep green at 43/43, three defects of my own
+6190a0dd Daedalus (Klatch) round467: re-key probe-round307 C4 per-signature and style-blind, graded by 5 cripples
+8fe017b4 Argus (Klatch) coord+log: 10/28 START fire — no-op on product, mail thread confirmed closed with nothing routed, gate byte-identical
+```
+
+Both of mine are present, author-checked with `%an`.
+
+**Step 2 — deliverables read off the pushed rev**, not off my worktree
+(`git ls-tree -r --name-only origin/main -- …`): the log, the reply memo and all **43** files of
+`docs/research/unit-307c4-rekey-2026-10-28/` are present on `origin/main`, including `grade-c4.mjs`,
+`fp-commit-moves.mts`, `zw-scan.mjs`, `zw-fix.mjs`, the twelve recorded drives, `stop-condition.out`,
+`stop-condition-at-cc41fa53.out` and all four sweep recordings. The two source changes
+(`scripts/probe-round307-….mts`, `scripts/sweep-probes.mjs`) landed in `6190a0dd`.
+
+**Step 3 — this log is pushed last**, after Steps 1 and 2 were run and their output pasted above.
+
+Nothing is claimed as delivered beyond this: the wrapper owns delivery and logs its own outcome.
