@@ -38,6 +38,29 @@
 // 6. REPAIR, same fire. T6 sliced a literal path under `docs/mail/`. The close-discipline
 //    `git mv`s a closed thread to `docs/mail/read/`, so the slice refused. Now keyed on the
 //    memo's BASENAME located in the rev's tree, which survives the documented move.
+// 7. RE-AIM 2026-10-28 START. T2 asserted `consecutive > 0`, which makes it RED on GOOD NEWS:
+//    a run of 0 means the track just cured a gated surface. Daedalus routed that here on 10-28
+//    after his 87270c6f moved the value 454/10 → 464/0. T2 now asserts the condition has NOT
+//    fired (`consecutive < N_PROPOSED`), so a RED means "the track should stop and re-scope" —
+//    the same information with the polarity the reader expects. The evaluability half of the old
+//    leg text is carried by `measured()` refusing, and by G1, which is the gate.
+// 8. ADDED, same fire. T2b. `87270c6f` credits round 464 under the dir key only because it filed
+//    an artifact into round 464's directory; round 464 cured nothing. Under a SELF-ATTESTED key
+//    (the crediting commit's subject names the round, OR the commit created the round's dir) the
+//    same rev reads 454/10 and the condition HAS fired. T2b publishes that disagreement, so the
+//    standing line can no longer be quoted without the key it was computed under. The key and its
+//    controls are graded in `docs/research/unit-464t2-reaim-2026-10-28/grade-the-credit-key.mjs`
+//    (9 legs, 6 cripples); it is RE-IMPLEMENTED here rather than imported, on design note 4's own
+//    reasoning — this is the cell this seat re-drives every fire and it must not acquire a
+//    cross-directory dependency a later round's guard can kill. `P6` pins the two agreeing.
+// 9. RETIRED, same fire: P1, P3, P4. Each was pre-registered on 10-27, LANDED that day, and was
+//    decided against by a real event rather than by a defect — P1/P3 by 87270c6f, P4 by the bare
+//    window's eroded band shrinking as the drive clock moved earlier in the boundary day. Left
+//    live they would publish `refuted=[P1,P3,P4]` every fire beside leg text asserting the OLD
+//    value, which is the "a cured figure leaves a live sentence about the old one" defect. T9
+//    carries their full history — both values, the rev each was read at, and the cause — which is
+//    strictly more than the `refuted` token said. Nothing is deleted, and none is re-keyed onto a
+//    value where it would land: a prediction bent until it passes grades nothing.
 
 import { execFileSync } from 'node:child_process';
 import { readFileSync, existsSync, readdirSync } from 'node:fs';
@@ -46,6 +69,10 @@ const REPO = new URL('../../..', import.meta.url).pathname.replace(/\/$/, '');
 // ABSOLUTE cutoff. `SINCE_BARE` is kept only so W1 can drive the defect it replaced.
 const SINCE = '2026-10-13 00:00:00';
 const SINCE_BARE = '2026-10-13';
+// The numeric bound this seat supplied with the condition on 2026-10-27. T6 reports that the
+// PROPOSAL left N unspecified; a condition with a free bound cannot fire, so the value is named
+// here and the leg that uses it says which number it used.
+const N_PROPOSED = 5;
 
 // ---------------------------------------------------------------------------
 // CRIPPLES. Each of the three repairs driven this fire has one, so that its leg
@@ -55,15 +82,24 @@ const SINCE_BARE = '2026-10-13';
 //   window-bare : restore the bare `--since`, so absolute == bare   -> W1 must RED
 //   memo-path   : restore T6's literal `docs/mail/` path            -> T6 must REFUSE
 //   t1-no-clock : reconstruct T1 without supplying the drive clock  -> T1 must RED
+//   t1-bare-clock : put a BARE date back in the t1-no-clock recon key -> W4 must RED
+//                 (added 10-28. The `t1-no-clock` cripple was keyed on the ambient clock and
+//                  stopped separating T1 on a fire that ran near drive1's hour. This arm
+//                  reproduces that regression deterministically, so W4's green is graded.)
+//   t2-dir-only : make the self-attested key admit every credit     -> T2b must go GREEN
+//                 (added 10-28 with T2b: a second key that admits everything republishes the
+//                  dir key's figure while reading as a second opinion, and T2b's RED is the
+//                  whole finding, so the one thing that must be graded is that the RED is
+//                  load-bearing rather than structural)
 //
 // Selected by argv, so the committed source is the real source in every arm; each
 // name below is referenced again at its own site, so a cripple that nothing reads
 // cannot sit here looking live. An unknown name exits non-zero rather than running
 // a clean arm under a crippled filename.
 //
-//   node grade-the-stop-condition.mjs [window-bare|memo-path|t1-no-clock]
+//   node grade-the-stop-condition.mjs [window-bare|memo-path|t1-no-clock|t1-bare-clock|t2-dir-only]
 // ---------------------------------------------------------------------------
-const CRIPPLES = ['window-bare', 'memo-path', 't1-no-clock'];
+const CRIPPLES = ['window-bare', 'memo-path', 't1-no-clock', 't1-bare-clock', 't2-dir-only'];
 const CRIPPLE = process.argv[2] ?? null;
 if (CRIPPLE !== null && !CRIPPLES.includes(CRIPPLE)) {
   console.error(`unknown cripple ${JSON.stringify(CRIPPLE)}; known: ${CRIPPLES.join(',')}`);
@@ -347,9 +383,24 @@ for (const f of [...scriptsFiles].sort()) console.log(`    ${f}`);
 // drive1's wall clock — to the key it actually used (the bare date).
 let recon = null;
 let reconDetail = 'the reconstruction population did not load';
-// Under `t1-no-clock` the reconstruction is given the rev but NOT the drive clock,
-// which is exactly what drive1's recording left a reader holding.
-const RECON_SINCE = CRIPPLE === 't1-no-clock' ? SINCE_BARE : DRIVE1.clock;
+// Under `t1-no-clock` the reconstruction is given the rev but a DIFFERENT clock from
+// drive1's, which is exactly what drive1's recording left a reader holding: a rev and
+// no hour.
+//
+// REPAIR 2026-10-28 START. This cripple used to pass `SINCE_BARE` — the literal
+// `'2026-10-13'` — which git resolves against the AMBIENT clock. It separated on
+// 10-27 at 14:57 (reconstruction 6/169 vs published 8/169, T1 RED) and STOPPED
+// separating on 10-28 at ~11:0x (reconstruction 8/169 == published 8/169, T1 green),
+// because this fire ran at nearly the same time of day as drive1's 10:51 and the
+// eroded band therefore nearly coincided. The cripple was keyed on the drive clock —
+// the hazard it exists to demonstrate — so T1's green was vacuous at some hours and
+// load-bearing at others, with nothing in the output saying which. Now pinned to the
+// clock drive2 actually ran at, so the arm separates at every hour; `W4` reddens if
+// anyone puts a bare date back here, and `W3` keeps the ambient figure printed so the
+// coincidence stays visible instead of flipping a verdict silently.
+const CLOCK_OTHER = CRIPPLE === 't1-bare-clock' ? SINCE_BARE : '2026-10-13 14:49:00';
+const RECON_SINCE =
+  CRIPPLE === 't1-no-clock' || CRIPPLE === 't1-bare-clock' ? CLOCK_OTHER : DRIVE1.clock;
 const reconCommits = loadCommits(RECON_SINCE, DRIVE1.rev);
 if (reconCommits !== null) {
   const rs = new Set();
@@ -376,6 +427,55 @@ measured(
 );
 
 // ---------------------------------------------------------------------------
+// W3 — [MEAS] the AMBIENT bare reconstruction, printed in every arm. This is the
+// figure the `t1-no-clock` cripple used to be keyed on, and it moves with the
+// hour the fire happens to run at. Kept visible so a future reader can see when
+// it coincides with the published pair rather than discovering it by a cripple
+// quietly going green.
+// ---------------------------------------------------------------------------
+let ambientScripts = null;
+let ambientMjs = null;
+const ambientCommits = loadCommits(SINCE_BARE, DRIVE1.rev);
+if (ambientCommits !== null) {
+  const as = new Set();
+  const am = new Set();
+  for (const c of ambientCommits) {
+    for (const f of c.files) {
+      if (f.startsWith('scripts/')) as.add(f);
+      if (f.startsWith('docs/research/') && f.endsWith('.mjs')) am.add(f);
+    }
+  }
+  ambientScripts = as.size;
+  ambientMjs = am.size;
+}
+const ambientCoincides =
+  ambientScripts === null ? null : ambientScripts === HIS.scripts && ambientMjs === HIS.researchMjs;
+console.log(`\nW3 [MEAS] the AMBIENT bare reconstruction at rev=${DRIVE1.rev} --since=${JSON.stringify(SINCE_BARE)}:`);
+console.log(`  scripts/ distinct : ${ambientScripts ?? 'UNMEASURED'}  (published ${HIS.scripts})`);
+console.log(`  research .mjs     : ${ambientMjs ?? 'UNMEASURED'}  (published ${HIS.researchMjs})`);
+console.log(`  coincides with the published pair at THIS hour: ${ambientCoincides ?? 'UNMEASURED'}`);
+console.log(`  drive1's clock was ${DRIVE1.clock}; this drive's is ${new Date().toISOString()}`);
+measured(
+  null,
+  'W3',
+  '[MEAS] the ambient bare reconstruction and whether it happens to coincide with the published pair at this hour (no assertion; it is a function of the drive clock)',
+  `ambient ${ambientScripts}/${ambientMjs} vs published ${HIS.scripts}/${HIS.researchMjs}; coincides=${ambientCoincides}`
+);
+
+// ---------------------------------------------------------------------------
+// W4 — the `t1-no-clock` cripple's recon key must carry an explicit TIME, not a
+// bare date. A bare date here is resolved against the ambient clock and the
+// cripple stops separating at the hours that happen to match drive1's. This is
+// the structural guard against reverting the 10-28 repair above.
+// ---------------------------------------------------------------------------
+measured(
+  /\b\d{2}:\d{2}:\d{2}$/.test(CLOCK_OTHER) && CLOCK_OTHER !== DRIVE1.clock,
+  'W4',
+  'the t1-no-clock cripple reconstructs at an explicitly pinned clock that differs from drive1\'s, so its separating power is not a function of the hour the fire runs at',
+  `CLOCK_OTHER=${JSON.stringify(CLOCK_OTHER)} DRIVE1.clock=${JSON.stringify(DRIVE1.clock)} hasExplicitTime=${/\b\d{2}:\d{2}:\d{2}$/.test(CLOCK_OTHER)}`
+);
+
+// ---------------------------------------------------------------------------
 // T2 — THE UNIT MISMATCH. His condition's unit is a ROUND. His reported current
 // value is a count of FILES ("8 against 755"). Compute the per-ROUND value.
 // ---------------------------------------------------------------------------
@@ -399,11 +499,131 @@ console.log(`  rounds that cured a gated surface (dir key): ${[...curedByDirKey]
 console.log(`  most recent such round                     : ${lastCuringRoundDirKey ?? 'NONE'}`);
 console.log(`  highest existing round                     : ${maxRound ?? 'NONE'}`);
 console.log(`  CONSECUTIVE rounds since, gated-cure-free  : ${consecutiveSelfOnly ?? 'UNMEASURED'}`);
+console.log(`  N_PROPOSED                                 : ${N_PROPOSED}`);
+console.log(
+  `  FIRED under the dir key                    : ${consecutiveSelfOnly === null ? 'UNMEASURED' : consecutiveSelfOnly >= N_PROPOSED}`
+);
+// RE-AIMED 2026-10-28 (design note 7). The old key was `consecutive > 0`, which reddens when the
+// run is 0 — i.e. on the track having just cured a gated surface. A leg must not be RED on good
+// news. The assertion is now the condition itself, in the direction where a RED is a problem:
+// the track has NOT reached the point where it should stop and re-scope.
 measured(
-  consecutiveSelfOnly === null ? null : consecutiveSelfOnly > 0,
+  consecutiveSelfOnly === null ? null : consecutiveSelfOnly < N_PROPOSED,
   'T2',
-  'the condition is evaluable per ROUND, and the current consecutive self-only run is > 0',
-  `last gated-curing round ${lastCuringRoundDirKey}, highest ${maxRound}, consecutive ${consecutiveSelfOnly}`
+  `the stop condition has NOT fired under the dir key — a RED here means the consecutive self-only run has reached N=${N_PROPOSED} and the track should stop and re-scope`,
+  `last gated-curing round ${lastCuringRoundDirKey}, highest ${maxRound}, consecutive ${consecutiveSelfOnly}, N=${N_PROPOSED}, fired=${consecutiveSelfOnly === null ? 'UNMEASURED' : consecutiveSelfOnly >= N_PROPOSED}`
+);
+
+// ---------------------------------------------------------------------------
+// T2b — THE KEY DECIDES THE ANSWER (design note 8). A credit edge is
+// SELF-ATTESTED iff the crediting commit's subject names the credited round, or
+// the crediting commit is the one that created that round's directory. Clause
+// (b) is not decoration: round 417's credit comes from the commit that created
+// its directory and that commit's subject carries no round label at all.
+//
+// `dirCreatorOf` REFUSES with null rather than guessing. An unresolvable creator
+// must not become "not self-creating", because that reads identically to
+// "incidental" and would manufacture the finding this leg exists to report.
+// ---------------------------------------------------------------------------
+const creatorCache = new Map();
+function dirCreatorOf(round) {
+  if (creatorCache.has(round)) return creatorCache.get(round);
+  let res = null;
+  try {
+    const raw = git([
+      'log',
+      '--diff-filter=A',
+      '--reverse',
+      `--format=%H${SEP}%an`,
+      '--',
+      `docs/research/round${round}-instruments/`,
+    ]);
+    const first = raw.split('\n').find((l) => l.trim().length > 0);
+    if (first) {
+      const [hash, author] = first.split(SEP);
+      if (hash && author) res = { hash, author };
+    }
+  } catch (e) {
+    res = null;
+  }
+  creatorCache.set(round, res);
+  return res;
+}
+
+const creditEdges = [];
+for (const c of gated) for (const r of c.dirRounds) creditEdges.push({ round: r, commit: c });
+for (const e of creditEdges) {
+  const creator = dirCreatorOf(e.round);
+  if (creator === null) {
+    e.genuine = null;
+  } else if (CRIPPLE === 't2-dir-only') {
+    e.genuine = true;
+  } else {
+    e.genuine = e.commit.subjectRound === e.round || creator.hash === e.commit.hash;
+  }
+}
+const edgesRefused = creditEdges.filter((e) => e.genuine === null).length;
+const curedBySelfAttested =
+  edgesRefused > 0
+    ? null
+    : [...new Set(creditEdges.filter((e) => e.genuine === true).map((e) => e.round))].sort(
+        (a, b) => a - b
+      );
+const lastSelfAttested =
+  curedBySelfAttested === null || curedBySelfAttested.length === 0
+    ? null
+    : Math.max(...curedBySelfAttested);
+const consecutiveSelfAttested =
+  lastSelfAttested === null ? null : existingRounds.filter((r) => r > lastSelfAttested).length;
+const incidentalRounds =
+  curedBySelfAttested === null
+    ? null
+    : [...new Set(creditEdges.filter((e) => e.genuine === false).map((e) => e.round))].sort(
+        (a, b) => a - b
+      );
+
+const firedDirKey = consecutiveSelfOnly === null ? null : consecutiveSelfOnly >= N_PROPOSED;
+const firedSelfAttested =
+  consecutiveSelfAttested === null ? null : consecutiveSelfAttested >= N_PROPOSED;
+
+console.log(`\nT2b does the CREDIT KEY decide whether the condition has fired?`);
+console.log(`  credit edges                 : ${creditEdges.length} (refused ${edgesRefused})`);
+console.log(
+  `  dir key            : cure set ${[...curedByDirKey].sort((a, b) => a - b).join(',')} last=${lastCuringRoundDirKey} consecutive=${consecutiveSelfOnly} fired=${firedDirKey ?? 'UNMEASURED'}`
+);
+console.log(
+  `  self-attested key  : cure set ${curedBySelfAttested === null ? 'UNMEASURED' : curedBySelfAttested.join(',')} last=${lastSelfAttested ?? 'UNMEASURED'} consecutive=${consecutiveSelfAttested ?? 'UNMEASURED'} fired=${firedSelfAttested ?? 'UNMEASURED'}`
+);
+console.log(
+  `  credited ONLY by an incidental edge: ${incidentalRounds === null ? 'UNMEASURED' : incidentalRounds.join(',') || 'NONE'}`
+);
+measured(
+  firedDirKey === null || firedSelfAttested === null ? null : firedDirKey === firedSelfAttested,
+  'T2b',
+  'the dir key and the self-attested key AGREE on whether the condition has fired — a RED means the standing line cannot be quoted without naming the key it came from',
+  `dir fired=${firedDirKey} (consecutive ${consecutiveSelfOnly}) vs self-attested fired=${firedSelfAttested} (consecutive ${consecutiveSelfAttested}); incidental=[${incidentalRounds === null ? 'UNMEASURED' : incidentalRounds.join(',')}]`
+);
+
+// ---------------------------------------------------------------------------
+// T9 — [MEAS] the dated history of this cell's own headline figure (design
+// note 9). Carries what retiring P1/P3/P4 would otherwise have dropped: both
+// values, the rev each was read at, and the cause of the move. Asserts nothing.
+// ---------------------------------------------------------------------------
+console.log(`\nT9 [MEAS] dated history of the figure this cell exists to publish:`);
+console.log(`  2026-10-27, rev 7a84c8d4 (this cell's source, unchanged since): dir key last=454 consecutive=10 — P1/P3 pre-registered and LANDED`);
+console.log(`  2026-10-28, rev 26f3a062 and later                           : dir key last=464 consecutive=0  — P1/P3 decided against`);
+console.log(`  cause: 87270c6f (Daedalus, 10-27 17:33) filed a grader under docs/research/round464-instruments/`);
+console.log(`         while curing scripts/lib/characterisation-markers.mjs and scripts/lib/offer-choice.mjs.`);
+console.log(`         Round 464 is this cell's own round and it cured nothing — see T2b.`);
+console.log(`  P4 (the bare window's 2 lost scripts/ paths) read "0|" on 10-28: the eroded band is`);
+console.log(`         [10-13 00:00, 10-13 <drive clock>) and the 10-28 drive ran EARLIER in the day`);
+console.log(`         than the 10-27 one, so the band shrank 19 -> 7 and no distinct path is lost.`);
+console.log(`         Decided against by the clock, which is the hazard W1/W2 exist to report.`);
+measured(
+  null,
+  'T9',
+  '[MEAS] dated history of the dir-key figure and the retirement record for P1/P3/P4 (no assertion)',
+  `10-27 454/10 -> 10-28 ${lastCuringRoundDirKey}/${consecutiveSelfOnly}; cause 87270c6f; P4 bare-window path loss now 0`
 );
 
 // ---------------------------------------------------------------------------
@@ -650,29 +870,40 @@ measured(
 // ---------------------------------------------------------------------------
 // PREDICTIONS — pre-registered in source before the drive.
 // ---------------------------------------------------------------------------
+// --- RETIRED 2026-10-28 START (design note 9) ---------------------------------
+// P1 ("the most recent dir-key gated-curing round is 454", expected 454) and
+// P3 ("the union key does not move the run; both give 10", expected 10) were
+// pre-registered on 10-27 and LANDED on 10-27. They were decided against on
+// 10-28 by 87270c6f — a real event, not an instrument defect. P4 ("the bare
+// window's tail loss is exactly the round263 and round377 probes") was decided
+// against by the drive clock: the eroded band is confined to the window's
+// boundary day and shrinks as the drive runs earlier in that day, so the loss
+// read "0|" rather than a two-member list.
+//
+// They are retired rather than re-expected, because bending a pin to the value
+// it now holds grades nothing, and rather than left live, because the leg text
+// of a live-but-refuted prediction asserts the OLD value every fire. T9 carries
+// both values, the rev each was read at, and the cause — strictly more than the
+// `refuted=[P1,P3,P4]` token carried. P6/P7/P8 below replace them with claims
+// about THIS fire's measurement, pre-registered before its first drive.
+// -----------------------------------------------------------------------------
 predict(
-  'P1',
-  'the most recent round that cured a gated surface under the dir key is 454',
+  'P6',
+  'the self-attested key re-implemented in this cell agrees with the one graded in unit-464t2-reaim-2026-10-28 at this rev: most recent gated-curing round 454',
   454,
-  () => lastCuringRoundDirKey
+  () => lastSelfAttested
 );
 predict(
-  'P3',
-  'the union key does NOT move the current consecutive run (both give 10) because the most recent gated cure is round 454 under either key',
+  'P7',
+  'the self-attested key gives a consecutive run of 10, so the two keys reach OPPOSITE verdicts about whether the condition has fired at N=5 — this is T2b\'s RED, pinned as a number',
   10,
-  () => consecutiveUnion
+  () => consecutiveSelfAttested
 );
-// --- pre-registered for the 2026-10-27 WORK-fire repair, before its drive ---
-// Compared as a joined MEMBER LIST with the length checked first, so an empty
-// member cannot pass as agreement.
 predict(
-  'P4',
-  'the two distinct scripts/ files the bare window had lost off its tail are exactly the round263 and round377 probes — the members whose absence turned T1 red between drive1 and drive2',
-  '2|scripts/probe-round263-an-emptiness-claim-over-a-shared-window-is-not-strict-it-is-blind.mts,scripts/probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts',
-  () => {
-    if (!Array.isArray(barePathLoss) || commitsBare === null) return null;
-    return `${barePathLoss.length}|${barePathLoss.join(',')}`;
-  }
+  'P8',
+  'exactly three rounds are credited only by an incidental edge — 387 and 389 (round 391\'s own commit, same author, amending their cells) and 464 (87270c6f, cross-author)',
+  '3|387,389,464',
+  () => (incidentalRounds === null ? null : `${incidentalRounds.length}|${incidentalRounds.join(',')}`)
 );
 predict(
   'P5',
@@ -694,14 +925,33 @@ predict(
 // ---------------------------------------------------------------------------
 // VERDICT
 // ---------------------------------------------------------------------------
+// MEAS legs carry a figure and assert nothing, so their null must not read as a
+// refusal. The exclusion is keyed on a DECLARED id list, not on the leg's own
+// text: a text-only rule would let any leg opt out of the verdict by editing its
+// own first six characters. `MEAS_DECLARED_OK` reddens if a declared MEAS leg
+// ever carries a non-null value, or if its text does not actually say [MEAS] —
+// either means the id list and the legs have drifted apart.
+const MEAS_LEGS = ['T9', 'W3'];
+const measDrift = MEAS_LEGS.filter((id) => {
+  const l = legs.find((x) => x.id === id);
+  return l === undefined || l.value !== null || !/^\[MEAS\]/.test(l.text);
+});
+measured(
+  measDrift.length === 0,
+  'M0',
+  'every leg declared as [MEAS] exists, carries no value and says so in its own text — so the verdict\'s refusal set cannot be opted out of silently',
+  `declared=[${MEAS_LEGS.join(',')}] drifted=[${measDrift.join(',')}]`
+);
+
+const isMeas = (l) => MEAS_LEGS.includes(l.id);
 const red = legs.filter((l) => l.value === false).map((l) => l.id);
-const refused = legs.filter((l) => l.value === null).map((l) => l.id);
+const refused = legs.filter((l) => l.value === null && !isMeas(l)).map((l) => l.id);
 const refuted = preds.filter((p) => p.actual !== null && p.actual !== p.expected).map((p) => p.id);
 const prefused = preds.filter((p) => p.actual === null).map((p) => p.id);
 
 console.log(`\n--- LEGS ---`);
 for (const l of legs) {
-  const v = l.value === null ? 'REF ' : l.value ? ' ok ' : 'RED ';
+  const v = isMeas(l) ? 'MEAS' : l.value === null ? 'REF ' : l.value ? ' ok ' : 'RED ';
   console.log(`${v} ${l.id}: ${l.text}`);
   console.log(`      detail: ${l.detail}`);
 }
