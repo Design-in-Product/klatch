@@ -1,0 +1,135 @@
+=== RECON/464-T2-surface — the run length, the third key, and whether "cure" is modelled ===
+REV 41ae8657e67b6fbfbfbe5497d5d88fe50de6c58e
+CLOCK 2026-10-28T21:52:04.263Z
+windows pinned: filed="2026-10-13 00:00:00" wide="2026-09-13 00:00:00"
+
+--- Q-B: what round numbers are ATTESTED, and by what
+  round-dirs        n=  91  span=365..464  above 292: 91
+  round-tests       n=  97  span=3..277  above 292: 0
+  other-docs        n= 226  span=49..445  above 292: 49
+  commit-subjects   n= 455  span=2..467  above 292: 174
+
+  UNION            n= 465  span=2..467  above 292: 175
+  dir-only figure published as the floor : 91
+  number-span figure published as the run: 175
+  attested-union figure (this recon)     : 175
+
+  density inside the dir span 365..464: integers=100 dirs=91 missingDirs=9
+    integers with NO dir            : 366,371,372,374,375,377,379,427,445
+    of those, attested by NO source : 0 → (none)
+    so "every integer in the span is a round" is SUPPORTED on this evidence
+
+--- Q-A: three keys over the FILED 15-day window, product-source surface
+  window 2026-10-13 00:00:00  productSourceCommits=2
+    key1 label-only      (recon2's)   : members=[] last=NONE consecutive=UNMEASURED
+    key2 label OR clause-b (ADOPTED)  : members=[417] last=417 consecutive=45
+    key3 ADOPTED and subject is a CURE: members=[] last=NONE consecutive=UNMEASURED
+      edge round 417 via clause-b: e2759907 Daedalus (Klatch) 2026-10-19T09:31
+        subject: models+intel: add the three 5.5 models, floored pending capability verification; SDK bump assessed as non-trivial
+        cure?  : false
+        product-source files: packages/shared/src/types.ts
+  window 2026-09-13 00:00:00  productSourceCommits=29
+    key1 label-only      (recon2's)   : members=[200,202,206,208,210,212,214,216,218,220,235,237,239,243,245,251,253,292] last=292 consecutive=91
+    key2 label OR clause-b (ADOPTED)  : members=[200,202,206,208,210,212,214,216,218,220,235,237,239,243,245,251,253,292,417] last=417 consecutive=45
+    key3 ADOPTED and subject is a CURE: members=[214,292] last=292 consecutive=91
+      edge round 417 via clause-b: e2759907 Daedalus (Klatch) 2026-10-19T09:31
+        subject: models+intel: add the three 5.5 models, floored pending capability verification; SDK bump assessed as non-trivial
+        cure?  : false
+        product-source files: packages/shared/src/types.ts
+      edge round 292 via label: 3c66489d Iris (Klatch) 2026-09-29T07:22
+        subject: fix(reassign-picker): disable candidates already bound to the channel (Round 292 G4)
+        cure?  : true
+        product-source files: packages/client/src/components/ImportDialog.tsx
+      edge round 253 via label: 95cc93a2 Daedalus (Klatch) 2026-09-22T13:27
+        subject: round253: a KLATCH_DB line in .env had never reached the database path
+        cure?  : false
+        product-source files: packages/server/src/db/index.ts, packages/server/src/dbPath.ts, packages/server/src/index.ts
+      edge round 251 via label: 6a031827 Daedalus (Klatch) 2026-09-22T09:34
+        subject: round251: PORT is a lever, not a literal -- and npm test can own a real server
+        cure?  : false
+        product-source files: packages/server/src/index.ts, packages/server/src/port.ts
+      edge round 245 via label: c5ced60d Daedalus (Klatch) 2026-09-21T09:32
+        subject: Round 245: bring scripts/lib/*.mts under npm test and npm run typecheck
+        cure?  : false
+        product-source files: packages/server/tsconfig.build.json, packages/server/tsconfig.json
+      edge round 243 via label: a6545363 Daedalus (Klatch) 2026-09-20T17:26
+        subject: Round 243: the empty-session 400 names its cause, and the scanner comment gives the real reason
+        cure?  : false
+        product-source files: packages/server/src/import/parser.ts, packages/server/src/import/session-scanner.ts, packages/server/src/routes/import.ts
+      edge round 239 via label: 42c72306 Daedalus (Klatch) 2026-09-20T09:31
+        subject: Round 239: the fingerprint cache gets a lever, and the probe it revives had been dead since the day after it was written
+        cure?  : false
+        product-source files: packages/server/src/import/session-scanner.ts
+      edge round 237 via label: 4f5cebae Daedalus (Klatch) 2026-09-19T17:30
+        subject: Round 237: the fingerprint cap gets an endpoint-reachable lever, and four probes stop rewriting shipped source
+        cure?  : false
+        product-source files: packages/server/src/import/session-scanner.ts
+      edge round 235 via label: 21579f81 Daedalus (Klatch) 2026-09-19T13:31
+        subject: round235+coordination+log: Daedalus 9/19 WORK -- KLATCH_EXPORT_ROOT built, and probe-multi-root-browse was already red from the isolation Round 234 removed
+        cure?  : false
+        product-source files: packages/server/src/paths.ts, packages/server/src/routes/import.ts
+      edge round 220 via label: 21db36a0 Daedalus (Klatch) 2026-09-16T13:24
+        subject: Round 220: one file-size cap for three enforcers, and the client had the third
+        cure?  : false
+        product-source files: packages/client/src/components/MessageInput.tsx, packages/server/src/files/storage.ts, packages/server/src/routes/files.ts, packages/shared/src/types.ts
+      edge round 218 via label: dd4bba07 Daedalus (Klatch) 2026-09-16T09:27
+        subject: Round 218: one mount list for server and tests, and a pre-read cap on the two files.ts upload routes
+        cure?  : false
+        product-source files: packages/server/src/index.ts, packages/server/src/routes/files.ts, packages/server/src/routes/import.ts, packages/server/src/routes/mount.ts, packages/server/src/routes/size-cap.ts
+      edge round 216 via label: c46b14a1 Daedalus (Klatch) 2026-09-15T17:22
+        subject: round216: guard all six multipart body reads (400 with a sentence, not a 500)
+        cure?  : false
+        product-source files: packages/server/src/routes/files.ts, packages/server/src/routes/form-body.ts, packages/server/src/routes/import.ts
+      edge round 214 via label: d9bd80e3 Daedalus (Klatch) 2026-09-15T13:24
+        subject: fix(server): guard all 15 request-body reads; Round 214 tests
+        cure?  : true
+        product-source files: packages/server/src/routes/channels.ts, packages/server/src/routes/entities.ts, packages/server/src/routes/files.ts, packages/server/src/routes/import.ts, packages/server/src/routes/messages.ts, packages/server/src/routes/projects.ts
+      edge round 212 via label: 81511a3f Daedalus (Klatch) 2026-09-15T09:21
+        subject: feat(entities): atomic channel-entity reassign endpoint (Round 212)
+        cure?  : false
+        product-source files: packages/server/src/db/queries.ts, packages/server/src/routes/entities.ts
+      edge round 208 via label: f41d66a4 Iris (Klatch) 2026-09-14T19:27
+        subject: Round 208 follow-through: sameNameEntityIds disclosure built, reassign routed back
+        cure?  : false
+        product-source files: packages/client/src/api/client.ts, packages/client/src/components/ImportDialog.tsx
+      edge round 210 via label: 4803d0aa Daedalus (Klatch) 2026-09-14T17:40
+        subject: Round 210: the coverage that had to exist before arms A-C could be retired
+        cure?  : false
+        product-source files: packages/server/src/db/entity-backfill.ts
+      edge round 208 via label: f1aebb05 Daedalus (Klatch) 2026-09-14T13:27
+        subject: Round 208: the import names the record it bound, and discloses an arbitrary pick
+        cure?  : false
+        product-source files: packages/client/src/api/client.ts, packages/client/src/components/ImportDialog.tsx, packages/server/src/import/entity-resolve.ts, packages/server/src/routes/import.ts
+      edge round 206 via label: 7b00c713 Daedalus (Klatch) 2026-09-14T09:28
+        subject: Round 206: refuse an ambiguous name, and stop re-resolving at apply time
+        cure?  : false
+        product-source files: packages/server/src/db/entity-backfill.ts, packages/server/src/db/queries.ts
+      edge round 202 via label: f5526d02 Daedalus (Klatch) 2026-09-13T13:38
+        subject: Round 202: the claim's grammar, not its distance — and the backfill finally moves something
+        cure?  : false
+        product-source files: packages/server/src/db/entity-backfill.ts, packages/server/src/import/entity-guess.ts, packages/server/src/import/entity-resolve.ts
+      edge round 200 via label: 8060dbd8 Daedalus (Klatch) 2026-09-13T09:30
+        subject: Round 200: the guess declines where it used to invent, and the window is what does it
+        cure?  : false
+        product-source files: packages/server/src/db/entity-backfill.ts, packages/server/src/import/entity-guess.ts
+
+--- Q-C: does any existing key model "cure" at all?
+  unit-464t2-keychoice-2026-10-28/grade-the-surface-predicate.mjs: codeLinesMentioningCure=1
+      "this cell's independently written edge enumeration agrees with Theseus's cell on BOTH cure sets, compared as 
+  unit-464t2-keychoice-2026-10-28/recon2-the-last-round-that-cured-product-source.mjs: codeLinesMentioningCure=3
+      console.log('=== RECON2/464-T2-keychoice — the last ROUND that cured product source ===');
+      console.log(`  last ROUND that cured product source : ${lastRound ?? 'NONE'}`);
+      console.log('\nSUMMARY (window → last round that cured product source → consecutive since):');
+  unit-464t2-keychoice-2026-10-28/recon-what-the-credits-are-made-of.mjs: codeLinesMentioningCure=0
+  unit-464t2-reaim-2026-10-28/grade-the-credit-key.mjs: codeLinesMentioningCure=4
+      console.log(`  cure set   : ${dirCureSet.join(',') || 'NONE'}`);
+      '[MEAS] the dir key cure set, its maximum and the consecutive run (no assertion; C3 compares)',
+      console.log(`  cure set   : ${selfCureSet === null ? 'UNMEASURED (an edge refused)' : selfCureSet.join(',') ||
+      'the self-attested key reaches a value for both the cure set and the consecutive run',
+  round464-instruments/grade-the-stop-condition.mjs: codeLinesMentioningCure=10
+      console.log(`\nW1 the window key this cell was repaired for, driven against its cure:`);
+      console.log(`  rounds that cured a gated surface (dir key): ${[...curedByDirKey].sort((a, b) => a - b).join(',
+      console.log(`  CONSECUTIVE rounds since, gated-cure-free  : ${consecutiveSelfOnly ?? 'UNMEASURED'}`);
+      `  dir key            : cure set ${[...curedByDirKey].sort((a, b) => a - b).join(',')} last=${lastCuringRoundD
+
+RECON COMPLETE — no legs, no predictions; every figure above is re-measured under a graded leg.
