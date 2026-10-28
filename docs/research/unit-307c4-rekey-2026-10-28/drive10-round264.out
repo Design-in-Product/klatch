@@ -1,0 +1,48 @@
+
+Round 264 — a census of one spelling, and the extraction that moved the rest out of reach
+Repo: /Users/xian/Development/klatch-worktrees/daedalus
+
+  [A0] PASS  the slices reached the real declarations, not a truncated stub
+        scan 1098 chars, emptinessSites 1108 (carries the --porcelain regex), assertionArgumentSpans 720 (carries the depth counter), assertedEmptinessSites 334. Round 258 §A and Daedalus's Round 257 §5 both lost a run to an extractor that returned less than it claimed, so the slices are graded before anything is computed from them.
+
+── arm A: the widened detector, driven both ways on minted source ────────
+  [A1] PASS  POSITIVE — all three spellings of the identical assertion are seen
+        Minted one per spelling: `before === ''` → ["before:eq"]; `dirty.length === 0` over a split/filter chain → ["dirty:len"]; `!dirty` over a .trim() chain → ["dirty:neg"]. The chain cases require the propagation Round 256 does not have — the porcelain binding never meets the comparison.
+  [A2] PASS  NEGATIVE — three ways to look like the defect without being it
+        A before/after comparison — which is the REMEDY — scores []. The whole shape inside a comment scores [] (Round 256's `scan` is doing that, unchanged). An unasserted diagnostic that prints `dirty.length === 0` and asserts on something else scores [] — the distinction Round 256's first pass got wrong on `probe-round253` and refined into `assertedEmptinessSites`. An arm that only fires in one direction has not been shown to measure anything.
+  [A3] PASS  the two detectors agree exactly where they overlap, and differ only on spelling
+        On the same three minted positives, Round 256's own detector scores 1 / 0 / 0. So it sees the `eq` spelling and neither of the other two, which is my Round 262 D2 restated with a second spelling added. Masking and span-finding are Round 256's own code running unmodified in BOTH instruments, so no delta below can come from either. Seeding is NOT held fixed — I widened it too, which I did not notice until B3 went red; B3a–B3c separate the two axes rather than letting one stand in for both.
+
+── arm B: the census over scripts/ at c4bd5307 ───────────────────────────
+  [B1] PASS  the widened detector is a STRICT SUPERSET of Round 256's across the population
+        147 files at c4bd5307. Files Round 256's detector flags that the widened one does not: []. This has to be empty or the comparison below is not measuring spelling — it would mean my seeding diverged from the historical seeding, and the delta would be partly an artefact of my own reimplementation. It is the check that makes the delta interpretable, so it runs before the delta is quoted.
+  [B2] PASS  the delta is non-empty — the published figure misses live instances
+        Round 256's detector: 11 files / 11 sites. Widened: 13 files / 13 sites (eq 12, len 1, neg 0). INVISIBLE TO ROUND 256 — 2 file(s): ["probe-round197-the-verdict-on-a-way-back-and-the-path-that-is-not-the-database.mts","probe-round262-the-population-is-a-tree-not-a-filename-convention.mts"]. Both hand-read before this figure was quoted anywhere, because Round 256's own first pass flagged two non-defects and the discipline since is that a census reports a list for a human to adjudicate. Both are real: each asserts emptiness over a window its seat does not own, with a frozen allowlist. B3a–B3c attribute the miss, which is NOT the single cause I expected.
+  [B3a] PASS  IDENTITY — my detector with BOTH widenings off reproduces Round 256's figure exactly
+        `allow=['eq'], propagate=false` over the identical population: 11 sites against Round 256's own 11. This is the arm that makes the other two interpretable. If it were off by one, every number below would be partly an artefact of my reimplementation rather than a property of the subject — and I would not be able to tell which part.
+  [B3b] PASS  AXIS 1, reach — propagation alone finds a site Round 256 cannot reach
+        Same spelling (`eq`, Round 256's own), propagation on vs. off: 12 vs 11. The +1 is probe-round197's `offenders === ''`, where `offenders` is `changed.split().filter().join()` and `changed` holds the porcelain. Round 256 requires the porcelain string in the initialiser of the compared binding, so a derivation chain of any length hides the site without changing the assertion by one character.
+  [B3c] PASS  AXIS 2, spelling — the length recogniser finds a further site on top of that
+        Propagation on, `eq` only vs. all three spellings: 12 vs 13 (+1, all of it `len`; `neg` scores 0 on this population). That +1 is probe-round262's `scriptsUntracked.length === 0`, which needs BOTH widenings — reach to get to the binding and spelling to recognise the comparison. So the two axes are not alternatives and neither alone would have found it.
+  [B4] PASS  the seed Daedalus named is IN the delta, confirmed by the instrument rather than assumed
+        Round 263 §8 item 2 offered one confirmed instance to seed this census with — arm Z1 of my own probe-round262, at c4bd5307 still carrying `scriptsUntracked.length === 0` over a `.split().filter()` chain. The delta contains ["probe-round262-the-population-is-a-tree-not-a-filename-convention.mts"]. Repaired on this fire's working tree, which is precisely why the population is pinned to a commit: a census that read the checkout would have lost its own seed to the repair it motivated.
+  [B5] MEAS  what the published figure would have been
+        Round 256 published 13 / 10 (files / asserted sites) over 137 files at 6465346a. Over 147 files at c4bd5307 the same detector now reports 11 / 11 and the widened one 13 / 13. The two figures are not comparable as a trend — different population, different date, and several of the Round 256 instances have been repaired since. What is comparable is the pair measured here, same tree same day: the widened detector finds 2 site(s) in 2 file(s) that the published instrument is constitutionally unable to see.
+
+── arm C: what the WIDENED detector still cannot see ─────────────────────
+  [C1] PASS  a porcelain call that moved into scripts/lib is invisible to BOTH detectors
+        Minted: import `windowState`, assert its result is `''`. Round 256 scores 0, widened scores 0, and the source does not contain the porcelain string at all, so both detectors exit at their first guard. This is the defect in full, one import away from the census. Round 263 §3 extracted the remedy because a copy could not propagate — correct, and the same extraction moves the DEFECT out of reach of the instrument that counts it. The lower bound above is bounded by this, not by the spellings in C2 and C3.
+  [C2] PASS  a fully inline chain — no binding to propagate from — is invisible to both
+        The porcelain string IS present (both detectors get past their guard) but the chain never lands in a named binding, and both instruments are name-based: they find comparisons on NAMES. Round 256 scores 0, widened scores 0. The widening I added propagates along bindings, so it inherits this blindness exactly.
+  [C3] PASS  an assertion spelled as a THROW is invisible to both — the span-finder only knows four names
+        Round 256 scores 0, widened scores 0 — and my propagation DID reach the binding (`porcelainNames` returns it), so the miss is entirely in `assertionArgumentSpans`, which matches `check|assert|expect|ok` and nothing else. A `throw` fails the run exactly as hard as a `check` does. I am reusing that function deliberately — one variable — and reporting what it costs rather than quietly fixing it inside an arm that is supposed to isolate spelling.
+  [C4] MEAS  so the figure is a lower bound, and this is the shape of what is under it
+        Three misses, each of a different kind: C1 the call moved to another MODULE (unreachable by any single-file reader); C2 the comparison has no NAME to hang on (unreachable by any name-based reader); C3 the assertion is not spelled as a CALL the span-finder knows. Only C3 is cheap to close. C1 is the one that matters: the fleet is mid-migration onto a shared lib this week, so the population of instances reachable by this method is going DOWN for a reason that has nothing to do with how many instances exist.
+
+── arm Z: I left the tree as I found it ──────────────────────────────────
+  [Z1] PASS  this run changed nothing under scripts/ or packages/ — bracketed, not asserted-empty
+        Content fingerprints identical at open and close for both pathspecs. Every write went under gitignored .testdata/r264/. The spelling this probe is a census OF is the one it refuses to use on itself — an emptiness claim here would be red for any seat with work in flight and blind to a write into a file already being edited, which is the same window.
+  [Z2] MEAS  the window I do not own, reported and never graded
+        scripts/ was clean at open. A fact about whoever last committed, not about this run.
+
+All 14 regression checks passed.

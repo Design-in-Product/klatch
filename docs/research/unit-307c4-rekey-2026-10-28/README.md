@@ -77,6 +77,8 @@ vacuity is one uncured module**, which is a sharper statement than the arm used 
 minted `PASS`/`FAIL`/absent lines in both polarities (`G0`, `G0b`) before any drive is read; the
 probe is restored and diffed against a sha captured **before the first mutation** (`G4`).
 
+(✗ = the arm went RED under that cripple, ✓ = it stayed green.)
+
 | cripple | predicted | measured | probe exit |
 |---|---|---|---|
 | `k-inline-blind` | `C4a` ✗ `C4` ✗ `C4b` ✗ | same | 3 of 19 FAILED |
@@ -140,14 +142,44 @@ asserts the self-only run is `> 0` — which is his leg to re-aim.
 * `npm run typecheck` — exit 0, 0 `error TS` (`gate-typecheck.out`)
 * `npm test` — 140 server files passed, 26 client passed / 13 skipped, `census PASSED`
   (`gate-npmtest.out` is the pre-bump run; `gate-npmtest-final.out` is the run as committed)
-* `node scripts/sweep-probes.mjs` — full driving sweep, three times: `gate-sweep-full.out` (the
-  original C4 red), `-2` (the pin bump's own four reds), `-3` (green). The census alone drives zero
-  probes and would not have seen the original red at all
+* `node scripts/sweep-probes.mjs` — **`SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0 blocked
+  (0 could not run, 0 ran but did not finish), 0 census problem(s), 110 deferred`**
+  (`gate-sweep-full-4.out`). Four drives: `-1` the original C4 red, `-2` the pin bump's own four
+  reds, `-3` one red that was my own `git commit` (below), `-4` the authoritative run with the index
+  untouched throughout. The census alone drives zero probes and would not have seen the original red
 * `probe-round307` itself: **All 19 regression checks passed**, 6 measurements
   (`drive08-probe-clean-final.out`)
 * `zw-scan.mjs` — 0 zero-width characters across the three edited source files. I had used a ZWSP to
   stop a `*/` closing a block comment, which is invisible in every diff view; `zw-fix.mjs` replaced
   all 6 with a visible `*\/` and the scan is the gate
+
+## Sweep 3's one red was my own `git commit`, and `tree-fingerprint.mts` does not cover that case
+
+Sweep 3 read `42 of 43 green, 1 red` — `probe-round264`. Driving that probe standalone immediately
+afterwards: `All 14 regression checks passed`. The variable was `git add` + `git commit` landing
+while the sweep drove — the incremental-push discipline a fire follows.
+
+Read off `scripts/lib/tree-fingerprint.mts`: `fingerprint` hashes
+`git status --porcelain -z -uall -- <pathspec>` as `P:` and `git diff HEAD -- <pathspec>` as `D:`,
+**both keyed on HEAD and the index rather than on file content**. The module's docblock argues at
+length that bracketing a run makes "a third party's in-flight work invisible to it" — true of
+*uncommitted* work, and silent about a commit.
+
+Driven in a scratch git repo (`fp-commit-moves.mts`, `VERDICT/1 ok legs=5 red=[]`): committing a
+dirty tracked file under the pathspec leaves the file's content sha identical and moves the
+fingerprint `P:739c4541… D:b7816307…` → `P:e3b0c442… D:e3b0c442…` (both `sha256("")`). The probe then
+reds while printing "this run changed nothing under `scripts/`".
+
+**My first reason was wrong and `F3` refuted it.** I predicted a `docs/`-only commit would move a
+`scripts/` fingerprint too, "because `git diff HEAD` is re-based on the new HEAD". Both queries are
+**path-filtered**, so it does not. Re-aimed rather than loosened, which turns an alarm into a rule:
+*do not commit a path under a pathspec a concurrently-driving probe brackets; a `docs/`-only commit
+mid-sweep is safe.* `6190a0dd` committed two files under `scripts/`, which is exactly why
+`probe-round264` reddened. `drive11` (refuted) and `drive12` (re-aimed) are both kept.
+
+Unrepaired and routed to Argus: 37 probe files reference this module (40 files under `scripts/` in
+total, counted this session rather than quoted from the module's docblock), the class fires only
+under concurrency, and it is invisible to the standalone re-drive that is everyone's first move.
 
 ## Also corrected in the probe, both verified against git rather than recalled
 
@@ -175,7 +207,13 @@ asserts the self-only run is `> 0` — which is his leg to re-aim.
 
 * `grade-c4.mjs` — the grader (6 legs, 5 cripples, 5 recorded drives)
 * `drive01-clean.out` / `.err` — the probe immediately after the repair, before the prose corrections
-* `drive02`–`drive06` — one per cripple, as driven
+* `drive02`–`drive06` — one per cripple, as driven (overwritten by the last grader drive, which is
+  why `drive07` and `drive09` are kept separately)
 * `drive07-grade-final.out` / `.err` — the grader after the prose corrections
 * `drive08-probe-clean-final.out` / `.err` — the probe as committed
-* `gate-typecheck.out`, `gate-npmtest.out`, `gate-sweep-full.out` / `.err`
+* `drive09-grade-after-zw-fix.out` / `.err` — the grader after the zero-width fix
+* `zw-scan.mjs` / `zw-fix.mjs` — the zero-width detector and the one-shot rewrite it gated
+* `stop-condition.out` / `.err` — Theseus's cell driven at my rev
+* `stop-condition-at-cc41fa53.out` — the same cell driven in a scratch worktree at **his** rev
+* `gate-typecheck.out`, `gate-npmtest.out`, `gate-npmtest-final.out`,
+  `gate-sweep-full{,-2,-3}.out` / `.err`

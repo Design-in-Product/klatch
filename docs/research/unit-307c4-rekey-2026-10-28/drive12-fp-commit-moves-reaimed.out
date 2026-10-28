@@ -1,0 +1,12 @@
+  [F0] PASS  CONTROL: with nothing happening between the two reads, the fingerprint does NOT move — so a move below is caused by the action and not by the instrument
+        P:739c45416f144bf3 D:b7816307404cbf3d vs P:739c45416f144bf3 D:b7816307404cbf3d
+  [F1] PASS  THE FINDING: committing a dirty tracked file changes no byte of the working tree, and the bracket MOVES anyway — so a probe using it publishes "this run changed nothing" as a RED
+        file content sha e7941bea8a318009 → e7941bea8a318009 (IDENTICAL — no write occurred); fingerprint P:739c45416f144bf3 D:b7816307404cbf3d → P:e3b0c44298fc1c14 D:e3b0c44298fc1c14 (MOVED).
+  [F2] PASS  and the components that moved are named: `P:` (the porcelain entry list) and `D:` (`git diff HEAD`) — both keyed on HEAD and the index rather than on file content
+        moved: P, D · P P:739c45416f144bf3 → P:e3b0c44298fc1c14 · D D:b7816307404cbf3d → D:e3b0c44298fc1c14. The module hashes `git status --porcelain` and `git diff HEAD`; a commit empties both for the committed path while writing nothing.
+  [F3] PASS  THE NEGATIVE CONTROL that bounds F1: a commit touching ONLY a path outside the pathspec leaves the pathspec’s own fingerprint byte-identical — so the hazard is not "a commit happened" but "a commit included a path inside the bracketed pathspec"
+        commit touched docs/note.md only; scripts/ file content sha 6d40edadbbba5257 → 6d40edadbbba5257; fingerprint UNMOVED (correct). components moved: none. I predicted the opposite here and this leg refuted it: both git queries are path-filtered. With F1, the rule a fire can act on is exact — do not commit a path under a pathspec a concurrently-driving probe brackets; a docs/-only commit mid-sweep is safe.
+  [F4] PASS  the scratch repo is removed, and it was never this worktree — the counterfactual is a commit, and nothing drives a commit into a tree another seat may be reading
+        .testdata/r467-fp absent at exit · gitignored while it existed.
+
+VERDICT/1 ok legs=5 red=[]
