@@ -1,0 +1,99 @@
+=== GRADE/464-T2 the credit key under the stop condition ===
+REV dcfce02ccfd9ba5bd1802ccaaa1b1341625700bf
+WINDOW --since="2026-10-13 00:00:00"
+CRIPPLE key-subject-only
+N_PROPOSED 5
+CLOCK 2026-10-28T17:55:35.472Z
+POPULATION commits=617 gated=18 roundDirsExisting=91
+
+C1 [MEAS] the DIR key, as filed 2026-10-27:
+  cure set   : 381,383,387,389,391,417,454,464
+  most recent: 464
+  consecutive: 0
+
+C2 the SELF-ATTESTED key:
+  credit edges: 9  genuine=5 incidental=4 refused=0
+  INC  round 464 ← 87270c6f Daedalus (Klatch) :: subjectRound=- creator=725f97ee/Theseus (Klatch) selfCreating=false
+  GEN  round 454 ← a4f42fc7 Daedalus (Klatch) :: subjectRound=454 creator=4a05dbf8/Daedalus (Klatch) selfCreating=false
+  GEN  round 454 ← 28833525 Daedalus (Klatch) :: subjectRound=454 creator=4a05dbf8/Daedalus (Klatch) selfCreating=false
+  INC  round 417 ← e2759907 Daedalus (Klatch) :: subjectRound=- creator=e2759907/Daedalus (Klatch) selfCreating=true
+  INC  round 387 ← 1588b85f Daedalus (Klatch) :: subjectRound=391 creator=beb1ab78/Daedalus (Klatch) selfCreating=false
+  INC  round 389 ← 1588b85f Daedalus (Klatch) :: subjectRound=391 creator=b0f5965c/Daedalus (Klatch) selfCreating=false
+  GEN  round 391 ← 1588b85f Daedalus (Klatch) :: subjectRound=391 creator=1588b85f/Daedalus (Klatch) selfCreating=true
+  GEN  round 383 ← 8b08f3e9 Daedalus (Klatch) :: subjectRound=383 creator=8b08f3e9/Daedalus (Klatch) selfCreating=true
+  GEN  round 381 ← 4d58eee3 Daedalus (Klatch) :: subjectRound=381 creator=4d58eee3/Daedalus (Klatch) selfCreating=true
+  cure set   : 381,383,391,454
+  most recent: 454
+  consecutive: 10
+
+C3 does the key choice decide whether the condition has FIRED at N=5?
+  dir key          : consecutive=0 fired=false
+  self-attested key: consecutive=10 fired=true
+
+C5 [MEAS] rounds credited by an INCIDENTAL edge only:
+  round 464 ← 87270c6f Daedalus (Klatch) subj=- :: gate(scripts/lib/*.mjs) 3/3: 127 → 0, wired into typecheck:scripts, and 
+      gated: scripts/lib/characterisation-markers.mjs scripts/lib/offer-choice.mjs
+  round 417 ← e2759907 Daedalus (Klatch) subj=- :: models+intel: add the three 5.5 models, floored pending capability verif
+      gated: packages/server/src/__tests__/round11-klatch-creation.test.ts packages/server/src/__tests__/round39-model-fallback-parity.test.ts packages/shared/src/types.ts
+  round 387 ← 1588b85f Daedalus (Klatch) subj=391 :: round391: the declaration takes the `?` AND the seven callers take the b
+      gated: scripts/lib/strip-source.d.mts
+  round 389 ← 1588b85f Daedalus (Klatch) subj=391 :: round391: the declaration takes the `?` AND the seven callers take the b
+      gated: scripts/lib/strip-source.d.mts
+  incidental rounds           : 387,389,417,464
+  of those, incidental-ONLY   : 387,389,417,464
+
+C6 the author-mismatch key this seat reached for first, graded:
+  edges with author mismatch      : 1
+  incidental edges it CATCHES     : 1 of 4
+    round 464 ← 87270c6f: authorMismatch=true (Theseus (Klatch) → Daedalus (Klatch))
+    round 417 ← e2759907: authorMismatch=false (Daedalus (Klatch) → Daedalus (Klatch))
+    round 387 ← 1588b85f: authorMismatch=false (Daedalus (Klatch) → Daedalus (Klatch))
+    round 389 ← 1588b85f: authorMismatch=false (Daedalus (Klatch) → Daedalus (Klatch))
+
+C7 known positive — round 417, genuine but subject-silent:
+  edges            : 1
+  subject names it : false
+  self-creating    : true
+  admitted         : false
+
+C8 declared-cripple occurrence count in this file's own source:
+  key-dir-only: 5
+  key-subject-only: 5
+  author-key-as-truth: 3
+  creator-unresolvable: 3
+  window-bare: 3
+  no-round-dirs: 3
+
+--- LEGS ---
+ ok  G1: GATE: the commit population and the round-directory list both loaded non-empty
+      detail: commits=617 roundDirs=91 popError=none
+MEAS C1: [MEAS] the dir key cure set, its maximum and the consecutive run (no assertion; C3 compares)
+      detail: set=[381,383,387,389,391,417,454,464] last=464 consecutive=0 edges=9
+ ok  C2: the self-attested key reaches a value for both the cure set and the consecutive run
+      detail: set=[381,383,391,454] last=454 consecutive=10 refusedEdges=0
+RED  C3: the two keys AGREE on whether the condition has fired at N=5 — a RED here means the standing line's value is decided by a key nobody has stated
+      detail: dir fired=false (consecutive 0) vs self-attested fired=true (consecutive 10)
+ ok  C4: both branches of the self-attested key are LIVE at this rev — it admits at least one edge and rejects at least one, so neither branch is dead code
+      detail: genuine=5 incidental=4 refused=0
+MEAS C5: [MEAS] the incidental credit edges and the rounds they are the only credit for (Q3 pins the set)
+      detail: incidentalRounds=[387,389,417,464] incidentalOnly=[387,389,417,464] edges=4
+RED  C6: the author-mismatch key catches EVERY incidental credit edge — a RED means this seat's first candidate key was insufficient and adopting it would have left false credits standing
+      detail: caught 1 of 4 incidental; 1 mismatch edge(s) overall
+RED  C7: KNOWN POSITIVE: round 417 is credited by the very commit that created its directory, its subject names no round, and the self-attested key ADMITS it — so clause (b) is load-bearing and not decoration
+      detail: edges=1 subjectNamesIt=false selfCreating=true admitted=false
+ ok  C8: every cripple declared in this file's docblock occurs MORE THAN ONCE in its own source, so each has at least one hook that reads it
+      detail: key-dir-only=5 key-subject-only=5 author-key-as-truth=3 creator-unresolvable=3 window-bare=3 no-round-dirs=3
+
+--- PREDICTIONS ---
+LAND Q1: under the self-attested key the most recent gated-curing round is 454 — the value the standing line carried before 87270c6f
+      expected=454 actual=454
+LAND Q2: under the self-attested key the consecutive run is 10, so the condition HAS fired at N=5 — the opposite verdict from the dir key at the same rev
+      expected=10 actual=10
+REFU Q3: the incidental credit edges name exactly rounds 387, 389 and 464 — two of them same-author (round 391's commit amending the 387 and 389 cells) and one cross-author (87270c6f in round 464's dir)
+      expected="3|387,389,464" actual="4|387,389,417,464"
+LAND Q4: the author-mismatch key catches exactly 1 of the 3 incidental edges, which is why it is reported and not adopted
+      expected=1 actual=1
+LAND Q5: every credited round's directory-creating commit resolves, so no edge refuses and the self-attested figure is a measurement rather than a floor
+      expected=true actual=true
+
+VERDICT/1 RED legs=9 red=[C3,C6,C7] refused=[] preds=5 refuted=[Q3] prefused=[]
