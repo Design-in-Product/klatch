@@ -158,3 +158,51 @@ bounded.
 **Verify step (Session Wrap Protocol):** pushing immediately after the COORDINATION.md entry lands;
 will confirm `git log origin/main --oneline -5` and the moved files' presence under `docs/mail/read/`
 in the same push.
+
+## 17:0x PT (SWEEP fire) — no-op, verified not assumed; gate byte-identical; needs-you unchanged at 2
+
+Checkpoint is this seat's own 10/27 MID-fire commit `1beca89c` (12:35:47 PT). `git log
+1beca89c..HEAD --format='%h %an %ci %s'` = 10 new commits, none mine: Daedalus's `recall-tap` fix
+(`2625227c`), his `scripts/**/*.mjs` gate pricing doc (`ae36f771`), his round462 E7 repair
+(`2cd3a4aa`), Argus's own WORK-fire no-op (`c91420d2`), Daedalus's MID-fire coord+mail
+(`c03773ed`), and Theseus's round464 repair chain (`7a84c8d4`, `11c68710`, `ff0cae98`, `d5677d75`)
+— his own cell's window was keyed on the drive clock, not the rev; three defects cured and
+crippled. `git diff --stat 1beca89c..HEAD -- packages/ scripts/` — one file,
+`scripts/lib/recall-tap.mjs` (+20/-2), Daedalus's own fix for two hand-written contracts in the
+same file that contradicted each other, checked directly rather than assumed from the commit
+subject.
+
+**Mail:** two new memos since checkpoint — Daedalus→Theseus (E7 repair, a false RED of his own
+surfaced) and Theseus→Daedalus (both routed items closed, drive-clock window) — both cc this seat
+only, confirmed via their own headers (`to: Theseus` / `to: Daedalus`), not addressed to this seat
+by name. `grep -rl '\*\*To:\*\* Calliope\|^to: Calliope' docs/mail/*.md` — same four standing
+Pard-to-Calliope memos from 10-20, no new file. All four writable cross-repo mailboxes re-checked
+fresh via `find -newermt "2026-10-27 12:35:47 -0700"`: `designinproduct` 0 new, `mediajunkie` 0
+new, `dispatch` 0 new, `piper-morgan-product/mailboxes` 0 new (excluding `MANIFEST.md`). Nothing
+owed from any.
+
+**Briefs:** cross-pollination brief still a private-source pointer dated 2026-10-27, mtime 08:30 —
+unchanged since this morning; its actual content at
+`mediajunkie/src/internal/briefs/2026-10-27-brief.md` confirmed unreachable this session (read
+attempt returns a permission prompt — only `mediajunkie/docs/mail` is a granted working
+directory), same gap as the 10-26 STOP-fire entry noted.
+
+**Rollup:** still v171, needs-you unchanged at 2 — neither the recall-tap fix nor the two
+round-track memos is a decision only xian can make. The four standing Pard threads (10-20)
+unchanged: `git branch -a` / `git ls-remote origin` show no `smoke`/`ma-smoke` branch — the
+smoke-run blocker is still unmet, not mine alone to clear.
+
+**Gate re-verified fresh:** `npm run typecheck` 0 `error TS` across all four workspaces; `npm test
+-w packages/server` — **140 files · 2185 passed · 1 skipped (2186)**, byte-identical to the MID-fire
+figure; `npm test -w packages/client` — **26 passed|13 skipped (39) · 333 passed|13 skipped
+(346)**, byte-identical; `node scripts/sweep-probes.mjs --census` — **153 probe files, 43
+swept/110 deferred, CENSUS OK**, unchanged. `lsof -i :3001` port free; `git status --short` clean
+before and after. Task list of record: no mandatory items due on a SWEEP fire; blog-series
+drafting remains gated on xian; the four standing Pard threads unchanged.
+
+**Drain:** ten new commits read with author verified and the one `packages/scripts` file diffed
+directly rather than assumed from its commit subject; both new round-track memos read via their
+own headers and confirmed cc-only; mail checked across local plus all four cross-repo mailboxes;
+the cross-pollination brief's unreachability re-verified by attempting the read, not carried from
+the 10-26 note; rollup re-checked, nothing moved; gate re-derived fresh and byte-identical at every
+layer. Two consecutive checks found nothing further unblocked. Fire closed bounded.
