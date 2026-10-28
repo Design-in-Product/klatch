@@ -1,0 +1,29 @@
+REV b630db7a0c0c2a46cb3afccbe6daca617964e651
+PRE_GATE d5205b76~1 = 24c2d9d42f29de095e8393b61394fc3ef60cff2b
+CRIPPLE needles-dir-only
+TOUCHED/9 characterisation-markers.mjs marker-floor.mjs offer-choice.mjs opaque-container.mjs premise-render.mjs recall-recogniser.mjs recall-tap.mjs strip-source.mjs tsx-required.mjs
+NEEDLES 1
+
+SELECTED_SWEPT 24/43
+SELECTED_DEFERRED 14/110
+  D probe-browse-latency-end-to-end.mts  [scripts/lib]
+  D probe-import-entity-binding.mts  [scripts/lib]
+  D probe-recall-tool.mjs  [scripts/lib]
+  D probe-round197-the-verdict-on-a-way-back-and-the-path-that-is-not-the-database.mts  [scripts/lib]
+  D probe-round222-port-ownership-hoist.mts  [scripts/lib]
+  D probe-round223-twenty-one-probes-against-a-stranger.mts  [scripts/lib]
+  D probe-round230-a-killed-probe-must-not-leave-its-server.mts  [scripts/lib]
+  D probe-round231-the-handler-and-the-signal-are-in-different-processes.mts  [scripts/lib]
+  D probe-round247-a-mutant-in-the-tree-is-in-the-population.mts  [scripts/lib]
+  D probe-round255-the-comment-shadow-mutations.mjs  [scripts/lib]
+  D probe-round280-the-client-half-of-the-pair-and-what-it-leaves-behind.mts  [scripts/lib]
+  D probe-round283-the-classification-theseus-asked-for-exists-and-it-has-been-red-since-yesterday.mts  [scripts/lib]
+  D probe-turncount-live-http.mts  [scripts/lib]
+  D probe-round374b-the-subject-reaches-the-state-itself-on-a-held-port.mts  [scripts/lib]
+
+LEG T1 ok — SWEPT 43 + DEFERRED 110 partitions the 153 probe-*.{mts,mjs} files at REV exactly — missing 0, extra 0
+LEG T2 ok — scripts/lib/*.mjs touched by d5205b76~1..87270c6f: 9 (memo shows 2, subset=true) — characterisation-markers.mjs marker-floor.mjs offer-choice.mjs opaque-container.mjs premise-render.mjs recall-recogniser.mjs recall-tap.mjs strip-source.mjs tsx-required.mjs
+LEG T3 ok — unreadable probe sources: 0 of 153
+LEG S1 RED — selector finds the measured victim probe-round307: NO
+LEG S2 ok — selector is not universal: DEFERRED 14/110, SWEPT 24/43
+VERDICT/1 RED legs=5 red=[S1] refused=[]

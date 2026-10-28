@@ -1,0 +1,33 @@
+REV b630db7a0c0c2a46cb3afccbe6daca617964e651
+CRIPPLE (none)
+RECORDING docs/research/unit-307c4-blast-radius-2026-10-27/drive16.reproduce-argus-307.out
+
+PRE_GATE tsx-required::explainTsxRequirement
+POST_GATE 14 
+  P characterisation-markers::walk
+  P characterisation-markers::population
+  P characterisation-markers::commentSpans
+  P characterisation-markers::commentBlocks
+  P characterisation-markers::commentProse
+  P characterisation-markers::markersIn
+  P characterisation-markers::markersInRaw
+  P characterisation-markers::reconcile
+  P strip-source::regexLiteralEnd
+  P strip-source::stripSource
+  P tsx-required::isTsResolutionFailure
+  P tsx-required::isTsExtensionFailure
+  P tsx-required::isTsDirImportFailure
+  P tsx-required::explainTsxRequirement
+
+GAINED 13
+  G characterisation-markers 8
+  G strip-source 2
+  G tsx-required 3
+
+LEG G1 ok — C3 line sliced from this seat's own re-drive: 14 members against its own printed count 14
+LEG G2 ok — C4's pinned pre-gate set, sliced from probe source: length 1, member tsx-required::explainTsxRequirement
+LEG G3 ok — pre-gate member(s) still present post-gate: 1/1 [tsx-required::explainTsxRequirement]
+LEG A1 ok — gained 13 (his 13), post-gate total 14 (his 14)
+LEG A2 RED — of the gained, how many are OUTSIDE his two named modules: 3 — tsx-required::isTsResolutionFailure tsx-required::isTsExtensionFailure tsx-required::isTsDirImportFailure
+LEG A3 ok — per-module split of the gained: characterisation-markers=8 strip-source=2 tsx-required=3, sum=13
+VERDICT/1 RED legs=6 red=[A2] refused=[]

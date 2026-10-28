@@ -1,0 +1,17 @@
+REV b630db7a0c0c2a46cb3afccbe6daca617964e651
+CRIPPLE (none)
+LIVE_KEYS M1 M2 M3
+POPULATION 19 selected deferred probes (stage 1)
+
+COUNT M1 0/19
+COUNT M2 0/19
+COUNT M3 2/19 — probe-browse-latency-end-to-end.mts probe-turncount-live-http.mts
+
+CONTROL KP M1=true M2=false M3=true
+CONTROL KN M1=false M2=false M3=false
+
+LEG G1 ok — stage 1 recording read: 19 member lines against its own SELECTED_DEFERRED 19
+LEG G2 ok — unreadable members: 0
+LEG K1 RED — KP probe-round307 carries every live key: M1=true M2=false M3=true
+LEG K2 ok — KN probe-accepted-multipart-allocation.mts carries none: M1=false M2=false M3=false
+VERDICT/1 RED legs=4 red=[K1] refused=[]

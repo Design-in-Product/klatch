@@ -1,0 +1,49 @@
+REV b630db7a0c0c2a46cb3afccbe6daca617964e651
+PRE_GATE d5205b76~1 = 24c2d9d42f29de095e8393b61394fc3ef60cff2b
+CRIPPLE (none)
+TOUCHED/9 scripts/lib/characterisation-markers.mjs scripts/lib/marker-floor.mjs scripts/lib/offer-choice.mjs scripts/lib/opaque-container.mjs scripts/lib/premise-render.mjs scripts/lib/recall-recogniser.mjs scripts/lib/recall-tap.mjs scripts/lib/strip-source.mjs scripts/lib/tsx-required.mjs
+NEEDLES 19
+
+SELECTED_SWEPT 34
+  S probe-round241-a-corpus-cast-is-resolved-not-pinned.mts  [scripts/lib, marker-floor.mjs, marker-floor]
+  S probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts  [scripts/lib]
+  S probe-round255-the-comment-shadow-census.mts  [scripts/lib]
+  S probe-round232-the-remainder-verdict-can-go-red.mts  [scripts/lib]
+  S probe-round224-a-skip-must-not-summarise-as-a-pass.mts  [scripts/lib, strip-source.mjs, strip-source]
+  S probe-round225-a-citation-is-not-a-call.mts  [scripts/lib]
+  S probe-round245-the-shared-lib-coverage-floor.mts  [scripts/lib, marker-floor.mjs, offer-choice.mjs, opaque-container.mjs, premise-render.mjs, recall-recogniser.mjs, recall-tap.mjs, strip-source.mjs, tsx-required.mjs, marker-floor, offer-choice, opaque-container, premise-render, recall-recogniser, recall-tap, strip-source, tsx-required]
+  S probe-round256-an-emptiness-assertion-grades-the-operator-and-a-sole-blocker-ranking-cannot-see-a-coupled-class.mts  [scripts/lib, strip-source.mjs, strip-source]
+  S probe-round257-the-scanner-had-no-model-of-interpolation.mts  [scripts/lib, strip-source.mjs, strip-source]
+  S probe-round258-three-readers-are-two-questions-and-the-shared-one-is-already-in-lib.mts  [scripts/lib, strip-source.mjs, strip-source]
+  S probe-round259-the-extraction-moved-nothing-and-closed-the-hole-in-the-file-it-moved-into.mts  [scripts/lib, strip-source.mjs, strip-source]
+  S probe-round260-a-census-pin-has-two-axes-and-the-round-number-in-a-filename-is-not-one-of-them.mts  [scripts/lib, strip-source.mjs, strip-source]
+  S probe-round261-a-pin-whose-red-is-cleared-by-doing-something-is-a-gate.mts  [scripts/lib]
+  S probe-round262-the-population-is-a-tree-not-a-filename-convention.mts  [scripts/lib]
+  S probe-round263-an-emptiness-claim-over-a-shared-window-is-not-strict-it-is-blind.mts  [scripts/lib]
+  S probe-round264-a-census-of-one-spelling-and-the-extraction-that-moved-the-rest-out-of-reach.mts  [scripts/lib]
+  S probe-round265-the-census-already-follows-imports-on-the-other-axis.mts  [scripts/lib, strip-source.mjs, strip-source]
+  S probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts  [strip-source.mjs, strip-source]
+  S probe-round246-the-sweep-repaired-and-the-emit-spelling-was-the-bigger-blind-spot.mts  [scripts/lib, tsx-required.mjs, tsx-required]
+  S probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts  [scripts/lib, strip-source.mjs, characterisation-markers, strip-source, tsx-required]
+  S probe-round307-the-return-half-is-gradeable-the-parameter-half-is-any-and-the-arity-check-covers-fourteen-of-eighteen.mts  [strip-source.mjs, tsx-required.mjs, strip-source, tsx-required]
+  S probe-round308-the-general-arm-pointer-detector-reports-thirteen-findings-all-thirteen-false-and-the-narrow-one-is-green-on-package-json.mts  [scripts/lib, strip-source.mjs, strip-source]
+  S probe-round309-the-drop-one-reach-census-over-reported-three-where-the-population-is-one-because-a-predicate-does-not-carry-its-corpus.mts  [strip-source.mjs, strip-source]
+  S probe-round311-the-nearer-of-argus-two-candidates-is-the-one-that-drops-a-failure-and-a-kind-field-is-what-breaks-it.mts  [strip-source.mjs, strip-source]
+  S probe-round322-the-deferred-magnitude-audit-is-clean-and-eight-censused-probes-freeze-the-one-figure-they-cannot-report.mts  [strip-source.mjs, strip-source]
+  S probe-round323-the-cheap-cure-for-a-frozen-figure-empties-the-tripwire-and-leaves-the-exit-code-lying.mts  [strip-source.mjs, strip-source]
+  S probe-round324-the-skips-figure-has-four-states-and-the-two-no-arm-claims-are-where-a-lowercase-channel-lands.mts  [strip-source.mjs, strip-source]
+  S probe-round325-the-fourth-exit-shape-returns-zero-and-restaging-an-inflated-pin-promotes-measurements-to-hard-checks.mts  [strip-source.mjs, strip-source]
+  S probe-round371-the-characterisation-item-is-a-registry-not-a-sweep.mts  [scripts/lib, characterisation-markers.mjs, characterisation-markers]
+  S probe-round372-the-rows-are-keyed-on-the-limb-and-the-contradiction-is-latent.mts  [strip-source.mjs, strip-source]
+  S probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts  [scripts/lib, strip-source.mjs, strip-source]
+  S probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts  [scripts/lib, strip-source.mjs, strip-source]
+  S probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts  [scripts/lib, strip-source.mjs, strip-source]
+  S probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts  [strip-source.mjs, strip-source]
+SELECTED_DEFERRED 0
+
+LEG T1 RED — SWEPT 43 + DEFERRED 110 = 153 against 140 probe-*.mts files at REV
+LEG T2 ok — scripts/lib/*.mjs files touched by d5205b76~1..87270c6f: 9 — characterisation-markers.mjs marker-floor.mjs offer-choice.mjs opaque-container.mjs premise-render.mjs recall-recogniser.mjs recall-tap.mjs strip-source.mjs tsx-required.mjs
+LEG T3 RED — unreadable probe sources: 110
+LEG S1 ok — selector finds the measured victim probe-round307 in SWEPT: yes, via [strip-source.mjs, tsx-required.mjs, strip-source, tsx-required]
+LEG S2 ok — selector is not universal: DEFERRED 0/110, SWEPT 34/43
+VERDICT/1 RED legs=5 red=[T1,T3] refused=[]

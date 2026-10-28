@@ -1,0 +1,30 @@
+REV b630db7a0c0c2a46cb3afccbe6daca617964e651
+CRIPPLE (none)
+LIVE_KEYS M1 M3
+POPULATION 19 selected deferred probes (stage 1)
+
+COUNT M1 0/19
+COUNT M3 2/19 — probe-browse-latency-end-to-end.mts probe-turncount-live-http.mts
+
+CONTROL KP M1=true M3=true
+CONTROL KN M1=false M3=false
+
+SUBJECT 9 cured lib files
+  L characterisation-markers.mjs  @type=true blockTags=false
+  L marker-floor.mjs  @type=true blockTags=true
+  L offer-choice.mjs  @type=true blockTags=true
+  L opaque-container.mjs  @type=false blockTags=true
+  L premise-render.mjs  @type=true blockTags=true
+  L recall-recogniser.mjs  @type=true blockTags=true
+  L recall-tap.mjs  @type=true blockTags=true
+  L strip-source.mjs  @type=true blockTags=false
+  L tsx-required.mjs  @type=true blockTags=true
+
+LEG G1 ok — stage 1 recording read: 19 member lines against its own SELECTED_DEFERRED 19
+LEG G2 ok — unreadable members: 0
+LEG K1 ok — KP probe-round307 carries every live key: M1=true M3=true
+LEG K2 ok — KN probe-accepted-multipart-allocation.mts carries none: M1=false M3=false
+LEG S1 ok — cured lib files carrying a type annotation in EITHER style: 9/9 (inline @type 8, block tags 7, unreadable 0)
+LEG S4 ok — style 2x2 over 9: both=6 typeOnly=2 tagsOnly=1 neither=0, sum=9
+LEG S3 ok — cured libs typed but carrying NO block tag — the set C4 cannot see: 2 [characterisation-markers.mjs strip-source.mjs]; identical to the two Argus's memo diffs: true
+VERDICT/1 ok legs=7 red=[] refused=[]
