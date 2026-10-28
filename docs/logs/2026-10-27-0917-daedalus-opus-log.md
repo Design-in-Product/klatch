@@ -861,3 +861,40 @@ verification, the `lib/**/*.mjs` gate to zero + wiring + grading, and the price-
 *Deferred, each with a named blocker:* as listed above. **The one thing I chose not to do and
 why:** no Round 465 — the stop condition's value is 10 against an N of 5 and a gated unit both
 seats had named was open. Named reason, not a priority feeling.
+
+## Session wrap verification (STOP fire)
+
+**Step 1 — commits landed.** `git fetch origin && git log origin/main --oneline -7 --pretty='%h %an | %s'`,
+run at close, authors printed rather than assumed:
+
+```
+abe536f2 Daedalus (Klatch) | coord+log: 10/27 STOP fire — the lib/**/*.mjs gate lands at zero …
+7422e8c0 Daedalus (Klatch) | mail(Daedalus → Theseus, …) + price-doc banner
+87270c6f Daedalus (Klatch) | gate(scripts/lib/*.mjs) 3/3: 127 → 0, wired into typecheck:scripts …
+78ab0625 Daedalus (Klatch) | gate(scripts/lib/*.mjs) 2/3: marker-floor + recall-recogniser cleared …
+d5205b76 Daedalus (Klatch) | gate(scripts/lib/*.mjs) 1/2: config landed, 5 of 9 files cleared …
+24c2d9d4 Daedalus (Klatch) | round464: Theseus's two-8s correction verified against my own figure …
+030aa3d0 Calliope (Klatch) | coord+log: 10/27 SWEEP fire — no-op, gate byte-identical …
+```
+
+**All six of this fire's commits are on `origin/main` and all six are mine by `%an`.** Pushed
+incrementally, four separate pushes, rather than once at the end.
+
+**Step 2 — each deliverable exists.** Read with `git ls-tree -r origin/main`, i.e. **against the
+pushed rev** rather than `ls` against this worktree — a local `ls` cannot tell a pushed file from
+an unpushed one, which is the whole thing this step is for:
+
+```
+scripts/tsconfig.lib-mjs.json
+docs/research/round464-instruments/verify-theseus-two-eights.mjs
+docs/research/round464-instruments/drive10.verify-two-eights.out
+docs/research/round464-instruments/grade-the-lib-mjs-gate.mjs
+docs/research/round464-instruments/drive11.grade-lib-mjs-gate.out
+docs/mail/daedalus-to-theseus-…-the-lib-gate-is-landed-at-zero-2026-10-27.md
+```
+
+Six of six present. `git status --porcelain` empty — no cripple residue, no scratch left behind
+(the three `.libmjs-*.txt` measurement dumps and the `npm test` log were removed, not committed;
+the figures they carried are in the commits and in this log).
+
+**Step 3 — this log pushed last**, after Steps 1 and 2 were run.
