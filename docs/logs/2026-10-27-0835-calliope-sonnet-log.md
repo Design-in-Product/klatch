@@ -206,3 +206,72 @@ own headers and confirmed cc-only; mail checked across local plus all four cross
 the cross-pollination brief's unreachability re-verified by attempting the read, not carried from
 the 10-26 note; rollup re-checked, nothing moved; gate re-derived fresh and byte-identical at every
 layer. Two consecutive checks found nothing further unblocked. Fire closed bounded.
+
+## 21:3x PT (STOP fire) — `log.html`'s owed 10/27 entry written; gate byte-identical; needs-you unchanged at 2
+
+Checkpoint is this seat's own 10/27 SWEEP-fire commit `030aa3d0` (17:03:37 PT). `git log
+030aa3d0..HEAD --format='%h %an %ci %s'` = 12 new commits, none mine, author-checked before citing
+them (the top of `git log --oneline` for this range is Theseus's, Iris's, Argus's, and Daedalus's
+own STOP-fire wrap commits from 17:19–20:04 PT, not this seat's, per the standing "check the
+commit author before assuming it's yours" discipline): Daedalus's round464 cross-check against
+Theseus's "two 8s" correction, his three-pass `scripts/lib/*.mjs` type-check gate landing (127 → 0
+files, wired into `typecheck:scripts`, graded by 5 deliberately-broken cripples), his mail to
+Theseus plus a price-doc banner, and his own STOP-fire coord+log+wrap; Argus's STOP-fire coord+log+
+mail noting the new gate reddened one cell in probe-round307's C4; Iris's STOP-fire no-op (31
+research-track commits read, nothing routed to her lane); Theseus's unit work sizing the new gate's
+blast radius over Argus's 110 DEFERRED probes (zero, by the gate's own mechanism) and correcting a
+disputed count to three modules, not two, plus his mail and STOP-fire coord+log+wrap. `git diff
+--stat 030aa3d0..HEAD -- packages/ scripts/` — ten files, all the new `scripts/lib/*.mjs` gate
+infrastructure (`scripts/lib/*.mjs`, `scripts/tsconfig.lib-mjs.json`), checked directly rather than
+assumed from commit subjects; no `packages/` touch.
+
+**`log.html`'s owed STOP-fire entry, written this fire, not deferred again:** four paragraphs
+covering the day's two real threads — the round249 CI-red diagnosis and fix (BSD-vs-Linux bind
+semantics, closed by mid-morning) and the larger arc starting from this seat's own 10-26
+proportionality flag: Theseus's grading and repair of Daedalus's proposed stop condition (three
+real defects found and fixed — an unspecified `N`, a second free attribution-key variable, and a
+"gated surfaces" claim that wasn't itself a censused surface), its current value reported as
+already past threshold, and the immediate behavioral change that followed — rather than opening
+Round 465, Daedalus spent the day's remaining hours on the `scripts/lib/*.mjs` gate the condition
+itself pointed at, which then rippled into one broken test cell that Argus and Theseus
+independently sized and converged on the same bounded answer for. Written in the house's
+established no-names, plain-language voice — sampled three prior entries (10-22, 10-21, 10-26)
+before drafting to confirm the voice rather than assume it from one example. `web/log.html` left
+untouched — confirmed via `git log -1 -- web/log.html` (last touched 2026-03-19, "Move web/ to
+repo root; add /web/* redirect stubs") that it is a dead redirect stub, not a live mirror, before
+deciding not to duplicate the entry there.
+
+**Mail:** one new memo since checkpoint cc's this seat (Theseus → Argus/Daedalus, the 110-probes
+blast-radius finding) — cc-only, not addressed by name, already folded into the commit summary
+above; no reply owed. `grep -l '\*\*To:\*\* Calliope\|^to: Calliope' docs/mail/*.md` — same
+standing four Pard-from-10-20 threads as every prior fire this week, no new file; the smoke-run
+branch still doesn't exist (`git branch -a` / `git ls-remote --heads origin` checked fresh), the
+one named blocker, still not mine alone to resolve. All four cross-repo mailboxes re-checked via
+`find -newermt "2026-10-27 17:03:37 -0700"` against the exact checkpoint timestamp: `designinproduct`
+0 new, `mediajunkie` 0 new, `dispatch` 0 new, `piper-morgan-product/mailboxes` 0 new. Nothing owed
+from any. **Briefs:** cross-pollination brief's pointer file unchanged since this morning's read
+(08:30 mtime); attempted `ls` on the real content at
+`mediajunkie/src/internal/briefs/2026-10-27-brief.md` directly this fire rather than citing the
+morning's note from memory — sandbox-denied, same gap, re-verified not assumed. **Rollup:** read
+`docs/operations/attention-rollup.md` directly — still v171 (2026-10-22), needs-you unchanged at 2;
+nothing in the 12 new commits is a decision only xian can make (CI infra, a round-track grading
+exchange, and type-check-gate hardening, all already resolved or routed within the team).
+
+**Gate re-verified fresh, including the brand-new `scripts/lib` type program:** `npm run
+typecheck` — 0 `error TS` across all four workspaces, now including Daedalus's new
+`scripts/tsconfig.lib-mjs.json` leg, run fresh rather than assumed clean from his commit message;
+`npm test -w packages/server` — **140 files · 2185 passed · 1 skipped (2186)**, byte-identical;
+`npm test -w packages/client` — **26 passed|13 skipped (39) · 333 passed|13 skipped (346)**,
+byte-identical; `node scripts/sweep-probes.mjs --census` — **153 probe files, 43 swept/110
+deferred, CENSUS OK**, unchanged. `lsof -i :3001` port free; `git status --short` clean before this
+fire's own `log.html` edit. Task list of record: no mandatory items due beyond `log.html`'s
+STOP-fire obligation, met this fire; blog-series drafting remains gated on xian; the four standing
+Pard threads unchanged.
+
+**Drain:** twelve new commits read with author verified (none mine) and the ten-file
+`scripts/lib`/`scripts/tsconfig` diff checked directly; the day's owed `log.html` entry written in
+the established voice rather than deferred a second time; mail checked across local plus all four
+cross-repo mailboxes against the exact checkpoint timestamp; the brief's unreachability re-verified
+by a fresh attempt, not carried from this morning's note; rollup re-checked against the live file;
+gate re-derived fresh including the new type-check leg, byte-identical apart from the expected new
+coverage. Two consecutive checks found nothing further unblocked. Fire closed bounded.
