@@ -1,0 +1,100 @@
+=== RECON/464-T2-keychoice — what the credit edges are made of ===
+REV c7bfbd6c0a6d4b3cba3e711ddddc2d36fd66ad4d
+WINDOW --since="2026-10-13 00:00:00"
+CLOCK 2026-10-28T20:20:47.839Z
+commits=626 gatedCommits=18 roundDirs=91
+
+CREDIT EDGES (commit touches round R's dir AND a gated file): 9
+
+  round 381 ← 4d58eee3 Daedalus (Klatch) 2026-10-13T09:30
+    subject      : round381: his 380 §4 taken, and the conjunct he showed unreachable by re-key is reachable alone by shape
+    subjectRound : 381
+    gated files  : 2
+      scripts/probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts
+      scripts/sweep-probes.mjs
+    packages/ among them: 0
+
+  round 383 ← 8b08f3e9 Daedalus (Klatch) 2026-10-13T13:36
+    subject      : round383: his 382 class reading reproduces as a SET, and my control for the cure went red on the cure
+    subjectRound : 383
+    gated files  : 2
+      scripts/probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts
+      scripts/sweep-probes.mjs
+    packages/ among them: 0
+
+  round 387 ← 1588b85f Daedalus (Klatch) 2026-10-14T17:38
+    subject      : round391: the declaration takes the `?` AND the seven callers take the boolean, because the explicit-only cure
+    subjectRound : 391
+    gated files  : 1
+      scripts/lib/strip-source.d.mts
+    packages/ among them: 0
+
+  round 389 ← 1588b85f Daedalus (Klatch) 2026-10-14T17:38
+    subject      : round391: the declaration takes the `?` AND the seven callers take the boolean, because the explicit-only cure
+    subjectRound : 391
+    gated files  : 1
+      scripts/lib/strip-source.d.mts
+    packages/ among them: 0
+
+  round 391 ← 1588b85f Daedalus (Klatch) 2026-10-14T17:38
+    subject      : round391: the declaration takes the `?` AND the seven callers take the boolean, because the explicit-only cure
+    subjectRound : 391
+    gated files  : 1
+      scripts/lib/strip-source.d.mts
+    packages/ among them: 0
+
+  round 417 ← e2759907 Daedalus (Klatch) 2026-10-19T09:31
+    subject      : models+intel: add the three 5.5 models, floored pending capability verification; SDK bump assessed as non-triv
+    subjectRound : -
+    gated files  : 3
+      packages/server/src/__tests__/round11-klatch-creation.test.ts
+      packages/server/src/__tests__/round39-model-fallback-parity.test.ts
+      packages/shared/src/types.ts
+    packages/ among them: 3
+
+  round 454 ← a4f42fc7 Daedalus (Klatch) 2026-10-25T13:39
+    subject      : round454: re-pin probe-round303 at 20 checks, and the clean re-drive confirms the 260 diagnosis
+    subjectRound : 454
+    gated files  : 1
+      scripts/sweep-probes.mjs
+    packages/ among them: 0
+
+  round 454 ← 28833525 Daedalus (Klatch) 2026-10-25T13:35
+    subject      : round454: stripSource refuses a non-string, and the sweep caught my own .d.mts as undeclared
+    subjectRound : 454
+    gated files  : 3
+      scripts/lib/strip-source.d.mts
+      scripts/lib/strip-source.mjs
+      scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts
+    packages/ among them: 0
+
+  round 464 ← 87270c6f Daedalus (Klatch) 2026-10-27T17:33
+    subject      : gate(scripts/lib/*.mjs) 3/3: 127 → 0, wired into typecheck:scripts, and graded by 5 cripples
+    subjectRound : -
+    gated files  : 2
+      scripts/lib/characterisation-markers.mjs
+      scripts/lib/offer-choice.mjs
+    packages/ among them: 0
+
+UNION of gated files across all credit edges: 10
+  packages/server/src/__tests__/round11-klatch-creation.test.ts
+  packages/server/src/__tests__/round39-model-fallback-parity.test.ts
+  packages/shared/src/types.ts
+  scripts/lib/characterisation-markers.mjs
+  scripts/lib/offer-choice.mjs
+  scripts/lib/strip-source.d.mts
+  scripts/lib/strip-source.mjs
+  scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts
+  scripts/probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts
+  scripts/sweep-probes.mjs
+
+packages/ members of that union: 3
+scripts/  members of that union: 7
+
+ALL gated files touched in the window (any commit, credited or not): 22
+  packages/: 4
+  scripts/ : 18
+    PKG packages/server/src/__tests__/round11-klatch-creation.test.ts
+    PKG packages/server/src/__tests__/round249-the-ownership-guard-drives-its-own-matrix.test.ts
+    PKG packages/server/src/__tests__/round39-model-fallback-parity.test.ts
+    PKG packages/shared/src/types.ts
