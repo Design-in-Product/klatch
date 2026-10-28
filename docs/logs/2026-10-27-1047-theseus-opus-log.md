@@ -288,3 +288,116 @@ tree clean after the final push.
 
 This block is appended after Steps 1 and 2 ran; the log commit carrying it is the last push of the
 fire.
+
+---
+
+# STOP fire — 2026-10-27 19:47–20:2x PT
+
+**No Round 465, fourth fire running.** Under this seat's own stop condition (`consecutive=10`, last
+gated-curing round `454`, `N=5` → already fired, quoted from `T2`'s figure) a self-directed round
+queues behind routed and gated work. This fire's work is gated work another seat named and left
+unclaimed in writing.
+
+## 19:47 — open, briefing
+
+`git fetch`: worktree at `b630db7a`, `HEAD..origin/main` empty, nothing behind. Two inbound memos
+since my 15:0x WORK fire, both naming this seat, identified by `git log ff0cae98..HEAD --name-only
+-- docs/mail/` rather than by mtime (the wrapper's sync restamps mtimes, so `find -newermt` is keyed
+on checkout time, not arrival):
+
+* `daedalus-to-theseus-…-your-two-eights-correction-is-exact-and-the-lib-gate-is-landed-at-zero-2026-10-27.md`
+* `argus-to-daedalus-cc-theseus-…-your-lib-mjs-gate-landed-and-it-reddened-round307s-c4-2026-10-27.md`
+
+Both read in full before any work. **Daedalus routed nothing** — his §6 says so explicitly and adds
+that nothing of mine is red from his fire (he drove `verify-recogniser-equivalence`,
+`verify-offer-choice`, `verify-tsx-guard` 213/213, `verify-design-assertions-gated` 37/37 and 86/86
+server tests before pushing). His §1 takes my two-8s correction in full, including both named swap
+members. Nothing to answer there.
+
+**Argus's memo routes a RED to Daedalus, not to me** — `probe-round307`'s `C4`. But it closes with an
+explicit non-claim: *"I did not check whether any of the other 110 deferred probes reference these
+two files' signatures in a way that would also move."* That is unowned, it is a census and a static
+read, and deferring it would have been indefensible. Took it.
+
+## 20:0x — the unit
+
+`docs/research/unit-307c4-blast-radius-2026-10-27/`, commit `cc41fa53`. 3 instruments, 18 recorded
+drives, 11 cripples. Findings in the dir's README; the five that matter:
+
+1. **19 of 110** deferred probes reference a cured lib file — **and my first drive published `0`.**
+   `SWEPT` holds `{file,expect,why}` objects, `DEFERRED` holds plain **strings**; reading `e.file`
+   over both built `scripts/undefined` 110 times. A leg that refuses on an unreadable source (`T3`)
+   is the only reason the 0 was not published, because a false zero reads identically to "none
+   reference lib." `drive1.recon.out` kept unedited.
+2. **0 of 110 can move under `C4`'s mechanism**, on two keys each carrying a known positive: `M1`
+   (the `@param`/`@returns` block-tag regex, `C4`'s own key) **0/19**; `M3`
+   (`Parameters`/`ReturnType<typeof>`) 2/19 but both targeting `spawn` and a local function, so
+   `M3T` = **0/2**. `M3T` needs a *dynamic* target shape as well as a static one — 307 reaches the
+   cured libs through generated `import * as impl from './<resolved>.mjs'` cells, and a
+   static-import-only key clears the known positive (`m3t-static-only` reddens `M3T-KP`).
+   **Scope stated:** this is a zero *by the mechanism*, not "none of the 110 is red." None was
+   driven.
+3. Argus's two files are the **complete set**, not a sample — set equality, not "both appear."
+4. The cure used **two annotation styles**: `both=6 typeOnly=2 tagsOnly=1 neither=0, sum=9`.
+   `opaque-container.mjs` was cured with block `@param` tags, not inline `@type`.
+5. **Argus's 13 is exact; its attribution is off by 3.** Split `characterisation-markers=8
+   strip-source=2 tsx-required=3`, and `tsx-required` carries 8 block tags. **This kills his second
+   suggested repair:** scoping the pin to the three original modules leaves `C4` false, because
+   `tsx-required` is one of them and went 1 → 4 gradeable without gaining a block tag. His first
+   repair (re-key off "has a typed parameter signature") survives.
+
+**Argus's RED reproduced under his own key before any of this was written** — `drive16`, my own
+re-drive of his probe: `C4 FAIL`, `1 of 17 regression check(s) FAILED`, exit 1, `.err` empty,
+`gradeable.length` 14 exactly as he predicted.
+
+## Three defects in my own instruments, two of which published exit 0
+
+1. The false zero above — caught by a refusing leg, not by reading.
+2. **`drop-307` was declared in the usage docblock and no hook read it.** Occurrence count in the
+   file: **1**. It exited **0** — "the cripple did not redden" and "the repair is sound" are the same
+   output. Implemented; `C0` now gates that every docblock-declared cripple occurs more than once in
+   the file's own source.
+3. **A vacuous green.** `kp-drop-m1` exited **0**: with `M1` dropped, the known-positive leg was
+   green on `M3` alone, `COUNT M1` vanished from the output entirely, and the verdict still read
+   `ok`. The cell had stopped measuring the one figure it exists to publish. `G3` now gates both keys
+   live. **Following the reds would never have found this** — only driving the cripple did.
+
+Two of my own assertions were reddened by their own controls and **re-aimed, not loosened**: `K1`
+(307 does not carry `@type` — it is a subject-side property, so the key moved to the subject with
+its own KP, rather than `K1` being relaxed to "every key except that one") and `S1` (8/9, not 9/9).
+
+**One cripple did not separate, and is labelled rather than counted.** `count-not-members` was meant
+to show that a bare total hides the attribution error; it does not, because `A2` reddens anyway. So
+`A2` is the gate and `A3` is descriptive — one load-bearing leg for finding 5, not two.
+
+Clean arms: `drive14` → `VERDICT/1 ok legs=10 red=[] refused=[]`; `drive4` → `ok legs=6`;
+`drive17` → `RED red=[A2]`, where the RED is the finding. All `.err` empty, `grep -c .` = 0 on each.
+
+## Not run this fire
+
+`npm test`, `npm run typecheck`, the driving sweep — nothing under `packages/` or `scripts/` was
+touched; this unit is new files under `docs/research/` only. Pre-commit census ran on both commits:
+`CENSUS OK · census PASSED` each time. No probe was left running: 307 uses `spawnSync`, so nothing
+to reap.
+
+## Drain
+
+Two inbound at open, both read in full before any work. Daedalus routed nothing and nothing of mine
+is red from his fire — nothing to answer. Argus's RED is routed to Daedalus, not here; the one
+unowned item in either memo was Argus's non-claim, and it is closed in the fire it arrived in, with
+two corrections going back out (his attribution, and Daedalus's "the cure added inline `@type`").
+Reply memo filed and pushed as its own commit to `main`.
+
+**Mail re-checked at close.** **Threads left open in `docs/mail/` deliberately,** not moved to
+`read/`: `C4` is an open action on Daedalus, and my §2 narrows but does not close it; the
+pinned-vs-live census question is still parked for someone to weigh in.
+
+**Deferred with named blockers:** driving any of the 19 — two are live-HTTP/port probes and need a
+window where a leaked server costs nothing, which a fire is not; the whole-cell drive of `455` cell A
+(same shape of blocker); the 67 unpinned `git` sites (next self-directed unit, no blocker, correctly
+queued behind gated work by the condition above). **Not taken, no blocker, named so it stays
+claimable:** the 37 non-`lib` `.mjs` probes, 826 errors, which Daedalus measured and explicitly does
+not recommend as a next unit.
+
+**Needs you (xian): 3**, unchanged — the drift census over the full 52; the key/trigger for Managed
+Agents test 1; the §4.3 "promising" threshold.
