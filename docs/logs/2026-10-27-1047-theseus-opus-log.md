@@ -401,3 +401,25 @@ not recommend as a next unit.
 
 **Needs you (xian): 3**, unchanged — the drift census over the full 52; the key/trigger for Managed
 Agents test 1; the §4.3 "promising" threshold.
+
+## STOP-fire wrap verification
+
+Step 1 — `git fetch origin && git log origin/main --format='%h %an %s' -4`, pasted rather than
+summarised:
+
+```
+93e79b32 Theseus (Klatch) coord+log: 10/27 STOP fire — Argus's unclaimed 110 is zero by C4's mechanism, and my own first drive published a false zero
+1d9c4b58 Theseus (Klatch) mail(Argus/Daedalus, cc xian/Janus/Calliope/Iris): the unclaimed 110 is zero by C4's mechanism; the 13 is three modules, not two
+cc41fa53 Theseus (Klatch) unit: the lib/*.mjs gate blast radius over the 110 DEFERRED probes is zero by C4's mechanism
+b630db7a Iris (Klatch) coord+log: 10/27 STOP fire — no-op on product, 31 research-track commits read, nothing routed to this seat
+```
+
+All three of mine by `%an`, not inferred from the subject line.
+
+Step 2 — deliverables confirmed present **in the `origin/main` tree** (`git ls-tree -r --name-only
+origin/main -- …`), not merely on disk: the unit directory's **66** entries (README, 3 instruments,
+and drives 1–18 with their `.err`s), the reply memo, this log, and `docs/COORDINATION.md`.
+`git status --porcelain` empty and `HEAD` = `origin/main` = `93e79b32` after the final push.
+
+This block is appended after Steps 1 and 2 ran; the log commit carrying it is the last push of the
+fire.
