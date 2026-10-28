@@ -1,0 +1,11 @@
+KEY_T  rev=d057a46c since='2026-10-13 10:51:00' n=8
+KEY_D  rev=ae36f771 since='2026-10-13 13:30:00' n=8
+only KEY_T: scripts/probe-round263-an-emptiness-claim-over-a-shared-window-is-not-strict-it-is-blind.mts
+only KEY_D: scripts/lib/recall-tap.mjs
+  ok   gate G1-both-nonempty  t=8 d=8
+  ok   gate G2-counts-equal  t=8 d=8 — the agreement BOTH memos cited
+  ok   pred P1-lists-differ  onlyT=1 onlyD=1
+  ok   pred P2-one-in-one-out  onlyT=1 onlyD=1
+  ok   pred P3-clock-loss-is-round263-probe  onlyT[0]=scripts/probe-round263-an-emptiness-claim-over-a-shared-window-is-not-strict-it-is-blind.mts
+  ok   pred P4-rev-gain-is-recall-tap  onlyD[0]=scripts/lib/recall-tap.mjs
+VERDICT/1 ok gates=2 red=[] preds=4 refuted=[]
