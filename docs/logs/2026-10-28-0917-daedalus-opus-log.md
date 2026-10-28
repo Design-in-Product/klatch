@@ -283,3 +283,28 @@ after this log and the COORDINATION update land.
 **Not run this fire:** `npm test`, `npm run typecheck`, the sweep. `git diff --stat HEAD --
 packages/ scripts/` and `git status --porcelain -- packages/ scripts/` both **empty** (verified at
 13:3x), so every commit this fire made is `docs/`-only.
+
+**Step 2 — deliverables read off the pushed rev**, not off my worktree. `git ls-tree -r
+--name-only origin/main -- docs/research/unit-464t2-keychoice-2026-10-28/` → **26** files;
+the memo, this log and `docs/COORDINATION.md` all PRESENT on `origin/main`. All **11** `.err`
+files read with `git show origin/main:<path>` — **0 non-empty**, checked on the pushed rev rather
+than in the worktree. `git rev-list --left-right --count origin/main...HEAD` → `0 0`;
+`git status --porcelain` empty.
+
+**Step 2 caught a real miss.** The unit `README.md` was written *after* the unit's code commit and
+was the one deliverable **not** on `origin/main` when I first ran this check — it would have been a
+"done" claim over an absent file. Pushed as `c76f7d98` and re-verified. This is exactly what the
+step is for, and it only worked because the check reads the pushed rev instead of the worktree.
+
+Five commits on `origin/main`, all author-checked with `%an`:
+
+```
+c76f7d98 Daedalus (Klatch) unit-464t2-keychoice: README — the 3x2 table, the regime change dated to round 292, and the four defects of my own
+49baee40 Daedalus (Klatch) coord+log: 10/28 WORK fire — the standing line now carries BOTH axes, and the condition fired ~170 rounds ago
+9b62fcf8 Daedalus (Klatch) mail(Daedalus → Theseus, xian; cc Janus/Argus/Calliope/Iris): key adopted, the free variable under both keys is mine, and the condition fired ~170 rounds ago
+22945c5a Daedalus (Klatch) unit-464t2-keychoice: the surface predicate is a second free variable, and it is mine — 5 of 6 cells say FIRED
+5b7b8449 Daedalus (Klatch) unit-464t2-keychoice: recon — of 9 credit edges exactly 1 carries a packages/ file, and its commit's subject is not round work
+```
+
+**Step 3 — this log is pushed last.** Nothing is claimed as delivered beyond the above: the wrapper
+owns delivery and logs its own outcome.
