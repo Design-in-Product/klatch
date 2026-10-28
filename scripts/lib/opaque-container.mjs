@@ -86,6 +86,8 @@ const GZIP_MAGIC = [0x1f, 0x8b];
  * different, and the difference shows up in `entries`: data can contain a well-formed local
  * file header, and an unguarded walk landing on one counts a phantom entry and then claims to
  * have finished. `round89-opaque-containers.test.ts` pins that case directly.
+ *
+ * @param {Buffer} buf
  */
 function walkZipEntries(buf) {
   let off = 0;
@@ -131,6 +133,8 @@ function walkZipEntries(buf) {
  *          counting it as reached re-creates, for one file, the unfalsifiable zero that
  *          `--all-tracked` used to print for the whole corpus. `measure-marker-floor.mjs`
  *          prints it as its own line for that reason.
+ *
+ * @param {Buffer} buf
  */
 export function classifyContainer(buf) {
   const plain = { opaque: false, kind: 'plain', entries: 0, compressed: 0, complete: true };
@@ -160,6 +164,9 @@ export function classifyContainer(buf) {
  * Lossy is not the same as opaque and must not be reported as it: the two SQLite backups decode
  * lossily and are still fully searchable for marker text, because page payloads are stored as
  * plain UTF-8. That property is the entire reason `--all-tracked` can stand in for `--db`.
+ *
+ * @param {Buffer} buf
+ * @param {string} text
  */
 export function decodesLosslessly(buf, text) {
   return Buffer.byteLength(text) === buf.length;

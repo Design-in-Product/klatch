@@ -47,6 +47,26 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 /**
+ * The caught error, viewed as the three fields node actually puts on these three shapes.
+ *
+ * Round 466, Daedalus, 2026-10-27, when `scripts/lib/**\/*.mjs` entered a type program for the
+ * first time (`scripts/tsconfig.lib-mjs.json`). `tsx-required.d.mts` declares every one of these
+ * parameters `unknown`, which is right at the boundary and is exactly why the bodies below could
+ * not be annotated `unknown` directly: property access on `unknown` is TS18046, and each
+ * predicate's first line IS the narrowing. This view is the one-line widening each body already
+ * assumes at runtime, in one place rather than four, with the fields left `unknown` so the
+ * `typeof … !== 'string'` guards still have work to do.
+ *
+ * `?? {}` is so a `null`/`undefined` error does not need a separate spelling here; every caller
+ * still tests `!err` on the ORIGINAL value, because `{}` is truthy and that test is load-bearing.
+ *
+ * @param {unknown} err
+ * @returns {{code?: unknown, url?: unknown, message?: unknown}}
+ */
+const asThrownError = (err) =>
+  /** @type {{code?: unknown, url?: unknown, message?: unknown}} */ (err ?? {});
+
+/**
  * The TypeScript extensions, as one binding — Round 128, Theseus.
  *
  * This existed three times, in three limbs that were supposed to be independent measurements:
@@ -157,10 +177,12 @@ export const TSX_LOADABLE_EXTENSIONS = ['.tsx', '.jsx', '.mts', '.cts', '.ts'];
  *
  * Exported so it is testable, and so the predicate has exactly one definition.
  */
+/** @param {unknown} err */
 export function isTsResolutionFailure(err) {
-  if (!err || err.code !== 'ERR_MODULE_NOT_FOUND' || typeof err.url !== 'string') return false;
-  if (!err.url.startsWith('file:')) return false;
-  const missing = fileURLToPath(err.url);
+  const e = asThrownError(err);
+  if (!err || e.code !== 'ERR_MODULE_NOT_FOUND' || typeof e.url !== 'string') return false;
+  if (!e.url.startsWith('file:')) return false;
+  const missing = fileURLToPath(e.url);
   if (!missing.includes(`${path.sep}packages${path.sep}`)) return false;
   // Round 137: the `.js` term was an under-fire — Theseus's Round 136 §3. An *extensionless*
   // inner specifier (`from './inner'` inside a `.ts`, `inner.ts` on disk) raises the same
@@ -211,9 +233,11 @@ export function isTsResolutionFailure(err) {
  * the running node rather than a frozen string, so a release that reformats the message turns that
  * file red instead of silently disarming this predicate.
  */
+/** @param {unknown} err */
 export function isTsExtensionFailure(err) {
-  if (!err || err.code !== 'ERR_UNKNOWN_FILE_EXTENSION' || typeof err.message !== 'string') return false;
-  const m = /^Unknown file extension "([^"]*)" for (.+)$/.exec(err.message.split('\n')[0]);
+  const e = asThrownError(err);
+  if (!err || e.code !== 'ERR_UNKNOWN_FILE_EXTENSION' || typeof e.message !== 'string') return false;
+  const m = /^Unknown file extension "([^"]*)" for (.+)$/.exec(e.message.split('\n')[0]);
   if (!m) return false;
   const [, ext, file] = m;
   // Round 137: `TSX_LOADABLE_EXTENSIONS`, not `TS_EXTENSIONS` — a superset, adding `.jsx`, which
@@ -270,10 +294,12 @@ export const TS_DIR_INDEX_EXTENSIONS = ['.tsx', '.ts'];
  * That conjunct exists there to separate "wrong runner" from "genuinely missing file", an ambiguity
  * this shape does not have: node found the directory and declined to look inside it.
  */
+/** @param {unknown} err */
 export function isTsDirImportFailure(err) {
-  if (!err || err.code !== 'ERR_UNSUPPORTED_DIR_IMPORT' || typeof err.url !== 'string') return false;
-  if (!err.url.startsWith('file:')) return false;
-  const dir = fileURLToPath(err.url);
+  const e = asThrownError(err);
+  if (!err || e.code !== 'ERR_UNSUPPORTED_DIR_IMPORT' || typeof e.url !== 'string') return false;
+  if (!e.url.startsWith('file:')) return false;
+  const dir = fileURLToPath(e.url);
   let stat;
   try {
     stat = fs.statSync(dir);
@@ -327,6 +353,12 @@ export function explainTsxRequirement(err, selfUrl) {
     console.error(`only the runner is wrong. Re-run as:\n`);
   }
   console.error(`    npx tsx ${self}\n`);
-  console.error(`(original error, for the record: ${shape === 'extension' ? err.message.split('\n')[0] : err.url})\n`);
+  // `shape` is non-null here, so one of the three predicates above returned true, and each of
+  // them has already tested the field this line reads: `extension` guarantees a string `message`,
+  // the other two a string `url`. The predicates return `boolean` rather than type predicates
+  // (that is what `tsx-required.d.mts` declares), so TypeScript cannot carry that across the call
+  // — the view below is the same widening the predicates use, not a new assumption.
+  const e = asThrownError(err);
+  console.error(`(original error, for the record: ${shape === 'extension' ? String(e.message).split('\n')[0] : e.url})\n`);
   process.exit(2);
 }

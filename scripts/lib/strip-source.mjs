@@ -137,7 +137,7 @@ export const REGEX_MAY_OPEN_AFTER_WORD = new Set([
 // The index just past a regex literal opening at `i`, or −1 if no such literal closes on this line.
 // `[` opens a character class, in which `/` is an ordinary character — `/[/]/` is one literal, not
 // two. Kept separate from the scanner so the case table below can point at it directly.
-export const regexLiteralEnd = (src, i) => {
+export const regexLiteralEnd = (/** @type {string} */ src, /** @type {number} */ i) => {
   let j = i + 1;
   let inClass = false;
   while (j < src.length) {
@@ -185,7 +185,17 @@ export const regexLiteralEnd = (src, i) => {
 // mistake, because the realistic origin is `readFileSync(p)` with the encoding argument forgotten.
 export class StripSourceInputError extends TypeError {}
 
-export const stripSource = (src, blankStrings) => {
+// The two annotations below are DELIBERATELY WIDER than `strip-source.d.mts`'s
+// `(src: string, blankStrings?: boolean)`, and the asymmetry is the point rather than drift.
+// The declaration describes what a caller may pass; this implementation exists to REFUSE what a
+// caller must not, and the Round 454 refusal above is unreachable under a `string` annotation —
+// TS narrows the guarded branch to `never` and the `=== null` test inside it stops typechecking.
+// `blankStrings` is tested for TRUTHINESS, not for `boolean`, which is the load-bearing fact the
+// declaration's own note spends a paragraph on; `unknown` is what the body actually assumes.
+export const stripSource = (
+  /** @type {unknown} */ src,
+  /** @type {unknown} */ blankStrings,
+) => {
   if (typeof src !== 'string') {
     const kind = src === null ? 'null'
       : Buffer.isBuffer(src) ? 'a Buffer'

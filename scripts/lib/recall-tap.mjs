@@ -61,6 +61,23 @@
 const RAW_INPUT_FIELD = 'toolInput';
 
 /**
+ * `err?.message ?? String(err)`, spelled so it typechecks under `useUnknownInCatchVariables`.
+ *
+ * Round 466. Behaviour-identical to the expression it replaces, case by case: an `Error` gives
+ * its message; a non-`Error` object without one, or a `null`/`undefined` throw, gives
+ * `String(err)` — because `(null ?? {}).message` is `undefined` and `??` falls through exactly as
+ * the optional chain did. Not `err instanceof Error`, which would have been a behaviour change:
+ * a cross-realm or duck-typed error carrying a `message` is in the corpus this probe taps.
+ *
+ * @param {unknown} err
+ * @returns {string}
+ */
+const thrownMessage = (err) => {
+  const m = /** @type {{message?: unknown}} */ (err ?? {}).message;
+  return m == null ? String(err) : String(m);
+};
+
+/**
  * Alignment / capture outcomes. Exported so the probe and the tests spell them once.
  *
  * `lost-race` and `no-calls` are deliberately *different* values for the same observed
@@ -201,7 +218,16 @@ export async function readSseEvents(body, opts = {}) {
  *   timeoutMs?: number,
  *   fetchImpl?: typeof fetch,
  * }} opts
- * @returns {{done: Promise<{frames: any[], status: string, reason: string|null, terminated: boolean}>, abort: () => void}}
+ * @returns {{done: Promise<{frames: any[], status: string|null, reason: string|null, terminated: boolean}>, abort: () => void}}
+ *
+ * `status` is `string|null` and said `string` until Round 466. This is the THIRD drifted
+ * hand-written contract in this file, and the first one found by a type program rather than by
+ * reading: the success path below sets `out.status = null` on purpose — see the comment there —
+ * so the declared `string` was false on every non-error return. It is also the least harmful of
+ * the three, because no caller reads this field: `probe-recall-tool.mjs:2346-2360` consumes
+ * `.reason` and `.frames` only, and `alignTapToCalls` is handed `{captureFailed, captureReason}`
+ * rather than this record. A contract nothing reads cannot be caught by its consumers going
+ * wrong, which is the argument for the gate rather than for more careful reading.
  */
 export function startRecallTap(opts) {
   const controller = new AbortController();
@@ -210,6 +236,7 @@ export function startRecallTap(opts) {
   let timer = null;
 
   const done = (async () => {
+    /** @type {{frames: any[], status: string|null, reason: string|null, terminated: boolean}} */
     const out = { frames: [], status: TAP_STATUS.FAILED, reason: null, terminated: false };
     try {
       timer = setTimeout(() => controller.abort(), timeoutMs);
@@ -233,7 +260,7 @@ export function startRecallTap(opts) {
     } catch (err) {
       out.reason = controller.signal.aborted
         ? `tap aborted after ${timeoutMs}ms or by the probe`
-        : `tap threw: ${err?.message ?? String(err)}`;
+        : `tap threw: ${thrownMessage(err)}`;
       return out;
     } finally {
       if (timer) clearTimeout(timer);
@@ -284,7 +311,7 @@ export function startRecallTap(opts) {
  * @returns {{status: string, reason: string|null, offset: number|null, verdicts: string[], inputs: (any|null)[]}}
  */
 export function alignTapToCalls(frames, calls, capture = {}) {
-  const none = (status, reason) => ({
+  const none = (/** @type {string} */ status, /** @type {string|null} */ reason) => ({
     status,
     reason,
     offset: null,
@@ -402,7 +429,7 @@ export function readTapVerdict(call, toolInput) {
  * @param {Array<{noQuery: boolean, kind: string}>} calls
  */
 export function tapSummary(alignment, calls) {
-  const count = (v) => alignment.verdicts.filter((x) => x === v).length;
+  const count = (/** @type {string} */ v) => alignment.verdicts.filter((x) => x === v).length;
   // Round 69's `unscorableCalls` predicate, spelled again here rather than imported,
   // because this must keep meaning "the rows Round 69 flagged" even if that predicate
   // later moves. The count itself is *not* recomputed for the probe — the probe keeps
@@ -416,7 +443,8 @@ export function tapSummary(alignment, calls) {
   // "the tap can only ever reduce unscorability" invariant becomes a claim instead of a
   // guarantee. Spelled as an explicit predicate rather than `!== NO_FRAME` because the
   // next verdict added would otherwise inherit "resolved" by default.
-  const adjudicated = (v) => v !== TAP_VERDICT.NO_FRAME && v !== TAP_VERDICT.UNREADABLE_SUMMARY;
+  const adjudicated = (/** @type {string} */ v) =>
+    v !== TAP_VERDICT.NO_FRAME && v !== TAP_VERDICT.UNREADABLE_SUMMARY;
   const resolved = flagged.filter((x) => adjudicated(alignment.verdicts[x.i]));
 
   return {

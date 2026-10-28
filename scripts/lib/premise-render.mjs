@@ -58,7 +58,11 @@
  *    prose does not travel with the number it qualifies.
  */
 
-/** Excerpts in a reconstructed render, distinguishing "none" from "one". */
+/**
+ * Excerpts in a reconstructed render, distinguishing "none" from "one".
+ *
+ * @param {{shownCount: number, excerptSeparators: number}} rendered
+ */
 export function countRenderedExcerpts(rendered) {
   // A zero-match search renders no excerpt at all, and `excerptSeparators` cannot tell that
   // apart from a single excerpt — both are 0. Round 98 §0's split of the ten runs turns on
@@ -68,11 +72,25 @@ export function countRenderedExcerpts(rendered) {
   return rendered.excerptSeparators + 1;
 }
 
+/**
+ * The two contracts below are the shapes `scripts/verify-premise-render.mjs` actually
+ * constructs (`Q_PREMISE`/`R_PREMISE` and `callOf`/`renderOf` at its lines 113-114, 181-182)
+ * and the shape `probe-recall-tool.mjs:2507` passes. `premise` is nullable because two of
+ * that verifier's cases pass `null` and `undefined` on purpose.
+ *
+ * @param {{call: string, excerpts: number} | null | undefined} premise
+ * @param {Array<{
+ *   reconstructionFabricated?: boolean,
+ *   rendered?: {shownCount: number, excerptSeparators: number, isError?: boolean} | null,
+ * }>} toolCalls
+ */
 export function readPremiseRenderHeld(premise, toolCalls) {
   if (!premise) return null;
   const call = toolCalls[premise.call === 'first' ? 0 : 1];
   const base = { premise, evidenceClass: 'reconstructed' };
-  const undecided = (why) => ({ ...base, observedExcerpts: null, held: null, why });
+  const undecided = (/** @type {string} */ why) => ({
+    ...base, observedExcerpts: null, held: null, why,
+  });
 
   if (call === undefined) return undecided(`no ${premise.call} tool call was made`);
   if (call.reconstructionFabricated) {

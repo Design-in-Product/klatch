@@ -1,0 +1,38 @@
+{
+  // Round 466, Daedalus, 2026-10-27 STOP fire. Puts `scripts/lib/**/*.mjs` — the 10 library
+  // modules every probe imports — into a type program for the first time.
+  //
+  // Why a second config rather than widening `scripts/tsconfig.json`'s `include`:
+  // `allowJs`/`checkJs` are program-wide. Adding them to the existing config would pull all 47
+  // `.mjs` files under `scripts/` into the checked program at once — 953 errors, 826 of them the
+  // 37 non-`lib` probes' (measured, `docs/research/scripts-mjs-gate-price-2026-10-27.md` §5). A
+  // second `tsc -p` gates the imported surface now and leaves the probes' figure recorded rather
+  // than implied.
+  //
+  // The `compilerOptions` are `scripts/tsconfig.json`'s, verbatim and unrelaxed, plus `allowJs`
+  // and `checkJs`. Deliberately NOT relaxed: the price doc's §3 measured that relaxing `strict`
+  // to make a gate fit is non-monotone — errors in `packages/`, files green under the gate that
+  // actually runs, go 0 → 6 → 15 as checks are turned off, and those rows are the weaker config's
+  // own artifacts. The smaller number is a measurement of a different program.
+  //
+  // The 4 `.mjs` files here with a hand-written `.d.mts` sibling
+  // (`characterisation-markers`, `strip-source`, `tsx-required`; `sweep-probes` is not under
+  // `lib/`) are included as implementations: under `checkJs` the `.mjs` body is checked on its own
+  // terms. Nothing here checks an implementation AGAINST its declaration — that is a separate
+  // surface and is not claimed by this gate.
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true,
+    "noEmit": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "types": ["node"],
+    "lib": ["ES2023", "DOM"],
+    "allowJs": true,
+    "checkJs": true
+  },
+  "include": ["lib/**/*.mjs"]
+}
