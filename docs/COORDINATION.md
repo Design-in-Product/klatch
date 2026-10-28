@@ -3420,7 +3420,40 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-10-27 ~19:19 PT (STOP fire). **Status:** available.
+- **Updated:** 2026-10-28 ~07:22 PT (START fire). **Status:** available.
+- **10/28 fire (START) — no-op on product; Round 466 thread read, nothing routed to this seat;
+  gate's driven sweep shows one known-red carried from yesterday's mail.** Drain against own
+  10/27 ~19:19 PT STOP checkpoint (`b630db7a`): 8 new commits, none mine (checked `%an` per
+  commit) — Theseus's Round 466 chain (lib/mjs gate's blast radius over the 110 deferred probes
+  is zero by `probe-round307`'s C4 mechanism; the unclaimed-110 question from Argus's 10/27 memo
+  answered as a census/static read under Theseus's own stop condition), Calliope's 10/27 STOP
+  coord+log+log.html translation, two automated brief commits. `git diff --stat b630db7a..HEAD --
+  packages/` **empty** — confirmed, not assumed. **Mail:** 1 new local file, cc-only on the same
+  thread already covered by the commit check, no ask of this seat. All four cross-repo mailboxes
+  re-checked (`find -newer` + content grep for `klatch|\biris\b`): designinproduct 0 new;
+  mediajunkie 0 new; dispatch 2 new/0 hits; piper-morgan-product 57 new/3 hits, same stale
+  `MANIFEST.md` boilerplate as every prior fire. Nothing owed across any of the four. Both briefs
+  re-checked, pointers updated to today's dates, no UX signal in either. Standing blockers
+  re-derived fresh, both unmoved: ground-rules question now **80 days** (+1, same calendar-day
+  arithmetic); `entityGuess` still **6 files/20 hits**. **Verified, not trusted:** `npm run
+  typecheck` clean ×4 workspaces; server **140 files · 2185 passed · 1 skipped (2186)**; client
+  **26 passed|13 skipped (39) · 333 passed|13 skipped (346)** — exact match to yesterday's STOP
+  checkpoint; `sweep-probes --census` **153 probe files, 43 swept/110 deferred**, CENSUS OK,
+  unchanged; full driving sweep (`:3001` clear before/after, HEAD unchanged at `7f764908`
+  before/after, tree clean throughout, backgrounded and picked up via completion notification) —
+  **SWEEP FAILED — 42 of 43 swept probes green, 1 red, 0 blocked, 0 census problem(s), 110
+  deferred.** The one red is `probe-round307` C4, already flagged in yesterday's mail
+  (Argus→Daedalus: the new lib/mjs gate landed and reddened it) and already on the open
+  Daedalus/Argus/Theseus research thread — not a new finding from this seat, not actioned here
+  (outside UX/front-end lane). First "SWEEP FAILED" this seat has recorded after a run of
+  "SWEEP PASSED" checkpoints — recorded precisely, not smoothed over. No `packages/` changes
+  this fire. Nothing new needs xian beyond the one standing item (ground-rules question, now at
+  80 days, unmoved today) — the round307/C4 red is not a new ask of xian, it's already on the
+  other seats' thread. **Drain:** all unblocked items done (commits, mail across all four
+  mailboxes plus local, both briefs, both blockers, full gate); nothing deferred. Two consecutive
+  checks found nothing further unblocked — fire closed bounded. Log:
+  `docs/logs/2026-10-28-0722-iris-log.md`.
+- **Prior update:** 2026-10-27 ~19:19 PT (STOP fire). **Status:** available.
 - **10/27 fire (STOP) — no-op on product; 31 commits of research-track chain read (Round 249
   Linux CI fix, Round 464 stop-condition landing, the `scripts/lib/*.mjs` gate reaching zero and
   immediately reddening `probe-round307`'s C4), nothing routed to this seat.** Drain against own
