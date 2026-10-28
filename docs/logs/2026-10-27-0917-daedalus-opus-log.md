@@ -677,3 +677,187 @@ docs/mail/daedalus-to-theseus-…-your-own-cell-has-reddened-2026-10-27.md 12708
 ```
 
 **Step 3 — this log pushed last**, in the coord+log+mail commit, after Steps 1 and 2 were run.
+
+---
+
+## 17:17 — STOP fire opens
+
+Pull verified clean by the wrapper. `git log --oneline -12 --pretty='%h %an | %s'` read with
+`%an` before assuming any head commit was mine: the four above my last (`c03773ed`) are
+Theseus's (`7a84c8d4`, `11c68710`, `ff0cae98`, `d5677d75`) and Calliope's (`030aa3d0`). None
+mine. `docs/mail/` read on arrival — **one unread inbound to this seat**, Theseus's
+`…both-routed-items-are-closed-and-my-window-was-keyed-on-the-drive-clock-2026-10-27.md`, read
+in full in the same turn as the `ls`, not queued.
+
+It routes **nothing** to me. It names two things as mine-if-I-want-them: the `lib/**/*.mjs`
+gate (§8, "the strongest unclaimed gated unit on the board… should go to whichever of us opens
+a fire with room for it"), and the pinned-vs-live census design question (§9, explicitly not a
+fire's work). **No Round 465 from this seat either** — the stop condition reads
+`consecutive=10` against `N=5`, already fired, third fire running, and a gated surface was
+open. Named reason, not a priority feeling.
+
+Plan: verify his §3 correction against my own published figure first (it is a correction *of
+me*), then take the gate.
+
+## 17:2x — his two-8s correction is exact, and my `8 vs 8` was a cancellation
+
+`docs/research/round464-instruments/verify-theseus-two-eights.mjs`, driven at HEAD. Did not
+take his word and did not re-type his key: both member lists sliced with **one** reader at each
+memo's own pinned `(rev, clock)`, lists compared, not counts.
+
+```
+VERDICT/1 ok gates=2 red=[] preds=4 refuted=[]
+  KEY_T  rev=d057a46c since='2026-10-13 10:51:00' n=8
+  KEY_D  rev=ae36f771 since='2026-10-13 13:30:00' n=8
+  only KEY_T: scripts/probe-round263-…-is-not-strict-it-is-blind.mts   (lost to the CLOCK)
+  only KEY_D: scripts/lib/recall-tap.mjs                               (gained from the REV)
+```
+
+`.err` 0 bytes. Four prediction legs green including both members he named by name.
+
+**The lesson for this seat is not the window.** He found that and I would not have. It is that
+**I had the member list in hand and compared the counts** — the 171/169 half of the very same
+drive is where I applied the rule, and the 8/8 half is where I did not. An agreeing pair is
+where compare-member-lists-not-counts is load-bearing and is exactly where it feels
+unnecessary. Committed `24c2d9d4`, pushed before starting the gate.
+
+## 17:2x–17:4x — the `lib/**/*.mjs` gate, 127 → 0, wired and graded
+
+Baseline **re-measured at HEAD** rather than cited from my own 13:27 doc: **127** error lines,
+and the per-code split (TS7006 98 · TS7005 12 · TS2322 5 · TS7031 4 · TS7053 3 · TS7034 2 ·
+TS18046 2 · TS2339 1) matched the doc's post-fix figure exactly.
+
+`scripts/tsconfig.lib-mjs.json` = `scripts/tsconfig.json`'s compilerOptions **verbatim** +
+`allowJs`/`checkJs`, `include: ["lib/**/*.mjs"]`. Unrelaxed, per the price doc's §3
+non-monotonicity measurement. `npm run typecheck:scripts` is now two `tsc -p`s.
+
+Progression, each step measured: **127 → 110 → 100 → 82 → 55 → 35 → 2 → 0**, nine files.
+
+### Findings, in descending order of what they cost to find
+
+1. **`offer-choice.mjs`'s `perCall` was `any[]` unconditionally, and 11 run-level fields read
+   it.** `const perCall = []` + `push` inside a `forEach`: TypeScript's evolving-array
+   inference does not cross a nested closure, so no annotation fixes it. Hand-writing the
+   17-field record as a typedef was the other option and is the duplicated-contract shape that
+   has drifted three times in `recall-tap.mjs` alone and twice more today — so `map` + `filter`
+   instead, and the element type is **inferred from the literal it describes**. The cycle's
+   cause, a backward `perCall.some(…)` read one line above the push, is now an accumulator set
+   after the record is built: same question, same members, quadratic rescan gone incidentally.
+2. **A third drifted contract in `recall-tap.mjs`.** `startRecallTap`'s `@returns` said
+   `status: string`; the success path sets `null` on purpose. **No consumer could have caught
+   it** — `probe-recall-tool.mjs:2346-2360` reads `.reason`/`.frames` only. Written, declared
+   wrong, read by nothing. This is the argument for the gate rather than for careful reading,
+   which is what I'd have claimed this morning.
+3. **Two latent couplings in `recall-recogniser.mjs`,** repaired not cast away:
+   `withheldMarked` re-matched `GAP_LINE` for group 1 on lines selected by a `GAP_LINE.test`
+   twelve lines earlier; `addressArithmeticOk` was `filter(e => e.address).every(e =>
+   e.address.to …)` and `filter` is not a narrowing.
+4. **Typing the phrase record off its PRODUCER cost zero, measured.** `P` is now
+   `typeof import('…/claude/recall.ts').RECALL_MARKER_PHRASES`, type-only. The price doc warns
+   that pulling server source in can manufacture rows, so: 100 → 98 and **zero error lines
+   outside `scripts/lib/`**.
+
+### Stated as gaps rather than left to be inferred
+
+- `marker-floor.mjs`'s classification record is **`any`, in writing**. A closed shape is not
+  jointly satisfiable with the module's own construction (index signature needed for the
+  `SUMMED`-array sums; spreading an index-signature type into a literal drops it, so the closed
+  half fails its own required fields one call later). The typedef names the field set in prose
+  and says what the gate does not grade.
+- **No `.mjs` is checked against its `.d.mts`.** `strip-source.mjs` shows the asymmetry can be
+  *correct*: its implementation annotation had to be **wider** (`unknown`) than its declaration
+  (`string`), because annotating the body `string` narrows the Round 454 refusal's branch to
+  `never` and stops the `=== null` inside it typechecking. Commented at both ends.
+
+### Grading the gate — and two defects of mine in the grader's first drive
+
+`grade-the-lib-mjs-gate.mjs` drives the **wired** `npm run typecheck:scripts` (not a bare
+`tsc` — the wiring is half of what is graded) under five cripples, each anchored on a string
+**asserted to occur exactly once**, each written-measured-restored with restoration checked
+byte-for-byte on every path including a throw.
+
+```
+clean                        exit=0
+implicit-any-param           exit=2  TS7006
+null-into-string-field       exit=2  TS2322
+field-typo-near-miss         exit=2  TS2551
+field-absent-no-near-miss    exit=2  TS2339
+null-deref-the-gate-repaired exit=2  TS18047
+VERDICT/1 ok legs=4 red=[]
+```
+
+`.err` 0 bytes. The first drive was **`VERDICT/1 RED legs=3 red=[G2,G3]`**, and both reds were
+the instrument's, not the gate's:
+
+- **I keyed a cripple on the error code I predicted, and was wrong.** Keyed `TS2339`; it
+  reddened at exit 2 with no TS2339 anywhere. TypeScript reports a **near-miss** field name as
+  `TS2551` ("Did you mean…") and only a no-close-match name as `TS2339`. One claim, two
+  spellings, one cripple grading half of it while reading like all of it. Two cripples now.
+  The gate behaved **better** than predicted — visible only because the leg was keyed on the
+  code and not on "exit non-zero". A leg keyed on the token prints `ok` and teaches nothing.
+- **A restoration leg published a false RED against my own uncommitted work.** It asserted
+  `git status -- scripts/lib` was EMPTY after the cripples, and read this fire's in-progress
+  edits to two *other* lib files as cripple residue. "I left nothing behind" is not "nothing is
+  uncommitted". Now a pre-cripple baseline compared against itself. Added
+  `G4-no-cripple-refused` in the same pass: `5/5 reddened` reads identically over five cripples
+  all **refused** before being written.
+
+### Runtime verified on the oracles, not by inspection
+
+`verify-offer-choice.mjs` all checks passed · `verify-recogniser-equivalence.mjs`
+**EQUIVALENT** (the oracle that exists to prove a recogniser edit moves no measurement) ·
+`verify-tsx-guard.mjs` 213/213 · `verify-design-assertions-gated.mjs` 37/37 ·
+`verify-empty-tail-detector.mjs` and `verify-filler-constraints.mjs` rc=0. Two verifiers print
+rc=2 and name the reason in their own last line (absent replay / Q corpora) — their declared
+INCOMPLETE, not a failure; and `verify-x0-reachability.mjs` rc=2 refuses on gitignored
+`.testdata/`.
+
+Six server tests importing these modules: **86/86** (round58, round71, round85, round89,
+round257, round259). Whole gate after wiring: `npm test` → **140 server files, 26 client (13
+skipped), census PASSED, no TS rows**.
+
+### The price doc, bannered rather than rewritten
+
+My own 13:27 §5 said "once its 129 are cleared" and read as live unclaimed work four hours
+after that figure became 0. Bannered at the head of §5, **everything under it verbatim** —
+rewriting a measurement to match its outcome is how a doc stops being evidence. One correction
+appended rather than edited in: **pricing a gate by error code over-counts the tail.** The 98
+TS7006 were mechanical as claimed, but the 31 others were about **eight** root causes, and the
+two largest were structural rather than annotational.
+
+## Open at close
+
+- **Newly unclaimed, no blocker, named so it is claimable:** the 37 non-`lib` `.mjs` probes,
+  **826** errors (measured, not subtracted). **Not** recommended as the next unit — 22× the
+  work for the probes rather than the imported surface — but it is the only `.mjs` gap left and
+  should be a number someone chose to leave.
+- **Newly named, neither seat's:** nothing checks a `.mjs` implementation against its `.d.mts`;
+  `strip-source` shows the asymmetry is sometimes correct, so it wants a design answer, not a
+  gate.
+- **Open design question, neither of us, unchanged:** pinned-vs-live census arms. His §9/my §5.
+  Thread left in `docs/mail/` rather than moved to `read/` **because of this item** — it needs
+  someone to weigh in, and the close-discipline says a parked open thread stays visible.
+- **Unchanged deferrals, each with a named blocker:** round456 whole-cell re-drive (wants a
+  window, not a fire); the 8 non-zero exits and 2 `spawn`-hazard instruments from 453 (neither
+  seat's); the SDK `0.122 → 1.3.0` bump (wants its own unit); a second `ubuntu-latest` image
+  (cannot reach a Linux kernel from this seat).
+- **api-native probe build** — still this seat's, still correctly unstarted: blocker is xian's
+  key/trigger plus the §4.3 threshold.
+- **Needs-you (xian), 3:** the drift census over the full 52; the key/trigger for Managed
+  Agents test 1; the §4.3 "promising" threshold.
+- **Not swept, reported rather than fixed:** `docs/mail/` still holds roughly forty
+  Daedalus/Theseus memos from September whose rounds are closed and which were never moved to
+  `read/` by their closers. Flagging, not sweeping — deciding which of another seat's threads
+  are closed is not a thing to do silently in a fire's tail.
+
+## Drain (2026-10-27 STOP fire)
+
+*Done, bounded* (Klatch is a recorded exception to the fleet duty-cycle-drain baseline). Pull
+verified; head-commit authorship read with `%an` before assuming any was mine, none were.
+`COORDINATION.md` read; `docs/mail/` read on arrival and **the one unread inbound was acted on
+in full in the same fire** — his §3 correction verified against my own figure rather than
+accepted, and his §8 unclaimed unit taken and closed. Three units drained: the two-8s
+verification, the `lib/**/*.mjs` gate to zero + wiring + grading, and the price-doc banner.
+*Deferred, each with a named blocker:* as listed above. **The one thing I chose not to do and
+why:** no Round 465 — the stop condition's value is 10 against an N of 5 and a gated unit both
+seats had named was open. Named reason, not a priority feeling.
