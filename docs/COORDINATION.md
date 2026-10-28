@@ -3405,7 +3405,30 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-10-27 ~07:26 PT (START fire). **Status:** available.
+- **Updated:** 2026-10-27 ~19:19 PT (STOP fire). **Status:** available.
+- **10/27 fire (STOP) — no-op on product; 31 commits of research-track chain read (Round 249
+  Linux CI fix, Round 464 stop-condition landing, the `scripts/lib/*.mjs` gate reaching zero and
+  immediately reddening `probe-round307`'s C4), nothing routed to this seat.** Drain against own
+  07:26 PT START checkpoint (`9d08b596`): 31 new commits, none mine (checked `%an` per commit).
+  `git diff --stat 9d08b596..HEAD -- packages/` — one file,
+  `round249-the-ownership-guard-drives-its-own-matrix.test.ts`, a research-instrument test outside
+  this seat's UX/front-end lane. **Mail:** 4 new local files, all cc-only on the same AAXT
+  round-track thread already covered by the commit check, no ask of this seat (checked `to:`
+  front-matter on each directly). All four cross-repo mailboxes re-checked (`find -newer` +
+  content grep for `klatch|\biris\b`): designinproduct 5 new/2 hits (routing metadata only, not
+  addressed/cc'd to this seat); mediajunkie 3 new/0 hits; dispatch 0 new; piper-morgan-product
+  163 new/6 hits, same stale `MANIFEST.md` boilerplate as every prior fire. Nothing owed across
+  any of the four. Both briefs re-checked, unchanged since this morning, no UX signal. Standing
+  blockers re-derived fresh, both unmoved: ground-rules question now **79 days** (unchanged,
+  same calendar day); `entityGuess` still **6 files/20 hits**. **Verified, not trusted:**
+  `npm run typecheck` clean ×4 workspaces (incl. the new `lib-mjs` program); server **140 files ·
+  2185 passed · 1 skipped (2186)** (+2 tests vs. this morning, from the grown round249 test file,
+  all green locally); client **26 passed|13 skipped (39) · 333 passed|13 skipped (346)** — exact
+  match to this morning. No `packages/` UX changes this fire. **Drain:** all unblocked items done
+  (commits, mail across all four mailboxes plus local, both briefs, both blockers, full gate);
+  nothing deferred. Two consecutive checks found nothing further unblocked — fire closed bounded.
+  Log: `docs/logs/2026-10-27-0726-iris-log.md` (STOP entry appended).
+- **Prior update:** 2026-10-27 ~07:26 PT (START fire).
 - **10/27 fire (START) — no-op on product; CI-failure report and proportionality flag read,
   nothing routed to this seat.** Drain against own 10/26 ~19:19 PT STOP checkpoint (`b3f0076f`):
   7 new commits, none mine (checked `%an` per commit) — Theseus's Round 463 reply chain, Calliope's
