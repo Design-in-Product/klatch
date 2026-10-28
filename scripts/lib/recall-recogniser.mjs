@@ -16,11 +16,26 @@
  */
 
 /** Escape a literal for embedding in a `RegExp`. `{`, `}` and `"` all occur in the record. */
-const rx = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const rx = (/** @type {string} */ s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 /**
- * @param P the frozen `RECALL_MARKER_PHRASES` record, imported by the caller from `recall.ts`
- *          so that this module has no opinion about where the build lives.
+ * The phrase record this module is parameterised by.
+ *
+ * Round 466: taken as `typeof RECALL_MARKER_PHRASES` from `recall.ts` itself rather than
+ * hand-written here. A hand-written copy is the shape that has drifted three times in
+ * `recall-tap.mjs` alone, and this record is exactly the kind that invites it — 16 string
+ * fields, one of them a `readonly` tuple. Reading it off the producer means a field renamed in
+ * `recall.ts` reddens here instead of resolving to `undefined` and embedding `"undefined"` in a
+ * pattern that then matches nothing. Type-only `import()`, so nothing about how this module runs
+ * changes; `scripts/tsconfig.lib-mjs.json` inherits `allowImportingTsExtensions` from the
+ * existing scripts config.
+ *
+ * @typedef {typeof import('../../packages/server/src/claude/recall.ts').RECALL_MARKER_PHRASES} MarkerPhrases
+ */
+
+/**
+ * @param {MarkerPhrases} P the frozen `RECALL_MARKER_PHRASES` record, imported by the caller from
+ *          `recall.ts` so that this module has no opinion about where the build lives.
  */
 export function buildRecogniser(P) {
   /**
@@ -38,7 +53,7 @@ export function buildRecogniser(P) {
    * not `"; "`. A conversation name containing the separator would over-split; that would
    * show up as an unread clause, i.e. loudly, which is the correct direction to fail.
    */
-  const clausesOf = (line) => line.split(P.edgeClauseJoin);
+  const clausesOf = (/** @type {string} */ line) => line.split(P.edgeClauseJoin);
 
   const GAP_LINE = new RegExp(
     '^' + rx(P.open) + '(\\d+)' +
@@ -65,7 +80,7 @@ export function buildRecogniser(P) {
   const UNREACHABLE = new RegExp('(\\d+)' + rx(P.edgeUnreachable));
 
   /** The clauses of one edge line's clause list that no current pattern reads. */
-  const unreadClauses = (clauseList) =>
+  const unreadClauses = (/** @type {string} */ clauseList) =>
     clausesOf(clauseList).filter(
       (c) => !REACHABLE_R56.test(c) && !REACHABLE_R54.test(c) && !UNREACHABLE.test(c),
     );
@@ -92,30 +107,42 @@ export function buildRecogniser(P) {
     {
       name: 'reachable clause, Round 54 wording (retired)',
       expect: 'never matches on a current build',
-      violated: (clauses) => clauses.some((c) => REACHABLE_R54.test(c)),
+      violated: (/** @type {string[]} */ clauses) => clauses.some((c) => REACHABLE_R54.test(c)),
       why: 'Round 56 replaced this wording. A match means the build regressed, or this run is reading a transcript from an older build than the source tree.',
     },
     {
       name: 'reachable + unreachable clauses, current wording',
       expect: 'together, they read every clause of every edge line — not merely every line',
-      violated: (clauses) => clauses.some((c) => unreadClauses(c).length > 0),
+      violated: (/** @type {string[]} */ clauses) => clauses.some((c) => unreadClauses(c).length > 0),
       why: 'Each clause an edge line renders is one of a known set. A clause no pattern reads means the recogniser is blind to it, and every count derived from it is not a measurement. Checked per clause because a line-level check is passed by an intact neighbour while the drifted clause reads zero.',
     },
     {
       name: 'interior phrase confined to the interior marker',
       expect: 'never appears on an edge line',
-      violated: (_clauses, lines) => lines.some((l) => l.includes(P.interiorPhrase)),
+      violated: (/** @type {string[]} */ _clauses, /** @type {string[]} */ lines) => lines.some((l) => l.includes(P.interiorPhrase)),
       why: 'Two markers, two vocabularies. The interior header sentence promises "the lines either side of it are not consecutive", which has no referent where there is only one side.',
     },
   ];
 
   /** Everything about one rendered tool result that the patterns alone determine. */
-  function read(text) {
+  function read(/** @type {string} */ text) {
     const lines = text.split('\n');
-    const gapLines = lines.filter((l) => GAP_LINE.test(l.trim()));
+    // Matched once and KEPT, rather than `test`ed here and re-matched below for the capture
+    // group. Round 466: a `test` and a later `match` are two reads of the same pattern over the
+    // same line, and nothing holds them together — the second read's `[1]` was an access on a
+    // match that is non-null only because of a filter twelve lines away, which is exactly the
+    // kind of coupling this project keeps finding broken from the other end. One pass, one match.
+    const gapMatches = lines
+      .map((l) => l.trim().match(GAP_LINE))
+      .filter((m) => m !== null);
     const edgeLines = lines
       .map((l) => l.trim().match(EDGE_LINE))
-      .filter(Boolean)
+      // `.filter((m) => m !== null)`, not `.filter(Boolean)`: identical at runtime (`match`
+      // returns an array or `null`), but `Boolean` is not a type guard, so under the Round 466
+      // gate every `m[1]`/`m[3]` below would be an access on a possibly-null match. The
+      // nullability here is real — it is just already excluded, and this is the spelling that
+      // says so to a reader and to the checker at once.
+      .filter((m) => m !== null)
       .map((m) => ({
         total: Number(m[1]),
         side: m[2],
@@ -156,11 +183,14 @@ export function buildRecogniser(P) {
       // taken from the landing memo: that one is offered at all, and that the range it names
       // is exactly as long as the count beside it (`to - from + 1 === ownCount`).
       addressesOffered: edgeLines.map((e) => e.address).filter(Boolean),
+      // `every(address === null || …)` rather than `filter(address).every(…)` — the same
+      // predicate over the same population (a vacuous `every` over an empty filter is `true`,
+      // and so is the disjunct for every excluded member), in one pass and with the narrowing
+      // visible to the checker instead of lost across the `filter`.
       addressArithmeticOk: edgeLines
-        .filter((e) => e.address)
-        .every((e) => e.address.to - e.address.from + 1 === e.reachable),
-      scopeGapLines: gapLines.length,
-      withheldMarked: gapLines.reduce((n, l) => n + Number(l.trim().match(GAP_LINE)[1]), 0),
+        .every((e) => e.address === null || e.address.to - e.address.from + 1 === e.reachable),
+      scopeGapLines: gapMatches.length,
+      withheldMarked: gapMatches.reduce((n, m) => n + Number(m[1]), 0),
       // The header sentence is conditional on a marker surviving the char budget, so its
       // presence is a separate observation from the marker's.
       headerExplainsTheEdge: text.split('\n\n')[0].includes(P.edgeHeaderStem),

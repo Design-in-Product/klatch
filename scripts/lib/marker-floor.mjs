@@ -13,9 +13,35 @@
  */
 
 /**
- * @param P    the frozen `RECALL_MARKER_PHRASES` record from `recall.ts`
- * @param CAP  `CARRIED_CONTEXT_MAX_MESSAGE_CHARS` from `carried-context.ts`
- * @param pats `{ GAP_LINE, EDGE_LINE }` from `buildRecogniser(P)`
+ * A classification record: `{read, severed, unparsed, embedded, residue}` plus `chars`,
+ * `straddles`, `stem`, `over`, `digitless`, `unreadLines`, and the six columns `withDerived`
+ * adds (`openers`, `matched`, `orphans`, `openersAnywhere`, `matchedAnywhere`,
+ * `orphansAnywhere`).
+ *
+ * **`any`, and the reason is a measurement rather than laziness — state what this gate does NOT
+ * grade (Round 466).** A closed shape was written first and does not survive this module's own
+ * construction: `tally` sums over the `SUMMED` and `UNREAD_BUCKETS` *string arrays*, which is how
+ * a bucket added to `BUCKETS` gets summed without a second edit, so the record needs an index
+ * signature; but spreading an index-signature type into an object literal (`{...c, openers, …}`
+ * in `withDerived`, `{...t, digitless, unreadLines}` in `tally`) drops it from the result, so the
+ * closed half then fails to satisfy its own required fields one call later. The two requirements
+ * are not jointly satisfiable in JSDoc without restating the field set three times.
+ *
+ * So the field set of this record is UNGATED, deliberately and in writing. What the gate does
+ * grade in this file is every parameter and every control-flow path around it — which is where
+ * the four TS7031/TS7053 rows above came from — and the field names stay documented here rather
+ * than inferred by a reader from an `any`.
+ *
+ * @typedef {Record<string, any>} FloorRecord
+ */
+
+/**
+ * @param {import('./recall-recogniser.mjs').MarkerPhrases} P
+ *   the frozen `RECALL_MARKER_PHRASES` record from `recall.ts` — taken through
+ *   `recall-recogniser.mjs`'s typedef, which reads it off the producer rather than restating
+ *   16 fields a second time here
+ * @param {number} CAP  `CARRIED_CONTEXT_MAX_MESSAGE_CHARS` from `carried-context.ts`
+ * @param {{GAP_LINE: RegExp, EDGE_LINE: RegExp}} pats from `buildRecogniser(P)`
  */
 export function buildFloorClassifier(P, CAP, { GAP_LINE, EDGE_LINE }) {
   /**
@@ -81,6 +107,13 @@ export function buildFloorClassifier(P, CAP, { GAP_LINE, EDGE_LINE }) {
    * `matchedAnywhere` is `read` for the structural reason above, and is emitted rather than
    * dropped so that a reader holding a Round 82-85 printout can line the two up cell for cell.
    */
+  /**
+   * @param {FloorRecord} c
+   * @returns {FloorRecord} declared, not inferred: spreading `c` into the literal below drops
+   *   its index signature, so the inferred return would be the six derived columns ALONE and
+   *   `classify`'s caller would lose every bucket. That is the half of the shape problem the
+   *   typedef's note is about, and this is where it bites.
+   */
   function withDerived(c) {
     const anchored = c.read + c.severed + c.unparsed;
     const anywhere = anchored + c.embedded + c.residue;
@@ -95,7 +128,7 @@ export function buildFloorClassifier(P, CAP, { GAP_LINE, EDGE_LINE }) {
     };
   }
 
-  function classify(text) {
+  function classify(/** @type {string} */ text) {
     const c = { read: 0, severed: 0, unparsed: 0, embedded: 0, residue: 0 };
     const digitless = { severed: 0, unparsed: 0, embedded: 0, residue: 0 };
     // Every line carrying the opener that the recogniser did not read, labelled with the
@@ -149,10 +182,13 @@ export function buildFloorClassifier(P, CAP, { GAP_LINE, EDGE_LINE }) {
   const SUMMED = ['chars', 'straddles', 'stem', ...BUCKETS];
 
   /** Sum `classify` over many units. Units, not characters, are the denominator. */
-  function tally(units) {
+  function tally(/** @type {Iterable<string>} */ units) {
+    /** @type {Record<string, number>} */
     const t = { units: 0, over: 0 };
     for (const k of SUMMED) t[k] = 0;
+    /** @type {Record<string, number>} */
     const digitless = { severed: 0, unparsed: 0, embedded: 0, residue: 0 };
+    /** @type {Array<{bucket: string, line: string}>} */
     const unreadLines = [];
     for (const u of units) {
       const c = classify(u);
@@ -185,14 +221,14 @@ export function buildFloorClassifier(P, CAP, { GAP_LINE, EDGE_LINE }) {
       {
         name: 'well-formed marker',
         text: wellFormed,
-        ok: (c) => c.read === 1 && c.matched === 1 && c.openers === 1 && c.orphans === 0,
+        ok: (/** @type {FloorRecord} */ c) => c.read === 1 && c.matched === 1 && c.openers === 1 && c.orphans === 0,
       },
       {
         // The one shape every line-start orphan in `docs/**.md` has turned out to be: a real
         // marker a human pasted into prose and an editor hard-wrapped.
         name: 'severed — marker hard-wrapped',
         text: wellFormed.slice(0, 40) + '\n' + wellFormed.slice(40),
-        ok: (c) => c.severed === 1 && c.read === 0 && c.openers === 1 && c.orphans === 1,
+        ok: (/** @type {FloorRecord} */ c) => c.severed === 1 && c.read === 0 && c.openers === 1 && c.orphans === 1,
       },
       {
         // Recogniser drift, constructed: anchored at column zero, closed on the line, complete
@@ -201,7 +237,7 @@ export function buildFloorClassifier(P, CAP, { GAP_LINE, EDGE_LINE }) {
         // floor is measuring the wrong thing.
         name: 'unparsed — anchored, closed, unreadable',
         text: `${P.open}2 an interior no current pattern reads${P.close}`,
-        ok: (c) => c.unparsed === 1 && c.read === 0 && c.severed === 0 &&
+        ok: (/** @type {FloorRecord} */ c) => c.unparsed === 1 && c.read === 0 && c.severed === 0 &&
                    c.openers === 1 && c.orphans === 1 && c.digitless.unparsed === 0,
       },
       {
@@ -211,7 +247,7 @@ export function buildFloorClassifier(P, CAP, { GAP_LINE, EDGE_LINE }) {
         // precisely how Round 85's broad column overstated the wrapping defect.
         name: 'embedded — marker quoted mid-sentence',
         text: `all three are the identical \`${wellFormed}\` marker, quoted inline`,
-        ok: (c) => c.embedded === 1 && c.severed === 0 && c.openers === 0 &&
+        ok: (/** @type {FloorRecord} */ c) => c.embedded === 1 && c.severed === 0 && c.openers === 0 &&
                    c.openersAnywhere === 1 && c.orphansAnywhere === 1,
       },
       {
@@ -220,13 +256,13 @@ export function buildFloorClassifier(P, CAP, { GAP_LINE, EDGE_LINE }) {
         // opener. `digitless` is what settles it, so the control asserts that too.
         name: 'residue — opener quoted with no digit',
         text: `the record reads "open": "${P.open}" and closes nothing on this line`,
-        ok: (c) => c.residue === 1 && c.embedded === 0 && c.severed === 0 &&
+        ok: (/** @type {FloorRecord} */ c) => c.residue === 1 && c.embedded === 0 && c.severed === 0 &&
                    c.digitless.residue === 1 && c.openers === 0,
       },
       {
         name: 'ordinary prose',
         text: 'An ordinary paragraph that names no marker and quotes no phrase.',
-        ok: (c) => BUCKETS.every((b) => c[b] === 0) && c.openersAnywhere === 0 && c.stem === 0,
+        ok: (/** @type {FloorRecord} */ c) => BUCKETS.every((b) => c[b] === 0) && c.openersAnywhere === 0 && c.stem === 0,
       },
     ];
   }
