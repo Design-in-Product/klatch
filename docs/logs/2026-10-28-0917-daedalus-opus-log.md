@@ -169,3 +169,117 @@ Both of mine are present, author-checked with `%an`.
 **Step 3 — this log is pushed last**, after Steps 1 and 2 were run and their output pasted above.
 
 Nothing is claimed as delivered beyond this: the wrapper owns delivery and logs its own outcome.
+
+---
+
+## 13:17 PT — Session resumed (WORK fire)
+
+Model: Opus 5. Same worktree, same branch. Filename kept as-is: the convention adopted in
+`e5ddfde2` this morning is one file per agent per calendar day and migration is forward-only, so
+this fire appends to the day's existing file rather than minting a disconnected second one.
+
+### Briefing
+
+* `date` → `2026-10-28 13:17 PDT`. `git status` clean; `git rev-list --left-right --count
+  origin/main...HEAD` → `0 0`, so the wrapper's pre-fire sync is confirmed rather than assumed.
+* `ls -la docs/mail/` → one new memo addressed to me, timestamped 13:17, i.e. it arrived with this
+  fire's own sync: Theseus's `…your-t2-item-is-taken-and-the-credit-that-moved-your-figure-is-one-of-three…`.
+  **Read and acted on in the same turn, not queued.** Argus's 10-27 `C4` memo was already answered
+  by my 09:44 reply this morning; nothing else addressed to me is open.
+
+### The routed item
+
+His §8: *"Yours, and not mine to settle: which key the stop condition uses… the decision changes
+whether the track should stop, which is yours and xian's."*
+
+### What I did
+
+1. **Reproduced his figures before touching anything.** Drove his `grade-the-credit-key.mjs`
+   unmodified, in my tree, at my own HEAD `c7bfbd6c`. `C3` came out byte-for-byte as his memo
+   quotes it — dir key `consecutive=0 fired=false` vs self-attested `consecutive=10 fired=true`;
+   `.err` 0 bytes. Recorded as `drive1.his-grader-at-my-head.out`.
+2. **Recon first, decision second.** Before picking a key I read what the credits are *made of*
+   (edge enumeration written independently of his, so a cross-check would not be my own copy of his
+   key agreeing with him). My going-in hypothesis — that no credit touches `packages/` at all —
+   was **wrong**, and measuring it instead of asserting it is what produced the better finding.
+3. **Built and graded the surface predicate.** `grade-the-surface-predicate.mjs`: 8 graded legs,
+   3 `[MEAS]`, 6 cripples, 4 predictions registered in source before the first drive. The clean
+   drive matched the hand-derived map exactly: `red=[D4a,D5] refused=[] refuted=[]`, all 4 landing.
+4. **Widened the window** (`recon2`) to answer the obvious objection — that the filed 15-day window
+   had simply cut off the product-curing rounds. It had not.
+
+### Findings
+
+* **The 3 × 2 table: 5 of 6 cells say FIRED.** The one that says continue is `AS-FILED × dir` — the
+  cell my own standing line had been publishing — and it says continue only because my `87270c6f`
+  credited round 464 for curing two `scripts/lib/*.mjs`.
+* **His key is adopted, and `D4b` shows it is the secondary axis:** the two keys disagree *only*
+  under `AS-FILED`. Under either strict reading they agree exactly.
+* **The free variable under both keys is mine.** I filed `^(packages|scripts)/`, conflating "has a
+  standing typecheck gate" (a CI property) with "is product" (the property the condition needs),
+  while the condition's own second clause names the stopping case as "round-track instruments
+  themselves" — and `scripts/` is where this track's instruments live, 213 files at HEAD.
+* Of 9 credit edges, exactly **one** carries any `packages/` file (round 417 via `e2759907`,
+  subject "models+intel", no round label), and **3 of the 4** `packages/` files in the window are
+  `roundNNN-*.test.ts` — round-track instruments inside the product tree.
+* **The last round that cured product source is round 292** (Iris, `3c66489d`, 2026-09-29), agreed
+  by both windows that can answer. By round number the run is **172 against N=5**. The filed 15-day
+  window holds **zero** round-labelled product-source commits and cannot answer its own question.
+* **`consecutive` is a floor in both our cells** — it counts round *directories* above the last
+  credited round, and those dirs span only 365..464, so below 365 it saturates at 91.
+
+### Four defects of my own
+
+Two were caught by hand-deriving every cripple's verdict map *before* driving it:
+
+1. `D6` conjoined a refused classification into `got !== want`, so `classifier-refuses` would have
+   published a **false RED** where the honest answer is unmeasurable — in the one leg whose whole
+   job is catching a broken classifier.
+2. The predictions passed `String(null)` — the truthy-looking string `"null"` — and would have
+   published a **REFUTATION** over a measurement that never happened.
+3. `D4b` printed `[MEAS]` without being in `MEAS_IDS`, so a deliberate `null` would have been
+   published as a refusal in the verdict line. `D8` now guards the list in both directions, keyed
+   on the declared id list rather than leg text (his `M0` reasoning).
+4. Found only by driving: recon2's gate asserted "the two wider windows agree" while its predicate
+   read all three, so a window with *nothing to report* folded in as a **disagreement**. `drive4`
+   is kept as the defective drive and `drive5` as the repair — and the split is what turned the
+   silent window into the §4 finding.
+
+### Two prediction-map misses, published rather than matched
+
+* `kp-drop-product`: I derived `Q4` as REFUTED against **pre-repair** code; defect 2's fix
+  correctly makes it PREFUSE. The leg is right and my prediction was written against code I had
+  already changed. A hand-derived map has to be re-derived after any repair to what it grades.
+* `no-edges`: I derived the red/refused columns and never stated the prediction column at all,
+  where `Q1` refutes correctly.
+
+### Decided, and not decided
+
+**Decided (mine, as the condition's author):** the surface predicate is repaired to "a file under
+`packages/` not under `__tests__/`"; `scripts/` leaves the gate; Theseus's self-attested key is
+adopted; the standing line carries both axes and the floor note from this fire on.
+
+**Not decided — xian's:** whether the track stops and re-scopes. My own condition, read honestly,
+says it should, by 172 rounds against an N of 5. I did not make that call, and surfaced it in §4 of
+the memo rather than parking it. Stated fairly in the memo, COORDINATION and the unit README: the
+work since round 292 hardened instruments, added `__tests__/roundNNN-*.test.ts` coverage and built
+typecheck gates — the condition says the track stopped curing the *product*, not that the work was
+worthless.
+
+### Wrap verification
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -4`, run at 13:32 PDT):
+
+```
+9b62fcf8 mail(Daedalus → Theseus, xian; cc Janus/Argus/Calliope/Iris): key adopted, the free variable under both keys is mine, and the condition fired ~170 rounds ago
+22945c5a unit-464t2-keychoice: the surface predicate is a second free variable, and it is mine — 5 of 6 cells say FIRED
+5b7b8449 unit-464t2-keychoice: recon — of 9 credit edges exactly 1 carries a packages/ file, and its commit's subject is not round work
+c7bfbd6c log: note mediajunkie mail commit's borrowed git identity (Pard's, not mine) and hook flag
+```
+
+Three of those are this fire's; `c7bfbd6c` is this morning's. Step 2 and Step 3 are recorded below,
+after this log and the COORDINATION update land.
+
+**Not run this fire:** `npm test`, `npm run typecheck`, the sweep. `git diff --stat HEAD --
+packages/ scripts/` and `git status --porcelain -- packages/ scripts/` both **empty** (verified at
+13:3x), so every commit this fire made is `docs/`-only.
