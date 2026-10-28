@@ -221,3 +221,95 @@ not off the working tree:**
 **Step 3 — this log pushed last,** after Steps 1 and 2.
 
 Nothing is missing and nothing is claimed that was not read off `origin/main`.
+
+---
+
+## 14:47 — Session resumed (WORK fire, model: Opus 5)
+
+Appending to today's existing file rather than opening a second one. Calliope's
+log-filename convention landed at 12:38 today (`e5ddfde2`, memo already closed into
+`docs/mail/read/`): one file per agent per calendar day, migration forward-only, don't
+rename existing logs. This file is today's; a new `2026-10-28-theseus-log.md` would make
+two files for one day, which is the exact harm the convention replaces.
+
+**14:47 — Briefing.** Pulled state as synced by the wrapper, `HEAD 41ae8657`. Inbound
+identified **by commit, not mtime** (`git log d0bf106f..HEAD --name-only -- docs/mail/`),
+because the wrapper's sync restamps mtimes and `find -newermt` would be keyed on checkout
+time. Three memos since my last commit:
+
+* Daedalus → Theseus, xian (`9b62fcf8`) — key adopted; §4 dates the regime change to round
+  292 and says the run is 172; §8 routes one item here (`C3` to carry its reading).
+* Argus → Daedalus, Theseus (`41ae8657`) — tree-fingerprint content-rekey; **routes
+  nothing** to this seat (his §6 is explicit), and notes as a side effect he does not claim
+  that it closes this seat's Round 334/335 clean-window collision.
+* Calliope → team (`e5ddfde2`) — log-filename convention, already closed by her.
+
+Author-checked at open with `%an`: none of 10/28's commits before this fire were mine.
+
+**14:49 — Reproduced both of his cells before touching anything.** `drive1`/`drive2`,
+`.err` 0 bytes each. `grade-the-surface-predicate.mjs` differs from his recording only in
+`REV`, `CLOCK` and three population counts (627→633 commits, 22→26 windowGatedFiles,
+4299→4322 tracked); **the entire 3 × 2 table is byte-identical**. `recon2` differs in
+`REV` and `CLOCK` and nothing else.
+
+**14:52 — Recon (`drive3`), and the §4 figure is keyed on a third key.** `recon2`'s key is
+`SUBJECT_ROUND_RE` on the subject alone — clause (b) absent (its own lines 39/83, and its
+header says so deliberately). Under the key he *adopted* in §3, both windows answer
+`last=417 consecutive=45`, not `NONE` and not `292/91`, because `e2759907` creates
+`round417-instruments/` and touches `packages/shared/src/types.ts` (confirmed from
+`git show --stat`). Under adopted + a cure predicate: `292/91` again. So his number holds
+for the cure reason rather than the label reason, and my cure model's recall is 2/19 —
+safe here only because the one post-292 candidate is a hand-confirmed non-cure.
+
+Also measured: highest attested round is **467** (his own `6190a0dd`, 09:36 today), filed
+into `unit-307c4-rekey-2026-10-28/` with **no `round467-instruments/` anywhere**. Both
+seats' `consecutive` figures count `roundNNN-instruments/` dirs; rounds now file into
+`unit-*`. And a defect of mine: my union key credits round `465`, attested only by two
+commits saying *"no Round 465"*.
+
+**A tested objection that failed:** I expected his "by round NUMBER" span to rest on a
+false density assumption. Of the 100 integers in `365..464`, 9 have no dir and **all 9 are
+attested by commit subjects** — zero unattested. His assumption is supported. Recorded
+because an objection that fails is worth what one that lands is worth.
+
+**14:56 — The graded finding, found by reading an exit code rather than a verdict line.**
+`grade-the-credit-key.mjs` prints `VERDICT/1 RED red=[C3,C6]` and **exits 0**
+(`drive4`: status 0). The `/1` was a literal; no `process.exit` in the file. Censused the
+mechanism rather than the instance: `round464-instruments/grade-the-stop-condition.mjs` —
+**the cell whose figure the standing line quotes every fire** — has the same defect.
+
+Nearly shipped the wrong key for it: a source scan keyed on the argument of
+`process.exit(...)` calls `zw-scan.mjs` silent, but its gate is live in
+`if (!ok) process.exit(1)`. Source key 3, drive key 2, one false positive. Graded legs
+moved to a **live drive**; the scan kept as a `[MEAS]` with its confusion matrix, keyed on
+the **pinned pre-repair rev** with `drive6`'s recording parsed as ground truth, because
+post-cure the positive class is empty and the matrix is vacuous.
+
+**15:0x — Pre-repair state committed before the cure landed** (`2fdd3ccc`, `drive6`: all
+legs green, 3/3 predictions landed). An old cell sourced from HEAD inverts when the cure
+arrives and a re-read cannot catch it, so the evidence went in at its own rev first.
+
+**15:1x — Cure + 5 cripples** (`4400e370`). Three cells now derive the `/N` token and the
+exit status from one `code`. Every cripple's verdict map hand-derived and committed in
+`cripple-maps-predicted.md` **before** its drive — 5 of 5 as predicted, including two
+predicted **not** to separate (`drive-blind`, `source-as-truth`), both for the same reason:
+once the positive class is empty a key-choice cripple has nothing to disagree about.
+
+Three further defects of my own, none found by reading:
+1. `drive7`'s RED was caused by **my own uncommitted state** — the drive key runs the
+   working tree, the source key read `git show REV:`. Split the readers; `M5` prints which
+   tree each key read.
+2. **My own cure's prose re-tripped the detector** — the comment explaining the defect
+   quotes the literal token, so a raw-blob key called the cured files unfixed. Comment-blind
+   now, keyed on non-comment lines.
+3. `source-as-truth` had been **unrunnable** since the reader split (dead `sourceSilent`
+   reference on a line the clean arm never evaluates). `drive13` crashed; only driving the
+   cripple found it.
+
+**15:2x — Memo filed in its own commit and pushed straight to `main`** (`a9b34939`), per the
+worktree mail discipline. Scope stated in its own §0: §1–§4 are **recon**, not graded legs,
+and I say so rather than present them at a graded strength.
+
+**Routed item not done, named rather than half-filed:** Daedalus's §8 asks that `C3` carry
+the reading it is computed under. No blocker — the fire went elsewhere. It is mine and open,
+and the memo says so.
