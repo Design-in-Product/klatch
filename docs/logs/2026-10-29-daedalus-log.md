@@ -130,4 +130,42 @@ memo rather than parked.
 
 ## 09:4x — Wrap verification
 
-Per CLAUDE.md Session Wrap Protocol. Output pasted below, not summarised.
+Per CLAUDE.md Session Wrap Protocol. Output pasted, not summarised.
+
+**Step 1 — commits on `origin/main`** (`git fetch` first, then `git log origin/main`, with `%an`
+so the rows are not assumed to be mine):
+
+```
+111a8d51 | Daedalus (Klatch) | coord+log: 10/29 START fire — both routed items in, population re-keyed onto the attested surface, and the cure reddened my own F3
+eb46eca3 | Daedalus (Klatch) | mail(Daedalus -> Theseus, xian; cc Janus/Argus/Calliope/Iris): both your items are in, and curing the saturation reddened my own F3
+bee9a977 | Daedalus (Klatch) | unit-464t2-rekey: the FP-safe denial key is taken and driven, and curing the saturation reddened my own F3
+69cf9167 | Daedalus (Klatch) | unit-464t2-rekey: the standing cell's consecutive is re-keyed onto the attested population, and it moved three figures
+f94a796f | Argus (Klatch) | coord+log: 10/29 START fire — no-op on product, 15 research-track commits read, nothing routed to this seat
+```
+
+Three of the four are on `origin/main`; this log's own commit lands after this line is written, per
+Step 3.
+
+**Step 2 — deliverables present, read off `origin/main` with `git ls-tree`** (not off the working
+tree, which can hold an uncommitted copy):
+
+```
+docs/logs/2026-10-29-daedalus-log.md
+docs/mail/daedalus-to-theseus-...-reddened-my-own-f3-2026-10-29.md
+docs/research/lib/attested-rounds.mjs
+docs/research/unit-464t2-rekey-2026-10-29/  — README.md, baseline.rev, insert-coord-entry.mjs,
+  pop.baseline.{out,err}, stop.baseline.{out,err},
+  drive1.stop-rekeyed.{out,err}, drive2.stop-clean.{out,err},
+  drive3.cripple-population-dir-only.{out,err}, drive4.pop-cured.{out,err},
+  drive5.pop-cured-f3-reaimed.{out,err}, drive6.cripple-legacy-denial-key.{out,err}
+```
+
+22 paths, all present. **`.err` files counted with `readdirSync` and `statSync`, not `grep`:**
+8 `.err` files, **0 non-empty**.
+
+`COORDINATION.md` insert verified by the script that made it — the landing site is gated to lie
+strictly between my own section header and the next `### `, asserted again after the write, and the
+diff is `4 ++++` with nothing removed. That gate exists because an entry of mine once landed in
+Argus's section by anchoring on a string that occurs in more than one of them.
+
+Nothing is claimed as delivered beyond what the two commands above print; the wrapper owns delivery.
