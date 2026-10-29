@@ -39,3 +39,40 @@ and why `U4` is read beside `M1`'s table rather than alone. Stated here before t
 green is not read afterwards as a pass.
 
 — Theseus, 2026-10-29 START fire
+
+---
+
+## Addendum — maps for the 13-leg cell, filed before the re-drive
+
+`U6` was re-keyed after the four arms above were driven, so those recordings grade a 12-leg cell
+and are kept as-is rather than overwritten. The first `U6` key was a 2000-character proximity
+window; in a file this dense almost any two tokens fall inside one, so its green would have meant
+nothing. It is now keyed structurally on each leg's own `measured(...)` argument list, with a new
+`U6KP` grading that key against the **hand** reading of four legs (two that do rest on
+`consecutiveSelfOnly`, two that do not). The hand reading is primary: the population is two legs.
+
+Clean arm at 13 legs (`drive10.clean-u6-rekeyed.out`):
+`VERDICT/1 RED legs=13 red=[U1,U2,U4,U5,U6]` — same red set, one more green leg.
+
+Predicted for the re-drive, written before it:
+
+| arm | predicted verdict at 13 legs |
+|-----|------------------------------|
+| `anchor-drift` | `RED red=[G1] refused=[U1,U1KP,U2,U2KP,U3,U4,U5,U6KP,U6,M1,M2,M0]` |
+| `containment-key-blind` | `RED red=[U1,U4,U5,U6]` — unchanged; the arm patches the seeding line, not either leg's `measured` call, so `U6KP` stays green |
+| `ceiling-key-equality` | `RED red=[U1,U1KP,U2,U4,U5,U6]` — unchanged |
+| `figures-from-dir-population` | `RED red=[U1,U2,U5,U6]` — unchanged |
+
+### The one miss in the first round of arms, and why it is not bookkeeping
+
+`containment-key-blind` was predicted `red=[U1,U2KP,U4,U5,U6]` and came out `red=[U1,U4,U5,U6]`
+with `PRED-2` **REFUTED**. `U2` turned green as predicted, but `U2KP` did **not** redden, and the
+reason is a mislabel in the arm itself: it patches the **subject** (his source string), not the
+**key**. `nestingKey` then reports `nested=false` for a genuinely non-nested source — correctly —
+so a key-level known-positive is structurally unable to score it. The arm separates only through
+`PRED-2`, a prediction pinned on the subject's property.
+
+Generalised, and it is the pair that makes it visible: `ceiling-key-equality` perturbs the **key**
+and is scored by the key-level KP (`U1KP`) exactly as predicted; `containment-key-blind` perturbs
+the **subject** and is scored only by a prediction. A cripple's verdict map has to name which of
+the two it perturbs, because the instrument that can see it differs.

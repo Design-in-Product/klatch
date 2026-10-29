@@ -1,0 +1,62 @@
+=== GRADE/unit-464t2-t8 — are T8's two operands both moving? ===
+REPO /Users/xian/Development/klatch-worktrees/theseus
+ARM figures-from-dir-population
+CLOCK 2026-10-29T17:59:20.163Z
+
+--- population (his lib) ---
+  lib selfTests : both true
+  attested      : n=464 max=467
+  dir surface   : n=91 max=464
+
+--- sliced operands ---
+  recording                 ok   popKey   popMax  lastUnion  dir union  T8
+  clean                     yes  attested 467     467        2   0    RED
+  hisClean                  yes  attested 467     467        2   0    RED
+  hisDirPop                 yes  dir      464     467        0   0    ok
+  ceilingRemoved            yes  attested 470     467        3   1    RED
+  PRIMARY arm = hisDirPop
+
+--- U1KP ceiling-key confusion matrix ---
+  lastUnion=467 popMax=467 (equal) expect=true got=true 
+  lastUnion=467 popMax=464 (above) expect=true got=true 
+  lastUnion=467 popMax=470 (below) expect=false got=false 
+
+--- U2 one-sidedness, read off his construction ---
+  seeded from the dir cure set : true
+  mutations of the union set   : ["add"] addsOnly=true
+  => nested=true; nested means lastUnion >= lastDir, so consecutiveUnion <= consecutiveDir
+
+--- U2KP nesting-key confusion matrix ---
+  nested               expect=true got=true 
+  independent          expect=false got=false 
+  nested-but-deleting  expect=false got=false 
+
+--- U5 observed verdicts ---
+  clean                     T8=RED  bothArmsZero=false unionAtCeiling=true
+  hisClean                  T8=RED  bothArmsZero=false unionAtCeiling=true
+  hisDirPop                 T8=ok  bothArmsZero=true unionAtCeiling=true
+  ceilingRemoved            T8=RED  bothArmsZero=false unionAtCeiling=false
+
+--- LEGS ---
+LEG G1 ok GATE: both shared libs self-test true, every anchor matched EXACTLY once in every recording, and both population surfaces loaded non-empty | detail: libs=both true; sliced=clean:y,hisClean:y,hisDirPop:y,ceilingRemoved:y; attested=464 dir=91
+LEG U1 RED the union arm is NOT at or above the ceiling of the population it counts over — a RED means `count(attested > lastUnion)` is 0 for a structural reason, so the operand is pinned and T8 reduces to "the dir arm is non-zero" | detail: lastUnion=467 popMax=464 cause=above key=>= atCeiling=true
+LEG U1KP ok the ceiling key separates all three positions — at the ceiling, above it, and below it — so U1 is not a key that answers the same way for every input | detail: equal:hit above:hit below:hit
+LEG U2 RED T8 is TWO-SIDED — the union arm can in principle exceed the dir arm. A RED means the union cure set is the dir set plus additions by construction, so the inequality only ever runs one way and "the two keys give the same run" can only fail in one direction | detail: seeded=true muts=["add"] addsOnly=true nested=true
+LEG U2KP ok the nesting key separates a seeded-and-only-added set from an independent one AND from a seeded set that deletes — so U2 is not keyed on the word "Set" | detail: nested:hit independent:hit nested-but-deleting:hit
+LEG U3 ok there is a DRIVEN case in which the union arm leaves 0 — his cell run in a scratch clone with one synthetic attested round above lastUnion that the union key does not credit. Green here is what makes U1 a statement about this rev and not about the construction | detail: scratch popMax=470 lastUnion=467 union=1 dir=3 (live: union=0)
+LEG U4 ok T8's own verdict token CHANGES when the union arm leaves 0 — a RED means it does not, so the published RED is produced by the dir arm alone and carries no information about whether the two credit keys can be reconciled | detail: live dir=0 union=0 T8=ok | ceiling-removed dir=3 union=1 T8=RED
+LEG U5 RED at least one OBSERVED green of T8 is not a both-arms-zero case — a RED means every green in hand is T8 agreeing because both arms saturated, which is a floor on the observed set and not a claim that no non-vacuous green exists | detail: observed=4 greens=1 nonVacuous=0 greenMembers=[hisDirPop]
+LEG U6 RED T2c and T8 do not both rest on `consecutiveSelfOnly` — a RED means one figure leaving 0 moves both legs, so the verdict line counts the dir key's freeze twice: once as T2c's green and once as T8's red | detail: T2c reads it=true T8 reads it=true shared=true
+LEG M1 ok [MEAS] the observed (dir arm, union arm, ceiling cause, T8) table across every recording in hand (no assertion) | detail: clean:2/0/equal/RED hisClean:2/0/equal/RED hisDirPop:0/0/above/ok ceilingRemoved:3/1/below/RED
+LEG M2 ok [MEAS] how far the union arm is from leaving the ceiling, in attested rounds (no assertion) | detail: attestedMax=467 lastUnion=467 distance=0 (0 means the next uncredited attested round above 467 moves it)
+LEG M0 ok every leg declared [MEAS] exists, says so in its own text, and is not carrying a RED — so the refusal set cannot be opted out of silently | detail: declared=[M1,M2] drifted=[]
+
+--- PREDICTIONS ---
+PRED PRED-1 LANDED the union arm sits at the ceiling of the population it counts over | expected=467|467|true actual=467|467|true
+PRED PRED-2 LANDED T8 is one-sided by construction | expected="seededFromDir=true addsOnly=true" actual="seededFromDir=true addsOnly=true"
+PRED PRED-3 LANDED T8 is green in exactly one of the four cells, (0,0) | expected="greenCells=1 members=[dir0/union0]" actual="greenCells=1 members=[dir0/union0]"
+PRED PRED-4 LANDED under his population-dir-only arm T8 is green and the union arm's 0 has a DIFFERENT cause | expected="t8=ok causeAttested=equal causeDir=above" actual="t8=ok causeAttested=equal causeDir=above"
+PRED PRED-5 LANDED a synthetic uncredited attested round above 467 moves the union arm to 1 and T8 stays RED (DRIVEN in a scratch clone, not modelled) | expected="union=1 t8=RED" actual="union=1 t8=RED"
+PRED PRED-6 LANDED T2c and T8 share the operand consecutiveSelfOnly | expected=sharedOperand=true actual=sharedOperand=true
+
+VERDICT/1 RED legs=12 red=[U1,U2,U5,U6] refused=[] preds=6 refuted=[] prefused=[]

@@ -349,11 +349,57 @@ leg(
 // ---------------------------------------------------------------------------
 // U6 — do T2c and T8 share a load-bearing operand?
 // ---------------------------------------------------------------------------
-const t2cUsesSelfOnly = /T2c[\s\S]{0,2000}?consecutiveSelfOnly|consecutiveSelfOnly[\s\S]{0,2000}?'T2c'/.test(hisSrc);
-const t8UsesSelfOnly = /'T8'[\s\S]{0,1200}?consecutiveSelfOnly|consecutiveSelfOnly[\s\S]{0,600}?'T8'/.test(hisSrc);
-const sharedOperand = t2cUsesSelfOnly && t8UsesSelfOnly;
+// Keyed STRUCTURALLY on each leg's own `measured(...)` argument list, not on a character
+// window. The first spelling here was `/T2c[\s\S]{0,2000}?consecutiveSelfOnly/` — a proximity
+// window, which is the shape that over-reports: in a file this dense almost any two tokens are
+// within 2000 characters of each other, so a green would have meant nothing. The population is
+// two legs, so the HAND reading is primary (T2c's `measured` at line 628 and T8's at line 1013
+// both take `consecutiveSelfOnly` as the compared value) and this key exists to be graded
+// against that hand reading by U6KP.
+const valueExprOf = (src, id) => {
+  // every `measured(` call, sliced at its own id argument — bounded by the call, not by a window
+  const chunks = src.split(/\bmeasured\(/).slice(1);
+  for (const c of chunks) {
+    const at = c.indexOf(`'${id}',`);
+    if (at === -1) continue;
+    return c.slice(0, at);
+  }
+  return null;
+};
+const usesSelfOnly = (src, id) => {
+  const expr = valueExprOf(src, id);
+  return expr === null ? null : /\bconsecutiveSelfOnly\b/.test(expr);
+};
+const t2cUsesSelfOnly = usesSelfOnly(hisSrc, 'T2c');
+const t8UsesSelfOnly = usesSelfOnly(hisSrc, 'T8');
+const sharedOperand = (t2cUsesSelfOnly === null || t8UsesSelfOnly === null)
+  ? null
+  : (t2cUsesSelfOnly && t8UsesSelfOnly);
+// U6KP — the structural key graded against the hand reading, both directions. Without the
+// negative row, a key that answered "uses it" for every id would pass U6 identically.
+const KP_U6 = [
+  { id: 'T2c', expect: true, why: 'hand-read at his line 628: consecutiveSelfOnly !== consecutiveOverDirSurface' },
+  { id: 'T8', expect: true, why: 'hand-read at his line 1013: consecutiveSelfOnly === consecutiveUnion' },
+  { id: 'T6', expect: false, why: 'hand-read: the committed-proposal leg, no consecutive figure in its value' },
+  { id: 'T7', expect: false, why: 'hand-read: the standing-gate surface leg, keyed on t7 alone' },
+];
+const kpU6Rows = KP_U6.map((c) => ({ ...c, got: usesSelfOnly(hisSrc, c.id) }));
+const kpU6Ok = kpU6Rows.every((r) => r.got === r.expect);
+say('\n--- U6KP structural key vs the hand reading ---');
+for (const r of kpU6Rows) {
+  say(`  ${r.id.padEnd(5)} expect=${String(r.expect).padEnd(5)} got=${String(r.got).padEnd(5)} `
+    + `${r.got === r.expect ? '' : '<- MISS'}  (${r.why})`);
+}
 leg(
-  G(!sharedOperand),
+  G(kpU6Ok),
+  'U6KP',
+  'the structural operand key agrees with the hand reading on all four legs — two that do rest on '
+    + '`consecutiveSelfOnly` and two that do not. A RED means U6 is keyed on something other than '
+    + 'the leg\'s own measured() argument',
+  kpU6Rows.map((r) => `${r.id}:${r.got === r.expect ? 'hit' : 'MISS'}`).join(' ')
+);
+leg(
+  G(sharedOperand === null ? null : !sharedOperand),
   'U6',
   'T2c and T8 do not both rest on `consecutiveSelfOnly` — a RED means one figure leaving 0 moves '
     + 'both legs, so the verdict line counts the dir key\'s freeze twice: once as T2c\'s green and '
