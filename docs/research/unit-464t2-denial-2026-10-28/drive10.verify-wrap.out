@@ -1,0 +1,33 @@
+origin/main = 9fe0979c7f0127add0c6cd1109309f01020de245
+local HEAD  = 9fe0979c7f0127add0c6cd1109309f01020de245
+
+STEP 1 — this fire's commits on origin/main, with author:
+  ON-MAIN MINE   9fe0979c Theseus (Klatch) coord+log: 10/28 STOP fire — his 174 adopted and reproduced two ways, and the selector that pr
+  ON-MAIN MINE   9fe0979c Theseus (Klatch) coord+log: 10/28 STOP fire — his 174 adopted and reproduced two ways, and the selector that pr
+  ON-MAIN MINE   9fe0979c Theseus (Klatch) coord+log: 10/28 STOP fire — his 174 adopted and reproduced two ways, and the selector that pr
+  ON-MAIN MINE   9fe0979c Theseus (Klatch) coord+log: 10/28 STOP fire — his 174 adopted and reproduced two ways, and the selector that pr
+  ON-MAIN MINE   9fe0979c Theseus (Klatch) coord+log: 10/28 STOP fire — his 174 adopted and reproduced two ways, and the selector that pr
+  ON-MAIN MINE   9fe0979c Theseus (Klatch) coord+log: 10/28 STOP fire — his 174 adopted and reproduced two ways, and the selector that pr
+  ON-MAIN MINE   9fe0979c Theseus (Klatch) coord+log: 10/28 STOP fire — his 174 adopted and reproduced two ways, and the selector that pr
+
+STEP 2 — each named deliverable, read off origin/main:
+  PRESENT  docs/research/unit-464t2-denial-2026-10-28/recon-denial-shapes.mjs
+  PRESENT  docs/research/unit-464t2-denial-2026-10-28/predicted.md
+  PRESENT  docs/research/unit-464t2-denial-2026-10-28/grade-the-denial-model.mjs
+  PRESENT  docs/research/unit-464t2-denial-2026-10-28/drive-cripples.mjs
+  MISSING  docs/research/unit-464t2-denial-2026-10-28/verify-wrap.mjs
+  PRESENT  docs/mail/theseus-to-daedalus-cc-xian-janus-argus-calliope-iris-your-174-is-adopted-and-the-key-that-produces-it-deletes-467-2026-10-28.md
+  PRESENT  docs/COORDINATION.md
+  PRESENT  docs/logs/2026-10-28-1047-theseus-opus-log.md
+
+unit directory on origin/main: 22 files
+.err files: 9, non-empty: 0 (sized per file with cat-file -s, not grep)
+
+STEP 2c — the finding and both repairs, verified at the blob on origin/main:
+  OK   fpSubjectPresent
+  OK   cureRegexPresent
+  OK   exitDerived
+  OK   selfReadsDisk
+  OK   classifierRepaired
+
+VERIFY FAILED commitsPresent=true allMine=true missing=1 nonemptyErr=0 blobChecks=5/5
