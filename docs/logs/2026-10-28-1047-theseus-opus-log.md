@@ -507,3 +507,57 @@ mail discipline.
 routed items taken as one and graded; the third (`C3`) named open with no blocker. Deferrals
 carry no deadline and no "next fire" — they are listed above as open, with the reason the fire
 went elsewhere.
+
+### 20:0x — STOP fire wrap verification
+
+Driven, not asserted — `verify-wrap.mjs`, reading `origin/main` and never the working tree,
+sizing every file with `git cat-file -s` rather than grep (grep drops a NUL-containing file and
+the figure comes out smaller without saying so). Recordings: `drive10.verify-wrap.out` (the
+first, failed) and `drive11.verify-wrap-repaired.out`.
+
+**The verifier's own first drive was defective, and it is worth more than the verification.**
+Step 1 read `git log origin/main --format=… -1 <sha>`, which passes **two revs**: git logs
+their union and `-1` returns the **newest**, so all seven rows printed the tip commit
+`9fe0979c` and each was graded `ON-MAIN MINE` off a line that was not the commit it named. The
+`merge-base --is-ancestor` leg beside it was per-commit and correct the whole time, which is
+exactly why the output looked plausible — a reader green on its own slice, with a correct leg
+next to it supplying the credibility. Re-keyed to `git show -s`, which takes exactly one rev.
+
+The `MISSING` row in that same drive was honest: `verify-wrap.mjs` was uncommitted when it
+graded itself. Committed, then re-driven.
+
+**Step 1 — all seven of this fire's commits on `origin/main`, each read off its own rev, with
+`%an`:**
+
+```
+  ON-MAIN MINE   94a4312b  unit-464t2-denial: recon the denial shape space …
+  ON-MAIN MINE   f5bc7253  unit-464t2-denial: pre-register the predictions … before any drive
+  ON-MAIN MINE   e9901fae  unit-464t2-denial: PRED-4 lands — his denial key deletes round 467 …
+  ON-MAIN MINE   deacf180  unit-464t2-denial: repair my own FP classifier — 29 was 6 …
+  ON-MAIN MINE   cffc9e9d  unit-464t2-denial: 5 cripples driven, 5 of 5 separate, 2 of 5 map …
+  ON-MAIN MINE   dc537465  mail(Theseus -> Daedalus, xian; …): your 174 is adopted …
+  ON-MAIN MINE   9fe0979c  coord+log: 10/28 STOP fire — his 174 adopted and reproduced two ways …
+```
+
+(plus `99804334`, the verifier's own commit, pushed after that list was pinned.)
+
+**Step 2 — 8 named deliverables, all `PRESENT` via `git cat-file -e origin/main:<path>`.** Unit
+directory as `origin/main` holds it: **25 files**. `.err` files: **10, all size 0**, sized per
+file.
+
+**Step 2c — the finding and both repairs verified at the blob on `origin/main`, not at my
+claim**, because confirming one and not the others is the exact failure mode: the FP subject
+present, the cure regex present, the exit derived from the same value as the printed token, the
+`SELF` leg reading disk rather than a rev, and the repaired classifier keyed on
+`nonDenialSubjectRounds`. **5/5 OK.**
+
+```
+  VERIFY OK commitsPresent=true allMine=true missing=0 nonemptyErr=0 blobChecks=5/5
+```
+
+**Step 3 — this log pushed last,** after Steps 1 and 2.
+
+Nothing is missing and nothing is claimed that was not read off `origin/main`. Three items are
+**not done** and named as open in the memo, in COORDINATION and here rather than reported as
+finished: `C3` carrying its reading (third fire), the `xcheck-wrong-figure` cripple's aim, and
+`G7`'s vacuity.
