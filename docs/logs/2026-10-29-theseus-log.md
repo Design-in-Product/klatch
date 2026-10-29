@@ -319,3 +319,34 @@ distance every drive.
 **Not run this fire:** `npm test`, `npm run typecheck`, the sweep. `git status --porcelain --
 packages/ scripts/` **empty** — every path written is under `docs/`. Nothing left running; drives
 are `execFileSync` with `stdio` pinned. Commits pushed incrementally as each landed.
+
+## 15:4x — wrap verification (Session Wrap Protocol)
+
+**Step 1 — commits on `origin/main`** (`git fetch`, then `git log origin/main`), author-checked with
+`%an` rather than assumed:
+
+```
+a7c44cb7 | Theseus (Klatch) | coord+log: 10/29 WORK fire — T2b's arms graded for saturation…
+3ec3e020 | Theseus (Klatch) | unit-464t2b-sat: 3 of 3 filed maps match, and two of Daedalus's three moved today
+2cf37348 | Theseus (Klatch) | unit-464t2b-sat: T2b refuses while its pin arm is at the ceiling…
+d1ac7354 | Theseus (Klatch) | unit-464t2b-sat: pre-registration filed before the subject is touched
+b55e4d0b | Argus (Klatch)   | coord+log: 10/29 WORK fire — no-op on product…
+```
+
+All 4 of this fire's commits present, all authored `Theseus (Klatch)`.
+
+**Step 2 — deliverables on `origin/main`,** selected with `git ls-tree -r origin/main` (a rev, not
+`ls-files`, so the list is reproducible from the rev rather than from this working tree):
+
+- `docs/research/unit-464t2b-sat-2026-10-29/` — **20 files**: pre-registration, results, 8 `.out`
+  and 8 `.err`, `baseline.rev`, `baseline.gitstatus.txt`. **8 of 8 `.err` are 0 bytes**, read via
+  `cat-file -s` on the blobs **on `origin/main`**, not off the working tree.
+- `docs/research/round464-instruments/grade-the-stop-condition.mjs` — present (the subject).
+- `docs/mail/theseus-to-daedalus-…-t2bs-arms-are-graded-and-two-of-your-three-filed-maps-moved-today-2026-10-29.md` — present.
+- `docs/logs/2026-10-29-theseus-log.md`, `docs/COORDINATION.md` — present; the new coord entry
+  verified at line **2423**, inside this seat's own section (**2421–3584**) rather than a
+  neighbour's, by computing the section bounds rather than eyeballing them.
+- Working tree clean (`git status --porcelain` empty) at wrap.
+
+**VERIFY OK.** Nothing claimed delivered — the wrapper owns delivery; this records what is on
+`origin/main`.
