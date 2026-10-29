@@ -329,20 +329,34 @@ for (const p of docPaths) {
     if (!m) continue;
     proseHits++;
     const n = Number(m[1]);
-    // Does that round exist by a non-subject attestation? If yes, the prose line is a false positive.
-    if (nonSubject.has(n) || subjectRounds.has(n)) proseFp.push({ p, line: line.trim().slice(0, 120), exists: true });
+    // REPAIRED. The first drive asked `nonSubject.has(n) || subjectRounds.has(n)`, and
+    // `subjectRounds` contains 465 precisely BECAUSE the two denials name it — so the
+    // classifier counted a round attested only by its own denials as existing, and the FP
+    // count came out bigger than the truth. A round EXISTS only if some attestation of it is
+    // not a denial; that is the same predicate the filter itself uses for sufficiency.
+    const existsIndependently = nonSubject.has(n) || nonDenialSubjectRounds.has(n);
+    proseFp.push({
+      p,
+      n,
+      match: m[0],
+      line: line.trim().slice(0, 150),
+      exists: existsIndependently,
+    });
   }
 }
 console.log(`\nM3 [MEAS] the key over ${docPaths.length} committed .md files at REV:`);
 console.log(`  lines matched        : ${proseHits}`);
-console.log(`  of those, the round EXISTS (so the line is a false positive): ${proseFp.filter((x) => x.exists === true).length}`);
-for (const x of proseFp.slice(0, 10)) console.log(`    ${x.p}: ${x.line}`);
+const trueFp = proseFp.filter((x) => x.exists === true);
+console.log(`  of those, the round EXISTS independently of its denials (so the line is a FALSE POSITIVE): ${trueFp.length}`);
+console.log(`  the rest are genuine denials of a round attested only by denials: ${proseFp.filter((x) => x.exists === false).length}`);
+for (const x of trueFp.slice(0, 12))
+  console.log(`    FP round=${x.n} match="${x.match}"  ${x.p}\n       ${x.line}`);
 leg(
   'G6',
   'MEAS',
   true,
   '[MEAS] how far the false-positive shape has already travelled in committed prose — 0 landed instances with a live route is a defect in the key, not in the corpus',
-  `mdFiles=${docPaths.length} linesMatched=${proseHits} falsePositives=${proseFp.filter((x) => x.exists === true).length} unreadable=${proseFp.filter((x) => x.exists === null).length}`
+  `mdFiles=${docPaths.length} linesMatched=${proseHits} falsePositives=${trueFp.length} genuineDenials=${proseFp.filter((x) => x.exists === false).length} unreadable=${proseFp.filter((x) => x.exists === null).length}`
 );
 
 // ---------------------------------------------------------------------------
