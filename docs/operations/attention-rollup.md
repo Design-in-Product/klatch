@@ -90,7 +90,7 @@
 - **Not urgent, correctly triaged low-priority** — no product impact, drafting proceeds regardless.
 - **Date added:** carried as a standing unblocked-but-gated item since 2026-05-12 (per `calliope.md`'s discuss-before-major-documents rule); first surfaced to this board 2026-10-14.
 
-### 2. The ground-rules configuration question — parked on you since 2026-08-09 (76 days)
+### 2. The ground-rules configuration question — parked on you since 2026-08-09 (80 days)
 
 - **What:** are a klatch's ground rules (`"nothing not already known to the group"`, Chatham House) a **standing default with per-klatch override**, or set **per-klatch from a blank slate**? The surrounding disclosure-norm decision shipped and was measured 2026-08-13; this one configuration-surface question was asked at the tail of a longer reply and never answered separately.
 - **Not urgent** — nothing is broken either way; this is a configuration-surface decision, not a defect.
