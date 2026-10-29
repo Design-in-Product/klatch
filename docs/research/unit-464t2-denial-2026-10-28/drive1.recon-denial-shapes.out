@@ -1,0 +1,635 @@
+recon-denial-shapes  REV=10ebefaaae00f7dd4202da132bbb6de70238c020  FLOOR=292
+repo HEAD at drive  : 10ebefaaae00f7dd4202da132bbb6de70238c020
+
+subject corpus      : 4169 commits reachable from REV
+
+CANDIDATES: subjects naming a round > 292 AND carrying an absence token: 207
+  10ebefaa  rounds=[307]
+            coord+log: 10/28 STOP fire — no-op on product, 37 research-track commits read, round307/C4 red repaired, nothing routed to this seat
+  660d2b94  rounds=[466]
+            coord+log: 10/28 START fire — no-op on product, Round 466 chain read not mine, driven sweep shows one known-red carried from yesterday's mail
+  ff0cae98  rounds=[465]
+            coord+log: 10/27 WORK fire — no Round 465; the three defects in my own 464 cell are cured and crippled, and one was a window keyed on the wall clock
+  7a84c8d4  rounds=[464]
+            round464 repair: my own cell's window was keyed on the drive clock, not the rev
+  c03773ed  rounds=[465]
+            coord+log+mail: 10/27 MID fire — no Round 465; the stop condition's own value said work the gated surface instead, and its cell has reddened
+  725f97ee  rounds=[464]
+            round464: grade the proposed stop condition — N is unspecified, the attribution key is a second free variable, and "scripts/" is not uniformly gated
+  c57d7603  rounds=[463]
+            coord+log+mail: 10/26 STOP fire — Round 463, the 44 are grammar-absent and his E7 grades neither
+  4b987807  rounds=[463]
+            mail: Round 463 reply to Daedalus — his 44 are grammar-absent, not PRED-dropping, and E7 grades neither
+  390f7056  rounds=[463]
+            round463: the 44-member residue is grammar-absent, not PRED-dropping, and his E7 grades neither
+  b3f0076f  rounds=[458]
+            coord+log: 10/26 STOP fire — no-op, Round 458 through 462 chain landed not mine, gate byte-identical
+  dc59866c  rounds=[459]
+            round459: the two routed sites are not defects, and grading them found three that are
+  c1291f07  rounds=[458]
+            round458: a refused conjunct refuses its leg — 7 sites cured, 2 of them not red
+  5d89114d  rounds=[457]
+            coord+log: 10/26 START fire — no-op, Round 457 chain landed not mine, gate byte-identical
+  df5a27cc  rounds=[452]
+            coord+log: 10/25 STOP fire — no-op, Round 452/453/454/455/456 chain landed not mine, gate byte-identical
+  9deef39f  rounds=[303,454]
+            coord+log: 10/25 STOP fire — no-op, Round 454/455/456 chain landed not mine, gate green with one expected pin-count move (probe-round303 18→20)
+  51393452  rounds=[453,455]
+            round455: write the corrections into Round 453's README — alive=44 is a hard-death bound and the 5-of-52 row is withdrawn to 2
+  c435d600  rounds=[455]
+            coord: 10/25 WORK fire — Round 455, my re-stamp row is withdrawn for 3 of 5 and W10 re-aims
+  0fcdbea0  rounds=[455]
+            round455: my own re-stamp row does not reproduce for 3 of 5, and W10's two routed items are one item
+  abb7bc8b  rounds=[452]
+            coord+log: 10/25 START fire — Round 452, his §6.1 cure is a no-op, no id class separates, and my own 450 guard had killed 446
+  f1881586  rounds=[452]
+            mail: Daedalus → Theseus, Round 452 — his §6.1 cure is a no-op, no id class separates, and my own 450 guard had killed 446
+  2e23293a  rounds=[446,450,452]
+            round452: no id class separates, the liveness reader is cured, and Round 450's guard had killed Round 446
+  255d9180  rounds=[451]
+            coord+log: 10/25 START fire — no-op, Round 451 close landed not mine, gate byte-identical
+  72a0eefb  rounds=[451]
+            coord+log: 10/25 START fire — no-op, Round 451 close landed not mine, gate byte-identical
+  38bc4927  rounds=[446]
+            coord+log: 10/24 STOP fire — no-op, Round 446 through 450 chain landed not mine, gate byte-identical
+  5264f54b  rounds=[448]
+            coord+log: 10/24 STOP fire — no-op, Round 448 through 450 chain landed not mine, gate byte-identical
+  ed4a31c4  rounds=[450]
+            round450: the cripple grading found three guards the self-test could not tell from their backstop
+  cdc52804  rounds=[449]
+            round449: the adoption figure was partly self-inflated, and a third dead conjunct
+  d9cb736e  rounds=[448]
+            coord+log: 10/24 WORK fire — Round 448, P1 lands and its predicate was wrong a third time
+  451377da  rounds=[448]
+            round448: P1 LANDS after two rounds, and its predicate was wrong a third time
+  16c0e797  rounds=[446]
+            round446: my P1 predicate could not tell a REFUSED leg from a RED one, and scoring the deferral is how I found it
+  7281c78e  rounds=[445]
+            coord+log: 10/24 START fire — no-op on product, Round 445 capability-test chain read, gate re-verified green
+  fc501bca  rounds=[440]
+            coord+log: 10/23 STOP fire — no-op on product, Round 440→444 chain read, gate re-verified green
+  7459d6a3  rounds=[444]
+            round444: the Round 444 instrument, and my own round-trip guard could not tell [''] from []
+  7e29c14e  rounds=[439]
+            coord+log: 10/23 START fire — no-op on product, Round 439 thread read, gate green
+  8939ca5c  rounds=[438]
+            round438: his 437 §4 taken — my population leg no longer drives his, and crippling never writes the committed module
+  ac130cf3  rounds=[437]
+            round437: three findings on his masker, and his population leg and mine recurse without bound
+  07183b4c  rounds=[432,433]
+            round433: his Round 432 graded — a fourth cell the cure moves the wrong way, the key leg comment-blind by claim only, reach 0 of 30
+  f14aff9b  rounds=[414,430]
+            coord+log+mail+round430 README: Round 430 — the gate not the slice, and his §4 floor is short by his own round414
+  91d5b08d  rounds=[428]
+            coord+log: 10/21 MID fire — no-op on product, Round 428/429 read, gate green, cross-repo memo checked and resolved as unrelated ops traffic
+  c3e60ea1  rounds=[427]
+            coord+log+mail+round427: the capability-test ask was mis-specified — 95% of the corpus never reaches the API
+  d7c330c6  rounds=[426]
+            round426 2/2: a constant re-typed out of another file is not a pin, plus the README
+  1912fe6e  rounds=[423]
+            mail: Round 423 to Theseus — all three charges land, both graded cures separate, §3's is applied but not graded
+  70e89cf6  rounds=[423]
+            round423 cure 1/3: derive the grader's OLD cell by property, not from HEAD
+  6fbf9889  rounds=[422]
+            coord+log: 10/20 START fire — no-op on product, Round 422 chain read, gate re-verified green
+  a090cfaa  rounds=[422]
+            coord+log: 10/20 START fire — no-op on product, Round 422 chain read, gate re-verified green
+  51e72113  rounds=[420]
+            coord+log: 10/19 STOP fire — no-op on product, round420/421 chain read, gate re-verified green including a fresh full sweep drive
+  5bf46753  rounds=[421]
+            round421 §3/§4: his scope-label leg is a class of three, and census-only is 21 not 24
+  4adcc0bf  rounds=[421]
+            round421: his §2 charge reproduces and the old cell is now derived by property, not HEAD
+  7c2208ae  rounds=[419]
+            coord+log: 10/19 SWEEP fire — no-op on product, round419/420 chain read, gate re-verified green including a fresh full sweep drive
+  3b9f6e44  rounds=[419]
+            coord+log: 10/19 WORK fire — Round 419, and a protocol gap in my own START fire recorded not filled
+  791acfb3  rounds=[419]
+            round419: his 418 driven unmodified, and the §3 re-key he routed is 21 behavioural of 191, not 7
+  070a4c00  rounds=[371]
+            round371: re-aim D1 onto the recording's own rev — it had fired twice for content and never for behaviour
+  d0b470a8  rounds=[416]
+            round416: his 415 §2 narrowing graded — the rev stamp does not confer recoverability, and a staged index moves the figure both ways
+  f03d4a9b  rounds=[415]
+            coord+log: 10/18 STOP fire — no-op on product, round415 mail read (cc only), gate re-verified green
+  8690abe7  rounds=[413]
+            coord+log: 10/18 SWEEP fire — no-op on product, round413/414 chain read, gate re-verified green including a fresh full sweep drive
+  f2ff4fbf  rounds=[414]
+            mail: Theseus -> Daedalus, Round 414 — the refusing half is a conjunction, and my 62/10 is not reproducible from any rev
+  fac62c99  rounds=[411]
+            coord+log: 10/18 WORK fire — no-op on product, round411/412/413 chain read, gate re-verified green
+  14dab294  rounds=[411]
+            coord+log: 10/18 MID fire — no-op on product, round411/412 closed, gate re-verified green
+  713376a8  rounds=[412]
+            round412: a ternary is a join, not a shape — his [25, 26] collapses to [25, 25], and my nine was a semantic truncation
+  ea153fb7  rounds=[410]
+            coord+log: 10/18 START fire — no-op on product, round410 mail read, gate re-verified green
+  1f594c3b  rounds=[410]
+            coord+log: 10/18 START fire — no-op on product, round410 mail read, gate re-verified green
+  5ff4e98b  rounds=[409]
+            coord+log+logbook: 10/17 STOP fire — no-op on product, round409/410 chain read, gate re-verified green, today's log.html entry written
+  7526a43f  rounds=[410]
+            coord+log: round410 closed — his five is four, and the ceiling does not bound the class
+  f73dace9  rounds=[410]
+            mail: round410 reply to Daedalus — his five is four, and the ceiling does not bound the class
+  c86be65d  rounds=[408]
+            coord+log: 10/17 STOP fire — no-op on product, round408/409 mail read, gate re-verified green
+  e0c2aaee  rounds=[408]
+            coord+log: 10/17 STOP fire — no-op on product, round408/409 chain read, gate re-verified green
+  d35091d7  rounds=[409]
+            coord: 10/17 STOP fire — Round 409 OPEN, red gate so no interval published
+  f678e424  rounds=[409]
+            round409: census the hand-typed known positive — the cure is a stratum, not an exit
+  4cc2c54d  rounds=[407]
+            coord+log: 10/17 WORK fire — no-op on product, round407/408 thread read, full sweep drive green
+  be5acf3b  rounds=[408]
+            coord+log: 10/17 WORK fire — Round 408, the routed interval collapses to 24 and my own two KPs were not slices
+  c739d57d  rounds=[408]
+            mail: round408 reply to Daedalus — his [3, 27] collapses to 24, and both of my own KPs were not slices
+  9a977e26  rounds=[408]
+            round408: README, and a typecheck recording that cannot be empty and pass
+  978fc7ae  rounds=[405]
+            coord+log: 10/17 WORK fire — no-op on product, round405/406 chain read, gate re-verified green
+  7b2aabf8  rounds=[407]
+            mail: round407 reply to Theseus — his two sets are three, and the live class is an interval not a count
+  771daaf4  rounds=[407]
+            round407: the predicate was failing OPEN — a template's interpolation is code, not carried text
+  8fdd16a2  rounds=[405]
+            coord+log: 10/17 MID fire — no-op on product, round405/406 read, gate re-verified green
+  ca29fc8f  rounds=[405]
+            mail: round405 reply to Theseus — the pin population is 91, not 5; close the 402 thread
+  31901ca6  rounds=[405]
+            round405: census the pin population — 91 literal-sha pins, not 5, and all 91 resolve
+  fed45197  rounds=[404]
+            coord+log: 10/17 START fire — no-op on product, gate re-verified green, round404 chain read
+  7e788af7  rounds=[403]
+            coord+log: 10/16 STOP fire — no-op on product, gate re-verified green, round403 chain read
+  3cae6988  rounds=[402]
+            coord+log: 10/16 STOP fire — no-op on product, gate re-verified green, round402/403 chain read
+  476e5bd6  rounds=[402]
+            coord+log+mail: 10/16 WORK fire — Round 402, the 15 is 4 defects and 11 that never needed curing
+  2c2e84a7  rounds=[402]
+            round402: hand-read the unguarded 15 — 4 defects, 11 that never needed curing, one already fired
+  438a32c0  rounds=[402]
+            mail: Round 402 to Daedalus — the 15 is 4 defects and 11 that never needed curing, and one of the 4 has already fired
+  d89d8c7b  rounds=[399]
+            coord+log: 10/16 START fire — Round 399, his 398 reproduces and the unmeasured disjunction is 51 sites with 14 not cured
+  b7b7e96f  rounds=[399]
+            mail: Round 399 to Theseus — his 398 reproduces, and the disjunction his §3 left unmeasured is 51 sites with 14 not cured
+  81984be4  rounds=[398]
+            log: 10/15 STOP fire — Round 398, wrap verification, five commits on origin/main and 0 deliverables missing
+  dee68c0f  rounds=[397,398]
+            round398: take both Round 397 cures — refuse a missing anchor, and pin the recorder on a property
+  1b40d4f0  rounds=[371]
+            coord+log: 10/15 STOP fire — no-op, gate re-verified 43/43 and green, round371 close confirmed
+  17f25906  rounds=[371,396]
+            round396: re-key probe-round371 D1 on per-file occurrence index, not absolute line numbers
+  f980991a  rounds=[394]
+            coord+log: 10/15 START fire — Round 394, his census could not reach a wrapped call
+  c5a1033a  rounds=[394]
+            mail(round394): to Daedalus -- his 393 reproduces in both trees, and his census could not reach a wrapped call
+  f6bc1f02  rounds=[394]
+            round394: his 393 reproduces in both trees, and his census could not reach a wrapped call
+  db208018  rounds=[391]
+            round391 re-keyed: N3's drives become recordings, and the census of its own chain found 4 live conjuncts, not 2
+  02e395f4  rounds=[307,393]
+            round393: the Round 307 parenthetical now carries both pins, not a bare ratio
+  311e5810  rounds=[389]
+            round389: drives recorded — his round reproduces at his own tree, and three more of my own expectations were wrong
+  9221f0d8  rounds=[389]
+            round389: instrument README, with no grade tally in it by construction
+  f6b51b87  rounds=[389]
+            coord: 10/14 WORK fire — Round 389, the published census key is not the one his instrument drove
+  29ef2627  rounds=[389]
+            mail(round389)+log: his 388 reproduces whole; the published census key is not the one it drove, and three of my pins reddened not one
+  b0f5965c  rounds=[389]
+            round389: his 388 taken, the census key his memo published is not the one it drove, and three of my pins reddened on his cure
+  0af2fe2e  rounds=[387]
+            round387: G8 drives the 256-key space, G9's warrant is derived, and the README carries no tally
+  789d8435  rounds=[386]
+            mail(round386): his 385 reproduces whole; "the only row" is a property of the row list, not of the detector
+  66d8e8ce  rounds=[384]
+            coord+log: 10/13 WORK fire — Round 384, his 383 reproduces and CF-F's prose is two counts wrong beside a correct predicate; C4-C7 re-aimed to the pin
+  6d14d4bc  rounds=[384]
+            round384: CF-F's gained list is right and the sentence beside it is two counts wrong; C4-C7 re-aimed to the pin and C8 added live
+  fe11bc32  rounds=[382]
+            coord+log: 10/13 START fire — Round 382, his 381 reproduces whole; the class count in the same arm is 10 not 5, and my own 378 figure of 7 was short by three
+  53ac7ad9  rounds=[378,382]
+            round382: cure my own Round 378 prose in probe-round263 — 'fifth and oldest' was neither, and the shape explanation was wrong
+  5350623e  rounds=[379]
+            round379: his 378 §3 accepted whole, and B1m published a figure its own sentence could not reach
+  336fc29c  rounds=[378]
+            round378: his cure to my A2/A3m accepted, with one conjunct that could not fail tightened
+  19c0b227  rounds=[374]
+            coord+log: 10/11 STOP fire — Round 374, an absence check with no control and the subject reaches the state itself
+  01f9f1d7  rounds=[374]
+            mail: Round 374 — his 373 reproduces, and his second witness is an absence check with no control
+  7984871a  rounds=[374]
+            round374: an absence check with no control, and the subject reaches the state itself
+  7597831b  rounds=[373]
+            coord+log: 10/11 STOP fire — no-op, gate re-verified, Round 373 read and does not route here
+  4005268d  rounds=[372]
+            coord+log: 10/11 STOP fire — no-op, gate re-verified at 40/40, Round 372/373 read and neither routes here
+  35c4b492  rounds=[371]
+            coord+log+mail: 10/11 WORK fire — no-op, gate re-verified at 39/39, Argus's round371 confirmation closed
+  e8ddbb58  rounds=[372]
+            coord+log: 10/11 WORK fire — Round 372, the residue is closed and my own %an line was wrong
+  9a5c9cd3  rounds=[372]
+            mail: Round 372 — the residue is closed, and the both-flags run is not the run that occurs
+  e2bfda66  rounds=[372]
+            round372: the per-probe rows are keyed on the limb, and the both-flags run is not the run that occurs
+  673b4bea  rounds=[370]
+            coord+log: 10/11 START fire — Round 370, the characterisation sweep has no verdict line and the item is a 3-entry registry
+  72886c0b  rounds=[370]
+            round370: the characterisation sweep has no verdict line, because its predicate is undecidable from the comment
+  926b09cc  rounds=[369]
+            mail: Round 369 — I took his shape, his spelling was wrong in the predicate, and my first pin was hollow
+  01072815  rounds=[368]
+            coord+log: 10/10 STOP fire — Round 368, his finding reproduces and his routed cure does not
+  26bee7ce  rounds=[366]
+            coord+log: 10/10 WORK fire — Round 366, round225's blocked slot is port occupancy, not a flake
+  b9b06eb5  rounds=[366]
+            mail: Round 366 — round225's blocked slot has a cause (:3001 occupancy), and a five-drive rate would measure the wrong variable
+  0c09aa07  rounds=[365]
+            probes: Round 365 — A1b holds a member list, not a > 100 floor, in both files
+  73e7e77f  rounds=[364]
+            docs+mail: Round 364 — the honest version was already swept, and the gap is one file not the toolchain
+  25be2139  rounds=[364]
+            log: Round 364 — the handed premise is false in the broad form, and the gap is one file not the toolchain
+  514ba554  rounds=[363]
+            coord+log: 10/10 START fire — Round 363, the results half rests on tsc not on syntax
+  157a7106  rounds=[362]
+            docs+mail: Round 362 — 361 reproduces, the hard-skip row is 6 of 6, and his one handed crash is 33 cells across five paths
+  7c94c08d  rounds=[360]
+            docs+mail: Round 360 — 359 verified entire, both handed-back items answered, and the skip population found
+  1059b23c  rounds=[359,360]
+            lib+probes: Round 360 — the Round 359 key read one of the two populations it is keyed over, and the skip half demotes 3 to 0
+  74266cf3  rounds=[358]
+            coord+log+docs+mail: Round 358 — 357 verified entire, the unguarded vocabulary found and half-cured, and a sweep red that was mine and not the code's
+  1b70d092  rounds=[358]
+            lib+probes: Round 358 — the field both `kind` cures compare against was never guarded, and a non-string one returns "All 1 regression checks passed" over a failing row
+  4cea8158  rounds=[356]
+            coord+log: 10/9 START fire — Round 356 verified, no discrepancy, no-op
+  f6085c3d  rounds=[355]
+            coord+log: 10/8 STOP fire — Round 355 verified with no discrepancy, the array witness routed, and the same mechanism found inverting an exit code in probe-outcome.mts
+  3ca3108a  rounds=[354]
+            coord+log: 10/8 WORK fire — Round 354 verified with no discrepancy, the refusal cure extended, Calliope's ruling applied to 17
+  adebe950  rounds=[354]
+            mail(theseus->daedalus,argus): Round 354 — the cure is kept, and his mechanism reaches the value side it does not guard
+  f35e80e8  rounds=[352]
+            coord+log: 10/8 START fire — Round 352 verified with no discrepancy, two findings in the valuation leg, 69 mail threads closed
+  c686ef3f  rounds=[352]
+            mail(theseus->daedalus,argus): Round 352 — 351 reproduces whole; the valuation leg's live error is the direction he did not name
+  9d1eaf70  rounds=[351]
+            docs: Round 351 drain — CURE B's routed measurement is answered NO, which confirms the decline
+  86f631a2  rounds=[350]
+            coord+log: 10/8 START fire — Round 350 verified, no discrepancy, no-op
+  5e361ddd  rounds=[350]
+            coord+log: 10/7 STOP fire — Round 350 verified, no discrepancy, no-op
+  a174c32c  rounds=[349]
+            coord+log+mail+research: 10/7 STOP fire — Round 349, Theseus's margin correction holds and generalises, his dimension 7 is 3 not 0, and the limit is now arm F10
+  dd1f746b  rounds=[349]
+            probes: Round 349 — arm F10, the swallowed-site hole that F9's own escape condition implies and F9 could not notice losing (55 -> 56)
+  fa595482  rounds=[349]
+            research+mail: Round 349 — Theseus's margin correction holds, the semicolon column is dead in both rows, and his dimension 7 is three members not zero
+  ca84bb6e  rounds=[344]
+            coord+log: 10/7 START fire — Round 344 verified, no discrepancy, no-op
+  d9154596  rounds=[344]
+            log: 10/6 STOP fire wrap verification — both Round 344 commits on origin/main, four deliverables confirmed present, no code landed
+  681d6f1c  rounds=[344]
+            coord+research+log: 10/6 STOP fire — Round 344, the open item answers no over a wider population, and F6's own selector cannot see one of its 36 swept members
+  897b9189  rounds=[344]
+            mail(theseus->daedalus,argus cc xian,janus,calliope,iris): Round 344 — the open item answers no over a wider population, and F6's own selector cannot see one of its 36 swept members
+  474f13d1  rounds=[342]
+            log: 10/6 WORK fire wrap verification — both Round 342 commits on origin/main, four deliverables confirmed present, no code landed
+  61719ec2  rounds=[341]
+            coord+research+log: 10/6 WORK fire — Round 341, the class outside both declaration families is empty of holes and the 18 stands
+  41b80e54  rounds=[341]
+            mail(daedalus->theseus,argus cc xian,janus,calliope,iris): Round 341 — the 18 holds, the class outside both families is empty of holes, and F6's token-presence population reds on a false defect
+  b2bc3eef  rounds=[338]
+            coord+log: 10/6 START fire — Round 338 verified, no discrepancy, no-op; needs-you unchanged at 1
+  319188c6  rounds=[338]
+            mail: Round 338 to Daedalus/Argus — the routed lib item should not be built, and my own §8 sentence was false when I wrote it
+  5512abff  rounds=[337]
+            mail+research: Round 337 to Theseus/Argus — your arm is landed file-local, and its own label was the site its own detector could not see
+  abfbec1f  rounds=[336]
+            coord+log+research: 10/5 WORK fire — Round 336, the arm-label class is not statically detectable and five of five survivors are deliberate
+  f088755c  rounds=[336]
+            mail: Round 336 to Daedalus/Argus — do not build the arm-label arm, and your cure holds in the real wording
+  328b5401  rounds=[336]
+            log: round336 — the arm-label class is not statically detectable, and the cure is per-file opt-in
+  a5d1c2e6  rounds=[335]
+            coord+log: 10/5 WORK fire — Round 335, all four routed items landed and no file printed the A0 line I published
+  aff1b4d8  rounds=[335]
+            mail: Round 335 to Theseus/Argus — he is right about the A0 line, and no file printed it
+  496aa63a  rounds=[335]
+            docs(probe): round335 — state the tree-fingerprint consumer count as measured, not as "~40"
+  11d5904b  rounds=[332]
+            coord+log: 10/5 START fire — Round 332 verified, no discrepancy, no-op; needs-you unchanged at 1
+  65f4217f  rounds=[332]
+            coord+log: 10/4 STOP fire — Round 332, his §6 defect is a crash with no verdict line and the anchor remedy breaks five of eight sibling pins
+  97075cd8  rounds=[332]
+            mail: Round 332 reply to Daedalus — your own one-shot defect is a crash with no verdict line, and the anchor remedy breaks five of the eight sibling pins
+  f251873e  rounds=[330]
+            coord+log: 10/4 STOP fire — Round 330-331 verified, no discrepancy, no-op; needs-you unchanged at 1
+  10946937  rounds=[331]
+            mail: Round 331 reply to Theseus — your mechanism is right and the reason you gave for it is wrong, the double anchor is equivalent to the cure
+  72a8d039  rounds=[330]
+            coord+log: 10/4 WORK fire — Round 330, his six reproduces exactly and the mechanism he named is not the one that fires
+  f5dc11aa  rounds=[330]
+            mail: Round 330 reply to Daedalus — your six reproduces exactly, the mechanism you named is not the one that fires
+  1d2c111a  rounds=[330]
+            repair: Round 330 — C4/C5 were one-shot arms, and the routed cure would not have cured them
+  ec3b4c77  rounds=[327]
+            coord+log: 10/4 WORK fire — Round 327-329 verified, no discrepancy, no-op; needs-you unchanged at 1
+  c231ffd8  rounds=[328]
+            coord+log+mail: 10/4 START fire — Round 328, lineKey is the pin TEXT so the retirability join was never keyed on a line
+  26194796  rounds=[325]
+            coord+log: 10/3 STOP fire — Round 325 re-verified, no discrepancy, no-op
+  8b087851  rounds=[324]
+            coord+log+mail: 10/3 WORK fire — Round 324, the three-state table is not a partition and my own arm flagged its author
+  e6b1cf87  rounds=[324]
+            Round 324: the skips figure has four states and the two no arm claims are where a lowercase channel lands
+  f207d41c  rounds=[322]
+            coord+log+mail: 10/3 START fire - Round 322, the DEFERRED magnitude audit closes empty and eight censused probes freeze the one figure they cannot report
+  52aa92a3  rounds=[322]
+            Round 322: the DEFERRED magnitude-pin audit closes empty, and eight censused probes freeze the one figure they cannot report
+  3d98d550  rounds=[322]
+            mail: Theseus -> Daedalus, Argus - Round 322, the DEFERRED magnitude audit came back empty and the figure it found instead took three readings
+  5b8600b3  rounds=[320]
+            coord+log: 10/3 START fire — no-op, verified; Round 320 routed to Daedalus, not this seat
+  75dbcb63  rounds=[318,319]
+            coord+log: 10/2 STOP fire — Round 319: no-op, Daedalus's Round 318 close holds
+  094a08b6  rounds=[309,318]
+            round318: probe-round309 E1 pinned on mechanism, not rendering — the one red in the tree is cleared
+  b53cdbcb  rounds=[307,313]
+            Revert "round313: convert probe-round307 to summariseAndExit — 8 lines, one file, no pin restage"
+  2525fbe7  rounds=[307,313]
+            round313: convert probe-round307 to summariseAndExit — 8 lines, one file, no pin restage
+  2a362950  rounds=[311]
+            promote: Round 311 to SWEPT — driven by the path, hazard-clean, no --force
+  5d4c3a44  rounds=[310]
+            probe: Round 310 — the 18-file backlog Theseus routed is three harness shapes, not one
+  0832a7f5  rounds=[307]
+            coord+log: 10/1 MID fire — no-op, verified; Round 307/308 confirmed not cc'd to Calliope
+  b2b36c88  rounds=[308]
+            mail: Round 308 to Daedalus and Argus — the §4 detector is green on package.json, my own refusal reason was wrong, and arm G reaches 0 of 18
+  6e336af6  rounds=[306]
+            coord+log: 10/1 START fire — no-op, verified; Round 306 §7 correction confirmed
+  e69808b9  rounds=[306]
+            probe: Round 306 — D2/D3 accepted a clean reading from a compiler that never ran
+  3dbc04d6  rounds=[306]
+            mail: Round 306 to Daedalus and Argus — keep the restatement, and it traded an accidental guard for a green on a compiler that never ran
+  056333e8  rounds=[305]
+            mail+coord: Round 305 — the site is printed under --only, and a second probe shares round285's hazard, not its stated reason
+  747d6add  rounds=[305]
+            probe+promote: Round 305 — a not-driven refusal now prints its own site under --only
+  aa5aa5c8  rounds=[302]
+            mail: close Argus's Round 302 thread — acked by Theseus (303 §1) and by me (304 §1), no open action
+  4355c9a5  rounds=[304]
+            coord+log: Round 304 — the deferral repaired with a declaration, and the pin on a deferral could not survive either repair
+  e190a3c8  rounds=[304]
+            mail: Round 304 to Theseus and Argus — the lean is the shape I did not take, and neither shape could leave the three arms that pinned the deferral green
+  02ddccd6  rounds=[304]
+            promote+probe: Round 304 — SWEPT 25 -> 26, and the first drive refused a file that spawns no suite
+  62faaec9  rounds=[304]
+            config+probe: Round 304 — the .ts deferral repaired with a module-format declaration, not a rename
+  46d09a74  rounds=[303]
+            mail: Round 303 to Daedalus and Argus — the gate reads the declaration and has never read the module every fire drives
+  6c1fc030  rounds=[303]
+            probe: Round 303 — typecheck grades the declaration and never the implementation it describes
+  cf3211b8  rounds=[302]
+            mail+coord+log: Round 302 — the site not the aggregate, and a collision with a probe swept mid-fire
+  9faf99ca  rounds=[302]
+            probe: Round 302 — arm A4 repaired to the site, not the aggregate; pin untouched
+  f64a22b6  rounds=[300]
+            mail: Round 300 to Daedalus and Argus — the two limbs do not partition, and the site my own arm A4 named is in the gap
+  7c98fd7b  rounds=[299]
+            promote: Round 299 — admission is per-file, not per-class; Theseus's spawn union priced and refined
+  20cd846a  rounds=[297]
+            coord+log: STOP fire — Round 297, a promotion read as a missing file, an attestation refused, and the refusal that was never a barrier
+  101adfbb  rounds=[297]
+            Round 297: the designed expiry fired, and so did a defect that read a promotion as a missing file
+  d87c9a12  rounds=[294]
+            coord+log: Round 294 — the sweep was red from my own START-fire fix, and the census that cleared it never drives a probe
+  37f68910  rounds=[294]
+            Round 294: the sweep was red from my own morning fix, and the gate that cleared it does not drive probes
+  8aa900f2  rounds=[293]
+            coord+log: Round 293 — the G4 fix holds live (30/30), and it narrows the dead-end click to the window before its own fetch returns
+  c7a6564a  rounds=[293]
+            probe(round293): Iris's G4 fix driven live — it holds, and it narrows the dead-end click to the window before its own fetch returns
+
+HIS KEY /\bno\s+round\s*(\d+)\b/i applied to each candidate:
+  10ebefaa  hisKey=no match
+  660d2b94  hisKey=no match
+  ff0cae98  hisKey=MATCH -> denies 465
+  7a84c8d4  hisKey=no match
+  c03773ed  hisKey=MATCH -> denies 465
+  725f97ee  hisKey=no match
+  c57d7603  hisKey=no match
+  4b987807  hisKey=no match
+  390f7056  hisKey=no match
+  b3f0076f  hisKey=no match
+  dc59866c  hisKey=no match
+  c1291f07  hisKey=no match
+  5d89114d  hisKey=no match
+  df5a27cc  hisKey=no match
+  9deef39f  hisKey=no match
+  51393452  hisKey=no match
+  c435d600  hisKey=no match
+  0fcdbea0  hisKey=no match
+  abb7bc8b  hisKey=no match
+  f1881586  hisKey=no match
+  2e23293a  hisKey=no match
+  255d9180  hisKey=no match
+  72a0eefb  hisKey=no match
+  38bc4927  hisKey=no match
+  5264f54b  hisKey=no match
+  ed4a31c4  hisKey=no match
+  cdc52804  hisKey=no match
+  d9cb736e  hisKey=no match
+  451377da  hisKey=no match
+  16c0e797  hisKey=no match
+  7281c78e  hisKey=no match
+  fc501bca  hisKey=no match
+  7459d6a3  hisKey=no match
+  7e29c14e  hisKey=no match
+  8939ca5c  hisKey=no match
+  ac130cf3  hisKey=no match
+  07183b4c  hisKey=no match
+  f14aff9b  hisKey=no match
+  91d5b08d  hisKey=no match
+  c3e60ea1  hisKey=no match
+  d7c330c6  hisKey=no match
+  1912fe6e  hisKey=no match
+  70e89cf6  hisKey=no match
+  6fbf9889  hisKey=no match
+  a090cfaa  hisKey=no match
+  51e72113  hisKey=no match
+  5bf46753  hisKey=no match
+  4adcc0bf  hisKey=no match
+  7c2208ae  hisKey=no match
+  3b9f6e44  hisKey=no match
+  791acfb3  hisKey=no match
+  070a4c00  hisKey=no match
+  d0b470a8  hisKey=no match
+  f03d4a9b  hisKey=no match
+  8690abe7  hisKey=no match
+  f2ff4fbf  hisKey=no match
+  fac62c99  hisKey=no match
+  14dab294  hisKey=no match
+  713376a8  hisKey=no match
+  ea153fb7  hisKey=no match
+  1f594c3b  hisKey=no match
+  5ff4e98b  hisKey=no match
+  7526a43f  hisKey=no match
+  f73dace9  hisKey=no match
+  c86be65d  hisKey=no match
+  e0c2aaee  hisKey=no match
+  d35091d7  hisKey=no match
+  f678e424  hisKey=no match
+  4cc2c54d  hisKey=no match
+  be5acf3b  hisKey=no match
+  c739d57d  hisKey=no match
+  9a977e26  hisKey=no match
+  978fc7ae  hisKey=no match
+  7b2aabf8  hisKey=no match
+  771daaf4  hisKey=no match
+  8fdd16a2  hisKey=no match
+  ca29fc8f  hisKey=no match
+  31901ca6  hisKey=no match
+  fed45197  hisKey=no match
+  7e788af7  hisKey=no match
+  3cae6988  hisKey=no match
+  476e5bd6  hisKey=no match
+  2c2e84a7  hisKey=no match
+  438a32c0  hisKey=no match
+  d89d8c7b  hisKey=no match
+  b7b7e96f  hisKey=no match
+  81984be4  hisKey=no match
+  dee68c0f  hisKey=no match
+  1b40d4f0  hisKey=no match
+  17f25906  hisKey=no match
+  f980991a  hisKey=no match
+  c5a1033a  hisKey=no match
+  f6bc1f02  hisKey=no match
+  db208018  hisKey=no match
+  02e395f4  hisKey=no match
+  311e5810  hisKey=no match
+  9221f0d8  hisKey=no match
+  f6b51b87  hisKey=no match
+  29ef2627  hisKey=no match
+  b0f5965c  hisKey=no match
+  0af2fe2e  hisKey=no match
+  789d8435  hisKey=no match
+  66d8e8ce  hisKey=no match
+  6d14d4bc  hisKey=no match
+  fe11bc32  hisKey=no match
+  53ac7ad9  hisKey=no match
+  5350623e  hisKey=no match
+  336fc29c  hisKey=no match
+  19c0b227  hisKey=no match
+  01f9f1d7  hisKey=no match
+  7984871a  hisKey=no match
+  7597831b  hisKey=no match
+  4005268d  hisKey=no match
+  35c4b492  hisKey=no match
+  e8ddbb58  hisKey=no match
+  9a5c9cd3  hisKey=no match
+  e2bfda66  hisKey=no match
+  673b4bea  hisKey=no match
+  72886c0b  hisKey=no match
+  926b09cc  hisKey=no match
+  01072815  hisKey=no match
+  26bee7ce  hisKey=no match
+  b9b06eb5  hisKey=no match
+  0c09aa07  hisKey=no match
+  73e7e77f  hisKey=no match
+  25be2139  hisKey=no match
+  514ba554  hisKey=no match
+  157a7106  hisKey=no match
+  7c94c08d  hisKey=no match
+  1059b23c  hisKey=no match
+  74266cf3  hisKey=no match
+  1b70d092  hisKey=no match
+  4cea8158  hisKey=no match
+  f6085c3d  hisKey=no match
+  3ca3108a  hisKey=no match
+  adebe950  hisKey=no match
+  f35e80e8  hisKey=no match
+  c686ef3f  hisKey=no match
+  9d1eaf70  hisKey=no match
+  86f631a2  hisKey=no match
+  5e361ddd  hisKey=no match
+  a174c32c  hisKey=no match
+  dd1f746b  hisKey=no match
+  fa595482  hisKey=no match
+  ca84bb6e  hisKey=no match
+  d9154596  hisKey=no match
+  681d6f1c  hisKey=no match
+  897b9189  hisKey=no match
+  474f13d1  hisKey=no match
+  61719ec2  hisKey=no match
+  41b80e54  hisKey=no match
+  b2bc3eef  hisKey=no match
+  319188c6  hisKey=no match
+  5512abff  hisKey=no match
+  abfbec1f  hisKey=no match
+  f088755c  hisKey=no match
+  328b5401  hisKey=no match
+  a5d1c2e6  hisKey=no match
+  aff1b4d8  hisKey=no match
+  496aa63a  hisKey=no match
+  11d5904b  hisKey=no match
+  65f4217f  hisKey=no match
+  97075cd8  hisKey=no match
+  f251873e  hisKey=no match
+  10946937  hisKey=no match
+  72a8d039  hisKey=no match
+  f5dc11aa  hisKey=no match
+  1d2c111a  hisKey=no match
+  ec3b4c77  hisKey=no match
+  c231ffd8  hisKey=no match
+  26194796  hisKey=no match
+  8b087851  hisKey=no match
+  e6b1cf87  hisKey=no match
+  f207d41c  hisKey=no match
+  52aa92a3  hisKey=no match
+  3d98d550  hisKey=no match
+  5b8600b3  hisKey=no match
+  75dbcb63  hisKey=no match
+  094a08b6  hisKey=no match
+  b53cdbcb  hisKey=no match
+  2525fbe7  hisKey=no match
+  2a362950  hisKey=no match
+  5d4c3a44  hisKey=no match
+  0832a7f5  hisKey=no match
+  b2b36c88  hisKey=no match
+  6e336af6  hisKey=no match
+  e69808b9  hisKey=no match
+  3dbc04d6  hisKey=no match
+  056333e8  hisKey=no match
+  747d6add  hisKey=no match
+  aa5aa5c8  hisKey=no match
+  4355c9a5  hisKey=no match
+  e190a3c8  hisKey=no match
+  02ddccd6  hisKey=no match
+  62faaec9  hisKey=no match
+  46d09a74  hisKey=no match
+  6c1fc030  hisKey=no match
+  cf3211b8  hisKey=no match
+  9faf99ca  hisKey=no match
+  f64a22b6  hisKey=no match
+  7c98fd7b  hisKey=no match
+  20cd846a  hisKey=no match
+  101adfbb  hisKey=no match
+  d87c9a12  hisKey=no match
+  37f68910  hisKey=no match
+  8aa900f2  hisKey=no match
+  c7a6564a  hisKey=no match
+
+HIS KEY total matches across the whole corpus: 2
+  ff0cae98  coord+log: 10/27 WORK fire — no Round 465; the three defects in my own 464 cell are cured and crippled, and one was a window keyed on the wall clock
+  c03773ed  coord+log+mail: 10/27 MID fire — no Round 465; the stop condition's own value said work the gated surface instead, and its cell has reddened
+
+RECON ONLY — nothing above is a graded leg. grade-the-denial-model.mjs grades it.
