@@ -133,6 +133,8 @@ const CRIPPLES = [
   't8-ceiling-blind',
   't8-unpinned',
   't9-insensitive-leg',
+  't2b-sat-wrong-arm',
+  't2b-dir-pinned',
 ];
 const CRIPPLE = process.argv[2] ?? null;
 if (CRIPPLE !== null && !CRIPPLES.includes(CRIPPLE)) {
@@ -335,6 +337,27 @@ const consecutiveAbove = (last) =>
   (last === null || countingPopulation === null
     ? null
     : countingPopulation.filter((r) => r > last).length);
+
+// ---------------------------------------------------------------------------
+// THE CEILING KEY, hoisted 2026-10-29 WORK (design note 13). Declared here, above
+// its FIRST reader, rather than at the T8 site below: T2b's arms are now graded for
+// saturation by the same key, and a second ceiling key written beside T2b would be a
+// copy free to drift from the one T8KP grades. One key, two legs, two known positives.
+//
+// `>=`, not `===`: under `===` the `population-dir-only` arm (lastUnion 467, popMax
+// 464) reads "not pinned" — the WORSE case, where the arm's bound sits ABOVE the whole
+// population, passing as the good one. Theseus's `drive13` drove that mis-key; it is
+// `t8-ceiling-blind` here, and it reddens T2bKP as well as T8KP.
+// ---------------------------------------------------------------------------
+const ceilingKey = (last, max) =>
+  (last === null || max === null
+    ? null
+    : (CRIPPLE === 't8-ceiling-blind' ? last === max : last >= max));
+
+const popMaxForCeiling =
+  countingPopulation === null || countingPopulation.length === 0
+    ? null
+    : countingPopulation[countingPopulation.length - 1];
 
 console.log(`=== GRADE/464 the proposed stop condition ===`);
 console.log(`REV ${REV}`);
@@ -768,15 +791,202 @@ console.log(
 console.log(
   `  credited ONLY by an incidental edge: ${incidentalRounds === null ? 'UNMEASURED' : incidentalRounds.join(',') || 'NONE'}`
 );
+// ---------------------------------------------------------------------------
+// DESIGN NOTE 13 — 2026-10-29 WORK. T2b's arms, graded for saturation.
+//
+// Routed to this seat by Daedalus's 10-29 MID memo §6: T2b is the leg the standing
+// line is now quoted from, it is one-sided by construction (his §2: the self-attested
+// cure set is a SUBSET of the dir set, so `consecutiveSelfAttested >=
+// consecutiveSelfOnly` always), and it had no `T8CEIL` of its own.
+//
+// WHICH ARM PINS FIRST IS A FUNCTION OF THE ARMS, NOT OF THE KEY. A larger `last`
+// leaves fewer rounds above it, so the arm with the larger `last` reaches the ceiling
+// first. Live that is the dir arm (464 >= 454) — the nesting showing up as a number —
+// but the selector below is DERIVED from the two values rather than hardcoded to the
+// dir arm, because a hardcoded selector would silently point at the free arm if the
+// nesting ever inverted. `T2bKP`'s `nesting-inverted` row is what separates the two.
+//
+// TWO SATURATION MODES, AND THEY ARE NOT SYMMETRIC:
+//
+//   (a) PIN ARM PINNED, OTHER ARM FREE. That arm's `fired` is forced false, and T2b's
+//       token becomes `!firedOther` — a manufactured RED under a leg text that claims
+//       to report key disagreement. This is exactly T8's shape.
+//   (b) BOTH ARMS PINNED. Both `fired` are forced false, so the token is forced TRUE —
+//       a manufactured GREEN, "the keys agree" published from a state in which they
+//       could not have disagreed. T8 does not have this mode; T2b does, because its
+//       arms are thresholded rather than compared as counts.
+//
+// (a) implies nothing about (b), but (b) implies (a), so ONE refusal criterion — the
+// pin arm is at or above the ceiling — covers both. T2bORACLE drives both modes on
+// synthetic populations rather than asserting them here, because a structural claim
+// typed into a comment beside its own cure is the shape this cell has shipped false
+// twice.
+//
+// Live: distances 3 and 13, neither arm pinned, so this guard is FALSE today and the
+// standing `red=[T2b]` is unchanged — which is why `t2b-dir-pinned` exists. A
+// self-exclusion leg that live state never exercises is vacuous until something drives
+// the exclusion.
+// ---------------------------------------------------------------------------
+/** The arm that reaches the ceiling first: the LARGER `last`. `null` propagates. */
+const pinArmLast = (lastDir, lastSelf) => {
+  if (lastDir === null || lastSelf === null) return null;
+  return CRIPPLE === 't2b-sat-wrong-arm' ? Math.min(lastDir, lastSelf) : Math.max(lastDir, lastSelf);
+};
+/** The pin-arm selector composed with the shipped ceiling key. What T2bKP grades. */
+const t2bArmPinned = (lastDir, lastSelf, max) => ceilingKey(pinArmLast(lastDir, lastSelf), max);
+
+const t2bPinArm = pinArmLast(lastCuringRoundDirKey, lastSelfAttested);
+const t2bPinArmLabel =
+  t2bPinArm === null
+    ? 'REFUSED'
+    : t2bPinArm === lastCuringRoundDirKey && t2bPinArm === lastSelfAttested
+      ? 'both'
+      : t2bPinArm === lastCuringRoundDirKey
+        ? 'dir'
+        : 'self';
+// SUBJECT cripple: the ceiling operand is lowered onto the live pin arm, so the arm
+// sits at the ceiling without any arm's VALUE changing. Perturbs what T2b reads, not
+// how it reads it — so T2bKP and T2bORACLE, both synthetic, structurally cannot score
+// it, and T2b must.
+const popMaxForT2b =
+  CRIPPLE === 't2b-dir-pinned' && t2bPinArm !== null ? t2bPinArm : popMaxForCeiling;
+const t2bPinned = t2bArmPinned(lastCuringRoundDirKey, lastSelfAttested, popMaxForT2b);
+const t2bPinDistance =
+  t2bPinArm === null || popMaxForT2b === null ? null : popMaxForT2b - t2bPinArm;
+const t2bFreeArmPinned =
+  lastCuringRoundDirKey === null || lastSelfAttested === null
+    ? null
+    : ceilingKey(Math.min(lastCuringRoundDirKey, lastSelfAttested), popMaxForT2b);
+
+console.log(`  pin arm (larger last, reaches the ceiling first): ${t2bPinArmLabel} last=${t2bPinArm}`);
+console.log(`  popMax=${popMaxForT2b ?? 'REFUSED'} pinDistance=${t2bPinDistance ?? 'REFUSED'}`
+  + ` pinArmPinned=${t2bPinned ?? 'REFUSED'} freeArmPinned=${t2bFreeArmPinned ?? 'REFUSED'}`
+  + ` assertable=${t2bPinned === false}`);
+
+// T2bSAT [MEAS] — the two pins and their distances, recorded unconditionally and
+// asserting nothing, for the same reason T8CEIL asserts nothing: where the population's
+// maximum happens to sit is not a state any edit here can cure. Recorded so that T2b's
+// refusal has its cause readable off the recording rather than inferable from a missing
+// line, and so that the distance is visible BEFORE it reaches 0.
+measured(
+  null,
+  'T2bSAT',
+  '[MEAS] T2b\'s two arms against the ceiling of the population they count over: each arm\'s last, '
+    + 'which of them reaches the ceiling first, both distances, and whether T2b is assertable (no '
+    + 'assertion; a function of where the population maximum sits at this rev)',
+  `dirLast=${lastCuringRoundDirKey} selfLast=${lastSelfAttested} popMax=${popMaxForT2b} `
+    + `pinArm=${t2bPinArmLabel}(${t2bPinArm}) pinDistance=${t2bPinDistance} `
+    + `freeDistance=${lastCuringRoundDirKey === null || lastSelfAttested === null || popMaxForT2b === null ? null : popMaxForT2b - Math.min(lastCuringRoundDirKey, lastSelfAttested)} `
+    + `pinArmPinned=${t2bPinned} freeArmPinned=${t2bFreeArmPinned} assertable=${t2bPinned === false} `
+    + `key=${CRIPPLE === 't8-ceiling-blind' ? '===' : '>='} `
+    + `selector=${CRIPPLE === 't2b-sat-wrong-arm' ? 'min(pins last)' : 'max(pins first)'}`
+);
+
+// T2bKP — KEY-LEVEL known positive over the pin-arm selector COMPOSED WITH the shipped
+// ceiling key, on synthetic operands so it is independent of this rev. Two cripples are
+// scored here and structurally cannot be scored by T2b: `t2b-sat-wrong-arm` (live state
+// sits at distances 3 and 13, where both spellings answer "not pinned", so T2b does not
+// move) and `t8-ceiling-blind` (live operands sit on the `below` row, where `===` and
+// `>=` agree). The `nesting-inverted` row is the one that separates a DERIVED selector
+// from one hardcoded to the dir arm.
+const t2bKpRows = [
+  { name: 'both-below', got: t2bArmPinned(464, 454, 467), want: false },
+  { name: 'pin-arm-at-ceiling', got: t2bArmPinned(467, 454, 467), want: true },
+  { name: 'pin-arm-above-ceiling', got: t2bArmPinned(470, 454, 467), want: true },
+  { name: 'nesting-inverted', got: t2bArmPinned(454, 467, 467), want: true },
+  { name: 'both-at-ceiling', got: t2bArmPinned(467, 467, 467), want: true },
+  { name: 'absent-arm', got: t2bArmPinned(null, 454, 467), want: null },
+];
+const t2bKpMisses = t2bKpRows.filter((r) => r.got !== r.want).map((r) => r.name);
+console.log(`  T2bKP pin-arm matrix: `
+  + t2bKpRows.map((r) => `${r.name}=${r.got}(want ${r.want})`).join(' '));
+measured(
+  t2bKpMisses.length === 0,
+  'T2bKP',
+  'KNOWN POSITIVE (key-level): the arm that pins first is the one with the LARGER last, and it '
+    + 'counts as pinned at OR above the ceiling — the `nesting-inverted` row is the one a selector '
+    + 'hardcoded to the dir arm gets wrong, and `pin-arm-above-ceiling` is the one a `===` ceiling '
+    + 'spelling gets wrong',
+  `misses=[${t2bKpMisses.join(',')}] rows=${t2bKpRows.length} `
+    + t2bKpRows.map((r) => `${r.name}:${r.got}/${r.want}`).join(' ')
+);
+
+// T2bORACLE — RUNTIME ORACLE. The two saturation modes are claims about what the T2b
+// token DOES under a pin, and a claim like that written in a comment is not a
+// measurement of the code beside it. So the token is recomputed from synthetic
+// `(population, dirCureSet, selfCureSet)` triples by the same two steps the live leg
+// uses — count the population above each arm's max, threshold each at N — and the modes
+// are read off the results. `oneArmed` and `forcedGreen` are DRIVEN here, not asserted.
+const oracleToken = (population, dirCure, selfCure) => {
+  const above = (last) => (last === null ? null : population.filter((r) => r > last).length);
+  const lastD = dirCure.length ? Math.max(...dirCure) : null;
+  const lastS = selfCure.length ? Math.max(...selfCure) : null;
+  const cd = above(lastD);
+  const cs = above(lastS);
+  const fd = cd === null ? null : cd >= N_PROPOSED;
+  const fs = cs === null ? null : cs >= N_PROPOSED;
+  return { cd, cs, fd, fs, token: fd === null || fs === null ? null : fd === fs };
+};
+const POP20 = Array.from({ length: 20 }, (_, i) => i + 1);
+const oracleRows = [
+  // Interior, and the live shape: dir run 2, self run 12, opposite verdicts at N=5.
+  {
+    name: 'interior-disagree',
+    got: oracleToken(POP20, [18], [8]).token,
+    want: false,
+  },
+  // Mode (a): the pin arm is at the ceiling. Moving it FURTHER above the ceiling does
+  // not move the token; moving the free arm across N does. The token is one-armed.
+  {
+    name: 'pinned-arm-one-armed',
+    got:
+      oracleToken(POP20, [20], [8]).token === oracleToken(POP20, [25], [8]).token
+      && oracleToken(POP20, [20], [8]).token !== oracleToken(POP20, [20], [16]).token,
+    want: true,
+  },
+  // Mode (b): both arms pinned. Both runs are 0, both fired false, token forced TRUE —
+  // agreement published from a state in which disagreement was unreachable.
+  {
+    name: 'both-pinned-forced-green',
+    got: oracleToken(POP20, [20], [20]).token === true
+      && oracleToken(POP20, [20], [20]).cd === 0
+      && oracleToken(POP20, [20], [20]).cs === 0,
+    want: true,
+  },
+  // An absent arm refuses rather than reading as "has not fired".
+  { name: 'absent-arm-refuses', got: oracleToken(POP20, [18], []).token, want: null },
+];
+const oracleMisses = oracleRows.filter((r) => r.got !== r.want).map((r) => r.name);
+console.log(`  T2bORACLE: `
+  + oracleRows.map((r) => `${r.name}=${r.got}(want ${r.want})`).join(' '));
+measured(
+  oracleMisses.length === 0,
+  'T2bORACLE',
+  'RUNTIME ORACLE: recomputing the T2b token over synthetic populations shows both saturation '
+    + 'modes — with the pin arm at the ceiling the token is a function of the FREE arm alone, and '
+    + 'with both arms pinned it is forced to TRUE, i.e. a pinned pair publishes "the keys agree" '
+    + 'from a state where they could not have disagreed',
+  `misses=[${oracleMisses.join(',')}] rows=${oracleRows.length} `
+    + oracleRows.map((r) => `${r.name}:${r.got}/${r.want}`).join(' ')
+    + ` | live-shape check: interior=${JSON.stringify(oracleToken(POP20, [18], [8]))}`
+);
+
+// T2b — assertable ONLY while its pin arm is interior. While that arm sits at the
+// ceiling, T2b refuses rather than republishing a one-armed token as key disagreement.
+// A refusal rather than a re-aim or a retirement, for the reason Daedalus gave for T8:
+// a refusal becomes an assertion again by itself the moment the population grows past
+// the pin, and both other cures discard that event.
 const vT2b = readsFigure('T2b', (cons) => {
+  if (t2bPinned === null) return null;
+  if (t2bPinned === true) return null;
   const fd = cons === null ? null : cons >= N_PROPOSED;
   return fd === null || firedSelfAttested === null ? null : fd === firedSelfAttested;
 });
 measured(
   vT2b(consecutiveSelfOnly),
   'T2b',
-  'the dir key and the self-attested key AGREE on whether the condition has fired — a RED means the standing line cannot be quoted without naming the key it came from',
-  `dir fired=${firedDirKey} (consecutive ${consecutiveSelfOnly}) vs self-attested fired=${firedSelfAttested} (consecutive ${consecutiveSelfAttested}); incidental=[${incidentalRounds === null ? 'UNMEASURED' : incidentalRounds.join(',')}]`
+  'the dir key and the self-attested key AGREE on whether the condition has fired — a RED means the standing line cannot be quoted without naming the key it came from. REFUSES while T2b\'s pin arm is at the population ceiling (T2bSAT), because there one arm\'s fired is forced false and the token reports only the other arm — and when BOTH arms are pinned the token is forced to agreement',
+  `dir fired=${firedDirKey} (consecutive ${consecutiveSelfOnly}) vs self-attested fired=${firedSelfAttested} (consecutive ${consecutiveSelfAttested}); incidental=[${incidentalRounds === null ? 'UNMEASURED' : incidentalRounds.join(',')}]; pinArm=${t2bPinArmLabel} pinDistance=${t2bPinDistance}; assertable=${t2bPinned === false}`
 );
 
 // ---------------------------------------------------------------------------
@@ -1087,20 +1297,10 @@ const lastCuringUnion = curedByUnionKey.size ? Math.max(...curedByUnionKey) : nu
 const consecutiveUnion =
   consecutiveAbove(lastCuringUnion);
 
-// The ceiling key, as a named function, so T8KP grades the SHIPPED key and not a copy
-// of it. `>=`, not `===`: under `===` the `population-dir-only` arm (lastUnion 467,
-// popMax 464) reads "not pinned" — the WORSE case, where the arm's bound sits ABOVE
-// the whole population, passing as the good one. Theseus's `drive13` drove that
-// mis-key; it is `t8-ceiling-blind` here.
-const ceilingKey = (last, max) =>
-  (last === null || max === null
-    ? null
-    : (CRIPPLE === 't8-ceiling-blind' ? last === max : last >= max));
-
-const popMaxForCeiling =
-  countingPopulation === null || countingPopulation.length === 0
-    ? null
-    : countingPopulation[countingPopulation.length - 1];
+// `ceilingKey` and `popMaxForCeiling` were declared HERE until 2026-10-29 WORK. They
+// are now declared above `consecutiveAbove`, above their first reader, because T2b's
+// arms are graded by the same key (design note 13) — T8KP still grades the shipped
+// key, and so does T2bKP, which is why `t8-ceiling-blind` reddens both.
 const unionArmPinned = ceilingKey(lastCuringUnion, popMaxForCeiling);
 const ceilingDistance =
   lastCuringUnion === null || popMaxForCeiling === null ? null : popMaxForCeiling - lastCuringUnion;
@@ -1358,6 +1558,22 @@ predict(
         }).length
 );
 
+// --- Pre-registered 2026-10-29 WORK, in source, before the first drive of this change
+// (and in docs/research/unit-464t2b-sat-2026-10-29/PRE-REGISTRATION.md, committed before
+// this file was touched).
+predict(
+  'P12',
+  'T2b\'s pin arm is INTERIOR at this rev — popMax minus the pin arm\'s last is 3 — so the standing red=[T2b] is a measurement and not a pin, unlike T8\'s former zero',
+  3,
+  () => t2bPinDistance
+);
+predict(
+  'P13',
+  'the arm that pins first at this rev is the DIR arm, and the two arms sit at 464 and 454 — the subset nesting as a number, keyed on the DERIVED selector so a mis-selected arm moves this',
+  'dir|464|454',
+  () => `${t2bPinArmLabel}|${lastCuringRoundDirKey}|${lastSelfAttested}`
+);
+
 // ---------------------------------------------------------------------------
 // VERDICT
 // ---------------------------------------------------------------------------
@@ -1367,7 +1583,7 @@ predict(
 // own first six characters. `MEAS_DECLARED_OK` reddens if a declared MEAS leg
 // ever carries a non-null value, or if its text does not actually say [MEAS] —
 // either means the id list and the legs have drifted apart.
-const MEAS_LEGS = ['T9', 'W3', 'T8CEIL', 'T10COUNT'];
+const MEAS_LEGS = ['T9', 'W3', 'T8CEIL', 'T10COUNT', 'T2bSAT'];
 const measDrift = MEAS_LEGS.filter((id) => {
   const l = legs.find((x) => x.id === id);
   return l === undefined || l.value !== null || !/^\[MEAS\]/.test(l.text);
@@ -1416,6 +1632,39 @@ measured(
     // the verdict line's. Said rather than left to be noticed: two counts of the same
     // population differing by one, in one recording, reads as drift.
     + ' (legs counted pre-push; verdict line is +1 for M0b itself)'
+);
+
+// M0c — GATE, added 2026-10-29 WORK. Every name in `CRIPPLES` has at least one DISPATCH
+// SITE in this file's own source. The comment above `CRIPPLES` has claimed since 10-27
+// that "a cripple that nothing reads cannot sit here looking live", and nothing measured
+// it — a prose claim about the source, which is the class of claim this cell has been
+// caught by repeatedly. The cost of being wrong is specific and silent: a declared name
+// with no hook runs a CLEAN arm, so every control driven under it comes back clean and
+// reads as "the instrument survived the cripple".
+//
+// Keyed on the dispatch shape rather than on a mention, because a name occurring twice
+// in COMMENTS would satisfy a mention count while nothing read it. Counted by literal
+// string search, not a regex: a char-class regex over a hyphenated name is the shape
+// that has returned a smaller number here before.
+//
+// Carries its own control. A gate that can only report zero misses cannot be told from
+// one that cannot see, so a synthetic name known to be absent is run through the same
+// counter and MUST come back missing.
+const CELL_SOURCE = readFileSync(new URL(import.meta.url), 'utf8');
+const dispatchSites = (name) => CELL_SOURCE.split(`CRIPPLE === '${name}'`).length - 1;
+const cripplesWithoutHook = CRIPPLES.filter((c) => dispatchSites(c) === 0);
+const CONTROL_ABSENT_NAME = 'zz-control-name-with-no-hook';
+const controlDetected = dispatchSites(CONTROL_ABSENT_NAME) === 0;
+measured(
+  cripplesWithoutHook.length === 0 && controlDetected,
+  'M0c',
+  'GATE: every declared cripple has at least one dispatch site in this file\'s source, and the '
+    + 'control name known to have none is detected as missing — a RED means either a declared '
+    + 'cripple runs a CLEAN arm (so every control driven under it is clean for the wrong reason) '
+    + 'or this gate has stopped being able to see an absent hook',
+  `declared=${CRIPPLES.length} withoutHook=[${cripplesWithoutHook.join(',')}] `
+    + `sites=${CRIPPLES.map((c) => `${c}:${dispatchSites(c)}`).join(' ')} `
+    + `control(${CONTROL_ABSENT_NAME})=${dispatchSites(CONTROL_ABSENT_NAME)} detected=${controlDetected}`
 );
 
 const isMeas = (l) => MEAS_LEGS.includes(l.id);
