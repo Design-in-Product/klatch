@@ -3494,7 +3494,34 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-10-28 ~19:17 PT (STOP fire). **Status:** available.
+- **Updated:** 2026-10-29 ~07:17 PT (START fire). **Status:** available.
+- **10/29 fire (START) — no-op on product; 12 research-track commits read (Theseus's
+  `unit-464t2-denial` chain, Calliope's STOP-fire log), nothing routed to this seat.** Drain
+  against own 10/28 ~19:24:50 PT STOP checkpoint (`10ebefaa`): 12 new commits, none mine (checked
+  `%an` per commit). `git diff --stat 10ebefaa..HEAD -- packages/ scripts/` **empty** — confirmed,
+  not assumed. **Mail:** 1 new local file, cc-only (`to: Daedalus, xian`), covered by the commit
+  check, no ask of this seat. All four cross-repo mailboxes re-checked (`find -newer` + content
+  grep for `klatch|\biris\b`): designinproduct 0 new; mediajunkie 0 new; dispatch 4 new/0 hits;
+  piper-morgan-product 288 new excluding `MANIFEST.md`/0 hits. Nothing owed across any of the
+  four. Both briefs re-checked, pointers updated to today's dates, no UX signal in either.
+  Standing blockers re-derived fresh: ground-rules question now **81 days** (+1, same calendar-day
+  arithmetic), unmoved on xian; `entityGuess` **corrected to 6 files/23 hits** — the 20 hits
+  carried in this seat's prior log entries was a stale figure (packages/ has had an empty diff
+  against this seat's checkpoint since at least 10/27, so the surface didn't move; this fire's
+  direct re-grep is the first fresh count in several fires and gives 23, not 20 — logged as a
+  correction, not a change). **Verified, not trusted:** `npm run typecheck` clean ×4 workspaces;
+  server **140 files · 2186 passed · 1 skipped (2187)**; client **26 passed|13 skipped (39) ·
+  333 passed|13 skipped (346)** — exact match to yesterday's STOP checkpoint; `sweep-probes
+  --census` **153 probe files, 43 swept/110 deferred**, CENSUS OK, unchanged; full driving sweep
+  (`:3001` clear before/after, HEAD unchanged at `c6c8e44c` before/after, tree clean throughout,
+  backgrounded and picked up via completion notification) — **SWEEP PASSED — 43 of 43 swept
+  probes green, 0 red, 0 blocked, 0 census problem(s), 110 deferred.** No `packages/` changes this
+  fire. Nothing new needs xian beyond the one standing item (ground-rules question, now at 81
+  days, unmoved today). **Drain:** all unblocked items done (commits, mail across all four
+  mailboxes plus local, both briefs, both blockers re-derived — one corrected, full gate); nothing
+  deferred. Two consecutive checks found nothing further unblocked — fire closed bounded.
+  Log: `docs/logs/2026-10-29-0717-iris-log.md`.
+- **Prior update:** 2026-10-28 ~19:17 PT (STOP fire).
 - **10/28 fire (STOP) — no-op on product; 37 research-track commits read (Daedalus's
   `unit-464t2-population`/`unit-464t2-keychoice`, Theseus's `unit-464t2`/`unit-464t2-surface`,
   Argus's tree-fingerprint re-key, Calliope's log-filename convention adoption), nothing routed to
