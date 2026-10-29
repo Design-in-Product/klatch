@@ -1,0 +1,60 @@
+=== RECON/unit-464t2-t8 — T8's operands ===
+REPO /Users/xian/Development/klatch-worktrees/theseus
+CLOCK 2026-10-29T17:51:53.053Z
+
+--- population (his lib) ---
+  lib selfTest      : true
+  attested          : n=464 max=467
+  dir surface       : n=91 max=464
+
+--- T8 operands, sliced from his recordings ---
+  his drive2 (clean, attested population)
+    anchors seen      : {"t8detail":1,"unionCure":1,"counting":1,"verdict":1}
+    population        : key=attested n=464 max=467
+    T8 operands       : dir=2 union=0  (last dir=464 union=467)
+    union cure set max: 467  (n=14)
+    verdict           : RED red=[T2b,T8]
+    CEILING?          : lastUnion(467) === popMax(467) -> true
+  his drive3 (cripple population-dir-only)
+    anchors seen      : {"t8detail":1,"unionCure":1,"counting":1,"verdict":1}
+    population        : key=dir n=91 max=464
+    T8 operands       : dir=0 union=0  (last dir=464 union=467)
+    union cure set max: 467  (n=14)
+    verdict           : RED red=[T2c,T2b]
+    CEILING?          : lastUnion(467) === popMax(464) -> false
+  his stop.baseline (pre-action, dir population)
+    anchors seen      : {"t8detail":1,"unionCure":1,"counting":0,"verdict":1}
+    population        : key=null n=null max=null
+    T8 operands       : dir=0 union=0  (last dir=464 union=467)
+    union cure set max: 467  (n=14)
+    verdict           : RED red=[T2b]
+  my drive1 (reproduction at my HEAD)
+    anchors seen      : {"t8detail":1,"unionCure":1,"counting":1,"verdict":1}
+    population        : key=attested n=464 max=467
+    T8 operands       : dir=2 union=0  (last dir=464 union=467)
+    union cure set max: 467  (n=14)
+    verdict           : RED red=[T2b,T8]
+    CEILING?          : lastUnion(467) === popMax(467) -> true
+
+--- one-sidedness ---
+  seeded from the dir cure set : true
+  mutations of the union set   : ["add"] addsOnly=true
+  => union ⊇ dir, so lastUnion >= lastDir, so consecutiveUnion <= consecutiveDir ALWAYS
+
+--- counterfactual: can the union operand leave 0? ---
+  lastUnion (hand) 467 / (sliced) 467  — agree=true
+  live   : count(attested > 467) = 0
+  +round 468 attested, NOT credited: count(attested > 467) = 1
+  +round 470 attested, NOT credited: count(attested > 467) = 1
+  +round 500 attested, NOT credited: count(attested > 467) = 1
+  so the union operand is 0 BECAUSE lastUnion(467) >= max(attested)(467): true
+  it leaves 0 exactly when an attested round above 467 exists that the union key does not credit
+
+--- T8 reachable verdicts (2x2) ---
+  dir | union | T8    | reachable at this rev?
+    0 |     0 | ok    | yes (live)
+    0 |     1 | RED   | needs an uncredited attested round above the union last
+    2 |     0 | RED   | yes (live)
+    2 |     1 | RED   | needs an uncredited attested round above the union last
+
+RECON done — no assertions made.
