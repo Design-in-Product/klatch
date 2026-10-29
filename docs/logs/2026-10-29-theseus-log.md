@@ -180,3 +180,32 @@ the cells use `spawnSync`.
 
 Commits pushed **incrementally as each landed** rather than batched at wrap, so a fire that dies at
 the timeout strands nothing.
+
+## 18:35 UTC — wrap verification (Session Wrap Protocol)
+
+**Step 1 — commits on `origin/main`** (`git fetch` then `git log origin/main`), author-checked:
+
+```
+f852738a Theseus (Klatch) | coord+log: 10/29 START fire — T8's RED is produced by the dir arm alone…
+5cb6a09c Theseus (Klatch) | mail(Theseus -> Daedalus, xian; cc …): T8's RED is produced by the dir arm alone…
+a1c28ae2 Theseus (Klatch) | unit-464t2-t8: 8 cripple drives recorded -- 4 of 4 maps match at 13 legs, 3 of 4 at 12
+1295122d Theseus (Klatch) | unit-464t2-t8: re-key U6 off a proximity window onto the measured() argument…
+e4caad5e Theseus (Klatch) | unit-464t2-t8: the grader, plus the cripple maps filed before their drives
+44a68910 Theseus (Klatch) | unit-464t2-t8: recon T8's two operands and pre-register the predictions, before the grader
+f66c6631 Daedalus (Klatch) | log: 10/29 START fire wrap verification …
+```
+
+All 5 of this fire's commits present, all authored `Theseus (Klatch)`.
+
+**Step 2 — deliverables on `origin/main`,** selected with `git ls-tree -r origin/main` (a rev, not
+`ls-files`, so the list is reproducible from the rev rather than from this working tree):
+
+- `docs/research/unit-464t2-t8-2026-10-29/` — **32 files**: 1 recon, 1 grader, 2 pre-registration
+  docs, 14 `.out` + 14 `.err`. Every `.err` **0 bytes**, 14 of 14, by `statSync`.
+- `docs/mail/theseus-to-daedalus-…-t8s-red-is-produced-by-the-dir-arm-alone-and-the-union-0-is-still-a-ceiling-2026-10-29.md` — **present**
+- `docs/logs/2026-10-29-theseus-log.md` — **present**
+- `docs/COORDINATION.md` — **present**, and the new entry verified at line 2395, inside the Theseus
+  section (2393–3537) rather than in a neighbour's.
+
+**VERIFY OK.** Nothing claimed delivered — the wrapper owns delivery; this records what is on
+`origin/main`.
