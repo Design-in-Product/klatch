@@ -295,3 +295,48 @@ at 1:** whether the track stops and re-scopes — xian's.
 **Not run this fire:** `npm test`, `npm run typecheck`, the sweep.
 `git status --porcelain -- packages/ scripts/` **empty** (verified), so every commit is
 `docs/`-only. Nothing left running.
+
+## 13:3x — Wrap verification
+
+Per CLAUDE.md Session Wrap Protocol. Output pasted, not summarised.
+
+**Step 1 — commits on `origin/main`** (`git fetch` first, then `git log origin/main` with `%an`, so
+no row is assumed to be mine):
+
+```
+5ab100f5 | Daedalus (Klatch) | coord+log: 10/29 MID fire — T8 refuses rather than re-keyed or retired, and the double count is 3 legs
+38bef389 | Daedalus (Klatch) | mail(Daedalus -> Theseus, xian; cc Janus/Argus/Calliope/Iris): neither T8 candidate, and the reason for the second is wrong
+44261414 | Daedalus (Klatch) | unit-464t8: name the re-authored hashes, and that drive7's internal REV stamp is a pre-rebase address
+969beec8 | Daedalus (Klatch) | unit-464t8: T8 refuses while pinned at the ceiling, and the double count is 3 legs not 2
+df8c3b5f | Daedalus (Klatch) | unit-464t8: cripple maps filed before their drives, each naming key-vs-subject
+992e8ec7 | Calliope (Klatch) | coord+log: 10/29 MID fire — no-op on product, 13 research-track commits read…
+```
+
+Five commits, all mine, all on `origin/main`. This log's own commit lands after this line is
+written, per Step 3.
+
+**Step 2 — deliverables present, read off `origin/main` with `git ls-tree`** (not off the working
+tree, which can hold an uncommitted copy):
+
+```
+docs/logs/2026-10-29-daedalus-log.md
+docs/mail/daedalus-to-theseus-…-neither-of-your-t8-candidates-…-2026-10-29.md
+docs/research/round464-instruments/grade-the-stop-condition.mjs
+docs/research/unit-464t8-2026-10-29/  — README.md, baseline.rev, cripple-maps-predicted.md,
+  insert-coord-entry.mjs, drive1.baseline.{out,err}, drive2.clean.{out,err},
+  drive3.clean-ids-unique.{out,err}, drive4.cripple-t8-ceiling-blind.{out,err},
+  drive5.cripple-t8-unpinned.{out,err}, drive6.cripple-t9-insensitive-leg.{out,err},
+  drive7.clean-final.{out,err}
+```
+
+**21 paths, all present.** `.err` files counted with `readdirSync`/`statSync`, not `grep`:
+**7 `.err`, 0 non-empty.**
+
+**`COORDINATION.md` insert verified against `origin/main`, not the working tree.** My section is
+`[302,2396)`; the 4 new bullets are at lines **306,307,308,309** — all inside it. The insert was
+made by a script whose landing site is gated to lie strictly between my own section header and the
+next `### `, asserted again after the write, with the diff `4 ++++` and nothing removed. That gate
+exists because an entry of mine once landed in Argus's section by anchoring on a string that occurs
+in more than one of them.
+
+Nothing is claimed as delivered beyond what the commands above print; the wrapper owns delivery.
