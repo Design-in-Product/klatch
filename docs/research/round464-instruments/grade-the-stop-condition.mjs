@@ -64,6 +64,9 @@
 
 import { execFileSync } from 'node:child_process';
 import { readFileSync, existsSync, readdirSync } from 'node:fs';
+import {
+  attestedRounds, dirRounds, selfTest as attestedSelfTest,
+} from '../lib/attested-rounds.mjs';
 
 const REPO = new URL('../../..', import.meta.url).pathname.replace(/\/$/, '');
 // ABSOLUTE cutoff. `SINCE_BARE` is kept only so W1 can drive the defect it replaced.
@@ -91,15 +94,21 @@ const N_PROPOSED = 5;
 //                  dir key's figure while reading as a second opinion, and T2b's RED is the
 //                  whole finding, so the one thing that must be graded is that the RED is
 //                  load-bearing rather than structural)
+//   population-dir-only : count `consecutive` over the round-DIRECTORY population again, which
+//                 is what this cell did until 10-29                   -> T2c must RED
+//                 (added 10-29 with the population re-key. The re-key is the whole change, so
+//                  the one thing that must be graded is that it MOVED the figure. A re-key
+//                  whose two arms give the same number has changed nothing and the leg that
+//                  reports it is green for free.)
 //
 // Selected by argv, so the committed source is the real source in every arm; each
 // name below is referenced again at its own site, so a cripple that nothing reads
 // cannot sit here looking live. An unknown name exits non-zero rather than running
 // a clean arm under a crippled filename.
 //
-//   node grade-the-stop-condition.mjs [window-bare|memo-path|t1-no-clock|t1-bare-clock|t2-dir-only]
+//   node grade-the-stop-condition.mjs [window-bare|memo-path|t1-no-clock|t1-bare-clock|t2-dir-only|population-dir-only]
 // ---------------------------------------------------------------------------
-const CRIPPLES = ['window-bare', 'memo-path', 't1-no-clock', 't1-bare-clock', 't2-dir-only'];
+const CRIPPLES = ['window-bare', 'memo-path', 't1-no-clock', 't1-bare-clock', 't2-dir-only', 'population-dir-only'];
 const CRIPPLE = process.argv[2] ?? null;
 if (CRIPPLE !== null && !CRIPPLES.includes(CRIPPLE)) {
   console.error(`unknown cripple ${JSON.stringify(CRIPPLE)}; known: ${CRIPPLES.join(',')}`);
@@ -212,7 +221,8 @@ for (const c of commits) {
 
 const gated = commits.filter((c) => c.touchesGated);
 
-// Every round that EXISTS as a directory, so "consecutive rounds" counts real rounds.
+// Every round that EXISTS as a directory. Still read, still printed — but since 10-29 this is NOT
+// the population `consecutive` is counted over. See COUNTING POPULATION below.
 let existingRounds = [];
 try {
   existingRounds = readdirSync(`${REPO}/docs/research`)
@@ -224,6 +234,60 @@ try {
   existingRounds = [];
 }
 
+// ---------------------------------------------------------------------------
+// RE-KEY 2026-10-29 (design note 10). THE COUNTING POPULATION.
+//
+// Theseus's 10-28 memo §5 listed this as "yours, open, unchanged — and I note it is the one that
+// matters". It is the one that matters because the dir population is **terminated**, measured in
+// `docs/research/unit-464t2-population-2026-10-28`: 91 dirs spanning 365..464, the last created
+// 2026-10-27T10:52:54-07:00, 0 round dirs created after that instant and 6 of 6 `unit-*` dirs
+// created after it. The two-point growth test settles it — round 467 landed between `8fe017b4` and
+// HEAD and the dir measure went 91 → 91 while the attested measure went 174 → 175.
+//
+// What that does to `consecutive` is not staleness, it is SATURATION, and this cell's own 10-29
+// baseline prints it from both ends:
+//
+//   dir key   : last=464 consecutive=0   — 464 IS max(dirs), so `consecutive < N` is green for
+//                                          every future round whatever the track does.
+//   union key : last=467 consecutive=0   — 0 not because no round followed 467, but because the dir
+//                                          population has no member above 464 at all.
+//
+// Line 215's comment above stated the assumption that died: "Every round that EXISTS as a
+// directory, so 'consecutive rounds' counts real rounds." True when written; ended by `unit-*` on
+// 10-27 at 20:01, nine hours after the last round dir.
+//
+// The attested population is the surface, read through `docs/research/lib/attested-rounds.mjs` so
+// that there is ONE reader and one denial key rather than a copy per cell. The dir population is
+// kept beside it as a named axis and printed, because which surface a figure is counted over is a
+// decision and a decision should be readable off the recording.
+//
+// REFUSAL, not fallback: if the attested reader cannot resolve, `countingPopulation` is `null` and
+// every leg derived from it refuses. Falling back to the dir population would restore the dead
+// measure under the new name, silently, which is the worst of the three available outcomes.
+// ---------------------------------------------------------------------------
+let attestedSelfTestOk = null;
+let attestedSelfTestWhy = 'not run';
+try {
+  attestedSelfTestOk = attestedSelfTest() === true;
+  attestedSelfTestWhy = attestedSelfTestOk ? 'true' : 'returned a non-true value';
+} catch (e) {
+  attestedSelfTestOk = false;
+  attestedSelfTestWhy = e.message;
+}
+
+const attested = attestedRounds(REPO, REV);
+const dirRoundsAtRev = dirRounds(REPO, REV);
+const POPULATION_KEY = CRIPPLE === 'population-dir-only' ? 'dir' : 'attested';
+const countingPopulation = POPULATION_KEY === 'dir'
+  ? (dirRoundsAtRev === null ? null : dirRoundsAtRev)
+  : (attested === null ? null : attested.sorted);
+
+/** Consecutive rounds above `last` in the counting population. `null` propagates. */
+const consecutiveAbove = (last) =>
+  (last === null || countingPopulation === null
+    ? null
+    : countingPopulation.filter((r) => r > last).length);
+
 console.log(`=== GRADE/464 the proposed stop condition ===`);
 console.log(`REV ${REV}`);
 console.log(`WINDOW --since=${JSON.stringify(SINCE_EFFECTIVE)}  (absolute; see design note 4)`);
@@ -231,16 +295,39 @@ console.log(`CRIPPLE ${CRIPPLE ?? 'none'}`);
 console.log(`CLOCK ${new Date().toISOString()}  — printed because the REPLACED key depended on it`);
 console.log(`POPULATION commits=${commits.length} gated=${gated.length} roundDirsExisting=${existingRounds.length}`);
 if (popError) console.log(`POPULATION ERROR: ${popError}`);
+// Both surfaces, printed, with the one actually counted over named. Design note 10.
+console.log(
+  `COUNTING POPULATION key=${POPULATION_KEY} n=${countingPopulation === null ? 'REFUSED' : countingPopulation.length}`
+  + ` max=${countingPopulation === null || countingPopulation.length === 0 ? 'REFUSED' : countingPopulation[countingPopulation.length - 1]}`
+);
+console.log(
+  `  dir surface      : n=${dirRoundsAtRev === null ? 'REFUSED' : dirRoundsAtRev.length}`
+  + ` max=${dirRoundsAtRev === null || dirRoundsAtRev.length === 0 ? 'REFUSED' : dirRoundsAtRev[dirRoundsAtRev.length - 1]}`
+);
+console.log(
+  `  attested surface : n=${attested === null ? 'REFUSED' : attested.sorted.length}`
+  + ` max=${attested === null || attested.sorted.length === 0 ? 'REFUSED' : attested.sorted[attested.sorted.length - 1]}`
+  + ` removed=[${attested === null ? 'REFUSED' : attested.removed.join(',')}]`
+);
+console.log(`  lib selfTest     : ${attestedSelfTestWhy}`);
 
 // ---------------------------------------------------------------------------
 // G1 — GATE LEG. A refusal here MUST be a RED: if the population did not load,
 // every other leg below is reporting about nothing. (Round 459 §2.)
 // ---------------------------------------------------------------------------
-const g1 = popError === null && commits.length > 0 && existingRounds.length > 0;
+// Since 10-29 this also gates the COUNTING population and the shared reader's own self-test. A
+// refusal in either reaches every `consecutive` figure below, so it belongs here and not in a leg
+// that could be read as an independent finding. Gated on `!== true`, not on truthiness.
+const g1 = popError === null && commits.length > 0 && existingRounds.length > 0
+  && attestedSelfTestOk === true
+  && countingPopulation !== null && countingPopulation.length > 0;
 legs.push({
   id: 'G1',
-  text: 'GATE: the commit population and the round-directory list both loaded non-empty',
-  detail: `commits=${commits.length} roundDirs=${existingRounds.length} popError=${popError ?? 'none'}`,
+  text: 'GATE: the commit population, the round-directory list and the COUNTING population all '
+    + "loaded non-empty, and the shared reader's self-test returned true",
+  detail: `commits=${commits.length} roundDirs=${existingRounds.length} `
+    + `counting=${countingPopulation === null ? 'REFUSED' : countingPopulation.length} `
+    + `key=${POPULATION_KEY} libSelfTest=${attestedSelfTestWhy} popError=${popError ?? 'none'}`,
   value: g1,
 });
 
@@ -488,11 +575,9 @@ const maxRound = existingRounds.length ? existingRounds[existingRounds.length - 
 const lastCuringRoundDirKey = [...curedByDirKey].length
   ? Math.max(...curedByDirKey)
   : null;
-// Consecutive rounds since then that exist and did NOT cure a gated surface.
-const consecutiveSelfOnly =
-  lastCuringRoundDirKey === null
-    ? null
-    : existingRounds.filter((r) => r > lastCuringRoundDirKey).length;
+// Consecutive rounds since then that exist and did NOT cure a gated surface. Counted over the
+// COUNTING POPULATION since 10-29 (design note 10), not over the dir population.
+const consecutiveSelfOnly = consecutiveAbove(lastCuringRoundDirKey);
 
 console.log(`\nT2 the unit is a ROUND, and the per-round value:`);
 console.log(`  rounds that cured a gated surface (dir key): ${[...curedByDirKey].sort((a, b) => a - b).join(',') || 'NONE'}`);
@@ -512,6 +597,41 @@ measured(
   'T2',
   `the stop condition has NOT fired under the dir key — a RED here means the consecutive self-only run has reached N=${N_PROPOSED} and the track should stop and re-scope`,
   `last gated-curing round ${lastCuringRoundDirKey}, highest ${maxRound}, consecutive ${consecutiveSelfOnly}, N=${N_PROPOSED}, fired=${consecutiveSelfOnly === null ? 'UNMEASURED' : consecutiveSelfOnly >= N_PROPOSED}`
+);
+
+// ---------------------------------------------------------------------------
+// T2c — DID THE RE-KEY MOVE THE FIGURE? (design note 10.)
+//
+// The re-key is this fire's whole change to this cell, so the one thing that must be graded is
+// that it is not a no-op. A re-key whose two arms give the same number has changed nothing, and
+// the leg reporting it would be green for free.
+//
+// Keyed on the ACTIVE figure against the dir surface, deliberately, and not on
+// `attestedFigure !== dirFigure` — that second spelling is a fact about the two surfaces and is
+// true in BOTH arms, so `population-dir-only` could not redden it. Keyed this way the cripple
+// makes the active figure the dir figure and the leg reddens, which is what makes its green
+// load-bearing.
+//
+// `consecutiveAbove` propagates a refusal as `null`, so an unresolvable population reaches this
+// leg as REFUSED and not as "the two numbers happen to be equal".
+// ---------------------------------------------------------------------------
+const consecutiveOverDirSurface =
+  (lastCuringRoundDirKey === null || dirRoundsAtRev === null)
+    ? null
+    : dirRoundsAtRev.filter((r) => r > lastCuringRoundDirKey).length;
+console.log(`\nT2c did the 10-29 population re-key move the figure?`);
+console.log(`  active figure (key=${POPULATION_KEY}) : ${consecutiveSelfOnly ?? 'UNMEASURED'}`);
+console.log(`  same figure over the dir surface  : ${consecutiveOverDirSurface ?? 'UNMEASURED'}`);
+measured(
+  consecutiveSelfOnly === null || consecutiveOverDirSurface === null
+    ? null
+    : consecutiveSelfOnly !== consecutiveOverDirSurface,
+  'T2c',
+  'the figure this cell counts is NOT the dead dir-surface figure — a RED means the re-key is a '
+    + 'no-op and `consecutive` is back on a population that stopped growing on 2026-10-27',
+  `active=${consecutiveSelfOnly} (key=${POPULATION_KEY}) vs dir surface=${consecutiveOverDirSurface}; `
+    + `last gated-curing round=${lastCuringRoundDirKey}; dir max=${dirRoundsAtRev === null ? 'REFUSED' : dirRoundsAtRev[dirRoundsAtRev.length - 1]}; `
+    + `attested max=${attested === null ? 'REFUSED' : attested.sorted[attested.sorted.length - 1]}`
 );
 
 // ---------------------------------------------------------------------------
@@ -573,8 +693,7 @@ const lastSelfAttested =
   curedBySelfAttested === null || curedBySelfAttested.length === 0
     ? null
     : Math.max(...curedBySelfAttested);
-const consecutiveSelfAttested =
-  lastSelfAttested === null ? null : existingRounds.filter((r) => r > lastSelfAttested).length;
+const consecutiveSelfAttested = consecutiveAbove(lastSelfAttested);
 const incidentalRounds =
   curedBySelfAttested === null
     ? null
@@ -850,7 +969,7 @@ for (const c of gated) {
 }
 const lastCuringUnion = curedByUnionKey.size ? Math.max(...curedByUnionKey) : null;
 const consecutiveUnion =
-  lastCuringUnion === null ? null : existingRounds.filter((r) => r > lastCuringUnion).length;
+  consecutiveAbove(lastCuringUnion);
 
 console.log(`\nT8 does the key ambiguity move the CURRENT value?`);
 console.log(`  dir key   : last=${lastCuringRoundDirKey} consecutive=${consecutiveSelfOnly}`);
