@@ -100,6 +100,21 @@ const N_PROPOSED = 5;
 //                  the one thing that must be graded is that it MOVED the figure. A re-key
 //                  whose two arms give the same number has changed nothing and the leg that
 //                  reports it is green for free.)
+//   t8-ceiling-blind : spell the ceiling key `===` instead of `>=`      -> T8KP must RED
+//                 (added 10-29 MID with the T8 refusal. Perturbs the KEY, not the subject, so
+//                  T8 itself is predicted NOT to move: live state sits on the `equal` row where
+//                  both spellings agree, and only the key-level known-positive can see it.
+//                  Theseus's U1 mis-key, carried forward as a standing arm.)
+//   t8-unpinned : add a synthetic counting-population member above the union arm's last
+//                 curing round                                         -> T8 must go REFUSED->RED
+//                 (added 10-29 MID. Perturbs the SUBJECT, so T8 itself is the instrument that
+//                  sees it and T8KP structurally cannot. The two t8 arms exist as a pair because
+//                  a cripple map has to name which of key or subject it perturbs.)
+//   t9-insensitive-leg : register a figure-reading leg whose verdict ignores the figure
+//                                                                      -> T9 must RED
+//                 (added 10-29 MID with the sensitivity registry. T9's gate is that every
+//                  registered non-refused leg actually moves with the figure; a leg that does
+//                  not is either mis-registered or reads it vacuously.)
 //
 // Selected by argv, so the committed source is the real source in every arm; each
 // name below is referenced again at its own site, so a cripple that nothing reads
@@ -108,7 +123,17 @@ const N_PROPOSED = 5;
 //
 //   node grade-the-stop-condition.mjs [window-bare|memo-path|t1-no-clock|t1-bare-clock|t2-dir-only|population-dir-only]
 // ---------------------------------------------------------------------------
-const CRIPPLES = ['window-bare', 'memo-path', 't1-no-clock', 't1-bare-clock', 't2-dir-only', 'population-dir-only'];
+const CRIPPLES = [
+  'window-bare',
+  'memo-path',
+  't1-no-clock',
+  't1-bare-clock',
+  't2-dir-only',
+  'population-dir-only',
+  't8-ceiling-blind',
+  't8-unpinned',
+  't9-insensitive-leg',
+];
 const CRIPPLE = process.argv[2] ?? null;
 if (CRIPPLE !== null && !CRIPPLES.includes(CRIPPLE)) {
   console.error(`unknown cripple ${JSON.stringify(CRIPPLE)}; known: ${CRIPPLES.join(',')}`);
@@ -147,6 +172,20 @@ function predict(id, text, expected, actualThunk) {
 function allOf(...vals) {
   if (vals.some((v) => v === null || v === undefined)) return null;
   return vals.every(Boolean);
+}
+
+// ---------------------------------------------------------------------------
+// SENSITIVITY REGISTRY (design note 12). Every leg whose verdict is a function of
+// `consecutiveSelfOnly` registers that function HERE, and the leg itself is then
+// published by calling the registered function — never by re-typing the predicate
+// beside it. T9 perturbs the figure through the registry, so the map it prints is
+// the same code path the verdict line used. Slicing the inputs but re-typing the
+// verdict would make the map agree with itself and with nothing else.
+// ---------------------------------------------------------------------------
+const FIGURE_READERS = [];
+function readsFigure(id, f) {
+  FIGURE_READERS.push({ id, f });
+  return f;
 }
 
 // ---------------------------------------------------------------------------
@@ -278,9 +317,18 @@ try {
 const attested = attestedRounds(REPO, REV);
 const dirRoundsAtRev = dirRounds(REPO, REV);
 const POPULATION_KEY = CRIPPLE === 'population-dir-only' ? 'dir' : 'attested';
-const countingPopulation = POPULATION_KEY === 'dir'
+const countingPopulationBase = POPULATION_KEY === 'dir'
   ? (dirRoundsAtRev === null ? null : dirRoundsAtRev)
   : (attested === null ? null : attested.sorted);
+// `t8-unpinned` is a SUBJECT perturbation (design note 11): it lifts the counting population
+// above the union arm's ceiling, which is the state that makes T8's comparison measurable. It is
+// the arm that grades T8's refusal, and it is deliberately separate from `t8-ceiling-blind`,
+// which perturbs the key instead.
+const SYNTHETIC_ABOVE_CEILING = 9467;
+const countingPopulation =
+  CRIPPLE === 't8-unpinned' && countingPopulationBase !== null
+    ? [...countingPopulationBase, SYNTHETIC_ABOVE_CEILING]
+    : countingPopulationBase;
 
 /** Consecutive rounds above `last` in the counting population. `null` propagates. */
 const consecutiveAbove = (last) =>
@@ -592,8 +640,9 @@ console.log(
 // run is 0 — i.e. on the track having just cured a gated surface. A leg must not be RED on good
 // news. The assertion is now the condition itself, in the direction where a RED is a problem:
 // the track has NOT reached the point where it should stop and re-scope.
+const vT2 = readsFigure('T2', (cons) => (cons === null ? null : cons < N_PROPOSED));
 measured(
-  consecutiveSelfOnly === null ? null : consecutiveSelfOnly < N_PROPOSED,
+  vT2(consecutiveSelfOnly),
   'T2',
   `the stop condition has NOT fired under the dir key — a RED here means the consecutive self-only run has reached N=${N_PROPOSED} and the track should stop and re-scope`,
   `last gated-curing round ${lastCuringRoundDirKey}, highest ${maxRound}, consecutive ${consecutiveSelfOnly}, N=${N_PROPOSED}, fired=${consecutiveSelfOnly === null ? 'UNMEASURED' : consecutiveSelfOnly >= N_PROPOSED}`
@@ -622,10 +671,13 @@ const consecutiveOverDirSurface =
 console.log(`\nT2c did the 10-29 population re-key move the figure?`);
 console.log(`  active figure (key=${POPULATION_KEY}) : ${consecutiveSelfOnly ?? 'UNMEASURED'}`);
 console.log(`  same figure over the dir surface  : ${consecutiveOverDirSurface ?? 'UNMEASURED'}`);
-measured(
-  consecutiveSelfOnly === null || consecutiveOverDirSurface === null
+const vT2c = readsFigure('T2c', (cons) =>
+  (cons === null || consecutiveOverDirSurface === null
     ? null
-    : consecutiveSelfOnly !== consecutiveOverDirSurface,
+    : cons !== consecutiveOverDirSurface)
+);
+measured(
+  vT2c(consecutiveSelfOnly),
   'T2c',
   'the figure this cell counts is NOT the dead dir-surface figure — a RED means the re-key is a '
     + 'no-op and `consecutive` is back on a population that stopped growing on 2026-10-27',
@@ -716,8 +768,12 @@ console.log(
 console.log(
   `  credited ONLY by an incidental edge: ${incidentalRounds === null ? 'UNMEASURED' : incidentalRounds.join(',') || 'NONE'}`
 );
+const vT2b = readsFigure('T2b', (cons) => {
+  const fd = cons === null ? null : cons >= N_PROPOSED;
+  return fd === null || firedSelfAttested === null ? null : fd === firedSelfAttested;
+});
 measured(
-  firedDirKey === null || firedSelfAttested === null ? null : firedDirKey === firedSelfAttested,
+  vT2b(consecutiveSelfOnly),
   'T2b',
   'the dir key and the self-attested key AGREE on whether the condition has fired — a RED means the standing line cannot be quoted without naming the key it came from',
   `dir fired=${firedDirKey} (consecutive ${consecutiveSelfOnly}) vs self-attested fired=${firedSelfAttested} (consecutive ${consecutiveSelfAttested}); incidental=[${incidentalRounds === null ? 'UNMEASURED' : incidentalRounds.join(',')}]`
@@ -984,6 +1040,36 @@ measured(
 // thing corrected is the prose that described the state, because a leg whose text
 // claims the opposite of its own detail string is the defect this cell has been
 // caught in twice — a cured figure leaving a live sentence about the old one.
+//
+// DESIGN NOTE 11 — 2026-10-29 MID. The paragraph above is wrong about what the RED
+// reports, and Theseus drove it rather than argued it (his `U1`/`U2`/`U4`, unit
+// `unit-464t2-t8-2026-10-29`, `drive3.scratch-ceiling-removed.out`). Two structural
+// facts, both reproduced in this seat's `drive1.baseline.out` before anything here
+// was edited:
+//
+//   (a) ONE-SIDED BY CONSTRUCTION. `curedByUnionKey` is seeded from `curedByDirKey`
+//       and only ever `add`ed to, so `lastCuringUnion >= lastCuringRoundDirKey` and
+//       hence `consecutiveUnion <= consecutiveSelfOnly`, always. "The two keys give
+//       the same run" can fail in exactly one direction.
+//   (b) THE WEAK ARM IS PINNED AT THE CEILING. `lastCuringUnion` is 467 and the
+//       counting population's maximum is 467, so `count(population > lastUnion)` is
+//       0 for structural reasons and not as a measurement. Removing the ceiling in a
+//       scratch clone moves BOTH operands (dir 2->3, union 0->1) and leaves the
+//       verdict token unchanged.
+//
+// Together: while the union arm sits at the ceiling, a RED here reports only that the
+// dir arm is non-zero, under a leg text that claims to report key disagreement. So
+// the cure is NOT to re-aim the assertion and NOT to delete the leg — it is to make
+// T8 REFUSE while its comparison is unmeasurable, and to publish the pin as a
+// measurement beside it. An instrument that cannot refuse manufactures findings, and
+// this one manufactured a key-disagreement finding out of a pinned zero.
+//
+// Note (a) is NOT a reason to prefer T2b, which is nested the other way: the
+// self-attested cure set is a SUBSET of the dir set, so `consecutiveSelfAttested >=
+// consecutiveSelfOnly` always and T2b is equally one-sided. What separates them is
+// (b) alone — T2b's arms sit at 2 and 12, neither at a boundary. Saturation is the
+// criterion, not independence, which is why it is graded below rather than asserted
+// in a comment.
 // ---------------------------------------------------------------------------
 const curedByUnionKey = new Set(curedByDirKey);
 const subjectOnlyDetail = [];
@@ -1001,21 +1087,194 @@ const lastCuringUnion = curedByUnionKey.size ? Math.max(...curedByUnionKey) : nu
 const consecutiveUnion =
   consecutiveAbove(lastCuringUnion);
 
+// The ceiling key, as a named function, so T8KP grades the SHIPPED key and not a copy
+// of it. `>=`, not `===`: under `===` the `population-dir-only` arm (lastUnion 467,
+// popMax 464) reads "not pinned" — the WORSE case, where the arm's bound sits ABOVE
+// the whole population, passing as the good one. Theseus's `drive13` drove that
+// mis-key; it is `t8-ceiling-blind` here.
+const ceilingKey = (last, max) =>
+  (last === null || max === null
+    ? null
+    : (CRIPPLE === 't8-ceiling-blind' ? last === max : last >= max));
+
+const popMaxForCeiling =
+  countingPopulation === null || countingPopulation.length === 0
+    ? null
+    : countingPopulation[countingPopulation.length - 1];
+const unionArmPinned = ceilingKey(lastCuringUnion, popMaxForCeiling);
+const ceilingDistance =
+  lastCuringUnion === null || popMaxForCeiling === null ? null : popMaxForCeiling - lastCuringUnion;
+
 console.log(`\nT8 does the key ambiguity move the CURRENT value?`);
 console.log(`  dir key   : last=${lastCuringRoundDirKey} consecutive=${consecutiveSelfOnly}`);
 console.log(`  union key : last=${lastCuringUnion} consecutive=${consecutiveUnion}`);
 console.log(`  union cure set: ${[...curedByUnionKey].sort((a, b) => a - b).join(',')}`);
+console.log(`  counting population max=${popMaxForCeiling ?? 'REFUSED'}`
+  + ` ceiling distance (popMax - lastUnion)=${ceilingDistance ?? 'REFUSED'}`
+  + ` unionArmPinned=${unionArmPinned ?? 'REFUSED'}`);
 console.log(`  subject-only members and whether their round dir exists:`);
 for (const d of subjectOnlyDetail) console.log(`    ${d}`);
+
+// T8CEIL [MEAS] — the pin, recorded unconditionally. No assertion: whether the union
+// arm tops out is a property of where the population's maximum happens to sit this
+// hour, and a leg that reddened on it would be red on a state no edit here can cure.
+// It is recorded so that T8's refusal below has its cause readable off the recording
+// rather than inferable from the absence of a line.
 measured(
-  consecutiveSelfOnly === null || consecutiveUnion === null
-    ? null
-    : consecutiveSelfOnly === consecutiveUnion,
+  null,
+  'T8CEIL',
+  '[MEAS] whether the union arm sits at the ceiling of the population it counts over, and its '
+    + 'distance from it (no assertion; a function of the population maximum at this rev)',
+  `lastUnion=${lastCuringUnion} popMax=${popMaxForCeiling} distance=${ceilingDistance} `
+    + `pinned=${unionArmPinned} key=${CRIPPLE === 't8-ceiling-blind' ? '===' : '>='}`
+);
+
+// T8KP — KEY-LEVEL known positive, a 4-row confusion matrix over `ceilingKey` itself,
+// on synthetic operands so it is independent of this rev. A cripple that perturbs the
+// KEY is scored HERE and structurally cannot be scored by T8; a cripple that perturbs
+// the SUBJECT (`t8-unpinned`) is scored by T8 and cannot be scored here. That split is
+// the rule Theseus's one map miss made visible, so it is written into the arms.
+const ceilKpRows = [
+  { name: 'equal', got: ceilingKey(467, 467), want: true },
+  { name: 'above', got: ceilingKey(467, 464), want: true },
+  { name: 'below', got: ceilingKey(463, 464), want: false },
+  { name: 'refuse', got: ceilingKey(null, 464), want: null },
+];
+const ceilKpMisses = ceilKpRows.filter((r) => r.got !== r.want).map((r) => r.name);
+console.log(`  T8KP ceiling-key matrix: `
+  + ceilKpRows.map((r) => `${r.name}=${r.got}(want ${r.want})`).join(' '));
+measured(
+  ceilKpMisses.length === 0,
+  'T8KP',
+  'KNOWN POSITIVE (key-level): the ceiling key classifies equal AND above as pinned, below as '
+    + 'free, and an absent operand as a refusal — the `above` row is the one a `===` spelling '
+    + 'gets wrong, and it is the case where the bound sits above the whole population',
+  `misses=[${ceilKpMisses.join(',')}] rows=${ceilKpRows.length} `
+    + ceilKpRows.map((r) => `${r.name}:${r.got}/${r.want}`).join(' ')
+);
+
+// T8 — assertable ONLY when the comparison is measurable. While the union arm is
+// pinned, T8 refuses rather than republishing the dir arm's non-zero as a key
+// disagreement. Registered in FIGURE_READERS because when it IS measurable its verdict
+// is a function of `consecutiveSelfOnly`, which is the double count T9 reports.
+const vT8 = readsFigure('T8', (cons) => {
+  if (unionArmPinned === null) return null;
+  if (unionArmPinned === true) return null;
+  return cons === null || consecutiveUnion === null ? null : cons === consecutiveUnion;
+});
+measured(
+  vT8(consecutiveSelfOnly),
   'T8',
-  'the two keys give the SAME consecutive run at this rev — a RED means the free variable T3 found '
-    + 'is LIVE and the current value depends on the key, not merely future ones (and since the '
-    + '10-29 population re-key it is: 2 vs 0)',
-  `dir ${consecutiveSelfOnly} vs union ${consecutiveUnion}; last dir=${lastCuringRoundDirKey} union=${lastCuringUnion}`
+  'the two keys give the SAME consecutive run at this rev — a RED means the free variable T3 '
+    + 'found is LIVE and the current value depends on the key. REFUSES while the union arm is '
+    + 'pinned at the population ceiling (T8CEIL), because there a RED would report only that the '
+    + 'dir arm is non-zero: both operands move when the ceiling is removed and this token does not',
+  `dir ${consecutiveSelfOnly} vs union ${consecutiveUnion}; last dir=${lastCuringRoundDirKey} `
+    + `union=${lastCuringUnion}; unionArmPinned=${unionArmPinned}; `
+    + `assertable=${unionArmPinned === false}`
+);
+
+// ---------------------------------------------------------------------------
+// T10 — HOW MANY ASSERTABLE LEGS REST ON ONE FIGURE? (design note 12.)
+//
+// Theseus's `U6`: T2c and T8 both rest on `consecutiveSelfOnly`, so one figure
+// leaving 0 moves both legs and the verdict line counts the dir key's freeze twice.
+// That is right and it is an undercount. Rather than assert the pairing in prose —
+// a hand-typed claim about my own source is not a measurement of it — the figure is
+// PERTURBED through the registry every leg's verdict was published from, and the legs
+// that move are observed.
+//
+// The probe set is not `cons + 1`. Every leg here is a threshold comparison, so a
+// unit perturbation moves none of them and a sensitivity gate keyed on it would
+// publish a false RED against a figure that is in fact load-bearing. The set carries
+// each threshold the legs compare against — 0, N-1, N, N+1, and the three rival
+// figures — so "insensitive" means insensitive across the thresholds, not merely
+// locally flat.
+//
+// A leg REFUSED in the base arm is excluded from the gate and reported separately:
+// the sensitivity of a refused verdict is not measurable, and counting it as
+// insensitive would redden T8 for refusing, which is the behaviour design note 11
+// just introduced on purpose.
+// ---------------------------------------------------------------------------
+const PROBES = [
+  0,
+  1,
+  N_PROPOSED - 1,
+  N_PROPOSED,
+  N_PROPOSED + 1,
+  ...[consecutiveUnion, consecutiveOverDirSurface, consecutiveSelfAttested].filter(
+    (v) => v !== null && v !== undefined
+  ),
+];
+const PROBE_SET = [...new Set(PROBES)].sort((a, b) => a - b);
+
+const sensitivity = FIGURE_READERS.map(({ id, f }) => {
+  const base = f(consecutiveSelfOnly);
+  const seen = PROBE_SET.map((p) => {
+    try {
+      return f(p);
+    } catch (e) {
+      return 'THREW';
+    }
+  });
+  const distinct = [...new Set(seen.map((v) => String(v)))];
+  return { id, base, seen, moved: base === null ? null : distinct.length > 1 };
+});
+const sensitiveIds = sensitivity.filter((s) => s.moved === true).map((s) => s.id);
+const insensitiveIds = sensitivity.filter((s) => s.moved === false).map((s) => s.id);
+const refusingIds = sensitivity.filter((s) => s.moved === null).map((s) => s.id);
+
+// `t9-insensitive-leg` registers a reader that ignores its argument, which is exactly
+// what the gate below exists to catch. Registered last so it cannot shift the ids of
+// the real readers in the printed map.
+if (CRIPPLE === 't9-insensitive-leg') {
+  readsFigure('T10CRIPPLE', () => true);
+  const f = FIGURE_READERS[FIGURE_READERS.length - 1].f;
+  sensitivity.push({ id: 'T10CRIPPLE', base: f(consecutiveSelfOnly), seen: [true], moved: false });
+  insensitiveIds.push('T10CRIPPLE');
+}
+
+console.log(`\nT10 how many assertable legs move with \`consecutiveSelfOnly\`?`);
+console.log(`  live figure : ${consecutiveSelfOnly ?? 'UNMEASURED'}`);
+console.log(`  probe set   : [${PROBE_SET.join(',')}]`);
+for (const s of sensitivity) {
+  console.log(`    ${s.id.padEnd(10)} base=${String(s.base).padEnd(7)}`
+    // `seen` holds nulls; `join` renders those as empty strings, so a refused row
+    // prints as `[,,,,,]` — six cells that cannot be told from six blanks. Mapped
+    // through String() first so a refusal is legible as a refusal in the recording.
+    + ` moved=${String(s.moved).padEnd(6)} over probes=[${s.seen.map((v) => String(v)).join(',')}]`);
+}
+console.log(`  sensitive   : [${sensitiveIds.join(',')}]  n=${sensitiveIds.length}`);
+console.log(`  refusing    : [${refusingIds.join(',')}]`);
+
+// T10COUNT [MEAS] — the double count itself, as a number. No assertion: the right
+// number of legs reading one figure is not something this cell can decide, and a leg
+// asserting "at most one" would be RED on a design that is arguably correct. It is
+// published so that `red=[...]` on the verdict line cannot be read as a count of
+// independent findings.
+measured(
+  null,
+  'T10COUNT',
+  '[MEAS] how many assertable legs are functions of the SAME figure `consecutiveSelfOnly` — the '
+    + 'verdict line below is not a count of independent findings, and one figure moving moves '
+    + 'every leg named here',
+  `sensitive=[${sensitiveIds.join(',')}] n=${sensitiveIds.length}; `
+    + `refusing=[${refusingIds.join(',')}]; probes=[${PROBE_SET.join(',')}]; `
+    + `figure=${consecutiveSelfOnly}`
+);
+
+// T10 — GATE on the registry itself: a leg registered as reading the figure must
+// actually move with it across the thresholds. A registered leg that never moves is
+// either mis-registered or reads the figure vacuously, and in both cases the map
+// above is lying about which legs the figure carries.
+measured(
+  insensitiveIds.length === 0,
+  'T10',
+  'every leg registered as a reader of `consecutiveSelfOnly` actually moves with it across the '
+    + 'probe set — a RED means a registered leg is insensitive to the figure it is published from, '
+    + 'so the sensitivity map overstates what the figure carries',
+  `insensitive=[${insensitiveIds.join(',')}] sensitive=[${sensitiveIds.join(',')}] `
+    + `refusing=[${refusingIds.join(',')}] registered=${FIGURE_READERS.length}`
 );
 
 // ---------------------------------------------------------------------------
@@ -1072,6 +1331,32 @@ predict(
     return [...authors].every((a) => /Daedalus|Theseus/.test(a));
   }
 );
+// --- Pre-registered 2026-10-29 MID, in source, before the first drive of this change.
+predict(
+  'P11',
+  'the union arm sits EXACTLY at the ceiling: popMax - lastCuringUnion is 0, so T8\'s zero is structural and not a measurement',
+  0,
+  () => ceilingDistance
+);
+predict(
+  'P9',
+  'THREE assertable legs move with `consecutiveSelfOnly`, not the two Theseus named — T2 and T2b read it as well as T2c — and T8 is a fourth that currently refuses',
+  'T2,T2c,T2b|T8',
+  () => `${sensitiveIds.join(',')}|${refusingIds.join(',')}`
+);
+predict(
+  'P10',
+  'a UNIT perturbation of the figure moves NO leg, which is why the sensitivity probe set carries the thresholds instead',
+  0,
+  () =>
+    consecutiveSelfOnly === null
+      ? null
+      : FIGURE_READERS.filter(({ f }) => {
+          const a = f(consecutiveSelfOnly);
+          const b = f(consecutiveSelfOnly + 1);
+          return a !== null && b !== null && a !== b;
+        }).length
+);
 
 // ---------------------------------------------------------------------------
 // VERDICT
@@ -1082,7 +1367,7 @@ predict(
 // own first six characters. `MEAS_DECLARED_OK` reddens if a declared MEAS leg
 // ever carries a non-null value, or if its text does not actually say [MEAS] —
 // either means the id list and the legs have drifted apart.
-const MEAS_LEGS = ['T9', 'W3'];
+const MEAS_LEGS = ['T9', 'W3', 'T8CEIL', 'T10COUNT'];
 const measDrift = MEAS_LEGS.filter((id) => {
   const l = legs.find((x) => x.id === id);
   return l === undefined || l.value !== null || !/^\[MEAS\]/.test(l.text);
@@ -1092,6 +1377,45 @@ measured(
   'M0',
   'every leg declared as [MEAS] exists, carries no value and says so in its own text — so the verdict\'s refusal set cannot be opted out of silently',
   `declared=[${MEAS_LEGS.join(',')}] drifted=[${measDrift.join(',')}]`
+);
+
+// M0b — GATE: leg AND prediction ids are unique. Added 2026-10-29 MID after this seat
+// shipped a second leg named `T9` beside the existing `[MEAS]` one, and then, in the
+// same edit, a second prediction named `P8`. Nothing caught either: `M0` resolves a
+// declared id with `legs.find`, which returns the FIRST match, so it graded the old
+// leg and reported no drift while the new leg rode along inheriting the `[MEAS]`
+// exemption — a non-null value excluded from the refusal set by a name it was not
+// entitled to. The duplicate `P8` was worse in one way: both rows print, both count
+// toward `preds=`, and `refuted=[P8]` would not say which of the two refuted.
+//
+// It covers BOTH arrays deliberately. The leg collision was found by eye while
+// reading the verdict block; the prediction collision was found only because the
+// first drive printed the two rows adjacently. Keyed on one array, this gate would
+// have been green over the second defect in the same commit that cured the first.
+const dupsIn = (rows, what) => {
+  const counts = new Map();
+  for (const r of rows) counts.set(r.id, (counts.get(r.id) ?? 0) + 1);
+  return {
+    what,
+    total: rows.length,
+    distinct: counts.size,
+    dups: [...counts.entries()].filter(([, n]) => n > 1).map(([id, n]) => `${id}x${n}`),
+  };
+};
+const idScopes = [dupsIn(legs, 'legs'), dupsIn(preds, 'preds')];
+const dupIds = idScopes.flatMap((s) => s.dups.map((d) => `${s.what}:${d}`));
+measured(
+  dupIds.length === 0,
+  'M0b',
+  'GATE: every leg id AND every prediction id occurs exactly once, so a declared-id lookup (M0, '
+    + 'MEAS_LEGS) resolves to the row it names and a refuted/red id names one row — a RED means '
+    + "two rows share a name and one of them is being graded in the other's place",
+  `duplicates=[${dupIds.join(',')}] `
+    + idScopes.map((s) => `${s.what}=${s.total}/distinct ${s.distinct}`).join(' ')
+    // This leg's count is taken before it pushes itself, so `legs=` here is one below
+    // the verdict line's. Said rather than left to be noticed: two counts of the same
+    // population differing by one, in one recording, reads as drift.
+    + ' (legs counted pre-push; verdict line is +1 for M0b itself)'
 );
 
 const isMeas = (l) => MEAS_LEGS.includes(l.id);
