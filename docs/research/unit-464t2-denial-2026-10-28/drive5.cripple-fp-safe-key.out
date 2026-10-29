@@ -1,0 +1,75 @@
+grade-the-denial-model  REV=10ebefaaae00f7dd4202da132bbb6de70238c020  FLOOR=292  CRIPPLE=fp-safe-key
+repo             : /Users/xian/Development/klatch-worktrees/theseus
+HEAD at drive    : deacf180f183dfab1e07a75563e3400043739907
+tree at drive    : DIRTY (figures below read REV, not the working tree)
+
+active denial key: /\bno\s+round\s*(\d+)(?![-\w./])/i
+
+M1 [MEAS] my own reader of the attested population above 292:
+  raw                : 175  (max attested 467)
+  denial-filtered    : 174
+  removed            : [465]
+  non-subject sources: 154 rounds
+
+G1 does my own reader reproduce his published 175 / 174 / [465]?
+  ok      G1 [GATE] my independent reader reproduces his raw=175, denial-filtered=174, removed=[465] at the pinned rev
+          mine raw=175 filtered=174 removed=[465]  expected 175/174/[465]
+
+G2 his cell driven as a child process (status 1):
+  his line parsed    : M3 attested denial-filtered  : above 292: 174 max=467 removed=[465]
+  his filtered=174 max=467 removed=[465]
+  ok      G2 [GATE] his cell, driven rather than re-typed, agrees with my reader on the filtered count, the max and the removed MEMBER LIST
+          his=174/467/[465] vs mine=174/467/[465]
+
+G3 his key's match set across all 4169 subjects:
+  ff0cae98 denies 465 | coord+log: 10/27 WORK fire — no Round 465; the three defects in my own 464 cell are cured and crippled, and on
+  c03773ed denies 465 | coord+log+mail: 10/27 MID fire — no Round 465; the stop condition's own value said work the gated surface inst
+  ok      G3 [GATE] the key matches exactly the hand-read denial set, member for member — not merely the same NUMBER of commits
+          key=[c03773ed,ff0cae98] hand=[c03773ed,ff0cae98]
+
+G4 THE FINDING — does the key read an absent ARTIFACT as a denied ROUND?
+  non-denial subject : round467: re-key probe-round307 C4 — there is no round467-instruments directory in the tree
+  key says           : no match
+  control (a real denial): coord+log: 10/27 WORK fire — no Round 465; the three defects in my own 464 cell are cured
+  key says           : DENIES 465
+  ok      G4 [GATE] the key does NOT match a subject that denies an ARTIFACT of round N rather than round N itself — a RED means the filter deletes a round that exists
+          fpSubjectMatched=false
+  ok      G4c [GATE] CONTROL: the key still matches a GENUINE denial, so G4 is a false positive and not a key that matches nothing or everything
+          controlMatched=true denies=465
+
+M2 [MEAS] recall floor — alternate denial spellings the key reaches:
+  MISSED  coord+log: 10/29 WORK fire — not Round 468; the cell is cured
+  MISSED  coord+log: 10/29 WORK fire — never Round 468, the label was mine
+  MISSED  coord+log: 10/29 WORK fire — Round 468 does not exist; renumbered
+  MISSED  coord+log: 10/29 WORK fire — Round 468 was skipped
+  ok      G5 [MEAS] [MEAS] the key reaches 0 of 4 alternate denial spellings, with 0 instances in the corpus at REV — a FLOOR on its reach, not a live defect
+          caught=0/4 corpusInstances=0
+
+M3 [MEAS] the key over 2811 committed .md files at REV:
+  lines matched        : 42
+  of those, the round EXISTS independently of its denials (so the line is a FALSE POSITIVE): 6
+  the rest are genuine denials of a round attested only by denials: 36
+    FP round=295 match="no Round 295"  docs/COORDINATION.md
+       - **Updated (previous):** 2026-10-09 ~13:5x PT (WORK fire — **Round 359: Theseus's Round 358 reproduces entire with no discrepancy, and the answer to 
+    FP round=445 match="no Round 445"  docs/COORDINATION.md
+       **Drain:** both memos addressed to this seat read in full at fire open and acted on in the same fire; the Janus thread `git mv`'d to `docs/mail/read/`
+    FP round=365 match="No Round 365"  docs/logs/2026-10-10-1332-argus-sonnet-log.md
+       this seat. No Round 365 mail memo exists yet (checked `docs/mail/` directly — only the two
+    FP round=422 match="no Round 422"  docs/logs/2026-10-19-1948-theseus-opus-log.md
+       `round421-instruments` only: **no Round 422 exists, and it is mine.**
+    FP round=445 match="No Round 445"  docs/logs/2026-10-23-1947-theseus-opus-log.md
+       - **No Round 445 reply memo to Daedalus.** Blocker: a reply is a full adversarial round against his
+    FP round=295 match="no Round 295"  docs/mail/read/daedalus-to-theseus-argus-cc-xian-janus-calliope-iris-both-your-declared-limits-are-real-and-one-falsified-a-sentence-i-had-just-written-2026-10-09.md
+       subject: "Round 357 (START fire): **your Round 356 reproduces entire with no discrepancy, and BOTH limits you declared undriven are real exit-code inv
+  ok      G6 [MEAS] [MEAS] how far the false-positive shape has already travelled in committed prose — 0 landed instances with a live route is a defect in the key, not in the corpus
+          mdFiles=2811 linesMatched=42 falsePositives=6 genuineDenials=36 unreadable=0
+
+G7 the wide candidate set at REV: 207 subjects
+  ok      G7 [GATE] the candidate population at the pinned rev is 207 and every hand-read denial is inside it — so the hand reading was done over the whole candidate set, not over the key's own output
+          candidates=207 (expected 207) handInside=[c03773ed,ff0cae98] hand=[c03773ed,ff0cae98]
+
+SELF-TEST cripple dispatch occurrences (each must be > 1): {"no-denial-filter":3,"fp-safe-key":3,"xcheck-wrong-figure":3,"hand-map-widened":3,"control-off":3}
+  ok      SELF [GATE] every declared cripple name occurs more than once in this file, so none is a declared cripple that no branch reads
+          {"no-denial-filter":3,"fp-safe-key":3,"xcheck-wrong-figure":3,"hand-map-widened":3,"control-off":3}
+
+VERDICT/0 GREEN legs=9 red=[] refused=[] cripple=fp-safe-key
