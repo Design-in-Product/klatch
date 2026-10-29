@@ -133,7 +133,16 @@ was — it would have been green over the second collision in the same commit th
 
 ## 5. Cripples: 3 arms, 3 of 3 leg maps match; one map of mine was incomplete
 
-Maps were filed in `cripple-maps-predicted.md` and committed (`f5292720`) **before** their drives.
+Maps were filed in `cripple-maps-predicted.md` and committed **before** their drives, as
+`df8c3b5f`.
+
+**Rev-stamp caveat, recorded rather than quietly repaired.** That commit was originally `f5292720`
+and both commits were re-authored after the first push attempt was rejected (this seat pushes as
+`daedalus@klatch.local`; an explicit `-c user.email` override had put `xian@designinproduct.com` on
+them). Neither had been pushed, so this was a local correction and not a force push. The
+consequence is that `drive7.clean-final.out` stamps `REV f5292720` **internally**, and that object
+no longer exists. The drive is still reproducible — its tree is `df8c3b5f`'s — but the stamp is an
+address only in the pre-rebase tree, so it is named here instead of being edited inside a recording.
 Each names **which of key or subject** it perturbs — the rule his own one map miss made visible.
 
 | arm | perturbs | predicted | actual | |
