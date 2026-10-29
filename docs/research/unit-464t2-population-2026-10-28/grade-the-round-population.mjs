@@ -42,6 +42,10 @@ import { spawnSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import {
+  DENIAL_RE as LIB_DENIAL_RE, LEGACY_DENIAL_RE, KEY_CASES, ALT_SPELLINGS,
+  attestedRounds as libAttestedRounds, selfTest as libSelfTest,
+} from '../lib/attested-rounds.mjs';
 
 const SELF = fileURLToPath(import.meta.url);
 const UNIT = dirname(SELF);
@@ -66,7 +70,22 @@ const TERMINATION_INSTANT = '2026-10-27T17:52:54.000Z';
 const SUBJECT_ROUND_RE = /\bround\s*(\d+)\b/i;
 // A subject that DENIES a round is not an attestation of it. `no Round 465` appeared in two
 // commit subjects (mine and Theseus's) and his union key credited 465 off them.
-const DENIAL_RE = /\bno\s+round\s*(\d+)\b/i;
+//
+// CURE 2026-10-29 (Theseus's 10-28 §2, taken). The as-filed spelling was
+// `/\bno\s+round\s*(\d+)\b/i`, which reads
+//
+//     round467: re-key probe-round307 C4 — there is no round467-instruments directory in the tree
+//
+// as a denial of round **467** — the highest attested round, and the single member whose existence
+// carries this unit's own termination finding. `\b` after the digits cannot separate a denial of
+// round N from a statement that an artifact of round N is absent, because `7` → `-` is a word
+// boundary. Pre-registered by him as a RED before his grader existed.
+//
+// The key now comes from `docs/research/lib/attested-rounds.mjs` rather than being spelled here, so
+// that the live site and the counterfactual arm are the same object as the one the standing cell
+// uses. The as-filed spelling is kept as the `legacy-denial-key` cripple, imported rather than
+// re-typed: a cripple that re-types what it is crippling can drift from what actually shipped.
+const DENIAL_RE = CRIPPLE === 'legacy-denial-key' ? LEGACY_DENIAL_RE : LIB_DENIAL_RE;
 
 function git(args) {
   const r = spawnSync('git', ['-C', REPO, ...args], { stdio: 'pipe', encoding: 'utf8' });
@@ -302,9 +321,30 @@ leg('F2', 'FREEZE', unitsCreatedAfterMaxDir !== null && unitsCreatedAfterMaxDir 
   'the track kept filing after that instant — into unit-* dirs, which the dir key cannot see',
   `unitDirsAfterPin=${unitsCreatedAfterMaxDir ?? 'REFUSED'}`);
 
-leg('F3', 'FREEZE', standing !== null && maxDir !== null && standing.last === maxDir && standing.consecutive === 0,
-  "saturation, read off the standing cell itself: it publishes last=maxDir and consecutive=0, so its T2 leg (`consecutive < N`) is green for every future round",
-  `standing=${standing === null ? 'REFUSED' : `last=${standing.last} consecutive=${standing.consecutive}`} maxDir=${maxDir ?? 'REFUSED'}`);
+// RE-AIMED 2026-10-29, and the reason is the whole point of writing it down.
+//
+// As filed on 10-28, F3 asserted the DEFECT: `standing.last === maxDir && standing.consecutive === 0`
+// — "the standing cell is saturated, so its T2 leg is green for every future round." That was the
+// finding, and it was true. Then this fire CURED it (the population re-key, design note 10 in
+// `round464-instruments/grade-the-stop-condition.mjs`), and F3 went RED on its own cure: the first
+// drive after the re-key published `RED legs=17 red=[F3]` with every figure it reports correct.
+//
+// A leg whose assertion IS the defect publishes a false RED the moment the defect is fixed, and the
+// RED is indistinguishable from a regression. So F3 now asserts the PROPERTY in the direction where
+// a RED is a problem — the standing cell is NOT saturated — and the 10-28 reading is kept as a
+// pinned literal in the detail rather than deleted, because the figure that moved is the evidence.
+//
+// `standing.consecutive === 0` alone would not do: 0 is also the honest answer when the track has
+// just cured a gated surface. What makes it saturation is `last === maxDir` — a last-round AT the
+// top of the counting population, so nothing can ever be counted above it.
+leg('F3', 'FREEZE',
+  standing !== null && maxDir !== null && !(standing.last >= maxDir && standing.consecutive === 0),
+  'the standing cell is NO LONGER saturated: it does not publish consecutive=0 at a last-round that '
+  + 'sits at the top of its counting population. A RED means the dead dir surface is back and its T2 '
+  + 'leg is green for every future round whatever the track does',
+  `standing=${standing === null ? 'REFUSED' : `last=${standing.last} consecutive=${standing.consecutive}`}`
+  + ` maxDir=${maxDir ?? 'REFUSED'}; saturated=${standing === null || maxDir === null ? 'REFUSED' : standing.last >= maxDir && standing.consecutive === 0}`
+  + '; 10-28 reading (pinned literal, pre-re-key): last=464 consecutive=0 maxDir=464 saturated=true');
 
 leg('F4', 'FREEZE',
   dirsAbove292 !== null && dirsAbove292Prior !== null && rawAbove292 !== null && rawAbove292Prior !== null
@@ -325,6 +365,59 @@ leg('D3', 'DENIAL', attNow !== null && !attNow.nonSubject.has(465),
   'round 465 is attested by no non-subject source, so the denial filter is sufficient, not merely necessary',
   `nonSubject has 465: ${attNow === null ? 'REFUSED' : attNow.nonSubject.has(465)}`);
 
+// ---------------------------------------------------------------------------
+// D4/D5/D6 — THE SELECTOR'S OTHER HALF (Theseus's 10-28 §2, taken 10-29).
+//
+// D1/D2/D3 are all keyed on the member **465**. A population-level claim — *the removed set is
+// exactly [465]* — graded only by legs about its single known member cannot reach either half of
+// what a selector gets wrong. These three grade the false-positive half.
+//
+// D4 is the known positive, in the real call shape (a whole commit subject, not a fragment).
+// D5 is its CONTROL, and it is not decoration: without it, a key that matched nothing at all would
+// pass D4. Under `legacy-denial-key` BOTH go to their as-filed answers together, which is how the
+// control is known to be live.
+// D6 is the recall floor, declared as [MEAS] rather than graded — four denial spellings neither key
+// reaches, with 0 instances measured in the corpus. A floor is not a defect, and labelling it one
+// would manufacture a finding.
+// ---------------------------------------------------------------------------
+const fpMatch = DENIAL_RE.exec(KEY_CASES.fpSubject);
+const ctlMatch = DENIAL_RE.exec(KEY_CASES.denialSubject);
+leg('D4', 'DENIAL', fpMatch === null,
+  'the ACTIVE denial key does NOT read "there is no round467-instruments directory" as a denial of '
+  + 'round 467 — the one member whose existence carries this unit\'s termination finding',
+  `active key ${DENIAL_RE} on the KP subject: ${fpMatch === null ? 'no match' : `DENIES ${fpMatch[1]}`}`);
+
+leg('D5', 'DENIAL', ctlMatch !== null && Number(ctlMatch[1]) === 465,
+  'CONTROL: the ACTIVE denial key still matches a GENUINE denial — so D4 is a false positive '
+  + 'removed, not a key that stopped matching anything',
+  `active key on the control subject: ${ctlMatch === null ? 'NO MATCH (the key is dead)' : `denies ${ctlMatch[1]}`}`);
+
+const altReached = ALT_SPELLINGS.filter((s) => DENIAL_RE.test(s));
+console.log(`  M9 recall floor [MEAS]       : the active key reaches ${altReached.length} of ${ALT_SPELLINGS.length} alternate denial spellings (0 instances in corpus — a floor, not a defect)`);
+
+// X1 — the cost of having one reader in a lib and one inline. This cell's own `attestation()` and
+// `docs/research/lib/attested-rounds.mjs` compute the same population by two separate pieces of
+// code, and the lib is what the standing cell now counts over. A hand-check that they agree is
+// worth nothing a week from now, so the agreement is a leg: if the two ever diverge, this reddens
+// rather than two cells quietly publishing different populations under the same name.
+const libAtt = libAttestedRounds(REPO, REV_NOW ?? 'HEAD', { denialRe: DENIAL_RE });
+let libSelfOk = null;
+try { libSelfOk = libSelfTest() === true; } catch (e) { libSelfOk = false; }
+const mineSorted = attNow === null ? null : [...attNow.filtered].sort((a, b) => a - b);
+leg('X1', 'GATE',
+  libAtt !== null && mineSorted !== null
+    && libAtt.sorted.length === mineSorted.length
+    && libAtt.sorted.every((n, i) => n === mineSorted[i])
+    && libAtt.removed.join(',') === attNow.removed.join(','),
+  "cross-check: the shared reader in docs/research/lib/attested-rounds.mjs and this cell's own "
+  + 'inline reader give the same attested population, member for member, under the same key',
+  `lib n=${libAtt === null ? 'REFUSED' : libAtt.sorted.length} removed=[${libAtt === null ? 'REFUSED' : libAtt.removed.join(',')}]`
+  + ` vs mine n=${mineSorted === null ? 'REFUSED' : mineSorted.length} removed=[${attNow === null ? 'REFUSED' : attNow.removed.join(',')}]`);
+
+leg('X2', 'GATE', libSelfOk === true,
+  "the shared reader's own selfTest() returns true (gated on `!== true`, not on truthiness)",
+  `libSelfTest=${libSelfOk}`);
+
 // PUBLISH — the pre-registered predictions.
 leg('P1', 'PRED', dirsAbove292 === 91, 'PRED-1: dirsAbove292 === 91', `measured ${dirsAbove292 ?? 'REFUSED'}`);
 leg('P2', 'PRED', rawAbove292 === 175, 'PRED-2: rawUnionAbove292 === 175', `measured ${rawAbove292 ?? 'REFUSED'}`);
@@ -339,7 +432,7 @@ leg('P3', 'PRED',
 // it. A name that appears only here is a cripple no code reads, which would make every
 // crippled control come back clean.
 // ---------------------------------------------------------------------------
-const DECLARED = ['no-denial-filter', 'credit-465-a-dir', 'fake-new-round-dir', 'dir-key-only', 'xcheck-wrong-figure', 'standing-last-mismatch'];
+const DECLARED = ['no-denial-filter', 'credit-465-a-dir', 'fake-new-round-dir', 'dir-key-only', 'xcheck-wrong-figure', 'standing-last-mismatch', 'legacy-denial-key'];
 const selfSource = readFileSync(SELF, 'utf8');
 const unread = DECLARED.filter((name) => selfSource.split(name).length - 1 < 2);
 const selfCheckOk = unread.length === 0 && (CRIPPLE === null || DECLARED.includes(CRIPPLE));

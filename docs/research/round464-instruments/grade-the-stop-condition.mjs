@@ -738,11 +738,29 @@ console.log(`  P4 (the bare window's 2 lost scripts/ paths) read "0|" on 10-28: 
 console.log(`         [10-13 00:00, 10-13 <drive clock>) and the 10-28 drive ran EARLIER in the day`);
 console.log(`         than the 10-27 one, so the band shrank 19 -> 7 and no distinct path is lost.`);
 console.log(`         Decided against by the clock, which is the hazard W1/W2 exist to report.`);
+console.log(`  2026-10-29, population RE-KEYED onto the attested surface (design note 10): dir key`);
+console.log(`         last=464 consecutive=2, self-attested key last=454 consecutive=12 — both read at`);
+console.log(`         the re-key commit, both moved by the re-key and by nothing else. P7 REFUTED: it`);
+console.log(`         pinned the self-attested run at 10, which is a DIR-SURFACE number. Left refuted`);
+console.log(`         and recorded here rather than re-pinned to 12 — a prediction bent until it`);
+console.log(`         passes grades nothing.`);
 measured(
   null,
   'T9',
-  '[MEAS] dated history of the dir-key figure and the retirement record for P1/P3/P4 (no assertion)',
-  `10-27 454/10 -> 10-28 ${lastCuringRoundDirKey}/${consecutiveSelfOnly}; cause 87270c6f; P4 bare-window path loss now 0`
+  '[MEAS] dated history of the dir-key figure and the retirement record for P1/P3/P4/P7 (no assertion)',
+  // PINNED LITERALS for the dated cells, and the live figure in its own labelled slot.
+  //
+  // This detail string used to read `10-27 454/10 -> 10-28 ${last}/${consecutive}` — the 10-28 cell
+  // INTERPOLATED the live figure into a dated historical slot. It was true on 10-28 and became
+  // false the moment this fire's re-key moved the number: drive1 printed `-> 10-28 464/2`, a 10-29
+  // figure wearing a 10-28 date, inside the one leg that exists to carry dated history. Caught by
+  // diffing drive1 against the pre-action baseline, not by rereading the line.
+  //
+  // So every dated cell is now a literal, and the live reading is labelled `live` with the rev and
+  // the population key it was taken under. A figure in a dated slot must not be able to move.
+  `10-27 454/10 -> 10-28 464/0 (both dir surface, literals) -> 10-29 re-key; `
+    + `live at ${REV.slice(0, 8)} key=${POPULATION_KEY}: ${lastCuringRoundDirKey}/${consecutiveSelfOnly}; `
+    + `cause 87270c6f then the 10-29 re-key; P4 bare-window path loss now 0; P7 refuted at 10 vs 12`
 );
 
 // ---------------------------------------------------------------------------
@@ -954,6 +972,18 @@ measured(
 // consecutive run against the dir key's. If they agree today, the key choice is
 // latent now and load-bearing later — which is a different report than "the
 // number is wrong", and the honest one.
+//
+// 2026-10-29: IT NO LONGER AGREES. The paragraph above and this leg's own `why`
+// string both read "latent today", which was true while both keys counted over the
+// terminated dir population and both saturated at 0. The population re-key (design
+// note 10) made the figures 2 and 0, so the free variable is LIVE now, not latent,
+// and the RED below is that fact rather than a regression.
+//
+// The RED is NOT repaired by re-aiming this leg, and that is the point: the
+// assertion ("the two keys agree") is the right assertion and it is false. The only
+// thing corrected is the prose that described the state, because a leg whose text
+// claims the opposite of its own detail string is the defect this cell has been
+// caught in twice — a cured figure leaving a live sentence about the old one.
 // ---------------------------------------------------------------------------
 const curedByUnionKey = new Set(curedByDirKey);
 const subjectOnlyDetail = [];
@@ -982,7 +1012,9 @@ measured(
     ? null
     : consecutiveSelfOnly === consecutiveUnion,
   'T8',
-  'the two keys give the SAME consecutive run at this rev — the free variable is latent today and becomes load-bearing the moment a routed gated fix lands (T4)',
+  'the two keys give the SAME consecutive run at this rev — a RED means the free variable T3 found '
+    + 'is LIVE and the current value depends on the key, not merely future ones (and since the '
+    + '10-29 population re-key it is: 2 vs 0)',
   `dir ${consecutiveSelfOnly} vs union ${consecutiveUnion}; last dir=${lastCuringRoundDirKey} union=${lastCuringUnion}`
 );
 

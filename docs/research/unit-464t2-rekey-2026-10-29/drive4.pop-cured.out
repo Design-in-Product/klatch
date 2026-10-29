@@ -1,0 +1,62 @@
+=== GRADE/464-T2-population — is the round population the condition counts still alive? ===
+REV_NOW   69cf9167d91436c0931afd5abdbf9dd762816e83
+REV_PRIOR 8fe017b4 (pinned literal)
+CLOCK     2026-10-29T16:27:41.413Z
+CRIPPLE   none
+
+--- [MEAS] populations
+  M1 dir population            : n=91 max=464 above 292: 91
+  M2 attested raw              : above 292: 175  (prior rev: 174)
+  M3 attested denial-filtered  : above 292: 174 max=467 removed=[465]
+  M4 highest round dir         : round464-instruments created 2026-10-27T10:52 by 725f97ee
+  M5 round dirs after PIN      : 0  (pin 2026-10-27T17:52:54.000Z)
+  M6 unit-* dirs after PIN     : 8 of 8 total
+       after: unit-307c4-blast-radius-2026-10-27 created 2026-10-27T20:01
+       after: unit-307c4-rekey-2026-10-28 created 2026-10-28T09:36
+       after: unit-464t2-reaim-2026-10-28 created 2026-10-28T10:52
+       after: unit-464t2-keychoice-2026-10-28 created 2026-10-28T13:22
+       after: unit-464t2-surface-2026-10-28 created 2026-10-28T14:55
+       after: unit-464t2-population-2026-10-28 created 2026-10-28T17:23
+       after: unit-464t2-denial-2026-10-28 created 2026-10-28T19:50
+       after: unit-464t2-rekey-2026-10-29 created 2026-10-29T09:25
+  M8 standing cell, dir key    : last=464 consecutive=2
+  M7 dir figure PRIOR vs NOW   : 91 -> 91
+
+  M9 recall floor [MEAS]       : the active key reaches 0 of 4 alternate denial spellings (0 instances in corpus — a floor, not a defect)
+--- legs
+  ok   G1  [GATE  ] every reader resolved at both revs and the dir population is non-empty
+         dirsNow=91 dirsPrior=91 attNow=ok rows=99
+  ok   G2  [GATE  ] cross-check: Theseus's own cell, driven as a child, reports the same dir floor I do
+         his=91 mine=91
+  ok   F1  [FREEZE] the dir population is TERMINATED: no round dir was created after the pinned instant
+         roundDirsAfterPin=0 pin=2026-10-27T17:52:54.000Z
+  ok   F2  [FREEZE] the track kept filing after that instant — into unit-* dirs, which the dir key cannot see
+         unitDirsAfterPin=8
+  RED  F3  [FREEZE] saturation, read off the standing cell itself: it publishes last=maxDir and consecutive=0, so its T2 leg (`consecutive < N`) is green for every future round
+         standing=last=464 consecutive=2 maxDir=464
+  ok   F4  [FREEZE] two-point growth test: a round landed between PRIOR and NOW; the dir measure did not move and the attested measure did
+         dir 91->91 (equal expected), attested 174->175 (increase expected)
+  ok   D1  [DENIAL] the raw subject key credits round 465
+         raw has 465: true
+  ok   D2  [DENIAL] the denial-filtered key does NOT credit round 465
+         filtered has 465: false
+  ok   D3  [DENIAL] round 465 is attested by no non-subject source, so the denial filter is sufficient, not merely necessary
+         nonSubject has 465: false
+  ok   D4  [DENIAL] the ACTIVE denial key does NOT read "there is no round467-instruments directory" as a denial of round 467 — the one member whose existence carries this unit's termination finding
+         active key /\bno\s+round\s*(\d+)(?![-\w./])/i on the KP subject: no match
+  ok   D5  [DENIAL] CONTROL: the ACTIVE denial key still matches a GENUINE denial — so D4 is a false positive removed, not a key that stopped matching anything
+         active key on the control subject: denies 465
+  ok   X1  [GATE  ] cross-check: the shared reader in docs/research/lib/attested-rounds.mjs and this cell's own inline reader give the same attested population, member for member, under the same key
+         lib n=464 removed=[465] vs mine n=464 removed=[465]
+  ok   X2  [GATE  ] the shared reader's own selfTest() returns true (gated on `!== true`, not on truthiness)
+         libSelfTest=true
+  ok   P1  [PRED  ] PRED-1: dirsAbove292 === 91
+         measured 91
+  ok   P2  [PRED  ] PRED-2: rawUnionAbove292 === 175
+         measured 175
+  ok   P3  [PRED  ] PRED-3: denial-filtered === 174 and the removed set is exactly [465]
+         measured 174 removed=[465]
+  ok   S1  [GATE  ] every declared cripple name is read somewhere in this file, and CRIPPLE (if set) is a declared name
+         unread=[] CRIPPLE=none
+
+VERDICT/1 RED legs=17 red=[F3]

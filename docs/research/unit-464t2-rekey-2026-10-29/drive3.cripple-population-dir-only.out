@@ -1,0 +1,234 @@
+=== GRADE/464 the proposed stop condition ===
+REV 69cf9167d91436c0931afd5abdbf9dd762816e83
+WINDOW --since="2026-10-13 00:00:00"  (absolute; see design note 4)
+CRIPPLE population-dir-only
+CLOCK 2026-10-29T16:26:07.854Z  — printed because the REPLACED key depended on it
+POPULATION commits=665 gated=19 roundDirsExisting=91
+COUNTING POPULATION key=dir n=91 max=464
+  dir surface      : n=91 max=464
+  attested surface : n=464 max=467 removed=[465]
+  lib selfTest     : true
+
+W1 the window key this cell was repaired for, driven against its cure:
+  absolute "2026-10-13 00:00:00" : commits=665
+  bare     "2026-10-13" : commits=661
+  commits the BARE key drops off its tail: 4
+  commits the BARE key has and absolute does not (must be 0): 0
+  oldest commit each key reaches:
+    absolute 35e276e2
+    bare     4d58eee3
+  distinct scripts/ files the BARE key cannot see (0):
+
+W2 how far the W1 hazard reaches:
+  eroded band size                : 4
+  of those, NOT on 2026-10-13   : 0 (band is confined to the boundary day)
+  last gated-curing round, absolute: 464
+  last gated-curing round, bare    : 464
+
+T1 the two published figures, and whether they are re-drivable:
+  MEAS absolute window, this rev:
+    scripts/ distinct files      : 21
+    docs/research/*.mjs distinct : 196
+  PUBLISHED (his memo, and drive1 of this cell): scripts=8 researchMjs=169
+  scripts/ members (absolute window):
+    scripts/lib/characterisation-markers.mjs
+    scripts/lib/marker-floor.mjs
+    scripts/lib/offer-choice.mjs
+    scripts/lib/opaque-container.mjs
+    scripts/lib/premise-render.mjs
+    scripts/lib/probe-server-ownership.mts
+    scripts/lib/recall-recogniser.mjs
+    scripts/lib/recall-tap.mjs
+    scripts/lib/strip-source.d.mts
+    scripts/lib/strip-source.mjs
+    scripts/lib/tree-fingerprint.mts
+    scripts/lib/tsx-required.mjs
+    scripts/probe-round256-an-emptiness-assertion-grades-the-operator-and-a-sole-blocker-ranking-cannot-see-a-coupled-class.mts
+    scripts/probe-round263-an-emptiness-claim-over-a-shared-window-is-not-strict-it-is-blind.mts
+    scripts/probe-round265-the-census-already-follows-imports-on-the-other-axis.mts
+    scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts
+    scripts/probe-round307-the-return-half-is-gradeable-the-parameter-half-is-any-and-the-arity-check-covers-fourteen-of-eighteen.mts
+    scripts/probe-round371-the-characterisation-item-is-a-registry-not-a-sweep.mts
+    scripts/probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts
+    scripts/sweep-probes.mjs
+    scripts/tsconfig.lib-mjs.json
+  RECONSTRUCTION at rev=d057a46c --since="2026-10-13 10:51:00":
+    scripts/ distinct files      : 8  (published 8)
+    docs/research/*.mjs distinct : 169  (published 169)
+
+W3 [MEAS] the AMBIENT bare reconstruction at rev=d057a46c --since="2026-10-13":
+  scripts/ distinct : 8  (published 8)
+  research .mjs     : 170  (published 169)
+  coincides with the published pair at THIS hour: false
+  drive1's clock was 2026-10-13 10:51:00; this drive's is 2026-10-29T16:26:08.080Z
+
+T2 the unit is a ROUND, and the per-round value:
+  rounds that cured a gated surface (dir key): 381,383,387,389,391,417,454,464
+  most recent such round                     : 464
+  highest existing round                     : 464
+  CONSECUTIVE rounds since, gated-cure-free  : 0
+  N_PROPOSED                                 : 5
+  FIRED under the dir key                    : false
+
+T2c did the 10-29 population re-key move the figure?
+  active figure (key=dir) : 0
+  same figure over the dir surface  : 0
+
+T2b does the CREDIT KEY decide whether the condition has fired?
+  credit edges                 : 9 (refused 0)
+  dir key            : cure set 381,383,387,389,391,417,454,464 last=464 consecutive=0 fired=false
+  self-attested key  : cure set 381,383,391,417,454 last=454 consecutive=10 fired=true
+  credited ONLY by an incidental edge: 387,389,464
+
+T9 [MEAS] dated history of the figure this cell exists to publish:
+  2026-10-27, rev 7a84c8d4 (this cell's source, unchanged since): dir key last=454 consecutive=10 — P1/P3 pre-registered and LANDED
+  2026-10-28, rev 26f3a062 and later                           : dir key last=464 consecutive=0  — P1/P3 decided against
+  cause: 87270c6f (Daedalus, 10-27 17:33) filed a grader under docs/research/round464-instruments/
+         while curing scripts/lib/characterisation-markers.mjs and scripts/lib/offer-choice.mjs.
+         Round 464 is this cell's own round and it cured nothing — see T2b.
+  P4 (the bare window's 2 lost scripts/ paths) read "0|" on 10-28: the eroded band is
+         [10-13 00:00, 10-13 <drive clock>) and the 10-28 drive ran EARLIER in the day
+         than the 10-27 one, so the band shrank 19 -> 7 and no distinct path is lost.
+         Decided against by the clock, which is the hazard W1/W2 exist to report.
+  2026-10-29, population RE-KEYED onto the attested surface (design note 10): dir key
+         last=464 consecutive=2, self-attested key last=454 consecutive=12 — both read at
+         the re-key commit, both moved by the re-key and by nothing else. P7 REFUTED: it
+         pinned the self-attested run at 10, which is a DIR-SURFACE number. Left refuted
+         and recorded here rather than re-pinned to 12 — a prediction bent until it
+         passes grades nothing.
+
+T3 attribution-key confusion matrix over the 19 gated commits:
+  bothAgree      5
+      a4f42fc7 2026-10-25 dir=[454] subj=454 :: round454: re-pin probe-round303 at 20 checks, and the clean re-drive c
+      28833525 2026-10-25 dir=[454] subj=454 :: round454: stripSource refuses a non-string, and the sweep caught my ow
+      1588b85f 2026-10-14 dir=[387,389,391] subj=391 :: round391: the declaration takes the `?` AND the seven callers take the
+      8b08f3e9 2026-10-13 dir=[383] subj=383 :: round383: his 382 class reading reproduces as a SET, and my control fo
+      4d58eee3 2026-10-13 dir=[381] subj=381 :: round381: his 380 §4 taken, and the conjunct he showed unreachable by 
+  dirOnly        2
+      87270c6f 2026-10-27 dir=[464] subj=- :: gate(scripts/lib/*.mjs) 3/3: 127 → 0, wired into typecheck:scripts, an
+      e2759907 2026-10-19 dir=[417] subj=- :: models+intel: add the three 5.5 models, floored pending capability ver
+  subjectOnly    7
+      6190a0dd 2026-10-28 dir=[-] subj=467 :: round467: re-key probe-round307 C4 per-signature and style-blind, grad
+      6ac4e914 2026-10-27 dir=[-] subj=249 :: feat(round249): record the linux bind matrix from the first green CI r
+      a4fbeedd 2026-10-27 dir=[-] subj=249 :: fix(round249): the bind matrix is a per-platform measurement, not a fa
+      070a4c00 2026-10-19 dir=[-] subj=371 :: round371: re-aim D1 onto the recording's own rev — it had fired twice 
+      17f25906 2026-10-15 dir=[-] subj=396 :: round396: re-key probe-round371 D1 on per-file occurrence index, not a
+      02e395f4 2026-10-15 dir=[-] subj=393 :: round393: the Round 307 parenthetical now carries both pins, not a bar
+      53ac7ad9 2026-10-13 dir=[-] subj=382 :: round382: cure my own Round 378 prose in probe-round263 — 'fifth and o
+  neither        5
+      41ae8657 2026-10-28 dir=[-] subj=- :: tree-fingerprint: re-key on content, not git bookkeeping, closing the 
+      78ab0625 2026-10-27 dir=[-] subj=- :: gate(scripts/lib/*.mjs) 2/3: marker-floor + recall-recogniser cleared 
+      d5205b76 2026-10-27 dir=[-] subj=- :: gate(scripts/lib/*.mjs) 1/2: config landed, 5 of 9 files cleared — 127
+      2625227c 2026-10-27 dir=[-] subj=- :: fix(recall-tap): two hand-written contracts in the same file contradic
+      9c22ee17 2026-10-26 dir=[-] subj=- :: types: promote all three 5.5 ids to FIVE_LEVEL, drop unbacked Haiku 4.
+
+T4 known negative — the routed CI fix his memo cites AGAINST the track:
+  6ac4e914 Daedalus (Klatch) dir=[-] subjectRound=249 gated=packages/server/src/__tests__/round249-the-ownership-guard-drives-its-own-matrix.test.ts scripts/lib/probe-server-ownership.mts
+  a4fbeedd Daedalus (Klatch) dir=[-] subjectRound=249 gated=packages/server/src/__tests__/round249-the-ownership-guard-drives-its-own-matrix.test.ts scripts/lib/probe-server-ownership.mts
+
+T5 known positive — gated commits where BOTH keys name the SAME round:
+  a4f42fc7 dir=[454] subj=454 :: round454: re-pin probe-round303 at 20 checks, and the clean re-drive c
+  28833525 dir=[454] subj=454 :: round454: stripSource refuses a non-string, and the sweep caught my ow
+  1588b85f dir=[387,389,391] subj=391 :: round391: the declaration takes the `?` AND the seven callers take the
+  8b08f3e9 dir=[383] subj=383 :: round383: his 382 class reading reproduces as a SET, and my control fo
+  4d58eee3 dir=[381] subj=381 :: round381: his 380 §4 taken, and the conjunct he showed unreachable by 
+
+T6 memo located by basename in the rev's tree:
+  candidates=1 chosen=docs/mail/read/daedalus-to-calliope-argus-theseus-cc-iris-janus-xian-both-asks-answered-the-probe-is-blocked-on-xian-and-the-flat-census-cannot-see-the-track-2026-10-27.md
+  the proposal as committed, sliced from docs/mail/read/daedalus-to-calliope-argus-theseus-cc-iris-janus-xian-both-asks-answered-the-probe-is-blocked-on-xian-and-the-flat-census-cannot-see-the-track-2026-10-27.md:
+    > **The track continues while its rounds keep curing defects in surfaces that have a standing gate
+    > (`packages/`, `scripts/`). It stops, and re-scopes, when N consecutive rounds cure defects only in
+    > round-track instruments themselves** — i.e. when the track has become its own subject.
+
+T7 is "scripts/" actually a gated surface? include=["**/*.mts","**/*.ts"]
+  IN a standing type program (15):
+    packages/server/src/__tests__/round11-klatch-creation.test.ts  [packages workspace tsconfig + npm test]
+    packages/server/src/__tests__/round249-the-ownership-guard-drives-its-own-matrix.test.ts  [packages workspace tsconfig + npm test]
+    packages/server/src/__tests__/round263-the-tree-fingerprint.test.ts  [packages workspace tsconfig + npm test]
+    packages/server/src/__tests__/round39-model-fallback-parity.test.ts  [packages workspace tsconfig + npm test]
+    packages/shared/src/types.ts  [packages workspace tsconfig + npm test]
+    scripts/lib/probe-server-ownership.mts  [scripts/tsconfig include .mts|.ts]
+    scripts/lib/strip-source.d.mts  [scripts/tsconfig include .mts|.ts]
+    scripts/lib/tree-fingerprint.mts  [scripts/tsconfig include .mts|.ts]
+    scripts/probe-round256-an-emptiness-assertion-grades-the-operator-and-a-sole-blocker-ranking-cannot-see-a-coupled-class.mts  [scripts/tsconfig include .mts|.ts]
+    scripts/probe-round263-an-emptiness-claim-over-a-shared-window-is-not-strict-it-is-blind.mts  [scripts/tsconfig include .mts|.ts]
+    scripts/probe-round265-the-census-already-follows-imports-on-the-other-axis.mts  [scripts/tsconfig include .mts|.ts]
+    scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts  [scripts/tsconfig include .mts|.ts]
+    scripts/probe-round307-the-return-half-is-gradeable-the-parameter-half-is-any-and-the-arity-check-covers-fourteen-of-eighteen.mts  [scripts/tsconfig include .mts|.ts]
+    scripts/probe-round371-the-characterisation-item-is-a-registry-not-a-sweep.mts  [scripts/tsconfig include .mts|.ts]
+    scripts/probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts  [scripts/tsconfig include .mts|.ts]
+  NOT in any standing type program (11):
+    scripts/lib/characterisation-markers.mjs
+    scripts/lib/marker-floor.mjs
+    scripts/lib/offer-choice.mjs
+    scripts/lib/opaque-container.mjs
+    scripts/lib/premise-render.mjs
+    scripts/lib/recall-recogniser.mjs
+    scripts/lib/recall-tap.mjs
+    scripts/lib/strip-source.mjs
+    scripts/lib/tsx-required.mjs
+    scripts/sweep-probes.mjs
+    scripts/tsconfig.lib-mjs.json
+
+T8 does the key ambiguity move the CURRENT value?
+  dir key   : last=464 consecutive=0
+  union key : last=467 consecutive=0
+  union cure set: 249,371,381,382,383,387,389,391,393,396,417,454,464,467
+  subject-only members and whether their round dir exists:
+    6190a0dd names round 467 (dir ABSENT)
+    6ac4e914 names round 249 (dir ABSENT)
+    a4fbeedd names round 249 (dir ABSENT)
+    070a4c00 names round 371 (dir ABSENT)
+    17f25906 names round 396 (dir EXISTS)
+    02e395f4 names round 393 (dir EXISTS)
+    53ac7ad9 names round 382 (dir EXISTS)
+
+--- LEGS ---
+ ok  G1: GATE: the commit population, the round-directory list and the COUNTING population all loaded non-empty, and the shared reader's self-test returned true
+      detail: commits=665 roundDirs=91 counting=91 key=dir libSelfTest=true popError=none
+ ok  W1: the bare date `--since=2026-10-13` drops commits the absolute cutoff keeps, and drops none the absolute cutoff lacks — git approxidate fills the time-of-day from the drive clock, so the REPLACED key made this cell irreproducible from its own stamped rev
+      detail: absolute=665 bare=661 tailLoss=4 bareOnly=0 scriptsMembersLost=0 []
+ ok  W2: the erosion is confined to the window's boundary day and both keys agree on the most recent gated-curing round — so the window defect broke the cell's REPRODUCIBILITY without moving the condition's value; reported because it blunts W1
+      detail: band=4 offBoundaryDay=0 lastGatedCuringRound absolute=464 bare=464
+ ok  T1: the two published figures are reproducible ONLY once the drive clock is supplied alongside the rev — which is the positive demonstration that the bare window had a hidden second key, and the reason neither figure may be pinned
+      detail: absolute now 21/196; reconstruction at (d057a46c, --since=2026-10-13 10:51:00) 8/169 vs published 8/169
+MEAS W3: [MEAS] the ambient bare reconstruction and whether it happens to coincide with the published pair at this hour (no assertion; it is a function of the drive clock)
+      detail: ambient 8/170 vs published 8/169; coincides=false
+ ok  W4: the t1-no-clock cripple reconstructs at an explicitly pinned clock that differs from drive1's, so its separating power is not a function of the hour the fire runs at
+      detail: CLOCK_OTHER="2026-10-13 14:49:00" DRIVE1.clock="2026-10-13 10:51:00" hasExplicitTime=true
+ ok  T2: the stop condition has NOT fired under the dir key — a RED here means the consecutive self-only run has reached N=5 and the track should stop and re-scope
+      detail: last gated-curing round 464, highest 464, consecutive 0, N=5, fired=false
+RED  T2c: the figure this cell counts is NOT the dead dir-surface figure — a RED means the re-key is a no-op and `consecutive` is back on a population that stopped growing on 2026-10-27
+      detail: active=0 (key=dir) vs dir surface=0; last gated-curing round=464; dir max=464; attested max=467
+RED  T2b: the dir key and the self-attested key AGREE on whether the condition has fired — a RED means the standing line cannot be quoted without naming the key it came from
+      detail: dir fired=false (consecutive 0) vs self-attested fired=true (consecutive 10); incidental=[387,389,464]
+MEAS T9: [MEAS] dated history of the dir-key figure and the retirement record for P1/P3/P4/P7 (no assertion)
+      detail: 10-27 454/10 -> 10-28 464/0 (both dir surface, literals) -> 10-29 re-key; live at 69cf9167 key=dir: 464/0; cause 87270c6f then the 10-29 re-key; P4 bare-window path loss now 0; P7 refuted at 10 vs 12
+ ok  T3: both asymmetric cells are non-empty — the two attribution keys are INCOMPARABLE, so the condition has an unstated free variable
+      detail: sum 19/19; dirOnly=2 subjectOnly=7 bothAgree=5 neither=5
+ ok  T4: the routed non-round CI fix is attributed to a ROUND by the subject key while touching no round dir — so a subject-keyed condition is reset by exactly the work that evidences the track NOT finding things
+      detail: 2 commit(s) matched; all subject-only=true
+ ok  T5: at least one gated commit has both keys naming the same round — the key shape CAN agree, so T3 separates something
+      detail: 5 agreeing commit(s)
+ ok  T6: the committed proposal states its threshold as the free variable N with no numeral — so the condition cannot fire, and cannot be reported per fire as he asks
+      detail: at docs/mail/read/daedalus-to-calliope-argus-theseus-cc-iris-janus-xian-both-asks-answered-the-probe-is-blocked-on-xian-and-the-flat-census-cannot-see-the-track-2026-10-27.md: sliced 3 quote line(s); 'N consecutive rounds'=true; numeric bound present=false
+ ok  T7: the proposal's own "standing gate" surface contains files no standing type program reads — the scope label is not a censused surface
+      detail: include=["**/*.mts","**/*.ts"]; in=15 out=11; out members=[scripts/lib/characterisation-markers.mjs, scripts/lib/marker-floor.mjs, scripts/lib/offer-choice.mjs, scripts/lib/opaque-container.mjs, scripts/lib/premise-render.mjs, scripts/lib/recall-recogniser.mjs, scripts/lib/recall-tap.mjs, scripts/lib/strip-source.mjs, scripts/lib/tsx-required.mjs, scripts/sweep-probes.mjs, scripts/tsconfig.lib-mjs.json]
+ ok  T8: the two keys give the SAME consecutive run at this rev — a RED means the free variable T3 found is LIVE and the current value depends on the key, not merely future ones (and since the 10-29 population re-key it is: 2 vs 0)
+      detail: dir 0 vs union 0; last dir=464 union=467
+ ok  M0: every leg declared as [MEAS] exists, carries no value and says so in its own text — so the verdict's refusal set cannot be opted out of silently
+      detail: declared=[T9,W3] drifted=[]
+
+--- PREDICTIONS ---
+LAND P6: the self-attested key re-implemented in this cell agrees with the one graded in unit-464t2-reaim-2026-10-28 at this rev: most recent gated-curing round 454
+      expected=454 actual=454
+LAND P7: the self-attested key gives a consecutive run of 10, so the two keys reach OPPOSITE verdicts about whether the condition has fired at N=5 — this is T2b's RED, pinned as a number
+      expected=10 actual=10
+LAND P8: exactly three rounds are credited only by an incidental edge — 387 and 389 (round 391's own commit, same author, amending their cells) and 464 (87270c6f, cross-author)
+      expected="3|387,389,464" actual="3|387,389,464"
+LAND P5: T6 now reads the memo from docs/mail/read/ — the path the close-discipline moved it to — rather than refusing
+      expected="docs/mail/read/daedalus-to-calliope-argus-theseus-cc-iris-janus-xian-both-asks-answered-the-probe-is-blocked-on-xian-and-the-flat-census-cannot-see-the-track-2026-10-27.md" actual="docs/mail/read/daedalus-to-calliope-argus-theseus-cc-iris-janus-xian-both-asks-answered-the-probe-is-blocked-on-xian-and-the-flat-census-cannot-see-the-track-2026-10-27.md"
+REFU P2: every gated commit in the window is authored by Daedalus or Theseus (no third seat touches the gated surface the condition keys on)
+      expected=true actual=false
+
+VERDICT/1 RED legs=17 red=[T2c,T2b] refused=[] preds=5 refuted=[P2] prefused=[]
