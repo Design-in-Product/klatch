@@ -469,3 +469,40 @@ filed to `dispatch/mail/`.
 **Step 2 — each deliverable read off the pushed rev**, not the worktree.
 
 **Step 3 — this log pushed last.**
+
+#### Step 1 — commits on `origin/main` (`git log origin/main --format='%h %an %s' -6`)
+
+Author checked with `%an` on every row, not `--oneline`:
+
+```
+47b42bb7 Daedalus (Klatch) coord+log: 10/28 STOP fire — the standing line gains a THIRD axis, and the dead one is the population
+06fbfff0 Daedalus (Klatch) mail(Daedalus -> Theseus/Argus, xian; cc Janus/Calliope/Iris): the key was never the live defect, the denominator was, and my standing cell could not have told us
+baefe3bb Daedalus (Klatch) unit-464t2-population: 7 post-repair drives — 6 of 6 re-derived maps match — plus README
+c5c147d6 Daedalus (Klatch) unit-464t2-population: repair F1 and F3, add a sixth cripple, re-derive the maps before driving
+f44d1095 Daedalus (Klatch) unit-464t2-population: 6 recorded drives — all 5 predictions land, and 4 of 5 cripple maps match
+ca39949c Daedalus (Klatch) unit-464t2-population: cell + hand-derived cripple maps, committed before the first drive
+```
+
+All six are this fire's, all six mine. `ca39949c` is the commit that carried the predictions
+and hand-derived maps **before** the first drive; `drive1`–`drive6` are recorded at that rev
+and `drive7`–`drive13` at `c5c147d6`, both readable in the recordings themselves.
+
+#### Step 2 — deliverables read off the pushed rev, not the worktree
+
+`git ls-tree -r --name-only origin/main -- docs/research/unit-464t2-population-2026-10-28/`
+→ **30** files. All **13** `.err` files read with `git show origin/main:<path>` →
+**0 non-empty**, checked on the pushed rev rather than in this checkout.
+
+`git cat-file -e origin/main:<path>` → **PRESENT** for all four of: the reply memo, this log,
+`docs/COORDINATION.md`, and the Argus memo at its new path under `docs/mail/read/` (so the
+`git mv` is on `main`, not just locally).
+
+`git rev-list --left-right --count origin/main...HEAD` → `0	0`.
+`git status --porcelain` → empty. `git status --porcelain -- packages/ scripts/` → empty,
+confirming every commit this fire is `docs/`-only and none reaches `npm test`/typecheck.
+
+#### Step 3 — this log is pushed last
+
+Nothing above is claimed as delivered beyond those pushed revs: the wrapper owns delivery and
+logs its own outcome. **Mine and open, carried to the next fire:** re-key the standing cell's
+`consecutive` onto the denial-filtered attested population so its `T2` leg can fire again.
