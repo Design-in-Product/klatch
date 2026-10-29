@@ -88,6 +88,62 @@ Two notes on the maps, because both are places this seat has been wrong before:
    key-choice cripple has nothing to disagree about once nothing is credited. If `D1`
    instead stays green there, the leg is vacuous and that is the finding, not the cripple.
 
+---
+
+## ADDENDUM 2026-10-28, after drive1–drive6 (pre-repair), before drive7+
+
+The original maps above are left exactly as written. This addendum records what the drives
+said, the two defects they found in this cell, and the **re-derived** maps for the repaired
+cell. Re-deriving is not optional: a hand map derived against the pre-repair subject goes
+stale the moment the subject is fixed, and this seat has shipped a prediction written
+against code it had already changed.
+
+### Scoreboard against the original maps
+
+All five of `PRED-1`…`PRED-5` landed exactly (`drive1.clean`, `VERDICT/0`, 13 legs,
+`.err` 0 bytes). Four of five cripple maps matched: `no-denial-filter` `[D2,P3]`,
+`credit-465-a-dir` `[G2,D2,D3,P1,P3]`, `dir-key-only` `[F4,D1,P2,P3]`,
+`xcheck-wrong-figure` `[G2]`.
+
+`fake-new-round-dir` did **not** match: predicted `[F1,F3,P1]`, actual `[F2]`. The two legs
+it was aimed at stayed green and an unrelated one reddened. That mismatch is the finding.
+
+### Two defects in this cell, both invisible to the clean green
+
+1. **`F1` could not fire.** It asked "was any round dir created after the *highest* round
+   dir". A new round dir *becomes* the highest, so it moves the reference point instead of
+   reddening the leg: `M4` shifted to the synthetic `round465-instruments` and `M5` stayed
+   `0`. The leg would have gone on publishing "TERMINATED" on the day the termination
+   ended — the same guard-cannot-fire shape this unit was built to expose, reproduced in the
+   instrument exposing it.
+   **Repair:** the termination instant is a pinned literal (`725f97ee`'s commit date,
+   `2026-10-27T17:52:54.000Z`); `F1`/`F2` count rows after that fixed instant.
+2. **`F3` was a tautology.** `dirsNow` is sorted ascending and `maxDir` is its last element,
+   so `count(dirs > maxDir) === 0` holds for every possible input. `F3` asserted nothing,
+   and the claim written in its own `why` string — that the standing cell publishes
+   `last=maxDir`, hence `consecutive=0` — was never tested.
+   **Repair:** `F3` now drives `round464-instruments/grade-the-stop-condition.mjs` as a
+   child and asserts against the figure it actually prints.
+
+`F2`'s red under that cripple was incidental — the synthetic row's date postdated every
+`unit-*` dir, so "units after the max row" went to 0. Keyed on the pin, that goes away.
+
+### Re-derived maps (repaired cell, 13 legs, 6 cripples)
+
+| cripple | expected red | changed from the original map? |
+|---|---|---|
+| `no-denial-filter` | `D2`, `P3` | no |
+| `credit-465-a-dir` | `G2`, `F3`, `D2`, `D3`, `P1`, `P3` | **yes** — gains `F3`: `maxDir` becomes 465 while the standing cell still publishes `last=464`, so the two disagree |
+| `fake-new-round-dir` | `F1` **only** | **yes** — `F1` now fires (that is the repair); `F2` no longer reddens incidentally; `F3`/`P1` were never reachable from this cripple and I was wrong to predict them |
+| `dir-key-only` | `F4`, `D1`, `P2`, `P3` | no |
+| `xcheck-wrong-figure` | `G2` | no |
+| `standing-last-mismatch` *(new)* | `F3` | new cripple, added because nothing in the original five could reach `F3` |
+
+Both previously-unreachable legs now have a cripple that reddens them: `F1` via
+`fake-new-round-dir`, `F3` via `standing-last-mismatch` and independently via
+`credit-465-a-dir`. A leg no cripple can redden is not evidence, and before this repair two
+of the four freeze legs were in that state while printing `ok`.
+
 ## What this unit does NOT settle
 
 Whether the track stops and re-scopes is xian's, unchanged. Whether `292` is the right

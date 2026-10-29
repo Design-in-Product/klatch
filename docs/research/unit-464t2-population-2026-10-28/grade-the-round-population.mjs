@@ -53,6 +53,15 @@ const CRIPPLE = process.env.CRIPPLE ?? null;
 const REV_PRIOR = '8fe017b4';
 const LAST_PRODUCT_ROUND = 292;
 const HIS_CELL = 'docs/research/unit-464t2-surface-2026-10-28/recon-run-length-and-cure.mjs';
+const STANDING_CELL = 'docs/research/round464-instruments/grade-the-stop-condition.mjs';
+
+// REPAIR 2026-10-28, found by the `fake-new-round-dir` cripple (drive4, pre-repair).
+// F1 used to ask "was any round dir created after the HIGHEST round dir". That cannot fire:
+// a new round dir becomes the reference point instead of reddening the leg — the synthetic
+// became M4 and M5 stayed 0. The termination instant is now a PINNED LITERAL: the creation
+// of `round464-instruments` (725f97ee, Theseus, 2026-10-27T10:52:54-07:00). Keyed on a fixed
+// instant, a round dir created after it reddens F1, which is the whole point of the leg.
+const TERMINATION_INSTANT = '2026-10-27T17:52:54.000Z';
 
 const SUBJECT_ROUND_RE = /\bround\s*(\d+)\b/i;
 // A subject that DENIES a round is not an attestation of it. `no Round 465` appeared in two
@@ -176,14 +185,39 @@ function creationRows() {
 // ---------------------------------------------------------------------------
 // Drive Theseus's cell for the cross-check (design note 2).
 // ---------------------------------------------------------------------------
+// Children are spawned with CRIPPLE stripped from the environment. Neither child reads it
+// today (the standing cell takes its cripple from `process.argv[2]`), but a drive that
+// leaks this cell's cripple into a cell being measured would make the measurement a
+// function of the cripple twice over.
+function childEnv() {
+  const env = { ...process.env };
+  delete env.CRIPPLE;
+  return env;
+}
+
 function hisFloorFigure() {
-  const r = spawnSync('node', [join(REPO, HIS_CELL)], { stdio: 'pipe', encoding: 'utf8', cwd: REPO });
+  const r = spawnSync('node', [join(REPO, HIS_CELL)], { stdio: 'pipe', encoding: 'utf8', cwd: REPO, env: childEnv() });
   if (typeof r.stdout !== 'string' || r.stdout === '') return null;
   const wanted = CRIPPLE === 'xcheck-wrong-figure'
     ? /attested-union figure \(this recon\)\s*:\s*(\d+)/
     : /dir-only figure published as the floor\s*:\s*(\d+)/;
   const m = wanted.exec(r.stdout);
   return m ? Number(m[1]) : null;
+}
+
+// REPAIR 2026-10-28. F3 used to assert `count(dirs > maxDir) === 0`, which is a TAUTOLOGY:
+// `dirsNow` is sorted ascending and `maxDir` is its last element, so that count is 0 for
+// every possible input. The leg asserted nothing, and the claim in its own `why` string —
+// that the standing cell publishes `last=maxDir`, hence `consecutive=0` — was never tested.
+// It is tested now, by driving the standing cell and reading the figure it actually prints.
+function standingDirKeyFigures() {
+  const r = spawnSync('node', [join(REPO, STANDING_CELL)], { stdio: 'pipe', encoding: 'utf8', cwd: REPO, env: childEnv() });
+  if (typeof r.stdout !== 'string' || r.stdout === '') return null;
+  const m = /dir key\s*:.*?last=(\d+)\s+consecutive=(\d+)/.exec(r.stdout);
+  if (!m) return null;
+  const figures = { last: Number(m[1]), consecutive: Number(m[2]) };
+  if (CRIPPLE === 'standing-last-mismatch') figures.last -= 1;
+  return figures;
 }
 
 // ---------------------------------------------------------------------------
@@ -216,25 +250,28 @@ const unitDirRows = rows === null ? null : rows.filter((r) => r.kind === 'unit-d
 const maxDirRow = roundDirRows === null || roundDirRows.length === 0
   ? null
   : roundDirRows.reduce((a, b) => (b.round > a.round ? b : a));
-const dirsCreatedAfterMaxDir = maxDirRow === null || roundDirRows === null
+// Keyed on the PINNED instant, not on the max row (see REPAIR note at TERMINATION_INSTANT).
+const dirsCreatedAfterMaxDir = roundDirRows === null
   ? null
-  : roundDirRows.filter((r) => r.date > maxDirRow.date).length;
-const unitsCreatedAfterMaxDir = maxDirRow === null || unitDirRows === null
+  : roundDirRows.filter((r) => Date.parse(r.date) > Date.parse(TERMINATION_INSTANT)).length;
+const unitsCreatedAfterMaxDir = unitDirRows === null
   ? null
-  : unitDirRows.filter((r) => r.date > maxDirRow.date).length;
+  : unitDirRows.filter((r) => Date.parse(r.date) > Date.parse(TERMINATION_INSTANT)).length;
+const standing = standingDirKeyFigures();
 
 console.log('--- [MEAS] populations');
 console.log(`  M1 dir population            : n=${dirsNow === null ? 'REFUSED' : dirsNow.length} max=${maxDir ?? 'REFUSED'} above ${LAST_PRODUCT_ROUND}: ${dirsAbove292 ?? 'REFUSED'}`);
 console.log(`  M2 attested raw              : above ${LAST_PRODUCT_ROUND}: ${rawAbove292 ?? 'REFUSED'}  (prior rev: ${rawAbove292Prior ?? 'REFUSED'})`);
 console.log(`  M3 attested denial-filtered  : above ${LAST_PRODUCT_ROUND}: ${filteredAbove292 ?? 'REFUSED'} max=${maxAttested ?? 'REFUSED'} removed=[${attNow === null ? 'REFUSED' : attNow.removed.join(',')}]`);
 console.log(`  M4 highest round dir         : ${maxDirRow === null ? 'REFUSED' : `${maxDirRow.name} created ${maxDirRow.date.slice(0, 16)} by ${maxDirRow.hash.slice(0, 8)}`}`);
-console.log(`  M5 dirs created after M4     : ${dirsCreatedAfterMaxDir ?? 'REFUSED'}`);
-console.log(`  M6 unit-* dirs after M4      : ${unitsCreatedAfterMaxDir ?? 'REFUSED'}${unitDirRows === null ? '' : ` of ${unitDirRows.length} total`}`);
-if (unitDirRows !== null && maxDirRow !== null) {
-  for (const u of unitDirRows.filter((r) => r.date > maxDirRow.date)) {
+console.log(`  M5 round dirs after PIN      : ${dirsCreatedAfterMaxDir ?? 'REFUSED'}  (pin ${TERMINATION_INSTANT})`);
+console.log(`  M6 unit-* dirs after PIN     : ${unitsCreatedAfterMaxDir ?? 'REFUSED'}${unitDirRows === null ? '' : ` of ${unitDirRows.length} total`}`);
+if (unitDirRows !== null) {
+  for (const u of unitDirRows.filter((r) => Date.parse(r.date) > Date.parse(TERMINATION_INSTANT))) {
     console.log(`       after: ${u.name} created ${u.date.slice(0, 16)}`);
   }
 }
+console.log(`  M8 standing cell, dir key    : ${standing === null ? 'REFUSED' : `last=${standing.last} consecutive=${standing.consecutive}`}`);
 console.log(`  M7 dir figure PRIOR vs NOW   : ${dirsAbove292Prior ?? 'REFUSED'} -> ${dirsAbove292 ?? 'REFUSED'}`);
 console.log('');
 
@@ -258,16 +295,16 @@ leg('G2', 'GATE', hisFloor !== null && hisFloor === dirsAbove292,
 
 // FREEZE — the finding.
 leg('F1', 'FREEZE', dirsCreatedAfterMaxDir === 0,
-  'the dir population is TERMINATED: no round dir was created after the highest one',
-  `dirsCreatedAfterMaxDir=${dirsCreatedAfterMaxDir ?? 'REFUSED'}`);
+  'the dir population is TERMINATED: no round dir was created after the pinned instant',
+  `roundDirsAfterPin=${dirsCreatedAfterMaxDir ?? 'REFUSED'} pin=${TERMINATION_INSTANT}`);
 
 leg('F2', 'FREEZE', unitsCreatedAfterMaxDir !== null && unitsCreatedAfterMaxDir >= 1,
-  'the track kept filing after that commit — into unit-* dirs, which the dir key cannot see',
-  `unitsCreatedAfterMaxDir=${unitsCreatedAfterMaxDir ?? 'REFUSED'}`);
+  'the track kept filing after that instant — into unit-* dirs, which the dir key cannot see',
+  `unitDirsAfterPin=${unitsCreatedAfterMaxDir ?? 'REFUSED'}`);
 
-leg('F3', 'FREEZE', maxDir !== null && dirsNow !== null && dirsNow.filter((d) => d > maxDir).length === 0,
-  "saturation: count(dirs > maxDir) is 0, and maxDir is the value the standing cell publishes as `last`, so its consecutive is pinned at 0",
-  `maxDir=${maxDir ?? 'REFUSED'} dirsAboveMaxDir=${dirsNow === null ? 'REFUSED' : dirsNow.filter((d) => d > maxDir).length}`);
+leg('F3', 'FREEZE', standing !== null && maxDir !== null && standing.last === maxDir && standing.consecutive === 0,
+  "saturation, read off the standing cell itself: it publishes last=maxDir and consecutive=0, so its T2 leg (`consecutive < N`) is green for every future round",
+  `standing=${standing === null ? 'REFUSED' : `last=${standing.last} consecutive=${standing.consecutive}`} maxDir=${maxDir ?? 'REFUSED'}`);
 
 leg('F4', 'FREEZE',
   dirsAbove292 !== null && dirsAbove292Prior !== null && rawAbove292 !== null && rawAbove292Prior !== null
@@ -302,7 +339,7 @@ leg('P3', 'PRED',
 // it. A name that appears only here is a cripple no code reads, which would make every
 // crippled control come back clean.
 // ---------------------------------------------------------------------------
-const DECLARED = ['no-denial-filter', 'credit-465-a-dir', 'fake-new-round-dir', 'dir-key-only', 'xcheck-wrong-figure'];
+const DECLARED = ['no-denial-filter', 'credit-465-a-dir', 'fake-new-round-dir', 'dir-key-only', 'xcheck-wrong-figure', 'standing-last-mismatch'];
 const selfSource = readFileSync(SELF, 'utf8');
 const unread = DECLARED.filter((name) => selfSource.split(name).length - 1 < 2);
 const selfCheckOk = unread.length === 0 && (CRIPPLE === null || DECLARED.includes(CRIPPLE));
