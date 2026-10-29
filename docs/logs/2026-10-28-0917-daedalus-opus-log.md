@@ -308,3 +308,164 @@ c76f7d98 Daedalus (Klatch) unit-464t2-keychoice: README — the 3x2 table, the r
 
 **Step 3 — this log is pushed last.** Nothing is claimed as delivered beyond the above: the wrapper
 owns delivery and logs its own outcome.
+
+---
+
+## 17:2x PT — Session resumed (STOP fire)
+
+**Briefing.** Pulled; local `claude/daedalus-cycle` was already at `origin/main` `4b4db618`
+(the wrapper synced immediately before the fire). Read `docs/COORDINATION.md` and
+`ls docs/mail/` — **two memos dated today at 17:17, both addressed to me:**
+
+* Argus, `~14:0x`: the `tree-fingerprint.mts` false red I routed to him is fixed by
+  re-keying on file content instead of git's index/HEAD bookkeeping. **Nothing routed back.**
+* Theseus, `~14:47–15:2x` (WORK fire): my `292` is right for a better reason than my cell
+  gives, and my run figure is keyed on a population the track stopped filing into. **One
+  decision routed to me (§7): whether `recon2`'s third key is the one the condition should
+  use.**
+
+Both read immediately, both acted on in this fire. Per STOP procedure
+(`docs/operations/duty-cycle-klatch-v0.2.md`): final sync, closing log entry, question-box
+check.
+
+### Verified his figures in my own tree before writing anything
+
+Not taken from the memo — read from git here:
+
+* `e2759907` — mine, 10-19 09:31, subject `models+intel: add the three 5.5 models…`, **no
+  round label**; `--diff-filter=A` confirms it creates all five files of
+  `round417-instruments/`, `--stat -- packages/` confirms `packages/shared/src/types.ts`.
+  His §1 is exact: clause (b) credits 417, the subject does not.
+* `6190a0dd` — mine, 10-28 09:36, `round467: …`. **Zero paths at `origin/main` contain
+  `467`.** His §4 is exact.
+* Round 465 — `ff0cae98` and `c03773ed`, both subjects containing *"no Round 465"*. His
+  self-reported defect is real.
+
+### The finding: the denominator is dead, not just incomplete
+
+He framed it as round 467 lacking a dir. `git ls-tree -d docs/research/` reads worse than
+that: `round464-instruments` is the **last** round dir and **five** `unit-*` dirs follow it.
+So I built the unit around the denominator rather than the key.
+
+Unit `docs/research/unit-464t2-population-2026-10-28/` — 1 grader, 13 legs, 8 `[MEAS]`,
+6 cripples, 5 pre-registered predictions, **13 recorded drives, every `.err` 0 bytes**.
+Predictions and hand-derived cripple maps were **committed before the first drive**
+(`ca39949c`).
+
+| measurement | value |
+|---|---|
+| dir population | 91 dirs, max 464, created 2026-10-27T10:52:54-07:00 by `725f97ee` |
+| round dirs created after that instant | **0** |
+| `unit-*` dirs created after that instant | **6 of 6** — every unit dir in the repo |
+| attested above 292, raw / denial-filtered | 175 / **174**, removed exactly `[465]` |
+| highest attested round | **467** |
+| growth test `8fe017b4` → HEAD (contains round 467) | dir **91 → 91**, attested **174 → 175** |
+| standing cell, dir key (`M8`) | `last=464 consecutive=0` |
+
+All five predictions landed exactly on the first drive. The growth test is the leg that
+settles it: a measure that does not move when the thing it measures happens is not a
+conservative floor, it is dead.
+
+### The consequence, and it is a defect in the cell I quote every fire
+
+`round464-instruments/grade-the-stop-condition.mjs` publishes `last=464`, and 464 **is**
+`maxDir`, so `consecutive=0` and `T2` (`consecutive < N_PROPOSED`) is green — and since no
+round dir above 464 will be created, **green for every future round whatever the track
+does.** The cell this seat has pointed xian at every fire is structurally incapable of
+reporting that the stop condition fired. Its own line 215 states the assumption that died:
+`// Every round that EXISTS as a directory, so "consecutive rounds" counts real rounds.`
+True when written; `unit-*` ended it on 10-27 at 20:01.
+
+Read off the cell by driving it (`F3` after repair), not inferred from its source.
+
+### Two defects of my own — and the clean green was hiding both
+
+`drive1` was `VERDICT/0`, 13 legs, all green, all five predictions exact. It was also hiding
+two legs that **could not fail**. Only `fake-new-round-dir` missing its hand-derived map
+exposed them (predicted `[F1,F3,P1]`, actual `[F2]`):
+
+1. **`F1` could not fire** — keyed on "created after the *highest* round dir", a new dir
+   becomes the reference point instead of reddening the leg (`M4` shifted to the synthetic,
+   `M5` stayed 0). It would have printed `TERMINATED` on the day termination ended. **The
+   unit reproduced, in its own instrument, the exact defect it was built to expose.**
+   Repaired to a pinned literal instant.
+2. **`F3` was a tautology** — `dirsNow` is sorted ascending and `maxDir` is its last
+   element, so `count(dirs > maxDir) === 0` for every possible input. It asserted nothing,
+   and the claim in its own `why` string was never tested. Repaired to drive the standing
+   cell and read the printed figure — which is the only reason §4 of the memo exists.
+
+Third, smaller, and the generalisable one: **`F2`'s red under that cripple was incidental**,
+not the aimed-at failure (the synthetic's date postdated every `unit-*` dir). A cripple that
+reddens the wrong leg reads as working if you only check that *something* went red. Checking
+the member list against the hand map caught it; a verdict-level check would have scored that
+cripple as separating.
+
+Maps **re-derived** against the repaired cell and committed before the re-drives
+(`c5c147d6`) — a map derived against a pre-repair subject goes stale the moment the subject
+is fixed. Pre-repair **4 of 5** matched; post-repair **6 of 6**, with a sixth cripple
+(`standing-last-mismatch`) added because nothing in the original five could reach `F3`.
+
+Two method notes: `G2` cross-checks by **driving Theseus's cell as a child process**
+(`his=91 mine=91`) rather than re-typing his reader; `drive.mjs` is a byte-identical copy of
+his driver (blob `c8fc0749`, verified with `git hash-object` on both paths), copied into my
+unit rather than invoked in place so my drives cannot re-stamp his recordings.
+
+### Decided this fire
+
+**Mine, as the condition's author (§7 answered):** cure-ness is the definition of the `last`
+term; but no published figure rests on his 2-of-19 cure regex alone — the measurement is the
+adopted attestation key **and** a cure predicate, cross-checked against the label-only key,
+**refusing when they disagree**. They agree at 292 today. For the one-member candidate set
+above 292, the two independent hand reads of `e2759907` are the evidence, not either regex.
+`recon2`'s third key is a proxy that agrees today, not the mechanism.
+
+**Also decided:** the published figure is **174 attested rounds above 292**, denial-filtered;
+`91` is demoted from "floor" to frozen constant; `~170`/`172` are superseded and kept in
+`COORDINATION` only so the correction has something to point at. The standing line now
+carries a **third axis — the population**.
+
+**Not decided — xian's, unchanged:** whether the track stops and re-scopes. `fired` is true
+under every reading either seat has built; what moved is the magnitude and the fact that the
+instrument reporting it could not have reported otherwise.
+
+### Mail handled
+
+* **Argus** — acked in §0 of the reply; nothing routed back either way; thread closed and
+  `git mv`'d to `docs/mail/read/` per close-discipline.
+* **Theseus** — replied in full:
+  `docs/mail/daedalus-to-theseus-argus-cc-xian-janus-calliope-iris-the-key-was-never-the-live-defect-the-denominator-was-and-my-standing-cell-could-not-have-told-us-2026-10-28.md`,
+  committed separately and pushed to `main` as `06fbfff0` before the rest of the fire's work,
+  per the worktree mail rule. **Left in `docs/mail/`** rather than moved: the thread still
+  carries an open action item, and it is mine (the standing-cell re-key).
+
+### Mine, open, no blocker
+
+Re-key the standing cell's `consecutive` onto the denial-filtered attested population so its
+`T2` leg can fire again. **Deliberately not done this fire** — it edits the cell whose figure
+is quoted in `COORDINATION.md` and deserves its own pre-registered map, not a tail-end edit
+in a STOP fire. First thing next fire.
+
+### Not run this fire
+
+`npm test`, `npm run typecheck`, the sweep. `git status --porcelain -- packages/ scripts/`
+**empty** — every commit this fire is `docs/`-only, so none of them reaches those gates.
+
+### Question-box check (STOP step 4)
+
+Considered, and a no this fire — but a considered one. The candidate I turned over: this
+fire's finding is that an instrument can be *structurally* unable to deliver bad news while
+reporting green, and that I only found it because a cripple missed its predicted map rather
+than because anything failed. That is a question about how xian reads our green reports, and
+it is close to question-box shape. I'm holding it because it is really a *work* question —
+it belongs in the standing-cell re-key and in the reply memo, both of which xian is cc'd on
+— and filing it as curiosity would be routing live work through the newsletter. Nothing
+filed to `dispatch/mail/`.
+
+### Wrap verification
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --format='%h %an %s'`, run at
+~18:0x PT), recorded below after the final push.
+
+**Step 2 — each deliverable read off the pushed rev**, not the worktree.
+
+**Step 3 — this log pushed last.**
