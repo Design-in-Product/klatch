@@ -129,3 +129,56 @@ Not claimed: did not re-touch the operational rule from Daedalus's §6b (don't c
 pathspec a concurrently-driving probe brackets) beyond noting in the module's docblock that it's
 now redundant with the fix rather than a substitute for it. Did not drive any of the 110 deferred
 probes.
+
+---
+
+## 18:1x PT — Session resumed (STOP fire)
+
+Pulled `origin/main` — already up to date, clean tree.
+
+**Drain.** Checkpoint is own last commit `41ae8657` (this same day's 14:0x WORK fire). `git log
+41ae8657..HEAD --format='%h %an %ci %s'` — 14 new commits since checkpoint, none mine (author-
+checked): Theseus's exit-code cure + Round 464 unit-surface work (3 commits), his coord+log pair
+and WORK-fire wrap verification, Calliope's SWEEP fire (no-op, one stale rollup day-count fixed),
+and Daedalus's `unit-464t2-population` unit (5 commits: cell + cripple maps, two repairs, a sixth
+cripple, 7 post-repair drives) plus his mail to Theseus/Argus and his own coord+log wrap. `git diff
+--stat 41ae8657..HEAD -- packages/ scripts/` — **empty**, confirmed directly — none of the 14
+touched `packages/` or `scripts/`. Because empty, ran census-only rather than a full driving sweep.
+
+**Mail.** No new memo addressed solely to this seat since checkpoint. One memo in the 14-commit
+range names this seat: `docs/mail/daedalus-to-theseus-argus-cc-xian-janus-calliope-iris-the-key-
+was-never-the-live-defect-the-denominator-was-and-my-standing-cell-could-not-have-told-us-2026-10-
+28.md` (17:2x–18:0x PT). Its §0 is addressed to Argus — an ack of this fire's own tree-fingerprint
+content-rekey ("Nothing routed back from me either.") — read in full, no action needed, no reply
+sent. Re-checked the two 10/27 threads still open in `docs/mail/` naming this seat (Theseus's
+`unclaimed-110` memo and Daedalus's `c4-red-is-repaired` memo): both state nothing further is
+routed to Argus, and this fire's own predecessor already took and closed the one item that *was*
+routed (the tree-fingerprint false red). Neither moved to `docs/mail/read/` — each still carries an
+open item for Theseus (`T2`) or Daedalus (`C4`'s narrowing), so the thread stays live under the
+close-discipline rule; closing a multi-party thread on the strength of only one addressee's part
+being done is not this seat's call to make.
+
+All four writable cross-repo mailboxes checked via `find -newer` against this seat's own last log
+entry (09:02 PT, same file): designinproduct — 0 new. mediajunkie — 0 new. dispatch — 0 new.
+piper-morgan-product/mailboxes — 0 new (excluding `MANIFEST.md`). Nothing owed from any.
+
+**Gate re-derived fresh, not taken from any memo; no full driving sweep — `packages/`/`scripts/`
+diff empty since checkpoint:**
+- `lsof -i :3001` — exit 1 (no listener), port free.
+- `npm run typecheck` (all four programs) — clean, 0 `error TS`.
+- `npm test -w packages/server` unpiped — **140 files / 2186 passed / 1 skipped (2187)**,
+  byte-identical to this same day's 14:0x WORK-fire figure.
+- `npm test -w packages/client` unpiped — **26 passed | 13 skipped (39) / 333 passed | 13 skipped
+  (346)**, byte-identical.
+- `node scripts/sweep-probes.mjs --census` — **153 probe files, 43 swept / 110 deferred, CENSUS
+  OK**, byte-identical — flat 15 days and counting.
+- `git status --short` clean before and after.
+
+**Standing blockers re-checked, both unmoved:**
+- CIO Laya/AAXT thread — parked on xian's scheduling call, no new input.
+- Intel sweep cadence — `ls -la docs/intel/` confirms `2026-10-26-sweep-curated.md` remains latest;
+  next due ~11/2, not due this fire.
+
+**Needs-you:** unchanged — nothing new surfaced this fire.
+
+Two consecutive checks found nothing further unblocked — fire closed bounded.
