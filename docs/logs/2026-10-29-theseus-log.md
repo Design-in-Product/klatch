@@ -209,3 +209,113 @@ All 5 of this fire's commits present, all authored `Theseus (Klatch)`.
 
 **VERIFY OK.** Nothing claimed delivered — the wrapper owns delivery; this records what is on
 `origin/main`.
+
+---
+
+## 14:47 — Session resumed (WORK fire, model claude-opus-5)
+
+Opened with the session-start protocol. HEAD at `b55e4d0b`, worktree clean, branch
+`claude/theseus-cycle` tracking `origin/main`. **Author-checked before assuming anything was mine:**
+`b55e4d0b` is Argus's and `271d6ef9` is Daedalus's — the three commits above this morning's
+`f852738a` belong to other seats, so this seat's day log already exists and this entry appends to it.
+
+**Inbound: one, addressed here.**
+`docs/mail/daedalus-to-theseus-cc-xian-janus-argus-calliope-iris-neither-of-your-t8-candidates-and-your-reason-for-the-second-is-wrong-2026-10-29.md`
+(`38bef389`, Daedalus, 13:29 PT). Read in full at open, before any work. He took neither of my T8
+candidates — `T8` now **refuses** while its union arm is pinned — and he is right that my stated
+reason for the second candidate was wrong: `T2b` is nested the *other* way
+(`curedBySelfAttested ⊂ curedByDirKey`), so it is one-sided by construction too. Saturation, not
+independence, is what separated the two legs. One item routed here, his §6: **grade `T2b`'s arms for
+saturation the way `T8`'s now are.** Taken this fire.
+
+## 14:5x — baseline before the edit, then pre-registration before the subject
+
+`drive1.baseline.out` driven at `b55e4d0b` **before touching the subject**, with
+`git status --porcelain` carrying only the unit's own untracked dir:
+
+```
+VERDICT/1 RED legs=22 red=[T2b] refused=[T8] preds=8 refuted=[P7,P2] prefused=[]
+  dir key           last=464 consecutive=2   self-attested key  last=454 consecutive=12
+  COUNTING POPULATION key=attested n=464 max=467
+```
+
+`PRE-REGISTRATION.md` committed in `d1ac7354` and pushed **before** the first edit: the criterion's
+derivation, 2 in-cell predictions (`P12` distance=3, `P13` `dir|464|454`), 3 external predictions,
+and 3 cripple maps each naming key-vs-subject **and** predicted `refuted=` movement — his 10-29 §5
+rule, adopted.
+
+**The criterion is not a copy of his.** Which arm pins first is a function of the arms, not the key:
+a larger `last` leaves fewer rounds above it, so the pin arm is `max(lastDir, lastSelf)`. Live that
+*is* the dir arm, but deriving it means an inverted nesting cannot silently point the guard at the
+free arm. And `T2b` has a second saturation mode `T8` lacks, because its arms are thresholded: with
+**both** arms pinned the token is forced **true** — "the keys agree" from a state where they could
+not have disagreed. One arm pinned manufactures a RED; the pair manufactures a GREEN.
+
+## 15:0x — the edit, and the clean arm does not move the line
+
+`ceilingKey`/`popMaxForCeiling` **hoisted** above their first reader so one key serves both legs
+(a second key beside `T2b` would be free to drift from the one `T8KP` grades). Added `T2bSAT`
+`[MEAS]`, `T2bKP` (6-row key-level matrix on synthetic operands), `T2bORACLE` (runtime oracle: both
+saturation modes recomputed, not asserted), and `T2b`'s refusal. `2cf37348`.
+
+```
+drive2.clean  VERDICT/1 RED legs=26 red=[T2b] refused=[T8] preds=10 refuted=[P7,P2] prefused=[]
+  T2bSAT: dirLast=464 selfLast=454 popMax=467 pinArm=dir(464) pinDistance=3 assertable=true
+```
+
+X1 **LANDED**: `status`, `code`, `red=`, `refused=`, `refuted=`, `prefused=` identical to the
+pre-edit baseline; only `legs=` and `preds=` move. `P12`/`P13` both LAND.
+
+## 15:1x — six cripple arms; 3 of 3 filed maps MATCH
+
+| arm | kind | observed | vs map |
+|---|---|---|---|
+| `t2b-sat-wrong-arm` | KEY | `red=[T2bKP,T2b]` `refused=[T8]` `refuted=[P7,P2,P12,P13]`, misses = the 3 named | MATCH |
+| `t2b-dir-pinned` | SUBJECT | `REFUSED red=[] refused=[T2b,T8]` `refuted=[P7,P2,P9,P12]`, `pinDistance=0` | MATCH |
+| `t8-ceiling-blind` | KEY (his) | `red=[T2bKP,T2b,T8KP]`, misses=`[pin-arm-above-ceiling]` only | MATCH |
+
+Member sets, not print order — the pre-registration wrote `[T2b,T2bKP]` where the cell prints
+`[T2bKP,T2b]`, named rather than quietly reconciled. `t2b-sat-wrong-arm` leaves `T2b` **unmoved**
+(live distances 3 and 13, where both spellings answer "not pinned"), so the arm separates through
+`T2bKP` alone — his 10-29 §5 lesson applied before the fact instead of after it. And
+`t2b-dir-pinned`'s map had to carry `refuted=`, where it moved **his** `P9`, because `T2b` leaves
+the sensitivity gate's base arm for its refusal set.
+
+## 15:2x — the finding, from two arms I drove without maps
+
+**Mine:** `t2-dir-only`, driven as an unmapped regression check, refuted this fire's own `P13`
+(`pinArm` → `both|464|464`). My pre-registration under-specified a pre-existing arm — the symmetric
+half of the miss he reported.
+
+**His, and nothing he built changed:** driven today at `2cf37348` against his 10-29 MID maps —
+`t8-ceiling-blind` gains `T2bKP` in `red=`; `t8-unpinned` gains `P12` in `refuted=` (that arm moves
+`popMax` to 9467, so a prediction keyed on the ceiling distance is pointed at it);
+`t9-insensitive-leg` identical. **A cripple map is complete only at its filing rev.** The bite is
+directional: the next fire re-driving `t8-unpinned` against the filed map reads `+P12` as a
+regression. Routed to him with both deltas recorded, so the work is recording them, not finding
+them — and offered to do it in his unit if he prefers.
+
+Also built, unasked, with its reason in the memo: **`M0c`** — every one of the 11 declared cripples
+has a dispatch site in the cell's own source. The comment above `CRIPPLES` has claimed this since
+10-27 and nothing measured it; a declared name with no hook runs a **clean** arm, so every control
+driven under it comes back clean and reads as survival. Keyed on the dispatch shape by literal
+string search, with a control name known absent required to come back missing.
+
+## 15:3x — drain, and what is for xian
+
+**Drain.** One inbound, read at open before any work, answered in the same fire, its routed item
+taken and graded. Thread left open in `docs/mail/` deliberately: open items on both seats and the
+stop/re-scope call is xian's. Cross-repo mailboxes not re-walked this fire — this morning's walk
+over 33,413 files found nothing owed and nothing newer than 10-28 addressed here, and no `git pull`
+since has brought mail for this seat (the three intervening commits are Argus's and Daedalus's own
+coord/log writes, checked by `%an` and `--name-only`).
+
+**For xian, and it is timing rather than a new axis:** the standing line is byte-identical to this
+morning — `red=[T2b]`, adopted reading **FIRED at 12 against N=5**. What is new is that `T2b`, the
+leg the line is now quoted from, sits **3** rounds below the population ceiling. Three more attested
+rounds above 464 with no gated cure and it refuses, the same way `T8` now does. `T2bSAT` prints the
+distance every drive.
+
+**Not run this fire:** `npm test`, `npm run typecheck`, the sweep. `git status --porcelain --
+packages/ scripts/` **empty** — every path written is under `docs/`. Nothing left running; drives
+are `execFileSync` with `stdio` pinned. Commits pushed incrementally as each landed.
