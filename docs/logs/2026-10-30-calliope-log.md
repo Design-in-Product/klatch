@@ -39,3 +39,29 @@ Nothing owed from any.
 All byte-identical to the STOP-fire checkpoint. Full driving sweep not re-run (not this seat's lane). `lsof -i :3001` port free. `git status --short` clean before this fire's own coordination/log/rollup edit.
 
 **Drain:** 4 new commits read with author verified and the empty `packages/`/`scripts/` diff checked directly; mail checked across local and all four cross-repo mailboxes against the exact checkpoint timestamp — the one local memo read and filed to `read/`, the mediajunkie hits traced to the same already-covered convention, the piper-morgan-product hits content-grepped and ruled unrelated; rollup re-checked against the live file, one stale day-count corrected; both standing blockers re-derived fresh rather than carried; gate re-derived fresh and byte-identical at every layer. Two consecutive checks found nothing further unblocked. Fire closed bounded.
+
+---
+
+## 12:3x — Session resumed (MID fire)
+
+**No-op on product; rollup and gate both byte-identical to this morning; smoke-run blocker unchanged at day 10.** Checkpoint is this seat's own 10/30 START-fire commit `89baf6e0` (11:00:52 PT).
+
+`git fetch origin` then `git log 89baf6e0..origin/main` — **0 new commits.** `git diff --stat 89baf6e0..origin/main` — empty (trivially, no new commits). Nothing landed anywhere since the START fire.
+
+**Mail:** `grep -l '^to: Calliope\|\*\*To:\*\* Calliope' docs/mail/*.md` (excluding `read/`) — same four standing Pard-from-10-20 threads, no new file addressed by name. All four cross-repo mailboxes checked fresh via `find -newermt "2026-10-30 11:00:52 -0700"`: `designinproduct`, `mediajunkie`, `dispatch`, `piper-morgan-product/mailboxes` — **0 new in all four.** Nothing owed from any.
+
+**Standing blockers, re-derived fresh:**
+- Managed Agents smoke-run thread — `git branch -a` / `git log --all --oneline | grep -i smoke` both still show no `ma-smoke/*` branch anywhere in this repo (only commit-message mentions of the blocker itself); named blocker on xian, still day 10.
+- Ground-rules configuration question, parked since 2026-08-09 — recomputed independently via `node -e` calendar-day arithmetic: **82 days**, matching this morning's corrected figure exactly. No further change.
+
+**Rollup:** read `docs/operations/attention-rollup.md` directly — still v171, needs-you unchanged at 2; item 2's heading already reads "(82 days)" from this morning's edit, confirmed current. Nothing to correct.
+
+**Gate, re-verified fresh:**
+- `npm run typecheck` — 0 `error TS` across all four workspaces
+- `npm test -w packages/server` — 140 files · 2186 passed · 1 skipped (2187)
+- `npm test -w packages/client` — 26 passed | 13 skipped (39) · 333 passed | 13 skipped (346)
+- `node scripts/sweep-probes.mjs --census` — 153 probe files, 43 swept / 110 deferred, CENSUS OK
+
+All byte-identical to the START-fire checkpoint. Full driving sweep not re-run (not this seat's lane). `lsof -i :3001` port free. `git status --short` clean before this fire's own coordination/log edit.
+
+**Drain:** fetched origin fresh and confirmed zero new commits, not assumed from the START fire's recency; mail checked across local and all four cross-repo mailboxes against the exact checkpoint timestamp, nothing owed; rollup re-checked against the live file, confirmed already current; both standing blockers re-derived fresh rather than carried; gate re-derived fresh and byte-identical at every layer. Two consecutive checks found nothing further unblocked. Fire closed bounded.
