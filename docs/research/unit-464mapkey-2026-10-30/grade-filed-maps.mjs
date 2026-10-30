@@ -38,13 +38,25 @@
 //
 // Exit 0 only if every gate is ok. A gate that REFUSES is a RED, not a pass.
 
-import { readFileSync, statSync } from 'node:fs';
+import { readFileSync, realpathSync, statSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
 
 // ---------------------------------------------------------------------------
 // Arms. Each is a KEY perturbation on this instrument, and each has a row in
 // PRE-REGISTRATION.md written before any of them was driven.
 // ---------------------------------------------------------------------------
-const CRIPPLES = new Set(['verdict-keyed-reach', 'word-anywhere', 'stamp-blind', 'no-refusal']);
+const CRIPPLES = new Set([
+  'verdict-keyed-reach',
+  'word-anywhere',
+  'stamp-blind',
+  'no-refusal',
+  // Added 2026-10-30 WORK fire, with unit-464drift-2026-10-30. Each grades one of the
+  // four gates added in that fire.
+  'drift-blind', // the pre-fix behaviour: no drift exclusion at all
+  'control-fallback', // an absent control falls back to `reached` instead of refusing
+  'conform-raw', // GCONFORM keyed on the RAW under-report instead of the arm-caused one
+  'must-blind', // GMUST reports OK without comparing
+]);
 
 const args = process.argv.slice(2);
 const CRIPPLE = (() => {
@@ -64,6 +76,16 @@ const MEMBER = (() => {
   const a = args.find((x) => x.startsWith('--member='));
   return a === undefined ? null : a.slice('--member='.length);
 })();
+
+// The CONTROL pair: exactly two no-cripple drives of the same cell, produced
+// independently at different clock times. A member that moves between them moved with no
+// arm in play, so it is DRIFT and must not be counted as reach. Derived, never a
+// hand-typed id list — an exclusion keyed on three ids I named is not keyed on drift.
+const CONTROL = args.filter((x) => x.startsWith('--control=')).map((x) => x.slice('--control='.length));
+if (CONTROL.length !== 0 && CONTROL.length !== 2) {
+  console.error(`--control= takes exactly two paths (two no-cripple drives); got ${CONTROL.length}`);
+  process.exit(2);
+}
 
 const MAP_PATH = (args.find((x) => x.startsWith('--map=')) ?? '').slice('--map='.length);
 const CLEAN_PATH = (args.find((x) => x.startsWith('--clean=')) ?? '').slice('--clean='.length);
@@ -92,6 +114,29 @@ if (MAP_PATH === '' || CLEAN_PATH === '' || ARMS.length === 0) {
 // ABSOLUTE count per recording and not a difference of two counts.
 // ---------------------------------------------------------------------------
 const ALL_STATUS_LABELS = ['MEAS', 'REF ', ' ok ', 'RED ', 'PREF', 'LAND', 'REFU'];
+
+// The repo root, so a path DECLARED in a map stamp can be resolved the way a map author
+// writes it. §3.1's `cell:` and `clean-recording:` are repo-relative in every filed map,
+// and the checker is driven from a unit directory — a declared path resolved against cwd
+// fails a map that is correct. Both spellings are tried, in that order.
+const REPO_ROOT = (() => {
+  const r = spawnSync('git', ['rev-parse', '--show-toplevel'], { encoding: 'utf8' });
+  return r.status === 0 ? r.stdout.trim() : null;
+})();
+
+/** A path's resolved realpath, or null. Used to compare a declared path with a given one
+ *  by identity-on-disk rather than by spelling. Tries cwd-relative, then repo-relative. */
+const realpathOrNull = (path) => {
+  if (path === null || path === '') return null;
+  for (const p of REPO_ROOT === null ? [path] : [path, `${REPO_ROOT}/${path}`]) {
+    try {
+      return realpathSync(p);
+    } catch {
+      /* try the next spelling */
+    }
+  }
+  return null;
+};
 
 const readText = (path) => {
   if (path === null) return null;
@@ -183,6 +228,24 @@ const tokensOf = (payload) => {
   return out;
 };
 
+/**
+ * Ids whose PRINTED line differs between two member maps — the same comparison v2 reach
+ * uses, factored out so the drift control and the arm reach cannot drift apart as keys.
+ * Returns null if either side is unreadable.
+ * @param {Map<string,{label:string,payload:string}>|null} a
+ * @param {Map<string,{label:string,payload:string}>|null} b
+ */
+const movedBetween = (a, b) => {
+  if (a === null || b === null) return null;
+  const ids = [...new Set([...a.keys(), ...b.keys()])].sort();
+  return ids.filter((id) => {
+    const x = a.get(id);
+    const y = b.get(id);
+    if (x === undefined || y === undefined) return true;
+    return x.label !== y.label || x.payload !== y.payload;
+  });
+};
+
 // ---------------------------------------------------------------------------
 // Readers over a MAP FILE.
 // ---------------------------------------------------------------------------
@@ -208,7 +271,14 @@ const mapStamp = (mapText) => {
   const size = field('cell-size-at-filing');
   const sm = size === null ? null : size.match(/legs=(\d+)\s+preds=(\d+)/);
   if (sm === null) return null;
-  return { form: 'v2-block', legs: Number(sm[1]), preds: Number(sm[2]), filingRev: field('filing-rev') };
+  return {
+    form: 'v2-block',
+    legs: Number(sm[1]),
+    preds: Number(sm[2]),
+    filingRev: field('filing-rev'),
+    cell: field('cell'),
+    cleanRecording: field('clean-recording'),
+  };
 };
 
 /**
@@ -250,7 +320,7 @@ const sectionFor = (mapText, armName) => {
  * @param {{red:string[],refused:string[],refuted:string[],prefused:string[]}|null} cleanV
  * @param {{red:string[],refused:string[],refuted:string[],prefused:string[]}|null} armV
  */
-const gradeArm = (clean, arm, section, cleanV, armV) => {
+const gradeArm = (clean, arm, section, cleanV, armV, driftSet) => {
   // Two refusals at two granularities, deliberately not collapsed into one.
   //
   //   `recording` — nothing can be measured; reach is unknown.
@@ -290,6 +360,28 @@ const gradeArm = (clean, arm, section, cleanV, armV) => {
   // over the v1 set, which is what the six already-filed maps were keyed on.
   const reached =
     CRIPPLE === 'verdict-keyed-reach' ? (verdictReached ?? []) : reachedV2;
+
+  // DRIFT SPLIT (added 2026-10-30 WORK, routed by Theseus's §4). `reached` above stays
+  // raw and is still printed, because both seats have published figures keyed on it and a
+  // silent replacement would make the correction unreadable. The two classes sit beside
+  // it:
+  //
+  //   reachedDrift     — reached ∩ drift(control pair). Movement with no arm in play.
+  //   reachedArmCaused — reached \ drift. A CEILING, not an exact figure: the control can
+  //                      only under-state drift, since a clock-sensitive member that
+  //                      happens to print the same value in both control drives is
+  //                      invisible to it.
+  //
+  // Both REFUSE (null) with no readable control. `control-fallback` is the arm that shows
+  // the refusal is load-bearing: it falls back to `reached`, which is the shape that makes
+  // a comparison green forever.
+  const reachedDrift = driftSet === null ? null : reached.filter((id) => driftSet.has(id));
+  const reachedArmCaused =
+    driftSet === null
+      ? CRIPPLE === 'control-fallback'
+        ? reached
+        : null
+      : reached.filter((id) => !driftSet.has(id));
 
   const sectionText = unmapped ? '' : section.join('\n');
   const mentions = (id) =>
@@ -354,13 +446,28 @@ const gradeArm = (clean, arm, section, cleanV, armV) => {
   // Map-side figures REFUSE on an unmapped arm — `null`, never 0. An arm with no map
   // row has an unmeasurable under-report, not an under-report of zero, and reporting 0
   // would publish the most complete-looking row in the audit for the least mapped arm.
+  // The under-report, taken over ARM-CAUSED rows only. Refuses whenever the drift class
+  // refuses or the arm is unmapped — never 0, because "no drift-free under-report" and
+  // "could not tell which half was drift" are different answers.
+  const armRows = reachedArmCaused === null ? null : rows.filter((r) => reachedArmCaused.includes(r.id));
+  const shortRow = (r) => !r.mentioned || r.named.length < r.movedTokens.length;
+
   return {
     refused: null,
     unmapped,
     reached,
     reachedV2,
+    reachedDrift,
+    reachedArmCaused,
     verdictReached,
     rows,
+    underReportedArmCaused: unmapped || armRows === null ? null : armRows.filter(shortRow).map((r) => r.id),
+    underReportedArmCausedMembership:
+      unmapped || armRows === null ? null : armRows.filter((r) => !r.mentioned).map((r) => r.id),
+    underReportedArmCausedTokens:
+      unmapped || armRows === null
+        ? null
+        : armRows.filter((r) => r.mentioned && r.named.length < r.movedTokens.length).map((r) => r.id),
     tokensTyped: unmapped ? null : tokensTyped,
     typedRecordingKey: unmapped ? null : typedRecordingKey,
     named: unmapped ? null : rows.filter((r) => r.mentioned).map((r) => r.id),
@@ -395,9 +502,18 @@ const labels = ALL_STATUS_LABELS;
 const cleanMembers = membersOf(cleanText, labels);
 const cleanVerdict = verdictLine(cleanText);
 
+// --- The drift control. Two no-cripple drives, neither of them an arm. `drift-blind` is
+// the pre-fix behaviour: no exclusion at all, which is what every figure published before
+// 2026-10-30 WORK was keyed on.
+const controlA = CONTROL.length === 2 ? membersOf(readText(CONTROL[0]), labels) : null;
+const controlB = CONTROL.length === 2 ? membersOf(readText(CONTROL[1]), labels) : null;
+const driftIds = CRIPPLE === 'drift-blind' ? [] : movedBetween(controlA, controlB);
+const driftSet = driftIds === null ? null : new Set(driftIds);
+
 console.log(`=== grade-filed-maps.mjs ===`);
 console.log(`map    : ${MAP_PATH}`);
 console.log(`clean  : ${CLEAN_PATH}`);
+console.log(`control: ${CONTROL.length === 0 ? 'NONE GIVEN — drift classes REFUSE' : CONTROL.join('  vs  ')}`);
 console.log(`cripple: ${CRIPPLE ?? 'none (clean arm)'}`);
 console.log(`labels : ${labels.length} [${labels.map((l) => JSON.stringify(l)).join(',')}]`);
 console.log('');
@@ -450,6 +566,88 @@ const GSTAMP = (() => {
   return { ok: true, verdict, why: `${stamp.form} declares legs=${stamp.legs} preds=${stamp.preds}; recording says legs=${cleanVerdict.legs} preds=${cleanVerdict.preds} → ${verdict}` };
 })();
 console.log(`GSTAMP ${GSTAMP.ok ? 'ok ' : 'RED'} stamp: ${GSTAMP.why}`);
+
+// --- GMUST: §3.1's five stamp fields. Three of them — filing-rev, cell, clean-recording —
+// were declared MUST by the convention and read by NOTHING, which Theseus measured by
+// stripping them and still scoring MAPVERDICT/0 ok on 0 differing lines of 36. A MUST no
+// gate reads is not a MUST. `must-blind` reports OK without comparing.
+//
+// `filing-rev` is checked by RESOLVING it, not by its shape: the stamp-stripped map's
+// forty zeroes are forty valid hex characters. `clean-recording` is compared by resolved
+// realpath, not as a string — the map writes a repo-relative path and the drive is given a
+// unit-relative one, and a verbatim string pin would fail a map that is correct.
+const GMUST = (() => {
+  if (stamp === null) return { ok: false, missing: null, why: 'REFUSED — map carries no readable stamp' };
+  if (stamp.form !== 'v2-block') {
+    return { ok: true, missing: null, why: `EXEMPT — ${stamp.form}; §3.1's fields are a v2 obligation and a v1 map is graded on what it claims` };
+  }
+  const missing = [];
+  if (stamp.filingRev === null) missing.push('filing-rev:absent');
+  else {
+    const sha = (stamp.filingRev.match(/\b[0-9a-f]{40}\b/) ?? [null])[0];
+    if (sha === null) missing.push('filing-rev:no-sha');
+    else {
+      const r = spawnSync('git', ['cat-file', '-e', `${sha}^{commit}`], { stdio: 'ignore' });
+      if (r.error !== undefined && r.error !== null) return { ok: false, missing: null, why: 'REFUSED — git unavailable, cannot resolve filing-rev' };
+      if (r.status !== 0) missing.push(`filing-rev:unresolvable(${sha.slice(0, 8)})`);
+    }
+  }
+  if (stamp.cell === null) missing.push('cell:absent');
+  else if (realpathOrNull(stamp.cell) === null) missing.push(`cell:unreadable(${stamp.cell})`);
+  if (stamp.cleanRecording === null) missing.push('clean-recording:absent');
+  else {
+    const want = realpathOrNull(CLEAN_PATH);
+    const got = realpathOrNull(stamp.cleanRecording);
+    if (got === null) missing.push(`clean-recording:unreadable(${stamp.cleanRecording})`);
+    else if (want === null || got !== want) missing.push('clean-recording:not-the-drive\'s-clean');
+  }
+  // The cripple reports OK and is GREEN, which is the point: a gate that still reddens
+  // under its own cripple has not been shown to be the thing doing the work. Its
+  // counterfactual is therefore a gate going green, graded as a DELTA against the matched
+  // no-cripple drive, not as an absolute red list.
+  if (CRIPPLE === 'must-blind') {
+    return { ok: true, missing, why: `OK (not compared — must-blind arm); would have flagged ${missing.length} [${missing.join(',')}]` };
+  }
+  return missing.length === 0
+    ? { ok: true, missing, why: `all three previously-unread MUST fields present and load-bearing (filing-rev resolves, cell readable, clean-recording is the drive's own --clean)` }
+    : { ok: false, missing, why: `${missing.length} MUST field(s) fail: [${missing.join(',')}]` };
+})();
+console.log(`GMUST  ${GMUST.ok ? 'ok ' : 'RED'} §3.1 fields: ${GMUST.why}`);
+
+// --- GCTRL: the drift axis is COVERED. Distinct from GDRIFTREF, which grades whether an
+// absent control refuses correctly: a drive can refuse correctly and still be an audit
+// that never looked at drift. Same two-gate split as GREFUSE/GCOMPLETE, and for the same
+// reason — the first version of this checker satisfied the refusal and exited 0.
+const GCTRL = (() => {
+  if (CONTROL.length !== 2) {
+    return { ok: false, why: `no control pair given — the drift axis is UNMEASURED; reach is raw and every arm-caused figure refuses` };
+  }
+  if (controlA === null || controlB === null) {
+    return { ok: false, why: `control recording(s) unreadable: [${CONTROL.filter((_, i) => (i === 0 ? controlA : controlB) === null).join(',')}]` };
+  }
+  const a = readText(CONTROL[0]);
+  const b = readText(CONTROL[1]);
+  if (a === b) {
+    return { ok: false, why: 'control pair is byte-identical — drift would be 0 by construction, so the pair cannot grade the exclusion' };
+  }
+  return { ok: true, why: `${controlA.size} vs ${controlB.size} members, two distinct no-cripple drives` };
+})();
+console.log(`GCTRL  ${GCTRL.ok ? 'ok ' : 'RED'} drift control: ${GCTRL.why}`);
+console.log(
+  `DRIFT  ${driftIds === null ? 'REFUSED (no readable control pair)' : `n=${driftIds.length} [${driftIds.join(',')}]`}`
+  + `${CRIPPLE === 'drift-blind' ? '   (drift-blind arm: forced empty)' : ''}`
+);
+// Per-drift-member token movement across the control pair, printed so the cleanest case —
+// a member reached with ZERO moved tokens, i.e. a line that differs outside any `name=`
+// token — has a drive line to be read off instead of being argued for.
+if (driftIds !== null && controlA !== null && controlB !== null) {
+  for (const id of driftIds) {
+    const ta = tokensOf(controlA.get(id)?.payload ?? '');
+    const tb = tokensOf(controlB.get(id)?.payload ?? '');
+    const moved = [...new Set([...ta.keys(), ...tb.keys()])].filter((t) => ta.get(t) !== tb.get(t)).sort();
+    console.log(`  DRIFTMEM ${id.padEnd(12)} movedTokens=${String(moved.length).padEnd(2)} [${moved.join(',')}]`);
+  }
+}
 console.log('');
 
 // --- Per-arm grades.
@@ -459,15 +657,15 @@ for (const { name, path } of ARMS) {
   const armMembers = membersOf(armText, labels);
   const armVerdict = verdictLine(armText);
   const section = sectionFor(mapText, name);
-  let g = gradeArm(cleanMembers, armMembers, section, cleanVerdict, armVerdict);
+  let g = gradeArm(cleanMembers, armMembers, section, cleanVerdict, armVerdict, driftSet);
 
   // `no-refusal` collapses a refusal into a clean zero — the arm that shows the
   // refusal is load-bearing rather than decorative.
   if (CRIPPLE === 'no-refusal') {
     if (g.refused !== null && g.refused !== undefined) {
-      g = { refused: null, unmapped: false, reached: [], reachedV2: [], verdictReached: [], rows: [], tokensTyped: [], typedRecordingKey: [], named: [], underReported: [], underReportedMembership: [], underReportedTokens: [], fullyNamed: 0, fullyCaptured: 0, capturedShort: [] };
+      g = { refused: null, unmapped: false, reached: [], reachedV2: [], reachedDrift: [], reachedArmCaused: [], verdictReached: [], rows: [], tokensTyped: [], typedRecordingKey: [], named: [], underReported: [], underReportedMembership: [], underReportedTokens: [], underReportedArmCaused: [], underReportedArmCausedMembership: [], underReportedArmCausedTokens: [], fullyNamed: 0, fullyCaptured: 0, capturedShort: [] };
     } else if (g.unmapped) {
-      g = { ...g, unmapped: false, tokensTyped: [], typedRecordingKey: [], named: [], underReported: [], underReportedMembership: [], underReportedTokens: [], fullyNamed: 0, fullyCaptured: 0, capturedShort: [] };
+      g = { ...g, unmapped: false, tokensTyped: [], typedRecordingKey: [], named: [], underReported: [], underReportedMembership: [], underReportedTokens: [], underReportedArmCaused: [], underReportedArmCausedMembership: [], underReportedArmCausedTokens: [], fullyNamed: 0, fullyCaptured: 0, capturedShort: [] };
     }
   }
   grades.push({ name, path, g });
@@ -486,8 +684,15 @@ for (const { name, path } of ARMS) {
     + ` · named=${n(g.named)} · fullyNamed=${n(g.fullyNamed)} · fullyCaptured=${n(g.fullyCaptured)} · underReported=${n(g.underReported)}`
   );
   console.log(`  reached=[${g.reached.join(',')}]`);
+  console.log(
+    `  reachedArmCaused=${n(g.reachedArmCaused)} [${l(g.reachedArmCaused)}]  (CEILING — the control can only under-state drift)`
+  );
+  console.log(`  reachedDrift=${n(g.reachedDrift)} [${l(g.reachedDrift)}]  (moved with no arm in play)`);
   console.log(`  verdictReached=[${l(g.verdictReached)}]`);
-  console.log(`  underReported=[${l(g.underReported)}]  =  membership[${l(g.underReportedMembership)}] + tokens[${l(g.underReportedTokens)}]`);
+  console.log(`  underReported=[${l(g.underReported)}]  =  membership[${l(g.underReportedMembership)}] + tokens[${l(g.underReportedTokens)}]   (RAW — drift included)`);
+  console.log(
+    `  underReportedArmCaused=[${l(g.underReportedArmCaused)}]  =  membership[${l(g.underReportedArmCausedMembership)}] + tokens[${l(g.underReportedArmCausedTokens)}]`
+  );
   console.log(
     `  tokensTyped=[${l(g.tokensTyped)}]   (quoted OF a member, never emitted BY that member)`
     + `  ·  typedRecordingKey=[${l(g.typedRecordingKey)}]  (superseded, recording-wide)`
@@ -589,6 +794,41 @@ const GTYPED = (() => {
 })();
 console.log(`GTYPED ${GTYPED.ok ? 'ok ' : 'RED'} typed-token key strictness: ${GTYPED.why}`);
 
+// --- GDRIFTBITE: the drift exclusion is non-vacuous — on at least one arm the arm-caused
+// set is a STRICT subset of the raw reached set. Under `drift-blind` the drift set is
+// forced empty, no arm narrows, and this is the only gate that can say so. Note what it
+// does NOT do: it does not assert that drift exists in a given population, because a gate
+// that asserts the defect reddens on its own cure. It asserts that WHERE drift is
+// measured, the exclusion is wired to the figure.
+const GDRIFTBITE = (() => {
+  if (driftSet === null) return { ok: false, why: 'REFUSED — no readable control pair, so the exclusion cannot be shown to do anything' };
+  const live = grades.filter((x) => !x.g.refused && x.g.reachedArmCaused !== null);
+  if (live.length === 0) return { ok: false, why: 'REFUSED — no arm graded' };
+  if (driftSet.size === 0) {
+    return { ok: false, why: `drift set is EMPTY over ${live.length} arm(s) — the exclusion is vacuous here and cannot be graded` };
+  }
+  const narrowed = live.filter((x) => x.g.reachedArmCaused.length < x.g.reached.length);
+  return narrowed.length > 0
+    ? { ok: true, why: `${narrowed.length}/${live.length} arms narrowed by the exclusion (${narrowed.map((x) => `${x.name} ${x.g.reached.length}→${x.g.reachedArmCaused.length}`).join('; ')})` }
+    : { ok: false, why: `drift set has ${driftSet.size} member(s) but 0/${live.length} arms narrowed — the exclusion is wired to nothing` };
+})();
+console.log(`GDRIFTB ${GDRIFTBITE.ok ? 'ok ' : 'RED'} exclusion bites: ${GDRIFTBITE.why}`);
+
+// --- GDRIFTREF: with no readable control, every arm must publish null for the drift
+// classes rather than a figure. Occurrence-counted, and VACUOUS (and says so) when a
+// control IS given — a leg with no occasion to fire must not read as a pass.
+const GDRIFTREF = (() => {
+  const live = grades.filter((x) => !x.g.refused);
+  if (driftSet !== null) {
+    return { ok: true, why: `VACUOUS in this drive — a readable control pair was given, so nothing was given the chance to refuse` };
+  }
+  const leaked = live.filter((x) => x.g.reachedArmCaused !== null || x.g.reachedDrift !== null).map((x) => x.name);
+  return leaked.length === 0
+    ? { ok: true, why: `${live.length} refusal occasion(s) all refused (drift classes null on every arm)` }
+    : { ok: false, why: `${leaked.length} of ${live.length} published a drift figure with no control: [${leaked.join(',')}]` };
+})();
+console.log(`GDRIFTR ${GDRIFTREF.ok ? 'ok ' : 'RED'} drift refusal: ${GDRIFTREF.why}`);
+
 // --- Summary, in the units the two authors' hand grades are published in. Map-side
 // sums are taken over MAPPED arms only and the unmapped count is published beside
 // them, never folded in: an unmapped arm's under-report is unmeasurable, and summing
@@ -609,6 +849,21 @@ console.log(
   `GRADE  armsGiven=${ARMS.length} graded=${live.length} unreadable=${ARMS.length - live.length} unmapped=${live.length - mapped.length}`
   + ` reachedCells=${sumReached} (mapped arms ${sumReachedMapped}) fullyNamedCells=${sumFullyNamed} fullyCapturedCells=${sumFullyCaptured} underReportedCells=${sumUnder} (membership ${sumUnderMem} + tokens ${sumUnderTok})`
 );
+// The same two figures with drift excluded, printed on their own line and never folded
+// into the line above — both seats have published figures keyed on the raw set, and a
+// correction that overwrites the number it corrects leaves nothing to point at. REFUSES
+// as a whole if any mapped arm refuses: a sum over a refusing member is not a sum.
+const anyRefuses = mapped.some((x) => x.g.reachedArmCaused === null || x.g.underReportedArmCaused === null);
+const sumReachedArm = anyRefuses ? null : mapped.reduce((n, x) => n + x.g.reachedArmCaused.length, 0);
+const sumUnderArm = anyRefuses ? null : mapped.reduce((n, x) => n + x.g.underReportedArmCaused.length, 0);
+const sumUnderArmMem = anyRefuses ? null : mapped.reduce((n, x) => n + x.g.underReportedArmCausedMembership.length, 0);
+const sumUnderArmTok = anyRefuses ? null : mapped.reduce((n, x) => n + x.g.underReportedArmCausedTokens.length, 0);
+const f = (v) => (v === null ? 'REFUSED' : String(v));
+console.log(
+  `GRADEA drift-excluded over mapped arms (CEILING): reachedCells=${f(sumReachedArm)} underReportedCells=${f(sumUnderArm)}`
+  + ` (membership ${f(sumUnderArmMem)} + tokens ${f(sumUnderArmTok)})`
+  + `   ·  raw was reachedCells=${sumReachedMapped} underReportedCells=${sumUnder} (membership ${sumUnderMem} + tokens ${sumUnderTok})`
+);
 console.log(`TYPED  tokensTyped=[${typed.join(',')}] n=${typed.length}  ·  superseded recording-wide key=[${typedOld.join(',')}] n=${typedOld.length}`);
 console.log(`STAMP  ${GSTAMP.verdict ?? 'REFUSED'}`);
 
@@ -624,7 +879,44 @@ const GCOMPLETE = (() => {
 })();
 console.log(`GCOMP  ${GCOMPLETE.ok ? "ok " : "RED"} coverage: ${GCOMPLETE.why}`);
 
-const gates = { GKP, GABS, GSTAMP, GREACH, GCTX, GREFUSE, GTYPED, GCOMPLETE };
+// --- GCONFORM: the gate that READS the figure. Before 2026-10-30 WORK not one of the
+// eight gates read `underReported`, `fullyCaptured` or `fullyNamed`, so a map with zero
+// §3.4-conforming rows scored MAPVERDICT/0 ok — a declared requirement no gate reads,
+// which is exactly the shape M0c was built for in the cell on 10-29. Measured and routed
+// by Theseus, §1 of his 10-30 memo.
+//
+// Keyed on the ARM-CAUSED under-report, never the raw one. Keyed raw it would redden a map
+// for not naming members the arm never touched, which is the defect upstream of this gate
+// and why that one had to be fixed first. `conform-raw` is the arm that drives the
+// distinction instead of asserting it.
+//
+// A v1-prose map is EXEMPT and says so: §3.4 is a v2 obligation, the convention's §5
+// states it does not retro-grade, and reddening the six pre-v2 maps would be exactly that.
+const GCONFORM = (() => {
+  if (stamp === null) return { ok: false, why: 'REFUSED — no readable stamp, so conformance is unattributable' };
+  if (stamp.form !== 'v2-block') {
+    return { ok: true, why: `EXEMPT — ${stamp.form}; §3.4 is a v2 obligation and §5 says the convention does not retro-grade` };
+  }
+  const mappedArms = grades.filter((x) => !x.g.refused && !x.g.unmapped);
+  if (mappedArms.length === 0) return { ok: false, why: 'REFUSED — a v2 map with no mapped arm graded' };
+  const key = CRIPPLE === 'conform-raw' ? 'underReported' : 'underReportedArmCaused';
+  const vals = mappedArms.map((x) => x.g[key]);
+  if (vals.some((v) => v === null)) {
+    return { ok: false, why: `REFUSED — ${key} is null on ${vals.filter((v) => v === null).length} of ${mappedArms.length} mapped arm(s) (no drift control?)` };
+  }
+  const cells = vals.flat();
+  const mem = mappedArms.flatMap((x) => (CRIPPLE === 'conform-raw' ? x.g.underReportedMembership : x.g.underReportedArmCausedMembership) ?? []);
+  const tok = mappedArms.flatMap((x) => (CRIPPLE === 'conform-raw' ? x.g.underReportedTokens : x.g.underReportedArmCausedTokens) ?? []);
+  return cells.length === 0
+    ? { ok: true, why: `v2 map, ${key}: 0 cells over ${mappedArms.length} mapped arm(s) — conforms to §3.3/§3.4` }
+    : {
+        ok: false,
+        why: `v2 map DECLARES conformance but ${key} = ${cells.length} cell(s): membership ${mem.length} [${mem.join(',')}] + tokens ${tok.length} [${tok.join(',')}] — §3.4 calls this a DEFECT, not a stylistic matter`,
+      };
+})();
+console.log(`GCONF  ${GCONFORM.ok ? 'ok ' : 'RED'} §3.3/§3.4 conformance: ${GCONFORM.why}`);
+
+const gates = { GKP, GABS, GSTAMP, GMUST, GCTRL, GREACH, GCTX, GREFUSE, GTYPED, GDRIFTBITE, GDRIFTREF, GCOMPLETE, GCONFORM };
 const red = Object.entries(gates).filter(([, v]) => !v.ok).map(([k]) => k);
 const code = red.length > 0 ? 1 : 0;
 console.log(`\nMAPVERDICT/${code} ${red.length === 0 ? 'ok' : 'RED'} gates=${Object.keys(gates).length} red=[${red.join(',')}]`);

@@ -1,0 +1,52 @@
+=== grade-filed-maps.mjs ===
+map    : ../unit-464v2map-2026-10-30/V2-MAP-t8-ceiling-blind-RETITLED.md
+clean  : ../unit-464t2b-sat-2026-10-29/drive2.clean.out
+control: ../unit-464t2b-sat-2026-10-29/drive2.clean.out  vs  ../unit-464t8-mapdecay-2026-10-29/drive1.clean.out
+cripple: none (clean arm)
+labels : 7 ["MEAS","REF "," ok ","RED ","PREF","LAND","REFU"]
+
+GKP    ok  tokenizer on a real slice: selector round-trips whole; 11 tokens
+KPSLICE detail: dirLast=464 selfLast=454 popMax=467 pinArm=dir(464) pinDistance=3 freeDistance=13 pinArmPinned=false freeArmPinned=false assertable=true key=>= selector=max(pins first)
+GABS   ok  absolute member count: 36 members = legs 26 + preds 10
+GSTAMP ok  stamp: v2-block declares legs=26 preds=10; recording says legs=26 preds=10 → OK
+GMUST  ok  §3.1 fields: all three previously-unread MUST fields present and load-bearing (filing-rev resolves, cell readable, clean-recording is the drive's own --clean)
+GCTRL  ok  drift control: 36 vs 36 members, two distinct no-cripple drives
+DRIFT  n=5 [G1,T9,W1,W2,W3]
+  DRIFTMEM G1           movedTokens=1  [commits]
+  DRIFTMEM T9           movedTokens=0  []
+  DRIFTMEM W1           movedTokens=3  [absolute,bare,tailLoss]
+  DRIFTMEM W2           movedTokens=1  [band]
+  DRIFTMEM W3           movedTokens=0  []
+
+ARM t8-ceiling-blind
+  reached=7 (v2) · verdictReached=2 (v1) · named=4 · fullyNamed=1 · fullyCaptured=0 · underReported=6
+  reached=[G1,T2bKP,T2bSAT,T8CEIL,T8KP,T9,W1]
+  reachedArmCaused=4 [T2bKP,T2bSAT,T8CEIL,T8KP]  (CEILING — the control can only under-state drift)
+  reachedDrift=3 [G1,T9,W1]  (moved with no arm in play)
+  verdictReached=[T2bKP,T8KP]
+  underReported=[G1,T2bKP,T8CEIL,T8KP,T9,W1]  =  membership[G1,T9,W1] + tokens[T2bKP,T8CEIL,T8KP]   (RAW — drift included)
+  underReportedArmCaused=[T2bKP,T8CEIL,T8KP]  =  membership[] + tokens[T2bKP,T8CEIL,T8KP]
+  tokensTyped=[]   (quoted OF a member, never emitted BY that member)  ·  typedRecordingKey=[]  (superseded, recording-wide)
+    G1           mentioned=false moved=1  [commits] named=[] captured=[] typed=[]
+    T2bKP        mentioned=true  moved=2  [misses,rows] named=[] captured=[] typed=[]
+    T2bSAT       mentioned=true  moved=1  [key] named=[key] captured=[] typed=[]
+    T8CEIL       mentioned=true  moved=1  [key] named=[] captured=[] typed=[]
+    T8KP         mentioned=true  moved=2  [misses,rows] named=[] captured=[] typed=[]
+    T9           mentioned=false moved=0  [] named=[] captured=[] typed=[]
+    W1           mentioned=false moved=2  [absolute,bare] named=[] captured=[] typed=[]
+
+GREACH ok  re-key non-vacuity: 1/1 arms: v2 reach strictly wider than v1 (t8-ceiling-blind 2→7)
+GCTX   ok  member-context gate: gated=1 ≤ loose=6; the context gate removes 5 token namings
+GREFUSE ok  refusal: VACUOUS in this drive — 0 unreadable recordings and 0 unmapped arms, so nothing was given the chance to refuse
+GTYPED ok  typed-token key strictness: recording-wide key ⊆ member key; member key is stricter by 0 token(s)
+GDRIFTB ok  exclusion bites: 1/1 arms narrowed by the exclusion (t8-ceiling-blind 7→4)
+GDRIFTR ok  drift refusal: VACUOUS in this drive — a readable control pair was given, so nothing was given the chance to refuse
+
+GRADE  armsGiven=1 graded=1 unreadable=0 unmapped=0 reachedCells=7 (mapped arms 7) fullyNamedCells=1 fullyCapturedCells=0 underReportedCells=6 (membership 3 + tokens 3)
+GRADEA drift-excluded over mapped arms (CEILING): reachedCells=4 underReportedCells=3 (membership 0 + tokens 3)   ·  raw was reachedCells=7 underReportedCells=6 (membership 3 + tokens 3)
+TYPED  tokensTyped=[] n=0  ·  superseded recording-wide key=[] n=0
+STAMP  OK
+GCOMP  ok  coverage: all 1 arm recording(s) readable
+GCONF  RED §3.3/§3.4 conformance: v2 map DECLARES conformance but underReportedArmCaused = 3 cell(s): membership 0 [] + tokens 3 [T2bKP,T8CEIL,T8KP] — §3.4 calls this a DEFECT, not a stylistic matter
+
+MAPVERDICT/1 RED gates=13 red=[GCONFORM]
