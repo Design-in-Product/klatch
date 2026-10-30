@@ -350,3 +350,91 @@ All 4 of this fire's commits present, all authored `Theseus (Klatch)`.
 
 **VERIFY OK.** Nothing claimed delivered — the wrapper owns delivery; this records what is on
 `origin/main`.
+
+---
+
+## 19:47 — STOP fire resumed (model: claude-opus-5)
+
+Third fire of the day for this seat. One inbound, arrived **after** the WORK wrap: Daedalus's 10-29
+STOP memo in `b92bd98b`. Identified by commit author and `--name-only` rather than by mtime (the
+wrapper restamps those) — the 4 commits above my `a1abf9ba` are Calliope's, Daedalus's (3) and
+Iris's; exactly one touches `docs/mail/` and exactly one routes an item here. Read at open, before
+any work. Tree clean at open, `REV 296df7c1`.
+
+**His §1, routed here:** a cripple map keyed on the verdict sets cannot name a **reached** `[MEAS]`
+leg, because a `[MEAS]` leg has no verdict to move. He measured it over his 3 arms (18 cells, 4
+reached, 2 nameable). The question left for this seat is whether the same deficiency sits in my own
+filed maps at their own filing rev.
+
+## 19:5x — it does, and worse: 0 of 3
+
+Graded off recordings **already committed** in `unit-464t2b-sat-2026-10-29/` — no re-drive, no
+instrument, no subject touched. `T2bSAT`'s own `detail:` line, token by token, against the clean
+drive:
+
+```
+SUMMARY arms=6 reached=5 unmoved=1
+GRADE   filedMaps=3 reached=3 fullyNamed=0 underReported=3
+```
+
+`t9-insensitive-leg` is the only arm of the six that does not reach the leg — which is also the one
+arm he reports byte-identical across revs, the same fact arrived at from the other side. All three
+filed maps reach it; **none** names its movement completely. Two never mention it; the third names 2
+of the 5 tokens that moved. His maps under-report; mine under-report on every row. Both sets were
+written the same week against the same convention, so the convention failed, not the care taken.
+
+**The second defect, which his §1 does not cover.** The one map that mentions the leg writes
+`pinned=true` where the cell prints `pinArmPinned=true` — a token **typed from the intent** instead
+of **captured from the output**. Re-key the convention to "name reached members" and that row still
+passes authoring and still fails comparison, because it was never keyed on the subject; it was keyed
+on my spelling of it. Routed to him as a spec input for the convention item he is holding: the cure
+wants both halves, and the captured half is what makes a machine-checked `legs=`/`preds=` comparator
+possible at all.
+
+**His convention applied to my own file.** COMPLETENESS STAMP above the three recorded tables in
+`PRE-REGISTRATION.md` — filing rev `d1ac7354`, `legs=22 preds=8` at filing against `legs=26 preds=10`
+at the grading drives, deficiency named, tables unchanged.
+
+## 19:5x — two defects in this fire's own grading, recorded not replaced
+
+1. **The first tokenizer split on whitespace**, which breaks `selector=max(pins first)` into two and
+   invents a 12th token that does not exist. It reported `movedTokens=4` for `t2b-sat-wrong-arm`; the
+   true figure is **3**. Re-keyed onto ` <ident>=` boundaries, with a self-test that exits `3` unless
+   `selector` round-trips whole. The self-test's own printed prose still said "12 tokens expected,
+   got 11" — the 12 was the artifact. The **gate** is on `selector` and is sound; only the sentence
+   beside it was stale. A guard and the prose beside it fail separately.
+2. **The first grading counted a token as named if the word appeared anywhere in the map's
+   section** — scoring `selector` named under `t2b-sat-wrong-arm` and `key` named under
+   `t8-ceiling-blind`, both off ordinary prose ("the **shipped** key rather than a copy of it").
+   Gating the match on a line that mentions the leg took both to zero. An over-reporting grader is
+   the more dangerous direction here: it manufactures the conclusion that the maps were fine.
+
+Also: the stamp insert shifted every map section down by 10, so the addresses the grading run printed
+(`L98–108`/`L109–122`/`L123–133`) went stale the moment it landed. Re-derived to
+`L108–118`/`L119–132`/`L133–143`, and the addendum says why rather than quietly carrying the new ones.
+
+## 19:5x — drain, and what is for xian
+
+**Drain.** One inbound, read at open, answered in the same fire, its routed item taken and graded.
+Cross-repo mailboxes not re-walked: this morning's walk over 33,413 files found nothing owed, and no
+commit since has brought mail for this seat. Thread left open in `docs/mail/` deliberately — open
+items on both seats and the stop/re-scope call is xian's.
+
+**Declined rather than claimed, deliberately.** Re-keying the map convention plus the machine-checked
+stamp comparator is unclaimed, has no blocker, and he explicitly offered it. This fire would not
+finish it, and claim-and-sit is worse than leaving it visible — left with him, with the
+captured-token finding as a spec input, and an offer to take it at the next WORK fire if he prefers.
+
+**Question-box check (STOP procedure §4):** nothing filed this fire. The one thing here with a
+question shape — whether a `[MEAS]` leg should be able to assert at all — is an ordinary work
+question on an open thread, not a question-box question, and it is already with xian and Daedalus
+through `docs/mail/`. A no, considered rather than skipped.
+
+**For xian: no new axis and no new timing.** The standing line is byte-identical to this fire's own
+WORK entry, and `T2b`'s countdown is the same **3** — re-read off `drive2.clean.out` this fire rather
+than carried forward. Adopted reading remains **FIRED at 12 against N=5**. Needs-you count unchanged
+at 4.
+
+**Not run this fire:** `npm test`, `npm run typecheck`, the sweep. `git status --porcelain --
+packages/ scripts/` **empty** at open and at close — every path written is under `docs/`. No
+instrument built and no subject touched, so there was nothing to drive. Nothing left running.
