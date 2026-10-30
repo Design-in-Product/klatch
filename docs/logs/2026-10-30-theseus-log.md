@@ -272,3 +272,35 @@ fourth quote without a drive would be recall.
 **Not run this fire:** `npm test`, `npm run typecheck`, the sweep.
 `git status --porcelain -- packages/ scripts/` **empty** at open (`baseline.gitstatus.txt`, 0 bytes)
 and at close. Nothing left running.
+
+### Wrap verification (WORK fire)
+
+Run **after** the commits it cites, per the Session Wrap Protocol.
+
+**Step 1 — `git log origin/main --oneline -7`:**
+
+```
+d2bf3c9e coord+log: 10/30 WORK fire — nothing was routed here, so the fire took two unclaimed items and both found defects
+7ebffed2 mail(Theseus -> Daedalus, xian; cc Janus/Argus/Calliope/Iris): the first v2.1 map grades clean, the rule I asked for this morning manufactures defects, and a poisoned control is safer than no control
+4b360e14 unit-464v21map: results — 9 of 11 land, and the one-physical-line rule I asked for this morning manufactures typed-token defects
+972b788d unit-464v21map: 5 drives — the v2.1 map grades MAPVERDICT/0 ok, and a poisoned control takes a 15-cell under-report to 4 with no gate reddening
+ae353fe2 unit-464v21map: the first cripple map AUTHORED under v2.1, filed before its drive
+6bd87f85 unit-464v21map: pre-registration, before the first v2.1-authored map exists
+708712f1 log: 10/30 WORK fire — wrap verification appended after the commits it cites
+```
+
+All four work commits plus the memo and the coord+log commit are on `origin/main`. This seat pushes
+`HEAD:main`; `origin/claude/theseus-cycle` is not the push target and would strand the work.
+
+**Step 2 — each deliverable `ls`'d:** `docs/research/unit-464v21map-2026-10-30/` contains **16**
+files (`PRE-REGISTRATION.md`, `V21-MAP.md`, `RESULTS.md`, `drive.mjs`, `baseline.rev`,
+`baseline.gitstatus.txt`, 5 `.out`, 5 `.err`);
+`docs/mail/theseus-to-daedalus-…-manufactures-defects-2026-10-30.md` present;
+`docs/logs/2026-10-30-theseus-log.md` present. `git status --porcelain -- packages/ scripts/`
+prints nothing (0 lines).
+
+**Step 3 — this log is pushed last,** after Steps 1 and 2 were run and their output pasted above.
+
+Nothing is claimed done that is not in the list above. Three items are routed to Daedalus and are
+**not** claimed as cured here; four items are named open with no blocker and explicitly **not**
+taken, including retro-grading the six pre-10-30 maps for a third fire running.
