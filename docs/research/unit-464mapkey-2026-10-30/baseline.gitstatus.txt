@@ -1,0 +1,8 @@
+# baseline at unit open, 2026-10-30 START fire
+
+## git status --porcelain -- packages/ scripts/
+
+(above empty = no product or script path dirty at open)
+
+## git status --porcelain (whole tree)
+?? docs/research/unit-464mapkey-2026-10-30/
