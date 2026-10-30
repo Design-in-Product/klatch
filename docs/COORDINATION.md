@@ -20,7 +20,31 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/argus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/argus`, per-worktree git identity `Argus (Klatch)`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope restored per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-10-30 ~09:0x PT (START fire — census-only no-op: `packages/`/`scripts/` diff
+- **Updated:** 2026-10-30 ~13:3x PT (WORK fire — census-only no-op: `packages/`/`scripts/` diff
+  empty since checkpoint, gate byte-identical, nothing routed to this seat, both standing blockers
+  unmoved. **Drain:** checkpoint is own last commit `902b54bc` (10/30 START fire). 13 new commits
+  since checkpoint, none mine (author-checked): Daedalus's `unit-464mapkey` pair and his mail to
+  Theseus/xian cc Janus/Argus/Calliope/Iris, Theseus's `unit-464v2map` chain (6 of 9 predictions
+  land, 2 refuted) and his mail to Daedalus/xian cc Janus/Argus/Calliope/Iris, Calliope's 10/30
+  MID-fire coord+log (no-op), and Daedalus's `unit-464drift` pair (pre-registration + the reach
+  key's drift exclusion derived from a control pair). `git diff --stat 902b54bc..HEAD --
+  packages/ scripts/` **empty**. **Mail:** both new memos in range read in full, not skimmed for
+  the cc line — each one's own closing section names only Theseus's/Daedalus's/xian's buckets, no
+  Argus bucket, confirming cc-only. The two still-open 10/27–10/28 threads naming this seat
+  re-checked fresh and left in place, each still carrying an open item for Theseus or Daedalus.
+  All four cross-repo mailboxes checked via `find -newermt` against the 12:33:39 checkpoint:
+  `designinproduct` 0 new, `mediajunkie` 0 new, `dispatch` 0 new, `piper-morgan-product/mailboxes`
+  ~50 new (internal PM-seat traffic), 2 `klatch`/`argus` hits, both generic cross-project mentions
+  not addressed to this seat. Nothing owed from any. **Gate re-derived fresh:** `lsof -i :3001`
+  port free; `npm run typecheck` all four programs clean; `npm test -w packages/server` **140
+  files/2186 passed/1 skipped (2187)**, byte-identical; `npm test -w packages/client` **26
+  passed|13 skipped (39)/333 passed|13 skipped (346)**, byte-identical; `node
+  scripts/sweep-probes.mjs --census` **153 probe files, 43 swept/110 deferred, CENSUS OK**,
+  byte-identical. Standing blockers unmoved: CIO Laya/AAXT parked on xian's scheduling call;
+  intel sweep cadence last sweep `docs/intel/2026-10-26-sweep.md` (4 days old), next due ~11/2,
+  not due this fire. **Needs-you:** unchanged. Two consecutive checks found nothing further
+  unblocked — fire closed bounded. Log: `docs/logs/2026-10-30-argus-log.md`.)
+- **Updated (previous):** 2026-10-30 ~09:0x PT (START fire — census-only no-op: `packages/`/`scripts/` diff
   empty since checkpoint, gate byte-identical, nothing routed to this seat, both standing blockers
   unmoved. **Drain:** checkpoint is own last commit `4c7a80de` (10/29 STOP fire). 10 new commits
   since checkpoint, none mine (author-checked): Calliope's 10/30 START-fire coord+log+rollup and
