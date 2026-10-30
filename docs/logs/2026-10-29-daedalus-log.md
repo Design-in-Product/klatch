@@ -340,3 +340,135 @@ exists because an entry of mine once landed in Argus's section by anchoring on a
 in more than one of them.
 
 Nothing is claimed as delivered beyond what the commands above print; the wrapper owns delivery.
+
+---
+
+## 17:17 — Session resumed (STOP fire, Opus 5)
+
+Scheduled duty-cycle fire. Wrapper synced the worktree to `origin/main` immediately before the fire.
+
+### Briefing
+
+`git log --format='%h %an ...'` first, with `%an`, because `--oneline` hides the author. The three
+commits at my worktree head — `ec0db7f7`, `a1abf9ba`, `a7c44cb7` — are **Calliope's** and
+**Theseus's**, all carrying "10/29" subjects that read like my own. My last commit before this fire
+was `271d6ef9` at 13:32.
+
+`docs/COORDINATION.md` read. `docs/mail/` read on arrival. **One memo new to this seat:**
+`theseus-to-daedalus-…-t2bs-arms-are-graded-and-two-of-your-three-filed-maps-moved-today-2026-10-29.md`,
+committed 14:58 — after my MID fire closed, so this is the first fire that could see it. Read in
+full, acted on in this same turn.
+
+### What it routed, and what this fire did
+
+His §5 "Yours, new, if you want it": stamp this seat's 10-29 MID cripple maps with their rev and
+leg/pred counts, and re-drive `t8-unpinned` and `t8-ceiling-blind` against them. Taken.
+
+Unit: `docs/research/unit-464t8-mapdecay-2026-10-29/`. Predictions filed in their **own commit**
+(`8b5f570f`) before the instrument was written to grade them; the work in `17d57504`; the memo in
+`b92bd98b`. 7 drives, 7 `.err`, 0 non-empty.
+
+**1 — His §3 reproduces under my own drive, at a different rev.** He drove at `2cf37348`, I drove at
+`ec0db7f7`:
+
+```
+drive1.clean                      VERDICT/1 RED legs=26 red=[T2b]             refused=[T8] preds=10 refuted=[P7,P2]
+drive2.redrive-t8-ceiling-blind   VERDICT/1 RED legs=26 red=[T2bKP,T2b,T8KP]  refused=[T8] preds=10 refuted=[P7,P2]
+drive3.redrive-t8-unpinned        VERDICT/1 RED legs=26 red=[T2b,T8]          refused=[]   preds=10 refuted=[P7,P2,P11,P9,P12]
+drive4.redrive-t9-insensitive-leg VERDICT/1 RED legs=26 red=[T2b,T10]         refused=[T8] preds=10 refuted=[P7,P2]
+```
+
+`+T2bKP`, `+P12`, `t9` identical — and `t9` checked at the figures its map named, compared as
+strings, not read by eye: both detail lines byte-identical including `n=3` and `registered=5`.
+
+**2 — The stamp.** `unit-464t8-2026-10-29/cripple-maps-predicted.md` now carries a COMPLETENESS
+STAMP: filing rev `df8c3b5f`, cell size at filing `legs=22 preds=8`, both deltas, pointer to the new
+unit. The three recorded tables are unchanged; the stamp sits above them.
+
+**3 — The finding.** 18-cell hand reading filed first (6 new members × his 3 arms), then an
+instrument driven to grade the hand reading: **18 of 18 match**, and
+
+```
+GSUBSET ok  verdict movement is a subset of detail movement: cells=18 verdictMoved=2 detailMoved=4 violations=[] refusedCells=0 vacuous=false
+MEAS   under-reported by a verdict-only map: 2 of 4 reached cells [t8-ceiling-blind/T2bSAT,t8-unpinned/T2bSAT]
+```
+
+Four cells are reached; a verdict-keyed map can name two. Both missing ones are `T2bSAT`, a `[MEAS]`
+leg with no verdict to move. His §3 established that a filed map goes **stale**; this is a second,
+independent deficiency present **at the filing rev**, and invisible to exactly the
+re-drive-and-compare his §3 prescribes. Stale over-reports, verdict-key under-reports.
+
+**4 — Went looking for a hole in his new `T2bORACLE`; there isn't one.** Predicted in writing, before
+driving, that it would not move under `t8-ceiling-blind` **and that this would be correct**: the
+oracle recomputes the token (count-above, threshold at N) and never calls `ceilingKey`; the guard is
+`T2bKP`'s to grade, which it does, including `pin-arm-above-ceiling`. Recorded as a landed
+prediction rather than dropped — a non-moving leg nobody keyed on reads the same as one that stopped
+working.
+
+### The defect in my own instrument, and the gate that was green over it
+
+The first version of `map-decay-footprint.mjs` listed **six** of the cell's seven printed status
+labels and omitted `REF `, so it was blind to every REFUSED leg — live, that is `T8`, the leg this
+whole round is about. Caught by its own printed count disagreeing with the cell's: `29` against
+`22+8=30`, `35` against `26+10=36`. Labels then re-derived from the cell's own branch literals
+(`:1678` legs, `:1684` predictions) rather than guessed.
+
+The carry-forward is the gate, not the typo. **`GDELTA` was green under the blindness and still is:**
+
+```
+drive7, --cripple=labels-miss-refused:
+GDELTA ok  ... cell=6 reader=6
+GABS   RED ... drive7.clean-final.out:reader=29/cell=30 drive1.clean.out:reader=35/cell=36 misses=[both] labels=6
+```
+
+A blind reader is off by the same constant in both recordings, so the error cancels in a
+**difference**. A delta gate checking my population against the subject's own delta could not have
+failed. `GABS` — the absolute count per recording — catches it. The `KP` row that reddens is keyed on
+`ALL_STATUS_LABELS`, never on the crippled list, because a row built from the same list the reader
+uses tests the crippled list against itself. `GHOOK` asserts the declared cripple has a dispatch
+site, with an absent control that must come back `0`.
+
+`drive5.footprint.out` is **kept** rather than overwritten: it is the recording in which `GDELTA` is
+green under the blindness, which is the evidence for the claim.
+
+One sentence of my own pre-registration's rationale was wrong — I wrote that the reader over-counted
+by also matching refuted-prediction lines; it under-counted, by one, for the reason above. Corrected
+in `RESULTS.md` §4 and flagged above the unchanged rows in `predicted.md`, not edited into them. All
+five `PRED` rows land.
+
+Two further sentences I wrote into `RESULTS.md` were wrong on first draft and were caught by running
+the comparison instead of reasoning about it: a claimed `registered` 4 → 5 drift across the two revs
+(it is 4 at both revs clean, 5 at both under the arm — the arm's own stub), and the mechanism I gave
+for it. Both re-derived from the recordings before the commit.
+
+### Mail
+
+Reply filed and pushed to `main`, own commit `b92bd98b`:
+`docs/mail/daedalus-to-theseus-cc-xian-janus-argus-calliope-iris-your-stamp-item-is-done-and-a-verdict-keyed-map-under-reports-at-its-own-filing-rev-2026-10-29.md`.
+Thread **left open** in `docs/mail/` (not moved to `read/`): open items on both sides — his `C3`,
+`xcheck-wrong-figure`, `G7`; mine the map-convention re-key, named claimable rather than claimed.
+
+### Budget
+
+`date` run, not estimated from effort: fire opened **17:17**, the item plus 7 drives and the memo
+done by **17:3x**.
+
+**Drain:** *Done, bounded* (Klatch is a recorded exception to the fleet duty-cycle-drain baseline;
+CLAUDE.md — checklist, act, write it down, stop). *Deferred, each with a named blocker:* **collapsing
+the population cell's inline reader into the lib** — blocker unchanged, wants a byte-identity gate
+against that cell's 13 recorded drives, its own unit; **the SDK major bump** `0.122 → 1.3.0` —
+blocker unchanged, wants its own unit with the streaming path driven; **the 8 non-zero exits and the
+2 `spawn`-hazard instruments from Round 453** — unchanged, neither seat's. **Not taken, no blocker,
+named claimable:** re-keying the cripple-map convention so a map names *reached* members rather than
+*verdict* members, with the `legs=`/`preds=` stamp machine-checked at compare time. **Needs-you
+unchanged at 1:** whether the track stops and re-scopes — xian's; the `T2b` countdown at distance 3
+is now surfaced in the standing `COORDINATION.md` line and §4 of the memo so it is visible before
+that call rather than after it.
+
+**Question-box check** (STOP procedure step 4): nothing this fire. The one thing I'd want to ask
+xian is the stop/re-scope question, and that is ordinary work routed through the attention item, not
+a question-box question.
+
+**Not run this fire:** `npm test`, `npm run typecheck`, the sweep.
+`git status --porcelain -- packages/ scripts/` **empty** (verified), so every commit is `docs/`-only.
+Nothing left running.
