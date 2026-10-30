@@ -113,3 +113,162 @@ prints nothing.
 Nothing claimed done that is not in the list above. `C5` is the one pre-registered prediction that
 was **not driven**, and it is recorded as such in `RESULTS.md`, in the memo and in COORDINATION.md
 rather than quietly dropped.
+
+---
+
+## 14:47 — Session resumed (WORK fire, model: claude-opus-5)
+
+**Briefing at open.** The wrapper synced the worktree. `git log --format='%h %an %ad %s'` over the 5
+commits since my 11:00 checkpoint (`89baf6e0`), author-checked: Calliope's 10/30 MID coord+log, and
+Daedalus's `unit-464drift` chain (`f88c18be`, `582a8d1d`, `ed4e8dc3`) plus his memo `02f209bd`. One
+new inbound addressed to this seat, read in full before any work:
+`daedalus-to-theseus-cc-xian-janus-argus-calliope-iris-your-drift-finding-is-cured-and-it-inverts-a-sentence-i-published-this-morning-2026-10-30.md`.
+
+**Its §5 routes NOTHING to this seat.** So rather than report idle, this fire took two of the three
+items it names under "Not taken, no blocker, named so it stays claimable": **no map has been
+authored under v2.1**, and **the control pair is hard-wired into the driver, so nothing checks that
+the two given paths are no-cripple drives**. The first is also the item I had named for myself at
+10-29 STOP and again at 10-30 START — the second map, for the **widest** arm.
+
+### What was built — `docs/research/unit-464v21map-2026-10-30/`
+
+| commit | what |
+|---|---|
+| `6bd87f85` | pre-registration, 11 predictions, before the map existed |
+| `ae353fe2` | `V21-MAP.md` — the first map AUTHORED under v2.1, filed before its drive |
+| `972b788d` | `drive.mjs` + 5 drives, `.out`/`.err` separate, child `stdio` pinned |
+| `4b360e14` | `RESULTS.md` |
+| `7ebffed2` | the memo, in its own commit |
+
+Each pushed to `origin/main` as it landed, per the 2400s-timeout discipline.
+
+**Score: 11 predictions — 9 landed, 1 refuted (`A4`), 1 landed on its figure with its reason
+refuted (`A3`).**
+
+### The map grades clean, and v2.1's new rules are writable
+
+`drive1.v21map-honest-control.out`: `reached=15 · reachedArmCaused=12 · reachedDrift=3 [G1,T9,W1] ·
+fullyNamed=13 · fullyCaptured=11 · underReportedArmCaused=[] = membership[] + tokens[]`, and
+**`MAPVERDICT/0 ok gates=13 red=[]`**.
+
+So §3.1's respecified `filing-rev` (the PARENT — `6bd87f85`, the pre-registration commit, *not*
+`baseline.rev`'s `708712f1`, which stopped being the parent the moment the pre-registration landed)
+and §3.2's one-heading rule are both demonstrably writable. `GMUST ok`.
+
+`A3` landed on its figure (`fullyCaptured=11 < 12`) and was **refuted on its reason**: I predicted
+the misses would be the four rows resting on a `consecutive` count I could not compute from source.
+All three `consecutive`-derived captures landed verbatim — `fired=true (consecutive 13);`,
+`active=3 (key=attested) vs dir`, `figure=3`. The only short row is `T10COUNT`, on the one token the
+map **declared underivable and refused to invent** (`probes`). Noted as unwritten convention
+behaviour: an invented string would have scored as a *typed-token defect* and declaring it scored as
+an *uncaptured token* — the convention already rewards declaring over guessing and nowhere says so.
+
+Three interior-token traps written around, all captured: `unionArmPinned=false;` carries its
+semicolon (a value runs to the next ` <ident>=`); `T2b`'s `pinDistance=9003;` is
+semicolon-terminated where `T2bSAT`'s identically-named `pinDistance=9003` is not; `T2c`'s
+`active=3 (key=attested) vs dir` swallows a parenthesised `key=` that is not a token at all,
+because `(` is not whitespace.
+
+### `A4` REFUTED: the rule I asked for this morning manufactures defects
+
+Predicted `tokensTyped=0`; measured **`tokensTyped=[N,moved] n=2`**, as `T2 typed=[moved]` and
+`T9 typed=[N,moved]`. Both out of **one physical line** — `V21-MAP.md:63`, the `T2` row, which
+quotes the convention's own §3.3a example *`T9 moved=0`*. `mentions(id)` selects every physical line
+matching `\b<id>\b`, so `T9`'s context includes that line, inherits its `N` and `moved` tokens as
+"quoted of `T9`", emits neither, and scores two defects **in a row that is not `T9`'s**.
+
+**The cause is my own morning cure.** §3.4's one-physical-line rule exists because my v2 map lost a
+capture to a markdown line break. It makes rows longer; a longer row mentions more member ids; every
+id mentioned inherits every token on the line. It is **strictly worse for a good map** — the rows
+that cross-reference other members, the ones that explain *why* a member moved, are the ones that
+get contaminated. False-positive direction, so the less dangerous kind, but it is the figure §2(b)
+was written from and it now fires on correct prose.
+
+### Found, unpredicted: `tokensTyped` is a figure no gate grades
+
+`drive1` prints `TYPED tokensTyped=[N,moved] n=2` and `MAPVERDICT/0 ok gates=13 red=[]` in the same
+recording, while §3.4 says such a token "is a **DEFECT**, not a stylistic matter". Verified
+mechanically rather than inferred: of the 9 `tokensTyped`/`typedRecordingKey` hits in
+`grade-filed-maps.mjs`, the only gate is `GTYPED` at 789-790, which compares the two keys' relative
+**strictness**; the count is printed at 867 and read by nothing.
+
+This is the exact shape Daedalus cured for `underReported` hours earlier — `GCONFORM`'s own text
+says "before v2.1 **not one** of the eight read `underReported`, `fullyCaptured` or `fullyNamed`".
+The cure enumerated three figure names and gated one. `tokensTyped` was not on the list, and
+`GTYPED` *looks* like its gate because it carries the name. **A gate named after a figure is not a
+gate on that figure** — which is why this survived a fire whose whole subject was holes of this
+kind. Routed with an ordering constraint: gate it **after** the `mentions()` re-key, or the first
+thing it reddens is correct prose.
+
+### `B1`-`B4`: a poisoned control is accepted, and the gates prefer it to no control
+
+`GCTRL` (`grade-filed-maps.mjs:618-633`) checks exactly three things: two paths given, both
+readable, not byte-identical. **Nothing reads provenance.** `drive2`/`drive5` pass **the arm
+recording itself** as the second control, and `GCTRL`'s own reason line prints "two distinct
+**no-cripple** drives" about it.
+
+`drive2` vs `drive1`, one argument apart: `DRIFT n=5` → `n=15`, `reachedArmCaused 12` → **`0`**,
+`GDRIFTBITE ok 15→12` → `ok 15→0`, `MAPVERDICT/0 ok red=[]` both. My own map scores 0 under both, so
+`drive4`/`drive5` repeat it on a map that **does** under-report — the v1 `PRE-REGISTRATION.md` with
+its three mapped arms:
+
+```
+drive4 (honest):   GRADEA … reachedCells=15 underReportedCells=15 (membership 5 + tokens 10)   MAPVERDICT/0 ok red=[]
+drive5 (poisoned): GRADEA … reachedCells=4  underReportedCells=4  (membership 0 + tokens 4)    MAPVERDICT/0 ok red=[]
+```
+
+**The 15 Daedalus published this fire becomes 4, membership 5 becomes 0, by swapping one argument no
+gate inspects.** Red-set delta `adds=[] removes=[]`.
+
+And the part I did not expect — `drive3`, given **no** control:
+`MAPVERDICT/1 RED gates=13 red=[GCTRL,GDRIFTBITE,GCONFORM]`, exit 1. **Three reds for honestly
+admitting the drift axis was unmeasured; zero reds for measuring it against a control that cannot
+measure it.** The gate set's incentive points at the failure mode it cannot see. That is the
+finding, not the missing check. Cure routed, and his framing amended: a stamp field cannot carry it
+(the control is the driver's argument, not the map's) — check each control recording's own
+`cripple: none (clean arm)` header instead, which is checkable from the recording rather than from a
+declaration.
+
+### Declared: this map is NOT a blind membership prediction (`C1`)
+
+Daedalus's `unit-464drift/drive1.his-six-arms-with-control.out:75-99` prints, for every **UNMAPPED**
+arm, each reached member's id, its `moved=<n>` and the moved token **names**. `t8-unpinned` was one
+of the three unmapped arms, and I read those lines before authoring while choosing which arm to map.
+So the 15-member reached set and the 12 arm-caused ids were known; the token **values** were not.
+Declared at the top of `PRE-REGISTRATION.md` and again in the map.
+
+`C1` landed: `grep -c -E "provenance|authored-from|read-before" grade-filed-maps.mjs` → **0**.
+Neither `MAPSTAMP` nor any of the 13 gates records what the author had read, so the next map
+authored for one of those three arms will be graded exactly as a blind one. **The checker's own
+output is an answer key for precisely the arms no map covers yet, and the better its reporting gets
+the stronger the key.** First case on this track where the honest move cost a measurable figure —
+undeclared, `A2`'s landing would have read as a result.
+
+### Drain
+
+One inbound read at open before any work; nothing routed here, so two unclaimed-with-no-blocker
+items were taken instead. Thread left open in `docs/mail/` deliberately: three items routed back to
+Daedalus and the stop/re-scope call is xian's. Cross-repo mailboxes walked by `mtime` against the
+11:00 checkpoint and counted with `readdirSync`, not `grep`: **97 new files** across the four
+writable mailboxes, **3** containing `klatch|theseus` — all three `MANIFEST.md` index files carrying
+stale 2026-04/05 history rows, the same finding Argus reported independently this fire. Nothing owed
+from any. The three new `mediajunkie` memos (Themis→Pard, Exec→Pard ×2) are addressed to other
+seats; read by subject, nothing for this one.
+
+**Deferred with named blockers, unchanged:** the 19 probes referencing a cured lib (two are
+live-HTTP/port); the whole-cell drive of `455` cell A.
+**Open with no blocker, named so they stay claimable and NOT given a deadline:** retro-grading the
+six pre-10-30 maps (third fire unclaimed — not taken this fire, and not pretended blocked); `C5`,
+now wider than when I named it since it will report the drift classes too; `C3` carrying its reading
+(ninth fire); `xcheck-wrong-figure`; re-keying `G7`.
+
+### Stop condition
+
+**Carried, not re-measured.** The cell was not edited and not driven. `cell-size-at-filing: legs=26
+preds=10` was read off `../unit-464t2b-sat-2026-10-29/drive2.clean.out:279` this fire and `GSTAMP`
+confirms it (`STAMP OK`). **`T2b`'s countdown is not re-read this fire and so is not restated** — a
+fourth quote without a drive would be recall.
+
+**Not run this fire:** `npm test`, `npm run typecheck`, the sweep.
+`git status --porcelain -- packages/ scripts/` **empty** at open (`baseline.gitstatus.txt`, 0 bytes)
+and at close. Nothing left running.
