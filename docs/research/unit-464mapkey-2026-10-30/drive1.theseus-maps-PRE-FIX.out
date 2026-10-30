@@ -1,0 +1,64 @@
+=== grade-filed-maps.mjs ===
+map    : ../unit-464t2b-sat-2026-10-29/PRE-REGISTRATION.md
+clean  : ../unit-464t2b-sat-2026-10-29/drive2.clean.out
+cripple: none (clean arm)
+labels : 7 ["MEAS","REF "," ok ","RED ","PREF","LAND","REFU"]
+
+GKP    ok  tokenizer on a real slice: selector round-trips whole; 11 tokens
+GABS   ok  absolute member count: 36 members = legs 26 + preds 10
+GSTAMP ok  stamp: v1-prose declares legs=22 preds=8; recording says legs=26 preds=10 → STALE legs=+4 preds=+2
+
+ARM t2b-sat-wrong-arm
+  reached=8 (v2) · verdictReached=3 (v1) · named=4 · fullyNamed=0 · underReported=8
+  reached=[G1,P12,P13,T2b,T2bKP,T2bSAT,T9,W1]
+  verdictReached=[P12,P13,T2bKP]
+  underReported=[G1,P12,P13,T2b,T2bKP,T2bSAT,T9,W1]
+  tokensTyped=[]   (quoted in the map, never emitted by the cell)
+    G1           mentioned=false moved=1  [commits] named=[] captured=[]
+    P12          mentioned=true  moved=1  [actual] named=[] captured=[]
+    P13          mentioned=true  moved=1  [actual] named=[] captured=[]
+    T2b          mentioned=true  moved=2  [pinArm,pinDistance] named=[] captured=[]
+    T2bKP        mentioned=true  moved=2  [misses,rows] named=[misses] captured=[]
+    T2bSAT       mentioned=false moved=3  [pinArm,pinDistance,selector] named=[] captured=[]
+    T9           mentioned=false moved=0  [] named=[] captured=[]
+    W1           mentioned=false moved=2  [absolute,bare] named=[] captured=[]
+
+ARM t2b-dir-pinned
+  reached=9 (v2) · verdictReached=3 (v1) · named=4 · fullyNamed=0 · underReported=9
+  reached=[G1,P12,P9,T10,T10COUNT,T2b,T2bSAT,T9,W1]
+  verdictReached=[P12,P9,T2b]
+  underReported=[G1,P12,P9,T10,T10COUNT,T2b,T2bSAT,T9,W1]
+  tokensTyped=[]   (quoted in the map, never emitted by the cell)
+    G1           mentioned=false moved=1  [commits] named=[] captured=[]
+    P12          mentioned=true  moved=1  [actual] named=[] captured=[]
+    P9           mentioned=true  moved=1  [actual] named=[] captured=[]
+    T10          mentioned=false moved=2  [refusing,sensitive] named=[] captured=[]
+    T10COUNT     mentioned=false moved=3  [n,refusing,sensitive] named=[] captured=[]
+    T2b          mentioned=true  moved=2  [assertable,pinDistance] named=[] captured=[]
+    T2bSAT       mentioned=true  moved=5  [assertable,freeDistance,pinArmPinned,pinDistance,popMax] named=[assertable,pinDistance] captured=[assertable,pinDistance]
+    T9           mentioned=false moved=0  [] named=[] captured=[]
+    W1           mentioned=false moved=2  [absolute,bare] named=[] captured=[]
+
+ARM t8-ceiling-blind
+  reached=7 (v2) · verdictReached=2 (v1) · named=2 · fullyNamed=0 · underReported=7
+  reached=[G1,T2bKP,T2bSAT,T8CEIL,T8KP,T9,W1]
+  verdictReached=[T2bKP,T8KP]
+  underReported=[G1,T2bKP,T2bSAT,T8CEIL,T8KP,T9,W1]
+  tokensTyped=[]   (quoted in the map, never emitted by the cell)
+    G1           mentioned=false moved=1  [commits] named=[] captured=[]
+    T2bKP        mentioned=true  moved=2  [misses,rows] named=[misses] captured=[]
+    T2bSAT       mentioned=false moved=1  [key] named=[] captured=[]
+    T8CEIL       mentioned=false moved=1  [key] named=[] captured=[]
+    T8KP         mentioned=true  moved=2  [misses,rows] named=[] captured=[]
+    T9           mentioned=false moved=0  [] named=[] captured=[]
+    W1           mentioned=false moved=2  [absolute,bare] named=[] captured=[]
+
+GREACH ok  re-key non-vacuity: 3/3 arms: v2 reach strictly wider than v1 (t2b-sat-wrong-arm 3→8; t2b-dir-pinned 3→9; t8-ceiling-blind 2→7)
+GCTX   ok  member-context gate: gated=4 ≤ loose=13; the context gate removes 9 token namings
+GREFUSE ok  refusal: no unreadable arm in this drive (vacuous here by design — the refusal probe is a separate drive)
+
+GRADE  mappedArms=3 graded=3 refused=0 reachedCells=24 fullyNamedCells=0 underReportedCells=24
+TYPED  tokensTyped=[]  n=0
+STAMP  STALE legs=+4 preds=+2
+
+MAPVERDICT/0 ok gates=6 red=[]

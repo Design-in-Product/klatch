@@ -1,0 +1,123 @@
+=== grade-filed-maps.mjs ===
+map    : ../unit-464t2b-sat-2026-10-29/PRE-REGISTRATION.md
+clean  : ../unit-464t2b-sat-2026-10-29/drive2.clean.out
+cripple: no-refusal
+labels : 7 ["MEAS","REF "," ok ","RED ","PREF","LAND","REFU"]
+
+GKP    ok  tokenizer on a real slice: selector round-trips whole; 11 tokens
+KPSLICE detail: dirLast=464 selfLast=454 popMax=467 pinArm=dir(464) pinDistance=3 freeDistance=13 pinArmPinned=false freeArmPinned=false assertable=true key=>= selector=max(pins first)
+GABS   ok  absolute member count: 36 members = legs 26 + preds 10
+GSTAMP ok  stamp: v1-prose declares legs=22 preds=8; recording says legs=26 preds=10 → STALE legs=+4 preds=+2
+
+ARM t2b-sat-wrong-arm
+  reached=8 (v2) · verdictReached=3 (v1) · named=4 · fullyNamed=0 · fullyCaptured=0 · underReported=8
+  reached=[G1,P12,P13,T2b,T2bKP,T2bSAT,T9,W1]
+  verdictReached=[P12,P13,T2bKP]
+  underReported=[G1,P12,P13,T2b,T2bKP,T2bSAT,T9,W1]  =  membership[G1,T2bSAT,T9,W1] + tokens[P12,P13,T2b,T2bKP]
+  tokensTyped=[]   (quoted OF a member, never emitted BY that member)  ·  typedRecordingKey=[]  (superseded, recording-wide)
+  MEMBER T2bSAT: REACHED moved=3 [pinArm,pinDistance,selector]
+    G1           mentioned=false moved=1  [commits] named=[] captured=[] typed=[]
+    P12          mentioned=true  moved=1  [actual] named=[] captured=[] typed=[]
+    P13          mentioned=true  moved=1  [actual] named=[] captured=[] typed=[]
+    T2b          mentioned=true  moved=2  [pinArm,pinDistance] named=[] captured=[] typed=[]
+    T2bKP        mentioned=true  moved=2  [misses,rows] named=[misses] captured=[] typed=[]
+    T2bSAT       mentioned=false moved=3  [pinArm,pinDistance,selector] named=[] captured=[] typed=[]
+    T9           mentioned=false moved=0  [] named=[] captured=[] typed=[]
+    W1           mentioned=false moved=2  [absolute,bare] named=[] captured=[] typed=[]
+
+ARM t2b-dir-pinned
+  reached=9 (v2) · verdictReached=3 (v1) · named=4 · fullyNamed=0 · fullyCaptured=0 · underReported=9
+  reached=[G1,P12,P9,T10,T10COUNT,T2b,T2bSAT,T9,W1]
+  verdictReached=[P12,P9,T2b]
+  underReported=[G1,P12,P9,T10,T10COUNT,T2b,T2bSAT,T9,W1]  =  membership[G1,T10,T10COUNT,T9,W1] + tokens[P12,P9,T2b,T2bSAT]
+  tokensTyped=[pinned]   (quoted OF a member, never emitted BY that member)  ·  typedRecordingKey=[]  (superseded, recording-wide)
+  MEMBER T2bSAT: REACHED moved=5 [assertable,freeDistance,pinArmPinned,pinDistance,popMax]
+    G1           mentioned=false moved=1  [commits] named=[] captured=[] typed=[]
+    P12          mentioned=true  moved=1  [actual] named=[] captured=[] typed=[]
+    P9           mentioned=true  moved=1  [actual] named=[] captured=[] typed=[]
+    T10          mentioned=false moved=2  [refusing,sensitive] named=[] captured=[] typed=[]
+    T10COUNT     mentioned=false moved=3  [n,refusing,sensitive] named=[] captured=[] typed=[]
+    T2b          mentioned=true  moved=2  [assertable,pinDistance] named=[] captured=[] typed=[]
+    T2bSAT       mentioned=true  moved=5  [assertable,freeDistance,pinArmPinned,pinDistance,popMax] named=[assertable,pinDistance] captured=[assertable,pinDistance] typed=[pinned]
+    T9           mentioned=false moved=0  [] named=[] captured=[] typed=[]
+    W1           mentioned=false moved=2  [absolute,bare] named=[] captured=[] typed=[]
+
+ARM t8-ceiling-blind
+  reached=7 (v2) · verdictReached=2 (v1) · named=2 · fullyNamed=0 · fullyCaptured=0 · underReported=7
+  reached=[G1,T2bKP,T2bSAT,T8CEIL,T8KP,T9,W1]
+  verdictReached=[T2bKP,T8KP]
+  underReported=[G1,T2bKP,T2bSAT,T8CEIL,T8KP,T9,W1]  =  membership[G1,T2bSAT,T8CEIL,T9,W1] + tokens[T2bKP,T8KP]
+  tokensTyped=[]   (quoted OF a member, never emitted BY that member)  ·  typedRecordingKey=[]  (superseded, recording-wide)
+  MEMBER T2bSAT: REACHED moved=1 [key]
+    G1           mentioned=false moved=1  [commits] named=[] captured=[] typed=[]
+    T2bKP        mentioned=true  moved=2  [misses,rows] named=[misses] captured=[] typed=[]
+    T2bSAT       mentioned=false moved=1  [key] named=[] captured=[] typed=[]
+    T8CEIL       mentioned=false moved=1  [key] named=[] captured=[] typed=[]
+    T8KP         mentioned=true  moved=2  [misses,rows] named=[] captured=[] typed=[]
+    T9           mentioned=false moved=0  [] named=[] captured=[] typed=[]
+    W1           mentioned=false moved=2  [absolute,bare] named=[] captured=[] typed=[]
+
+ARM t8-unpinned
+  reached=15 (v2) · verdictReached=4 (v1) · named=0 · fullyNamed=0 · fullyCaptured=0 · underReported=0
+  reached=[G1,P11,P12,P7,P9,T10,T10COUNT,T2,T2b,T2bSAT,T2c,T8,T8CEIL,T9,W1]
+  verdictReached=[P11,P12,P9,T8]
+  underReported=[]  =  membership[] + tokens[]
+  tokensTyped=[]   (quoted OF a member, never emitted BY that member)  ·  typedRecordingKey=[]  (superseded, recording-wide)
+  MEMBER T2bSAT: REACHED moved=3 [freeDistance,pinDistance,popMax]
+    G1           mentioned=false moved=2  [commits,counting] named=[] captured=[] typed=[]
+    P11          mentioned=false moved=1  [actual] named=[] captured=[] typed=[]
+    P12          mentioned=false moved=1  [actual] named=[] captured=[] typed=[]
+    P7           mentioned=false moved=1  [actual] named=[] captured=[] typed=[]
+    P9           mentioned=false moved=1  [actual] named=[] captured=[] typed=[]
+    T10          mentioned=false moved=2  [refusing,sensitive] named=[] captured=[] typed=[]
+    T10COUNT     mentioned=false moved=5  [figure,n,probes,refusing,sensitive] named=[] captured=[] typed=[]
+    T2           mentioned=false moved=0  [] named=[] captured=[] typed=[]
+    T2b          mentioned=false moved=2  [fired,pinDistance] named=[] captured=[] typed=[]
+    T2bSAT       mentioned=false moved=3  [freeDistance,pinDistance,popMax] named=[] captured=[] typed=[]
+    T2c          mentioned=false moved=1  [active] named=[] captured=[] typed=[]
+    T8           mentioned=false moved=2  [assertable,unionArmPinned] named=[] captured=[] typed=[]
+    T8CEIL       mentioned=false moved=3  [distance,pinned,popMax] named=[] captured=[] typed=[]
+    T9           mentioned=false moved=1  [key] named=[] captured=[] typed=[]
+    W1           mentioned=false moved=2  [absolute,bare] named=[] captured=[] typed=[]
+
+ARM t9-insensitive-leg
+  reached=4 (v2) · verdictReached=1 (v1) · named=0 · fullyNamed=0 · fullyCaptured=0 · underReported=0
+  reached=[G1,T10,T9,W1]
+  verdictReached=[T10]
+  underReported=[]  =  membership[] + tokens[]
+  tokensTyped=[]   (quoted OF a member, never emitted BY that member)  ·  typedRecordingKey=[]  (superseded, recording-wide)
+  MEMBER T2bSAT: UNMOVED moved=0 []
+    G1           mentioned=false moved=1  [commits] named=[] captured=[] typed=[]
+    T10          mentioned=false moved=2  [insensitive,registered] named=[] captured=[] typed=[]
+    T9           mentioned=false moved=0  [] named=[] captured=[] typed=[]
+    W1           mentioned=false moved=2  [absolute,bare] named=[] captured=[] typed=[]
+
+ARM t2-dir-only
+  reached=10 (v2) · verdictReached=4 (v1) · named=0 · fullyNamed=0 · fullyCaptured=0 · underReported=0
+  reached=[G1,P13,P6,P7,P8,T10COUNT,T2b,T2bSAT,T9,W1]
+  verdictReached=[P13,P6,P8,T2b]
+  underReported=[]  =  membership[] + tokens[]
+  tokensTyped=[]   (quoted OF a member, never emitted BY that member)  ·  typedRecordingKey=[]  (superseded, recording-wide)
+  MEMBER T2bSAT: REACHED moved=3 [freeDistance,pinArm,selfLast]
+    G1           mentioned=false moved=1  [commits] named=[] captured=[] typed=[]
+    P13          mentioned=false moved=1  [actual] named=[] captured=[] typed=[]
+    P6           mentioned=false moved=1  [actual] named=[] captured=[] typed=[]
+    P7           mentioned=false moved=1  [actual] named=[] captured=[] typed=[]
+    P8           mentioned=false moved=1  [actual] named=[] captured=[] typed=[]
+    T10COUNT     mentioned=false moved=1  [probes] named=[] captured=[] typed=[]
+    T2b          mentioned=false moved=3  [fired,incidental,pinArm] named=[] captured=[] typed=[]
+    T2bSAT       mentioned=false moved=3  [freeDistance,pinArm,selfLast] named=[] captured=[] typed=[]
+    T9           mentioned=false moved=0  [] named=[] captured=[] typed=[]
+    W1           mentioned=false moved=2  [absolute,bare] named=[] captured=[] typed=[]
+
+GREACH ok  re-key non-vacuity: 6/6 arms: v2 reach strictly wider than v1 (t2b-sat-wrong-arm 3→8; t2b-dir-pinned 3→9; t8-ceiling-blind 2→7; t8-unpinned 4→15; t9-insensitive-leg 1→4; t2-dir-only 4→10)
+GCTX   ok  member-context gate: gated=4 ≤ loose=13; the context gate removes 9 token namings
+GREFUSE RED refusal: 3 of 3 published a figure instead of refusing: [t8-unpinned:section,t9-insensitive-leg:section,t2-dir-only:section]
+GTYPED ok  typed-token key strictness: recording-wide key ⊆ member key; member key is stricter by 1 token(s) [t2b-dir-pinned:pinned]
+
+GRADE  armsGiven=6 graded=6 unreadable=0 unmapped=0 reachedCells=53 (mapped arms 53) fullyNamedCells=0 fullyCapturedCells=0 underReportedCells=24 (membership 14 + tokens 10)
+TYPED  tokensTyped=[pinned] n=1  ·  superseded recording-wide key=[] n=0
+STAMP  STALE legs=+4 preds=+2
+GCOMP  ok  coverage: all 6 arm recording(s) readable
+
+MAPVERDICT/1 RED gates=8 red=[GREFUSE]

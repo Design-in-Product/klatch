@@ -110,12 +110,28 @@ Per arm it reports:
 
 | figure | meaning |
 |---|---|
-| `reached` | members whose printed line moved, clean → arm |
+| `reached` | members whose printed line moved, clean → arm (v2 key) |
+| `verdictReached` | members that entered or left a verdict set (v1 key, reported beside it — one key alone is not a measurement) |
 | `named` | reached members mentioned on a line inside that arm's section |
-| `tokensMoved` | captured tokens that changed value on a reached member's line |
-| `tokensNamed` | moved tokens quoted, **in member context**, inside the section |
-| `tokensTyped` | tokens the section quotes that do **not** occur in the arm's recording — defects |
-| `stamp` | `OK` / `STALE legs=+N preds=+M` / `ABSENT` |
+| `fullyNamed` | rows where every moved token's **name** appears in member context |
+| `fullyCaptured` | rows where every moved token appears as the exact captured `name=value` string. `fullyCaptured ≤ fullyNamed` by construction |
+| `underReported` | printed as `membership + tokens` and never as one number: a reached member with no mention at all is a different defect from a mentioned member whose tokens are unnamed, and the v1 key hides exactly one of the two |
+| `tokensTyped` | tokens the section quotes **of a member** that **that member's own line** never emits — defects. Keyed per member, not per recording: another member's identical token will otherwise launder the mis-spelling |
+| `stamp` | `OK` / `STALE legs=+N preds=+M` / `REFUSED` |
+
+Its eight gates, each with a cripple arm that reddens it and only it:
+`GKP` (tokenizer, on a real slice of a recording), `GABS` (absolute member count against the
+recording's own `VERDICT/` counts — an absolute, because a delta cancels a constant blindness in the
+reader taking both counts), `GSTAMP`, `GREACH` (the re-key is non-vacuous), `GCTX` (the
+member-context gate can bite), `GTYPED` (the per-member typed-token key is no looser than the
+recording-wide one it replaced), `GREFUSE` (refusal semantics), `GCOMPLETE` (coverage — a correct
+refusal on an arm it could not read is still an incomplete audit, and these are separate gates
+because the first version of this checker satisfied the former and exited 0 under the latter).
+
+**The two halves of the cure are ordered, not merely both required.** The typed-token check only
+examines rows for members in the *reached* set, so applying §3.4 on top of a verdict-keyed reach
+reports a clean `n=0` on the very row the convention exists to catch. Re-key reach first. Measured:
+`docs/research/unit-464mapkey-2026-10-30/RESULTS.md` §5.
 
 **Refusal semantics.** A missing recording, an unparseable arm section, a recording with no
 `VERDICT/` line, or an absent `MAPSTAMP` yields **`null`, never `0`**, and a non-zero exit. An

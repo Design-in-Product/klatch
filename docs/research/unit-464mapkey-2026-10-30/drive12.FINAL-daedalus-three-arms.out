@@ -1,0 +1,65 @@
+=== grade-filed-maps.mjs ===
+map    : ../unit-464t8-2026-10-29/cripple-maps-predicted.md
+clean  : ../unit-464t8-mapdecay-2026-10-29/drive1.clean.out
+cripple: none (clean arm)
+labels : 7 ["MEAS","REF "," ok ","RED ","PREF","LAND","REFU"]
+
+GKP    ok  tokenizer on a real slice: selector round-trips whole; 11 tokens
+KPSLICE detail: dirLast=464 selfLast=454 popMax=467 pinArm=dir(464) pinDistance=3 freeDistance=13 pinArmPinned=false freeArmPinned=false assertable=true key=>= selector=max(pins first)
+GABS   ok  absolute member count: 36 members = legs 26 + preds 10
+GSTAMP ok  stamp: v1-prose declares legs=22 preds=8; recording says legs=26 preds=10 → STALE legs=+4 preds=+2
+
+ARM t8-ceiling-blind
+  reached=4 (v2) · verdictReached=2 (v1) · named=1 · fullyNamed=0 · fullyCaptured=0 · underReported=4
+  reached=[T2bKP,T2bSAT,T8CEIL,T8KP]
+  verdictReached=[T2bKP,T8KP]
+  underReported=[T2bKP,T2bSAT,T8CEIL,T8KP]  =  membership[T2bKP,T2bSAT,T8CEIL] + tokens[T8KP]
+  tokensTyped=[]   (quoted OF a member, never emitted BY that member)  ·  typedRecordingKey=[]  (superseded, recording-wide)
+  MEMBER T2bSAT: REACHED moved=1 [key]
+    T2bKP        mentioned=false moved=2  [misses,rows] named=[] captured=[] typed=[]
+    T2bSAT       mentioned=false moved=1  [key] named=[] captured=[] typed=[]
+    T8CEIL       mentioned=false moved=1  [key] named=[] captured=[] typed=[]
+    T8KP         mentioned=true  moved=2  [misses,rows] named=[misses] captured=[] typed=[]
+
+ARM t8-unpinned
+  reached=14 (v2) · verdictReached=4 (v1) · named=3 · fullyNamed=1 · fullyCaptured=0 · underReported=13
+  reached=[G1,P11,P12,P7,P9,T10,T10COUNT,T2,T2b,T2bSAT,T2c,T8,T8CEIL,T9]
+  verdictReached=[P11,P12,P9,T8]
+  underReported=[G1,P11,P12,P7,P9,T10,T10COUNT,T2,T2b,T2bSAT,T8,T8CEIL,T9]  =  membership[G1,P11,P12,P7,P9,T10,T10COUNT,T2,T2bSAT,T8CEIL,T9] + tokens[T2b,T8]
+  tokensTyped=[]   (quoted OF a member, never emitted BY that member)  ·  typedRecordingKey=[]  (superseded, recording-wide)
+  MEMBER T2bSAT: REACHED moved=3 [freeDistance,pinDistance,popMax]
+    G1           mentioned=false moved=1  [counting] named=[] captured=[] typed=[]
+    P11          mentioned=false moved=1  [actual] named=[] captured=[] typed=[]
+    P12          mentioned=false moved=1  [actual] named=[] captured=[] typed=[]
+    P7           mentioned=false moved=1  [actual] named=[] captured=[] typed=[]
+    P9           mentioned=false moved=1  [actual] named=[] captured=[] typed=[]
+    T10          mentioned=false moved=2  [refusing,sensitive] named=[] captured=[] typed=[]
+    T10COUNT     mentioned=false moved=5  [figure,n,probes,refusing,sensitive] named=[] captured=[] typed=[]
+    T2           mentioned=false moved=0  [] named=[] captured=[] typed=[]
+    T2b          mentioned=true  moved=2  [fired,pinDistance] named=[fired] captured=[] typed=[]
+    T2bSAT       mentioned=false moved=3  [freeDistance,pinDistance,popMax] named=[] captured=[] typed=[]
+    T2c          mentioned=true  moved=1  [active] named=[active] captured=[] typed=[]
+    T8           mentioned=true  moved=2  [assertable,unionArmPinned] named=[] captured=[] typed=[]
+    T8CEIL       mentioned=false moved=3  [distance,pinned,popMax] named=[] captured=[] typed=[]
+    T9           mentioned=false moved=1  [key] named=[] captured=[] typed=[]
+
+ARM t9-insensitive-leg
+  reached=1 (v2) · verdictReached=1 (v1) · named=1 · fullyNamed=0 · fullyCaptured=0 · underReported=1
+  reached=[T10]
+  verdictReached=[T10]
+  underReported=[T10]  =  membership[] + tokens[T10]
+  tokensTyped=[]   (quoted OF a member, never emitted BY that member)  ·  typedRecordingKey=[]  (superseded, recording-wide)
+  MEMBER T2bSAT: UNMOVED moved=0 []
+    T10          mentioned=true  moved=2  [insensitive,registered] named=[insensitive] captured=[insensitive] typed=[]
+
+GREACH ok  re-key non-vacuity: 2/3 arms: v2 reach strictly wider than v1 (t8-ceiling-blind 2→4; t8-unpinned 4→14)
+GCTX   ok  member-context gate: gated=4 ≤ loose=12; the context gate removes 8 token namings
+GREFUSE ok  refusal: VACUOUS in this drive — 0 unreadable recordings and 0 unmapped arms, so nothing was given the chance to refuse
+GTYPED ok  typed-token key strictness: recording-wide key ⊆ member key; member key is stricter by 0 token(s)
+
+GRADE  armsGiven=3 graded=3 unreadable=0 unmapped=0 reachedCells=19 (mapped arms 19) fullyNamedCells=1 fullyCapturedCells=0 underReportedCells=18 (membership 14 + tokens 4)
+TYPED  tokensTyped=[] n=0  ·  superseded recording-wide key=[] n=0
+STAMP  STALE legs=+4 preds=+2
+GCOMP  ok  coverage: all 3 arm recording(s) readable
+
+MAPVERDICT/0 ok gates=8 red=[]

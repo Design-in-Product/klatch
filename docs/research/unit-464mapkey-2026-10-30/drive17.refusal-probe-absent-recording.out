@@ -1,0 +1,41 @@
+=== grade-filed-maps.mjs ===
+map    : ../unit-464t2b-sat-2026-10-29/PRE-REGISTRATION.md
+clean  : ../unit-464t2b-sat-2026-10-29/drive2.clean.out
+cripple: none (clean arm)
+labels : 7 ["MEAS","REF "," ok ","RED ","PREF","LAND","REFU"]
+
+GKP    ok  tokenizer on a real slice: selector round-trips whole; 11 tokens
+KPSLICE detail: dirLast=464 selfLast=454 popMax=467 pinArm=dir(464) pinDistance=3 freeDistance=13 pinArmPinned=false freeArmPinned=false assertable=true key=>= selector=max(pins first)
+GABS   ok  absolute member count: 36 members = legs 26 + preds 10
+GSTAMP ok  stamp: v1-prose declares legs=22 preds=8; recording says legs=26 preds=10 → STALE legs=+4 preds=+2
+
+ARM t2b-dir-pinned
+  reached=9 (v2) · verdictReached=3 (v1) · named=4 · fullyNamed=0 · fullyCaptured=0 · underReported=9
+  reached=[G1,P12,P9,T10,T10COUNT,T2b,T2bSAT,T9,W1]
+  verdictReached=[P12,P9,T2b]
+  underReported=[G1,P12,P9,T10,T10COUNT,T2b,T2bSAT,T9,W1]  =  membership[G1,T10,T10COUNT,T9,W1] + tokens[P12,P9,T2b,T2bSAT]
+  tokensTyped=[pinned]   (quoted OF a member, never emitted BY that member)  ·  typedRecordingKey=[]  (superseded, recording-wide)
+    G1           mentioned=false moved=1  [commits] named=[] captured=[] typed=[]
+    P12          mentioned=true  moved=1  [actual] named=[] captured=[] typed=[]
+    P9           mentioned=true  moved=1  [actual] named=[] captured=[] typed=[]
+    T10          mentioned=false moved=2  [refusing,sensitive] named=[] captured=[] typed=[]
+    T10COUNT     mentioned=false moved=3  [n,refusing,sensitive] named=[] captured=[] typed=[]
+    T2b          mentioned=true  moved=2  [assertable,pinDistance] named=[] captured=[] typed=[]
+    T2bSAT       mentioned=true  moved=5  [assertable,freeDistance,pinArmPinned,pinDistance,popMax] named=[assertable,pinDistance] captured=[assertable,pinDistance] typed=[pinned]
+    T9           mentioned=false moved=0  [] named=[] captured=[] typed=[]
+    W1           mentioned=false moved=2  [absolute,bare] named=[] captured=[] typed=[]
+
+ARM does-not-exist
+  REFUSED (recording) — reached=null named=null underReported=null
+
+GREACH ok  re-key non-vacuity: 1/1 arms: v2 reach strictly wider than v1 (t2b-dir-pinned 3→9)
+GCTX   ok  member-context gate: gated=2 ≤ loose=4; the context gate removes 2 token namings
+GREFUSE ok  refusal: 1 refusal occasion(s) all refused (unreadable=[does-not-exist] unmapped=[])
+GTYPED ok  typed-token key strictness: recording-wide key ⊆ member key; member key is stricter by 1 token(s) [t2b-dir-pinned:pinned]
+
+GRADE  armsGiven=2 graded=1 unreadable=1 unmapped=0 reachedCells=9 (mapped arms 9) fullyNamedCells=0 fullyCapturedCells=0 underReportedCells=9 (membership 5 + tokens 4)
+TYPED  tokensTyped=[pinned] n=1  ·  superseded recording-wide key=[] n=0
+STAMP  STALE legs=+4 preds=+2
+GCOMP  RED coverage: 1 of 2 arm recording(s) unreadable: [does-not-exist] — the audit is incomplete whether or not the refusal was correct
+
+MAPVERDICT/1 RED gates=8 red=[GCOMPLETE]

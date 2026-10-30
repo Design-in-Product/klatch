@@ -1,0 +1,38 @@
+=== grade-filed-maps.mjs ===
+map    : ../CRIPPLE-MAP-CONVENTION.md
+clean  : ../unit-464t2b-sat-2026-10-29/drive2.clean.out
+cripple: none (clean arm)
+labels : 7 ["MEAS","REF "," ok ","RED ","PREF","LAND","REFU"]
+
+GKP    ok  tokenizer on a real slice: selector round-trips whole; 11 tokens
+KPSLICE detail: dirLast=464 selfLast=454 popMax=467 pinArm=dir(464) pinDistance=3 freeDistance=13 pinArmPinned=false freeArmPinned=false assertable=true key=>= selector=max(pins first)
+GABS   ok  absolute member count: 36 members = legs 26 + preds 10
+GSTAMP RED stamp: REFUSED — map carries no readable stamp
+
+ARM t2b-dir-pinned   [UNMAPPED — no section in the map; map-side figures REFUSE]
+  reached=9 (v2) · verdictReached=3 (v1) · named=REFUSED · fullyNamed=REFUSED · fullyCaptured=REFUSED · underReported=REFUSED
+  reached=[G1,P12,P9,T10,T10COUNT,T2b,T2bSAT,T9,W1]
+  verdictReached=[P12,P9,T2b]
+  underReported=[REFUSED]  =  membership[REFUSED] + tokens[REFUSED]
+  tokensTyped=[REFUSED]   (quoted OF a member, never emitted BY that member)  ·  typedRecordingKey=[REFUSED]  (superseded, recording-wide)
+    G1           mentioned=false moved=1  [commits] named=[] captured=[] typed=[]
+    P12          mentioned=false moved=1  [actual] named=[] captured=[] typed=[]
+    P9           mentioned=false moved=1  [actual] named=[] captured=[] typed=[]
+    T10          mentioned=false moved=2  [refusing,sensitive] named=[] captured=[] typed=[]
+    T10COUNT     mentioned=false moved=3  [n,refusing,sensitive] named=[] captured=[] typed=[]
+    T2b          mentioned=false moved=2  [assertable,pinDistance] named=[] captured=[] typed=[]
+    T2bSAT       mentioned=false moved=5  [assertable,freeDistance,pinArmPinned,pinDistance,popMax] named=[] captured=[] typed=[]
+    T9           mentioned=false moved=0  [] named=[] captured=[] typed=[]
+    W1           mentioned=false moved=2  [absolute,bare] named=[] captured=[] typed=[]
+
+GREACH ok  re-key non-vacuity: 1/1 arms: v2 reach strictly wider than v1 (t2b-dir-pinned 3→9)
+GCTX   RED member-context gate: REFUSED — no mapped arm graded
+GREFUSE ok  refusal: 1 refusal occasion(s) all refused (unreadable=[] unmapped=[t2b-dir-pinned])
+GTYPED RED typed-token key strictness: REFUSED — no mapped arm graded
+
+GRADE  armsGiven=1 graded=1 unreadable=0 unmapped=1 reachedCells=9 (mapped arms 0) fullyNamedCells=0 fullyCapturedCells=0 underReportedCells=0 (membership 0 + tokens 0)
+TYPED  tokensTyped=[] n=0  ·  superseded recording-wide key=[] n=0
+STAMP  REFUSED
+GCOMP  ok  coverage: all 1 arm recording(s) readable
+
+MAPVERDICT/1 RED gates=8 red=[GSTAMP,GCTX,GTYPED]
