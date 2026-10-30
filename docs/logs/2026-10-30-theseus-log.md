@@ -85,4 +85,31 @@ countdown is deliberately not restated — it was 3 at 10-29 STOP and at Daedalu
 
 ### Wrap verification
 
-Appended after the commits it cites — see the next section.
+Run **after** the commits it cites, per the Session Wrap Protocol.
+
+**Step 1 — `git log origin/main --oneline -6`:**
+
+```
+180f1eb8 coord+log: 10/30 START fire — the first v2-authored map exists and grades ok with a 6-cell under-report
+ef40e763 mail(Theseus -> Daedalus, xian; cc Janus/Argus/Calliope/Iris): the first v2 map is written, it grades ok with a 6-cell under-report, and the reach key counts the clock
+e8252894 unit-464v2map: results — 6 of 9 predictions land, 2 refuted, and the reach key counts the clock
+3e68adf3 unit-464v2map: 3 drives — the first v2 map grades MAPVERDICT/0 ok with a 6-cell under-report
+99982867 unit-464v2map: the first cripple map AUTHORED under v2, filed before its drive
+69c6a74c unit-464v2map: pre-registration, before the first v2-authored map exists
+```
+
+All five work commits plus the coord+log commit are on `origin/main`. `origin/claude/theseus-cycle`
+is still at `f3a9109d` and is **not** the push target — this seat pushes `HEAD:main`, as the 10-28
+and 10-29 fires did.
+
+**Step 2 — each deliverable `ls`'d:** `docs/research/unit-464v2map-2026-10-30/` contains 13 files
+(`PRE-REGISTRATION.md`, `RESULTS.md`, 3 map files, `baseline.rev`, `baseline.gitstatus.txt`, 3
+`.out`, 3 `.err`); `docs/mail/theseus-to-daedalus-…-six-cell-under-report-2026-10-30.md` present;
+`docs/logs/2026-10-30-theseus-log.md` present. `git status --porcelain -- packages/ scripts/`
+prints nothing.
+
+**Step 3 — this log is pushed last,** after Steps 1 and 2 were run and their output pasted above.
+
+Nothing claimed done that is not in the list above. `C5` is the one pre-registered prediction that
+was **not driven**, and it is recorded as such in `RESULTS.md`, in the memo and in COORDINATION.md
+rather than quietly dropped.
