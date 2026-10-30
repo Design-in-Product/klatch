@@ -92,6 +92,49 @@ All four cross-repo mailboxes checked by mtime **and** by content grep of every 
 designinproduct 0 new · mediajunkie 6 new · dispatch 3 new · piper-morgan-product 1096 new —
 **0 `klatch|daedalus` hits** in filenames or bodies. Nothing owed from any.
 
-## Wrap verification
+## 09:5x — Wrap verification (run after the commits it cites, not before)
 
-See the closing section below, written after the commits it cites.
+**Step 1 — commits on `origin/main`.** `git log origin/main --format='%h %an %s' -6`:
+
+```
+533b9476 Daedalus (Klatch) coord+log: 10/30 START fire — Theseus's unclaimed item built, 3 of 7 predictions failed, C4 thread closed after driving it
+d0086b7e Daedalus (Klatch) mail(Daedalus -> Theseus, xian; cc Janus/Argus/Calliope/Iris): your unclaimed item is built, and the captured-token half is the SECOND half
+dad68cf8 Daedalus (Klatch) unit-464mapkey: the map convention is machine-checked, and both seats' hand grades reproduce
+6364fac6 Daedalus (Klatch) unit-464mapkey: pre-registration + the v2 cripple-map convention, before the checker
+902b54bc Argus (Klatch) coord+log: 10/30 START fire — census-only no-op…
+db9fa472 Calliope (Klatch) coord+log+rollup: 10/30 START fire — no-op on product…
+```
+
+Four commits, all four mine by `%an`, all four on `origin/main`.
+
+**Step 2 — every deliverable, checked on the pushed rev with `git cat-file -e 533b9476:<path>`, not
+with `ls` on the working tree:**
+
+```
+present docs/research/CRIPPLE-MAP-CONVENTION.md
+present docs/research/unit-464mapkey-2026-10-30/PRE-REGISTRATION.md
+present docs/research/unit-464mapkey-2026-10-30/RESULTS.md
+present docs/research/unit-464mapkey-2026-10-30/grade-filed-maps.mjs
+present docs/research/unit-464mapkey-2026-10-30/insert-coord-entry.mjs
+present docs/research/unit-464mapkey-2026-10-30/baseline.rev
+present docs/research/unit-464mapkey-2026-10-30/baseline.gitstatus.txt
+present docs/logs/2026-10-30-daedalus-log.md
+present docs/mail/daedalus-to-theseus-…-the-two-halves-of-the-cure-are-ordered-2026-10-30.md
+present docs/mail/read/argus-to-daedalus-…-round307s-c4-2026-10-27.md
+present docs/mail/read/daedalus-to-argus-…-your-c4-red-is-repaired-…-2026-10-28.md
+
+unit files on rev 533b9476: 40
+.err files on rev: 17, non-empty on rev: 0
+.out files on rev: 17
+files MISSING: 0
+```
+
+`.err` sizes read off the rev with `git ls-tree -r -l`, so the zero is a property of what was
+pushed, not of my working copy.
+
+**`COORDINATION.md` insert verified against the pushed rev.** Section headers on the rev put mine at
+`[382,2484)`, header occurring exactly once; the 4 new bullets are at lines **386, 387, 388, 389**,
+each occurring exactly once and each inside those bounds. The insert was made by a section-gated
+script that asserts the landing site again after writing; the diff was `4 ++++` with nothing removed.
+
+Nothing is claimed as delivered beyond what the commands above print — the wrapper owns delivery.
