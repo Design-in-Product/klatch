@@ -214,3 +214,57 @@ delta-grading and reason-level grading of a saturated gate. The `>` note above �
 own sentence was false when v2 published it, rather than quietly correcting it.
 
 Memo `02f209bd`, pushed as its own commit per worktree mail discipline.
+
+## 13:5x — Wrap verification (run after the commits it cites, not before)
+
+**Step 1 — commits on `origin/main`.** `git log origin/main --format='%h %an %s' -5`:
+
+```
+07510cf2 Daedalus (Klatch) coord+log: 10/30 WORK fire — all three routed items in, 9 of 11 predictions land…
+02f209bd Daedalus (Klatch) mail(Daedalus -> Theseus, xian; cc Janus/Argus/Calliope/Iris): all three routed items are in…
+ed4e8dc3 Daedalus (Klatch) unit-464drift: results, and v2.1 of the cripple-map convention
+582a8d1d Daedalus (Klatch) unit-464drift: the reach key's drift exclusion, derived from a control pair
+f88c18be Daedalus (Klatch) unit-464drift: pre-registration, before the drift instrument exists
+```
+
+Five commits, all five mine by `%an`, all five on `origin/main`. Pushed incrementally — the
+pre-registration was on `origin/main` before the instrument it pre-registers existed.
+
+**Step 2 — every deliverable, checked on the pushed rev with `git cat-file -e 07510cf2:<path>`, not
+with `ls` on the working tree:**
+
+```
+present docs/research/CRIPPLE-MAP-CONVENTION.md
+present docs/research/unit-464drift-2026-10-30/PRE-REGISTRATION.md
+present docs/research/unit-464drift-2026-10-30/RESULTS.md
+present docs/research/unit-464drift-2026-10-30/drive.mjs
+present docs/research/unit-464drift-2026-10-30/grade-arms.mjs
+present docs/research/unit-464drift-2026-10-30/insert-coord-entry.mjs
+present docs/research/unit-464drift-2026-10-30/baseline.rev
+present docs/research/unit-464drift-2026-10-30/baseline.gitstatus.txt
+present docs/research/unit-464mapkey-2026-10-30/grade-filed-maps.mjs
+present docs/logs/2026-10-30-daedalus-log.md
+present docs/mail/daedalus-to-theseus-…-inverts-a-sentence-i-published-this-morning-2026-10-30.md
+
+unit files on rev 07510cf2: 25
+.err on rev: 9, non-empty on rev: 0
+.out on rev: 9
+files MISSING: 0
+```
+
+`.err` sizes read off the rev with `git ls-tree -r -l`, so the zero is a property of what was
+pushed, not of my working copy.
+
+**`COORDINATION.md` insert verified against the pushed rev**, with `git grep` rather than a read
+into a buffer — the file is over 1 MB and `git show` into `execFileSync` dies `ENOBUFS`, which is
+itself worth recording: a verification step that crashes on the size of its subject verifies
+nothing. Section headers on the rev put mine at `[382, 2491)`; the 6 new bullets are at lines
+**386–391**, each occurring exactly once and each inside those bounds. The insert was made by the
+section-gated script, which re-reads the written file and asserts the landing site again.
+
+**`git status --short` empty** at close, and `git status --porcelain -- packages/ scripts/` empty
+at open and at close — every commit this fire is `docs/`-only, so both instruments sit outside the
+probe census by construction. The pre-commit census ran on all five commits and printed
+`CENSUS OK · 153 probe files · 43 swept / 110 deferred` each time.
+
+Nothing is claimed as delivered beyond what the commands above print — the wrapper owns delivery.
