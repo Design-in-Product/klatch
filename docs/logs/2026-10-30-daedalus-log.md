@@ -138,3 +138,79 @@ each occurring exactly once and each inside those bounds. The insert was made by
 script that asserts the landing site again after writing; the diff was `4 ++++` with nothing removed.
 
 Nothing is claimed as delivered beyond what the commands above print — the wrapper owns delivery.
+
+---
+
+## 13:17 — Session resumed: WORK fire opens (Opus 5)
+
+Head commit `f5394430` reads "10/30 MID fire" and is **Calliope's**, checked with `%an` before
+assuming it was mine. My last fire was START at 09:17; there was no Daedalus MID fire today.
+
+`docs/mail/` read on arrival. **One memo new to this seat** — Theseus's 10-30 START reply, filed
+11:2x, after my START fire closed. It takes the v2-authoring item I left unclaimed and **routes
+three items back here**, naming the first upstream of the other two:
+
+1. §4 — the reach key in `grade-filed-maps.mjs` counts the clock.
+2. §1/§3 — a declared requirement no gate reads, plus three MUST stamp fields nothing reads.
+3. §2 — two unstated authoring rules, each measured as a cost on his first conforming map.
+
+**This fire is all three.** Cross-repo mailboxes by mtime and by content grep of every new file:
+designinproduct 0 new, mediajunkie 2, dispatch 0, piper-morgan 384 — 10 `klatch|daedalus` hits, all
+read; 5 are MANIFEST/DIRECTORY listings, and the 2 real memos (Pard's mechanical-stamps reply, the
+CIO workstream review) are informational. Nothing owed from any.
+
+## 13:2x — verified his §4 before accepting it
+
+Off my own committed `drive11.FINAL-theseus-six-arms.out`, not off his memo: `G1`/`T9`/`W1` in the
+`reached=[...]` line of all six arms; `t9-insensitive-leg`'s whole set is `[G1,T10,T9,W1]`, so 3 of
+its 4; `T9` prints `moved=0 []` on five of six. And off his own `drive2.v2map-retitled.out`: his
+membership under-report is **exactly** `membership[G1,T9,W1]`. He is right.
+
+## 13:2x — pre-registration first, before the instrument existed
+
+`docs/research/unit-464drift-2026-10-30/PRE-REGISTRATION.md` — 11 predictions and a 4-arm cripple
+map, committed `f88c18be` and **pushed before any instrument in the unit existed**. The design
+decision recorded there: the drift set is **derived from a control pair** of two already-committed
+no-cripple cell drives at two revs, not from a hand-typed id list — an exclusion keyed on three ids
+I named is keyed on my reading of them, not on drift.
+
+## 13:3x — built, driven, and two of my own gates were wrong on their first drive
+
+`grade-filed-maps.mjs` 8 gates → 13 (`GCTRL`, `GDRIFTBITE`, `GDRIFTREF`, `GMUST`, `GCONFORM`).
+9 drives, every `.err` 0 bytes with the child's `stdio` pinned. 4 cripple arms all MATCH
+(`ARMVERDICT/0 ok rows=6 mismatched=0`).
+
+**9 of 11 predictions landed. Both refutations moved the method, not just a number:**
+
+* **P1 refuted** — the control finds **n=5 `[G1,T9,W1,W2,W3]`**, two more than his arms exposed
+  (`W2 movedTokens=1 [band]`, `W3 movedTokens=0`). My prediction was keyed on what the arms
+  happened to reveal, which is the thing a control exists to stop being the measure.
+* **P9 refuted** — `control-fallback` reddens three gates, all three correctly: `GCTRL`,
+  `GDRIFTBITE` and `GDRIFTREF` share the control-pair precondition. **An arm that removes a shared
+  precondition cannot be isolated by an absolute red list.** Fix is in the grading method — a delta
+  against a matched no-cripple drive (`drive9`), which isolates it to `adds=[GDRIFTREF]`.
+* **P3/P4 landed exactly** — `reachedDrift=3` on every one of six arms; "14 of 24" is **5 of 15**.
+* **The correction inverts my own 10/30 START sentence** — membership is the *smaller* half in his
+  maps now (5 against 10 tokens), still the larger in mine (12 against 4), and the asymmetry is
+  because his clean and arm drives came from different clock windows and mine from one. Drift is a
+  property of how the recordings were produced, not of the author's care.
+
+**My own gates, failed first and recorded rather than tidied:** `GMUST` failed his **intact** map by
+comparing declared paths as strings (a map writes repo-relative, the checker runs from a unit dir —
+a gate that does that fails every map that is correct); `must-blind` still reddened under its own
+cripple, because its `ok` stayed keyed on the comparison while only its reason string said "not
+compared", so the arm proved nothing.
+
+Commits `582a8d1d` (work) and `ed4e8dc3` (results + convention v2.1), both pushed.
+
+## 13:4x — convention to v2.1, memo filed
+
+`CRIPPLE-MAP-CONVENTION.md` v2 → v2.1 within hours of v2, and the reason is the general finding:
+**a convention is not checkable until something has been written under it.** §3.3a drift exclusion
+with the control-pair method and the CEILING caveat, §3.1 writable `filing-rev` (the PARENT of the
+filing commit — v2 asked for a sha that cannot exist while the map is written) plus all four fields
+gated, §3.2 one-heading rule, §3.4 one-physical-line rule, §4 three ordered halves plus
+delta-grading and reason-level grading of a saturated gate. The `>` note above §3 states that its
+own sentence was false when v2 published it, rather than quietly correcting it.
+
+Memo `02f209bd`, pushed as its own commit per worktree mail discipline.
