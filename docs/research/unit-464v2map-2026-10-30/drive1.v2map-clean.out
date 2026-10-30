@@ -1,0 +1,36 @@
+=== grade-filed-maps.mjs ===
+map    : V2-MAP-t8-ceiling-blind.md
+clean  : ../unit-464t2b-sat-2026-10-29/drive2.clean.out
+cripple: none (clean arm)
+labels : 7 ["MEAS","REF "," ok ","RED ","PREF","LAND","REFU"]
+
+GKP    ok  tokenizer on a real slice: selector round-trips whole; 11 tokens
+KPSLICE detail: dirLast=464 selfLast=454 popMax=467 pinArm=dir(464) pinDistance=3 freeDistance=13 pinArmPinned=false freeArmPinned=false assertable=true key=>= selector=max(pins first)
+GABS   ok  absolute member count: 36 members = legs 26 + preds 10
+GSTAMP ok  stamp: v2-block declares legs=26 preds=10; recording says legs=26 preds=10 → OK
+
+ARM t8-ceiling-blind   [UNMAPPED — no section in the map; map-side figures REFUSE]
+  reached=7 (v2) · verdictReached=2 (v1) · named=REFUSED · fullyNamed=REFUSED · fullyCaptured=REFUSED · underReported=REFUSED
+  reached=[G1,T2bKP,T2bSAT,T8CEIL,T8KP,T9,W1]
+  verdictReached=[T2bKP,T8KP]
+  underReported=[REFUSED]  =  membership[REFUSED] + tokens[REFUSED]
+  tokensTyped=[REFUSED]   (quoted OF a member, never emitted BY that member)  ·  typedRecordingKey=[REFUSED]  (superseded, recording-wide)
+    G1           mentioned=false moved=1  [commits] named=[] captured=[] typed=[]
+    T2bKP        mentioned=false moved=2  [misses,rows] named=[] captured=[] typed=[]
+    T2bSAT       mentioned=false moved=1  [key] named=[] captured=[] typed=[]
+    T8CEIL       mentioned=false moved=1  [key] named=[] captured=[] typed=[]
+    T8KP         mentioned=false moved=2  [misses,rows] named=[] captured=[] typed=[]
+    T9           mentioned=false moved=0  [] named=[] captured=[] typed=[]
+    W1           mentioned=false moved=2  [absolute,bare] named=[] captured=[] typed=[]
+
+GREACH ok  re-key non-vacuity: 1/1 arms: v2 reach strictly wider than v1 (t8-ceiling-blind 2→7)
+GCTX   RED member-context gate: REFUSED — no mapped arm graded
+GREFUSE ok  refusal: 1 refusal occasion(s) all refused (unreadable=[] unmapped=[t8-ceiling-blind])
+GTYPED RED typed-token key strictness: REFUSED — no mapped arm graded
+
+GRADE  armsGiven=1 graded=1 unreadable=0 unmapped=1 reachedCells=7 (mapped arms 0) fullyNamedCells=0 fullyCapturedCells=0 underReportedCells=0 (membership 0 + tokens 0)
+TYPED  tokensTyped=[] n=0  ·  superseded recording-wide key=[] n=0
+STAMP  OK
+GCOMP  ok  coverage: all 1 arm recording(s) readable
+
+MAPVERDICT/1 RED gates=8 red=[GCTX,GTYPED]

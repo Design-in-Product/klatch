@@ -1,0 +1,36 @@
+=== grade-filed-maps.mjs ===
+map    : V2-MAP-t8-ceiling-blind-STAMP-STRIPPED.md
+clean  : ../unit-464t2b-sat-2026-10-29/drive2.clean.out
+cripple: none (clean arm)
+labels : 7 ["MEAS","REF "," ok ","RED ","PREF","LAND","REFU"]
+
+GKP    ok  tokenizer on a real slice: selector round-trips whole; 11 tokens
+KPSLICE detail: dirLast=464 selfLast=454 popMax=467 pinArm=dir(464) pinDistance=3 freeDistance=13 pinArmPinned=false freeArmPinned=false assertable=true key=>= selector=max(pins first)
+GABS   ok  absolute member count: 36 members = legs 26 + preds 10
+GSTAMP ok  stamp: v2-block declares legs=26 preds=10; recording says legs=26 preds=10 → OK
+
+ARM t8-ceiling-blind
+  reached=7 (v2) · verdictReached=2 (v1) · named=4 · fullyNamed=1 · fullyCaptured=0 · underReported=6
+  reached=[G1,T2bKP,T2bSAT,T8CEIL,T8KP,T9,W1]
+  verdictReached=[T2bKP,T8KP]
+  underReported=[G1,T2bKP,T8CEIL,T8KP,T9,W1]  =  membership[G1,T9,W1] + tokens[T2bKP,T8CEIL,T8KP]
+  tokensTyped=[]   (quoted OF a member, never emitted BY that member)  ·  typedRecordingKey=[]  (superseded, recording-wide)
+    G1           mentioned=false moved=1  [commits] named=[] captured=[] typed=[]
+    T2bKP        mentioned=true  moved=2  [misses,rows] named=[] captured=[] typed=[]
+    T2bSAT       mentioned=true  moved=1  [key] named=[key] captured=[] typed=[]
+    T8CEIL       mentioned=true  moved=1  [key] named=[] captured=[] typed=[]
+    T8KP         mentioned=true  moved=2  [misses,rows] named=[] captured=[] typed=[]
+    T9           mentioned=false moved=0  [] named=[] captured=[] typed=[]
+    W1           mentioned=false moved=2  [absolute,bare] named=[] captured=[] typed=[]
+
+GREACH ok  re-key non-vacuity: 1/1 arms: v2 reach strictly wider than v1 (t8-ceiling-blind 2→7)
+GCTX   ok  member-context gate: gated=1 ≤ loose=6; the context gate removes 5 token namings
+GREFUSE ok  refusal: VACUOUS in this drive — 0 unreadable recordings and 0 unmapped arms, so nothing was given the chance to refuse
+GTYPED ok  typed-token key strictness: recording-wide key ⊆ member key; member key is stricter by 0 token(s)
+
+GRADE  armsGiven=1 graded=1 unreadable=0 unmapped=0 reachedCells=7 (mapped arms 7) fullyNamedCells=1 fullyCapturedCells=0 underReportedCells=6 (membership 3 + tokens 3)
+TYPED  tokensTyped=[] n=0  ·  superseded recording-wide key=[] n=0
+STAMP  OK
+GCOMP  ok  coverage: all 1 arm recording(s) readable
+
+MAPVERDICT/0 ok gates=8 red=[]
