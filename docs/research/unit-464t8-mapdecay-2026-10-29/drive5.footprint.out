@@ -1,0 +1,31 @@
+KP  ok  footprint reader: verdict-moves-detail-frozen=true both-move=true detail-only=true member-absent-refuses=true misses=[] rows=4
+POP old=drive7.clean-final.out(29) new=drive1.clean.out(35) added=6 [T2bSAT,T2bKP,T2bORACLE,M0c,P12,P13] removed=[]
+GDELTA ok  this reader's added-member count against the cell's own legs=/preds= delta: cell=6 reader=6 (old legs=22 preds=8 -> new legs=26 preds=10)
+
+--- FOOTPRINT MATRIX (new members x arms) ---
+  drive2.redrive-t8-ceiling-blind.out
+    T2bSAT       verdict=-        detail=MOVED
+    T2bKP        verdict=MOVED    detail=MOVED
+    T2bORACLE    verdict=-        detail=-
+    M0c          verdict=-        detail=-
+    P12          verdict=-        detail=-
+    P13          verdict=-        detail=-
+  drive3.redrive-t8-unpinned.out
+    T2bSAT       verdict=-        detail=MOVED
+    T2bKP        verdict=-        detail=-
+    T2bORACLE    verdict=-        detail=-
+    M0c          verdict=-        detail=-
+    P12          verdict=MOVED    detail=MOVED
+    P13          verdict=-        detail=-
+  drive4.redrive-t9-insensitive-leg.out
+    T2bSAT       verdict=-        detail=-
+    T2bKP        verdict=-        detail=-
+    T2bORACLE    verdict=-        detail=-
+    M0c          verdict=-        detail=-
+    P12          verdict=-        detail=-
+    P13          verdict=-        detail=-
+
+GSUBSET ok  verdict movement is a subset of detail movement: cells=18 verdictMoved=2 detailMoved=4 violations=[] refusedCells=0 vacuous=false
+MEAS   under-reported by a verdict-only map: 2 of 4 reached cells [drive2.redrive-t8-ceiling-blind.out/T2bSAT,drive3.redrive-t8-unpinned.out/T2bSAT]
+
+VERDICT/0 GREEN kpMisses=0 gate=ok violations=0 refusedCells=0

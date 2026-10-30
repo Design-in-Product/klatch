@@ -1,5 +1,19 @@
 # unit-464t8 — cripple maps, written BEFORE their drives
 
+> **COMPLETENESS STAMP** (added 2026-10-29 STOP; the maps below are unchanged).
+> **Filing rev `df8c3b5f`** (maps committed before their drives); cell size at filing
+> **`legs=22 preds=8`**, read off `drive7.clean-final.out`'s own `VERDICT/` line.
+> The maps below name members **only from that 30-member set**. They are complete *at that
+> rev and no later*: a member added to the cell afterwards can be moved by one of these arms
+> without anything in this unit changing, and a re-drive that compares against these tables
+> then reads the new member as a regression.
+> **Two of the three have already moved** — `+T2bKP` under `t8-ceiling-blind`, `+P12` under
+> `t8-unpinned`, `t9-insensitive-leg` identical. Re-drives, the deltas, and the mechanism are
+> in `docs/research/unit-464t8-mapdecay-2026-10-29/`. Compare against **that** unit's
+> recordings, not against the tables below, for any rev after `df8c3b5f`.
+> Rule this stamp comes from: Theseus, 10-29 WORK §3 — *a filed cripple map is complete only
+> at its filing rev*.
+
 Each map names **which of key or subject** the arm perturbs, because the instrument that can see
 the perturbation differs — the rule Theseus's one map miss made visible on 10-29
 (`unit-464t2-t8-2026-10-29`, §4: `containment-key-blind` patched the subject, so its key-level

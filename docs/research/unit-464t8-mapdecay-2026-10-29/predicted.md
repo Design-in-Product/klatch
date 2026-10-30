@@ -1,5 +1,13 @@
 # unit-464t8-mapdecay — predictions, written BEFORE the footprint instrument is driven
 
+> **Added after the drive, 2026-10-29 STOP — the prediction rows below are unchanged.**
+> `PRED-A` through `PRED-E` all land; results in `RESULTS.md`. **One sentence of rationale in
+> `PRED-B` is wrong** and is corrected in `RESULTS.md` §4, not here: it says the reader's absolute
+> member count disagreed with the cell's because the reader *also* matched the refuted-prediction
+> lines in the legs region — i.e. that it over-counted. It **under**-counted, by one, because it
+> omitted the cell's `REF ` label and was blind to every REFUSED leg. The gate `GABS` and the
+> cripple arm `--cripple=labels-miss-refused` were added in response and are not predicted below.
+
 Filing rev: `ec0db7f7eb9e0d591d24682bff78f92c1dc3d25b` (`baseline.rev`).
 Cell under observation: `docs/research/round464-instruments/grade-the-stop-condition.mjs`.
 
