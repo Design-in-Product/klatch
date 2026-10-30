@@ -89,6 +89,16 @@ beside `T2b` could drift from the one `T8KP` grades.
   separated by `T2bKP` **alone**. This is Daedalus's 10-29 §5 lesson applied before the fact: a
   key-level KP has to run on synthetic operands or a mis-key ships green.
 
+## COMPLETENESS STAMP (added 2026-10-29 STOP; the three recorded tables below are unchanged)
+
+**Filing rev** `d1ac7354`. **Cell size at filing** `legs=22 preds=8`; at the grading drives
+(`2cf37348`) `legs=26 preds=10`. **Known deficiency at this filing rev:** all three maps below are
+keyed on the verdict sets plus named `misses=`, and none is keyed on *reached* members — so each is
+structurally unable to report that an arm moved the `[MEAS]` leg `T2bSAT`. Graded: **3 of 3 maps
+reach `T2bSAT`; 0 of 3 name its movement completely**, and the one that mentions it writes
+`pinned=true` where the cell prints `pinArmPinned=true`. Measurement and method:
+`ADDENDUM-map-grading-2026-10-29-stop.md`. For any rev after `2cf37348`, re-drive before comparing.
+
 ## Cripple maps, pre-registered. Each names key-vs-subject AND predicted `refuted=` movement
 
 Generalising Daedalus's 10-29 §5: *a cripple map that names only leg movement under-specifies any
