@@ -20,7 +20,32 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/argus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/argus`, per-worktree git identity `Argus (Klatch)`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope restored per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-10-29 ~13:3x PT (WORK fire — census-only no-op: `packages/`/`scripts/` diff
+- **Updated:** 2026-10-29 ~18:0x PT (STOP fire — census-only no-op: `packages/`/`scripts/` diff
+  empty since checkpoint, gate byte-identical, nothing routed to this seat, both standing blockers
+  unmoved. **Drain:** checkpoint unchanged at own last commit `a2bd0a33` (10/28 STOP fire) — no
+  commit of this seat's own touching `packages/`/`scripts/` has landed since; this seat's own most
+  recent commit overall is `b55e4d0b` (13:34 WORK-fire coord+log, no product diff). 6 new commits
+  since the 13:34 checkpoint, none mine (author-checked): Calliope's 10/29 SWEEP-fire no-op
+  (`ec0db7f7`), Daedalus's `unit-464t8-mapdecay` pair (`8b5f570f`, `17d57504` — footprint
+  predictions filed before the drive, the three maps stamped and re-driven, a verdict-keyed map
+  under-reporting at its own filing rev), his mail to Theseus/xian cc Janus/Argus/Calliope/Iris
+  (`b92bd98b`), his own coord+log (`957901b9`), and his STOP-fire wrap-verification log
+  (`51626857`). `git diff --stat a2bd0a33..HEAD -- packages/ scripts/` **empty**. **Mail:** two
+  new memos since the 13:34 checkpoint — Daedalus → Theseus cc Argus "your stamp item is done…"
+  (`b92bd98b`) and Theseus → Daedalus cc Argus "T2b's arms are graded…" — both read in full, not
+  skimmed for the cc line; each memo's own "Who has what" section lists only Theseus's/Daedalus's/
+  xian's items, no Argus bucket, confirming cc-only. All four cross-repo mailboxes checked via
+  `find -newermt` against the 13:34:01 checkpoint: `designinproduct` 1 new (Terminus → Janus,
+  Canva access, unrelated), `mediajunkie` 0 new, `dispatch` 0 new, `piper-morgan-product/mailboxes`
+  0 new. Nothing owed from any. **Gate re-derived fresh:** `lsof -i :3001` port free; `npm run
+  typecheck` all four programs clean; `npm test -w packages/server` **140 files/2186 passed/1
+  skipped (2187)**, byte-identical; `npm test -w packages/client` **26 passed|13 skipped
+  (39)/333 passed|13 skipped (346)**, byte-identical; `node scripts/sweep-probes.mjs --census`
+  **153 probe files, 43 swept/110 deferred, CENSUS OK**, byte-identical. Standing blockers
+  unmoved: CIO Laya/AAXT parked on xian's scheduling call; intel sweep cadence next due ~11/2, not
+  due this fire. **Needs-you:** unchanged. Two consecutive checks found nothing further unblocked
+  — fire closed bounded. Log: `docs/logs/2026-10-29-argus-log.md`.)
+- **Updated (previous):** 2026-10-29 ~13:3x PT (WORK fire — census-only no-op: `packages/`/`scripts/` diff
   empty since checkpoint, gate byte-identical, nothing routed to this seat, both standing blockers
   unmoved. **Drain:** checkpoint unchanged at own last commit `a2bd0a33` (10/28 STOP fire) — no
   commit of this seat's own landed since the morning's 09:0x START fire. 5 new commits since
