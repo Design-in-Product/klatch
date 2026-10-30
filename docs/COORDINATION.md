@@ -3635,7 +3635,45 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-10-29 ~19:19 PT (STOP fire). **Status:** available.
+- **Updated:** 2026-10-30 ~07:24 PT (START fire). **Status:** available.
+- **10/30 fire (START) — no-op on product; 6 research-track/briefs commits read (Pard's fire-depth
+  publish, the hub's cross-pollination publish, Calliope's and Theseus's own STOP coord+log/round
+  entries), nothing routed to this seat. First log under this seat's own new `YYYY-MM-DD-NAME-log.md`
+  filename** (every other seat moved 10/28–10/29; this seat's 10/28/10/29 logs still used the old
+  `-HHMM-` scheme — not renamed, per the forward-only migration rule; this fire starts the new
+  scheme going forward). Drain against own 10/29 ~19:24:45 PT STOP checkpoint (`296df7c1`): 6 new
+  commits, none mine (checked `%an` per commit). `git diff --stat 296df7c1..origin/main --
+  packages/ scripts/` **empty** — confirmed, not assumed; full diff stat (9 files, 361
+  insertions/6 deletions) shows every changed file under `docs/logs/`, `docs/mail/`,
+  `docs/research/`, or `docs/briefs/`. **Mail:** 1 new local file, cc-only
+  (Theseus→Daedalus, cc this seat), already covered by the commit list above, no reply owed. All
+  four cross-repo mailboxes re-checked (`find -newermt` against the exact checkpoint timestamp +
+  content grep for `klatch|\biris\b` on the new files): designinproduct 0 new; mediajunkie 0 new;
+  dispatch 3 new/0 hits (daily dinp↔pm memos + inbox-check-clean signal, no Klatch content);
+  piper-morgan-product 40+ new/0 hits (Piper Morgan's own internal CIO/lead/comms/docs traffic,
+  no mention of Klatch or this seat). Nothing owed across any of the four. Both briefs re-checked:
+  `fire-depth-latest.md` generated 06:50 PT, metrics table only, no UX signal; cross-pollination
+  pointer dated 10/30, points to the private `designinproduct` source (public-repo redaction,
+  expected), not independently fetchable from this seat's writable paths — flagged, not guessed
+  at. **Standing blockers re-derived fresh:** ground-rules question now **82 days** (`node`
+  date-arithmetic against both ISO dates, not estimated — `Math.round((new
+  Date('2026-10-30')-new Date('2026-08-09'))/86400000)` = 82; same calendar-day arithmetic as
+  before, unmoved on xian); `entityGuess` re-grepped independently (`packages/{server,client}/src`,
+  excluding `dist/`/`node_modules/`, counted with `grep -o | wc -l` not `-c` since one
+  `ImportDialog.tsx` line carries two occurrences) — **6 files/23 hits**, unchanged from 10/29's
+  corrected figure. **Verified, not trusted:** `npm run typecheck` clean ×4 workspaces; server
+  **140 files · 2186 passed · 1 skipped (2187)**; client **26 passed|13 skipped (39) · 333
+  passed|13 skipped (346)** — byte-identical to the 10/29 STOP checkpoint; `sweep-probes --census`
+  **153 probe files, 43 swept/110 deferred**, CENSUS OK, unchanged; full driving sweep (`:3001`
+  clear before/after, HEAD unchanged at `ff0420e5` before/after, tree clean throughout,
+  backgrounded past the 120s foreground limit and picked up via completion notification) —
+  **SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0 blocked, 0 census problem(s), 110
+  deferred.** No `packages/` changes this fire. Nothing new needs xian beyond the one standing
+  item (ground-rules question, now at 82 days, unmoved today). **Drain:** all unblocked items
+  done (commits, mail across all four mailboxes plus local, both briefs, both blockers
+  re-derived, full gate); nothing deferred. Two consecutive checks found nothing further
+  unblocked — fire closed bounded. Log: `docs/logs/2026-10-30-iris-log.md`.
+- **Prior update:** 2026-10-29 ~19:19 PT (STOP fire). **Status:** available.
 - **10/29 fire (STOP) — no-op on product; 37 research-track commits read (Daedalus's
   `unit-464t8`/`unit-464t8-mapdecay` chains, Theseus's `unit-464t2b-sat` chain, Calliope's SWEEP/MID
   coord+log entries), nothing routed to this seat.** Drain against own 10/29 ~07:24:57 PT START
