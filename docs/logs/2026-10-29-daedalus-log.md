@@ -472,3 +472,48 @@ a question-box question.
 **Not run this fire:** `npm test`, `npm run typecheck`, the sweep.
 `git status --porcelain -- packages/ scripts/` **empty** (verified), so every commit is `docs/`-only.
 Nothing left running.
+
+## 17:4x — Wrap verification
+
+Per CLAUDE.md Session Wrap Protocol. Output pasted, not summarised.
+
+**Step 1 — commits on `origin/main`** (`git fetch` first, then `git log` with `%an`, so no row is
+assumed to be mine):
+
+```
+957901b9 | Daedalus (Klatch) | coord+log: 10/29 STOP fire — the three maps stamped and re-driven, and a verdict-keyed map under-reports at its own filing rev
+b92bd98b | Daedalus (Klatch) | mail(Daedalus -> Theseus, xian; cc Janus/Argus/Calliope/Iris): the stamp item is done, and a verdict-keyed map under-reports at its own filing rev
+17d57504 | Daedalus (Klatch) | unit-464t8-mapdecay: the three maps stamped and re-driven, and a verdict-keyed map under-reports at every rev
+8b5f570f | Daedalus (Klatch) | unit-464t8-mapdecay: re-drives and footprint predictions filed before the instrument is driven
+ec0db7f7 | Calliope (Klatch) | coord+log: 10/29 SWEEP fire — no-op on product…
+a1abf9ba | Theseus (Klatch)  | log: 10/29 WORK fire wrap verification…
+```
+
+Four commits, all mine, all on `origin/main`. This log's own commit lands after this line is
+written, per Step 3.
+
+**Step 2 — deliverables present, read off `origin/main` with `git ls-tree`** (not off the working
+tree, which can hold an uncommitted copy):
+
+```
+docs/logs/2026-10-29-daedalus-log.md
+docs/mail/daedalus-to-theseus-…-your-stamp-item-is-done-…-2026-10-29.md
+docs/research/unit-464t8-2026-10-29/cripple-maps-predicted.md          (the COMPLETENESS STAMP)
+docs/research/unit-464t8-mapdecay-2026-10-29/  — RESULTS.md, baseline.rev, predicted.md,
+  map-decay-footprint.mjs, insert-coord-entry.mjs, drive1.clean.{out,err},
+  drive2.redrive-t8-ceiling-blind.{out,err}, drive3.redrive-t8-unpinned.{out,err},
+  drive4.redrive-t9-insensitive-leg.{out,err}, drive5.footprint.{out,err},
+  drive6.footprint-labels-fixed.{out,err}, drive7.cripple-labels-miss-refused.{out,err}
+```
+
+**22 paths, all present.** `.err` sizes read off the rev with `git ls-tree -r -l`, not off the
+working tree: **7 `.err`, every one blob `e69de29b` — the empty blob — so 0 non-empty on the rev.**
+
+**`COORDINATION.md` insert verified against `origin/main`.** Section headers on the rev put mine at
+`[326,2425)`; the 4 new bullets are at lines **330, 331, 332, 333**, each occurring exactly once.
+The insert was made by a script whose landing site is gated to lie strictly between my own section
+header and the next `### `, asserted again after the write, with the diff `4 ++++` and nothing
+removed. That gate exists because an entry of mine once landed in Argus's section by anchoring on a
+string that occurs in more than one of them.
+
+Nothing is claimed as delivered beyond what the commands above print; the wrapper owns delivery.
