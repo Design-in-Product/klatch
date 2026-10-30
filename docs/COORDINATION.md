@@ -3620,7 +3620,38 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-10-29 ~07:17 PT (START fire). **Status:** available.
+- **Updated:** 2026-10-29 ~19:19 PT (STOP fire). **Status:** available.
+- **10/29 fire (STOP) — no-op on product; 37 research-track commits read (Daedalus's
+  `unit-464t8`/`unit-464t8-mapdecay` chains, Theseus's `unit-464t2b-sat` chain, Calliope's SWEEP/MID
+  coord+log entries), nothing routed to this seat.** Drain against own 10/29 ~07:24:57 PT START
+  checkpoint (`ddb18fe7`): 37 new commits, none mine (checked `%an` per commit). `git diff --stat
+  ddb18fe7..origin/main -- packages/ scripts/` **empty** — confirmed, not assumed; full diff stat
+  (122 files, 13075 insertions/34 deletions) shows every changed file under `docs/research/` or
+  `docs/mail/`, round-track drive artifacts and mail only. **Mail:** 5 new local files, all
+  cc-only to this seat (`grep -li "^to:.*iris" docs/mail/*.md` — no hits outside `read/`), already
+  covered by the commit list above, no reply owed. All four cross-repo mailboxes re-checked
+  (`find -newermt` against the exact checkpoint timestamp + content grep for `klatch|\biris\b` on
+  each new file individually): designinproduct 9 new/1 hit (Pard's fwd of Calliope's log-filename
+  convention memo, informational, already known); mediajunkie 1 new/0 hits; dispatch 0 new;
+  piper-morgan-product 281 new, grep on the new files only hits the same stale `MANIFEST.md`
+  boilerplate as every prior fire. Nothing owed across any of the four. Both briefs re-checked:
+  `fire-depth-latest.md` generated 06:50 PT, unchanged since before this seat's own checkpoint;
+  cross-pollination pointer dated 2026-10-29, no UX signal. Standing blockers re-derived fresh:
+  ground-rules question still **81 days** (same calendar day as this morning, unmoved on xian);
+  `entityGuess` re-grepped independently (excluding `dist/`/`node_modules/`) — **6 files/23 hits**,
+  unchanged from this morning's corrected figure. **Verified, not trusted:** `npm run typecheck`
+  clean ×4 workspaces; server **140 files · 2186 passed · 1 skipped (2187)**; client **26
+  passed|13 skipped (39) · 333 passed|13 skipped (346)** — byte-identical to this morning's START
+  checkpoint; `sweep-probes --census` **153 probe files, 43 swept/110 deferred**, CENSUS OK,
+  unchanged; full driving sweep (`:3001` clear before/after, HEAD unchanged at `4c7a80de`
+  before/after, tree clean throughout, backgrounded and picked up via completion notification) —
+  **SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0 blocked, 0 census problem(s), 110
+  deferred.** No `packages/` changes this fire. Nothing new needs xian beyond the one standing
+  item (ground-rules question, now at 81 days, unmoved today). **Drain:** all unblocked items
+  done (commits, mail across all four mailboxes plus local, both briefs, both blockers re-derived,
+  full gate); nothing deferred. Two consecutive checks found nothing further unblocked — fire
+  closed bounded. Log: `docs/logs/2026-10-29-0717-iris-log.md` (STOP entry appended).
+- **Prior update:** 2026-10-29 ~07:17 PT (START fire). **Status:** available.
 - **10/29 fire (START) — no-op on product; 12 research-track commits read (Theseus's
   `unit-464t2-denial` chain, Calliope's STOP-fire log), nothing routed to this seat.** Drain
   against own 10/28 ~19:24:50 PT STOP checkpoint (`10ebefaa`): 12 new commits, none mine (checked
