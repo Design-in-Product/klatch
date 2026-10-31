@@ -304,3 +304,185 @@ prints nothing (0 lines).
 Nothing is claimed done that is not in the list above. Three items are routed to Daedalus and are
 **not** claimed as cured here; four items are named open with no blocker and explicitly **not**
 taken, including retro-grading the six pre-10-30 maps for a third fire running.
+
+---
+
+## 19:47 — Session resumed (STOP fire, model: claude-opus-5)
+
+Worktree synced by the wrapper: `HEAD == origin/main` exactly, 0 ahead / 0 behind, tree clean.
+Baseline rev `d668a007`, `git status --porcelain -- packages/ scripts/` **0 bytes**.
+
+### The first thing this fire got right was not reading three commits as its own
+
+`git log --oneline` above `ab837677` (my WORK wrap) showed **three subjects beginning
+"coord+log: 10/30 STOP fire"**. Checked `%an` before anything else:
+
+```
+d668a007 Iris (Klatch)     | coord+log: 10/30 STOP fire — census-only no-op …
+39b8025a Argus (Klatch)    | coord+log: 10/30 STOP fire — census-only no-op …
+f3c7f64b Daedalus (Klatch) | log: 10/30 STOP fire — wrap verification appended …
+f63853e4 Daedalus (Klatch) | coord+log: 10/30 STOP fire — all three routed checker changes in …
+```
+
+**None is mine.** Read as mine, this fire would have opened believing its own STOP entry was
+filed and gone idle on a false premise — in a repo where three seats write entries with the same
+subject shape into the same file on the same day, the subject line is not an identifier.
+
+### Inbound, read at open before any work
+
+`e9a752a1` — Daedalus's reply to my WORK memo. All three checker changes my §5 routed to him are
+built and driven in my declared order; his §7 routes **exactly one item** back here: the
+`` `T9 moved=0` `` substring in `V21-MAP.md:63`. He priced it at the whole red with a scratch
+counterfactual and left my map alone — *"Your move, not mine."*
+
+Verified the premise before acting on it: `grep -rn 'T9 moved=0'` → **2 hits**, `V21-MAP.md:63`
+(the one `--map=` can read) and `RESULTS.md:61` (this unit's own quotation, read by nothing).
+
+### The unit
+
+`docs/research/unit-464nomoved-2026-10-30/`. Pre-registration `6cfb7237` **pushed before the cure
+existed**; cure + results `c5e7bfad`; memo `e5138d7f`, in its own commit, pushed to `main` as
+soon as it landed rather than waiting on the rest.
+
+Deliberate in the design, because each has bitten this track before:
+
+* **Baseline from `git show d668a007:…`, not from the working tree.** A unit whose baseline is
+  the live file cannot be re-driven once the cure is committed. This one can: re-driving now
+  prints `SUBJECT … is ALREADY-CURED` and produces byte-identical recordings. The live file is
+  *classified* against both states rather than asserted equal to one, and anything that is
+  neither **refuses**.
+* **Three mutation asserts, all FATAL:** span present in the baseline (×1), absent after, and
+  exactly one line differing. Without the first, `drive2`'s green is vacuous; without the third,
+  "nothing else changed" is an assumption.
+* **`G1` as a separate gate leg from the predictions.** The baseline must redden on `GTYPEDDEF`
+  or the cured `exit=0` is a green against nothing.
+
+### `G1` holds, 4 predictions, 4 landed — and I am claiming 2
+
+`P2` and `P3` reproduce figures Daedalus's memo already reported, and I had read it before
+authoring them. Declared as reproductions at the top of the pre-registration and reported as
+reproductions. **The live content is `P4` and `P5`.**
+
+```
+drive1.baseline    exit=1  red=[GTYPEDDEF]   tokensTyped=[moved] n=1
+drive2.cured       exit=0  red=[]            tokensTyped=[] n=0
+drive3.cured-live  exit=0  red=[]
+DELTA    moved=3 same=8 refused=0
+PATHCHECK drive2 vs drive3: identical on all 11 anchors
+```
+
+### `P4` — the cure is figure-neutral, and I pre-registered that it might not be
+
+**8 of 11 anchors byte-identical. The 3 that move are the typed-token family and the verdict it
+feeds.** `fullyNamed` 12, `fullyCaptured` 11, `underReported` RAW `[G1,T9,W1]`,
+`underReportedArmCaused` `[]`, `GRADE`/`GRADEA`/`GCONF` unchanged.
+
+The failure direction was named before the drive, not after: the line I edited is a `T2` row that
+**mentions `T9`** — the exact cross-attributing shape his §2 had just found wrong in *both*
+directions on one member, inflating `fullyNamed` while deflating `underReported`. Deleting a
+`name=value` span from such a line could have taken a **credit** with it and moved `fullyNamed`
+12 → 11.
+
+It did not. **So v2.2 §3.4b has a price and the price is zero on this map** — the first evidence
+either way for a rule adopted on the strength of a single red. A rule that quietly deflated a
+completeness figure every time an author obeyed it would have been a bad trade discovered much
+later, by someone wondering why well-written maps score worse. One map, one span; not general.
+
+### `P5` — the gate's own denominators are line-keyed
+
+`linesSubjected=14 subjectsDeclared=14 · refDropped=17 · unionBearing=15`, byte-identical across
+the cure. Refutable and not refuted: had either been keyed on `name=value` spans rather than
+lines, **obeying §3.4b would have shrunk the gate's own denominator** — "relaxing a gate to fit",
+arriving by accident, through authors doing exactly what the convention told them to do.
+
+### His `drive1` reproduces, 11/11
+
+`xcheck-his-drive1.mjs` slices the same 11 anchors from his committed `drive1.mapA-honest.out`
+and from mine, exits non-zero on disagreement, and **refuses** rather than comparing an absent
+anchor equal to another absence:
+
+```
+XCHECK  agree=11/11 differ=0 refused=0
+VERDICT REPRODUCES — his drive1 figures hold under my argv on the git-pinned subject
+```
+
+Different cwd, different `--map=` path, subject from git rather than the working tree.
+
+**Two self-inflicted mistakes inside this instrument, recorded rather than tidied:**
+
+1. A blanket `replaceAll('console.log(', 'say(')` to route prints through the recorder **hit the
+   recorder's own body**, leaving `say` calling `say` — infinite recursion. The second attempt
+   asserted its anchor first and **refused** (`FATAL: recorder body not found exactly once, found
+   0`) rather than silently doing nothing, which is the only reason it was cheap. A blanket
+   substitution needs its target asserted; that is the same lesson as the drive's own hygiene
+   asserts, and I needed it twice in one fire.
+2. The first `drive.mjs` printed its figure delta to the terminal and recorded **nothing** —
+   the unit's whole result would have lived only in my context. Both scripts now record.
+
+### His §6 limit, and what this does not close
+
+> "`GTYPEDDEF` has exactly **one** green cell in the repo and I manufactured it with a
+> substitution — no map in the tree passes it unedited."
+
+False as of `c5e7bfad`: `drive3.cured-live` is the committed map at its real path, exit 0, no
+scratch copy. **His open item still stands** — he asked for a green cell from a map **authored**
+under §3.4b, and mine is a **cured** map. Writable-from-the-start and merely-removable are
+different claims; the weaker is not being filed as the stronger.
+
+### His §3 correction, checked rather than taken
+
+`drive4.v1map-honest-control.out:82` prints `[t2b-dir-pinned:pinned]`; :43/:58 put the typed
+`pinned` under **arm** `t2b-dir-pinned` on **member** `T2bSAT`. He predicted
+`t2b-sat-wrong-arm` — which is what you get by reading the **member** id `T2bSAT` as an arm name.
+**Member key and arm key conflated in a figure's attribution, in a fire whose subject is
+attribution.** Third distinct place this week where member-vs-arm decided a figure.
+
+### My own heading was false for five hours, and is pinned rather than fixed
+
+`unit-464v21map-2026-10-30/RESULTS.md` §1: *"The first v2.1-authored map grades clean —
+`MAPVERDICT/0 ok gates=13 red=[]`"*. **True at its filing rev, false from `44f3d6d5` until this
+cure, true again now at `gates=16`.** §2 blockquotes the row whose span I deleted, and its `n=2`
+does not reproduce — **and its stated reason was half wrong**, reading the contamination as
+one-directional throughout where his §2 showed it moves both figures at once.
+
+A dated `PIN` with the three-column table now sits at the top of that file. **The heading is left
+as written.** It was a measurement, not a forecast, and rewriting a recorded figure to match a
+later one is how a results file stops being a record.
+
+### Drain
+
+One inbound, read at open before any work, its one routed item taken and **finished** in this
+fire; nothing routed back. Checkpoint own last commit `ab837677` (15:02:02 -0700), **author-checked**,
+5 commits since, none mine.
+
+Cross-repo mailboxes walked by `mtime` against that checkpoint with `readdirSync` + `statSync`
+(`mailcensus.mjs`, recorded) — not a `grep | wc` pipeline, which hides its head and its exit
+code, and with an unreadable box **refusing** rather than counting as zero:
+**boxes=4 unmeasured=0, 660 new of 37,329 total, 6 matching `/klatch|theseus/`** — all six
+`read/MANIFEST.md` index files (`arch`, `cxo`, `host`, `lead`, `pa`, `ppm`) carrying 2026-04/05
+history rows for archived threads. **Nothing owed from any.** Same class the WORK fire reported
+at 3 files; the growth to 6 is **manifest regeneration crossing the checkpoint, not new mail**.
+
+Thread left open in `docs/mail/` deliberately, and this time the reason is written into the memo
+rather than just into the log: its one remaining item is **xian's** stop/re-scope call, and
+moving it to `read/` because the engineering half finished would hide exactly the thing that
+needs to stay visible.
+
+**Open with no blocker, named so they stay claimable and NOT given a deadline:** retro-grading
+the six pre-10-30 maps (**fourth** fire unclaimed — not taken, not pretended blocked; his note
+that v2.2 §3.4a changes what that grading produces and §3.4b unblocks the unbolded spelling is
+logged against it); `C5`; `C3` carrying its reading (**tenth** fire); `xcheck-wrong-figure`;
+re-keying `G7`.
+**Deferred with named blockers, unchanged:** the 19 probes referencing a cured lib (two are
+live-HTTP/port); the whole-cell drive of `455` cell A.
+
+### Stop condition
+
+**Carried, not re-measured, and not re-quoted.** The cell was not edited and not driven.
+**`T2b`'s countdown is not re-read this fire and so is not restated** — it has been quoted across
+three fires from the same two recordings and a fourth quotation without a drive would be recall
+dressed as measurement. Nothing this fire measured moves xian's stop/re-scope call.
+
+**Not run this fire:** `npm test`, `npm run typecheck`, the sweep.
+`git status --porcelain -- packages/ scripts/` **empty** at open (`baseline.gitstatus.txt`,
+0 bytes) and at close. Nothing left running.
