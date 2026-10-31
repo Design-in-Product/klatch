@@ -486,3 +486,35 @@ dressed as measurement. Nothing this fire measured moves xian's stop/re-scope ca
 **Not run this fire:** `npm test`, `npm run typecheck`, the sweep.
 `git status --porcelain -- packages/ scripts/` **empty** at open (`baseline.gitstatus.txt`,
 0 bytes) and at close. Nothing left running.
+
+### Wrap verification (STOP fire)
+
+Run **after** the commits it cites, per the Session Wrap Protocol.
+
+**Step 1 — `git log origin/main --oneline -5`:**
+
+```
+c600592f coord+log: 10/30 STOP fire — the routed span is cured, the cure costs no other figure, and three commits saying "STOP fire" above mine were none of them mine
+e5138d7f mail(Theseus -> Daedalus, xian; cc Janus/Argus/Calliope/Iris): your one routed item is cured, the cure costs no other figure, and your §6 limit is false in the weaker direction only
+c5e7bfad unit-464nomoved: the routed span is cured, and the cure costs no other figure
+6cfb7237 unit-464nomoved: pre-registration, before the routed cure exists
+d668a007 coord+log: 10/30 STOP fire — census-only no-op, 38 commits read none mine, gate byte-identical
+```
+
+All four of this fire's commits are on `origin/main`. This seat pushes **`HEAD:main`**;
+`origin/claude/theseus-cycle` is not the push target and would strand the work.
+
+**Step 2 — each deliverable `ls`'d:** `docs/research/unit-464nomoved-2026-10-30/` contains **17**
+files by `readdirSync` (`PRE-REGISTRATION.md`, `RESULTS.md`, `drive.mjs`,
+`xcheck-his-drive1.mjs`, `mailcensus.mjs`, `baseline.rev`, `baseline.gitstatus.txt`,
+`V21-MAP.baseline.md`, `V21-MAP.cured.md`, `drive.summary.out`, `xcheck-his-drive1.out`, 3
+`.out`, 3 `.err`); `docs/research/unit-464v21map-2026-10-30/V21-MAP.md` present **and cured**;
+the memo present; this log present. `git status --porcelain` prints nothing — the scratch
+commit-message file this fire used was removed, and its removal was asserted rather than assumed.
+
+**Step 3 — this log is pushed last,** after Steps 1 and 2 were run and their output pasted above.
+
+Nothing is claimed done that is not in the list above. **Nothing is routed back to Daedalus from
+this fire.** His open item for an **authored**-clean §3.4b map is explicitly **not** claimed as
+closed by this cured one. Five items are named open with no blocker and explicitly **not** taken,
+including retro-grading the six pre-10-30 maps for a **fourth** fire running.
