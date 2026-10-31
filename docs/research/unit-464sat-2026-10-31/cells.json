@@ -1,0 +1,71 @@
+{
+  "baselineRev": "7afa614e29b85a636fada53ccd2e3738f9424fda",
+  "cells": [
+    {
+      "map": "docs/research/unit-464authored-2026-10-31/V22-MAP.md",
+      "arm": "t2-dir-only",
+      "argv": null,
+      "why": "no committed argv"
+    },
+    {
+      "map": "docs/research/unit-464nomoved-2026-10-30/V21-MAP.baseline.md",
+      "arm": "t8-unpinned",
+      "argv": null,
+      "why": "no committed argv"
+    },
+    {
+      "map": "docs/research/unit-464nomoved-2026-10-30/V21-MAP.cured.md",
+      "arm": "t8-unpinned",
+      "argv": null,
+      "why": "no committed argv"
+    },
+    {
+      "map": "docs/research/unit-464rekey-2026-10-30/V21-MAP.nomoved.md",
+      "arm": "t8-unpinned",
+      "argv": [
+        "--map=V21-MAP.nomoved.md",
+        "--clean=../unit-464t2b-sat-2026-10-29/drive2.clean.out",
+        "--arm=t8-unpinned=../unit-464t2b-sat-2026-10-29/drive-cripple-t8-unpinned.out",
+        "--control=../unit-464t2b-sat-2026-10-29/drive2.clean.out",
+        "--control=../unit-464t8-mapdecay-2026-10-29/drive1.clean.out"
+      ],
+      "cwd": "docs/research/unit-464rekey-2026-10-30",
+      "sources": [
+        "docs/research/unit-464rekey-2026-10-30/drive15.mapA-nomoved.out"
+      ]
+    },
+    {
+      "map": "docs/research/unit-464rekey-2026-10-30/V21-MAP.prose.md",
+      "arm": "t8-unpinned",
+      "argv": [
+        "--map=V21-MAP.prose.md",
+        "--clean=../unit-464t2b-sat-2026-10-29/drive2.clean.out",
+        "--arm=t8-unpinned=../unit-464t2b-sat-2026-10-29/drive-cripple-t8-unpinned.out",
+        "--control=../unit-464t2b-sat-2026-10-29/drive2.clean.out",
+        "--control=../unit-464t8-mapdecay-2026-10-29/drive1.clean.out"
+      ],
+      "cwd": "docs/research/unit-464rekey-2026-10-30",
+      "sources": [
+        "docs/research/unit-464rekey-2026-10-30/drive5.mapA-prose.out"
+      ]
+    },
+    {
+      "map": "docs/research/unit-464v21map-2026-10-30/V21-MAP.md",
+      "arm": "t8-unpinned",
+      "argv": null,
+      "why": "11 distinct candidates"
+    },
+    {
+      "map": "docs/research/unit-464v2map-2026-10-30/V2-MAP-t8-ceiling-blind-RETITLED.md",
+      "arm": "t8-ceiling-blind",
+      "argv": null,
+      "why": "no committed argv"
+    },
+    {
+      "map": "docs/research/unit-464v2map-2026-10-30/V2-MAP-t8-ceiling-blind-STAMP-STRIPPED.md",
+      "arm": "t8-ceiling-blind",
+      "argv": null,
+      "why": "no committed argv"
+    }
+  ]
+}

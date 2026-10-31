@@ -1,0 +1,33 @@
+GCURE ok  cured copy vs live checker: 1 line(s) differ [228], cured boundary occurs 1x, substituting it back reproduces the live checker EXACTLY
+CELLS  8 scored cell(s), sliced at 7afa614e (source declares 8)
+GARGV2 21 committed argv line(s) over 732 .out file(s); honest-configuration tails per arm: t2-dir-only=1 · t8-unpinned=1 · t2b-sat-wrong-arm=1 · t2b-dir-pinned=1 · t8-ceiling-blind=1
+GSLICE ok  tokensOf sliced from docs/research/unit-464mapkey-2026-10-30/grade-filed-maps.mjs at 7afa614e (444B), boundary present exactly once
+GKP ok  sliced reader on the checker's own real slice: 11 tokens (source wants 11), selector="max(pins first)" round-trips-whole=true
+CELL REFUSED V22-MAP.md / t2-dir-only: tail is not sibling-relative, so cwd=docs/research/unit-464authored-2026-10-31 would not resolve it
+CELL REFUSED V21-MAP.baseline.md / t8-unpinned: tail is not sibling-relative, so cwd=docs/research/unit-464nomoved-2026-10-30 would not resolve it
+CELL REFUSED V21-MAP.cured.md / t8-unpinned: tail is not sibling-relative, so cwd=docs/research/unit-464nomoved-2026-10-30 would not resolve it
+CELL REFUSED V21-MAP.nomoved.md / t8-unpinned: tail is not sibling-relative, so cwd=docs/research/unit-464rekey-2026-10-30 would not resolve it
+CELL REFUSED V21-MAP.prose.md / t8-unpinned: tail is not sibling-relative, so cwd=docs/research/unit-464rekey-2026-10-30 would not resolve it
+CELL REFUSED V21-MAP.md / t8-unpinned: tail is not sibling-relative, so cwd=docs/research/unit-464v21map-2026-10-30 would not resolve it
+CELL REFUSED V2-MAP-t8-ceiling-blind-RETITLED.md / t8-ceiling-blind: tail is not sibling-relative, so cwd=docs/research/unit-464v2map-2026-10-30 would not resolve it
+CELL REFUSED V2-MAP-t8-ceiling-blind-STAMP-STRIPPED.md / t8-ceiling-blind: tail is not sibling-relative, so cwd=docs/research/unit-464v2map-2026-10-30 would not resolve it
+
+=== SATURATION CENSUS over the 8 scored maps ===
+  REFUSED      V22-MAP.md / t2-dir-only  (tail not sibling-relative)
+  REFUSED      V21-MAP.baseline.md / t8-unpinned  (tail not sibling-relative)
+  REFUSED      V21-MAP.cured.md / t8-unpinned  (tail not sibling-relative)
+  REFUSED      V21-MAP.nomoved.md / t8-unpinned  (tail not sibling-relative)
+  REFUSED      V21-MAP.prose.md / t8-unpinned  (tail not sibling-relative)
+  REFUSED      V21-MAP.md / t8-unpinned  (tail not sibling-relative)
+  REFUSED      V2-MAP-t8-ceiling-blind-RETITLED.md / t8-ceiling-blind  (tail not sibling-relative)
+  REFUSED      V2-MAP-t8-ceiling-blind-STAMP-STRIPPED.md / t8-ceiling-blind  (tail not sibling-relative)
+
+SATCOUNT  0 saturated · 0 NOT saturated · 8 REFUSED/UNMEASURED of 8 scored map(s). The refused cells are UNMEASURED, not saturated and not 0.
+
+P1 UNMEASURED — at least one of the 8 is NOT saturated: 0 not saturated of 0 scored
+P2 UNMEASURED — at least one priced token is a hyphenation-tail false positive: 0 hyphen-involving of 0 priced token(s)
+P3 UNMEASURED — both V2-MAP cells have price 0: 0 V2-MAP cell(s) scored, price(s) []
+P4 LANDS — all 8 cells pass GREACH: 0 cell(s) refused for want of reach
+
+ERRCOUNT  1 .err file(s) in this unit dir, 0 non-empty []  (counted with readdirSync)
+SATVERDICT/0 ok  1 of 4 predictions land

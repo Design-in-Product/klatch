@@ -1,0 +1,82 @@
+GCURE ok  cured copy vs live checker: 1 line(s) differ [228], cured boundary occurs 1x, substituting it back reproduces the live checker EXACTLY
+CELLS  8 scored cell(s), sliced at 7afa614e (source declares 8)
+GARGV2 21 committed argv line(s) over 732 .out file(s); honest-configuration tails per arm: t2-dir-only=1 · t8-unpinned=1 · t2b-sat-wrong-arm=1 · t2b-dir-pinned=1 · t8-ceiling-blind=1
+GSLICE ok  tokensOf sliced from docs/research/unit-464mapkey-2026-10-30/grade-filed-maps.mjs at 7afa614e (444B), boundary present exactly once
+GKP ok  sliced reader on the checker's own real slice: 11 tokens (source wants 11), selector="max(pins first)" round-trips-whole=true
+GREACH ok  V22-MAP.md / t2-dir-only: section 49 line(s), live 1 name(s), wide 20, wide adds 19
+CELL SATURATED     V22-MAP.md / t2-dir-only: live typed=[] cured typed=[]  PRICE=+[] -[]
+     live  GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed   |   MAPVERDICT/0 ok gates=16 red=[]
+     cured GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed   |   MAPVERDICT/0 ok gates=16 red=[]
+GREACH ok  V21-MAP.baseline.md / t8-unpinned: section 56 line(s), live 3 name(s), wide 31, wide adds 28
+CELL NOT-SATURATED V21-MAP.baseline.md / t8-unpinned: live typed=[moved] cured typed=[figure,moved,reachedArmCaused,selfLast]  PRICE=+[figure,reachedArmCaused,selfLast] -[]
+     live  GTYPEDDEF RED typed-token defects: 1 typed token(s) — quoted OF a member that never emits it: [t8-unpinned:moved]   |   MAPVERDICT/1 RED gates=16 red=[GTYPEDDEF]
+     cured GTYPEDDEF RED typed-token defects: 4 typed token(s) — quoted OF a member that never emits it: [t8-unpinned:figure,t8-unpinned:moved,t8-unpinned:reachedArmCaused,t8-unpinned:selfLast]   |   MAPVERDICT/1 RED gates=16 red=[GTYPED,GTYPEDDEF]
+     PRICECLASS figure: GENUINE-BOUNDARY  preceding-char histogram over the section: "`"x2
+     PRICECLASS reachedArmCaused: GENUINE-BOUNDARY  preceding-char histogram over the section: "`"x1
+     PRICECLASS selfLast: GENUINE-BOUNDARY  preceding-char histogram over the section: "`"x1
+GREACH ok  V21-MAP.cured.md / t8-unpinned: section 56 line(s), live 2 name(s), wide 30, wide adds 28
+CELL NOT-SATURATED V21-MAP.cured.md / t8-unpinned: live typed=[] cured typed=[figure,reachedArmCaused,selfLast]  PRICE=+[figure,reachedArmCaused,selfLast] -[]
+     live  GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed   |   MAPVERDICT/0 ok gates=16 red=[]
+     cured GTYPEDDEF RED typed-token defects: 3 typed token(s) — quoted OF a member that never emits it: [t8-unpinned:figure,t8-unpinned:reachedArmCaused,t8-unpinned:selfLast]   |   MAPVERDICT/1 RED gates=16 red=[GTYPED,GTYPEDDEF]
+     PRICECLASS figure: GENUINE-BOUNDARY  preceding-char histogram over the section: "`"x2
+     PRICECLASS reachedArmCaused: GENUINE-BOUNDARY  preceding-char histogram over the section: "`"x1
+     PRICECLASS selfLast: GENUINE-BOUNDARY  preceding-char histogram over the section: "`"x1
+GREACH ok  V21-MAP.nomoved.md / t8-unpinned: section 56 line(s), live 2 name(s), wide 30, wide adds 28
+CELL NOT-SATURATED V21-MAP.nomoved.md / t8-unpinned: live typed=[] cured typed=[figure,reachedArmCaused,selfLast]  PRICE=+[figure,reachedArmCaused,selfLast] -[]
+     live  GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed   |   MAPVERDICT/0 ok gates=16 red=[]
+     cured GTYPEDDEF RED typed-token defects: 3 typed token(s) — quoted OF a member that never emits it: [t8-unpinned:figure,t8-unpinned:reachedArmCaused,t8-unpinned:selfLast]   |   MAPVERDICT/1 RED gates=16 red=[GTYPED,GTYPEDDEF]
+     PRICECLASS figure: GENUINE-BOUNDARY  preceding-char histogram over the section: "`"x2
+     PRICECLASS reachedArmCaused: GENUINE-BOUNDARY  preceding-char histogram over the section: "`"x1
+     PRICECLASS selfLast: GENUINE-BOUNDARY  preceding-char histogram over the section: "`"x1
+GREACH ok  V21-MAP.prose.md / t8-unpinned: section 56 line(s), live 3 name(s), wide 31, wide adds 28
+CELL NOT-SATURATED V21-MAP.prose.md / t8-unpinned: live typed=[N,moved] cured typed=[N,actual,figure,fired,incidental,insensitive,moved,n,reachedArmCaused,refusing,registered,selfLast,sensitive]  PRICE=+[actual,figure,fired,incidental,insensitive,n,reachedArmCaused,refusing,registered,selfLast,sensitive] -[]
+     live  GTYPEDDEF RED typed-token defects: 2 typed token(s) — quoted OF a member that never emits it: [t8-unpinned:N,t8-unpinned:moved]   |   MAPVERDICT/1 RED gates=16 red=[GTYPEDDEF]
+     cured GTYPEDDEF RED typed-token defects: 13 typed token(s) — quoted OF a member that never emits it: [t8-unpinned:N,t8-unpinned:actual,t8-unpinned:figure,t8-unpinned:fired,t8-unpinned:incidental,t8-unpinned:insensitive,t8-unpinned:moved,t8-unpinned:n,t8-unpinned:reachedArmCaused,t8-unpinned:refusing,t8-unpinned:registered,t8-unpinned:selfLast,t8-unpinned:sensitive]   |   MAPVERDICT/1 RED gates=16 red=[GTYPED,GTYPEDDEF]
+     PRICECLASS actual: GENUINE-BOUNDARY  preceding-char histogram over the section: "`"x4
+     PRICECLASS figure: GENUINE-BOUNDARY  preceding-char histogram over the section: "`"x2
+     PRICECLASS fired: GENUINE-BOUNDARY  preceding-char histogram over the section: "`"x2
+     PRICECLASS incidental: GENUINE-BOUNDARY  preceding-char histogram over the section: "`"x1
+     PRICECLASS insensitive: GENUINE-BOUNDARY  preceding-char histogram over the section: "`"x1
+     PRICECLASS n: GENUINE-BOUNDARY  preceding-char histogram over the section: "o"x1 "`"x1
+     PRICECLASS reachedArmCaused: GENUINE-BOUNDARY  preceding-char histogram over the section: "`"x1
+     PRICECLASS refusing: GENUINE-BOUNDARY  preceding-char histogram over the section: "`"x3
+     PRICECLASS registered: GENUINE-BOUNDARY  preceding-char histogram over the section: "`"x1
+     PRICECLASS selfLast: GENUINE-BOUNDARY  preceding-char histogram over the section: "`"x1
+     PRICECLASS sensitive: GENUINE-BOUNDARY  preceding-char histogram over the section: "`"x2 "n"x1
+GREACH ok  V21-MAP.md / t8-unpinned: section 56 line(s), live 2 name(s), wide 30, wide adds 28
+CELL NOT-SATURATED V21-MAP.md / t8-unpinned: live typed=[] cured typed=[figure,reachedArmCaused,selfLast]  PRICE=+[figure,reachedArmCaused,selfLast] -[]
+     live  GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed   |   MAPVERDICT/0 ok gates=16 red=[]
+     cured GTYPEDDEF RED typed-token defects: 3 typed token(s) — quoted OF a member that never emits it: [t8-unpinned:figure,t8-unpinned:reachedArmCaused,t8-unpinned:selfLast]   |   MAPVERDICT/1 RED gates=16 red=[GTYPED,GTYPEDDEF]
+     PRICECLASS figure: GENUINE-BOUNDARY  preceding-char histogram over the section: "`"x2
+     PRICECLASS reachedArmCaused: GENUINE-BOUNDARY  preceding-char histogram over the section: "`"x1
+     PRICECLASS selfLast: GENUINE-BOUNDARY  preceding-char histogram over the section: "`"x1
+GREACH ok  V2-MAP-t8-ceiling-blind-RETITLED.md / t8-ceiling-blind: section 53 line(s), live 2 name(s), wide 9, wide adds 7
+CELL NOT-SATURATED V2-MAP-t8-ceiling-blind-RETITLED.md / t8-ceiling-blind: live typed=[] cured typed=[reached]  PRICE=+[reached] -[]
+     live  GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed   |   MAPVERDICT/1 RED gates=16 red=[GCONFORM]
+     cured GTYPEDDEF RED typed-token defects: 1 typed token(s) — quoted OF a member that never emits it: [t8-ceiling-blind:reached]   |   MAPVERDICT/1 RED gates=16 red=[GTYPED,GTYPEDDEF,GCONFORM]
+     PRICECLASS reached: GENUINE-BOUNDARY  preceding-char histogram over the section: "`"x1
+GREACH ok  V2-MAP-t8-ceiling-blind-STAMP-STRIPPED.md / t8-ceiling-blind: section 53 line(s), live 2 name(s), wide 9, wide adds 7
+CELL NOT-SATURATED V2-MAP-t8-ceiling-blind-STAMP-STRIPPED.md / t8-ceiling-blind: live typed=[] cured typed=[reached]  PRICE=+[reached] -[]
+     live  GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed   |   MAPVERDICT/1 RED gates=16 red=[GMUST,GCONFORM]
+     cured GTYPEDDEF RED typed-token defects: 1 typed token(s) — quoted OF a member that never emits it: [t8-ceiling-blind:reached]   |   MAPVERDICT/1 RED gates=16 red=[GMUST,GTYPED,GTYPEDDEF,GCONFORM]
+     PRICECLASS reached: GENUINE-BOUNDARY  preceding-char histogram over the section: "`"x1
+
+=== SATURATION CENSUS over the 8 scored maps ===
+  SATURATED    V22-MAP.md / t2-dir-only  price=0 []
+  NOT-SATURATED V21-MAP.baseline.md / t8-unpinned  price=3 [figure,reachedArmCaused,selfLast]
+  NOT-SATURATED V21-MAP.cured.md / t8-unpinned  price=3 [figure,reachedArmCaused,selfLast]
+  NOT-SATURATED V21-MAP.nomoved.md / t8-unpinned  price=3 [figure,reachedArmCaused,selfLast]
+  NOT-SATURATED V21-MAP.prose.md / t8-unpinned  price=11 [actual,figure,fired,incidental,insensitive,n,reachedArmCaused,refusing,registered,selfLast,sensitive]
+  NOT-SATURATED V21-MAP.md / t8-unpinned  price=3 [figure,reachedArmCaused,selfLast]
+  NOT-SATURATED V2-MAP-t8-ceiling-blind-RETITLED.md / t8-ceiling-blind  price=1 [reached]
+  NOT-SATURATED V2-MAP-t8-ceiling-blind-STAMP-STRIPPED.md / t8-ceiling-blind  price=1 [reached]
+
+SATCOUNT  1 saturated · 7 NOT saturated · 0 REFUSED/UNMEASURED of 8 scored map(s). The refused cells are UNMEASURED, not saturated and not 0.
+
+P1 LANDS — at least one of the 8 is NOT saturated: 7 not saturated of 8 scored
+P2 REFUTED — at least one priced token is a hyphenation-tail false positive: 0 hyphen-involving of 25 priced token(s)
+P3 REFUTED — both V2-MAP cells have price 0: 2 V2-MAP cell(s) scored, price(s) [1,1]
+P4 LANDS — all 8 cells pass GREACH (|wide \ live| > 0): 8 of 8 cell(s) reached the GREACH leg and passed it
+
+ERRCOUNT  18 .err file(s) in this unit dir, 0 non-empty []  (counted with readdirSync)
+SATVERDICT/0 ok  2 of 4 predictions land
