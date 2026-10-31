@@ -1,0 +1,9 @@
+KPGATE ok  copied tokenizer on a real slice: 11 tokens (checker publishes 11), selector="max(pins first)" (checker publishes "max(pins first)")
+DENOM  V22-MAP.md / t2-dir-only: 1 span(s) the checker's tokenizer SEES, 1 distinct name(s) [n] over 49 section line(s)
+WIDE   V22-MAP.md / t2-dir-only: a backtick-aware left boundary sees 20 distinct name(s) — 19 more than the checker [actual,assertable,dirLast,expected,figure,fired,freeArmPinned,freeDistance,incidental,key,n,pinArm,pinArmPinned,pinDistance,popMax,probes,refusing,selector,selfLast,sensitive]
+DENOM  ../unit-464v21map-2026-10-30/V21-MAP.md / t8-unpinned: 2 span(s) the checker's tokenizer SEES, 2 distinct name(s) [N,surface] over 56 section line(s)
+WIDE   ../unit-464v21map-2026-10-30/V21-MAP.md / t8-unpinned: a backtick-aware left boundary sees 30 distinct name(s) — 28 more than the checker [N,active,actual,assertable,dir,distance,expected,figure,fired,freeArmPinned,freeDistance,incidental,insensitive,key,max,n,name,pinArm,pinArmPinned,pinDistance,pinned,popMax,reachedArmCaused,refusing,registered,selfLast,sensitive,surface,union,unionArmPinned]
+DENOM  ../unit-464nomoved-2026-10-30/V21-MAP.baseline.md / t8-unpinned: 3 span(s) the checker's tokenizer SEES, 3 distinct name(s) [N,moved,surface] over 56 section line(s)
+WIDE   ../unit-464nomoved-2026-10-30/V21-MAP.baseline.md / t8-unpinned: a backtick-aware left boundary sees 31 distinct name(s) — 28 more than the checker [N,active,actual,assertable,dir,distance,expected,figure,fired,freeArmPinned,freeDistance,incidental,insensitive,key,max,moved,n,name,pinArm,pinArmPinned,pinDistance,pinned,popMax,reachedArmCaused,refusing,registered,selfLast,sensitive,surface,union,unionArmPinned]
+DENOM  PROBE-MAP-rowless.md / t2-dir-only: 0 span(s) the checker's tokenizer SEES, 0 distinct name(s) [] over 4 section line(s)
+WIDE   PROBE-MAP-rowless.md / t2-dir-only: a backtick-aware left boundary sees 0 distinct name(s) — 0 more than the checker []
