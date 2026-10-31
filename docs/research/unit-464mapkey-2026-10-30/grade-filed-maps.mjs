@@ -56,6 +56,14 @@ const CRIPPLES = new Set([
   'control-fallback', // an absent control falls back to `reached` instead of refusing
   'conform-raw', // GCONFORM keyed on the RAW under-report instead of the arm-caused one
   'must-blind', // GMUST reports OK without comparing
+  // Added 2026-10-30 STOP fire, with unit-464rekey-2026-10-30. The first three are KEY
+  // perturbations on the subject re-key; the last two are SUBJECT perturbations, one per
+  // new gate. A key cripple cannot score a subject gate, which is why they are labelled.
+  'subject-blind', // KEY: mentions() = every line matching \bid\b (the pre-fix behaviour)
+  'subject-rows-only', // KEY: declared rows only — the "narrows to nothing" failure mode
+  'subject-bold-only', // KEY: the subject parse requires the ** markers
+  'typed-ungated', // SUBJECT: GTYPEDDEF reports ok without reading tokensTyped
+  'control-header-blind', // SUBJECT: GCTRLPROV does not read the controls' CRIPPLE line
 ]);
 
 const args = process.argv.slice(2);
@@ -384,11 +392,74 @@ const gradeArm = (clean, arm, section, cleanV, armV, driftSet) => {
       : reached.filter((id) => !driftSet.has(id));
 
   const sectionText = unmapped ? '' : section.join('\n');
-  const mentions = (id) =>
-    unmapped ? [] : section.filter((l) => new RegExp(`\\b${id}\\b`).test(l));
+
+  // SUBJECT RE-KEY (added 2026-10-30 STOP, routed by Theseus's §2). The defect he
+  // measured: `mentions()` selected every physical line matching `\bid\b`, and §3.4's
+  // one-physical-line rule — which he asked for the same morning — makes rows longer, so
+  // a longer row mentions more member ids and every id mentioned inherits every token on
+  // the line. His `V21-MAP.md:63` is `T2`'s row and it quotes §3.3a's own worked example
+  // `T9 moved=0`; `T9` therefore scored two typed-token defects in a row that is not its
+  // own. The one-physical-line rule and the per-member typed-token key pull against each
+  // other, and it is strictly WORSE for a good map — the rows that cross-reference other
+  // members to explain why one moved are exactly the rows that get contaminated.
+  //
+  // The key: a line's DECLARED SUBJECT is the member id in its leading code span (bolded
+  // or not — see PRE-REGISTRATION D1; the six pre-10-30 maps use the unbolded spelling),
+  // accepted only when that text is a known member id. Other ids on the line are
+  // REFERENCES.
+  //
+  //   mentions(id) = { rows whose declared subject is id } ∪ { lines with NO declared
+  //                   subject that match \bid\b }
+  //
+  // The union is the half that answers his "must not narrow to nothing": a map written
+  // entirely in prose declares no subjects, so every line is unsubjected and this key is
+  // EXACTLY the pre-fix key. `subject-rows-only` drops the union and is the arm that gives
+  // that property a counterfactual instead of an argument.
+  const idSet = new Set(ids);
+  const SUBJECT_RE = CRIPPLE === 'subject-bold-only'
+    ? /^\s*[-*+]\s+\*\*\s*`([^`]+)`\s*\*\*/
+    : /^\s*[-*+]\s+(?:\*\*\s*)?`([^`]+)`/;
+  const subjectOf = (l) => {
+    const m = SUBJECT_RE.exec(l);
+    if (m === null) return null;
+    return idSet.has(m[1]) ? m[1] : null;
+  };
+  const mentions = (id) => {
+    if (unmapped) return [];
+    if (CRIPPLE === 'subject-blind') {
+      return section.filter((l) => new RegExp(`\\b${id}\\b`).test(l));
+    }
+    return section.filter((l) => {
+      const subj = subjectOf(l);
+      if (subj !== null) return subj === id;
+      if (CRIPPLE === 'subject-rows-only') return false;
+      return new RegExp(`\\b${id}\\b`).test(l);
+    });
+  };
+
+  // Figures the subject re-key is graded on, computed INDEPENDENTLY of the cripple so a
+  // crippled drive still prints its own denominators. `linesSubjected` is leg A's
+  // denominator: with no declared subject anywhere, leg A has nothing to bite on and must
+  // say VACUOUS rather than read as a pass.
+  const linesSubjected = unmapped ? 0 : section.filter((l) => subjectOf(l) !== null).length;
+  const subjectsDeclared = unmapped
+    ? []
+    : [...new Set(section.map(subjectOf).filter((s) => s !== null))].sort();
 
   const rows = reached.map((id) => {
     const ctx = mentions(id);
+    // The pre-fix key, kept beside the live one so the re-key is a 2-key comparison and
+    // not a silent replacement — the same discipline `typedRecordingKey` carries below.
+    const looseCtx = unmapped ? [] : section.filter((l) => new RegExp(`\\b${id}\\b`).test(l));
+    // Lines the loose key gave this member that belong to ANOTHER member's declared row.
+    // This is the contamination Theseus measured, counted per member.
+    const refDropped = looseCtx.filter((l) => {
+      const s = subjectOf(l);
+      return s !== null && s !== id;
+    }).length;
+    // Does this member's context rest on any UNSUBJECTED line? If so, the union in D2 is
+    // load-bearing for it, and `subject-rows-only` must be able to show that.
+    const unsubjectedCtx = looseCtx.filter((l) => subjectOf(l) === null).length;
     const a = clean.get(id);
     const b = arm.get(id);
     const ta = a === undefined ? new Map() : tokensOf(a.payload);
@@ -428,7 +499,18 @@ const gradeArm = (clean, arm, section, cleanV, armV, driftSet) => {
     for (const l of ctx) for (const t of tokensOf(l).keys()) quotedOfMe.add(t);
     const typed = [...quotedOfMe].filter((t) => !ownEmits.has(t)).sort();
 
-    return { id, mentioned: ctx.length > 0, movedTokens, named, captured, typed };
+    return {
+      id,
+      mentioned: ctx.length > 0,
+      movedTokens,
+      named,
+      captured,
+      typed,
+      ctxLines: ctx.length,
+      looseLines: looseCtx.length,
+      refDropped,
+      unsubjectedCtx,
+    };
   });
 
   // The superseded key, kept beside the live one so the correction is a 2-key
@@ -489,6 +571,8 @@ const gradeArm = (clean, arm, section, cleanV, armV, driftSet) => {
     fullyNamed: unmapped ? null : rows.filter((r) => r.mentioned && r.named.length === r.movedTokens.length).length,
     fullyCaptured: unmapped ? null : rows.filter((r) => r.mentioned && r.captured.length === r.movedTokens.length).length,
     capturedShort: unmapped ? null : rows.filter((r) => r.captured.length < r.named.length).map((r) => r.id),
+    linesSubjected,
+    subjectsDeclared,
   };
 };
 
@@ -630,9 +714,63 @@ const GCTRL = (() => {
   if (a === b) {
     return { ok: false, why: 'control pair is byte-identical — drift would be 0 by construction, so the pair cannot grade the exclusion' };
   }
-  return { ok: true, why: `${controlA.size} vs ${controlB.size} members, two distinct no-cripple drives` };
+  // The reason line says only what this gate checked. It previously read "two distinct
+  // no-cripple drives", which asserted a provenance it never read — Theseus passed the ARM
+  // recording as the second control and this line said that about it. Provenance is
+  // GCTRLPROV's leg, below, and the two gates are kept separate so neither borrows the
+  // other's conclusion.
+  return { ok: true, why: `${controlA.size} vs ${controlB.size} members, two distinct readable recordings (NOT checked here: whether either is a no-cripple drive — that is GCTRLPROV)` };
 })();
 console.log(`GCTRL  ${GCTRL.ok ? 'ok ' : 'RED'} drift control: ${GCTRL.why}`);
+
+// --- GCTRLPROV: each control path's own recorded PROVENANCE says it is a no-cripple
+// drive (added 2026-10-30 STOP, routed by Theseus's §4).
+//
+// The defect he measured: GCTRL checks two paths were given, both readable, not
+// byte-identical — and then its reason line ASSERTS "two distinct no-cripple drives"
+// about a pair whose second member was the ARM recording itself. Passing the arm as the
+// second control took the under-report his §2 exhibit carries from 15 (membership 5 +
+// tokens 10) to 4 (membership 0 + tokens 4), with red-set delta adds=[] removes=[]. And
+// the direction of the incentive is the finding: giving NO control reddens three gates and
+// exits 1, while measuring drift against a control that cannot measure it exits 0.
+//
+// Why a recording and not a stamp: the control is the DRIVER's argument, not the map's, so
+// no map field can carry it. Theseus's point exactly, and a declaration is the weaker form.
+//
+// Why `^CRIPPLE <value>` and not also `cripple: <value>` (PRE-REGISTRATION D3): the cell
+// recordings every control actually points at print `CRIPPLE none`; `cripple: none (clean
+// arm)` is THIS checker's own header spelling. A reader taking both would accept a
+// grade-filed-maps recording as a cell control — a recording of a different subject
+// entirely. Absent header therefore REFUSES, and a refusal here is a RED: a control whose
+// provenance cannot be read is the precise hole this gate exists to close.
+const crippleHeaderOf = (path) => {
+  const t = readText(path);
+  if (t === null) return { value: null, why: 'unreadable' };
+  const m = /^CRIPPLE[ \t]+(.+)$/m.exec(t);
+  return m === null ? { value: null, why: 'no CRIPPLE header' } : { value: m[1].trim(), why: 'read' };
+};
+const GCTRLPROV = (() => {
+  const checked = [];
+  const bad = [];
+  // The clean recording is read on the same leg: a crippled `--clean=` makes every
+  // reach figure a comparison between two arms, which is the same hole one argument over.
+  for (const [role, path] of [['clean', CLEAN_PATH], ...CONTROL.map((p, i) => [`control${i + 1}`, p])]) {
+    const h = crippleHeaderOf(path);
+    checked.push(`${role}=${h.value === null ? h.why.toUpperCase() : h.value}`);
+    if (h.value === null) bad.push(`${role}:REFUSED(${h.why})`);
+    else if (h.value !== 'none') bad.push(`${role}:CRIPPLE ${h.value}`);
+  }
+  if (CRIPPLE === 'control-header-blind') {
+    return {
+      ok: true,
+      why: `OK (provenance not read — control-header-blind arm); would have flagged ${bad.length} [${bad.join(',')}]`,
+    };
+  }
+  return bad.length === 0
+    ? { ok: true, why: `${checked.length} recording(s) declare no cripple in their own header: [${checked.join(' ')}]` }
+    : { ok: false, why: `${bad.length} of ${checked.length} recording(s) are NOT no-cripple drives: [${bad.join(',')}]  ·  read: [${checked.join(' ')}]` };
+})();
+console.log(`GCTRLPROV ${GCTRLPROV.ok ? 'ok ' : 'RED'} control provenance: ${GCTRLPROV.why}`);
 console.log(
   `DRIFT  ${driftIds === null ? 'REFUSED (no readable control pair)' : `n=${driftIds.length} [${driftIds.join(',')}]`}`
   + `${CRIPPLE === 'drift-blind' ? '   (drift-blind arm: forced empty)' : ''}`
@@ -663,9 +801,9 @@ for (const { name, path } of ARMS) {
   // refusal is load-bearing rather than decorative.
   if (CRIPPLE === 'no-refusal') {
     if (g.refused !== null && g.refused !== undefined) {
-      g = { refused: null, unmapped: false, reached: [], reachedV2: [], reachedDrift: [], reachedArmCaused: [], verdictReached: [], rows: [], tokensTyped: [], typedRecordingKey: [], named: [], underReported: [], underReportedMembership: [], underReportedTokens: [], underReportedArmCaused: [], underReportedArmCausedMembership: [], underReportedArmCausedTokens: [], fullyNamed: 0, fullyCaptured: 0, capturedShort: [] };
+      g = { refused: null, unmapped: false, reached: [], reachedV2: [], reachedDrift: [], reachedArmCaused: [], verdictReached: [], rows: [], tokensTyped: [], typedRecordingKey: [], named: [], underReported: [], underReportedMembership: [], underReportedTokens: [], underReportedArmCaused: [], underReportedArmCausedMembership: [], underReportedArmCausedTokens: [], fullyNamed: 0, fullyCaptured: 0, capturedShort: [], linesSubjected: 0, subjectsDeclared: [] };
     } else if (g.unmapped) {
-      g = { ...g, unmapped: false, tokensTyped: [], typedRecordingKey: [], named: [], underReported: [], underReportedMembership: [], underReportedTokens: [], underReportedArmCaused: [], underReportedArmCausedMembership: [], underReportedArmCausedTokens: [], fullyNamed: 0, fullyCaptured: 0, capturedShort: [] };
+      g = { ...g, unmapped: false, tokensTyped: [], typedRecordingKey: [], named: [], underReported: [], underReportedMembership: [], underReportedTokens: [], underReportedArmCaused: [], underReportedArmCausedMembership: [], underReportedArmCausedTokens: [], fullyNamed: 0, fullyCaptured: 0, capturedShort: [], linesSubjected: 0, subjectsDeclared: [] };
     }
   }
   grades.push({ name, path, g });
@@ -696,6 +834,12 @@ for (const { name, path } of ARMS) {
   console.log(
     `  tokensTyped=[${l(g.tokensTyped)}]   (quoted OF a member, never emitted BY that member)`
     + `  ·  typedRecordingKey=[${l(g.typedRecordingKey)}]  (superseded, recording-wide)`
+  );
+  console.log(
+    `  subject key: linesSubjected=${g.linesSubjected} subjectsDeclared=${g.subjectsDeclared.length}`
+    + ` [${g.subjectsDeclared.join(',')}]  ·  refDropped=${g.rows.reduce((n, r) => n + r.refDropped, 0)}`
+    + ` (lines the pre-fix key gave a member off ANOTHER member's row)`
+    + `  ·  unionBearing=${g.rows.filter((r) => r.unsubjectedCtx > 0).length}`
   );
   if (MEMBER !== null) {
     const r = g.rows.find((x) => x.id === MEMBER);
@@ -793,6 +937,92 @@ const GTYPED = (() => {
     : { ok: false, why: `${escapes.length} token(s) the recording-wide key flags escape the member key: [${escapes.join(',')}]` };
 })();
 console.log(`GTYPED ${GTYPED.ok ? 'ok ' : 'RED'} typed-token key strictness: ${GTYPED.why}`);
+
+// --- GSUBJ: the subject re-key BITES and does not narrow to nothing (added 2026-10-30
+// STOP, routed by Theseus's §2). Two legs, each with its own denominator printed, because
+// a leg whose denominator is 0 has not passed — it was never given the chance to fail.
+//
+//   leg A (BITE): on a map that declares subjects at all, the re-key must drop at least
+//     one line a member only got off ANOTHER member's row. `subject-blind` reverts the
+//     key, drops nothing, and is the arm that makes this leg's pass non-vacuous.
+//   leg B (NON-COLLAPSE): every reached member whose context rests on an UNSUBJECTED line
+//     must still be mentioned — i.e. D2's union is in force. `subject-rows-only` removes
+//     the union and is the arm for this leg. VACUOUS on a map all of whose member content
+//     sits in declared rows, and it says so.
+const GSUBJ = (() => {
+  const live = grades.filter((x) => !x.g.refused && !x.g.unmapped);
+  if (live.length === 0) return { ok: false, why: 'REFUSED — no mapped arm graded' };
+  // `opportunities` is the DENOMINATOR and `drops` is the measurement, and the two must
+  // come from different places or the leg cannot see its own cripple. Both of this leg's
+  // first-drive defects were here:
+  //
+  //   (1) it read `refDropped`, which is computed from the subject parse and NOT from the
+  //       live key — so `subject-blind`, which reverts the key entirely, still printed
+  //       refDropped=17 and the leg stayed GREEN under the one arm built to redden it. A
+  //       leg keyed on a cripple-independent figure is blind to its own cripple.
+  //   (2) its vacuity escape was keyed on `linesSubjected`, which is an opportunity count
+  //       for the MAP and not for the KEY. The de-bolded prose map has 2 subjected lines
+  //       and no cross-reference between them, so drops=0 is correct there — and the leg
+  //       published a RED for it.
+  //
+  // Live measurement: how many context lines the live key actually withheld.
+  const drops = live.reduce((n, x) => n + x.g.rows.reduce((m, r) => m + (r.looseLines - r.ctxLines), 0), 0);
+  // Opportunity: how many member/line pairs the pre-fix key would have contaminated. 0
+  // means nothing was available to drop, which is VACUOUS and not a pass.
+  const opportunities = live.reduce((n, x) => n + x.g.rows.reduce((m, r) => m + r.refDropped, 0), 0);
+  const subjected = live.reduce((n, x) => n + x.g.linesSubjected, 0);
+  const unionBearing = live.flatMap((x) => x.g.rows.filter((r) => r.unsubjectedCtx > 0).map((r) => `${x.name}:${r.id}`));
+  const collapsed = live.flatMap((x) =>
+    x.g.rows.filter((r) => r.unsubjectedCtx > 0 && !r.mentioned).map((r) => `${x.name}:${r.id}`)
+  );
+  const legA = opportunities === 0
+    ? { ok: true, why: `VACUOUS (opportunities=0 across ${subjected} subjected line(s) — no reached member is mentioned on another member's row, so there was nothing to drop)` }
+    : drops > 0
+      ? { ok: true, why: `bites: the live key withheld ${drops} context line(s) of ${opportunities} available across ${subjected} subjected line(s)` }
+      : { ok: false, why: `opportunities=${opportunities} but the live key withheld 0 — the re-key is not in force` };
+  const legB = unionBearing.length === 0
+    ? { ok: true, why: `VACUOUS (0 reached members rest on an unsubjected line)` }
+    : collapsed.length === 0
+      ? { ok: true, why: `${unionBearing.length} union-bearing member(s) all still mentioned` }
+      : { ok: false, why: `${collapsed.length} of ${unionBearing.length} union-bearing member(s) lost all context: [${collapsed.join(',')}]` };
+  return {
+    ok: legA.ok && legB.ok,
+    why: `A/bite ${legA.ok ? 'ok' : 'RED'} ${legA.why}  ·  B/non-collapse ${legB.ok ? 'ok' : 'RED'} ${legB.why}`,
+  };
+})();
+console.log(`GSUBJ  ${GSUBJ.ok ? 'ok ' : 'RED'} subject re-key: ${GSUBJ.why}`);
+
+// --- GTYPEDDEF: the typed-token DEFECT COUNT is gated (added 2026-10-30 STOP, routed by
+// Theseus's §3). It printed at one line and was read by nothing; `GTYPED` above carries
+// the name but grades the two keys' relative STRICTNESS, so a map could print
+// `tokensTyped=[N,moved] n=2` and `MAPVERDICT/0 ok gates=13 red=[]` in the same recording.
+// His general form: **a gate named after a figure is not a gate on that figure** — and
+// this is the same shape I cured for `underReported` hours earlier, where GCONFORM's own
+// text enumerated three figure names and gated one. `tokensTyped` was not on that list.
+//
+// Ordered AFTER the §2 re-key on his instruction, and the order is load-bearing: before
+// the re-key, the first thing this gate reddens is correct prose that cross-references
+// another member. §3.4 calls a typed token a DEFECT, so this is a gate on the MAP, like
+// GCONFORM — MAP-A (correct post-§2) is the green cell that keeps it from being a constant.
+const GTYPEDDEF = (() => {
+  const live = grades.filter((x) => !x.g.refused && !x.g.unmapped);
+  if (live.length === 0) return { ok: false, why: 'REFUSED — no mapped arm graded' };
+  const offenders = live.flatMap((x) => (x.g.tokensTyped ?? []).map((t) => `${x.name}:${t}`));
+  const refusers = live.filter((x) => x.g.tokensTyped === null).map((x) => x.name);
+  if (CRIPPLE === 'typed-ungated') {
+    return {
+      ok: true,
+      why: `OK (figure not read — typed-ungated arm); would have flagged ${offenders.length} [${offenders.join(',')}]`,
+    };
+  }
+  if (refusers.length > 0) {
+    return { ok: false, why: `${refusers.length} mapped arm(s) published no figure: [${refusers.join(',')}] — unmeasurable, not zero` };
+  }
+  return offenders.length === 0
+    ? { ok: true, why: `0 typed tokens across ${live.length} mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed` }
+    : { ok: false, why: `${offenders.length} typed token(s) — quoted OF a member that never emits it: [${offenders.join(',')}]` };
+})();
+console.log(`GTYPEDDEF ${GTYPEDDEF.ok ? 'ok ' : 'RED'} typed-token defects: ${GTYPEDDEF.why}`);
 
 // --- GDRIFTBITE: the drift exclusion is non-vacuous — on at least one arm the arm-caused
 // set is a STRICT subset of the raw reached set. Under `drift-blind` the drift set is
@@ -916,7 +1146,7 @@ const GCONFORM = (() => {
 })();
 console.log(`GCONF  ${GCONFORM.ok ? 'ok ' : 'RED'} §3.3/§3.4 conformance: ${GCONFORM.why}`);
 
-const gates = { GKP, GABS, GSTAMP, GMUST, GCTRL, GREACH, GCTX, GREFUSE, GTYPED, GDRIFTBITE, GDRIFTREF, GCOMPLETE, GCONFORM };
+const gates = { GKP, GABS, GSTAMP, GMUST, GCTRL, GCTRLPROV, GREACH, GCTX, GREFUSE, GTYPED, GTYPEDDEF, GSUBJ, GDRIFTBITE, GDRIFTREF, GCOMPLETE, GCONFORM };
 const red = Object.entries(gates).filter(([, v]) => !v.ok).map(([k]) => k);
 const code = red.length > 0 ? 1 : 0;
 console.log(`\nMAPVERDICT/${code} ${red.length === 0 ? 'ok' : 'RED'} gates=${Object.keys(gates).length} red=[${red.join(',')}]`);

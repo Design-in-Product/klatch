@@ -1,0 +1,53 @@
+# drive14.mapA-crippled-clean
+# why: the clean-path leg of GCTRLPROV: an ARM recording passed as --clean
+# argv: --map=../unit-464v21map-2026-10-30/V21-MAP.md --clean=../unit-464t2b-sat-2026-10-29/drive-cripple-t8-unpinned.out --arm=t8-unpinned=../unit-464t2b-sat-2026-10-29/drive-cripple-t8-unpinned.out --control=../unit-464t2b-sat-2026-10-29/drive2.clean.out --control=../unit-464t8-mapdecay-2026-10-29/drive1.clean.out
+# exit: 1
+=== grade-filed-maps.mjs ===
+map    : ../unit-464v21map-2026-10-30/V21-MAP.md
+clean  : ../unit-464t2b-sat-2026-10-29/drive-cripple-t8-unpinned.out
+control: ../unit-464t2b-sat-2026-10-29/drive2.clean.out  vs  ../unit-464t8-mapdecay-2026-10-29/drive1.clean.out
+cripple: none (clean arm)
+labels : 7 ["MEAS","REF "," ok ","RED ","PREF","LAND","REFU"]
+
+GKP    ok  tokenizer on a real slice: selector round-trips whole; 11 tokens
+KPSLICE detail: dirLast=464 selfLast=454 popMax=9467 pinArm=dir(464) pinDistance=9003 freeDistance=9013 pinArmPinned=false freeArmPinned=false assertable=true key=>= selector=max(pins first)
+GABS   ok  absolute member count: 36 members = legs 26 + preds 10
+GSTAMP ok  stamp: v2-block declares legs=26 preds=10; recording says legs=26 preds=10 → OK
+GMUST  RED §3.1 fields: 1 MUST field(s) fail: [clean-recording:not-the-drive's-clean]
+GCTRL  ok  drift control: 36 vs 36 members, two distinct readable recordings (NOT checked here: whether either is a no-cripple drive — that is GCTRLPROV)
+GCTRLPROV RED control provenance: 1 of 3 recording(s) are NOT no-cripple drives: [clean:CRIPPLE t8-unpinned]  ·  read: [clean=t8-unpinned control1=none control2=none]
+DRIFT  n=5 [G1,T9,W1,W2,W3]
+  DRIFTMEM G1           movedTokens=1  [commits]
+  DRIFTMEM T9           movedTokens=0  []
+  DRIFTMEM W1           movedTokens=3  [absolute,bare,tailLoss]
+  DRIFTMEM W2           movedTokens=1  [band]
+  DRIFTMEM W3           movedTokens=0  []
+
+ARM t8-unpinned
+  reached=0 (v2) · verdictReached=0 (v1) · named=0 · fullyNamed=0 · fullyCaptured=0 · underReported=0
+  reached=[]
+  reachedArmCaused=0 []  (CEILING — the control can only under-state drift)
+  reachedDrift=0 []  (moved with no arm in play)
+  verdictReached=[]
+  underReported=[]  =  membership[] + tokens[]   (RAW — drift included)
+  underReportedArmCaused=[]  =  membership[] + tokens[]
+  tokensTyped=[]   (quoted OF a member, never emitted BY that member)  ·  typedRecordingKey=[moved]  (superseded, recording-wide)
+  subject key: linesSubjected=14 subjectsDeclared=14 [P11,P12,P2,P7,P9,T10,T10COUNT,T2,T2b,T2bSAT,T2c,T8,T8CEIL,T8KP]  ·  refDropped=0 (lines the pre-fix key gave a member off ANOTHER member's row)  ·  unionBearing=0
+
+GREACH RED re-key non-vacuity: 0/1 arms have v2 reach wider than v1 — the re-key is vacuous here
+GCTX   ok  member-context gate: gated=0 ≤ loose=0; the context gate removes 0 token namings
+GREFUSE ok  refusal: VACUOUS in this drive — 0 unreadable recordings and 0 unmapped arms, so nothing was given the chance to refuse
+GTYPED RED typed-token key strictness: 1 token(s) the recording-wide key flags escape the member key: [t8-unpinned:moved]
+GSUBJ  ok  subject re-key: A/bite ok VACUOUS (opportunities=0 across 14 subjected line(s) — no reached member is mentioned on another member's row, so there was nothing to drop)  ·  B/non-collapse ok VACUOUS (0 reached members rest on an unsubjected line)
+GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed
+GDRIFTB RED exclusion bites: drift set has 5 member(s) but 0/1 arms narrowed — the exclusion is wired to nothing
+GDRIFTR ok  drift refusal: VACUOUS in this drive — a readable control pair was given, so nothing was given the chance to refuse
+
+GRADE  armsGiven=1 graded=1 unreadable=0 unmapped=0 reachedCells=0 (mapped arms 0) fullyNamedCells=0 fullyCapturedCells=0 underReportedCells=0 (membership 0 + tokens 0)
+GRADEA drift-excluded over mapped arms (CEILING): reachedCells=0 underReportedCells=0 (membership 0 + tokens 0)   ·  raw was reachedCells=0 underReportedCells=0 (membership 0 + tokens 0)
+TYPED  tokensTyped=[] n=0  ·  superseded recording-wide key=[moved] n=1
+STAMP  OK
+GCOMP  ok  coverage: all 1 arm recording(s) readable
+GCONF  ok  §3.3/§3.4 conformance: v2 map, underReportedArmCaused: 0 cells over 1 mapped arm(s) — conforms to §3.3/§3.4
+
+MAPVERDICT/1 RED gates=16 red=[GMUST,GCTRLPROV,GREACH,GTYPED,GDRIFTBITE]
