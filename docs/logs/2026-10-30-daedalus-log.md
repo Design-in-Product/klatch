@@ -364,3 +364,61 @@ Memo `e9a752a1`, pushed as its own commit per worktree mail discipline. The thre
 `COORDINATION.md` insert by the section-gated script (`insert-coord-entry.mjs`), which re-reads the
 written file and asserts the landing site: `OK inserted 6 bullet(s) after line 409; my section is
 now [406,2520]`.
+
+## 17:3x — Wrap verification (run after the commits it cites, not before)
+
+**Step 1 — commits on `origin/main`.** `git log origin/main --format='%h %an %s' -6`:
+
+```
+f63853e4 Daedalus (Klatch) coord+log: 10/30 STOP fire — all three routed checker changes in…
+e9a752a1 Daedalus (Klatch) mail(Daedalus -> Theseus, xian; cc Janus/Argus/Calliope/Iris)…
+663d067b Daedalus (Klatch) unit-464rekey: results, and v2.2 of the cripple-map convention
+44f3d6d5 Daedalus (Klatch) unit-464rekey: the three routed checker changes, and two defects…
+41b9f85d Daedalus (Klatch) unit-464rekey: pre-registration, before any of the three routed…
+a0aa6054 Calliope (Klatch) log+coord: 10/30 SWEEP fire — backfill two missing log.html entries
+```
+
+Five commits, all five mine by `%an`, all five on `origin/main`. Pushed **incrementally** — the
+pre-registration was on `origin/main` before any line of the cure existed.
+
+**Step 2 — every deliverable, checked on the pushed rev with `git cat-file -e f63853e4:<path>`, not
+with `ls` on the working tree:**
+
+```
+present docs/research/CRIPPLE-MAP-CONVENTION.md
+present docs/research/unit-464rekey-2026-10-30/PRE-REGISTRATION.md
+present docs/research/unit-464rekey-2026-10-30/RESULTS.md
+present docs/research/unit-464rekey-2026-10-30/drive.mjs
+present docs/research/unit-464rekey-2026-10-30/grade-arms.mjs
+present docs/research/unit-464rekey-2026-10-30/insert-coord-entry.mjs
+present docs/research/unit-464rekey-2026-10-30/baseline.rev
+present docs/research/unit-464rekey-2026-10-30/baseline.gitstatus.txt
+present docs/research/unit-464mapkey-2026-10-30/grade-filed-maps.mjs
+present docs/logs/2026-10-30-daedalus-log.md
+present docs/mail/daedalus-to-theseus-…-the-re-key-fixes-attribution-not-the-count-2026-10-30.md
+
+unit files on rev f63853e4: 39
+.err on rev: 15, non-empty on rev: 0
+.out on rev: 15
+files MISSING: 0
+```
+
+`.err` sizes read off the rev with `git ls-tree -r -l`, so the zero is a property of what was
+pushed and not of my working copy.
+
+**`COORDINATION.md` insert verified against the pushed rev** with `git grep` rather than a read into
+a buffer — the file is over 1 MB and `git show` into `execFileSync` dies `ENOBUFS`. The entry's
+distinguishing bullet occurs exactly **1** time on `f63853e4`, and the insert script's own re-read
+put all 6 bullets inside `[406,2520)`, my section's bounds on the written file.
+
+**`git status --short` empty** at close, and `git status --porcelain -- packages/ scripts/` empty at
+open (`baseline.gitstatus.txt`, 0 bytes) and at close — every commit this fire is `docs/`-only, so
+both instruments sit outside the probe census by construction. The pre-commit census ran on all five
+commits and printed `CENSUS OK · 153 probe files · 43 swept / 110 deferred` each time.
+
+**Mail state at close:** Theseus's inbound and my reply both stay in `docs/mail/` — the thread has
+an open action routed back to him (one substring in `V21-MAP.md:63`), and close-discipline says an
+open thread stays visible. Cross-repo mailboxes not swept this fire; nothing in the inbound memo
+asked anything of another project.
+
+Nothing is claimed as delivered beyond what the commands above print — the wrapper owns delivery.
