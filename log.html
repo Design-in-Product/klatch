@@ -37,6 +37,46 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-10-29 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-10-29">
+      <p class="log-date">October 29, 2026</p>
+      <div class="log-body">
+
+        <p>The narrower safety filter written the day before was formally adopted, and checked against reality rather than just logic: across every real commit message in the project, the dangerous case it exists to catch — deleting a genuine data point by mistaking it for a bogus one — isn't currently happening anywhere. The underlying finding was real and worth guarding against, but the fix is preventive, a distinction recorded explicitly rather than left for the more dramatic first version of the story to stand on its own.</p>
+
+        <p>The deeper repair from the day before — moving the project's standing stopping-rule count off the frozen measure and onto a fuller one that tracks a round by any trace of its existence, not only whether its own folder exists — moved three separate numbers at once, including the one printed in the team's daily status line. The more important change was what the number now means: the same reading of "nothing has happened yet" went from "this measurement is broken and literally cannot move" to "this measurement is healthy, and nothing has happened yet" — two very different things to tell the project's own lead, even though the printed figure looks identical either way.</p>
+
+        <p>Fixing the freeze broke two of the team's own tests that same day, both for the same reason: each had been written specifically to detect the freeze, so the moment it was cured, both raised what looked exactly like a fresh alarm and wasn't — caught only by comparing against a saved earlier snapshot rather than trusting the new result on its own. One of the two had a second problem underneath the first: it was supposed to preserve a frozen historical reading for comparison, but kept silently recalculating itself from the live, now-changed figure instead, so it no longer measured history at all. A general rule came out of catching both the same day: decide in advance, in writing, whether a given check is testing for "the bug" or testing for "the underlying fact," because once the bug is gone, a false alarm and a real one look identical.</p>
+
+        <p>A third number feeding the same status line had been sitting pinned at the extreme edge of what it's even possible for it to show, like a gauge stuck against its own maximum. Rather than keep quietly reporting a number that structurally can't move, or swap in a different gauge that turned out, on inspection, to share the exact same hidden flaw, the fix taken was a third option: that gauge now refuses to give a reading at all while pinned, and starts reporting honestly again the moment real data pushes it off the edge. As of today the number the project's status line now draws from sits three steps from hitting that same ceiling itself — flagged plainly for the project's lead to know before any decision about pausing or reshaping the exchange, rather than after.</p>
+
+        <p>Separately, both participants checked their own handwritten notes of "what a given test should show" against what the underlying tools actually print, and found the notes don't reliably match reality: one had written down a label the real program never uses at all, so no check built from that note could ever have caught anything, even in principle. The agreed fix on both sides: copy the program's exact wording when writing such a note, rather than paraphrasing the intent from memory.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-10-29 -->
+
+    <!-- ============================================================ -->
+    <!-- ENTRY: 2026-10-28 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-10-28">
+      <p class="log-date">October 28, 2026</p>
+      <div class="log-body">
+
+        <p>A suggestion that had sat untouched for two and a half months finally got acted on: team session logs had been starting a brand new file every time an agent woke up partway through the same day, so one calendar day's work could end up scattered across three or four disconnected files with nothing linking them. That checked out against other agents' real files, not just the suggestion's word for it, and the practice changed today to one file per person per day, written into the project's own operating instructions and relayed to the rest of the team. Five other pieces of old, already-settled correspondence were cleared out in the same pass.</p>
+
+        <p>The long-running adversarial testing exchange between two team members turned up a genuinely unsettled question about its own stopping rule: asking whether ten rounds in a row have produced nothing useful gave two different answers at the exact same point in the project's history, depending on a small technical choice — whether a round counts as "done" only once its own folder exists, or the moment a commit message says it's done. One method said no, the rule hadn't fired; the other said yes, ten times over. Which to trust turned out to be a judgment call about what "done" should mean, not something either side's tooling could settle alone.</p>
+
+        <p>Adopting the stricter of the two exposed a second problem directly underneath it: the measurement's idea of "real work on the product" had been quietly counting work on the testing tools themselves, because both happened to live in the same folder. Narrowing that definition moved the picture again — by nearly every combination of the two fixes, the exchange had already crossed its own stopping point days or weeks earlier than the figure the team had been quoting, and the true last time it fixed an actual product problem, rather than testing itself, traced back to late September.</p>
+
+        <p>The day's most consequential finding was about the measuring instrument rather than the exchange it measures: the number quoted in the project's daily status line turned out to be structurally unable to change at all, because the population it counts against had stopped growing three days earlier when the work moved to a different naming pattern. A direct before-and-after check proved it — a real event that should have moved the number left it exactly where it started. That was written down plainly rather than left to keep quietly reading as "nothing to report." A related repair, meant only to throw out two clearly bogus data points, was caught just before it shipped: as first written, it would also have deleted the single real data point proving the freeze existed at all, because both looked identical to a simple pattern match. A narrower version replaced it, checked against the real data first.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-10-28 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-10-27 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-10-27">
