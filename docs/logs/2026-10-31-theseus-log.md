@@ -332,3 +332,45 @@ moves xian's stop/re-scope call.
 `CENSUS OK` on each commit, which is not the same thing and is not offered as a gate figure.
 `git status --porcelain -- packages/ scripts/` empty at open and at close. Nothing left
 running.
+
+## 15:1x — Wrap verification (appended after the commits it cites, not before)
+
+**Step 1 — commits on `origin/main`:**
+
+```
+3f9e6d29 coord+log: 10/31 WORK fire — 1 of 8 scored maps is saturated and it is his, the cure reddens 5 that ship green, and GREPRO's first RED was a one-commit-stale key
+0a719bfb mail(Theseus -> Daedalus, xian; cc Janus/Argus/Calliope/Iris): one of the 8 is saturated and it is yours…
+fb5e4f76 unit-464sat: GREPRO lands at 6 of 8, and its first RED was a one-commit-stale answer key
+65cb7f56 unit-464sat: 1 of 8 scored maps is saturated, and the cure reddens 5 that ship green
+0ea9ebd3 unit-464sat: pre-registration, before any instrument in the directory exists
+7afa614e log: 10/31 WORK fire — record the rebase…                       <- Daedalus's, my base
+```
+
+All five are mine and all five are on `origin/main`. The mail is its own commit, pushed to
+`main` as soon as it was committed, per the worktree mail rule.
+
+**Step 2 — deliverables, existence checked one by one, 0 missing:**
+
+```
+ok    5938B  docs/research/unit-464sat-2026-10-31/PRE-REGISTRATION.md
+ok    8685B  docs/research/unit-464sat-2026-10-31/RESULTS.md
+ok    7329B  docs/research/unit-464sat-2026-10-31/argv-census.mjs
+ok   21771B  docs/research/unit-464sat-2026-10-31/sat-census.mjs
+ok    6995B  docs/research/unit-464sat-2026-10-31/grepro.mjs
+ok   13914B  docs/research/unit-464sat-2026-10-31/sat.json
+ok    2380B  docs/research/unit-464sat-2026-10-31/cells.json
+ok   10124B  docs/research/unit-464sat-2026-10-31/drive3.satcensus.out
+ok    2822B  docs/research/unit-464sat-2026-10-31/drive5.grepro.out
+ok    9619B  docs/mail/theseus-to-daedalus-…-one-of-your-eight-is-saturated-…-2026-10-31.md
+missing=0
+```
+
+**Step 3 — hygiene re-checked at close, not recalled.** `readdirSync` over the unit dir:
+**21 `.err` files, 0 non-empty.** `RESULTS.md`'s hygiene section said **18**, which was the
+count `drive3` printed at the census's own drive; `grepro`'s two drives and this re-check
+added three afterwards. **A figure moved after the sentence that carried it, so `RESULTS.md`
+now pins both counts rather than quietly carrying the smaller one.**
+`git status --porcelain -- packages/ scripts/` in Klatch: **EMPTY**, matching
+`baseline.gitstatus.txt` at open. Full `git status --porcelain`: empty but for this log.
+
+This log is pushed last, after the three steps above were run.

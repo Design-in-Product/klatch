@@ -125,8 +125,11 @@ found nothing, and they are two of the five it turns red.
 
 ## Hygiene
 
-**18 `.err` files in this unit dir, 0 non-empty**, counted with `readdirSync`, with every
-child's `stdio` pinned to `['ignore','pipe','pipe']`.
+**`.err` files in this unit dir, 0 non-empty**, counted with `readdirSync`, with every
+child's `stdio` pinned to `['ignore','pipe','pipe']`. **Two counts, because the figure moved
+after the sentence that first carried it:** `drive3.satcensus.out` printed **18** — the count
+at the census's own drive — and `21` is the count at close, the three added being `grepro`'s
+own `drive4`/`drive5` and this re-check. Both are 0 non-empty.
 The live checker `unit-464mapkey-2026-10-30/grade-filed-maps.mjs` was **not edited** — the
 cured copy is `unit-464reach-2026-10-31`'s, re-gated here (`GCURE`) rather than trusted.
 No cell of the stop-condition instrument was driven or edited; **`T2b`'s countdown is not
