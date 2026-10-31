@@ -1,0 +1,348 @@
+{
+  "boundary": "wide",
+  "cripple": "emitted-empty",
+  "rows": [
+    {
+      "id": "G1",
+      "ctxLines": 1,
+      "ownEmits": [
+        "commits",
+        "counting",
+        "key",
+        "libSelfTest",
+        "popError",
+        "roundDirs"
+      ],
+      "quotedOfMe": [],
+      "typed": [],
+      "aTokens": [
+        "commits",
+        "counting",
+        "key",
+        "libSelfTest",
+        "popError",
+        "roundDirs"
+      ],
+      "bTokens": [
+        "commits",
+        "counting",
+        "key",
+        "libSelfTest",
+        "popError",
+        "roundDirs"
+      ]
+    },
+    {
+      "id": "P13",
+      "ctxLines": 3,
+      "ownEmits": [
+        "actual",
+        "expected"
+      ],
+      "quotedOfMe": [
+        "actual",
+        "expected"
+      ],
+      "typed": [],
+      "aTokens": [
+        "actual",
+        "expected"
+      ],
+      "bTokens": [
+        "actual",
+        "expected"
+      ]
+    },
+    {
+      "id": "P6",
+      "ctxLines": 3,
+      "ownEmits": [
+        "actual",
+        "expected"
+      ],
+      "quotedOfMe": [
+        "actual",
+        "expected"
+      ],
+      "typed": [],
+      "aTokens": [
+        "actual",
+        "expected"
+      ],
+      "bTokens": [
+        "actual",
+        "expected"
+      ]
+    },
+    {
+      "id": "P7",
+      "ctxLines": 3,
+      "ownEmits": [
+        "actual",
+        "expected"
+      ],
+      "quotedOfMe": [
+        "actual",
+        "expected"
+      ],
+      "typed": [],
+      "aTokens": [
+        "actual",
+        "expected"
+      ],
+      "bTokens": [
+        "actual",
+        "expected"
+      ]
+    },
+    {
+      "id": "P8",
+      "ctxLines": 3,
+      "ownEmits": [
+        "actual",
+        "expected"
+      ],
+      "quotedOfMe": [
+        "actual",
+        "expected"
+      ],
+      "typed": [],
+      "aTokens": [
+        "actual",
+        "expected"
+      ],
+      "bTokens": [
+        "actual",
+        "expected"
+      ]
+    },
+    {
+      "id": "T10COUNT",
+      "ctxLines": 2,
+      "ownEmits": [
+        "figure",
+        "n",
+        "probes",
+        "refusing",
+        "sensitive"
+      ],
+      "quotedOfMe": [
+        "figure",
+        "n",
+        "probes",
+        "refusing",
+        "sensitive"
+      ],
+      "typed": [],
+      "aTokens": [
+        "figure",
+        "n",
+        "probes",
+        "refusing",
+        "sensitive"
+      ],
+      "bTokens": [
+        "figure",
+        "n",
+        "probes",
+        "refusing",
+        "sensitive"
+      ]
+    },
+    {
+      "id": "T2b",
+      "ctxLines": 3,
+      "ownEmits": [
+        "assertable",
+        "fired",
+        "incidental",
+        "pinArm",
+        "pinDistance"
+      ],
+      "quotedOfMe": [
+        "assertable",
+        "fired",
+        "incidental",
+        "pinArm",
+        "pinDistance"
+      ],
+      "typed": [],
+      "aTokens": [
+        "assertable",
+        "fired",
+        "incidental",
+        "pinArm",
+        "pinDistance"
+      ],
+      "bTokens": [
+        "assertable",
+        "fired",
+        "incidental",
+        "pinArm",
+        "pinDistance"
+      ]
+    },
+    {
+      "id": "T2bSAT",
+      "ctxLines": 2,
+      "ownEmits": [
+        "assertable",
+        "dirLast",
+        "freeArmPinned",
+        "freeDistance",
+        "key",
+        "pinArm",
+        "pinArmPinned",
+        "pinDistance",
+        "popMax",
+        "selector",
+        "selfLast"
+      ],
+      "quotedOfMe": [
+        "assertable",
+        "dirLast",
+        "freeArmPinned",
+        "freeDistance",
+        "key",
+        "pinArm",
+        "pinArmPinned",
+        "pinDistance",
+        "popMax",
+        "selector",
+        "selfLast"
+      ],
+      "typed": [],
+      "aTokens": [
+        "assertable",
+        "dirLast",
+        "freeArmPinned",
+        "freeDistance",
+        "key",
+        "pinArm",
+        "pinArmPinned",
+        "pinDistance",
+        "popMax",
+        "selector",
+        "selfLast"
+      ],
+      "bTokens": [
+        "assertable",
+        "dirLast",
+        "freeArmPinned",
+        "freeDistance",
+        "key",
+        "pinArm",
+        "pinArmPinned",
+        "pinDistance",
+        "popMax",
+        "selector",
+        "selfLast"
+      ]
+    },
+    {
+      "id": "T9",
+      "ctxLines": 1,
+      "ownEmits": [
+        "key"
+      ],
+      "quotedOfMe": [],
+      "typed": [],
+      "aTokens": [
+        "key"
+      ],
+      "bTokens": [
+        "key"
+      ]
+    },
+    {
+      "id": "W1",
+      "ctxLines": 1,
+      "ownEmits": [
+        "absolute",
+        "bare",
+        "bareOnly",
+        "scriptsMembersLost",
+        "tailLoss"
+      ],
+      "quotedOfMe": [],
+      "typed": [],
+      "aTokens": [
+        "absolute",
+        "bare",
+        "bareOnly",
+        "scriptsMembersLost",
+        "tailLoss"
+      ],
+      "bTokens": [
+        "absolute",
+        "bare",
+        "bareOnly",
+        "scriptsMembersLost",
+        "tailLoss"
+      ]
+    }
+  ],
+  "arms": [
+    {
+      "unmapped": false,
+      "sectionLines": 49,
+      "emitted": [],
+      "quoted": [
+        "actual",
+        "assertable",
+        "dirLast",
+        "expected",
+        "figure",
+        "fired",
+        "freeArmPinned",
+        "freeDistance",
+        "incidental",
+        "key",
+        "n",
+        "pinArm",
+        "pinArmPinned",
+        "pinDistance",
+        "popMax",
+        "probes",
+        "refusing",
+        "selector",
+        "selfLast",
+        "sensitive"
+      ],
+      "typedRecordingKey": [
+        "actual",
+        "assertable",
+        "dirLast",
+        "expected",
+        "figure",
+        "fired",
+        "freeArmPinned",
+        "freeDistance",
+        "incidental",
+        "key",
+        "n",
+        "pinArm",
+        "pinArmPinned",
+        "pinDistance",
+        "popMax",
+        "probes",
+        "refusing",
+        "selector",
+        "selfLast",
+        "sensitive"
+      ],
+      "reached": [
+        "G1",
+        "P13",
+        "P6",
+        "P7",
+        "P8",
+        "T10COUNT",
+        "T2b",
+        "T2bSAT",
+        "T9",
+        "W1"
+      ]
+    }
+  ]
+}

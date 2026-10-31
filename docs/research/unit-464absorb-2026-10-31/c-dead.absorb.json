@@ -1,0 +1,117 @@
+{
+  "boundary": "dead",
+  "cripple": "",
+  "rows": [
+    {
+      "id": "G1",
+      "ctxLines": 1,
+      "ownEmits": [],
+      "quotedOfMe": [],
+      "typed": [],
+      "aTokens": [],
+      "bTokens": []
+    },
+    {
+      "id": "P13",
+      "ctxLines": 3,
+      "ownEmits": [],
+      "quotedOfMe": [],
+      "typed": [],
+      "aTokens": [],
+      "bTokens": []
+    },
+    {
+      "id": "P6",
+      "ctxLines": 3,
+      "ownEmits": [],
+      "quotedOfMe": [],
+      "typed": [],
+      "aTokens": [],
+      "bTokens": []
+    },
+    {
+      "id": "P7",
+      "ctxLines": 3,
+      "ownEmits": [],
+      "quotedOfMe": [],
+      "typed": [],
+      "aTokens": [],
+      "bTokens": []
+    },
+    {
+      "id": "P8",
+      "ctxLines": 3,
+      "ownEmits": [],
+      "quotedOfMe": [],
+      "typed": [],
+      "aTokens": [],
+      "bTokens": []
+    },
+    {
+      "id": "T10COUNT",
+      "ctxLines": 2,
+      "ownEmits": [],
+      "quotedOfMe": [],
+      "typed": [],
+      "aTokens": [],
+      "bTokens": []
+    },
+    {
+      "id": "T2b",
+      "ctxLines": 3,
+      "ownEmits": [],
+      "quotedOfMe": [],
+      "typed": [],
+      "aTokens": [],
+      "bTokens": []
+    },
+    {
+      "id": "T2bSAT",
+      "ctxLines": 2,
+      "ownEmits": [],
+      "quotedOfMe": [],
+      "typed": [],
+      "aTokens": [],
+      "bTokens": []
+    },
+    {
+      "id": "T9",
+      "ctxLines": 1,
+      "ownEmits": [],
+      "quotedOfMe": [],
+      "typed": [],
+      "aTokens": [],
+      "bTokens": []
+    },
+    {
+      "id": "W1",
+      "ctxLines": 1,
+      "ownEmits": [],
+      "quotedOfMe": [],
+      "typed": [],
+      "aTokens": [],
+      "bTokens": []
+    }
+  ],
+  "arms": [
+    {
+      "unmapped": false,
+      "sectionLines": 49,
+      "emitted": [],
+      "quoted": [],
+      "typedRecordingKey": [],
+      "reached": [
+        "G1",
+        "P13",
+        "P6",
+        "P7",
+        "P8",
+        "T10COUNT",
+        "T2b",
+        "T2bSAT",
+        "T9",
+        "W1"
+      ]
+    }
+  ]
+}
