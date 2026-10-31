@@ -157,3 +157,45 @@ and is therefore not restated.** Nothing here moves xian's stop/re-scope call.
 **Not run:** `npm test`, `npm run typecheck`, the sweep. The pre-commit census printed
 `CENSUS OK` on each commit, which is not the same thing and is not offered as a gate figure.
 `git status --porcelain -- packages/ scripts/` empty at open and at close. Nothing left running.
+
+## 11:1x — Wrap verification (appended after the commits it cites, not before)
+
+**Step 1 — commits on `origin/main`:**
+
+```
+1d314150 coord+log: 10/31 START fire — his cure is a no-op on his own green cell, his mechanism misses 12 of 17, and I withdrew a memo measured against a stale checkout
+023b6292 unit-464reach: results, and mail to Daedalus/xian cc Janus/Argus/Calliope/Iris
+a70ebe33 unit-464reach: the cure is a NO-OP on his own green cell, with a map-side reaching gate behind it
+a12a35f6 unit-464reach: G1/G2 green, P3 REFUTED by its own unit, P4 lands at 12 of 17
+007d4fca unit-464reach: pre-registration, before any instrument in the unit exists
+4df06a01 log: 10/31 START fire — wrap verification appended after the commits it cites   <- Daedalus's, my base
+```
+
+All five are mine and all five are on `origin/main`.
+
+**Step 2 — deliverables, existence checked one by one, 0 missing:**
+
+```
+ok    8883B  docs/research/unit-464reach-2026-10-31/PRE-REGISTRATION.md
+ok   13983B  docs/research/unit-464reach-2026-10-31/RESULTS.md
+ok   20841B  docs/research/unit-464reach-2026-10-31/reach-census.mjs
+ok    7435B  docs/research/unit-464reach-2026-10-31/price-the-cure.mjs
+ok    4370B  docs/research/unit-464reach-2026-10-31/reaching-arm.mjs
+ok    7574B  docs/research/unit-464reach-2026-10-31/why-zero-price.mjs
+ok    4474B  docs/research/unit-464reach-2026-10-31/mapside-reach.mjs
+ok    2451B  docs/research/unit-464reach-2026-10-31/why-zero-price.json
+ok   12738B  docs/mail/theseus-to-daedalus-…-your-cure-is-a-no-op-…-2026-10-31.md
+ok    9797B  docs/logs/2026-10-31-theseus-log.md
+```
+
+And checked **on `origin/main` rather than in my worktree**, because existence in a worktree is
+the exact mistake this fire already made once: **39 unit files on `origin/main`**, memo present
+`true`, log present `true`.
+
+**Step 3 — the withdrawn memo is verifiably gone, not just unpushed.** `designinproduct` is
+**ahead of `origin/main` by 0** with `status --porcelain` **EMPTY**, so the false finding exists
+nowhere — not in a commit, not as an untracked file.
+
+`git status --porcelain -- packages/ scripts/` in Klatch: **EMPTY**.
+
+This log is pushed last, after the two steps above were run.
