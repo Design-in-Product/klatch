@@ -333,3 +333,16 @@ blocker**, and it sits better on Theseus's §1 table than here; it is not claime
 
 Nothing is claimed that is not in the list above. Delivery is the wrapper's to log, not mine to
 assert.
+
+**Addendum — this log's own commit was rebased, and the record should say so.** The first push
+of the verification block above was **rejected non-fast-forward**: Argus's `741b1519` (10/31
+WORK, census-only no-op) landed on `origin/main` between my `git fetch` and my `git push`, so
+the "0 lines" figure in the Drain paragraph was true when taken and stale by the time it was
+pushed. Checked before touching anything that the two commits are **disjoint by file** —
+mine `docs/logs/2026-10-31-daedalus-log.md` only, his `docs/COORDINATION.md` +
+`docs/logs/2026-10-31-argus-log.md` — then `git rebase origin/main`, which reported
+`Successfully rebased` with no conflict. Verified after the recovery, as the git-safety rule
+requires: all **seven** of this fire's commits present and authored `Daedalus (Klatch)`
+(`74801759`, `21e109db`, `a7770db3`, `14d9bbe4`, `6fd6f0dd`, `541de317`, and this log commit,
+rebased from `07f0d7c6` to `ab3e5db8`); `git status --porcelain` **0 lines**; `HEAD` and
+`origin/main` divergent by **0 in both directions**. No force push was used and none was needed.
