@@ -1,0 +1,12 @@
+G1 ok  his quoted-denominator.mjs re-driven unmodified from its own dir (4 pairs, argv sliced from his own DENOM lines): exit=0 err=0B stdout BYTE-IDENTICAL to the committed quoted-denominator.out (1968B vs 1968B)
+G2SLICE ok  tokensOf sliced from docs/research/unit-464mapkey-2026-10-30/grade-filed-maps.mjs:226-237 at 4df06a01 (444B); boundary (?:^|\s) present exactly once
+G2CURE  ok  WIDE reader is the SAME sliced text with (?:^|\s) -> (?:^|[^A-Za-z0-9_.]), one substitution, 12B delta
+G2SLICE ok  sectionFor sliced from docs/research/unit-464mapkey-2026-10-30/grade-filed-maps.mjs:299-318
+G2KP RED sliced reader on GKP's own real slice: 11 tokens (checker's published GKP line says 11), selector="max(pins first)" (checker publishes null)
+G2KP REFUSED — the sliced reader does not reproduce the checker's own published figures
+G2AGREE ok  V22-MAP.md / t2-dir-only: sliced=[n] his=[n]
+G2AGREE ok  ../unit-464v21map-2026-10-30/V21-MAP.md / t8-unpinned: sliced=[N,surface] his=[N,surface]
+G2AGREE ok  ../unit-464nomoved-2026-10-30/V21-MAP.baseline.md / t8-unpinned: sliced=[N,moved,surface] his=[N,moved,surface]
+G2AGREE ok  PROBE-MAP-rowless.md / t2-dir-only: sliced=[] his=[]
+
+REFUSED/1 — no reach figure is published. P3 and P4 are UNMEASURED.

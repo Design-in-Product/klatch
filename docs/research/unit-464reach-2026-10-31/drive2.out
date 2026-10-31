@@ -1,0 +1,48 @@
+G1 ok  his quoted-denominator.mjs re-driven unmodified from its own dir (4 pairs, argv sliced from his own DENOM lines): exit=0 err=0B stdout BYTE-IDENTICAL to the committed quoted-denominator.out (1968B vs 1968B)
+G2SLICE ok  tokensOf sliced from docs/research/unit-464mapkey-2026-10-30/grade-filed-maps.mjs:226-237 at 4df06a01 (444B); boundary (?:^|\s) present exactly once
+G2CURE  ok  WIDE reader is the SAME sliced text with (?:^|\s) -> (?:^|[^A-Za-z0-9_.]), one substitution, 12B delta
+G2SLICE ok  sectionFor sliced from docs/research/unit-464mapkey-2026-10-30/grade-filed-maps.mjs:299-318
+G2KP ok  sliced reader on GKP's own real slice: 11 tokens (checker source :613 wants 11), selector="max(pins first)" (checker source :613 wants "max(pins first)"), round-trips-whole=true
+G2AGREE ok  V22-MAP.md / t2-dir-only: sliced=[n] his=[n]
+G2AGREE ok  ../unit-464v21map-2026-10-30/V21-MAP.md / t8-unpinned: sliced=[N,surface] his=[N,surface]
+G2AGREE ok  ../unit-464nomoved-2026-10-30/V21-MAP.baseline.md / t8-unpinned: sliced=[N,moved,surface] his=[N,moved,surface]
+G2AGREE ok  PROBE-MAP-rowless.md / t2-dir-only: sliced=[] his=[]
+
+LEGS  A=1642 (docs/research/) · B=388 (.md) · C=11 (basename /MAP/) · D=10 (has a `## Arm `name`` heading)
+LEGD-OUT  in C but not D: [docs/research/CRIPPLE-MAP-CONVENTION.md]
+
+--- P3: reach of the live tokenizer vs the one-character-class cure, per map
+P3ROW REFUSED docs/research/unit-464authored-2026-10-31/PROBE-MAP-rowless.md / t2-dir-only: wide denominator is 0 over 4 section line(s) — a ratio over 0 refuses rather than scoring (this is the rowless probe's shape)
+P3ROW ok  docs/research/unit-464authored-2026-10-31/V22-MAP.md / t2-dir-only: live sees 1 of 20 = 5.0% over 49 section line(s)  live=[n]
+P3ROW ok  docs/research/unit-464nomoved-2026-10-30/V21-MAP.baseline.md / t8-unpinned: live sees 3 of 31 = 9.7% over 56 section line(s)  live=[N,moved,surface]
+P3ROW ok  docs/research/unit-464nomoved-2026-10-30/V21-MAP.cured.md / t8-unpinned: live sees 2 of 30 = 6.7% over 56 section line(s)  live=[N,surface]
+P3ROW ok  docs/research/unit-464rekey-2026-10-30/V21-MAP.nomoved.md / t8-unpinned: live sees 2 of 30 = 6.7% over 56 section line(s)  live=[N,surface]
+P3ROW ok  docs/research/unit-464rekey-2026-10-30/V21-MAP.prose.md / t8-unpinned: live sees 3 of 31 = 9.7% over 56 section line(s)  live=[N,moved,surface]
+P3ROW ok  docs/research/unit-464v21map-2026-10-30/V21-MAP.md / t8-unpinned: live sees 2 of 30 = 6.7% over 56 section line(s)  live=[N,surface]
+P3ROW REFUTES docs/research/unit-464v2map-2026-10-30/V2-MAP-t8-ceiling-blind-RETITLED.md / t8-ceiling-blind: live sees 2 of 9 = 22.2% over 53 section line(s)  live=[distance,popMax]
+P3ROW REFUTES docs/research/unit-464v2map-2026-10-30/V2-MAP-t8-ceiling-blind-STAMP-STRIPPED.md / t8-ceiling-blind: live sees 2 of 9 = 22.2% over 53 section line(s)  live=[distance,popMax]
+P3ROW REFUSED docs/research/unit-464v2map-2026-10-30/V2-MAP-t8-ceiling-blind.md / t8-ceiling-blind: sectionFor returned null (heading not unique)
+P3 REFUTED — 8 rows-bearing map(s) scored, 2 at or above 10%, 2 refused [docs/research/unit-464authored-2026-10-31/PROBE-MAP-rowless.md/t2-dir-only, docs/research/unit-464v2map-2026-10-30/V2-MAP-t8-ceiling-blind.md/t8-ceiling-blind]
+
+--- P4: the mechanism, per SEEN name. Daedalus's claim: every seen name is a
+    second-or-later token inside a multi-token INLINE code span.
+P4HIT     docs/research/unit-464authored-2026-10-31/V22-MAP.md / t2-dir-only  name=n  class=INLINE-SPAN-LATER  prevChar=" "  secLine=33
+P4HIT *OFF* docs/research/unit-464nomoved-2026-10-30/V21-MAP.baseline.md / t8-unpinned  name=N  class=BARE-PROSE  prevChar=" "  secLine=33
+P4HIT     docs/research/unit-464nomoved-2026-10-30/V21-MAP.baseline.md / t8-unpinned  name=moved  class=INLINE-SPAN-LATER  prevChar=" "  secLine=33
+P4HIT     docs/research/unit-464nomoved-2026-10-30/V21-MAP.baseline.md / t8-unpinned  name=surface  class=INLINE-SPAN-LATER  prevChar=" "  secLine=34
+P4HIT *OFF* docs/research/unit-464nomoved-2026-10-30/V21-MAP.cured.md / t8-unpinned  name=N  class=BARE-PROSE  prevChar=" "  secLine=33
+P4HIT     docs/research/unit-464nomoved-2026-10-30/V21-MAP.cured.md / t8-unpinned  name=surface  class=INLINE-SPAN-LATER  prevChar=" "  secLine=34
+P4HIT *OFF* docs/research/unit-464rekey-2026-10-30/V21-MAP.nomoved.md / t8-unpinned  name=N  class=BARE-PROSE  prevChar=" "  secLine=33
+P4HIT     docs/research/unit-464rekey-2026-10-30/V21-MAP.nomoved.md / t8-unpinned  name=surface  class=INLINE-SPAN-LATER  prevChar=" "  secLine=34
+P4HIT *OFF* docs/research/unit-464rekey-2026-10-30/V21-MAP.prose.md / t8-unpinned  name=N  class=BARE-PROSE  prevChar=" "  secLine=33
+P4HIT     docs/research/unit-464rekey-2026-10-30/V21-MAP.prose.md / t8-unpinned  name=moved  class=INLINE-SPAN-LATER  prevChar=" "  secLine=33
+P4HIT     docs/research/unit-464rekey-2026-10-30/V21-MAP.prose.md / t8-unpinned  name=surface  class=INLINE-SPAN-LATER  prevChar=" "  secLine=34
+P4HIT *OFF* docs/research/unit-464v21map-2026-10-30/V21-MAP.md / t8-unpinned  name=N  class=BARE-PROSE  prevChar=" "  secLine=33
+P4HIT     docs/research/unit-464v21map-2026-10-30/V21-MAP.md / t8-unpinned  name=surface  class=INLINE-SPAN-LATER  prevChar=" "  secLine=34
+P4HIT     docs/research/unit-464v2map-2026-10-30/V2-MAP-t8-ceiling-blind-RETITLED.md / t8-ceiling-blind  name=distance  class=INLINE-SPAN-LATER  prevChar=" "  secLine=25
+P4HIT     docs/research/unit-464v2map-2026-10-30/V2-MAP-t8-ceiling-blind-RETITLED.md / t8-ceiling-blind  name=popMax  class=INLINE-SPAN-LATER  prevChar=" "  secLine=25
+P4HIT     docs/research/unit-464v2map-2026-10-30/V2-MAP-t8-ceiling-blind-STAMP-STRIPPED.md / t8-ceiling-blind  name=distance  class=INLINE-SPAN-LATER  prevChar=" "  secLine=25
+P4HIT     docs/research/unit-464v2map-2026-10-30/V2-MAP-t8-ceiling-blind-STAMP-STRIPPED.md / t8-ceiling-blind  name=popMax  class=INLINE-SPAN-LATER  prevChar=" "  secLine=25
+P4 LANDS — 17 seen name(s) classified, 5 off his stated mechanism: [N@V21-MAP.baseline.md:BARE-PROSE, N@V21-MAP.cured.md:BARE-PROSE, N@V21-MAP.nomoved.md:BARE-PROSE, N@V21-MAP.prose.md:BARE-PROSE, N@V21-MAP.md:BARE-PROSE]
+
+CENSUS COMPLETE — gates all green, so the figures above are measured.
