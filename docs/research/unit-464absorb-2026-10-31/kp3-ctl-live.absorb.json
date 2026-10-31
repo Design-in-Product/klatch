@@ -1,0 +1,344 @@
+{
+  "boundary": "live",
+  "cripple": "",
+  "rows": [
+    {
+      "id": "G1",
+      "ctxLines": 1,
+      "ownEmits": [
+        "commits",
+        "counting",
+        "key",
+        "libSelfTest",
+        "popError",
+        "roundDirs"
+      ],
+      "quotedOfMe": [],
+      "typed": [],
+      "aTokens": [
+        "commits",
+        "counting",
+        "key",
+        "libSelfTest",
+        "popError",
+        "roundDirs"
+      ],
+      "bTokens": [
+        "commits",
+        "counting",
+        "key",
+        "libSelfTest",
+        "popError",
+        "roundDirs"
+      ]
+    },
+    {
+      "id": "P13",
+      "ctxLines": 3,
+      "ownEmits": [
+        "actual",
+        "expected"
+      ],
+      "quotedOfMe": [],
+      "typed": [],
+      "aTokens": [
+        "actual",
+        "expected"
+      ],
+      "bTokens": [
+        "actual",
+        "expected"
+      ]
+    },
+    {
+      "id": "P6",
+      "ctxLines": 3,
+      "ownEmits": [
+        "actual",
+        "expected"
+      ],
+      "quotedOfMe": [],
+      "typed": [],
+      "aTokens": [
+        "actual",
+        "expected"
+      ],
+      "bTokens": [
+        "actual",
+        "expected"
+      ]
+    },
+    {
+      "id": "P7",
+      "ctxLines": 3,
+      "ownEmits": [
+        "actual",
+        "expected"
+      ],
+      "quotedOfMe": [],
+      "typed": [],
+      "aTokens": [
+        "actual",
+        "expected"
+      ],
+      "bTokens": [
+        "actual",
+        "expected"
+      ]
+    },
+    {
+      "id": "P8",
+      "ctxLines": 3,
+      "ownEmits": [
+        "actual",
+        "expected"
+      ],
+      "quotedOfMe": [],
+      "typed": [],
+      "aTokens": [
+        "actual",
+        "expected"
+      ],
+      "bTokens": [
+        "actual",
+        "expected"
+      ]
+    },
+    {
+      "id": "T10COUNT",
+      "ctxLines": 2,
+      "ownEmits": [
+        "figure",
+        "n",
+        "probes",
+        "refusing",
+        "sensitive"
+      ],
+      "quotedOfMe": [
+        "n"
+      ],
+      "typed": [],
+      "aTokens": [
+        "figure",
+        "n",
+        "probes",
+        "refusing",
+        "sensitive"
+      ],
+      "bTokens": [
+        "figure",
+        "n",
+        "probes",
+        "refusing",
+        "sensitive"
+      ]
+    },
+    {
+      "id": "T2b",
+      "ctxLines": 3,
+      "ownEmits": [
+        "assertable",
+        "fired",
+        "incidental",
+        "pinArm",
+        "pinDistance"
+      ],
+      "quotedOfMe": [],
+      "typed": [],
+      "aTokens": [
+        "assertable",
+        "fired",
+        "incidental",
+        "pinArm",
+        "pinDistance"
+      ],
+      "bTokens": [
+        "assertable",
+        "fired",
+        "incidental",
+        "pinArm",
+        "pinDistance"
+      ]
+    },
+    {
+      "id": "T2bSAT",
+      "ctxLines": 2,
+      "ownEmits": [
+        "assertable",
+        "dirLast",
+        "freeArmPinned",
+        "freeDistance",
+        "key",
+        "pinArm",
+        "pinArmPinned",
+        "pinDistance",
+        "popMax",
+        "selector",
+        "selfLast"
+      ],
+      "quotedOfMe": [],
+      "typed": [],
+      "aTokens": [
+        "assertable",
+        "dirLast",
+        "freeArmPinned",
+        "freeDistance",
+        "key",
+        "pinArm",
+        "pinArmPinned",
+        "pinDistance",
+        "popMax",
+        "selector",
+        "selfLast"
+      ],
+      "bTokens": [
+        "assertable",
+        "dirLast",
+        "freeArmPinned",
+        "freeDistance",
+        "key",
+        "pinArm",
+        "pinArmPinned",
+        "pinDistance",
+        "popMax",
+        "selector",
+        "selfLast"
+      ]
+    },
+    {
+      "id": "T9",
+      "ctxLines": 1,
+      "ownEmits": [
+        "key"
+      ],
+      "quotedOfMe": [],
+      "typed": [],
+      "aTokens": [
+        "key"
+      ],
+      "bTokens": [
+        "key"
+      ]
+    },
+    {
+      "id": "W1",
+      "ctxLines": 1,
+      "ownEmits": [
+        "absolute",
+        "bare",
+        "bareOnly",
+        "scriptsMembersLost",
+        "tailLoss"
+      ],
+      "quotedOfMe": [],
+      "typed": [],
+      "aTokens": [
+        "absolute",
+        "bare",
+        "bareOnly",
+        "scriptsMembersLost",
+        "tailLoss"
+      ],
+      "bTokens": [
+        "absolute",
+        "bare",
+        "bareOnly",
+        "scriptsMembersLost",
+        "tailLoss"
+      ]
+    }
+  ],
+  "arms": [
+    {
+      "unmapped": false,
+      "sectionLines": 49,
+      "emitted": [
+        "CLOCK_OTHER",
+        "DRIVE1.clock",
+        "N",
+        "absolute",
+        "active",
+        "actual",
+        "assertable",
+        "band",
+        "bare",
+        "bareOnly",
+        "bothAgree",
+        "coincides",
+        "commits",
+        "counting",
+        "declared",
+        "detected",
+        "dir",
+        "dirLast",
+        "dirOnly",
+        "distance",
+        "drifted",
+        "duplicates",
+        "expected",
+        "figure",
+        "fired",
+        "freeArmPinned",
+        "freeDistance",
+        "hasExplicitTime",
+        "in",
+        "incidental",
+        "include",
+        "insensitive",
+        "interior",
+        "key",
+        "lastUnion",
+        "legs",
+        "libSelfTest",
+        "max",
+        "members",
+        "misses",
+        "n",
+        "neither",
+        "offBoundaryDay",
+        "out",
+        "pinArm",
+        "pinArmPinned",
+        "pinDistance",
+        "pinned",
+        "popError",
+        "popMax",
+        "preds",
+        "present",
+        "probes",
+        "refusing",
+        "registered",
+        "round",
+        "roundDirs",
+        "rows",
+        "scriptsMembersLost",
+        "selector",
+        "selfLast",
+        "sensitive",
+        "sites",
+        "subjectOnly",
+        "surface",
+        "tailLoss",
+        "union",
+        "unionArmPinned",
+        "withoutHook"
+      ],
+      "quoted": [
+        "n"
+      ],
+      "typedRecordingKey": [],
+      "reached": [
+        "G1",
+        "P13",
+        "P6",
+        "P7",
+        "P8",
+        "T10COUNT",
+        "T2b",
+        "T2bSAT",
+        "T9",
+        "W1"
+      ]
+    }
+  ]
+}

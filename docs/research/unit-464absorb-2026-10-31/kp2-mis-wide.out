@@ -1,0 +1,58 @@
+=== grade-filed-maps.mjs ===
+map    : ../unit-464absorb-2026-10-31/KP-MISATTRIBUTED-MAP.md
+clean  : ../unit-464t2b-sat-2026-10-29/drive2.clean.out
+control: ../unit-464t2b-sat-2026-10-29/drive2.clean.out  vs  ../unit-464t8-mapdecay-2026-10-29/drive1.clean.out
+cripple: none (clean arm)
+labels : 7 ["MEAS","REF "," ok ","RED ","PREF","LAND","REFU"]
+
+GKP    ok  tokenizer on a real slice: selector round-trips whole; 11 tokens
+KPSLICE detail: dirLast=464 selfLast=454 popMax=467 pinArm=dir(464) pinDistance=3 freeDistance=13 pinArmPinned=false freeArmPinned=false assertable=true key=>= selector=max(pins first)
+GABS   ok  absolute member count: 36 members = legs 26 + preds 10
+GSTAMP ok  stamp: v2-block declares legs=26 preds=10; recording says legs=26 preds=10 → OK
+GMUST  ok  §3.1 fields: all three previously-unread MUST fields present and load-bearing (filing-rev resolves, cell readable, clean-recording is the drive's own --clean)
+GCTRL  ok  drift control: 36 vs 36 members, two distinct readable recordings (NOT checked here: whether either is a no-cripple drive — that is GCTRLPROV)
+GCTRLPROV ok  control provenance: 3 recording(s) declare no cripple in their own header: [clean=none control1=none control2=none]
+DRIFT  n=5 [G1,T9,W1,W2,W3]
+  DRIFTMEM G1           movedTokens=1  [commits]
+  DRIFTMEM T9           movedTokens=0  []
+  DRIFTMEM W1           movedTokens=3  [absolute,bare,tailLoss]
+  DRIFTMEM W2           movedTokens=1  [band]
+  DRIFTMEM W3           movedTokens=0  []
+
+ARM t2-dir-only
+  reached=10 (v2) · verdictReached=4 (v1) · named=10 · fullyNamed=8 · fullyCaptured=8 · underReported=2
+  reached=[G1,P13,P6,P7,P8,T10COUNT,T2b,T2bSAT,T9,W1]
+  reachedArmCaused=7 [P13,P6,P7,P8,T10COUNT,T2b,T2bSAT]  (CEILING — the control can only under-state drift)
+  reachedDrift=3 [G1,T9,W1]  (moved with no arm in play)
+  verdictReached=[P13,P6,P8,T2b]
+  underReported=[G1,W1]  =  membership[] + tokens[G1,W1]   (RAW — drift included)
+  underReportedArmCaused=[]  =  membership[] + tokens[]
+  tokensTyped=[pinDistance]   (quoted OF a member, never emitted BY that member)  ·  typedRecordingKey=[]  (superseded, recording-wide)
+  subject key: linesSubjected=7 subjectsDeclared=7 [P13,P6,P7,P8,T10COUNT,T2b,T2bSAT]  ·  refDropped=1 (lines the pre-fix key gave a member off ANOTHER member's row)  ·  unionBearing=10
+    G1           mentioned=true  moved=1  [commits] named=[] captured=[] typed=[]
+    P13          mentioned=true  moved=1  [actual] named=[actual] captured=[actual] typed=[]
+    P6           mentioned=true  moved=1  [actual] named=[actual] captured=[actual] typed=[]
+    P7           mentioned=true  moved=1  [actual] named=[actual] captured=[actual] typed=[pinDistance]
+    P8           mentioned=true  moved=1  [actual] named=[actual] captured=[actual] typed=[]
+    T10COUNT     mentioned=true  moved=1  [probes] named=[probes] captured=[probes] typed=[]
+    T2b          mentioned=true  moved=3  [fired,incidental,pinArm] named=[fired,incidental,pinArm] captured=[fired,incidental,pinArm] typed=[]
+    T2bSAT       mentioned=true  moved=3  [freeDistance,pinArm,selfLast] named=[freeDistance,pinArm,selfLast] captured=[freeDistance,pinArm,selfLast] typed=[]
+    W1           mentioned=true  moved=2  [absolute,bare] named=[] captured=[] typed=[]
+
+GREACH ok  re-key non-vacuity: 1/1 arms: v2 reach strictly wider than v1 (t2-dir-only 4→10)
+GCTX   ok  member-context gate: gated=11 ≤ loose=11; the context gate removes 0 token namings
+GREFUSE ok  refusal: VACUOUS in this drive — 0 unreadable recordings and 0 unmapped arms, so nothing was given the chance to refuse
+GTYPED ok  typed-token key strictness: recording-wide key ⊆ member key; member key is stricter by 1 token(s) [t2-dir-only:pinDistance]
+GSUBJ  ok  subject re-key: A/bite ok bites: the live key withheld 1 context line(s) of 1 available across 7 subjected line(s)  ·  B/non-collapse ok 10 union-bearing member(s) all still mentioned
+GTYPEDDEF RED typed-token defects: 1 typed token(s) — quoted OF a member that never emits it: [t2-dir-only:pinDistance]
+GDRIFTB ok  exclusion bites: 1/1 arms narrowed by the exclusion (t2-dir-only 10→7)
+GDRIFTR ok  drift refusal: VACUOUS in this drive — a readable control pair was given, so nothing was given the chance to refuse
+
+GRADE  armsGiven=1 graded=1 unreadable=0 unmapped=0 reachedCells=10 (mapped arms 10) fullyNamedCells=8 fullyCapturedCells=8 underReportedCells=2 (membership 0 + tokens 2)
+GRADEA drift-excluded over mapped arms (CEILING): reachedCells=7 underReportedCells=0 (membership 0 + tokens 0)   ·  raw was reachedCells=10 underReportedCells=2 (membership 0 + tokens 2)
+TYPED  tokensTyped=[pinDistance] n=1  ·  superseded recording-wide key=[] n=0
+STAMP  OK
+GCOMP  ok  coverage: all 1 arm recording(s) readable
+GCONF  ok  §3.3/§3.4 conformance: v2 map, underReportedArmCaused: 0 cells over 1 mapped arm(s) — conforms to §3.3/§3.4
+
+MAPVERDICT/1 RED gates=16 red=[GTYPEDDEF]
