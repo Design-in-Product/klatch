@@ -37,6 +37,27 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-10-30 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-10-30">
+      <p class="log-date">October 30, 2026</p>
+      <div class="log-body">
+
+        <p>One side re-keyed the research track's own grading convention — the rules the two partners use to check whether the other's detector really caught a planted fake bug — switching it from counting a hit by which case a checker's verdict happened to mention to counting by which case it actually reached, and for the first time wrote a machine check for the convention itself rather than only describing it in prose, publishing both before either could shape the other. Driving it against the day before's work turned up two real bugs in that first version of the checker: one case's own correctly-copied wording could get credited to a completely different, merely nearby case, and a check meant to confirm a probe covers both of two possible situations could report success while only ever having tested one of them.</p>
+
+        <p>The other side then wrote the very first test map under the freshly re-keyed rules, and immediately found a hole in what the rules promised: a map can pass every single one of the checker's eight checks while still missing six genuinely findable cases entirely and fully capturing none of them, because none of the eight checks actually reads those completeness numbers at all. A second finding undercut a count from the day before — three cases both sides had been treating as genuinely shared between their separate test runs turned out to be artifacts of the clock, not real agreement, because the "before" and "after" runs being compared were timed slightly apart against a codebase that kept changing underneath them. The earlier number was a ceiling on the real count, not a measurement of it.</p>
+
+        <p>Taking that seriously, the side who'd made the original shared-case claim built a proper check for it instead of trusting a hand-made list — two separate "nothing should have changed" runs, compared against each other, to isolate exactly which cases the clock affects. The result overturned the other side's own prediction of the exact number affected (it was larger by two, which both agreed mattered more than the miss itself: a safety net shouldn't be built from exactly the cases that luck already revealed) and, once applied, reversed an earlier claim about which of the convention's two halves — naming a case, or copying its exact wording — does more work. For one side's own maps the answer flipped from "naming matters more" to "copying matters more," traced entirely to that side's test runs being taken closer together in time than the other's, not to any real difference in how carefully either map was written.</p>
+
+        <p>A same-morning fix for an unrelated formatting bug then backfired on a well-written map: a rule meant to stop one long row from being counted twice ended up making any long row that mentions a neighboring case inherit that neighbor's exact-wording penalties too — punishing the cross-referencing style a careful author should be rewarded for, not fined. The same map exposed a second, more awkward problem already sitting in the checker as written: submitting a fake, already-passing run as your own "control" is accepted at face value and quietly clears a real under-reporting problem, while honestly admitting you have no control at all gets penalized three separate times.</p>
+
+        <p>Closing the loop, the three fixes asked for in response went in, but fixing the attribution bug from the first paragraph didn't clear the map it was meant to fix — it still fails, now for a different and genuine reason: quoting the checker's own printed output word for word (the literal text <code>T9 moved=0</code>) still counts as copying rather than describing in your own words. An unplanned side effect of that same fix: it also stripped out a false credit the map had been getting on that identical line, meaning the old rule had been wrong in both directions on one row without anyone having noticed. The newest checker code was itself wrong twice on its first run, and a label mix-up — reading one case's own name as the name of an entire test scenario — cost a count for the third time this week; all caught and corrected before anything was published. The day's last move was the one-line fix that was asked for, confirmed afterward to have changed nothing else worth worrying about — eight of the eleven tracked figures held exactly steady, which had been flagged beforehand as not a safe assumption to make going in. Nobody asked xian to decide anything today; the one open item every memo still points to — whether to keep running this exchange at all, or stop and rethink it — is the same one that was already sitting on his desk this morning.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-10-30 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-10-29 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-10-29">
