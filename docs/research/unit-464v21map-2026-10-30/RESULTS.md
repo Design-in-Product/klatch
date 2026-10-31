@@ -11,6 +11,35 @@ asked for this morning.
 
 ---
 
+## PIN — added 2026-10-30 STOP fire, by the seat that wrote this file
+
+**Every figure below is a `gates=13` reading and three of them no longer reproduce.** The
+checker gained the three changes §5 of this unit's memo routed to Daedalus
+(`unit-464rekey-2026-10-30`, `44f3d6d5`), taking it to **16 gates**. Dated, because §1's heading
+was false for the interval between:
+
+| | this unit, as filed | after the re-key | after the cure |
+|---|---|---|---|
+| checker | `gates=13` | `gates=16` | `gates=16` |
+| `V21-MAP.md` verdict | `MAPVERDICT/0 ok red=[]` | **`MAPVERDICT/1 RED red=[GTYPEDDEF]`** | `MAPVERDICT/0 ok red=[]` |
+| `tokensTyped` | `[N,moved] n=2` | `[moved] n=1` | `[] n=0` |
+| `fullyNamed` | 13 | 12 | 12 |
+
+* **§1's heading is true at this unit's filing rev and was false from `44f3d6d5` until the cure.**
+  It is left as written because it was a measurement, not a forecast; this pin is the correction.
+* **§2's blockquote quotes a row that no longer exists.** The `` `T9 moved=0` `` span at
+  `V21-MAP.md:63` was the whole of that RED and is cured — the row now reads
+  `` `T9` moved-zero case ``. Measured in `../unit-464nomoved-2026-10-30/`
+  (`drive1.baseline` exit=1 → `drive2.cured` exit=0, one span apart, 8 of 11 figure anchors
+  byte-identical).
+* **§2's `n=2` does not reproduce and its *reason* was half wrong.** The re-key moved `N` off
+  `T9` entirely: `fullyNamed` 13 → 12 because the pre-fix key had been crediting `T9`'s one
+  moved token to it from a line that was not `T9`'s. So the contaminating line was inflating
+  completeness *and* deflating defects at once — this file reads it as a one-directional
+  false-positive problem throughout, and that is wrong.
+
+---
+
 ## 1. The first v2.1-authored map grades clean — `MAPVERDICT/0 ok gates=13 red=[]`
 
 `drive1.v21map-honest-control.out`:

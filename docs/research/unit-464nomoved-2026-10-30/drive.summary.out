@@ -1,0 +1,26 @@
+SUBJECT  ../unit-464v21map-2026-10-30/V21-MAP.md is ALREADY-CURED vs d668a007 · `T9 moved=0` ×1 in baseline · cured line 63 · 85 lines both sides
+CURE     ../unit-464v21map-2026-10-30/V21-MAP.md re-written identically (was already cured); V21-MAP.baseline.md and V21-MAP.cured.md recorded beside it
+drive1.baseline    exit=1 err=0B  — G1/P2 — the uncured map at baseline.rev; the gate leg and the matched drive for drive2
+drive2.cured       exit=0 err=0B  — P3/P4/P5 — one span apart from drive1, same path depth
+drive3.cured-live  exit=0 err=0B  — the tree after the cure: whether a COMMITTED map now passes GTYPEDDEF unedited
+
+=== FIGURE DELTA drive1.baseline → drive2.cured (one span apart) ===
+SAME     summary            reached=15 (v2) · verdictReached=4 (v1) · named=15 · fullyNamed=12 · fullyCaptured=11 · underReported=3
+SAME     underReportedRaw   underReported=[G1,T9,W1]  =  membership[] + tokens[G1,T9,W1]   (RAW — drift included)
+SAME     underReportedArm   underReportedArmCaused=[]  =  membership[] + tokens[]
+SAME     subjectKey         subject key: linesSubjected=14 subjectsDeclared=14 [P11,P12,P2,P7,P9,T10,T10COUNT,T2,T2b,T2bSAT,T2c,T8,T8CEIL,T8KP]  ·  refDropped=17 (lines the pre-fix key gave a member off ANOTHER member's row)  ·  unionBearing=15
+SAME     GTYPED             GTYPED ok  typed-token key strictness: recording-wide key ⊆ member key; member key is stricter by 0 token(s)
+MOVED    GTYPEDDEF         
+   base  GTYPEDDEF RED typed-token defects: 1 typed token(s) — quoted OF a member that never emits it: [t8-unpinned:moved]
+   cured GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed
+SAME     GRADE              GRADE  armsGiven=1 graded=1 unreadable=0 unmapped=0 reachedCells=15 (mapped arms 15) fullyNamedCells=12 fullyCapturedCells=11 underReportedCells=3 (membership 0 + tokens 3)
+SAME     GRADEA             GRADEA drift-excluded over mapped arms (CEILING): reachedCells=12 underReportedCells=0 (membership 0 + tokens 0)   ·  raw was reachedCells=15 underReportedCells=3 (membership 0 + tokens 3)
+MOVED    TYPED             
+   base  TYPED  tokensTyped=[moved] n=1  ·  superseded recording-wide key=[moved] n=1
+   cured TYPED  tokensTyped=[] n=0  ·  superseded recording-wide key=[] n=0
+SAME     GCONF              GCONF  ok  §3.3/§3.4 conformance: v2 map, underReportedArmCaused: 0 cells over 1 mapped arm(s) — conforms to §3.3/§3.4
+MOVED    MAPVERDICT        
+   base  MAPVERDICT/1 RED gates=16 red=[GTYPEDDEF]
+   cured MAPVERDICT/0 ok gates=16 red=[]
+DELTA    moved=3 same=8 refused=0
+PATHCHECK drive2 vs drive3 (identical content, different path): identical on all 11 anchors
