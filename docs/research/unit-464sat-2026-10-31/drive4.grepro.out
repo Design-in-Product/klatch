@@ -1,0 +1,78 @@
+GREPROPOP  77 committed grade-filed-maps recording(s) over 732 .out file(s) at 7afa614e
+GREPRO ok  V22-MAP-t2-dir-only: 4 committed no-cripple recording(s) agree with my live drive on GTYPEDDEF, TYPED and MAPVERDICT [kp0-base-live.out, kp0-base-wide.out, drive1.out, drive5.out]
+GREPRO ok  V21-MAP.baseline-t8-unpinned: 1 committed no-cripple recording(s) agree with my live drive on GTYPEDDEF, TYPED and MAPVERDICT [drive1.baseline.out]
+GREPRO ok  V21-MAP.cured-t8-unpinned: 1 committed no-cripple recording(s) agree with my live drive on GTYPEDDEF, TYPED and MAPVERDICT [drive2.cured.out]
+GREPRO ok  V21-MAP.nomoved-t8-unpinned: 1 committed no-cripple recording(s) agree with my live drive on GTYPEDDEF, TYPED and MAPVERDICT [drive15.mapA-nomoved.out]
+GREPRO ok  V21-MAP.prose-t8-unpinned: 1 committed no-cripple recording(s) agree with my live drive on GTYPEDDEF, TYPED and MAPVERDICT [drive5.mapA-prose.out]
+GREPRO RED V21-MAP-t8-unpinned: 7 of 8 committed recording(s) DISAGREE with my live drive
+     vs docs/research/unit-464rekey-2026-10-30/drive1.mapA-honest.out
+        tree : GTYPEDDEF RED typed-token defects: 1 typed token(s) — quoted OF a member that never emits it: [t8-unpinned:moved]
+        mine : GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed
+        tree : TYPED  tokensTyped=[moved] n=1  ·  superseded recording-wide key=[moved] n=1
+        mine : TYPED  tokensTyped=[] n=0  ·  superseded recording-wide key=[] n=0
+        tree : MAPVERDICT/1 RED gates=16 red=[GTYPEDDEF]
+        mine : MAPVERDICT/0 ok gates=16 red=[]
+     vs docs/research/unit-464rekey-2026-10-30/drive11.mapA-poisoned.out
+        tree : GTYPEDDEF RED typed-token defects: 1 typed token(s) — quoted OF a member that never emits it: [t8-unpinned:moved]
+        mine : GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed
+        tree : TYPED  tokensTyped=[moved] n=1  ·  superseded recording-wide key=[moved] n=1
+        mine : TYPED  tokensTyped=[] n=0  ·  superseded recording-wide key=[] n=0
+        tree : MAPVERDICT/1 RED gates=16 red=[GCTRLPROV,GTYPEDDEF]
+        mine : MAPVERDICT/0 ok gates=16 red=[]
+     vs docs/research/unit-464rekey-2026-10-30/drive13.mapA-foreign-control.out
+        tree : GTYPEDDEF RED typed-token defects: 1 typed token(s) — quoted OF a member that never emits it: [t8-unpinned:moved]
+        mine : GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed
+        tree : TYPED  tokensTyped=[moved] n=1  ·  superseded recording-wide key=[moved] n=1
+        mine : TYPED  tokensTyped=[] n=0  ·  superseded recording-wide key=[] n=0
+        tree : MAPVERDICT/1 RED gates=16 red=[GCTRL,GCTRLPROV,GTYPEDDEF,GDRIFTBITE,GCONFORM]
+        mine : MAPVERDICT/0 ok gates=16 red=[]
+     vs docs/research/unit-464rekey-2026-10-30/drive14.mapA-crippled-clean.out
+        tree : TYPED  tokensTyped=[] n=0  ·  superseded recording-wide key=[moved] n=1
+        mine : TYPED  tokensTyped=[] n=0  ·  superseded recording-wide key=[] n=0
+        tree : MAPVERDICT/1 RED gates=16 red=[GMUST,GCTRLPROV,GREACH,GTYPED,GDRIFTBITE]
+        mine : MAPVERDICT/0 ok gates=16 red=[]
+     vs docs/research/unit-464v21map-2026-10-30/drive1.v21map-honest-control.out
+        tree : (absent)
+        mine : GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed
+        tree : TYPED  tokensTyped=[N,moved] n=2  ·  superseded recording-wide key=[moved] n=1
+        mine : TYPED  tokensTyped=[] n=0  ·  superseded recording-wide key=[] n=0
+        tree : MAPVERDICT/0 ok gates=13 red=[]
+        mine : MAPVERDICT/0 ok gates=16 red=[]
+     vs docs/research/unit-464v21map-2026-10-30/drive2.v21map-poisoned-control.out
+        tree : (absent)
+        mine : GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed
+        tree : TYPED  tokensTyped=[N,moved] n=2  ·  superseded recording-wide key=[moved] n=1
+        mine : TYPED  tokensTyped=[] n=0  ·  superseded recording-wide key=[] n=0
+        tree : MAPVERDICT/0 ok gates=13 red=[]
+        mine : MAPVERDICT/0 ok gates=16 red=[]
+     vs docs/research/unit-464v21map-2026-10-30/drive3.v21map-no-control.out
+        tree : (absent)
+        mine : GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed
+        tree : TYPED  tokensTyped=[N,moved] n=2  ·  superseded recording-wide key=[moved] n=1
+        mine : TYPED  tokensTyped=[] n=0  ·  superseded recording-wide key=[] n=0
+        tree : MAPVERDICT/1 RED gates=13 red=[GCTRL,GDRIFTBITE,GCONFORM]
+        mine : MAPVERDICT/0 ok gates=16 red=[]
+GREPRO RED V2-MAP-t8-ceiling-blind-RETITLED-t8-ceiling-blind: 2 of 2 committed recording(s) DISAGREE with my live drive
+     vs docs/research/unit-464drift-2026-10-30/drive2.v2map-with-control.out
+        tree : (absent)
+        mine : GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed
+        tree : MAPVERDICT/1 RED gates=13 red=[GCONFORM]
+        mine : MAPVERDICT/1 RED gates=16 red=[GCONFORM]
+     vs docs/research/unit-464v2map-2026-10-30/drive2.v2map-retitled.out
+        tree : (absent)
+        mine : GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed
+        tree : MAPVERDICT/0 ok gates=8 red=[]
+        mine : MAPVERDICT/1 RED gates=16 red=[GCONFORM]
+GREPRO RED V2-MAP-t8-ceiling-blind-STAMP-STRIPPED-t8-ceiling-blind: 2 of 2 committed recording(s) DISAGREE with my live drive
+     vs docs/research/unit-464drift-2026-10-30/drive3.v2map-stamp-stripped.out
+        tree : (absent)
+        mine : GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed
+        tree : MAPVERDICT/1 RED gates=13 red=[GMUST,GCONFORM]
+        mine : MAPVERDICT/1 RED gates=16 red=[GMUST,GCONFORM]
+     vs docs/research/unit-464v2map-2026-10-30/drive3.v2map-stamp-stripped.out
+        tree : (absent)
+        mine : GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed
+        tree : MAPVERDICT/0 ok gates=8 red=[]
+        mine : MAPVERDICT/1 RED gates=16 red=[GMUST,GCONFORM]
+
+GREPRO RED 5 cell(s) reproduce a committed recording · 3 DISAGREE · 0 have no committed answer key (UNAVAILABLE, not a pass) of 8 scored cell(s)

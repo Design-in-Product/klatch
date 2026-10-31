@@ -1,0 +1,22 @@
+GREPROPOP  77 committed grade-filed-maps recording(s) over 732 .out file(s) at 7afa614e
+GREPRO ok  V22-MAP-t2-dir-only: 4 committed no-cripple recording(s) agree with my live drive on GTYPEDDEF, TYPED and MAPVERDICT [kp0-base-live.out, kp0-base-wide.out, drive1.out, drive5.out]
+GREPRO ok  V21-MAP.baseline-t8-unpinned: 1 committed no-cripple recording(s) agree with my live drive on GTYPEDDEF, TYPED and MAPVERDICT [drive1.baseline.out]
+GREPRO ok  V21-MAP.cured-t8-unpinned: 1 committed no-cripple recording(s) agree with my live drive on GTYPEDDEF, TYPED and MAPVERDICT [drive2.cured.out]
+GREPRO ok  V21-MAP.nomoved-t8-unpinned: 1 committed no-cripple recording(s) agree with my live drive on GTYPEDDEF, TYPED and MAPVERDICT [drive15.mapA-nomoved.out]
+GREPRO ok  V21-MAP.prose-t8-unpinned: 1 committed no-cripple recording(s) agree with my live drive on GTYPEDDEF, TYPED and MAPVERDICT [drive5.mapA-prose.out]
+     STALE drive1.mapA-honest.out: map blob 91a75ef4 at the recording's commit vs cea1a524 at baseline
+     STALE drive11.mapA-poisoned.out: map blob 91a75ef4 at the recording's commit vs cea1a524 at baseline
+     STALE drive13.mapA-foreign-control.out: map blob 91a75ef4 at the recording's commit vs cea1a524 at baseline
+     STALE drive14.mapA-crippled-clean.out: map blob 91a75ef4 at the recording's commit vs cea1a524 at baseline
+     STALE drive1.v21map-honest-control.out: gates=13 vs my gates=16 · map blob 91a75ef4 at the recording's commit vs cea1a524 at baseline
+     STALE drive2.v21map-poisoned-control.out: gates=13 vs my gates=16 · map blob 91a75ef4 at the recording's commit vs cea1a524 at baseline
+     STALE drive3.v21map-no-control.out: gates=13 vs my gates=16 · map blob 91a75ef4 at the recording's commit vs cea1a524 at baseline
+GREPRO ok  V21-MAP-t8-unpinned: 1 committed no-cripple recording(s) agree with my live drive on GTYPEDDEF, TYPED and MAPVERDICT [drive3.cured-live.out]
+     STALE drive2.v2map-with-control.out: gates=13 vs my gates=16
+     STALE drive2.v2map-retitled.out: gates=8 vs my gates=16
+GREPRO UNAVAILABLE V2-MAP-t8-ceiling-blind-RETITLED-t8-ceiling-blind: 2 committed no-cripple recording(s) declare this map and grade this arm, and 2 of them are STALE — my live drive has no FRESH answer key in the tree, and that is NOT a pass
+     STALE drive3.v2map-stamp-stripped.out: gates=13 vs my gates=16
+     STALE drive3.v2map-stamp-stripped.out: gates=8 vs my gates=16
+GREPRO UNAVAILABLE V2-MAP-t8-ceiling-blind-STAMP-STRIPPED-t8-ceiling-blind: 2 committed no-cripple recording(s) declare this map and grade this arm, and 2 of them are STALE — my live drive has no FRESH answer key in the tree, and that is NOT a pass
+
+GREPRO ok  6 cell(s) reproduce a committed recording · 0 DISAGREE · 2 have no committed answer key (UNAVAILABLE, not a pass) of 8 scored cell(s)
