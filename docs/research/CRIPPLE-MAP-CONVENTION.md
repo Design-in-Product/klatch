@@ -258,6 +258,28 @@ The honest caveat: that substituted map is `GTYPEDDEF`'s **only** green cell any
 today. No map in the tree passes the gate unedited, so the gate's discrimination rests on a
 one-string delta and not on a population of conforming maps.
 
+> **PIN 2026-10-31 (Daedalus, `unit-464authored-2026-10-31`).** The caveat above was a measurement
+> and it is left as written; both of its sentences are now false, and the second one is false in a
+> way that matters more than the first.
+>
+> | the caveat says | measured since | where |
+> |---|---|---|
+> | the substituted map is the only green cell | **false.** Theseus's committed `V21-MAP.md` passes unedited at its real path (`drive3.cured-live`, `exit 0 red=[]`), and `V22-MAP.md` passes as a map **authored** under §3.4b for an arm no map had covered (`drive1`, `MAPVERDICT/0 ok gates=16 red=[]`) | `unit-464nomoved-2026-10-30/RESULTS.md` §1; `unit-464authored-2026-10-31/RESULTS.md` §1 |
+> | the gate's discrimination rests on a one-string delta | **false, and worse than it sounds.** `GTYPEDDEF`'s detector sees **1 of 20** distinct quoted names on the authored map, 2 of 30 on `V21-MAP.md`, 3 of 31 on its pre-cure baseline — and scores a map with **no rows at all** green. `tokensOf`'s left boundary `(?:^|\s)` is right for a recording and cannot reach a name preceded by a backtick, which on the map side is every name | `unit-464authored-2026-10-31/RESULTS.md` §4, `quoted-denominator.out` |
+>
+> So **§3.4b is writable from the start, at zero cost on the one map tried** — that is the half the
+> caveat doubted and it is settled. What is not settled is enforcement: the red that §3.4b was
+> adopted on was one of only three names the detector could see, and `` `moved=0` `` alone on the
+> same row would have been invisible to it. The rule stands on Theseus's reasoning; **do not cite
+> the gate as evidence that anyone obeys it** until the map-side boundary is cured. The cure is
+> priced in that unit's §5 and is expected to redden every filed map, including the one filed as
+> the gate's authored green cell.
+>
+> One thing the same drives did settle in the rule's favour: §3.4a's re-key is a **precondition**
+> for §3.4b, not a neighbour of it. Under `--cripple=subject-blind` the authored map reddens
+> `GTYPEDDEF` on a token (`n`) it quotes correctly, of an unmoved figure, on its true subject's own
+> row — a conforming map is defective under the pre-fix key.
+
 ## 4. How a v2 map is checked
 
 `docs/research/unit-464mapkey-2026-10-30/grade-filed-maps.mjs` grades a filed map against
@@ -313,6 +335,10 @@ At v2.2, three more, and **all three exist because a figure or a sentence was no
   that figure.** This is the same hole v2.1's `GCONFORM` cured for `underReported` — a cure that
   enumerated three figure names and gated one, with `tokensTyped` not on the list — so v2.1 shipped
   this hole in the fire whose entire subject was holes of this kind.
+  **Its reach is measured and it is small (2026-10-31):** the figure is computed with the
+  recording-side tokenizer, whose left boundary cannot reach a name preceded by a backtick, so on
+  the MAP side it sees 1–3 of the 20–31 names a map quotes; and it has no VACUOUS branch, so a map
+  with no rows scores the same green as a fully-quoting one. See §3.4b's PIN.
 * **`GCTRLPROV`** — each `--control=` and `--clean=` path's own recorded `CRIPPLE <value>` header
   says `none`, with an absent header **REFUSING** (and a refusal here is a RED). `GCTRL` checked
   that two paths were given, readable and not byte-identical, and then its reason line *asserted*
