@@ -278,3 +278,58 @@ $ git -C . log origin/main --oneline -7
 
 **Step 2 — deliverables present**, by `ls`, after the final push. **Step 3 — this log pushed
 last.** Both appended below rather than above, so the verification cannot predate what it cites.
+
+### 13:5x — Wrap verification, run AFTER the six commits it cites
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -7`, run after the final
+push of everything except this verification block):
+
+```
+541de317 coord+log: 10/31 WORK fire — the routed item is answered at the level of the map
+6fd6f0dd unit-464absorb: results, and mail to Theseus/xian cc Janus/Argus/Calliope/Iris
+14d9bbe4 unit-464absorb: the KP lands 4 of 4 — the zero price measures the MAP, not the cure
+a7770db3 unit-464absorb: pre-registration addendum, before the four KP arms are driven
+21e109db unit-464absorb: all three routes load-bearing, and P5 is refuted exactly backwards
+74801759 unit-464absorb: pre-registration, before any instrument in the directory exists
+636853f9 coord+log: 10/31 MID fire — … (Calliope's, the rev this fire opened at)
+```
+
+All six of this fire's commits are on `origin/main`, checked on `origin/main` and not in the
+worktree. `git log HEAD..origin/main` after a fresh `git fetch`: **0 lines**.
+
+**Step 2 — deliverables present**, by `ls`/`statSync`, with sizes:
+
+* `docs/research/unit-464absorb-2026-10-31/` — **58 files**: `PRE-REGISTRATION.md` (8160 B),
+  `PRE-REGISTRATION-2.md` (4638 B), `RESULTS.md` (11102 B), `make-scratch.mjs` (7906 B),
+  `drive.mjs` (7734 B), `attribute.mjs` (8342 B), `mint-kp.mjs` (4450 B), `drive-kp.mjs`
+  (8448 B), `KP-MISATTRIBUTED-MAP.md` and `KP-ALIGNED-MAP.md` (**8035 B each** — equal size is
+  expected and is itself a check, since the inserted text is byte-identical and only its
+  destination row differs), `grade-filed-maps.INSTRUMENTED.mjs`, `baseline.rev` (41 B),
+  `baseline.gitstatus.txt` (**0 B**), and 15 drives × (`.out` + `.err` + `.absorb.json`) with
+  **15 of 15 `.err` at 0 bytes**.
+* `docs/mail/daedalus-to-theseus-…-the-zero-price-measures-my-map-not-your-cure-2026-10-31.md`
+  (12550 B), pushed to `main` in `6fd6f0dd` as the mail convention requires.
+* `docs/COORDINATION.md` — this fire's two bullets verified **by section index, not by string
+  proximity**: the Daedalus section spans lines 458–2582 and the new entry is at line 465,
+  inside it. (A shared-file insert of mine has landed in Argus's section before.)
+* `docs/logs/2026-10-31-daedalus-log.md` (this file, 16685 B before this block).
+
+**Step 3 — tree state.** `git status --porcelain -- packages/ scripts/` **empty** (0 lines) at
+close, matching the 0-byte `baseline.gitstatus.txt` taken at open. No product file was touched.
+
+**Drain.** Mail re-checked at close: `git log 636853f9..origin/main -- docs/mail/` returns one
+commit, **my own**. Cross-repo boxes checked with `find -newermt` against the 13:19:33 open
+stamp — `designinproduct` 3 new, `mediajunkie` 1, `dispatch` 4, `piper-morgan-product/mailboxes`
+442; the three small boxes were **content**-grepped (not just filename-grepped) and gave **one**
+hit: Pard → Janus on `mail-deliver.sh` stamping, which names "Klatch" only in a list of DinP-side
+seats for Janus to relay to, says "No reply needed", and is addressed to Janus — Klatch's POC for
+relayed conventions is Calliope, not this seat. Nothing owed from any box. Needs-you unchanged
+at 3. Two consecutive checks found nothing further unblocked; fire closed bounded, per Klatch's
+recorded exception to the platform drain baseline.
+
+**Deferred with named blockers — none newly.** The one figure this unit opened and did not take
+(how many of the 8 scored maps are saturated) is **named without a deadline and without a
+blocker**, and it sits better on Theseus's §1 table than here; it is not claimed as blocked.
+
+Nothing is claimed that is not in the list above. Delivery is the wrapper's to log, not mine to
+assert.
