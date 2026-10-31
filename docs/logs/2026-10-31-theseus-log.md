@@ -199,3 +199,136 @@ nowhere — not in a commit, not as an untracked file.
 `git status --porcelain -- packages/ scripts/` in Klatch: **EMPTY**.
 
 This log is pushed last, after the two steps above were run.
+
+---
+
+## 14:47 — Session resumed (WORK fire, Opus 5)
+
+Session-start protocol run: worktree already synced to `origin/main` by the wrapper at
+`7afa614e`, `docs/COORDINATION.md` read, `docs/mail/` listed. One memo new since the 11:10
+START fire: **Daedalus → Theseus/xian cc Janus/Argus/Calliope/Iris** (`6fd6f0dd`, 13:33),
+*"your routed item is answered — the zero price measures my MAP, not your cure."* Read in
+full, not skimmed for the cc line; its "Who has what" section names only Daedalus's,
+Theseus's and xian's buckets, so cc-only for the rest. His 09:30 memo (`70724a40`) was
+already answered in the 11:0x START fire and is not re-opened.
+
+**The item.** His §7 names one figure and explicitly declines to take it: *"The figure that
+decides whether the cure is worth ordering is how many of the 8 scored maps are saturated,
+and it is unmeasured. I am naming it rather than taking it, because it is a census over maps
+whose arms you have already scored and your §1 table is the natural place it hangs."* Taken,
+and nothing else.
+
+## 14:51 — Pre-registration pushed before any instrument existed
+
+`docs/research/unit-464sat-2026-10-31/PRE-REGISTRATION.md` at `0ea9ebd3`, with `baseline.rev`
+(`7afa614e`) and `baseline.gitstatus.txt` (0 bytes — `packages/`+`scripts/` clean at open).
+Four gates (`GARGV`, `GREPRO`, `GCURE`, `GREACH`) and four predictions, written before the
+directory held any code.
+
+The operational definition matters and is in the pre-registration: **SATURATED = the cure's
+price on `GTYPEDDEF` is empty AND the cure demonstrably reached this map's section.** Without
+the second conjunct a saturated cell cannot be told from an inert cured copy — the failure
+shape I have already been caught by once.
+
+## 14:5x — The argv key measured my selector, not the maps
+
+`drive1.argvcensus.out`: keyed cell argv on the `# argv:` header and came back **2 of 8**.
+Only two of the five harnesses write that header, so I had keyed a census on **optional
+metadata**. Replaced, with the first key recorded rather than deleted: the replacement keys
+on the arm's **honest configuration** — no `--cripple=`, `--clean=` a clean recording,
+exactly two distinct clean `--control=` — and asserts it selects exactly **one** tail per
+arm, so no cell is scored off a tail I chose. That selects 1 tail for each of 5 arms over 21
+committed argv lines across 732 `.out` files.
+
+## 14:5x — The census
+
+`drive3.satcensus.out`:
+
+```
+SATCOUNT  1 saturated · 7 NOT saturated · 0 REFUSED/UNMEASURED  of 8 scored map(s)
+```
+
+**The saturated map is `V22-MAP.md` — his, and the only one.** Saturation is a property of
+the one map authored under v2.2 against the gate itself, not of the filed corpus. As gate
+verdicts: five of eight ship `GTYPEDDEF ok` and go **RED** under the cure; two already-RED
+get deeper (1→4, 2→13); and on three `V21-MAP` cells the whole map verdict goes from
+`MAPVERDICT/0 ok` to `RED gates=16 red=[GTYPED,GTYPEDDEF]` — **two** gates, not one.
+25 priced tokens in total.
+
+`GREACH` **ok on 8 of 8** (the cure adds 7–28 names to every section), so not one of these
+prices is an inert copy read as agreement.
+
+**`P2` REFUTED, and it is the result that should change the ordering.** His §5 warned the
+cure's hyphenation-tail mode would manufacture map-side defects. It is **0 of 25**: every
+priced token has a backtick-preceded occurrence in its section, histogram printed per token.
+So the cure's first map-side bite is 25 *genuine* §3.4 mis-attributions, not noise. **`P3`
+REFUTED** too, and more sharply — the two smallest-denominator maps are two of the five the
+cure turns red.
+
+Two instrument defects of mine, both recorded in `drive2.satcensus.out` rather than tidied:
+a sibling-relative gate whose regex could not match `--arm=name=path` and so refused **all 8
+cells** for a reason that was mine; and `P4` printing `LANDS` at 0 while `GREACH` had run on
+no cell at all — a leg an earlier filter makes unreachable cannot be re-keyed red. Re-keyed
+to count cells that reached the leg and passed it: 8 of 8.
+
+## 15:0x — `GREPRO`: pre-registered, not implemented, then RED, and the RED was mine
+
+`GREPRO` was in the pre-registration and `sat-census.mjs` did not implement it. Driven as its
+own instrument (`grepro.mjs`) rather than folded in, so driving it could not re-stamp
+`drive3.satcensus.out` — the recording the published figures were read from.
+
+Its **first** drive (`drive4.grepro.out`) printed **RED on 3 cells**. Two freshness legs were
+missing, and I checked the alternatives before believing my own drive was right:
+
+* the candidate's **own published `gates=` count** — recordings at `gates=8`/`gates=13`
+  predate `GTYPEDDEF`, so its line was *absent*, not disagreeing;
+* the map's **blob hash at the recording's commit**. `V21-MAP.md` is `91a75ef4` at the rekey
+  recordings and `cea1a524` at baseline, because **my own `unit-464nomoved` cure edited that
+  map at 10-30 19:56, after those recordings were made** (`git log` on the map file, this
+  session). The answer key was one commit stale.
+
+With both legs (`drive5.grepro.out`): **6 of 8 reproduce a fresh committed recording on
+`GTYPEDDEF`, `TYPED` and `MAPVERDICT`; 0 disagree; 2 UNAVAILABLE.** The 2 are both
+`V2-MAP-…` cells, and the reason is a corpus property that bears on Daedalus's retro-grading
+item: **every filed no-cripple recording of those two maps was made by a checker without
+`GTYPEDDEF`.** Their *price* is still a within-drive delta and stands; their *live baseline*
+has no filed key, and that is published as UNAVAILABLE rather than rounded to a pass.
+
+## 15:1x — Drain
+
+**Drained and done:** the one new memo read and acted on in the same fire; its one claimable
+figure measured and filed (`RESULTS.md`); reply memo written, committed and pushed to `main`
+in its own commit; `COORDINATION.md` and this log updated.
+
+**Deferred, each with a named blocker:**
+
+* `V2-MAP-t8-ceiling-blind.md`'s double arm heading, retro-grading the filed maps, `C5`, `C3`,
+  `xcheck-wrong-figure`, re-keying `G7` — **blocker: these are the standing open items, and
+  retro-grading now has a precondition this unit found (2 of 8 maps have no answer key at the
+  current gate count) that is worth filing before the grade, not during it.**
+* A convention line requiring harnesses to record the argv that produced a recording —
+  **blocker: not mine to write.** 3 of 5 harnesses do not, and the arm paths exist nowhere
+  else in the tree, so a filed recording whose configuration is unrecoverable cannot be
+  re-priced by anybody later. Named to Daedalus in §5 of the reply rather than written.
+* The whole-corpus rate of his §5 false-positive mode — **blocker: out of this unit's scope
+  by its own pre-registration,** which says it is measured only where it shows up inside a
+  non-empty price, because that is where it changes the ordering decision.
+
+**Not drained for want of anything:** nothing. No mail arrived mid-fire (checked at close).
+
+## 15:1x — Wrap
+
+**Scoreline: 5 gates green (`GCURE`, `GSLICE`/`GKP`, `GARGV2`, `GREACH` 8/8, `GREPRO` 6/8
+with 2 declared UNAVAILABLE), 4 predictions — 2 landed, 2 refuted, both refutations mine,
+and 4 of my own defects recorded.** Headline: **1 of the 8 scored maps is saturated and it is
+his; the cure reddens 5 maps that ship green, and its first bite is genuine rather than his
+own false positive.**
+
+The live checker was **not edited**. The standing cell was **not driven and not edited**.
+**`T2b`'s countdown is not re-read this fire and is therefore not restated.** Nothing here
+moves xian's stop/re-scope call.
+
+**Not run:** `npm test`, `npm run typecheck`, the sweep. The pre-commit census printed
+`CENSUS OK` on each commit, which is not the same thing and is not offered as a gate figure.
+`git status --porcelain -- packages/ scripts/` empty at open and at close. Nothing left
+running.
