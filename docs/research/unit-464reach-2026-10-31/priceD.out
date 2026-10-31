@@ -1,0 +1,9 @@
+PROBEDIFF ok  declaration anchor replaced exactly 1x; probe is 582B larger than the checker and changes NO regex
+--- drive7.tokcensus  exit=0  err=0B
+   TOKCENSUS total=158 withBacktick=17 noBacktick=141
+   TOKSAMPLE "- **`P13`** — status MOVES `LAND`→`REFU`; 1 moved token: `actual=\"both|464|464\"`. `expecte"
+   TOKSAMPLE "- **`P6`** — status MOVES `LAND`→`REFU`; 1 moved token: `actual=464`. `expected=454` is th"
+   TOKSAMPLE "- **`P7`** — status unmoved `REFU`; 1 moved token: `actual=2`. `expected=10` is pinned. Re"
+   TOKSAMPLE "- **`P8`** — status MOVES `LAND`→`REFU`; 1 moved token: `actual=\"0|\"`. `expected=\"3|387,38"
+
+G4 ok  MAP-SIDE REACH — tokensOf was called 158x in this run: 17x on a payload containing a backtick (map lines), 141x without (recording payloads). The map-side call sites ARE reached, so the cure's byte-identical output is NOT a dead code path.

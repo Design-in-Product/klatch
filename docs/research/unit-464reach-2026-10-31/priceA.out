@@ -1,0 +1,29 @@
+TUPLE  sliced from ../unit-464authored-2026-10-31/drive.mjs — 5 arg(s):
+         --map=V22-MAP.md
+         --clean=../unit-464t2b-sat-2026-10-29/drive2.clean.out
+         --arm=t2-dir-only=../unit-464t2b-sat-2026-10-29/drive-cripple-t2-dir-only.out
+         --control=../unit-464t2b-sat-2026-10-29/drive2.clean.out
+         --control=../unit-464t8-mapdecay-2026-10-29/drive1.clean.out
+CUREDIFF ok  1 line(s) differ between the scratch copy and the cured copy (line 228)
+         -  const re = /(?:^|\s)([A-Za-z][A-Za-z0-9_.]*)=/g;
+         +  const re = /(?:^|[^A-Za-z0-9_.])([A-Za-z][A-Za-z0-9_.]*)=/g;
+--- drive4.scratch-uncured  checker=../unit-464reach-2026-10-31/grade-filed-maps.SCRATCH.mjs  exit=0  err=0B
+
+--- P6: the uncured scratch copy against his committed drive1.out, anchor by anchor
+P6 ok  MAPVERDICT
+P6 ok  GTYPEDDEF
+P6 ok  GTYPED 
+P6 ok  GSUBJ
+P6 REFUSED GCOMPLETE: mine=ABSENT his=ABSENT
+P6 REFUSED GCONFORM: mine=ABSENT his=ABSENT
+P6 FAILS — 6 anchor(s), 0 differ, 2 refused. P5 is WITHDRAWN: without a matched no-cripple drive the cured result is not attributable to the cure.
+--- drive5.scratch-cured  checker=../unit-464reach-2026-10-31/grade-filed-maps.CURED.mjs  exit=0  err=0B
+
+--- P5: the SAME tuple, SAME cwd, one character class changed
+P5LINE same    MAPVERDICT
+P5LINE same    GTYPEDDEF
+P5LINE same    GTYPED 
+P5LINE same    GSUBJ
+P5LINE same    GCOMPLETE
+P5LINE same    GCONFORM
+P5 WITHDRAWN — GTYPEDDEF on his authored green cell under the cured boundary is NOT red. Not attributable — see P6.

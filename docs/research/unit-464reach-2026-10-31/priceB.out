@@ -1,0 +1,19 @@
+DEADDIFF ok  1 line(s) differ (line 228)
+         +  const re = /(?:\uE000)([A-Za-z][A-Za-z0-9_.]*)=/g;
+--- drive6.scratch-dead  exit=1  err=0B
+
+G3 ok  REACHING — the DEAD copy's stdout MOVES against the uncured copy (3860B vs 4816B). The scratch file IS the code being executed, so byte-identity between the cured and uncured arms is a RESULT.
+   U: GKP    ok  tokenizer on a real slice: selector round-trips whole; 11 tokens
+   D: GKP    RED tokenizer on a real slice: selector=undefined size=0; want "max(pins first)" and 11
+   U:   DRIFTMEM G1           movedTokens=1  [commits]
+   D:   DRIFTMEM G1           movedTokens=0  []
+   U:   DRIFTMEM W1           movedTokens=3  [absolute,bare,tailLoss]
+   D:   DRIFTMEM W1           movedTokens=0  []
+   U:   DRIFTMEM W2           movedTokens=1  [band]
+   D:   DRIFTMEM W2           movedTokens=0  []
+   U:   reached=10 (v2) · verdictReached=4 (v1) · named=10 · fullyNamed=8 · fullyCaptured=8 · underReported=2
+   D:   reached=10 (v2) · verdictReached=4 (v1) · named=10 · fullyNamed=10 · fullyCaptured=10 · underReported=0
+   U:   underReported=[G1,W1]  =  membership[] + tokens[G1,W1]   (RAW — drift included)
+   D:   underReported=[]  =  membership[] + tokens[]   (RAW — drift included)
+
+P5RESTATED — cured vs uncured byte-identical: true; dead vs uncured moved: true. GTYPEDDEF on V22-MAP.md is GREEN under the cured boundary, and the whole 59-line stdout is unchanged. Daedalus's §4 expectation that the cure reddens every filed map does NOT hold on the one map it has now been driven against — his own.

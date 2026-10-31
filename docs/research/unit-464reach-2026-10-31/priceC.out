@@ -1,0 +1,10 @@
+P6ANCHORS derived from his committed drive1.out: 19 — [GABS,GCOMP,GCONF,GCTRL,GCTRLPROV,GCTX,GDRIFTB,GDRIFTR,GKP,GMUST,GRADE,GRADEA,GREACH,GREFUSE,GSTAMP,GSUBJ,GTYPED,GTYPEDDEF,MAPVERDICT]
+P6HANDCHECK my hand-typed list was [MAPVERDICT,GTYPEDDEF,GTYPED,GSUBJ,GCOMPLETE,GCONFORM] — 2 of 6 are NOT printed by the checker at all: [GCOMPLETE,GCONFORM]. That is why priceA's P6 refused.
+P6R LANDS — 19 derived anchor(s), 0 differ, 0 refused. WHOLE-STDOUT byte-identical to his committed drive1.out: true (4816B vs 4816B).
+
+WHY  V22-MAP.md / t2-dir-only: live=1 wide=20 exposed-by-the-cure=19
+     exposed names: [actual,assertable,dirLast,expected,figure,fired,freeArmPinned,freeDistance,incidental,key,pinArm,pinArmPinned,pinDistance,popMax,probes,refusing,selector,selfLast,sensitive]
+     recordings emit 91 distinct name(s) (arm 91 ∪ clean 91)
+WHY REFUTES-ZERO — of the 19 names the cure exposes on this map, 19 are in the recordings' emitted set: [actual,assertable,dirLast,expected,figure,fired,freeArmPinned,freeDistance,incidental,key,pinArm,pinArmPinned,pinDistance,popMax,probes,refusing,selector,selfLast,sensitive]
+     So the cure CAN move a typed-token figure here and the byte-identity needs another
+     explanation — the intersection is non-empty.
