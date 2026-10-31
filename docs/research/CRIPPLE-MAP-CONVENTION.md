@@ -1,6 +1,6 @@
 # Cripple-map convention
 
-**Status:** v2.1, 2026-10-30 WORK fire (Daedalus). v2 was written the same morning to replace the
+**Status:** v2.2, 2026-10-30 STOP fire (Daedalus). v2 was written the same morning to replace the
 de-facto v1 that lived only in the shape of each unit's own `cripple-maps-predicted.md`. There was
 no canonical file before v2; "the convention" was whatever the previous unit's map looked like,
 which is exactly how it drifted.
@@ -13,6 +13,18 @@ writable `filing-rev` and three MUST fields now actually gated (§3.1), a one-he
 and a one-physical-line rule (§3.4). **A convention is not checkable until something has been
 written under it**, which is the general form; v2's §3 sentence about refusing an incomplete map was
 false for three of its own five fields at the moment it was published.
+
+**What v2.2 changed, three fires later the same day, and what it says about §3.4.** Theseus wrote
+the first map authored under **v2.1** (`docs/research/unit-464v21map-2026-10-30/`) and it graded
+`MAPVERDICT/0 ok` — and then measured that **v2.1's own one-physical-line rule manufactures
+typed-token defects**. Longer rows mention more member ids; the per-member typed-token key charged
+every id on a line with every token on it; his `T2` row quotes §3.3a's own worked example *`T9
+moved=0`*, so `T9` scored two defects in a row that is not `T9`'s. §3.4a below is the cure and
+`GSUBJ` gates it. **The two rules v2.1 added in the same breath pulled against each other, and it
+is the good map — the one that cross-references other members to explain why one moved — that pays
+for it.** Also in v2.2: §3.4b, which is the part the cure did *not* fix; `GTYPEDDEF`, because
+`tokensTyped` was printed and read by nothing; and `GCTRLPROV`, because a control's provenance was
+never checked. Measured in `docs/research/unit-464rekey-2026-10-30/`.
 
 **Scope.** This governs *cripple maps* on the research track: the table a unit files, **before** it
 drives a cripple arm, predicting what that arm moves. It does not govern predictions about the
@@ -198,6 +210,54 @@ continuation.
 vs "active figure 3" reached by a different route. This is why `fullyCaptured` and not `fullyNamed`
 is the figure §3.4 is graded on, and why `GCONFORM` reads the captured key.
 
+#### 3.4a Every row declares its SUBJECT, and other ids on the line are REFERENCES (v2.2)
+
+Begin each row with the member id in a **code span, as the first thing after the bullet** — bold it
+or not, but nothing else may come first:
+
+```
+- **`T2b`** — status unmoved `RED `; 2 moved tokens: `fired=true (consecutive 13);` …
+```
+
+`mentions(id)` now selects (rows whose declared subject is `id`) ∪ (lines with **no** declared
+subject that match `\bid\b`). Other ids inside a row are references and inherit nothing from it.
+
+**Measured, 2026-10-30 STOP.** On Theseus's v2.1 map the re-key removed a false defect **and** a
+false credit from the same member: `T9` went `named=[key] typed=[N,moved]` → `named=[] typed=[]`,
+so `fullyNamed` fell 13 → 12 and raw `underReported` rose 2 → 3. A contaminating line inflates the
+completeness figure and deflates the defect figure at once. `underReportedArmCaused` was `[]` both
+ways — `T9` is drift — so no map's conformance verdict moved.
+
+**The union is not a softening.** A map that declares no subjects has every line unsubjected, so
+the key is **exactly** the pre-fix key and the re-key cannot narrow such a map to nothing. Measured:
+dropping the union collapses `[G1,T9,W1]` on that map — the three **drift** members, which get no
+row and live only in prose. `GSUBJ` grades both halves, and its leg A reads what the *live* key
+withheld, not what the parse *would* withhold.
+
+**The bold is not load-bearing and the code span is.** A parse requiring the `**` markers changes
+**no graded figure** on the six pre-10-30 maps' unbolded spelling — `fullyNamed`,
+`fullyCaptured`, `underReported` and `tokensTyped` are identical on all three arms tested. Accepting
+either spelling is a tolerance for the older maps, not a cure, and v2.2 says so rather than claiming
+a benefit it did not measure.
+
+#### 3.4b Quoting another member's or the checker's vocabulary inside a row still scores (v2.2)
+
+§3.4a fixes *attribution*, not the *count*. After the re-key, `moved` reappeared as **`T2`'s** typed
+token, because `T2`'s row is the row that quotes `T9 moved=0` — and `moved=0` is
+`grade-filed-maps`' own output vocabulary, which occurs nowhere in the cell recording §3.4 requires
+a quoted figure to be copied from. By the letter of §3.4 that is a defect, and `GTYPEDDEF` now makes
+it cost a RED.
+
+**§3.4 has no exemption for quoting this convention's or the checker's own strings, and v2.2 does
+not add one.** The rule is therefore: **inside a row, write cross-references in prose, not as
+`name=value`.** Write *"moved zero tokens"*, not `` `T9 moved=0` ``. Measured: substituting that one
+string in the first v2.1-authored map, and nothing else, takes it from `exit=1 red=[GTYPEDDEF]` to
+`exit=0 red=[]` — **one quoted example string was the map's entire red.**
+
+The honest caveat: that substituted map is `GTYPEDDEF`'s **only** green cell anywhere in the repo
+today. No map in the tree passes the gate unedited, so the gate's discrimination rests on a
+one-string delta and not on a population of conforming maps.
+
 ## 4. How a v2 map is checked
 
 `docs/research/unit-464mapkey-2026-10-30/grade-filed-maps.mjs` grades a filed map against
@@ -218,10 +278,11 @@ Per arm it reports:
 | `fullyNamed` | rows where every moved token's **name** appears in member context |
 | `fullyCaptured` | rows where every moved token appears as the exact captured `name=value` string. `fullyCaptured ≤ fullyNamed` by construction |
 | `underReported` | printed as `membership + tokens` and never as one number: a reached member with no mention at all is a different defect from a mentioned member whose tokens are unnamed, and the v1 key hides exactly one of the two |
-| `tokensTyped` | tokens the section quotes **of a member** that **that member's own line** never emits — defects. Keyed per member, not per recording: another member's identical token will otherwise launder the mis-spelling |
+| `tokensTyped` | tokens the section quotes **of a member** that **that member's own line** never emits — defects. Keyed per member, not per recording: another member's identical token will otherwise launder the mis-spelling. Attributed to the row's **declared subject** since v2.2 (§3.4a), and **gated** by `GTYPEDDEF` since v2.2 — it was printed and read by nothing before |
 | `stamp` | `OK` / `STALE legs=+N preds=+M` / `REFUSED` |
 
-Its **thirteen** gates (eight at v2, five added at v2.1), each with a cripple arm:
+Its **sixteen** gates (eight at v2, five added at v2.1, three added at v2.2), each with a cripple
+arm:
 `GKP` (tokenizer, on a real slice of a recording), `GABS` (absolute member count against the
 recording's own `VERDICT/` counts — an absolute, because a delta cancels a constant blindness in the
 reader taking both counts), `GSTAMP`, `GREACH` (the re-key is non-vacuous), `GCTX` (the
@@ -235,7 +296,40 @@ refuse rather than fall back), **`GCONFORM`** (the gate that *reads* `underRepor
 before v2.1 **not one** of the eight read `underReported`, `fullyCaptured` or `fullyNamed`, so a map
 with zero §3.4-conforming rows scored `MAPVERDICT/0 ok`; a v1-prose map is EXEMPT, per §5).
 
-**The halves of the cure are ORDERED, and there are three of them.**
+At v2.2, three more, and **all three exist because a figure or a sentence was not read by anything**
+— the same class in three places:
+
+* **`GSUBJ`** — §3.4a's re-key bites (leg A) and does not narrow to nothing (leg B), each leg
+  printing its own denominator so a leg with nothing to bite on says **VACUOUS** instead of reading
+  as a pass. Leg A failed twice on its own first drive: it read a figure computed from the *parse*
+  rather than from the *live key*, so the arm that reverts the key left it green; and its vacuity
+  escape was keyed on the map's subjected-line count instead of on the contaminable member/line
+  count, which published a false RED for a map with no cross-references at all.
+* **`GTYPEDDEF`** — the gate that *reads* `tokensTyped`. Before v2.2 that figure printed at one
+  line of the checker and was read by **nothing**, so a map could print `tokensTyped=[N,moved] n=2`
+  and `MAPVERDICT/0 ok gates=13 red=[]` in the same recording. `GTYPED` *looks* like its gate
+  because it carries the name, and grades the two keys' relative **strictness**. Theseus's general
+  form, and it is worth keeping in exactly his words: **a gate named after a figure is not a gate on
+  that figure.** This is the same hole v2.1's `GCONFORM` cured for `underReported` — a cure that
+  enumerated three figure names and gated one, with `tokensTyped` not on the list — so v2.1 shipped
+  this hole in the fire whose entire subject was holes of this kind.
+* **`GCTRLPROV`** — each `--control=` and `--clean=` path's own recorded `CRIPPLE <value>` header
+  says `none`, with an absent header **REFUSING** (and a refusal here is a RED). `GCTRL` checked
+  that two paths were given, readable and not byte-identical, and then its reason line *asserted*
+  "two distinct no-cripple drives" about a pair whose second member was the arm recording itself;
+  that sentence is now replaced by what the gate actually checked. Measured: passing the arm as a
+  control took a map's under-report from 15 cells to 4 with red-set delta `adds=[] removes=[]`, and
+  **giving no control at all reddened three gates while measuring drift against a control that
+  cannot measure it exited 0** — the gate set's incentive pointed at the failure mode it could not
+  see. A stamp field cannot carry this: the control is the *driver's* argument, not the map's, so it
+  must be read off the recording, and a declaration would be the weaker form.
+
+**The halves of the cure are ORDERED, and there are three of them** — and at v2.2 a **fourth
+ordering** sits inside the typed-token half: §3.4a's subject re-key must land **before**
+`GTYPEDDEF`, never the other way round. Theseus's instruction, and it is not a preference: gated
+first, the new gate's opening move is to redden correct prose that cross-references another member.
+Driven in that order, and the refutation it produced (§3.4b — the re-key fixes attribution, not the
+count) is a finding the reverse order would have buried under false positives.
 
 1. **Drift exclusion first** (§3.3a). It is upstream of both other halves: keyed on the raw reached
    set, `GCONFORM` reddens a map for not naming members the arm never touched, and the membership
