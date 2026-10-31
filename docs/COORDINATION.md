@@ -20,7 +20,34 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/argus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/argus`, per-worktree git identity `Argus (Klatch)`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope restored per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-10-30 ~18:0x PT (STOP fire — census-only no-op: checkpoint own last commit
+- **Updated:** 2026-10-31 ~09:0x PT (START fire — census-only no-op: checkpoint own last commit
+  `39b8025a` (10/30 STOP fire). 8 new commits since, none mine (author-checked): Calliope's and
+  Iris's own 10/31 START-fire no-ops, Pard's fire-depth report, the automated cross-pollination
+  bump, Calliope's 10/30 STOP-fire log+coord, and Theseus's `unit-464nomoved` chain (the cure
+  Daedalus's own §7 routed back to him — 8 of 11 figure anchors byte-identical across the cure,
+  3 move and are exactly the typed-token family it targeted; a second gate's line-keyed
+  denominators correctly don't see the same cure) plus his mail to Daedalus/xian cc
+  Janus/**Argus**/Calliope/Iris. `git diff --stat 39b8025a..HEAD -- packages/ scripts/`
+  **empty**. **Mail:** one new local file, read in full — §5 to xian only, §7's close names
+  Theseus's and xian's open items, no Argus bucket, confirming cc-only; thread stays in
+  `docs/mail/` since its one open item is xian's. All four cross-repo mailboxes checked via
+  `find -newermt` against the 18:04:23 checkpoint: `designinproduct` 0 new; `mediajunkie` 1 new
+  (grepped for klatch/argus, 0 hits); `dispatch` 4 new (grepped, 0 hits; the `mail-deliver.sh`
+  relay already covered); `piper-morgan-product/mailboxes` 797 new, 7 klatch/argus hits, all
+  `MANIFEST.md` lines tracing to the same stale 2026-05-20 cluster already on record. Nothing
+  owed from any. **Standing blockers re-derived fresh:** CIO Laya/AAXT parked on xian's
+  scheduling call, unmoved; Managed Agents smoke-run thread — no `ma-smoke/*` branch anywhere,
+  named blocker on xian, day 11; ground-rules question recomputed independently at 83 days,
+  matches the rollup's current text. Rollup's live needs-you section (not its stale v171
+  header) read directly — count 2, nothing in the 8 new commits is xian's to decide. **Gate
+  re-derived fresh:** `lsof -i :3001` port free; `npm run typecheck` all four programs clean;
+  `npm test -w packages/server` **140 files/2186 passed/1 skipped (2187)**, byte-identical;
+  `npm test -w packages/client` **26 passed|13 skipped (39)/333 passed|13 skipped (346)**,
+  byte-identical; `node scripts/sweep-probes.mjs --census` **153 probe files, 43 swept/110
+  deferred, CENSUS OK**, byte-identical. Intel sweep last `docs/intel/2026-10-26-sweep.md` (5
+  days old), next due ~11/2, not due this fire. **Needs-you:** unchanged. Two consecutive checks
+  found nothing further unblocked — fire closed bounded. Log: `docs/logs/2026-10-31-argus-log.md`.)
+- **Updated (previous):** 2026-10-30 ~18:0x PT (STOP fire — census-only no-op: checkpoint own last commit
   `aba502e6` (10/30 13:35 WORK fire). 15 new commits since, none mine (author-checked): Calliope's
   10/30 SWEEP-fire log+coord backfill (two missing `log.html` entries, 8th lapse of that protocol
   gap), Theseus's `unit-464v21map` chain (first map authored under v2.1, 9 of 11 predictions land,
