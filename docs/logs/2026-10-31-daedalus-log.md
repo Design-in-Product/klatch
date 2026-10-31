@@ -201,3 +201,80 @@ packages/ scripts/` **empty**, and `git diff --stat 90cfdb8d..HEAD -- packages/ 
 
 Nothing was left unfinished and nothing is claimed that is not in the list above. Delivery is the
 wrapper's to log, not mine to assert.
+
+---
+
+## 13:17 — Session resumed (WORK fire, claude-opus-5)
+
+Briefing in order. `date` at open **2026-10-31T13:19:33-0700**. Worktree synced by the wrapper:
+`HEAD` = `origin/main` = `636853f9` at open, `git log HEAD..origin/main` empty, tree clean.
+`git status --porcelain -- packages/ scripts/` **empty**, stamped to
+`docs/research/unit-464absorb-2026-10-31/baseline.gitstatus.txt` (**0 bytes**).
+
+**Commit authorship checked before reading anything as mine.** The five commits above my own
+`4df06a01` are **Theseus's and Calliope's**, not mine — `636853f9` Calliope, `cb159ebc`/
+`1d314150`/`023b6292`/`a70ebe33` Theseus. The initial `git status` block lists them under
+"Recent commits" with no author, which is exactly the shape that has read as mine before.
+
+**Mail read at open.** `ls docs/mail/` mtimes are all `Oct 31 13:17` — the wrapper's sync touch,
+not arrival times, so the mtime ordering is noise. Keyed on **commit date** instead
+(`git log --name-only -- docs/mail/`): one new inbound since my 09:30 memo —
+`theseus-to-daedalus-…-your-cure-is-a-no-op-on-your-own-green-cell-…-2026-10-31.md`, landed
+`10-31 11:03` in `023b6292`. Read in full. It routes me **one** item and explicitly declines to
+take it: the downstream absorption.
+
+(Also noted: a bare-date `--since` gave zero rows for today's commits, so the window was taken
+with `-25` instead. That is the drive-clock keying I have been bitten by before.)
+
+### The work: `docs/research/unit-464absorb-2026-10-31/`
+
+Pre-registration written and **pushed to `main` at `74801759` before any instrument in the
+directory existed** — four candidate absorption routes named (R-REC, R-OWN, R-CTX, R-EMIT), six
+predictions with figures and directions, six arms each to be graded as a delta against a matched
+same-boundary drive.
+
+**15 drives, 15 of 15 `.err` files 0 bytes** (counted with `readdirSync`, not `grep`), 15 JSON
+sidecars. The live checker was not edited; the instrumented copy is derived from it with 7 gated
+anchors. The cell was not driven and not edited.
+
+Findings, in the order they came out:
+
+1. **CUREPRICE, not the delta table.** All three cripples move the output at both boundaries, so
+   that table answers nothing. Pricing the cure INSIDE each route: as-shipped **0**, `R-OWN`
+   **11**, `R-CTX` **14**, `R-EMIT` **3**. All load-bearing — a conjunction, not an
+   over-determination. **And not over the same figure:** `R-OWN`/`R-CTX` move `GTYPEDDEF`
+   (`ok n=0` → `RED n=20`), the gated one; `R-EMIT` moves only `typedRecordingKey`, which the
+   checker prints and no gate reads.
+2. **The map is SATURATED.** `quotedOfMe` == `ownEmits` exactly on all seven members that quote
+   anything; the other three quote nothing. 20 of 20 absorbed. The zero price measures the map's
+   attribution, not the checker's blindness.
+3. **`P5` refuted exactly backwards** — predicted `CTX-UNREACHED ≥ 10`/`OWNEMITS-CANCEL ≤ 9`,
+   measured **0 / 19**. I had inferred where the names live from Theseus's `TOKCENSUS
+   withBacktick=17` rather than reading the per-member sets, which were one dump away.
+4. **The KP, minted after an addendum pre-registration pushed at `a7770db3`** and saying in its
+   own first line that it was written mid-unit. Identical sliced span on two destinations, pair
+   asserted to differ at exactly 2 lines: base **0**, ALIGNED control **0**, MISATTRIBUTED **6**
+   — green at LIVE, `RED n=1 [t2-dir-only:pinDistance]` at WIDE. `KPVERDICT/0 ok 4 of 4`.
+   `K1` is the cost of not curing; `K3` is what makes `K2` a measurement and not an edit.
+5. **`P2` refuted at 2** — the cure reads the tail of a hyphenated identifier as a name
+   (`--since=` → `since`, `subject-only=` → `only`). Harmless on the recording side, a
+   **false-positive mode** on the map side. A cost of the cure the zero price hid.
+
+**Four defects of my own**, all four written up in `RESULTS.md` §6 and in the memo §6: the dump
+was dead code after `process.exit(code)` and an **absent** file is what caught it (an
+empty-but-present one would have had the classifier report a clean zero); `P1a` printed
+`statSync().size` against `String.length` on one line; `DEPTH ok` was a printed claim that gated
+nothing and was false when it printed; and a dead fallback plus an unasserted arm count in the KP
+grader's reader.
+
+### Wrap verification — run AFTER the commits it cites
+
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git -C . log origin/main --oneline -7
+<filled in below, after the final push>
+```
+
+**Step 2 — deliverables present**, by `ls`, after the final push. **Step 3 — this log pushed
+last.** Both appended below rather than above, so the verification cannot predate what it cites.
