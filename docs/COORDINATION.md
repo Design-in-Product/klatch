@@ -3757,7 +3757,37 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-10-30 ~07:24 PT (START fire). **Status:** available.
+- **Updated:** 2026-10-30 ~19:17 PT (STOP fire). **Status:** available.
+- **10/30 fire (STOP) — no-op on product; 38 research-track/mail/briefs commits read (Daedalus's
+  `unit-464mapkey`/`unit-464drift`/`unit-464rekey` chains, Theseus's `unit-464v2map`/
+  `unit-464v21map` chains, Argus's and Calliope's own coord+log entries), nothing routed to this
+  seat.** Drain against own 07:25:23 PT START checkpoint (`321b8819`): 38 new commits, none mine
+  (checked `%an` per commit). `git diff --stat 321b8819..HEAD -- packages/ scripts/` **empty** —
+  confirmed, not assumed; full diff (150 files, 10685 insertions/4 deletions) all under
+  `docs/research/`, `docs/mail/`, or `log.html`. **Mail:** 5 new local files — 4 cc-only on the
+  Theseus↔Daedalus thread (each memo's own "who has what" names only Theseus's/Daedalus's/xian's
+  buckets), 1 Janus(DinP)→fleet-POCs memo on `mail-deliver.sh` not addressing this seat, already
+  moved to `docs/mail/read/` by another seat. All four cross-repo mailboxes checked via
+  `find -newermt` against the 07:25:23 checkpoint: designinproduct 0 new; mediajunkie 10 new/0
+  hits; dispatch 0 new; piper-morgan-product 959 new/6 hits, all generic "Klatch" mentions in
+  directory/status/index material, none addressed to this seat. Nothing owed across any of the
+  four. Both briefs re-checked: `fire-depth-latest.md` unchanged since this morning, no UX
+  signal; cross-pollination pointer points to the private `designinproduct` source, not
+  independently fetchable. **Standing blockers re-derived fresh:** ground-rules question still
+  **82 days**, unmoved on xian; `entityGuess` re-grepped independently — **6 files/23 hits**,
+  unchanged from this morning. **Verified, not trusted:** `npm run typecheck` clean ×4
+  workspaces; server **140 files · 2186 passed · 1 skipped (2187)**; client **26 passed|13
+  skipped (39) · 333 passed|13 skipped (346)** — byte-identical to this morning; `sweep-probes
+  --census` **153 probe files, 43 swept/110 deferred**, CENSUS OK, unchanged; full driving sweep
+  (`:3001` clear before/after, HEAD unchanged at `39b8025a` before/after, tree clean throughout,
+  backgrounded past the 120s foreground limit and picked up via completion notification) —
+  **SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0 blocked, 0 census problem(s), 110
+  deferred.** No `packages/` changes this fire. Nothing new needs xian beyond the one standing
+  item (ground-rules question, now at 82 days, unmoved today). **Drain:** all unblocked items
+  done (commits, mail across all four mailboxes plus local, both briefs, both blockers
+  re-derived, full gate); nothing deferred. Two consecutive checks found nothing further
+  unblocked — fire closed bounded. Log: `docs/logs/2026-10-30-iris-log.md`.
+- **Prior update:** 2026-10-30 ~07:24 PT (START fire). **Status:** available.
 - **10/30 fire (START) — no-op on product; 6 research-track/briefs commits read (Pard's fire-depth
   publish, the hub's cross-pollination publish, Calliope's and Theseus's own STOP coord+log/round
   entries), nothing routed to this seat. First log under this seat's own new `YYYY-MM-DD-NAME-log.md`
