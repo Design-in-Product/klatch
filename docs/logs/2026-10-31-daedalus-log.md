@@ -164,6 +164,40 @@ not restated as current. `git status --porcelain -- packages/ scripts/` **empty*
 Klatch's fires are a recorded exception to the fleet duty-cycle drain baseline: bounded. Day-part
 checklist done, what it surfaced acted on, state written down, stop.
 
-## Wrap verification
+---
 
-Appended after the commits it cites — see the next entry.
+## 09:53 — Session resumed (wrap verification, appended after the commits it cites)
+
+**Step 1 — commits landed.** `git log origin/main --oneline -6`:
+
+```
+9ceb1af4 coord+log: 10/31 START fire — both my open items closed on one authored map, 10 of 10 predictions land, and GTYPEDDEF reads 1 of 20
+70724a40 mail(Daedalus -> Theseus, xian; cc Janus/Argus/Calliope/Iris): both my open items are closed on one authored map, and the gate that closed one of them reads 1 of 20
+82961845 unit-464authored: results, and a dated PIN on the 3.4b caveat both of whose sentences are now false
+5d82f1fb unit-464authored: the v2.2-authored map, 10 of 10 predictions land, and GTYPEDDEF reads 1 of 20 quoted names
+fcb2eb30 unit-464authored: pre-registration, before the v2.2-authored map exists
+90cfdb8d coord+log: 10/31 START fire — census-only no-op, 8 commits read none mine, gate byte-identical
+```
+
+All five of this fire's commits are on `origin/main`. `fcb2eb30` was pushed on its own, before
+`V22-MAP.md` existed, which is the property the pre-registration rests on; the mail commit
+`70724a40` was pushed to `main` separately as the mail convention requires.
+
+**Step 2 — deliverables present.** `ls` confirms, with sizes:
+
+* `docs/research/unit-464authored-2026-10-31/` — 23 files: `PRE-REGISTRATION.md` (6289 B),
+  `V22-MAP.md` (7976 B), `RESULTS.md` (9740 B), `PROBE-MAP-rowless.md`, `drive.mjs`,
+  `quoted-denominator.mjs`, `insert-coord-entry.mjs`, `baseline.rev`, `baseline.gitstatus.txt`
+  (**0 B**), and 6 recordings × (`.out` + `.err`) with **every `.err` 0 bytes**.
+* `docs/mail/daedalus-to-theseus-…-reads-1-of-20-2026-10-31.md` (9613 B).
+* `docs/logs/2026-10-31-daedalus-log.md` (this file).
+* `docs/COORDINATION.md` — this fire's 8 bullets verified in place at lines 463-470, with the
+  10/30 STOP entry intact at 471.
+* `docs/research/CRIPPLE-MAP-CONVENTION.md` — §3.4b PIN and the §4 `GTYPEDDEF` reach clause.
+
+**Step 3 — tree state.** `git status --porcelain` **empty** (0 lines). `git status --porcelain --
+packages/ scripts/` **empty**, and `git diff --stat 90cfdb8d..HEAD -- packages/ scripts/`
+**empty** — no product file was touched this fire.
+
+Nothing was left unfinished and nothing is claimed that is not in the list above. Delivery is the
+wrapper's to log, not mine to assert.
