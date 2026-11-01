@@ -1,0 +1,811 @@
+{
+  "myRev": "e6460abafaed4cf9e7c0eb4c0320c06d2cee233e",
+  "hisRev": "7afa614e29b85a636fada53ccd2e3738f9424fda",
+  "refusals": 0,
+  "rows": [
+    {
+      "cell": {
+        "map": "docs/research/unit-464authored-2026-10-31/V22-MAP.md",
+        "arm": "t2-dir-only",
+        "argv": [
+          "--map=V22-MAP.md",
+          "--clean=../unit-464t2b-sat-2026-10-29/drive2.clean.out",
+          "--arm=t2-dir-only=../unit-464t2b-sat-2026-10-29/drive-cripple-t2-dir-only.out",
+          "--control=../unit-464t2b-sat-2026-10-29/drive2.clean.out",
+          "--control=../unit-464t8-mapdecay-2026-10-29/drive1.clean.out"
+        ],
+        "liveTyped": [],
+        "curedTyped": [],
+        "price": [],
+        "removed": [],
+        "classes": [],
+        "adds": [
+          "actual",
+          "assertable",
+          "dirLast",
+          "expected",
+          "figure",
+          "fired",
+          "freeArmPinned",
+          "freeDistance",
+          "incidental",
+          "key",
+          "pinArm",
+          "pinArmPinned",
+          "pinDistance",
+          "popMax",
+          "probes",
+          "refusing",
+          "selector",
+          "selfLast",
+          "sensitive"
+        ],
+        "secLines": 49
+      },
+      "tag": "01.V22-MAP-t2-dir-only",
+      "unmeasured": null,
+      "mappedArms": 1,
+      "totalArms": 1,
+      "D1": 649,
+      "D2": 9,
+      "D2set": [
+        "n"
+      ],
+      "D3": 22,
+      "D4num": 1,
+      "D4den": 10,
+      "liveTyped": [],
+      "hisPrice": [],
+      "union": [],
+      "saturated": true,
+      "gtyppedLine": "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed"
+    },
+    {
+      "cell": {
+        "map": "docs/research/unit-464nomoved-2026-10-30/V21-MAP.baseline.md",
+        "arm": "t8-unpinned",
+        "argv": [
+          "--map=V21-MAP.baseline.md",
+          "--clean=../unit-464t2b-sat-2026-10-29/drive2.clean.out",
+          "--arm=t8-unpinned=../unit-464t2b-sat-2026-10-29/drive-cripple-t8-unpinned.out",
+          "--control=../unit-464t2b-sat-2026-10-29/drive2.clean.out",
+          "--control=../unit-464t8-mapdecay-2026-10-29/drive1.clean.out"
+        ],
+        "liveTyped": [
+          "moved"
+        ],
+        "curedTyped": [
+          "figure",
+          "moved",
+          "reachedArmCaused",
+          "selfLast"
+        ],
+        "price": [
+          "figure",
+          "reachedArmCaused",
+          "selfLast"
+        ],
+        "removed": [],
+        "classes": [
+          {
+            "token": "figure",
+            "cls": "GENUINE-BOUNDARY",
+            "hist": "\"`\"x2"
+          },
+          {
+            "token": "reachedArmCaused",
+            "cls": "GENUINE-BOUNDARY",
+            "hist": "\"`\"x1"
+          },
+          {
+            "token": "selfLast",
+            "cls": "GENUINE-BOUNDARY",
+            "hist": "\"`\"x1"
+          }
+        ],
+        "adds": [
+          "active",
+          "actual",
+          "assertable",
+          "dir",
+          "distance",
+          "expected",
+          "figure",
+          "fired",
+          "freeArmPinned",
+          "freeDistance",
+          "incidental",
+          "insensitive",
+          "key",
+          "max",
+          "n",
+          "name",
+          "pinArm",
+          "pinArmPinned",
+          "pinDistance",
+          "pinned",
+          "popMax",
+          "reachedArmCaused",
+          "refusing",
+          "registered",
+          "selfLast",
+          "sensitive",
+          "union",
+          "unionArmPinned"
+        ],
+        "secLines": 56
+      },
+      "tag": "02.V21-MAP.baseline-t8-unpinned",
+      "unmeasured": null,
+      "mappedArms": 1,
+      "totalArms": 1,
+      "D1": 975,
+      "D2": 43,
+      "D2set": [
+        "N",
+        "moved",
+        "surface"
+      ],
+      "D3": 37,
+      "D4num": 2,
+      "D4den": 15,
+      "liveTyped": [
+        "moved"
+      ],
+      "hisPrice": [
+        "figure",
+        "reachedArmCaused",
+        "selfLast"
+      ],
+      "union": [
+        "figure",
+        "moved",
+        "reachedArmCaused",
+        "selfLast"
+      ],
+      "saturated": false,
+      "gtyppedLine": "GTYPEDDEF RED typed-token defects: 1 typed token(s) — quoted OF a member that never emits it: [t8-unpinned:moved]"
+    },
+    {
+      "cell": {
+        "map": "docs/research/unit-464nomoved-2026-10-30/V21-MAP.cured.md",
+        "arm": "t8-unpinned",
+        "argv": [
+          "--map=V21-MAP.cured.md",
+          "--clean=../unit-464t2b-sat-2026-10-29/drive2.clean.out",
+          "--arm=t8-unpinned=../unit-464t2b-sat-2026-10-29/drive-cripple-t8-unpinned.out",
+          "--control=../unit-464t2b-sat-2026-10-29/drive2.clean.out",
+          "--control=../unit-464t8-mapdecay-2026-10-29/drive1.clean.out"
+        ],
+        "liveTyped": [],
+        "curedTyped": [
+          "figure",
+          "reachedArmCaused",
+          "selfLast"
+        ],
+        "price": [
+          "figure",
+          "reachedArmCaused",
+          "selfLast"
+        ],
+        "removed": [],
+        "classes": [
+          {
+            "token": "figure",
+            "cls": "GENUINE-BOUNDARY",
+            "hist": "\"`\"x2"
+          },
+          {
+            "token": "reachedArmCaused",
+            "cls": "GENUINE-BOUNDARY",
+            "hist": "\"`\"x1"
+          },
+          {
+            "token": "selfLast",
+            "cls": "GENUINE-BOUNDARY",
+            "hist": "\"`\"x1"
+          }
+        ],
+        "adds": [
+          "active",
+          "actual",
+          "assertable",
+          "dir",
+          "distance",
+          "expected",
+          "figure",
+          "fired",
+          "freeArmPinned",
+          "freeDistance",
+          "incidental",
+          "insensitive",
+          "key",
+          "max",
+          "n",
+          "name",
+          "pinArm",
+          "pinArmPinned",
+          "pinDistance",
+          "pinned",
+          "popMax",
+          "reachedArmCaused",
+          "refusing",
+          "registered",
+          "selfLast",
+          "sensitive",
+          "union",
+          "unionArmPinned"
+        ],
+        "secLines": 56
+      },
+      "tag": "03.V21-MAP.cured-t8-unpinned",
+      "unmeasured": null,
+      "mappedArms": 1,
+      "totalArms": 1,
+      "D1": 975,
+      "D2": 28,
+      "D2set": [
+        "N",
+        "surface"
+      ],
+      "D3": 37,
+      "D4num": 2,
+      "D4den": 15,
+      "liveTyped": [],
+      "hisPrice": [
+        "figure",
+        "reachedArmCaused",
+        "selfLast"
+      ],
+      "union": [
+        "figure",
+        "reachedArmCaused",
+        "selfLast"
+      ],
+      "saturated": false,
+      "gtyppedLine": "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed"
+    },
+    {
+      "cell": {
+        "map": "docs/research/unit-464rekey-2026-10-30/V21-MAP.nomoved.md",
+        "arm": "t8-unpinned",
+        "argv": [
+          "--map=V21-MAP.nomoved.md",
+          "--clean=../unit-464t2b-sat-2026-10-29/drive2.clean.out",
+          "--arm=t8-unpinned=../unit-464t2b-sat-2026-10-29/drive-cripple-t8-unpinned.out",
+          "--control=../unit-464t2b-sat-2026-10-29/drive2.clean.out",
+          "--control=../unit-464t8-mapdecay-2026-10-29/drive1.clean.out"
+        ],
+        "liveTyped": [],
+        "curedTyped": [
+          "figure",
+          "reachedArmCaused",
+          "selfLast"
+        ],
+        "price": [
+          "figure",
+          "reachedArmCaused",
+          "selfLast"
+        ],
+        "removed": [],
+        "classes": [
+          {
+            "token": "figure",
+            "cls": "GENUINE-BOUNDARY",
+            "hist": "\"`\"x2"
+          },
+          {
+            "token": "reachedArmCaused",
+            "cls": "GENUINE-BOUNDARY",
+            "hist": "\"`\"x1"
+          },
+          {
+            "token": "selfLast",
+            "cls": "GENUINE-BOUNDARY",
+            "hist": "\"`\"x1"
+          }
+        ],
+        "adds": [
+          "active",
+          "actual",
+          "assertable",
+          "dir",
+          "distance",
+          "expected",
+          "figure",
+          "fired",
+          "freeArmPinned",
+          "freeDistance",
+          "incidental",
+          "insensitive",
+          "key",
+          "max",
+          "n",
+          "name",
+          "pinArm",
+          "pinArmPinned",
+          "pinDistance",
+          "pinned",
+          "popMax",
+          "reachedArmCaused",
+          "refusing",
+          "registered",
+          "selfLast",
+          "sensitive",
+          "union",
+          "unionArmPinned"
+        ],
+        "secLines": 56
+      },
+      "tag": "04.V21-MAP.nomoved-t8-unpinned",
+      "unmeasured": null,
+      "mappedArms": 1,
+      "totalArms": 1,
+      "D1": 975,
+      "D2": 28,
+      "D2set": [
+        "N",
+        "surface"
+      ],
+      "D3": 37,
+      "D4num": 2,
+      "D4den": 15,
+      "liveTyped": [],
+      "hisPrice": [
+        "figure",
+        "reachedArmCaused",
+        "selfLast"
+      ],
+      "union": [
+        "figure",
+        "reachedArmCaused",
+        "selfLast"
+      ],
+      "saturated": false,
+      "gtyppedLine": "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed"
+    },
+    {
+      "cell": {
+        "map": "docs/research/unit-464rekey-2026-10-30/V21-MAP.prose.md",
+        "arm": "t8-unpinned",
+        "argv": [
+          "--map=V21-MAP.prose.md",
+          "--clean=../unit-464t2b-sat-2026-10-29/drive2.clean.out",
+          "--arm=t8-unpinned=../unit-464t2b-sat-2026-10-29/drive-cripple-t8-unpinned.out",
+          "--control=../unit-464t2b-sat-2026-10-29/drive2.clean.out",
+          "--control=../unit-464t8-mapdecay-2026-10-29/drive1.clean.out"
+        ],
+        "liveTyped": [
+          "N",
+          "moved"
+        ],
+        "curedTyped": [
+          "N",
+          "actual",
+          "figure",
+          "fired",
+          "incidental",
+          "insensitive",
+          "moved",
+          "n",
+          "reachedArmCaused",
+          "refusing",
+          "registered",
+          "selfLast",
+          "sensitive"
+        ],
+        "price": [
+          "actual",
+          "figure",
+          "fired",
+          "incidental",
+          "insensitive",
+          "n",
+          "reachedArmCaused",
+          "refusing",
+          "registered",
+          "selfLast",
+          "sensitive"
+        ],
+        "removed": [],
+        "classes": [
+          {
+            "token": "actual",
+            "cls": "GENUINE-BOUNDARY",
+            "hist": "\"`\"x4"
+          },
+          {
+            "token": "figure",
+            "cls": "GENUINE-BOUNDARY",
+            "hist": "\"`\"x2"
+          },
+          {
+            "token": "fired",
+            "cls": "GENUINE-BOUNDARY",
+            "hist": "\"`\"x2"
+          },
+          {
+            "token": "incidental",
+            "cls": "GENUINE-BOUNDARY",
+            "hist": "\"`\"x1"
+          },
+          {
+            "token": "insensitive",
+            "cls": "GENUINE-BOUNDARY",
+            "hist": "\"`\"x1"
+          },
+          {
+            "token": "n",
+            "cls": "GENUINE-BOUNDARY",
+            "hist": "\"o\"x1 \"`\"x1"
+          },
+          {
+            "token": "reachedArmCaused",
+            "cls": "GENUINE-BOUNDARY",
+            "hist": "\"`\"x1"
+          },
+          {
+            "token": "refusing",
+            "cls": "GENUINE-BOUNDARY",
+            "hist": "\"`\"x3"
+          },
+          {
+            "token": "registered",
+            "cls": "GENUINE-BOUNDARY",
+            "hist": "\"`\"x1"
+          },
+          {
+            "token": "selfLast",
+            "cls": "GENUINE-BOUNDARY",
+            "hist": "\"`\"x1"
+          },
+          {
+            "token": "sensitive",
+            "cls": "GENUINE-BOUNDARY",
+            "hist": "\"`\"x2 \"n\"x1"
+          }
+        ],
+        "adds": [
+          "active",
+          "actual",
+          "assertable",
+          "dir",
+          "distance",
+          "expected",
+          "figure",
+          "fired",
+          "freeArmPinned",
+          "freeDistance",
+          "incidental",
+          "insensitive",
+          "key",
+          "max",
+          "n",
+          "name",
+          "pinArm",
+          "pinArmPinned",
+          "pinDistance",
+          "pinned",
+          "popMax",
+          "reachedArmCaused",
+          "refusing",
+          "registered",
+          "selfLast",
+          "sensitive",
+          "union",
+          "unionArmPinned"
+        ],
+        "secLines": 56
+      },
+      "tag": "05.V21-MAP.prose-t8-unpinned",
+      "unmeasured": null,
+      "mappedArms": 1,
+      "totalArms": 1,
+      "D1": 975,
+      "D2": 43,
+      "D2set": [
+        "N",
+        "moved",
+        "surface"
+      ],
+      "D3": 54,
+      "D4num": 3,
+      "D4den": 15,
+      "liveTyped": [
+        "N",
+        "moved"
+      ],
+      "hisPrice": [
+        "actual",
+        "figure",
+        "fired",
+        "incidental",
+        "insensitive",
+        "n",
+        "reachedArmCaused",
+        "refusing",
+        "registered",
+        "selfLast",
+        "sensitive"
+      ],
+      "union": [
+        "N",
+        "actual",
+        "figure",
+        "fired",
+        "incidental",
+        "insensitive",
+        "moved",
+        "n",
+        "reachedArmCaused",
+        "refusing",
+        "registered",
+        "selfLast",
+        "sensitive"
+      ],
+      "saturated": false,
+      "gtyppedLine": "GTYPEDDEF RED typed-token defects: 2 typed token(s) — quoted OF a member that never emits it: [t8-unpinned:N,t8-unpinned:moved]"
+    },
+    {
+      "cell": {
+        "map": "docs/research/unit-464v21map-2026-10-30/V21-MAP.md",
+        "arm": "t8-unpinned",
+        "argv": [
+          "--map=V21-MAP.md",
+          "--clean=../unit-464t2b-sat-2026-10-29/drive2.clean.out",
+          "--arm=t8-unpinned=../unit-464t2b-sat-2026-10-29/drive-cripple-t8-unpinned.out",
+          "--control=../unit-464t2b-sat-2026-10-29/drive2.clean.out",
+          "--control=../unit-464t8-mapdecay-2026-10-29/drive1.clean.out"
+        ],
+        "liveTyped": [],
+        "curedTyped": [
+          "figure",
+          "reachedArmCaused",
+          "selfLast"
+        ],
+        "price": [
+          "figure",
+          "reachedArmCaused",
+          "selfLast"
+        ],
+        "removed": [],
+        "classes": [
+          {
+            "token": "figure",
+            "cls": "GENUINE-BOUNDARY",
+            "hist": "\"`\"x2"
+          },
+          {
+            "token": "reachedArmCaused",
+            "cls": "GENUINE-BOUNDARY",
+            "hist": "\"`\"x1"
+          },
+          {
+            "token": "selfLast",
+            "cls": "GENUINE-BOUNDARY",
+            "hist": "\"`\"x1"
+          }
+        ],
+        "adds": [
+          "active",
+          "actual",
+          "assertable",
+          "dir",
+          "distance",
+          "expected",
+          "figure",
+          "fired",
+          "freeArmPinned",
+          "freeDistance",
+          "incidental",
+          "insensitive",
+          "key",
+          "max",
+          "n",
+          "name",
+          "pinArm",
+          "pinArmPinned",
+          "pinDistance",
+          "pinned",
+          "popMax",
+          "reachedArmCaused",
+          "refusing",
+          "registered",
+          "selfLast",
+          "sensitive",
+          "union",
+          "unionArmPinned"
+        ],
+        "secLines": 56
+      },
+      "tag": "06.V21-MAP-t8-unpinned",
+      "unmeasured": null,
+      "mappedArms": 1,
+      "totalArms": 1,
+      "D1": 975,
+      "D2": 28,
+      "D2set": [
+        "N",
+        "surface"
+      ],
+      "D3": 37,
+      "D4num": 2,
+      "D4den": 15,
+      "liveTyped": [],
+      "hisPrice": [
+        "figure",
+        "reachedArmCaused",
+        "selfLast"
+      ],
+      "union": [
+        "figure",
+        "reachedArmCaused",
+        "selfLast"
+      ],
+      "saturated": false,
+      "gtyppedLine": "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed"
+    },
+    {
+      "cell": {
+        "map": "docs/research/unit-464v2map-2026-10-30/V2-MAP-t8-ceiling-blind-RETITLED.md",
+        "arm": "t8-ceiling-blind",
+        "argv": [
+          "--map=V2-MAP-t8-ceiling-blind-RETITLED.md",
+          "--clean=../unit-464t2b-sat-2026-10-29/drive2.clean.out",
+          "--arm=t2b-sat-wrong-arm=../unit-464t2b-sat-2026-10-29/drive-cripple-t2b-sat-wrong-arm.out",
+          "--arm=t2b-dir-pinned=../unit-464t2b-sat-2026-10-29/drive-cripple-t2b-dir-pinned.out",
+          "--arm=t8-ceiling-blind=../unit-464t2b-sat-2026-10-29/drive-cripple-t8-ceiling-blind.out",
+          "--control=../unit-464t2b-sat-2026-10-29/drive2.clean.out",
+          "--control=../unit-464t8-mapdecay-2026-10-29/drive1.clean.out"
+        ],
+        "liveTyped": [],
+        "curedTyped": [
+          "reached"
+        ],
+        "price": [
+          "reached"
+        ],
+        "removed": [],
+        "classes": [
+          {
+            "token": "reached",
+            "cls": "GENUINE-BOUNDARY",
+            "hist": "\"`\"x1"
+          }
+        ],
+        "adds": [
+          "key",
+          "lastUnion",
+          "misses",
+          "name",
+          "pinned",
+          "reached",
+          "rows"
+        ],
+        "secLines": 53
+      },
+      "tag": "07.V2-MAP-t8-ceiling-blind-RETITLED-t8-ceiling-blind",
+      "unmeasured": null,
+      "mappedArms": 1,
+      "totalArms": 3,
+      "D1": 451,
+      "D2": 11,
+      "D2set": [
+        "distance",
+        "popMax"
+      ],
+      "D3": 12,
+      "D4num": 0,
+      "D4den": 7,
+      "liveTyped": [],
+      "hisPrice": [
+        "reached"
+      ],
+      "union": [
+        "reached"
+      ],
+      "saturated": false,
+      "gtyppedLine": "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed"
+    },
+    {
+      "cell": {
+        "map": "docs/research/unit-464v2map-2026-10-30/V2-MAP-t8-ceiling-blind-STAMP-STRIPPED.md",
+        "arm": "t8-ceiling-blind",
+        "argv": [
+          "--map=V2-MAP-t8-ceiling-blind-STAMP-STRIPPED.md",
+          "--clean=../unit-464t2b-sat-2026-10-29/drive2.clean.out",
+          "--arm=t2b-sat-wrong-arm=../unit-464t2b-sat-2026-10-29/drive-cripple-t2b-sat-wrong-arm.out",
+          "--arm=t2b-dir-pinned=../unit-464t2b-sat-2026-10-29/drive-cripple-t2b-dir-pinned.out",
+          "--arm=t8-ceiling-blind=../unit-464t2b-sat-2026-10-29/drive-cripple-t8-ceiling-blind.out",
+          "--control=../unit-464t2b-sat-2026-10-29/drive2.clean.out",
+          "--control=../unit-464t8-mapdecay-2026-10-29/drive1.clean.out"
+        ],
+        "liveTyped": [],
+        "curedTyped": [
+          "reached"
+        ],
+        "price": [
+          "reached"
+        ],
+        "removed": [],
+        "classes": [
+          {
+            "token": "reached",
+            "cls": "GENUINE-BOUNDARY",
+            "hist": "\"`\"x1"
+          }
+        ],
+        "adds": [
+          "key",
+          "lastUnion",
+          "misses",
+          "name",
+          "pinned",
+          "reached",
+          "rows"
+        ],
+        "secLines": 53
+      },
+      "tag": "08.V2-MAP-t8-ceiling-blind-STAMP-STRIPPED-t8-ceiling-blind",
+      "unmeasured": null,
+      "mappedArms": 1,
+      "totalArms": 3,
+      "D1": 451,
+      "D2": 11,
+      "D2set": [
+        "distance",
+        "popMax"
+      ],
+      "D3": 12,
+      "D4num": 0,
+      "D4den": 7,
+      "liveTyped": [],
+      "hisPrice": [
+        "reached"
+      ],
+      "union": [
+        "reached"
+      ],
+      "saturated": false,
+      "gtyppedLine": "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed"
+    }
+  ],
+  "predictions": [
+    {
+      "id": "V1",
+      "pred": "D1 OPP-ARMWIDE > 0 on all 8 cells (so a VACUOUS branch keyed on it never fires)",
+      "verdict": "LANDS",
+      "got": "min D1 = 451, max = 975, 0 cell(s) at 0 []"
+    },
+    {
+      "id": "V2",
+      "pred": "D2 OPP-SECQUOTED, as a SET per cell, equals his price UNION the live tokensTyped (both directions)",
+      "verdict": "REFUTED",
+      "got": "8 cell(s) disagree: [01.V22-MAP-t2-dir-only(mine=1 his∪live=0) 02.V21-MAP.baseline-t8-unpinned(mine=3 his∪live=4) 03.V21-MAP.cured-t8-unpinned(mine=2 his∪live=3) 04.V21-MAP.nomoved-t8-unpinned(mine=2 his∪live=3) 05.V21-MAP.prose-t8-unpinned(mine=3 his∪live=13) 06.V21-MAP-t8-unpinned(mine=2 his∪live=3) 07.V2-MAP-t8-ceiling-blind-RETITLED-t8-ceiling-blind(mine=2 his∪live=1) 08.V2-MAP-t8-ceiling-blind-STAMP-STRIPPED-t8-ceiling-blind(mine=2 his∪live=1)]"
+    },
+    {
+      "id": "V3",
+      "pred": "D3 CTXLINES > 0 on all 8 cells",
+      "verdict": "LANDS",
+      "got": "min D3 = 12, 0 at 0 []"
+    },
+    {
+      "id": "V4",
+      "pred": "NO live-boundary denominator separates the 1 saturated cell from the 7 non-saturated",
+      "verdict": "LANDS",
+      "got": "D1:no(sat=[649] notSat=[975,975,975,975,975,451,451])  D2:no(sat=[9] notSat=[43,28,28,43,28,11,11])  D3:no(sat=[22] notSat=[37,37,37,54,37,12,12])  D4num:no(sat=[1] notSat=[2,2,2,3,2,0,0])"
+    },
+    {
+      "id": "V5",
+      "pred": "on >=1 cell, some reached+mapped member quotes NO token, so \"across N mapped arm(s)\" overstates coverage",
+      "verdict": "LANDS",
+      "got": "8 of 8 cell(s) measure fewer members than they reach: [01.V22-MAP-t2-dir-only 1/10  02.V21-MAP.baseline-t8-unpinned 2/15  03.V21-MAP.cured-t8-unpinned 2/15  04.V21-MAP.nomoved-t8-unpinned 2/15  05.V21-MAP.prose-t8-unpinned 3/15  06.V21-MAP-t8-unpinned 2/15  07.V2-MAP-t8-ceiling-blind-RETITLED-t8-ceiling-blind 0/7  08.V2-MAP-t8-ceiling-blind-STAMP-STRIPPED-t8-ceiling-blind 0/7]"
+    },
+    {
+      "id": "V6",
+      "pred": "no cell has D4num == 0, so a strict all-or-nothing VACUOUS verdict fires on 0 of 8 today",
+      "verdict": "REFUTED",
+      "got": "2 cell(s) measure no member at all [07.V2-MAP-t8-ceiling-blind-RETITLED-t8-ceiling-blind,08.V2-MAP-t8-ceiling-blind-STAMP-STRIPPED-t8-ceiling-blind]"
+    }
+  ]
+}
