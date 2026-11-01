@@ -346,3 +346,126 @@ requires: all **seven** of this fire's commits present and authored `Daedalus (K
 (`74801759`, `21e109db`, `a7770db3`, `14d9bbe4`, `6fd6f0dd`, `541de317`, and this log commit,
 rebased from `07f0d7c6` to `ab3e5db8`); `git status --porcelain` **0 lines**; `HEAD` and
 `origin/main` divergent by **0 in both directions**. No force push was used and none was needed.
+
+---
+
+## 17:17 — Session resumed (STOP fire, claude-opus-5)
+
+Session-start protocol: worktree synced by the wrapper (`e6460aba`), `git status` clean,
+`COORDINATION.md` read, `docs/mail/` listed. **`HEAD` at open is `e6460aba`, which is
+Calliope's SWEEP-fire coord+log, NOT mine** — checked the author rather than assuming the tip
+commit was my own last fire. My last fire was the 13:37 WORK one.
+
+**One new inbound memo, and it postdates my last fire:** Theseus → Daedalus/xian cc
+Janus/Argus/Calliope/Iris, `0a719bfb` at **15:02**, "one of the 8 is saturated and it is
+yours". Read in full at open. It routes no defect to this seat; it supplies the figure my
+10/31 WORK §7 named and left claimable (`SATCOUNT 1 saturated · 7 NOT saturated`) and reads it
+as closing my open `VACUOUS` item. Took that item and nothing else.
+
+## 17:21 — the unit, and why its first question is not the one either of us asked
+
+`docs/research/unit-464vac-2026-10-31/`. Pre-registration written and pushed **before any
+instrument in the directory existed** (`8c7718db`), baseline `e6460aba`,
+`baseline.gitstatus.txt` 0 bytes.
+
+The thing that stopped me taking his reading on trust: **his saturation predicate is
+`price.length === 0`, the CURE's price at the wide token boundary** (`sat-census.mjs:351`),
+and `GTYPEDDEF` runs at the LIVE boundary. A branch inside the gate can only read figures the
+gate has. So the pre-registered first question was not "should VACUOUS fire" but *is there any
+live-boundary denominator that separates the 1 saturated cell from the other 7* — with `V4`
+saying explicitly that if the answer is no, the item resolves as a finding and not a build.
+
+Population and resolved argv read from **his** committed `sat.json`, with the dependency
+declared in the pre-registration rather than re-derived: re-deriving his argv selector would
+grade his selector, which is not this unit's question.
+
+## 17:25 — drives, and the shape check that came first
+
+`inspect-dump.mjs` — one trial drive on the 3-arm cell, to learn the dump's shape before
+`measure.mjs` assumed one. It paid for itself: `rows[]` is flat across arms and carries one
+entry per **reached** member, recoverable only by cumulative reached-counts, and 2 of that
+cell's 3 arms are `unmapped` so the gate reads 1 of 3. `measure.mjs` recovers the grouping and
+then **asserts** it (`G3`), because a grouping off by one silently moves a member's figures
+onto another arm.
+
+`measure.mjs`, 8 cells × 2 checkers (live + my instrumented copy, identical argv). **`G2`
+asserts the derived copy reproduces the live checker's own `GTYPEDDEF`/`TYPED`/`MAPVERDICT`
+lines on every cell** — a derived copy that has drifted cannot measure its source. `G4`
+refuses outright if `ABSORB_CRIPPLE` is set in the environment, and re-checks each dump's own
+recorded cripple per cell. `G0` compares all 10 subjects by blob hash at his rev and mine:
+**byte-identical**, so his key is fresh and the disagreement below is a property.
+
+## 17:28 — the result, and both refutations are mine
+
+`V4` **LANDS**: the saturated cell sits inside the non-saturated range on all four candidates.
+`V1`, `V3`, `V5` land. **`V2` and `V6` refuted.**
+
+**`V6`'s refutation is the finding.** 2 of 8 cells reach 7 members over 12 context lines and
+judge **0 of them** — verified member-by-member off the dumps, not inferred from a summary —
+and the gate publishes `GTYPEDDEF ok typed-token defects: 0`. His census calls both NOT
+saturated and prices both at 1. So **the cure finds a real §3.4 defect exactly where the live
+gate measures nothing**, which is the opposite way round from the saturation reading.
+
+**`V2` was refuted by my own premise, not by the corpus.** I had written that `D2` was "the
+wide boundary's measurement". It is not — his cure widens the **token** boundary, `D2` widens
+the **context** width. The giveaway was that it disagreed in *both* directions (mine smaller
+on 6 cells, larger on 2); a subset relation cannot do that, so the mechanism differs. Had it
+disagreed one way only I might have filed it as a corpus property.
+
+## 17:31 — the cure, and I read the CONSUMERS before editing
+
+Two near-misses, both caught by looking at who parses these lines rather than by driving and
+finding out:
+
+1. **`MAPVERDICT` must not be appended to.** `unit-464rekey-2026-10-30/grade-arms.mjs:17`
+   parses it with a `$`-anchored regex. **Ran the regex** against both shapes rather than
+   reasoning about it: as it ships `matches, red=GCONFORM`; with ` vacuous=[GTYPEDDEF]`
+   appended, `NO MATCH`. Nothing re-drives that instrument. The vacuity list went on its own
+   new line.
+2. **The coverage line is `TYPEDDEFCOV`, not `GTYPEDDEFCOV`.**
+   `unit-464reach-2026-10-31/why-zero-price.mjs:70` derives its gate set with
+   `/^(MAPVERDICT|G[A-Z][A-Z0-9]*)\b/`, so a `G`-prefixed label would have minted a phantom
+   17th gate that is not in the `gates` object. One character of prefix.
+
+`ok: true` by design. `GCONFORM` is already RED on both vacuous cells (`red=[GCONFORM]`,
+`red=[GMUST,GCONFORM]`), read off the drives; reddening here double-counts one defect and
+leaves the real harm, which is a **retro-grade** taking a §3.4 credit the gate never issued.
+Verdict green, pass labelled.
+
+## 17:32 — grading: 6 of 6, and the pre-cure baseline comes from git
+
+`grade-cure.mjs`. `C1` fires on exactly the cells `D4num == 0` names, with the expectation
+**derived** from the measurement rather than typed, so a cell that stops being vacuous moves
+it. `C5` prices the cure at **zero newly-red maps**. `C2` keeps all three keyed lines
+byte-identical on the 6 non-vacuous cells, which is aimed squarely at his `GREPRO`. `C4` is
+the counterfactual and restores the pre-cure line verbatim. `C6` is **labelled** as one
+computation read two ways — a `quotedCount` wiring check, not confirmation.
+
+The pre-cure recordings are read with `git show` at a **derived** rev (newest commit touching
+this directory that did *not* touch the checker), so a re-drive in this directory cannot
+re-stamp what the comparison reads, and a later commit of mine cannot silently become the
+baseline. `C0` refuses outright if the worktree checker is identical to the checker at that
+rev: a grading run whose subject was never edited grades nothing and must say so.
+
+## Not run this fire, stated so silence stays diagnostic
+
+`npm test`, `npm run typecheck`, the sweep, the stop-condition cell. No file under `packages/`
+or `scripts/` was touched; `git status --porcelain -- packages/ scripts/` **empty** at open and
+re-checked empty at close. The pre-commit census printed `CENSUS OK` on each commit — that is
+not a gate figure and is not offered as one.
+
+## Drain
+
+Mail: the one new inbound read at open and its one newly-measurable item taken and closed in
+this same fire. Re-checked at close. Needs-you unchanged at 3. Klatch's recorded exception to
+the platform drain baseline applies: bounded fire, checklist done, state written, stop.
+
+**Deferred with named blockers — none newly.** Two items this unit opened are **named without
+a deadline and without a blocker**: wiring `GSUBJ` to `MAPVACUOUS` (its vacuity is per-leg and
+partial, which needs a call about what a half-vacuous gate reports) and a census of how many
+of the 16 gates can pass vacuously at all (a sweep over gate bodies, not a drive).
+
+### Wrap verification — to be appended AFTER the commits it cites
+
+Steps 1–3 go below this line, after the final push, so the verification cannot predate what it
+cites.
