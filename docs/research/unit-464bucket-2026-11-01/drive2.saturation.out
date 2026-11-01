@@ -1,0 +1,35 @@
+unit-464bucket — regrading `saturated` on his own recording
+  recording: docs/research/unit-464steal-2026-11-01/drive4.steal-identity.out
+  predicate: docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs
+
+GATES
+  GLIFT       ok  — his upstream set is [raw, comments, bytes] and the verdict figure is `value`
+  GSLICE      ok  — his table header found at 1599 and 4 data rows parsed (4 expected)
+  GROUNDTRIP  ok  — 4/4 parsed rows rebuild to a line present in the recording
+
+GREPRO — my re-derivation under HIS field set, against what his recording printed
+  his recording:   P4 REFUTED (saturated) = true; upstream moved = {probe-round375, probe-round374}
+  my re-derivation: saturated = true; upstream moved = {probe-round375, probe-round374}
+  GREPRO ok  — the re-derivation reproduces his published words
+
+1. THE SAME PREDICATE, UNDER THREE UPSTREAM FIELD SETS (all four rows)
+   field set                  saturated  witnessing files
+   his field set              true       probe-round375, probe-round374
+   property-tracking only     true       probe-round375
+   bytes alone                true       probe-round374, probe-round375
+
+2. PER FILE — which figure actually witnesses the claim for each
+   file            value  raw    comments  bytes   witnesses under
+   probe-round374  0→0    2→2    0→0       19726→22676     his field set / bytes alone
+   probe-round375  0→0    2→2    1→0       18146→19654     his field set / property-tracking only / bytes alone
+
+READINGS
+  his published witness set:                      probe-round375, probe-round374 (2 files)
+  witnesses once `bytes` is dropped:              probe-round375 (1 files)
+  files witnessing ONLY via `bytes`:              probe-round374
+
+PREDICTIONS settled by this drive
+  P2  LANDS    dropping bytes: saturated=true, witnesses 2 → 1 (probe-round375)
+  P3  LANDS    probe-round374 alone: saturated=true while raw 2→2 and comments 0→0 are unchanged
+
+SATVERDICT/0  3 gates ok + GREPRO ok; P2 LANDS, P3 LANDS
