@@ -1,0 +1,44 @@
+unit-464bucket — how much can his GATTRIB absorb?
+  his gate:  docs/research/unit-464steal-2026-11-01/grade-the-copy-is-his-reader.mjs
+  fixtures:  HIS 280 lines · MINE 316 lines (as his gate counts them)
+  scratch:   /Users/xian/Development/klatch-worktrees/theseus/.testdata/unit-464bucket
+
+GATES
+  GLIFT       ok  — 4 buckets lifted from his source: header, pop-flag, label, artefact
+  GREPRO      ok  — lifted predicates reproduce drive6's per-bucket (added, removed): header 24/0 vs 24/0 · pop-flag 18/1 vs 18/1 · label 3/1 vs 3/1 · artefact 2/1 vs 2/1
+  GLIVECLEAN  ok  — git status --porcelain -- packages/ scripts/ is 0 bytes in the LIVE tree
+  GCTRL       ok  — ctrl arm exit 0, GREEN, 5/5 gate lines byte-identical to drive6
+  GPLANT      ok  — every arm's fixture is exactly as declared (4/4)
+
+1. BUCKET CAPACITY — lines of the WHOLE copy each lifted predicate matches
+   bucket     matches  of    %      used by the declared edit   why (his words)
+   header         103   316  32.6%                        24   my own header block, above his verbatim one
+   pop-flag        19   316   6.0%                        18   the --pop parameter replacing the hardcoded --all
+   label            3   316   0.9%                         3   the printed corpus label derived from POP instead of asserting --all
+   artefact         3   316   0.9%                         2   the per-arm json filename
+   (beside a structural allowlist of 3 exact strings, which GNOPAD requires be fully consumed)
+
+2. CRIPPLE ARMS — his gate, unmodified, on a one-line mutation of the copy
+   arm   GATTRIB  verdict   exit  what was planted
+   ctrl  ok       GREEN     0     no mutation — must reproduce his drive6
+   a     RED      REFUSED   1     a real filter added to the corpus loop, no bucket keyword
+   b     ok       GREEN     0     the SAME filter, plus a trailing comment containing "population"
+   c     ok       GREEN     0     a column-0 comment asserting something false about the reader
+
+   arm-a: "  if (c.subject.length > 500) continue;"
+          buckets whose predicate matches it: (none) ⇒ his gate CAUGHT it (red)
+   arm-b: "  if (c.subject.length > 500) continue;  // cap the population"
+          buckets whose predicate matches it: pop-flag ⇒ his gate ABSORBED it (green)
+   arm-c: "// The self-exclusion is unnecessary for subjects over 30 chars."
+          buckets whose predicate matches it: header ⇒ his gate ABSORBED it (green)
+
+READINGS
+  absorbed (gate green on a planted mutation): arm-b, arm-c
+  caught   (gate red):                         arm-a
+  the a/b pair — identical code, one comment — flips the verdict: true
+
+PREDICTIONS settled by this drive
+  P5  LANDS    the `header` predicate matches 103 of 316 lines of the whole copy (registered threshold: >= 100)
+  P6  LANDS    2 of 3 planted mutations went green: arm-b, arm-c
+
+ATTRIBVERDICT/0  5 gates ok; absorbed 2/3, caught 1/3, a-vs-b flips true
