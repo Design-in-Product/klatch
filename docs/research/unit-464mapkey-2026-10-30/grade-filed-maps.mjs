@@ -64,6 +64,10 @@ const CRIPPLES = new Set([
   'subject-bold-only', // KEY: the subject parse requires the ** markers
   'typed-ungated', // SUBJECT: GTYPEDDEF reports ok without reading tokensTyped
   'control-header-blind', // SUBJECT: GCTRLPROV does not read the controls' CRIPPLE line
+  // Added 2026-10-31 STOP fire, with unit-464vac-2026-10-31. SUBJECT perturbation on the
+  // one gate that fire changed: GTYPEDDEF reports its pre-cure green on a map where it
+  // judged no (member, token) pair at all. The counterfactual for the VACUOUS branch.
+  'typeddef-vacuity-blind',
 ]);
 
 const args = process.argv.slice(2);
@@ -510,6 +514,11 @@ const gradeArm = (clean, arm, section, cleanV, armV, driftSet) => {
       looseLines: looseCtx.length,
       refDropped,
       unsubjectedCtx,
+      // How many name=value tokens this member's own context quotes. This is GTYPEDDEF's
+      // DENOMINATOR and it must be published, not inferred: `typed` is empty both when the
+      // member quotes its own tokens correctly and when it quotes nothing at all, and those
+      // are a pass and a non-measurement. Added 2026-10-31 STOP with unit-464vac.
+      quotedCount: quotedOfMe.size,
     };
   });
 
@@ -1018,11 +1027,74 @@ const GTYPEDDEF = (() => {
   if (refusers.length > 0) {
     return { ok: false, why: `${refusers.length} mapped arm(s) published no figure: [${refusers.join(',')}] — unmeasurable, not zero` };
   }
+  // --- The VACUOUS branch (added 2026-10-31 STOP, unit-464vac-2026-10-31).
+  //
+  // The unit it came from is worth recording, because the key I had named for two days was
+  // the WRONG ONE and so was Theseus's reading of his own census. Both of us expected this
+  // branch to be keyed on SATURATION — a map on which the boundary cure's price is zero —
+  // and his `SATCOUNT 1 saturated · 7 NOT saturated` to mean the branch fires on one cell.
+  // Measured over the 8 scored cells at THIS boundary: no live-boundary denominator
+  // separates the saturated cell at all. It sits inside the non-saturated range on all four
+  // candidates (`vac.json`, `V4`). Saturation is a property of the CURE's reach; what makes
+  // this gate's zero inert is a property of the gate's own COVERAGE, and they point at
+  // different cells.
+  //
+  // The unit of judgement here is the (member, quoted token) pair, not the arm. A member
+  // whose context quotes nothing contributes a guaranteed-empty `typed` set, so the shipped
+  // line's "0 typed tokens across N mapped arm(s)" can be — and on 2 of the 8 filed cells
+  // IS — a zero over an empty denominator: `V2-MAP-t8-ceiling-blind-RETITLED.md` and
+  // `…-STAMP-STRIPPED.md` each reach 7 members across 12 context lines and judge 0 of them,
+  // and the gate called that a pass. Both are cells the census calls NOT saturated and the
+  // cure prices at 1 — so the cure finds a real defect exactly where this gate measured
+  // nothing, which is the opposite of the saturation reading.
+  //
+  // Why this does NOT return `ok: false`: the map is not defective for quoting no figures —
+  // GCONFORM is the gate for that, and it is already RED on both cells. Reddening here
+  // would double-count one defect and still leave the real harm in place, which is that a
+  // RETRO-GRADE reading `GTYPEDDEF ok` takes a §3.4 credit the gate never issued. So the
+  // verdict stays green and the PASS is labelled, on its own `MAPVACUOUS/` line below: a
+  // consumer that wants conformance credit must now read whether the pass was vacuous.
+  //
+  // The counterfactual is `typeddef-vacuity-blind`, which restores the pre-cure text. Note
+  // the branch also has REAL arms on both sides in the filed population — 2 cells vacuous,
+  // 6 not — so its reachability does not rest on the cripple alone.
+  const judged = live.flatMap((x) => x.g.rows.filter((r) => r.quotedCount > 0).map((r) => `${x.name}:${r.id}`));
+  const reachedRows = live.reduce((n, x) => n + x.g.rows.length, 0);
+  if (offenders.length === 0 && judged.length === 0 && CRIPPLE !== 'typeddef-vacuity-blind') {
+    return {
+      ok: true,
+      vacuous: `judged 0 of ${reachedRows} reached member(s) on ${live.length} mapped arm(s)`,
+      why:
+        `VACUOUS — 0 typed tokens, but 0 of ${reachedRows} reached member(s) on ${live.length} mapped arm(s) ` +
+        `quote any name=value token, so there was no (member, token) pair to judge. ` +
+        `This 0 is a non-measurement, not a §3.4 pass`,
+    };
+  }
   return offenders.length === 0
     ? { ok: true, why: `0 typed tokens across ${live.length} mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed` }
     : { ok: false, why: `${offenders.length} typed token(s) — quoted OF a member that never emits it: [${offenders.join(',')}]` };
 })();
 console.log(`GTYPEDDEF ${GTYPEDDEF.ok ? 'ok ' : 'RED'} typed-token defects: ${GTYPEDDEF.why}`);
+// GTYPEDDEF's coverage, published UNCONDITIONALLY and on its OWN line — not appended to the
+// line above, because `unit-464sat-2026-10-31/grepro.mjs` reproduces committed recordings by
+// comparing the `GTYPEDDEF `, `TYPED ` and `MAPVERDICT/` lines verbatim, and a cure that
+// rewrote a green line would make every filed recording disagree for a reason that is not a
+// defect. Measured over the 8 filed cells, coverage is BELOW 100% on all 8 (1/10, 2/15 ×4,
+// 3/15, 0/7 ×2) — so this figure is informative on every cell, not only the vacuous ones.
+//
+// The label deliberately does NOT begin with `G`. `unit-464reach-2026-10-31/
+// why-zero-price.mjs:70` derives the gate set from a recording with
+// `/^(MAPVERDICT|G[A-Z][A-Z0-9]*)\b/`, so a line named `GTYPEDDEFCOV` would be read as a
+// 17th gate that is not in the `gates` object. One character of prefix is the difference.
+console.log(
+  `TYPEDDEFCOV ${(() => {
+    const live = grades.filter((x) => !x.g.refused && !x.g.unmapped);
+    const rows = live.reduce((n, x) => n + x.g.rows.length, 0);
+    const j = live.reduce((n, x) => n + x.g.rows.filter((r) => r.quotedCount > 0).length, 0);
+    const lines = live.reduce((n, x) => n + x.g.rows.reduce((m, r) => m + r.ctxLines, 0), 0);
+    return `judged ${j} of ${rows} reached member(s) over ${lines} context line(s) on ${live.length} mapped arm(s)`;
+  })()}`,
+);
 
 // --- GDRIFTBITE: the drift exclusion is non-vacuous — on at least one arm the arm-caused
 // set is a STRICT subset of the raw reached set. Under `drift-blind` the drift set is
@@ -1149,5 +1221,18 @@ console.log(`GCONF  ${GCONFORM.ok ? 'ok ' : 'RED'} §3.3/§3.4 conformance: ${GC
 const gates = { GKP, GABS, GSTAMP, GMUST, GCTRL, GCTRLPROV, GREACH, GCTX, GREFUSE, GTYPED, GTYPEDDEF, GSUBJ, GDRIFTBITE, GDRIFTREF, GCOMPLETE, GCONFORM };
 const red = Object.entries(gates).filter(([, v]) => !v.ok).map(([k]) => k);
 const code = red.length > 0 ? 1 : 0;
-console.log(`\nMAPVERDICT/${code} ${red.length === 0 ? 'ok' : 'RED'} gates=${Object.keys(gates).length} red=[${red.join(',')}]`);
+// Which gates passed VACUOUSLY — green, but over an empty denominator. Published on its OWN
+// line, BEFORE the verdict and deliberately NOT appended to it: `unit-464rekey-2026-10-30/
+// grade-arms.mjs:17` parses the verdict with `/^MAPVERDICT\/(\d+) (ok|RED) gates=(\d+)
+// red=\[([^\]]*)\]$/m` — `$`-ANCHORED — so appending a field to that line would stop an
+// older round's instrument from matching at all, and nothing re-drives it. Added 2026-10-31
+// STOP with unit-464vac. A gate opts in by returning a `vacuous` string; only GTYPEDDEF does
+// so today. GSUBJ already prints VACUOUS in its own prose on both legs and is NOT wired here
+// — its vacuity is per-leg and partial, which needs a call about what a half-vacuous gate
+// reports. Named without a deadline, not deferred for lack of time.
+const vacuous = Object.entries(gates).filter(([, v]) => typeof v.vacuous === 'string');
+console.log(
+  `\nMAPVACUOUS/${vacuous.length} ${vacuous.length === 0 ? 'none — every green gate measured something' : vacuous.map(([k, v]) => `${k} (${v.vacuous})`).join(' · ')}`,
+);
+console.log(`MAPVERDICT/${code} ${red.length === 0 ? 'ok' : 'RED'} gates=${Object.keys(gates).length} red=[${red.join(',')}]`);
 process.exit(code);

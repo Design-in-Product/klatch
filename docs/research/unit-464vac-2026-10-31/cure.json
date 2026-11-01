@@ -1,0 +1,299 @@
+{
+  "precureRev": "caaf2cf18cc5ac5dbc9aa5e81fea74440d0b4d6d",
+  "legs": [
+    {
+      "id": "C1",
+      "pred": "MAPVACUOUS/1 GTYPEDDEF on exactly the cells the measurement calls vacuous (D4num == 0), MAPVACUOUS/0 on the rest",
+      "verdict": "LANDS",
+      "got": "expected [07.V2-MAP-t8-ceiling-blind-RETITLED-t8-ceiling-blind,08.V2-MAP-t8-ceiling-blind-STAMP-STRIPPED-t8-ceiling-blind] (2), got [07.V2-MAP-t8-ceiling-blind-RETITLED-t8-ceiling-blind,08.V2-MAP-t8-ceiling-blind-STAMP-STRIPPED-t8-ceiling-blind] (2); the other 6 print MAPVACUOUS/0"
+    },
+    {
+      "id": "C2",
+      "pred": "on the 6 NON-vacuous cells all three keyed lines are BYTE-IDENTICAL to the pre-cure recording, so no filed recording disagrees for a non-defect",
+      "verdict": "LANDS",
+      "got": "01.V22-MAP-t2-dir-only:same 02.V21-MAP.baseline-t8-unpinned:same 03.V21-MAP.cured-t8-unpinned:same 04.V21-MAP.nomoved-t8-unpinned:same 05.V21-MAP.prose-t8-unpinned:same 06.V21-MAP-t8-unpinned:same"
+    },
+    {
+      "id": "C3",
+      "pred": "on the 2 vacuous cells the GTYPEDDEF line DIFFERS from pre-cure while MAPVERDICT stays byte-identical (green, labelled — not a new RED)",
+      "verdict": "LANDS",
+      "got": "07.V2-MAP-t8-ceiling-blind-RETITLED-t8-ceiling-blind: GTYPEDDEF differs, MAPVERDICT identical · 08.V2-MAP-t8-ceiling-blind-STAMP-STRIPPED-t8-ceiling-blind: GTYPEDDEF differs, MAPVERDICT identical"
+    },
+    {
+      "id": "C4",
+      "pred": "the COUNTERFACTUAL: --cripple=typeddef-vacuity-blind restores the pre-cure GTYPEDDEF line byte-for-byte on the 2 vacuous cells and MAPVACUOUS/0 on all 8",
+      "verdict": "LANDS",
+      "got": "2 of 2 restored verbatim; 8 of 8 print MAPVACUOUS/0 under the cripple"
+    },
+    {
+      "id": "C5",
+      "pred": "the cure costs ZERO newly-red maps: MAPVERDICT is byte-identical to pre-cure on all 8 cells",
+      "verdict": "LANDS",
+      "got": "all 8 verdicts byte-identical"
+    },
+    {
+      "id": "C6",
+      "pred": "TYPEDDEFCOV's judged/reached matches vac.json's D4 on all 8 cells (ONE computation read two ways — a wiring check, not confirmation)",
+      "verdict": "LANDS",
+      "got": "01:ok 02:ok 03:ok 04:ok 05:ok 06:ok 07:ok 08:ok"
+    }
+  ],
+  "cells": [
+    {
+      "tag": "01.V22-MAP-t2-dir-only",
+      "saturated": true,
+      "hisPrice": 0,
+      "D4num": 1,
+      "D4den": 10,
+      "D3": 22,
+      "beforeKeys": [
+        "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed",
+        "TYPED  tokensTyped=[] n=0  ·  superseded recording-wide key=[] n=0",
+        "MAPVERDICT/0 ok gates=16 red=[]"
+      ],
+      "afterKeys": [
+        "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed",
+        "TYPED  tokensTyped=[] n=0  ·  superseded recording-wide key=[] n=0",
+        "MAPVERDICT/0 ok gates=16 red=[]"
+      ],
+      "blindKeys": [
+        "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed",
+        "TYPED  tokensTyped=[] n=0  ·  superseded recording-wide key=[] n=0",
+        "MAPVERDICT/0 ok gates=16 red=[]"
+      ],
+      "mapvac": "MAPVACUOUS/0 none — every green gate measured something",
+      "mapvacBlind": "MAPVACUOUS/0 none — every green gate measured something",
+      "cov": "TYPEDDEFCOV judged 1 of 10 reached member(s) over 22 context line(s) on 1 mapped arm(s)",
+      "verdictBefore": "MAPVERDICT/0 ok gates=16 red=[]",
+      "verdictAfter": "MAPVERDICT/0 ok gates=16 red=[]",
+      "gtBefore": "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed",
+      "gtAfter": "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed",
+      "gtBlind": "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed",
+      "rcAfter": 0
+    },
+    {
+      "tag": "02.V21-MAP.baseline-t8-unpinned",
+      "saturated": false,
+      "hisPrice": 3,
+      "D4num": 2,
+      "D4den": 15,
+      "D3": 37,
+      "beforeKeys": [
+        "GTYPEDDEF RED typed-token defects: 1 typed token(s) — quoted OF a member that never emits it: [t8-unpinned:moved]",
+        "TYPED  tokensTyped=[moved] n=1  ·  superseded recording-wide key=[moved] n=1",
+        "MAPVERDICT/1 RED gates=16 red=[GTYPEDDEF]"
+      ],
+      "afterKeys": [
+        "GTYPEDDEF RED typed-token defects: 1 typed token(s) — quoted OF a member that never emits it: [t8-unpinned:moved]",
+        "TYPED  tokensTyped=[moved] n=1  ·  superseded recording-wide key=[moved] n=1",
+        "MAPVERDICT/1 RED gates=16 red=[GTYPEDDEF]"
+      ],
+      "blindKeys": [
+        "GTYPEDDEF RED typed-token defects: 1 typed token(s) — quoted OF a member that never emits it: [t8-unpinned:moved]",
+        "TYPED  tokensTyped=[moved] n=1  ·  superseded recording-wide key=[moved] n=1",
+        "MAPVERDICT/1 RED gates=16 red=[GTYPEDDEF]"
+      ],
+      "mapvac": "MAPVACUOUS/0 none — every green gate measured something",
+      "mapvacBlind": "MAPVACUOUS/0 none — every green gate measured something",
+      "cov": "TYPEDDEFCOV judged 2 of 15 reached member(s) over 37 context line(s) on 1 mapped arm(s)",
+      "verdictBefore": "MAPVERDICT/1 RED gates=16 red=[GTYPEDDEF]",
+      "verdictAfter": "MAPVERDICT/1 RED gates=16 red=[GTYPEDDEF]",
+      "gtBefore": "GTYPEDDEF RED typed-token defects: 1 typed token(s) — quoted OF a member that never emits it: [t8-unpinned:moved]",
+      "gtAfter": "GTYPEDDEF RED typed-token defects: 1 typed token(s) — quoted OF a member that never emits it: [t8-unpinned:moved]",
+      "gtBlind": "GTYPEDDEF RED typed-token defects: 1 typed token(s) — quoted OF a member that never emits it: [t8-unpinned:moved]",
+      "rcAfter": 1
+    },
+    {
+      "tag": "03.V21-MAP.cured-t8-unpinned",
+      "saturated": false,
+      "hisPrice": 3,
+      "D4num": 2,
+      "D4den": 15,
+      "D3": 37,
+      "beforeKeys": [
+        "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed",
+        "TYPED  tokensTyped=[] n=0  ·  superseded recording-wide key=[] n=0",
+        "MAPVERDICT/0 ok gates=16 red=[]"
+      ],
+      "afterKeys": [
+        "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed",
+        "TYPED  tokensTyped=[] n=0  ·  superseded recording-wide key=[] n=0",
+        "MAPVERDICT/0 ok gates=16 red=[]"
+      ],
+      "blindKeys": [
+        "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed",
+        "TYPED  tokensTyped=[] n=0  ·  superseded recording-wide key=[] n=0",
+        "MAPVERDICT/0 ok gates=16 red=[]"
+      ],
+      "mapvac": "MAPVACUOUS/0 none — every green gate measured something",
+      "mapvacBlind": "MAPVACUOUS/0 none — every green gate measured something",
+      "cov": "TYPEDDEFCOV judged 2 of 15 reached member(s) over 37 context line(s) on 1 mapped arm(s)",
+      "verdictBefore": "MAPVERDICT/0 ok gates=16 red=[]",
+      "verdictAfter": "MAPVERDICT/0 ok gates=16 red=[]",
+      "gtBefore": "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed",
+      "gtAfter": "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed",
+      "gtBlind": "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed",
+      "rcAfter": 0
+    },
+    {
+      "tag": "04.V21-MAP.nomoved-t8-unpinned",
+      "saturated": false,
+      "hisPrice": 3,
+      "D4num": 2,
+      "D4den": 15,
+      "D3": 37,
+      "beforeKeys": [
+        "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed",
+        "TYPED  tokensTyped=[] n=0  ·  superseded recording-wide key=[] n=0",
+        "MAPVERDICT/0 ok gates=16 red=[]"
+      ],
+      "afterKeys": [
+        "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed",
+        "TYPED  tokensTyped=[] n=0  ·  superseded recording-wide key=[] n=0",
+        "MAPVERDICT/0 ok gates=16 red=[]"
+      ],
+      "blindKeys": [
+        "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed",
+        "TYPED  tokensTyped=[] n=0  ·  superseded recording-wide key=[] n=0",
+        "MAPVERDICT/0 ok gates=16 red=[]"
+      ],
+      "mapvac": "MAPVACUOUS/0 none — every green gate measured something",
+      "mapvacBlind": "MAPVACUOUS/0 none — every green gate measured something",
+      "cov": "TYPEDDEFCOV judged 2 of 15 reached member(s) over 37 context line(s) on 1 mapped arm(s)",
+      "verdictBefore": "MAPVERDICT/0 ok gates=16 red=[]",
+      "verdictAfter": "MAPVERDICT/0 ok gates=16 red=[]",
+      "gtBefore": "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed",
+      "gtAfter": "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed",
+      "gtBlind": "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed",
+      "rcAfter": 0
+    },
+    {
+      "tag": "05.V21-MAP.prose-t8-unpinned",
+      "saturated": false,
+      "hisPrice": 11,
+      "D4num": 3,
+      "D4den": 15,
+      "D3": 54,
+      "beforeKeys": [
+        "GTYPEDDEF RED typed-token defects: 2 typed token(s) — quoted OF a member that never emits it: [t8-unpinned:N,t8-unpinned:moved]",
+        "TYPED  tokensTyped=[N,moved] n=2  ·  superseded recording-wide key=[moved] n=1",
+        "MAPVERDICT/1 RED gates=16 red=[GTYPEDDEF]"
+      ],
+      "afterKeys": [
+        "GTYPEDDEF RED typed-token defects: 2 typed token(s) — quoted OF a member that never emits it: [t8-unpinned:N,t8-unpinned:moved]",
+        "TYPED  tokensTyped=[N,moved] n=2  ·  superseded recording-wide key=[moved] n=1",
+        "MAPVERDICT/1 RED gates=16 red=[GTYPEDDEF]"
+      ],
+      "blindKeys": [
+        "GTYPEDDEF RED typed-token defects: 2 typed token(s) — quoted OF a member that never emits it: [t8-unpinned:N,t8-unpinned:moved]",
+        "TYPED  tokensTyped=[N,moved] n=2  ·  superseded recording-wide key=[moved] n=1",
+        "MAPVERDICT/1 RED gates=16 red=[GTYPEDDEF]"
+      ],
+      "mapvac": "MAPVACUOUS/0 none — every green gate measured something",
+      "mapvacBlind": "MAPVACUOUS/0 none — every green gate measured something",
+      "cov": "TYPEDDEFCOV judged 3 of 15 reached member(s) over 54 context line(s) on 1 mapped arm(s)",
+      "verdictBefore": "MAPVERDICT/1 RED gates=16 red=[GTYPEDDEF]",
+      "verdictAfter": "MAPVERDICT/1 RED gates=16 red=[GTYPEDDEF]",
+      "gtBefore": "GTYPEDDEF RED typed-token defects: 2 typed token(s) — quoted OF a member that never emits it: [t8-unpinned:N,t8-unpinned:moved]",
+      "gtAfter": "GTYPEDDEF RED typed-token defects: 2 typed token(s) — quoted OF a member that never emits it: [t8-unpinned:N,t8-unpinned:moved]",
+      "gtBlind": "GTYPEDDEF RED typed-token defects: 2 typed token(s) — quoted OF a member that never emits it: [t8-unpinned:N,t8-unpinned:moved]",
+      "rcAfter": 1
+    },
+    {
+      "tag": "06.V21-MAP-t8-unpinned",
+      "saturated": false,
+      "hisPrice": 3,
+      "D4num": 2,
+      "D4den": 15,
+      "D3": 37,
+      "beforeKeys": [
+        "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed",
+        "TYPED  tokensTyped=[] n=0  ·  superseded recording-wide key=[] n=0",
+        "MAPVERDICT/0 ok gates=16 red=[]"
+      ],
+      "afterKeys": [
+        "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed",
+        "TYPED  tokensTyped=[] n=0  ·  superseded recording-wide key=[] n=0",
+        "MAPVERDICT/0 ok gates=16 red=[]"
+      ],
+      "blindKeys": [
+        "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed",
+        "TYPED  tokensTyped=[] n=0  ·  superseded recording-wide key=[] n=0",
+        "MAPVERDICT/0 ok gates=16 red=[]"
+      ],
+      "mapvac": "MAPVACUOUS/0 none — every green gate measured something",
+      "mapvacBlind": "MAPVACUOUS/0 none — every green gate measured something",
+      "cov": "TYPEDDEFCOV judged 2 of 15 reached member(s) over 37 context line(s) on 1 mapped arm(s)",
+      "verdictBefore": "MAPVERDICT/0 ok gates=16 red=[]",
+      "verdictAfter": "MAPVERDICT/0 ok gates=16 red=[]",
+      "gtBefore": "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed",
+      "gtAfter": "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed",
+      "gtBlind": "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed",
+      "rcAfter": 0
+    },
+    {
+      "tag": "07.V2-MAP-t8-ceiling-blind-RETITLED-t8-ceiling-blind",
+      "saturated": false,
+      "hisPrice": 1,
+      "D4num": 0,
+      "D4den": 7,
+      "D3": 12,
+      "beforeKeys": [
+        "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed",
+        "TYPED  tokensTyped=[] n=0  ·  superseded recording-wide key=[] n=0",
+        "MAPVERDICT/1 RED gates=16 red=[GCONFORM]"
+      ],
+      "afterKeys": [
+        "GTYPEDDEF ok  typed-token defects: VACUOUS — 0 typed tokens, but 0 of 7 reached member(s) on 1 mapped arm(s) quote any name=value token, so there was no (member, token) pair to judge. This 0 is a non-measurement, not a §3.4 pass",
+        "TYPED  tokensTyped=[] n=0  ·  superseded recording-wide key=[] n=0",
+        "MAPVERDICT/1 RED gates=16 red=[GCONFORM]"
+      ],
+      "blindKeys": [
+        "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed",
+        "TYPED  tokensTyped=[] n=0  ·  superseded recording-wide key=[] n=0",
+        "MAPVERDICT/1 RED gates=16 red=[GCONFORM]"
+      ],
+      "mapvac": "MAPVACUOUS/1 GTYPEDDEF (judged 0 of 7 reached member(s) on 1 mapped arm(s))",
+      "mapvacBlind": "MAPVACUOUS/0 none — every green gate measured something",
+      "cov": "TYPEDDEFCOV judged 0 of 7 reached member(s) over 12 context line(s) on 1 mapped arm(s)",
+      "verdictBefore": "MAPVERDICT/1 RED gates=16 red=[GCONFORM]",
+      "verdictAfter": "MAPVERDICT/1 RED gates=16 red=[GCONFORM]",
+      "gtBefore": "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed",
+      "gtAfter": "GTYPEDDEF ok  typed-token defects: VACUOUS — 0 typed tokens, but 0 of 7 reached member(s) on 1 mapped arm(s) quote any name=value token, so there was no (member, token) pair to judge. This 0 is a non-measurement, not a §3.4 pass",
+      "gtBlind": "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed",
+      "rcAfter": 1
+    },
+    {
+      "tag": "08.V2-MAP-t8-ceiling-blind-STAMP-STRIPPED-t8-ceiling-blind",
+      "saturated": false,
+      "hisPrice": 1,
+      "D4num": 0,
+      "D4den": 7,
+      "D3": 12,
+      "beforeKeys": [
+        "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed",
+        "TYPED  tokensTyped=[] n=0  ·  superseded recording-wide key=[] n=0",
+        "MAPVERDICT/1 RED gates=16 red=[GMUST,GCONFORM]"
+      ],
+      "afterKeys": [
+        "GTYPEDDEF ok  typed-token defects: VACUOUS — 0 typed tokens, but 0 of 7 reached member(s) on 1 mapped arm(s) quote any name=value token, so there was no (member, token) pair to judge. This 0 is a non-measurement, not a §3.4 pass",
+        "TYPED  tokensTyped=[] n=0  ·  superseded recording-wide key=[] n=0",
+        "MAPVERDICT/1 RED gates=16 red=[GMUST,GCONFORM]"
+      ],
+      "blindKeys": [
+        "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed",
+        "TYPED  tokensTyped=[] n=0  ·  superseded recording-wide key=[] n=0",
+        "MAPVERDICT/1 RED gates=16 red=[GMUST,GCONFORM]"
+      ],
+      "mapvac": "MAPVACUOUS/1 GTYPEDDEF (judged 0 of 7 reached member(s) on 1 mapped arm(s))",
+      "mapvacBlind": "MAPVACUOUS/0 none — every green gate measured something",
+      "cov": "TYPEDDEFCOV judged 0 of 7 reached member(s) over 12 context line(s) on 1 mapped arm(s)",
+      "verdictBefore": "MAPVERDICT/1 RED gates=16 red=[GMUST,GCONFORM]",
+      "verdictAfter": "MAPVERDICT/1 RED gates=16 red=[GMUST,GCONFORM]",
+      "gtBefore": "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed",
+      "gtAfter": "GTYPEDDEF ok  typed-token defects: VACUOUS — 0 typed tokens, but 0 of 7 reached member(s) on 1 mapped arm(s) quote any name=value token, so there was no (member, token) pair to judge. This 0 is a non-measurement, not a §3.4 pass",
+      "gtBlind": "GTYPEDDEF ok  typed-token defects: 0 typed tokens across 1 mapped arm(s); §3.4's DEFECT is now read by a gate and not only printed",
+      "rcAfter": 1
+    }
+  ]
+}
