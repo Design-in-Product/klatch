@@ -1,0 +1,65 @@
+unit-464steal — arm=steal
+  clone:   /Users/xian/Development/klatch-worktrees/daedalus/.testdata/unit-464steal/clone
+  phrase:  "the 375/376 cure landed"   (lifted from docs/research/round378-instruments/grade-b3-known-positive.mjs, not typed)
+  pin:     56b180e602d426ff97591efa2713d89f0d9344d0
+  decl:    "const R223B_REFUSAL = "
+
+GATES
+  GCLONE      ok  — clone git-dir /Users/xian/Development/klatch-worktrees/daedalus/.testdata/unit-464steal/clone/.git ≠ live /Users/xian/Development/klatch/.git/worktrees/daedalus, under .testdata/, has scripts/lib/
+  GPIN        ok  — 56b180e6 is a commit in the clone
+  GREADER     ok  — live and clone scripts/lib/strip-source.mjs byte-identical
+  GLIVECLEAN  ok  — git status --porcelain -- packages/ scripts/ is 0 bytes in the LIVE tree
+  GARMREACH   ok  — arm=steal: matches 1 → 2, steal commit aa44ab69
+
+1. WHAT THE TWO SPELLINGS ANSWER, on this world state
+   commits matching the phrase:            2
+      aa44ab69  2026-11-01 | Daedalus (Klatch) | mail(Daedalus -> Theseus): the stealable class, reported
+      56b180e6  2026-10-12 | Daedalus (Klatch) | round377: the 375/376 cure landed on the two reported sites and the mechanism was live in both files
+   pre-cure spelling  (log -1 --grep):     aa44ab69
+   cured spelling     (literal pin):       56b180e6
+   the two spellings AGREE:                false
+   cure's guard would throw (pin lost):    false
+   cure's guard would WARN (count ≠ 1):    true
+
+2. THE VALUE THE KNOWN-POSITIVE LEG IS COMPUTED FROM
+   S1 reads `<rev>^:scripts/<file>` and counts DECL_FRAGMENT after stripSource(…, true).
+   file            rev         verdict-figure  comments-blanked  raw  bytes
+   probe-round374  PIN^              0                 0    2  19726
+   probe-round374  KEYED^            0                 0    2  22676
+   probe-round375  PIN^              0                 1    2  18146
+   probe-round375  KEYED^            0                 0    2  19654
+   verdict figures that MOVED and still read cleanly: (none)
+   reads that THREW at the keyed rev:                false
+   UPSTREAM figures (raw/comments/bytes) that moved:  probe-round375, probe-round374
+   ⇒ a verdict figure that did not move while an upstream one did is SATURATED,
+     not protected: the steal reached the read and the read could not express it.
+
+3. S1 ITSELF, UNMODIFIED, RUN INSIDE THE CLONE
+   EXIT 0; guard WARNED: true; guard THREW: false
+   | WARNING: 2 commits now match the cure's subject phrase; the pin holds, but `log -1 --grep` would resolve to aa44ab69d600185a95c8e060229adcd9cfd4ba15 instead of 56b180e602d426ff97591efa2713d89f0d9344d0.
+   | curing commit (read with %an, never --oneline): 56b180e6 Daedalus (Klatch) round377: the 375/376 cure landed on the two reported sites and the mechanism was live in both files
+   | B3's own known-positive legs, as shipped (fixture read RAW):
+   |    occ(PRECURE_374, DECL_FRAGMENT) = 1
+   |    occ(PRECURE_375, DECL_FRAGMENT) = 1
+   | and the same two fixtures put through the reader the LIVE legs use:
+   |    occ(stripSource(PRECURE_374, true), DECL_FRAGMENT) = 0
+   |    occ(stripSource(PRECURE_375, true), DECL_FRAGMENT) = 0
+   | the pre-cure sources — the state in which the defect was PRESENT — read by B3's live leg:
+   |    file            pre:raw  pre:comments  pre:both  live:both
+   |    probe-round374      2            0         0          0
+   |    probe-round375      2            1         0          0
+   | READINGS:
+   |   1. B3's live leg reads 0 on a PRE-CURE file for: probe-round374, probe-round375
+   |   2. B3's known positives survive the reader its live legs use: false
+   | VERDICT on his §6 question — is `probe-round377` a member of the class it reports?
+   |   YES on the known positive: the live leg would have read 0 on the defect itself, so the
+   |   two KP legs cannot witness the failure mode the live legs have. The fixture is inert where
+   |   he says it is, but it is also inert as evidence.
+
+PREDICTIONS settled by THIS arm
+  P1  N/A       graded on arm=kn
+  P2  LANDS     pre-cure spelling resolves to aa44ab69; steal is aa44ab69
+  P3  LANDS     cured instrument EXIT 0, answer still 56b180e6, guard reached: true
+  P4  REFUTED (saturated) verdict figure is 0 at both revs while raw/comments/bytes moved for probe-round375, probe-round374 — the steal reached and could not be expressed
+
+SUMMARY arm=steal: 5/5 gates ok, graded
