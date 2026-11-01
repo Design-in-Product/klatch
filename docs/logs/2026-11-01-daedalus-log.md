@@ -111,3 +111,53 @@ since demonstrating it means committing a message that quotes the phrase), the
 `log -1`-keyed values across the 308-file surface feed a published **identity** claim
 rather than a freshness decision, which is a different selector from the one Theseus's
 `unit-464rec` census used.
+
+---
+
+## 09:33 — Session wrap verification
+
+Appended after the five commits it cites, not before.
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline --author='Daedalus' -6`):
+
+```
+b985d9a9 coord+log: 11/01 START fire — all three routed sites taken, two had already moved
+ce0c6362 mail(Daedalus -> Theseus, xian; cc Janus/Argus/Calliope/Iris): two of his three had already moved
+cb91d048 unit-464rec3: all three routed sites cured, and two of them had already moved
+3b113470 unit-464rec3: two of his three are already moved, and S2 lifts the cure it exists to grade
+c1d56074 unit-464rec3: pre-registration, before any instrument in the directory exists
+e0dbc61c log: 10/31 STOP fire — wrap verification appended after the seven commits it cites
+```
+
+The last is the prior fire's; the five above it are this fire's. `git diff --stat
+origin/main HEAD` is **empty**, so nothing is stranded on the local branch.
+
+**Step 2 — each deliverable, sized by `statSync`:**
+
+* `PRE-REGISTRATION.md` 5057 B · `RESULTS.md` 8888 B
+* `census-the-three-routed-sites.mjs` 7687 B · `probe-does-the-drift-change-the-value.mjs`
+  5284 B · `grade-p4-the-conjunct-no-movement-can-falsify.mjs` 4768 B ·
+  `grade-the-three-cures.mjs` 9522 B · `drive-s1-guard-cripple.mjs` 4298 B
+* **7 `.out` recordings, 7 `.err`, 0 non-empty**, counted with `readdirSync`; **0 stray
+  `.arm-*` files** — the cripple driver's generated arms are unlinked in a `finally`.
+* The three cured instruments, in `cb91d048`: `round378-instruments/grade-b3-known-positive.mjs`
+  (+27/-), `round397-instruments/grade-the-anchor-that-is-not-guarded.mjs` (+22/-),
+  `round397-instruments/probe-the-anchor-that-is-not-guarded.mjs` (+21/-).
+* `docs/COORDINATION.md` — entry verified **by section index, not string proximity**: the
+  Daedalus section spans 546–2716 and the new bullet is at **548**, inside it. (A
+  shared-file insert of mine has landed in Argus's section before.)
+* `docs/mail/daedalus-to-theseus-…-two-of-your-three-had-already-moved-…-2026-11-01.md`,
+  pushed to `main` in `ce0c6362` as the mail convention requires.
+
+**Step 3 — tree state.** `git status --porcelain` **0 lines**; `git status --porcelain --
+packages/ scripts/` **0 lines**, matching open. `git diff --dirstat e0dbc61c..HEAD` shows
+every changed path under `docs/`.
+
+**The one claim in this log that needed its own check**, since it is the kind that reads
+as true and is not: that no commit message of mine stole S1's answer key.
+`git log origin/main --grep` on the subject phrase, run **after** the final push, returns
+**exactly one commit** — `56b180e6 Daedalus (Klatch) round377: …`, the real curing commit.
+The hazard was not created by reporting it.
+
+Delivery is the wrapper's to log, not mine to assert. Nothing is claimed above that is not
+in this list.

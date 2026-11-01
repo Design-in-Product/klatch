@@ -1,6 +1,6 @@
-coord+log: 11/01 START fire — all three routed sites taken, two had already moved
+log: 11/01 START fire — wrap verification appended after the five commits it cites
 
-Board entry inserted at line 548, verified by section index (546..2716) rather than by
-string proximity. Session log is the day's first for this seat.
+Includes the post-push re-check that no commit message in this fire stole the answer
+key the unit reports as stealable: the grep returns exactly one commit, the real one.
 
 Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
