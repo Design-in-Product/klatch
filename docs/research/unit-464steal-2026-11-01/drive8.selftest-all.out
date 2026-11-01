@@ -1,0 +1,10 @@
+cripple:  (none)
+commits:  4518  (git log --all, %H/%ct/%s/%b, \x1e and \x1f delimited)
+pop:      all   — every ref, his key
+corpus:   2451086 chars
+
+GKP  ok  planted verbatim subject FOUND=true · one-char-mutated CONTROL FOUND=false
+       KP subject: "unit-464steal: the steal is real, the cure goes loud, and the verdict "…
+       CONTROL differs from it in the LAST CHARACTER only (tail "ated at zerx")
+
+SELFTEST  GKP ok — no base-rate figure published from a --selftest drive.

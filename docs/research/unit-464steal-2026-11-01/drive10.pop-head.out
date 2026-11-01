@@ -1,0 +1,34 @@
+cripple:  (none)
+commits:  4343  (git log (HEAD, no --all), %H/%ct/%s/%b, \x1e and \x1f delimited)
+pop:      head   — HEAD-reachable only, the population every --grep site in this tree actually reads
+corpus:   2416289 chars
+
+GKP  ok  planted verbatim subject FOUND=true · one-char-mutated CONTROL FOUND=false
+       KP subject: "unit-464steal: the steal is real, the cure goes loud, and the verdict "…
+       CONTROL differs from it in the LAST CHARACTER only (tail "ated at zerx")
+
+MINLEN >= 30
+  subjects tested                            4327 of 4343
+  matched anywhere in another commit         250  (5.8%)   <- drive8's undivided figure
+    of which: COLLISION only (same subject)  250  (5.8%)
+    of which: QUOTATION (in another BODY)    0  (0.0%)  <- the clause under test
+  QUOTED IN A BODY BY A STRICTLY LATER COMMIT 0  (0.0%)
+     ^ THE figure: a `--grep <subject>` + `-1` selector on one of these already
+       answers with a commit other than the one its author meant.
+  GSUM ok  250 + 0 = 250, matched 250
+
+MINLEN >= 50
+  subjects tested                            4046 of 4343
+  matched anywhere in another commit         209  (5.2%)   <- drive8's undivided figure
+    of which: COLLISION only (same subject)  209  (5.2%)
+    of which: QUOTATION (in another BODY)    0  (0.0%)  <- the clause under test
+  QUOTED IN A BODY BY A STRICTLY LATER COMMIT 0  (0.0%)
+     ^ THE figure: a `--grep <subject>` + `-1` selector on one of these already
+       answers with a commit other than the one its author meant.
+  GSUM ok  209 + 0 = 209, matched 209
+
+Subjects QUOTED IN A LATER COMMIT'S BODY, top 0 at MINLEN 30 — the GHAND surface:
+
+GMONO ok  MINLEN 50 is a subset of MINLEN 30: tested 4046<=4327, matched 209<=250, later 142<=167, later-quotation 0<=0
+
+BASERATEVERDICT/0  GKP ok, GMONO ok, GSUM ok at 2 threshold(s): 30,50

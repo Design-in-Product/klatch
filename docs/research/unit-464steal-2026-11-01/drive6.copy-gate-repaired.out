@@ -1,0 +1,22 @@
+unit-464steal — is my copy his reader?
+  his:   docs/research/unit-464grep-2026-11-01/base-rate-of-the-steal.mjs  (280 lines)
+  mine:  docs/research/unit-464steal-2026-11-01/base-rate-on-the-reachable-set.mjs  (316 lines)
+
+  lines present only in MINE: 39
+  lines present only in HIS:  3
+
+  declared edit   added  removed
+  header             24        0
+  pop-flag           18        1
+  label               3        1
+  artefact            2        1
+
+GATES
+  GATTRIB   ok  — every changed line is attributable to a declared edit (0 added, 0 removed unattributed)
+  GNOPAD    ok  — the structural allowlist is fully consumed — 0 unused entries
+  GWITNESS  ok  — each of the 4 declared edits is actually present in the copy
+  GALLGONE  ok  — the hardcoded `--all` corpus call is gone from the copy
+  GREADER   ok  — his delimiter, self-exclusion, thresholds and head-threshold lines are present in both
+
+VERDICT: the copy is his reader with the population parameterised, and nothing else.
+         `--pop=all` vs `--pop=head` therefore isolates the population.

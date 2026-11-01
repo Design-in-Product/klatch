@@ -1,0 +1,6091 @@
+{
+  "pop": "all",
+  "popArgs": [
+    "--all"
+  ],
+  "cripple": null,
+  "commits": 4518,
+  "corpusChars": 2451086,
+  "gkp": {
+    "pass": true,
+    "kpFound": true,
+    "ctlFound": false,
+    "subject": "unit-464steal: the steal is real, the cure goes loud, and the verdict figure it would have moved is saturated at zero"
+  },
+  "thresholds": {
+    "30": {
+      "tested": 4493,
+      "quoted": 325,
+      "stolenShape": 222,
+      "byQuotation": 0,
+      "byCollisionOnly": 325,
+      "laterQuotation": 0,
+      "sumOk": true,
+      "rows": [
+        {
+          "sha": "ab3e5db8",
+          "subject": "log: 10/31 WORK fire — wrap verification appended after the commits it cites",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "4df06a01",
+          "subject": "log: 10/31 START fire — wrap verification appended after the commits it cites",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "6821495a",
+          "subject": "log: 10/30 STOP fire — wrap verification appended after the commits it cites",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f3c7f64b",
+          "subject": "log: 10/30 STOP fire — wrap verification appended after the commits it cites",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "ab837677",
+          "subject": "log: 10/30 WORK fire — wrap verification appended after the commits it cites",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "708712f1",
+          "subject": "log: 10/30 WORK fire — wrap verification appended after the commits it cites",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "89baf6e0",
+          "subject": "log: 10/30 START fire — wrap verification appended after the commits it cites",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "ee653841",
+          "subject": "log: 10/30 START fire — wrap verification appended after the commits it cites",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "255d9180",
+          "subject": "coord+log: 10/25 START fire — no-op, Round 451 close landed not mine, gate byte-identical",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "72a0eefb",
+          "subject": "coord+log: 10/25 START fire — no-op, Round 451 close landed not mine, gate byte-identical",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a1988a03",
+          "subject": "coord+log: 10/22 STOP fire — no-op on product, gate re-verified green, both standing blockers unmoved",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "c43be250",
+          "subject": "coord+log: 10/22 STOP fire — no-op on product, gate re-verified green, both standing blockers unmoved",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "9feaac31",
+          "subject": "log: 10/22 START fire — wrap verification appended, commits and tree read off origin/main",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "be9f2767",
+          "subject": "log: 10/22 START fire — wrap verification appended, commits and tree read off origin/main",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "839e6063",
+          "subject": "coord+log: 10/22 START fire — no-op on product, gate re-verified green, both standing blockers unmoved",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "e5dc1d33",
+          "subject": "coord+log: 10/22 START fire — no-op on product, gate re-verified green, both standing blockers unmoved",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f7ba1352",
+          "subject": "log: 10/21 START fire — wrap verification appended",
+          "quoters": 3,
+          "collision": 3,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "83739f44",
+          "subject": "coord+log: 10/21 START fire — no-op on product, gate re-verified green, both standing blockers unmoved",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "89a5b10d",
+          "subject": "coord+log: 10/21 START fire — no-op on product, gate re-verified green, both standing blockers unmoved",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "2ca58521",
+          "subject": "log: 10/20 STOP fire — wrap verification appended",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f9add551",
+          "subject": "log: 10/20 STOP fire — wrap verification appended",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "6fbf9889",
+          "subject": "coord+log: 10/20 START fire — no-op on product, Round 422 chain read, gate re-verified green",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a090cfaa",
+          "subject": "coord+log: 10/20 START fire — no-op on product, Round 422 chain read, gate re-verified green",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "477cbc73",
+          "subject": "coord+log: 10/19 START fire — no-op on product, gate re-verified green",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "ea153fb7",
+          "subject": "coord+log: 10/18 START fire — no-op on product, round410 mail read, gate re-verified green",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "1f594c3b",
+          "subject": "coord+log: 10/18 START fire — no-op on product, round410 mail read, gate re-verified green",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "dafdcc08",
+          "subject": "coord+log: 10/17 START fire — no-op on product, gate re-verified green",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f7c61397",
+          "subject": "coord+log: 10/17 START fire — no-op on product, gate re-verified green",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "0b159654",
+          "subject": "coord+log: 10/16 START fire — no-op on product, gate re-verified 43/43 green, standing blockers unmoved",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "6a5ac265",
+          "subject": "coord+log: 10/16 START fire — no-op on product, gate re-verified 43/43 green, standing blockers unmoved",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "fa64f4f7",
+          "subject": "coord+log: 10/16 START fire — no-op on product, gate re-verified 43/43 green, standing blockers unmoved",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "0c62294a",
+          "subject": "coord+log: 10/15 START fire — no-op, gate re-verified green (153/43)",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "5ad685d2",
+          "subject": "briefs: fire-depth report 2026-10-14 (published by Pard for Calliope)",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "7b231dd3",
+          "subject": "briefs: fire-depth report 2026-10-14 (published by Pard for Calliope)",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "9f450244",
+          "subject": "coord+log: 10/14 START fire — no-op, gate re-verified green (153/43)",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "7ec7802f",
+          "subject": "coord+log: 10/14 START fire — no-op, gate re-verified green (153/43)",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "3d35c3d0",
+          "subject": "coord+log: 10/14 START fire — no-op, gate re-verified green (153/43)",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "b8e2f214",
+          "subject": "coord+log: 10/13 START fire — no-op, gate re-verified green (153/43)",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "65ef4ce5",
+          "subject": "coord+log: 10/13 START fire — no-op, gate re-verified green (153/43)",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "e11087b7",
+          "subject": "coord+log: 10/13 START fire — no-op, gate re-verified green (153/43)",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "7df8203b",
+          "subject": "coord+log: 10/11 START fire — no-op, gate re-verified, both standing blockers unmoved",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "bdfece3a",
+          "subject": "coord+log: 10/11 START fire — no-op, gate re-verified, both standing blockers unmoved",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "df280754",
+          "subject": "coord+log: 10/11 START fire — no-op, gate re-verified, both standing blockers unmoved",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "2bdaf597",
+          "subject": "coord+log: 10/10 START fire — no-op on product, standing blockers unmoved",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "92757965",
+          "subject": "coord+log: 10/10 START fire — no-op on product, standing blockers unmoved",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "5b3cb776",
+          "subject": "coord+log: 10/5 START fire — no-op, verified not assumed; standing blockers unmoved",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "47f75657",
+          "subject": "coord+log: 10/5 START fire — no-op, verified not assumed; standing blockers unmoved",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "13afdfba",
+          "subject": "coord+log: 10/4 START fire — no-op, verified; needs-you unchanged at 1",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "2f09ae8f",
+          "subject": "coord+log: 10/4 START fire — no-op, verified; needs-you unchanged at 1",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "1af8c08a",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus-cycle",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "2525fbe7",
+          "subject": "round313: convert probe-round307 to summariseAndExit — 8 lines, one file, no pin restage",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "49d8bda6",
+          "subject": "log: append Session Wrap Protocol verification block to Round 312 STOP fire entry",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "ff1fa58d",
+          "subject": "log: append Session Wrap Protocol verification block to Round 312 STOP fire entry",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "30f86863",
+          "subject": "log: append Session Wrap Protocol verification block to MID fire entry",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "8e775fdb",
+          "subject": "log: append Session Wrap Protocol verification block to START fire entry",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "b3945a0a",
+          "subject": "log: append Session Wrap Protocol verification block to START fire entry",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "80bcff5d",
+          "subject": "log: append Session Wrap Protocol verification block to STOP fire entry",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "570dfb8b",
+          "subject": "log: append Session Wrap Protocol verification block to STOP fire entry",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "061445a1",
+          "subject": "log: append Session Wrap Protocol verification block to MID fire entry",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "0d5fe960",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/daedalus-cycle",
+          "quoters": 7,
+          "collision": 7,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "b1157814",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/daedalus-cycle",
+          "quoters": 7,
+          "collision": 7,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f634f1c6",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/daedalus-cycle",
+          "quoters": 7,
+          "collision": 7,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "4ef72c26",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/daedalus-cycle",
+          "quoters": 7,
+          "collision": 7,
+          "quotation": 0,
+          "later": 3,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "507a9595",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus-cycle",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "99097518",
+          "subject": "log: START fire wrap verification — commits and deliverables confirmed on origin/main",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "eb3eede5",
+          "subject": "log: START fire wrap verification — commits and deliverables confirmed on origin/main",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "92d620d0",
+          "subject": "log+coordination: 9/1 STOP -- no-op, verified not assumed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "69171f3c",
+          "subject": "log+coordination: 9/1 STOP -- no-op, verified not assumed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "0b9ea74e",
+          "subject": "log+coordination: 9/1 START -- no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "fd09f98e",
+          "subject": "log+coordination: 9/1 START -- no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "b25203f1",
+          "subject": "log+coordination: 9/1 START -- no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "5db9f4b2",
+          "subject": "log: 8/30 START -- wrap verification block",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "cf7054af",
+          "subject": "log: 8/30 START -- wrap verification block",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "63fe2a9d",
+          "subject": "log+coordination: 8/30 START -- no-op, verified not assumed (Iris's escalation is xian's, not mine)",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "c8294b62",
+          "subject": "log+coordination: 8/30 START -- no-op, verified not assumed (Iris's escalation is xian's, not mine)",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "d61235cd",
+          "subject": "log+coordination: 8/29 STOP -- no-op, verified not assumed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "02550468",
+          "subject": "log+coordination: 8/29 STOP -- no-op, verified not assumed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "4401224f",
+          "subject": "log+coordination: 8/29 MID -- no-op, verified not assumed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "2687e189",
+          "subject": "log+coordination: 8/29 MID -- no-op, verified not assumed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "8fe9995c",
+          "subject": "log+coordination: 8/29 START -- no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "2c422fe7",
+          "subject": "log+coordination: 8/29 START -- no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "da1ad35f",
+          "subject": "log+coordination: 8/29 START -- no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "84a434b0",
+          "subject": "log: 8/28 MID -- session wrap verification block (both commits confirmed on origin/main, all six deliverables confirmed present)",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "83798a07",
+          "subject": "log+coordination: 8/28 MID -- no-op, verified not assumed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "2c4a33e5",
+          "subject": "log: 8/28 MID -- session wrap verification block (both commits confirmed on origin/main, all six deliverables confirmed present)",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "39369d67",
+          "subject": "log+coordination: 8/28 MID -- no-op, verified not assumed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "b297c032",
+          "subject": "log+coordination: 8/28 START -- no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "5f062642",
+          "subject": "log+coordination: 8/28 START -- no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f789a38f",
+          "subject": "log+coordination: 8/27 STOP -- no-op, verified not assumed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "49ba5ce6",
+          "subject": "log+coordination: 8/27 STOP -- no-op, verified not assumed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "0ae6983f",
+          "subject": "log+coordination: 8/27 START -- no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "33d82cc2",
+          "subject": "log+coordination: 8/27 START -- no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "9b047a94",
+          "subject": "log+coordination: 8/27 START -- no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "c05bfa4e",
+          "subject": "log+coordination: 8/26 STOP -- no-op, verified not assumed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "c8c66558",
+          "subject": "log+coordination: 8/26 STOP -- no-op, verified not assumed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f3ef4cb4",
+          "subject": "log+coordination: 8/26 START -- no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a3413fa5",
+          "subject": "log+coordination: 8/26 START -- no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "1a88d07a",
+          "subject": "log+coordination: 8/26 START -- no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "81f7bd35",
+          "subject": "log+coordination: 8/25 START — no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "05cbb003",
+          "subject": "log+coordination: 8/25 START — no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "21f03b00",
+          "subject": "log+coordination: 8/25 START — no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "03917a5b",
+          "subject": "log: 8/24 STOP — wrap verification appended",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "813fd0b8",
+          "subject": "log+coordination: 8/24 STOP -- no-op, verified not assumed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f3bbea0a",
+          "subject": "log+coordination: 8/24 STOP -- no-op, verified not assumed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "1c2b4b51",
+          "subject": "log: 8/24 STOP — wrap verification appended",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "bf4851c4",
+          "subject": "log: 8/24 START — wrap verification appended",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "5aecc520",
+          "subject": "log: 8/24 START — wrap verification appended",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "05cb28a5",
+          "subject": "log+coordination: 8/24 START — no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "48c38324",
+          "subject": "log+coordination: 8/24 START — no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "421ff2d9",
+          "subject": "log+coordination: 8/24 START — no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "74965a77",
+          "subject": "log: 8/23 STOP — wrap verification appended",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "ac2d14ea",
+          "subject": "log: 8/23 STOP — wrap verification appended",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "7c1c4fda",
+          "subject": "log: 8/23 STOP — wrap verification appended",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "87897a14",
+          "subject": "log: 8/23 MID — wrap verification appended",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "167dc4b4",
+          "subject": "log: 8/23 MID — wrap verification appended",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "b4486100",
+          "subject": "log: 8/23 START — wrap verification appended",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "206d089d",
+          "subject": "log: 8/23 START — wrap verification appended",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "3d54a048",
+          "subject": "log: 8/22 STOP — wrap verification appended",
+          "quoters": 3,
+          "collision": 3,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "c24bc597",
+          "subject": "log: 8/22 STOP — wrap verification appended",
+          "quoters": 3,
+          "collision": 3,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "24f63ec1",
+          "subject": "log: 8/22 STOP — wrap verification appended",
+          "quoters": 3,
+          "collision": 3,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "de4431c0",
+          "subject": "log: 8/22 STOP — wrap verification appended",
+          "quoters": 3,
+          "collision": 3,
+          "quotation": 0,
+          "later": 3,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "ed190709",
+          "subject": "log: 8/22 WORK — wrap verification appended",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "51ddb50b",
+          "subject": "log: 8/22 WORK — wrap verification appended",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "0362e593",
+          "subject": "log: 8/22 MID — wrap verification appended",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "0f5046bd",
+          "subject": "log: 8/22 MID — wrap verification appended",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "c7414d8e",
+          "subject": "log: 8/22 START — wrap verification appended",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f675ff20",
+          "subject": "log: 8/22 START — wrap verification appended",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "dc576dec",
+          "subject": "log+coordination: 8/22 START — no-op, mail/blockers verified unchanged",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "8884cb5d",
+          "subject": "log+coordination: 8/22 START — no-op, mail/blockers verified unchanged",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "5c110163",
+          "subject": "log: 8/20 STOP — wrap verification output",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "42be40b5",
+          "subject": "log: 8/20 STOP — wrap verification output",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "c52eeb33",
+          "subject": "log+coordination: 8/20 START — no-op, verified not assumed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "43b45693",
+          "subject": "log+coordination: 8/20 START — no-op, verified not assumed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a5d372b1",
+          "subject": "log: 8/19 STOP wrap verification, read from origin/main after the push",
+          "quoters": 3,
+          "collision": 3,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "6ca41760",
+          "subject": "log: 8/19 STOP wrap verification, read from origin/main after the push",
+          "quoters": 3,
+          "collision": 3,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "35597b2f",
+          "subject": "log: 8/19 STOP wrap verification, read from origin/main after the push",
+          "quoters": 3,
+          "collision": 3,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "33b3d1b2",
+          "subject": "log: 8/19 STOP wrap verification, read from origin/main after the push",
+          "quoters": 3,
+          "collision": 3,
+          "quotation": 0,
+          "later": 3,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "b829a627",
+          "subject": "log: 8/19 START wrap verification, read from origin/main after the push",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "c8e389d5",
+          "subject": "log: 8/19 START wrap verification, read from origin/main after the push",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "271565dc",
+          "subject": "log+coordination: 8/19 START — no-op, verified not assumed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "44692d4f",
+          "subject": "log: 8/19 START wrap verification, read from origin/main after the push",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "28307d46",
+          "subject": "log+coordination: 8/19 START — no-op, verified not assumed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "78660bee",
+          "subject": "log: 8/18 STOP wrap verification, read from origin/main after the push",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "48a8d8d9",
+          "subject": "log: 8/18 STOP wrap verification, read from origin/main after the push",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "09ebd537",
+          "subject": "log: 8/18 WORK wrap verification, read from origin/main after the push",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "5d9c3437",
+          "subject": "log: 8/18 WORK wrap verification, read from origin/main after the push",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "66f1bab6",
+          "subject": "log: 8/17 STOP — wrap verification, read from origin/main after the push",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "92ef6cef",
+          "subject": "log: 8/17 STOP — wrap verification, read from origin/main after the push",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "69ff327c",
+          "subject": "log: 8/17 STOP — wrap verification, read from origin/main after the push",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "dcfebd00",
+          "subject": "log: 8/17 WORK — wrap verification, read from origin/main after the push",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "deb40655",
+          "subject": "log: 8/17 WORK — wrap verification, read from origin/main after the push",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "669aa54d",
+          "subject": "log+coordination: 8/17 START — no-op, mail/blockers unchanged since 8/16 STOP",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "8d432187",
+          "subject": "log+coordination: 8/17 START — no-op, mail/blockers unchanged since 8/16 STOP",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "6515fbb8",
+          "subject": "log: 8/16 STOP — wrap verification with the pushed hash",
+          "quoters": 3,
+          "collision": 3,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "5606abb6",
+          "subject": "log: 8/16 STOP — wrap verification with the pushed hash",
+          "quoters": 3,
+          "collision": 3,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a7f96193",
+          "subject": "log: 8/16 STOP — wrap verification with the pushed hash",
+          "quoters": 3,
+          "collision": 3,
+          "quotation": 0,
+          "later": 3,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "48ae62e6",
+          "subject": "log: 8/16 WORK — wrap verification with the pushed hash",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "b914af45",
+          "subject": "log: 8/16 MID — wrap verification with the pushed hash",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "0b4bcd06",
+          "subject": "log: 8/15 STOP fire — wrap verification",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f0600e92",
+          "subject": "log: 8/15 STOP fire — wrap verification",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "aee860d3",
+          "subject": "log: 8/15 WORK fire — wrap verification appended",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "fa8ffc58",
+          "subject": "log: 8/15 WORK fire — wrap verification appended",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "62a7d0c8",
+          "subject": "log(argus): 8/14 WORK fire — Round 49 independently re-verified (1266/226, exit 0), no new mail action",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a9f3aee7",
+          "subject": "log(argus): 8/14 WORK fire — Round 49 independently re-verified (1266/226, exit 0), no new mail action",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "74f8d2db",
+          "subject": "mail(theseus): reply to Pard's post-reboot nudge — verified LaunchAgent restore, not on unaccounted list, first-tool-call report",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f3a9109d",
+          "subject": "mail(theseus): reply to Pard's post-reboot nudge — verified LaunchAgent restore, not on unaccounted list, first-tool-call report",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "9b0d81fe",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/theseus-cycle",
+          "quoters": 5,
+          "collision": 5,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a56d27ee",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/daedalus-cycle",
+          "quoters": 7,
+          "collision": 7,
+          "quotation": 0,
+          "later": 4,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "6055c42f",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/theseus-cycle",
+          "quoters": 5,
+          "collision": 5,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "de757d67",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/daedalus-cycle",
+          "quoters": 7,
+          "collision": 7,
+          "quotation": 0,
+          "later": 5,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "2a7c2747",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/theseus-cycle",
+          "quoters": 5,
+          "collision": 5,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "e758c860",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/daedalus-cycle",
+          "quoters": 7,
+          "collision": 7,
+          "quotation": 0,
+          "later": 6,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "18ab5eb8",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/theseus-cycle",
+          "quoters": 5,
+          "collision": 5,
+          "quotation": 0,
+          "later": 3,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "4cdfb0e2",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/daedalus-cycle",
+          "quoters": 7,
+          "collision": 7,
+          "quotation": 0,
+          "later": 7,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "e7395ac6",
+          "subject": "Merge branch 'main' of github.com:Design-in-Product/klatch into claude/calliope-cycle",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "d244c1a6",
+          "subject": "Merge branch 'main' of github.com:Design-in-Product/klatch into claude/calliope-cycle",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "6df6de36",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/theseus-cycle",
+          "quoters": 5,
+          "collision": 5,
+          "quotation": 0,
+          "later": 4,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "6cd45784",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/theseus-cycle",
+          "quoters": 5,
+          "collision": 5,
+          "quotation": 0,
+          "later": 5,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "35e007de",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/theseus",
+          "quoters": 12,
+          "collision": 12,
+          "quotation": 0,
+          "later": 6,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "8a6f3e16",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/theseus",
+          "quoters": 12,
+          "collision": 12,
+          "quotation": 0,
+          "later": 7,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "5d4ad887",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "e6433412",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 3,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "d3dbf910",
+          "subject": "mail(argus): team memo replies + sweep #16 routing",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "43b20227",
+          "subject": "mail(argus): team memo replies + sweep #16 routing",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "2ecffaca",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 4,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "318b1dfa",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 5,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "e9434b9a",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/theseus",
+          "quoters": 12,
+          "collision": 12,
+          "quotation": 0,
+          "later": 8,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "3fe9fbed",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 6,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "20819ecd",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 7,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "c3171f68",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 8,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "904841ad",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 9,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "4301b12d",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 10,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f8e0490f",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 11,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "3dac2327",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 12,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f8be3028",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 13,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "58f9e9e8",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 14,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "d3114612",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 15,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "070ac861",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 16,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "99824e3d",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 17,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a426c209",
+          "subject": "Merge branch 'main' of github.com:Design-in-Product/klatch",
+          "quoters": 16,
+          "collision": 16,
+          "quotation": 0,
+          "later": 4,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "cc64f9ed",
+          "subject": "Merge branch 'main' of github.com:Design-in-Product/klatch",
+          "quoters": 16,
+          "collision": 16,
+          "quotation": 0,
+          "later": 5,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "2d2fb856",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 18,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "4e83b796",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 19,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f6f02635",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 20,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f783df4f",
+          "subject": "feat(compose): increment 7 — @mention overrides any klatch mode (spec §5)",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "0e9c746a",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 21,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "33f47b39",
+          "subject": "Merge remote-tracking branch 'origin/main'",
+          "quoters": 85,
+          "collision": 85,
+          "quotation": 0,
+          "later": 40,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "4f3fa236",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 22,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "17c3d788",
+          "subject": "feat(compose): increment 7 — @mention overrides any klatch mode (spec §5)",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "3ded0fba",
+          "subject": "Merge branch 'main' of github.com:Design-in-Product/klatch",
+          "quoters": 16,
+          "collision": 16,
+          "quotation": 0,
+          "later": 6,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "0f821a21",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 23,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "42d31f07",
+          "subject": "Merge branch 'main' of github.com:Design-in-Product/klatch",
+          "quoters": 16,
+          "collision": 16,
+          "quotation": 0,
+          "later": 7,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "99c98b12",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 24,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "aefac05e",
+          "subject": "ops(calliope): attention rollup v7 — R45 passed; Inc 6 in Iris review; cohort updated",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f9923fd8",
+          "subject": "ops(calliope): attention rollup v7 — R45 passed; Inc 6 in Iris review; cohort updated",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "e0987420",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 25,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "6659fa78",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 26,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "c22c4c0a",
+          "subject": "docs(roadmap): beta milestone section — composition gesture + July 2026 target",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "16fbaa6b",
+          "subject": "docs(roadmap): beta milestone section — composition gesture + July 2026 target",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a763c0b2",
+          "subject": "Daedalus 6/26: cycle log — merge + increment 6 + R45-clean validation; drain 3 ack threads",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "d8afec61",
+          "subject": "mail(daedalus->iris): increment 6 clone-from-klatch built — UX review request",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "0ad58d5c",
+          "subject": "mail: close Iris R44 + Daedalus tsc + round7-inversion threads (argus)",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "cea265a4",
+          "subject": "aaxt(theseus): R45 CrossRefStrip clean — 8/8, 100% conveyance, 0 Phantoms",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f0b8c4b0",
+          "subject": "mail(daedalus->theseus+argus): branch merged to main — cross-ref ready for AAXT, Round7 inversion unblocked, round44 probe stale-copy flag",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "6de9aba4",
+          "subject": "ops(iris): heartbeat 4 — branch merged; R45 coordination sent to Theseus; stale threads closed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "86cde1f3",
+          "subject": "fix(a11y/copy): R43+R44 AAXT fixes from Iris — pin aria-label, KB 'L3 context'->'AI context', Cancel title",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a33ea61b",
+          "subject": "fix(cross-ref): suppress 'Also in' strip on #general (Iris 6/23 review guard)",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "5e889d8b",
+          "subject": "docs(cross-ref): Iris UX review request + Argus tsc-baseline flag + task-list item 5 done",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "40e0d397",
+          "subject": "feat(cross-ref): 1-1 chat shows klatches its agent is also in",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "b60e5b37",
+          "subject": "docs: default-project increment coordination — Argus Round7 heads-up + Iris review request + task-list",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "29d36831",
+          "subject": "feat(sidebar): default-project increment — klatch creatable w/o project, 'First project' group",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "46156589",
+          "subject": "Daedalus 6/26: cycle log — merge + increment 6 + R45-clean validation; drain 3 ack threads",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "8adb2b40",
+          "subject": "ops(calliope): 6/26 — beta definition captured, rollup v6",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "df5d13e5",
+          "subject": "ops(calliope): 6/26 — beta definition captured, rollup v6",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "eff1abb0",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/theseus",
+          "quoters": 12,
+          "collision": 12,
+          "quotation": 0,
+          "later": 9,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a2a9603c",
+          "subject": "aaxt(theseus): R45 CrossRefStrip clean — 8/8, 100% conveyance, 0 Phantoms",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "c2f0041f",
+          "subject": "mail(daedalus->iris): increment 6 clone-from-klatch built — UX review request",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "5227adae",
+          "subject": "mail: close Iris R44 + Daedalus tsc + round7-inversion threads (argus)",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "8bc4f82b",
+          "subject": "Merge branch 'main' of github.com:Design-in-Product/klatch",
+          "quoters": 16,
+          "collision": 16,
+          "quotation": 0,
+          "later": 8,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "19d4ec37",
+          "subject": "ops(iris): heartbeat 4 — branch merged; R45 coordination sent to Theseus; stale threads closed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "30be2895",
+          "subject": "mail(daedalus->theseus+argus): branch merged to main — cross-ref ready for AAXT, Round7 inversion unblocked, round44 probe stale-copy flag",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a314d488",
+          "subject": "fix(a11y/copy): R43+R44 AAXT fixes from Iris — pin aria-label, KB 'L3 context'->'AI context', Cancel title",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a5486c0e",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 27,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "353ed9e9",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 28,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "341457a6",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/theseus",
+          "quoters": 12,
+          "collision": 12,
+          "quotation": 0,
+          "later": 10,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "e6fd6f92",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/theseus",
+          "quoters": 12,
+          "collision": 12,
+          "quotation": 0,
+          "later": 11,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "ff3befec",
+          "subject": "fix(cross-ref): suppress 'Also in' strip on #general (Iris 6/23 review guard)",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "30da84a8",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 29,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "b18ab576",
+          "subject": "Merge remote-tracking branch 'origin/main'",
+          "quoters": 85,
+          "collision": 85,
+          "quotation": 0,
+          "later": 52,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "ea035aac",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 30,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "66aae966",
+          "subject": "docs(cross-ref): Iris UX review request + Argus tsc-baseline flag + task-list item 5 done",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "e2568eef",
+          "subject": "feat(cross-ref): 1-1 chat shows klatches its agent is also in",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "3974d11b",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/theseus",
+          "quoters": 12,
+          "collision": 12,
+          "quotation": 0,
+          "later": 12,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "9cceb715",
+          "subject": "Merge branch 'main' of github.com:Design-in-Product/klatch",
+          "quoters": 16,
+          "collision": 16,
+          "quotation": 0,
+          "later": 9,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "37650d7e",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 31,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "1cafd8d1",
+          "subject": "docs: default-project increment coordination — Argus Round7 heads-up + Iris review request + task-list",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "0719adc7",
+          "subject": "feat(sidebar): default-project increment — klatch creatable w/o project, 'First project' group",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "2e7e5053",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 32,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "00cc682f",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 33,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "92aef5e2",
+          "subject": "Merge branch 'main' of github.com:Design-in-Product/klatch",
+          "quoters": 16,
+          "collision": 16,
+          "quotation": 0,
+          "later": 10,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "2ebb5b4c",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 34,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "eeff9586",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 35,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "c7698d30",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 36,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a6aff953",
+          "subject": "Merge branch 'main' of github.com:Design-in-Product/klatch",
+          "quoters": 16,
+          "collision": 16,
+          "quotation": 0,
+          "later": 11,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a51c7a6b",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 37,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "7c763150",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 38,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "00ec57d0",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 39,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "81bcc0d4",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 40,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "0cca5d11",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 41,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f30cfdec",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 42,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "000e2c39",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 43,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "3e5698db",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 44,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "59941271",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 45,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "6c9b1459",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 46,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "4f5054e8",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 47,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f1b6995c",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 48,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "7c9e3491",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 49,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "26360978",
+          "subject": "Merge branch 'main' of github.com:Design-in-Product/klatch",
+          "quoters": 16,
+          "collision": 16,
+          "quotation": 0,
+          "later": 12,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "0fc32ba6",
+          "subject": "briefs: cross-pollination 2026-06-02 — PM memory provenance, BYOC",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "36fa6ee2",
+          "subject": "briefs: cross-pollination 2026-06-02 — PM memory provenance, BYOC",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "c43d67cd",
+          "subject": "Merge branch 'main' of github.com:Design-in-Product/klatch",
+          "quoters": 16,
+          "collision": 16,
+          "quotation": 0,
+          "later": 13,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "595c5857",
+          "subject": "Merge branch 'main' of github.com:Design-in-Product/klatch",
+          "quoters": 16,
+          "collision": 16,
+          "quotation": 0,
+          "later": 14,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "c240bf95",
+          "subject": "Merge branch 'main' of github.com:Design-in-Product/klatch",
+          "quoters": 16,
+          "collision": 16,
+          "quotation": 0,
+          "later": 15,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "c9ba5794",
+          "subject": "Subagent analysis: Anthropic billing-split impact on Klatch",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "1001e2a0",
+          "subject": "Subagent analysis: Anthropic billing-split impact on Klatch",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "69762692",
+          "subject": "docs(intel): automated external scan 2026-04-27",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "9eaa6956",
+          "subject": "docs(intel): automated external scan 2026-04-27",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "dbeff44c",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/audit-and-planning-xn2w7",
+          "quoters": 11,
+          "collision": 11,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "fee9c4f9",
+          "subject": "docs: cross-pollination brief for 2026-03-26",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "d8732ca1",
+          "subject": "docs: cross-pollination brief for 2026-03-26",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a0341cb8",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/audit-and-planning-xn2w7",
+          "quoters": 11,
+          "collision": 11,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "8111e84a",
+          "subject": "Merge remote-tracking branch 'origin/claude/audit-and-planning-xn2w7'",
+          "quoters": 4,
+          "collision": 4,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "68364506",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/audit-and-planning-xn2w7",
+          "quoters": 11,
+          "collision": 11,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "c005ed45",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/audit-and-planning-xn2w7",
+          "quoters": 11,
+          "collision": 11,
+          "quotation": 0,
+          "later": 3,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f0cf2d39",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/audit-and-planning-xn2w7",
+          "quoters": 11,
+          "collision": 11,
+          "quotation": 0,
+          "later": 4,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "86608e95",
+          "subject": "Merge remote-tracking branch 'origin/claude/audit-and-planning-xn2w7'",
+          "quoters": 4,
+          "collision": 4,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "b7626f67",
+          "subject": "Phase 4: Selective import browser for claude.ai exports",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "61156ce2",
+          "subject": "Phase 4: Selective import browser for claude.ai exports",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "e7cabcbc",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/audit-and-planning-xn2w7",
+          "quoters": 11,
+          "collision": 11,
+          "quotation": 0,
+          "later": 5,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "b08e519c",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/audit-and-planning-xn2w7",
+          "quoters": 11,
+          "collision": 11,
+          "quotation": 0,
+          "later": 6,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "d294d8cb",
+          "subject": "Phase 1 tests: ChannelSidebar, ImportDialog, error paths, fork continuity",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "222b6526",
+          "subject": "Add v0.8.2 LinkedIn release announcement draft",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "60062e47",
+          "subject": "Add deliverables convention to CLAUDE.md",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "b5943bd8",
+          "subject": "Phase 1 tests: ChannelSidebar, ImportDialog, error paths, fork continuity",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "be9b4eef",
+          "subject": "Add v0.8.2 LinkedIn release announcement draft",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "44ab4a71",
+          "subject": "Add deliverables convention to CLAUDE.md",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "cbf1157a",
+          "subject": "Merge remote-tracking branch 'origin/claude/audit-and-planning-xn2w7'",
+          "quoters": 4,
+          "collision": 4,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "e281e92d",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/audit-and-planning-xn2w7",
+          "quoters": 11,
+          "collision": 11,
+          "quotation": 0,
+          "later": 7,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "1869ff76",
+          "subject": "Merge branch 'main' of github.com:Design-in-Product/klatch",
+          "quoters": 16,
+          "collision": 16,
+          "quotation": 0,
+          "later": 16,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "e28f0107",
+          "subject": "sample jsonl for argus from Piper Morgan",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "e695dc42",
+          "subject": "sample jsonl for argus from Piper Morgan",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "57993723",
+          "subject": "Update website text to match README",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "bd8675c4",
+          "subject": "Switch website to light theme matching app identity",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "c1da4641",
+          "subject": "Add entity handle field, directed mode tests, sidebar grouping tests",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f42455b3",
+          "subject": "Gitignore large demo source files (.mov, .gif) and untrack them",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "0cef5acf",
+          "subject": "Update website text to match README",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a8af10c8",
+          "subject": "Switch website to light theme matching app identity",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "0653d520",
+          "subject": "Add entity handle field, directed mode tests, sidebar grouping tests",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "c12a04b1",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/audit-and-planning-xn2w7",
+          "quoters": 11,
+          "collision": 11,
+          "quotation": 0,
+          "later": 8,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a1bff387",
+          "subject": "Gitignore large demo source files (.mov, .gif) and untrack them",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "4766f8ae",
+          "subject": "Merge remote-tracking branch 'origin/claude/audit-and-planning-xn2w7'",
+          "quoters": 4,
+          "collision": 4,
+          "quotation": 0,
+          "later": 3,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "1abd929f",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/audit-and-planning-xn2w7",
+          "quoters": 11,
+          "collision": 11,
+          "quotation": 0,
+          "later": 9,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "5d0ff1b6",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/audit-and-planning-xn2w7",
+          "quoters": 11,
+          "collision": 11,
+          "quotation": 0,
+          "later": 10,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "882bc87a",
+          "subject": "Merge remote-tracking branch 'origin/claude/audit-and-planning-xn2w7'",
+          "quoters": 4,
+          "collision": 4,
+          "quotation": 0,
+          "later": 4,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a98e3bd0",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/audit-and-planning-xn2w7",
+          "quoters": 11,
+          "collision": 11,
+          "quotation": 0,
+          "later": 11,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        }
+      ]
+    },
+    "50": {
+      "tested": 4180,
+      "quoted": 280,
+      "stolenShape": 195,
+      "byQuotation": 0,
+      "byCollisionOnly": 280,
+      "laterQuotation": 0,
+      "sumOk": true,
+      "rows": [
+        {
+          "sha": "ab3e5db8",
+          "subject": "log: 10/31 WORK fire — wrap verification appended after the commits it cites",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "4df06a01",
+          "subject": "log: 10/31 START fire — wrap verification appended after the commits it cites",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "6821495a",
+          "subject": "log: 10/30 STOP fire — wrap verification appended after the commits it cites",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f3c7f64b",
+          "subject": "log: 10/30 STOP fire — wrap verification appended after the commits it cites",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "ab837677",
+          "subject": "log: 10/30 WORK fire — wrap verification appended after the commits it cites",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "708712f1",
+          "subject": "log: 10/30 WORK fire — wrap verification appended after the commits it cites",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "89baf6e0",
+          "subject": "log: 10/30 START fire — wrap verification appended after the commits it cites",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "ee653841",
+          "subject": "log: 10/30 START fire — wrap verification appended after the commits it cites",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "255d9180",
+          "subject": "coord+log: 10/25 START fire — no-op, Round 451 close landed not mine, gate byte-identical",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "72a0eefb",
+          "subject": "coord+log: 10/25 START fire — no-op, Round 451 close landed not mine, gate byte-identical",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a1988a03",
+          "subject": "coord+log: 10/22 STOP fire — no-op on product, gate re-verified green, both standing blockers unmoved",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "c43be250",
+          "subject": "coord+log: 10/22 STOP fire — no-op on product, gate re-verified green, both standing blockers unmoved",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "9feaac31",
+          "subject": "log: 10/22 START fire — wrap verification appended, commits and tree read off origin/main",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "be9f2767",
+          "subject": "log: 10/22 START fire — wrap verification appended, commits and tree read off origin/main",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "839e6063",
+          "subject": "coord+log: 10/22 START fire — no-op on product, gate re-verified green, both standing blockers unmoved",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "e5dc1d33",
+          "subject": "coord+log: 10/22 START fire — no-op on product, gate re-verified green, both standing blockers unmoved",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f7ba1352",
+          "subject": "log: 10/21 START fire — wrap verification appended",
+          "quoters": 3,
+          "collision": 3,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "83739f44",
+          "subject": "coord+log: 10/21 START fire — no-op on product, gate re-verified green, both standing blockers unmoved",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "89a5b10d",
+          "subject": "coord+log: 10/21 START fire — no-op on product, gate re-verified green, both standing blockers unmoved",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "6fbf9889",
+          "subject": "coord+log: 10/20 START fire — no-op on product, Round 422 chain read, gate re-verified green",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a090cfaa",
+          "subject": "coord+log: 10/20 START fire — no-op on product, Round 422 chain read, gate re-verified green",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "477cbc73",
+          "subject": "coord+log: 10/19 START fire — no-op on product, gate re-verified green",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "ea153fb7",
+          "subject": "coord+log: 10/18 START fire — no-op on product, round410 mail read, gate re-verified green",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "1f594c3b",
+          "subject": "coord+log: 10/18 START fire — no-op on product, round410 mail read, gate re-verified green",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "dafdcc08",
+          "subject": "coord+log: 10/17 START fire — no-op on product, gate re-verified green",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f7c61397",
+          "subject": "coord+log: 10/17 START fire — no-op on product, gate re-verified green",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "0b159654",
+          "subject": "coord+log: 10/16 START fire — no-op on product, gate re-verified 43/43 green, standing blockers unmoved",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "6a5ac265",
+          "subject": "coord+log: 10/16 START fire — no-op on product, gate re-verified 43/43 green, standing blockers unmoved",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "fa64f4f7",
+          "subject": "coord+log: 10/16 START fire — no-op on product, gate re-verified 43/43 green, standing blockers unmoved",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "0c62294a",
+          "subject": "coord+log: 10/15 START fire — no-op, gate re-verified green (153/43)",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "5ad685d2",
+          "subject": "briefs: fire-depth report 2026-10-14 (published by Pard for Calliope)",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "7b231dd3",
+          "subject": "briefs: fire-depth report 2026-10-14 (published by Pard for Calliope)",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "9f450244",
+          "subject": "coord+log: 10/14 START fire — no-op, gate re-verified green (153/43)",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "7ec7802f",
+          "subject": "coord+log: 10/14 START fire — no-op, gate re-verified green (153/43)",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "3d35c3d0",
+          "subject": "coord+log: 10/14 START fire — no-op, gate re-verified green (153/43)",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "b8e2f214",
+          "subject": "coord+log: 10/13 START fire — no-op, gate re-verified green (153/43)",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "65ef4ce5",
+          "subject": "coord+log: 10/13 START fire — no-op, gate re-verified green (153/43)",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "e11087b7",
+          "subject": "coord+log: 10/13 START fire — no-op, gate re-verified green (153/43)",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "7df8203b",
+          "subject": "coord+log: 10/11 START fire — no-op, gate re-verified, both standing blockers unmoved",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "bdfece3a",
+          "subject": "coord+log: 10/11 START fire — no-op, gate re-verified, both standing blockers unmoved",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "df280754",
+          "subject": "coord+log: 10/11 START fire — no-op, gate re-verified, both standing blockers unmoved",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "2bdaf597",
+          "subject": "coord+log: 10/10 START fire — no-op on product, standing blockers unmoved",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "92757965",
+          "subject": "coord+log: 10/10 START fire — no-op on product, standing blockers unmoved",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "5b3cb776",
+          "subject": "coord+log: 10/5 START fire — no-op, verified not assumed; standing blockers unmoved",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "47f75657",
+          "subject": "coord+log: 10/5 START fire — no-op, verified not assumed; standing blockers unmoved",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "13afdfba",
+          "subject": "coord+log: 10/4 START fire — no-op, verified; needs-you unchanged at 1",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "2f09ae8f",
+          "subject": "coord+log: 10/4 START fire — no-op, verified; needs-you unchanged at 1",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "1af8c08a",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus-cycle",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "2525fbe7",
+          "subject": "round313: convert probe-round307 to summariseAndExit — 8 lines, one file, no pin restage",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "49d8bda6",
+          "subject": "log: append Session Wrap Protocol verification block to Round 312 STOP fire entry",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "ff1fa58d",
+          "subject": "log: append Session Wrap Protocol verification block to Round 312 STOP fire entry",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "30f86863",
+          "subject": "log: append Session Wrap Protocol verification block to MID fire entry",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "8e775fdb",
+          "subject": "log: append Session Wrap Protocol verification block to START fire entry",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "b3945a0a",
+          "subject": "log: append Session Wrap Protocol verification block to START fire entry",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "80bcff5d",
+          "subject": "log: append Session Wrap Protocol verification block to STOP fire entry",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "570dfb8b",
+          "subject": "log: append Session Wrap Protocol verification block to STOP fire entry",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "061445a1",
+          "subject": "log: append Session Wrap Protocol verification block to MID fire entry",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "0d5fe960",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/daedalus-cycle",
+          "quoters": 7,
+          "collision": 7,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "b1157814",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/daedalus-cycle",
+          "quoters": 7,
+          "collision": 7,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f634f1c6",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/daedalus-cycle",
+          "quoters": 7,
+          "collision": 7,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "4ef72c26",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/daedalus-cycle",
+          "quoters": 7,
+          "collision": 7,
+          "quotation": 0,
+          "later": 3,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "507a9595",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus-cycle",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "99097518",
+          "subject": "log: START fire wrap verification — commits and deliverables confirmed on origin/main",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "eb3eede5",
+          "subject": "log: START fire wrap verification — commits and deliverables confirmed on origin/main",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "92d620d0",
+          "subject": "log+coordination: 9/1 STOP -- no-op, verified not assumed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "69171f3c",
+          "subject": "log+coordination: 9/1 STOP -- no-op, verified not assumed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "0b9ea74e",
+          "subject": "log+coordination: 9/1 START -- no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "fd09f98e",
+          "subject": "log+coordination: 9/1 START -- no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "b25203f1",
+          "subject": "log+coordination: 9/1 START -- no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "63fe2a9d",
+          "subject": "log+coordination: 8/30 START -- no-op, verified not assumed (Iris's escalation is xian's, not mine)",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "c8294b62",
+          "subject": "log+coordination: 8/30 START -- no-op, verified not assumed (Iris's escalation is xian's, not mine)",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "d61235cd",
+          "subject": "log+coordination: 8/29 STOP -- no-op, verified not assumed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "02550468",
+          "subject": "log+coordination: 8/29 STOP -- no-op, verified not assumed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "4401224f",
+          "subject": "log+coordination: 8/29 MID -- no-op, verified not assumed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "2687e189",
+          "subject": "log+coordination: 8/29 MID -- no-op, verified not assumed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "8fe9995c",
+          "subject": "log+coordination: 8/29 START -- no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "2c422fe7",
+          "subject": "log+coordination: 8/29 START -- no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "da1ad35f",
+          "subject": "log+coordination: 8/29 START -- no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "84a434b0",
+          "subject": "log: 8/28 MID -- session wrap verification block (both commits confirmed on origin/main, all six deliverables confirmed present)",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "83798a07",
+          "subject": "log+coordination: 8/28 MID -- no-op, verified not assumed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "2c4a33e5",
+          "subject": "log: 8/28 MID -- session wrap verification block (both commits confirmed on origin/main, all six deliverables confirmed present)",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "39369d67",
+          "subject": "log+coordination: 8/28 MID -- no-op, verified not assumed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "b297c032",
+          "subject": "log+coordination: 8/28 START -- no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "5f062642",
+          "subject": "log+coordination: 8/28 START -- no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f789a38f",
+          "subject": "log+coordination: 8/27 STOP -- no-op, verified not assumed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "49ba5ce6",
+          "subject": "log+coordination: 8/27 STOP -- no-op, verified not assumed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "0ae6983f",
+          "subject": "log+coordination: 8/27 START -- no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "33d82cc2",
+          "subject": "log+coordination: 8/27 START -- no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "9b047a94",
+          "subject": "log+coordination: 8/27 START -- no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "c05bfa4e",
+          "subject": "log+coordination: 8/26 STOP -- no-op, verified not assumed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "c8c66558",
+          "subject": "log+coordination: 8/26 STOP -- no-op, verified not assumed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f3ef4cb4",
+          "subject": "log+coordination: 8/26 START -- no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a3413fa5",
+          "subject": "log+coordination: 8/26 START -- no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "1a88d07a",
+          "subject": "log+coordination: 8/26 START -- no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "81f7bd35",
+          "subject": "log+coordination: 8/25 START — no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "05cbb003",
+          "subject": "log+coordination: 8/25 START — no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "21f03b00",
+          "subject": "log+coordination: 8/25 START — no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "813fd0b8",
+          "subject": "log+coordination: 8/24 STOP -- no-op, verified not assumed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f3bbea0a",
+          "subject": "log+coordination: 8/24 STOP -- no-op, verified not assumed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "05cb28a5",
+          "subject": "log+coordination: 8/24 START — no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "48c38324",
+          "subject": "log+coordination: 8/24 START — no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "421ff2d9",
+          "subject": "log+coordination: 8/24 START — no-op, verified not assumed",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "dc576dec",
+          "subject": "log+coordination: 8/22 START — no-op, mail/blockers verified unchanged",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "8884cb5d",
+          "subject": "log+coordination: 8/22 START — no-op, mail/blockers verified unchanged",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "c52eeb33",
+          "subject": "log+coordination: 8/20 START — no-op, verified not assumed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "43b45693",
+          "subject": "log+coordination: 8/20 START — no-op, verified not assumed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a5d372b1",
+          "subject": "log: 8/19 STOP wrap verification, read from origin/main after the push",
+          "quoters": 3,
+          "collision": 3,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "6ca41760",
+          "subject": "log: 8/19 STOP wrap verification, read from origin/main after the push",
+          "quoters": 3,
+          "collision": 3,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "35597b2f",
+          "subject": "log: 8/19 STOP wrap verification, read from origin/main after the push",
+          "quoters": 3,
+          "collision": 3,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "33b3d1b2",
+          "subject": "log: 8/19 STOP wrap verification, read from origin/main after the push",
+          "quoters": 3,
+          "collision": 3,
+          "quotation": 0,
+          "later": 3,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "b829a627",
+          "subject": "log: 8/19 START wrap verification, read from origin/main after the push",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "c8e389d5",
+          "subject": "log: 8/19 START wrap verification, read from origin/main after the push",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "271565dc",
+          "subject": "log+coordination: 8/19 START — no-op, verified not assumed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "44692d4f",
+          "subject": "log: 8/19 START wrap verification, read from origin/main after the push",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "28307d46",
+          "subject": "log+coordination: 8/19 START — no-op, verified not assumed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "78660bee",
+          "subject": "log: 8/18 STOP wrap verification, read from origin/main after the push",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "48a8d8d9",
+          "subject": "log: 8/18 STOP wrap verification, read from origin/main after the push",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "09ebd537",
+          "subject": "log: 8/18 WORK wrap verification, read from origin/main after the push",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "5d9c3437",
+          "subject": "log: 8/18 WORK wrap verification, read from origin/main after the push",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "66f1bab6",
+          "subject": "log: 8/17 STOP — wrap verification, read from origin/main after the push",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "92ef6cef",
+          "subject": "log: 8/17 STOP — wrap verification, read from origin/main after the push",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "69ff327c",
+          "subject": "log: 8/17 STOP — wrap verification, read from origin/main after the push",
+          "quoters": 2,
+          "collision": 2,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "dcfebd00",
+          "subject": "log: 8/17 WORK — wrap verification, read from origin/main after the push",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "deb40655",
+          "subject": "log: 8/17 WORK — wrap verification, read from origin/main after the push",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "669aa54d",
+          "subject": "log+coordination: 8/17 START — no-op, mail/blockers unchanged since 8/16 STOP",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "8d432187",
+          "subject": "log+coordination: 8/17 START — no-op, mail/blockers unchanged since 8/16 STOP",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "6515fbb8",
+          "subject": "log: 8/16 STOP — wrap verification with the pushed hash",
+          "quoters": 3,
+          "collision": 3,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "5606abb6",
+          "subject": "log: 8/16 STOP — wrap verification with the pushed hash",
+          "quoters": 3,
+          "collision": 3,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a7f96193",
+          "subject": "log: 8/16 STOP — wrap verification with the pushed hash",
+          "quoters": 3,
+          "collision": 3,
+          "quotation": 0,
+          "later": 3,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "48ae62e6",
+          "subject": "log: 8/16 WORK — wrap verification with the pushed hash",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "b914af45",
+          "subject": "log: 8/16 MID — wrap verification with the pushed hash",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "62a7d0c8",
+          "subject": "log(argus): 8/14 WORK fire — Round 49 independently re-verified (1266/226, exit 0), no new mail action",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a9f3aee7",
+          "subject": "log(argus): 8/14 WORK fire — Round 49 independently re-verified (1266/226, exit 0), no new mail action",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "74f8d2db",
+          "subject": "mail(theseus): reply to Pard's post-reboot nudge — verified LaunchAgent restore, not on unaccounted list, first-tool-call report",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f3a9109d",
+          "subject": "mail(theseus): reply to Pard's post-reboot nudge — verified LaunchAgent restore, not on unaccounted list, first-tool-call report",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "9b0d81fe",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/theseus-cycle",
+          "quoters": 5,
+          "collision": 5,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a56d27ee",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/daedalus-cycle",
+          "quoters": 7,
+          "collision": 7,
+          "quotation": 0,
+          "later": 4,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "6055c42f",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/theseus-cycle",
+          "quoters": 5,
+          "collision": 5,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "de757d67",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/daedalus-cycle",
+          "quoters": 7,
+          "collision": 7,
+          "quotation": 0,
+          "later": 5,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "2a7c2747",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/theseus-cycle",
+          "quoters": 5,
+          "collision": 5,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "e758c860",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/daedalus-cycle",
+          "quoters": 7,
+          "collision": 7,
+          "quotation": 0,
+          "later": 6,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "18ab5eb8",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/theseus-cycle",
+          "quoters": 5,
+          "collision": 5,
+          "quotation": 0,
+          "later": 3,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "4cdfb0e2",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/daedalus-cycle",
+          "quoters": 7,
+          "collision": 7,
+          "quotation": 0,
+          "later": 7,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "e7395ac6",
+          "subject": "Merge branch 'main' of github.com:Design-in-Product/klatch into claude/calliope-cycle",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "d244c1a6",
+          "subject": "Merge branch 'main' of github.com:Design-in-Product/klatch into claude/calliope-cycle",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "6df6de36",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/theseus-cycle",
+          "quoters": 5,
+          "collision": 5,
+          "quotation": 0,
+          "later": 4,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "6cd45784",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/theseus-cycle",
+          "quoters": 5,
+          "collision": 5,
+          "quotation": 0,
+          "later": 5,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "35e007de",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/theseus",
+          "quoters": 12,
+          "collision": 12,
+          "quotation": 0,
+          "later": 6,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "8a6f3e16",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/theseus",
+          "quoters": 12,
+          "collision": 12,
+          "quotation": 0,
+          "later": 7,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "5d4ad887",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "e6433412",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 3,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "d3dbf910",
+          "subject": "mail(argus): team memo replies + sweep #16 routing",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "43b20227",
+          "subject": "mail(argus): team memo replies + sweep #16 routing",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "2ecffaca",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 4,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "318b1dfa",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 5,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "e9434b9a",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/theseus",
+          "quoters": 12,
+          "collision": 12,
+          "quotation": 0,
+          "later": 8,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "3fe9fbed",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 6,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "20819ecd",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 7,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "c3171f68",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 8,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "904841ad",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 9,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "4301b12d",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 10,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f8e0490f",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 11,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "3dac2327",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 12,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f8be3028",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 13,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "58f9e9e8",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 14,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "d3114612",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 15,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "070ac861",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 16,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "99824e3d",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 17,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a426c209",
+          "subject": "Merge branch 'main' of github.com:Design-in-Product/klatch",
+          "quoters": 16,
+          "collision": 16,
+          "quotation": 0,
+          "later": 4,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "cc64f9ed",
+          "subject": "Merge branch 'main' of github.com:Design-in-Product/klatch",
+          "quoters": 16,
+          "collision": 16,
+          "quotation": 0,
+          "later": 5,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "2d2fb856",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 18,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "4e83b796",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 19,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f6f02635",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 20,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f783df4f",
+          "subject": "feat(compose): increment 7 — @mention overrides any klatch mode (spec §5)",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "0e9c746a",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 21,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "4f3fa236",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 22,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "17c3d788",
+          "subject": "feat(compose): increment 7 — @mention overrides any klatch mode (spec §5)",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "3ded0fba",
+          "subject": "Merge branch 'main' of github.com:Design-in-Product/klatch",
+          "quoters": 16,
+          "collision": 16,
+          "quotation": 0,
+          "later": 6,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "0f821a21",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 23,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "42d31f07",
+          "subject": "Merge branch 'main' of github.com:Design-in-Product/klatch",
+          "quoters": 16,
+          "collision": 16,
+          "quotation": 0,
+          "later": 7,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "99c98b12",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 24,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "aefac05e",
+          "subject": "ops(calliope): attention rollup v7 — R45 passed; Inc 6 in Iris review; cohort updated",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f9923fd8",
+          "subject": "ops(calliope): attention rollup v7 — R45 passed; Inc 6 in Iris review; cohort updated",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "e0987420",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 25,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "6659fa78",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 26,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "c22c4c0a",
+          "subject": "docs(roadmap): beta milestone section — composition gesture + July 2026 target",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "16fbaa6b",
+          "subject": "docs(roadmap): beta milestone section — composition gesture + July 2026 target",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a763c0b2",
+          "subject": "Daedalus 6/26: cycle log — merge + increment 6 + R45-clean validation; drain 3 ack threads",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "d8afec61",
+          "subject": "mail(daedalus->iris): increment 6 clone-from-klatch built — UX review request",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "0ad58d5c",
+          "subject": "mail: close Iris R44 + Daedalus tsc + round7-inversion threads (argus)",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "cea265a4",
+          "subject": "aaxt(theseus): R45 CrossRefStrip clean — 8/8, 100% conveyance, 0 Phantoms",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f0b8c4b0",
+          "subject": "mail(daedalus->theseus+argus): branch merged to main — cross-ref ready for AAXT, Round7 inversion unblocked, round44 probe stale-copy flag",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "6de9aba4",
+          "subject": "ops(iris): heartbeat 4 — branch merged; R45 coordination sent to Theseus; stale threads closed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "86cde1f3",
+          "subject": "fix(a11y/copy): R43+R44 AAXT fixes from Iris — pin aria-label, KB 'L3 context'->'AI context', Cancel title",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a33ea61b",
+          "subject": "fix(cross-ref): suppress 'Also in' strip on #general (Iris 6/23 review guard)",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "5e889d8b",
+          "subject": "docs(cross-ref): Iris UX review request + Argus tsc-baseline flag + task-list item 5 done",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "40e0d397",
+          "subject": "feat(cross-ref): 1-1 chat shows klatches its agent is also in",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "b60e5b37",
+          "subject": "docs: default-project increment coordination — Argus Round7 heads-up + Iris review request + task-list",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "29d36831",
+          "subject": "feat(sidebar): default-project increment — klatch creatable w/o project, 'First project' group",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "46156589",
+          "subject": "Daedalus 6/26: cycle log — merge + increment 6 + R45-clean validation; drain 3 ack threads",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "8adb2b40",
+          "subject": "ops(calliope): 6/26 — beta definition captured, rollup v6",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "df5d13e5",
+          "subject": "ops(calliope): 6/26 — beta definition captured, rollup v6",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "eff1abb0",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/theseus",
+          "quoters": 12,
+          "collision": 12,
+          "quotation": 0,
+          "later": 9,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a2a9603c",
+          "subject": "aaxt(theseus): R45 CrossRefStrip clean — 8/8, 100% conveyance, 0 Phantoms",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "c2f0041f",
+          "subject": "mail(daedalus->iris): increment 6 clone-from-klatch built — UX review request",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "5227adae",
+          "subject": "mail: close Iris R44 + Daedalus tsc + round7-inversion threads (argus)",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "8bc4f82b",
+          "subject": "Merge branch 'main' of github.com:Design-in-Product/klatch",
+          "quoters": 16,
+          "collision": 16,
+          "quotation": 0,
+          "later": 8,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "19d4ec37",
+          "subject": "ops(iris): heartbeat 4 — branch merged; R45 coordination sent to Theseus; stale threads closed",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "30be2895",
+          "subject": "mail(daedalus->theseus+argus): branch merged to main — cross-ref ready for AAXT, Round7 inversion unblocked, round44 probe stale-copy flag",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a314d488",
+          "subject": "fix(a11y/copy): R43+R44 AAXT fixes from Iris — pin aria-label, KB 'L3 context'->'AI context', Cancel title",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a5486c0e",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 27,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "353ed9e9",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 28,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "341457a6",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/theseus",
+          "quoters": 12,
+          "collision": 12,
+          "quotation": 0,
+          "later": 10,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "e6fd6f92",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/theseus",
+          "quoters": 12,
+          "collision": 12,
+          "quotation": 0,
+          "later": 11,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "ff3befec",
+          "subject": "fix(cross-ref): suppress 'Also in' strip on #general (Iris 6/23 review guard)",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "30da84a8",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 29,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "ea035aac",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 30,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "66aae966",
+          "subject": "docs(cross-ref): Iris UX review request + Argus tsc-baseline flag + task-list item 5 done",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "e2568eef",
+          "subject": "feat(cross-ref): 1-1 chat shows klatches its agent is also in",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "3974d11b",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/theseus",
+          "quoters": 12,
+          "collision": 12,
+          "quotation": 0,
+          "later": 12,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "9cceb715",
+          "subject": "Merge branch 'main' of github.com:Design-in-Product/klatch",
+          "quoters": 16,
+          "collision": 16,
+          "quotation": 0,
+          "later": 9,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "37650d7e",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 31,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "1cafd8d1",
+          "subject": "docs: default-project increment coordination — Argus Round7 heads-up + Iris review request + task-list",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "0719adc7",
+          "subject": "feat(sidebar): default-project increment — klatch creatable w/o project, 'First project' group",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "2e7e5053",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 32,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "00cc682f",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 33,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "92aef5e2",
+          "subject": "Merge branch 'main' of github.com:Design-in-Product/klatch",
+          "quoters": 16,
+          "collision": 16,
+          "quotation": 0,
+          "later": 10,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "2ebb5b4c",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 34,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "eeff9586",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 35,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "c7698d30",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 36,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a6aff953",
+          "subject": "Merge branch 'main' of github.com:Design-in-Product/klatch",
+          "quoters": 16,
+          "collision": 16,
+          "quotation": 0,
+          "later": 11,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a51c7a6b",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 37,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "7c763150",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 38,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "00ec57d0",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 39,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "81bcc0d4",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 40,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "0cca5d11",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 41,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f30cfdec",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 42,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "000e2c39",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 43,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "3e5698db",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 44,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "59941271",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 45,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "6c9b1459",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 46,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "4f5054e8",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 47,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f1b6995c",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 48,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "7c9e3491",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/argus",
+          "quoters": 49,
+          "collision": 49,
+          "quotation": 0,
+          "later": 49,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "26360978",
+          "subject": "Merge branch 'main' of github.com:Design-in-Product/klatch",
+          "quoters": 16,
+          "collision": 16,
+          "quotation": 0,
+          "later": 12,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "0fc32ba6",
+          "subject": "briefs: cross-pollination 2026-06-02 — PM memory provenance, BYOC",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "36fa6ee2",
+          "subject": "briefs: cross-pollination 2026-06-02 — PM memory provenance, BYOC",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "c43d67cd",
+          "subject": "Merge branch 'main' of github.com:Design-in-Product/klatch",
+          "quoters": 16,
+          "collision": 16,
+          "quotation": 0,
+          "later": 13,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "595c5857",
+          "subject": "Merge branch 'main' of github.com:Design-in-Product/klatch",
+          "quoters": 16,
+          "collision": 16,
+          "quotation": 0,
+          "later": 14,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "c240bf95",
+          "subject": "Merge branch 'main' of github.com:Design-in-Product/klatch",
+          "quoters": 16,
+          "collision": 16,
+          "quotation": 0,
+          "later": 15,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "c9ba5794",
+          "subject": "Subagent analysis: Anthropic billing-split impact on Klatch",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "1001e2a0",
+          "subject": "Subagent analysis: Anthropic billing-split impact on Klatch",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "dbeff44c",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/audit-and-planning-xn2w7",
+          "quoters": 11,
+          "collision": 11,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a0341cb8",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/audit-and-planning-xn2w7",
+          "quoters": 11,
+          "collision": 11,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "8111e84a",
+          "subject": "Merge remote-tracking branch 'origin/claude/audit-and-planning-xn2w7'",
+          "quoters": 4,
+          "collision": 4,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "68364506",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/audit-and-planning-xn2w7",
+          "quoters": 11,
+          "collision": 11,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "c005ed45",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/audit-and-planning-xn2w7",
+          "quoters": 11,
+          "collision": 11,
+          "quotation": 0,
+          "later": 3,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f0cf2d39",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/audit-and-planning-xn2w7",
+          "quoters": 11,
+          "collision": 11,
+          "quotation": 0,
+          "later": 4,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "86608e95",
+          "subject": "Merge remote-tracking branch 'origin/claude/audit-and-planning-xn2w7'",
+          "quoters": 4,
+          "collision": 4,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "b7626f67",
+          "subject": "Phase 4: Selective import browser for claude.ai exports",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "61156ce2",
+          "subject": "Phase 4: Selective import browser for claude.ai exports",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "e7cabcbc",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/audit-and-planning-xn2w7",
+          "quoters": 11,
+          "collision": 11,
+          "quotation": 0,
+          "later": 5,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "b08e519c",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/audit-and-planning-xn2w7",
+          "quoters": 11,
+          "collision": 11,
+          "quotation": 0,
+          "later": 6,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "d294d8cb",
+          "subject": "Phase 1 tests: ChannelSidebar, ImportDialog, error paths, fork continuity",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "b5943bd8",
+          "subject": "Phase 1 tests: ChannelSidebar, ImportDialog, error paths, fork continuity",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "cbf1157a",
+          "subject": "Merge remote-tracking branch 'origin/claude/audit-and-planning-xn2w7'",
+          "quoters": 4,
+          "collision": 4,
+          "quotation": 0,
+          "later": 2,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "e281e92d",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/audit-and-planning-xn2w7",
+          "quoters": 11,
+          "collision": 11,
+          "quotation": 0,
+          "later": 7,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "1869ff76",
+          "subject": "Merge branch 'main' of github.com:Design-in-Product/klatch",
+          "quoters": 16,
+          "collision": 16,
+          "quotation": 0,
+          "later": 16,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "bd8675c4",
+          "subject": "Switch website to light theme matching app identity",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "c1da4641",
+          "subject": "Add entity handle field, directed mode tests, sidebar grouping tests",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "f42455b3",
+          "subject": "Gitignore large demo source files (.mov, .gif) and untrack them",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 0,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a8af10c8",
+          "subject": "Switch website to light theme matching app identity",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "0653d520",
+          "subject": "Add entity handle field, directed mode tests, sidebar grouping tests",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "c12a04b1",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/audit-and-planning-xn2w7",
+          "quoters": 11,
+          "collision": 11,
+          "quotation": 0,
+          "later": 8,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a1bff387",
+          "subject": "Gitignore large demo source files (.mov, .gif) and untrack them",
+          "quoters": 1,
+          "collision": 1,
+          "quotation": 0,
+          "later": 1,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "4766f8ae",
+          "subject": "Merge remote-tracking branch 'origin/claude/audit-and-planning-xn2w7'",
+          "quoters": 4,
+          "collision": 4,
+          "quotation": 0,
+          "later": 3,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "1abd929f",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/audit-and-planning-xn2w7",
+          "quoters": 11,
+          "collision": 11,
+          "quotation": 0,
+          "later": 9,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "5d0ff1b6",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/audit-and-planning-xn2w7",
+          "quoters": 11,
+          "collision": 11,
+          "quotation": 0,
+          "later": 10,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "882bc87a",
+          "subject": "Merge remote-tracking branch 'origin/claude/audit-and-planning-xn2w7'",
+          "quoters": 4,
+          "collision": 4,
+          "quotation": 0,
+          "later": 4,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        },
+        {
+          "sha": "a98e3bd0",
+          "subject": "Merge remote-tracking branch 'origin/main' into claude/audit-and-planning-xn2w7",
+          "quoters": 11,
+          "collision": 11,
+          "quotation": 0,
+          "later": 11,
+          "laterQuotation": 0,
+          "laterQuotationShas": []
+        }
+      ]
+    }
+  },
+  "gmono": true,
+  "gsum": true
+}

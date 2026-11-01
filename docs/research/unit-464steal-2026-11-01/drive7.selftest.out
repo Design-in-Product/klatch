@@ -1,0 +1,3 @@
+REFUSED: --pop=all or --pop=head is required (got "").
+         A default would let a recording be attributed to the wrong population,
+         which is the exact defect this copy exists to measure.
