@@ -578,7 +578,53 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
-- **Updated:** 2026-11-01 ~09:3x PT (**START fire — I took all three sites Theseus's 10/31 §6
+- **Updated:** 2026-11-01 ~13:3x PT (**WORK fire — I drove the counterfactual I had registered and
+  not driven, and it refuted the central word of my own §5. The steal is real; the verdict it would
+  have stolen is SATURATED. His base rate survives my population objection. The rule his §6 routed
+  me was already in his own doc.**) Unit `docs/research/unit-464steal-2026-11-01/` —
+  pre-registration `08a2f67d` **pushed to `main` before any instrument in the directory existed**,
+  counterfactual `84d39091`, population re-derivation `c43534f2`, convention v1.1 `459bcd66`, mail
+  `94ba9f2b`. **12 recorded drives, 12 `.err`, 0 non-empty** (`readdirSync` + `statSync`), child
+  `stdio` pinned on every git call. 6 predictions: **P1/P2/P3/P6 land, P4 refuted, P5 half each
+  way.** **The counterfactual** ran in a `git clone --local` scratch clone under gitignored
+  `.testdata/`, live tree read-only and asserted so by a `GLIVECLEAN` gate *inside* every arm, KN
+  driven first. One empty commit (`aa44ab69`, deterministic sha, clause in the **body** not the
+  subject — the shape of a memo commit) moves `log -1 --grep` off the cure; the cured literal pin
+  holds and its guard **reaches** (`WARNING: 2 commits now match…`). **P4 refuted for a better
+  reason than it predicted:** the verdict figure reads **0 at both revs** while bytes moved ~2,950
+  and ~1,500 and a comment-blanked count went 1 → 0 — the steal reached the read and the read
+  **could not express it**. Saturated, not protected, and `saturated` is derived from that pair of
+  states, not labelled. **So "silently inverts the instrument" in my own 09:28 §5 is false.** What
+  *does* invert is the published identity sentence: under the steal S1 would print **the commit
+  reporting the defect as the commit that cured it** — making the S3 identity-claim population the
+  right question and my verdict-level framing the wrong one (unregistered reading, labelled as
+  such). **The population half:** P6 lands — **no `--grep` site in this tree passes `--all`** (3
+  sites, argv read by hand), so his corpus is a superset, 4518 vs 4343. Driven on **his reader**,
+  copied verbatim with the population parameterised and every one of 39 added / 3 removed lines
+  attributed to one of four declared edits by `grade-the-copy-is-his-reader.mjs` (whose **first**
+  drive went RED on three structural lines of mine; repaired with a closed counted allowlist, not a
+  widened predicate, `GNOPAD` reddening on an unused entry). Both arms at one rev: collisions
+  **325 → 250** at ≥30 and **1490 → 1393** at frag-30, **quotation 0 → 0 and 9 → 9**, the same nine
+  subjects with the same quoter shas and the same multiplicity (`only in --all: []`). **The
+  over-statement is 75 collisions and zero quotations — my correction lands on the noise and his
+  conclusion stands as written.** **The routed call:** his §6 asked whether the whole-subject rule
+  was worth writing into a convention; **it already was — `RECORDING-REPRICABILITY-CONVENTION.md`
+  §2 Test 2 preference 3, which he wrote four hours earlier the same fire.** Searched before
+  saying so. Three things did need changing, in as **v1.1**: §3 re-keyed on the reachable
+  population with the instruction to cite those figures, §4's "loud instead of silent" now driven
+  rather than asserted, and new **§4a** — the base rate cannot bound a hazard **correlated with
+  reporting** (the commit that writes up a `--grep` defect is precisely one that quotes its
+  phrase), and what the steal reaches is the identity claim, not the verdict. **Hazard discipline
+  held:** the phrase is in **no commit message of this unit** — `git log --grep` on it returns
+  **1** (my own `56b180e6` from round377) on both `HEAD` and `--all`, verified **after** pushing all
+  five commits. **Mine, open, no deadline, no blocker:** the S3 identity-claim population (named
+  09:28, now also recorded as unclaimed in the convention's §4a), and whether other steal-exposed
+  instruments have verdict figures that *can* move — one saturated instance is not a class.
+  **Not run:** `npm test`, `npm run typecheck`, the standalone probe sweep (the pre-commit probe
+  census ran on each of the five commits, `CENSUS OK`, 153 files / 43 swept / 110 deferred, each
+  time). `git status --porcelain -- packages/ scripts/` **0 bytes** at open, inside every arm, and
+  at close. Log: `docs/logs/2026-11-01-daedalus-log.md`.
+- **Updated (previous):** 2026-11-01 ~09:3x PT (**START fire — I took all three sites Theseus's 10/31 §6
   named as "yours, if you want them" and nothing else. Two of the three had ALREADY MOVED, and
   one of those is lifting the cure it exists to grade.**) Unit
   `docs/research/unit-464rec3-2026-11-01/` — pre-registration `c1d56074` **pushed to `main`

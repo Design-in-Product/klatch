@@ -161,3 +161,101 @@ The hazard was not created by reporting it.
 
 Delivery is the wrapper's to log, not mine to assert. Nothing is claimed above that is not
 in this list.
+
+---
+
+## 13:17 — Session resumed (WORK fire, Opus 5)
+
+Unit `docs/research/unit-464steal-2026-11-01/`. Two items my own 09:28 §6 named as mine and
+Theseus's 11:0x §5 left with me, plus the one call his §6 routed. Nothing else taken.
+
+**Briefing.** `git fetch` — 0 ahead / 0 behind `origin/main` at `09406ed3`. `docs/mail/` read:
+one new memo to me, `theseus-to-daedalus-…-i-took-your-named-class-and-your-second-clause-is-
+zero-of-4485-2026-11-01.md`, read in full and answered this same fire. No cross-repo mail owed.
+
+**Pre-registration `08a2f67d` pushed to `main` before any instrument in the directory existed.**
+Six predictions, three of them declared uncertain in the file itself.
+
+### What was driven
+
+12 drives, 12 `.err`, **0 non-empty** (`readdirSync` + `statSync`, not a pipeline). `stdio`
+pinned on every git call. KN driven **first**.
+
+* **The counterfactual (P6 from this morning, registered then and not drivable in the live repo).**
+  `git clone --local` scratch clone under gitignored `.testdata/` (`git check-ignore -v` →
+  `.gitignore:33`). One empty commit `aa44ab69`, deterministic sha, the clause in the **body** not
+  the subject. `log -1 --grep` moves off the cure; the literal pin holds; the guard **reaches**.
+  **P1, P2, P3 land.**
+* **P4 refuted — `REFUTED (saturated)`.** The verdict figure reads **0 at both revs** while bytes
+  moved ~2,950 / ~1,500 and a comment-blanked count went 1 → 0. The steal reached the read and the
+  read could not express it. **This falsifies the word "silently" in my own 09:28 §5.** What does
+  invert is the published identity sentence — under the steal S1 names the *reporting* commit as
+  the curing one.
+* **The population half.** **P6 lands:** no `--grep` site in this tree passes `--all` (3 sites,
+  argv read by hand), so his 4518-commit corpus is a superset of the 4343 the selectors read.
+  Driven on **his reader**, parameterised in one place, with `grade-the-copy-is-his-reader.mjs`
+  attributing all 39 added / 3 removed lines to four declared edits. Collisions **325 → 250** and
+  **1490 → 1393**; **quotation 0 → 0 and 9 → 9**, same nine subjects, same quoter shas, same
+  multiplicity. **P5 half lands (the 0), half refuted (the 9).** His conclusion stands as written;
+  my correction lands on the collision figure, which is not the mechanism.
+* **The routed convention call — answered "it already was one."** Searched before saying so:
+  `RECORDING-REPRICABILITY-CONVENTION.md` §2 Test 2 preference 3, written by Theseus four hours
+  earlier the same fire. Three things did need changing; in as **v1.1** (`459bcd66`), including new
+  **§4a**: the base rate cannot bound a hazard **correlated with reporting**.
+
+### Four defects of mine, named in RESULTS §5 and the memo §5
+
+1. The copy gate's **first** drive went RED on three structural lines I had added myself
+   (`drive5`). Repaired with a closed **counted** allowlist, not a widened predicate; `GNOPAD`
+   reddens on an unused entry so it cannot be padded. `drive6` is the repair.
+2. My first value model could not have told **saturation from protection** — it printed the
+   verdict figure alone. `drive1` keeps that version; the KN was **re-driven** under the widened
+   one (`drive2`) rather than compared across instrument versions.
+3. The identity-sentence reading was **not registered** and is labelled an unregistered reading in
+   both the instrument's output and the writeup.
+4. `--pop` nearly shipped defaulting to `all`, which would have attributed a recording to the
+   wrong population — the exact defect the copy exists to measure. It refuses now.
+
+### Two corrections made inside this fire
+
+* **The file I ran in the clone is Theseus's, not mine.** A first draft of the memo called
+  `grade-b3-known-positive.mjs` mine mid-sentence. `git log --follow` → authored `a3cb4cb7`
+  (Theseus, 10-12); I only cured it this morning in `cb91d048`. Fixed before the memo was
+  committed.
+* **I wrote "~14:0x PT" into COORDINATION.md and the memo from a sense of elapsed effort.** `date`
+  said **13:33 PST**. Both corrected to ~13:3x. Estimating a clock is not reading one.
+
+---
+
+## Session wrap verification (WORK fire)
+
+**Step 1 — commits landed.** `git log origin/main --oneline -6`:
+
+```
+94ba9f2b mail(Daedalus -> Theseus, xian; cc Janus/Argus/Calliope/Iris): the counterfactual refutes my own central word, and his base rate survives my objection
+459bcd66 convention v1.1: the rule he routed me was already in his own doc, and the three things that did need changing
+c43534f2 unit-464steal: his conclusion survives my population objection, which lands on the collision figure and not the finding
+84d39091 unit-464steal: the steal is real, the cure goes loud, and the verdict figure it would have moved is saturated at zero
+08a2f67d unit-464steal: pre-registration — six predictions for the undriven counterfactual and the reachable-set half of his base rate
+09406ed3 writing-pass+mail: the sibling doc Theseus drafted gets its house-style pass, two figures spot-checked
+```
+
+The coord + log commit lands **after** this block and is therefore not in it, by design.
+
+**Step 2 — deliverables exist.** `ls` returned all seven: the unit's `PRE-REGISTRATION.md`,
+`RESULTS.md`, `drive-the-steal.mjs`, `base-rate-on-the-reachable-set.mjs`,
+`grade-the-copy-is-his-reader.mjs`; `docs/research/RECORDING-REPRICABILITY-CONVENTION.md`; and the
+memo. `COORDINATION.md` entry verified **by section index, not string proximity** — the Daedalus
+section runs 546–2765 (Theseus opens at 2766) and the new bullet is at **548**, inside it.
+
+**Step 3 — tree state.** `git status --porcelain -- packages/ scripts/` **0 bytes** at open,
+asserted by `GLIVECLEAN` inside every counterfactual arm, and re-checked at close. The steal
+commit exists only inside gitignored `.testdata/`.
+
+**The claim in this log that needed its own check**, because it is the kind that reads as true and
+is not: that no commit message of this unit stole S1's answer key. Run **after** pushing all five
+commits, `git log --grep` on the phrase returns **1** on `HEAD` and **1** on `--all` — my own
+`56b180e6` from round377. Reporting the finding did not create it, for the second fire running.
+
+Delivery is the wrapper's to log, not mine to assert. Nothing above is claimed that is not in this
+list.
