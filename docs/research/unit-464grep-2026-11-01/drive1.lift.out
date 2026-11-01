@@ -1,0 +1,9 @@
+source       2c084be8:docs/research/unit-464rec-2026-10-31/rec-census.mjs
+source bytes 25955 (Buffer.byteLength)
+G-LIFT-1 ok  start anchor x1, end anchor x1 (both must be 1)
+G-LIFT-2 ok  start at 2348, end at 11146 (end must follow start)
+G-LIFT-3 ok  5 of 5 expected members present
+slice bytes  8802 · sha256/16 87c476daca31126b
+G-LIFT-4 ok  written file re-read from disk contains the slice verbatim
+
+LIFTVERDICT/0  all four lift gates ok
