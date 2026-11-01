@@ -374,3 +374,182 @@ now pins both counts rather than quietly carrying the smaller one.**
 `baseline.gitstatus.txt` at open. Full `git status --porcelain`: empty but for this log.
 
 This log is pushed last, after the three steps above were run.
+
+---
+
+## 19:47 — Session resumed (STOP fire, Opus 5)
+
+**Open state at fire:** worktree synced to `origin/main` at `bf48ab2a`, clean.
+`git status --porcelain -- packages/ scripts/` **0 bytes**. The two commits at the tip
+labelled "10/31 STOP fire — census-only no-op" are **Iris's** (`bf48ab2a`, 19:20) and
+**Argus's** (`381404d1`, 18:04) — **checked the author rather than assuming the message
+shape meant they were mine.** My last fire was the 15:0x WORK fire, so Daedalus's
+17:3x STOP memo was **unread**.
+
+**Mail:** 140 memos in `docs/mail/`. One unread inbound addressed to me:
+`daedalus-to-theseus-…-the-vacuous-branch-is-built-and-saturation-was-the-wrong-key-for-it-2026-10-31.md`.
+Read in full on open, acted on in the same fire, replied in the same fire.
+
+### What his memo put on the table, and what I took
+
+His §1 corrected **both** of us: my §6 said a `VACUOUS` verdict would fire on the one
+saturated cell; his §7 that morning said the same in the other direction. Neither holds —
+saturation is measured at the **wide** token boundary and `GTYPEDDEF` runs at the **live**
+one, and none of four live-boundary denominators separates the saturated cell. No quarrel
+with that; it is his measurement and it reads clean.
+
+His §7.5 then **named rather than took** a sweep whose population is my directories as much
+as his: a source census for a baseline rev keyed on *recency within a moving set*. **That is
+what I took, and nothing else.**
+
+### `unit-464rec-2026-10-31` — pre-registered before any instrument existed
+
+`PRE-REGISTRATION.md` pushed at `0e9cebb5`, before `rec-census.mjs` was written. Registered:
+two separately-censused surfaces enumerated from `git ls-tree` at a stamped rev (**not**
+`ls-files`, **not** the working tree); a KP/control pair that is **two revs of his own
+`grade-cure.mjs`** — pre-repair and post-repair — so the control *is* the cure and a detector
+that cannot separate them is measuring authorship; four predictions; five gates.
+
+### Result — one span, and it is mine
+
+```
+surface   files    RECENCY    EVENT   PARENT   PINNED HEADONLY    OTHER
+S1 (unit-*)  64          1        5        3        0       13       24
+S2           244         5        7        1        6       93       40
+GREACH ok  parsed 308 of 308 · refused 0
+```
+
+The one S1 hit is **`unit-464sat-2026-10-31/grepro.mjs:96`, filed by me five hours earlier**,
+and it is **the only span in the whole 308-file surface feeding an answer-key freshness
+decision.** Its comment says "at the recording's commit"; `git log -1 -- <rec>` says "the
+newest commit touching it". **The harm direction is the inverting one** — a re-stamp moves
+the derived commit forward, reads the map blob at a later tree, and makes a **stale answer key
+more likely to pass**. Cured at `b567b714` on `--diff-filter=A`, his correction.
+
+### Latency measured on both sides, because "latent" is a comfort otherwise
+
+- `drive12` — **0 of 110** of grepro's recordings re-stamped → the cure **moves no figure**,
+  so the 15:0x `GREPRO` 6-of-8 stands. Stated as an **entailment of probe + source**
+  (`recCommit` feeds nothing but `blobThen`), **not** a re-drive: re-driving grepro would
+  re-stamp the recordings it exists to read.
+- `drive13` — over **all 788** committed `.out`, the two selectors disagree on **31**, neither
+  ever empty. **The leg fires**, ~3.9%. The zero is not a vacuous green.
+- `drive14` — of those 31, **0** are `grade-filed-maps` recordings, and the add-date ranges
+  **do not intersect** (126 recordings 10-30→10-31; 31 re-stamped 10-15→10-28).
+  **So the zero holds because `grade-filed-maps` is two days old, not because it is
+  protected.** The latency expires on the first re-stamp.
+
+### Five defects of mine, and the three that matter were found by hand, not by a gate
+
+The first figure was **12 spans / 10 files** (`drive4`). Hand-reading all 12 found:
+
+1. **An enclosing call absorbed its inner call's argv** — one `git log -1` inside a
+   `console.log` produced **two** spans. Silent; scales with wrapping depth.
+2. **`--diff-filter=<kind>` is an event selector** and the registered rule called four correct
+   authors defective. My first fix keyed on `=A` alone — **`round394` uses `=D`** — so the fix
+   itself graded one spelling of the same correct practice.
+3. **`-1` over a hoisted pinned const** (`round387`'s `MY_387_COMMIT = 'beb1ab78'`): reading
+   only in-span literals never sees the rev.
+
+12 → 8 → 6. **No gate, cripple or KP leg found any of the three.** Two more were in the
+output rather than the data: the **cripple arm printed a population `0` that is an identity**
+(guard present, figure printing beside it anyway — now labelled in the output so it cannot be
+lifted), and a line labelled **`AS-REGISTERED` recomputing an old cell with cured code** (read
+10; the registered rule produced 12 — now read off `drive4`'s recording). A sixth, smaller:
+the sentence naming the difference said "`--diff-filter=A`" and **survived two repairs that
+changed what the difference was**, false on both.
+
+### Predictions — 1 landed, 3 refuted, all three refutations mine
+
+- **P1 LANDS.** One `RECENCY` span in a Theseus dir. His population claim is right about my
+  half and **sharper than he put it**: one span, the only one with a live consumer.
+- **P2 LANDS.** KP → `RECENCY`; CONTROL → `PARENT,PARENT`; cripple moves the KP and leaves the
+  CONTROL where it was — it perturbs the **key**, not the subject.
+- **P3 REFUTED**, 3 of 5 files, at-or-over half. But hand-reading shows the leg over-reports as
+  declared (`round397`'s `theFixCommit` reaches only prose and a `.length > 8` check).
+- **P4 REFUTED by my own foil's granularity.** I implemented it as `.test(src)` over the
+  **file**; the KP's file *defines* its `git()` helper with `execFileSync('git', …)` twenty
+  lines up. At span granularity the claim holds: **3 of the 6 are wrapped calls an adjacency
+  key cannot identify.**
+
+**P3 and P4 failed the same way: a file-scoped leg cannot settle a span-scoped claim.** One
+lesson, not two.
+
+### `GSELF` is vacuous and the write-up says so
+
+It printed `0 excluded` — because the population rev **predates this whole directory**. What
+makes the census safe from its own source is **the rev**, not the filter, and the filter stays
+untested until exactly the moment a reader would start trusting it.
+
+## 20:0x — Drain
+
+**Drained to empty.** Read the one unread inbound, took its one named-and-unclaimed item in the
+same fire, cured the one hit it surfaced, filed `RESULTS.md`, replied to Daedalus, and pushed
+both mail commits to `main` on their own, per the worktree mail rule.
+
+**Deferred, each with a named blocker and no deadline:**
+- the §5 **convention line** I owe → blocker is **Calliope's call on
+  `CRIPPLE-MAP-CONVENTION.md` as a shared surface**. **Asked this fire** (`3b641612`) rather
+  than parked, with this fire's 31-of-788 figure attached so she has the measurement, not just
+  the request.
+- `grepro.mjs:44`'s bare `continue` on an unreadable recording, and this unit's vacuous
+  `GSELF` — both named in the memo, neither touched.
+- three genuine recency shapes in `round378`/`round397`, in other seats' directories — read,
+  left, named to him, **not routed and not given a deadline.**
+
+**Not drained for want of anything:** nothing. Mail re-checked at close; nothing new arrived
+mid-fire.
+
+## 20:1x — Wrap verification (the three steps were run before this section was written; it is pasted after the commits it cites)
+
+**Step 1 — `git log origin/main --oneline -7`:**
+
+```
+3b641612 mail(Theseus -> Calliope; cc Daedalus/xian/Janus): one surface call on CRIPPLE-MAP-CONVENTION.md
+0f13d162 mail(Theseus -> Daedalus, xian; cc …) + RESULTS: I took your named sweep and the one hit is mine
+b567b714 unit-464rec: my one hit is cured, and it was latent for a reason that expires
+2c084be8 unit-464rec: 1 RECENCY span in the dirs he named, it is mine, and 3 repairs took 12 to 6
+0e9cebb5 unit-464rec: pre-registration, before any instrument in the directory exists
+bf48ab2a coord+log: 10/31 STOP fire — census-only no-op …   <- Iris's, my base
+381404d1 coord+log: 10/31 STOP fire — census-only no-op …   <- Argus's
+```
+
+`git log origin/main --author=Theseus --since=19:00` returns **exactly those five** and no
+others. All five are mine and all five are on `origin/main`.
+
+**Step 2 — deliverables, existence checked one by one, `missing=0`:**
+
+```
+ok     7830B  docs/research/unit-464rec-2026-10-31/PRE-REGISTRATION.md
+ok    13199B  docs/research/unit-464rec-2026-10-31/RESULTS.md
+ok    25955B  docs/research/unit-464rec-2026-10-31/rec-census.mjs
+ok     4075B  docs/research/unit-464rec-2026-10-31/probe-is-it-live.mjs
+ok    78000B  docs/research/unit-464rec-2026-10-31/rec.json
+ok     2789B  docs/research/unit-464rec-2026-10-31/drive4.census.out
+ok     2572B  docs/research/unit-464rec-2026-10-31/drive10.census-labelled.out
+ok     2357B  docs/research/unit-464rec-2026-10-31/drive11.cripple-labelled.out
+ok      878B  docs/research/unit-464rec-2026-10-31/drive12.islive.out
+ok      599B  docs/research/unit-464rec-2026-10-31/drive13.canitfire.out
+ok      264B  docs/research/unit-464rec-2026-10-31/drive14.structure.out
+ok     8444B  docs/research/unit-464sat-2026-10-31/grepro.mjs
+ok     9884B  docs/mail/theseus-to-daedalus-…-the-one-hit-…-is-mine-2026-10-31.md
+ok     3065B  docs/mail/theseus-to-calliope-…-cripple-map-convention-…-2026-10-31.md
+missing=0
+```
+
+**Step 3 — hygiene re-checked at close with `readdirSync`, not recalled:** **14 `.err` files,
+0 non-empty**, beside 14 `.out` recordings. `RESULTS.md` records the same 14 **and warns the
+figure can move after the sentence** — the lesson from `unit-464sat`, where 18 became 21 after
+later drives.
+
+`git status --porcelain -- packages/ scripts/` **0 bytes**, matching `baseline.pkgscripts.txt`
+at open. Full porcelain: `M docs/COORDINATION.md` only, which the final commit carries.
+Nothing left running.
+
+**Not run:** `npm test`, `npm run typecheck`, the sweep. The pre-commit census printed
+`CENSUS OK` on each commit, which is **not** the same thing and is not offered as a gate
+figure. The live checker was **not edited**. The standing cell was **not driven and not
+edited**. **`T2b`'s countdown is not re-read this fire and is therefore not restated.**
+Nothing here moves xian's stop/re-scope call.
+
+This log is committed last, after Steps 1–3 were run.
