@@ -495,7 +495,64 @@ Both appended to the memo as its §7 and to `RESULTS.md` as defects 5 and 6; the
 entry corrected in the same commit, since its first version described the sliding derivation
 as a safeguard.
 
-### Wrap verification — to be appended AFTER the commits it cites
+### 17:38 — Wrap verification, run AFTER the seven commits it cites
 
-Steps 1–3 go below this line, after the final push, so the verification cannot predate what it
-cites.
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -8`, run after a fresh
+`git fetch` and after the final push of everything except this block):
+
+```
+1cb405b8 unit-464vac: the re-anchored baseline graded by the condition that broke the old one
+a901f189 unit-464vac: two more defects of mine, found by re-driving AFTER the push
+79795a2a coord+log: 10/31 STOP fire — the VACUOUS branch is built and saturation was the wrong key for it
+789487d5 unit-464vac: results, and mail to Theseus/xian cc Janus/Argus/Calliope/Iris
+0e8bc9ac unit-464vac: the VACUOUS branch is in, keyed on COVERAGE not saturation, 6 of 6 legs
+caaf2cf1 unit-464vac: VACUOUS fires on 2 of 8 and on NEITHER is the map saturated
+8c7718db unit-464vac: pre-registration, before any instrument in the directory exists
+e6460aba coord+log: 10/31 SWEEP fire — … (Calliope's, the rev this fire opened at)
+```
+
+All seven of this fire's commits are on `origin/main`, **authorship checked** — `git log
+e6460aba..origin/main --format='%an' | sort | uniq -c` gives `7 Daedalus (Klatch)` and nothing
+else. `git log HEAD..origin/main` **0 lines**; `git log origin/main..HEAD` **0 lines**. No
+rebase was needed this fire and no force push was used.
+
+**Step 2 — deliverables present**, by `readdirSync`/`statSync`:
+
+* `docs/research/unit-464vac-2026-10-31/` — **88 files**: `PRE-REGISTRATION.md` (6224 B),
+  `RESULTS.md` (13600 B), `measure.mjs` (14530 B), `grade-cure.mjs` (11009 B),
+  `inspect-dump.mjs` (1945 B), `vac.json` (22118 B), `cure.json` (18046 B), `baseline.rev`
+  (41 B), `baseline.gitstatus.txt` (**0 B**), and **35 `.out` + 35 `.err` + 9 dumps** with
+  **0 of 35 `.err` non-empty**, child `stdio` pinned on every spawn.
+  `drive2.gradecure-repaired.out` and `drive3.gradecure-postcommit.out` are **3274 B each** —
+  equal size is expected and is itself the check, since byte-identity across the intervening
+  commit is what grades the re-anchored baseline.
+* `docs/research/unit-464mapkey-2026-10-30/grade-filed-maps.mjs` — **71123 B** by `statSync`
+  (the unit this fire got wrong once; stated with the function that produced it).
+* `docs/mail/daedalus-to-theseus-…-the-vacuous-branch-is-built-and-saturation-was-the-wrong-key-for-it-2026-10-31.md`
+  (13551 B), pushed to `main` in `789487d5` + `a901f189` as the mail convention requires.
+* `docs/COORDINATION.md` — this fire's two bullets verified **by section index, not by string
+  proximity**: the Daedalus section spans lines 484–2610 and the entries are at lines **491**
+  and **492**, both inside it. (A shared-file insert of mine has landed in Argus's section
+  before.)
+* `docs/logs/2026-10-31-daedalus-log.md` (31012 B before this block).
+
+**Step 3 — tree state.** `git status --porcelain` **0 lines**; `git status --porcelain --
+packages/ scripts/` **0 lines** at close, matching the 0-byte `baseline.gitstatus.txt` taken at
+open. No product file was touched.
+
+**Drain.** Mail re-checked at close: `git log e6460aba..origin/main -- docs/mail/` returns two
+commits, **both my own**. All four cross-repo mailboxes checked with `find -newermt` against
+the 17:17:00 open stamp: **0 new files** across all four, so nothing to grep and nothing owed.
+Needs-you unchanged at 3. The one new inbound memo was read at open and its one
+newly-measurable item taken and closed in this same fire. Two consecutive checks found nothing
+further unblocked; fire closed bounded, per Klatch's recorded exception to the platform drain
+baseline.
+
+**Deferred with named blockers — none.** Three items this unit opened are named **without a
+deadline and without a blocker**: wiring `GSUBJ` to `MAPVACUOUS` (per-leg, partial vacuity —
+needs a call about what a half-vacuous gate reports), a census of how many of the 16 gates can
+pass vacuously at all (a source sweep, not a drive), and the recency-keyed-baseline class
+routed to Theseus because the population is his unit directories as much as mine.
+
+Nothing is claimed that is not in the list above. Delivery is the wrapper's to log, not mine to
+assert.
