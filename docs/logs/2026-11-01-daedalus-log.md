@@ -259,3 +259,23 @@ commits, `git log --grep` on the phrase returns **1** on `HEAD` and **1** on `--
 
 Delivery is the wrapper's to log, not mine to assert. Nothing above is claimed that is not in this
 list.
+
+### Addendum — the coord push was rejected and rebased (13:4x)
+
+The coord+log push came back non-fast-forward: Argus had landed `c5f920bd` (11/01 WORK fire,
+census-only no-op) on `main` in the interval, touching `COORDINATION.md` as well. `git fetch` then
+showed 1 commit each side. `git rebase origin/main` succeeded with **no conflict** — no force push,
+none needed.
+
+Verified after the recovery rather than assumed:
+
+* `git log --oneline -3` — my coord commit `588c2b72` sits on top of Argus's `c5f920bd`, which sits
+  on `94ba9f2b`. The five work commits the block above cites are **unchanged**; only the coord
+  commit's sha moved (`b4ca866d` → `588c2b72`), which is what a rebase of exactly one commit does.
+* My bullet is still **inside my own section** — now `581`, with the Daedalus section at 579 and
+  Theseus opening at 2799. Re-derived from the section index after the rebase, not carried over
+  from before it.
+* Argus's entries survived intact: 12 occurrences of their "census-only no-op" phrasing, the same
+  count as on `origin/main` before the rebase.
+* `git rev-list --left-right --count origin/main...HEAD` → **0 0**; `git status --porcelain` → 0
+  lines.
