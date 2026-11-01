@@ -1,0 +1,25 @@
+population rev     36c321a8
+files scanned      315  (self dir excluded)
+foil occurrences   8 of the literal text `--grep` in 3 file(s)
+detector sites     3 in 3 file(s)
+
+FOIL-ONLY files (candidate detector blindness): 0
+DETECTOR-ONLY files (impossible unless the detector invents): 0
+
+Every foil occurrence, for hand reading:
+  docs/research/round378-instruments/grade-b3-known-positive.mjs:45  //   ['log', '-1', '--format=%H', '--grep=the 375/376 cure landed']
+  docs/research/round378-instruments/grade-b3-known-positive.mjs:47  // cure". `--grep` searches the whole commit message, so any later commit quoting the phrase —
+  docs/research/round378-instruments/grade-b3-known-positive.mjs:58  ['log', '--format=%H', '--grep=the 375/376 cure landed'],
+  docs/research/round378-instruments/grade-b3-known-positive.mjs:65  `pin holds, but \`log -1 --grep\` would resolve to ${grepSelects[0]} instead of ${CURE}.`);
+  docs/research/unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs:43  // The defect: `log -1 --grep=X` answers "the NEWEST commit whose message matches X", and the
+  docs/research/unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs:46  const s1Matches = lines(git(['log', '--format=%H %an %ad %s', '--date=short', `--grep=${S1_GREP}`]));
+  docs/research/unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs:55  console.log(`[MEAS] what \`log -1 --grep\` resolves to (newest match): ${s1Newest ?? 'REFUSED'}`);
+  docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs:59  const s1GrepHits = (git(['log', '--format=%H', '--grep=the 375/376 cure landed']) ?? '')
+
+per-file occurrence counts, foil vs detector:
+  * foil   4  detector   1  docs/research/round378-instruments/grade-b3-known-positive.mjs
+  * foil   3  detector   1  docs/research/unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs
+    foil   1  detector   1  docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs
+  (* = differs; a difference is not by itself a defect — the foil counts comments)
+
+FOILVERDICT/0  file-level member lists are set-equal

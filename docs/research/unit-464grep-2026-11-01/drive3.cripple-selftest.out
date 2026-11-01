@@ -1,0 +1,8 @@
+cripple:       grep-blind
+population rev 36c321a8
+
+GKP  RED KP(a3cb4cb7) grep sites=0 phrase=(none)
+CTL  ok  same file: 2 `log` span(s) reached, 1 carry no --grep and are NOT labelled GREP
+       (5649B via Buffer.byteLength)
+
+SELFTEST  GKP RED — no population figure published from a --selftest drive.

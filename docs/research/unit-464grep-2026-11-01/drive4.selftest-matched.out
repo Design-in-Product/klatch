@@ -1,0 +1,8 @@
+cripple:       (none)
+population rev 36c321a8
+
+GKP  ok  KP(a3cb4cb7) grep sites=1 phrase="the 375/376 cure landed"
+CTL  ok  same file: 2 `log` span(s) reached, 1 carry no --grep and are NOT labelled GREP
+       (5649B via Buffer.byteLength)
+
+SELFTEST  GKP ok — no population figure published from a --selftest drive.

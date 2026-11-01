@@ -1,0 +1,126 @@
+{
+  "rev": "36c321a8774d5b1a36e06a8965bcded567562874",
+  "cripple": null,
+  "gkp": {
+    "pass": true,
+    "kpHit": true,
+    "sites": 1,
+    "logSpans": 2,
+    "nonGrepLogSpans": 1,
+    "kpPhrase": "the 375/376 cure landed"
+  },
+  "population": {
+    "s1": 71,
+    "s2": 244,
+    "total": 315,
+    "selfExcluded": 3,
+    "parsed": 315,
+    "selfVacuous": false
+  },
+  "refusals": [],
+  "figures": {
+    "sites": 3,
+    "resolved": 2,
+    "unresolved": 1,
+    "dead": 0,
+    "latent": 2,
+    "stolen": 0,
+    "withCountSelector": 0,
+    "bodyOnlyFired": 0,
+    "keysDisagree": 0,
+    "unexplained": 0
+  },
+  "sites": [
+    {
+      "surface": "S1",
+      "path": "docs/research/unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs",
+      "at": 2203,
+      "callee": "git",
+      "sub": "log",
+      "form": null,
+      "phrase": null,
+      "why": "UNRESOLVED-INTERP",
+      "flags": [],
+      "countSel": [],
+      "wide": false,
+      "narrowing": [],
+      "verdict": "UNRESOLVED-INTERP",
+      "keyA": null,
+      "keyB": null,
+      "split": null,
+      "loudSignal": false
+    },
+    {
+      "surface": "S1",
+      "path": "docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs",
+      "at": 2570,
+      "callee": "git",
+      "sub": "log",
+      "form": "equals",
+      "phrase": "the 375/376 cure landed",
+      "why": null,
+      "flags": [],
+      "countSel": [],
+      "wide": false,
+      "narrowing": [],
+      "verdict": "LATENT",
+      "keyA": {
+        "n": 1,
+        "argv": [
+          "log",
+          "--grep=the 375/376 cure landed",
+          "--format=%H"
+        ],
+        "shas": [
+          "56b180e602d426ff97591efa2713d89f0d9344d0"
+        ]
+      },
+      "keyB": {
+        "n": 1
+      },
+      "split": {
+        "subject": 1,
+        "bodyOnly": 0,
+        "unexplained": [],
+        "mode": "regex"
+      },
+      "loudSignal": false
+    },
+    {
+      "surface": "S2",
+      "path": "docs/research/round378-instruments/grade-b3-known-positive.mjs",
+      "at": 3495,
+      "callee": "execFileSync",
+      "sub": "log",
+      "form": "equals",
+      "phrase": "the 375/376 cure landed",
+      "why": null,
+      "flags": [],
+      "countSel": [],
+      "wide": false,
+      "narrowing": [],
+      "verdict": "LATENT",
+      "keyA": {
+        "n": 1,
+        "argv": [
+          "log",
+          "--grep=the 375/376 cure landed",
+          "--format=%H"
+        ],
+        "shas": [
+          "56b180e602d426ff97591efa2713d89f0d9344d0"
+        ]
+      },
+      "keyB": {
+        "n": 1
+      },
+      "split": {
+        "subject": 1,
+        "bodyOnly": 0,
+        "unexplained": [],
+        "mode": "regex"
+      },
+      "loudSignal": true
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+cripple:       (none)
+population rev 36c321a8
+
+GKP  ok  KP(a3cb4cb7) grep sites=1 phrase="the 375/376 cure landed"
+CTL  ok  same file: 2 `log` span(s) reached, 1 carry no --grep and are NOT labelled GREP
+       (5649B via Buffer.byteLength)
+
+GSELF ok      3 of this unit's own .mjs excluded from both surfaces
+GREACH ok  parsed 315 of 315 · refused 0 (each named below if any)
+
+GREP sites: 3 in 3 file(s)  (S1 2 · S2 1)
+
+Per-site, every one — this is the GHAND surface:
+
+  UNRESOLVED-INTERP      S1 docs/research/unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs@2203
+      callee=git(log)  form=-  flags=[]  count-sel=[]  --all=false
+      phrase UNRESOLVED (UNRESOLVED-INTERP): "${}"
+  LATENT                 S1 docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs@2570
+      callee=git(log)  form=equals  flags=[]  count-sel=[]  --all=false
+      phrase="the 375/376 cure landed"
+      key A (site's own grep flags, --all=false) n=1
+      key B (same flags, --all forced)              n=1
+      of key A's 1: subject-match 1 · BODY-ONLY 0 · unexplained 0  [tester regex]
+      silently-stealable: no count selector; a steal widens a list instead
+      narrowing args present and NOT reproduced by key A: []
+      P6 file-scoped loud SIGNAL (throw/exit anywhere in file): false
+  LATENT                 S2 docs/research/round378-instruments/grade-b3-known-positive.mjs@3495
+      callee=execFileSync(log)  form=equals  flags=[]  count-sel=[]  --all=false
+      phrase="the 375/376 cure landed"
+      key A (site's own grep flags, --all=false) n=1
+      key B (same flags, --all forced)              n=1
+      of key A's 1: subject-match 1 · BODY-ONLY 0 · unexplained 0  [tester regex]
+      silently-stealable: no count selector; a steal widens a list instead
+      narrowing args present and NOT reproduced by key A: []
+      P6 file-scoped loud SIGNAL (throw/exit anywhere in file): true
+
+FIGURES
+  sites                       3
+  resolved / unresolved       2 / 1
+  DEAD / LATENT / STOLEN      0 / 2 / 0
+  with a count selector       0  (a steal silently changes the answer)
+  BODY-ONLY match present     0  (the steal mechanism having actually fired)
+  key A vs key B disagree     0  (scope is doing work)
+  GSUBJ unexplained rows      0  (git matched, JS tester explained neither field)
+
+GREPVERDICT/0  GKP ok, CTL ok, GREACH ok, GSELF ok, GSUBJ ok
