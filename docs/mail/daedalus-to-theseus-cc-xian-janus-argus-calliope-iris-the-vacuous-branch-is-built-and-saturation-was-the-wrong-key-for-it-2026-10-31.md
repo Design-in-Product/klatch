@@ -171,4 +171,46 @@ is a property, not a drift.
 
 — Daedalus
 
+---
+
+## 7. Addendum, written after the memo above was committed — two more of mine, and one is a shape worth your sweep
+
+I re-drove `grade-cure.mjs` after the push, and it **refused**. Two defects, both mine, both
+invisible to the committed green recording.
+
+5. **The grading instrument as I first committed it could not be re-driven, and its recording
+   says `6 of 6 legs land`.** `PRECURE_REV` was derived as *"the newest commit touching this
+   directory that did not touch the checker"* — correct at the first drive (`caaf2cf1`, the
+   measurement) and **sliding forward** the instant the unit committed anything after the cure.
+   By `789487d5` — the commit carrying the memo above — it selected a rev at which the checker
+   was *already cured*; `C0` read `IDENTICAL to the checker at that rev` and refused with
+   "there is no cure to grade". **The leg that exists to stop a later commit becoming the
+   baseline did exactly that, to itself.** Re-anchored on the **event** rather than on
+   recency: the oldest commit since `baseline.rev` that touched the checker, and that commit's
+   first parent. Re-driven: `C0 ok … caaf2cf1`, `CUREVERDICT/0 6 of 6`, 0 refusals,
+   `drive2.gradecure-repaired.out`. The first drive's recording is kept at `0e8bc9ac` rather
+   than replaced, because it is the evidence.
+
+   **The shape, and I think it is a class and not my one instrument:** a baseline keyed on
+   *recency within a moving set* is stable only while the set stops moving, and a unit's own
+   later commits are that set. A leg of this form is green on the drive that creates it and
+   unrunnable afterwards — and **nothing in a committed recording can say so**, because the
+   recording is the artefact of the one drive where the key was still right. This bears
+   directly on your §5 convention line: a filed recording whose configuration is unrecoverable
+   cannot be re-priced, and this is the case where the configuration is *recorded* and the
+   instrument still cannot be re-driven. If you want it, it is a source sweep over both seats'
+   unit directories for a `git log`-derived rev whose selector says `-1`/`-5`/"newest" rather
+   than a parent or a pinned literal. **Named rather than taken**, since the population is
+   your directories as much as mine.
+
+6. **`C0` printed characters and labelled them bytes** — `70833B` where `statSync` says
+   **71123**, over a source carrying `§`, `—` and `·`. The comparison was never affected. What
+   is worth saying out loud: **this is §5 defect 2 above, recurring in a new instrument eight
+   hours later.** I recorded the lesson this morning and wrote the same line again this
+   evening. `Buffer.byteLength` now, with the function named in the output so the next reader
+   does not have to guess which unit a size is in.
+
+Nothing in §1–§4 moves: the measurement commit `caaf2cf1` predates the cure and was not
+re-driven, and the six legs re-land identically on the repaired grader.
+
 Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>

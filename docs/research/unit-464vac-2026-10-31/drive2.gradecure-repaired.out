@@ -1,0 +1,27 @@
+C0  ok  pre-cure baseline rev caaf2cf1; the checker in the worktree DIFFERS from the checker at that rev (64933B -> 71123B, both by Buffer.byteLength and NOT String.length)
+
+=== per cell ===
+measuring   01.V22-MAP-t2-dir-only                             saturated     judged=1/10  rc=0  MAPVACUOUS/0 none — every green gate measured something
+measuring   02.V21-MAP.baseline-t8-unpinned                    price=3        judged=2/15  rc=1  MAPVACUOUS/0 none — every green gate measured something
+measuring   03.V21-MAP.cured-t8-unpinned                       price=3        judged=2/15  rc=0  MAPVACUOUS/0 none — every green gate measured something
+measuring   04.V21-MAP.nomoved-t8-unpinned                     price=3        judged=2/15  rc=0  MAPVACUOUS/0 none — every green gate measured something
+measuring   05.V21-MAP.prose-t8-unpinned                       price=11       judged=3/15  rc=1  MAPVACUOUS/0 none — every green gate measured something
+measuring   06.V21-MAP-t8-unpinned                             price=3        judged=2/15  rc=0  MAPVACUOUS/0 none — every green gate measured something
+VACUOUS     07.V2-MAP-t8-ceiling-blind-RETITLED-t8-ceiling-blind price=1        judged=0/7  rc=1  MAPVACUOUS/1 GTYPEDDEF (judged 0 of 7 reached member(s) on
+VACUOUS     08.V2-MAP-t8-ceiling-blind-STAMP-STRIPPED-t8-ceiling-blind price=1        judged=0/7  rc=1  MAPVACUOUS/1 GTYPEDDEF (judged 0 of 7 reached member(s) on
+
+=== LEGS ===
+C1  LANDS     MAPVACUOUS/1 GTYPEDDEF on exactly the cells the measurement calls vacuous (D4num == 0), MAPVACUOUS/0 on the rest
+      got: expected [07.V2-MAP-t8-ceiling-blind-RETITLED-t8-ceiling-blind,08.V2-MAP-t8-ceiling-blind-STAMP-STRIPPED-t8-ceiling-blind] (2), got [07.V2-MAP-t8-ceiling-blind-RETITLED-t8-ceiling-blind,08.V2-MAP-t8-ceiling-blind-STAMP-STRIPPED-t8-ceiling-blind] (2); the other 6 print MAPVACUOUS/0
+C2  LANDS     on the 6 NON-vacuous cells all three keyed lines are BYTE-IDENTICAL to the pre-cure recording, so no filed recording disagrees for a non-defect
+      got: 01.V22-MAP-t2-dir-only:same 02.V21-MAP.baseline-t8-unpinned:same 03.V21-MAP.cured-t8-unpinned:same 04.V21-MAP.nomoved-t8-unpinned:same 05.V21-MAP.prose-t8-unpinned:same 06.V21-MAP-t8-unpinned:same
+C3  LANDS     on the 2 vacuous cells the GTYPEDDEF line DIFFERS from pre-cure while MAPVERDICT stays byte-identical (green, labelled — not a new RED)
+      got: 07.V2-MAP-t8-ceiling-blind-RETITLED-t8-ceiling-blind: GTYPEDDEF differs, MAPVERDICT identical · 08.V2-MAP-t8-ceiling-blind-STAMP-STRIPPED-t8-ceiling-blind: GTYPEDDEF differs, MAPVERDICT identical
+C4  LANDS     the COUNTERFACTUAL: --cripple=typeddef-vacuity-blind restores the pre-cure GTYPEDDEF line byte-for-byte on the 2 vacuous cells and MAPVACUOUS/0 on all 8
+      got: 2 of 2 restored verbatim; 8 of 8 print MAPVACUOUS/0 under the cripple
+C5  LANDS     the cure costs ZERO newly-red maps: MAPVERDICT is byte-identical to pre-cure on all 8 cells
+      got: all 8 verdicts byte-identical
+C6  LANDS     TYPEDDEFCOV's judged/reached matches vac.json's D4 on all 8 cells (ONE computation read two ways — a wiring check, not confirmation)
+      got: 01:ok 02:ok 03:ok 04:ok 05:ok 06:ok 07:ok 08:ok
+
+CUREVERDICT/0 6 of 6 legs land · 0 refusal(s) · 8 of 8 cells driven

@@ -131,12 +131,17 @@ not — so its reachability does not rest on the cripple alone. `C0` refuses out
 checker in the worktree is identical to the checker at the pre-cure rev: a grading run whose
 subject was never edited grades nothing and must say so.
 
-**The pre-cure baseline is read from `git show`, not from the working tree**, and its rev is
-**derived** (the newest commit touching this directory that did *not* touch the checker), so a
-later commit of mine cannot silently become the baseline and a re-drive in this directory
-cannot re-stamp what the comparison reads.
+**The pre-cure baseline is read from `git show`, not from the working tree**, so a re-drive in
+this directory cannot re-stamp what the comparison reads. Its rev is **derived** — the oldest
+commit since `baseline.rev` that touched the checker, and that commit's first parent
+(`caaf2cf1`) — which is anchored on the *event* and cannot move however many commits this unit
+makes afterwards. **The first derivation was not, and defect 5 below is what happened.**
 
-## Four defects of my own
+The legs above are from `drive2.gradecure-repaired.out`. The **first** drive's recording is
+kept at `0e8bc9ac` rather than replaced: it reported the same `6 of 6` and it is the evidence
+for defect 5.
+
+## Six defects of my own, two of them found only by re-driving after the push
 
 1. **`V2`'s premise was wrong, so its refutation is mine and not the corpus's.** I wrote that
    `D2 OPP-SECQUOTED` was "the wide boundary's measurement". It is not: **Theseus's cure widens
@@ -161,6 +166,21 @@ cannot re-stamp what the comparison reads.
    have blinded an instrument nobody re-drives. Both were caught by reading the *consumers*
    before the edit rather than after — recorded as near-misses because the only reason they
    are not defects is the order I did two things in.
+5. **The grading instrument as first committed could not be re-driven, and its recording said
+   `6 of 6`.** `PRECURE_REV` was derived as "the newest commit touching this directory that did
+   not touch the checker" — correct at the first drive (`caaf2cf1`) and **sliding forward** the
+   moment the unit committed anything after the cure. By `789487d5` the derivation picked a rev
+   at which the checker was *already cured*, so `C0` read `IDENTICAL` and refused: *the guard
+   that exists to stop a later commit becoming the baseline did exactly that, to itself.* Only
+   a re-drive after the push could show it — a committed green recording cannot. Re-anchored on
+   the **event**: the oldest commit since `baseline.rev` that touched the checker, and its first
+   parent.
+6. **`C0` printed characters and labelled them bytes** — `70833B` for a file `statSync` calls
+   **71123** bytes, over a source carrying `§`, `—` and `·`. The *comparison* was never
+   affected (string vs string), but a size a reader cannot check against `ls -l` is not a size.
+   **This is defect 2 of my own 10/31 WORK memo recurring in a new instrument the same day**,
+   which is the part worth carrying: I recorded the lesson eight hours earlier and wrote the
+   same line again. `Buffer.byteLength` now, named in the output so the next reader can tell.
 
 ## Named, no deadline, no blocker
 

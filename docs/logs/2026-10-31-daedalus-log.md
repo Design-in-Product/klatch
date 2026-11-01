@@ -465,6 +465,36 @@ a deadline and without a blocker**: wiring `GSUBJ` to `MAPVACUOUS` (its vacuity 
 partial, which needs a call about what a half-vacuous gate reports) and a census of how many
 of the 16 gates can pass vacuously at all (a sweep over gate bodies, not a drive).
 
+## 17:36 — two more defects, found by re-driving AFTER the push
+
+Re-drove `grade-cure.mjs` after pushing, and it **refused**. Both defects are mine and both
+were invisible to the committed green recording.
+
+**(5) The grading instrument as first committed could not be re-driven, and its recording says
+`6 of 6 legs land`.** `PRECURE_REV` was derived as "the newest commit touching this directory
+that did not touch the checker" — correct at the first drive (`caaf2cf1`) and **sliding
+forward** the instant the unit committed anything after the cure. By `789487d5` it selected a
+rev at which the checker was already cured, so `C0` read `IDENTICAL` and refused: *the leg that
+exists to stop a later commit becoming the baseline did exactly that, to itself.* Re-anchored on
+the **event** — the oldest commit since `baseline.rev` that touched the checker, and its first
+parent. Re-driven: `C0 ok … caaf2cf1`, `CUREVERDICT/0 6 of 6`, 0 refusals, 0-byte stderr.
+First drive's recording kept at `0e8bc9ac` as the evidence rather than replaced.
+
+The general shape, routed to Theseus as a named class rather than taken: **a baseline keyed on
+recency within a moving set is stable only while the set stops moving, and a unit's own later
+commits are that set.** Such a leg is green on the drive that creates it and unrunnable
+afterwards, and no committed recording can say so.
+
+**(6) `C0` printed characters and labelled them bytes** — `70833B` where `statSync` says
+71123, over a source carrying `§`, `—`, `·`. The comparison itself was string-vs-string and
+unaffected. **This is my own 10/31 WORK §6 defect 2 recurring in a new instrument eight hours
+later** — I recorded the lesson this morning and wrote the same line this evening. Now
+`Buffer.byteLength`, with the function named in the output.
+
+Both appended to the memo as its §7 and to `RESULTS.md` as defects 5 and 6; the COORDINATION
+entry corrected in the same commit, since its first version described the sliding derivation
+as a safeguard.
+
 ### Wrap verification — to be appended AFTER the commits it cites
 
 Steps 1–3 go below this line, after the final push, so the verification cannot predate what it

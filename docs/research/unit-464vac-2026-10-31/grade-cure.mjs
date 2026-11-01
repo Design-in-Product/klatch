@@ -36,25 +36,43 @@ const vac = JSON.parse(readFileSync('vac.json', 'utf8'));
 const CELLS = vac.rows.filter((r) => r.unmeasured === null);
 if (CELLS.length !== 8) refuse('C0', `vac.json carries ${CELLS.length} measured cell(s), not 8 — grading nothing`);
 
-// The rev the pre-cure recordings were committed at: the newest commit that touched this
-// directory and did NOT touch the checker. Derived, not typed, so a later commit of mine
-// cannot silently become the baseline.
+// The rev the pre-cure recordings were committed at.
+//
+// THE FIRST DERIVATION OF THIS WAS WRONG AND IT IS RECORDED RATHER THAN REPLACED. It read
+// "the newest commit touching this directory that did NOT touch the checker", which was
+// correct at the first drive (`caaf2cf1`, the measurement) and SLID FORWARD the moment this
+// unit committed anything after the cure: by `789487d5` (results + memo, no checker change)
+// the derivation picked a rev at which the checker was ALREADY CURED, `C0` saw
+// `IDENTICAL -> no cure to grade`, and the instrument became unrunnable — while its committed
+// recording said `6 of 6 legs land`. The guard that exists to stop a later commit becoming
+// the baseline did exactly that, to itself, and only a re-drive could show it.
+//
+// The stable derivation is anchored on the EVENT, not on recency: the OLDEST commit since
+// `baseline.rev` that touched the checker, and that commit's first parent. That rev cannot
+// move however many commits this unit makes afterwards.
+const BASE_REV = readFileSync('baseline.rev', 'utf8').trim();
 const PRECURE_REV = (() => {
-  const log = git('log', '--format=%H', '-5', '--', MY_DIR_REL);
-  for (const rev of (log ?? '').trim().split('\n').filter(Boolean)) {
-    const touched = git('show', '--name-only', '--format=', rev) ?? '';
-    if (!touched.split('\n').includes(LIVE_REL)) return rev;
-  }
-  return null;
+  const log = git('log', '--format=%H', '--reverse', `${BASE_REV}..HEAD`, '--', LIVE_REL);
+  const first = (log ?? '').trim().split('\n').filter(Boolean)[0];
+  if (first === undefined) return null; // nothing has touched the checker since open
+  return (git('rev-parse', `${first}^`) ?? '').trim() || null;
 })();
 if (PRECURE_REV === null) refuse('C0', 'no commit of this directory predates a commit of the checker');
 else {
   const checkerNow = readFileSync(resolve(REPO, LIVE_REL), 'utf8');
   const checkerThen = git('show', `${PRECURE_REV}:${LIVE_REL}`) ?? '';
   const changed = checkerNow !== checkerThen;
+  // The size is printed in BYTES via Buffer.byteLength, not in `String.length`. The first
+  // drive of this leg (committed at `0e8bc9ac`, kept as the evidence) printed `70833B` for a
+  // file `statSync` calls 71123 bytes — characters labelled B, over a source carrying `§`,
+  // `—` and `·`. Same defect class as my own 10/31 WORK §6.2, recurring in a new instrument
+  // the same day. The COMPARISON was never affected — it is string vs string — but a figure
+  // whose unit is wrong is a figure a reader cannot check against `ls -l`.
+  const bytes = (s) => Buffer.byteLength(s, 'utf8');
   console.log(
     `C0  ${changed ? 'ok ' : 'RED'} pre-cure baseline rev ${PRECURE_REV.slice(0, 8)}; the checker in the worktree ` +
-      `${changed ? 'DIFFERS from' : 'is IDENTICAL to'} the checker at that rev (${checkerThen.length}B -> ${checkerNow.length}B)`,
+      `${changed ? 'DIFFERS from' : 'is IDENTICAL to'} the checker at that rev (${bytes(checkerThen)}B -> ${bytes(checkerNow)}B, ` +
+      `both by Buffer.byteLength and NOT String.length)`,
   );
   // A grading run in which the subject was never edited grades nothing and must say so.
   if (!changed) refuse('C0', 'the checker is unchanged — there is no cure to grade');
