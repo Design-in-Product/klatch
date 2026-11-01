@@ -1,0 +1,35 @@
+cripple:      recency-blind
+population rev bf48ab2a
+
+GKP  RED KP(0e8bc9ac) RECENCY=false · CONTROL(a901f189) RECENCY=false PARENT=true
+       KP labels      : OTHER   (9469B via Buffer.byteLength)
+       CONTROL labels : PARENT,PARENT   (11009B via Buffer.byteLength)
+P4a  AS REGISTERED (file-scoped .test(src)): adjacency reaches KP = true
+       -> REFUTES P4 as written. The KP's file defines its `git()` helper with
+          execFileSync('git', ...), so file-containment is true while span-reach is not.
+P4b  AT SPAN GRANULARITY: of the KP's 0 RECENCY span(s), a spawn-callee key
+       reaches 0; the span extractor reaches 0.
+       KP RECENCY callee(s): (none)
+
+GSELF ok  0 of this unit's own .mjs files excluded from both surfaces
+GREACH ok  parsed 308 of 308 · refused 0 (named below if any)
+
+surface   files    RECENCY    EVENT   PARENT   PINNED HEADONLY    OTHER
+S1           64          0        5        3        0       13       25
+S2          244          0        7        1        6       93       45
+
+AS-REGISTERED RECENCY (five-label rule, no EVENT): 0 spans
+REFINED       RECENCY (EVENT carved out)         : 0 spans
+  the 0 difference: 0 carved out as EVENT (--diff-filter=<kind>),
+  the rest re-labelled by the pinned-const resolution, which the EVENT rule does not touch
+
+RECENCY   spans 0 in 0 files  (S1 0 · S2 0)
+P3        of the 0 RECENCY files, 0 also contain a `git show <rev>:<path>` baseline read
+          AT-OR-OVER half — registered prediction was UNDER half
+          (file-scoped, declared a CEILING on the defect class, not an estimate)
+P4b-pop   of the 0 RECENCY spans, a spawn-callee adjacency key reaches 0;
+          0 are wrapped calls an adjacency key cannot identify.
+
+RECENCY spans, every one, S1 first — for the GHAND leg:
+
+CENSUSVERDICT/1  see the RED/!! lines above

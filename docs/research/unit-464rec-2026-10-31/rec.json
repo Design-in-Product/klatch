@@ -1,0 +1,3233 @@
+{
+  "rev": "bf48ab2af18361dca29066831a3f7567b7623593",
+  "cripple": "recency-blind",
+  "gkp": {
+    "pass": false,
+    "kpHit": false,
+    "ctlHit": false,
+    "ctlParent": true,
+    "p4aFileScoped": true,
+    "p4bSpanReached": 0,
+    "kpRecSpans": 0,
+    "kpRecCallees": []
+  },
+  "adjacencySpanCensus": {
+    "recencySpans": 0,
+    "reachedBySpawnCallee": 0
+  },
+  "population": {
+    "s1": 64,
+    "s2": 244,
+    "total": 308,
+    "selfExcluded": 0,
+    "parsed": 308
+  },
+  "refusals": [],
+  "counts": {
+    "RECENCY": {
+      "S1": 0,
+      "S2": 0
+    },
+    "EVENT": {
+      "S1": 5,
+      "S2": 7
+    },
+    "PARENT": {
+      "S1": 3,
+      "S2": 1
+    },
+    "PINNED": {
+      "S1": 0,
+      "S2": 6
+    },
+    "HEADONLY": {
+      "S1": 13,
+      "S2": 93
+    },
+    "OTHER": {
+      "S1": 25,
+      "S2": 45
+    }
+  },
+  "recency": {
+    "spans": 0,
+    "files": [],
+    "consumerFiles": []
+  },
+  "rows": [
+    {
+      "path": "docs/research/unit-307c4-blast-radius-2026-10-27/cell-attribution.mjs",
+      "callee": "execFileSync",
+      "at": 1528,
+      "words": [
+        "-C",
+        "rev-parse",
+        "HEAD",
+        "utf8",
+        "ignore",
+        "pipe",
+        "pipe"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": false,
+      "viaArg": true,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-307c4-blast-radius-2026-10-27/cell-mechanism.mjs",
+      "callee": "git",
+      "at": 3219,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-307c4-blast-radius-2026-10-27/recon.mjs",
+      "callee": "git",
+      "at": 3392,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-307c4-blast-radius-2026-10-27/recon.mjs",
+      "callee": "git",
+      "at": 3448,
+      "words": [
+        "rev-parse",
+        "${}~1"
+      ],
+      "label": "PARENT",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464absorb-2026-10-31/grade-filed-maps.INSTRUMENTED.mjs",
+      "callee": "spawnSync",
+      "at": 6992,
+      "words": [
+        "rev-parse",
+        "--show-toplevel",
+        "utf8"
+      ],
+      "label": "OTHER",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": false,
+      "viaArg": true,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464mapkey-2026-10-30/grade-filed-maps.mjs",
+      "callee": "spawnSync",
+      "at": 7285,
+      "words": [
+        "rev-parse",
+        "--show-toplevel",
+        "utf8"
+      ],
+      "label": "OTHER",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": false,
+      "viaArg": true,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464reach-2026-10-31/grade-filed-maps.CURED.mjs",
+      "callee": "spawnSync",
+      "at": 6992,
+      "words": [
+        "rev-parse",
+        "--show-toplevel",
+        "utf8"
+      ],
+      "label": "OTHER",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": false,
+      "viaArg": true,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464reach-2026-10-31/grade-filed-maps.DEAD.mjs",
+      "callee": "spawnSync",
+      "at": 6992,
+      "words": [
+        "rev-parse",
+        "--show-toplevel",
+        "utf8"
+      ],
+      "label": "OTHER",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": false,
+      "viaArg": true,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464reach-2026-10-31/grade-filed-maps.SCRATCH.mjs",
+      "callee": "spawnSync",
+      "at": 6992,
+      "words": [
+        "rev-parse",
+        "--show-toplevel",
+        "utf8"
+      ],
+      "label": "OTHER",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": false,
+      "viaArg": true,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464reach-2026-10-31/grade-filed-maps.TOKCENSUS.mjs",
+      "callee": "spawnSync",
+      "at": 6992,
+      "words": [
+        "rev-parse",
+        "--show-toplevel",
+        "utf8"
+      ],
+      "label": "OTHER",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": false,
+      "viaArg": true,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464sat-2026-10-31/grepro.mjs",
+      "callee": "git",
+      "at": 4429,
+      "words": [
+        "rev-parse",
+        "${}:${}"
+      ],
+      "label": "OTHER",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464sat-2026-10-31/grepro.mjs",
+      "callee": "git",
+      "at": 4764,
+      "words": [
+        "log",
+        "-1",
+        "--format=%H",
+        "--"
+      ],
+      "label": "OTHER",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464sat-2026-10-31/grepro.mjs",
+      "callee": "git",
+      "at": 4871,
+      "words": [
+        "rev-parse",
+        "${}:${}"
+      ],
+      "label": "OTHER",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464t2-denial-2026-10-28/grade-the-denial-model.mjs",
+      "callee": "git",
+      "at": 6179,
+      "words": [
+        "log",
+        "--format=%Hx1f%s"
+      ],
+      "label": "OTHER",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464t2-denial-2026-10-28/recon-denial-shapes.mjs",
+      "callee": "git",
+      "at": 1365,
+      "words": [
+        "log",
+        "--format=%Hx1f%s"
+      ],
+      "label": "OTHER",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464t2-denial-2026-10-28/verify-wrap.mjs",
+      "callee": "git",
+      "at": 799,
+      "words": [
+        "rev-parse",
+        "origin/main"
+      ],
+      "label": "OTHER",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464t2-denial-2026-10-28/verify-wrap.mjs",
+      "callee": "git",
+      "at": 1782,
+      "words": [
+        "merge-base",
+        "--is-ancestor",
+        "origin/main"
+      ],
+      "label": "OTHER",
+      "sub": "merge-base",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464t2-keychoice-2026-10-28/grade-the-surface-predicate.mjs",
+      "callee": "git",
+      "at": 7858,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464t2-keychoice-2026-10-28/grade-the-surface-predicate.mjs",
+      "callee": "git",
+      "at": 8400,
+      "words": [
+        "log",
+        "--since=${}",
+        "--name-only",
+        "--format=%x00%H${}%an${}%cI${}%s"
+      ],
+      "label": "OTHER",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464t2-keychoice-2026-10-28/grade-the-surface-predicate.mjs",
+      "callee": "git",
+      "at": 14699,
+      "words": [
+        "log",
+        "--diff-filter=A",
+        "--reverse",
+        "--format=%H${}%an",
+        "--",
+        "docs/research/round${}-instruments/"
+      ],
+      "label": "EVENT",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464t2-keychoice-2026-10-28/recon-what-the-credits-are-made-of.mjs",
+      "callee": "git",
+      "at": 2049,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464t2-keychoice-2026-10-28/recon-what-the-credits-are-made-of.mjs",
+      "callee": "git",
+      "at": 2239,
+      "words": [
+        "log",
+        "--since=${}",
+        "--name-only",
+        "--format=%x00%H${}%an${}%cI${}%s"
+      ],
+      "label": "OTHER",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464t2-keychoice-2026-10-28/recon2-the-last-round-that-cured-product-source.mjs",
+      "callee": "git",
+      "at": 1781,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464t2-keychoice-2026-10-28/recon2-the-last-round-that-cured-product-source.mjs",
+      "callee": "git",
+      "at": 2813,
+      "words": [
+        "log",
+        "--since=${}",
+        "--name-only",
+        "--format=%x00%H${}%an${}%cI${}%s"
+      ],
+      "label": "OTHER",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464t2-population-2026-10-28/drive.mjs",
+      "callee": "spawnSync",
+      "at": 1447,
+      "words": [
+        "-C",
+        "rev-parse",
+        "HEAD",
+        "pipe",
+        "utf8"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": false,
+      "viaArg": true,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464t2-population-2026-10-28/grade-the-round-population.mjs",
+      "callee": "git",
+      "at": 5706,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464t2-population-2026-10-28/grade-the-round-population.mjs",
+      "callee": "git",
+      "at": 6578,
+      "words": [
+        "log",
+        "--format=%Hu0001%s"
+      ],
+      "label": "OTHER",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464t2-population-2026-10-28/grade-the-round-population.mjs",
+      "callee": "git",
+      "at": 8852,
+      "words": [
+        "log",
+        "--diff-filter=A",
+        "--format=%Hu0001%aIu0001%s",
+        "--name-only",
+        "--reverse",
+        "HEAD",
+        "--",
+        "docs/research/"
+      ],
+      "label": "EVENT",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464t2-reaim-2026-10-28/grade-the-credit-key.mjs",
+      "callee": "execFileSync",
+      "at": 3515,
+      "words": [
+        "-C",
+        "rev-parse",
+        "--show-toplevel",
+        "utf8",
+        "ignore",
+        "pipe",
+        "pipe"
+      ],
+      "label": "OTHER",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": false,
+      "viaArg": true,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464t2-reaim-2026-10-28/grade-the-credit-key.mjs",
+      "callee": "git",
+      "at": 4073,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464t2-reaim-2026-10-28/grade-the-credit-key.mjs",
+      "callee": "git",
+      "at": 5457,
+      "words": [
+        "log",
+        "--since=${}",
+        "--name-only",
+        "--format=%x00%H${}%an${}%cI${}%s"
+      ],
+      "label": "OTHER",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464t2-reaim-2026-10-28/grade-the-credit-key.mjs",
+      "callee": "git",
+      "at": 9708,
+      "words": [
+        "log",
+        "--diff-filter=A",
+        "--reverse",
+        "--format=%H${}%an${}%cI${}%s",
+        "--",
+        "docs/research/round${}-instruments/"
+      ],
+      "label": "EVENT",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464t2-reaim-2026-10-28/recon-credit-provenance.mjs",
+      "callee": "execFileSync",
+      "at": 2182,
+      "words": [
+        "-C",
+        "rev-parse",
+        "--show-toplevel",
+        "utf8",
+        "ignore",
+        "pipe",
+        "pipe"
+      ],
+      "label": "OTHER",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": false,
+      "viaArg": true,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464t2-reaim-2026-10-28/recon-credit-provenance.mjs",
+      "callee": "git",
+      "at": 2507,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464t2-reaim-2026-10-28/recon-credit-provenance.mjs",
+      "callee": "git",
+      "at": 2964,
+      "words": [
+        "log",
+        "--since=${}",
+        "--name-only",
+        "--format=%x00%H${}%an${}%cI${}%s"
+      ],
+      "label": "OTHER",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464t2-reaim-2026-10-28/recon-credit-provenance.mjs",
+      "callee": "git",
+      "at": 4664,
+      "words": [
+        "log",
+        "--diff-filter=A",
+        "--reverse",
+        "--format=%H${}%an${}%cI${}%s",
+        "--",
+        "docs/research/round${}-instruments/"
+      ],
+      "label": "EVENT",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464t2-surface-2026-10-28/drive.mjs",
+      "callee": "spawnSync",
+      "at": 1447,
+      "words": [
+        "-C",
+        "rev-parse",
+        "HEAD",
+        "pipe",
+        "utf8"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": false,
+      "viaArg": true,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464t2-surface-2026-10-28/grade-the-exit-code.mjs",
+      "callee": "git",
+      "at": 3291,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464t2-surface-2026-10-28/recon-run-length-and-cure.mjs",
+      "callee": "git",
+      "at": 2890,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464t2-surface-2026-10-28/recon-run-length-and-cure.mjs",
+      "callee": "git",
+      "at": 4842,
+      "words": [
+        "log",
+        "--format=%Hu0001%s"
+      ],
+      "label": "OTHER",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464t2-surface-2026-10-28/recon-run-length-and-cure.mjs",
+      "callee": "git",
+      "at": 8568,
+      "words": [
+        "log",
+        "--since=${}",
+        "--format=%Hu0001%anu0001%aIu0001%s",
+        "--name-only"
+      ],
+      "label": "OTHER",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464t2-surface-2026-10-28/recon-run-length-and-cure.mjs",
+      "callee": "git",
+      "at": 9561,
+      "words": [
+        "log",
+        "--diff-filter=A",
+        "--format=%H",
+        "--reverse",
+        "--",
+        "docs/research/round${}-instruments/"
+      ],
+      "label": "EVENT",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464vac-2026-10-31/grade-cure.mjs",
+      "callee": "git",
+      "at": 2893,
+      "words": [
+        "log",
+        "--format=%H",
+        "--reverse",
+        "${}..HEAD",
+        "--",
+        "docs/research/unit-464mapkey-2026-10-30/grade-filed-maps.mjs"
+      ],
+      "label": "PARENT",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464vac-2026-10-31/grade-cure.mjs",
+      "callee": "git",
+      "at": 3133,
+      "words": [
+        "rev-parse",
+        "${}^"
+      ],
+      "label": "PARENT",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464vac-2026-10-31/measure.mjs",
+      "callee": "git",
+      "at": 3621,
+      "words": [
+        "rev-parse",
+        "${}:${}"
+      ],
+      "label": "OTHER",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/unit-464vac-2026-10-31/measure.mjs",
+      "callee": "git",
+      "at": 3672,
+      "words": [
+        "rev-parse",
+        "${}:${}"
+      ],
+      "label": "OTHER",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S1"
+    },
+    {
+      "path": "docs/research/lib/attested-rounds.mjs",
+      "callee": "git",
+      "at": 7768,
+      "words": [
+        "log",
+        "--format=%H${}%s"
+      ],
+      "label": "OTHER",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round378-instruments/grade-b3-known-positive.mjs",
+      "callee": "execFileSync",
+      "at": 2520,
+      "words": [
+        "log",
+        "-1",
+        "--format=%H",
+        "--grep=the 375/376 cure landed",
+        "utf8"
+      ],
+      "label": "OTHER",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": false,
+      "viaArg": true,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round378-instruments/grade-b3-known-positive.mjs",
+      "callee": "execFileSync",
+      "at": 2728,
+      "words": [
+        "log",
+        "-1",
+        "--format=%h %an %s",
+        "utf8"
+      ],
+      "label": "OTHER",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": false,
+      "viaArg": true,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs",
+      "callee": "git",
+      "at": 16670,
+      "words": [
+        "log",
+        "-1",
+        "--format=%B",
+        "beb1ab78"
+      ],
+      "label": "PINNED",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs",
+      "callee": "git",
+      "at": 17842,
+      "words": [
+        "log",
+        "--format=%h %an",
+        "--diff-filter=D",
+        "-1",
+        "--",
+        "docs/mail/daedalus-to-theseus-cc-xian-janus-argus-calliope-iris-your-390-reproduces-whole-and-the-8-0-it-publishes-is-a-function-of-a-gitignored-directory-2026-10-14.md"
+      ],
+      "label": "EVENT",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs",
+      "callee": "git",
+      "at": 18434,
+      "words": [
+        "rev-list",
+        "--count",
+        "${}..${}"
+      ],
+      "label": "OTHER",
+      "sub": "rev-list",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs",
+      "callee": "git",
+      "at": 18574,
+      "words": [
+        "log",
+        "--format=%an",
+        "${}..${}"
+      ],
+      "label": "OTHER",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round394-instruments/record-drives.mjs",
+      "callee": "git",
+      "at": 2577,
+      "words": [
+        "rev-parse",
+        "--short=8",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round394-instruments/record-drives.mjs",
+      "callee": "git",
+      "at": 3999,
+      "words": [
+        "rev-parse",
+        "--short=8",
+        "3b0677e0"
+      ],
+      "label": "PINNED",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round395-instruments/grade-the-refusal-that-deletes-the-verdict.mjs",
+      "callee": "git",
+      "at": 26331,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round395-instruments/probe-the-header-restates-its-input.mjs",
+      "callee": "git",
+      "at": 3107,
+      "words": [
+        "rev-parse",
+        "--short=8",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round395-instruments/probe-the-header-restates-its-input.mjs",
+      "callee": "git",
+      "at": 3273,
+      "words": [
+        "rev-parse",
+        "--short=8",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round395-instruments/probe-the-header-restates-its-input.mjs",
+      "callee": "git",
+      "at": 4210,
+      "words": [
+        "rev-parse",
+        "--short=8",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round395-instruments/probe-the-header-restates-its-input.mjs",
+      "callee": "git",
+      "at": 5356,
+      "words": [
+        "rev-parse",
+        "--short=8",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round395-instruments/record-drives.mjs",
+      "callee": "git",
+      "at": 2529,
+      "words": [
+        "rev-parse",
+        "--short=8",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round395-instruments/record-drives.mjs",
+      "callee": "git",
+      "at": 2599,
+      "words": [
+        "rev-parse",
+        "--short=8",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round396-instruments/record-drives.mjs",
+      "callee": "git",
+      "at": 1988,
+      "words": [
+        "rev-parse",
+        "--short=8"
+      ],
+      "label": "OTHER",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round397-instruments/grade-the-anchor-that-is-not-guarded.mjs",
+      "callee": "git",
+      "at": 17570,
+      "words": [
+        "log",
+        "-1",
+        "--format=%h %s",
+        "--",
+        "docs/research/round395-instruments/grade-the-refusal-that-deletes-the-verdict.mjs"
+      ],
+      "label": "OTHER",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs",
+      "callee": "git",
+      "at": 2363,
+      "words": [
+        "log",
+        "-1",
+        "--format=%h",
+        "--",
+        "docs/research/round396-instruments/grade-the-grade-that-reddens-on-its-own-routed-cure.mjs"
+      ],
+      "label": "OTHER",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round397-instruments/record-drives.mjs",
+      "callee": "git",
+      "at": 3601,
+      "words": [
+        "rev-parse",
+        "--short=8",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round397-instruments/record-drives.mjs",
+      "callee": "git",
+      "at": 3671,
+      "words": [
+        "rev-parse",
+        "--short=8",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs",
+      "callee": "execFileSync",
+      "at": 3047,
+      "words": [
+        "rev-parse",
+        "--show-toplevel",
+        "utf8"
+      ],
+      "label": "OTHER",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": false,
+      "viaArg": true,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round398-instruments/record-drives.mjs",
+      "callee": "git",
+      "at": 1137,
+      "words": [
+        "rev-parse",
+        "--short=8",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round399-instruments/census-the-named-binding-form.mjs",
+      "callee": "execFileSync",
+      "at": 3805,
+      "words": [
+        "rev-parse",
+        "--show-toplevel",
+        "utf8"
+      ],
+      "label": "OTHER",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": false,
+      "viaArg": true,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round399-instruments/census-the-named-binding-form.mjs",
+      "callee": "execFileSync",
+      "at": 3901,
+      "words": [
+        "rev-parse",
+        "HEAD",
+        "utf8"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": false,
+      "viaArg": true,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round400-instruments/regrade-the-file-scoped-guard.mjs",
+      "callee": "execFileSync",
+      "at": 3968,
+      "words": [
+        "rev-parse",
+        "--show-toplevel",
+        "utf8"
+      ],
+      "label": "OTHER",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": false,
+      "viaArg": true,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round400-instruments/regrade-the-file-scoped-guard.mjs",
+      "callee": "execFileSync",
+      "at": 4065,
+      "words": [
+        "rev-parse",
+        "HEAD",
+        "utf8"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": false,
+      "viaArg": true,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round400-instruments/regrade-the-file-scoped-guard.mjs",
+      "callee": "execFileSync",
+      "at": 16865,
+      "words": [
+        "rev-parse",
+        "HEAD",
+        "utf8"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": false,
+      "viaArg": true,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round401-instruments/census-the-branch-polarity-axis.mjs",
+      "callee": "execFileSync",
+      "at": 5338,
+      "words": [
+        "rev-parse",
+        "--show-toplevel",
+        "utf8"
+      ],
+      "label": "OTHER",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": false,
+      "viaArg": true,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round401-instruments/census-the-branch-polarity-axis.mjs",
+      "callee": "execFileSync",
+      "at": 5435,
+      "words": [
+        "rev-parse",
+        "HEAD",
+        "utf8"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": false,
+      "viaArg": true,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round401-instruments/census-the-branch-polarity-axis.mjs",
+      "callee": "execFileSync",
+      "at": 37069,
+      "words": [
+        "rev-parse",
+        "HEAD",
+        "utf8"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": false,
+      "viaArg": true,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round402-instruments/hand-read-the-unguarded.mjs",
+      "callee": "execFileSync",
+      "at": 3174,
+      "words": [
+        "rev-parse",
+        "--show-toplevel",
+        "utf8"
+      ],
+      "label": "OTHER",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": false,
+      "viaArg": true,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round402-instruments/hand-read-the-unguarded.mjs",
+      "callee": "execFileSync",
+      "at": 3271,
+      "words": [
+        "rev-parse",
+        "HEAD",
+        "utf8"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": false,
+      "viaArg": true,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round402-instruments/hand-read-the-unguarded.mjs",
+      "callee": "git",
+      "at": 16427,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round402-instruments/key-from-round400.mjs",
+      "callee": "execFileSync",
+      "at": 1498,
+      "words": [
+        "rev-parse",
+        "--show-toplevel",
+        "utf8"
+      ],
+      "label": "OTHER",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": false,
+      "viaArg": true,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round402-instruments/key-from-round400.mjs",
+      "callee": "execFileSync",
+      "at": 1595,
+      "words": [
+        "rev-parse",
+        "HEAD",
+        "utf8"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": false,
+      "viaArg": true,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round403-instruments/live-census-over-all-fifteen.mjs",
+      "callee": "git",
+      "at": 3281,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round404-instruments/grade-the-three-cures.mjs",
+      "callee": "git",
+      "at": 4461,
+      "words": [
+        "log",
+        "--format=%h",
+        "--"
+      ],
+      "label": "OTHER",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round404-instruments/grade-the-three-cures.mjs",
+      "callee": "git",
+      "at": 9147,
+      "words": [
+        "merge-base",
+        "--is-ancestor",
+        "HEAD",
+        "7e788af7"
+      ],
+      "label": "PINNED",
+      "sub": "merge-base",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round406-instruments/hand-read-the-inline-seven.mjs",
+      "callee": "git",
+      "at": 11070,
+      "words": [
+        "log",
+        "--format=%h",
+        "--diff-filter=A",
+        "-1",
+        "--",
+        "docs/research/round404-instruments/grade-the-three-cures.mjs"
+      ],
+      "label": "EVENT",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round407-instruments/census-the-fixture-as-string-class.mjs",
+      "callee": "git",
+      "at": 21263,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round408-instruments/stratify-the-live-interval.mjs",
+      "callee": "git",
+      "at": 24675,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round409-instruments/census-the-hand-typed-known-positive.mjs",
+      "callee": "git",
+      "at": 3995,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs",
+      "callee": "git",
+      "at": 27717,
+      "words": [
+        "rev-parse",
+        "--short",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs",
+      "callee": "git",
+      "at": 3924,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round412-instruments/resolve-the-ternary-and-reconstruct-the-nine.mjs",
+      "callee": "git",
+      "at": 4842,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round413-instruments/attack-g7-and-grade-the-branch-layer.mjs",
+      "callee": "git",
+      "at": 30084,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round414-instruments/grade-the-refusing-half-and-reconcile-the-ten.mjs",
+      "callee": "git",
+      "at": 2880,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round415-instruments/census-the-index-keyed-population.mjs",
+      "callee": "git",
+      "at": 3822,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round416-instruments/grade-the-rev-stamp-against-a-dirty-index.mjs",
+      "callee": "git",
+      "at": 4150,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round416-instruments/grade-the-rev-stamp-against-a-dirty-index.mjs",
+      "callee": "git",
+      "at": 8498,
+      "words": [
+        "rev-parse",
+        "HEAD",
+        "${}/${}"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round418-instruments/compaction-capability-computed-then-discarded.mjs",
+      "callee": "execFileSync",
+      "at": 1012,
+      "words": [
+        "rev-parse",
+        "utf8"
+      ],
+      "label": "OTHER",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": false,
+      "viaArg": true,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round418-instruments/installed-sdk-and-sec4-by-shape.mjs",
+      "callee": "execFileSync",
+      "at": 4829,
+      "words": [
+        "-C",
+        "log",
+        "-1",
+        "--format=%h %an %ad",
+        "--date=short",
+        "--",
+        "package-lock.json",
+        "utf8"
+      ],
+      "label": "OTHER",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": false,
+      "viaArg": true,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round419-instruments/drive-his-418.mjs",
+      "callee": "spawnSync",
+      "at": 1439,
+      "words": [
+        "-C",
+        "rev-parse",
+        "HEAD",
+        "utf8"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": false,
+      "viaArg": true,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round419-instruments/grade-the-417-repairs.mjs",
+      "callee": "spawnSync",
+      "at": 3722,
+      "words": [
+        "-C",
+        "rev-parse",
+        "HEAD",
+        "utf8"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": false,
+      "viaArg": true,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round419-instruments/grade-the-417-repairs.mjs",
+      "callee": "spawnSync",
+      "at": 5990,
+      "words": [
+        "-C",
+        "log",
+        "--format=%H",
+        "--",
+        "utf8",
+        "docs/research/round417-instruments/sdk-gap-0122-to-0135.mjs"
+      ],
+      "label": "OTHER",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": false,
+      "viaArg": true,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round419-instruments/sec3-rekeyed-on-the-call-shape.mjs",
+      "callee": "git",
+      "at": 2693,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round420-instruments/drive-his-419.mjs",
+      "callee": "git",
+      "at": 1786,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round420-instruments/his-old-cell-is-keyed-on-head.mjs",
+      "callee": "git",
+      "at": 7779,
+      "words": [
+        "log",
+        "--format=%H",
+        "--",
+        "docs/research/round417-instruments/sdk-gap-0122-to-0135.mjs"
+      ],
+      "label": "OTHER",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round420-instruments/tool-surface-is-a-scope-label-not-a-censused-surface.mjs",
+      "callee": "git",
+      "at": 2751,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round421-instruments/grade-the-420-repair.mjs",
+      "callee": "git",
+      "at": 4125,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round421-instruments/grade-the-420-repair.mjs",
+      "callee": "git",
+      "at": 6476,
+      "words": [
+        "log",
+        "--format=%H",
+        "--",
+        "docs/research/round419-instruments/grade-the-417-repairs.mjs"
+      ],
+      "label": "OTHER",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round421-instruments/grade-the-420-repair.mjs",
+      "callee": "git",
+      "at": 9336,
+      "words": [
+        "log",
+        "--format=%H",
+        "--",
+        "docs/research/round417-instruments/sdk-gap-0122-to-0135.mjs"
+      ],
+      "label": "OTHER",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round421-instruments/grade-the-420-repair.mjs",
+      "callee": "git",
+      "at": 10186,
+      "words": [
+        "rev-parse",
+        "${}:${}"
+      ],
+      "label": "OTHER",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round421-instruments/grade-the-420-repair.mjs",
+      "callee": "git",
+      "at": 10240,
+      "words": [
+        "rev-parse",
+        "${}:${}"
+      ],
+      "label": "OTHER",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round421-instruments/grade-the-420-repair.mjs",
+      "callee": "git",
+      "at": 10410,
+      "words": [
+        "merge-base",
+        "--is-ancestor",
+        "e2759907",
+        "791acfb3"
+      ],
+      "label": "PINNED",
+      "sub": "merge-base",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round421-instruments/grade-the-420-repair.mjs",
+      "callee": "git",
+      "at": 10579,
+      "words": [
+        "merge-base",
+        "--is-ancestor",
+        "ee37abae",
+        "HEAD"
+      ],
+      "label": "PINNED",
+      "sub": "merge-base",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round422-instruments/drive-his-421.mjs",
+      "callee": "git",
+      "at": 3756,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round422-instruments/drive-his-421.mjs",
+      "callee": "git",
+      "at": 6959,
+      "words": [
+        "log",
+        "--format=%H",
+        "--",
+        "docs/research/round419-instruments/grade-the-417-repairs.mjs"
+      ],
+      "label": "OTHER",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round422-instruments/drive-his-421.mjs",
+      "callee": "git",
+      "at": 7337,
+      "words": [
+        "log",
+        "--format=%H",
+        "--",
+        "${}/grade-the-420-repair.mjs"
+      ],
+      "label": "OTHER",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round422-instruments/drive-his-421.mjs",
+      "callee": "git",
+      "at": 7894,
+      "words": [
+        "merge-base",
+        "--is-ancestor",
+        "4adcc0bf",
+        "7c2208ae"
+      ],
+      "label": "PINNED",
+      "sub": "merge-base",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round423-instruments/grade-the-422-cures.mjs",
+      "callee": "git",
+      "at": 5907,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round424-instruments/an-exit-code-is-not-the-gate-that-fired.mjs",
+      "callee": "git",
+      "at": 5296,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round424-instruments/the-resolver-reads-one-pattern-per-body.mjs",
+      "callee": "spawnSync",
+      "at": 3974,
+      "words": [
+        "-C",
+        "rev-parse",
+        "HEAD",
+        "utf8"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": false,
+      "viaArg": true,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round425-instruments/position-vs-property-confusion-matrix.mjs",
+      "callee": "git",
+      "at": 5031,
+      "words": [
+        "log",
+        "--format=%H",
+        "--",
+        "docs/research/round421-instruments/scope-label-legs-are-a-class-of-three.mjs"
+      ],
+      "label": "OTHER",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round428-instruments/a-sentence-keyed-on-a-subset-publishes-past-its-own-gate.mjs",
+      "callee": "git",
+      "at": 4574,
+      "words": [
+        "log",
+        "--format=%H",
+        "--",
+        "docs/research/round425-instruments/a-crash-cannot-print-separates.mjs"
+      ],
+      "label": "OTHER",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round428-instruments/a-sentence-keyed-on-a-subset-publishes-past-its-own-gate.mjs",
+      "callee": "git",
+      "at": 5418,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round429-instruments/does-any-other-instrument-retype-a-verdict-it-slices.mjs",
+      "callee": "git",
+      "at": 3573,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round429-instruments/does-any-other-instrument-retype-a-verdict-it-slices.mjs",
+      "callee": "git",
+      "at": 6852,
+      "words": [
+        "log",
+        "--diff-filter=A",
+        "--format=%an",
+        "--"
+      ],
+      "label": "EVENT",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round429-instruments/does-any-other-instrument-retype-a-verdict-it-slices.mjs",
+      "callee": "git",
+      "at": 11213,
+      "words": [
+        "log",
+        "--format=%H",
+        "--"
+      ],
+      "label": "OTHER",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round430-instruments/grade-the-convention-gate.mjs",
+      "callee": "git",
+      "at": 28910,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round430-instruments/his412-prefix.sliced.mjs",
+      "callee": "git",
+      "at": 4842,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round430-instruments/mutant-m1-refused-false-on-success.sliced.mjs",
+      "callee": "git",
+      "at": 4842,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round430-instruments/mutant-m2-refusal-key-renamed.sliced.mjs",
+      "callee": "git",
+      "at": 4842,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round430-instruments/mutant-m3-control-message-reworded.sliced.mjs",
+      "callee": "git",
+      "at": 4842,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round431-instruments/grade-his-convention-and-measure-the-reach.mjs",
+      "callee": "git",
+      "at": 4644,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round431-instruments/grade-his-convention-and-measure-the-reach.mjs",
+      "callee": "git",
+      "at": 13823,
+      "words": [
+        "log",
+        "--format=%H",
+        "--"
+      ],
+      "label": "OTHER",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round433-instruments/grade-his-cure-and-census-its-reach.mjs",
+      "callee": "git",
+      "at": 2194,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round434-instruments/grade-the-two-cures-and-the-prose.mjs",
+      "callee": "git",
+      "at": 2525,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs",
+      "callee": "git",
+      "at": 3495,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs",
+      "callee": "git",
+      "at": 27355,
+      "words": [
+        "log",
+        "--format=%h",
+        "--diff-filter=A",
+        "--",
+        "docs/research/round434-instruments/grade-the-two-cures-and-the-prose.mjs"
+      ],
+      "label": "EVENT",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs",
+      "callee": "git",
+      "at": 27647,
+      "words": [
+        "merge-base",
+        "--is-ancestor"
+      ],
+      "label": "OTHER",
+      "sub": "merge-base",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round436-instruments/grade-the-cures-against-a-runtime-oracle.mjs",
+      "callee": "git",
+      "at": 3645,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round436-instruments/grade-the-cures-against-a-runtime-oracle.mjs",
+      "callee": "git",
+      "at": 6233,
+      "words": [
+        "rev-parse",
+        "HEAD:${}"
+      ],
+      "label": "OTHER",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round436-instruments/grade-the-cures-against-a-runtime-oracle.mjs",
+      "callee": "git",
+      "at": 12358,
+      "words": [
+        "rev-parse",
+        "${}:${}"
+      ],
+      "label": "OTHER",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round436-instruments/promotion-diff.mjs",
+      "callee": "git",
+      "at": 2740,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round437-instruments/grade-his-cure-and-the-live-keyed-finding-leg.mjs",
+      "callee": "git",
+      "at": 4446,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round438-instruments/grade-the-binding-position-cures.mjs",
+      "callee": "git",
+      "at": 2472,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round438-instruments/grade-the-binding-position-cures.mjs",
+      "callee": "git",
+      "at": 3368,
+      "words": [
+        "rev-parse",
+        "HEAD:${}"
+      ],
+      "label": "OTHER",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round438-instruments/grade-the-binding-position-cures.mjs",
+      "callee": "git",
+      "at": 4964,
+      "words": [
+        "rev-parse",
+        "${}:${}"
+      ],
+      "label": "OTHER",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round439-instruments/attribute-the-ungradeable-red.mjs",
+      "callee": "git",
+      "at": 3149,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round439-instruments/attribute-the-ungradeable-red.mjs",
+      "callee": "git",
+      "at": 3341,
+      "words": [
+        "rev-parse",
+        "HEAD:${}"
+      ],
+      "label": "OTHER",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round440-instruments/census-the-gate-line-grammar-his-cure-must-cover.mjs",
+      "callee": "git",
+      "at": 3799,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round440-instruments/census-the-gate-line-grammar-his-cure-must-cover.mjs",
+      "callee": "git",
+      "at": 38223,
+      "words": [
+        "rev-parse",
+        "HEAD:${}"
+      ],
+      "label": "OTHER",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round441-instruments/key-the-silent-class-from-source.mjs",
+      "callee": "git",
+      "at": 5112,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round441-instruments/key-the-silent-class-from-source.mjs",
+      "callee": "git",
+      "at": 43872,
+      "words": [
+        "log",
+        "--format=%H",
+        "--"
+      ],
+      "label": "OTHER",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round441-instruments/key-the-silent-class-from-source.mjs",
+      "callee": "git",
+      "at": 44135,
+      "words": [
+        "rev-parse",
+        "${}:${}"
+      ],
+      "label": "OTHER",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round442-instruments/grade-the-shared-verdict-emitter.mjs",
+      "callee": "git",
+      "at": 1365,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round443-instruments/grade-the-emitter-at-its-published-line.mjs",
+      "callee": "git",
+      "at": 1980,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round444-instruments/grade-the-round-trip-cure.mjs",
+      "callee": "git",
+      "at": 1326,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round445-capability-test/klatch-capability-test.mjs",
+      "callee": "return.execFileSync",
+      "at": 7579,
+      "words": [
+        "-C",
+        "rev-parse",
+        "--short",
+        "HEAD",
+        "utf8",
+        "ignore",
+        "pipe",
+        "ignore"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": false,
+      "viaArg": true,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round446-instruments/grade-my-own-oracle-predicate.mjs",
+      "callee": "git",
+      "at": 3126,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round447-instruments/postcommit-diff.mjs",
+      "callee": "git",
+      "at": 522,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round447-instruments/record-drives.mjs",
+      "callee": "git",
+      "at": 2275,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round448-instruments/census-pred-occupancy.mjs",
+      "callee": "git",
+      "at": 1410,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round448-instruments/census-topToken-callers.mjs",
+      "callee": "git",
+      "at": 1348,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round448-instruments/grade-the-four-list-scorer.mjs",
+      "callee": "git",
+      "at": 3720,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round449-instruments/probe-the-argument-shapes.mjs",
+      "callee": "git",
+      "at": 1103,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round449-instruments/resolve-the-variable-write-targets.mjs",
+      "callee": "git",
+      "at": 5515,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round450-instruments/census-the-row-vocabulary.mjs",
+      "callee": "git",
+      "at": 1975,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round450-instruments/grade-the-row-guards.mjs",
+      "callee": "git",
+      "at": 1950,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round451-instruments/recon-the-out-corpus.mjs",
+      "callee": "git",
+      "at": 341,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round453-instruments/census1-drive-every-at-risk-instrument.mjs",
+      "callee": "git",
+      "at": 1701,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round454-instruments/census1-row-helpers-that-embed-a-newline.mjs",
+      "callee": "git",
+      "at": 1614,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round454-instruments/census2-does-any-call-site-feed-stripsource-a-non-string.mjs",
+      "callee": "git",
+      "at": 2291,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round454-instruments/census3-resolve-the-324-unmodelled-one-level.mjs",
+      "callee": "git",
+      "at": 2052,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round454-instruments/probe0-why-449s-two-reader-slices-return-null.mjs",
+      "callee": "git",
+      "at": 1767,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round455-instruments/attribute-each-restamp-to-the-file-it-stamps.mjs",
+      "callee": "git",
+      "at": 2555,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round455-instruments/dispose-of-w10-and-repair-the-lifter-it-needs.mjs",
+      "callee": "git",
+      "at": 2764,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round455-instruments/dispose-of-w10-and-repair-the-lifter-it-needs.mjs",
+      "callee": "git",
+      "at": 3178,
+      "words": [
+        "rev-parse",
+        "${}^"
+      ],
+      "label": "PARENT",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round456-instruments/drift-census-over-the-verdict-publishing-population.mjs",
+      "callee": "git",
+      "at": 6007,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round457-instruments/grade-recording-completeness-across-the-whole-corpus.mjs",
+      "callee": "git",
+      "at": 6314,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round458-instruments/grade-the-conjunct-cure.mjs",
+      "callee": "git",
+      "at": 2797,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round459-instruments/grade-the-two-routed-sites-and-census-the-laundering-idioms.mjs",
+      "callee": "git",
+      "at": 6382,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round460-instruments/grade-the-pred-gate-landing.mjs",
+      "callee": "git",
+      "at": 6670,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round462-instruments/grade-the-pred-half-refusal.mjs",
+      "callee": "git",
+      "at": 5788,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round462-instruments/recon.mjs",
+      "callee": "git",
+      "at": 1119,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round463-instruments/grade-the-57-of-461-class.mjs",
+      "callee": "git",
+      "at": 5298,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round463-instruments/grade-the-57-of-461-class.mjs",
+      "callee": "return.git",
+      "at": 20608,
+      "words": [
+        "log",
+        "--reverse",
+        "--format=%H",
+        "-S",
+        "export function renderPredRows",
+        "--",
+        "docs/research/lib/verdict.mjs"
+      ],
+      "label": "OTHER",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round463-instruments/grade-the-57-of-461-class.mjs",
+      "callee": "return.git",
+      "at": 21105,
+      "words": [
+        "log",
+        "--diff-filter=A",
+        "--format=%H",
+        "-1",
+        "--"
+      ],
+      "label": "EVENT",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round463-instruments/grade-the-57-of-461-class.mjs",
+      "callee": "git",
+      "at": 21312,
+      "words": [
+        "merge-base",
+        "--is-ancestor"
+      ],
+      "label": "OTHER",
+      "sub": "merge-base",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round463-instruments/recon.mjs",
+      "callee": "git",
+      "at": 1611,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round463-instruments/which-residue-member-postdates.mjs",
+      "callee": "git",
+      "at": 727,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round463-instruments/which-residue-member-postdates.mjs",
+      "callee": "git",
+      "at": 920,
+      "words": [
+        "log",
+        "--reverse",
+        "--format=%H",
+        "-S",
+        "export function renderPredRows",
+        "--",
+        "docs/research/lib/verdict.mjs"
+      ],
+      "label": "OTHER",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round463-instruments/which-residue-member-postdates.mjs",
+      "callee": "git",
+      "at": 1416,
+      "words": [
+        "log",
+        "--diff-filter=A",
+        "--format=%H %ad %an",
+        "-1",
+        "--date=short",
+        "--"
+      ],
+      "label": "EVENT",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round463-instruments/which-residue-member-postdates.mjs",
+      "callee": "git",
+      "at": 1571,
+      "words": [
+        "merge-base",
+        "--is-ancestor"
+      ],
+      "label": "OTHER",
+      "sub": "merge-base",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round464-instruments/grade-the-stop-condition.mjs",
+      "callee": "git",
+      "at": 10132,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round464-instruments/grade-the-stop-condition.mjs",
+      "callee": "git",
+      "at": 12470,
+      "words": [
+        "log",
+        "--since=${}",
+        "--format=${}%H${}%an${}%ad${}%s",
+        "--date=short",
+        "--name-only"
+      ],
+      "label": "OTHER",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round464-instruments/grade-the-stop-condition.mjs",
+      "callee": "git",
+      "at": 41100,
+      "words": [
+        "log",
+        "--diff-filter=A",
+        "--reverse",
+        "--format=%H${}%an",
+        "--",
+        "docs/research/round${}-instruments/"
+      ],
+      "label": "EVENT",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round464-instruments/recon.mjs",
+      "callee": "git",
+      "at": 1397,
+      "words": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "label": "HEADONLY",
+      "sub": "rev-parse",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round464-instruments/recon.mjs",
+      "callee": "git",
+      "at": 1786,
+      "words": [
+        "log",
+        "--since=${}",
+        "--format=${}%H${}%an${}%ad${}%s",
+        "--date=short",
+        "--name-only"
+      ],
+      "label": "OTHER",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": true,
+      "viaArg": false,
+      "surface": "S2"
+    },
+    {
+      "path": "docs/research/round464-instruments/verify-theseus-two-eights.mjs",
+      "callee": "execFileSync",
+      "at": 827,
+      "words": [
+        "-C",
+        "log",
+        "--since=${}",
+        "--name-only",
+        "--format=",
+        "utf8",
+        "ignore",
+        "pipe",
+        "pipe"
+      ],
+      "label": "OTHER",
+      "sub": "log",
+      "wasRegisteredRecency": false,
+      "viaCallee": false,
+      "viaArg": true,
+      "surface": "S2"
+    }
+  ]
+}

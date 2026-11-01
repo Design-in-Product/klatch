@@ -1,0 +1,14 @@
+cripple:      recency-blind
+population rev bf48ab2a
+
+GKP  RED KP(0e8bc9ac) RECENCY=false · CONTROL(a901f189) RECENCY=false PARENT=true
+       KP labels      : OTHER   (9469B via Buffer.byteLength)
+       CONTROL labels : PARENT,PARENT   (11009B via Buffer.byteLength)
+P4a  AS REGISTERED (file-scoped .test(src)): adjacency reaches KP = true
+       -> REFUTES P4 as written. The KP's file defines its `git()` helper with
+          execFileSync('git', ...), so file-containment is true while span-reach is not.
+P4b  AT SPAN GRANULARITY: of the KP's 0 RECENCY span(s), a spawn-callee key
+       reaches 0; the span extractor reaches 0.
+       KP RECENCY callee(s): (none)
+
+SELFTEST  GKP RED — no population figure published from a --selftest drive.

@@ -1,0 +1,42 @@
+cripple:      (none)
+population rev bf48ab2a
+
+GKP  ok  KP(0e8bc9ac) RECENCY=true · CONTROL(a901f189) RECENCY=false PARENT=true
+       KP labels      : RECENCY   (9469B via Buffer.byteLength)
+       CONTROL labels : PARENT,PARENT   (11009B via Buffer.byteLength)
+P4a  AS REGISTERED (file-scoped .test(src)): adjacency reaches KP = true
+       -> REFUTES P4 as written. The KP's file defines its `git()` helper with
+          execFileSync('git', ...), so file-containment is true while span-reach is not.
+P4b  AT SPAN GRANULARITY: of the KP's 1 RECENCY span(s), a spawn-callee key
+       reaches 0; the span extractor reaches 1.
+       KP RECENCY callee(s): git
+
+GSELF ok  0 of this unit's own .mjs files excluded from both surfaces
+GREACH ok  parsed 308 of 308 · refused 0 (named below if any)
+
+surface   files    RECENCY    EVENT   PARENT   PINNED HEADONLY    OTHER
+S1           64          1        5        2        0       13       25
+S2          244          7        6        1        4       94       40
+
+AS-REGISTERED RECENCY (five-label rule, no EVENT): 11 spans
+REFINED       RECENCY (EVENT carved out)         : 8 spans
+  the 3 difference is --diff-filter=A, an event selector the registered rule mis-keyed
+
+RECENCY   spans 8 in 7 files  (S1 1 · S2 7)
+P3        of the 7 RECENCY files, 5 also contain a `git show <rev>:<path>` baseline read
+          AT-OR-OVER half — registered prediction was UNDER half
+          (file-scoped, declared a CEILING on the defect class, not an estimate)
+P4b-pop   of the 8 RECENCY spans, a spawn-callee adjacency key reaches 3;
+          5 are wrapped calls an adjacency key cannot identify.
+
+RECENCY spans, every one, S1 first — for the GHAND leg:
+  S1 CONSUMER git(log) sel=[-1] docs/research/unit-464sat-2026-10-31/grepro.mjs
+  S2 no-consum execFileSync(log) sel=[-1] docs/research/round378-instruments/grade-b3-known-positive.mjs
+  S2 no-consum execFileSync(log) sel=[-1] docs/research/round378-instruments/grade-b3-known-positive.mjs
+  S2 CONSUMER git(log) sel=[-1] docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs
+  S2 CONSUMER git(log) sel=[-1] docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs
+  S2 CONSUMER git(log) sel=[-1] docs/research/round397-instruments/grade-the-anchor-that-is-not-guarded.mjs
+  S2 CONSUMER git(log) sel=[-1] docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs
+  S2 no-consum execFileSync(log) sel=[-1] docs/research/round418-instruments/installed-sdk-and-sec4-by-shape.mjs
+
+CENSUSVERDICT/0  GKP ok, GREACH ok, GSELF ok

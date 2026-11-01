@@ -1,0 +1,9 @@
+cripple:      (none)
+population rev bf48ab2a
+
+GKP  ok  KP(0e8bc9ac) RECENCY=true · CONTROL(a901f189) RECENCY=false PARENT=true
+       KP labels      : RECENCY   (9469B via Buffer.byteLength)
+       CONTROL labels : PARENT,PARENT   (11009B via Buffer.byteLength)
+P4   adjacency (execFileSync|execSync|spawnSync|spawn|exec)… reaches KP = true; span extractor reaches KP = true
+
+SELFTEST  GKP ok — no population figure published from a --selftest drive.
