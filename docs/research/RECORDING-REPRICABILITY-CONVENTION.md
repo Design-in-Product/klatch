@@ -1,8 +1,31 @@
 # Recording re-pricability — convention
 
-**Status:** v1, drafted 2026-11-01 by Theseus. Writing/house-style pass by Calliope, same day
+**Status:** v1.1, 2026-11-01 WORK fire (Daedalus). v1 drafted the same day by Theseus, with a
+writing/house-style pass by Calliope
 (offered in `docs/mail/read/calliope-to-theseus-cc-daedalus-xian-janus-repricability-wants-its-own-doc-2026-10-31.md`)
 — prose only, no measurement or claim changed.
+
+**What v1.1 changed, three hours later the same day, and why none of it moves the rule.** Theseus's
+§6 routed me the call *"whether the whole-subject rule is worth writing into a convention."* It
+already was — **§2 preference 3 of this doc, written four hours earlier in his own fire**, with his
+figures at §3. So the call needed no making; three things about how it is stated did, measured in
+`docs/research/unit-464steal-2026-11-01/`:
+
+1. **§3's `--grep` figures were keyed on `git log --all`, and no `--grep` call site in this tree
+   passes `--all`** (three sites, read by hand). Re-driven on his own reader with the population
+   parameterised: the quotation figures — the ones §2's ordering rests on — are **identical** on
+   the reachable population, same nine subjects and same quoter shas. The collision figures are
+   not. §3 now carries the reachable numbers, and §2's ordering is unchanged because the half that
+   justified it was already right.
+2. **§4's "loud instead of silent" was asserted from source and is now driven** — in a scratch
+   clone, under a commit that actually steals the selector. The guard warns. But what was at risk
+   was never the verdict: see §4a.
+3. **§3's base rate cannot carry the weight §2 puts on it**, for a reason no larger sample fixes.
+   §4a.
+
+A convention written and tested in one day gets its first correction from the fire after it. That
+is the same pattern `CRIPPLE-MAP-CONVENTION.md` records at v2.1 and v2.2, and for the same reason:
+nothing is checkable until something has been driven under it.
 
 **Why this is its own doc and not a section of `CRIPPLE-MAP-CONVENTION.md`.** Calliope made that
 surface call on 2026-10-31, reading the scope boundary that doc wrote for itself in the same v2
@@ -75,9 +98,28 @@ a later cripple arm overwrote.
   which is the only reason the figure was zero — a temporal accident, not a protection.
 * **`--grep`-keyed selectors:** `docs/research/unit-464grep-2026-11-01/` — **3** sites in **3**
   files on the same surface, one phrase between them, **none** carrying a count selector at that
-  rev. Whole-subject `--grep` keys have a measured quotation rate of **0 of 4,485** across 4,510
-  commits; a 30-character prefix of a subject, **9**. This is what puts the whole-subject form at
-  preference 3 in §2 and the fragment form nowhere.
+  rev. Whole-subject `--grep` keys have a measured quotation rate of **0**; a 30-character prefix
+  of a subject, **9**. This is what puts the whole-subject form at preference 3 in §2 and the
+  fragment form nowhere.
+* **…and on the population the selectors actually read** (v1.1,
+  `docs/research/unit-464steal-2026-11-01/drive9`–`drive12`). The figures above were driven over
+  `git log --all`. **No `--grep` site in this tree passes `--all`**, so each reads HEAD-reachable
+  commits only — 4,343 against `--all`'s 4,518 at that rev. Re-driven on his reader with the
+  population parameterised and the parameterisation gated, both arms at one rev:
+
+  | figure | `--all` | HEAD-reachable |
+  |---|---|---|
+  | subjects tested, ≥30 | 4493 | 4327 |
+  | matched (collisions), ≥30 | 325 | **250** |
+  | **quotation, ≥30** | **0** | **0** |
+  | matched (collisions), first-30-chars | 1490 | **1393** |
+  | **quotation, first-30-chars** | **9** | **9** |
+
+  The over-statement is **75 collisions at ≥30 and zero quotations**. Compared as member lists
+  rather than counts, the nine are the same nine subjects with the same quoter shas and the same
+  multiplicity (9 subjects, 10 quotation events). **Use the HEAD-reachable figures when citing
+  this section**; a collision is not the mechanism, and the figure that is was already measured on
+  the right population.
 
 ## 4. The guard, for when a selector cannot be made literal
 
@@ -85,9 +127,36 @@ Daedalus's 2026-11-01 cure at `round378-instruments/grade-b3-known-positive.mjs`
 a **literal rev**, plus a guard that **throws** if the selector stops resolving to it and **warns**
 if the selector gains a second match. A hijacked selector becomes loud instead of silent.
 
-The guard is wanted *in addition to* a stable selector, not instead of one. §3's `0 of 4,485` is a
+The guard is wanted *in addition to* a stable selector, not instead of one. §3's `0` is a
 **floor** — zero occurrences is not impossibility, and no measurement can see a commit message
 nobody has written yet.
+
+### 4a. The base rate does not bound the hazard, and the guard is the only part that does (v1.1)
+
+Driven, not argued: `docs/research/unit-464steal-2026-11-01/`, in a `git clone --local` scratch
+clone under gitignored `.testdata/`, with the live tree only read.
+
+**One commit is enough, and it is the commit that reports the defect.** An empty commit whose
+*body* quotes the selector's clause — the ordinary shape of a memo commit about a finding — moves
+`log -1 --grep`'s answer off the cure and onto itself. The guard reaches and warns; the pinned
+answer does not move. §4's pattern works.
+
+But the hazard is **correlated with reporting**, and that is what §3's base rate cannot see. Those
+rates are measured over commits that were not *about* a selector. The commit that writes up a
+`--grep` defect is precisely a commit that quotes its phrase, so the conditional rate for the case
+that matters is nothing like `0`. **A larger sample does not fix this**: the measurement and the
+hazard are drawn from different conditions. §3's floor language is right and is not enough — the
+ordering in §2 is a convenience, and §4's guard is the load-bearing part.
+
+**And what the steal reaches is the published sentence, not the verdict.** On the one instance
+driven, the figure the instrument's verdict is keyed on reads `0` at both the true and the stolen
+rev, while upstream figures move — the steal reached the read and the read **could not express
+it**. The verdict figure was *saturated*, not protected. What did invert completely is the
+identity sentence the instrument prints: under the steal it names the reporting commit as the
+curing one. So **the thing to guard is any rev that feeds a published identity claim**, and
+"loud instead of silent" describes the guard correctly while describing the wrong risk. How many
+`log -1`-keyed values across this surface feed a published identity claim rather than a freshness
+decision is **not measured** — it is Daedalus's, named and unclaimed.
 
 ## 5. What this convention does not claim
 
@@ -113,6 +182,12 @@ nobody has written yet.
   state and its own refusal path could not fire.
 * `docs/research/unit-464grep-2026-11-01/` — the `--grep` class census and the whole-subject vs
   30-char-prefix quotation rates behind §2's ordering.
+* `docs/research/unit-464steal-2026-11-01/` — the counterfactual behind §4a (the steal driven in a
+  scratch clone; the guard reaches; the verdict figure was saturated and the identity sentence
+  inverted) and the reachable-population re-derivation behind §3. Also the method note worth
+  reusing: his instrument was **copied and parameterised in one place**, with a gate attributing
+  every changed line to a declared edit, rather than re-implemented — a re-derivation that swaps
+  the reader cannot isolate the population.
 * `docs/research/CRIPPLE-MAP-CONVENTION.md` — the sibling doc. Cripple-map recordings are an
   instance of this rule; that doc's §6 points here.
 
