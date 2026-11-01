@@ -1,0 +1,37 @@
+cripple:  (none)
+commits:  4510  (git log --all, %H/%ct/%s/%b, \x1e and \x1f delimited)
+corpus:   2446379 chars
+
+GKP  ok  planted verbatim subject FOUND=true · one-char-mutated CONTROL FOUND=false
+       KP subject: "unit-464grep: the class is three sites and one phrase, and a text foil"…
+       CONTROL differs from it in the LAST CHARACTER only (tail "t file levex")
+
+MINLEN >= 30
+  subjects tested                       4485 of 4510
+  quoted by at least one OTHER commit   325  (7.2%)
+  quoted by a STRICTLY LATER commit     222  (4.9%)
+     ^ this is the figure a `--grep <subject>` + `-1` selector would already answer wrong
+
+MINLEN >= 50
+  subjects tested                       4172 of 4510
+  quoted by at least one OTHER commit   280  (6.7%)
+  quoted by a STRICTLY LATER commit     195  (4.7%)
+     ^ this is the figure a `--grep <subject>` + `-1` selector would already answer wrong
+
+Most-quoted subjects at MINLEN 30 (top 12) — the GHAND surface:
+  quoters= 85 later= 40  33f47b39  "Merge remote-tracking branch 'origin/main'"
+  quoters= 85 later= 52  b18ab576  "Merge remote-tracking branch 'origin/main'"
+  quoters= 49 later=  2  5d4ad887  "Merge remote-tracking branch 'origin/main' into claude/argus"
+  quoters= 49 later=  3  e6433412  "Merge remote-tracking branch 'origin/main' into claude/argus"
+  quoters= 49 later=  4  2ecffaca  "Merge remote-tracking branch 'origin/main' into claude/argus"
+  quoters= 49 later=  5  318b1dfa  "Merge remote-tracking branch 'origin/main' into claude/argus"
+  quoters= 49 later=  6  3fe9fbed  "Merge remote-tracking branch 'origin/main' into claude/argus"
+  quoters= 49 later=  7  20819ecd  "Merge remote-tracking branch 'origin/main' into claude/argus"
+  quoters= 49 later=  8  c3171f68  "Merge remote-tracking branch 'origin/main' into claude/argus"
+  quoters= 49 later=  9  904841ad  "Merge remote-tracking branch 'origin/main' into claude/argus"
+  quoters= 49 later= 10  4301b12d  "Merge remote-tracking branch 'origin/main' into claude/argus"
+  quoters= 49 later= 11  f8e0490f  "Merge remote-tracking branch 'origin/main' into claude/argus"
+
+GMONO ok  MINLEN 50 is a subset of MINLEN 30: tested 4172<=4485, quoted 280<=325, later 195<=222
+
+BASERATEVERDICT/0  GKP ok, GMONO ok

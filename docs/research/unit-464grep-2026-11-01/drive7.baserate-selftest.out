@@ -1,0 +1,9 @@
+cripple:  (none)
+commits:  4510  (git log --all, %H/%ct/%s/%b, \x1e and \x1f delimited)
+corpus:   2446379 chars
+
+GKP  ok  planted verbatim subject FOUND=true · one-char-mutated CONTROL FOUND=false
+       KP subject: "unit-464grep: the class is three sites and one phrase, and a text foil"…
+       CONTROL differs from it in the LAST CHARACTER only (tail "t file levex")
+
+SELFTEST  GKP ok — no base-rate figure published from a --selftest drive.

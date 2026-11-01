@@ -1,0 +1,37 @@
+cripple:  self-blind
+commits:  4510  (git log --all, %H/%ct/%s/%b, \x1e and \x1f delimited)
+corpus:   2446379 chars
+
+GKP  ok  planted verbatim subject FOUND=true · one-char-mutated CONTROL FOUND=false
+       KP subject: "unit-464grep: the class is three sites and one phrase, and a text foil"…
+       CONTROL differs from it in the LAST CHARACTER only (tail "t file levex")
+
+*** CRIPPLE ARM — THE FIGURES BELOW ARE VACUOUS BY CONSTRUCTION. ***
+    `self-blind` removes the self-occurrence exclusion, so every subject is
+    "quoted" by its own record. A quoted-rate near 100% here is an identity.
+
+MINLEN >= 30
+  subjects tested                            4485 of 4510
+  matched anywhere in another commit         4485  (100.0%)   <- drive8's undivided figure
+    of which: COLLISION only (same subject)  4485  (100.0%)
+    of which: QUOTATION (in another BODY)    0  (0.0%)  <- the clause under test
+  QUOTED IN A BODY BY A STRICTLY LATER COMMIT 0  (0.0%)
+     ^ THE figure: a `--grep <subject>` + `-1` selector on one of these already
+       answers with a commit other than the one its author meant.
+  GSUM ok  4485 + 0 = 4485, matched 4485
+
+MINLEN >= 50
+  subjects tested                            4172 of 4510
+  matched anywhere in another commit         4172  (100.0%)   <- drive8's undivided figure
+    of which: COLLISION only (same subject)  4172  (100.0%)
+    of which: QUOTATION (in another BODY)    0  (0.0%)  <- the clause under test
+  QUOTED IN A BODY BY A STRICTLY LATER COMMIT 0  (0.0%)
+     ^ THE figure: a `--grep <subject>` + `-1` selector on one of these already
+       answers with a commit other than the one its author meant.
+  GSUM ok  4172 + 0 = 4172, matched 4172
+
+Subjects QUOTED IN A LATER COMMIT'S BODY, top 0 at MINLEN 30 — the GHAND surface:
+
+GMONO ok  MINLEN 50 is a subset of MINLEN 30: tested 4172<=4485, matched 4172<=4485, later 195<=222, later-quotation 0<=0
+
+BASERATEVERDICT/0  GKP ok, GMONO ok, GSUM ok at 2 threshold(s): 30,50

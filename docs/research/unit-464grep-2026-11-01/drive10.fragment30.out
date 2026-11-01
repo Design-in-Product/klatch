@@ -1,0 +1,41 @@
+cripple:  (none)
+commits:  4510  (git log --all, %H/%ct/%s/%b, \x1e and \x1f delimited)
+corpus:   2446379 chars
+
+GKP  ok  planted verbatim subject FOUND=true · one-char-mutated CONTROL FOUND=false
+       KP subject: "unit-464grep: the class is three sites and one phrase, and a text foil"…
+       CONTROL differs from it in the LAST CHARACTER only (tail "t file levex")
+
+FRAGMENT KEY: first 30 chars of each subject (subjects >= 30 chars)
+  subjects tested                            4485 of 4510
+  matched anywhere in another commit         1485  (33.1%)   <- drive8's undivided figure
+    of which: COLLISION only (same subject)  1476  (32.9%)
+    of which: QUOTATION (in another BODY)    9  (0.2%)  <- the clause under test
+  QUOTED IN A BODY BY A STRICTLY LATER COMMIT 9  (0.2%)
+     ^ THE figure: a `--grep <subject>` + `-1` selector on one of these already
+       answers with a commit other than the one its author meant.
+  GSUM ok  1476 + 9 = 1485, matched 1485
+
+Subjects QUOTED IN A LATER COMMIT'S BODY, top 9 at MINLEN 30 — the GHAND surface:
+  later-quot=  2 collision=  0  d57203a2  "Step 10 Phase 1 design conversation closed: round 3 sketch + acknowledgments"
+        quoted by: 73a5db0f 7ac86fee
+  later-quot=  1 collision=  0  6190a0dd  "round467: re-key probe-round307 C4 per-signature and style-blind, graded by 5 cripples"
+        quoted by: e9901fae
+  later-quot=  1 collision=  0  e2759907  "models+intel: add the three 5.5 models, floored pending capability verification; SDK b"
+        quoted by: 5b7b8449
+  later-quot=  1 collision=  0  ddb69d1b  "Round 323: the cheap cure for a frozen figure empties the tripwire and leaves the exit"
+        quoted by: c12401a1
+  later-quot=  1 collision=  0  609ddf4c  "Round 173: the Browse import route dropped the entity it resolved"
+        quoted by: 5f701888
+  later-quot=  1 collision=  0  ef613fcf  "Round 32: import gating + empty-entities auto-attach (Argus 31b follow-ups)"
+        quoted by: 9f67804c
+  later-quot=  1 collision=  0  c8422180  "AuditBench methodology review: 4 recommendations for AXT cross-pollination"
+        quoted by: 9d772f75
+  later-quot=  1 collision=  0  e6171c6b  "Models API verification: green light for Daedalus dynamic discovery"
+        quoted by: 0f24c97a
+  later-quot=  1 collision=  0  00e26669  "Add demo seed script for mystery-menu roundtable"
+        quoted by: 74bb4066
+
+GMONO N/A  fragment mode drives a single threshold; the subset leg is unreachable here
+
+BASERATEVERDICT/0  GKP ok, GMONO ok, GSUM ok at both thresholds

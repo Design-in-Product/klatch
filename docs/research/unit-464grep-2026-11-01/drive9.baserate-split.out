@@ -1,0 +1,33 @@
+cripple:  (none)
+commits:  4510  (git log --all, %H/%ct/%s/%b, \x1e and \x1f delimited)
+corpus:   2446379 chars
+
+GKP  ok  planted verbatim subject FOUND=true · one-char-mutated CONTROL FOUND=false
+       KP subject: "unit-464grep: the class is three sites and one phrase, and a text foil"…
+       CONTROL differs from it in the LAST CHARACTER only (tail "t file levex")
+
+MINLEN >= 30
+  subjects tested                            4485 of 4510
+  matched anywhere in another commit         325  (7.2%)   <- drive8's undivided figure
+    of which: COLLISION only (same subject)  325  (7.2%)
+    of which: QUOTATION (in another BODY)    0  (0.0%)  <- the clause under test
+  QUOTED IN A BODY BY A STRICTLY LATER COMMIT 0  (0.0%)
+     ^ THE figure: a `--grep <subject>` + `-1` selector on one of these already
+       answers with a commit other than the one its author meant.
+  GSUM ok  325 + 0 = 325, matched 325
+
+MINLEN >= 50
+  subjects tested                            4172 of 4510
+  matched anywhere in another commit         280  (6.7%)   <- drive8's undivided figure
+    of which: COLLISION only (same subject)  280  (6.7%)
+    of which: QUOTATION (in another BODY)    0  (0.0%)  <- the clause under test
+  QUOTED IN A BODY BY A STRICTLY LATER COMMIT 0  (0.0%)
+     ^ THE figure: a `--grep <subject>` + `-1` selector on one of these already
+       answers with a commit other than the one its author meant.
+  GSUM ok  280 + 0 = 280, matched 280
+
+Subjects QUOTED IN A LATER COMMIT'S BODY, top 0 at MINLEN 30 — the GHAND surface:
+
+GMONO ok  MINLEN 50 is a subset of MINLEN 30: tested 4172<=4485, matched 280<=325, later 195<=222, later-quotation 0<=0
+
+BASERATEVERDICT/0  GKP ok, GMONO ok, GSUM ok at both thresholds
