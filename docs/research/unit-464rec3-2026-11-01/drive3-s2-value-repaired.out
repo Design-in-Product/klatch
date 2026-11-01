@@ -1,0 +1,14 @@
+# unit-464rec3 — does S2's drift change the lifted value?
+# rev c1d56074c9da9a7d8a7f0d7b77deb9a648553ad1
+
+[MEAS] ADD      ff93ad0a: file 24858 B
+         line: const renamedAway = !/\btype Row\b/.test(readFileSync(join(REPO, PROBE_371_PATH), 'utf8').slice(readFileSync(join(REPO, PROBE_371_PATH), 'utf8').indexOf('ROUND 396 RE-KEY')));
+[MEAS] RECENCY  dee68c0f: file 27367 B
+         line: const renamedAway = rekeyBlock !== null && rekeyBlock.includes('type MemberRow') && !/\btype Row\b/.test(rekeyBlock);
+
+[MEAS] the FILE differs between the two revs: true
+[MEAS] the LIFTED LINE differs between the two revs: true
+[MEAS] the lifted line is present at BOTH revs: true
+
+[VERDICT] S2 today: SILENT HARM — the probe lifts a different line than its own comment claims
+[MEAS] the drifting commit DID edit the lifted line, so nothing protects the value — the probe reads a text its own comment says it is not reading, and its output says nothing about it. Direction matters: the ADD rev holds the DEFECT this probe exists to grade and the RECENCY rev holds the CURE, so the probe grades the defect against the fixed state.

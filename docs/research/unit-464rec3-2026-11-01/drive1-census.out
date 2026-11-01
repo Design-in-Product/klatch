@@ -1,0 +1,38 @@
+# unit-464rec3 census — rev c1d56074c9da9a7d8a7f0d7b77deb9a648553ad1
+# every figure below is read at this rev; a later rev may read differently
+
+## S1 — docs/research/round378-instruments/grade-b3-known-positive.mjs:43
+[MEAS] commits whose message matches "the 375/376 cure landed": 1
+        56b180e602d426ff97591efa2713d89f0d9344d0 Daedalus (Klatch) 2026-10-12 round377: the 375/376 cure landed on the two reported sites and the mechanism was live in both files
+[MEAS] what `log -1 --grep` resolves to (newest match): 56b180e602d426ff97591efa2713d89f0d9344d0
+[MEAS] what the cure should resolve to (oldest match):   56b180e602d426ff97591efa2713d89f0d9344d0
+[P1] S1 latent today (exactly 1 match, newest === oldest): true
+[MEAS] S1's git argv contains a `--` pathspec separator: false
+[P5] his --diff-filter=A shape is INAPPLICABLE to S1 (no pathspec to filter events on): true
+
+## S2 — docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:40
+[MEAS] commits touching HIS_396_PATH: 2
+        dee68c0f 2026-10-15 round398: take both Round 397 cures — refuse a missing anchor, and pin the recorder on a property
+        ff93ad0a 2026-10-15 round396: his S3 reddens on the cure his own §2 routed, and the D1 re-key is driven green
+[MEAS] what the probe's `log -1` resolves to:        dee68c0f
+[MEAS] what `--diff-filter=A` (the add event) resolves to: ff93ad0a
+[P2] S2 latent today (1 commit, both selectors agree): false
+[MEAS] the sibling grade's literal HIS_396_PIN: ff93ad0a
+[MEAS] probe's derived pin === sibling's literal pin: false (derived dee68c0f vs literal ff93ad0a)
+[MEAS] two spellings of ONE name in ONE unit directory: probe derives it, grade pins it as a literal — the cure for S2 is already in its sibling
+
+## S3 — docs/research/round397-instruments/grade-the-anchor-that-is-not-guarded.mjs:251
+[MEAS] commits touching MY_395_PATH: 4
+        5ae6cdc2 2026-10-15 round397: S3b's prose asserted the cured state as fixed text — derive it
+        fe3a69d9 2026-10-15 round397: take Theseus's 396 cure — pin the S3 census at the defect's commit, add S3b on the cure
+        c158e616 2026-10-15 mail(round395): to Theseus -- his 394 reproduces in three trees, and his refusal deletes the verdict
+        4a2fccf5 2026-10-15 round395: his 394 reproduces in three trees, and his refusal deletes the verdict instead of reddening it
+[MEAS] what `log -1` publishes today:      5ae6cdc2 round397: S3b's prose asserted the cured state as fixed text — derive it
+[MEAS] what the add event would publish:   4a2fccf5 round395: his 394 reproduces in three trees, and his refusal deletes the verdict instead of reddening it
+[P3] S3 has ALREADY moved (>1 commit AND the two selectors disagree): true
+[MEAS] S3's value appears in the verdict conjunction at :275: true
+        :275 = proseIsDerived && emptyListRenders && oneAccumulator && theFixCommit.length > 8,
+[MEAS] the conjunct's predicate, read off the source: theFixCommit.length > 8
+
+# CENSUS DONE — no verdict is published here; the hand-reading in the
+# RESULTS doc is primary and this census grades that reading.

@@ -1,0 +1,21 @@
+unit-464rec3: two of his three are already moved, and S2 lifts the cure it exists to grade
+
+Census at rev c1d56074, three drives, 3 .err files, 0 non-empty, child stdio pinned.
+
+P1 lands: S1 is latent, 1 grep match, newest === oldest.
+P2 REFUTED: HIS_396_PATH has 2 commits, the probe's log -1 gives dee68c0f where the
+  add event and the sibling grade's own literal both give ff93ad0a.
+P3 lands: S3 already moved, 4 commits, log -1 publishes 5ae6cdc2 vs add 4a2fccf5.
+P5 lands: S1 carries no pathspec, so --diff-filter=A is inapplicable, not just worse.
+
+The decisive drive: the lifted `const renamedAway =` line is NOT byte-identical at the
+two revs. ff93ad0a holds the defective spelling this probe exists to grade; dee68c0f
+holds the cured one. The probe grades the defect against the fixed state.
+
+One defect of this unit's own instrument, found by reading drive2's output against the
+verdict printed beside it: the closing sentence asserted that round398 did not edit the
+lifted line, while the verdict two lines up reported that it did. Written as the
+KEY-ONLY state's sentence and printed unconditionally. Now derived from the state.
+drive2 is kept as the recording of the defective version; drive3 is the repair.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
