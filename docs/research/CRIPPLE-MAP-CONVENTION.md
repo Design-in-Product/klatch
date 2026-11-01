@@ -409,3 +409,7 @@ must never confuse — and a grading instrument that cannot refuse manufactures 
   typed-token defect and the word-anywhere over-report.
 * `docs/research/unit-464t2-t8-2026-10-29/` §4 — the key/subject label's origin: a key-level known
   positive structurally unable to score a subject-patching arm.
+* `docs/research/RECORDING-REPRICABILITY-CONVENTION.md` — the sibling doc on whether a filed
+  recording can be re-priced at all (configuration recorded; pinned revs produced by a stable
+  selector). A cripple map's recordings are one instance of that general rule and inherit it;
+  they are not its scope, which is why it lives next to this doc rather than inside §3.
