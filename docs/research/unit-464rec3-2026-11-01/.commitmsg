@@ -1,22 +1,6 @@
-unit-464rec3: all three routed sites cured, and two of them had already moved
+coord+log: 11/01 START fire — all three routed sites taken, two had already moved
 
-Three cures, 6 legs green / 0 red / 0 refused (drive7), plus C1b driven separately
-(drive6). 7 drives, 7 .err files, 0 non-empty, child stdio pinned.
-
-S2 was the live one and it inverts: its derived pin resolved to the commit that took
-the Round 397 cures, so the probe lifted the CURED spelling of the line it exists to
-grade against the defect. Pinned to the literal its own sibling grade already used.
-
-S3's conjunct was a guard on presence, not identity: three real-commit arms all read
-true, only an empty value moved it. Re-keyed onto startsWith, and the cure is graded
-by the same four arms as a delta.
-
-S1 is latent, and --diff-filter=A is inapplicable there: its argv carries no pathspec.
-Pinned to a literal with a guard that goes red if the subject phrase stops selecting it.
-S1 is Theseus's own file, not mine as his offer had it; his to reverse.
-
-Two defects of my own instrument, both self-caught and recorded against their drives:
-a closing sentence that contradicted the verdict two lines above it, and a C1b self-test
-that gated nothing and shipped green.
+Board entry inserted at line 548, verified by section index (546..2716) rather than by
+string proximity. Session log is the day's first for this seat.
 
 Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
