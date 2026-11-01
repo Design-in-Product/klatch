@@ -193,3 +193,117 @@ at open and again at close.
 registered gate, not a hope, because reporting this class is the one action that can create it.
 
 This log is pushed last, after Steps 1–3.
+
+---
+
+## 14:47 — Session resumed (WORK fire, Opus 5)
+
+Briefing: pulled clean at `f9721679`. `docs/COORDINATION.md` read. `docs/mail/` — **one new memo
+addressed to me**, Daedalus 13:3x, `…the-steal-is-real-and-the-verdict-it-would-have-stolen-is-saturated-2026-11-01.md`,
+read in full in the same turn it was noticed. `docs/briefs/cross-pollination/current.md` is a
+pointer to a private URL (public repo), no in-repo content.
+
+His §6 leaves me exactly one item — my `unit-464grep` §2's "9" counts subjects, and he says 10
+events with `d57203a2` the row at 2. I took that plus three grading axes on his own instruments.
+Unit `docs/research/unit-464bucket-2026-11-01/`, pre-registration pushed **first** at `82feb62e`.
+
+**Six predictions, six landed.** `RESULTS.md` has the full writeup; the short form:
+
+1. **P1 — his count is exact to the sha.** 9 subjects / 10 events / one row at 2, and it is
+   `d57203a2` (quoters `73a5db0f`, `7ac86fee`). Driven on a byte-identical copy of my own reader
+   (sha256 `760a9778…` both sides) in `--fragment=30` mode. Corpus has grown to 4,525 commits
+   since this morning's 4,485 and the figures are unchanged.
+2. **P2/P3 — his word `saturated` survives, its evidence is half the sentence.** His
+   `upstreamMoved` unions `raw`, `comments` **and `bytes`**; `bytes` is `src.length`, not a count
+   of the needle, so it moves for any two distinct trees. Dropping it, `saturated` still reads
+   true but the witnessing file set falls **2 → 1**: `probe-round375` carries it (`comments` 1→0),
+   `probe-round374` witnesses only via bytes with `raw` 2→2 and `comments` 0→0.
+3. **P4 — his `GARMREACH` publishes both verdict words on an arm that creates nothing.** His
+   instrument run unmodified from my repo root (it hardcodes the clone path), three arms each on a
+   fresh `git clone --local`. `ctrl` reproduces his drive3 (1→2, P2 LANDS, GCTRL). Two arms
+   pre-planted with one memo-shaped commit quoting the phrase in its body: gate **ok**, **no
+   commit created**, P2 **LANDS** on one and **REFUTED** on the other — the second reporting the
+   mechanism refuted while the sha the gate calls "steal commit" was never created by it.
+   **A fuse, not a firing defect:** `GFUSE` records the live match count at **1** (the pin).
+4. **P5/P6 — his `GATTRIB` absorbs a real mutation on one word of comment.** His four buckets
+   lifted from source and evaluated (`GREPRO` reproduces his drive6 per-bucket table exactly);
+   `GCTRL` reproduces all five of his gate lines byte for byte before any cripple arm is read.
+   `header` matches **103 of 316** lines of the whole copy for a 24-line edit. The a/b pair is the
+   headline: the same inserted filter line goes **REFUSED** without a comment and **GREEN** with
+   `// cap the population` on the end, because `pop-flag` is `/POP|…/i` on the bare substring.
+   arm-c: a column-0 comment making a false claim about the reader, absorbed by `header`.
+
+**Two defects of mine, recorded as they happened:**
+
+1. **`GCTRL`'s first version was a verbatim pin and was right to go red** — it required ctrl's
+   `GARMREACH` line byte-identical to his drive3's, which it cannot be, because his note carries
+   the created sha and my clone's HEAD is 40-odd commits past his. `drive4.armreach.out` is kept
+   as the red recording; `drive5` is the repair, **re-aimed on the property** (both `matches N → M`
+   transitions agree *and* the sha his note reports is the commit the arm created) rather than
+   loosened to a substring.
+2. **I reached for `unit-464grep/base-rate.json` before checking which arm wrote it.** It holds
+   the **`self-blind` cripple arm's** output (`laterQuotation: 0`) — `drive13` ran after `drive12`
+   and overwrote it. Grading his correction against that artefact would have reported him wrong.
+   The published 9 is sound because it lives in `drive12.fragment30-final.out`. `unit-464grep`'s
+   json is left exactly as it is; re-stamping it would destroy the evidence.
+
+## 15:1x — Mail filed and cross-repo check
+
+Memo to Daedalus/xian cc Janus/Argus/Calliope/Iris filed and pushed in its **own commit**
+(`04d7975a`), separate from the unit work, per the worktree mail rule.
+
+Cross-repo, by `git fetch` + `git log --all --since '2026-11-01 11:09'` on each repo directly:
+`designinproduct` **3** (Janus's rollup/fire bookkeeping, one marking 14 handled Klatch cc's as
+seen — `git show --stat` confirms it touches only `docs/agents/janus/mail-seen.txt`; nothing owed),
+`mediajunkie` **5** (ghmint token lapse, troll blocker, disk fire — content-unrelated),
+`dispatch` **0**, `piper-morgan-product` **138**, content-grepped (`git log -p`) for
+klatch/theseus → **0 hits**. Nothing owed from any.
+
+## 15:2x — Wrap verification (run after the commits it cites)
+
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git log origin/main --oneline -5
+04d7975a mail(Theseus -> Daedalus, xian; cc Janus/Argus/Calliope/Iris): his count is exact, two gates go green on what they catch
+cf50c314 unit-464bucket: his GARMREACH disjunct publishes both verdict words on an arm that creates nothing
+9b28b2f2 unit-464bucket: his GATTRIB absorbs 2 of 3 planted mutations, and one trailing comment flips the verdict
+bb4ef0ea unit-464bucket: his event count is exact, and his saturation witness set is one file not two
+82feb62e unit-464bucket: pre-registration, before any instrument in the directory exists
+```
+
+All five are mine, authored this fire, and `82feb62e` — the pre-registration — is **first**.
+
+**Step 2 — each deliverable `ls`-checked individually.** 17 files in
+`docs/research/unit-464bucket-2026-11-01/`: `PRE-REGISTRATION.md`, `RESULTS.md`,
+`base-rate-reread.mjs`, `base-rate.json`, `regrade-saturation.mjs`,
+`grade-his-attrib-gate.mjs`, `grade-his-armreach-gate.mjs`, and `drive1`–`drive5` `.out`/`.err`
+pairs — **5 `.err`, 0 non-empty** (`statSync`, not `grep`). Plus the memo in `docs/mail/` and this
+log.
+
+**Step 3 — product tree untouched:** `git status --porcelain -- packages/ scripts/` → **0 bytes**,
+at open and again at close, and asserted *inside* both cripple harnesses (`GLIVECLEAN`) rather
+than by hand at the end.
+
+**The phrase discipline re-verified at close:** `the 375/376 cure landed` matches **1** commit in
+the live tree, HEAD-reachable and `--all` — unchanged from open. It appears in this unit's files
+and in no commit message of it. That number is what makes §3 a fuse rather than a defect already
+firing, so it is measured, not assumed.
+
+**Scratch removed:** `.testdata/unit-464steal` and `.testdata/unit-464bucket` deleted (both were
+under the gitignored path, `.gitignore:33`); the harnesses rebuild their own fixtures.
+
+**Not run this fire:** `npm test`, `npm run typecheck`, the probe sweep as a standalone drive — the
+pre-commit probe census printed `CENSUS OK`, 153 files, 43 swept / 110 deferred, on each of the
+five commits.
+
+**Drain:** drained to the one new memo, which is answered in full. Deferred with named blockers:
+the three items Daedalus lists as still mine (reader template-interpolation blindness,
+`grepro.mjs:44`'s `catch { continue }`, `GSELF` vacuity in `unit-464rec`) — not blocked, not
+taken, named in §6 of both the writeup and the memo with no deadline, which is Klatch's bounded-fire
+exception rather than a deferral; and the new **artefact-overwrite class** from defect 2, uncensused.
+xian's standing item is unchanged: whether the track stops and re-scopes. Nothing this fire moves
+the verdict; the standing cell was not driven and not edited, and `T2b`'s countdown is not re-read
+this fire and is therefore not restated.
+
+This log is pushed last, after Steps 1–3.
