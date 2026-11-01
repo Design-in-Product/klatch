@@ -1,0 +1,42 @@
+unit-464bucket — what his GARMREACH asserts on the steal arm
+  subject:  docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs
+  phrase:   "the 375/376 cure landed"   (lifted from docs/research/round378-instruments/grade-b3-known-positive.mjs)
+  clone:    /Users/xian/Development/klatch-worktrees/theseus/.testdata/unit-464steal/clone  (rebuilt fresh per arm)
+
+GATES
+  GPATH        ok  — his instrument's hardcoded clone path is .testdata/unit-464steal/clone and this harness builds exactly that
+  GDISJUNCT    ok  — his steal-arm leg is: ARM === 'kn' ? matches.length === 1 : (matches.length === matchesBefore.length + 1 || matches.length === 2),
+  GALREADY     ok  — his skip condition is: already = matchesBefore.length > 1
+  GLIVECLEAN   ok  — git status --porcelain -- packages/ scripts/ is 0 bytes in the LIVE tree
+  GFUSE        ok  — the LIVE tree matches the phrase 1 time(s) — this is a fuse while that is 1
+  GCTRL        ok  — ctrl transition 1→2 vs drive3's 1→2, P2 LANDS, commit created true, his reported sha 70c9e178 is the created HEAD: true
+  GPLANTED     ok  — each arm entered its run with the match count its plant list declares: ctrl 1, preplant-head 2, preplant-buried 2
+
+ARMS
+   arm              matches  commit    GARMREACH  his P2     what the arm was
+   ctrl             1 → 2    created   ok         LANDS      fresh clone, nothing planted — must reproduce his drive3
+   preplant-head    2 → 2    NONE      ok         LANDS      one quoting commit, left at HEAD
+   preplant-buried  2 → 2    NONE      ok         REFUTED    one quoting commit, then a non-quoting commit on top
+
+   arm ctrl:
+     GARMREACH   ok  — arm=steal: matches 1 → 2, steal commit 70c9e178
+     P2  LANDS     pre-cure spelling resolves to 70c9e178; steal is 70c9e178
+     the sha his note calls "steal commit": 70c9e178 — created by this arm; HEAD 9b28b2f2 → 70c9e178
+   arm preplant-head:
+     GARMREACH   ok  — arm=steal: matches 2 → 2, steal commit 5045e2fd
+     P2  LANDS     pre-cure spelling resolves to 5045e2fd; steal is 5045e2fd
+     the sha his note calls "steal commit": 5045e2fd — NOT created by this arm; it is the clone's pre-existing HEAD; HEAD 5045e2fd → 5045e2fd
+   arm preplant-buried:
+     GARMREACH   ok  — arm=steal: matches 2 → 2, steal commit a75125dd
+     P2  REFUTED   pre-cure spelling resolves to 5045e2fd; steal is a75125dd
+     the sha his note calls "steal commit": a75125dd — NOT created by this arm; it is the clone's pre-existing HEAD; HEAD a75125dd → a75125dd
+
+READINGS
+  arms where GARMREACH read ok while the arm created NO commit: preplant-head, preplant-buried
+  P2 words those arms published: LANDS, REFUTED
+  both verdict words reachable with the gate green: true
+
+PREDICTIONS settled by this drive
+  P4  LANDS    2 of 2 pre-planted arms: gate ok, no commit created, P2 graded LANDS/REFUTED against a commit that is not a steal
+
+ARMREACHVERDICT/0  7 gates ok; spurious-green arms 2/2, P2 words reachable under a green gate: LANDS,REFUTED

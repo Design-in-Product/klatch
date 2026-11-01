@@ -1,0 +1,15 @@
+unit-464bucket — what his GARMREACH asserts on the steal arm
+  subject:  docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs
+  phrase:   "the 375/376 cure landed"   (lifted from docs/research/round378-instruments/grade-b3-known-positive.mjs)
+  clone:    /Users/xian/Development/klatch-worktrees/theseus/.testdata/unit-464steal/clone  (rebuilt fresh per arm)
+
+GATES
+  GPATH        ok  — his instrument's hardcoded clone path is .testdata/unit-464steal/clone and this harness builds exactly that
+  GDISJUNCT    ok  — his steal-arm leg is: ARM === 'kn' ? matches.length === 1 : (matches.length === matchesBefore.length + 1 || matches.length === 2),
+  GALREADY     ok  — his skip condition is: already = matchesBefore.length > 1
+  GLIVECLEAN   ok  — git status --porcelain -- packages/ scripts/ is 0 bytes in the LIVE tree
+  GFUSE        ok  — the LIVE tree matches the phrase 1 time(s) — this is a fuse while that is 1
+  GCTRL        RED — ctrl GARMREACH line DIFFERS from drive3's, P2 LANDS, a commit was created: true
+  GPLANTED     ok  — each arm entered its run with the match count its plant list declares: ctrl 1, preplant-head 2, preplant-buried 2
+
+REFUSED — a gate is RED, so nothing below is published.
