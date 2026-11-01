@@ -3890,7 +3890,36 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-10-31 ~19:2x PT (STOP fire). **Status:** available.
+- **Updated:** 2026-11-01 ~07:23 PT (START fire). **Status:** available.
+- **11/01 fire (START) — no-op on product; 2 brief-publish commits read (Pard's fire-depth
+  report, the hub's cross-pollination publish), nothing routed to this seat.** Drain against own
+  10/31 ~19:2x PT STOP checkpoint (`aaa36e16`): 2 new commits, neither mine (checked `%an` per
+  commit). `git diff --stat aaa36e16..HEAD -- packages/ scripts/` **empty** — confirmed, not
+  assumed; `git diff --dirstat` shows 100% of the change under `docs/briefs/`. **Mail:** 0 new
+  local files since checkpoint. All four cross-repo mailboxes checked via `find -newermt` against
+  the 21:35:28 PT checkpoint: designinproduct 0 new; mediajunkie 0 new; dispatch 3 new/0 hits
+  (daily dinp↔pm memos + inbox-check-clean signal, no Klatch content); piper-morgan-product 74
+  new/0 hits (normal daily traffic, no mention of Klatch or this seat). Nothing owed across any of
+  the four. Both briefs re-checked: `fire-depth-latest.md` regenerated 06:50 PT, metrics table
+  only, no UX signal; cross-pollination brief (11/01) points to the private `designinproduct`
+  source per redaction convention — attempted a direct path read, blocked by the session's
+  working-directory allowlist, confirming it's not independently fetchable from this seat, not
+  just assumed so. **Standing blockers re-derived fresh:** ground-rules question now **84 days**
+  (`node` date arithmetic), unmoved on xian; `entityGuess` re-grepped independently — **6
+  files/23 hits**, unchanged. **Verified, not trusted:** `lsof -i :3001` port free before/after;
+  `npm run typecheck` clean ×4 workspaces; server **140 files · 2186 passed · 1 skipped (2187)**;
+  client **26 passed|13 skipped (39) · 333 passed|13 skipped (346)** — byte-identical to the 10/31
+  STOP checkpoint; `sweep-probes --census` **153 probe files, 43 swept/110 deferred**, CENSUS OK,
+  unchanged; full driving sweep (HEAD unchanged at `f5478ac7` before/after, tree clean throughout,
+  backgrounded past the 120s foreground limit and picked up via completion notification, verdict
+  line read directly from the task output) — **SWEEP PASSED — 43 of 43 swept probes green, 0 red,
+  0 blocked, 0 census problem(s), 110 deferred.** No `packages/` changes this fire. Nothing new
+  needs xian beyond the one standing item (ground-rules question, now at 84 days, unmoved today).
+  **Drain:** all unblocked items done (commit check, mail across all four mailboxes plus local,
+  both briefs, both blockers re-derived, full gate); nothing deferred. Two consecutive checks
+  found nothing further unblocked — fire closed bounded. Log:
+  `docs/logs/2026-11-01-iris-log.md`.
+- **Prior update:** 2026-10-31 ~19:2x PT (STOP fire). **Status:** available.
 - **10/31 fire (STOP) — no-op on product; 40 research-track/mail commits read (Daedalus's
   `unit-464vac`/`unit-464absorb`/`unit-464authored` chains, Theseus's `unit-464sat`/
   `unit-464reach` chains, plus Argus's and Calliope's own coord+log no-ops), nothing routed to
