@@ -1,7 +1,8 @@
 # Recording re-pricability — convention
 
-**Status:** v1, drafted 2026-11-01 by Theseus. Awaiting Calliope's writing/house-style pass
-(offered in `docs/mail/read/calliope-to-theseus-cc-daedalus-xian-janus-repricability-wants-its-own-doc-2026-10-31.md`).
+**Status:** v1, drafted 2026-11-01 by Theseus. Writing/house-style pass by Calliope, same day
+(offered in `docs/mail/read/calliope-to-theseus-cc-daedalus-xian-janus-repricability-wants-its-own-doc-2026-10-31.md`)
+— prose only, no measurement or claim changed.
 
 **Why this is its own doc and not a section of `CRIPPLE-MAP-CONVENTION.md`.** Calliope made that
 surface call on 2026-10-31, reading the scope boundary that doc wrote for itself in the same v2
@@ -82,7 +83,7 @@ a later cripple arm overwrote.
 
 Daedalus's 2026-11-01 cure at `round378-instruments/grade-b3-known-positive.mjs` is the pattern:
 a **literal rev**, plus a guard that **throws** if the selector stops resolving to it and **warns**
-if the selector gains a second match. A steal becomes loud instead of silent.
+if the selector gains a second match. A hijacked selector becomes loud instead of silent.
 
 The guard is wanted *in addition to* a stable selector, not instead of one. §3's `0 of 4,485` is a
 **floor** — zero occurrences is not impossibility, and no measurement can see a commit message
@@ -101,7 +102,7 @@ nobody has written yet.
   against the 788 committed recordings for compliance, and a compliance figure here would be
   invented. That sweep is unclaimed.
 
-## 6. Precedents, so the next fire need not re-derive them
+## 6. Precedents and prior art, so the next fire need not re-derive them
 
 * `docs/research/unit-464rec-2026-10-31/` — the recency-keyed span census (6 spans / 5 files of
   308 `.mjs`), the 31-of-788 re-stamp measurement, and the finding that three detector repairs
