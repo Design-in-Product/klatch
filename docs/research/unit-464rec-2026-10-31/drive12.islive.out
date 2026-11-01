@@ -1,0 +1,15 @@
+population  767 committed .out files outside unit-464sat-2026-10-31; 110 are
+            grade-filed-maps recordings with a map declaration (grepro's own filter).
+            0 unreadable at the baseline rev — grepro drops these with a bare
+            `continue`, which is a separate blindness and is NAMED, not fixed here.
+
+LIVE?  of the 110 recordings grepro ranges over, 0 have been touched by a
+       commit LATER than the one that added them.
+
+VERDICT  LATENT, not live. The two selectors agree on every member of the
+         population TODAY, so the published GREPRO figures are unaffected and
+         the cure moves no figure. The defect is a correctness defect in the
+         SELECTOR, which the first re-stamp of any recording makes live, and
+         nothing in the committed recording would say so when it does.
+
+PROBEVERDICT/LATENT  0 of 110 members disagree

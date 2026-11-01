@@ -1,0 +1,11 @@
+ALL .out at rev: 788
+either selector empty: 0
+selectors DISAGREE  : 31
+    docs/research/round398-instruments/census-refusable-index-windows.out
+    docs/research/round398-instruments/my396-instrument-after-both-cures.out
+    docs/research/round398-instruments/the-refusable-anchor-counterfactuals.out
+    docs/research/round399-instruments/census-the-named-binding-form.out
+    docs/research/round401-instruments/sweep.out
+    docs/research/round413-instruments/typecheck-scripts.out
+    docs/research/round413-instruments/typecheck-workspace.out
+    docs/research/round417-instruments/sdk-gap.out
