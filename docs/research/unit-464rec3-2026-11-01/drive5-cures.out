@@ -1,0 +1,42 @@
+# unit-464rec3 — grading the three cures, rev 3b113470eb1c30836ef7ee3dc76e49a7b0fce23d
+[MEAS] node --check docs/research/round378-instruments/grade-b3-known-positive.mjs: true
+[MEAS] node --check docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs: true
+[MEAS] node --check docs/research/round397-instruments/grade-the-anchor-that-is-not-guarded.mjs: true
+
+[C0] GREEN — all three edited instruments still parse
+[MEAS] S1's pin: 56b180e602d426ff97591efa2713d89f0d9344d0
+[MEAS] the subject phrase currently selects 1 commit(s)
+[MEAS] the pin is among them: true; its parent resolves: true
+
+[C1] GREEN — S1 is a literal pin, no longer a recency selector, and the pin is still the commit its own subject names
+
+[C1b] GREEN — S1's new guard is reachable — a pin the phrase does not select is detected (predicate exercised against a rev the phrase cannot name)
+[MEAS] S2's pin: ff93ad0a; the path's add event: ff93ad0a
+[MEAS] the stale "(git log -1 on the path)" label is gone: true
+
+[C2] GREEN — S2 is pinned to the add event, the recency call is gone, and the printed label no longer describes the method it stopped using
+[MEAS] the line at the pin is the DEFECTIVE spelling (reads the file twice): true
+[MEAS] the line differs from what the old recency key would have lifted: true
+
+[C2b] GREEN — S2 now lifts the defective spelling its round exists to grade, and that text is different from what the uncured key lifted
+[MEAS] S3's pin: 5ae6cdc2; in MY_395_PATH's history: true
+
+[C3] GREEN — S3 publishes a pinned identity that is actually in the path's history
+
+# the same four arms, under the OLD conjunct and the NEW one
+[MEAS] old=true  new=true   5ae6cdc2 round397: S3b's prose asserted the 
+         arm: NO-CRIPPLE (the pin itself)
+[MEAS] old=true  new=false  4a2fccf5 round395: his 394 reproduces in thr
+         arm: KP (the add event — the value the OLD key had already drifted off)
+[MEAS] old=true  new=true   5ae6cdc2 round397: S3b's prose asserted the 
+         arm: KP (what the old `log -1` would give today)
+[MEAS] old=true  new=false  6935ce02 Initial commit: Steps 1-3 of Klatch
+         arm: KP (the repo root)
+
+[MEAS] under the OLD conjunct, any KP arm moves the verdict: false
+[MEAS] under the NEW conjunct, any KP arm moves the verdict: true
+
+[C3b] GREEN — the re-keyed conjunct is falsifiable by exactly the movement the old one could not see — graded as a delta against the same arms, not as an absolute
+
+# 7 legs — 7 green, 0 red, 0 refused
+# VERDICT: ALL CURES HOLD

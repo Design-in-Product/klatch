@@ -1,0 +1,21 @@
+# unit-464rec3 — S1's guard, driven. rev 3b113470eb1c30836ef7ee3dc76e49a7b0fce23d
+[MEAS] GOOD pin  (from source): 56b180e602d426ff97591efa2713d89f0d9344d0
+[MEAS] WRONG pin (repo root):   6935ce0214781b636a0af7e8a859791d6016dd8d
+
+[MEAS] arm: CONTROL (pin unchanged)
+         substitution gate (arm's text is as intended): true
+         exit code: 0
+         guard message present in output: false
+         first output line: curing commit (read with %an, never --oneline): 56b180e6 Daedalus (Klatch) round377: the 375/376 cure landed o
+
+[MEAS] arm: CRIPPLE (pin re-pointed at a real but unnamed commit)
+         substitution gate (arm's text is as intended): true
+         exit code: 1
+         guard message present in output: true
+         first output line: file:///Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-464rec3-2026-11-01/.arm-cripple.mj
+
+[MEAS] both arms' substitution gates passed: true
+[MEAS] CONTROL exit 0, guard fired: false
+[MEAS] CRIPPLE exit 1, guard fired: true
+
+[C1b] GREEN — S1's guard is REACHED and DISCRIMINATING: silent under the correct pin, fatal under a real-but-unnamed one. Graded as the delta between two arms that differ in exactly one literal.

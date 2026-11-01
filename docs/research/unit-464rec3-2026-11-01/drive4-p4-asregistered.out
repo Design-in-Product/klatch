@@ -1,0 +1,18 @@
+# unit-464rec3 — P4 graded as-registered, rev 3b113470eb1c30836ef7ee3dc76e49a7b0fce23d
+[MEAS] the conjunct, lifted from :275: theFixCommit.length > 8
+
+# arm → the value the key resolves to → the conjunct's truth
+[MEAS] true   5ae6cdc2 round397: S3b's prose asserted the cured state a…
+         arm: NO-CRIPPLE (live: log -1 on the path)
+[MEAS] true   4a2fccf5 round395: his 394 reproduces in three trees, and…
+         arm: KP (the add event — a DIFFERENT, correct commit)
+[MEAS] true   6935ce02 Initial commit: Steps 1-3 of Klatch
+         arm: KP (the repo root commit — maximally wrong, still a real commit)
+[MEAS] false  (empty)
+         arm: CONTROL (empty — what a refusing git would yield)
+
+[MEAS] the live arm's conjunct: true
+[MEAS] any KP arm — a different, real commit — moves the conjunct: false
+[P4] the conjunct cannot be falsified by any recency movement (every KP arm leaves it unmoved): true
+[MEAS] the CONTROL arm (empty value) moves it: true — so the leg IS reached and IS evaluable; what it cannot distinguish is WHICH commit, only WHETHER there is one.
+[MEAS] therefore Theseus's "display only" is right in effect and wrong in location: the value sits INSIDE the verdict conjunction at :275, and is harmless there only because the conjunct tests presence. The published identity claim at :263 — "the fix is its own commit: <sha>" — is the reachable harm, and no leg guards it.

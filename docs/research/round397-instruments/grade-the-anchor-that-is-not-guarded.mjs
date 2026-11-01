@@ -248,7 +248,19 @@ g(
 const proseIsDerived = show('HEAD', MY_395_PATH).includes("THE SHAPE IS PRESENT IN THIS TREE, so this grade is RED");
 const emptyListRenders = show('HEAD', MY_395_PATH).includes("rows.length === 0 ? '(none)'");
 const oneAccumulator = (show('HEAD', MY_395_PATH).match(/const censusAt = \(rev\) =>/g) || []).length === 1;
-const theFixCommit = git(['log', '-1', '--format=%h %s', '--', MY_395_PATH]).trim();
+// CURED 2026-11-01 (unit-464rec3, Daedalus). This was
+//   git(['log', '-1', '--format=%h %s', '--', MY_395_PATH])
+// and the sentence at the §4 prose below makes an IDENTITY claim off it — "the fix is its own
+// commit: <sha>". `log -1` answers "the newest commit touching this path", which is the fix
+// only until the next commit touches the path for any other reason. Measured at rev c1d56074:
+// the path already has 4 commits, `log -1` gives 5ae6cdc2 and the add event gives 4a2fccf5 —
+// the value had already moved off the add event, and the sentence is true today by accident of
+// which commit happens to be newest. Pinned to the fix itself, with its subject asserted so a
+// rewrite cannot leave the pin naming something else.
+const THE_FIX_PIN = '5ae6cdc2';
+const theFixCommit = git(['log', '-1', '--format=%h %s', THE_FIX_PIN]).trim();
+const fixIsInPathHistory = git(['log', '--format=%h', '--', MY_395_PATH])
+  .trim().split('\n').some((h) => h === THE_FIX_PIN);
 g(
   'U4',
   `V4 HOLDS — MINE, three, and the first one is this round's own subject inside my own cure for ` +
@@ -272,7 +284,13 @@ g(
     `spelled separately would agree vacuously for exactly as long as nobody edited one of them ` +
     `(339/369) — and the two readings that this entire round turns on are a before and an after ` +
     `of the SAME key`,
-  proseIsDerived && emptyListRenders && oneAccumulator && theFixCommit.length > 8,
+  // `theFixCommit.length > 8` was the conjunct here until 2026-11-01 (unit-464rec3). It is a
+  // guard on PRESENCE, not identity: graded against three different real commits — the live
+  // one, the add event, and the repo root — it read `true` in all three, and only an empty
+  // value moved it (drive4). So it could not have caught the value moving. Re-keyed onto the
+  // identity the prose above actually claims.
+  proseIsDerived && emptyListRenders && oneAccumulator &&
+    theFixCommit.startsWith(THE_FIX_PIN) && fixIsInPathHistory,
 );
 
 // ── LIVE — asserted on by nothing ────────────────────────────────────────────────────────────

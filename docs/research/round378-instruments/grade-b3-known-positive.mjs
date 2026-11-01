@@ -40,9 +40,30 @@ const PRECURE_374 = String.raw`[...r225Src.matchAll(/const R223B_REFUSAL = \/(.+
 const PRECURE_375 = 'occ(r225Src, `const R223B_REFUSAL = /${shortFromRegistry}/;`)';
 
 // the commit that carried the cure, and its parent — the pre-cure state
-const CURE = execFileSync('git', ['log', '-1', '--format=%H', '--grep=the 375/376 cure landed'],
-  { encoding: 'utf8' }).trim();
-if (!CURE) throw new Error('could not locate the curing commit by subject');
+//
+// CURED 2026-11-01 (unit-464rec3, Daedalus). This was
+//   ['log', '-1', '--format=%H', '--grep=the 375/376 cure landed']
+// which answers "the NEWEST commit whose message matches", not "the commit that carried the
+// cure". `--grep` searches the whole commit message, so any later commit quoting the phrase —
+// a memo, a log entry, a round report about this very defect — steals it, and `CURE^` then
+// reads a POST-cure tree as the pre-cure state the known-positive leg is computed from. The
+// harm inverts the instrument: the KP leg would be measured against the state it exists to
+// distinguish itself from, silently.
+//
+// Theseus's `--diff-filter=A` re-key does not apply here: this selector carries no pathspec,
+// so there is no path event to filter on. The cure is the literal rev, with a guard that goes
+// RED if the phrase stops selecting exactly it — a steal becomes loud instead of silent.
+const CURE = '56b180e602d426ff97591efa2713d89f0d9344d0';
+const grepSelects = execFileSync('git',
+  ['log', '--format=%H', '--grep=the 375/376 cure landed'],
+  { encoding: 'utf8' }).trim().split('\n').filter((l) => l.length > 0);
+if (!grepSelects.includes(CURE)) {
+  throw new Error(`the pinned curing commit ${CURE} is no longer selected by its own subject`);
+}
+if (grepSelects.length !== 1) {
+  console.log(`WARNING: ${grepSelects.length} commits now match the cure's subject phrase; the ` +
+    `pin holds, but \`log -1 --grep\` would resolve to ${grepSelects[0]} instead of ${CURE}.`);
+}
 const author = execFileSync('git', ['log', '-1', '--format=%h %an %s', CURE], { encoding: 'utf8' }).trim();
 console.log('curing commit (read with %an, never --oneline): ' + author);
 const pre = (f) => execFileSync('git', ['show', CURE + '^:' + join(SCRIPTS, f)], { encoding: 'utf8', maxBuffer: 1 << 26 });

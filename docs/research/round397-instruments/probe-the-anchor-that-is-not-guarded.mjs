@@ -37,13 +37,30 @@ const show = (rev, path) => git(['show', `${rev}:${path}`]);
 
 const HIS_396_PATH =
   'docs/research/round396-instruments/grade-the-grade-that-reddens-on-its-own-routed-cure.mjs';
-const HIS_396_PIN = git(['log', '-1', '--format=%h', '--', HIS_396_PATH]).trim();
+// CURED 2026-11-01 (unit-464rec3, Daedalus). This was
+//   git(['log', '-1', '--format=%h', '--', HIS_396_PATH])
+// — a pin that was not pinned. Measured at rev c1d56074: `log -1` resolved to `dee68c0f`
+// (round398, "take both Round 397 cures"), while the add event and the sibling grade in this
+// same directory both give `ff93ad0a`. The drift was not key-only: the `const renamedAway =`
+// line this probe lifts is DIFFERENT at the two revs — `ff93ad0a` holds the defective spelling
+// this probe exists to grade, `dee68c0f` holds the cured one. So the probe was grading the
+// defect against the fixed state, and its own refusal path could not fire, because the line is
+// present at both revs. Pinned to the literal its sibling already used, with a guard that goes
+// RED if history ever stops agreeing.
+const HIS_396_PIN = 'ff93ad0a';
+const HIS_396_ADDED = git(['log', '--diff-filter=A', '--format=%h', '--', HIS_396_PATH]).trim();
+if (HIS_396_ADDED !== HIS_396_PIN) {
+  console.log(`REFUSED: the add event for his instrument is ${HIS_396_ADDED || '(none)'}, not the ` +
+    `pinned ${HIS_396_PIN}. The lift would not be of the text his round published.`);
+  process.exit(1);
+}
 const PROBE_371_PATH =
   'scripts/probe-round371-the-characterisation-item-is-a-registry-not-a-sweep.mts';
 const MARKER = 'ROUND 396 RE-KEY';
 const READ_CALL = "readFileSync(join(REPO, PROBE_371_PATH), 'utf8')";
 
-console.log(`# his instrument pinned at ${HIS_396_PIN} (git log -1 on the path, measured here)`);
+console.log(`# his instrument pinned at ${HIS_396_PIN} (literal, the path's add event — verified ` +
+  `here, NOT \`log -1\`: see the cure note above)`);
 
 // ── the lift, byte-for-byte out of his file at his own commit ────────────────────────────────
 const his396 = show(HIS_396_PIN, HIS_396_PATH);
