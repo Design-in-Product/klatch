@@ -3888,7 +3888,36 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-10-31 ~07:17 PT (START fire). **Status:** available.
+- **Updated:** 2026-10-31 ~19:2x PT (STOP fire). **Status:** available.
+- **10/31 fire (STOP) — no-op on product; 40 research-track/mail commits read (Daedalus's
+  `unit-464vac`/`unit-464absorb`/`unit-464authored` chains, Theseus's `unit-464sat`/
+  `unit-464reach` chains, plus Argus's and Calliope's own coord+log no-ops), nothing routed to
+  this seat.** Drain against own 10/31 ~07:23 PT START checkpoint (`9ea4ff6f`): 40 new commits,
+  none mine (checked `%an` per commit). `git diff --stat 9ea4ff6f..HEAD -- packages/ scripts/`
+  **empty** — confirmed, not assumed; `git diff --dirstat` shows every changed path under
+  `docs/logs/`, `docs/mail/`, or `docs/research/unit-464*-2026-10-31/`. **Mail:** 5 new local
+  files, all cc-only on the Daedalus↔Theseus research thread (`cc: Janus, Argus, Calliope, Iris`
+  on each; grepped `-i iris` across all 5 — every hit is a `cc:` line or filename, none in body
+  text routing an action here). All four cross-repo mailboxes checked via `git log --since`
+  against the 07:23:27 PT checkpoint: designinproduct 0 new; mediajunkie 1 new
+  (Themis(DinP)→Pard cc xian/Tally, daily duty-cycle quiet-day flag, not addressed to a Klatch
+  agent); dispatch 0 new; piper-morgan-product/mailboxes ~790 new (normal daily volume),
+  content-grepped for `klatch|\biris\b` — 0 hits. Nothing owed from any. **Standing blockers
+  re-derived fresh:** ground-rules question — **83 days** (`node` date arithmetic), unmoved on
+  xian, unchanged from this morning; `entityGuess` re-grepped independently — **6 files/23
+  hits**, unchanged. **Verified, not trusted:** `lsof -i :3001` port free; `npm run typecheck`
+  clean ×4 workspaces; `npm test -w packages/server` **140 files · 2186 passed · 1 skipped
+  (2187)**; `npm test -w packages/client` **26 passed|13 skipped (39) · 333 passed|13 skipped
+  (346)** — byte-identical to this morning; `sweep-probes --census` **153 probe files, 43
+  swept/110 deferred**, CENSUS OK, byte-identical. Driving sweep not re-run (already driven
+  fresh at this morning's START fire, HEAD unchanged for packages/scripts since — re-running
+  against an unchanged tree would reproduce, not newly verify, that result). No `packages/`
+  changes this fire. Nothing new needs xian beyond the one standing item (ground-rules question,
+  83 days, unmoved). **Drain:** all unblocked items done (commit check, mail across all four
+  mailboxes plus local, both blockers re-derived, full gate); nothing deferred. Two consecutive
+  checks found nothing further unblocked — fire closed bounded. Log:
+  `docs/logs/2026-10-31-iris-log.md`.
+- **Prior update:** 2026-10-31 ~07:17 PT (START fire). **Status:** available.
 - **10/31 fire (START) — no-op on product; 7 research-track/mail/briefs commits read (Theseus's
   `unit-464nomoved` pair plus his mail to Daedalus/xian cc Janus/Argus/Calliope/Iris, Calliope's
   10/30 STOP log+coord, the two automated brief bumps), nothing routed to this seat.** Drain
