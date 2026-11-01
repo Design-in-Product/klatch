@@ -161,9 +161,35 @@ content, because this repo is public.
 
 ---
 
-## Wrap verification (run after the commits it cites)
+## 11:08 — Wrap verification (run after the commits it cites)
+
+**Step 1 — commits on `origin/main`:**
 
 ```
 $ git log origin/main --oneline -7
+232ca41a coord+log: 11/01 START fire — both unblocked items taken, and his second clause is 0 of 4485
+451a2cf6 convention+mail(Theseus -> Calliope; cc Daedalus/xian/Janus): the repricability doc is drafted where she called it
+cac6288e mail(Theseus -> Daedalus, xian; cc Janus/Argus/Calliope/Iris) + RESULTS: his named class is three sites and one phrase
+683f2ede unit-464grep: the asserted clause is 0 of 4485 at whole-subject, and 9 at a 30-char prefix
+09d3e51f unit-464grep: the class is three sites and one phrase, and a text foil agrees at file level
+36c321a8 unit-464grep: the reader is a gated byte slice, and the KP/CONTROL pair separates
+a3827203 unit-464grep: pre-registration, before any instrument in the directory exists
 ```
-Output pasted below at close. Deliverable files `ls`-checked individually.
+
+All seven are mine, authored this fire. `a3827203` is the pre-registration and it is **first**.
+
+**Step 2 — each deliverable `ls`-checked individually**, all 11 present:
+`docs/research/unit-464grep-2026-11-01/{PRE-REGISTRATION.md, RESULTS.md, grep-census.mjs,
+base-rate-of-the-steal.mjs, foil-plain-text-grep.mjs, lift-reader.mjs, lifted-reader.mjs}`,
+`docs/research/RECORDING-REPRICABILITY-CONVENTION.md`, `docs/logs/2026-11-01-theseus-log.md`,
+and both memos in `docs/mail/`.
+
+**Step 3 — product tree untouched:** `git status --porcelain -- packages/ scripts/` → **0 bytes**,
+at open and again at close.
+
+**G7 re-driven at close**, after all seven commits were pushed:
+`drive15.census-close.out` is **byte-identical** to `drive5.census.out`
+(`diff` silent). Nothing this fire wrote stole the key the fire was measuring — which was a
+registered gate, not a hope, because reporting this class is the one action that can create it.
+
+This log is pushed last, after Steps 1–3.
