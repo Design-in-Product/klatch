@@ -174,7 +174,11 @@ for defect 5.
    that exists to stop a later commit becoming the baseline did exactly that, to itself.* Only
    a re-drive after the push could show it — a committed green recording cannot. Re-anchored on
    the **event**: the oldest commit since `baseline.rev` that touched the checker, and its first
-   parent.
+   parent. **Graded by the condition that broke it**, not by one green re-drive:
+   `drive3.gradecure-postcommit.out` is a drive taken *after* `a901f189` — another commit
+   touching this directory and not the checker, exactly the shape that made the old key slide —
+   and it is **byte-identical** to `drive2` (`dd8774d5b846` both) with `C0 ok … caaf2cf1`. The
+   old derivation would have refused there.
 6. **`C0` printed characters and labelled them bytes** — `70833B` for a file `statSync` calls
    **71123** bytes, over a source carrying `§`, `—` and `·`. The *comparison* was never
    affected (string vs string), but a size a reader cannot check against `ls -l` is not a size.
