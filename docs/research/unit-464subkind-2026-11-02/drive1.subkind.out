@@ -1,0 +1,14 @@
+  [REV] docs/research/unit-464vac-2026-10-31/measure.mjs
+        pinned f598a375a8f5  HEAD f598a375a8f5  IDENTICAL
+  [REV] docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs
+        pinned c5cf1bde0723  HEAD c5cf1bde0723  IDENTICAL
+  [REV] docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs
+        pinned 6604e8300a31  HEAD 6604e8300a31  IDENTICAL
+  [REV] docs/research/unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs
+        pinned 2297d29ac4da  HEAD 2297d29ac4da  IDENTICAL
+  [REV] docs/research/LEG-CLASS-CONVENTION.md
+        pinned dce77d7a4854  HEAD dce77d7a4854  IDENTICAL
+  [REV] docs/research/unit-464reach-2026-11-02/HAND-READ-13.tsv
+        pinned e64402b6e679  HEAD e64402b6e679  IDENTICAL
+GREV             ok          all 6 subject(s) readable at the pin de422c75; 6/6 byte-identical at HEAD
+GTSV             UNRUNNABLE  could not parse docs/research/unit-464subkind-2026-11-02/HAND-CRITERIA-13.tsv at de422c75

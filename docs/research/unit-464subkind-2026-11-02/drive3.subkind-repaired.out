@@ -1,0 +1,76 @@
+  [REV] docs/research/unit-464vac-2026-10-31/measure.mjs
+        pinned f598a375a8f5  HEAD f598a375a8f5  IDENTICAL
+  [REV] docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs
+        pinned c5cf1bde0723  HEAD c5cf1bde0723  IDENTICAL
+  [REV] docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs
+        pinned 6604e8300a31  HEAD 6604e8300a31  IDENTICAL
+  [REV] docs/research/unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs
+        pinned 2297d29ac4da  HEAD 2297d29ac4da  IDENTICAL
+  [REV] docs/research/LEG-CLASS-CONVENTION.md
+        pinned dce77d7a4854  HEAD dce77d7a4854  IDENTICAL
+  [REV] docs/research/unit-464reach-2026-11-02/HAND-READ-13.tsv
+        pinned e64402b6e679  HEAD e64402b6e679  IDENTICAL
+GREV             ok          all 6 subject(s) readable at the pin de422c75; 6/6 byte-identical at HEAD
+GMYTSVCOMMITTED  ok          my own criteria input is read at HEAD (it postdates the subject pin): HEAD blob 456f17e07791 vs worktree 456f17e07791 — IDENTICAL, so the graded input is the committed one
+GROWKEY          ok          his 13 rows and my 13 rows join on (file,line,id) with no row dropped on either side; unmatched his=0 mine=0
+GNOTRETYPED      ok          my TSV columns [file,line,id,c1,c2,c3,c4,why] carry no subkind column, so every departure below is derived from c1..c4 and joined against HIS subkind5 — not transcribed
+
+  ── the 13 x 4 criteria matrix (mine), the derived first-yes label, and his ──────────────
+  row                                                  c1 c2 c3 c4  n  derived      his          agree
+  cure3/grade-the-attrib-cure.mjs:60 GDELTA            F  T  F  F  1  delta        delta        yes
+  cure3/grade-the-attrib-cure.mjs:71 GCURE             T  T  F  F  2  conjunctive  delta        NO
+  cure3/grade-the-attrib-cure.mjs:88 GPATHS            F  F  F  T  1  inert        inert        yes
+  cure3/grade-the-attrib-cure.mjs:161 GCTRLPRE         F  F  F  F  0  keyed        keyed        yes
+  cure3/grade-the-attrib-cure.mjs:186 GLIFT2           T  F  F  F  1  conjunctive  conjunctive  yes
+  cure3/grade-the-steal-cures.mjs:90 GCURE             T  T  F  F  2  conjunctive  delta        NO
+  cure3/grade-the-steal-cures.mjs:104 GPATH            F  F  F  T  1  inert        inert        yes
+  cure3/grade-the-steal-cures.mjs:194 GCTRLPRE         T  F  F  F  1  conjunctive  conjunctive  yes
+  cure3/grade-the-steal-cures.mjs:211 GROWREPRO        F  F  F  F  0  keyed        keyed        yes
+  rec3/grade-the-three-cures.mjs:99 C2b                F  T  T  F  2  delta        staleness    NO
+  vac/grade-cure.mjs:78 C0                             F  T  F  F  1  delta        delta        yes
+  vac/measure.mjs:79 G0                                T  F  T  T  3  conjunctive  conjunctive  yes
+  vac/measure.mjs:80 G0                                F  F  T  T  2  staleness    staleness    yes
+GNOREFUSE        ok          0 row(s) carry a '?' in the position that would decide the label; total '?' cells across the matrix: 0
+GOVERLAP         ok          P3 — rows with TWO OR MORE of the five criteria true at once: 5 of 13 [GCURE@71{conjunctive+delta} GCURE@90{conjunctive+delta} C2b@99{delta+staleness} G0@79{conjunctive+staleness+inert} G0@80{staleness+inert}] — 'first yes decides' is ORDERING an overlap, not resolving one
+
+  [DEPART] unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:71 GCURE — mine conjunctive (via c1), his delta
+           why: every conjunct is ONE state's shape-map field vs a boolean literal (!preHas.budget ... && postHas.budget); the states are never an operand pair. c2 is ALSO readable as true (it asserts pre lacks and post has), which is the ambiguity
+  [DEPART] unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:90 GCURE — mine conjunctive (via c1), his delta
+           why: same shape as attrib:71 — six shape-map fields per state, each vs a boolean literal, no operand pair. c2 also readable as true
+  [DEPART] unit-464rec3-2026-11-01/grade-the-three-cures.mjs:99 C2b — mine delta (via c2), his staleness
+           why: the predicate is `defectiveShape && atPin !== atRecency` — an explicit !== between the two states, so criterion 2 fires BEFORE criterion 3; atRecency is `git log -1 --format=%h -- HIS_396_PATH`, a recency SELECTOR, so any commit touching the path moves the figure
+GDEPARTCOUNT     ok          10 of 13 labels agree, 3 depart [GCURE@71: delta->conjunctive · GCURE@90: delta->conjunctive · C2b@99: staleness->delta]
+  [DIST] his five-way:  conjunctive 3 · delta 4 · inert 2 · keyed 2 · staleness 2
+  [DIST] mine five-way: conjunctive 5 · delta 3 · inert 2 · keyed 2 · staleness 1
+GHAZARDMEMBERS   ok          P5 — the HAZARD cell compared as a MEMBER LIST, not a count: his [unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs|161|GCTRLPRE ; unit-464cure3-2026-11-01/grade-the-steal-cures.mjs|211|GROWREPRO] vs mine [unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs|161|GCTRLPRE ; unit-464cure3-2026-11-01/grade-the-steal-cures.mjs|211|GROWREPRO] — IDENTICAL
+GMYREV           ok          P1 — sliced `const MY_REV = readFileSync('baseline.rev', 'utf8').trim()` and `const HIS_REV = sat.baselineRev ?? ''`: MY_REV is a readFileSync of a recorded rev (true) with no HEAD/cwd/execSync selector in it (true), HIS_REV comes out of his sat.json — so NEITHER side is the worktree and the row is staleness, not keyed
+  [MEAS] tracked baseline.rev files at de422c75: 17; commit counts: unit-464absorb-2026-10-31=1 unit-464authored-2026-10-31=1 unit-464drift-2026-10-30=1 unit-464grep-2026-11-01=2 unit-464mapkey-2026-10-30=1 unit-464nomoved-2026-10-30=1 unit-464reach-2026-10-31=1 unit-464rec-2026-10-31=1 unit-464rekey-2026-10-30=1 unit-464sat-2026-10-31=1 unit-464t2-rekey-2026-10-29=1 unit-464t2b-sat-2026-10-29=1 unit-464t8-2026-10-29=1 unit-464t8-mapdecay-2026-10-29=1 unit-464v21map-2026-10-30=1 unit-464v2map-2026-10-30=1 unit-464vac-2026-10-31=1
+GBASEMEASURED    ok          the write/read scan is non-vacuous: 715 tracked code file(s) read at the pin, 12 READ a baseline.rev and 0 WRITE one [none]; 17 baseline.rev files tracked; the subject's (unit-464vac) own history is 1 commit(s)
+GBASEPOP         ok          population, reported not asserted: 1 of 17 baseline.rev file(s) have >1 commit [unit-464grep-2026-11-01/baseline.rev=2] — the one that does is MY OWN unit-464grep, where I re-stamped it BY HAND after the instrument commit to cure a vacuous self-exclusion leg. So an anchor file can move across commits; what no instrument in the tree does is move one on a DRIVE
+  [MEAS] C2b's two anchors:
+         const s2Pin = (s2Src.match(/^const HIS_396_PIN = '([0-9a-f]+)';$/m) ?? [null, null])[1];
+         const atRecency = liftAt((git(['log', '-1', '--format=%h', '--', HIS_396_PATH]) ?? '').trim());
+GRECENCY         ok          C2b's SECOND anchor is `git log -1 --format=%h -- HIS_396_PATH` — a recency SELECTOR (true), so any commit touching that path moves the figure: the leg IS in a cure's reach
+GC2BDIFFERS      ok          and C2b's predicate carries an explicit `atPin !== atRecency` (true) — criterion 2 ("asserts they DIFFER") is TRUE of it, and criterion 2 is asked BEFORE criterion 3, so his own ordered key sends C2b to `delta`, the cell his table marks "(sound)"
+GREACH79         ok          P4 — :76 is `if (a === null || b === null) unreadable.push(p);` (each state vs the literal null: true) and BOTH anchors are fixed strings read at startup (true) — so the compared figure ("does path p exist at this frozen rev") cannot be moved by ANY commit. Criterion 4 is TRUE of row 79, which is where criterion 1 already sent it: the row satisfies three sub-kinds and his ORDER picks one
+GL80ASSERTSEQ    ok          and row 80's leg refuses WHEN they differ (`else if (moved.length > 0) refuse('G0', `${moved.length} of …`), i.e. it asserts EQUALITY — so criterion 2 is false of it and criterion 3 is the first yes, exactly as he has it
+  [MEAS] id `G0` is registered at 2 site(s): unit-464vac-2026-10-31/measure.mjs:79 , unit-464vac-2026-10-31/measure.mjs:80
+  [MEAS] id `GCTRLPRE` is registered at 2 site(s): unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:161 , unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:194
+  [MEAS] id `GCURE` is registered at 2 site(s): unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:71 , unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:90
+  [MEAS] id `GROWREPRO` is registered at 1 site(s): unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:211
+GDUPID           ok          P6 — ids registered in MORE THAN ONE FILE: 2 [GCURE{unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:71|unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:90} GCTRLPRE{unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:161|unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:194}]. `GCTRLPRE` sits at 2 site(s): unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:161 , unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:194 — so "@161" and "@194" are DIFFERENT FILES, not two lines of one, and his TSV gives them DIFFERENT sub-kinds
+GMYCITATION      ok          and the consequence is mine: my own 11/02 §7 deferred "the both-sides counterfactual for GCTRLPRE@194" as the perturbation that separates keyed from conjunctive — but @194 (unit-464cure3-2026-11-01/grade-the-steal-cures.mjs) is already `conjunctive` and the `keyed` GCTRLPRE is @161 (unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs). I aimed a named follow-up at the wrong one of two same-named legs, one fire after charging him with exactly that
+GCONV            ok          docs/research/LEG-CLASS-CONVENTION.md at the pin is v1.1 (true) and names conjunctive/true staleness/true inert/true; MEASURED-BLOCK-V11 present: true
+GNODEPEND        ok          git status --porcelain -- packages/ scripts/ is 0 bytes
+GHISDIRCLEAN     ok          git status --porcelain -- docs/research/unit-464reach-2026-11-02 is 0 bytes — this unit reads his directory and must not write it
+
+  ── prediction verdicts ─────────────────────────────────────────────────────────────────
+  P1  LANDS     declared non-blind. MY_REV is a readFileSync=true, carries no live selector=true — measure.mjs:80 is staleness, not keyed, and my published keyed-and-reachable 3 is 2
+  P2  REFUTED   registered: >=1 writer AND >=2 commits on the subject's anchor. Measured: writers=0 (threshold >=1), subject anchor commits=1 (threshold >=2). BOTH HALVES REFUTED — the separating axis is not edit-moved vs drive-moved but LITERAL vs SELECTOR anchor, which is his own criterion 4
+  P3  LANDS     registered: >=3 of 13 rows with two or more criteria true. Measured: 5 of 13 — "first yes decides" is ordering an overlap, not resolving one
+  P4  LANDS     registered: criterion 4 evaluates TRUE on measure.mjs:79. Measured: true — so the consequence I attached to `conjunctive` ("reddens twice on a cure") does not hold there at all
+  P5  REFUTED   registered: his hazard cell is a FLOOR, i.e. my member list would differ. Measured: member lists IDENTICAL — REFUTED, his 2 of 13 is exact under an independently-applied key, and I registered expecting this
+  P6  REFUTED   registered three branches, one of them "two GCTRLPRE registrations in grade-the-steal-cures.mjs". Measured: 2 sites, in the same file=false — REFUTED as registered; the answer is a fourth branch, two files, different sub-kinds
+
+GATES  0 RED · 0 UNRUNNABLE · 20 ok  (of 20 legs)
+UNIT GREEN.
