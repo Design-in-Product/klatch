@@ -1,0 +1,33 @@
+# unit-464reach — the hand read, which is the verdict. The 12 CROSS-STATE call sites of
+# unit-464class-2026-11-02/HAND-READ.tsv, re-keyed under the ordered 5-way hazard key below.
+# Filed as its own commit BEFORE grade-reach.mjs exists. The instrument joins these rows out of
+# this file on (file, line, id) and is SCORED against them; it never supplies them.
+#
+# The ordered key (first question whose answer is yes decides the row):
+#   1. is NEITHER side the live subject?                      -> staleness
+#   2. are the two states never compared TO EACH OTHER?       -> conjunctive
+#   3. does the comparison assert they DIFFER?                -> delta        (sound; leave it)
+#   4. is the compared figure OUT of a cure's reach?          -> inert        (cannot lie; re-aim for honesty)
+#   5. otherwise                                              -> keyed        (THE HAZARD)
+#
+# figure   = what the predicate compares, in my words.
+# reach    = source-literal | source-derived | run-derived | content-derived | n/a
+#            (what the compared figure is made of; registered because P2 predicts `inert` is
+#             coextensive with source-literal, and this column is what refutes or confirms it)
+# states   = for `conjunctive` rows only: the hand-supplied frozen/live label of each operand of
+#            each conjunct, semicolon-separated. There is NO instrument behind this column and the
+#            harness says so; Theseus's drive6 refuses on exactly this question and mine would too.
+#
+file	line	id	subkind5	reach	figure	states
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	60	GDELTA	delta	source-derived	preSrc vs postSrc, asserted to differ	-
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	71	GCURE	delta	source-literal	defect spelling absent in PRE and cure spelling present in POST	-
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	88	GPATHS	inert	source-literal	the HIS and MINE fixture path literals of the subject	-
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	161	GCTRLPRE	keyed	run-derived	5 gate lines of a live-fixture ctrl run vs the frozen drive6 recording	-
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	186	GLIFT2	conjunctive	source-derived	existence of three named buckets in two separately-lifted DECLARED arrays	preDecl:frozen vs Array literal; postDecl:live vs Array literal; bucket(preDecl,'header'):frozen vs key literal; bucket(preDecl,'pop-flag'):frozen vs key literal; bucket(postDecl,'pop-flag'):live vs key literal
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	90	GCURE	delta	source-literal	six-term defect/cure shape across PRE and POST	-
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	104	GPATH	inert	source-literal	the CLONE path literal the subject hardcodes	-
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	194	GCTRLPRE	conjunctive	run-derived	two transitions, each compared to the shared literal '1 to 2'	ctrlPinned(preCtrl):live vs '1→2' literal; transition(rec3Arm):frozen vs '1→2' literal
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	211	GROWREPRO	keyed	run-derived	the frozen drive4 recording's 4 triples vs the live-derived PRE ctrl run's rows	-
+unit-464rec3-2026-11-01/grade-the-three-cures.mjs	99	C2b	staleness	content-derived	the subject line at its pin rev vs at its newest rev; neither side is the worktree	-
+unit-464vac-2026-10-31/grade-cure.mjs	78	C0	delta	content-derived	checkerNow (worktree) vs checkerThen (git show at PRECURE_REV), asserted to differ	-
+unit-464vac-2026-10-31/measure.mjs	80	G0	keyed	content-derived	the subjects a frozen key names, asserted unchanged between his rev and my live tree	-
