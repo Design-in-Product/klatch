@@ -209,6 +209,60 @@ check('GREFUSABLE', refusalProbe.cls === 'UNMODELLED',
 check('GP4REACH', crossHand.length > 0 && recFilesSearched > 0,
   `P4 searched ${recFilesSearched} committed recording(s) for ${crossHand.length} CROSS-STATE leg name(s)`);
 
+// ─────────────────────────────────────────────── GDOCPIN — P6: the entry's figures, read from the doc
+//
+// This leg READS THE MARKDOWN's own literals and compares them to the figures measured above. It
+// does not recompute what it grades: a pin that re-derives the number it is pinning holds nothing.
+// A missing document is a RED, never a skip.
+const DOC = join(ROOT, 'docs/research/LEG-CLASS-CONVENTION.md');
+const handCountOf = (c) => handRows.filter((r) => r.cls === c).length;
+const subOf = (k) => handRows.filter((r) => r.cls === 'CROSS-STATE' && r.subkind === k).length;
+const depthCurve = (d) => {
+  let ag = 0, found = 0, calledGate = 0;
+  for (const s of sites) {
+    const h = hand.get(`${s.short}:${s.line}:${s.id}`);
+    if (!h) continue;
+    const c = classify(s, d).cls;
+    if (c === h.cls) ag++;
+    if (h.cls === 'CROSS-STATE' && c === 'CROSS-STATE') found++;
+    if (h.cls === 'CROSS-STATE' && c === 'GATE') calledGate++;
+  }
+  return { ag, found, calledGate };
+};
+const d1 = depthCurve(1), d5 = depthCurve(5), d8 = depthCurve(8);
+const docPin = (() => {
+  if (!existsSync(DOC)) return { ok: false, note: `${DOC} does not exist — the entry this unit exists to pin is absent` };
+  const doc = readFileSync(DOC, 'utf8');
+  const num = (re, label) => {
+    const m = doc.match(re);
+    return m ? { label, got: Number(m[1]) } : { label, got: null };
+  };
+  const want = [
+    [num(/call sites hand-read:\s+(\d+)/, 'sites'), sites.length],
+    [num(/hand read:\s+PIN (\d+)/, 'hand PIN'), handCountOf('PIN')],
+    [num(/hand read:\s+PIN \d+ · GATE (\d+)/, 'hand GATE'), handCountOf('GATE')],
+    [num(/hand read:.* · CROSS-STATE (\d+)/, 'hand CROSS-STATE'), handCountOf('CROSS-STATE')],
+    [num(/hand read:.* · UNMODELLED (\d+)/, 'hand UNMODELLED'), handCountOf('UNMODELLED')],
+    [num(/CROSS-STATE:\s+delta (\d+)/, 'delta'), subOf('delta')],
+    [num(/CROSS-STATE:\s+delta \d+ · keyed (\d+)/, 'keyed'), subOf('keyed')],
+    [num(/depth 1:\s+agreement (\d+)/, 'd1 agreement'), d1.ag],
+    [num(/depth 1:.*CROSS-STATE found (\d+)/, 'd1 found'), d1.found],
+    [num(/depth 1:.*called GATE (\d+)/, 'd1 calledGate'), d1.calledGate],
+    [num(/saturation \(5\):\s+agreement (\d+)/, 'd5 agreement'), d5.ag],
+    [num(/saturation \(5\):.*CROSS-STATE found (\d+)/, 'd5 found'), d5.found],
+    [num(/saturation \(5\):.*called GATE (\d+)/, 'd5 calledGate'), d5.calledGate],
+    [num(/Searching \*\*(\d+)\*\* committed recordings/, 'recordings searched'), recFilesSearched],
+    [num(/leg names returns \*\*(\d+)\*\*/, 'recorded reds'), redHits.length],
+    [num(/still calls \*\*(\d+) of the 12\*\*/, 'prose calledGate'), d5.calledGate],
+  ];
+  const bad = want.filter(([a, b]) => a.got !== b)
+    .map(([a, b]) => `${a.label}: doc says ${a.got === null ? '(not found)' : a.got}, measured ${b}`);
+  const saturated = d5.ag === d8.ag && d5.found === d8.found;
+  if (!saturated) bad.push(`the doc claims depth 8 is identical to depth 5; measured d5 ${d5.ag}/${d5.found} vs d8 ${d8.ag}/${d8.found}`);
+  return { ok: bad.length === 0, note: `${want.length} figures read out of the markdown, ${bad.length} mismatch(es)${bad.length ? ' — ' + bad.join('; ') : ''}` };
+})();
+check('GDOCPIN', docPin.ok, docPin.note);
+
 const gatesOk = legs.every((l) => l.ok);
 
 // ──────────────────────────────────────────────────────────────────────────────────── output
