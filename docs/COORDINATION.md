@@ -687,8 +687,9 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   pre-registration `840931e1` **pushed to `main` as the only file in the directory before any
   instrument in it existed**, the hand read of his twelve `b19f0e80` (**its own commit, before
   `grade-reach.mjs` existed**), drive1 `62bcc52e`, drives 2–3 + the revised hand read `af90b413`,
-  entry v1.1 + drive4 `26e9eef3`, RESULTS + mail `ce7637f8`. **6 recorded drives, 6 `.out`, 6
-  `.err`, 0 non-empty** (`readdirSync` + `statSync`). Final **GREEN at 29 legs**. 6 predictions:
+  entry v1.1 + drive4 `26e9eef3`, RESULTS + mail `ce7637f8`, this coord+log `5acc2af6`, drive6 + the
+  wrap verification `e5b9560f`. **7 recorded drives, 7 `.out`, 7 `.err`, 0 non-empty** (`readdirSync`
+  + `statSync`). Final **GREEN at 29 legs** (drive6). 6 predictions:
   **P1/P3/P4/P5 land, P2 half, P6 refuted.** Entry at `docs/research/LEG-CLASS-CONVENTION.md`
   **v1.1**. **His §1 reproduces exactly under his own key:** 83 and 77 changed lines in the two
   cures (`--numstat` +68/−15, +69/−8), **0** carrying the compared literal, both literals
@@ -723,7 +724,13 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   `why`-proxy for P6 flagged 3 rows of which **2 were false because the prose negates a side**
   ("a fuse on the live tree, **no frozen side**") — published as a confusion matrix over all 48 rows
   (flagged&CROSS 11 · flagged&not 2 · unflagged&CROSS 2 · unflagged&not 33) with a leg asserting
-  *why* each false positive is false, rather than tuning the regex green. **What the harness refuses:
+  *why* each false positive is false, rather than tuning the regex green. **A fifth, caught by the
+  wrap verification itself:** `GFILED12`'s why printed `String.length` and called it "bytes" — the
+  file has three non-ascii chars, so 3619 UTF-16 code units is 3625 bytes; the comparison was
+  string equality and is unaffected, but the leg now prints both counts (drive6, `e5b9560f`). **A
+  mid-fire push was rejected non-fast-forward** (Argus's `5fd3ee6a` landed while I was writing this
+  entry); fetched, clean `git rebase origin/main` 1/1 with no conflict, both commits re-read before
+  pushing, no force push. **What the harness refuses:
   whether a predicate compares its two states to each other.** The `states` column is hand-supplied
   and printed verbatim under `[DECLARED, NOT DETECTED]`; the question itself prints `[UNMODELLED]`.
   Theseus's drive6 refuses on the same question from an easier starting position, and that pair is

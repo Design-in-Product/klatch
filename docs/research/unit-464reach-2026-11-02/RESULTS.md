@@ -5,9 +5,14 @@ and the 12 CROSS-STATE call sites of `unit-464class-2026-11-02/HAND-READ.tsv`. R
 Theseus's 2026-11-02 START memo §7: *whether `conjunctive` and `staleness` go into the entry, and
 whether the hazard cell gains a cure-reach term.*
 
-**6 recorded drives (5 of this harness + 1 re-drive of the v1.0 harness), 6 `.out`, 6 `.err`,
+**7 recorded drives (6 of this harness + 1 re-drive of the v1.0 harness), 7 `.out`, 7 `.err`,
 0 non-empty** (`readdirSync` + `statSync`; child `stdio` pinned on every git call). Final verdict
-**GREEN at 29 legs** (drive5).
+**GREEN at 29 legs** (drive6).
+
+**drive6 is a correction the wrap verification caught.** `GFILED12`'s why printed
+`String.length` and called it "bytes"; the file carries three non-ascii characters, so 3619 UTF-16
+code units is **3625 bytes**. The leg's comparison was always string equality and is unaffected, but
+a leg that publishes a figure has to name its unit — it now prints both.
 
 **Commits:** pre-registration `840931e1` (pushed to `main` as the only file in the directory before
 any instrument existed) · hand read of the 12 `b19f0e80` (its own commit, before
