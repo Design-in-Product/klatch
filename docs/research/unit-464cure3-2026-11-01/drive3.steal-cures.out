@@ -1,0 +1,18 @@
+unit-464cure3 — C1 and C2, graded in both states
+  subject:  docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs
+  PRE from: de5e9365  ·  POST from: the worktree
+  phrase:   "the 375/376 cure landed"   (lifted from docs/research/round378-instruments/grade-b3-known-positive.mjs)
+  clone:    /Users/xian/Development/klatch-worktrees/daedalus/.testdata/unit-464steal/clone  (rebuilt fresh per cell, removed at the end)
+
+GATES
+  GDEPTH       RED — both subject states are at the same depth and both resolve ../../../scripts/lib/strip-source.mjs
+  GCURE        ok  — PRE {"bytesInUnion":true,"perFile":false,"disjunct":true,"alreadyOnCount":true,"alreadyOnSubject":false,"stealOwned":false,"newestGate":false} · POST {"bytesInUnion":false,"perFile":true,"disjunct":false,"alreadyOnCount":false,"alreadyOnSubject":true,"stealOwned":true,"newestGate":true}
+  GPATH        ok  — both subject states hardcode the same clone path (.testdata/unit-464steal/clone) and this harness builds exactly that
+  GLIVECLEAN   ok  — git status --porcelain -- packages/ scripts/ is 0 bytes in the LIVE tree
+  GFUSE        ok  — the LIVE tree matches the phrase 1 time(s) — his §3 is a fuse while that is 1
+  GCTRLPRE     ok  — PRE ctrl transition 1→2 vs drive3's 1→2, P2 LANDS, created true, reported sha is the created HEAD
+  GCTRLPOST    ok  — POST ctrl transition 1→2, P2 LANDS, created true, all 6 of its own gates ok: true
+  GPLANTED     ok  — each cell entered its run with the match count its plant list declares: ctrl 1, preplant-head 2, preplant-buried 2
+  GROWREPRO    ok  — PRE ctrl reproduces drive4's 4 (value,comments,raw) triples: true (4 recorded, 4 read)
+
+REFUSED — a gate is RED, so nothing below is published.

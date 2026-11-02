@@ -110,8 +110,14 @@ check('GLIVECLEAN', liveDirty.length === 0,
 const matchesBefore = g(['log', '--format=%H', '--grep=' + PHRASE], CLONE)
   .split('\n').filter((l) => l.length === 40);
 let stealSha = null;
+let stealCreated = false;
 if (ARM === 'steal') {
-  const already = matchesBefore.length > 1;
+  // CURED 2026-11-01 STOP (Theseus's §3). Was `already = matchesBefore.length > 1` — the world's
+  // match count, which is 2 on any clone that already holds SOMEONE ELSE'S quoting commit. The
+  // arm then created nothing and every reading below was the clone's, not the steal's. The
+  // idempotency key has to be this arm's OWN artefact: HEAD carrying the steal's exact subject
+  // is the only state a previous drive of THIS arm can have left behind.
+  const already = g(['log', '-1', '--format=%s'], CLONE) === STEAL_SUBJECT;
   if (!already) {
     execFileSync('git', ['commit', '--allow-empty', '--quiet',
       '-m', STEAL_SUBJECT, '-m', STEAL_BODY], {
@@ -124,18 +130,48 @@ if (ARM === 'steal') {
         GIT_AUTHOR_DATE: STEAL_WHEN, GIT_COMMITTER_DATE: STEAL_WHEN,
       },
     });
+    stealCreated = true;
   }
   stealSha = g(['rev-parse', 'HEAD'], CLONE);
 }
 const matches = g(['log', '--format=%H', '--grep=' + PHRASE], CLONE)
   .split('\n').filter((l) => l.length === 40);
 
-// GARMREACH — the arm must actually have moved the figure it exists to move. A steal arm that
-// left the match count where the KN found it would make every reading below the KN's reading.
+// GARMREACH — the arm must actually have CREATED the commit it reports.
+//
+// CURED 2026-11-01 STOP (Theseus's §3). The old steal leg was
+//   matches.length === matchesBefore.length + 1 || matches.length === 2
+// and its second disjunct passed on any world that merely ENDED in a two-match state. On a clone
+// pre-loaded with someone else's quoting commit it read `ok — matches 2 → 2` on an arm that
+// created nothing, and the sha it printed as "steal commit" was the clone's pre-existing HEAD.
+// The property is creation, not an end-state count: assert the steal is among the matches and that
+// this arm either created it or owns it from a previous drive of itself.
+const stealOwned = stealSha !== null
+  && matches.includes(stealSha)
+  && g(['log', '-1', '--format=%s'], CLONE) === STEAL_SUBJECT
+  && matches.length === matchesBefore.length + (stealCreated ? 1 : 0);
 check('GARMREACH',
-  ARM === 'kn' ? matches.length === 1 : (matches.length === matchesBefore.length + 1 || matches.length === 2),
+  ARM === 'kn' ? matches.length === 1 : stealOwned,
   `arm=${ARM}: matches ${matchesBefore.length} → ${matches.length}` +
-  (stealSha ? `, steal commit ${stealSha.slice(0, 8)}` : ''));
+  (stealSha ? `, steal commit ${stealSha.slice(0, 8)} ` +
+    `(${stealCreated ? 'created by this arm' : 'owned from a previous drive of this arm'})` : ''));
+
+// A `GSTEALNEWEST` leg was added here in the same fire as the GARMREACH cure, on the reasoning
+// that P2 presupposes the steal being the NEWEST matching commit and that `STEAL_WHEN`'s hardcoded
+// instant is a fossil. It was driven (unit-464cure3 `drive4`) and REMOVED, for two reasons, both
+// read off that recording rather than argued:
+//
+//  1. Its predicate was `log -1 --grep === stealSha` — which is P2's OWN predicate. A gate keyed
+//     on the prediction cannot grade it: it is green exactly when P2 LANDS and red exactly when
+//     P2 would be REFUTED, so all it can do is convert a verdict word into a refusal.
+//     [[feedback_gate_the_figure_on_the_key_not_on_the_prediction]]
+//  2. The premise was wrong about git. `log -1 --grep` on a linear chain returns the match nearest
+//     HEAD in traversal order, not the latest by timestamp: in `drive4`'s POST preplant-head arm it
+//     returned the steal dated 14:00 ahead of a planted quoting commit dated 15:00. So the
+//     hardcoded date is not the fossil I took it for while the steal is committed on top.
+//
+// `GARMREACH` above already carries the only precondition P2 has — that this arm created or owns
+// the commit it reports.
 
 // ------------------------------------------------------- the two spellings, on the SAME world state
 // the spelling S1 shipped with before this morning's cure
@@ -236,10 +272,35 @@ const movedOn = (field) => rows.filter((r) => r.trueRev.state === 'READ'
 const moved = movedOn('value');
 const silentlyMoved = moved.length > 0;
 const loudlyFailed = rows.some((r) => r.keyedRev.state === 'THREW');
-const upstreamMoved = [...new Set([...movedOn('raw'), ...movedOn('comments'), ...movedOn('bytes')])];
+// CURED 2026-11-01 STOP (Theseus's §2). `bytes` was in this union and is `src.length`, which moves
+// whenever the two revs hold different file content. So the leg that distinguishes "the read could
+// not express the property" from "the property was absent at both revs" could be satisfied by the
+// trees merely differing. Only `raw` and `comments` track the property — they are the same needle
+// counted with weaker blanking. `bytes` stays a printed column, and the per-file line below
+// replaces the single clause that named two files on evidence that held for one.
+const upstreamMoved = [...new Set([...movedOn('raw'), ...movedOn('comments')])];
+const bytesOnly = rows.filter((r) => r.trueRev.state === 'READ' && r.keyedRev.state === 'READ'
+  && r.trueRev.bytes !== r.keyedRev.bytes
+  && r.trueRev.raw === r.keyedRev.raw && r.trueRev.comments === r.keyedRev.comments);
 console.log(`   verdict figures that MOVED and still read cleanly: ${moved.length ? moved.map((r) => r.label).join(', ') : '(none)'}`);
 console.log(`   reads that THREW at the keyed rev:                ${loudlyFailed}`);
-console.log(`   UPSTREAM figures (raw/comments/bytes) that moved:  ${upstreamMoved.length ? upstreamMoved.map((r) => r.label).join(', ') : '(none)'}`);
+console.log(`   UPSTREAM figures (raw/comments) that moved:        ${upstreamMoved.length ? upstreamMoved.map((r) => r.label).join(', ') : '(none)'}`);
+console.log('   per file — which fields moved between the two revs:');
+for (const r of rows) {
+  if (r.trueRev.state !== 'READ' || r.keyedRev.state !== 'READ') {
+    console.log(`      ${r.label.padEnd(15)} UNREADABLE at one rev, witnesses nothing`);
+    continue;
+  }
+  const f = ['value', 'comments', 'raw', 'bytes'].filter((k) => r.trueRev[k] !== r.keyedRev[k]);
+  const witnesses = f.includes('raw') || f.includes('comments');
+  console.log(`      ${r.label.padEnd(15)} moved: ${(f.join(', ') || '(nothing)').padEnd(24)}` +
+    `⇒ ${witnesses ? 'WITNESSES saturation (a property figure moved)'
+      : f.length ? 'witnesses NOTHING (only ' + f.join('/') + ' moved; the trees merely differ)'
+        : 'witnesses nothing (identical at both revs)'}`);
+}
+console.log(`   files where bytes moved but no property figure did: ` +
+  `${bytesOnly.length ? bytesOnly.map((r) => r.label).join(', ') : '(none)'}` +
+  ` — these were counted as witnesses before this cure`);
 console.log('   ⇒ a verdict figure that did not move while an upstream one did is SATURATED,');
 console.log('     not protected: the steal reached the read and the read could not express it.');
 const saturated = moved.length === 0 && upstreamMoved.length > 0 && !loudlyFailed;
@@ -287,7 +348,7 @@ if (!gatesOk) {
       : saturated ? 'REFUTED (saturated)' : 'REFUTED (no move)',
     silentlyMoved ? `${moved.map((r) => r.label).join(', ')} read a different value at the keyed rev`
       : loudlyFailed ? 'the keyed rev threw — the harm is loud, not silent'
-        : saturated ? `verdict figure is 0 at both revs while raw/comments/bytes moved for ` +
+        : saturated ? `verdict figure is 0 at both revs while raw/comments moved for ` +
             `${upstreamMoved.map((r) => r.label).join(', ')} — the steal reached and could not be expressed`
           : 'both files read the same value at both revs, and no upstream figure moved either');
 }

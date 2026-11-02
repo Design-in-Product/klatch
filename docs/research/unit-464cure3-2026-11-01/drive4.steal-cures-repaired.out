@@ -1,0 +1,69 @@
+unit-464cure3 — C1 and C2, graded in both states
+  subject:  docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs
+  PRE from: de5e9365  ·  POST from: the worktree
+  phrase:   "the 375/376 cure landed"   (lifted from docs/research/round378-instruments/grade-b3-known-positive.mjs)
+  clone:    /Users/xian/Development/klatch-worktrees/daedalus/.testdata/unit-464steal/clone  (rebuilt fresh per cell, removed at the end)
+
+GATES
+  GDEPTH       ok  — both subject states are at the same depth and both resolve ../../../scripts/lib/strip-source.mjs from their own directory: PRE true, POST true
+  GCURE        ok  — PRE {"bytesInUnion":true,"perFile":false,"disjunct":true,"alreadyOnCount":true,"alreadyOnSubject":false,"stealOwned":false,"newestGate":false} · POST {"bytesInUnion":false,"perFile":true,"disjunct":false,"alreadyOnCount":false,"alreadyOnSubject":true,"stealOwned":true,"newestGate":true}
+  GPATH        ok  — both subject states hardcode the same clone path (.testdata/unit-464steal/clone) and this harness builds exactly that
+  GLIVECLEAN   ok  — git status --porcelain -- packages/ scripts/ is 0 bytes in the LIVE tree
+  GFUSE        ok  — the LIVE tree matches the phrase 1 time(s) — his §3 is a fuse while that is 1
+  GCTRLPRE     ok  — PRE ctrl transition 1→2 vs drive3's 1→2, P2 LANDS, created true, reported sha is the created HEAD
+  GCTRLPOST    ok  — POST ctrl transition 1→2, P2 LANDS, created true, all 6 of its own gates ok: true
+  GPLANTED     ok  — each cell entered its run with the match count its plant list declares: ctrl 1, preplant-head 2, preplant-buried 2
+  GROWREPRO    ok  — PRE ctrl reproduces drive4's 4 (value,comments,raw) triples: true (4 recorded, 4 read)
+
+1. C2 — THE 2 × 3 MATRIX
+   state  arm              matches  commit    GARMREACH  GSTEALNEWEST  exit  P2
+   PRE    ctrl             1 → 2    created   ok         (absent)      0     LANDS
+   PRE    preplant-head    2 → 2    NONE      ok         (absent)      0     LANDS
+   PRE    preplant-buried  2 → 2    NONE      ok         (absent)      0     REFUTED
+   POST   ctrl             1 → 2    created   ok         ok            0     LANDS
+   POST   preplant-head    2 → 3    created   ok         ok            0     LANDS
+   POST   preplant-buried  2 → 3    created   ok         ok            0     LANDS
+
+   PRE preplant-head:
+     GARMREACH   ok  — arm=steal: matches 2 → 2, steal commit d244547c
+     P2  LANDS     pre-cure spelling resolves to d244547c; steal is d244547c
+     the sha reported as "steal commit": d244547c — NOT created by this arm; the clone's pre-existing HEAD
+   PRE preplant-buried:
+     GARMREACH   ok  — arm=steal: matches 2 → 2, steal commit 2afa66b8
+     P2  REFUTED   pre-cure spelling resolves to d244547c; steal is 2afa66b8
+     the sha reported as "steal commit": 2afa66b8 — NOT created by this arm; the clone's pre-existing HEAD
+   POST preplant-head:
+     GARMREACH   ok  — arm=steal: matches 2 → 3, steal commit c3006664 (created by this arm)
+     GSTEALNEWEST ok  — the newest matching commit is c3006664 and the steal is c3006664 — P2 is only testable when these are the same
+     P2  LANDS     pre-cure spelling resolves to c3006664; steal is c3006664
+     the sha reported as "steal commit": c3006664 — created by this arm
+   POST preplant-buried:
+     GARMREACH   ok  — arm=steal: matches 2 → 3, steal commit b5fb3214 (created by this arm)
+     GSTEALNEWEST ok  — the newest matching commit is b5fb3214 and the steal is b5fb3214 — P2 is only testable when these are the same
+     P2  LANDS     pre-cure spelling resolves to b5fb3214; steal is b5fb3214
+     the sha reported as "steal commit": b5fb3214 — created by this arm
+
+2. C1 — THE SATURATION WITNESS SET, from the control cell of each state
+   PRE:
+     UPSTREAM figures (raw/comments/bytes) that moved:  probe-round375, probe-round374
+     P4: REFUTED (saturated)
+   POST:
+     UPSTREAM figures (raw/comments) that moved:        probe-round375
+       probe-round374  moved: bytes                   ⇒ witnesses NOTHING (only bytes moved; the trees merely differ)
+       probe-round375  moved: comments, bytes         ⇒ WITNESSES saturation (a property figure moved)
+     P4: REFUTED (saturated)
+
+   the row table both states read (identical by GROWREPRO on the triples):
+   file            rev      value  comments  raw   bytes
+   probe-round374  PIN^         0         0     2   19726
+   probe-round374  KEYED^       0         0     2   22676
+   probe-round375  PIN^         0         1     2   18146
+   probe-round375  KEYED^       0         0     2   19654
+
+PREDICTIONS settled by this drive
+  P1  LANDS    witness set ["probe-round375","probe-round374"] → ["probe-round375"]; P4 word PRE "REFUTED (saturated)" → POST "REFUTED (saturated)"
+  P2  LANDS    files whose bytes moved while raw and comments did not: probe-round374 — the cure is not vacuous
+  P3  LANDS    arms reading GARMREACH ok while creating nothing: PRE 2 (preplant-head, preplant-buried) → POST 0 (none)
+  P4  REFUTED  P2 words published under an all-green gate: PRE {LANDS, REFUTED} → POST {LANDS}; both POST pre-planted arms refused: false
+
+STEALCURES/0  9 gates, 9 ok; P1 LANDS, P2 LANDS, P3 LANDS, P4 REFUTED
