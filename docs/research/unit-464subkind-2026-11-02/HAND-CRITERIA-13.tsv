@@ -1,0 +1,36 @@
+# unit-464subkind — MY independent evaluation of Daedalus's FIVE ordered hazard criteria, applied
+# to the same thirteen CROSS-STATE rows, read off `slice1.13rows.out` (a recorded slice of the
+# PINNED source at de422c75), not off his `subkind5`, `reach`, `figure` or `states` columns.
+#
+# THIS FILE DELIBERATELY CARRIES NO `subkind5` COLUMN. The grader derives the first-yes label from
+# c1..c4 itself and joins his verdict out of HIS file on (file,line,id), so a departure cannot come
+# from my transcription of his label. [[feedback_slicing_the_inputs_but_retyping_the_verdict]]
+#
+# His criteria, verbatim from HAND-READ-13.tsv, first yes decides:
+#   1. are the states never compared TO EACH OTHER (each vs a literal)? -> conjunctive
+#   2. does the comparison assert they DIFFER?                          -> delta      (sound)
+#   3. is NEITHER side the live worktree?                               -> staleness
+#   4. is the compared figure OUT of a cure's reach?                    -> inert
+#   5. otherwise                                                        -> keyed      (HAZARD)
+#
+# T / F / ? — `?` means I could not decide it from the slice and is NOT silently folded into F;
+# the grader prints the undecidable count and a `?` in a position that would change the first-yes
+# label is a REFUSAL, not a result. [[feedback_a_grading_instrument_that_cannot_refuse_manufactures_findings]]
+#
+# "out of a cure's reach" is read as out of the reach of THE CURE THE LEG GRADES, not of any
+# conceivable future edit.
+#
+file	line	id	c1	c2	c3	c4	why
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	60	GDELTA	F	T	F	F	preSrc !== postSrc — the two states are the two operands, and the assertion is that they differ; POST is the LIVE file (comment at :51-54), so one side is the worktree
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	71	GCURE	T	T	F	F	every conjunct is ONE state's shape-map field vs a boolean literal (!preHas.budget ... && postHas.budget); the states are never an operand pair. c2 is ALSO readable as true (it asserts pre lacks and post has), which is the ambiguity
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	88	GPATHS	F	F	F	T	HIS === pathOf(preSrc,'HIS') compares the states to each other and asserts EQUAL; the figure is the fixture path literal, measured at 0 of 83 changed lines of the graded cure
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	161	GCTRLPRE	F	F	F	F	preCtrlMatches counts live ctrl gate lines against the frozen drive6 lines, element by element — a direct state-vs-state comparison asserting identity; the gate lines are exactly what a cure to the subject moves
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	186	GLIFT2	T	F	F	F	five conjuncts, each one state vs an Array/key literal; the bucket set of postDecl is what the graded cure chose (4 -> 3), so the figure is inside its reach
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	90	GCURE	T	T	F	F	same shape as attrib:71 — six shape-map fields per state, each vs a boolean literal, no operand pair. c2 also readable as true
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	104	GPATH	F	F	F	T	clonePre === clonePost is an operand pair asserting EQUAL; the figure is the hardcoded clone path, measured at 0 of 77 changed lines of the graded cure
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	194	GCTRLPRE	T	F	F	F	ctrlPinned(preCtrl) is five conjuncts all live-vs-literal, and transition(rec3Arm) === '1→2' is frozen-vs-the-same-literal; the two states are never compared to each other
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	211	GROWREPRO	F	F	F	F	tripleKey(preCtrl.rows) === tripleKey(rec4Rows) is an operand pair asserting EQUAL; preCtrl is a live run
+unit-464rec3-2026-11-01/grade-the-three-cures.mjs	99	C2b	F	T	T	F	the predicate is `defectiveShape && atPin !== atRecency` — an explicit !== between the two states, so criterion 2 fires BEFORE criterion 3; atRecency is `git log -1 --format=%h -- HIS_396_PATH`, a recency SELECTOR, so any commit touching the path moves the figure
+unit-464vac-2026-10-31/grade-cure.mjs	78	C0	F	T	F	F	changed = checkerNow !== checkerThen at :64, refused when NOT changed; checkerNow is the worktree
+unit-464vac-2026-10-31/measure.mjs	79	G0	T	F	T	T	a === null || b === null — each state vs the literal null, never to each other; HIS_REV comes from sat.json and MY_REV from baseline.rev, so neither side is the worktree AND both anchors are fixed strings, so no cure can change what rev-parse returns at either
+unit-464vac-2026-10-31/measure.mjs	80	G0	F	F	T	T	a !== b per file is an operand pair, but the LEG refuses when they differ, i.e. it asserts EQUAL, so c2 is false; both anchors fixed as at :79
