@@ -14,6 +14,8 @@ import { readFileSync, writeFileSync } from 'node:fs';
 
 const DIR = 'docs/research/unit-464pins-2026-11-01';
 const PREREG = DIR + '/PRE-REGISTRATION.md';
+const DRIVE = (process.argv.find((a) => a.startsWith('--drive=')) ?? '--drive=drive2').slice(8);
+if (DRIVE === 'drive1') { console.log('REFUSED — drive1 is the recording of the GREACHSPLIT defect; pick another label.'); process.exit(2); }
 
 const HARNESSES = [
   { key: 'armreach', path: 'docs/research/unit-464bucket-2026-11-01/grade-his-armreach-gate.mjs' },
@@ -62,8 +64,10 @@ for (const h of HARNESSES) {
     out = execFileSync('node', [h.path], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], maxBuffer: 1 << 28 });
   } catch (e) { code = e.status ?? '?'; out = String(e.stdout ?? ''); err = String(e.stderr ?? ''); }
   h.code = code; h.out = out; h.err = err;
-  writeFileSync(`${DIR}/drive1.${h.key}.out`, out);
-  writeFileSync(`${DIR}/drive1.${h.key}.err`, err);
+  // DRIVE is argv-driven and defaults to a NEW label, so a re-drive cannot re-stamp drive1 — the
+  // only recording of the GREACHSPLIT defect. [[feedback_a_drive_can_restamp_someone_elses_recording]]
+  writeFileSync(`${DIR}/${DRIVE}.${h.key}.out`, out);
+  writeFileSync(`${DIR}/${DRIVE}.${h.key}.err`, err);
 
   // Verdicts read from the harness's OWN printed GATES block, not re-derived.
   const seen = new Map();
@@ -86,10 +90,26 @@ for (const r of MAP) { r.verdict = byFile[r.file].seen.get(r.leg) ?? null; }
 const reached = MAP.filter((r) => r.verdict !== null);
 const unreached = MAP.filter((r) => r.verdict === null);
 
-// GREACHSPLIT — the drive must actually reach SOME legs and leave SOME unreached, or the 2×2 below
-// is scored over a degenerate population and P1/P2's whole distinction is untested.
-check('GREACHSPLIT', reached.length > 0 && unreached.length > 0,
-  `${reached.length} legs reached, ${unreached.length} unreached — both non-empty, so exit-1 and exit-2 are distinguished by measurement`);
+// GLEGCOUNT — drive1's gate here was `GREACHSPLIT`: it required reached AND unreached to both be
+// non-empty, which is **P1's own predicate**. P1 was refuted (regrade exits 1 with all 3 legs
+// reached, not 2 with 0), and the gate converted that refutation into a refusal — the same shape
+// as the `GSTEALNEWEST` defect Daedalus reported in the memo this unit answers, built into the
+// instrument that exists to map that shape. `drive1.*` is kept as the only recording of it.
+//
+// Re-aimed, not loosened ([[feedback_verbatim_source_pin_is_not_a_property_pin]]): the property
+// the gate should protect is that reachedness is MEASURED from each harness's own printed output
+// rather than assumed — so pin my hand map's per-file leg count against the number of leg lines
+// each harness actually prints. That reddens if I miscounted a file's legs (a real failure mode,
+// and the one that would silently shrink the matrix's denominator) and no prediction of this unit
+// can make it true.
+const HAND_PER_FILE = { armreach: 7, attrib: 5, regrade: 3 };
+const legCountRows = HARNESSES.map((h) => {
+  const mapped = MAP.filter((r) => r.file === h.key).length;
+  return { key: h.key, hand: HAND_PER_FILE[h.key], mapped, printed: h.seen.size };
+});
+check('GLEGCOUNT', legCountRows.every((r) => r.hand === r.mapped && r.mapped === r.printed),
+  'hand/map/printed leg counts per harness: ' +
+  legCountRows.map((r) => `${r.key} ${r.hand}/${r.mapped}/${r.printed}`).join(', '));
 check('GCODES', HARNESSES.every((h) => h.code === 0 || h.code === 1 || h.code === 2),
   'exit codes: ' + HARNESSES.map((h) => `${h.key}=${h.code}`).join(', '));
 

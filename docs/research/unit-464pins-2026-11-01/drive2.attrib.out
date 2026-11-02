@@ -1,0 +1,13 @@
+unit-464bucket — how much can his GATTRIB absorb?
+  his gate:  docs/research/unit-464steal-2026-11-01/grade-the-copy-is-his-reader.mjs
+  fixtures:  HIS 280 lines · MINE 316 lines (as his gate counts them)
+  scratch:   /Users/xian/Development/klatch-worktrees/theseus/.testdata/unit-464bucket
+
+GATES
+  GLIFT       RED — 4 buckets lifted from his source: pop-flag, label, artefact
+  GREPRO      RED — lifted predicates reproduce drive6's per-bucket (added, removed): pop-flag 15/1 vs 18/1 · label 4/1 vs 3/1 · artefact 4/1 vs 2/1
+  GLIVECLEAN  ok  — git status --porcelain -- packages/ scripts/ is 0 bytes in the LIVE tree
+  GCTRL       RED — ctrl arm exit 0, GREEN, 3/5 gate lines byte-identical to drive6
+  GPLANT      ok  — every arm's fixture is exactly as declared (4/4)
+
+REFUSED — a gate is RED, so nothing below is published.
