@@ -1,0 +1,99 @@
+unit-464class — stage 2: the detector graded against the hand read
+  rev:        25b2e87178bf27ce7aea5d1559833adc33b6348a
+  population: 48 call sites, read from legs.spans.txt @ b0de039b
+  answer key: HAND-READ.tsv, 48 rows
+
+GATES
+  GLIVECLEAN   ok  — git status --porcelain -- packages/ scripts/ is 0 bytes
+  GSPANREV     ok  — the population was read from legs.spans.txt, stamped rev b0de039b (this drive is at 25b2e871)
+  GHANDCOVER   ok  — population and answer key are the same set: 48 sites, 48 hand rows, 48 matched, 0 unmatched
+  GMATSUM      ok  — matrix cells sum to the matched population: 48 vs 48
+  GREFUSABLE   ok  — an evidence-free predicate comes out UNMODELLED, not GATE (the refusal value is not the GATE value)
+  GP4REACH     ok  — P4 searched 244 committed recording(s) for 12 CROSS-STATE leg name(s)
+
+1. THE HAND READ — THE VERDICT
+   PIN           0
+   GATE         35
+   CROSS-STATE  12
+   UNMODELLED    1
+   of the CROSS-STATE: delta 5 · keyed 7   (UNREGISTERED split, see RESULTS §4)
+
+2. P2 / P3 / P4 / P5
+   P2  LANDS    CROSS-STATE occurs in my own instruments at 12 site(s)
+   P3  REFUTED  GROWREPRO predicted GATE, hand read says CROSS-STATE (keyed)
+   P4  LANDS    recorded REDs on a CROSS-STATE leg name: 0 (searched 244 recordings)
+   P5  LANDS    the detector refused on 22 site(s)
+
+3. THE DETECTOR, SCORED — hand read down, detector across
+                           PIN        GATE CROSS-STATE  UNMODELLED
+   PIN                      0           0           0           0
+   GATE                     0          15           1          19
+   CROSS-STATE              0          10           0           2
+   UNMODELLED               0           0           0           1
+   agreement 16/48; 32 disagreement(s)
+     GDELTA       hand CROSS-STATE  det GATE         unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:60
+        detector's reason: live side only
+     GCURE        hand CROSS-STATE  det GATE         unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:71
+        detector's reason: live side only
+     GPATHS       hand CROSS-STATE  det GATE         unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:88
+        detector's reason: live side only
+     GCTRLPRE     hand CROSS-STATE  det GATE         unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:161
+        detector's reason: frozen side only
+     GPLANT       hand GATE         det UNMODELLED   unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:170
+        detector's reason: neither a frozen nor a live source resolved from the predicate
+     GLIFT2       hand CROSS-STATE  det GATE         unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:186
+        detector's reason: live side only
+     GCURE        hand CROSS-STATE  det GATE         unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:90
+        detector's reason: live side only
+     GPATH        hand CROSS-STATE  det GATE         unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:104
+        detector's reason: live side only
+     GCTRLPRE     hand CROSS-STATE  det GATE         unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:194
+        detector's reason: frozen side only
+     GCTRLPOST    hand GATE         det UNMODELLED   unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:197
+        detector's reason: neither a frozen nor a live source resolved from the predicate
+     GPLANTED     hand GATE         det UNMODELLED   unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:200
+        detector's reason: neither a frozen nor a live source resolved from the predicate
+     GROWREPRO    hand CROSS-STATE  det GATE         unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:211
+        detector's reason: frozen side only
+     GPIN         hand GATE         det UNMODELLED   unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:96
+        detector's reason: neither a frozen nor a live source resolved from the predicate
+     GARMREACH    hand GATE         det UNMODELLED   unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:135
+        detector's reason: neither a frozen nor a live source resolved from the predicate
+     C0           hand GATE         det UNMODELLED   unit-464rec3-2026-11-01/grade-the-three-cures.mjs:53
+        detector's reason: neither a frozen nor a live source resolved from the predicate
+     C1           hand GATE         det UNMODELLED   unit-464rec3-2026-11-01/grade-the-three-cures.mjs:66
+        detector's reason: neither a frozen nor a live source resolved from the predicate
+     C2           hand GATE         det UNMODELLED   unit-464rec3-2026-11-01/grade-the-three-cures.mjs:85
+        detector's reason: neither a frozen nor a live source resolved from the predicate
+     C2b          hand CROSS-STATE  det UNMODELLED   unit-464rec3-2026-11-01/grade-the-three-cures.mjs:99
+        detector's reason: neither a frozen nor a live source resolved from the predicate
+     C3           hand GATE         det UNMODELLED   unit-464rec3-2026-11-01/grade-the-three-cures.mjs:109
+        detector's reason: neither a frozen nor a live source resolved from the predicate
+     C3b          hand GATE         det UNMODELLED   unit-464rec3-2026-11-01/grade-the-three-cures.mjs:138
+        detector's reason: neither a frozen nor a live source resolved from the predicate
+     GPIN         hand GATE         det UNMODELLED   unit-464steal-2026-11-01/drive-the-steal.mjs:96
+        detector's reason: neither a frozen nor a live source resolved from the predicate
+     GARMREACH    hand GATE         det UNMODELLED   unit-464steal-2026-11-01/drive-the-steal.mjs:153
+        detector's reason: neither a frozen nor a live source resolved from the predicate
+     C0           hand GATE         det UNMODELLED   unit-464vac-2026-10-31/grade-cure.mjs:37
+        detector's reason: neither a frozen nor a live source resolved from the predicate
+     C0           hand CROSS-STATE  det GATE         unit-464vac-2026-10-31/grade-cure.mjs:78
+        detector's reason: live side only
+     C1           hand GATE         det CROSS-STATE  unit-464vac-2026-10-31/grade-cure.mjs:91
+        detector's reason: both a frozen artefact and a live read resolve
+     C1           hand GATE         det UNMODELLED   unit-464vac-2026-10-31/grade-cure.mjs:105
+        detector's reason: neither a frozen nor a live source resolved from the predicate
+     G1           hand GATE         det UNMODELLED   unit-464vac-2026-10-31/measure.mjs:58
+        detector's reason: neither a frozen nor a live source resolved from the predicate
+     G0           hand GATE         det UNMODELLED   unit-464vac-2026-10-31/measure.mjs:79
+        detector's reason: neither a frozen nor a live source resolved from the predicate
+     G0           hand CROSS-STATE  det UNMODELLED   unit-464vac-2026-10-31/measure.mjs:80
+        detector's reason: neither a frozen nor a live source resolved from the predicate
+     G4           hand GATE         det UNMODELLED   unit-464vac-2026-10-31/measure.mjs:88
+        detector's reason: neither a frozen nor a live source resolved from the predicate
+     G2           hand GATE         det UNMODELLED   unit-464vac-2026-10-31/measure.mjs:124
+        detector's reason: neither a frozen nor a live source resolved from the predicate
+     G3           hand GATE         det UNMODELLED   unit-464vac-2026-10-31/measure.mjs:161
+        detector's reason: neither a frozen nor a live source resolved from the predicate
+
+CLASSGRADE/32  hand PIN=0 GATE=35 CROSS-STATE=12 UNMODELLED=1 · det PIN=0 GATE=25 CROSS-STATE=1 UNMODELLED=22 · agreement 16/48 · rev 25b2e871
