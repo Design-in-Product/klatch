@@ -20,7 +20,45 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/argus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/argus`, per-worktree git identity `Argus (Klatch)`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope restored per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-02 ~09:0x PT (START fire — census-only no-op). Checkpoint own last commit
+- **Updated:** 2026-11-02 ~13:3x PT (WORK fire — census-only no-op). Checkpoint own last commit
+  `8d8a4d27` (11/02 START fire, 09:04 PT). 22 new commits since, none mine (author-checked):
+  Calliope's MID-fire coord+log+rollup no-op (v171 → v172, ground-rules day-count 84 → 85
+  corrected in place), Theseus's `unit-464dir` chain (pre-registration, drives 3-6, grade lands
+  3 of 5, a self-test built to confirm his own departure refuses) plus mail to Daedalus/xian cc
+  Janus/**Argus**/Calliope/Iris, Theseus's own log correction (stage-header clock times had been
+  estimated, now read off the remote tree), Daedalus's `unit-464reach`/`unit-464class` chain
+  (pre-registration, hand-read of 12 CROSS-STATE sites under an ordered 5-way hazard key,
+  drive1 — 3 of 21 red, his own lifter hand-typed not sliced — drives 2-3 — GREEN at 26 legs, a
+  re-key and a why-string correction — and a drive4/4b/5 tail plus `LEG-CLASS-CONVENTION` v1.1)
+  plus two replies (to Theseus's split memo, and to Theseus/xian on sub-kinds/census overlap),
+  all cc **Argus**/Calliope/Iris. `git diff --dirstat 8d8a4d27..HEAD` **100% under `docs/`**;
+  `git diff --stat 8d8a4d27..HEAD -- packages/ scripts/` empty. **Mail:** three new local
+  files, all read in full and grepped for "argus" — each carries only the header cc line, no
+  Argus bucket in any body; confirmed cc-only, no action. Re-read the standing open thread
+  addressed to this seat (`theseus-to-argus-daedalus-...-your-unclaimed-110-is-zero...-2026-10-27.md`):
+  unchanged, still "nothing routed," still left open since Daedalus's C4 half is unclosed. All
+  four cross-repo mailboxes checked via `git log --since` against the 09:04:07 checkpoint:
+  `designinproduct` 1 new (`cio`→`janus`, correcting the 11-02 cross-pollination brief's
+  guard-stdout insight — three facts fixed, notes "Klatch and DinP readers might act" on one,
+  but addressed to Janus, who owns the brief; the brief points to a private source outside this
+  seat's reach, so the correction can't be checked against it here — no action for this seat);
+  `mediajunkie` 0 new; `dispatch` 0 new; `piper-morgan-product/mailboxes` ~20 new,
+  content-grepped for klatch/argus — the one hit is the same cio→janus memo mirrored in, no
+  separate content. Nothing owed from any. **Standing blockers re-derived fresh:** Managed
+  Agents smoke-run — no `ma-smoke/*` branch anywhere, named blocker on xian, unchanged at day
+  **13**. Rollup now v172 (read directly): needs-you unchanged at 2, this render's only change
+  was the day-count fix noted above; nothing in the 22 new commits is xian's to decide. Intel
+  sweep cadence satisfied today by the automated scan, not due from this seat. **Gate
+  re-derived fresh:** `lsof -i :3001` port free; `npm run typecheck` clean ×4 workspaces; `npm
+  test -w packages/server` **140 files · 2186 passed · 1 skipped (2187)**, byte-identical; `npm
+  test -w packages/client` **26 passed|13 skipped (39) · 333 passed|13 skipped (346)**,
+  byte-identical; `node scripts/sweep-probes.mjs --census` **153 probe files, 43 swept/110
+  deferred, CENSUS OK**, byte-identical. **Needs-you:** unchanged at 2. First `git fetch origin`
+  mid-fire surfaced 2 more commits (Daedalus's `unit-464reach` tail + convention bump),
+  fast-forward merged and re-checked (still 100% `docs/`, no product diff, new mail cc-only);
+  second fetch found nothing further. Two consecutive checks found nothing further unblocked —
+  fire closed bounded. Log: `docs/logs/2026-11-02-argus-log.md`.
+- **Updated (previous):** 2026-11-02 ~09:0x PT (START fire — census-only no-op). Checkpoint own last commit
   `4973533a` (11/01 STOP fire, 18:04:39 PT). 13 new commits since, none mine (author-checked):
   Theseus's `unit-464pins` chain (pre-registration, drive1/drive2 — Daedalus's three named pins
   are four, `regrade-saturation.mjs:49` is a second `GLIFT` under the same name, all four
