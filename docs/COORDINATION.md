@@ -4156,6 +4156,38 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   both briefs, both blockers re-derived, full gate); nothing deferred. Two consecutive checks
   found nothing further unblocked — fire closed bounded. Log:
   `docs/logs/2026-11-01-iris-log.md`.
+- **Updated:** 2026-11-01 ~19:3x PT (STOP fire). **Status:** available.
+- **11/01 fire (STOP) — no-op on product; 41 commits read since own START checkpoint, none
+  mine, all under the Daedalus/Theseus `unit-464*` research thread, nothing routed to this
+  seat.** Drain against own 11/01 ~07:23 PT START checkpoint (`a9858f98`): 41 new commits
+  (checked `%an` per commit — Daedalus, Theseus, Argus, Calliope; none Iris). `git diff --stat
+  a9858f98..HEAD -- packages/ scripts/` **empty** — confirmed, not assumed; `git diff --dirstat`
+  shows the change entirely under `docs/research/unit-464{bucket,grep,steal}-2026-11-01/` plus
+  `docs/research/RECORDING-REPRICABILITY-CONVENTION.md`. **Mail:** 5 new local files since
+  checkpoint, all the Daedalus↔Theseus `unit-464` round exchange (cc Janus/Argus/Calliope/Iris on
+  each) plus Calliope's house-style pass on Theseus's convention doc; grepped `-i iris` across all
+  5 — every hit is a `cc:` header line or a filename reference, none routing an action here. All
+  four cross-repo mailboxes checked via `find -newermt` against the 07:23:00 PT checkpoint:
+  `designinproduct` 4 new (Tally/Pard finance + duty-cycle items, content-checked — no
+  klatch/Iris mention); `mediajunkie` 2 new (Amber ghmint token-mint incident, self-healed —
+  no klatch/Iris mention); `dispatch` 1 new (daily inbox-check-clean signal); `piper-morgan-product`
+  480 new, content-grepped for `klatch|\biris\b` — only hits were 4 `read/MANIFEST.md` index
+  files, boilerplate bookkeeping, no body-text mention. Nothing owed across any of the four.
+  **Standing blockers re-derived fresh:** ground-rules question still **84 days**, unmoved on
+  xian, unchanged from this morning; `entityGuess` re-grepped independently — **6 files/23
+  hits**, unchanged. **Verified, not trusted:** `lsof -i :3001` port free; `npm run typecheck`
+  clean ×4 workspaces; server **140 files · 2186 passed · 1 skipped (2187)**; client **26
+  passed|13 skipped (39) · 333 passed|13 skipped (346)** — byte-identical to this morning's START
+  checkpoint; `sweep-probes --census` **153 probe files, 43 swept/110 deferred**, CENSUS OK,
+  unchanged; full driving sweep (HEAD unchanged at `4973533a` before/after, tree clean throughout,
+  backgrounded past the 120s foreground limit, verdict line read directly from the task output,
+  not the exit code) — **SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0 blocked (0 could
+  not run, 0 ran but did not finish), 0 census problem(s), 110 deferred.** No `packages/` changes
+  this fire. Nothing new needs xian beyond the one standing item (ground-rules question, now at
+  84 days, unmoved today). **Drain:** all unblocked items done (commit check, mail across all
+  four mailboxes plus local, both blockers re-derived, full gate); nothing deferred. Two
+  consecutive checks found nothing further unblocked — fire closed bounded. Log:
+  `docs/logs/2026-11-01-iris-log.md` (19:3x entry appended).
 - **Prior update:** 2026-10-31 ~19:2x PT (STOP fire). **Status:** available.
 - **10/31 fire (STOP) — no-op on product; 40 research-track/mail commits read (Daedalus's
   `unit-464vac`/`unit-464absorb`/`unit-464authored` chains, Theseus's `unit-464sat`/
