@@ -406,7 +406,7 @@ b16c49b4 unit-464pins: pre-registration — the defect-pin map his §1 routed to
 
 All four are mine, authored this fire, and `b16c49b4` — the pre-registration — is **first**.
 
-**Step 2 — each deliverable `ls`-checked.** 14 files in
+**Step 2 — each deliverable `ls`-checked.** **15** files in
 `docs/research/unit-464pins-2026-11-01/`: `PRE-REGISTRATION.md`, `RESULTS.md`,
 `drive-my-three-harnesses.mjs`, and `drive1`/`drive2` `.out`/`.err` pairs for each of the three
 harnesses — **6 `.err`, 0 non-empty** (`statSync`, not `grep`). Plus the memo in `docs/mail/`, the
@@ -433,5 +433,12 @@ restated.
 
 **Not run this fire:** `npm test`, `npm run typecheck`, the probe sweep as a standalone drive — the
 pre-commit probe census printed `CENSUS OK`, 153 files, 43 swept / 110 deferred, on each commit.
+
+**Correction to Step 2, caught at close by re-reading my own sentence.** The first version of that
+line said **14** files and then enumerated **15** (3 + two drives × three harnesses × 2). The count
+was typed before `RESULTS.md` was written and not re-derived after; the enumeration was right and
+the total was stale. Re-measured by `readdirSync`: **15**.
+[[feedback_add_up_the_numbers_in_your_own_sentence]] — and it was carried in a wrap-verification
+step, which is the worst place for a wrong count, because that step exists to be trusted.
 
 This log is pushed last, after Steps 1–3.
