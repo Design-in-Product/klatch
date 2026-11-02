@@ -643,7 +643,65 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
-- **Updated:** 2026-11-01 ~17:4x PT (**STOP fire — all three items his memo routed are cured and
+- **Updated:** 2026-11-02 ~10:1x PT (**START fire — the convention he routed me is drafted and
+  censused rather than asserted; CROSS-STATE splits in two and only one half is a hazard; the one
+  leg I predicted was safe is the hazard shape.**) Unit `docs/research/unit-464class-2026-11-02/` —
+  pre-registration `b0de039b` **pushed to `main` as the only file in the directory before any
+  instrument in it existed**, drives 1–3 `1be298a7`, the hand read `25b2e871` (its own commit,
+  **before `classify-and-grade.mjs` existed**), the grade `4094b2fd`, entry + RESULTS + mail
+  `f8a5f847`. Entry at `docs/research/LEG-CLASS-CONVENTION.md` v1.0. **7 recorded drives, 7 `.err`,
+  0 non-empty** (`readdirSync` + `statSync`). 6 predictions: **P1/P2/P4/P5/P6 land, P3 refuted.**
+  **His §3 correction accepted up front:** my 11/01 §1's "unrunnable" was one notch high — his
+  harnesses ran, reached every leg, exited 1 and named the reddened leg; `CROSS-STATE` is his
+  coinage and the entry says so. **The verdict is a hand read of 48 call sites** across my 14
+  `unit-464*` dirs (authorship by each dir's **oldest** adding commit): **PIN 0 · GATE 35 ·
+  CROSS-STATE 12 · UNMODELLED 1**. **PIN 0 is itself half the answer to his §4** — his four pins are
+  his; these harnesses were built as classifiers after the lesson that produced them, so the class's
+  population is author-dependent and never a property of "the repo". **The split his pair could not
+  show (unregistered reading, labelled as such):** `delta` 5 — asserts the two states *differ*, a
+  cure makes it **true**, the sound baseline-from-git pattern; `keyed` 7 — asserts frozen and live
+  *agree*, a cure makes it **false**, the hazard. Direction decides it, not the number of states
+  read. **His re-aim reduces blast radius, not class:** the `GCTRL` he quoted as ok
+  (`grade-the-steal-cures.mjs:194`) is still CROSS-STATE — it reads the frozen `drive3` transition
+  and the live-derived ctrl run in one predicate. **P3 refuted and it is the finding worth most:**
+  `GROWREPRO` was predicted GATE because both sides looked frozen; `preCtrl` is a **run** whose
+  clone and reader come from the live tree, so it is CROSS-STATE (keyed) — the shape, in the leg I
+  called safe, with my own comment above it calling byte-pinning a virtue. **The entry's clause is
+  measured, not preferred:** the detector found **0 of 12** at the registered closure depth; rather
+  than tune it against its own answer key the depth became a parameter and the grade a curve, which
+  **saturates** — depth 5 and depth 8 identical at 25/48, 4 of 12 found, and **6 of the 12 still
+  called plain GATE**, i.e. the illegible-red class reported as benign. So: **declare the class at
+  the registration site.** **P4:** 244 committed recordings searched for a red verdict line on any
+  of the 12 names → **0**; `GP4REACH` asserts the search opened recordings, so the zero is a
+  measurement. The hazard is **latent** in my tree, not realised. **P6:** `GDOCPIN` reads **16**
+  figures out of the entry's own markdown literals (including two prose figures) and compares them
+  to the measured values — it does not recompute what it grades, and a missing doc is a RED, not a
+  skip; `drive7` re-drove it **after** the commit that promoted those figures, byte-identical to
+  `drive6` modulo sha. **Four defects of mine, all kept as recordings:** `drive1` — the walker
+  censused **its own** directory (29 dirs/42 `.mjs`), Theseus's 11/01 §5.2 defect recurring in the
+  unit built to grade his finding, now `GSELFEXCL` reading the **exclusion count**; `drive1` — a raw
+  `check(` regex matching the *prose* `cross-check (design note 2)` in a comment, cured by a blanked
+  copy (raw line-based 31 → blanked 28). **Two that `drive2` was green on, which is worse:** the
+  `g(` idiom was dead by construction (required a quote blanking removes — `0 legs` beside **6** real
+  sites while `GIDIOM` summed happily to a total missing them; `GKPG` now pins the hand-found site),
+  and `check(`/`refuse(` were fused under one count when `refuse(id, why)` is the *action* whose
+  predicate is the enclosing `if` and **not in the span** (14 sites, 7 distinct ids; the one guard
+  the backward walk cannot resolve is published `UNMODELLED-PREDICATE`). **Mail:** his memo read in
+  full at open and replied in the same fire (`f8a5f847`); thread stays in `docs/mail/` — both memos
+  name an open item as xian's. All four cross-repo mailboxes `git fetch`ed first, then scanned since
+  my 11/01 17:37 checkpoint: `designinproduct` 14 new, **0** touching `docs/mail/`; `mediajunkie` 13
+  (troll/disk/piper-guards traffic); `dispatch` 12 (PM/DinP daily syncs plus a Theseus→**xian**
+  question letter, not mine); `piper-morgan-product` 95, content-grepped → **1** hit, an omnibus line
+  reading "Klatch appears in none". Nothing owed from any. `git status --porcelain -- packages/
+  scripts/` **0 bytes**, asserted *inside* both harnesses rather than by hand. **Drain:** the routed
+  convention draft done this fire, mail replied in the same fire, cross-repo checked. **Deferred
+  with no blocker and no deadline, only a name** (it is unblocked and I did not reach it): the
+  artefact-overwrite census across my own units. Also named, not fixed:
+  `grade-the-three-cures.mjs` registers cure claims through the same `legs` array it would register
+  gates in — no gate layer at all — which edits a filed harness other units may pin.
+  **Needs-you:** unchanged, nothing in this fire is xian's to decide. Log:
+  `docs/logs/2026-11-02-daedalus-log.md`.
+- **Updated (previous):** 2026-11-01 ~17:4x PT (**STOP fire — all three items his memo routed are cured and
   graded, and the gate I added beside one of them was keyed on its own prediction.**) Unit
   `docs/research/unit-464cure3-2026-11-01/` — pre-registration `de5e9365` **pushed to `main` before
   any instrument in the directory existed**, C3 `bd67169e`, C1+C2 `ca4d65fe`, RESULTS+mail
