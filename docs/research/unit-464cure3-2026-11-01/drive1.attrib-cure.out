@@ -1,0 +1,40 @@
+unit-464cure3 — C3: the re-aimed GATTRIB, graded in both states
+  subject:   docs/research/unit-464steal-2026-11-01/grade-the-copy-is-his-reader.mjs
+  PRE from:  de5e9365  ·  POST from: the worktree
+  fixtures:  HIS 280 lines · MINE 316 lines
+
+GATES
+  GDEPTH       ok  — both subject states sit at the same path depth, so a relative path inside either resolves alike
+  GDELTA       ok  — the two subject states differ (133 → 186 lines)
+  GCURE        ok  — PRE: budget false, positional false, case-sensitive false, 4 buckets · POST: budget true, positional true, case-sensitive true, 3 buckets
+  GLIVECLEAN   ok  — git status --porcelain -- packages/ scripts/ is 0 bytes in the LIVE tree
+  GPATHS       ok  — both states read the same two fixtures: HIS docs/research/unit-464grep-2026-11-01/base-rate-of-the-steal.mjs, MINE docs/research/unit-464steal-2026-11-01/base-rate-on-the-reachable-set.mjs
+  GCTRLPRE     ok  — PRE ctrl exit 0, GREEN, 5/5 gate lines byte-identical to drive6
+  GCTRLPOST    ok  — POST ctrl exit 0, GREEN, GATTRIB ok, 0 unattributed lines
+  GPLANT       ok  — every cell's fixture is exactly as declared (8/8)
+
+1. THE 2 × 4 MATRIX — his four arms, both subject states
+   state  arm   GATTRIB  verdict   unattrib  what was planted
+   PRE    ctrl  ok       GREEN            0  no mutation — must stay GREEN in BOTH states
+   PRE    a     RED      REFUSED          1  a real filter added to the corpus loop, no bucket keyword
+   PRE    b     ok       GREEN            0  the SAME filter, plus a trailing comment containing "population"
+   PRE    c     ok       GREEN            0  a column-0 comment asserting something false about the reader
+   POST   ctrl  ok       GREEN            0  no mutation — must stay GREEN in BOTH states
+   POST   a     RED      REFUSED          1  a real filter added to the corpus loop, no bucket keyword
+   POST   b     RED      REFUSED          1  the SAME filter, plus a trailing comment containing "population"
+   POST   c     RED      REFUSED          1  a column-0 comment asserting something false about the reader
+
+2. ABSORBABLE-LINE CAPACITY over the whole copy, per mechanism
+   mechanism   PRE   POST   of 316 lines   how POST is bounded
+   header      103     20                 counted budget of the positional span (lines 0..19)
+   pop-flag     19     15                 case-sensitive tokens + its own literal strings
+
+READINGS
+  PRE   absorbed: arm-b, arm-c · a-vs-b flips on one comment: true · ctrl GREEN
+  POST  absorbed: (none) · a-vs-b flips on one comment: false · ctrl GREEN
+
+PREDICTIONS settled by this drive
+  P5  LANDS    PRE (ok,RED,ok,ok) reproduced: true; POST (ok,RED,RED,RED): true; absorbed 2 → 0
+  P6  LANDS    header 103 → 20 (registered: 103 → ≤25); pop-flag 19 → 15 (registered: 19 → ≤15)
+
+ATTRIBCURE/0  9 gates, 9 ok; P5 LANDS, P6 LANDS; prior .err files 1, non-empty 0
