@@ -307,3 +307,131 @@ the verdict; the standing cell was not driven and not edited, and `T2b`'s countd
 this fire and is therefore not restated.
 
 This log is pushed last, after Steps 1–3.
+
+---
+
+## 19:47 — Session resumed (STOP fire, Opus 5)
+
+Worktree synced by the wrapper. `git log` at open: **4** commits since my own `204f1b76` (15:04),
+**none mine** — Calliope's 11/01 SWEEP no-op, Daedalus's three-commit `unit-464cure3` chain plus his
+log/coord, Argus's 18:04 and Iris's 19:23 STOP no-ops. Author-checked first
+([[feedback_check_commit_author_before_assuming_its_yours]]).
+
+**Mail at open:** one unread inbound, Daedalus 17:33, `…all-three-of-your-items-are-cured-and-the-gate-i-added-beside-one-was-keyed-on-its-own-prediction-2026-11-01.md`.
+Read in full in the turn it was noticed, not queued.
+
+## 19:5x — His cures verified off his tree before anything was graded
+
+Not from his memo. `de5e9365` is a **single-file** pre-registration (`git show --stat`: 1 file, 91
+insertions) and is **first** in his chain. 16 files in his unit dir, **5 `.out` / 5 `.err`, 0
+`.err` non-empty** by `statSync` over `readdirSync`. His `drive5` recording carries the figures his
+§2–§3 publish: witness set `["probe-round375","probe-round374"] → ["probe-round375"]`,
+`probe-round374` bytes 19726 → 22676 with `raw` and `comments` unmoved, P3 `2 → 0`, P4 clause 2
+failing. All four cure spellings read as he says, read out of his source by my own harnesses below.
+
+## 20:0x — The item his §1 routed to me
+
+Unit `docs/research/unit-464pins-2026-11-01/`. Pre-registration `b16c49b4` pushed to `main` before
+any instrument in the directory existed. Scope **censused, three inclusion legs**, not labelled.
+Leg count **hand-read as primary** (15) with the raw `check('` regex (17) as the thing being
+graded, not the source of truth — the 2 extra are a quoted comment and a regex literal in one file.
+
+**Result, `drive2`:** 5 gates ok, 15/15 legs reached, matrix **4/0/2/9**.
+
+* **4 pins, not 3.** The fourth is `regrade-saturation.mjs:49` — a **second leg also named
+  `GLIFT`**, asserting `HIS_FIELDS.length === 3`, which C1 falsifies. His memo named the `attrib`
+  `GLIFT` and not this one.
+* **P1 REFUTED, and it corrects him in his favour.** I predicted `regrade` would die on its lift
+  block at exit 2 with 0 legs reached. It exits **1** with **3** reached. None of the three is
+  unrunnable; each names its reddened leg. His word "unrunnable" is one notch high — what is
+  illegible is the **co-occurrence** of three REDs in one block, only one of which is a pin.
+* **P4 REFUTED on two named legs → the third class.** `attrib/GREPRO` and `attrib/GCTRL` compare a
+  **frozen pre-cure recording** against something **lifted from the live cured source**:
+  CROSS-STATE, neither pin nor gate, and the only class whose red is illegible in the output.
+  `regrade`'s `GSLICE`/`GROUNDTRIP` read the frozen recording **only** and both read `ok`, which is
+  what isolates it.
+* **The pair that makes the case.** `armreach/GCTRL` **ok**, `attrib/GCTRL` **RED** — same name,
+  same cure. The first was re-aimed onto the property by an earlier fire (its own comment records
+  the byte-identity version going red and being re-aimed rather than loosened); the second was not.
+
+## Defects of mine, two, recorded as they happened
+
+1. **`GREACHSPLIT` was keyed on P1's own predicate.** It required `reached` and `unreached` both
+   non-empty — the *split* P1 predicted. P1 was refuted, the gate reddened, and the publication
+   refused: a refuted prediction came out as a refusal instead of as the word `REFUTED`. This is the
+   **same shape** as the `GSTEALNEWEST` defect Daedalus reports in §4.1 of the memo this unit
+   answers, built into the instrument whose purpose is to map that shape, **after** reading his
+   description of it. `drive1.*` kept as the only recording of it driving, and the driver now
+   refuses `--drive=drive1` so a re-drive cannot re-stamp it. Re-aimed, not loosened, to
+   `GLEGCOUNT` (hand/map/printed leg counts must agree per harness: 7/7/7, 5/5/5, 3/3/3) — a
+   property no prediction of this unit can make true.
+2. **The pre-registration's corpus scan counted its own source.** Filed "27 dirs / 45 raw hits".
+   Re-measured at close: **28** dirs / **51** hits, **6** of them this unit's own instrument;
+   excluding its directory gives back exactly 45. The dir count moved because this unit's own
+   directory is a `unit-464*` directory, created in the same fire. Corrected in `RESULTS.md` §7
+   rather than quietly re-filed.
+
+## 20:1x — Mail, question-box, cross-repo
+
+Memo to Daedalus/xian cc Janus/Argus/Calliope/Iris filed and pushed in its **own commit**
+(`2a2ccb00`), separate from the unit work, per the worktree mail rule. Both memos left in
+`docs/mail/` — his §6 and my §6 each carry open items, so neither thread closes.
+
+**STOP step 4 (question-box) considered, not waved past.** Filed
+`dispatch/mail/question-theseus-2026-11-01-the-shape-i-had-just-read-about.md` — why reading a
+precise description of a failure mode preceded committing it by under an hour, and whether a
+well-named failure mode shows a *bump* before a decline. Last filing from this seat was 10/25, and
+the content is distinct from it. First push rejected non-fast-forward (3 upstream commits);
+rebased 1 commit onto `origin/main`, **no force push**, verified at `3b0c628` with the file
+`ls`-checked on disk.
+
+Cross-repo, by `git fetch` + `git log --all --since '2026-11-01 15:04'` on each repo directly:
+`designinproduct` **1** (a newsletter scaffold commit by another project's agent, unrelated —
+details stay in that private repo), `mediajunkie` **3** (Pard fire bookkeeping: post-fetch blip,
+troll scan verified, quiet), `dispatch` **3** (the routine EOD DinP↔PM sync pair plus my own
+question), `piper-morgan-product` **29**, content-grepped (`git log -p`) for klatch/theseus →
+**0 hits**. Nothing owed from any.
+
+## 20:2x — Wrap verification (run after the commits it cites)
+
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git log origin/main --oneline -4
+2a2ccb00 mail(Theseus -> Daedalus, xian; cc Janus/Argus/Calliope/Iris): his three pins are four, two of my gates are a third class, and his 'unrunnable' is one notch high
+89ab0be8 unit-464pins: his three named pins are four, all four redden, and two legs I called gates are a third class
+76dea860 unit-464pins: drive1 — all 15 legs reached, and my GREACHSPLIT gate was keyed on P1's own predicate
+b16c49b4 unit-464pins: pre-registration — the defect-pin map his §1 routed to me, before any instrument exists
+```
+
+All four are mine, authored this fire, and `b16c49b4` — the pre-registration — is **first**.
+
+**Step 2 — each deliverable `ls`-checked.** 14 files in
+`docs/research/unit-464pins-2026-11-01/`: `PRE-REGISTRATION.md`, `RESULTS.md`,
+`drive-my-three-harnesses.mjs`, and `drive1`/`drive2` `.out`/`.err` pairs for each of the three
+harnesses — **6 `.err`, 0 non-empty** (`statSync`, not `grep`). Plus the memo in `docs/mail/`, the
+question in `dispatch/mail/`, this log, and the `COORDINATION.md` entry — the last verified to sit
+under `### Theseus Prime` at line 2877 and to occur exactly **once**, by reading back the enclosing
+section header rather than trusting the anchor
+([[feedback_anchor_a_shared_file_insert_on_the_section_not_a_string]]).
+
+**Step 3 — product tree untouched:** `git status --porcelain -- packages/ scripts/` → **0 bytes**,
+at open and again at close, and asserted *inside* the driven harnesses (`GLIVECLEAN`, legs 4 and 10,
+both `ok`) rather than by hand at the end.
+
+**Drain:** drained to the one new memo, answered in full; its §1 item taken and closed in the same
+fire. Deferred with named blockers, none a deadline: the **12** other Theseus-authored `unit-464*`
+dirs that hold legs and are unmapped (they register legs under `refuse(`/`cell(`/`leg(` as well as
+`check(`); the `4 buckets lifted` note literal at `grade-his-attrib-gate.mjs:68`, left because
+editing a filed harness's output string would re-stamp a recording his `GROWREPRO` may pin; the
+artefact-overwrite class across my own units, uncensused; the reader's template-interpolation
+blindness and `grepro.mjs:44`'s bare `catch { continue }`, carried. The convention draft is **handed
+to Daedalus, not split** — §4 of `RESULTS.md` is my input to it. xian's standing item is unchanged:
+whether the track stops and re-scopes. Nothing this fire moves the verdict; the standing cell was
+not driven and not edited, and `T2b`'s countdown is not re-read this fire and is therefore not
+restated.
+
+**Not run this fire:** `npm test`, `npm run typecheck`, the probe sweep as a standalone drive — the
+pre-commit probe census printed `CENSUS OK`, 153 files, 43 swept / 110 deferred, on each commit.
+
+This log is pushed last, after Steps 1–3.
