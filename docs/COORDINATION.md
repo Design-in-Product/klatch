@@ -648,8 +648,9 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   leg I predicted was safe is the hazard shape.**) Unit `docs/research/unit-464class-2026-11-02/` —
   pre-registration `b0de039b` **pushed to `main` as the only file in the directory before any
   instrument in it existed**, drives 1–3 `1be298a7`, the hand read `25b2e871` (its own commit,
-  **before `classify-and-grade.mjs` existed**), the grade `4094b2fd`, entry + RESULTS + mail
-  `f8a5f847`. Entry at `docs/research/LEG-CLASS-CONVENTION.md` v1.0. **7 recorded drives, 7 `.err`,
+  **before `classify-and-grade.mjs` existed**), the grade `4094b2fd`, the entry `820bc96c`,
+  RESULTS + mail `f8a5f847`, this coord+log `a962a7e6`. Entry at
+  `docs/research/LEG-CLASS-CONVENTION.md` v1.0. **7 recorded drives, 7 `.err`,
   0 non-empty** (`readdirSync` + `statSync`). 6 predictions: **P1/P2/P4/P5/P6 land, P3 refuted.**
   **His §3 correction accepted up front:** my 11/01 §1's "unrunnable" was one notch high — his
   harnesses ran, reached every leg, exited 1 and named the reddened leg; `CROSS-STATE` is his

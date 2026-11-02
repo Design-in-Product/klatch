@@ -46,7 +46,9 @@ as the only file in the directory. Six predictions. Then:
 | `1be298a7` | `enumerate-legs.mjs` + drives 1–3 |
 | `25b2e871` | `HAND-READ.tsv` — **its own commit, before the detector existed** |
 | `4094b2fd` | `classify-and-grade.mjs` + drives 4–5 |
-| `f8a5f847` | `LEG-CLASS-CONVENTION.md` v1.0 + drives 6–7 + RESULTS + mail |
+| `820bc96c` | `LEG-CLASS-CONVENTION.md` v1.0 + `GDOCPIN` + drives 6–7 |
+| `f8a5f847` | `RESULTS.md` + mail to Theseus |
+| `a962a7e6` | this coord entry + log |
 
 **Result: P1/P2/P4/P5/P6 land, P3 refuted.** Hand read of 48 call sites: PIN 0 · GATE 35 ·
 CROSS-STATE 12 · UNMODELLED 1. The CROSS-STATE 12 splits — 5 `delta` (asserts the states *differ*,
@@ -93,4 +95,38 @@ than by hand. `npm test` / `npm run typecheck` not run — nothing under `packag
 touched. The pre-commit probe census printed `CENSUS OK`, 153 files, 43 swept / 110 deferred, on
 every commit. Drive accounting by `readdirSync` + `statSync`: **7 `.out`, 7 `.err`, 0 non-empty**.
 
-Step 1 and Step 2 output is appended below, after the commits it cites.
+**Step 1 — commits on `origin/main`** (`git fetch origin` then `git log origin/main --oneline -7`):
+
+```
+a962a7e6 coord+log: 11/02 START fire — the convention he routed me is drafted and censused, and the one leg I called safe is the hazard shape
+f8a5f847 RESULTS+mail(Daedalus -> Theseus, xian; cc Janus/Argus/Calliope/Iris): the convention is drafted, CROSS-STATE splits in two, and the leg I called safe is the hazard shape
+820bc96c LEG-CLASS-CONVENTION v1.0: the entry he routed me, with every figure in it pinned by GDOCPIN
+4094b2fd unit-464class: drive4-5 — P2/P4/P5 land, P3 refuted, and the detector calls half the hazard benign at closure saturation
+25b2e871 unit-464class: the hand read, filed before the detector exists
+1be298a7 unit-464class: drive1-3 — P1 lands, and two defects of my own are in drive1 and drive2
+b0de039b unit-464class: pre-registration — the CROSS-STATE class he coined, censused in my own tree before any instrument exists
+```
+
+**Step 2 — deliverables present on `origin/main`**, read with `git ls-tree -r --name-only
+origin/main` (the remote tree, not the worktree, so this cannot pass on an unpushed file):
+
+```
+docs/logs/2026-11-02-daedalus-log.md
+docs/research/LEG-CLASS-CONVENTION.md
+docs/research/unit-464class-2026-11-02/HAND-READ.tsv
+docs/research/unit-464class-2026-11-02/PRE-REGISTRATION.md
+docs/research/unit-464class-2026-11-02/RESULTS.md
+docs/research/unit-464class-2026-11-02/classify-and-grade.mjs
+docs/research/unit-464class-2026-11-02/enumerate-legs.mjs
+docs/research/unit-464class-2026-11-02/legs.spans.txt
+docs/research/unit-464class-2026-11-02/drive{1..7}.*.{out,err}   (14 files, listed in full in the drive accounting above)
+docs/mail/daedalus-to-theseus-cc-xian-janus-argus-calliope-iris-the-convention-is-drafted-and-cross-state-splits-in-two-only-one-half-is-a-hazard-2026-11-02.md
+```
+
+**One correction found by this verification and fixed forward, not quietly:** my first version of
+the coord entry and of the table above attributed `LEG-CLASS-CONVENTION.md` to `f8a5f847`. The
+entry landed at `820bc96c`; `f8a5f847` is RESULTS + mail. Reading the actual `git log` is what
+caught it. This log entry and the coord entry now carry the right shas, in the commit below.
+
+Delivery is the wrapper's to log, not mine to assert; what is asserted above is that these objects
+are reachable from `origin/main` as read back after the push.
