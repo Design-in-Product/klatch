@@ -578,7 +578,47 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
-- **Updated:** 2026-11-01 ~13:3x PT (**WORK fire — I drove the counterfactual I had registered and
+- **Updated:** 2026-11-01 ~17:4x PT (**STOP fire — all three items his memo routed are cured and
+  graded, and the gate I added beside one of them was keyed on its own prediction.**) Unit
+  `docs/research/unit-464cure3-2026-11-01/` — pre-registration `de5e9365` **pushed to `main` before
+  any instrument in the directory existed**, C3 `bd67169e`, C1+C2 `ca4d65fe`, RESULTS+mail
+  `3db6079a`. **5 recorded drives, 5 `.err`, 0 non-empty** (`readdirSync` + `statSync`). 6
+  predictions: **P1/P2/P3/P5/P6 land, P4 refuted.** Each cure graded in **both** states — PRE from
+  the pinned pre-registration sha, POST from the worktree — because **all three of his legs that
+  found these holes are defect-asserting** (`GDISJUNCT`, `GALREADY`, `GLIFT`) and go red on their
+  own cure, scoring a repair as unrunnable rather than as landed. **C1:** `bytes` out of
+  `upstreamMoved`, per-file reporting; witness set **2 → 1** (`probe-round375` alone), `saturated`
+  unchanged; the non-vacuity leg lands — `probe-round374`'s bytes moved 19726 → 22676 while raw and
+  comments did not, so the dropped term was all that carried it. **C2:** `already` keyed on this
+  arm's own artefact (HEAD's subject) instead of the world's match count, and `GARMREACH` asserts
+  the arm created or owns the commit it reports; arms reading green while creating nothing
+  **2 → 0**. **C3:** `header` becomes a counted **positional** budget (capacity **103 → 20** of
+  316) and `pop-flag` goes case-sensitive (**19 → 15**); his four-arm table reproduces exactly in
+  PRE (ok/RED/ok/ok) and reads ok/RED/RED/RED in POST, control green in both states. **P4 refuted
+  and the reason is worth more than the prediction:** I added `GSTEALNEWEST` beside the C2 cure;
+  its predicate was `log -1 --grep === stealSha` — **P2's own predicate** — so all it could do is
+  convert a verdict word into a refusal, and it drove **green on all six arms**. The premise was
+  also wrong about git: `log -1 --grep` returns the match nearest HEAD in **traversal** order, not
+  the latest by timestamp (drive4 returns a steal dated 14:00 ahead of a plant dated 15:00).
+  Removed in drive5; drive4 kept as its only recording. Two more self-caught: drive3's `GDEPTH`
+  resolved the import against the **file path**, one level too shallow, and would have reddened
+  every cell of a correctly-placed copy; drive1's `GLIFT2` was registered **after** `gatesOk` was
+  taken and refused nothing. **Mail:** his memo read in full at open and replied in the same fire
+  (`3db6079a`); the thread stays in `docs/mail/` — both memos name an open item as xian's. All four
+  cross-repo mailboxes checked by `git log --since 13:34` on each repo directly: `designinproduct`
+  3 new (one is Janus's seen-marker for Klatch cc's, informational), `mediajunkie` 5 (troll scan +
+  ghmint traffic, unrelated), `dispatch` 0, `piper-morgan-product/mailboxes` 11, content-grepped
+  for klatch/daedalus → **0 hits**. Nothing owed from any. `git diff --dirstat` over all four of my
+  commits is **100% under `docs/`**; `git status --porcelain -- packages/ scripts/` **0 bytes**,
+  asserted inside both harnesses rather than by hand. The phrase S1 is keyed on: `git log --all
+  --grep` returns **1** at open and **1** at close (`56b180e6`, round377, mine). **Drain:**
+  drained — all three routed items done this fire, mail replied in the same fire, cross-repo
+  checked twice (pre- and post-work `git fetch`), both finding nothing new. Deferred with a named
+  blocker: the artefact-overwrite census across my own units (blocker — it needs a census, not an
+  instance; one of his is not a measurement of mine); the defect-pin-vs-gate convention clause
+  (blocker — Theseus may want to draft it, asked in my §6). **Needs-you:** unchanged, nothing in
+  this fire is xian's to decide. Log: `docs/logs/2026-11-01-daedalus-log.md`.
+- **Updated (previous):** 2026-11-01 ~13:3x PT (**WORK fire — I drove the counterfactual I had registered and
   not driven, and it refuted the central word of my own §5. The steal is real; the verdict it would
   have stolen is SATURATED. His base rate survives my population objection. The rule his §6 routed
   me was already in his own doc.**) Unit `docs/research/unit-464steal-2026-11-01/` —

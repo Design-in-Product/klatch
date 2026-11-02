@@ -279,3 +279,109 @@ Verified after the recovery rather than assumed:
   count as on `origin/main` before the rebase.
 * `git rev-list --left-right --count origin/main...HEAD` → **0 0**; `git status --porcelain` → 0
   lines.
+
+---
+
+## 17:17 — Session resumed (STOP fire, Opus 5)
+
+Mail at open: `ls docs/mail/` showed one new memo to me — Theseus's 11/01 WORK-fire reply
+(`theseus-to-daedalus-…-your-event-count-is-exact-and-two-of-your-gates-go-green-on-what-they-exist-to-catch-2026-11-01.md`,
+his commit `04d7975a`, 15:02). Read in full at open, replied in this same fire. Checked the commit
+author before reading `8d90e2d0` as mine — it is Calliope's SWEEP-fire no-op, not a Daedalus
+commit, which is why this log has no 17:0x entry.
+[[feedback_check_commit_author_before_assuming_its_yours]]
+
+### Unit `unit-464cure3-2026-11-01` — his three routed items
+
+His §6 routed three, all in my files, nothing blocked: the `bytes` term in `upstreamMoved` (§2),
+`GARMREACH`'s `already`/disjunct pair (§3), and `GATTRIB`'s `header` and `pop-flag` predicates (§4).
+All three cured and graded this fire.
+
+Pre-registration `de5e9365` pushed to `main` **before any instrument in the directory existed**.
+Then `bd67169e` (C3), `ca4d65fe` (C1+C2), `3db6079a` (RESULTS + mail). Pushed incrementally, one
+commit at a time, rather than at the end. [[project_fire_2400s_timeout_push_incrementally]]
+
+**The structural finding, which is why this took a harness per cure.** All three of his legs that
+found these holes are *defect-asserting*: `GDISJUNCT` pins `/matches\.length === 2/`, `GALREADY`
+pins `/matchesBefore\.length > 1/`, `GLIFT` pins the four-bucket `DECLARED`. Each is red exactly
+when its own finding is cured, and his harnesses then print `REFUSED — a gate is RED` and exit 1.
+Running his harness against my cure would have scored the repair **unrunnable**, which is
+indistinguishable from a repair that broke something. So each grade is his harness re-aimed, driving
+**both** states — PRE from the pinned pre-registration sha, POST from the worktree — and classifying
+the source shape rather than requiring it.
+[[feedback_a_unit_that_cures_its_own_subject_needs_the_baseline_from_git]]
+
+### What each cure reads
+
+* **C1** — `bytes` out of the witness union, kept as a printed column, witnesses reported per file.
+  Set **2 → 1** (`probe-round375` alone); `saturated` unchanged, `P4` still `REFUTED (saturated)`.
+  The non-vacuity leg lands: `probe-round374`'s bytes moved 19726 → 22676 while `raw` and
+  `comments` did not, so the dropped term was the whole of that file's claim to being a witness.
+  `GROWREPRO` pins the PRE control's four `(value, comments, raw)` triples against my own `drive4`,
+  with `bytes` deliberately outside the pin.
+* **C2** — `already` keyed on this arm's own artefact (HEAD's subject equals `STEAL_SUBJECT`)
+  instead of the world's match count; `GARMREACH` asserts the steal is among the matches, that HEAD
+  carries its subject, and that the count moved by one when the arm created it. Arms reading green
+  while creating nothing: **2 → 0**.
+* **C3** — `header` becomes the **positional** prefix above his file's first line, attributed by a
+  counted budget; `GNOPAD` now requires both budgets consumed, `GHEADER` asserts the positional
+  claim itself. `pop-flag` goes case-**sensitive**. Capacity **103 → 20** of 316, and **19 → 15**.
+  His four-arm table reproduces exactly in PRE (ok/RED/ok/ok) and reads ok/RED/RED/RED in POST,
+  with the control green in both states.
+
+### Four defects of mine, all self-caught, named in RESULTS §5
+
+1. **`GSTEALNEWEST` was keyed on its own prediction** — the one worth recording. I added it beside
+   the C2 cure, reasoning that P2 presupposes the steal being the newest matching commit. Its
+   predicate was `log -1 --grep === stealSha`, which **is** P2's predicate: green exactly when P2
+   lands, red exactly when P2 would be refuted. A gate like that cannot grade a prediction; it can
+   only convert a verdict word into a refusal — the failure mode I thought I was preventing. It
+   drove **green on all six arms**, which is how I caught it. The premise was also simply wrong
+   about git: `log -1 --grep` returns the match nearest HEAD in **traversal** order, not the latest
+   by timestamp — `drive4` returns a steal dated 14:00 ahead of a plant dated 15:00. Removed in
+   `drive5`; `drive4` kept as its only recording.
+   [[feedback_gate_the_figure_on_the_key_not_on_the_prediction]]
+2. **`drive3`'s `GDEPTH` looked one level too shallow.** `resolve(filePath, '../../../…')` treats a
+   file path as its own base directory, so it checked `docs/scripts/lib/` and would have reddened
+   every cell of a correctly-placed copy. Re-aimed on `dirname` plus the import specifier lifted
+   from the subject, not loosened.
+   [[feedback_a_scratch_copy_at_the_wrong_depth_refuses_every_cell]]
+3. **`drive1`'s `GLIFT2` was registered after `gatesOk` had been taken** — it counted in the summary
+   line and refused nothing. Had it been red the run would have died on a `TypeError`: fail-loud by
+   accident, not design. `drive2` moves it above the gate print.
+   [[feedback_a_printed_self_test_that_gates_nothing]]
+4. **The §2 sentence naming two witnesses on evidence that held for one** — his item, recorded as
+   mine, because the clause was mine.
+
+### One correction made inside this fire
+
+My own post-splice check on `COORDINATION.md` printed "17 `- **Updated:**` bullets in my section"
+and I read it as a failure for a moment. It is not: only the three most recent bullets in my section
+carry `(previous)`; everything from 10/29 back keeps the plain spelling. The count measures
+pre-existing formatting history, not this edit. The invariants that do matter were green — bullet at
+line 580, immediately under the Branch line, inside my own section, the next section header moved by
+exactly the entry's 40 lines, and the `### ` header count unchanged.
+
+## Session wrap verification (STOP fire)
+
+Run, not recalled:
+
+```
+$ git log origin/main --oneline -5
+3db6079a RESULTS+mail(Daedalus -> Theseus, xian; cc Janus/Argus/Calliope/Iris): all three routed items cured, and the gate I added beside one was keyed on its own prediction
+ca4d65fe unit-464cure3: C1 and C2 land, and the gate I added beside them was keyed on its own prediction
+bd67169e unit-464cure3: C3 — the header bucket becomes a counted positional budget, and pop-flag stops matching 'population'
+de5e9365 unit-464cure3: pre-registration — three cures for the three items his memo routed, before any instrument exists
+8d90e2d0 coord+log: 11/01 SWEEP fire — no-op on product (Calliope's, not mine)
+```
+
+Deliverables, each `ls`-ed rather than assumed — see the verification block appended below this
+entry after the coord+log commit lands.
+
+**The claim in this log that needed its own check**, because it is the kind that reads as true and
+is not: that no commit message of this unit quotes the phrase S1 is keyed on. `git log --all --grep`
+returns **1** at open and **1** at close — my own `56b180e6` from round377. Reporting the finding
+has not created it, for the third fire running.
+
+Delivery is the wrapper's to log, not mine to assert. Nothing above is claimed that is not in this
+list.
