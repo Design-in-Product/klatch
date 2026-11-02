@@ -1,0 +1,68 @@
+unit-464dir / across-one-operator-v2 — pinned rev b0de039bd79f, drive rev fe5285482d06
+
+LABELLING (hand-declared, printed so it can be disagreed with)
+  preSrc             frozen
+  postSrc            live
+  preHas             frozen
+  postHas            live
+  HIS                live
+  MINE               live
+  pathOf             fn
+  preCtrl            live
+  preCtrlMatches     mixed
+  preDecl            frozen
+  postDecl           live
+  bucket             fn
+  clonePre           frozen
+  clonePost          live
+  CLONE              literal
+  resolve            fn
+  ctrlPinned         fn
+  transition         fn
+  rec3Arm            frozen
+  rec4Rows           frozen
+  tripleKey          fn
+  atPin              frozen
+  atRecency          frozen
+  defectiveShape     frozen
+  liftAt             fn
+  changed            mixed
+  checkerNow         live
+  checkerThen        frozen
+  moved              mixed
+
+ROWS
+  GDELTA    @60   his delta  mine delta        args=3 cand=3 UNRESOLVED: 3 non-literal arguments
+  GCURE     @71   his delta  mine delta        args=3 cand=3 UNRESOLVED: 3 non-literal arguments
+  GPATHS    @88   his keyed  mine keyed        args=3 cand=3 UNRESOLVED: 3 non-literal arguments
+  GCTRLPRE  @161  his keyed  mine keyed        args=3 cand=3 UNRESOLVED: 3 non-literal arguments
+  GLIFT2    @186  his keyed  mine conjunctive  args=3 cand=3 UNRESOLVED: 3 non-literal arguments
+  GCURE     @90   his delta  mine delta        args=3 cand=3 UNRESOLVED: 3 non-literal arguments
+  GPATH     @104  his keyed  mine keyed        args=3 cand=3 UNRESOLVED: 3 non-literal arguments
+  GCTRLPRE  @194  his keyed  mine conjunctive  args=3 cand=3 UNRESOLVED: 3 non-literal arguments
+  GROWREPRO @211  his keyed  mine keyed        args=3 cand=3 UNRESOLVED: 3 non-literal arguments
+  C2b       @99   his delta  mine staleness    args=3 cand=3 UNRESOLVED: 3 non-literal arguments
+  C0        @78   his delta  mine delta        args=1 cand=1 across=false conjuncts=1 inlined=[]
+        pred: !changed
+        (no equality comparison among the conjuncts)
+  G0        @80   his keyed  mine keyed        args=1 cand=1 across=false conjuncts=1 inlined=[]
+        pred: moved.length > 0
+        (no equality comparison among the conjuncts)
+
+THE RESULT — does across-one-operator track the conjunctive label?
+  scored rows: 2 of 12 (10 unresolved)
+  rows I called conjunctive: none
+    across = 0 of 0   (my hand read predicts 0)
+  rows I did not: C0@78 G0@80
+    across = 0 of 2   (my hand read predicts all of them)
+
+GATES
+  RED  GKP  KP GROWREPRO@211 (genuinely keyed, tripleKey(preCtrl.rows) === tripleKey(rec4Rows)) across=undefined — must be true
+  RED  GKP2  KP GDELTA@60 (genuinely delta, preSrc !== postSrc) across=undefined — must be true; this test separates {delta,keyed} from {conjunctive}, not delta from keyed
+  RED  GKP3  KP GPATHS@88 (keyed on a path literal, but still a frozen-vs-live comparison) across=undefined — must be true: cure-INERT is a separate axis from across-one-operator
+  ok   GREACH  12 of 12 rows reached
+  ok   GJOINED  12 of 12 joined onto my hand read
+  ok   GUNRES  10 rows UNRESOLVED by the argument rule (published, not skipped): GDELTA@60 (3 non-literal arguments), GCURE@71 (3 non-literal arguments), GPATHS@88 (3 non-literal arguments), GCTRLPRE@161 (3 non-literal arguments), GLIFT2@186 (3 non-literal arguments), GCURE@90 (3 non-literal arguments), GPATH@104 (3 non-literal arguments), GCTRLPRE@194 (3 non-literal arguments), GROWREPRO@211 (3 non-literal arguments), C2b@99 (3 non-literal arguments)
+  ok   GNODEPEND  git status --porcelain -- packages/ scripts/ is 0 bytes
+
+VERDICT: RED — 3 of 7 gates red

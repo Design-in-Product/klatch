@@ -1,0 +1,74 @@
+unit-464dir / across-one-operator — pinned rev b0de039bd79f, drive rev fe5285482d06
+
+LABELLING (hand-declared, printed so it can be disagreed with)
+  preSrc             frozen
+  postSrc            live
+  preHas             frozen
+  postHas            live
+  HIS                live
+  MINE               live
+  pathOf             fn
+  preCtrl            live
+  preCtrlMatches     mixed
+  preDecl            frozen
+  postDecl           live
+  bucket             fn
+  clonePre           frozen
+  clonePost          live
+  CLONE              literal
+  resolve            fn
+  ctrlPinned         fn
+  transition         fn
+  rec3Arm            frozen
+  rec4Rows           frozen
+  tripleKey          fn
+  atPin              frozen
+  atRecency          frozen
+  defectiveShape     frozen
+  liftAt             fn
+  changed            mixed
+  checkerNow         live
+  checkerThen        frozen
+  moved              mixed
+
+ROWS
+  GDELTA    @60   his delta  mine delta        across=false conjuncts=1 inlined=[]
+        !==  frozen !== frozen   across=false
+  GCURE     @71   his delta  mine delta        across=false conjuncts=1 inlined=[]
+        ===  frozen === frozen   across=false
+  GPATHS    @88   his keyed  mine keyed        across=true  conjuncts=1 inlined=[pathOf]
+        ===  live === frozen   across=true
+  GCTRLPRE  @161  his keyed  mine keyed        across=false conjuncts=1 inlined=[]
+        ===  live === live   across=false
+  GLIFT2    @186  his keyed  mine conjunctive  across=false conjuncts=1 inlined=[bucket]
+        ===  frozen === frozen   across=false
+  GCURE     @90   his delta  mine delta        across=false conjuncts=1 inlined=[]
+        (no equality comparison at top level — UNRESOLVED by this test)
+  GPATH     @104  his keyed  mine keyed        across=false conjuncts=1 inlined=[]
+        ===  frozen === frozen   across=false
+  GCTRLPRE  @194  his keyed  mine conjunctive  across=false conjuncts=1 inlined=[ctrlPinned,transition]
+        ===  literal-or-unknown === live   across=false
+  GROWREPRO @211  his keyed  mine keyed        across=false conjuncts=1 inlined=[tripleKey]
+        ===  frozen === frozen   across=false
+  C2b       @99   his delta  mine staleness    across=false conjuncts=1 inlined=[]
+        !==  frozen !== frozen   across=false
+  C0        @78   his delta  mine delta        across=false conjuncts=1 inlined=[]
+        (no equality comparison at top level — UNRESOLVED by this test)
+  G0        @80   his keyed  mine keyed        across=false conjuncts=1 inlined=[]
+        (no equality comparison at top level — UNRESOLVED by this test)
+
+THE RESULT
+  rows I called conjunctive: GLIFT2@186 GCTRLPRE@194
+    of those, across-one-operator = 0 of 2  (my hand read predicts 0)
+  rows I did NOT call conjunctive: 10
+    of those, across-one-operator = 1 of 10
+
+GATES
+  RED  GKP  KP GROWREPRO@211 (genuinely keyed) comes out across=false — must be true or this instrument cannot find a cross-state comparison at all
+  RED  GKP2  KP GDELTA@60 (genuinely delta) comes out across=false — the test separates {delta,keyed} from {conjunctive}, not delta from keyed
+  ok   GREACH  12 of 12 predicates sliced and non-empty
+  ok   GJOINED  12 of 12 joined onto my hand read
+  ok   GCMPREACH  every row yielded >=1 conjunct; 3 rows yielded no equality comparison at all (reported, not skipped)
+  ok   GNODEPEND  git status --porcelain -- packages/ scripts/ is 0 bytes
+
+VERDICT: RED — 2 of 6 gates red

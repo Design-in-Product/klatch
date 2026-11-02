@@ -1,0 +1,59 @@
+unit-464dir / grade-direction — pinned rev b0de039bd79f, drive rev fe5285482d06
+
+HIS SUBKIND (joined, not transcribed)  ×  MY DIRECTION
+                        delta        keyed  conjunctive    staleness
+  his delta                 4            0            0            1
+  his keyed                 0            5            2            0
+
+HIS keyed = 7.  Of those: keyed-and-reachable 3 · keyed-but-inert 2 · re-read as conjunctive 2
+MY keyed  = 5, of which 3 reachable — the hazard population
+FROZEN-SIDE ADDRESSING over the delta/staleness rows: {"literal":3,"recency":1,"event-anchored":1}
+
+EVERY ROW
+  GDELTA     grade-the-attrib-cure.mjs   :60   his delta  mine delta        reachable  literal        
+  GCURE      grade-the-attrib-cure.mjs   :71   his delta  mine delta        reachable  literal        
+  GPATHS     grade-the-attrib-cure.mjs   :88   his keyed  mine keyed        inert      literal         <<REACH
+  GCTRLPRE   grade-the-attrib-cure.mjs   :161  his keyed  mine keyed        reachable  artefact       
+  GLIFT2     grade-the-attrib-cure.mjs   :186  his keyed  mine conjunctive  reachable  literal         <<DIRECTION
+  GCURE      grade-the-steal-cures.mjs   :90   his delta  mine delta        reachable  literal        
+  GPATH      grade-the-steal-cures.mjs   :104  his keyed  mine keyed        inert      literal         <<REACH
+  GCTRLPRE   grade-the-steal-cures.mjs   :194  his keyed  mine conjunctive  reachable  artefact        <<DIRECTION
+  GROWREPRO  grade-the-steal-cures.mjs   :211  his keyed  mine keyed        reachable  artefact       
+  C2b        grade-the-three-cures.mjs   :99   his delta  mine staleness    reachable  recency         <<DIRECTION
+  C0         grade-cure.mjs              :78   his delta  mine delta        reachable  event-anchored 
+  G0         measure.mjs                 :80   his keyed  mine keyed        reachable  artefact       
+
+P2 MEASUREMENT (my own extraction, not either harness's)
+  GPATHS@88  subject docs/research/unit-464steal-2026-11-01/grade-the-copy-is-his-reader.mjs
+    PRE_REV de5e9365  PRE literals [HIS=docs/research/unit-464grep-2026-11-01/base-rate-of-the-steal.mjs, MINE=docs/research/unit-464steal-2026-11-01/base-rate-on-the-reachable-set.mjs]
+                      POST literals [HIS=docs/research/unit-464grep-2026-11-01/base-rate-of-the-steal.mjs, MINE=docs/research/unit-464steal-2026-11-01/base-rate-on-the-reachable-set.mjs]  identical=true
+    cure diff PRE_REV..HEAD over the subject: 83 changed lines, 0 of them carry the literal
+  GPATH@104  subject docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs
+    PRE_REV de5e9365  PRE literals [CLONE=.testdata/unit-464steal/clone]
+                      POST literals [CLONE=.testdata/unit-464steal/clone]  identical=true
+    cure diff PRE_REV..HEAD over the subject: 77 changed lines, 0 of them carry the literal
+
+PREDICTIONS (scored; the exit code does NOT read this block)
+  LANDS    P1  the classes are not disjoint: >=2 of his 7 keyed rows compare a cure-INERT figure, namely GPATHS@88 and GPATH@104
+            → 2 of his 7 keyed rows are keyed-and-inert: GPATHS@88 GPATH@104
+  LANDS    P2  both inert figures are source literals, byte-identical across the two states, on lines the cure does not touch
+            → GPATHS@88: PRE==POST true (HIS=docs/research/unit-464grep-2026-11-01/base-rate-of-the-steal.mjs,MINE=docs/research/unit-464steal-2026-11-01/base-rate-on-the-reachable-set.mjs), 83 cure-changed lines of which 0 touch the literal · GPATH@104: PRE==POST true (CLONE=.testdata/unit-464steal/clone), 77 cure-changed lines of which 0 touch the literal
+  LANDS    P3  >=1 of the 12 is conjunctive — two single-state assertions, no cross-state comparison — namely GLIFT2@186
+            → conjunctive: GLIFT2@186 GCTRLPRE@194 — 2 of 12, so the sub-kind split over the 12 is not 5+7
+  REFUTED  P4  5 of 5 delta rows address their frozen side by a LITERAL rev or path
+            → addressing over my delta+staleness rows: {"literal":3,"recency":1,"event-anchored":1} — refuted in the direction registered as the worse finding if anything is 'recency'
+  REFUTED  P5  exactly 3 of 12 rows depart from his cell (1 direction, 2 reach)
+            → 5 of 12 depart: 3 direction (GLIFT2@186 keyed→conjunctive, GCTRLPRE@194 keyed→conjunctive, C2b@99 delta→staleness) and 2 reach (GPATHS@88, GPATH@104)
+
+GATES (the exit code reads these only)
+  ok   GNOTRETYPED  my TSV's data rows carry no `subkind` column — his verdict is joined, never transcribed
+  ok   GJOIN  12 of 12 of my rows joined onto his 12 CROSS-STATE rows (0 unjoined)
+  ok   GROWKEY  every one of his 12 CROSS-STATE keys is present in my read (no row of his silently dropped)
+  ok   GPREDROWS  3 rows named in the registration's markdown (GPATHS@88 GPATH@104 GLIFT2@186), 3 of them present in the read
+  ok   GLITREACH  GPATHS@88: PRE 2 / POST 2 literals · GPATH@104: PRE 1 / POST 1 literals
+  ok   GCUREREACH  GPATHS@88: 83 changed lines in de5e9365..HEAD over the subject · GPATH@104: 77 changed lines in de5e9365..HEAD over the subject — a zero here would make "the cure does not touch the literal" an unreached arm, not a measurement
+  ok   GSELFEXCL  30 unit-464* dirs, 1 excluded as own, 29 on the surface; nothing under unit-464class-2026-11-02/ is written
+  ok   GHISDIRCLEAN  git status --porcelain over HIS unit dir is 0 bytes — this unit reads it and does not write it
+  ok   GNODEPEND  git status --porcelain -- packages/ scripts/ is 0 bytes
+
+VERDICT: ok — 0 of 9 gates red · predictions 3 land / 2 refuted
