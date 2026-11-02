@@ -1,0 +1,33 @@
+[DECLARED, NOT DETECTED] GLIFT2@186 operands: preDecl:frozen vs Array literal; postDecl:live vs Array literal; bucket(preDecl,'header'):frozen vs key literal; bucket(preDecl,'pop-flag'):frozen vs key literal; bucket(postDecl,'pop-flag'):live vs key literal
+[DECLARED, NOT DETECTED] GCTRLPRE@194 operands: ctrlPinned(preCtrl):live vs '1→2' literal; transition(rec3Arm):frozen vs '1→2' literal
+[UNMODELLED] whether a predicate compares its two states TO EACH OTHER is not decided by this harness. One-level inlining drops a function parameter (Theseus drive6, his §6); the labels above are hand-supplied and are the verdict.
+[MEAS] counterfactual: were the pin equal to the newest commit (dee68c0f), the two lifted lines would be identical and C2b@99 would read RED. Its soundness runs opposite to its own pin's freshness.
+[LIMITATION] GWHYPROXY is keyed on prose I wrote, not on a re-read of the 48 predicates. A non-zero result names rows needing a hand re-read; it does not itself reclassify them.
+[PENDING] GDOCPIN: the entry in the worktree is not yet v1.1, so there are no promoted figures to pin. This drive records the measurements; the promotion drive pins them.
+
+unit-464reach — 21 legs
+  ok   GJOIN  re-key covers exactly the census's CROSS-STATE set: mine 12, census 12, missing 0, extra 0
+  ok   GNEWCOL  census has no subkind5 column; sub-kinds not in its vocabulary: [inert,conjunctive,staleness] (census vocabulary [delta,keyed])
+  ok   GPARTITION  the 5-way key sums to 12: {"delta":4,"inert":2,"keyed":3,"conjunctive":2,"staleness":1}
+  ok   GSLICED  all four constants sliced out of the harnesses: PRE_A de5e9365, PRE_S de5e9365, SUBJ_A docs/research/unit-464steal-2026-11-01/grade-the-copy-is-his-reader.mjs, SUBJ_S docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs
+  ok   GPATSLICED  lifting patterns sliced from the harnesses: pathOf `^const ${name} = '(.+?)';$` · CLONE /^const CLONE = resolve\('(.+?)'\);$/m
+  ok   GLITIDENT_GPATHS  GPATHS: every compared literal identical in both states — HIS pre=docs/research/unit-464grep-2026-11-01/base-rate-of-the-steal.mjs post=docs/research/unit-464grep-2026-11-01/base-rate-of-the-steal.mjs · MINE pre=docs/research/unit-464steal-2026-11-01/base-rate-on-the-reachable-set.mjs post=docs/research/unit-464steal-2026-11-01/base-rate-on-the-reachable-set.mjs
+  ok   GCUREREACH_GPATHS  GPATHS: the cure's diff over docs/research/unit-464steal-2026-11-01/grade-the-copy-is-his-reader.mjs is non-empty — numstat +68/-15 = 83, 83 changed lines in -U0
+  ok   GLITINDIFF_GPATHS  GPATHS: 0 of 83 changed lines carry a compared literal
+  ok   GLITIDENT_GPATH  GPATH: every compared literal identical in both states — CLONE pre=.testdata/unit-464steal/clone post=.testdata/unit-464steal/clone
+  ok   GCUREREACH_GPATH  GPATH: the cure's diff over docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs is non-empty — numstat +69/-8 = 77, 77 changed lines in -U0
+  ok   GLITINDIFF_GPATH  GPATH: 0 of 77 changed lines carry a compared literal
+  ok   GP2  inert rows: 2 [GPATHS,GPATH], all source-literal: true
+  RED  GP2COEXT  source-literal rows that are NOT inert: 2 [GCURE@71=delta,GCURE@90=delta]
+  ok   GCONJDECL  conjunctive rows 2, every one carrying a hand-supplied per-operand state label: true
+  ok   GSTALEPIN  the pin is the ADDING commit, deliberately, not rot: pin ff93ad0a · adding ff93ad0a · newest dee68c0f
+  ok   GSTALE  pin ff93ad0a !== newest dee68c0f — the leg's truth needs a post-addition edit to exist
+  RED  GSTALEINVERT  the two addressed lines differ (so the leg is true): atPin "import { existsSync, readFileSync } from 'node:fs';" · atNewest "import { existsSync, readFileSync } from 'node:fs';"
+  ok   GS2  the same harness carries s2NoRecency, asserting its SUBJECT's pin is not recency-keyed: true
+  ok   GDOCV10  v1.0 at 820bc96c: disjoint|partition 0; GATE row carries "cure-independent property" true; CROSS-STATE row carries "the live subject" true — a leg reading both states and comparing a cure-immovable figure satisfies BOTH rows
+  RED  GWHYPROXY  GATE rows 35; of those, whose why names a frozen artefact AND a live read: 3 [GFUSE@112,C1@66,G0@79]
+  ok   GNODEPEND  git status --porcelain -- packages/ scripts/ is 0 bytes
+
+THE 5-WAY KEY: {"delta":4,"inert":2,"keyed":3,"conjunctive":2,"staleness":1}
+VERDICT: RED — 3 of 21 (GP2COEXT, GSTALEINVERT, GWHYPROXY)
+rev: b19f0e80cdc3b352d4aabab2da573c0292d43fbd
