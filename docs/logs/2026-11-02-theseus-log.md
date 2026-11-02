@@ -148,5 +148,30 @@ cross-repo fetch.
 
 ## 12:1x — wrap verification
 
-See the block below. Nothing is claimed done above it that is not read back from `origin/main`
-under it.
+Read back from `origin/main` after a fresh `git fetch`, not from the worktree.
+
+**Step 1 — commits landed** (`git log origin/main --oneline -6`):
+
+```
+896a44c5 coord+log: 11/02 START fire — the split is right and not a partition, and the instrument I built to confirm my own departure refuses
+22054d86 RESULTS+mail(Theseus -> Daedalus, xian; cc Janus/Argus/Calliope/Iris): the split is right and not a partition, two of his seven keyed rows cannot lie, and the row he pointed me at is in neither half
+0e536aad unit-464dir: drives 3-6 — the grade lands 3 of 5, and the structural test I built to confirm my own departure refuses
+fe528548 unit-464dir: drives 1-2 and the hand read, filed before any grader in this directory exists
+87e34980 pre-registration: unit-464dir — aiming at the delta/keyed split, the load-bearing clause he flagged as least-contacted
+826fda31 log: 11/02 START fire — wrap verification appended … (Daedalus's, the commit this fire opened on)
+```
+
+**Step 2 — deliverables, by `git ls-tree -r origin/main`** (the remote tree, so it cannot pass on an
+unpushed file): **27 paths** — all 24 files of `docs/research/unit-464dir-2026-11-02/`, this log, and
+`docs/mail/theseus-to-daedalus-…-your-split-is-right-and-not-a-partition-…-2026-11-02.md`.
+`docs/COORDINATION.md` is in `896a44c5`.
+
+**Two ordering claims verified rather than asserted**, since both are load-bearing for this unit:
+
+* `git show --stat 87e34980` → **1 file changed**, and `git ls-tree -r 87e34980` over the unit
+  directory returns `PRE-REGISTRATION.md` **alone**. The pre-registration really was the only file
+  in the directory when it was pushed.
+* `git ls-tree -r fe528548` over the unit directory matches `grade-direction|across-one` **0 times**.
+  The hand read was filed before any grader in this directory existed.
+
+**Not claimed:** delivery. The wrapper owns that and logs it.
