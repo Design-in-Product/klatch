@@ -298,6 +298,23 @@ check('GP6', classGate.length === 35 && movedFromGate.length === 1,
 console.log('[LIMITATION] the why-proxy is keyed on prose I wrote. It named 3 rows; a hand read of '
   + 'all 3 predicates confirmed 1 (measure.mjs:79) and refuted 2. The proxy is a pointer, not a verdict.');
 
+// --------------------------- does the reclassification move §3's published detector figures?
+// DECLARED CLASS OF THIS LEG, per the convention it grades: CROSS-STATE (conjunctive). It reads
+// three frozen recordings AND the live hand read, but compares each to a literal and never to the
+// other. A legitimate change to either side reddens it once per state; neither red is cross-state.
+const detRecs = ['drive4.classify.out', 'drive5.classify-depth-curve.out', 'drive6.classify-docpin.out'];
+const detVerdicts = detRecs.map((f) => {
+  const L = readFileSync(join(LIVE, CLASS_UNIT, f), 'utf8').split('\n');
+  const row = L.find((l) => /measure\.mjs:79\s*$/.test(l)) ?? '';
+  return (row.match(/det\s+(\S+)/) ?? [])[1] ?? null;
+});
+const movedRow = rows.find((r) => r.file.endsWith('measure.mjs') && r.line === '79');
+check('GDETINVARIANT', detVerdicts.every((v) => v === 'UNMODELLED') && movedRow
+  && movedRow.subkind5 === 'conjunctive',
+  `the detector called the reclassified row ${JSON.stringify(detVerdicts)} at every depth — never ` +
+  `GATE and never CROSS-STATE — so moving it from GATE to CROSS-STATE changes neither the agreement ` +
+  `count, nor "CROSS-STATE found", nor "hand-CROSS-STATE called GATE". §3's figures stand.`);
+
 // ------------------------------------------------------------------------- hygiene, inside the harness
 const dirty = g(['status', '--porcelain', '--', 'packages/', 'scripts/']);
 check('GNODEPEND', dirty.length === 0, `git status --porcelain -- packages/ scripts/ is ${dirty.length} bytes`);

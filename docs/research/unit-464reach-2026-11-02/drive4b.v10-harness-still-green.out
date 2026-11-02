@@ -1,0 +1,108 @@
+unit-464class — stage 2: the detector graded against the hand read
+  rev:        af90b4138af8271e49195cb695045aa8d1475d1e
+  population: 48 call sites, read from legs.spans.txt @ b0de039b
+  answer key: HAND-READ.tsv, 48 rows
+
+GATES
+  GLIVECLEAN   ok  — git status --porcelain -- packages/ scripts/ is 0 bytes
+  GSPANREV     ok  — the population was read from legs.spans.txt, stamped rev b0de039b (this drive is at af90b413)
+  GHANDCOVER   ok  — population and answer key are the same set: 48 sites, 48 hand rows, 48 matched, 0 unmatched
+  GMATSUM      ok  — matrix cells sum to the matched population: 48 vs 48
+  GREFUSABLE   ok  — an evidence-free predicate comes out UNMODELLED, not GATE (the refusal value is not the GATE value)
+  GP4REACH     ok  — P4 searched 244 committed recording(s) for 12 CROSS-STATE leg name(s)
+  GDOCPIN      ok  — 16 figures read out of the markdown, 0 mismatch(es)
+
+1. THE HAND READ — THE VERDICT
+   PIN           0
+   GATE         35
+   CROSS-STATE  12
+   UNMODELLED    1
+   of the CROSS-STATE: delta 5 · keyed 7   (UNREGISTERED split, see RESULTS §4)
+
+2. P2 / P3 / P4 / P5
+   P2  LANDS    CROSS-STATE occurs in my own instruments at 12 site(s)
+   P3  REFUTED  GROWREPRO predicted GATE, hand read says CROSS-STATE (keyed)
+   P4  LANDS    recorded REDs on a CROSS-STATE leg name: 0 (searched 244 recordings)
+   P5  LANDS    the detector refused on 22 site(s)
+
+3. THE DETECTOR, SCORED — hand read down, detector across
+                           PIN        GATE CROSS-STATE  UNMODELLED
+   PIN                      0           0           0           0
+   GATE                     0          15           1          19
+   CROSS-STATE              0          10           0           2
+   UNMODELLED               0           0           0           1
+   agreement 16/48; 32 disagreement(s)
+     GDELTA       hand CROSS-STATE  det GATE         unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:60
+        detector's reason: live side only at depth 1 (3 ids closed)
+     GCURE        hand CROSS-STATE  det GATE         unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:71
+        detector's reason: live side only at depth 1 (3 ids closed)
+     GPATHS       hand CROSS-STATE  det GATE         unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:88
+        detector's reason: live side only at depth 1 (5 ids closed)
+     GCTRLPRE     hand CROSS-STATE  det GATE         unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:161
+        detector's reason: frozen side only at depth 1 (4 ids closed)
+     GPLANT       hand GATE         det UNMODELLED   unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:170
+        detector's reason: neither source resolved at depth 1 (4 ids closed)
+     GLIFT2       hand CROSS-STATE  det GATE         unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:186
+        detector's reason: live side only at depth 1 (5 ids closed)
+     GCURE        hand CROSS-STATE  det GATE         unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:90
+        detector's reason: live side only at depth 1 (3 ids closed)
+     GPATH        hand CROSS-STATE  det GATE         unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:104
+        detector's reason: live side only at depth 1 (4 ids closed)
+     GCTRLPRE     hand CROSS-STATE  det GATE         unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:194
+        detector's reason: frozen side only at depth 1 (6 ids closed)
+     GCTRLPOST    hand GATE         det UNMODELLED   unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:197
+        detector's reason: neither source resolved at depth 1 (4 ids closed)
+     GPLANTED     hand GATE         det UNMODELLED   unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:200
+        detector's reason: neither source resolved at depth 1 (5 ids closed)
+     GROWREPRO    hand CROSS-STATE  det GATE         unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:211
+        detector's reason: frozen side only at depth 1 (5 ids closed)
+     GPIN         hand GATE         det UNMODELLED   unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:96
+        detector's reason: neither source resolved at depth 1 (3 ids closed)
+     GARMREACH    hand GATE         det UNMODELLED   unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:135
+        detector's reason: neither source resolved at depth 1 (5 ids closed)
+     C0           hand GATE         det UNMODELLED   unit-464rec3-2026-11-01/grade-the-three-cures.mjs:53
+        detector's reason: neither source resolved at depth 1 (2 ids closed)
+     C1           hand GATE         det UNMODELLED   unit-464rec3-2026-11-01/grade-the-three-cures.mjs:66
+        detector's reason: neither source resolved at depth 1 (6 ids closed)
+     C2           hand GATE         det UNMODELLED   unit-464rec3-2026-11-01/grade-the-three-cures.mjs:85
+        detector's reason: neither source resolved at depth 1 (6 ids closed)
+     C2b          hand CROSS-STATE  det UNMODELLED   unit-464rec3-2026-11-01/grade-the-three-cures.mjs:99
+        detector's reason: neither source resolved at depth 1 (5 ids closed)
+     C3           hand GATE         det UNMODELLED   unit-464rec3-2026-11-01/grade-the-three-cures.mjs:109
+        detector's reason: neither source resolved at depth 1 (4 ids closed)
+     C3b          hand GATE         det UNMODELLED   unit-464rec3-2026-11-01/grade-the-three-cures.mjs:138
+        detector's reason: neither source resolved at depth 1 (4 ids closed)
+     GPIN         hand GATE         det UNMODELLED   unit-464steal-2026-11-01/drive-the-steal.mjs:96
+        detector's reason: neither source resolved at depth 1 (3 ids closed)
+     GARMREACH    hand GATE         det UNMODELLED   unit-464steal-2026-11-01/drive-the-steal.mjs:153
+        detector's reason: neither source resolved at depth 1 (7 ids closed)
+     C0           hand GATE         det UNMODELLED   unit-464vac-2026-10-31/grade-cure.mjs:37
+        detector's reason: neither source resolved at depth 1 (1 ids closed)
+     C0           hand CROSS-STATE  det GATE         unit-464vac-2026-10-31/grade-cure.mjs:78
+        detector's reason: live side only at depth 1 (1 ids closed)
+     C1           hand GATE         det CROSS-STATE  unit-464vac-2026-10-31/grade-cure.mjs:91
+        detector's reason: both resolve at depth 1 (1 ids closed)
+     C1           hand GATE         det UNMODELLED   unit-464vac-2026-10-31/grade-cure.mjs:105
+        detector's reason: neither source resolved at depth 1 (2 ids closed)
+     G1           hand GATE         det UNMODELLED   unit-464vac-2026-10-31/measure.mjs:58
+        detector's reason: neither source resolved at depth 1 (2 ids closed)
+     G0           hand GATE         det UNMODELLED   unit-464vac-2026-10-31/measure.mjs:79
+        detector's reason: neither source resolved at depth 1 (1 ids closed)
+     G0           hand CROSS-STATE  det UNMODELLED   unit-464vac-2026-10-31/measure.mjs:80
+        detector's reason: neither source resolved at depth 1 (1 ids closed)
+     G4           hand GATE         det UNMODELLED   unit-464vac-2026-10-31/measure.mjs:88
+        detector's reason: neither source resolved at depth 1 (0 ids closed)
+     G2           hand GATE         det UNMODELLED   unit-464vac-2026-10-31/measure.mjs:124
+        detector's reason: neither source resolved at depth 1 (1 ids closed)
+     G3           hand GATE         det UNMODELLED   unit-464vac-2026-10-31/measure.mjs:161
+        detector's reason: neither source resolved at depth 1 (3 ids closed)
+
+4. THE CLOSURE DEPTH CURVE — is one level the limit, or is the class not locally decidable?
+   depth   agreement   CROSS-STATE found of 12   hand-CROSS-STATE called GATE   UNMODELLED
+       1      16/48                       0                             10           22
+       2      20/48                       3                              7           19
+       3      23/48                       4                              6           16
+       5      25/48                       4                              6           14
+       8      25/48                       4                              6           14
+
+CLASSGRADE/32  hand PIN=0 GATE=35 CROSS-STATE=12 UNMODELLED=1 · det PIN=0 GATE=25 CROSS-STATE=1 UNMODELLED=22 · agreement 16/48 · rev af90b413
