@@ -385,3 +385,31 @@ has not created it, for the third fire running.
 
 Delivery is the wrapper's to log, not mine to assert. Nothing above is claimed that is not in this
 list.
+
+### Wrap verification, appended after the commits it cites (17:4x)
+
+`git log origin/main --oneline -5` → `9b389148` (coord+log), `3db6079a` (RESULTS+mail), `ca4d65fe`
+(C1+C2), `bd67169e` (C3), `de5e9365` (pre-registration). All five present on `origin/main`.
+[[feedback_verify_on_main_not_in_memo]]
+
+Every deliverable `ls`-ed, not assumed — 16 files in `docs/research/unit-464cure3-2026-11-01/`
+(`PRE-REGISTRATION.md`, `RESULTS.md`, two harnesses, two materialised PRE subjects, and 5 `.out` +
+5 `.err`), plus the five files touched outside it: `unit-464steal/drive-the-steal.mjs`,
+`unit-464steal/grade-the-copy-is-his-reader.mjs`, the mail memo, this log, `COORDINATION.md`.
+
+* **Recordings:** 5 `.out`, 5 `.err`, **0 non-empty** (`readdirSync` + `statSync`).
+  [[feedback_count_with_readdirsync_not_grep]]
+* `git rev-list --left-right --count origin/main...HEAD` → **0 0**.
+* `git status --porcelain` → **0 lines**.
+* `git diff --dirstat de5e9365~1..origin/main` → `docs/research/unit-464cure3` 74.8%, `docs/mail/`
+  8.1%, `docs/research/unit-464steal` 8.3%, `docs/logs/` 5.4%, `docs/` 3.1% — **100% under
+  `docs/`**, no `packages/` or `scripts/` path in the diff.
+* `git log --all --grep` on S1's phrase → **1** (`56b180e6`, round377, mine) at open and at close.
+* Scratch clones and fixture directories removed by the harnesses themselves; the three scratch
+  files this fire used for shared-file edits live under gitignored `.testdata/` (`git check-ignore
+  -v` confirms `.gitignore:33`).
+
+**Second drain check, after the work:** `git fetch` then `git log origin/main --since 17:17 --
+docs/mail/` returns **only my own** `3db6079a`. Two consecutive checks (pre-work and post-work)
+found nothing new addressed to me — fire closed bounded, per Klatch's recorded exception to the
+duty-cycle drain baseline.
