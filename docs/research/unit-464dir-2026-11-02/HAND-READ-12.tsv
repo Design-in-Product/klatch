@@ -1,0 +1,40 @@
+# unit-464dir — the hand read of the 12 CROSS-STATE call sites. This is the verdict.
+#
+# Written from docs/research/unit-464dir-2026-11-02/spans.12.closure.txt (drive2) — the predicate
+# sliced from rev b0de039bd79f3fa30daba69353d2eeaf48c42a2e, plus every same-file declaration of
+# every identifier the predicate names, which drive2 prints. Written BEFORE grade-direction.mjs
+# existed.
+#
+# His subkind is NOT retyped here. The grader joins these rows onto
+# unit-464class-2026-11-02/HAND-READ.tsv on (file, line, id) and lifts his column itself, so a
+# departure cannot be manufactured by my transcription of his verdict.
+#
+# direction — what the predicate ASSERTS about the two states it reads:
+#   delta        the frozen figure and the live figure are asserted to DIFFER
+#   keyed        the frozen figure and the live figure are asserted to AGREE
+#   conjunctive  NEITHER — two independent single-state assertions, each against a LITERAL, with
+#                no comparison between the states. A cure moves one conjunct, not the relation.
+#   staleness    neither side is the live subject; the assertion is about whether a PIN is current
+#
+# reach — can a correct cure of the defect this harness grades move the figure compared?
+#   reachable | inert
+#
+# frozen-addressing — how the non-live side is named:
+#   literal          a 40/8-hex sha written in the source, or a literal path
+#   event-anchored   computed, but anchored on an event so new commits cannot move it
+#   recency          `git log -1` — moves whenever anything touches the path
+#   artefact         a committed recording read as a file
+#
+# file	line	id	direction	reach	frozen-addressing	why
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	60	GDELTA	delta	reachable	literal	preSrc at PRE_REV='de5e9365' (literal, line 30) vs the live postSrc; `preSrc !== postSrc`
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	71	GCURE	delta	reachable	literal	four flags absent in PRE and present in POST, both lifted from the same two states
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	88	GPATHS	keyed	inert	literal	HIS/MINE are pathOf(postSrc) (lines 86-87) compared to pathOf(preSrc); the figure is a `const HIS = '...'` FIXTURE PATH literal in the subject. No correct cure of the attrib defect rewrites a fixture path, so "a correct cure makes it false" is false here
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	161	GCTRLPRE	keyed	reachable	artefact	preCtrlMatches===5 is a COUNT of byte-identical gate lines against the frozen drive6; the cross-state comparison is hoisted into the operand and is invisible at the predicate, which compares only to literals 0/'GREEN'/5
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	186	GLIFT2	conjunctive	reachable	literal	Array.isArray(preDecl) && Array.isArray(postDecl) && bucket(preDecl,'header') && bucket(preDecl,'pop-flag') && bucket(postDecl,'pop-flag') — five conjuncts, every one a single-state assertion against a literal; preDecl and postDecl are never compared to each other
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	90	GCURE	delta	reachable	literal	twelve flags, PRE-has/POST-hasn't per term, both states from PRE_REV and the worktree
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	104	GPATH	keyed	inert	literal	clonePre/clonePost (lines 100-101) are the `const CLONE = resolve('...')` path literal regexed out of each state; the third conjunct compares that literal to this harness's own CLONE constant. A path literal is not in any cure's reach
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	194	GCTRLPRE	conjunctive	reachable	artefact	ctrlPinned(preCtrl) asserts the LIVE run's transition === the literal '1→2' (line 190); the second conjunct asserts the FROZEN rec3Arm's transition === the same literal. Both states are compared to a SHARED LITERAL, never to each other. This is the row his §2 names as "still CROSS-STATE" — it is, by the class's reading test, and it is not keyed by the sub-kind's comparison test
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	211	GROWREPRO	keyed	reachable	artefact	tripleKey(preCtrl.rows) === tripleKey(rec4Rows); a genuine tuple-for-tuple agreement between a live-derived run and the frozen drive4
+unit-464rec3-2026-11-01/grade-the-three-cures.mjs	99	C2b	staleness	reachable	recency	atPin=liftAt(s2Pin) vs atRecency=liftAt(git log -1 -- HIS_396_PATH), asserted to DIFFER. NEITHER side is the live worktree, and the content of the assertion is "the pin is not current". Measured: HIS_396_PIN='ff93ad0a' and the newest commit touching that path is 'dee68c0f' — the leg is true BECAUSE the pin is one commit stale, and would be false if it were current
+unit-464vac-2026-10-31/grade-cure.mjs	78	C0	delta	reachable	event-anchored	`if (!changed)` refuses; changed = checkerNow (live worktree) !== checkerThen (git show at PRECURE_REV). PRECURE_REV is computed but anchored on the OLDEST commit since baseline.rev that touched the checker, so new commits cannot move it — the comment at line 50 says exactly that
+unit-464vac-2026-10-31/measure.mjs	80	G0	keyed	reachable	artefact	`if (moved.length > 0)` refuses; `moved` is filled in a loop comparing the subjects his frozen sat.json names against my live tree, so the predicate asserts AGREEMENT (nothing moved). The comparison is in the loop, not in the predicate

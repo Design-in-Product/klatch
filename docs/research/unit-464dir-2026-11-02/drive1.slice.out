@@ -1,0 +1,122 @@
+unit-464dir / slice-spans — pinned rev b0de039bd79f
+drive rev (HEAD): 87e34980203c
+cripple: none
+
+SUBJECT FILES
+  2297d29ac4da pinned · 2297d29ac4da HEAD · IDENTICAL · unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs
+  6604e8300a31 pinned · 6604e8300a31 HEAD · IDENTICAL · unit-464cure3-2026-11-01/grade-the-steal-cures.mjs
+  c5cf1bde0723 pinned · c5cf1bde0723 HEAD · IDENTICAL · unit-464rec3-2026-11-01/grade-the-three-cures.mjs
+  972983835abb pinned · 972983835abb HEAD · IDENTICAL · unit-464vac-2026-10-31/grade-cure.mjs
+  f598a375a8f5 pinned · f598a375a8f5 HEAD · IDENTICAL · unit-464vac-2026-10-31/measure.mjs
+
+SURFACE: 30 unit-464* dirs, 1 excluded as own, 29 remain
+
+THE 12 CROSS-STATE PREDICATES, sliced from the pin
+
+  [0] unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:60  GDELTA  (REGISTER)
+      his subkind: delta
+      predicate taken from: call   ops: !== == !=
+      ── predicate ──
+      | ('GDELTA', preSrc !== postSrc,
+      |   `the two subject states differ (${preSrc.split('\n').length} → ${postSrc.split('\n').length} lines)`)
+
+  [1] unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:71  GCURE  (REGISTER)
+      his subkind: delta
+      predicate taken from: call   ops: === ==
+      ── predicate ──
+      | ('GCURE',
+      |   !preHas.budget && !preHas.positional && !preHas.caseSens && preHas.buckets === 4
+      |   && postHas.budget && postHas.positional && postHas.caseSens && postHas.buckets === 3,
+      |   `PRE: budget ${preHas.budget}, positional ${preHas.positional}, case-sensitive ${preHas.caseSens}, ` +
+      |   `${preHas.buckets} buckets · POST: budget ${postHas.budget}, positional ${postHas.positional}, ` +
+      |   `case-sensitive ${postHas.caseSens}, ${postHas.buckets} buckets`)
+
+  [2] unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:88  GPATHS  (REGISTER)
+      his subkind: keyed
+      predicate taken from: call   ops: === ==
+      ── predicate ──
+      | ('GPATHS', !!HIS && !!MINE && HIS === pathOf(preSrc, 'HIS') && MINE === pathOf(preSrc, 'MINE'),
+      |   `both states read the same two fixtures: HIS ${HIS}, MINE ${MINE}`)
+
+  [3] unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:161  GCTRLPRE  (REGISTER)
+      his subkind: keyed
+      predicate taken from: call   ops: === ==
+      ── predicate ──
+      | ('GCTRLPRE', preCtrl.code === 0 && preCtrl.verdict === 'GREEN' && preCtrlMatches === 5,
+      |   `PRE ctrl exit ${preCtrl.code}, ${preCtrl.verdict}, ${preCtrlMatches}/5 gate lines byte-identical to drive6`)
+
+  [4] unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:186  GLIFT2  (REGISTER)
+      his subkind: keyed
+      predicate taken from: call   ops: >
+      ── predicate ──
+      | ('GLIFT2',
+      |   Array.isArray(preDecl) && Array.isArray(postDecl)
+      |   && !!bucket(preDecl, 'header') && !!bucket(preDecl, 'pop-flag') && !!bucket(postDecl, 'pop-flag'),
+      |   `both DECLARED arrays lift and evaluate, and the censused buckets exist: PRE ` +
+      |   `[${(preDecl ?? []).map((d) => d.key).join(',')}] · POST [${(postDecl ?? []).map((d) => d.key).join(',')}]`)
+
+  [5] unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:90  GCURE  (REGISTER)
+      his subkind: delta
+      predicate taken from: call   ops: (none)
+      ── predicate ──
+      | ('GCURE',
+      |   preHas.bytesInUnion && !preHas.perFile && preHas.disjunct && preHas.alreadyOnCount
+      |   && !preHas.stealOwned && !preHas.newestGate
+      |   && !postHas.bytesInUnion && postHas.perFile && !postHas.disjunct && !postHas.alreadyOnCount
+      |   && postHas.alreadyOnSubject && postHas.stealOwned && !postHas.newestGate,
+      |   `PRE ${JSON.stringify(preHas)} · POST ${JSON.stringify(postHas)}`)
+
+  [6] unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:104  GPATH  (REGISTER)
+      his subkind: keyed
+      predicate taken from: call   ops: === ==
+      ── predicate ──
+      | ('GPATH', !!clonePre && clonePre === clonePost && resolve(clonePre) === CLONE,
+      |   `both subject states hardcode the same clone path (${clonePre}) and this harness builds exactly that`)
+
+  [7] unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:194  GCTRLPRE  (REGISTER)
+      his subkind: keyed
+      predicate taken from: call   ops: === ==
+      ── predicate ──
+      | ('GCTRLPRE', ctrlPinned(preCtrl) && transition(rec3Arm) === '1→2',
+      |   `PRE ctrl transition ${transition(preCtrl.armreach)} vs drive3's ${transition(rec3Arm)}, ` +
+      |   `P2 ${preCtrl.p2Word}, created ${preCtrl.createdCommit}, reported sha is the created HEAD`)
+
+  [8] unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:211  GROWREPRO  (REGISTER)
+      his subkind: keyed
+      predicate taken from: call   ops: === ==
+      ── predicate ──
+      | ('GROWREPRO', rec4Rows.length === 4 && preCtrl.rows.length === 4
+      |   && tripleKey(preCtrl.rows) === tripleKey(rec4Rows),
+      |   `PRE ctrl reproduces drive4's 4 (value,comments,raw) triples: ` +
+      |   `${tripleKey(preCtrl.rows) === tripleKey(rec4Rows)} (${rec4Rows.length} recorded, ${preCtrl.rows.length} read)`)
+
+  [9] unit-464rec3-2026-11-01/grade-the-three-cures.mjs:99  C2b  (REGISTER)
+      his subkind: delta
+      predicate taken from: call   ops: !== == !=
+      ── predicate ──
+      | ('C2b', 'S2 now lifts the defective spelling its round exists to grade, and that text is ' +
+      |   'different from what the uncured key lifted',
+      |   defectiveShape && atPin !== atRecency)
+
+  [10] unit-464vac-2026-10-31/grade-cure.mjs:78  C0  (REFUSE-SITE)
+      his subkind: delta
+      predicate taken from: call   ops: (none)
+      ── predicate ──
+      | (!changed)
+
+  [11] unit-464vac-2026-10-31/measure.mjs:80  G0  (REFUSE-SITE)
+      his subkind: keyed
+      predicate taken from: call   ops: >
+      ── predicate ──
+      | (moved.length > 0)
+
+GATES
+  ok   GTSVSHAPE  his TSV parses to 48 rows, 12 CROSS-STATE (expect 48 / 12)
+  ok   GFILES  5 distinct subject files (expect 5)
+  ok   GREV  all 5 subject files readable at the pin; 0 diverged from HEAD
+  ok   GSELFEXCL  30 unit-464* dirs seen, 1 excluded (own: unit-464dir-2026-11-02), 29 on the surface
+  ok   GSPANREACH  12 of 12 predicates non-empty
+  RED  GSPANCMP  10 of 12 predicates carry >=1 comparison/membership operator
+  ok   GNODEPEND  git status --porcelain -- packages/ scripts/ is 0 bytes
+
+VERDICT: RED — 1 of 7 gates red
