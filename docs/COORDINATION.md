@@ -20,7 +20,42 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/argus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/argus`, per-worktree git identity `Argus (Klatch)`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope restored per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-01 ~13:3x PT (WORK fire — census-only no-op: checkpoint own last commit
+- **Updated:** 2026-11-01 ~18:0x PT (STOP fire — census-only no-op: checkpoint own last commit
+  `c5f920bd` (11/01 WORK fire, 13:3x PT). 29 new commits since, none mine (author-checked):
+  Daedalus's `unit-464steal` tail (pre-registration, steal confirmed real, the population
+  objection survives, convention v1.1 update) plus mail to Theseus/xian cc
+  Janus/**Argus**/Calliope/Iris, Theseus's `unit-464bucket` chain (pre-registration, event count
+  exact, `GATTRIB` absorbs 2 of 3 planted mutations with one trailing comment flipping the
+  verdict, `GARMREACH` publishes both verdict words on an arm that creates nothing) plus mail to
+  Daedalus/xian cc Janus/**Argus**/Calliope/Iris, Calliope's SWEEP-fire no-op, and Daedalus's
+  `unit-464cure3` chain (pre-registration, C3 recasts the header bucket as a counted positional
+  budget and stops pop-flag matching "population", C1/C2 land) plus RESULTS+mail reporting all
+  three of Theseus's routed items cured and that the gate added beside one was keyed on its own
+  prediction, cc Janus/**Argus**/Calliope/Iris, plus Daedalus's own session-wrap log.
+  `git diff --dirstat c5f920bd..HEAD` **100% under `docs/`** (`docs/research/` + `docs/mail/`
+  only); no `packages/`/`scripts/` diff. **Mail:** two new local files, both read in full and
+  both grepped directly for "argus" — only the header cc line in each, no Argus bucket in
+  either body; confirmed cc-only, no action. Also re-read the standing open thread addressed to
+  this seat (`theseus-to-argus-daedalus-...-your-unclaimed-110-is-zero...-2026-10-27.md`): its
+  own §5 already reads "Yours, Argus, if you want it: nothing routed" — no action was ever
+  owed; left in `docs/mail/` rather than moved to `read/` since Daedalus's C4 half of that
+  thread is still open and the close call belongs to whichever seat closes that live
+  sub-thread. All four cross-repo mailboxes checked via `git fetch` + recency scan against the
+  13:3x checkpoint: `designinproduct`, `mediajunkie`, `dispatch`, `piper-morgan-product` all
+  show new commits (themis/janus/dinp/cio day-part traffic through ~17:1x PT) but none mention
+  klatch/argus. Nothing owed from any. **Standing blockers re-derived fresh:** Managed Agents
+  smoke-run — `git branch -a` shows no `ma-smoke/*` branch anywhere, named blocker on xian,
+  unchanged. Rollup's live needs-you section read directly (still v171, now ~10 days stale,
+  Calliope's doc to refresh) — count 2, nothing in the 29 new commits is xian's to decide.
+  **Gate re-derived fresh:** `lsof -i :3001` port free; `npm run typecheck` all four programs
+  clean; `npm test -w packages/server` **140 files/2186 passed/1 skipped (2187)**,
+  byte-identical; `npm test -w packages/client` **26 passed|13 skipped (39)/333 passed|13
+  skipped (346)**, byte-identical; `node scripts/sweep-probes.mjs --census` **153 probe files,
+  43 swept/110 deferred, CENSUS OK**, byte-identical. Intel sweep last
+  `docs/intel/2026-10-26-sweep.md` (6 days old), next due ~11/2, not due this fire.
+  **Needs-you:** unchanged at 2. Two consecutive checks (`git fetch origin` run twice) found
+  nothing further unblocked — fire closed bounded. Log: `docs/logs/2026-11-01-argus-log.md`.
+- **Updated (previous):** 2026-11-01 ~13:3x PT (WORK fire — census-only no-op: checkpoint own last commit
   `cababf6e` (11/01 START fire, 09:04:07 PT). 20 new commits since, none mine (author-checked):
   Daedalus's `unit-464rec3` chain (took all three sites Theseus's §6 named, two already moved,
   one lifting the cure it exists to grade, one file was Theseus's own) plus mail to Theseus/xian
