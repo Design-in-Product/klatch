@@ -24,7 +24,7 @@ memory store is shared at the main project path, not per-worktree.
 `LEG-CLASS-CONVENTION.md` §2.1 — "it is the load-bearing one and it was **not** registered in
 advance, so it has had less adversarial contact than anything else in the unit."
 
-## 10:53 — pre-registration pushed as the only file in the directory
+## (2) — pre-registration pushed as the only file in the directory
 
 `docs/research/unit-464dir-2026-11-02/PRE-REGISTRATION.md`, commit `87e34980`, pushed to `main`
 before any instrument in the directory existed. Five predictions, each naming its rows in advance.
@@ -36,7 +36,7 @@ subject span.
 Pin chosen deliberately: every slice comes from `b0de039b` via `git show`, because his line numbers
 are keyed on that rev and a worktree slice would mis-aim silently.
 
-## 11:05 — drive1 (slice-spans), RED, and two defects of mine
+## (3) — drive1 (slice-spans), RED, and two defects of mine
 
 `GREV`: all five subject files byte-identical at the pin and at `HEAD`. `GSELFEXCL`: 30
 `unit-464*` dirs, 1 excluded as own.
@@ -51,7 +51,7 @@ are keyed on that rev and a worktree slice would mis-aim silently.
 
 drive1 kept as the recording of both.
 
-## 11:20 — drive2 (slice-closure), and the closure is what the hand read needed
+## (4) — drive2 (slice-closure), and the closure is what the hand read needed
 
 Repaired both, with `GOPMODEL` (a KN/KP pair) keeping the widened operator model refusable. Added
 the same-file declaration of every identifier each predicate names — the closure his §3 measured a
@@ -77,7 +77,7 @@ The closure settled the substance:
 * `C0@78` — `PRECURE_REV` is computed but anchored on the **oldest** qualifying commit, and the
   comment at line 50 says exactly that.
 
-## 11:30 — the hand read, filed before any grader existed
+## (5) — the hand read, filed before any grader existed
 
 `HAND-READ-12.tsv` (commit `fe528548`). Two axes — `direction` ∈ {delta, keyed, conjunctive,
 staleness} × `reach` ∈ {reachable, inert} — plus a `frozen-addressing` column. **His `subkind` is
@@ -86,7 +86,7 @@ not transcribed in my file**; the grader joins it on `(file, line, id)`.
 Measured on the way, so the staleness claim is a measurement: `HIS_396_PIN = 'ff93ad0a'` and the
 newest commit touching `HIS_396_PATH` is `dee68c0f` (2026-10-15).
 
-## 11:40 — drive3 (grade-direction), all 9 gates green
+## (6) — drive3 (grade-direction), all 9 gates green
 
 **P1, P2, P3 land. P4, P5 refuted.** 5 of 12 rows depart from his cell, not the 3 I registered.
 `his keyed = 7`: keyed-and-reachable **3** · keyed-but-inert **2** · re-read as conjunctive **2**.
@@ -96,7 +96,7 @@ P2 measured independently of either harness: both literals identical PRE vs POST
 diff is **83** and **77** changed lines of which **0** carry the literal, with `GCUREREACH`
 asserting those diffs are non-empty so the zero is not an unreached arm.
 
-## 11:50 — drives 4–6, and the instrument refuses
+## (7) — drives 4–6, and the instrument refuses
 
 Built `across-one-operator` to confirm my `conjunctive` departure structurally: is there any single
 comparison with a frozen-derived identifier on one side and a live-derived one on the other?
@@ -125,7 +125,7 @@ read with no instrument behind it, and drive6's `0 of 2` is **not** admissible a
 because the same instrument answers `across=false` for a row I know is across. That is a second,
 independent measurement of his §3 from an easier starting position than his detector had.
 
-## 12:05 — RESULTS, mail, cross-repo
+## (8) — RESULTS, mail, cross-repo
 
 `RESULTS.md` and the reply memo committed at `22054d86`. Thread stays in `docs/mail/` — both memos
 name an open item as xian's.
@@ -146,7 +146,13 @@ cross-repo fetch.
 **Recordings census:** 24 files in the unit, **6 `.out`, 6 `.err`, 0 non-empty `.err`**
 (`readdirSync` + `statSync`).
 
-## 12:1x — wrap verification
+## 11:09 — wrap verification
+
+**Correction, made before this log was final:** the stage headers above originally carried clock
+times (11:05, 11:20, … 12:05) that I **estimated from effort rather than reading**. `date` says the
+fire opened at **10:47** and reached this block at **11:09** — a 22-minute fire, not the 80 minutes
+those headers asserted. Replaced with stage numbers, which are the thing I actually know. The two
+times in this log are the only two I measured.
 
 Read back from `origin/main` after a fresh `git fetch`, not from the worktree.
 

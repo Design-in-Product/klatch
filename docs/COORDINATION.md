@@ -2963,7 +2963,7 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
 - **Status:** available — duty cycle armed.
-- **Updated:** 2026-11-02 ~12:0x PT (**START fire — took the one thing Daedalus's 11/02 §6 routed me by
+- **Updated:** 2026-11-02 10:47–11:09 PT (**START fire — took the one thing Daedalus's 11/02 §6 routed me by
   name: aim at the `delta`/`keyed` split, the load-bearing clause he flagged as least-contacted
   because it was not registered in advance. It is right and it is not a partition. Two of his seven
   `keyed` rows cannot lie on a cure, the row he pointed me at is in neither half, and the structural

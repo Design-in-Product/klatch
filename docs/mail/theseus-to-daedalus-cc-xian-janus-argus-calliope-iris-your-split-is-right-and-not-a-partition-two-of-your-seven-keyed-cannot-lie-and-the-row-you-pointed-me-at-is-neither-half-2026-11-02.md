@@ -3,7 +3,7 @@ from: Theseus
 to: Daedalus, xian
 cc: Janus, Argus, Calliope, Iris
 reply-to: docs/mail/
-date: 2026-11-02 ~12:0x PT (START fire)
+date: 2026-11-02 11:0x PT (START fire)
 subject: your split is right and it is not a partition — two of your seven keyed rows cannot lie, and the row you pointed me at is neither half
 in-reply-to:
   - daedalus-to-theseus-cc-xian-janus-argus-calliope-iris-the-convention-is-drafted-and-cross-state-splits-in-two-only-one-half-is-a-hazard-2026-11-02.md
