@@ -681,7 +681,70 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
-- **Updated:** 2026-11-02 ~10:1x PT (**START fire — the convention he routed me is drafted and
+- **Updated:** 2026-11-02 ~13:3x PT (**WORK fire — all three sub-kinds he routed are adopted, the
+  overlap he found cost one row of my own published census, and his keyed-and-reachable 3 is 2
+  because of a word in a `why` column of mine.**) Unit `docs/research/unit-464reach-2026-11-02/` —
+  pre-registration `840931e1` **pushed to `main` as the only file in the directory before any
+  instrument in it existed**, the hand read of his twelve `b19f0e80` (**its own commit, before
+  `grade-reach.mjs` existed**), drive1 `62bcc52e`, drives 2–3 + the revised hand read `af90b413`,
+  entry v1.1 + drive4 `26e9eef3`, RESULTS + mail `ce7637f8`. **6 recorded drives, 6 `.out`, 6
+  `.err`, 0 non-empty** (`readdirSync` + `statSync`). Final **GREEN at 29 legs**. 6 predictions:
+  **P1/P3/P4/P5 land, P2 half, P6 refuted.** Entry at `docs/research/LEG-CLASS-CONVENTION.md`
+  **v1.1**. **His §1 reproduces exactly under his own key:** 83 and 77 changed lines in the two
+  cures (`--numstat` +68/−15, +69/−8), **0** carrying the compared literal, both literals
+  byte-identical at `de5e9365` and `HEAD` — with the lifting patterns **sliced out of his subjects'
+  own harnesses**, not re-typed. **Both keys are now ordered, first-yes-decides**, which is the only
+  form in which a split can be checked: class on what the predicate *reads* (two states →
+  CROSS-STATE, else live defect spelling → PIN, else GATE), hazard on what it *compares*
+  (conjunctive → delta → staleness → inert → keyed). **Where reach goes is measured, not
+  stylistic:** both `GCURE` legs compare a source literal exactly as the two inert legs do and they
+  are `delta`, so **reach is question 4, after direction** — which refutes P2's coextension half
+  (its count half landed: inert 2, both source-literal). **P6 refuted and it corrects a figure I
+  published this morning:** making the class key explicit about "two states" reclassifies
+  `unit-464vac-2026-10-31/measure.mjs:79`, which reads its subject at `HIS_REV` **and** `MY_REV` and
+  v1.0 called a GATE — **GATE is 34 and CROSS-STATE is 13, not 35 and 12** — and it lands in his
+  `conjunctive` as a *readability precondition* (each state vs `null`), a shape neither of us had in
+  view. **None of §3's four detector figures moves, and that is measured:** `GDETINVARIANT` reads
+  the per-row verdict out of all three census recordings and the detector called that row
+  `UNMODELLED` at every closure depth, so it was a disagreement before and is one now. The v1.0
+  `MEASURED-BLOCK` was left **verbatim** rather than corrected in place, because it is what
+  `unit-464class`'s own `GDOCPIN` grades; `drive4b` re-drove that filed harness after the promotion
+  — **16 figures, 0 mismatches, green**. **My departure from his matrix:** `measure.mjs:80` is
+  `staleness`, not `keyed` — `MY_REV` there is `readFileSync('baseline.rev')`, a recorded rev, so
+  neither side is live, which is his own criterion. He counted it keyed-and-reachable because for
+  that one row he used my sub-kind, and **my sub-kind came from a `why` of mine that says "my live
+  tree"**. So five-way: **conjunctive 3 · delta 4 · staleness 2 · inert 2 · keyed 2 — the hazard
+  cell is 2 of 13.** **Four defects of mine, all kept as recordings:** drive1's `GSTALEINVERT` was
+  **my own hand-typed lifter** (`/^.*HIS_396.*$/m` instead of the harness's own `/^const renamedAway
+  = .*$/m`), which matched an `import` line identical at both revs and **would have reported his §3
+  inversion as not reproducing** — sliced now; drive2's `GCONJDECL` was a typed `conj.length === 2`
+  that reddened on **my own re-key** to 13 rather than on the subject; drive1's `GP2COEXT` asserted
+  a prediction, so a refutation left it red forever (re-aimed onto the measured relation); and my
+  `why`-proxy for P6 flagged 3 rows of which **2 were false because the prose negates a side**
+  ("a fuse on the live tree, **no frozen side**") — published as a confusion matrix over all 48 rows
+  (flagged&CROSS 11 · flagged&not 2 · unflagged&CROSS 2 · unflagged&not 33) with a leg asserting
+  *why* each false positive is false, rather than tuning the regex green. **What the harness refuses:
+  whether a predicate compares its two states to each other.** The `states` column is hand-supplied
+  and printed verbatim under `[DECLARED, NOT DETECTED]`; the question itself prints `[UNMODELLED]`.
+  Theseus's drive6 refuses on the same question from an easier starting position, and that pair is
+  now the second measurement behind §3's "declare the class, do not detect it". **Mail:** his memo
+  read in full at open and replied in the same fire (`ce7637f8`); thread stays in `docs/mail/` —
+  both memos name an open item as xian's. All four cross-repo mailboxes `git fetch`ed first, then
+  scanned since my 10:15 checkpoint: `designinproduct` 8 new commits / 2 mail files,
+  `mediajunkie` 4 / 2, `dispatch` **0**, `piper-morgan-product` 245 / 277 mail files — every
+  touched mail file content-grepped for `klatch|daedalus`, **5 hits and all 5 are historical
+  April–May index rows in `read/MANIFEST.md` files** touched by a close-discipline move, not new
+  mail. Nothing owed from any. `git status --porcelain -- packages/ scripts/` **0 bytes**, asserted
+  *inside* the harness rather than by hand. **Drain:** the one item his §7 routed, done this fire;
+  mail replied in the same fire; cross-repo checked. **Deferred with no blocker and no deadline,
+  only a name** (unblocked, not reached): the artefact-overwrite census across my own units, and
+  `grade-the-three-cures.mjs` registering cure claims through the same `legs` array it would
+  register gates in, with no gate layer at all. **Routed to Theseus, not decided by me:** whether
+  `conjunctive` should cover the readability-precondition shape where I put it, and whether
+  `staleness` wants splitting (a deliberate archival anchor vs a moving checkpoint are both
+  "neither side live"). **Needs-you:** unchanged, nothing in this fire is xian's to decide. Log:
+  `docs/logs/2026-11-02-daedalus-log.md`.
+- **Updated (previous):** 2026-11-02 ~10:1x PT (**START fire — the convention he routed me is drafted and
   censused rather than asserted; CROSS-STATE splits in two and only one half is a hazard; the one
   leg I predicted was safe is the hazard shape.**) Unit `docs/research/unit-464class-2026-11-02/` —
   pre-registration `b0de039b` **pushed to `main` as the only file in the directory before any

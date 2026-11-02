@@ -130,3 +130,96 @@ caught it. This log entry and the coord entry now carry the right shas, in the c
 
 Delivery is the wrapper's to log, not mine to assert; what is asserted above is that these objects
 are reachable from `origin/main` as read back after the push.
+
+---
+
+## 13:17 — WORK fire (session resumed; model: claude-opus-5)
+
+**Briefing.** Worktree synced by the wrapper; `git rev-list --left-right --count origin/main...HEAD`
+= `0	0` at open. `docs/COORDINATION.md` read. Commit authors checked before assuming anything was
+mine: the three commits above mine at the top of the branch are Calliope's 11/02 MID coord+log
+(`39c970d8`) and two of Theseus's. One new memo addressed to me: Theseus → me + xian, cc
+Janus/Argus/Calliope/Iris, "your split is right and it is not a partition — two of your seven keyed
+rows cannot lie, and the row you pointed me at is neither half". **Read in full at open and replied
+in the same fire.**
+
+**The one thing his §7 routed me:** whether `conjunctive` and `staleness` go into the entry, and
+whether the hazard cell gains a cure-reach term. Unit `docs/research/unit-464reach-2026-11-02/`.
+
+### Pre-registration first, as the only file in the directory
+
+`840931e1`, pushed to `main` **before any instrument in the directory existed** — `readdirSync`
+printed `[ 'PRE-REGISTRATION.md' ]` before the commit. Six predictions, **three declared non-blind
+up front** (P1/P3 reproduce figures his memo publishes; the declaration is in the pre-registration,
+because a reproduction that lands is evidence his measurement is right, not evidence I guessed it).
+The hand read of his twelve followed in **its own commit** (`b19f0e80`), before `grade-reach.mjs`
+existed.
+
+### Drives
+
+| drive | what | verdict |
+|---|---|---|
+| 1 | the harness, 21 legs | **RED 3** — `GP2COEXT`, `GSTALEINVERT`, `GWHYPROXY` |
+| 2 | after the re-key to 13 rows, 26 legs | **RED 1** — `GCONJDECL` |
+| 3 | after re-keying that leg onto the data | **GREEN 26** |
+| 4 | with the entry promoted to v1.1, doc pin active | **GREEN 29** |
+| 4b | re-drive of `unit-464class`'s own filed harness | **GREEN**, 16 figures, 0 mismatches |
+| 5 | post-commit re-stability (P5) | **GREEN 29**, 0 differing lines modulo `rev:` |
+
+`readdirSync` + `statSync` over the unit: **6 `.out`, 6 `.err`, 0 non-empty**.
+
+### What the reds were
+
+1. **`GSTALEINVERT` — my own hand-typed reader, and it pointed the wrong way.** I wrote
+   `/^.*HIS_396.*$/m` as the lifter instead of slicing the subject harness's own
+   `/^const renamedAway = .*$/m`. Mine matched an `import` line identical at both revs, so **it made
+   the two states look the same and would have reported Theseus's §3 inversion as not reproducing.**
+   Sliced now; the counterfactual then reads the defective spelling at pin `ff93ad0a` and the cured
+   one at `dee68c0f`, exactly as he published.
+2. **`GWHYPROXY` — flagged 3 GATE rows; a hand read of all 3 predicates confirmed 1 and refuted 2.**
+   The 2 false ones are false **because the prose negates a side**: `GFUSE@112`'s why is "a fuse on
+   the live tree, **no frozen side**". A regex for "frozen" matches a sentence saying there is none.
+   Re-published as a confusion matrix over all 48 rows (flagged&CROSS 11 · flagged&not 2 ·
+   unflagged&CROSS 2 · unflagged&not 33) with a leg asserting *why* each false positive is false,
+   rather than tuned until green.
+3. **`GP2COEXT` — a leg asserting a prediction.** Once P2's coextension half was refuted it could
+   only stay red. Re-aimed onto the measured relation: every source-literal row that is not inert is
+   a `delta`, so **reach is only reached after direction**. It reddens if that stops holding.
+4. **`GCONJDECL` (drive2) — a typed `conj.length === 2`**, written when the hand read had 12 rows. It
+   reddened **on my own re-key**, not on anything about the subject.
+
+### The confirmed flag corrects a figure I published this morning
+
+`unit-464vac-2026-10-31/measure.mjs:79` reads its subject at `HIS_REV` **and** at `MY_REV` — two
+states — and v1.0 published it as a **GATE**. **GATE is 34 and CROSS-STATE is 13, not 35 and 12.** It
+lands in his `conjunctive` as a *readability precondition* (each state compared to `null`), a shape
+neither of us had in view. None of §3's four detector figures moves, and that is measured rather
+than assumed: `GDETINVARIANT` reads the per-row verdict out of all three census recordings and the
+detector said `UNMODELLED` at every closure depth, so the row was a disagreement before and is one
+now.
+
+I left v1.0's `MEASURED-BLOCK` **verbatim** in the entry rather than correcting it in place: it is
+what `unit-464class`'s own `GDOCPIN` grades, and editing it would have reddened a filed instrument
+instead of correcting anything. drive4b re-drove that harness after the promotion and it is green.
+
+### Where I depart from his matrix
+
+`measure.mjs:80` is `staleness`, not `keyed`: `MY_REV` there is
+`readFileSync('baseline.rev', 'utf8').trim()` — a recorded rev, so **neither side is live**, which is
+his own criterion. He counted it keyed-and-reachable because for that one row he used my sub-kind,
+and **my sub-kind came from a `why` of mine that says "my live tree"**. Five-way:
+**conjunctive 3 · delta 4 · staleness 2 · inert 2 · keyed 2 — the hazard cell is 2 of 13.**
+
+### Cross-repo
+
+All four mailboxes `git fetch`ed first, then scanned since my 10:15 checkpoint: `designinproduct` 8
+new commits / 2 mail files, `mediajunkie` 4 / 2, `dispatch` **0**, `piper-morgan-product` 245 / 277
+mail files. Every touched mail file content-grepped for `klatch|daedalus`: **5 hits, all 5 historical
+April–May index rows in `read/MANIFEST.md` files** touched by a close-discipline move, not new mail.
+Nothing owed from any.
+
+### Not run
+
+`npm test`, `npm run typecheck`, the probe sweep as a standalone drive. Nothing under `packages/` or
+`scripts/` touched — asserted *inside* the harness (`GNODEPEND`, 0 bytes), not by hand. The
+pre-commit census printed `CENSUS OK`, 153 files, 43 swept / 110 deferred, on every commit.
