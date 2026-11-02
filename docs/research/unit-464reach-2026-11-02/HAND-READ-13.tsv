@@ -1,0 +1,52 @@
+# unit-464reach — the hand read, REVISED after drive1. This file is the verdict; HAND-READ-12.tsv
+# is kept unchanged as the record of what was filed BEFORE the instrument existed.
+# Stamped: revised at rev 62bcc52e, 13 rows (was 12). [[feedback_rederive_the_hand_map_after_repairing_the_subject]]
+#
+# WHAT MOVED, and why. Two changes, both forced by a red in drive1:
+#
+# 1. `unit-464vac-2026-10-31/measure.mjs:79` (G0, REFUSE-SITE) was classed **GATE** in
+#    unit-464class's census. It is CROSS-STATE. It reads `git rev-parse HIS_REV:p` and
+#    `MY_REV:p` for every subject — two states of the subject in one predicate. It was flagged by
+#    GWHYPROXY and a hand read of the predicate confirmed the flag. So the census's class counts
+#    published in LEG-CLASS-CONVENTION v1.0 are wrong by one: CROSS-STATE 13, GATE 34.
+#
+# 2. `unit-464vac-2026-10-31/measure.mjs:80` (G0) was classed CROSS-STATE **keyed** on the
+#    strength of a `why` I wrote that says "between his rev and my live tree". The source says
+#    `const MY_REV = readFileSync('baseline.rev', 'utf8').trim()` — a recorded rev, not the
+#    worktree. NEITHER side is live, so it is **staleness**, not keyed. My own why column was the
+#    error. [[feedback_read_a_precedence_claim_off_the_live_array]]
+#
+#    This is also where I depart from Theseus's matrix: his keyed-and-reachable 3 counts this row,
+#    because for this one row he used my sub-kind rather than measuring it. It is 2.
+#
+# The ordered hazard key, revised. Step 1 of the 12-row version ("is NEITHER side live ->
+# staleness") was wrong: it swallowed readability preconditions that compare each state to `null`
+# and never to each other. The comparison question has to come first.
+#
+#   CLASS (what the predicate READS):
+#     does it read more than one state of the subject in one predicate?   -> CROSS-STATE
+#     else does it read the live subject's defect SPELLING?                -> PIN
+#     else                                                                 -> GATE
+#   Two frozen revs are two states. The live worktree is not privileged here.
+#
+#   HAZARD (what it COMPARES), inside CROSS-STATE, first yes decides:
+#     1. are the states never compared TO EACH OTHER (each vs a literal)? -> conjunctive
+#     2. does the comparison assert they DIFFER?                          -> delta      (sound)
+#     3. is NEITHER side the live worktree?                               -> staleness
+#     4. is the compared figure OUT of a cure's reach?                    -> inert
+#     5. otherwise                                                        -> keyed      (HAZARD)
+#
+file	line	id	subkind5	reach	figure	states
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	60	GDELTA	delta	source-derived	preSrc vs postSrc, asserted to differ	-
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	71	GCURE	delta	source-literal	defect spelling absent in PRE and cure spelling present in POST	-
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	88	GPATHS	inert	source-literal	the HIS and MINE fixture path literals of the subject	-
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	161	GCTRLPRE	keyed	run-derived	5 gate lines of a live-fixture ctrl run vs the frozen drive6 recording	-
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	186	GLIFT2	conjunctive	source-derived	existence of three named buckets in two separately-lifted DECLARED arrays	preDecl:frozen vs Array literal; postDecl:live vs Array literal; bucket(preDecl,'header'):frozen vs key literal; bucket(preDecl,'pop-flag'):frozen vs key literal; bucket(postDecl,'pop-flag'):live vs key literal
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	90	GCURE	delta	source-literal	six-term defect/cure shape across PRE and POST	-
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	104	GPATH	inert	source-literal	the CLONE path literal the subject hardcodes	-
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	194	GCTRLPRE	conjunctive	run-derived	two transitions, each compared to the shared literal '1 to 2'	ctrlPinned(preCtrl):live vs '1→2' literal; transition(rec3Arm):frozen vs '1→2' literal
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	211	GROWREPRO	keyed	run-derived	the frozen drive4 recording's 4 triples vs the live-derived PRE ctrl run's rows	-
+unit-464rec3-2026-11-01/grade-the-three-cures.mjs	99	C2b	staleness	content-derived	the subject line at its pin rev vs at its newest rev; neither side is the worktree	-
+unit-464vac-2026-10-31/grade-cure.mjs	78	C0	delta	content-derived	checkerNow (worktree) vs checkerThen (git show at PRECURE_REV), asserted to differ	-
+unit-464vac-2026-10-31/measure.mjs	79	G0	conjunctive	content-derived	readability of each subject at HIS_REV and at MY_REV, each compared to null	a:HIS_REV-frozen vs null; b:MY_REV-frozen vs null
+unit-464vac-2026-10-31/measure.mjs	80	G0	staleness	content-derived	per-file blob hash at HIS_REV vs at MY_REV, asserted equal; neither is the worktree	-

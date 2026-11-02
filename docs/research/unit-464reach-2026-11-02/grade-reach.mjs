@@ -33,7 +33,11 @@ const check = (name, ok, why) => { legs.push({ name, ok: !!ok, why }); };
 const refuse = (name, why) => { legs.push({ name, ok: false, why: 'REFUSED — ' + why }); };
 
 // ------------------------------------------------------------------- the hand read, joined not typed
-const tsv = readFileSync(join(LIVE, UNIT, 'HAND-READ-12.tsv'), 'utf8').split('\n')
+// HAND-READ-13.tsv is the verdict (revised after drive1). HAND-READ-12.tsv is the pre-instrument
+// filing and must stay byte-identical to what was committed: a revision that silently rewrote the
+// earlier filing would be unfalsifiable. [[feedback_a_filed_cripple_map_is_complete_only_at_its_filing_rev]]
+const FILED12 = 'b19f0e80';
+const tsv = readFileSync(join(LIVE, UNIT, 'HAND-READ-13.tsv'), 'utf8').split('\n')
   .filter((l) => l.length && !l.startsWith('#'));
 const hdr = tsv[0].split('\t');
 const rows = tsv.slice(1).map((l) => {
@@ -55,11 +59,17 @@ const mine = new Set(rows.map(key));
 const theirs = new Set(classCross.map(key));
 const missing = [...theirs].filter((k) => !mine.has(k));
 const extra = [...mine].filter((k) => !theirs.has(k));
-check('GJOIN', rows.length === 12 && classCross.length === 12 && missing.length === 0 && extra.length === 0,
-  `re-key covers exactly the census's CROSS-STATE set: mine ${rows.length}, census ${classCross.length}, ` +
-  `missing ${missing.length}, extra ${extra.length}` +
-  (missing.length ? ` [missing ${missing.join(' | ')}]` : '') + (extra.length ? ` [extra ${extra.join(' | ')}]` : ''));
+// the re-key must COVER the census's 12 and may ADD rows, each of which must be a row the census
+// classed something else — a reclassification, named, not a row invented here.
+const extraRows = extra.map((k) => classRows.find((r) => key(r) === k)).filter(Boolean);
+check('GJOIN', missing.length === 0 && classCross.length === 12 && extra.length === extraRows.length,
+  `re-key covers the census's 12 CROSS-STATE rows (missing ${missing.length}) and adds ` +
+  `${extra.length}, every one of which the census classed otherwise: ` +
+  `[${extraRows.map((r) => `${r.id}@${r.line} was ${r.cls}`).join(', ')}]`);
 // [[feedback_compare_member_lists_not_counts]]
+const filed12 = g(['show', `${FILED12}:${UNIT}/HAND-READ-12.tsv`]);
+check('GFILED12', filed12 === readFileSync(join(LIVE, UNIT, 'HAND-READ-12.tsv'), 'utf8'),
+  `the pre-instrument filing is byte-identical to its commit ${FILED12} (${filed12.length} bytes)`);
 
 // the re-key must be NEW, not a transcription of the census's own `sub` column
 const censusSubs = new Set(classCross.map((r) => r.sub));
@@ -70,8 +80,8 @@ check('GNEWCOL', !classTsv[0].includes('subkind5') && newSubs.length >= 1,
 
 const by = (sk) => rows.filter((r) => r.subkind5 === sk);
 const tally = Object.fromEntries([...new Set(rows.map((r) => r.subkind5))].map((s) => [s, by(s).length]));
-check('GPARTITION', Object.values(tally).reduce((a, b) => a + b, 0) === 12,
-  `the 5-way key sums to 12: ${JSON.stringify(tally)}`);
+check('GPARTITION', Object.values(tally).reduce((a, b) => a + b, 0) === rows.length && rows.length === 13,
+  `the 5-way key sums to ${rows.length}: ${JSON.stringify(tally)}`);
 // a sub-split must partition the class it splits [[feedback_a_subsplit_cannot_partition_a_class_keyed_on_something_else]]
 
 // ------------------------------------------------------- P1/P2: cure reach of what each row compares
@@ -146,15 +156,26 @@ const inertAllLiteral = inert.every((r) => r.reach === 'source-literal');
 const litKeyedNonInert = rows.filter((r) => r.reach === 'source-literal' && r.subkind5 !== 'inert');
 check('GP2', inert.length === 2 && inertAllLiteral,
   `inert rows: ${inert.length} [${inert.map((r) => r.id).join(',')}], all source-literal: ${inertAllLiteral}`);
-check('GP2COEXT', litKeyedNonInert.length === 0,
+// P2's coextension half is REFUTED (drive1). The leg is re-aimed onto the measured relation, which
+// is the finding: source-literal is NECESSARY for inert here and not SUFFICIENT — every
+// source-literal row that is not inert is a `delta`, i.e. DIRECTION is decided before REACH. A
+// future source-literal row landing in `keyed` reddens this.
+// [[feedback_a_leg_that_asserts_the_defect_reddens_on_its_own_cure]]
+check('GREACHAFTERDIR', litKeyedNonInert.length >= 1 && litKeyedNonInert.every((r) => r.subkind5 === 'delta'),
   `source-literal rows that are NOT inert: ${litKeyedNonInert.length} ` +
-  `[${litKeyedNonInert.map((r) => `${r.id}@${r.line}=${r.subkind5}`).join(',')}]`);
+  `[${litKeyedNonInert.map((r) => `${r.id}@${r.line}=${r.subkind5}`).join(',')}] — all delta, so reach ` +
+  `is only reached after direction`);
 
 // ----------------------------------------------- the conjunctive rows: declared, printed, not detected
 const conj = by('conjunctive');
 const conjComplete = conj.every((r) => r.states && r.states !== '-' && r.states.split(';').length >= 2);
-check('GCONJDECL', conj.length === 2 && conjComplete,
-  `conjunctive rows ${conj.length}, every one carrying a hand-supplied per-operand state label: ${conjComplete}`);
+// Keyed on the DATA, not on a typed count — drive2's RED here was a `conj.length === 2` written
+// when the hand read had 12 rows, which reddened on my own re-key rather than on anything about
+// the subject. [[feedback_a_pin_on_a_count_reddens_on_its_own_promotion]]
+const strayStates = rows.filter((r) => r.subkind5 !== 'conjunctive' && r.states && r.states !== '-');
+check('GCONJDECL', conj.length >= 2 && conjComplete && strayStates.length === 0,
+  `conjunctive rows ${conj.length}, every one carrying a complete hand-supplied per-operand state ` +
+  `label (${conjComplete}), and ${strayStates.length} non-conjunctive rows carry one`);
 for (const r of conj) {
   console.log(`[DECLARED, NOT DETECTED] ${r.id}@${r.line} operands: ${r.states}`);
 }
@@ -178,12 +199,19 @@ if (!H396) {
     `the pin is the ADDING commit, deliberately, not rot: pin ${pin} · adding ${added} · newest ${newest}`);
   check('GSTALE', !!pin && !!newest && pin !== newest,
     `pin ${pin} !== newest ${newest} — the leg's truth needs a post-addition edit to exist`);
-  // the counterfactual, computed not argued: lift the line at BOTH revs and compare
+  // the counterfactual, computed not argued: lift the line at BOTH revs and compare.
+  // drive1's RED here was MINE: I hand-typed `/^.*HIS_396.*$/m` instead of slicing the harness's
+  // own lifter, and it matched an `import` line that is identical at both revs — so my reader made
+  // the two states look the same and would have reported Theseus's finding as not reproducing.
+  // The pattern is now sliced out of grade-the-three-cures.mjs's own `liftAt`.
+  // [[feedback_a_hand_typed_reader_is_not_a_slice]]
+  const liftPat = (three.match(/liftAt = \(rev\) => \{[\s\S]*?match\((\/.+?\/m)\)/) ?? [])[1];
+  check('GLIFTSLICED', !!liftPat, `the subject harness's own lifting pattern, sliced: ${liftPat}`);
   const liftAt = (rev) => {
     const src = showAt(rev, H396);
-    if (!src) return null;
-    const m = src.match(/^.*HIS_396.*$/m);
-    return m ? m[0] : src.split('\n').find((l) => l.includes('readFileSync')) ?? null;
+    if (!src || !liftPat) return null;
+    const body = liftPat.slice(1, liftPat.lastIndexOf('/'));
+    return (src.match(new RegExp(body, 'm')) ?? [null])[0];
   };
   const atPin = liftAt(pin);
   const atNewest = liftAt(newest);
@@ -212,17 +240,63 @@ if (!v10) {
     `states and comparing a cure-immovable figure satisfies BOTH rows`);
 }
 
+// ---------------------------------------------- the G0@80 departure, read off the source not my why
+// My census `why` for measure.mjs:80 says "between his rev and my live tree". The source says
+// MY_REV is read out of a recorded file. That one word is the whole departure from Theseus's
+// matrix, so it is asserted here against the source, not argued.
+// [[feedback_read_a_precedence_claim_off_the_live_array]]
+const measureSrc = readFileSync(join(LIVE, 'docs/research/unit-464vac-2026-10-31/measure.mjs'), 'utf8');
+const myRevDecl = (measureSrc.match(/^const MY_REV = (.+)$/m) ?? [])[1] ?? '';
+const g0Why = (classRows.find((r) => r.file.endsWith('measure.mjs') && r.line === '80') ?? {}).why ?? '';
+check('GMYREV', /readFileSync\(/.test(myRevDecl) && !/resolve\('\.'\)|process\.cwd/.test(myRevDecl)
+  && /live tree/.test(g0Why),
+  `measure.mjs MY_REV = ${JSON.stringify(myRevDecl)} — a recorded rev, not the worktree; and my own ` +
+  `census why for :80 says "live tree": ${JSON.stringify(g0Why)}. The why was wrong, so the row is ` +
+  `staleness, not keyed, and his keyed-and-reachable 3 is 2.`);
+
 // ------------------------------------------- P6: does moving the property term out cost any row?
-// LIMITATION, registered before measuring: this is a `why`-column proxy over the census's 35 GATE
+// LIMITATION, registered before measuring: this is a `why`-column proxy over the census's GATE
 // rows, not a re-read of 48 predicates. It can only find rows that SAY they read two states.
+// Published as a confusion matrix against the hand verdict, never as a count of its own, and NOT
+// tuned to go green. [[feedback_a_lookahead_behind_quantified_whitespace_excludes_nothing]]
 const FROZEN = /frozen|recording|pinned sha|git show|PRE_REV|drive\d/i;
 const LIVEWORD = /live|worktree|POST\b/i;
-const gateBoth = classGate.filter((r) => FROZEN.test(r.why) && LIVEWORD.test(r.why));
-check('GWHYPROXY', classGate.length === 35 && gateBoth.length === 0,
-  `GATE rows ${classGate.length}; of those, whose why names a frozen artefact AND a live read: ` +
-  `${gateBoth.length}${gateBoth.length ? ` [${gateBoth.map((r) => `${r.id}@${r.line}`).join(',')}]` : ''}`);
-console.log('[LIMITATION] GWHYPROXY is keyed on prose I wrote, not on a re-read of the 48 predicates. '
-  + 'A non-zero result names rows needing a hand re-read; it does not itself reclassify them.');
+const NEGATING = /no frozen|frozen side only|live only|no live|git only|no live-vs-frozen/i;
+const handCross = new Set(rows.map(key));
+const matrix = { flaggedCross: [], flaggedNot: [], unflaggedCross: [], unflaggedNot: 0 };
+for (const r of classRows) {
+  const flagged = FROZEN.test(r.why) && LIVEWORD.test(r.why);
+  const isCross = handCross.has(key(r));
+  if (flagged && isCross) matrix.flaggedCross.push(`${r.id}@${r.line}`);
+  else if (flagged) matrix.flaggedNot.push(`${r.id}@${r.line}`);
+  else if (isCross) matrix.unflaggedCross.push(`${r.id}@${r.line}`);
+  else matrix.unflaggedNot += 1;
+}
+console.log(`[MATRIX] why-proxy × hand verdict over ${classRows.length} rows: ` +
+  `flagged&CROSS ${matrix.flaggedCross.length} · flagged&not ${matrix.flaggedNot.length} ` +
+  `[${matrix.flaggedNot.join(',')}] · unflagged&CROSS ${matrix.unflaggedCross.length} ` +
+  `[${matrix.unflaggedCross.join(',')}] · unflagged&not ${matrix.unflaggedNot}`);
+check('GPROXYSUM', matrix.flaggedCross.length + matrix.flaggedNot.length
+  + matrix.unflaggedCross.length + matrix.unflaggedNot === classRows.length,
+  `the matrix's four cells sum to the census's ${classRows.length} rows`);
+// every false positive must be explained by NEGATING prose, not by a tuned threshold: a `why` that
+// says "no frozen artefact" contains the word "frozen". [[feedback_a_correction_that_quotes_the_wrong_spelling_retrips_the_detector]]
+const fpRows = matrix.flaggedNot.map((s) => classRows.find((r) => `${r.id}@${r.line}` === s)).filter(Boolean);
+check('GPROXYNEG', fpRows.length >= 1 && fpRows.every((r) => NEGATING.test(r.why)),
+  `every why-proxy false positive is prose that NEGATES one side: ` +
+  `${fpRows.map((r) => `${r.id}@${r.line} ${JSON.stringify(r.why.slice(0, 44))}`).join(' · ')}`);
+// GP6 is keyed on the RECLASSIFIED rows (in my 13, census-classed otherwise), not on the proxy's
+// flags — most of the census's own 12 are flagged too, so a flag count could not tell the two
+// apart. [[feedback_a_gate_named_after_a_figure_is_not_a_gate_on_that_figure]]
+const movedFromGate = extraRows.filter((r) => r.cls === 'GATE');
+check('GP6', classGate.length === 35 && movedFromGate.length === 1,
+  `P6 REFUTED: the census published GATE ${classGate.length} / CROSS-STATE ${classCross.length}; ` +
+  `making the class key explicit about "two states" moves ${movedFromGate.length} row ` +
+  `[${movedFromGate.map((r) => `${r.id}@${r.line}`).join(',')}] from GATE to CROSS-STATE, so the ` +
+  `entry's v1.0 block is wrong by one: GATE ${classGate.length - movedFromGate.length}, ` +
+  `CROSS-STATE ${classCross.length + movedFromGate.length}`);
+console.log('[LIMITATION] the why-proxy is keyed on prose I wrote. It named 3 rows; a hand read of '
+  + 'all 3 predicates confirmed 1 (measure.mjs:79) and refuted 2. The proxy is a pointer, not a verdict.');
 
 // ------------------------------------------------------------------------- hygiene, inside the harness
 const dirty = g(['status', '--porcelain', '--', 'packages/', 'scripts/']);
