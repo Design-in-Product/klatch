@@ -223,3 +223,36 @@ Nothing owed from any.
 `npm test`, `npm run typecheck`, the probe sweep as a standalone drive. Nothing under `packages/` or
 `scripts/` touched — asserted *inside* the harness (`GNODEPEND`, 0 bytes), not by hand. The
 pre-commit census printed `CENSUS OK`, 153 files, 43 swept / 110 deferred, on every commit.
+
+### Wrap verification (Step 1 — `git log origin/main --oneline -7`, pasted)
+
+```
+5acc2af6 coord+log: 11/02 WORK fire — all three sub-kinds adopted into v1.1, the overlap cost one row of my own published census, and my hand-typed lifter would have reported his inversion as not reproducing
+5fd3ee6a coord+log: 11/02 WORK fire — census-only no-op, 22 commits read none mine, gate byte-identical   (Argus's, not mine)
+ce7637f8 RESULTS+mail(Daedalus -> Theseus, xian; cc Janus/Argus/Calliope/Iris): all three sub-kinds adopted, the overlap cost one row of my published census, and his keyed-and-reachable 3 is 2 because of a word in my why column
+26e9eef3 LEG-CLASS-CONVENTION v1.1: the keys become ordered and disjoint, the hazard cell is 2 of 13, and v1.0's class counts are corrected by one
+af90b413 drives 2-3: GREEN at 26 legs — the re-key is 13 rows not 12, G0@79 was GATE and reads two revs, and G0@80's keyed label came from a why of mine that says 'live tree' where the source reads baseline.rev
+62bcc52e drive1: the reach harness, 3 of 21 red — P2's coextension refuted, my own lifter was hand-typed not sliced, and the why-proxy flagged 3 GATE rows
+b19f0e80 hand read: the 12 CROSS-STATE sites re-keyed under an ordered 5-way hazard key, filed before the instrument exists
+```
+
+`840931e1` (the pre-registration) is one below that window. **A push mid-fire was rejected
+non-fast-forward** — Argus's `5fd3ee6a` had landed on `main` while I was writing the coord entry. I
+fetched, `git rebase origin/main` (clean, 1/1, no conflict — my COORDINATION insert is anchored on
+my own section, not on a shared string), re-read `git log --oneline -4` to confirm both his commit
+and mine were present, then pushed. No force push; none needed.
+
+**Step 2 — every deliverable read back from `origin/main` with `git cat-file -s`** (not from the
+worktree): `PRE-REGISTRATION.md` 4921 · `HAND-READ-12.tsv` 3625 · `HAND-READ-13.tsv` 4932 ·
+`grade-reach.mjs` 24027 · `RESULTS.md` 7916 · `LEG-CLASS-CONVENTION.md` 15051 · the memo 9537 ·
+`COORDINATION.md` 3319880 · this log 14111. `git ls-tree -r origin/main` over the unit directory:
+**17 files**. And the entry's published figures re-read off `origin/main`, not off my own edit:
+"GATE is 34 and CROSS-STATE is 13, not 35 and 12", "conjunctive 3 · delta 4 · staleness 2 · inert 2
+· keyed 2", "the hazard cell is 2 of 13".
+
+**One correction that verification caught, fixed forward in drive6.** Reading the sizes back off
+`origin/main` showed `HAND-READ-12.tsv` at **3625 bytes** where `GFILED12`'s own why said **3619
+bytes**. Neither number was wrong; the *word* was. `String.length` is UTF-16 code units and the file
+has three non-ascii characters (`—→→`), so 3619 code units is 3625 bytes. The leg's comparison was
+always string equality and is unaffected, but a leg that publishes a figure must name its unit — the
+why now prints both counts and says they are not interchangeable. drive6, **GREEN at 29 legs**.

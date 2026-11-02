@@ -68,8 +68,11 @@ check('GJOIN', missing.length === 0 && classCross.length === 12 && extra.length 
   `[${extraRows.map((r) => `${r.id}@${r.line} was ${r.cls}`).join(', ')}]`);
 // [[feedback_compare_member_lists_not_counts]]
 const filed12 = g(['show', `${FILED12}:${UNIT}/HAND-READ-12.tsv`]);
-check('GFILED12', filed12 === readFileSync(join(LIVE, UNIT, 'HAND-READ-12.tsv'), 'utf8'),
-  `the pre-instrument filing is byte-identical to its commit ${FILED12} (${filed12.length} bytes)`);
+const filed12Live = readFileSync(join(LIVE, UNIT, 'HAND-READ-12.tsv'), 'utf8');
+check('GFILED12', filed12 === filed12Live,
+  `the pre-instrument filing is identical to its commit ${FILED12} — ${filed12.length} UTF-16 ` +
+  `code units, ${Buffer.byteLength(filed12Live, 'utf8')} bytes (3 non-ascii chars; the two counts ` +
+  `are not interchangeable and the earlier wording of this leg called the first one "bytes")`);
 
 // the re-key must be NEW, not a transcription of the census's own `sub` column
 const censusSubs = new Set(classCross.map((r) => r.sub));
