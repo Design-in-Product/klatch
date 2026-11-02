@@ -20,7 +20,37 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/argus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/argus`, per-worktree git identity `Argus (Klatch)`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope restored per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-01 ~18:0x PT (STOP fire — census-only no-op: checkpoint own last commit
+- **Updated:** 2026-11-02 ~09:0x PT (START fire — census-only no-op). Checkpoint own last commit
+  `4973533a` (11/01 STOP fire, 18:04:39 PT). 13 new commits since, none mine (author-checked):
+  Theseus's `unit-464pins` chain (pre-registration, drive1/drive2 — Daedalus's three named pins
+  are four, `regrade-saturation.mjs:49` is a second `GLIFT` under the same name, all four
+  redden, two legs reclassified from GATE to a third unnamed class — CROSS-STATE — plus two
+  self-found defects in his own instrument) plus mail to Daedalus/xian cc
+  Janus/**Argus**/Calliope/Iris; the automated external scan (`docs/intel/2026-11-02-sweep.md`);
+  Pard's fire-depth report; the automated cross-pollination brief bump; two coord+log no-ops
+  (Iris, Calliope). `git diff --dirstat 4973533a..HEAD` **100% under `docs/`**; `git diff --stat
+  4973533a..HEAD -- packages/ scripts/` empty. **Mail:** one new local file, read in full —
+  Theseus→Daedalus+xian cc Janus/**Argus**/Calliope/Iris; its own §6 "who has what" names no
+  Argus bucket, confirmed cc-only. Re-read the standing open thread addressed to this seat
+  (`theseus-to-argus-daedalus-...-your-unclaimed-110-is-zero...-2026-10-27.md`): unchanged,
+  still "nothing routed," left open since Daedalus's C4 half is unclosed. All four cross-repo
+  mailboxes checked via `git log --since` against the 18:04:39 checkpoint: `designinproduct` 0
+  new; `mediajunkie` 2 new (cio↔pard piper-guards traffic, unrelated); `dispatch` 3 new
+  (daily PM-sync ×2, plus Theseus→xian question-box letter on a gate-keyed-on-its-own-prediction
+  defect — addressed to xian, no action here); `piper-morgan-product` 16 new, release/comms
+  traffic, 0 mentions of klatch/argus. Nothing owed from any. Cross-pollination brief points to a
+  private source outside this seat's accessible paths — not retried, consistent with prior
+  fires. **Standing blockers re-derived fresh:** Managed Agents smoke-run — no `ma-smoke/*`
+  branch anywhere, named blocker on xian, day **13**. Rollup still v171 (2026-10-22, 11 days
+  stale, Calliope's doc), needs-you unchanged at 2. Intel sweep cadence satisfied today by the
+  automated scan, not due from this seat. **Gate re-derived fresh:** `lsof -i :3001` port free;
+  `npm run typecheck` clean ×4 workspaces; `npm test -w packages/server` **140 files · 2186
+  passed · 1 skipped (2187)**, byte-identical; `npm test -w packages/client` **26 passed|13
+  skipped (39) · 333 passed|13 skipped (346)**, byte-identical; `node scripts/sweep-probes.mjs
+  --census` **153 probe files, 43 swept/110 deferred, CENSUS OK**, byte-identical. **Needs-you:**
+  unchanged at 2. Two consecutive checks found nothing further unblocked — fire closed bounded.
+  Log: `docs/logs/2026-11-02-argus-log.md`.
+- **Updated (previous):** 2026-11-01 ~18:0x PT (STOP fire — census-only no-op: checkpoint own last commit
   `c5f920bd` (11/01 WORK fire, 13:3x PT). 29 new commits since, none mine (author-checked):
   Daedalus's `unit-464steal` tail (pre-registration, steal confirmed real, the population
   objection survives, convention v1.1 update) plus mail to Theseus/xian cc
