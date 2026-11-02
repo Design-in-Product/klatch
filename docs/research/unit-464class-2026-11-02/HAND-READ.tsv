@@ -1,0 +1,65 @@
+# unit-464class — the hand read, which is the verdict. 48 call sites, one row each.
+#
+# Keyed per CALL SITE, not per id: a REFUSE-SITE id repeats, and `C0` in
+# unit-464vac/grade-cure.mjs is GATE at two of its three sites and CROSS-STATE at the third.
+# The id is not the unit.
+#
+# Read from docs/research/unit-464class-2026-11-02/legs.spans.txt at rev
+# b0de039bd79f3fa30daba69353d2eeaf48c42a2e, plus the enclosing source where a span referenced an
+# identifier (noted in `why`). Written BEFORE classify-and-grade.mjs existed.
+#
+# class:   PIN | GATE | CROSS-STATE | UNMODELLED        (the four registered buckets)
+# subkind: delta | keyed | -                            (UNREGISTERED reading, see RESULTS §4)
+#   delta — the predicate asserts the two states DIFFER. A correct cure makes it TRUE.
+#   keyed — the predicate asserts the frozen artefact and the live-derived figure AGREE.
+#           A correct cure makes it FALSE. This is the hazard half.
+#
+# file	line	id	kind	class	subkind	why
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	56	GDEPTH	REGISTER	GATE	-	path-depth of both state paths; reads no artefact content and no cure can move it
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	60	GDELTA	REGISTER	CROSS-STATE	delta	preSrc (pinned sha de5e9365) vs postSrc (the live file); asserts they DIFFER
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	71	GCURE	REGISTER	CROSS-STATE	delta	defect spelling required ABSENT in the frozen PRE and PRESENT in the live POST; an inverted pin
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	79	GLIVECLEAN	REGISTER	GATE	-	live git status --porcelain only; cure-independent
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	88	GPATHS	REGISTER	CROSS-STATE	keyed	fixture paths lifted from the live POST must EQUAL those lifted from the frozen PRE
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	161	GCTRLPRE	REGISTER	CROSS-STATE	keyed	5/5 gate lines BYTE-identical to the frozen drive6 recording, for a run whose fixtures are read from the live tree
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	166	GCTRLPOST	REGISTER	GATE	-	live run only, pinned on the property (exit, verdict, GATTRIB, unattributed count)
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	170	GPLANT	REGISTER	GATE	-	declared plants vs the fixtures actually written; live only
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	186	GLIFT2	REGISTER	CROSS-STATE	keyed	DECLARED lifted from the frozen PRE and the live POST; requires named buckets to exist in each
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	69	GDEPTH	REGISTER	GATE	-	depth plus import resolution from each state's own directory; cure-independent
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	90	GCURE	REGISTER	CROSS-STATE	delta	six-term defect/cure shape across the frozen PRE and the live POST; an inverted pin
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	104	GPATH	REGISTER	CROSS-STATE	keyed	the clone path must be hardcoded IDENTICALLY in the frozen PRE and the live POST
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	108	GLIVECLEAN	REGISTER	GATE	-	live git status --porcelain only
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	112	GFUSE	REGISTER	GATE	-	live match count is 1; a fuse on the live tree, no frozen side
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	194	GCTRLPRE	REGISTER	CROSS-STATE	keyed	the frozen drive3 transition AND the live-derived ctrl run in one predicate; this is the re-aimed one and it reads ok
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	197	GCTRLPOST	REGISTER	GATE	-	live run only, property-pinned via ctrlPinned plus allGatesOk
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	200	GPLANTED	REGISTER	GATE	-	each cell's entering match count against its own declared plant list; live only
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	211	GROWREPRO	REGISTER	CROSS-STATE	keyed	the frozen drive4 recording's 4 triples must EQUAL the PRE ctrl run's rows
+unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs	84	GCLONE	REGISTER	GATE	-	clone git-dir differs from live, sits under .testdata, carries scripts/lib; structural
+unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs	96	GPIN	REGISTER	GATE	-	the pinned sha is a commit in the clone; git reachability, no frozen artefact read
+unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs	102	GREADER	REGISTER	GATE	-	live and clone copies of one reader byte-identical; both sides live-derived
+unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs	106	GLIVECLEAN	REGISTER	GATE	-	live git status --porcelain only
+unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs	135	GARMREACH	REGISTER	GATE	-	carries the PRE defect spelling, but its own predicate reads only clone-derived match counts
+unit-464rec3-2026-11-01/grade-the-three-cures.mjs	53	C0	REGISTER	GATE	-	three live instruments parse; live only
+unit-464rec3-2026-11-01/grade-the-three-cures.mjs	66	C1	REGISTER	GATE	-	live source spelling plus live git selection; no frozen artefact
+unit-464rec3-2026-11-01/grade-the-three-cures.mjs	85	C2	REGISTER	GATE	-	live source spelling plus the add-event sha from live git history
+unit-464rec3-2026-11-01/grade-the-three-cures.mjs	99	C2b	REGISTER	CROSS-STATE	delta	a live source shape AND two git-show reads of the subject at different revs, asserted to DIFFER
+unit-464rec3-2026-11-01/grade-the-three-cures.mjs	109	C3	REGISTER	GATE	-	live source pin plus its presence in live history
+unit-464rec3-2026-11-01/grade-the-three-cures.mjs	138	C3b	REGISTER	GATE	-	live source predicate plus four live git arms, graded as a delta between two conjuncts
+unit-464steal-2026-11-01/drive-the-steal.mjs	84	GCLONE	REGISTER	GATE	-	structural, as its PRE twin
+unit-464steal-2026-11-01/drive-the-steal.mjs	96	GPIN	REGISTER	GATE	-	git reachability of the pin in the clone
+unit-464steal-2026-11-01/drive-the-steal.mjs	102	GREADER	REGISTER	GATE	-	live and clone reader byte-identical; both live-derived
+unit-464steal-2026-11-01/drive-the-steal.mjs	106	GLIVECLEAN	REGISTER	GATE	-	live git status --porcelain only
+unit-464steal-2026-11-01/drive-the-steal.mjs	153	GARMREACH	REGISTER	GATE	-	the cured spelling; reads clone-derived figures and ownership only
+unit-464vac-2026-10-31/grade-cure.mjs	37	C0	REFUSE-SITE	GATE	-	cell count out of the frozen vac.json recording only
+unit-464vac-2026-10-31/grade-cure.mjs	60	C0	REFUSE-SITE	GATE	-	a baseline rev resolved from git history only
+unit-464vac-2026-10-31/grade-cure.mjs	78	C0	REFUSE-SITE	CROSS-STATE	delta	checkerNow (live worktree) vs checkerThen (git show at PRECURE_REV); asserts they DIFFER
+unit-464vac-2026-10-31/grade-cure.mjs	91	C1	REFUSE-SITE	GATE	-	readability of a frozen pre-cure recording; frozen side only
+unit-464vac-2026-10-31/grade-cure.mjs	105	C1	REFUSE-SITE	GATE	-	stderr length of two runs; live only
+unit-464vac-2026-10-31/measure.mjs	58	G1	REFUSE-SITE	GATE	-	cell slicing and well-formedness of his frozen sat.json
+unit-464vac-2026-10-31/measure.mjs	79	G0	REFUSE-SITE	GATE	-	subject readability at two revs; git only, no live-vs-frozen comparison
+unit-464vac-2026-10-31/measure.mjs	80	G0	REFUSE-SITE	CROSS-STATE	keyed	the subjects his frozen key names must NOT have changed between his rev and my live tree
+unit-464vac-2026-10-31/measure.mjs	88	G4	REFUSE-SITE	GATE	-	an environment variable; cure-independent
+unit-464vac-2026-10-31/measure.mjs	124	G2	REFUSE-SITE	GATE	-	live checker output vs the derived copy's; both sides live-derived in the same run
+unit-464vac-2026-10-31/measure.mjs	129	G2	REFUSE-SITE	GATE	-	stderr lengths of two live runs
+unit-464vac-2026-10-31/measure.mjs	138	G2	REFUSE-SITE	UNMODELLED	-	the backward walk did not resolve an enclosing if; NOT classified off its message string
+unit-464vac-2026-10-31/measure.mjs	143	G4	REFUSE-SITE	GATE	-	the dump's own boundary and cripple fields, from this run's artefact
+unit-464vac-2026-10-31/measure.mjs	161	G3	REFUSE-SITE	GATE	-	row/arm partition arithmetic within one live run
