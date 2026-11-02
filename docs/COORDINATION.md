@@ -3071,7 +3071,107 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
 - **Status:** available — duty cycle armed.
-- **Updated:** 2026-11-02 10:47–11:09 PT (**START fire — took the one thing Daedalus's 11/02 §6 routed me by
+- **Updated:** 2026-11-02 14:47–15:0x PT (**WORK fire — took BOTH things Daedalus's 11/02 WORK §6 filed as
+  mine, as the coiner of the two terms. Answer to question 2 dissolves it: under his own ordered key
+  `staleness` has ONE member, because `C2b`'s predicate asserts the two states DIFFER and criterion 2
+  fires before criterion 3 — and `delta` is the cell his table marks "(sound)" for the one row we have
+  both measured as unsound. Answer to question 1 is no. And my own named follow-up from this morning was
+  aimed at the wrong one of two same-named legs, one fire after I charged him with that exact defect.**)
+  Unit `docs/research/unit-464subkind-2026-11-02/` — pre-registration `2b57db13` **pushed to `main` as
+  the only file in the directory before any instrument in it existed** (`git ls-tree -r 2b57db13` over
+  the directory returns `PRE-REGISTRATION.md` alone), the predicate slice plus my own criteria hand read
+  `47920ad6` (**`git ls-tree -r 47920ad6` returns 5 files and no `grade-subkind.mjs`** — filed before the
+  grader existed), drives 1–4 `c0432f2e`, RESULTS `b4085c2b`, mail `3af2b8af` in its own commit.
+  **5 recorded drives, 5 `.err`, 0 non-empty** (`readdirSync` + `statSync`, 14 files). Final **GREEN at
+  22 legs**, 0 RED, 0 UNRUNNABLE. 6 predictions: **P1/P3/P4 land, P2/P5/P6 refuted.** Every slice from
+  the pin `de422c75` via `git show`, never the worktree; `GREV` prints the pinned and `HEAD` blob hash of
+  all six subject files and **all six are IDENTICAL**. **P1 was declared NON-BLIND in the
+  pre-registration**, with the exact prior reads named (his memo in full, `measure.mjs` lines 26–29 and
+  40–82, a grep for `MY_REV`) — its answer was already known when the prediction was written and calling
+  it blind would have been false. **His §4 departure is accepted without qualification:** `MY_REV` is
+  `readFileSync('baseline.rev','utf8').trim()` and `HIS_REV` is `sat.baselineRev`, so neither side is the
+  worktree, `measure.mjs:80` is `staleness`, and **my published keyed-and-reachable 3 is 2** — that was
+  the one row where I took his sub-kind, in the same memo where I claimed to have measured off the source
+  rather than his `why`. **Question 2, the headline:** `C2b`'s predicate carries an explicit
+  `atPin !== atRecency`, so his criterion 2 ("asserts they DIFFER → `delta`") fires before criterion 3
+  ("neither side live → `staleness`"), **leaving `staleness` with one member — a one-member class cannot
+  be split, so the question dissolves rather than getting an answer.** The distinction he sensed is real
+  and lives in **criterion 4**: `GRECENCY` reads `C2b`'s second anchor off the source as
+  `git log -1 --format=%h -- HIS_396_PATH`, a **recency selector**, so any commit touching the path moves
+  the figure; `measure.mjs:80`'s two anchors are both fixed strings, so **no commit can move its figure at
+  all**. The axis is **literal-anchor vs selector-anchor**, his own criterion 4 asked one step too late —
+  not archival-vs-checkpoint. **Question 1 is answered no:** `GREACH79` measures the *consequence* I
+  attached to the name, not the shape — `:76` is `a === null || b === null` (criterion 1 true, which is
+  why his order lands it there) and both anchors are fixed, so the figure ("does path *p* exist at this
+  frozen rev") **cannot be moved by any commit**. It cannot redden twice on a cure; it cannot redden on a
+  cure. The row satisfies **three** sub-kinds and his ORDER picks one. **P3 lands: 5 of 13 rows carry two
+  or more of the five criteria** — `GCURE@71{conjunctive+delta}`, `GCURE@90{conjunctive+delta}`,
+  `C2b@99{delta+staleness}`, `G0@79{conjunctive+staleness+inert}`, `G0@80{staleness+inert}`. **10 of 13
+  labels agree, 3 depart** (his `conjunctive 3 · delta 4 · staleness 2 · inert 2 · keyed 2`; mine
+  `conjunctive 5 · delta 3 · staleness 1 · inert 2 · keyed 2`). My criteria file carries **no subkind
+  column** (`GNOTRETYPED`) and the grader derives the first-yes label itself, joining his verdict out of
+  his own TSV on `(file,line,id)`, so no departure can come from my transcription; `GROWKEY` asserts
+  neither side dropped a row. **Criterion 1 is measured, not read** (`GC1READER`) on the 2 departure rows
+  plus 3 rows whose `c1` I read as false for a state-pair reason, so the reader is controlled in both
+  directions and one returning 0 could not pass: `GCURE@71=0/2 GCURE@90=0/0 C2b@99=1/1 GPATHS@88=2/2
+  GROWREPRO@211=1/3`. Strings are stripped **first**, because a why-string's `${…}` interpolation would
+  otherwise put an identifier on the wrong side of an operator — that is how my own drive4 broke
+  yesterday. It found something sharper than the overlap: **`GCURE@90` carries ZERO comparison operators
+  in its entire predicate**, so for that row criterion 2 is not ambiguous but **unanswerable**, and a key
+  that returns false by default calls it `conjunctive` without ever having been able to rule out `delta`.
+  **Known blindness stated:** the reader captures the token adjacent to each operator, not the full
+  operand expression, so it decides literal-vs-not and nothing finer. **P5 refuted, and I registered it
+  expecting refutation** because the alternative was publishing agreement I had not tested:
+  `GHAZARDMEMBERS` compares the hazard cell as a **member list, not a count**, and his and mine are
+  **IDENTICAL** — `[grade-the-attrib-cure.mjs|161|GCTRLPRE ; grade-the-steal-cures.mjs|211|GROWREPRO]`.
+  **His 2 of 13 is exact**; three of the other eleven labels move and the hazard cell does not. **P2
+  refuted in both halves:** 715 tracked code files read at the pin, **0** write a `baseline.rev` and 12
+  read one; `unit-464vac`'s anchor has **1** commit, not ≥2. So the edit-moved/drive-moved axis I
+  registered does not separate the two candidates. `GBASEPOP` reports the one of 17 `baseline.rev` files
+  with two commits and it is **mine** — `unit-464grep`, re-stamped *by hand* to cure a vacuous
+  self-exclusion leg; an anchor file can move across commits, but nothing in the tree moves one on a
+  drive. **P6 refuted as registered, and the consequence is mine:** `GDUPID` prints every registration
+  site — `GCTRLPRE` at `grade-the-attrib-cure.mjs:161` **and** `grade-the-steal-cures.mjs:194`, same id,
+  **two different files**, and his TSV gives them **different sub-kinds** (`@161` keyed, `@194`
+  conjunctive). My registered disjunction named three branches and the answer is a fourth. **My own §7
+  this morning deferred "the both-sides counterfactual for `GCTRLPRE@194` — the only perturbation that
+  separates keyed from conjunctive", and `@194` is already `conjunctive`; the `keyed` one is `@161`, in
+  the other file. I aimed a named follow-up at the wrong one of two same-named legs, one fire after
+  charging him with exactly that.** His TSV is keyed on `(file,line,id)` and is not wrong; the loss is in
+  the prose, on both sides, which cites bare line numbers with no file. **Four defects of mine, all kept
+  as recordings:** `drive1` **REFUSED** because I pinned my **own** input TSV to the subject's rev, which
+  predates this unit — an instrument's input cannot be pinned to the rev of the thing it grades (repaired
+  by reading it at `HEAD`, with `GMYTSVCOMMITTED` asserting the `HEAD` blob is byte-identical to the
+  worktree copy so the graded input is the committed one); `drive2`'s two P2 legs **asserted their own
+  prediction**, so a refuted prediction came out as a **RED** and one of them printed the word **"LANDS"
+  beside a RED** — **third occurrence** of that shape, built after reading both his description and my
+  own; `drive2`'s prediction verdicts were **keyed on leg greenness**, so a cleanly REFUTED P2 printed
+  **`UNRESOLVED`** (a verdict read off a leg cannot tell "refuted" from "could not run" — every figure now
+  routes through one object and each verdict line prints its registered threshold *and* the measured
+  value); and criterion 1 was **hand-read** for the two departure rows before `GC1READER` existed to
+  measure it. **Mail:** his 11/02 WORK memo read in full at open and replied in the same fire
+  (`3af2b8af`, its own commit); thread stays in `docs/mail/` — both memos name an open item as xian's.
+  All four cross-repo mailboxes `git fetch`ed first, then scanned since my 11:10 checkpoint:
+  `designinproduct` **14** commits, `docs/mail/` diffs content-grepped for klatch/theseus → **0**;
+  `mediajunkie` **~40** (piper-guards 0.2.2 restart traffic), mail diffs → **0**; `dispatch` **0** new;
+  `piper-morgan-product` **261**, of which **94** under `mailboxes/`, content-grepped → **0**. A
+  whole-repo grep on ppm returned 4 hits and **all four are inside a Medium posts data blob, not mail**.
+  Nothing owed from any of the four. Brief is 4 lines and a private URL, outside this seat's reach.
+  **Not run:** `npm test`, `npm run typecheck`, the probe sweep as a standalone drive — nothing under
+  `packages/` or `scripts/` touched; `GNODEPEND` asserts `git status --porcelain -- packages/ scripts/` is
+  **0 bytes** *inside* the harness rather than by hand, and `GHISDIRCLEAN` asserts the same over **his**
+  `unit-464reach-2026-11-02/`, which this unit reads and does not write. **Drain:** both routed items done
+  this fire, mail replied in the same fire, cross-repo checked after a fetch, second Klatch fetch
+  mid-fire found only my own 5 commits — two consecutive checks found nothing further unblocked, fire
+  closed bounded. **Deferred with no blocker and no deadline, only a name** (unblocked, I did not reach
+  them): the **both-sides counterfactual**, now correctly aimed at `grade-the-attrib-cure.mjs:161`;
+  **parameter substitution in my inliner plus a per-row known-positive**; and the **artefact-overwrite
+  census** across my own units, still uncensused. **Needs-you:** nothing in this fire is xian's to decide.
+  Whether criterion 2 should be able to **refuse** on a predicate with no comparison operator, and whether
+  the ordered key wants a note that the five sub-kinds are not disjoint, are **Daedalus's** calls — I
+  filed measurements, not patches, and I am not competing for his entry. Log:
+  `docs/logs/2026-11-02-theseus-log.md`.
+- **Updated (previous):** 2026-11-02 10:47–11:09 PT (**START fire — took the one thing Daedalus's 11/02 §6 routed me by
   name: aim at the `delta`/`keyed` split, the load-bearing clause he flagged as least-contacted
   because it was not registered in advance. It is right and it is not a partition. Two of his seven
   `keyed` rows cannot lie on a cure, the row he pointed me at is in neither half, and the structural

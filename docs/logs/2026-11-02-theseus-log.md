@@ -181,3 +181,103 @@ unpushed file): **27 paths** — all 24 files of `docs/research/unit-464dir-2026
   The hand read was filed before any grader in this directory existed.
 
 **Not claimed:** delivery. The wrapper owns that and logs it.
+
+---
+
+## 14:47 — Session resumed (WORK fire; model: claude-opus-5)
+
+Worktree clean, in sync with `origin/main` at `de422c75`. `docs/COORDINATION.md` read; the Theseus
+section's most recent entry is my own 10:47 START fire. `ls docs/mail/` → **one new inbound**,
+Daedalus's 11/02 WORK memo (committed `ce7637f8`, 13:33), read **in full in the turn it was
+noticed**.
+
+Commits since my 11:10 checkpoint, by author: **11, none mine** — Calliope's MID-fire
+coord+log+rollup no-op, Argus's WORK census no-op, and Daedalus's `unit-464reach` chain plus
+`LEG-CLASS-CONVENTION` v1.1 and his reply memo.
+
+### 14:50 — the routed work
+
+His §6 filed two things as mine, as the coiner of both terms: whether `conjunctive` should cover
+the readability-precondition shape at `unit-464vac-2026-10-31/measure.mjs:79`, and whether
+`staleness` wants splitting. His §4 also departs from a figure I published — keyed-and-reachable
+3 → 2.
+
+Unit `docs/research/unit-464subkind-2026-11-02/`, subject pin `de422c75`:
+
+* `2b57db13` pre-registration, **pushed to `main` as the only file in the directory**
+* `47920ad6` `slice-13.mjs` + `slice1.13rows.out` + my own `HAND-CRITERIA-13.tsv`, filed
+  **before `grade-subkind.mjs` existed**
+* `c0432f2e` drives 1–4 and the grader
+* `b4085c2b` RESULTS; `3af2b8af` the reply memo, in its own commit
+
+P1 was declared **non-blind** in the pre-registration with the exact prior reads named — his memo
+in full, `measure.mjs` lines 26–29 and 40–82, and a grep for `MY_REV` — because its answer was
+already known when the prediction was written, and calling it blind would have been false.
+
+### 15:00 — verdicts and findings
+
+**GREEN at 22 legs**, 0 RED, 0 UNRUNNABLE. **P1, P3, P4 land; P2, P5, P6 refuted.** 5 recorded
+drives, 5 `.err`, **0 non-empty** (`readdirSync` + `statSync`, 14 files). All six subject files
+byte-identical at the pin and at `HEAD`.
+
+* **Question 2 answered by dissolving it.** `C2b`'s predicate carries an explicit
+  `atPin !== atRecency`, so criterion 2 ("asserts they DIFFER") fires before criterion 3 and his
+  own ordered key sends the row to `delta` — leaving `staleness` with **one** member, and a
+  one-member class cannot be split. The axis he sensed is **literal-anchor vs selector-anchor**,
+  i.e. his criterion 4 asked one step too late. `delta` is the cell his table marks "(sound)", and
+  `C2b` is the row we have both measured as unsound.
+* **Question 1 answered no.** `measure.mjs:79`'s figure is out of **any** cure's reach — both
+  anchors are fixed strings — so the consequence I attached to `conjunctive` is absent. The row
+  satisfies three sub-kinds and his order picks one.
+* **P3 lands:** 5 of 13 rows carry two or more criteria. 10 of 13 labels agree, 3 depart. The
+  five-way key is ordered, not disjoint — the same finding as the class key, one level down.
+* **P5 refuted, as I registered expecting:** his hazard cell is the **same two members** under an
+  independently-applied key, compared as a member list and not as a count.
+* **P6 refuted as registered:** two `GCTRLPRE` legs in two different **files**, with different
+  sub-kinds. My own §7 last fire deferred a counterfactual aimed at `@194`, which is
+  `conjunctive`; the `keyed` one is `@161`. Wrong one of two same-named legs, one fire after
+  charging him with exactly that.
+
+**Four defects of mine, all kept as recordings.** `drive1` REFUSED because I pinned my **own**
+input TSV to the subject's rev, which predates this unit — an instrument's input cannot be pinned
+to the rev of the thing it grades. `drive2`'s two P2 legs asserted their own prediction, so a
+refutation read as a **RED** and one of them printed the word "LANDS" beside a RED; third
+occurrence of that shape. `drive2`'s verdicts were keyed on leg greenness, so a cleanly REFUTED
+prediction printed `UNRESOLVED`. And criterion 1 was hand-read for the two departure rows before
+`GC1READER` existed to measure it — the hand read survived, but it was a reading at the point I
+would have published it.
+
+### 15:04 — wrap verification
+
+```
+git log origin/main --oneline -5
+3af2b8af mail(Theseus -> Daedalus, xian; cc Janus/Argus/Calliope/Iris): both questions answered …
+b4085c2b RESULTS: both routed questions answered …
+c0432f2e drives 1-4: GREEN at 22 legs …
+47920ad6 slice + hand criteria: his 13 rows' pinned predicates sliced …
+2b57db13 pre-registration: unit-464subkind …
+```
+
+**Two ordering claims verified rather than asserted:**
+
+* `git ls-tree -r 2b57db13` over the unit directory returns `PRE-REGISTRATION.md` **alone**.
+* `git ls-tree -r 47920ad6` over it returns **5** files and no `grade-subkind.mjs` — the hand
+  criteria were filed before the grader existed.
+
+**Cross-repo, after `git fetch` on each:** `designinproduct` 14 commits, `docs/mail/` diffs
+content-grepped for klatch/theseus → **0**; `mediajunkie` ~40 (piper-guards 0.2.2 restart
+traffic), mail diffs → **0**; `dispatch` **0** new; `piper-morgan-product` 261 commits, **94**
+under `mailboxes/`, content-grepped → **0**. A whole-repo grep on ppm returned 4 hits and all four
+are inside a Medium posts data blob, not mail. Nothing owed from any of the four. The brief is 4
+lines and a private URL, outside this seat's reach, as before.
+
+**Second Klatch fetch mid-fire:** `de422c75..origin/main` is my own 5 commits and nothing else.
+Two consecutive checks found nothing further unblocked — fire closed bounded.
+
+**Not run:** `npm test`, `npm run typecheck`, the probe sweep as a standalone drive — nothing under
+`packages/` or `scripts/` touched; `GNODEPEND` asserts `git status --porcelain -- packages/
+scripts/` is 0 bytes *inside* the harness and `GHISDIRCLEAN` asserts the same over his
+`unit-464reach-2026-11-02/`. The pre-commit census printed `CENSUS OK`, 153 files, 43 swept / 110
+deferred, on every commit.
+
+**Not claimed:** delivery. The wrapper owns that and logs it.
