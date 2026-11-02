@@ -1,0 +1,118 @@
+unit-464class — stage 1: the leg population and the idiom census
+  rev:      b0de039bd79f3fa30daba69353d2eeaf48c42a2e
+  surface:  14 of 29 unit-464* dirs are mine by oldest adding commit (own dir excluded); 41 .mjs in them
+
+GATES
+  GLIVECLEAN   ok  — git status --porcelain -- packages/ scripts/ is 0 bytes
+  GIDIOM       ok  — per-idiom counts sum to the population: check(28 + g(6 + refuse(14 = 48 vs 48 enumerated
+  GSPANOK      ok  — every match sliced to a balanced span: 0 problem(s)
+  GBLANK       ok  — blanking preserved length and left every file paren-balanced: 0 warning(s)
+  GSELFEXCL    ok  — this unit's own directory excluded from its own surface: 1 excluded (unit-464class-2026-11-02), 15 mine before exclusion, 14 after
+  GREV         ok  — rev read and printed: b0de039b
+  GKPG         ok  — the hand-found g( site is reached: 6 leg(s) in unit-464rec3-2026-11-01/grade-the-three-cures.mjs [C0,C1,C2,C2b,C3,C3b]
+  GGUARD       ok  — every refuse site has a resolved guard or is counted UNMODELLED-PREDICATE: 14 sites, 13 resolved, 1 unmodelled
+  GOWNED       ok  — authorship selector partitions: 14 mine of 29 dirs
+  GACCOUNT     ok  — every idiom match is either a keyed leg or a counted NON-LITERAL-ID: 48 keyed + 0 non-literal
+
+A. P1 — THE SINGLE-IDIOM SELECTOR AGAINST THE IDIOM CENSUS
+   line-based check(, raw source:    31 sites across 5 files   ← inflated by comment prose
+   line-based check(, blanked:       28 sites across 4 files
+   span-sliced check( only:          28 sites across 4 files, 28 distinct legs
+   idiom census (all idioms):        48 sites across 7 files, 41 distinct legs
+       check(    REGISTER      28 sites across 4 files, 28 distinct
+       g(        REGISTER       6 sites across 1 files, 6 distinct
+       refuse(   REFUSE-SITE   14 sites across 2 files, 7 distinct
+   P1 word: LANDS   (strictly more in all three units — sites 48 > 28, files 7 > 4, distinct legs 41 > 28)
+
+B. PER-FILE ACCOUNTING — the residual bucket is keyed positively
+   MODELLED 7 · UNMODELLED-FILE 27 · NON-HARNESS 7  (of 41)
+   UNMODELLED-FILE   0 legs  unit-464absorb-2026-10-31/attribute.mjs
+   UNMODELLED-FILE   0 legs  unit-464absorb-2026-10-31/drive-kp.mjs
+   UNMODELLED-FILE   0 legs  unit-464absorb-2026-10-31/grade-filed-maps.INSTRUMENTED.mjs
+   UNMODELLED-FILE   0 legs  unit-464authored-2026-10-31/drive.mjs
+   UNMODELLED-FILE   0 legs  unit-464authored-2026-10-31/insert-coord-entry.mjs
+   UNMODELLED-FILE   0 legs  unit-464authored-2026-10-31/quoted-denominator.mjs
+   MODELLED          9 legs  unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs
+   MODELLED          9 legs  unit-464cure3-2026-11-01/grade-the-steal-cures.mjs
+   UNMODELLED-FILE   0 legs  unit-464cure3-2026-11-01/subject.pre.copy-gate.mjs
+   MODELLED          5 legs  unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs
+   UNMODELLED-FILE   0 legs  unit-464drift-2026-10-30/grade-arms.mjs
+   UNMODELLED-FILE   0 legs  unit-464drift-2026-10-30/insert-coord-entry.mjs
+   UNMODELLED-FILE   0 legs  unit-464mapkey-2026-10-30/grade-filed-maps.mjs
+   UNMODELLED-FILE   0 legs  unit-464mapkey-2026-10-30/insert-coord-entry.mjs
+   UNMODELLED-FILE   0 legs  unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs
+   UNMODELLED-FILE   0 legs  unit-464rec3-2026-11-01/drive-s1-guard-cripple.mjs
+   UNMODELLED-FILE   0 legs  unit-464rec3-2026-11-01/grade-p4-the-conjunct-no-movement-can-falsify.mjs
+   MODELLED          6 legs  unit-464rec3-2026-11-01/grade-the-three-cures.mjs
+   UNMODELLED-FILE   0 legs  unit-464rec3-2026-11-01/probe-does-the-drift-change-the-value.mjs
+   UNMODELLED-FILE   0 legs  unit-464rekey-2026-10-30/drive.mjs
+   UNMODELLED-FILE   0 legs  unit-464rekey-2026-10-30/grade-arms.mjs
+   UNMODELLED-FILE   0 legs  unit-464rekey-2026-10-30/insert-coord-entry.mjs
+   UNMODELLED-FILE   0 legs  unit-464steal-2026-11-01/base-rate-on-the-reachable-set.mjs
+   MODELLED          5 legs  unit-464steal-2026-11-01/drive-the-steal.mjs
+   UNMODELLED-FILE   0 legs  unit-464steal-2026-11-01/grade-the-copy-is-his-reader.mjs
+   UNMODELLED-FILE   0 legs  unit-464t2-keychoice-2026-10-28/grade-the-surface-predicate.mjs
+   UNMODELLED-FILE   0 legs  unit-464t2-keychoice-2026-10-28/recon2-the-last-round-that-cured-product-source.mjs
+   UNMODELLED-FILE   0 legs  unit-464t2-population-2026-10-28/grade-the-round-population.mjs
+   UNMODELLED-FILE   0 legs  unit-464t2-rekey-2026-10-29/insert-coord-entry.mjs
+   UNMODELLED-FILE   0 legs  unit-464t8-2026-10-29/insert-coord-entry.mjs
+   UNMODELLED-FILE   0 legs  unit-464t8-mapdecay-2026-10-29/insert-coord-entry.mjs
+   UNMODELLED-FILE   0 legs  unit-464t8-mapdecay-2026-10-29/map-decay-footprint.mjs
+   MODELLED          5 legs  unit-464vac-2026-10-31/grade-cure.mjs
+   MODELLED          9 legs  unit-464vac-2026-10-31/measure.mjs
+   — UNMODELLED-FILE means: carries verdict vocabulary or a G-named literal, and no
+     recognised registration call. Its legs are NOT in the population below.
+   — NON-LITERAL-ID matches (a leg whose id is computed, so the population cannot key it): 0
+
+C. THE ENUMERATED LEG POPULATION — no class printed, by design
+   GDEPTH         REGISTER     check(                      unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:56
+   GDELTA         REGISTER     check(                      unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:60
+   GCURE          REGISTER     check(                      unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:71
+   GLIVECLEAN     REGISTER     check(                      unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:79
+   GPATHS         REGISTER     check(                      unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:88
+   GCTRLPRE       REGISTER     check(                      unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:161
+   GCTRLPOST      REGISTER     check(                      unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:166
+   GPLANT         REGISTER     check(                      unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:170
+   GLIFT2         REGISTER     check(                      unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:186
+   GDEPTH         REGISTER     check(                      unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:69
+   GCURE          REGISTER     check(                      unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:90
+   GPATH          REGISTER     check(                      unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:104
+   GLIVECLEAN     REGISTER     check(                      unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:108
+   GFUSE          REGISTER     check(                      unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:112
+   GCTRLPRE       REGISTER     check(                      unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:194
+   GCTRLPOST      REGISTER     check(                      unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:197
+   GPLANTED       REGISTER     check(                      unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:200
+   GROWREPRO      REGISTER     check(                      unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:211
+   GCLONE         REGISTER     check(                      unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:84
+   GPIN           REGISTER     check(                      unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:96
+   GREADER        REGISTER     check(                      unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:102
+   GLIVECLEAN     REGISTER     check(                      unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:106
+   GARMREACH      REGISTER     check(                      unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:135
+   C0             REGISTER     g(                          unit-464rec3-2026-11-01/grade-the-three-cures.mjs:53
+   C1             REGISTER     g(                          unit-464rec3-2026-11-01/grade-the-three-cures.mjs:66
+   C2             REGISTER     g(                          unit-464rec3-2026-11-01/grade-the-three-cures.mjs:85
+   C2b            REGISTER     g(                          unit-464rec3-2026-11-01/grade-the-three-cures.mjs:99
+   C3             REGISTER     g(                          unit-464rec3-2026-11-01/grade-the-three-cures.mjs:109
+   C3b            REGISTER     g(                          unit-464rec3-2026-11-01/grade-the-three-cures.mjs:138
+   GCLONE         REGISTER     check(                      unit-464steal-2026-11-01/drive-the-steal.mjs:84
+   GPIN           REGISTER     check(                      unit-464steal-2026-11-01/drive-the-steal.mjs:96
+   GREADER        REGISTER     check(                      unit-464steal-2026-11-01/drive-the-steal.mjs:102
+   GLIVECLEAN     REGISTER     check(                      unit-464steal-2026-11-01/drive-the-steal.mjs:106
+   GARMREACH      REGISTER     check(                      unit-464steal-2026-11-01/drive-the-steal.mjs:153
+   C0             REFUSE-SITE  refuse(  guard-resolved     unit-464vac-2026-10-31/grade-cure.mjs:37
+   C0             REFUSE-SITE  refuse(  guard-resolved     unit-464vac-2026-10-31/grade-cure.mjs:60
+   C0             REFUSE-SITE  refuse(  guard-resolved     unit-464vac-2026-10-31/grade-cure.mjs:78
+   C1             REFUSE-SITE  refuse(  guard-resolved     unit-464vac-2026-10-31/grade-cure.mjs:91
+   C1             REFUSE-SITE  refuse(  guard-resolved     unit-464vac-2026-10-31/grade-cure.mjs:105
+   G1             REFUSE-SITE  refuse(  guard-resolved     unit-464vac-2026-10-31/measure.mjs:58
+   G0             REFUSE-SITE  refuse(  guard-resolved     unit-464vac-2026-10-31/measure.mjs:79
+   G0             REFUSE-SITE  refuse(  guard-resolved     unit-464vac-2026-10-31/measure.mjs:80
+   G4             REFUSE-SITE  refuse(  guard-resolved     unit-464vac-2026-10-31/measure.mjs:88
+   G2             REFUSE-SITE  refuse(  guard-resolved     unit-464vac-2026-10-31/measure.mjs:124
+   G2             REFUSE-SITE  refuse(  guard-resolved     unit-464vac-2026-10-31/measure.mjs:129
+   G2             REFUSE-SITE  refuse(  UNMODELLED-PREDICATE unit-464vac-2026-10-31/measure.mjs:138
+   G4             REFUSE-SITE  refuse(  guard-resolved     unit-464vac-2026-10-31/measure.mjs:143
+   G3             REFUSE-SITE  refuse(  guard-resolved     unit-464vac-2026-10-31/measure.mjs:161
+
+LEGPOP/48  48 call sites, 41 distinct legs, 7 files, 14 dirs, rev b0de039b
+spans written: legs.spans.txt (48 spans)

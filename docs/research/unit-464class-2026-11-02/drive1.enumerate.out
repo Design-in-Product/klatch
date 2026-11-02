@@ -1,0 +1,12 @@
+unit-464class — stage 1: the leg population and the idiom census
+  rev:      b0de039bd79f3fa30daba69353d2eeaf48c42a2e
+  surface:  15 of 29 unit-464* dirs are mine by oldest adding commit; 42 .mjs in them
+
+GATES
+  GLIVECLEAN   ok  — git status --porcelain -- packages/ scripts/ is 0 bytes
+  GIDIOM       ok  — per-idiom counts sum to the population: check(34 + refuse(14 + g(6 = 54 vs 54 enumerated
+  GSPANOK      RED — no unsliceable span and no non-literal leg id: 8 problem(s) — unbalanced span starting line 30; unbalanced span starting line 127; unbalanced span starting line 166; unbalanced span starting line 167; unbalanced span starting line 31; unbalanced span starting line 32; docs/research/unit-464t2-population-2026-10-28/grade-the-round-population.mjs:205 check( with a non-literal id; docs/research/unit-464t2-population-2026-10-28/grade-the-round-population.mjs:430 check( with a non-literal id
+  GREV         ok  — rev read and printed: b0de039b
+  GOWNED       ok  — authorship selector partitions: 15 mine of 29 dirs
+
+REFUSED — a gate is RED, so nothing below is published.

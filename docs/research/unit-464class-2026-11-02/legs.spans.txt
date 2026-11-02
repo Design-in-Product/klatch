@@ -1,0 +1,220 @@
+rev b0de039bd79f3fa30daba69353d2eeaf48c42a2e
+48 call sites, 41 distinct legs
+
+──────── GDEPTH  REGISTER  check(  docs/research/unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:56
+check('GDEPTH',
+  STATES.every((s) => s.path.split('/').length === join(LIVE, GATE).split('/').length),
+  'both subject states sit at the same path depth, so a relative path inside either resolves alike')
+
+──────── GDELTA  REGISTER  check(  docs/research/unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:60
+check('GDELTA', preSrc !== postSrc,
+  `the two subject states differ (${preSrc.split('\n').length} → ${postSrc.split('\n').length} lines)`)
+
+──────── GCURE  REGISTER  check(  docs/research/unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:71
+check('GCURE',
+  !preHas.budget && !preHas.positional && !preHas.caseSens && preHas.buckets === 4
+  && postHas.budget && postHas.positional && postHas.caseSens && postHas.buckets === 3,
+  `PRE: budget ${preHas.budget}, positional ${preHas.positional}, case-sensitive ${preHas.caseSens}, ` +
+  `${preHas.buckets} buckets · POST: budget ${postHas.budget}, positional ${postHas.positional}, ` +
+  `case-sensitive ${postHas.caseSens}, ${postHas.buckets} buckets`)
+
+──────── GLIVECLEAN  REGISTER  check(  docs/research/unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:79
+check('GLIVECLEAN', liveDirty.length === 0,
+  `git status --porcelain -- packages/ scripts/ is ${liveDirty.length} bytes in the LIVE tree`)
+
+──────── GPATHS  REGISTER  check(  docs/research/unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:88
+check('GPATHS', !!HIS && !!MINE && HIS === pathOf(preSrc, 'HIS') && MINE === pathOf(preSrc, 'MINE'),
+  `both states read the same two fixtures: HIS ${HIS}, MINE ${MINE}`)
+
+──────── GCTRLPRE  REGISTER  check(  docs/research/unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:161
+check('GCTRLPRE', preCtrl.code === 0 && preCtrl.verdict === 'GREEN' && preCtrlMatches === 5,
+  `PRE ctrl exit ${preCtrl.code}, ${preCtrl.verdict}, ${preCtrlMatches}/5 gate lines byte-identical to drive6`)
+
+──────── GCTRLPOST  REGISTER  check(  docs/research/unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:166
+check('GCTRLPOST', postCtrl.code === 0 && postCtrl.verdict === 'GREEN'
+  && postCtrl.attrib === 'ok' && postCtrl.unattributedCount === 0,
+  `POST ctrl exit ${postCtrl.code}, ${postCtrl.verdict}, GATTRIB ${postCtrl.attrib}, ` +
+  `${postCtrl.unattributedCount} unattributed lines`)
+
+──────── GPLANT  REGISTER  check(  docs/research/unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:170
+check('GPLANT', results.every((r) => r.planted.ok),
+  `every cell's fixture is exactly as declared (${results.filter((r) => r.planted.ok).length}/${results.length})`)
+
+──────── GLIFT2  REGISTER  check(  docs/research/unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:186
+check('GLIFT2',
+  Array.isArray(preDecl) && Array.isArray(postDecl)
+  && !!bucket(preDecl, 'header') && !!bucket(preDecl, 'pop-flag') && !!bucket(postDecl, 'pop-flag'),
+  `both DECLARED arrays lift and evaluate, and the censused buckets exist: PRE ` +
+  `[${(preDecl ?? []).map((d) => d.key).join(',')}] · POST [${(postDecl ?? []).map((d) => d.key).join(',')}]`)
+
+──────── GDEPTH  REGISTER  check(  docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:69
+check('GDEPTH',
+  !!IMPORT_REL
+  && STATES.every((s) => s.path.split('/').length === join(LIVE, SUBJ).split('/').length)
+  && STATES.every((s) => existsSync(resolve(dirname(s.path), IMPORT_REL))),
+  `both subject states are at the same depth and both resolve ${IMPORT_REL} from their own ` +
+  `directory: ${STATES.map((s) => s.state + ' ' + existsSync(resolve(dirname(s.path), IMPORT_REL ?? 'x'))).join(', ')}`)
+
+──────── GCURE  REGISTER  check(  docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:90
+check('GCURE',
+  preHas.bytesInUnion && !preHas.perFile && preHas.disjunct && preHas.alreadyOnCount
+  && !preHas.stealOwned && !preHas.newestGate
+  && !postHas.bytesInUnion && postHas.perFile && !postHas.disjunct && !postHas.alreadyOnCount
+  && postHas.alreadyOnSubject && postHas.stealOwned && !postHas.newestGate,
+  `PRE ${JSON.stringify(preHas)} · POST ${JSON.stringify(postHas)}`)
+
+──────── GPATH  REGISTER  check(  docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:104
+check('GPATH', !!clonePre && clonePre === clonePost && resolve(clonePre) === CLONE,
+  `both subject states hardcode the same clone path (${clonePre}) and this harness builds exactly that`)
+
+──────── GLIVECLEAN  REGISTER  check(  docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:108
+check('GLIVECLEAN', liveDirty.length === 0,
+  `git status --porcelain -- packages/ scripts/ is ${liveDirty.length} bytes in the LIVE tree`)
+
+──────── GFUSE  REGISTER  check(  docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:112
+check('GFUSE', liveMatches.length === 1,
+  `the LIVE tree matches the phrase ${liveMatches.length} time(s) — his §3 is a fuse while that is 1`)
+
+──────── GCTRLPRE  REGISTER  check(  docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:194
+check('GCTRLPRE', ctrlPinned(preCtrl) && transition(rec3Arm) === '1→2',
+  `PRE ctrl transition ${transition(preCtrl.armreach)} vs drive3's ${transition(rec3Arm)}, ` +
+  `P2 ${preCtrl.p2Word}, created ${preCtrl.createdCommit}, reported sha is the created HEAD`)
+
+──────── GCTRLPOST  REGISTER  check(  docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:197
+check('GCTRLPOST', ctrlPinned(postCtrl) && postCtrl.allGatesOk,
+  `POST ctrl transition ${transition(postCtrl.armreach)}, P2 ${postCtrl.p2Word}, ` +
+  `created ${postCtrl.createdCommit}, all ${postCtrl.gateLines.length} of its own gates ok: ${postCtrl.allGatesOk}`)
+
+──────── GPLANTED  REGISTER  check(  docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:200
+check('GPLANTED', results.every((r) => r.beforeN === 1 + r.plants.filter((p) => p[1].includes(PHRASE)).length),
+  'each cell entered its run with the match count its plant list declares: ' +
+  [...new Set(results.map((r) => `${r.arm} ${r.beforeN}`))].join(', '))
+
+──────── GROWREPRO  REGISTER  check(  docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:211
+check('GROWREPRO', rec4Rows.length === 4 && preCtrl.rows.length === 4
+  && tripleKey(preCtrl.rows) === tripleKey(rec4Rows),
+  `PRE ctrl reproduces drive4's 4 (value,comments,raw) triples: ` +
+  `${tripleKey(preCtrl.rows) === tripleKey(rec4Rows)} (${rec4Rows.length} recorded, ${preCtrl.rows.length} read)`)
+
+──────── GCLONE  REGISTER  check(  docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:84
+check('GCLONE', cloneOk,
+  `clone git-dir ${cloneReal} ≠ live ${liveReal}, under .testdata/, has scripts/lib/`)
+
+──────── GPIN  REGISTER  check(  docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:96
+check('GPIN', pinPresent, `${CURE.slice(0, 8)} is a commit in the clone`)
+
+──────── GREADER  REGISTER  check(  docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:102
+check('GREADER', readerSame, 'live and clone scripts/lib/strip-source.mjs byte-identical')
+
+──────── GLIVECLEAN  REGISTER  check(  docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:106
+check('GLIVECLEAN', liveDirty.length === 0,
+  `git status --porcelain -- packages/ scripts/ is ${liveDirty.length} bytes in the LIVE tree`)
+
+──────── GARMREACH  REGISTER  check(  docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:135
+check('GARMREACH',
+  ARM === 'kn' ? matches.length === 1 : (matches.length === matchesBefore.length + 1 || matches.length === 2),
+  `arm=${ARM}: matches ${matchesBefore.length} → ${matches.length}` +
+  (stealSha ? `, steal commit ${stealSha.slice(0, 8)}` : ''))
+
+──────── C0  REGISTER  g(  docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs:53
+g('C0', 'all three edited instruments still parse', allParse)
+
+──────── C1  REGISTER  g(  docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs:66
+g('C1', 'S1 is a literal pin, no longer a recency selector, and the pin is still the commit ' +
+  'its own subject names', s1Pin !== null && s1NoRecency && s1PinSelected && s1ParentResolves)
+
+──────── C2  REGISTER  g(  docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs:85
+g('C2', 'S2 is pinned to the add event, the recency call is gone, and the printed label no ' +
+  'longer describes the method it stopped using',
+  s2Pin !== null && s2NoRecency && s2Pin === s2Added && s2LabelFixed)
+
+──────── C2b  REGISTER  g(  docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs:99
+g('C2b', 'S2 now lifts the defective spelling its round exists to grade, and that text is ' +
+  'different from what the uncured key lifted',
+  defectiveShape && atPin !== atRecency)
+
+──────── C3  REGISTER  g(  docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs:109
+g('C3', 'S3 publishes a pinned identity that is actually in the path\'s history',
+  s3Pin !== null && s3InHistory)
+
+──────── C3b  REGISTER  g(  docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs:138
+g('C3b', 'the re-keyed conjunct is falsifiable by exactly the movement the old one could not ' +
+  'see — graded as a delta against the same arms, not as an absolute',
+  newPredicate && oldMoved === false && newMoved === true)
+
+──────── GCLONE  REGISTER  check(  docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs:84
+check('GCLONE', cloneOk,
+  `clone git-dir ${cloneReal} ≠ live ${liveReal}, under .testdata/, has scripts/lib/`)
+
+──────── GPIN  REGISTER  check(  docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs:96
+check('GPIN', pinPresent, `${CURE.slice(0, 8)} is a commit in the clone`)
+
+──────── GREADER  REGISTER  check(  docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs:102
+check('GREADER', readerSame, 'live and clone scripts/lib/strip-source.mjs byte-identical')
+
+──────── GLIVECLEAN  REGISTER  check(  docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs:106
+check('GLIVECLEAN', liveDirty.length === 0,
+  `git status --porcelain -- packages/ scripts/ is ${liveDirty.length} bytes in the LIVE tree`)
+
+──────── GARMREACH  REGISTER  check(  docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs:153
+check('GARMREACH',
+  ARM === 'kn' ? matches.length === 1 : stealOwned,
+  `arm=${ARM}: matches ${matchesBefore.length} → ${matches.length}` +
+  (stealSha ? `, steal commit ${stealSha.slice(0, 8)} ` +
+    `(${stealCreated ? 'created by this arm' : 'owned from a previous drive of this arm'})` : ''))
+
+──────── C0  REFUSE-SITE  refuse(  docs/research/unit-464vac-2026-10-31/grade-cure.mjs:37
+GUARD: (CELLS.length !== 8)
+refuse('C0', `vac.json carries ${CELLS.length} measured cell(s), not 8 — grading nothing`)
+
+──────── C0  REFUSE-SITE  refuse(  docs/research/unit-464vac-2026-10-31/grade-cure.mjs:60
+GUARD: (PRECURE_REV === null)
+refuse('C0', 'no commit of this directory predates a commit of the checker')
+
+──────── C0  REFUSE-SITE  refuse(  docs/research/unit-464vac-2026-10-31/grade-cure.mjs:78
+GUARD: (!changed)
+refuse('C0', 'the checker is unchanged — there is no cure to grade')
+
+──────── C1  REFUSE-SITE  refuse(  docs/research/unit-464vac-2026-10-31/grade-cure.mjs:91
+GUARD: (before === null)
+refuse('C1', `${row.tag}: pre-cure recording unreadable at ${String(PRECURE_REV).slice(0, 8)}`)
+
+──────── C1  REFUSE-SITE  refuse(  docs/research/unit-464vac-2026-10-31/grade-cure.mjs:105
+GUARD: ((after.stderr ?? '').length > 0 || (blind.stderr ?? '').length > 0)
+refuse('C1', `${row.tag}: non-empty stderr (cured ${(after.stderr ?? '').length}B, blind ${(blind.stderr ?? '').length}B)`)
+
+──────── G1  REFUSE-SITE  refuse(  docs/research/unit-464vac-2026-10-31/measure.mjs:58
+GUARD: (CELLS.length !== 8 || !wellFormed)
+refuse('G1', `sliced ${CELLS.length} cell(s), well-formed=${wellFormed} — expected 8, all with --map= and >=1 --arm=`)
+
+──────── G0  REFUSE-SITE  refuse(  docs/research/unit-464vac-2026-10-31/measure.mjs:79
+GUARD: (unreadable.length > 0)
+refuse('G0', `${unreadable.length} subject(s) unreadable at one of the two revs: [${unreadable.map(basename).join(',')}]`)
+
+──────── G0  REFUSE-SITE  refuse(  docs/research/unit-464vac-2026-10-31/measure.mjs:80
+GUARD: (moved.length > 0)
+refuse('G0', `${moved.length} of ${subjects.length} subject(s) CHANGED between his rev and mine: [${moved.join(',')}] — his key is stale against my tree`)
+
+──────── G4  REFUSE-SITE  refuse(  docs/research/unit-464vac-2026-10-31/measure.mjs:88
+GUARD: (process.env.ABSORB_CRIPPLE !== undefined)
+refuse('G4', `ABSORB_CRIPPLE is set in this process's environment (${JSON.stringify(process.env.ABSORB_CRIPPLE)}) — refusing to drive`)
+
+──────── G2  REFUSE-SITE  refuse(  docs/research/unit-464vac-2026-10-31/measure.mjs:124
+GUARD: (!agree)
+refuse('G2', `${tag}: the derived copy does not reproduce the live checker's published lines (live ${kLive.length} line(s), instr ${kInstr.length}) — not measuring`)
+
+──────── G2  REFUSE-SITE  refuse(  docs/research/unit-464vac-2026-10-31/measure.mjs:129
+GUARD: (live.stderr.length > 0 || instr.stderr.length > 0)
+refuse('G2', `${tag}: non-empty stderr (live ${live.stderr.length}B, instr ${instr.stderr.length}B)`)
+
+──────── G2  REFUSE-SITE  refuse(  docs/research/unit-464vac-2026-10-31/measure.mjs:138
+GUARD: (UNMODELLED-PREDICATE)
+refuse('G2', `${tag}: dump unreadable`)
+
+──────── G4  REFUSE-SITE  refuse(  docs/research/unit-464vac-2026-10-31/measure.mjs:143
+GUARD: (j.cripple !== '' || j.boundary !== 'live')
+refuse('G4', `${tag}: dump records boundary=${j.boundary} cripple=${JSON.stringify(j.cripple)} — not a live, uncrippled drive`)
+
+──────── G3  REFUSE-SITE  refuse(  docs/research/unit-464vac-2026-10-31/measure.mjs:161
+GUARD: (i !== j.rows.length || !groupingOk)
+refuse('G3', `${tag}: ${j.rows.length} row(s) do not partition into ${j.arms.length} arm(s) by reached-count (consumed ${i}, ids match=${groupingOk})`)
