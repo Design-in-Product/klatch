@@ -1,0 +1,10 @@
+unit-464bucket — regrading `saturated` on his own recording
+  recording: docs/research/unit-464steal-2026-11-01/drive4.steal-identity.out
+  predicate: docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs
+
+GATES
+  GLIFT       RED — his upstream set is [raw, comments] and the verdict figure is `value`
+  GSLICE      ok  — his table header found at 1599 and 4 data rows parsed (4 expected)
+  GROUNDTRIP  ok  — 4/4 parsed rows rebuild to a line present in the recording
+
+REFUSED — a gate is RED, so nothing below is published.
