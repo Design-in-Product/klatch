@@ -110,21 +110,27 @@ const legIdentityImmovable = (r) => {
   return { verdict: a === b ? 'GREEN' : 'RED', figure: `${a}|${b}`, anchors: `${r.REV_A}:${SUBJECT}|${r.REV_B}:${SUBJECT}` };
 };
 
-// `delta x history-keyed` — `C2b@99`'s shape, here only as the DISCRIMINATING reader on arm B.
-const legDeltaHistoryKeyed = (r) => {
-  const atPin = r.REV_A;
+// `delta x history-keyed` — `C2b@99`'s shape. THE PIN IS A PARAMETER, and drive1 is why: I first
+// hardcoded it to `REV_A` and then asserted that the identity polarity FLIPS between arms. It does
+// not, because `REV_A` was never the newest commit touching the path — the cure commit `REV_B`
+// touched it — so that comparison was already false in arm A and stayed false. The figure moved;
+// the verdict could not. Pinning on `REV_B` is the configuration in which a verdict CAN flip, and
+// it is the configuration Theseus's own scratch drive was in (his pin was the only commit touching
+// his path). Driving both pins is the repair. [[feedback_a_guard_on_identity_does_not_guard_value]]
+const legDeltaHistoryKeyed = (r, pin) => {
+  const atPin = pin;
   const atRecency = g(r.root, 'log', '-1', '--format=%H', '--', SUBJECT);
   if (typeof atRecency !== 'string' || atRecency === '') return { verdict: 'UNRUNNABLE', figure: null };
-  return { verdict: atPin !== atRecency ? 'GREEN' : 'RED', figure: `${atPin}|${atRecency}`, anchors: `${r.REV_A}|git log -1 -- ${SUBJECT}` };
+  return { verdict: atPin !== atRecency ? 'GREEN' : 'RED', figure: `${atPin}|${atRecency}`, anchors: `${pin}|git log -1 -- ${SUBJECT}` };
 };
 
 // `identity x history-keyed` — Theseus's cell, re-driven here so the lemma is demonstrated on BOTH
 // columns in one harness rather than cited from his unit.
-const legIdentityHistoryKeyed = (r) => {
-  const atPin = r.REV_A;
+const legIdentityHistoryKeyed = (r, pin) => {
+  const atPin = pin;
   const atRecency = g(r.root, 'log', '-1', '--format=%H', '--', SUBJECT);
   if (typeof atRecency !== 'string' || atRecency === '') return { verdict: 'UNRUNNABLE', figure: null };
-  return { verdict: atPin === atRecency ? 'GREEN' : 'RED', figure: `${atPin}|${atRecency}`, anchors: `${r.REV_A}|git log -1 -- ${SUBJECT}` };
+  return { verdict: atPin === atRecency ? 'GREEN' : 'RED', figure: `${atPin}|${atRecency}`, anchors: `${pin}|git log -1 -- ${SUBJECT}` };
 };
 
 // =========================================================================== arms A and B
@@ -142,14 +148,18 @@ check('GTARGETAB', typeof blobA === 'string' && typeof blobB === 'string' && blo
 
 const A_delta = legDeltaImmovable(ab);
 const A_ident = legIdentityImmovable(ab);
-const A_hist = legDeltaHistoryKeyed(ab);
-const A_histIdent = legIdentityHistoryKeyed(ab);
+const A_hist = legDeltaHistoryKeyed(ab, ab.REV_A);
+const A_histIdent = legIdentityHistoryKeyed(ab, ab.REV_A);
+const A_histB = legDeltaHistoryKeyed(ab, ab.REV_B);
+const A_histIdentB = legIdentityHistoryKeyed(ab, ab.REV_B);
 
 console.log(`\narm A (control — two named revs, content differs, no further commits):`);
-console.log(`  delta    x immovable      : ${A_delta.verdict}   figure ${A_delta.figure}`);
-console.log(`  identity x immovable      : ${A_ident.verdict}   figure ${A_ident.figure}`);
-console.log(`  delta    x history-keyed  : ${A_hist.verdict}   figure ${A_hist.figure}`);
-console.log(`  identity x history-keyed  : ${A_histIdent.verdict}   figure ${A_histIdent.figure}`);
+console.log(`  delta    x immovable                : ${A_delta.verdict}   figure ${A_delta.figure}`);
+console.log(`  identity x immovable                : ${A_ident.verdict}   figure ${A_ident.figure}`);
+console.log(`  delta    x history-keyed  (pin REV_A): ${A_hist.verdict}   figure ${A_hist.figure}`);
+console.log(`  identity x history-keyed  (pin REV_A): ${A_histIdent.verdict}   figure ${A_histIdent.figure}`);
+console.log(`  delta    x history-keyed  (pin REV_B): ${A_histB.verdict}   figure ${A_histB.figure}`);
+console.log(`  identity x history-keyed  (pin REV_B): ${A_histIdentB.verdict}   figure ${A_histIdentB.figure}`);
 
 check('GARMA', A_delta.verdict === 'GREEN',
   `P1 half one: the delta x immovable leg reads GREEN on two named revs whose content differs (registered: GREEN) — got ${A_delta.verdict}`);
@@ -171,20 +181,31 @@ check('GTARGETB', typeof newest === 'string' && newest !== ab.REV_B && countTouc
 
 const B_delta = legDeltaImmovable(ab);
 const B_ident = legIdentityImmovable(ab);
-const B_hist = legDeltaHistoryKeyed(ab);
-const B_histIdent = legIdentityHistoryKeyed(ab);
+const B_hist = legDeltaHistoryKeyed(ab, ab.REV_A);
+const B_histIdent = legIdentityHistoryKeyed(ab, ab.REV_A);
+const B_histB = legDeltaHistoryKeyed(ab, ab.REV_B);
+const B_histIdentB = legIdentityHistoryKeyed(ab, ab.REV_B);
 
 console.log(`\narm B (perturbed — THREE further commits touching the path, graded property untouched):`);
-console.log(`  delta    x immovable      : ${B_delta.verdict}   figure ${B_delta.figure}`);
-console.log(`  identity x immovable      : ${B_ident.verdict}   figure ${B_ident.figure}`);
-console.log(`  delta    x history-keyed  : ${B_hist.verdict}   figure ${B_hist.figure}`);
-console.log(`  identity x history-keyed  : ${B_histIdent.verdict}   figure ${B_histIdent.figure}`);
+console.log(`  delta    x immovable                : ${B_delta.verdict}   figure ${B_delta.figure}`);
+console.log(`  identity x immovable                : ${B_ident.verdict}   figure ${B_ident.figure}`);
+console.log(`  delta    x history-keyed  (pin REV_A): ${B_hist.verdict}   figure ${B_hist.figure}`);
+console.log(`  identity x history-keyed  (pin REV_A): ${B_histIdent.verdict}   figure ${B_histIdent.figure}`);
+console.log(`  delta    x history-keyed  (pin REV_B): ${B_histB.verdict}   figure ${B_histB.figure}`);
+console.log(`  identity x history-keyed  (pin REV_B): ${B_histIdentB.verdict}   figure ${B_histIdentB.figure}`);
 
 check('GIMMOV', B_delta.figure === A_delta.figure && B_delta.verdict === A_delta.verdict,
   `P2 half one — IMMOVABLE: three commits touching the path moved the leg's figure not at all (${A_delta.figure} -> ${B_delta.figure}) and its verdict not at all (${A_delta.verdict} -> ${B_delta.verdict})`);
 
-check('GDISCRIM', B_hist.figure !== A_hist.figure && B_histIdent.verdict !== A_histIdent.verdict,
-  `P2 half two — THE DISCRIMINATING READER: on the SAME arm B, the history-keyed figure DID move (${A_hist.figure} -> ${B_hist.figure}) and its identity polarity flipped ${A_histIdent.verdict} -> ${B_histIdent.verdict}. So GIMMOV above is a measurement and not a dead reader`);
+// SPLIT APART after drive1, where these two were one conjunction and the second half published a
+// false RED. The FIGURE moving is the axis-B claim and is pin-independent; a VERDICT flipping needs
+// the reader pinned on the rev that was newest when the arm opened. Two legs, two claims.
+// [[feedback_a_refusal_conjoined_away_publishes_a_false_red]]
+check('GDISCRIM', B_hist.figure !== A_hist.figure,
+  `P2 half two — THE DISCRIMINATING READER (figure): on the SAME arm B the history-keyed figure DID move (${A_hist.figure} -> ${B_hist.figure}), while GIMMOV's figure above did not. One arm, two readers, exactly one moved — so GIMMOV is a measurement and not a dead reader`);
+
+check('GHISTFLIP', A_histIdentB.verdict === 'GREEN' && B_histIdentB.verdict === 'RED' && A_histB.verdict === 'RED' && B_histB.verdict === 'GREEN',
+  `P2 half three — THE DISCRIMINATING READER (verdict), pinned on REV_B, the rev that WAS newest when arm A opened: identity x history-keyed ${A_histIdentB.verdict} -> ${B_histIdentB.verdict} and delta x history-keyed ${A_histB.verdict} -> ${B_histB.verdict}. Theseus's own result, reproduced in this harness and in both polarities`);
 
 // =========================================================================== arm C
 const c = buildScratch('c', true);
@@ -212,11 +233,13 @@ else {
   // not what it READS, so the two polarities must present byte-identical anchors and figures, and
   // must disagree on every state pair.
   const pairs = [
-    ['arm A', A_delta, A_ident],
-    ['arm B', B_delta, B_ident],
-    ['arm C', C_delta, C_ident],
-    ['arm A hist', A_hist, A_histIdent],
-    ['arm B hist', B_hist, B_histIdent],
+    ['arm A immovable', A_delta, A_ident],
+    ['arm B immovable', B_delta, B_ident],
+    ['arm C immovable', C_delta, C_ident],
+    ['arm A history-keyed @REV_A', A_hist, A_histIdent],
+    ['arm B history-keyed @REV_A', B_hist, B_histIdent],
+    ['arm A history-keyed @REV_B', A_histB, A_histIdentB],
+    ['arm B history-keyed @REV_B', B_histB, B_histIdentB],
   ];
   const sameAnchors = pairs.filter(([, d, i]) => d.anchors === i.anchors && d.figure === i.figure);
   check('GAXISBINV', sameAnchors.length === pairs.length,
@@ -291,7 +314,9 @@ if (typeof tsv !== 'string') {
 }
 
 console.log(`\n=========================================================`);
-console.log(`drive1 (occupy delta x immovable + the polarity lemma): RED ${red} · UNRUNNABLE ${unrunnable}`);
+// Named after the SCRIPT, not after a drive number: this harness is run more than once, and a
+// recording whose summary line asserts a drive number it was not the drive for is simply false.
+console.log(`occupy-delta-immovable (the cell + the polarity lemma): RED ${red} · UNRUNNABLE ${unrunnable}`);
 console.log(`VERDICT ${red === 0 && unrunnable === 0 ? 'GREEN' : red > 0 ? 'RED' : 'UNRUNNABLE'}`);
 console.log(`scratch repos left for inspection, both outside the Klatch tree.`);
 process.exit(red > 0 ? 1 : unrunnable > 0 ? 2 : 0);

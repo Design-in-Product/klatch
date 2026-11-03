@@ -1,0 +1,53 @@
+GSCRATCH  ok    arms A/B scratch repo built at /var/folders/jl/g34tk0xx7nj20xbjvyq6bskc0000gn/T/klatch-464immov-ab-3p0cBV with two distinct named revs 8cd06823 / 70a84ee8
+GTARGETAB  ok    arm A's construction target is present: subject.txt has different blobs at the two named revs (fe8da01d vs a690c644)
+
+arm A (control — two named revs, content differs, no further commits):
+  delta    x immovable                : GREEN   figure fe8da01d1efdbedbae9cdc8e3659bec25593ed78|a690c64438acadbfb304b83966a106b07fc36f19
+  identity x immovable                : RED   figure fe8da01d1efdbedbae9cdc8e3659bec25593ed78|a690c64438acadbfb304b83966a106b07fc36f19
+  delta    x history-keyed  (pin REV_A): GREEN   figure 8cd06823af52a141161cd741d271930c9b48cac2|70a84ee8f6590292aae338301f92a4758fe31956
+  identity x history-keyed  (pin REV_A): RED   figure 8cd06823af52a141161cd741d271930c9b48cac2|70a84ee8f6590292aae338301f92a4758fe31956
+  delta    x history-keyed  (pin REV_B): RED   figure 70a84ee8f6590292aae338301f92a4758fe31956|70a84ee8f6590292aae338301f92a4758fe31956
+  identity x history-keyed  (pin REV_B): GREEN   figure 70a84ee8f6590292aae338301f92a4758fe31956|70a84ee8f6590292aae338301f92a4758fe31956
+GARMA  ok    P1 half one: the delta x immovable leg reads GREEN on two named revs whose content differs (registered: GREEN) — got GREEN
+GTARGETB  ok    arm B's perturbation landed: 5 commits now touch subject.txt (was 2), newest 62db1d3d != the second named rev 70a84ee8
+
+arm B (perturbed — THREE further commits touching the path, graded property untouched):
+  delta    x immovable                : GREEN   figure fe8da01d1efdbedbae9cdc8e3659bec25593ed78|a690c64438acadbfb304b83966a106b07fc36f19
+  identity x immovable                : RED   figure fe8da01d1efdbedbae9cdc8e3659bec25593ed78|a690c64438acadbfb304b83966a106b07fc36f19
+  delta    x history-keyed  (pin REV_A): GREEN   figure 8cd06823af52a141161cd741d271930c9b48cac2|62db1d3db1ac36c43737c65d8b796ea3ada4d78d
+  identity x history-keyed  (pin REV_A): RED   figure 8cd06823af52a141161cd741d271930c9b48cac2|62db1d3db1ac36c43737c65d8b796ea3ada4d78d
+  delta    x history-keyed  (pin REV_B): GREEN   figure 70a84ee8f6590292aae338301f92a4758fe31956|62db1d3db1ac36c43737c65d8b796ea3ada4d78d
+  identity x history-keyed  (pin REV_B): RED   figure 70a84ee8f6590292aae338301f92a4758fe31956|62db1d3db1ac36c43737c65d8b796ea3ada4d78d
+GIMMOV  ok    P2 half one — IMMOVABLE: three commits touching the path moved the leg's figure not at all (fe8da01d1efdbedbae9cdc8e3659bec25593ed78|a690c64438acadbfb304b83966a106b07fc36f19 -> fe8da01d1efdbedbae9cdc8e3659bec25593ed78|a690c64438acadbfb304b83966a106b07fc36f19) and its verdict not at all (GREEN -> GREEN)
+GDISCRIM  ok    P2 half two — THE DISCRIMINATING READER (figure): on the SAME arm B the history-keyed figure DID move (8cd06823af52a141161cd741d271930c9b48cac2|70a84ee8f6590292aae338301f92a4758fe31956 -> 8cd06823af52a141161cd741d271930c9b48cac2|62db1d3db1ac36c43737c65d8b796ea3ada4d78d), while GIMMOV's figure above did not. One arm, two readers, exactly one moved — so GIMMOV is a measurement and not a dead reader
+GHISTFLIP  ok    P2 half three — THE DISCRIMINATING READER (verdict), pinned on REV_B, the rev that WAS newest when arm A opened: identity x history-keyed GREEN -> RED and delta x history-keyed RED -> GREEN. Theseus's own result, reproduced in this harness and in both polarities
+GTARGETC  ok    arm C's construction target is present: two DISTINCT named revs (ba0f0793/26a0a0a9) carrying BYTE-IDENTICAL subject.txt (fe8da01d)
+
+arm C (matched — two named revs carrying identical content):
+  delta    x immovable      : RED   figure fe8da01d1efdbedbae9cdc8e3659bec25593ed78|fe8da01d1efdbedbae9cdc8e3659bec25593ed78
+  identity x immovable      : GREEN   figure fe8da01d1efdbedbae9cdc8e3659bec25593ed78|fe8da01d1efdbedbae9cdc8e3659bec25593ed78
+GARMC  ok    P1 half two: the same leg reads RED when the two named revs carry identical content (registered: RED) — got RED
+GDELTAVSCTRL  ok    the matched arms DIFFER at the leg under test (GREEN vs RED) — so the leg's verdict is a function of the PAIR's difference, which is what axis A 'delta' means. A single arm could not have told occupiable from dead
+GAXISBINV  ok    P3's premise, measured not argued: on 7/7 state pairs the delta leg and its identity complement present BYTE-IDENTICAL anchors AND byte-identical figures. Axis B reads the same thing in both polarities
+GDELTAPOL  ok    and on 7/7 state pairs the two polarities give OPPOSITE verdicts — they are complements, so they cannot both be green and cannot both be empty for want of a writable shape
+GGRIDROWS  ok    sliced 13 rows from the axes TSV at e0fbd74c (published total: 13)
+
+THE 3x3 CROSS-TAB, sliced from docs/research/unit-464order-2026-11-02/HAND-AXES-13.tsv at e0fbd74c:
+                      immovable       movable history-keyed      row
+  conjunctive                 1             4             0        5
+  delta                       0             2             1        3
+  identity                    3             2             0        5
+  col                         4             8             1       13
+GEMPTIES  ok    the sliced grid leaves 3 cells empty: [conjunctive x history-keyed ; delta x immovable ; identity x history-keyed] (my published figure: 3)
+
+P3 — THE LEMMA'S REACH over the three empty cells:
+  REACHABLE-BY-COMPLEMENT  delta x immovable  (complement 'identity x immovable' occupied by 3: GPATHS@88,GPATH@104,G0@80)
+  REACHABLE-BY-COMPLEMENT  identity x history-keyed  (complement 'delta x history-keyed' occupied by 1: C2b@99)
+  OUTSIDE THE LEMMA        conjunctive x history-keyed  (axis A 'conjunctive' has no operand pair, so no complement)
+GLEMMAREACH  ok    P3: 2 of the 3 empty cells are reachable-by-complement from an OCCUPIED cell in their own column, and exactly 1 lies outside the lemma — conjunctive x history-keyed
+GGRIDINDEP  ok    P3's consequence: of the 9 cells, the 6 delta/identity cells collapse to 3 independent pairs, leaving 6 independent cells, not 9
+
+=========================================================
+drive1 (occupy delta x immovable + the polarity lemma): RED 0 · UNRUNNABLE 0
+VERDICT GREEN
+scratch repos left for inspection, both outside the Klatch tree.
