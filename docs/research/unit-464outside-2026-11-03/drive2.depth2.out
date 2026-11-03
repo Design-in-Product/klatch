@@ -1,0 +1,58 @@
+unit-464outside — census of the UNENUMERATED half
+PIN=bba2aa3c  CRIPPLE=(none)  CLASS_DEPTH=2
+instrument blob (HEAD-side, this file): 0b2e193f2425517090d6e87f9e189e37e2539f5d
+
+SURFACE at bba2aa3c
+  unit-464* dirs total                 37
+  admitted by HIS selector (censused)  19 dirs · 52 .mjs
+  THIS population                      18 dirs · 54 .mjs
+
+LEGS over 54 file(s): 126 site(s)
+  CROSS-STATE    2
+  GATE           30
+  UNMODELLED     94
+
+CROSS-STATE legs on this surface: 2
+  unit-464bucket-2026-11-01/grade-his-armreach-gate.mjs:145  id=GCTRL  conjunctive                          selector=no 
+  unit-464bucket-2026-11-01/grade-his-attrib-gate.mjs:95  id=GREPRO  conjunctive                          selector=no 
+
+selector idiom present in 8 of 54 file(s) on the surface
+    unit-464cell-2026-11-02/p3-scratch-identity-history.mjs
+    unit-464conj-2026-11-03/occupy-conj-history.mjs
+    unit-464dir-2026-11-02/across-one-operator-v2.mjs
+    unit-464dir-2026-11-02/across-one-operator.mjs
+    unit-464rec-2026-10-31/probe-is-it-live.mjs
+    unit-464rec-2026-10-31/rec-census.mjs
+    unit-464sat-2026-10-31/grepro.mjs
+    unit-464subkind-2026-11-02/grade-subkind.mjs
+
+conjunctive AND selector-bearing CROSS-STATE legs: 0
+
+UNREGISTERED — every directory under docs/research/ at bba2aa3c, by family
+  other                     6 dirs ·    5 .mjs
+  roundNNN-instruments     91 dirs ·  191 .mjs
+  unit-464*                37 dirs ·  106 .mjs
+  unit-other                2 dirs ·    6 .mjs
+  TOTAL                   136 dirs ·  308 .mjs
+  his census surface is 52 of 308 .mjs = 16.9% of the instruments in this tree
+
+LEGS
+  ok   GLIFT          9 fragments lifted from his two files at bba2aa3c, every one non-empty
+  ok   GLIFTEVAL      his kit evaluates: 3 idioms (check( g( refuse(), FROZEN_RE 5 · LIVE_RE 9
+  ok   GBLANKED       lifted blankNonCode is length-preserving on a probe carrying braces inside a string, a comment and a regex class
+  ok   GSELF          this unit's own dir is not in the population (present at pin: no — committed after the pin)
+  ok   GDISJOINT      baseline: complement ∩ censused half = 0 members (compared as member lists, not counts)
+  ok   GUNION         censused half ∪ population = all 37 unit-464 dirs, member for member
+  ok   GNOTRETYPED    the censused-half member list is HIS selector applied to git log, 19 dirs, never typed into this unit
+  ok   GLEGSFOUND     his idioms over my surface register 126 leg site(s)
+  ok   GCSARM         the CROSS-STATE arm of his class key is REACHED on my surface: 2 site(s) — a later zero elsewhere is a measured zero, not an unreached arm
+  ok   GSELECTORARM   the selector detector's POSITIVE arm fires somewhere in this run: 8 file(s) · 0 CROSS-STATE leg(s). A zero in P4 is then a measured zero
+
+VERDICTS
+  P1  LANDS    NON-BLIND (declared). 37 dirs / 19 his / 52 .mjs his / 18 mine / 54 .mjs mine
+  P2  LANDS    complement leg population = 126 (threshold ≥ 40)
+  P3  LANDS    CROSS-STATE legs outside the censused half = 2 (threshold ≥ 1)
+  P4  LANDS    conjunctive × selector legs = 0 (LANDS iff 0) — NON-VACUOUS: the selector arm fired 8 time(s) on this surface
+  P5  LANDS    files carrying the selector idiom = 8 of 54 (threshold ≥ 1)
+
+SUMMARY  legs 10 ok / 0 RED  ·  verdicts 5 land / 0 fail  ·  GREEN at 10 legs
