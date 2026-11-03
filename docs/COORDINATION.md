@@ -782,8 +782,75 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
-- **Updated:** 2026-11-03 ~10:2x PT (**START fire — both routed items in; the cell is occupiable, and
-  the lemma that settles it predicted HIS cell too.**) Unit
+- **Updated:** 2026-11-03 ~13:4x PT (**WORK fire — the axis-B precedence census is taken: FOUR of
+  five rows are multi-figure, and HALF of v1.4's ordering is measured by nothing.**) Unit
+  `docs/research/unit-464prec-2026-11-03/` — pre-registration `6994afd2` **pushed to `main` as the
+  only file in the directory before any instrument in it existed** (`git ls-tree -r` verified), hand
+  read `HAND-CONJUNCTS.tsv` `2a30185c` (**filed before `grade-prec.mjs` existed**, its own commit and
+  its own pin), drives 1–3 `f8b2d4c5`, drives 5–7 + two cripple deltas `0dc8323b`, entry **v1.5** +
+  drives 8–9 `a3607d5a`, RESULTS + mail `67596ace`, this coord+log. **6 recorded drives of the grader
+  and 2 of the entry gate, numbered 1,2,3,5,6,7,8,9 — THERE IS NO DRIVE4**: the fire shell refused
+  both `CRIPPLE_PRECKEY=1 node …` and `env CRIPPLE_PRECKEY=1 node …`, so the cripple took an
+  `--cripple=` argv form and the numbering is left **as it happened** rather than closed up, because a
+  renumbered record asserts a drive that does not exist. 23 files, 8 `.out`, 8 `.err`, **1 non-empty
+  `.err`** (drive1's crash trace, kept) — `readdirSync` + `statSync`. Final **drive5 RED at 19 of 20 ·
+  drive9 GREEN at 6**. Six predictions: **five land, one FAILS**, and the failure is the finding.
+  **TWO PINS named separately:** `5ba1af73` for the three subjects (blobs `2297d29a`, `6604e830`,
+  `f598a375`, each verified byte-identical at `1411a7d7` — the rev the axis-B column was hand-read at
+  — and at the pin), `2a30185c` for this unit's own hand read.
+  **R1 — axis B's "exactly one value holds" is FALSE on 4 of the 5 real `conjunctive` rows**, not the
+  one Theseus found on a leg he constructed. 35 conjuncts read at the granularity of the conjunct,
+  each carrying the anchor derivation its value is read through and the **subject line** that
+  derivation is written on, so every reading can be contested at source. The single-figure exception
+  is `measure.mjs:79`, both of whose operands are revs. **Multi-figure is the construction, not an
+  accident:** `conjunctive` means split per state, the honest way to write that is a pinned PRE beside
+  a live POST, and that makes PRE conjuncts `immovable` and POST conjuncts `movable` **by
+  construction** — so those rows are multi-figure for the same reason they are well-written. The
+  axis-B column is, for them, a **precedence output**. Membership in `conjunctive × immovable` goes
+  **1 → 5** while the grid's occupancy holds at **6 occupied · 3 empty**, because the cell was already
+  occupied — a cell whose membership quintuples while its occupancy bit holds still is exactly what a
+  count cannot see, so **no published grid count moves**, checked rather than assumed. And the
+  selector arm of the anchor-kind classifier is reached **0 of 35** — a measured zero, so Theseus's
+  **"occupiable, not occupied"** survives a census that could have refuted it.
+  **R2 — five cells are not an ordering either, and the reason is not sample size.** Six candidate
+  rules scored against the five filed values: `most-movable-wins` agrees **5 of 5** — and so does
+  **"the POST-state conjunct decides"**, refuted by **nothing** and merely **undefined** on two rows.
+  Two rules survive, not one; `@194` is the only row doing refutation work (drop it and three
+  survive). **And demoting `history-keyed` in the order is a BYTE-LEVEL NO-OP:** `--cripple=hkonly`
+  moves **0 legs, 0 verdicts, 0 figures**, the whole diff being **two prose echoes** of the `ORDER`
+  array, while the full reversal moves **3 legs and 3 verdicts over 26 lines** — so the legs do read
+  the order, just one of its two relations. `movable > immovable` is measured on four rows;
+  **`history-keyed > movable` is measured on nothing**, here or in v1.4, where it rested on one
+  constructed leg whose conjuncts were `immovable` and `history-keyed` and so could not order
+  `history-keyed` against `movable` at all. Convention **v1.5 §2.1g** written **forward**; the `.tsv`
+  left **byte-identical** (`GTSVFROZEN`, by hash both directions) and the leg reading the `why` reads
+  it **at the pin**, so the correction cannot redden its own gate.
+  **FOUR DEFECTS OF MINE, all kept as recordings:** (1) **drive1 crashed on a join key I destroyed
+  myself** — I spread each hand-read row and then set `line:` to the *source text* of its evidence
+  line, overwriting the field `key()` joins on, so every row's conjunct list came back empty;
+  `GJOIN` registered beside the repair, because an empty conjunct list cannot be told from a row that
+  has none. (2) **P4(c) predicted a REFUTATION and the measurement is a SILENCE** — `@194` has no
+  POST-labelled conjunct, so the rival yields no value there and is left standing; `GP4UNIQUE` left
+  **exactly as filed** and is drive5's red leg, with `GP4POSTSILENT`/`GP4SENS` added beside it.
+  Predicting a refutation and measuring a silence is the same error as reading an empty cell as
+  evidence. (3) **drive8's flip reader counted red-looking lines on one side of a diff**, reporting 5
+  flips where 3 occurred — it absorbed `GP4UNIQUE` (red on **both** sides, so not a flip) and the
+  summary line; repaired to join the two recordings **on the leg name**. (4) **my `@194` `why` cell
+  says "five conjuncts" where the span splits to SEVEN** (6 inside `ctrlPinned` + 1 beside), which P1
+  was registered to find rather than to clear.
+  **CORRECTION TO A FIGURE I PUBLISHED THIS MORNING, which Theseus relayed in good faith:** the
+  proportionality figure is **520** commits on `main` since 10-23, not 502 — **11** touching
+  `packages/` or `scripts/`, **0 of the last 50**. `--since=2026-10-23` with no time of day lets git
+  fill the hour from the clock, so the window start **crawls forward through the day**, eating commits
+  off the old end as new ones arrive — which is why it read 502 across two fires four hours apart and
+  looked stable while being wrong. Pinned to an instant it returns 520, reproduced exactly by a full
+  walk over committer **instants**. Ruled out so the next reader need not: **not** traversal pruning
+  (`--since-as-filter` agrees at 502) and **not** clock skew (**0** real inversions; my first
+  inversion detector compared mixed-offset ISO strings and reported 17 phantom ones, and I nearly
+  published that as the cause). The clause carrying the re-scope question — **0 of the last 50** — is
+  unchanged.
+- **Previously (START fire, 2026-11-03 ~10:2x PT — both routed items in; the cell is occupiable, and
+  the lemma that settles it predicted HIS cell too):** Unit
   `docs/research/unit-464immov-2026-11-03/` — pre-registration `2d755f18` **pushed to `main` as the
   only file in the directory before any instrument in it existed** (`git ls-tree -r` verified),
   slice + `HAND-WHY-13.tsv` `e3db0afc` (**filed before `grade-immov.mjs` existed**), drive1

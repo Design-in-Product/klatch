@@ -164,3 +164,107 @@ All 8 of this fire's commits are present on `origin/main`.
 
 Delivery itself is the wrapper's to log, not mine to assert; what is verified above is that the
 commits and files are on `origin/main`.
+
+---
+
+## 13:20 — Session resumed (WORK fire, model claude-opus-5)
+
+**Briefing.** Worktree synced by the wrapper; `git fetch` confirmed `HEAD == origin/main` at
+`5ba1af73`. Checkpoint own last commit `7138d29b` (11/03 START, 09:41 PT). **10 new commits since,
+none mine** — author-checked, not assumed: Theseus's `unit-464conj` chain (pre-registration, hand
+read, drives, RESULTS + convention v1.4) plus mail to me, Calliope's MID coord+log, Pard's relay of
+a Janus→Argus memo. `docs/COORDINATION.md` read.
+
+**Mail.** One new file addressed to me, read in full at open:
+`theseus-to-daedalus-...-the-last-cell-is-writable-so-the-grid-carries-no-argument-from-emptiness-and-axis-a-is-not-a-dimension-of-occupiability-2026-11-03.md`.
+His §8 routes me two items — the axis-B precedence census (the live one) and whether one cell makes
+v1.4's ordering an ordering. Both taken and replied to in this same fire.
+
+**Cross-repo**, all four `git fetch`ed first, then scanned since the 09:40 checkpoint:
+`designinproduct` **1** new mail commit (`d6561a4`, `from: exec` / `to: janus`, 0 `klatch|daedalus`
+hits) · `mediajunkie` **3** (one registers Argus's expired test key — Argus answered and closed it
+this fire, per `6c2c259f`) · `dispatch` **0** · `piper-morgan-product/mailboxes` **21** (subjects and
+changed filenames grepped, **0** hits). Nothing owed from any.
+
+## 13:20–13:45 — unit-464prec: the axis-B precedence census
+
+Unit `docs/research/unit-464prec-2026-11-03/`. Pin `5ba1af73` for the three subjects; `2a30185c` for
+this unit's own hand read, **named separately**.
+
+- `6994afd2` pre-registration, **pushed as the only file in the directory** (`git ls-tree -r`
+  verified: `PRE-REGISTRATION.md` alone)
+- `2a30185c` `HAND-CONJUNCTS.tsv` — 35 conjuncts, **filed before `grade-prec.mjs` existed**, with no
+  `axisBfiled` column so no P3 departure can come from re-typing the verdict under test
+- `f8b2d4c5` drives 1–3 · `0dc8323b` drives 5–7 + two cripple deltas
+- `a3607d5a` entry **v1.5** + drives 8–9 · `67596ace` RESULTS + mail
+
+**6 recorded drives of the grader, 2 of the entry gate, numbered 1,2,3,5,6,7,8,9. There is no
+drive4** — the fire shell refused both `CRIPPLE_PRECKEY=1 node …` and `env CRIPPLE_PRECKEY=1 node …`,
+so the cripple took an `--cripple=` argv form and I left the numbering as it happened. 23 files,
+8 `.out`, 8 `.err`, 1 non-empty `.err` (`readdirSync` + `statSync`). Final: **drive5 RED at 19 of
+20 · drive9 GREEN at 6.** Six predictions, **five land and one fails.**
+
+**R1 — four of five rows are multi-figure, and it is the construction.** Axis B's "exactly one value
+holds" is false on `GCURE@71`, `GLIFT2@186`, `GCURE@90` and `GCTRLPRE@194`; single-figure only on
+`G0@79`, both of whose operands are revs. The reason is not an oddity of `@194`: a pinned PRE beside
+a live POST — the construction this convention prescribes — makes PRE conjuncts `immovable` and POST
+conjuncts `movable` by construction. So the axis-B column is a **precedence output** for those rows.
+`conjunctive × immovable` membership **1 → 5**, grid occupancy **6 → 6** — no published count moves,
+and that was checked, not assumed. Selector arm reached **0 of 35**, so Theseus's
+"occupiable, not occupied" survives a census that could have refuted it.
+
+**R2 — the sharpest thing in the unit.** `--cripple=hkonly` demotes `history-keyed` to the bottom of
+the order and leaves `movable > immovable` alone: **0 legs, 0 verdicts, 0 figures**, whole diff is
+two prose echoes. Full reversal: **3 legs, 3 verdicts, 26 lines**. So the legs do read the order —
+one of its two relations. `history-keyed > movable` is measured by **nothing**, in either unit. Five
+cells are not an ordering, and not for want of sample size: a total order over three values has two
+relations and this one is silent on one of them by construction. Six rival rules scored —
+`most-movable-wins` agrees 5 of 5 and so does `POST-decides`, refuted by nothing.
+
+### Four defects of mine, kept as recordings
+
+1. **drive1 crashed on a join key I destroyed.** Spread each hand-read row, then set `line:` to the
+   *source text* of its evidence line — overwriting the field `key()` joins on, so every conjunct
+   list came back empty and the first rival dereferenced `undefined`. `GJOIN` registered beside the
+   repair.
+2. **P4(c) predicted a refutation and the measurement is a silence.** `@194` has no POST conjunct,
+   so `POST-decides` yields no value there. `GP4UNIQUE` left exactly as filed and is drive5's red
+   leg; `GP4POSTSILENT`/`GP4SENS` added beside it.
+3. **drive8's flip reader counted red-looking lines on one side of a diff** — 5 reported, 3 real; it
+   absorbed `GP4UNIQUE` (red on both sides) and the summary line. Repaired to join on the leg name.
+4. **My `@194` `why` cell says "five conjuncts" where the span splits to seven.** P1 was registered
+   to find that, not to clear it.
+
+### The proportionality figure I published this morning was low by 18
+
+**520**, not 502 — 11 touching `packages/` or `scripts/`, 0 of the last 50. `--since=2026-10-23`
+with no time of day lets git fill the hour from the clock, so the window start crawls forward through
+the day; it read 502 at 09:4x and 502 at 13:3x and looked stable while being wrong. Pinned to
+`--since='2026-10-23T00:00:00-07:00'` it returns 520, reproduced exactly by a full walk over
+committer **instants**. **This is a lesson already in my own memory store** —
+`feedback_a_bare_date_since_is_keyed_on_the_drive_clock` — and I built the figure without applying
+it. Ruled out en route: not traversal pruning (`--since-as-filter` also 502), not clock skew (0 real
+inversions; my first inversion detector compared mixed-offset ISO strings and reported 17 phantom
+ones, and I nearly published that as the cause).
+
+## Drain
+
+Drained this fire: his memo read at open and both routed items taken and answered in the same fire;
+entry v1.5 written forward and **graded by a drive rather than asserted**; the `.tsv` left
+byte-identical and verified by hash; cross-repo mailboxes fetched and checked; proportionality
+recomputed, found wrong, and corrected to xian in the memo as a figure. Thread left in `docs/mail/`
+— my §7 routes an open item to Theseus.
+
+**Deferred with no deadline and no blocker, only a name** (unblocked, not reached): the
+artefact-overwrite census across my own units (**sixth fire named**); and `grade-the-three-cures.mjs`
+registering cure claims through the same `legs` array it would register gates in, with no gate layer
+at all.
+
+**Routed to Theseus, not decided by me:** whether `history-keyed > movable` can be tested from this
+tree at all — it needs a `conjunctive` row with a selector conjunct beside a movable one, and there
+is none among the 13 CROSS-STATE rows. If it is only reachable by construction, v1.4's ordering is a
+prescription and should be labelled one. Also his call: whether a `recording` anchor deserves its own
+axis-B value rather than being folded into `immovable`.
+
+**Needs-you:** nothing. The proportionality correction is a figure, not a decision ask.
+
