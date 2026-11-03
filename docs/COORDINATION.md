@@ -20,7 +20,38 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/argus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/argus`, per-worktree git identity `Argus (Klatch)`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope restored per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-02 ~13:3x PT (WORK fire — census-only no-op). Checkpoint own last commit
+- **Updated:** 2026-11-02 ~18:0x PT (STOP fire — census-only no-op). Checkpoint own last commit
+  `5fd3ee6a` (11/02 WORK fire, ~13:3x PT). 16 new commits since, none mine (author-checked):
+  Daedalus's `unit-464order` chain (pre-registration, drives 1/2-6 — GREEN at 20 then 22 legs,
+  6 of 6 predictions land, the hazard is a CELL not a rank, the bottom cell of an ordered key is
+  order-invariant, his own published sub-kind tally was never the output of his own ordered key)
+  plus RESULTS+mail to Theseus/xian cc Janus/**Argus**/Calliope/Iris, Theseus's reply mail (both
+  questions answered, his order sends C2b to the cell he marks sound), Theseus's
+  `unit-464subkind` chain (pre-registration, drives 1-4 — GREEN at 22 legs, his C2b is `delta`
+  under his own order, 5 of 13 rows carry two or more criteria) plus RESULTS+mail, and two
+  coord+log no-ops (Daedalus SWEEP, Theseus WORK). `git diff --dirstat 5fd3ee6a..HEAD` **100%
+  under `docs/`**; `git diff --stat 5fd3ee6a..HEAD -- packages/ scripts/` empty. **Mail:** two
+  new local files, both read in full and grepped for "argus" — each carries only the header cc
+  line, no Argus bucket in either body; confirmed cc-only, no action. Re-read the standing open
+  thread addressed to this seat
+  (`theseus-to-argus-daedalus-...-your-unclaimed-110-is-zero...-2026-10-27.md`): unchanged,
+  still "nothing routed," still left open since Daedalus's C4 half is unclosed. All four
+  cross-repo mailboxes checked fresh via `git fetch` + `git log --since` against the ~13:3x
+  checkpoint: `designinproduct` 0 new; `mediajunkie` ~35 new (piper-guards 0.2.2
+  restart/registry traffic, content-grepped for klatch/argus, 0 hits); `dispatch` 0 new;
+  `piper-morgan-product/mailboxes` ~140 new, content-grepped, 0 hits. Nothing owed from any.
+  **Standing blockers re-derived fresh:** Managed Agents smoke-run — no `ma-smoke/*` branch
+  anywhere, named blocker on xian, unchanged at day 13. Rollup still v172 (read directly):
+  needs-you unchanged at 2, nothing in the 16 new commits is xian's to decide. Intel sweep
+  cadence satisfied today by the automated scan, not due from this seat. **Gate re-derived
+  fresh:** `lsof -i :3001` port free; `npm run typecheck` clean ×4 workspaces; `npm test -w
+  packages/server` **140 files · 2186 passed · 1 skipped (2187)**, byte-identical; `npm test -w
+  packages/client` **26 passed|13 skipped (39) · 333 passed|13 skipped (346)**, byte-identical;
+  `node scripts/sweep-probes.mjs --census` **153 probe files, 43 swept/110 deferred, CENSUS
+  OK**, byte-identical. **Needs-you:** unchanged at 2. Two consecutive `git fetch origin` checks
+  found nothing further unblocked — fire closed bounded. **Drain:** all of the above drained in
+  this fire; nothing deferred. Log: `docs/logs/2026-11-02-argus-log.md`.
+- **Updated (previous):** 2026-11-02 ~13:3x PT (WORK fire — census-only no-op). Checkpoint own last commit
   `8d8a4d27` (11/02 START fire, 09:04 PT). 22 new commits since, none mine (author-checked):
   Calliope's MID-fire coord+log+rollup no-op (v171 → v172, ground-rules day-count 84 → 85
   corrected in place), Theseus's `unit-464dir` chain (pre-registration, drives 3-6, grade lands
