@@ -1,0 +1,91 @@
+[MEAS] the five-way key, derived from HIS c1..c4 under MY registered order c1<c2<c3<c4:
+       {"keyed":2,"conjunctive":5,"delta":3,"inert":2,"staleness":1}
+[MEAS] the five-way key as I PUBLISHED it in HAND-READ-13.tsv:
+       {"keyed":2,"conjunctive":3,"delta":4,"inert":2,"staleness":2}
+[MEAS] departures: 3 of 13
+       unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs|71|GCURE  published=delta  derived=conjunctive  c1..c4=TTFF
+       unit-464cure3-2026-11-01/grade-the-steal-cures.mjs|90|GCURE  published=delta  derived=conjunctive  c1..c4=TTFF
+       unit-464rec3-2026-11-01/grade-the-three-cures.mjs|99|C2b  published=staleness  derived=delta  c1..c4=FTTF
+[P1] unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs|71|GCURE: my label is criterion 2; earlier criteria answering T: [c1] (1)
+[P1] unit-464cure3-2026-11-01/grade-the-steal-cures.mjs|90|GCURE: my label is criterion 2; earlier criteria answering T: [c1] (1)
+[P1] unit-464rec3-2026-11-01/grade-the-three-cures.mjs|99|C2b: my label is criterion 3; earlier criteria answering T: [c2] (1)
+[MEAS] ops in span  unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs|161|GCTRLPRE  3
+[MEAS] ops in span  unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs|186|GLIFT2  2
+[MEAS] ops in span  unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs|60|GDELTA  1
+[MEAS] ops in span  unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs|71|GCURE  2
+[MEAS] ops in span  unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs|88|GPATHS  2
+[MEAS] ops in span  unit-464cure3-2026-11-01/grade-the-steal-cures.mjs|104|GPATH  2
+[MEAS] ops in span  unit-464cure3-2026-11-01/grade-the-steal-cures.mjs|194|GCTRLPRE  1
+[MEAS] ops in span  unit-464cure3-2026-11-01/grade-the-steal-cures.mjs|211|GROWREPRO  4
+[MEAS] ops in span  unit-464cure3-2026-11-01/grade-the-steal-cures.mjs|90|GCURE  0
+[MEAS] ops in span  unit-464rec3-2026-11-01/grade-the-three-cures.mjs|99|C2b  1
+[MEAS] ops in span  unit-464vac-2026-10-31/grade-cure.mjs|78|C0  0
+[MEAS] ops in span  unit-464vac-2026-10-31/measure.mjs|79|G0  1
+[MEAS] ops in span  unit-464vac-2026-10-31/measure.mjs|80|G0  1
+[P2] rows his read marks c1=T AND c2=T: [unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs|71|GCURE ; unit-464cure3-2026-11-01/grade-the-steal-cures.mjs|90|GCURE]
+[P2]   unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs|71|GCURE ops=2
+[P2]   unit-464cure3-2026-11-01/grade-the-steal-cures.mjs|90|GCURE ops=0
+[P3] c2=T: [unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs|60|GDELTA ; unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs|71|GCURE ; unit-464cure3-2026-11-01/grade-the-steal-cures.mjs|90|GCURE ; unit-464rec3-2026-11-01/grade-the-three-cures.mjs|99|C2b ; unit-464vac-2026-10-31/grade-cure.mjs|78|C0]
+[P3] c4=T: [unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs|88|GPATHS ; unit-464cure3-2026-11-01/grade-the-steal-cures.mjs|104|GPATH ; unit-464vac-2026-10-31/measure.mjs|79|G0 ; unit-464vac-2026-10-31/measure.mjs|80|G0]
+[P4] cell conjunctive: 4 distinct member list(s) across 24 orderings
+[P4] cell delta: 4 distinct member list(s) across 24 orderings
+[P4] cell staleness: 6 distinct member list(s) across 24 orderings
+[P4] cell inert: 3 distinct member list(s) across 24 orderings
+[P4] cell keyed: 1 distinct member list(s) across 24 orderings
+[P4] the one keyed member list: [unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs|161|GCTRLPRE ; unit-464cure3-2026-11-01/grade-the-steal-cures.mjs|211|GROWREPRO]
+[P5] conjunctive × immovable: 1  [unit-464vac-2026-10-31/measure.mjs|79|G0]
+[P5] conjunctive × movable: 4  [unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs|186|GLIFT2 ; unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs|71|GCURE ; unit-464cure3-2026-11-01/grade-the-steal-cures.mjs|194|GCTRLPRE ; unit-464cure3-2026-11-01/grade-the-steal-cures.mjs|90|GCURE]
+[P5] delta × history-keyed: 1  [unit-464rec3-2026-11-01/grade-the-three-cures.mjs|99|C2b]
+[P5] delta × movable: 2  [unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs|60|GDELTA ; unit-464vac-2026-10-31/grade-cure.mjs|78|C0]
+[P5] identity × immovable: 3  [unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs|88|GPATHS ; unit-464cure3-2026-11-01/grade-the-steal-cures.mjs|104|GPATH ; unit-464vac-2026-10-31/measure.mjs|80|G0]
+[P5] identity × movable: 2  [unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs|161|GCTRLPRE ; unit-464cure3-2026-11-01/grade-the-steal-cures.mjs|211|GROWREPRO]
+[P6] mis-prescribed under the ordered key: unit-464rec3-2026-11-01/grade-the-three-cures.mjs|99|C2b → delta ("the figure can move") while c3 (neither side live) says it cannot
+[P6] mis-prescribed under the ordered key: unit-464vac-2026-10-31/measure.mjs|79|G0 → conjunctive ("the figure can move") while c3 (neither side live) and c4 (out of a cure's reach) says it cannot
+[MEAS] the entry carries a MEASURED-BLOCK-V12 fence: false
+[MEAS] the entry's version header line: **v1.1, 2026-11-02.** Drafted by Daedalus. **`CROSS-STATE` is Theseus's coinage**, and so are two
+[MEAS] /v1\.1/ still matches the live entry (so GDOCPIN's version key is insensitive to the bump): true
+
+unit-464order — 20 legs
+  ok   GINPUTREV  my own axis read is graded from its COMMITTED form: HEAD blob 5938 bytes, worktree 5938 bytes, identical true
+  ok   GHISFROZEN  his criteria TSV cannot have diverged between the pin and HEAD: 4682 bytes at 1411a7d7, 4682 at HEAD, identical true
+  ok   GROWKEY  the three inputs key on the same 13 (file,line,id) rows — compared as MEMBER LISTS, not counts: mine 13, his 13, axes 13; mine==his true, mine==axes true
+  ok   GSUBJECTPIN  all 5 subject files byte-identical at 1411a7d7 and HEAD, so the pin costs nothing and is still the only thing between a correct read and a silent mis-aim; drifted []
+  ok   GAXISATOTAL  axis A is total and single-valued over 13 rows: {"delta":3,"conjunctive":5,"identity":5}; off-vocabulary []
+  ok   GAXISBTOTAL  axis B is total and single-valued over 13 rows: {"movable":8,"immovable":4,"history-keyed":1}; off-vocabulary []
+  ok   GNOUNDECIDED  no row carries '?' in c1..c4, so every first-yes label is derived and none is a silent fold of undecidable into F (13 rows × 4 criteria read)
+  ok   GP1NONVACUOUS  P1's population is non-empty — 3 departure row(s); a 0-of-0 "3 of 3" would be vacuous
+  ok   GSPANLIFT  every one of the 13 registered spans lifted from the PINNED source by paren balance over the comment- and string-blanked text; unliftable []
+  ok   GOPKP  the operator counter fires where the slice shows operators: :71 has 2 (`=== 4`, `=== 3` — both state-vs-LITERAL), :88 has 2 (`===`, state-vs-state); so a 0 elsewhere is a reading, not a dead counter
+  ok   GSPANBLIND  the span-only surface is DEMONSTRABLY blind, not assumed so: :161 counts 3 operator(s) in its span and every one is state-vs-LITERAL, while its FIGURE is a live-vs-frozen identity count built in `preCtrlMatches` one line above the span
+  ok   GP2NONVACUOUS  P2's population is the 2 rows whose criterion-2 value is an interpretation rather than a reading; measured 2
+  ok   GP3NONVACUOUS  neither conjunct is empty, so "0 rows have both" is a measurement and not a filter artefact: c2=T on 5 row(s), c4=T on 4 row(s)
+  ok   GP4NONVACUOUS  order-invariance of the bottom cell is not trivial: 5 of 13 row(s) take more than one label across the 24 orderings — [unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs|71|GCURE ; unit-464cure3-2026-11-01/grade-the-steal-cures.mjs|90|GCURE ; unit-464rec3-2026-11-01/grade-the-three-cures.mjs|99|C2b ; unit-464vac-2026-10-31/measure.mjs|79|G0 ; unit-464vac-2026-10-31/measure.mjs|80|G0]
+  ok   GP4ORDERCOUNT  all orderings of the four ASKED criteria are enumerated (criterion 5 is the fallthrough and cannot move): 24 = 4!
+  ok   GP5TOTAL  the 3×3 cross-tab is total: 13 row-assignments over 13 rows across 6 non-empty cell(s)
+  ok   GP5NONEMPTY  both hazard member lists are non-empty before they are compared: new 2, old 2
+  ok   GP6CHECKERKP  the SAME mis-prescription checker fires on the old prescription table — 2 row(s) — which is the known positive that makes its count on the new table a measurement rather than a vacuous pass [[feedback_a_printed_self_test_that_gates_nothing]]
+  ok   GV11VERBATIM  the MEASURED-BLOCK-V11 fence is byte-identical at 1411a7d7 and in the worktree, so unit-464reach's own GDOCPIN still grades the figures it was filed against: 717 vs 717 bytes, identical true
+  ok   GNODEPEND  git status --porcelain -- packages/ scripts/ is 0 bytes, asserted INSIDE the harness rather than by hand
+
+PREDICTIONS — registered threshold beside measured value:
+  LANDS    P1
+      registered: 3 of 3 departure rows have an earlier criterion answering T
+      measured:   3 of 3
+  LANDS    P2
+      registered: a refusal keyed on "zero comparison operators" fires on exactly 1 of the 2 ambiguous rows
+      measured:   1 of 2
+  LANDS    P3
+      registered: 0 of 13 rows have c2=T AND c4=T, so no row separates criterion-2-before-4 from 4-before-2
+      measured:   0 of 13
+  LANDS    P4
+      registered: the keyed member list is identical across all 24 orderings, and >=1 other cell varies
+      measured:   keyed has 1 distinct member list(s) across 24; cells that vary: [conjunctive,delta,staleness,inert] (4)
+  LANDS    P5
+      registered: the identity × movable member list is byte-identical to the published keyed member list
+      measured:   lengths 2 vs 2; members IDENTICAL — new [unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs|161|GCTRLPRE ; unit-464cure3-2026-11-01/grade-the-steal-cures.mjs|211|GROWREPRO] vs old [unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs|161|GCTRLPRE ; unit-464cure3-2026-11-01/grade-the-steal-cures.mjs|211|GROWREPRO]
+  LANDS    P6
+      registered: exactly 2 of 13 rows are mis-prescribed by the ordered key, and 0 under the two axes
+      measured:   old 2 of 13 [unit-464rec3-2026-11-01/grade-the-three-cures.mjs|99|C2b ; unit-464vac-2026-10-31/measure.mjs|79|G0] · new 0 of 13
+
+GREEN at 20 legs
+6 of 6 predictions land
