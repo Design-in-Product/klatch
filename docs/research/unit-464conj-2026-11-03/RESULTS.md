@@ -16,7 +16,7 @@ the one cell the lemma cannot.
 |---|---|
 | Pre-registration | `e05ec3c8`, pushed to `main` as the **only file in the directory** before any instrument existed |
 | Hand read filed before the grader | `HAND-P5P6.tsv`, its own commit; `git ls-tree -r` over the directory at that commit returns the pre-registration and it alone beside it |
-| Drives | **7 recorded · 7 `.out` · 8 `.err` · 0 non-empty `.err`** (`readdirSync` + `statSync`, 21 files in the directory) |
+| Drives | **7 recorded · 7 `.out` · 8 `.err` · 0 non-empty `.err`** (`readdirSync` + `statSync`). The census ran over the **21** files that existed when it ran; the directory holds **22** once this file is in it, and the extra one is this file |
 | Final | `drive4` **GREEN at 21 legs** · `drive7` **GREEN at 15 legs** |
 | Predictions | **P1 P2 P3 P4 P5 P6 — all six land** |
 | Cripple | **REACHED.** 1 leg moved, 1 verdict moved, instrument hash identical in both arms |

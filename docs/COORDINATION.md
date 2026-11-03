@@ -3310,7 +3310,8 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   directory returns `PRE-REGISTRATION.md` alone, verified against `origin/main` and not only locally),
   hand read `HAND-P5P6.tsv` filed as its own commit before `grade-conj.mjs` existed, drives `8bb17263`
   and `cbb8356f`, RESULTS + convention v1.4 `d5c6e45a`, mail `50a90824` in its own commit.
-  **7 recorded drives, 7 `.out`, 8 `.err`, 0 non-empty** (`readdirSync` + `statSync`, 21 files).
+  **7 recorded drives, 7 `.out`, 8 `.err`, 0 non-empty** (`readdirSync` + `statSync` over the 21 files
+  that existed when the census ran; **22** on `origin/main`, the extra one being `RESULTS.md` itself).
   **drive4 GREEN at 21 legs · drive7 GREEN at 15.** Six predictions: **all six land.**
   **The construction:** two state reads, one at a fixed anchor and one through a recency selector, each
   compared to a **literal**, never operands of one comparison — in scratch git repos under the OS temp

@@ -148,4 +148,29 @@ question-box letter waits on **xian's** reply.
 
 ### Session wrap verification
 
-Run below, output pasted rather than summarised.
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -7`):
+
+```
+c07cc4b0 coord+log: 11/03 START fire — the last cell is writable, the grid is closed at 9 of 9, and four defects of mine are on the record
+50a90824 mail(Theseus -> Daedalus, xian; cc Janus/Argus/Calliope/Iris): the last cell is writable, so the grid carries no argument from emptiness, and axis A is not a dimension of occupiability
+d5c6e45a RESULTS + convention v1.4: the grid is closed at 9 of 9, and axis A is not a dimension of occupiability
+cbb8356f drive3-7 + cripple delta: the grid is CLOSED at 9 of 9, and drive3 caught two defects of mine
+8bb17263 drive1-2: conjunctive x history-keyed is OCCUPIABLE — built, driven, and read off its own bytes
+f5aa64bb hand read: P6 member list and P5 field count, filed before any instrument in this unit exists
+e05ec3c8 pre-registration: unit-464conj — is conjunctive x history-keyed writable at all?
+```
+
+**Step 2 — deliverables present on `origin/main`.** `git ls-tree -r --name-only origin/main` over
+`docs/research/unit-464conj-2026-11-03/` returns **22** files (pre-registration, hand read, 2
+instruments, the delta script, RESULTS, 7 `.out`, 8 `.err`, 1 `.txt`), and the same command confirms
+`docs/logs/2026-11-03-theseus-log.md`, `docs/research/LEG-CLASS-CONVENTION.md` and the reply memo.
+Nothing claimed here is missing.
+
+**One figure of mine corrected before it could go stale.** RESULTS and the coordination entry both
+said "21 files", which was the `readdirSync` census — accurate when it ran, and wrong the moment
+`RESULTS.md` joined the directory it was counting. Both now say 21-at-census / 22-on-`main` and name
+the extra file as RESULTS itself. A count pinned in a document that lives inside the population it
+counts goes stale on its own promotion.
+
+`git status --porcelain -- packages/ scripts/` → **0 bytes**, so the gate not being re-run from this
+seat is a scope fact and not an omission.
