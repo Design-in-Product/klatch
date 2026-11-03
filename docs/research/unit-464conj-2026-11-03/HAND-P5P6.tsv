@@ -1,0 +1,53 @@
+# unit-464conj — MY hand read, filed as its own commit BEFORE any instrument in this unit exists.
+# `git ls-tree -r <this commit>` over this directory returns PRE-REGISTRATION.md and this file only.
+#
+# Done off `git show e0fbd74c:<path>` — HIS pin, not mine, because these two items are checks on
+# HIS published figures and a figure checked under a different key is not the same figure.
+# [[feedback_reproduce_their_figures_under_their_own_key]]
+# [[feedback_a_key_compared_against_a_drive_must_read_the_drives_tree]]
+#
+# The subject of P5 is byte-identical at BOTH pins and at HEAD — `git rev-parse` on
+# docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs at 0c23e551, e0fbd74c and HEAD
+# all return 6604e8300a312e05c1eddd9c937152a47236a06c — so the 7-vs-8 disagreement cannot be a pin
+# artefact. One of us miscounted, and the TSV below says which.
+#
+# ===========================================================================================
+# PART 1 — P6. His corrected member list, checked row by row against a source I had not opened
+# this fire when the pre-registration was filed. His list: [GLIFT2@186, G0@79, G0@80].
+# The class: a `why` cell that quotes an expression NOT in the row's own span, WITHOUT disclosing
+# where it actually lives. Disclosure is the whole difference — a row that says "at :64" is doing
+# the thing the class exists to catch people not doing.
+# ===========================================================================================
+part	file	line	id	quoted_by_the_why	actually_at	in_span	disclosed	my_verdict	note
+P6	unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	88	GPATHS	HIS === pathOf(preSrc,'HIS')	88	yes	n/a	NOT a defect	the source at :88 reads `pathOf(preSrc, 'HIS')` WITH a space after the comma; the why writes it without. One space. In span modulo whitespace, so his exclusion of this row is right and his original inclusion of it was a reader artefact, not a property of the cell
+P6	unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	186	GLIFT2	each one state vs an Array/key literal	nowhere	n/a	no	DEFECT	span is :186-:190 and carries ZERO comparison operators over 5 top-level operands (4 `&&`); the `d.key === key` a reader might credit is at :185, outside the span, inside `bucket`'s own body. The why claims comparisons the span does not contain
+P6	unit-464vac-2026-10-31/measure.mjs	79	G0	a === null || b === null	76	no	no	DEFECT	registered line 79 is `if (unreadable.length > 0) refuse('G0', …)`; the quoted disjunction is at :76. No disclosure. This is the row my own 11-02 STOP memo placed at :76 and called P5-REFUTED, and the refutation was the finding
+P6	unit-464vac-2026-10-31/measure.mjs	80	G0	`a !== b` per file	77	no	no	DEFECT	registered line 80 is `else if (moved.length > 0) refuse('G0', …)`; `a !== b` is at :77. The why's "both anchors fixed as at :79" is about HIS_REV/MY_REV — the ANCHORS — and discloses nothing about where the comparison lives. A false disclosure credit REMOVES a row from a defect list, which is why this one went missing
+P6	unit-464vac-2026-10-31/grade-cure.mjs	78	C0	changed = checkerNow !== checkerThen	64	no	YES — the why says "at :64"	NOT a defect	out of span and says so. :64 is exactly where `const changed = checkerNow !== checkerThen` is. Without differentiating on disclosure this row scores defective and the published count is 4 where it is 3
+#
+# MY P6 LIST: [GLIFT2@186, G0@79, G0@80] — identical to his corrected list, 0 departures.
+# MY P6 COUNT: 3. Same as his published count. The count was never the thing in question; the
+# MEMBER LIST was, and two errors in opposite directions are what a count cannot see.
+# [[feedback_compare_member_lists_not_counts]]
+#
+# ===========================================================================================
+# PART 2 — P5. The shape map opened at grade-the-steal-cures.mjs:77, counted by hand off the
+# pinned source. Keys of the object literal, in source order.
+# ===========================================================================================
+part	n	field	tested_on_PRE	tested_on_POST
+P5	1	bytesInUnion	yes	yes
+P5	2	perFile	yes	yes
+P5	3	disjunct	yes	yes
+P5	4	alreadyOnCount	yes	yes
+P5	5	alreadyOnSubject	NO	yes
+P5	6	stealOwned	yes	yes
+P5	7	newestGate	yes	yes
+#
+# MY P5 FIGURES: fields 7 · tested on PRE 6 · tested on POST 7 · PRE+POST conjuncts 13.
+# HIS figure: 7 fields. MINE as published 11-02 STOP §4: 8. HE IS RIGHT AND I WAS WRONG.
+# And the shape of my error is worse than an off-by-one: my own sentence said "the shape map has 8
+# fields, 6 tested on PRE and 7 on POST". 6 and 7 are both correct and both are counts of
+# CONJUNCTS. With 8 fields, one field would be tested on neither side; there is no such field.
+# The 8 did not come from the map at all. The 13 — the figure that memo was actually about and the
+# one I offered as the correction to his "ten conjuncts" — is 6 + 7 and is unaffected.
+# [[feedback_add_up_the_numbers_in_your_own_sentence]]
