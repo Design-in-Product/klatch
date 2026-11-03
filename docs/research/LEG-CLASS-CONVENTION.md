@@ -1,5 +1,21 @@
 # Leg-class convention — PIN, GATE, CROSS-STATE
 
+**v1.4, 2026-11-03.** v1.4's entry (§2.1f) is **Theseus's**, written into Daedalus's document the
+way v1.1–v1.3 were written: **forward, correcting nothing in place.** Its input is Daedalus's
+2026-11-03 START memo §7, which routed the last open cell to me, and its measured figures come from
+`docs/research/unit-464conj-2026-11-03/`.
+
+**What v1.4 changed, and the sentence it retires.** v1.3 settled two of the three empty cells and
+left `conjunctive × history-keyed` as the one cell in the grid with **nothing said about its
+possibility** — the lemma could not reach it, because `conjunctive` has no operator to negate.
+v1.4 builds it. The cell is reached by a **second** transformation, **operand→literal
+substitution**, which preserves axis B for the same reason the polarity lemma does. Three
+consequences: **the grid is closed** — 9 of 9 cells occupied or demonstrated occupiable, so **no
+cell in it can carry an argument from emptiness**, which retires the first clause of v1.3's standing
+rule; the collapse goes further than six, to **three cells, one per column**; and axis B's
+**"exactly one value holds" is false on a `conjunctive` row**, which this document has been
+resolving by an unwritten precedence rule. §2.1f.
+
 **v1.3, 2026-11-03.** Drafted by Daedalus. **`CROSS-STATE` is Theseus's coinage**, and so are two
 of the five sub-kind names in §2.1 (`conjunctive`, `staleness`) and the axis v1.2 is built on; §4 of
 his 2026-11-01 STOP memo is the input this entry is built on, his 2026-11-02 START memo is the input
@@ -227,6 +243,91 @@ why-column census over all 13 rows (drive6):
   hand-read departures, comparison counts       0 of 5
 shape map at grade-the-steal-cures.mjs:77       7 fields  (his memo's cross-check says 8)
 ```
+
+### 2.1f The grid is CLOSED — nine of nine, so no cell in it is evidence of anything
+
+**v1.4, Theseus.** v1.3 left `conjunctive × history-keyed` as the one cell with nothing said about
+its possibility. It is **occupiable**, and demonstrated the way the other two were — by building a
+leg of its shape in scratch git repos outside this tree, driven twice, with the leg generated as a
+**file that `node` executed and a lifted reader then read**, so the predicate is not written once to
+run and again to be measured. `unit-464conj-2026-11-03/`, drive2 GREEN at 15 legs.
+
+**The move, and it is a second rule beside the polarity lemma.** Axis B is a claim about the figure
+the operand pair *reads*. v1.3 drew the consequence for the **operator**: negate it and a leg moves
+between `delta` and `identity` with axis B fixed. The same premise licenses a second transformation
+— replace one **operand** with a **literal**, keeping both state reads live. The leg becomes
+`conjunctive` by §2's own definition, and axis B does not move, because the anchors did not.
+**operand→literal substitution.**
+
+> **For every column *X*: if any one of `conjunctive × X`, `delta × X`, `identity × X` is
+> occupiable, all three are.** Operator negation moves a leg between two of a column's cells;
+> operand→literal substitution moves it into the third.
+
+So the collapse goes further than v1.3's six. On this argument the grid has **three** independent
+cells — one per column — and **axis A is not an independent dimension of occupiability at all.** It
+remains an indispensable dimension of *prescription*: `identity × movable` is still the hazard and
+`conjunctive` still means "split it per state and say so". What axis A does not do is tell you
+whether a cell can be written.
+
+**What that retires.** v1.3's standing rule ends: *"Only `conjunctive`'s three cells, and a column
+empty in both polarities, can carry an argument from emptiness at all."* `conjunctive`'s three cells
+are now two occupied and one constructed, so **no cell in this grid can carry an argument from
+emptiness.** The only thing that still could is a **column** empty in all three axis-A values, and
+there is none. The live form of the rule:
+
+> An empty cell in this grid is **evidence of nothing.** All nine are occupied or demonstrated
+> occupiable. Emptiness becomes informative again only for a column empty in all three values —
+> and then the argument is about the column, never about the cell.
+
+**Occupiable is not occupied.** No leg of `conjunctive × history-keyed`'s shape exists anywhere in
+this tree, and the same holds for the other two constructed cells.
+
+**And axis B's "exactly one value holds" is false on a `conjunctive` row.** The constructed leg's
+conjunct 1 reads a frozen anchor — no commit can move its figure, which is `immovable`. Its conjunct
+2 reads a recency selector — any commit touching the path moves it, which is `history-keyed`. Both
+measured across the same perturbation (`GC1FROZEN`, `GC2MOVED`): **one leg, simultaneously in two
+axis-B cells.** The reason is structural, not accidental: `conjunctive` *means* there is no single
+operand pair, so there is no single figure for axis B to be about.
+
+This document has been resolving that silently. `GCTRLPRE@194`'s own `why` describes a live
+`ctrlPinned(preCtrl)` **and** a frozen `transition(rec3Arm) === '1→2'`, and the row is filed
+`movable` — a precedence decision (take the most movable conjunct) made in a cell and never written
+down as a rule. **The rule that should be written, and is not yet measured over the sample:** a
+`conjunctive` row's axis B is the **most movable** of its conjuncts' figures, ordered
+`history-keyed > movable > immovable`, and a row whose conjuncts disagree should say so rather than
+be collapsed to one value. Whether the other four `conjunctive` rows are multi-figure is **not
+measured** — named here, not done.
+
+### MEASURED-BLOCK-V14
+
+```
+conjunctive x history-keyed, by construction (unit-464conj drive2, GREEN at 15 legs):
+  arm A, no commit                              GREEN -> GREEN
+  arm B, one commit touching the path            GREEN -> RED   (property FOUR at the pin and now)
+  same arm, second anchor given a REV            figure byte-identical, verdict unchanged
+  the constructed predicate, lifted reader       cmps 2 · litCmps 2 · state-vs-state 0
+operand->literal substitution over 5 state pairs:
+  anchor tuple identical across all four modes   5 of 5   (member by member, not joined)
+  delta/identity opposite verdicts               5 of 5   (the polarity lemma, reproduced)
+  conjunctive leg distinct verdicts in series    2        (so the agreement is not two constants)
+the 3x3 grid (unit-464conj drive4, GREEN at 21 legs):
+  cells occupied by the 13 rows                 6
+  cells empty                                   3
+  empties carrying a construction               3 of 3
+  cells with nothing said about possibility      0
+  independent cells implied, of 9                3   (one per column)
+one leg in two axis-B cells:
+  conjunct 1 figure across the perturbation      byte-identical   -> immovable
+  conjunct 2 figure across the perturbation      moved, true->false -> history-keyed
+shape map at grade-the-steal-cures.mjs:77       7 fields · 6 on PRE · 7 on POST · 13 conjuncts
+  (v1.3's parenthetical is right: the 8 was Theseus's and it was wrong)
+why-census member list, re-derived independently 3   GLIFT2@186, G0@79, G0@80   (0 departures)
+  a === null || b === null   at :76   out of the :79 span, undisclosed
+  a !== b                    at :77   out of the :80 span, disclosure names :79 — the ANCHORS
+  C0@78 names :64, where the expression is       disclosed, NOT a defect
+cripple, CONJ_CMP_MAX re-keyed 0 -> -1:          1 leg moved · 1 verdict moved · REACHED
+```
+
 ### 2.1a Why the hazard count survived a key this wrong
 
 v1.1's `keyed 2` was exact — Theseus checked it independently as a **member list**, not a count, and
