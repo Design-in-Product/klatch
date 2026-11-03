@@ -681,7 +681,72 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
-- **Updated:** 2026-11-02 ~13:3x PT (**WORK fire — all three sub-kinds he routed are adopted, the
+- **Updated:** 2026-11-02 ~17:3x PT (**STOP fire — both routed items in, and the answer to both was
+  the same: the ORDER was the defect, not the sequence it was in.**) Unit
+  `docs/research/unit-464order-2026-11-02/` — pre-registration `29b91664` **pushed to `main` as the
+  only file in the directory before any instrument in it existed**, the re-slice at my own pin plus
+  my two-axis hand read `1e5a6833` (**filed before `grade-order.mjs` existed**), drive1 `f0f371ad`,
+  drives 2–6 + entry v1.2 `097cf3e6`, RESULTS + mail `8f5b3e61`, this coord+log. **6 recorded
+  drives, 7 `.out`, 7 `.err`, 0 non-empty** (`readdirSync` + `statSync`, 19 files). Final **GREEN at
+  22 legs**. 6 predictions: **all six land.** Entry at `docs/research/LEG-CLASS-CONVENTION.md`
+  **v1.2**. **His §1 is right and it is worse than a mislabel:** an ordered key makes the *labels* a
+  partition and leaves the *criteria* overlapping, and **a label whose criteria overlap cannot carry
+  a prescription** — registered rule, measured: **2 of 13 rows are mis-prescribed**, `C2b@99`
+  (`delta`, "leave it", with `c3=T`) and `measure.mjs:79 G0` (`conjunctive`, "it will redden twice on
+  a legitimate move", with `c4=T` saying nothing can move it). **v1.2 replaces the ordered five-way
+  key with two independent axes** — comparison (`conjunctive`/`delta`/`identity`) × figure
+  (`immovable`/`movable`/`history-keyed`), each a partition on its own — and **the hazard is a cell,
+  not a rank: `identity × movable`**, member list **byte-identical to v1.1's `keyed`** (compared as a
+  list *and* by length). **Axis B is his** ("literal-anchor vs selector-anchor"), narrowed from the
+  anchor to the *figure*, which is what lets `GPATHS@88` read `immovable`. **`staleness` retired as a
+  label.** **His question 1 — no, criterion 2 needed a scope, not a refusal:** operator counts over
+  all 13 registered spans (sliced from the pinned source via `scripts/lib/strip-source.mjs`, reused
+  not re-rolled) show a refusal keyed on *zero operators* fires on **1 of the 2** ambiguous rows —
+  `@71` has two, both state-vs-literal, and is equally ambiguous. **His question 2 — a measurement
+  rather than a note:** all **24** orderings of v1.1's four asked criteria enumerated, and **`keyed`
+  has ONE member list across all 24 while the other four cells each have more than one; 5 of 13 rows
+  change label with the order.** The bottom cell of an ordered key is order-invariant because it is
+  reached only by all-no rows — so his `GHAZARDMEMBERS` exact match was **structural, not luck**, and
+  the four non-hazard counts I published were never safe to quote. **All three of our label
+  departures were mine:** deriving the first-yes label from his criteria under *my own* registered
+  order yields his tally, not mine, and all 3 are rows where my hand label skipped an earlier
+  criterion answering `T` (3 of 3). **Also refuted, a sentence of mine from this morning:** v1.1's
+  "direction is decided before reach" — `c2=T ∧ c4=T` holds on **0 of 13**, so no row in this tree
+  tests that ordering and the two rows I cited never reach criterion 2 at all. **Two defects of mine,
+  both kept as recordings:** drive1 published `new 0 of 13` beside `old 2 of 13` as if both were
+  counts over one population, when the new-scheme filter is false **by construction** for every
+  `× immovable` cell — a property of my prescription table, not of the rows — re-measured in drive2
+  **by exhaustion over all 9 cells** with a planted fault in a broken copy of the table as the known
+  positive; and **`GDOCPIN`'s version key `/v1\.1/` cannot tell v1.1 from v1.2**, because a v1.2
+  entry still says "v1.1" in the paragraph naming what it superseded, so that filed gate would grade
+  the superseded figures forever. **Fixed forward, not retro-edited:** V11 fence left byte-identical
+  (717 bytes at pin and in the worktree), v1.2's figures in a new `MEASURED-BLOCK-V12` pinned by
+  `GV12` (18 figures, none recomputed by the leg grading them), and **drive6 re-runs the filed
+  `grade-reach.mjs` against the edited entry — `GDOCPIN` ok, `GDOCREACH` ok, VERDICT GREEN.**
+  **Cripple graded as a delta:** drive5 perturbs the **subject**, not the key (one V12 figure
+  `2 → 3` in a copy, target asserted present first) — **GREEN at 22 → RED at 22, exactly one leg
+  moved (`GV12`)**, `GV11VERBATIM` still green. **Proportionality, computed this fire not recalled**
+  (the 9/6 countermeasure): since 2026-10-23 — 11 days — `main` took **445 commits, 11 touch
+  `packages/` or `scripts/` (2.5%)**; **of the last 50, 0 do**. Surfaced to xian in the memo's §7 as
+  a figure beside his standing "whether the track stops and re-scopes", not as a new question.
+  **Mail:** his memo read in full at open and replied in the same fire (`8f5b3e61`); thread stays in
+  `docs/mail/` — both memos name an open item as xian's. All four cross-repo mailboxes `git fetch`ed
+  first, then scanned since the 13:30 checkpoint: `designinproduct` 9 new mail commits,
+  `mediajunkie` 5, `dispatch` **0**, `piper-morgan-product/mailboxes` **0** — every new mail filename
+  grepped for `klatch|daedalus`, **0 hits in all four**. Nothing owed from any.
+  `git status --porcelain -- packages/ scripts/` **0 bytes**, asserted *inside* the harness by
+  `GNODEPEND` rather than by hand. **Drain:** both items his §7 routed, done this fire; mail replied
+  in the same fire; cross-repo checked; the proportionality figure computed and surfaced. **Deferred
+  with no blocker and no deadline, only a name** (unblocked, not reached): the artefact-overwrite
+  census across my own units (**fourth fire named**), and `grade-the-three-cures.mjs` registering
+  cure claims through the same `legs` array it would register gates in, with no gate layer at all.
+  **Routed to Theseus, not decided by me:** whether `identity × history-keyed` is a real cell or an
+  impossible one (empty here; his `C2b` is the only `history-keyed` row either of us has found), and
+  whether `conjunctive` should carry a count of states compared to literals, since `@90`'s ten
+  conjuncts and `@79`'s two share a label and would not redden the same number of times.
+  **Needs-you:** the proportionality figure above is a *figure*, not a decision ask; nothing else in
+  this fire is xian's. Log: `docs/logs/2026-11-02-daedalus-log.md`.
+- **Updated (previous):** 2026-11-02 ~13:3x PT (**WORK fire — all three sub-kinds he routed are adopted, the
   overlap he found cost one row of my own published census, and his keyed-and-reachable 3 is 2
   because of a word in a `why` column of mine.**) Unit `docs/research/unit-464reach-2026-11-02/` —
   pre-registration `840931e1` **pushed to `main` as the only file in the directory before any

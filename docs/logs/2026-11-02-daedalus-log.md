@@ -256,3 +256,103 @@ bytes**. Neither number was wrong; the *word* was. `String.length` is UTF-16 cod
 has three non-ascii characters (`—→→`), so 3619 code units is 3625 bytes. The leg's comparison was
 always string equality and is unaffected, but a leg that publishes a figure must name its unit — the
 why now prints both counts and says they are not interchangeable. drive6, **GREEN at 29 legs**.
+
+---
+
+## 17:17 — Session resumed (STOP fire, claude-opus-5)
+
+**Mail at open.** Theseus → Daedalus/xian cc Janus/Argus/Calliope/Iris, his 15:03 WORK memo
+(`3af2b8af`), read in full. He answered both questions my 13:3x §7 routed him, accepted my §4
+`measure.mjs:80` correction, and found something sharper in passing: **my own ordered five-way key
+sends `C2b` to `delta`, the cell my own table marks "(sound)", and `C2b` is the one row we have both
+measured to be unsound.** His §7 routed me two edits to my entry.
+
+**Unit `docs/research/unit-464order-2026-11-02/`.** Pre-registration `29b91664`, pushed to `main` as
+the only file in the directory before any instrument in it existed. Slice at my own pin + my
+two-axis hand read `1e5a6833`, filed before `grade-order.mjs` existed. Drive1 `f0f371ad`. Drives 2–6
++ entry v1.2 `097cf3e6`. RESULTS + mail `8f5b3e61`. **6 recorded drives, 7 `.out`, 7 `.err`, 0
+non-empty** (`readdirSync` + `statSync`, 19 files). Final **GREEN at 22 legs**, **6 of 6 predictions
+land**.
+
+**The answer to both his questions turned out to be the same answer: the ORDER was the defect.** An
+ordered key makes the labels a partition and leaves the criteria overlapping, and a label whose
+criteria overlap cannot carry a prescription. Registered rule, measured: **2 of 13 rows are
+mis-prescribed** — `C2b@99` (`delta`, "leave it", with `c3=T`) and `measure.mjs:79 G0`
+(`conjunctive`, "it will redden twice on a legitimate move", with `c4=T` saying nothing can move it).
+v1.2 replaces the ordered key with **two independent axes** — comparison (`conjunctive`/`delta`/
+`identity`) × figure (`immovable`/`movable`/`history-keyed`) — and the hazard is the cell
+`identity × movable`, whose member list is **byte-identical to v1.1's `keyed`**. Axis B is his
+("literal-anchor vs selector-anchor"), narrowed from the anchor to the figure so `GPATHS@88` reads
+`immovable`. **`staleness` retired as a label.**
+
+**His question 1 (should criterion 2 refuse on a predicate with no comparison operator): no — it
+needed a scope, not a refusal.** Operator counts over all 13 registered spans, sliced from the pinned
+source with `scripts/lib/strip-source.mjs`: a refusal keyed on zero operators fires on **1 of the 2**
+ambiguous rows. `@71` has two (`=== 4`, `=== 3`), both state-vs-literal, and is equally ambiguous.
+
+**His question 2 (a note that the five are not disjoint): a measurement instead.** All 24 orderings of
+v1.1's four asked criteria enumerated: **`keyed` has one member list across all 24; the other four
+cells each have more than one; 5 of 13 rows change label with the order.** The bottom cell of an
+ordered key is order-invariant because it is reached only by all-no rows. So his `GHAZARDMEMBERS`
+exact match was structural, not luck — and the four non-hazard counts I published were never safe.
+
+**All three of our label departures were mine.** Deriving the first-yes label from his criteria under
+my own registered order gives his tally, not mine; all 3 departures are rows where my hand label
+skipped an earlier criterion answering `T` (3 of 3). Also refuted: v1.1's "direction is decided
+before reach" — `c2=T ∧ c4=T` holds on **0 of 13**, so no row in this tree tests that ordering and
+the two rows I cited never reach criterion 2.
+
+**Two defects of mine, both kept as recordings.** (1) drive1 published `new 0 of 13` beside
+`old 2 of 13` as if both were counts over one population; the new-scheme filter is false **by
+construction** for every `× immovable` cell, so that 0 was a property of my prescription table, not
+of the rows — re-measured in drive2 by exhaustion over all 9 cells with a planted fault in a broken
+copy of the table as the known positive. (2) **`GDOCPIN`'s version key `/v1\.1/` cannot tell v1.1
+from v1.2** — a v1.2 entry still says "v1.1" in the paragraph naming what it superseded, so that
+filed gate will grade the superseded figures forever. Fixed forward: V11 fence left byte-identical
+(717 bytes, pin and worktree), v1.2 figures in a new `MEASURED-BLOCK-V12` pinned by `GV12` (18
+figures, none recomputed by the leg grading them), and **drive6 re-runs the filed `grade-reach.mjs`
+against the edited entry — `GDOCPIN` ok, `GDOCREACH` ok, VERDICT GREEN.**
+
+**Cripple, graded as a delta.** drive5 perturbs the **subject**, not the key: one V12 figure moved
+`2 → 3` in a copy, target asserted present before the edit. Against the matched drive4 baseline:
+**GREEN at 22 → RED at 22, exactly one leg moved (`GV12`)**, `GV11VERBATIM` still green.
+
+**Proportionality, run this fire rather than recalled** (the countermeasure I committed to on 9/6):
+since 2026-10-23 — 11 days — `main` took **445 commits and 11 touch `packages/` or `scripts/`
+(2.5%)**; **of the last 50 commits, 0 do**. Put in front of xian in the memo's §7 as a figure, not a
+question. Theseus's "whether the track stops and re-scopes" has been parked as xian's for several
+fires; the aggregate should be visible beside it.
+
+**Cross-repo mailboxes**, all four `git fetch`ed first, then scanned since the 13:30 checkpoint:
+`designinproduct` 9 new mail commits, `mediajunkie` 5, `dispatch` **0**,
+`piper-morgan-product/mailboxes` 0 — every new mail filename grepped for `klatch|daedalus`,
+**0 hits in all four**. Nothing owed from any.
+
+**Session wrap verification.**
+
+```
+$ git log origin/main --oneline -5
+8f5b3e61 RESULTS+mail(Daedalus -> Theseus, xian; ...)
+097cf3e6 drives 2-6 + entry v1.2: GREEN at 22 legs, ...
+f0f371ad drive1: GREEN at 20 legs, 6 of 6 predictions land ...
+1e5a6833 slice + hand axes: the 13 rows re-sliced at my own pin ...
+29b91664 pre-registration: unit-464order — six predictions ...
+```
+
+All five present on `origin/main`, all author `Daedalus (Klatch)`. Each deliverable `ls`-verified:
+`PRE-REGISTRATION.md` 6300B, `HAND-AXES-13.tsv` 5938B, `grade-order.mjs` 26277B, `RESULTS.md` 9477B,
+`LEG-CLASS-CONVENTION.md` 24656B, the memo 11931B. `git status --porcelain -- packages/ scripts/`
+**0 bytes**, asserted inside the harness by `GNODEPEND` rather than by hand.
+
+**Not run this fire:** `npm test`, `npm run typecheck`, the probe sweep as a standalone drive. The
+pre-commit census printed `CENSUS OK`, 153 files, 43 swept / 110 deferred, on every commit.
+
+**Drain:** both items his §7 routed, done this fire; his memo read at open and replied in the same
+fire; cross-repo checked and nothing owed; the proportionality figure computed and surfaced.
+**Deferred with no blocker and no deadline, only a name** (unblocked, not reached): the
+artefact-overwrite census across my own units — fourth fire named — and `grade-the-three-cures.mjs`
+registering cure claims through the same `legs` array it would register gates in, with no gate layer
+at all. **Routed to Theseus, not decided by me:** whether `identity × history-keyed` is a real cell
+or an impossible one (empty here, and his `C2b` is the only `history-keyed` row either of us has
+found), and whether `conjunctive` should carry a count of states compared to literals, since `@90`'s
+ten conjuncts and `@79`'s two share a label and would not redden the same number of times.
