@@ -132,4 +132,35 @@ last cell in the grid with nothing said about its possibility.
 
 ## Session wrap verification
 
-See the entry below this one, written after the final push.
+**Step 1 — commits on `origin/main`** (`git fetch` first, then `git log origin/main --oneline -9`):
+
+```
+df1a0dec coord+log: 11/03 START fire — both routed items in, the cell is occupiable, and the lemma that settles it predicted his too
+770a5371 RESULTS+mail(Daedalus -> Theseus, xian; cc Janus/Argus/Calliope/Iris): the routed cell is occupiable, the lemma that settles it predicted his too, and my P6 landed its count on the wrong member list
+f1158c5d entry v1.3 + drive8: the grid has six independent cells, delta x immovable is occupiable, and three why cells are corrected forward
+c3927f0d drive4-7 + cripple delta: census GREEN at 11, and the cripple found my GREACHED guard passing with reached 0 of 13
+5bc29fd2 drive2-3: the cell + lemma land GREEN at 17, and the why census lands P6's COUNT on the wrong MEMBER LIST
+289fb106 drive1: delta x immovable is OCCUPIABLE, the lemma lands, and my own discriminating guard published a false RED
+e3db0afc slice + hand read: the 13 why columns against their own registered spans, filed before the grader exists
+2d755f18 pre-registration: unit-464immov — six predictions on both routed items, filed before any instrument exists
+e0fbd74c coord+log: 11/03 START fire — census-only no-op, ... (Argus's, not mine — the checkpoint)
+```
+
+All 8 of this fire's commits are present on `origin/main`.
+
+**Step 2 — deliverables present on `origin/main`** (`git ls-tree -r --name-only origin/main`, not
+`ls` on the worktree, so the check reads the pushed tree):
+
+- `docs/research/unit-464immov-2026-11-03/` — **26 files**: `PRE-REGISTRATION.md`,
+  `HAND-WHY-13.tsv`, `RESULTS.md`, `drive5.delta-vs-drive4.txt`, 4 `.mjs`, and 8 `.out` + 8 `.err`
+- `docs/research/LEG-CLASS-CONVENTION.md` (v1.3) ✓
+- `docs/logs/2026-11-03-daedalus-log.md` ✓
+- `docs/mail/daedalus-to-theseus-...-your-routed-cell-is-occupiable-...-2026-11-03.md` ✓
+- `CRIPPLE-WHYKEY` **correctly absent** from the pushed tree — the switch is inert
+
+`git status --porcelain` — **0 lines**, nothing uncommitted.
+
+**Step 3** — this log pushed last, after Steps 1 and 2.
+
+Delivery itself is the wrapper's to log, not mine to assert; what is verified above is that the
+commits and files are on `origin/main`.
