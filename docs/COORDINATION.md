@@ -745,7 +745,104 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
-- **Updated:** 2026-11-02 ~17:3x PT (**STOP fire — both routed items in, and the answer to both was
+- **Updated:** 2026-11-03 ~10:2x PT (**START fire — both routed items in; the cell is occupiable, and
+  the lemma that settles it predicted HIS cell too.**) Unit
+  `docs/research/unit-464immov-2026-11-03/` — pre-registration `2d755f18` **pushed to `main` as the
+  only file in the directory before any instrument in it existed** (`git ls-tree -r` verified),
+  slice + `HAND-WHY-13.tsv` `e3db0afc` (**filed before `grade-immov.mjs` existed**), drive1
+  `289fb106`, drives 2–3 `5bc29fd2`, drives 4–7 + cripple delta `c3927f0d`, entry **v1.3** + drive8
+  `f1158c5d`, RESULTS + mail `770a5371`, this coord+log. **8 recorded drives, 8 `.out`, 8 `.err`, 0
+  non-empty** (`readdirSync` + `statSync`, 22 files). Final **drive2 GREEN at 17 · drive6 GREEN at
+  11 · drive8 GREEN at 6**. 6 predictions: **all six land** — and §3 below is the one that landed
+  *vacuously*. **TWO PINS named separately:** `e0fbd74c` for the subjects, `e3db0afc` for this
+  unit's own hand read, because an instrument's own input cannot carry the subject's pin.
+  **R1 — `delta × immovable` is OCCUPIABLE**, built in scratch repos under the OS temp dir and not
+  argued: a leg comparing one path's content at **two named revs** and asserting they **differ** —
+  the ordinary "the cure commit actually changed the subject" check, written between two pins
+  instead of against the worktree. arm A GREEN, arm C (identical content) RED, arm B (**three**
+  commits touching the path) figure **byte-identical** — and arm B is read **twice**, because one
+  reader saying "did not move" cannot be told from a dead reader; the history-keyed reader on the
+  same arm moves, in both polarities. **The real finding is the POLARITY LEMMA:** `delta` and
+  `identity` are two polarities of ONE shape (an operand pair), and axis B is a claim about the
+  **figure the pair reads**, so negating the operator moves a leg between rows **without changing
+  its axis-B value** — measured over **7 state pairs**, byte-identical anchors AND figures **7 of
+  7**, opposite verdicts **7 of 7**. So for every column X, `delta × X` is occupiable iff
+  `identity × X` is, and **the nine cells collapse to SIX independent ones**. The lemma settles
+  **exactly** the empty cell Theseus's arithmetic could not reach (`delta × immovable`), and the one
+  cell **outside** the lemma is **exactly** the one his arithmetic already explained
+  (`conjunctive × history-keyed`, no operand pair so no complement) — between the two arguments
+  nothing is left over, and **his scratch drive was a confirming instance of a rule neither of us
+  had stated**; his own closing sentence last night was the lemma one column early.
+  **R2 — yes, and the defect is one level up.** Censused **all 13** `why` columns, not the routed
+  row: three defective — `GLIFT2@186` (his; "each one state **vs** an Array/key literal" over a
+  predicate with **0** comparison operators), `G0@79` (his first; expression at `:76`), and
+  **`G0@80`** (expression at `:77`, **named in no prior memo of either of ours**). `C0@78` quotes out
+  of span too and is **NOT** a defect — its `why` says "at `:64`", which is where the expression is;
+  **disclosure is the whole difference**, and without that differentiation I would have published 4
+  where there are 3. **And v1.2's axis-A definition is false:** its clause "each is compared to a
+  literal" fails on **2 of its 5 `conjunctive` rows**, while **my own `why` cell for one of them says
+  so outright in the same file**. Entry **v1.3** corrects the table; `HAND-AXES-13.tsv` left
+  **byte-identical** and drive8 verifies it **by hash** — fixed forward, not retro-edited.
+  **Reader provenance:** his `spanOf`/`countOps` **LIFTED from his file at the pin and evaluated**,
+  not copied — the pre-registration promised a verbatim copy with a pin, and a copy plus a pin is
+  strictly worse than no copy, because it can drift and then the pin is the only thing between a
+  reader and a paraphrase. **P4 declared non-independent up front:** re-running his reader to recover
+  his figure measures nothing, so what was registered is my hand count — **0 departures of 5** on
+  comparison counts, **0 of 5** on operands, **2** rows at zero comparisons. **THREE DEFECTS OF MINE,
+  all kept as recordings:** (1) drive1 `GDISCRIM` conjoined a true measurement with a clause the
+  construction cannot support — the pin handed to the history-keyed reader was never the newest
+  commit touching the path, so its verdict could not flip; split into two legs. (2) **drive3's P6 got
+  its COUNT right and its MEMBER LIST wrong twice over, cancelling** — printed `count 3 / LANDS` on
+  `[GPATHS@88, GLIFT2@186, G0@79]` where the correct list is `[GLIFT2@186, G0@79, G0@80]`; `@88`
+  entered on a whitespace **collapse** where insensitivity was needed (**my own hand-read note names
+  that exact hazard and I then built the reader that falls into it**) and `@80` was excluded by a
+  false disclosure credit, which **removes** a row from a defect list. Registered count predicate
+  left **exactly as filed**; `GP6MEMBERS` added beside it comparing lists. (3) **the cripple caught
+  `GREACHED` reading `ok` with the census reached 0 of 13** — its predicate was
+  `reached + unreached === 13`, which a two-bucket partition satisfies **by construction**; a guard
+  registered *specifically* against the unreached bucket absorbing blindness, absorbing it. Re-keyed
+  onto a figure the cripple can move: drive6 GREEN at 11, drive7 RED 6, `GREACHED` among the movers.
+  **Cripple graded as a delta:** key-perturbed never subject, grader `git hash-object` **identical
+  before and after** both runs, `CRIPPLE-WHYKEY` removed and verified absent; 5 legs moved then 6,
+  **all census legs**, with P4/P5 and the lift/slice legs correctly unmoved — so the delta is
+  attributable. **One figure of his corrected, measured not eyeballed:** the shape map at
+  `grade-the-steal-cures.mjs:77` has **7** fields, not 8; it does not touch his 6 + 7 = 13, which
+  reproduces exactly. **NOT ESTABLISHED, and kept out of the summary:** occupiable **is not**
+  occupied — no leg of that shape exists anywhere in this tree; the census measures **two named
+  classes**, not "is this `why` true", so `@90` sits in the **unreached** bucket (reached 12 /
+  unreached 1) and not in "clean"; and the whitespace repair can only **miss**, never invent, so the
+  defect list is a floor in that direction. **Proportionality, recomputed not carried — and the
+  first query was WRONG:** `git log -50 origin/main -- packages/ scripts/` returned **50**, because
+  it asks for *the last 50 commits that touch those paths* from all of history, not *how many of the
+  last 50 touch them*; a count limit with a pathspec is a different question from a rev range.
+  Caught before publication. Correct figures: since 2026-10-23 (11 days) `origin/main` took **502
+  commits**, **11** touch `packages/` or `scripts/` (**2.2%**), **0** in
+  `origin/main~50..origin/main`. Last fire's 445 is the same figure a day of traffic ago.
+  **Gate re-derived fresh:** `lsof -i :3001` port free; `npm run typecheck` clean ×4; `npm test -w
+  packages/server` **140 files · 2186 passed · 1 skipped (2187)**, byte-identical; `npm test -w
+  packages/client` **26 passed|13 skipped (39) · 333 passed|13 skipped (346)**, byte-identical;
+  `node scripts/sweep-probes.mjs --census` **153 probe files, 43 swept/110 deferred, CENSUS OK**,
+  byte-identical; `git status --porcelain -- packages/ scripts/` **0 bytes**. **Mail:** his memo plus
+  addendum read in full at open and replied in the same fire (`770a5371`); thread stays in
+  `docs/mail/` — both memos name an open item that is his or xian's. All four cross-repo mailboxes
+  `git fetch`ed first, then scanned since the 17:35 checkpoint: `designinproduct` **0** new mail
+  commits, `mediajunkie` **0**, `dispatch` **3** (routine; filenames and content grepped for
+  `klatch|daedalus`, **0 hits**), `piper-morgan-product/mailboxes` **127** new on one unrelated topic
+  (grepped, **0 hits**). Nothing owed from any. **Checkpoint:** own last commit `1adb7609`; 15 new
+  commits since, **none mine** (author-checked — the three "11/03 START fire" commits at the top of
+  the log are Argus's, Calliope's and Iris's, and they read as if they were mine). `git diff
+  --dirstat 1adb7609..HEAD` **100% under `docs/`**; `--stat -- packages/ scripts/` **empty**.
+  **Drain:** both routed items done this fire; mail replied same fire; entry v1.3 written and
+  **graded by a drive** rather than asserted; cross-repo checked; gate re-derived; proportionality
+  recomputed and surfaced. **Deferred with no blocker and no deadline, only a name** (unblocked, not
+  reached): the artefact-overwrite census across my own units (**fifth fire named**), and
+  `grade-the-three-cures.mjs` registering cure claims through the same `legs` array it would register
+  gates in, with no gate layer at all. **Routed to Theseus, not decided by me:** whether
+  `conjunctive × history-keyed` is **writable at all** — the lemma says nothing about it and his
+  arithmetic explains only why it is *empty*; it is now the last cell in the grid with nothing said
+  about its possibility. **Needs-you:** nothing — the proportionality figure is a figure, not a
+  decision ask. Log: `docs/logs/2026-11-03-daedalus-log.md`.
+- **Updated (previous):** 2026-11-02 ~17:3x PT (**STOP fire — both routed items in, and the answer to both was
   the same: the ORDER was the defect, not the sequence it was in.**) Unit
   `docs/research/unit-464order-2026-11-02/` — pre-registration `29b91664` **pushed to `main` as the
   only file in the directory before any instrument in it existed**, the re-slice at my own pin plus
