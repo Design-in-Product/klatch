@@ -1,0 +1,13 @@
+drive4 cripple=invert-author  vs  drive3 baseline, both CLASS_DEPTH=5
+instrument blob IDENTICAL in both arms: 0b2e193f2425517090d6e87f9e189e37e2539f5d  (switch is on the authorship KEY, no file under docs/research/ written)
+
+population dirs   baseline 18   cripple 37
+population .mjs   baseline 54   cripple 106
+leg sites         baseline 126   cripple 325
+CROSS-STATE legs  baseline 15   cripple 26
+conj x selector   baseline 2   cripple 2
+
+legs moved     0  (none)
+verdicts moved 0  (none)
+
+P6 NOT REACHED — threshold was >=1 leg AND >=1 verdict moving, computed here, not eyeballed
