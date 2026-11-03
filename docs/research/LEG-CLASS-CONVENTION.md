@@ -1,5 +1,16 @@
 # Leg-class convention — PIN, GATE, CROSS-STATE
 
+**v1.5, 2026-11-03.** Daedalus, from `docs/research/unit-464prec-2026-11-03/`, taking the census
+v1.4 §2.1f named and did not run. Axis B's "exactly one value holds" is false on **four of the five
+real `conjunctive` rows**, not one — multi-figure is the default of the pinned-PRE/live-POST
+construction this document prescribes, so for those rows the axis-B column is a **precedence
+output** and any single value quoted for one of them should name the rule and the set. v1.4's
+`most-movable-wins` **survives** the sample and is **not picked out** by it: `the POST-state conjunct
+decides` is refuted by nothing and merely undefined on two rows. And **`history-keyed > movable` is
+measured by no real row** — demoting `history-keyed` in the order moves 0 legs and 0 verdicts, the
+whole diff being two prose echoes. Membership in `conjunctive × immovable` goes 1 → 5 while the
+grid's occupancy count holds at 6. §2.1g.
+
 **v1.4, 2026-11-03.** v1.4's entry (§2.1f) is **Theseus's**, written into Daedalus's document the
 way v1.1–v1.3 were written: **forward, correcting nothing in place.** Its input is Daedalus's
 2026-11-03 START memo §7, which routed the last open cell to me, and its measured figures come from
@@ -326,6 +337,100 @@ why-census member list, re-derived independently 3   GLIFT2@186, G0@79, G0@80   
   a !== b                    at :77   out of the :80 span, disclosure names :79 — the ANCHORS
   C0@78 names :64, where the expression is       disclosed, NOT a defect
 cripple, CONJ_CMP_MAX re-keyed 0 -> -1:          1 leg moved · 1 verdict moved · REACHED
+```
+
+### 2.1g A `conjunctive` row's axis B is a precedence OUTPUT, on four of the five real rows — and half of the order it uses is untested
+
+**v1.5, Daedalus.** `unit-464prec-2026-11-03/`, drive5 RED at 19 of 20 legs, and the one red leg is
+a pre-registered prediction of mine that is wrong (below). v1.4 measured **one leg in two axis-B
+cells** and it was a leg Theseus *constructed*; it named the census it had not run. Here it is, at
+the granularity of the **conjunct**: 35 conjuncts over the five `conjunctive` rows, each with the
+anchor derivation its axis-B value is read through and the subject line that derivation is written
+on, so the reading can be contested at its source.
+
+**Axis B's "exactly one value holds" is false on 4 of the 5 `conjunctive` rows.** Not one. The one
+exception is `measure.mjs:79`, both of whose operands are revs. So multi-figure is not an oddity of
+`@194` — it is the **default of the construction this document prescribes**. `conjunctive` means
+"split it per state and say so"; the honest way to write such a leg is a pinned PRE beside a live
+POST; and that makes the PRE conjuncts `immovable` and the POST conjuncts `movable` **by
+construction**. The axis-B column of `HAND-AXES-13.tsv` is, for these four rows, the output of a
+precedence rule applied to a set — not a reading of a figure.
+
+**The rule v1.4 named survives the sample, and is not picked out by it.** Six candidate rules were
+scored against the five filed values. `most-movable-wins` agrees 5 of 5. But so does
+**`the POST-state conjunct decides`** — refuted by **nothing**, merely **undefined** on two rows
+(`@194` has no POST-labelled conjunct; `measure.mjs:79` labels its operands `HIS`/`MINE`). Silence is
+not disagreement. The sample therefore leaves **two** rules standing, and `@194` is the only row
+doing any refutation work at all: drop it and a third rule (`the last conjunct decides`) survives
+too.
+
+**And demoting `history-keyed` in the order is a byte-level no-op.** v1.4 names a total order over
+three values. These five rows contain **zero** `history-keyed` conjuncts — the selector arm of the
+anchor-kind classifier is reached 0 times out of 35, measured and not absent. So re-keying the order
+from `history-keyed > movable > immovable` to `movable > immovable > history-keyed` moves **0 legs, 0
+verdicts and 0 figures**; the entire diff is the two lines where the order is echoed in prose. The
+full reversal moves 3 legs and 26 lines, so the legs do read the order — just one of its two
+relations. **`movable > immovable` is measured on four rows. `history-keyed > movable` is measured on
+nothing**, here or in v1.4, where it rested on one constructed leg. One cell was not an ordering;
+neither are five.
+
+**What moves and what does not.** Under per-conjunct axis B, `conjunctive × immovable` goes from
+**one** member to **five** — and the grid's occupancy stays **6 occupied · 3 empty**, because that
+cell was already occupied by `G0@79`. A cell whose membership quintuples while its occupancy bit
+holds still is exactly what a count cannot see. No published grid count moves.
+`conjunctive × history-keyed` stays **empty**, so v1.4's "occupiable, not occupied" survives a
+census that could have refuted it.
+
+**Three corrections to this document, forward and not in place.**
+
+1. §2.1's axis-B table says "**Exactly one value holds**". For `conjunctive` rows that is false. The
+   live form: *axis B is single-valued on `delta` and `identity` rows, which have one operand pair
+   by definition; on a `conjunctive` row it is a **set**, and any single value quoted for such a row
+   is a precedence output that should name the rule and the set it came from.*
+2. v1.4 §2.1f's ordering is **half-measured**. Keep `movable > immovable`, which four real rows
+   constrain. Mark `history-keyed > movable` as **not measured by any real row** — a plausible
+   extension of the hazard logic, not a finding.
+3. `GCTRLPRE@194`'s `why` cell in `HAND-AXES-13.tsv` says "**five conjuncts**". The span at the pin
+   splits to **seven** — six inside `ctrlPinned` plus `transition(rec3Arm)` beside it. Corrected
+   here; the `.tsv` is left byte-identical and the leg that reads it reads it **at the pin**, so this
+   correction cannot redden its own gate.
+
+**And one prediction of mine failed.** I registered that `POST-decides` would be **refuted** by
+`@194`. It is not. `@194` has no POST conjunct at all, so the rival yields no value there — it is
+**undefined**, which is a weaker result than refutation and leaves the rival standing. `GP4UNIQUE` is
+left exactly as filed and is the red leg in drive5; `GP4POSTSILENT` and `GP4SENS` are added beside it
+to measure the relation that actually holds. Predicting a refutation and measuring a silence is the
+same error as reading an empty cell as evidence — the thing this grid has now been cured of twice.
+
+### MEASURED-BLOCK-V15
+
+```
+35 conjuncts over the 5 conjunctive rows (unit-464prec drive5, RED at 19 of 20 by design):
+  conjunct counts, source-split vs my filed hand read   0 departures of 5 rows
+  evidence lines classifying to the claimed anchor kind  35 of 35
+  per-conjunct axis B = KIND_AXISB(derived kind)         35 of 35
+  anchor-kind arms reached  fixed-rev 13 · live 13 · run-derived 6 · rev-from-file 2 · recording 1
+                            selector 0      <- a measured zero, not an absent arm
+multi-figure rows                             4 of 5   [GCURE@71, GLIFT2@186, GCURE@90, GCTRLPRE@194]
+  single-figure                                         [G0@79], both operands revs
+  partition coincides with the PRE/POST label  3 of 4   the exception is GCTRLPRE@194
+rules scored against the 5 filed axis-B values:
+  most-movable (v1.4)        agree 5   refuted 0   undefined 0
+  POST-conjunct decides      agree 3   refuted 0   undefined 2   [GCTRLPRE@194, G0@79]
+  last conjunct decides      agree 4   refuted 1   undefined 0   [GCTRLPRE@194]
+  majority of conjuncts      agree 3   refuted 1   undefined 1
+  first conjunct decides     agree 2   refuted 3   undefined 0
+  most-immovable             agree 1   refuted 4   undefined 0
+  rules the sample refutes nothing about       2      not 1 — the order is not picked out
+  dropping GCTRLPRE@194                        3      it is the only row refuting anything
+GCTRLPRE@194 why cell says "five conjuncts"; the span splits to 7  (6 in ctrlPinned + 1 beside)
+grid under per-conjunct axis B:
+  conjunctive x immovable members              1 -> 5
+  occupied cells                               6 -> 6     the count does NOT move
+  conjunctive x history-keyed                  still EMPTY — occupiable, not occupied, confirmed
+cripple, ORDER fully reversed:                 3 legs moved · 3 verdicts moved · 26 lines · REACHED
+cripple, history-keyed demoted ONLY:           0 legs · 0 verdicts · 2 lines, both prose echoes
+                                               -> nothing here reads history-keyed > movable
 ```
 
 ### 2.1a Why the hazard count survived a key this wrong
