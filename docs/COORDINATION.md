@@ -4694,6 +4694,40 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   (commit check, mail across all four mailboxes plus local, both briefs, both blockers
   re-derived, full gate); nothing deferred. Two consecutive checks found nothing further
   unblocked — fire closed bounded. Log: `docs/logs/2026-11-02-iris-log.md`.
+- **Updated:** 2026-11-02 ~19:17 PT (STOP fire). **Status:** available.
+- **11/02 fire (STOP) — no-op on product; 42 commits read since own START checkpoint, none
+  mine, nothing routed to this seat.** Drain against own 11/02 ~07:24 PT START checkpoint
+  (`b5007766`): 42 new commits (checked `%an` per commit — 23 Daedalus, 13 Theseus, 3 Argus, 3
+  Calliope; none Iris). `git diff --stat b5007766..HEAD -- packages/ scripts/` **empty** —
+  confirmed, not assumed; `git diff --dirstat` shows the change entirely under
+  `docs/research/unit-464{class,dir,order,reach,subkind}-2026-11-02/`, `docs/logs/`, and
+  `docs/mail/` — five parallel sub-threads of the Daedalus/Theseus `unit-464*` research track.
+  **Mail:** 5 new local files, all cc-only on the Daedalus↔Theseus research exchange (checked
+  each header directly — `to: Theseus/Daedalus, xian`, `cc: ...Iris` — no body-text action here).
+  All four cross-repo mailboxes checked via `find -newermt` against the 07:24:00 PT checkpoint:
+  `designinproduct` 1 new (CIO→Janus correction to the 11/02 cross-pollination brief's "guard
+  passed" claim — it blocked, not passed; 0.2.2 not installed yet; informational, addressed to
+  Janus, no action routed here); `mediajunkie` 1 new/0 hits; `dispatch` 0 new;
+  `piper-morgan-product` 705 new, content-grepped for `klatch|\biris\b` — only stale
+  `read/MANIFEST.md` boilerplate plus the CIO memo's `sent/` copy already read. Nothing owed
+  across any of the four. Both briefs re-checked: `fire-depth-latest.md` unchanged since 06:50
+  PT, no UX signal; cross-pollination brief still points to the private `designinproduct`
+  source, not independently fetchable. **Standing blockers re-derived fresh:** ground-rules
+  question still **85 days**, unmoved on xian; `entityGuess` re-grepped independently — **6
+  files/23 hits**, unchanged. **Verified, not trusted:** `lsof -i :3001` port free; `npm run
+  typecheck` clean ×4 workspaces; server **140 files · 2186 passed · 1 skipped (2187)**; client
+  **26 passed|13 skipped (39) · 333 passed|13 skipped (346)** — byte-identical to this morning's
+  START checkpoint; `sweep-probes --census` **153 probe files, 43 swept/110 deferred**, CENSUS
+  OK, unchanged; full driving sweep (HEAD unchanged at `fe2a6eb3` before/after, tree clean
+  throughout, backgrounded past the 120s foreground limit, picked up via completion
+  notification, verdict line read directly from the task output) — **SWEEP PASSED — 43 of 43
+  swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but did not finish), 0 census
+  problem(s), 110 deferred.** No `packages/` changes this fire. Nothing new needs xian beyond
+  the one standing item (ground-rules question, now at 85 days, unmoved today). **Drain:** all
+  unblocked items done (commit check, mail across all four mailboxes plus local, both briefs,
+  both blockers re-derived, full gate); nothing deferred. Two consecutive checks found nothing
+  further unblocked — fire closed bounded. Log: `docs/logs/2026-11-02-iris-log.md` (19:17 entry
+  appended).
 - **Prior update:** 2026-10-31 ~19:2x PT (STOP fire). **Status:** available.
 - **10/31 fire (STOP) — no-op on product; 40 research-track/mail commits read (Daedalus's
   `unit-464vac`/`unit-464absorb`/`unit-464authored` chains, Theseus's `unit-464sat`/
