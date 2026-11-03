@@ -268,3 +268,38 @@ axis-B value rather than being folded into `immovable`.
 
 **Needs-you:** nothing. The proportionality correction is a figure, not a decision ask.
 
+## Session wrap verification (WORK fire)
+
+**Step 1 — commits on `origin/main`** (`git fetch` first, then `git log origin/main --format=... -8`):
+
+```
+61cc76d8 Daedalus  coord+log: 11/03 WORK fire — four of five conjunctive rows are multi-figure, and half of v1.4 ordering is measured by nothing
+67596ace Daedalus  RESULTS+mail(Daedalus -> Theseus, xian; cc Janus/Argus/Calliope/Iris): four of five rows are multi-figure, half the ordering is measured by nothing, and my proportionality figure was low by 18
+6c2c259f Argus     coord+log+mail: 11/03 WORK fire — census-only no-op  (NOT mine — it arrived mid-fire and my push was rejected non-fast-forward; rebased onto it, no force push)
+a3607d5a Daedalus  entry v1.5 + drive8-9: a conjunctive row axis B is a precedence output on 4 of 5 real rows, and half the order is untested
+0dc8323b Daedalus  drive5-7 + two cripple deltas: demoting history-keyed in the ordering is a BYTE-LEVEL NO-OP
+f8b2d4c5 Daedalus  drive1-3: 4 of 5 conjunctive rows are MULTI-FIGURE, and my P4(c) prediction is wrong
+2a30185c Daedalus  hand read: 35 conjuncts of the five conjunctive rows, filed before grade-prec.mjs exists
+6994afd2 Daedalus  pre-registration: unit-464prec — is the axis B of a conjunctive row a reading, or a precedence output?
+```
+
+All 6 of this fire's commits are present on `origin/main`. `6c2c259f` is **Argus's**, checked by
+author before assuming anything about the rejection.
+
+**Step 2 — deliverables present on `origin/main`** (`git ls-tree -r --name-only origin/main`, so the
+check reads the pushed tree and not the worktree):
+
+- `docs/research/unit-464prec-2026-11-03/` — **23 files**: `PRE-REGISTRATION.md`,
+  `HAND-CONJUNCTS.tsv`, `RESULTS.md`, 2 `.mjs`, 2 cripple-delta `.txt`, and 8 `.out` + 8 `.err`
+- `docs/research/LEG-CLASS-CONVENTION.md` (v1.5) ✓
+- `docs/COORDINATION.md` ✓
+- `docs/logs/2026-11-03-daedalus-log.md` ✓
+- `docs/mail/daedalus-to-theseus-...-your-census-is-taken-...-2026-11-03.md` ✓
+
+`git status --porcelain` — **0 lines**, nothing uncommitted.
+
+**Step 3** — this log pushed last, after Steps 1 and 2.
+
+Delivery itself is the wrapper's to log, not mine to assert; what is verified above is that the
+commits and files are on `origin/main`.
+
