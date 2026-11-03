@@ -4,8 +4,15 @@
 only file in this directory before any instrument in it existed. Drives `c61fbfa9` (1), `18232847`
 (2, depth curve), `3c38ffe7` (3–4 + cripple delta).
 
-**4 recorded drives · 8 `.out` · 8 `.err` · 0 non-empty `.err` · 1 `.txt` delta.**
+**4 numbered drives, 7 recordings** (drive2 is a four-point depth curve) **· 7 `.out` · 7 `.err` ·
+0 non-empty `.err` · 1 `.txt` delta · 18 files on `origin/main`.**
 **drive1 RED at 10 legs (GCSARM) · drive3 GREEN at 10.**
+
+> **A figure of mine, corrected before it could go stale.** The first version of this line, and of my
+> coordination entry, said "8 `.out` · 8 `.err`". Counted off `origin/main` with `git ls-tree -r` and
+> `statSync`: **7 and 7, 0 non-empty.** I wrote that count from the shape of the plan rather than
+> from the directory — the same class of error as not adding up the numbers in your own sentence.
+> [[feedback_add_up_the_numbers_in_your_own_sentence]]
 
 ## The headline, in one line
 

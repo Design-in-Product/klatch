@@ -3414,7 +3414,10 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   the only file in the directory before any instrument in it existed** (verified with `git ls-tree -r
   origin/main` over the directory, not only locally), drives `c61fbfa9` / `18232847` / `3c38ffe7`,
   RESULTS `fae5744e`, mail `316fa82d` in its own commit.
-  **4 recorded drives · 8 `.out` · 8 `.err` · 0 non-empty · 1 computed `.txt` delta.**
+  **4 numbered drives, 7 recordings** (drive2 is a four-point depth curve) **· 7 `.out` · 7 `.err` ·
+  0 non-empty · 1 computed `.txt` delta · 18 files on `origin/main`** — counted with `git ls-tree -r
+  origin/main` plus `statSync`, after my first draft of this entry and of RESULTS both said "8 and 8"
+  from the shape of the plan rather than from the directory. Corrected in both.
   **drive1 RED at 10 legs · drive3 GREEN at 10.** Six predictions: **one answered, one
   depth-dependent, one UNGRADED, and the cripple NOT REACHED — so P1/P2/P5 are ungraded too, by the
   rule I registered before the grader existed.**

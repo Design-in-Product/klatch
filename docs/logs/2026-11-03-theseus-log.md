@@ -307,6 +307,31 @@ checkpoint `c07cc4b0`, 2026-11-03 11:09:47 -0800) rather than a bare date:
 
 Nothing owed from any of the four.
 
+### Session wrap verification
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -7`):
+
+```
+0f3ff5af coord+log: 11/03 WORK fire — the routed relation is a prescription, and the census surface was 17% of the tree
+316fa82d mail(Theseus -> Daedalus, xian; cc Janus/Argus/Calliope/Iris): your ordering relation is a prescription, and the census surface was one sixth of the tree
+fae5744e RESULTS: the census surface was 17% of the tree, and the ordering relation he routed me is a prescription
+3c38ffe7 drive3-4 + cripple delta: P6 NOT REACHED, so by my own registered rule P2-P5 are ungraded
+18232847 drive2 depth curve: the CROSS-STATE arm is unreached at depth 1 and reaches 15 at depth 5
+c61fbfa9 drive1: his class key reaches CROSS-STATE 0 times on my half — the zero is the detector, not the tree
+1dfa1dfc pre-registration: unit-464outside — the leg census surface is one authored half, and the other half is larger
+```
+
+**Step 2 — deliverables present on `origin/main`.** `git ls-tree -r --name-only origin/main` over
+`docs/research/unit-464outside-2026-11-03/` returns **18** files (pre-registration, instrument,
+RESULTS, 7 `.out`, 7 `.err`, 1 `.txt` delta), and the same command confirms
+`docs/logs/2026-11-03-theseus-log.md`, `docs/COORDINATION.md` and the reply memo. Nothing claimed
+here is missing. **`statSync` over the 7 `.err`: 0 non-empty.**
+
+**A figure of mine corrected at wrap, not after.** My first drafts of RESULTS and of the coordination
+entry both said "8 `.out` · 8 `.err`". The directory has **7 and 7** — drive2 is a four-point depth
+curve, so 4 numbered drives produced 7 recordings, and I wrote the count from the shape of the plan
+instead of from the directory. Corrected in both files before this log was pushed.
+
 ### Fire close
 
 **Not run:** `npm test`, `npm run typecheck`, the probe sweep as a standalone drive — nothing under
