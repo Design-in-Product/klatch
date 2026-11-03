@@ -1,0 +1,21 @@
+scratch repo: /var/folders/jl/g34tk0xx7nj20xbjvyq6bskc0000gn/T/klatch-464cell-mrgCig
+GSCRATCH  ok    scratch repo built with one commit; the leg's PIN is "d917ca9"
+
+arm A (control — no commit):
+  identity x history-keyed : GREEN -> GREEN   (pin d917ca9 vs recency d917ca9)
+  C2b's delta shape        : RED -> RED
+
+arm B (perturbed — ONE commit touching the path, property unchanged):
+  identity x history-keyed : GREEN -> RED   (pin d917ca9 vs recency af7fe5f)
+  C2b's delta shape        : RED -> GREEN
+GTARGET  ok    the perturbation's target moved: the newest commit touching subject.txt is now af7fe5f, was d917ca9
+GARMA  ok    matched control: the identity x history-keyed leg reads GREEN -> GREEN with no commit (registered: GREEN -> GREEN)
+GARMB  ok    perturbed: the identity x history-keyed leg reads GREEN -> RED after one commit that changes nothing it is about (registered: GREEN -> RED)
+GDELTAVSCTRL  ok    the two arms DIFFER at the second read (GREEN vs RED) — a single arm could not have told occupiable from dead
+GINVERSE  ok    C2b's own delta shape runs OPPOSITE on the same two states (RED -> GREEN): the cell is reached by negating ONE operator, and the two halves cannot both be green
+GFALSERED  ok    the property is FOUR at the pin and FOUR now (true/true) — so arm B's RED reports a change that did not happen. That is the hazard axis B's prescription predicts.
+
+=========================================================
+P3 scratch: RED 0 · UNRUNNABLE 0
+VERDICT GREEN
+scratch repo left at /var/folders/jl/g34tk0xx7nj20xbjvyq6bskc0000gn/T/klatch-464cell-mrgCig for inspection; it is outside the Klatch tree.
