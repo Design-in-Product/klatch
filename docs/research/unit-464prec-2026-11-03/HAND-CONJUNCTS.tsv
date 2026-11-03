@@ -1,0 +1,98 @@
+# unit-464prec — MY hand read of the CONJUNCTS of the five `conjunctive` rows of
+# `unit-464order-2026-11-02/HAND-AXES-13.tsv`, one line per conjunct, done off the three subject
+# files at the pin `5ba1af7369e97a3abade0cbd5be4e542e0668971` and filed as its own commit BEFORE
+# `grade-prec.mjs` exists.
+#
+# THIS FILE CARRIES NO `axisBfiled` COLUMN. The grader lifts the filed row-level axis-B value out of
+# `HAND-AXES-13.tsv` itself, on (file,line,id), so no departure in P3 can come from my re-typing the
+# verdict I am testing. [[feedback_slicing_the_inputs_but_retyping_the_verdict]]
+#
+# AXIS B PER CONJUNCT — the same three values as the convention's axis B, applied to the figure THIS
+# conjunct reads rather than to the row:
+#   immovable     no commit can change this conjunct's compared figure
+#   movable       a cure to the subject moves it
+#   history-keyed an anchor is a recency SELECTOR, so any commit touching the path moves it
+#
+# ANCHORKIND is the derivation the value is read THROUGH, and `evid` is the line of the subject file
+# where that derivation is written, so the reading can be contested at its source rather than taken
+# on my word. Four kinds appear:
+#   fixed-rev      `git show <40-hex const>:<path>` — the rev is a source literal
+#   rev-from-file  `rev-parse <sha>:<path>` where the sha was READ FROM A FILE at startup
+#   live           `readFileSync` under `LIVE` — the worktree copy of the subject
+#   run-derived    a row of this harness's OWN run table, produced by driving an arm
+#   recording      a committed `.out` read from the worktree
+#
+# `state` is the PRE/POST label the subject file itself gives the operand, or `-` where the conjunct
+# belongs to NEITHER state. The `-` rows are the whole reason this census can separate
+# most-movable-wins from "the POST conjunct decides".
+#
+file	line	id	k	conjunct	state	anchorkind	evid	axisB
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	71	GCURE	1	!preHas.budget	PRE	fixed-rev	41	immovable
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	71	GCURE	2	!preHas.positional	PRE	fixed-rev	41	immovable
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	71	GCURE	3	!preHas.caseSens	PRE	fixed-rev	41	immovable
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	71	GCURE	4	preHas.buckets === 4	PRE	fixed-rev	41	immovable
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	71	GCURE	5	postHas.budget	POST	live	39	movable
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	71	GCURE	6	postHas.positional	POST	live	39	movable
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	71	GCURE	7	postHas.caseSens	POST	live	39	movable
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	71	GCURE	8	postHas.buckets === 3	POST	live	39	movable
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	186	GLIFT2	1	Array.isArray(preDecl)	PRE	fixed-rev	41	immovable
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	186	GLIFT2	2	Array.isArray(postDecl)	POST	live	39	movable
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	186	GLIFT2	3	!!bucket(preDecl, 'header')	PRE	fixed-rev	41	immovable
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	186	GLIFT2	4	!!bucket(preDecl, 'pop-flag')	PRE	fixed-rev	41	immovable
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	186	GLIFT2	5	!!bucket(postDecl, 'pop-flag')	POST	live	39	movable
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	90	GCURE	1	preHas.bytesInUnion	PRE	fixed-rev	47	immovable
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	90	GCURE	2	!preHas.perFile	PRE	fixed-rev	47	immovable
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	90	GCURE	3	preHas.disjunct	PRE	fixed-rev	47	immovable
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	90	GCURE	4	preHas.alreadyOnCount	PRE	fixed-rev	47	immovable
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	90	GCURE	5	!preHas.stealOwned	PRE	fixed-rev	47	immovable
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	90	GCURE	6	!preHas.newestGate	PRE	fixed-rev	47	immovable
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	90	GCURE	7	!postHas.bytesInUnion	POST	live	44	movable
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	90	GCURE	8	postHas.perFile	POST	live	44	movable
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	90	GCURE	9	!postHas.disjunct	POST	live	44	movable
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	90	GCURE	10	!postHas.alreadyOnCount	POST	live	44	movable
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	90	GCURE	11	postHas.alreadyOnSubject	POST	live	44	movable
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	90	GCURE	12	postHas.stealOwned	POST	live	44	movable
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	90	GCURE	13	!postHas.newestGate	POST	live	44	movable
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	194	GCTRLPRE	1	transition(c.armreach) === '1→2'	PRE	run-derived	185	movable
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	194	GCTRLPRE	2	c.createdCommit	PRE	run-derived	185	movable
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	194	GCTRLPRE	3	c.p2Word === 'LANDS'	PRE	run-derived	185	movable
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	194	GCTRLPRE	4	c.code === 0	PRE	run-derived	185	movable
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	194	GCTRLPRE	5	!!(c.armreach.match(/steal commit ([0-9a-f]{8})/) ?? [])[1]	PRE	run-derived	185	movable
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	194	GCTRLPRE	6	c.headAfter.startsWith((c.armreach.match(/steal commit ([0-9a-f]{8})/) ?? [])[1])	PRE	run-derived	185	movable
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	194	GCTRLPRE	7	transition(rec3Arm) === '1→2'	-	recording	181	immovable
+unit-464vac-2026-10-31/measure.mjs	79	G0	1	a === null	HIS	rev-from-file	48	immovable
+unit-464vac-2026-10-31/measure.mjs	79	G0	2	b === null	MINE	rev-from-file	29	immovable
+#
+# NOTES ON THE READINGS I EXPECT TO BE CONTESTED, written here and not in RESULTS, so they are on
+# the record before the grader runs:
+#
+# 1. `@194` k1..k6 are the SIX conjuncts of `ctrlPinned` (defined at :190–:193), applied to
+#    `preCtrl`. My own `why` cell for this row in `HAND-AXES-13.tsv` says "five conjuncts". I count
+#    six, and seven with `transition(rec3Arm)` beside them. P1 is registered to land by finding that
+#    defect, not by clearing it.
+#
+# 2. `@194` k1..k6 read `movable`, not `immovable`, even though their operand is labelled PRE. The
+#    PRE label there names the SOURCE STATE the arm drove, not a frozen anchor: `preCtrl` is a row
+#    of this harness's own `results` table, produced by cloning the LIVE repo and running an arm in
+#    it, so a cure to the subject moves the figure. This is the row that makes the census able to
+#    tell most-movable-wins apart from POST-decides.
+#
+# 3. `@194` k7 reads `immovable` on the `recording` kind. A committed `.out` is not a source
+#    literal — a commit COULD rewrite `drive3.steal.out`. It reads `immovable` under the clause the
+#    convention actually states ("the cure's own diff does not touch the compared literal"), and it
+#    is the weakest `immovable` in the table. Recorded as such rather than hardened.
+#
+# 4. `measure.mjs:79` k1/k2 are `rev-from-file`, not `fixed-rev`: the revs are shas READ AT STARTUP
+#    from `sat.json` (tracked, `:48`) and `baseline.rev` (`:29`). `baseline.rev` is UNTRACKED
+#    (`git ls-files --error-unmatch baseline.rev` → "did not match any file"), so no commit can move
+#    MY_REV at all; `sat.json` is tracked, so HIS_REV's immovability is contingent on a file and not
+#    on the source. Filed `immovable` as in `HAND-AXES-13.tsv`, with the contingency named.
+#
+# 5. The expression for `measure.mjs:79` is at `:76`, not `:79`; `:79` is the `refuse` call. That is
+#    the already-published `G0@79` out-of-span finding and is not re-litigated here — the row key
+#    stays `79` so this file joins to `HAND-AXES-13.tsv` on it.
+#
+# 6. `a === null || b === null` is a DISJUNCTION. "Conjunct" is used here for "top-level operand of
+#    the predicate's boolean spine", which is what axis A's definition is about ("never operands of
+#    ONE comparison"); the spine's operator does not change the per-operand figure. Named because a
+#    reader counting `&&` alone would find zero conjuncts in this row.
