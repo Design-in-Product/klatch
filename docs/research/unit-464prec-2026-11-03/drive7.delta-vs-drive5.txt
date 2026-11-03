@@ -1,0 +1,8 @@
+2c2
+< subjects pinned at 5ba1af73 · hand read at 2a30185c · ORDER [history-keyed > movable > immovable]
+---
+> subjects pinned at 5ba1af73 · hand read at 2a30185c · ORDER [movable > immovable > history-keyed]   *** CRIPPLE HKONLY SET ***
+38c38
+<    ok   GP3ORDER       most-movable-wins under [history-keyed > movable > immovable] vs the value filed in HAND-AXES-13.tsv: GCURE@71 movable/movable · GLIFT2@186 movable/movable · GCURE@90 movable/movable · GCTRLPRE@194 movable/movable · G0@79 immovable/immovable — 0 departures of 5
+---
+>    ok   GP3ORDER       most-movable-wins under [movable > immovable > history-keyed] vs the value filed in HAND-AXES-13.tsv: GCURE@71 movable/movable · GLIFT2@186 movable/movable · GCURE@90 movable/movable · GCTRLPRE@194 movable/movable · G0@79 immovable/immovable — 0 departures of 5

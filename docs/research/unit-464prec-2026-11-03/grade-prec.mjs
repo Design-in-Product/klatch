@@ -25,9 +25,16 @@ const R = 'docs/research/';
 // CRIPPLE_HKONLY demotes `history-keyed` to the bottom and leaves `movable > immovable` alone. If
 // that moves no leg and no figure, then nothing in this unit reads the `history-keyed > movable`
 // half of the ordering, and P3's green is a green about half a rule.
-const ORDER = process.env.CRIPPLE_PRECKEY !== undefined
+// Both switches are readable as an env var OR as `--cripple=<name>`, because this fire's shell
+// refused an env-prefixed invocation (`CRIPPLE_PRECKEY=1 node …` and `env CRIPPLE_PRECKEY=1 node …`
+// both came back "requires approval"), and a cripple no drive can set is not a cripple.
+// [[feedback_a_declared_cripple_no_hook_reads_makes_every_crippled_control_clean]]
+const CRIPPLE = process.env.CRIPPLE_PRECKEY !== undefined ? 'preckey'
+  : process.env.CRIPPLE_HKONLY !== undefined ? 'hkonly'
+    : (process.argv.find((a) => a.startsWith('--cripple=')) ?? '').slice('--cripple='.length) || null;
+const ORDER = CRIPPLE === 'preckey'
   ? ['immovable', 'movable', 'history-keyed']
-  : process.env.CRIPPLE_HKONLY !== undefined
+  : CRIPPLE === 'hkonly'
     ? ['movable', 'immovable', 'history-keyed']
     : ['history-keyed', 'movable', 'immovable'];
 
@@ -322,8 +329,7 @@ check('GP6MEMBERS',
 // --------------------------------------------------------------------------------------- readings
 console.log(`unit-464prec — the axis-B precedence census over the five conjunctive rows`);
 console.log(`subjects pinned at ${SUBJ_REV.slice(0, 8)} · hand read at ${HAND_REV} · ORDER [${ORDER.join(' > ')}]` +
-  (process.env.CRIPPLE_PRECKEY !== undefined ? '   *** CRIPPLE_PRECKEY SET ***'
-    : process.env.CRIPPLE_HKONLY !== undefined ? '   *** CRIPPLE_HKONLY SET ***' : ''));
+  (CRIPPLE ? `   *** CRIPPLE ${CRIPPLE.toUpperCase()} SET ***` : ''));
 console.log('');
 for (const x of perRow) {
   console.log(`   ${x.row.padEnd(12)} ${String(x.cs.length).padStart(2)} conjuncts  ` +

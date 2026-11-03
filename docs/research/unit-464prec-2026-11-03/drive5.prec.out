@@ -1,0 +1,47 @@
+unit-464prec — the axis-B precedence census over the five conjunctive rows
+subjects pinned at 5ba1af73 · hand read at 2a30185c · ORDER [history-keyed > movable > immovable]
+
+   GCURE@71      8 conjuncts  {immovable,movable}       most-movable movable    filed movable    MULTI-FIGURE
+   GLIFT2@186    5 conjuncts  {immovable,movable}       most-movable movable    filed movable    MULTI-FIGURE
+   GCURE@90     13 conjuncts  {immovable,movable}       most-movable movable    filed movable    MULTI-FIGURE
+   GCTRLPRE@194  7 conjuncts  {movable,immovable}       most-movable movable    filed movable    MULTI-FIGURE
+   G0@79         2 conjuncts  {immovable}               most-movable immovable  filed immovable  single
+
+   most-movable (v1.4)      agree 5  refuted 0  undefined 0
+   most-immovable           agree 1  refuted 4  undefined 0   refuted by [GCURE@71, GLIFT2@186, GCURE@90, GCTRLPRE@194]
+   POST-conjunct decides    agree 3  refuted 0  undefined 2   silent on [GCTRLPRE@194, G0@79]
+   first conjunct decides   agree 2  refuted 3  undefined 0   refuted by [GCURE@71, GLIFT2@186, GCURE@90]
+   last conjunct decides    agree 4  refuted 1  undefined 0   refuted by [GCTRLPRE@194]
+   majority of conjuncts    agree 3  refuted 1  undefined 1   refuted by [GLIFT2@186]   silent on [GCURE@71]
+
+   cells occupied, row-level axis B      6
+   cells occupied, per-conjunct axis B   6
+      delta × movable                2  [GDELTA@60, C0@78]
+      conjunctive × immovable        5  [GCURE@71, GLIFT2@186, GCURE@90, GCTRLPRE@194, G0@79]
+      conjunctive × movable          4  [GCURE@71, GLIFT2@186, GCURE@90, GCTRLPRE@194]
+      identity × immovable           3  [GPATHS@88, GPATH@104, G0@80]
+      identity × movable             2  [GCTRLPRE@161, GROWREPRO@211]
+      delta × history-keyed          1  [C2b@99]
+
+   ok   GPIN           all 3 subject blobs at 5ba1af73 match the pre-registered figures: grade-the-attrib-cure.mjs 2297d29a · grade-the-steal-cures.mjs 6604e830 · measure.mjs f598a375
+   ok   GHANDREV       hand read read at its OWN rev 2a30185c (blob bb4bdb61); worktree copy bb4bdb61 — identical
+   ok   GSLICE         sliced 13 axes rows (expect 13) and 35 conjunct rows (expect 35) out of the pinned files
+   ok   GFIVE          5 conjunctive rows in the axes file, and my conjunct file covers 5 distinct rows — join on (file,line), member lists not counts
+   ok   GSPLITSAFE     no registered span contains an escaped pipe and all 35 produced operands are bracket-balanced — the two conditions under which a regex-blind scanner is sound here
+   ok   GP1COUNTS      conjunct counts, source-derived vs my filed hand read: GCURE@71 8/8 · GLIFT2@186 5/5 · GCURE@90 13/13 · GCTRLPRE@194 7/7 · G0@79 2/2 — 0 departures of 5
+   ok   GWHY194        @194: my filed why says "five conjuncts"; the span at the pin splits to 7 (6 inside ctrlPinned + 1 beside it) — the why cell is wrong by two
+   ok   GJOIN          every one of the 5 conjunctive rows joins to at least one conjunct after the kind derivation: [GCURE@71 8, GLIFT2@186 5, GCURE@90 13, GCTRLPRE@194 7, G0@79 2] — registered because drive1 destroyed this join by overwriting the key field
+   ok   GEVID          all 35 evidence lines classify to the anchor kind my hand read claims — 0 departures
+   ok   GAXISB         all 35 per-conjunct axis-B values equal KIND_AXISB applied to the DERIVED kind — 0 departures
+   ok   GKINDREACHED   anchor-kind arms reached: fixed-rev 13 · rev-from-file 2 · recording 1 · live 13 · run-derived 6 · selector 0 — the selector arm is reached ZERO times, which is P5 and a measured zero, not an absent arm
+   ok   GP2MULTI       multi-figure rows 4 of 5: [GCURE@71, GLIFT2@186, GCURE@90, GCTRLPRE@194]; single-figure [G0@79] — member lists, not counts
+   ok   GP3ORDER       most-movable-wins under [history-keyed > movable > immovable] vs the value filed in HAND-AXES-13.tsv: GCURE@71 movable/movable · GLIFT2@186 movable/movable · GCURE@90 movable/movable · GCTRLPRE@194 movable/movable · G0@79 immovable/immovable — 0 departures of 5
+   ok   GP4SURVIVE     rivals over the 5 filed rows — most-movable (v1.4): agree 5, refuted 0, undefined 0 | most-immovable: agree 1, refuted 4 [GCURE@71,GLIFT2@186,GCURE@90,GCTRLPRE@194], undefined 0 | POST-conjunct decides: agree 3, refuted 0, undefined 2 [GCTRLPRE@194,G0@79] | first conjunct decides: agree 2, refuted 3 [GCURE@71,GLIFT2@186,GCURE@90], undefined 0 | last conjunct decides: agree 4, refuted 1 [GCTRLPRE@194], undefined 0 | majority of conjuncts: agree 3, refuted 1 [GLIFT2@186], undefined 1 [GCURE@71]
+   RED  GP4UNIQUE      rules this sample refutes NOTHING about: [most-movable (v1.4) (undefined on 0), POST-conjunct decides (undefined on 2)] — most-movable-wins is NOT the unique survivor, so five rows do not pick it out
+   ok   GP4POSTSILENT  POST-decides is refuted by 0 of the 5 rows and UNDEFINED on 2 [GCTRLPRE@194, G0@79] — P4(c) predicted a refutation and there is none; silence is not disagreement
+   ok   GP4SENS        rules no row refutes, with the sample at 5: 2 [most-movable (v1.4), POST-conjunct decides] · dropping GCTRLPRE@194: 3 [most-movable (v1.4), POST-conjunct decides, last conjunct decides] · dropping G0@79: 2 — @194 is the only row doing refutation work
+   ok   GP4COINCIDE    the axis-B partition coincides with the PRE/POST state label on 3 of 4 multi-figure rows; the one that does not is GCTRLPRE@194 — so on the other three, most-movable-wins and POST-decides are indistinguishable
+   ok   GP6COUNT       occupied cells of the 3x3: 6 with row-level axis B, 6 with per-conjunct axis B — the occupancy count does NOT move
+   ok   GP6MEMBERS     conjunctive × immovable: [G0@79] -> [GCURE@71, GLIFT2@186, GCURE@90, GCTRLPRE@194, G0@79] (1 -> 5 members); conjunctive × history-keyed stays EMPTY — a cell whose membership quintuples while its occupancy bit holds still
+
+RED — 19 of 20 legs ok
