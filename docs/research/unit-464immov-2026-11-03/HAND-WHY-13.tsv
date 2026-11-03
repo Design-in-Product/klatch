@@ -1,0 +1,91 @@
+# unit-464immov — MY hand read of the 13 `why` columns of unit-464order-2026-11-02/HAND-AXES-13.tsv
+# against each row's OWN registered span, plus my hand count of comparison operators over the five
+# `conjunctive` spans.
+#
+# Done off `slice1.13rows-at-e0fbd74c.out` — a recorded slice of the PINNED source at e0fbd74c,
+# produced by this unit's `slice-at-my-pin.mjs`, which is a three-line wrapper around the slicer
+# Theseus and I have now shared across three units. Filed as its own commit BEFORE
+# `grade-immov.mjs` exists. [[feedback_a_hand_typed_reader_is_not_a_slice]]
+#
+# WHY A HAND READ AT ALL, given that the operator reader in this unit is Theseus's own code copied
+# verbatim: because re-running his reader and getting his number back measures nothing.
+# [[feedback_a_pin_that_recomputes_what_it_grades_is_hollow]] The independent half is this file. The
+# grader's job is to print the DEPARTURE COUNT between these columns and the copied reader, not to
+# re-derive his figures. [[feedback_slicing_the_inputs_but_retyping_the_verdict]]
+#
+# ---------------------------------------------------------------------------------------------
+# SPAN. Theseus's model, carried over verbatim with his stated blindness: the registered line plus
+# continuation lines until the parenthesis opened on the registered line closes; if the registered
+# line opens no paren, the span is that line alone. It is a syntactic window, not an expression
+# tree, so it cannot see an operand DERIVED above the registered line.
+#
+# TWO SOURCE FORMS, AND THE SPLIT MATTERS. Operator counting is done over the
+# STRINGS-AND-COMMENTS-BLANKED span, as his reader does. Quotation containment is done over the
+# RAW span, because a `why` fragment quoting a string literal (`pathOf(preSrc,'HIS')`) would never
+# be found inside a span whose literals have been blanked to spaces — the test would report every
+# such row out-of-span for a reason that has nothing to do with the row.
+# [[feedback_a_diff_based_span_test_is_blind_to_self_blanking_chars]]
+# [[feedback_a_source_regex_fails_by_returning_a_smaller_number]]
+#
+# ---------------------------------------------------------------------------------------------
+# THE TWO REGISTERED DEFECT CLASSES (PRE-REGISTRATION P6), plus the one differentiation I had to
+# add while hand-reading and am declaring rather than hiding:
+#
+#   phantom       the `why` claims a comparison (`vs` at a word boundary, or "compared to") while
+#                 the span carries ZERO comparison operators. There is no `vs` for it to be.
+#   outofspan-U   a backticked `why` fragment CONTAINING a comparison operator does not appear in
+#                 the row's own raw span, and the `why` does not say where it does live.
+#                 UNDISCLOSED — the reader of the row is told the expression is there.
+#   outofspan-D   same containment failure, but the `why` NAMES the line it lives at ("at :64").
+#                 DISCLOSED, and therefore NOT a defect — it is a more careful `why` than its
+#                 neighbours, not a less careful one.
+#
+# `outofspan-D` is NOT in the pre-registration. I added it at hand-read time, on `C0@78`, and
+# without it this census would have published 4 defects where there are 3 — scoring a row as
+# defective for disclosing exactly the thing the class exists to catch people NOT disclosing.
+# An undifferentiated containment match fuses the two mechanisms.
+# [[feedback_an_undifferentiated_containment_match_fuses_two_mechanisms]]
+#
+#   unreached     the `why` makes NEITHER kind of claim — no `vs`, no "compared to", and no
+#                 backticked fragment carrying a comparison operator. NOT clean: unreached. A
+#                 census that folds these into "clean" absorbs its own blindness.
+#                 [[feedback_a_terminal_bucket_reached_by_fallthrough_absorbs_every_blindness]]
+#
+# ---------------------------------------------------------------------------------------------
+# DECLARED NON-BLIND, in both directions, before the numbers below are read:
+#   - Theseus's 11-02 STOP memo told me `@186` has 0 comparison operators and that `:79`'s quoted
+#     expression lives at `:76`. Those two are not blind discoveries and I do not claim them as
+#     such. `:80` IS a blind one — it is in neither his memo nor my own prior reads, and it is the
+#     row that makes P6's "wider than the one row you named" something other than a restatement.
+#   - His memo also gives operand counts for all five conjunctive rows. My `cmpHand` column below
+#     is my own count off the slice; where it agrees with him, the agreement is a cross-check and
+#     not an independent confirmation, and the grader labels it so.
+#
+# cmpHand   my hand count of comparison operators in the span (=== !== == != <= >= < >), with `=>`
+#           NOT counted as `>` — it is an arrow, and his reader excludes it by lookbehind.
+# opndHand  my hand count of top-level operands in the span's predicate (joiners + 1).
+# `-`       not applicable: `cmpHand`/`opndHand` are filled for the five `conjunctive` rows only.
+#
+file	line	id	axisA	whyClass	cmpHand	opndHand	note
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	60	GDELTA	delta	clean	-	-	`preSrc !== postSrc` is at :60, the registered line itself. THE KNOWN POSITIVE for the quotation reader: if this row does not read IN-SPAN, the reader is dead and every other row's defect is manufactured
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	71	GCURE	conjunctive	clean	2	8	THE KNOWN POSITIVE for the phantom reader: the `why` says "vs a boolean literal" AND the span carries 2 comparisons (`=== 4`, `=== 3`), both quoted fragments in span. A reader keying on the word `vs` rather than on the property would flag this row
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	88	GPATHS	identity	clean	-	-	`HIS === pathOf(preSrc,'HIS')` is at :88 — the source writes `pathOf(preSrc, 'HIS')` with a space after the comma, so this row only reads clean under whitespace normalisation, and only against the RAW span
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	161	GCTRLPRE	identity	clean	-	-	`preCtrlMatches === 5` is at :161
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	186	GLIFT2	conjunctive	phantom	0	5	THE ROW THESEUS ROUTED. The `why` reads "each one state vs an Array/key literal"; the span is `Array.isArray(preDecl) && Array.isArray(postDecl) && !!bucket(...) && !!bucket(...) && !!bucket(...)` — five operands, ZERO comparison operators, nothing for `vs` to relate. Declared non-blind
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	90	GCURE	conjunctive	unreached	0	13	Reached by NEITHER registered class: no `vs`, no "compared to", no backticked fragment. And yet its `why` says "ten conjuncts" where I count 13 — a THIRD defect class (a miscounted figure) that P6 does not cover. Reported as unreached, which is the honest bucket, not as clean
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	104	GPATH	identity	clean	-	-	`clonePre === clonePost` is at :104
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	194	GCTRLPRE	conjunctive	clean	1	2	`\bvs\b` does match "live-vs-literal" (the hyphen is a non-word char), so this row IS reached by the phantom class — and its span carries 1 comparison, so it reads clean. `transition(rec3Arm) === '1→2'` is at :194
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	211	GROWREPRO	identity	clean	-	-	`tripleKey(preCtrl.rows) === tripleKey(rec4Rows)` is at :212, inside the span opened at :211
+unit-464rec3-2026-11-01/grade-the-three-cures.mjs	99	C2b	delta	clean	-	-	`defectiveShape && atPin !== atRecency` is at :101, inside the span opened at :99
+unit-464vac-2026-10-31/grade-cure.mjs	78	C0	delta	outofspan-D	-	-	`changed = checkerNow !== checkerThen` is NOT in the span (:78 is `if (!changed) refuse(...)` alone) — but the `why` SAYS "at :64". Disclosed, so NOT a defect. This is the row that forced the differentiation
+unit-464vac-2026-10-31/measure.mjs	79	G0	conjunctive	outofspan-U	1	1	`a === null || b === null` is at :76, three lines ABOVE the registered line, and the `why` does not say so. The span is `if (unreadable.length > 0) refuse('G0', …)` — 1 comparison, no top-level joiner at all. Declared non-blind: Theseus measured this one first
+unit-464vac-2026-10-31/measure.mjs	80	G0	identity	outofspan-U	-	-	`a !== b` is at :77, three lines above the registered line, undisclosed. THE BLIND ONE — not in Theseus's memo and not in any prior read of mine. This row is why P6 is about a class and not about `@186`
+#
+# ---------------------------------------------------------------------------------------------
+# MY HAND TOTALS, registered here so the grader can only agree or depart from them:
+#   conjunctive rows at ZERO comparison operators : 2   (@186, @90)
+#   defective under the two REGISTERED classes    : 3   (@186 phantom; :79, :80 outofspan-U)
+#   disclosed-and-therefore-not-defective         : 1   (@78)
+#   clean                                         : 8
+#   unreached                                     : 1   (@90)
+#   reached / unreached                            : 12 / 1     sum 13
