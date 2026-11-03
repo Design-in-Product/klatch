@@ -174,3 +174,152 @@ counts goes stale on its own promotion.
 
 `git status --porcelain -- packages/ scripts/` → **0 bytes**, so the gate not being re-run from this
 seat is a scope fact and not an omission.
+
+---
+
+## 14:47 — Session resumed (WORK fire)
+
+**Model:** claude-opus-5.
+
+**Briefing.** Fetched; `git rev-list --count HEAD..origin/main` → **0**, worktree current. Checked the
+**author** of the three commits at the tip before assuming anything: `61cc76d8` and `bba2aa3c` are
+**Daedalus's** 13:37 WORK fire, not mine. My own checkpoint is `c07cc4b0` (11:09:47 -0800).
+`docs/COORDINATION.md` read (my `### Theseus Prime` section at line 3401, Argus's for current state).
+`docs/mail/` listed newest-first: one new memo addressed to me,
+`daedalus-to-theseus-...-your-census-is-taken-and-four-of-five-rows-are-multi-figure-...-2026-11-03.md`,
+**194 lines, read in full at open.** Cross-pollination brief read: a pointer to a private URL, no
+insight text in-repo.
+
+**His §7 routed me the live item:** whether `history-keyed > movable` can be tested from this tree at
+all. It needs a `conjunctive` row with a **selector** conjunct beside a **movable** one; his census
+found none, and he explicitly had not looked outside the 13 and would not guess.
+
+### 14:5x — the surface, before any prediction was registered
+
+Traced the 13 rows back: `unit-464order`'s `HAND-AXES-13.tsv` ← `unit-464reach`'s `HAND-READ-13.tsv`
+← `unit-464class`'s leg census, whose surface is declared at `enumerate-legs.mjs:7` and implemented
+at **`:181`**: `if (/^Daedalus/.test(oldest)) mineAll.push(d);`. **The census surface is the
+Daedalus-authored half of the unit directories, not the tree.** Measured at `bba2aa3c`: **18 dirs /
+54 `.mjs`** in the complement against **19 / 52** inside — the unenumerated half is the larger one.
+Declared this **P1 NON-BLIND** in the pre-registration rather than registering a prediction whose
+answer I already held.
+
+Then found the surface is wider still, by family over every dir under `docs/research/`:
+`unit-464*` 37/106 · **`roundNNN-instruments` 91 dirs / 191 `.mjs`** · `unit-other` 2/6 · other 6/5 ·
+**TOTAL 136 dirs / 308 `.mjs`**. His surface is **52 of 308 = 16.9%**. Kept this **UNREGISTERED** and
+labelled as such in both instrument and RESULTS, because it is wider than the population P1–P6 are
+keyed on and a join key must not widen with the property.
+
+### 15:0x — pre-registration filed and pushed as the only file in its directory
+
+`docs/research/unit-464outside-2026-11-03/PRE-REGISTRATION.md`, commit `1dfa1dfc`. Six predictions
+with thresholds, the cripple registered before the grader existed, P1 declared non-blind up front,
+and **P5 registered separately from P4 specifically so a P4 that lands vacuously could be told from
+one that lands.** Verified against `origin/main`: `git ls-tree -r origin/main` over the directory
+returns `PRE-REGISTRATION.md` alone.
+
+### 15:1x — the instrument: his predicates lifted, not retyped
+
+`census-outside.mjs`. **Nine anchored fragments lifted from his committed source at the pin** —
+`blankNonCode`, `lineOf`, `IDIOMS`, `spans`, `enclosingIf` from `enumerate-legs.mjs`;
+`declarationsOf`, `FROZEN_RE`, `LIVE_RE`, `classify` from `classify-and-grade.mjs` — sliced on exact
+signature + column-0 terminator anchors, evaluated in one `new Function`, with a failed lift
+**UNRUNNABLE rather than degraded**. `GBLANKED` probes the lifted blanker for length preservation on
+a string/comment/regex-class brace probe. I did not re-implement his class key in order to disagree
+with it.
+
+### 15:1x — drive1 RED, and the red was the guard doing its job
+
+**126 leg sites** over the complement's 54 files; **0 CROSS-STATE**, 23 GATE, **103 UNMODELLED**.
+`GCSARM` — registered before the grader existed to tell a measured zero from an unreached arm —
+**RED**. Published without it, P4 would have read a clean `0` and I would have told Daedalus the tree
+is silent.
+
+### 15:2x — drive2, the depth curve: the zero was the closure depth
+
+His `classify` is parameterised on identifier-closure depth and his census ran at the registered
+depth 1:
+
+| depth | sites | GATE | CROSS-STATE | UNMODELLED |
+|---|---|---|---|---|
+| 1 | 126 | 23 | **0** | 103 |
+| 2 | 126 | 30 | 2 | 94 |
+| 3 | 126 | 25 | 11 | 90 |
+| 5 | 126 | 24 | **15** | 87 |
+
+**15 CROSS-STATE legs outside the censused half, against 13 inside it**, all 15 `conjunctive`. So
+"the 13" is one authored half read at one closure depth. **87 of 126 stay UNMODELLED at depth 5** —
+his `FROZEN_RE`/`LIVE_RE` name his idioms, not mine; a portability limit inherited here, not cured
+here. **My own defect: P3 was registered without pinning the depth**, so its verdict is REFUTED at 1
+and LANDS at ≥2.
+
+**The routed question, answered:** 2 of the 15 carry a selector, and **both are
+`occupy-conj-history.mjs:270` and `:296` — the leg I built this morning.** Selector idiom alive on
+the surface at **8 of 54 files**, so the zero outside my own construction is measured. On Daedalus's
+own hand read those two conjuncts are `immovable` + `history-keyed` with **no `movable` conjunct**,
+so they are not witnesses either. **Real witnesses in the family: 0.** His second horn holds — the
+relation is reachable only by construction and the ordering's second relation is a **prescription**.
+
+**Second defect of mine, named rather than papered over:** P4 as registered says `conjunctive` *and*
+selector *beside a `movable` conjunct*; my detector tests only the first two. It over-reports against
+its own prediction, so **P4 as registered is UNGRADED by this instrument** and the `2` is the weaker
+property.
+
+### 15:3x — drive3/4, the cripple: NOT REACHED, and two more defects are mine
+
+`CRIPPLE=invert-author`, a switch on the **authorship key** — blob `0b2e193f` identical in both arms,
+no file under `docs/research/` written. Delta **computed** into
+`drive4.delta-vs-drive3.txt`, not eyeballed. Population **18→37 dirs, 54→106 `.mjs`, 126→325 sites,
+CROSS-STATE 15→26** — and **0 legs moved, 0 verdicts moved. NOT REACHED.**
+
+1. I gave `GDISJOINT` and P1 **cripple-aware branches**, so the cripple re-keys the very legs meant
+   to grade it.
+2. My REACHED threshold was keyed on **leg outcomes and verdicts**; every leg here is an existence
+   leg and every verdict a floor threshold, so doubling the population crosses no boundary. **The
+   criterion should have required a figure to move.**
+
+My pre-registration says a NOT-REACHED cripple means **P2–P5 are ungraded, not landed**, and I am
+honouring that rather than keeping the greens. The crippled arm still buys its figure: over the full
+37 dirs, `conj × selector` is **2 — the same two**, so §1's answer holds across the whole family.
+
+### 15:3x — deliverables
+
+- `RESULTS.md` `fae5744e` — the answer, the 16.9% surface figure, the depth curve, and §5 listing my
+  four defects with the verdict table showing what is ungraded.
+- Reply memo to Daedalus/xian cc Janus/Argus/Calliope/Iris, **in its own commit** `316fa82d`, pushed
+  to `main` directly per the worktree mail discipline. Relays his own §5 correction: the
+  proportionality figure I passed on in my START §6 was **502 and is 520** — his bug, a bare-date
+  `--since`, and I relayed it in good faith.
+- **No convention edit from this seat.** v1.5 §2.1g is his document and the relabel is his call; I
+  routed it rather than writing into his section.
+
+### 15:3x — cross-repo sweep
+
+All four mailboxes `git fetch`ed **first**, then scanned with an **explicit timestamp** (my
+checkpoint `c07cc4b0`, 2026-11-03 11:09:47 -0800) rather than a bare date:
+
+| mailbox | commits | outcome |
+|---|---|---|
+| `designinproduct` | 18 | Janus's WORK cycle, rollup v528, "Klatch figure corrected" — he has already picked up Daedalus's proportionality correction. **0** filename hits on `klatch\|theseus` |
+| `mediajunkie` | 8 | Pard restart verification, Spotlight exclusion, the expired `argus-test-key` register entry. **0** hits |
+| `dispatch` | 0 | — |
+| `piper-morgan-product` | 53 | Docs/Comms publication traffic. **0** hits (stated as **filenames**) |
+
+Nothing owed from any of the four.
+
+### Fire close
+
+**Not run:** `npm test`, `npm run typecheck`, the probe sweep as a standalone drive — nothing under
+`packages/` or `scripts/` touched (`git status --porcelain` on those two paths, **0 bytes**, checked
+before the RESULTS commit). The pre-commit census printed `CENSUS OK`, 153 files, 43 swept / 110
+deferred, on every commit.
+
+**Drain:** the one new memo read at open and answered in this fire by construction; the live routed
+item answered; the surface defect found and measured; four defects of mine recorded; all four
+mailboxes swept; brief read. **Three deferrals, each with a named blocker:** the
+`roundNNN-instruments` leg census (**91 dirs / 191 `.mjs`**, counted but not censused — a
+`conjunctive × selector × movable` leg could live there and would overturn the answer), a **hand read
+of the 15 CROSS-STATE rows** this unit classed by detector alone, and the repair of my cripple
+criterion to key on figures. All three are mine and named; none is blocked on another party, and I am
+recording them because this fire ran out of fire, not because they are lower priority. My 11-01
+question-box letter still waits on **xian's** reply.
