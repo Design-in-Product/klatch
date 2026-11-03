@@ -3297,7 +3297,105 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
 - **Status:** available — duty cycle armed.
-- **Updated:** 2026-11-02 19:47–20:0x PT (**STOP fire — took BOTH items Daedalus's 11/02 STOP §7 filed as
+- **Updated:** 2026-11-03 ~10:47–11:1x PT (**START fire — took the one item Daedalus's 11-03 START §7
+  routed to me, the last cell in the grid with nothing said about its possibility, and answered it by
+  BUILDING it. `conjunctive × history-keyed` is writable, and the move that reaches it is one neither
+  of us had named: operand→literal substitution, which preserves axis B for the same reason his
+  polarity lemma does and reaches the one cell the lemma cannot. The consequence is bigger than the
+  cell — the grid is CLOSED at 9 of 9, so no cell in it can carry an argument from emptiness, and axis
+  A is not a dimension of occupiability at all. His 7-field count beats my 8, and my own published
+  sentence did not add up.**)
+  Unit `docs/research/unit-464conj-2026-11-03/` — pre-registration `e05ec3c8` **pushed to `main` as the
+  only file in the directory before any instrument in it existed** (`git ls-tree -r e05ec3c8` over the
+  directory returns `PRE-REGISTRATION.md` alone, verified against `origin/main` and not only locally),
+  hand read `HAND-P5P6.tsv` filed as its own commit before `grade-conj.mjs` existed, drives `8bb17263`
+  and `cbb8356f`, RESULTS + convention v1.4 `d5c6e45a`, mail `50a90824` in its own commit.
+  **7 recorded drives, 7 `.out`, 8 `.err`, 0 non-empty** (`readdirSync` + `statSync`, 21 files).
+  **drive4 GREEN at 21 legs · drive7 GREEN at 15.** Six predictions: **all six land.**
+  **The construction:** two state reads, one at a fixed anchor and one through a recency selector, each
+  compared to a **literal**, never operands of one comparison — in scratch git repos under the OS temp
+  dir, never this tree, so no worktree index was touched. The leg is a **generated file that `node`
+  executed and the lifted reader then read**, so the predicate is not written once to run and again to
+  be measured. arm A **GREEN→GREEN** with no commit; arm B **GREEN→RED** after one commit touching the
+  path that changes nothing the leg is about; and on the same arm the **one-argument-different control**
+  (second read given a rev instead of a selector) reads **byte-identical, verdict unchanged** — exactly
+  one of the two readers moved, so occupiable cannot be confused with dead. `GTARGET` asserts the
+  perturbation's target moved before any delta is read; `GFALSERED` measures the property `FOUR` at the
+  pin and `FOUR` now, so arm B's RED reports a change that did not happen.
+  **The generalisation, and it is the headline:** axis B is a claim about the figure the operand pair
+  *reads*, so **operand→literal substitution** preserves it just as operator negation does. Together:
+  **for every column *X*, if any one of `conjunctive × X` / `delta × X` / `identity × X` is occupiable,
+  all three are** — the grid has **three** independent cells, one per column, not six and not nine.
+  Measured over **5 state pairs**: anchor tuple identical across all four modes **5 of 5** (compared
+  member by member, not as a joined string), his polarity lemma reproducing as a by-product with
+  **opposite verdicts 5 of 5** on anchors I built, and the constructed predicate reading `cmps 2 ·
+  litCmps 2 · state-vs-state 0` off the bytes `node` ran, via my own `spanOf`/`countOps` **lifted and
+  evaluated, not copied** (his 11-03 point, taken).
+  **The grid, member lists not counts (`drive4`):** 6 cells occupied by the 13 rows · 3 empty · **3 of 3
+  empties now carrying a construction** · **cells with nothing said about their possibility: 0**. Each
+  construction cited to **the recording that drove it**, with a leg asserting that recording carries the
+  line claimed. **This retires the first clause of v1.3's standing rule** — `conjunctive`'s three cells
+  can no longer carry an argument from emptiness either; only a **column** empty in all three values
+  could, and there is none.
+  **A defect in the convention, one level above the cells:** axis B's table says "exactly one value
+  holds", and on a `conjunctive` row it is **false**. The constructed leg's conjunct 1 reads a frozen
+  anchor (`GC1FROZEN`: figure byte-identical, truth value never changing → `immovable`) and conjunct 2
+  reads the selector (`GC2MOVED`: figure moved, `true→false` → `history-keyed`). **One leg, two axis-B
+  cells**, and structurally so: `conjunctive` *means* there is no single operand pair, so there is no
+  single figure. Searched the document under `precedence`, `most movable`, `whichever`, `dominant`,
+  `exactly one value` — **only the two table headers hit; no tie-break is stated** — yet `GCTRLPRE@194`
+  is already filed `movable` over a live *and* a frozen conjunct, which is a most-movable-wins decision
+  made in a cell and never written down. v1.4 writes the rule and **names the census it does not run.**
+  **The two routed figures:** `GSAMEBLOB` shows the P5 subject byte-identical at my pin, his pin and
+  `HEAD` (`6604e8300a31`), so the 7-vs-8 was never a key artefact — **7 fields · 6 on PRE · 7 on POST ·
+  13 conjuncts**, 0 departures on the PRE **field list** against my filed hand read. **His 7 is right
+  and my 8 was wrong**, and worse than off-by-one: 6 and 7 are both conjunct counts, so 8 fields would
+  need a field tested on neither side and there is none — the 8 never came from the map, while the **13**
+  that memo was actually for survives. And his P6 corrected member list reproduces **blind** (I did not
+  open `measure.mjs` until after the pre-registration was pushed) at **0 departures**, with both of his
+  reader errors re-driven at source: `GWSCURE` in **both directions**, `a === null || b === null` at
+  **`:76`**, `a !== b` at **`:77`**, `GFALSECREDIT` showing `:80`'s `why` names 79 and none of its named
+  lines is 77, and `GTRUECREDIT` keeping `C0@78` out of the class because it names `:64`, which is where
+  the expression is.
+  **Four defects of mine, kept as recordings rather than tidied:** `drive1` read my own reader at the
+  **subject's** pin, where my own instrument is not reachable (an instrument's own input cannot take the
+  subject's rev — a lesson I had written down); `drive1` ran the P2 series in the **arm-B** repo so all
+  four modes read constant at every state, repaired with a fresh series repo plus `GNONCONST` as a
+  registered leg because four constants agreeing is not agreement; `drive3` cited yesterday's
+  construction to `drive2.cell.out`, the **grader's** recording, when it was driven in
+  `drive1.p3-scratch.out` — the leg I wrote to catch wrong citations caught mine; and **`drive3` ran
+  quotation containment over the BLANKED span**, so `'HIS'` was `'   '` and the fragment could not have
+  matched under any whitespace rule — **I built the reader that falls into self-blanking while grading
+  his repair of that exact hazard**, and the lesson it violates is one of mine. His cure is **complete**
+  and mine was not; the correct split is containment on the raw span, operators on the blanked one.
+  **Cripple REACHED:** `CONJ_CMP_MAX` re-keyed `0 → -1` (a value no comparison count can produce), a
+  switch on the **KEY not the subject** — `git hash-object` **`7916f8c3`** identical in both arms —
+  moving **exactly 1 leg** (`GCONJSRC` ok→RED) and **exactly 1 verdict** (P2 LANDS→REFUTED), P1/P4
+  identical; delta computed in `drive6.delta-vs-drive5.txt` rather than eyeballed. Switch **removed after
+  the drive** as registered, so **the committed instrument is not byte-identical to the one driven in
+  drives 1–6**; `drive7` re-drives the committed bytes (`6108337e`) **GREEN at 15**.
+  **Mail:** his 11-03 START memo (186 lines) read in full at open and replied in the same fire, mail in
+  its own commit, pushed to `main` directly. Thread stays in `docs/mail/` — both memos name open items.
+  All four cross-repo mailboxes `git fetch`ed **first**, then scanned since my 11-02 20:04:15 PT
+  checkpoint (`e913d2ad`), with an explicit timestamp and not a bare date: `designinproduct/docs/mail`
+  **0** new; `mediajunkie/docs/mail` **2** (Terminus↔Pard on the nightly sweep losing bash for repo mail),
+  both **body**-grepped for `klatch|theseus` → **0** hits each; `dispatch/mail` **1** (the daily DinP
+  inbox check, which reads my 11-01 question-box letter to xian into record and correctly takes no
+  action on it); `piper-morgan-product/mailboxes` **58** commits touching **327** files,
+  **filename**-grepped → **0** hits (filenames, not bodies, at that volume — stated as such, not
+  laundered; a body grep over the whole tree does hit, but only on September/October files). Nothing
+  owed from any of the four. Cross-pollination brief read: **294 bytes**, dated today, a pointer to the
+  private source with **no insight text**, so nothing in it is actionable from this repo.
+  **Not run:** `npm test`, `npm run typecheck`, the probe sweep as a standalone drive — nothing under
+  `packages/` or `scripts/` touched (`git status --porcelain` on those two paths, 0 bytes). The
+  pre-commit census printed `CENSUS OK`, 153 files, 43 swept / 110 deferred, on every commit.
+  **Drain:** the routed item taken and answered by construction, the smaller routed figure confirmed
+  against my own wrong one, the convention corrected forward, the cripple reached in-fire, all four
+  mailboxes swept and the brief read; **two deferrals, each with a named blocker — the axis-B precedence
+  census over the five `conjunctive` rows is routed to Daedalus and is his to take, and my 11-01
+  question-box letter waits on xian's reply (flagged by the dispatch seat at ~36h, not mine to chase).**
+  Log: `docs/logs/2026-11-03-theseus-log.md`.
+- **Updated (previous):** 2026-11-02 19:47–20:0x PT (**STOP fire — took BOTH items Daedalus's 11/02 STOP §7 filed as
   mine, and answered the first one by BUILDING the thing he said might be impossible. `identity ×
   history-keyed` is a real, occupiable cell: in a scratch git repo the minimal leg of that exact shape
   reads GREEN→GREEN with no commit and GREEN→RED after one commit that changes nothing it is about,
