@@ -1,0 +1,32 @@
+# unit-464cell — MY hand read of the three candidate COUNTS over the five rows Daedalus's
+# HAND-AXES-13.tsv marks `conjunctive`, done off `slice1.13rows-at-0c23e551.out` (a recorded slice
+# of the PINNED source at 0c23e551), not off his `why` column and not off the worktree.
+#
+# THIS FILE CARRIES NO axisA/axisB COLUMNS. The grader joins his labels out of HIS OWN
+# unit-464order-2026-11-02/HAND-AXES-13.tsv on (file,line,id), so no departure below can come from
+# my re-typing his. [[feedback_slicing_the_inputs_but_retyping_the_verdict]]
+#
+# ORDERING, STATED HONESTLY AND NOT LAUNDERED: `grade-cell.mjs` existed in my worktree, UNCOMMITTED
+# AND NEVER DRIVEN, when I made this hand read. I wrote the counting logic before I counted by hand.
+# That is weaker than the ordering I have claimed in previous units (hand read filed before the
+# grader's source exists at all) and I am not going to describe it as that ordering. What the join
+# below still buys is that the grader cannot silently agree with me: every departure prints.
+#
+# SPAN MODEL (the same one the grader declares): the registered line plus continuation lines until
+# the parenthesis opened on the registered line closes, over strings-and-comments-blanked source.
+# STATED BLINDNESS: this window cannot see an operand DERIVED ABOVE the registered line. That is
+# not a hypothetical here — see the `:79` note.
+#
+# COLUMNS
+#   joiner    the TOP-LEVEL boolean joiner of the span's predicate: `&&`, `||`, or `none`
+#   operands  the count of top-level operands that joiner separates (1 when there is no joiner)
+#   cmps      comparison operators (=== !== == != <= >= < >) in the span
+#   litCmps   of those, the ones with a literal on one side
+#   callOps   distinct call-wrapped operand names in the span (an identifier applied to arguments)
+#
+file	line	id	joiner	operands	cmps	litCmps	callOps	note
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	71	GCURE	&&	8	2	2	0	eight top-level operands; the only two comparisons are `preHas.buckets === 4` and `postHas.buckets === 3`, both state-vs-literal. His why says "eight conjuncts" and this agrees.
+unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs	186	GLIFT2	&&	5	0	0	2	five top-level operands and ZERO comparison operators — `Array.isArray(preDecl)` and `!!bucket(preDecl,'header')` are calls and negations, not comparisons. His why says "five conjuncts, each one state vs an Array/key literal"; there is no `vs` in this predicate at all. This is a SECOND zero-comparison row besides @90.
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	90	GCURE	&&	13	0	0	0	thirteen top-level operands, all bare truthiness or negation of a shape-map field, ZERO comparison operators. His why and his memo both say "ten conjuncts"; I read thirteen and register the departure rather than adopting his number.
+unit-464cure3-2026-11-01/grade-the-steal-cures.mjs	194	GCTRLPRE	&&	2	1	1	2	TWO top-level operands, not five: `ctrlPinned(preCtrl)` is ONE operand at this level and its five conjuncts live in a definition four lines above. The span count is a lower bound for exactly the reason §2.1b gives.
+unit-464vac-2026-10-31/measure.mjs	79	G0	none	1	1	1	0	the registered line is `if (unreadable.length > 0) refuse('G0', …)` — ONE comparison, `length > 0`, and NO top-level boolean joiner. The `a === null || b === null` that both his why-column and my own prior memo attribute to this row is at :76, THREE LINES ABOVE the registered line, outside the span.
