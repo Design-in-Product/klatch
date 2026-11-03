@@ -20,7 +20,44 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/argus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/argus`, per-worktree git identity `Argus (Klatch)`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope restored per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-03 ~09:1x PT (START fire — census-only no-op). Checkpoint own last commit
+- **Updated:** 2026-11-03 ~13:3x PT (WORK fire — census-only no-op, one mail item answered).
+  Checkpoint own last commit `e0fbd74c` (11/03 START fire, 09:05 PT). 22 new commits since, none
+  mine (author-checked): Daedalus's `unit-464immov` chain (pre-registration through drive8 +
+  convention v1.3 — delta × immovable occupiable, a false RED published by his own
+  discriminating guard, a `GREACHED` guard found passing at reached 0 of 13) plus RESULTS+mail to
+  Theseus/xian cc Janus/**Argus**/Calliope/Iris, Theseus's `unit-464conj` chain (pre-registration
+  through drive3-7 + cripple delta + RESULTS + convention v1.4 — conjunctive × history-keyed
+  occupiable, grid closed at 9 of 9, two defects of his own caught by his own drive3) plus mail,
+  Daedalus's `unit-464prec` chain (pre-registration, hand read of 35 conjuncts, drive1-3 — 4 of 5
+  conjunctive rows multi-figure, his own P4(c) prediction wrong — drive5-7 + two cripple deltas —
+  demoting history-keyed in the ordering is a byte-level no-op), the Janus→Argus test-key memo
+  (delivered by Pard), and Calliope's MID-fire coord+log no-op. `git diff --dirstat
+  e0fbd74c..HEAD` **100% under `docs/`**; `git diff --stat e0fbd74c..HEAD -- packages/ scripts/`
+  empty. **Mail:** one new local file addressed directly to this seat (not cc) —
+  `argus-test-key` expired today, last used 30+ days, nothing to action since this week's gate
+  commands (typecheck/mocked server tests/client tests/`sweep-probes --census`) never touch
+  `~/.klatch/klatch.env`; replied confirming no live-call need and naming where I'll raise it if
+  that changes, both inbound and reply moved to `docs/mail/read/` together, thread closed. The
+  standing open thread addressed to this seat
+  (`theseus-to-argus-daedalus-...-your-unclaimed-110-is-zero...-2026-10-27.md`) re-read: unchanged,
+  still "nothing routed," still open on Daedalus's unclosed C4 half. All four cross-repo
+  mailboxes checked fresh via `git fetch` + `git log --since` against the 09:05 checkpoint:
+  `designinproduct` 0 new; `mediajunkie` 3 new (sweep-fix traffic plus a register-entry memo for
+  the same expired key, informational, addressed to Pard, no action here); `dispatch` 0 new;
+  `piper-morgan-product/mailboxes` ~20 new, content-grepped for klatch/argus — 0 hits. Nothing
+  owed beyond the reply already sent. **Standing blockers re-derived fresh:** Managed Agents
+  smoke-run — no `ma-smoke/*` branch anywhere, named blocker on xian, unchanged at day **14**
+  (same calendar day as this morning). Rollup still v173 (read directly): needs-you unchanged at
+  2, nothing in the 22 new commits is xian's to decide. Intel sweep cadence satisfied today by
+  the automated scan, not due from this seat. **Gate re-derived fresh:** `lsof -i :3001` port
+  free; `npm run typecheck` clean ×4 workspaces; `npm test -w packages/server` **140 files · 2186
+  passed · 1 skipped (2187)**, byte-identical; `npm test -w packages/client` **26 passed|13
+  skipped (39) · 333 passed|13 skipped (346)**, byte-identical; `node scripts/sweep-probes.mjs
+  --census` **153 probe files, 43 swept/110 deferred, CENSUS OK**, byte-identical. **Needs-you:**
+  unchanged at 2. Two consecutive `git fetch origin` checks found nothing further unblocked —
+  fire closed bounded. **Drain:** all of the above drained this fire, including the one mail item
+  (answered and closed to `read/`); nothing deferred. Log: `docs/logs/2026-11-03-argus-log.md`.
+- **Updated (previous):** 2026-11-03 ~09:1x PT (START fire — census-only no-op). Checkpoint own last commit
   `fe2a6eb3` (11/02 STOP fire, 18:03:45 PT). 13 new commits since, none mine (author-checked):
   Theseus's `unit-464cell` chain (pre-registration, drives 1-4 + addendum — both of Daedalus's
   routed items taken, `identity × history-keyed` demonstrated occupiable in a two-arm scratch
