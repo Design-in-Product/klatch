@@ -141,10 +141,23 @@ if (axes !== null && hand !== null && reader !== null) {
   // `vs` alternation is blinded the same way.
   const FRAG_CMP = CRIPPLE ? /\u0000NEVER\u0000/ : /===|!==|==|!=|<=|>=|<|>/;
   const CLAIMS_CMP = CRIPPLE ? /\u0000NEVER\u0000/ : /\bvs\b|compared to/i;
-  // "at :NN" anywhere in the why DISCLOSES another line. Undifferentiated containment would fuse
-  // disclosure with misattribution. [[feedback_an_undifferentiated_containment_match_fuses_two_mechanisms]]
-  const DISCLOSES = /\bat :(\d+)\b/;
-  const norm = (s) => s.replace(/\s+/g, ' ').trim();
+  // DISCLOSURE MUST BE ATTACHED TO THE FRAGMENT, not merely present in the why. drive3 read any
+  // `at :NN` anywhere in the cell as a disclosure, and so credited `:80` — whose why says "both
+  // anchors fixed as at :79", a claim about the ANCHORS that discloses nothing about where
+  // `a !== b` lives — with disclosing its own out-of-span quotation. A false credit REMOVES a row
+  // from the defect list, so that leniency made P6's count right and its membership wrong.
+  // The rule now: the why must name a line AND the fragment must actually be at a line it names.
+  // [[feedback_an_undifferentiated_containment_match_fuses_two_mechanisms]]
+  // [[feedback_a_guard_on_identity_does_not_guard_value]]
+  const DISCLOSED_LINES = (why) => [...(why ?? '').matchAll(/\bat :(\d+)\b/g)].map((m) => Number(m[1]));
+  // WHITESPACE-INSENSITIVE, not whitespace-collapsed. drive3 collapsed runs to one space, which
+  // still failed `pathOf(preSrc,'HIS')` against the source's `pathOf(preSrc, 'HIS')` — a difference
+  // of one space that has nothing to do with the property. My own hand read named this hazard and
+  // the reader I then built fell into it. STATED BLINDNESS: deleting whitespace entirely can
+  // over-match (`a ===b` would match `a===b`), so this reader can only MISS an out-of-span
+  // fragment, never invent one — the safe direction for a defect census.
+  // [[feedback_a_source_regex_fails_by_returning_a_smaller_number]]
+  const norm = (s) => s.replace(/\s+/g, '');
 
   const measured = [];
   for (const r of axes.rows) {
@@ -162,8 +175,19 @@ if (axes !== null && hand !== null && reader !== null) {
 
     const frags = [...(r.why ?? '').matchAll(/`([^`]+)`/g)].map((m) => m[1]).filter((f) => FRAG_CMP.test(f));
     const outOfSpan = frags.filter((f) => !rawSpan.includes(norm(f)));
-    const discloses = DISCLOSES.test(r.why ?? '');
     const claimsCmp = CLAIMS_CMP.test(r.why ?? '');
+    const namedLines = DISCLOSED_LINES(r.why);
+
+    // Where each out-of-span fragment ACTUALLY lives, so the finding is a location and not a denial
+    // — and so disclosure can be checked AGAINST that location rather than against the cell's prose.
+    const located = outOfSpan.map((f) => {
+      const i = rawAll.findIndex((l) => norm(l).includes(norm(f)));
+      return { frag: norm(f), at: i < 0 ? null : i + 1 };
+    });
+    // Disclosed only if EVERY out-of-span fragment sits at a line the why names.
+    const discloses = located.length > 0 && located.every((l) => l.at !== null && namedLines.includes(l.at));
+    const foundAt = located.map((l) => `${l.frag} -> ${l.at === null ? 'nowhere in the file' : `:${l.at}`}`
+      + `  (why names ${namedLines.length ? namedLines.map((n) => `:${n}`).join(',') : 'no line'} -> ${l.at !== null && namedLines.includes(l.at) ? 'DISCLOSED' : 'NOT disclosed'})`);
 
     let cls;
     if (outOfSpan.length > 0) cls = discloses ? 'outofspan-D' : 'outofspan-U';
@@ -171,13 +195,7 @@ if (axes !== null && hand !== null && reader !== null) {
     else if (frags.length === 0 && !claimsCmp) cls = 'unreached';
     else cls = 'clean';
 
-    // Where each out-of-span fragment ACTUALLY lives, so the finding is a location and not a denial.
-    const foundAt = outOfSpan.map((f) => {
-      const i = rawAll.findIndex((l) => norm(l).includes(norm(f)));
-      return `${norm(f)} -> ${i < 0 ? 'nowhere in the file' : `:${i + 1}`}`;
-    });
-
-    measured.push({ ...r, cls, cmps: ops.cmps, operands: ops.andTop + ops.orTop + 1, spanLines: span.lines, frags: frags.length, outOfSpan: outOfSpan.length, discloses, claimsCmp, foundAt });
+    measured.push({ ...r, cls, cmps: ops.cmps, operands: ops.andTop + ops.orTop + 1, spanLines: span.lines, frags: frags.length, outOfSpan: outOfSpan.length, discloses, claimsCmp, namedLines, foundAt });
   }
 
   console.log(`\nTHE ${measured.length}-ROW \`why\` CENSUS (span = his model; operators over the BLANKED span, quotation over the RAW span):`);
@@ -198,8 +216,16 @@ if (axes !== null && hand !== null && reader !== null) {
   const buckets = {};
   for (const m of measured) buckets[m.cls] = (buckets[m.cls] ?? 0) + 1;
   const reached = measured.filter((m) => m.cls !== 'unreached').length;
-  check('GREACHED', reached + (buckets.unreached ?? 0) === measured.length && measured.length === 13,
-    `the census prints its own REACH, not a clean count: reached ${reached} / unreached ${buckets.unreached ?? 0} of ${measured.length}. Buckets ${JSON.stringify(buckets)}`);
+  // drive5's cripple caught this guard being vacuous. Its predicate was `reached + unreached === 13`,
+  // which the two buckets satisfy BY CONSTRUCTION — so the crippled arm, in which the census reached
+  // 0 of 13, passed it. The guard printed the number that would have told me and then asserted
+  // something a partition cannot violate. It is now keyed on the reached count matching my hand
+  // read's own reached count, which is a figure the cripple can and does move.
+  // [[feedback_a_gate_leg_must_read_a_figure_the_cripple_can_move]]
+  // [[feedback_a_guard_that_fires_beside_a_figure_that_still_prints]]
+  const handReached = hand.rows.filter((r) => r.whyClass !== 'unreached').length;
+  check('GREACHED', measured.length === 13 && reached === handReached && reached > 0,
+    `the census prints its own REACH and is GATED on it: reached ${reached} / unreached ${buckets.unreached ?? 0} of ${measured.length}, against my hand read's reached count of ${handReached}. Buckets ${JSON.stringify(buckets)}`);
 
   // Departures against my hand read — the independent half.
   const deps = measured.filter((m) => handBy.get(key(m)).whyClass !== m.cls)
@@ -243,6 +269,18 @@ if (axes !== null && hand !== null && reader !== null) {
     { defective: defective.map((m) => `${m.id}@${m.line} ${m.cls}`), count: defective.length, disclosedNotCounted: measured.filter((m) => m.cls === 'outofspan-D').map((m) => `${m.id}@${m.line}`), routedByTheseus: 'GLIFT2@186' },
     (m) => m.count >= 3);
 
+  // P6 AS REGISTERED IS A COUNT, AND THAT IS THE UNDER-SPECIFICATION drive3 exposed: it printed
+  // `count 3 / LANDS` on a member list with one row in it that did not belong (@88, a whitespace
+  // artefact) and one row missing that did (:80, a false disclosure credit). Two errors in opposite
+  // directions, and a count cannot see them. I am keeping the registered count predicate above
+  // exactly as filed and grading the MEMBERSHIP here, separately.
+  // [[feedback_compare_member_lists_not_counts]] [[feedback_a_round_directory_key_is_not_a_member_key]]
+  const handDefective = hand.rows.filter((r) => r.whyClass === 'phantom' || r.whyClass === 'outofspan-U')
+    .map((r) => `${r.id}@${r.line}`).sort();
+  const measDefective = defective.map((m) => `${m.id}@${m.line}`).sort();
+  check('GP6MEMBERS', handDefective.join(' ') === measDefective.join(' '),
+    `P6 graded on MEMBERSHIP rather than on count: my hand read's defective set [${handDefective.join(',')}] vs the measurement's [${measDefective.join(',')}] — ${handDefective.join(' ') === measDefective.join(' ') ? 'identical' : 'DIFFERENT, so the count landing says nothing'}`);
+
   // =========================================================================================
   // ADDENDUM, DECLARED NON-BLIND — a third defect class the registration does NOT cover
   // =========================================================================================
@@ -254,12 +292,26 @@ if (axes !== null && hand !== null && reader !== null) {
     const mm = (m.why ?? '').match(/\b(one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|\d+)\s+conjuncts\b/i);
     if (!mm) continue;
     const claimed = WORD[mm[1].toLowerCase()] ?? Number(mm[1]);
-    countClaims.push({ row: `${m.id}@${m.line}`, claimed, measuredOperands: m.operands, agrees: claimed === m.operands });
+    // WHOSE conjuncts? `@194`'s why reads "`ctrlPinned(preCtrl)` is five conjuncts" — the number is
+    // attributed to a NAMED INNER CALL, not to the row's span, and grading it against the span's
+    // 2 operands would score a correct sentence wrong. If a backticked fragment sits just before
+    // the number, the claim is about that fragment and this reader must say so instead of judging.
+    // [[feedback_a_join_key_must_not_widen_with_the_property]]
+    const before = (m.why ?? '').slice(0, mm.index ?? 0);
+    const attrib = before.match(/`([^`]+)`[^`]{0,20}$/);
+    countClaims.push({
+      row: `${m.id}@${m.line}`, claimed, measuredOperands: m.operands,
+      attributedTo: attrib ? attrib[1] : 'the span',
+      agrees: attrib ? null : claimed === m.operands,
+    });
   }
   console.log(`\nADDENDUM (declared non-blind, OUTSIDE P6's count) — numeric "N conjuncts" claims vs measured operands:`);
-  for (const c of countClaims) console.log(`  ${c.row.padEnd(14)} claims ${String(c.claimed).padStart(2)} · measured ${String(c.measuredOperands).padStart(2)} · ${c.agrees ? 'agrees' : 'WRONG'}`);
-  const wrongCounts = countClaims.filter((c) => !c.agrees);
-  console.log(`  ${wrongCounts.length} of ${countClaims.length} numeric conjunct claims are wrong. This class is reached by NEITHER registered class, which is why @90 lands in the unreached bucket above rather than in P6's count.`);
+  for (const c of countClaims) {
+    console.log(`  ${c.row.padEnd(14)} claims ${String(c.claimed).padStart(2)} · span operands ${String(c.measuredOperands).padStart(2)} · attributed to ${c.attributedTo === 'the span' ? 'THE SPAN' : `\`${c.attributedTo}\``} · ${c.agrees === null ? 'NOT GRADED (claim is about an inner call, not the span)' : c.agrees ? 'agrees' : 'WRONG'}`);
+  }
+  const graded = countClaims.filter((c) => c.agrees !== null);
+  const wrongCounts = graded.filter((c) => !c.agrees);
+  console.log(`  ${wrongCounts.length} of ${graded.length} gradeable numeric conjunct claims are wrong (${countClaims.length - graded.length} not graded). This class is reached by NEITHER registered class, which is why @90 lands in the unreached bucket above rather than in P6's count.`);
 
   // And the cross-check figure from his memo that I could not reproduce by eye: the shape map's
   // field count. Measured off the pinned source, because a figure I am correcting in someone
@@ -268,11 +320,15 @@ if (axes !== null && hand !== null && reader !== null) {
   const stealSrc = git(['show', `${SUBJ_PIN}:${SUBJ_ROOT}unit-464cure3-2026-11-01/grade-the-steal-cures.mjs`]);
   if (stealSrc === null) refuse('GSHAPEFIELDS', 'cannot read grade-the-steal-cures.mjs at the pin');
   else {
+    // drive3's `e` predicate was self-contradictory — it required the trimmed line NOT to look like
+    // `});` and the untrimmed line to BE `});` — so it never matched, `body` was empty, and the
+    // reader reported 0 fields. A reader that cannot find anything cannot correct anyone's figure.
+    // [[feedback_an_instrument_that_cannot_refuse_manufactures_findings]]
     const code = stripSource(stealSrc, true).split('\n');
     const s = code.findIndex((l) => /const shape = \(src\) => \(\{/.test(l));
-    const e = s < 0 ? -1 : code.findIndex((l, i) => i > s && /^\}\);/.test(l.trim()) === false && /^\s*\}\);\s*$/.test(l));
+    const e = s < 0 ? -1 : code.findIndex((l, i) => i > s && /^\s*\}\);\s*$/.test(l));
     const body = s < 0 || e < 0 ? [] : code.slice(s + 1, e);
-    const fields = body.filter((l) => /^\s{4}[A-Za-z_$][\w$]*:/.test(l)).map((l) => l.trim().split(':')[0]);
+    const fields = body.filter((l) => /^\s*[A-Za-z_$][\w$]*:/.test(l)).map((l) => l.trim().split(':')[0]);
     console.log(`\n  his memo's cross-check: "the shape map has 8 fields". Measured at the pin: ${fields.length} — [${fields.join(',')}]`);
     check('GSHAPEFIELDS', fields.length > 0,
       `the shape-map field reader is alive (${fields.length} fields lifted), so the comparison against his 8 is a measurement and not a failed slice`);

@@ -1,0 +1,51 @@
+GLIFTANCHOR  ok    his spanOf/countOps lifted from docs/research/unit-464cell-2026-11-02/grade-cell.mjs at e0fbd74c: 55 lines, both definitions present, both callable. No copy of his reader exists in this unit, so there is nothing to drift
+GAXES  ok    sliced 13 rows from the axes TSV at e0fbd74c
+GHAND  ok    sliced 13 rows from my hand read at e3db0afc
+GJOIN  ok    all 13 axes rows join to my hand read on (file,line,id) — 13/13
+
+THE 13-ROW `why` CENSUS (span = his model; operators over the BLANKED span, quotation over the RAW span):
+  grade-the-attrib-cure.mjs:60   GDELTA    delta       clean        cmps=1 operands= 1 spanLines=2 frags=1 claimsCmp=false discloses=false
+  grade-the-attrib-cure.mjs:71   GCURE     conjunctive clean        cmps=2 operands= 8 spanLines=6 frags=2 claimsCmp=true discloses=false
+  grade-the-attrib-cure.mjs:88   GPATHS    identity    clean        cmps=2 operands= 4 spanLines=2 frags=1 claimsCmp=false discloses=false
+  grade-the-attrib-cure.mjs:161  GCTRLPRE  identity    clean        cmps=3 operands= 3 spanLines=2 frags=1 claimsCmp=true discloses=false
+  grade-the-attrib-cure.mjs:186  GLIFT2    conjunctive phantom      cmps=0 operands= 5 spanLines=5 frags=0 claimsCmp=true discloses=false
+  grade-the-steal-cures.mjs:90   GCURE     conjunctive unreached    cmps=0 operands=13 spanLines=6 frags=0 claimsCmp=false discloses=false
+  grade-the-steal-cures.mjs:104  GPATH     identity    clean        cmps=2 operands= 3 spanLines=2 frags=1 claimsCmp=false discloses=false
+  grade-the-steal-cures.mjs:194  GCTRLPRE  conjunctive clean        cmps=1 operands= 2 spanLines=3 frags=1 claimsCmp=true discloses=false
+  grade-the-steal-cures.mjs:211  GROWREPRO identity    clean        cmps=4 operands= 3 spanLines=4 frags=1 claimsCmp=false discloses=false
+  grade-the-three-cures.mjs:99   C2b       delta       clean        cmps=1 operands= 2 spanLines=3 frags=1 claimsCmp=false discloses=false
+  grade-cure.mjs:78   C0        delta       outofspan-D  cmps=0 operands= 1 spanLines=1 frags=1 claimsCmp=false discloses=true
+                          OUT OF SPAN: changed=checkerNow!==checkerThen -> :64  (why names :64 -> DISCLOSED)
+  measure.mjs:79   G0        conjunctive outofspan-U  cmps=1 operands= 1 spanLines=1 frags=1 claimsCmp=true discloses=false
+                          OUT OF SPAN: a===null||b===null -> :76  (why names no line -> NOT disclosed)
+  measure.mjs:80   G0        identity    outofspan-U  cmps=1 operands= 1 spanLines=1 frags=1 claimsCmp=false discloses=false
+                          OUT OF SPAN: a!==b -> :77  (why names :79 -> NOT disclosed)
+GKPQUOTE  ok    KNOWN POSITIVE for the quotation reader: @60's `preSrc !== postSrc` is recognised as a cmp-bearing fragment (1) and found IN its own span (0 out-of-span). A reader that found nothing anywhere would fail this leg and could not manufacture the findings below
+GKPPHANTOM  ok    KNOWN POSITIVE for the phantom reader: @71's why DOES say "vs" (claimsCmp true) and its span carries 2 comparisons, so it reads clean and not phantom. The reader keys on the property, not on the word
+GREACHED  ok    the census prints its own REACH and is GATED on it: reached 12 / unreached 1 of 13, against my hand read's reached count of 12. Buckets {"clean":8,"phantom":1,"unreached":1,"outofspan-D":1,"outofspan-U":2}
+GHANDWHY  ok    0 departures of 13 between my hand read's whyClass column and the measurement
+GCMPREADERKP  ok    KNOWN POSITIVE for the operator reader: :161 reads 3 comparison operators (Theseus published 3 at his own pin). A reader returning 0 everywhere could not pass this leg, so the zeroes below are measurements
+
+P4  LANDS  my hand count of comparison operators over the five conjunctive spans departs from the lifted reader on 0 of 5, and the number of those rows reading ZERO comparisons is 2
+     measured: {"conjRows":5,"cmpDepartures":[],"operandDepartures":[],"zeroCmpRows":["GLIFT2@186","GCURE@90"],"zeroCmpCount":2}
+
+P5  LANDS  the `conjunctive` DEFINITION in the entry carries a parenthetical ('each is compared to a literal') that is FALSE on every conjunctive row measuring zero comparison operators — so the defect is in the convention, not only in @186's why cell
+     measured: {"definitionAtPin":"conjunctive  the two states are never operands of ONE comparison (each is compared to a literal)","parentheticalPresent":true,"rowsFalsifyingIt":["GLIFT2@186","GCURE@90"],"count":2}
+
+P6  LANDS  at least 3 of the 13 why columns carry a claim unsupported by the row's own registered span, under the two registered classes (phantom comparison; undisclosed out-of-span quotation)
+     measured: {"defective":["GLIFT2@186 phantom","G0@79 outofspan-U","G0@80 outofspan-U"],"count":3,"disclosedNotCounted":["C0@78"],"routedByTheseus":"GLIFT2@186"}
+GP6MEMBERS  ok    P6 graded on MEMBERSHIP rather than on count: my hand read's defective set [G0@79,G0@80,GLIFT2@186] vs the measurement's [G0@79,G0@80,GLIFT2@186] — identical
+
+ADDENDUM (declared non-blind, OUTSIDE P6's count) — numeric "N conjuncts" claims vs measured operands:
+  GCURE@71       claims  8 · span operands  8 · attributed to THE SPAN · agrees
+  GLIFT2@186     claims  5 · span operands  5 · attributed to THE SPAN · agrees
+  GCURE@90       claims 10 · span operands 13 · attributed to THE SPAN · WRONG
+  GCTRLPRE@194   claims  5 · span operands  2 · attributed to `ctrlPinned(preCtrl)` · NOT GRADED (claim is about an inner call, not the span)
+  1 of 3 gradeable numeric conjunct claims are wrong (1 not graded). This class is reached by NEITHER registered class, which is why @90 lands in the unreached bucket above rather than in P6's count.
+
+  his memo's cross-check: "the shape map has 8 fields". Measured at the pin: 7 — [bytesInUnion,perFile,disjunct,alreadyOnCount,alreadyOnSubject,stealOwned,newestGate]
+GSHAPEFIELDS  ok    the shape-map field reader is alive (7 fields lifted), so the comparison against his 8 is a measurement and not a failed slice
+
+=========================================================
+grade-immov (the why-column census): RED 0 · UNRUNNABLE 0
+VERDICT GREEN

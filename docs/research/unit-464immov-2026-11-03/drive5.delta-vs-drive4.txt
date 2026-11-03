@@ -1,0 +1,60 @@
+CRIPPLE DELTA — drive4 (intact) vs drive5 (CRIPPLE-WHYKEY), graded as a delta against a matched
+baseline rather than read off the crippled arm alone.
+[[feedback_grade_a_cripple_as_a_delta_against_a_matched_no_cripple_drive]]
+
+WHAT WAS PERTURBED: the census KEY, never the subject. `FRAG_CMP` (the alternation that decides
+whether a backticked `why` fragment carries a comparison operator) and `CLAIMS_CMP` (the `\bvs\b|
+compared to` alternation) are both re-keyed onto `\u0000NEVER\u0000`, which no `why` column in the
+tree writes. Nothing under `docs/research/unit-464*` was touched, and the 13 subjects are
+byte-identical in both arms. [[feedback_a_cripple_map_must_name_whether_it_perturbs_the_key_or_the_subject]]
+
+GRADER SOURCE, BOTH ARMS:  git hash-object grade-immov.mjs
+  before drive5   bd7c1f580da9bac94e534248c34400d54d3f4a0d
+  after  drive5   bd7c1f580da9bac94e534248c34400d54d3f4a0d     <- byte-identical, so the delta
+                                                                  below is the switch and not an edit
+SWITCH:  driven by the PRESENCE OF A FILE (`CRIPPLE-WHYKEY`), because this fire's shell refuses an
+inline `VAR=… node …` prefix. The file was removed after drive5; `ls` confirms it is absent, so the
+switch is inert in the committed tree.
+
+                            drive4 (intact)              drive5 (crippled)
+  FRAG_CMP / CLAIMS_CMP     live alternations            re-keyed to a token nothing writes
+  census buckets            clean 8 · phantom 1 ·        unreached 13
+                            unreached 1 · oos-D 1 ·
+                            oos-U 2
+  GKPQUOTE                  ok   (1 frag, in span)      RED  (0 frags recognised)
+  GKPPHANTOM                ok   (claimsCmp true)       RED  (claimsCmp false)
+  GHANDWHY                  ok   (0 departures of 13)   RED  (12 departures of 13)
+  P6                        LANDS  count 3              REFUTED  count 0
+  GP6MEMBERS                ok   lists identical        RED  measured list empty
+  summary                   GREEN at 11 legs            RED 5 · UNRUNNABLE 0
+
+  GLIFTANCHOR               ok                          ok      <- unchanged
+  GAXES / GHAND / GJOIN     ok                          ok      <- unchanged
+  GCMPREADERKP              ok                          ok      <- unchanged
+  P4                        LANDS                       LANDS   <- unchanged
+  P5                        LANDS                       LANDS   <- unchanged
+  GSHAPEFIELDS              ok                          ok      <- unchanged
+  GREACHED                  ok                          ok      <- UNCHANGED, AND THAT IS A DEFECT
+
+FIVE LEGS MOVED AND ALL FIVE ARE CENSUS LEGS. P4 and P5 read operator counts off the lifted reader
+and are correctly untouched by a key that only decides fragment recognition; GLIFTANCHOR, the three
+slice legs, GCMPREADERKP and GSHAPEFIELDS are correctly untouched. So the cripple reached the census
+and nothing else, and the delta is attributable.
+
+THE FINDING THE CRIPPLE EXISTS FOR, AND IT IS IN MY OWN GUARD:
+
+  GREACHED  ok    ... reached 0 / unreached 13 of 13. Buckets {"unreached":13}
+
+`GREACHED` was registered in the pre-registration as the guard against exactly this — "a row whose
+`why` makes neither kind of claim is UNREACHED, not clean", citing
+[[feedback_a_terminal_bucket_reached_by_fallthrough_absorbs_every_blindness]]. Its predicate is
+`reached + unreached === 13`, which is arithmetically unavoidable: the two buckets partition the
+rows by construction, so the sum is 13 whatever the key does. A census that reached NOTHING AT ALL
+passes it. The guard prints the number that would have told me and then asserts something else.
+[[feedback_a_guard_that_fires_beside_a_figure_that_still_prints]]
+[[feedback_a_gate_leg_must_read_a_figure_the_cripple_can_move]]
+
+That is the third defect of my own this unit has found, and it is the one I would not have found
+without the cripple: drive4 is GREEN at 11 legs with a vacuous guard sitting inside the green.
+Repaired in drive6/drive7 below by keying `GREACHED` on the reached count matching my hand read's
+own reached count (12), which is a figure the cripple CAN move.
