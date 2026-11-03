@@ -1,0 +1,60 @@
+occupy-conj-history — PIN=0c23e551 · CONJ_CMP_MAX=0
+GLIFT  ok    spanOf/countOps lifted from docs/research/unit-464cell-2026-11-02/grade-cell.mjs at HEAD (blob byte-identical to the worktree, 20984 bytes): 55 lines, both present, both callable. No copy of the reader exists in this unit, so there is nothing to keep in sync
+
+scratch repo: /var/folders/jl/g34tk0xx7nj20xbjvyq6bskc0000gn/T/klatch-464conj-42B3lB
+GSCRATCH  ok    scratch repo built with one commit; the leg's pinned rev is 84d26f839ecedf16f9261553040af0ad9cfa5ae3
+leg.mjs sha256 98e28a290caef3e0007a2b7f9e557a8ce055f1b681f74e294092ebbf8d87994f
+
+arm A (control — no commit):
+  conjunctive × history-keyed : GREEN -> GREEN   (c1 true/true · c2 true/true)
+  conjunctive, anchors FIXED  : GREEN -> GREEN
+
+arm B (perturbed — ONE commit touching the path, property unchanged):
+  conjunctive × history-keyed : GREEN -> RED   (c1 true/true · c2 true/false)
+  conjunctive, anchors FIXED  : GREEN -> GREEN
+GTARGET  ok    the perturbation's target moved: the newest commit touching subject.txt is now 98516067, was 84d26f83
+GARMA  ok    matched control: the conjunctive × history-keyed leg reads GREEN -> GREEN with no commit (registered: GREEN -> GREEN)
+GARMB  ok    perturbed: the same leg reads GREEN -> RED after one commit that changes nothing it is about (registered: GREEN -> RED)
+GDELTAVSCTRL  ok    the two arms DIFFER at the second read (GREEN vs RED) — a single arm could not have told occupiable from dead
+GFIXEDCTRL  ok    the one-argument-different control holds: anchors-fixed conjunctive reads GREEN -> GREEN across the same commit and its figure is byte-identical (84d26f83 -> 84d26f83). Exactly one of the two readers moved
+GFALSERED  ok    the property is FOUR at the pin and FOUR now (true/true) — so arm B's RED reports a change that did not happen, which is the hazard axis B's prescription predicts
+GC1FROZEN  ok    conjunct 1's figure is byte-identical across the perturbation (84d26f83 -> 84d26f83) and its own truth value never changes — no commit can move it, which is axis B `immovable`
+GC2MOVED  ok    conjunct 2's figure MOVED on a commit that touched the path and nothing else (84d26f83 -> 98516067) and its truth value flipped true->false — which is axis B `history-keyed`
+
+P2 — four modes over successive states, same two reads throughout.
+series scratch repo: /var/folders/jl/g34tk0xx7nj20xbjvyq6bskc0000gn/T/klatch-464conj-series-fBOHFb  (FRESH — state0 is unperturbed)
+  state0     conjhk=GREEN · conjfix=GREEN · delta=RED · identity=GREEN  tuple=(84d26f83,84d26f83)
+  state1     conjhk=RED · conjfix=GREEN · delta=GREEN · identity=RED  tuple=(84d26f83,6ece7d3c)
+  state2     conjhk=RED · conjfix=GREEN · delta=GREEN · identity=RED  tuple=(84d26f83,5f8eb998)
+  state3     conjhk=RED · conjfix=GREEN · delta=GREEN · identity=RED  tuple=(84d26f83,59dea6ce)
+  state4     conjhk=RED · conjfix=GREEN · delta=GREEN · identity=RED  tuple=(84d26f83,3a3ae27f)
+GTUPLE  ok    the anchor tuple (atPin, atRecency) is identical across all four modes at 5 of 5 states, every member non-empty — the substitution changes what the predicate DOES with the pair, not what the pair READS
+GPOLARITY  ok    delta and identity give OPPOSITE verdicts at 5 of 5 states — Daedalus's polarity lemma reproduces here as a by-product, on anchors I built rather than the ones he did
+GNONCONST  ok    the conjunctive leg is NOT constant across the series — it takes 2 distinct verdicts [GREEN,RED] over 5 states, so GTRACKS below is an agreement between two varying readers and not between two constants
+GTRACKS  ok    the conjunctive leg's verdict matches the identity leg's at 5 of 5 states — the substitution preserves the leg's DIRECTION as well as its figure
+
+the constructed leg's own predicate, read by the lifted reader:
+  ok = atPin === '                                        ' && atRecency === '                                        ';
+  cmps=2 litCmps=2 stateVsState=0 &&=0 ||=0
+GCONJSRC  ok    the constructed predicate carries 2 comparisons of which 2 are against a LITERAL, so state-vs-state comparisons = 0 (registered ceiling: 0). It is axis A `conjunctive` by the convention's own definition, measured off the bytes node executed and not asserted by me
+
+VERDICT P1: LANDS
+  registered: arm A GREEN->GREEN, arm B GREEN->RED, and the anchors-fixed control byte-identical across arm B's commit
+  measured:   {"armA":"GREEN->GREEN","armB":"GREEN->RED","fixedControlArmB":"GREEN->GREEN","fixedFigureMoved":false}
+
+VERDICT P2: LANDS
+  registered: anchor tuples identical across modes at >=5 of 5 states, the series non-constant, state-vs-state comparisons 0, literal comparisons >=2
+  measured:   {"states":5,"tupleAgree":5,"oppositePolarity":5,"tracksIdentity":5,"distinctConjVerdicts":2,"cmps":2,"litCmps":2,"stateVsState":0}
+
+VERDICT P4: LANDS
+  registered: one constructed leg whose conjunct 1 is immovable and conjunct 2 is history-keyed — i.e. simultaneously in two axis-B cells
+  measured:   {"conjunct1":"immovable","conjunct2":"history-keyed","oneLegTwoCells":true}
+
+=========================================================
+occupy-conj-history: 15 legs · RED 0 · UNRUNNABLE 0
+  P1: LANDS
+  P2: LANDS
+  P4: LANDS
+VERDICT GREEN at 15 legs
+leg.mjs sha256 98e28a290caef3e0007a2b7f9e557a8ce055f1b681f74e294092ebbf8d87994f — asserted identical across cripple arms
+scratch repo left at /var/folders/jl/g34tk0xx7nj20xbjvyq6bskc0000gn/T/klatch-464conj-42B3lB for inspection; it is outside the Klatch tree.

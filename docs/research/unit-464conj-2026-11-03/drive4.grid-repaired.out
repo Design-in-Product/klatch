@@ -1,0 +1,60 @@
+grade-conj — HIS_PIN=e0fbd74c
+GROWS  ok    his axes TSV at e0fbd74c carries 13 rows (registered population: 13)
+GMYTSV  ok    my HAND-P5P6.tsv is byte-identical at HEAD and in the worktree (4955 bytes), so what is graded below is what was filed before this grader existed
+GLIFT  ok    spanOf/countOps lifted from docs/research/unit-464cell-2026-11-02/grade-cell.mjs at HEAD (55 lines), both callable, reading subjects at e0fbd74c
+GAXISVALS  ok    every row's axisA is one of conjunctive/delta/identity and axisB one of movable/immovable/history-keyed
+GREC:identity x history-keyed  ok    identity x history-keyed is demonstrated by Theseus 11-02, cited to the recording docs/research/unit-464cell-2026-11-02/drive1.p3-scratch.out which carries "GINVERSE  ok"
+GREC:delta x immovable  ok    delta x immovable is demonstrated by Daedalus 11-03, cited to the recording docs/research/unit-464immov-2026-11-03/drive2.occupy-repaired.out which carries "VERDICT GREEN"
+GREC:conjunctive x history-keyed  ok    conjunctive x history-keyed is demonstrated by Theseus 11-03 (this unit), cited to the recording docs/research/unit-464conj-2026-11-03/drive2.occupy-repaired.out which carries "VERDICT P1: LANDS"
+
+the 3x3 grid, member lists printed — not counts:
+  conjunctive x movable             4  OCCUPIED                 [GCURE@71, GLIFT2@186, GCURE@90, GCTRLPRE@194]
+  conjunctive x immovable           1  OCCUPIED                 [G0@79]
+  conjunctive x history-keyed       0  OCCUPIABLE (constructed) []
+  delta x movable                   2  OCCUPIED                 [GDELTA@60, C0@78]
+  delta x immovable                 0  OCCUPIABLE (constructed) []
+  delta x history-keyed             1  OCCUPIED                 [C2b@99]
+  identity x movable                2  OCCUPIED                 [GCTRLPRE@161, GROWREPRO@211]
+  identity x immovable              3  OCCUPIED                 [GPATHS@88, GPATH@104, G0@80]
+  identity x history-keyed          0  OCCUPIABLE (constructed) []
+GGRIDSUM  ok    the three states partition the grid: 6 occupied + 3 constructed + 0 nothing-said = 9 of 9
+GEMPTIES  ok    his 13 rows occupy 6 cells and leave 3 empty (registered: 6 occupied, 3 empty)
+GSAMEBLOB  ok    unit-464cure3-2026-11-01/grade-the-steal-cures.mjs is byte-identical at my pin, his pin and HEAD (6604e8300a31) — so the 7-vs-8 disagreement is a counting disagreement and not an artefact of which key either of us read
+GFIELDSALIVE  ok    the shape-map field reader is alive — it lifted [bytesInUnion, perFile, disjunct, alreadyOnCount, alreadyOnSubject, stealOwned, newestGate] from the literal opened at the line carrying `const shape = (src) => ({`
+
+P5: fields 7 · PRE-tested 6 · POST-tested 7 · sum 13
+    my filed hand read: fields 7 · PRE 6 · POST 7 · sum 13
+GP5MEMBERS  ok    the FIELD LIST tested on PRE agrees between the pinned source and my filed hand read, 0 departures over 7 fields: source [bytesInUnion,perFile,disjunct,alreadyOnCount,stealOwned,newestGate] · mine [bytesInUnion,perFile,disjunct,alreadyOnCount,stealOwned,newestGate]
+GFIELDS  ok    the shape map has 7 fields at the pin and my hand read filed 7 — Daedalus's figure, not the 8 my 11-02 STOP §4 published
+GCONJ90  ok    GCURE@90's span references 6 shape-map fields on PRE and 7 on POST, summing to 13 conjuncts — the 13 my 11-02 memo offered against his "ten" survives, over SEVEN fields and not eight, because `alreadyOnSubject` is tested on POST only
+
+P6 member lists:
+  his original : [GPATHS@88, GLIFT2@186, G0@79]
+  his corrected: [GLIFT2@186, G0@79, G0@80]
+  mine (filed) : [GLIFT2@186, G0@79, G0@80]
+GP6MEMBERS  ok    my filed list and his corrected list agree member-for-member, 0 departures — compared as lists, because two errors in opposite directions are exactly what a count cannot see
+GWSCURE  ok    :88's why fragment "HIS === pathOf(preSrc,'HIS')" is NOT found in its own span under his collapsing test (false) and IS found under a whitespace-ignoring one (true) — the repair changes the answer on the known case, which is the only way to grade it. One space, and the source spells it `pathOf(preSrc, 'HIS')`
+GAT76  ok    `a === null || b === null` is at :76 in measure.mjs at the pin (row G0@79 quotes it and its registered line is 79, so it is OUT of span)
+GAT77  ok    `a !== b` is at :77 in measure.mjs at the pin (row G0@80 quotes it and its registered line is 80, so it is OUT of span)
+GFALSECREDIT  ok    :80's why mentions line number(s) [79] and NONE of them is 77, where the expression it quotes actually lives — so the `at :79` in it is about the ANCHORS and credits a disclosure that was never made. A false disclosure credit REMOVES a row from a defect list, which is why this row went missing from his original three
+GNODISCLOSE79  ok    :79's why mentions no line number at all ([]) — it quotes an expression from :76 and discloses nothing, which is the class in its plainest form
+GTRUECREDIT  ok    C0@78's why discloses [64] and the expression it quotes is at :64 — a MATCH, so it quotes out of span and says where. Without differentiating on disclosure the published figure is 4 where it is 3, scoring a row defective for doing the thing the class exists to catch people not doing
+
+VERDICT P3: LANDS
+  registered: cells with nothing said about their possibility = 0, and demonstrated occupied-or-occupiable = 9 of 9
+  measured:   {"occupied":6,"constructed":3,"nothingSaid":0,"demonstrated":9,"constructedCells":["identity x history-keyed","delta x immovable","conjunctive x history-keyed"]}
+
+VERDICT P5: LANDS
+  registered: shape-map fields = 7, PRE-tested = 6, POST-tested = 7, sum = 13, and my published 8 is wrong
+  measured:   {"fieldsAtPin":7,"myFiledFields":7,"preRefs":6,"postRefs":7,"sum":13,"myPublished":8,"preListDepartures":0}
+
+VERDICT P6: LANDS
+  registered: departures between his corrected member list and my filed one = 0, with both of his reader errors re-driven at source
+  measured:   {"hisCorrected":["GLIFT2@186","G0@79","G0@80"],"mine":["GLIFT2@186","G0@79","G0@80"],"departures":0,"aNullAt":76,"aNeqBAt":77,"falseCreditShown":true}
+
+=========================================================
+grade-conj: 21 legs · RED 0 · UNRUNNABLE 0
+  P3: LANDS
+  P5: LANDS
+  P6: LANDS
+VERDICT GREEN at 21 legs

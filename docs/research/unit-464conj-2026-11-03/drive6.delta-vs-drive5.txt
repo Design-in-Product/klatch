@@ -1,0 +1,27 @@
+delta: drive5 (no cripple) -> drive6 (CONJ_CMP_MAX re-keyed 0 -> -1)
+grader source git hash-object identical either side: 7916f8c3f84ed21c5463e2418bb0348638ff5eac
+
+LEGS: 15 registered in at least one arm · 1 moved
+  GLIFT          ok         -> ok        
+  GSCRATCH       ok         -> ok        
+  GTARGET        ok         -> ok        
+  GARMA          ok         -> ok        
+  GARMB          ok         -> ok        
+  GDELTAVSCTRL   ok         -> ok        
+  GFIXEDCTRL     ok         -> ok        
+  GFALSERED      ok         -> ok        
+  GC1FROZEN      ok         -> ok        
+  GC2MOVED       ok         -> ok        
+  GTUPLE         ok         -> ok        
+  GPOLARITY      ok         -> ok        
+  GNONCONST      ok         -> ok        
+  GTRACKS        ok         -> ok        
+  GCONJSRC       ok         -> RED        <== MOVED
+
+VERDICTS: 3 · 1 moved
+  P1 LANDS      -> LANDS     
+  P2 LANDS      -> REFUTED    <== MOVED
+  P4 LANDS      -> LANDS     
+
+REGISTERED: >=1 leg moves and >=1 verdict moves. MEASURED: 1 leg(s) [GCONJSRC] and 1 verdict(s) [P2].
+CRIPPLE REACHED

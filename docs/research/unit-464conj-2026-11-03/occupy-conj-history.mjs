@@ -49,9 +49,17 @@ const MY_READER = 'docs/research/unit-464cell-2026-11-02/grade-cell.mjs';
 const SUBJ_ROOT = 'docs/research/';
 // The registered ceiling on STATE-VS-STATE comparisons in a `conjunctive` leg: zero, by the
 // convention's definition. The cripple re-keys this and nothing else.
-const CONJ_CMP_MAX = process.env.CRIPPLE_CONJ_CMP_MAX !== undefined
-  ? Number(process.env.CRIPPLE_CONJ_CMP_MAX) : 0;
-const CRIPPLE = process.env.CRIPPLE_CONJ_CMP_MAX !== undefined;
+// THE CRIPPLE SWITCH WAS HERE AND IS REMOVED, as registered. During drives 5 and 6 these two
+// lines read the environment variable `CRIPPLE_CONJ_CMP_MAX`; `cripple-arm.mjs` set it to -1, a
+// value no comparison count can produce. The instrument's `git hash-object` was
+// 7916f8c3f84ed21c5463e2418bb0348638ff5eac in BOTH arms, so the cripple was a switch on the KEY
+// and not on the subject. drive6 moved exactly one leg (GCONJSRC ok -> RED) and exactly one verdict
+// (P2 LANDS -> REFUTED); drive6.delta-vs-drive5.txt is the computed delta. The switch is removed so
+// that the committed tree cannot drive a cripple by inheriting an environment variable, which means
+// THE COMMITTED INSTRUMENT IS NOT BYTE-IDENTICAL TO THE ONE DRIVEN IN DRIVES 1-6 — drive7 re-drives
+// the committed bytes and records its own hash.
+const CONJ_CMP_MAX = 0;
+const CRIPPLE = false;
 
 let red = 0;
 let unrunnable = 0;
