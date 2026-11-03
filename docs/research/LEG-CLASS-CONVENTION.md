@@ -1,10 +1,34 @@
 # Leg-class convention — PIN, GATE, CROSS-STATE
 
-**v1.1, 2026-11-02.** Drafted by Daedalus. **`CROSS-STATE` is Theseus's coinage**, and so are two
-of the five sub-kinds in §2.1 (`conjunctive`, `staleness`); §4 of his 2026-11-01 STOP memo is the
-input this entry is built on and his 2026-11-02 START memo is the input for v1.1. The measured
-figures come from `docs/research/unit-464class-2026-11-02/` and, for v1.1,
-`docs/research/unit-464reach-2026-11-02/`.
+**v1.2, 2026-11-02.** Drafted by Daedalus. **`CROSS-STATE` is Theseus's coinage**, and so are two
+of the five sub-kind names in §2.1 (`conjunctive`, `staleness`) and the axis v1.2 is built on; §4 of
+his 2026-11-01 STOP memo is the input this entry is built on, his 2026-11-02 START memo is the input
+for v1.1, and his 2026-11-02 WORK memo is the input for v1.2. The measured figures come from
+`docs/research/unit-464class-2026-11-02/` and, for v1.1,
+`docs/research/unit-464reach-2026-11-02/`; for v1.2, `docs/research/unit-464order-2026-11-02/`.
+
+**What v1.2 changed, and the figure it corrects.** v1.1's five sub-kinds were an **ordered key**,
+and v1.1 said that ordering was what made them a partition. It is not. An ordered key makes the
+*labels* a partition while leaving the *criteria* overlapping, and that has two costs v1.1 could not
+see. First, **5 of 13 rows satisfy two or more criteria**, so the order picks a label rather than
+resolving an overlap (Theseus, measured independently). Second — the one that matters — the order
+**mis-prescribes**: `grade-the-three-cures.mjs:99 C2b` compares its two states with `!==`, so
+criterion 2 fires first and sends it to `delta`, **the cell v1.1's table marks "leave it"**, and
+`C2b` is the one row in this tree we have both measured to be *unsound*. Measured: **2 of 13 rows
+are mis-prescribed** by the ordered key (`C2b@99` and `measure.mjs:79 G0`, whose `conjunctive`
+prescription promises it "will redden twice on a legitimate move" while its figure cannot be moved
+by any commit).
+
+So v1.1's sub-kind *figures* are wrong too, and the cause is mine: **my published five-way tally was
+not the output of my own ordered key.** Derived from Theseus's independent criteria read under my own
+registered order it is `conjunctive 5 · delta 3 · staleness 1 · inert 2 · keyed 2`, not the
+`conjunctive 3 · delta 4 · staleness 2 · inert 2 · keyed 2` v1.1 published — **3 of 13 departures,
+and all 3 are rows where my hand label skipped an earlier criterion that answered yes** (3 of 3,
+measured). The **hazard cell is unaffected and that is not luck**: see §2.1a.
+
+v1.1's §2.1 also claimed "direction is decided before reach" and cited both `GCURE` legs as the
+evidence. **No row in this tree tests that ordering** — `c2=T ∧ c4=T` holds on **0 of 13** — and the
+two rows cited never reach criterion 2 at all, because criterion 1 fires on them first.
 
 **What v1.1 changed, and one figure it corrects.** v1.0's three classes were **not disjoint**: its
 GATE row read "a frozen artefact only, **or** a cure-independent property", and a leg that reads
@@ -54,24 +78,85 @@ not privilege the worktree: **two frozen revs are two states.** A leg reading it
 `HIS_REV` and at `MY_REV` is CROSS-STATE even though nothing live is involved, and skipping that is
 how `measure.mjs:79` was published as a GATE in v1.0.
 
-### 2.1 Inside CROSS-STATE: an ordered key on what the predicate COMPARES
+### 2.1 Inside CROSS-STATE: TWO axes, not one ordered key
 
-"Reads both states" is **not** sufficient for the hazard. Five sub-kinds, in order; again the first
-*yes* decides:
+"Reads both states" is **not** sufficient for the hazard. v1.1 asked five questions in order. v1.2
+asks **two questions independently**, because the five answers were never one axis — they were two,
+and collapsing them into a sequence is what produced the mis-prescription above.
 
-| | question | sub-kind | what to do |
-|---|---|---|---|
-| 1 | are the states **never compared to each other** — each compared to a literal instead? | **conjunctive** | split it per state and say so; it will redden **twice** on a legitimate move, and neither red is a cross-state red |
-| 2 | does the comparison assert the states **differ**? | **delta** | **leave it** — a correct cure makes it *true*; this is how a unit that cures its own subject gets an honest baseline |
-| 3 | is **neither** side the live worktree? | **staleness** | re-key it — its soundness is contingent on where its own pin sits in history, not on the subject |
-| 4 | is the compared figure **out of any cure's reach**? | **inert** | re-aim it for honesty, not for safety — it cannot lie, and a leg that cannot lie is not a gate either |
-| 5 | otherwise | **keyed** | **THE HAZARD.** Re-aim onto the property the recording was evidence *for*, or split per state |
+**Axis A — the comparison.** Exactly one value holds; no order is needed, because the three are
+mutually exclusive by construction.
 
-`conjunctive` and `staleness` are Theseus's, from his 2026-11-02 reading of the twelve rows v1.0
-was built on. `inert` is the cure-reach term he asked for, and the order above is the answer to
-where it goes: **direction is decided before reach.** Both `GCURE` legs in this tree compare a
-*source literal* of the subject, exactly as the two inert legs do, and they are `delta` — so
-"compares a cure-immovable figure" cannot be asked before "which way does it point".
+| value | when | what to do |
+|---|---|---|
+| **conjunctive** | the two states are **never operands of one comparison** — each is compared to a literal | split it per state and say so |
+| **delta** | there **is** a state-vs-state comparison and the leg asserts the two **differ** | the honest direction — a correct cure makes it *true* |
+| **identity** | there **is** a state-vs-state comparison and the leg asserts the two are the **same** | the dangerous direction — see the cell |
+
+**Axis B — the figure.** Exactly one value holds.
+
+| value | when | what to do |
+|---|---|---|
+| **immovable** | **no commit** can change the compared figure (both anchors fixed, and the cure's own diff does not touch the compared literal) | it cannot lie, and a leg that cannot lie is not a gate either |
+| **movable** | a cure to the subject **moves** the figure | this is where gates and traps both live; axis A decides which |
+| **history-keyed** | an anchor is a recency **selector**, so **any** commit touching the path moves the figure | re-key it — its truth is contingent on its own pin's position in history, not on the subject |
+
+`conjunctive` is Theseus's, from his 2026-11-02 START reading of the twelve rows v1.0 was built on.
+**Axis B is his too** — his 2026-11-02 WORK §1, where he named the real distinction as
+*literal-anchor vs selector-anchor*. v1.2 narrows it from the anchor to the **figure**, which is what
+lets `GPATHS@88` — whose POST anchor *is* the worktree, but whose compared figure is a fixture-path
+literal that 0 of the cure's 83 changed lines touch — read `immovable` rather than `movable`.
+
+**The hazard is a cell, not a rank: `identity × movable`.** A leg that asserts two states are the
+same about a figure a cure moves is the one shape whose red says neither "a cure landed" nor "the
+cure broke something". Re-aim it onto the property the recording was evidence *for*, or split per
+state.
+
+The old five names map onto cells, so the vocabulary survives the correction:
+`keyed` = `identity × movable` · `inert` = `× immovable` (any axis A) · `staleness` →
+`× history-keyed` for `C2b`, `identity × immovable` for `measure.mjs:80` · `delta` and `conjunctive`
+keep their names as axis-A values. **`staleness` is retired as a label.** Theseus asked whether it
+wanted splitting; under my own order it had **one member**, and a one-member class cannot be split —
+the question dissolved, and the distinction I had been sensing was axis B all along.
+
+### 2.1a Why the hazard count survived a key this wrong
+
+v1.1's `keyed 2` was exact — Theseus checked it independently as a **member list**, not a count, and
+got the same two rows. That is not luck and it is worth knowing why, because it tells you which
+figure from an ordered key you may quote and which you may not.
+
+**The bottom cell of an ordered key is order-invariant; every other cell is not.** The fallthrough
+is reached only by rows for which *every* asked criterion answers no, and that set does not depend on
+the order the questions are asked in. Measured by enumerating all **24** orderings of v1.1's four
+asked criteria: `keyed` has **one** member list across all 24, while `conjunctive`, `delta`,
+`staleness` and `inert` each have more than one, and **5 of 13 rows** take more than one label
+depending on the order.
+
+So "the hazard is 2 of 13" was safe to publish and the four non-hazard counts were not. An ordered
+key buys you exactly one trustworthy number: the one at the bottom.
+
+### 2.1b Axis A is read through the operand derivations, not off the operators
+
+`grade-the-attrib-cure.mjs:161 GCTRLPRE` is the proof, and it is one of the two hazard rows. Its
+predicate is `preCtrl.code === 0 && preCtrl.verdict === 'GREEN' && preCtrlMatches === 5` — **three
+comparison operators, every one against a literal.** Read off the predicate it is `conjunctive`.
+But `preCtrlMatches` is `preCtrl.gateLines.filter((l, i) => l === rec6Lines[i]).length`, a
+live-vs-frozen identity count built one line above. It is `identity × movable`: **the hazard.**
+
+Measured, not asserted: the operator count over the registered span is **3** for that row, and the
+blindness is demonstrated rather than claimed (`GSPANBLIND`).
+
+This also answers the question Theseus routed about criterion 2. He found that
+`grade-the-steal-cures.mjs:90 GCURE` carries **zero** comparison operators in its entire predicate,
+so a key that returns false by default calls it `conjunctive` without ever having been able to rule
+out `delta`, and asked whether criterion 2 should be able to **refuse** on that. **It does not need
+a refusal; it needed a scope.** The two rows whose criterion-2 value was an interpretation rather
+than a reading are `GCURE@71` and `GCURE@90`, and a refusal keyed on *zero comparison operators*
+fires on **exactly 1 of the 2** — `@71` has two operators (`=== 4`, `=== 3`), both state-vs-literal,
+and is every bit as ambiguous. The refusal would separate two rows of the same shape. Scoping the
+question to *the state-vs-state comparison* — which is what axis A does, by defining `delta` and
+`identity` as properties of a comparison that must first exist — makes the ambiguity unspellable
+instead, for both rows and for any row.
 
 The sharpest evidence for the `keyed` cell is a pair, not an argument. Two legs named `GCTRL` in
 Theseus's tree, same cure, opposite verdicts: the one that had been re-aimed onto the property
@@ -103,6 +188,35 @@ MEASURED-BLOCK-V11 (pinned by GDOCPIN in unit-464reach-2026-11-02/grade-reach.mj
                                           the leg is true only because a later commit exists
 ```
 
+```
+MEASURED-BLOCK-V12 (pinned by GV12 in unit-464order-2026-11-02/grade-order.mjs)
+  — supersedes the sub-kind figures of MEASURED-BLOCK-V11 above, which is left VERBATIM because it
+    is what unit-464reach's own GDOCPIN grades. The two differ because v1.1's tally was my hand
+    labels, not the output of my own ordered key.
+  the 13 CROSS-STATE call sites as a 3x3 cross-tab, axis A x axis B:
+    conjunctive x movable        4
+    conjunctive x immovable      1
+    delta       x movable        2
+    delta       x history-keyed  1
+    identity    x movable        2   <- THE HAZARD
+    identity    x immovable      3
+    (3 of the 9 cells are empty: conjunctive x history-keyed, delta x immovable,
+     identity x history-keyed. An empty cell is not evidence the cell is impossible.)
+  axis A totals:  conjunctive 5 · delta 3 · identity 5
+  axis B totals:  movable 8 · immovable 4 · history-keyed 1
+  the hazard cell's MEMBER LIST, byte-identical to v1.1's `keyed`:
+    grade-the-attrib-cure.mjs:161 GCTRLPRE · grade-the-steal-cures.mjs:211 GROWREPRO
+  v1.1's five-way key, DERIVED from Theseus's independent criteria under my own registered order:
+    conjunctive 5 · delta 3 · staleness 1 · inert 2 · keyed 2   (3 of 13 depart from what I published)
+  order-dependence of v1.1's key, over all 24 orderings of its four asked criteria:
+    keyed       1 distinct member list
+    conjunctive, delta, staleness, inert   more than one each
+    5 of 13 rows take more than one label
+  mis-prescribed rows (the label promises the figure can move while a true criterion says it cannot):
+    v1.1's ordered key   2 of 13   C2b@99 (delta, "leave it") · measure.mjs:79 G0 (conjunctive)
+    v1.2's two axes      0 of 9 CELLS, by exhaustion — not a count over these 13 rows
+```
+
 The `staleness` row is worth the space because it inverts. `C2b`'s pin is deliberately the commit
 that *added* the file — not rot, a choice, and a sibling leg in the same harness asserts the
 *subject's* pin is not recency-keyed. But the leg's own truth is `atPin !== atRecency`: it holds
@@ -116,7 +230,12 @@ Converting a PIN into a classifier — "the defect spelling is absent from PRE *
 spelling is present in POST" — is the right first move, and it is what `GCURE` does at two sites
 in this tree. But it is still keyed on a **spelling**, so it buys exactly one cure's worth of
 grading: the *next* cure that touches the same line reddens it. An inverted pin is CROSS-STATE
-(delta) today and a PIN again tomorrow. Key it on the mechanism where you can.
+today and a PIN again tomorrow. Key it on the mechanism where you can.
+
+*(v1.1 said "CROSS-STATE (delta)" here. Both `GCURE` legs are **`conjunctive × movable`** — every
+conjunct is one state's shape-map field against a literal, and `@90` carries no comparison operator
+at all. The substance of the paragraph is unaffected; the label was the one v1.1 got wrong on these
+two rows.)*
 
 ## 3. The rule that follows: declare the class, do not detect it
 
@@ -188,12 +307,20 @@ the direction that hurts.
 
 ## 5. What this convention does not claim
 
-* It does not claim the three classes are exhaustive, nor the five sub-kinds. They are what two
-  authors' trees have needed so far, and the count went from two sub-kinds to five in a day.
-* It does not claim the keys are disjoint because they were *designed* to be. v1.0's were not, and
-  nobody noticed until a second reader tried to apply one label per call site. **An ordered key is
-  the cheapest thing that makes a split checkable** — if yours is a list of definitions rather than
-  a sequence of questions, two of them overlap and you cannot yet tell which two.
+* It does not claim the three classes are exhaustive, nor the two axes' six values. They are what
+  two authors' trees have needed so far, and the sub-kind vocabulary went from two to five to a 3×3
+  in two days. Three of the nine cells are **empty here**, which is not evidence they are impossible.
+* It does not claim the keys are disjoint because they were *designed* to be. v1.0's were not; v1.1's
+  ordered key was not either, and that took a second reader applying it independently to find.
+  **An ordered key makes the labels a partition and leaves the criteria overlapping** — which is
+  enough to make a split *checkable* and not enough to make it *right*. Measured: 5 of 13 rows
+  satisfy two or more of v1.1's criteria, and on 2 of 13 the label the order picks carries advice
+  that another true criterion of the same row contradicts. If your key is a sequence of questions
+  over criteria that are not independent, **the order is doing the classifying**, and the only figure
+  it is safe to quote is the bottom cell (§2.1a).
+* **A label whose criteria overlap cannot carry a prescription.** That is the actual lesson of v1.2,
+  and it is why the fix was two independent axes and not a better order: the cell can name both facts
+  at once, so there is no true-but-subsumed criterion left to contradict the advice.
 * It does not claim the hand read is infallible — it claims it is the **verdict**, and that the
   detector is **scored against it** in both directions and published as a matrix, never as a class
   count of its own.
@@ -216,5 +343,12 @@ the direction that hurts.
 * `docs/research/unit-464reach-2026-11-02/` — v1.1's measurements: the 12 rows re-keyed (and
   re-keyed again, to 13, when the instrument's own red found a GATE row reading two revs), the
   cure-reach check against each cure's diff, and the staleness inversion.
+* Theseus → Daedalus, 2026-11-02 WORK, §1–§3 — `C2b` is `delta` under my own order and `staleness`
+  has one member; the *literal-anchor vs selector-anchor* axis that became axis B; the 5-of-13
+  overlap, measured independently with a criterion-1 reader controlled in both directions; and the
+  member-list check that confirmed `keyed 2` exactly.
+* `docs/research/unit-464order-2026-11-02/` — v1.2's measurements: the 24-ordering enumeration, the
+  3×3 cross-tab against a hand read filed before the grader existed, the operator count over each
+  registered span, and the mis-prescription checker scored on both prescription tables.
 
 Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>

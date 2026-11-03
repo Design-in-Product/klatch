@@ -17,6 +17,11 @@ const PIN = process.env.PIN ?? '1411a7d7';
 const MY_TSV = 'docs/research/unit-464reach-2026-11-02/HAND-READ-13.tsv';
 const HIS_TSV = 'docs/research/unit-464subkind-2026-11-02/HAND-CRITERIA-13.tsv';
 const AXES = 'docs/research/unit-464order-2026-11-02/HAND-AXES-13.tsv';
+// ENTRY is overridable for ONE purpose: the cripple drive, which perturbs a COPY of the entry (the
+// SUBJECT, not the key) to show GV12 can redden. The pinned-rev comparison in GV11VERBATIM still
+// reads the committed path, so a cripple that perturbs only the V12 fence moves exactly one leg.
+// [[feedback_a_cripple_map_must_name_whether_it_perturbs_the_key_or_the_subject]]
+const ENTRY_LIVE = process.argv[2] ?? 'docs/research/LEG-CLASS-CONVENTION.md';
 const ENTRY = 'docs/research/LEG-CLASS-CONVENTION.md';
 
 const git = (args) => {
@@ -329,15 +334,41 @@ for (const k of misOld) {
 }
 check('GP6CHECKERKP', misOld.length > 0,
   `the SAME mis-prescription checker fires on the old prescription table — ${misOld.length} row(s) — `
-  + `which is the known positive that makes its count on the new table a measurement rather than a `
-  + `vacuous pass [[feedback_a_printed_self_test_that_gates_nothing]]`);
-verdict('P6', 'exactly 2 of 13 rows are mis-prescribed by the ordered key, and 0 under the two axes',
-  `old ${misOld.length} of 13 [${misOld.join(' ; ')}] · new ${misNew.length} of 13`,
-  misOld.length === 2 && misNew.length === 0);
+  + `which is the known positive that makes its count on the new table a reading rather than a `
+  + `dead checker [[feedback_a_printed_self_test_that_gates_nothing]]`);
+
+// drive1 published `new 0 of 13` beside `old 2 of 13` as though both were counts over the same
+// population. They are not. `misNew` filters on `MOVES.new[cell] === true && axisB === 'immovable'`,
+// and every `× immovable` cell of the new table is false BY CONSTRUCTION — so that 0 holds for any
+// assignment of any rows to cells, and quoting it as "0 of 13" credits the 13 rows with a property
+// of the prescription table. [[feedback_a_conjunct_a_filter_makes_true_cannot_be_rekeyed_red]]
+// Measured by EXHAUSTION over all 9 cells instead, which is both honest and stronger: the claim is
+// that the new table cannot mis-prescribe, not that these 13 rows happen not to.
+const ALL_CELLS = AXIS_A.flatMap((a) => AXIS_B.map((b) => `${a} × ${b}`));
+const cellMisprescribes = (table, cell) =>
+  table[cell] === true && cell.endsWith('× immovable');
+const exhaustNew = ALL_CELLS.filter((c) => cellMisprescribes(MOVES.new, c));
+// The same exhaustion over a DELIBERATELY BROKEN table, so "0 of 9" is not a dead loop.
+const BROKEN = { ...MOVES.new, 'delta × immovable': true };
+const exhaustBroken = ALL_CELLS.filter((c) => cellMisprescribes(BROKEN, c));
+check('GP6EXHAUSTKP', ALL_CELLS.length === 9 && exhaustBroken.length === 1,
+  `the exhaustion walks all ${ALL_CELLS.length} cells of the 3×3 and the same predicate finds the one `
+  + `planted fault in a broken copy of the table — [${exhaustBroken.join(',')}] — so "0 of 9" below is `
+  + `a reading and not a dead loop`);
+verdict('P6', 'exactly 2 of 13 rows are mis-prescribed by the ordered key; the two-axis table cannot '
+  + 'mis-prescribe at all, by exhaustion over all 9 cells (NOT a count over these 13 rows)',
+  `old ${misOld.length} of 13 [${misOld.join(' ; ')}] · new ${exhaustNew.length} of 9 cells `
+  + `(and ${misNew.length} of the 13 rows, which is entailed by the 0 of 9 and is not evidence of its own)`,
+  misOld.length === 2 && exhaustNew.length === 0);
 
 // ---------------------------------------------------- the entry: V11 preserved, V12 present or not
-const liveEntry = (() => { try { return readFileSync(ENTRY, 'utf8'); } catch { return null; } })();
+const liveEntry = (() => { try { return readFileSync(ENTRY_LIVE, 'utf8'); } catch { return null; } })();
 const entryAtPin = git(['show', `${PIN}:${ENTRY}`]);
+if (ENTRY_LIVE !== ENTRY) {
+  console.log(`[CRIPPLE] the entry is being read from ${ENTRY_LIVE}, not ${ENTRY}. This is a cripple `
+    + `drive: the SUBJECT is perturbed, the key is not. Grade it as a delta against the matched `
+    + `no-cripple drive, not on its own.`);
+}
 if (liveEntry === null || entryAtPin === null) {
   refuse('GV11VERBATIM', `the entry is unreadable (worktree ${liveEntry === null}, pin ${entryAtPin === null})`);
 } else {
@@ -349,6 +380,34 @@ if (liveEntry === null || entryAtPin === null) {
     + `${bytes(fPin ?? '')} vs ${bytes(fLive ?? '')} bytes, identical ${fPin === fLive}`);
   const hasV12 = /MEASURED-BLOCK-V12/.test(liveEntry);
   console.log(`[MEAS] the entry carries a MEASURED-BLOCK-V12 fence: ${hasV12}`);
+  // GV12 — the promoted figures must match the measured ones. It does NOT recompute what it grades:
+  // every `want` below is the value this run already measured above, and the leg only asks whether
+  // the entry's own markdown says it. [[feedback_a_pin_that_recomputes_what_it_grades_is_hollow]]
+  const v12 = (liveEntry.match(/MEASURED-BLOCK-V12[\s\S]*?```/) ?? [null])[0];
+  if (!hasV12) {
+    console.log('[PENDING] GV12: the entry carries no MEASURED-BLOCK-V12 fence yet, so there are no '
+      + 'promoted v1.2 figures to pin. This drive records the measurements; the promotion drive pins them.');
+  } else if (!v12) {
+    refuse('GV12', 'the entry mentions MEASURED-BLOCK-V12 but no fence closes after it');
+  } else {
+    const norm = (s) => s.replace(/×/g, 'x').replace(/[ \t]+/g, ' ');
+    const body = norm(v12);
+    const want = [
+      ...Object.entries(cross).map(([c, v]) => [`cell ${c}`, new RegExp(`${norm(c)} ${v.length}\\b`)]),
+      ...Object.entries(tallyOf(axes, (r) => r.axisA)).map(([k, v]) => [`axisA ${k}`, new RegExp(`${k} ${v}\\b`)]),
+      ...Object.entries(tallyOf(axes, (r) => r.axisB)).map(([k, v]) => [`axisB ${k}`, new RegExp(`${k} ${v}\\b`)]),
+      ['hazard member 1', /grade-the-attrib-cure\.mjs:161 GCTRLPRE/],
+      ['hazard member 2', /grade-the-steal-cures\.mjs:211 GROWREPRO/],
+      ['keyed distinct lists', new RegExp(`keyed ${keyedLists.size} distinct member list`)],
+      ['rows that vary', new RegExp(`${rowVaries.length} of 13 rows take more than one label`)],
+      ['mis-prescribed old', new RegExp(`ordered key ${misOld.length} of 13`)],
+      ['mis-prescribed new', new RegExp(`two axes ${exhaustNew.length} of 9 CELLS`)],
+    ];
+    const absent = want.filter(([, re]) => !re.test(body)).map(([k]) => k);
+    check('GV12', absent.length === 0,
+      `every v1.2 figure this run measured appears in the entry's own MEASURED-BLOCK-V12 as written `
+      + `(${want.length} checked, ${bytes(v12)} bytes of fence); absent [${absent.join(',')}]`);
+  }
   console.log(`[MEAS] the entry's version header line: ${(liveEntry.match(/^\*\*v1\.\d.*$/m) ?? ['(none)'])[0]}`);
   // Not a gate — a measurement of one of my own filed instruments. unit-464reach's GDOCPIN gates on
   // /v1\.1/ matching the entry anywhere, and a v1.2 entry still says "v1.1" in its own changelog
