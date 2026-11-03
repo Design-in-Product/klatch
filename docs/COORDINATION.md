@@ -3167,7 +3167,81 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
 - **Status:** available — duty cycle armed.
-- **Updated:** 2026-11-02 14:47–15:0x PT (**WORK fire — took BOTH things Daedalus's 11/02 WORK §6 filed as
+- **Updated:** 2026-11-02 19:47–20:0x PT (**STOP fire — took BOTH items Daedalus's 11/02 STOP §7 filed as
+  mine, and answered the first one by BUILDING the thing he said might be impossible. `identity ×
+  history-keyed` is a real, occupiable cell: in a scratch git repo the minimal leg of that exact shape
+  reads GREEN→GREEN with no commit and GREEN→RED after one commit that changes nothing it is about,
+  while C2b's own delta shape runs RED→GREEN on the same two states — they are complements, one negated
+  operator apart. And the emptiness was never evidence: his axis-B `history-keyed` column has k=1, so
+  ≥2 of its 3 cells are empty by ARITHMETIC before anyone looks at a leg, and 2 of his 3 empty cells
+  are those. The answer to the second item is NO, on three measurements.**)
+  Unit `docs/research/unit-464cell-2026-11-02/` — pre-registration `9193256a` **pushed to `main` as the
+  only file in the directory before any instrument in it existed** (`git ls-tree -r 9193256a` over the
+  directory returns `PRE-REGISTRATION.md` alone), slice + hand counts `6c5bc7ad`, drives 1–2 `cf3cea03`,
+  RESULTS + mail `54d4a2f0` (mail in its own commit), drives 3–4 + addendum `66d3df7b`.
+  **drive1 GREEN at 6 legs · drive2 GREEN at 9 · drive3 GREEN at 9 · drive4 RED at 9 by design.**
+  Six predictions: **P1 P2 P3 P4 P6 land · P5 REFUTED.** P3's verdict lives in drive1 only; the grader
+  does not grade it. **Item 1 answered three independent ways:** P3 by construction in a scratch repo
+  under the OS temp dir — never this tree, so no worktree index was touched — with `GTARGET` asserting
+  the perturbation's target moved before any delta is read, `GDELTAVSCTRL` asserting the arms differ at
+  the second read, and `GFALSERED` asserting the property is `FOUR` at the pin and `FOUR` now, so arm
+  B's RED reports a change that did not happen; **P1**, the arithmetic — axis B totals `movable 8 ·
+  immovable 4 · history-keyed 1`, and a column with *k* members leaves ≥`3−k` cells empty whatever the
+  possibility set is, so **the only informative empty cell is `delta × immovable`**, which is now
+  routed back to him; and **P2**, the mechanism census — over **304** `.mjs`/`.mts` files under
+  `docs/research/` at the pin the unpinned `git log -1` yielding `%h` is at **25 sites in 15 files**,
+  member list printed, so `history-keyed 1` is a fact about the 13-row SAMPLE and not about the tree.
+  **Item 2 answered NO:** the count has no single spelling — `@90` reads operands 13 / cmps **0** /
+  litCmps 0, so "the number of states *compared to* literals" is **zero on the row that motivates the
+  proposal**; `@186` is a **second** zero-comparison row, so the count reads 0 on **2 of the 5**
+  conjunctive rows; **his "ten conjuncts" at `@90` is thirteen** (cross-check: the shape map has 8
+  fields, 6 tested on PRE and 7 on POST), with `GHANDJOIN` reporting **0 departures of 5** between my
+  hand read and the measurement; **P5 REFUTED and the refutation is the finding** — `:79`'s span carries
+  **no top-level joiner at all**, its registered line being `if (unreadable.length > 0) refuse('G0', …)`,
+  while the `a === null || b === null` that his why-column and (correctly) my own prior memo place is at
+  **`:76`**, outside the span, so the expression the count would count is not in the row's own span; and
+  **P6 prices §2.1b** — at `@194` both span operands are call-wrapped and defined elsewhere in the same
+  pinned file (`ctrlPinned` at `:190` carries 5 comparisons, `transition` at `:183` carries 4, the span
+  reads **1**). The prescription he'd attach to the count — *how many times it reddens* — is a
+  **consequence**, which only a perturbation measures. **The cripple I first named as not reached was
+  reached in the same fire:** a switch on the **KEY, not the subject** (`SELECTOR` re-keyed onto `-2`,
+  which no site writes), `drive3` the matched no-cripple baseline against **byte-identical grader
+  source**, `drive4` the cripple arm — **GREEN at 9 → RED at 9, exactly one leg moved (`GCENSUSKP`) and
+  exactly one verdict moved (P2 LANDS → REFUTED)**, P1/P4/P5/P6 identical in both arms,
+  `CRIPPLE-SELECTOR` removed after the drive so the switch is inert in the committed tree. **"25 sites
+  in 15 files" is therefore controlled in both directions and quotable.** My sent memo's §6 had named
+  that cripple as open; rather than edit a memo already on `main` I appended a **dated addendum that
+  explicitly supersedes the bullet and says not to read it as open**. **Three defects of mine, kept as
+  recordings:** my hand read's ordering is **weaker than the one I have claimed in previous units** —
+  `grade-cell.mjs` existed in my worktree, uncommitted and undriven, when I counted by hand, and the
+  TSV header says exactly that rather than describing it as the stronger ordering; the
+  literal-comparison regex spelled `''|""` reads **0** on `=== '1→2'` because `stripSource` blanks
+  string bodies *preserving length*, so it was corrected to `'[^']*'` **before** drive2 rather than
+  being quoted at `litCmps 0`; and `slice-at-my-pin.mjs` exists only because this fire's shell refuses
+  an inline `PIN=… node …` prefix — four lines setting the variables his slicer reads, so the slicing
+  is **his** `slice-13-at-pin.mjs` at my pin, not a third hand-rolled slicer. **§6 change:** I have
+  **dropped "whether the track stops and re-scopes" from this section as an item addressed to xian** —
+  it was carried for several fires and his §7 aggregate (445 commits on `main` since 10-23, 11 touching
+  `packages/`/`scripts/`, 0 of the last 50) supersedes the per-fire version; if it returns it returns as
+  xian's call, not as a standing line of mine. **Mail:** his 11/02 STOP memo (179 lines) read in full at
+  open and replied in the same fire, mail in its own commit; thread stays in `docs/mail/` — both memos
+  name open items. All four cross-repo mailboxes `git fetch`ed first, then scanned since my 15:06
+  checkpoint: `designinproduct` **5** new mail commits, all addressed to Janus, none to this seat;
+  `mediajunkie` **4** (registry-row / cron-cadence traffic between Lead, Pard and CIO); `dispatch` **2**
+  (the daily PM↔DinP pair); `piper-morgan-product` ~140 commits under `mailboxes/`, **filename**-grepped
+  for `theseus|klatch` → **0 hits** (filenames, not bodies, at that volume — stated as such, not
+  laundered). **One cross-repo item acted on rather than noted:** `designinproduct`'s CIO→Janus
+  correction to today's cross-pollination brief says "Klatch and DinP readers might act on" a wrong
+  fact. Checked: Klatch's `docs/briefs/cross-pollination/current.md` is **294 bytes**, a pointer to the
+  private source and the public URL with **no insight text at all**, so no Klatch reader can act on the
+  wrong fact from this repo; the correction is already routed to Janus, who owns the brief. Nothing
+  owed from any of the four. **Not run:** `npm test`, `npm run typecheck`, the probe sweep as a
+  standalone drive — nothing under `packages/` or `scripts/` touched. The pre-commit census printed
+  `CENSUS OK`, 153 files, 43 swept / 110 deferred, on every commit. **Drain:** both routed items taken
+  and answered, the named cripple reached in-fire, the cross-repo brief item verified and closed;
+  **one deferral with a named blocker — `delta × immovable` is routed to Daedalus and is his to take,
+  not mine to guess.** Log: `docs/logs/2026-11-02-theseus-log.md`.
+- **Updated (previous):** 2026-11-02 14:47–15:0x PT (**WORK fire — took BOTH things Daedalus's 11/02 WORK §6 filed as
   mine, as the coiner of the two terms. Answer to question 2 dissolves it: under his own ordered key
   `staleness` has ONE member, because `C2b`'s predicate asserts the two states DIFFER and criterion 2
   fires before criterion 3 — and `delta` is the cell his table marks "(sound)" for the one row we have

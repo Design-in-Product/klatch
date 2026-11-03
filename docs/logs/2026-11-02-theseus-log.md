@@ -281,3 +281,142 @@ scripts/` is 0 bytes *inside* the harness and `GHISDIRCLEAN` asserts the same ov
 deferred, on every commit.
 
 **Not claimed:** delivery. The wrapper owns that and logs it.
+
+---
+
+## 19:47 — Session resumed (STOP fire, Opus 5)
+
+**Took both items Daedalus's 11/02 STOP §7 filed as mine.** Unit
+`docs/research/unit-464cell-2026-11-02/`. Pin `0c23e551`.
+
+**Commits, verified on `origin/main`:**
+
+* `9193256a` pre-registration — pushed as the **only file** in the directory before any instrument
+  in it existed. `git ls-tree -r 9193256a` over the directory returns `PRE-REGISTRATION.md` alone.
+* `6c5bc7ad` slice + hand counts
+* `cf3cea03` drives 1–2
+* `54d4a2f0` RESULTS + mail (mail in its own commit)
+
+**drive1 GREEN at 6 legs. drive2 GREEN at 9 legs. 0 RED, 0 UNRUNNABLE in both.**
+Six predictions: **P1 P2 P3 P4 P6 land · P5 REFUTED.** P3's verdict lives in drive1 only; the
+grader does not grade it.
+
+### Routed item 1 — `identity × history-keyed` is a real cell. Three independent reasons.
+
+1. **P3, by construction.** A scratch git repo under the OS temp dir — never this tree, so no
+   worktree index was touched. Two matched arms: `GREEN → GREEN` with no commit, `GREEN → RED`
+   after one commit touching the path that changes nothing the leg is about. `GFALSERED` asserts
+   the property is `FOUR` at the pin and `FOUR` now, so arm B's RED reports a change that did not
+   happen. `GINVERSE`, unpredicted: C2b's own delta shape runs `RED → GREEN` on the same two
+   states — the two cannot both be green, they are complements, and the cell is one negated
+   operator from a row we already have.
+2. **P1 — the emptiness was arithmetically forced.** axis B totals `movable 8 · immovable 4 ·
+   history-keyed 1`. A column with *k* members leaves ≥ `3−k` cells empty whatever the possibility
+   set is; with **k=1**, two of the three are empty before anyone looks at a leg. **2 of his 3
+   empty cells lie in that column.** The only informative empty cell is **`delta × immovable`**.
+3. **P2 — the mechanism is 25 sites, not 1.** Over **304** `.mjs`/`.mts` files under
+   `docs/research/` at the pin, the unpinned `git log -1` yielding `%h` is at **25 sites in 15
+   files**, member list printed. `GCENSUSKP` is the known positive (must find a site in C2b's own
+   file); **22** further `git log -1` calls rejected as FIXED with the reason printed per site.
+   `history-keyed 1` is a fact about the 13-row sample, not the tree.
+
+### Routed item 2 — no, `conjunctive` should not carry a count.
+
+| row | joiner | operands | cmps | litCmps |
+|---|---|---|---|---|
+| `grade-the-attrib-cure.mjs:71` | `&&` | 8 | 2 | 2 |
+| `grade-the-attrib-cure.mjs:186` | `&&` | 5 | **0** | 0 |
+| `grade-the-steal-cures.mjs:90` | `&&` | **13** | **0** | 0 |
+| `grade-the-steal-cures.mjs:194` | `&&` | 2 | 1 | 1 |
+| `measure.mjs:79` | **none** | 1 | 1 | 1 |
+
+* **P4 lands (declared NON-BLIND, prior reads named).** `@90` reads **0** comparison operators, so
+  "the number of states *compared to* literals" is zero on the row that motivates the proposal.
+* **`@186` is a second zero-comparison row** — 2 of the 5 conjunctive rows have no comparison at
+  all, so the count reads 0 on 40% of the class.
+* **His "ten conjuncts" at `@90` is thirteen.** `GHANDJOIN`: **0 departures of 5** between my hand
+  read and the measurement. Cross-check: the shape map has 8 fields, 6 tested on PRE, 7 on POST.
+* **P5 REFUTED, and the refutation is the finding.** `:79`'s span carries **no top-level joiner at
+  all** — its registered line is `if (unreadable.length > 0) refuse('G0', …)`. The
+  `a === null || b === null` both his why-column and (correctly) my own prior memo place is at
+  **`:76`**, outside the span. The expression the count would count is not in the row's own span.
+* **P6 lands and prices §2.1b.** At `@194` both span operands are call-wrapped and defined
+  elsewhere in the same pinned file: `ctrlPinned` at `:190` carries **5** comparisons, `transition`
+  at `:183` carries **4**, span reads **1**.
+
+### Defects of mine, kept as recordings
+
+1. **My hand read's ordering is weaker than the one I have claimed before, and the TSV header says
+   so** rather than describing it as the stronger one: `grade-cell.mjs` existed in my worktree,
+   uncommitted and undriven, when I counted by hand. In previous units the hand read was filed
+   before the grader's source existed at all.
+2. **The literal-comparison regex had to be fixed before it was driven.** Spelled `''|""` it reads
+   **0** on `=== '1→2'`, because `stripSource` blanks string bodies *preserving length* — the
+   literal arrives as `=== '    '`. Corrected to `'[^']*'` before drive2. It would have printed
+   `litCmps 0` at `@194` and been quotable.
+3. **`slice-at-my-pin.mjs` exists only because this fire's shell refuses an inline `PIN=… node …`
+   env prefix.** Four lines setting the two variables his slicer reads, then importing it. The
+   slicing is his code at my pin, not a third hand-rolled slicer.
+
+### §6 change
+
+**I dropped "whether the track stops and re-scopes" from my own section as an item addressed to
+xian.** It had been carried there for several fires and Daedalus's §7 aggregate (445 commits on
+`main` since 10-23, 11 touching `packages/`/`scripts/`, 0 of the last 50) supersedes the per-fire
+version. If it comes back it comes back as xian's call, not as a standing line of mine.
+
+### Mail
+
+Daedalus's 11/02 STOP memo (179 lines) **read in full at open and replied in the same fire**
+(`54d4a2f0`, mail in its own commit). Thread stays in `docs/mail/` — both memos name open items.
+
+**Cross-repo, after `git fetch` on each:** `designinproduct` **5** new mail commits, all addressed
+to Janus, none to this seat; `mediajunkie` **4** (registry-row / cron-cadence traffic between Lead,
+Pard and CIO); `dispatch` **2** (the daily PM↔DinP pair); `piper-morgan-product` ~140 commits under
+`mailboxes/`, filename-grepped for `theseus|klatch` → **0 hits** (filenames, not bodies, at that
+volume — stated as such). Nothing owed from any of the four.
+
+**One item acted on, not just noted.** `designinproduct`'s
+`cio-to-janus-correction-to-the-11-02-cross-pollination-brief-…` says "Klatch and DinP readers
+might act on" a wrong fact in today's brief. Checked: Klatch's `docs/briefs/cross-pollination/
+current.md` is **294 bytes** — a pointer to the private source and the public URL, carrying no
+insight text at all. **No Klatch reader can act on the wrong fact from this repo**, and the
+correction is already routed to Janus, who owns the brief. Nothing owed from this seat.
+
+### 20:0x — the cripple I had named as not reached, reached (drives 3–4, `66d3df7b`)
+
+A cripple switch on the **KEY, not the subject**: `grade-cell.mjs`'s `SELECTOR` regex re-keyed onto
+`-2`, which no site in the tree writes, driven by file presence because this fire's shell refuses an
+inline `VAR=… node …` prefix. `drive3` is the **matched no-cripple baseline against byte-identical
+grader source**; `drive4` is the cripple arm. Delta recorded in `drive4.delta-vs-drive3.txt`:
+
+```
+                     drive3 (intact)     drive4 (crippled)
+SELECTOR reader      keyed on -1         keyed on -2
+sites                25 in 15 files      0 in 0 files
+rejected as FIXED    22                  0
+GCENSUSKP            ok                  RED
+P2                   LANDS               REFUTED
+summary              GREEN at 9 legs     RED at 9 legs
+```
+
+**Exactly one leg moved and exactly one verdict moved.** P1/P4/P5/P6 read identically in both arms.
+`CRIPPLE-SELECTOR` removed after the drive, so the switch is inert in the committed tree. **"25
+sites in 15 files" is now controlled in both directions and quotable.**
+
+My sent memo's §6 had named this as not reached. Rather than edit a memo already on `main`, I
+appended a **dated addendum that explicitly supersedes that bullet and says not to read it as
+open** — a closure line left standing as an open item is its own defect.
+
+### Named and not reached — no deadline, no blocker
+
+**`delta × immovable`** — the only one of his three empty cells where an occupied cell was
+arithmetically available. Routed to Daedalus in §6, not held here. I have not looked, and I am not
+going to guess from a cross-tab what this unit spent four drives showing a cross-tab cannot tell
+you.
+
+**Not run:** `npm test`, `npm run typecheck`, the probe sweep as a standalone drive — nothing under
+`packages/` or `scripts/` touched. The pre-commit census printed `CENSUS OK`, 153 files, 43 swept /
+110 deferred, on every commit.
+
+**Not claimed:** delivery. The wrapper owns that and logs it.
