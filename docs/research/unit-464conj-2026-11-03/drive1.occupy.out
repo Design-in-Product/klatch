@@ -1,0 +1,54 @@
+occupy-conj-history — PIN=0c23e551 · CONJ_CMP_MAX=0
+GLIFT  UNRUNNABLE  cannot read docs/research/unit-464cell-2026-11-02/grade-cell.mjs at 0c23e551 — the constructed leg's axis A would be my say-so, and I will not fall back to a fresh reader of my own
+
+scratch repo: /var/folders/jl/g34tk0xx7nj20xbjvyq6bskc0000gn/T/klatch-464conj-Gj9IYx
+GSCRATCH  ok    scratch repo built with one commit; the leg's pinned rev is a2602d6d911e082877168d71568b61a20a231853
+leg.mjs sha256 5c8f96f3b29ffdbd909fa63fd1003c8ecd177027664e037aa21ccc96a4ee2ae1
+
+arm A (control — no commit):
+  conjunctive × history-keyed : GREEN -> GREEN   (c1 true/true · c2 true/true)
+  conjunctive, anchors FIXED  : GREEN -> GREEN
+
+arm B (perturbed — ONE commit touching the path, property unchanged):
+  conjunctive × history-keyed : GREEN -> RED   (c1 true/true · c2 true/false)
+  conjunctive, anchors FIXED  : GREEN -> GREEN
+GTARGET  ok    the perturbation's target moved: the newest commit touching subject.txt is now 63810bde, was a2602d6d
+GARMA  ok    matched control: the conjunctive × history-keyed leg reads GREEN -> GREEN with no commit (registered: GREEN -> GREEN)
+GARMB  ok    perturbed: the same leg reads GREEN -> RED after one commit that changes nothing it is about (registered: GREEN -> RED)
+GDELTAVSCTRL  ok    the two arms DIFFER at the second read (GREEN vs RED) — a single arm could not have told occupiable from dead
+GFIXEDCTRL  ok    the one-argument-different control holds: anchors-fixed conjunctive reads GREEN -> GREEN across the same commit and its figure is byte-identical (a2602d6d -> a2602d6d). Exactly one of the two readers moved
+GFALSERED  ok    the property is FOUR at the pin and FOUR now (true/true) — so arm B's RED reports a change that did not happen, which is the hazard axis B's prescription predicts
+GC1FROZEN  ok    conjunct 1's figure is byte-identical across the perturbation (a2602d6d -> a2602d6d) and its own truth value never changes — no commit can move it, which is axis B `immovable`
+GC2MOVED  ok    conjunct 2's figure MOVED on a commit that touched the path and nothing else (a2602d6d -> 63810bde) and its truth value flipped true->false — which is axis B `history-keyed`
+
+P2 — four modes over successive states, same two reads throughout:
+  state0     conjhk=RED · conjfix=GREEN · delta=GREEN · identity=RED  tuple=(a2602d6d,63810bde)
+  state1     conjhk=RED · conjfix=GREEN · delta=GREEN · identity=RED  tuple=(a2602d6d,94773156)
+  state2     conjhk=RED · conjfix=GREEN · delta=GREEN · identity=RED  tuple=(a2602d6d,c96d274e)
+  state3     conjhk=RED · conjfix=GREEN · delta=GREEN · identity=RED  tuple=(a2602d6d,35ad6654)
+  state4     conjhk=RED · conjfix=GREEN · delta=GREEN · identity=RED  tuple=(a2602d6d,cc7e1189)
+GTUPLE  ok    the anchor tuple (atPin, atRecency) is identical across all four modes at 5 of 5 states, every member non-empty — the substitution changes what the predicate DOES with the pair, not what the pair READS
+GPOLARITY  ok    delta and identity give OPPOSITE verdicts at 5 of 5 states — Daedalus's polarity lemma reproduces here as a by-product, on anchors I built rather than the ones he did
+GTRACKS  ok    the conjunctive leg's verdict matches the identity leg's at 5 of 5 states — the substitution preserves the leg's DIRECTION as well as its figure
+GCONJSRC  UNRUNNABLE  the reader did not lift, so the constructed leg's axis A is unmeasured and P2 cannot be resolved off my own say-so
+
+VERDICT P1: LANDS
+  registered: arm A GREEN->GREEN, arm B GREEN->RED, and the anchors-fixed control byte-identical across arm B's commit
+  measured:   {"armA":"GREEN->GREEN","armB":"GREEN->RED","fixedControlArmB":"GREEN->GREEN","fixedFigureMoved":false}
+
+VERDICT P2: UNRESOLVED
+  registered: anchor tuples identical across modes at >=5 of 5 states, state-vs-state comparisons 0, literal comparisons >=2
+  measured:   null
+
+VERDICT P4: LANDS
+  registered: one constructed leg whose conjunct 1 is immovable and conjunct 2 is history-keyed — i.e. simultaneously in two axis-B cells
+  measured:   {"conjunct1":"immovable","conjunct2":"history-keyed","oneLegTwoCells":true}
+
+=========================================================
+occupy-conj-history: 12 legs · RED 0 · UNRUNNABLE 2
+  P1: LANDS
+  P2: UNRESOLVED
+  P4: LANDS
+VERDICT UNRUNNABLE at 12 legs
+leg.mjs sha256 5c8f96f3b29ffdbd909fa63fd1003c8ecd177027664e037aa21ccc96a4ee2ae1 — asserted identical across cripple arms
+scratch repo left at /var/folders/jl/g34tk0xx7nj20xbjvyq6bskc0000gn/T/klatch-464conj-Gj9IYx for inspection; it is outside the Klatch tree.
