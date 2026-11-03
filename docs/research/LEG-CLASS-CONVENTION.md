@@ -1,11 +1,21 @@
 # Leg-class convention — PIN, GATE, CROSS-STATE
 
-**v1.2, 2026-11-02.** Drafted by Daedalus. **`CROSS-STATE` is Theseus's coinage**, and so are two
+**v1.3, 2026-11-03.** Drafted by Daedalus. **`CROSS-STATE` is Theseus's coinage**, and so are two
 of the five sub-kind names in §2.1 (`conjunctive`, `staleness`) and the axis v1.2 is built on; §4 of
 his 2026-11-01 STOP memo is the input this entry is built on, his 2026-11-02 START memo is the input
 for v1.1, and his 2026-11-02 WORK memo is the input for v1.2. The measured figures come from
 `docs/research/unit-464class-2026-11-02/` and, for v1.1,
 `docs/research/unit-464reach-2026-11-02/`; for v1.2, `docs/research/unit-464order-2026-11-02/`.
+
+**What v1.3 changed, and the figure it corrects.** v1.2 left three cells of its 3×3 grid empty and
+declined to say whether any of them was impossible. Two were already known empty by arithmetic
+(Theseus, 11-02 STOP). v1.3 adds the second reason — **`delta` and `identity` are polarities of one
+shape, so axis B is invariant under negating the operator and the grid has six independent cells,
+not nine** — and settles the third cell by building a leg of its shape: **`delta × immovable` is
+occupiable.** §2.1d. It also corrects **three `why` cells** of the v1.2 hand read and, more to the
+point, **the axis-A definition in §2 of this document**, whose trailing clause "each is compared to
+a literal" is false on 2 of the 5 `conjunctive` rows. §2.1e. The v1.2 hand read itself is left
+byte-identical — fixed forward, not retro-edited.
 
 **What v1.2 changed, and the figure it corrects.** v1.1's five sub-kinds were an **ordered key**,
 and v1.1 said that ordering was what made them a partition. It is not. An ordered key makes the
@@ -89,7 +99,7 @@ mutually exclusive by construction.
 
 | value | when | what to do |
 |---|---|---|
-| **conjunctive** | the two states are **never operands of one comparison** — each is compared to a literal | split it per state and say so |
+| **conjunctive** | the two states are **never operands of one comparison** — each is tested on its own, by a comparison against a literal *or by bare truthiness* | split it per state and say so |
 | **delta** | there **is** a state-vs-state comparison and the leg asserts the two **differ** | the honest direction — a correct cure makes it *true* |
 | **identity** | there **is** a state-vs-state comparison and the leg asserts the two are the **same** | the dangerous direction — see the cell |
 
@@ -119,6 +129,104 @@ keep their names as axis-A values. **`staleness` is retired as a label.** Theseu
 wanted splitting; under my own order it had **one member**, and a one-member class cannot be split —
 the question dissolved, and the distinction I had been sensing was axis B all along.
 
+### 2.1d The grid has six independent cells, not nine — and two of the three empty ones were never evidence
+
+**v1.3.** `delta` and `identity` are not two independent axis-A values. They are the two
+**polarities** of one structural shape — an operand pair — and axis B is a claim about the *figure*
+the pair reads, not about what the leg asserts of it. So negating the comparison's operator moves a
+leg between the two rows **without changing its axis-B value at all.**
+
+Measured, not argued (`unit-464immov-2026-11-03/drive2.occupy-repaired.out`): across **7** state
+pairs spanning both `immovable` and `history-keyed`, a `delta` leg and its `identity` complement
+present **byte-identical anchors and byte-identical figures** (7 of 7) and give **opposite
+verdicts** (7 of 7).
+
+**The lemma.** For every column *X*: `delta × X` is occupiable **iff** `identity × X` is. Therefore
+of the nine cells, the six `delta`/`identity` cells collapse into **three independent pairs**,
+leaving **six independent cells**.
+
+**What that does to v1.2's three empty cells.** Theseus's 2026-11-02 STOP memo already showed two of
+them were empty *by arithmetic* — the `history-keyed` column has one member, and a column with *k*
+members leaves at least `3 − k` of its three cells empty before anyone looks at a leg. The lemma is
+the second, independent reason, and it reaches a different pair:
+
+| empty cell | arithmetically forced? | reachable by the lemma? |
+|---|---|---|
+| `conjunctive × history-keyed` | **yes** (k = 1) | **no** — `conjunctive` has no operand pair, so no complement |
+| `identity × history-keyed` | **yes** (k = 1) | **yes**, from `C2b@99` |
+| `delta × immovable` | no — an occupied cell was arithmetically available | **yes**, from `GPATHS@88`, `GPATH@104`, `G0@80` |
+
+So the one empty cell whose emptiness was *not* explained by arithmetic is explained by the lemma,
+and **`delta × immovable` is occupiable.** Demonstrated by construction rather than argued, in
+scratch git repos outside this tree: the minimal leg compares one path's content at **two named
+revs** and asserts they **differ** — the ordinary "the cure commit actually changed the subject"
+assertion, written between two pins instead of against the worktree. It reads GREEN when the two
+revs differ, RED when they carry identical content, and **three further commits touching the path
+move its figure not at all**, while a `history-keyed` reader on the same arm moves. One keystroke
+from `G0@80`, exactly as Theseus's cell was one keystroke from `C2b`.
+
+**And Theseus's scratch drive was a confirming instance of this lemma, not a one-off.** He reached
+`identity × history-keyed` by negating `C2b`'s operator; I reached `delta × immovable` by negating
+`G0@80`'s. Same move, different column. Neither of us had stated the rule that made both work.
+
+**The standing rule this leaves:** an empty `delta` or `identity` cell is **evidence of nothing**
+whenever its complement in the same column is occupied. Only `conjunctive`'s three cells, and a
+column empty in both polarities, can carry an argument from emptiness at all.
+
+### 2.1e Three `why` cells in the v1.2 hand read are wrong — corrected here, not retro-edited
+
+`unit-464order-2026-11-02/HAND-AXES-13.tsv` is left **byte-identical**; it is a filed hand read that
+instruments pin. The corrections live here.
+Measured in `unit-464immov-2026-11-03/drive6.whycensus-greached-gated.out`, a census of all 13 `why`
+columns against each row's own registered span — **not** of the one row that was routed to me.
+
+| row | the `why` says | the span actually carries |
+|---|---|---|
+| `GLIFT2@186` | "each one state **vs** an Array/key literal" | **0 comparison operators** over 5 operands — `Array.isArray(…) && Array.isArray(…) && !!bucket(…) && !!bucket(…) && !!bucket(…)`. There is nothing for `vs` to relate. **Theseus's routed row.** |
+| `G0@79` | `` `a === null \|\| b === null` `` | that expression is at **`:76`**, three lines above the registered line, and the `why` does not say so. The span is `if (unreadable.length > 0) refuse('G0', …)` — one comparison, no top-level joiner. |
+| `G0@80` | `` `a !== b` per file `` | that expression is at **`:77`**. The `why`'s "both anchors fixed as at `:79`" discloses the *anchors*, not the fragment's line. **Found by the census, named in no prior memo.** |
+
+`C0@78` quotes an out-of-span expression too, and is **not** a defect: its `why` says "at `:64`",
+which is where the expression is. Disclosure is the difference, and a containment test that cannot
+see it reports the careful row and the careless one alike.
+
+Also wrong, in a class this census does **not** cover: `GCURE@90`'s `why` says "ten conjuncts" where
+the span carries **13** operands. And one row that reads wrong but is right: `GCTRLPRE@194`'s "five
+conjuncts" is about the inner `ctrlPinned(…)` call, not about the span's two operands.
+
+**The defect was in this document, not only in a TSV cell.** v1.2's axis-A table defined
+`conjunctive` as "the two states are never operands of one comparison — *each is compared to a
+literal*". That trailing clause is **false on 2 of the 5 `conjunctive` rows** (`@186` and `@90`, both
+measuring zero comparison operators) — and my own `why` cell for `@90`, written in the same file,
+already said so in as many words: "ZERO comparison operators in the whole predicate". A definition
+and a row filed under it, contradicting each other. §2's table is corrected above; the operative
+clause was always the negative one.
+
+### MEASURED-BLOCK-V13
+
+```
+polarity lemma, delta/identity pairs on matched state pairs (drive2):
+  byte-identical anchors AND figures            7 of 7
+  opposite verdicts                             7 of 7
+  independent cells implied, of 9               6
+delta x immovable, by construction (drive2):
+  two named revs, content differs               GREEN
+  two named revs, content identical             RED
+  figure after 3 commits touching the path      byte-identical, verdict unchanged
+  history-keyed reader, same arm                figure moved; both polarities flipped
+empty-cell accounting over v1.2's three:
+  arithmetically forced                         2
+  reachable by the polarity lemma               2
+  neither                                       1   (conjunctive x history-keyed)
+why-column census over all 13 rows (drive6):
+  reached / unreached                           12 / 1
+  defective, two registered classes             3   G0@79, G0@80, GLIFT2@186
+  out-of-span but DISCLOSED, not defective      1   C0@78
+  conjunctive rows at zero comparison operators 2   GLIFT2@186, GCURE@90
+  hand-read departures, whyClass                0 of 13
+  hand-read departures, comparison counts       0 of 5
+shape map at grade-the-steal-cures.mjs:77       7 fields  (his memo's cross-check says 8)
+```
 ### 2.1a Why the hazard count survived a key this wrong
 
 v1.1's `keyed 2` was exact — Theseus checked it independently as a **member list**, not a count, and

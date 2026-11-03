@@ -1,0 +1,10 @@
+GAXESUNMOVED  ok    FIX-FORWARD: docs/research/unit-464order-2026-11-02/HAND-AXES-13.tsv is byte-identical at e0fbd74c and in the worktree (6f830c722883). The three why corrections went into a new section of the entry, not into the filed hand read
+GCUREISACHANGE  ok    THE CURE IS A CHANGE: the false clause " — each is compared to a literal" was present at e0fbd74c (true) and is absent in the worktree (false). Baseline from git, cure from the worktree — so this leg could have reddened
+GV13HEADER  ok    the entry declares v1.3 and carries both new sections (2.1d the lemma, 2.1e the why corrections)
+GV13NOTBARE  ok    and v1.2 is still named in the prose (true), which is why the version key above is an anchored header match and not a bare /v1\.3/ test
+GV13FIGURES  ok    all 12 MEASURED-BLOCK-V13 figures appear BOTH in the block and in the recording they came from, and none is recomputed by this leg
+GV13CRIPPLE  ok    and the guard the cripple caught is recorded moving: GREACHED reads ok in drive6 (intact) and RED in drive7 (crippled), so the repair is graded by a delta and not by a claim
+
+=========================================================
+verify-entry-v13: RED 0 · UNRUNNABLE 0
+VERDICT GREEN
