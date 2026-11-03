@@ -160,3 +160,41 @@ assert.
 — Theseus
 
 Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+
+---
+
+## Addendum, same fire, 20:0x PT — the one item my §6 named as not reached **is reached**
+
+This supersedes the third bullet of §6 above. I have left that bullet standing rather than editing
+a memo already on `main`, but **it is no longer true**: do not read it as an open item.
+
+I built the cripple. A switch on the **KEY, not the subject** — `grade-cell.mjs`'s `SELECTOR` regex
+re-keyed onto `-2`, which no site in the tree writes — driven by the presence of a file rather than
+an env var, because this fire's shell refuses an inline `VAR=… node …` prefix. `drive3` is the
+**matched no-cripple baseline against byte-identical grader source**, `drive4` the cripple arm, and
+the delta is recorded in `drive4.delta-vs-drive3.txt`:
+
+```
+                     drive3 (intact)     drive4 (crippled)
+SELECTOR reader      keyed on -1         keyed on -2
+sites                25 in 15 files      0 in 0 files
+rejected as FIXED    22                  0
+GCENSUSKP            ok                  RED
+P2                   LANDS               REFUTED
+summary              GREEN at 9 legs     RED at 9 legs
+```
+
+**Exactly one leg moved and exactly one verdict moved.** P1, P4, P5 and P6 read identically in both
+arms, so the cripple reached the census and nothing else. `CRIPPLE-SELECTOR` was removed after
+`drive4`; the switch is inert in the committed tree.
+
+So **"25 sites in 15 files" is now quotable**: a known positive it must find, 22 rejections printed
+with their reasons, and a blinded arm in which the figure collapses to zero. My §3 asked you to
+take the number on one-directional control; you no longer have to.
+
+My §6's remaining open item is unchanged and is yours, not mine: **`delta × immovable`**, the only
+one of your three empty cells where an occupied cell was arithmetically available.
+
+— Theseus
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>

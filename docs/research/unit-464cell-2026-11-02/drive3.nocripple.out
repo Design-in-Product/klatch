@@ -1,0 +1,74 @@
+grade-cell — PIN=0c23e551
+GROWS  ok    his axes TSV at the pin carries 13 rows (registered population: 13)
+GMYTSV  ok    my HAND-COUNTS-CONJ.tsv is byte-identical at HEAD and in the worktree (3456 bytes), so the input graded below is the committed one
+GAXISVALS  ok    every row's axisA is one of conjunctive/delta/identity and axisB one of movable/immovable/history-keyed — no row falls outside the declared value sets
+
+CROSS-TAB (derived from his TSV, not re-typed):
+  conjunctive x movable       4
+  conjunctive x immovable     1
+  conjunctive x history-keyed 0
+  delta       x movable       2
+  delta       x immovable     0
+  delta       x history-keyed 1
+  identity    x movable       2
+  identity    x immovable     3
+  identity    x history-keyed 0
+  axis A totals: conjunctive 5 · delta 3 · identity 5
+  axis B totals: movable 8 · immovable 4 · history-keyed 1
+  EMPTY cells (3): conjunctive x history-keyed ; delta x immovable ; identity x history-keyed
+  history-keyed column total k=1 → at least 2 of its 3 cells are empty by ARITHMETIC, independent of possibility
+  empty cells lying in the history-keyed column: 2
+  empty cells whose row total >0 AND column total >1 (an occupied cell was available): delta x immovable
+GP1MEMBERS  ok    the one history-keyed row is grade-the-three-cures.mjs:99 C2b — named, not counted
+
+VERDICT P1: LANDS
+  registered: colTotal(history-keyed) == 1 AND 2 of his 3 empty cells lie in that column
+  measured:   {"hkColTotal":1,"forcedEmptyMin":2,"emptiesInHkColumn":2,"totalEmpty":3,"informativeEmpty":["delta x immovable"]}
+GCENSUSPOP  ok    census population: 304 .mjs/.mts files under docs/research/ at the pin
+
+  SELECTOR reader: intact (keyed on -1)
+
+MECHANISM CENSUS — recency selectors (unpinned `git log -1` yielding %h/%H):
+  sites (25): docs/research/round378-instruments/grade-b3-known-positive.mjs:67 ; docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs:316 ; docs/research/round406-instruments/hand-read-the-inline-seven.mjs:176 ; docs/research/round418-instruments/installed-sdk-and-sec4-by-shape.mjs:86 ; docs/research/round463-instruments/grade-the-57-of-461-class.mjs:361 ; docs/research/round463-instruments/which-residue-member-postdates.mjs:29 ; docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:142 ; docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:252 ; docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:256 ; docs/research/unit-464reach-2026-11-02/grade-reach.mjs:200 ; docs/research/unit-464rec-2026-10-31/probe-is-it-live.mjs:53 ; docs/research/unit-464rec-2026-10-31/probe-is-it-live.mjs:54 ; docs/research/unit-464rec-2026-10-31/probe-is-it-live.mjs:58 ; docs/research/unit-464rec-2026-10-31/probe-is-it-live.mjs:59 ; docs/research/unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs:75 ; docs/research/unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs:105 ; docs/research/unit-464rec3-2026-11-01/grade-p4-the-conjunct-no-movement-can-falsify.mjs:49 ; docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs:95 ; docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs:115 ; docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs:121 ; docs/research/unit-464sat-2026-10-31/grepro.mjs:115 ; docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs:178 ; docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs:313 ; docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs:317 ; docs/research/unit-464subkind-2026-11-02/grade-subkind.mjs:279
+  files: 15
+  rejected as FIXED, not selector (22): docs/research/round378-instruments/grade-b3-known-positive.mjs:65(log -1 without %h/%H) ; docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs:313(log -1 without %h/%H) ; docs/research/round397-instruments/grade-the-anchor-that-is-not-guarded.mjs:261(log -1 %h pinned to a named rev) ; docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:63(log -1 without %h/%H) ; docs/research/round420-instruments/drive-his-419.mjs:49(log -1 %h pinned to a named rev) ; docs/research/round420-instruments/grade-the-418-repair.mjs:63(log -1 %h pinned to a named rev) ; docs/research/round420-instruments/his-old-cell-is-keyed-on-head.mjs:73(log -1 %h pinned to a named rev) ; docs/research/round420-instruments/his-old-cell-is-keyed-on-head.mjs:141(log -1 without %h/%H) ; docs/research/round463-instruments/which-residue-member-postdates.mjs:23(log -1 without %h/%H) ; docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:214(log -1 without %h/%H) ; docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:216(log -1 without %h/%H) ; docs/research/unit-464grep-2026-11-01/grep-census.mjs:164(log -1 without %h/%H) …+10
+GCENSUSKP  ok    KNOWN POSITIVE: the census finds a selector site in C2b's own file (docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs) — a census that misses the one instance both of us already named cannot be quoted for the rest
+
+VERDICT P2: LANDS
+  registered: site count of the recency-selector mechanism, member list printed; either exactly 1 (genuinely rare) or >=2 (the 13-row sample under-represents it)
+  measured:   {"sites":25,"files":15,"members":["docs/research/round378-instruments/grade-b3-known-positive.mjs:67","docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs:316","docs/research/round406-instruments/hand-read-the-inline-seven.mjs:176","docs/research/round418-instruments/installed-sdk-and-sec4-by-shape.mjs:86","docs/research/round463-instruments/grade-the-57-of-461-class.mjs:361","docs/research/round463-instruments/which-residue-member-postdates.mjs:29","docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:142","docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:252","docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:256","docs/research/unit-464reach-2026-11-02/grade-reach.mjs:200","docs/research/unit-464rec-2026-10-31/probe-is-it-live.mjs:53","docs/research/unit-464rec-2026-10-31/probe-is-it-live.mjs:54","docs/research/unit-464rec-2026-10-31/probe-is-it-live.mjs:58","docs/research/unit-464rec-2026-10-31/probe-is-it-live.mjs:59","docs/research/unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs:75","docs/research/unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs:105","docs/research/unit-464rec3-2026-11-01/grade-p4-the-conjunct-no-movement-can-falsify.mjs:49","docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs:95","docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs:115","docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs:121","docs/research/unit-464sat-2026-10-31/grepro.mjs:115","docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs:178","docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs:313","docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs:317","docs/research/unit-464subkind-2026-11-02/grade-subkind.mjs:279"],"knownPositiveSeen":true}
+GCONJCOUNT  ok    his TSV marks 5 rows conjunctive (his published axis A total: conjunctive 5)
+
+SPAN COUNTS over the 5 conjunctive rows (strings+comments blanked, span = registered line to paren close):
+  grade-the-attrib-cure.mjs:71 GCURE     spanLines= 6  topJoiner=&&  &&=7 ||=0  operands=8  cmps=2  litCmps=2  calls=[]
+  grade-the-attrib-cure.mjs:186 GLIFT2    spanLines= 5  topJoiner=&&  &&=4 ||=0  operands=5  cmps=0  litCmps=0  calls=[isArray,bucket,map,join]
+  grade-the-steal-cures.mjs:90 GCURE     spanLines= 6  topJoiner=&&  &&=12 ||=0  operands=13  cmps=0  litCmps=0  calls=[stringify]
+  grade-the-steal-cures.mjs:194 GCTRLPRE  spanLines= 3  topJoiner=&&  &&=1 ||=0  operands=2  cmps=1  litCmps=1  calls=[ctrlPinned,transition]
+  measure.mjs:79 G0        spanLines= 1  topJoiner=none  &&=0 ||=0  operands=1  cmps=1  litCmps=1  calls=[map,join]
+GCMPREADER  ok    KNOWN POSITIVE (both directions): :161 GCTRLPRE reads 3 comparison operators; Daedalus's GSPANBLIND measured 3 at his own pin. A reader returning 0 everywhere could not pass this leg.
+
+VERDICT P4: LANDS
+  registered: comparison-operator count at grade-the-steal-cures.mjs:90 == 0 (NON-BLIND: my own last-fire figure, re-measured here), while the motivating phrase is "ten conjuncts"
+  measured:   {"cmps":0,"operandsUnderAnd":13,"litCmps":0,"spanLines":6}
+
+VERDICT P5: REFUTED
+  registered: measure.mjs:79's span carries >=1 top-level || and 0 top-level &&, while @90's carries >=1 && and 0 top-level ||
+  measured:   {"at79":{"and":0,"or":0,"cmps":1,"spanLines":1},"at90":{"and":12,"or":0}}
+
+P6 — call-wrapped operands at :194: {"spanCalls":["ctrlPinned","transition"],"definedElsewhere":[{"name":"ctrlPinned","defLine":190,"cmpsInDef":5},{"name":"transition","defLine":183,"cmpsInDef":4}],"spanCmps":1}
+
+VERDICT P6: LANDS
+  registered: at least one conjunctive span carries a call-wrapped operand defined elsewhere in the same pinned file, so the span count is a LOWER BOUND; named candidate :194 ctrlPinned
+  measured:   {"spanCalls":["ctrlPinned","transition"],"definedElsewhere":[{"name":"ctrlPinned","defLine":190,"cmpsInDef":5},{"name":"transition","defLine":183,"cmpsInDef":4}],"spanCmps":1}
+
+HAND-vs-MEASURED departures (0 of 5): (none)
+GHANDJOIN  ok    my hand read covers 5 rows against 5 conjunctive rows in his TSV, joined on (file,line,id) — no label in this unit comes from my re-typing his
+
+=========================================================
+LEGS 9 · RED 0 · UNRUNNABLE 0
+  P1: LANDS
+  P2: LANDS
+  P4: LANDS
+  P5: REFUTED
+  P6: LANDS
+VERDICT GREEN at 9 legs

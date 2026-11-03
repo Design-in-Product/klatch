@@ -12,7 +12,7 @@
 // [[feedback_a_verdict_keyed_map_cannot_name_a_reached_meas_leg]]
 
 import { execFileSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import { stripSource } from '../../../scripts/lib/strip-source.mjs';
 
 const PIN = process.env.PIN ?? '0c23e551';
@@ -158,7 +158,17 @@ if (tree === null) {
   // commit identity (%h/%H or -1 with a pathspec). The literal-vs-selector model is explicit:
   // `rev-parse <rev>:<path>` and `log <REV>` are FIXED; `log -1 ... -- <path>` with no rev is a
   // SELECTOR, because which commit it names depends on history, not on a named rev.
-  const SELECTOR = /(?:'log'|"log"|\blog\b)[^\n]{0,160}?(?:'-1'|"-1"|\s-1\b)/;
+  // CRIPPLE SWITCH — perturbs the KEY (this instrument's reader), never the SUBJECT.
+  // [[feedback_a_cripple_map_must_name_whether_it_perturbs_the_key_or_the_subject]]
+  // Driven by the PRESENCE of a file rather than an env var, because this fire's shell refuses an
+  // inline `VAR=… node …` prefix. The crippled reader requires a `-2` that no site in the tree
+  // writes, so a census that still reports sites under it is reporting them from somewhere other
+  // than this regex.
+  const CRIPPLED = existsSync('docs/research/unit-464cell-2026-11-02/CRIPPLE-SELECTOR');
+  const SELECTOR = CRIPPLED
+    ? /(?:'log'|"log"|\blog\b)[^\n]{0,160}?(?:'-2'|"-2"|\s-2\b)/
+    : /(?:'log'|"log"|\blog\b)[^\n]{0,160}?(?:'-1'|"-1"|\s-1\b)/;
+  console.log(`\n  SELECTOR reader: ${CRIPPLED ? 'CRIPPLED (keyed on -2, which no site writes)' : 'intact (keyed on -1)'}`);
   const FORMAT_H = /%h|%H/;
   const sites = [];
   const skippedFixed = [];

@@ -2,9 +2,11 @@
 
 **Theseus, 2026-11-02 STOP fire.** Pin `0c23e551`. Pre-registration `9193256a` (pushed to `main` as
 the only file in this directory before any instrument in it existed). Slice + hand counts
-`6c5bc7ad`. Drives 1–2 `cf3cea03`.
+`6c5bc7ad`. Drives 1–2 `cf3cea03`. Drives 3–4 (the census cripple pair) in the commit carrying this
+revision of the file.
 
-**Final: GREEN at 9 legs in drive2, GREEN at 6 legs in drive1. 0 RED, 0 UNRUNNABLE in both.**
+**Final: GREEN at 6 legs in drive1, GREEN at 9 legs in drive2 and in drive3 — 0 RED, 0 UNRUNNABLE in
+all three. `drive4` is a deliberate cripple and is RED at 9 legs by design.**
 Six predictions: **P1, P2, P3, P4, P6 land. P5 refuted** — and the refutation is the sharper half of
 the answer to routed item 2.
 
@@ -131,12 +133,34 @@ with a matched control, recorded. Not a modifier on a label.
    prefix.** `slice-at-my-pin.mjs` is four lines that set the two variables his slicer reads and
    import it. The slicing is his code at my pin, not a third hand-rolled slicer.
 
+## The P2 census is now controlled in both directions (drives 3–4, same fire)
+
+The cripple this file first listed as not reached **was reached, later in the same fire.** A cripple
+switch on the **KEY, not the subject** — the `SELECTOR` regex re-keyed onto `-2`, which no site in
+the tree writes — driven by the presence of a `CRIPPLE-SELECTOR` file rather than an env var,
+because this fire's shell refuses an inline `VAR=… node …` prefix. `drive3` is the **matched
+no-cripple baseline, run against byte-identical grader source**; `drive4` is the cripple arm. The
+delta is recorded in `drive4.delta-vs-drive3.txt`:
+
+```
+                     drive3 (intact)     drive4 (crippled)
+SELECTOR reader      keyed on -1         keyed on -2
+sites                25 in 15 files      0 in 0 files
+rejected as FIXED    22                  0
+GCENSUSKP            ok                  RED
+P2                   LANDS               REFUTED
+summary              GREEN at 9 legs     RED at 9 legs
+```
+
+**Exactly one leg moved and exactly one verdict moved.** P1 LANDS, P4 LANDS, P5 REFUTED and P6
+LANDS read identically in both arms, so the cripple reached the census and nothing else. The
+`CRIPPLE-SELECTOR` file was removed after `drive4`, so the switch is inert in the committed tree.
+
+"25 sites" now has a control in both directions: a known positive it must find, 22 rejections
+printed with their reasons, and a blinded arm in which the figure collapses to zero.
+
 ## Named and not reached — no deadline, no blocker
 
-* **A cripple on the P2 census.** The census has a known positive (`GCENSUSKP`) and 22 printed
-  rejections, but no drive in which the `SELECTOR` regex is deliberately blinded and the site count
-  is asserted to collapse. Without it, "25 sites" has a control in one
-  direction only. Not reached in this fire; named here so it is not lost.
 * **`delta × immovable`** — the one empty cell whose emptiness is *not* arithmetically forced. I have
   not looked at whether it is impossible, and I am not going to guess from a cross-tab what I just
   spent a unit showing a cross-tab cannot tell you.

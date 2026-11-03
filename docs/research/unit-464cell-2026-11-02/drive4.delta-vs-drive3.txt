@@ -1,0 +1,34 @@
+29c29
+<   SELECTOR reader: intact (keyed on -1)
+---
+>   SELECTOR reader: CRIPPLED (keyed on -2, which no site writes)
+32,35c32,35
+<   sites (25): docs/research/round378-instruments/grade-b3-known-positive.mjs:67 ; docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs:316 ; docs/research/round406-instruments/hand-read-the-inline-seven.mjs:176 ; docs/research/round418-instruments/installed-sdk-and-sec4-by-shape.mjs:86 ; docs/research/round463-instruments/grade-the-57-of-461-class.mjs:361 ; docs/research/round463-instruments/which-residue-member-postdates.mjs:29 ; docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:142 ; docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:252 ; docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:256 ; docs/research/unit-464reach-2026-11-02/grade-reach.mjs:200 ; docs/research/unit-464rec-2026-10-31/probe-is-it-live.mjs:53 ; docs/research/unit-464rec-2026-10-31/probe-is-it-live.mjs:54 ; docs/research/unit-464rec-2026-10-31/probe-is-it-live.mjs:58 ; docs/research/unit-464rec-2026-10-31/probe-is-it-live.mjs:59 ; docs/research/unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs:75 ; docs/research/unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs:105 ; docs/research/unit-464rec3-2026-11-01/grade-p4-the-conjunct-no-movement-can-falsify.mjs:49 ; docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs:95 ; docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs:115 ; docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs:121 ; docs/research/unit-464sat-2026-10-31/grepro.mjs:115 ; docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs:178 ; docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs:313 ; docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs:317 ; docs/research/unit-464subkind-2026-11-02/grade-subkind.mjs:279
+<   files: 15
+<   rejected as FIXED, not selector (22): docs/research/round378-instruments/grade-b3-known-positive.mjs:65(log -1 without %h/%H) ; docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs:313(log -1 without %h/%H) ; docs/research/round397-instruments/grade-the-anchor-that-is-not-guarded.mjs:261(log -1 %h pinned to a named rev) ; docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:63(log -1 without %h/%H) ; docs/research/round420-instruments/drive-his-419.mjs:49(log -1 %h pinned to a named rev) ; docs/research/round420-instruments/grade-the-418-repair.mjs:63(log -1 %h pinned to a named rev) ; docs/research/round420-instruments/his-old-cell-is-keyed-on-head.mjs:73(log -1 %h pinned to a named rev) ; docs/research/round420-instruments/his-old-cell-is-keyed-on-head.mjs:141(log -1 without %h/%H) ; docs/research/round463-instruments/which-residue-member-postdates.mjs:23(log -1 without %h/%H) ; docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:214(log -1 without %h/%H) ; docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:216(log -1 without %h/%H) ; docs/research/unit-464grep-2026-11-01/grep-census.mjs:164(log -1 without %h/%H) …+10
+< GCENSUSKP  ok    KNOWN POSITIVE: the census finds a selector site in C2b's own file (docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs) — a census that misses the one instance both of us already named cannot be quoted for the rest
+---
+>   sites (0): (none)
+>   files: 0
+>   rejected as FIXED, not selector (0): 
+> GCENSUSKP  RED   KNOWN POSITIVE: the census finds a selector site in C2b's own file (docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs) — a census that misses the one instance both of us already named cannot be quoted for the rest
+37c37
+< VERDICT P2: LANDS
+---
+> VERDICT P2: REFUTED
+39c39
+<   measured:   {"sites":25,"files":15,"members":["docs/research/round378-instruments/grade-b3-known-positive.mjs:67","docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs:316","docs/research/round406-instruments/hand-read-the-inline-seven.mjs:176","docs/research/round418-instruments/installed-sdk-and-sec4-by-shape.mjs:86","docs/research/round463-instruments/grade-the-57-of-461-class.mjs:361","docs/research/round463-instruments/which-residue-member-postdates.mjs:29","docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:142","docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:252","docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:256","docs/research/unit-464reach-2026-11-02/grade-reach.mjs:200","docs/research/unit-464rec-2026-10-31/probe-is-it-live.mjs:53","docs/research/unit-464rec-2026-10-31/probe-is-it-live.mjs:54","docs/research/unit-464rec-2026-10-31/probe-is-it-live.mjs:58","docs/research/unit-464rec-2026-10-31/probe-is-it-live.mjs:59","docs/research/unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs:75","docs/research/unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs:105","docs/research/unit-464rec3-2026-11-01/grade-p4-the-conjunct-no-movement-can-falsify.mjs:49","docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs:95","docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs:115","docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs:121","docs/research/unit-464sat-2026-10-31/grepro.mjs:115","docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs:178","docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs:313","docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs:317","docs/research/unit-464subkind-2026-11-02/grade-subkind.mjs:279"],"knownPositiveSeen":true}
+---
+>   measured:   {"sites":0,"files":0,"members":[],"knownPositiveSeen":false}
+68c68
+< LEGS 9 · RED 0 · UNRUNNABLE 0
+---
+> LEGS 9 · RED 1 · UNRUNNABLE 0
+70c70
+<   P2: LANDS
+---
+>   P2: REFUTED
+74c74
+< VERDICT GREEN at 9 legs
+---
+> VERDICT RED at 9 legs
