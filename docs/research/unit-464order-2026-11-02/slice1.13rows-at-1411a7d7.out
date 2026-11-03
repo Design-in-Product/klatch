@@ -1,0 +1,317 @@
+sliced 13 row(s) from docs/research/unit-464reach-2026-11-02/HAND-READ-13.tsv at 1411a7d7; columns: file,line,id,subkind5,reach,figure,states
+
+====================================================================================================
+ROW  unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:60  id=GDELTA  HIS-subkind5=delta  HIS-reach=source-derived
+     HIS-figure: preSrc vs postSrc, asserted to differ
+====================================================================================================
+  46    // Both copies are written at the SAME directory depth as the original, so a relative path inside
+  47    // either resolves identically. [[feedback_a_scratch_copy_at_the_wrong_depth_refuses_every_cell]]
+  48    const PRE_COPY = resolve('docs/research/unit-464cure3-2026-11-01/subject.pre.copy-gate.mjs');
+  49    writeFileSync(PRE_COPY, preSrc);
+  50    const STATES = [
+  51      // PRE is a materialised copy of the pinned rev; POST is the LIVE file itself, so the cure is
+  52      // graded where it actually shipped and not on a transcription of it.
+  53      { state: 'PRE', src: preSrc, path: PRE_COPY },
+  54      { state: 'POST', src: postSrc, path: join(LIVE, GATE) },
+  55    ];
+  56    check('GDEPTH',
+  57      STATES.every((s) => s.path.split('/').length === join(LIVE, GATE).split('/').length),
+  58      'both subject states sit at the same path depth, so a relative path inside either resolves alike');
+  59    
+  60 >> check('GDELTA', preSrc !== postSrc,
+  61      `the two subject states differ (${preSrc.split('\n').length} → ${postSrc.split('\n').length} lines)`);
+  62    // The cure must be IN the POST subject and ABSENT from the PRE one, keyed on the mechanism and not
+  63    // on a comment: a counted header budget, a positional header end, and a case-SENSITIVE pop-flag.
+  64    const curePresent = (src) => ({
+
+====================================================================================================
+ROW  unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:71  id=GCURE  HIS-subkind5=delta  HIS-reach=source-literal
+     HIS-figure: defect spelling absent in PRE and cure spelling present in POST
+====================================================================================================
+  57      STATES.every((s) => s.path.split('/').length === join(LIVE, GATE).split('/').length),
+  58      'both subject states sit at the same path depth, so a relative path inside either resolves alike');
+  59    
+  60    check('GDELTA', preSrc !== postSrc,
+  61      `the two subject states differ (${preSrc.split('\n').length} → ${postSrc.split('\n').length} lines)`);
+  62    // The cure must be IN the POST subject and ABSENT from the PRE one, keyed on the mechanism and not
+  63    // on a comment: a counted header budget, a positional header end, and a case-SENSITIVE pop-flag.
+  64    const curePresent = (src) => ({
+  65      budget: /const headerBudget = new Map\(HEADER\);/.test(src),
+  66      positional: /const hdrEnd = mine\.indexOf\(his\[0\]\);/.test(src),
+  67      caseSens: !/\/POP\|--pop\|POP_ARGS\|REFUSED: --pop\|a default would\|which is the exact defect\/i/.test(src),
+  68      buckets: (src.match(/^ {2}\{ key: '/gm) ?? []).length,
+  69    });
+  70    const [preHas, postHas] = [curePresent(preSrc), curePresent(postSrc)];
+  71 >> check('GCURE',
+  72      !preHas.budget && !preHas.positional && !preHas.caseSens && preHas.buckets === 4
+  73      && postHas.budget && postHas.positional && postHas.caseSens && postHas.buckets === 3,
+  74      `PRE: budget ${preHas.budget}, positional ${preHas.positional}, case-sensitive ${preHas.caseSens}, ` +
+  75      `${preHas.buckets} buckets · POST: budget ${postHas.budget}, positional ${postHas.positional}, ` +
+
+====================================================================================================
+ROW  unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:88  id=GPATHS  HIS-subkind5=inert  HIS-reach=source-literal
+     HIS-figure: the HIS and MINE fixture path literals of the subject
+====================================================================================================
+  74      `PRE: budget ${preHas.budget}, positional ${preHas.positional}, case-sensitive ${preHas.caseSens}, ` +
+  75      `${preHas.buckets} buckets · POST: budget ${postHas.budget}, positional ${postHas.positional}, ` +
+  76      `case-sensitive ${postHas.caseSens}, ${postHas.buckets} buckets`);
+  77    
+  78    const liveDirty = g(['status', '--porcelain', '--', 'packages/', 'scripts/']);
+  79    check('GLIVECLEAN', liveDirty.length === 0,
+  80      `git status --porcelain -- packages/ scripts/ is ${liveDirty.length} bytes in the LIVE tree`);
+  81    
+  82    // ---------------------------------------------------------- his fixtures and his planted mutations
+  83    // Lifted from the POST subject, which is the file whose paths the arms must satisfy. If the two
+  84    // states disagreed about where the fixtures live, the arms would grade different files.
+  85    const pathOf = (src, name) => (src.match(new RegExp(`^const ${name} = '(.+?)';$`, 'm')) ?? [])[1];
+  86    const HIS = pathOf(postSrc, 'HIS');
+  87    const MINE = pathOf(postSrc, 'MINE');
+  88 >> check('GPATHS', !!HIS && !!MINE && HIS === pathOf(preSrc, 'HIS') && MINE === pathOf(preSrc, 'MINE'),
+  89      `both states read the same two fixtures: HIS ${HIS}, MINE ${MINE}`);
+  90    if (!HIS || !MINE) { console.log('REFUSED — fixture paths could not be lifted.'); process.exit(2); }
+  91    
+  92    const hisLines = readFileSync(join(LIVE, HIS), 'utf8').split('\n');
+
+====================================================================================================
+ROW  unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:161  id=GCTRLPRE  HIS-subkind5=keyed  HIS-reach=run-derived
+     HIS-figure: 5 gate lines of a live-fixture ctrl run vs the frozen drive6 recording
+====================================================================================================
+ 147      }
+ 148    }
+ 149    const cell = (state, arm) => results.find((r) => r.state === state && r.arm === arm);
+ 150    
+ 151    // GCTRL — split in two, one per state. A single control cannot grade two subjects.
+ 152    // [[feedback_one_control_cannot_grade_a_seam_and_a_write_path]]
+ 153    const rec6 = readFileSync(join(LIVE, REC6), 'utf8');
+ 154    const rec6Lines = ['GATTRIB', 'GNOPAD', 'GWITNESS', 'GALLGONE', 'GREADER']
+ 155      .map((n) => (rec6.split('\n').find((l) => l.trim().startsWith(n + ' ')) ?? '').trim());
+ 156    const preCtrl = cell('PRE', 'ctrl');
+ 157    const postCtrl = cell('POST', 'ctrl');
+ 158    // PRE's control is pinned against my own drive6 recording BYTE FOR BYTE — the PRE subject IS the
+ 159    // file that produced it, so anything less would not prove this harness drives it.
+ 160    const preCtrlMatches = preCtrl.gateLines.filter((l, i) => l === rec6Lines[i]).length;
+ 161 >> check('GCTRLPRE', preCtrl.code === 0 && preCtrl.verdict === 'GREEN' && preCtrlMatches === 5,
+ 162      `PRE ctrl exit ${preCtrl.code}, ${preCtrl.verdict}, ${preCtrlMatches}/5 gate lines byte-identical to drive6`);
+ 163    // POST's control cannot be byte-pinned (the gate's own lines changed, which is the cure). It is
+ 164    // pinned on the property: green, exit 0, and NOTHING unattributed.
+ 165    // [[feedback_verbatim_source_pin_is_not_a_property_pin]]
+
+====================================================================================================
+ROW  unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:186  id=GLIFT2  HIS-subkind5=conjunctive  HIS-reach=source-derived
+     HIS-figure: existence of three named buckets in two separately-lifted DECLARED arrays
+     HIS-states: preDecl:frozen vs Array literal; postDecl:live vs Array literal; bucket(preDecl,'header'):frozen vs key literal; bucket(preDecl,'pop-flag'):frozen vs key literal; bucket(postDecl,'pop-flag'):live vs key literal
+====================================================================================================
+ 172    
+ 173    // ------------------------------------------------------------------- the capacity census (§2 below)
+ 174    // Computed HERE, above the gate print, because `GLIFT2` is a gate: in drive1 it was registered
+ 175    // after `gatesOk` had already been taken, so it counted in the summary line and refused nothing.
+ 176    // [[feedback_a_printed_self_test_that_gates_nothing]]
+ 177    const lift = (src) => {
+ 178      const s = src.indexOf('const DECLARED = [');
+ 179      const e = src.indexOf('\n];', s);
+ 180      if (s < 0 || e < s) return null;
+ 181      try { return new Function('return ' + src.slice(s + 'const DECLARED = '.length, e + 3).replace(/;$/, ''))(); }
+ 182      catch { return null; }
+ 183    };
+ 184    const [preDecl, postDecl] = [lift(preSrc), lift(postSrc)];
+ 185    const bucket = (decl, key) => (decl ?? []).find((d) => d.key === key);
+ 186 >> check('GLIFT2',
+ 187      Array.isArray(preDecl) && Array.isArray(postDecl)
+ 188      && !!bucket(preDecl, 'header') && !!bucket(preDecl, 'pop-flag') && !!bucket(postDecl, 'pop-flag'),
+ 189      `both DECLARED arrays lift and evaluate, and the censused buckets exist: PRE ` +
+ 190      `[${(preDecl ?? []).map((d) => d.key).join(',')}] · POST [${(postDecl ?? []).map((d) => d.key).join(',')}]`);
+
+====================================================================================================
+ROW  unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:90  id=GCURE  HIS-subkind5=delta  HIS-reach=source-literal
+     HIS-figure: six-term defect/cure shape across PRE and POST
+====================================================================================================
+  76    // GCURE — the cures are present in POST and absent from PRE, keyed on the MECHANISM in each case.
+  77    const shape = (src) => ({
+  78      bytesInUnion: /movedOn\('bytes'\)\]\)\]/.test(src) || /\.\.\.movedOn\('comments'\), \.\.\.movedOn\('bytes'\)/.test(src),
+  79      perFile: /per file — which fields moved between the two revs/.test(src),
+  80      disjunct: /matches\.length === 2\)/.test(src),
+  81      alreadyOnCount: /const already = matchesBefore\.length > 1;/.test(src),
+  82      alreadyOnSubject: /const already = g\(\['log', '-1', '--format=%s'\], CLONE\) === STEAL_SUBJECT;/.test(src),
+  83      stealOwned: /const stealOwned = stealSha !== null/.test(src),
+  84      // Registered in drive4 as a cure and REMOVED after it drove green: its predicate was P2's own,
+  85      // so it could only turn a verdict word into a refusal. Kept in this shape map as a classifier,
+  86      // not a requirement, so that a future re-introduction of it shows up here as a difference.
+  87      newestGate: /check\('GSTEALNEWEST'/.test(src),
+  88    });
+  89    const [preHas, postHas] = [shape(preSrc), shape(postSrc)];
+  90 >> check('GCURE',
+  91      preHas.bytesInUnion && !preHas.perFile && preHas.disjunct && preHas.alreadyOnCount
+  92      && !preHas.stealOwned && !preHas.newestGate
+  93      && !postHas.bytesInUnion && postHas.perFile && !postHas.disjunct && !postHas.alreadyOnCount
+  94      && postHas.alreadyOnSubject && postHas.stealOwned && !postHas.newestGate,
+
+====================================================================================================
+ROW  unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:104  id=GPATH  HIS-subkind5=inert  HIS-reach=source-literal
+     HIS-figure: the CLONE path literal the subject hardcodes
+====================================================================================================
+  90    check('GCURE',
+  91      preHas.bytesInUnion && !preHas.perFile && preHas.disjunct && preHas.alreadyOnCount
+  92      && !preHas.stealOwned && !preHas.newestGate
+  93      && !postHas.bytesInUnion && postHas.perFile && !postHas.disjunct && !postHas.alreadyOnCount
+  94      && postHas.alreadyOnSubject && postHas.stealOwned && !postHas.newestGate,
+  95      `PRE ${JSON.stringify(preHas)} · POST ${JSON.stringify(postHas)}`);
+  96    
+  97    // ------------------------------------------------------- the phrase and the clone path, lifted
+  98    const phraseM = readFileSync(join(LIVE, S1), 'utf8')
+  99      .match(/^\s*\['log', '--format=%H', '--grep=(.+?)'\],$/m);
+ 100    const clonePre = (preSrc.match(/^const CLONE = resolve\('(.+?)'\);$/m) ?? [])[1];
+ 101    const clonePost = (postSrc.match(/^const CLONE = resolve\('(.+?)'\);$/m) ?? [])[1];
+ 102    if (!phraseM) { console.log(`REFUSED — ${S1}: no \`--grep=…\` argv line to lift the phrase from.`); process.exit(2); }
+ 103    const PHRASE = phraseM[1];
+ 104 >> check('GPATH', !!clonePre && clonePre === clonePost && resolve(clonePre) === CLONE,
+ 105      `both subject states hardcode the same clone path (${clonePre}) and this harness builds exactly that`);
+ 106    
+ 107    const liveDirty = g(['-C', LIVE, 'status', '--porcelain', '--', 'packages/', 'scripts/'], LIVE);
+ 108    check('GLIVECLEAN', liveDirty.length === 0,
+
+====================================================================================================
+ROW  unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:194  id=GCTRLPRE  HIS-subkind5=conjunctive  HIS-reach=run-derived
+     HIS-figure: two transitions, each compared to the shared literal '1 to 2'
+     HIS-states: ctrlPinned(preCtrl):live vs '1→2' literal; transition(rec3Arm):frozen vs '1→2' literal
+====================================================================================================
+ 180    // [[feedback_one_control_cannot_grade_a_seam_and_a_write_path]]
+ 181    const rec3 = readFileSync(join(LIVE, REC3), 'utf8');
+ 182    const rec4 = readFileSync(join(LIVE, REC4), 'utf8');
+ 183    const transition = (s) => (String(s).match(/matches (\d+) → (\d+)/) ?? []).slice(1, 3).join('→');
+ 184    const rec3Arm = (rec3.split('\n').find((l) => /GARMREACH/.test(l)) ?? '').trim();
+ 185    const preCtrl = cell('PRE', 'ctrl');
+ 186    const postCtrl = cell('POST', 'ctrl');
+ 187    // Property-pinned, not byte-pinned: the recording carries a sha whose parent is 40-odd commits
+ 188    // behind this clone's HEAD, so a verbatim pin cannot hold. This is Theseus's own repair of his
+ 189    // first GCTRL. [[feedback_verbatim_source_pin_is_not_a_property_pin]]
+ 190    const ctrlPinned = (c) => transition(c.armreach) === '1→2' && c.createdCommit
+ 191      && c.p2Word === 'LANDS' && c.code === 0
+ 192      && !!(c.armreach.match(/steal commit ([0-9a-f]{8})/) ?? [])[1]
+ 193      && c.headAfter.startsWith((c.armreach.match(/steal commit ([0-9a-f]{8})/) ?? [])[1]);
+ 194 >> check('GCTRLPRE', ctrlPinned(preCtrl) && transition(rec3Arm) === '1→2',
+ 195      `PRE ctrl transition ${transition(preCtrl.armreach)} vs drive3's ${transition(rec3Arm)}, ` +
+ 196      `P2 ${preCtrl.p2Word}, created ${preCtrl.createdCommit}, reported sha is the created HEAD`);
+ 197    check('GCTRLPOST', ctrlPinned(postCtrl) && postCtrl.allGatesOk,
+ 198      `POST ctrl transition ${transition(postCtrl.armreach)}, P2 ${postCtrl.p2Word}, ` +
+
+====================================================================================================
+ROW  unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:211  id=GROWREPRO  HIS-subkind5=keyed  HIS-reach=run-derived
+     HIS-figure: the frozen drive4 recording's 4 triples vs the live-derived PRE ctrl run's rows
+====================================================================================================
+ 197    check('GCTRLPOST', ctrlPinned(postCtrl) && postCtrl.allGatesOk,
+ 198      `POST ctrl transition ${transition(postCtrl.armreach)}, P2 ${postCtrl.p2Word}, ` +
+ 199      `created ${postCtrl.createdCommit}, all ${postCtrl.gateLines.length} of its own gates ok: ${postCtrl.allGatesOk}`);
+ 200    check('GPLANTED', results.every((r) => r.beforeN === 1 + r.plants.filter((p) => p[1].includes(PHRASE)).length),
+ 201      'each cell entered its run with the match count its plant list declares: ' +
+ 202      [...new Set(results.map((r) => `${r.arm} ${r.beforeN}`))].join(', '));
+ 203    
+ 204    // GROWREPRO — the C1 reading is published off the row table, so the PRE control's rows must
+ 205    // reproduce drive4's (value, comments, raw) triples. `bytes` is excluded from the PIN for the same
+ 206    // reason the cure excludes it from the witness union: it moves when the trees merely differ.
+ 207    const rec4Rows = rec4.split('\n')
+ 208      .map((l) => l.match(/^ {3}(probe-round\d+) +(PIN\^|KEYED\^) +(-?\d+) +(-?\d+) +(-?\d+) +(-?\d+)\s*$/))
+ 209      .filter(Boolean).map((m) => ({ file: m[1], rev: m[2], value: +m[3], comments: +m[4], raw: +m[5], bytes: +m[6] }));
+ 210    const tripleKey = (rs) => rs.map((r) => `${r.file}/${r.rev}=${r.value},${r.comments},${r.raw}`).sort().join(' ');
+ 211 >> check('GROWREPRO', rec4Rows.length === 4 && preCtrl.rows.length === 4
+ 212      && tripleKey(preCtrl.rows) === tripleKey(rec4Rows),
+ 213      `PRE ctrl reproduces drive4's 4 (value,comments,raw) triples: ` +
+ 214      `${tripleKey(preCtrl.rows) === tripleKey(rec4Rows)} (${rec4Rows.length} recorded, ${preCtrl.rows.length} read)`);
+ 215    
+
+====================================================================================================
+ROW  unit-464rec3-2026-11-01/grade-the-three-cures.mjs:99  id=C2b  HIS-subkind5=staleness  HIS-reach=content-derived
+     HIS-figure: the subject line at its pin rev vs at its newest rev; neither side is the worktree
+====================================================================================================
+  85    g('C2', 'S2 is pinned to the add event, the recency call is gone, and the printed label no ' +
+  86      'longer describes the method it stopped using',
+  87      s2Pin !== null && s2NoRecency && s2Pin === s2Added && s2LabelFixed);
+  88    
+  89    // The decisive one: does the lift now read the text his round PUBLISHED, i.e. the defect?
+  90    const liftAt = (rev) => {
+  91      const src = git(['show', `${rev}:${HIS_396_PATH}`]);
+  92      return src === null ? null : (src.match(/^const renamedAway = .*$/m) ?? [null])[0];
+  93    };
+  94    const atPin = liftAt(s2Pin);
+  95    const atRecency = liftAt((git(['log', '-1', '--format=%h', '--', HIS_396_PATH]) ?? '').trim());
+  96    const defectiveShape = atPin !== null && atPin.includes('readFileSync');
+  97    console.log(`[MEAS] the line at the pin is the DEFECTIVE spelling (reads the file twice): ${defectiveShape}`);
+  98    console.log(`[MEAS] the line differs from what the old recency key would have lifted: ${atPin !== atRecency}`);
+  99 >> g('C2b', 'S2 now lifts the defective spelling its round exists to grade, and that text is ' +
+ 100      'different from what the uncured key lifted',
+ 101      defectiveShape && atPin !== atRecency);
+ 102    
+ 103    // ── S3 ───────────────────────────────────────────────────────────────────────────────────────
+
+====================================================================================================
+ROW  unit-464vac-2026-10-31/grade-cure.mjs:78  id=C0  HIS-subkind5=delta  HIS-reach=content-derived
+     HIS-figure: checkerNow (worktree) vs checkerThen (git show at PRECURE_REV), asserted to differ
+====================================================================================================
+  64      const changed = checkerNow !== checkerThen;
+  65      // The size is printed in BYTES via Buffer.byteLength, not in `String.length`. The first
+  66      // drive of this leg (committed at `0e8bc9ac`, kept as the evidence) printed `70833B` for a
+  67      // file `statSync` calls 71123 bytes — characters labelled B, over a source carrying `§`,
+  68      // `—` and `·`. Same defect class as my own 10/31 WORK §6.2, recurring in a new instrument
+  69      // the same day. The COMPARISON was never affected — it is string vs string — but a figure
+  70      // whose unit is wrong is a figure a reader cannot check against `ls -l`.
+  71      const bytes = (s) => Buffer.byteLength(s, 'utf8');
+  72      console.log(
+  73        `C0  ${changed ? 'ok ' : 'RED'} pre-cure baseline rev ${PRECURE_REV.slice(0, 8)}; the checker in the worktree ` +
+  74          `${changed ? 'DIFFERS from' : 'is IDENTICAL to'} the checker at that rev (${bytes(checkerThen)}B -> ${bytes(checkerNow)}B, ` +
+  75          `both by Buffer.byteLength and NOT String.length)`,
+  76      );
+  77      // A grading run in which the subject was never edited grades nothing and must say so.
+  78 >>   if (!changed) refuse('C0', 'the checker is unchanged — there is no cure to grade');
+  79    }
+  80    
+  81    const KEY = /^(GTYPEDDEF |TYPED {2}|MAPVERDICT\/)/;
+  82    const keyLines = (s) => s.split('\n').filter((l) => KEY.test(l));
+
+====================================================================================================
+ROW  unit-464vac-2026-10-31/measure.mjs:79  id=G0  HIS-subkind5=conjunctive  HIS-reach=content-derived
+     HIS-figure: readability of each subject at HIS_REV and at MY_REV, each compared to null
+     HIS-states: a:HIS_REV-frozen vs null; b:MY_REV-frozen vs null
+====================================================================================================
+  65    // reading it at mine. A figure keyed on a map that has since changed is stale, not wrong,
+  66    // and the two need different handling. Compared by BLOB HASH at both revs, per file, for
+  67    // every map plus the live checker and the instrumented copy.
+  68    // ===========================================================================
+  69    {
+  70      const subjects = [...new Set([...CELLS.map((c) => c.map), LIVE_REL, INSTR_REL])];
+  71      const moved = [];
+  72      const unreadable = [];
+  73      for (const p of subjects) {
+  74        const a = git('rev-parse', `${HIS_REV}:${p}`);
+  75        const b = git('rev-parse', `${MY_REV}:${p}`);
+  76        if (a === null || b === null) unreadable.push(p);
+  77        else if (a !== b) moved.push(`${basename(p)}(${a.slice(0, 8)}->${b.slice(0, 8)})`);
+  78      }
+  79 >>   if (unreadable.length > 0) refuse('G0', `${unreadable.length} subject(s) unreadable at one of the two revs: [${unreadable.map(basename).join(',')}]`);
+  80      else if (moved.length > 0) refuse('G0', `${moved.length} of ${subjects.length} subject(s) CHANGED between his rev and mine: [${moved.join(',')}] — his key is stale against my tree`);
+  81      else console.log(`G0  ok  all ${subjects.length} subject(s) (8 maps + live checker + instrumented copy) byte-identical at ${HIS_REV.slice(0, 8)} and ${MY_REV.slice(0, 8)} — his key is FRESH against my tree`);
+  82    }
+  83    
+
+====================================================================================================
+ROW  unit-464vac-2026-10-31/measure.mjs:80  id=G0  HIS-subkind5=staleness  HIS-reach=content-derived
+     HIS-figure: per-file blob hash at HIS_REV vs at MY_REV, asserted equal; neither is the worktree
+====================================================================================================
+  66    // and the two need different handling. Compared by BLOB HASH at both revs, per file, for
+  67    // every map plus the live checker and the instrumented copy.
+  68    // ===========================================================================
+  69    {
+  70      const subjects = [...new Set([...CELLS.map((c) => c.map), LIVE_REL, INSTR_REL])];
+  71      const moved = [];
+  72      const unreadable = [];
+  73      for (const p of subjects) {
+  74        const a = git('rev-parse', `${HIS_REV}:${p}`);
+  75        const b = git('rev-parse', `${MY_REV}:${p}`);
+  76        if (a === null || b === null) unreadable.push(p);
+  77        else if (a !== b) moved.push(`${basename(p)}(${a.slice(0, 8)}->${b.slice(0, 8)})`);
+  78      }
+  79      if (unreadable.length > 0) refuse('G0', `${unreadable.length} subject(s) unreadable at one of the two revs: [${unreadable.map(basename).join(',')}]`);
+  80 >>   else if (moved.length > 0) refuse('G0', `${moved.length} of ${subjects.length} subject(s) CHANGED between his rev and mine: [${moved.join(',')}] — his key is stale against my tree`);
+  81      else console.log(`G0  ok  all ${subjects.length} subject(s) (8 maps + live checker + instrumented copy) byte-identical at ${HIS_REV.slice(0, 8)} and ${MY_REV.slice(0, 8)} — his key is FRESH against my tree`);
+  82    }
+  83    
+  84    // ===========================================================================
+
