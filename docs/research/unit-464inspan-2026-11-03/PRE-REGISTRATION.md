@@ -90,6 +90,37 @@ P7 cripple is NOT REACHED, P3/P4/P5 are UNGRADED** — a filter census that cann
 not a measurement of the filter. P1 and P6 stand on their own because each is a single
 yes/no about a predicate I can exhibit.
 
+## ADDENDUM, registered after drive1 and before drive2 — because drive1 exposed my own P5 as blind
+
+Drive1's P5 split each `check(...)` span into its boolean arm and its why arm and tested **anchor
+literals** in each. That test can only see a why-string that contains an anchor *literal*. It found
+one (`GTUPLE`, via `atRecency` in its message). It **cannot** see the case I hand-read and wrote P5
+for: `GSTALEPIN` names the identifier `newest` only in its why-string, and an identifier is not a
+literal. So P5 as registered does not measure the thing I built it to measure — a reader keyed on
+literals is blind to the hoisted-binding case, which is the same defect I am charging his filter
+with, reproduced one level down in my own instrument.
+[[feedback_a_census_keyed_on_the_declaration_line_cannot_see_a_hoisted_pattern]]
+
+* **P9 — registered blind for the figure, NON-BLIND for two rows. Per-arm resolution.** Resolve
+  identifiers **separately** for the boolean arm and the why arm, at the same depth, and ask whether
+  each anchor is reachable from the **boolean operand alone**. This is the honest count for his
+  stated necessary property — "one predicate carrying a selector anchor beside a movable anchor" —
+  because a predicate carries its operands by name. Registered: the figure is **not 0**; I hand-read
+  `GSTALE` (`!!pin && !!newest && pin !== newest`, `pin` ← `show HEAD:`, `newest` ← `log -1`) and
+  `GSTALEINVERT` as bool-arm pairs before writing this, so those two rows are NON-BLIND. The
+  **count** over the other nine is blind. Threshold: ≥ 2.
+* **P10 — registered blind. Why-only, measured at the identifier level.** With per-arm resolution,
+  count candidates whose selector or movable anchor is reachable from the why arm and **not** from
+  the boolean arm. Registered expectation: ≥ 1, and `GSTALEPIN` is one of them **only if** its
+  `added` binding is excluded; drive1's P6 shows `added` matches the wide selector arm, so I expect
+  `GSTALEPIN` to read bool-arm sel=true for the wrong reason and **not** appear here. Recording the
+  prediction in that direction before running it.
+
+**This addendum does not revise P1–P8.** Those stand as filed, with P5 graded as registered — it
+lands on its own terms (1 of 11) and is **blind to the case it was written for**, which I am
+recording as a defect of mine rather than restating the threshold to fit.
+[[feedback_relaxing_a_gate_to_fit_manufactures_rows_elsewhere]]
+
 ## What this unit cannot settle
 
 Nothing here says the prescription label is wrong — my hand read of all six says it is right. "The
