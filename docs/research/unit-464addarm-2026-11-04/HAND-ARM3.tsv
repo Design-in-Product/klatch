@@ -1,0 +1,36 @@
+#	HAND-ARM3.tsv — all 20 arm-[3] match sites in the 18 arm-[3]-only files, classified BY HAND.
+#	Theseus, 2026-11-04. Filed BEFORE grade-addarm.mjs contains any classifier (drive1's blob has none).
+#	Population pin 0ae48068. Site ids and the first four columns are CAPTURED from drive1.enumerate.out's
+#	TSV-SKELETON; CLASS and CONSUMER are read by hand from the consuming code at the same pin.
+#
+#	CLASS, by the one question that decides whether narrowing arm [3] loses something real:
+#	  does this call's SELECTION move as history grows?
+#	    R  = history-keyed. It moves. arm [3] is RIGHT; narrowing it WRONGLY drops this file.
+#	    A  = stable (addition-keyed or first-touch-keyed). It cannot move. arm [3] is WRONG here.
+#	    O  = neither. The selection is a literal-SHA membership test over history; it does not move.
+#	    W  = window artefact: the span crossed a call boundary. EMPTY on this corpus (all depthMin 0).
+#
+#	CALL_ADD = does the ENCLOSING CALL carry --diff-filter=A (the addendum's unit), as read by hand.
+#	file_add = Daedalus's file-level flag, as recorded in his drive3.negfix-depth1.out.
+#
+site_id	file_add	span_add	call_add	depth_min	lines	CLASS	CONSUMER — what the code does with the result, which is what decides
+round404-instruments/grade-the-three-cures.mjs#1	-	-	no	0	79-79	R	full history newest-first into `touching`; loop breaks at the first rev where both anchors resolve, `newestResolving = resolving[0]`. "newest rev with property X" moves when a newer commit carries X.
+round419-instruments/grade-the-417-repairs.mjs#1	-	-	no	0	99-99	R	full history into `history`; `carries = history.filter(blobAt(r).includes(DEFECT_NEEDLE))`. The carrier set grows with history.
+round420-instruments/his-old-cell-is-keyed-on-head.mjs#1	-	-	no	0	137-137	R	full history; its own comment says "the NEWEST rev in the graded file's own history whose blob carries the token". Newest-with-property: moves.
+round421-instruments/grade-the-420-repair.mjs#1	-	-	no	0	104-104	R	`gradedCarriers[0]` — newest rev carrying DEFECT_TOKEN. Moves.
+round421-instruments/grade-the-420-repair.mjs#2	-	-	no	0	144-144	R	`sdkHistory` full history of SDK_REL, then a property filter over it. Moves. SECOND site in this file; his `.test` never saw it.
+round422-instruments/drive-his-421.mjs#1	-	-	no	0	122-122	O	`curedAt = gradedHistory.find((r) => r.startsWith('4adcc0bf'))` — a LITERAL SHA membership test over the history. A new commit cannot change whether that SHA is in there. Does not move.
+round422-instruments/drive-his-421.mjs#2	-	-	no	0	126-126	R	`graderAddedAt.length === 1 && graderAddedAt[0] === curedAt` — a newest-first `[0]` plus a length assertion, both of which move the moment the grader is touched again. SECOND site in this file; his `.test` never saw it.
+round425-instruments/position-vs-property-confusion-matrix.mjs#1	-	-	no	0	86-86	R	`carriers[0]` — newest rev carrying OLD_TOKEN. Moves.
+round428-instruments/a-sentence-keyed-on-a-subset-publishes-past-its-own-gate.mjs#1	-	-	no	0	85-85	R	`history.find((r) => !show(r).includes(CURE_TOKEN))` — newest rev LACKING the token. Moves.
+round429-instruments/does-any-other-instrument-retype-a-verdict-it-slices.mjs#1	ADD	-	no	0	205-205	R	`revsOf(p)` full history; `newestWithout(p, token) = revsOf(p).find(r => !includes)`. Moves. HIS ADD FLAG IS A TRUE FALSE POSITIVE HERE: the file's --diff-filter=A is a DIFFERENT call at line 123, `git('log','--diff-filter=A','--format=%an','--',p).pop()`, which arm [3] cannot even match because %an is neither %h nor %H.
+round431-instruments/grade-his-convention-and-measure-the-reach.mjs#1	-	-	no	0	213-213	R	`revsOfPath(HIS413)`; `carriedAt[0]` is the newest carrier and `CURE_REV = r413revs[indexOf(KP_REV) - 1]` is the rev one step NEWER than it. Both move.
+round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs#1	ADD	ADD	yes	0	410-410	A	`git('log','--format=%h','--diff-filter=A','--', path).split('\n')[0]` — the commit that ADDED the path. Cannot move. The ONLY site of 20 whose own SPAN carries the flag, and only because this file happens to put --format BEFORE --diff-filter=A.
+round441-instruments/key-the-silent-class-from-source.mjs#1	-	-	no	0	658-658	R	`git('log','--format=%H', REV, '--', r)` with `REV = rev-parse HEAD`; consumed as `revs.length` and a blob-generations walk. The FIGURE moves as history grows, so arm [3] is right even though this is a census rather than an anchor.
+round464-instruments/grade-the-stop-condition.mjs#1	ADD	-	yes	0	732-733	A	same call carries '--diff-filter=A','--reverse' at lines 730-731, i.e. the OLDEST adding commit per round dir. Cannot move. The flag sits two lines ABOVE where the span starts.
+unit-464t2-keychoice-2026-10-28/grade-the-surface-predicate.mjs#1	ADD	-	yes	0	292-293	A	`'log','--diff-filter=A','--reverse',`--format=...`` on one line, then `.find(l => l.trim())` — the first addition. Cannot move. The flag is on the same line, before --format.
+unit-464t2-population-2026-10-28/grade-the-round-population.mjs#1	ADD	-	yes	0	171-172	A	`--diff-filter=A ... --name-only --reverse REV_NOW ?? 'HEAD'` — an addition CENSUS, not an anchor. Each member is an addition and cannot move; the SET grows as paths are added, noted rather than hidden.
+unit-464t2-reaim-2026-10-28/grade-the-credit-key.mjs#1	ADD	-	yes	0	234-235	A	'--diff-filter=A','--reverse' at lines 232-233 of the same call — oldest adding commit. Cannot move.
+unit-464t2-reaim-2026-10-28/recon-credit-provenance.mjs#1	ADD	-	yes	0	124-124	A	`git(['log','--diff-filter=A','--reverse',`--format=...`,'--',path])` — oldest adding commit. Cannot move.
+unit-464t2-surface-2026-10-28/recon-run-length-and-cure.mjs#1	ADD	-	yes	0	203-206	A	'--diff-filter=A' at line 202 of the same call, '--reverse' at 204 — oldest adding commit. Cannot move.
+unit-464vac-2026-10-31/grade-cure.mjs#1	-	-	no	0	55-55	A	`git('log','--format=%H','--reverse',`${BASE_REV}..HEAD`,'--',LIVE_REL)` then `[0]` — the OLDEST commit since a fixed baseline that touched the checker. THE SUBJECT'S OWN COMMENT AT LINES 50-52 STATES THE PROPERTY: "anchored on the EVENT, not on recency ... That rev cannot move however many commits this unit makes afterwards." A deliberately STABLE anchor built with --reverse over a fixed range and NO --diff-filter=A anywhere in the file. His flag is blind to it.
