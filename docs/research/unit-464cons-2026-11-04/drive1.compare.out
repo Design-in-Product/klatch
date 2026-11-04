@@ -1,0 +1,29 @@
+unit-464cons — a second reader on his 20 sites, the witness for his existence-negation, and the disagreement measured
+SUBJ_PIN=268457d1  POP_PIN=0ae48068  HIS_REC=40015d90  CRIPPLE=(none)
+instrument blob (worktree copy of this file): 47f574a3cf70d0e01b30888ab1acc3982c13a05a
+
+legs, streaming as they are checked:
+  RED   GBOOT        the subject's OWN sliceFrom, lifted and re-run over the same 3 anchors, agrees with my bootstrap byte-for-byte (disagreements: sliceFrom,SELECTOR_WIDE,MOVABLE_WIDE)
+  GREEN GARMS        the lifted keys are the published ones: SELECTOR_WIDE 4 arms, MOVABLE_WIDE 5 arms, and arm [3] is byte-identically /--format=%[hH][\s\S]{0,240}?['"`]--['"`]/
+  UNRUN GORDER       my hand read was added at 2fd49cd7; THIS GRADER IS NOT YET COMMITTED, so the order claim cannot be closed on this run — it closes on the committed re-run, and that run's .out is the one that counts. Reported UNRUN rather than green, because an uncommitted grader cannot witness its own ordering.
+  GREEN P1REPRO      my population at 0ae48068 vs HIS figures parsed from his .out at 40015d90: .mjs 310/310 · selector files 40/40 · arm-[3]-only 18/18 · arm-[3] SITES 20/20 (a global non-overlapping walk, not a .test)
+  GREEN P4HAND       both hand reads cover exactly the 20 sites my own walk enumerated — mine 20 rows (16 blind, 4 NOT-BLIND), his 20 rows; sites absent from mine: 0, from his: 0
+
+  classes, ALL 20 sites — mine:  R 12 · A 7 · O 1 · W 0
+  classes, ALL 20 sites — his:   R 11 · A 8 · O 1 · W 0
+  GREEN P5AGREE      BLIND sites only: 15 of 16 agree (registered floor 14 — below it the price does not go into the convention). Disagreements: unit-464t2-population-2026-10-28/grade-the-round-population.mjs#1 mine=R his=A
+  NOT-BLIND 4 (excluded from the numerator, per pre-registration §2): 0 disagreement(s)
+  GREEN P6PRICE      the price, computed from each reader's OWN committed rows over the same 40 selector files: MINE R-RETAINING 11 (27.5%) / FP-ONLY 7 (17.5%) · HIS R-RETAINING 10 (25.0%) / FP-ONLY 8 (20.0%)
+  files I call R-RETAINING and he does not: unit-464t2-population-2026-10-28/grade-the-round-population.mjs
+  files he calls FP-ONLY and I do not:      unit-464t2-population-2026-10-28/grade-the-round-population.mjs
+  GREEN P2WITNESS    HIS §3, tested on one witness and no classifier: unit-464vac-2026-10-31/grade-cure.mjs contains 0 occurrence(s) of `--diff-filter=A` anywhere in the file, and MY OWN hand read makes it FP-ONLY (true). With zero occurrences there is nothing for a flag-keyed cure to match AT ANY GRANULARITY — file, span or call — so such a cure has a blind spot of >=1 member before it is written. His existence-negation is established by this single row, independently of either hand read's classifier.
+  GREEN P3OVER       does-any-other-instrument-retype-a-verdict-it-slices.mjs: 1 `--diff-filter=A` occurrence(s) at line(s) 123, and 0 of them fall inside any of the 1 arm-[3] match range(s) at line(s) 205 — measured as index-range non-overlap, not by reading line numbers and judging. The flag is in a DIFFERENT call, so the file-level co-occurrence is a true false positive.
+  GREEN P7SYMDIFF    my ADD set re-derived per occurrence (not carried over from my START-fire .out): 8 files (his recorded 8) — so his "same size" framing is NOT downstream of an under-count of mine. Against MY FP-ONLY 7: |symmetric difference| = 3 (ADD-not-FP 2: round429-instruments/does-any-other-instrument-retype-a-verdict-it-slices.mjs, unit-464t2-population-2026-10-28/grade-the-round-population.mjs · FP-not-ADD 1: unit-464vac-2026-10-31/grade-cure.mjs)
+
+  P8MOVED — selections evaluated twice, at 0ae48068 and at HEAD bc01d2dc:
+  RED   GMOVEDKP     the test's own KP and matched negative: a full-history COUNT over docs/research/ reads 691 at the pin and 714 at HEAD (moved=true) — so the instrument can see a difference; and the OLDEST commit of unit-464presc-2026-11-03/census-presc.mjs is null at both revs (stable=false) — so it does not report differences that are not there
+  GREEN P8MOVED      THE DISPUTED SITE unit-464t2-population-2026-10-28/grade-the-round-population.mjs#1 — mine=R his=A. Its consumer publishes the distinct unit-dir row count as M6; evaluated through the subject's own selection, that count is 40 at 0ae48068 and 45 at HEAD. MOVED=true — and MOVED=true is the half of this test that carries sound evidence, so the selection demonstrably moves and the row is R.
+  GREEN P8NEGS       the dir-creator idiom behind 6 of my 7 A rows, evaluated over all 91 round dirs present at the pin: 0 changed between the two revs. READ THIS AS REGISTERED: stable here means ONLY "not observed to move in this interval" and is NOT evidence for A — a movable selection over an untouched path reads stable too. A non-zero result would REFUTE my A rows; zero does not establish them.
+  UNRUN P8R441       round441-instruments/key-the-silent-class-from-source.mjs#1 is NOT evaluated: its selection is taken over TRACKED_TARGETS, which the subject derives by scanning every .mjs blob in the tree at its own REV for a writeFileSync(join(HERE|REPO, '<literal>')) shape. Re-deriving that by hand would grade my re-implementation, not the subject's selection. Both readers already call this row R, so nothing in the price turns on it. Named and not reached, not quietly dropped.
+
+VERDICT/1 RED legs=14 green=10 red=[GBOOT,GMOVEDKP] unrun=[GORDER,P8R441]
