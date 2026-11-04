@@ -162,28 +162,42 @@ const familyOf = (d) => /^unit-464/.test(d) ? 'unit-464'
   : /^unit-/.test(d) ? 'unit-other'
   : 'other';
 
-const famDirs = {}, famFiles = {};
+// TWO dir denominators, because they are different questions and the relayed 136 is the second one.
+// `allDirs` is every directory under docs/research/; `mjsDirs` is every directory that holds an
+// instrument. Most round directories hold only recordings, so the two differ by a factor of three.
+const mjsDirs = [...new Set(allMjs.map(dirOf))].sort();
+
+const famDirs = {}, famMjsDirs = {}, famFiles = {};
 for (const d of allDirs) (famDirs[familyOf(d)] ??= []).push(d);
+for (const d of mjsDirs) (famMjsDirs[familyOf(d)] ??= []).push(d);
 for (const p of allMjs) (famFiles[familyOf(dirOf(p))] ??= []).push(p);
 
 // HIS selector — my own line 181 from the published census — applied here, not its result retyped.
 const unit464Dirs = (famDirs['unit-464'] ?? []);
-const censusSurface = unit464Dirs.filter((d) => {
-  if (d === 'unit-464class-2026-11-02' || d === SELF_DIR) return false;
+const mineAll = unit464Dirs.filter((d) => {
+  if (d === SELF_DIR) return false;
   const authors = (gitq(['log', '--diff-filter=A', '--format=%an', PIN, '--', `docs/research/${d}`]) ?? '')
     .trim().split('\n').filter(Boolean);
   const oldest = authors[authors.length - 1] || '(none)';   // newest-first ⇒ last is oldest
   return /^Daedalus/.test(oldest);
 });
+// `mineAll` is what the authorship selector ADMITS. The surface actually CENSUSED excludes the
+// census's own directory — enumerate-legs.mjs does this at its `mineDirs` line, and the relayed
+// "19 dirs · 52 .mjs" is the admitted set, one dir and two files larger than what was read.
+const censusSurface = mineAll.filter((d) => d !== 'unit-464class-2026-11-02');
 const censusFiles = allMjs.filter((p) => censusSurface.includes(dirOf(p)));
+const admittedFiles = allMjs.filter((p) => mineAll.includes(dirOf(p)));
 
 console.log('population at the pin, by family:');
+console.log(`  family        all-dirs  dirs-with-.mjs   .mjs`);
 for (const fam of ['unit-464', 'roundNNN', 'unit-other', 'other']) {
-  console.log(`  ${fam.padEnd(12)} ${String((famDirs[fam] ?? []).length).padStart(4)} dirs · ${String((famFiles[fam] ?? []).length).padStart(4)} .mjs`);
+  console.log(`  ${fam.padEnd(12)} ${String((famDirs[fam] ?? []).length).padStart(8)} ${String((famMjsDirs[fam] ?? []).length).padStart(15)} ${String((famFiles[fam] ?? []).length).padStart(6)}`);
 }
-console.log(`  ${'TOTAL'.padEnd(12)} ${String(allDirs.length).padStart(4)} dirs · ${String(allMjs.length).padStart(4)} .mjs`);
-console.log(`  census surface ${String(censusSurface.length).padStart(2)} dirs · ${String(censusFiles.length).padStart(3)} .mjs  = ` +
-  `${(100 * censusFiles.length / allMjs.length).toFixed(1)}% of the tree's instruments`);
+console.log(`  ${'TOTAL'.padEnd(12)} ${String(allDirs.length).padStart(8)} ${String(mjsDirs.length).padStart(15)} ${String(allMjs.length).padStart(6)}`);
+console.log(`  authorship ADMITS      ${String(mineAll.length).padStart(2)} dirs · ${String(admittedFiles.length).padStart(3)} .mjs   (the relayed "census surface")`);
+console.log(`  actually CENSUSED      ${String(censusSurface.length).padStart(2)} dirs · ${String(censusFiles.length).padStart(3)} .mjs   = ` +
+  `${(100 * censusFiles.length / allMjs.length).toFixed(1)}% of the tree's instruments ` +
+  `(the census excludes its own directory, 1 dir / ${admittedFiles.length - censusFiles.length} .mjs)`);
 console.log('');
 
 const popFiles = (CRIPPLE === 'mysurface' ? censusFiles : allMjs).filter((p) => dirOf(p) !== SELF_DIR);
@@ -287,7 +301,8 @@ for (const rel of popFiles) {
       n++;
       const predicate = idiom.kind === 'REFUSE-SITE' ? h.guard : h.span;
       const text = closedTextOf(rel, predicate);
-      sites.push({ rel, dir: dirOf(rel), fam: familyOf(dirOf(rel)), line: h.line, id: h.id, idiom: idiom.idiom, ...classifySite(text) });
+      sites.push({ rel, dir: dirOf(rel), fam: familyOf(dirOf(rel)), line: h.line, id: h.id, idiom: idiom.idiom,
+        span: predicate ?? '', closed: text, ...classifySite(text) });
     }
   }
   fileRows.push({
@@ -326,10 +341,32 @@ const wideWitnesses = sites.filter((s) => s.wideWitness);
 console.log(`WITNESSES to \`history-keyed > movable\` (a selector anchor beside a movable anchor in one leg):`);
 console.log(`  narrow (lifted kindOf, both arms)  ${narrowWitnesses.length}`);
 console.log(`  wide   (declared regexes)          ${wideWitnesses.length}`);
+// Provenance per candidate, so each one can be graded rather than counted. A match that lands only
+// in text pulled in by the closure expansion — or inside a PROSE argument of a reporting call — is
+// not a conjunct of the leg's predicate. [[feedback_a_proximity_window_consumer_key_over_reports]]
+const firstMatch = (text, res) => {
+  for (const r of res) { const m = text.match(r); if (m) return m[0].replace(/\s+/g, ' ').slice(0, 90); }
+  return null;
+};
+const PROSE_ARG = /^[A-Za-z0-9_]+\s*\(\s*\n?\s*['"`][A-Za-z0-9_]+['"`]\s*,\s*\n?\s*`/;
 for (const s of wideWitnesses.slice(0, 40)) {
+  const selInSpan = SELECTOR_WIDE.some((r) => r.test(s.span));
+  const movInSpan = MOVABLE_WIDE.some((r) => r.test(s.span));
   console.log(`    ${s.rel.replace('docs/research/', '')}:${s.line} ${s.id ?? '(no literal id)'} ` +
     `narrow=${s.narrowWitness} kinds=[${s.kinds}]`);
+  console.log(`        sel  in-span=${selInSpan}  via=${firstMatch(s.closed, SELECTOR_WIDE)}`);
+  console.log(`        mov  in-span=${movInSpan}  via=${firstMatch(s.closed, MOVABLE_WIDE)}`);
+  console.log(`        both-in-span=${selInSpan && movInSpan}  prose-arg-call=${PROSE_ARG.test(s.span)}  ` +
+    `span=${s.span.length}B closed=${s.closed.length}B`);
 }
+console.log('');
+
+// A candidate whose two arms are BOTH inside the predicate span is the only kind that can be a
+// conjunct pair. Everything else is the expansion's reach or a report call's prose.
+const inSpanWitnesses = wideWitnesses.filter((s) =>
+  SELECTOR_WIDE.some((r) => r.test(s.span)) && MOVABLE_WIDE.some((r) => r.test(s.span)));
+console.log(`candidates with BOTH arms inside the predicate span: ${inSpanWitnesses.length} of ${wideWitnesses.length}`);
+for (const s of inSpanWitnesses) console.log(`    ${s.rel.replace('docs/research/', '')}:${s.line} ${s.id}`);
 console.log('');
 
 // ───────────── P5: Theseus's two constructed legs, by name — is my detector able to see his work?
@@ -368,11 +405,13 @@ check('GROUNDREACHED', roundSites.length > 0,
   `kindOf-classified anchor — if this were 0 the family would be counted, not censused, a second time`);
 
 // ───────────────────────────────────────────────────────────────────── verdicts
+// Compared on HIS denominator — dirs that hold an instrument — not on every directory under
+// docs/research/. [[feedback_reproduce_their_figures_under_their_own_key]]
 const P1 = {
-  u464dirs: (famDirs['unit-464'] ?? []).length, u464files: (famFiles['unit-464'] ?? []).length,
-  rndDirs: (famDirs['roundNNN'] ?? []).length, rndFiles: (famFiles['roundNNN'] ?? []).length,
-  totDirs: allDirs.length, totFiles: allMjs.length,
-  censDirs: censusSurface.length, censFiles: censusFiles.length,
+  u464dirs: (famMjsDirs['unit-464'] ?? []).length, u464files: (famFiles['unit-464'] ?? []).length,
+  rndDirs: (famMjsDirs['roundNNN'] ?? []).length, rndFiles: (famFiles['roundNNN'] ?? []).length,
+  totDirs: mjsDirs.length, totFiles: allMjs.length,
+  censDirs: mineAll.length, censFiles: admittedFiles.length,
 };
 const P1_EXPECT = { u464dirs: 37, u464files: 106, rndDirs: 91, rndFiles: 191, totDirs: 136, totFiles: 308, censDirs: 19, censFiles: 52 };
 const P1_DEPART = Object.keys(P1_EXPECT).filter((k) => P1[k] !== P1_EXPECT[k]);

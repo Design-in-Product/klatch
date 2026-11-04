@@ -1,0 +1,74 @@
+unit-464presc — selector-first witness census over the WHOLE tree
+PIN=0ae48068  CRIPPLE=mysurface  DEPTH=1
+instrument blob (worktree copy of this file): feee11ab3a2cddbf62c08eb1b8290334a81d190c
+
+population at the pin, by family:
+  family        all-dirs  dirs-with-.mjs   .mjs
+  unit-464           38              36    107
+  roundNNN          325              90    195
+  unit-other          2               2      6
+  other              44               1      2
+  TOTAL             409             129    310
+  authorship ADMITS      19 dirs ·  52 .mjs   (the relayed "census surface")
+  actually CENSUSED      18 dirs ·  50 .mjs   = 16.1% of the tree's instruments (the census excludes its own directory, 1 dir / 2 .mjs)
+
+POPULATION THIS ARM: 50 .mjs over 18 dirs (this unit's own directory excluded either way)
+
+leg sites and anchor-kind reach, by family:
+  family        files  sites  kindOf-nonnull  sel(narrow)  sel(wide)  mov(narrow)
+  unit-464        50    182              21            6          9           13
+  TOTAL           50    182              21            6          9           13
+
+files carrying a selector idiom: narrow 8 · wide 8 of 50
+    WIDE  unit-464immov-2026-11-03/occupy-delta-immovable.mjs
+    both  unit-464reach-2026-11-02/grade-reach.mjs
+    both  unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs
+    both  unit-464rec3-2026-11-01/grade-p4-the-conjunct-no-movement-can-falsify.mjs
+    both  unit-464rec3-2026-11-01/grade-the-three-cures.mjs
+    WIDE  unit-464t2-keychoice-2026-10-28/grade-the-surface-predicate.mjs
+    WIDE  unit-464t2-population-2026-10-28/grade-the-round-population.mjs
+    WIDE  unit-464vac-2026-10-31/grade-cure.mjs
+
+WITNESSES to `history-keyed > movable` (a selector anchor beside a movable anchor in one leg):
+  narrow (lifted kindOf, both arms)  0
+  wide   (declared regexes)          3
+    unit-464immov-2026-11-03/occupy-delta-immovable.mjs:179 GTARGETB narrow=false kinds=[]
+        sel  in-span=false  via='log', '-1', '--format=%H', '--'
+        mov  in-span=false  via='HEAD'
+        both-in-span=false  prose-arg-call=false  span=267B closed=530B
+    unit-464immov-2026-11-03/occupy-delta-immovable.mjs:207 GHISTFLIP narrow=false kinds=[]
+        sel  in-span=false  via='log', '-1', '--format=%H', '--'
+        mov  in-span=false  via='HEAD'
+        both-in-span=false  prose-arg-call=false  span=480B closed=793B
+    unit-464rec3-2026-11-01/grade-the-three-cures.mjs:138 C3b narrow=false kinds=[selector]
+        sel  in-span=false  via='log', '-1', '--format=%h %s', '--'
+        mov  in-span=false  via='HEAD'
+        both-in-span=false  prose-arg-call=false  span=226B closed=806B
+
+candidates with BOTH arms inside the predicate span: 0 of 3
+
+Theseus's two constructed legs in unit-464conj-2026-11-03/occupy-conj-history.mjs:
+    GFIXEDCTRL   site found=false line=null selector narrow=null wide=null kinds=[]
+    GC2MOVED     site found=false line=null selector narrow=null wide=null kinds=[]
+
+PREDICTIONS
+  P1 census reproduction        DEPARTS — 6 of 8 figures depart: u464dirs 36 vs relayed 37, u464files 107 vs relayed 106, rndDirs 90 vs relayed 91, rndFiles 195 vs relayed 191, totDirs 129 vs relayed 136, totFiles 310 vs relayed 308
+  P2 selector on the NEW surface REFUTED — roundNNN selector-bearing files = 0 (threshold ≥ 1)
+  P3 witness arm fires on its KP LANDS — BLOCKING
+  P4 tree-wide real witnesses = 0 REFUTED — narrow 0 · wide 3  [READ WITH P2: roundNNN selector arm unreached, so this is UNGRADED on that family]
+  P5 his two legs are visible     REFUTED — sites false, wide false, NARROW (the convention's own) false
+  P6 cripple moves a FIGURE       this IS the crippled arm; the delta is computed against the baseline recording
+
+LEGS
+  GREEN GLIFT            8 fragments lifted from my 3 committed files at 0ae48068 and evaluated: blankNonCode(56L) lineOf(1L) IDIOMS(5L) spans(23L) enclosingIf(17L) declarationsOf(11L) KIND_AXISB(8L) kindOf(9L); KIND_AXISB maps selector->history-keyed and live->movable, 3 site idioms
+  GREEN GAXISBARMS       the witness property is read off the lifted map, not retyped: movable kinds = [live,run-derived], history-keyed kinds = [selector]
+  GREEN GKP              the CONSTRUCTED known positive — a selector anchor beside a movable anchor — is classed a witness by both arms: narrow=true (kinds [selector,run-derived]) wide=true. Without this leg a tree-wide 0 would be an arm that never fired
+  GREEN GKPNEG           the matched negative — same text, selector anchor deleted — is NOT a witness (narrow=false wide=false), so the arm is not firing on everything
+  RED   GHISSITES        both of his constructed leg sites are enumerated by the lifted site walker: GFIXEDCTRL=false GC2MOVED=false
+  RED   GHISSELWIDE      my WIDE selector arm sees both of his constructed selector legs: GFIXEDCTRL=null GC2MOVED=null
+  RED   GHISSELNARROW    the CONVENTION'S OWN lifted selector arm sees both of his constructed selector legs: GFIXEDCTRL=null GC2MOVED=null — a FALSE here is a defect of my published classifier, not of his legs, and makes every narrow zero a floor
+  GREEN GSELARMFIRED     the selector detector's positive arm fires on this surface at all: 8 file(s) wide, 8 narrow — so a witness count of 0 is a measured zero and not a dead detector
+  RED   GROUNDREACHED    the NEWLY censused roundNNN family is reached at all: 0 leg sites over 0 files, 0 with a kindOf-classified anchor — if this were 0 the family would be counted, not censused, a second time
+
+SUMMARY  legs 9 · green 5 · red 4 [GHISSITES GHISSELWIDE GHISSELNARROW GROUNDREACHED]
+FIGURES  pop_files=50 pop_dirs=18 sites=182 sel_files_wide=8 sel_files_narrow=8 witnesses_narrow=0 witnesses_wide=3 kindof_nonnull_sites=21

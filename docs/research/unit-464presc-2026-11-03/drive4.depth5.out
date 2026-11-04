@@ -1,0 +1,141 @@
+unit-464presc — selector-first witness census over the WHOLE tree
+PIN=0ae48068  CRIPPLE=(none)  DEPTH=5
+instrument blob (worktree copy of this file): feee11ab3a2cddbf62c08eb1b8290334a81d190c
+
+population at the pin, by family:
+  family        all-dirs  dirs-with-.mjs   .mjs
+  unit-464           38              36    107
+  roundNNN          325              90    195
+  unit-other          2               2      6
+  other              44               1      2
+  TOTAL             409             129    310
+  authorship ADMITS      19 dirs ·  52 .mjs   (the relayed "census surface")
+  actually CENSUSED      18 dirs ·  50 .mjs   = 16.1% of the tree's instruments (the census excludes its own directory, 1 dir / 2 .mjs)
+
+POPULATION THIS ARM: 310 .mjs over 129 dirs (this unit's own directory excluded either way)
+
+leg sites and anchor-kind reach, by family:
+  family        files  sites  kindOf-nonnull  sel(narrow)  sel(wide)  mov(narrow)
+  unit-464       107    335              77            8         18           51
+  roundNNN       195    296              27            2          4           24
+  unit-other       6     28               0            0          0            0
+  other            2     11               0            0          0            0
+  TOTAL          310    670             104           10         22           75
+
+files carrying a selector idiom: narrow 15 · wide 40 of 310
+    WIDE  round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs
+    WIDE  round395-instruments/probe-the-header-restates-its-input.mjs
+    both  round397-instruments/grade-the-anchor-that-is-not-guarded.mjs
+    both  round397-instruments/probe-the-anchor-that-is-not-guarded.mjs
+    WIDE  round404-instruments/grade-the-three-cures.mjs
+    WIDE  round406-instruments/hand-read-the-inline-seven.mjs
+    WIDE  round418-instruments/installed-sdk-and-sec4-by-shape.mjs
+    WIDE  round419-instruments/grade-the-417-repairs.mjs
+    WIDE  round420-instruments/his-old-cell-is-keyed-on-head.mjs
+    WIDE  round421-instruments/grade-the-420-repair.mjs
+    WIDE  round422-instruments/drive-his-421.mjs
+    WIDE  round425-instruments/position-vs-property-confusion-matrix.mjs
+    WIDE  round428-instruments/a-sentence-keyed-on-a-subset-publishes-past-its-own-gate.mjs
+    WIDE  round429-instruments/does-any-other-instrument-retype-a-verdict-it-slices.mjs
+    WIDE  round431-instruments/grade-his-convention-and-measure-the-reach.mjs
+    WIDE  round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs
+    WIDE  round441-instruments/key-the-silent-class-from-source.mjs
+    WIDE  round463-instruments/grade-the-57-of-461-class.mjs
+    both  round463-instruments/which-residue-member-postdates.mjs
+    WIDE  round464-instruments/grade-the-stop-condition.mjs
+    WIDE  unit-464cell-2026-11-02/p3-scratch-identity-history.mjs
+    WIDE  unit-464conj-2026-11-03/occupy-conj-history.mjs
+    WIDE  unit-464dir-2026-11-02/across-one-operator-v2.mjs
+    WIDE  unit-464dir-2026-11-02/across-one-operator.mjs
+    WIDE  unit-464immov-2026-11-03/occupy-delta-immovable.mjs
+    WIDE  unit-464outside-2026-11-03/census-outside.mjs
+    both  unit-464reach-2026-11-02/grade-reach.mjs
+    WIDE  unit-464rec-2026-10-31/probe-is-it-live.mjs
+    both  unit-464rec-2026-10-31/rec-census.mjs
+    both  unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs
+    both  unit-464rec3-2026-11-01/grade-p4-the-conjunct-no-movement-can-falsify.mjs
+    both  unit-464rec3-2026-11-01/grade-the-three-cures.mjs
+    WIDE  unit-464sat-2026-10-31/grepro.mjs
+    WIDE  unit-464subkind-2026-11-02/grade-subkind.mjs
+    WIDE  unit-464t2-keychoice-2026-10-28/grade-the-surface-predicate.mjs
+    WIDE  unit-464t2-population-2026-10-28/grade-the-round-population.mjs
+    WIDE  unit-464t2-reaim-2026-10-28/grade-the-credit-key.mjs
+    WIDE  unit-464t2-reaim-2026-10-28/recon-credit-provenance.mjs
+    WIDE  unit-464t2-surface-2026-10-28/recon-run-length-and-cure.mjs
+    WIDE  unit-464vac-2026-10-31/grade-cure.mjs
+
+WITNESSES to `history-keyed > movable` (a selector anchor beside a movable anchor in one leg):
+  narrow (lifted kindOf, both arms)  5
+  wide   (declared regexes)          11
+    round397-instruments/grade-the-anchor-that-is-not-guarded.mjs:264 U4 narrow=false kinds=[selector]
+        sel  in-span=false  via=--format=%h', '--'
+        mov  in-span=false  via='HEAD'
+        both-in-span=false  prose-arg-call=true  span=2543B closed=3723B
+    unit-464conj-2026-11-03/occupy-conj-history.mjs:259 GTARGET narrow=false kinds=[]
+        sel  in-span=false  via='log', '-1', '--format=%H', '--'
+        mov  in-span=false  via='HEAD'
+        both-in-span=false  prose-arg-call=false  span=209B closed=931B
+    unit-464conj-2026-11-03/occupy-conj-history.mjs:270 GFIXEDCTRL narrow=false kinds=[]
+        sel  in-span=false  via='log', '-1', '--format=%H', '${PIN_REV}', '--'
+        mov  in-span=false  via='HEAD'
+        both-in-span=false  prose-arg-call=false  span=401B closed=1512B
+    unit-464conj-2026-11-03/occupy-conj-history.mjs:296 GC2MOVED narrow=false kinds=[]
+        sel  in-span=false  via='log', '-1', '--format=%H', '--'
+        mov  in-span=false  via=HEAD:
+        both-in-span=false  prose-arg-call=false  span=332B closed=1401B
+    unit-464conj-2026-11-03/occupy-conj-history.mjs:341 GTUPLE narrow=false kinds=[]
+        sel  in-span=true  via='log', '-1', '--format=%H', '--'
+        mov  in-span=false  via='HEAD'
+        both-in-span=false  prose-arg-call=false  span=281B closed=1161B
+    unit-464immov-2026-11-03/occupy-delta-immovable.mjs:179 GTARGETB narrow=false kinds=[]
+        sel  in-span=false  via='log', '-1', '--format=%H', '--'
+        mov  in-span=false  via='HEAD'
+        both-in-span=false  prose-arg-call=false  span=267B closed=766B
+    unit-464immov-2026-11-03/occupy-delta-immovable.mjs:207 GHISTFLIP narrow=false kinds=[]
+        sel  in-span=false  via='log', '-1', '--format=%H', '--'
+        mov  in-span=false  via='HEAD'
+        both-in-span=false  prose-arg-call=false  span=480B closed=1141B
+    unit-464reach-2026-11-02/grade-reach.mjs:201 GSTALEPIN narrow=true kinds=[selector,live]
+        sel  in-span=false  via='log', '-1', '--format=%h', '--'
+        mov  in-span=false  via='HEAD'
+        both-in-span=false  prose-arg-call=false  span=161B closed=974B
+    unit-464reach-2026-11-02/grade-reach.mjs:203 GSTALE narrow=true kinds=[selector,live]
+        sel  in-span=false  via='log', '-1', '--format=%h', '--'
+        mov  in-span=false  via='HEAD'
+        both-in-span=false  prose-arg-call=false  span=145B closed=805B
+    unit-464reach-2026-11-02/grade-reach.mjs:221 GSTALEINVERT narrow=true kinds=[selector,live]
+        sel  in-span=false  via='log', '-1', '--format=%h', '--'
+        mov  in-span=false  via='HEAD'
+        both-in-span=false  prose-arg-call=false  span=261B closed=955B
+    unit-464rec3-2026-11-01/grade-the-three-cures.mjs:138 C3b narrow=false kinds=[selector]
+        sel  in-span=false  via='log', '-1', '--format=%h %s', '--'
+        mov  in-span=false  via='HEAD'
+        both-in-span=false  prose-arg-call=false  span=226B closed=1458B
+
+candidates with BOTH arms inside the predicate span: 0 of 11
+
+Theseus's two constructed legs in unit-464conj-2026-11-03/occupy-conj-history.mjs:
+    GFIXEDCTRL   site found=true line=270 selector narrow=false wide=true kinds=[]
+    GC2MOVED     site found=true line=296 selector narrow=false wide=true kinds=[]
+
+PREDICTIONS
+  P1 census reproduction        DEPARTS — 6 of 8 figures depart: u464dirs 36 vs relayed 37, u464files 107 vs relayed 106, rndDirs 90 vs relayed 91, rndFiles 195 vs relayed 191, totDirs 129 vs relayed 136, totFiles 310 vs relayed 308
+  P2 selector on the NEW surface LANDS — roundNNN selector-bearing files = 20 (threshold ≥ 1)
+  P3 witness arm fires on its KP LANDS — BLOCKING
+  P4 tree-wide real witnesses = 0 REFUTED — narrow 5 · wide 11
+  P5 his two legs are visible     LANDS — sites true, wide true, NARROW (the convention's own) false
+  P6 cripple moves a FIGURE       baseline arm
+
+LEGS
+  GREEN GLIFT            8 fragments lifted from my 3 committed files at 0ae48068 and evaluated: blankNonCode(56L) lineOf(1L) IDIOMS(5L) spans(23L) enclosingIf(17L) declarationsOf(11L) KIND_AXISB(8L) kindOf(9L); KIND_AXISB maps selector->history-keyed and live->movable, 3 site idioms
+  GREEN GAXISBARMS       the witness property is read off the lifted map, not retyped: movable kinds = [live,run-derived], history-keyed kinds = [selector]
+  GREEN GKP              the CONSTRUCTED known positive — a selector anchor beside a movable anchor — is classed a witness by both arms: narrow=true (kinds [selector,run-derived]) wide=true. Without this leg a tree-wide 0 would be an arm that never fired
+  GREEN GKPNEG           the matched negative — same text, selector anchor deleted — is NOT a witness (narrow=false wide=false), so the arm is not firing on everything
+  GREEN GHISSITES        both of his constructed leg sites are enumerated by the lifted site walker: GFIXEDCTRL=true GC2MOVED=true
+  GREEN GHISSELWIDE      my WIDE selector arm sees both of his constructed selector legs: GFIXEDCTRL=true GC2MOVED=true
+  RED   GHISSELNARROW    the CONVENTION'S OWN lifted selector arm sees both of his constructed selector legs: GFIXEDCTRL=false GC2MOVED=false — a FALSE here is a defect of my published classifier, not of his legs, and makes every narrow zero a floor
+  GREEN GSELARMFIRED     the selector detector's positive arm fires on this surface at all: 40 file(s) wide, 15 narrow — so a witness count of 0 is a measured zero and not a dead detector
+  GREEN GROUNDREACHED    the NEWLY censused roundNNN family is reached at all: 296 leg sites over 195 files, 27 with a kindOf-classified anchor — if this were 0 the family would be counted, not censused, a second time
+
+SUMMARY  legs 9 · green 8 · red 1 [GHISSELNARROW]
+FIGURES  pop_files=310 pop_dirs=129 sites=670 sel_files_wide=40 sel_files_narrow=15 witnesses_narrow=5 witnesses_wide=11 kindof_nonnull_sites=104
