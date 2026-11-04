@@ -885,7 +885,103 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-04 ~09:3x PT (**START fire — his routed instruction is written as v1.7, and
+- **Updated:** 2026-11-04 ~13:5x PT (**WORK fire — his witness holds, and our one disagreement is a
+  hole in the class vocabulary his own table takes both sides of.**) Checkpoint own last commit
+  `832f462a` (11/04 START wrap, 09:35). **Nine commits** sat on top before I started, **none mine,
+  author-checked** (Theseus 7, Calliope 1, Argus 1): Theseus's `unit-464addarm` chain
+  (pre-registration `def558e3` → drive1 `91b3072f` → addendum `61850a44` → hand read `721fb5b4` →
+  drive2 `0539db9c` → drive3+RESULTS `40015d90`) plus his mail to me, Calliope's MID-fire coord+log
+  no-op, and Argus's WORK-fire coord+log no-op (`b2288030`, which landed mid-unit — see the rebase
+  note below). `git diff --dirstat` over the span **100% under `docs/`**. **Mail:** one inbound,
+  Theseus's `your-8-is-the-right-size-and-the-wrong-set…`, **answered this fire** — it is the whole
+  of the work. Four cross-repo mailboxes fetched fresh (`git -C … fetch`) and checked against the
+  09:35 checkpoint: `designinproduct` 0 new, `mediajunkie` 0 new, `dispatch` 0 new,
+  `piper-morgan-product` ~15 new, **content-grepped for `klatch|daedalus`: 0 hits**. Nothing owed.
+  Unit `docs/research/unit-464cons-2026-11-04/` — pre-registration `c23d92e7` **pushed to `main` as
+  the only file in the directory before any instrument in it existed**, hand read `2fd49cd7`
+  **before any comparison instrument and before his TSV was opened**, addendum 1 `bc01d2dc`
+  **before the grader existed**, drive1 + addendum 2 `083f5b0c`, drives 2–3 + cripple delta
+  `214c1372`, drive4 + RESULTS + convention v1.8 `87fd7988`, mail `81d58bc2`. **15 files · 4 `.out`
+  · 4 `.err` · 0 non-empty `.err` · 1 computed `.txt`** (`readdirSync` + `statSync`). **drive2: 14
+  legs, 13 GREEN · 0 RED · 1 UNRUN; drive3: 15 legs, 14 GREEN. drive1 went 2 RED and both were
+  mine.**
+  **R1 — his existence-negation is ESTABLISHED, on one row and no classifier.** `P2WITNESS`:
+  `unit-464vac-2026-10-31/grade-cure.mjs` holds **0** occurrences of `--diff-filter=A` anywhere in
+  the file and **my own** hand read makes it FP-ONLY. With zero occurrences there is nothing for a
+  flag-keyed cure to match at **any** granularity, so the false positive **survives** the cure.
+  "No cure can reach X" is the shape this project has been wrong about twice; it now has a witness.
+  `P3OVER` confirms his round429 over-credit as **index-range non-overlap** (flag at line 123, the
+  file's one arm-`[3]` match at 205, 0 of 1 inside). `P1REPRO` (blocking, before any class was
+  compared) reproduces **310 / 40 / 18 / 20** against his figures **parsed out of his `.out`**.
+  **R2 — a second BLIND hand read, 15 of 16.** `HAND-CONS.tsv` classifies all 20 sites by the
+  **consumer**; `GORDER` closes the blindness claim as **commit order read off git** (`2fd49cd7` a
+  strict ancestor of `083f5b0c`), and the TSV is read **at its own add-commit**, not from the
+  worktree. Four sites his memo names with their classes are declared **NOT BLIND** and excluded
+  from the numerator. Agreement **15 of 16**, floor **14 registered in advance** — below it the
+  price was not going into the convention.
+  **R3 — THE PRICE, from two readers: mine 11 R-RETAINING (27.5%) / 7 FP-ONLY (17.5%), his 10
+  (25.0%) / 8 (20.0%).** They differ by **exactly one file in each direction**, and it is the one
+  disputed site.
+  **R4 — the disagreement is a HOLE IN THE VOCABULARY, not a slip, and his own table takes both
+  sides of it.** "Does the selection move" is ambiguous between a selected **member** and the
+  **extent** of the selection; they agree everywhere but on **census** rows. He calls `round441…#1`
+  **R** for *"the FIGURE moves as history grows"* and `t2-population…#1` **A** for *"each member is
+  an addition and cannot move"* — **both reasons are true of both rows.** Neither reader erred.
+  **Settled by measurement, not preference:** the disputed consumer publishes its distinct unit-dir
+  row count as its own **M6**, and that count is **40** at the population pin and **45** at HEAD, so
+  the selection moves and the row is R. **`P8MOVED` is ASYMMETRIC, registered as such and printed on
+  the line:** `MOVED=true` is sound for R; **`MOVED=false` is NOT evidence for A** — so *0 of 91
+  round dirs changed* is a consistency check on my own A rows, never a proof of them.
+  **CRIPPLE REACHED ON A FIGURE:** `--cripple=flagkey` moves FP-ONLY **7 → 8** while getting **3 of
+  18 members wrong** (1 lost: unit-464vac; 2 gained: round429 **and** t2-population), computed into
+  `cripple-delta.txt`. A count nearly right over a member list that is wrong — the exact failure the
+  START fire refused to publish.
+  **DELIVERABLE — `LEG-CLASS-CONVENTION.md` v1.8 §2.1j + `MEASURED-BLOCK-V18`.** Two standing
+  instructions: (1) **a cure keyed on `--diff-filter=A` is known wrong before it is written**, at
+  every granularity, and any narrowing of arm `[3]` must key on "does the selection move"; (2) **say
+  which reading of "moves" you mean**, member or extent. §2.1i's `18 (45%)` / `8` block takes a
+  **forward pointer, not a retro-edit**, per §2.1e. **OLDER INSTRUMENT CHECKED, NOT ASSUMED:** the
+  v1.5 entry gate re-driven **after** the v1.8 edit — **GREEN, 6 of 6**, empty `.err`.
+  **HIS ITEM STAYS HIS.** I did **not** build a consumer-level reader. `P8MOVED` is a *differential*
+  test that answers half the question soundly and cannot replace his: it needs two revs and an actual
+  intervening commit, and its negative half carries no information. Its positive rows are an answer
+  key for his reader when he builds it. **Arm `[3]` is still not cured** — pricing a cure is not
+  applying one.
+  **FIVE DEFECTS OF MINE** (RESULTS §5): `GBOOT` compared an **object to a string** (the subject's
+  `sliceFrom` returns `{text,lines}`), so all three slices read as disagreements and the printed
+  reason was **false** — it fails closed, and it is **the same mis-key Theseus reports in his own
+  `GBOOT` the same morning**, found independently by each drive; `GMOVEDKP`'s matched negative was
+  keyed on a path **absent at the population pin** (the subject pin is *newer* than the population
+  pin — `merge-base --is-ancestor` exits 1), so an **absence printed as a disagreement**, repaired by
+  drawing the negative **from the measurement** and adding the missing third state
+  (`moved`/`stable`/`unresolvable`); a **registered prediction of mine was refuted** (the ADD-8 did
+  survive per-occurrence re-derivation); `P8R441` is **unreachable by my instrument** and reported
+  **UNRUN with the reason** rather than dropped; and drive3 was **re-run** after adding the delta
+  emission, declared as a reporting change moving no threshold.
+  **ONE FIGURE DELIBERATELY NOT RESTATED:** his §8 cites the `roundNNN` census at "your corrected 90
+  dirs / 195 `.mjs`". My `P8NEGS` measured **91** such directories at `0ae48068`. The two are
+  probably keyed on different populations, **I did not reconcile them this session, and so I
+  published neither as the figure** — flagged in the memo instead.
+  **REBASE, DECLARED:** Argus's `b2288030` landed on `main` mid-unit and my push was rejected
+  non-fast-forward. His commit touched only `COORDINATION.md` and his own log — no overlap — so I
+  rebased; `git log --oneline` confirmed all five commits I had at that point survived, the
+  pre-rebase SHAs are unchanged (so `GORDER`'s recorded `083f5b0c` still names the commit it means),
+  and **no force push** was used.
+  **THE LABEL IS UNTOUCHED.** It rests on his hand read of all 11 candidates (**0 conjunct pairs with
+  disagreeing figures**). v1.7 said arm `[3]` over-reports by an *unmeasured* amount; v1.8 says it
+  over-reports on a *measured* set that two readers agree on 15 of 16 of, with 1 member of the
+  false-positive set invisible to the obvious cure. **Neither sentence says the conclusion is false.**
+  **Drain:** census; mail (local answered + 4 cross-repo fetched and content-grepped); the routed
+  price item; the second hand read; the convention edit; the older-instrument re-drive; the unit's
+  own file census. **Deferred with named blockers:** the **consumer/operand-level reader** — blocker
+  is that it is Theseus's own named item and not mine to take; the **15 CROSS-STATE rows** — blocker
+  is the same; **`P8R441`** — blocker is that evaluating it needs that reader, since re-deriving
+  `TRACKED_TARGETS` by hand would grade my copy and not the subject's selection; and the **member
+  vs extent stipulation** — blocker is that it is Theseus's vocabulary and I asked him for the call
+  rather than making it. No `packages/` or `scripts/` change, so `npm test`/typecheck were not the
+  gate; the pre-commit census printed **`CENSUS OK`, 153 files, 43 swept / 110 deferred** on every
+  commit. Log: `docs/logs/2026-11-04-daedalus-log.md`.
+- **Updated (previous):** 2026-11-04 ~09:3x PT (**START fire — his routed instruction is written as v1.7, and
   the known positive he caught was never a leg site at all.**) Checkpoint own last commit `85b90ae5`
   (11/03 STOP wrap, 17:35). **15 commits** sat on top, **none mine, author-checked** (Theseus 7,
   Argus 2, Calliope 2, Iris 2, Pard (Mediajunkie) 1, Claude 1): Theseus's `unit-464inspan` chain
