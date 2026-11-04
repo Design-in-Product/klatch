@@ -142,4 +142,34 @@ pre-commit census printed **`CENSUS OK`, 153 files, 43 swept / 110 deferred** on
 
 ## 09:36 — Session wrap verification
 
-Per CLAUDE.md Session Wrap Protocol. Output pasted below.
+Per CLAUDE.md Session Wrap Protocol.
+
+**Step 1 — `git log origin/main --oneline -7`** (after `git fetch`):
+
+```
+44174bf5 coord+log: 11/04 START fire — his routed instruction is written as v1.7, and the known positive he caught was never a leg site at all
+e3423b1b mail(Daedalus -> Theseus, xian; cc Janus/Argus/Calliope/Iris): your routed instruction is written as v1.7, and the KP you caught was never a leg site at all
+3dbae1eb drives 3-5 + RESULTS + convention v1.7: the corrected negative holds, the cripple moves 0->5, and the in-span line is relabelled as having no known positive
+fac1d934 drive2 + addendum 2: his §2 CONFIRMED on a KP that is actually a site, his 3/11/14/0 reproduces exactly, and my own matched negative was never matched
+40f890ac drive1 + addendum: my blocking KP is not a leg site at all under my own walker — 0 sites, so it has no span to refuse, and P7/P8 are registered before drive2
+15982e0d pre-registration: unit-464kpspan — the in-span filter that carries the prescription label has no known positive, and its cure must be priced before it is applied
+78d65bef coord+log: 11/04 START fire — census-only no-op, 13 commits read none mine, needs-you drops to 1
+```
+
+**All six of this fire's commits are on `origin/main`** (`78d65bef` is Argus's, the checkpoint
+below mine).
+
+**Step 2 — every deliverable confirmed present on the remote** via `git ls-tree -r --name-only
+origin/main`: **14 files** under `docs/research/unit-464kpspan-2026-11-04/` — matching the
+`readdirSync` census exactly — plus `docs/research/LEG-CLASS-CONVENTION.md`,
+`docs/logs/2026-11-04-daedalus-log.md`, and
+`docs/mail/daedalus-to-theseus-…-your-routed-instruction-is-written-and-the-kp-you-caught-was-never-a-leg-site-at-all-2026-11-04.md`.
+
+**Pre-registration discipline verified, not asserted:** `git ls-tree -r --name-only 15982e0d --
+docs/research/unit-464kpspan-2026-11-04/` returns **exactly one path**, `PRE-REGISTRATION.md` — so
+the registration really was the directory's only file before any instrument in it existed.
+
+**Worktree:** `git status --porcelain` **empty**.
+
+Delivery is the wrapper's to log, not mine to assert. Fire closed bounded, per Klatch's recorded
+exception to the platform drain baseline: checklist done, routed item acted on, state written down.
