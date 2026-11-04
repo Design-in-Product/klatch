@@ -1,0 +1,34 @@
+#	HAND-SITES.tsv — my own 20 HAND-ARM3 reason lines, hand-read for ONE question.
+#	Theseus, 2026-11-04 WORK fire. Filed in its own commit BEFORE the drive that grades P6HAND.
+#	Subject: docs/research/unit-464addarm-2026-11-04/HAND-ARM3.tsv at 721fb5b4, read line by line.
+#
+#	THE QUESTION, fixed before reading: does this reason line name a CONSUMPTION SITE — an
+#	identifier or expression that RECEIVES the selection downstream, together with what is done
+#	to it? Naming the call's own shape (which flags it carries, what the flags mean) is NOT a
+#	consumption site. Producing the value (`.split('\n')[0]`, `.find(l => l.trim())`) inside the
+#	same expression is NOT a consumption site either: that is still the selection, not its consumer.
+#	Quoting the subject's own comment about the property is NOT a consumption site.
+#
+#	ARGUES_FROM records what the reason line actually rests its class on, in my words at the time.
+#
+site_id	names_consumption_site	class	argues_from
+round404-instruments/grade-the-three-cures.mjs#1	yes	R	consumer: `touching`, loop break, `newestResolving = resolving[0]`
+round419-instruments/grade-the-417-repairs.mjs#1	yes	R	consumer: `carries = history.filter(...)`
+round420-instruments/his-old-cell-is-keyed-on-head.mjs#1	no	R	the subject's own comment, quoted — "the NEWEST rev ... whose blob carries the token"
+round421-instruments/grade-the-420-repair.mjs#1	yes	R	consumer: `gradedCarriers[0]`
+round421-instruments/grade-the-420-repair.mjs#2	yes	R	consumer: `sdkHistory` plus a property filter over it
+round422-instruments/drive-his-421.mjs#1	yes	O	consumer: `curedAt = gradedHistory.find(r => r.startsWith('4adcc0bf'))`
+round422-instruments/drive-his-421.mjs#2	yes	R	consumer: `graderAddedAt.length === 1 && graderAddedAt[0] === curedAt`
+round425-instruments/position-vs-property-confusion-matrix.mjs#1	yes	R	consumer: `carriers[0]`
+round428-instruments/a-sentence-keyed-on-a-subset-publishes-past-its-own-gate.mjs#1	yes	R	consumer: `history.find(r => !show(r).includes(CURE_TOKEN))`
+round429-instruments/does-any-other-instrument-retype-a-verdict-it-slices.mjs#1	yes	R	consumer: `newestWithout(p, token) = revsOf(p).find(...)`
+round431-instruments/grade-his-convention-and-measure-the-reach.mjs#1	yes	R	consumer: `carriedAt[0]` and `CURE_REV = r413revs[indexOf(KP_REV) - 1]`
+round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs#1	no	A	the call's own shape — `--diff-filter=A` with `.split('\n')[0]`, "the commit that ADDED the path"
+round441-instruments/key-the-silent-class-from-source.mjs#1	yes	R	consumer, named as such: "consumed as `revs.length` and a blob-generations walk"
+round464-instruments/grade-the-stop-condition.mjs#1	no	A	the call's own shape — "same call carries --diff-filter=A, --reverse ... the OLDEST adding commit"
+unit-464t2-keychoice-2026-10-28/grade-the-surface-predicate.mjs#1	no	A	the call's own shape — flag position plus `.find(l => l.trim())`, "the first addition"
+unit-464t2-population-2026-10-28/grade-the-round-population.mjs#1	no	A	the call's own shape — "an addition CENSUS, not an anchor ... each member is an addition"
+unit-464t2-reaim-2026-10-28/grade-the-credit-key.mjs#1	no	A	the call's own shape — flag lines 232-233, "oldest adding commit"
+unit-464t2-reaim-2026-10-28/recon-credit-provenance.mjs#1	no	A	the call's own shape — flags inline, "oldest adding commit"
+unit-464t2-surface-2026-10-28/recon-run-length-and-cure.mjs#1	no	A	the call's own shape — flag lines 202/204, "oldest adding commit"
+unit-464vac-2026-10-31/grade-cure.mjs#1	no	A	the subject's own comment, quoted, plus `[0]` over a fixed range
