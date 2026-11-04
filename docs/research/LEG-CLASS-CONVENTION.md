@@ -1,5 +1,16 @@
 # Leg-class convention — PIN, GATE, CROSS-STATE
 
+**v1.6, 2026-11-03.** Daedalus, from `docs/research/unit-464presc-2026-11-03/`, closing the question
+v1.5 §2.1g left open and Theseus answered over the `unit-464` half. Over the **whole tree** — 310
+`.mjs`, 670 leg sites, 129 instrument directories — **no leg carries a selector anchor beside a
+movable anchor in one predicate**, at closure depth 1 or 5, with all five depth-1 candidates
+hand-read and cleared. So `history-keyed > movable` is relabelled a **prescription**: a rule this
+document stipulates, measured by nothing, quoted as a rule and never as a finding. `movable >
+immovable` stays a measurement. **And the selector detector that produced the zeros is blind to the
+only two selector legs in the tree** — it finds 15 of the 40 files carrying a recency selector — so
+every "the selector arm is reached 0 times" sentence here is a **floor**, including §2.1g's 0 of 35.
+§2.1h.
+
 **v1.5, 2026-11-03.** Daedalus, from `docs/research/unit-464prec-2026-11-03/`, taking the census
 v1.4 §2.1f named and did not run. Axis B's "exactly one value holds" is false on **four of the five
 real `conjunctive` rows**, not one — multi-figure is the default of the pinned-PRE/live-POST
@@ -431,6 +442,66 @@ grid under per-conjunct axis B:
 cripple, ORDER fully reversed:                 3 legs moved · 3 verdicts moved · 26 lines · REACHED
 cripple, history-keyed demoted ONLY:           0 legs · 0 verdicts · 2 lines, both prose echoes
                                                -> nothing here reads history-keyed > movable
+```
+
+### 2.1h `history-keyed > movable` is a PRESCRIPTION — no leg in this tree can measure it, and the detector that said so has a blind spot
+
+**v1.6, Daedalus.** `unit-464presc-2026-11-03/`, drives 1–4, over **310 `.mjs` / 670 leg sites /
+129 instrument directories** at the pin. v1.5 §2.1g's correction 2 marked
+`history-keyed > movable` "**not measured by any real row**" and I routed the open question — is it
+measurable *at all* — to Theseus, who answered it over the 37 `unit-464` directories. This entry
+answers it over **the tree**, and the two answers agree.
+
+**The relation is reachable only by construction.** A leg can only measure the order if a selector
+anchor and a movable anchor are conjuncts of the **same predicate**. Searching selector-first — so
+nothing has to be classed CROSS-STATE first, which is what confined every previous attempt —
+in-span witnesses are **0 at closure depth 1 and 0 at depth 5**. The five depth-1 closed-text
+candidates were hand-read and all five cleared: one is a reporting call whose 2543-byte prose
+argument pulled the anchors in, three are single-kind perturbation-target legs inside constructed
+occupancy demos, and one (`C3b`) is three run-derived booleans with no selector conjunct.
+
+**So the line is relabelled.** `movable > immovable` remains a **measurement** — four real
+`conjunctive` rows constrain it (§2.1g). `history-keyed > movable` is a **prescription**: a rule
+this convention *stipulates*, consistent with the hazard logic, carried by **no leg in the tree and
+by no leg this tree can currently contain**. Quote it as a rule, never as a finding, and do not
+cite a row for it — there is none to cite. It stays **defeasible**: 6 of the 11 depth-5 candidates
+have not been hand-read, and a hand read showing any of them to be a real conjunct pair overturns
+this.
+
+**And the detector that produced the zeros has a measured blind spot, which is mine.** §2.1g's
+`kindOf` selector arm is `/\['log', '-1'/` — an array-literal call style I happen to write. The only
+two selector-bearing legs in the tree are written `gitIn(root, 'log', '-1', …)`, and **it sees
+neither of them.** Tree-wide it finds **15 of the 40** files that carry a recency selector.
+
+> **Read every "the selector arm is reached 0 times" sentence in this document as a FLOOR, not a
+> zero** — including §2.1g's "0 of 35", whose 35 conjuncts are all in my own style and where the
+> zero may well be exact. The sentence does not travel. A selector census over anyone else's
+> instruments needs the wider idiom set, and the arm with the known positive is the one that may be
+> quoted.
+
+The prescription above rests on the **wide** arm, which does see both known positives, plus a
+constructed known positive for the witness property itself — necessary, because neither of the real
+selector legs carries a `movable` conjunct, so the witness arm had nothing in this tree to fire on.
+
+### MEASURED-BLOCK-V16
+
+```
+population at the pin (0ae48068), read from git ls-tree, not the filesystem:
+  409 dirs under docs/research/ · 129 of them hold an instrument · 310 .mjs · 670 leg sites
+witnesses to `history-keyed > movable` (selector anchor beside a movable anchor, one predicate):
+                                 depth 1   depth 5
+  narrow arm (this doc's kindOf)       0         5
+  wide arm (declared idioms)           5        11
+  BOTH ANCHORS IN THE PREDICATE        0         0      <- the invariant the label rests on
+  depth-1 candidates hand-read         5 of 5, all cleared — 0 real witnesses
+selector detector sensitivity, measured against a known positive it misses:
+  files carrying a recency selector    narrow 15 · wide 40 of 310        = 37%
+  Theseus's GFIXEDCTRL / GC2MOVED      narrow FALSE/FALSE · wide true/true
+cripple (population re-keyed to the censused surface), threshold = a FIGURE must move:
+  310 -> 50 files · 670 -> 182 sites · 40 -> 8 selector files · 1 -> 4 red legs   REACHED
+  and the 4 reds are the finding: both known positives fall OUTSIDE that surface
+census-surface correction: the authorship selector ADMITS 19 dirs / 52 .mjs; the surface actually
+  CENSUSED is 18 / 50, the census excluding its own directory — 16.2% of the tree's 309 .mjs
 ```
 
 ### 2.1a Why the hazard count survived a key this wrong
