@@ -1,0 +1,19 @@
+--- drive2 vs drive3 (same command, re-run after the --key=tuned arm was added)
+  byte-identical: true
+  drive2: VERDICT GREEN legs=6 red=0
+  drive3: VERDICT GREEN legs=6 red=0
+
+--- the counterfactual: a key TUNED to the disputed row and wrong elsewhere
+  the claim is about ONE leg, so it is read at the leg. The whole-verdict line cannot
+  carry it: the tuned key also reddens R2ENTRIES / R3OTHER / R4NEITHER, which depend on
+  the same family tally, so both arms are RED overall for reasons that are not R1REPRO.
+  drive4 (tuned, all four rows) : whole=VERDICT RED legs=6 red=4
+     R1REPRO leg: RED  detail: all-four=false disputed-only=true per-row=unit-464:true roundNNN:true unit-other:false other:false
+  drive5 (tuned, DISPUTED only) : whole=VERDICT RED legs=6 red=3 CRIPPLE=tunedisputedonly
+     R1REPRO leg: GREEN  detail: all-four=false disputed-only=true per-row=unit-464:true roundNNN:true unit-other:false other:false
+
+  CONJUNCTION LOAD-BEARING: YES — on one and the same tuned key, R1REPRO is RED when all four rows are graded and GREEN when only the disputed row is. The conjunction is what rejects a tuned key
+
+--- file census of this unit directory, at the moment this line is computed
+  key: readdirSync + statSync over unit-464moves-2026-11-04, counted when compare-arms.mjs runs — NOT a figure to publish in a file written after it
+  files=23 .out=8 .err=8 non-empty .err=0 .mjs=5 .md=2 .tsv=0

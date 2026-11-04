@@ -1,0 +1,48 @@
+--- [MEAS] R1REPRO — his four rows under HIS registered key, at his pin bba2aa3c
+  key: family on the FIRST-LEVEL NAME under docs/research/; round* -> roundNNN; a bare *.mjs is held by docs/research/ itself
+  unit-464    dirs-with-.mjs   35 (his  35) =    .mjs  106 (his 106) =
+  roundNNN    dirs-with-.mjs   90 (his  90) =    .mjs  195 (his 195) =
+  unit-other  dirs-with-.mjs    3 (his   2) *    .mjs    8 (his   6) *
+  other       dirs-with-.mjs    0 (his   1) *    .mjs    0 (his   2) *
+  rows landing in BOTH columns: 2 of 4
+
+--- [MEAS] R2ENTRIES — what the 408 denominator counts, at bba2aa3c
+  key: git ls-tree <rev> docs/research/ (non-recursive), entries split by git object type
+  first-level entries total : 408   (his all-dirs column sums to 408)
+  of which trees (directories) : 136
+  of which blobs (loose files) : 272
+  entries in family unit-464   :   37 (his all-dirs   37) =
+  entries in family roundNNN   :  325 (his all-dirs  325) =
+  entries in family unit-other :    3 (his all-dirs    2) *
+  entries in family other      :   43 (his all-dirs   44) *
+
+--- [MEAS] R3MEMBERS — the 4 .mjs his roundNNN holds and mine does not, by name
+  docs/research/round352-valuation-leg-key.mjs
+  docs/research/round427-capability-test-pointer/the-history-window-is-200-messages-not-the-file.mjs
+  docs/research/round445-capability-test/klatch-capability-test.mjs
+  docs/research/round445-capability-test/verify-request-shapes.mjs
+  his other row members: (none)
+
+--- [MEAS] R4NEITHER — my own figures re-derived at my own pin 0ae48068
+  key: /^round\d+-instruments$/ first-level dirs = 91; of those, holding >=1 .mjs = 87; .mjs under them = 191
+
+--- [MEAS] R5MTS — the rival explanation, and its discriminator
+  key: .mjs + .mts under /^round\d+-instruments$/ dirs
+  rival dirs-with-instrument: 90 (his 90 -> MATCHES, so the dirs column does not discriminate)
+  rival file count          : 197 (his 195 -> differs, so the rival is refuted on the file column)
+
+--- legs
+  RED   R1REPRO    GATE     ONE key reproduces all four of his 11/03 rows in both measured columns. The four-row conjunction is the control: a key tuned until the disputed row lands measures the tuning
+        detail: all-four=false disputed-only=true per-row=unit-464:true roundNNN:true unit-other:false other:false
+  RED   R2ENTRIES  FINDING  his all-dirs column counts FIRST-LEVEL ENTRIES, not directories: all four row figures land exactly on the entry count, the total is 408, and the majority of the 408 are loose files. A label defect, not an arithmetic one — the true first-level directory count is the tree count printed above
+        detail: entries=408 trees=136 blobs=272 per-row-exact=false
+  GREEN R3MEMBERS  FINDING  the 195-vs-191 gap is exactly the four named .mjs files, member list not count: one bare file with no directory at all, one under round427-capability-test-pointer, two under round445-capability-test — none of them in a *-instruments directory
+        detail: diff=4 registered=4 exact=true
+  RED   R3OTHER    CONTROL  CONTROL for R3MEMBERS: his `other` row's 2 .mjs must be exactly the two docs/research/lib files. Without it, the four that moved could have come from anywhere and the partition would not be accounted for end to end
+        detail: other=0 -> 
+  RED   R4NEITHER  FINDING  neither figure is an arithmetic error: his 90/195 is exact under his first-level-name key and my 91/191 is exact under mine. Two populations, one tree. The 11/03 sentence correcting my row to "90 dirs / 195 .mjs at your own pin" compares across the two keys
+        detail: his-key-all-four=false my 91=91 my 191=191
+  GREEN R5MTS      FINDING  the rival (.mjs+.mts) explains his dirs column exactly — 90 — and NOT his file column: 197, not 195. So the dirs column alone cannot discriminate between the two explanations and the file column does. Registered as a refutation of the rival, not as evidence for my key
+        detail: rival dirs=90 files=197; his 90/195
+
+VERDICT RED legs=6 red=4
