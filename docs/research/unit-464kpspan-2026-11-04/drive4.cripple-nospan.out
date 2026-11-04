@@ -1,0 +1,183 @@
+unit-464kpspan — the in-span filter, its missing known positive, and the price of its cure
+SUBJ_PIN=268457d1  POP_PIN=0ae48068  CRIPPLE=nospan  DEPTH=1
+instrument blob (worktree copy of this file): d7ab61914e6fc78b849e00ca0137346c40ea22d5
+
+legs, streaming as they are checked (so a die still leaves a record):
+  GREEN GBOOT         my hand-written bootstrap slicer agrees BYTE-IDENTICALLY with the subject's own committed sliceFrom on all 13 slices (disagreements: none) — so the first cut is not an unchecked hand-written reader
+  GREEN GLIFT         14 fragments lifted (subject at 268457d1, walker at 0ae48068) and evaluated: sliceFrom(10L) SELECTOR_WIDE(6L) MOVABLE_WIDE(7L) KP_TEXT(5L) classifySite(17L) closedTextOf(23L) blankNonCode(56L) IDIOMS(5L) spans(23L) enclosingIf(17L) declarationsOf(11L) KIND_AXISB(8L) kindOf(9L)
+  GREEN GINSPANTEXT   the lifted in-span filter is the published one and reads the PREDICATE SPAN, not the closed text (unit-464presc-2026-11-03/census-presc.mjs:366-367; s.span ×2, s.closed ×0)
+population at 0ae48068: 310 .mjs under docs/research/ (subject's arm excluded its own dir ⇒ 310 files)
+
+  GREEN GARMS         the lifted keys are the published ones: SELECTOR_WIDE 4 arms, MOVABLE_WIDE 5 arms, KP_TEXT 187B naming GKPWITNESS
+  GREEN P6REPRO       reconstruction vs the subject's PUBLISHED figures: .mjs 310 (pub 310) · leg sites 670 (pub 670) · wide candidates@depth1 5 (pub 5 at depth 1) · wide-selector files 40 (pub 40)
+KP_TEXT, walked by the lifted site walker: 0 site(s)
+
+  UNRUN P1KPREFUSED   UNRUNNABLE AS REGISTERED — the lifted walker finds 0 sites in KP_TEXT, so the KP has NO SPAN for the in-span filter to refuse. Theseus's §2 says the filter refuses my blocking known positive; the measurement says the KP is not a leg site at all. `spans` is a balanced-paren slicer and the KP's `check(` never closes. NOT counted as a pass
+  GREEN P8PARENCAUSE  ONE-EDIT counterfactual: appending the single missing `)` (+1 char, nothing else) takes the site count 0 → 1. The unbalanced paren IS the cause — the diagnosis is a moved counterfactual, not a reading of the source
+
+P7 — the REPAIRED known positive (parens balanced only), walked: 1 site(s)
+    check( id=GKPWITNESS span="check('GKPWITNESS', atRecencyHead === cellNow, 'the recency head equals the live cell')"
+    span   : sel=false  mov=false  both=false
+    closed : wideSel=true  wideMov=true  wideWitness=true  (186B, depth 1)
+
+  GREEN P7KPSPAN      the repaired KP IS a single leg site, its closed text IS accepted by the candidate arm (wideWitness=true), and its SPAN is REFUSED by the in-span filter (sel=false mov=false both=false) — Theseus's §2 CONFIRMED on a KP that is actually a site: the anchors sit on the binding lines, so the predicate carries neither
+P2 — the in-span filter over ALL 670 leg sites (field=CLOSED TEXT (crippled)):
+    sel-in-span   16  (2.4%)
+    mov-in-span   76  (11.3%)
+    either        87  (13.0%)
+    BOTH           5  (0.7%)
+    sel-in-span members:
+        round397-instruments/grade-the-anchor-that-is-not-guarded.mjs:264 U4
+        round406-instruments/hand-read-the-inline-seven.mjs:174 K2d
+        unit-464cell-2026-11-02/p3-scratch-identity-history.mjs:113 GTARGET
+        unit-464conj-2026-11-03/occupy-conj-history.mjs:259 GTARGET
+        unit-464conj-2026-11-03/occupy-conj-history.mjs:270 GFIXEDCTRL
+        unit-464conj-2026-11-03/occupy-conj-history.mjs:296 GC2MOVED
+        unit-464conj-2026-11-03/occupy-conj-history.mjs:341 GTUPLE
+        unit-464immov-2026-11-03/occupy-delta-immovable.mjs:179 GTARGETB
+        unit-464immov-2026-11-03/occupy-delta-immovable.mjs:207 GHISTFLIP
+        unit-464reach-2026-11-02/grade-reach.mjs:201 GSTALEPIN
+        unit-464reach-2026-11-02/grade-reach.mjs:203 GSTALE
+        unit-464rec3-2026-11-01/grade-the-three-cures.mjs:85 C2
+        unit-464rec3-2026-11-01/grade-the-three-cures.mjs:99 C2b
+        unit-464rec3-2026-11-01/grade-the-three-cures.mjs:109 C3
+        unit-464rec3-2026-11-01/grade-the-three-cures.mjs:138 C3b
+        unit-464vac-2026-10-31/grade-cure.mjs:60 C0
+    mov-in-span members:
+        round392-instruments/grade-the-finding-that-is-its-own-finding.mjs:250 Q2b
+        round392-instruments/grade-the-finding-that-is-its-own-finding.mjs:356 Q4
+        round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs:349 P4
+        round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs:447 P5
+        round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs:488 P6
+        round395-instruments/grade-the-refusal-that-deletes-the-verdict.mjs:550 S3b
+        round396-instruments/grade-the-grade-that-reddens-on-its-own-routed-cure.mjs:193 T2
+        round397-instruments/grade-the-anchor-that-is-not-guarded.mjs:206 U3
+        round397-instruments/grade-the-anchor-that-is-not-guarded.mjs:264 U4
+        round404-instruments/grade-the-three-cures.mjs:156 S6
+        round405-instruments/census-the-pin-population.mjs:390 W6
+        round407-instruments/census-the-fixture-as-string-class.mjs:406 T1
+        round407-instruments/census-the-fixture-as-string-class.mjs:425 S2
+        round408-instruments/stratify-the-live-interval.mjs:601 T1
+        round408-instruments/stratify-the-live-interval.mjs:613 S2
+        round408-instruments/stratify-the-live-interval.mjs:698 H1
+        round409-instruments/census-the-hand-typed-known-positive.mjs:366 S1
+        round409-instruments/census-the-hand-typed-known-positive.mjs:377 T1
+        round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs:556 G4
+        round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs:581 G6
+        round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs:594 G8
+        round412-instruments/resolve-the-ternary-and-reconstruct-the-nine.mjs:549 G5
+        round412-instruments/resolve-the-ternary-and-reconstruct-the-nine.mjs:553 G6
+        round413-instruments/attack-g7-and-grade-the-branch-layer.mjs:368 P4
+        round414-instruments/grade-the-refusing-half-and-reconcile-the-ten.mjs:219 G4
+        round414-instruments/grade-the-refusing-half-and-reconcile-the-ten.mjs:234 G5
+        round414-instruments/grade-the-refusing-half-and-reconcile-the-ten.mjs:329 P1
+        round414-instruments/grade-the-refusing-half-and-reconcile-the-ten.mjs:374 P2
+        round414-instruments/grade-the-refusing-half-and-reconcile-the-ten.mjs:425 P4
+        round430-instruments/grade-the-convention-gate.mjs:175 G2
+        round430-instruments/grade-the-convention-gate.mjs:187 G3
+        round430-instruments/grade-the-convention-gate.mjs:230 G4
+        round430-instruments/grade-the-convention-gate.mjs:243 G5
+        round430-instruments/grade-the-convention-gate.mjs:256 G6
+        round430-instruments/grade-the-convention-gate.mjs:355 G7
+        round430-instruments/grade-the-convention-gate.mjs:436 P4
+        unit-307c4-blast-radius-2026-10-27/recon.mjs:123 T1
+        unit-464bucket-2026-11-01/grade-his-armreach-gate.mjs:66 GPATH
+        unit-464bucket-2026-11-01/grade-his-armreach-gate.mjs:145 GCTRL
+        unit-464cell-2026-11-02/grade-cell.mjs:98 GMYTSV
+        unit-464cell-2026-11-02/grade-cell.mjs:140 GP1MEMBERS
+        unit-464cell-2026-11-02/grade-cell.mjs:96 GMYTSV
+        unit-464class-2026-11-02/classify-and-grade.mjs:187 GSPANREV
+        unit-464class-2026-11-02/enumerate-legs.mjs:267 GREV
+        unit-464conj-2026-11-03/grade-conj.mjs:73 GMYTSV
+        unit-464conj-2026-11-03/grade-conj.mjs:183 GSAMEBLOB
+        unit-464conj-2026-11-03/grade-conj.mjs:71 GMYTSV
+        unit-464conj-2026-11-03/grade-conj.mjs:89 GLIFT
+        unit-464conj-2026-11-03/occupy-conj-history.mjs:137 GLIFT
+        unit-464conj-2026-11-03/occupy-conj-history.mjs:163 GSCRATCH
+        unit-464conj-2026-11-03/occupy-conj-history.mjs:259 GTARGET
+        unit-464conj-2026-11-03/occupy-conj-history.mjs:112 GLIFT
+        unit-464conj-2026-11-03/occupy-conj-history.mjs:114 GLIFT
+        unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:60 GDELTA
+        unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:161 GCTRLPRE
+        unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:166 GCTRLPOST
+        unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:194 GCTRLPRE
+        unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:197 GCTRLPOST
+        unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:211 GROWREPRO
+        unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:102 GREADER
+        unit-464immov-2026-11-03/occupy-delta-immovable.mjs:139 GSCRATCH
+        unit-464immov-2026-11-03/occupy-delta-immovable.mjs:179 GTARGETB
+        unit-464immov-2026-11-03/occupy-delta-immovable.mjs:207 GHISTFLIP
+        unit-464immov-2026-11-03/occupy-delta-immovable.mjs:216 GTARGETC
+        unit-464order-2026-11-02/grade-order.mjs:65 GINPUTREV
+        unit-464order-2026-11-02/grade-order.mjs:72 GHISFROZEN
+        unit-464order-2026-11-02/grade-order.mjs:108 GSUBJECTPIN
+        unit-464order-2026-11-02/grade-order.mjs:294 GP5TOTAL
+        unit-464order-2026-11-02/grade-order.mjs:63 GINPUTREV
+        unit-464reach-2026-11-02/grade-reach.mjs:72 GFILED12
+        unit-464reach-2026-11-02/grade-reach.mjs:80 GNEWCOL
+        unit-464reach-2026-11-02/grade-reach.mjs:315 GDETINVARIANT
+        unit-464reach-2026-11-02/grade-reach.mjs:131 (no id)
+        unit-464reach-2026-11-02/grade-reach.mjs:330 GDOCPIN
+        unit-464rec3-2026-11-01/grade-the-three-cures.mjs:138 C3b
+        unit-464steal-2026-11-01/drive-the-steal.mjs:102 GREADER
+    BOTH members:
+        round397-instruments/grade-the-anchor-that-is-not-guarded.mjs:264 U4
+        unit-464conj-2026-11-03/occupy-conj-history.mjs:259 GTARGET
+        unit-464immov-2026-11-03/occupy-delta-immovable.mjs:179 GTARGETB
+        unit-464immov-2026-11-03/occupy-delta-immovable.mjs:207 GHISTFLIP
+        unit-464rec3-2026-11-01/grade-the-three-cures.mjs:138 C3b
+
+  GREEN P2RATE        (not graded on the crippled arm — the field is the closed text, not the span)
+P3/P11 — the known positive the in-span filter never had (both anchors INLINED in one predicate):
+    positive  (both inlined)        : sel=true  mov=true  both=true   MOVABLE arms firing [2,3] of 5
+    negative V1 (drive2, FAILED)    : mov=true                     MOVABLE arms firing [3] — `cell(` was still there
+    negative P11 (corrected)        : sel=true  mov=false  both=false   MOVABLE arms firing [] of 5
+
+  GREEN P11KPINSPAN   the in-span filter is ALIVE, not dead: a predicate with both anchors inlined reads both=true, and the CORRECTED matched negative — every one of the 5 MOVABLE_WIDE arms absent (firing: []), selector anchor retained (sel=true) — reads both=false. So the tree-wide 0 measures CODING STYLE (anchors sit on binding lines), not the absence of the property
+  GREEN P11NEGV1      drive2's negative is retained as a FAILED control and still fails: MOVABLE arms [3] fire on it, so it was a second positive, not a matched negative — the RED it produced was correct
+P4 — SELECTOR_WIDE by ARM INDEX (his §5):
+    addition-keyed line (.pop() on newest-first = OLDEST = the adding commit) : arms [3]
+    real recency line                                                        : arms [0,3]
+
+  GREEN P4ADDARM      his §5 reproduces by arm index: the addition-keyed anchor matches arm [3] ONLY (got [3]) and the real recency anchor matches arms [0,3] (got [0,3]) — arm 3 (`--format=%h … --`) cannot tell "newest commit touching the path" from "commit that ADDED the path", so it reads a STABLE anchor as history-keyed
+P5 (MEASUREMENT, ungraded) — the price of narrowing arm [3]:
+    wide-selector files                      40
+    held ONLY by arm [3]                     18
+    …of those, carrying --diff-filter=A      8
+             round404-instruments/grade-the-three-cures.mjs
+             round419-instruments/grade-the-417-repairs.mjs
+             round420-instruments/his-old-cell-is-keyed-on-head.mjs
+             round421-instruments/grade-the-420-repair.mjs
+             round422-instruments/drive-his-421.mjs
+             round425-instruments/position-vs-property-confusion-matrix.mjs
+             round428-instruments/a-sentence-keyed-on-a-subset-publishes-past-its-own-gate.mjs
+        ADD  round429-instruments/does-any-other-instrument-retype-a-verdict-it-slices.mjs
+             round431-instruments/grade-his-convention-and-measure-the-reach.mjs
+        ADD  round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs
+             round441-instruments/key-the-silent-class-from-source.mjs
+        ADD  round464-instruments/grade-the-stop-condition.mjs
+        ADD  unit-464t2-keychoice-2026-10-28/grade-the-surface-predicate.mjs
+        ADD  unit-464t2-population-2026-10-28/grade-the-round-population.mjs
+        ADD  unit-464t2-reaim-2026-10-28/grade-the-credit-key.mjs
+        ADD  unit-464t2-reaim-2026-10-28/recon-credit-provenance.mjs
+        ADD  unit-464t2-surface-2026-10-28/recon-run-length-and-cure.mjs
+             unit-464vac-2026-10-31/grade-cure.mjs
+
+  GREEN CRIPPLEFIG    CRIPPLE=nospan moved the HEADLINE FIGURE: both-in-span 0 → 5 (threshold: 0 → 5 at depth 1). The zero IS produced by the span restriction, not by the arms
+tally:
+  GREEN GBOOT
+  GREEN GLIFT
+  GREEN GINSPANTEXT
+  GREEN GARMS
+  GREEN P6REPRO
+  UNRUN P1KPREFUSED
+  GREEN P8PARENCAUSE
+  GREEN P7KPSPAN
+  GREEN P2RATE
+  GREEN P11KPINSPAN
+  GREEN P11NEGV1
+  GREEN P4ADDARM
+  GREEN CRIPPLEFIG
+
+VERDICT: GREEN-WITH-UNRUN — 12 GREEN · 0 RED · 1 UNRUN of 13 legs  [SUBJ_PIN=268457d1 POP_PIN=0ae48068 ARM=repaired CRIPPLE=nospan DEPTH=1]
+UNRUN legs are NOT passes: P1KPREFUSED

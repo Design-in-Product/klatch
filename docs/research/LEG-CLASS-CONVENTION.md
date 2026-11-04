@@ -1,10 +1,23 @@
 # Leg-class convention — PIN, GATE, CROSS-STATE
 
+**v1.7, 2026-11-04.** Daedalus, from `docs/research/unit-464kpspan-2026-11-04/`, on Theseus's §7
+routing. The **label stands** — his hand read of all 11 candidates found **0 conjunct pairs with
+disagreeing figures**. But the **line** v1.6 published it on has **no known positive**: the in-span
+filter is **0 of 670** tree-wide, and it **refuses a repaired version of this document's own
+blocking KP** — which turns out not to be a leg site at all (0 sites; the walker is a balanced-paren
+slicer and the KP's `check(` never closes). So v1.6's "read it as a FLOOR" is **not strong enough
+for the in-span sentences**: a floor implies the line can fire, and this one never has on a real
+leg. It is **alive but style-measuring**. Also: `SELECTOR_WIDE` arm `[3]` reads an **addition**-keyed
+anchor as history-keyed, so wide-arm selector counts **over-report** by an unmeasured amount —
+opposite in direction to §2.1h's narrow-arm under-report. Arm `[3]` is priced, not cured. §2.1i.
+
 **v1.6, 2026-11-03.** Daedalus, from `docs/research/unit-464presc-2026-11-03/`, closing the question
 v1.5 §2.1g left open and Theseus answered over the `unit-464` half. Over the **whole tree** — 310
 `.mjs`, 670 leg sites, 129 instrument directories — **no leg carries a selector anchor beside a
 movable anchor in one predicate**, at closure depth 1 or 5, with all five depth-1 candidates
-hand-read and cleared. So `history-keyed > movable` is relabelled a **prescription**: a rule this
+hand-read and cleared. **(v1.7, §2.1i: that in-span zero has no known positive and is 0 of 670 —
+read it as a line that has never fired on a real leg, not as a floor. The label is unaffected; it
+rests on Theseus's hand read of all 11.)** So `history-keyed > movable` is relabelled a **prescription**: a rule this
 document stipulates, measured by nothing, quoted as a rule and never as a finding. `movable >
 immovable` stays a measurement. **And the selector detector that produced the zeros is blind to the
 only two selector legs in the tree** — it finds 15 of the 40 files carrying a recency selector — so
@@ -483,6 +496,12 @@ The prescription above rests on the **wide** arm, which does see both known posi
 constructed known positive for the witness property itself — necessary, because neither of the real
 selector legs carries a `movable` conjunct, so the witness arm had nothing in this tree to fire on.
 
+> **v1.7 correction, §2.1i — that constructed known positive did NOT cover the in-span line.** It
+> was passed to the **candidate** classifier, which takes raw text; the in-span filter is keyed on a
+> **span**, and the KP yields **0 sites** under this document's own walker, so it has no span to
+> refuse. Repaired, its span is refused while its closed text is accepted. The sentence above is
+> true of the **candidate arm** only. Corrected forward, not retro-edited, per §2.1e.
+
 ### MEASURED-BLOCK-V16
 
 ```
@@ -502,6 +521,85 @@ cripple (population re-keyed to the censused surface), threshold = a FIGURE must
   and the 4 reds are the finding: both known positives fall OUTSIDE that surface
 census-surface correction: the authorship selector ADMITS 19 dirs / 52 .mjs; the surface actually
   CENSUSED is 18 / 50, the census excluding its own directory — 16.2% of the tree's 309 .mjs
+```
+
+### 2.1i The line the prescription rests on has NO KNOWN POSITIVE — it is not a floor, and this is a stronger warning than §2.1h's
+
+**v1.7, Daedalus.** `unit-464kpspan-2026-11-04/`, drives 1–4, routed to me by Theseus's 11/03 STOP
+memo §7 rather than written into my section by him. Subject pin `268457d1`, population pin
+`0ae48068`. Every key lifted from committed source and evaluated, never retyped; the bootstrap
+slicer checked byte-identical against the subject's own `sliceFrom` on all 13 slices.
+
+§2.1h's standing instruction says to read every *"the selector arm is reached 0 times"* sentence here
+as a **FLOOR**. That instruction is right and it stays. **It is not strong enough for the line the
+prescription actually rests on**, and the difference matters:
+
+> A **FLOOR** says: this line can fire, it fired zero times here, and it may fire more often
+> elsewhere. **The in-span line is not that.** It has **no known positive among real legs**, a
+> **0.0% tree-wide rate (0 of 670)**, and it **refuses a repaired version of this document's own
+> blocking known positive**. A floor still implies the line can fire on a real leg. This one never
+> has.
+
+**Read every in-span sentence — "both anchors in the predicate", "0 real witnesses" — as a line with
+no known positive, not as a floor and not as a zero.** It is alive but it measures **coding style**:
+in a tree whose legs compare hoisted `const` operands, a predicate essentially never contains an
+anchor literal. The anchors sit on the **binding** lines.
+
+**And the known positive §2.1h cites did not cover this line.** The v1.6 paragraph above says the
+prescription rests on the wide arm "plus a constructed known positive for the witness property
+itself." That KP was passed to the **candidate** classifier, which takes raw **text**. The in-span
+filter is keyed on a **span**, and the KP **is not a leg site at all** — the site walker is a
+balanced-paren slicer and the KP's `check(` never closes, so it yields **0 sites** and has no span to
+refuse. **The guard this document built against a vacuous zero was keyed on something weaker than
+the thing it guarded.** That is my defect, found by Theseus and measured here.
+
+Repairing the KP's parens and nothing else yields exactly 1 site, whose **span** is refused
+(`sel=false mov=false both=false`) while its **closed text** is accepted (`wideWitness=true`). So
+the refusal is real and it is about where authors put anchors, not about whether the property exists.
+
+**What is NOT weakened.** The **label** stands. `history-keyed > movable` is a prescription because
+Theseus **hand-read all 11 candidates** (`unit-464inspan-2026-11-03/HAND-READ-11.tsv`) and found **0
+conjunct pairs with disagreeing figures**. The label rests on that hand read, **not** on the in-span
+filter. "The invariant is vacuous" and "the conclusion is false" are different claims, and only the
+first is established.
+
+**A second standing instruction, narrower and new.** `SELECTOR_WIDE` arm `[3]`
+(`/--format=%[hH][\s\S]{0,240}?['"`]--['"`]/`) **cannot tell "newest commit touching the path" from
+"the commit that ADDED the path"** — `.pop()` on a newest-first list is the oldest entry. So it reads
+a **stable** anchor as history-keyed. **A wide-arm selector count in this document is an
+over-report by an unmeasured amount**, in the opposite direction to §2.1h's narrow-arm under-report.
+Quoting either arm's count without naming which arm it is will be wrong one way or the other.
+
+Arm `[3]` is **not cured here**, deliberately: the prescription rests on the wide arm, so tightening
+it moves the figure the label is published on. The cure is **priced** instead — see the block below.
+
+### MEASURED-BLOCK-V17
+
+```
+the in-span filter (census-presc.mjs:366-367), over all 670 leg sites at 0ae48068:
+                              span (published)   closed text (cripple)
+  sel-in-span                        3  (0.4%)        16  (2.4%)
+  mov-in-span                       11  (1.6%)        76  (11.3%)
+  either                            14  (2.1%)        87  (13.0%)
+  BOTH — the published invariant      0  (0.0%)         5  (0.7%)   <- cripple REACHED, 0 -> 5
+  member lists recorded, not counts; union and intersection checked for consistency
+this document's own blocking KP, through the two arms:
+  KP_TEXT walked by the site walker   0 SITES      <- no span to refuse; P1 UNRUNNABLE as registered
+  one missing `)` appended (+1 char)  0 -> 1 sites <- the unbalanced paren IS the cause
+  repaired KP, span                   sel=false mov=false both=false   REFUSED by the in-span line
+  repaired KP, closed text            wideWitness=true                 ACCEPTED by the candidate arm
+is the in-span line DEAD or just unexercised? — both anchors INLINED in one predicate:
+  constructed positive                both=true   MOVABLE arms firing [2,3] of 5
+  matched negative (corrected)        both=false  MOVABLE arms firing []    of 5
+  => ALIVE. the 0 of 670 measures CODING STYLE, not the absence of the property
+SELECTOR_WIDE arm [3], by ARM INDEX:
+  addition-keyed line (.pop() = oldest)   arms [3]     <- a STABLE anchor read as history-keyed
+  real recency line                       arms [0,3]
+price of narrowing arm [3], measured BEFORE any cure, and NOT applied:
+  wide-selector files 40 · held ONLY by arm [3] 18 (45%) · of those, containing --diff-filter=A 8
+  the 8 is a FILE-LEVEL co-occurrence, NOT an attribution — a flag for hand reading
+reproduction gate (blocking, ran before any figure above was reported):
+  310 .mjs · 670 leg sites · 5 wide candidates at depth 1 · 40 wide-selector files   all exact
 ```
 
 ### 2.1a Why the hazard count survived a key this wrong

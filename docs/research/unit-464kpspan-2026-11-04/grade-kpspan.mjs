@@ -447,10 +447,14 @@ check('P2RATE',
 // [[feedback_an_instrument_does_not_census_its_own_source]]
 const KP_INSPAN_POS =
   "check('GKPINSPAN', g(['log', '-1', '--format=%H', '--', SUBJECT]) === cell(readFileSync(join(LIVE, 'map.tsv'), 'utf8')),";
-// Matched negative: SAME text, the MOVABLE anchor swapped for a pinned rev. Only the movable anchor
-// changes, so a verdict flip is attributable to that one edit.
-const KP_INSPAN_NEG =
+// Matched negative, CORRECTED per addendum 2 (P11). drive2's negative still read mov=true: I swapped
+// `join(LIVE, …)` for a pinned path and left `cell(` in place, which is MOVABLE_WIDE arm [3] in its
+// own right. The criterion is NOT "one character changed" — it is that the negative differs in
+// exactly the PROPERTY under test. [[feedback_a_guard_on_identity_does_not_guard_value]]
+const KP_INSPAN_NEG_V1 =   // kept, as the control that FAILED — drive2's text, verbatim
   "check('GKPINSPAN', g(['log', '-1', '--format=%H', '--', SUBJECT]) === cell(readFileSync(join('/pinned/0ae48068', 'map.tsv'), 'utf8')),";
+const KP_INSPAN_NEG =      // P11: every MOVABLE_WIDE arm removed, selector anchor retained
+  "check('GKPINSPAN', g(['log', '-1', '--format=%H', '--', SUBJECT]) === readFileSync(join('/pinned/0ae48068', 'map.tsv'), 'utf8'),";
 
 const posSel = SELECTOR_WIDE.some((r) => r.test(KP_INSPAN_POS));
 const posMov = MOVABLE_WIDE.some((r) => r.test(KP_INSPAN_POS));
@@ -458,16 +462,28 @@ const posBoth = inSpanFilter(SELECTOR_WIDE, MOVABLE_WIDE, [{ span: KP_INSPAN_POS
 const negSel = SELECTOR_WIDE.some((r) => r.test(KP_INSPAN_NEG));
 const negMov = MOVABLE_WIDE.some((r) => r.test(KP_INSPAN_NEG));
 const negBoth = inSpanFilter(SELECTOR_WIDE, MOVABLE_WIDE, [{ span: KP_INSPAN_NEG }]).length === 1;
+const negV1Mov = MOVABLE_WIDE.some((r) => r.test(KP_INSPAN_NEG_V1));
 
-console.log('P3 — the known positive the in-span filter never had (both anchors INLINED in one predicate):');
-console.log(`    positive (inlined HEAD-ish movable) : sel=${posSel}  mov=${posMov}  both=${posBoth}`);
-console.log(`    matched negative (movable → pinned) : sel=${negSel}  mov=${negMov}  both=${negBoth}`);
+// PER-ARM, not in aggregate: an arm I did not think about must not be able to hide inside a true
+// conjunction. [[feedback_a_joined_string_comparison_cannot_see_an_empty_member]]
+const movArmsPos = MOVABLE_WIDE.map((r, i) => (r.test(KP_INSPAN_POS) ? i : -1)).filter((i) => i >= 0);
+const movArmsNeg = MOVABLE_WIDE.map((r, i) => (r.test(KP_INSPAN_NEG) ? i : -1)).filter((i) => i >= 0);
+const movArmsNegV1 = MOVABLE_WIDE.map((r, i) => (r.test(KP_INSPAN_NEG_V1) ? i : -1)).filter((i) => i >= 0);
+
+console.log('P3/P11 — the known positive the in-span filter never had (both anchors INLINED in one predicate):');
+console.log(`    positive  (both inlined)        : sel=${posSel}  mov=${posMov}  both=${posBoth}   MOVABLE arms firing [${movArmsPos}] of ${MOVABLE_WIDE.length}`);
+console.log(`    negative V1 (drive2, FAILED)    : mov=${negV1Mov}                     MOVABLE arms firing [${movArmsNegV1}] — \`cell(\` was still there`);
+console.log(`    negative P11 (corrected)        : sel=${negSel}  mov=${negMov}  both=${negBoth}   MOVABLE arms firing [${movArmsNeg}] of ${MOVABLE_WIDE.length}`);
 console.log('');
-check('P3KPINSPAN', posBoth === true && negBoth === false && negSel === true,
+check('P11KPINSPAN',
+  posBoth === true && negBoth === false && negSel === true && movArmsNeg.length === 0,
   `the in-span filter is ALIVE, not dead: a predicate with both anchors inlined reads both=true, ` +
-  `and its matched negative — one edit, the movable anchor swapped for a pinned rev — reads ` +
-  `both=false while the selector arm still fires (sel=${negSel}). So the tree-wide 0 measures ` +
-  `CODING STYLE (anchors sit on binding lines), not the absence of the property`);
+  `and the CORRECTED matched negative — every one of the ${MOVABLE_WIDE.length} MOVABLE_WIDE arms ` +
+  `absent (firing: [${movArmsNeg}]), selector anchor retained (sel=${negSel}) — reads both=${negBoth}. ` +
+  `So the tree-wide 0 measures CODING STYLE (anchors sit on binding lines), not the absence of the property`);
+check('P11NEGV1', negV1Mov === true && movArmsNegV1.length > 0,
+  `drive2's negative is retained as a FAILED control and still fails: MOVABLE arms [${movArmsNegV1}] ` +
+  `fire on it, so it was a second positive, not a matched negative — the RED it produced was correct`);
 
 // ───────── P4: his §5 — does my wide selector arm read an ADDITION-keyed anchor as history-keyed?
 const ADD_LINE = "const added = g(['log','--diff-filter=A','--format=%h','--',H396]).trim().split('\\n').filter(Boolean).pop();";

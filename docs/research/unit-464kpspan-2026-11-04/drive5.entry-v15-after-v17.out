@@ -1,0 +1,8 @@
+   ok   GTSVFROZEN   HAND-AXES-13.tsv is byte-identical at the pin (6f830c72) and in the worktree (6f830c72) — the @194 why cell is corrected in the document, not retro-edited
+   ok   GENTRY       §2.1g is 17229 bytes, carries its MEASURED-BLOCK, and the document header announces v1.5
+   ok   GCLAIMS      12 of 12 published figures found verbatim in drive5's recording
+   ok   GHKNOOP      history-keyed demoted only: 4 changed lines (2 pairs), 0 legs other than GP3ORDER's own echo, 0 summary-line changes — and GP3ORDER's two lines differ only in the echoed ORDER, both still ok with "0 departures of 5"
+   ok   GHKECHO      both sides of GP3ORDER's changed line read "0 departures of 5" under the demoted order — the figure does not move, so nothing in this unit reads history-keyed > movable
+   ok   GPKREACHED   20 named legs · full reversal flips 3 [GP3ORDER, GP4SURVIVE, GP4COINCIDE] over 26 changed lines · history-keyed demoted flips 0 — the legs DO read the order, so GHKNOOP is a measured no-op and not a dead switch
+
+GREEN — 6 of 6 legs ok
