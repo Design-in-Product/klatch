@@ -1,0 +1,23 @@
+unit-464cons — cripple-delta.txt
+computed by grade-cons.mjs --cripple=flagkey; POP_PIN=0ae48068 SUBJ_PIN=268457d1 HIS_REC=40015d90
+
+ARM [3] FALSE-POSITIVE SET, two ways of keying it:
+  keyed on MEASURED MOVEMENT (my committed hand read):   FP-ONLY 7 of 40 files
+  keyed on the --diff-filter=A FLAG (the cripple):        FP-ONLY 8 of 40 files
+
+COUNT DELTA:      7 -> 8   (+1)
+MEMBERSHIP DELTA: 3 file(s) wrong — 1 lost, 2 gained
+
+LOST by the flag key (really stable; a cure keyed on the flag cannot drop them, so the
+false positive SURVIVES the cure):
+  - unit-464vac-2026-10-31/grade-cure.mjs
+
+GAINED by the flag key (really R-RETAINING; a cure keyed on the flag drops them and loses a
+live history-keyed reading):
+  + round429-instruments/does-any-other-instrument-retype-a-verdict-it-slices.mjs
+  + unit-464t2-population-2026-10-28/grade-the-round-population.mjs
+
+READING: the two keys disagree on 3 of the 18 arm-[3]-only files while their COUNTS differ by
+only 1. A count that is nearly right over a member list that is wrong is the exact failure the
+11/04 START fire refused to publish when it recorded its 8 as a co-occurrence rather than an
+attribution.

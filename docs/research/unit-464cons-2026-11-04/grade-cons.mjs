@@ -15,7 +15,7 @@
 // nothing under docs/research/ is written by this file.
 
 import { execFileSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = '/Users/xian/Development/klatch-worktrees/daedalus';
@@ -87,11 +87,23 @@ try {
 } catch (e) {
   die(`the subject's own sliceFrom does not parse when lifted: ${e.message}`);
 }
-const bootDisagree = LIFTS.filter(([label, start, end]) =>
-  subjSliceFrom(subjSrc, start, end, label) !== lifted[label]).map(([l]) => l);
-check('GBOOT', bootDisagree.length === 0,
+// ADDENDUM 2 §1 REPAIR. drive1 compared the subject's return value — an OBJECT, `{ text, lines }`
+// at census-presc.mjs:64-73 — to my bootstrap's STRING, so all three slices read as disagreements
+// and the printed reason was false. It failed CLOSED (a mis-keyed check that can only go RED
+// cannot launder a bad lift), but a RED with a false reason is still a false reason. The SHAPE is
+// asserted first, so a future change of return type is a RED that says so.
+// [[feedback_a_guard_on_identity_does_not_guard_value]] [[feedback_sibling_readers_with_different_kind_models]]
+const probe = subjSliceFrom(subjSrc, ...LIFTS[0].slice(1), LIFTS[0][0]);
+const shapeOk = probe !== null && typeof probe === 'object'
+  && typeof probe.text === 'string' && typeof probe.lines === 'number';
+const textOf = (v) => (shapeOk ? v.text : v);
+const bootDisagree = !shapeOk ? LIFTS.map(([l]) => l)
+  : LIFTS.filter(([label, start, end]) =>
+      textOf(subjSliceFrom(subjSrc, start, end, label)) !== lifted[label]).map(([l]) => l);
+check('GBOOT', shapeOk && bootDisagree.length === 0,
   `the subject's OWN sliceFrom, lifted and re-run over the same ${LIFTS.length} anchors, agrees with ` +
-  `my bootstrap byte-for-byte (disagreements: ${bootDisagree.length ? bootDisagree.join(',') : 'none'})`);
+  `my bootstrap byte-for-byte on the TEXT it returns (return shape ` +
+  `{text:string,lines:number} = ${shapeOk}; disagreements: ${bootDisagree.length ? bootDisagree.join(',') : 'none'})`);
 
 let SELECTOR_WIDE, MOVABLE_WIDE;
 try {
@@ -320,20 +332,37 @@ console.log(`  P8MOVED — selections evaluated twice, at ${POP_PIN} and at HEAD
 // GMOVEDKP: the test's own known positive and matched negative, on a declared path that WAS
 // touched in the interval. A differential test that cannot detect a difference proves nothing
 // about the rows it calls stable. [[feedback_a_known_positive_must_carry_the_property_not_an_analogy]]
-const KP_PATH = SUBJ_REL;
-const newestOf = (rev, p) => ((gitq(['log', '--format=%H', rev, '--', p]) ?? '').trim().split('\n').filter(Boolean)[0] ?? null);
+// ADDENDUM 2 §2 REPAIR, in two parts. drive1 keyed the matched negative on the SUBJECT, and the
+// subject's directory does not exist at POP_PIN (`ls-tree` empty; `merge-base --is-ancestor
+// 268457d1 0ae48068` exits 1 — the subject pin is NEWER than the population pin). `oldestOf` came
+// back null at both ends and `null !== null` is false, so an ABSENCE printed as a disagreement.
+//   (1) the negative is now drawn FROM THE MEASUREMENT — arm3Only[0], which exists at the pin by
+//       construction — rather than typed; and
+//   (2) resolvability is asserted at BOTH revs first, so `moved`, `stable` and `unresolvable` are
+//       three distinguishable findings instead of two.
+// [[feedback_a_false_false_row_cannot_be_told_from_an_untouched_defect]] [[feedback_a_hand_typed_kp_is_not_a_slice]]
+const KP_PATH = arm3Only[0];
 const oldestOf = (rev, p) => ((gitq(['log', '--format=%H', '--reverse', rev, '--', p]) ?? '').trim().split('\n').filter(Boolean)[0] ?? null);
 const kpCount = (rev) => (gitq(['log', '--format=%H', rev, '--', 'docs/research/']) ?? '').trim().split('\n').filter(Boolean).length;
+const resolves = (rev, p) => (gitq(['ls-tree', '--name-only', rev, '--', p]) ?? '').trim() !== '';
 const kpMoved = kpCount(POP_PIN) !== kpCount(HEAD);
-const kpNegPin = oldestOf(POP_PIN, KP_PATH), kpNegHead = oldestOf(HEAD, KP_PATH);
-const kpNegStable = kpNegPin !== null && kpNegPin === kpNegHead;
-check('GMOVEDKP', kpMoved && kpNegStable,
-  `the test's own KP and matched negative: a full-history COUNT over docs/research/ reads ` +
-  `${kpCount(POP_PIN)} at the pin and ${kpCount(HEAD)} at HEAD (moved=${kpMoved}) — so the instrument ` +
-  `can see a difference; and the OLDEST commit of ${shortOf(KP_PATH)} is ` +
-  `${String(kpNegPin).slice(0, 8)} at both revs (stable=${kpNegStable}) — so it does not report ` +
-  `differences that are not there`);
-if (!kpMoved) die('the differential test cannot detect a known difference — every "stable" below would be uninterpretable');
+const negAtPin = resolves(POP_PIN, KP_PATH), negAtHead = resolves(HEAD, KP_PATH);
+if (!negAtPin || !negAtHead) {
+  unrun('GMOVEDKP', `the matched negative's path ${shortOf(KP_PATH)} does not resolve at ` +
+    `${!negAtPin ? POP_PIN : ''}${!negAtPin && !negAtHead ? ' and ' : ''}${!negAtHead ? 'HEAD' : ''} — ` +
+    `UNRUN, not RED: an absent path is not a stable selection and not a moved one`);
+  if (!kpMoved) die('the differential test cannot detect a known difference');
+} else {
+  const kpNegPin = oldestOf(POP_PIN, KP_PATH), kpNegHead = oldestOf(HEAD, KP_PATH);
+  const kpNegStable = kpNegPin !== null && kpNegPin === kpNegHead;
+  check('GMOVEDKP', kpMoved && kpNegStable,
+    `the test's own KP and matched negative, both resolvable at both revs: a full-history COUNT over ` +
+    `docs/research/ reads ${kpCount(POP_PIN)} at the pin and ${kpCount(HEAD)} at HEAD (moved=${kpMoved}) — ` +
+    `so the instrument can see a difference; and the OLDEST commit of ${shortOf(KP_PATH)} (taken from the ` +
+    `measurement as arm3Only[0], not typed) is ${String(kpNegPin).slice(0, 8)} at both revs ` +
+    `(stable=${kpNegStable}) — so it does not report differences that are not there`);
+  if (!kpMoved || !kpNegStable) die('the differential test failed its own KP or matched negative — every "stable" below would be uninterpretable');
+}
 
 // (a) THE DISPUTED SITE, evaluated as its own consumer evaluates it: the count of distinct
 //     `unit-*` directory creation rows, which the subject publishes as measurement M6.
@@ -386,6 +415,32 @@ if (CRIPPLE === 'flagkey') {
   console.log(`    hand-read FP-ONLY ${myPrice.fpOnly.length} -> flag-keyed FP-ONLY ${crippledFp.length}`);
   console.log(`    members LOST (really stable, invisible to the flag):   ${lost.join(', ') || 'none'}`);
   console.log(`    members GAINED (really R-RETAINING, dropped wrongly):  ${gained.join(', ') || 'none'}`);
+  // The delta is WRITTEN, computed, rather than eyeballed off the console — into this unit's own
+  // directory only. [[feedback_exit_0_without_a_summary_line_is_not_a_measurement]]
+  writeFileSync(new URL('./cripple-delta.txt', import.meta.url), [
+    'unit-464cons — cripple-delta.txt',
+    `computed by grade-cons.mjs --cripple=flagkey; POP_PIN=${POP_PIN} SUBJ_PIN=${SUBJ_PIN} HIS_REC=${HIS_REC}`,
+    '',
+    'ARM [3] FALSE-POSITIVE SET, two ways of keying it:',
+    `  keyed on MEASURED MOVEMENT (my committed hand read):   FP-ONLY ${myPrice.fpOnly.length} of ${selFiles.length} files`,
+    `  keyed on the --diff-filter=A FLAG (the cripple):        FP-ONLY ${crippledFp.length} of ${selFiles.length} files`,
+    '',
+    `COUNT DELTA:      ${myPrice.fpOnly.length} -> ${crippledFp.length}   (${crippledFp.length - myPrice.fpOnly.length >= 0 ? '+' : ''}${crippledFp.length - myPrice.fpOnly.length})`,
+    `MEMBERSHIP DELTA: ${lost.length + gained.length} file(s) wrong — ${lost.length} lost, ${gained.length} gained`,
+    '',
+    'LOST by the flag key (really stable; a cure keyed on the flag cannot drop them, so the',
+    'false positive SURVIVES the cure):',
+    ...lost.map((f) => `  - ${f}`),
+    '',
+    'GAINED by the flag key (really R-RETAINING; a cure keyed on the flag drops them and loses a',
+    'live history-keyed reading):',
+    ...gained.map((f) => `  + ${f}`),
+    '',
+    'READING: the two keys disagree on 3 of the 18 arm-[3]-only files while their COUNTS differ by',
+    'only 1. A count that is nearly right over a member list that is wrong is the exact failure the',
+    "11/04 START fire refused to publish when it recorded its 8 as a co-occurrence rather than an",
+    'attribution.',
+  ].join('\n') + '\n');
   check('P9CRIPPLE', lost.length + gained.length > 0,
     `the cripple is REACHED on a FIGURE: membership changes by ${lost.length + gained.length} file(s) ` +
     `(${lost.length} lost, ${gained.length} gained) while the COUNT moves ${myPrice.fpOnly.length} -> ` +
