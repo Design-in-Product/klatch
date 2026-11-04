@@ -20,7 +20,39 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/argus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/argus`, per-worktree git identity `Argus (Klatch)`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope restored per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-04 ~09:0x PT (START fire — census-only no-op, 13 new commits read none mine, needs-you dropped to 1).
+- **Updated:** 2026-11-04 ~13:3x PT (WORK fire — census-only no-op, 15 new commits read none mine, needs-you unchanged at 1).
+  Checkpoint own last commit `78d65beff` (11/04 START fire, 09:03 PT). 15 new commits since,
+  author-checked (Daedalus 11, Theseus 3, Calliope 1), none mine: Daedalus's `unit-464kpspan`
+  chain (pre-registration through drives 1-5 + two addenda — his own blocking KP has no leg
+  site under his walker, P7/P8 registered before drive2, convention bumped to v1.7) plus mail
+  to Theseus/xian cc Janus/**Argus**/Calliope/Iris, Theseus's `unit-464addarm` chain
+  (pre-registration through drive3 + hand reads of all 20 arm-[3] sites + RESULTS — his 8 and
+  Theseus's 8 are the same size but differ by one member each way, no `--diff-filter=A` cure
+  reaches the whole false-positive set) plus mail to Daedalus/xian cc Janus/**Argus**/Calliope/
+  Iris, Daedalus's `unit-464cons` chain (pre-registration + hand read + addendum — a second
+  independent hand read of Theseus's 20 sites, one disagreement settled as an unstated free
+  variable via P8MOVED), and Calliope's 11/04 MID coord+log no-op. `git diff --dirstat
+  78d65beff..HEAD` **100% under `docs/`** (logs, mail, three new `unit-464*-2026-11-04/`
+  dirs); `git diff --stat 78d65beff..HEAD -- packages/ scripts/` empty. **Mail:** two new
+  local files this window, both headers and bodies checked directly — Argus on `cc:` only in
+  both, no body bucket naming this seat, confirmed no action. Standing open thread addressed
+  to this seat (`theseus-to-argus-daedalus-...-your-unclaimed-110-is-zero...-2026-10-27.md`)
+  re-checked: unchanged, still open on Daedalus's unclosed C4 half, not this seat's call to
+  close unilaterally. All four cross-repo mailboxes re-fetched and content-grepped for
+  "klatch"/"argus" against the 09:03 checkpoint: `designinproduct` 0 new in-window;
+  `mediajunkie` 0 new; `dispatch` 0 new; `piper-morgan-product/mailboxes` ~40 new (F1/onboarding/
+  GitHub-leak traffic), 0 klatch/argus hits. Nothing owed from any. **Standing blockers
+  re-derived fresh:** Managed Agents smoke-run — no `ma-smoke/*` branch anywhere, named blocker
+  on xian, unchanged. Rollup read directly: still v174, needs-you still **1**, matching this
+  morning exactly. **Gate re-derived fresh:** `npm run typecheck` clean ×4 workspaces; `npm
+  test -w packages/server` **140 files · 2186 passed · 1 skipped (2187)**, byte-identical;
+  `npm test -w packages/client` **26 passed|13 skipped (39) · 333 passed|13 skipped (346)**,
+  byte-identical; `node scripts/sweep-probes.mjs --census` **153 probe files, 43 swept/110
+  deferred, CENSUS OK**, byte-identical. **Needs-you:** unchanged at 1. Two consecutive checks
+  (mail re-ls, cross-repo fetches) found nothing further unblocked — fire closed bounded.
+  **Drain:** census, mail (local + 4 cross-repo), gate, and standing-blocker check all drained
+  this fire; nothing deferred. Log: `docs/logs/2026-11-04-argus-log.md`.
+- **Updated (previous):** 2026-11-04 ~09:0x PT (START fire — census-only no-op, 13 new commits read none mine, needs-you dropped to 1).
   Checkpoint own last commit `1a99e797` (11/03 STOP fire, 18:04 PT). 13 new commits since,
   author-checked (Calliope 2, Iris 2, Pard (Mediajunkie) 1, Theseus 7, Claude 1), none mine:
   Theseus's `unit-464inspan` chain (pre-registration through drive1-5 + addendum — the in-span
