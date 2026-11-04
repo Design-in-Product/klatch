@@ -1,0 +1,59 @@
+--- [MEAS] the disputed selection, evaluated at two revs
+  key: --diff-filter=A --name-only --reverse <rev> -- docs/research/, first-appearance dedup (re-implemented from docs/research/unit-464t2-population-2026-10-28/grade-the-round-population.mjs@0ae48068 lines 167-201)
+  POP  0ae48068: rows=131 unit-dir=40 round-dir=91 maxDir=round464-instruments dirsAfterPin=0 unitsAfterPin=40
+  HEAD cc444f7a: rows=136 unit-dir=45 round-dir=91 maxDir=round464-instruments dirsAfterPin=0 unitsAfterPin=45
+
+--- [MEAS] consumption sites of that one selection, movability MEASURED at the two revs
+  S1 PUBLISHED-FIGURE MOVED    40 -> 45                   M6 published total `of ${unitDirRows.length} total`
+  S2 PUBLISHED-FIGURE MOVED    40 -> 45                   M6 published count `unitsCreatedAfterMaxDir`
+  S3 REASON-STRING    MOVED    131 -> 136                 G1 detail string `rows=${rows.length}`
+  S4 PREDICATE        stable   true -> true               G1 predicate `rows !== null`
+  S5 PREDICATE        stable   true -> true               F2 predicate `unitsCreatedAfterMaxDir >= 1`
+  S6 PUBLISHED-FIGURE stable   round464-instruments -> round464-instruments M4 published `maxDirRow.name`
+  key: movability = does the value this site consumes differ between 0ae48068 and cc444f7a
+  distinct (site-kind / movability) classes present: 4 -> PREDICATE/stable , PUBLISHED-FIGURE/MOVED , PUBLISHED-FIGURE/stable , REASON-STRING/MOVED
+
+--- [MEAS] P3SAT asymmetry
+  F2 predicate (>=1): true @0ae48068 -> true @cc444f7a
+  figure under it   : 40 -> 45  (extent 40 -> 45)
+  INTERPRETABLE: YES — the figure moved over the same interval, so a stable verdict is evidence of SATURATION
+
+--- [MEAS] P4GATE — where in the G1 call each token actually lives
+  key: leg(id, kind, value, why, detail); arg index 2 is the PREDICATE, 3 and 4 are reason strings. Top-level comma split over docs/research/unit-464t2-population-2026-10-28/grade-the-round-population.mjs@0ae48068
+  G1 args parsed      : 5
+  'rows.length'       : REASON-STRING
+  'rows !== null'     : PREDICATE
+  CONTROL 'dirsNow.length > 0' : PREDICATE
+
+--- [MEAS] P5CENSUS — roundNNN-instruments, three keys, each printed with its count
+  POP  0ae48068 (a) tree entries under docs/research/ matching /^round\d+-instruments$/, no other condition : 91
+  POP  0ae48068 (b) of those, directories holding >=1 *.mjs at any depth                                    : 87
+  POP  0ae48068 (c) *.mjs blobs under those directories, recursive                                          : 191
+  POP  0ae48068 (d) (a)-(b), named                                                                          : round367-instruments, round368-instruments, round373-instruments, round461-instruments
+  HIS  bba2aa3c (a) tree entries under docs/research/ matching /^round\d+-instruments$/, no other condition : 91
+  HIS  bba2aa3c (b) of those, directories holding >=1 *.mjs at any depth                                    : 87
+  HIS  bba2aa3c (c) *.mjs blobs under those directories, recursive                                          : 191
+  HIS  bba2aa3c (d) (a)-(b), named                                                                          : round367-instruments, round368-instruments, round373-instruments, round461-instruments
+  his 11/03 table at bba2aa3c said dirs-with-.mjs=90 .mjs=195; his 11/04 P8NEGS at 0ae48068 said all-dirs=91
+
+--- [MEAS] P6HAND — my own reason lines
+  key: a row counts as NAMING a consumption site only if its HAND-ARM3 reason text identifies what consumes the selection (hand-read, one row per site)
+  rows read: 21   naming a consumption site: 11
+
+--- legs
+  GREEN P1REPRO   GATE     BLOCKING: the selection's unit-dir extent re-derived independently is 40 at the population pin and 45 at HEAD — his two figures, reproduced not retyped
+        detail: mine: 40@0ae48068 -> 45@cc444f7a; his targets 40/45
+  GREEN P2SITE    FINDING  ONE selection is consumed at >=3 distinct (site-kind / movability) classes, and at least one PREDICATE over it does not move while the figures over it do — so "does the selection move" is underdetermined by the selection alone
+        detail: classes=4 immovable-predicate=true
+  GREEN P3SAT     FINDING  F2's verdict is stable TRUE across an interval in which the figure it is derived from moved — a saturated threshold over a movable selection. Registered asymmetry: a stable verdict is evidence only BECAUSE the figure is measured to move; it is uninterpretable otherwise
+        detail: f2 stable-true=true figure-moved=true
+  GREEN P4GATE    FINDING  the `rows.length` the reply memo calls a gate lives in G1's DETAIL argument; G1's predicate over the selection is `rows !== null`, an existence check that cannot move however far the selection grows
+        detail: rows.length=REASON-STRING rows!==null=PREDICATE
+  GREEN P4CTL     CONTROL  CONTROL for P4GATE: a `.length` that IS in the predicate must read PREDICATE. Without this, a reader that calls every `.length` a reason string passes P4GATE vacuously
+        detail: dirsNow.length > 0 => PREDICATE (expected PREDICATE)
+  RED   P5CENSUS  FINDING  the 90-vs-91 is one tree under two conditions: (a) every roundNNN-instruments directory = 91, (b) those holding an instrument = 90, and the difference is exactly one named directory with no .mjs in it
+        detail: pop: a=91 b=87 c=191; his-pin: b=87 c=191; targets a=91 b=90 c=195
+  RED   P6HAND    FINDING  registered against my own work: <=8 of my 20 reason lines name a consumption site, i.e. the discipline this unit proposes is NOT already in place in my own table
+        detail: rows=21 naming=11 (registered ceiling 8)
+
+VERDICT RED legs=7 red=2 unrun=0 gate=GREEN

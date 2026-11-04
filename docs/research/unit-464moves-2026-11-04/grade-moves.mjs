@@ -311,9 +311,16 @@ leg('P5CENSUS', 'FINDING',
 // --- P6HAND: my own 20 reason lines, scored against me ---------------------
 let hand = null;
 if (existsSync(HAND_SITES)) {
+  // DEFECT, mine, caught by drive6's own output: the first version filtered only '#' lines and
+  // blanks, so the TSV's uncommented COLUMN HEADER was parsed as a 21st data row. P6HAND's
+  // predicate is a conjunction of `rows === 20` and `naming <= 8`, so a red could have been
+  // produced by my own parsing slip while printing a reason about the registered ceiling. A leg red
+  // for two reasons, one of them an artefact, cannot say which. The header row is now dropped by
+  // name and drive6's first recording is kept.
   hand = readFileSync(HAND_SITES, 'utf8').split('\n')
     .filter((l) => l.trim() && !l.startsWith('#'))
-    .map((l) => l.split('\t'));
+    .map((l) => l.split('\t'))
+    .filter((r) => r[0] !== 'site_id');
 }
 if (hand === null) {
   leg('P6HAND', 'FINDING', 'UNRUN',

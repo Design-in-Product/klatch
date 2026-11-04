@@ -1,0 +1,25 @@
+POST-HOC. Derived from HAND-SITES.tsv; not pre-registered, and not graded. No leg, no verdict.
+
+rows: 20
+
+            names a consumption site
+class          yes      no    total
+  R              10       1       11
+  A               0       8        8
+  O               1       0        1
+  W               0       0        0   (empty cell — nothing in this class on this corpus)
+  total          11       9       20
+
+off-pattern rows, named (the pattern being: names-a-consumer <-> class R):
+  class R with NO consumer named (1):
+    round420-instruments/his-old-cell-is-keyed-on-head.mjs#1  <- the subject's own comment, quoted — "the NEWEST rev ... whose blob carries the token"
+  class A WITH a consumer named (0):
+  class O rows at all (1), which the two-way pattern has no cell for:
+    round422-instruments/drive-his-421.mjs#1  [names=yes]  <- consumer: `curedAt = gradedHistory.find(r => r.startsWith('4adcc0bf'))`
+
+rows whose reason rests on the CALL'S OWN SHAPE (the key v1.8 2.1j declares known-wrong): 7
+  of those, classed A: 7 of 8 A rows
+  NOT a claim that those classes are wrong. It is a claim that their REASONS are keyed on
+  the flag rather than on consumption, so re-reading them at their consumption sites is
+  unmeasured work, not a correction. One of them has already flipped under that reading
+  (unit-464t2-population, by his P8MOVED and my drive1) and the rest have not been read.
