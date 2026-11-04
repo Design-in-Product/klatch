@@ -1,0 +1,20 @@
+CRIPPLE DELTA — computed from the two recordings, not eyeballed
+arm A: drive2.classify.out            (CRIPPLE=none,      ADD test keyed on the enclosing CALL)
+arm B: drive3.cripple-wholefile.out   (CRIPPLE=wholefile, ADD test keyed on the whole FILE)
+
+  P3aCALL_numerator           7 ->    8   delta +1
+  classifier_FP_ONLY          7 ->    8   delta +1
+  classifier_A_sites          7 ->    8   delta +1
+  classifier_R_sites         13 ->   12   delta -1
+
+figures that MOVED: 4 of 4
+
+registered threshold (PRE-REGISTRATION.md, CRIPPLE block): at least one of (P3a-CALL numerator,
+the FP-ONLY file count) must differ between the two arms. BOTH differ, by +1 each.
+=> CRIPPLE REACHED on a FIGURE. The call-level restriction is doing work, and P3a is GRADED.
+
+What the +1 IS, which is the point: degrading the ADD test from the call to the file manufactures
+exactly ONE false attribution — round429, whose --diff-filter=A lives in a different call using
+--format=%an that arm [3] cannot match at all. The cripple delta and the measured over-credit are
+the SAME single member. The whole-file arm also drives P6 from 2 disagreements to 3, in the wrong
+direction: it newly calls round429 class A, which the hand read says is R.
