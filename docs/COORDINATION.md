@@ -20,7 +20,42 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/argus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/argus`, per-worktree git identity `Argus (Klatch)`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope restored per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-03 ~18:0x PT (STOP fire — census-only no-op, four new mail files read, all cc-only or addressed elsewhere).
+- **Updated:** 2026-11-04 ~09:0x PT (START fire — census-only no-op, 13 new commits read none mine, needs-you dropped to 1).
+  Checkpoint own last commit `1a99e797` (11/03 STOP fire, 18:04 PT). 13 new commits since,
+  author-checked (Calliope 2, Iris 2, Pard (Mediajunkie) 1, Theseus 7, Claude 1), none mine:
+  Theseus's `unit-464inspan` chain (pre-registration through drive1-5 + addendum — the in-span
+  filter carrying the prescription label has no known positive, his blocking KP reads
+  both-in-span=false through its own filter, the filter's tree-wide positive rate is 0 of 670,
+  and the label holds on a hand read of 0 conjunct pairs of 11) plus RESULTS, mail
+  (Theseus→Daedalus, cc Janus/**Argus**/Calliope/Iris), a wrap-verification log, Calliope's
+  11/03 STOP (ground rules RULED, superseding the 9/24 ruling) and this morning's two START
+  coord+log no-ops (Iris, Calliope), plus the automated cross-pollination brief and Pard's
+  fire-depth report. `git diff --dirstat 1a99e797..HEAD` **100% under `docs/`**; `git diff
+  --stat 1a99e797..HEAD -- packages/ scripts/` empty. **Mail:** one new local file, read in
+  full and grepped for "argus" — Argus only on the header `cc:` line, no body bucket naming
+  this seat; confirmed cc-only, no action. The standing open thread addressed to this seat
+  (`theseus-to-argus-daedalus-...-your-unclaimed-110-is-zero...-2026-10-27.md`) re-read in
+  full: unchanged, still "nothing routed" per its own §1, still open on Daedalus's unclosed C4
+  half — not this seat's call to close a two-recipient thread unilaterally. All four cross-repo
+  mailboxes checked fresh via `git fetch` + content-grepped via `git log -p --since` against
+  the 18:04 checkpoint: `designinproduct` 0 new; `mediajunkie` 0 new; `dispatch` 2 new (routine
+  daily EOD syncs, content-grepped, 0 klatch/argus hits); `piper-morgan-product/mailboxes` ~20
+  new (F1/2098/2259/2265 routing traffic), content-grepped, 0 hits. Nothing owed from any.
+  **Standing blockers re-derived fresh:** Managed Agents smoke-run — no `ma-smoke/*` branch
+  anywhere (`git branch -a` and `git ls-remote --heads origin` both empty), named blocker on
+  xian, now day **15** (2026-10-20 → 2026-11-04, computed fresh, matches Calliope's same-morning
+  commit). Rollup is v174 (read directly): **needs-you 2 → 1** — item 2 (the ground-rules
+  question, parked 86 days) was RULED by xian via Janus on 11/03 and is now closed; nothing in
+  the 13 new commits is xian's to decide. **Gate re-derived fresh:** `lsof -i :3001` port free;
+  `npm run typecheck` clean ×4 workspaces; `npm test -w packages/server` **140 files · 2186
+  passed · 1 skipped (2187)**, byte-identical; `npm test -w packages/client` **26 passed|13
+  skipped (39) · 333 passed|13 skipped (346)**, byte-identical; `node scripts/sweep-probes.mjs
+  --census` **153 probe files, 43 swept/110 deferred, CENSUS OK**, byte-identical. **Needs-you:**
+  2 → 1 (reflects xian's own 11/03 ruling, not a new decision made here). Two consecutive
+  checks (mail re-ls, cross-repo fetches) found nothing further unblocked — fire closed
+  bounded. **Drain:** census, mail (local + 4 cross-repo), gate, and standing-blocker day-count
+  all drained this fire; nothing deferred. Log: `docs/logs/2026-11-04-argus-log.md`.
+- **Updated (previous):** 2026-11-03 ~18:0x PT (STOP fire — census-only no-op, four new mail files read, all cc-only or addressed elsewhere).
   Checkpoint own last commit `6c2c259f` (11/03 WORK fire, ~13:3x PT). 20 new commits since,
   author-checked (Calliope 1, Daedalus 10, Pard (Mediajunkie) 1, Theseus 8), none mine: three
   more `unit-464*` research chains (`unit-464outside`, `unit-464prec`, `unit-464presc` —
