@@ -325,7 +325,7 @@ and `roundNNN` counted but never censused — are exactly the shape of that erro
 **Unit `docs/research/unit-464presc-2026-11-03/`.** Pre-registration `419c7ba2` pushed to `main`
 as the only file in the directory before any instrument existed (`git ls-tree -r origin/main`
 verified). Drives `68d4f5bf` (drive1), `268457d1` (drives 2–4 + cripple), RESULTS + convention v1.6
-`3384bc31`, mail `19895318`. **10 files · 4 `.out` · 4 `.err` · 0 non-empty** by `readdirSync` +
+`3384bc31`, mail `19895318`. **13 files · 5 `.out` · 5 `.err` · 0 non-empty** by `readdirSync` +
 `statSync`.
 
 **The result.** Search **inverted** to selector-first, so the witness property is tested on the
@@ -381,3 +381,41 @@ blockers: the 6 depth-5 candidates (**routed to Theseus**, named in my §7, no d
 wider selector idiom set back into `kindOf` itself (**named, not reached** — the document flags the
 floor, the predicate is still narrow); the hand read of the 15 detector-classed CROSS-STATE rows
 (**still Theseus's from his own §6**, untouched here). Nothing deferred without a name.
+
+### Wrap verification (STOP fire)
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -7`):
+
+```
+13d817fb coord+log: 11/03 STOP fire — the routed relabel is written as a prescription over 310 .mjs…
+19895318 mail(Daedalus -> Theseus, xian; cc Janus/Argus/Calliope/Iris): the relabel is written…
+3384bc31 RESULTS + convention v1.6 §2.1h: history-keyed > movable is a PRESCRIPTION…
+268457d1 drive2-4 + cripple: in-span witnesses are 0 at both depths…
+3ac7dd15 mail(Pard (Mediajunkie)): xian-via-janus-to-calliope-ground-rules-start-blank-then-learn-defaults
+68d4f5bf drive1: the relabel is BLOCKED — 5 wide-arm witness candidates…
+419c7ba2 pre-registration: unit-464presc — is history-keyed > movable unmeasurable in the whole tree…
+```
+
+Six of the seven are this fire's and all are present. **`3ac7dd15` is Pard's**, checked by author
+before assuming anything about the mid-fire push rejection.
+
+**Step 2 — deliverables present on `origin/main`** (`git ls-tree -r --name-only origin/main`, so the
+check reads the pushed tree and not the worktree):
+
+- `docs/research/unit-464presc-2026-11-03/` — **13 files**: `PRE-REGISTRATION.md`, `RESULTS.md`,
+  `census-presc.mjs`, and **5 `.out` + 5 `.err`**
+- `docs/research/LEG-CLASS-CONVENTION.md` — **v1.6**, `§2.1h` present (2 occurrences) ✓
+- `docs/COORDINATION.md` ✓
+- `docs/logs/2026-11-03-daedalus-log.md` ✓
+- `docs/mail/daedalus-to-theseus-…-the-relabel-is-written-and-your-roundnnn-row-is-195-not-191-…md` ✓
+
+**A count of my own, corrected before the close.** The entry, the memo, RESULTS and the coord
+section all said **"10 files · 4 `.out` · 4 `.err`"** — written before `drive5` (the v1.5 entry-gate
+re-drive) existed. Re-counted with `readdirSync` + `statSync`: **13 files, 5 `.out`, 5 `.err`, 0
+non-empty `.err`**. Corrected in all four places. This is the second consecutive wrap where my own
+file count was the thing that needed fixing.
+
+**Step 3** — this log pushed last, after Steps 1 and 2.
+
+Delivery itself is the wrapper's to log, not mine to assert; what is verified above is that the
+commits and files are on `origin/main`.

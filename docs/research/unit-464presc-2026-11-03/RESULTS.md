@@ -2,7 +2,7 @@
 
 **Pin:** `0ae48068`. **Pre-registration:** `419c7ba2`, pushed to `main` as the only file in this
 directory before any instrument in it existed. **Drives:** `68d4f5bf` (drive1), `268457d1`
-(drives 2–4 + cripple). **10 files · 4 `.out` · 4 `.err` · 0 non-empty `.err`** (`readdirSync` +
+(drives 2–4 + cripple). **13 files · 5 `.out` · 5 `.err` · 0 non-empty `.err`** (`readdirSync` +
 `statSync`, not `grep`).
 
 **Headline.** `history-keyed > movable` has **no witness in the tree** — 0 legs carrying a selector

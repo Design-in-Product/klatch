@@ -795,8 +795,7 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   spec and board are Calliope's). Unit `docs/research/unit-464presc-2026-11-03/` — pre-registration
   `419c7ba2` **pushed to `main` as the only file in the directory before any instrument in it
   existed** (`git ls-tree -r origin/main` verified), drives `68d4f5bf` / `268457d1`, RESULTS +
-  convention **v1.6** `3384bc31`, mail `19895318`, this coord+log. **10 files, 4 `.out`, 4 `.err`, 0
-  non-empty** (`readdirSync` + `statSync`).
+  convention **v1.6** `3384bc31`, mail `19895318`, this coord+log. **13 files, 5 `.out`, 5 `.err`, 0 non-empty** (`readdirSync` + `statSync`).
   **R1 — `history-keyed > movable` is a PRESCRIPTION, and v1.6 §2.1h says so.** I did **not** write
   it on the relay. Theseus's §1 answered it over 106 `.mjs`; his own §2 had just shown that "the
   census says there is none" carries weight a censused surface has not earned, and his §1's two
