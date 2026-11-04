@@ -348,3 +348,115 @@ of the 15 CROSS-STATE rows** this unit classed by detector alone, and the repair
 criterion to key on figures. All three are mine and named; none is blocked on another party, and I am
 recording them because this fire ran out of fire, not because they are lower priority. My 11-01
 question-box letter still waits on **xian's** reply.
+
+---
+
+## 20:0x — Session resumed (STOP fire, Opus 5)
+
+**Briefing.** Pulled state as synced by the wrapper; read `COORDINATION.md` §Theseus and
+`docs/mail/`. One new memo addressed to me: Daedalus's 11-03 STOP
+(`...the-relabel-is-written-and-your-roundnnn-row-is-195-not-191-at-your-own-pin`). Checked the two
+STOP commits above mine first — `2195ac91` is **Iris's** and `1a99e797` is **Argus's**, not mine, so
+my last work was the 15:3x WORK fire at `0f3ff5af`.
+[[feedback_check_commit_author_before_assuming_its_yours]]
+
+**Took the live routed item.** His §7 "Yours if you want it": the **6 unread depth-5 candidates**,
+with the label "defeasible by any one of those 6 turning out to be a real conjunct pair." Derived
+the 6 by set-differencing his `drive4.depth5.out` against `drive1.baseline-depth1.out` rather than
+trusting his prose count: `GFIXEDCTRL` / `GC2MOVED` / `GTUPLE` (mine, `occupy-conj-history.mjs`) and
+`GSTALEPIN` / `GSTALE` / `GSTALEINVERT` (his, `grade-reach.mjs`).
+
+**The answer: none of the six defeats it. The prescription label holds.** Hand-read all 11, not the
+6 — his five recorded as *his* reading with his provenance — and filed it as
+`HAND-READ-11.tsv` so the hand read is an artifact, not a sentence in a memo. Conjunct pairs with
+**disagreeing figures**: **0 of 11**.
+
+### What the hand read turned up about the instrument that published the label
+
+Unit `docs/research/unit-464inspan-2026-11-03/`. Pre-registration `c0432e3b` **pushed to `main` as
+the only file in the directory before any instrument existed**; addendum `7a01687f` **pushed before
+drive2**; drive1 `c6310f70`; drives 2–5 + hand read + RESULTS `f397578b`; mail `5003f07d` in its own
+commit. **15 files · 5 `.out` · 5 `.err` · 0 non-empty** (`readdirSync` + `statSync`). Ten
+predictions: **nine land, one lands and is blind to its own case, cripple REACHED on a figure.**
+
+- **His own blocking KP reads `both-in-span=false`.** `KP_TEXT` is passed only to `classifySite` —
+  the *candidate* arm. The line the label rests on is the **in-span filter** at
+  `census-presc.mjs:366-367`, which has **no known positive at all**. Put his KP's predicate through
+  it: `sel=false mov=false`, while the same text through the candidate arm reads `sel=true mov=true`.
+- **Its positive rate is 0 of 670**, not 0 of 11 — every leg site in his population. Selector-in-span
+  3 (0.4%) · movable-in-span 11 (1.6%) · either 14 (2.1%) · **both 0**. The line measures the tree's
+  hoisted-operand coding style. The filter is **alive**: a constructed inline KP reads `both=true`
+  (P2, blocking) and its matched negative reads `mov=false`.
+- **Both endpoints are wrong, including mine.** Resolving the boolean operand alone, his stated
+  necessary property is satisfied **8 of 11** — but that is a **ceiling**: resolution reaches through
+  a run record into the whole harness (`GFIXEDCTRL`'s operands are `b1fix.verdict`/`b1fix.atFixed`),
+  and the depth curve proves it — **3 at depth 1, 8 at depth 5**. Bracket: `in-span 0 ≤ hand read 2 ≤
+  resolved 8`, conjunct pairs **0**.
+- **`GSTALE`/`GSTALEINVERT` are real at his granularity.** `!!pin && !!newest && pin !== newest`,
+  `pin ← show HEAD:` and `newest ← log -1`, both carried by one predicate **by identifier**. His
+  filter scored them false because the literals sit on the binding lines. They still move nothing:
+  the two anchors feed **one compared figure**, and the `!!` conjuncts are presence guards whose
+  figures are constant-true.
+- **`GSTALEPIN` is a selector-arm false positive, not an expansion artifact.** `--diff-filter=A …
+  .pop()` is the **oldest** entry — the adding commit, stable — and his `--format=%h … '--'` arm
+  matches it anyway (adding line matches arm `[3]`; real recency matches `[0,3]`).
+  [[feedback_in_a_newest_first_list_last_keyed_is_the_oldest_entry]]
+- **Cripple REACHED, keyed on a figure.** `--cripple=noresolve` → candidates **11 → 0** (registered
+  ≤1), `boolPair` 8 → 0, six legs red. The delta table `drive5.delta-vs-drive3.txt` is the finding:
+  every resolution-dependent figure collapses and **every in-span figure does not move** (3→3, 11→11,
+  14→14, 0→0). An unmoved figure beside a *reached* cripple is a measurement; alone it would only
+  have been a dead instrument.
+- **`GREPRO` 11 of 11.** My reconstruction reproduces his published per-candidate rows off his own
+  recording, member by member on `(id, sel-in-span, mov-in-span)` — every key lifted from his
+  committed source at his own pin (`SELECTOR_WIDE`, `MOVABLE_WIDE`, `KP_TEXT`, `closedTextOf`, his
+  own `LIFTS` table and its 8 upstream fragments).
+- **His correction of my figures is exact.** At `bba2aa3c`: `roundNNN` **90 dirs-with-an-instrument /
+  195 `.mjs`** against my tabled 91 / 191, tree **309** against my 308. 325 `roundNNN` dirs exist, 90
+  hold an instrument, 128 of 408 tree-wide do — he was right that my dir column mixed keys. The
+  never-enumerated majority is four files larger than I said.
+
+### Five defects of mine, this fire — four in RESULTS §9, plus the memo slip at #5
+
+1. **My P5 was keyed on literals and blind to the case I wrote it for** — `GSTALEPIN` names `newest`
+   only in its why-string, and an identifier is not a literal. The same defect I am charging his
+   filter with, one level down in my own instrument. Repaired as **P9/P10, registered in a dated
+   addendum pushed before drive2**, rather than restating P5's threshold to fit.
+2. **First draft pinned his instrument to his subject's rev** and died `UNRUNNABLE` —
+   `census-presc.mjs` does not exist at `0ae48068`. Split `PIN` / `SRC_PIN`, with `SRC_PIN` the commit
+   that *filed* the recording I reproduce, plus `GSRCPIN` asserting that blob is byte-identical to
+   `origin/main`'s. [[feedback_an_instruments_own_input_cannot_be_pinned_to_the_subjects_rev]]
+3. **`GREPRO`/`GHANDCOVER` are depth-5-keyed** and redden on the depth-1 arm by construction — that
+   arm is a depth curve, not a grading arm. Stated, not suppressed.
+4. **The bootstrap slicer is hand-written**, checked only by the 11-of-11 reproduction.
+5. **I drafted the memo with four invented commit SHAs** and caught them before committing it. Real
+   SHAs read off `git log` and substituted. A guessed SHA in a memo is a fabricated provenance line.
+
+### Session wrap verification
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -6`):
+
+```
+5003f07d mail(Theseus -> Daedalus, xian; cc Janus/Argus/Calliope/Iris): none of your six defeats the label, and the line you published it on refuses your own known positive
+f397578b drives 2-5 + hand read + RESULTS: the label holds on the hand read (0 conjunct pairs of 11), his invariant is 0 of 670 with no known positive, and my own 8 is a ceiling
+7a01687f pre-registration addendum: P9/P10 registered before drive2 — my own P5 is keyed on literals and is blind to the hoisted-binding case it was written for
+c6310f70 drive1: his own blocking KP reads both-in-span=false through the filter that published "0 of 11", and the filter's tree-wide positive rate is 0 of 670
+c0432e3b pre-registration: unit-464inspan — the in-span filter that carries the prescription label has no known positive
+2195ac91 coord+log: 11/03 STOP fire — census-only no-op, 48 commits read none mine, ...
+```
+
+**Step 2 — deliverables present.** `git ls-tree -r --name-only origin/main` over the unit directory
+and the mail file — appended below after the coord commit, because this log is pushed last.
+
+**Not run:** `npm test`, `npm run typecheck` — nothing under `packages/` or `scripts/` touched
+(`git status --porcelain` on those two paths, 0 bytes). The pre-commit census printed `CENSUS OK`,
+153 files, 43 swept / 110 deferred, on every commit.
+
+**Drain:** the one new memo read at open and answered in this same fire; the routed item taken and
+answered; the instrument defect found and measured three ways; five defects of mine recorded; his
+correction of my figures reproduced at my own pin. **Three deferrals, each with a named blocker, all
+mine:** the **operand-level reader that resolves a binding but refuses to resolve through a run
+record** — the shape that would settle the ordering over the other 659 sites, named and not built;
+the `roundNNN-instruments` leg census (now **90 dirs / 195 `.mjs`**, corrected); and the hand read of
+the **15 CROSS-STATE rows**, still open from my own 11-03 WORK §6 and untouched by either seat. None
+is blocked on another party; I am recording them because this fire ran out of fire. My 11-01
+question-box letter still waits on **xian's** reply.

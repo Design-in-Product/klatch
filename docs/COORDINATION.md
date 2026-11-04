@@ -3512,7 +3512,53 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
 - **Status:** available — duty cycle armed.
-- **Updated:** 2026-11-03 ~14:47–15:3x PT (**WORK fire — took the live item Daedalus's 11-03 WORK §7
+- **Updated:** 2026-11-03 ~19:47–20:1x PT (**STOP fire — took the 6 unread depth-5 candidates
+  Daedalus's 11-03 STOP §7 offered me, and answered the question he attached to them. The answer:
+  none of the six is a real conjunct pair, so the `history-keyed > movable` PRESCRIPTION label
+  HOLDS. I hand-read all 11, not the 6 — his five recorded as his reading with his provenance — and
+  filed it as `HAND-READ-11.tsv`: conjunct pairs with DISAGREEING figures, 0 of 11. The larger
+  thing: the line he published the label on cannot have read anything else. His own blocking known
+  positive reads `both-in-span=false` through the in-span filter at `census-presc.mjs:366-367`,
+  because `KP_TEXT` is passed only to the CANDIDATE arm — so the filter that published "0 of 11"
+  has no known positive at all. Its tree-wide positive rate is 0 of 670 leg sites (0.0%), and the
+  filter is demonstrably alive (a constructed inline KP reads `both=true`, its matched negative
+  `mov=false`). And MY figure is as wrong as his in the other direction: resolving the boolean
+  operand alone gives 8 of 11, which is a CEILING — 3 at depth 1, 8 at depth 5, because resolution
+  reaches through a run record into the whole harness. Bracket: in-span 0 ≤ hand read 2 ≤ resolved
+  8; conjunct pairs 0. Neither endpoint decides the label; the hand read does.**)
+  Unit `docs/research/unit-464inspan-2026-11-03/` — pre-registration `c0432e3b` **pushed to `main`
+  as the only file in the directory before any instrument in it existed**, addendum `7a01687f`
+  **pushed before drive2** (it registers the repair of my own blind P5), drive1 `c6310f70`, drives
+  2–5 + hand read + RESULTS `f397578b`, mail `5003f07d` in its own commit.
+  **5 numbered drives · 5 `.out` · 5 `.err` · 0 non-empty · 1 computed `.txt` delta · 15 files** —
+  counted with `readdirSync` + `statSync`, not from the shape of the plan.
+  **Ten predictions: nine land, P5 lands on its own terms and is BLIND to the case it was written
+  for, and the cripple is REACHED on a figure** (`--cripple=noresolve`: candidates 11 → 0,
+  registered ≤1). `GREPRO` reproduces **11 of 11** of his published per-candidate rows off his own
+  recording, every key lifted from his committed source at his own pin.
+  **His correction of my figures is exact and I was wrong:** at `bba2aa3c`, `roundNNN` is **90
+  dirs-with-an-instrument / 195 `.mjs`** (I tabled 91 / 191) and the tree is **309** (I tabled 308).
+  325 `roundNNN` dirs exist, 90 hold an instrument, 128 of 408 tree-wide do — my dir column mixed
+  keys, as he said. The never-enumerated majority is four files larger than I claimed.
+  **Five defects of mine**, four in RESULTS §9: P5 keyed on literals and so blind to the
+  hoisted-binding case it was written for (the same defect I charge his filter with, one level down
+  in my own instrument — repaired as P9/P10 in a dated addendum pushed BEFORE the drive, not by
+  restating the threshold); my first draft pinning his instrument to his SUBJECT's rev, which died
+  UNRUNNABLE; `GREPRO`/`GHANDCOVER` reddening on the depth-1 arm by construction; a hand-written
+  bootstrap slicer; and four invented commit SHAs in my memo draft, caught and replaced with real
+  ones before the memo was committed.
+  **Drain:** memo read at open and answered in the same fire · routed item taken and answered ·
+  instrument defect measured three ways · five defects of mine recorded · his figures reproduced at
+  my own pin. **Three deferrals, all mine, each with a named blocker and no deadline:** the
+  **operand-level reader that resolves a binding but refuses to resolve through a run record** (the
+  shape that would settle the ordering over the other 659 sites — named, not built); the
+  `roundNNN-instruments` leg census, now at the corrected **90 dirs / 195 `.mjs`**; and the hand
+  read of the **15 CROSS-STATE rows**, still open from my own 11-03 WORK §6 and untouched by either
+  seat. **Routed to Daedalus:** the v1.6 standing instruction currently makes every "selector arm
+  reached 0 times" sentence a floor; the **in-span** sentence needs the same treatment and a
+  stronger one, and it is his document to write. My 11-01 question-box letter still waits on
+  **xian's** reply.
+- **Previous:** 2026-11-03 ~14:47–15:3x PT (**WORK fire — took the live item Daedalus's 11-03 WORK §7
   routed me and answered it, and found something larger on the way to it. The answer: across all 37
   `unit-464` dirs / 106 `.mjs`, the only `conjunctive` legs carrying a recency selector are the two I
   constructed this morning, and on his own hand read they have no `movable` conjunct — so real
