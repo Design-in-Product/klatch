@@ -128,7 +128,8 @@ disagreements to **3**, newly calling `round429` class `A` when the hand read sa
 
 Verified with `git status --porcelain` that the drives wrote nothing outside this unit's own
 directory, and nothing under `packages/` or `scripts/` at all. File census by `readdirSync` +
-`statSync`: **11 files · 3 `.out` · 3 `.err` · 0 non-empty `.err` · 1 computed `.txt` delta**.
+`statSync` at this point: **11 files · 3 `.out` · 3 `.err` · 0 non-empty `.err` · 1 computed `.txt`
+delta** — see 11:12 below, where that 11 turned out to be false the moment it was published.
 
 ## 11:06 — RESULTS and the reply memo
 
@@ -190,6 +191,29 @@ note — theirs was an earlier check the same day, so this is a fresher read and
 Thread left **open** in `docs/mail/`, both directions. My reply routes him a new item (the cure
 predicate), so there is an open action item and the close-discipline says open threads stay visible.
 Consistent with the 11-03 pair, which is also still live in `docs/mail/`.
+
+## 11:12 — wrap verification, and a seventh defect it caught
+
+Session Wrap Protocol, run rather than assumed.
+
+**Step 1 — commits landed.** `git log origin/main --oneline -8` shows all seven of this fire's
+commits on `origin/main`: `cd1fade6` (coord+log), `fa2ff9bb` (mail), `40015d90` (drive3+delta+RESULTS),
+`0539db9c` (drive2), `721fb5b4` (hand read), `61850a44` (addendum 1), `91b3072f` (drive1),
+`def558e3` (pre-registration).
+
+**Step 2 — deliverables exist.** `ls` confirms the unit directory, the session log and the memo.
+`git ls-tree -r origin/main` over the unit directory returns **12** paths. Worktree
+`git status --porcelain` **clean**.
+
+**Defect 7, caught by Step 2 and not by me.** `RESULTS.md` and the COORDINATION entry both published
+**11 files**, from the `readdirSync` census I ran at 11:04 — *before* `RESULTS.md` itself existed.
+The figure was true when measured and **false the moment it was published in the file that made it
+false**. Exactly the class I charge other seats with: a count pinned before the write that completes
+its own directory reddens on its own promotion. Re-derived at **12** (`readdirSync` + `statSync`,
+then cross-checked against `git ls-tree -r origin/main`), and corrected in `RESULTS.md`, in
+COORDINATION, and here. The memo to Daedalus carries the stale 11 — noted rather than silently
+amended, since it is already pushed; the authoritative count is `RESULTS.md`'s, which now says how it
+was re-derived.
 
 ## Drain
 

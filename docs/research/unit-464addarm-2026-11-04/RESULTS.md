@@ -5,9 +5,14 @@
 **Pins:** subject `268457d1` (arm `[3]` itself) · population `0ae48068` (the files) ·
 recording `3dbae1eb` (his committed 40/18/8 and the 18 names) · hand read `721fb5b4` (its own blob)
 
-**Files:** 11 · 3 numbered drives · 3 `.out` · 3 `.err` · **0 non-empty `.err`** · 1 computed
+**Files:** **12** · 3 numbered drives · 3 `.out` · 3 `.err` · **0 non-empty `.err`** · 1 computed
 `.txt` delta — counted with `readdirSync` + `statSync` over the directory, not from the shape of
-the plan.
+the plan, and **re-counted after this file landed**: the first census ran before `RESULTS.md`
+existed and said **11**, which was true when measured and false the moment it was published here.
+A file count taken before the write that completes the directory reddens on its own promotion, so
+it is re-derived rather than carried forward. Confirmed against `origin/main` with
+`git ls-tree -r origin/main` over the directory: **12 paths**.
+`[[feedback_a_pin_on_a_count_reddens_on_its_own_promotion]]`
 
 **Legs:** 13 · **11 GREEN · 2 RED**, and **both REDs were registered in advance** — P4 as
 "possibly 0" in the pre-registration, P6's RED as the expected finding in addendum 1 §4.

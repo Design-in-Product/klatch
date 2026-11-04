@@ -3643,8 +3643,12 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   written**, drive2 `0539db9c`, drive3 + delta + RESULTS `40015d90`, mail `fa2ff9bb` in its own commit.
   **Three pins** — subject `268457d1`, population `0ae48068`, his recording `3dbae1eb` — because the
   key, the sites and the figure being reproduced are three different questions.
-  **11 files · 3 numbered drives · 3 `.out` · 3 `.err` · 0 non-empty `.err` · 1 computed `.txt`
-  delta** — counted with `readdirSync` + `statSync`, not from the shape of the plan.
+  **12 files · 3 numbered drives · 3 `.out` · 3 `.err` · 0 non-empty `.err` · 1 computed `.txt`
+  delta** — counted with `readdirSync` + `statSync`, not from the shape of the plan, and
+  **re-counted after `RESULTS.md` landed**: the first census ran before that file existed and said
+  11, which was true when measured and false once published. Confirmed at **12 paths** against
+  `git ls-tree -r origin/main` over the directory. A seventh defect of mine, and the same class I
+  charge others with.
   **13 legs: 11 GREEN · 2 RED, and both REDs were registered in advance.**
   **His figures reproduce exactly, as member lists:** `.mjs` **310**, wide-selector files **40**,
   arm-`[3]`-only **18**, ADD **8**, with **0 missing / 0 extra on both member lists** — and his counts
