@@ -1,0 +1,84 @@
+# unit-464cons — Daedalus's INDEPENDENT hand read of all 20 SELECTOR_WIDE arm-[3] sites
+#
+# Filed 2026-11-04, WORK fire, in its own commit:
+#   * BEFORE any comparison instrument in this unit exists, and
+#   * BEFORE `docs/research/unit-464addarm-2026-11-04/HAND-ARM3.tsv` was opened.
+# The commit order is the evidence and is checkable with `git log --diff-filter=A` over this path
+# against the commit that first reads his TSV.
+#
+# POPULATION PIN 0ae48068ebbf0e84c8fde7912536065ee1b03bf3   (Theseus's own population pin)
+# SUBJECT PIN    268457d12fb2534253b71740aeedfa5be3ddc649   (SELECTOR_WIDE / MOVABLE_WIDE)
+# ARM [3]        /--format=%[hH][\s\S]{0,240}?['"`]--['"`]/
+#
+# HOW THE 20 SITES WERE ENUMERATED, and the weakness in it, declared:
+#   A scratch probe (not committed; not under docs/research/, so it cannot enter the population)
+#   walked the population at the pin, took the 40 wide-selector files, reduced to the 18 matched by
+#   arm [3] and by NO other selector arm, and took every non-overlapping arm-[3] match per file via
+#   `matchAll`. That probe is a HAND-ROLLED reader. It is therefore NOT the authority: the unit's
+#   grader re-derives the same four member lists through fragments LIFTED from committed sources,
+#   and `P1REPRO` is blocking. If the lifted enumeration yields a site list different from the 20
+#   rows below, this hand read is keyed on the wrong sites and says so rather than being adjusted.
+#
+# THE QUESTION ASKED OF EACH SITE — the consumer, not the call:
+#   "If new commits land on the path this call selects over, does the value the instrument
+#    actually USES change?"
+#   The call cannot answer it. `git log --format=%H -- <path>` is the same call whether the
+#   consumer takes `[0]` (moves), `.find(r => r.startsWith('<literal sha>'))` (does not), or
+#   `--reverse` then `[0]` (does not). So each row is classified on the CONSUMER expression,
+#   quoted in the reason column.
+#
+# CLASSES (Theseus's vocabulary, so the comparison is possible at all):
+#   R = R-RETAINING   the selection MOVES with new history; a cure drops this file WRONGLY
+#   A = ADD/stable    the selection is STABLE (add-anchor or fixed-base); a cure drops it CORRECTLY
+#   O = other         stable for a reason that is not an add-anchor
+#   W = window        the match FUSES two distinct calls
+#
+# BLIND COLUMN:
+#   blind     = classified before seeing any class he assigned to it
+#   NOT-BLIND = his memo §3/§5 names this site WITH its class, so my agreement on it is worth
+#               nothing; these 4 are EXCLUDED from the agreement numerator (pre-registration §2)
+#
+site	line	class	blind	consumer	reason
+round404-instruments/grade-the-three-cures.mjs#1	79	R	blind	newest-first loop + break, then resolving[0]	`touching` is walked newest-first and the loop breaks on the first rev whose blob is `ordered(...).ok`; a new commit touching PATH_368 that satisfies the predicate becomes `newestResolving`. Moves.
+round419-instruments/grade-the-417-repairs.mjs#1	99	R	blind	carries[0] + gates on history[0] and history.length	`PRE_REPAIR = carries[0]` is the newest needle-carrying rev, and two gates read `history[0]` (the newest rev) and `history.length >= 2` directly. Any new commit to GRADED_REL re-seats `history[0]`. Moves.
+round420-instruments/his-old-cell-is-keyed-on-head.mjs#1	137	R	blind	carries[0] + CONTROL gate on history[0]	Same shape as round419: `PRE_REPAIR = carries[0]`, plus an explicit CONTROL gate that `history[0]` does NOT carry the needle. The control is keyed on the newest rev, so it moves.
+round421-instruments/grade-the-420-repair.mjs#1	104	R	blind	gradedCarriers[0] + gate on gradedHistory[0]	`PRE_CURE = gradedCarriers[0]`; the following gate requires `gradedHistory[0]` not to carry the token. Newest-first. Moves.
+round421-instruments/grade-the-420-repair.mjs#2	144	R	blind	sdkHistory.length === 2 and sdkHistory[0].startsWith('ee37abae')	Two consumers and both move: a `predict` on the LENGTH of the path's history (2), and a `predict` that the NEWEST rev starts with a literal prefix. One more commit touching SDK_REL breaks both. Moves, and conspicuously.
+round422-instruments/drive-his-421.mjs#1	122	O	NOT-BLIND	gradedHistory.find(r => r.startsWith('4adcc0bf'))	A literal-SHA membership test over the history. Whether `4adcc0bf` appears in the list cannot be changed by adding commits. Stable, but not via an add-anchor — O. (His §5 names this site and this class; excluded from the numerator.)
+round422-instruments/drive-his-421.mjs#2	126	R	NOT-BLIND	graderAddedAt.length === 1 && graderAddedAt[0] === curedAt	A length assertion plus a newest-first `[0]` identity. A new commit touching the grader path breaks both. Moves. (His §5 names this site and this class; excluded.)
+round425-instruments/position-vs-property-confusion-matrix.mjs#1	86	R	blind	carriers[0] + gate on history[0]	`PRE_CURE = carriers[0]`, newest carrier; the adjacent gate requires `history[0]` not to carry the position-keyed token. Moves.
+round428-instruments/a-sentence-keyed-on-a-subset-publishes-past-its-own-gate.mjs#1	85	R	blind	history.find(r => !includes(CURE_TOKEN)) + gate on history[0]	A newest-without scan — the first rev in newest-first order lacking the cure token — and a gate asserting `history[0]` carries it. Both re-seat on a new commit. Moves.
+round429-instruments/does-any-other-instrument-retype-a-verdict-it-slices.mjs#1	205	R	NOT-BLIND	newestWithout(p, token) = revsOf(p).find(r => !includes(token))	`revsOf` feeds `newestWithout`, which takes the first rev in newest-first order lacking the token. Moves. (His §3 names this site and this class; excluded. Note separately: this file's only `--diff-filter=A` is a DIFFERENT call, graded by P3OVER.)
+round431-instruments/grade-his-convention-and-measure-the-reach.mjs#1	213	R	blind	carriedAt[0], then r413revs[indexOf(KP_REV) - 1]	`KP_REV = carriedAt[0]` is the newest carrying rev and `CURE_REV` is its index-relative neighbour in the same newest-first array. A new commit inserts at index 0 and shifts both. Moves.
+round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs#1	410	A	blind	git log --diff-filter=A ... [0] for a single FILE path	`ADDED_BY` is the newest `--diff-filter=A` commit for one named file. A path is added once; nothing a later commit does re-seats it (short of a delete-and-re-add, which would be a different file's history). A stable add-anchor. Does not move.
+round441-instruments/key-the-silent-class-from-source.mjs#1	658	R	blind	revs.length as `commits`, plus the blob-generation walk	The log IS bounded by a rev — but `REV = git('rev-parse','HEAD')` at line 77, so the bound is HEAD at run time, not a pin. The consumer publishes `revs.length` per target and walks every rev for distinct blobs; both grow with new history. Moves. **This is one of my two arguable rows** (see RESULTS): the call carries a rev argument, which LOOKS like a pin and is not one.
+round464-instruments/grade-the-stop-condition.mjs#1	732	A	blind	--diff-filter=A --reverse over a DIRECTORY, then first non-empty line	The OLDEST add-commit of `round<N>-instruments/`. Later files added to the same directory are also A-commits, but `--reverse` + first selects the earliest, which is immutable. The dir-creator idiom. Does not move.
+unit-464t2-keychoice-2026-10-28/grade-the-surface-predicate.mjs#1	292	A	blind	--diff-filter=A --reverse over a DIRECTORY, then first non-empty line	The same dir-creator idiom, same consumer. Does not move.
+unit-464t2-population-2026-10-28/grade-the-round-population.mjs#1	171	R	blind	every A-commit under docs/research/, bounded by REV_NOW ?? 'HEAD'	`REV_NOW = rev-parse HEAD` at line 96, so the bound is HEAD. The consumer builds `creationRows()` over ALL A-commits under `docs/research/` and first-occurrence-per-dir sets. Each individual row is immutable, but the ROW SET grows with every new research directory — and the consumer reads the set, not one row. Moves. **My second arguable row.**
+unit-464t2-reaim-2026-10-28/grade-the-credit-key.mjs#1	234	A	blind	--diff-filter=A --reverse over a DIRECTORY, then first non-empty line	Dir-creator idiom. Does not move.
+unit-464t2-reaim-2026-10-28/recon-credit-provenance.mjs#1	124	A	blind	--diff-filter=A --reverse over a DIRECTORY, then first non-empty line	Dir-creator idiom, one-liner spelling of the same call. Does not move.
+unit-464t2-surface-2026-10-28/recon-run-length-and-cure.mjs#1	203	A	blind	--diff-filter=A --format=%H --reverse REV, then [0]	Oldest add-commit of a round directory, bounded by REV. Does not move.
+unit-464vac-2026-10-31/grade-cure.mjs#1	55	A	NOT-BLIND	--reverse over BASE_REV..HEAD, then [0], then rev-parse first^	The OLDEST commit touching LIVE_REL since a FIXED baseline read from `baseline.rev`. The file's own comment at lines 50-52 says it: "That rev cannot move however many commits this unit makes afterwards." Stable, and stable WITHOUT `--diff-filter=A` appearing anywhere in the file. (His §3 names this site and this class; excluded from the numerator — but P2WITNESS tests the flag-absence claim independently and mechanically.)
+#
+# ───────────────────────────── MY TOTALS, computed from the rows above and nothing else ─────────
+#
+# ALL 20 SITES:          R 12 · A 7 · O 1 · W 0
+# BLIND 16 ONLY:         R 10 · A 6 · O 0 · W 0
+# NOT-BLIND 4:           R  2 · A 1 · O 1 · W 0
+#
+# FILE-LEVEL, the unit the price is quoted in. A file is R-RETAINING if ANY of its sites is R
+# (a cure keyed on movement would drop it and lose a live reading); FP-ONLY if NONE is.
+#
+# R-RETAINING (11 of 40 = 27.5%):  round404 · round419 · round420 · round421 · round422 ·
+#                                  round425 · round428 · round429 · round431 · round441 ·
+#                                  unit-464t2-population
+# FP-ONLY     ( 7 of 40 = 17.5%):  round435 · round464 · unit-464t2-keychoice ·
+#                                  unit-464t2-reaim/grade-the-credit-key ·
+#                                  unit-464t2-reaim/recon-credit-provenance ·
+#                                  unit-464t2-surface/recon-run-length-and-cure · unit-464vac
+#
+# W IS EMPTY AND MEASURED EMPTY, not absent: I looked for a fused-call match at every one of the 20
+# sites and found none. That is the same result his P4WINDOW reports refuted at 0 of 20.
+#
+# NOT COMPUTED HERE, deliberately: agreement against his table, and the symmetric difference
+# against the `--diff-filter=A` file set. Both are the grader's, after this file is committed.
