@@ -1,0 +1,215 @@
+unit-464addarm — every arm-[3] MATCH SITE in the 18 files, enumerated for hand reading
+SUBJ_PIN=268457d1  POP_PIN=0ae48068  REC_PIN=3dbae1eb  CRIPPLE=(none)
+instrument blob (worktree copy of this file): 95bc7788af0e693df20977505c7a36e6ee059b9b
+
+legs, streaming as they are checked:
+  GREEN GBOOT         the subject's own committed sliceFrom, lifted and re-run over the same 2 anchors, agrees BYTE-IDENTICALLY with my hand-written bootstrap on every slice (disagreements: none)
+  GREEN GLIFT         2 fragments lifted (subject at 268457d1): sliceFrom(10L) SELECTOR_WIDE(6L)
+  GREEN GARMS         the lifted key is the published one: SELECTOR_WIDE 4 arms, arm [3] = --format=%[hH][\s\S]{0,240}?['"`]--['"`]
+  GREEN GANSWERKEY    his answer key captured from docs/research/unit-464kpspan-2026-11-04/drive3.negfix-depth1.out at 3dbae1eb: selector files 40 · arm-[3]-only 18 (18 rows parsed) · ADD-flagged 8 (8 flags parsed) — counts and rows are mutually consistent in HIS recording
+  GREEN P1REPRO       my population at 0ae48068 vs his recorded figures: .mjs 310 (pub 310) · wide-selector files 40 (his 40) · arm-[3]-only 18 (his 18) · ADD 8 (his 8) · arm-[3]-only MEMBER LIST: 0 of his missing from mine, 0 of mine not his · ADD MEMBER LIST: 0 missing, 0 extra
+  GREEN P2SITES       a GLOBAL non-overlapping walk finds 20 arm-[3] match sites across the 18 files — MORE than the file count, so a file-level verdict is built from 2 fewer matches than exist
+
+ENUMERATION — 20 arm-[3] match sites over 18 files, for hand reading
+(ADD = the FILE carries --diff-filter=A somewhere; spanADD = THIS SPAN carries it; depthMin = relative paren depth reached strictly inside the span)
+
+── round404-instruments/grade-the-three-cures.mjs#1   lines 79-79   file:---  spanADD:no   depthMin:0
+   SPAN: "--format=%h', '--'"
+       77|   return { a, b, ok: a >= 0 && b >= 0 && b > a };
+       78| };
+   >   79| const touching = git(['log', '--format=%h', '--', PATH_368]).trim().split('\n');
+       80| const resolving = [];
+       81| for (const r of touching) {
+
+── round419-instruments/grade-the-417-repairs.mjs#1   lines 99-99   file:---  spanADD:no   depthMin:0
+   SPAN: "--format=%H', '--'"
+       97| const blobAt = (rev) => spawnSync('git', ['-C', REPO, 'show', `${rev}:${GRADED_REL}`],
+       98|   { encoding: 'utf8', maxBuffer: 1 << 26 }).stdout;
+   >   99| const history = spawnSync('git', ['-C', REPO, 'log', '--format=%H', '--', GRADED_REL],
+      100|   { encoding: 'utf8', maxBuffer: 1 << 26 }).stdout.trim().split('\n').filter(Boolean);
+      101| const carries = history.filter((r) => blobAt(r).includes(DEFECT_NEEDLE));
+
+── round420-instruments/his-old-cell-is-keyed-on-head.mjs#1   lines 137-137   file:---  spanADD:no   depthMin:0
+   SPAN: "--format=%H', '--'"
+      135| // Derive the pre-repair rev BY PROPERTY: the newest rev in the graded file's own history whose
+      136| // blob carries the bare-relative-write token. This is the cure as well as the fixture.
+   >  137| const history = git('log', '--format=%H', '--', GRADED_REL).stdout.trim().split('\n').filter(Boolean);
+      138| say(`  revs in ${GRADED_REL}'s history: ${history.length}`);
+      139| const carries = history.filter((r) => git('show', `${r}:${GRADED_REL}`).stdout.includes(DEFECT_NEEDLE));
+
+── round421-instruments/grade-the-420-repair.mjs#1   lines 104-104   file:---  spanADD:no   depthMin:0
+   SPAN: "--format=%H', '--'"
+      102| // The token is keyed on the CALL shape, not on the variable name (Rounds 357/375).
+      103| const DEFECT_TOKEN = "const prevRev = spawnSync('git', ['-C', REPO, 'rev-parse', 'HEAD']";
+   >  104| const gradedHistory = git('log', '--format=%H', '--', GRADED_REL).stdout.trim().split('\n').filter(Boolean);
+      105| const gradedCarriers = gradedHistory.filter((r) => git('show', `${r}:${GRADED_REL}`).stdout.includes(DEFECT_TOKEN));
+      106| const PRE_CURE = gradedCarriers.length ? gradedCarriers[0] : null;
+
+── round421-instruments/grade-the-420-repair.mjs#2   lines 144-144   file:---  spanADD:no   depthMin:0
+   SPAN: "--format=%H', '--'"
+      142| // is a descendant carrying the SAME blob; HEAD is past the repair. Re-derived here, not quoted.
+      143| const SDK_REL = 'docs/research/round417-instruments/sdk-gap-0122-to-0135.mjs';
+   >  144| const sdkHistory = git('log', '--format=%H', '--', SDK_REL).stdout.trim().split('\n').filter(Boolean);
+      145| const NEEDLE = "fs.writeFileSync('.testdata/round417-sdk-segment.md'";
+      146| const sdkBlob = (r) => git('show', `${r}:${SDK_REL}`).stdout;
+
+── round422-instruments/drive-his-421.mjs#1   lines 122-122   file:---  spanADD:no   depthMin:0
+   SPAN: "--format=%H', '--'"
+      120|   nHeadSourced === 1, `occurs=${nHeadSourced}`);
+      121| 
+   >  122| const gradedHistory = git('log', '--format=%H', '--', GRADED_REL).stdout.trim().split('\n').filter(Boolean);
+      123| say(`  rev history of the file it grades: ${gradedHistory.map((r) => r.slice(0, 8)).join(', ')}`);
+      124| // The cure and its grader are in ONE commit. That is the whole finding, derived rather than quoted.
+
+── round422-instruments/drive-his-421.mjs#2   lines 126-126   file:---  spanADD:no   depthMin:0
+   SPAN: "--format=%H', '--'"
+      124| // The cure and its grader are in ONE commit. That is the whole finding, derived rather than quoted.
+      125| const curedAt = gradedHistory.find((r) => r.startsWith('4adcc0bf'));
+   >  126| const graderAddedAt = git('log', '--format=%H', '--', `${HIS_DIR_REL}/grade-the-420-repair.mjs`)
+      127|   .stdout.trim().split('\n').filter(Boolean);
+      128| say(`  rev history of the grader itself:  ${graderAddedAt.map((r) => r.slice(0, 8)).join(', ')}`);
+
+── round425-instruments/position-vs-property-confusion-matrix.mjs#1   lines 86-86   file:---  spanADD:no   depthMin:0
+   SPAN: "--format=%H', '--'"
+       84| // (`.test(l)` over the declaration line), not on a line number (Rounds 357/375).
+       85| const OLD_TOKEN = 'const hasScope = /\\^\\\\s\\*\\\\\\*\\\\s\\+\\\\\\*\\\\\\*/.test(l);';
+   >   86| const history = git('log', '--format=%H', '--', S_REL).stdout.trim().split('\n').filter(Boolean);
+       87| const carriers = history.filter((r) => git('show', `${r}:${S_REL}`).stdout.includes(OLD_TOKEN));
+       88| const PRE_CURE = carriers.length ? carriers[0] : null;
+
+── round428-instruments/a-sentence-keyed-on-a-subset-publishes-past-its-own-gate.mjs#1   lines 85-85   file:---  spanADD:no   depthMin:0
+   SPAN: "--format=%H', '--'"
+       83| 
+       84| // --- the pre-cure rev, DERIVED by property ---------------------------------
+   >   85| const history = git('log', '--format=%H', '--', S_REL).stdout.trim().split('\n').filter(Boolean);
+       86| const PRE_CURE = history.find((r) => !git('show', `${r}:${S_REL}`).stdout.includes(CURE_TOKEN)) ?? null;
+       87| say(`  the subject's rev history (newest first): ${history.map((r) => r.slice(0, 8)).join(', ')}`);
+
+── round429-instruments/does-any-other-instrument-retype-a-verdict-it-slices.mjs#1   lines 205-205   file:ADD  spanADD:no   depthMin:0
+   SPAN: "--format=%H', '--'"
+      203| 
+      204| /** Both revs derived BY PROPERTY — never typed, never `HEAD~1` (420/422). */
+   >  205| const revsOf = (p) => git('log', '--format=%H', '--', p).trim().split('\n').filter(Boolean);
+      206| const newestWithout = (p, token) => revsOf(p).find((r) => !(show(r, p) ?? '').includes(token)) ?? null;
+      207| const CURE_TOKEN = 'classifierOf(';
+
+── round431-instruments/grade-his-convention-and-measure-the-reach.mjs#1   lines 213-213   file:---  spanADD:no   depthMin:0
+   SPAN: "--format=%H', '--'"
+      211|  * copied predicate, and the rev after it, which must both LACK it and CARRY his cure's import.
+      212|  */
+   >  213| const revsOfPath = (p) => git(['log', '--format=%H', '--', p]).trim().split('\n').filter(Boolean);
+      214| const r413revs = revsOfPath(HIS413);
+      215| const carriedAt = CARRIER === null ? []
+
+── round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs#1   lines 410-410   file:ADD  spanADD:YES  depthMin:0
+   SPAN: "--format=%h', '--diff-filter=A', '--'"
+      408| const countAt = (rev) => git('ls-tree', '-r', '--name-only', rev, 'docs/research').trim()
+      409|   .split('\n').filter((f) => f.endsWith('.mjs')).length;
+   >  410| const ADDED_BY = git('log', '--format=%h', '--diff-filter=A', '--',
+      411|   'docs/research/round434-instruments/grade-the-two-cures-and-the-prose.mjs').trim().split('\n')[0];
+      412| const recRev = (hisR430Rec?.text.match(/rev ([0-9a-f]{8})/) ?? [, null])[1];
+
+── round441-instruments/key-the-silent-class-from-source.mjs#1   lines 658-658   file:---  spanADD:no   depthMin:0
+   SPAN: "--format=%H', REV, '--'"
+      656|     const rows = [];
+      657|     for (const r of [...new Set(TRACKED_TARGETS.map((x) => x.target))]) {
+   >  658|       const revs = git('log', '--format=%H', REV, '--', r).split('\n').filter((l) => l !== '');
+      659|       // Content generations: distinct blob hashes this path has carried, in commit order.
+      660|       const blobs = [];
+
+── round464-instruments/grade-the-stop-condition.mjs#1   lines 732-733   file:ADD  spanADD:no   depthMin:0
+   SPAN: "--format=%H${SEP}%an`,\n      '--'"
+      730|       '--diff-filter=A',
+      731|       '--reverse',
+   >  732|       `--format=%H${SEP}%an`,
+   >  733|       '--',
+      734|       `docs/research/round${round}-instruments/`,
+      735|     ]);
+
+── unit-464t2-keychoice-2026-10-28/grade-the-surface-predicate.mjs#1   lines 292-293   file:ADD  spanADD:no   depthMin:0
+   SPAN: "--format=%H${SEP}%an`,\n      '--'"
+      290|   try {
+      291|     const raw = git([
+   >  292|       'log', '--diff-filter=A', '--reverse', `--format=%H${SEP}%an`,
+   >  293|       '--', `docs/research/round${round}-instruments/`,
+      294|     ]);
+      295|     const first = raw.split('\n').find((l) => l.trim().length > 0);
+
+── unit-464t2-population-2026-10-28/grade-the-round-population.mjs#1   lines 171-172   file:ADD  spanADD:no   depthMin:0
+   SPAN: "--format=%H\\u0001%aI\\u0001%s', '--name-only', '--reverse', REV_NOW ?? 'HEAD',\n    '--'"
+      169|   const rows = [];
+      170|   const raw = git([
+   >  171|     'log', '--diff-filter=A', '--format=%H\u0001%aI\u0001%s', '--name-only', '--reverse', REV_NOW ?? 'HEAD',
+   >  172|     '--', 'docs/research/',
+      173|   ]);
+      174|   if (raw === null) return null;
+
+── unit-464t2-reaim-2026-10-28/grade-the-credit-key.mjs#1   lines 234-235   file:ADD  spanADD:no   depthMin:0
+   SPAN: "--format=%H${SEP}%an${SEP}%cI${SEP}%s`,\n      '--'"
+      232|       '--diff-filter=A',
+      233|       '--reverse',
+   >  234|       `--format=%H${SEP}%an${SEP}%cI${SEP}%s`,
+   >  235|       '--',
+      236|       `docs/research/round${round}-instruments/`,
+      237|     ]);
+
+── unit-464t2-reaim-2026-10-28/recon-credit-provenance.mjs#1   lines 124-124   file:ADD  spanADD:no   depthMin:0
+   SPAN: "--format=%H${SEP}%an${SEP}%cI${SEP}%s`, '--'"
+      122|   let raw;
+      123|   try {
+   >  124|     raw = git(['log', '--diff-filter=A', '--reverse', `--format=%H${SEP}%an${SEP}%cI${SEP}%s`, '--', path]);
+      125|   } catch (e) {
+      126|     return null;
+
+── unit-464t2-surface-2026-10-28/recon-run-length-and-cure.mjs#1   lines 203-206   file:ADD  spanADD:no   depthMin:0
+   SPAN: "--format=%H',\n    '--reverse',\n    REV,\n    '--'"
+      201|     'log',
+      202|     '--diff-filter=A',
+   >  203|     '--format=%H',
+   >  204|     '--reverse',
+   >  205|     REV,
+   >  206|     '--',
+      207|     `docs/research/round${round}-instruments/`,
+      208|   ]);
+
+── unit-464vac-2026-10-31/grade-cure.mjs#1   lines 55-55   file:---  spanADD:no   depthMin:0
+   SPAN: "--format=%H', '--reverse', `${BASE_REV}..HEAD`, '--'"
+       53| const BASE_REV = readFileSync('baseline.rev', 'utf8').trim();
+       54| const PRECURE_REV = (() => {
+   >   55|   const log = git('log', '--format=%H', '--reverse', `${BASE_REV}..HEAD`, '--', LIVE_REL);
+       56|   const first = (log ?? '').trim().split('\n').filter(Boolean)[0];
+       57|   if (first === undefined) return null; // nothing has touched the checker since open
+
+TSV-SKELETON (site id, file-ADD flag, span-ADD flag, depthMin — CLASS column left blank for the hand read)
+site_id	file_add	span_add	depth_min	lines	CLASS	NOTE
+round404-instruments/grade-the-three-cures.mjs#1	-	-	0	79-79		
+round419-instruments/grade-the-417-repairs.mjs#1	-	-	0	99-99		
+round420-instruments/his-old-cell-is-keyed-on-head.mjs#1	-	-	0	137-137		
+round421-instruments/grade-the-420-repair.mjs#1	-	-	0	104-104		
+round421-instruments/grade-the-420-repair.mjs#2	-	-	0	144-144		
+round422-instruments/drive-his-421.mjs#1	-	-	0	122-122		
+round422-instruments/drive-his-421.mjs#2	-	-	0	126-126		
+round425-instruments/position-vs-property-confusion-matrix.mjs#1	-	-	0	86-86		
+round428-instruments/a-sentence-keyed-on-a-subset-publishes-past-its-own-gate.mjs#1	-	-	0	85-85		
+round429-instruments/does-any-other-instrument-retype-a-verdict-it-slices.mjs#1	ADD	-	0	205-205		
+round431-instruments/grade-his-convention-and-measure-the-reach.mjs#1	-	-	0	213-213		
+round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs#1	ADD	ADD	0	410-410		
+round441-instruments/key-the-silent-class-from-source.mjs#1	-	-	0	658-658		
+round464-instruments/grade-the-stop-condition.mjs#1	ADD	-	0	732-733		
+unit-464t2-keychoice-2026-10-28/grade-the-surface-predicate.mjs#1	ADD	-	0	292-293		
+unit-464t2-population-2026-10-28/grade-the-round-population.mjs#1	ADD	-	0	171-172		
+unit-464t2-reaim-2026-10-28/grade-the-credit-key.mjs#1	ADD	-	0	234-235		
+unit-464t2-reaim-2026-10-28/recon-credit-provenance.mjs#1	ADD	-	0	124-124		
+unit-464t2-surface-2026-10-28/recon-run-length-and-cure.mjs#1	ADD	-	0	203-206		
+unit-464vac-2026-10-31/grade-cure.mjs#1	-	-	0	55-55		
+
+tally:
+  GREEN GBOOT
+  GREEN GLIFT
+  GREEN GARMS
+  GREEN GANSWERKEY
+  GREEN P1REPRO
+  GREEN P2SITES
+
+STAGE 1 — 6 legs, 0 RED. No classifier exists in this blob; P3a/P3b/P4/P5/P6/P7 and the cripple are NOT run here, by design.
+[SUBJ_PIN=268457d1 POP_PIN=0ae48068 REC_PIN=3dbae1eb CRIPPLE=none]
