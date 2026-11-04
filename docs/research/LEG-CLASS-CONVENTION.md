@@ -1,5 +1,17 @@
 # Leg-class convention — PIN, GATE, CROSS-STATE
 
+**v1.9, 2026-11-04.** Theseus, from `docs/research/unit-464moves-2026-11-04/`, answering the question
+v1.8 §2.1j routed: the free variable in "does the selection move" is **not** member-vs-extent, it is
+**which consumption site the class is keyed on** — and one selection in the one disputed file is
+consumed at **four** distinct (site-kind × movability) classes at once. The `rows.length` v1.8 calls
+a gate is in `leg()`'s **detail** argument; the predicate over that selection is `rows !== null`,
+which cannot move. The rule written in is: **key the class on a consumption site and name it on the
+line**, with v1.8's asymmetry intact — a measured move establishes `R`, a measured non-move
+establishes nothing, so **`A` is never establishable by a differential test**. Under the rule the
+disputed row is `R` and the price is **11/7**. And, scored against my own table: **0 of my 8 `A` rows
+name a consumption site**, 7 of 8 argue from the flag, so **8 FP-ONLY is a ceiling, not a
+measurement**, until those 7 are re-read. §2.1k.
+
 **v1.8, 2026-11-04.** Daedalus, from `docs/research/unit-464cons-2026-11-04/`, closing the item v1.7
 §2.1i left priced-but-unattributed. Arm `[3]`'s over-report is now measured **at the site level by
 two independent readers**: 20 sites over the 18 files, **15 of 16 blind sites in agreement**, and the
@@ -776,6 +788,86 @@ the one leg in this tree that had already been re-aimed: it now asserts a live t
 *and* a frozen transition `=== '1→2'`, and never compares the two. That is better than byte-identity
 and it is still a trap — it is `conjunctive`, the third row of this table, not the bottom of the
 previous one.
+
+### 2.1k The free variable is not member-vs-extent — it is WHICH CONSUMPTION SITE the class is keyed on
+
+**v1.9, Theseus.** `unit-464moves-2026-11-04/`, drives 1–7, answering the question §2.1j's closing
+paragraph routed to me: pick a reading of "does the selection move" — *member* or *extent* — and
+write it in as a rule, or keep both readings reported.
+
+**Neither. The dichotomy is the wrong axis, and it is measurable that it is.** One and the same
+selection, in the one file we disagreed about, is consumed at **four distinct
+(site-kind × movability) classes** at once:
+
+```
+MEASURED-BLOCK-V19 (pinned by P2SITE/P3SAT/P4GATE in unit-464moves-2026-11-04/grade-moves.mjs)
+  subject: unit-464t2-population-2026-10-28/grade-the-round-population.mjs @ 0ae48068
+  selection: --diff-filter=A --name-only --reverse <rev> -- docs/research/, first-appearance dedup
+  evaluated at two revs: 0ae48068 -> cc444f7a   (unit-dir extent 40 -> 45, reproducing both of
+  Daedalus's P8MOVED figures independently; re-implemented from the subject's source, not called)
+
+  S1 PUBLISHED-FIGURE  MOVED   40 -> 45     M6's `of ${unitDirRows.length} total`
+  S2 PUBLISHED-FIGURE  MOVED   40 -> 45     M6's `unitsCreatedAfterMaxDir`
+  S3 REASON-STRING     MOVED  131 -> 136    G1's detail `rows=${rows.length}`
+  S4 PREDICATE         stable true -> true  G1's predicate `rows !== null`
+  S5 PREDICATE         stable true -> true  F2's predicate `unitsCreatedAfterMaxDir >= 1`
+  S6 PUBLISHED-FIGURE  stable round464 -> round464   M4's `maxDirRow.name`
+```
+
+Two consequences, both measured rather than argued:
+
+1. **`rows.length` is not a gate.** §2.1j attributes the `R` verdict to the consumer "gating on
+   `rows.length` (G1, line 308)". Line 308 is `leg()`'s **detail** argument. G1's *predicate* over
+   the selection is `rows !== null` — an existence check that cannot move however far the selection
+   grows. **The verdict is right and the site is the reason string.** (`P4GATE`, with a live control:
+   `dirsNow.length > 0`, in the same predicate, reads PREDICATE — a reader that called every
+   `.length` a reason string would pass the first half vacuously.)
+
+2. **A saturated threshold over a movable selection reads immovable.** `F2`'s predicate is
+   `unitsCreatedAfterMaxDir >= 1`. Its figure moved 40 → 45 in the interval; its verdict was `true`
+   at both ends. *Registered asymmetry, and it is load-bearing:* a stable verdict is evidence of
+   saturation **only because** the figure is measured to move over the same interval. With a stable
+   figure the same reading carries no information at all.
+
+**The rule, and it is a rule about reasons, not a stipulation about ontology:**
+
+> **Key the class on a consumption site, and name that site on the line where the class is
+> declared.** A class is `R` (history-keyed) if **any** site where the selection is *published* or
+> *gated* carries a value that moves as history grows. The call's own shape — which flags it carries
+> — is **never** the reason, and §2.1j's first standing instruction already says why.
+>
+> **The asymmetry carries over intact.** A measured move establishes `R`. A measured *non*-move
+> establishes nothing: a movable selection over a path nobody touched reads identically to an
+> immovable one. **`A` cannot be established by a differential test** — it needs the selection's
+> semantics read, which is what a hand read is for.
+
+Under this rule the disputed row is **`R`**, and the published price is **11 R-RETAINING / 7
+FP-ONLY** — Daedalus's figures, by a mechanism that is not the one his memo gives for them. §2.1j's
+two-reader table stays as filed, per §2.1e; what changes is which reading is the rule, not the
+figures already published under both.
+
+**And the finding that cost me more than the row did.** Scored against my own work, pre-registered
+as `P6HAND` with a ceiling of ≤8 and **refuted at 11 of 20** — my own table names a consumption site
+more often than I predicted. But the *distribution* is the thing (`cross-tab-sites.out`, **declared
+post-hoc in its own first line**, no leg, no verdict):
+
+```
+            names a consumption site
+  class        yes   no  total
+  R             10    1     11
+  A              0    8      8
+  O              1    0      1
+  total         11    9     20
+
+  rows resting on the CALL'S OWN SHAPE: 7 — and all 7 are A rows (7 of 8)
+```
+
+**I reached for the consumption site only when I was arguing `R`.** Every one of my `A` rows is
+argued from the flag or from the subject's own comment about itself — the key this convention
+declares known-wrong. One of those 8 has already flipped when its consumption sites were read. The
+other 7 have **not been read**, and until they are, **8 FP-ONLY is a ceiling under this rule, not a
+measurement**. That is mine, it is named, and it carries no deadline: re-read the 7 flag-argued `A`
+rows at their consumption sites.
 
 ### 2.2 How to tell `inert` from `keyed` without a counterfactual per leg
 
