@@ -163,3 +163,73 @@ mailboxes, the one real new item (expired test key) traced and confirmed already
 by Argus, nothing owed from any; both standing blockers re-derived fresh, neither moved; gate
 re-derived fresh and byte-identical; rollup confirmed correctly untouched; log.html confirmed not
 yet due. Two consecutive checks found nothing further unblocked. Fire closed bounded.
+
+---
+
+## 20:1x PT — Session resumed (STOP fire)
+
+Checkpoint: this seat's own 17:05:07 PT SWEEP-fire commit `0ae48068`. `git log 0ae48068..HEAD
+--format='%h %an %ci %s' --reverse` showed 36 new commits, author-checked before citing, none mine:
+Pard's mail-delivery commit (Janus→Argus cc Calliope/xian, expired test key — already closed);
+Daedalus's `unit-464prec` chain (6 commits) and `unit-464presc` chain (6 commits); Argus's WORK-fire
+and STOP-fire census no-ops; Theseus's `unit-464outside` chain (8 commits) and `unit-464inspan`
+chain (6 commits); Iris's own STOP-fire census no-op. `git diff --stat 0ae48068..HEAD --
+packages/ scripts/` empty — confirmed, not assumed; dirstat 100% under `docs/research/unit-464{prec,
+presc,outside,inspan}-2026-11-03/`, `docs/logs/`, `docs/mail/`.
+
+**The day's real item:** `docs/mail/xian-via-janus-to-calliope-ground-rules-start-blank-then-learn-defaults-2026-11-03.md`
+(Janus relaying xian, cc Argus/Theseus/Daedalus/Iris) answered this board's item 2, open since
+2026-08-09 (86 days): no defaults ship, the user's own rules become them. Read in full, acted same
+fire. Named the conflict Janus explicitly asked this seat to flag: this supersedes the 2026-09-24
+ruling ("one fixed disclosure norm is enough, no per-klatch setting") — verified `DISCLOSURE_NORM`
+(`carried-context.ts:120`) directly before writing, still the one hardcoded string, nothing
+per-klatch built. That 9/24 ruling had named itself explicitly provisional, inviting exactly this
+re-raise; today's answer lands it the other way. Rollup updated: `docs/operations/attention-rollup.md`
+v173 → v174, item 2 closed (needs-you 2 → 1), full ruling text plus the supersession note added under
+✅ Recently closed, banner/metrics-strip/changelog all updated. Replied to Janus (cc xian, team):
+`docs/mail/read/calliope-to-janus-cc-xian-team-ground-rules-decided-and-it-supersedes-the-924-ruling-2026-11-03.md`
+— confirms the board update, states the supersession plainly, commits to scoping/sequencing as this
+seat's own going forward per xian's note. Both the inbound ruling and the reply moved to
+`docs/mail/read/`.
+
+**Read all four of today's round-mail memos in full to write `log.html`'s mandatory entry** (not
+skimmed): the `unit-464prec`→`unit-464outside`→`unit-464presc`→`unit-464inspan` chain, chasing
+whether one relation in yesterday's two-axis replacement (history-keyed outranking movable) is
+backed by any real example in the tree. Net result across all four: no real example exists anywhere
+in the 309-file research corpus; the relation is now formally labelled a prescription, not a
+finding; along the way a census surface thought to cover the relevant population turned out to be
+~17% of it (later corrected to ~16% at an exact file count), and a safeguard built to stop "found
+nothing" from passing as proof was itself found silent on its own worked example, caught by the next
+round's hand-read rather than trusted. Translated to plain-language narrative and written into
+`log.html` as today's entry, with the ground-rules ruling given its own closing paragraph since it's
+the day's actual decision-relevant item. `docs/operations/duty-cycle/calliope-tasks.md`'s recurring-
+items row bumped (`next_due` → 2026-11-04, `last_completed` → 2026-11-03) with a summary note
+prepended.
+
+**Mail — board now clear of named-to-this-seat items:** `grep -li "^to:.*calliope" docs/mail/*.md`
+(excluding `read/`) returns nothing now that the ground-rules thread is closed — first time since
+10-20 the four standing Pard threads aren't the only open mail (they're also unchanged, day 14). All
+four cross-repo mailboxes checked fresh via `git -C <repo> fetch` + `git log --since` against this
+seat's own 17:05:07 PT checkpoint: `designinproduct` 4 new, `mediajunkie` 3 new, `dispatch` 2 new —
+content-grepped for `klatch`/`calliope` across all three, 0 hits; `piper-morgan-product/mailboxes`
+66 new commits, content-grepped via `git log -p --since`, 0 hits. Nothing owed from any.
+
+Standing blockers re-derived fresh: Managed Agents smoke-run — no `ma-smoke/*` branch anywhere,
+named blocker on xian, day 14, unchanged same calendar day. Ground-rules day-count blocker —
+retired this fire, the question it was counting is now ruled.
+
+Gate re-verified fresh after all edits: `npx tsx scripts/gate.mts` — census OK, typecheck 0
+`error TS` across all four workspaces; server 140 files · 2186 passed · 1 skipped (2187); client 26
+passed | 13 skipped (39) · 333 passed | 13 skipped (346) — byte-identical to every prior checkpoint
+today, confirming the rollup/mail/log.html/COORDINATION edits touched nothing under `packages/`.
+
+`git status --short` clean before this fire's own rollup/mail/log.html/coordination/log edits.
+
+Drain: 36 new commits read with author verified before citing, none mine, confirmed via empty
+`packages/`/`scripts/` diff and dirstat; the one real new item (ground-rules ruling) read in full and
+acted on same fire — board updated, conflict named, reply filed and sent, mail hygiene closed; all
+four round-mail memos read in full for the mandatory `log.html` entry, written on time; mail checked
+locally (board now clear) and across all four cross-repo mailboxes, nothing owed from any; both
+standing blockers re-derived fresh, one (ground-rules day-count) retired outright; gate re-derived
+fresh and byte-identical after every edit. Two consecutive checks found nothing further unblocked.
+Fire closed bounded.
