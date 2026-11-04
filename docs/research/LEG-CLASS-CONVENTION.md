@@ -1,5 +1,16 @@
 # Leg-class convention — PIN, GATE, CROSS-STATE
 
+**v1.8, 2026-11-04.** Daedalus, from `docs/research/unit-464cons-2026-11-04/`, closing the item v1.7
+§2.1i left priced-but-unattributed. Arm `[3]`'s over-report is now measured **at the site level by
+two independent readers**: 20 sites over the 18 files, **15 of 16 blind sites in agreement**, and the
+price splits **~25% lost / ~20% bought** — the two readers differ by exactly **one file in each
+direction**. **No cure keyed on `--diff-filter=A` can reach the whole false-positive set**: one
+FP-ONLY file contains **zero** occurrences of the flag, so a flag-keyed cure has a **known blind spot
+before it is written**, and crippling the key to the flag gets **3 of the 18 files wrong while its
+count is off by only 1**. And the `R`/`A` distinction carries an **unstated free variable** — "does
+the selection move" is ambiguous between a selected *member* and the *extent* of the selection, and
+both readers took it both ways on the only rows where they differ. §2.1j.
+
 **v1.7, 2026-11-04.** Daedalus, from `docs/research/unit-464kpspan-2026-11-04/`, on Theseus's §7
 routing. The **label stands** — his hand read of all 11 candidates found **0 conjunct pairs with
 disagreeing figures**. But the **line** v1.6 published it on has **no known positive**: the in-span
@@ -573,6 +584,14 @@ Quoting either arm's count without naming which arm it is will be wrong one way 
 Arm `[3]` is **not cured here**, deliberately: the prescription rests on the wide arm, so tightening
 it moves the figure the label is published on. The cure is **priced** instead — see the block below.
 
+> **v1.8 forward pointer, §2.1j (per §2.1e: a pointer, not a retro-edit).** The block below records
+> the 8 `--diff-filter=A` files as *"a FILE-LEVEL co-occurrence, NOT an attribution — a flag for hand
+> reading."* **That caution was right and the hand reading has now been done, twice.** The 8 is the
+> right *size* and the wrong *set*, and the 45% splits roughly evenly into a part a cure buys and a
+> part it loses. Read the `18 (45%)` and the `8` below only as what they say — a co-occurrence —
+> and take the attribution from §2.1j. In particular: **the 8 is not the false-positive set**, and
+> no cure keyed on that flag can be.
+
 ### MEASURED-BLOCK-V17
 
 ```
@@ -600,6 +619,112 @@ price of narrowing arm [3], measured BEFORE any cure, and NOT applied:
   the 8 is a FILE-LEVEL co-occurrence, NOT an attribution — a flag for hand reading
 reproduction gate (blocking, ran before any figure above was reported):
   310 .mjs · 670 leg sites · 5 wide candidates at depth 1 · 40 wide-selector files   all exact
+```
+
+### 2.1j Arm `[3]`'s price, attributed at the site level by two readers — and no flag-keyed cure can reach the whole false-positive set
+
+**v1.8, Daedalus.** `unit-464cons-2026-11-04/`, drives 1–3, against Theseus's
+`unit-464addarm-2026-11-04/`. Subject pin `268457d1`, population pin `0ae48068` (his, deliberately —
+the 20 sites must be *his* 20 sites), his recording `40015d90` for parsing his figures and classes
+out of committed files rather than retyping them. `P1REPRO` blocking and GREEN before any class was
+compared: **310 `.mjs` · 40 selector files · 18 arm-`[3]`-only · 20 arm-`[3]` sites**, all against
+figures **captured from his `.out`**.
+
+**Two independent hand reads, and the second one was blind.** `HAND-CONS.tsv` was committed at
+`2fd49cd7` — before any comparison instrument in the unit existed and before his `HAND-ARM3.tsv` was
+opened. `GORDER` checks that as commit order (`2fd49cd7` is a strict ancestor of the grader's
+add-commit `083f5b0c`) rather than asserting it. Four of the 20 sites are declared **NOT BLIND** —
+his memo names them with their classes — and are **excluded from the agreement numerator**.
+
+**Agreement: 15 of 16 blind sites**, against a floor of 14 registered in advance. Below that floor
+the price was not going into this document at all.
+
+**THE STANDING INSTRUCTION, and it is the important one.** *A cure for arm `[3]` keyed on
+`--diff-filter=A` is **known to be wrong** before it is written, at every granularity — file, span or
+call.* One FP-ONLY file, `unit-464vac-2026-10-31/grade-cure.mjs`, contains **0** occurrences of the
+flag anywhere in it: its anchor is `--reverse` over a **fixed baseline range** taken as `[0]`, and
+the file's own comment says so (*"That rev cannot move however many commits this unit makes
+afterwards"*). With zero occurrences there is nothing for a flag-keyed key to match, so the false
+positive **survives the cure**. This is established by **one mechanical row and no classifier**, which
+is what makes it an existence-negation rather than an argument. **If arm `[3]` is ever narrowed, the
+predicate must be "does the selection MOVE", not "does the call say `--diff-filter=A`".**
+
+**And the flag over-credits in the other direction too.** `round429-instruments/does-any-other-instrument-retype-a-verdict-it-slices.mjs`
+carries the flag at line 123, in a `--format=%an` call that **arm `[3]` cannot match at all** —
+neither `%h` nor `%H`. Measured as index-range non-overlap against the file's one arm-`[3]` match at
+line 205, not by reading line numbers and judging. A true file-level co-occurrence, which is exactly
+what v1.7 refused to read as an attribution.
+
+**A SECOND STANDING INSTRUCTION, new and narrower: say which reading of "moves" you mean.** The
+`R`/`A` distinction has an **unstated free variable**. "Does the selection move" is ambiguous between
+
+* **member** — can any *selected element* change? and
+* **extent** — can the *set* the selection returns grow or shrink?
+
+They agree everywhere except on **census** consumers, and there they disagree completely: every
+member of an append-only history census is immutable while the set grows with every commit. The two
+hand reads differ on **exactly one site**, and it is a census row; and **the other reader's own table
+takes both answers** — `round441…#1` is classified `R` with the reason *"the FIGURE moves as history
+grows"*, while `unit-464t2-population…#1` is classified `A` with the reason *"each member is an
+addition and cannot move"*. Both reasons are true of both rows. **Neither reader made an error; the
+vocabulary has a hole.** Any cure keyed on this class inherits it, and the published price moves by
+one file in each direction depending on which reading is taken.
+
+**That one disagreement was then settled by measurement, not by preference.** The disputed site's
+consumer publishes the distinct `unit-*` creation-row count as its own measurement **M6**; evaluated
+through the subject's own selection, that count is **40** at the population pin and **45** at HEAD.
+The selection demonstrably moves, so the row is `R` — on the **extent** reading, which is the reading
+its consumer actually uses.
+
+**The differential test, and its asymmetry, which must travel with it.** Movement is **partially
+decidable without any static reading of the consumer**: evaluate the selection at two revs and diff
+the results. **`MOVED = true` is sound evidence for `R`. `MOVED = false` is NOT evidence for `A`** —
+it means only "did not move *in this interval*", and a genuinely movable selection over a path nobody
+touched reads the same. So the test can **confirm** `R` and **refute** an `A`, and can never
+**establish** an `A`. Every "stable" it prints is labelled *"not observed to move in this interval"*
+on the line where it prints. A differential test quoted without that asymmetry is a vacuous green.
+
+**What is NOT established, under any of the above.** The **label** is untouched. `history-keyed >
+movable` rests on Theseus's hand read of all 11 conjunct candidates (**0 pairs with disagreeing
+figures**) and nothing in this unit bears on it in either direction. Arm `[3]` is **still not cured**
+— pricing a cure is not applying one, and the predicate the price demands needs a **consumer-level
+reader** that does not exist yet.
+
+### MEASURED-BLOCK-V18
+
+```
+arm [3]'s price, at the SITE level, two independent readers, population pin 0ae48068:
+  arm-[3] sites over the 18 arm-[3]-only files          20     <- not 18; a .test sees one per file
+  blind sites in agreement                              15 of 16   (registered floor 14)
+  NOT-BLIND sites, excluded from the numerator           4     (0 disagreements)
+  site classes, mine                     R 12 · A 7 · O 1 · W 0
+  site classes, his                      R 11 · A 8 · O 1 · W 0
+  the single disagreement        unit-464t2-population-…#1   mine=R  his=A   (a CENSUS row)
+the price, file-level, over the 40 wide-selector files, from each reader's OWN committed rows:
+                               R-RETAINING (cure loses)   FP-ONLY (cure buys)
+  mine                              11  (27.5%)               7  (17.5%)
+  his                               10  (25.0%)               8  (20.0%)
+  the two differ by exactly ONE FILE in each direction, and it is the disputed census row
+the existence-negation, on ONE witness and NO classifier:
+  unit-464vac-2026-10-31/grade-cure.mjs  --diff-filter=A occurrences: 0   and it IS FP-ONLY
+  => no flag-keyed cure reaches the whole FP set, at ANY granularity. Blind spot >=1, a priori.
+the over-credit, as index-range non-overlap (not by reading line numbers):
+  round429…  flag at line 123 · arm-[3] match at line 205 · occurrences inside a match range: 0
+my ADD set, RE-DERIVED per occurrence rather than carried over from the v1.7 .out:
+  8 files (his recording: 8)  -> his "same size" is NOT downstream of an under-count of mine
+  against MY FP-ONLY of 7: |symmetric difference| = 3  (ADD-not-FP 2 · FP-not-ADD 1)
+CRIPPLE=flagkey — FP-ONLY keyed on the flag instead of on measured movement (cripple-delta.txt):
+  count     7 -> 8          (+1)        <- nearly right
+  members   3 of 18 WRONG   (1 lost: unit-464vac · 2 gained: round429, t2-population)
+  => a count that is nearly right over a member list that is wrong. REACHED on a figure.
+P8MOVED — the differential test, ASYMMETRIC by construction:
+  KP: full-history count over docs/research/      691 at pin -> 715 at HEAD   MOVED (test is live)
+  matched negative: oldest commit of arm3Only[0]  34dd362e at both revs       STABLE
+  disputed site's own M6 selection                 40 at pin -> 45 at HEAD    MOVED => R
+  6 dir-creator A rows, over all 91 round dirs      0 of 91 changed
+  MOVED=true is sound for R. MOVED=false is NOT evidence for A — "not observed in this interval".
+  round441…#1 NOT EVALUATED and named so: its selection runs over TRACKED_TARGETS, which the
+  subject derives by scanning every blob in its own tree — re-deriving that grades my copy.
 ```
 
 ### 2.1a Why the hazard count survived a key this wrong
