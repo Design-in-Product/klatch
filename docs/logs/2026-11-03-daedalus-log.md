@@ -303,3 +303,81 @@ check reads the pushed tree and not the worktree):
 Delivery itself is the wrapper's to log, not mine to assert; what is verified above is that the
 commits and files are on `origin/main`.
 
+
+---
+
+## 17:17 — Session resumed (STOP fire, Opus 5)
+
+**Checklist.** Pulled (`fetch` + worktree already synced by the wrapper; `HEAD` = `origin/main` =
+`0ae48068` at open). `docs/COORDINATION.md` read. `docs/mail/` listed: **two inbound from today**,
+both from Theseus, and the newer one — `…your-ordering-relation-is-a-prescription-and-the-census-
+surface-was-one-sixth-of-the-tree-2026-11-03.md`, committed **14:58** — postdates my own last
+commit (13:35) and was **unanswered**. The four commits sitting on top of mine are Theseus's (3)
+and Calliope's (1), **checked by author** before assuming any of them were mine.
+
+**What the checklist surfaced, and what I did with it.** His §6 routed me one live item: whether
+v1.5 §2.1g's `history-keyed > movable` line should be relabelled a **prescription** on the strength
+of his §1. I did not write it on the relay. His §1 is measured over 106 `.mjs`; his own §2 had just
+shown that "the census says there is none" was carrying weight a censused surface had not earned,
+and his §1's two stated gaps — a witness search confined to legs his pipeline classed CROSS-STATE,
+and `roundNNN` counted but never censused — are exactly the shape of that error one level up.
+
+**Unit `docs/research/unit-464presc-2026-11-03/`.** Pre-registration `419c7ba2` pushed to `main`
+as the only file in the directory before any instrument existed (`git ls-tree -r origin/main`
+verified). Drives `68d4f5bf` (drive1), `268457d1` (drives 2–4 + cripple), RESULTS + convention v1.6
+`3384bc31`, mail `19895318`. **10 files · 4 `.out` · 4 `.err` · 0 non-empty** by `readdirSync` +
+`statSync`.
+
+**The result.** Search **inverted** to selector-first, so the witness property is tested on the
+leg's text without first agreeing with my class key: **0 in-span witnesses at closure depth 1 and
+depth 5**, over **310 `.mjs` / 670 leg sites / 129 instrument dirs**, with all five depth-1
+closed-text candidates **hand-read and cleared**. `history-keyed > movable` relabelled a
+**prescription** in **v1.6 §2.1h**; `movable > immovable` stays a measurement.
+
+**The defect beside it.** `GHISSELNARROW` **RED** in every arm: §2.1g's `kindOf` selector arm
+(`/\['log', '-1'/`) cannot see **either** of Theseus's constructed selector legs, which are written
+`gitIn(root, 'log', '-1', …)`. 15 of 40 selector-bearing files tree-wide. v1.6 now carries a
+standing instruction to read every "selector arm reached 0" sentence in that document as a
+**floor**, its own 0-of-35 included.
+
+**Cripple REACHED on a figure** (per Theseus's defect #4): 310 → 50 files · 670 → 182 sites · 40 → 8
+selector files · 1 → 4 red legs — and the reds are the finding, because **both of his known
+positives fall outside the censused surface entirely**.
+
+**Two things I caught before publishing them.** (1) I drafted the roundNNN departure as "four
+`.mjs` added between his pin and mine" and checked it at **his** pin: wrong — `roundNNN` is **90
+dirs / 195 `.mjs` at `bba2aa3c`**, not 91 / 191, so the family he flagged is four files larger and
+the tree is 309 `.mjs`, not 308. (2) I wrote "~18:1x PT" into the memo header from a sense of
+elapsed time and then ran `date`: **17:32**. Corrected in place before the push.
+
+**My own four defects** are in RESULTS §6. The first matters most: **P4 pinned no closure depth**,
+so its count is 0/5 at depth 1 and 5/11 at depth 5 and the prediction has no answer — **the same
+defect Theseus recorded against his own P3 in the memo this unit exists to answer.** P4 is UNGRADED
+as registered; what carries the entry is the in-span invariant plus the hand read.
+
+**Older instrument checked, not assumed.** The v1.5 entry gate (`grade-entry-v15.mjs`) re-driven
+from the repo root after the v1.6 edit: **GREEN, 6 of 6**, recorded as `drive5`. Forward correction
+leaves the v1.5 paragraph its `GENTRY` leg keys on intact, so adding v1.6 did not redden a gate
+written beside v1.5. The first attempt failed on a cwd-relative path (run from the unit dir, not the
+root) — recorded, re-run correctly.
+
+**Mail arriving mid-fire.** `git push` was rejected non-fast-forward partway through; `fetch` showed
+one new commit, Pard's delivery of `xian-via-janus-to-calliope-ground-rules-start-blank-then-learn-
+defaults-2026-11-03.md`. Read it in the same turn: I am **cc, not action** — xian's call is that the
+product ships **no** default ground rules and the user's own rules become the default or a template;
+spec and board are Calliope's. Rebased onto `origin/main` (clean, 1/1, no conflict, work commits
+verified present) and pushed.
+
+**Thread left OPEN, deliberately.** His inbound memo is **not** moved to `docs/mail/read/` — my
+reply routes **6 unread depth-5 candidates** back to him, and the prescription label is defeasible
+by any one of them. A thread with an open action item stays visible.
+
+**Question-box check (STOP):** nothing new from this seat — the question I would ask is already
+sitting in Theseus's 11-01 letter to xian, still unanswered.
+
+**Drain:** the one mail item the checklist surfaced was drained to completion in this fire (read →
+re-measured rather than relayed → entry written → reply filed → coord updated). Deferred with named
+blockers: the 6 depth-5 candidates (**routed to Theseus**, named in my §7, no deadline); pushing the
+wider selector idiom set back into `kindOf` itself (**named, not reached** — the document flags the
+floor, the predicate is still narrow); the hand read of the 15 detector-classed CROSS-STATE rows
+(**still Theseus's from his own §6**, untouched here). Nothing deferred without a name.
