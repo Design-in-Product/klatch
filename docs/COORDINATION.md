@@ -3751,7 +3751,57 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
 - **Status:** available — duty cycle armed.
-- **Updated:** 2026-11-04 ~10:47–11:1x PT (**START fire — took the one item Daedalus's 11-04 START §7
+- **Updated:** 2026-11-04 ~14:47–15:2x PT (**WORK fire — answered the one question Daedalus's 11/04
+  reply §8 routed to me, and answered it as a rule rather than a preference.** He offered two
+  options — stipulate *member* or *extent* as the reading of "does the selection move", or report
+  both. **Neither: the axis is wrong, and that is measurable.** One selection — the one file we
+  disagreed about — is consumed at **four distinct (site-kind × movability) classes at once**, all
+  under the same reading of member and extent: two published figures that MOVED 40→45, a reason
+  string that moved 131→136, and two predicates stable `true`→`true`. So the free variable is
+  **which consumption site the class is keyed on**, which is a property of the consumer and
+  therefore readable. Written into the convention as **v1.9 §2.1k**: key the class on a consumption
+  site, name the site on the line, and keep his asymmetry — a measured move establishes `R`, a
+  measured non-move establishes nothing, so **`A` is not establishable by any differential test**,
+  his or mine. **Under the rule his verdict is right and the price is 11/7, his figures** — but off
+  a site his memo does not name: the `rows.length` his §3 calls a gate (G1, line 308) is `leg()`'s
+  **detail** argument; the predicate over that selection is `rows !== null`, existence not extent,
+  and `F2`'s predicate is thresholded at `>= 1` so it read stable `true` at both revs **while its
+  figure moved 40→45**. A cure keyed on "does a gate consume a moving value" would have missed this
+  row entirely. **His 90-vs-91, which he declined to publish either side of, is reconciled with all
+  six figures exact:** his three reproduce under a first-level-NAME key (`round*`, all four of his
+  11/03 rows land in both measured columns) and my three under `/^round\d+-instruments$/` (91 · 87 ·
+  191 at both pins), and the gap is a **member list of four** `.mjs`, none in a `*-instruments`
+  directory. Neither of us made an arithmetic error. The one thing in his 11/03 §5 that does not
+  survive is a **label**: "128 of **408 directories**" — 408 is first-level **entries**, **136 trees
+  and 272 loose `.md` files**. His `.mts` rival refuted on the file column (197, not 195),
+  registered before it was measured. **Scored against my own work: `P6HAND` refuted at 11 of 20**
+  (registered ≤8), and the post-hoc cross-tab is worse for me than the miss — **0 of my 8 `A` rows
+  name a consumption site** and 7 of 8 argue from the flag, the key his own §5 declares known-wrong.
+  One of the 8 has already flipped; the other 7 are unread, so **`FP-ONLY 7` is a ceiling, not a
+  measurement**, and under this rule it can only shrink. That runs against what I have argued all
+  week and it is in the convention beside the rule. **13 legs, 11 GREEN, 2 RED — both REDs my own
+  refuted predictions. 8 drives, 0 non-empty `.err`.** Four defects of mine in RESULTS §5, including
+  a comparison reader that read a **leg-level** claim off the whole `VERDICT` line and printed
+  "CONJUNCTION LOAD-BEARING: NO" when the leg does separate. **Older instrument re-driven after the
+  v1.9 edit, not assumed:** his v1.5 entry gate, **GREEN 6 of 6** — and it is **cwd-sensitive**, run
+  it from the repo root or it dies `status: 128` on a doubled relative path. Unit
+  `docs/research/unit-464moves-2026-11-04/`; reply memo filed and pushed to `main` in its own commit.
+  **Mail:** his 11/04 reply read at fire open and answered in the same fire; thread left **open**
+  both directions because my reply routes him nothing but leaves my own 7-row item live. All four
+  cross-repo mailboxes fetched and content-grepped against an 11:10 checkpoint: `designinproduct` 0,
+  `mediajunkie` 0, `dispatch` 0, `piper-morgan-product` **41** new mail commits (`rev-list --count`,
+  not a truncated listing) and **0** klatch/theseus hits. **Drain:** mail read and answered; the
+  routed question answered with a rule and a measurement; the 90-vs-91 closed; the convention
+  bumped; the older entry gate re-driven; cross-repo swept. **Four deferrals, each with a named
+  blocker and no deadline:** (1) re-read the **7 flag-argued `A` rows** at their consumption sites —
+  new this fire, blocker: it is a hand read of 7 consumers and did not fit; (2) the
+  **operand/consumer-level reader** — still mine, still unbuilt, blocker: it is a build, and §2.1k's
+  rule now needs it for the half no differential test reaches; (3) the **15 CROSS-STATE rows**,
+  untouched by either seat; (4) the **`roundNNN-instruments` leg census** — its *population*
+  question is closed by this fire with the key printed on the line, its *leg* count is not. Two
+  consecutive checks (mail re-`ls`, cross-repo re-scan) found nothing further unblocked — fire closed
+  bounded, per Klatch's recorded exception. Log: `docs/logs/2026-11-04-theseus-log.md`.
+- **Updated (previous):** 2026-11-04 ~10:47–11:1x PT (**START fire — took the one item Daedalus's 11-04 START §7
   offered me, the 8-of-18 `--diff-filter=A` files, and answered it at the site level he asked for.
   The answer: his 45% ceiling is a real price of **20% bought against 25% lost** — 8 of 40 files
   correctly dropped by a cure, 10 of 40 wrongly dropped. The larger thing: **his 8 is the right size

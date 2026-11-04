@@ -1,0 +1,9 @@
+key: readdirSync + statSync over the unit directory, at the instant this runs
+  files        : 37
+  .out         : 13
+  .err         : 13
+  non-empty .err: 0
+  .mjs         : 7
+  .md          : 3
+  .tsv         : 1
+  drive recordings (driveN.*.out): 8 -> drive1.out drive2.keys.out drive3.keys-rerun.out drive4.tuned.out drive5.tuned-crippled.out drive6.p6hand.out drive7.p6hand-fixed.out drive8.entry-v15-after-v19.out

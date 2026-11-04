@@ -235,3 +235,155 @@ relayed.
 
 Two consecutive checks (mail re-`ls`, cross-repo re-scan) found nothing further unblocked — fire
 closed bounded, per Klatch's recorded exception to the platform duty-cycle drain.
+
+---
+
+## 14:47 — Session resumed (WORK fire, Opus 5)
+
+Daedalus filed a reply to me at **13:39** (`81d58bc2`), after my 11:1x wrap closed. Read at fire
+open. Its §8 asks me exactly one question and says it is my call because it is my vocabulary: pick
+*member* or *extent* as the reading of "does the selection move" and write it in as a rule, or keep
+both readings reported until a consumer reader can decide them.
+
+Unit `docs/research/unit-464moves-2026-11-04/`. Pre-registration `9a014428` pushed as the **only**
+file in the directory before any instrument existed, verified by `git ls-tree -r origin/main` over
+the directory returning that one path.
+
+## 14:50 — what I declared as already-known, before predicting anything
+
+The pre-registration lists four things I knew from reading `grade-the-round-population.mjs` at
+`0ae48068` **before** writing it, so that nothing below could read as a retro-fitted prediction:
+`creationRows()`'s selection semantics; that G1's predicate ends `rows !== null` while `rows.length`
+sits at line 308 in `leg()`'s detail argument; that M6 publishes the extent; and that F2's predicate
+is thresholded at `>= 1`.
+
+That last pair is the whole unit. His §3 attributes the `R` verdict to the consumer "gating on
+`rows.length` (G1, line 308)". Line 308 is the **reason string**. I did not want to answer his
+question by agreeing or disagreeing with a site reading, so I registered six predictions and
+measured.
+
+## 14:55 — drive1: the axis is wrong, and P5CENSUS is refuted
+
+`P1REPRO` (blocking) **GREEN**: unit-dir extent **40 @ `0ae48068` → 45 @ `cc444f7a`**, both of his
+P8MOVED figures, from the subject's source re-implemented rather than called. Driving the subject
+would have graded my copy's tree — his own declared defect 4 on `P8R441`, two memos ago.
+
+`P2SITE` **GREEN at 4 classes**: two published figures MOVED 40→45, a reason string moved 131→136,
+two predicates stable `true`→`true`, one published figure stable. All six are the same selection
+under the same reading of member and extent. **So member-vs-extent cannot separate them** — the free
+variable is which consumption site the class is keyed on.
+
+`P3SAT` **GREEN** with its asymmetry printed on the line: F2's verdict stable TRUE across an interval
+in which its figure moved, which is evidence of saturation **only because** the figure is measured to
+move. `P4GATE` **GREEN**, `P4CTL` live (`dirsNow.length > 0`, same predicate, reads PREDICATE).
+
+`P5CENSUS` **RED — my own registered reconciliation refuted.** I predicted 91 dirs / 90 with-`.mjs` /
+195 `.mjs` and a one-directory difference I would name. My key reads **91 / 87 / 191** at *both*
+pins, and there are **four** `.mjs`-less directories. I had predicted the shape of a reconciliation
+without having read either key.
+
+## 14:56 — the probes, then an addendum rather than a quiet re-key
+
+`probe-hiskey.mjs` tried seven candidate keys; **none** gives his 325/90/195. But his four rows sum
+to his own totals and his `.mjs` total (309) reproduces exactly off `ls-tree`, so this was a key
+difference to characterise, not an error to assign. `probe-residual.mjs` found two of his four rows
+land exactly under my key and the `.mjs` departures are **+4 / −4** between two rows.
+
+Rather than adjust the key until the disputed row landed, I filed **addendum 1** (`3dd8a547`) with
+five predictions and a control whose outcome I did not know: **one key must reproduce all four of his
+rows in both measured columns**. A key tuned until the disputed row lands measures the tuning.
+
+## 14:59 — drives 2-5: all five land, and the counterfactual separates
+
+`R1REPRO` **GREEN, 4 of 4 rows** (unit-464 35/106 · roundNNN 90/195 · unit-other 2/6 · other 1/2)
+under one key: family on the **first-level name**, `round*` → roundNNN, with a bare `*.mjs` held by
+`docs/research/` itself. `R2ENTRIES` **GREEN**: his 408 is first-level **entries** — **136 trees, 272
+loose files** — with every row exact on the entry count, so the arithmetic is his and right and the
+word *directories* is what it is not. `R3MEMBERS` **GREEN**: the gap is four named `.mjs`, none in a
+`*-instruments` dir. `R3OTHER` control **GREEN**. `R4NEITHER` **GREEN**. `R5MTS` **GREEN**: the
+`.mjs`+`.mts` rival matches his 90 dirs and gives **197** files — the dirs column cannot discriminate
+and the file column can.
+
+Then I drove the control instead of asserting it. A **tuned** key, identical to his on roundNNN and
+wrong on two other rows: R1REPRO **RED** over four rows, **GREEN** over the disputed row alone, same
+key. `compare-arms.out` reads it off the recordings.
+
+**Defect 1 and 2, mine, caught by `compare-arms.mjs`'s own first recording.** It read that
+leg-level claim off the whole `VERDICT` line — which under the tuned key is RED in both arms, because
+the tuned key reddens R2/R3OTHER/R4 as well — and printed `CONJUNCTION LOAD-BEARING: NO` when the leg
+does separate. Its `R1REPRO` reader also matched the `--- [MEAS] R1REPRO` **section header** and
+printed the key line as the leg's detail. Both re-keyed to the leg; the wrong answer is described in
+the source where it was fixed. `drive3` is `drive2`'s command re-run after the `--key=tuned` arm was
+added: **byte-identical**, computed, not eyeballed.
+
+## 15:00 — the hand read, filed before the drive that grades it
+
+`HAND-SITES.tsv` (`091880f9`): my own 20 `HAND-ARM3` reason lines, one question fixed before
+reading — does the line name an identifier or expression that **receives** the selection downstream.
+The call's own shape, a value-producing expression inside the same call, and a quotation of the
+subject's own comment all count as **no**.
+
+`P6HAND` **RED — refuted at 11 of 20** against a registered ceiling of ≤8. My table is better than I
+predicted.
+
+**Defect 3, mine, caught by drive6's own output:** the reader filtered `#` lines and blanks but not
+the TSV's **uncommented column header**, so it read **21** rows. P6HAND's predicate conjoins
+`rows === 20` with `naming <= 8` — so the leg could have gone RED on my parsing slip while printing a
+reason about the registered ceiling. A leg red for two reasons cannot say which. Header dropped by
+name; drive6 kept, drive7 is the fixed run. Red either way, now for one reason.
+
+## 15:02 — the cross-tab, declared post-hoc in its own first output line
+
+I formed the impression while hand-reading, so no prediction about it could have been honest. No leg,
+no verdict:
+
+```
+            names a consumption site
+  class        yes   no  total
+  R             10    1     11
+  A              0    8      8
+  O              1    0      1
+  rows resting on the CALL'S OWN SHAPE: 7 — all 7 of them A rows (7 of 8)
+```
+
+**I reached for the consumption site only when I was arguing `R`.** Every `A` row of mine is argued
+from the flag the call carries, or from the subject's own comment about itself — the key his §5
+standing instruction declares known-wrong before it is written. One of the 8 has already flipped once
+its consumption sites were read. The other **7 are unread**. So under the rule I was about to write,
+**`FP-ONLY 7` is a ceiling and it can only shrink** — against the direction I have argued all week.
+
+## 15:04 — convention v1.9 §2.1k, and the older gate re-driven
+
+The rule: key the class on a consumption site, **name the site on the line where the class is
+declared**, and keep his asymmetry intact — a measured move establishes `R`, a measured non-move
+establishes nothing, so **`A` is not establishable by any differential test**, his or mine. Under it
+the disputed row is `R` and the price is **11/7**, his figures, off a site his memo does not name.
+Header bumped to v1.9; §2.1j left as filed per §2.1e.
+
+**Older instrument re-driven after the edit, not assumed:** `unit-464prec-2026-11-03/
+grade-entry-v15.mjs` — **GREEN, 6 of 6**, empty `.err` (`drive8`). It is **cwd-sensitive**: my first
+attempt from the unit directory died `status: 128` on a doubled relative path
+(`unit-464prec-2026-11-03/docs/research/...`), which looks like a missing file and is not. Run it
+from the repo root. Recorded for the next seat that drives it.
+
+## 15:1x — the memo, and a figure corrected before it was pushed
+
+Reply memo filed in **its own commit** per the worktree mail rule and pushed to `main` immediately.
+
+**Caught in the memo before it was committed:** it said `piper-morgan-product` had "~15 new mail
+commits" — that was the length of a `head -15`, not a count. `rev-list --count` says **41**. The
+`log -p` content-grep covered all 41 and found **0** klatch/theseus hits either way, so nothing owed
+changes; the figure does. A truncated listing is not a measurement.
+
+## 15:1x — cross-repo sweep, against an explicit checkpoint
+
+All four mailboxes `git fetch`ed, scanned against an 11:10 checkpoint (my previous fire's wrap):
+`designinproduct` **0**, `mediajunkie` **0**, `dispatch` **0**, `piper-morgan-product` **41** mail
+commits and **0** hits. Nothing owed from any. My **11-01 question-box letter** to xian still has no
+reply; the blocker is named and it is his, and nothing new is owed from this seat.
+
+## Mail close-discipline
+
+Thread left **open** in `docs/mail/`, both directions. My reply routes him nothing new, but it leaves
+my own 7-row item live and names the price as a ceiling, so there is an open action item on this
+side. Open threads stay visible.
