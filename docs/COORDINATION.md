@@ -5450,6 +5450,47 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   updated, full gate including the driving sweep); nothing deferred. Two consecutive checks
   found nothing further unblocked — fire closed bounded. Log: `docs/logs/2026-11-03-iris-log.md`
   (19:17 entry appended).
+- **Updated:** 2026-11-04 ~07:2x PT (START fire). **Status:** available.
+- **11/04 fire (START) — no-op on product; 10 commits read since own 11/03 ~19:27 PT checkpoint
+  (`2195ac91`), none mine; the 86-day ground-rules blocker this seat carried every fire since
+  08-09 is now fully RULED and closed.** Drain against own checkpoint: 10 new commits (checked
+  `%an` per commit — 7 Theseus, 1 Calliope, 2 brief-publish (Pard/Mediajunkie, Janus)). `git diff
+  --stat 2195ac91..HEAD -- packages/ scripts/` **empty** — confirmed, not assumed; `git diff
+  --dirstat` shows the change under `docs/research/unit-464inspan-2026-11-03/`, `docs/logs/`,
+  `docs/mail/`, `docs/operations/duty-cycle/` (Theseus's `unit-464inspan` chain — the in-span
+  filter carrying the prescription label has no known positive, 0 of 670 tree-wide) and
+  Calliope's STOP-fire commit. **The one worth flagging:** Calliope's commit (`de404db9`)
+  formally closes the ground-rules item — xian's ruling, relayed by Janus 11/03 (read directly:
+  `docs/mail/read/xian-via-janus-to-calliope-ground-rules-start-blank-then-learn-defaults-2026-11-03.md`),
+  supersedes the 2026-09-24 ruling; rollup v173→v174, needs-you 2→1. Verified `grep -ril
+  "ground.rules" packages/client/src` still empty — nothing built yet that the ruling could
+  conflict with. This seat's standing-blocker line retires here; next action is Calliope's spec,
+  not a re-check of xian from this seat. **Mail:** one new local file (Theseus's
+  `...none-of-your-six-defeats-the-label...-2026-11-03.md`) — checked header directly, addressed
+  to Daedalus/xian, Iris cc-only, no routed action. All four cross-repo mailboxes checked fresh
+  via `git -C <repo> fetch` + `git log --since` against the 2026-11-03 19:27:00 PT checkpoint:
+  `designinproduct` 0 new; `mediajunkie` 0 new; `dispatch` 0 new; `piper-morgan-product/mailboxes`
+  21 new, content-grepped for `klatch|\biris\b` — 0 hits. Nothing owed from any. Briefs:
+  fire-depth report (2026-11-04, Pard) — metrics table only, no UX signal; cross-pollination
+  brief (2026-11-04) points to the private `designinproduct` source per redaction convention —
+  attempted a direct `Read` of the private path, refused by the session's working-directory
+  allowlist, confirming (not assuming) it's not independently fetchable from this seat.
+  **Standing blockers re-derived fresh:** ground-rules question **closed** (see above, was 86
+  days); `entityGuess` re-grepped independently with the exact historical method
+  (`packages/server/src` + `packages/client/src`) — **6 files/23 hits**, unchanged. **Verified,
+  not trusted:** `lsof -i :3001` port free; `npm run typecheck` clean ×4 workspaces; server **140
+  files · 2186 passed · 1 skipped (2187)**; client **26 passed|13 skipped (39) · 333 passed|13
+  skipped (346)** — byte-identical to the 11/03 STOP checkpoint; `sweep-probes --census` **153
+  probe files, 43 swept/110 deferred**, CENSUS OK, unchanged; full driving sweep (HEAD unchanged
+  at `5108e8d9` before/after, tree clean throughout, backgrounded past the 120s foreground limit,
+  picked up via completion notification, verdict line read directly from the task output) —
+  **SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but did
+  not finish), 0 census problem(s), 110 deferred.** No `packages/` changes this fire. Nothing new
+  needs xian — the one standing item carried for 86 days is now ruled; no open ask remains.
+  **Drain:** all unblocked items done (commit check, mail across all four mailboxes plus local,
+  both blockers re-derived — one now closed, full gate including the driving sweep); nothing
+  deferred. Two consecutive checks found nothing further unblocked — fire closed bounded. Log:
+  `docs/logs/2026-11-04-iris-log.md`.
 - **Prior update:** 2026-10-31 ~19:2x PT (STOP fire). **Status:** available.
 - **10/31 fire (STOP) — no-op on product; 40 research-track/mail commits read (Daedalus's
   `unit-464vac`/`unit-464absorb`/`unit-464authored` chains, Theseus's `unit-464sat`/
