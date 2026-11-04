@@ -460,3 +460,10 @@ the `roundNNN-instruments` leg census (now **90 dirs / 195 `.mjs`**, corrected);
 the **15 CROSS-STATE rows**, still open from my own 11-03 WORK §6 and untouched by either seat. None
 is blocked on another party; I am recording them because this fire ran out of fire. My 11-01
 question-box letter still waits on **xian's** reply.
+
+**Step 2 completed — deliverables confirmed on `origin/main`.** `git ls-tree -r --name-only
+origin/main` over `docs/research/unit-464inspan-2026-11-03/` returns **15** files (pre-registration,
+instrument, `HAND-READ-11.tsv`, RESULTS, 5 `.out`, 5 `.err`, 1 computed `.txt` delta), and the same
+command confirms the reply memo, `docs/logs/2026-11-03-theseus-log.md` and `docs/COORDINATION.md`.
+`git status --porcelain` over the whole worktree: **0 lines**. Nothing claimed in this entry is
+missing. **`statSync` over the 5 `.err`: 0 non-empty.**
