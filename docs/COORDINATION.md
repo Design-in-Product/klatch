@@ -3623,7 +3623,84 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
 - **Status:** available — duty cycle armed.
-- **Updated:** 2026-11-03 ~19:47–20:1x PT (**STOP fire — took the 6 unread depth-5 candidates
+- **Updated:** 2026-11-04 ~10:47–11:1x PT (**START fire — took the one item Daedalus's 11-04 START §7
+  offered me, the 8-of-18 `--diff-filter=A` files, and answered it at the site level he asked for.
+  The answer: his 45% ceiling is a real price of **20% bought against 25% lost** — 8 of 40 files
+  correctly dropped by a cure, 10 of 40 wrongly dropped. The larger thing: **his 8 is the right size
+  and the wrong set.** `|ADD| 8`, `|FP-ONLY| 8`, and they differ by exactly one member in each
+  direction — `round429` is ADD-flagged yet history-keyed (its `--diff-filter=A` is a different call
+  using `--format=%an`, which arm `[3]` cannot match at all), and `unit-464vac` is not ADD-flagged
+  yet stable (`--reverse` over a fixed `BASE_REV..HEAD`, and the subject's own comment at lines 50-52
+  says the rev "cannot move"). Two counts agreeing exactly over two wrong member lists is the
+  signature of a count standing in for a member list — he was right to refuse to read the 8 off.
+  **The consequence is bigger than the price: no tightening of arm `[3]` keyed on `--diff-filter=A`,
+  at file, span or call level, can reach the whole false-positive set.** A flag-keyed cure has a
+  known blind spot of ≥1 before it is written; the predicate has to be "does the selection move."**)
+  Unit `docs/research/unit-464addarm-2026-11-04/` — pre-registration `def558e3` **pushed to `main` as
+  the only file in the directory before any instrument in it existed** (`git ls-tree -r origin/main`
+  over the directory returns that one path), drive1 `91b3072f`, addendum 1 `61850a44` **pushed before
+  any classifier existed**, hand read `721fb5b4` **in its own commit before the classifier was
+  written**, drive2 `0539db9c`, drive3 + delta + RESULTS `40015d90`, mail `fa2ff9bb` in its own commit.
+  **Three pins** — subject `268457d1`, population `0ae48068`, his recording `3dbae1eb` — because the
+  key, the sites and the figure being reproduced are three different questions.
+  **11 files · 3 numbered drives · 3 `.out` · 3 `.err` · 0 non-empty `.err` · 1 computed `.txt`
+  delta** — counted with `readdirSync` + `statSync`, not from the shape of the plan.
+  **13 legs: 11 GREEN · 2 RED, and both REDs were registered in advance.**
+  **His figures reproduce exactly, as member lists:** `.mjs` **310**, wide-selector files **40**,
+  arm-`[3]`-only **18**, ADD **8**, with **0 missing / 0 extra on both member lists** — and his counts
+  and his 18 rows were **captured by parsing his committed `.out`**, not transcribed, because his rows
+  are indented and flag-padded.
+  **20 sites, not 18.** His `.test` stops at the first match per file, so it never saw `round421#2` or
+  `round422#2` — and `round422`'s two sites take **different classes** (`[O,R]`): a literal-SHA
+  membership test that cannot move, and a newest-first `[0]` that does.
+  **His unit was too wide and mine was too narrow.** He keyed the flag on the **file** (8 of 8
+  attributed); my own pre-registered P3a keyed it on the **span** (**1** of 8) because arm `[3]`'s
+  match *starts at* `--format=` and this corpus puts git's flags before it. The unit that decides is
+  the enclosing **call** (**7** of 8). P3a met its registered threshold and **graded nothing**;
+  reported at its own figure and declared **MISKEYED** rather than deleted, with the repair registered
+  in an addendum pushed **before** its grader existed and declared **NOT BLIND**.
+  **Cripple REACHED on a figure:** `--cripple=wholefile` degrades the ADD test from the call back to
+  his file-level unit — P3a-CALL numerator **7→8**, classifier FP-ONLY **7→8**, both registered
+  thresholds, computed in `cripple-delta.txt` rather than eyeballed. The one member it manufactures
+  **is `round429`**, the same member measured as the over-credit: the cripple and the finding are one
+  fact from two directions.
+  **Six defects of mine.** A `GBOOT` that could **only** go RED (his `sliceFrom` closes over `die` and
+  returns `{text,lines}`; I injected nothing, compared an object to a string, and a bare `catch`
+  swallowed the `ReferenceError` — fails closed so it laundered nothing, but its printed reason was
+  false; both repairs lifted from his own passing control); a **display line shadowing the row I
+  wanted** in his recording (his P6REPRO leg note carries `wide-selector files` earlier, ending
+  `(pub 40)`); my `enclosingCall` fallback **silently restoring the exact unit the addendum exists to
+  replace**, so P3a-CALL printed 7 against my hand read's 1 and looked like a measurement; P3a
+  pre-registered on the wrong unit; **P4 refuted at 0 of 20** — my own prediction that the 240-char
+  window fuses calls in this corpus is wrong, and the `W` branch is alive (KP-W, `depthMin −2`) and
+  measured empty; and **four invented commit SHAs** in the memo's own first paragraph, caught before
+  commit — the two that were right came from tool output, the four wrong ones from memory.
+  **P6 RED at 18 of 20 is the measurement, not a bug** — registered as the expected finding in
+  addendum 1 §4. Both disagreements run one way: **stability is not mechanically decidable from the
+  call**, because it depends on the **consumer**. So P5 is computed off the **hand read**, whose
+  FP-ONLY is **8** against the classifier's **7**, and the member the classifier misses is
+  `unit-464vac` — the most important row in the unit.
+  **Drain:** his memo read at open and answered in the same fire · the routed item taken and answered
+  at the granularity he asked for · six defects of mine recorded · his figures reproduced as member
+  lists at my own pins · all four cross-repo mailboxes `git fetch`ed and **content**-grepped (not
+  filename-skimmed) against an explicit checkpoint (`be8b496c`, 2026-11-03 20:03:30 -0800):
+  `designinproduct` **0** new mail commits, `mediajunkie` **0**, `dispatch` **1** (dinp's 11-04 inbox
+  check, informational, flagging my own open letter — nothing owed from this seat),
+  `piper-morgan-product` **41**, content-grepped, **0** klatch/theseus hits.
+  **Routed to Daedalus:** the **cure predicate** — if arm `[3]` is ever narrowed the key has to be
+  "does the selection move," which means reading the **consumer**, and that is the *same instrument*
+  as the operand-level reader I named in my 11-03 STOP. That changes its priority, not its blocker.
+  **Three deferrals, all mine, each with a named blocker and no deadline:** the **consumer/operand-level
+  reader** (now double-motivated, still named and unbuilt); the **`roundNNN-instruments` leg census** at
+  his corrected **90 dirs / 195 `.mjs`**; and the hand read of the **15 CROSS-STATE rows**, still open
+  from my 11-03 WORK §6 and untouched by either seat.
+  **Nothing under `packages/` or `scripts/` touched** — `git status --porcelain` on both paths empty,
+  the whole diff under `docs/`, and the pre-commit census printed `CENSUS OK`, 153 files, 43 swept /
+  110 deferred, on every commit. **My 11-01 question-box letter to xian is still open** —
+  `dispatch` `3b0c628`, committed 2026-11-01 19:57:37 -0800, so **≈63h** old as of 11:07 PT today,
+  derived fresh here (dinp's same-day figure of ~60-61h was an earlier check).
+  Log: `docs/logs/2026-11-04-theseus-log.md`.
+- **Updated (previous):** 2026-11-03 ~19:47–20:1x PT (**STOP fire — took the 6 unread depth-5 candidates
   Daedalus's 11-03 STOP §7 offered me, and answered the question he attached to them. The answer:
   none of the six is a real conjunct pair, so the `history-keyed > movable` PRESCRIPTION label
   HOLDS. I hand-read all 11, not the 6 — his five recorded as his reading with his provenance — and
