@@ -20,7 +20,42 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/argus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/argus`, per-worktree git identity `Argus (Klatch)`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope restored per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-03 ~13:3x PT (WORK fire — census-only no-op, one mail item answered).
+- **Updated:** 2026-11-03 ~18:0x PT (STOP fire — census-only no-op, four new mail files read, all cc-only or addressed elsewhere).
+  Checkpoint own last commit `6c2c259f` (11/03 WORK fire, ~13:3x PT). 20 new commits since,
+  author-checked (Calliope 1, Daedalus 10, Pard (Mediajunkie) 1, Theseus 8), none mine: three
+  more `unit-464*` research chains (`unit-464outside`, `unit-464prec`, `unit-464presc` —
+  pre-registration through drive2-4/cripple, the census surface is one authored half, a
+  conjunctive row's axis B is a precedence output on 4 of 5 rows, and `history-keyed > movable`
+  is written as a PRESCRIPTION whose own selector arm is blind to the only two selector legs in
+  the tree) plus RESULTS, convention v1.5/v1.6 §2.1h entries, mail
+  (Theseus→Daedalus/Daedalus→Theseus, both cc Janus/**Argus**/Calliope/Iris), two more
+  coord+log+wrap no-ops (SWEEP, STOP fires), and one delivered memo
+  (`xian-via-janus-to-calliope-ground-rules...`). `git diff --dirstat 6c2c259f..HEAD` **100%
+  under `docs/`**; `git diff --stat 6c2c259f..HEAD -- packages/ scripts/` empty. **Mail:** four
+  new local files, all read in full. Three grepped for "argus" — each carries Argus only on the
+  header `cc:` line, no body bucket naming this seat; confirmed cc-only, no action. The fourth
+  (ground-rules ruling) is addressed to Calliope, cc'd here, no ask of this seat. The standing
+  open thread addressed to this seat
+  (`theseus-to-argus-daedalus-...-your-unclaimed-110-is-zero...-2026-10-27.md`) re-read in full:
+  unchanged, its own §5 still reads "nothing routed," still open on Daedalus's unclosed C4 half —
+  not this seat's call to close a two-recipient thread unilaterally. All four cross-repo
+  mailboxes checked fresh via `git fetch` + content-grepped via `git log -p --since` against the
+  13:34:40 checkpoint (not just filename/header skim): `designinproduct` 1 new (WP
+  status-publish titles, 0 klatch/argus hits); `mediajunkie` 5 new (WP-title-fix/restart/spotlight
+  traffic, 0 hits); `dispatch` 0 new; `piper-morgan-product/mailboxes` 34 new, 0 hits. Nothing
+  owed from any. **Standing blockers re-derived fresh:** Managed Agents smoke-run — no
+  `ma-smoke/*` branch anywhere (checked both `git branch -a` and `git ls-remote --heads origin`),
+  named blocker on xian, unchanged at day **14** (same calendar day as this morning). Rollup
+  still v173 (read directly): needs-you unchanged at 2, nothing in the 20 new commits is xian's
+  to decide. Intel sweep cadence satisfied today by the automated scan, not due from this seat.
+  **Gate re-derived fresh:** `lsof -i :3001` port free; `npm run typecheck` clean ×4 workspaces;
+  `npm test -w packages/server` **140 files · 2186 passed · 1 skipped (2187)**, byte-identical;
+  `npm test -w packages/client` **26 passed|13 skipped (39) · 333 passed|13 skipped (346)**,
+  byte-identical; `node scripts/sweep-probes.mjs --census` **153 probe files, 43 swept/110
+  deferred, CENSUS OK**, byte-identical. **Needs-you:** unchanged at 2. Two consecutive `git
+  fetch origin` checks found nothing further unblocked — fire closed bounded. **Drain:** all of
+  the above drained this fire; nothing deferred. Log: `docs/logs/2026-11-03-argus-log.md`.
+- **Updated (previous):** 2026-11-03 ~13:3x PT (WORK fire — census-only no-op, one mail item answered).
   Checkpoint own last commit `e0fbd74c` (11/03 START fire, 09:05 PT). 22 new commits since, none
   mine (author-checked): Daedalus's `unit-464immov` chain (pre-registration through drive8 +
   convention v1.3 — delta × immovable occupiable, a false RED published by his own
