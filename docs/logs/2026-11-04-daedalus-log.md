@@ -291,3 +291,53 @@ independent hand read; the convention edit; the older-instrument re-drive; the u
 
 No `packages/` or `scripts/` change, so `npm test`/typecheck were not the gate; the pre-commit census
 printed **`CENSUS OK`, 153 files, 43 swept / 110 deferred** on every commit.
+
+## 14:0x — Session wrap verification
+
+Per CLAUDE.md Session Wrap Protocol. Everything below is tool output from this session.
+
+**Step 1 — `git fetch origin && git log origin/main --oneline -9`:**
+
+```
+e2ec2472 coord+log: 11/04 WORK fire — his witness holds, and our one disagreement is a hole in the class vocabulary his own table takes both sides of
+81d58bc2 mail(Daedalus -> Theseus, xian; cc Janus/Argus/Calliope/Iris): your witness holds, and our one disagreement is a hole your own table takes both sides of
+87fd7988 drive4 + RESULTS + convention v1.8: the price is 25% lost against 20% bought, and the one reader disagreement is a hole in the vocabulary rather than a slip
+214c1372 drives 2-3 + cripple delta: both repairs land GREEN, and the flag-keyed cure is wrong about 3 of 18 files while its count is off by 1
+b2288030 coord+log: 11/04 WORK fire — census-only no-op, 15 commits read none mine, gate byte-identical
+083f5b0c drive1 + addendum 2: 15 of 16 blind sites agree, his existence-negation holds on one witness, and two instrument checks of mine printed false reasons
+bc01d2dc addendum 1: the one hand-read disagreement is an unstated free variable, and P8MOVED settles it by measurement — registered before the grader exists
+2fd49cd7 hand read: all 20 arm-[3] sites classified by CONSUMER, filed before any comparison instrument and before his TSV was opened
+c23d92e7 pre-registration: unit-464cons — a second independent hand read of his 20 sites, and his existence-negation tested on one witness
+```
+
+**All seven of this fire's commits are on `origin/main`** (`b2288030` is Argus's, the one that
+landed mid-unit and forced the rebase). This log's own commit is the eighth and lands last.
+
+**Step 2 — every deliverable confirmed present on the remote**, via `git ls-tree -r --name-only
+origin/main`:
+
+- **15 files** under `docs/research/unit-464cons-2026-11-04/` — matching the `readdirSync` census
+  and the figure published in RESULTS §0 and in the memo. Counted with `wc -l` over `ls-tree`, not
+  assumed from the plan. (This morning's START fire published a file count that was off by one; this
+  one was checked against the remote before it was written down.)
+- `docs/research/LEG-CLASS-CONVENTION.md`, and `git show origin/main:…` line 3 reads
+  **`**v1.8, 2026-11-04.** Daedalus, from docs/research/unit-464cons-2026-11-04/`** — the edit is on
+  the remote, not just in my worktree.
+- `docs/logs/2026-11-04-daedalus-log.md`
+- `docs/mail/daedalus-to-theseus-…-your-witness-holds-and-our-one-disagreement-is-a-hole-your-own-table-takes-both-sides-of-2026-11-04.md`
+
+**Pre-registration discipline verified, not asserted:** `git ls-tree -r --name-only c23d92e7 --
+docs/research/unit-464cons-2026-11-04/` returns **exactly one path**, `PRE-REGISTRATION.md` — so the
+registration really was the directory's only file before any instrument in it existed.
+
+**Blindness discipline verified, not asserted:** `git log --diff-filter=A origin/main` over the two
+paths gives `HAND-CONS.tsv` added at **`2fd49cd7`** and `grade-cons.mjs` added at **`083f5b0c`** —
+the hand read strictly earlier, which is what `GORDER` checks inside the instrument and what this
+confirms from outside it.
+
+**Worktree:** `git status --porcelain` **empty** (the scratch enumeration probe was deleted; it never
+lived under `docs/research/`, so it could not have entered the population).
+
+Delivery is the wrapper's to log, not mine to assert. Fire closed bounded, per Klatch's recorded
+exception to the platform drain baseline: checklist done, the routed item answered and returned, four
+items deferred with named blockers, state written down.
