@@ -38,14 +38,33 @@ const MAX_TEXT = 200_000;
 const git = (args) => execFileSync('git', ['-C', ROOT, ...args], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
 const gitq = (args) => { try { return git(args); } catch { return null; } };
 
+// Legs STREAM as they are checked (addendum, 09:24 PT): drive1 died at P1 and its recording lost
+// five already-passing blocking legs, including the reproduction of the published figures. This
+// changes no threshold and no verdict — only whether a run that dies leaves a diagnostic record.
+// [[feedback_exit_0_without_a_summary_line_is_not_a_measurement]]
+//
+// THREE states, not two. A leg that could not be graded must be distinguishable from a leg that
+// passed and from a leg that failed; collapsing UNRUN into either one hides the defect.
+// [[feedback_a_false_false_row_cannot_be_told_from_an_untouched_defect]]
 const legs = [];
-const check = (name, pass, note) => { legs.push({ name, pass, note }); return pass; };
+const emit = (state, name, note) => {
+  legs.push({ name, state, note });
+  console.log(`  ${state.padEnd(5)} ${name.padEnd(13)} ${note}`);
+  return state === 'GREEN';
+};
+const check = (name, pass, note) => emit(pass ? 'GREEN' : 'RED', name, note);
+const unrun = (name, note) => emit('UNRUN', name, note);
 const die = (why) => { console.error(`UNRUNNABLE: ${why}`); process.exit(2); };
+
+// `--arm=repaired` runs the addendum's P7/P8. The DEFAULT arm is drive1's behaviour, unchanged:
+// P1 dies on a KP the walker cannot see. A switch on which arm runs, not on any threshold.
+const ARM = (argv.find((a) => a.startsWith('--arm=')) ?? '').replace('--arm=', '');
 
 console.log('unit-464kpspan — the in-span filter, its missing known positive, and the price of its cure');
 console.log(`SUBJ_PIN=${SUBJ_PIN}  POP_PIN=${POP_PIN}  CRIPPLE=${CRIPPLE || '(none)'}  DEPTH=${DEPTH}`);
 console.log(`instrument blob (worktree copy of this file): ${git(['hash-object', fileURLToPath(import.meta.url)]).trim()}`);
 console.log('');
+console.log('legs, streaming as they are checked (so a die still leaves a record):');
 
 // ───────────────────────────────────────── stage 0: bootstrap slicer, then CHECK it against the subject's
 //
@@ -225,9 +244,15 @@ const sourceOf = (rel) => {
   if (!srcCache.has(rel)) srcCache.set(rel, gitq(['show', `${POP_PIN}:${rel}`]) ?? '');
   return srcCache.get(rel);
 };
+// A VIRTUAL file hook, so the lifted `closedTextOf` can resolve a KP's own binding lines without
+// that KP ever being written under docs/research/ — where it would enter the population and turn
+// the measured zero into a one. [[feedback_an_instrument_does_not_census_its_own_source]]
+const virtualSrc = new Map();
 const declCache = new Map();
 const declsFor = (rel) => {
-  if (!declCache.has(rel)) declCache.set(rel, K.declarationsOf(sourceOf(rel)));
+  if (!declCache.has(rel)) {
+    declCache.set(rel, K.declarationsOf(virtualSrc.has(rel) ? virtualSrc.get(rel) : sourceOf(rel)));
+  }
   return declCache.get(rel);
 };
 
@@ -290,11 +315,82 @@ console.log(`KP_TEXT, walked by the lifted site walker: ${kpSites.length} site(s
 for (const k of kpSites) console.log(`    ${k.idiom} line=${k.line} id=${k.id} span=${JSON.stringify(k.span)}`);
 console.log('');
 if (kpSites.length === 0) {
-  die(`the lifted walker finds NO site in KP_TEXT — P1 is UNRUNNABLE, not confirmed: a KP the ` +
-    `walker cannot see is not evidence that the filter refuses it`);
+  unrun('P1KPREFUSED',
+    `UNRUNNABLE AS REGISTERED — the lifted walker finds ${kpSites.length} sites in KP_TEXT, so the ` +
+    `KP has NO SPAN for the in-span filter to refuse. Theseus's §2 says the filter refuses my ` +
+    `blocking known positive; the measurement says the KP is not a leg site at all. \`spans\` is a ` +
+    `balanced-paren slicer and the KP's \`check(\` never closes. NOT counted as a pass`);
+  if (ARM !== 'repaired') {
+    die(`the lifted walker finds NO site in KP_TEXT — P1 is UNRUNNABLE, not confirmed: a KP the ` +
+      `walker cannot see is not evidence that the filter refuses it`);
+  }
 }
 
-const kpSpan = kpSites[0].span;
+const kpSpan = kpSites.length ? kpSites[0].span : null;
+if (kpSpan === null) {
+  // ─────────── P8: the mechanism, isolated by a ONE-EDIT counterfactual (addendum, before drive2)
+  const KP_ONE_EDIT = KP_TEXT.replace(
+    "check('GKPWITNESS', atRecencyHead === cellNow,",
+    "check('GKPWITNESS', atRecencyHead === cellNow,)");
+  const oneEditChars = KP_ONE_EDIT.length - KP_TEXT.length;
+  const oneEditSites = [];
+  for (const idiom of K.IDIOMS) {
+    for (const h of K.spans(KP_ONE_EDIT, K.blankNonCode(KP_ONE_EDIT), idiom, 'KP_ONE_EDIT(virtual)')) {
+      oneEditSites.push(h);
+    }
+  }
+  check('P8PARENCAUSE', oneEditChars === 1 && oneEditSites.length >= 1,
+    `ONE-EDIT counterfactual: appending the single missing \`)\` (+${oneEditChars} char, nothing ` +
+    `else) takes the site count 0 → ${oneEditSites.length}. The unbalanced paren IS the cause — ` +
+    `the diagnosis is a moved counterfactual, not a reading of the source`);
+
+  // ───────────── P7 (BLOCKING): the repaired KP — same anchors, same shape, parens balanced only
+  const KP_REPAIRED = [
+    "check('GKPWITNESS', atRecencyHead === cellNow, 'the recency head equals the live cell');",
+    "  const atRecencyHead = g(['log', '-1', '--format=%H', '--', SUBJECT]);",
+    "  const cellNow = cell(readFileSync(join(LIVE, 'map.tsv'), 'utf8'));",
+  ].join('\n');
+  const KP_REL = 'docs/research/KP-REPAIRED(virtual)/kp.mjs';
+  virtualSrc.set(KP_REL, KP_REPAIRED);
+
+  const repSites = [];
+  for (const idiom of K.IDIOMS) {
+    for (const h of K.spans(KP_REPAIRED, K.blankNonCode(KP_REPAIRED), idiom, KP_REL)) {
+      repSites.push({ idiom: idiom.idiom, kind: idiom.kind, id: h.id,
+        span: (idiom.kind === 'REFUSE-SITE' ? h.guard : h.span) ?? '' });
+    }
+  }
+  console.log('');
+  console.log(`P7 — the REPAIRED known positive (parens balanced only), walked: ${repSites.length} site(s)`);
+  for (const r of repSites) console.log(`    ${r.idiom} id=${r.id} span=${JSON.stringify(r.span)}`);
+
+  if (repSites.length !== 1) {
+    unrun('P7KPSPAN', `UNRUNNABLE — the repaired KP yields ${repSites.length} sites, not 1, so it is ` +
+      `not the single-site known positive P7 registered`);
+  } else {
+    const rSpan = repSites[0].span;
+    const rSel = SELECTOR_WIDE.some((r) => r.test(rSpan));
+    const rMov = MOVABLE_WIDE.some((r) => r.test(rSpan));
+    const rBoth = inSpanFilter(SELECTOR_WIDE, MOVABLE_WIDE, [{ span: rSpan }]).length === 1;
+    const rClosed = closedTextOf(KP_REL, rSpan);
+    const rCand = classifySite(rClosed);
+    console.log(`    span   : sel=${rSel}  mov=${rMov}  both=${rBoth}`);
+    console.log(`    closed : wideSel=${rCand.wideSel}  wideMov=${rCand.wideMov}  wideWitness=${rCand.wideWitness}  (${rClosed.length}B, depth ${DEPTH})`);
+    console.log('');
+    if (!rCand.wideWitness) {
+      unrun('P7KPSPAN', `UNRUNNABLE — the repaired KP's closed text is NOT a witness to the candidate ` +
+        `arm (wideWitness=false), so the repair changed the KP's meaning and this is not the same ` +
+        `known positive`);
+    } else {
+      check('P7KPSPAN', rSel === false && rMov === false && rBoth === false,
+        `the repaired KP IS a single leg site, its closed text IS accepted by the candidate arm ` +
+        `(wideWitness=true), and its SPAN is REFUSED by the in-span filter (sel=${rSel} mov=${rMov} ` +
+        `both=${rBoth}) — Theseus's §2 CONFIRMED on a KP that is actually a site: the anchors sit on ` +
+        `the binding lines, so the predicate carries neither`);
+    }
+  }
+}
+if (kpSpan !== null) {
 const kpSelInSpan = SELECTOR_WIDE.some((r) => r.test(kpSpan));
 const kpMovInSpan = MOVABLE_WIDE.some((r) => r.test(kpSpan));
 const kpBothViaFilter = inSpanFilter(SELECTOR_WIDE, MOVABLE_WIDE, [{ span: kpSpan }]).length === 1;
@@ -309,6 +405,7 @@ check('P1KPREFUSED', kpSelInSpan === false && kpMovInSpan === false && kpBothVia
   `the in-span filter REFUSES my own blocking known positive (sel=${kpSelInSpan} mov=${kpMovInSpan} ` +
   `both=${kpBothViaFilter}) while the candidate arm it was built for ACCEPTS it ` +
   `(both=${kpCand.wideWitness}) — my §3 defect, reproduced one stage downstream of where I prevented it`);
+}
 
 // ───────────── P2: the filter's tree-wide positive rate, as MEMBER LISTS and not counts alone
 const keyOf = (s) => `${s.rel.replace('docs/research/', '')}:${s.line} ${s.id ?? '(no id)'}`;
@@ -415,13 +512,16 @@ if (CRIPPLE === 'nospan') {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────────── the report
-console.log('legs:');
-let red = 0;
-for (const l of legs) {
-  if (!l.pass) red++;
-  console.log(`  ${l.pass ? 'GREEN' : 'RED  '} ${l.name.padEnd(13)} ${l.note}`);
-}
+// Legs already streamed above as they were checked. This is the tally, and it counts THREE states:
+// an UNRUN leg is neither a pass nor a failure, and must not be absorbed into either.
+const green = legs.filter((l) => l.state === 'GREEN').length;
+const red = legs.filter((l) => l.state === 'RED').length;
+const un = legs.filter((l) => l.state === 'UNRUN').length;
+console.log('tally:');
+for (const l of legs) console.log(`  ${l.state.padEnd(5)} ${l.name}`);
 console.log('');
-console.log(`VERDICT: ${red === 0 ? 'GREEN' : 'RED'} — ${legs.length - red} of ${legs.length} legs pass` +
-  (red ? `, ${red} RED` : '') + `  [SUBJ_PIN=${SUBJ_PIN} POP_PIN=${POP_PIN} CRIPPLE=${CRIPPLE || 'none'} DEPTH=${DEPTH}]`);
+console.log(`VERDICT: ${red === 0 ? (un === 0 ? 'GREEN' : 'GREEN-WITH-UNRUN') : 'RED'} — ` +
+  `${green} GREEN · ${red} RED · ${un} UNRUN of ${legs.length} legs  ` +
+  `[SUBJ_PIN=${SUBJ_PIN} POP_PIN=${POP_PIN} ARM=${ARM || 'default'} CRIPPLE=${CRIPPLE || 'none'} DEPTH=${DEPTH}]`);
+if (un) console.log(`UNRUN legs are NOT passes: ${legs.filter((l) => l.state === 'UNRUN').map((l) => l.name).join(', ')}`);
 process.exit(red === 0 ? 0 : 1);

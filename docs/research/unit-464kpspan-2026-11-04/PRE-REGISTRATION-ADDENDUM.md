@@ -75,6 +75,67 @@ threshold and no verdict**; it changes only whether a run that dies leaves a dia
 A recording whose silence is not diagnostic is the harm.
 [[feedback_exit_0_without_a_summary_line_is_not_a_measurement]]
 
+---
+
+# Addendum 2: P11, registered 2026-11-04 09:27 PT, BEFORE drive3
+
+**Registered after drive2, before drive3.** `drive2.repaired-depth1.{out,err}` is kept exactly as
+it ran, including its RED.
+
+## What drive2 found: P3's matched negative was never matched
+
+P3 went **RED**, correctly, and the defect is mine:
+
+```
+positive (inlined HEAD-ish movable) : sel=true  mov=true  both=true
+matched negative (movable → pinned) : sel=true  mov=true  both=true
+```
+
+The **positive** behaves as predicted — a predicate with both anchors inlined reads `both=true`, so
+the in-span filter is **alive**, not dead. The **negative** failed: it still reads `mov=true`.
+
+Cause: I swapped `join(LIVE, …)` for `join('/pinned/0ae48068', …)` and called that "the movable
+anchor removed." It was not. `MOVABLE_WIDE` has **five** arms, and the text still carried
+`cell(` — which is arm `[3]`, `/\bcell\(/`, a movable anchor in its own right. I changed the
+anchor's **identity** and checked that one thing had changed, without checking that the **property**
+was gone. [[feedback_a_guard_on_identity_does_not_guard_value]]
+
+A matched negative that does not remove the property is not a control; it is a second positive.
+
+## P11 — BLOCKING. The corrected matched negative.
+
+The criterion is **not** "one character changed" — that was the wrong criterion and is what produced
+the RED. The criterion is that the negative differs from the positive in **exactly the property
+under test**: every `MOVABLE_WIDE` arm absent, the selector anchor retained.
+
+Negative: the inlined movable read replaced by a **pinned** read that goes through neither `LIVE`
+nor `cell(`.
+
+Predicted:
+
+- positive: `sel=true`, `mov=true`, `both=true` (unchanged from drive2 — it was already right)
+- negative: `sel=true`, **`mov=false`**, **`both=false`**
+- and, reported as the check that the negative is really matched: the **count of `MOVABLE_WIDE` arms
+  firing** on the negative is **0 of 5**, printed per-arm rather than asserted in aggregate, so an
+  arm I did not think about cannot hide inside a true conjunction.
+  [[feedback_a_joined_string_comparison_cannot_see_an_empty_member]]
+
+CONFIRMED only if all of the above hold. If the negative still reads `mov=true`, the finding is that
+I cannot construct a matched negative for this filter at all, and P3's aliveness claim rests on the
+positive alone — which would make "the filter is alive" a **one-sided** result and I will say so.
+
+## P5's `--diff-filter=A` column is a FILE-LEVEL co-occurrence, not an attribution
+
+Recording this before it can be over-read, including by me. drive2's P5 says 18 of the 40
+wide-selector files are held **only** by arm `[3]`, and that **8** of those 18 contain
+`--diff-filter=A` somewhere. That 8 does **not** say arm `[3]`'s match in those files *is* the
+addition-keyed line — the file containing both strings anywhere is a containment match that fuses
+two mechanisms. [[feedback_an_undifferentiated_containment_match_fuses_two_mechanisms]]
+
+It is a **flag for hand reading**, not evidence of a false positive at any of those sites. The price
+of narrowing arm `[3]` is therefore bounded by **18 of 40 files (45%)**, with the share that are
+genuine false positives **unmeasured** in this unit.
+
 — Daedalus
 
 Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>

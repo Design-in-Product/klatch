@@ -1,0 +1,94 @@
+unit-464kpspan — the in-span filter, its missing known positive, and the price of its cure
+SUBJ_PIN=268457d1  POP_PIN=0ae48068  CRIPPLE=(none)  DEPTH=1
+instrument blob (worktree copy of this file): 8e451b73be727332e65820060a208339859dedf2
+
+legs, streaming as they are checked (so a die still leaves a record):
+  GREEN GBOOT         my hand-written bootstrap slicer agrees BYTE-IDENTICALLY with the subject's own committed sliceFrom on all 13 slices (disagreements: none) — so the first cut is not an unchecked hand-written reader
+  GREEN GLIFT         14 fragments lifted (subject at 268457d1, walker at 0ae48068) and evaluated: sliceFrom(10L) SELECTOR_WIDE(6L) MOVABLE_WIDE(7L) KP_TEXT(5L) classifySite(17L) closedTextOf(23L) blankNonCode(56L) IDIOMS(5L) spans(23L) enclosingIf(17L) declarationsOf(11L) KIND_AXISB(8L) kindOf(9L)
+  GREEN GINSPANTEXT   the lifted in-span filter is the published one and reads the PREDICATE SPAN, not the closed text (unit-464presc-2026-11-03/census-presc.mjs:366-367; s.span ×2, s.closed ×0)
+population at 0ae48068: 310 .mjs under docs/research/ (subject's arm excluded its own dir ⇒ 310 files)
+
+  GREEN GARMS         the lifted keys are the published ones: SELECTOR_WIDE 4 arms, MOVABLE_WIDE 5 arms, KP_TEXT 187B naming GKPWITNESS
+  GREEN P6REPRO       reconstruction vs the subject's PUBLISHED figures: .mjs 310 (pub 310) · leg sites 670 (pub 670) · wide candidates@depth1 5 (pub 5 at depth 1) · wide-selector files 40 (pub 40)
+KP_TEXT, walked by the lifted site walker: 0 site(s)
+
+  UNRUN P1KPREFUSED   UNRUNNABLE AS REGISTERED — the lifted walker finds 0 sites in KP_TEXT, so the KP has NO SPAN for the in-span filter to refuse. Theseus's §2 says the filter refuses my blocking known positive; the measurement says the KP is not a leg site at all. `spans` is a balanced-paren slicer and the KP's `check(` never closes. NOT counted as a pass
+  GREEN P8PARENCAUSE  ONE-EDIT counterfactual: appending the single missing `)` (+1 char, nothing else) takes the site count 0 → 1. The unbalanced paren IS the cause — the diagnosis is a moved counterfactual, not a reading of the source
+
+P7 — the REPAIRED known positive (parens balanced only), walked: 1 site(s)
+    check( id=GKPWITNESS span="check('GKPWITNESS', atRecencyHead === cellNow, 'the recency head equals the live cell')"
+    span   : sel=false  mov=false  both=false
+    closed : wideSel=true  wideMov=true  wideWitness=true  (186B, depth 1)
+
+  GREEN P7KPSPAN      the repaired KP IS a single leg site, its closed text IS accepted by the candidate arm (wideWitness=true), and its SPAN is REFUSED by the in-span filter (sel=false mov=false both=false) — Theseus's §2 CONFIRMED on a KP that is actually a site: the anchors sit on the binding lines, so the predicate carries neither
+P2 — the in-span filter over ALL 670 leg sites (field=predicate span):
+    sel-in-span    3  (0.4%)
+    mov-in-span   11  (1.6%)
+    either        14  (2.1%)
+    BOTH           0  (0.0%)
+    sel-in-span members:
+        round406-instruments/hand-read-the-inline-seven.mjs:174 K2d
+        unit-464conj-2026-11-03/occupy-conj-history.mjs:341 GTUPLE
+        unit-464rec3-2026-11-01/grade-the-three-cures.mjs:99 C2b
+    mov-in-span members:
+        round395-instruments/grade-the-refusal-that-deletes-the-verdict.mjs:550 S3b
+        round396-instruments/grade-the-grade-that-reddens-on-its-own-routed-cure.mjs:193 T2
+        round404-instruments/grade-the-three-cures.mjs:156 S6
+        round405-instruments/census-the-pin-population.mjs:390 W6
+        round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs:581 G6
+        round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs:594 G8
+        round413-instruments/attack-g7-and-grade-the-branch-layer.mjs:368 P4
+        unit-464bucket-2026-11-01/grade-his-armreach-gate.mjs:145 GCTRL
+        unit-464cell-2026-11-02/grade-cell.mjs:140 GP1MEMBERS
+        unit-464order-2026-11-02/grade-order.mjs:72 GHISFROZEN
+        unit-464order-2026-11-02/grade-order.mjs:294 GP5TOTAL
+
+  GREEN P2RATE        Theseus's figures reproduce under my own lifted key: sel 3/3 · mov 11/11 · either 14/14 · both 0/0; member lists internally consistent (union true, intersection true)
+P3 — the known positive the in-span filter never had (both anchors INLINED in one predicate):
+    positive (inlined HEAD-ish movable) : sel=true  mov=true  both=true
+    matched negative (movable → pinned) : sel=true  mov=true  both=true
+
+  RED   P3KPINSPAN    the in-span filter is ALIVE, not dead: a predicate with both anchors inlined reads both=true, and its matched negative — one edit, the movable anchor swapped for a pinned rev — reads both=false while the selector arm still fires (sel=true). So the tree-wide 0 measures CODING STYLE (anchors sit on binding lines), not the absence of the property
+P4 — SELECTOR_WIDE by ARM INDEX (his §5):
+    addition-keyed line (.pop() on newest-first = OLDEST = the adding commit) : arms [3]
+    real recency line                                                        : arms [0,3]
+
+  GREEN P4ADDARM      his §5 reproduces by arm index: the addition-keyed anchor matches arm [3] ONLY (got [3]) and the real recency anchor matches arms [0,3] (got [0,3]) — arm 3 (`--format=%h … --`) cannot tell "newest commit touching the path" from "commit that ADDED the path", so it reads a STABLE anchor as history-keyed
+P5 (MEASUREMENT, ungraded) — the price of narrowing arm [3]:
+    wide-selector files                      40
+    held ONLY by arm [3]                     18
+    …of those, carrying --diff-filter=A      8
+             round404-instruments/grade-the-three-cures.mjs
+             round419-instruments/grade-the-417-repairs.mjs
+             round420-instruments/his-old-cell-is-keyed-on-head.mjs
+             round421-instruments/grade-the-420-repair.mjs
+             round422-instruments/drive-his-421.mjs
+             round425-instruments/position-vs-property-confusion-matrix.mjs
+             round428-instruments/a-sentence-keyed-on-a-subset-publishes-past-its-own-gate.mjs
+        ADD  round429-instruments/does-any-other-instrument-retype-a-verdict-it-slices.mjs
+             round431-instruments/grade-his-convention-and-measure-the-reach.mjs
+        ADD  round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs
+             round441-instruments/key-the-silent-class-from-source.mjs
+        ADD  round464-instruments/grade-the-stop-condition.mjs
+        ADD  unit-464t2-keychoice-2026-10-28/grade-the-surface-predicate.mjs
+        ADD  unit-464t2-population-2026-10-28/grade-the-round-population.mjs
+        ADD  unit-464t2-reaim-2026-10-28/grade-the-credit-key.mjs
+        ADD  unit-464t2-reaim-2026-10-28/recon-credit-provenance.mjs
+        ADD  unit-464t2-surface-2026-10-28/recon-run-length-and-cure.mjs
+             unit-464vac-2026-10-31/grade-cure.mjs
+
+tally:
+  GREEN GBOOT
+  GREEN GLIFT
+  GREEN GINSPANTEXT
+  GREEN GARMS
+  GREEN P6REPRO
+  UNRUN P1KPREFUSED
+  GREEN P8PARENCAUSE
+  GREEN P7KPSPAN
+  GREEN P2RATE
+  RED   P3KPINSPAN
+  GREEN P4ADDARM
+
+VERDICT: RED — 9 GREEN · 1 RED · 1 UNRUN of 11 legs  [SUBJ_PIN=268457d1 POP_PIN=0ae48068 ARM=repaired CRIPPLE=none DEPTH=1]
+UNRUN legs are NOT passes: P1KPREFUSED
