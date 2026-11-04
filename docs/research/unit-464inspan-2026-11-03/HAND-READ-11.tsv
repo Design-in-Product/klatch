@@ -1,0 +1,21 @@
+#	Hand read of all 11 depth-5 candidates from unit-464presc's drive4. Theseus, 2026-11-03 STOP fire.
+#	read_by: THESEUS for the 6 Daedalus left unread; DAEDALUS for the 5 he reported in his 11-03 memo §2,
+#	         recorded here as his reading with his provenance, not re-asserted as mine.
+#	selector_anchor / movable_anchor: does the leg's BOOLEAN OPERAND carry one, by hand, counting a
+#	         binding reached by name but NOT counting a run-record variable that resolves into the
+#	         whole harness.
+#	conjunct_pair: does the leg have TWO conjuncts whose FIGURES disagree, one history-keyed and one
+#	         movable — which is what the ordering `history-keyed > movable` would have to pick between.
+#	         This, not the text test, is what decides the prescription label.
+id	site	author	read_by	selector_anchor	movable_anchor	conjunct_pair	note
+U4	round397-instruments/grade-the-anchor-that-is-not-guarded.mjs:264	other	DAEDALUS	no	no	no	a reporting g() call whose 2543B prose argument pulled both anchors in
+GTARGET	unit-464conj-2026-11-03/occupy-conj-history.mjs:259	theseus	DAEDALUS	yes	no	no	single-kind perturbation-target leg in a constructed demo; newest !== PIN_REV is one operand pair
+GFIXEDCTRL	unit-464conj-2026-11-03/occupy-conj-history.mjs:270	theseus	THESEUS	no	no	no	operands are run-derived verdict/figure fields of b1fix/b2fix; the anchors are reached only by resolving a run record into the harness
+GC2MOVED	unit-464conj-2026-11-03/occupy-conj-history.mjs:296	theseus	THESEUS	no	no	no	operands are c2Figure before/after plus two recorded booleans; all four concern conjunct 2's recency figure, so there is no movable conjunct to order against
+GTUPLE	unit-464conj-2026-11-03/occupy-conj-history.mjs:341	theseus	THESEUS	no	no	no	compared figure is a COUNT of state records; atPin/atRecency are reached through the filter closure and named in the why-string
+GTARGETB	unit-464immov-2026-11-03/occupy-delta-immovable.mjs:179	daedalus	DAEDALUS	yes	no	no	single-kind perturbation-target leg in a constructed demo
+GHISTFLIP	unit-464immov-2026-11-03/occupy-delta-immovable.mjs:207	daedalus	DAEDALUS	yes	no	no	single-kind perturbation-target leg in a constructed demo
+GSTALEPIN	unit-464reach-2026-11-02/grade-reach.mjs:201	daedalus	THESEUS	no	yes	no	predicate is !!pin && !!added && pin === added. pin <- show HEAD: is movable. added <- log --diff-filter=A ... .pop() is the ADDING commit, the oldest entry of a newest-first list, and is NOT a recency selector. The selector his wide arm scored here is a FALSE POSITIVE of the --format=%h form
+GSTALE	unit-464reach-2026-11-02/grade-reach.mjs:203	daedalus	THESEUS	yes	yes	no	predicate is !!pin && !!newest && pin !== newest. pin <- show HEAD: (movable), newest <- log -1 --format=%h (recency selector). BOTH anchors are genuinely carried by this one predicate, by identifier. But they feed ONE compared figure, so axis B is decided by the single-pair anchor rule, not by the conjunct-precedence ordering. The !! guards are presence guards whose figures are constant-true whenever the slices succeed
+GSTALEINVERT	unit-464reach-2026-11-02/grade-reach.mjs:221	daedalus	THESEUS	yes	yes	no	same shape as GSTALE one level deeper: atPin <- liftAt(pin) (HEAD-derived), atNewest <- liftAt(newest) (recency). One compared figure, presence guards constant-true
+C3b	unit-464rec3-2026-11-01/grade-the-three-cures.mjs:138	daedalus	DAEDALUS	no	no	no	three run-derived booleans with no selector conjunct

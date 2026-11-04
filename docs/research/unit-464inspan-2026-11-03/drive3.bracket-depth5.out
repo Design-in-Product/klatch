@@ -1,0 +1,110 @@
+unit-464inspan · ROOT=/Users/xian/Development/klatch-worktrees/theseus
+PIN=0ae48068 (his subject pin)  SRC_PIN=268457d1 (his instrument + recording)  MY_PIN=bba2aa3c
+DEPTH=5  CRIPPLE=(none)
+
+P1 — his KP_TEXT through both arms:
+    predicate line : "check('GKPWITNESS', atRecencyHead === cellNow,"
+    in-span filter : sel=false mov=false both=false
+    candidate arm  : sel=true mov=true both=true
+
+sites enumerated: 670 over 310 .mjs / 129 dirs (his unit and mine excluded)
+wide candidates at DEPTH=5: 11
+
+P3 — the in-span filter's base rate over EVERY leg site, not just the candidates:
+    sites                                  670
+    selector literal inside the span         3   0.4%
+    movable  literal inside the span        11   1.6%
+    either                                  14   2.1%
+    BOTH  (= his published invariant)        0   0.0%
+
+P4/P5 — per candidate: the predicate span, its boolean arm, its why arm, and the closure
+        resolve-only = the anchor is absent from the span and present after resolution
+    round397-instruments/grade-the-anchor-that-is-not-guarded.mjs:264 U4
+        span  sel=false mov=false   bool-arm sel=false mov=false   why-arm sel=false mov=false   closed sel=true mov=true   args=8
+        resolve-only=true  why-only-sel=false  why-only-mov=false
+        RESOLVED  bool-arm sel=false mov=true  why-arm sel=true mov=true  BOOL-ARM PAIR=false  why-only-resolved sel=true mov=false
+    unit-464conj-2026-11-03/occupy-conj-history.mjs:259 GTARGET
+        span  sel=false mov=false   bool-arm sel=false mov=false   why-arm sel=false mov=false   closed sel=true mov=true   args=3
+        resolve-only=true  why-only-sel=false  why-only-mov=false
+        RESOLVED  bool-arm sel=true mov=true  why-arm sel=true mov=true  BOOL-ARM PAIR=true  why-only-resolved sel=false mov=false
+    unit-464conj-2026-11-03/occupy-conj-history.mjs:270 GFIXEDCTRL
+        span  sel=false mov=false   bool-arm sel=false mov=false   why-arm sel=false mov=false   closed sel=true mov=true   args=3
+        resolve-only=true  why-only-sel=false  why-only-mov=false
+        RESOLVED  bool-arm sel=true mov=true  why-arm sel=true mov=true  BOOL-ARM PAIR=true  why-only-resolved sel=false mov=false
+    unit-464conj-2026-11-03/occupy-conj-history.mjs:296 GC2MOVED
+        span  sel=false mov=false   bool-arm sel=false mov=false   why-arm sel=false mov=false   closed sel=true mov=true   args=3
+        resolve-only=true  why-only-sel=false  why-only-mov=false
+        RESOLVED  bool-arm sel=true mov=false  why-arm sel=true mov=true  BOOL-ARM PAIR=false  why-only-resolved sel=false mov=true
+    unit-464conj-2026-11-03/occupy-conj-history.mjs:341 GTUPLE
+        span  sel=true mov=false   bool-arm sel=false mov=false   why-arm sel=true mov=false   closed sel=true mov=true   args=3
+        resolve-only=true  why-only-sel=true  why-only-mov=false
+        RESOLVED  bool-arm sel=true mov=true  why-arm sel=true mov=true  BOOL-ARM PAIR=true  why-only-resolved sel=false mov=false
+    unit-464immov-2026-11-03/occupy-delta-immovable.mjs:179 GTARGETB
+        span  sel=false mov=false   bool-arm sel=false mov=false   why-arm sel=false mov=false   closed sel=true mov=true   args=3
+        resolve-only=true  why-only-sel=false  why-only-mov=false
+        RESOLVED  bool-arm sel=true mov=true  why-arm sel=true mov=true  BOOL-ARM PAIR=true  why-only-resolved sel=false mov=false
+    unit-464immov-2026-11-03/occupy-delta-immovable.mjs:207 GHISTFLIP
+        span  sel=false mov=false   bool-arm sel=false mov=false   why-arm sel=false mov=false   closed sel=true mov=true   args=3
+        resolve-only=true  why-only-sel=false  why-only-mov=false
+        RESOLVED  bool-arm sel=false mov=true  why-arm sel=true mov=true  BOOL-ARM PAIR=false  why-only-resolved sel=true mov=false
+    unit-464reach-2026-11-02/grade-reach.mjs:201 GSTALEPIN
+        span  sel=false mov=false   bool-arm sel=false mov=false   why-arm sel=false mov=false   closed sel=true mov=true   args=3
+        resolve-only=true  why-only-sel=false  why-only-mov=false
+        RESOLVED  bool-arm sel=true mov=true  why-arm sel=true mov=true  BOOL-ARM PAIR=true  why-only-resolved sel=false mov=false
+    unit-464reach-2026-11-02/grade-reach.mjs:203 GSTALE
+        span  sel=false mov=false   bool-arm sel=false mov=false   why-arm sel=false mov=false   closed sel=true mov=true   args=3
+        resolve-only=true  why-only-sel=false  why-only-mov=false
+        RESOLVED  bool-arm sel=true mov=true  why-arm sel=true mov=true  BOOL-ARM PAIR=true  why-only-resolved sel=false mov=false
+    unit-464reach-2026-11-02/grade-reach.mjs:221 GSTALEINVERT
+        span  sel=false mov=false   bool-arm sel=false mov=false   why-arm sel=false mov=false   closed sel=true mov=true   args=3
+        resolve-only=true  why-only-sel=false  why-only-mov=false
+        RESOLVED  bool-arm sel=true mov=true  why-arm sel=true mov=true  BOOL-ARM PAIR=true  why-only-resolved sel=false mov=false
+    unit-464rec3-2026-11-01/grade-the-three-cures.mjs:138 C3b
+        span  sel=false mov=false   bool-arm sel=false mov=false   why-arm sel=false mov=false   closed sel=true mov=true   args=3
+        resolve-only=true  why-only-sel=false  why-only-mov=false
+        RESOLVED  bool-arm sel=true mov=true  why-arm sel=false mov=false  BOOL-ARM PAIR=true  why-only-resolved sel=false mov=false
+
+
+P8 — my own table re-measured at MY pin bba2aa3c, under BOTH dir keys:
+    family       all-dirs  dirs-with-.mjs   .mjs    I tabled
+    unit-464           37              35    106    37 / 106
+    roundNNN          325              90    195    91 / 191
+    unit-other          2               2      6    2 / 6
+    other              44               1      2    6 / 5
+    TOTAL             408             128    309    136 / 308
+
+LEGS
+  GREEN  GSRCPIN          his instrument read at SRC_PIN 268457d1 is byte-identical to the one on origin/main (feee11ab3a2c vs feee11ab3a2c) — the key is not stale relative to the subject. His subject pin 0ae48068 predates his own unit, so the instrument cannot be read there at all
+  GREEN  GLIFT            his keys lifted from unit-464presc-2026-11-03/census-presc.mjs + his own LIFTS table at 0ae48068: LIFTS(10L) SELECTOR_WIDE(6L) MOVABLE_WIDE(7L) KP_TEXT(5L) closedTextOf(23L) · upstream [blankNonCode lineOf IDIOMS spans enclosingIf declarationsOf KIND_AXISB kindOf] · SELECTOR_WIDE 4 arms · MOVABLE_WIDE 5 arms · selector kinds [selector] movable kinds [live,run-derived]
+  GREEN  GKPINSPANPOS     BLOCKING: a constructed predicate with both anchor literals INLINED is accepted by his in-span filter: sel=true mov=true both=true. The filter can fire
+  GREEN  GKPINSPANNEG     the matched negative — same predicate, the movable anchor replaced by a pinned rev — is NOT in-span for movable (sel=true mov=false), so the arm is not firing on everything
+  GREEN  GKPINSPAN        his own blocking KP, the one his §3 exists to make the zero mean something, reads both-in-span=false (sel false · mov false) when its predicate line is put through the in-span filter — while the SAME text through the candidate arm reads sel true · mov true. The filter that publishes "0 of 11" has no known positive
+  GREEN  GDIFFFILTER      his wide selector arm matches an ADDING-commit read as if it were a recency selector: `--diff-filter=A ... .pop()` on a newest-first list is the OLDEST entry and is stable, yet SELECTOR_WIDE arms [3] match it (the real recency line matches arms [0,3]). So GSTALEPIN is a FALSE POSITIVE of the selector arm, not an artifact of the expansion's reach
+  GREEN  GINSPANBASE      tree-wide, over 670 leg sites and not only the 11 candidates, the in-span conjunction holds 0 times (0.0%): selector-in-span 3, movable-in-span 11, either 14. A filter whose positive rate over the whole tree is 0.0% is measuring the tree's hoisted-operand coding style, not the ordering
+  GREEN  GRESOLVEONLY     every one of the 11 candidates reaches at least one of its two anchors ONLY after identifier resolution — 11 of 11. The candidate arm resolves bindings; the in-span filter does not, so no candidate in a hoisted-operand tree can pass it
+  GREEN  GWHYARM          1 of 11 candidates carry an anchor that is in the why-string arm and NOT in the boolean operand: [GTUPLE sel]. A why-string is not a conjunct. His `prose-arg-call` flag caught one shape of this; the arm split measures it per candidate
+  GREEN  GBOOLPAIR        with the BOOLEAN OPERAND resolved on its own — which is how a predicate actually carries its anchors — 8 of 11 candidates hold a selector anchor beside a movable anchor: [GTARGET · GFIXEDCTRL · GTUPLE · GTARGETB · GSTALEPIN · GSTALE · GSTALEINVERT · C3b]. His stated necessary property is satisfied 8 times in this tree, not 0. The "0" is his in-span filter's figure, and that filter has no known positive (GKPINSPAN)
+  GREEN  GHANDCOVER       the filed hand read covers exactly the candidate set this drive enumerated: 11 rows against 11 candidates, every id matched member by member
+  GREEN  GBRACKET         THE BRACKET: his published 0 is a FLOOR (in-span, keyed on anchor literals, no known positive) and my 8 is a CEILING (unbounded resolution reaches a run record's whole harness). Neither endpoint decides the label. By hand over all 11 candidates — 6 read by me this fire, 5 his reading recorded as his — legs whose boolean operand carries BOTH anchors: 2 [GSTALE · GSTALEINVERT]; legs that are a CONJUNCT PAIR with disagreeing figures: 0. So the prescription label HOLDS, and it holds on the hand read, not on either instrument's figure
+  GREEN  GWHYARMR         why-only at the IDENTIFIER level: 3 of 11 candidates reach an anchor from the resolved why arm and not from the resolved boolean arm [U4 sel · GC2MOVED mov · GHISTFLIP sel]
+  GREEN  GREPRO           my reconstruction of his in-span filter reproduces his published per-candidate figures off his own recording: 11 of 11 rows agree on (id, sel-in-span, mov-in-span), and my candidate set is 11 against his 11
+  GREEN  GMYPIN           his correction reproduces at my own pin: roundNNN is 90 dirs-with-an-instrument / 195 .mjs (I tabled 91 / 191) and the tree is 309 .mjs (I tabled 308). His 90/195/309 is exact. My dir column mixed keys — 325 roundNNN dirs exist, 90 hold an instrument, and 128 of 408 dirs tree-wide do
+
+VERDICT: GREEN — 15 legs · 0 red · 0 refused
+
+PREDICTIONS
+  P1 his KP refused by the filter   LANDS (NON-BLIND) — both-in-span=false
+  P2 positive in-span KP accepted   LANDS — BLOCKING
+  P3 tree-wide both-in-span = 0     LANDS — 0 of 670 (0.0%); either 14
+  P4 all candidates resolve-only    LANDS — 11 of 11
+  P5 >=1 why-only anchor            LANDS — 1 of 11
+  P6 --diff-filter=A reads selector LANDS (NON-BLIND) — arms [3]
+  P7 CRIPPLE candidates fall <=1    not this arm
+  P8 his roundNNN correction        LANDS
+  P9 bool-arm anchor pairs >= 2     LANDS — 8 of 11 [GTARGET GFIXEDCTRL GTUPLE GTARGETB GSTALEPIN GSTALE GSTALEINVERT C3b]
+  P10 why-only, identifier level    LANDS — 3 of 11 [U4 GC2MOVED GHISTFLIP]
+
+BRACKET: in-span 0 (his floor, no KP)  <=  hand read 2 (both anchors in the boolean operand)  <=  resolved 8 (my ceiling)
+         CONJUNCT PAIRS with disagreeing figures, by hand over all 11: 0 — the prescription label HOLDS
+
+REPRO: 11/11 of his published rows reproduced

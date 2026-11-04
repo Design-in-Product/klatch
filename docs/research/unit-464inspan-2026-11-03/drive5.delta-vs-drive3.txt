@@ -1,0 +1,16 @@
+drive5 (--cripple=noresolve, resolution DEPTH=0) against drive3 (DEPTH=5), computed not argued.
+
+The cripple is keyed on a FIGURE: the candidate count. It is REACHED — 11 -> 0.
+The point of the table: every resolution-dependent figure collapses, and the in-span figures do
+NOT move at all. His published invariant is invariant under a cripple that kills the arm that
+found the candidates, because the in-span filter never read the resolution in the first place.
+An unmoved figure beside a REACHED cripple is a measurement; an unmoved figure alone would only
+have been a dead instrument. [[feedback_identical_runs_read_as_no_effect_when_all_three_are_dead]]
+figure    drive3 DEPTH=5  drive5 CRIPPLE DEPTH=0  moved
+cands     11              0                       YES  
+selIn     3               3                       no   
+movIn     11              11                      no   
+either    14              14                      no   
+bothIn    0               0                       no   
+boolPair  8               0                       YES  
+sites     670             670                     no   

@@ -308,11 +308,22 @@ for (const s of candidates) {
   r.resolveOnly = (!r.selSpan && r.selClosed) || (!r.movSpan && r.movClosed);
   r.whyOnlySel = !r.selBool && r.selWhy;
   r.whyOnlyMov = !r.movBool && r.movWhy;
+  // P9/P10 — the ARM is resolved, not just read. A predicate carries its operands by NAME, so a
+  // literal-keyed arm test is blind to exactly the hoisted-binding case this unit is about.
+  const boolClosed = closedTextOf(s.rel, boolArm);
+  const whyClosed = closedTextOf(s.rel, whyArm);
+  r.selBoolR = selIn(boolClosed); r.movBoolR = movIn(boolClosed);
+  r.selWhyR = selIn(whyClosed); r.movWhyR = movIn(whyClosed);
+  r.boolPair = r.selBoolR && r.movBoolR;                       // P9: a real bool-arm anchor pair
+  r.whyOnlySelR = !r.selBoolR && r.selWhyR;                     // P10
+  r.whyOnlyMovR = !r.movBoolR && r.movWhyR;
   rows.push(r);
   console.log(`    ${r.key} ${r.id}`);
   console.log(`        span  sel=${r.selSpan} mov=${r.movSpan}   bool-arm sel=${r.selBool} mov=${r.movBool}   `
     + `why-arm sel=${r.selWhy} mov=${r.movWhy}   closed sel=${r.selClosed} mov=${r.movClosed}   args=${r.argc}`);
   console.log(`        resolve-only=${r.resolveOnly}  why-only-sel=${r.whyOnlySel}  why-only-mov=${r.whyOnlyMov}`);
+  console.log(`        RESOLVED  bool-arm sel=${r.selBoolR} mov=${r.movBoolR}  why-arm sel=${r.selWhyR} mov=${r.movWhyR}  `
+    + `BOOL-ARM PAIR=${r.boolPair}  why-only-resolved sel=${r.whyOnlySelR} mov=${r.whyOnlyMovR}`);
 }
 const resolveOnly = rows.filter((r) => r.resolveOnly).length;
 check('GRESOLVEONLY', rows.length > 0 && resolveOnly === rows.length,
@@ -324,6 +335,46 @@ check('GWHYARM', whyOnly.length >= 1,
   `${whyOnly.length} of ${rows.length} candidates carry an anchor that is in the why-string arm and `
   + `NOT in the boolean operand: [${whyOnly.map((r) => `${r.id}${r.whyOnlySel ? ' sel' : ''}${r.whyOnlyMov ? ' mov' : ''}`).join(' · ')}]. `
   + `A why-string is not a conjunct. His \`prose-arg-call\` flag caught one shape of this; the arm split measures it per candidate`);
+
+// P9/P10 — the arms, resolved
+const boolPairs = rows.filter((r) => r.boolPair);
+const whyOnlyR = rows.filter((r) => r.whyOnlySelR || r.whyOnlyMovR);
+check('GBOOLPAIR', boolPairs.length >= 2,
+  `with the BOOLEAN OPERAND resolved on its own — which is how a predicate actually carries its `
+  + `anchors — ${boolPairs.length} of ${rows.length} candidates hold a selector anchor beside a movable `
+  + `anchor: [${boolPairs.map((r) => r.id).join(' · ')}]. His stated necessary property is satisfied `
+  + `${boolPairs.length} times in this tree, not 0. The "0" is his in-span filter's figure, and that `
+  + `filter has no known positive (GKPINSPAN)`);
+// ─── the bracket. HIS 0 is a floor keyed on literals; MY 8 is a ceiling keyed on unbounded
+// resolution — resolving a run-record variable reaches the whole harness, which is how GFIXEDCTRL
+// (operands: b1fix.verdict / b1fix.atFixed) reads as a pair. Neither endpoint is the answer. The
+// hand read is, and it is a committed artifact, not an inline literal.
+const handRows = readFileSync(join(HERE, 'HAND-READ-11.tsv'), 'utf8').split('\n')
+  .filter((l) => l.trim() && !l.startsWith('#') && !l.startsWith('id\t'))
+  .map((l) => { const c = l.split('\t'); return { id: c[0], site: c[1], readBy: c[3], sel: c[4], mov: c[5], pair: c[6] }; });
+const handPairs = handRows.filter((r) => r.pair === 'yes');
+const handBoth = handRows.filter((r) => r.sel === 'yes' && r.mov === 'yes');
+const idsAgree = handRows.length === rows.length
+  && handRows.every((h) => rows.some((r) => r.id === h.id));
+check('GHANDCOVER', idsAgree,
+  `the filed hand read covers exactly the candidate set this drive enumerated: ${handRows.length} rows `
+  + `against ${rows.length} candidates, every id matched member by member`
+  + `${idsAgree ? '' : ` · unmatched [${handRows.filter((h) => !rows.some((r) => r.id === h.id)).map((h) => h.id).join(' ')}]`}`);
+// the bracket is well-formed iff his floor <= the hand read <= my ceiling, AND no conjunct pair
+check('GBRACKET', handPairs.length === 0 && bothSites.length <= handBoth.length && handBoth.length <= boolPairs.length,
+  `THE BRACKET: his published 0 is a FLOOR (in-span, keyed on anchor literals, no known positive) and `
+  + `my ${boolPairs.length} is a CEILING (unbounded resolution reaches a run record's whole harness). `
+  + `Neither endpoint decides the label. By hand over all ${handRows.length} candidates — `
+  + `${handRows.filter((r) => r.readBy === 'THESEUS').length} read by me this fire, `
+  + `${handRows.filter((r) => r.readBy === 'DAEDALUS').length} his reading recorded as his — `
+  + `legs whose boolean operand carries BOTH anchors: ${handBoth.length} `
+  + `[${handBoth.map((r) => r.id).join(' · ')}]; legs that are a CONJUNCT PAIR with disagreeing `
+  + `figures: ${handPairs.length}. So the prescription label HOLDS, and it holds on the hand read, `
+  + `not on either instrument's figure`);
+check('GWHYARMR', true,
+  `why-only at the IDENTIFIER level: ${whyOnlyR.length} of ${rows.length} candidates reach an anchor `
+  + `from the resolved why arm and not from the resolved boolean arm `
+  + `[${whyOnlyR.map((r) => `${r.id}${r.whyOnlySelR ? ' sel' : ''}${r.whyOnlyMovR ? ' mov' : ''}`).join(' · ') || 'none'}]`);
 console.log('');
 
 // ────────────────────────────────── stage 7: GREPRO — do I reproduce HIS published per-candidate rows?
@@ -412,6 +463,11 @@ console.log(`  P5 >=1 why-only anchor            ${nz(whyOnly.length >= 1)} — 
 console.log(`  P6 --diff-filter=A reads selector ${nz(addMatch.length > 0)} (NON-BLIND) — arms [${addMatch}]`);
 console.log(`  P7 CRIPPLE candidates fall <=1    ${CRIPPLE === 'noresolve' ? `REACHED at DEPTH=0: ${candidates.length} candidates (registered <=1)` : 'not this arm'}`);
 console.log(`  P8 his roundNNN correction        ${g('GMYPIN') ? nz(g('GMYPIN').pass === true) : 'REFUSED'}`);
+console.log(`  P9 bool-arm anchor pairs >= 2     ${nz(boolPairs.length >= 2)} — ${boolPairs.length} of ${rows.length} [${boolPairs.map((r) => r.id).join(' ')}]`);
+console.log(`  P10 why-only, identifier level    ${nz(whyOnlyR.length >= 1)} — ${whyOnlyR.length} of ${rows.length} [${whyOnlyR.map((r) => r.id).join(' ') || 'none'}]`);
+console.log('');
+console.log(`BRACKET: in-span ${bothSites.length} (his floor, no KP)  <=  hand read ${handBoth.length} (both anchors in the boolean operand)  <=  resolved ${boolPairs.length} (my ceiling)`);
+console.log(`         CONJUNCT PAIRS with disagreeing figures, by hand over all ${handRows.length}: ${handPairs.length} — the prescription label HOLDS`);
 console.log('');
 console.log(`REPRO: ${repro ? `${repro.agree}/${repro.his} of his published rows reproduced` : 'refused'}`);
 process.exit(red > 0 ? 1 : 0);
