@@ -286,6 +286,8 @@ for (const rel of only3) {
       rel,
       add: only3Add.includes(rel),
       ord: i + 1,
+      start: s.start,
+      end: s.end,
       line: lineOf(src, s.start),
       endLine: lineOf(src, s.end),
       span: s.text,
@@ -330,10 +332,213 @@ for (const s of sites) {
 }
 console.log('');
 
+// ═════════════════════════════════════ stage 4: the classifier (addendum 1), and what grades it
+//
+// ADDENDUM 1: his unit is the FILE (too wide, his own stated limit); mine was the SPAN (too narrow
+// — arm [3]'s match STARTS at `--format=`, and this corpus puts git's flags before it). The unit
+// that decides is the enclosing CALL.
+
+// The enclosing call, by a mechanical bracket-depth scan — not by eye and not by line.
+const enclosingCall = (src, start, end) => {
+  let d = 0, open = -1;
+  for (let i = start - 1; i >= 0; i--) {
+    const c = src[i];
+    if (c === ')' || c === ']' || c === '}') d++;
+    else if (c === '(' || c === '[' || c === '{') { if (d === 0) { open = i; break; } d--; }
+  }
+  if (open < 0) return null;
+  let d2 = 0, close = -1;
+  for (let i = open; i < src.length; i++) {
+    const c = src[i];
+    if (c === '(' || c === '[' || c === '{') d2++;
+    else if (c === ')' || c === ']' || c === '}') { d2--; if (d2 === 0) { close = i; break; } }
+  }
+  if (close < 0 || close < end) return null;
+  return src.slice(open, close + 1);
+};
+
+// The classifier, as the addendum's BRANCH LITERALS. `R` is the FALL-THROUGH, so it absorbs every
+// blindness above it and P6 is what measures how much.
+// [[feedback_derive_the_verdict_predicate_from_the_branch_literals]]
+// [[feedback_a_fall_through_terminal_bucket_absorbs_every_blindness]]
+const classOf = (site, addText) => {
+  if (site.depthMin <= -1) return 'W';
+  if (/--diff-filter=A/.test(addText)) return 'A';
+  return 'R';
+};
+// CRIPPLE=wholefile degrades the ADD test's unit from the CALL back to the FILE — his unit, one
+// level up. A switch on the key, not the subject.
+// DEFECT OF MINE, drive2, kept in the record: my first version of this fell back to `?? site.span`
+// when `enclosingCall` returned null — and the sites never recorded `start`/`end` at all, so the
+// scan ran on `undefined`, returned null for all 20, and EVERY site silently got the span-level
+// unit the addendum exists to replace. P3aCALL printed 7 over-credits against my hand read's 1 and
+// looked like a measurement. A fallback to the exact unit under repair is not a fallback, so the
+// null case is now UNRUNNABLE instead of silent. [[topic_refusal_and_sentinels]]
+const addTextFor = (site) => {
+  if (CRIPPLE === 'wholefile') return sourceOf(site.rel);
+  const src = sourceOf(site.rel);
+  const call = enclosingCall(src, site.start, site.end);
+  if (call === null) die(`no enclosing call found for ${site.id} (chars ${site.start}-${site.end}) — ` +
+    `falling back to the SPAN here would silently restore the very unit addendum 1 replaces`);
+  return call;
+};
+
+// ───── P7 (BLOCKING): one witness per class, and a refused negative. Each carries the property.
+// KP-A and KP-R are HIS OWN committed literals, lifted from his instrument — not analogies, and
+// not retyped. [[feedback_a_known_positive_must_carry_the_property_not_an_analogy]]
+const kpSrc = gitq(['show', `${REC_PIN}:docs/research/unit-464kpspan-2026-11-04/grade-kpspan.mjs`]);
+if (kpSrc === null) die(`cannot read his instrument at ${REC_PIN} to lift KP-A and KP-R`);
+const liftDecl = (name) => {
+  const hits = kpSrc.split('\n').filter((l) => new RegExp(`^const ${name} = `).test(l));
+  if (hits.length !== 1) die(`lift ${name}: declaration line found ${hits.length} times, need exactly 1`);
+  try { return new Function(`${hits[0]}\nreturn ${name};`)(); }
+  catch (e) { die(`lift ${name}: does not evaluate: ${e.message}`); }
+};
+const KP_A = liftDecl('ADD_LINE');
+const KP_R = liftDecl('REC_LINE');
+// KP-W: two CLOSED calls inside the 240-char window — `--format=%h` in the first, the quoted `--`
+// in the second. The span must cross a call boundary, which is what depthMin <= -1 means.
+const KP_W = "const a = g(['log','--format=%h']); const b = h(['diff','--']);";
+// KN: `--format=%h` with NO quoted `--` within 240 chars. Must yield ZERO sites.
+const KN = "const a = g(['log','--format=%h']).trim();";
+
+const classifyText = (text) => {
+  const found = sitesIn(text);
+  return found.map((s) => {
+    const site = { start: s.start, end: s.end, span: s.text, depthMin: depthMin(s.text) };
+    const addText = CRIPPLE === 'wholefile' ? text : (enclosingCall(text, s.start, s.end) ?? s.text);
+    return { ...site, cls: classOf(site, addText) };
+  });
+};
+const wA = classifyText(KP_A), wR = classifyText(KP_R), wW = classifyText(KP_W), wN = classifyText(KN);
+const p7 = wA.length === 1 && wA[0].cls === 'A' && wR.length === 1 && wR[0].cls === 'R'
+  && wW.length === 1 && wW[0].cls === 'W' && wN.length === 0;
+check('P7WITNESS', p7,
+  `one witness per class plus a refused negative: KP-A (HIS committed ADD_LINE, lifted) ` +
+  `${wA.length} site(s) class ${wA.map((x) => x.cls).join(',') || '-'} (need 1/A) · ` +
+  `KP-R (HIS committed REC_LINE, lifted) ${wR.length}/${wR.map((x) => x.cls).join(',') || '-'} (need 1/R) · ` +
+  `KP-W (two closed calls in-window) ${wW.length}/${wW.map((x) => x.cls).join(',') || '-'} ` +
+  `(need 1/W, depthMin ${wW[0]?.depthMin ?? 'n/a'}) · KN (no quoted \`--\` in window) ` +
+  `${wN.length} sites (need 0)`);
+if (!p7) die('the classifier cannot separate the three classes and refuse the negative — no figure ' +
+  'below it is reportable');
+
+// ───────────────────────────────────────────── classify the 20 real sites, and the three ADD units
+for (const s of sites) {
+  s.callText = addTextFor(s);
+  s.callHasAdd = /--diff-filter=A/.test(s.callText);
+  s.cls = classOf(s, s.callText);
+}
+
+// P3a AS ORIGINALLY REGISTERED — keyed on the SPAN. Reported at its own figure and declared
+// MISKEYED in the same breath; its GREEN is not claimed as a result.
+// [[feedback_a_published_sentence_keyed_on_a_cell_name_is_not_keyed_on_a_measurement]]
+const addFiles = only3.filter((r) => only3Add.includes(r));
+const nonAddFiles = only3.filter((r) => !only3Add.includes(r));
+const spanAttributed = addFiles.filter((r) => sites.some((s) => s.rel === r && s.spanHasAdd));
+check('P3aSPAN', spanAttributed.length < addFiles.length,
+  `P3a AS REGISTERED (span-keyed, and MISKEYED): of his ${addFiles.length} ADD files, ` +
+  `${spanAttributed.length} have a site whose own SPAN carries --diff-filter=A. Threshold met ` +
+  `(<${addFiles.length}) — but by an ARTEFACT of arm [3]'s match starting at \`--format=\`, not by ` +
+  `a fact about his flag. Repaired as P3aCALL per addendum 1; this leg grades nothing`);
+
+// P3a-CALL — the repair. The over-credit of his file-level flag.
+const callAttributed = addFiles.filter((r) => sites.some((s) => s.rel === r && s.callHasAdd));
+const overCredited = addFiles.filter((r) => !callAttributed.includes(r));
+check('P3aCALL', overCredited.length >= 1,
+  `P3a-CALL: of his ${addFiles.length} ADD files, ${callAttributed.length} have an arm-[3] site ` +
+  `whose ENCLOSING CALL carries --diff-filter=A. OVER-CREDIT = ${overCredited.length}` +
+  (overCredited.length ? ` → ${overCredited.map((r) => r.replace('docs/research/', '')).join(', ')}` : ''));
+
+// ───── the hand read, loaded from its own committed blob at the commit that filed it
+const HAND_REL = 'docs/research/unit-464addarm-2026-11-04/HAND-ARM3.tsv';
+const HAND_PIN = (gitq(['log', '-1', '--format=%H', '--', HAND_REL]) ?? '').trim();
+if (!HAND_PIN) die(`the hand read ${HAND_REL} has no commit — it must be filed BEFORE this classifier runs`);
+const handSrc = gitq(['show', `${HAND_PIN}:${HAND_REL}`]);
+if (handSrc === null) die(`cannot read the hand read at its own pin ${HAND_PIN}`);
+const hand = new Map();
+for (const l of handSrc.split('\n')) {
+  if (l.startsWith('#') || l.startsWith('site_id') || l.trim() === '') continue;
+  const c = l.split('\t');
+  if (c.length < 7) continue;
+  hand.set(c[0], { file_add: c[1], span_add: c[2], call_add: c[3], depth_min: Number(c[4]), cls: c[6] });
+}
+if (!check('GHANDPIN', hand.size === sites.length,
+    `hand read loaded from its OWN committed blob at ${HAND_PIN.slice(0, 8)} (not the worktree copy): ` +
+    `${hand.size} rows for ${sites.length} sites`)) {
+  die('the hand read does not cover every enumerated site');
+}
+
+// P3b-CALL — the under-credit: non-ADD files the HAND READ calls stable.
+const underCredited = nonAddFiles.filter((r) => sites.some((s) => s.rel === r && hand.get(s.id)?.cls === 'A'));
+check('P3bCALL', underCredited.length >= 1,
+  `P3b-CALL: of the ${nonAddFiles.length} non-ADD files, ${underCredited.length} carry a site the ` +
+  `HAND READ calls stable — a stable anchor his flag is blind to. UNDER-CREDIT = ` +
+  `${underCredited.length}` +
+  (underCredited.length ? ` → ${underCredited.map((r) => r.replace('docs/research/', '')).join(', ')}` : ''));
+
+// P4 — the window artefact, registered as possibly 0 and reported either way.
+const wSites = sites.filter((s) => s.depthMin <= -1);
+check('P4WINDOW', wSites.length >= 1,
+  `P4: arm-[3] sites whose span CROSSED a call boundary (depthMin <= -1): ${wSites.length} of ` +
+  `${sites.length}. ${wSites.length === 0
+    ? 'ZERO — registered as possibly 0, and this is that case: the 240-char window CAN fuse two ' +
+      'calls (KP-W proves the branch alive) but this corpus does not exercise it. A real negative, ' +
+      'reported as one.'
+    : wSites.map((s) => s.id).join(', ')}`);
+
+// ───── P6 — the CLASSIFIER graded against the HAND READ. A RED here is the classifier's defect.
+const disagree = sites.filter((s) => hand.get(s.id).cls !== s.cls);
+check('P6AGREE', disagree.length === 0,
+  `P6 — classifier vs HAND READ over ${sites.length} sites: ${sites.length - disagree.length} agree, ` +
+  `${disagree.length} disagree. The hand read is the measurement; a disagreement is the ` +
+  `CLASSIFIER's defect` +
+  (disagree.length ? ` → ${disagree.map((s) => `${s.id} [hand ${hand.get(s.id).cls} / clf ${s.cls}]`).join(' · ')}` : ''));
+
+// ───── P5 — THE REAL PRICE. A MEASUREMENT with no threshold, computed off the HAND READ.
+const handClsIn = (rel) => sites.filter((s) => s.rel === rel).map((s) => hand.get(s.id).cls);
+const retaining = only3.filter((r) => handClsIn(r).includes('R'));
+const fpOnly = only3.filter((r) => !handClsIn(r).includes('R'));
+const clfFpOnly = only3.filter((r) => !sites.filter((s) => s.rel === r).some((s) => s.cls === 'R'));
+const handTally = { R: 0, A: 0, O: 0, W: 0 };
+for (const s of sites) handTally[hand.get(s.id).cls] = (handTally[hand.get(s.id).cls] ?? 0) + 1;
+
+console.log('');
+console.log('P5 (MEASUREMENT, no threshold registered) — THE REAL SITE-LEVEL PRICE OF NARROWING ARM [3]:');
+console.log(`    arm-[3]-only files (his ceiling)             ${only3.length} of ${selFilesWide.length}  (${(100 * only3.length / selFilesWide.length).toFixed(0)}%)`);
+console.log(`    hand-read site classes                       R ${handTally.R} · A ${handTally.A} · O ${handTally.O} · W ${handTally.W}  (of ${sites.length})`);
+console.log(`    R-RETAINING files — WRONGLY dropped by a cure  ${retaining.length} of ${selFilesWide.length}  (${(100 * retaining.length / selFilesWide.length).toFixed(0)}%)`);
+console.log(`    FP-ONLY files — CORRECTLY dropped by a cure    ${fpOnly.length} of ${selFilesWide.length}  (${(100 * fpOnly.length / selFilesWide.length).toFixed(0)}%)`);
+console.log(`    his ADD set and my FP-ONLY set, as MEMBER LISTS (same size is not the same set):`);
+console.log(`      |ADD| ${addFiles.length}   |FP-ONLY| ${fpOnly.length}   ADD-not-FP ${addFiles.filter((r) => !fpOnly.includes(r)).length}   FP-not-ADD ${fpOnly.filter((r) => !addFiles.includes(r)).length}`);
+for (const r of addFiles.filter((x) => !fpOnly.includes(x))) console.log(`      ADD-but-R-RETAINING  ${r.replace('docs/research/', '')}`);
+for (const r of fpOnly.filter((x) => !addFiles.includes(x))) console.log(`      FP-but-NOT-ADD       ${r.replace('docs/research/', '')}`);
+console.log('');
+console.log('    per-file (hand-read classes, newest-first within file):');
+for (const r of only3) {
+  const cs = handClsIn(r);
+  console.log(`      ${cs.includes('R') ? 'R-RETAIN' : 'FP-ONLY '}  ${only3Add.includes(r) ? 'ADD' : '---'}  ` +
+    `[${cs.join(',')}]  ${r.replace('docs/research/', '')}`);
+}
+console.log('');
+
+// ───────────────────────────────────── the cripple's own threshold, as a FIGURE that must move
+if (CRIPPLE === 'wholefile') {
+  console.log(`CRIPPLE=wholefile — the ADD test's unit degraded from the CALL back to the FILE:`);
+  console.log(`    P3a-CALL numerator (ADD files attributed)    ${callAttributed.length}`);
+  console.log(`    classifier FP-ONLY files                     ${clfFpOnly.length}`);
+  console.log('');
+}
+console.log(`FIGURES-FOR-THE-CRIPPLE-DELTA  P3aCALL_numerator=${callAttributed.length} ` +
+  `classifier_FP_ONLY=${clfFpOnly.length} classifier_A_sites=${sites.filter((s) => s.cls === 'A').length} ` +
+  `classifier_R_sites=${sites.filter((s) => s.cls === 'R').length}`);
+console.log('');
+
 const reds = legs.filter((l) => l.state === 'RED');
 console.log('tally:');
 for (const l of legs) console.log(`  ${l.state} ${l.name}`);
 console.log('');
-console.log(`STAGE 1 — ${legs.length} legs, ${reds.length} RED. No classifier exists in this blob; ` +
-  `P3a/P3b/P4/P5/P6/P7 and the cripple are NOT run here, by design.`);
+console.log(`STAGE 2 — ${legs.length} legs, ${reds.length} RED. P5 is a MEASUREMENT and carries no ` +
+  `verdict; P3aSPAN is reported and declared MISKEYED; P6's RED, if any, is the classifier's defect ` +
+  `and the hand read stands.`);
 console.log(`[SUBJ_PIN=${SUBJ_PIN} POP_PIN=${POP_PIN} REC_PIN=${REC_PIN} CRIPPLE=${CRIPPLE || 'none'}]`);
