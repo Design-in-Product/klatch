@@ -106,3 +106,60 @@ locally and across all four cross-repo mailboxes, nothing owed from any; both st
 re-derived fresh, neither moved; gate re-derived fresh and byte-identical; rollup confirmed
 correctly untouched; log.html confirmed not yet due. Two consecutive checks found nothing further
 unblocked. Fire closed bounded.
+
+---
+
+## 17:0x PT — Session resumed (SWEEP fire)
+
+No-op on product. Checkpoint is this seat's own last commit `6e3d1a70` (11/03 MID fire).
+`git log 6e3d1a70..HEAD --format='%h %an %ci %s' --reverse` showed 18 new commits, author-checked
+before citing, none mine: Pard's mail-delivery commit filing Janus's memo to Argus (cc Calliope,
+xian) on the expired `argus-test-key`, landed directly in `docs/mail/read/`; Daedalus's
+`unit-464prec` chain (6 commits — whether a conjunctive row's axis B is a reading or a
+precedence output; 4 of 5 rows land MULTI-FIGURE, his own P4(c) refuted; demoting history-keyed
+in the ordering is a byte-level no-op; RESULTS+mail correcting his own proportionality figure by
+18); Argus's own WORK-fire census no-op, test-key memo answered and closed in the same commit;
+Theseus's `unit-464outside` chain (8 commits — the leg census surface is one authored half with
+the other half larger; his class key reaches CROSS-STATE zero times on Daedalus's half; P6 NOT
+REACHED leaves P2-P5 ungraded by his own rule; RESULTS+mail: the census surface was 17% of the
+tree, the routed ordering relation is a prescription; a same-fire self-correction of his own file
+count 8/8 → 7/7).
+
+`git diff --stat 6e3d1a70..HEAD -- packages/ scripts/` empty — confirmed, not assumed; dirstat
+splits across `docs/research/unit-464prec-2026-11-03/` (39.3%) and
+`docs/research/unit-464outside-2026-11-03/` (28.6%), remainder in `docs/logs/`/`docs/mail/`.
+
+Mail: `grep -li "^to:.*calliope" docs/mail/*.md` (excluding `read/`) — same four standing
+Pard-from-10-20 threads, no new file addressed by name, day 14 unchanged. The one new mail commit
+this fire (Janus→Argus, cc Calliope/xian, expired test key) is cc-only and already landed in
+`read/`, Argus's own commit confirms it answered and closed — nothing owed from this seat. All
+four cross-repo mailboxes checked fresh via `git -C <repo> fetch` + `git log --since` against this
+seat's own 12:36:00 PT checkpoint: `designinproduct` 1 new (Pard's "R16 relayed" exec memo,
+content-grepped for `klatch`/`calliope`, 0 hits); `mediajunkie` 3 new (Pard's restart/spotlight
+traffic plus his own api-orgs-and-keys.md mirror of the same expired-test-key disposition already
+seen in-repo, content-grepped, hits confined to that already-known, already-closed item);
+`dispatch` 0 new; `piper-morgan-product/mailboxes` 14 new (content-grepped, 0 hits). Nothing owed
+from any.
+
+Standing blockers re-derived fresh: Managed Agents smoke-run — no `ma-smoke/*` branch anywhere,
+named blocker on xian, day 14, unchanged same calendar day. Ground-rules day-count — rollup v173
+already reads "86 days", re-verified against today's date, still correct.
+
+Rollup: not touched — none of the 18 new commits is a decision only xian can make; v173 stands.
+
+Gate re-verified fresh: `npx tsx scripts/gate.mts` — census OK, typecheck 0 `error TS` across all
+four workspaces; server 140 files · 2186 passed · 1 skipped (2187); client 26 passed | 13 skipped
+(39) · 333 passed | 13 skipped (346) — byte-identical to this fire's own MID-fire figures.
+
+`log.html`: not due until tonight's STOP fire per the recurring-items row (`next_due` 2026-11-03,
+`last_completed` 2026-11-02). `git status --short` clean before this fire's own coordination/log
+edits (one scratch file, `docs/.cal_sec_tmp.md`, created to page through the oversized
+`COORDINATION.md` section directly since the file exceeds the Read tool's size ceiling at 3.3MB —
+deleted before this fire's own commit, never staged).
+
+Drain: 18 new commits read with author verified before citing, none mine, confirmed via empty
+`packages/`/`scripts/` diff and dirstat; mail checked locally and across all four cross-repo
+mailboxes, the one real new item (expired test key) traced and confirmed already answered/closed
+by Argus, nothing owed from any; both standing blockers re-derived fresh, neither moved; gate
+re-derived fresh and byte-identical; rollup confirmed correctly untouched; log.html confirmed not
+yet due. Two consecutive checks found nothing further unblocked. Fire closed bounded.
