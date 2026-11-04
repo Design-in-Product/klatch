@@ -5357,6 +5357,53 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   re-derived, full gate including the driving sweep); nothing deferred. Two consecutive checks
   found nothing further unblocked — fire closed bounded. Log:
   `docs/logs/2026-11-03-iris-log.md`.
+- **Updated:** 2026-11-03 ~19:17 PT (STOP fire). **Status:** available.
+- **11/03 fire (STOP) — no-op on product; 48 commits read since own START checkpoint, none
+  mine; the 86-day ground-rules blocker this seat has carried since 08-09 is now decided by
+  xian, cc'd to this seat, addressed to Calliope for spec.** Drain against own 11/03 ~07:17 PT
+  START checkpoint (`ac49004a`): 48 new commits (checked `%an` per commit — 3 Calliope, 3 Argus,
+  2 Pard (Mediajunkie), 23 Daedalus, 17 Theseus; none Iris). `git diff --stat ac49004a..HEAD --
+  packages/ scripts/` **empty** — confirmed, not assumed; `git diff --dirstat` shows the change
+  entirely under `docs/research/unit-464{conj,immov,outside,prec,presc}-2026-11-03/`,
+  `docs/logs/`, and `docs/mail/` (Daedalus's `unit-464immov`/`unit-464prec`/`unit-464presc`
+  chains, Theseus's `unit-464conj`/`unit-464outside` chains, three coord-only no-ops). **Mail:**
+  5 new local files (excluding one already closed to `read/` within the window), all the day's
+  Daedalus↔Theseus `unit-464*` exchange — checked each header directly, Iris cc-only on all
+  five, no body-text action. **The one worth flagging:**
+  `xian-via-janus-to-calliope-ground-rules-start-blank-then-learn-defaults-2026-11-03.md` (to:
+  Calliope, cc: ...Iris) — xian's ruling, relayed by Janus: ships no defaults; a first klatch's
+  ground-rules field starts empty (optional guidance/examples beside it), and a user's own
+  submitted rules become either a saved default or a named template for later klatches;
+  scenario-suggestion guidance named explicitly as a future enhancement. Addressed to Calliope
+  for spec/scope, no action asked of Iris directly. Checked current code before updating this
+  seat's blocker status: `grep -ril "ground.rules" packages/client/src` **empty** — nothing
+  built yet that the ruling could conflict with. **Standing-blocker status change: ground-rules
+  question moves from "unmoved on xian" (86 days, carried every fire since 08-09) to "decided by
+  xian 11-03, pending Calliope's spec"** — not closing the thread myself since Calliope's
+  scoping reply, not mine, is what closes it. All four cross-repo mailboxes checked fresh via
+  `git -C <repo> fetch` + `git log --since` against the 07:25:30 PT checkpoint:
+  `designinproduct` 5 new/0 hits; `mediajunkie` 8 new/0 hits (one register-entry memo names
+  "Klatch" as the consumer of the already-known expired test key, informational, no Iris
+  mention); `dispatch` 3 new/0 hits; `piper-morgan-product/mailboxes` 99 new/0 hits. Nothing
+  owed from any. **Standing blockers re-derived fresh:** ground-rules question resolved (see
+  above); `entityGuess` re-grepped independently with the exact historical method
+  (`packages/server/src` + `packages/client/src`, not client alone — an interim mid-fire check
+  used the wrong scope, returned 5/22, caught against the historical command before citing and
+  re-run correctly) — **6 files/23 hits**, unchanged. **Verified, not trusted:** `lsof -i :3001`
+  port free; `npm run typecheck` clean ×4 workspaces; server **140 files · 2186 passed · 1
+  skipped (2187)**; client **26 passed|13 skipped (39) · 333 passed|13 skipped (346)** —
+  byte-identical to this morning's START checkpoint; `sweep-probes --census` **153 probe files,
+  43 swept/110 deferred**, CENSUS OK, unchanged; full driving sweep (HEAD unchanged at
+  `1a99e797` before/after, tree clean throughout, backgrounded past the 120s foreground limit,
+  picked up via completion notification, verdict line read directly from the task output) —
+  **SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but did
+  not finish), 0 census problem(s), 110 deferred.** No `packages/` changes this fire. Nothing
+  new needs xian — the one standing item this seat carried for 86 days is now decided; next
+  action is Calliope's spec, not a new ask of xian. **Drain:** all unblocked items done (commit
+  check, mail across all four mailboxes plus local, both blockers re-derived — one resolved and
+  updated, full gate including the driving sweep); nothing deferred. Two consecutive checks
+  found nothing further unblocked — fire closed bounded. Log: `docs/logs/2026-11-03-iris-log.md`
+  (19:17 entry appended).
 - **Prior update:** 2026-10-31 ~19:2x PT (STOP fire). **Status:** available.
 - **10/31 fire (STOP) — no-op on product; 40 research-track/mail commits read (Daedalus's
   `unit-464vac`/`unit-464absorb`/`unit-464authored` chains, Theseus's `unit-464sat`/
