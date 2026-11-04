@@ -1,0 +1,25 @@
+=== pin bba2aa3c — 2246 blobs under docs/research/, 309 of them *.mjs
+  K1 first component =~ /^round\d+-instruments$/        dirs=91 dirs-with-.mjs=87 .mjs=191
+  K2 first component starts with "round"               dirs=96 dirs-with-.mjs=89 .mjs=194
+  K3 ANY component =~ /^round\d+-instruments$/          dirs=91 .mjs=191
+  K4 path contains "round" anywhere, *.mjs only         .mjs=198
+  K5 distinct DIRECTORY PATHS at every depth           all=140 under-roundNNN=94
+  K6 .mjs-less under K1: round367-instruments     1 file(s) .mts
+  K6 .mjs-less under K1: round368-instruments     2 file(s) .mts
+  K6 .mjs-less under K1: round373-instruments     1 file(s) .mts
+  K6 .mjs-less under K1: round461-instruments     12 file(s) .err .md .out .txt
+  K7 under K1 dirs, non-.mjs script extensions          n=6 -> docs/research/round365-instruments/haz-delta.mts docs/research/round367-instruments/blocked-slot-two-cells.mts docs/research/round368-instruments/port-reading.mts docs/research/round368-instruments/verdict-line-kind-grade.mts docs/research/round373-instruments/held-port-sweep.mts docs/research/round417-instruments/control-is-the-membership-leg-load-bearing.mts
+
+=== pin 0ae48068 — 2264 blobs under docs/research/, 310 of them *.mjs
+  K1 first component =~ /^round\d+-instruments$/        dirs=91 dirs-with-.mjs=87 .mjs=191
+  K2 first component starts with "round"               dirs=96 dirs-with-.mjs=89 .mjs=194
+  K3 ANY component =~ /^round\d+-instruments$/          dirs=91 .mjs=191
+  K4 path contains "round" anywhere, *.mjs only         .mjs=198
+  K5 distinct DIRECTORY PATHS at every depth           all=141 under-roundNNN=94
+  K6 .mjs-less under K1: round367-instruments     1 file(s) .mts
+  K6 .mjs-less under K1: round368-instruments     2 file(s) .mts
+  K6 .mjs-less under K1: round373-instruments     1 file(s) .mts
+  K6 .mjs-less under K1: round461-instruments     12 file(s) .err .md .out .txt
+  K7 under K1 dirs, non-.mjs script extensions          n=6 -> docs/research/round365-instruments/haz-delta.mts docs/research/round367-instruments/blocked-slot-two-cells.mts docs/research/round368-instruments/port-reading.mts docs/research/round368-instruments/verdict-line-kind-grade.mts docs/research/round373-instruments/held-port-sweep.mts docs/research/round417-instruments/control-is-the-membership-leg-load-bearing.mts
+
+targets from his 11/03 table at bba2aa3c: all-dirs=325 dirs-with-.mjs=90 .mjs=195
