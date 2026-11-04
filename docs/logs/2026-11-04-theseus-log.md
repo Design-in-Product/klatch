@@ -387,3 +387,48 @@ reply; the blocker is named and it is his, and nothing new is owed from this sea
 Thread left **open** in `docs/mail/`, both directions. My reply routes him nothing new, but it leaves
 my own 7-row item live and names the price as a ceiling, so there is an open action item on this
 side. Open threads stay visible.
+
+## 15:2x — wrap verification, run rather than assumed
+
+**Step 1 — commits landed.** `git log origin/main --oneline -10` shows all **nine** of this fire's
+commits on `origin/main`: `b800be00` (coord+log), `56ddbdac` (mail), `3750faab` (RESULTS +
+convention v1.9), `5099004d` (drives 6-7 + cross-tab), `091880f9` (HAND-SITES.tsv), `4bbb80af`
+(drives 2-5 + counterfactual), `3dd8a547` (addendum 1), `b18585a1` (drive1 + probes), `9a014428`
+(pre-registration).
+
+**Step 2 — deliverables exist.** `git ls-tree origin/main` returns all four named paths: the reply
+memo, `unit-464moves-2026-11-04/RESULTS.md`, this log, and `LEG-CLASS-CONVENTION.md` — whose header
+on `origin/main` reads **v1.9, 2026-11-04, Theseus**, confirmed by `git show origin/main:` rather
+than from the worktree. `git ls-tree -r origin/main` over the unit directory returns **37** paths,
+matching `census-now.out`'s `readdirSync` count of 37 taken after the last file was written. Worktree
+`git status --porcelain` **clean**.
+
+**The 11/04 defect 7 is not repeated.** `RESULTS.md` publishes **no** file count — the figure would
+have been false the moment it was written into the directory it counts, which is exactly what
+happened to this seat's 11 this morning. The count lives here, derived twice: once by `readdirSync`
+at the instant every file existed, once by `ls-tree origin/main` after the final push. Both say 37.
+
+## Drain
+
+Drained and done this fire: his 13:39 memo read at fire open and answered in the same fire; the one
+question his §8 routed answered as a **rule** in convention v1.9 §2.1k rather than as a preference;
+both of his P8MOVED figures reproduced independently; his `R` verdict taken off a site his memo does
+not name; the saturation measured; his 90-vs-91 closed with **both** keys exact and the gap as a
+member list of four; his "408 directories" label corrected to 136 trees / 272 files; his `.mts`
+rival refuted on the file column; the four-row conjunction's load-bearingness **driven** as a
+counterfactual rather than claimed; five defects of mine recorded; his older v1.5 entry gate
+re-driven after my edit; all four cross-repo mailboxes fetched and content-grepped; the brief read.
+
+**Four deferrals, all mine, each with a named blocker and no deadline:**
+
+1. re-read the **7 flag-argued `A` rows** at their consumption sites — new this fire, and the reason
+   `FP-ONLY 7` is published as a ceiling rather than a measurement. Blocker: it is a hand read of 7
+   consumers and did not fit this fire.
+2. the **operand/consumer-level reader** — still mine, still unbuilt, and §2.1k's rule now needs it
+   for exactly the half no differential test can reach. Blocker: it is a build, not a read.
+3. the hand read of the **15 CROSS-STATE rows**, open from my 11-03 WORK §6, untouched by either seat.
+4. the **`roundNNN-instruments` leg census** — its *population* question is closed by this fire, with
+   the key printed on the line that prints each count, as his §8 asked. Its *leg* count is not.
+
+Two consecutive checks (mail re-`ls`, cross-repo re-scan) found nothing further unblocked — fire
+closed bounded, per Klatch's recorded exception to the platform duty-cycle drain.
