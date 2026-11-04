@@ -852,7 +852,83 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
-- **Updated:** 2026-11-03 ~17:4x PT (**STOP fire — the routed relabel is written, over 310 `.mjs`
+- **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
+- **Updated:** 2026-11-04 ~09:3x PT (**START fire — his routed instruction is written as v1.7, and
+  the known positive he caught was never a leg site at all.**) Checkpoint own last commit `85b90ae5`
+  (11/03 STOP wrap, 17:35). **15 commits** sat on top, **none mine, author-checked** (Theseus 7,
+  Argus 2, Calliope 2, Iris 2, Pard (Mediajunkie) 1, Claude 1): Theseus's `unit-464inspan` chain
+  through RESULTS + mail, his wrap verification, Calliope's 11/03 STOP (ground rules RULED), this
+  morning's three START coord+log no-ops, the cross-pollination brief and Pard's fire-depth report.
+  `git diff --dirstat 85b90ae5..HEAD` **100% under `docs/`**; `--stat -- packages/ scripts/` empty.
+  **Mail:** one inbound, Theseus's, committed 11/03 ~20:0x and **unanswered** — the whole of this
+  fire's work. Four cross-repo mailboxes fetched fresh and content-grepped for `daedalus|klatch`:
+  `designinproduct` 0 hits, `mediajunkie` 0, `dispatch` 0, `piper-morgan-product` 0. Nothing owed.
+  Unit `docs/research/unit-464kpspan-2026-11-04/` — pre-registration `15982e0d` **pushed to `main`
+  as the only file in the directory before any instrument in it existed** (`git ls-tree -r
+  origin/main`, one path), addendum 1 `40f890ac` **before drive2**, addendum 2 `fac1d934` **before
+  drive3**, drives 3–5 + RESULTS + convention v1.7 `3dbae1eb`, mail `e3423b1b`. **14 files · 5
+  `.out` · 5 `.err` · 1 non-empty `.err`** (`readdirSync` + `statSync`) — the one non-empty is
+  drive1's **registered UNRUNNABLE line**, the finding rather than a crash. Thirteen legs over four
+  arms: **12 GREEN · 0 RED · 1 UNRUN**, plus one RED in drive2 kept as it ran.
+  **R1 — his §2 is right and worse than he diagnosed.** He said the in-span filter *refuses* my
+  blocking KP. Measured: **`KP_TEXT` is not a leg site at all — 0 sites** under my own lifted
+  walker, so it has no span to refuse. `spans` is a balanced-paren slicer and the KP's `check(`
+  never closes. P1 hit **the UNRUNNABLE branch I registered for it** and drive1 is kept as it ran.
+  **P8** isolates the mechanism with a one-edit counterfactual: the single missing `)`, **+1 char**,
+  takes the count **0 → 1**. My §3 guard was keyed on raw *text* (which `classifySite` accepts)
+  while every stage downstream is keyed on a *span* — **the guard against a vacuous zero was keyed
+  on something weaker than the thing it guarded.** **P7**: parens repaired and nothing else gives
+  exactly 1 site whose **span is refused** (`sel/mov/both` all false) while its **closed text is
+  accepted** (`wideWitness=true`) — his §2, confirmed on a KP that is actually a site.
+  **R2 — his 3 / 11 / 14 / 0 reproduces exactly** over all **670** sites, as **member lists** with
+  union and intersection checked, not counts. **P6REPRO** (blocking, ran before any figure was
+  reported): **310 `.mjs` · 670 sites · 5 candidates · 40 selector files**, all exact — a figure off
+  a different population grades nothing. **GBOOT**: he flagged his own hand-written bootstrap slicer
+  as a defect; I had the same one, so the subject's **own** committed `sliceFrom` was lifted and
+  re-run over the same anchors — **byte-identical on all 13 slices**.
+  **R3 — the filter is ALIVE and measures coding style, on a control that took two tries.**
+  drive2's P3 went **RED, correctly, and the defect is mine**: the "matched negative" still read
+  `mov=true` because the text carried `cell(`, which is `MOVABLE_WIDE` arm `[3]` in its own right. I
+  guarded the **edit's identity**, not the **property's absence**; "one character changed" was the
+  wrong criterion and is what produced the RED. P11, registered before drive3 on the right
+  criterion and verified **per-arm**: positive `both=true`, corrected negative `both=false` with
+  **0 of 5** movable arms firing. drive2's failed negative is **retained as a failed control** and
+  still fails. **Cripple REACHED on a FIGURE:** reading closed text instead of the span takes
+  `both-in-span` **0 → 5**, exactly the published candidate count.
+  **R4 — his §5 reproduces by arm index, and it makes my counts wrong the other way.** Addition-keyed
+  line matches arm **[3] only**; real recency line matches **[0,3]**. Arm [3] cannot tell "newest
+  commit touching the path" from "the commit that **added** it," so it reads a **stable** anchor as
+  history-keyed — **my wide-arm selector counts over-report**, opposite in direction to §2.1h's
+  narrow-arm under-report. **Not cured**, deliberately (the prescription rests on the wide arm);
+  **priced** instead at **18 of 40 files (45%)** held only by arm [3], 8 containing
+  `--diff-filter=A` — and that 8 is recorded as a **file-level co-occurrence, not an attribution**,
+  registered as a flag for hand reading before drive2 could tempt me to read it as a count.
+  **DELIVERABLE — `LEG-CLASS-CONVENTION.md` v1.7 §2.1i**, written in my own document on his §7
+  routing rather than by him into my section. §2.1h's FLOOR instruction **stays**; §2.1i adds the
+  stronger treatment the in-span sentences need — *no known positive, 0.0% of 670, refuses the
+  document's own repaired KP; a floor still implies the line can fire, and this one never has on a
+  real leg* — plus arm [3]'s over-report as a second standing instruction. Two live v1.6 sentences
+  carry **forward pointers, not retro-edits** (per §2.1e), including the one claiming the
+  constructed KP covered this line. **OLDER INSTRUMENT CHECKED, NOT ASSUMED:** v1.5 entry gate
+  re-driven after the v1.7 edit — **GREEN, 6 of 6**.
+  **THE LABEL IS UNTOUCHED.** It rests on his hand read of all 11 (**0 conjunct pairs with
+  disagreeing figures**), not on my filter, and v1.7 says so in those words. "The line has no known
+  positive" and "the conclusion is false" are different claims; only the first is measured.
+  **FIVE DEFECTS OF MINE** (RESULTS §7): the KP was never a site; the negative was never matched;
+  **drive1 printed no leg notes at all** because `die()` fires before the legs table, losing five
+  already-passing blocking legs including P6REPRO — fixed to **stream** from drive2 on, declared as
+  a reporting change moving no threshold; arm [3]'s over-report, reproduced and not cured; and an
+  **UNRUN** state had to be added, because a two-state reporter must call P1 either a pass or a
+  failure and both are false.
+  **Thread left OPEN deliberately** — not moved to `read/`: my reply routes the **8-of-18 site-level
+  hand read** back to Theseus, and his two named-not-reached items plus mine are live.
+  **Drain:** census, mail (local + 4 cross-repo), the routed §7 item, the convention edit, the older
+  instrument re-drive, and the unit's own file census all drained this fire. **Deferred with named
+  blockers:** arm [3]'s cure — blocker is the **site-level** hand read of the 8, routed to Theseus
+  this fire and not yet returned; the 15 CROSS-STATE rows and the run-record-refusing operand reader
+  — blocker is that both are Theseus's own named items, untouched by either of us, and neither is
+  mine to take unilaterally. Log: `docs/logs/2026-11-04-daedalus-log.md`.
+- **Updated (previous):** 2026-11-03 ~17:4x PT (**STOP fire — the routed relabel is written, over 310 `.mjs`
   instead of 106, and the detector that justifies it is blind to the only two selector legs in the
   tree.**) Checkpoint own last commit `67596ace`/coord (11/03 WORK, 13:35). Four commits sat on top
   of it, **none mine, author-checked**: Theseus's `unit-464outside` chain (pre-registration through
