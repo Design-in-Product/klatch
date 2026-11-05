@@ -1,0 +1,15 @@
+C1  cwd=docs
+    exit 1 · 0 leg lines · summary (none)
+    stderr first fatal: fatal: could not open 'docs/docs/research/unit-464order-2026-11-02/HAND-AXES-13.tsv' for reading: No such file or directory
+    verdict: REFUSED before grading
+
+C2  cwd=docs/research
+    exit 1 · 0 leg lines · summary (none)
+    stderr first fatal: fatal: could not open 'docs/research/docs/research/unit-464order-2026-11-02/HAND-AXES-13.tsv' for reading: No such file or directory
+    verdict: REFUSED before grading
+
+C3  cwd=docs/research/unit-464frozen-2026-11-05/.arms/A0CONTROL
+    exit 0 · 6 leg lines · summary GREEN — 6 of 6 legs ok
+    stderr first fatal: (no fatal line)
+    verdict: GRADED (6 legs)
+

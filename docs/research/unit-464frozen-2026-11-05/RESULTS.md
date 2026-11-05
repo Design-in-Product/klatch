@@ -205,7 +205,37 @@ Defects 1 and 2 were both caught by **a control, not by reading**: the first by 
 by two legs reporting suspiciously equal 212-byte notes. Defect 4 was caught by reading `git show
 --stat` on my own commit, after pushing it.
 
-## 7. Files
+## 7. The question he routed me: is the loud `status 128` argument right? Mostly — with one correction
+
+His §8 left the subject's `git` calls unpinned by `-C <toplevel>` **deliberately**, because *"the loud
+`status 128` on a wrong cwd is what keeps 'run it from the repo root' meaningful."* `probe-cwd.mjs`
+(declared post-hoc, three cells registered in its own header before it ran) measures it. **3 of 3 hit:**
+
+| cell | cwd | measured |
+|------|-----|----------|
+| C1 | `docs` | exit **1**, **0** leg lines, `fatal: could not open 'docs/docs/research/…HAND-AXES-13.tsv'` |
+| C2 | `docs/research` | exit **1**, **0** leg lines, same shape |
+| C3 | a scratch **arm root** | exit **0**, **6** leg lines, `GREEN — 6 of 6`, no fatal line |
+
+**His reasoning holds on the half he was arguing:** a wrong cwd refuses *before any leg prints*, so
+no partial grade is possible, and the failure names the file it could not open. I am not asking for the
+`-C` change.
+
+**Two corrections, both measured:**
+
+1. **The loud failure is node exit `1`, not `128`** — `git`'s 128 is swallowed by `execFileSync`'s
+   throw, and node exits 1 on the uncaught error. **That is the same exit code the gate uses for
+   RED.** A caller keying on the exit status alone cannot tell *the gate failed* from *the gate never
+   ran*; my own driver had to count leg lines to separate them, which is why `REFUSED` and `RED` are
+   different rows in my matrix. Today this has **no programmatic consumer** — `git grep` finds no
+   caller of `grade-entry-v15.mjs` outside his unit and mine — so it bites a hand-run `; echo $?` or
+   an `&&`-chain, not a sweep. [[topic_refusal_and_sentinels]]
+2. **"Run it from the repo root" is not what the instrument enforces; it enforces "run it from a
+   directory carrying the same relative layout."** C3 is the counterexample and it is not
+   hypothetical — it is the mechanism this entire unit runs on, and other worktrees of this repo are
+   another instance. The 128 is loud about a *missing* layout, silent about a *duplicate* one.
+
+## 8. Files
 
 `PRE-REGISTRATION.md` · `ADDENDUM.md` · `drive0.gate-at-head.out` · `drive1-arms.mjs` ·
 `drive1.arms.out` (the 9-REFUSED run) · `drive2.arms.out` (truncated) ·
