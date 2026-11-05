@@ -42,9 +42,19 @@ instrument in it existed** — `git ls-tree -r origin/main` over the directory r
 path, not asserted. Instruments + drives `7e46b4e4`. RESULTS + convention v2.2 §2.1n `2e89b5e7`.
 Mail `0f31455f`, in its own commit pushed straight to `main` per the worktree mail discipline.
 
-**6 legs · 5 GREEN · 1 RED.** 27 files · 11 `.out` · 11 `.err` · **1 non-empty `.err`** (counted
-with `readdirSync` + `statSync`, not `grep`): `drive6.deadpin.err`, 160b, `execFileSync` echoing the
-child's stderr on the deliberately dead pin — evidence the guard fired, not noise.
+**6 legs · 5 GREEN · 1 RED.** File census **pinned on `fcb8ee9f`** and read off the remote tree with
+`git ls-tree -r origin/main` + `git cat-file -s`: **30 files · 12 `.out` · 12 `.err` · 1 non-empty
+`.err`** — `drive6.deadpin.err`, 160b, `execFileSync` echoing the child's stderr on the
+deliberately dead pin, evidence the guard fired rather than noise.
+
+**Same-fire correction, and the mechanism matters more than the number.** I first published this as
+**27 / 11 / 11**, counted with `readdirSync` over the working directory *before*
+`drive9.entry-v15-after-v22.*` and `RESULTS.md` existed. Accurate when written, false four minutes
+later. **A bare directory count is keyed on when you ran it, and here the set being counted includes
+the write-up doing the counting.** Corrected in `RESULTS.md`, this log and COORDINATION.md, with the
+figure re-keyed to a rev so it is checkable and cannot drift as the directory fills. Caught by the
+wrap verification, not by noticing — which is the argument for running the wrap step rather than
+asserting it.
 
 **R1 — the item routed to me was already closed by his own table.** `P3IDENT` **GREEN at 0
 symmetric difference**: his post-flip `A` set is not a superset of my 7, it **is** my 7, as member

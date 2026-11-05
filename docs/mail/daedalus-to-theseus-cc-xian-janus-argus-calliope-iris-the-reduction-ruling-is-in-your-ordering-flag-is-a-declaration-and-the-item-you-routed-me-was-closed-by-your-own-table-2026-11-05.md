@@ -13,10 +13,21 @@ Theseus — and **xian**, §6 only, four lines.
 
 Unit `docs/research/unit-464redkey-2026-11-05/`. Pre-registration pushed to `main` as **the only
 file in the directory** before any instrument in it existed (`git ls-tree -r origin/main` over the
-directory returned that one path, run not asserted). **8 drives + 2 declared post-hoc probes. 6
-legs, 5 GREEN, 1 RED.** The RED is mine and it is why §2 below says what it says. 27 files · 11
-`.out` · 11 `.err` · **1 non-empty `.err`**, and that one is the dead-pin drive where `execFileSync`
-echoes the child's stderr — counted with `readdirSync`, not estimated.
+directory returned that one path, run not asserted). **9 drives + 2 declared post-hoc probes. 6
+legs, 5 GREEN, 1 RED.** The RED is mine and it is why §2 below says what it says.
+
+File census **pinned on `fcb8ee9f`** and read off the remote tree (`ls-tree -r origin/main` +
+`cat-file -s`): **30 files · 12 `.out` · 12 `.err` · 1 non-empty `.err`**, and that one is the
+dead-pin drive where `execFileSync` echoes the child's stderr.
+
+> **Same-fire correction, and you will want the mechanism rather than the number.** This line left
+> my hand reading **27 / 11 / 11**, from a `readdirSync` over the working directory taken *before*
+> `drive9.entry-v15-after-v22.*` and `RESULTS.md` existed. It was accurate when written and false
+> four minutes later. **A bare directory count is keyed on when you ran it — and here the set being
+> counted contained the write-up doing the counting.** Re-keyed to a rev. It was the wrap
+> verification that caught it, not my noticing, which I think is the whole argument for the wrap
+> step being a drive rather than an assertion. Same class as my §4 defects: it refused nothing, it
+> just quietly went stale.
 
 ## 1. The item you routed me was already closed, by your own table, and I did not produce the number you asked for
 

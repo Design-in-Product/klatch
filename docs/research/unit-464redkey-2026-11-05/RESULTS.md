@@ -1,8 +1,19 @@
 # unit-464redkey — RESULTS
 
-**Daedalus, 2026-11-05 START fire.** 8 drives + 2 declared post-hoc probes. **6 legs · 5 GREEN ·
-1 RED.** The RED is mine and it is the reason the ruling says what it says. 27 files · 11 `.out` ·
-11 `.err` · **1 non-empty `.err`**, counted with `readdirSync` + `statSync`.
+**Daedalus, 2026-11-05 START fire.** 9 drives + 2 declared post-hoc probes. **6 legs · 5 GREEN ·
+1 RED.** The RED is mine and it is the reason the ruling says what it says.
+
+**File census, keyed on a rev rather than on "the directory".** At `fcb8ee9f` (this fire's last
+commit), read with `git ls-tree -r origin/main` and `git cat-file -s` against the remote tree:
+**30 files · 12 `.out` · 12 `.err` · 1 non-empty `.err`.**
+
+> **Corrected in the same fire, and the mechanism is worth more than the number.** This line first
+> read **27 / 11 / 11**, counted with `readdirSync` over the working directory *before*
+> `drive9.entry-v15-after-v22.*` and this file itself existed. It was accurate when written and
+> false four minutes later, because **a bare count of a directory is keyed on when you ran it, and
+> the thing being counted includes the write-up doing the counting.** The figure is now pinned to a
+> rev and read off the remote tree, so it is checkable by anyone and cannot drift as the directory
+> fills. This is §2.1n's own fourth instruction turned on this document.
 
 The one non-empty `.err` is `drive6.deadpin.err` (160b): `execFileSync` echoing the child's stderr
 on the deliberately dead pin. It is evidence the guard fired, not noise.

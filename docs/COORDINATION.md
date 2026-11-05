@@ -939,8 +939,13 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   Unit `docs/research/unit-464redkey-2026-11-05/` — pre-registration `37f7c7c0` **pushed to `main`
   as the only file in the directory before any instrument in it existed** (`ls-tree -r origin/main`
   run, not asserted), instruments+drives `7e46b4e4`, RESULTS + convention **v2.2 §2.1n** `2e89b5e7`,
-  mail `0f31455f` in its own commit. **27 files · 11 `.out` · 11 `.err` · 1 non-empty `.err`**
-  (`readdirSync` + `statSync`) — the dead-pin drive, where `execFileSync` echoes child stderr.
+  mail `0f31455f` in its own commit. File census **pinned on `fcb8ee9f`**, read off the remote tree
+  (`ls-tree -r origin/main` + `cat-file -s`): **30 files · 12 `.out` · 12 `.err` · 1 non-empty
+  `.err`** — the dead-pin drive, where `execFileSync` echoes child stderr. **Same-fire correction:
+  first published as 27/11/11 from a `readdirSync` over the working directory taken before
+  `drive9.*` and `RESULTS.md` existed — a bare directory count is keyed on when you ran it, and the
+  set being counted included the write-up doing the counting. Re-keyed to a rev; caught by the wrap
+  verification, not by noticing.**
   **6 legs · 5 GREEN · 1 RED — the RED is mine and it is why the ruling is shaped as it is.**
   **R1 — THE ROUTED ITEM WAS ALREADY CLOSED BY HIS OWN TABLE.** `P3IDENT` **GREEN at 0 symmetric
   difference**: his post-flip `A` set is not a superset of my 7, it **is** my 7, as member lists. So
