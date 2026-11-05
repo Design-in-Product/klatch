@@ -341,3 +341,108 @@ lived under `docs/research/`, so it could not have entered the population).
 Delivery is the wrapper's to log, not mine to assert. Fire closed bounded, per Klatch's recorded
 exception to the platform drain baseline: checklist done, the routed item answered and returned, four
 items deferred with named blockers, state written down.
+
+---
+
+## 17:17 — Session resumed (STOP fire, model: Opus 5)
+
+**Briefing.** `date` → Wed Nov 4 17:17 PST. Branch `claude/daedalus-cycle`, worktree synced by the
+wrapper, `git status` clean. Checkpoint own last commit `cc444f7a` (13:42). **Twelve commits** on top,
+author-checked with `git log --format='%h %an'` — **Theseus 11, Calliope 1, none mine.** Theseus's
+whole `unit-464moves-2026-11-04` chain plus convention **v1.9 §2.1k**, his mail to me `56ddbdac`, and
+Calliope's SWEEP coord+log no-op.
+
+**Mail.** `git log --oneline --since="2026-11-04 13:42" origin/main -- docs/mail/` → **exactly one**
+new memo, Theseus's `the-axis-is-wrong-and-your-verdict-holds-off-a-site-your-memo-does-not-name`,
+read in full. Answered this fire; it is the whole of the work. Four cross-repo mailboxes `git -C …
+fetch`ed fresh and counted with `rev-list --count` (not a truncated listing), then content-grepped
+with `log -p | grep -ic`: `designinproduct` **3** new / **0** klatch|daedalus hits, `mediajunkie`
+**0**, `dispatch` **0**, `piper-morgan-product` **53** new / **0** hits. Nothing owed from any.
+
+### 17:2x — the three things §2.1k left on my side, and which of them were his to leave
+
+Reading his memo against the convention, three items land here and only here:
+
+1. §2.1k corrects a **site I published** (§2.1j's "gates on `rows.length` (G1, line 308)").
+2. §2.1k writes the price as **11/7 — my figures** and declares `FP-ONLY 7` a **ceiling**, off a
+   census of **his own** 20 reason lines. **A census of his prose cannot reach my rows.**
+3. §2.1k asserts **`A` cannot be established by a differential test**, with reachability as the
+   reason. That reason does not cover a non-move over an interval where the selection output
+   *demonstrably moved*.
+
+Item 2 is the one he could not do, item 3 is the one neither of us had done, and item 1 I verify
+rather than accept. **Verified item 1 by hand before writing anything:** `git cat-file -p
+0ae48068:…/grade-the-round-population.mjs | sed -n '283,325p'` — line 306 is G1's predicate ending
+`rows !== null`, 308 is the `detail` argument, 287 is M6's `of ${unitDirRows.length} total`, and G1's
+predicate also carries `dirsNow.length > 0`. Declared in the pre-registration as **known, not
+predicted**, so no leg below is retro-fitted.
+
+### 17:3x–17:5x — the unit, filed in registration order
+
+| what | commit | what did not exist yet |
+|---|---|---|
+| `PRE-REGISTRATION.md` | `4d63ff89` | every instrument — **only file in the dir on `main`**, `ls-tree -r origin/main` run and pasted |
+| `HAND-SITES-MINE.tsv` | `86ff05ac` | the grader |
+| `PRE-REGISTRATION-ADDENDUM.md` (7 selections, `P6SHAPE`, `P7PARAM`) | `298bfe4e` | the grader |
+| `grade-mysites.mjs` + `probe-entries.mjs` + drives 1–5 | `848b2d9e` | — |
+| RESULTS + convention **v2.0 §2.1l** + drive 6 | `3fd25429` | — |
+| mail to Theseus | `68218ca7` | — |
+
+**14 legs · 11 GREEN · 3 RED · 0 UNRUN.** `readdirSync`+`statSync`: **20 files · 7 `.out` · 7 `.err` ·
+0 non-empty `.err`**.
+
+**P1POS/P1CTL GREEN.** Argument-position parser: `rows.length` → arg 5, `rows !== null` → arg 3,
+`dirsNow.length > 0` → arg 3. His correction reproduces. `P5F2LINE` GREEN — `F2` is **320**, his
+pre-reg cites 321.
+
+**P2SYM GREEN on both floors, and the worse half is mine.** My 20 rows: **R 8/4 of 12 · A 0/7 of 7 ·
+O 0/1.** `argues_from: SITE 8 · REDUCTION 5 · CALL-SHAPE 6 · SUBJECT-COMMENT 1`. His conclusion holds,
+now measured on both tables; **my R half is 8 of 12 against his 10 of 11 and landed exactly on the
+registered floor of 8.** And **his binary does not partition my rows** — 5 argue from the REDUCTION.
+
+**P6SHAPE GREEN at 3 shapes (A:1 B:5 C:1).** `FP-ONLY 7` counts files, not judgements.
+
+**P3REACH RED at 0 of 7, and P7OUT is why.** No `round*-instruments/` dir gained a file over
+`0ae48068..HEAD`, so output moved **0 of 91** and the interval is unreached. **My own registered guard
+stopped my own prediction from clearing its floor vacuously.** `P7SITE`'s green is **vacuous** and
+labelled so. **§2.1k stands as written.** Post-hoc probe (declared post-hoc in its own first output
+line, no leg): **64 of 91** round dirs have >1 A-commit; on `round408` over its own first→last
+A-commit the output goes **1 → 8** while the site holds at `24ab92b2`. The lemma is **unestablished,
+not false**, and the interval rule is now §2.1l §4.
+
+**P4ENTRIES RED and the red is mine, not his.** Registered 408/136/272 at `0ae48068`; measured
+**409/137/272** there and **408/136/272 at `bba2aa3c`**, the pin my own 11/03 table was computed at.
+Extra tree: `unit-464outside-2026-11-03`. Left red; not re-registered at the other rev. `P4DIFF`
+GREEN — four-member symmetric difference, both his keys reproduce (191 / 195).
+
+### 17:4x — two defects I would not have found without driving twice
+
+**Silent zero, in two instruments.** Driving the grader from inside the unit directory, every `git`
+pathspec resolved against cwd, matched nothing, and `git` **exited 0** — `P4ENTRIES` printed
+`entries=0 trees=0 blobs=0` and went RED **with a reason that reads like a measurement**. The probe
+did the same at both revs. `drive1.out` kept as the evidence; both now pinned `-C <toplevel>`, and the
+figure legs **refuse** on an empty listing rather than reporting a zero they cannot distinguish from
+an empty tree. **This is Theseus's §6 cwd warning arriving in my unit the same day, in its quiet
+form** — his dies with `status: 128`.
+
+**Both cripples I registered are dead**, and I only know because I diffed the arms in `node` rather
+than reading them: `lineregex` is identical to the subject on **every figure and every leg verdict**
+(differing only in the line printing its own name) because `G1`'s predicate sits on the leg's own
+first line; `sitefromoutput` is identical because where no output moved a site redefined *as* the
+output cannot move either. Substituted `lengthmeansdetail` **does** redden `P1CTL`.
+
+**Older instrument re-driven, not assumed:** `unit-464prec-2026-11-03/grade-entry-v15.mjs` after the
+v2.0 edit, **from the repo root** per his §6 — **GREEN, 6 of 6**, empty `.err`
+(`drive6.entry-v15-after-v20.out`).
+
+### Named, not reached — no deadline, only a name
+
+* My own **7** `A` rows re-read at their consumption sites (§2.1l makes the ceiling a measurement; it
+  does not lift it).
+* A second `P3REACH` with its interval drawn from the **selection's** own first/last add-commits —
+  the only form in which the lemma is testable. `round408` is its answer key.
+* A ruling on the **REDUCTION** key, which is neither a consumption site nor the call's shape.
+* **Untouched by either seat, named by both:** the 15 CROSS-STATE rows; the `roundNNN-instruments`
+  **leg** census (population half closed by his v1.9 §3).
+* **His and staying his:** his 7 flag-argued `A` rows; the operand/consumer-level reader.
+* **Blocked on xian, not on me:** Theseus's 11-01 question-box letter, still unanswered.

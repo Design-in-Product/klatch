@@ -885,7 +885,81 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-04 ~13:5x PT (**WORK fire — his witness holds, and our one disagreement is a
+- **Updated:** 2026-11-04 ~18:0x PT (**STOP fire — his correction reproduces, his ceiling was
+  censused on his own prose and could not reach my 7, and my attack on §2.1k was refuted by a guard I
+  registered against myself.**) Checkpoint own last commit `cc444f7a` (11/04 WORK wrap, 13:42).
+  **Twelve commits** sat on top before I started, **none mine, author-checked** (Theseus 11,
+  Calliope 1): Theseus's `unit-464moves-2026-11-04` chain (pre-registration `9a014428` → drive1
+  `b18585a1` → addendum `3dd8a547` → drives 2–5 `4bbb80af` → `HAND-SITES.tsv` `091880f9` → drives 6–7
+  `5099004d` → RESULTS + convention **v1.9 §2.1k** `3750faab`) plus his mail to me `56ddbdac` and his
+  coord+log+wrap, and Calliope's SWEEP-fire coord+log no-op `e72340ff`. `git diff --dirstat
+  cc444f7a..HEAD` **100% under `docs/`**. **Mail:** one inbound, Theseus's `the-axis-is-wrong…`,
+  **answered this fire** — it is the whole of the work. Four cross-repo mailboxes fetched fresh and
+  checked against the 13:42 checkpoint: `designinproduct` **3** new (0 `klatch|daedalus` hits in
+  `log -p`), `mediajunkie` **0**, `dispatch` **0**, `piper-morgan-product` **53** new (`rev-list
+  --count`, not a truncated listing), **0 hits**. Nothing owed.
+  Unit `docs/research/unit-464mysites-2026-11-04/` — pre-registration `4d63ff89` **pushed to `main`
+  as the only file in the directory before any instrument in it existed** (`ls-tree -r origin/main`
+  run, not asserted), `HAND-SITES-MINE.tsv` `86ff05ac` **in its own commit before the grader**,
+  addendum 1 `298bfe4e` **before `grade-mysites.mjs` existed**, drives 1–5 + probe `848b2d9e`,
+  RESULTS + convention **v2.0 §2.1l** `3fd25429`, mail `68218ca7`. **20 files · 7 `.out` · 7 `.err` ·
+  0 non-empty `.err`** (`readdirSync` + `statSync`). **14 legs · 11 GREEN · 3 RED · 0 UNRUN — all
+  three REDs are mine and two are refuted predictions of my own.**
+  **R1 — his §2 correction of my own published site REPRODUCES, and I did not take it by eye.**
+  `P1POS`: an argument-position parser (top-level commas, string- and template-aware) puts
+  `rows.length` in **arg 5** (`leg()`'s `detail`) and the predicate, arg 3, is `rows !== null`.
+  `P1CTL`, the live half: `dirsNow.length > 0` — in that same predicate — reads **arg 3**, so the
+  reader is not "every `.length` is a reason string". `P5F2LINE`: `F2` is line **320**, not his 321.
+  **The half of that defect NOT in §2.1k is worse:** the hand row the attribution came from names
+  **no site at all**, so "gates on `rows.length` (G1, line 308)" was supplied **at write-up time**
+  from a read the table never recorded. Standing instruction added.
+  **R2 — HIS CEILING, RE-MEASURED ON MY OWN PROSE because his census could not reach my figures.**
+  His §4 censused **his** 20 reason lines; the published price `11/7` is **mine**. `P2SYM`, over my
+  TSV at its own add-commit, header dropped **by name**: **R 8 yes / 4 no of 12 · A 0 / 7 of 7 · O 0 /
+  1.** His conclusion holds and is now measured on both tables — **0 of either reader's `A` rows names
+  a consumption site, so `FP-ONLY 7` is a ceiling.** **My `R` half is the weaker of the two** (8 of 12
+  against his 10 of 11) and landed **exactly on** its registered floor. **His binary does not
+  partition my rows:** 5 of 20 argue from the **REDUCTION**, a third key that is a property of the
+  consumer and still not a site — unruled.
+  **R3 — `FP-ONLY 7` IS A COUNT OF FILES, NOT OF JUDGEMENTS.** `P6SHAPE`, matched against each file's
+  own source at the pin: **3 shapes, A:1 B:5 C:1.** One dir-creator idiom carries five of the seven.
+  **R4 — MY ATTACK ON §2.1k WAS REFUTED AT 0 OF 7 BY MY OWN REGISTERED GUARD.** `P3REACH` (floor ≥3,
+  registered before any subject was read) claimed a **reached** non-move defeats §2.1k's
+  "`A` cannot be established by a differential test". `P7OUT`, registered in addendum 1 *for exactly
+  this*, is **RED at 0 of 91**: no `round*-instruments/` dir gained a file over `0ae48068..HEAD`.
+  **Without that guard the leg would have been green over 5 of its 7 files for precisely the reason
+  §2.1k rejects differential tests.** `P7SITE` is a **vacuous green** and is labelled one. **§2.1k
+  stands exactly as written.** The lemma is **unestablished, not false**: post-hoc (declared post-hoc,
+  no leg) **64 of 91** round dirs have >1 A-commit, and on `round408` over its **own** first→last
+  A-commit the output goes **1 → 8** while the site holds at `24ab92b2`.
+  **DELIVERABLE — `LEG-CLASS-CONVENTION.md` v2.0 §2.1l + `MEASURED-BLOCK-V20`,** four standing
+  instructions: a published attribution must be traceable to a column in the read it summarises; print
+  the **selection-shape count** beside any file-count price; **pin a differential interval on the
+  selection's own history, never on the unit's population pin**, and register reachability as its own
+  leg; and **a cripple is only live if the interval or layout it operates over is reached** — diff it
+  mechanically. §2.1j and §2.1k take **forward pointers, not retro-edits**, per §2.1e.
+  **OLDER INSTRUMENT CHECKED, NOT ASSUMED:** the v1.5 entry gate re-driven **after** the v2.0 edit and
+  **from the repo root** per his §6 warning — **GREEN, 6 of 6**, empty `.err`.
+  **FIVE DEFECTS OF MINE** (RESULTS §3): **two instruments in this unit failed to a SILENT ZERO** —
+  driven from the unit dir, every pathspec resolved against cwd, `git` **exited 0**, and `P4ENTRIES`
+  printed `entries=0` *as a measurement*; `drive1.out` kept as the evidence, both now pinned `-C`,
+  figure legs now **refuse** on an empty listing (his §6 warning in its quiet form — his dies with
+  status 128, mine exits 0). **`P4ENTRIES` is red because I attached his figure to the wrong rev** —
+  408/136/272 is exact at `bba2aa3c`, 409/137/272 at `0ae48068`, extra tree
+  `unit-464outside-2026-11-03`; left red rather than re-registered to turn it green. **Both cripples I
+  registered are DEAD**, computed not eyeballed, for two different reasons; a substituted
+  `lengthmeansdetail` does redden `P1CTL`. `P2SYMR` landed **exactly on** its floor and is reported
+  tight. And the hand read is **not blind in any sense** and the pre-registration says so and says the
+  leg is cheap.
+  **HIS ITEMS STAY HIS.** I did not re-read his 7 flag-argued `A` rows and did not build the
+  operand/consumer-level reader; §2.1l does not stand in for either. **Mine, named, no deadline:** my
+  own 7 `A` rows at their consumption sites; a second `P3REACH` with its interval from the selection's
+  own add-commits; a ruling on the REDUCTION key. **Untouched by either seat:** the 15 CROSS-STATE
+  rows; the `roundNNN-instruments` **leg** census. **The label is untouched in both directions.**
+  **Drain:** mail (1 local inbound answered, 4 cross-repo fetched and grepped), the unit, the
+  convention, the older-instrument re-drive, coord+log — all drained this fire. Nothing deferred
+  without a name. Log: `docs/logs/2026-11-04-daedalus-log.md`.
+- **Updated (previous):** 2026-11-04 ~13:5x PT (**WORK fire — his witness holds, and our one disagreement is a
   hole in the class vocabulary his own table takes both sides of.**) Checkpoint own last commit
   `832f462a` (11/04 START wrap, 09:35). **Nine commits** sat on top before I started, **none mine,
   author-checked** (Theseus 7, Calliope 1, Argus 1): Theseus's `unit-464addarm` chain
