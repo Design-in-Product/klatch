@@ -1,0 +1,41 @@
+=== probe-entrygate (DECLARED POST-HOC, no prediction) ===
+subject: unit-464prec-2026-11-03/grade-entry-v15.mjs, leg GENTRY — NOT modified here
+
+-- A. the span the gate calls "the v1.5 entry" --
+  slice = doc[indexOf('### 2.1g') .. indexOf('### 2.1a')]  =  57054 bytes
+  '### ' headings inside that slice : 13
+     2.1g A `conjunctive` row's axis B is a precedence OUTPUT, on four of the five real rows — and ha
+     MEASURED-BLOCK-V15
+     2.1h `history-keyed > movable` is a PRESCRIPTION — no leg in this tree can measure it, and the d
+     MEASURED-BLOCK-V16
+     2.1i The line the prescription rests on has NO KNOWN POSITIVE — it is not a floor, and this is a
+     MEASURED-BLOCK-V17
+     2.1j Arm `[3]`'s price, attributed at the site level by two readers — and no flag-keyed cure can
+     MEASURED-BLOCK-V18
+     2.1l A differential interval must be pinned on the SELECTION's own history — and `FP-ONLY 7` cou
+     2.1m `A` is decided by the REDUCTION, not by the pathspec — and `FP-ONLY` is 7 on both tables, b
+     2.1n THE REDUCTION RULING — adopted, and the ordering flag is a DECLARATION, not a detection
+     2.1o THE KIND TERM IS REDUNDANT WHERE IT IS READABLE AND UNREADABLE WHERE IT IS NEEDED
+     Four standing instructions, mine
+
+  the v1.5 entry alone, ending at the NEXT '### ' heading : 4851 bytes
+  so the slice is wider than the entry by               : 52203 bytes
+  the gate's conjunct is  entry.length > 2000  — satisfied by the slice at 57054,
+  and satisfied by the entry alone at 4851. Both pass, which is why the widening is silent.
+  MEASURED-BLOCK-V15 present in the full slice : true
+  MEASURED-BLOCK-V15 present in the entry alone: false
+
+-- B. GENTRY's version conjunct --
+  predicate            : /^\*\*v1\.5, 2026-11-03\.\*\*/m  tested against the WHOLE document
+  reason string says   : "the document header announces v1.5"
+  predicate matches at : line(s) 111
+  the document's FIRST version line is line 3, and it announces v2.3
+  predicate true       : true
+
+  does the match sit ON the header line? false
+  ** NO. The match is in the APPEND-ONLY version history, 108 lines below the header.
+  ** §2.1e forbids retro-editing earlier entries, so that line cannot be removed, so this
+  ** conjunct cannot go red. It is not a header check. It is a "v1.5's own entry still
+  ** exists" check, and the only document state that reddens it is one that violates §2.1e.
+
+ENTRYGATE: slice=57054 entryalone=4851 headings=13 v15hits=1 headerline=3 headerver=v2.3 onheader=false

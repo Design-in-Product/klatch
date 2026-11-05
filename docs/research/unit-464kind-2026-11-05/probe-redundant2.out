@@ -1,0 +1,33 @@
+=== probe-redundant2 (DECLARED POST-HOC — corrects probe-redundant's no-flag arm) ===
+pin 0ae48068
+endpoint: the selection's PENULTIMATE add-commit (was: the SECOND, which is the same
+          commit as the pin's newest whenever members == 2)
+
+round*-instruments directories at the pin : 91
+  members == 1, NO INTERVAL of their own  : 27   (not counted as agreement)
+  members >  1, differentially tested      : 64
+  skipped / degenerate endpoint             : 0
+
+-- under --reverse --
+  IMMOVABLE : 64 of 64
+  MOVED     : 0
+
+-- without the flag (newest-first) --
+  MOVED  : 64 of 64
+  STABLE : 0
+
+-- no-flag outcome BROKEN OUT BY MEMBER COUNT, so a forced cell cannot hide in a total --
+  members= 2  moved  35  stable   0
+  members= 3  moved  16  stable   0
+  members= 4  moved   8  stable   0
+  members= 5  moved   2  stable   0
+  members= 6  moved   2  stable   0
+  members= 8  moved   1  stable   0
+
+CONCLUSION, on a non-degenerate interval for all 64 selections with members > 1:
+  --reverse [0] immovable 64/64 · no-flag [0] moved 64/64.
+  probe-redundant's 29-of-64 for the no-flag arm is SUPERSEDED: it was 29 over the 29
+  selections whose interval had room, and forced-stable over the 35 with members == 2.
+  The --reverse arm is unchanged at 64/64 and was never affected.
+
+REDUNDANT2: rounds=91 nointerval=27 tested=64 revimmovable=64 revmoved=0 plainmoved=64 plainstable=0 skipped=0

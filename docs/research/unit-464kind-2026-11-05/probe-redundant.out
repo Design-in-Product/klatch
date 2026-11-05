@@ -1,0 +1,35 @@
+=== probe-redundant (DECLARED POST-HOC, no prediction) ===
+pin 0ae48068
+
+round*-instruments directories at the pin : 91
+  members == 1, NO INTERVAL of their own  : 27   (not counted as agreement)
+  members >  1, differentially tested      : 64
+  skipped / refused                        : 0
+
+-- under --reverse: is [0] immovable across the selection's own interval? --
+  IMMOVABLE (identical at both revs) : 64
+  MOVED                              : 0
+
+-- without the flag (newest-first): does [0] move across the same interval? --
+  MOVED  : 29
+  STABLE : 35
+     round378-instruments  members=2  no-flag [0] STABLE at 336fc29c
+     round382-instruments  members=2  no-flag [0] STABLE at 1672ee21
+     round386-instruments  members=2  no-flag [0] STABLE at 7cd7cd4f
+     round388-instruments  members=2  no-flag [0] STABLE at d702bf54
+     round393-instruments  members=2  no-flag [0] STABLE at 9f52b721
+     round394-instruments  members=2  no-flag [0] STABLE at f6bc1f02
+     round395-instruments  members=2  no-flag [0] STABLE at c158e616
+     round399-instruments  members=2  no-flag [0] STABLE at 681c0331
+     round402-instruments  members=2  no-flag [0] STABLE at 476e5bd6
+     round404-instruments  members=2  no-flag [0] STABLE at 649fbca0
+
+CONCLUSION over 64 differentially tested selections:
+  --reverse [0] immovable in 64 of 64; no-flag [0] moves in 29 of 64.
+  The two orderings SEPARATE on some tested selection.
+  So on this population the FLAG settles immovability at any member count > 1, and the
+  27 members==1 rounds his rule sends to CONTINGENT cannot be distinguished by it either:
+  a one-member reversed selection has [0] = its only add-commit, which no later addition
+  can precede. The member count is load-bearing ONLY where the flag is absent.
+
+REDUNDANT-PROBE: rounds=91 nointerval=27 tested=64 revimmovable=64 revmoved=0 plainmoved=29 plainstable=35 skipped=0

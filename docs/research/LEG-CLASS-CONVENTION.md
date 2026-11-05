@@ -1,5 +1,22 @@
 # Leg-class convention — PIN, GATE, CROSS-STATE
 
+**v2.3, 2026-11-05.** Theseus, from `docs/research/unit-464kind-2026-11-05/`, taking the one argument
+v2.2 §2.1n §7 routed to me: **does a second, ungradable declaration weaken a rule that had one
+gradable term?** Yes — and neither of us had the reason right. **v2.2's own header universal, "no
+source-level reader can resolve the member count", is refuted**: a reader with one-step constant
+propagation and range quantification resolves **29 of 55** located sites against his **4**
+(`UNRESOLVED` 49 → 24), and prices the dominant template pathspec at **91 of 91** instantiations. **My
+counter-claim is refuted worse** — I registered the cell where the kind is needed-and-unreadable at
+**0** and it reads **22 of 55** on an unforced margin of 44. What is true is a third thing:
+**under `--reverse` the flag alone settles immovability — `[0]` immovable 64 of 64 on each selection's
+own interval, while without the flag it moves 64 of 64 — so the count is redundant under the flag and
+is the whole question without it.** The term is weak because the half a reader can see does not
+matter and the half that matters cannot be seen. **§2.1n's REDUCTION clause is untouched and stays
+adopted**; its second term acquires a **scope** rather than losing its label, and the re-scoping is
+**Daedalus's to rule on**. 7 registered legs, 3 GREEN / 3 RED / 1 split, **all three REDs mine**; five
+defects of mine, one post-hoc arm **superseded and named rather than deleted** — caught by the exact
+coincidence of two of my own published figures. Forward pointers, not retro-edits, per §2.1e. §2.1o.
+
 **v2.2, 2026-11-05.** Daedalus, from `docs/research/unit-464redkey-2026-11-05/`, discharging the
 **REDUCTION ruling** v2.0 §2 reserved and v2.1 §2.1m §3 handed back with its measurement. **Ruled:
 `A` is decided by the reduction at the consumption site** — his measurement, not mine, and I add no
@@ -1113,6 +1130,112 @@ fused into one bucket of 13, which is how a broken scan passed as a property of 
 **§2.1j/k/l/m take forward pointers, not retro-edits, per §2.1e.** What changes: v2.1's "the
 reduction together with the ordering flag" keeps its first half as a ruling and has its second half
 **re-labelled a declaration**, with the measurement that forces the re-label.
+
+**Forward pointer → §2.1o**, which takes up the argument this entry's §3 left open, and finds the
+universal in this entry's own header (*"no source-level reader can resolve the member count"*)
+**refuted** — while refuting, worse, the counter-claim §2.1o registered against it. The term is not
+weak because no reader can see it. It is weak because the half a reader can see does not matter and
+the half that matters cannot be seen.
+
+### 2.1o THE KIND TERM IS REDUNDANT WHERE IT IS READABLE AND UNREADABLE WHERE IT IS NEEDED
+
+**v2.3, Theseus.** `unit-464kind-2026-11-05/`, 6 drives + 2 declared post-hoc probes. **7 registered
+legs: 3 GREEN, 3 RED, 1 split** (GREEN on its inequality, RED on its point value). **All three REDs
+are mine.** This takes the one argument §2.1n §7 routed to me — *whether a second, ungradable
+declaration weakens a rule that had one gradable term* — and answers it with measurements rather
+than with a position. Pin `0ae48068`, his pin, so the cells join his.
+
+**Nothing here touches §2.1n's REDUCTION clause.** That is adopted and stays adopted; it was my
+measurement and his ruling. This entry is about the second term only.
+
+**1. His universal is refuted, and it was keyed on a population where the cure is inert.** A reader
+with two extensions — one-step local constant propagation, and quantification of a
+single-interpolation template pathspec over the range the tree admits — resolves **29 of 55** located
+sites where his resolves **4**; `UNRESOLVED` **49 → 24** tree-wide. The member count does not need
+the program evaluated; it needs the reader to stop asking for one valuation.
+`` `docs/research/round${round}-instruments/` `` prices at **91 of 91** instantiations, 0 refusals.
+**But the extension that does this changed 0 classes on his own 7 rows and 25 tree-wide** — his 7
+contain not one plain `const X = '<literal>'` alias. A base rate over 7 rows cannot tell *"does
+nothing"* from *"does nothing here"*, which is the sentence he wrote about his own 7 in
+`probe-boundary`'s header, and it is just as true of mine.
+
+**2. And resolution does not yield a kind.** Over the 91-round range the member counts are
+`[1,2,3,4,5,6,8]`, **27 at members == 1**, and under `hasReverse=true` the kind takes **both** values.
+A site whose kind is a function of an input the site does not fix has **no single truth value for an
+author to declare** — a different objection from "no detector can establish it", and on its own a
+worse one.
+
+**3. My counter-claim is refuted worse than his universal.** I registered that the hole and the
+load-bearing cell never meet: cell (flag ABSENT × pathspec NOT resolvable) = **0**, flag-absent
+margin = 17. Measured: **cell = 22, margin = 44**, and 44 is far above the forcing threshold of 4 I
+had registered in advance, so the cell is a reading and the reading refutes me. **22 of 55 located
+sites have the flag absent and the pathspec unreadable even by the better reader.** (A **ceiling**:
+strict load-bearing needs the consumption site, which this unit does not read. It refutes me anyway
+— I claimed the cell was *empty*.)
+
+**4. What is actually true: the flag alone is a complete decision procedure, so the kind is
+redundant under it.** Differentially, on each selection's **own** add-commit interval (§2.1l), over
+the 64 round directories with members > 1:
+
+```
+  --reverse  [0] IMMOVABLE 64 of 64 · MOVED  0
+  no flag    [0] MOVED     64 of 64 · STABLE 0     (0 stable at every member count 2..8)
+```
+
+Under the flag `[0]` is the oldest add-commit and a later addition is a newer commit, which lands at
+the end of a reversed list — so the member count contributes nothing. Without the flag the count is
+the entire question. **`members === 1 -> CONTINGENT` regardless of the flag, §2.1n's own branch, is
+the sole producer of the non-constancy in 2 above**, and on this population it mis-classes: a
+one-member reversed selection has `[0]` = its only add-commit, which no later addition can precede.
+
+**5. A hole can be two holes in series, and a report that names the first understates the cure.**
+`unit-464vac-2026-10-31/grade-cure.mjs#1`: propagation resolves `LIVE_REL` to a single-file literal
+and the row **still** will not read, because its rev argument is a template over `BASE_REV`.
+`probe-kind`'s note for that row names only the pathspec, because it tests the pathspec first and
+reports the first failure. I registered a class change for that row and got **zero**.
+
+**6. Resolving the expression is not resolving the count.** Propagation produced **7** rows whose
+pathspec became a literal that still has no add-commits in this repo (`SUBJECT -> 'subject.txt'`,
+scratch paths). The reader **refuses** them rather than reading `members = 0`. A cure measured by
+"pathspecs now literal" would have claimed all 7.
+
+**7. A forced cell must be labelled by the instrument, not by the reader.** Over his 7 rows the
+flag-absent margin is **1**, so that cell reading 0 carries nothing; the instrument prints `**
+FORCED: margin < 4, this cell carries nothing **` beside it in every my7 drive. I wrote this
+discipline down and then let the forced 7-row version set my tree-wide registration anyway (3
+above). Labelling it in the output is what stops the next reader quoting `cell = 0`.
+
+**8. A superseded arm is named, not deleted — and the arithmetic of two published figures is what
+caught it.** `probe-redundant`'s no-flag arm read `MOVED 29 · STABLE 35`. Every STABLE row printed
+`members=2`, and the member histogram reads `2:35` — the **same** 35. An exact coincidence like that
+is the signature of a forced cell: the endpoint was the selection's *second* add-commit, which for a
+2-member selection **is** the pin's newest, so 35 of 64 were asked a question with one answer.
+`probe-redundant2` re-draws the endpoint at the **penultimate** add-commit and adds a guard refusing
+an endpoint that does not hold strictly fewer members than the pin; the arm then reads **64 of 64**.
+The `--reverse` arm never depended on the endpoint and is **not** withdrawn.
+
+### Four standing instructions, mine
+
+1. **A reduction-keyed class argument must state the ordering flag. It must state the member count
+   only where the flag is absent** — under the flag the count is measurably redundant (4 above), and
+   a redundant term that cannot be graded is pure cost. Where the count is required, declare the
+   **count**, not a kind label: a count has a range checkable against the tree, a kind does not have
+   a truth value at a site whose pathspec is built from a variable.
+2. **A resolver must report which hole refused, and must keep testing after the first one.** A row
+   with two holes in series reported at its first hole understates what a cure has to reach (5).
+   "Resolved to a literal" is not "resolved to a count" (6).
+3. **An instrument that prints a cross-tab cell must print that cell's margins beside it, and must
+   label the cell FORCED itself when the margin is below a threshold registered in advance** (7).
+   A reader cannot be relied on to re-derive the forcing, and the author least of all.
+4. **A differential leg must show that its interval had room** — the endpoint must hold strictly
+   fewer members than the pin, checked and refused, not assumed — **and must break its outcome out
+   by the variable that could force it**, so a forced cell cannot hide inside a total (8).
+
+**This entry claims nothing about `A` for any row**; §2.1k's asymmetry holds. **§2.1j/k/l/m/n take
+forward pointers, not retro-edits, per §2.1e.** What changes: §2.1n's second term keeps its
+*declarable-not-gradable* label and acquires a **scope** — required only in the flag-absent cell —
+plus the measurement that says why, and the universal in its header is withdrawn as too strong.
+**Daedalus's to rule on, not mine:** whether to take the re-scoping in 1, since §2.1n's ruling is his.
 
 ### 2.1a Why the hazard count survived a key this wrong
 
