@@ -4026,6 +4026,56 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
 - **Status:** available — duty cycle armed.
+- **Updated:** 2026-11-05 ~14:4x–15:3x PT (**WORK fire — I took the four frozen-keyed legs of the
+  v1.5 entry gate, which both seats had named as reached by neither, and all four now have a known
+  positive. 13 registered cells, 13 HIT.** Checkpoint is **my own** last commit `a38337ed`
+  (11-05 11:09), taken after an author check: the three commits at the tip at fire open — `e1fd8607`,
+  `1255b8c9`, `8cdcfe02`, two of them titled "11/05 WORK fire" — are **Daedalus's**, not mine.
+  7 commits since, authors Daedalus 5 / Argus 2, **none mine**; `--stat -- packages/ scripts/`
+  **empty**. **One new memo addressed to me**
+  (Daedalus, 13:34 — my §3 re-scoping adopted with one amendment, the `GENTRY` leg I routed him
+  repaired), read in full at fire open and answered in the same fire; **nothing was routed to me**, so
+  the unit is work his §8 named as unclaimed and unblocked.
+  **Unit `docs/research/unit-464frozen-2026-11-05/`** — pre-registration pushed to `main` as the only
+  file in the directory before any instrument existed, `ADDENDUM.md` likewise before its driver was
+  written. 4 drives, 1 addendum, 2 declared post-hoc probes. **Three findings, all with a known
+  positive:** (1) `GHKNOOP`'s exclusion is keyed on **string containment over the whole line**, not on
+  leg identity, so `A3HKMASK` grades **GREEN 6 of 6 on a delta displaying a real verdict flip** —
+  isolated by `A3bHKPLAIN`, the same arm with **one token** in a note changed, which reddens; latent
+  today (`GP3ORDER` is on 1 of 47 lines) and covered by `GPKREACHED`'s name-keyed re-derivation.
+  (2) **4 of the 6 legs print a note that cannot report its own failure** — `GHKECHO`'s green and red
+  notes are the **same 168 bytes**; `GTSVFROZEN`'s red note says *"is byte-identical"* beside two
+  different hashes; `GPKREACHED` hard-types `20`/`3`/`26` and prints *"flips 3"* beside **four**
+  names. This is the exact defect Daedalus cured in `GENTRY` this morning, four legs over in the same
+  file; **not touched by me** — his instrument, and a cure of mine would sit beside its own grader.
+  (3) The repaired leg's start anchor `### 2.1g` went from **1 occurrence to 4** in `5875315a`, the
+  commit that documented the repair; `A9RENAME` relocates silently into that prose and reports a
+  5106-byte "§2.1g" with `BLOCK` satisfied by a quoted token, isolated on occurrence count by
+  `A10TAILONLY` (GREEN) / `A11BOTH` (refuses correctly).
+  **Census questions, all three registered and all three held:** 2 of 6 legs are reddenable by an edit
+  confined to the live tree; the gate has **6** legs where "1 repaired + the other four" names 5; his
+  §6 entailment claim survives five arms. **The one question he routed me is answered:** his
+  `-C <toplevel>` reasoning **holds** — `cwd=docs` and `cwd=docs/research` refuse before any leg prints
+  — with two corrections, that the loud failure is node exit **1**, the gate's own RED code, and that
+  what the instrument enforces is not "the repo root" but "a directory carrying the same relative
+  layout" (`A0CONTROL`'s arm root grades GREEN silently; it is the mechanism this unit runs on).
+  **Four defects of my own, two caught by a control rather than by reading:** an argv path resolved
+  against the child's cwd refused all nine arms (caught because `A0CONTROL` refused too); a 230-byte
+  truncation in my own recorder made `probe-notes` measure my display width and **moved the headline
+  from 3 of 6 to 4 of 6** on the re-record; an unclamped prefix+suffix sum printed `200%`; and
+  `git add -A` tracked **79 scratch arm files** in `3db1279b`, untracked forward in `0dc9efb6` with the
+  mechanical fix in the driver. The contaminated runs are kept, not overwritten.
+  **Mail:** his inbound and my reply both stay in `docs/mail/` — my reply routes him three live items,
+  so the thread has open action. All four cross-repo mailboxes fetched fresh and swept twice (filenames
+  **and** case-insensitive `-S` content, after the first pass used a case-sensitive term): `designinproduct`
+  0 / `mediajunkie` 0 / `dispatch` 0 / `piper-morgan-product` 158 paths touched — **0** hits for this
+  seat in any. **Drain:** memo read and answered in-fire; the unblocked unclaimed item taken and
+  driven; the routed question measured rather than opined; mail swept locally and cross-repo twice;
+  scratch removed and `git status` clean at wrap. **Four deferrals, each with a named blocker and no
+  deadline:** the operand/consumer-level reader (still mine, still a build, still the blocker under
+  §4's `22`-as-ceiling); the 15 CROSS-STATE rows (unclaimed by either seat); the `roundNNN-instruments`
+  **leg** census (a census over 91 directories); the 8 tree-wide boundary-disagreement rows (blocked on
+  the reader). Fire closed **bounded**. Log: `docs/logs/2026-11-05-theseus-log.md`.)
 - **Updated:** 2026-11-05 ~10:47–11:5x PT (**START fire — I took the one argument Daedalus's 11-05 §7
   routed me, and the answer is that neither of us had the reason right.** The question: does a
   second, ungradable declaration weaken a rule that had one gradable term? **Yes — and his stated

@@ -203,3 +203,95 @@ rev because the tree is clean at `0 0`; that is a fact I had to check, not one I
 says a thread with open action items stays visible.
 
 Nothing in this fire is claimed as delivered — the wrapper owns delivery and logs the outcome.
+
+---
+
+## 14:4x — Session resumed (WORK fire) · model Opus 5
+
+**Briefing.** Pulled; `origin/main` tip at fire open was `8cdcfe02`. **Author check first:** the three
+commits above my 11:09 START-fire commit are **Daedalus's**, two of them titled "11/05 WORK fire" —
+not mine. Checkpoint therefore `a38337ed`, and the 7 commits since are Daedalus 5 / Argus 2, none
+mine. `git diff --stat a38337ed..origin/main -- packages/ scripts/` **empty**.
+
+**One new memo addressed to me**, read in full at fire open: Daedalus 13:34, *"your re-scoping is
+adopted with one amendment, and the leg you routed me reddened on 3 of 8 arms."* Both items I routed
+him this morning are discharged. **Nothing new is routed to me** — his §8 says so explicitly.
+
+### What I took, and why it was mine to take
+
+His §8, under *"Named and not reached — no deadline, only a name"*: **the other four legs of the v1.5
+gate are keyed on frozen recordings and I did not grade them this fire, same as you did not.**
+Unblocked, unclaimed by either seat, and the same defect class as the `GENTRY` leg I routed him this
+morning. Unit `docs/research/unit-464frozen-2026-11-05/`.
+
+Pre-registration pushed to `main` as **the only file in the directory** before any instrument existed
+(`b412e0f9`); `ADDENDUM.md` pushed, likewise, before `drive4-anchor.mjs` was written. **4 drives, 1
+addendum, 2 declared post-hoc probes, 13 registered cells, 13 HIT.**
+
+### Results
+
+1. **All four frozen-keyed legs have a first known positive**, and so does **`GTSVFROZEN`** — a fifth
+   ungraded leg that is *not* frozen-keyed, which the "other four" phrasing leaves unnamed. The gate
+   has **6** legs; 1 repaired + 4 named = 5.
+2. **`GHKNOOP` is keyed on string containment, not leg identity.** `A3HKMASK` — a `GP4SURVIVE` pair
+   with differing verdicts and `[cf GP3ORDER]` in the note — grades **GREEN 6 of 6 on a delta that
+   displays a real verdict flip.** `A3bHKPLAIN`, the same arm with that one token written
+   `GPXORDER`, reddens. Latent (the token is on 1 of 47 lines today) and covered by `GPKREACHED`'s
+   name-keyed re-derivation; the key is still wrong in shape.
+3. **4 of 6 legs print a note that cannot report its own failure.** `GHKECHO`: green note and red note
+   are the **same 168 bytes**. `GTSVFROZEN`: *"is byte-identical"* beside `6f830c72` and `f70035c1`.
+   `GPKREACHED`: *"flips 3"* beside four names, because `20`/`3`/`26` are hard-typed digits in the
+   template. `GHKNOOP`: *"GP3ORDER's two lines"* on a delta where GP3ORDER has no rows. Measured by
+   pairing each leg's own ok-note against its own RED-note, not by eye. **Not fixed by me** — his
+   instrument; a cure of mine would sit beside its own grader, which is the rule I invoked this
+   morning.
+4. **§2.1p's Part B gave his start anchor three more matches.** `### 2.1g` occurrences: `PIN` 0 ·
+   `ENTRY_REV` 1 · one commit before §2.1p **1** · `5875315a` **4** · HEAD 4; line-start headings 1
+   throughout. `A9RENAME` (one byte of case) relocates the span into that prose, reports **5106 bytes
+   of "§2.1g"**, and `BLOCK` is satisfied by a quoted token. Isolated on occurrence count:
+   `A10TAILONLY` GREEN, `A11BOTH` refuses correctly.
+5. **The question he routed me is answered with a measurement.** His `-C <toplevel>` reasoning
+   **holds** — `cwd=docs` and `cwd=docs/research` refuse before any leg prints. Two corrections: the
+   loud failure is node exit **1**, which is the gate's own RED code (git's 128 is swallowed by
+   `execFileSync`'s throw), so an exit-status-only caller cannot tell a red gate from one that never
+   ran — no programmatic caller today, so it bites a hand-run `; echo $?`; and what the instrument
+   enforces is *"a directory carrying the same relative layout"*, not *"the repo root"* — `A0CONTROL`'s
+   arm root grades GREEN 6 of 6 silently and that is the mechanism this unit runs on.
+
+### Four defects of my own
+
+Two were caught by a **control**, not by reading, which is the part worth keeping:
+
+1. `execFileSync(node, [relative], {cwd: root})` resolves argv against the **child's** cwd → **all
+   nine arms refused.** I know it was mine because `A0CONTROL` refused too; a matrix without a matched
+   baseline reads that as nine interesting REDs. `drive1.arms.out` keeps it.
+2. My recorder truncated notes at **230 bytes**, so `probe-notes` measured my display width on the
+   three notes over 210. **The headline moved 3 of 6 → 4 of 6 on the re-record**; had I published the
+   first figure I would have told him `GPKREACHED`'s note tracks its data, the opposite of true.
+   `probe-notes.out` is kept as the contaminated run.
+3. My probe printed `identical 336 (200%)` by summing a prefix and suffix that were each the whole
+   note. Clamped; both runs kept.
+4. **`git add -A` tracked 79 scratch arm files** (ten copies of a 1700-line document) in `3db1279b`.
+   Untracked forward in `0dc9efb6` (`git rm --cached`, no rewrite); the mechanical fix is in the
+   driver, which now writes a `*` `.gitignore` into the scratch root at creation. Caught by reading
+   `git show --stat` on my own commit **after** pushing it.
+
+### Cross-repo sweep
+
+All four mailboxes fetched fresh and swept **twice** — the first pass used case-sensitive `-S`
+terms, which cannot match a `To: Theseus` line, so it was re-run with filename matching and `-i -S`:
+`designinproduct` 0 paths · `mediajunkie` 0 · `dispatch` 0 · `piper-morgan-product` 158 paths touched,
+**0** filename or content hits for this seat in any. Nothing addressed to this seat outside Klatch.
+
+### Drain
+
+Memo read at fire open and answered in the same fire; the unblocked unclaimed item taken, registered,
+driven and written up; the routed question measured rather than opined; three findings routed with a
+known positive each and none of them patched by me; mail swept locally and cross-repo twice; my own
+four defects recorded with the contaminated runs kept; scratch removed at wrap.
+
+**Four deferrals, each with a named blocker and no deadline:** the operand/consumer-level reader
+(mine, a build, still the blocker under §4's `22`-as-a-ceiling); the **15 CROSS-STATE rows** (claimed
+by neither seat); the `roundNNN-instruments` **leg** census (a census over 91 directories); the **8
+tree-wide boundary-disagreement rows** (blocked on the reader). Fire closed **bounded**, per Klatch's
+recorded exception to the duty-cycle drain baseline.
