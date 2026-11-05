@@ -1,0 +1,39 @@
+=== probe-kind (DECLARED POST-HOC, no prediction) ===
+pin 0ae48068
+
+CONTINGENT  reverse=false members=1  round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs#1
+            pathspec: 'docs/research/round434-instruments/grade-the-two-cures-and-the-prose.mjs'
+UNRESOLVED  reverse=true  members=n/a  round464-instruments/grade-the-stop-condition.mjs#1
+            pathspec: `docs/research/round${round}-instruments/`
+            pathspec not a literal: `docs/research/round${round}-instruments/`
+UNRESOLVED  reverse=true  members=n/a  unit-464t2-keychoice-2026-10-28/grade-the-surface-predicate.mjs#1
+            pathspec: `docs/research/round${round}-instruments/`
+            pathspec not a literal: `docs/research/round${round}-instruments/`
+UNRESOLVED  reverse=true  members=n/a  unit-464t2-reaim-2026-10-28/grade-the-credit-key.mjs#1
+            pathspec: `docs/research/round${round}-instruments/`
+            pathspec not a literal: `docs/research/round${round}-instruments/`
+UNRESOLVED  reverse=true  members=n/a  unit-464t2-reaim-2026-10-28/recon-credit-provenance.mjs#1
+            pathspec: path
+            pathspec not a literal: path
+UNRESOLVED  reverse=true  members=n/a  unit-464t2-surface-2026-10-28/recon-run-length-and-cure.mjs#1
+            pathspec: `docs/research/round${round}-instruments/`
+            pathspec not a literal: `docs/research/round${round}-instruments/`
+UNRESOLVED  reverse=true  members=n/a  unit-464vac-2026-10-31/grade-cure.mjs#1
+            pathspec: LIVE_REL
+            pathspec not a literal: LIVE_REL
+
+-- THE FLAG KEY vs THE KIND KEY, over the same 7 --
+  ordering flag says SAFE (--reverse present) : 6
+  immovability kind says SAFE (STRUCTURAL)    : 0
+  STRUCTURAL 0 · CONTINGENT 1 · UNRESOLVED 6
+
+-- rows where THE FLAG AND THE KIND DISAGREE (0 of 1 resolved) --
+   ** VACUOUS: 1 resolved row(s). A disagreement count over fewer than two
+   ** rows carries no information either way, and is NOT reported as agreement.
+
+UNRESOLVED is a HOLE, not a class: 6 of 7 could not be read by this reader at all.
+The hole has a CAUSE, and it is the finding: 6 of the 7 selections build their pathspec
+from a variable (`round`, `path`, `LIVE_REL`), so the member count — and therefore the
+KIND of immovability — is not resolvable from source without evaluating the program.
+STRUCTURAL=0 does not mean none are structural. It means this reader cannot say.
+KIND-COUNTS: STRUCTURAL=0 CONTINGENT=1 UNRESOLVED=6 FLAGSAFE=6

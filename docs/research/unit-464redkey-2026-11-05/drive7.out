@@ -1,0 +1,38 @@
+=== unit-464redkey · grade-redkey.mjs ===
+toplevel        /Users/xian/Development/klatch-worktrees/daedalus
+source pin      0ae48068
+mine            2fd49cd7  docs/research/unit-464cons-2026-11-04/HAND-CONS.tsv
+arm3            721fb5b4  docs/research/unit-464addarm-2026-11-04/HAND-ARM3.tsv
+consa           c21105db  docs/research/unit-464acons-2026-11-04/HAND-CONS-A.tsv
+
+-- my A set (7) --
+   round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs#1
+   round464-instruments/grade-the-stop-condition.mjs#1
+   unit-464t2-keychoice-2026-10-28/grade-the-surface-predicate.mjs#1
+   unit-464t2-reaim-2026-10-28/grade-the-credit-key.mjs#1
+   unit-464t2-reaim-2026-10-28/recon-credit-provenance.mjs#1
+   unit-464t2-surface-2026-10-28/recon-run-length-and-cure.mjs#1
+   unit-464vac-2026-10-31/grade-cure.mjs#1
+-- his A set (8) --
+   round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs#1
+   round464-instruments/grade-the-stop-condition.mjs#1
+   unit-464t2-keychoice-2026-10-28/grade-the-surface-predicate.mjs#1
+   unit-464t2-population-2026-10-28/grade-the-round-population.mjs#1
+   unit-464t2-reaim-2026-10-28/grade-the-credit-key.mjs#1
+   unit-464t2-reaim-2026-10-28/recon-credit-provenance.mjs#1
+   unit-464t2-surface-2026-10-28/recon-run-length-and-cure.mjs#1
+   unit-464vac-2026-10-31/grade-cure.mjs#1
+-- his rows that did NOT hold (1) --
+   unit-464t2-population-2026-10-28/grade-the-round-population.mjs#1
+
+GREEN  P1MINE        my HAND-CONS.tsv class==A rows, read at its own add-commit
+                     registered exactly 7 · measured 7
+GREEN  P2SUBSET      member lists, not tallies: mine is a strict subset of his 8
+                     |his|=8 (want 8) · |his\mine|=1 (want 1) [unit-464t2-population-2026-10-28/grade-the-round-population.mjs#1] · |mine\his|=0 (want 0) [-]
+GREEN  P3IDENT       his post-flip A set is IDENTICAL to my 7 — decides whether the routed item is a measurement
+                     |his post-flip|=7 · symmetric difference = 0 [none]
+GREEN  P4HELD        DERIVATIVE: my 7 as recorded in HIS HAND-CONS-A.tsv — his verdicts, not an independent read
+                     held 7 (want 7) · not-held 0 (want 0)  ** DERIVATIVE GREEN: P3IDENT green, so this leg carries no independent information **
+
+-- P5ORDER: ordering flag per site, off the subject source at the pin --
+REFUSE: round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs#1: lexical scan of docs/research/round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs ended UNCLEAN (lex residue 0, unclosed parens 1) — the pair table is fiction past the desync point and will not be read

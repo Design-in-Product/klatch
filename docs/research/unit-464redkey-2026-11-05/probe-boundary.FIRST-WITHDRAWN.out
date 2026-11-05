@@ -1,0 +1,47 @@
+=== probe-boundary (DECLARED POST-HOC, no prediction) ===
+pin 0ae48068
+.mjs files under docs/research at the pin: 310
+
+files holding >=1 arm-[3] match : 37
+arm-[3] matches total           : 65
+  invocation located            : 52
+  invocation NOT located        : 13
+
+in-call reader AGREES with file-wide : 44
+in-call reader DISAGREES             : 8
+disagreement rate over located sites : 15.4%  (8/52)
+
+-- callee names the selection is actually invoked through --
+     41  git()
+      8  g()
+      1  execFileSync()
+      1  spawnSync()
+      1  gitIn()
+
+-- sites where the BOUNDARY MODEL BITES --
+   round463-instruments/grade-the-57-of-461-class.mjs#2  in-call=false file-wide=true callee=git()
+   round463-instruments/which-residue-member-postdates.mjs#2  in-call=false file-wide=true callee=git()
+   unit-464rec3-2026-11-01/grade-p4-the-conjunct-no-movement-can-falsify.mjs#1  in-call=false file-wide=true callee=git()
+   unit-464rec3-2026-11-01/grade-p4-the-conjunct-no-movement-can-falsify.mjs#2  in-call=false file-wide=true callee=git()
+   unit-464rec3-2026-11-01/grade-the-three-cures.mjs#1  in-call=false file-wide=true callee=git()
+   unit-464rec3-2026-11-01/grade-the-three-cures.mjs#2  in-call=false file-wide=true callee=git()
+   unit-464rec3-2026-11-01/grade-the-three-cures.mjs#3  in-call=false file-wide=true callee=git()
+   unit-464rec3-2026-11-01/grade-the-three-cures.mjs#5  in-call=false file-wide=true callee=git()
+
+-- sites with no locatable enclosing call (13) --
+   round397-instruments/grade-the-anchor-that-is-not-guarded.mjs#1
+   round397-instruments/grade-the-anchor-that-is-not-guarded.mjs#2
+   round397-instruments/probe-the-anchor-that-is-not-guarded.mjs#1
+   round404-instruments/grade-the-three-cures.mjs#1
+   round441-instruments/key-the-silent-class-from-source.mjs#1
+   unit-464conj-2026-11-03/occupy-conj-history.mjs#1
+   unit-464conj-2026-11-03/occupy-conj-history.mjs#2
+   unit-464outside-2026-11-03/census-outside.mjs#1
+   unit-464rec-2026-10-31/rec-census.mjs#1
+   unit-464rec-2026-10-31/rec-census.mjs#2
+   unit-464rec3-2026-11-01/grade-the-three-cures.mjs#4
+   unit-464subkind-2026-11-02/grade-subkind.mjs#1
+   unit-464subkind-2026-11-02/grade-subkind.mjs#2
+
+BOUNDARY-LIVE-SOMEWHERE: true
+DISAGREE=8 AGREE=44 UNLOCATABLE=13 TOTAL=65

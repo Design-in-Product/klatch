@@ -1,0 +1,8 @@
+=== unit-464redkey · grade-redkey.mjs ===
+toplevel        /Users/xian/Development/klatch-worktrees/daedalus
+source pin      0ae48068
+mine            2fd49cd7  docs/research/unit-464cons-2026-11-04/HAND-CONS.tsv
+arm3            721fb5b4  docs/research/unit-464addarm-2026-11-04/HAND-ARM3.tsv
+consa           c21105db  docs/research/unit-464acons-2026-11-04/HAND-CONS-A.tsv
+
+REFUSE: HAND-CONS-A A_HOLDS cell for unit-464t2-population-2026-10-28/grade-the-round-population.mjs#1 is "NO — FLIPS TO R" — not in either literal set

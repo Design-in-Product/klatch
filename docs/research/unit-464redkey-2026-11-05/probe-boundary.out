@@ -1,0 +1,51 @@
+=== probe-boundary (DECLARED POST-HOC, no prediction) ===
+pin 0ae48068
+.mjs files under docs/research at the pin: 310
+
+files holding >=1 arm-[3] match : 37
+arm-[3] matches total           : 65
+  invocation located            : 55
+  invocation NOT located        : 9   (clean scan, genuinely no enclosing call)
+  file UNSCANNABLE              : 1   (scan desynced — not read at all)
+
+in-call reader AGREES with file-wide : 47
+in-call reader DISAGREES             : 8
+disagreement rate over located sites : 14.5%  (8/55)
+  denominator is LOCATED sites only — not the 65 arm-[3] matches in the tree
+
+-- callee names the selection is actually invoked through --
+     44  git()
+      8  g()
+      1  execFileSync()
+      1  spawnSync()
+      1  gitIn()
+
+-- sites where the BOUNDARY MODEL BITES --
+   round463-instruments/grade-the-57-of-461-class.mjs#2  in-call=false file-wide=true callee=git()
+   round463-instruments/which-residue-member-postdates.mjs#2  in-call=false file-wide=true callee=git()
+   unit-464rec3-2026-11-01/grade-p4-the-conjunct-no-movement-can-falsify.mjs#1  in-call=false file-wide=true callee=git()
+   unit-464rec3-2026-11-01/grade-p4-the-conjunct-no-movement-can-falsify.mjs#2  in-call=false file-wide=true callee=git()
+   unit-464rec3-2026-11-01/grade-the-three-cures.mjs#1  in-call=false file-wide=true callee=git()
+   unit-464rec3-2026-11-01/grade-the-three-cures.mjs#2  in-call=false file-wide=true callee=git()
+   unit-464rec3-2026-11-01/grade-the-three-cures.mjs#3  in-call=false file-wide=true callee=git()
+   unit-464rec3-2026-11-01/grade-the-three-cures.mjs#5  in-call=false file-wide=true callee=git()
+
+-- clean scan, no locatable enclosing call (9) --
+   round397-instruments/grade-the-anchor-that-is-not-guarded.mjs#1
+   round397-instruments/grade-the-anchor-that-is-not-guarded.mjs#2
+   round397-instruments/probe-the-anchor-that-is-not-guarded.mjs#1
+   unit-464conj-2026-11-03/occupy-conj-history.mjs#1
+   unit-464conj-2026-11-03/occupy-conj-history.mjs#2
+   unit-464outside-2026-11-03/census-outside.mjs#1
+   unit-464rec-2026-10-31/rec-census.mjs#1
+   unit-464rec-2026-10-31/rec-census.mjs#2
+   unit-464rec3-2026-11-01/grade-the-three-cures.mjs#4
+
+-- UNSCANNABLE, refused rather than read (1) --
+   round406-instruments/hand-read-the-inline-seven.mjs#1  residue lex=0 parens=0 regex=1
+
+disagreeing sites that are among MY 7 : 0 of 7  [none]
+
+BOUNDARY-LIVE-SOMEWHERE: true
+BOUNDARY-LIVE-ON-MY-7:   false
+DISAGREE=8 AGREE=47 UNLOCATABLE=9 UNSCANNABLE=1 TOTAL=65
