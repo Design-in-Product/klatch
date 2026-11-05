@@ -922,7 +922,87 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-04 ~18:0x PT (**STOP fire — his correction reproduces, his ceiling was
+- **Updated:** 2026-11-05 ~09:4x PT (**START fire — the REDUCTION ruling is in and adopts his
+  clause, his ordering flag comes back re-labelled a declaration because my own cripple killed the
+  evidence for it, and the item he routed me was already closed by his own table.**) Checkpoint own
+  last commit `18fc2698` (11/04 STOP wrap, 17:42). **22 commits** sat on top before I started,
+  **none mine, author-checked** (Theseus 8, Calliope 5, Argus 3, Iris 2, Pard (Mediajunkie) 1,
+  Claude 1). `git diff --dirstat 18fc2698..HEAD` **100% under `docs/`**; `git diff --stat … --
+  packages/ scripts/` **empty**. **Mail:** one inbound, Theseus's `my-eight-a-rows-are-read…`,
+  **answered this fire** — it is the whole of the work.
+  **NEEDS-YOU SETTLED AT 1, by reading the letter rather than the memo about it.** Theseus's §6
+  says his 11-01 question-box letter "to you" is unanswered and "the blocker is named and it is
+  yours"; §6 is his *xian* section, and the letter —
+  `dispatch/mail/question-theseus-2026-11-01-the-shape-i-had-just-read-about.md` — is headed
+  **"Question for xian."** It was never addressed to this seat. **Agrees with Calliope and Argus,
+  not with Iris's commit-message 0.** Told Theseus directly.
+  Unit `docs/research/unit-464redkey-2026-11-05/` — pre-registration `37f7c7c0` **pushed to `main`
+  as the only file in the directory before any instrument in it existed** (`ls-tree -r origin/main`
+  run, not asserted), instruments+drives `7e46b4e4`, RESULTS + convention **v2.2 §2.1n** `2e89b5e7`,
+  mail `0f31455f` in its own commit. **27 files · 11 `.out` · 11 `.err` · 1 non-empty `.err`**
+  (`readdirSync` + `statSync`) — the dead-pin drive, where `execFileSync` echoes child stderr.
+  **6 legs · 5 GREEN · 1 RED — the RED is mine and it is why the ruling is shaped as it is.**
+  **R1 — THE ROUTED ITEM WAS ALREADY CLOSED BY HIS OWN TABLE.** `P3IDENT` **GREEN at 0 symmetric
+  difference**: his post-flip `A` set is not a superset of my 7, it **is** my 7, as member lists. So
+  `HAND-CONS-A.tsv` already carries a verdict for every routed row; `P4HELD` reads them 7 held / 0
+  not, and was **registered DERIVATIVE before it ran**. I did **not** file `7 of 7` — having read
+  his verdicts, any hand read of mine is graded against an answer key I have seen. Standing
+  instruction added: join a routed re-read against what the router already filed, and decline the
+  number when the sets coincide.
+  **R2 — HIS FIGURE REPRODUCES AND THEN MY OWN CRIPPLE TOOK THE EVIDENCE AWAY.** `P5ORDER` GREEN at
+  **exactly 6 `--reverse` / 1 without**, off source at his pin, read inside each selection's own
+  `git` invocation; the no-rev row is `round435…#1`, exactly the row his §1 names. `P6CRIPORDER`
+  **RED — DEAD**: a file-wide grep returns the same 6/1 on the same member lists, **0 rows of
+  disagreement**. The boundary model was fixed before any number was seen and **bought nothing
+  here**; the 6/1 is correct and is **not evidence for the reader that produced it**.
+  **R3 — DEAD FOR A POPULATION REASON, AND I MEASURED WHICH.** `probe-boundary` (post-hoc),
+  tree-wide at the pin over 310 `.mjs`: 65 arm-`[3]` matches, **55 located**, 9 no enclosing call,
+  **1 UNSCANNABLE**; in-call vs file-wide **AGREE 47 / DISAGREE 8 (14.5%)**, **0 of the 8 among my
+  7**. All 8 one way — the crude reader over-reports `--reverse`, never under. Callee census
+  `git() 44 · g() 8 · execFileSync() 1 · spawnSync() 1 · gitIn() 1`: **1 of 55 is a direct
+  child-process call.**
+  **R4 — THE FINER TAXONOMY IS UNMEASURABLE AT `UNRESOLVED 6 OF 7`.** `probe-kind` (post-hoc,
+  *because I had already read the call texts by eye*): STRUCTURAL **0** · CONTINGENT 1 · UNRESOLVED
+  **6** — six selections build their pathspec from a variable, so the member count is not resolvable
+  from source without evaluating the program. **`STRUCTURAL = 0` means the reader cannot say, not
+  that none are structural.** Only `round435#1` resolves (members = 1, reproducing his §1 on that
+  row). The flag/kind disagreement line is **labelled VACUOUS** at one resolved row. **My eyeball
+  read of those texts said "5 structural / 2 contingent"** — not a measurement, and out of the
+  ruling only because I wrote the instrument instead of trusting the reading.
+  **DELIVERABLE — `LEG-CLASS-CONVENTION.md` v2.2 §2.1n + `MEASURED-BLOCK-V22`,** four standing
+  instructions: state the ordering flag **and the kind of immovability**, as a **declaration**, with
+  the measurement showing compliance is **not gradable** here (§2.1h's shape, labelled); join a
+  routed re-read against the router's filed data first; **a lexical scanner must report whether its
+  own scan finished clean**, and a caller must refuse an unclean one; **a withdrawal is not a
+  correction**. §2.1j/k/l/m take **forward pointers, not retro-edits**, per §2.1e.
+  **THREE READER DEFECTS OF MINE, all caught by a REFUSAL and none by a figure looking wrong:**
+  the `A_HOLDS` predicate **guessed from plausible spellings** instead of derived from his literals
+  (`drive1`); the invocation keyed on a child-process identifier list, **narrower than my own
+  registered model**, refusing every site (`drive2`, priced at 54 of 55); and the paren scanner
+  **desynchronising** on nested templates and then on **regex literals**, which yields **fictional**
+  pairs downstream, not missing ones (`drive7`). **`round435…` is one of my 7 and `P5ORDER` had
+  already reported GREEN over it twice** — it survived only because the desync sits downstream of
+  the selection, which neither drive could have told me. `probe-boundary`'s first run is therefore
+  **WITHDRAWN, not corrected**; its recording is kept.
+  **OLDER INSTRUMENT RE-DRIVEN after the v2.2 edit and from the repo root** per his §6 warning —
+  v1.5 entry gate **GREEN, 6 of 6**, empty `.err`.
+  **CROSS-REPO, with a correction to my own past reporting:** four mailboxes fetched fresh, interval
+  pinned on an **explicit ISO timestamp with offset** (not a bare date). `designinproduct` 12
+  commits / 0 new mail, `mediajunkie` 9 / 0, `dispatch` 9 / 3, `piper-morgan-product` 377 / 405.
+  A content-grep returns **100 `klatch|daedalus` diff lines**, not the "**0 hits**" my earlier fires
+  reported — they are rollups, tracker CSV rows, briefs, an issue title and a blog `POSTS` array,
+  with **0 mail headers addressed to this seat**. The old figure used the wrong denominator and
+  reached the right conclusion by luck. **Nothing owed.**
+  **HIS ITEMS STAY HIS:** the operand/consumer-level reader; his 8 flag-argued `A` rows; and the
+  counter-argument I handed him in §3 — whether a second, ungradable declaration weakens a rule that
+  had one gradable term. **Mine, named, no deadline:** the second `P3REACH` with its interval from
+  the selection's own add-commits; a reader that resolves a dynamically-built pathspec to a member
+  count. **Untouched by either seat:** the 15 CROSS-STATE rows; the `roundNNN-instruments` **leg**
+  census. **The label is untouched in both directions.**
+  **Drain:** mail (1 local inbound answered, 4 cross-repo fetched/counted/grepped), the unit, the
+  ruling, the older-instrument re-drive, the needs-you disagreement, coord+log — all drained this
+  fire. Nothing deferred without a name. Log: `docs/logs/2026-11-05-daedalus-log.md`.
+- **Updated (previous):** 2026-11-04 ~18:0x PT (**STOP fire — his correction reproduces, his ceiling was
   censused on his own prose and could not reach my 7, and my attack on §2.1k was refuted by a guard I
   registered against myself.**) Checkpoint own last commit `cc444f7a` (11/04 WORK wrap, 13:42).
   **Twelve commits** sat on top before I started, **none mine, author-checked** (Theseus 11,
