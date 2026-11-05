@@ -27,3 +27,25 @@ model: Claude Sonnet 5
 **Drain:** 3 new commits read with author verified before citing, none mine, confirmed via empty `packages/`/`scripts/` diff and dirstat; mail checked locally (board still clear of named-to-this-seat open items) and across all four cross-repo mailboxes, nothing owed from any; both standing blockers re-derived fresh — ma-smoke advanced to day 16, ground-rules confirmed retired; gate re-derived fresh and byte-identical; rollup read directly and found to disagree with a teammate's own commit-message figure, flagged rather than either silently adopted or silently corrected; log.html confirmed not yet due (owed at tonight's STOP fire). Two consecutive checks found nothing further unblocked. Fire closed bounded.
 
 ---
+
+## 12:3x — Session resumed (MID fire)
+
+**Census-only no-op; 11 new commits since own START checkpoint, none mine; both standing blockers re-derived fresh (ma-smoke still day 16); gate byte-identical; rollup needs-you re-confirmed at 1.**
+
+Checkpoint is this seat's own 11/05 START-fire commit `683476e4`. `git log 683476e4..HEAD --format='%H %an %ci %s' --reverse` — 11 new commits, author-checked before citing, none mine: Argus's own START-fire census no-op (`048fd4b9`, agrees with this seat's needs-you-1 read, not Iris's commit-message 0); Daedalus's `unit-464redkey` chain (6 commits, `37f7c7c0`…`33389f8d`); Theseus's `unit-464kind` chain (4 commits, `937505d4`…`e1ca8a8b`).
+
+`git diff --stat 683476e4..HEAD -- packages/ scripts/` **empty** — confirmed, not assumed; dirstat 36.4%/30.9% split across `docs/research/unit-464kind-2026-11-05/` and `docs/research/unit-464redkey-2026-11-05/`.
+
+**Mail:** `grep -li "^to:.*calliope" docs/mail/*.md` (excluding `read/`) — same four standing Pard-from-10-20 threads, no new file addressed by name; the two new Daedalus↔Theseus research-track memos read by header, both cc-only, neither asks anything of this seat. All four cross-repo mailboxes fetched fresh against this fire's own 08:34:20 PT checkpoint: `designinproduct` 0 new; `mediajunkie` 1 new (Pard's CIO-relay memo, content-grepped, 0 `klatch`/`calliope` hits); `dispatch` 0 new; `piper-morgan-product/mailboxes` 52 new (dense internal PM-ops ticket traffic, content-grepped via `git log -p --since`, 0 `klatch`/`calliope` hits). Nothing owed from any.
+
+**Standing blockers re-derived fresh:** Managed Agents smoke-run — no `ma-smoke/*` branch anywhere (`git branch -a` + `git ls-remote origin`), named blocker on xian since Pard's 2026-10-21 memo, day count re-derived fresh — **day 16**, unchanged same calendar day. Ground-rules day-count — retired 11/03.
+
+**Rollup:** not touched — none of the 11 commits is a decision only xian can make. `docs/operations/attention-rollup.md` still v174; its "Needs you" section (`grep -n "^## \|^### "`) shows exactly one item (blog-series angle/sequencing) — needs-you 1, matching this morning's own figure.
+
+**Gate re-verified fresh:** `npx tsx scripts/gate.mts` — census OK, typecheck 0 `error TS` across all four workspaces; server 140 files · 2186 passed · 1 skipped (2187); client 26 passed | 13 skipped (39) · 333 passed | 13 skipped (346) — byte-identical to every figure recorded today.
+
+**`log.html`:** not due this fire — owed at tonight's STOP fire.
+
+**Drain:** 11 new commits read with author verified before citing, none mine, confirmed via empty `packages/`/`scripts/` diff and dirstat; mail checked locally and across all four cross-repo mailboxes, nothing owed from any; both standing blockers re-derived fresh, neither moved; gate re-derived fresh and byte-identical; rollup read directly and confirmed consistent with this morning's own figure. Two consecutive checks found nothing further unblocked. Fire closed bounded.
+
+---
