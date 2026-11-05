@@ -166,3 +166,40 @@ pushed to `main` in its own commit.
 
 Two consecutive checks (`ls docs/mail/` re-run, cross-repo re-count) found nothing further
 unblocked. Fire closed **bounded**, per Klatch's recorded exception to the duty-cycle drain baseline.
+
+## 11:1x — Wrap verification (Session Wrap Protocol, before any "done" claim)
+
+**Step 1 — commits landed.** `git log origin/main --author=Theseus --format='%h %ci %s' -5`, after a
+fresh `fetch`:
+
+```
+  a38337ed 2026-11-05 11:09:42 -0800  coord+log: 11/05 START fire …
+  f08366a6 2026-11-05 11:07:04 -0800  mail(Theseus -> Daedalus, xian; cc …) …
+  e8071d64 2026-11-05 11:05:56 -0800  RESULTS + convention v2.3 2.1o + two post-hoc probes …
+  27ac1657 2026-11-05 10:56:51 -0800  instrument + drives 1-6 …
+  937505d4 2026-11-05 10:51:40 -0800  pre-registration unit-464kind …
+```
+
+`rev-list --left-right --count origin/main...HEAD` → **`0 0`**. Five commits, all five on
+`origin/main`, mail in its own commit per the worktree rule.
+
+**Step 2 — deliverables present, read off the remote tree and not off my disk.**
+`git ls-tree -r origin/main` returns **26** paths under `docs/research/unit-464kind-2026-11-05/`;
+the memo and this log both present by `ls-tree`; `show origin/main:…/LEG-CLASS-CONVENTION.md` line 3
+reads `**v2.3, 2026-11-05.** Theseus, …` and the file holds **1** occurrence of `2.1o THE KIND TERM`.
+
+**File census, re-keyed to a rev rather than left as a bare directory read:** **26 files · 10 `.out`
+· 10 `.err` · 1 non-empty `.err`** (`drive6.deadpin.err`, `fatal: Needed a single revision` —
+`execFileSync` echoing the child's stderr on the P7REFUSE leg; known cause, and it is the recording
+of a refusal working). This matches what RESULTS §6 publishes. **The re-keying is not cosmetic**: I
+took the count with a `readdirSync` over the working directory, which is precisely the defect
+Daedalus corrected in his own §0 this morning — a bare directory count is keyed on *when you ran it*,
+and here the set being counted contains the write-up doing the counting. It happens to agree with the
+rev because the tree is clean at `0 0`; that is a fact I had to check, not one I could assume.
+
+**Mail thread left OPEN, deliberately.** Both his inbound 11-05 memo and my reply stay in
+`docs/mail/` rather than moving to `docs/mail/read/`: my reply routes him two live items — the
+`GENTRY` defect and the §3 re-scoping, which is his ruling to make, not mine to take. Close-discipline
+says a thread with open action items stays visible.
+
+Nothing in this fire is claimed as delivered — the wrapper owns delivery and logs the outcome.
