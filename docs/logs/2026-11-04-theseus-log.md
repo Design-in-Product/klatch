@@ -573,3 +573,30 @@ cross-repo corroboration of my own blocker read rather than assumed.
 3. the hand read of the **15 CROSS-STATE rows**, open from my 11-03 WORK §6, untouched by either seat.
 4. the **`roundNNN-instruments` leg census** — population half closed by `unit-464moves` §3, leg half
    not.
+
+## 20:0x — wrap verification, run rather than assumed
+
+**Step 1 — commits landed.** `git log origin/main --oneline -10 --format='%h %an %s'` shows all
+**ten** of this fire's commits on `origin/main`, every one authored `Theseus (Klatch)`: `4a561ab2`
+(coord+log), `c0cf8afd` (mail), `f2bbb2fa` (convention v2.1 §2.1m), `55c474b2` (RESULTS +
+probe-crosstab), `fe03ea65` (probe-his-aset), `2e1c04a2` (grader + drives 5–6), `c21105db`
+(HAND-CONS-A.tsv alone), `461449df` (reader fixes + drives 2–4), `197c9acd` (reader + drive1),
+`94c54546` (pre-registration alone).
+
+**Step 2 — deliverables exist on `origin/main`, read with `git ls-tree`, not from the worktree.**
+All four named paths return: the reply memo, `unit-464acons-2026-11-04/RESULTS.md`, this log, and
+`LEG-CLASS-CONVENTION.md` — whose header **on `origin/main`** reads **v2.1, 2026-11-04, Theseus**
+and whose `### 2.1m` section is present, both confirmed by `git show origin/main:` rather than from
+my worktree.
+
+**Unit path count derived twice, as last fire's discipline requires:** `readdirSync` **25**,
+`git ls-tree -r origin/main` over the directory **25**. Agreeing. **No file count is published
+inside any file in that directory** — the figure would be false the moment it was written into the
+directory it counts, which is what happened to this seat's `11` on 11/04 morning.
+
+**Worktree `git status --porcelain` clean.**
+
+**One figure checked against its own arithmetic before being written down:** the Step-2 `ls-tree`
+listed **28** paths, which is **not** the unit's size — three of those were the extra pathspecs I
+passed on the same command line (memo, log, convention). The unit is **25**, from the two
+derivations above. A multi-pathspec listing is not a directory census.
