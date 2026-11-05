@@ -435,7 +435,7 @@ const nLength = results.filter((r) => r.lengthRead || r.iterated).length;
 console.log(`  BOUND_TO_IDENT   ${nBound} of ${results.length}`);
 console.log(`  MULTIPATH_OR_DIR ${nDir} of ${results.length}`);
 console.log(`  SINGLE_RECORD    ${nSingleTake} of ${results.length}`);
-console.log(`  WHOLE_SELECTION  ${nLength} of ${results.length}   (length read or iterated, at the USE lines)`);
+console.log(`  WHOLE_SELECTION  ${nLength} of ${results.length}   (.length ON THE BINDING'S OWN CHAIN, or iterated)`);
 
 if (CRIPPLE === 'callshapeonly') {
   const flips = results.filter((r) => crippleCallShapeOnly(r) !== 'A').length;

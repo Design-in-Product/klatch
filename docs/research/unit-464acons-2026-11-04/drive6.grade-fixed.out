@@ -1,0 +1,26 @@
+grade-acons — unit-464acons
+  hand table   docs/research/unit-464acons-2026-11-04/HAND-CONS-A.tsv
+  at its own add-commit  c21105db0cdaf5bbd817081063791ef9f70446a9
+
+=== LEGS ===
+  GREEN  P1AFLIP    PRED  at least 1 of the 8 A rows flips to R when read at its consumption site
+              flips = 1 of 8, floor >= 1  (EXACTLY ON the floor — tight, not comfortable)
+  GREEN  P1BEXACT   PRED  exactly 1 of the 8 flips
+              flips = 1; the flipped row(s): unit-464t2-population-2026-10-28/grade-the-round-population.mjs#1
+  RED    P2CENSUS   PRED  exactly 1 of the 8 enclosing calls selects over a directory or multi-path pathspec
+              MULTIPATH_OR_DIR = 5 of 8, registered exactly 1
+  GREEN  P3BIND     PRED  at least 4 of the 8 bind the call result to a named identifier
+              BOUND_TO_IDENT = 8 of 8, floor >= 4
+  GREEN  P4REDUCE   PRED  exactly 7 of the 8 reduce the selection to a single record
+              SINGLE_RECORD = 7 of 8, registered exactly 7
+  GREEN  P5LEN      PRED  exactly 1 of the 8 consumes the whole selection rather than one record out of it
+              WHOLE_SELECTION = 1 of 8, registered exactly 1
+  GREEN  P6CRIPPLE  CTL   the call-shape-only cripple flips 0 of 8 — it reproduces the original hand read and cannot see the flip
+              CRIPPLE_FLIPS = 0 of 8; cripple disagrees with the corrected hand read on 1 site(s): unit-464t2-population-2026-10-28/grade-the-round-population.mjs#1
+  GREEN  P7REFUSE   CTL   an unresolvable pin makes the reader REFUSE, with no figure printed
+              rc = 2, REFUSE line = true, figure leaked = false; first line: REFUSE: pin deadbeefdeadbeefdeadbeefdeadbeefdeadbeef does not resolve
+
+VERDICT  7 of 8 legs GREEN, 1 RED
+  FLIPS=1  FLAGGED_ROWS=2  BOUND=8 MULTIPATH=5 SINGLE=7 WHOLE=1
+  CRIPPLE_LIVE=true  (a cripple that agreed with the hand read on all 8 would be reported as vacuous)
+  reds: P2CENSUS
