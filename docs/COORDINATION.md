@@ -5768,7 +5768,38 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-11-01 ~07:23 PT (START fire). **Status:** available.
+- **Updated:** 2026-11-05 ~07:1x PT (START fire). **Status:** available.
+- **11/05 fire (START) — no-op on product; 16 commits read since own 11/04 STOP checkpoint
+  (`91b2e76a`), none mine — all under Theseus's `unit-464acons` research chain plus Calliope's
+  logbook/wrap commits and two brief-publishes. Nothing routed to this seat.** Drain against own
+  11/04 ~19:26 PT STOP checkpoint (`91b2e76a`): 16 new commits (checked `%an` per commit — 11
+  Theseus, 3 Calliope, 1 Pard(Mediajunkie), 1 Claude(Janus brief)). `git diff --stat
+  91b2e76a..HEAD -- packages/ scripts/` **empty** — confirmed, not assumed; `git diff --dirstat`
+  shows the change under `docs/research/unit-464acons-2026-11-04/`, `docs/logs/`, `docs/mail/`,
+  `docs/operations/duty-cycle/`. **Mail:** one new local file (Theseus's `...my-eight-a-rows-are-
+  read...-2026-11-04.md`) — grepped `-i iris`, only a `cc:` header hit and a filename reference,
+  no routed action here. All four cross-repo mailboxes checked fresh via `git -C <repo> fetch` +
+  `git log --since` against the 2026-11-04 19:26:22 -0800 checkpoint: `designinproduct` 0 new;
+  `mediajunkie` 0 new; `dispatch` 0 new; `piper-morgan-product/mailboxes` 57 new, content-grepped
+  (`git log -p --since ... | grep -iE "klatch|\biris\b"`) — 0 hits. Nothing owed from any.
+  Briefs: fire-depth and cross-pollination both regenerated for 2026-11-05 (3 files touched under
+  `docs/briefs/`), read both — metrics-table/OAuth-callbacks/shell-script-perf content, no UX
+  signal. **Standing blockers re-derived fresh:** ground-rules question stays **closed** (ruled
+  11/03, formally closed 11/04, no re-opening signal); `entityGuess` re-grepped independently —
+  **6 files/23 hits**, unchanged. **Verified, not trusted:** `lsof -i :3001` port free; `npm run
+  typecheck` clean ×4 workspaces; server **140 files · 2186 passed · 1 skipped (2187)**; client
+  **26 passed|13 skipped (39) · 333 passed|13 skipped (346)** — byte-identical to the 11/04 STOP
+  checkpoint; `sweep-probes --census` **153 probe files, 43 swept/110 deferred**, CENSUS OK,
+  unchanged; full driving sweep (HEAD unchanged at `6bc24f9f` before/after, tree clean
+  throughout, backgrounded past the 120s foreground limit, picked up via completion
+  notification, verdict line read directly from the task output) — **SWEEP PASSED — 43 of 43
+  swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but did not finish), 0 census
+  problem(s), 110 deferred.** No `packages/` changes this fire. Nothing new needs xian — no
+  open ask remains since the ground-rules item closed 11/04. **Drain:** all unblocked items done
+  (commit check, mail across all four mailboxes plus local, both blockers re-derived, both
+  briefs read, full gate including the driving sweep); nothing deferred. Two consecutive checks
+  found nothing further unblocked — fire closed bounded. Log: `docs/logs/2026-11-05-iris-log.md`.
+- **Prior update:** 2026-11-01 ~07:23 PT (START fire). **Status:** available.
 - **11/01 fire (START) — no-op on product; 2 brief-publish commits read (Pard's fire-depth
   report, the hub's cross-pollination publish), nothing routed to this seat.** Drain against own
   10/31 ~19:2x PT STOP checkpoint (`aaa36e16`): 2 new commits, neither mine (checked `%an` per
