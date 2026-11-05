@@ -923,6 +923,84 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
+- **Updated:** 2026-11-05 ~14:1x PT (**WORK fire — both items he routed are discharged: the
+  re-scoping is adopted with one amendment, and the `GENTRY` leg he would not touch is repaired. My
+  cure then printed the routed defect back at me, and the probe that caught it inverted on its own
+  fix.**) Checkpoint own last commit `33389f8d` (09:39, START fire). **4 commits** sat on top before
+  I started, **none mine, author-checked** (Theseus 3, Calliope 1). Diff on arrival 100% under
+  `docs/`. **Mail:** one inbound, Theseus's `your-universal-is-refuted…`, **answered in full this
+  fire** — it routes his §3 (my ruling to give) and his §6 (my instrument to repair) and together
+  they are the whole of the work. 4 cross-repo mailboxes fetched fresh against a 11-04 20:00 window:
+  `designinproduct` **0**, `mediajunkie` **1** (`b7f3e04`, cio→pard, not mine), `dispatch` **1**
+  (`866afdc`, the ~84.7h timing on Theseus's question to xian — **first-hand now, not from his
+  memo**), `piper-morgan-product/mailboxes` **124** commits with **0** filename hits and **0**
+  content hits under `log -S'Daedalus'`. Nothing owed from any.
+  Unit `docs/research/unit-464gentry-2026-11-05/` — pre-registration `e382cb13` **pushed to `main`
+  as the only file in the directory before any instrument in it existed** (`ls-tree -r origin/main`
+  **run**, not asserted), drives1-3 + the repair `5ada0e73`, probe + drives4-7 `b785c227`,
+  RESULTS + convention **v2.4 §2.1p** + drive8 `5875315a`, mail `e1fd8607` in its own commit.
+  **7 drives + 1 declared post-hoc probe · 6 registered legs: 4 GREEN, 1 RED · 8 matrix arms: 7 hit
+  their registered cell, 1 MISSES. The RED and the MISS are both mine.**
+  **THE REPAIR.** His §6 figures reproduce exactly (**57054 bytes over 13 `###` headings**; regex at
+  **line 111** while header line 3 reads v2.3) because the span's end anchor `### 2.1a` sits *below*
+  its start `### 2.1g` in the out-of-order tail. The entry is **6937 bytes over 2 headings**, and
+  `entry.length > 2000` separates **0 of 2** candidate spans. **Of the 3 corruptions that should
+  redden the leg, the pre-repair version catches 0 and the repaired version catches 3** — registered
+  cell by cell, before the matrix ran, with the pre-repair arm taken from `git show` and the
+  identical one-line parameterisation applied to both versions and its 2-line diff printed.
+  **`P2PINNED` RED, and not for the reason I registered.** `### 2.1g` does not exist at the gate's
+  own `PIN` at all: `PIN` is 11-03 **13:07** and freezes the *recordings*; the entry was authored
+  **23 minutes later**. `P2bFROZEN` then refused too, because `### 2.1h` does not exist at *that* rev
+  either. One span rule, two revs, two document structures — which is why the end is now derived
+  **structurally** instead of by naming a sibling heading.
+  **THREE DEFECTS OF MINE, EACH FOUND BY THE INSTRUMENT BUILT FOR THE LAST ONE.** (1) `A7BLOCKGONE`
+  MISSED: I registered the pre-repair leg green and it reddened — its MEASURED-BLOCK and history
+  conjuncts were live, and a deleted *start* anchor reddens even the floor via an empty slice. **3 of
+  8 arms reddened it**, so his *"carries no information"* and my own *"a threshold that cannot
+  discriminate"* are **both too strong**; what it could not detect is any edit to the entry's own
+  text. (2) **my cure printed `MEASURED-BLOCK-V15 is inside the span` and `above §2.1g` as fixed
+  strings on arms where those conjuncts had FAILED** — the routed defect, written into the cure for
+  it, same fire. (3) **the fix for (2) inverted the probe that caught it**: `probe-entail` read the
+  subject's note *prose*, so `drive5` prints `does NOT contain MEASURED-BLOCK-V15` **two lines
+  beneath its own evidence** saying `found in the span`. Re-keyed on the subject's `FAILED:` list;
+  `drive6` corrected. `probe-entail.out` kept unoverwritten as the evidence.
+  **AFTER THE REPAIR ONLY TWO CONJUNCTS ARE DETECTION.** FROZEN asserts byte-equality with a
+  baseline that has 2 headings and contains the MEASURED-BLOCK, so FROZEN **forces** SHAPE and
+  BLOCK, and is unevaluable unless SPAN resolved. Independently reddenable: **FROZEN, HIST**. All
+  five observed red at least once so none is dead — entailment is not independence, and this leg is
+  not to be reported as five conjuncts.
+  **THE RULING.** §2.1o instruction 1 **adopted**. One amendment from his own §2: §2.1n's
+  `members === 1 -> CONTINGENT` branch is **withdrawn under the flag**, kept only in the flag-absent
+  cell, because that branch is the sole producer of the both-values result. His caveat published as
+  a figure — **22 of 44 flag-absent sites (22 of 55 located) are unreadable**, so the rule is
+  ungradable on half the population it governs, and a standing instruction now requires any
+  compliance figure to print that denominator. New: **the one-member cell under the flag is
+  unmeasurable**, not unmeasured — his own instruction 4's room guard refuses it — so it must not be
+  filed as a drive someone owes.
+  **Gate:** the leg for the directory I touched is the v1.5 entry gate itself, driven twice —
+  `drive7` (after the repair) and `drive8` (after the v2.4 edit) — **GREEN 6 of 6, `.err` empty**
+  both times, and `diff` against Theseus's `unit-464kind/drive7` is **one line**, GENTRY's own.
+  **The span reads 6937 either side of my §2.1p append**, which is the figure his §6 watched move
+  49206 → 57054. Pre-commit census `CENSUS OK — 153 files, 43 swept / 110 deferred` on every commit.
+  **`npm run typecheck`/`npm test` not re-run and not cited from anyone else:** diff is 100% `docs/`,
+  no TypeScript surface touched, the `.mjs` files are in no tsconfig. Scope choice, stated.
+  **Proportionality, computed this fire:** last 40 commits (`ecbcd95b..origin/main`) **100% under
+  `docs/`**, `--stat -- packages/ scripts/` **empty**, **last `packages/` commit 2026-10-28** (Argus),
+  **8 days ago**. Rollup read live: **v174, needs-you 1** — unchanged, and still Theseus's
+  question-box letter to xian, not mine. Flagged in the memo §7 with an offer to point this seat at
+  product code next fire.
+  **One non-fast-forward**, resolved by `fetch` + `rebase origin/main` (Argus's `be953eac` and a
+  merge landed mid-fire): 1 commit replayed, verified with `git log --oneline -3`, `0 0` after. **No
+  force push, no history rewritten, no overlap with Argus's files.**
+  **Drain:** mail (local + 4 cross-repo), the routed repair, the routed ruling, the post-hoc probe
+  the all-green matrix demanded, the two self-inflicted defects it exposed, the older-instrument
+  re-drive, the convention entry, the proportionality figure, coord+log — all drained. **Deferred
+  with named blockers:** the other four legs of the v1.5 gate (this seat; keyed on frozen recordings,
+  graded by neither seat today); the `-C <toplevel>` pinning of that instrument's `git` calls (**a
+  decision**, not time — the loud `status 128` is what keeps "run it from the repo root" meaningful;
+  reasoning stated in §2.1p and Theseus invited to overturn it); the 15 CROSS-STATE rows and the
+  `roundNNN-instruments` leg census (unclaimed by either seat). Nothing deferred without a name.
+  Log: `docs/logs/2026-11-05-daedalus-log.md`.
 - **Updated:** 2026-11-05 ~09:4x PT (**START fire — the REDUCTION ruling is in and adopts his
   clause, his ordering flag comes back re-labelled a declaration because my own cripple killed the
   evidence for it, and the item he routed me was already closed by his own table.**) Checkpoint own

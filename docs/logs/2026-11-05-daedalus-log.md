@@ -147,3 +147,121 @@ this fire. **Deferred, each with a named blocker:** the second `P3REACH` with it
 selection's own add-commits (blocker: this seat, not reached today, no deadline); a reader that
 resolves a dynamically-built pathspec to a member count (blocker: this seat — it is what §4 needs
 and no source-level reader here has it). Nothing deferred without a name.
+
+---
+
+## 13:17 — Session resumed (WORK fire, Opus 5)
+
+Worktree synced by the wrapper; `origin/main...HEAD` at `0 0` on arrival. Last commit on `main` was
+Calliope's 11/05 MID coord (`5afca5dd`) — **author-checked before assuming anything was mine**; my
+own last commit was `33389f8d` at 09:39. Between them: Theseus's START-fire chain (`f08366a6`,
+`a38337ed`, `e1ca8a8b`) and Calliope's MID no-op.
+
+**Mail: one inbound, Theseus's `your-universal-is-refuted…`, read in full.** It routes me two
+things — his §3 (the re-scoping of §2.1n's second term, which is my ruling to give) and his §6 (the
+`GENTRY` leg of my own v1.5 entry gate, which he deliberately did **not** repair, on the ground that
+his repair would be a cure written beside its own grader). Both discharged this fire; the whole of
+the work is in `docs/research/unit-464gentry-2026-11-05/`.
+
+### What I measured
+
+Pre-registration `e382cb13` pushed as the **only** file in the directory before any instrument in it
+existed — `git ls-tree -r origin/main` over the directory **run**, returned that one path.
+
+* **His two §6 figures reproduce exactly**, run by me: span **57054 bytes over 13 `###` headings**,
+  regex at **line 111** while header line 3 reads `v2.3`. Declared as reproduction, not as my own
+  blind measurement.
+* **`P1TIGHT` GREEN** — the right span is **6937 bytes over 2 headings**.
+* **`P3FLOOR` GREEN** — `entry.length > 2000` separates **0 of 2** candidate spans.
+* **`P4HEADER` GREEN** — the printed note has been false since v1.6 while its predicate stayed true.
+* **`P2PINNED` RED, and not for the reason I registered.** `### 2.1g` does not exist at the gate's
+  own `PIN` at all: `PIN` is 2026-11-03 **13:07** and freezes the drive recordings; the entry was
+  authored **23 minutes later** at `a3607d5a`. `P2bFROZEN` then refused in turn because `### 2.1h`
+  does not exist at that rev either. One span rule, two revs, two document structures — and that is
+  what forced the repair to derive its end **structurally** rather than from a named sibling.
+* **`P5MATRIX` GREEN 6 of 6** registered cells, plus 2 declared post-hoc arms. **Of the 3
+  corruptions that should redden the leg, the pre-repair version catches 0 and the repaired version
+  catches 3.**
+* **`P6OTHERLEGS` GREEN** — `drive7` vs `unit-464kind/drive7` differs on the GENTRY line alone,
+  five other legs byte-identical, GREEN 6 of 6, every `.err` empty.
+* **`drive8`**, after the v2.4 edit: the span reads **6937 before and after the append** — the figure
+  Theseus watched move 49206 → 57054 when he appended §2.1o.
+
+### Three defects of my own, in sequence
+
+1. **`A7BLOCKGONE` MISSED its registered cell** (registered pre=`ok`, measured pre=`RED`). The
+   pre-repair leg's MEASURED-BLOCK conjunct was live, so was its history conjunct, and a deleted
+   *start* anchor reddens even its floor via an empty slice. **3 of 8 arms reddened it.** So his
+   "carries no information" and my own "a threshold that cannot discriminate" are **both too
+   strong**; the exact claim is that it could not detect any edit to the entry's own text.
+2. **My cure reproduced the routed defect.** It printed `BLOCK: MEASURED-BLOCK-V15 is inside the
+   span` and `HIST: … above §2.1g` as fixed strings **on arms where those conjuncts had FAILED** —
+   a reason string stationary while its predicate moves, written into the cure for exactly that.
+   Every note is now derived from its own measurement; `probe-entail.out` keeps the evidence
+   unoverwritten.
+3. **The fix for (2) inverted the probe that caught it.** `probe-entail` read the subject's note
+   *prose*, so repairing the note silently falsified the reader: `drive5` prints `does NOT contain
+   MEASURED-BLOCK-V15` **two lines beneath its own evidence** reading `found in the span`. Re-keyed
+   on the subject's verdict-bearing `FAILED:` list; `drive6` is the corrected run.
+
+Also recorded: after the repair only **two** of the five conjuncts are independently reddenable
+(FROZEN, HIST). FROZEN asserts byte-equality with a baseline that has 2 headings and contains the
+MEASURED-BLOCK, so FROZEN forces SHAPE and BLOCK; SPAN/SHAPE/BLOCK are **attribution**. All five have
+been observed red at least once, so none is dead — but entailment is not independence.
+
+### The ruling
+
+§2.1o standing instruction 1 **ADOPTED**, written as **v2.4 §2.1p Part A**. One amendment out of his
+own §2 — the `members === 1 -> CONTINGENT` branch is withdrawn **under the flag** and kept only in
+the flag-absent cell, since that branch is the sole producer of the both-values result. His caveat
+published as a figure: **22 of 44 flag-absent sites (22 of 55 located) are unreadable**, so the rule
+is ungradable on half the population it governs, and a standing instruction now requires any
+compliance figure to print that denominator. New: the one-member cell under the flag is
+**unmeasurable** by a differential test — his own instruction 4's room guard refuses it — so it must
+not be filed as a drive someone owes.
+
+### Gate
+
+**The gate leg for the directory I touched is the v1.5 entry gate itself**, and it is run twice:
+`drive7` (after the repair) and `drive8` (after the v2.4 edit), both **GREEN 6 of 6** with empty
+`.err`. Pre-commit census printed `CENSUS OK — 153 probe files, 43 swept / 110 deferred` on every
+commit of this fire. **I did not re-run `npm run typecheck` / `npm test`, and I am not citing anyone
+else's run as mine:** the whole diff is under `docs/` with no TypeScript surface touched, and the
+`.mjs` files I wrote are in no tsconfig, so that gate could not move. Stated as a scope choice.
+
+### Cross-repo mail, fetched fresh this fire
+
+All four fetched against a 2026-11-04 20:00 window. `designinproduct/docs/mail` **0**;
+`mediajunkie/docs/mail` **1** (`b7f3e04`, cio→pard, not mine); `dispatch/mail` **1** (`866afdc`,
+Dispatch-DinP's 11-05 inbox check — it is the source of the ~84.7h figure on Theseus's question to
+xian, which I had taken from his memo and have now seen first-hand); `piper-morgan-product/mailboxes`
+**124** commits, **0** filename hits on klatch/daedalus and **0** content hits under
+`log -S'Daedalus'`. Nothing addressed to this seat outside Klatch.
+
+### Proportionality, computed not recalled
+
+Over the last 40 commits on `origin/main` (`ecbcd95b..origin/main`), `--dirstat` is **100% under
+`docs/`** and `--stat -- packages/ scripts/` is **empty**. **Last commit touching `packages/` was
+2026-10-28** (Argus's `tree-fingerprint` re-key), **8 days ago**. Rollup read live: **v174,
+needs-you 1**. Flagged to xian in the memo's §7 with an explicit offer to point the seat at product
+code next fire.
+
+### Drain
+
+Mail (1 local inbound answered in full and in the same fire; 4 cross-repo fetched, counted and
+content-grepped), the routed repair, the routed ruling, the post-hoc probe the all-green matrix
+demanded, the two self-inflicted defects it exposed, the older-instrument re-drive, the convention
+entry, the proportionality figure, coord+log — all drained this fire. **Deferred, each with a named
+blocker:** the other four legs of the v1.5 gate (blocker: this seat — keyed on frozen recordings,
+not graded today by either seat, no deadline); the `-C <toplevel>` pinning of that instrument's `git`
+calls (blocker: **a decision**, not time — the loud `status 128` is what keeps "run it from the repo
+root" meaningful, so I stated the reasoning in §2.1p and invited Theseus to overturn it); the 15
+CROSS-STATE rows and the `roundNNN-instruments` leg census (blocker: unclaimed by either seat).
+Nothing deferred without a name.
+
+### One non-fast-forward, resolved by rebase, no force push
+
+My mail commit was rejected as non-fast-forward: Argus's WORK-fire coord (`be953eac`) plus a merge
+(`dc0359ac`) landed while I was writing it. `git fetch` + `git rebase origin/main` — clean, 1 commit
+replayed, `git log --oneline -3` checked before pushing, and `origin/main...HEAD` back at `0 0`
+after. No overlap with Argus's files and no history rewritten.
