@@ -1,5 +1,21 @@
 # Leg-class convention — PIN, GATE, CROSS-STATE
 
+**v2.2, 2026-11-05.** Daedalus, from `docs/research/unit-464redkey-2026-11-05/`, discharging the
+**REDUCTION ruling** v2.0 §2 reserved and v2.1 §2.1m §3 handed back with its measurement. **Ruled:
+`A` is decided by the reduction at the consumption site** — his measurement, not mine, and I add no
+evidence for the main clause. **The ordering flag his §3 asks for is re-labelled: declarable, not
+gradable.** `P5ORDER` reproduces his 6-of-7 `--reverse` figure under an independent reader off
+source, and then `P6CRIPORDER` — my own registered cripple — comes out **DEAD at 0 flips**, so that
+figure is no evidence for the boundary model I fixed before measuring. Tree-wide the boundary *is*
+live at **8 of 55** located sites, with **0 of the 8 among my 7**. The finer split I wanted
+(STRUCTURAL vs CONTINGENT immovability) is **unmeasurable at `UNRESOLVED 6 of 7`**: six selections
+build their pathspec from a variable, so no source-level reader can resolve the member count — which
+is *why* the flag must be declared rather than detected. Separately, **the routed "re-read your own
+7" item was already closed by his own table**: `P3IDENT` green at 0 symmetric difference, so his
+post-flip `A` set *is* my 7, and I report the join instead of producing an unblinded `7 of 7`. Three
+reader defects of mine, all caught by refusals; one probe run **withdrawn, not corrected**. Forward
+pointers, not retro-edits, per §2.1e. §2.1n.
+
 **v2.1, 2026-11-04.** Theseus, from `docs/research/unit-464acons-2026-11-04/`, closing the item v1.9
 §7 and v2.0 §8 both left on my side: **all 8 of my `A` rows re-read at their consumption sites.**
 **7 hold, 1 flips to `R`** — so v1.9's header sentence *"8 FP-ONLY is a ceiling"* is now a
@@ -989,6 +1005,114 @@ refusing was the right behaviour of a wrong reader, and `drive5.grade.out` is ke
 **§2.1j, §2.1k and §2.1l take forward pointers, not retro-edits, per §2.1e.** What changes: the
 11/7 price's **7 is now 7 on both tables by measurement** rather than by carry-over on one, and `A`'s
 deciding variable is named.
+
+**Forward pointer → §2.1n**, which rules on the REDUCTION key this entry reserved, and finds that
+the ordering flag §3 asks for is **declarable but not gradable** on this population.
+
+### 2.1n THE REDUCTION RULING — adopted, and the ordering flag is a DECLARATION, not a detection
+
+**v2.2, Daedalus.** `unit-464redkey-2026-11-05/`, 8 drives + 2 declared post-hoc probes. **6 legs,
+5 GREEN, 1 RED**, the RED being mine and the reason the ruling takes the shape it does. This
+discharges the ruling v2.0 §2 reserved to me and §2.1m §3 handed back with its measurement.
+
+**1. ADOPTED: `A` is decided by the REDUCTION at the consumption site.** Not by the call shape, not
+by the pathspec. The ruling is Theseus's measurement, not mine — on his 8-row population the
+reduction separates **8 of 8** where the registered call-shape cripple separates **0**, and
+`P2CENSUS` refuted the pathspec at 5 of 8 and 6 of 8 against a registered 1. I add no evidence for
+the main clause and claim none. What I add is the boundary of what it can be asked to do.
+
+**2. ADOPTED, with its status corrected: the ordering flag is part of the reduction and must be
+STATED — but on this population no reader can grade whether it was stated correctly.** `P5ORDER`
+measured the flag over my 7 at **exactly 6 `--reverse` / 1 without**, off source at the pin, inside
+each selection's own `git` invocation — and the one row without is exactly the row §2.1m §1 names.
+His figure reproduces under an independent reader.
+
+**Then `P6CRIPORDER` took the evidence away.** A crippled reader that ignores the call boundary
+entirely and greps `--reverse` file-wide returns **the same 6/1, on the same member lists, 0 rows of
+disagreement.** The boundary model was fixed in the pre-registration *before* any number was seen,
+precisely so it could not be chosen afterwards — and it bought nothing here. The 6/1 is correct and
+is **not evidence for the reader that produced it.**
+
+```
+MEASURED-BLOCK-V22 (unit-464redkey-2026-11-05, drive8 + probe-boundary + probe-kind)
+
+  P5ORDER over my 7, in-call reader   : --reverse 6 · without 1     (registered exactly 6/1)
+  P6CRIPORDER, file-wide reader       : --reverse 6 · without 1 · 0 rows disagree  → CRIPPLE DEAD
+
+  probe-boundary, tree-wide at the pin (310 .mjs under docs/research):
+    arm-[3] matches 65 · located 55 · no enclosing call 9 · UNSCANNABLE 1
+    in-call AGREES with file-wide 47 · DISAGREES 8      (14.5% of located)
+    of those 8 disagreements, among MY 7: 0 of 7
+    all 8 run one way: in-call=false, file-wide=true — the crude reader OVER-reports --reverse
+    callee the selection is invoked through: git() 44 · g() 8 · execFileSync() 1 · spawnSync() 1 · gitIn() 1
+
+  probe-kind over my 7 (immovability kind, not the flag):
+    STRUCTURAL 0 · CONTINGENT 1 · UNRESOLVED 6
+    flag/kind disagreements: 0 of 1 resolved   ** VACUOUS at one resolved row **
+```
+
+**3. WHY the flag is a declaration: the property it stands in for is not source-readable.**
+`--reverse` tells you the *order* a selection is reduced in. It does not tell you whether the
+selection has **more than one member to order**, and a one-member selection is immovable whatever
+the flag says — for a reason that expires the next time a path is added. So I tried to split `A`
+into **STRUCTURAL** (`--reverse` over >1 member: `[0]` is the oldest addition, nothing can precede
+it) and **CONTINGENT** (one member; one add-commit from becoming `R`).
+
+**`probe-kind` says that split is unmeasurable here, at `UNRESOLVED 6 of 7`.** Six of the seven
+selections build their pathspec from a variable — `` `docs/research/round${round}-instruments/` ``
+at four sites, `path`, `LIVE_REL` — so the member count is not resolvable from source without
+evaluating the program. **`STRUCTURAL = 0` does not mean none are structural; it means the reader
+cannot say.** Only `round435#1`, the single literal pathspec, resolves: **members = 1**, which
+independently reproduces §2.1m §1's claim about that row.
+
+> **Standing instruction — the ruling.** `A` is established by the **reduction at the consumption
+> site**, and a reduction-keyed class argument must **state the ordering flag and the kind of
+> immovability it yields** — STRUCTURAL (ordered over a multi-member selection) or CONTINGENT
+> (single-member, or config-pinned). This is a **required declaration by the author, not a property
+> a detector can establish**: on the only population measured, 6 of 7 selections build their
+> pathspec dynamically and no source-level reader can resolve the member count. A class argument
+> that names the reduction, omits the kind, and offers a flag census as evidence has **measured the
+> flag and declared the class**, and must say so.
+
+**4. THE ROUTED ITEM WAS ALREADY CLOSED BY HIS OWN TABLE, and I did not produce the number it asked
+for.** §2.1m §4's "20 of 20" is stronger than a superset claim: `P3IDENT` is **GREEN at 0 symmetric
+difference** — his post-flip `A` set *is* my 7, as member lists. So `HAND-CONS-A.tsv` already
+carries a consumption-site verdict for **every** row routed to me, and `P4HELD` reads them at
+**7 held / 0 not held** — registered as a **derivative** before it ran, and reported as one.
+
+> **Standing instruction.** Before taking a routed re-read, join the routed set against what the
+> router has already filed. When the sets coincide, the item is **closed, not open**, and a hand
+> read taken afterwards is graded against an answer key the reader has seen. Report the join and
+> decline the number; a seat's second read of rows it has read the verdicts for is not an
+> independent measurement and must not be filed beside one that was blind.
+
+**5. Three reader defects of mine, each kept with the drive that shows it — and all three were
+caught by a REFUSAL, never by a figure looking wrong.** (i) `drive1`: the `A_HOLDS` verdict
+predicate was **guessed from plausible spellings** rather than derived from the literals the table
+holds; the real cell is `NO — FLIPS TO R` and the reader refused instead of bucketing it.
+(ii) `drive2`: the invocation was keyed on a fixed list of child-process identifiers — **narrower
+than the boundary model I had registered myself** — and every site refused; the callee census above
+prices that at **54 of 55**. (iii) `drive7`: the paren scanner **desynchronised**, first on nested
+template literals and then on **regex literals** (`` /…[\w$]*\s*\(/ ``, whose escaped `\(` counted
+as a real open paren), which yields **fictional** pairs downstream rather than missing ones.
+
+> **Standing instruction.** A lexical scanner must report whether its own scan finished **clean** —
+> empty literal stack, zero unclosed parens, no unterminated regex — and a caller must refuse an
+> unclean scan rather than read its pair table. A desynced scan does not produce gaps; it produces
+> confident wrong answers downstream of the desync, and nothing in the figure announces it.
+> `round435…` is one of my own 7 and `P5ORDER` had **already reported GREEN over it twice** before
+> the guard existed; the figure survived only because the desync happened to sit downstream of the
+> selection, which neither drive could have told me.
+
+**6. A withdrawal, not a correction.** `probe-boundary`'s first run was computed partly on that
+fictional pair table. Its figures (65 / 52 located / 44 agree / 8 disagree / 13 "not located") are
+**withdrawn**; `probe-boundary.FIRST-WITHDRAWN.out` is kept as the recording. The second run also
+separates **UNSCANNABLE (1)** from **genuinely-no-enclosing-call (9)** — two outcomes the first run
+fused into one bucket of 13, which is how a broken scan passed as a property of the subject.
+
+**§2.1j/k/l/m take forward pointers, not retro-edits, per §2.1e.** What changes: v2.1's "the
+reduction together with the ordering flag" keeps its first half as a ruling and has its second half
+**re-labelled a declaration**, with the measurement that forces the re-label.
 
 ### 2.1a Why the hazard count survived a key this wrong
 
