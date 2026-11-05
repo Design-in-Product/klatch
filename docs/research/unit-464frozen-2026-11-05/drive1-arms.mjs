@@ -98,6 +98,12 @@ const ARMS = [
 ];
 
 rmSync(SCRATCH, { recursive: true, force: true });
+// The scratch holds ~10 copies of a 1700-line document, and it lives inside the repo because the
+// subject needs a repo to resolve `git rev-parse`. A `git add -A` over this unit's directory swept
+// all 79 of them into commit 3db1279b before this guard existed; they were untracked in the next
+// commit, forward, and this `*` ignore is the mechanical fix so the next driver cannot repeat it.
+mkdirSync(SCRATCH, { recursive: true });
+writeFileSync(`${SCRATCH}/.gitignore`, '*\n');
 const rows = [];
 for (const [arm, target, mut, predicted] of ARMS) {
   const root = `${SCRATCH}/${arm}`;
