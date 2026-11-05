@@ -1,0 +1,27 @@
+#	HAND-CONS-A.tsv — all 8 CLASS=A rows of HAND-ARM3.tsv, re-read AT THEIR CONSUMPTION SITES.
+#	Theseus, 2026-11-04 STOP fire. Filed in its OWN COMMIT, BEFORE grade-acons.mjs exists.
+#	Source pin 0ae48068. Table rev 721fb5b4. Consumer listings from drive4.chains.out; every
+#	verdict below was also checked against the subject's own source at the pin, by eye.
+#
+#	THE QUESTION, and it is NOT the question HAND-SITES.tsv asked:
+#	  HAND-SITES asked "does the REASON LINE name a consumption site?" — answer was no, 8 of 8.
+#	  This table asks "having now READ the consumption site: does CLASS A survive?"
+#	  A = stable; the selection cannot move as history grows. R = history-keyed; it moves.
+#
+#	THE RULE, and its precedent in my own table: every selected commit can be addition-keyed
+#	while the value the CONSUMER derives still moves as history grows. That is why
+#	round441-instruments/key-the-silent-class-from-source.mjs#1 is R in HAND-ARM3 — "consumed as
+#	`revs.length` ... the FIGURE moves as history grows." An A row whose consumer looks like
+#	round441's is misclassified. This table applies that rule and nothing else.
+#
+#	FLAG = a row I am not fully comfortable with, recorded rather than waived.
+#
+site_id	A_HOLDS	reduction_read_at_the_site	why	flag
+round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs#1	yes	`.split('\n')[0]` on the call's own tail — NEWEST-first over a SINGLE file path	single path + --diff-filter=A: the addition list has one member, so newest and oldest coincide. Consumer treats it as a pinned SHA: `merge-base --is-ancestor recRev ADDED_BY` (414), `countAt(ADDED_BY)` (423), `ADDED_BY.startsWith('be58bfa4')` (428), printed at 445/448. Nothing derives a figure over a set.	FLAG: the ONLY one of the 8 whose stability rests on the addition event being UNIQUE rather than on --reverse. It carries no --reverse. If that path were ever deleted and re-added, `[0]` newest-first moves to the re-add. A re-add is an addition event rather than ordinary history growth, so A holds under the class definition — but this row would be the first to fall if the definition were tightened.
+round464-instruments/grade-the-stop-condition.mjs#1	yes	`raw.split('\n').find((l) => l.trim().length > 0)` at 736 — FIRST record of a --reverse list	pathspec is a DIRECTORY (`docs/research/round${round}-instruments/`), so the selection is multi-member and grows. The reduction takes the OLDEST addition in that directory. A commit older than the directory's first addition cannot appear, so the reduced value is pinned. Directory-shaped selection, stable value.	-
+unit-464t2-keychoice-2026-10-28/grade-the-surface-predicate.mjs#1	yes	`raw.split('\n').find((l) => l.trim().length > 0)` at 295 — FIRST record of a --reverse list	identical shape to round464#1: directory pathspec, --diff-filter=A --reverse, oldest addition taken. Stable.	-
+unit-464t2-population-2026-10-28/grade-the-round-population.mjs#1	NO — FLIPS TO R	`for (const line of raw.split('\n'))` at 178 — ITERATES THE WHOLE SELECTION	the only one of the 8 that consumes the set rather than one record. Pathspec `docs/research/` with --name-only --reverse; the loop accumulates one `rows` entry per round-dir and unit-dir first appearance, and `rows` GROWS as directories are added. Downstream (lines 261-262, in another scope) that set is `.filter(...).length`-ed into a published figure. Each MEMBER is addition-keyed and cannot move; the FIGURE moves. This is round441#1's rule exactly, and HAND-ARM3's own CONSUMER column already said "the SET grows as paths are added" without drawing the consequence. arm [3] is RIGHT here and my A was WRONG.	-
+unit-464t2-reaim-2026-10-28/grade-the-credit-key.mjs#1	yes	`raw.split('\n').find((l) => l.trim().length > 0)` at 238 — FIRST record of a --reverse list	directory pathspec, oldest addition. Stable. Same shape as round464#1.	-
+unit-464t2-reaim-2026-10-28/recon-credit-provenance.mjs#1	yes	`raw.split('\n').find((l) => l.trim().length > 0)` at 128 — FIRST record of a --reverse list	`dirCreator(round)`: directory pathspec built at 121, `let raw;` hoisted at 122, assigned inside the try at 124, consumed at 128. Oldest addition. Stable. HAND-ARM3 recorded this row's pathspec as a single `path` variable, which is literally true and hides that the variable holds a DIRECTORY.	-
+unit-464t2-surface-2026-10-28/recon-run-length-and-cure.mjs#1	yes	`raw.split('\n').filter(Boolean)[0]` at 209 — FIRST record of a --reverse list	directory pathspec, --diff-filter=A --format=%H --reverse, oldest addition. `.filter(Boolean)` drops blanks and `[0]` takes the oldest. Stable.	-
+unit-464vac-2026-10-31/grade-cure.mjs#1	yes	`(log ?? '').trim().split('\n').filter(Boolean)[0]` at 56, then `rev-parse first^` at 58	NO --diff-filter=A anywhere in the file. `--reverse` over the range `${BASE_REV}..HEAD` for a single path: `[0]` is the OLDEST commit in the range, pinned by BASE_REV at the low end. HEAD moving extends the range at the high end only, so the oldest element cannot change. The subject's own comment at 50-52 asserts exactly this and the consumer bears it out.	FLAG: BASE_REV is read from the file `baseline.rev` at line 53, not from history. The anchor is immovable with respect to HISTORY GROWTH, which is what CLASS A means, but it is movable by a FILE EDIT. That is a different hazard with its own precedent in this same file's comment (a later commit becoming the baseline), and it is out of scope for arm [3]. Recorded, not waived.
