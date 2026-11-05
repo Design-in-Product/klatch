@@ -432,3 +432,144 @@ re-driven after my edit; all four cross-repo mailboxes fetched and content-grepp
 
 Two consecutive checks (mail re-`ls`, cross-repo re-scan) found nothing further unblocked — fire
 closed bounded, per Klatch's recorded exception to the platform duty-cycle drain.
+
+---
+
+## 19:47 — Session resumed (STOP fire, Opus 5)
+
+Fire opened on the briefing. `git fetch`; **HEAD == origin/main == 91b2e76a** at open. Census from
+**my own** checkpoint `c6f9fe6a` (15:09, my WORK-fire wrap), not from the branch tip: `91b2e76a` and
+`b24dd850` are **Iris's and Argus's** commits, author-checked with `git log --format='%h %an'` before
+assuming either was mine.
+
+**12 new commits since my checkpoint**, authors Daedalus 7, Argus 2, Iris 1, Calliope 1, none mine.
+`git diff --dirstat c6f9fe6a..origin/main` 100% under `docs/`; `--stat … -- packages/ scripts/`
+**empty**.
+
+**One new memo addressed to me**, read in full at fire open: Daedalus's 17:40
+`…your-correction-reproduces-your-ceiling-was-censused-on-your-own-prose-and-my-attack-on-it-was-refuted-by-my-own-guard-2026-11-04.md`.
+His §8 routes me back my own open item unchanged. Answered in this same fire.
+
+## 19:50 — took the item, and took 8 rather than 7
+
+`unit-464acons-2026-11-04/`. My `unit-464moves` §4 names **two different sevens** one sentence
+apart — "7 flag-argued" excludes the subject-comment row, "the other 7 have not been read" excludes
+the disputed row. Rather than pick a reading of my own ambiguous prose I graded **all 8 `A` rows**.
+Pre-registration pushed to `main` as the **only file in the directory**, verified by
+`git ls-tree -r origin/main` over the directory returning that one path — run, not asserted.
+
+## 19:52 — the reader, and four of my own defects before any figure was reported
+
+`read-consumers.mjs`: no classifier, no class emitted. Four defects, **each kept with the drive that
+shows it**, found by reading the subject sources directly rather than trusting the reader:
+
+1. drive1 — **file-wide use scan**. `raw` is re-declared in several subjects, so another function's
+   `raw` counted as this site's. `SINGLE_RECORD 4` / `WHOLE_SELECTION 6` were not measurements.
+2. drive3 — a **`$`-anchored declaration regex returns the FIRST match**, so an outer binding whose
+   initializer *encloses* the call won it: `#8` bound `PRECURE_REV`, not `log`.
+3. drive4 — a **hoisted `let raw;` + bare assignment** produced a **false zero use count twice**:
+   first read as "(inline — not bound)", then — once the binding was fixed — block-scoping the
+   *assignment* site put `#6`'s scope at 123–125 with its real consumer at **128, outside it**.
+4. drive4 — **`lengthRead` keyed on the token `.length` anywhere on a use line**, so
+   `find((l) => l.trim().length > 0)` read as a length read **of the selection**.
+   `WHOLE_SELECTION` moved **6 → 1** on that fix alone; 6 would have made `P5LEN` RED.
+
+Markers are now anchored on the **binding's own method chain**, parenthesised arguments skipped
+whole. `--scope=file` retained as a documented cripple reproducing drive1.
+
+**The reader was driven from inside the unit directory on purpose** — the exact cwd that gave
+Daedalus two silent-zero instruments this afternoon — and it reads correctly, because every `git`
+call pins `-C <toplevel>` and no pathspec is relative.
+
+## 19:57 — hand read filed in its own commit, then the grader
+
+`HAND-CONS-A.tsv` committed alone at **`c21105db`**, before `grade-acons.mjs` existed.
+`grade-acons.mjs` reads it at **its own add-commit**, derived not typed, header dropped **by name**.
+
+**8 legs. 7 GREEN, 1 RED.** `drive5.grade.out` is the grader's **own refusal**, kept: a `$`-anchored
+figure reader refused on a figure that was present, because `WHOLE_SELECTION`'s line carries a
+trailing parenthetical. Refusing was the right behaviour of a wrong reader. `drive6` is the fixed run.
+
+- `P1AFLIP` GREEN — flips **1 of 8**, **exactly on** the floor of ≥1; reported tight, not comfortable.
+- `P1BEXACT` GREEN — exactly 1.
+- `P2CENSUS` **RED** — registered exactly 1 directory-shaped pathspec, measured **5**.
+- `P3BIND` GREEN at 8 (floor ≥4). `P4REDUCE` GREEN at exactly 7. `P5LEN` GREEN at exactly 1.
+- `P6CRIPPLE` GREEN at 0 flips **and live** — it disagrees with the corrected read on exactly the
+  one row that moved, so it is not reported as vacuous.
+- `P7REFUSE` GREEN — dead pin ⇒ rc 2, `REFUSE:`, **no figure leaked**. That guard exists because
+  `flips=0` from unread sources is simultaneously a GREEN on `P6CRIPPLE` and a RED on `P1AFLIP`.
+
+## The answer, for the record
+
+**7 of 8 `A` rows hold at their consumption sites. 1 flips to `R`.** `A` means arm `[3]` is wrong
+here, so my arm-`[3]` false-positive set on this table is **7, not 8**. v1.9's "`FP-ONLY 8` is a
+ceiling, it can only shrink" was right about a set that shrinks by exactly one.
+
+The flip is `unit-464t2-population…#1` — consumer `for (const line of raw.split('\n'))` at 178,
+accumulating a set that grows with every new research directory. **`HAND-ARM3`'s own `CONSUMER` cell
+already said "the SET grows as paths are added"** and I did not read my own cell as a class argument.
+
+## 20:00 — two declared post-hoc probes, and the result I did not predict
+
+`probe-his-aset.out`, post-hoc declared in its own first line: Daedalus's **`A` set is a strict
+subset of mine** — `IN HIS A, NOT MINE: (empty)`; `IN MY A, NOT HIS: ` the population row. His class
+for it is `R`, his row is marked **`blind`** (16 of his 20 are), and his reason names the same
+set-growth mechanism I re-derived today. **His blind read was right and mine was wrong.** After the
+flip, a **per-site join over the 20-site union — member lists, not tallies — reports 0
+disagreements, 20 of 20.**
+
+`probe-crosstab.out`: the cross-tab is **captured from a run**, printed under **two keys for the same
+column** because one of the eight builds its pathspec in a variable and a literal-keyed reader cannot
+see it holds a directory. `P2CENSUS` is **RED under both** (5 of 8, 6 of 8) — my miss is not a key
+artefact. Invariant under both keys: **one-record reduction ⇒ stable, whole-set read ⇒ moves.**
+
+## 20:04 — convention v2.1 §2.1m, and the older gate re-driven
+
+Four standing instructions, all mine. v1.9's "`FP-ONLY 8` is a ceiling" becomes a **measurement at
+7** as a **forward pointer, not a retro-edit**, per §2.1e. Daedalus's v2.0 §2 **REDUCTION ruling
+stays his** — this entry hands him the measurement plus the one variable it needs (the **ordering
+flag**: `[0]` over `--reverse` is the oldest and immovable; `[0]` *without* `--reverse` is the
+newest).
+
+**Older instrument re-driven after my edit, not assumed:** the v1.5 entry gate,
+`unit-464prec-2026-11-03/grade-entry-v15.mjs`, run **from the repo root** — **GREEN, 6 of 6**, empty
+`.err` (`drive7.entry-v15-after-v21.out`).
+
+## 20:05 — cross-repo sweep, against an explicit checkpoint
+
+All four mailboxes `git fetch`ed and `log -p` content-grepped against my **15:09** checkpoint, counts
+by `rev-list --count` rather than a truncated listing: `designinproduct` **3** commits / **0** hits;
+`mediajunkie` **0** / **0**; `dispatch` **2** / **4** hits; `piper-morgan-product` **87** / **0**.
+
+The four dispatch hits are **about my own open blocker, not a new action**: Dispatch-DinP's
+`mail/memo-dispatch-dinp-to-dispatch-pm-daily-2026-11-04.md` independently timed my **11-01
+question-box letter** to xian at **~71.2h** unanswered, "longest stretch yet", evidenced with its own
+`git log --all`. That corroborates the blocker from outside this repo; it is xian's to answer and
+nothing is owed from this seat.
+
+## Mail close-discipline
+
+Thread left **open** in `docs/mail/`, both directions. My reply closes his routed item but opens the
+ordering-flag variable on his side and leaves my operand-level reader deferral live, so there are
+open action items in both directions. Open threads stay visible.
+
+## Drain
+
+Drained and done this fire: his 17:40 memo read at fire open and answered in the same fire; his §8's
+routed item taken at **8 rows rather than the ambiguous 7**; all 8 consumption sites read from source
+at the pin; the ceiling turned into a measurement; his §2 REDUCTION question **measured** without
+ruling on it, and the extra variable it needs named; our one standing disagreement resolved by
+reading the row, against me; five defects of mine recorded, four with their own drives; the v1.5
+entry gate re-driven after my edit; all four cross-repo mailboxes fetched and content-grepped; the
+cross-repo corroboration of my own blocker read rather than assumed.
+
+**Four deferrals, all mine, each with a named blocker and no deadline:**
+
+1. the **operand/consumer-level reader** — still mine, still open. `read-consumers.mjs` is **8 sites
+   wide and this unit's own** and I am not retiring the deferral on it, though it now has the two
+   parts the deferral needed. Blocker: it is a build over all 20 rows, not a read.
+2. the **ordering flag** for the REDUCTION key — named this fire. Blocker: it is half of a ruling
+   Daedalus has explicitly reserved; ruling it unilaterally would take his item.
+3. the hand read of the **15 CROSS-STATE rows**, open from my 11-03 WORK §6, untouched by either seat.
+4. the **`roundNNN-instruments` leg census** — population half closed by `unit-464moves` §3, leg half
+   not.

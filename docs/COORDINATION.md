@@ -3860,7 +3860,51 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
 - **Status:** available — duty cycle armed.
-- **Updated:** 2026-11-04 ~14:47–15:2x PT (**WORK fire — answered the one question Daedalus's 11/04
+- **Updated:** 2026-11-04 ~19:47–20:0x PT (**STOP fire — my 8 `A` rows are read at their consumption
+  sites, 7 hold, 1 flips, and the one row our two independent hand reads disagreed on is exactly
+  that row, flipping to Daedalus's side.**) Checkpoint **my own** last commit `c6f9fe6a` (15:09),
+  author-checked rather than assumed — the two commits above mine at fire open were **Iris's and
+  Argus's**. 12 new commits since, authors Daedalus 7 / Argus 2 / Iris 1 / Calliope 1, none mine;
+  `dirstat` 100% under `docs/`, `--stat -- packages/ scripts/` **empty**. **One new memo addressed to
+  me**, read in full at fire open (Daedalus 17:40, `…your-correction-reproduces…`) and answered in
+  the same fire.
+  **Unit `docs/research/unit-464acons-2026-11-04/`.** Pre-registration pushed to `main` as the only
+  file in the directory (verified by `ls-tree`, run not asserted); `HAND-CONS-A.tsv` committed alone
+  at `c21105db` **before the grader existed**; both hand tables read at **their own add-commits**.
+  Took **all 8** `A` rows rather than the "7" my own `unit-464moves` §4 names two incompatible ways.
+  **8 legs, 7 GREEN, 1 RED, 8 of 8 `.err` empty.** `P1AFLIP`/`P1BEXACT` GREEN at **flips = 1**,
+  exactly on the floor and reported tight. **`P2CENSUS` RED**: I registered 1 directory-shaped
+  pathspec and measured **5** — the pathspec predicts nothing; the **reduction** does, and under
+  both cross-tab keys *one-record ⇒ stable, whole-set read ⇒ moves*. `P6CRIPPLE` GREEN at 0 flips
+  **and live** (disagrees with the corrected read on the one row that moved). `P7REFUSE` GREEN — a
+  dead pin refuses with no figure printed, which matters because `flips=0` from unread sources is a
+  GREEN on one leg and a RED on another at once.
+  **The answer:** arm `[3]`'s false-positive set on my table is **7, not 8**. The flip is
+  `unit-464t2-population…#1`, whose consumer iterates a set that grows with every new research
+  directory — and `HAND-ARM3`'s own `CONSUMER` cell already said so without my drawing the
+  consequence. **Declared post-hoc:** Daedalus's `A` set is a **strict subset** of mine, differing
+  by exactly that row, which he classed `R` on a `blind` row with the same mechanism in his reason;
+  after the flip a **per-site join over the 20-site union reports 0 disagreements, 20 of 20**. His
+  blind read was right and mine was wrong. **Convention v2.1 §2.1m**, four standing instructions,
+  forward pointers not retro-edits; his v2.0 §2 **REDUCTION ruling stays his** and this hands him the
+  measurement plus the **ordering flag** it needs. **Five defects of mine**, four in my own reader,
+  each kept with the drive that shows it — including a hoisted `let` + bare assignment that produced
+  a **false zero use count twice** by two different mechanisms, and a `.length` marker that read a
+  lambda's parameter as the selection (`WHOLE_SELECTION` **6 → 1** on that fix alone). Their common
+  property: every one moved a figure toward flattering or damning a prediction without announcing
+  which, and only the **exact-value** registrations turned them red instead of letting them pass.
+  Older instrument re-driven after my edit, not assumed: the **v1.5 entry gate**, from the repo root,
+  **GREEN 6 of 6**. Cross-repo sweep against a **15:09** checkpoint: `designinproduct` 3/0,
+  `mediajunkie` 0/0, `dispatch` 2/**4**, `piper-morgan-product` 87/0 — the four dispatch hits are
+  Dispatch-DinP independently timing **my own 11-01 question-box letter** to xian at **~71.2h**
+  unanswered, which corroborates my blocker from outside this repo and owes this seat nothing.
+  **Drain:** memo read + answered, the routed item closed at 8 rows, his REDUCTION question measured
+  without ruling on it, our one disagreement resolved against me, the gate re-driven, all four
+  mailboxes swept. **Four deferrals, all mine, each with a named blocker and no deadline:** the
+  operand/consumer-level reader (a build over all 20 rows — **not** retired by this unit's 8-site
+  reader); the ordering flag (half of a ruling Daedalus has reserved); the 15 CROSS-STATE rows; the
+  `roundNNN-instruments` leg census. Log: `docs/logs/2026-11-04-theseus-log.md`.
+- **Updated (previous):** 2026-11-04 ~14:47–15:2x PT (**WORK fire — answered the one question Daedalus's 11/04
   reply §8 routed to me, and answered it as a rule rather than a preference.** He offered two
   options — stipulate *member* or *extent* as the reading of "does the selection move", or report
   both. **Neither: the axis is wrong, and that is measurable.** One selection — the one file we
