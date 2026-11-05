@@ -1,0 +1,89 @@
+=== unit-464mysites — grade-mysites.mjs ===
+  cripple      : sitefromoutput
+  repo root    : /Users/xian/Development/klatch-worktrees/daedalus   (every git call is pinned with -C; see the drive-1 note in source)
+  population pin: 0ae48068
+  live HEAD     : 298bfe4e6de4fcec535fa6014a9e4f7d0d290f08
+  TSV rev       : 86ff05ac  (docs/research/unit-464mysites-2026-11-04/HAND-SITES-MINE.tsv)
+
+--- [MEAS] P1POS argument positions in G1 (1=id 2=kind 3=value/predicate 4=why 5=detail)
+  leg('G1' starts at line 306 @ 0ae48068; top-level args = 5
+  rows.length          -> arg 5   (line 308)
+  rows !== null        -> arg 3
+  dirsNow.length > 0   -> arg 3   [THE CONTROL]
+
+--- [MEAS] P2SYM my own 20 reason lines, read at 86ff05ac
+              names a consumption site
+    class        yes   no  total
+    R              8    4     12
+    A              0    7      7
+    O              0    1      1
+    argues_from: REDUCTION 5 · SITE 8 · CALL-SHAPE 6 · SUBJECT-COMMENT 1
+
+--- [MEAS] P3RESOLVE / P6SHAPE
+  shape A  resolves=true  sig=true  round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs
+  shape B  resolves=true  sig=true  round464-instruments/grade-the-stop-condition.mjs
+  shape B  resolves=true  sig=true  unit-464t2-keychoice-2026-10-28/grade-the-surface-predicate.mjs
+  shape B  resolves=true  sig=true  unit-464t2-reaim-2026-10-28/grade-the-credit-key.mjs
+  shape B  resolves=true  sig=true  unit-464t2-reaim-2026-10-28/recon-credit-provenance.mjs
+  shape B  resolves=true  sig=true  unit-464t2-surface-2026-10-28/recon-run-length-and-cure.mjs
+  shape C  resolves=true  sig=true  unit-464vac-2026-10-31/grade-cure.mjs
+  distinct shapes = 3 · A:1 B:5 C:1
+
+--- [MEAS] P7PARAM shape B over every round*-instruments dir at 0ae48068 -> 298bfe4e6de4fcec535fa6014a9e4f7d0d290f08
+  instantiations=91  unrun=0
+  selection OUTPUT moved : 0
+  consumed SITE moved    : 0
+
+--- [MEAS] P3REACH per file, 0ae48068 -> 298bfe4e6de4fcec535fa6014a9e4f7d0d290f08
+  shape  outputMoved  siteMoved  instantiations  file
+  A      false        false      1/1             round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs
+  B      false        false      0/91            round464-instruments/grade-the-stop-condition.mjs
+  B      false        false      0/91            unit-464t2-keychoice-2026-10-28/grade-the-surface-predicate.mjs
+  B      false        false      0/91            unit-464t2-reaim-2026-10-28/grade-the-credit-key.mjs
+  B      false        false      0/91            unit-464t2-reaim-2026-10-28/recon-credit-provenance.mjs
+  B      false        false      0/91            unit-464t2-surface-2026-10-28/recon-run-length-and-cure.mjs
+  C      false        false      1/1             unit-464vac-2026-10-31/grade-cure.mjs
+  REACHED NON-MOVE (output moved AND site stable): 0 of 7 graded (0 UNRUN, dropped from BOTH numerator and denominator)
+
+--- [MEAS] P4LABEL first-level entries under docs/research/ @ 0ae48068
+  entries=409  trees=137  blobs=272   (my published label said "408 directories"; registered 408/136/272)
+  .mjs under his key /^round\d+-instruments$/ : 191   (his §3: 191)
+  .mjs under my key  /^round/                  : 195   (his §3: 195)
+  symmetric difference (4 members):
+    docs/research/round352-valuation-leg-key.mjs
+    docs/research/round427-capability-test-pointer/the-history-window-is-200-messages-not-the-file.mjs
+    docs/research/round445-capability-test/klatch-capability-test.mjs
+    docs/research/round445-capability-test/verify-request-shapes.mjs
+  dirs under his key: 91   (his §3: 91)
+
+--- VERDICT ---
+  GREEN P1POS      GATE     §2.1k reproduces: rows.length is leg()'s DETAIL argument and G1's predicate over the selection is rows !== null
+        rows.length=arg5 rows!==null=arg3 expected 5 and 3
+  GREEN P1CTL      CONTROL  the control: dirsNow.length > 0 is in the PREDICATE, so the reader is not "every .length is a reason string"
+        dirsNow.length>0=arg3 expected 3
+  GREEN P5F2LINE   MEAS     F2's line at the pin; his unit's pre-registration cites 321
+        measured=320 registered=320 his=321
+  GREEN P2ROWS     GATE     the hand table parses to exactly 20 data rows, header dropped by name
+        rows=20 headerLinesDropped=1
+  GREEN P2SYMA     MEAS     the ceiling his §4 established over HIS 8 also holds over MY 7: A rows naming no consumption site
+        A no-site=7 of 7  floor>=5
+  GREEN P2SYMR     MEAS     my R rows naming a consumption site
+        R site-naming=8 of 12  floor>=8
+  GREEN P2NOA      MEAS     the structural claim we agree on, measured on my table rather than carried from his: NO A row names a site
+        A yes=0 (his: 0 of 8)
+  GREEN P3RESOLVE  GATE     all seven FP-ONLY files resolve at the pin AND carry their shape signature in their own source
+        resolved+sig=7 of 7
+  GREEN P6SHAPE    MEAS     FP-ONLY 7 is carried by three selection shapes, one of which carries five — a count of files, not of independent judgements
+        shapes={"A":1,"B":5,"C":1} registered=3 shapes with B=5
+  RED   P7OUT      GATE     REACHABILITY: the interval actually touched the selected paths, so a shape-B non-move is not vacuous
+        outputMoved=0 of 91 floor>=1
+  GREEN P7SITE     MEAS     and the consumed site did not move at any instantiation
+        siteMoved=0 of 91 registered=0
+  RED   P3REACH    MEAS     files whose selection output demonstrably MOVED while the consumed site did not — a REACHED non-move, which is not the case §2.1k's reachability objection covers
+        reached=0 of 7 graded  floor>=3  unrun=0
+  RED   P4ENTRIES  MEAS     his correction of my "408 directories" label reproduces: 408 first-level ENTRIES = 136 trees + 272 blobs
+        entries=409 trees=137 blobs=272 registered=408/136/272
+  GREEN P4DIFF     MEAS     the 195-vs-191 gap is a member list of four, derived as a set difference between the two keys rather than retyped
+        diff=4 his=191 mine=195 registered=4
+
+VERDICT 14 legs · 11 GREEN · 3 RED · 0 UNRUN   cripple=sitefromoutput

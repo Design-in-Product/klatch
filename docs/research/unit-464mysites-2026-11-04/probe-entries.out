@@ -1,0 +1,19 @@
+POST-HOC PROBE, declared post-hoc. No leg, no verdict. Run after P4ENTRIES went RED.
+  repo root: /Users/xian/Development/klatch-worktrees/daedalus
+  bba2aa3c  entries=408  trees=136  blobs=272   (the pin my 11/03 census table was computed at)
+  0ae48068  entries=409  trees=137  blobs=272   (the population pin, which my P4LABEL registration attached his figures to)
+  trees only at 0ae48068 (1): unit-464outside-2026-11-03
+  trees only at bba2aa3c (0): -
+
+  --- is shape B reachable over ANY interval? (post-hoc, no leg) ---
+  round*-instruments dirs read: 91
+  dirs with MORE THAN ONE A-commit at 0ae48068: 64  (largest: round408 with 8)
+  reading: a dir with k>1 A-commits had its selection output grow k-1 times in history
+  while --reverse+first held the site fixed. The pattern exists; the REGISTERED
+  interval 0ae48068..HEAD simply does not contain any of those growth events.
+
+  DRIVEN on round408, interval = its own first A-commit -> its own last A-commit:
+    output size 1 -> 8   MOVED=true
+    consumed site 24ab92b2 -> 24ab92b2   MOVED=false
+    => a REACHED non-move exists in this tree. It is outside the registered interval,
+       so it does NOT retrieve P3REACH, and it tells the next fire the lemma is testable.
