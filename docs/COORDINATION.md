@@ -5970,6 +5970,37 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   both blockers re-derived — one now closed, full gate including the driving sweep); nothing
   deferred. Two consecutive checks found nothing further unblocked — fire closed bounded. Log:
   `docs/logs/2026-11-04-iris-log.md`.
+- **Updated:** 2026-11-04 ~19:2x PT (STOP fire). **Status:** available.
+- **11/04 fire (STOP) — no-op on product; 50 commits read since own 11/04 START checkpoint
+  (`35a7fa24`), none mine, all under the Daedalus↔Theseus `unit-464{addarm,kpspan,cons,moves,
+  mysites}` research chains, nothing routed to this seat.** Drain against own START checkpoint:
+  50 new commits, none mine (checked `%an` per commit — 24 Daedalus, 19 Theseus, 4 Argus, 3
+  Calliope). `git diff --stat 35a7fa24..HEAD -- packages/ scripts/` **empty** — confirmed, not
+  assumed; `git diff --dirstat` shows the change entirely under
+  `docs/research/unit-464{addarm,kpspan,cons,moves,mysites}-2026-11-04/`, `docs/logs/`, and
+  `docs/mail/`. **Mail:** 5 new local files, all the Daedalus↔Theseus `unit-464` round exchange
+  (`cc: Janus, Argus, Calliope, Iris` on each); grepped `-i iris` across all 5 — every hit is a
+  `cc:` header line or a filename reference, none in body text routing an action here. All four
+  cross-repo mailboxes checked fresh via `git -C <repo> fetch` + `git log --since` against the
+  07:2x PT checkpoint: `designinproduct` 0 new; `mediajunkie` 0 new; `dispatch` 0 new;
+  `piper-morgan-product/mailboxes` 128 new, content-grepped (`git log -p --since ... | grep -iE
+  "klatch|\biris\b"`) — 0 hits. Nothing owed from any. Briefs: both unchanged since this
+  morning's checkpoint (fire-depth report and cross-pollination brief, `git diff --stat` empty
+  for `docs/briefs/`). **Standing blockers re-derived fresh:** ground-rules question stays
+  **closed** (ruled this morning, no re-opening signal); `entityGuess` re-grepped independently —
+  **6 files/23 hits**, unchanged. **Verified, not trusted:** `lsof -i :3001` port free; `npm run
+  typecheck` clean ×4 workspaces; server **140 files · 2186 passed · 1 skipped (2187)**; client
+  **26 passed|13 skipped (39) · 333 passed|13 skipped (346)** — byte-identical to this morning's
+  checkpoint; `sweep-probes --census` **153 probe files, 43 swept/110 deferred**, CENSUS OK,
+  unchanged; full driving sweep (HEAD unchanged at `ecbcd95b` before/after, tree clean throughout,
+  backgrounded past the 120s foreground limit, picked up via completion notification, verdict
+  line read directly from the task output) — **SWEEP PASSED — 43 of 43 swept probes green, 0
+  red, 0 blocked (0 could not run, 0 ran but did not finish), 0 census problem(s), 110
+  deferred.** No `packages/` changes this fire. Nothing new needs xian beyond the standing state
+  already recorded this morning. **Drain:** all unblocked items done (commit check, mail across
+  all four mailboxes plus local, both blockers re-derived, full gate including the driving
+  sweep); nothing deferred. Two consecutive checks found nothing further unblocked — fire closed
+  bounded. Log: `docs/logs/2026-11-04-iris-log.md`.
 - **Prior update:** 2026-10-31 ~19:2x PT (STOP fire). **Status:** available.
 - **10/31 fire (STOP) — no-op on product; 40 research-track/mail commits read (Daedalus's
   `unit-464vac`/`unit-464absorb`/`unit-464authored` chains, Theseus's `unit-464sat`/
