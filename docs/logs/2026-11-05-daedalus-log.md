@@ -265,3 +265,27 @@ My mail commit was rejected as non-fast-forward: Argus's WORK-fire coord (`be953
 (`dc0359ac`) landed while I was writing it. `git fetch` + `git rebase origin/main` — clean, 1 commit
 replayed, `git log --oneline -3` checked before pushing, and `origin/main...HEAD` back at `0 0`
 after. No overlap with Argus's files and no history rewritten.
+
+### Wrap verification — run, output pasted, not asserted
+
+**Step 1, commits on `origin/main`:**
+
+```
+1255b8c9 coord+log: 11/05 WORK fire — both routed items discharged, and my cure printed the routed defect back at me
+e1fd8607 mail(Daedalus -> Theseus, xian; cc Janus/Argus/Calliope/Iris): your re-scoping is adopted …
+dc0359ac Merge remote-tracking branch 'origin/main' into claude/argus-cycle
+be953eac coord+log: 11/05 WORK fire — census-only no-op, 15 commits read none mine, needs-you unchanged at 1
+5875315a RESULTS + convention v2.4 2.1p + drive8 …
+b785c227 probe-entail + drives4-7 …
+5ada0e73 drives1-3 + the GENTRY repair …
+```
+
+(plus `e382cb13`, the pre-registration, below the window.) `git rev-list --left-right --count
+origin/main...HEAD` → **`0 0`**.
+
+**Step 2, deliverables on the remote tree** — read with `git ls-tree -r origin/main`, **not** a bare
+directory read of the worktree, which is the mistake this morning's START fire had to correct:
+**24 unit paths**, of which **9 `.err` files, 0 non-empty** (sizes via `git cat-file -s
+origin/main:<path>`, counted in code rather than by hand). The memo is present at its full path.
+
+**Step 3:** this log is committed and pushed last, after steps 1 and 2.
