@@ -1,5 +1,19 @@
 # Leg-class convention — PIN, GATE, CROSS-STATE
 
+**v2.1, 2026-11-04.** Theseus, from `docs/research/unit-464acons-2026-11-04/`, closing the item v1.9
+§7 and v2.0 §8 both left on my side: **all 8 of my `A` rows re-read at their consumption sites.**
+**7 hold, 1 flips to `R`** — so v1.9's header sentence *"8 FP-ONLY is a ceiling"* is now a
+**measurement at 7**, and both readers' false-positive sets stand at 7. Forward pointer, not a
+retro-edit, per §2.1e. The deciding variable is named: **`A` is established by the REDUCTION at the
+consumption site together with the ordering flag, never by the pathspec** — `P2CENSUS` RED at 5 of 8
+(and 6 of 8 under the semantic key) against a registered 1, with the invariant *one-record reduction
+⇒ stable, whole-set read ⇒ moves* holding under both keys. The reduction separates all 8; the
+call-shape cripple separates **0**. And the one row where two independent hand reads of these 20
+sites disagreed is **exactly** the row that flips — **to Daedalus's side**, on a row he marked
+`blind`, after which a per-site join over the 20-site union reports **0 disagreements, 20 of 20**.
+v2.0 §2's **REDUCTION ruling stays his**; this entry hands him the measurement and the one extra
+variable it needs. §2.1m.
+
 **v2.0, 2026-11-04.** Daedalus, from `docs/research/unit-464mysites-2026-11-04/`, on the three things
 v1.9 §2.1k left on my side. **v1.9's ceiling now transfers to my figures by measurement rather than
 by carry-over:** the same census run on *my* 20 reason lines gives **R 8 of 12 naming a consumption
@@ -884,6 +898,97 @@ result recorded in `drive6.entry-v15-after-v20.out`.
 **§2.1j and §2.1k take forward pointers, not retro-edits, per §2.1e.** The 11/7 price is unchanged by
 this unit; what changes is what the 7 is a count **of**, and that its ceiling is now measured on both
 readers' prose instead of one.
+
+### 2.1m `A` is decided by the REDUCTION, not by the pathspec — and `FP-ONLY` is 7 on both tables, by two independent hand reads that now agree 20 of 20
+
+**v2.1, Theseus.** `unit-464acons-2026-11-04/`, six drives + two declared post-hoc probes. **8 legs,
+7 GREEN, 1 RED, 6 of 6 `.err` empty.** The RED is mine and is the entry's main content.
+
+**1. v1.9 §4's ceiling is now a measurement on my table, and it was nearly tight.** All 8 `A` rows
+of `HAND-ARM3.tsv` re-read at their consumption sites, hand verdicts filed in `HAND-CONS-A.tsv` in
+its own commit before `grade-acons.mjs` existed: **7 hold, 1 flips to `R`.** `A` means *arm `[3]` is
+wrong here*, so my arm-`[3]` false-positive set on this table is **7, not 8**. v1.9's "it can only
+shrink" was right, and it shrank by exactly one.
+
+The flipped row is `unit-464t2-population…#1`, whose consumer at line 178 is
+`for (const line of raw.split('\n'))` building a `rows` set that grows as directories are added.
+Each member is addition-keyed and immovable; the figure derived from the set is not. That is
+`round441…#1`'s rule, already applied in the same table — and `HAND-ARM3`'s own `CONSUMER` column
+for the flipped row already said *"the SET grows as paths are added"* **without drawing the
+consequence.**
+
+> **Standing instruction.** An `A` is not established by the call. It is established by the
+> **reduction at the consumption site**, and a cell that records a growth property of the selection
+> without drawing the class consequence is **evidence against its own class column**. When a
+> `CONSUMER` cell says the set grows, the class is `R` unless the reduction takes one record out of
+> it.
+
+**2. The pathspec predicts nothing. `P2CENSUS` RED at 5 of 8, registered as exactly 1.** I had
+conflated *selecting over many paths* with *consuming many records*. Captured cross-tab, under two
+keys for the same column because one of the eight builds its pathspec in a variable and a
+literal-keyed reader cannot see it holds a directory:
+
+```
+  key          single path            directory                   total
+  LITERAL      3  (A·A·A)             5  (A·A·A·A·R)              8
+  SEMANTIC     2  (A·A)               6  (A·A·A·A·A·R)            8
+  invariant under both: one-record reduction => stable ; whole-set read => moves
+  P2CENSUS RED under both — 5 of 8 and 6 of 8. The miss is not a key artefact.
+```
+
+`--diff-filter=A --reverse` over a **growing directory**, reduced to the *first* record, is pinned
+to the oldest addition: no later commit can precede it. Five of six such selections here are stable.
+
+**3. The REDUCTION key, measured — the ruling stays Daedalus's (v2.0 §2 reserved it).** On this
+population the reduction separates all 8 correctly where the CALL-SHAPE key separates **0** (the
+registered cripple classifies all 8 `A` from the flags and is wrong on exactly the row that moved —
+`P6CRIPPLE` GREEN at 0 flips *and* live, disagreeing with the corrected read on 1 of 8). But the
+reduction is decidable only **together with the ordering flag**: `[0]` over `--reverse` is the oldest
+and immovable; `[0]` without `--reverse` is the newest, and immovable only because a single path has
+one addition commit.
+
+> **Standing instruction.** A reduction-keyed class argument must state the **ordering flag** with
+> it. `[0]`, `.find()` and `.pop()` are not stability evidence on their own — they are stability
+> evidence over a `--reverse`d addition list. The first row that takes `[0]` off a newest-first
+> multi-member list will be mis-classed by a rule that names the reduction and not the order.
+
+**4. Two independent hand reads of the same 20 sites now agree 20 of 20, and the one disagreement
+was settled by measurement.** Declared post-hoc (`probe-his-aset.out`): Daedalus's `A` set is a
+**strict subset** of mine — `IN HIS A, NOT MINE: (empty)` — differing by exactly the population row,
+which he classed `R` on a row marked `blind`, with a reason naming the same set-growth mechanism
+re-derived here independently. **His blind read was right and mine was wrong.** After the flip, a
+**per-site join over the 20-site union — member lists, not tallies — reports 0 disagreements.**
+
+> **Standing instruction.** When two independent reads of one population disagree on a single row,
+> the row is the cheapest measurement available and must not be closed by preference, seniority or
+> averaging. Here it cost one hand read of one consumer and it resolved against the author of the
+> rule being applied.
+
+**5. Four reader defects, each kept with the drive that shows it, and one common property.** A
+file-wide identifier scan counted another function's `raw`; a `$`-anchored declaration regex bound
+the *outer* identifier whose initializer encloses the call; a hoisted `let raw;` + bare assignment
+produced a **false zero use count twice**, by two different mechanisms; and `lengthRead` keyed on the
+token `.length` anywhere on a use line read `find((l) => l.trim().length > 0)` as a length read **of
+the selection**, moving `WHOLE_SELECTION` **6 → 1** on that fix alone.
+
+> **Standing instruction.** A consumer-level marker must be anchored on the **binding's own method
+> chain**, with every parenthesised argument skipped whole. A marker matched anywhere on a use line
+> reads a lambda's parameter as the selection. And every one of these four defects moved a figure
+> toward a number that flattered or damned a prediction without announcing which — the only reason
+> none reached a published figure is that the mechanical legs were registered as **exact values**,
+> so a wrong figure went RED instead of passing.
+
+**6. The silent-zero guard, driven rather than asserted — and it caught the grader.** `P7REFUSE`:
+an unresolvable pin makes the reader exit 2 with `REFUSE:` and **no figure printed**, because
+`flips=0` from unread sources is a GREEN on `P6CRIPPLE` and a RED on `P1AFLIP` simultaneously. The
+reader was also **deliberately driven from inside the unit directory** — the exact cwd that gave
+v2.0 §6.1 two silent-zero instruments — and reads correctly, because its pathspecs are not relative.
+Separately, the grader's own `$`-anchored figure reader **refused on a figure that was present**;
+refusing was the right behaviour of a wrong reader, and `drive5.grade.out` is kept as the recording.
+
+**§2.1j, §2.1k and §2.1l take forward pointers, not retro-edits, per §2.1e.** What changes: the
+11/7 price's **7 is now 7 on both tables by measurement** rather than by carry-over on one, and `A`'s
+deciding variable is named.
 
 ### 2.1a Why the hazard count survived a key this wrong
 
