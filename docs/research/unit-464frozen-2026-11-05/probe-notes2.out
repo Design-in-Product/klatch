@@ -1,0 +1,33 @@
+recording docs/research/unit-464frozen-2026-11-05/drive3.arms-untruncated.out — 6 legs × 9 arms
+
+   GTSVFROZEN  ok@A0CONTROL  RED@A6TSV      note 154/154 bytes · identical 146 (95%)
+      common PREFIX (78): "HAND-AXES-13.tsv is byte-identical at the pin (6f830c72) and in the worktree ("
+      common SUFFIX (68): ") — the @194 why cell is corrected in the document, not retro-edited"
+      the RED note's own words:     "HAND-AXES-13.tsv is byte-identical at the pin (6f830c72) and in the worktree (f70035c1) — the @194 why cell is corrected in the document, not retro-edited"
+
+   GENTRY      ok@A0CONTROL  RED@A7DOC      note 436/378 bytes · identical 21 (5%)
+      common PREFIX (21): "SPAN: §2.1g → ### 2.1"
+      common SUFFIX (0): ""
+      the RED note's own words:     "SPAN: §2.1g → ### 2.1a Why the hazard count survived a key this wrong, 5106 bytes · SHAPE: 1 `###` headings in the span (want 2: the entry and its own MEASURED-BLOCK) · BLOCK: MEASURED-BLOCK-V15 found"
+
+   GCLAIMS     ok@A0CONTROL  RED@A1CLAIM    note 63/90 bytes · identical 1 (1%)
+      common PREFIX (1): "1"
+      common SUFFIX (0): ""
+      the RED note's own words:     "11 of 12 published figures found verbatim in drive5's recording — MISSING: RED at 19 of 20"
+
+   GHKNOOP     ok@A0CONTROL  RED@A2HKEXTRA  note 215/215 bytes · identical 187 (87%)
+      common PREFIX (28): "history-keyed demoted only: "
+      common SUFFIX (159): "er than GP3ORDER's own echo, 0 summary-line changes — and GP3ORDER's two lines differ only in the echoed ORDER, both still ok with \"0 departures of 5\""
+      the RED note's own words:     "history-keyed demoted only: 5 changed lines (2 pairs), 1 legs other than GP3ORDER's own echo, 0 summary-line changes — and GP3ORDER's two lines differ only in the echoed ORDER, both still ok with \"0 d"
+
+   GHKECHO     ok@A0CONTROL  RED@A4ECHO     note 168/168 bytes · identical 168 (100%)
+      common PREFIX (168): "both sides of GP3ORDER's changed line read \"0 departures of 5\" under the demoted order — t"
+      common SUFFIX (168): "RDER's changed line read \"0 departures of 5\" under the demoted order — the figure does not move, so nothing in this unit reads history-keyed > movable"
+      the RED note's own words:     "both sides of GP3ORDER's changed line read \"0 departures of 5\" under the demoted order — the figure does not move, so nothing in this unit reads history-keyed > movable"
+
+   GPKREACHED  ok@A0CONTROL  RED@A5PKFLIP   note 210/220 bytes · identical 210 (95%)
+      common PREFIX (72): "20 named legs · full reversal flips 3 [GP3ORDER, GP4SURVIVE, GP4COINCIDE"
+      common SUFFIX (138): "] over 26 changed lines · history-keyed demoted flips 0 — the legs DO read the order, so GHKNOOP is a measured no-op and not a dead switch"
+      the RED note's own words:     "20 named legs · full reversal flips 3 [GP3ORDER, GP4SURVIVE, GP4COINCIDE, GP6COUNT] over 26 changed lines · history-keyed demoted flips 0 — the legs DO read the order, so GHKNOOP is a measured no-op a"
+
+4 of 6 legs print a common suffix of more than 40 bytes across their own ok/RED pair

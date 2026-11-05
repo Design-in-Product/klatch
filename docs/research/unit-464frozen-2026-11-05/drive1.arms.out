@@ -1,0 +1,83 @@
+subject docs/research/unit-464prec-2026-11-03/grade-entry-v15.mjs
+subject rev (HEAD, read not recalled) b412e0f9b226ab326c31193e1758f30d7dedbccd
+subject blob at HEAD 41e0be019d12
+
+== A0CONTROL  (no mutation)
+   exit 1 · 0 leg lines · (no summary line)
+   stderr: node:internal/modules/cjs/loader:1573 |   throw err; |   ^ | 
+
+== A1CLAIM  docs/research/unit-464prec-2026-11-03/drive5.prec.out
+   landed: 5883 -> 5883 bytes, 1 line(s) differ
+     - RED — 19 of 20 legs ok
+     + RED — 18 of 20 legs ok
+   exit 1 · 0 leg lines · (no summary line)
+   stderr: node:internal/modules/cjs/loader:1573 |   throw err; |   ^ | 
+
+== A2HKEXTRA  docs/research/unit-464prec-2026-11-03/drive7.delta-vs-drive5.txt
+   landed: 821 -> 872 bytes, 2 line(s) differ
+     - 
+     + >    RED  GP4UNIQUE    appended fifth changed line
+     - (absent)
+     + 
+   exit 1 · 0 leg lines · (no summary line)
+   stderr: node:internal/modules/cjs/loader:1573 |   throw err; |   ^ | 
+
+== A3HKMASK  docs/research/unit-464prec-2026-11-03/drive7.delta-vs-drive5.txt
+   landed: 821 -> 854 bytes, 2 line(s) differ
+     - <    ok   GP3ORDER       most-movable-wins under [history-keyed > movable > immovable] vs the value filed in HAND-AXES-13.tsv: GCURE@71 movable/movabl
+     + <    ok   GP4SURVIVE       most-movable-wins [cf GP3ORDER] under [history-keyed > movable > immovable] vs the value filed in HAND-AXES-13.tsv: GCURE@7
+     - >    ok   GP3ORDER       most-movable-wins under [movable > immovable > history-keyed] vs the value filed in HAND-AXES-13.tsv: GCURE@71 movable/movabl
+     + >    RED   GP4SURVIVE       most-movable-wins [cf GP3ORDER] under [movable > immovable > history-keyed] vs the value filed in HAND-AXES-13.tsv: GCURE@
+   exit 1 · 0 leg lines · (no summary line)
+   stderr: node:internal/modules/cjs/loader:1573 |   throw err; |   ^ | 
+
+== A3bHKPLAIN  docs/research/unit-464prec-2026-11-03/drive7.delta-vs-drive5.txt
+   landed: 821 -> 854 bytes, 2 line(s) differ
+     - <    ok   GP3ORDER       most-movable-wins under [history-keyed > movable > immovable] vs the value filed in HAND-AXES-13.tsv: GCURE@71 movable/movabl
+     + <    ok   GP4SURVIVE       most-movable-wins [cf GPXORDER] under [history-keyed > movable > immovable] vs the value filed in HAND-AXES-13.tsv: GCURE@7
+     - >    ok   GP3ORDER       most-movable-wins under [movable > immovable > history-keyed] vs the value filed in HAND-AXES-13.tsv: GCURE@71 movable/movabl
+     + >    RED   GP4SURVIVE       most-movable-wins [cf GPXORDER] under [movable > immovable > history-keyed] vs the value filed in HAND-AXES-13.tsv: GCURE@
+   exit 1 · 0 leg lines · (no summary line)
+   stderr: node:internal/modules/cjs/loader:1573 |   throw err; |   ^ | 
+
+== A4ECHO  docs/research/unit-464prec-2026-11-03/drive7.delta-vs-drive5.txt
+   landed: 821 -> 821 bytes, 1 line(s) differ
+     - <    ok   GP3ORDER       most-movable-wins under [history-keyed > movable > immovable] vs the value filed in HAND-AXES-13.tsv: GCURE@71 movable/movabl
+     + <    ok   GP3ORDER       most-movable-wins under [history-keyed > movable > immovable] vs the value filed in HAND-AXES-13.tsv: GCURE@71 movable/movabl
+   exit 1 · 0 leg lines · (no summary line)
+   stderr: node:internal/modules/cjs/loader:1573 |   throw err; |   ^ | 
+
+== A5PKFLIP  docs/research/unit-464prec-2026-11-03/drive6.cripple-preckey.out
+   landed: 5902 -> 5903 bytes, 1 line(s) differ
+     -    ok   GP6COUNT       occupied cells of the 3x3: 6 with row-level axis B, 6 with per-conjunct axis B — the occupancy count does NOT move
+     +    RED   GP6COUNT       occupied cells of the 3x3: 6 with row-level axis B, 6 with per-conjunct axis B — the occupancy count does NOT move
+   exit 1 · 0 leg lines · (no summary line)
+   stderr: node:internal/modules/cjs/loader:1573 |   throw err; |   ^ | 
+
+== A6TSV  docs/research/unit-464order-2026-11-02/HAND-AXES-13.tsv
+   landed: 5911 -> 5912 bytes, 1 line(s) differ
+     - (absent)
+     + 
+   exit 1 · 0 leg lines · (no summary line)
+   stderr: node:internal/modules/cjs/loader:1573 |   throw err; |   ^ | 
+
+== A7DOC  docs/research/LEG-CLASS-CONVENTION.md
+   (A7DOC re-derived span: 6937 bytes, ends at ### 2.1h `history-ke; first digit at span offset 4 = "2")
+   landed: 122891 -> 122891 bytes, 1 line(s) differ
+     - ### 2.1g A `conjunctive` row's axis B is a precedence OUTPUT, on four of the five real rows — and half of the order it uses is untested
+     + ### 3.1g A `conjunctive` row's axis B is a precedence OUTPUT, on four of the five real rows — and half of the order it uses is untested
+   exit 1 · 0 leg lines · (no summary line)
+   stderr: node:internal/modules/cjs/loader:1573 |   throw err; |   ^ | 
+
+== MATRIX — registered cell vs measured
+   MISS A0CONTROL   predicted ∅                measured REFUSED
+   MISS A1CLAIM     predicted {GCLAIMS}        measured REFUSED
+   MISS A2HKEXTRA   predicted {GHKNOOP}        measured REFUSED
+   MISS A3HKMASK    predicted ∅                measured REFUSED
+   MISS A3bHKPLAIN  predicted {GHKNOOP}        measured REFUSED
+   MISS A4ECHO      predicted {GHKECHO}        measured REFUSED
+   MISS A5PKFLIP    predicted {GPKREACHED}     measured REFUSED
+   MISS A6TSV       predicted {GTSVFROZEN}     measured REFUSED
+   MISS A7DOC       predicted {GENTRY}         measured REFUSED
+
+0 of 9 arms hit their registered cell

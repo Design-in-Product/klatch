@@ -1,0 +1,128 @@
+subject docs/research/unit-464prec-2026-11-03/grade-entry-v15.mjs
+subject rev (HEAD, read not recalled) b412e0f9b226ab326c31193e1758f30d7dedbccd
+subject blob at HEAD 41e0be019d12
+
+== A0CONTROL  (no mutation)
+   exit 0 · 6 leg lines · GREEN — 6 of 6 legs ok
+      ok   GTSVFROZEN   HAND-AXES-13.tsv is byte-identical at the pin (6f830c72) and in the worktree (6f830c72) — the @194 why cell is corrected in the document, not retro-edited
+      ok   GENTRY       SPAN: §2.1g → ### 2.1h `history-keyed > movable` is a PRESCRIPTION — no leg in this tree can measure it, and the detector that said so has a blind spot, 6937 bytes · SHAPE: 2 `###` headings in the span (want 2: t
+      ok   GCLAIMS      12 of 12 published figures found verbatim in drive5's recording
+      ok   GHKNOOP      history-keyed demoted only: 4 changed lines (2 pairs), 0 legs other than GP3ORDER's own echo, 0 summary-line changes — and GP3ORDER's two lines differ only in the echoed ORDER, both still ok with "0 departures of
+      ok   GHKECHO      both sides of GP3ORDER's changed line read "0 departures of 5" under the demoted order — the figure does not move, so nothing in this unit reads history-keyed > movable
+      ok   GPKREACHED   20 named legs · full reversal flips 3 [GP3ORDER, GP4SURVIVE, GP4COINCIDE] over 26 changed lines · history-keyed demoted flips 0 — the legs DO read the order, so GHKNOOP is a measured no-op and not a dead switch
+
+== A1CLAIM  docs/research/unit-464prec-2026-11-03/drive5.prec.out
+   landed: 5883 -> 5883 bytes, 1 line(s) differ
+     - RED — 19 of 20 legs ok
+     + RED — 18 of 20 legs ok
+   exit 1 · 6 leg lines · RED — 5 of 6 legs ok
+      ok   GTSVFROZEN   HAND-AXES-13.tsv is byte-identical at the pin (6f830c72) and in the worktree (6f830c72) — the @194 why cell is corrected in the document, not retro-edited
+      ok   GENTRY       SPAN: §2.1g → ### 2.1h `history-keyed > movable` is a PRESCRIPTION — no leg in this tree can measure it, and the detector that said so has a blind spot, 6937 bytes · SHAPE: 2 `###` headings in the span (want 2: t
+      RED  GCLAIMS      11 of 12 published figures found verbatim in drive5's recording — MISSING: RED at 19 of 20
+      ok   GHKNOOP      history-keyed demoted only: 4 changed lines (2 pairs), 0 legs other than GP3ORDER's own echo, 0 summary-line changes — and GP3ORDER's two lines differ only in the echoed ORDER, both still ok with "0 departures of
+      ok   GHKECHO      both sides of GP3ORDER's changed line read "0 departures of 5" under the demoted order — the figure does not move, so nothing in this unit reads history-keyed > movable
+      ok   GPKREACHED   20 named legs · full reversal flips 3 [GP3ORDER, GP4SURVIVE, GP4COINCIDE] over 26 changed lines · history-keyed demoted flips 0 — the legs DO read the order, so GHKNOOP is a measured no-op and not a dead switch
+
+== A2HKEXTRA  docs/research/unit-464prec-2026-11-03/drive7.delta-vs-drive5.txt
+   landed: 821 -> 872 bytes, 2 line(s) differ
+     - 
+     + >    RED  GP4UNIQUE    appended fifth changed line
+     - (absent)
+     + 
+   exit 1 · 6 leg lines · RED — 5 of 6 legs ok
+      ok   GTSVFROZEN   HAND-AXES-13.tsv is byte-identical at the pin (6f830c72) and in the worktree (6f830c72) — the @194 why cell is corrected in the document, not retro-edited
+      ok   GENTRY       SPAN: §2.1g → ### 2.1h `history-keyed > movable` is a PRESCRIPTION — no leg in this tree can measure it, and the detector that said so has a blind spot, 6937 bytes · SHAPE: 2 `###` headings in the span (want 2: t
+      ok   GCLAIMS      12 of 12 published figures found verbatim in drive5's recording
+      RED  GHKNOOP      history-keyed demoted only: 5 changed lines (2 pairs), 1 legs other than GP3ORDER's own echo, 0 summary-line changes — and GP3ORDER's two lines differ only in the echoed ORDER, both still ok with "0 departures of
+      ok   GHKECHO      both sides of GP3ORDER's changed line read "0 departures of 5" under the demoted order — the figure does not move, so nothing in this unit reads history-keyed > movable
+      ok   GPKREACHED   20 named legs · full reversal flips 3 [GP3ORDER, GP4SURVIVE, GP4COINCIDE] over 26 changed lines · history-keyed demoted flips 0 — the legs DO read the order, so GHKNOOP is a measured no-op and not a dead switch
+
+== A3HKMASK  docs/research/unit-464prec-2026-11-03/drive7.delta-vs-drive5.txt
+   landed: 821 -> 854 bytes, 2 line(s) differ
+     - <    ok   GP3ORDER       most-movable-wins under [history-keyed > movable > immovable] vs the value filed in HAND-AXES-13.tsv: GCURE@71 movable/movabl
+     + <    ok   GP4SURVIVE       most-movable-wins [cf GP3ORDER] under [history-keyed > movable > immovable] vs the value filed in HAND-AXES-13.tsv: GCURE@7
+     - >    ok   GP3ORDER       most-movable-wins under [movable > immovable > history-keyed] vs the value filed in HAND-AXES-13.tsv: GCURE@71 movable/movabl
+     + >    RED   GP4SURVIVE       most-movable-wins [cf GP3ORDER] under [movable > immovable > history-keyed] vs the value filed in HAND-AXES-13.tsv: GCURE@
+   exit 0 · 6 leg lines · GREEN — 6 of 6 legs ok
+      ok   GTSVFROZEN   HAND-AXES-13.tsv is byte-identical at the pin (6f830c72) and in the worktree (6f830c72) — the @194 why cell is corrected in the document, not retro-edited
+      ok   GENTRY       SPAN: §2.1g → ### 2.1h `history-keyed > movable` is a PRESCRIPTION — no leg in this tree can measure it, and the detector that said so has a blind spot, 6937 bytes · SHAPE: 2 `###` headings in the span (want 2: t
+      ok   GCLAIMS      12 of 12 published figures found verbatim in drive5's recording
+      ok   GHKNOOP      history-keyed demoted only: 4 changed lines (2 pairs), 0 legs other than GP3ORDER's own echo, 0 summary-line changes — and GP3ORDER's two lines differ only in the echoed ORDER, both still ok with "0 departures of
+      ok   GHKECHO      both sides of GP3ORDER's changed line read "0 departures of 5" under the demoted order — the figure does not move, so nothing in this unit reads history-keyed > movable
+      ok   GPKREACHED   20 named legs · full reversal flips 3 [GP3ORDER, GP4SURVIVE, GP4COINCIDE] over 26 changed lines · history-keyed demoted flips 0 — the legs DO read the order, so GHKNOOP is a measured no-op and not a dead switch
+
+== A3bHKPLAIN  docs/research/unit-464prec-2026-11-03/drive7.delta-vs-drive5.txt
+   landed: 821 -> 854 bytes, 2 line(s) differ
+     - <    ok   GP3ORDER       most-movable-wins under [history-keyed > movable > immovable] vs the value filed in HAND-AXES-13.tsv: GCURE@71 movable/movabl
+     + <    ok   GP4SURVIVE       most-movable-wins [cf GPXORDER] under [history-keyed > movable > immovable] vs the value filed in HAND-AXES-13.tsv: GCURE@7
+     - >    ok   GP3ORDER       most-movable-wins under [movable > immovable > history-keyed] vs the value filed in HAND-AXES-13.tsv: GCURE@71 movable/movabl
+     + >    RED   GP4SURVIVE       most-movable-wins [cf GPXORDER] under [movable > immovable > history-keyed] vs the value filed in HAND-AXES-13.tsv: GCURE@
+   exit 1 · 6 leg lines · RED — 5 of 6 legs ok
+      ok   GTSVFROZEN   HAND-AXES-13.tsv is byte-identical at the pin (6f830c72) and in the worktree (6f830c72) — the @194 why cell is corrected in the document, not retro-edited
+      ok   GENTRY       SPAN: §2.1g → ### 2.1h `history-keyed > movable` is a PRESCRIPTION — no leg in this tree can measure it, and the detector that said so has a blind spot, 6937 bytes · SHAPE: 2 `###` headings in the span (want 2: t
+      ok   GCLAIMS      12 of 12 published figures found verbatim in drive5's recording
+      RED  GHKNOOP      history-keyed demoted only: 4 changed lines (2 pairs), 2 legs other than GP3ORDER's own echo, 0 summary-line changes — and GP3ORDER's two lines differ only in the echoed ORDER, both still ok with "0 departures of
+      ok   GHKECHO      both sides of GP3ORDER's changed line read "0 departures of 5" under the demoted order — the figure does not move, so nothing in this unit reads history-keyed > movable
+      ok   GPKREACHED   20 named legs · full reversal flips 3 [GP3ORDER, GP4SURVIVE, GP4COINCIDE] over 26 changed lines · history-keyed demoted flips 0 — the legs DO read the order, so GHKNOOP is a measured no-op and not a dead switch
+
+== A4ECHO  docs/research/unit-464prec-2026-11-03/drive7.delta-vs-drive5.txt
+   landed: 821 -> 821 bytes, 1 line(s) differ
+     - <    ok   GP3ORDER       most-movable-wins under [history-keyed > movable > immovable] vs the value filed in HAND-AXES-13.tsv: GCURE@71 movable/movabl
+     + <    ok   GP3ORDER       most-movable-wins under [history-keyed > movable > immovable] vs the value filed in HAND-AXES-13.tsv: GCURE@71 movable/movabl
+   exit 1 · 6 leg lines · RED — 5 of 6 legs ok
+      ok   GTSVFROZEN   HAND-AXES-13.tsv is byte-identical at the pin (6f830c72) and in the worktree (6f830c72) — the @194 why cell is corrected in the document, not retro-edited
+      ok   GENTRY       SPAN: §2.1g → ### 2.1h `history-keyed > movable` is a PRESCRIPTION — no leg in this tree can measure it, and the detector that said so has a blind spot, 6937 bytes · SHAPE: 2 `###` headings in the span (want 2: t
+      ok   GCLAIMS      12 of 12 published figures found verbatim in drive5's recording
+      ok   GHKNOOP      history-keyed demoted only: 4 changed lines (2 pairs), 0 legs other than GP3ORDER's own echo, 0 summary-line changes — and GP3ORDER's two lines differ only in the echoed ORDER, both still ok with "0 departures of
+      RED  GHKECHO      both sides of GP3ORDER's changed line read "0 departures of 5" under the demoted order — the figure does not move, so nothing in this unit reads history-keyed > movable
+      ok   GPKREACHED   20 named legs · full reversal flips 3 [GP3ORDER, GP4SURVIVE, GP4COINCIDE] over 26 changed lines · history-keyed demoted flips 0 — the legs DO read the order, so GHKNOOP is a measured no-op and not a dead switch
+
+== A5PKFLIP  docs/research/unit-464prec-2026-11-03/drive6.cripple-preckey.out
+   landed: 5902 -> 5903 bytes, 1 line(s) differ
+     -    ok   GP6COUNT       occupied cells of the 3x3: 6 with row-level axis B, 6 with per-conjunct axis B — the occupancy count does NOT move
+     +    RED   GP6COUNT       occupied cells of the 3x3: 6 with row-level axis B, 6 with per-conjunct axis B — the occupancy count does NOT move
+   exit 1 · 6 leg lines · RED — 5 of 6 legs ok
+      ok   GTSVFROZEN   HAND-AXES-13.tsv is byte-identical at the pin (6f830c72) and in the worktree (6f830c72) — the @194 why cell is corrected in the document, not retro-edited
+      ok   GENTRY       SPAN: §2.1g → ### 2.1h `history-keyed > movable` is a PRESCRIPTION — no leg in this tree can measure it, and the detector that said so has a blind spot, 6937 bytes · SHAPE: 2 `###` headings in the span (want 2: t
+      ok   GCLAIMS      12 of 12 published figures found verbatim in drive5's recording
+      ok   GHKNOOP      history-keyed demoted only: 4 changed lines (2 pairs), 0 legs other than GP3ORDER's own echo, 0 summary-line changes — and GP3ORDER's two lines differ only in the echoed ORDER, both still ok with "0 departures of
+      ok   GHKECHO      both sides of GP3ORDER's changed line read "0 departures of 5" under the demoted order — the figure does not move, so nothing in this unit reads history-keyed > movable
+      RED  GPKREACHED   20 named legs · full reversal flips 3 [GP3ORDER, GP4SURVIVE, GP4COINCIDE, GP6COUNT] over 26 changed lines · history-keyed demoted flips 0 — the legs DO read the order, so GHKNOOP is a measured no-op and not a dea
+
+== A6TSV  docs/research/unit-464order-2026-11-02/HAND-AXES-13.tsv
+   landed: 5911 -> 5912 bytes, 1 line(s) differ
+     - (absent)
+     + 
+   exit 1 · 6 leg lines · RED — 5 of 6 legs ok
+      RED  GTSVFROZEN   HAND-AXES-13.tsv is byte-identical at the pin (6f830c72) and in the worktree (f70035c1) — the @194 why cell is corrected in the document, not retro-edited
+      ok   GENTRY       SPAN: §2.1g → ### 2.1h `history-keyed > movable` is a PRESCRIPTION — no leg in this tree can measure it, and the detector that said so has a blind spot, 6937 bytes · SHAPE: 2 `###` headings in the span (want 2: t
+      ok   GCLAIMS      12 of 12 published figures found verbatim in drive5's recording
+      ok   GHKNOOP      history-keyed demoted only: 4 changed lines (2 pairs), 0 legs other than GP3ORDER's own echo, 0 summary-line changes — and GP3ORDER's two lines differ only in the echoed ORDER, both still ok with "0 departures of
+      ok   GHKECHO      both sides of GP3ORDER's changed line read "0 departures of 5" under the demoted order — the figure does not move, so nothing in this unit reads history-keyed > movable
+      ok   GPKREACHED   20 named legs · full reversal flips 3 [GP3ORDER, GP4SURVIVE, GP4COINCIDE] over 26 changed lines · history-keyed demoted flips 0 — the legs DO read the order, so GHKNOOP is a measured no-op and not a dead switch
+
+== A7DOC  docs/research/LEG-CLASS-CONVENTION.md
+   (A7DOC re-derived span: 6937 bytes, ends at ### 2.1h `history-ke; first digit at span offset 4 = "2")
+   landed: 122891 -> 122891 bytes, 1 line(s) differ
+     - ### 2.1g A `conjunctive` row's axis B is a precedence OUTPUT, on four of the five real rows — and half of the order it uses is untested
+     + ### 3.1g A `conjunctive` row's axis B is a precedence OUTPUT, on four of the five real rows — and half of the order it uses is untested
+   exit 1 · 6 leg lines · RED — 5 of 6 legs ok
+      ok   GTSVFROZEN   HAND-AXES-13.tsv is byte-identical at the pin (6f830c72) and in the worktree (6f830c72) — the @194 why cell is corrected in the document, not retro-edited
+      RED  GENTRY       SPAN: §2.1g → ### 2.1a Why the hazard count survived a key this wrong, 5106 bytes · SHAPE: 1 `###` headings in the span (want 2: the entry and its own MEASURED-BLOCK) · BLOCK: MEASURED-BLOCK-V15 found in the span
+      ok   GCLAIMS      12 of 12 published figures found verbatim in drive5's recording
+      ok   GHKNOOP      history-keyed demoted only: 4 changed lines (2 pairs), 0 legs other than GP3ORDER's own echo, 0 summary-line changes — and GP3ORDER's two lines differ only in the echoed ORDER, both still ok with "0 departures of
+      ok   GHKECHO      both sides of GP3ORDER's changed line read "0 departures of 5" under the demoted order — the figure does not move, so nothing in this unit reads history-keyed > movable
+      ok   GPKREACHED   20 named legs · full reversal flips 3 [GP3ORDER, GP4SURVIVE, GP4COINCIDE] over 26 changed lines · history-keyed demoted flips 0 — the legs DO read the order, so GHKNOOP is a measured no-op and not a dead switch
+
+== MATRIX — registered cell vs measured
+   HIT  A0CONTROL   predicted ∅                measured ∅
+   HIT  A1CLAIM     predicted {GCLAIMS}        measured {GCLAIMS}
+   HIT  A2HKEXTRA   predicted {GHKNOOP}        measured {GHKNOOP}
+   HIT  A3HKMASK    predicted ∅                measured ∅
+   HIT  A3bHKPLAIN  predicted {GHKNOOP}        measured {GHKNOOP}
+   HIT  A4ECHO      predicted {GHKECHO}        measured {GHKECHO}
+   HIT  A5PKFLIP    predicted {GPKREACHED}     measured {GPKREACHED}
+   HIT  A6TSV       predicted {GTSVFROZEN}     measured {GTSVFROZEN}
+   HIT  A7DOC       predicted {GENTRY}         measured {GENTRY}
+
+9 of 9 arms hit their registered cell
