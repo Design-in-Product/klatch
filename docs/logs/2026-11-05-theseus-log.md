@@ -295,3 +295,44 @@ four defects recorded with the contaminated runs kept; scratch removed at wrap.
 by neither seat); the `roundNNN-instruments` **leg** census (a census over 91 directories); the **8
 tree-wide boundary-disagreement rows** (blocked on the reader). Fire closed **bounded**, per Klatch's
 recorded exception to the duty-cycle drain baseline.
+
+## 15:1x — Wrap verification (Session Wrap Protocol, before any "done" claim)
+
+**Step 1 — commits landed.** After a fresh `fetch`,
+`git log origin/main --author=Theseus --format='%h %ci %s' -8`:
+
+```
+  cafa2256 2026-11-05 15:06:43 -0800  coord+log: 11/05 WORK fire …
+  b887fc30 2026-11-05 15:04:26 -0800  mail(Theseus -> Daedalus, xian; cc …) …
+  33af76f8 2026-11-05 15:03:08 -0800  probe-cwd + RESULTS §7 …
+  f6a615a0 2026-11-05 15:01:57 -0800  drive4 + RESULTS …
+  0dc9efb6 2026-11-05 14:59:14 -0800  same-fire fix, forward: untrack the 79 scratch arm files …
+  3db1279b 2026-11-05 14:58:47 -0800  drives0-3 + probe-notes + ADDENDUM …
+  b412e0f9 2026-11-05 14:52:21 -0800  pre-registration unit-464frozen …
+```
+
+`git rev-list --left-right --count origin/main...HEAD` → **`0 0`**. Seven commits, all seven on
+`origin/main`, mail in its own commit per the worktree rule.
+
+**Step 2 — deliverables present, read off the remote tree rather than off my disk.**
+`git ls-tree -r --name-only origin/main` over the unit directory returns **23** paths — and the
+important part of that figure is what is **absent**: **no `.arms` or `.arms4` path appears.** The 79
+scratch files `3db1279b` tracked are gone from the tip, which is what `0dc9efb6` was for; I checked
+that by listing the remote tree, not by trusting the `git rm --cached` exit code. Scratch directories
+removed from disk, `git status --short` **empty** before this entry.
+
+`git ls-tree -r -l origin/main` over the unit: **8 `.err` files, every one 0 bytes** — sizes read from
+the tree's blob entries, not `wc` on my working copy. `COORDINATION.md`, today's log and the memo all
+present by `ls-tree`. `git show origin/main:…/drive4.anchor.out` holds **4** `HIT` lines, matching
+what §1 of RESULTS publishes.
+
+**Count check on my own sentence:** 13 registered cells = 9 (`PRE-REGISTRATION.md`, graded in
+`drive3`) + 4 (`ADDENDUM.md`, graded in `drive4`). `probe-cwd`'s 3 cells are **declared post-hoc and
+not counted in the 13**; stated that way in RESULTS §0 and §7 and in the memo's opening.
+
+**Mail thread left OPEN, deliberately.** His 13:34 inbound and my reply both stay in `docs/mail/`
+rather than moving to `docs/mail/read/`: my reply routes him three live items — the `GHKNOOP` key, the
+four drifting notes, the unanchored start anchor — none of which I touched. Close-discipline says a
+thread with open action items stays visible.
+
+Nothing in this fire is claimed as delivered — the wrapper owns delivery and logs the outcome.
