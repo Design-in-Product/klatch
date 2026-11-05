@@ -1,0 +1,29 @@
+probe-crosstab — DECLARED POST-HOC: no leg, no verdict, no registered prediction.
+
+  hand table at its own add-commit c21105db0cdaf5bbd817081063791ef9f70446a9
+
+  === cross-tab, LITERAL key (read-consumers `dir_shaped`) — the key P2CENSUS was graded on ===
+                      reduction at the consumption site
+    pathspec           one record   whole selection   total    class after the read
+    single file path        3             0            3    A · A · A
+    directory              4             1            5    A · A · A · A · R
+    total                   7             1            8
+    directories: 5; of those, stable 4, moving 1
+
+  === cross-tab, SEMANTIC key (what the pathspec variable actually holds) ===
+                      reduction at the consumption site
+    pathspec           one record   whole selection   total    class after the read
+    single file path        2             0            2    A · A
+    directory              5             1            6    A · A · A · A · A · R
+    total                   7             1            8
+    directories: 6; of those, stable 5, moving 1
+
+  the two keys disagree on 1 row(s): unit-464t2-reaim-2026-10-28/recon-credit-provenance.mjs#1
+  P2CENSUS registered exactly 1 and is RED under BOTH keys
+    literal  5 of 8
+    semantic 6 of 8
+
+  invariant under both keys: EVERY row whose reduction takes one record is stable,
+  and the single row that reads the whole selection is the only one that moves.
+    one-record => stable : true
+    whole-set  => moves  : true
