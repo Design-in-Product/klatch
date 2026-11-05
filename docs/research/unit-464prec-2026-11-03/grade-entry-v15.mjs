@@ -6,13 +6,43 @@
 // [[feedback_prose_written_beside_its_own_cure_needs_a_pin]]
 //
 //   node docs/research/unit-464prec-2026-11-03/grade-entry-v15.mjs
+//
+// GENTRY repaired 2026-11-05 by `unit-464gentry-2026-11-05/` after Theseus routed it to me: as
+// written it could not go red. See that unit's RESULTS.md and v2.4 §2.1p. The three defects were a
+// wrong-and-unasserted end anchor, a floor that separated 0 of 2 candidate spans, and a reason
+// string that had drifted false while its predicate stayed true.
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 
 const D = 'docs/research/unit-464prec-2026-11-03/';
-const DOC = 'docs/research/LEG-CLASS-CONVENTION.md';
+// Overridable so a cripple arm can drive this instrument against a mutated copy of the document
+// without mutating the document. Nothing else in this file reads it.
+const DOC = process.env.GENTRY_DOC ?? 'docs/research/LEG-CLASS-CONVENTION.md';
+const DOC_TRACKED = 'docs/research/LEG-CLASS-CONVENTION.md';
 const AXES = 'docs/research/unit-464order-2026-11-02/HAND-AXES-13.tsv';
 const PIN = '5ba1af7369e97a3abade0cbd5be4e542e0668971';
+// The rev that INTRODUCED §2.1g, derived once with `git log -S '### 2.1g' --reverse` and recorded
+// in `unit-464gentry-2026-11-05/drive2.entryrev.out`. It is NOT `PIN`: `PIN` is 2026-11-03 13:07
+// and freezes the drive recordings; the entry was authored 23 minutes later at 13:31, so `PIN`
+// does not contain §2.1g at all and cannot supply a frozen baseline for the prose.
+const ENTRY_REV = 'a3607d5a045cdccea7dd97b91b0250d4d1923eaa';
+
+// A span is a START anchor and an END, and both must be established before any byte is sliced.
+// `doc.indexOf(x)` returning -1 makes `slice(i, -1)` a BIGGER span, not an error, so an unasserted
+// anchor cannot be detected downstream by any threshold on the result.
+// The end is derived STRUCTURALLY — the next `### ` heading that is not the entry's own
+// MEASURED-BLOCK, else end of document — because a named sibling heading does not exist at every
+// rev this span has to be read at: `### 2.1h` arrived with v1.6 and is absent at ENTRY_REV, and
+// `### 2.1a` sits in the out-of-order tail BELOW §2.1g, which is what produced the 57054-byte
+// 13-heading "entry" Theseus priced.
+export function entrySpan(text, startAnchor = '### 2.1g', ownBlock = '### MEASURED-BLOCK-V15') {
+  const i = text.indexOf(startAnchor);
+  if (i < 0) return { err: `start anchor absent: ${startAnchor}` };
+  const heads = [...text.matchAll(/^### .*$/gm)]
+    .filter((m) => m.index > i && !m[0].startsWith(ownBlock));
+  const j = heads.length ? heads[0].index : text.length;
+  return { text: text.slice(i, j), i, j, end: heads.length ? heads[0][0] : '(end of document)' };
+}
 const legs = [];
 const check = (n, ok, note) => { legs.push({ n, ok, note }); return ok; };
 const g = (a) => execFileSync('git', a, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], maxBuffer: 1 << 28 }).trim();
@@ -26,9 +56,31 @@ check('GTSVFROZEN', axesPin === axesLive,
   `(${axesLive.slice(0, 8)}) — the @194 why cell is corrected in the document, not retro-edited`);
 
 const doc = rd(DOC);
-const entry = doc.slice(doc.indexOf('### 2.1g'), doc.indexOf('### 2.1a'));
-check('GENTRY', entry.length > 2000 && /MEASURED-BLOCK-V15/.test(entry) && /^\*\*v1\.5, 2026-11-03\.\*\*/m.test(doc),
-  `§2.1g is ${entry.length} bytes, carries its MEASURED-BLOCK, and the document header announces v1.5`);
+const span = entrySpan(doc);
+const baseSpan = span.err ? null : entrySpan(g(['show', `${ENTRY_REV}:${DOC_TRACKED}`]));
+const heads = span.err ? [] : (span.text.match(/^### .*$/gm) ?? []);
+const histRe = /^\*\*v1\.5, 2026-11-03\.\*\*/m;
+const hist = doc.match(histRe);
+// Each conjunct is named and reported separately: a conjunction that only prints its own truth
+// value cannot say which half reddened.
+// [[feedback_a_leg_conjoining_a_sanity_check_with_its_claim_cannot_say_which_reddened]]
+const conj = [
+  ['SPAN', !span.err, span.err ?? `§2.1g → ${span.end}, ${span.text.length} bytes`],
+  ['SHAPE', heads.length === 2, `${heads.length} \`###\` headings in the span (want 2: the entry and its own MEASURED-BLOCK)`],
+  ['BLOCK', !span.err && /MEASURED-BLOCK-V15/.test(span.text), 'MEASURED-BLOCK-V15 is inside the span'],
+  ['FROZEN', !!baseSpan && !baseSpan.err && baseSpan.text === span.text,
+    baseSpan?.err ? `baseline refused at ${ENTRY_REV.slice(0, 8)}: ${baseSpan.err}`
+      : `${baseSpan ? baseSpan.text.length : '—'} bytes at ${ENTRY_REV.slice(0, 8)} vs ${span.err ? '—' : span.text.length} live`],
+  ['HIST', !!hist && hist.index < doc.indexOf('### 2.1g'),
+    hist ? `v1.5's version-history entry is at line ${doc.slice(0, hist.index).split('\n').length}, above §2.1g`
+      : "v1.5's version-history entry is ABSENT (§2.1e forbids removing it)"],
+];
+const bad = conj.filter(([, ok]) => !ok);
+// The note states measurements, not a claim. A sentence asserting the verdict is a second thing
+// that can drift away from the predicate, which is precisely what this leg's old note did.
+check('GENTRY', bad.length === 0,
+  conj.map(([n, , note]) => `${n}: ${note}`).join(' · ') +
+  (bad.length ? ` — FAILED: ${bad.map(([n]) => n).join(', ')}` : ''));
 
 // Every figure the entry publishes, against the recording it came from.
 const base = rd(D + 'drive5.prec.out');

@@ -1,0 +1,7 @@
+subject pin 5afca5dd · gate pin 5ba1af73 · toplevel /Users/xian/Development/klatch-worktrees/daedalus
+   ok   P1TIGHT    tight span (### 2.1g -> ### 2.1h) is 6937 bytes over 2 ### headings [2.1g, MEASURED-BLOCK-V15]
+   RED  P2PINNED   REFUSED at the pin — start anchor absent: ### 2.1g (so the pin cannot supply a frozen span)
+   ok   P3FLOOR    `entry.length > 2000`: wrong=true · tight=true — the conjunct separates 0 of 2 spans (wrong span 57054B over 13 ### headings)
+   ok   P4HEADER   regex matches at line 111 (index 9582), which is ABOVE ### 2.1g at 33528 — i.e. in the append-only version history, not the header. Header line 3 announces v2.3, so the printed note "the document header announces v1.5" is FALSE
+
+RED — 3 of 4 legs ok

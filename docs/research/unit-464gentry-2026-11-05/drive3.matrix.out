@@ -1,0 +1,30 @@
+--- the one-line parameterisation applied to the pinned baseline, verbatim ---
+--- docs/research/unit-464gentry-2026-11-05/scratch/pinned.grade-entry-v15.mjs	2026-11-05 13:25:08
++++ docs/research/unit-464gentry-2026-11-05/scratch/pre-repair.grade-entry-v15.mjs	2026-11-05 13:25:08
+@@ -10,7 +10,7 @@
+ import { readFileSync } from 'node:fs';
+ 
+ const D = 'docs/research/unit-464prec-2026-11-03/';
+-const DOC = 'docs/research/LEG-CLASS-CONVENTION.md';
++const DOC = process.env.GENTRY_DOC ?? 'docs/research/LEG-CLASS-CONVENTION.md';
+ const AXES = 'docs/research/unit-464order-2026-11-02/HAND-AXES-13.tsv';
+ const PIN = '5ba1af7369e97a3abade0cbd5be4e542e0668971';
+ const legs = [];
+changed lines: 2 (want 2: one -, one +)
+
+--- P5MATRIX: GENTRY verdict per arm, per instrument version ---
+   ok   A0NULL       pre=ok   post=ok    registered pre=ok post=ok  · doc 112253B · other legs pre[GTSVFROZEN=ok GCLAIMS=ok GHKNOOP=ok GHKECHO=ok GPKREACHED=ok] post[GTSVFROZEN=ok GCLAIMS=ok GHKNOOP=ok GHKECHO=ok GPKREACHED=ok]
+        post note: SPAN: §2.1g → ### 2.1h `history-keyed > movable` is a PRESCRIPTION — no leg in this tree can measure it, and the detector that said so has a blind spot, 6937 bytes · SHAPE: 2 `###` headings in the span (want 2: the entry and its own MEASURED-BLOCK) · BLOCK: MEASURED-BLOCK-V15 is inside the span · FROZEN: 6937 bytes at a3607d5a vs 6937 live · HIST: v1.5's version-history entry is at line 111, above §2.1g
+   ok   A1FIGURE     pre=ok   post=RED   registered pre=ok post=RED  · doc 112254B · other legs pre[GTSVFROZEN=ok GCLAIMS=ok GHKNOOP=ok GHKECHO=ok GPKREACHED=ok] post[GTSVFROZEN=ok GCLAIMS=ok GHKNOOP=ok GHKECHO=ok GPKREACHED=ok]
+        post note: SPAN: §2.1g → ### 2.1h `history-keyed > movable` is a PRESCRIPTION — no leg in this tree can measure it, and the detector that said so has a blind spot, 6938 bytes · SHAPE: 2 `###` headings in the span (want 2: the entry and its own MEASURED-BLOCK) · BLOCK: MEASURED-BLOCK-V15 is inside the span · FROZEN: 6937 bytes at a3607d5a vs 6938 live · HIST: v1.5's version-history entry is at line 111, above §2.1g — FAILED: FROZEN
+   ok   A2SHRINK     pre=ok   post=RED   registered pre=ok post=RED  · doc 107604B · other legs pre[GTSVFROZEN=ok GCLAIMS=ok GHKNOOP=ok GHKECHO=ok GPKREACHED=ok] post[GTSVFROZEN=ok GCLAIMS=ok GHKNOOP=ok GHKECHO=ok GPKREACHED=ok]
+        post note: SPAN: §2.1g → ### 2.1h `history-keyed > movable` is a PRESCRIPTION — no leg in this tree can measure it, and the detector that said so has a blind spot, 2288 bytes · SHAPE: 2 `###` headings in the span (want 2: the entry and its own MEASURED-BLOCK) · BLOCK: MEASURED-BLOCK-V15 is inside the span · FROZEN: 6937 bytes at a3607d5a vs 2288 live · HIST: v1.5's version-history entry is at line 111, above §2.1g — FAILED: FROZEN
+   ok   A3ENDGONE    pre=ok   post=RED   registered pre=ok post=RED  · doc 112146B · other legs pre[GTSVFROZEN=ok GCLAIMS=ok GHKNOOP=ok GHKECHO=ok GPKREACHED=ok] post[GTSVFROZEN=ok GCLAIMS=ok GHKNOOP=ok GHKECHO=ok GPKREACHED=ok]
+        post note: SPAN: §2.1g → ### MEASURED-BLOCK-V16, 10208 bytes · SHAPE: 2 `###` headings in the span (want 2: the entry and its own MEASURED-BLOCK) · BLOCK: MEASURED-BLOCK-V15 is inside the span · FROZEN: 6937 bytes at a3607d5a vs 10208 live · HIST: v1.5's version-history entry is at line 111, above §2.1g — FAILED: FROZEN
+   ok   A4OLDANCHOR  pre=ok   post=ok    registered pre=ok post=ok  · doc 112230B · other legs pre[GTSVFROZEN=ok GCLAIMS=ok GHKNOOP=ok GHKECHO=ok GPKREACHED=ok] post[GTSVFROZEN=ok GCLAIMS=ok GHKNOOP=ok GHKECHO=ok GPKREACHED=ok]
+        post note: SPAN: §2.1g → ### 2.1h `history-keyed > movable` is a PRESCRIPTION — no leg in this tree can measure it, and the detector that said so has a blind spot, 6937 bytes · SHAPE: 2 `###` headings in the span (want 2: the entry and its own MEASURED-BLOCK) · BLOCK: MEASURED-BLOCK-V15 is inside the span · FROZEN: 6937 bytes at a3607d5a vs 6937 live · HIST: v1.5's version-history entry is at line 111, above §2.1g
+   ok   A5HISTGONE   pre=RED  post=RED   registered pre=RED post=RED  · doc 112253B · other legs pre[GTSVFROZEN=ok GCLAIMS=ok GHKNOOP=ok GHKECHO=ok GPKREACHED=ok] post[GTSVFROZEN=ok GCLAIMS=ok GHKNOOP=ok GHKECHO=ok GPKREACHED=ok]
+        post note: SPAN: §2.1g → ### 2.1h `history-keyed > movable` is a PRESCRIPTION — no leg in this tree can measure it, and the detector that said so has a blind spot, 6937 bytes · SHAPE: 2 `###` headings in the span (want 2: the entry and its own MEASURED-BLOCK) · BLOCK: MEASURED-BLOCK-V15 is inside the span · FROZEN: 6937 bytes at a3607d5a vs 6937 live · HIST: v1.5's version-history entry is ABSENT (§2.1e forbids removing it) — FAILED: HIST
+
+P5MATRIX GREEN — 6 of 6 arms match their registered cell
+DISCRIMINATION — of the 4 corruptions outside the two controls, the pre-repair leg catches 0 and the repaired leg catches 3
