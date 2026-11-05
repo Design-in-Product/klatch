@@ -20,7 +20,42 @@ Agents working on this repo use this file as the async handoff protocol.
 ### Argus (quality & test infrastructure)
 - **Branch:** `claude/argus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/argus`, per-worktree git identity `Argus (Klatch)`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope restored per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-04 ~13:3x PT (WORK fire — census-only no-op, 15 new commits read none mine, needs-you unchanged at 1).
+- **Updated:** 2026-11-04 ~18:0x PT (STOP fire — census-only no-op, 24 new commits read none mine, needs-you unchanged at 1).
+  Checkpoint own last commit `b2288030` (11/04 WORK fire, ~13:3x PT). 24 new commits since,
+  author-checked (Daedalus 13, Theseus 10, Calliope 1), none mine: Daedalus's `unit-464cons`
+  chain (pre-registration, hand read, drives 1-4 — a second independent hand read of Theseus's
+  20 sites, 15 of 16 blind sites agree, the one disagreement measured rather than resolved by
+  preference, convention v1.8), Theseus's `unit-464moves` chain (pre-registration through
+  drives 1-7 + cross-tab + RESULTS — the axis is wrong, a consumption site is the free variable
+  rather than member-vs-extent, "A is not establishable by a differential test," the 90-vs-91
+  directory count reconciled exactly under both keys, convention v1.9 §2.1k), Daedalus's
+  `unit-464mysites` chain (pre-registration, hand read, addendum, drives 1-5 + probe — P3REACH
+  REFUTED at 0 of 7, both of Daedalus's registered cripples found dead on mechanical diff,
+  convention v2.0 §2.1l), three rounds of mail between Daedalus and Theseus (cc
+  Janus/**Argus**/Calliope/Iris each time), and Calliope's 11/04 SWEEP coord+log no-op. `git
+  diff --dirstat b2288030..HEAD` **100% under `docs/`** (logs, mail, three `unit-464*-2026-11-04/`
+  dirs); `git diff --stat b2288030..HEAD -- packages/ scripts/` empty. **Mail:** three new
+  local files this window, all read in full — Argus on `cc:` only in all three, no body
+  bucket naming this seat; one memo notes informationally that my own WORK-fire commit caused
+  a non-fast-forward rejection Daedalus resolved by a clean rebase (no overlap, no force push),
+  nothing to action. Standing open thread addressed to this seat
+  (`theseus-to-argus-daedalus-...-your-unclaimed-110-is-zero...-2026-10-27.md`) re-checked:
+  unchanged, still open on Daedalus's unclosed C4 half, not this seat's call to close
+  unilaterally. All four cross-repo mailboxes re-fetched and content-grepped for
+  "klatch"/"argus" against a 14:00 PT checkpoint: `designinproduct` 3 new (Janus/Themis intro-
+  draft/summit traffic, 0 hits); `mediajunkie` 0 new; `dispatch` 0 new;
+  `piper-morgan-product/mailboxes` 51 new, 0 hits. Nothing owed from any. **Standing blockers
+  re-derived fresh:** Managed Agents smoke-run — no `ma-smoke/*` branch anywhere, named blocker
+  on xian, unchanged. Rollup read directly: still v174, needs-you still **1**, matching midday
+  exactly. **Gate re-derived fresh:** `npm run typecheck` clean ×4 workspaces; `npm test -w
+  packages/server` **140 files · 2186 passed · 1 skipped (2187)**, byte-identical; `npm test -w
+  packages/client` **26 passed|13 skipped (39) · 333 passed|13 skipped (346)**, byte-identical;
+  `node scripts/sweep-probes.mjs --census` **153 probe files, 43 swept/110 deferred, CENSUS
+  OK**, byte-identical. **Needs-you:** unchanged at 1. Two consecutive checks (mail re-ls,
+  cross-repo fetches) found nothing further unblocked — fire closed bounded. **Drain:** census,
+  mail (local + 4 cross-repo), gate, and standing-blocker check all drained this fire; nothing
+  deferred. Log: `docs/logs/2026-11-04-argus-log.md`.
+- **Updated (previous):** 2026-11-04 ~13:3x PT (WORK fire — census-only no-op, 15 new commits read none mine, needs-you unchanged at 1).
   Checkpoint own last commit `78d65beff` (11/04 START fire, 09:03 PT). 15 new commits since,
   author-checked (Daedalus 11, Theseus 3, Calliope 1), none mine: Daedalus's `unit-464kpspan`
   chain (pre-registration through drives 1-5 + two addenda — his own blocking KP has no leg
