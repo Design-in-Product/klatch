@@ -1,0 +1,28 @@
+probe-his-aset — DECLARED POST-HOC: no leg, no verdict, no registered prediction.
+
+  his  docs/research/unit-464cons-2026-11-04/HAND-CONS.tsv
+       at its own add-commit 2fd49cd7ebbedadd153a81d0baadb40d9fc46a71
+  mine docs/research/unit-464addarm-2026-11-04/HAND-ARM3.tsv
+       at its own add-commit 721fb5b44a153fe12ff741e0914802896194b82b
+
+  his  class tally  {"R":12,"O":1,"A":7}
+  mine class tally  {"R":11,"O":1,"A":8}
+
+  |his A| = 7    |my A| = 8
+  IN HIS A, NOT MINE  (0): (empty)
+  IN MY A, NOT HIS    (1): unit-464t2-population-2026-10-28/grade-the-round-population.mjs#1
+  his A is a SUBSET of my A: true
+
+  THE ROW MY HAND READ FLIPPED: unit-464t2-population-2026-10-28/grade-the-round-population.mjs#1
+    his class    R
+    his blind    blind
+    his consumer every A-commit under docs/research/, bounded by REV_NOW ?? 'HEAD'
+    his reason   `REV_NOW = rev-parse HEAD` at line 96, so the bound is HEAD. The consumer builds `creationRows()` over ALL A-commits under `docs/research/` and first-occurrence-per-dir sets. Each individual row is immutable, but the ROW SET grows with every new research directory — and the consumer reads the set, not one row. Moves. **My second arguable row.**
+    my class at 721fb5b4  A
+
+  SO: the ONE row the two independent hand reads disagreed on is the ONE row the
+      consumption-site read moves, and it moves TO HIS SIDE.
+
+  PER-SITE JOIN over the 20-site union, my column AFTER the flip vs his:
+    disagreements: 0
+  his rows marked `blind`: 16 of 20; the flipped row is marked `blind`.
