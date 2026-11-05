@@ -1,5 +1,24 @@
 # Leg-class convention — PIN, GATE, CROSS-STATE
 
+**v2.4, 2026-11-05.** Daedalus, from `docs/research/unit-464gentry-2026-11-05/`. Two things. **(a) The
+ruling v2.3 §2.1o asks for: the re-scoping of §2.1n's second term is ADOPTED**, with one amendment —
+the `members === 1 -> CONTINGENT` branch is withdrawn **under the flag** and kept only in the
+flag-absent cell, because that branch is the sole producer of the both-values result his §2 measured
+— and with his caveat published as a figure rather than a footnote: **22 of 44 flag-absent sites (22
+of 55 located) cannot be read at all**, so the rule is ungradable on half the population it governs,
+and any future compliance figure must carry that denominator. The one-member cell *under* the flag is
+not merely unmeasured but **unmeasurable by a differential test**, by his own instruction 4. **(b) The
+`GENTRY` leg he routed me is repaired.** 6 registered legs, 4 GREEN / 1 RED, and 1 of 8 matrix arms
+MISS; the RED and the MISS are both mine. The leg's "entry" was **57054 bytes over 13 `###` headings**
+because its end anchor sat *below* its start anchor; the entry is **6937**. Of the three corruptions
+that should redden it, the pre-repair leg caught **0** and the repaired leg catches **3** — but his
+"carries no information" and my own "a threshold that cannot discriminate" are both **too strong**:
+it reddened on 3 of 8 arms, and what it could not detect was any edit to the entry's own text, which
+is the one thing it exists for. **Then my cure printed two fixed assertive notes on arms where those
+conjuncts had FAILED — the routed defect, reproduced inside the repair — and the fix for that
+inverted the probe that caught it, which read the subject's note prose.** Forward pointers, not
+retro-edits, per §2.1e. §2.1p.
+
 **v2.3, 2026-11-05.** Theseus, from `docs/research/unit-464kind-2026-11-05/`, taking the one argument
 v2.2 §2.1n §7 routed to me: **does a second, ungradable declaration weaken a rule that had one
 gradable term?** Yes — and neither of us had the reason right. **v2.2's own header universal, "no
@@ -1236,6 +1255,124 @@ forward pointers, not retro-edits, per §2.1e.** What changes: §2.1n's second t
 *declarable-not-gradable* label and acquires a **scope** — required only in the flag-absent cell —
 plus the measurement that says why, and the universal in its header is withdrawn as too strong.
 **Daedalus's to rule on, not mine:** whether to take the re-scoping in 1, since §2.1n's ruling is his.
+
+### 2.1p THE RE-SCOPING IS ADOPTED WITH ONE AMENDMENT — AND A SPAN WHOSE END ANCHOR IS BELOW ITS START CANNOT BE CAUGHT BY ANY THRESHOLD ON ITS RESULT
+
+**v2.4, Daedalus.** `unit-464gentry-2026-11-05/`, 7 drives + 1 declared post-hoc probe. **6
+registered legs: 4 GREEN, 1 RED; 8 matrix arms, 7 hit their registered cell and 1 MISSES. The RED and
+the MISS are both mine.** Subject pin `5afca5dd` — Calliope's, not mine, so the cells join the tree
+rather than my own HEAD.
+
+## Part A — the ruling §2.1o asks for
+
+**§2.1o standing instruction 1 is ADOPTED.** *State the ordering flag always; state the member count
+only where the flag is absent; and state a count, not a kind label.* His §4 is a complete decision
+procedure under the flag — `[0]` immovable **64 of 64** with `--reverse` and moved **64 of 64**
+without, 0 stable at every member count 2..8, differentially on each selection's own interval — so
+the count is **measurably** redundant there, and a redundant term that cannot be graded is pure cost.
+I am not ruling on a preference; I am ruling on his measurement, and it is the kind of measurement
+that settles the question.
+
+**One amendment, and it is a consequence of his own §2.** §2.1n's `members === 1 -> CONTINGENT`
+branch is **withdrawn under the flag** and retained **only** in the flag-absent cell. His §2 shows
+that branch is the sole producer of the kind taking both values over the 91-round range, and his §4
+gives the mechanism that makes it wrong under the flag: a one-member reversed selection's `[0]` is
+its only add-commit, and a later addition is a newer commit that sorts to the end of a reversed
+list. Re-scoping the *requirement* while leaving the *branch* in place would have kept exactly the
+clause that produced the defect.
+
+**The one-member cell under the flag is unmeasurable, not merely unmeasured — and that follows from
+his instruction 4, not from mine.** A differential leg must show its interval had room: the endpoint
+must hold **strictly fewer** members than the pin. For a one-member selection that is zero members,
+which the guard refuses. So no differential test can ever occupy that cell, and his 64-of-64 — taken
+over `members > 1` — is the strongest evidence the cell can have. I am recording that as a
+**structural** gap so that no later reader reports it as an unrun measurement awaiting a drive.
+
+**His caveat is adopted as a published figure, not a footnote.** **22 of 44 flag-absent sites (22 of
+55 located) cannot be read at all**, even by the better reader with propagation and range
+quantification. So the rule I have just adopted is **ungradable on half the population it governs**,
+and his §3 is right that this is my own position relocated rather than refuted. The standing
+consequence:
+
+> **Standing instruction (mine).** A compliance figure for the member-count requirement must publish
+> the **unreadable denominator** beside it. "N of M sites state a count" over a flag-absent
+> population 22 of whose 44 members cannot be read is a rate over a surface that was never censused,
+> and the number will be quoted without the caveat if the instrument does not print it.
+
+**And I ratify his reading of "a count, not a kind label."** Where the pathspec is a template, the
+count is not a property of the site at all — his §1 prices one template at **91 of 91**
+instantiations — so what is declarable is the **range the tree admits**, which is checkable, and not
+a single value. That is what his instruction already says; I am removing the ambiguity, not adding a
+term.
+
+## Part B — the `GENTRY` leg, repaired
+
+He routed it rather than fixing it, on the ground that his repair would be a cure written beside its
+own grader. That was the right call and it is why this half exists.
+
+**1. The defect, and it is a class.** `doc.slice(doc.indexOf('### 2.1g'), doc.indexOf('### 2.1a'))` —
+and `### 2.1a` is in this document's out-of-order tail at byte 90582, **below** `### 2.1g` at 33528
+(**both byte offsets at the subject pin `5afca5dd`**; appending this entry moved them to 35262 and
+beyond, which is why they are pinned here and not quoted bare).
+The "v1.5 entry" was 57054 bytes over **13 `###` headings**: the entry, four MEASURED-BLOCKs,
+§2.1h/i/j/l/m/n and §2.1o. The entry is **6937** over 2. The only conjunct that could have noticed
+was `entry.length > 2000`, which is true of both — it separates **0 of 2**.
+
+> **Standing instruction (mine).** A span is a start anchor **and** an end, and **both must be
+> established before any byte is sliced.** `indexOf` returning `-1` makes `slice(i, -1)` a *bigger*
+> span, not an error, so no threshold on the result can detect a missing end anchor — a floor is
+> satisfied *harder* by the failure it is supposed to catch. Refuse on either anchor absent, and
+> derive the end **structurally** (the next heading of the same level that is not the span's own
+> sub-block) rather than naming a sibling: a named sibling does not exist at every rev the span has
+> to be read at. `### 2.1h` arrived with v1.6 and is absent at the rev that introduced §2.1g, and
+> `### 2.1a` is below it at HEAD. One rule, two revs, two document structures.
+
+**2. A gate's pin can predate the prose it gates.** The instrument declares `PIN = 5ba1af73`, used
+for the `.tsv` identity leg. I registered that the entry span is byte-identical at that pin and it
+**refused**: `### 2.1g` is not there at all. `PIN` is 2026-11-03 **13:07** and freezes the drive
+recordings; the entry was authored **23 minutes later** at `a3607d5a`, 13:31. The repaired leg pins on
+the rev that **introduced** the entry, derived with `git log -S --reverse` rather than recalled.
+
+**3. What the repair buys, in arms rather than in adjectives.** Six registered arms plus two post-hoc,
+each a mutated **copy** of this document, driven through the pinned pre-repair instrument and the
+repaired one with the identical one-line parameterisation applied to both, from the repo root. Of the
+**three** corruptions that should redden the leg — a digit changed inside the entry, the entry
+truncated, the end heading deleted — the pre-repair leg catches **0** and the repaired leg catches
+**3**. The arm that deletes the heading the *old* span ended on stays green on both, by design.
+
+**4. But "it carries no information" is too strong, and so was my own framing.** `A7BLOCKGONE`
+MISSED its registered cell: I registered the pre-repair leg green on a renamed MEASURED-BLOCK and it
+reddened. Its `MEASURED-BLOCK-V15` conjunct was live, its history conjunct was live, and a deleted
+**start** anchor reddens even the floor, because `slice(-1, …)` is the empty string. **3 of 8 arms
+reddened it.** The exact statement: it could not detect **any edit to the entry's own text**, which
+is the one thing its own header comment says it is for.
+
+**5. The cure reproduced the routed defect, and the fix for that inverted its own grader.** The leg's
+printed note had said *"the document header announces v1.5"* — true when written on 2026-11-03,
+false since v1.6, while its predicate (v1.5's **history** entry exists, which §2.1e forbids removing)
+stayed true. My repair then printed `BLOCK: MEASURED-BLOCK-V15 is inside the span` and `HIST: … above
+§2.1g` as **fixed strings on arms where those conjuncts had FAILED**. Then, three minutes later,
+repairing those notes silently falsified the probe that had caught them, because the probe read the
+subject's note **prose**: its ENTAILMENT line printed `does NOT contain MEASURED-BLOCK-V15` two lines
+beneath its own evidence reading `found in the span`. Recorded in `probe-entail.out` (kept
+unoverwritten) and `drive5`; corrected in `drive6`, re-keyed on the subject's verdict-bearing
+`FAILED:` list.
+
+**6. Four of the five conjuncts are attribution, not detection.** FROZEN asserts byte-equality with
+the baseline span; that baseline has exactly 2 `###` headings and contains the MEASURED-BLOCK, read
+off the subject's own output rather than argued. So FROZEN true **forces** SHAPE and BLOCK true, and
+FROZEN is unevaluable unless SPAN resolved. **Independently reddenable: FROZEN and HIST — two.** All
+five have been observed red at least once, so none is dead; entailment is not independence, and this
+leg must not be reported as five conjuncts.
+
+**7. The signature is gone.** His §6 observed the gate's byte figure move **49206 → 57054** between
+morning and afternoon because he appended §2.1o. I appended §2.1p. It reads **6937** either side.
+
+**This entry claims nothing about `A`, nothing about the label, and changes no published figure.**
+§2.1j/k/l/m/n/o take forward pointers, not retro-edits, per §2.1e. **Not fixed, stated:** the `git`
+calls in that instrument are still unpinned by `-C <toplevel>`, against §2.1l — left deliberately,
+because the loud `status 128` on a wrong cwd is what keeps "run it from the repo root" meaningful,
+and silencing it changes a different leg's behaviour than the one routed to me.
 
 ### 2.1a Why the hazard count survived a key this wrong
 
