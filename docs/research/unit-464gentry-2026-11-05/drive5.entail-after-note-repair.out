@@ -1,0 +1,19 @@
+--- two post-hoc arms aimed at the three conjuncts drive3 never reddened ---
+   ok   A6STARTGONE  pre=RED  post=RED   registered pre=RED post=RED  · conjuncts failed post: SPAN, SHAPE, BLOCK, FROZEN, HIST
+        pre  note: §2.1g is 0 bytes, carries its MEASURED-BLOCK, and the document header announces v1.5
+        post note: SPAN: start anchor absent: ### 2.1g · SHAPE: 0 `###` headings in the span (want 2: the entry and its own MEASURED-BLOCK) · BLOCK: MEASURED-BLOCK-V15 NOT FOUND in the span · FROZEN: — bytes at a3607d5a vs — live · HIST: v1.5's version-history entry at line 111 (byte 9582) vs §2.1g at byte -1 — §2.1g ABSENT, so "above §2.1g" is unevaluable — FAILED: SPAN, SHAPE, BLOCK, FROZEN, HIST
+   MISS A7BLOCKGONE  pre=RED  post=RED   registered pre=ok post=RED  · conjuncts failed post: SHAPE, BLOCK, FROZEN
+        pre  note: §2.1g is 57056 bytes, carries its MEASURED-BLOCK, and the document header announces v1.5
+        post note: SPAN: §2.1g → ### MB-V15-RENAMED-BY-A7, 4851 bytes · SHAPE: 1 `###` headings in the span (want 2: the entry and its own MEASURED-BLOCK) · BLOCK: MEASURED-BLOCK-V15 NOT FOUND in the span · FROZEN: 6937 bytes at a3607d5a vs 4851 live · HIST: v1.5's version-history entry at line 111 (byte 9582) vs §2.1g at byte 33528 — above it — FAILED: SHAPE, BLOCK, FROZEN
+
+A8ATENTRYREV — the repaired gate driven against the document AS IT WAS when the entry
+   was written (a3607d5a): GENTRY=ok
+        note: SPAN: §2.1g → ### 2.1a Why the hazard count survived a key this wrong, 6937 bytes · SHAPE: 2 `###` headings in the span (want 2: the entry and its own MEASURED-BLOCK) · BLOCK: MEASURED-BLOCK-V15 found in the span · FROZEN: 6937 bytes at a3607d5a vs 6937 live · HIST: v1.5's version-history entry at line 3 (byte 49) vs §2.1g at byte 23995 — above it
+ENTAILMENT — that baseline span has exactly 2 `###` headings and does NOT contain MEASURED-BLOCK-V15,
+   so FROZEN=true does NOT force SHAPE=true and BLOCK=true, and FROZEN is
+   unevaluable unless SPAN resolved. Independently reddenable conjuncts: FROZEN, HIST.
+   Conjuncts observed red across drive3 + this probe: BLOCK, FROZEN, HIST, SHAPE, SPAN
+
+SPAN/SHAPE/BLOCK are ATTRIBUTION, not detection: they name which way the entry moved
+once FROZEN has already failed. That is worth keeping and is not worth counting as
+five conjuncts in any future report of this leg.

@@ -64,16 +64,25 @@ const hist = doc.match(histRe);
 // Each conjunct is named and reported separately: a conjunction that only prints its own truth
 // value cannot say which half reddened.
 // [[feedback_a_leg_conjoining_a_sanity_check_with_its_claim_cannot_say_which_reddened]]
+// EVERY note below is a measurement, not a claim. First written 2026-11-05 with fixed assertive
+// strings for BLOCK and HIST, which `unit-464gentry/probe-entail.out` caught printing
+// "MEASURED-BLOCK-V15 is inside the span" and "above §2.1g" on the arms where those very conjuncts
+// had FAILED — the defect this repair exists to remove, reproduced inside the repair.
+const gIdx = doc.indexOf('### 2.1g');
+const histLine = hist ? doc.slice(0, hist.index).split('\n').length : -1;
 const conj = [
   ['SPAN', !span.err, span.err ?? `§2.1g → ${span.end}, ${span.text.length} bytes`],
   ['SHAPE', heads.length === 2, `${heads.length} \`###\` headings in the span (want 2: the entry and its own MEASURED-BLOCK)`],
-  ['BLOCK', !span.err && /MEASURED-BLOCK-V15/.test(span.text), 'MEASURED-BLOCK-V15 is inside the span'],
+  ['BLOCK', !span.err && /MEASURED-BLOCK-V15/.test(span.text),
+    `MEASURED-BLOCK-V15 ${!span.err && /MEASURED-BLOCK-V15/.test(span.text) ? 'found in' : 'NOT FOUND in'} the span`],
   ['FROZEN', !!baseSpan && !baseSpan.err && baseSpan.text === span.text,
     baseSpan?.err ? `baseline refused at ${ENTRY_REV.slice(0, 8)}: ${baseSpan.err}`
       : `${baseSpan ? baseSpan.text.length : '—'} bytes at ${ENTRY_REV.slice(0, 8)} vs ${span.err ? '—' : span.text.length} live`],
-  ['HIST', !!hist && hist.index < doc.indexOf('### 2.1g'),
-    hist ? `v1.5's version-history entry is at line ${doc.slice(0, hist.index).split('\n').length}, above §2.1g`
-      : "v1.5's version-history entry is ABSENT (§2.1e forbids removing it)"],
+  ['HIST', !!hist && gIdx >= 0 && hist.index < gIdx,
+    hist
+      ? `v1.5's version-history entry at line ${histLine} (byte ${hist.index}) vs §2.1g at byte ` +
+        `${gIdx}${gIdx < 0 ? ' — §2.1g ABSENT, so "above §2.1g" is unevaluable' : hist.index < gIdx ? ' — above it' : ' — BELOW it'}`
+      : "v1.5's version-history entry NOT FOUND (§2.1e forbids removing it)"],
 ];
 const bad = conj.filter(([, ok]) => !ok);
 // The note states measurements, not a claim. A sentence asserting the verdict is a second thing
