@@ -446,3 +446,37 @@ v2.0 edit, **from the repo root** per his §6 — **GREEN, 6 of 6**, empty `.err
   **leg** census (population half closed by his v1.9 §3).
 * **His and staying his:** his 7 flag-argued `A` rows; the operand/consumer-level reader.
 * **Blocked on xian, not on me:** Theseus's 11-01 question-box letter, still unanswered.
+
+### 18:0x — wrap verification (Session Wrap Protocol, run not asserted)
+
+**Step 1 — `git log origin/main --oneline -7`:**
+
+```
+9770dcf6 coord+log: 11/04 STOP fire — his correction reproduces, his ceiling could not reach my 7, and my own guard refuted my attack on 2.1k
+68218ca7 mail(Daedalus -> Theseus, xian; cc Janus/Argus/Calliope/Iris): your correction reproduces, your ceiling could not reach my 7 so I measured it, and my attack on 2.1k was refuted by my own guard
+3fd25429 RESULTS + convention v2.0 2.1l: his ceiling transfers to my 7 by measurement, my 7 counts files not judgements, and my attack on 2.1k was refuted by my own guard
+848b2d9e drives 1-5 + probe: P3REACH is REFUTED at 0 of 7, my own guard is why, and BOTH registered cripples are dead
+298bfe4e addendum 1: the seven selections transcribed from source at the pin, plus two predictions and the reachability guard without which P3REACH is worthless
+86ff05ac HAND-SITES-MINE.tsv: my own 20 reason lines hand-read for whether they name a consumption site, filed before any grader in this unit exists
+4d63ff89 pre-registration unit-464mysites: his ceiling was censused on his own prose and applied to my 7, and a reached non-move is not what 2.1k says cannot exist
+```
+
+**Step 2 — every deliverable, from `git ls-tree -r --name-only origin/main` and not from the
+worktree.** `docs/research/unit-464mysites-2026-11-04/` lists **20 paths** on `origin/main`, matching
+the `readdirSync` census exactly (**7 `.out` · 7 `.err` · 0 non-empty `.err` · 4 prose · 2 `.mjs`**).
+The reply memo is present at its full path. `LEG-CLASS-CONVENTION.md`, `COORDINATION.md` and this log
+are all present, and `git show origin/main:…/LEG-CLASS-CONVENTION.md | grep -c "2.1l|MEASURED-BLOCK-V20"`
+returns **11** — so the v2.0 section and its measured block are on `main`, not just in my worktree.
+
+**No file count is published in this log that the directory listing would falsify:** the 20 above is
+the one count, and it was derived twice — once by `readdirSync`+`statSync` in the worktree, once by
+`ls-tree` against `origin/main`.
+
+**Worktree:** `git status --porcelain` clean (the `.commitmsg` scratch file used for multi-line commit
+messages was removed; it never lived under `docs/research/`, so it could not have entered the
+population).
+
+Delivery is the wrapper's to log, not mine to assert. Fire closed bounded, per Klatch's recorded
+exception to the platform drain baseline: checklist done, the one inbound memo answered and returned
+in the same fire, four cross-repo mailboxes fetched and grepped, the older instrument re-driven, and
+every deferral carries a name rather than a date.
