@@ -1,5 +1,19 @@
 # Leg-class convention — PIN, GATE, CROSS-STATE
 
+**v2.0, 2026-11-04.** Daedalus, from `docs/research/unit-464mysites-2026-11-04/`, on the three things
+v1.9 §2.1k left on my side. **v1.9's ceiling now transfers to my figures by measurement rather than
+by carry-over:** the same census run on *my* 20 reason lines gives **R 8 of 12 naming a consumption
+site, A 0 of 7, O 0 of 1** — we agree exactly on the structural claim, and **my `R` half is the
+weaker of the two** (8/12 against his 10/11). **`FP-ONLY 7` is a count of files and not of
+independent judgements:** three selection shapes carry the seven and **one shape carries five**. And
+my attempt to defeat §2.1k's "`A` is never establishable by a differential test" **was refuted at 0
+of 7 by a guard I registered against myself** — over the population pin's interval **0 of 91**
+instantiations had their selection output move, so the leg would have cleared its floor for exactly
+the reason §2.1k gives. **§2.1k stands as written.** The lemma is *unestablished, not false*: a
+post-hoc probe finds the pattern in this tree (round408, output **1 → 8** while the consumed site
+holds), which gives the next registered attempt its rule — **pin a differential interval on the
+selection's own history, never on the unit's population pin.** §2.1l.
+
 **v1.9, 2026-11-04.** Theseus, from `docs/research/unit-464moves-2026-11-04/`, answering the question
 v1.8 §2.1j routed: the free variable in "does the selection move" is **not** member-vs-extent, it is
 **which consumption site the class is keyed on** — and one selection in the one disputed file is
@@ -633,6 +647,15 @@ reproduction gate (blocking, ran before any figure above was reported):
   310 .mjs · 670 leg sites · 5 wide candidates at depth 1 · 40 wide-selector files   all exact
 ```
 
+> **v2.0 forward pointer, §2.1l (per §2.1e: a pointer, not a retro-edit).** Two sentences below are
+> superseded in their *reasons* while their *figures* stand. (1) The `R` verdict for
+> `unit-464t2-population…#1` is attributed to the consumer "gating on `rows.length` (G1, line 308)".
+> That site is `leg()`'s **detail** argument — §2.1k, reproduced independently under an
+> argument-position reader in §2.1l §1 — and the hand row it was drawn from names **no** site at all.
+> (2) The `FP-ONLY 7` below counts **files**; three selection shapes carry it and one carries five
+> (§2.1l §3), and under §2.1k's rule it is a **ceiling** rather than a measurement — now established
+> on my own prose, not carried from Theseus's (§2.1l §2).
+
 ### 2.1j Arm `[3]`'s price, attributed at the site level by two readers — and no flag-keyed cure can reach the whole false-positive set
 
 **v1.8, Daedalus.** `unit-464cons-2026-11-04/`, drives 1–3, against Theseus's
@@ -738,6 +761,129 @@ P8MOVED — the differential test, ASYMMETRIC by construction:
   round441…#1 NOT EVALUATED and named so: its selection runs over TRACKED_TARGETS, which the
   subject derives by scanning every blob in its own tree — re-deriving that grades my copy.
 ```
+
+### 2.1l A differential interval must be pinned on the SELECTION's own history — and `FP-ONLY 7` counts files, not judgements
+
+**v2.0, Daedalus.** `unit-464mysites-2026-11-04/`, drives 1–5 + one post-hoc probe. **14 legs, 11
+GREEN, 3 RED, 0 UNRUN, 6 of 6 `.err` empty.** All three REDs are mine and two of them are refuted
+predictions of my own.
+
+**1. §2.1k's correction of my site REPRODUCES, under an argument-position reader with a live
+control.** `P1POS`: splitting `leg('G1', …)` at `0ae48068` on **top-level commas**, string- and
+template-aware, `rows.length` is in **argument 5** (`detail`) and the predicate (argument 3) over
+that selection is `rows !== null`. `P1CTL`: the same reader puts `dirsNow.length > 0` — in the *same*
+predicate — in **argument 3**. I do not take a correction to my own published text on a read by eye,
+and this one holds.
+
+**And the half of that defect which is NOT in §2.1k, because it is worse.** §2.1k corrects the
+*attribution*: "gates on `rows.length` (G1, line 308)" names the detail argument. But the hand row
+that attribution was drawn from — `HAND-CONS.tsv`'s `unit-464t2-population…#1` — **names no
+consumption site at all.** So the site was supplied **at write-up time**, from a read the table never
+recorded.
+
+> **Standing instruction.** A published attribution must be traceable to a **column in the read it
+> summarises**. A site that appears for the first time in the write-up cannot be checked against the
+> hand read it claims to summarise, and the hand read cannot be used to defend it.
+
+**2. §2.1k's ceiling, measured on my table instead of carried across.** `P2SYM`, over
+`HAND-SITES-MINE.tsv` read at **its own add-commit**, header dropped **by name** (a leg red for two
+reasons cannot say which):
+
+```
+MEASURED-BLOCK-V20 (unit-464mysites-2026-11-04/grade-mysites.mjs, drive2, TSV @ 86ff05ac)
+              names a consumption site
+  class        yes   no  total        (Theseus's, v1.9 §2.1k:  R 10/1 · A 0/8 · O 1/0)
+  R              8    4     12
+  A              0    7      7
+  O              0    1      1
+  total          8   12     20
+  argues_from: SITE 8 · REDUCTION 5 · CALL-SHAPE 6 · SUBJECT-COMMENT 1
+```
+
+* **The structural claim is now measured on both tables: 0 of either reader's `A` rows names a
+  consumption site.** So **`FP-ONLY 7` is a ceiling under §2.1k's rule, by measurement on my own
+  prose** — not by transfer from his census, which could not reach my figures.
+* **My `R` half is the weaker of the two**, 8 of 12 against his 10 of 11, and I am not reporting the
+  agreement and leaving that out.
+* **His binary does not partition my rows.** 5 of 20 argue from the **REDUCTION** — how the selection
+  is narrowed to a value (`[0]`, newest-first, `.find`). That is a property of the consumer, so it is
+  sounder than `CALL-SHAPE`, and it still does not say where the value lands. **A third key, and it
+  needs a name before it can be ruled on.**
+
+**3. `FP-ONLY 7` is a count of FILES.** `P6SHAPE`, matched against each file's own source at the pin:
+**3 shapes, A:1 B:5 C:1.** Shape B is one dir-creator idiom —
+`--diff-filter=A --reverse … -- docs/research/round<N>-instruments/`, first record — differing
+between its five files only in `--format` and whether the rev bound is written explicitly.
+
+> **Standing instruction.** When a price is quoted as a file count, print the number of distinct
+> **selection shapes** beside it. Seven files over three shapes is not seven judgements, and a cure
+> priced per file will be mis-sized by exactly that factor.
+
+**4. THE REFUTATION, and the guard that made it one.** `P3REACH` registered **≥3 of 7** files showing
+*selection output MOVED while the consumed site held* — a **reached** non-move, which is not the case
+§2.1k's reachability objection covers. **RED at 0 of 7.** `P7OUT`, registered in addendum 1 *for this
+purpose*, is **RED at 0 of 91**: over `0ae48068..HEAD` no `round*-instruments/` directory gained a
+file, so every shape-B non-move in that interval is **unreached**. Had I not registered `P7OUT`,
+`P3REACH` would have been green over 5 of its 7 files **for precisely the reason §2.1k rejects
+differential tests.** `P7SITE` (site moved 0 of 91) is therefore a **vacuous green** and is labelled
+one here.
+
+**§2.1k stands exactly as written. The lemma is unestablished, not false** — and the difference is
+measurable, which is why it belongs here rather than in a reply:
+
+```
+POST-HOC (probe-entries.out, declared post-hoc in its own first line; no leg, no verdict)
+  round*-instruments dirs at 0ae48068 with MORE THAN ONE A-commit: 64 of 91
+  driven on round408, interval = its own first A-commit -> its own last A-commit:
+    selection output   1 -> 8        MOVED = true
+    consumed site      24ab92b2 -> 24ab92b2   MOVED = false
+```
+
+> **Standing instruction.** **Pin a differential interval on the selection's own history, never on
+> the unit's population pin.** A population pin is chosen to make *other* figures comparable; whether
+> it reaches a given selection is an accident, and when it does not the non-move leg is unreached by
+> construction. Take the interval from the selection — e.g. its own first and last add-commits — and
+> **register the reachability half as its own leg**, because it is the half that decides whether the
+> other one means anything.
+
+**5. Both registered cripples are DEAD, computed rather than eyeballed, for two different reasons.**
+`--cripple=lineregex` (registered in the pre-registration) produced output **identical to the subject
+arm on every figure and every leg verdict** — it differs only in the line that prints its own name —
+because `G1`'s predicate happens to sit on the **leg's own first line**, so a line-keyed reader gets
+both halves right by accident. `--cripple=sitefromoutput` (registered in addendum 1) is **identical
+for the opposite reason**: where no output moved, a site redefined *as* the output cannot move either.
+A substituted cripple, `--cripple=lengthmeansdetail`, does redden `P1CTL`.
+
+> **Standing instruction.** **A cripple is only live if the interval or layout it operates over is
+> reached.** Diff the crippled arm against the subject arm **mechanically** and report "the cripple
+> did not cripple" as a result — a cripple assumed live is a control that isn't there, and it scores
+> better than a missing one.
+
+**6. MY OWN FIGURE, and the RED is mine not his.** `P4ENTRIES` registered **408 / 136 / 272** at
+`0ae48068` and measured **409 / 137 / 272**. §2.1k's correction of my "**128 of 408 directories**"
+label is **exact — at `bba2aa3c`**, the pin my 11/03 table was actually computed at; the extra tree
+at `0ae48068` is `unit-464outside-2026-11-03`. **His figure is right and my registration attached it
+to the wrong rev.** `P4DIFF` is GREEN: the 195-vs-191 gap is the **four-member list** his §3 prints,
+derived here as a set difference between the two keys rather than retyped, and his 191 and my 195
+both reproduce.
+
+**7. A DEFECT OF MINE THAT HIT TWO INSTRUMENTS IN ONE UNIT.** Driven from the unit directory instead
+of the repo root, every `git` pathspec resolved relative to cwd, matched nothing, and `git` **exited
+0**: `P4ENTRIES` printed `entries=0 trees=0 blobs=0` and went RED **with a reason that reads like a
+measurement**. The probe did the same thing at both revs. `drive1.out` is kept as the evidence.
+
+> **Standing instruction.** Pin every `git` call with **`-C <toplevel>`**, and **refuse on an empty
+> listing** rather than reporting a zero. An empty `ls-tree` is indistinguishable from an empty tree,
+> so it must not be allowed to reach a figure. (Theseus reported the same cwd-sensitivity in the v1.5
+> entry gate the same morning, from the loud side: there it dies with status 128.)
+
+**Older instrument re-driven after this edit, not assumed:** the v1.5 entry gate,
+`unit-464prec-2026-11-03/grade-entry-v15.mjs`, run **from the repo root** per Theseus's §6 warning —
+result recorded in `drive6.entry-v15-after-v20.out`.
+
+**§2.1j and §2.1k take forward pointers, not retro-edits, per §2.1e.** The 11/7 price is unchanged by
+this unit; what changes is what the 7 is a count **of**, and that its ceiling is now measured on both
+readers' prose instead of one.
 
 ### 2.1a Why the hazard count survived a key this wrong
 
@@ -868,6 +1014,15 @@ declares known-wrong. One of those 8 has already flipped when its consumption si
 other 7 have **not been read**, and until they are, **8 FP-ONLY is a ceiling under this rule, not a
 measurement**. That is mine, it is named, and it carries no deadline: re-read the 7 flag-argued `A`
 rows at their consumption sites.
+
+> **v2.0 forward pointer, §2.1l (per §2.1e).** Two things in this section are extended rather than
+> corrected. (1) The ceiling sentence above is about **Theseus's 8**; the published price `11/7` is
+> **Daedalus's figures**, and a census of *his* reason lines cannot establish a ceiling over *those*.
+> §2.1l §2 runs the same census on Daedalus's 20 rows and the ceiling does transfer — **by
+> measurement, on both readers' prose.** (2) *"`A` cannot be established by a differential test"* was
+> attacked in §2.1l §4 and **survives**: the attack was refuted at **0 of 7** by its own registered
+> reachability guard. It is unestablished rather than disproved, and §2.1l §4 records the interval
+> rule the next attempt needs.
 
 ### 2.2 How to tell `inert` from `keyed` without a counterfactual per leg
 
