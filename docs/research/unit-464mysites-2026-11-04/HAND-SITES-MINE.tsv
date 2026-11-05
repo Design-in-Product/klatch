@@ -1,0 +1,90 @@
+# unit-464mysites — MY OWN 20 reason lines, hand-read for whether each one names a CONSUMPTION SITE
+#
+# Filed 2026-11-04, STOP fire, in its own commit, BEFORE any grader in this unit exists. The commit
+# order is the evidence and is checkable with `git log --diff-filter=A` over this path against the
+# commit that first reads it.
+#
+# SUBJECT   docs/research/unit-464cons-2026-11-04/HAND-CONS.tsv @ its own add-commit 2fd49cd7
+# RULE      LEG-CLASS-CONVENTION.md v1.9 §2.1k (Theseus), whose §4 ran this same census on HIS table
+#
+# ───────────────────────── THIS READ IS NOT BLIND AND I AM NOT DRESSING IT AS ONE ─────────────────
+#   I wrote every row of HAND-CONS.tsv myself this morning and have read all 20. This is a census of
+#   my own prose, by me. Its only claim to value is that the question below is NOT the question I was
+#   asking when I wrote those rows, and that the thresholds were registered in PRE-REGISTRATION.md
+#   (P2SYM: >=5 of 7 A rows name no site; >=8 of 12 R rows name a site) before this file existed.
+#   Declared cheap in the pre-registration. The leg that is not cheap is P3REACH.
+#
+# ───────────────────────── THE QUESTION, AND THE TRAP IN ASKING IT OF MY TABLE ────────────────────
+#   §2.1k: a CONSUMPTION SITE is where the selection's value LANDS — a PUBLISHED-FIGURE, a printed
+#   REASON-STRING, or a PREDICATE/gate.
+#
+#   My TSV carries a dedicated `consumer` column, so EVERY one of my 20 rows names a consumer
+#   EXPRESSION. If "names a consumer expression" counted, this leg would be green by construction at
+#   20 of 20 and would measure nothing. So the column below is keyed strictly on the LANDING SITE,
+#   and a row that names only how the selection is NARROWED (`[0]`, newest-first, `.find`) is `no`.
+#
+# ───────────────────────── COLUMNS ───────────────────────────────────────────────────────────────
+#   names_site   yes | no    does the reason name a place where the value LANDS?
+#   site_kind    PREDICATE | PUBLISHED-FIGURE | REASON-STRING | -        (only when names_site=yes)
+#   argues_from  SITE | REDUCTION | CALL-SHAPE | SUBJECT-COMMENT
+#                  SITE            a landing site, per above
+#                  REDUCTION       how the selection is narrowed to a value — a property of the
+#                                  consumer, so sounder than CALL-SHAPE, but still not a site
+#                  CALL-SHAPE      which flags the call carries — the key §2.1j/§2.1k declare
+#                                  known-wrong before it is written
+#                  SUBJECT-COMMENT the subject's own comment about itself
+#
+#   A THIRD KEY IS PRESENT AND HIS BINARY DOES NOT PARTITION MY ROWS. His §4 splits his rows into
+#   "names a site" and "rests on the call's own shape". Mine need REDUCTION as well, and it is not a
+#   rounding detail: a reduction-keyed argument is a claim about the consumer, which is the right
+#   kind of thing, and it still does not say where the value goes.
+#
+site	class	names_site	site_kind	argues_from	the_phrase_in_my_own_reason_that_decides_it
+round404-instruments/grade-the-three-cures.mjs#1	R	no	-	REDUCTION	"walked newest-first and the loop breaks on the first rev whose blob is ordered(...).ok ... becomes newestResolving" — the reduction, and no gate or printed figure is named
+round419-instruments/grade-the-417-repairs.mjs#1	R	yes	PREDICATE	SITE	"two gates read history[0] (the newest rev) and history.length >= 2 directly"
+round420-instruments/his-old-cell-is-keyed-on-head.mjs#1	R	yes	PREDICATE	SITE	"an explicit CONTROL gate that history[0] does NOT carry the needle"
+round421-instruments/grade-the-420-repair.mjs#1	R	yes	PREDICATE	SITE	"the following gate requires gradedHistory[0] not to carry the token"
+round421-instruments/grade-the-420-repair.mjs#2	R	yes	PREDICATE	SITE	"a predict on the LENGTH of the path's history (2), and a predict that the NEWEST rev starts with a literal prefix" — a predict IS the predicate site
+round422-instruments/drive-his-421.mjs#1	O	no	-	REDUCTION	"A literal-SHA membership test over the history" — names the .find, not where its result lands
+round422-instruments/drive-his-421.mjs#2	R	yes	PREDICATE	SITE	"A length assertion plus a newest-first [0] identity" — names the site by KIND but not by line; counted yes, and the missing line is recorded here rather than waived
+round425-instruments/position-vs-property-confusion-matrix.mjs#1	R	yes	PREDICATE	SITE	"the adjacent gate requires history[0] not to carry the position-keyed token"
+round428-instruments/a-sentence-keyed-on-a-subset-publishes-past-its-own-gate.mjs#1	R	yes	PREDICATE	SITE	"a gate asserting history[0] carries it"
+round429-instruments/does-any-other-instrument-retype-a-verdict-it-slices.mjs#1	R	no	-	REDUCTION	"revsOf feeds newestWithout, which takes the first rev in newest-first order lacking the token" — reduction only
+round431-instruments/grade-his-convention-and-measure-the-reach.mjs#1	R	no	-	REDUCTION	"KP_REV = carriedAt[0] ... CURE_REV is its index-relative neighbour ... a new commit inserts at index 0 and shifts both" — reduction only
+round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs#1	A	no	-	CALL-SHAPE	"ADDED_BY is the newest --diff-filter=A commit for one named file ... A stable add-anchor"
+round441-instruments/key-the-silent-class-from-source.mjs#1	R	yes	PUBLISHED-FIGURE	SITE	"The consumer PUBLISHES revs.length per target"
+round464-instruments/grade-the-stop-condition.mjs#1	A	no	-	CALL-SHAPE	"Later files added to the same directory are also A-commits, but --reverse + first selects the earliest ... The dir-creator idiom"
+unit-464t2-keychoice-2026-10-28/grade-the-surface-predicate.mjs#1	A	no	-	CALL-SHAPE	"The same dir-creator idiom, same consumer"
+unit-464t2-population-2026-10-28/grade-the-round-population.mjs#1	R	no	-	REDUCTION	"the ROW SET grows with every new research directory — and the consumer reads the set, not one row" — no landing site named ANYWHERE in this row, which is where §2.1k's correction actually bites (see the note below)
+unit-464t2-reaim-2026-10-28/grade-the-credit-key.mjs#1	A	no	-	CALL-SHAPE	"Dir-creator idiom. Does not move."
+unit-464t2-reaim-2026-10-28/recon-credit-provenance.mjs#1	A	no	-	CALL-SHAPE	"Dir-creator idiom, one-liner spelling of the same call."
+unit-464t2-surface-2026-10-28/recon-run-length-and-cure.mjs#1	A	no	-	CALL-SHAPE	"Oldest add-commit of a round directory, bounded by REV"
+unit-464vac-2026-10-31/grade-cure.mjs#1	A	no	-	SUBJECT-COMMENT	"The file's own comment at lines 50-52 says it: 'That rev cannot move however many commits this unit makes afterwards'"
+#
+# ───────────────────────── WHERE §2.1k's CORRECTION ACTUALLY BITES, stated precisely ──────────────
+#   §2.1k corrects "gating on rows.length (G1, line 308)". That phrase is in §2.1j and in my memo's
+#   §3. It is NOT in the TSV row above: the TSV row names no site at all. So the defect has two
+#   distinct halves and only one of them is the one §2.1k describes:
+#     (a) the published attribution named a site that is the detail argument, not a gate  — §2.1k's;
+#     (b) the hand row it was drawn from named NO site, so (a) was supplied at write-up time from a
+#         read that the table never recorded.                                             — mine.
+#   (b) is the worse of the two and it is not in §2.1k. A reason invented at publication time cannot
+#   be checked against the read it claims to summarise.
+#
+# ───────────────────────── MY TOTALS, computed from the rows above and nothing else ───────────────
+#                 names a consumption site
+#   class            yes   no   total
+#   R                  8    4      12
+#   A                  0    7       7
+#   O                  0    1       1
+#   total              8   12      20
+#
+#   argues_from:   SITE 8 · REDUCTION 5 · CALL-SHAPE 6 · SUBJECT-COMMENT 1
+#   A rows resting on a key §2.1k declares known-wrong: 7 of 7 (6 CALL-SHAPE + 1 SUBJECT-COMMENT)
+#
+#   AGAINST HIS §4 (R 10/1, A 0/8, O 1/0): we agree exactly on the structural claim — 0 of either
+#   reader's A rows names a consumption site — and MY R HALF IS THE WEAKER OF THE TWO, 8 of 12
+#   against his 10 of 11. I am not going to report the agreement and leave that out.
+#
+# NOT COMPUTED HERE, deliberately: the tabulation against the registered floors, and anything
+# differential. Both are the grader's, after this file is committed.
