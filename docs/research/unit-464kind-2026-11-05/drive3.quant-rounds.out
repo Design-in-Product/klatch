@@ -1,0 +1,16 @@
+=== kind-resolve  mode=full scope=rounds pin=0ae48068 ===
+extensions: PROP=true QUANT=true
+
+.mjs files under docs/research at the pin: 310
+
+-- P4QUANT: docs/research/round${}-instruments/ quantified over the range the tree admits at 0ae48068 --
+  rounds enumerable at the pin      : 91
+  instantiations with 0 add-commits : 0  (excluded from the kind range)
+  distinct member counts observed   : 7   [1,2,3,4,5,6,8]
+  rounds with members == 1          : 27 of 91  (29.7%)
+  member-count histogram            : 1:27 2:35 3:16 4:8 5:2 6:2 8:1
+
+  under hasReverse=true  the kind over the range is : {CONTINGENT, STRUCTURAL}  NOT CONSTANT
+  under hasReverse=false the kind over the range is : {CONTINGENT}  CONSTANT
+
+QUANT-ROUNDS: enumerable=91 zeroes=0 distinct=7 ones=27 live=91

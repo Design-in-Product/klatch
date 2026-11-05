@@ -1,0 +1,55 @@
+=== kind-resolve  mode=his scope=my7 pin=0ae48068 ===
+extensions: PROP=false QUANT=false
+
+CONTINGENT        reverse=false members=1  bucket=LITERAL
+    round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs#1
+    pathspec: 'docs/research/round434-instruments/grade-the-two-cures-and-the-prose.mjs'
+UNRESOLVED        reverse=true  members=n/a  bucket=NON-LITERAL-TEMPLATE
+    round464-instruments/grade-the-stop-condition.mjs#1
+    pathspec: `docs/research/round${round}-instruments/`
+UNRESOLVED        reverse=true  members=n/a  bucket=NON-LITERAL-TEMPLATE
+    unit-464t2-keychoice-2026-10-28/grade-the-surface-predicate.mjs#1
+    pathspec: `docs/research/round${round}-instruments/`
+UNRESOLVED        reverse=true  members=n/a  bucket=NON-LITERAL-TEMPLATE
+    unit-464t2-reaim-2026-10-28/grade-the-credit-key.mjs#1
+    pathspec: `docs/research/round${round}-instruments/`
+UNRESOLVED        reverse=true  members=n/a  bucket=NON-LITERAL-IDENT
+    unit-464t2-reaim-2026-10-28/recon-credit-provenance.mjs#1
+    pathspec: path
+UNRESOLVED        reverse=true  members=n/a  bucket=NON-LITERAL-TEMPLATE
+    unit-464t2-surface-2026-10-28/recon-run-length-and-cure.mjs#1
+    pathspec: `docs/research/round${round}-instruments/`
+UNRESOLVED        reverse=true  members=n/a  bucket=NON-LITERAL-IDENT
+    unit-464vac-2026-10-31/grade-cure.mjs#1
+    pathspec: LIVE_REL
+
+-- bucket census (every outcome has its own bucket; none is a fall-through) --
+     4  NON-LITERAL-TEMPLATE
+     2  NON-LITERAL-IDENT
+     1  LITERAL
+
+-- kind census --
+     6  UNRESOLVED
+     1  CONTINGENT
+
+-- P5CELL cross-tab over LOCATED sites (7) --
+                       pathspec RESOLVABLE   pathspec NOT          margin
+  --reverse PRESENT                 0               6        6
+  --reverse ABSENT                  1               0        1
+  margin                         1               6        7
+
+  the registered cell (flag ABSENT x NOT resolvable) = 0
+  flag-ABSENT margin = 1  ->  ** FORCED: margin < 4, this cell carries nothing **
+
+-- KIND-NOT-CONSTANT sites: 0 --
+
+SUMMARY: mode=his scope=my7 rows=7 located=7 cell=0 absMargin=1 notconst=0
+ROWS-BEGIN
+ROW	round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs#1	LITERAL	CONTINGENT	false	1
+ROW	round464-instruments/grade-the-stop-condition.mjs#1	NON-LITERAL-TEMPLATE	UNRESOLVED	true	
+ROW	unit-464t2-keychoice-2026-10-28/grade-the-surface-predicate.mjs#1	NON-LITERAL-TEMPLATE	UNRESOLVED	true	
+ROW	unit-464t2-reaim-2026-10-28/grade-the-credit-key.mjs#1	NON-LITERAL-TEMPLATE	UNRESOLVED	true	
+ROW	unit-464t2-reaim-2026-10-28/recon-credit-provenance.mjs#1	NON-LITERAL-IDENT	UNRESOLVED	true	
+ROW	unit-464t2-surface-2026-10-28/recon-run-length-and-cure.mjs#1	NON-LITERAL-TEMPLATE	UNRESOLVED	true	
+ROW	unit-464vac-2026-10-31/grade-cure.mjs#1	NON-LITERAL-IDENT	UNRESOLVED	true	
+ROWS-END

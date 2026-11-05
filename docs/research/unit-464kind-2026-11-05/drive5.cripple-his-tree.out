@@ -1,0 +1,142 @@
+=== kind-resolve  mode=his scope=tree pin=0ae48068 ===
+extensions: PROP=false QUANT=false
+
+.mjs files under docs/research at the pin: 310
+
+-- bucket census (every outcome has its own bucket; none is a fall-through) --
+    42  NON-LITERAL-IDENT
+     9  NOT-LOCATED
+     5  NON-LITERAL-TEMPLATE
+     4  LITERAL
+     2  NO-SEP
+     1  UNSCANNABLE
+     1  NON-LITERAL-OTHER
+     1  LITERAL-REV-VAR
+
+-- kind census --
+    49  UNRESOLVED
+    12  (null)
+     4  CONTINGENT
+
+-- P5CELL cross-tab over LOCATED sites (55) --
+                       pathspec RESOLVABLE   pathspec NOT          margin
+  --reverse PRESENT                 2               7        9
+  --reverse ABSENT                  2              42       44
+  margin                         4              51       55
+
+  the registered cell (flag ABSENT x NOT resolvable) = 42
+  flag-ABSENT margin = 44  ->  NOT forced (margin >= 4)
+  rows in that cell:
+    round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs#1  bucket=NON-LITERAL-IDENT  pathspec: MOVED_MEMO
+    round397-instruments/probe-the-anchor-that-is-not-guarded.mjs#2  bucket=NON-LITERAL-IDENT  pathspec: HIS_396_PATH
+    round404-instruments/grade-the-three-cures.mjs#1  bucket=NON-LITERAL-IDENT  pathspec: PATH_368
+    round420-instruments/his-old-cell-is-keyed-on-head.mjs#1  bucket=NON-LITERAL-IDENT  pathspec: GRADED_REL
+    round421-instruments/grade-the-420-repair.mjs#1  bucket=NON-LITERAL-IDENT  pathspec: GRADED_REL
+    round421-instruments/grade-the-420-repair.mjs#2  bucket=NON-LITERAL-IDENT  pathspec: SDK_REL
+    round422-instruments/drive-his-421.mjs#1  bucket=NON-LITERAL-IDENT  pathspec: GRADED_REL
+    round422-instruments/drive-his-421.mjs#2  bucket=NON-LITERAL-TEMPLATE  pathspec: `${HIS_DIR_REL}/grade-the-420-repair.mjs`
+    round425-instruments/position-vs-property-confusion-matrix.mjs#1  bucket=NON-LITERAL-IDENT  pathspec: S_REL
+    round428-instruments/a-sentence-keyed-on-a-subset-publishes-past-its-own-gate.mjs#1  bucket=NON-LITERAL-IDENT  pathspec: S_REL
+    round429-instruments/does-any-other-instrument-retype-a-verdict-it-slices.mjs#1  bucket=NON-LITERAL-IDENT  pathspec: p
+    round431-instruments/grade-his-convention-and-measure-the-reach.mjs#1  bucket=NON-LITERAL-IDENT  pathspec: p
+    round441-instruments/key-the-silent-class-from-source.mjs#1  bucket=NON-LITERAL-IDENT  pathspec: r
+    round463-instruments/grade-the-57-of-461-class.mjs#2  bucket=NON-LITERAL-IDENT  pathspec: p
+    round463-instruments/which-residue-member-postdates.mjs#2  bucket=NON-LITERAL-IDENT  pathspec: p
+    unit-464cell-2026-11-02/p3-scratch-identity-history.mjs#1  bucket=NON-LITERAL-IDENT  pathspec: SUBJECT
+    unit-464cell-2026-11-02/p3-scratch-identity-history.mjs#2  bucket=NON-LITERAL-IDENT  pathspec: SUBJECT
+    unit-464cell-2026-11-02/p3-scratch-identity-history.mjs#3  bucket=NON-LITERAL-IDENT  pathspec: SUBJECT
+    unit-464conj-2026-11-03/occupy-conj-history.mjs#3  bucket=NON-LITERAL-IDENT  pathspec: SUBJECT
+    unit-464immov-2026-11-03/occupy-delta-immovable.mjs#1  bucket=NON-LITERAL-IDENT  pathspec: SUBJECT
+    unit-464immov-2026-11-03/occupy-delta-immovable.mjs#2  bucket=NON-LITERAL-IDENT  pathspec: SUBJECT
+    unit-464immov-2026-11-03/occupy-delta-immovable.mjs#3  bucket=NON-LITERAL-IDENT  pathspec: SUBJECT
+    unit-464reach-2026-11-02/grade-reach.mjs#1  bucket=NON-LITERAL-IDENT  pathspec: H396
+    unit-464reach-2026-11-02/grade-reach.mjs#2  bucket=NON-LITERAL-IDENT  pathspec: H396
+    unit-464rec-2026-10-31/probe-is-it-live.mjs#1  bucket=NON-LITERAL-IDENT  pathspec: f
+    unit-464rec-2026-10-31/probe-is-it-live.mjs#2  bucket=NON-LITERAL-IDENT  pathspec: f
+    unit-464rec-2026-10-31/probe-is-it-live.mjs#3  bucket=NON-LITERAL-IDENT  pathspec: f
+    unit-464rec-2026-10-31/probe-is-it-live.mjs#4  bucket=NON-LITERAL-IDENT  pathspec: f
+    unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs#1  bucket=NON-LITERAL-IDENT  pathspec: HIS_396_PATH
+    unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs#2  bucket=NON-LITERAL-IDENT  pathspec: HIS_396_PATH
+    unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs#3  bucket=NON-LITERAL-IDENT  pathspec: HIS_396_PATH
+    unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs#4  bucket=NON-LITERAL-IDENT  pathspec: MY_395_PATH
+    unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs#5  bucket=NON-LITERAL-IDENT  pathspec: MY_395_PATH
+    unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs#6  bucket=NON-LITERAL-IDENT  pathspec: MY_395_PATH
+    unit-464rec3-2026-11-01/grade-p4-the-conjunct-no-movement-can-falsify.mjs#1  bucket=NON-LITERAL-IDENT  pathspec: MY_395_PATH
+    unit-464rec3-2026-11-01/grade-p4-the-conjunct-no-movement-can-falsify.mjs#2  bucket=NON-LITERAL-IDENT  pathspec: MY_395_PATH
+    unit-464rec3-2026-11-01/grade-the-three-cures.mjs#1  bucket=NON-LITERAL-IDENT  pathspec: HIS_396_PATH
+    unit-464rec3-2026-11-01/grade-the-three-cures.mjs#2  bucket=NON-LITERAL-IDENT  pathspec: HIS_396_PATH
+    unit-464rec3-2026-11-01/grade-the-three-cures.mjs#3  bucket=NON-LITERAL-IDENT  pathspec: MY_395_PATH
+    unit-464rec3-2026-11-01/grade-the-three-cures.mjs#5  bucket=NON-LITERAL-IDENT  pathspec: MY_395_PATH
+    unit-464sat-2026-10-31/grepro.mjs#1  bucket=NON-LITERAL-OTHER  pathspec: r.from
+    unit-464subkind-2026-11-02/grade-subkind.mjs#1  bucket=NON-LITERAL-IDENT  pathspec: p
+
+-- KIND-NOT-CONSTANT sites: 0 --
+
+SUMMARY: mode=his scope=tree rows=65 located=55 cell=42 absMargin=44 notconst=0
+ROWS-BEGIN
+ROW	round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs#1	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	round397-instruments/grade-the-anchor-that-is-not-guarded.mjs#1	NOT-LOCATED	null	null	
+ROW	round397-instruments/grade-the-anchor-that-is-not-guarded.mjs#2	NOT-LOCATED	null	null	
+ROW	round397-instruments/probe-the-anchor-that-is-not-guarded.mjs#1	NOT-LOCATED	null	null	
+ROW	round397-instruments/probe-the-anchor-that-is-not-guarded.mjs#2	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	round404-instruments/grade-the-three-cures.mjs#1	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	round406-instruments/hand-read-the-inline-seven.mjs#1	UNSCANNABLE	null	null	
+ROW	round418-instruments/installed-sdk-and-sec4-by-shape.mjs#1	NO-SEP	null	null	
+ROW	round419-instruments/grade-the-417-repairs.mjs#1	NO-SEP	null	null	
+ROW	round420-instruments/his-old-cell-is-keyed-on-head.mjs#1	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	round421-instruments/grade-the-420-repair.mjs#1	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	round421-instruments/grade-the-420-repair.mjs#2	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	round422-instruments/drive-his-421.mjs#1	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	round422-instruments/drive-his-421.mjs#2	NON-LITERAL-TEMPLATE	UNRESOLVED	false	
+ROW	round425-instruments/position-vs-property-confusion-matrix.mjs#1	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	round428-instruments/a-sentence-keyed-on-a-subset-publishes-past-its-own-gate.mjs#1	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	round429-instruments/does-any-other-instrument-retype-a-verdict-it-slices.mjs#1	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	round431-instruments/grade-his-convention-and-measure-the-reach.mjs#1	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs#1	LITERAL	CONTINGENT	false	1
+ROW	round441-instruments/key-the-silent-class-from-source.mjs#1	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	round463-instruments/grade-the-57-of-461-class.mjs#1	LITERAL	CONTINGENT	true	1
+ROW	round463-instruments/grade-the-57-of-461-class.mjs#2	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	round463-instruments/which-residue-member-postdates.mjs#1	LITERAL	CONTINGENT	true	1
+ROW	round463-instruments/which-residue-member-postdates.mjs#2	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	round464-instruments/grade-the-stop-condition.mjs#1	NON-LITERAL-TEMPLATE	UNRESOLVED	true	
+ROW	unit-464cell-2026-11-02/p3-scratch-identity-history.mjs#1	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	unit-464cell-2026-11-02/p3-scratch-identity-history.mjs#2	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	unit-464cell-2026-11-02/p3-scratch-identity-history.mjs#3	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	unit-464conj-2026-11-03/occupy-conj-history.mjs#1	NOT-LOCATED	null	null	
+ROW	unit-464conj-2026-11-03/occupy-conj-history.mjs#2	NOT-LOCATED	null	null	
+ROW	unit-464conj-2026-11-03/occupy-conj-history.mjs#3	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	unit-464immov-2026-11-03/occupy-delta-immovable.mjs#1	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	unit-464immov-2026-11-03/occupy-delta-immovable.mjs#2	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	unit-464immov-2026-11-03/occupy-delta-immovable.mjs#3	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	unit-464outside-2026-11-03/census-outside.mjs#1	NOT-LOCATED	null	null	
+ROW	unit-464reach-2026-11-02/grade-reach.mjs#1	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	unit-464reach-2026-11-02/grade-reach.mjs#2	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	unit-464rec-2026-10-31/probe-is-it-live.mjs#1	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	unit-464rec-2026-10-31/probe-is-it-live.mjs#2	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	unit-464rec-2026-10-31/probe-is-it-live.mjs#3	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	unit-464rec-2026-10-31/probe-is-it-live.mjs#4	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	unit-464rec-2026-10-31/rec-census.mjs#1	NOT-LOCATED	null	null	
+ROW	unit-464rec-2026-10-31/rec-census.mjs#2	NOT-LOCATED	null	null	
+ROW	unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs#1	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs#2	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs#3	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs#4	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs#5	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs#6	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	unit-464rec3-2026-11-01/grade-p4-the-conjunct-no-movement-can-falsify.mjs#1	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	unit-464rec3-2026-11-01/grade-p4-the-conjunct-no-movement-can-falsify.mjs#2	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	unit-464rec3-2026-11-01/grade-the-three-cures.mjs#1	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	unit-464rec3-2026-11-01/grade-the-three-cures.mjs#2	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	unit-464rec3-2026-11-01/grade-the-three-cures.mjs#3	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	unit-464rec3-2026-11-01/grade-the-three-cures.mjs#4	NOT-LOCATED	null	null	
+ROW	unit-464rec3-2026-11-01/grade-the-three-cures.mjs#5	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	unit-464sat-2026-10-31/grepro.mjs#1	NON-LITERAL-OTHER	UNRESOLVED	false	
+ROW	unit-464subkind-2026-11-02/grade-subkind.mjs#1	NON-LITERAL-IDENT	UNRESOLVED	false	
+ROW	unit-464subkind-2026-11-02/grade-subkind.mjs#2	LITERAL	CONTINGENT	false	1
+ROW	unit-464t2-keychoice-2026-10-28/grade-the-surface-predicate.mjs#1	NON-LITERAL-TEMPLATE	UNRESOLVED	true	
+ROW	unit-464t2-population-2026-10-28/grade-the-round-population.mjs#1	LITERAL-REV-VAR	UNRESOLVED	true	
+ROW	unit-464t2-reaim-2026-10-28/grade-the-credit-key.mjs#1	NON-LITERAL-TEMPLATE	UNRESOLVED	true	
+ROW	unit-464t2-reaim-2026-10-28/recon-credit-provenance.mjs#1	NON-LITERAL-IDENT	UNRESOLVED	true	
+ROW	unit-464t2-surface-2026-10-28/recon-run-length-and-cure.mjs#1	NON-LITERAL-TEMPLATE	UNRESOLVED	true	
+ROW	unit-464vac-2026-10-31/grade-cure.mjs#1	NON-LITERAL-IDENT	UNRESOLVED	true	
+ROWS-END
