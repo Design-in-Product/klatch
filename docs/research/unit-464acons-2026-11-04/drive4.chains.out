@@ -1,0 +1,128 @@
+read-consumers — unit-464acons
+  pin        0ae48068ebbf0e84c8fde7912536065ee1b03bf3  (0ae48068)
+  table rev  721fb5b44a153fe12ff741e0914802896194b82b  (721fb5b4)
+  cripple    none
+  toplevel   /Users/xian/Development/klatch-worktrees/theseus
+
+A rows captured from docs/research/unit-464addarm-2026-11-04/HAND-ARM3.tsv: 8
+
+=== PER-SITE LISTING (source-derived; no class emitted) ===
+
+--- round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs#1
+    lines 410-410   call fn `git(` at line 410
+    flags      --format=%h --diff-filter=A
+    pathspec   [docs/research/round434-instruments/grade-the-two-cures-and-the-prose.mjs]  arity=1 dirShaped=false
+    binding    ADDED_BY
+    tail       [0] .split .trim
+    scope      block  lines 1-615
+    use lines  5
+       414: try { git('merge-base', '--is-ancestor', recRev, ADDED_BY); return true; } catch { return false; }
+       423: const countAdded = countAt(ADDED_BY);
+       428: && recRev === 'f9fba861' && ADDED_BY.startsWith('be58bfa4') && isDescendant === true
+       445: + `historical) · at his promotion commit ${ADDED_BY}: ${countAdded} (pinned, historical) · `
+       448: + `\n        the grader was added by ${ADDED_BY}, a descendant of ${recRev}: `
+    chain      .startsWith(
+    singleRecord=true iterated=false lengthRead=false
+
+--- round464-instruments/grade-the-stop-condition.mjs#1
+    lines 732-733   call fn `git(` at line 728
+    flags      --diff-filter=A --reverse
+    pathspec   [docs/research/round${round}-instruments/]  arity=1 dirShaped=true
+    binding    raw
+    tail       (none)
+    scope      block  lines 727-741
+    use lines  1
+       736: const first = raw.split('\n').find((l) => l.trim().length > 0);
+    chain      .split( .find(
+    singleRecord=true iterated=false lengthRead=false
+
+--- unit-464t2-keychoice-2026-10-28/grade-the-surface-predicate.mjs#1
+    lines 292-293   call fn `git(` at line 291
+    flags      --diff-filter=A --reverse
+    pathspec   [docs/research/round${round}-instruments/]  arity=1 dirShaped=true
+    binding    raw
+    tail       (none)
+    scope      block  lines 290-300
+    use lines  1
+       295: const first = raw.split('\n').find((l) => l.trim().length > 0);
+    chain      .split( .find(
+    singleRecord=true iterated=false lengthRead=false
+
+--- unit-464t2-population-2026-10-28/grade-the-round-population.mjs#1
+    lines 171-172   call fn `git(` at line 170
+    flags      --diff-filter=A --format=%H\u0001%aI\u0001%s --name-only --reverse
+    pathspec   [docs/research/]  arity=1 dirShaped=true
+    binding    raw
+    tail       (none)
+    scope      block  lines 168-202
+    use lines  2
+       174: if (raw === null) return null;
+       178: for (const line of raw.split('\n')) {
+    chain      .split(
+    singleRecord=false iterated=true lengthRead=false
+
+--- unit-464t2-reaim-2026-10-28/grade-the-credit-key.mjs#1
+    lines 234-235   call fn `git(` at line 230
+    flags      --diff-filter=A --reverse
+    pathspec   [docs/research/round${round}-instruments/]  arity=1 dirShaped=true
+    binding    raw
+    tail       (none)
+    scope      block  lines 229-243
+    use lines  1
+       238: const first = raw.split('\n').find((l) => l.trim().length > 0);
+    chain      .split( .find(
+    singleRecord=true iterated=false lengthRead=false
+
+--- unit-464t2-reaim-2026-10-28/recon-credit-provenance.mjs#1
+    lines 124-124   call fn `git(` at line 124
+    flags      --diff-filter=A --reverse
+    pathspec   [path]  arity=1 dirShaped=false
+    binding    raw
+    tail       (none)
+    scope      block  lines 120-133
+    use lines  2
+       122: let raw;
+       128: const first = raw.split('\n').find((l) => l.trim().length > 0);
+    chain      .split( .find(
+    singleRecord=true iterated=false lengthRead=false
+
+--- unit-464t2-surface-2026-10-28/recon-run-length-and-cure.mjs#1
+    lines 203-206   call fn `git(` at line 200
+    flags      --diff-filter=A --format=%H --reverse
+    pathspec   [docs/research/round${round}-instruments/]  arity=1 dirShaped=true
+    binding    raw
+    tail       (none)
+    scope      block  lines 198-212
+    use lines  1
+       209: const first = raw === null ? null : (raw.split('\n').filter(Boolean)[0] ?? null);
+    chain      .split( .filter( [0]
+    singleRecord=true iterated=false lengthRead=false
+
+--- unit-464vac-2026-10-31/grade-cure.mjs#1
+    lines 55-55   call fn `git(` at line 55
+    flags      --format=%H --reverse
+    pathspec   [LIVE_REL]  arity=1 dirShaped=false
+    binding    log
+    tail       (none)
+    scope      block  lines 54-59
+    use lines  1
+        56: const first = (log ?? '').trim().split('\n').filter(Boolean)[0];
+    chain      .trim( .split( .filter( [0]
+    singleRecord=true iterated=false lengthRead=false
+
+=== MECHANICAL COUNTS (no class, no flip) ===
+  BOUND_TO_IDENT   8 of 8
+  MULTIPATH_OR_DIR 5 of 8
+  SINGLE_RECORD    7 of 8
+  WHOLE_SELECTION  1 of 8   (length read or iterated, at the USE lines)
+
+=== TSV SKELETON (A_HOLDS and WHY intentionally EMPTY — for the hand read) ===
+site_id	call_fn	flags	path_arity	dir_shaped	binding	single_record	whole_selection	A_HOLDS	WHY
+round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs#1	git	--format=%h --diff-filter=A	1	false	ADDED_BY	true	false		
+round464-instruments/grade-the-stop-condition.mjs#1	git	--diff-filter=A --reverse	1	true	raw	true	false		
+unit-464t2-keychoice-2026-10-28/grade-the-surface-predicate.mjs#1	git	--diff-filter=A --reverse	1	true	raw	true	false		
+unit-464t2-population-2026-10-28/grade-the-round-population.mjs#1	git	--diff-filter=A --format=%H\u0001%aI\u0001%s --name-only --reverse	1	true	raw	false	true		
+unit-464t2-reaim-2026-10-28/grade-the-credit-key.mjs#1	git	--diff-filter=A --reverse	1	true	raw	true	false		
+unit-464t2-reaim-2026-10-28/recon-credit-provenance.mjs#1	git	--diff-filter=A --reverse	1	false	raw	true	false		
+unit-464t2-surface-2026-10-28/recon-run-length-and-cure.mjs#1	git	--diff-filter=A --format=%H --reverse	1	true	raw	true	false		
+unit-464vac-2026-10-31/grade-cure.mjs#1	git	--format=%H --reverse	1	false	log	true	false		

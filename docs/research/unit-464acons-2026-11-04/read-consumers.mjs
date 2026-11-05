@@ -29,6 +29,10 @@ const flag = (n, d) => {
 const PIN = flag('pin', '0ae48068');
 const TABLE_REV = flag('table-rev', '721fb5b4');
 const CRIPPLE = flag('cripple', 'none');
+// SCOPE: 'block' restricts the binding's uses to the enclosing function/block of its declaration.
+// 'file' is drive1's behaviour, kept as a LIVE CRIPPLE: it counts a same-named binding declared in
+// another function as a use of this site's binding. drive1.read.out is its recording.
+const SCOPE = flag('scope', 'block');
 
 const TOP = execFileSync('git', ['rev-parse', '--show-toplevel'], {
   encoding: 'utf8',
@@ -119,6 +123,61 @@ function balancedFrom(src, openIdx) {
   return -1;
 }
 
+// Mask strings, template literals and comments so brace-depth tracking is not fooled by `{` in a
+// string or a `//` comment. Returns a same-length string with masked spans blanked.
+function codeMask(src) {
+  const out = src.split('');
+  let i = 0;
+  while (i < src.length) {
+    const c = src[i];
+    if (c === '/' && src[i + 1] === '/') {
+      while (i < src.length && src[i] !== '\n') { out[i] = ' '; i++; }
+      continue;
+    }
+    if (c === '/' && src[i + 1] === '*') {
+      out[i] = out[i + 1] = ' '; i += 2;
+      while (i < src.length && !(src[i] === '*' && src[i + 1] === '/')) { if (src[i] !== '\n') out[i] = ' '; i++; }
+      if (i < src.length) { out[i] = out[i + 1] = ' '; i += 2; }
+      continue;
+    }
+    if (c === "'" || c === '"' || c === '`') {
+      const q = c;
+      out[i] = ' '; i++;
+      while (i < src.length) {
+        if (src[i] === '\\') { out[i] = ' '; out[i + 1] = ' '; i += 2; continue; }
+        if (src[i] === q) { out[i] = ' '; i++; break; }
+        if (src[i] !== '\n') out[i] = ' ';
+        i++;
+      }
+      continue;
+    }
+    i++;
+  }
+  return out.join('');
+}
+
+// Character range of the innermost brace block enclosing `idx`. Returns [start, end] of the block's
+// interior, or the whole file when the declaration is at top level.
+function enclosingBlock(mask, idx) {
+  let depth = 0;
+  let open = -1;
+  for (let i = idx; i >= 0; i--) {
+    const ch = mask[i];
+    if (ch === '}') depth++;
+    else if (ch === '{') {
+      if (depth === 0) { open = i; break; }
+      depth--;
+    }
+  }
+  if (open < 0) return [0, mask.length];
+  let d = 0;
+  for (let i = open; i < mask.length; i++) {
+    if (mask[i] === '{') d++;
+    else if (mask[i] === '}') { d--; if (d === 0) return [open, i]; }
+  }
+  return [open, mask.length];
+}
+
 function lineStarts(src) {
   const out = [0];
   for (let i = 0; i < src.length; i++) if (src[i] === '\n') out.push(i + 1);
@@ -174,9 +233,24 @@ for (const s of sites) {
   // statement containing the call -> binding
   let stmtStart = src.lastIndexOf('\n', call.open);
   // walk back over continuation: find nearest preceding ';' or '{' or line that starts a decl
-  const back = src.slice(Math.max(0, call.open - 600), call.open);
-  const declM = /(?:^|[\n;{}])\s*(const|let|var)\s+([A-Za-z_$][\w$]*)\s*=\s*[^;]*$/.exec(back);
-  const binding = declM ? declM[2] : null;
+  const backBase0 = Math.max(0, call.open - 600);
+  const back = src.slice(backBase0, call.open);
+  // Two defects drive2 had here, both found by reading the subjects directly:
+  //   (a) `let raw;` hoisted, then `raw = git(...)` on a later line — a declaration-keyed regex
+  //       cannot see it, and #6 came out "(inline — not bound)" with a FALSE ZERO use count;
+  //   (b) `exec` returns the FIRST match, so an OUTER binding whose initializer encloses the call
+  //       won it — #8 bound to `PRECURE_REV` instead of to `log`, the identifier the call's result
+  //       is actually assigned to, and the reduction inside the IIFE was invisible.
+  // Fixed by accepting a bare assignment and by taking the LAST (innermost) match.
+  // The statement the call sits in: everything after the last `;`, `{` or `}` before it. That cut
+  // is what makes the match innermost — an enclosing initializer is always separated from the call
+  // by its own `{` when it is an IIFE, and by a `;` otherwise.
+  let cut = -1;
+  for (const ch of [';', '{', '}']) cut = Math.max(cut, back.lastIndexOf(ch));
+  const stmt = back.slice(cut + 1);
+  const declM = /(?:(?:const|let|var)\s+)?([A-Za-z_$][\w$]*)\s*=\s*[A-Za-z_$][\w$.]*$/.exec(stmt);
+  const binding = declM ? declM[1] : null;
+  const declStartAbs = backBase0 + cut + 1;
 
   // reduction: text from the call's close to end of statement
   const semi = src.indexOf(';', call.close);
@@ -195,27 +269,110 @@ for (const s of sites) {
   ];
   const tailReducers = REDUCERS.filter(([, re]) => re.test(tail)).map(([n]) => n);
 
-  // downstream uses of the binding, excluding its own declaration line
+  // downstream uses of the binding.
+  //
+  // Scoped to the enclosing block of the DECLARATION (SCOPE=block, the default), because `raw` is
+  // re-declared in several of these files and a file-wide scan counts another function's `raw` as a
+  // use of this one. Excluded: the declaration's own character range — not a +/-2 line window,
+  // which hid consumers sitting on the line after the call's closing paren (drive1).
   let uses = [];
+  let scopeFrom = 1;
+  let scopeTo = src.split('\n').length;
   if (binding) {
-    const re = new RegExp(`\\b${binding.replace(/\$/g, '\\$')}\\b`);
-    const lines = src.split('\n');
-    const declLine = callLineNo;
-    uses = lines
-      .map((text, i) => ({ no: i + 1, text }))
-      .filter((r) => re.test(r.text))
-      .filter((r) => r.no < s.lineFrom - 2 || r.no > s.lineTo + 2)
-      .filter((r) => r.no !== declLine);
+    const mask = codeMask(src);
+    const declStart = declStartAbs;
+    const declEnd = semi < 0 ? call.close : semi;
+    // Where the binding's SCOPE starts is not always where the call's statement is. `let raw;` at
+    // function level, assigned inside a `try {}`, consumed after the `try` — block-scoping the
+    // ASSIGNMENT site put #6's scope at lines 123-125 and its real consumer at 128 outside it, a
+    // second false zero from the same hoisted pattern. Anchor on the hoisting declaration when the
+    // statement is a bare assignment.
+    const bareAssign = !/\b(?:const|let|var)\s/.test(stmt);
+    let scopeAnchor = declStart;
+    if (bareAssign) {
+      const hoist = new RegExp(`\\b(?:let|var|const)\\s+${binding.replace(/\$/g, '\\$')}\\b`, 'g');
+      let last = -1;
+      for (const h of mask.matchAll(hoist)) if (h.index < declStart) last = h.index;
+      if (last >= 0) scopeAnchor = last;
+    }
+    const [bFrom, bTo] = SCOPE === 'block' ? enclosingBlock(mask, scopeAnchor) : [0, src.length];
+    const lineOf = (ci) => {
+      let lo = 0, hi = starts.length - 1;
+      while (lo < hi) { const mid = (lo + hi + 1) >> 1; if (starts[mid] <= ci) lo = mid; else hi = mid - 1; }
+      return lo + 1;
+    };
+    scopeFrom = lineOf(bFrom);
+    scopeTo = lineOf(bTo);
+    // Matched against the RAW source, not the mask: a use inside a template literal
+    // (`${ADDED_BY}`) is a real consumption and the mask blanks it. The cost is that an
+    // identifier named inside a comment or a plain string also matches; those are visible in the
+    // printed use lines and were checked by hand.
+    const re = new RegExp(`\\b${binding.replace(/\$/g, '\\$')}\\b`, 'g');
+    uses = [...src.matchAll(re)]
+      .filter((x) => x.index >= bFrom && x.index <= bTo)
+      .filter((x) => x.index < declStart || x.index > declEnd)
+      .map((x) => lineOf(x.index))
+      .filter((no, i, a) => a.indexOf(no) === i)
+      .map((no) => ({ no, text: src.split('\n')[no - 1] }));
   }
 
-  // consumer-side markers, read off the USE lines only (not off the declaration)
+  // Consumer-side markers, ANCHORED ON THE BINDING'S OWN METHOD CHAIN.
+  //
+  // drive3's `lengthRead` was keyed on the token `.length` appearing anywhere on a use line, so
+  // `raw.split('\n').find((l) => l.trim().length > 0)` read as a length read of the SELECTION when
+  // the `.length` belongs to the lambda's parameter. The chain walker below skips every
+  // parenthesised argument whole, so a marker inside a lambda body cannot be mistaken for a marker
+  // applied to the selection.
+  const chainsFor = (text, ident) => {
+    const out = [];
+    const re = new RegExp(`\\b${ident.replace(/\$/g, '\\$')}\\b`, 'g');
+    for (const m of text.matchAll(re)) {
+      let i = m.index + ident.length;
+      // the binding may sit inside a parenthesised expression: `(log ?? '').trim()...`
+      if (text[i] !== '.' && text[i] !== '[') {
+        const openParen = text.lastIndexOf('(', m.index);
+        if (openParen >= 0) {
+          const close = balancedFrom(text, openParen);
+          if (close > m.index) i = close + 1;
+        }
+      }
+      const segs = [];
+      while (i < text.length) {
+        if (text[i] === '.') {
+          const sm = /^\.(\w+)/.exec(text.slice(i));
+          if (!sm) break;
+          i += sm[0].length;
+          if (text[i] === '(') {
+            const c = balancedFrom(text, i);
+            if (c < 0) break;
+            segs.push(`.${sm[1]}(`);
+            i = c + 1;
+          } else segs.push(`.${sm[1]}`);
+        } else if (text[i] === '[') {
+          const c = balancedFrom(text, i);
+          if (c < 0) break;
+          segs.push(text.slice(i, c + 1).replace(/\s+/g, ''));
+          i = c + 1;
+        } else break;
+      }
+      out.push(segs);
+    }
+    return out;
+  };
+
   const useText = uses.map((u) => u.text).join('\n');
-  const useMarkers = REDUCERS.filter(([, re]) => re.test(useText)).map(([n]) => n);
-  const iterated = /\bfor\s*\(\s*(?:const|let|var)?\s*[^)]*\bof\b/.test(useText)
-    || /\.forEach\s*\(/.test(useText)
-    || /\.filter\s*\(/.test(useText)
-    || /\.map\s*\(/.test(useText);
-  const lengthRead = /\.length\b/.test(useText) || /\.length\b/.test(tail);
+  const chains = binding ? chainsFor(useText + '\n' + tail, binding) : [];
+  const SINGLE = ['[0]', '.find(', '.pop(', '.shift(', '.at('];
+  const FANOUT = ['.forEach(', '.filter(', '.map(', '.reduce(', '.sort('];
+  const chainTakesOne = (segs) => segs.some((s) => SINGLE.includes(s));
+  const chainFansOut = (segs) => segs.some((s) => FANOUT.includes(s)) && !chainTakesOne(segs);
+  const useMarkers = [...new Set(chains.flat())];
+  const ofLoop = binding
+    ? new RegExp(`\\bfor\\s*\\([^)]*\\bof\\s+${binding.replace(/\$/g, '\\$')}\\b`).test(useText)
+    : false;
+  const singleRecord = chains.some(chainTakesOne) || /\[\s*0\s*\]|\.find\s*\(|\.pop\s*\(/.test(tail);
+  const lengthRead = chains.some((segs) => segs.includes('.length'));
+  const iterated = ofLoop || chains.some(chainFansOut);
 
   results.push({
     ...s,
@@ -229,9 +386,12 @@ for (const s of sites) {
     tailReducers,
     uses,
     useMarkers,
+    singleRecord,
     iterated,
     lengthRead,
     callText,
+    scopeFrom,
+    scopeTo,
   });
 }
 
@@ -253,12 +413,14 @@ for (const r of results) {
   console.log(`    pathspec   [${r.pathspec.join(' | ')}]  arity=${r.pathArity} dirShaped=${r.dirShaped}`);
   console.log(`    binding    ${r.binding ?? '(inline — not bound)'}`);
   console.log(`    tail       ${r.tailReducers.join(' ') || '(none)'}`);
+  console.log(`    scope      ${SCOPE}  lines ${r.scopeFrom}-${r.scopeTo}`);
   console.log(`    use lines  ${r.uses.length}`);
   for (const u of r.uses.slice(0, 14)) {
     console.log(`      ${String(u.no).padStart(4)}: ${u.text.trim().slice(0, 150)}`);
   }
   if (r.uses.length > 14) console.log(`      … ${r.uses.length - 14} more`);
-  console.log(`    use markers ${r.useMarkers.join(' ') || '(none)'}  iterated=${r.iterated} lengthRead=${r.lengthRead}`);
+  console.log(`    chain      ${r.useMarkers.join(' ') || '(none)'}`);
+  console.log(`    singleRecord=${r.singleRecord} iterated=${r.iterated} lengthRead=${r.lengthRead}`);
   if (CRIPPLE === 'callshapeonly') {
     console.log(`    CRIPPLE callshapeonly -> ${crippleCallShapeOnly(r)}`);
   }
@@ -268,10 +430,7 @@ console.log('');
 console.log('=== MECHANICAL COUNTS (no class, no flip) ===');
 const nBound = results.filter((r) => r.binding).length;
 const nDir = results.filter((r) => r.dirShaped || r.pathArity > 1).length;
-const nSingleTake = results.filter((r) => {
-  const all = [...r.tailReducers, ...r.useMarkers];
-  return all.some((m) => m === '[0]' || m === '.find(' || m === '.pop()' || m === '.shift()' || m === '.at(');
-}).length;
+const nSingleTake = results.filter((r) => r.singleRecord).length;
 const nLength = results.filter((r) => r.lengthRead || r.iterated).length;
 console.log(`  BOUND_TO_IDENT   ${nBound} of ${results.length}`);
 console.log(`  MULTIPATH_OR_DIR ${nDir} of ${results.length}`);
@@ -287,8 +446,7 @@ console.log('');
 console.log('=== TSV SKELETON (A_HOLDS and WHY intentionally EMPTY — for the hand read) ===');
 console.log(['site_id', 'call_fn', 'flags', 'path_arity', 'dir_shaped', 'binding', 'single_record', 'whole_selection', 'A_HOLDS', 'WHY'].join('\t'));
 for (const r of results) {
-  const all = [...r.tailReducers, ...r.useMarkers];
-  const single = all.some((m) => ['[0]', '.find(', '.pop()', '.shift()', '.at('].includes(m));
+  const single = r.singleRecord;
   console.log([
     r.id,
     r.fn,
