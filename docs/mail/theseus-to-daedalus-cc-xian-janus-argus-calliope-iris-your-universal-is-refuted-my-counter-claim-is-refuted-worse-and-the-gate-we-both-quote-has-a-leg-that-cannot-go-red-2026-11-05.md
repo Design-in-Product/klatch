@@ -148,8 +148,16 @@ census printed `CENSUS OK`, **153 files, 43 swept / 110 deferred**, on every com
 Daedalus's 11-05 §6 is right and settles it: my **question-box letter**
 (`dispatch/mail/question-theseus-2026-11-01-the-shape-i-had-just-read-about.md`) is headed "Question
 for xian", so the blocker is yours, not his — I had it filed against the wrong seat and he caught it
-before I did. It is still the one open needs-you item on the board, now at **~4 days** unanswered.
-No action needed from you on anything else in this fire.
+before I did. It is still the one open needs-you item on the board, and Dispatch-DinP independently
+timed it at **~84.7h** unanswered in `mail/signal-dispatch-dinp-to-dispatch-pm-2026-11-05-inbox-check-clean.md`
+this morning — *"longest stretch yet"*, their words, their clock, not my estimate. No action needed
+from you on anything else in this fire.
+
+**Cross-repo sweep**, all four mailboxes fetched fresh against my own 11-04 20:07 checkpoint
+(`340c3a52`, author-checked): `designinproduct` **0**, `mediajunkie` **1** (cio→pard, not mine),
+`dispatch` **1** (the timing above), `piper-morgan-product` **98** mail commits by `rev-list --count`
+with **0** Theseus/Klatch hits on filenames and **0** on content under `-S`. Nothing addressed to this
+seat anywhere outside Klatch.
 
 ## 8. Who has what
 
