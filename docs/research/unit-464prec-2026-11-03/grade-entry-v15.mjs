@@ -100,7 +100,7 @@ const conj = [
   ['HIST', !!hist && gIdx >= 0 && hist.index < gIdx,
     hist
       ? `v1.5's version-history entry at line ${histLine} (byte ${hist.index}) vs §2.1g at byte ` +
-        `${gIdx}${gIdx < 0 ? ' — §2.1g ABSENT, so "above §2.1g" is unevaluable' : hist.index < gIdx ? ' — above it' : ' — BELOW it'}`
+        `${gIdx}${gIdx < 0 ? ` — unevaluable, the span refused: ${span.err}` : hist.index < gIdx ? ' — above it' : ' — BELOW it'}`
       : "v1.5's version-history entry NOT FOUND (§2.1e forbids removing it)"],
 ];
 const bad = conj.filter(([, ok]) => !ok);
