@@ -35,9 +35,21 @@ const ENTRY_REV = 'a3607d5a045cdccea7dd97b91b0250d4d1923eaa';
 // rev this span has to be read at: `### 2.1h` arrived with v1.6 and is absent at ENTRY_REV, and
 // `### 2.1a` sits in the out-of-order tail BELOW §2.1g, which is what produced the 57054-byte
 // 13-heading "entry" Theseus priced.
+// The START is matched LINE-ANCHORED and must be UNIQUE. `text.indexOf(startAnchor)` is an
+// unanchored first match: §2.1p's Part B quotes `### 2.1g` three times in prose, so at HEAD the
+// anchor occurs 4x and lands on the heading only because 35262 < 96114. Theseus's `A9RENAME`
+// changed the heading by one byte of case and the leg reported a 5106-byte "§2.1g" that was prose
+// ABOUT §2.1g, with `BLOCK` satisfied by a quotation. A second line-start hit now REFUSES rather
+// than silently taking the first. [[feedback_sliced_exactly_once_does_not_pin_the_start_anchor]]
 export function entrySpan(text, startAnchor = '### 2.1g', ownBlock = '### MEASURED-BLOCK-V15') {
-  const i = text.indexOf(startAnchor);
-  if (i < 0) return { err: `start anchor absent: ${startAnchor}` };
+  const re = new RegExp(`^${startAnchor.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?=[ \\t]|$)`, 'gm');
+  const starts = [...text.matchAll(re)];
+  if (starts.length === 0) return { err: `start anchor absent: ${startAnchor}` };
+  if (starts.length > 1) {
+    return { err: `start anchor not unique: ${starts.length} line-start matches for ` +
+      `${startAnchor} at bytes ${starts.map((m) => m.index).join(', ')}` };
+  }
+  const i = starts[0].index;
   const heads = [...text.matchAll(/^### .*$/gm)]
     .filter((m) => m.index > i && !m[0].startsWith(ownBlock));
   const j = heads.length ? heads[0].index : text.length;
@@ -51,9 +63,12 @@ const rd = (p) => readFileSync(p, 'utf8');
 // The .tsv is corrected FORWARD in the document and left byte-identical on disk. By hash, both ways.
 const axesPin = g(['rev-parse', `${PIN}:${AXES}`]);
 const axesLive = g(['hash-object', AXES]);
+// The note states the two hashes AND whether they agree. The old note asserted "is byte-identical"
+// as a fixed string, so on Theseus's `A6TSV` it printed that assertion beside 6f830c72 vs f70035c1
+// — a sentence contradicting the two figures in its own line.
 check('GTSVFROZEN', axesPin === axesLive,
-  `HAND-AXES-13.tsv is byte-identical at the pin (${axesPin.slice(0, 8)}) and in the worktree ` +
-  `(${axesLive.slice(0, 8)}) — the @194 why cell is corrected in the document, not retro-edited`);
+  `HAND-AXES-13.tsv at the pin ${axesPin.slice(0, 8)} ` +
+  `${axesPin === axesLive ? '==' : '!= (DIFFERS)'} in the worktree ${axesLive.slice(0, 8)}`);
 
 const doc = rd(DOC);
 const span = entrySpan(doc);
@@ -68,7 +83,11 @@ const hist = doc.match(histRe);
 // strings for BLOCK and HIST, which `unit-464gentry/probe-entail.out` caught printing
 // "MEASURED-BLOCK-V15 is inside the span" and "above §2.1g" on the arms where those very conjuncts
 // had FAILED — the defect this repair exists to remove, reproduced inside the repair.
-const gIdx = doc.indexOf('### 2.1g');
+// Taken from the span's own anchored, uniqueness-checked match rather than re-running the
+// unanchored `indexOf` the span no longer uses — two readers of one anchor with different
+// boundary models is how the first match and the heading come apart.
+// [[feedback_a_reader_used_on_two_surfaces_needs_a_boundary_model_per_surface]]
+const gIdx = span.err ? -1 : span.i;
 const histLine = hist ? doc.slice(0, hist.index).split('\n').length : -1;
 const conj = [
   ['SPAN', !span.err, span.err ?? `§2.1g → ${span.end}, ${span.text.length} bytes`],
@@ -116,16 +135,29 @@ check('GCLAIMS', failed.length === 0,
 
 // The two cripple claims, read off the deltas rather than off my sentence about them.
 const hkLines = hk.split('\n').filter((l) => /^[<>]/.test(l));
-const hkVerdicts = hkLines.filter((l) => /^[<>]\s+(ok|RED)\s/.test(l) && !/GP3ORDER/.test(l));
+// The exclusion is keyed on the CAPTURED LEG NAME, not on containment. `!/GP3ORDER/.test(l)` asked
+// "does this line mention GP3ORDER" — so Theseus's `A3HKMASK`, a GP4SURVIVE pair with differing
+// verdicts carrying `[cf GP3ORDER]` in its note, read GREEN 6 of 6 on a delta displaying a real
+// verdict flip. One token inside a note was the whole of the difference.
+// [[feedback_an_undifferentiated_containment_match_fuses_two_mechanisms]]
+const hkRows = hkLines.map((l) => l.match(/^[<>]\s+(ok|RED)\s+(G[A-Z0-9]+)\s/)).filter(Boolean);
+const hkVerdicts = hkRows.filter((m) => m[2] !== 'GP3ORDER');
 const hkFlip = hkLines.filter((l) => /legs ok$/.test(l));
+// Every clause is a measured value with its wanted value beside it. The old note closed with
+// "GP3ORDER's two lines differ only in the echoed ORDER, both still ok with 0 departures of 5" —
+// a sentence that stayed put while all three of its claims became measurable-and-false.
+const gp3 = hkRows.filter((m) => m[2] === 'GP3ORDER');
+const gp3Verdicts = [...new Set(gp3.map((m) => m[1]))];
+const echoes = (hk.match(/0 departures of 5/g) ?? []).length;
 check('GHKNOOP', hkLines.length === 4 && hkVerdicts.length === 0 && hkFlip.length === 0,
-  `history-keyed demoted only: ${hkLines.length} changed lines (2 pairs), ${hkVerdicts.length} legs other than ` +
-  `GP3ORDER's own echo, ${hkFlip.length} summary-line changes — and GP3ORDER's two lines differ only in the ` +
-  `echoed ORDER, both still ok with "0 departures of 5"`);
-check('GHKECHO',
-  (hk.match(/0 departures of 5/g) ?? []).length === 2 && /ORDER \[movable > immovable > history-keyed\]/.test(hk),
-  `both sides of GP3ORDER's changed line read "0 departures of 5" under the demoted order — the figure ` +
-  `does not move, so nothing in this unit reads history-keyed > movable`);
+  `history-keyed demoted: ${hkLines.length} changed lines (want 4) · ${hkVerdicts.length} verdict rows ` +
+  `keyed to a leg other than GP3ORDER (want 0)${hkVerdicts.length ? ` [${hkVerdicts.map((m) => m[2]).join(', ')}]` : ''} · ` +
+  `${hkFlip.length} summary-line changes (want 0) · GP3ORDER verdict rows ${gp3.length}, ` +
+  `distinct verdicts across them [${gp3Verdicts.join(', ')}]`);
+const demotedTok = /ORDER \[movable > immovable > history-keyed\]/.test(hk);
+check('GHKECHO', echoes === 2 && demotedTok,
+  `"0 departures of 5" occurs ${echoes} times in the delta (want 2, i.e. both sides of GP3ORDER's ` +
+  `changed line) · demoted-ORDER token ${demotedTok ? 'present' : 'ABSENT'} (want present)`);
 // Flips are counted by joining the two recordings ON THE LEG NAME. drive8's first form counted
 // `>`-side lines beginning with RED, which reported 5: it absorbed GP4UNIQUE (red on BOTH sides, so
 // not a flip) and the summary line. A verdict change is a disagreement between two keyed reads, not
@@ -136,12 +168,17 @@ const vBase = verdicts('drive5.prec.out');
 const flips = (other) => Object.keys(vBase).filter((k) => vBase[k] !== verdicts(other)[k]);
 const pkFlip = flips('drive6.cripple-preckey.out');
 const hkFlipNamed = flips('drive7.cripple-hkonly.out');
+// `20`, `3` and `26` were hard-typed DIGITS in the template while the flip list was interpolated,
+// so on Theseus's `A5PKFLIP` the note read "flips 3 [GP3ORDER, GP4SURVIVE, GP4COINCIDE, GP6COUNT]"
+// — the count and the list disagreeing inside one sentence, and the count is the half a reader
+// quotes. Every figure below is now the measured one. [[feedback_add_up_the_numbers_in_your_own_sentence]]
+const nLegs = Object.keys(vBase).length;
+const pkChanged = pk.split('\n').filter((l) => /^[<>]/.test(l)).length;
 check('GPKREACHED',
-  Object.keys(vBase).length === 20 && pkFlip.length === 3 && hkFlipNamed.length === 0
-  && pk.split('\n').filter((l) => /^[<>]/.test(l)).length === 26,
-  `20 named legs · full reversal flips 3 [${pkFlip.join(', ')}] over 26 changed lines · ` +
-  `history-keyed demoted flips ${hkFlipNamed.length} — the legs DO read the order, so GHKNOOP is a ` +
-  `measured no-op and not a dead switch`);
+  nLegs === 20 && pkFlip.length === 3 && hkFlipNamed.length === 0 && pkChanged === 26,
+  `${nLegs} named legs (want 20) · full reversal flips ${pkFlip.length} (want 3) [${pkFlip.join(', ')}] ` +
+  `over ${pkChanged} changed lines (want 26) · history-keyed demoted flips ${hkFlipNamed.length} (want 0)` +
+  `${hkFlipNamed.length ? ` [${hkFlipNamed.join(', ')}]` : ''}`);
 
 for (const l of legs) console.log(`   ${l.ok ? 'ok  ' : 'RED '} ${l.n.padEnd(12)} ${l.note}`);
 const ok = legs.every((l) => l.ok);
