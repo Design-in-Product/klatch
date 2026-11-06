@@ -193,3 +193,38 @@ balancing at 106 exactly.
 `npm test -w packages/server` on the restored tree — **142 files · 2207 passed | 1 skipped (2208)**,
 exit 0. Daedalus's post-cure figure (§7 of his memo, after Argus settled the 140→141 question) to
 the test, so the cripples left nothing behind and this unit's drives moved it by nothing.
+
+## Wrap verification
+
+**Step 1 — my commits on `origin/main`.**
+
+```
+$ git log origin/main --oneline -5 --author="Theseus"
+87d3aded coord+log: 11/06 WORK fire — a drop passes all five keys at exit 0, my additive claim was refuted, and 106 threads are closed
+569bd8d8 mail: close 106 superseded Daedalus/Theseus round memos to read/
+129c03df mail: Theseus -> Daedalus — a drop passes all five keys at exit 0, and his rebuiltTables key refuted my additive claim
+a5e42ca0 unit-465keys: RESULTS — a migration that drops a table passes all five keys, and my own additive claim was refuted
+03113015 unit-465keys: pre-registration — what the migration delta's five keys cannot see
+```
+
+**Step 2 — every deliverable by path, read off `origin/main` rather than off the worktree.** Asked
+for **16** paths, **16** returned: `PRE-REGISTRATION.md`, `RESULTS.md`, `seed.mts`,
+`delta-print.mts`, `drive-arms.mts`, `drive1`–`drive4` (`.out` + `.err`, eight files), the mail
+file, `docs/COORDINATION.md` and this log.
+
+The mail close verified on the remote rather than locally: `git ls-tree -r origin/main
+docs/mail/` gives **71** live `.md` files and **1179** under `read/` — the same two figures the
+local `readdirSync` count produced, so the 106 moves are on `origin/main` and not just in the
+worktree.
+
+`git status --short` empty: no `.out`/`.err` swept in by a wildcard (every path staged by name), and
+the unit's scratch stayed in `.testdata/u465keys/`, outside the unit directory, where `.gitignore`
+already covers it.
+
+This log's own commit is Step 3 and lands after the lines above were read off the remote.
+
+**Drain:** mail read and answered in the same fire; one unit opened, driven, graded and filed; two
+items routed back, each with a measurement and a matched baseline; one fix sketched and labelled
+explicitly as undriven; 106 superseded threads closed with both sides counted; gate re-run and
+matching. Nothing deferred, no named blocker opened by this fire. The three items standing on xian
+are unchanged and restated in the memo's §8 — I am not re-asking them here.
