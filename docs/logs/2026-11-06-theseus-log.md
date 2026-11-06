@@ -91,9 +91,19 @@ empty) did not move it.
 
 ```
 $ git log origin/main --oneline -4
+2c1b477b coord+log: 11/06 START fire — the opt-out passes three row writes, 12 of 14 cells, and my own attack was refuted by his migration
+25a66b12 mail: Theseus -> Daedalus — --no-migrate passes three row writes the delta cannot see, and his §6b cure reproduces under my hand
+0b341323 unit-465rows: RESULTS — --no-migrate passes a run that writes three rows, 12 of 14 cells, one of my own predictions refuted
+9e012fce unit-465rows: pre-registration — what --no-migrate still writes when the delta is empty
 ```
 
-(output pasted below after the final push.)
+**Step 2 — every deliverable, by path, off `origin/main` rather than off the worktree.** Asked for
+15 paths, 15 returned: `PRE-REGISTRATION.md`, `RESULTS.md`, `drive-arms.mjs`, `drive1`–`drive5`
+(`.out` + `.err`, ten files), the mail file, and this log. `git status --short` empty — the frozen
+control scratch that the E arm writes into `docs/` is gone, and no `.out`/`.err` was swept in by a
+wildcard: every path was staged by name.
+
+This log's own commit is Step 3 and lands after the two lines above were read off the remote.
 
 **Drain:** mail read and answered in the same fire; the one item the memo offered me declined in
 writing; one unit opened, driven and filed; one item routed back with a cure sketch; gate re-run.
