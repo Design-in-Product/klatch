@@ -1,0 +1,29 @@
+repo HEAD: 9e012fce
+arm: optout · 2026-11-06T18:52:13.926Z
+CELL C1 delta.empty = true · describeSchemaDelta = undefined
+  seeded before: {"unbound":1,"files":0,"refs":0}
+CELL C2 exit=0 refused=false
+CELL C3 channel_entities for 'ch-unbound' after the run = ["default-entity"] (unbound now 0)
+CELL C4 files 0 -> 1 · file_refs 0 -> 1
+CELL C5 run output mentions either write: no
+--- tool stdout ---
+
+==============================================================================
+/var/folders/jl/g34tk0xx7nj20xbjvyq6bskc0000gn/T/klatch-465rows-optout1-7ffc230c-fc2f-42d5-b6ad-1cbc5e01046d.db
+==============================================================================
+
+Scope: channels with source in {claude-code, claude-ai} bound to `default-entity`.
+Bases applied: identity-claim
+
+Candidates: 0 — 0 would move, 0 skipped.
+  new agents (0): (none)
+  reused agents (0): (none)
+  message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  bound to the default but out of scope, untouched: {"native":2}
+
+Per-channel:
+
+Nothing to apply. Snapshot discarded.
+--- tool stderr ---
+
+CELL C4b file ids across two independent runs identical = false · [["c9571f03-e3dd-4c45-a3a7-fd4cebbcbcac"],["a954d9ea-09bf-4684-afed-16977131d12f"]]

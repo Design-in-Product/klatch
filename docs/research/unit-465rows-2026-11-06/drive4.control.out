@@ -1,0 +1,8 @@
+repo HEAD: 9e012fce
+arm: control · 2026-11-06T18:54:51.589Z
+CELL E1 frozen script exit=1 · unknown-flag refusal = true
+--- frozen stderr (first 12 lines) ---
+Refusing to run: an argument would have been ignored, and an ignored flag changes what this run covers.
+  --no-migrate: not a flag this script knows
+usage: npx tsx scripts/backfill-entity-bindings.mts <klatch.db> [--apply] [--bases=a,b] [--channels=id,id] [--undo=<record.json>]
+  (frozen run state after: {"unbound":1,"boundTo":[],"files":0,"refs":0,"fileIds":[]})

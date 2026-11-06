@@ -1,0 +1,27 @@
+repo HEAD: 9e012fce
+arm: rebuild · 2026-11-06T18:54:20.391Z
+CELL D1 before cols = ["id","channel_id","role","content","status","stop_reason","model","entity_id","original_timestamp","original_id"] (a strict prefix of the rebuild's order)
+CELL D1 schemaDelta THREW: SqliteError: no such column: created_at
+CELL D1 verdict: the blind cell is NOT reachable through this migration — the rebuild's INSERT..SELECT names every column, so a prefix table dies instead of migrating.
+CELL D1e --apply --no-migrate against it: exit=1 · "could not be\n  determined" = true
+CELL D1f --apply without --no-migrate against it: exit=1 · no-such-column surfaced = true
+CELL D1g messages cols on the subject after that failed apply = ["id","channel_id","role","content","status","stop_reason","model","entity_id","original_timestamp","original_id"]
+CELL D3 appended-column-plus-widened-CHECK: {"addedObjects":[],"addedColumns":["t.b"],"rebuiltTables":[],"alteredTables":[],"empty":false}
+CELL D3 verdict: rebuilt=0 altered=0 — a rebuild reported as a plain append.
+CELL D4a (initSchema's own order — the shape Daedalus's first known positive had)
+CELL D4a order = ["id","channel_id","role","content","status","stop_reason","model","created_at","entity_id","original_timestamp","original_id"]
+CELL D4a delta: rebuilt=["messages"] altered=[] addedColumns=[] empty=false
+CELL D4a note mentions 'changed constraint' = false
+CELL D4b (the rebuild's own order — the shape that carries the property)
+CELL D4b order = ["id","channel_id","role","content","status","stop_reason","model","entity_id","original_timestamp","original_id","created_at"]
+CELL D4b delta: rebuilt=[] altered=["messages"] addedColumns=[] empty=false
+CELL D4b note mentions 'changed constraint' = true
+--- rendered disclosure (D4b) ---
+SCHEMA: this database is behind the current schema, and opening it for writing
+  upgrades it in place. klatch-465rows-kp-D4b-12267291-8ae9-4080-b355-9d53eb759bfb.db would gain:
+    1 table(s) with a changed constraint and no changed column: messages
+      Same columns in the same order, different CREATE TABLE text. Reached by a rebuild, so
+      every row of that table is rewritten for a change you cannot see in a column list.
+  Every existing row survives this. What does not survive is the file's value as a record
+  of an older schema: restore it later to ask what the schema looked like then and you get
+  today's answer. Pass --no-migrate to refuse instead of upgrading.

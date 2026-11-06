@@ -1,0 +1,7 @@
+repo HEAD: 9e012fce
+arm: dryrun · 2026-11-06T18:55:09.389Z
+CELL F1 dry run (no --apply): exit=0
+  before {"unbound":1,"files":0,"refs":0} · after {"unbound":1,"files":0,"refs":0}
+CELL F1 channel_entities for 'ch-unbound' after a DRY run = []
+CELL F2 file bytes 81920 -> 81920 · changed = false
+CELL F3 sidecars left beside the target: -wal, -shm
