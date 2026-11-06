@@ -49,3 +49,27 @@ Checkpoint is this seat's own 11/05 START-fire commit `683476e4`. `git log 68347
 **Drain:** 11 new commits read with author verified before citing, none mine, confirmed via empty `packages/`/`scripts/` diff and dirstat; mail checked locally and across all four cross-repo mailboxes, nothing owed from any; both standing blockers re-derived fresh, neither moved; gate re-derived fresh and byte-identical; rollup read directly and confirmed consistent with this morning's own figure. Two consecutive checks found nothing further unblocked. Fire closed bounded.
 
 ---
+
+## 17:0x — Session resumed (SWEEP fire)
+
+**Census-only no-op; 17 new commits since own MID-fire checkpoint, none mine; both standing blockers re-derived fresh (ma-smoke still day 16); gate byte-identical; rollup needs-you re-confirmed at 1, v174 untouched.**
+
+Checkpoint is this seat's own 11/05 MID-fire commit `5afca5dd`. `git log 5afca5dd..HEAD --format='%H %an %ci %s' --reverse` — 17 new commits, author-checked before citing, none mine: Daedalus's `unit-464gentry` chain (pre-registration, drives1-3, probe-entail + drives4-7, RESULTS + convention v2.4 2.1p + drive8 — repairing a gate whose own pin predates the entry it gates), Argus's own WORK-fire census no-op plus a merge commit, Daedalus's mail to Theseus/xian (re-scoping adopted with one amendment) and a WORK-fire coord+log plus wrap-verification, and Theseus's `unit-464frozen` chain (pre-registration, drives0-3 + probe-notes + ADDENDUM, a same-fire untrack-scratch fix, drive4 + RESULTS, probe-cwd + RESULTS §7, his mail to Daedalus/xian, WORK-fire coord+log, wrap-verification).
+
+`git diff --stat 5afca5dd..HEAD -- packages/ scripts/` **empty** — confirmed, not assumed; dirstat split across `docs/research/unit-464frozen-2026-11-05/` (41.4%) and `docs/research/unit-464gentry-2026-11-05/` (26.6%), remainder in `docs/logs/`/`docs/mail/`.
+
+**Mail:** `grep -li "^to:.*calliope\|\*\*To:\*\* Calliope" docs/mail/*.md` (excluding `read/`) — same four standing Pard-from-10-20 threads, no new file addressed by name; the two new Daedalus↔Theseus research-track memos checked by header, both cc-only to this seat, neither asks anything of this seat. All four cross-repo mailboxes fetched fresh: `designinproduct` 3 new (Janus↔Themis intro-drafts thread, content-checked, 0 `klatch`/`calliope` hits); `mediajunkie` 3 new (Notarios↔Pard Epistrophikon-writing-plan traffic plus a CIO→Pard memo, content-checked, 0 `klatch`/`calliope` hits); `dispatch` 3 new (daily EOD-sync bookkeeping between Dispatch-DinP and Dispatch-PM); `piper-morgan-product/mailboxes` 3 new (web/exec/cxo internal PM-ops traffic, content-checked, 0 `klatch`/`calliope` hits). Nothing owed from any to this seat. **Noted, not actioned:** the dispatch sync restates a `question(Theseus -> xian)` (newsletter question-box, committed 2026-11-01, "the failure mode I committed immediately after reading its description") now ~84.7h unanswered, its longest stretch yet — addressed to xian directly, not to any agent mailbox, and dispatch's own memo says explicitly "not mine to action." Checked the question itself: Theseus states plainly he doesn't need an answer to proceed on anything. Not a Klatch-repo item and not this seat's mail to action; flagged here for visibility only, per this seat's role as xian's primary contact, not escalated.
+
+**Standing blockers re-derived fresh:** Managed Agents smoke-run — no `ma-smoke/*` branch anywhere (`git branch -a` + `git ls-remote origin`), named blocker on xian since Pard's 2026-10-21 memo, day count re-derived via `node -e` against today's date — **day 16**, unchanged same calendar day. Ground-rules day-count — retired 11/03, nothing to re-derive.
+
+**Rollup:** not touched — none of the 17 commits is a decision only xian can make. `docs/operations/attention-rollup.md` still v174; its "Needs you" section (`grep -n "^## \|^### "`, read directly between the two h2 headers) shows exactly one item (blog-series angle/sequencing) — needs-you 1, matching every figure recorded today.
+
+**Gate re-verified fresh:** `npx tsx scripts/gate.mts` — census OK, typecheck 0 `error TS` across all four workspaces; server 140 files · 2186 passed · 1 skipped (2187); client 26 passed | 13 skipped (39) · 333 passed | 13 skipped (346) — byte-identical to every figure recorded today.
+
+**`log.html`:** not due this fire — writes at the STOP fire per the recurring-items row's own cadence note; owed tonight.
+
+`git status --short` clean before this fire's own coordination/log edits.
+
+**Drain:** 17 new commits read with author verified before citing, none mine, confirmed via empty `packages/`/`scripts/` diff and dirstat; mail checked locally (board still clear) and across all four cross-repo mailboxes (minor traffic in each, all content-checked to zero relevant hits, one item — an unanswered Theseus-to-xian question tracked by dispatch — noted for visibility per this seat's primary-contact role but explicitly not this seat's to action); both standing blockers re-derived fresh, neither moved; gate re-derived fresh and byte-identical; rollup read directly and confirmed consistent with every figure recorded today. Two consecutive checks found nothing further unblocked. Fire closed bounded.
+
+---
