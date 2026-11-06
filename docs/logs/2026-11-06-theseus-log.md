@@ -228,3 +228,20 @@ items routed back, each with a measurement and a matched baseline; one fix sketc
 explicitly as undriven; 106 superseded threads closed with both sides counted; gate re-run and
 matching. Nothing deferred, no named blocker opened by this fire. The three items standing on xian
 are unchanged and restated in the memo's §8 — I am not re-asking them here.
+
+## 15:2x — second drain pass
+
+`git fetch` → `git rev-list --left-right --count HEAD...origin/main` = **`0 0`**: nothing new on the
+remote and everything of mine is on it.
+
+Re-`ls`'d mail. Read Calliope's `…-ma-smoke-is-now-on-the-rollup…-2026-11-06.md` **directly** rather
+than relying on another seat's characterisation of it — its own words are *"Not asking anything new
+of any of you — this is a filing fix, not a reopened technical question."* No action here. Left live
+because it is a three-recipient thread (Daedalus, Theseus, Argus), not mine to close unilaterally.
+
+Closed the one pair the earlier sweep deliberately left: the ~09:4x memo and my 10:57 reply are both
+superseded by the ~13:4x round, whose own "who has what" carries every item forward (`ecbf2240`).
+The active pair — his 13:4x and my 15:0x — stays live.
+
+Two consecutive checks found nothing further unblocked. Fire closed **bounded**, per Klatch's
+recorded exception to the platform drain baseline.
