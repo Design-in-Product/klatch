@@ -1,0 +1,96 @@
+
+==============================================================================
+A5 — P3DROPBLIND: cripple Y1 in place — drop + recreate a populated table
+==============================================================================
+  seed: seeded artifact: /Users/xian/Development/klatch-worktrees/theseus/.testdata/u465keys/a5.db (81920 bytes) channels=2 entities=1 channel_entities=2 messages=1 message_artifacts=1 files=0
+  counts before: channels=2 channel_entities=2 message_artifacts=1 files=0 file_refs=0
+  --- schemaDelta() on this file, field by field (Y1 in the child) ---
+{
+  "addedObjects": [],
+  "addedColumns": [],
+  "rebuiltTables": [],
+  "alteredTables": [],
+  "empty": true,
+  "data": {
+    "rows": {},
+    "rowWrites": 0,
+    "empty": true
+  }
+}
+SchemaDelta.empty = true    DataDelta.empty = true
+describeSchemaDelta -> undefined
+describeDataDelta   -> undefined
+
+  exit=0
+  counts after: channels=2 channel_entities=2 message_artifacts=1 files=0 file_refs=0
+  --- stdout ---
+
+==============================================================================
+/Users/xian/Development/klatch-worktrees/theseus/.testdata/u465keys/a5.db
+==============================================================================
+
+Scope: channels with source in {claude-code, claude-ai} bound to `default-entity`.
+Bases applied: identity-claim
+
+Candidates: 1 — 0 would move, 1 skipped.
+  skipped, by reason: {"no-guess":1}
+  new agents (0): (none)
+  reused agents (0): (none)
+  message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  bound to the default but out of scope, untouched: {"native":1}
+
+Per-channel:
+  ch-bound  bound                             claude-code none            P2=0    P3=1    SKIP (no-guess)
+
+Nothing to apply. Snapshot discarded.
+
+  --- stderr ---
+
+
+==============================================================================
+A6 — P4DROPONLY: cripple Y2 in place — pure drop, no recreate
+==============================================================================
+  seed: seeded artifact: /Users/xian/Development/klatch-worktrees/theseus/.testdata/u465keys/a6.db (81920 bytes) channels=2 entities=1 channel_entities=2 messages=1 message_artifacts=1 files=0
+  counts before: channels=2 channel_entities=2 message_artifacts=1 files=0 file_refs=0
+  --- schemaDelta() on this file, field by field (Y2 in the child) ---
+{
+  "addedObjects": [],
+  "addedColumns": [],
+  "rebuiltTables": [],
+  "alteredTables": [],
+  "empty": true,
+  "data": {
+    "rows": {},
+    "rowWrites": 0,
+    "empty": true
+  }
+}
+SchemaDelta.empty = true    DataDelta.empty = true
+describeSchemaDelta -> undefined
+describeDataDelta   -> undefined
+
+  exit=0
+  counts after: channels=2 channel_entities=2 message_artifacts=1 files=0 file_refs=0
+  --- stdout ---
+
+==============================================================================
+/Users/xian/Development/klatch-worktrees/theseus/.testdata/u465keys/a6.db
+==============================================================================
+
+Scope: channels with source in {claude-code, claude-ai} bound to `default-entity`.
+Bases applied: identity-claim
+
+Candidates: 1 — 0 would move, 1 skipped.
+  skipped, by reason: {"no-guess":1}
+  new agents (0): (none)
+  reused agents (0): (none)
+  message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  bound to the default but out of scope, untouched: {"native":1}
+
+Per-channel:
+  ch-bound  bound                             claude-code none            P2=0    P3=1    SKIP (no-guess)
+
+Nothing to apply. Snapshot discarded.
+
+  --- stderr ---
+

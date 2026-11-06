@@ -1,0 +1,164 @@
+
+==============================================================================
+A5 — P3DROPBLIND: cripple Y1 in place — drop + recreate a populated table
+==============================================================================
+  seed: seeded artifact: /Users/xian/Development/klatch-worktrees/theseus/.testdata/u465keys/a5.db (81920 bytes) channels=2 entities=1 channel_entities=2 messages=1 message_artifacts=1 files=0
+  counts before: channels=2 channel_entities=2 message_artifacts=1 files=0 file_refs=0
+  --- schemaDelta() on this file, field by field (Y1 in the child) ---
+{
+  "addedObjects": [],
+  "addedColumns": [],
+  "rebuiltTables": [
+    "message_artifacts"
+  ],
+  "alteredTables": [],
+  "empty": false,
+  "data": {
+    "rows": {
+      "message_artifacts": -1
+    },
+    "rowWrites": 0,
+    "empty": true
+  }
+}
+SchemaDelta.empty = false    DataDelta.empty = true
+describeSchemaDelta -> (a block)
+describeDataDelta   -> undefined
+
+  exit=1
+  counts after: channels=2 channel_entities=2 message_artifacts=1 files=0 file_refs=0
+  --- stdout ---
+
+SCHEMA: this database is behind the current schema, and opening it for writing
+  upgrades it in place. a5.db would gain:
+    1 table(s) rebuilt, not altered in place: message_artifacts
+      A rebuild rewrites every row of that table. The file grows and the space the old
+      pages held is left as slack inside it — expect a larger file than the data needs.
+  Every existing row survives this. What does not survive is the file's value as a record
+  of an older schema: restore it later to ask what the schema looked like then and you get
+  today's answer. Pass --no-migrate to refuse instead of upgrading.
+
+  --- stderr ---
+(node:57616) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+Refusing to run: --no-migrate, and this run would upgrade the schema above.
+  Nothing was written and the snapshot was discarded. Three ways on from here:
+    - run it without --no-migrate, accepting the change above;
+    - copy the file first and point this script at the copy, keeping a5.db as it is;
+    - run it with no flags for the review sheet, which never writes to the file at all.
+
+
+==============================================================================
+A6 — P4DROPONLY: cripple Y2 in place — pure drop, no recreate
+==============================================================================
+  seed: seeded artifact: /Users/xian/Development/klatch-worktrees/theseus/.testdata/u465keys/a6.db (81920 bytes) channels=2 entities=1 channel_entities=2 messages=1 message_artifacts=1 files=0
+  counts before: channels=2 channel_entities=2 message_artifacts=1 files=0 file_refs=0
+  --- schemaDelta() on this file, field by field (Y2 in the child) ---
+{
+  "addedObjects": [],
+  "addedColumns": [],
+  "rebuiltTables": [],
+  "alteredTables": [],
+  "empty": true,
+  "data": {
+    "rows": {},
+    "rowWrites": 0,
+    "empty": true
+  }
+}
+SchemaDelta.empty = true    DataDelta.empty = true
+describeSchemaDelta -> undefined
+describeDataDelta   -> undefined
+
+  exit=0
+  counts after: channels=2 channel_entities=2 message_artifacts=ABSENT files=0 file_refs=0
+  --- stdout ---
+
+==============================================================================
+/Users/xian/Development/klatch-worktrees/theseus/.testdata/u465keys/a6.db
+==============================================================================
+
+Scope: channels with source in {claude-code, claude-ai} bound to `default-entity`.
+Bases applied: identity-claim
+
+Candidates: 1 — 0 would move, 1 skipped.
+  skipped, by reason: {"no-guess":1}
+  new agents (0): (none)
+  reused agents (0): (none)
+  message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  bound to the default but out of scope, untouched: {"native":1}
+
+Per-channel:
+  ch-bound  bound                             claude-code none            P2=0    P3=1    SKIP (no-guess)
+
+Nothing to apply. Snapshot discarded.
+
+  --- stderr ---
+
+
+==============================================================================
+A7 — P5INITSITES: current schema, `default` channel row deleted — an initSchema site
+==============================================================================
+  seed: seeded nodefault: /Users/xian/Development/klatch-worktrees/theseus/.testdata/u465keys/a7.db (81920 bytes) channels=1 entities=1 channel_entities=1 messages=0 message_artifacts=0 files=0
+  counts before: channels=1 channel_entities=1 message_artifacts=0 files=0 file_refs=0
+  --- schemaDelta() on this file, field by field ---
+{
+  "addedObjects": [],
+  "addedColumns": [],
+  "rebuiltTables": [],
+  "alteredTables": [],
+  "empty": true,
+  "data": {
+    "rows": {
+      "channel_entities": 1,
+      "channels": 1
+    },
+    "rowWrites": 2,
+    "empty": false
+  }
+}
+SchemaDelta.empty = true    DataDelta.empty = false
+describeSchemaDelta -> undefined
+describeDataDelta   -> (a block)
+
+  exit=1
+  counts after: channels=1 channel_entities=1 message_artifacts=0 files=0 file_refs=0
+  --- stdout ---
+
+ROWS: opening this database for writing also writes rows to it. The migration would
+  change a7.db like this:
+    +1 channel_entities, +1 channels
+    2 row write(s) in total
+  These are the migration's own writes, not this tool's plan. They happen on the way in, to any
+  database opened for writing, and a run that moves no channel still performs them. Pass
+  --no-migrate to refuse the run rather than let it write them.
+
+  --- stderr ---
+(node:57950) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+Refusing to run: --no-migrate, and this run would write the rows above.
+  Nothing was written and the snapshot was discarded. Three ways on from here:
+    - run it without --no-migrate, accepting the change above;
+    - copy the file first and point this script at the copy, keeping a7.db as it is;
+    - run it with no flags for the review sheet, which never writes to the file at all.
+
+
+==============================================================================
+A8 — P6TRUNCATE: is a bare `DELETE FROM t` counted by total_changes()?
+==============================================================================
+  rows before delete: 17
+  total_changes() before=17 after=34 delta=17
+  rows after delete: 0
+  sqlite version: 3.53.2
+
+==============================================================================
+A9 — P7BACKUPWAL: does `source.backup()` see uncheckpointed frames, and leave a `-wal`?
+==============================================================================
+  seed: seeded clean: /Users/xian/Development/klatch-worktrees/theseus/.testdata/u465keys/a9.db (81920 bytes) channels=2 entities=1 channel_entities=2 messages=0 message_artifacts=0 files=0
+  target before: -shm:32768B -wal:16512B
+  channels through a live handle (WAL included): 3
+  channels in a bare fs.copyFileSync of the .db:  2
+  channels in source.backup()'s destination:      3
+  beside the snapshot right after backup(): (nothing)
