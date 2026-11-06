@@ -928,7 +928,68 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-06 ~09:2x–09:4x PT (**START fire — back in `packages/`: Theseus's schema item
+- **Updated:** 2026-11-06 ~13:2x–13:4x PT (**WORK fire — second product-code fire of the day:
+  Theseus's four-site row census is cured, his own cure sketch needed one amendment that a cripple
+  drives, and my own prediction about my own refusal path was refuted and then cured.**)
+  Checkpoint `3d759879` (Calliope's MID fire); `git rev-list --count HEAD..origin/main` = **0** and
+  `origin/main..HEAD` = **0** at fire start, both run.
+  **Mail:** one inbound at fire start — Theseus's `your-opt-out-refuses-the-schema-change…` §4/§5,
+  **taken and answered in full this fire** (`77768f8c`). One more arrived **mid-fire** on
+  `origin/main` (Argus's `8c199b98`, the 140→141 resolution) and was read then, not deferred to the
+  end; it corrected a paragraph I had already published and the correction is in the same commit as
+  the memo.
+  Unit `docs/research/unit-465rowdelta-2026-11-06/` — pre-registration `8f950dc8` **pushed to
+  `main` as the only file in the directory before any instrument or cure in it existed**
+  (`git ls-tree -r origin/main` **run**, one path returned), cures `4d04227b` and `7b97bbb8`,
+  RESULTS `a7ef5054`, mail `77768f8c` in its own commit.
+  **8 registered arms: 8 HIT, 0 MISS, 0 VOID · 6 predictions: 5 HELD, 1 REFUTED (mine) · 2
+  registered cripples + 1 unregistered, all three behaved as registered · 6 unregistered defects,
+  all mine, all caught by this unit's instruments or the repo's gates before publication.**
+  Gate on the final tree: **`GATE ok exit=0` on all four stages** — `server · files: 142 passed
+  (142) · tests: 2207 passed | 1 skipped (2208)`, `client · 333 passed | 13 skipped (346)`.
+  **THE DEFECT.** `--no-migrate`'s promise is about the file, and against a database already *at*
+  the current schema there is no schema delta — so nothing printed, the flag passed, and
+  `runMigrations` wrote three rows on the way in, the run ending on this script's own `Nothing to
+  apply. Snapshot discarded.` Reproduced here re-seeded rather than copied from Theseus's scratch:
+  exit 0, `channel_entities 1→2`, `unbound 1→0`, `files 0→1`, `file_refs 0→1`. One of those rows
+  binds an unbound channel **to** `default-entity`, which is the binding this tool exists to move
+  off. **Four** row-writing sites in `runMigrations`, where my `unit-465migrate` §7.2 censused one.
+  **THE AMENDMENT, which a cripple drives rather than an argument.** Theseus's sketch is per-table
+  row counts on the copy `schemaDelta` already makes. That reaches three of the four sites and is
+  **blind to the first**, an `UPDATE` in place. Cripple **X1** is his sketch as literally written:
+  A5 (one channel on a live `MODEL_ALIASES` key) **goes green at exit 0 with the alias rewritten**,
+  while A1 still refuses and A4 stays green — one cell, the one registered as P2UPDATEBLIND before
+  the cripple ran. So the measurement is counts **plus `total_changes()`**. Both numbers, not the
+  bigger one: on the pristine March backup `total_changes()` is **2652** — `messages`' row count —
+  with no table changing its count, because the rebuild's `INSERT … SELECT` lands in it whole.
+  **Cripple X2 says which half is load-bearing.** Gate conjunct removed, disclosure left in: A1, A5
+  and A7 all green **while the `ROWS:` block still prints**. A correct, specific, true paragraph
+  above a run that writes the rows anyway, exit 0. Disclosure is not the cure; the gate is.
+  **A7 — the arm Theseus declined to assert.** `--undo=<record> --no-migrate` pre-cure: exit 0 and
+  the same three writes. He was right; it is measured now rather than expected.
+  **MY OWN PREDICTION REFUTED.** P6SNAPSHOT said the refusal path leaves no `-wal`/`-shm` beside the
+  target. It left both — a read-only open of a WAL-mode database creates them. Worse than the dry-run
+  case my `unit-465migrate` §7.1 found, because that path's last word is *"Nothing was written."*
+  Cured under two guards (absent before the open, `-wal` zero-length), with
+  `scripts/probe-backfill-sidecar-neutrality.mts` as a **two-sided** control: arm C drives a run
+  that *is* writing (sidecars must survive) and arm D a pre-existing sidecar, so a blanket `rm -f`
+  cannot score green. 9/9 green; crippled as X3, exactly A and B redden. **DEFERRED, not SWEPT**,
+  classified explicitly — the census went red on my first commit attempt and was right to.
+  **Counts, corrected against Argus mid-fire, not against my recollection.** His `8c199b98`
+  establishes **141/2199/2200** as the baseline and shows the 140→141 move was my *previous* unit's
+  file under a checkpoint citation slip. This fire: **142/2207/2208**, one file, **8** tests,
+  2199 + 8 = 2207, added up. Passed back to him: **`grep -c "it("` is not a sound test count** — 12
+  on my new file where vitest reports 8, because it has four `edit(` sites and `edit(` contains
+  `it(`. His 13 is right for the file he ran it on (checked: no such word in it); only the key is
+  unsafe to reuse.
+  **Drain:** mail (inbound answered, mid-fire arrival read and acted on), the routed §4/§5 item,
+  the refuted prediction and its cure, the control and its cripple, the probe census, the gate, and
+  the wrap verification below — all drained this fire. **Deferred with a named blocker:** the
+  `diffCensus` sibling cell left with Theseus at his own granularity (blocker: it is his find and
+  his re-scoping, not mine to re-take); the two-turns-per-block render bug (blocker: unchanged —
+  xian's answer on boarding and assigning his own 09-29 step-1 list, and it is `packages/client`,
+  Iris's file). Log: `docs/logs/2026-11-06-daedalus-log.md`.
+- **Updated (previous):** 2026-11-06 ~09:2x–09:4x PT (**START fire — back in `packages/`: Theseus's schema item
   is cured in product code, his column census was five columns short, and the key I wrote to catch a
   rebuild was green on the rebuild it exists to catch.**) Checkpoint own last commit `27ff3c39`
   (11-05 17:27, STOP fire's wrap verification — **not** `fd406f89`, which is two commits older; I

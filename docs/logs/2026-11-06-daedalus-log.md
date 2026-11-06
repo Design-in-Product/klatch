@@ -205,3 +205,104 @@ The seventh is `drive6.err` at **190** bytes: `tsx`'s `module.register()` deprec
 rather than suppressed.
 
 Delivery itself is the wrapper's to log, not mine to assert.
+
+---
+
+## 13:20 — Session resumed (WORK fire, Opus 5)
+
+Session-start protocol run: worktree already synced by the wrapper (`HEAD..origin/main` = 0,
+`origin/main..HEAD` = 0, both run), `docs/COORDINATION.md` read, `docs/mail/` listed and ordered by
+commit rather than by mtime — mtime in a worktree is checkout time, not arrival time.
+
+**One inbound at fire start:** Theseus's `your-opt-out-refuses-the-schema-change-and-passes-three-row-writes…`
+(`25a66b12`), §4 routed to me with the §5 cure sketch. Taken this fire.
+
+### 13:23 — unit-465rowdelta pre-registered
+
+`8f950dc8`, pushed to `main` as the only file in the directory before any instrument or cure in it
+existed. 8 arms, 6 predictions, 2 cripples, all written down first. One pre-check ran before the
+registration and is named in it: `SELECT total_changes()` against the bundled SQLite (3.53.2) on an
+in-memory database — `INSERT` ×3 → 3, `UPDATE` ×3 → 6, `ALTER TABLE ADD COLUMN` → 6 unchanged,
+`DELETE` ×3 → 9. That is a measurement of better-sqlite3, not of the subject, which is why it was
+allowed to precede the registration rather than being folded into an arm.
+
+### 13:26 — the first drive caught a defect in my own instrument
+
+A1 pre-cure reproduced Theseus's §4 exactly: exit 0, no refusal, three rows written, closing on
+`Nothing to apply. Snapshot discarded.` And **`target intact: YES`** — because my key was `sha256`
+of the main database file and the three writes were sitting in the `-wal`, uncheckpointed. A
+sha-only verdict reads a three-row write as an untouched target. Re-keyed on the row counts and
+minted ids read through a handle that sees the WAL, with the byte claim kept and printed separately
+so the two cannot be read as one. Fixed before any further arm ran.
+
+Second instrument defect, same pass: my `ROWS:` block detector was
+`/^ROWS:|^  .*row|^    [+-]\d/`, and the tool has printed `message rows re-stamped:` for many
+rounds — so the **pre-cure** tree reported `ROWS block lines: 1` on a tree with no `ROWS:` block in
+it at all. Re-anchored on the block's own first token.
+
+### 13:30 — cure, tests, gate, pushed
+
+`4d04227b`. `schemaDelta` returns per-table row counts and `total_changes()` from the same copy;
+`describeDataDelta` prints a `ROWS:` block beside the `SCHEMA:` one; the `--no-migrate` gate keys on
+either note and **names which one it refused for** — the old single sentence, "would upgrade the
+schema", would have been a false reason for a correct refusal on exactly the routed case.
+`round465-data-delta.test.ts`, 8 tests, green. Full typecheck clean, server suite green, pushed
+before going further, per the 2400s lesson.
+
+### 13:33 — cripples X1 and X2
+
+X1 (counts only, Theseus's sketch as literally written): A5 green at exit 0 with the alias
+rewritten, A1 still red, A4 still green. P2UPDATEBLIND held, one cell, the registered one.
+X2 (gate conjunct removed, disclosure left in): A1, A5, A7 all green **while the `ROWS:` block
+still prints**. That is the one to remember — disclosure is not the cure, the gate is, and a
+reviewer reading only output would have scored X2 as fixed.
+
+### 13:35 — P6SNAPSHOT refuted, and three more defects of mine
+
+The refusal path left `-wal` and `-shm` beside the target. Cured, guarded twice (absent before the
+open; `-wal` zero-length), with a two-sided probe as the control.
+
+Three defects of mine surfaced getting there, all recorded rather than quietly fixed:
+
+1. **My probe manufactured the state its own arm measures.** `probe()` opens the target read-only,
+   which *creates* the sidecars — so by the time the tool ran they were already there, the cure's
+   "absent before" guard correctly declined, and `drive8` read the cure as having done nothing. The
+   cure was right and the instrument was contaminating its own input. Both drives are committed,
+   `drive8` contaminated and `drive9` neutral, rather than the second replacing the first.
+2. **The cripple's restore-from-`HEAD` wiped an uncommitted cure.** X3 was driven while the sidecar
+   cure was only in the working tree. The cripple applied, the probe reddened correctly, and the
+   restore then put the file back to a `HEAD` that did not contain the cure. Caught by
+   `grep -c sidecarsBefore` → `0`. Re-applied, committed (`7b97bbb8`), X3 re-driven on the committed
+   tree (`drive11`). The rule the hard way: restore-from-`HEAD` is only sound when the subject is
+   already in `HEAD`.
+3. **My commit message asserted a default the probe census does not have.** It said an unclassified
+   probe "lands in DEFERRED automatically." The census is a partition, the pre-commit hook went red
+   naming the file, and the claim was corrected in the message that shipped rather than left in it.
+
+### 13:39 — mid-fire mail, read then and not at the end
+
+Argus's `8c199b98` landed on `origin/main` while I was mid-unit (found by the push being rejected
+non-fast-forward; clean rebase, no force push, `git log` checked afterwards and all four of my
+commits present). Read immediately. It resolves Calliope's 140→141 flag as a checkpoint citation
+slip rather than a gate anomaly, and establishes **141/2199/2200** as the baseline — which made a
+paragraph I had **already published** in RESULTS loose. Corrected in the same commit as the memo
+(`77768f8c`), against his figures rather than my recollection of hers.
+
+Passed back to him: **`grep -c "it("` is not a sound test count.** It returns **12** on my new file
+where vitest reports **8**, because the file has four `edit(` call sites and `edit(` contains
+`it(`. His **13** is correct for the file he ran it on — checked directly, it contains no such word
+— so his figure stands and only the key is unsafe to reuse. This fire's counts: **142 files · 2207
+passed · 1 skipped (2208)**, the whole delta being my one new file, 2199 + 8 = 2207, added up in
+the sentence rather than asserted at the end of it.
+
+### 13:41 — tally
+
+**8 registered arms: 8 HIT, 0 MISS, 0 VOID. 6 predictions: 5 HELD, 1 REFUTED, the refuted one
+mine. 2 registered cripples + 1 unregistered, all three as registered. 2 unregistered arms. 6
+unregistered defects, all mine, every one caught by this unit's own instruments or by the repo's
+gates before publication.** Gate: `GATE ok exit=0` on all four stages. Every one of the 12 `.err`
+files is 0 bytes, counted off `wc -c`.
+
+**Named blockers, unchanged:** the `diffCensus` sibling cell stays with Theseus (his find, his
+re-scoping, not mine to re-take); the two-turns-per-block render bug still waits on xian's answer
+about boarding and assigning his own 09-29 step-1 list, and it is `packages/client`, Iris's file.
