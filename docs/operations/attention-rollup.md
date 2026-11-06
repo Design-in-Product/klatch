@@ -6,7 +6,9 @@
 
 **Trust-instrument discipline** (Exec 2026-06-19): every render comes from a fresh **verified sweep** of source docs — never from memory. A false "all clear" is a trust breach. "Quiet" must mean *verified-clear*, not *haven't-checked*.
 
-**Last refreshed:** 2026-11-05 (STOP fire, Calliope) — v175. **Backfill closed (ready-to-run → executed); a same-evening cross-team conflation of two different "needs-you=1" items corrected rather than left on the record; needs-you 1 → 2, a genuinely new item Theseus surfaced the same fire.**
+**Last refreshed:** 2026-11-06 (START fire, Calliope) — v176. **needs-you 2 → 3: the Managed Agents smoke test / API-native probe has been tracked daily in COORDINATION.md since 2026-10-21 but never promoted to this board, xian's actual skim surface.**
+
+**New item 3, found this fire:** not a neglected item — this seat's own COORDINATION.md entry has re-derived "ma-smoke — day N, unchanged" fresh every single fire since 2026-10-21 (day 17 today) — but it has never once been promoted from that agent-facing log to *this* board, which is xian's actual skim surface. `git ls-remote --heads origin` still shows no `smoke`/`ma-smoke`/`managed` branch, confirmed fresh this fire, same zero Daedalus found 2026-10-27. His memo (`docs/mail/read/daedalus-to-calliope-argus-theseus-cc-iris-janus-xian-both-asks-answered-the-probe-is-blocked-on-xian-and-the-flat-census-cannot-see-the-track-2026-10-27.md`) named two links as xian's and closed the thread on his own side with that stated: "two of the three links are his — the key/trigger for test 1, and the §4.3 threshold." The item had been *removed* from needs-you on 2026-10-22 (v171) for a different, narrower reason (the MVP-feature sub-question closing); nobody re-added it to this board when Daedalus reopened the xian-blocked half five days later, even though it kept being tracked, correctly, in the other document. Boarded as item 3 below.
 
 **Backfill:** the 🔴 item at the top of this board named one exact command for 38 days with no owner. Theseus ran it this fire (`59405a6e`): 9 channels re-pointed, 9 agents minted, 821 `messages` rows moved. Verified independently by this seat against the same backup file, not taken on the commit message — `entities` 68→77 confirmed, `channel_entities` still on `default-entity` confirmed at 129. Moved to ✅, full build/verification history archived unchanged under the matching heading in `docs/operations/attention-rollup-archive-2026-09-27.md`. See that section for detail; not repeated here.
 
@@ -66,7 +68,7 @@
 
 | Needs you | Blocked-on-others | Lower-urgency |
 |---|---|---|
-| **2** | **0** | **11** |
+| **3** | **0** | **11** |
 
 ---
 
@@ -82,7 +84,7 @@ Full build-and-verification history — the sizing work, the four named refusal 
 
 ## 🔴 Needs you — FIRST, always
 
-**Two open items.** One surfaced 2026-10-14 after Janus flagged this board was reading 0 while they sat on you unrendered; a second item (the ground-rules configuration question) closed 2026-11-03 — see ✅ Recently closed. A new one (item 2 below) opened tonight, 2026-11-05, when Theseus found four of your own 2026-09-29 sequencing items had never made it onto any board. Dated by when it actually opened, not by today.
+**Three open items.** Item 1 surfaced 2026-10-14 after Janus flagged this board was reading 0 while it sat on you unrendered. A separate item (the ground-rules configuration question) closed 2026-11-03 — see ✅ Recently closed. Item 2 opened 2026-11-05, when Theseus found four of your own 2026-09-29 sequencing items had never made it onto any board. Item 3 was reopened by Daedalus on 2026-10-27 but not boarded here until tonight. Dated by when it actually opened, not by today.
 
 ### 1. Blog-series: a major new draft needs an angle/sequencing conversation with you first
 
@@ -102,6 +104,14 @@ Full build-and-verification history — the sizing work, the four named refusal 
 - **The ask, Theseus's own words:** *"Do you want that list boarded and assigned now, ahead of the five-agent roadmap meeting, the way you sequenced it? A yes needs no detail from you; we'll pick owners."*
 - **Not urgent by the same measure as item 1, but xian sequenced it as step 1 of his own plan** — the gap is that nobody checked the board against his sequencing until tonight, not that anyone deprioritized it on purpose.
 - **Date added:** 2026-11-05 (STOP fire, source finding Theseus, boarded by Calliope). Source: `docs/mail/theseus-to-daedalus-xian-cc-janus-argus-calliope-iris-i-did-not-attack-your-unit-the-ruling-you-asked-xian-for-was-already-on-the-board-2026-11-05.md` §5–6; `klatch-artifacts/roundtable.md` §2/§6.
+
+### 3. Managed Agents smoke test, set up 16 days ago, never run — plus the API-native probe's "promising" threshold
+
+- **What:** Pard set up a smoke test for the hosted-agent comparison, offered as this seat's 2026-10-21 START fire (`docs/mail/pard-to-calliope-cc-xian-janus-smoke-run-set-for-your-0830-start-hosted-copy-on-a-branch-2026-10-20.md`): a key in the Klatch workspace, a repo-scoped GitHub token, and one script, run only if xian starts it. **It has never run, 17 days in.** Checked fresh this fire: `git ls-remote --heads origin` shows no `smoke`/`ma-smoke`/`managed` branch — same zero Daedalus found 2026-10-27.
+- **Why this is on you and not the team:** Daedalus's 2026-10-27 memo (`docs/mail/read/daedalus-to-calliope-argus-theseus-cc-iris-janus-xian-both-asks-answered-the-probe-is-blocked-on-xian-and-the-flat-census-cannot-see-the-track-2026-10-27.md`) named it plainly and closed the thread on his own side: *"two of the three links are his — the key/trigger for test 1, and the §4.3 threshold. Neither is a big ask; both are small and both are blocking a deliverable he asked for."* §4.3 of `docs/plans/api-native-probe-plan-2026-10-21.md` is what "promising" means for the API-native probe, concretely enough to read a result against before the build starts — your own call per everyone's framing, named open rather than decided for you.
+- **How this fell off *this* board without falling off tracking entirely:** the API-experiment item closed off needs-you on 2026-10-22 (v171, below) for a different, narrower reason — the MVP-feature sub-question (which core feature to build) was answered. This seat's own `COORDINATION.md` entry has re-derived and reported "ma-smoke — day N" fresh every single fire since (day 17 today), so the fact was never lost — but nobody promoted it back to *this* board, the one built to be xian's actual skim surface, when Daedalus's 10-27 memo reopened the still-xian-gated half. Found and boarded this fire.
+- **Not urgent in the sense that nothing breaks by waiting** — but both asks are small (a key/token/trigger for one, a threshold sentence for the other) and both have been sitting exactly as long as nobody asked twice.
+- **Date added:** 2026-11-06 (START fire, Calliope) — the underlying block is 2026-10-27; the daily tracking is 2026-10-21.
 
 ---
 
