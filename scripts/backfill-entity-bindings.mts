@@ -44,8 +44,22 @@
  * migrated — so **every run now discloses the delta before writing, and
  * `--no-migrate` refuses instead**. Both are keyed on a measured diff (the
  * snapshot is copied, the real migration code is applied to the copy, the two are
- * compared), so a database already at the current schema prints nothing and runs
- * normally with `--no-migrate` on the line.
+ * compared), so a database with nothing pending prints nothing and runs normally
+ * with `--no-migrate` on the line.
+ *
+ * **The disclosure covers rows as well as schema, because the migration writes
+ * rows.** The first version covered only the container, and Theseus's 2026-11-06
+ * §4 found the gap that left: against a database *already at* the current schema
+ * there is no schema delta, so nothing printed, `--no-migrate` passed — and
+ * `runMigrations` still wrote three rows on the way in (a `channel_entities` row
+ * binding an unbound channel **to** `default-entity`, which is the binding this
+ * tool exists to move off, plus a `files` and a `file_refs` row for an
+ * un-backfilled artifact). The run ended on this script's own `Nothing to apply.
+ * Snapshot discarded.` — true about the plan, false about the file. There are
+ * **four** row-writing sites in `runMigrations`, not the one an earlier census of
+ * them named; the measurement is now per-table row counts plus
+ * `total_changes()`, which is what catches the fourth, an `UPDATE` in place that
+ * moves no count.
  *
  * **A dry run cannot touch the database it is reporting on.** `getDb()` runs the
  * server's schema init and migrations on whatever it opens — additive and
@@ -853,7 +867,7 @@ const { GUESS_BASES } = await import('../packages/server/src/import/entity-guess
 // Already loaded transitively by `entity-backfill.js` above — named here only so
 // `checkpointAfterWrite` can reach the connection the writes went through.
 const { getDb } = await import('../packages/server/src/db/index.js');
-const { schemaDelta, describeSchemaDelta } = await import(
+const { schemaDelta, describeSchemaDelta, describeDataDelta } = await import(
   '../packages/server/src/db/schema-delta.js'
 );
 
@@ -880,12 +894,30 @@ const { schemaDelta, describeSchemaDelta } = await import(
 //
 // Placed above the undo branch because `--undo` writes too, and runs on exactly
 // the same kind of file.
+// ── …and what it would do to the file's *rows* ─────────────────────────────
+//
+// Theseus's 2026-11-06 §4, which is the half the block above missed. The schema
+// disclosure went in against a database that was *behind* the schema; against one
+// already at it, `delta.empty` is true, nothing printed, `--no-migrate` passed —
+// and `runMigrations` still wrote three rows on the way in, because it has four
+// row-writing sites and my census of them named one. His measured case ended with
+// this script's own `Nothing to apply. Snapshot discarded.`, which is true about
+// the plan and false about the file. `--no-migrate`'s promise is about the file.
+//
+// Same measurement, same copy, so this costs nothing extra: per-table row counts
+// either side of the migration, plus `total_changes()`, which is the only one of
+// the two that sees the in-place `UPDATE` at site 1. The flag keeps its name —
+// these writes are `runMigrations`' own, and an operator who asked not to be
+// migrated asked about them too.
 const noMigrate = flags.includes('--no-migrate');
 const willWrite = apply || Boolean(undoPath);
 let schemaNote: string | undefined;
+let dataNote: string | undefined;
 let schemaUnknown: string | undefined;
 try {
-  schemaNote = describeSchemaDelta(schemaDelta(snapshotPath), dbPath);
+  const delta = schemaDelta(snapshotPath);
+  schemaNote = describeSchemaDelta(delta, dbPath);
+  dataNote = describeDataDelta(delta.data, dbPath);
 } catch (err) {
   // Never fatal on its own. A database this script cannot read has a refusal of
   // its own further down, in this script's voice, with the restore steps in it;
@@ -895,22 +927,35 @@ try {
   schemaUnknown = (err as Error).message;
 }
 if (schemaNote) console.log(`\n${schemaNote}`);
-if (noMigrate && willWrite && (schemaNote || schemaUnknown)) {
+if (dataNote) console.log(`\n${dataNote}`);
+if (noMigrate && willWrite && (schemaNote || dataNote || schemaUnknown)) {
   discardSnapshot();
+  // Named at the granularity of what was actually measured. "would upgrade the
+  // schema" was the only sentence here, and against the routed case — rows
+  // written, schema already current — it would have been a false reason for a
+  // correct refusal.
+  const reason =
+    schemaNote && dataNote
+      ? 'this run would upgrade the schema and write the rows above'
+      : schemaNote
+        ? 'this run would upgrade the schema above'
+        : dataNote
+          ? 'this run would write the rows above'
+          : undefined;
   console.error(
-    schemaNote
-      ? '\nRefusing to run: --no-migrate, and this run would upgrade the schema above.'
-      : `\nRefusing to run: --no-migrate, and whether this run would upgrade the schema could not be\n  determined (${schemaUnknown}).`
+    reason
+      ? `\nRefusing to run: --no-migrate, and ${reason}.`
+      : `\nRefusing to run: --no-migrate, and whether this run would change the file could not be\n  determined (${schemaUnknown}).`
   );
   console.error(
     '  Nothing was written and the snapshot was discarded. Three ways on from here:\n' +
-      '    - run it without --no-migrate, accepting the schema change above;\n' +
+      '    - run it without --no-migrate, accepting the change above;\n' +
       `    - copy the file first and point this script at the copy, keeping ${path.basename(dbPath)} as it is;\n` +
       '    - run it with no flags for the review sheet, which never writes to the file at all.'
   );
   process.exit(1);
 }
-if (noMigrate && !willWrite && schemaNote) {
+if (noMigrate && !willWrite && (schemaNote || dataNote)) {
   console.log(
     '  --no-migrate is on this line and this is a review sheet, which does not write to the file —\n' +
       '  so there is nothing here to refuse. An --apply or --undo against this database would refuse.'
@@ -1321,6 +1366,18 @@ if (filterProblems.length) {
 if (plan.summary.apply === 0) {
   discardSnapshot();
   console.log('\nNothing to apply. Snapshot discarded.');
+  // Only reachable on the writing path — the dry run exits above — so by here
+  // `getDb()` has opened the file and the migration has already written whatever
+  // it writes. "Nothing to apply" is true about the plan and, on its own, false
+  // about the file: Theseus's 2026-11-06 §4 measured three rows written under
+  // exactly this line. The disclosure is upstream; this is the sentence an
+  // operator actually finishes on.
+  if (dataNote) {
+    console.log(
+      '  Nothing from the plan, that is. The row writes disclosed above are the migration\'s own and\n' +
+        '  happened on the way in — this run opened the file for writing, so they are in it now.'
+    );
+  }
   process.exit(0);
 }
 

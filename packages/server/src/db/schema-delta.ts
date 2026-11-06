@@ -29,6 +29,43 @@
  * The copy is why nothing here writes to the caller's database: `delta.ts` is
  * called on the pre-write snapshot the tool has already taken, copies *that*, and
  * deletes the copy and its sidecars on the way out, including on a throw.
+ *
+ * ## Why it measures rows as well as schema
+ *
+ * The first version of this module answered only *what will change about the
+ * container*, and `unit-465migrate` §7.2 censused the migration's row-writing
+ * sites at **one** — the `MODEL_ALIASES` loop — and called it "structural and
+ * currently empty." Theseus's 2026-11-06 §4 read the file and found **four**, and
+ * drove the consequence: against a database already at the current schema,
+ * `--apply --no-migrate` passed a run that wrote three rows and ended with
+ * *"Nothing to apply. Snapshot discarded."* That sentence is true about the plan
+ * and false about the file, and `--no-migrate`'s whole promise is about the file.
+ *
+ * The four sites, all in `runMigrations`:
+ *
+ * 1. the `MODEL_ALIASES` loop — `UPDATE channels/messages SET model`, **in
+ *    place**, so no row count moves;
+ * 2. the `message_artifacts` → `files` + `file_refs` backfill — two `INSERT`s per
+ *    `type='file'` artifact not yet in `files`, ids minted with `randomUUID()`;
+ * 3. the default-entity `INSERT`, when `DEFAULT_ENTITY_ID` is absent;
+ * 4. `INSERT INTO channel_entities (…, DEFAULT_ENTITY_ID)` for every channel with
+ *    no entity row — a tool whose job is moving bindings *off* the default
+ *    creating bindings *to* it, as a side effect of opening the file.
+ *
+ * So the measurement is two numbers, not one. **Per-table row counts** either
+ * side of the same `applySchema` call reach sites 2, 3 and 4 exactly. They are
+ * blind to site 1, which changes rows without changing how many there are — so
+ * **`total_changes()`** is read across the same call, and it sees the in-place
+ * `UPDATE` while ignoring a pure `ALTER TABLE ADD COLUMN`. A cure keyed on counts
+ * alone would hand `--no-migrate` a run that rewrites every legacy model id in
+ * the corpus and call it clean.
+ *
+ * `total_changes()` has its own cost, which is why both numbers are reported
+ * rather than just the bigger one: the `messages` rebuild is an `INSERT … SELECT`
+ * over the whole table, so on any database behind that migration the write count
+ * is dominated by rows that were **rewritten, not added** — 2,652 of them on the
+ * March backup. Reported as "rows added" it would be wrong by three orders of
+ * magnitude.
  */
 import Database from 'better-sqlite3';
 import fs from 'fs';
@@ -64,6 +101,39 @@ export interface SchemaDelta {
   alteredTables: string[];
   /** True when the database is already at the current schema. */
   empty: boolean;
+}
+
+/**
+ * What bringing this database up to the current schema would do to its **rows**,
+ * as distinct from its shape. Separate from `SchemaDelta` because the two are
+ * independent: a database can be exactly at the current schema and still have
+ * three rows written into it the moment it is opened for writing, which is the
+ * defect this exists for.
+ */
+export interface DataDelta {
+  /**
+   * Net row-count change per table, zeros omitted. Reaches the migration's three
+   * `INSERT` sites. A table the migration creates counts from 0, so its rows show
+   * up here as well as the table showing up in `addedObjects`.
+   */
+  rows: Record<string, number>;
+  /**
+   * `total_changes()` across the migration — every row an `INSERT`, `UPDATE` or
+   * `DELETE` touched, whether or not the count moved.
+   *
+   * This is the key, not `rows`: it is the only one of the two that sees an
+   * in-place `UPDATE`. It is **not** a count of rows *added* — a table rebuild's
+   * `INSERT … SELECT` lands here in full — so `describeDataDelta` reports it
+   * beside the net counts and says which is which.
+   */
+  rowWrites: number;
+  /** True when the migration writes no row at all. */
+  empty: boolean;
+}
+
+/** `schemaDelta()`'s answer: the container and the rows, measured in one pass. */
+export interface MigrationDelta extends SchemaDelta {
+  data: DataDelta;
 }
 
 export interface Census {
@@ -148,6 +218,37 @@ export function diffCensus(before: Census, after: Census): SchemaDelta {
   };
 }
 
+/** Row count per table named in a census. A table with no rows is still listed. */
+function countRows(db: Database.Database, c: Census): Record<string, number> {
+  const counts: Record<string, number> = {};
+  for (const name of Object.keys(c.cols)) {
+    counts[name] = db.prepare(`SELECT COUNT(*) FROM "${name}"`).pluck().get() as number;
+  }
+  return counts;
+}
+
+/**
+ * Rows this connection has inserted, updated or deleted since it was opened.
+ * SQLite's own counter, so it needs no list of writing sites to stay current —
+ * which is the point, given that the hand-written list of them came out three
+ * short.
+ */
+function totalChanges(db: Database.Database): number {
+  return db.prepare('SELECT total_changes()').pluck().get() as number;
+}
+
+function diffRows(
+  before: Record<string, number>,
+  after: Record<string, number>
+): Record<string, number> {
+  const rows: Record<string, number> = {};
+  for (const table of Object.keys(after)) {
+    const net = after[table]! - (before[table] ?? 0);
+    if (net !== 0) rows[table] = net;
+  }
+  return rows;
+}
+
 /**
  * The schema delta between the database at `dbPath` and the current schema.
  *
@@ -159,7 +260,7 @@ export function diffCensus(before: Census, after: Census): SchemaDelta {
  * Throws whatever `better-sqlite3` throws on an unreadable file; the caller owns
  * that sentence (the backfill script has one, in its own voice).
  */
-export function schemaDelta(dbPath: string): SchemaDelta {
+export function schemaDelta(dbPath: string): MigrationDelta {
   const scratch = path.join(os.tmpdir(), `klatch-schema-delta-${randomUUID()}.db`);
   let db: Database.Database | undefined;
   try {
@@ -172,9 +273,18 @@ export function schemaDelta(dbPath: string): SchemaDelta {
     db.pragma('journal_mode = WAL');
     db.pragma('foreign_keys = ON');
     const before = census(db);
+    const rowsBefore = countRows(db, before);
+    // Read on this connection, so the baseline is whatever the two pragmas above
+    // did (nothing, to rows) rather than assumed to be zero.
+    const writesBefore = totalChanges(db);
     applySchema(db);
     const after = census(db);
-    return diffCensus(before, after);
+    const rowsAfter = countRows(db, after);
+    const rowWrites = totalChanges(db) - writesBefore;
+    return {
+      ...diffCensus(before, after),
+      data: { rows: diffRows(rowsBefore, rowsAfter), rowWrites, empty: rowWrites === 0 },
+    };
   } finally {
     db?.close();
     for (const suffix of ['', '-wal', '-shm']) fs.rmSync(scratch + suffix, { force: true });
@@ -224,5 +334,53 @@ export function describeSchemaDelta(delta: SchemaDelta, dbPath: string): string 
     `  of an older schema: restore it later to ask what the schema looked like then and you get`
   );
   lines.push(`  today's answer. Pass --no-migrate to refuse instead of upgrading.`);
+  return lines.join('\n');
+}
+
+/**
+ * The migration's **row** writes as lines for an operator, or `undefined` when it
+ * writes none.
+ *
+ * Deliberately a separate block from `describeSchemaDelta`, and a separate
+ * sentence in the refusal: the two are independent, and the case that routed this
+ * work is a database with **no** schema delta at all, where this is the only
+ * honest disclosure there is. Either block has to stand alone.
+ *
+ * Counts, never ids. Two of the writing sites mint `randomUUID()`, so the ids on
+ * the temp copy are not the ids the real run will write — the *number* transfers
+ * and the identity does not, and printing one would be a specific false claim
+ * where "+1 row" is a true general one.
+ */
+export function describeDataDelta(data: DataDelta, dbPath: string): string | undefined {
+  if (data.empty) return undefined;
+  const lines: string[] = [];
+  const added = Object.values(data.rows).reduce((a, b) => a + (b > 0 ? b : 0), 0);
+  lines.push(`ROWS: opening this database for writing also writes rows to it. The migration would`);
+  lines.push(`  change ${path.basename(dbPath)} like this:`);
+  const named = Object.entries(data.rows)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([table, n]) => `${n > 0 ? '+' : ''}${n} ${table}`);
+  lines.push(
+    named.length
+      ? `    ${named.join(', ')}`
+      : `    no table changes how many rows it holds — every write below is a rewrite`
+  );
+  lines.push(`    ${data.rowWrites} row write(s) in total`);
+  if (data.rowWrites > added) {
+    lines.push(
+      `      More writes than rows gained, so ${data.rowWrites - added} row(s) are rewritten rather`
+    );
+    lines.push(
+      `      than added: a table rebuild moves every row it holds, and the migration also rewrites`
+    );
+    lines.push(`      legacy model ids in place where it finds them, changing no count at all.`);
+  }
+  lines.push(
+    `  These are the migration's own writes, not this tool's plan. They happen on the way in, to any`
+  );
+  lines.push(
+    `  database opened for writing, and a run that moves no channel still performs them. Pass`
+  );
+  lines.push(`  --no-migrate to refuse the run rather than let it write them.`);
   return lines.join('\n');
 }
