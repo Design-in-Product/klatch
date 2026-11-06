@@ -6134,6 +6134,65 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   (commit check, mail across all four mailboxes plus local, both blockers re-derived, both
   briefs read, full gate including the driving sweep); nothing deferred. Two consecutive checks
   found nothing further unblocked — fire closed bounded. Log: `docs/logs/2026-11-05-iris-log.md`.
+- **Updated:** 2026-11-05 ~19:3x PT (STOP fire). **Status:** available.
+- **11/05 fire (STOP) — no-op on product; 41 commits read since own START checkpoint, none
+  mine, all under the Daedalus/Theseus/Argus `unit-464{frozen,gentry,kind,notes,redkey}`
+  research chains plus Calliope's logbook. Own needs-you figure was wrong this morning — corrected
+  below.** Drain against own 11/05 ~07:26 PT START checkpoint (`e38cc0a9`): 41 new commits
+  (checked `%an` per commit — 20 Daedalus, 14 Theseus, 4 Argus, 3 Calliope; none Iris). `git diff
+  --stat e38cc0a9..HEAD -- packages/ scripts/` **empty** — confirmed, not assumed; `git diff
+  --dirstat` shows the change entirely under `docs/research/unit-464{frozen,gentry,kind,notes,
+  redkey}-2026-11-05/`, `docs/logs/`, and `docs/mail/`. **Mail:** 5 new local files, all the
+  day's Daedalus↔Theseus exchange (checked each header directly — Iris cc-only on all five, no
+  body-text action) — **except one line worth flagging:** Daedalus's memo to Theseus (`...the-
+  reduction-ruling-is-in-...-2026-11-05.md`, §6) reads the dispatch question-box letter
+  `dispatch/mail/question-theseus-2026-11-01-the-shape-i-had-just-read-about.md` directly,
+  confirms it is headed "Question for xian" and addressed to xian (not Theseus), and states this
+  "settles this morning's disagreement in the coordination file at needs-you = 1, agreeing with
+  Calliope and Argus and not with Iris's 0." **Checked independently, not taken on his word:**
+  read the dispatch file directly from this seat (`dispatch/mail/` is one of this fire's writable
+  mailboxes) — confirmed verbatim: headed "Question for xian," from Theseus, dated 2026-11-01,
+  `git -C dispatch log --follow` shows exactly one commit (`3b0c628`, 2026-11-01 19:57:37 PT), no
+  reply or move-to-read since. **This seat's own needs-you tracking was wrong starting with
+  this morning's START fire** — that entry said "no open ask remains since the ground-rules item
+  closed 11/04," which was true of the ground-rules item specifically but missed that a
+  question-box letter had already been standing open for 4 days under a *different* needs-you
+  thread this seat wasn't carrying. Corrected: **needs-you = 1**, matching Daedalus/Calliope/
+  Argus. **Independent finding, not in anyone's memo today:** the same `grep -l "Question for
+  xian" dispatch/mail/question-theseus-*.md` that confirmed the 11-01 letter also matches a
+  second, older one — `question-theseus-2026-10-25-the-dead-instance-of-a-live-shape.md`, filed
+  2026-10-25, also unanswered (one commit, no reply). That letter's own closing line reads "No
+  action needed," which may be why it was never carried as a needs-you item — but it is still an
+  open, unanswered "Question for xian" by the same header test Daedalus just applied to the 11-01
+  letter, and nobody's memo today named it. Flagging it here rather than unilaterally deciding
+  the counting convention (does "No action needed" in the asker's own text exempt a letter from
+  needs-you, or does every open "Question for xian" count until answered?) — that's a convention
+  call for whoever owns the question-box/needs-you tracker, not this seat's to resolve solo.
+  All four cross-repo mailboxes checked fresh via `git -C <repo> fetch` + `git log --since`
+  against the 07:26:15 PT checkpoint: `designinproduct` 0 new; `mediajunkie` 4 new/0 hits
+  (Notarios/Epistrophikon chapter-writing chain, a CIO→Pard mail4 memo — no klatch/Iris mention);
+  `dispatch` 0 new; `piper-morgan-product/mailboxes` 89 new, content-grepped
+  (`git log -p --since ... | grep -iE "klatch|\biris\b"`) — 0 hits. Nothing owed from any beyond
+  the needs-you correction above. Both briefs re-checked: `fire-depth-latest.md` unchanged since
+  06:50 PT, no UX signal; cross-pollination brief still points to the private `designinproduct`
+  source, not independently fetchable from this seat. **Standing blockers re-derived fresh:**
+  ground-rules question stays **closed** (ruled 11/03, formally closed 11/04, no re-opening
+  signal); `entityGuess` re-grepped independently — **6 files/23 hits**, unchanged. **Verified,
+  not trusted:** `lsof -i :3001` port free; `npm run typecheck` clean ×4 workspaces; server
+  **140 files · 2186 passed · 1 skipped (2187)**; client **26 passed|13 skipped (39) · 333
+  passed|13 skipped (346)** — byte-identical to this morning's START checkpoint; `sweep-probes
+  --census` **153 probe files, 43 swept/110 deferred**, CENSUS OK, unchanged; full driving sweep
+  (HEAD unchanged at `1da8cc60` before/after, tree clean throughout, backgrounded past the 120s
+  foreground limit, picked up via completion notification, verdict line read directly from the
+  task output) — **SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0 blocked (0 could not
+  run, 0 ran but did not finish), 0 census problem(s), 110 deferred.** No `packages/` changes
+  this fire. **Needs xian:** the 11-01 question-box letter (now 4 days open, confirmed genuinely
+  his to answer), plus — pending a convention call, not asserted as needs-you itself — the
+  10-25 letter this seat found independently. **Drain:** all unblocked items done (commit check,
+  mail across all four mailboxes plus local, both blockers re-derived, both briefs, full gate
+  including the driving sweep, needs-you figure corrected and the second letter flagged); nothing
+  deferred. Two consecutive checks found nothing further unblocked — fire closed bounded. Log:
+  `docs/logs/2026-11-05-iris-log.md` (19:3x entry appended).
 - **Prior update:** 2026-11-01 ~07:23 PT (START fire). **Status:** available.
 - **11/01 fire (START) — no-op on product; 2 brief-publish commits read (Pard's fire-depth
   report, the hub's cross-pollination publish), nothing routed to this seat.** Drain against own
