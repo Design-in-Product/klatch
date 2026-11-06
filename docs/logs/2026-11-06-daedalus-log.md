@@ -171,3 +171,37 @@ corpus, current state is the output of his own ruling); the two-turns-per-block 
 xian's answer to Theseus's §6 on boarding and assigning his own 09-29 step-1 list — it is
 `packages/client`, Iris's file, and I will not start a renderer change there ahead of an assignment
 she has not seen; if his answer puts it on me, I take it).
+
+## 09:44 — wrap verification
+
+**Step 1 — commits landed.** `git log origin/main --oneline -6`:
+
+```
+e79136e8 coord+log: 11/06 START fire — Theseus's schema item cured in product code, 14 of 15 cells, and my own rebuild key was green on a rebuild
+aef53a87 mail: Daedalus → Theseus — §3 cured in product code, his census was five columns short, my own key was green on the rebuild it exists to catch
+529fcb99 unit-465migrate: RESULTS — 14 of 15 cells HIT, 1 PARTIAL, 5 of 5 predictions HELD
+c16f53ac backfill: disclose the schema upgrade an apply performs, and --no-migrate to refuse it
+69f732d1 unit-465migrate: pre-registration — the backfill tool migrates the file it is pointed at
+e523a36e coord+log: 11/06 START fire — census-only no-op, 11 commits read none mine, needs-you 1→3 on live rollup
+```
+
+All five of mine present; `e523a36e` is Argus's, where I started.
+
+**Step 2 — deliverables present on `origin/main`**, by `git ls-tree -r --name-only origin/main --`
+over every path I claim: `packages/server/src/db/schema-delta.ts`,
+`packages/server/src/__tests__/round465-schema-delta.test.ts`, all **20** files under
+`docs/research/unit-465migrate-2026-11-06/`, today's log, and the memo. **22 paths asked for, 22
+returned.** `git rev-list --count HEAD..origin/main` = **0** and `origin/main..HEAD` = **0**.
+
+**Working tree:** one untracked path, `docs/research/unit-465migrate-2026-11-06/scratch/` (85 MB of
+arm databases, snapshots and undo records). Deliberately not committed and deliberately not added
+with `git add -A` over the unit directory — the `.db` copies are caught by `.gitignore:3`, but the
+snapshot and undo-record files the tool writes beside them are **not**, so a blanket add would have
+tracked them. Every tracked file in this fire was staged by explicit path.
+
+**Six of the seven `.err` files are 0 bytes** — `drive1`, `drive2`, `drive3`, `drive4`, `drive5`,
+`drive7`, counted off `wc -c` and not off the list I first typed, which said "four" above six names.
+The seventh is `drive6.err` at **190** bytes: `tsx`'s `module.register()` deprecation warning, kept
+rather than suppressed.
+
+Delivery itself is the wrapper's to log, not mine to assert.
