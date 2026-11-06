@@ -6268,6 +6268,53 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   including the driving sweep, needs-you figure corrected and the second letter flagged); nothing
   deferred. Two consecutive checks found nothing further unblocked — fire closed bounded. Log:
   `docs/logs/2026-11-05-iris-log.md` (19:3x entry appended).
+- **Updated:** 2026-11-06 ~07:2x PT (START fire). **Status:** available.
+- **11/06 fire (START) — no-op on product; 8 commits read since own 11/05 STOP checkpoint
+  (`28f55713`), none mine. A mail-driven correction to this seat's own needs-you tracking —
+  detailed below.** Drain against own checkpoint: 8 new commits (checked `%an` per commit — 4
+  Theseus, 2 Calliope, 1 Pard(Mediajunkie), 1 Claude(brief-publish)). `git diff --stat
+  28f55713..HEAD -- packages/ scripts/` **empty** — confirmed, not assumed; `git diff --dirstat`
+  shows 95.9% under `backups/` (the backfill artifact itself) and 3.9% `docs/`.
+  **Mail:** Calliope's 11/05 STOP-fire memo (`...needs-you-1-is-the-blog-series-not-the-letter-
+  and-backfill-is-closed-2026-11-05.md`, to Daedalus/Theseus/Iris) corrects the premise behind
+  this seat's own 11/05 STOP entry's 0→1 needs-you move. Checked the live rollup's own reasoning
+  as relayed, not re-derived independently this fire (Calliope already did that read against the
+  live board before writing): the board's one open needs-you item since 2026-10-14 has always
+  been the blog-series/sequencing conversation, not Theseus's dispatch letter this seat
+  (and Daedalus) read the figure as referring to. Three of us landed on the same number that
+  night by two different routes and two different items — worth naming, not treating as
+  convergence. Calliope also boarded Theseus's §6 find (four of xian's five 2026-09-29
+  sequencing items never made a board, 37 days) as needs-you item **2**, and closed the Backfill
+  item (re-verified herself against the backup DB directly). **Correction: needs-you is 2, not
+  1** — blog-series item (unchanged) plus the newly-boarded sequencing-items find. Nothing in the
+  memo asks this seat for a decision; not moved to `read/` unilaterally since Daedalus and
+  Theseus are also addressees and haven't acted on it in this seat's view yet.
+  All four cross-repo mailboxes checked fresh via `git -C <repo> fetch` + `git log --since`
+  against the 11/05 ~19:30 PT checkpoint: `designinproduct` 0 new; `mediajunkie` 0 new;
+  `dispatch` 0 new; `piper-morgan-product/mailboxes` 87 new, content-grepped (via a scratch file
+  inside this worktree, since a bare `/tmp` redirect needs approval outside the allowed working
+  directories) — 0 hits, all internal Piper Morgan role traffic. Nothing owed from any. Both
+  briefs regenerated for 11/06 and read: fire-depth no new UX signal; cross-pollination brief
+  still points to the private `designinproduct` source, confirmed not independently fetchable
+  from this seat (only `designinproduct/docs/mail` is writable/readable this session).
+  **Standing blockers re-derived fresh:** ground-rules question stays **closed** (ruled 11/03,
+  closed 11/04, no re-opening signal); `entityGuess` re-grepped independently — first pass with
+  `-l | wc -l` undercounted at 20 (counts matching lines, not occurrences, and
+  `ImportDialog.tsx` has lines with two hits); recounted with `-o | wc -l` — **6 files/23 hits**,
+  unchanged. **Verified, not trusted:** `lsof -i :3001` port free; `npm run typecheck` clean ×4
+  workspaces; server **140 files · 2186 passed · 1 skipped (2187)**; client **26 passed|13
+  skipped (39) · 333 passed|13 skipped (346)** — byte-identical to the 11/05 STOP checkpoint;
+  `sweep-probes --census` **153 probe files, 43 swept/110 deferred**, CENSUS OK, unchanged; full
+  driving sweep (HEAD unchanged at `74461066` before/after, tree clean throughout, backgrounded
+  past the 120s foreground limit, picked up via completion notification, verdict line read
+  directly from the task output) — **SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0
+  blocked (0 could not run, 0 ran but did not finish), 0 census problem(s), 110 deferred.** No
+  `packages/` changes this fire. Nothing new needs xian from this seat — the needs-you correction
+  is a tracking fix, not a new ask. **Drain:** all unblocked items done (commit check, mail
+  across all four mailboxes plus local, both blockers re-derived, both briefs, full gate
+  including the driving sweep, own needs-you tracking corrected); nothing deferred. Two
+  consecutive checks found nothing further unblocked — fire closed bounded. Log:
+  `docs/logs/2026-11-06-iris-log.md`.
 - **Prior update:** 2026-11-01 ~07:23 PT (START fire). **Status:** available.
 - **11/01 fire (START) — no-op on product; 2 brief-publish commits read (Pard's fire-depth
   report, the hub's cross-pollination publish), nothing routed to this seat.** Drain against own
