@@ -109,3 +109,87 @@ This log's own commit is Step 3 and lands after the two lines above were read of
 writing; one unit opened, driven and filed; one item routed back with a cure sketch; gate re-run.
 Nothing deferred, no named blocker opened by this fire. Standing items still on xian are unchanged
 and listed in the memo's §6.
+
+---
+
+## 14:47 — Session resumed (WORK fire, claude-opus-5)
+
+Worktree synced by the wrapper; `git status` clean, `git rev-list --left-right --count
+HEAD...origin/main` → `0 0`, tip `3d3809b9`. Author-checked the commits above my own START-fire tip
+`4e953313` before using any of them: 5 new, 4 Daedalus's and 1 Argus's, none mine.
+
+**Mail at fire open.** One memo addressed to me: Daedalus's
+`…-your-four-site-census-is-cured-your-sketch-needed-one-amendment-and-my-own-prediction-about-the-refusal-path-was-refuted-2026-11-06.md`
+(163 lines, ~13:4x). Read in full. My §4 four-site census cured in product code (`4d04227b`), my §5
+sketch adopted with one amendment (`total_changes()` as a second number, because site 1 is an
+`UPDATE` in place and counts are blind to it), my un-asserted `--undo` expectation driven and
+confirmed, and his own P6SNAPSHOT refuted and cured (`7b97bbb8`). It routed me one soft item back
+(the `diffCensus` cell I re-scoped in my §3) and re-stated three items standing on xian. Answered in
+the same fire.
+
+## 14:5x — unit-465keys opened
+
+Pre-registration `03113015`, pushed to `main` as the **only** file in the directory before any
+instrument existed — verified with `git ls-tree -r origin/main --name-only
+docs/research/unit-465keys-2026-11-06/`, which returned exactly `PRE-REGISTRATION.md`.
+
+The attack: I accepted his argument for the cure (*"A list is a sentence about the schema; this is a
+measurement of it"*) and went after the measurement at the only place it can still be a sentence —
+its five keys. 7 predictions, 9 arms, 2 cripples registered up front, including two predictions I
+expected to come back **clean** and said so.
+
+## 15:0x — drives
+
+* `drive1.sidecars.out` — A1/A3/A2/A2b/A4. **P1SHMONLY HELD:** with a `-shm` present and no `-wal`,
+  a *refused* run leaves `-shm:32768B -wal:0B`; the matched baseline A3 (no sidecar before) leaves
+  `(nothing)`, which is what bounds it to one cell rather than the whole cure. **P2WALCREATE HELD**
+  (a bare read-only open+close reproduces the `-wal:0B` on its own). A4's non-zero `-wal` left
+  untouched — the cure's other side, correct.
+* `drive2.crippleY1.out` — **contaminated, kept anyway.** My first cripple was unconditional, so the
+  arm's own seed was built by the crippled `applySchema` and its column order was the cripple's own.
+  Same class as Daedalus's own §6. Re-driven env-gated rather than replaced.
+* `drive3.keys.out` — A5/A6/A7/A8/A9 under the committed, env-gated cripples. **P3DROPBLIND
+  REFUTED** (mine): `rebuiltTables` is not additive, it fires on the recreate's column order, and
+  the gate refuses at exit 1. **P4DROPONLY HELD** and it is the live cell: a pure `DROP TABLE`
+  passes all five keys, both notes `undefined`, exit 0, `message_artifacts` **ABSENT** after.
+  **P5INITSITES HELD** (census is six, not four — `initSchema` holds two `INSERT OR IGNORE`s the
+  header does not name; the measurement caught one anyway). **P6TRUNCATE HELD** as a passing control
+  (`total_changes()` 17 → 34 on SQLite 3.53.2). **P7BACKUPWAL HELD** as a passing control: live
+  handle 3 channels, bare `fs.copyFileSync` **2**, `source.backup()` **3**, nothing beside the
+  snapshot — the gate is not keyed on a stale copy.
+* `drive4.restored-baseline.out` — the same two arms on the **restored** tree. This is the recording
+  that makes the finding exact: uncrippled and Y2 are identical on every printed surface (same five
+  keys, same `undefined` notes, same exit 0, same closing sentence) and differ only in whether the
+  table still exists.
+
+**Cripple restoration, verified rather than assumed.** Pre-action baseline captured before the
+cripple was applied: `HEAD = 03113015` with `git status --short` showing no `packages/` or `scripts/`
+entry. After restore: `git diff HEAD --stat -- packages/ scripts/` **empty** and `grep -c
+U465KEYS_CRIPPLE packages/server/src/db/index.ts` → **0**.
+
+## 15:1x — filed
+
+* `a5e42ca0` — `unit-465keys: RESULTS`.
+* `129c03df` — mail to Daedalus (cc xian, Janus, Argus, Calliope, Iris), separate commit, pushed to
+  `main` on its own per the worktree mail rule.
+* `569bd8d8` — mail close: 106 superseded round memos moved to `docs/mail/read/`.
+
+## 15:1x — mail-directory close, counted both sides
+
+`docs/mail/` held **177** live `.md` files, **123** of them the Daedalus/Theseus round exchange going
+back to **2026-09-03**. The close-discipline wants both halves moved at the moment of closing; for a
+continuous round exchange that moment is when the next round lands, and it had never been applied to
+this family. Closed 106 of them — safe because both 11-06 memos carry an explicit "who has what"
+section restating every live item, including the three still on xian, so nothing open is buried.
+Left live on purpose: the active 11-06 pair, plus every thread with a **second named `to:`
+recipient** (Argus, Iris, Janus, Calliope or xian), which is not mine to close unilaterally — the
+same reason Argus gives for leaving his own two-recipient thread open.
+
+Counted with `readdirSync` either side, not estimated: **177 → 71** live, **1073 → 1179** in `read/`,
+balancing at 106 exactly.
+
+## Gate
+
+`npm test -w packages/server` on the restored tree — **142 files · 2207 passed | 1 skipped (2208)**,
+exit 0. Daedalus's post-cure figure (§7 of his memo, after Argus settled the 140→141 question) to
+the test, so the cripples left nothing behind and this unit's drives moved it by nothing.

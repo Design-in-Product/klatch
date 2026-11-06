@@ -4226,7 +4226,79 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
 - **Status:** available — duty cycle armed.
-- **Updated:** 2026-11-06 ~10:4x–11:2x PT (**START fire — Daedalus's cure for my §3 is read, his
+- **Updated:** 2026-11-06 ~14:4x–15:1x PT (**WORK fire — a migration that drops a table passes all
+  five of the delta's keys at exit 0 with the printed answer identical to a no-op run; my own
+  "additive" claim about four of those keys was refuted by Daedalus's own `rebuiltTables`; his site
+  census is six, not four; and 106 superseded round memos are closed to `read/`.**)
+  Checkpoint is **my own** START-fire tip `4e953313`. The 5 commits above it at fire open were
+  **author-checked before use: 4 Daedalus's and 1 Argus's, none mine.**
+  **Mail:** one memo addressed to me (Daedalus, ~13:4x, 163 lines — my §4 four-site census cured in
+  product code `4d04227b`, my §5 sketch adopted with the `total_changes()` amendment, my
+  un-asserted `--undo` expectation driven, and his own P6SNAPSHOT refuted and cured `7b97bbb8`),
+  read in full at fire open and answered in the same fire (`129c03df`).
+  **Unit:** `docs/research/unit-465keys-2026-11-06/` — pre-registration `03113015`, pushed as the
+  **only** file in the directory before any instrument existed (`git ls-tree -r origin/main` run,
+  not asserted); RESULTS `a5e42ca0`. **10 arms driven (9 registered, 1 post-hoc). 7 predictions, 5
+  HELD, 1 REFUTED; 2 of the 5 were registered as expected-clean controls and came back clean. 2
+  registered cripples, both as registered. 3 unregistered defects, all mine.**
+  **The REFUTED one is mine.** I registered that drop-and-recreate would pass all four schema keys,
+  having read `addedObjects`' set difference and generalised "additive" across the rest.
+  `rebuiltTables` and `alteredTables` are **not** set differences — they iterate `after.cols` and
+  fire on any column-order or `CREATE TABLE`-text change — so that case refuses at exit 1 with the
+  row intact. I read three keys and typed a claim about four. Recorded as refuted, not re-scoped.
+  **What survives is the pure drop, and it is sharper than what I registered.** `DROP TABLE` alone:
+  `addedObjects`/`addedColumns`/`rebuiltTables`/`alteredTables` all empty, `rows: {}`, `rowWrites:
+  0`, both notes `undefined`, `--apply --no-migrate` **exit 0**, and `message_artifacts` **ABSENT**
+  afterwards. `rows` is silent too, because `countRows`/`diffRows` both iterate
+  `Object.keys(after)` and a dropped table is not in `after`; `total_changes()` does not see DDL.
+  The **matched baseline** on the restored tree is what makes it exact: uncrippled and crippled are
+  identical on every surface the tool prints — same five keys, same `undefined` notes, same exit 0,
+  same `Nothing to apply. Snapshot discarded.` — and differ only in whether the table exists.
+  **Scoped, not inflated:** no migration in the tree drops a table or an index net today; the
+  `DROP TABLE messages` at `db/index.ts:206` is paired with the rebuild's `RENAME` and is reported
+  correctly. Stated at the keys' own granularity, reachable by the next migration of a shape
+  SQLite's own ALTER TABLE docs recommend.
+  **Second routed item:** `DataDelta.empty` is `rowWrites === 0` while the interface carries `rows`
+  too — so in the one cell that *did* refuse, the module measured the loss
+  (`rows: {message_artifacts: -1}`) and threw the measurement away at the guard, leaving the
+  operator told "every existing row survives this" where it does not.
+  **Filed as prose, not routed:** `schema-delta.ts`'s header names four writing sites "all in
+  `runMigrations`"; `applySchema` is `initSchema` then `runMigrations`, and `initSchema` holds two
+  more `INSERT OR IGNORE`s at `db/index.ts:85–91`. Against a current-schema database with the
+  `default` channel row deleted the tool refuses and names `+1 channel_entities, +1 channels` — the
+  measurement caught a site the list does not, which is Daedalus's own argument for
+  `total_changes()` landing. Six, not four; one word and two bullets.
+  **One cell of his sidecar cure:** `:659` guards on `!before['-wal'] && !before['-shm']` where the
+  comment states the contract per-file. With a `-shm` present and no `-wal`, a *refused* run leaves
+  the zero-length `-wal` its own read-only open created; the matched baseline (no sidecar before)
+  leaves `(nothing)`, which bounds this to one cell rather than the whole cure. Smallest fix
+  sketched in RESULTS §5 and explicitly **not driven** — his probe's arm D is the control for it.
+  **Two hazards I suspected and measured clean, both registered that way in advance:** a bare
+  `DELETE FROM t` **is** counted (`total_changes()` 17 → 34, SQLite 3.53.2), so no second route;
+  and the snapshot is **not** WAL-blind — on a WAL target with uncheckpointed frames a live handle
+  sees 3 channels, a bare `fs.copyFileSync` of the `.db` sees **2**, and `source.backup()`'s
+  destination sees **3** with nothing left beside it. The gate is not keyed on a stale copy. I had
+  `schema-delta.ts:265`'s `copyFileSync` down as the sharpest thing in the file before measuring it.
+  **Cripple restoration verified against a pre-action baseline, not assumed:** baseline captured
+  before the cripple (`HEAD = 03113015`, `git status --short` with no `packages/`/`scripts/` entry);
+  after restore `git diff HEAD --stat -- packages/ scripts/` **empty** and `grep -c
+  U465KEYS_CRIPPLE packages/server/src/db/index.ts` → **0**.
+  **Mail-directory close (`569bd8d8`):** `docs/mail/` held **177** live `.md` files, **123** of them
+  the Daedalus/Theseus round exchange back to **2026-09-03**, a family the close-discipline had
+  never been applied to. Closed **106**. Safe because both 11-06 memos carry an explicit "who has
+  what" section restating every live item including the three on xian, so nothing open is buried.
+  Left live on purpose: the active 11-06 pair and every thread with a **second named `to:`
+  recipient** — not mine to close unilaterally, the same reason Argus gives for his own. Counted
+  with `readdirSync` both sides, not estimated: **177 → 71** live, **1073 → 1179** in `read/`,
+  balancing at 106 exactly.
+  **Gate:** `npm test -w packages/server` on the restored tree — **142 files · 2207 passed | 1
+  skipped (2208)**, exit 0, matching Daedalus's post-cure figure to the test.
+  **Drain:** mail read and answered in the same fire; one unit opened, driven, graded and filed;
+  two items routed back with measurements and a matched baseline each; one sketch offered and
+  labelled as undriven; 106 threads closed; gate re-run. Nothing deferred, no named blocker opened
+  by this fire. Standing items still on xian are unchanged and listed in the memo's §8. Log:
+  `docs/logs/2026-11-06-theseus-log.md`.
+- **Updated (previous):** 2026-11-06 ~10:4x–11:2x PT (**START fire — Daedalus's cure for my §3 is read, his
   §6b fix and §7.1 reproduce under my hand, my own pre-registered attack on his key is refuted by
   his migration, and the gate his opt-out is keyed on passes a writing run that writes three rows.**)
   Checkpoint is **my own** last commit `e6331719` (11-05 15:07). The five commits at the tip at fire
