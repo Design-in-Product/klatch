@@ -926,7 +926,87 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-05 ~17:5x PT (**STOP fire — all three items Theseus routed into my own
+- **Updated:** 2026-11-06 ~09:2x–09:4x PT (**START fire — back in `packages/`: Theseus's schema item
+  is cured in product code, his column census was five columns short, and the key I wrote to catch a
+  rebuild was green on the rebuild it exists to catch.**) Checkpoint own last commit `27ff3c39`
+  (11-05 17:27, STOP fire's wrap verification — **not** `fd406f89`, which is two commits older; I
+  checked the author list rather than assuming the mail commit was my last). **13 commits** sat on
+  top before I started, **none mine, author-checked**: Theseus 4, Calliope 3, Iris 2, Argus 2, Pard
+  1, and one `briefs:` commit authored `Claude <noreply@anthropic.com>`;
+  `git rev-list --count HEAD..origin/main` = **0** after the wrapper's sync. **Mail:** three inbound
+  new at fire start. Theseus's `i-did-not-attack-your-unit…` **answered in full this fire**
+  (`aef53a87`); Calliope's two (`ma-smoke-is-now-on-the-rollup…`, `needs-you-1-is-the-blog-series…`)
+  are filing fixes asking nothing — read, acted on where they correct me (below), and **left in
+  `docs/mail/` rather than moved to `read/`, because I am one of three recipients on one and the
+  other opens a thread boarded as still open on xian.**
+  **MY 11-05 ESCALATION TO XIAN IS WITHDRAWN, NOT PENDING.** I asked him to rule on product-vs-round
+  track. Theseus's §1 read his board instead and found **"🔴 Backfill — RULED, 2026-09-28: xian says
+  Go"** on it for **38 days**, then did the work. He didn't need a word from xian and neither did I.
+  **The named blocker is discharged; this fire went to product code on the strength of it.**
+  Unit `docs/research/unit-465migrate-2026-11-06/` — pre-registration `69f732d1` **pushed to `main`
+  as the only file in the directory before any instrument or cure in it existed** (`git ls-tree -r
+  origin/main` **run**), cure `c16f53ac`, RESULTS `529fcb99`, mail `aef53a87` in its own commit.
+  **15 registered cells: 14 HIT, 1 PARTIAL · 5 predictions, 5 HELD · 2 unregistered defects, both
+  mine, both caught by the unit's own tests before the cure shipped.**
+  Gate on the final tree: **`GATE ok exit=0` on all four stages** — `server · tests: 2199 passed |
+  1 skipped (2200)`, `client · tests: 333 passed | 13 skipped (346)`.
+  **THE HAZARD.** `getDb()` migrates whatever it opens, so `--apply` against
+  `backups/klatch.db.backup-2026-03-14` upgraded a frozen March artefact to the November schema.
+  Re-derived from the **pre-apply blob** (`git show c945e8aa:…`), not from the already-migrated file
+  on `main`: **5,230,592 → 9,449,472 bytes · 1277 → 2307 pages · freelist 1016 · 7 → 11 objects**.
+  His `pre objects: 7` is computed **excluding `sqlite_autoindex_*`** (13 → 19 counting them) — key
+  named so two correct counts cannot later read as a disagreement. Slack: 1016 × 4096 =
+  **4,161,536** of the 4,218,880-byte growth, **98.6%**.
+  **P1SCHEMA HELD — his column census is five columns short.** The delta is **9**, a strict superset
+  of the four his §3 names, by exactly `projects.memory` + four `message_artifacts.file_*`.
+  Registered before the drive, off the pristine schema.
+  **THE CURE.** `applySchema(db)` exported from `db/index.ts`; new `db/schema-delta.ts` copies the
+  snapshot the run already takes, applies the **real** migration code to the copy, diffs, deletes
+  the copy (**23.9–29.5 ms** over four runs, **0** temp files left, subject byte-identical); the
+  script discloses **above** the `--undo` branch so dry/apply/undo are one site, and `--no-migrate`
+  refuses a *writing* run whose delta is non-empty. Keyed on the **measured delta**, not the flag —
+  A3b proves a current-schema database still writes with the flag on the line. `--no-migrate` is the
+  first hyphenated flag in that script, so the argv recogniser was widened: `/^--([a-z]+)/` matched
+  `--no` and refused it as unknown.
+  **THE PARTIAL IS MY REGISTRATION, NOT THE CURE.** A3 read "applies, exit 0"; exit 0 landed, but
+  with the default bases the plan moves **0 of 72**, so the half asserting a *write proceeds* was
+  never demonstrated — **the arm would have passed against a cure that silently swallowed the
+  apply.** A3b is it with his two bases: `TARGET WRITTEN`, 9 re-pointed. Declared post-hoc.
+  **MY TWO DEFECTS.** (a) `rebuiltTables` compared **survivor order**: `[id,b] → [id,c,b]` preserves
+  it and is still a mid-list insert, so the key went **green on a rebuild**; it caught the March case
+  only because `created_at` moves past three columns there. Now `after === before ++ new`, the one
+  shape `ALTER TABLE ADD COLUMN` can reach. (b) My first RESULTS **documented** a blind spot — a
+  widened `CHECK` with no column change is invisible — and that blind spot is the `'incomplete'`
+  migration, a full rebuild of `messages` adding no column: on a columns-current database it would
+  move every row and the delta would say **nothing**. Closed instead of documented (`alteredTables`,
+  keyed on `CREATE TABLE` text). **And its first known positive was vacuous** — narrowing the CHECK
+  on a *fresh* database returns `rebuiltTables: ['messages']`, green on the old key, because
+  `initSchema`'s column order is not the rebuild's. The KP only carries the property after a first
+  narrow-and-`applySchema` cycle.
+  **Named, mine, not cured:** every run leaves `<db>-wal`/`-shm` beside the target, including both
+  refusals and all four dry runs (file itself byte-identical in all six non-writing cells); and
+  `runMigrations` rewrites row **data** (`MODEL_ALIASES`), which `--no-migrate` cannot stop and the
+  delta cannot see — measured at **0 rows on this corpus**, so structural and currently empty.
+  **Not mine to settle:** `backups/` tracked-vs-ignored (already boarded 🟡 on the rollup, 11-05;
+  reproduced here — `.gitignore:21`, two tracked files, `check-ignore -v --no-index` names the rule,
+  and `--no-index` is load-bearing); restoring the March artefact from `c945e8aa` (xian's corpus,
+  current state is his own ruling's output); the two-turns-per-block render bug, which is
+  `packages/client` and Iris's file — **one name, no deadline: if xian's answer to Theseus's §6 puts
+  it on me rather than Iris, I take it.** I will not start a renderer change in her file ahead of an
+  assignment she has not seen.
+  **Correction to my own 11-05 §6:** I wrote that the one open needs-you item was Theseus's
+  question-box letter. Calliope read the live board and it is the **blog-series** item, carried since
+  10-14. She was right; I was reasoning from the wrong referent. Live strip read this fire:
+  **needs-you 3 · blocked-on-others 0 · lower-urgency 11.**
+  **Drain:** mail (3 inbound, 1 answered in full in the same fire, 2 informational and acted on),
+  the routed §3 item taken and cured in product code with 15 cells, two self-inflicted defects found
+  and fixed before shipping, one vacuous KP repaired, RESULTS written, my own escalation withdrawn.
+  **Deferred, with named blockers:** Theseus's §4 `backups/` half (blocker: xian's + Calliope's
+  call, boarded); the render bug (blocker: xian's answer on boarding/assigning his 09-29 step-1
+  list); the 15 CROSS-STATE rows, the `roundNNN-instruments` leg census, the label, and my
+  two-GREEN-either-side soft spot (unchanged, untouched by either seat).
+  Log: `docs/logs/2026-11-06-daedalus-log.md`.
+- **Updated (previous):** 2026-11-05 ~17:5x PT (**STOP fire — all three items Theseus routed into my own
   instrument are cured and graded 18 of 18 cells, and my own C3 cure re-introduced the
   drifting-reason-string class C2 had just removed four instances of.**) Checkpoint own last commit
   `8cdcfe02` (13:37, WORK fire). **5 commits** sat on top before I started, **none mine,
