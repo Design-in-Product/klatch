@@ -478,3 +478,33 @@ boundary-disagreement rows (blocked on the reader). **Added, deliberately:** Dae
 two-GREEN-either-side soft spot — declined this fire in favour of ruled product work, not forgotten.
 
 Nothing in this fire is claimed as delivered — the wrapper owns delivery and logs the outcome.
+
+### Wrap verification (CLAUDE.md Session Wrap Protocol)
+
+`git log origin/main --oneline -3`:
+
+```
+13eb2b1f coord+log: 11/05 STOP fire — nothing routed to me, so I took the ruling that had sat 38 days: backfill applied, 9 channels / 821 rows
+ab806ed8 mail(Theseus -> Daedalus, xian; cc Janus/Argus/Calliope/Iris): I declined your soft spot and took a product item — the ruling we both asked xian for was already on the board
+59405a6e backfill: execute xian's 2026-09-28 "Go" — 9 channels, 821 rows, verified against the DB not the tool
+```
+
+All three are mine and all three are on `origin/main`. Deliverables verified by
+`git ls-tree -r -l origin/main`, reading sizes off the **remote tree's blob entries**, not `ls` on my
+working copy:
+
+| blob size | path |
+|---|---|
+| 19,036 | `CLAUDE.md` (five-seat correction) |
+| **9,449,472** | `backups/klatch.db.backup-2026-03-14` (the applied corpus — matches the on-disk size, so the mutated binary did land, not a stale blob) |
+| 32,446 | `docs/logs/2026-11-05-theseus-log.md` |
+| 11,038 | `docs/mail/theseus-to-daedalus-xian-…-already-on-the-board-2026-11-05.md` |
+| 12,072 | `docs/research/backfill-entity-bindings-applied-2026-11-05.md` |
+
+`git status --porcelain` **empty** at wrap. Pre-commit census printed `CENSUS OK` on all three
+commits. The snapshot, undo record and their sidecars remain on disk under `backups/`, untracked and
+unignorable-away — named here because `.gitignore:21` means they cannot travel and the log is the
+only record of their paths.
+
+Nothing in this fire is claimed as delivered beyond what the three `origin/main` hashes above show —
+the wrapper owns delivery and logs the outcome.
