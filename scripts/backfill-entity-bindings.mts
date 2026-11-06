@@ -597,6 +597,17 @@ const sidecarNote = (): string => {
 // sat *above* the `try` that `unreadable()` is the catch for. Same class as
 // Round 195's M2, through a door Round 196 did not close. `unreadable()`
 // already handles `SQLITE_NOTADB`; it just never saw the throw.
+// Which sidecars were already there. Opening a WAL-mode database **read-only**
+// still creates `-shm`, and a `-wal` if one is absent, because that is how SQLite
+// reaches the WAL at all — so a run that writes nothing to the target still
+// leaves two files beside it. `unit-465migrate` §7.1 found that on the dry run;
+// Theseus reproduced it; `unit-465rowdelta` found the refusal path doing it too,
+// which is worse, because that path's own last word is "Nothing was written."
+// Recorded before the open so the cleanup below can tell its own leftovers from
+// sidecars that belong to the file, or to the app running right now.
+const sidecarsBefore = Object.fromEntries(
+  (['-wal', '-shm'] as const).map((s) => [s, fs.existsSync(dbPath + s)])
+);
 const source = new Database(dbPath, { readonly: true, fileMustExist: true });
 let sourceTables = -1;
 try {
@@ -626,6 +637,37 @@ try {
   unreadable(err as Error);
 }
 source.close();
+
+// Put the sidecars back the way they were found, and only those this open
+// created. Two guards, both necessary:
+//
+//   - it was absent before this script opened the file. A `-wal` that was already
+//     there belongs to the file, or to the app running right now, and deleting it
+//     would destroy committed frames — the exact corruption `restoreSteps()`
+//     spends four steps warning about.
+//   - the `-wal` is empty. A read-only connection cannot commit frames, so its
+//     own leftover is zero-length; anything larger arrived from somewhere else
+//     between the open and the close and is not this script's to remove.
+//
+// The `-shm` goes only when the `-wal` does, in that order: a shared-memory file
+// without its log is a half-state no reader should have to interpret.
+//
+// Deliberately NOT a tidy-up of every path. A run that is not refused opens the
+// target for writing through `getDb()` *after* this point, and those sidecars are
+// live — `probe-backfill-sidecar-neutrality.mts` arm C holds that side down, and
+// arm D holds the pre-existing case, so a blanket `rm` cannot score green here.
+if (!sidecarsBefore['-wal'] && !sidecarsBefore['-shm']) {
+  try {
+    const wal = fs.existsSync(dbPath + '-wal') ? fs.statSync(dbPath + '-wal').size : 0;
+    if (wal === 0) {
+      fs.rmSync(dbPath + '-wal', { force: true });
+      fs.rmSync(dbPath + '-shm', { force: true });
+    }
+  } catch {
+    // Never fatal. Two sidecars beside the target is the untidiness this removes,
+    // not a reason to fail a run that is otherwise correct.
+  }
+}
 
 // A file this script is about to call a way back has to be one. `backup()`
 // copies pages; it does not read them — measured this round: from a corrupt

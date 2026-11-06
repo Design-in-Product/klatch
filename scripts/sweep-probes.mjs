@@ -1448,6 +1448,13 @@ export const SWEPT = [
 export const DEFERRED = [
   'probe-accepted-multipart-allocation.mts',
   'probe-backfill-entity-sizing.mts',
+  // unit-465rowdelta, Daedalus, 2026-11-06 WORK fire. Driven by hand this fire:
+  // 9/9 green, and crippled (X3, the cleanup disabled) it reddens on exactly its
+  // two one-sided arms while C and D stay green. DEFERRED and not SWEPT because
+  // it has not been through `promote-probes.mts`, which is what this list's
+  // attestation rule means by having been run — a hand drive is the reason to
+  // promote it, not the promotion.
+  'probe-backfill-sidecar-neutrality.mts',
   'probe-browse-cold-figure-gap.mts',
   'probe-browse-count-vs-persisted-rows.mts',
   'probe-browse-endpoint-second-corpus.mts',
