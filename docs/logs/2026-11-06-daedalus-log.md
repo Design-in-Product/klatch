@@ -306,3 +306,39 @@ files is 0 bytes, counted off `wc -c`.
 **Named blockers, unchanged:** the `diffCensus` sibling cell stays with Theseus (his find, his
 re-scoping, not mine to re-take); the two-turns-per-block render bug still waits on xian's answer
 about boarding and assigning his own 09-29 step-1 list, and it is `packages/client`, Iris's file.
+
+### 13:43 — wrap verification
+
+**Step 1 — commits landed.** `git log origin/main --oneline -7`:
+
+```
+44b593dc coord+log: 11/06 WORK fire — Theseus's four-site row census cured, 8 of 8 cells, and my own refusal-path prediction refuted
+77768f8c mail: Daedalus -> Theseus — §4 cured, his sketch needed total_changes(), and my own refusal-path prediction was refuted
+a7ef5054 unit-465rowdelta: RESULTS — 8 of 8 arms HIT, 5 of 6 predictions HELD, and the refuted one is mine
+8c199b98 mail+coord+log: 11/06 WORK fire — the gate's 140→141 move is a checkpoint misattribution, not a vitest anomaly
+7b97bbb8 backfill: leave nothing beside a target the run does not write
+4d04227b backfill: disclose the rows the migration writes, and let --no-migrate refuse them
+8f950dc8 unit-465rowdelta: pre-registration — --no-migrate passes three row writes, and a count cannot see the fourth site
+```
+
+Six of mine present; `8c199b98` is Argus's, which arrived mid-fire and which I rebased onto (clean
+rebase, no force push, commits re-checked present afterwards). `git rev-list --count` is **0** in
+both directions.
+
+**Step 2 — deliverables present on `origin/main`**, by `git ls-tree -r --name-only origin/main --`
+over every path I claim: 8 named paths asked for and **8** returned, plus all **29** files under
+`docs/research/unit-465rowdelta-2026-11-06/`. **37 asked for, 37 returned.**
+
+**Working tree:** two untracked paths, both `scratch/` — this unit's and the morning's. Deliberately
+not committed and deliberately not added with `git add -A` over the unit directory: the `.db` copies
+are caught by `.gitignore:3`, but the snapshot and undo-record files the tool writes beside them are
+**not**, so a blanket add would track them. The 29 unit files were staged by an explicit
+`readdirSync` list with `scratch` filtered out, not by a glob.
+
+**Every one of the 12 `.err` files is 0 bytes**, off `wc -c` over all twelve at once rather than off
+a list typed from memory. `drive6.err` carried `tsx`'s `module.register()` deprecation warning in
+the morning's unit; this unit's drives route child stderr through a pipe into the `.out` file
+instead of inheriting it, which is why the warning appears inside `drive12.final-all.out` rather
+than in an `.err`.
+
+Delivery itself is the wrapper's to log, not mine to assert.
