@@ -1,0 +1,938 @@
+unit-465migrate drive — drive5-postcure-final
+repo HEAD: 69f732d1
+pristine:  5230592 bytes  sha256 c2295121bbdfdbbb
+tool:      scripts/backfill-entity-bindings.mts
+arms:      M1 M2 A1 A2 A3 A3b A4 A5 A6
+
+==============================================================================
+== M1  [his own command, from the pristine blob]
+==============================================================================
+argv:   --bases=identity-claim,role-title --apply
+exit:   0
+wall:   518 ms
+bytes:  5230592 -> 9449472
+pages:  1277 -> 2307  (page_size 4096, freelist 0 -> 1016)
+sha256: c2295121bbdfdbbb -> 959adcc8d2fcbe6d  TARGET WRITTEN
+objects(no-auto): 7 -> 11
+objects(all):     13 -> 19
+added objects:   index:idx_file_refs_file  index:idx_file_refs_scope  table:file_refs  table:files
+added columns (9): channels.type  entities.effort  entities.reflections  message_artifacts.file_name  message_artifacts.file_mime_type  message_artifacts.file_size_bytes  message_artifacts.file_storage_key  messages.stop_reason  projects.memory
+column order moved: messages: id,channel_id,role,content,status,model,created_at,entity_id,original_timestamp,original_id -> id,channel_id,role,content,status,stop_reason,model,entity_id,original_timestamp,original_id,created_at
+files left beside the db: subject.db-shm  subject.db-wal  subject.db.backfill-2026-11-06T17-30-33-503Z.json  subject.db.backup-backfill-2026-11-06T17-30-33-503Z  subject.db.backup-backfill-2026-11-06T17-30-33-503Z-shm  subject.db.backup-backfill-2026-11-06T17-30-33-503Z-wal
+--- stdout (14871 bytes) ---
+
+SCHEMA: this database is behind the current schema, and opening it for writing
+  upgrades it in place. subject.db would gain:
+    4 new object(s): index:idx_file_refs_file, index:idx_file_refs_scope, table:file_refs, table:files
+    9 new column(s): channels.type, entities.effort, entities.reflections, message_artifacts.file_name, message_artifacts.file_mime_type, message_artifacts.file_size_bytes, message_artifacts.file_storage_key, messages.stop_reason, projects.memory
+    1 table(s) rebuilt, not altered in place: messages
+      A rebuild rewrites every row of that table. The file grows and the space the old
+      pages held is left as slack inside it — expect a larger file than the data needs.
+  Every existing row survives this. What does not survive is the file's value as a record
+  of an older schema: restore it later to ask what the schema looked like then and you get
+  today's answer. Pass --no-migrate to refuse instead of upgrading.
+
+==============================================================================
+/Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465migrate-2026-11-06/scratch/arms/M1/subject.db
+==============================================================================
+
+Scope: channels with source in {claude-code, claude-ai} bound to `default-entity`.
+Bases applied: identity-claim, role-title
+
+Candidates: 72 — 9 would move, 63 skipped.
+  skipped, by reason: {"no-guess":63}
+  new agents (9): chief architect, tech-savvy communications chief, Chief Innovation Office (CIO), Executive Assistant and Chief of Staff, chief of staff, Chief of Staff (Executive Assistant), Head of Sapient Resources (HoSR), tech-savvy Communications Chief, career coach
+  reused agents (0): (none)
+  message rows re-stamped: 821 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+
+  ! "tech-savvy communications chief" is the name 2 separate agents would carry — 182 message rows, not merged:
+      358c1952  1/2-14: Comms Chief (o)
+      e7a7a513  1/15-3/13: Comms Chief (o) - content strategy, blogging, web
+    A role is a job, not a person, so these do not merge — you get that many agents with
+    the same name. If they are in fact one agent continuing, merge them by hand after.
+
+  What the collision check does and does not cover: it compares names for exact equality,
+  ignoring case and surrounding space. Two chats that state the same job in different words
+  ("Chief of Staff (Executive Assistant)" and "Executive Assistant and Chief of Staff") mint
+  two agents and produce no warning above. Successive chats in one role are common in an
+  imported corpus — read the channel names in the per-channel list before approving.
+  bound to the default but out of scope, untouched: {"native":66}
+
+Per-channel:
+  0111a366  1/5-3/13: Chief Architect (o) -   claude-ai   role-title      P2=93   P3=0    MINTED → "chief architect"
+              ↳ The session's opening turn says "You are my chief architect" — a role, not a name. Two sessions holding the same job are not the same agent, so this mints a new entity rather than reusing one by name.
+  04bc9d21  bad-meta                          claude-code none            P2=0    P3=0    SKIP (no-guess)
+  0ae3694d  ordering-test                     claude-code none            P2=4    P3=0    SKIP (no-guess)
+  0d2c7db9  path-test                         claude-code none            P2=1    P3=0    SKIP (no-guess)
+  10f6337c  test-10f633                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  1b479419  Hermes - Distinguishing project   claude-ai   none            P2=11   P3=0    SKIP (no-guess)
+  1e2ced26  1/16-3/13: CXO (o) - MUX, MVP, m  claude-ai   none            P2=110  P3=0    SKIP (no-guess)
+  1e79bb77  empty-cwd                         claude-code none            P2=0    P3=0    SKIP (no-guess)
+  1eb7ff09  test-1eb7ff                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  246e2ae0  3/13: Chief Arch: (o4.6) - M1, a  claude-ai   none            P2=2    P3=0    SKIP (no-guess)
+  2a6351ea  Learning cuneiform from scratch   claude-ai   none            P2=29   P3=0    SKIP (no-guess)
+  2c30fb26  Onramp questionnaire guide restr  claude-ai   none            P2=11   P3=0    SKIP (no-guess)
+  2d40fa2d  Music video for Ghost Door or Do  claude-ai   none            P2=1    P3=0    SKIP (no-guess)
+  327e9630  rate-limiter-session              claude-code none            P2=4    P3=0    SKIP (no-guess)
+  3354e5ff  empty-cwd                         claude-code none            P2=0    P3=0    SKIP (no-guess)
+  358c1952  1/2-14: Comms Chief (o)           claude-ai   role-title      P2=34   P3=0    MINTED → "tech-savvy communications chief"
+              ↳ The session's opening turn says "You are my tech-savvy communications chief" — a role, not a name. Two sessions holding the same job are not the same agent, so this mints a new entity rather than reusing one by name.
+  39bdeda2  3/12: CIO: (o4.6) - Klatch branc  claude-ai   none            P2=33   P3=0    SKIP (no-guess)
+  3d661b3d  test-3d661b                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  40fab888  no-meta                           claude-code none            P2=0    P3=0    SKIP (no-guess)
+  48681a20  rate-limiter-session              claude-code none            P2=4    P3=0    SKIP (no-guess)
+  4bd53772  claude.ai — 0e9dc064-6762-42a9-a  claude-ai   none            P2=0    P3=0    SKIP (no-guess)
+  4ca7bbcb  no-meta                           claude-code none            P2=0    P3=0    SKIP (no-guess)
+  5e1af7a4  SC 3 design and engineering time  claude-ai   none            P2=4    P3=0    SKIP (no-guess)
+  5fb78415  1/4-5,15-16: HoSR (o) - onboard   claude-ai   none            P2=51   P3=0    SKIP (no-guess)
+  6229ca87  multi-fork                        claude-code none            P2=4    P3=0    SKIP (no-guess)
+  6380814f  test-638081                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  6c5017ab  Secundus — 2026-03-11             claude-code none            P2=18   P3=0    SKIP (no-guess)
+  6dec5c76  multi-fork                        claude-code none            P2=4    P3=0    SKIP (no-guess)
+  712ae004  3/13: PPM (o4.6) - M1 sprint tes  claude-ai   none            P2=8    P3=0    SKIP (no-guess)
+  71ce1d26  compacted-session                 claude-code none            P2=2    P3=0    SKIP (no-guess)
+  74bb02d3  1/15-2/16: CIO (o) - gastown, dr  claude-ai   role-title      P2=42   P3=0    MINTED → "Chief Innovation Office (CIO)"
+              ↳ The session's opening turn says "You are my Chief Innovation Office (CIO)" — a role, not a name. Two sessions holding the same job are not the same agent, so this mints a new entity rather than reusing one by name.
+  7556723c  Test message                      claude-ai   none            P2=2    P3=0    SKIP (no-guess)
+  7ba45fce  test-7ba45f                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  7d162b7e  1/5,11,16: Chief Innovation Offi  claude-ai   none            P2=14   P3=0    SKIP (no-guess)
+  820929ab  test-820929                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  8ef10002  2/7-3/12: Chief of Staff (o4.6)   claude-ai   role-title      P2=101  P3=0    MINTED → "Executive Assistant and Chief of Staff"
+              ↳ The session's opening turn says "You are my Executive Assistant and Chief of Staff" — a role, not a name. Two sessions holding the same job are not the same agent, so this mints a new entity rather than reusing one by name.
+  8f6b1298  test-8f6b12                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  91f46c7f  compacted-session                 claude-code none            P2=2    P3=0    SKIP (no-guess)
+  970f80ef  bad-meta                          claude-code none            P2=0    P3=0    SKIP (no-guess)
+  a091a0a1  compact-import                    claude-code none            P2=1    P3=0    SKIP (no-guess)
+  a4c194dd  Medieval name for Mainz in 940 A  claude-ai   none            P2=2    P3=0    SKIP (no-guess)
+  a4e0bd2a  3/13: CXO (o4.6) - M1             claude-ai   none            P2=10   P3=0    SKIP (no-guess)
+  a64c9d45  Exploratory testing agent role s  claude-ai   none            P2=10   P3=0    SKIP (no-guess)
+  a94b272e  Daedalus — 2026-03-07             claude-code none            P2=3    P3=0    SKIP (no-guess)
+  ad70f691  test-ad70f6                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  adaf6406  VA exec asst                      claude-ai   role-title      P2=174  P3=0    MINTED → "chief of staff"
+              ↳ The session's opening turn says "You are my chief of staff" — a role, not a name. Two sessions holding the same job are not the same agent, so this mints a new entity rather than reusing one by name.
+              ↳ note: 4 agents named "chief of staff" already exist (fc4a59b6, d064dae8, 45691e94, 1e18ec34). A role-title guess does not reuse them — this mints another.
+  b173483e  test-import                       claude-code none            P2=3    P3=0    SKIP (no-guess)
+  b20c5b5b  empty-content-session             claude-code none            P2=2    P3=0    SKIP (no-guess)
+  b2c0503a  no-cwd                            claude-ai   none            P2=1    P3=0    SKIP (no-guess)
+  b8c77ad4  Voice input setup for Claude Cod  claude-ai   none            P2=5    P3=0    SKIP (no-guess)
+  b937e368  ordering-test                     claude-code none            P2=4    P3=0    SKIP (no-guess)
+  bdcd0506  test-import                       claude-code none            P2=3    P3=0    SKIP (no-guess)
+  c4f8438b  test-c4f843                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  cd7df34e  test-cd7df3                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  cff40904  1/3-2/6: Chief of Staff (o4.5) -  claude-ai   role-title      P2=122  P3=0    MINTED → "Chief of Staff (Executive Assistant)"
+              ↳ The session's opening turn says "You are my Chief of Staff (Executive Assistant)" — a role, not a name. Two sessions holding the same job are not the same agent, so this mints a new entity rather than reusing one by name.
+  ddf29996  Reviving website project with Ta  claude-ai   none            P2=1    P3=0    SKIP (no-guess)
+  df34157e  test-df3415                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  e07e9d56  1/16-3/13: HoSR (o) - Weekly Shi  claude-ai   role-title      P2=94   P3=0    MINTED → "Head of Sapient Resources (HoSR)"
+              ↳ The session's opening turn says "you are the Head of Sapient Resources (HoSR)" — a role, not a name. Two sessions holding the same job are not the same agent, so this mints a new entity rather than reusing one by name.
+  e113cb6a  test-empty-filter                 claude-code none            P2=4    P3=0    SKIP (no-guess)
+  e2b48268  test-empty-filter                 claude-code none            P2=4    P3=0    SKIP (no-guess)
+  e39b439d  missing-claude-md                 claude-code none            P2=1    P3=0    SKIP (no-guess)
+  e52e8fa8  1/8,12: CXO (o) - UX vision cont  claude-ai   none            P2=12   P3=0    SKIP (no-guess)
+  e6385897  test-e63858                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  e7a7a513  1/15-3/13: Comms Chief (o) - con  claude-ai   role-title      P2=148  P3=0    MINTED → "tech-savvy Communications Chief"
+              ↳ The session's opening turn says "You are my tech-savvy Communications Chief" — a role, not a name. Two sessions holding the same job are not the same agent, so this mints a new entity rather than reusing one by name.
+  e8210556  claude.ai — aab4cff8-8d7c-42e5-8  claude-ai   none            P2=0    P3=0    SKIP (no-guess)
+  e93d3810  1/17: SecOps (o) - GCP project s  claude-ai   none            P2=19   P3=0    SKIP (no-guess)
+  eba7c2c1  3/13: Chief of Staff (o4.6) - M1  claude-ai   none            P2=12   P3=0    SKIP (no-guess)
+  ef2a2e35  Applying for Product Lead, Consu  claude-ai   role-title      P2=13   P3=0    MINTED → "career coach"
+              ↳ The session's opening turn says "You are my career coach" — a role, not a name. Two sessions holding the same job are not the same agent, so this mints a new entity rather than reusing one by name.
+  f1debd2c  test-f1debd                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  f64312da  empty-content-session             claude-code none            P2=2    P3=0    SKIP (no-guess)
+  f863740a  test-f86374                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  faa00367  compact-import                    claude-code none            P2=1    P3=0    SKIP (no-guess)
+
+Backup (taken before anything was written): /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465migrate-2026-11-06/scratch/arms/M1/subject.db.backup-backfill-2026-11-06T17-30-33-503Z
+To put that file back by hand, stop the app and delete the sidecars first. A plain copy while
+something still holds the database open restores nothing — the app goes on reading the run — and
+one message written since the run is enough to leave a database SQLite calls malformed
+(Theseus's Rounds 191 and 193):
+  1. stop `npm run dev`, and anything else holding this database open
+  2. rm -f '/Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465migrate-2026-11-06/scratch/arms/M1/subject.db-wal' '/Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465migrate-2026-11-06/scratch/arms/M1/subject.db-shm'
+  3. cp '/Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465migrate-2026-11-06/scratch/arms/M1/subject.db.backup-backfill-2026-11-06T17-30-33-503Z' '/Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465migrate-2026-11-06/scratch/arms/M1/subject.db'
+  4. re-run this script with no flags:
+       npx tsx scripts/backfill-entity-bindings.mts '/Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465migrate-2026-11-06/scratch/arms/M1/subject.db'
+     its `Candidates:` line should read, word for word:
+       Candidates: 72 — 0 would move, 72 skipped.
+Applied: 9 channel(s) re-pointed, 9 agent(s) minted.
+Undo record: /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465migrate-2026-11-06/scratch/arms/M1/subject.db.backfill-2026-11-06T17-30-33-503Z.json
+  reverse with:  npx tsx scripts/backfill-entity-bindings.mts '/Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465migrate-2026-11-06/scratch/arms/M1/subject.db' --undo='/Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465migrate-2026-11-06/scratch/arms/M1/subject.db.backfill-2026-11-06T17-30-33-503Z.json'
+--- stderr (0 bytes) ---
+
+
+==============================================================================
+== M2  [dry run — does it touch the target at all]
+==============================================================================
+argv:   (none)
+exit:   0
+wall:   463 ms
+bytes:  5230592 -> 5230592
+pages:  1277 -> 1277  (page_size 4096, freelist 0 -> 0)
+sha256: c2295121bbdfdbbb -> c2295121bbdfdbbb  TARGET INTACT
+objects(no-auto): 7 -> 7
+objects(all):     13 -> 13
+added columns (0): (none)
+files left beside the db: subject.db-shm  subject.db-wal
+--- stdout (9743 bytes) ---
+
+SCHEMA: this database is behind the current schema, and opening it for writing
+  upgrades it in place. subject.db would gain:
+    4 new object(s): index:idx_file_refs_file, index:idx_file_refs_scope, table:file_refs, table:files
+    9 new column(s): channels.type, entities.effort, entities.reflections, message_artifacts.file_name, message_artifacts.file_mime_type, message_artifacts.file_size_bytes, message_artifacts.file_storage_key, messages.stop_reason, projects.memory
+    1 table(s) rebuilt, not altered in place: messages
+      A rebuild rewrites every row of that table. The file grows and the space the old
+      pages held is left as slack inside it — expect a larger file than the data needs.
+  Every existing row survives this. What does not survive is the file's value as a record
+  of an older schema: restore it later to ask what the schema looked like then and you get
+  today's answer. Pass --no-migrate to refuse instead of upgrading.
+
+==============================================================================
+/Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465migrate-2026-11-06/scratch/arms/M2/subject.db
+==============================================================================
+
+Scope: channels with source in {claude-code, claude-ai} bound to `default-entity`.
+Bases applied: identity-claim
+
+Candidates: 72 — 0 would move, 72 skipped.
+  skipped, by reason: {"basis-excluded":9,"no-guess":63}
+  excluded by basis: 9 role-title — this run applies {identity-claim}. To see them: --bases=identity-claim,role-title
+  new agents (0): (none)
+  reused agents (0): (none)
+  message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  bound to the default but out of scope, untouched: {"native":66}
+
+Per-channel:
+  0111a366  1/5-3/13: Chief Architect (o) -   claude-ai   role-title      P2=93   P3=0    SKIP (basis-excluded)
+  04bc9d21  bad-meta                          claude-code none            P2=0    P3=0    SKIP (no-guess)
+  0ae3694d  ordering-test                     claude-code none            P2=4    P3=0    SKIP (no-guess)
+  0d2c7db9  path-test                         claude-code none            P2=1    P3=0    SKIP (no-guess)
+  10f6337c  test-10f633                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  1b479419  Hermes - Distinguishing project   claude-ai   none            P2=11   P3=0    SKIP (no-guess)
+  1e2ced26  1/16-3/13: CXO (o) - MUX, MVP, m  claude-ai   none            P2=110  P3=0    SKIP (no-guess)
+  1e79bb77  empty-cwd                         claude-code none            P2=0    P3=0    SKIP (no-guess)
+  1eb7ff09  test-1eb7ff                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  246e2ae0  3/13: Chief Arch: (o4.6) - M1, a  claude-ai   none            P2=2    P3=0    SKIP (no-guess)
+  2a6351ea  Learning cuneiform from scratch   claude-ai   none            P2=29   P3=0    SKIP (no-guess)
+  2c30fb26  Onramp questionnaire guide restr  claude-ai   none            P2=11   P3=0    SKIP (no-guess)
+  2d40fa2d  Music video for Ghost Door or Do  claude-ai   none            P2=1    P3=0    SKIP (no-guess)
+  327e9630  rate-limiter-session              claude-code none            P2=4    P3=0    SKIP (no-guess)
+  3354e5ff  empty-cwd                         claude-code none            P2=0    P3=0    SKIP (no-guess)
+  358c1952  1/2-14: Comms Chief (o)           claude-ai   role-title      P2=34   P3=0    SKIP (basis-excluded)
+  39bdeda2  3/12: CIO: (o4.6) - Klatch branc  claude-ai   none            P2=33   P3=0    SKIP (no-guess)
+  3d661b3d  test-3d661b                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  40fab888  no-meta                           claude-code none            P2=0    P3=0    SKIP (no-guess)
+  48681a20  rate-limiter-session              claude-code none            P2=4    P3=0    SKIP (no-guess)
+  4bd53772  claude.ai — 0e9dc064-6762-42a9-a  claude-ai   none            P2=0    P3=0    SKIP (no-guess)
+  4ca7bbcb  no-meta                           claude-code none            P2=0    P3=0    SKIP (no-guess)
+  5e1af7a4  SC 3 design and engineering time  claude-ai   none            P2=4    P3=0    SKIP (no-guess)
+  5fb78415  1/4-5,15-16: HoSR (o) - onboard   claude-ai   none            P2=51   P3=0    SKIP (no-guess)
+  6229ca87  multi-fork                        claude-code none            P2=4    P3=0    SKIP (no-guess)
+  6380814f  test-638081                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  6c5017ab  Secundus — 2026-03-11             claude-code none            P2=18   P3=0    SKIP (no-guess)
+  6dec5c76  multi-fork                        claude-code none            P2=4    P3=0    SKIP (no-guess)
+  712ae004  3/13: PPM (o4.6) - M1 sprint tes  claude-ai   none            P2=8    P3=0    SKIP (no-guess)
+  71ce1d26  compacted-session                 claude-code none            P2=2    P3=0    SKIP (no-guess)
+  74bb02d3  1/15-2/16: CIO (o) - gastown, dr  claude-ai   role-title      P2=42   P3=0    SKIP (basis-excluded)
+  7556723c  Test message                      claude-ai   none            P2=2    P3=0    SKIP (no-guess)
+  7ba45fce  test-7ba45f                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  7d162b7e  1/5,11,16: Chief Innovation Offi  claude-ai   none            P2=14   P3=0    SKIP (no-guess)
+  820929ab  test-820929                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  8ef10002  2/7-3/12: Chief of Staff (o4.6)   claude-ai   role-title      P2=101  P3=0    SKIP (basis-excluded)
+  8f6b1298  test-8f6b12                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  91f46c7f  compacted-session                 claude-code none            P2=2    P3=0    SKIP (no-guess)
+  970f80ef  bad-meta                          claude-code none            P2=0    P3=0    SKIP (no-guess)
+  a091a0a1  compact-import                    claude-code none            P2=1    P3=0    SKIP (no-guess)
+  a4c194dd  Medieval name for Mainz in 940 A  claude-ai   none            P2=2    P3=0    SKIP (no-guess)
+  a4e0bd2a  3/13: CXO (o4.6) - M1             claude-ai   none            P2=10   P3=0    SKIP (no-guess)
+  a64c9d45  Exploratory testing agent role s  claude-ai   none            P2=10   P3=0    SKIP (no-guess)
+  a94b272e  Daedalus — 2026-03-07             claude-code none            P2=3    P3=0    SKIP (no-guess)
+  ad70f691  test-ad70f6                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  adaf6406  VA exec asst                      claude-ai   role-title      P2=174  P3=0    SKIP (basis-excluded)
+  b173483e  test-import                       claude-code none            P2=3    P3=0    SKIP (no-guess)
+  b20c5b5b  empty-content-session             claude-code none            P2=2    P3=0    SKIP (no-guess)
+  b2c0503a  no-cwd                            claude-ai   none            P2=1    P3=0    SKIP (no-guess)
+  b8c77ad4  Voice input setup for Claude Cod  claude-ai   none            P2=5    P3=0    SKIP (no-guess)
+  b937e368  ordering-test                     claude-code none            P2=4    P3=0    SKIP (no-guess)
+  bdcd0506  test-import                       claude-code none            P2=3    P3=0    SKIP (no-guess)
+  c4f8438b  test-c4f843                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  cd7df34e  test-cd7df3                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  cff40904  1/3-2/6: Chief of Staff (o4.5) -  claude-ai   role-title      P2=122  P3=0    SKIP (basis-excluded)
+  ddf29996  Reviving website project with Ta  claude-ai   none            P2=1    P3=0    SKIP (no-guess)
+  df34157e  test-df3415                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  e07e9d56  1/16-3/13: HoSR (o) - Weekly Shi  claude-ai   role-title      P2=94   P3=0    SKIP (basis-excluded)
+  e113cb6a  test-empty-filter                 claude-code none            P2=4    P3=0    SKIP (no-guess)
+  e2b48268  test-empty-filter                 claude-code none            P2=4    P3=0    SKIP (no-guess)
+  e39b439d  missing-claude-md                 claude-code none            P2=1    P3=0    SKIP (no-guess)
+  e52e8fa8  1/8,12: CXO (o) - UX vision cont  claude-ai   none            P2=12   P3=0    SKIP (no-guess)
+  e6385897  test-e63858                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  e7a7a513  1/15-3/13: Comms Chief (o) - con  claude-ai   role-title      P2=148  P3=0    SKIP (basis-excluded)
+  e8210556  claude.ai — aab4cff8-8d7c-42e5-8  claude-ai   none            P2=0    P3=0    SKIP (no-guess)
+  e93d3810  1/17: SecOps (o) - GCP project s  claude-ai   none            P2=19   P3=0    SKIP (no-guess)
+  eba7c2c1  3/13: Chief of Staff (o4.6) - M1  claude-ai   none            P2=12   P3=0    SKIP (no-guess)
+  ef2a2e35  Applying for Product Lead, Consu  claude-ai   role-title      P2=13   P3=0    SKIP (basis-excluded)
+  f1debd2c  test-f1debd                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  f64312da  empty-content-session             claude-code none            P2=2    P3=0    SKIP (no-guess)
+  f863740a  test-f86374                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  faa00367  compact-import                    claude-code none            P2=1    P3=0    SKIP (no-guess)
+
+Dry run — planned against a read-only snapshot, which has been deleted. Your database was
+not opened for writing and no agent was minted. Re-run with --apply to move these, or with
+--channels=<ids> to move only the ones you approve off this sheet.
+--- stderr (0 bytes) ---
+
+
+==============================================================================
+== A1  [already at the current schema, dry run]
+==============================================================================
+argv:   (none)
+exit:   0
+wall:   426 ms
+bytes:  9449472 -> 9449472
+pages:  2307 -> 2307  (page_size 4096, freelist 1026 -> 1026)
+sha256: 041160f55930e284 -> 041160f55930e284  TARGET INTACT
+objects(no-auto): 11 -> 11
+objects(all):     19 -> 19
+added columns (0): (none)
+files left beside the db: subject.db-shm  subject.db-wal
+--- stdout (8787 bytes) ---
+
+==============================================================================
+/Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465migrate-2026-11-06/scratch/arms/A1/subject.db
+==============================================================================
+
+Scope: channels with source in {claude-code, claude-ai} bound to `default-entity`.
+Bases applied: identity-claim
+
+Candidates: 72 — 0 would move, 72 skipped.
+  skipped, by reason: {"basis-excluded":9,"no-guess":63}
+  excluded by basis: 9 role-title — this run applies {identity-claim}. To see them: --bases=identity-claim,role-title
+  new agents (0): (none)
+  reused agents (0): (none)
+  message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  bound to the default but out of scope, untouched: {"native":66}
+
+Per-channel:
+  0111a366  1/5-3/13: Chief Architect (o) -   claude-ai   role-title      P2=93   P3=0    SKIP (basis-excluded)
+  04bc9d21  bad-meta                          claude-code none            P2=0    P3=0    SKIP (no-guess)
+  0ae3694d  ordering-test                     claude-code none            P2=4    P3=0    SKIP (no-guess)
+  0d2c7db9  path-test                         claude-code none            P2=1    P3=0    SKIP (no-guess)
+  10f6337c  test-10f633                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  1b479419  Hermes - Distinguishing project   claude-ai   none            P2=11   P3=0    SKIP (no-guess)
+  1e2ced26  1/16-3/13: CXO (o) - MUX, MVP, m  claude-ai   none            P2=110  P3=0    SKIP (no-guess)
+  1e79bb77  empty-cwd                         claude-code none            P2=0    P3=0    SKIP (no-guess)
+  1eb7ff09  test-1eb7ff                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  246e2ae0  3/13: Chief Arch: (o4.6) - M1, a  claude-ai   none            P2=2    P3=0    SKIP (no-guess)
+  2a6351ea  Learning cuneiform from scratch   claude-ai   none            P2=29   P3=0    SKIP (no-guess)
+  2c30fb26  Onramp questionnaire guide restr  claude-ai   none            P2=11   P3=0    SKIP (no-guess)
+  2d40fa2d  Music video for Ghost Door or Do  claude-ai   none            P2=1    P3=0    SKIP (no-guess)
+  327e9630  rate-limiter-session              claude-code none            P2=4    P3=0    SKIP (no-guess)
+  3354e5ff  empty-cwd                         claude-code none            P2=0    P3=0    SKIP (no-guess)
+  358c1952  1/2-14: Comms Chief (o)           claude-ai   role-title      P2=34   P3=0    SKIP (basis-excluded)
+  39bdeda2  3/12: CIO: (o4.6) - Klatch branc  claude-ai   none            P2=33   P3=0    SKIP (no-guess)
+  3d661b3d  test-3d661b                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  40fab888  no-meta                           claude-code none            P2=0    P3=0    SKIP (no-guess)
+  48681a20  rate-limiter-session              claude-code none            P2=4    P3=0    SKIP (no-guess)
+  4bd53772  claude.ai — 0e9dc064-6762-42a9-a  claude-ai   none            P2=0    P3=0    SKIP (no-guess)
+  4ca7bbcb  no-meta                           claude-code none            P2=0    P3=0    SKIP (no-guess)
+  5e1af7a4  SC 3 design and engineering time  claude-ai   none            P2=4    P3=0    SKIP (no-guess)
+  5fb78415  1/4-5,15-16: HoSR (o) - onboard   claude-ai   none            P2=51   P3=0    SKIP (no-guess)
+  6229ca87  multi-fork                        claude-code none            P2=4    P3=0    SKIP (no-guess)
+  6380814f  test-638081                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  6c5017ab  Secundus — 2026-03-11             claude-code none            P2=18   P3=0    SKIP (no-guess)
+  6dec5c76  multi-fork                        claude-code none            P2=4    P3=0    SKIP (no-guess)
+  712ae004  3/13: PPM (o4.6) - M1 sprint tes  claude-ai   none            P2=8    P3=0    SKIP (no-guess)
+  71ce1d26  compacted-session                 claude-code none            P2=2    P3=0    SKIP (no-guess)
+  74bb02d3  1/15-2/16: CIO (o) - gastown, dr  claude-ai   role-title      P2=42   P3=0    SKIP (basis-excluded)
+  7556723c  Test message                      claude-ai   none            P2=2    P3=0    SKIP (no-guess)
+  7ba45fce  test-7ba45f                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  7d162b7e  1/5,11,16: Chief Innovation Offi  claude-ai   none            P2=14   P3=0    SKIP (no-guess)
+  820929ab  test-820929                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  8ef10002  2/7-3/12: Chief of Staff (o4.6)   claude-ai   role-title      P2=101  P3=0    SKIP (basis-excluded)
+  8f6b1298  test-8f6b12                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  91f46c7f  compacted-session                 claude-code none            P2=2    P3=0    SKIP (no-guess)
+  970f80ef  bad-meta                          claude-code none            P2=0    P3=0    SKIP (no-guess)
+  a091a0a1  compact-import                    claude-code none            P2=1    P3=0    SKIP (no-guess)
+  a4c194dd  Medieval name for Mainz in 940 A  claude-ai   none            P2=2    P3=0    SKIP (no-guess)
+  a4e0bd2a  3/13: CXO (o4.6) - M1             claude-ai   none            P2=10   P3=0    SKIP (no-guess)
+  a64c9d45  Exploratory testing agent role s  claude-ai   none            P2=10   P3=0    SKIP (no-guess)
+  a94b272e  Daedalus — 2026-03-07             claude-code none            P2=3    P3=0    SKIP (no-guess)
+  ad70f691  test-ad70f6                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  adaf6406  VA exec asst                      claude-ai   role-title      P2=174  P3=0    SKIP (basis-excluded)
+  b173483e  test-import                       claude-code none            P2=3    P3=0    SKIP (no-guess)
+  b20c5b5b  empty-content-session             claude-code none            P2=2    P3=0    SKIP (no-guess)
+  b2c0503a  no-cwd                            claude-ai   none            P2=1    P3=0    SKIP (no-guess)
+  b8c77ad4  Voice input setup for Claude Cod  claude-ai   none            P2=5    P3=0    SKIP (no-guess)
+  b937e368  ordering-test                     claude-code none            P2=4    P3=0    SKIP (no-guess)
+  bdcd0506  test-import                       claude-code none            P2=3    P3=0    SKIP (no-guess)
+  c4f8438b  test-c4f843                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  cd7df34e  test-cd7df3                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  cff40904  1/3-2/6: Chief of Staff (o4.5) -  claude-ai   role-title      P2=122  P3=0    SKIP (basis-excluded)
+  ddf29996  Reviving website project with Ta  claude-ai   none            P2=1    P3=0    SKIP (no-guess)
+  df34157e  test-df3415                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  e07e9d56  1/16-3/13: HoSR (o) - Weekly Shi  claude-ai   role-title      P2=94   P3=0    SKIP (basis-excluded)
+  e113cb6a  test-empty-filter                 claude-code none            P2=4    P3=0    SKIP (no-guess)
+  e2b48268  test-empty-filter                 claude-code none            P2=4    P3=0    SKIP (no-guess)
+  e39b439d  missing-claude-md                 claude-code none            P2=1    P3=0    SKIP (no-guess)
+  e52e8fa8  1/8,12: CXO (o) - UX vision cont  claude-ai   none            P2=12   P3=0    SKIP (no-guess)
+  e6385897  test-e63858                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  e7a7a513  1/15-3/13: Comms Chief (o) - con  claude-ai   role-title      P2=148  P3=0    SKIP (basis-excluded)
+  e8210556  claude.ai — aab4cff8-8d7c-42e5-8  claude-ai   none            P2=0    P3=0    SKIP (no-guess)
+  e93d3810  1/17: SecOps (o) - GCP project s  claude-ai   none            P2=19   P3=0    SKIP (no-guess)
+  eba7c2c1  3/13: Chief of Staff (o4.6) - M1  claude-ai   none            P2=12   P3=0    SKIP (no-guess)
+  ef2a2e35  Applying for Product Lead, Consu  claude-ai   role-title      P2=13   P3=0    SKIP (basis-excluded)
+  f1debd2c  test-f1debd                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  f64312da  empty-content-session             claude-code none            P2=2    P3=0    SKIP (no-guess)
+  f863740a  test-f86374                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  faa00367  compact-import                    claude-code none            P2=1    P3=0    SKIP (no-guess)
+
+Dry run — planned against a read-only snapshot, which has been deleted. Your database was
+not opened for writing and no agent was minted. Re-run with --apply to move these, or with
+--channels=<ids> to move only the ones you approve off this sheet.
+--- stderr (0 bytes) ---
+
+
+==============================================================================
+== A2  [the opt-out, on a database that would be upgraded]
+==============================================================================
+argv:   --apply --no-migrate
+exit:   1
+wall:   419 ms
+bytes:  5230592 -> 5230592
+pages:  1277 -> 1277  (page_size 4096, freelist 0 -> 0)
+sha256: c2295121bbdfdbbb -> c2295121bbdfdbbb  TARGET INTACT
+objects(no-auto): 7 -> 7
+objects(all):     13 -> 13
+added columns (0): (none)
+files left beside the db: subject.db-shm  subject.db-wal
+--- stdout (956 bytes) ---
+
+SCHEMA: this database is behind the current schema, and opening it for writing
+  upgrades it in place. subject.db would gain:
+    4 new object(s): index:idx_file_refs_file, index:idx_file_refs_scope, table:file_refs, table:files
+    9 new column(s): channels.type, entities.effort, entities.reflections, message_artifacts.file_name, message_artifacts.file_mime_type, message_artifacts.file_size_bytes, message_artifacts.file_storage_key, messages.stop_reason, projects.memory
+    1 table(s) rebuilt, not altered in place: messages
+      A rebuild rewrites every row of that table. The file grows and the space the old
+      pages held is left as slack inside it — expect a larger file than the data needs.
+  Every existing row survives this. What does not survive is the file's value as a record
+  of an older schema: restore it later to ask what the schema looked like then and you get
+  today's answer. Pass --no-migrate to refuse instead of upgrading.
+--- stderr (595 bytes) ---
+(node:97085) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+Refusing to run: --no-migrate, and this run would upgrade the schema above.
+  Nothing was written and the snapshot was discarded. Three ways on from here:
+    - run it without --no-migrate, accepting the schema change above;
+    - copy the file first and point this script at the copy, keeping subject.db as it is;
+    - run it with no flags for the review sheet, which never writes to the file at all.
+
+==============================================================================
+== A3  [the opt-out, on a database that would not]
+==============================================================================
+argv:   --apply --no-migrate
+exit:   0
+wall:   461 ms
+bytes:  9449472 -> 9449472
+pages:  2307 -> 2307  (page_size 4096, freelist 1026 -> 1026)
+sha256: 041160f55930e284 -> 041160f55930e284  TARGET INTACT
+objects(no-auto): 11 -> 11
+objects(all):     19 -> 19
+added columns (0): (none)
+files left beside the db: subject.db-shm  subject.db-wal
+--- stdout (8577 bytes) ---
+
+==============================================================================
+/Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465migrate-2026-11-06/scratch/arms/A3/subject.db
+==============================================================================
+
+Scope: channels with source in {claude-code, claude-ai} bound to `default-entity`.
+Bases applied: identity-claim
+
+Candidates: 72 — 0 would move, 72 skipped.
+  skipped, by reason: {"basis-excluded":9,"no-guess":63}
+  excluded by basis: 9 role-title — this run applies {identity-claim}. To see them: --bases=identity-claim,role-title
+  new agents (0): (none)
+  reused agents (0): (none)
+  message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  bound to the default but out of scope, untouched: {"native":66}
+
+Per-channel:
+  0111a366  1/5-3/13: Chief Architect (o) -   claude-ai   role-title      P2=93   P3=0    SKIP (basis-excluded)
+  04bc9d21  bad-meta                          claude-code none            P2=0    P3=0    SKIP (no-guess)
+  0ae3694d  ordering-test                     claude-code none            P2=4    P3=0    SKIP (no-guess)
+  0d2c7db9  path-test                         claude-code none            P2=1    P3=0    SKIP (no-guess)
+  10f6337c  test-10f633                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  1b479419  Hermes - Distinguishing project   claude-ai   none            P2=11   P3=0    SKIP (no-guess)
+  1e2ced26  1/16-3/13: CXO (o) - MUX, MVP, m  claude-ai   none            P2=110  P3=0    SKIP (no-guess)
+  1e79bb77  empty-cwd                         claude-code none            P2=0    P3=0    SKIP (no-guess)
+  1eb7ff09  test-1eb7ff                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  246e2ae0  3/13: Chief Arch: (o4.6) - M1, a  claude-ai   none            P2=2    P3=0    SKIP (no-guess)
+  2a6351ea  Learning cuneiform from scratch   claude-ai   none            P2=29   P3=0    SKIP (no-guess)
+  2c30fb26  Onramp questionnaire guide restr  claude-ai   none            P2=11   P3=0    SKIP (no-guess)
+  2d40fa2d  Music video for Ghost Door or Do  claude-ai   none            P2=1    P3=0    SKIP (no-guess)
+  327e9630  rate-limiter-session              claude-code none            P2=4    P3=0    SKIP (no-guess)
+  3354e5ff  empty-cwd                         claude-code none            P2=0    P3=0    SKIP (no-guess)
+  358c1952  1/2-14: Comms Chief (o)           claude-ai   role-title      P2=34   P3=0    SKIP (basis-excluded)
+  39bdeda2  3/12: CIO: (o4.6) - Klatch branc  claude-ai   none            P2=33   P3=0    SKIP (no-guess)
+  3d661b3d  test-3d661b                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  40fab888  no-meta                           claude-code none            P2=0    P3=0    SKIP (no-guess)
+  48681a20  rate-limiter-session              claude-code none            P2=4    P3=0    SKIP (no-guess)
+  4bd53772  claude.ai — 0e9dc064-6762-42a9-a  claude-ai   none            P2=0    P3=0    SKIP (no-guess)
+  4ca7bbcb  no-meta                           claude-code none            P2=0    P3=0    SKIP (no-guess)
+  5e1af7a4  SC 3 design and engineering time  claude-ai   none            P2=4    P3=0    SKIP (no-guess)
+  5fb78415  1/4-5,15-16: HoSR (o) - onboard   claude-ai   none            P2=51   P3=0    SKIP (no-guess)
+  6229ca87  multi-fork                        claude-code none            P2=4    P3=0    SKIP (no-guess)
+  6380814f  test-638081                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  6c5017ab  Secundus — 2026-03-11             claude-code none            P2=18   P3=0    SKIP (no-guess)
+  6dec5c76  multi-fork                        claude-code none            P2=4    P3=0    SKIP (no-guess)
+  712ae004  3/13: PPM (o4.6) - M1 sprint tes  claude-ai   none            P2=8    P3=0    SKIP (no-guess)
+  71ce1d26  compacted-session                 claude-code none            P2=2    P3=0    SKIP (no-guess)
+  74bb02d3  1/15-2/16: CIO (o) - gastown, dr  claude-ai   role-title      P2=42   P3=0    SKIP (basis-excluded)
+  7556723c  Test message                      claude-ai   none            P2=2    P3=0    SKIP (no-guess)
+  7ba45fce  test-7ba45f                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  7d162b7e  1/5,11,16: Chief Innovation Offi  claude-ai   none            P2=14   P3=0    SKIP (no-guess)
+  820929ab  test-820929                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  8ef10002  2/7-3/12: Chief of Staff (o4.6)   claude-ai   role-title      P2=101  P3=0    SKIP (basis-excluded)
+  8f6b1298  test-8f6b12                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  91f46c7f  compacted-session                 claude-code none            P2=2    P3=0    SKIP (no-guess)
+  970f80ef  bad-meta                          claude-code none            P2=0    P3=0    SKIP (no-guess)
+  a091a0a1  compact-import                    claude-code none            P2=1    P3=0    SKIP (no-guess)
+  a4c194dd  Medieval name for Mainz in 940 A  claude-ai   none            P2=2    P3=0    SKIP (no-guess)
+  a4e0bd2a  3/13: CXO (o4.6) - M1             claude-ai   none            P2=10   P3=0    SKIP (no-guess)
+  a64c9d45  Exploratory testing agent role s  claude-ai   none            P2=10   P3=0    SKIP (no-guess)
+  a94b272e  Daedalus — 2026-03-07             claude-code none            P2=3    P3=0    SKIP (no-guess)
+  ad70f691  test-ad70f6                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  adaf6406  VA exec asst                      claude-ai   role-title      P2=174  P3=0    SKIP (basis-excluded)
+  b173483e  test-import                       claude-code none            P2=3    P3=0    SKIP (no-guess)
+  b20c5b5b  empty-content-session             claude-code none            P2=2    P3=0    SKIP (no-guess)
+  b2c0503a  no-cwd                            claude-ai   none            P2=1    P3=0    SKIP (no-guess)
+  b8c77ad4  Voice input setup for Claude Cod  claude-ai   none            P2=5    P3=0    SKIP (no-guess)
+  b937e368  ordering-test                     claude-code none            P2=4    P3=0    SKIP (no-guess)
+  bdcd0506  test-import                       claude-code none            P2=3    P3=0    SKIP (no-guess)
+  c4f8438b  test-c4f843                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  cd7df34e  test-cd7df3                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  cff40904  1/3-2/6: Chief of Staff (o4.5) -  claude-ai   role-title      P2=122  P3=0    SKIP (basis-excluded)
+  ddf29996  Reviving website project with Ta  claude-ai   none            P2=1    P3=0    SKIP (no-guess)
+  df34157e  test-df3415                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  e07e9d56  1/16-3/13: HoSR (o) - Weekly Shi  claude-ai   role-title      P2=94   P3=0    SKIP (basis-excluded)
+  e113cb6a  test-empty-filter                 claude-code none            P2=4    P3=0    SKIP (no-guess)
+  e2b48268  test-empty-filter                 claude-code none            P2=4    P3=0    SKIP (no-guess)
+  e39b439d  missing-claude-md                 claude-code none            P2=1    P3=0    SKIP (no-guess)
+  e52e8fa8  1/8,12: CXO (o) - UX vision cont  claude-ai   none            P2=12   P3=0    SKIP (no-guess)
+  e6385897  test-e63858                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  e7a7a513  1/15-3/13: Comms Chief (o) - con  claude-ai   role-title      P2=148  P3=0    SKIP (basis-excluded)
+  e8210556  claude.ai — aab4cff8-8d7c-42e5-8  claude-ai   none            P2=0    P3=0    SKIP (no-guess)
+  e93d3810  1/17: SecOps (o) - GCP project s  claude-ai   none            P2=19   P3=0    SKIP (no-guess)
+  eba7c2c1  3/13: Chief of Staff (o4.6) - M1  claude-ai   none            P2=12   P3=0    SKIP (no-guess)
+  ef2a2e35  Applying for Product Lead, Consu  claude-ai   role-title      P2=13   P3=0    SKIP (basis-excluded)
+  f1debd2c  test-f1debd                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  f64312da  empty-content-session             claude-code none            P2=2    P3=0    SKIP (no-guess)
+  f863740a  test-f86374                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  faa00367  compact-import                    claude-code none            P2=1    P3=0    SKIP (no-guess)
+
+Nothing to apply. Snapshot discarded.
+--- stderr (0 bytes) ---
+
+
+==============================================================================
+== A3b  [POST-HOC: A3 with a plan that actually moves rows]
+==============================================================================
+argv:   --bases=identity-claim,role-title --apply --no-migrate
+exit:   0
+wall:   487 ms
+bytes:  9449472 -> 9449472
+pages:  2307 -> 2307  (page_size 4096, freelist 1026 -> 1016)
+sha256: 041160f55930e284 -> 2b920112304c3180  TARGET WRITTEN
+objects(no-auto): 11 -> 11
+objects(all):     19 -> 19
+added columns (0): (none)
+files left beside the db: subject.db-shm  subject.db-wal  subject.db.backfill-2026-11-06T17-30-37-082Z.json  subject.db.backup-backfill-2026-11-06T17-30-37-082Z  subject.db.backup-backfill-2026-11-06T17-30-37-082Z-shm  subject.db.backup-backfill-2026-11-06T17-30-37-082Z-wal
+--- stdout (13925 bytes) ---
+
+==============================================================================
+/Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465migrate-2026-11-06/scratch/arms/A3b/subject.db
+==============================================================================
+
+Scope: channels with source in {claude-code, claude-ai} bound to `default-entity`.
+Bases applied: identity-claim, role-title
+
+Candidates: 72 — 9 would move, 63 skipped.
+  skipped, by reason: {"no-guess":63}
+  new agents (9): chief architect, tech-savvy communications chief, Chief Innovation Office (CIO), Executive Assistant and Chief of Staff, chief of staff, Chief of Staff (Executive Assistant), Head of Sapient Resources (HoSR), tech-savvy Communications Chief, career coach
+  reused agents (0): (none)
+  message rows re-stamped: 821 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+
+  ! "tech-savvy communications chief" is the name 2 separate agents would carry — 182 message rows, not merged:
+      358c1952  1/2-14: Comms Chief (o)
+      e7a7a513  1/15-3/13: Comms Chief (o) - content strategy, blogging, web
+    A role is a job, not a person, so these do not merge — you get that many agents with
+    the same name. If they are in fact one agent continuing, merge them by hand after.
+
+  What the collision check does and does not cover: it compares names for exact equality,
+  ignoring case and surrounding space. Two chats that state the same job in different words
+  ("Chief of Staff (Executive Assistant)" and "Executive Assistant and Chief of Staff") mint
+  two agents and produce no warning above. Successive chats in one role are common in an
+  imported corpus — read the channel names in the per-channel list before approving.
+  bound to the default but out of scope, untouched: {"native":66}
+
+Per-channel:
+  0111a366  1/5-3/13: Chief Architect (o) -   claude-ai   role-title      P2=93   P3=0    MINTED → "chief architect"
+              ↳ The session's opening turn says "You are my chief architect" — a role, not a name. Two sessions holding the same job are not the same agent, so this mints a new entity rather than reusing one by name.
+  04bc9d21  bad-meta                          claude-code none            P2=0    P3=0    SKIP (no-guess)
+  0ae3694d  ordering-test                     claude-code none            P2=4    P3=0    SKIP (no-guess)
+  0d2c7db9  path-test                         claude-code none            P2=1    P3=0    SKIP (no-guess)
+  10f6337c  test-10f633                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  1b479419  Hermes - Distinguishing project   claude-ai   none            P2=11   P3=0    SKIP (no-guess)
+  1e2ced26  1/16-3/13: CXO (o) - MUX, MVP, m  claude-ai   none            P2=110  P3=0    SKIP (no-guess)
+  1e79bb77  empty-cwd                         claude-code none            P2=0    P3=0    SKIP (no-guess)
+  1eb7ff09  test-1eb7ff                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  246e2ae0  3/13: Chief Arch: (o4.6) - M1, a  claude-ai   none            P2=2    P3=0    SKIP (no-guess)
+  2a6351ea  Learning cuneiform from scratch   claude-ai   none            P2=29   P3=0    SKIP (no-guess)
+  2c30fb26  Onramp questionnaire guide restr  claude-ai   none            P2=11   P3=0    SKIP (no-guess)
+  2d40fa2d  Music video for Ghost Door or Do  claude-ai   none            P2=1    P3=0    SKIP (no-guess)
+  327e9630  rate-limiter-session              claude-code none            P2=4    P3=0    SKIP (no-guess)
+  3354e5ff  empty-cwd                         claude-code none            P2=0    P3=0    SKIP (no-guess)
+  358c1952  1/2-14: Comms Chief (o)           claude-ai   role-title      P2=34   P3=0    MINTED → "tech-savvy communications chief"
+              ↳ The session's opening turn says "You are my tech-savvy communications chief" — a role, not a name. Two sessions holding the same job are not the same agent, so this mints a new entity rather than reusing one by name.
+  39bdeda2  3/12: CIO: (o4.6) - Klatch branc  claude-ai   none            P2=33   P3=0    SKIP (no-guess)
+  3d661b3d  test-3d661b                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  40fab888  no-meta                           claude-code none            P2=0    P3=0    SKIP (no-guess)
+  48681a20  rate-limiter-session              claude-code none            P2=4    P3=0    SKIP (no-guess)
+  4bd53772  claude.ai — 0e9dc064-6762-42a9-a  claude-ai   none            P2=0    P3=0    SKIP (no-guess)
+  4ca7bbcb  no-meta                           claude-code none            P2=0    P3=0    SKIP (no-guess)
+  5e1af7a4  SC 3 design and engineering time  claude-ai   none            P2=4    P3=0    SKIP (no-guess)
+  5fb78415  1/4-5,15-16: HoSR (o) - onboard   claude-ai   none            P2=51   P3=0    SKIP (no-guess)
+  6229ca87  multi-fork                        claude-code none            P2=4    P3=0    SKIP (no-guess)
+  6380814f  test-638081                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  6c5017ab  Secundus — 2026-03-11             claude-code none            P2=18   P3=0    SKIP (no-guess)
+  6dec5c76  multi-fork                        claude-code none            P2=4    P3=0    SKIP (no-guess)
+  712ae004  3/13: PPM (o4.6) - M1 sprint tes  claude-ai   none            P2=8    P3=0    SKIP (no-guess)
+  71ce1d26  compacted-session                 claude-code none            P2=2    P3=0    SKIP (no-guess)
+  74bb02d3  1/15-2/16: CIO (o) - gastown, dr  claude-ai   role-title      P2=42   P3=0    MINTED → "Chief Innovation Office (CIO)"
+              ↳ The session's opening turn says "You are my Chief Innovation Office (CIO)" — a role, not a name. Two sessions holding the same job are not the same agent, so this mints a new entity rather than reusing one by name.
+  7556723c  Test message                      claude-ai   none            P2=2    P3=0    SKIP (no-guess)
+  7ba45fce  test-7ba45f                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  7d162b7e  1/5,11,16: Chief Innovation Offi  claude-ai   none            P2=14   P3=0    SKIP (no-guess)
+  820929ab  test-820929                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  8ef10002  2/7-3/12: Chief of Staff (o4.6)   claude-ai   role-title      P2=101  P3=0    MINTED → "Executive Assistant and Chief of Staff"
+              ↳ The session's opening turn says "You are my Executive Assistant and Chief of Staff" — a role, not a name. Two sessions holding the same job are not the same agent, so this mints a new entity rather than reusing one by name.
+  8f6b1298  test-8f6b12                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  91f46c7f  compacted-session                 claude-code none            P2=2    P3=0    SKIP (no-guess)
+  970f80ef  bad-meta                          claude-code none            P2=0    P3=0    SKIP (no-guess)
+  a091a0a1  compact-import                    claude-code none            P2=1    P3=0    SKIP (no-guess)
+  a4c194dd  Medieval name for Mainz in 940 A  claude-ai   none            P2=2    P3=0    SKIP (no-guess)
+  a4e0bd2a  3/13: CXO (o4.6) - M1             claude-ai   none            P2=10   P3=0    SKIP (no-guess)
+  a64c9d45  Exploratory testing agent role s  claude-ai   none            P2=10   P3=0    SKIP (no-guess)
+  a94b272e  Daedalus — 2026-03-07             claude-code none            P2=3    P3=0    SKIP (no-guess)
+  ad70f691  test-ad70f6                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  adaf6406  VA exec asst                      claude-ai   role-title      P2=174  P3=0    MINTED → "chief of staff"
+              ↳ The session's opening turn says "You are my chief of staff" — a role, not a name. Two sessions holding the same job are not the same agent, so this mints a new entity rather than reusing one by name.
+              ↳ note: 4 agents named "chief of staff" already exist (fc4a59b6, d064dae8, 45691e94, 1e18ec34). A role-title guess does not reuse them — this mints another.
+  b173483e  test-import                       claude-code none            P2=3    P3=0    SKIP (no-guess)
+  b20c5b5b  empty-content-session             claude-code none            P2=2    P3=0    SKIP (no-guess)
+  b2c0503a  no-cwd                            claude-ai   none            P2=1    P3=0    SKIP (no-guess)
+  b8c77ad4  Voice input setup for Claude Cod  claude-ai   none            P2=5    P3=0    SKIP (no-guess)
+  b937e368  ordering-test                     claude-code none            P2=4    P3=0    SKIP (no-guess)
+  bdcd0506  test-import                       claude-code none            P2=3    P3=0    SKIP (no-guess)
+  c4f8438b  test-c4f843                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  cd7df34e  test-cd7df3                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  cff40904  1/3-2/6: Chief of Staff (o4.5) -  claude-ai   role-title      P2=122  P3=0    MINTED → "Chief of Staff (Executive Assistant)"
+              ↳ The session's opening turn says "You are my Chief of Staff (Executive Assistant)" — a role, not a name. Two sessions holding the same job are not the same agent, so this mints a new entity rather than reusing one by name.
+  ddf29996  Reviving website project with Ta  claude-ai   none            P2=1    P3=0    SKIP (no-guess)
+  df34157e  test-df3415                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  e07e9d56  1/16-3/13: HoSR (o) - Weekly Shi  claude-ai   role-title      P2=94   P3=0    MINTED → "Head of Sapient Resources (HoSR)"
+              ↳ The session's opening turn says "you are the Head of Sapient Resources (HoSR)" — a role, not a name. Two sessions holding the same job are not the same agent, so this mints a new entity rather than reusing one by name.
+  e113cb6a  test-empty-filter                 claude-code none            P2=4    P3=0    SKIP (no-guess)
+  e2b48268  test-empty-filter                 claude-code none            P2=4    P3=0    SKIP (no-guess)
+  e39b439d  missing-claude-md                 claude-code none            P2=1    P3=0    SKIP (no-guess)
+  e52e8fa8  1/8,12: CXO (o) - UX vision cont  claude-ai   none            P2=12   P3=0    SKIP (no-guess)
+  e6385897  test-e63858                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  e7a7a513  1/15-3/13: Comms Chief (o) - con  claude-ai   role-title      P2=148  P3=0    MINTED → "tech-savvy Communications Chief"
+              ↳ The session's opening turn says "You are my tech-savvy Communications Chief" — a role, not a name. Two sessions holding the same job are not the same agent, so this mints a new entity rather than reusing one by name.
+  e8210556  claude.ai — aab4cff8-8d7c-42e5-8  claude-ai   none            P2=0    P3=0    SKIP (no-guess)
+  e93d3810  1/17: SecOps (o) - GCP project s  claude-ai   none            P2=19   P3=0    SKIP (no-guess)
+  eba7c2c1  3/13: Chief of Staff (o4.6) - M1  claude-ai   none            P2=12   P3=0    SKIP (no-guess)
+  ef2a2e35  Applying for Product Lead, Consu  claude-ai   role-title      P2=13   P3=0    MINTED → "career coach"
+              ↳ The session's opening turn says "You are my career coach" — a role, not a name. Two sessions holding the same job are not the same agent, so this mints a new entity rather than reusing one by name.
+  f1debd2c  test-f1debd                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  f64312da  empty-content-session             claude-code none            P2=2    P3=0    SKIP (no-guess)
+  f863740a  test-f86374                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  faa00367  compact-import                    claude-code none            P2=1    P3=0    SKIP (no-guess)
+
+Backup (taken before anything was written): /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465migrate-2026-11-06/scratch/arms/A3b/subject.db.backup-backfill-2026-11-06T17-30-37-082Z
+To put that file back by hand, stop the app and delete the sidecars first. A plain copy while
+something still holds the database open restores nothing — the app goes on reading the run — and
+one message written since the run is enough to leave a database SQLite calls malformed
+(Theseus's Rounds 191 and 193):
+  1. stop `npm run dev`, and anything else holding this database open
+  2. rm -f '/Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465migrate-2026-11-06/scratch/arms/A3b/subject.db-wal' '/Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465migrate-2026-11-06/scratch/arms/A3b/subject.db-shm'
+  3. cp '/Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465migrate-2026-11-06/scratch/arms/A3b/subject.db.backup-backfill-2026-11-06T17-30-37-082Z' '/Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465migrate-2026-11-06/scratch/arms/A3b/subject.db'
+  4. re-run this script with no flags:
+       npx tsx scripts/backfill-entity-bindings.mts '/Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465migrate-2026-11-06/scratch/arms/A3b/subject.db'
+     its `Candidates:` line should read, word for word:
+       Candidates: 72 — 0 would move, 72 skipped.
+Applied: 9 channel(s) re-pointed, 9 agent(s) minted.
+Undo record: /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465migrate-2026-11-06/scratch/arms/A3b/subject.db.backfill-2026-11-06T17-30-37-082Z.json
+  reverse with:  npx tsx scripts/backfill-entity-bindings.mts '/Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465migrate-2026-11-06/scratch/arms/A3b/subject.db' --undo='/Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465migrate-2026-11-06/scratch/arms/A3b/subject.db.backfill-2026-11-06T17-30-37-082Z.json'
+--- stderr (0 bytes) ---
+
+
+==============================================================================
+== A4  [the typo — does the argv rule cover the new flag]
+==============================================================================
+argv:   --apply --no-migrat
+exit:   1
+wall:   354 ms
+bytes:  5230592 -> 5230592
+pages:  1277 -> 1277  (page_size 4096, freelist 0 -> 0)
+sha256: c2295121bbdfdbbb -> c2295121bbdfdbbb  TARGET INTACT
+objects(no-auto): 7 -> 7
+objects(all):     13 -> 13
+added columns (0): (none)
+files left beside the db: subject.db-shm  subject.db-wal
+--- stdout (0 bytes) ---
+
+--- stderr (322 bytes) ---
+Refusing to run: an argument would have been ignored, and an ignored flag changes what this run covers.
+  --no-migrat: not a flag this script knows — did you mean --no-migrate?
+usage: npx tsx scripts/backfill-entity-bindings.mts <klatch.db> [--apply] [--bases=a,b] [--channels=id,id] [--undo=<record.json>] [--no-migrate]
+
+==============================================================================
+== A5  [review sheet with the opt-out on the line]
+==============================================================================
+argv:   --no-migrate
+exit:   0
+wall:   487 ms
+bytes:  5230592 -> 5230592
+pages:  1277 -> 1277  (page_size 4096, freelist 0 -> 0)
+sha256: c2295121bbdfdbbb -> c2295121bbdfdbbb  TARGET INTACT
+objects(no-auto): 7 -> 7
+objects(all):     13 -> 13
+added columns (0): (none)
+files left beside the db: subject.db-shm  subject.db-wal
+--- stdout (9932 bytes) ---
+
+SCHEMA: this database is behind the current schema, and opening it for writing
+  upgrades it in place. subject.db would gain:
+    4 new object(s): index:idx_file_refs_file, index:idx_file_refs_scope, table:file_refs, table:files
+    9 new column(s): channels.type, entities.effort, entities.reflections, message_artifacts.file_name, message_artifacts.file_mime_type, message_artifacts.file_size_bytes, message_artifacts.file_storage_key, messages.stop_reason, projects.memory
+    1 table(s) rebuilt, not altered in place: messages
+      A rebuild rewrites every row of that table. The file grows and the space the old
+      pages held is left as slack inside it — expect a larger file than the data needs.
+  Every existing row survives this. What does not survive is the file's value as a record
+  of an older schema: restore it later to ask what the schema looked like then and you get
+  today's answer. Pass --no-migrate to refuse instead of upgrading.
+  --no-migrate is on this line and this is a review sheet, which does not write to the file —
+  so there is nothing here to refuse. An --apply or --undo against this database would refuse.
+
+==============================================================================
+/Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465migrate-2026-11-06/scratch/arms/A5/subject.db
+==============================================================================
+
+Scope: channels with source in {claude-code, claude-ai} bound to `default-entity`.
+Bases applied: identity-claim
+
+Candidates: 72 — 0 would move, 72 skipped.
+  skipped, by reason: {"basis-excluded":9,"no-guess":63}
+  excluded by basis: 9 role-title — this run applies {identity-claim}. To see them: --bases=identity-claim,role-title
+  new agents (0): (none)
+  reused agents (0): (none)
+  message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  bound to the default but out of scope, untouched: {"native":66}
+
+Per-channel:
+  0111a366  1/5-3/13: Chief Architect (o) -   claude-ai   role-title      P2=93   P3=0    SKIP (basis-excluded)
+  04bc9d21  bad-meta                          claude-code none            P2=0    P3=0    SKIP (no-guess)
+  0ae3694d  ordering-test                     claude-code none            P2=4    P3=0    SKIP (no-guess)
+  0d2c7db9  path-test                         claude-code none            P2=1    P3=0    SKIP (no-guess)
+  10f6337c  test-10f633                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  1b479419  Hermes - Distinguishing project   claude-ai   none            P2=11   P3=0    SKIP (no-guess)
+  1e2ced26  1/16-3/13: CXO (o) - MUX, MVP, m  claude-ai   none            P2=110  P3=0    SKIP (no-guess)
+  1e79bb77  empty-cwd                         claude-code none            P2=0    P3=0    SKIP (no-guess)
+  1eb7ff09  test-1eb7ff                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  246e2ae0  3/13: Chief Arch: (o4.6) - M1, a  claude-ai   none            P2=2    P3=0    SKIP (no-guess)
+  2a6351ea  Learning cuneiform from scratch   claude-ai   none            P2=29   P3=0    SKIP (no-guess)
+  2c30fb26  Onramp questionnaire guide restr  claude-ai   none            P2=11   P3=0    SKIP (no-guess)
+  2d40fa2d  Music video for Ghost Door or Do  claude-ai   none            P2=1    P3=0    SKIP (no-guess)
+  327e9630  rate-limiter-session              claude-code none            P2=4    P3=0    SKIP (no-guess)
+  3354e5ff  empty-cwd                         claude-code none            P2=0    P3=0    SKIP (no-guess)
+  358c1952  1/2-14: Comms Chief (o)           claude-ai   role-title      P2=34   P3=0    SKIP (basis-excluded)
+  39bdeda2  3/12: CIO: (o4.6) - Klatch branc  claude-ai   none            P2=33   P3=0    SKIP (no-guess)
+  3d661b3d  test-3d661b                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  40fab888  no-meta                           claude-code none            P2=0    P3=0    SKIP (no-guess)
+  48681a20  rate-limiter-session              claude-code none            P2=4    P3=0    SKIP (no-guess)
+  4bd53772  claude.ai — 0e9dc064-6762-42a9-a  claude-ai   none            P2=0    P3=0    SKIP (no-guess)
+  4ca7bbcb  no-meta                           claude-code none            P2=0    P3=0    SKIP (no-guess)
+  5e1af7a4  SC 3 design and engineering time  claude-ai   none            P2=4    P3=0    SKIP (no-guess)
+  5fb78415  1/4-5,15-16: HoSR (o) - onboard   claude-ai   none            P2=51   P3=0    SKIP (no-guess)
+  6229ca87  multi-fork                        claude-code none            P2=4    P3=0    SKIP (no-guess)
+  6380814f  test-638081                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  6c5017ab  Secundus — 2026-03-11             claude-code none            P2=18   P3=0    SKIP (no-guess)
+  6dec5c76  multi-fork                        claude-code none            P2=4    P3=0    SKIP (no-guess)
+  712ae004  3/13: PPM (o4.6) - M1 sprint tes  claude-ai   none            P2=8    P3=0    SKIP (no-guess)
+  71ce1d26  compacted-session                 claude-code none            P2=2    P3=0    SKIP (no-guess)
+  74bb02d3  1/15-2/16: CIO (o) - gastown, dr  claude-ai   role-title      P2=42   P3=0    SKIP (basis-excluded)
+  7556723c  Test message                      claude-ai   none            P2=2    P3=0    SKIP (no-guess)
+  7ba45fce  test-7ba45f                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  7d162b7e  1/5,11,16: Chief Innovation Offi  claude-ai   none            P2=14   P3=0    SKIP (no-guess)
+  820929ab  test-820929                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  8ef10002  2/7-3/12: Chief of Staff (o4.6)   claude-ai   role-title      P2=101  P3=0    SKIP (basis-excluded)
+  8f6b1298  test-8f6b12                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  91f46c7f  compacted-session                 claude-code none            P2=2    P3=0    SKIP (no-guess)
+  970f80ef  bad-meta                          claude-code none            P2=0    P3=0    SKIP (no-guess)
+  a091a0a1  compact-import                    claude-code none            P2=1    P3=0    SKIP (no-guess)
+  a4c194dd  Medieval name for Mainz in 940 A  claude-ai   none            P2=2    P3=0    SKIP (no-guess)
+  a4e0bd2a  3/13: CXO (o4.6) - M1             claude-ai   none            P2=10   P3=0    SKIP (no-guess)
+  a64c9d45  Exploratory testing agent role s  claude-ai   none            P2=10   P3=0    SKIP (no-guess)
+  a94b272e  Daedalus — 2026-03-07             claude-code none            P2=3    P3=0    SKIP (no-guess)
+  ad70f691  test-ad70f6                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  adaf6406  VA exec asst                      claude-ai   role-title      P2=174  P3=0    SKIP (basis-excluded)
+  b173483e  test-import                       claude-code none            P2=3    P3=0    SKIP (no-guess)
+  b20c5b5b  empty-content-session             claude-code none            P2=2    P3=0    SKIP (no-guess)
+  b2c0503a  no-cwd                            claude-ai   none            P2=1    P3=0    SKIP (no-guess)
+  b8c77ad4  Voice input setup for Claude Cod  claude-ai   none            P2=5    P3=0    SKIP (no-guess)
+  b937e368  ordering-test                     claude-code none            P2=4    P3=0    SKIP (no-guess)
+  bdcd0506  test-import                       claude-code none            P2=3    P3=0    SKIP (no-guess)
+  c4f8438b  test-c4f843                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  cd7df34e  test-cd7df3                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  cff40904  1/3-2/6: Chief of Staff (o4.5) -  claude-ai   role-title      P2=122  P3=0    SKIP (basis-excluded)
+  ddf29996  Reviving website project with Ta  claude-ai   none            P2=1    P3=0    SKIP (no-guess)
+  df34157e  test-df3415                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  e07e9d56  1/16-3/13: HoSR (o) - Weekly Shi  claude-ai   role-title      P2=94   P3=0    SKIP (basis-excluded)
+  e113cb6a  test-empty-filter                 claude-code none            P2=4    P3=0    SKIP (no-guess)
+  e2b48268  test-empty-filter                 claude-code none            P2=4    P3=0    SKIP (no-guess)
+  e39b439d  missing-claude-md                 claude-code none            P2=1    P3=0    SKIP (no-guess)
+  e52e8fa8  1/8,12: CXO (o) - UX vision cont  claude-ai   none            P2=12   P3=0    SKIP (no-guess)
+  e6385897  test-e63858                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  e7a7a513  1/15-3/13: Comms Chief (o) - con  claude-ai   role-title      P2=148  P3=0    SKIP (basis-excluded)
+  e8210556  claude.ai — aab4cff8-8d7c-42e5-8  claude-ai   none            P2=0    P3=0    SKIP (no-guess)
+  e93d3810  1/17: SecOps (o) - GCP project s  claude-ai   none            P2=19   P3=0    SKIP (no-guess)
+  eba7c2c1  3/13: Chief of Staff (o4.6) - M1  claude-ai   none            P2=12   P3=0    SKIP (no-guess)
+  ef2a2e35  Applying for Product Lead, Consu  claude-ai   role-title      P2=13   P3=0    SKIP (basis-excluded)
+  f1debd2c  test-f1debd                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  f64312da  empty-content-session             claude-code none            P2=2    P3=0    SKIP (no-guess)
+  f863740a  test-f86374                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  faa00367  compact-import                    claude-code none            P2=1    P3=0    SKIP (no-guess)
+
+Dry run — planned against a read-only snapshot, which has been deleted. Your database was
+not opened for writing and no agent was minted. Re-run with --apply to move these, or with
+--channels=<ids> to move only the ones you approve off this sheet.
+--- stderr (0 bytes) ---
+
+
+==============================================================================
+== A6  [current schema minus exactly one column]
+==============================================================================
+argv:   (none)
+exit:   0
+wall:   422 ms
+bytes:  9449472 -> 9449472
+pages:  2307 -> 2307  (page_size 4096, freelist 1024 -> 1024)
+sha256: 5ba11a4182d240e5 -> 5ba11a4182d240e5  TARGET INTACT
+objects(no-auto): 11 -> 11
+objects(all):     19 -> 19
+added columns (0): (none)
+files left beside the db: subject.db-shm  subject.db-wal
+--- stdout (9200 bytes) ---
+
+SCHEMA: this database is behind the current schema, and opening it for writing
+  upgrades it in place. subject.db would gain:
+    1 new column(s): projects.memory
+  Every existing row survives this. What does not survive is the file's value as a record
+  of an older schema: restore it later to ask what the schema looked like then and you get
+  today's answer. Pass --no-migrate to refuse instead of upgrading.
+
+==============================================================================
+/Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465migrate-2026-11-06/scratch/arms/A6/subject.db
+==============================================================================
+
+Scope: channels with source in {claude-code, claude-ai} bound to `default-entity`.
+Bases applied: identity-claim
+
+Candidates: 72 — 0 would move, 72 skipped.
+  skipped, by reason: {"basis-excluded":9,"no-guess":63}
+  excluded by basis: 9 role-title — this run applies {identity-claim}. To see them: --bases=identity-claim,role-title
+  new agents (0): (none)
+  reused agents (0): (none)
+  message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  bound to the default but out of scope, untouched: {"native":66}
+
+Per-channel:
+  0111a366  1/5-3/13: Chief Architect (o) -   claude-ai   role-title      P2=93   P3=0    SKIP (basis-excluded)
+  04bc9d21  bad-meta                          claude-code none            P2=0    P3=0    SKIP (no-guess)
+  0ae3694d  ordering-test                     claude-code none            P2=4    P3=0    SKIP (no-guess)
+  0d2c7db9  path-test                         claude-code none            P2=1    P3=0    SKIP (no-guess)
+  10f6337c  test-10f633                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  1b479419  Hermes - Distinguishing project   claude-ai   none            P2=11   P3=0    SKIP (no-guess)
+  1e2ced26  1/16-3/13: CXO (o) - MUX, MVP, m  claude-ai   none            P2=110  P3=0    SKIP (no-guess)
+  1e79bb77  empty-cwd                         claude-code none            P2=0    P3=0    SKIP (no-guess)
+  1eb7ff09  test-1eb7ff                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  246e2ae0  3/13: Chief Arch: (o4.6) - M1, a  claude-ai   none            P2=2    P3=0    SKIP (no-guess)
+  2a6351ea  Learning cuneiform from scratch   claude-ai   none            P2=29   P3=0    SKIP (no-guess)
+  2c30fb26  Onramp questionnaire guide restr  claude-ai   none            P2=11   P3=0    SKIP (no-guess)
+  2d40fa2d  Music video for Ghost Door or Do  claude-ai   none            P2=1    P3=0    SKIP (no-guess)
+  327e9630  rate-limiter-session              claude-code none            P2=4    P3=0    SKIP (no-guess)
+  3354e5ff  empty-cwd                         claude-code none            P2=0    P3=0    SKIP (no-guess)
+  358c1952  1/2-14: Comms Chief (o)           claude-ai   role-title      P2=34   P3=0    SKIP (basis-excluded)
+  39bdeda2  3/12: CIO: (o4.6) - Klatch branc  claude-ai   none            P2=33   P3=0    SKIP (no-guess)
+  3d661b3d  test-3d661b                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  40fab888  no-meta                           claude-code none            P2=0    P3=0    SKIP (no-guess)
+  48681a20  rate-limiter-session              claude-code none            P2=4    P3=0    SKIP (no-guess)
+  4bd53772  claude.ai — 0e9dc064-6762-42a9-a  claude-ai   none            P2=0    P3=0    SKIP (no-guess)
+  4ca7bbcb  no-meta                           claude-code none            P2=0    P3=0    SKIP (no-guess)
+  5e1af7a4  SC 3 design and engineering time  claude-ai   none            P2=4    P3=0    SKIP (no-guess)
+  5fb78415  1/4-5,15-16: HoSR (o) - onboard   claude-ai   none            P2=51   P3=0    SKIP (no-guess)
+  6229ca87  multi-fork                        claude-code none            P2=4    P3=0    SKIP (no-guess)
+  6380814f  test-638081                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  6c5017ab  Secundus — 2026-03-11             claude-code none            P2=18   P3=0    SKIP (no-guess)
+  6dec5c76  multi-fork                        claude-code none            P2=4    P3=0    SKIP (no-guess)
+  712ae004  3/13: PPM (o4.6) - M1 sprint tes  claude-ai   none            P2=8    P3=0    SKIP (no-guess)
+  71ce1d26  compacted-session                 claude-code none            P2=2    P3=0    SKIP (no-guess)
+  74bb02d3  1/15-2/16: CIO (o) - gastown, dr  claude-ai   role-title      P2=42   P3=0    SKIP (basis-excluded)
+  7556723c  Test message                      claude-ai   none            P2=2    P3=0    SKIP (no-guess)
+  7ba45fce  test-7ba45f                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  7d162b7e  1/5,11,16: Chief Innovation Offi  claude-ai   none            P2=14   P3=0    SKIP (no-guess)
+  820929ab  test-820929                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  8ef10002  2/7-3/12: Chief of Staff (o4.6)   claude-ai   role-title      P2=101  P3=0    SKIP (basis-excluded)
+  8f6b1298  test-8f6b12                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  91f46c7f  compacted-session                 claude-code none            P2=2    P3=0    SKIP (no-guess)
+  970f80ef  bad-meta                          claude-code none            P2=0    P3=0    SKIP (no-guess)
+  a091a0a1  compact-import                    claude-code none            P2=1    P3=0    SKIP (no-guess)
+  a4c194dd  Medieval name for Mainz in 940 A  claude-ai   none            P2=2    P3=0    SKIP (no-guess)
+  a4e0bd2a  3/13: CXO (o4.6) - M1             claude-ai   none            P2=10   P3=0    SKIP (no-guess)
+  a64c9d45  Exploratory testing agent role s  claude-ai   none            P2=10   P3=0    SKIP (no-guess)
+  a94b272e  Daedalus — 2026-03-07             claude-code none            P2=3    P3=0    SKIP (no-guess)
+  ad70f691  test-ad70f6                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  adaf6406  VA exec asst                      claude-ai   role-title      P2=174  P3=0    SKIP (basis-excluded)
+  b173483e  test-import                       claude-code none            P2=3    P3=0    SKIP (no-guess)
+  b20c5b5b  empty-content-session             claude-code none            P2=2    P3=0    SKIP (no-guess)
+  b2c0503a  no-cwd                            claude-ai   none            P2=1    P3=0    SKIP (no-guess)
+  b8c77ad4  Voice input setup for Claude Cod  claude-ai   none            P2=5    P3=0    SKIP (no-guess)
+  b937e368  ordering-test                     claude-code none            P2=4    P3=0    SKIP (no-guess)
+  bdcd0506  test-import                       claude-code none            P2=3    P3=0    SKIP (no-guess)
+  c4f8438b  test-c4f843                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  cd7df34e  test-cd7df3                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  cff40904  1/3-2/6: Chief of Staff (o4.5) -  claude-ai   role-title      P2=122  P3=0    SKIP (basis-excluded)
+  ddf29996  Reviving website project with Ta  claude-ai   none            P2=1    P3=0    SKIP (no-guess)
+  df34157e  test-df3415                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  e07e9d56  1/16-3/13: HoSR (o) - Weekly Shi  claude-ai   role-title      P2=94   P3=0    SKIP (basis-excluded)
+  e113cb6a  test-empty-filter                 claude-code none            P2=4    P3=0    SKIP (no-guess)
+  e2b48268  test-empty-filter                 claude-code none            P2=4    P3=0    SKIP (no-guess)
+  e39b439d  missing-claude-md                 claude-code none            P2=1    P3=0    SKIP (no-guess)
+  e52e8fa8  1/8,12: CXO (o) - UX vision cont  claude-ai   none            P2=12   P3=0    SKIP (no-guess)
+  e6385897  test-e63858                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  e7a7a513  1/15-3/13: Comms Chief (o) - con  claude-ai   role-title      P2=148  P3=0    SKIP (basis-excluded)
+  e8210556  claude.ai — aab4cff8-8d7c-42e5-8  claude-ai   none            P2=0    P3=0    SKIP (no-guess)
+  e93d3810  1/17: SecOps (o) - GCP project s  claude-ai   none            P2=19   P3=0    SKIP (no-guess)
+  eba7c2c1  3/13: Chief of Staff (o4.6) - M1  claude-ai   none            P2=12   P3=0    SKIP (no-guess)
+  ef2a2e35  Applying for Product Lead, Consu  claude-ai   role-title      P2=13   P3=0    SKIP (basis-excluded)
+  f1debd2c  test-f1debd                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  f64312da  empty-content-session             claude-code none            P2=2    P3=0    SKIP (no-guess)
+  f863740a  test-f86374                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  faa00367  compact-import                    claude-code none            P2=1    P3=0    SKIP (no-guess)
+
+Dry run — planned against a read-only snapshot, which has been deleted. Your database was
+not opened for writing and no agent was minted. Re-run with --apply to move these, or with
+--channels=<ids> to move only the ones you approve off this sheet.
+--- stderr (0 bytes) ---
+

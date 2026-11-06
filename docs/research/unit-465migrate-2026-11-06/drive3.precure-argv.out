@@ -1,0 +1,85 @@
+unit-465migrate drive — drive3-precure-argv
+repo HEAD: 69f732d1
+pristine:  5230592 bytes  sha256 c2295121bbdfdbbb
+tool:      scripts/u465-frozen-precure.mts
+arms:      A2 A3 A4 A5
+
+==============================================================================
+== A2  [the opt-out, on a database that would be upgraded]
+==============================================================================
+argv:   --apply --no-migrate
+exit:   1
+wall:   379 ms
+bytes:  5230592 -> 5230592
+pages:  1277 -> 1277  (page_size 4096, freelist 0 -> 0)
+sha256: c2295121bbdfdbbb -> c2295121bbdfdbbb  TARGET INTACT
+objects(no-auto): 7 -> 7
+objects(all):     13 -> 13
+added columns (0): (none)
+files left beside the db: subject.db-shm  subject.db-wal
+--- stdout (0 bytes) ---
+
+--- stderr (279 bytes) ---
+Refusing to run: an argument would have been ignored, and an ignored flag changes what this run covers.
+  --no-migrate: not a flag this script knows
+usage: npx tsx scripts/backfill-entity-bindings.mts <klatch.db> [--apply] [--bases=a,b] [--channels=id,id] [--undo=<record.json>]
+
+==============================================================================
+== A3  [the opt-out, on a database that would not]
+==============================================================================
+argv:   --apply --no-migrate
+exit:   1
+wall:   352 ms
+bytes:  9449472 -> 9449472
+pages:  2307 -> 2307  (page_size 4096, freelist 1026 -> 1026)
+sha256: 041160f55930e284 -> 041160f55930e284  TARGET INTACT
+objects(no-auto): 11 -> 11
+objects(all):     19 -> 19
+added columns (0): (none)
+files left beside the db: subject.db-shm  subject.db-wal
+--- stdout (0 bytes) ---
+
+--- stderr (279 bytes) ---
+Refusing to run: an argument would have been ignored, and an ignored flag changes what this run covers.
+  --no-migrate: not a flag this script knows
+usage: npx tsx scripts/backfill-entity-bindings.mts <klatch.db> [--apply] [--bases=a,b] [--channels=id,id] [--undo=<record.json>]
+
+==============================================================================
+== A4  [the typo — does the argv rule cover the new flag]
+==============================================================================
+argv:   --apply --no-migrat
+exit:   1
+wall:   351 ms
+bytes:  5230592 -> 5230592
+pages:  1277 -> 1277  (page_size 4096, freelist 0 -> 0)
+sha256: c2295121bbdfdbbb -> c2295121bbdfdbbb  TARGET INTACT
+objects(no-auto): 7 -> 7
+objects(all):     13 -> 13
+added columns (0): (none)
+files left beside the db: subject.db-shm  subject.db-wal
+--- stdout (0 bytes) ---
+
+--- stderr (278 bytes) ---
+Refusing to run: an argument would have been ignored, and an ignored flag changes what this run covers.
+  --no-migrat: not a flag this script knows
+usage: npx tsx scripts/backfill-entity-bindings.mts <klatch.db> [--apply] [--bases=a,b] [--channels=id,id] [--undo=<record.json>]
+
+==============================================================================
+== A5  [review sheet with the opt-out on the line]
+==============================================================================
+argv:   --no-migrate
+exit:   1
+wall:   354 ms
+bytes:  5230592 -> 5230592
+pages:  1277 -> 1277  (page_size 4096, freelist 0 -> 0)
+sha256: c2295121bbdfdbbb -> c2295121bbdfdbbb  TARGET INTACT
+objects(no-auto): 7 -> 7
+objects(all):     13 -> 13
+added columns (0): (none)
+files left beside the db: subject.db-shm  subject.db-wal
+--- stdout (0 bytes) ---
+
+--- stderr (279 bytes) ---
+Refusing to run: an argument would have been ignored, and an ignored flag changes what this run covers.
+  --no-migrate: not a flag this script knows
+usage: npx tsx scripts/backfill-entity-bindings.mts <klatch.db> [--apply] [--bases=a,b] [--channels=id,id] [--undo=<record.json>]

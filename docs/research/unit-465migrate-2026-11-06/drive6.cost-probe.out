@@ -1,0 +1,9 @@
+subject: /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465migrate-2026-11-06/scratch/pristine-march.db
+bytes:   5230592
+temp copies before: 0
+run 0: 29.5 ms — objects 4, columns 9, rebuilt [messages], empty=false
+run 1: 25.3 ms — objects 4, columns 9, rebuilt [messages], empty=false
+run 2: 24.2 ms — objects 4, columns 9, rebuilt [messages], empty=false
+run 3: 23.9 ms — objects 4, columns 9, rebuilt [messages], empty=false
+temp copies after:  0
+subject bytes after four probes: 5230592
