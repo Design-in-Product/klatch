@@ -1,0 +1,376 @@
+unit-465rowdelta drive — label=postcure
+tree HEAD: 8f950dc81f437abe46fcd71eb1c1c0dbfa8da49f
+dirty: 16 path(s)
+
+==============================================================================
+== A1
+==============================================================================
+  seed: seeded seeded: /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/postcure-A1.db (81920 bytes)
+  flags: --apply --no-migrate
+  exit: 1
+  before: {"sha":"a18b1e8de32f47d1","bytes":81920,"walBytes":0,"channels":2,"channel_entities":1,"unbound":1,"entities":1,"files":0,"file_refs":0,"legacyModels":0,"fileIds":""}
+  after: {"sha":"a18b1e8de32f47d1","bytes":81920,"walBytes":0,"channels":2,"channel_entities":1,"unbound":1,"entities":1,"files":0,"file_refs":0,"legacyModels":0,"fileIds":""}
+  target rows unchanged: YES
+  target bytes unchanged: YES
+  beside target: postcure-A1.db-shm postcure-A1.db-wal
+  ROWS block present: true
+    | ROWS: opening this database for writing also writes rows to it. The migration would
+    |   change postcure-A1.db like this:
+    |     +1 channel_entities, +1 file_refs, +1 files
+    |     3 row write(s) in total
+    |   These are the migration's own writes, not this tool's plan. They happen on the way in, to any
+    |   database opened for writing, and a run that moves no channel still performs them. Pass
+    |   --no-migrate to refuse the run rather than let it write them.
+  SCHEMA block present: false
+  refusal: Refusing to run: --no-migrate, and this run would write the rows above.
+  nothing-to-apply line: false
+  --- stdout ---
+  | 
+  | ROWS: opening this database for writing also writes rows to it. The migration would
+  |   change postcure-A1.db like this:
+  |     +1 channel_entities, +1 file_refs, +1 files
+  |     3 row write(s) in total
+  |   These are the migration's own writes, not this tool's plan. They happen on the way in, to any
+  |   database opened for writing, and a run that moves no channel still performs them. Pass
+  |   --no-migrate to refuse the run rather than let it write them.
+  | 
+  --- stderr ---
+  ! (node:29247) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+  ! (Use `node --trace-deprecation ...` to show where the warning was created)
+  ! 
+  ! Refusing to run: --no-migrate, and this run would write the rows above.
+  !   Nothing was written and the snapshot was discarded. Three ways on from here:
+  !     - run it without --no-migrate, accepting the change above;
+  !     - copy the file first and point this script at the copy, keeping postcure-A1.db as it is;
+  !     - run it with no flags for the review sheet, which never writes to the file at all.
+  ! 
+
+==============================================================================
+== A2
+==============================================================================
+  seed: seeded seeded: /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/postcure-A2.db (81920 bytes)
+  flags: --apply
+  exit: 0
+  before: {"sha":"c1ba124076d9daa5","bytes":81920,"walBytes":0,"channels":2,"channel_entities":1,"unbound":1,"entities":1,"files":0,"file_refs":0,"legacyModels":0,"fileIds":""}
+  after: {"sha":"c1ba124076d9daa5","bytes":81920,"walBytes":32992,"channels":2,"channel_entities":2,"unbound":0,"entities":1,"files":1,"file_refs":1,"legacyModels":0,"fileIds":"05497ad1-9a92-4035-99d0-131a2773179e"}
+  target rows unchanged: NO (channel_entities 1 -> 2, unbound 1 -> 0, files 0 -> 1, file_refs 0 -> 1, fileIds  -> 05497ad1-9a92-4035-99d0-131a2773179e)
+  target bytes unchanged: YES
+  beside target: postcure-A2.db-shm postcure-A2.db-wal
+  ROWS block present: true
+    | ROWS: opening this database for writing also writes rows to it. The migration would
+    |   change postcure-A2.db like this:
+    |     +1 channel_entities, +1 file_refs, +1 files
+    |     3 row write(s) in total
+    |   These are the migration's own writes, not this tool's plan. They happen on the way in, to any
+    |   database opened for writing, and a run that moves no channel still performs them. Pass
+    |   --no-migrate to refuse the run rather than let it write them.
+  SCHEMA block present: false
+  refusal: (none)
+  nothing-to-apply line: true
+  --- stdout ---
+  | 
+  | ROWS: opening this database for writing also writes rows to it. The migration would
+  |   change postcure-A2.db like this:
+  |     +1 channel_entities, +1 file_refs, +1 files
+  |     3 row write(s) in total
+  |   These are the migration's own writes, not this tool's plan. They happen on the way in, to any
+  |   database opened for writing, and a run that moves no channel still performs them. Pass
+  |   --no-migrate to refuse the run rather than let it write them.
+  | 
+  | ==============================================================================
+  | /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/postcure-A2.db
+  | ==============================================================================
+  | 
+  | Scope: channels with source in {claude-code, claude-ai} bound to `default-entity`.
+  | Bases applied: identity-claim
+  | 
+  | Candidates: 1 — 0 would move, 1 skipped.
+  |   skipped, by reason: {"no-guess":1}
+  |   new agents (0): (none)
+  |   reused agents (0): (none)
+  |   message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  |   bound to the default but out of scope, untouched: {"native":1}
+  | 
+  | Per-channel:
+  |   ch-unbou  unbound                           claude-code none            P2=0    P3=0    SKIP (no-guess)
+  | 
+  | Nothing to apply. Snapshot discarded.
+  |   Nothing from the plan, that is. The row writes disclosed above are the migration's own and
+  |   happened on the way in — this run opened the file for writing, so they are in it now.
+  | 
+  --- stderr ---
+  ! 
+
+==============================================================================
+== A3
+==============================================================================
+  seed: seeded seeded: /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/postcure-A3.db (81920 bytes)
+  flags: (none)
+  exit: 0
+  before: {"sha":"3d6f49c31d54638e","bytes":81920,"walBytes":0,"channels":2,"channel_entities":1,"unbound":1,"entities":1,"files":0,"file_refs":0,"legacyModels":0,"fileIds":""}
+  after: {"sha":"3d6f49c31d54638e","bytes":81920,"walBytes":0,"channels":2,"channel_entities":1,"unbound":1,"entities":1,"files":0,"file_refs":0,"legacyModels":0,"fileIds":""}
+  target rows unchanged: YES
+  target bytes unchanged: YES
+  beside target: postcure-A3.db-shm postcure-A3.db-wal
+  ROWS block present: true
+    | ROWS: opening this database for writing also writes rows to it. The migration would
+    |   change postcure-A3.db like this:
+    |     +1 channel_entities, +1 file_refs, +1 files
+    |     3 row write(s) in total
+    |   These are the migration's own writes, not this tool's plan. They happen on the way in, to any
+    |   database opened for writing, and a run that moves no channel still performs them. Pass
+    |   --no-migrate to refuse the run rather than let it write them.
+  SCHEMA block present: false
+  refusal: (none)
+  nothing-to-apply line: false
+  --- stdout ---
+  | 
+  | ROWS: opening this database for writing also writes rows to it. The migration would
+  |   change postcure-A3.db like this:
+  |     +1 channel_entities, +1 file_refs, +1 files
+  |     3 row write(s) in total
+  |   These are the migration's own writes, not this tool's plan. They happen on the way in, to any
+  |   database opened for writing, and a run that moves no channel still performs them. Pass
+  |   --no-migrate to refuse the run rather than let it write them.
+  | 
+  | ==============================================================================
+  | /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/postcure-A3.db
+  | ==============================================================================
+  | 
+  | Scope: channels with source in {claude-code, claude-ai} bound to `default-entity`.
+  | Bases applied: identity-claim
+  | 
+  | Candidates: 1 — 0 would move, 1 skipped.
+  |   skipped, by reason: {"no-guess":1}
+  |   new agents (0): (none)
+  |   reused agents (0): (none)
+  |   message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  |   bound to the default but out of scope, untouched: {"native":1}
+  | 
+  | Per-channel:
+  |   ch-unbou  unbound                           claude-code none            P2=0    P3=0    SKIP (no-guess)
+  | 
+  | Dry run — planned against a read-only snapshot, which has been deleted. Your database was
+  | not opened for writing and no agent was minted. Re-run with --apply to move these, or with
+  | --channels=<ids> to move only the ones you approve off this sheet.
+  | 
+  --- stderr ---
+  ! 
+
+==============================================================================
+== A4
+==============================================================================
+  seed: seeded clean: /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/postcure-A4.db (81920 bytes)
+  flags: --apply --no-migrate
+  exit: 0
+  before: {"sha":"a520f8209163d298","bytes":81920,"walBytes":0,"channels":2,"channel_entities":2,"unbound":0,"entities":1,"files":0,"file_refs":0,"legacyModels":0,"fileIds":""}
+  after: {"sha":"a520f8209163d298","bytes":81920,"walBytes":0,"channels":2,"channel_entities":2,"unbound":0,"entities":1,"files":0,"file_refs":0,"legacyModels":0,"fileIds":""}
+  target rows unchanged: YES
+  target bytes unchanged: YES
+  beside target: postcure-A4.db-shm postcure-A4.db-wal
+  ROWS block present: false
+  SCHEMA block present: false
+  refusal: (none)
+  nothing-to-apply line: true
+  --- stdout ---
+  | 
+  | ==============================================================================
+  | /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/postcure-A4.db
+  | ==============================================================================
+  | 
+  | Scope: channels with source in {claude-code, claude-ai} bound to `default-entity`.
+  | Bases applied: identity-claim
+  | 
+  | Candidates: 1 — 0 would move, 1 skipped.
+  |   skipped, by reason: {"no-guess":1}
+  |   new agents (0): (none)
+  |   reused agents (0): (none)
+  |   message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  |   bound to the default but out of scope, untouched: {"native":1}
+  | 
+  | Per-channel:
+  |   ch-bound  bound                             claude-code none            P2=0    P3=0    SKIP (no-guess)
+  | 
+  | Nothing to apply. Snapshot discarded.
+  | 
+  --- stderr ---
+  ! 
+
+==============================================================================
+== A5
+==============================================================================
+  seed: alias key seeded: claude-opus-4-20250514 -> claude-opus-4-6 | seeded alias: /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/postcure-A5.db (81920 bytes)
+  flags: --apply --no-migrate
+  exit: 1
+  before: {"sha":"ab666112a507ff84","bytes":81920,"walBytes":0,"channels":3,"channel_entities":3,"unbound":0,"entities":1,"files":0,"file_refs":0,"legacyModels":1,"fileIds":""}
+  after: {"sha":"ab666112a507ff84","bytes":81920,"walBytes":0,"channels":3,"channel_entities":3,"unbound":0,"entities":1,"files":0,"file_refs":0,"legacyModels":1,"fileIds":""}
+  target rows unchanged: YES
+  target bytes unchanged: YES
+  beside target: postcure-A5.db-shm postcure-A5.db-wal
+  ROWS block present: true
+    | ROWS: opening this database for writing also writes rows to it. The migration would
+    |   change postcure-A5.db like this:
+    |     no table changes how many rows it holds — every write below is a rewrite
+    |     1 row write(s) in total
+    |       More writes than rows gained, so 1 row(s) are rewritten rather
+    |       than added: a table rebuild moves every row it holds, and the migration also rewrites
+    |       legacy model ids in place where it finds them, changing no count at all.
+    |   These are the migration's own writes, not this tool's plan. They happen on the way in, to any
+    |   database opened for writing, and a run that moves no channel still performs them. Pass
+    |   --no-migrate to refuse the run rather than let it write them.
+  SCHEMA block present: false
+  refusal: Refusing to run: --no-migrate, and this run would write the rows above.
+  nothing-to-apply line: false
+  --- stdout ---
+  | 
+  | ROWS: opening this database for writing also writes rows to it. The migration would
+  |   change postcure-A5.db like this:
+  |     no table changes how many rows it holds — every write below is a rewrite
+  |     1 row write(s) in total
+  |       More writes than rows gained, so 1 row(s) are rewritten rather
+  |       than added: a table rebuild moves every row it holds, and the migration also rewrites
+  |       legacy model ids in place where it finds them, changing no count at all.
+  |   These are the migration's own writes, not this tool's plan. They happen on the way in, to any
+  |   database opened for writing, and a run that moves no channel still performs them. Pass
+  |   --no-migrate to refuse the run rather than let it write them.
+  | 
+  --- stderr ---
+  ! (node:29374) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+  ! (Use `node --trace-deprecation ...` to show where the warning was created)
+  ! 
+  ! Refusing to run: --no-migrate, and this run would write the rows above.
+  !   Nothing was written and the snapshot was discarded. Three ways on from here:
+  !     - run it without --no-migrate, accepting the change above;
+  !     - copy the file first and point this script at the copy, keeping postcure-A5.db as it is;
+  !     - run it with no flags for the review sheet, which never writes to the file at all.
+  ! 
+
+==============================================================================
+== A6
+==============================================================================
+  exit: 1
+  before: {"sha":"c2295121bbdfdbbb","bytes":5230592,"walBytes":0,"channels":139,"channel_entities":170,"unbound":0,"entities":68,"files":"ERR","file_refs":"ERR","legacyModels":0,"fileIds":"ERR"}
+  after: {"sha":"c2295121bbdfdbbb","bytes":5230592,"walBytes":0,"channels":139,"channel_entities":170,"unbound":0,"entities":68,"files":"ERR","file_refs":"ERR","legacyModels":0,"fileIds":"ERR"}
+  target rows unchanged: YES
+  target bytes unchanged: YES
+  beside target: postcure-A6.db-shm postcure-A6.db-wal
+  refusal: Refusing to run: --no-migrate, and this run would upgrade the schema and write the rows above.
+  --- stdout ---
+  | 
+  | SCHEMA: this database is behind the current schema, and opening it for writing
+  |   upgrades it in place. postcure-A6.db would gain:
+  |     4 new object(s): index:idx_file_refs_file, index:idx_file_refs_scope, table:file_refs, table:files
+  |     9 new column(s): channels.type, entities.effort, entities.reflections, message_artifacts.file_name, message_artifacts.file_mime_type, message_artifacts.file_size_bytes, message_artifacts.file_storage_key, messages.stop_reason, projects.memory
+  |     1 table(s) rebuilt, not altered in place: messages
+  |       A rebuild rewrites every row of that table. The file grows and the space the old
+  |       pages held is left as slack inside it — expect a larger file than the data needs.
+  |   Every existing row survives this. What does not survive is the file's value as a record
+  |   of an older schema: restore it later to ask what the schema looked like then and you get
+  |   today's answer. Pass --no-migrate to refuse instead of upgrading.
+  | 
+  | ROWS: opening this database for writing also writes rows to it. The migration would
+  |   change postcure-A6.db like this:
+  |     no table changes how many rows it holds — every write below is a rewrite
+  |     2652 row write(s) in total
+  |       More writes than rows gained, so 2652 row(s) are rewritten rather
+  |       than added: a table rebuild moves every row it holds, and the migration also rewrites
+  |       legacy model ids in place where it finds them, changing no count at all.
+  |   These are the migration's own writes, not this tool's plan. They happen on the way in, to any
+  |   database opened for writing, and a run that moves no channel still performs them. Pass
+  |   --no-migrate to refuse the run rather than let it write them.
+  | 
+  --- stderr ---
+  ! (node:29392) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+  ! (Use `node --trace-deprecation ...` to show where the warning was created)
+  ! 
+  ! Refusing to run: --no-migrate, and this run would upgrade the schema and write the rows above.
+  !   Nothing was written and the snapshot was discarded. Three ways on from here:
+  !     - run it without --no-migrate, accepting the change above;
+  !     - copy the file first and point this script at the copy, keeping postcure-A6.db as it is;
+  !     - run it with no flags for the review sheet, which never writes to the file at all.
+  ! 
+
+==============================================================================
+== A7
+==============================================================================
+  seed: seeded seeded: /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/postcure-A7.db (81920 bytes)
+  seeding apply exit: 0
+  records found: postcure-A7.db.backfill-2026-11-06T21-28-04-135Z.json
+  exit: 1
+  before: {"sha":"7273d4f26cde49d7","bytes":81920,"walBytes":0,"channels":2,"channel_entities":1,"unbound":1,"entities":2,"files":0,"file_refs":0,"legacyModels":0,"fileIds":""}
+  after: {"sha":"7273d4f26cde49d7","bytes":81920,"walBytes":0,"channels":2,"channel_entities":1,"unbound":1,"entities":2,"files":0,"file_refs":0,"legacyModels":0,"fileIds":""}
+  target rows unchanged: YES
+  target bytes unchanged: YES
+  refusal: Refusing to run: --no-migrate, and this run would write the rows above.
+  --- stdout ---
+  | 
+  | ROWS: opening this database for writing also writes rows to it. The migration would
+  |   change postcure-A7.db like this:
+  |     +1 channel_entities, +1 file_refs, +1 files
+  |     3 row write(s) in total
+  |   These are the migration's own writes, not this tool's plan. They happen on the way in, to any
+  |   database opened for writing, and a run that moves no channel still performs them. Pass
+  |   --no-migrate to refuse the run rather than let it write them.
+  | 
+  --- stderr ---
+  ! (node:29454) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+  ! (Use `node --trace-deprecation ...` to show where the warning was created)
+  ! 
+  ! Refusing to run: --no-migrate, and this run would write the rows above.
+  !   Nothing was written and the snapshot was discarded. Three ways on from here:
+  !     - run it without --no-migrate, accepting the change above;
+  !     - copy the file first and point this script at the copy, keeping postcure-A7.db as it is;
+  !     - run it with no flags for the review sheet, which never writes to the file at all.
+  ! 
+
+==============================================================================
+== A8
+==============================================================================
+  seed: seeded seeded: /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/postcure-A8a.db (81920 bytes)
+  flags: --apply
+  exit: 0
+  before: {"sha":"fcb4692ff523c208","bytes":81920,"walBytes":0,"channels":2,"channel_entities":1,"unbound":1,"entities":1,"files":0,"file_refs":0,"legacyModels":0,"fileIds":""}
+  after: {"sha":"fcb4692ff523c208","bytes":81920,"walBytes":32992,"channels":2,"channel_entities":2,"unbound":0,"entities":1,"files":1,"file_refs":1,"legacyModels":0,"fileIds":"3372131f-29d1-4df3-b6a8-5fdb19a261e9"}
+  target rows unchanged: NO (channel_entities 1 -> 2, unbound 1 -> 0, files 0 -> 1, file_refs 0 -> 1, fileIds  -> 3372131f-29d1-4df3-b6a8-5fdb19a261e9)
+  target bytes unchanged: YES
+  beside target: postcure-A8a.db-shm postcure-A8a.db-wal
+  ROWS block present: true
+    | ROWS: opening this database for writing also writes rows to it. The migration would
+    |   change postcure-A8a.db like this:
+    |     +1 channel_entities, +1 file_refs, +1 files
+    |     3 row write(s) in total
+    |   These are the migration's own writes, not this tool's plan. They happen on the way in, to any
+    |   database opened for writing, and a run that moves no channel still performs them. Pass
+    |   --no-migrate to refuse the run rather than let it write them.
+  SCHEMA block present: false
+  refusal: (none)
+  nothing-to-apply line: true
+  seed: seeded seeded: /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/postcure-A8b.db (81920 bytes)
+  flags: --apply
+  exit: 0
+  before: {"sha":"fb92b7b881ecfdc5","bytes":81920,"walBytes":0,"channels":2,"channel_entities":1,"unbound":1,"entities":1,"files":0,"file_refs":0,"legacyModels":0,"fileIds":""}
+  after: {"sha":"fb92b7b881ecfdc5","bytes":81920,"walBytes":32992,"channels":2,"channel_entities":2,"unbound":0,"entities":1,"files":1,"file_refs":1,"legacyModels":0,"fileIds":"487e3477-efaa-4ac9-9077-6c55db4c2816"}
+  target rows unchanged: NO (channel_entities 1 -> 2, unbound 1 -> 0, files 0 -> 1, file_refs 0 -> 1, fileIds  -> 487e3477-efaa-4ac9-9077-6c55db4c2816)
+  target bytes unchanged: YES
+  beside target: postcure-A8b.db-shm postcure-A8b.db-wal
+  ROWS block present: true
+    | ROWS: opening this database for writing also writes rows to it. The migration would
+    |   change postcure-A8b.db like this:
+    |     +1 channel_entities, +1 file_refs, +1 files
+    |     3 row write(s) in total
+    |   These are the migration's own writes, not this tool's plan. They happen on the way in, to any
+    |   database opened for writing, and a run that moves no channel still performs them. Pass
+    |   --no-migrate to refuse the run rather than let it write them.
+  SCHEMA block present: false
+  refusal: (none)
+  nothing-to-apply line: true
+  A8a rows:     +1 channel_entities, +1 file_refs, +1 files
+  A8b rows:     +1 channel_entities, +1 file_refs, +1 files
+  rows agree: YES
+  A8a file ids: 3372131f-29d1-4df3-b6a8-5fdb19a261e9
+  A8b file ids: 487e3477-efaa-4ac9-9077-6c55db4c2816
+  ids differ: YES
+  A8a ids printed: (none)
+  A8b ids printed: (none)
+
+drive complete

@@ -1,0 +1,208 @@
+unit-465rowdelta drive — label=precure
+tree HEAD: 8f950dc81f437abe46fcd71eb1c1c0dbfa8da49f
+dirty: 7 path(s)
+
+==============================================================================
+== A1
+==============================================================================
+  seed: seeded seeded: /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/precure-A1.db (81920 bytes)
+  flags: --apply --no-migrate
+  exit: 0
+  before: {"sha":"a703f2522d6dab6d","bytes":81920,"walBytes":0,"channels":2,"channel_entities":1,"unbound":1,"entities":1,"files":0,"file_refs":0,"legacyModels":0,"fileIds":""}
+  after: {"sha":"a703f2522d6dab6d","bytes":81920,"walBytes":32992,"channels":2,"channel_entities":2,"unbound":0,"entities":1,"files":1,"file_refs":1,"legacyModels":0,"fileIds":"402b017f-09e3-48a3-9f5d-eee38f4adda4"}
+  target rows unchanged: NO (channel_entities 1 -> 2, unbound 1 -> 0, files 0 -> 1, file_refs 0 -> 1, fileIds  -> 402b017f-09e3-48a3-9f5d-eee38f4adda4)
+  target bytes unchanged: YES
+  beside target: precure-A1.db-shm precure-A1.db-wal
+  ROWS block lines: 1
+    |   message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  SCHEMA block present: false
+  refusal: (none)
+  nothing-to-apply line: true
+  --- stdout ---
+  | 
+  | ==============================================================================
+  | /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/precure-A1.db
+  | ==============================================================================
+  | 
+  | Scope: channels with source in {claude-code, claude-ai} bound to `default-entity`.
+  | Bases applied: identity-claim
+  | 
+  | Candidates: 1 — 0 would move, 1 skipped.
+  |   skipped, by reason: {"no-guess":1}
+  |   new agents (0): (none)
+  |   reused agents (0): (none)
+  |   message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  |   bound to the default but out of scope, untouched: {"native":1}
+  | 
+  | Per-channel:
+  |   ch-unbou  unbound                           claude-code none            P2=0    P3=0    SKIP (no-guess)
+  | 
+  | Nothing to apply. Snapshot discarded.
+  | 
+  --- stderr ---
+  ! 
+
+==============================================================================
+== A2
+==============================================================================
+  seed: seeded seeded: /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/precure-A2.db (81920 bytes)
+  flags: --apply
+  exit: 0
+  before: {"sha":"7400cd2392a143b5","bytes":81920,"walBytes":0,"channels":2,"channel_entities":1,"unbound":1,"entities":1,"files":0,"file_refs":0,"legacyModels":0,"fileIds":""}
+  after: {"sha":"7400cd2392a143b5","bytes":81920,"walBytes":32992,"channels":2,"channel_entities":2,"unbound":0,"entities":1,"files":1,"file_refs":1,"legacyModels":0,"fileIds":"9772cfc2-5b97-46cd-aa26-c915a946c5e6"}
+  target rows unchanged: NO (channel_entities 1 -> 2, unbound 1 -> 0, files 0 -> 1, file_refs 0 -> 1, fileIds  -> 9772cfc2-5b97-46cd-aa26-c915a946c5e6)
+  target bytes unchanged: YES
+  beside target: precure-A2.db-shm precure-A2.db-wal
+  ROWS block lines: 1
+    |   message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  SCHEMA block present: false
+  refusal: (none)
+  nothing-to-apply line: true
+  --- stdout ---
+  | 
+  | ==============================================================================
+  | /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/precure-A2.db
+  | ==============================================================================
+  | 
+  | Scope: channels with source in {claude-code, claude-ai} bound to `default-entity`.
+  | Bases applied: identity-claim
+  | 
+  | Candidates: 1 — 0 would move, 1 skipped.
+  |   skipped, by reason: {"no-guess":1}
+  |   new agents (0): (none)
+  |   reused agents (0): (none)
+  |   message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  |   bound to the default but out of scope, untouched: {"native":1}
+  | 
+  | Per-channel:
+  |   ch-unbou  unbound                           claude-code none            P2=0    P3=0    SKIP (no-guess)
+  | 
+  | Nothing to apply. Snapshot discarded.
+  | 
+  --- stderr ---
+  ! 
+
+==============================================================================
+== A3
+==============================================================================
+  seed: seeded seeded: /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/precure-A3.db (81920 bytes)
+  flags: (none)
+  exit: 0
+  before: {"sha":"9908fec42af3a596","bytes":81920,"walBytes":0,"channels":2,"channel_entities":1,"unbound":1,"entities":1,"files":0,"file_refs":0,"legacyModels":0,"fileIds":""}
+  after: {"sha":"9908fec42af3a596","bytes":81920,"walBytes":0,"channels":2,"channel_entities":1,"unbound":1,"entities":1,"files":0,"file_refs":0,"legacyModels":0,"fileIds":""}
+  target rows unchanged: YES
+  target bytes unchanged: YES
+  beside target: precure-A3.db-shm precure-A3.db-wal
+  ROWS block lines: 1
+    |   message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  SCHEMA block present: false
+  refusal: (none)
+  nothing-to-apply line: false
+  --- stdout ---
+  | 
+  | ==============================================================================
+  | /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/precure-A3.db
+  | ==============================================================================
+  | 
+  | Scope: channels with source in {claude-code, claude-ai} bound to `default-entity`.
+  | Bases applied: identity-claim
+  | 
+  | Candidates: 1 — 0 would move, 1 skipped.
+  |   skipped, by reason: {"no-guess":1}
+  |   new agents (0): (none)
+  |   reused agents (0): (none)
+  |   message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  |   bound to the default but out of scope, untouched: {"native":1}
+  | 
+  | Per-channel:
+  |   ch-unbou  unbound                           claude-code none            P2=0    P3=0    SKIP (no-guess)
+  | 
+  | Dry run — planned against a read-only snapshot, which has been deleted. Your database was
+  | not opened for writing and no agent was minted. Re-run with --apply to move these, or with
+  | --channels=<ids> to move only the ones you approve off this sheet.
+  | 
+  --- stderr ---
+  ! 
+
+==============================================================================
+== A4
+==============================================================================
+  seed: seeded clean: /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/precure-A4.db (81920 bytes)
+  flags: --apply --no-migrate
+  exit: 0
+  before: {"sha":"dc4781b6b2de7912","bytes":81920,"walBytes":0,"channels":2,"channel_entities":2,"unbound":0,"entities":1,"files":0,"file_refs":0,"legacyModels":0,"fileIds":""}
+  after: {"sha":"dc4781b6b2de7912","bytes":81920,"walBytes":0,"channels":2,"channel_entities":2,"unbound":0,"entities":1,"files":0,"file_refs":0,"legacyModels":0,"fileIds":""}
+  target rows unchanged: YES
+  target bytes unchanged: YES
+  beside target: precure-A4.db-shm precure-A4.db-wal
+  ROWS block lines: 1
+    |   message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  SCHEMA block present: false
+  refusal: (none)
+  nothing-to-apply line: true
+  --- stdout ---
+  | 
+  | ==============================================================================
+  | /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/precure-A4.db
+  | ==============================================================================
+  | 
+  | Scope: channels with source in {claude-code, claude-ai} bound to `default-entity`.
+  | Bases applied: identity-claim
+  | 
+  | Candidates: 1 — 0 would move, 1 skipped.
+  |   skipped, by reason: {"no-guess":1}
+  |   new agents (0): (none)
+  |   reused agents (0): (none)
+  |   message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  |   bound to the default but out of scope, untouched: {"native":1}
+  | 
+  | Per-channel:
+  |   ch-bound  bound                             claude-code none            P2=0    P3=0    SKIP (no-guess)
+  | 
+  | Nothing to apply. Snapshot discarded.
+  | 
+  --- stderr ---
+  ! 
+
+==============================================================================
+== A5
+==============================================================================
+  seed: alias key seeded: claude-opus-4-20250514 -> claude-opus-4-6 | seeded alias: /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/precure-A5.db (81920 bytes)
+  flags: --apply --no-migrate
+  exit: 0
+  before: {"sha":"df53a300156df638","bytes":81920,"walBytes":0,"channels":3,"channel_entities":3,"unbound":0,"entities":1,"files":0,"file_refs":0,"legacyModels":1,"fileIds":""}
+  after: {"sha":"df53a300156df638","bytes":81920,"walBytes":4152,"channels":3,"channel_entities":3,"unbound":0,"entities":1,"files":0,"file_refs":0,"legacyModels":0,"fileIds":""}
+  target rows unchanged: NO (legacyModels 1 -> 0)
+  target bytes unchanged: YES
+  beside target: precure-A5.db-shm precure-A5.db-wal
+  ROWS block lines: 1
+    |   message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  SCHEMA block present: false
+  refusal: (none)
+  nothing-to-apply line: true
+  --- stdout ---
+  | 
+  | ==============================================================================
+  | /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/precure-A5.db
+  | ==============================================================================
+  | 
+  | Scope: channels with source in {claude-code, claude-ai} bound to `default-entity`.
+  | Bases applied: identity-claim
+  | 
+  | Candidates: 2 — 0 would move, 2 skipped.
+  |   skipped, by reason: {"no-guess":2}
+  |   new agents (0): (none)
+  |   reused agents (0): (none)
+  |   message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  |   bound to the default but out of scope, untouched: {"native":1}
+  | 
+  | Per-channel:
+  |   ch-alias  alias                             claude-code none            P2=0    P3=0    SKIP (no-guess)
+  |   ch-bound  bound                             claude-code none            P2=0    P3=0    SKIP (no-guess)
+  | 
+  | Nothing to apply. Snapshot discarded.
+  | 
+  --- stderr ---
+  ! 
+
+drive complete

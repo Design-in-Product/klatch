@@ -1,0 +1,18 @@
+crippled packages/server/src/db/schema-delta.ts — packages/server/src/db/schema-delta.ts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+== A1
+  exit: 1
+  target rows unchanged: YES
+  ROWS block present: true
+  refusal: Refusing to run: --no-migrate, and this run would write the rows above.
+== A4
+  exit: 0
+  target rows unchanged: YES
+  ROWS block present: false
+  refusal: (none)
+== A5
+  exit: 0
+  target rows unchanged: NO (legacyModels 1 -> 0)
+  ROWS block present: false
+  refusal: (none)
+restored packages/server/src/db/schema-delta.ts from HEAD — git sees: (clean)

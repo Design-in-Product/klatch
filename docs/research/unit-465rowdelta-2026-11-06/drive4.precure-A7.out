@@ -1,0 +1,39 @@
+unit-465rowdelta drive — label=precure
+tree HEAD: 8f950dc81f437abe46fcd71eb1c1c0dbfa8da49f
+dirty: 12 path(s)
+
+==============================================================================
+== A7
+==============================================================================
+  seed: seeded seeded: /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/precure-A7.db (81920 bytes)
+  seeding apply exit: 0
+  records found: precure-A7.db.backfill-2026-11-06T21-25-21-176Z.json
+  exit: 0
+  before: {"sha":"5e71cf153a5879cb","bytes":81920,"walBytes":0,"channels":2,"channel_entities":1,"unbound":1,"entities":2,"files":0,"file_refs":0,"legacyModels":0,"fileIds":""}
+  after: {"sha":"d1dbc363035a77cb","bytes":81920,"walBytes":0,"channels":2,"channel_entities":2,"unbound":0,"entities":1,"files":1,"file_refs":1,"legacyModels":0,"fileIds":"92c15cf8-d113-46f0-8877-90c465da63a5"}
+  target rows unchanged: NO (channel_entities 1 -> 2, unbound 1 -> 0, entities 2 -> 1, files 0 -> 1, file_refs 0 -> 1, fileIds  -> 92c15cf8-d113-46f0-8877-90c465da63a5)
+  target bytes unchanged: NO
+  refusal: (none)
+  --- stdout ---
+  | Backup (taken before anything was written): /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/precure-A7.db.backup-backfill-2026-11-06T21-25-21-601Z
+  | To put that file back by hand, stop the app and delete the sidecars first. A plain copy while
+  | something still holds the database open restores nothing — the app goes on reading the run — and
+  | one message written since the run is enough to leave a database SQLite calls malformed
+  | (Theseus's Rounds 191 and 193):
+  |   1. stop `npm run dev`, and anything else holding this database open
+  |   2. rm -f '/Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/precure-A7.db-wal' '/Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/precure-A7.db-shm'
+  |   3. cp '/Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/precure-A7.db.backup-backfill-2026-11-06T21-25-21-601Z' '/Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/precure-A7.db'
+  |   4. re-run this script with no flags:
+  |        npx tsx scripts/backfill-entity-bindings.mts '/Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/precure-A7.db'
+  |      its `Candidates:` line should read, word for word:
+  |        Candidates: 1 — 1 would move, 0 skipped.
+  | 
+  | Record written 2026-11-06T21:25:21.215Z, 1 channel(s). Each was read before anything was written to it:
+  |   ch-unbou  unbound                           ALREADY REVERTED — nothing to do
+  | 
+  | Reverted 0 channel(s). Agents removed: 1
+  | 
+  --- stderr ---
+  ! 
+
+drive complete

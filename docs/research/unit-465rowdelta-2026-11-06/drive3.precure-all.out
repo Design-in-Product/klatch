@@ -1,0 +1,281 @@
+unit-465rowdelta drive — label=precure
+tree HEAD: 8f950dc81f437abe46fcd71eb1c1c0dbfa8da49f
+dirty: 9 path(s)
+
+==============================================================================
+== A1
+==============================================================================
+  seed: seeded seeded: /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/precure-A1.db (81920 bytes)
+  flags: --apply --no-migrate
+  exit: 0
+  before: {"sha":"1d44679c045673ad","bytes":81920,"walBytes":0,"channels":2,"channel_entities":1,"unbound":1,"entities":1,"files":0,"file_refs":0,"legacyModels":0,"fileIds":""}
+  after: {"sha":"1d44679c045673ad","bytes":81920,"walBytes":32992,"channels":2,"channel_entities":2,"unbound":0,"entities":1,"files":1,"file_refs":1,"legacyModels":0,"fileIds":"adaf9f9b-669c-4bd5-9196-48b80f90fbf5"}
+  target rows unchanged: NO (channel_entities 1 -> 2, unbound 1 -> 0, files 0 -> 1, file_refs 0 -> 1, fileIds  -> adaf9f9b-669c-4bd5-9196-48b80f90fbf5)
+  target bytes unchanged: YES
+  beside target: precure-A1.db-shm precure-A1.db-wal
+  ROWS block present: false
+  SCHEMA block present: false
+  refusal: (none)
+  nothing-to-apply line: true
+  --- stdout ---
+  | 
+  | ==============================================================================
+  | /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/precure-A1.db
+  | ==============================================================================
+  | 
+  | Scope: channels with source in {claude-code, claude-ai} bound to `default-entity`.
+  | Bases applied: identity-claim
+  | 
+  | Candidates: 1 — 0 would move, 1 skipped.
+  |   skipped, by reason: {"no-guess":1}
+  |   new agents (0): (none)
+  |   reused agents (0): (none)
+  |   message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  |   bound to the default but out of scope, untouched: {"native":1}
+  | 
+  | Per-channel:
+  |   ch-unbou  unbound                           claude-code none            P2=0    P3=0    SKIP (no-guess)
+  | 
+  | Nothing to apply. Snapshot discarded.
+  | 
+  --- stderr ---
+  ! 
+
+==============================================================================
+== A2
+==============================================================================
+  seed: seeded seeded: /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/precure-A2.db (81920 bytes)
+  flags: --apply
+  exit: 0
+  before: {"sha":"14f61a74b205a26f","bytes":81920,"walBytes":0,"channels":2,"channel_entities":1,"unbound":1,"entities":1,"files":0,"file_refs":0,"legacyModels":0,"fileIds":""}
+  after: {"sha":"14f61a74b205a26f","bytes":81920,"walBytes":32992,"channels":2,"channel_entities":2,"unbound":0,"entities":1,"files":1,"file_refs":1,"legacyModels":0,"fileIds":"b6dc4409-ea40-4a78-8699-adbb53c836ab"}
+  target rows unchanged: NO (channel_entities 1 -> 2, unbound 1 -> 0, files 0 -> 1, file_refs 0 -> 1, fileIds  -> b6dc4409-ea40-4a78-8699-adbb53c836ab)
+  target bytes unchanged: YES
+  beside target: precure-A2.db-shm precure-A2.db-wal
+  ROWS block present: false
+  SCHEMA block present: false
+  refusal: (none)
+  nothing-to-apply line: true
+  --- stdout ---
+  | 
+  | ==============================================================================
+  | /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/precure-A2.db
+  | ==============================================================================
+  | 
+  | Scope: channels with source in {claude-code, claude-ai} bound to `default-entity`.
+  | Bases applied: identity-claim
+  | 
+  | Candidates: 1 — 0 would move, 1 skipped.
+  |   skipped, by reason: {"no-guess":1}
+  |   new agents (0): (none)
+  |   reused agents (0): (none)
+  |   message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  |   bound to the default but out of scope, untouched: {"native":1}
+  | 
+  | Per-channel:
+  |   ch-unbou  unbound                           claude-code none            P2=0    P3=0    SKIP (no-guess)
+  | 
+  | Nothing to apply. Snapshot discarded.
+  | 
+  --- stderr ---
+  ! 
+
+==============================================================================
+== A3
+==============================================================================
+  seed: seeded seeded: /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/precure-A3.db (81920 bytes)
+  flags: (none)
+  exit: 0
+  before: {"sha":"b5aee9ec0b6ec6aa","bytes":81920,"walBytes":0,"channels":2,"channel_entities":1,"unbound":1,"entities":1,"files":0,"file_refs":0,"legacyModels":0,"fileIds":""}
+  after: {"sha":"b5aee9ec0b6ec6aa","bytes":81920,"walBytes":0,"channels":2,"channel_entities":1,"unbound":1,"entities":1,"files":0,"file_refs":0,"legacyModels":0,"fileIds":""}
+  target rows unchanged: YES
+  target bytes unchanged: YES
+  beside target: precure-A3.db-shm precure-A3.db-wal
+  ROWS block present: false
+  SCHEMA block present: false
+  refusal: (none)
+  nothing-to-apply line: false
+  --- stdout ---
+  | 
+  | ==============================================================================
+  | /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/precure-A3.db
+  | ==============================================================================
+  | 
+  | Scope: channels with source in {claude-code, claude-ai} bound to `default-entity`.
+  | Bases applied: identity-claim
+  | 
+  | Candidates: 1 — 0 would move, 1 skipped.
+  |   skipped, by reason: {"no-guess":1}
+  |   new agents (0): (none)
+  |   reused agents (0): (none)
+  |   message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  |   bound to the default but out of scope, untouched: {"native":1}
+  | 
+  | Per-channel:
+  |   ch-unbou  unbound                           claude-code none            P2=0    P3=0    SKIP (no-guess)
+  | 
+  | Dry run — planned against a read-only snapshot, which has been deleted. Your database was
+  | not opened for writing and no agent was minted. Re-run with --apply to move these, or with
+  | --channels=<ids> to move only the ones you approve off this sheet.
+  | 
+  --- stderr ---
+  ! 
+
+==============================================================================
+== A4
+==============================================================================
+  seed: seeded clean: /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/precure-A4.db (81920 bytes)
+  flags: --apply --no-migrate
+  exit: 0
+  before: {"sha":"78def49e396a5933","bytes":81920,"walBytes":0,"channels":2,"channel_entities":2,"unbound":0,"entities":1,"files":0,"file_refs":0,"legacyModels":0,"fileIds":""}
+  after: {"sha":"78def49e396a5933","bytes":81920,"walBytes":0,"channels":2,"channel_entities":2,"unbound":0,"entities":1,"files":0,"file_refs":0,"legacyModels":0,"fileIds":""}
+  target rows unchanged: YES
+  target bytes unchanged: YES
+  beside target: precure-A4.db-shm precure-A4.db-wal
+  ROWS block present: false
+  SCHEMA block present: false
+  refusal: (none)
+  nothing-to-apply line: true
+  --- stdout ---
+  | 
+  | ==============================================================================
+  | /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/precure-A4.db
+  | ==============================================================================
+  | 
+  | Scope: channels with source in {claude-code, claude-ai} bound to `default-entity`.
+  | Bases applied: identity-claim
+  | 
+  | Candidates: 1 — 0 would move, 1 skipped.
+  |   skipped, by reason: {"no-guess":1}
+  |   new agents (0): (none)
+  |   reused agents (0): (none)
+  |   message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  |   bound to the default but out of scope, untouched: {"native":1}
+  | 
+  | Per-channel:
+  |   ch-bound  bound                             claude-code none            P2=0    P3=0    SKIP (no-guess)
+  | 
+  | Nothing to apply. Snapshot discarded.
+  | 
+  --- stderr ---
+  ! 
+
+==============================================================================
+== A5
+==============================================================================
+  seed: alias key seeded: claude-opus-4-20250514 -> claude-opus-4-6 | seeded alias: /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/precure-A5.db (81920 bytes)
+  flags: --apply --no-migrate
+  exit: 0
+  before: {"sha":"1232be027be33a70","bytes":81920,"walBytes":0,"channels":3,"channel_entities":3,"unbound":0,"entities":1,"files":0,"file_refs":0,"legacyModels":1,"fileIds":""}
+  after: {"sha":"1232be027be33a70","bytes":81920,"walBytes":4152,"channels":3,"channel_entities":3,"unbound":0,"entities":1,"files":0,"file_refs":0,"legacyModels":0,"fileIds":""}
+  target rows unchanged: NO (legacyModels 1 -> 0)
+  target bytes unchanged: YES
+  beside target: precure-A5.db-shm precure-A5.db-wal
+  ROWS block present: false
+  SCHEMA block present: false
+  refusal: (none)
+  nothing-to-apply line: true
+  --- stdout ---
+  | 
+  | ==============================================================================
+  | /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/precure-A5.db
+  | ==============================================================================
+  | 
+  | Scope: channels with source in {claude-code, claude-ai} bound to `default-entity`.
+  | Bases applied: identity-claim
+  | 
+  | Candidates: 2 — 0 would move, 2 skipped.
+  |   skipped, by reason: {"no-guess":2}
+  |   new agents (0): (none)
+  |   reused agents (0): (none)
+  |   message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  |   bound to the default but out of scope, untouched: {"native":1}
+  | 
+  | Per-channel:
+  |   ch-alias  alias                             claude-code none            P2=0    P3=0    SKIP (no-guess)
+  |   ch-bound  bound                             claude-code none            P2=0    P3=0    SKIP (no-guess)
+  | 
+  | Nothing to apply. Snapshot discarded.
+  | 
+  --- stderr ---
+  ! 
+
+==============================================================================
+== A6
+==============================================================================
+  exit: 1
+  before: {"sha":"c2295121bbdfdbbb","bytes":5230592,"walBytes":0,"channels":139,"channel_entities":170,"unbound":0,"entities":68,"files":"ERR","file_refs":"ERR","legacyModels":0,"fileIds":"ERR"}
+  after: {"sha":"c2295121bbdfdbbb","bytes":5230592,"walBytes":0,"channels":139,"channel_entities":170,"unbound":0,"entities":68,"files":"ERR","file_refs":"ERR","legacyModels":0,"fileIds":"ERR"}
+  target rows unchanged: YES
+  target bytes unchanged: YES
+  beside target: precure-A6.db-shm precure-A6.db-wal
+  refusal: Refusing to run: --no-migrate, and this run would upgrade the schema above.
+  --- stdout ---
+  | 
+  | SCHEMA: this database is behind the current schema, and opening it for writing
+  |   upgrades it in place. precure-A6.db would gain:
+  |     4 new object(s): index:idx_file_refs_file, index:idx_file_refs_scope, table:file_refs, table:files
+  |     9 new column(s): channels.type, entities.effort, entities.reflections, message_artifacts.file_name, message_artifacts.file_mime_type, message_artifacts.file_size_bytes, message_artifacts.file_storage_key, messages.stop_reason, projects.memory
+  |     1 table(s) rebuilt, not altered in place: messages
+  |       A rebuild rewrites every row of that table. The file grows and the space the old
+  |       pages held is left as slack inside it — expect a larger file than the data needs.
+  |   Every existing row survives this. What does not survive is the file's value as a record
+  |   of an older schema: restore it later to ask what the schema looked like then and you get
+  |   today's answer. Pass --no-migrate to refuse instead of upgrading.
+  | 
+  --- stderr ---
+  ! (node:24032) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+  ! (Use `node --trace-deprecation ...` to show where the warning was created)
+  ! 
+  ! Refusing to run: --no-migrate, and this run would upgrade the schema above.
+  !   Nothing was written and the snapshot was discarded. Three ways on from here:
+  !     - run it without --no-migrate, accepting the schema change above;
+  !     - copy the file first and point this script at the copy, keeping precure-A6.db as it is;
+  !     - run it with no flags for the review sheet, which never writes to the file at all.
+  ! 
+
+==============================================================================
+== A7
+==============================================================================
+  seed: seeded seeded: /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/precure-A7.db (81920 bytes)
+  seeding apply exit: 0
+  records found: (none)
+  ARM VOID: no undo record was written, so --undo has no input
+
+==============================================================================
+== A8
+==============================================================================
+  seed: seeded seeded: /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/precure-A8a.db (81920 bytes)
+  flags: --apply
+  exit: 0
+  before: {"sha":"3a77d4f349b1ba1f","bytes":81920,"walBytes":0,"channels":2,"channel_entities":1,"unbound":1,"entities":1,"files":0,"file_refs":0,"legacyModels":0,"fileIds":""}
+  after: {"sha":"3a77d4f349b1ba1f","bytes":81920,"walBytes":32992,"channels":2,"channel_entities":2,"unbound":0,"entities":1,"files":1,"file_refs":1,"legacyModels":0,"fileIds":"ff0a2877-aa0f-4760-a902-6863e5b14065"}
+  target rows unchanged: NO (channel_entities 1 -> 2, unbound 1 -> 0, files 0 -> 1, file_refs 0 -> 1, fileIds  -> ff0a2877-aa0f-4760-a902-6863e5b14065)
+  target bytes unchanged: YES
+  beside target: precure-A8a.db-shm precure-A8a.db-wal
+  ROWS block present: false
+  SCHEMA block present: false
+  refusal: (none)
+  nothing-to-apply line: true
+  seed: seeded seeded: /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/precure-A8b.db (81920 bytes)
+  flags: --apply
+  exit: 0
+  before: {"sha":"b1267a55f8dab75f","bytes":81920,"walBytes":0,"channels":2,"channel_entities":1,"unbound":1,"entities":1,"files":0,"file_refs":0,"legacyModels":0,"fileIds":""}
+  after: {"sha":"b1267a55f8dab75f","bytes":81920,"walBytes":32992,"channels":2,"channel_entities":2,"unbound":0,"entities":1,"files":1,"file_refs":1,"legacyModels":0,"fileIds":"5c09d82a-9fc2-4aae-990f-ef7f4a1693e0"}
+  target rows unchanged: NO (channel_entities 1 -> 2, unbound 1 -> 0, files 0 -> 1, file_refs 0 -> 1, fileIds  -> 5c09d82a-9fc2-4aae-990f-ef7f4a1693e0)
+  target bytes unchanged: YES
+  beside target: precure-A8b.db-shm precure-A8b.db-wal
+  ROWS block present: false
+  SCHEMA block present: false
+  refusal: (none)
+  nothing-to-apply line: true
+  A8a rows: (none)
+  A8b rows: (none)
+  rows agree: YES
+  A8a file ids: ff0a2877-aa0f-4760-a902-6863e5b14065
+  A8b file ids: 5c09d82a-9fc2-4aae-990f-ef7f4a1693e0
+  ids differ: YES
+  A8a ids printed: (none)
+  A8b ids printed: (none)
+
+drive complete

@@ -1,0 +1,92 @@
+unit-465rowdelta drive — label=sidecure
+tree HEAD: 4d04227bf46b96c3fa5df59ff218ec6b02d82456
+dirty: 22 path(s)
+
+==============================================================================
+== A9
+==============================================================================
+  seed: seeded seeded: /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/sidecure-A9refuse.db (81920 bytes)
+  flags: --apply --no-migrate
+  exit: 1
+  before: {"sha":"087c69e3563dc0d7","bytes":81920,"walBytes":0,"channels":2,"channel_entities":1,"unbound":1,"entities":1,"files":0,"file_refs":0,"legacyModels":0,"fileIds":""}
+  after: {"sha":"087c69e3563dc0d7","bytes":81920,"walBytes":0,"channels":2,"channel_entities":1,"unbound":1,"entities":1,"files":0,"file_refs":0,"legacyModels":0,"fileIds":""}
+  target rows unchanged: YES
+  target bytes unchanged: YES
+  beside target: sidecure-A9refuse.db-shm sidecure-A9refuse.db-wal
+  ROWS block present: true
+    | ROWS: opening this database for writing also writes rows to it. The migration would
+    |   change sidecure-A9refuse.db like this:
+    |     +1 channel_entities, +1 file_refs, +1 files
+    |     3 row write(s) in total
+    |   These are the migration's own writes, not this tool's plan. They happen on the way in, to any
+    |   database opened for writing, and a run that moves no channel still performs them. Pass
+    |   --no-migrate to refuse the run rather than let it write them.
+  SCHEMA block present: false
+  refusal: Refusing to run: --no-migrate, and this run would write the rows above.
+  nothing-to-apply line: false
+  seed: seeded seeded: /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/sidecure-A9dry.db (81920 bytes)
+  flags: (none)
+  exit: 0
+  before: {"sha":"4bb12a02141b548f","bytes":81920,"walBytes":0,"channels":2,"channel_entities":1,"unbound":1,"entities":1,"files":0,"file_refs":0,"legacyModels":0,"fileIds":""}
+  after: {"sha":"4bb12a02141b548f","bytes":81920,"walBytes":0,"channels":2,"channel_entities":1,"unbound":1,"entities":1,"files":0,"file_refs":0,"legacyModels":0,"fileIds":""}
+  target rows unchanged: YES
+  target bytes unchanged: YES
+  beside target: sidecure-A9dry.db-shm sidecure-A9dry.db-wal
+  ROWS block present: true
+    | ROWS: opening this database for writing also writes rows to it. The migration would
+    |   change sidecure-A9dry.db like this:
+    |     +1 channel_entities, +1 file_refs, +1 files
+    |     3 row write(s) in total
+    |   These are the migration's own writes, not this tool's plan. They happen on the way in, to any
+    |   database opened for writing, and a run that moves no channel still performs them. Pass
+    |   --no-migrate to refuse the run rather than let it write them.
+  SCHEMA block present: false
+  refusal: (none)
+  nothing-to-apply line: false
+  seed: seeded clean: /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/sidecure-A9clean.db (81920 bytes)
+  flags: --apply --no-migrate
+  exit: 0
+  before: {"sha":"03403f0084890498","bytes":81920,"walBytes":0,"channels":2,"channel_entities":2,"unbound":0,"entities":1,"files":0,"file_refs":0,"legacyModels":0,"fileIds":""}
+  after: {"sha":"03403f0084890498","bytes":81920,"walBytes":0,"channels":2,"channel_entities":2,"unbound":0,"entities":1,"files":0,"file_refs":0,"legacyModels":0,"fileIds":""}
+  target rows unchanged: YES
+  target bytes unchanged: YES
+  beside target: sidecure-A9clean.db-shm sidecure-A9clean.db-wal
+  ROWS block present: false
+  SCHEMA block present: false
+  refusal: (none)
+  nothing-to-apply line: true
+  seed: seeded seeded: /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/sidecure-A9wrote.db (81920 bytes)
+  flags: --apply
+  exit: 0
+  before: {"sha":"c9cf97396735e961","bytes":81920,"walBytes":0,"channels":2,"channel_entities":1,"unbound":1,"entities":1,"files":0,"file_refs":0,"legacyModels":0,"fileIds":""}
+  after: {"sha":"c9cf97396735e961","bytes":81920,"walBytes":32992,"channels":2,"channel_entities":2,"unbound":0,"entities":1,"files":1,"file_refs":1,"legacyModels":0,"fileIds":"b943b760-03b0-43b1-aba3-d9b314fa17cc"}
+  target rows unchanged: NO (channel_entities 1 -> 2, unbound 1 -> 0, files 0 -> 1, file_refs 0 -> 1, fileIds  -> b943b760-03b0-43b1-aba3-d9b314fa17cc)
+  target bytes unchanged: YES
+  beside target: sidecure-A9wrote.db-shm sidecure-A9wrote.db-wal
+  ROWS block present: true
+    | ROWS: opening this database for writing also writes rows to it. The migration would
+    |   change sidecure-A9wrote.db like this:
+    |     +1 channel_entities, +1 file_refs, +1 files
+    |     3 row write(s) in total
+    |   These are the migration's own writes, not this tool's plan. They happen on the way in, to any
+    |   database opened for writing, and a run that moves no channel still performs them. Pass
+    |   --no-migrate to refuse the run rather than let it write them.
+  SCHEMA block present: false
+  refusal: (none)
+  nothing-to-apply line: true
+  refused: beside target: sidecure-A9refuse.db-shm sidecure-A9refuse.db-wal
+  dry: beside target: sidecure-A9dry.db-shm sidecure-A9dry.db-wal
+  clean pass-through: beside target: sidecure-A9clean.db-shm sidecure-A9clean.db-wal
+  wrote: beside target: sidecure-A9wrote.db-shm sidecure-A9wrote.db-wal
+
+==============================================================================
+== A10
+==============================================================================
+  exit: 0
+  bytes: 5230592
+  target bytes unchanged: YES
+  beside target: (nothing)
+  SCHEMA block present: true
+  ROWS block present: true
+
+drive complete

@@ -1,0 +1,17 @@
+crippled scripts/backfill-entity-bindings.mts — scripts/backfill-entity-bindings.mts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+== A1
+  exit: 0
+  target rows unchanged: NO (channel_entities 1 -> 2, unbound 1 -> 0, files 0 -> 1, file_refs 0 -> 1, fileIds  -> d2fb1fd3-84fa-4007-88c0-2a94200592cf)
+  ROWS block present: true
+  refusal: (none)
+== A5
+  exit: 0
+  target rows unchanged: NO (legacyModels 1 -> 0)
+  ROWS block present: true
+  refusal: (none)
+== A7
+  exit: 0
+  target rows unchanged: NO (channel_entities 1 -> 2, unbound 1 -> 0, entities 2 -> 1, files 0 -> 1, file_refs 0 -> 1, fileIds  -> 0ab372a8-0394-452f-9a75-06f557d46f64)
+  refusal: (none)
+restored scripts/backfill-entity-bindings.mts from HEAD — git sees: (clean)

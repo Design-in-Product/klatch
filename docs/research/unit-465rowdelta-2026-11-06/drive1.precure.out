@@ -1,0 +1,44 @@
+unit-465rowdelta drive — label=precure
+tree HEAD: 8f950dc81f437abe46fcd71eb1c1c0dbfa8da49f
+dirty: 5 path(s)
+
+==============================================================================
+== A1
+==============================================================================
+  seed: seeded seeded: /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/precure-A1.db (81920 bytes)
+  flags: --apply --no-migrate
+  exit: 0
+  before: {"sha":"f02b9ade58c9f619","bytes":81920,"channels":2,"channel_entities":1,"unbound":1,"entities":1,"files":0,"file_refs":0,"legacyModels":0,"fileIds":""}
+  after: {"sha":"f02b9ade58c9f619","bytes":81920,"channels":2,"channel_entities":2,"unbound":0,"entities":1,"files":1,"file_refs":1,"legacyModels":0,"fileIds":"039bb3d8-7905-4004-b23e-13a59d351f5c"}
+  target intact: YES
+  beside target: precure-A1.db-shm precure-A1.db-wal
+  ROWS block lines: 1
+    |   message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  SCHEMA block present: false
+  refusal: (none)
+  nothing-to-apply line: true
+  --- stdout ---
+  | 
+  | ==============================================================================
+  | /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465rowdelta-2026-11-06/scratch/precure-A1.db
+  | ==============================================================================
+  | 
+  | Scope: channels with source in {claude-code, claude-ai} bound to `default-entity`.
+  | Bases applied: identity-claim
+  | 
+  | Candidates: 1 — 0 would move, 1 skipped.
+  |   skipped, by reason: {"no-guess":1}
+  |   new agents (0): (none)
+  |   reused agents (0): (none)
+  |   message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  |   bound to the default but out of scope, untouched: {"native":1}
+  | 
+  | Per-channel:
+  |   ch-unbou  unbound                           claude-code none            P2=0    P3=0    SKIP (no-guess)
+  | 
+  | Nothing to apply. Snapshot discarded.
+  | 
+  --- stderr ---
+  ! 
+
+drive complete
