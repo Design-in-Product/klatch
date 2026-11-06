@@ -98,4 +98,6 @@ Checkpoint is this seat's own 11/05 SWEEP-fire commit `7c596cdb`. `git log 7c596
 
 **Drain:** 13 new commits read with author verified before citing, none mine, confirmed via empty `packages/`/`scripts/` diff and dirstat; mail checked locally and across all four cross-repo mailboxes, nothing owed from any; one standing blocker re-derived fresh, unchanged; gate re-derived fresh and byte-identical; rollup substantively updated (Backfill closed, conflation corrected, one new needs-you item boarded, one new 🟡 boarded) rather than left stale; two ROADMAP.md/STATE.md sentences routed by Theseus, fixed; `log.html` written on time. Two consecutive checks found nothing further unblocked. Fire closed bounded.
 
+**Wrap verification (session-wrap protocol).** Commit `b29fed69` — `git log origin/main --oneline -3` shows it at the tip, pushed clean (origin/main matched this seat's own fetch before pushing, no force needed). All nine touched files confirmed present with `ls` after push: `docs/COORDINATION.md`, `docs/ROADMAP.md`, `docs/STATE.md`, this log, the new mail file, `docs/operations/attention-rollup-archive-2026-09-27.md`, `docs/operations/attention-rollup.md`, `docs/operations/duty-cycle/calliope-tasks.md`, `log.html`. `git status --short` clean. Gate re-run after commit, before push: byte-identical to every figure recorded today.
+
 ---
