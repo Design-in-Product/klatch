@@ -4163,7 +4163,57 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
 - **Status:** available — duty cycle armed.
-- **Updated:** 2026-11-05 ~19:4x–20:1x PT (**STOP fire — nothing was routed to me, so instead of
+- **Updated:** 2026-11-06 ~10:4x–11:2x PT (**START fire — Daedalus's cure for my §3 is read, his
+  §6b fix and §7.1 reproduce under my hand, my own pre-registered attack on his key is refuted by
+  his migration, and the gate his opt-out is keyed on passes a writing run that writes three rows.**)
+  Checkpoint is **my own** last commit `e6331719` (11-05 15:07). The five commits at the tip at fire
+  open (`6db293bf` back) were **author-checked before use: all five Daedalus's, none mine.**
+  **Mail:** one memo addressed to me (Daedalus, ~09:4x, 176 lines — my §3 cured in product code,
+  `--no-migrate` shipped, his proportionality escalation to xian **withdrawn** on the strength of my
+  §1), read in full at fire open and answered in the same fire (`25a66b12`). It routed me nothing;
+  the soft spot it re-offered (his two GREEN-either-side arms) I declined again **in writing** rather
+  than by silence. One memo arrived mid-fire on a fetch (`cio-to-argus-network-research-hub-trial-…`)
+  — Argus's, no cc for this seat, no action here.
+  **Unit:** `docs/research/unit-465rows-2026-11-06/` — pre-registration `9e012fce`, pushed as the
+  **only** file in the directory before any instrument existed (`git ls-tree -r origin/main` run, not
+  asserted); RESULTS `0b341323`. **14 registered cells — 12 HIT, 1 MISS, 1 VOID. 6 predictions, 5
+  HELD, 1 REFUTED.** 8 further cells declared post-hoc and labelled.
+  **The MISS is mine.** I registered that the sibling of his §6b case — a rebuild that changes
+  constraint text *and* appends a column — was reachable through `messages`; `applySchema` **throws**
+  `no such column: created_at` on a prefix table, because the rebuild's `INSERT … SELECT` names every
+  column. Wrong in the direction that would have made my finding bigger; recorded as refuted, not
+  re-scoped. What survives is the cell at `diffCensus` level (exported, reachable by the next
+  migration that widens a constraint and appends a column in one rebuild), stated at that
+  granularity.
+  **The finding that stands, routed to Daedalus:** his §7.2 censuses **one** row-writing site in
+  `runMigrations` of **four** (`index.ts:118–121` the `MODEL_ALIASES` loop — his; `319–350` the
+  `files`/`file_refs` backfill with `randomUUID()` ids; `353–358` the default entity; `361–371` the
+  `channel_entities` auto-assign). On a current-schema database — `delta.empty === true`, so
+  `--no-migrate` says yes — `--apply --no-migrate` exits **0**, writes **+1 `channel_entities`
+  (a `default-entity` binding, in the table the tool exists to re-point *off* it), +1 `files`, +1
+  `file_refs`**, mentions none of them, and prints **"Nothing to apply."** Cure sketched in the memo
+  §5, not written: the copy `schemaDelta` already takes makes a row-count delta free.
+  **Bounded honestly:** a **dry** run against the same seeded states writes nothing and leaves the
+  file byte-identical, so his header's *"a dry run cannot touch the database it is reporting on"*
+  holds; and all four sites measure **0** on both real databases (channels with no entity row 0 of 2
+  in `klatch.db`, 0 of 139 in the backup; file artifacts not in `files` 0 both, the backup's 2,826
+  artifacts holding none of type `file`; `MODEL_ALIASES` matches 0 both, his figure reproduced under
+  my own read with the keys pulled from `shared/src/types.ts` by the drive). His "structural and
+  currently empty" verdict is **widened, not overturned.** `--undo` not driven and not asserted.
+  **His cure verified, not taken on trust:** §6b's `alteredTables` fires on the rebuild-order table
+  (`rebuilt=[] altered=["messages"]`) and his own vacuous known positive reproduces on the
+  initSchema-order one (`rebuilt=["messages"]`, green for a column move); §7.1's `-wal`/`-shm`
+  sidecars beside an unwritten target confirmed; and his `schemaUnknown` arm now has a known positive
+  that throws **inside** `schemaDelta` rather than on an unreadable file.
+  **Gate:** `npm test -w packages/server` **141 files · 2199 passed | 1 skipped (2200)**, exit 0 —
+  equal to his post-cure figure. `git diff --stat 6db293bf..9e012fce -- packages/ scripts/` empty:
+  this unit touched no product code.
+  **Drain:** mail read and answered same fire; offered item declined in writing; unit opened, driven,
+  filed; one item routed back with a cure sketch; gate re-run. Nothing deferred, no new blocker.
+  Still open on xian, unchanged: my 09-29 step-1 boarding question; the `backups/` tracked-vs-ignored
+  half; whether a March-schema March backup should be restored from `c945e8aa`.
+  Log: `docs/logs/2026-11-06-theseus-log.md`.
+- **Previously:** 2026-11-05 ~19:4x–20:1x PT (**STOP fire — nothing was routed to me, so instead of
   opening another round I went looking for scheduled product work, and found xian's own "Go" sitting
   unexecuted on the attention board for 38 days. The backfill is applied: 9 channels re-pointed,
   9 agents minted, 821 message rows re-stamped — verified off the database, not off the tool.**
