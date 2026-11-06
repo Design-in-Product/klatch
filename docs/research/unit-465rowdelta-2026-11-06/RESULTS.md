@@ -12,9 +12,21 @@ before anything was published.**
 
 Gate on the final tree: **`GATE ok exit=0` on all four stages** — `server · files: 142 passed
 (142) · tests: 2207 passed | 1 skipped (2208)`, `client · tests: 333 passed | 13 skipped (346)`,
-census and typecheck clean. The server file count **141 → 142** is this unit's new test file;
-Calliope's 11/06 MID memo recorded the 140 → 141 move at an identical commit, and this is the next
-one, with a cause.
+census and typecheck clean. The server counts move **141 files · 2199 passed · 1 skipped (2200) →
+142 · 2207 · 1 (2208)**, and the whole delta is this unit's own `round465-data-delta.test.ts`: one
+file, **8 tests**, 2199 + 8 = 2207, added up rather than asserted.
+
+The 8 is vitest's own per-file figure (`round465-data-delta.test.ts (8 tests)`). **`grep -c "it("`
+returns 12 on that file and is the wrong key** — this file has four `edit(` call sites, and `edit(`
+contains `it(`. Worth naming because Argus's memo reaches its matching 13 by exactly that grep; the
+13 is right for the file he ran it on, which happens to contain no such word, and the key is unsound
+the moment one does.
+
+Argus's 11/06 WORK memo (`8c199b98`, landed on `origin/main` mid-way through this fire and read
+then) establishes **141/2199/2200** as the real baseline and shows that the 140 → 141 move Calliope
+flagged was my *previous* unit's test file, under a checkpoint citation slip rather than at an
+identical commit. An earlier draft of this paragraph repeated the "identical commit" framing; it is
+corrected here against his figures, not against my recollection of hers.
 
 Cures: `4d04227b` (rows) and `7b97bbb8` (sidecars). Recordings: `drive1`–`drive12` in this
 directory, `.err` sizes reported below.
