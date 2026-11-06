@@ -4,10 +4,22 @@ import { DEFAULT_MODEL, DEFAULT_ENTITY_ID, ENTITY_COLORS, MODEL_ALIASES, DEFAULT
 
 let testDb: Database.Database;
 
-// Mock the db module so all queries use our in-memory DB
-vi.mock('../db/index.js', () => ({
-  getDb: () => testDb,
-}));
+// Mock the db module so all queries use our in-memory DB.
+//
+// `getDb` is the whole point of the mock — every query under test must land on
+// `testDb` and never on a file. `applySchema` is forwarded to the real one
+// instead of being stubbed: it is a pure function of the handle it is given, it
+// opens nothing by itself, and `db/schema-delta.ts` exists specifically to report
+// what the *real* migration code would do. Stubbing it would leave
+// `schemaDelta` calling `undefined` — and, worse, would make a test that passed
+// against a stub look like evidence about the schema (round465).
+vi.mock('../db/index.js', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../db/index.js')>();
+  return {
+    getDb: () => testDb,
+    applySchema: actual.applySchema,
+  };
+});
 
 function createFreshDb(): Database.Database {
   const db = new Database(':memory:');

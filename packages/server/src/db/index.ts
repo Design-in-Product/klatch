@@ -14,13 +14,31 @@ export function getDb(): Database.Database {
     db = new Database(resolveDbPath(process.env.KLATCH_DB));
     db.pragma('journal_mode = WAL');
     db.pragma('foreign_keys = ON');
-    initSchema();
-    runMigrations();
+    applySchema(db);
   }
   return db;
 }
 
-function initSchema() {
+/**
+ * Bring one handle up to the current schema: create what is missing, migrate
+ * what is behind. This is what `getDb()` does to the process's own database, and
+ * it is exported so a caller can do it to a handle the singleton never sees.
+ *
+ * The reason it is exported is `schema-delta.ts`: the backfill tool needs to
+ * answer *what would this run add to the file I was pointed at* before it writes
+ * anything, and the only honest answer is the one the real migration code gives.
+ * A hand-maintained list of expected tables and columns would be a second schema
+ * definition, correct on the day it was typed and silently wrong one migration
+ * later.
+ *
+ * Writes. Pass a handle on a copy unless you mean to migrate the original.
+ */
+export function applySchema(target: Database.Database): void {
+  initSchema(target);
+  runMigrations(target);
+}
+
+function initSchema(db: Database.Database) {
   db.exec(`
     CREATE TABLE IF NOT EXISTS channels (
       id TEXT PRIMARY KEY,
@@ -73,7 +91,7 @@ function initSchema() {
   `);
 }
 
-function runMigrations() {
+function runMigrations(db: Database.Database) {
   // Add model column to channels if it doesn't exist
   const channelCols = db.prepare("PRAGMA table_info(channels)").all() as { name: string }[];
   if (!channelCols.some((c) => c.name === 'model')) {

@@ -26,6 +26,27 @@
  *   # put it back
  *   npx tsx scripts/backfill-entity-bindings.mts /path/to/klatch.db --undo=<record.json>
  *
+ *   # refuse rather than upgrade the schema of a file you want left as it is
+ *   npx tsx scripts/backfill-entity-bindings.mts /path/to/backup --apply --no-migrate
+ *
+ * **An apply upgrades the schema of the file it is pointed at, and a backup is
+ * the likeliest thing to point it at.** `getDb()` runs the server's schema init
+ * and migrations on whatever it opens, so an `--apply` against
+ * `backups/klatch.db.backup-2026-03-14` — Theseus's 2026-11-05 run, on a file
+ * whose whole purpose is to answer *what did this corpus look like in March* —
+ * added 4 objects and 9 columns, rebuilt `messages`, and took the file from
+ * 5,230,592 to 9,449,472 bytes. Every row move in it was exact; the file stopped
+ * being a record of an older schema. This header was meticulous about the
+ * read-only planning handle, the pre-write snapshot and the restore steps, and
+ * said nothing about that until unit-465migrate.
+ *
+ * Avoidance is not available — a planner cannot plan against a schema it has not
+ * migrated — so **every run now discloses the delta before writing, and
+ * `--no-migrate` refuses instead**. Both are keyed on a measured diff (the
+ * snapshot is copied, the real migration code is applied to the copy, the two are
+ * compared), so a database already at the current schema prints nothing and runs
+ * normally with `--no-migrate` on the line.
+ *
  * **A dry run cannot touch the database it is reporting on.** `getDb()` runs the
  * server's schema init and migrations on whatever it opens — additive and
  * idempotent, but still a write, and a review pass that mutates the thing under
@@ -143,7 +164,7 @@ import path from 'path';
 import Database from 'better-sqlite3';
 
 const USAGE =
-  'usage: npx tsx scripts/backfill-entity-bindings.mts <klatch.db> [--apply] [--bases=a,b] [--channels=id,id] [--undo=<record.json>]';
+  'usage: npx tsx scripts/backfill-entity-bindings.mts <klatch.db> [--apply] [--bases=a,b] [--channels=id,id] [--undo=<record.json>] [--no-migrate]';
 
 // Every token in argv is read, or the run refuses. Round 180's rule refuses a
 // value-taking flag with an *empty* value; it could not see a flag with the wrong
@@ -157,7 +178,12 @@ const USAGE =
 // the shell as a stray argument, `--apply=yes` running dry. One rule at the parse
 // boundary closes all of them rather than one guard per spelling.
 const VALUE_FLAGS = ['bases', 'channels', 'undo'];
-const KNOWN_FLAGS = ['apply', ...VALUE_FLAGS];
+// `no-migrate` is the first flag here with a hyphen in its name, which the
+// recogniser below had to be widened for — `/^--([a-z]+)/` matched `--no` out of
+// `--no-migrate` and then refused it as unknown. A flag the parser cannot spell
+// is a flag that cannot be passed.
+const BARE_FLAGS = ['apply', 'no-migrate'];
+const KNOWN_FLAGS = [...BARE_FLAGS, ...VALUE_FLAGS];
 
 function editDistance(a: string, b: string): number {
   const row = Array.from({ length: b.length + 1 }, (_, j) => j);
@@ -186,7 +212,7 @@ function didYouMean(token: string, next: string | undefined, positionals: number
   const typed = (eq === -1 ? token : token.slice(0, eq)).replace(/^-+/, '').toLowerCase();
   const near = KNOWN_FLAGS.find((k) => editDistance(typed, k) <= 2);
   if (!near) return '';
-  if (near === 'apply') return ' — did you mean --apply?';
+  if (BARE_FLAGS.includes(near)) return ` — did you mean --${near}?`;
   if (eq !== -1) return ` — did you mean --${near}${token.slice(eq)}?`;
   if (next !== undefined && !next.startsWith('-') && positionals >= 2) {
     return ` — did you mean --${near}=${next}? (with an equals sign; "${next}" was read as a separate argument)`;
@@ -204,12 +230,12 @@ for (const [i, token] of argv.entries()) {
     positional.push(token);
     continue;
   }
-  const name = /^--([a-z]+)(?:=|$)/.exec(token)?.[1];
+  const name = /^--([a-z-]+)(?:=|$)/.exec(token)?.[1];
   if (!name || !KNOWN_FLAGS.includes(name)) {
     argProblems.push(`  ${token}: not a flag this script knows${didYouMean(token, argv[i + 1], positionalCount)}`);
-  } else if (name === 'apply' && token !== '--apply') {
-    argProblems.push(`  ${token}: --apply takes no value — pass it bare`);
-  } else if (VALUE_FLAGS.includes(name) && flags.some((f) => /^--([a-z]+)/.exec(f)?.[1] === name)) {
+  } else if (BARE_FLAGS.includes(name) && token !== `--${name}`) {
+    argProblems.push(`  ${token}: --${name} takes no value — pass it bare`);
+  } else if (VALUE_FLAGS.includes(name) && flags.some((f) => /^--([a-z-]+)/.exec(f)?.[1] === name)) {
     // Only the first was ever read. Which one the operator meant is not
     // something to guess: `--bases=identity-claim --bases=none` is two requests.
     argProblems.push(`  ${token}: --${name} was already given — pass it once`);
@@ -827,6 +853,69 @@ const { GUESS_BASES } = await import('../packages/server/src/import/entity-guess
 // Already loaded transitively by `entity-backfill.js` above — named here only so
 // `checkpointAfterWrite` can reach the connection the writes went through.
 const { getDb } = await import('../packages/server/src/db/index.js');
+const { schemaDelta, describeSchemaDelta } = await import(
+  '../packages/server/src/db/schema-delta.js'
+);
+
+// ── What this run would do to the file's *schema* ──────────────────────────
+//
+// Every other disclosure in this script is about rows. This one is about the
+// container, and it exists because of Theseus's 2026-11-05 §3: he pointed the
+// apply at `backups/klatch.db.backup-2026-03-14` — a file whose whole purpose is
+// to answer *what did this corpus look like in March* — and `getDb()` upgraded it
+// to the November schema on the way in. 4 new objects, 9 new columns, `messages`
+// rebuilt, 5,230,592 → 9,449,472 bytes. Every row move was exact. The artefact
+// stopped being an artefact, and this header — meticulous about the read-only
+// planning handle, the pre-write snapshot and the restore steps — said nothing
+// about it.
+//
+// A backup is the *likeliest* thing to point this tool at, so avoidance is not
+// the fix: a planner cannot plan against a schema it has not migrated. Disclosure
+// is, plus `--no-migrate` for the operator who would rather stop. Both are keyed
+// on a **measured** delta, not on the flag and not on a list of expected columns:
+// the snapshot this run has already taken is copied, the real migration code is
+// applied to the copy, and the two are diffed. A hard-typed list would be right
+// the day it was written and quietly wrong one migration later — wrong in the
+// direction of telling an operator nothing will change.
+//
+// Placed above the undo branch because `--undo` writes too, and runs on exactly
+// the same kind of file.
+const noMigrate = flags.includes('--no-migrate');
+const willWrite = apply || Boolean(undoPath);
+let schemaNote: string | undefined;
+let schemaUnknown: string | undefined;
+try {
+  schemaNote = describeSchemaDelta(schemaDelta(snapshotPath), dbPath);
+} catch (err) {
+  // Never fatal on its own. A database this script cannot read has a refusal of
+  // its own further down, in this script's voice, with the restore steps in it;
+  // taking the run down here would replace that with a worse sentence. The one
+  // exception is the arm below, where the operator has asked not to be migrated
+  // and the only honest answer is that we cannot tell.
+  schemaUnknown = (err as Error).message;
+}
+if (schemaNote) console.log(`\n${schemaNote}`);
+if (noMigrate && willWrite && (schemaNote || schemaUnknown)) {
+  discardSnapshot();
+  console.error(
+    schemaNote
+      ? '\nRefusing to run: --no-migrate, and this run would upgrade the schema above.'
+      : `\nRefusing to run: --no-migrate, and whether this run would upgrade the schema could not be\n  determined (${schemaUnknown}).`
+  );
+  console.error(
+    '  Nothing was written and the snapshot was discarded. Three ways on from here:\n' +
+      '    - run it without --no-migrate, accepting the schema change above;\n' +
+      `    - copy the file first and point this script at the copy, keeping ${path.basename(dbPath)} as it is;\n` +
+      '    - run it with no flags for the review sheet, which never writes to the file at all.'
+  );
+  process.exit(1);
+}
+if (noMigrate && !willWrite && schemaNote) {
+  console.log(
+    '  --no-migrate is on this line and this is a review sheet, which does not write to the file —\n' +
+      '  so there is nothing here to refuse. An --apply or --undo against this database would refuse.'
+  );
+}
 
 if (undoPath) {
   const checked = checkUndoRecord(undoRecordJson);
