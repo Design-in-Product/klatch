@@ -23,3 +23,23 @@ Sent a short memo to Daedalus/Theseus/Argus (cc Iris/Janus/xian) naming the fix 
 `log.html` not due this fire — owed at tonight's STOP fire.
 
 **Drain:** commits read and confirmed none mine; both briefs read, cross-poll-brief unfetchability independently reconfirmed; mail checked locally and across all four cross-repo mailboxes, nothing owed; the standing `ma-smoke` blocker re-derived fresh and, this time, actually boarded where it belongs (rollup, not just COORDINATION); memo sent to the team; gate re-derived fresh and byte-identical. Two consecutive checks found nothing further unblocked. Fire closed bounded.
+
+---
+
+## 12:3x — Session resumed (MID fire)
+
+**Substantive: a real gate-determinism anomaly, found and flagged to the right owner.** Checkpoint: this seat's own START-fire commit `4e953313`. `git log 4e953313..HEAD` empty — no new commits since the START fire closed; `git status --short` clean.
+
+**The finding:** this morning's gate run (above) got `server 140 files/2186 passed/1 skipped (2187)`, explicitly noted as byte-identical to Iris's own independent fresh run a few hours earlier — two agreeing readings. Re-running the identical `npx tsx scripts/gate.mts` this fire, at the unchanged `HEAD`, returned `server 141 files/2199 passed/1 skipped (2200)`. Ran it twice more to rule out a fluke — both agree on 141/2199/2200. `git ls-files` against the test-file pathspec and a plain `find` both currently read 141, consistent with the new number. Checked the historical record in `COORDINATION.md`: "140 files" has been stable for weeks, with only the passed-test count climbing as tests were added to existing files (2174→2178→2179→2186) — so this isn't a stale figure quietly carried forward, it's a twice-confirmed baseline that moved with zero commits in between. Client-side figures (26/39 files, 333/346 tests) were unchanged, matching every prior reading.
+
+Didn't chase a root cause — that's test-infra territory, not chronicling. Wrote it up and sent to Argus (cc xian, Janus): `docs/mail/calliope-to-argus-cc-xian-janus-gate-server-count-moved-140-to-141-files-at-the-identical-commit-2026-11-06.md`.
+
+**Mail:** same four standing Pard-from-10-20 threads, left open (the ma-smoke thread they open is still open on xian per this morning's boarding). All four cross-repo mailboxes fetched fresh against the START-fire checkpoint: `designinproduct` 0 new; `mediajunkie` 4 new (internal, 0 `klatch`/`calliope` hits); `dispatch` 0 new; `piper-morgan-product/mailboxes` 439 new commits — pickaxe search found 8 "klatch" hits, all the same already-known thread (xian's 11-06 retirement of the cross-project research-hub trial; the matching memo to Argus is already sitting in this repo's own mail, nothing needed back); 0 "calliope" hits. Nothing owed from any.
+
+**Standing blocker re-derived fresh:** ma-smoke — no matching branch anywhere, day 16, unchanged same calendar day.
+
+**Rollup:** read directly, still exactly 3 needs-you items, matching this morning's v176 boarding. Not touched — nothing this fire surfaced is a decision only xian can make (beyond the gate anomaly, now routed to Argus).
+
+`log.html` not due this fire — cadence is daily at STOP fire; owed tonight.
+
+**Drain:** no new commits to read; mail checked locally and across all four cross-repo mailboxes, nothing owed; standing blocker re-derived, unchanged; rollup read directly and confirmed consistent; the gate anomaly — the one real open thread this fire surfaced — is now filed with Argus rather than left as an unexplained number on the board. Two consecutive checks found nothing further unblocked. Fire closed bounded.
