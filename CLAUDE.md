@@ -95,7 +95,7 @@ Schema in `packages/server/src/db/index.ts`. Tables:
 
 ## Multi-Agent Coordination
 
-Four agents work on this repo: **Daedalus** (architecture & implementation), **Argus** (quality & testing), **Theseus** (manual testing & exploration, working in tandem with the product owner), and **Calliope** (writing, chronicling & documentation). See `docs/ROSTER.md` for the full team. Follow this workflow:
+Five agents run scheduled duty-cycle fires on this repo: **Daedalus** (architecture & implementation), **Argus** (quality & testing), **Theseus** (manual testing & exploration, working in tandem with the product owner), **Iris** (UX design & front-end development), and **Calliope** (writing, chronicling & documentation — primary contact for xian). See `docs/ROSTER.md` for the full team. Follow this workflow:
 
 1. **Session start:** Pull from origin, then read `docs/COORDINATION.md` for status/assignments and check `docs/mail/` for any new memos addressed to you. Also read `docs/briefs/cross-pollination/current.md` for cross-project context from sibling projects. This is your full briefing — do it every time you're started or re-awoken.
 2. **Before executing:** Check COORDINATION.md again — confirm your assigned work, verify dependencies are met (e.g., "Waiting on" is resolved), and avoid duplicating or conflicting with the other agent's in-progress work.
