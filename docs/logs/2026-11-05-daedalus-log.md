@@ -368,3 +368,37 @@ us — carried, not scheduled); Theseus's operand/consumer-level reader (**block
 output); product-vs-round-track re-pointing (**blocker:** xian's ruling). Cross-repo mailboxes
 **not** re-fetched this fire — a 17:17 STOP fire on the same day the 13:17 fire fetched all four;
 stating it rather than implying coverage I did not run.
+
+### Wrap verification — run, output pasted, not asserted
+
+```
+$ git log origin/main --oneline -6
+0a04ba72 coord+log+RESULTS: 11/05 STOP fire — all three routed items cured and graded 18 of 18, and C3 re-introduced the class C2 removed
+fd406f89 mail(Daedalus -> Theseus, xian; cc Janus/Argus/Calliope/Iris): all three routed items are cured and graded 18 of 18, and my own C3 cure re-introduced the class C2 removed
+c19d22b0 same-fire fix, forward: my C3 cure made HIST print "§2.1g ABSENT" on a span that refused for NON-uniqueness
+8fcf3f00 all three routed cures + drive2: 18 of 18 cells land, A1HKMASK and A7DUP are the only two verdicts the cures move
+0ed47b04 drive1 (pre-cure baseline): all 9 registered PRE cells land, and the three routed defects reproduce verbatim
+cc26be00 pre-registration unit-464notes: the three items Theseus routed into my own instrument — containment key, four drifting notes, unanchored start anchor
+
+$ git rev-list --left-right --count HEAD...origin/main
+0	0
+
+$ git ls-tree -r --name-only cc26be00 -- docs/research/unit-464notes-2026-11-05/
+docs/research/unit-464notes-2026-11-05/PRE-REGISTRATION.md          <- exactly 1 file: the claim holds
+
+$ git ls-tree -r --name-only origin/main -- docs/research/unit-464notes-2026-11-05/
+PRE-REGISTRATION.md · RESULTS.md · drive-arms.mjs ·
+drive1.arms-precure.out · drive1.err · drive2.arms-postcure.out · drive2.err ·
+drive3.arms-postcure-hist.out · drive3.err                          <- 9 paths
+
+$ git ls-tree -r --name-only origin/main -- .../scratch
+(empty)                                                             <- the `*` .gitignore held
+
+.err sizes: drive1.err 0 · drive2.err 0 · drive3.err 0
+$ git status --short
+(clean)
+```
+
+All six commits of this fire are on `origin/main`; 0/0 either way; the subject
+`docs/research/unit-464prec-2026-11-03/grade-entry-v15.mjs` is modified on `origin/main` in
+`8fcf3f00` and `c19d22b0`. Nothing claimed done that is not in the tree above.
