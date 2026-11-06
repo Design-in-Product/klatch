@@ -923,7 +923,61 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-05 ~14:1x PT (**WORK fire — both items he routed are discharged: the
+- **Updated:** 2026-11-05 ~17:5x PT (**STOP fire — all three items Theseus routed into my own
+  instrument are cured and graded 18 of 18 cells, and my own C3 cure re-introduced the
+  drifting-reason-string class C2 had just removed four instances of.**) Checkpoint own last commit
+  `8cdcfe02` (13:37, WORK fire). **5 commits** sat on top before I started, **none mine,
+  author-checked** (Theseus 4, Calliope 1); `git rev-list --count HEAD..origin/main` = **0** after the
+  wrapper's sync. **Mail:** one inbound unanswered at fire start — Theseus's `the-four-frozen-legs-are-graded…`
+  (`b887fc30`, 15:04) — **answered in full this fire** (`fd406f89`). Its §7 offered me three items and
+  forced none; **all three are in my file, so I took all three.**
+  Unit `docs/research/unit-464notes-2026-11-05/` — pre-registration `cc26be00` **pushed to `main` as
+  the only file in the directory before any instrument in it existed**, drive1 (pre-cure baseline)
+  `0ed47b04`, all three cures + drive2 `8fcf3f00`, same-fire forward fix + drive3 `c19d22b0`, mail
+  `fd406f89` in its own commit.
+  **3 drives · 9 arms × 2 instrument versions = 18 registered cells, 18 HIT · 6 predictions, 6 HELD ·
+  1 unregistered defect, mine.** The gate reads **GREEN — 6 of 6 legs ok** on the real tree before the
+  cures and after.
+  **THE THREE CURES.** **C1** `GHKNOOP`'s exclusion was `!/GP3ORDER/.test(l)` — containment, not the
+  row's key — so a `GP4SURVIVE` pair with *differing* verdicts carrying `[cf GP3ORDER]` in its note read
+  **GREEN 6 of 6 on a delta displaying a real verdict flip**. Now keyed on the captured leg name, which
+  `verdicts()` already parsed. **C2** four notes (`GTSVFROZEN`, `GHKNOOP`, `GHKECHO`, `GPKREACHED`) were
+  claims, not measurements; `20`/`3`/`26` were hard-typed digits beside an interpolated list, so
+  `A2PKFLIP` printed `flips 3 [` **4 names** `]`. Every clause is now interpolated. **C3** the start
+  anchor was `text.indexOf('### 2.1g')` — unanchored first match in a document that now quotes its own
+  anchors. Censused live, not recalled: **4 occurrences at 35262 · 96114 · 96235 · 97663, exactly 1 at
+  line start.** Now `/^### 2\.1g(?=[ \t]|$)/m` **and it refuses a second line-start hit**.
+  **THE TWO KNOWN POSITIVES THAT SEPARATE.** `A1HKMASK` **GREEN → RED** (C1) and `A7DUP`
+  **GREEN → RED** (C3's second clause). `A1bHKPLAIN` (same arm, token written `GPXORDER`) is RED either
+  side, isolating C1 on the exclusion alone; `A6TAILONLY` (anchor occurrences 4 → 1) is GREEN either
+  side, so the prose matches are inert while the heading stands. **P2NOTE held: C2 moves no verdict on
+  any of the 18 cells** — it is a report cure and the matrix says so. **Theseus's 5106-byte figure
+  reproduces to the byte** (P5SPAN).
+  **`A7DUP` IS THE ARM HE DID NOT BUILD, AND IT GRADES HALF THE CURE.** His `A11BOTH` drove occurrences
+  to **0**, which grades the absent-anchor refusal the instrument *already had*. Nothing in his set
+  grades duplication. **PRE is GREEN 6/6 — the pre-cure instrument was silent about a duplicated anchor,
+  not loud** (P4DUP). Without that arm the second half of the one-line fix would have shipped ungraded
+  and the matrix would have read 16 of 16.
+  **MY OWN DEFECT, AND THE VERDICT MATRIX PASSED IT.** C3 derives `gIdx` from the span's anchored match,
+  which made `HIST` print **`§2.1g ABSENT`** on `A7DUP` — where the anchor is not absent, it is
+  **duplicated**. A reason string stationary while its predicate moved: **the exact class C2 exists to
+  remove, re-introduced by C3 in the commit that removed four instances of it.** 18 of 18 cells landed
+  on `drive2` *with the false wording inside a cell marked HIT*; what caught it was the **note-movement**
+  arm of my own driver (per leg, is this note the same bytes as its `A0CONTROL` note, and is any leg RED
+  with an unchanged note — **PRE 1, POST 0**), which only exists because his §3 made me build it. Fixed
+  forward; `drive2` kept.
+  **Proportionality, computed this fire:** `git diff --stat 7c596cdb..HEAD -- packages/ scripts/`
+  **empty**; last commit touching `packages/` is `41ae8657`, **2026-10-28, eight days ago**. Theseus
+  reported the same at 15:0x and *offered* to re-point his seat. **I escalated it to xian as a decision
+  rather than an offer** (mail §5) — this is the 09-02 pathology's shape, and absent a word from him the
+  next fire goes to the round track by default. **Named blocker: xian's ruling.**
+  **Drain:** mail (1 inbound, answered in the same fire), all three routed items taken and graded, one
+  self-inflicted defect found and fixed forward, RESULTS written, proportionality escalated. **Deferred,
+  with named blockers:** the 15 CROSS-STATE rows, the `roundNNN-instruments` leg census, the label (all
+  three unchanged from his §7 and untouched by either seat); Theseus's operand/consumer-level reader
+  (blocker: his seat's output); product-vs-round-track re-pointing (blocker: xian's ruling).
+  Log: `docs/logs/2026-11-05-daedalus-log.md`.
+- **Updated (previous):** 2026-11-05 ~14:1x PT (**WORK fire — both items he routed are discharged: the
   re-scoping is adopted with one amendment, and the `GENTRY` leg he would not touch is repaired. My
   cure then printed the routed defect back at me, and the probe that caught it inverted on its own
   fix.**) Checkpoint own last commit `33389f8d` (09:39, START fire). **4 commits** sat on top before

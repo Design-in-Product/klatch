@@ -289,3 +289,82 @@ directory read of the worktree, which is the mistake this morning's START fire h
 origin/main:<path>`, counted in code rather than by hand). The memo is present at its full path.
 
 **Step 3:** this log is committed and pushed last, after steps 1 and 2.
+
+---
+
+## 17:17 — Session resumed (STOP fire, Opus 5)
+
+Wrapper synced the worktree before the fire: `git rev-list --count HEAD..origin/main` = **0**.
+Checkpoint own last commit `8cdcfe02` (13:37). 5 commits on top, author-checked, **none mine**
+(Theseus 4, Calliope 1).
+
+### Mail
+One inbound unanswered at fire start: Theseus's `the-four-frozen-legs-are-graded-and-the-defect-you-cured-has-four-siblings-in-its-own-file`
+(`b887fc30`, 15:04). Read in full. Its §7 names three items *"yours if you want them, nothing
+forced"* — the `GHKNOOP` containment key, four drifting notes, the unanchored start anchor. **All
+three are in my own file (`unit-464prec-2026-11-03/grade-entry-v15.mjs`), so all three are mine. I
+took all three.** Answered in full this fire (`fd406f89`).
+
+### Work — unit `docs/research/unit-464notes-2026-11-05/`
+Pre-registration `cc26be00`, **pushed to `main` as the only file in the directory before any
+instrument in it existed**. Then drive1 (pre-cure baseline) `0ed47b04`, the three cures + drive2
+`8fcf3f00`, same-fire forward fix + drive3 `c19d22b0`, mail `fd406f89` in its own commit.
+
+**9 arms × 2 instrument versions (PRE from `git show 7c596cdb:<subject>`, POST live) = 18 registered
+cells. 18 HIT. 6 predictions, 6 HELD.** Gate on the real tree **GREEN 6 of 6** before and after.
+
+Verified live, not recalled, before registering C3: `### 2.1g` occurs **4** times in
+`LEG-CLASS-CONVENTION.md` at bytes **35262 · 96114 · 96235 · 97663**, exactly **1** at line start.
+Theseus's census reproduces exactly. So does his **5106**-byte A9RENAME span figure (P5SPAN).
+
+The two arms that separate the versions: `A1HKMASK` GREEN → RED (C1) and `A7DUP` GREEN → RED (C3's
+second clause). `A1bHKPLAIN` RED either side isolates C1 on the exclusion token alone; `A6TAILONLY`
+GREEN either side shows the three prose anchor matches inert while the heading stands. **P2NOTE: the
+C2 note cure moves no verdict on any of the 18 cells.**
+
+`A7DUP` is my own addition and it matters: his `A11BOTH` drove occurrences to **0**, grading the
+absent-anchor refusal the instrument already had. Nothing in his set grades **duplication**. PRE is
+GREEN 6/6 — the pre-cure instrument was silent, not loud, about a duplicated anchor. Without that
+arm the second half of the one-line fix ships ungraded and the matrix reads 16 of 16.
+
+### One defect of mine, and the verdict matrix passed it
+C3 derives `gIdx` from the span's anchored match. That made `HIST` print **`§2.1g ABSENT`** on
+`A7DUP`, where the anchor is **not absent — it is duplicated**. A reason string stationary while its
+predicate moved: **the exact class C2 removes four instances of, re-introduced by C3 in the same
+commit.** All 18 cells landed on `drive2` *with the false wording inside a cell marked HIT*. What
+caught it was the note-movement arm of my own driver — per leg, is this note the same bytes as its
+`A0CONTROL` note, and is any leg RED with an unchanged note: **PRE 1 (`GHKECHO` on `A3ECHO`), POST
+0** — which only exists because his §3 made me build it. Fixed forward; `drive2` kept.
+
+Second time this week: a cure written beside its own grader needs the grader to measure the cure's
+**output text**, not only its verdict.
+
+### Gate
+`node docs/research/unit-464prec-2026-11-03/grade-entry-v15.mjs` → **GREEN — 6 of 6 legs ok**, run
+at HEAD before any edit and again after all three cures. Pre-commit census printed `CENSUS OK`,
+**153 files, 43 swept / 110 deferred**, on every one of the five commits.
+
+### Proportionality, computed not recalled
+`git diff --stat 7c596cdb..HEAD -- packages/ scripts/` is **empty**. Last commit touching
+`packages/`: `41ae8657`, **2026-10-28 — eight days ago**. Theseus reported the same figure at 15:0x
+and *offered* to re-point his seat. I escalated it to xian as a **decision** rather than an offer
+(mail §5): this is the shape of the 09-02 pathology — a round track whose tail runs on while no
+product item moves — and absent a word from him the next fire goes to the round track by default.
+**Named blocker: xian's ruling.**
+
+### Question-box check (STOP procedure item 4)
+Considered, not skipped. Nothing new this fire. Theseus's `question-theseus-2026-11-01-the-shape-i-had-just-read-about.md`
+in `dispatch/mail/` is still the one open needs-you item and I am not re-opening it beyond saying it
+is there. Deliberate **no** for this seat today: the one thing I'd want to ask xian is the
+product-vs-round-track ruling, and that is an ordinary work question, so it went through mail §5
+where it belongs rather than into the question box.
+
+### Drain
+Mail (1 inbound, answered same fire) · all three routed items taken, cured and graded · one
+self-inflicted defect found and fixed forward · RESULTS written · proportionality escalated.
+**Deferred, with named blockers:** the 15 CROSS-STATE rows, the `roundNNN-instruments` leg census,
+the label (all three unchanged from his §7, untouched by either seat, no blocker named by either of
+us — carried, not scheduled); Theseus's operand/consumer-level reader (**blocker:** his seat's
+output); product-vs-round-track re-pointing (**blocker:** xian's ruling). Cross-repo mailboxes
+**not** re-fetched this fire — a 17:17 STOP fire on the same day the 13:17 fire fetched all four;
+stating it rather than implying coverage I did not run.
