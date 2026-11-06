@@ -4081,7 +4081,82 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
 - **Status:** available — duty cycle armed.
-- **Updated:** 2026-11-05 ~14:4x–15:3x PT (**WORK fire — I took the four frozen-keyed legs of the
+- **Updated:** 2026-11-05 ~19:4x–20:1x PT (**STOP fire — nothing was routed to me, so instead of
+  opening another round I went looking for scheduled product work, and found xian's own "Go" sitting
+  unexecuted on the attention board for 38 days. The backfill is applied: 9 channels re-pointed,
+  9 agents minted, 821 message rows re-stamped — verified off the database, not off the tool.**
+  Checkpoint is **my own** last commit `e6331719` (11-05 15:07), taken after an author check: the
+  three commits at the tip at fire open — `28f55713`, `1da8cc60`, `27ff3c39`, two of them titled
+  "11/05 STOP fire" — are **Iris's, Argus's and Daedalus's**, not mine. 10 commits since, authors
+  Daedalus 7 / Argus 1 / Calliope 1 / Iris 1, **none mine**; `--dirstat` 100% under `docs/`;
+  `--stat -- packages/ scripts/` **empty**.
+  **One memo addressed to me** (Daedalus, 17:2x — all three items I routed him cured and graded 18 of
+  18, his own C3 cure re-introducing the class C2 removed), read in full at fire open and answered in
+  the same fire. **His §6 routed me nothing.** The soft spot he offered — `A0CONTROL` and
+  `A6TAILONLY` being his only two GREEN-either-side arms — is real and I **declined it this fire in
+  writing** rather than let the silence read as an oversight.
+  **Why:** his §5 escalated proportionality to xian (*"absent a word, the next fire goes to the round
+  track by default"*). His figure reproduces — `packages/` last touched `41ae8657`, **2026-10-28, 8
+  days** — and two sharper ones run here: **2122 commits since 2026-09-14, 47 touched `packages/`
+  (2.2%)**, and **since 2026-09-29 exactly one commit touched `packages/client/src`** (`6344eed2`,
+  Iris, 10-06, implementing a *different* ruling). But my own 09-06 note says the discriminator is
+  not the ratio, it is *a scheduled product item sitting unbuilt* — so I checked for one before
+  asking xian anything. **`docs/operations/attention-rollup.md`'s top item has read "🔴 Backfill —
+  RULED, 2026-09-28: xian says Go. Ready to run; no owner assigned yet" for 38 days, with the command
+  in it**, and Calliope's covering memo that day deliberately left it for "the next agent with
+  bandwidth." The ruling we were both about to ask for was already written.
+  **The apply** (`docs/research/backfill-entity-bindings-applied-2026-11-05.md`, commit `59405a6e`).
+  Reversibility checked *before* acting: target tracked in git, tool snapshots from a read-only handle
+  pre-write, Round 204 drove `--undo` byte-for-byte both directions twice. Dry run reproduced the
+  approved sheet to the row (`72 — 9 would move, 63 skipped`, **821 P2 / 0 P3**, reused 0); apply
+  `9 channel(s) re-pointed, 9 agent(s) minted`. **Verified two ways, neither the script's own success
+  line:** planner re-run `63 — 0 would move` (population drops 72→63 as the nine leave
+  `default-entity` scope — and the tool's restore instructions predict `72 — 0 would move`, the
+  post-*restore* line, so a reader checking an apply against it calls a correct run wrong); and a
+  read-only `better-sqlite3` query finding 9 new entities carrying
+  174+148+122+101+94+93+42+34+13 = **821** rows, `entities` 68→77, 9 `channel_entities` re-pointed,
+  **129** still on `default-entity` = 63 skipped imports + 66 out-of-scope native. Both sums close.
+  **One finding, routed to Daedalus:** the apply calls `runMigrations` against a file whose purpose is
+  to be a frozen March artefact, so the backup now carries the November schema (`+files`,
+  `+file_refs`, 2 indexes; `messages` gained `stop_reason` with `created_at` **relocated** — a table
+  rebuild; `channels` `+type`; `entities` `+effort`/`+reflections`). **5,230,592 → 9,449,472 bytes,
+  +81%**, page count 1277→2307 with **`freelist_count` 1016** (~4.16 MB slack). Not `VACUUM`ed — a
+  second unrequested write. Not a correctness defect; the row moves are exact.
+  **Two bookkeeping defects, neither mine to fix unilaterally:** `backups/` is gitignored
+  (`.gitignore:21`) while two `.db` files inside it are **tracked**, so `git add` refused the snapshot
+  and undo record — **both stay Amber-local and the way back is git history, not the JSON**; I
+  recorded the tracked corpus's modification with `-f` on the reasoning that five seats run off one
+  `origin/main` and a locally-applied tracked file leaves the other four reading the pre-ruling answer.
+  And **`ROADMAP.md:277` still ends "Round 205 (Theseus) found a live, unresolved defect, not yet
+  answered"** — answered the **next day** by Round 206 (`7b00c713`), with 208/210 behind it; the file
+  was last edited 2026-09-13. Routed to Calliope with `ROADMAP.md`/`STATE.md`'s now-false "not yet
+  applied to real data".
+  **xian's own step 1, 37 days on:** `state-of-klatch-next-steps-2026-09-29.md` sequences *"work
+  through the UI issues and compositional-logic bugs"* **then** the five-agent roadmap meeting. Four
+  of the five items he named are on **no board** — 0 hits in this file, 0 in the rollup: §2.1
+  render-hang; **§2.2 two-turns-per-block, flagged High**; §2.5 attachment asymmetry (all three open,
+  unboarded, unassigned); §2.4 memory-path bug (open, boarded 🟡, unassigned); **§2.3 CLAUDE.md
+  omitting Iris was still live at line 98 and is fixed in `59405a6e`** — it is the Layer 2 artefact
+  auto-loaded into every imported entity, so the drift was reaching agents, not just readers. **One
+  question open on xian:** board and assign that list now, ahead of the meeting, as he sequenced it?
+  **Gate re-derived fresh, all byte-identical to today's three earlier fires:** typecheck clean ×4;
+  server **140 files · 2186 passed · 1 skipped (2187)**; client **26 passed | 13 skipped (39) · 333
+  passed | 13 skipped (346)**; `sweep-probes --census` **153 files, 43 swept / 110 deferred, CENSUS
+  OK**. **Cross-repo**, all four fetched fresh: `designinproduct` `4f6d88b` (0 new); `mediajunkie`
+  `8964bda` (1 new, Notarios→Pard); `dispatch` `f975e63` (2 new daily syncs, one flagging **my own**
+  question-box letter at ~95.2h, 6th cycle, awaiting xian); `piper-morgan-product` `7512515ce1`
+  (12 new `mailboxes/` commits, content-grepped, **0 hits**). Nothing addressed to this seat.
+  **Mail thread left OPEN** — my reply routes Daedalus the `runMigrations` finding and leaves one
+  question on xian. **Drain:** memo read and answered in-fire; the 38-day ruled item taken and
+  executed with both verifications; one of xian's five step-1 items closed; two bookkeeping defects
+  routed; gate re-derived; mail swept locally and ×4 cross-repo; scratch removed, `git status` clean
+  at wrap. **Four deferrals, each with a named blocker and no deadline:** the operand/consumer-level
+  reader (mine, a build, the blocker under §4's `22`-as-ceiling); the 15 CROSS-STATE rows (unclaimed
+  by either seat); the `roundNNN-instruments` leg census (91 directories); the 8 tree-wide
+  boundary-disagreement rows (blocked on the reader). **Added deliberately:** Daedalus's
+  two-GREEN-either-side soft spot — declined in favour of ruled product work, not forgotten. Fire
+  closed **bounded**. Log: `docs/logs/2026-11-05-theseus-log.md`.)
+- **Updated (previous):** 2026-11-05 ~14:4x–15:3x PT (**WORK fire — I took the four frozen-keyed legs of the
   v1.5 entry gate, which both seats had named as reached by neither, and all four now have a known
   positive. 13 registered cells, 13 HIT.** Checkpoint is **my own** last commit `a38337ed`
   (11-05 11:09), taken after an author check: the three commits at the tip at fire open — `e1fd8607`,

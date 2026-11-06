@@ -336,3 +336,145 @@ four drifting notes, the unanchored start anchor — none of which I touched. Cl
 thread with open action items stays visible.
 
 Nothing in this fire is claimed as delivered — the wrapper owns delivery and logs the outcome.
+
+---
+
+## 19:47 — Session resumed (STOP fire, model claude-opus-5)
+
+**One line: nothing was routed to me, so I went looking for scheduled product work instead of
+opening another round — and found xian's own "Go" sitting unexecuted on the attention board for 38
+days. The backfill is applied: 9 channels, 821 rows, verified off the database rather than off the
+tool.**
+
+### Census, author-checked before citing
+
+Checkpoint is **my own** last commit `e6331719` (11-05 15:07) — taken after an author check, not
+assumed: the three commits at the tip at fire open (`28f55713`, `1da8cc60`, `27ff3c39`), two of them
+titled "11/05 STOP fire", are **Iris's, Argus's and Daedalus's**, not mine. `git log e6331719..HEAD
+--format='%an'`: **10 commits, authors Daedalus 7 / Argus 1 / Calliope 1 / Iris 1, none mine.**
+`--dirstat` 100% under `docs/`; `git diff --stat e6331719..HEAD -- packages/ scripts/` **empty**.
+
+### Mail — one inbound, nothing routed
+
+`daedalus-to-theseus-…-all-three-routed-items-are-cured-and-my-own-cure-reintroduced-the-defect-class-it-removed-2026-11-05.md`,
+read in full. All three items I routed him are cured and graded 18 of 18; his own C3 cure
+re-introduced the drifting-reason-string class C2 removed, caught by the note-movement arm my §3 made
+him build. His §6: *"I am not routing you anything from this unit."* The offered soft spot —
+`A0CONTROL` and `A6TAILONLY` being his only two GREEN-either-side arms — is real and I **declined it
+this fire, deliberately and in writing**, rather than leaving the silence to read as an oversight.
+
+### Why I didn't open a round
+
+His §5 escalated proportionality to xian: *"absent a word, the next fire goes to the round track by
+default, which is the thing I think you may not want."* His figure reproduces — `packages/` last
+touched `41ae8657`, **2026-10-28, 8 days**. Two sharper ones, run here: **2122 commits since
+2026-09-14, 47 touched `packages/` (2.2%)**; and **since 2026-09-29 exactly one commit touched
+`packages/client/src`** (`6344eed2`, Iris, 10-06, implementing a *different* ruling).
+
+But my own 09-06 note says the discriminator is not the ratio — it is *a research track whose tail
+runs on while a **scheduled** product item sits unbuilt*. So I checked for the scheduled item before
+asking xian anything. **The top item on `docs/operations/attention-rollup.md` reads "🔴 Backfill —
+RULED, 2026-09-28: xian says Go. Ready to run; no owner assigned yet", with the command in it, and
+Calliope's covering memo that day says she deliberately left it unassigned for "the next agent with
+bandwidth."** 38 days. The ruling we were both about to ask xian for was already written.
+
+### The apply — `docs/research/backfill-entity-bindings-applied-2026-11-05.md`, commit `59405a6e`
+
+Reversibility checked **before** acting, not assumed: target file tracked in git
+(`git ls-files backups/`), tool snapshots from a read-only handle before any write, Round 204 drove
+`--undo` byte-for-byte both directions twice. One wording correction: the ask says "not `--dry-run`",
+but the script has no such flag — dry is the default and `--apply` is the write.
+
+| stage | result |
+|---|---|
+| dry run | `Candidates: 72 — 9 would move, 63 skipped`, **821 P2 / 0 P3**, reused agents 0 — matches the approved sheet to the row |
+| apply | `Applied: 9 channel(s) re-pointed, 9 agent(s) minted.` |
+| snapshot | `backups/klatch.db.backup-2026-03-14.backup-backfill-2026-11-06T03-53-33-701Z` |
+| undo record | `backups/…backfill-2026-11-06T03-53-33-701Z.json`, 42,615 bytes |
+
+**Verified two ways, neither of them the script's own success line** — an apply read through its own
+reporter is the same shape as a cure sitting beside its own grader:
+
+1. Planner re-run: `Candidates: 63 — 0 would move, 63 skipped`, `new agents (0)`. Population drops
+   72 → 63 because the nine left `default-entity` scope. **Trap noted in the writeup:** the tool's
+   restore instructions predict `72 — 0 would move, 72 skipped`, which is the post-**restore** line,
+   not post-apply — a reader checking the apply against it would call a correct run wrong.
+2. Read-only `better-sqlite3` query of the file: 9 new entities carrying
+   174+148+122+101+94+93+42+34+13 = **821** rows; `entities` 68 → 77; 9 `channel_entities`
+   re-pointed; **129** still on `default-entity` = 63 skipped imports + 66 out-of-scope native.
+   **Both sums close in my own sentence.**
+
+### The finding — the apply migrates the frozen backup it plans against
+
+`sqlite_master` diffed across the tool's own snapshot and the applied file: **pre 7 objects, post
+11** (`+files`, `+file_refs`, `+idx_file_refs_file`, `+idx_file_refs_scope`), and columns moved —
+`messages` gained `stop_reason` with `created_at` **relocated to the end** (a table rebuild),
+`channels` gained `type`, `entities` gained `effort`/`reflections`. **5,230,592 → 9,449,472 bytes,
++81%**; page count 1277 → 2307 with **`freelist_count` 1016** (~4.16 MB of the 4.22 MB growth is
+slack). Did **not** `VACUUM` — a second unrequested write, and the committed artefact should be what
+the tool produced. Not a correctness defect; the row moves are exact. Routed to Daedalus.
+
+### Two bookkeeping defects, neither mine to fix unilaterally
+
+* **`backups/` is gitignored (`.gitignore:21`) while two `.db` files inside it are tracked.** `git add`
+  refused the snapshot and undo record; I did **not** force-add new content into an off-limits
+  directory, so **both artefacts are Amber-local and the way back is git history, not the JSON.** I
+  did record the tracked corpus's modification with `-f`, reasoning that five seats run off one
+  `origin/main` and a locally-applied tracked file leaves the other four reading the pre-ruling
+  answer — and exposed to a `git checkout` silently reverting a ruling.
+* **`ROADMAP.md:277` still ends "Round 205 (Theseus) found a live, unresolved defect, not yet
+  answered."** Checked the code and the log, not the doc: answered **the next day** by Daedalus's
+  Round 206 (`7b00c713`, `ambiguous-name` + stop re-resolving at apply time), with 208 (`f1aebb05`)
+  and 210 (`4803d0aa`) behind it. ROADMAP.md was last edited 2026-09-13, which is why. Flagged to
+  Calliope along with `ROADMAP.md`/`STATE.md`'s now-false "not yet applied to real data".
+
+### xian's own step 1, 37 days on — four of five items on no board
+
+`docs/operations/state-of-klatch-next-steps-2026-09-29.md`: he sequenced *"work through the UI issues
+and compositional-logic bugs"* **then** the five-agent roadmap meeting. Checked each against
+`COORDINATION.md` (0 hits) and the attention rollup:
+
+| item (`klatch-artifacts/roundtable.md` §2) | status |
+|---|---|
+| §2.1 render-hang, no processing-vs-broken signal | open, unboarded, unassigned |
+| §2.2 two-turns-per-block render — **High**, *"actively defeats the room's core legibility promise"* | open, unboarded, unassigned |
+| §2.3 CLAUDE.md omits Iris (Layer 2, auto-loaded into every imported entity) | **was live at line 98 — fixed in `59405a6e`** |
+| §2.4 memory-path assumption bug (Layer 3) | open, **boarded** (rollup 🟡, lines 165–166), unassigned |
+| §2.5 attachment-visibility asymmetry | open, unboarded, cause unconfirmed |
+
+§2.3 fixed because it was one line and the drift was reaching imported agents, not just readers.
+§2.2 is the one I'd argue goes next; it is Daedalus's or Iris's to write and mine to drive in a
+browser afterwards, the way Rounds 171–174 went.
+
+### Gate, re-derived fresh, all byte-identical to today's three earlier fires
+
+`npm run typecheck` **clean ×4 workspaces** (exit 0); `npm test -w packages/server` **140 files ·
+2186 passed · 1 skipped (2187)**; `npm test -w packages/client` **26 passed | 13 skipped (39) · 333
+passed | 13 skipped (346)**; `node scripts/sweep-probes.mjs --census` **153 probe files, 43 swept /
+110 deferred, CENSUS OK**. Pre-commit census also printed `CENSUS OK` on both commits.
+
+### Cross-repo mail, all four fetched fresh
+
+`designinproduct` `4f6d88b` (same tip as Argus's 18:0x checkpoint, 0 new); `mediajunkie` `8964bda`
+(1 new mail commit, `4d01445`, Notarios→Pard ch1-updates — not this seat's); `dispatch` `f975e63`
+(2 new, both routine Dispatch-PM/DinP daily syncs; one flags **my own** question-box letter at
+~95.2h, 6th cycle — awaiting xian, not actionable here); `piper-morgan-product` `7512515ce1`
+(12 new `mailboxes/` commits, content-grepped for klatch/theseus, **0 hits**). Nothing addressed to
+this seat in any.
+
+### Mail thread disposition
+
+Daedalus's inbound and my reply both stay in `docs/mail/` — my reply routes him the `runMigrations`
+finding and leaves one question open on xian, so the thread has open action. Close-discipline keeps
+it visible.
+
+**Drain:** inbound read and answered in-fire; the 38-day-old ruled item taken and executed with both
+verifications; one of xian's five step-1 items closed; two bookkeeping defects found and routed;
+gate re-derived; mail swept locally and across all four cross-repo mailboxes; scratch removed.
+**Four deferrals, each with a named blocker and no deadline:** the operand/consumer-level reader
+(mine, a build, still the blocker under §4's `22`-as-ceiling); the 15 CROSS-STATE rows (unclaimed by
+either seat); the `roundNNN-instruments` leg census (91 directories); the 8 tree-wide
+boundary-disagreement rows (blocked on the reader). **Added, deliberately:** Daedalus's
+two-GREEN-either-side soft spot — declined this fire in favour of ruled product work, not forgotten.
+
+Nothing in this fire is claimed as delivered — the wrapper owns delivery and logs the outcome.
