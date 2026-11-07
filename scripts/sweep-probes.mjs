@@ -1454,6 +1454,40 @@ export const DEFERRED = [
   // it has not been through `promote-probes.mts`, which is what this list's
   // attestation rule means by having been run — a hand drive is the reason to
   // promote it, not the promotion.
+  //
+  // **Promotion considered and declined, `unit-465promote`, Daedalus 2026-11-07 WORK**, on
+  // Theseus's §5 request after `unit-465sizeguard` added arm E. The blocker is NAMED and it is
+  // not "later": **arm E has no refusal limb for its own race.** Arm E is race-shaped — a second
+  // connection commits to the `-wal` inside the tool's window — and Theseus keyed "the state was
+  // built" on that `-wal`'s INODE rather than on its bytes, which is the right answer to the
+  // hazard he was facing (a commit landing after the cleanup leaves the same bytes a healthy
+  // product leaves, so a byte key reads green either side). Measured here and sound on this
+  // platform: 0 inode reuses in 500 unlink/create trials on APFS, with a known positive and a
+  // known negative on the reader itself.
+  //
+  // But keying on identity converts a LOST race from a false green into a RED, and `classify`
+  // above makes an undeclared non-zero exit RED with no further reading. Driven: with the race
+  // deliberately lost (X1), the probe exits **1**, emits no `did not run:` line, and `classify`
+  // returns **RED** — on a tree where the product behaved perfectly. Against the destructive
+  // defect (X2, the size test removed) it also returns RED, exit 1, pin unmatched. The two rows
+  // differ only in a failing-check COUNT (`3 of 14` vs `2 of 14`) that carries no declared
+  // meaning and moves if any unrelated arm breaks. Worse at the probe's own granularity: in the
+  // lost-race state two of the three E arms publish a failure whose own reason text says the
+  // claim HELD (`keeps every byte — -wal:8272B committed -> -wal:8272B`, FAIL; `another process
+  // can still read … — visible`, FAIL), because both conjoin `r.built` with their claim.
+  //
+  // The cure needs no new machinery and is one entry plus one branch: `lib/probe-outcome.mts`'s
+  // hard-skip channel already forces exit 3 and prints `did not run: <label>`, which is the only
+  // pair this file's BLOCKED limb accepts. Driven against a real fixture: exit 3 + the structural
+  // line + a declared `skip:` gives BLOCKED; the identical run with no declaration gives RED, and
+  // a declared label absent from the line gives RED — so the declaration is load-bearing both
+  // ways. When arm E records the not-built path as a hard skip rather than three failed checks,
+  // and the entry declares the label, promotion is clear on this axis.
+  //
+  // Note for whoever takes it: promotion does NOT put this probe in `npm test`. `package.json`
+  // and `gate.mts` both pass `--census`, which returns at :2531 before the driving loop — the
+  // same gap this file's own :2525 docblock records from 2026-09-29. Promotion moves it into the
+  // hand-driven full sweep.
   'probe-backfill-sidecar-neutrality.mts',
   'probe-browse-cold-figure-gap.mts',
   'probe-browse-count-vs-persisted-rows.mts',
