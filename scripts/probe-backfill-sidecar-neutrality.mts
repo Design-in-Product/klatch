@@ -43,6 +43,27 @@ const REPO = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..')
 const TOOL = path.join(REPO, 'scripts/backfill-entity-bindings.mts');
 const results: ProbeVerdict[] = [];
 const made: string[] = [];
+/**
+ * Arms that did not run. Today this is arm **E**'s not-built path and nothing
+ * else: a lost race is a precondition failure, so it is a **hard** skip (a bare
+ * string), which `probe-outcome.mts` turns into exit 3 plus a structural
+ * `did not run: <label>` line rather than into three failed claims.
+ *
+ * **For whoever promotes this probe:** the exit-3 pair is only half of what
+ * `sweep-probes.mjs` `classify` needs. `BLOCKED` requires the label to be
+ * DECLARED by the entry *and* to appear on the run's own `did not run:` line —
+ * measured both ways in `unit-465skipE`, and an undeclared exit 3 stays RED. The
+ * entry therefore needs
+ *
+ *     skip: /the race state could not be built/,
+ *
+ * and without it promotion converts a lost race into a red on a tree where the
+ * product behaved perfectly, which is the state Daedalus declined promotion over.
+ *
+ * Array-initialised, never re-assigned, elements pushed as string literals — the
+ * three properties `probe-round224` arm Q3 holds over every caller of this field.
+ */
+const skipped: string[] = [];
 
 /**
  * A WAL-mode, current-schema database with **no sidecars on disk** — the state
@@ -258,10 +279,40 @@ console.log('probe-backfill-sidecar-neutrality');
 //    what proves `sidecarsBefore` was captured with it absent and the cleanup had
 //    not yet run. A different inode means the racer made its own file after the
 //    cleanup, and the arm **refuses rather than passes** — three attempts, then
-//    red. That is the third instance of the two-greens-either-side shape this
-//    probe's own history is made of, and the first one caught before it shipped.
+//    a declared hard skip. That is the third instance of the two-greens-either-side
+//    shape this probe's own history is made of, and the first one caught before it
+//    shipped.
+//
+//    **The key is platform-dependent, and this comment used to read as though it
+//    were not.** An inode key has exactly one false-green — inode *reuse*, the
+//    filesystem handing the unlinked inode back to the next file created in its
+//    place, which would read "same inode" for a `-wal` the racer made *after* the
+//    cleanup. Daedalus measured it where this probe runs (`unit-465promote`, 500
+//    unlink/create trials under `os.tmpdir()`, APFS on `/System/Volumes/Data`):
+//    1,000 distinct inodes of 1,000, **0 reuses**, with both controls carried. On
+//    ext4, reuse after unlink is ordinary. So the key is sound on the machine this
+//    probe is driven on and would need re-measuring, not re-reading, anywhere else.
+//
+//    **And a lost race is a declared hard skip, not a red** (`unit-465skipE`).
+//    Keying on identity converts a lost race from a false green into a non-zero
+//    exit, and `sweep-probes.mjs` `classify` makes an *undeclared* non-zero exit
+//    RED with no further reading — a red on a tree where the product behaved
+//    perfectly. Worse, the two downstream claims used to conjoin `r.built` with
+//    their own claim, so in that state they printed a FAIL whose own reason text
+//    said the claim held (`-wal:8272B committed -> -wal:8272B`; `visible`). They
+//    are not reached in that state now: the not-built path records a hard skip
+//    through `probe-outcome.mts`, which exits 3 and prints a structural
+//    `did not run: <label>` line. For the sweep to read that as BLOCKED rather
+//    than RED the entry must declare the label — see the note by `skipped` below.
 {
   const ATTEMPTS = 3;
+  /**
+   * X1, `unit-465skipE`: await the child's exit before opening the racer, so the
+   * cleanup has already removed the tool's `-wal` and the racer's `INSERT`
+   * necessarily makes its own file. Deterministic — a lost race on every attempt.
+   * The state builder for the skip path; it cripples nothing in the product.
+   */
+  const LOSE = process.env.KLATCH_U465SKIPE_LOSE === '1';
   type Race = {
     built: boolean;
     why: string;
@@ -288,6 +339,20 @@ console.log('probe-backfill-sidecar-neutrality');
 
     // The tool's own `-wal`: it cannot pre-exist, `build()` removed both sidecars.
     let toolIno = -1;
+    if (LOSE) {
+      // X1. Stat the `-wal` first so `toolIno` is a real inode (the arm must lose
+      // the race, not fail to see one), then let the child finish before the racer
+      // opens — the cleanup has run by then.
+      while (toolIno < 0 && !exited) {
+        try {
+          toolIno = fs.statSync(p + '-wal').ino;
+          break;
+        } catch {
+          await new Promise((r) => setTimeout(r, 1));
+        }
+      }
+      await done;
+    }
     while (toolIno < 0 && !exited) {
       try {
         toolIno = fs.statSync(p + '-wal').ino;
@@ -356,19 +421,34 @@ console.log('probe-backfill-sidecar-neutrality');
     tries++;
   }
 
-  check('E', 'the race state is built', r.built, `${r.why} — ${tries} attempt(s)`);
-  check(
-    'E',
-    'a -wal written inside the window keeps every byte',
-    r.built && r.racerBytes > 0 && r.walAfter === `-wal:${r.racerBytes}B`,
-    `-wal:${r.racerBytes}B committed -> ${r.walAfter}`
-  );
-  check(
-    'E',
-    'another process can still read the database it is writing',
-    r.built && r.rowSeen === 'visible',
-    r.rowSeen
-  );
+  // The state is a **precondition**, not a claim about the product, so it is
+  // evidence rather than a check row: under the cure it is enforced by the exit
+  // code, and a row emitted only on the branch that makes it true is green by
+  // construction. `unit-465skipE` registered that trade before driving — the arm
+  // publishes two claims, and the green conclusion line reads 13, not 14.
+  console.log(`  [E] state ${r.built ? 'BUILT' : 'NOT BUILT'} — ${r.why} — ${tries} attempt(s)`);
+
+  if (!r.built) {
+    // A hard skip: `probe-outcome.mts` forces exit 3 and prints a structural
+    // `did not run: <label>` line. The label carries **no attempt count** on
+    // purpose — `ATTEMPTS` is a constant above and a number baked into the
+    // declared label would drift the moment it changes, while the sweep's `skip:`
+    // pattern is matched against this exact line. The count is on the line above.
+    skipped.push('the race state could not be built');
+  } else {
+    check(
+      'E',
+      'a -wal written inside the window keeps every byte',
+      r.racerBytes > 0 && r.walAfter === `-wal:${r.racerBytes}B`,
+      `-wal:${r.racerBytes}B committed -> ${r.walAfter}`
+    );
+    check(
+      'E',
+      'another process can still read the database it is writing',
+      r.rowSeen === 'visible',
+      r.rowSeen
+    );
+  }
 }
 
 for (const p of made) {
@@ -378,4 +458,4 @@ for (const p of made) {
   }
 }
 
-summariseAndExit({ probeName: 'backfill-sidecar-neutrality', results });
+summariseAndExit({ probeName: 'backfill-sidecar-neutrality', results, skipped });
