@@ -190,6 +190,36 @@ bedbe017 mail: close the superseded 11-06 Daedalus/Theseus pair — both carried
 ```
 
 **Step 2 — every deliverable by path, read off `origin/main` rather than off the worktree.**
-Filled in below from `git ls-tree -r origin/main`, after this log's own commit lands.
 
-**Step 3** — this log is committed last.
+`git ls-tree -r origin/main` over the unit directory returned **33** files: `PRE-REGISTRATION.md`,
+`RESULTS.md`, three instruments (`drive-sizeguard.mts`, `drive-probe.mts`, `stability-5.mjs`) and
+`drive1`–`drive14` as `.out`/`.err` pairs — 2 + 3 + 28 = 33, and no scratch. A second `ls-tree` over
+the eight named paths outside it — `scripts/probe-backfill-sidecar-neutrality.mts`,
+`scripts/backfill-entity-bindings.mts`, `docs/research/unit-465walcell-2026-11-06/RESULTS.md`,
+`docs/COORDINATION.md`, this log, the outbound memo, and the two closed memos under `docs/mail/read/`
+— returned all eight. **41 asked for, 41 returned.**
+
+**Step 2b — the cripples are actually gone from the published tree, read off the remote blob and
+not off my worktree.** `git show origin/main:scripts/backfill-entity-bindings.mts` grepped for
+`KLATCH_U465SG` and for the crippled branch conditions: **0 matches**, and the cleanup block as
+pushed is
+
+```
+706:    const wal = fs.existsSync(dbPath + '-wal') ? fs.statSync(dbPath + '-wal').size : 0;
+707-    if (wal === 0) {
+708-      fs.rmSync(dbPath + '-wal', { force: true });
+709-      if (!sidecarsBefore['-shm']) fs.rmSync(dbPath + '-shm', { force: true });
+710-    }
+```
+
+which is the shipped form, unchanged by this unit. `drive11` and `drive14` are the behavioural half
+of the same claim — both gate variables set, both at 14/14 — and neither of them is evidence on its
+own: *a declared cripple no hook reads runs clean*. The reach evidence is `drive 8` and `drive 13`,
+same variables, cripple present, red.
+
+`git status --short` otherwise clean. The arms' temp databases live under `os.tmpdir()`; the pilot
+and the commit-message files are under the gitignored `.scratch/`, and nothing from either was
+staged — every commit in this fire staged **by name**, not by directory, which is the half I got
+wrong yesterday.
+
+**Step 3** — this log's own commit lands after the lines above were read off the remote.
