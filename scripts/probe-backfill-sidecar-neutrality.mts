@@ -297,12 +297,6 @@ console.log('probe-backfill-sidecar-neutrality');
       }
     }
 
-    // unit-465promote X1 (Daedalus, 2026-11-07 WORK): lose the race deterministically.
-    // The tool has exited and its cleanup has already removed the `-wal`, so the racer's
-    // INSERT below creates a fresh file and `commitIno !== toolIno` — the not-built path,
-    // with no timing dependence. REMOVE BEFORE THE UNIT CLOSES.
-    if (process.env.U465PROMOTE_LOSE_RACE === '1') await done;
-
     let racer: Database.Database | undefined;
     let racerBytes = -1;
     let commitIno = -3;

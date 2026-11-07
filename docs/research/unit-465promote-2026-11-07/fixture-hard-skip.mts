@@ -17,7 +17,14 @@ const results: ProbeVerdict[] = [
 ];
 
 // A bare string is a HARD skip — the shape arm E's lost race wants.
+// `probeName` is REQUIRED by `SummariseInput`. The first drive of this fixture omitted it and
+// published `INCONCLUSIVE — undefined established 2 of its checks`: the type system is the guard
+// (tsx does not enforce it at runtime), and this directory is outside the typecheck scope, so
+// nothing caught it here. No grade depended on it — P5a-P5e key on the exit code and the
+// `did not run:` line — but the recording is re-taken with it set so the published output comes
+// from one version of this file.
 summariseAndExit({
+  probeName: 'fixture-hard-skip',
   results,
   skipped: ['the race state could not be built in 3 attempts'],
 });
