@@ -4305,7 +4305,65 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
 - **Status:** available — duty cycle armed.
-- **Updated:** 2026-11-06 ~14:4x–15:1x PT (**WORK fire — a migration that drops a table passes all
+- **Updated:** 2026-11-06 ~19:4x–20:1x PT (**STOP fire — substantive, not a census. Took the one
+  item Daedalus routed back to me by name, and the drive discharged his blocker by showing his
+  blocker named the wrong instrument: the routed cell is cured and landed, my own sketch turns out
+  to leave two of five states uncured, one of my two cripples was DEAD, and two sentences in his
+  probe do not hold — one of which refutes half of my own registration.**)
+  Checkpoint is **my own** WORK-fire tip `dae92e10`. The 10 commits above it at fire open were
+  **author-checked before use: 7 Daedalus's, 1 Argus's, 1 Iris's, 1 Calliope's, none mine.**
+  **Mail:** one memo addressed to me (Daedalus, ~17:3x — both my routed items cured and driven, his
+  P5 refuted on the control that mattered, my §4 in the header) read in full. Its §6 declined my
+  `unit-465keys` §5 sketch with a *named* blocker (his arm D control not re-driven) and its §7
+  offered me the drive. **I took it the same fire.**
+  **Unit `docs/research/unit-465walcell-2026-11-06/`** — pre-registration `ce0bb965`, pushed as the
+  only file in the directory before any instrument existed (`git ls-tree -r origin/main` run on it,
+  not asserted); cure `0351a26b`; cripples removed `fa725770`; RESULTS `42375c7f`.
+  **7 arms, 7 predictions, 7 HELD; 2 cripples, one half-refuted and one dead; 3 unregistered
+  findings.** The cure's reach sliced off the two recordings rather than eyeballed: **2 of 42 arm
+  lines differ, both E2** — the routed cell moves and no other arm does.
+  **His blocker named the wrong instrument.** Arm D is built with a *zero-length* pre-existing
+  `-wal` (`probe-backfill-sidecar-neutrality.mts:142`), so it is declined by the first guard and the
+  size test is never why it stays green — and no existing arm starts from the mixed `-shm`-present /
+  `-wal`-absent state at all. Re-driving D was necessary and not sufficient; I built five one-sided
+  states (E1–E5) plus his C and D.
+  **Against myself, twice.** (1) My §5 memo presented `wal === 0` as the sketch's contribution when
+  it was already on disk as the inner guard — caught writing the pre-registration, second slip of
+  this shape from me this week. (2) **P5SHMORPHAN HELD as registered against my own sketch:** E4/E5
+  still end with an `-shm` this script's open created, both sides, because the sketch nests the
+  `-shm` removal inside the `-wal` branch. Two of five one-sided states still gain a file on the
+  refusal path — named in the source and in RESULTS §5, deliberately **not** widened, because
+  `:652`'s ordering contract makes that a decision with its own baseline.
+  **Cripples.** Y1 (blanket `rm`) reddened D and destroyed **329,632 bytes of committed WAL frames**
+  on E3 — but came back **green on C**, refuting half my own registration and refuting the probe's
+  `:124` sentence (*"Without this arm, `rm -f` on both paths would score three green"* — it scores
+  three green *with* arm C present; D is the only arm that catches it). Y2 (no size guard) was
+  **DEAD**: identical on all 42 arm lines, so the size test is **ungraded** and the source now says
+  so rather than reading as verified. Env reach confirmed in the recording, not assumed.
+  **Unregistered, routed to Daedalus, not landed by me:** arm D's assertion is **presence-keyed**
+  (`sidecars(p) === '-wal -shm'`) and was green while the run rewrote the pre-existing `-shm` from
+  **0 B to 32,768 B** — its label claims "left alone", its test says "still exists", and a cure that
+  truncated a pre-existing `-wal` in place would score it green while destroying the frames the arm
+  exists to protect.
+  **Restoration verified, not assumed:** pre-action baseline `HEAD = ce0bb965` with `git status
+  --short -- packages/ scripts/` empty, captured *before* the first edit; after, `grep -c
+  U465WALCELL` → **0**, `git diff ce0bb965 --stat -- packages/ scripts/` exactly one file +24/−4,
+  and `drive5.final.out` identical on all 42 arm lines to `drive2.postcure.out`.
+  **Gate:** typecheck clean ×4 workspaces; `npm test -w packages/server` **143 files · 2221 passed ·
+  1 skipped (2222)** — Daedalus's own post-`unit-465drop` figure to the test, so this unit moved the
+  gate by nothing. Existing probe re-run **9/9** (P7PROBE held: it is blind to the amendment).
+  **Mail close:** the superseded 13:4x/15:0x pair moved to `read/` (both single-`to:`, both items
+  carried forward in the new pair's who-has-what). The active pair stays live — my reply routes
+  three items back to him. Counted with `readdirSync`: **68 live / 1185 read**. These do *not*
+  balance against the "71 / 1179" in my own WORK-fire entry, and the reason is a citation-timing
+  slip of mine, chased rather than waved at: that figure was taken *before* that same fire's
+  second-pass close of one more pair. Corrected baseline 69/1181 → 69+1+1−1−2 = **68** and
+  1181+1+1+2 = **1185**, balancing exactly. Same class as today's team-wide thread.
+  **Drain:** mail read, answered and closed in the same fire; the one routed item taken, driven,
+  graded, cured, landed and gated; three findings routed back with measurements; nothing deferred
+  and no new named blocker opened by this fire. The three items standing on xian are unchanged and I
+  am not re-asking them. Log: `docs/logs/2026-11-06-theseus-log.md`.
+- **Updated (previous):** 2026-11-06 ~14:4x–15:1x PT (**WORK fire — a migration that drops a table passes all
   five of the delta's keys at exit 0 with the printed answer identical to a no-op run; my own
   "additive" claim about four of those keys was refuted by Daedalus's own `rebuiltTables`; his site
   census is six, not four; and 106 superseded round memos are closed to `read/`.**)
