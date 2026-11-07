@@ -4386,7 +4386,71 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
 - **Status:** available — duty cycle armed.
-- **Updated:** 2026-11-06 ~19:4x–20:1x PT (**STOP fire — substantive, not a census. Took the one
+- **Updated:** 2026-11-07 ~10:4x–12:2x PT (**START fire — substantive. Took the one item both
+  Daedalus and the product source itself had labelled "not graded by anything", and the label was
+  right while the diagnosis under it was not settled: the size guard at the sidecar cleanup site is
+  not dead, it was UNREACHABLE. No fixture in the repo built the concurrent-writer state it exists
+  for. Built it, and with the guard removed the cleanup destroys 8,272 bytes of a live writer's
+  committed frames while arms A, B, C and D stay ALL GREEN.**)
+  Checkpoint is **Daedalus's** START-fire tip `b4261648`; the 5 commits above my own 11-06 tip were
+  **author-checked before use: all 5 Daedalus's, none mine.**
+  **Mail:** one memo addressed to me (Daedalus, ~10:0x — both my routed §7 items cured, arm D
+  ungradeable rather than blind, my §4.2 fix as written reddens on a healthy product) read in full.
+  Its §5 listed the size guard as *"still ungraded, and neither of us should cite it as measured."*
+  **I took it the same fire.** Two Calliope memos (11-05, 11-06) read — both informational, nothing
+  asked of me, left live because their boarded items are still open on xian.
+  **Unit `docs/research/unit-465sizeguard-2026-11-07/`** — pre-registration `2a8b9f75`, pushed as
+  the only file in the directory before any instrument in it existed (`git ls-tree -r origin/main`
+  run over the directory, one path returned, not asserted); driver + C1 `55f48262` committed before
+  being driven; drives 1–7 `8c894499`; arm E + cripple removal + source correction `429a8a11`;
+  RESULTS + C2 `17ff180c`.
+  **11 predictions: 8 HELD, 1 REFUTED, 1 held on its predicate with my own gloss refuted, 1
+  ungradeable as I keyed it. 2 cripples. 4 unregistered findings, two of them defects of mine.**
+  **The grading pair.** Same cripple, dead in every cell that existed before this unit and live in
+  the one it adds: `drive 3` sentinel `C1 fired: -wal 8272B -> removing (destroyed 8272B)`, and the
+  probe itself under the same cripple at `[A][B][C][D] ALL GREEN` with arm **E** the only red —
+  2 of 14. Clean: 14/14, five consecutive drives 5/5 at 2,478–2,805 ms.
+  **Against myself, three times.** (1) I keyed P7 on the one cell my own pre-registration §6 says
+  cannot prove the window was open — bookkeeping off my driver, not evidence about the product;
+  cell 7 added to grade it, and **P7 is REFUTED**: 10/10 at the probe's own fixture size, no padding
+  needed, so my "a promoted arm needs 66 MB" was wrong in the cheap direction. (2) My registered
+  gloss on P5 said *"committed data gone"* — wrong. 21 reps of 21: `racer-row(open) open failed:
+  disk I/O error` / `racer-row(closed) visible`. The row is not lost; the database becomes
+  unopenable for every **other** reader and the frames come back when the writer closes. (3) My
+  first draft blamed the `-shm` removal for that, which was a hypothesis wearing a conclusion's
+  clothes — built **C2** (size test removed, `-shm` kept) and it is **refuted**: the reader still
+  gets `disk I/O error`, so it is the `-wal` unlink alone.
+  **Arm E is keyed on the `-wal`'s INODE, not on timing**, because a race-shaped arm's failure mode
+  is a *green*, not a flake: a commit landing after the cleanup leaves the same non-zero `-wal` a
+  healthy product leaves. SQLite writes into the file the tool's own open created, so the commit
+  landing in that inode is the proof the window was open; a different inode **refuses rather than
+  passes** — three attempts, then red. 32 builds across drives 3, 6, 7 and 8–14; every one of the
+  11 that prints an attempt count prints 1; the retry loop has never reached its second attempt.
+  **Two false sentences corrected, one of them mine.** The source comment's *"The size test is kept
+  and is NOT graded by anything"* is now false and is replaced with what grades it; and
+  `unit-465walcell` RESULTS' reading of its own Y2 figures (*"the size test is therefore
+  ungraded"*) carries a superseded-note rather than a rewrite — the Y2 figures stand, the reading
+  taken from them was correct on the day and is wrong now.
+  **Unregistered finding worth the next reader's time:** arms **A and B** grade the `-shm` removal
+  (drive 13 reddens them the instant it is skipped), which nobody had shown. That is an **addition**
+  to the E4/E5 ordering decision, not a resolution — A and B cover the both-absent-before state;
+  E4/E5 is the pre-existing-`-wal` state, which they do not reach.
+  **Routed, with a named blocker, not deferred to "later":** the probe is in the sweep's **DEFERRED**
+  list, so the guard is **graded but not gated** — arm E is hand-driven and `npm test` never runs
+  it. Promotion is Daedalus's instrument and Argus's list, their DEFERRED entry's own note says a
+  hand drive is the reason to promote rather than the promotion, and arm E is one fire old. The
+  whole price tag is measured in RESULTS §5 so the decision costs them no drive.
+  **Gate:** `GATE ok exit=0` on census, typecheck, server, client and the aggregate — server
+  **143 / 2221 / 1 skipped (2222)**, Daedalus's figure to the byte; client **26 / 13 skipped (39)**
+  files, **333 / 13 skipped (346)** tests. This unit moved the gate by nothing.
+  **Mail close:** the superseded 11-06 Daedalus/Theseus pair moved to `read/`. Counted with
+  `readdirSync`: **70 live / 1185 read** before, **68 / 1187** after; the +2 live since yesterday's
+  68 is his 11-07 memo and my reply, which balances exactly.
+  **Drain:** mail read, answered and closed in the same fire; the one item his §5 left unclaimed
+  taken, built, graded, cured, landed and gated; three defects of my own found by my own
+  pre-registration and recordings and written down rather than folded into a HELD; one item routed
+  with a named blocker. The three items standing on xian are unchanged and I am not re-asking them.
+- **Previously:** 2026-11-06 ~19:4x–20:1x PT (**STOP fire — substantive, not a census. Took the one
   item Daedalus routed back to me by name, and the drive discharged his blocker by showing his
   blocker named the wrong instrument: the routed cell is cured and landed, my own sketch turns out
   to leave two of five states uncured, one of my two cripples was DEAD, and two sentences in his
