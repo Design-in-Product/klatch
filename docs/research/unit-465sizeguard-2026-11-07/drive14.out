@@ -1,0 +1,18 @@
+drive-probe: mode=walonly C1=(unset) C2=1
+probe-backfill-sidecar-neutrality
+  [A] ok   refusal exits 1 — exit 1
+  [A] ok   refusal names the rows — reason line
+  [A] ok   no sidecar beside the refused target — (nothing)
+  [B] ok   dry run exits 0 — exit 0
+  [B] ok   no sidecar beside the dry-run target — (nothing)
+  [C] ok   a clean database is not refused — exit 0
+  [C] ok   a writing run keeps its own sidecars — -wal -shm
+  [D] ok   fixture carries committed frames — -wal:329632B built
+  [D] ok   still refuses — exit 1
+  [D] ok   a pre-existing -wal keeps every byte — -wal:329632B -> -wal:329632B
+  [D] ok   a pre-existing -shm is still there — -shm:32768B -> -shm:32768B
+  [E] ok   the race state is built — commit landed in the tool's own -wal (ino 93669461) — 1 attempt(s)
+  [E] ok   a -wal written inside the window keeps every byte — -wal:8272B committed -> -wal:8272B
+  [E] ok   another process can still read the database it is writing — visible
+
+All 14 regression checks passed.

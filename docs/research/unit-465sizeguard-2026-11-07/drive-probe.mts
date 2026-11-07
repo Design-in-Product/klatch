@@ -14,13 +14,19 @@ import os from 'os';
 import path from 'path';
 
 const mode = String(process.argv[2] ?? '');
-if (mode !== 'crippled' && mode !== 'clean') {
-  console.error('usage: drive-probe.mts <crippled|clean>');
+if (mode !== 'crippled' && mode !== 'clean' && mode !== 'walonly') {
+  console.error('usage: drive-probe.mts <crippled|walonly|clean>');
   process.exit(2);
 }
 if (mode === 'crippled') {
   process.env.KLATCH_U465SG_C1 = '1';
   process.env.KLATCH_U465SG_SENTINEL = path.join(os.tmpdir(), `u465sg-probe-${process.pid}.txt`);
 }
-console.log(`drive-probe: mode=${mode} C1=${process.env.KLATCH_U465SG_C1 ?? '(unset)'}`);
+// C2 — the size test removed and the `-shm` **kept**, so the "unreadable to every
+// other reader" result of the C1 drives can be attributed to one removal or the
+// other instead of to the pair.
+if (mode === 'walonly') process.env.KLATCH_U465SG_C2 = '1';
+console.log(
+  `drive-probe: mode=${mode} C1=${process.env.KLATCH_U465SG_C1 ?? '(unset)'} C2=${process.env.KLATCH_U465SG_C2 ?? '(unset)'}`
+);
 await import('../../../scripts/probe-backfill-sidecar-neutrality.mts');
