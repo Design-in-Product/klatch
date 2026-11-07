@@ -63,3 +63,21 @@ Re-ran the gate anyway, since it's part of the standard SWEEP checklist regardle
 `log.html` not due this fire — owed tonight at STOP.
 
 **Drain:** 16 new commits read and author-checked, none mine; the MID-fire flag verified as already closed by Argus rather than left open on the board; this fire's own gate move checked against the diff before calling it explained; mail checked locally and across all four cross-repo mailboxes, nothing owed from any; standing blocker re-derived, unchanged; rollup read directly and confirmed consistent. Two consecutive checks found nothing further unblocked. Fire closed bounded.
+
+---
+
+## 21:4x — Session resumed (STOP fire)
+
+**Substantive: `log.html`'s mandatory daily entry written on time.** Checkpoint: this seat's own SWEEP-fire commit `821e073d`. `git log 821e073d..HEAD --format='%an' | sort | uniq -c`: 17 new commits, author-checked — Daedalus 7, Theseus 8, Argus 1, Iris 1, none mine. `git diff --stat 821e073d..HEAD -- packages/ scripts/` not empty: `schema-delta.ts`, `backfill-entity-bindings.mts`, three test files — Daedalus's `unit-465drop` and Theseus's `unit-465walcell` chains, already chronicled in their own COORDINATION entries.
+
+**`log.html`:** forked a subagent to read all eight of today's round-mail memos (six archived in `docs/mail/read/`, two still open at top level) plus both briefs in full, and return a precise factual digest — exact HIT/PARTIAL/MISS figures, which predictions held or were refuted, checked against source. Wrote the day's entry in house style myself from that digest (same division of labor as the 10-24/10-25/10-30/11-01/11-03/11-04 precedent — fork extracts facts, this seat writes prose). Covers the six-unit chain (migrate, rows, rowdelta, keys, drop, walcell) end to end plus three side threads (the 140→141 gate citation slip, the C4 nine-day-stale closure, the ma-smoke rollup promotion). Verified: `grep -c "ENTRY: 2026-11-06" log.html` = 1, inserted directly above the 2026-11-05 entry. Recurring-items row in `docs/operations/duty-cycle/calliope-tasks.md` updated (`next_due`→2026-11-07, `last_completed`→2026-11-06).
+
+**Gate re-verified fresh, matched against the digest's own figures before trusting them:** server **143 files/2221 passed/1 skipped (2222)**, client **26/39 files, 333/346 tests** — exact match.
+
+**Mail:** same four standing Pard-from-10-20 threads, left in place. All four cross-repo mailboxes fetched fresh against the 17:05:05 PT SWEEP-fire checkpoint: `designinproduct` 4 new, 1 pickaxe hit (Janus's own rollup commit auto-indexing today's Klatch mail filenames, not an ask); `mediajunkie` 7 new, 0 hits; `dispatch` 6 new, 1 new item — a fresh question-box letter from **Daedalus** (not Theseus) reflecting on today's own findings and asking xian a philosophical question about measurement vs. story, explicitly "nothing waits on an answer" — noted for visibility, not escalated; `piper-morgan-product` 193 new, 1 pickaxe hit (a routine deferral-list mention of "Klatch R&D possibility," someone else's board). Nothing owed from any.
+
+**Standing blocker re-derived fresh:** ma-smoke — unchanged same calendar day.
+
+**Rollup:** read directly, still v176, needs-you 3, unchanged from every fire today.
+
+**Drain:** 17 new commits read and author-checked, none mine; both real product-code files confirmed already chronicled; `log.html`'s mandatory entry written and verified; gate re-run fresh and matched; mail checked locally and across all four cross-repo mailboxes, nothing owed from any (one visibility-only note); standing blocker re-derived, unchanged; rollup read directly and confirmed consistent. Two consecutive checks found nothing further unblocked. Fire closed bounded.
