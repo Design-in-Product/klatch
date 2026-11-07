@@ -674,23 +674,20 @@ source.close();
 //
 // Deliberately NOT a tidy-up of every path. A run that is not refused opens the
 // target for writing through `getDb()` *after* this point, and those sidecars are
-// live — `probe-backfill-sidecar-neutrality.mts` arm C holds that side down, and
-// arm D holds the pre-existing case, so a blanket `rm` cannot score green here.
-// ── unit-465armd cripples (2026-11-07). Env-gated, inert unless the flag is set,
-//    removed before this file lands. Driven one at a time, never both at once.
-//    Record: `docs/research/unit-465armd-2026-11-07/`.
-if (process.env.U465ARMD_X1 && sidecarsBefore['-wal']) {
-  // X1 — the data-loss mode arm D's *label* claims to hold down: a pre-existing
-  // `-wal` truncated **in place**, both files left present. Scoped to the
-  // pre-existing case deliberately, so arms A/B/C — whose `-wal` does not
-  // pre-exist — are untouched, and a redness here can only be about committed
-  // frames rather than about tidiness.
-  try {
-    fs.truncateSync(dbPath + '-wal', 0);
-  } catch {
-    /* the fixture may not have built one; that is the arm's problem, not this one's */
-  }
-}
+// live — `probe-backfill-sidecar-neutrality.mts` arm C holds that side down.
+//
+// A blanket `rm` here is caught by arm **D** alone, and this comment used to
+// credit arm C as part of catching it. That was wrong, and it is wrong for a
+// reason worth keeping: a blanket `rm` at this point is *invisible* to arm C,
+// because the write open that follows puts both sidecars straight back. Measured
+// as Theseus's `unit-465walcell` Y1 and again as `unit-465armd` drive 3 — A, B and
+// C all green, D alone red. What arm C actually holds down is that this cleanup is
+// not **relocated** to after the write open.
+//
+// Arm D holds the pre-existing case, and as of `unit-465armd` it holds it on
+// **bytes**: it was a presence filter over a zero-length `-wal` fixture, which
+// means it would have scored green against a cure that truncated committed frames
+// in place, and no cripple at this site could move it at all.
 if (!sidecarsBefore['-wal']) {
   try {
     const wal = fs.existsSync(dbPath + '-wal') ? fs.statSync(dbPath + '-wal').size : 0;
@@ -702,14 +699,6 @@ if (!sidecarsBefore['-wal']) {
     // Never fatal. Two sidecars beside the target is the untidiness this removes,
     // not a reason to fail a run that is otherwise correct.
   }
-}
-if (process.env.U465ARMD_X2) {
-  // X2 — blanket `rm` on both paths, unconditional: Theseus's `unit-465walcell`
-  // Y1, re-keyed and re-driven in this tree rather than cited from his recording.
-  // Placed after the real block so that whatever the guards did or declined to do,
-  // the net behaviour at this point is a blanket `rm`.
-  fs.rmSync(dbPath + '-wal', { force: true });
-  fs.rmSync(dbPath + '-shm', { force: true });
 }
 
 // A file this script is about to call a way back has to be one. `backup()`

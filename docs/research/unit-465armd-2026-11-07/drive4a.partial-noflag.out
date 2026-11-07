@@ -1,0 +1,31 @@
+drive: drive4a — PARTIAL cure (Theseus's fix as written: both sizes before/after), fixture unchanged, NO cripple
+cripple requested: (none)
+subject rev: 86aace846e852c490068b19a198d0d3bd9bf8056
+subject dirty (packages/ scripts/): M scripts/backfill-entity-bindings.mts
+ M scripts/probe-backfill-sidecar-neutrality.mts
+probe exit: 1
+--- cripple self-report (file sentinel) ---
+(no report — the cripple did not fire. For a requested cripple this means DEAD, not undetected, and no greenness below is evidence about the arm.)
+--- probe stdout + stderr (both, always) ---
+probe-backfill-sidecar-neutrality
+  [A] ok   refusal exits 1 — exit 1
+  [A] ok   refusal names the rows — reason line
+  [A] ok   no sidecar beside the refused target — (nothing)
+  [B] ok   dry run exits 0 — exit 0
+  [B] ok   no sidecar beside the dry-run target — (nothing)
+  [C] ok   a clean database is not refused — exit 0
+  [C] ok   a writing run keeps its own sidecars — -wal -shm
+  [D] ok   still refuses — exit 1
+  [D] FAIL a pre-existing sidecar is left alone — -wal:0B -shm:0B -> -wal:0B -shm:32768B
+
+REGRESSIONS:
+  [D] a pre-existing sidecar is left alone — -wal:0B -shm:0B -> -wal:0B -shm:32768B
+
+1 of 9 regression check(s) FAILED.
+--- per-arm verdicts, parsed ---
+[A] GREEN  (3/3 checks pass)
+[B] GREEN  (2/2 checks pass)
+[C] GREEN  (2/2 checks pass)
+[D] RED  (1/2 checks pass)  first failure: a pre-existing sidecar is left alone — -wal:0B -shm:0B -> -wal:0B -shm:32768B
+arms seen: A,B,C,D
+checks parsed: 9

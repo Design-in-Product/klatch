@@ -1,0 +1,30 @@
+drive: drive5 — FULL cure, no cripple
+cripple requested: (none)
+subject rev: 86aace846e852c490068b19a198d0d3bd9bf8056
+subject dirty (packages/ scripts/): M scripts/backfill-entity-bindings.mts
+ M scripts/probe-backfill-sidecar-neutrality.mts
+probe exit: 0
+--- cripple self-report (file sentinel) ---
+(no cripple requested)
+--- probe stdout + stderr (both, always) ---
+probe-backfill-sidecar-neutrality
+  [A] ok   refusal exits 1 — exit 1
+  [A] ok   refusal names the rows — reason line
+  [A] ok   no sidecar beside the refused target — (nothing)
+  [B] ok   dry run exits 0 — exit 0
+  [B] ok   no sidecar beside the dry-run target — (nothing)
+  [C] ok   a clean database is not refused — exit 0
+  [C] ok   a writing run keeps its own sidecars — -wal -shm
+  [D] ok   fixture carries committed frames — -wal:329632B built
+  [D] ok   still refuses — exit 1
+  [D] ok   a pre-existing -wal keeps every byte — -wal:329632B -> -wal:329632B
+  [D] ok   a pre-existing -shm is still there — -shm:32768B -> -shm:32768B
+
+All 11 regression checks passed.
+--- per-arm verdicts, parsed ---
+[A] GREEN  (3/3 checks pass)
+[B] GREEN  (2/2 checks pass)
+[C] GREEN  (2/2 checks pass)
+[D] GREEN  (4/4 checks pass)
+arms seen: A,B,C,D
+checks parsed: 11

@@ -94,6 +94,42 @@ function run(dbPath: string, flags: string[]): { code: number; out: string } {
 const sidecars = (p: string) =>
   (['-wal', '-shm'] as const).filter((s) => fs.existsSync(p + s)).join(' ');
 
+/** One sidecar's presence **and** bytes — `-wal:329632B`, or `absent`. */
+const size = (p: string, s: '-wal' | '-shm') =>
+  fs.existsSync(p + s) ? `${s}:${fs.statSync(p + s).size}B` : `${s}:absent`;
+
+/**
+ * Put a **genuine, valid, non-zero `-wal`** beside the database — not a dummy
+ * file. Autocheckpoint off, commit frames, stash the real log's bytes, close
+ * (which checkpoints and removes it), then put the stashed bytes back. The header
+ * and salt match the database, so a read-only open *recovers* this log rather
+ * than rejecting it — which is what makes an arm built on it a measurement of the
+ * cleanup guards rather than a measurement of SQLite's error handling.
+ *
+ * Why it has to be genuine: with a zero-length `-wal` there is nothing for a
+ * truncation to destroy, so **no cripple at the cleanup site can move this arm at
+ * all** — it is not a weak arm, it is an ungradeable one. Measured, this round:
+ * `unit-465armd` drive 2 fired a truncate-in-place cripple against the old
+ * zero-length fixture and it reported `-wal 0B -> 0B (destroyed 0B)`. Returns the
+ * byte count so the arm can refuse rather than pass if the fixture ever stops
+ * carrying the property it exists to carry.
+ */
+function withNonZeroWal(p: string): number {
+  const db = new Database(p);
+  db.pragma('journal_mode = WAL');
+  db.pragma('wal_autocheckpoint = 0');
+  for (let i = 0; i < 40; i++) {
+    db.prepare(
+      `INSERT INTO channels (id, name, system_prompt, source) VALUES (?, ?, '', 'claude-code')`
+    ).run(`pad-${i}`, `pad ${i}`);
+  }
+  const stash = fs.readFileSync(p + '-wal');
+  db.close();
+  for (const s of ['-wal', '-shm'] as const) fs.rmSync(p + s, { force: true });
+  fs.writeFileSync(p + '-wal', stash);
+  return stash.length;
+}
+
 const check = (arm: string, label: string, pass: boolean, got: string) => {
   results.push({ arm, check: `${label} — ${got}`, pass });
   console.log(`  [${arm}] ${pass ? 'ok  ' : 'FAIL'} ${label} — ${got}`);
@@ -121,7 +157,20 @@ console.log('probe-backfill-sidecar-neutrality');
 
 // ── C: the other side. A run that is NOT refused opens the target for writing
 //    through `getDb()` *after* the cleanup, so its sidecars are live and must
-//    survive. Without this arm, `rm -f` on both paths would score three green.
+//    survive.
+//
+//    What this arm does **not** catch: a blanket `rm -f` on both paths at the
+//    cleanup site. This comment used to claim *"Without this arm, `rm -f` on both
+//    paths would score three green"* — false for this site, and measured twice:
+//    Theseus's `unit-465walcell` Y1, and `unit-465armd` drive 3 re-keyed in this
+//    tree. A blanket `rm` does score **three** green — A, B *and C* — and only
+//    arm D reddens. The mechanism is plain once measured: this cleanup runs
+//    *before* `getDb()` reopens the target for writing, so whatever a blanket `rm`
+//    removes here, the write open puts straight back.
+//
+//    The property arm C does hold down is a different and real one: that the
+//    cleanup is not **relocated** to after the write open. Move it there and this
+//    arm is the one that reddens.
 {
   const p = build('clean');
   const r = run(p, ['--apply', '--no-migrate']);
@@ -134,20 +183,47 @@ console.log('probe-backfill-sidecar-neutrality');
   );
 }
 
-// ── D: a sidecar that was already there is never removed, whatever the path.
-//    The guard that keeps this a tidy-up rather than a data loss: a `-wal` on
-//    disk before the run can hold committed frames.
+// ── D: a `-wal` that was already there, holding committed frames, keeps every
+//    byte of them — whatever the path. This is the arm that makes the cleanup a
+//    tidy-up rather than a data loss, so it is keyed on **bytes**, not presence,
+//    and the two sidecars are checked **separately**.
+//
+//    Both of those are repairs, measured in `unit-465armd-2026-11-07` after
+//    Theseus routed §4.2 of his `unit-465walcell` memo at this arm:
+//
+//      - The fixture used to be `writeFileSync(p + '-wal', '')` — zero bytes. A
+//        truncate-in-place cripple against it reported `destroyed 0B`, so the arm
+//        was not weak but *ungradeable*: nothing at this site could move it.
+//      - The assertion used to be `sidecars(p) === '-wal -shm'`, a **presence**
+//        filter, while this comment claimed the stronger thing. A cure that
+//        truncated a pre-existing `-wal` in place would have scored it green.
+//      - Keying both sidecars in **one** check does not work either, and that is
+//        why there are two: a `-shm` legitimately moves 0 B → 32,768 B here, so a
+//        single conjoined byte check reddens on a healthy product (measured, drive
+//        4a) and can never speak about the `-wal` on its own.
 {
   const p = build('seeded');
-  fs.writeFileSync(p + '-wal', '');
-  fs.writeFileSync(p + '-shm', '');
+  const walBytes = withNonZeroWal(p);
+  fs.writeFileSync(p + '-shm', Buffer.alloc(32768));
+  // The arm refuses rather than passes if its own fixture stops carrying the
+  // property. A green here must mean the frames survived, never that there were
+  // none.
+  check('D', 'fixture carries committed frames', walBytes > 0, `-wal:${walBytes}B built`);
+  const walBefore = size(p, '-wal');
+  const shmBefore = size(p, '-shm');
   const r = run(p, ['--apply', '--no-migrate']);
   check('D', 'still refuses', r.code === 1, `exit ${r.code}`);
   check(
     'D',
-    'a pre-existing sidecar is left alone',
-    sidecars(p) === '-wal -shm',
-    sidecars(p) || '(nothing)'
+    'a pre-existing -wal keeps every byte',
+    size(p, '-wal') === walBefore,
+    `${walBefore} -> ${size(p, '-wal')}`
+  );
+  check(
+    'D',
+    'a pre-existing -shm is still there',
+    size(p, '-shm') === shmBefore,
+    `${shmBefore} -> ${size(p, '-shm')}`
   );
 }
 

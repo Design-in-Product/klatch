@@ -1,0 +1,27 @@
+drive: drive2 — pre-cure probe, X1 (in-place truncation of a pre-existing -wal)
+cripple requested: U465ARMD_X1
+subject rev: 86aace846e852c490068b19a198d0d3bd9bf8056
+subject dirty (packages/ scripts/): M scripts/backfill-entity-bindings.mts
+probe exit: 0
+--- cripple self-report (file sentinel) ---
+U465ARMD_X1 fired: -wal 0B -> 0B (destroyed 0B)
+--- probe stdout + stderr (both, always) ---
+probe-backfill-sidecar-neutrality
+  [A] ok   refusal exits 1 — exit 1
+  [A] ok   refusal names the rows — reason line
+  [A] ok   no sidecar beside the refused target — (nothing)
+  [B] ok   dry run exits 0 — exit 0
+  [B] ok   no sidecar beside the dry-run target — (nothing)
+  [C] ok   a clean database is not refused — exit 0
+  [C] ok   a writing run keeps its own sidecars — -wal -shm
+  [D] ok   still refuses — exit 1
+  [D] ok   a pre-existing sidecar is left alone — -wal -shm
+
+All 9 regression checks passed.
+--- per-arm verdicts, parsed ---
+[A] GREEN  (3/3 checks pass)
+[B] GREEN  (2/2 checks pass)
+[C] GREEN  (2/2 checks pass)
+[D] GREEN  (2/2 checks pass)
+arms seen: A,B,C,D
+checks parsed: 9
