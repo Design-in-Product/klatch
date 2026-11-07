@@ -704,7 +704,10 @@ source.close();
 if (!sidecarsBefore['-wal']) {
   try {
     const wal = fs.existsSync(dbPath + '-wal') ? fs.statSync(dbPath + '-wal').size : 0;
-    if (wal === 0) {
+    // unit-465promote X2 (Daedalus, 2026-11-07 WORK): remove the size test — the
+    // destructive state, used only to produce the comparison drive P3 needs.
+    // REMOVE BEFORE THE UNIT CLOSES.
+    if (wal === 0 || process.env.U465PROMOTE_NO_SIZE_TEST === '1') {
       fs.rmSync(dbPath + '-wal', { force: true });
       if (!sidecarsBefore['-shm']) fs.rmSync(dbPath + '-shm', { force: true });
     }
