@@ -1,0 +1,63 @@
+
+=== drive0  control — no gate variable set
+exit 0  2558 ms
+conclusion: All 13 regression checks passed.
+state line: [E] state BUILT — commit landed in the tool's own -wal (ino 93822906) — 1 attempt(s)
+did-not-run line(s): (none)
+  arm E check row(s): 2
+  [E] claim "keeps every byte": EMITTED
+  [E] claim "another process can still read": EMITTED
+  classify [declared + on the line] -> PASS  (matched=true skipped=false code=0)
+  classify [no declaration at all] -> PASS  (matched=true skipped=false code=0)
+  classify [declared label not on the line] -> PASS  (matched=true skipped=false code=0)
+
+=== drive1  X1 — race deterministically lost
+exit 3  3416 ms
+conclusion: INCONCLUSIVE — backfill-sidecar-neutrality established 11 of its checks and skipped 1 arm(s). This is not a pass.
+state line: [E] state NOT BUILT — commit made its own -wal (ino 93823032 != 93823023) — cleanup had already run — 3 attempt(s)
+did-not-run line(s): did not run: the race state could not be built
+  arm E check row(s): 0
+  [E] claim "keeps every byte": absent
+  [E] claim "another process can still read": absent
+  classify [declared + on the line] -> BLOCKED  (matched=false skipped=true code=3)
+  classify [no declaration at all] -> RED  (matched=false skipped=false code=3)
+  classify [declared label not on the line] -> RED  (matched=false skipped=false code=3)
+
+=== drive2  C1 — size test removed, race built
+exit 1  2692 ms
+conclusion: 2 of 13 regression check(s) FAILED.
+state line: [E] state BUILT — commit landed in the tool's own -wal (ino 93823131) — 1 attempt(s)
+did-not-run line(s): (none)
+  arm E check row(s): 4
+  [E] claim "keeps every byte": EMITTED
+  [E] claim "another process can still read": EMITTED
+  [E] FAIL a -wal written inside the window keeps every byte — -wal:8272B committed -> -wal:absent
+  [E] FAIL another process can still read the database it is writing — unreadable (disk I/O error)
+  2 of 13 regression check(s) FAILED.
+  classify [declared + on the line] -> RED  (matched=false skipped=false code=1)
+  classify [no declaration at all] -> RED  (matched=false skipped=false code=1)
+  classify [declared label not on the line] -> RED  (matched=false skipped=false code=1)
+
+=== drive3  X1 + C1 — a lost race under a crippled product still skips, it does not red
+exit 3  3575 ms
+conclusion: INCONCLUSIVE — backfill-sidecar-neutrality established 11 of its checks and skipped 1 arm(s). This is not a pass.
+state line: [E] state NOT BUILT — commit made its own -wal (ino 93823264 != 93823255) — cleanup had already run — 3 attempt(s)
+did-not-run line(s): did not run: the race state could not be built
+  arm E check row(s): 0
+  [E] claim "keeps every byte": absent
+  [E] claim "another process can still read": absent
+  classify [declared + on the line] -> BLOCKED  (matched=false skipped=true code=3)
+  classify [no declaration at all] -> RED  (matched=false skipped=false code=3)
+  classify [declared label not on the line] -> RED  (matched=false skipped=false code=3)
+
+=== drive4  control, repeat — the green state is stable
+exit 0  2539 ms
+conclusion: All 13 regression checks passed.
+state line: [E] state BUILT — commit landed in the tool's own -wal (ino 93823338) — 1 attempt(s)
+did-not-run line(s): (none)
+  arm E check row(s): 2
+  [E] claim "keeps every byte": EMITTED
+  [E] claim "another process can still read": EMITTED
+  classify [declared + on the line] -> PASS  (matched=true skipped=false code=0)
+  classify [no declaration at all] -> PASS  (matched=true skipped=false code=0)
+  classify [declared label not on the line] -> PASS  (matched=true skipped=false code=0)
