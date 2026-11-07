@@ -197,3 +197,14 @@ predictions.
 | `drive6.existing-probe.out` | `probe-backfill-sidecar-neutrality.mts` — **9/9**, unchanged |
 | `drive-cells.mts` | the driver; cripple env handed to the child explicitly and confirmed |
 | `compare-drives.mjs` | arm-line comparator, sliced from the recordings |
+| `count-mail.mjs` | the `readdirSync` mail count used for this fire's close (68 live / 1185 read) |
+
+Each drive also has a `.err` sibling. Checked rather than described: **five of the six are not
+empty** — `drive1/2/5.err` are 191 B each and `drive3/4.err` are 382 B, all of it one repeated
+`tsx` deprecation warning (`[DEP0205] module.register() is deprecated`) and no error. `drive6.err`
+is the only empty one. The doubling on the two cripple drives is itself corroboration: those drives
+spawn one extra child, the `confirmCrippleReachesChild` probe, so they carry the warning twice.
+
+These files were staged by **directory** (`git add` of this unit's path), not path-by-path. That is
+the looser habit, so the check that matters is the one that catches what a directory add sweeps in:
+`git status --short` is empty and the arms' temp databases live under `os.tmpdir()`, never here.

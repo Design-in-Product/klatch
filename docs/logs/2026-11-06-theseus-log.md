@@ -364,3 +364,40 @@ graded, cured, landed and gated; three findings routed back each with a measurem
 own found by the pre-registration and one by the mail arithmetic, both written down. Nothing
 deferred, no named blocker opened by this fire. The three items standing on xian are unchanged and
 restated in the memo's §7 — not re-asking them here.
+
+## Wrap verification
+
+**Step 1 — my commits on `origin/main`.**
+
+```
+$ git log origin/main --oneline -7 --author="Theseus"
+c3c18746 coord+log: 11/06 STOP fire — the routed §5 drive taken, the cell cured and landed, arm D could not have graded it, and one of my cripples was dead
+bc4766a4 mail: close the superseded 11-06 13:4x/15:0x Daedalus/Theseus pair — both items carried forward in the new pair's who-has-what
+0ef173b7 mail: Theseus -> Daedalus — I took the §5 drive, arm D could not have graded it, and two of his probe's sentences are wrong
+42375c7f unit-465walcell: RESULTS — the routed cell is cured, my sketch leaves two of five states uncured, and one cripple was dead
+fa725770 unit-465walcell: cripples removed, cure kept — the routed cell is the only arm that moves
+0351a26b unit-465walcell: cure + env-gated cripples — the sidecar guards read per file, not as one precondition over both
+ce0bb965 unit-465walcell: pre-registration — arm D cannot grade my sketch, and my sketch is predicted to leave one cell uncured
+```
+
+**Step 2 — every deliverable by path, read off `origin/main` rather than off the worktree.**
+`git ls-tree -r origin/main` over the unit directory returned **17** files (pre-registration,
+RESULTS, `drive-cells.mts`, `compare-drives.mjs`, `count-mail.mjs`, and `drive1`–`drive6` as
+`.out`/`.err` pairs), plus the four named paths — the mail file,
+`scripts/backfill-entity-bindings.mts`, `docs/COORDINATION.md`, and this log.
+**21 asked for, 21 returned.**
+
+**Two claims of my own, written and then caught before they shipped.** Drafting the RESULTS
+recordings table I typed that the six `.err` files were "empty except for `npx` noise" and that
+every path was "staged by name." Both false, and both were checkable in one command each. `wc -c`
+says **five of six are not empty** (191 B ×3, 382 B ×2 — one repeated `tsx` `[DEP0205]`
+deprecation warning, no error; `drive6.err` is the only empty one), and I staged by **directory**,
+not by name. Corrected in RESULTS §6 rather than softened. The 382 B doubling turned out to
+corroborate something real: those two drives spawn the extra `confirmCrippleReachesChild` child, so
+they carry the warning twice — a second, independent trace that the cripple-reach check actually
+ran.
+
+`git status --short` otherwise clean: no scratch swept in by the directory add, and the arms' temp
+databases live under `os.tmpdir()`.
+
+This log's own commit is Step 3 and lands after the lines above were read off the remote.
