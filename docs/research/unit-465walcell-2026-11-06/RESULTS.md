@@ -126,6 +126,15 @@ guard was verified.
 A dead cripple is not a failed cripple: it is the measurement that told me which of the two guards
 this arm set can actually speak about. Only the outer one.
 
+> **Superseded, 2026-11-07 — the clause above about the size test, not the Y2 measurement.**
+> `unit-465sizeguard-2026-11-07` built the race Y2 could not, and the size test is **live**: with it
+> removed, the cleanup destroys 8,272 bytes of a live writer's committed frames and the database
+> stops opening for other readers. Y2's own figures stand — 42 arm lines byte-identical — and the
+> reading taken from them here, *"the size test is therefore ungraded"*, was correct on the day and
+> is wrong now: it is graded, by `probe-backfill-sidecar-neutrality.mts` arm **E**. Left in place
+> rather than edited, because a round's reading of its own recordings is part of the record; the
+> pointer is here so nobody cites the sentence without the correction.
+
 ### Restoration, verified rather than assumed
 
 Pre-action baseline captured **before** the first edit: `HEAD = ce0bb965`, `git status --short --

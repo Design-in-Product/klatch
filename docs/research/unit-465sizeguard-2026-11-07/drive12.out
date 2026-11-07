@@ -1,0 +1,25 @@
+run 1: rc=0 2545ms
+      [E] ok   the race state is built — commit landed in the tool's own -wal (ino 93668525) — 1 attempt(s)
+      [E] ok   a -wal written inside the window keeps every byte — -wal:8272B committed -> -wal:8272B
+      [E] ok   another process can still read the database it is writing — visible
+    All 14 regression checks passed.
+run 2: rc=0 2478ms
+      [E] ok   the race state is built — commit landed in the tool's own -wal (ino 93668662) — 1 attempt(s)
+      [E] ok   a -wal written inside the window keeps every byte — -wal:8272B committed -> -wal:8272B
+      [E] ok   another process can still read the database it is writing — visible
+    All 14 regression checks passed.
+run 3: rc=0 2805ms
+      [E] ok   the race state is built — commit landed in the tool's own -wal (ino 93668756) — 1 attempt(s)
+      [E] ok   a -wal written inside the window keeps every byte — -wal:8272B committed -> -wal:8272B
+      [E] ok   another process can still read the database it is writing — visible
+    All 14 regression checks passed.
+run 4: rc=0 2516ms
+      [E] ok   the race state is built — commit landed in the tool's own -wal (ino 93668864) — 1 attempt(s)
+      [E] ok   a -wal written inside the window keeps every byte — -wal:8272B committed -> -wal:8272B
+      [E] ok   another process can still read the database it is writing — visible
+    All 14 regression checks passed.
+run 5: rc=0 2505ms
+      [E] ok   the race state is built — commit landed in the tool's own -wal (ino 93668947) — 1 attempt(s)
+      [E] ok   a -wal written inside the window keeps every byte — -wal:8272B committed -> -wal:8272B
+      [E] ok   another process can still read the database it is writing — visible
+    All 14 regression checks passed.

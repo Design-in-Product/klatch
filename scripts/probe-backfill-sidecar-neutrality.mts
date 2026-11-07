@@ -21,10 +21,16 @@
  * purpose: a run that genuinely opens the target for writing must still leave its
  * sidecars, or the "cure" would be a `rm` of live frames dressed as tidiness.
  *
+ * One arm per guard, and they are not interchangeable: arm **D** grades the outer
+ * one (a `-wal` that was already there), arm **E** the inner one (a `-wal` another
+ * process commits to *inside* the window). Arms A–D are all green with the size
+ * test removed, which is why it was carried as explicitly ungraded until arm E
+ * existed — `unit-465sizeguard-2026-11-07`.
+ *
  * Hermetic: temp databases under `os.tmpdir()`, built by the product's own
  * `applySchema`. No ports, no corpus, no model call, no `$HOME` read.
  */
-import { execFileSync } from 'child_process';
+import { execFileSync, spawn } from 'child_process';
 import Database from 'better-sqlite3';
 import fs from 'fs';
 import os from 'os';
@@ -224,6 +230,144 @@ console.log('probe-backfill-sidecar-neutrality');
     'a pre-existing -shm is still there',
     size(p, '-shm') === shmBefore,
     `${shmBefore} -> ${size(p, '-shm')}`
+  );
+}
+
+// ── E: the race the size test exists for, which is the only state it can fire in.
+//    The cleanup's outer test is `!sidecarsBefore['-wal']`, so a non-zero `-wal`
+//    here can only have been committed by **another process between this open and
+//    this close**. No arm A–D builds that, which is why the size test was carried
+//    for two rounds as explicitly ungraded: Theseus's `unit-465walcell` Y2 removed
+//    it and all seven arms came back byte-identical, and Daedalus's `unit-465armd`
+//    X1 bypasses the guards rather than testing them.
+//
+//    `unit-465sizeguard-2026-11-07` built the state and the test is **live**: with
+//    it removed, the cleanup destroys 8,272 bytes of a live writer's committed
+//    frames (drive 3, sentinel `destroyed 8272B`), and the database stops opening
+//    for every other reader — `disk I/O error`, not a missing row — until the
+//    writer's own connection closes. It is the difference between a tidy-up and
+//    corrupting a database somebody else is using.
+//
+//    **Why the inode, and not the timing.** The window is wide (~43 ms at this
+//    fixture size) but it is still a window, and the failure mode is a *green*, not
+//    a flake: if the commit landed after the cleanup, the `-wal` is present and
+//    non-zero for a reason that has nothing to do with the guard, and a
+//    byte-keyed assertion reads exactly as it does on a healthy product. So the
+//    state is keyed on **the identity of the file**: SQLite writes into the `-wal`
+//    the tool's own open created, so the racer's commit landing in *that inode* is
+//    what proves `sidecarsBefore` was captured with it absent and the cleanup had
+//    not yet run. A different inode means the racer made its own file after the
+//    cleanup, and the arm **refuses rather than passes** — three attempts, then
+//    red. That is the third instance of the two-greens-either-side shape this
+//    probe's own history is made of, and the first one caught before it shipped.
+{
+  const ATTEMPTS = 3;
+  type Race = {
+    built: boolean;
+    why: string;
+    racerBytes: number;
+    walAfter: string;
+    rowSeen: string;
+  };
+
+  const raceOnce = async (): Promise<Race> => {
+    const p = build('seeded');
+    const child = spawn('npx', ['tsx', TOOL, p, '--apply', '--no-migrate'], {
+      cwd: REPO,
+      stdio: ['ignore', 'pipe', 'pipe'],
+    });
+    child.stdout.resume();
+    child.stderr.resume();
+    let exited = false;
+    const done = new Promise<void>((res) =>
+      child.on('exit', () => {
+        exited = true;
+        res();
+      })
+    );
+
+    // The tool's own `-wal`: it cannot pre-exist, `build()` removed both sidecars.
+    let toolIno = -1;
+    while (toolIno < 0 && !exited) {
+      try {
+        toolIno = fs.statSync(p + '-wal').ino;
+        break;
+      } catch {
+        await new Promise((r) => setTimeout(r, 1));
+      }
+    }
+
+    let racer: Database.Database | undefined;
+    let racerBytes = -1;
+    let commitIno = -3;
+    if (toolIno >= 0) {
+      racer = new Database(p);
+      racer.pragma('wal_autocheckpoint = 0');
+      racer.prepare(
+        `INSERT INTO channels (id,name,system_prompt,source) VALUES ('racer','racer','','claude-code')`
+      ).run();
+      try {
+        const st = fs.statSync(p + '-wal');
+        commitIno = st.ino;
+        racerBytes = st.size;
+      } catch {
+        // Removed between the commit and this stat — which can only be the cleanup
+        // running *after* the commit landed, so the state was built and the guard
+        // let it through. Not a failure to build.
+        commitIno = -2;
+      }
+    }
+    await done;
+
+    const built = toolIno >= 0 && (commitIno === toolIno || commitIno === -2);
+    const walAfter = size(p, '-wal');
+    let rowSeen = '(not read)';
+    try {
+      const r = new Database(p, { readonly: true, fileMustExist: true });
+      rowSeen =
+        (r.prepare(`select count(*) as n from channels where id = 'racer'`).get() as { n: number })
+          .n === 1
+          ? 'visible'
+          : 'GONE';
+      r.close();
+    } catch (err) {
+      rowSeen = `unreadable (${(err as Error).message})`;
+    }
+    try {
+      racer?.close();
+    } catch {
+      /* the verdicts above are already taken; a handle that will not close changes none of them */
+    }
+    const why =
+      toolIno < 0
+        ? 'the tool never created a -wal'
+        : commitIno === -2
+          ? 'cleanup removed the tool -wal after the commit'
+          : commitIno === toolIno
+            ? `commit landed in the tool's own -wal (ino ${toolIno})`
+            : `commit made its own -wal (ino ${commitIno} != ${toolIno}) — cleanup had already run`;
+    return { built, why, racerBytes, walAfter, rowSeen };
+  };
+
+  let r = await raceOnce();
+  let tries = 1;
+  while (!r.built && tries < ATTEMPTS) {
+    r = await raceOnce();
+    tries++;
+  }
+
+  check('E', 'the race state is built', r.built, `${r.why} — ${tries} attempt(s)`);
+  check(
+    'E',
+    'a -wal written inside the window keeps every byte',
+    r.built && r.racerBytes > 0 && r.walAfter === `-wal:${r.racerBytes}B`,
+    `-wal:${r.racerBytes}B committed -> ${r.walAfter}`
+  );
+  check(
+    'E',
+    'another process can still read the database it is writing',
+    r.built && r.rowSeen === 'visible',
+    r.rowSeen
   );
 }
 

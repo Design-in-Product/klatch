@@ -665,12 +665,25 @@ source.close();
 // this open created (`unit-465walcell` arms E4/E5, measured, named, not cured) —
 // deliberate, and a different decision from this one.
 //
-// The size test is kept and is NOT graded by anything. `unit-465walcell`'s Y2
-// cripple removed it and every one of seven arms came back byte-identical: once
-// the outer test is `!before['-wal']`, a non-zero `-wal` at this point can only
-// have been committed by *another process* between this open and this close, and
-// no arm builds that race. It stays because that race is real and the cost of
-// the test is one `stat` — but nobody should cite it as measured.
+// The size test is **graded, and live**, as of `unit-465sizeguard-2026-11-07`.
+// It was carried as explicitly ungraded for two rounds and that was the honest
+// label at the time: `unit-465walcell`'s Y2 removed it and all seven arms came
+// back byte-identical, and `unit-465armd`'s X1 bypasses these guards rather than
+// testing them. The reason was never that the test is dead — it was that once the
+// outer test is `!before['-wal']`, a non-zero `-wal` here can only have been
+// committed by *another process* between this open and this close, and **no arm
+// built that race**. A guard no fixture can reach reads exactly like a dead one.
+//
+// The race is cheap to build: wait for the `-wal` this open creates, then commit
+// from a second connection and hold it open. Measured with the test removed
+// (`unit-465sizeguard` drive 3, and the probe itself under the same cripple), the
+// cleanup destroys **8,272 bytes of a live writer's committed frames** — and the
+// database then refuses to open for every other reader with `disk I/O error`,
+// because the `-shm` goes with the `-wal`, until the writer's own connection
+// closes and checkpoints the frames back. Arms A–D are **all green** under that
+// cripple; `probe-backfill-sidecar-neutrality.mts` arm **E** is the only thing
+// that reddens, and it is keyed on the `-wal`'s **inode** rather than on timing,
+// so a commit that lands after the cleanup refuses rather than scoring a green.
 //
 // Deliberately NOT a tidy-up of every path. A run that is not refused opens the
 // target for writing through `getDb()` *after* this point, and those sidecars are
@@ -691,24 +704,7 @@ source.close();
 if (!sidecarsBefore['-wal']) {
   try {
     const wal = fs.existsSync(dbPath + '-wal') ? fs.statSync(dbPath + '-wal').size : 0;
-    // ── CRIPPLE C1, unit-465sizeguard, env-gated, REMOVED BEFORE THE UNIT CLOSES.
-    //    Removes the size test so the cleanup proceeds on a non-zero `-wal`. It
-    //    reports through a pid-scoped file rather than stderr, because a cripple
-    //    that reports on a stream nobody echoes is a cripple nobody can grade
-    //    (Daedalus, unit-465armd §4, twice over). `destroyed` is read **before**
-    //    the removal, which is the only moment the number exists.
-    const c1 = process.env.KLATCH_U465SG_C1 === '1';
-    if (c1) {
-      const s = process.env.KLATCH_U465SG_SENTINEL;
-      if (s) {
-        try {
-          fs.appendFileSync(s, `C1 fired: -wal ${wal}B -> removing (destroyed ${wal}B)\n`);
-        } catch {
-          /* an unwritable sentinel must not be read as "the cripple did not fire" */
-        }
-      }
-    }
-    if (c1 || wal === 0) {
+    if (wal === 0) {
       fs.rmSync(dbPath + '-wal', { force: true });
       if (!sidecarsBefore['-shm']) fs.rmSync(dbPath + '-shm', { force: true });
     }
