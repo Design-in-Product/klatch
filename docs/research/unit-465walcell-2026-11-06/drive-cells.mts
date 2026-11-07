@@ -87,6 +87,14 @@ const sidecars = (p: string) => {
   return parts.length ? parts.join(' ') : '(nothing)';
 };
 
+// Which cripple this drive is of. Taken from this script's own argv and handed
+// to the child explicitly, because the env of *this* process is not what the
+// tool reads — the tool is a child, and an inherited-env assumption is the kind
+// of thing that makes a cripple drive silently identical to the clean one.
+const CRIPPLE: Record<string, string> = {};
+if (process.argv.includes('--y1')) CRIPPLE.U465WALCELL_Y1 = '1';
+if (process.argv.includes('--y2')) CRIPPLE.U465WALCELL_Y2 = '1';
+
 function run(dbPath: string, flags: string[]): { code: number; out: string } {
   try {
     const out = execFileSync('npx', ['tsx', TOOL, dbPath, ...flags], {
@@ -94,12 +102,29 @@ function run(dbPath: string, flags: string[]): { code: number; out: string } {
       encoding: 'utf8',
       stdio: ['ignore', 'pipe', 'pipe'],
       maxBuffer: 32 * 1024 * 1024,
+      env: { ...process.env, ...CRIPPLE },
     });
     return { code: 0, out };
   } catch (err) {
     const e = err as { status?: number; stdout?: string; stderr?: string };
     return { code: e.status ?? -1, out: `${e.stdout ?? ''}\n${e.stderr ?? ''}` };
   }
+}
+
+/**
+ * A cripple drive that cannot be told from the clean one is not evidence. The
+ * child is asked, once, whether it actually sees the flag this drive claims to
+ * be driving, before any arm runs.
+ */
+function confirmCrippleReachesChild(): string {
+  const keys = Object.keys(CRIPPLE);
+  if (!keys.length) return 'none requested';
+  const probe = execFileSync('npx', ['tsx', '-e', 'console.log(JSON.stringify(Object.keys(process.env).filter(k=>k.startsWith("U465WALCELL"))))'], {
+    cwd: REPO,
+    encoding: 'utf8',
+    env: { ...process.env, ...CRIPPLE },
+  }).trim();
+  return `${keys.join(',')} requested; child sees ${probe}`;
 }
 
 type Arm = {
@@ -160,7 +185,8 @@ const ARMS: Arm[] = [
 ];
 
 const only = process.argv.slice(2).filter((a) => !a.startsWith('-'));
-console.log(`unit-465walcell drive — cripples: Y1=${process.env.U465WALCELL_Y1 ?? 'off'} Y2=${process.env.U465WALCELL_Y2 ?? 'off'}`);
+console.log(`unit-465walcell drive — cripples: Y1=${CRIPPLE.U465WALCELL_Y1 ?? 'off'} Y2=${CRIPPLE.U465WALCELL_Y2 ?? 'off'}`);
+console.log(`cripple reaches child: ${confirmCrippleReachesChild()}`);
 console.log(`subject HEAD state is recorded by the caller, not here\n`);
 
 for (const arm of ARMS) {

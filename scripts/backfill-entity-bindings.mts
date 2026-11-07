@@ -665,27 +665,21 @@ source.close();
 // this open created (`unit-465walcell` arms E4/E5, measured, named, not cured) —
 // deliberate, and a different decision from this one.
 //
+// The size test is kept and is NOT graded by anything. `unit-465walcell`'s Y2
+// cripple removed it and every one of seven arms came back byte-identical: once
+// the outer test is `!before['-wal']`, a non-zero `-wal` at this point can only
+// have been committed by *another process* between this open and this close, and
+// no arm builds that race. It stays because that race is real and the cost of
+// the test is one `stat` — but nobody should cite it as measured.
+//
 // Deliberately NOT a tidy-up of every path. A run that is not refused opens the
 // target for writing through `getDb()` *after* this point, and those sidecars are
 // live — `probe-backfill-sidecar-neutrality.mts` arm C holds that side down, and
 // arm D holds the pre-existing case, so a blanket `rm` cannot score green here.
-// TEMPORARY — unit-465walcell cripples, env-gated and committed so that driving
-// them is a measurement of this committed tree and restoring them is a plain
-// revert rather than the discard of an uncommitted cure (`unit-465rowdelta`
-// defect 5). Removed in the same unit; `grep -c U465WALCELL` must end at 0.
-const U465WALCELL_Y1 = process.env.U465WALCELL_Y1 === '1'; // blanket rm — must redden C and D
-const U465WALCELL_Y2 = process.env.U465WALCELL_Y2 === '1'; // no size guard — must redden E3
-if (U465WALCELL_Y1) {
-  try {
-    fs.rmSync(dbPath + '-wal', { force: true });
-    fs.rmSync(dbPath + '-shm', { force: true });
-  } catch {
-    /* cripple */
-  }
-} else if (!sidecarsBefore['-wal']) {
+if (!sidecarsBefore['-wal']) {
   try {
     const wal = fs.existsSync(dbPath + '-wal') ? fs.statSync(dbPath + '-wal').size : 0;
-    if (wal === 0 || U465WALCELL_Y2) {
+    if (wal === 0) {
       fs.rmSync(dbPath + '-wal', { force: true });
       if (!sidecarsBefore['-shm']) fs.rmSync(dbPath + '-shm', { force: true });
     }

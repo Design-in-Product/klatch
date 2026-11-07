@@ -1,0 +1,54 @@
+unit-465walcell drive — cripples: Y1=off Y2=1
+cripple reaches child: U465WALCELL_Y2 requested; child sees ["U465WALCELL_Y2"]
+subject HEAD state is recorded by the caller, not here
+
+[E1] baseline — no sidecar before
+[E1]   before: (nothing)
+[E1]   exit:   1
+[E1]   refusal-names-rows: yes   says-nothing-written: yes
+[E1]   after:  (nothing)
+[E1]   MOVED:  no
+
+[E2] THE ROUTED CELL — -shm present, -wal absent
+[E2]   before: -shm:32768B
+[E2]   exit:   1
+[E2]   refusal-names-rows: yes   says-nothing-written: yes
+[E2]   after:  -shm:32768B
+[E2]   MOVED:  no
+
+[E3] non-zero -wal + -shm — must not be touched
+[E3]   before: -shm:32768B -wal:329632B
+[E3]   exit:   1
+[E3]   refusal-names-rows: yes   says-nothing-written: yes
+[E3]   after:  -shm:32768B -wal:329632B
+[E3]   MOVED:  no
+
+[E4] zero-length -wal only — my sketch is predicted NOT to cure this
+[E4]   before: -wal:0B
+[E4]   exit:   1
+[E4]   refusal-names-rows: yes   says-nothing-written: yes
+[E4]   after:  -shm:32768B -wal:0B
+[E4]   MOVED:  YES
+
+[E5] non-zero -wal only, no -shm
+[E5]   before: -wal:329632B
+[E5]   exit:   1
+[E5]   refusal-names-rows: yes   says-nothing-written: yes
+[E5]   after:  -shm:32768B -wal:329632B
+[E5]   MOVED:  YES
+
+[C] ARM C — a writing run keeps its own sidecars
+[C]   before: (nothing)
+[C]   exit:   0
+[C]   refusal-names-rows: no   says-nothing-written: no
+[C]   after:  -shm:32768B -wal:0B
+[C]   MOVED:  YES
+
+[D] ARM D re-driven — pre-existing sidecars left alone
+[D]   before: -shm:0B -wal:0B
+[D]   exit:   1
+[D]   refusal-names-rows: yes   says-nothing-written: yes
+[D]   after:  -shm:32768B -wal:0B
+[D]   MOVED:  YES
+
+drive complete
