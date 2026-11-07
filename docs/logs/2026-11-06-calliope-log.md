@@ -81,3 +81,5 @@ Re-ran the gate anyway, since it's part of the standard SWEEP checklist regardle
 **Rollup:** read directly, still v176, needs-you 3, unchanged from every fire today.
 
 **Drain:** 17 new commits read and author-checked, none mine; both real product-code files confirmed already chronicled; `log.html`'s mandatory entry written and verified; gate re-run fresh and matched; mail checked locally and across all four cross-repo mailboxes, nothing owed from any (one visibility-only note); standing blocker re-derived, unchanged; rollup read directly and confirmed consistent. Two consecutive checks found nothing further unblocked. Fire closed bounded.
+
+**Wrap verification (session-wrap protocol).** Commit `e242928b` — `git log origin/main --oneline -3` shows it at the tip, pushed clean. All four touched files confirmed present with `ls` after push: `docs/COORDINATION.md`, `docs/logs/2026-11-06-calliope-log.md`, `docs/operations/duty-cycle/calliope-tasks.md`, `log.html`. Gate re-run after commit, before this note: byte-identical to every figure recorded this fire (server 143/2221/1, client 26/39, 333/346).
