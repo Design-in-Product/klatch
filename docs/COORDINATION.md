@@ -6661,6 +6661,55 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   including the driving sweep, own needs-you tracking corrected); nothing deferred. Two
   consecutive checks found nothing further unblocked — fire closed bounded. Log:
   `docs/logs/2026-11-06-iris-log.md`.
+- **Updated:** 2026-11-06 ~19:2x PT (STOP fire). **Status:** available.
+- **11/06 fire (STOP) — no-op on product; 42 commits read since own START checkpoint
+  (`5dc983e0`), none mine — the day's full Daedalus↔Theseus `unit-465{migrate,rows,rowdelta,
+  keys,drop}` backfill-schema research chain. A genuine measurement error in this seat's own
+  START-fire entry (this file, a few lines above), found and corrected.** Drain against own
+  checkpoint: 42 new commits (author-checked — 20 Daedalus, 13 Theseus, 3 Argus, 3 Calliope, 1
+  Pard(Mediajunkie)). `git diff --stat 5dc983e0..HEAD -- packages/ scripts/` **not empty** (9
+  files, all server-side: `db/index.ts`, new `db/schema-delta.ts`, three new
+  `round465-*.test.ts`, `scripts/backfill-entity-bindings.mts`, new
+  `scripts/probe-backfill-sidecar-neutrality.mts`, `scripts/sweep-probes.mjs`,
+  `__tests__/setup.ts`) — zero `packages/client/src` touched, outside Iris's UX lane. **Mail:**
+  four new local files, all read directly: Calliope's rollup-promotion memo boards the Managed
+  Agents smoke-test item as needs-you item 3 (v176) — this seat's own prior entries correctly
+  tracked "ma-smoke, day N" every fire since 2026-10-21 but it was never promoted to the board
+  xian skims; her fix, not an ask of this seat. Three Daedalus↔Theseus exchange memos are
+  cc-only, same research track, no routed question. Rollup re-checked directly at v176 —
+  needs-you is now **3**. **Correction to this morning's own START entry:** its claim of
+  "6 files/23 hits" for `entityGuess` is wrong — re-running the identical grep now gives **5
+  files/22 hits**, and `git grep -l/-o entityGuess 5dc983e0 -- packages/client/src` confirms it
+  was already 5/22 *at that exact checkpoint commit*, so this is a hand-arithmetic slip written
+  this morning, not drift (the morning text itself shows the confusion: conflating a file-count
+  fix with an occurrence-count fix). The blocker's status is unaffected, only the citation.
+  All four cross-repo mailboxes checked fresh via `git -C <repo> fetch` + `git log --since`
+  against the 07:26 PT checkpoint: `designinproduct` 7 new (Wedge/Themis/CIO bizdev traffic,
+  unrelated); `mediajunkie` 7 new (Notarios/Cairn submission traffic, unrelated); `dispatch` 2
+  new (a Daedalus(Klatch)-authored question-box letter to xian, outbound not inbound; a dinp
+  inbox-check noting Theseus's own xian-question age, not this seat's item);
+  `piper-morgan-product/mailboxes` 251 new, content-grepped via scratch file (33 hits) — all one
+  thread (CIO's research-hub-trial retirement, already landed/closed in this project's own
+  `docs/mail/read/` by Argus) plus xian's informal aside about possibly making Klatch an R&D
+  team, informational, no decision, nothing addressed here. Nothing owed from any. Both briefs
+  unchanged since this morning's read. Standing blockers re-derived fresh: ground-rules stays
+  **closed**; `entityId`/reassign-picker live-browser drive remains queued on Theseus;
+  `entityGuess` corrected above to 5 files/22 hits. **Verified, not trusted:** `npm run
+  typecheck` clean ×4 workspaces; server **143 files · 2221 passed · 1 skipped (2222)**; client
+  **26 passed|13 skipped (39) · 333 passed|13 skipped (346)** — matching Argus's own 11/06
+  WORK-fire gate figures exactly; `sweep-probes --census` **154 probe files, 43 swept/111
+  deferred**, CENSUS OK (up one deferred probe, Daedalus's own new sidecar probe, correctly
+  deferred); full driving sweep (HEAD unchanged at `6538bf7b` before/after, tree clean
+  throughout, backgrounded past the 120s foreground limit, picked up via completion
+  notification, verdict line read directly from the task output) — **SWEEP PASSED — 43 of 43
+  swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but did not finish), 0 census
+  problem(s), 111 deferred.** No `packages/` changes of my own this fire. Nothing new needs xian
+  from this seat — needs-you=3 and the ma-smoke boarding were both already handled by Calliope
+  before this fire opened; the `entityGuess` correction is a citation fix, not a new finding.
+  **Drain:** all unblocked items done (commit check, mail across all four mailboxes plus local,
+  both blockers re-derived, both briefs, full gate including the driving sweep, own prior
+  citation error found and corrected); nothing deferred. Two consecutive checks found nothing
+  further unblocked — fire closed bounded. Log: `docs/logs/2026-11-06-iris-log.md`.
 - **Prior update:** 2026-11-01 ~07:23 PT (START fire). **Status:** available.
 - **11/01 fire (START) — no-op on product; 2 brief-publish commits read (Pard's fire-depth
   report, the hub's cross-pollination publish), nothing routed to this seat.** Drain against own
