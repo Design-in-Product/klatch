@@ -1,0 +1,5 @@
+unit-465sizeguard drive cell 3
+db bytes:             66,678,784
+race / cripple:       ON / ON
+rep 1: exit 1  -wal appeared +331ms  commit +332ms (8272B)  child exit +550ms  after -wal:absent -shm:absent  racer-row(open) open failed: disk I/O error  racer-row(closed) visible  refusal-line true  unreadable-line false  sentinel "C1 fired: -wal 8272B -> removing (destroyed 8272B)"  window OPEN
+DRIVE 3 DONE

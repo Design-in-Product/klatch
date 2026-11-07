@@ -8,8 +8,9 @@
  *
  *   cell 1 — R off, C off      cell 4 — R off, C on
  *   cell 2 — R on,  C off      cell 3 — R on,  C on
- *   cell 5 — R on,  C off, probe-sized fixture (no padding)   → P7
+ *   cell 5 — R on,  C off, probe-sized fixture (no padding)   → P7, ungradeable
  *   cell 6 — R on,  C on,  500 pad rows, 10 repeats           → P11
+ *   cell 7 — R on,  C on,  no padding, 10 repeats             → P7, graded
  *
  * Two instrument rules this driver obeys because they were paid for elsewhere:
  *
@@ -43,6 +44,14 @@ const CELLS: Record<string, Cell> = {
   '4': { race: false, cripple: true, pad: 2000, reps: 1 },
   '5': { race: true, cripple: false, pad: 0, reps: 1 },
   '6': { race: true, cripple: true, pad: 500, reps: 10 },
+  // Cell 7 repairs a defect in my own registration. P7 was keyed on cell 5, which
+  // is R=on **C=off** — the exact cell PRE-REGISTRATION §6 says cannot prove the
+  // window was open, because a commit landing after the cleanup leaves the same
+  // non-zero `-wal` behind. So cell 5 recorded `window OPEN` off `commitAt > 0`,
+  // which is bookkeeping, not evidence. Only a crippled cell can grade it, and
+  // this is that cell at the probe's own fixture size. Added after cells 1–5 were
+  // driven and before 6 and 7 were; the drive numbering and RESULTS §5 say so.
+  '7': { race: true, cripple: true, pad: 0, reps: 10 },
 };
 if (!CELLS[cell]) {
   console.error(`usage: drive-sizeguard.mts <${Object.keys(CELLS).join('|')}>`);

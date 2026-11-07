@@ -1,0 +1,5 @@
+unit-465sizeguard drive cell 1
+db bytes:             66,678,784
+race / cripple:       off / off
+rep 1: exit 1  -wal appeared +-1ms  commit +-1ms (-1B)  child exit +588ms  after -wal:absent -shm:absent  racer-row(open) GONE  racer-row(closed) (racer never opened)  refusal-line true  unreadable-line false  sentinel "(no cripple in this cell)"  window not-open
+DRIVE 1 DONE

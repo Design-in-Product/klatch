@@ -1,0 +1,15 @@
+unit-465sizeguard drive cell 7
+db bytes:             81,920
+race / cripple:       ON / ON
+rep 1: exit 1  -wal appeared +338ms  commit +339ms (8272B)  child exit +381ms  after -wal:absent -shm:absent  racer-row(open) open failed: disk I/O error  racer-row(closed) visible  refusal-line true  unreadable-line false  sentinel "C1 fired: -wal 8272B -> removing (destroyed 8272B)"  window OPEN
+rep 2: exit 1  -wal appeared +342ms  commit +343ms (8272B)  child exit +386ms  after -wal:absent -shm:absent  racer-row(open) open failed: disk I/O error  racer-row(closed) visible  refusal-line true  unreadable-line false  sentinel "C1 fired: -wal 8272B -> removing (destroyed 8272B)"  window OPEN
+rep 3: exit 1  -wal appeared +343ms  commit +345ms (8272B)  child exit +387ms  after -wal:absent -shm:absent  racer-row(open) open failed: disk I/O error  racer-row(closed) visible  refusal-line true  unreadable-line false  sentinel "C1 fired: -wal 8272B -> removing (destroyed 8272B)"  window OPEN
+rep 4: exit 1  -wal appeared +352ms  commit +353ms (8272B)  child exit +393ms  after -wal:absent -shm:absent  racer-row(open) open failed: disk I/O error  racer-row(closed) visible  refusal-line true  unreadable-line false  sentinel "C1 fired: -wal 8272B -> removing (destroyed 8272B)"  window OPEN
+rep 5: exit 1  -wal appeared +340ms  commit +341ms (8272B)  child exit +382ms  after -wal:absent -shm:absent  racer-row(open) open failed: disk I/O error  racer-row(closed) visible  refusal-line true  unreadable-line false  sentinel "C1 fired: -wal 8272B -> removing (destroyed 8272B)"  window OPEN
+rep 6: exit 1  -wal appeared +335ms  commit +336ms (8272B)  child exit +378ms  after -wal:absent -shm:absent  racer-row(open) open failed: disk I/O error  racer-row(closed) visible  refusal-line true  unreadable-line false  sentinel "C1 fired: -wal 8272B -> removing (destroyed 8272B)"  window OPEN
+rep 7: exit 1  -wal appeared +343ms  commit +344ms (8272B)  child exit +386ms  after -wal:absent -shm:absent  racer-row(open) open failed: disk I/O error  racer-row(closed) visible  refusal-line true  unreadable-line false  sentinel "C1 fired: -wal 8272B -> removing (destroyed 8272B)"  window OPEN
+rep 8: exit 1  -wal appeared +340ms  commit +341ms (8272B)  child exit +381ms  after -wal:absent -shm:absent  racer-row(open) open failed: disk I/O error  racer-row(closed) visible  refusal-line true  unreadable-line false  sentinel "C1 fired: -wal 8272B -> removing (destroyed 8272B)"  window OPEN
+rep 9: exit 1  -wal appeared +331ms  commit +332ms (8272B)  child exit +374ms  after -wal:absent -shm:absent  racer-row(open) open failed: disk I/O error  racer-row(closed) visible  refusal-line true  unreadable-line false  sentinel "C1 fired: -wal 8272B -> removing (destroyed 8272B)"  window OPEN
+rep 10: exit 1  -wal appeared +344ms  commit +345ms (8272B)  child exit +389ms  after -wal:absent -shm:absent  racer-row(open) open failed: disk I/O error  racer-row(closed) visible  refusal-line true  unreadable-line false  sentinel "C1 fired: -wal 8272B -> removing (destroyed 8272B)"  window OPEN
+WINDOW OPEN: 10/10
+DRIVE 7 DONE
