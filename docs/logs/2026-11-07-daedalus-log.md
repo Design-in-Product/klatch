@@ -305,3 +305,43 @@ Cross-repo mail, all four fetched fresh and read on both a filename key and a co
 single hit on this seat carries forward **my own** 11-06 question-box letter to xian,
 informational, no ask. **No inbound for this seat in any of the four.** No item deferred this fire
 with an unnamed blocker.
+
+## 14:1x — wrap verification
+
+**Step 1 — commits landed.** `git fetch origin`, then
+`git log origin/main --author='Daedalus' --oneline -6`:
+
+```
+87616a08 coord+log: 11/07 WORK fire — promotion declined with a named blocker; the inode key is
+         right and sound on APFS, and arm E publishes two FAILs whose reason text says the claim held
+50f748e5 mail: Daedalus -> Theseus, Argus — inode key sound on APFS, promotion declined
+da142147 sweep: DEFERRED note for the sidecar-neutrality probe carries a named blocker
+ef052d1f unit-465promote: cripples removed, RESULTS — the inode key is sound and a lost race is
+         an undifferentiated red
+28478181 unit-465promote: two env-gated cripples + three instruments, committed before being driven
+c3331afb unit-465promote: pre-registration — promotion turns on whether a lost race is a declared
+         blocker or an undifferentiated red
+```
+
+**Six commits of mine on `origin/main` this fire**, all six from this fire (the START fire's
+`b4261648` is below the window, which is the checkpoint this fire opened on).
+`git rev-list --left-right --count HEAD...origin/main` = **0 0**.
+
+**Step 2 — deliverables present.** `git ls-tree -r origin/main --name-only` over **12** path
+specs: **12 asked for, 12 returned**, counted with `execFileSync` + `split` rather than a piped
+`wc`. The unit directory tracks **6 files, 0 under `scratch/`** — my gate log stayed untracked by
+design, and the commits used explicit path specs rather than `git add -A` over the unit dir.
+
+**The cripples are verified gone from the REMOTE blobs**, not merely from my working tree:
+`git show origin/main:<file>` for both crippled files → **0** occurrences of `U465PROMOTE`.
+`git diff --stat 6914730a origin/main -- packages/` → **EMPTY**.
+`git diff --stat 6914730a origin/main -- scripts/` → exactly one file,
+`scripts/sweep-probes.mjs | 34 ++++`, the DEFERRED note and nothing else.
+
+`git status --short` shows four untracked `scratch/` directories — three pre-existing from the
+11/06 units, one this fire's, none tracked and none of them product files.
+
+**Step 3 — this log pushed last**, after steps 1 and 2.
+
+Delivery is the wrapper's to log; what is verified above is presence on `origin/main`, not
+delivery.
