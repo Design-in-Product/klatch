@@ -928,7 +928,84 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-06 ~13:2x–13:4x PT (**WORK fire — second product-code fire of the day:
+- **Updated:** 2026-11-06 ~17:2x–17:5x PT (**STOP fire — third product-code fire of the day:
+  Theseus's §2 and §3 both cured and driven; the one control I registered as the one that could
+  redden came back clean; and a nine-day-stale "open" thread of mine closed with a measurement.**)
+  Checkpoint is this seat's own `3d3809b9` (the 11/06 WORK-fire wrap log), re-derived with
+  `git log -1 --author='Daedalus'` rather than taken from the session-start commit list — the
+  commit immediately above it, `d28681f5`, has a nearly identical subject and is **Theseus's**,
+  author-checked before citing. `git rev-list --left-right --count HEAD...origin/main` = **0 0** at
+  fire start. 9 new commits since the checkpoint, author-checked (Theseus 8, Calliope 1), **none
+  mine**; `git diff --stat 3d3809b9..HEAD -- packages/ scripts/` **empty** at fire start.
+  **Mail:** one inbound addressed to this seat — Theseus's
+  `a-drop-passes-all-five-of-your-keys…` — read in full and **both of its routed items taken,
+  cured, driven and answered this fire**, not filed.
+  **Unit `docs/research/unit-465drop-2026-11-06/`** (pre-registration `4cb05d09`, verified as the
+  only path in the directory on `origin/main` before any instrument existed; cure `b3344f75`;
+  RESULTS `25de1d4b`; memo `b609165f`). **8 arms, 8 HIT. 6 predictions, 5 HELD, 1 REFUTED. 3
+  cripples, all as registered. 2 unregistered defects, both mine.** Every key in `SchemaDelta`
+  asked only what the migration *adds*, so a `DROP TABLE` of a populated table came back
+  `empty: true` on all four schema keys and on both row keys, `--apply --no-migrate` returned
+  **exit 0**, and the tool printed `Nothing to apply.` over a file that had just lost a table —
+  his figures reproduced to the byte pre-cure. Cured with `droppedObjects`, `diffRows` over the
+  **union** of the two censuses, `DataDelta.empty` reading both quantities it carries, and the
+  backfill refusal's verb keyed on the measured key. **P5 REFUTED, and it is the one I wanted to be
+  wrong about:** the genuine pre-upgrade March blob (read out of `c945e8aa` with `git cat-file`, not
+  out of `backups/`) nets **no** dropped object, so the cure manufactures no refusal on the one real
+  behind-schema artefact in the repo, and the strings quoted in `unit-465rowdelta/RESULTS.md` A1/A6
+  stay byte-identical. **Two defects of mine, both found by driving the cure rather than writing
+  it:** the §3 guard made my own schema block print *"Every existing row survives this"* two
+  paragraphs above `-1 message_artifacts` in one stdout (cured by making no promise at all — that
+  block's input carries no row data, so any sentence it makes about rows is a guess); and adding a
+  third caller of `schemaDelta` turned a latent cross-fork race red in two sibling leak assertions
+  (vitest's default pool is forks sharing one tmpdir — the scratch name now carries `process.pid`
+  and both filters are scoped to it, which makes the assertion *stronger*, not relaxed).
+  **Bookkeeping debt of mine, closed:** Theseus's 10-27 §5 left `C4` open on this seat and every
+  Argus fire entry since has reported it open. It was cured **2026-10-28** in `6190a0dd` — mine,
+  author-checked — and the probe reads `All 19 regression checks passed` on a live run this fire,
+  up from `1 of 17 FAILED`. The cure landed in a commit whose subject was about re-keying and no
+  memo ever said "closed" in the thread, so Argus read the record correctly every time and the
+  record was mine to fix. Closing memo filed and the 10-27 pair moved to `docs/mail/read/`
+  (`cfa1295a`), both confirmed present there on `origin/main`.
+  **Question-box (STOP item 4), considered not skipped:** filed —
+  `dispatch/mail/question-daedalus-2026-11-06-when-the-instrument-is-ahead-of-the-story-about-it.md`,
+  pushed and verified at the remote with `git -C dispatch ls-tree -r origin/main` (dispatch was
+  behind; clean rebase onto `origin/main`, no force push, commit re-checked by `%an` afterwards).
+  **Cross-repo mail, all four fetched fresh and read on two independent keys** — a filename key
+  (`daedalus` in the name, dated 11-03..11-06) and, because a filename key cannot see a memo to
+  this seat whose name omits it, a content grep of the actual `HEAD..origin/main` diffs for
+  `daedalus|klatch`: `designinproduct` (0 new commits touching `docs/mail/`), `mediajunkie` (0),
+  `dispatch` (1, the routine 11-06 inbox check), `piper-morgan-product` (2, routine PA/web checks).
+  **0 hits on both keys in all four.**
+  **Standing blockers re-derived fresh:** Managed Agents smoke-run — no `smoke`/`managed` branch
+  anywhere (`git branch -a` 0, `git ls-remote --heads origin` 0), named blocker on xian, unchanged.
+  **One figure flagged, not adjudicated:** `node -e` against the dates gives **16 days elapsed**
+  since 2026-10-21, i.e. day 17 counting 10-21 as day 1 — which agrees with Calliope's rollup
+  ("day 17 today") and not with the "day 18" in Argus's 11/06 WORK entry. His derivation is in his
+  log, not mine to re-key; noting the disagreement so one of us reconciles it rather than both
+  carrying a number.
+  **Rollup:** `docs/operations/attention-rollup.md` read directly — still **v176, needs-you 3**,
+  unchanged from this morning. Neither of the two items touching this seat is mine to action
+  (item 2 is xian's call on boarding his own 09-29 list; item 3 is Calliope's filing fix). This
+  unit does hand the 🟡 `backups/` item a concrete reproduction — the pre-upgrade blob is intact at
+  `c945e8aa` and `git cat-file blob` recovers it — but the rollup is Calliope's board, so it is
+  recorded here and in RESULTS §7 rather than edited in.
+  **Gate re-derived fresh:** `npx tsx scripts/gate.mts` → `GATE ok exit=0` on all four stages.
+  Typecheck clean ×4; server **143 files · 2221 passed · 1 skipped (2222)**, up from 142/2207/2208
+  — the whole delta is this unit's one new file, measured at **14** tests on its own, and
+  2207 + 14 = 2221, added up in this sentence rather than asserted at the end of it; client
+  **26/39 files, 333/346**, unchanged; `sweep-probes --census` **154 / 43 / 111, CENSUS OK** (154,
+  not 153 — Theseus's `unit-465keys` probe, his commit, not mine).
+  **Every one of the 6 `.err` files is 189–191 bytes, not 0**, counted with `wc -c` over all six at
+  once: all of it is `tsx`'s `module.register()` deprecation warning, which this unit's driver
+  inherits rather than piping. Said rather than rounded to "clean."
+  **Drain:** census, the one inbound (cured, not filed), the nine-day-stale C4 closure, cross-repo
+  mail on two keys, the question-box, standing blockers, rollup and gate all drained this fire.
+  **Deferred with a named blocker, one:** Theseus's §5 sidecar-guard sketch — blocker is that its
+  grading instrument, arm D in `unit-465rowdelta`, has not been re-driven against his three cells,
+  and landing a guard whose grader I have not run is the thing I would route back at him.
+  Log: `docs/logs/2026-11-06-daedalus-log.md`.
+- **Prior update:** 2026-11-06 ~13:2x–13:4x PT (**WORK fire — second product-code fire of the day:
   Theseus's four-site row census is cured, his own cure sketch needed one amendment that a cripple
   drives, and my own prediction about my own refusal path was refuted and then cured.**)
   Checkpoint `3d759879` (Calliope's MID fire); `git rev-list --count HEAD..origin/main` = **0** and

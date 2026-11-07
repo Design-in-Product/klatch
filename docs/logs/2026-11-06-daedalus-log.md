@@ -342,3 +342,213 @@ instead of inheriting it, which is why the warning appears inside `drive12.final
 than in an `.err`.
 
 Delivery itself is the wrapper's to log, not mine to assert.
+
+---
+
+## 17:17 — Session resumed (STOP fire, Opus 5)
+
+Third fire of the day, third one that touches product code.
+
+### 17:18 — census, and a checkpoint I nearly got wrong
+
+`git rev-list --left-right --count HEAD...origin/main` → **0 0**. Nine new commits since this
+seat's last, author-checked before citing: **Theseus 8, Calliope 1, none mine.**
+`git diff --stat <checkpoint>..HEAD -- packages/ scripts/` empty.
+
+The checkpoint itself is worth a line. The session-start commit list showed `d28681f5` —
+*"log: wrap verification for the 11/06 WORK fire — five commits of mine on origin/main, 16 paths
+asked for and 16 returned"* — directly above a commit of mine with almost the same shape. My own
+wrap entry says **six** commits and **37** paths. I re-derived the checkpoint off
+`git log -1 --author='Daedalus'` rather than off the list, and it is `3d3809b9`, not `d28681f5`;
+`d28681f5` is **Theseus's**. Two seats running the same discipline on the same day produce wrap
+lines that differ only in two numbers, and the numbers are the only thing that tells them apart.
+
+### 17:19 — the inbound, and taking both halves
+
+Theseus's `a-drop-passes-all-five-of-your-keys…`, 177 lines, read in full. His §8 offers two items
+to this seat and I took both. Before writing a line of pre-registration I read both defects off
+`schema-delta.ts` directly rather than off his memo:
+
+* `diffCensus:177` is `after.objects.filter(…)` with **no converse**, and the three keys below it
+  iterate `Object.entries(after.cols)` — so an object in `before` and not in `after` is visited by
+  none of them.
+* `countRows:224` and `diffRows:245` iterate `Object.keys(after)` for the same reason.
+* `schemaDelta:286` is `empty: rowWrites === 0` over an interface carrying **two** measured
+  quantities.
+
+And the blast-radius question his scoping turns on: `grep -n DROP packages/server/src/db/index.ts`
+→ exactly one site, `DROP TABLE messages` at `:206`, paired with the rebuild's `RENAME` at `:207`.
+His scoping holds on my read too.
+
+### 17:21 — unit-465drop pre-registered
+
+`4cb05d09`, pushed as the only file in the directory, verified by `git ls-tree -r --name-only
+origin/main --` on it rather than asserted. 8 arms, 6 predictions, 3 cripples.
+
+The prediction I cared most about is **P2**: that `droppedObjects` would be **empty** on the
+drop-and-recreate cell. The obvious reading of "a drop is invisible" is that one new key fixes it.
+It does not — the recreated table is in `after`, so the object key is silent there, and §3 needs the
+row key. Registering that first is what stopped me shipping a cure whose commit message claimed the
+drop was handled while his §3 cell stayed exactly as blind.
+
+**P5** is the one I registered at low confidence because it is where a miss would hurt: that the
+March backup nets a dropped object, putting the new key's first firing on a *control*.
+
+### 17:23 — his figures reproduce to the byte, both halves
+
+`drive1.precure.out`. Y2: five keys empty, both notes `undefined`, exit **0**,
+`message_artifacts=ABSENT`, closing line `Nothing to apply. Snapshot discarded.` Y1:
+`rebuiltTables` fires, exit 1, `"rows": {"message_artifacts": -1}`, `"rowWrites": 0`,
+`"empty": true`, `describeDataDelta -> undefined`. Identical to his §2 and §3.
+
+His sibling sentence about a dropped **index** I promoted from prose to a registered arm; it
+reproduces too — silent on all five keys, exit 0, index gone.
+
+### 17:24 — P5 settled before the controls were published, and it refuted me
+
+The arm I had labelled "behind-schema, a copy of `backups/klatch.db.backup-2026-03-14`" is **not
+behind the schema**: 9,449,472 bytes, 11 objects, `empty: true`. That is the already-upgraded file —
+mtime today — from the 11-05 accident whose restore is still open on xian. The label was wrong until
+it was measured.
+
+So I went and got the real one, out of git rather than out of `backups/`:
+`git cat-file blob c945e8aa:backups/klatch.db.backup-2026-03-14`, 5,230,592 bytes, 7 objects. Its
+`droppedObjects` is **`[]`** — every difference additive: 4 new objects, 9 new columns, `messages`
+rebuilt. **P5 REFUTED.** Which also settles something I had decided on judgement a few minutes
+earlier: I kept the no-drop verbs in the refusal's reason ternary unchanged because those exact
+strings are quoted in `unit-465rowdelta/RESULTS.md` A1 and A6, and changing a string a published
+cell quotes turns a correct record into an apparent mismatch. The measurement is what makes that
+decision safe rather than lucky — and line 93 of `drive3` shows the published sentence coming back
+word for word.
+
+Both arms kept. `MARCH` is the control for what is on disk; `MARCHGIT` for what the artefact is.
+
+### 17:26 — cure, and two defects of mine that only driving it could find
+
+Four edits (`b3344f75`): `droppedObjects` conjoined into `empty`; `diffRows` over the **union**;
+`DataDelta.empty` reading both quantities; the refusal's verb keyed on the measured key.
+
+**1. The §3 cure exposed a sentence of mine two paragraphs below itself.** `drive4` shows Y1
+printing both blocks — and disagreeing with itself inside one stdout: `Every existing row survives
+this` above `-1 message_artifacts`. My `dropping` conditional was keyed on `droppedObjects`, and a
+rebuild-with-loss has none.
+
+But the conditional was never the right instrument. `describeSchemaDelta` takes a `SchemaDelta`,
+which carries **no row information at all** — so every sentence it makes about rows is a guess, and
+in that cell the guess was wrong. Theseus named that exact sentence in his §3 and I had read it as a
+*consequence* of the `empty` guard rather than as a defect of its own. The cure is no promise:
+*"A change to the container is not by itself a change to the rows. The ROWS block says what moves,
+and no ROWS block means nothing moves."* Pinned over three deltas — a drop, a rebuild, an add.
+
+`drive4` is kept beside `drive5` rather than replaced. It is the pass that caught this.
+
+**2. My third caller of `schemaDelta` broke the leak assertion in two siblings.** Both existing
+round-465 files assert no `klatch-schema-delta*` file survives a call. vitest's default pool is
+**forks** sharing one tmpdir — config read this session, no `pool`, no `fileParallelism` — and the
+scratch name was a bare UUID, so each fork counted the other forks' in-flight copies as its own
+leak. `round465-data-delta.test.ts:142` went red at `expected 0 … received 1`. The race was already
+latent between the first two files and passing on timing.
+
+I did not relax it. The scratch name now carries `process.pid` and both filters are scoped to it,
+which makes the assertion mean *"this process leaked"* rather than *"someone leaked."*
+
+### 17:30 — gate, and the arithmetic in the sentence
+
+`GATE ok exit=0` on all four stages. Server **143 files · 2221 passed · 1 skipped (2222)**, up from
+142 / 2207 / 2208. The delta is this unit's one new file, which I measured on its own rather than
+inferred: `npx vitest run src/__tests__/round465-drop-delta.test.ts` → **14 passed**, and
+2207 + 14 = **2221**. Client unchanged at 26/39 and 333/346. `sweep-probes --census`
+**154 / 43 / 111, CENSUS OK** — 154 not 153, and the new probe is Theseus's, not mine.
+
+Cripples: `subject restored: shasum before=1981ff97509d7f2e after=1981ff97509d7f2e IDENTICAL` and
+`grep -c U465DROP_CRIPPLE in subject: 0`, in four separate drives. Restore is from a byte copy taken
+**before** the patch, not from `HEAD` — the trap `unit-465rowdelta` X3 fell into — and it runs in a
+`finally`. Because the block is env-gated the controls in `drive5` ran on the patched tree, so
+`drive6` re-runs them unpatched: identical. The inertness is measured, not argued.
+
+**All six `.err` files are 189–191 bytes, not 0** (`wc -c` over all six at once): `tsx`'s
+`module.register()` deprecation warning, which this driver inherits rather than piping. Said rather
+than rounded to "clean."
+
+### 17:35 — a nine-day-stale "open" of mine, closed with a measurement
+
+Argus's fire entries have reported *"still open on Daedalus's unclosed C4 half"* on every fire since
+Theseus's 10-27 §5. Ran the probe live rather than recalling its state:
+`All 19 regression checks passed`, up from `[C4] FAIL · 1 of 17 FAILED`.
+
+The cure is `6190a0dd`, 10-28 09:36 — **mine**, author-checked off `git log --format='%an'` over
+that path before I claimed it — and its own message takes Theseus's narrowing exactly as given
+(module-name repair dead, per-signature and style-blind landed, five cripples). My 10-28 reply
+*cites* that commit, but in its §1, as one row in a round-label audit. So the work landed, the probe
+went green, and the thread's last word stayed "yours, unchanged."
+
+Argus read the record correctly every time. The record was mine to fix. Closing memo filed, 10-27
+pair moved to `read/` (`cfa1295a`), both verified present there on `origin/main`.
+
+The lesson, written down because it will recur: **a cure that lands in a commit whose subject is
+about something else does not close the thread that routed it.** The closing sentence has to be
+addressed to the thread, in the thread.
+
+### 17:37 — question-box, considered rather than skipped
+
+STOP item 4. Filed —
+`dispatch/mail/question-daedalus-2026-11-06-when-the-instrument-is-ahead-of-the-story-about-it.md`.
+The question is the day's actual shape: twice today my code was *more correct than its own sentences
+about itself* (a header census wrong at one, then four, against a measurement that was right both
+times; and a block promising row survival with no row data in its input). Asked whether he finds the
+same asymmetry in his own work, and whether the move is ever "write a truer sentence" or always
+"take the claim out of the mouth that can't support it."
+
+I did weigh *not* filing: two of Theseus's question-box letters are open, the newer at ~107.7h and
+flagged seven dispatch cycles running. But both letters say in their own text that no answer is
+needed to proceed, which is what the channel is for, and "the queue is long" is not a named blocker
+— it is not something missing. So: filed.
+
+Pushed from a repo that was behind. Clean rebase onto `origin/main`, no force push, commit re-checked
+by `%an` afterwards, and the file verified at the remote with
+`git -C dispatch ls-tree -r origin/main` rather than from the local commit.
+
+Identity note, since it has bitten this seat before: dispatch's recent authors read
+`xian <xian@amber.attlocal.net>`, which is what my commit used with no `-c user.email` override.
+Also a small `git` gotcha found the hard way this fire: `git rev-parse --short HEAD origin/main`
+fails with `fatal: Needed a single revision` — `--short` takes one rev; the bare two-rev form works.
+
+### 17:40 — cross-repo mail, on two keys
+
+All four fetched fresh. A filename key (`daedalus` in the name, dated 11-03..11-06) returned **none**
+in all four. Because a filename key cannot see a memo to this seat whose filename omits the name, I
+ran a second, independent key over the actual `HEAD..origin/main` diffs — content grep of added
+lines for `daedalus|klatch`: **0 hits in all four**. New commits touching the mail dirs:
+`designinproduct` 0, `mediajunkie` 0, `dispatch` 1 (routine 11-06 inbox check),
+`piper-morgan-product` 2 (routine PA/web checks).
+
+### 17:41 — standing items, and one figure I am flagging rather than settling
+
+Managed Agents smoke-run: no `smoke`/`managed` branch anywhere, `git branch -a` 0 and
+`git ls-remote --heads origin` 0. Named blocker on xian, unchanged.
+
+`node -e` on the dates gives **16 days elapsed** since 2026-10-21 — day 17 counting 10-21 as day 1.
+That agrees with Calliope's rollup ("day 17 today") and not with the "day 18" in Argus's 11/06 WORK
+entry. His derivation is in his log and is not mine to re-key; flagging the disagreement so one of
+us reconciles it rather than both of us carrying a number.
+
+Rollup read directly: still **v176, needs-you 3**, unchanged from this morning. Neither item
+touching this seat is mine to action. This unit does hand the 🟡 `backups/` item a concrete
+reproduction — the pre-upgrade blob is intact at `c945e8aa` and `git cat-file blob` recovers it —
+but the board is Calliope's, so it is recorded in RESULTS §7 and in COORDINATION rather than edited
+in.
+
+### 17:42 — tally
+
+**8 registered arms: 8 HIT, 0 MISS, 0 VOID. 6 predictions: 5 HELD, 1 REFUTED, the refuted one mine.
+3 registered cripples, all three as registered. 2 unregistered defects, both mine, both caught by
+this unit's own drives before publication.**
+
+**Named blockers, one, and it is a decline with a reason:** Theseus's §5 sidecar-guard sketch. His
+amendment is right and I am not arguing it; the blocker is that arm D in `unit-465rowdelta` — the
+control that would grade it — has not been re-driven against his three cells, and landing a guard
+whose grading instrument I have not run is precisely what I would route back at him. Offered to him
+in §6 of the reply if he wants to take it.
+
+Unchanged and not re-asked: the 09-29 step-1 list; the `backups/` tracked-vs-ignored half; the
+March-backup restore from `c945e8aa`, which this unit now gives a one-command reproduction for.
