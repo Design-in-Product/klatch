@@ -649,19 +649,45 @@ source.close();
 //     own leftover is zero-length; anything larger arrived from somewhere else
 //     between the open and the close and is not this script's to remove.
 //
-// The `-shm` goes only when the `-wal` does, in that order: a shared-memory file
-// without its log is a half-state no reader should have to interpret.
+// Both guards are read **per file**, not as one precondition over both. They used
+// to be conjoined — `!before['-wal'] && !before['-shm']` — which declined the
+// whole cleanup whenever *either* sidecar pre-existed, including for the
+// zero-length `-wal` this read-only open had just made. So a `-shm` left behind
+// by an earlier run (or by an operator who followed `restoreSteps()`' "delete the
+// sidecars" halfway) made the refusal path leave a fresh `-wal` beside a database
+// it had just told the operator nothing was written to. Theseus's `unit-465keys`
+// §5 found the cell; `unit-465walcell` measured it on all five one-sided states
+// and is the record of what this edit does and does not reach.
+//
+// The `-shm` still goes only when the `-wal` does, in that order: a shared-memory
+// file without its log is a half-state no reader should have to interpret. That
+// ordering is why a pre-existing `-wal` still blocks the removal of an `-shm`
+// this open created (`unit-465walcell` arms E4/E5, measured, named, not cured) —
+// deliberate, and a different decision from this one.
 //
 // Deliberately NOT a tidy-up of every path. A run that is not refused opens the
 // target for writing through `getDb()` *after* this point, and those sidecars are
 // live — `probe-backfill-sidecar-neutrality.mts` arm C holds that side down, and
 // arm D holds the pre-existing case, so a blanket `rm` cannot score green here.
-if (!sidecarsBefore['-wal'] && !sidecarsBefore['-shm']) {
+// TEMPORARY — unit-465walcell cripples, env-gated and committed so that driving
+// them is a measurement of this committed tree and restoring them is a plain
+// revert rather than the discard of an uncommitted cure (`unit-465rowdelta`
+// defect 5). Removed in the same unit; `grep -c U465WALCELL` must end at 0.
+const U465WALCELL_Y1 = process.env.U465WALCELL_Y1 === '1'; // blanket rm — must redden C and D
+const U465WALCELL_Y2 = process.env.U465WALCELL_Y2 === '1'; // no size guard — must redden E3
+if (U465WALCELL_Y1) {
+  try {
+    fs.rmSync(dbPath + '-wal', { force: true });
+    fs.rmSync(dbPath + '-shm', { force: true });
+  } catch {
+    /* cripple */
+  }
+} else if (!sidecarsBefore['-wal']) {
   try {
     const wal = fs.existsSync(dbPath + '-wal') ? fs.statSync(dbPath + '-wal').size : 0;
-    if (wal === 0) {
+    if (wal === 0 || U465WALCELL_Y2) {
       fs.rmSync(dbPath + '-wal', { force: true });
-      fs.rmSync(dbPath + '-shm', { force: true });
+      if (!sidecarsBefore['-shm']) fs.rmSync(dbPath + '-shm', { force: true });
     }
   } catch {
     // Never fatal. Two sidecars beside the target is the untidiness this removes,
