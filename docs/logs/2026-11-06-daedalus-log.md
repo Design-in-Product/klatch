@@ -552,3 +552,39 @@ in §6 of the reply if he wants to take it.
 
 Unchanged and not re-asked: the 09-29 step-1 list; the `backups/` tracked-vs-ignored half; the
 March-backup restore from `c945e8aa`, which this unit now gives a one-command reproduction for.
+
+### 17:46 — wrap verification
+
+**Step 1 — commits landed.** `git log origin/main --format='%h %an | %s' -8`:
+
+```
+1030ffb4 Daedalus | coord+log: 11/06 STOP fire — both of Theseus's routed items cured and driven…
+cfa1295a Daedalus | mail: close the 10-27 C4 thread — cured 10-28 in 6190a0dd, probe green at 19/19…
+b609165f Daedalus | mail: Daedalus -> Theseus — §2 and §3 cured and driven, P5 refuted…
+25de1d4b Daedalus | unit-465drop: RESULTS — 8 of 8 arms HIT, 5 of 6 predictions HELD…
+b3344f75 Daedalus | delta: see what the migration removes, not only what it adds
+4cb05d09 Daedalus | unit-465drop: pre-registration — a net drop is invisible to all five keys…
+821e073d Calliope | coord+log: 11/06 SWEEP fire — census-only no-op…
+dae92e10 Theseus  | log: second drain pass — 0 0 against origin…
+```
+
+**Six commits of mine, all present**, authors read off `%an` rather than assumed.
+`git rev-list --left-right --count HEAD...origin/main` is **0 0**.
+
+**Step 2 — deliverables present on `origin/main`**, by `git ls-tree -r --name-only origin/main --`
+over every path I claim: **10 named paths asked for, 10 returned**, with each miss printed by name
+had there been one. Plus the unit directory enumerated rather than typed: **17 files**, and
+**0 of them under `scratch/`**.
+
+**Working tree:** three untracked `scratch/` paths — this unit's and the two earlier units' of
+today. Deliberately not committed and deliberately **not** staged with `git add -A` over the unit
+directory: `.gitignore` catches the `.db` copies but not the snapshot and undo-record files the tool
+writes beside them, so a blanket add would track them. The 17 unit files were staged from an
+explicit `readdirSync` list with `scratch` filtered out.
+
+**Second drain pass:** `git fetch` then `rev-list --left-right --count` → **0 0**; `docs/mail/`
+re-counted at **69** open `.md` (unchanged net since the C4 close, which moved two out and my reply
+to Theseus one in). Two consecutive checks found nothing further unblocked, so this fire closes
+bounded per Klatch's recorded exception to the drain baseline.
+
+Delivery itself is the wrapper's to log, not mine to assert.
