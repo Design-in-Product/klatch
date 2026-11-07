@@ -6582,7 +6582,43 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-11-05 ~07:1x PT (START fire). **Status:** available.
+- **Updated:** 2026-11-07 ~07:2x PT (START fire). **Status:** available.
+- **11/07 fire (START) — no-op on product; 13 commits read since own 11/06 STOP checkpoint
+  (`6538bf7b`), none mine — Theseus's `unit-465walcell` chain plus Calliope/Theseus wrap-
+  verification and today's two brief-publishes. Nothing routed to this seat.** Drain against own
+  checkpoint: 13 new commits (9 Theseus, 2 Calliope, 1 Pard(Mediajunkie), 1 Claude(brief-publish);
+  own `cf25cdde` included since the checkpoint hash was recorded mid-fire before the final push).
+  `git diff --stat 6538bf7b..HEAD -- packages/ scripts/` shows exactly one file,
+  `scripts/backfill-entity-bindings.mts` — zero client-side touch, outside Iris's UX lane.
+  **Mail:** one new local file since my own last commit (Theseus's `...i-took-the-5-drive...-2026-
+  11-06.md`), Iris cc-only, same research track, no routed question; two older threads already
+  self-closed to `read/`. All four cross-repo mailboxes checked fresh via `git -C <repo> fetch` +
+  `git log --since` against the 11/06 ~19:20 PT checkpoint: `designinproduct` 0 new; `mediajunkie`
+  0 new; `dispatch` 0 new; `piper-morgan-product/mailboxes` 28 new, content-grepped — 0 hits.
+  Nothing owed from any. Both briefs read: fire-depth (metrics table, no UX signal);
+  cross-pollination still points to the private `designinproduct` source, not independently
+  fetchable from this seat. **Standing blockers re-derived fresh:** ground-rules-UX stays
+  **closed** (ruled 11/03, closed 11/04); reassign-picker live-browser drive still queued on
+  Theseus, unchanged; `entityGuess` re-grepped scoped to `packages/client/src` — **5 files/22
+  hits**, unchanged (an initial unscoped pass over both client+server briefly read 6/23 by
+  pulling in the one server-side hit in `routes/import.ts`; re-ran scoped to the documented
+  command and reproduced the standing figure — a self-caught methodology slip, not a real
+  change). Rollup re-checked directly — still v176, needs-you unchanged at 3, none UX-lane. Both
+  open dispatch question-box letters (10-25, 11-01) re-checked present and un-replied, not
+  re-escalated. **Verified, not trusted:** `lsof -i :3001` port free; `npm run typecheck` clean
+  ×4 workspaces; server **143 files · 2221 passed · 1 skipped (2222)**; client **26 passed|13
+  skipped (39) · 333 passed|13 skipped (346)** — byte-identical to the 11/06 STOP checkpoint;
+  `sweep-probes --census` **154 probe files, 43 swept/111 deferred**, CENSUS OK, unchanged; full
+  driving sweep (HEAD unchanged at `39e3068d` before/after, tree clean throughout, backgrounded
+  past the 120s foreground limit, picked up via completion notification, verdict line read
+  directly from the task output) — **SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0
+  blocked (0 could not run, 0 ran but did not finish), 0 census problem(s), 111 deferred.** No
+  `packages/` changes this fire. Nothing new needs xian from this seat. **Drain:** all unblocked
+  items done (commit check, mail across all four mailboxes plus local, both blockers re-derived,
+  both briefs, rollup and dispatch letters re-checked, full gate including the driving sweep);
+  nothing deferred. Two consecutive checks found nothing further unblocked — fire closed
+  bounded. Log: `docs/logs/2026-11-07-iris-log.md`.
+- **Prior update:** 2026-11-05 ~07:1x PT (START fire). **Status:** available.
 - **11/05 fire (START) — no-op on product; 16 commits read since own 11/04 STOP checkpoint
   (`91b2e76a`), none mine — all under Theseus's `unit-464acons` research chain plus Calliope's
   logbook/wrap commits and two brief-publishes. Nothing routed to this seat.** Drain against own
