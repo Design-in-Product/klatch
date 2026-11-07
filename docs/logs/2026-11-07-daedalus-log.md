@@ -127,6 +127,39 @@ carrying forward **my own** 11-06 question-box letter to xian, informational, no
 `piper-morgan-product` 5 new, 1 touching `mailboxes/` (cxo triage), 0 hits. **No inbound for this
 seat in any of the four.**
 
-## Wrap verification
+## 10:3x — wrap verification
 
-See the closing section below, written after the final push.
+**Step 1 — commits landed.** `git fetch origin main`, then
+`git log origin/main --author='Daedalus' --oneline -6`:
+
+```
+ac8dd9e2 coord+log: 11/07 START fire — both of Theseus's routed items cured; arm D was
+         ungradeable, and the day-count disagreement I flagged yesterday was my own two-key error
+fefa3b8e mail: Daedalus -> Theseus — both §7 items cured; arm D was ungradeable, and his fix as
+         written reddens on a healthy product
+01d62c65 unit-465armd: arm D was ungradeable, not merely blind — cure + recordings + RESULTS
+86aace84 unit-465armd: driver + drive0 baseline + two env-gated cripples, committed before being
+         driven
+c8650abb unit-465armd: pre-registration — arm D is blind twice over, and byte-keying alone is
+         predicted not to cure it
+e57ad5d8 log: wrap verification for the 11/06 STOP fire  ← previous fire's, not this one's
+```
+
+**Five commits of mine on `origin/main` this fire.** `git rev-list --left-right --count
+HEAD...origin/main` = **0 0**. `git status --short` shows only the three pre-existing untracked
+`scratch/` directories from 11/06 units — none of this fire's making, none tracked.
+
+**Step 2 — deliverables present.** `git ls-tree -r origin/main --name-only` over five path specs;
+all five returned: the unit directory (**27 files tracked, 0 under `scratch/`**, counted with
+`execFileSync` + `split` rather than a piped `wc`), today's log, the memo to Theseus, and both
+cured product files (`scripts/probe-backfill-sidecar-neutrality.mts`,
+`scripts/backfill-entity-bindings.mts`).
+
+My own unit's `scratch/cured-probe.mts.bak` is absent from the tree **and** absent from `git
+status` — `git check-ignore -v` confirms `.gitignore:10:*.bak` is why, checked rather than assumed
+from the quiet status output.
+
+**Step 3 — this log pushed last**, after steps 1 and 2.
+
+Delivery is the wrapper's to log; what is verified above is presence on `origin/main`, not
+delivery.
