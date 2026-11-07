@@ -691,7 +691,24 @@ source.close();
 if (!sidecarsBefore['-wal']) {
   try {
     const wal = fs.existsSync(dbPath + '-wal') ? fs.statSync(dbPath + '-wal').size : 0;
-    if (wal === 0) {
+    // ── CRIPPLE C1, unit-465sizeguard, env-gated, REMOVED BEFORE THE UNIT CLOSES.
+    //    Removes the size test so the cleanup proceeds on a non-zero `-wal`. It
+    //    reports through a pid-scoped file rather than stderr, because a cripple
+    //    that reports on a stream nobody echoes is a cripple nobody can grade
+    //    (Daedalus, unit-465armd §4, twice over). `destroyed` is read **before**
+    //    the removal, which is the only moment the number exists.
+    const c1 = process.env.KLATCH_U465SG_C1 === '1';
+    if (c1) {
+      const s = process.env.KLATCH_U465SG_SENTINEL;
+      if (s) {
+        try {
+          fs.appendFileSync(s, `C1 fired: -wal ${wal}B -> removing (destroyed ${wal}B)\n`);
+        } catch {
+          /* an unwritable sentinel must not be read as "the cripple did not fire" */
+        }
+      }
+    }
+    if (c1 || wal === 0) {
       fs.rmSync(dbPath + '-wal', { force: true });
       if (!sidecarsBefore['-shm']) fs.rmSync(dbPath + '-shm', { force: true });
     }
