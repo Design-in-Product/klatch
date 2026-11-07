@@ -1,0 +1,112 @@
+
+==============================================================================
+DROP — pure drop of a populated table (Theseus Y2)
+==============================================================================
+  cripples installed: /Users/xian/Development/klatch-worktrees/daedalus/packages/server/src/db/index.ts 1981ff97509d7f2e -> ed98387d89a2581c
+  seed: seeded artifact: /Users/xian/Development/klatch-worktrees/daedalus/.testdata/u465drop/drop.db (81920 bytes) channels=2 channel_entities=2 messages=1 message_artifacts=1 | 11 objects
+  counts before: channels=2 channel_entities=2 messages=1 message_artifacts=1 idx_message_artifacts_message_id=present
+  --- schemaDelta(), field by field (Y2 in the child) ---
+{
+  "addedObjects": [],
+  "addedColumns": [],
+  "rebuiltTables": [],
+  "alteredTables": [],
+  "empty": true,
+  "data": {
+    "rows": {},
+    "rowWrites": 0,
+    "empty": true
+  }
+}
+SchemaDelta.empty = true    DataDelta.empty = true
+--- describeSchemaDelta ---
+undefined
+--- describeDataDelta ---
+undefined
+
+  exit=0
+  counts after: channels=2 channel_entities=2 messages=1 message_artifacts=ABSENT idx_message_artifacts_message_id=ABSENT
+  --- stdout ---
+
+==============================================================================
+/Users/xian/Development/klatch-worktrees/daedalus/.testdata/u465drop/drop.db
+==============================================================================
+
+Scope: channels with source in {claude-code, claude-ai} bound to `default-entity`.
+Bases applied: identity-claim
+
+Candidates: 1 — 0 would move, 1 skipped.
+  skipped, by reason: {"no-guess":1}
+  new agents (0): (none)
+  reused agents (0): (none)
+  message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  bound to the default but out of scope, untouched: {"native":1}
+
+Per-channel:
+  ch-bound  bound                             claude-code none            P2=0    P3=1    SKIP (no-guess)
+
+Nothing to apply. Snapshot discarded.
+
+  --- stderr ---
+
+
+==============================================================================
+RECREATE — drop AND recreate, reordered columns (Theseus Y1)
+==============================================================================
+  seed: seeded artifact: /Users/xian/Development/klatch-worktrees/daedalus/.testdata/u465drop/recreate.db (81920 bytes) channels=2 channel_entities=2 messages=1 message_artifacts=1 | 11 objects
+  counts before: channels=2 channel_entities=2 messages=1 message_artifacts=1 idx_message_artifacts_message_id=present
+  --- schemaDelta(), field by field (Y1 in the child) ---
+{
+  "addedObjects": [],
+  "addedColumns": [],
+  "rebuiltTables": [
+    "message_artifacts"
+  ],
+  "alteredTables": [],
+  "empty": false,
+  "data": {
+    "rows": {
+      "message_artifacts": -1
+    },
+    "rowWrites": 0,
+    "empty": true
+  }
+}
+SchemaDelta.empty = false    DataDelta.empty = true
+--- describeSchemaDelta ---
+SCHEMA: this database is behind the current schema, and opening it for writing
+  upgrades it in place. recreate.db would gain:
+    1 table(s) rebuilt, not altered in place: message_artifacts
+      A rebuild rewrites every row of that table. The file grows and the space the old
+      pages held is left as slack inside it — expect a larger file than the data needs.
+  Every existing row survives this. What does not survive is the file's value as a record
+  of an older schema: restore it later to ask what the schema looked like then and you get
+  today's answer. Pass --no-migrate to refuse instead of upgrading.
+--- describeDataDelta ---
+undefined
+
+  exit=1
+  counts after: channels=2 channel_entities=2 messages=1 message_artifacts=1 idx_message_artifacts_message_id=present
+  --- stdout ---
+
+SCHEMA: this database is behind the current schema, and opening it for writing
+  upgrades it in place. recreate.db would gain:
+    1 table(s) rebuilt, not altered in place: message_artifacts
+      A rebuild rewrites every row of that table. The file grows and the space the old
+      pages held is left as slack inside it — expect a larger file than the data needs.
+  Every existing row survives this. What does not survive is the file's value as a record
+  of an older schema: restore it later to ask what the schema looked like then and you get
+  today's answer. Pass --no-migrate to refuse instead of upgrading.
+
+  --- stderr ---
+(node:86409) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+Refusing to run: --no-migrate, and this run would upgrade the schema above.
+  Nothing was written and the snapshot was discarded. Three ways on from here:
+    - run it without --no-migrate, accepting the change above;
+    - copy the file first and point this script at the copy, keeping recreate.db as it is;
+    - run it with no flags for the review sheet, which never writes to the file at all.
+
+  subject restored: shasum before=1981ff97509d7f2e after=1981ff97509d7f2e IDENTICAL
+  grep -c U465DROP_CRIPPLE in subject: 0

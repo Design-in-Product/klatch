@@ -1,0 +1,268 @@
+
+==============================================================================
+CLEAN — CONTROL: current schema, nothing pending
+==============================================================================
+  seed: seeded clean: /Users/xian/Development/klatch-worktrees/daedalus/.testdata/u465drop/clean.db (81920 bytes) channels=2 channel_entities=2 messages=0 message_artifacts=0 | 11 objects
+  counts before: channels=2 channel_entities=2 messages=0 message_artifacts=0 idx_message_artifacts_message_id=present
+  --- schemaDelta(), field by field (uncrippled) ---
+{
+  "addedObjects": [],
+  "addedColumns": [],
+  "rebuiltTables": [],
+  "alteredTables": [],
+  "empty": true,
+  "data": {
+    "rows": {},
+    "rowWrites": 0,
+    "empty": true
+  }
+}
+SchemaDelta.empty = true    DataDelta.empty = true
+--- describeSchemaDelta ---
+undefined
+--- describeDataDelta ---
+undefined
+
+  exit=0
+  beside after: -shm:32768B -wal:0B
+  counts after: channels=2 channel_entities=2 messages=0 message_artifacts=0 idx_message_artifacts_message_id=present
+  --- stdout ---
+
+==============================================================================
+/Users/xian/Development/klatch-worktrees/daedalus/.testdata/u465drop/clean.db
+==============================================================================
+
+Scope: channels with source in {claude-code, claude-ai} bound to `default-entity`.
+Bases applied: identity-claim
+
+Candidates: 1 — 0 would move, 1 skipped.
+  skipped, by reason: {"no-guess":1}
+  new agents (0): (none)
+  reused agents (0): (none)
+  message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  bound to the default but out of scope, untouched: {"native":1}
+
+Per-channel:
+  ch-bound  bound                             claude-code none            P2=0    P3=0    SKIP (no-guess)
+
+Nothing to apply. Snapshot discarded.
+
+  --- stderr ---
+
+
+==============================================================================
+ARTIFACT — CONTROL: current schema, one thinking artifact
+==============================================================================
+  seed: seeded artifact: /Users/xian/Development/klatch-worktrees/daedalus/.testdata/u465drop/artifact.db (81920 bytes) channels=2 channel_entities=2 messages=1 message_artifacts=1 | 11 objects
+  counts before: channels=2 channel_entities=2 messages=1 message_artifacts=1 idx_message_artifacts_message_id=present
+  --- schemaDelta(), field by field (uncrippled) ---
+{
+  "addedObjects": [],
+  "addedColumns": [],
+  "rebuiltTables": [],
+  "alteredTables": [],
+  "empty": true,
+  "data": {
+    "rows": {},
+    "rowWrites": 0,
+    "empty": true
+  }
+}
+SchemaDelta.empty = true    DataDelta.empty = true
+--- describeSchemaDelta ---
+undefined
+--- describeDataDelta ---
+undefined
+
+  exit=0
+  beside after: -shm:32768B -wal:0B
+  counts after: channels=2 channel_entities=2 messages=1 message_artifacts=1 idx_message_artifacts_message_id=present
+  --- stdout ---
+
+==============================================================================
+/Users/xian/Development/klatch-worktrees/daedalus/.testdata/u465drop/artifact.db
+==============================================================================
+
+Scope: channels with source in {claude-code, claude-ai} bound to `default-entity`.
+Bases applied: identity-claim
+
+Candidates: 1 — 0 would move, 1 skipped.
+  skipped, by reason: {"no-guess":1}
+  new agents (0): (none)
+  reused agents (0): (none)
+  message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  bound to the default but out of scope, untouched: {"native":1}
+
+Per-channel:
+  ch-bound  bound                             claude-code none            P2=0    P3=1    SKIP (no-guess)
+
+Nothing to apply. Snapshot discarded.
+
+  --- stderr ---
+
+
+==============================================================================
+INDEX — drop the index only, table left alone
+==============================================================================
+  cripples installed: /Users/xian/Development/klatch-worktrees/daedalus/packages/server/src/db/index.ts 1981ff97509d7f2e -> ed98387d89a2581c
+  seed: seeded artifact: /Users/xian/Development/klatch-worktrees/daedalus/.testdata/u465drop/index.db (81920 bytes) channels=2 channel_entities=2 messages=1 message_artifacts=1 | 11 objects
+  counts before: channels=2 channel_entities=2 messages=1 message_artifacts=1 idx_message_artifacts_message_id=present
+  --- schemaDelta(), field by field (Y3 in the child) ---
+{
+  "addedObjects": [],
+  "addedColumns": [],
+  "rebuiltTables": [],
+  "alteredTables": [],
+  "empty": true,
+  "data": {
+    "rows": {},
+    "rowWrites": 0,
+    "empty": true
+  }
+}
+SchemaDelta.empty = true    DataDelta.empty = true
+--- describeSchemaDelta ---
+undefined
+--- describeDataDelta ---
+undefined
+
+  exit=0
+  counts after: channels=2 channel_entities=2 messages=1 message_artifacts=1 idx_message_artifacts_message_id=ABSENT
+  --- stdout ---
+
+==============================================================================
+/Users/xian/Development/klatch-worktrees/daedalus/.testdata/u465drop/index.db
+==============================================================================
+
+Scope: channels with source in {claude-code, claude-ai} bound to `default-entity`.
+Bases applied: identity-claim
+
+Candidates: 1 — 0 would move, 1 skipped.
+  skipped, by reason: {"no-guess":1}
+  new agents (0): (none)
+  reused agents (0): (none)
+  message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  bound to the default but out of scope, untouched: {"native":1}
+
+Per-channel:
+  ch-bound  bound                             claude-code none            P2=0    P3=1    SKIP (no-guess)
+
+Nothing to apply. Snapshot discarded.
+
+  --- stderr ---
+
+
+==============================================================================
+MARCH — CONTROL: behind-schema, a copy of the 2026-03-14 backup
+==============================================================================
+  seed: seeded march: /Users/xian/Development/klatch-worktrees/daedalus/.testdata/u465drop/march.db (9449472 bytes) channels=139 channel_entities=170 messages=2652 message_artifacts=2826 | 11 objects
+  counts before: channels=139 channel_entities=170 messages=2652 message_artifacts=2826 idx_message_artifacts_message_id=present
+  --- schemaDelta(), field by field (uncrippled) ---
+{
+  "addedObjects": [],
+  "addedColumns": [],
+  "rebuiltTables": [],
+  "alteredTables": [],
+  "empty": true,
+  "data": {
+    "rows": {},
+    "rowWrites": 0,
+    "empty": true
+  }
+}
+SchemaDelta.empty = true    DataDelta.empty = true
+--- describeSchemaDelta ---
+undefined
+--- describeDataDelta ---
+undefined
+
+  exit=0
+  beside after: -shm:32768B -wal:0B
+  counts after: channels=139 channel_entities=170 messages=2652 message_artifacts=2826 idx_message_artifacts_message_id=present
+  --- stdout ---
+
+==============================================================================
+/Users/xian/Development/klatch-worktrees/daedalus/.testdata/u465drop/march.db
+==============================================================================
+
+Scope: channels with source in {claude-code, claude-ai} bound to `default-entity`.
+Bases applied: identity-claim
+
+Candidates: 63 — 0 would move, 63 skipped.
+  skipped, by reason: {"no-guess":63}
+  new agents (0): (none)
+  reused agents (0): (none)
+  message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  bound to the default but out of scope, untouched: {"native":66}
+
+Per-channel:
+  04bc9d21  bad-meta                          claude-code none            P2=0    P3=0    SKIP (no-guess)
+  0ae3694d  ordering-test                     claude-code none            P2=4    P3=0    SKIP (no-guess)
+  0d2c7db9  path-test                         claude-code none            P2=1    P3=0    SKIP (no-guess)
+  10f6337c  test-10f633                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  1b479419  Hermes - Distinguishing project   claude-ai   none            P2=11   P3=0    SKIP (no-guess)
+  1e2ced26  1/16-3/13: CXO (o) - MUX, MVP, m  claude-ai   none            P2=110  P3=0    SKIP (no-guess)
+  1e79bb77  empty-cwd                         claude-code none            P2=0    P3=0    SKIP (no-guess)
+  1eb7ff09  test-1eb7ff                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  246e2ae0  3/13: Chief Arch: (o4.6) - M1, a  claude-ai   none            P2=2    P3=0    SKIP (no-guess)
+  2a6351ea  Learning cuneiform from scratch   claude-ai   none            P2=29   P3=0    SKIP (no-guess)
+  2c30fb26  Onramp questionnaire guide restr  claude-ai   none            P2=11   P3=0    SKIP (no-guess)
+  2d40fa2d  Music video for Ghost Door or Do  claude-ai   none            P2=1    P3=0    SKIP (no-guess)
+  327e9630  rate-limiter-session              claude-code none            P2=4    P3=0    SKIP (no-guess)
+  3354e5ff  empty-cwd                         claude-code none            P2=0    P3=0    SKIP (no-guess)
+  39bdeda2  3/12: CIO: (o4.6) - Klatch branc  claude-ai   none            P2=33   P3=0    SKIP (no-guess)
+  3d661b3d  test-3d661b                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  40fab888  no-meta                           claude-code none            P2=0    P3=0    SKIP (no-guess)
+  48681a20  rate-limiter-session              claude-code none            P2=4    P3=0    SKIP (no-guess)
+  4bd53772  claude.ai — 0e9dc064-6762-42a9-a  claude-ai   none            P2=0    P3=0    SKIP (no-guess)
+  4ca7bbcb  no-meta                           claude-code none            P2=0    P3=0    SKIP (no-guess)
+  5e1af7a4  SC 3 design and engineering time  claude-ai   none            P2=4    P3=0    SKIP (no-guess)
+  5fb78415  1/4-5,15-16: HoSR (o) - onboard   claude-ai   none            P2=51   P3=0    SKIP (no-guess)
+  6229ca87  multi-fork                        claude-code none            P2=4    P3=0    SKIP (no-guess)
+  6380814f  test-638081                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  6c5017ab  Secundus — 2026-03-11             claude-code none            P2=18   P3=0    SKIP (no-guess)
+  6dec5c76  multi-fork                        claude-code none            P2=4    P3=0    SKIP (no-guess)
+  712ae004  3/13: PPM (o4.6) - M1 sprint tes  claude-ai   none            P2=8    P3=0    SKIP (no-guess)
+  71ce1d26  compacted-session                 claude-code none            P2=2    P3=0    SKIP (no-guess)
+  7556723c  Test message                      claude-ai   none            P2=2    P3=0    SKIP (no-guess)
+  7ba45fce  test-7ba45f                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  7d162b7e  1/5,11,16: Chief Innovation Offi  claude-ai   none            P2=14   P3=0    SKIP (no-guess)
+  820929ab  test-820929                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  8f6b1298  test-8f6b12                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  91f46c7f  compacted-session                 claude-code none            P2=2    P3=0    SKIP (no-guess)
+  970f80ef  bad-meta                          claude-code none            P2=0    P3=0    SKIP (no-guess)
+  a091a0a1  compact-import                    claude-code none            P2=1    P3=0    SKIP (no-guess)
+  a4c194dd  Medieval name for Mainz in 940 A  claude-ai   none            P2=2    P3=0    SKIP (no-guess)
+  a4e0bd2a  3/13: CXO (o4.6) - M1             claude-ai   none            P2=10   P3=0    SKIP (no-guess)
+  a64c9d45  Exploratory testing agent role s  claude-ai   none            P2=10   P3=0    SKIP (no-guess)
+  a94b272e  Daedalus — 2026-03-07             claude-code none            P2=3    P3=0    SKIP (no-guess)
+  ad70f691  test-ad70f6                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  b173483e  test-import                       claude-code none            P2=3    P3=0    SKIP (no-guess)
+  b20c5b5b  empty-content-session             claude-code none            P2=2    P3=0    SKIP (no-guess)
+  b2c0503a  no-cwd                            claude-ai   none            P2=1    P3=0    SKIP (no-guess)
+  b8c77ad4  Voice input setup for Claude Cod  claude-ai   none            P2=5    P3=0    SKIP (no-guess)
+  b937e368  ordering-test                     claude-code none            P2=4    P3=0    SKIP (no-guess)
+  bdcd0506  test-import                       claude-code none            P2=3    P3=0    SKIP (no-guess)
+  c4f8438b  test-c4f843                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  cd7df34e  test-cd7df3                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  ddf29996  Reviving website project with Ta  claude-ai   none            P2=1    P3=0    SKIP (no-guess)
+  df34157e  test-df3415                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  e113cb6a  test-empty-filter                 claude-code none            P2=4    P3=0    SKIP (no-guess)
+  e2b48268  test-empty-filter                 claude-code none            P2=4    P3=0    SKIP (no-guess)
+  e39b439d  missing-claude-md                 claude-code none            P2=1    P3=0    SKIP (no-guess)
+  e52e8fa8  1/8,12: CXO (o) - UX vision cont  claude-ai   none            P2=12   P3=0    SKIP (no-guess)
+  e6385897  test-e63858                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  e8210556  claude.ai — aab4cff8-8d7c-42e5-8  claude-ai   none            P2=0    P3=0    SKIP (no-guess)
+  e93d3810  1/17: SecOps (o) - GCP project s  claude-ai   none            P2=19   P3=0    SKIP (no-guess)
+  eba7c2c1  3/13: Chief of Staff (o4.6) - M1  claude-ai   none            P2=12   P3=0    SKIP (no-guess)
+  f1debd2c  test-f1debd                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  f64312da  empty-content-session             claude-code none            P2=2    P3=0    SKIP (no-guess)
+  f863740a  test-f86374                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  faa00367  compact-import                    claude-code none            P2=1    P3=0    SKIP (no-guess)
+
+Nothing to apply. Snapshot discarded.
+
+  --- stderr ---
+
+  subject restored: shasum before=1981ff97509d7f2e after=1981ff97509d7f2e IDENTICAL
+  grep -c U465DROP_CRIPPLE in subject: 0

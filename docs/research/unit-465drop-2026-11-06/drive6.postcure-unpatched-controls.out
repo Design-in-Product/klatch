@@ -1,0 +1,104 @@
+
+==============================================================================
+CLEAN — CONTROL: current schema, nothing pending
+==============================================================================
+  seed: seeded clean: /Users/xian/Development/klatch-worktrees/daedalus/.testdata/u465drop/clean.db (81920 bytes) channels=2 channel_entities=2 messages=0 message_artifacts=0 | 11 objects
+  counts before: channels=2 channel_entities=2 messages=0 message_artifacts=0 idx_message_artifacts_message_id=present
+  --- schemaDelta(), field by field (uncrippled) ---
+{
+  "addedObjects": [],
+  "droppedObjects": [],
+  "addedColumns": [],
+  "rebuiltTables": [],
+  "alteredTables": [],
+  "empty": true,
+  "data": {
+    "rows": {},
+    "rowWrites": 0,
+    "empty": true
+  }
+}
+SchemaDelta.empty = true    DataDelta.empty = true
+--- describeSchemaDelta ---
+undefined
+--- describeDataDelta ---
+undefined
+
+  exit=0
+  beside after: -shm:32768B -wal:0B
+  counts after: channels=2 channel_entities=2 messages=0 message_artifacts=0 idx_message_artifacts_message_id=present
+  --- stdout ---
+
+==============================================================================
+/Users/xian/Development/klatch-worktrees/daedalus/.testdata/u465drop/clean.db
+==============================================================================
+
+Scope: channels with source in {claude-code, claude-ai} bound to `default-entity`.
+Bases applied: identity-claim
+
+Candidates: 1 — 0 would move, 1 skipped.
+  skipped, by reason: {"no-guess":1}
+  new agents (0): (none)
+  reused agents (0): (none)
+  message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  bound to the default but out of scope, untouched: {"native":1}
+
+Per-channel:
+  ch-bound  bound                             claude-code none            P2=0    P3=0    SKIP (no-guess)
+
+Nothing to apply. Snapshot discarded.
+
+  --- stderr ---
+
+
+==============================================================================
+ARTIFACT — CONTROL: current schema, one thinking artifact
+==============================================================================
+  seed: seeded artifact: /Users/xian/Development/klatch-worktrees/daedalus/.testdata/u465drop/artifact.db (81920 bytes) channels=2 channel_entities=2 messages=1 message_artifacts=1 | 11 objects
+  counts before: channels=2 channel_entities=2 messages=1 message_artifacts=1 idx_message_artifacts_message_id=present
+  --- schemaDelta(), field by field (uncrippled) ---
+{
+  "addedObjects": [],
+  "droppedObjects": [],
+  "addedColumns": [],
+  "rebuiltTables": [],
+  "alteredTables": [],
+  "empty": true,
+  "data": {
+    "rows": {},
+    "rowWrites": 0,
+    "empty": true
+  }
+}
+SchemaDelta.empty = true    DataDelta.empty = true
+--- describeSchemaDelta ---
+undefined
+--- describeDataDelta ---
+undefined
+
+  exit=0
+  beside after: -shm:32768B -wal:0B
+  counts after: channels=2 channel_entities=2 messages=1 message_artifacts=1 idx_message_artifacts_message_id=present
+  --- stdout ---
+
+==============================================================================
+/Users/xian/Development/klatch-worktrees/daedalus/.testdata/u465drop/artifact.db
+==============================================================================
+
+Scope: channels with source in {claude-code, claude-ai} bound to `default-entity`.
+Bases applied: identity-claim
+
+Candidates: 1 — 0 would move, 1 skipped.
+  skipped, by reason: {"no-guess":1}
+  new agents (0): (none)
+  reused agents (0): (none)
+  message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  bound to the default but out of scope, untouched: {"native":1}
+
+Per-channel:
+  ch-bound  bound                             claude-code none            P2=0    P3=1    SKIP (no-guess)
+
+Nothing to apply. Snapshot discarded.
+
+  --- stderr ---
+

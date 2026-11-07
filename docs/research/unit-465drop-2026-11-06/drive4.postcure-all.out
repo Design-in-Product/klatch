@@ -1,0 +1,538 @@
+
+==============================================================================
+DROP — pure drop of a populated table (Theseus Y2)
+==============================================================================
+  cripples installed: /Users/xian/Development/klatch-worktrees/daedalus/packages/server/src/db/index.ts 1981ff97509d7f2e -> ed98387d89a2581c
+  seed: seeded artifact: /Users/xian/Development/klatch-worktrees/daedalus/.testdata/u465drop/drop.db (81920 bytes) channels=2 channel_entities=2 messages=1 message_artifacts=1 | 11 objects
+  counts before: channels=2 channel_entities=2 messages=1 message_artifacts=1 idx_message_artifacts_message_id=present
+  --- schemaDelta(), field by field (Y2 in the child) ---
+{
+  "addedObjects": [],
+  "droppedObjects": [
+    "index:idx_message_artifacts_message_id",
+    "table:message_artifacts"
+  ],
+  "addedColumns": [],
+  "rebuiltTables": [],
+  "alteredTables": [],
+  "empty": false,
+  "data": {
+    "rows": {
+      "message_artifacts": -1
+    },
+    "rowWrites": 0,
+    "empty": false
+  }
+}
+SchemaDelta.empty = false    DataDelta.empty = false
+--- describeSchemaDelta ---
+SCHEMA: this database does not match the current schema, and opening it for writing
+  changes it in place. drop.db would lose:
+    2 object(s) dropped outright: index:idx_message_artifacts_message_id, table:message_artifacts
+      A dropped table takes every row it holds with it, and every index on it. The
+      migration does not put them back, and afterwards this file cannot be told from one
+      that never had them. Any row count below is net of that loss.
+  Rows in the objects above do NOT survive this. Nor does the file's value as a record of
+  an older schema. Pass --no-migrate to refuse instead of changing it.
+--- describeDataDelta ---
+ROWS: opening this database for writing removes rows from it. The migration would
+  change drop.db like this:
+    -1 message_artifacts
+    0 row write(s) in total
+      1 row(s) are lost, not written. A row that goes because its table goes is not
+      counted as a write — total_changes() does not see DDL — so the count above can be 0
+      while rows are still leaving the file.
+  These are the migration's own changes, not this tool's plan. They happen on the way in, to any
+  database opened for writing, and a run that moves no channel still performs them. Pass
+  --no-migrate to refuse the run rather than let it make them.
+
+  exit=1
+  counts after: channels=2 channel_entities=2 messages=1 message_artifacts=1 idx_message_artifacts_message_id=present
+  --- stdout ---
+
+SCHEMA: this database does not match the current schema, and opening it for writing
+  changes it in place. drop.db would lose:
+    2 object(s) dropped outright: index:idx_message_artifacts_message_id, table:message_artifacts
+      A dropped table takes every row it holds with it, and every index on it. The
+      migration does not put them back, and afterwards this file cannot be told from one
+      that never had them. Any row count below is net of that loss.
+  Rows in the objects above do NOT survive this. Nor does the file's value as a record of
+  an older schema. Pass --no-migrate to refuse instead of changing it.
+
+ROWS: opening this database for writing removes rows from it. The migration would
+  change drop.db like this:
+    -1 message_artifacts
+    0 row write(s) in total
+      1 row(s) are lost, not written. A row that goes because its table goes is not
+      counted as a write — total_changes() does not see DDL — so the count above can be 0
+      while rows are still leaving the file.
+  These are the migration's own changes, not this tool's plan. They happen on the way in, to any
+  database opened for writing, and a run that moves no channel still performs them. Pass
+  --no-migrate to refuse the run rather than let it make them.
+
+  --- stderr ---
+(node:92663) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+Refusing to run: --no-migrate, and this run would change the schema and change the rows above.
+  Nothing was written and the snapshot was discarded. Three ways on from here:
+    - run it without --no-migrate, accepting the change above;
+    - copy the file first and point this script at the copy, keeping drop.db as it is;
+    - run it with no flags for the review sheet, which never writes to the file at all.
+
+
+==============================================================================
+RECREATE — drop AND recreate, reordered columns (Theseus Y1)
+==============================================================================
+  seed: seeded artifact: /Users/xian/Development/klatch-worktrees/daedalus/.testdata/u465drop/recreate.db (81920 bytes) channels=2 channel_entities=2 messages=1 message_artifacts=1 | 11 objects
+  counts before: channels=2 channel_entities=2 messages=1 message_artifacts=1 idx_message_artifacts_message_id=present
+  --- schemaDelta(), field by field (Y1 in the child) ---
+{
+  "addedObjects": [],
+  "droppedObjects": [],
+  "addedColumns": [],
+  "rebuiltTables": [
+    "message_artifacts"
+  ],
+  "alteredTables": [],
+  "empty": false,
+  "data": {
+    "rows": {
+      "message_artifacts": -1
+    },
+    "rowWrites": 0,
+    "empty": false
+  }
+}
+SchemaDelta.empty = false    DataDelta.empty = false
+--- describeSchemaDelta ---
+SCHEMA: this database is behind the current schema, and opening it for writing
+  upgrades it in place. recreate.db would gain:
+    1 table(s) rebuilt, not altered in place: message_artifacts
+      A rebuild rewrites every row of that table. The file grows and the space the old
+      pages held is left as slack inside it — expect a larger file than the data needs.
+  Every existing row survives this. What does not survive is the file's value as a record
+  of an older schema: restore it later to ask what the schema looked like then and you get
+  today's answer. Pass --no-migrate to refuse instead of upgrading.
+--- describeDataDelta ---
+ROWS: opening this database for writing removes rows from it. The migration would
+  change recreate.db like this:
+    -1 message_artifacts
+    0 row write(s) in total
+      1 row(s) are lost, not written. A row that goes because its table goes is not
+      counted as a write — total_changes() does not see DDL — so the count above can be 0
+      while rows are still leaving the file.
+  These are the migration's own changes, not this tool's plan. They happen on the way in, to any
+  database opened for writing, and a run that moves no channel still performs them. Pass
+  --no-migrate to refuse the run rather than let it make them.
+
+  exit=1
+  counts after: channels=2 channel_entities=2 messages=1 message_artifacts=1 idx_message_artifacts_message_id=present
+  --- stdout ---
+
+SCHEMA: this database is behind the current schema, and opening it for writing
+  upgrades it in place. recreate.db would gain:
+    1 table(s) rebuilt, not altered in place: message_artifacts
+      A rebuild rewrites every row of that table. The file grows and the space the old
+      pages held is left as slack inside it — expect a larger file than the data needs.
+  Every existing row survives this. What does not survive is the file's value as a record
+  of an older schema: restore it later to ask what the schema looked like then and you get
+  today's answer. Pass --no-migrate to refuse instead of upgrading.
+
+ROWS: opening this database for writing removes rows from it. The migration would
+  change recreate.db like this:
+    -1 message_artifacts
+    0 row write(s) in total
+      1 row(s) are lost, not written. A row that goes because its table goes is not
+      counted as a write — total_changes() does not see DDL — so the count above can be 0
+      while rows are still leaving the file.
+  These are the migration's own changes, not this tool's plan. They happen on the way in, to any
+  database opened for writing, and a run that moves no channel still performs them. Pass
+  --no-migrate to refuse the run rather than let it make them.
+
+  --- stderr ---
+(node:92873) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+Refusing to run: --no-migrate, and this run would upgrade the schema and write the rows above.
+  Nothing was written and the snapshot was discarded. Three ways on from here:
+    - run it without --no-migrate, accepting the change above;
+    - copy the file first and point this script at the copy, keeping recreate.db as it is;
+    - run it with no flags for the review sheet, which never writes to the file at all.
+
+
+==============================================================================
+INDEX — drop the index only, table left alone
+==============================================================================
+  seed: seeded artifact: /Users/xian/Development/klatch-worktrees/daedalus/.testdata/u465drop/index.db (81920 bytes) channels=2 channel_entities=2 messages=1 message_artifacts=1 | 11 objects
+  counts before: channels=2 channel_entities=2 messages=1 message_artifacts=1 idx_message_artifacts_message_id=present
+  --- schemaDelta(), field by field (Y3 in the child) ---
+{
+  "addedObjects": [],
+  "droppedObjects": [
+    "index:idx_message_artifacts_message_id"
+  ],
+  "addedColumns": [],
+  "rebuiltTables": [],
+  "alteredTables": [],
+  "empty": false,
+  "data": {
+    "rows": {},
+    "rowWrites": 0,
+    "empty": true
+  }
+}
+SchemaDelta.empty = false    DataDelta.empty = true
+--- describeSchemaDelta ---
+SCHEMA: this database does not match the current schema, and opening it for writing
+  changes it in place. index.db would lose:
+    1 object(s) dropped outright: index:idx_message_artifacts_message_id
+      A dropped table takes every row it holds with it, and every index on it. The
+      migration does not put them back, and afterwards this file cannot be told from one
+      that never had them. Any row count below is net of that loss.
+  Rows in the objects above do NOT survive this. Nor does the file's value as a record of
+  an older schema. Pass --no-migrate to refuse instead of changing it.
+--- describeDataDelta ---
+undefined
+
+  exit=1
+  counts after: channels=2 channel_entities=2 messages=1 message_artifacts=1 idx_message_artifacts_message_id=present
+  --- stdout ---
+
+SCHEMA: this database does not match the current schema, and opening it for writing
+  changes it in place. index.db would lose:
+    1 object(s) dropped outright: index:idx_message_artifacts_message_id
+      A dropped table takes every row it holds with it, and every index on it. The
+      migration does not put them back, and afterwards this file cannot be told from one
+      that never had them. Any row count below is net of that loss.
+  Rows in the objects above do NOT survive this. Nor does the file's value as a record of
+  an older schema. Pass --no-migrate to refuse instead of changing it.
+
+  --- stderr ---
+(node:93004) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+Refusing to run: --no-migrate, and this run would change the schema above.
+  Nothing was written and the snapshot was discarded. Three ways on from here:
+    - run it without --no-migrate, accepting the change above;
+    - copy the file first and point this script at the copy, keeping index.db as it is;
+    - run it with no flags for the review sheet, which never writes to the file at all.
+
+
+==============================================================================
+CLEAN — CONTROL: current schema, nothing pending
+==============================================================================
+  seed: seeded clean: /Users/xian/Development/klatch-worktrees/daedalus/.testdata/u465drop/clean.db (81920 bytes) channels=2 channel_entities=2 messages=0 message_artifacts=0 | 11 objects
+  counts before: channels=2 channel_entities=2 messages=0 message_artifacts=0 idx_message_artifacts_message_id=present
+  --- schemaDelta(), field by field (uncrippled) ---
+{
+  "addedObjects": [],
+  "droppedObjects": [],
+  "addedColumns": [],
+  "rebuiltTables": [],
+  "alteredTables": [],
+  "empty": true,
+  "data": {
+    "rows": {},
+    "rowWrites": 0,
+    "empty": true
+  }
+}
+SchemaDelta.empty = true    DataDelta.empty = true
+--- describeSchemaDelta ---
+undefined
+--- describeDataDelta ---
+undefined
+
+  exit=0
+  beside after: -shm:32768B -wal:0B
+  counts after: channels=2 channel_entities=2 messages=0 message_artifacts=0 idx_message_artifacts_message_id=present
+  --- stdout ---
+
+==============================================================================
+/Users/xian/Development/klatch-worktrees/daedalus/.testdata/u465drop/clean.db
+==============================================================================
+
+Scope: channels with source in {claude-code, claude-ai} bound to `default-entity`.
+Bases applied: identity-claim
+
+Candidates: 1 — 0 would move, 1 skipped.
+  skipped, by reason: {"no-guess":1}
+  new agents (0): (none)
+  reused agents (0): (none)
+  message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  bound to the default but out of scope, untouched: {"native":1}
+
+Per-channel:
+  ch-bound  bound                             claude-code none            P2=0    P3=0    SKIP (no-guess)
+
+Nothing to apply. Snapshot discarded.
+
+  --- stderr ---
+
+
+==============================================================================
+ARTIFACT — CONTROL: current schema, one thinking artifact
+==============================================================================
+  seed: seeded artifact: /Users/xian/Development/klatch-worktrees/daedalus/.testdata/u465drop/artifact.db (81920 bytes) channels=2 channel_entities=2 messages=1 message_artifacts=1 | 11 objects
+  counts before: channels=2 channel_entities=2 messages=1 message_artifacts=1 idx_message_artifacts_message_id=present
+  --- schemaDelta(), field by field (uncrippled) ---
+{
+  "addedObjects": [],
+  "droppedObjects": [],
+  "addedColumns": [],
+  "rebuiltTables": [],
+  "alteredTables": [],
+  "empty": true,
+  "data": {
+    "rows": {},
+    "rowWrites": 0,
+    "empty": true
+  }
+}
+SchemaDelta.empty = true    DataDelta.empty = true
+--- describeSchemaDelta ---
+undefined
+--- describeDataDelta ---
+undefined
+
+  exit=0
+  beside after: -shm:32768B -wal:0B
+  counts after: channels=2 channel_entities=2 messages=1 message_artifacts=1 idx_message_artifacts_message_id=present
+  --- stdout ---
+
+==============================================================================
+/Users/xian/Development/klatch-worktrees/daedalus/.testdata/u465drop/artifact.db
+==============================================================================
+
+Scope: channels with source in {claude-code, claude-ai} bound to `default-entity`.
+Bases applied: identity-claim
+
+Candidates: 1 — 0 would move, 1 skipped.
+  skipped, by reason: {"no-guess":1}
+  new agents (0): (none)
+  reused agents (0): (none)
+  message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  bound to the default but out of scope, untouched: {"native":1}
+
+Per-channel:
+  ch-bound  bound                             claude-code none            P2=0    P3=1    SKIP (no-guess)
+
+Nothing to apply. Snapshot discarded.
+
+  --- stderr ---
+
+
+==============================================================================
+MARCH — CONTROL: a copy of the 2026-03-14 backup as it is on disk today
+==============================================================================
+  seed: seeded march: /Users/xian/Development/klatch-worktrees/daedalus/.testdata/u465drop/march.db (9449472 bytes) channels=139 channel_entities=170 messages=2652 message_artifacts=2826 | 11 objects
+  counts before: channels=139 channel_entities=170 messages=2652 message_artifacts=2826 idx_message_artifacts_message_id=present
+  --- schemaDelta(), field by field (uncrippled) ---
+{
+  "addedObjects": [],
+  "droppedObjects": [],
+  "addedColumns": [],
+  "rebuiltTables": [],
+  "alteredTables": [],
+  "empty": true,
+  "data": {
+    "rows": {},
+    "rowWrites": 0,
+    "empty": true
+  }
+}
+SchemaDelta.empty = true    DataDelta.empty = true
+--- describeSchemaDelta ---
+undefined
+--- describeDataDelta ---
+undefined
+
+  exit=0
+  beside after: -shm:32768B -wal:0B
+  counts after: channels=139 channel_entities=170 messages=2652 message_artifacts=2826 idx_message_artifacts_message_id=present
+  --- stdout ---
+
+==============================================================================
+/Users/xian/Development/klatch-worktrees/daedalus/.testdata/u465drop/march.db
+==============================================================================
+
+Scope: channels with source in {claude-code, claude-ai} bound to `default-entity`.
+Bases applied: identity-claim
+
+Candidates: 63 — 0 would move, 63 skipped.
+  skipped, by reason: {"no-guess":63}
+  new agents (0): (none)
+  reused agents (0): (none)
+  message rows re-stamped: 0 P2 (were `default-entity`), 0 P3 (were NULL — invisible to every entity today).
+  bound to the default but out of scope, untouched: {"native":66}
+
+Per-channel:
+  04bc9d21  bad-meta                          claude-code none            P2=0    P3=0    SKIP (no-guess)
+  0ae3694d  ordering-test                     claude-code none            P2=4    P3=0    SKIP (no-guess)
+  0d2c7db9  path-test                         claude-code none            P2=1    P3=0    SKIP (no-guess)
+  10f6337c  test-10f633                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  1b479419  Hermes - Distinguishing project   claude-ai   none            P2=11   P3=0    SKIP (no-guess)
+  1e2ced26  1/16-3/13: CXO (o) - MUX, MVP, m  claude-ai   none            P2=110  P3=0    SKIP (no-guess)
+  1e79bb77  empty-cwd                         claude-code none            P2=0    P3=0    SKIP (no-guess)
+  1eb7ff09  test-1eb7ff                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  246e2ae0  3/13: Chief Arch: (o4.6) - M1, a  claude-ai   none            P2=2    P3=0    SKIP (no-guess)
+  2a6351ea  Learning cuneiform from scratch   claude-ai   none            P2=29   P3=0    SKIP (no-guess)
+  2c30fb26  Onramp questionnaire guide restr  claude-ai   none            P2=11   P3=0    SKIP (no-guess)
+  2d40fa2d  Music video for Ghost Door or Do  claude-ai   none            P2=1    P3=0    SKIP (no-guess)
+  327e9630  rate-limiter-session              claude-code none            P2=4    P3=0    SKIP (no-guess)
+  3354e5ff  empty-cwd                         claude-code none            P2=0    P3=0    SKIP (no-guess)
+  39bdeda2  3/12: CIO: (o4.6) - Klatch branc  claude-ai   none            P2=33   P3=0    SKIP (no-guess)
+  3d661b3d  test-3d661b                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  40fab888  no-meta                           claude-code none            P2=0    P3=0    SKIP (no-guess)
+  48681a20  rate-limiter-session              claude-code none            P2=4    P3=0    SKIP (no-guess)
+  4bd53772  claude.ai — 0e9dc064-6762-42a9-a  claude-ai   none            P2=0    P3=0    SKIP (no-guess)
+  4ca7bbcb  no-meta                           claude-code none            P2=0    P3=0    SKIP (no-guess)
+  5e1af7a4  SC 3 design and engineering time  claude-ai   none            P2=4    P3=0    SKIP (no-guess)
+  5fb78415  1/4-5,15-16: HoSR (o) - onboard   claude-ai   none            P2=51   P3=0    SKIP (no-guess)
+  6229ca87  multi-fork                        claude-code none            P2=4    P3=0    SKIP (no-guess)
+  6380814f  test-638081                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  6c5017ab  Secundus — 2026-03-11             claude-code none            P2=18   P3=0    SKIP (no-guess)
+  6dec5c76  multi-fork                        claude-code none            P2=4    P3=0    SKIP (no-guess)
+  712ae004  3/13: PPM (o4.6) - M1 sprint tes  claude-ai   none            P2=8    P3=0    SKIP (no-guess)
+  71ce1d26  compacted-session                 claude-code none            P2=2    P3=0    SKIP (no-guess)
+  7556723c  Test message                      claude-ai   none            P2=2    P3=0    SKIP (no-guess)
+  7ba45fce  test-7ba45f                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  7d162b7e  1/5,11,16: Chief Innovation Offi  claude-ai   none            P2=14   P3=0    SKIP (no-guess)
+  820929ab  test-820929                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  8f6b1298  test-8f6b12                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  91f46c7f  compacted-session                 claude-code none            P2=2    P3=0    SKIP (no-guess)
+  970f80ef  bad-meta                          claude-code none            P2=0    P3=0    SKIP (no-guess)
+  a091a0a1  compact-import                    claude-code none            P2=1    P3=0    SKIP (no-guess)
+  a4c194dd  Medieval name for Mainz in 940 A  claude-ai   none            P2=2    P3=0    SKIP (no-guess)
+  a4e0bd2a  3/13: CXO (o4.6) - M1             claude-ai   none            P2=10   P3=0    SKIP (no-guess)
+  a64c9d45  Exploratory testing agent role s  claude-ai   none            P2=10   P3=0    SKIP (no-guess)
+  a94b272e  Daedalus — 2026-03-07             claude-code none            P2=3    P3=0    SKIP (no-guess)
+  ad70f691  test-ad70f6                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  b173483e  test-import                       claude-code none            P2=3    P3=0    SKIP (no-guess)
+  b20c5b5b  empty-content-session             claude-code none            P2=2    P3=0    SKIP (no-guess)
+  b2c0503a  no-cwd                            claude-ai   none            P2=1    P3=0    SKIP (no-guess)
+  b8c77ad4  Voice input setup for Claude Cod  claude-ai   none            P2=5    P3=0    SKIP (no-guess)
+  b937e368  ordering-test                     claude-code none            P2=4    P3=0    SKIP (no-guess)
+  bdcd0506  test-import                       claude-code none            P2=3    P3=0    SKIP (no-guess)
+  c4f8438b  test-c4f843                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  cd7df34e  test-cd7df3                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  ddf29996  Reviving website project with Ta  claude-ai   none            P2=1    P3=0    SKIP (no-guess)
+  df34157e  test-df3415                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  e113cb6a  test-empty-filter                 claude-code none            P2=4    P3=0    SKIP (no-guess)
+  e2b48268  test-empty-filter                 claude-code none            P2=4    P3=0    SKIP (no-guess)
+  e39b439d  missing-claude-md                 claude-code none            P2=1    P3=0    SKIP (no-guess)
+  e52e8fa8  1/8,12: CXO (o) - UX vision cont  claude-ai   none            P2=12   P3=0    SKIP (no-guess)
+  e6385897  test-e63858                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  e8210556  claude.ai — aab4cff8-8d7c-42e5-8  claude-ai   none            P2=0    P3=0    SKIP (no-guess)
+  e93d3810  1/17: SecOps (o) - GCP project s  claude-ai   none            P2=19   P3=0    SKIP (no-guess)
+  eba7c2c1  3/13: Chief of Staff (o4.6) - M1  claude-ai   none            P2=12   P3=0    SKIP (no-guess)
+  f1debd2c  test-f1debd                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  f64312da  empty-content-session             claude-code none            P2=2    P3=0    SKIP (no-guess)
+  f863740a  test-f86374                       claude-code none            P2=0    P3=2    SKIP (no-guess)
+  faa00367  compact-import                    claude-code none            P2=1    P3=0    SKIP (no-guess)
+
+Nothing to apply. Snapshot discarded.
+
+  --- stderr ---
+
+
+==============================================================================
+MARCHGIT — CONTROL: the genuine behind-schema March blob, out of c945e8aa
+==============================================================================
+  seed: seeded marchgit: /Users/xian/Development/klatch-worktrees/daedalus/.testdata/u465drop/marchgit.db (5230592 bytes) channels=139 channel_entities=170 messages=2652 message_artifacts=2826 | 7 objects
+  counts before: channels=139 channel_entities=170 messages=2652 message_artifacts=2826 idx_message_artifacts_message_id=present
+  --- schemaDelta(), field by field (uncrippled) ---
+{
+  "addedObjects": [
+    "index:idx_file_refs_file",
+    "index:idx_file_refs_scope",
+    "table:file_refs",
+    "table:files"
+  ],
+  "droppedObjects": [],
+  "addedColumns": [
+    "channels.type",
+    "entities.effort",
+    "entities.reflections",
+    "message_artifacts.file_name",
+    "message_artifacts.file_mime_type",
+    "message_artifacts.file_size_bytes",
+    "message_artifacts.file_storage_key",
+    "messages.stop_reason",
+    "projects.memory"
+  ],
+  "rebuiltTables": [
+    "messages"
+  ],
+  "alteredTables": [],
+  "empty": false,
+  "data": {
+    "rows": {},
+    "rowWrites": 2652,
+    "empty": false
+  }
+}
+SchemaDelta.empty = false    DataDelta.empty = false
+--- describeSchemaDelta ---
+SCHEMA: this database is behind the current schema, and opening it for writing
+  upgrades it in place. marchgit.db would gain:
+    4 new object(s): index:idx_file_refs_file, index:idx_file_refs_scope, table:file_refs, table:files
+    9 new column(s): channels.type, entities.effort, entities.reflections, message_artifacts.file_name, message_artifacts.file_mime_type, message_artifacts.file_size_bytes, message_artifacts.file_storage_key, messages.stop_reason, projects.memory
+    1 table(s) rebuilt, not altered in place: messages
+      A rebuild rewrites every row of that table. The file grows and the space the old
+      pages held is left as slack inside it — expect a larger file than the data needs.
+  Every existing row survives this. What does not survive is the file's value as a record
+  of an older schema: restore it later to ask what the schema looked like then and you get
+  today's answer. Pass --no-migrate to refuse instead of upgrading.
+--- describeDataDelta ---
+ROWS: opening this database for writing also writes rows to it. The migration would
+  change marchgit.db like this:
+    no table changes how many rows it holds — every write below is a rewrite
+    2652 row write(s) in total
+      More writes than rows gained, so 2652 row(s) are rewritten rather
+      than added: a table rebuild moves every row it holds, and the migration also rewrites
+      legacy model ids in place where it finds them, changing no count at all.
+  These are the migration's own writes, not this tool's plan. They happen on the way in, to any
+  database opened for writing, and a run that moves no channel still performs them. Pass
+  --no-migrate to refuse the run rather than let it write them.
+
+  exit=1
+  beside after: (nothing)
+  counts after: channels=139 channel_entities=170 messages=2652 message_artifacts=2826 idx_message_artifacts_message_id=present
+  --- stdout ---
+
+SCHEMA: this database is behind the current schema, and opening it for writing
+  upgrades it in place. marchgit.db would gain:
+    4 new object(s): index:idx_file_refs_file, index:idx_file_refs_scope, table:file_refs, table:files
+    9 new column(s): channels.type, entities.effort, entities.reflections, message_artifacts.file_name, message_artifacts.file_mime_type, message_artifacts.file_size_bytes, message_artifacts.file_storage_key, messages.stop_reason, projects.memory
+    1 table(s) rebuilt, not altered in place: messages
+      A rebuild rewrites every row of that table. The file grows and the space the old
+      pages held is left as slack inside it — expect a larger file than the data needs.
+  Every existing row survives this. What does not survive is the file's value as a record
+  of an older schema: restore it later to ask what the schema looked like then and you get
+  today's answer. Pass --no-migrate to refuse instead of upgrading.
+
+ROWS: opening this database for writing also writes rows to it. The migration would
+  change marchgit.db like this:
+    no table changes how many rows it holds — every write below is a rewrite
+    2652 row write(s) in total
+      More writes than rows gained, so 2652 row(s) are rewritten rather
+      than added: a table rebuild moves every row it holds, and the migration also rewrites
+      legacy model ids in place where it finds them, changing no count at all.
+  These are the migration's own writes, not this tool's plan. They happen on the way in, to any
+  database opened for writing, and a run that moves no channel still performs them. Pass
+  --no-migrate to refuse the run rather than let it write them.
+
+  --- stderr ---
+(node:93838) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+Refusing to run: --no-migrate, and this run would upgrade the schema and write the rows above.
+  Nothing was written and the snapshot was discarded. Three ways on from here:
+    - run it without --no-migrate, accepting the change above;
+    - copy the file first and point this script at the copy, keeping marchgit.db as it is;
+    - run it with no flags for the review sheet, which never writes to the file at all.
+
+  subject restored: shasum before=1981ff97509d7f2e after=1981ff97509d7f2e IDENTICAL
+  grep -c U465DROP_CRIPPLE in subject: 0

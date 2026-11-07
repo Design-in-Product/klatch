@@ -1,0 +1,98 @@
+
+==============================================================================
+MARCHGIT — CONTROL: the genuine behind-schema March blob, out of c945e8aa
+==============================================================================
+  seed: seeded marchgit: /Users/xian/Development/klatch-worktrees/daedalus/.testdata/u465drop/marchgit.db (5230592 bytes) channels=139 channel_entities=170 messages=2652 message_artifacts=2826 | 7 objects
+  counts before: channels=139 channel_entities=170 messages=2652 message_artifacts=2826 idx_message_artifacts_message_id=present
+  --- schemaDelta(), field by field (uncrippled) ---
+{
+  "addedObjects": [
+    "index:idx_file_refs_file",
+    "index:idx_file_refs_scope",
+    "table:file_refs",
+    "table:files"
+  ],
+  "droppedObjects": [],
+  "addedColumns": [
+    "channels.type",
+    "entities.effort",
+    "entities.reflections",
+    "message_artifacts.file_name",
+    "message_artifacts.file_mime_type",
+    "message_artifacts.file_size_bytes",
+    "message_artifacts.file_storage_key",
+    "messages.stop_reason",
+    "projects.memory"
+  ],
+  "rebuiltTables": [
+    "messages"
+  ],
+  "alteredTables": [],
+  "empty": false,
+  "data": {
+    "rows": {},
+    "rowWrites": 2652,
+    "empty": false
+  }
+}
+SchemaDelta.empty = false    DataDelta.empty = false
+--- describeSchemaDelta ---
+SCHEMA: this database is behind the current schema, and opening it for writing
+  upgrades it in place. marchgit.db would gain:
+    4 new object(s): index:idx_file_refs_file, index:idx_file_refs_scope, table:file_refs, table:files
+    9 new column(s): channels.type, entities.effort, entities.reflections, message_artifacts.file_name, message_artifacts.file_mime_type, message_artifacts.file_size_bytes, message_artifacts.file_storage_key, messages.stop_reason, projects.memory
+    1 table(s) rebuilt, not altered in place: messages
+      A rebuild rewrites every row of that table. The file grows and the space the old
+      pages held is left as slack inside it — expect a larger file than the data needs.
+  Every existing row survives this. What does not survive is the file's value as a record
+  of an older schema: restore it later to ask what the schema looked like then and you get
+  today's answer. Pass --no-migrate to refuse instead of upgrading.
+--- describeDataDelta ---
+ROWS: opening this database for writing also writes rows to it. The migration would
+  change marchgit.db like this:
+    no table changes how many rows it holds — every write below is a rewrite
+    2652 row write(s) in total
+      More writes than rows gained, so 2652 row(s) are rewritten rather
+      than added: a table rebuild moves every row it holds, and the migration also rewrites
+      legacy model ids in place where it finds them, changing no count at all.
+  These are the migration's own writes, not this tool's plan. They happen on the way in, to any
+  database opened for writing, and a run that moves no channel still performs them. Pass
+  --no-migrate to refuse the run rather than let it write them.
+
+  exit=1
+  beside after: (nothing)
+  counts after: channels=139 channel_entities=170 messages=2652 message_artifacts=2826 idx_message_artifacts_message_id=present
+  --- stdout ---
+
+SCHEMA: this database is behind the current schema, and opening it for writing
+  upgrades it in place. marchgit.db would gain:
+    4 new object(s): index:idx_file_refs_file, index:idx_file_refs_scope, table:file_refs, table:files
+    9 new column(s): channels.type, entities.effort, entities.reflections, message_artifacts.file_name, message_artifacts.file_mime_type, message_artifacts.file_size_bytes, message_artifacts.file_storage_key, messages.stop_reason, projects.memory
+    1 table(s) rebuilt, not altered in place: messages
+      A rebuild rewrites every row of that table. The file grows and the space the old
+      pages held is left as slack inside it — expect a larger file than the data needs.
+  Every existing row survives this. What does not survive is the file's value as a record
+  of an older schema: restore it later to ask what the schema looked like then and you get
+  today's answer. Pass --no-migrate to refuse instead of upgrading.
+
+ROWS: opening this database for writing also writes rows to it. The migration would
+  change marchgit.db like this:
+    no table changes how many rows it holds — every write below is a rewrite
+    2652 row write(s) in total
+      More writes than rows gained, so 2652 row(s) are rewritten rather
+      than added: a table rebuild moves every row it holds, and the migration also rewrites
+      legacy model ids in place where it finds them, changing no count at all.
+  These are the migration's own writes, not this tool's plan. They happen on the way in, to any
+  database opened for writing, and a run that moves no channel still performs them. Pass
+  --no-migrate to refuse the run rather than let it write them.
+
+  --- stderr ---
+(node:91933) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+Refusing to run: --no-migrate, and this run would upgrade the schema and write the rows above.
+  Nothing was written and the snapshot was discarded. Three ways on from here:
+    - run it without --no-migrate, accepting the change above;
+    - copy the file first and point this script at the copy, keeping marchgit.db as it is;
+    - run it with no flags for the review sheet, which never writes to the file at all.
+
