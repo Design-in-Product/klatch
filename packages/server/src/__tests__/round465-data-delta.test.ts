@@ -41,8 +41,11 @@ afterEach(() => {
 });
 
 const sha = (p: string) => createHash('sha256').update(fs.readFileSync(p)).digest('hex');
+/** This process's leftovers only — see the same helper in `round465-schema-delta.test.ts`. */
 const strayCopies = () =>
-  fs.readdirSync(os.tmpdir()).filter((f) => f.startsWith('klatch-schema-delta')).length;
+  fs
+    .readdirSync(os.tmpdir())
+    .filter((f) => f.startsWith(`klatch-schema-delta-${process.pid}-`)).length;
 
 /** A current-schema database, by the product's own path, with its sidecars folded in. */
 function current(): string {

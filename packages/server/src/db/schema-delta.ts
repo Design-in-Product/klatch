@@ -41,7 +41,7 @@
  * *"Nothing to apply. Snapshot discarded."* That sentence is true about the plan
  * and false about the file, and `--no-migrate`'s whole promise is about the file.
  *
- * The four sites, all in `runMigrations`:
+ * The **six** sites — four in `runMigrations`, two in `initSchema`:
  *
  * 1. the `MODEL_ALIASES` loop — `UPDATE channels/messages SET model`, **in
  *    place**, so no row count moves;
@@ -50,7 +50,22 @@
  * 3. the default-entity `INSERT`, when `DEFAULT_ENTITY_ID` is absent;
  * 4. `INSERT INTO channel_entities (…, DEFAULT_ENTITY_ID)` for every channel with
  *    no entity row — a tool whose job is moving bindings *off* the default
- *    creating bindings *to* it, as a side effect of opening the file.
+ *    creating bindings *to* it, as a side effect of opening the file;
+ * 5. `INSERT OR IGNORE INTO channels … 'default'` — `initSchema`, `index.ts:85`;
+ * 6. `INSERT OR IGNORE INTO entities … DEFAULT_ENTITY_ID` — `initSchema`,
+ *    `index.ts:90`.
+ *
+ * This list said **four, all in `runMigrations`** until Theseus's 2026-11-06 §4
+ * found 5 and 6 and drove them: against a current-schema database with the
+ * `default` channel row deleted, the tool refuses and names `+1 channels, +1
+ * channel_entities`. Both no-op on a database that already has those rows, which
+ * is why they are easy to miss.
+ *
+ * Counted twice, wrong twice: `unit-465migrate` §7.2 said **one** (five short) and
+ * this header said **four** (two short). The **measurement** was right both times.
+ * That is the argument for measuring rather than listing, and it is worth more
+ * than the list it replaces — so the list above is here as orientation, not as the
+ * thing the disclosure is keyed on.
  *
  * So the measurement is two numbers, not one. **Per-table row counts** either
  * side of the same `applySchema` call reach sites 2, 3 and 4 exactly. They are
@@ -77,6 +92,27 @@ import { applySchema } from './index.js';
 export interface SchemaDelta {
   /** `type:name` for every `sqlite_master` object the schema would create. */
   addedObjects: string[];
+  /**
+   * `type:name` for every object that is in the database now and **not** there
+   * after the migration — a net removal.
+   *
+   * Theseus's 2026-11-06 §2. Every other key in this interface was written as a
+   * question about what the migration *adds*: `addedObjects` is a one-directional
+   * set difference, and the three below iterate `after.cols`, so an object that
+   * leaves is reached by none of them. A `DROP TABLE` of a populated table came
+   * back `empty: true` on all four, `--no-migrate` returned **exit 0**, and the
+   * tool printed `Nothing to apply.` over a file that had just lost a table.
+   *
+   * Nothing in the tree nets a removal today — the one `DROP TABLE` at
+   * `index.ts:206` is paired with the rebuild's `RENAME`, so `messages` is in
+   * `after` and reports as a rebuild. That is exactly why this is here: the key
+   * has to exist before the migration that needs it, because the failure mode is
+   * silence and the operator has no way to tell silence from "nothing happened."
+   *
+   * A table dropped with `DROP TABLE` takes its indexes with it, so this key
+   * generally carries more than one entry per lost table.
+   */
+  droppedObjects: string[];
   /** `table.column` for every column it would add to a table that already exists. */
   addedColumns: string[];
   /**
@@ -115,6 +151,10 @@ export interface DataDelta {
    * Net row-count change per table, zeros omitted. Reaches the migration's three
    * `INSERT` sites. A table the migration creates counts from 0, so its rows show
    * up here as well as the table showing up in `addedObjects`.
+   *
+   * Keyed on the **union** of the two censuses, not on `after` alone. A table that
+   * stops existing holds zero rows afterwards, and counting only the tables that
+   * survive makes the largest row loss reachable the one thing this cannot see.
    */
   rows: Record<string, number>;
   /**
@@ -127,7 +167,20 @@ export interface DataDelta {
    * beside the net counts and says which is which.
    */
   rowWrites: number;
-  /** True when the migration writes no row at all. */
+  /**
+   * True when the migration neither writes a row nor loses one.
+   *
+   * This was `rowWrites === 0` alone, which is Theseus's 2026-11-06 §3: the
+   * interface carries two measured quantities and the guard read one. In the
+   * drop-and-recreate cell `rows` held `{ message_artifacts: -1 }` and `rowWrites`
+   * held `0`, so the module **measured** the loss and then discarded it —
+   * `describeDataDelta` returned `undefined` and the operator was told, in the
+   * schema block, that *"every existing row survives this."* In that cell it did
+   * not.
+   *
+   * A guard over an interface has to read every quantity the interface carries, or
+   * the quantity it skips is measured for nothing.
+   */
   empty: boolean;
 }
 
@@ -175,6 +228,10 @@ function census(db: Database.Database): Census {
  */
 export function diffCensus(before: Census, after: Census): SchemaDelta {
   const addedObjects = after.objects.filter((o) => !before.objects.includes(o));
+  // The converse of the line above, and the only key in here that asks the
+  // question in that direction. The three loops below cannot: they iterate
+  // `after.cols`, so a table that is not in `after` is not visited at all.
+  const droppedObjects = before.objects.filter((o) => !after.objects.includes(o));
   const addedColumns: string[] = [];
   const rebuiltTables: string[] = [];
   const alteredTables: string[] = [];
@@ -207,11 +264,13 @@ export function diffCensus(before: Census, after: Census): SchemaDelta {
   }
   return {
     addedObjects,
+    droppedObjects,
     addedColumns,
     rebuiltTables,
     alteredTables,
     empty:
       addedObjects.length === 0 &&
+      droppedObjects.length === 0 &&
       addedColumns.length === 0 &&
       rebuiltTables.length === 0 &&
       alteredTables.length === 0,
@@ -230,20 +289,32 @@ function countRows(db: Database.Database, c: Census): Record<string, number> {
 /**
  * Rows this connection has inserted, updated or deleted since it was opened.
  * SQLite's own counter, so it needs no list of writing sites to stay current —
- * which is the point, given that the hand-written list of them came out three
- * short.
+ * which is the point, given that the hand-written list of them came out five short
+ * the first time and two short the second.
+ *
+ * It does **not** see DDL. A `DROP TABLE` moves this counter by zero however many
+ * rows the table held, which is why `rows` is reported beside it and why
+ * `DataDelta.empty` reads both.
  */
 function totalChanges(db: Database.Database): number {
   return db.prepare('SELECT total_changes()').pluck().get() as number;
 }
 
+/**
+ * Net row change per table over the **union** of the two sides.
+ *
+ * `Object.keys(after)` alone was the row half of Theseus's §2: a table that
+ * ceases to exist is not in `after`, `countRows` never counted it on that side,
+ * and every row it held vanished from the arithmetic along with it. The union
+ * makes a missing table read as the zero it now holds.
+ */
 function diffRows(
   before: Record<string, number>,
   after: Record<string, number>
 ): Record<string, number> {
   const rows: Record<string, number> = {};
-  for (const table of Object.keys(after)) {
-    const net = after[table]! - (before[table] ?? 0);
+  for (const table of new Set([...Object.keys(before), ...Object.keys(after)])) {
+    const net = (after[table] ?? 0) - (before[table] ?? 0);
     if (net !== 0) rows[table] = net;
   }
   return rows;
@@ -261,7 +332,13 @@ function diffRows(
  * that sentence (the backfill script has one, in its own voice).
  */
 export function schemaDelta(dbPath: string): MigrationDelta {
-  const scratch = path.join(os.tmpdir(), `klatch-schema-delta-${randomUUID()}.db`);
+  // The pid is in the name so that a *leak* check can be scoped to one process.
+  // The tests assert that no `klatch-schema-delta-*` file survives a call, and
+  // vitest's default pool is forks sharing one tmpdir: with a bare UUID, three
+  // test files calling this concurrently each see the other two's in-flight
+  // scratch copies and the assertion fires on a leak that is not theirs. Found by
+  // adding the third file, not by reasoning about the first two.
+  const scratch = path.join(os.tmpdir(), `klatch-schema-delta-${process.pid}-${randomUUID()}.db`);
   let db: Database.Database | undefined;
   try {
     fs.copyFileSync(dbPath, scratch);
@@ -281,9 +358,13 @@ export function schemaDelta(dbPath: string): MigrationDelta {
     const after = census(db);
     const rowsAfter = countRows(db, after);
     const rowWrites = totalChanges(db) - writesBefore;
+    const rows = diffRows(rowsBefore, rowsAfter);
     return {
       ...diffCensus(before, after),
-      data: { rows: diffRows(rowsBefore, rowsAfter), rowWrites, empty: rowWrites === 0 },
+      // Both measured quantities, not just the one. `rowWrites` cannot see a
+      // `DROP TABLE` — it is DDL — so on a net removal `rows` is the only key with
+      // anything in it, and keying `empty` on `rowWrites` alone threw it away.
+      data: { rows, rowWrites, empty: rowWrites === 0 && Object.keys(rows).length === 0 },
     };
   } finally {
     db?.close();
@@ -299,8 +380,44 @@ export function schemaDelta(dbPath: string): MigrationDelta {
 export function describeSchemaDelta(delta: SchemaDelta, dbPath: string): string | undefined {
   if (delta.empty) return undefined;
   const lines: string[] = [];
-  lines.push(`SCHEMA: this database is behind the current schema, and opening it for writing`);
-  lines.push(`  upgrades it in place. ${path.basename(dbPath)} would gain:`);
+  // "behind the current schema … upgrades it in place" was the only shape this
+  // block was written for, and a net *removal* makes every word of it false: the
+  // database is not behind, and the change is not an upgrade. `droppedObjects`
+  // arrived with a case the old header could not describe, so the header moved
+  // too — a new key whose prose still says "gain" discloses the wrong thing in a
+  // confident voice.
+  const dropping = delta.droppedObjects.length > 0;
+  lines.push(
+    dropping
+      ? `SCHEMA: this database does not match the current schema, and opening it for writing`
+      : `SCHEMA: this database is behind the current schema, and opening it for writing`
+  );
+  lines.push(
+    dropping
+      ? `  changes it in place. ${path.basename(dbPath)} would lose:`
+      : `  upgrades it in place. ${path.basename(dbPath)} would gain:`
+  );
+  if (dropping) {
+    lines.push(
+      `    ${delta.droppedObjects.length} object(s) dropped outright: ${delta.droppedObjects.join(', ')}`
+    );
+    lines.push(
+      `      A dropped table takes every row it holds with it, and every index on it. The`
+    );
+    lines.push(
+      `      migration does not put them back, and afterwards this file cannot be told from one`
+    );
+    lines.push(`      that never had them. Any row count below is net of that loss.`);
+  }
+  if (
+    dropping &&
+    (delta.addedObjects.length ||
+      delta.addedColumns.length ||
+      delta.rebuiltTables.length ||
+      delta.alteredTables.length)
+  ) {
+    lines.push(`  …and would gain:`);
+  }
   if (delta.addedObjects.length) {
     lines.push(`    ${delta.addedObjects.length} new object(s): ${delta.addedObjects.join(', ')}`);
   }
@@ -327,19 +444,47 @@ export function describeSchemaDelta(delta: SchemaDelta, dbPath: string): string 
     );
     lines.push(`      every row of that table is rewritten for a change you cannot see in a column list.`);
   }
-  lines.push(
-    `  Every existing row survives this. What does not survive is the file's value as a record`
-  );
-  lines.push(
-    `  of an older schema: restore it later to ask what the schema looked like then and you get`
-  );
-  lines.push(`  today's answer. Pass --no-migrate to refuse instead of upgrading.`);
+  // Conditional, because in the cell that routed this it was simply false. A
+  // drop-and-recreate fires `rebuiltTables`, so the block above printed and the
+  // operator was told "every existing row survives this" over a run that emptied
+  // the table. The sentence is true of an append and of a rebuild; it is not true
+  // of a removal, and there is no version of it that covers both.
+  if (dropping) {
+    lines.push(
+      `  Rows in the objects above do NOT survive this. Nor does the file's value as a record of`
+    );
+    lines.push(`  an older schema. Pass --no-migrate to refuse instead of changing it.`);
+  } else {
+    // This read "Every existing row survives this" — a claim about **rows**, made
+    // by a block whose input carries no row information at all. Driven against
+    // the drop-and-recreate cell it was simply false: this block printed the
+    // survival promise while the ROWS block, two paragraphs down the same stdout,
+    // printed `-1 message_artifacts`. One file, one run, two contradicting
+    // sentences. Found by this unit's own post-cure drive of the arm that routed
+    // it, after the §3 guard started letting the ROWS block speak.
+    //
+    // The cure is not a better promise, it is no promise: the only honest thing a
+    // schema-shaped delta can say about rows is where to look.
+    lines.push(
+      `  A change to the container is not by itself a change to the rows. The ROWS block says what`
+    );
+    lines.push(
+      `  moves, and no ROWS block means nothing moves. What does not survive either way is the`
+    );
+    lines.push(
+      `  file's value as a record of an older schema: restore it later to ask what the schema`
+    );
+    lines.push(
+      `  looked like then and you get today's answer. Pass --no-migrate to refuse instead of`
+    );
+    lines.push(`  upgrading.`);
+  }
   return lines.join('\n');
 }
 
 /**
- * The migration's **row** writes as lines for an operator, or `undefined` when it
- * writes none.
+ * The migration's **row** movement as lines for an operator, or `undefined` when
+ * no row moves either way.
  *
  * Deliberately a separate block from `describeSchemaDelta`, and a separate
  * sentence in the refusal: the two are independent, and the case that routed this
@@ -355,7 +500,21 @@ export function describeDataDelta(data: DataDelta, dbPath: string): string | und
   if (data.empty) return undefined;
   const lines: string[] = [];
   const added = Object.values(data.rows).reduce((a, b) => a + (b > 0 ? b : 0), 0);
-  lines.push(`ROWS: opening this database for writing also writes rows to it. The migration would`);
+  // The losses, as a positive number. `added` sums positives only, which is right
+  // for its own job — it is compared against `rowWrites` to separate rewrites from
+  // gains — but it meant a net *loss* summed to zero and every sentence below read
+  // as though nothing had moved.
+  const lost = Object.values(data.rows).reduce((a, b) => a + (b < 0 ? -b : 0), 0);
+  // Three openings, because "also writes rows to it" is false of a run that only
+  // removes them, and this block's whole job is to be the sentence an operator can
+  // act on.
+  lines.push(
+    lost && data.rowWrites
+      ? `ROWS: opening this database for writing writes rows to it and removes others. The migration would`
+      : lost
+        ? `ROWS: opening this database for writing removes rows from it. The migration would`
+        : `ROWS: opening this database for writing also writes rows to it. The migration would`
+  );
   lines.push(`  change ${path.basename(dbPath)} like this:`);
   const named = Object.entries(data.rows)
     .sort(([a], [b]) => a.localeCompare(b))
@@ -366,6 +525,15 @@ export function describeDataDelta(data: DataDelta, dbPath: string): string | und
       : `    no table changes how many rows it holds — every write below is a rewrite`
   );
   lines.push(`    ${data.rowWrites} row write(s) in total`);
+  if (lost) {
+    lines.push(
+      `      ${lost} row(s) are lost, not written. A row that goes because its table goes is not`
+    );
+    lines.push(
+      `      counted as a write — total_changes() does not see DDL — so the count above can be 0`
+    );
+    lines.push(`      while rows are still leaving the file.`);
+  }
   if (data.rowWrites > added) {
     lines.push(
       `      More writes than rows gained, so ${data.rowWrites - added} row(s) are rewritten rather`
@@ -376,11 +544,13 @@ export function describeDataDelta(data: DataDelta, dbPath: string): string | und
     lines.push(`      legacy model ids in place where it finds them, changing no count at all.`);
   }
   lines.push(
-    `  These are the migration's own writes, not this tool's plan. They happen on the way in, to any`
+    `  These are the migration's own ${lost ? 'changes' : 'writes'}, not this tool's plan. They happen on the way in, to any`
   );
   lines.push(
     `  database opened for writing, and a run that moves no channel still performs them. Pass`
   );
-  lines.push(`  --no-migrate to refuse the run rather than let it write them.`);
+  lines.push(
+    `  --no-migrate to refuse the run rather than let it ${lost ? 'make them' : 'write them'}.`
+  );
   return lines.join('\n');
 }

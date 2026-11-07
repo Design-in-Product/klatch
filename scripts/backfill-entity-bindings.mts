@@ -956,8 +956,13 @@ const willWrite = apply || Boolean(undoPath);
 let schemaNote: string | undefined;
 let dataNote: string | undefined;
 let schemaUnknown: string | undefined;
+// Hoisted out of the `try` because the refusal's own sentence, further down, has
+// to name what was measured rather than guess a verb. Empty on the throw path,
+// which is the right answer there: that arm's reason says we could not tell.
+let dropped: string[] = [];
 try {
   const delta = schemaDelta(snapshotPath);
+  dropped = delta.droppedObjects;
   schemaNote = describeSchemaDelta(delta, dbPath);
   dataNote = describeDataDelta(delta.data, dbPath);
 } catch (err) {
@@ -976,13 +981,25 @@ if (noMigrate && willWrite && (schemaNote || dataNote || schemaUnknown)) {
   // schema" was the only sentence here, and against the routed case — rows
   // written, schema already current — it would have been a false reason for a
   // correct refusal.
+  // "upgrade" is the wrong verb for a net removal, and a wrong reason for a
+  // correct refusal is the same defect this ternary was written to fix one layer
+  // up: Theseus's 2026-11-06 §2 reached a `DROP TABLE` through this path. Read off
+  // the measured key rather than off the flag — `delta` is in scope and
+  // `droppedObjects` is the only key that distinguishes the two.
+  // Both verbs stay as they were on the no-drop path, deliberately: those exact
+  // sentences are the recorded output in `unit-465rowdelta/RESULTS.md` A1 and A6,
+  // and changing a string that an already-published cell quotes turns a correct
+  // record into an apparent mismatch for no gain. Only the drop path is new.
+  const dropping = Boolean(dropped.length);
+  const schemaVerb = dropping ? 'change the schema' : 'upgrade the schema';
+  const dataVerb = dropping ? 'change the rows' : 'write the rows';
   const reason =
     schemaNote && dataNote
-      ? 'this run would upgrade the schema and write the rows above'
+      ? `this run would ${schemaVerb} and ${dataVerb} above`
       : schemaNote
-        ? 'this run would upgrade the schema above'
+        ? `this run would ${schemaVerb} above`
         : dataNote
-          ? 'this run would write the rows above'
+          ? `this run would ${dataVerb} above`
           : undefined;
   console.error(
     reason

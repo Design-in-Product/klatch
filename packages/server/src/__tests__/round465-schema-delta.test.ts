@@ -41,9 +41,16 @@ afterEach(() => {
 
 const sha = (p: string) => createHash('sha256').update(fs.readFileSync(p)).digest('hex');
 
-/** The leftovers `schemaDelta` would be leaving behind if it leaked. */
+/**
+ * The leftovers `schemaDelta` would be leaving behind if it leaked — **this
+ * process's** leftovers only. vitest's default pool is forks sharing one tmpdir,
+ * so an unscoped prefix counts a sibling test file's in-flight scratch copy as a
+ * leak here. The pid in the subject's scratch name is what makes this scopeable.
+ */
 const strayCopies = () =>
-  fs.readdirSync(os.tmpdir()).filter((f) => f.startsWith('klatch-schema-delta')).length;
+  fs
+    .readdirSync(os.tmpdir())
+    .filter((f) => f.startsWith(`klatch-schema-delta-${process.pid}-`)).length;
 
 /**
  * A census from objects and columns, with the `CREATE TABLE` text a real table
@@ -272,6 +279,7 @@ describe('schemaDelta', () => {
     const text = describeSchemaDelta(
       {
         addedObjects: ['table:files'],
+        droppedObjects: [],
         addedColumns: ['messages.stop_reason'],
         rebuiltTables: ['messages'],
         alteredTables: [],
