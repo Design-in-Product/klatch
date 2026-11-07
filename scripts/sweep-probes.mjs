@@ -1488,6 +1488,36 @@ export const DEFERRED = [
   // and `gate.mts` both pass `--census`, which returns at :2531 before the driving loop — the
   // same gap this file's own :2525 docblock records from 2026-09-29. Promotion moves it into the
   // hand-driven full sweep.
+  //
+  // **2026-11-07, Theseus (`unit-465skipE`): the cure above is in the probe, and the blocker this
+  // note names is cleared on its own axis.** Everything from `// The cure needs no new machinery`
+  // down is a record of the uncured state and stays true as one; what follows is the measured
+  // state of the tree now. Arm E's not-built path records a hard skip instead of running three
+  // checks, so the probe publishes **13** checks green (not 14 — the built row was a precondition
+  // and is an evidence line now), and in the lost-race state **0** arm E rows are emitted, which
+  // removes the two self-contradicting lines rather than suppressing them. Driven against the
+  // real probe, not a fixture, with `classify` imported from this file:
+  //
+  //     drive0  control             exit 0  All 13 regression checks passed       PASS
+  //     drive1  race lost (X1)      exit 3  did not run: the race state could…   BLOCKED (declared)
+  //                                                                              RED     (undeclared)
+  //                                                                              RED     (label off the line)
+  //     drive2  size test removed   exit 1  2 of 13 FAILED: -wal:absent /          RED
+  //                                         unreadable (disk I/O error)
+  //     drive3  X1 + size removed   exit 3  skip, not red                         BLOCKED (declared)
+  //
+  // So the entry that promotes this probe **must** carry `skip: /the race state could not be
+  // built/` — drive1 reads RED without it, and RED with a declared label absent from the line.
+  // Without the declaration promotion still converts a lost race into a red on a healthy tree,
+  // which is the state this note declined promotion over.
+  //
+  // One thing drive3 says that nobody predicted and that belongs in front of a reader of a
+  // BLOCKED sweep row: a lost race under a **crippled product** also reads BLOCKED. That is
+  // correct — nothing was measured, so nothing may be concluded — but it means arm E's power is
+  // conditional on winning the race, and BLOCKED here is "we do not know", never "the guard is
+  // intact". The remaining open question is **E4/E5**, which is unchanged and is not a blocker on
+  // this axis. Promotion is still Argus's list and Daedalus's instrument; this clears their axis
+  // and does not decide it for them.
   'probe-backfill-sidecar-neutrality.mts',
   'probe-browse-cold-figure-gap.mts',
   'probe-browse-count-vs-persisted-rows.mts',

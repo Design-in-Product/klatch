@@ -704,9 +704,7 @@ source.close();
 if (!sidecarsBefore['-wal']) {
   try {
     const wal = fs.existsSync(dbPath + '-wal') ? fs.statSync(dbPath + '-wal').size : 0;
-    // C1, unit-465skipE: the size test removed. Present only to show the cure to
-    // arm E's not-built path did not blind the arm. Removed before the unit lands.
-    if (wal === 0 || process.env.KLATCH_U465SKIPE_NOSIZE === '1') {
+    if (wal === 0) {
       fs.rmSync(dbPath + '-wal', { force: true });
       if (!sidecarsBefore['-shm']) fs.rmSync(dbPath + '-shm', { force: true });
     }

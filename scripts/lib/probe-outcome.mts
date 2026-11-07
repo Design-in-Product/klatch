@@ -133,10 +133,21 @@ export type SummariseInput = {
    * `input` itself (11), `results` (10), `results[0]` (2), `skipped` (8), `skipped[0]` (2). The
    * cured fields have none. Two reasons this one stays uncured, both driven:
    *
-   *   1. **No live caller can reach it.** 50 `skipped` argument sites in 29 files: 21 array
-   *      literals and 29 bare identifiers (27 array-initialised, never-reassigned locals, plus 2
-   *      parameters of `probe-round224`'s own fixtures). All 50 elements arrive by a
-   *      literal-shaped `.push()`; no other mutator, no index write, no re-assignment anywhere.
+   *   1. **No live caller can reach it.** Every `skipped` argument site is an array literal or a
+   *      bare identifier bound to an array-initialised, never-reassigned local (plus 2 parameters
+   *      of `probe-round224`'s own fixtures); every element arrives by a literal-shaped `.push()`;
+   *      no other mutator, no index write, no re-assignment anywhere.
+   *
+   *      **The population is read live by arm Q3 and is deliberately not frozen here.** It was
+   *      frozen — *"50 argument sites in 29 files: 21 array literals and 29 bare identifiers (27
+   *      … locals …). All 50 elements …"* — and by 2026-11-07 the live tree read **55 sites in 32
+   *      files, 24 literal arrays, 31 identifiers (29 locals + 2 params), 52 pushes**, five sites
+   *      and two files past the sentence. Nothing went wrong: Q3's predicate is `reachable === 0`
+   *      and its counts are computed each run, so the gate never drifted — only this paragraph
+   *      did, silently, because a count in prose beside a live reading has nothing holding it.
+   *      Found by Theseus in `unit-465skipE-2026-11-07` while *adding* the 55th site, and
+   *      registered as a prediction before it was read, which is the only reason it is a finding
+   *      and not a repair nobody can grade. Q3's own output carries the numbers; read them there.
    *   2. **The crash is in the safe direction.** Driven as a subprocess: a throwing
    *      `summariseAndExit` exits **1** with **0 bytes on stdout** — no headline, no
    *      `REGRESSIONS:` block, never the word "passed". Round 355's class was the opposite, an

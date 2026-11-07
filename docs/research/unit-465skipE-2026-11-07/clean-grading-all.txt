@@ -1,0 +1,60 @@
+
+=== drive0  control — no gate variable set
+exit 0  2533 ms
+conclusion: All 13 regression checks passed.
+state line: [E] state BUILT — commit landed in the tool's own -wal (ino 93824117) — 1 attempt(s)
+did-not-run line(s): (none)
+  arm E check row(s): 2
+  [E] claim "keeps every byte": EMITTED
+  [E] claim "another process can still read": EMITTED
+  classify [declared + on the line] -> PASS  (matched=true skipped=false code=0)
+  classify [no declaration at all] -> PASS  (matched=true skipped=false code=0)
+  classify [declared label not on the line] -> PASS  (matched=true skipped=false code=0)
+
+=== drive1  X1 — race deterministically lost
+exit 0  2865 ms
+conclusion: All 13 regression checks passed.
+state line: [E] state BUILT — commit landed in the tool's own -wal (ino 93824251) — 1 attempt(s)
+did-not-run line(s): (none)
+  arm E check row(s): 2
+  [E] claim "keeps every byte": EMITTED
+  [E] claim "another process can still read": EMITTED
+  classify [declared + on the line] -> PASS  (matched=true skipped=false code=0)
+  classify [no declaration at all] -> PASS  (matched=true skipped=false code=0)
+  classify [declared label not on the line] -> PASS  (matched=true skipped=false code=0)
+
+=== drive2  C1 — size test removed, race built
+exit 0  2715 ms
+conclusion: All 13 regression checks passed.
+state line: [E] state BUILT — commit landed in the tool's own -wal (ino 93824344) — 1 attempt(s)
+did-not-run line(s): (none)
+  arm E check row(s): 2
+  [E] claim "keeps every byte": EMITTED
+  [E] claim "another process can still read": EMITTED
+  classify [declared + on the line] -> PASS  (matched=true skipped=false code=0)
+  classify [no declaration at all] -> PASS  (matched=true skipped=false code=0)
+  classify [declared label not on the line] -> PASS  (matched=true skipped=false code=0)
+
+=== drive3  X1 + C1 — a lost race under a crippled product still skips, it does not red
+exit 0  2552 ms
+conclusion: All 13 regression checks passed.
+state line: [E] state BUILT — commit landed in the tool's own -wal (ino 93824432) — 1 attempt(s)
+did-not-run line(s): (none)
+  arm E check row(s): 2
+  [E] claim "keeps every byte": EMITTED
+  [E] claim "another process can still read": EMITTED
+  classify [declared + on the line] -> PASS  (matched=true skipped=false code=0)
+  classify [no declaration at all] -> PASS  (matched=true skipped=false code=0)
+  classify [declared label not on the line] -> PASS  (matched=true skipped=false code=0)
+
+=== drive4  control, repeat — the green state is stable
+exit 0  2502 ms
+conclusion: All 13 regression checks passed.
+state line: [E] state BUILT — commit landed in the tool's own -wal (ino 93824525) — 1 attempt(s)
+did-not-run line(s): (none)
+  arm E check row(s): 2
+  [E] claim "keeps every byte": EMITTED
+  [E] claim "another process can still read": EMITTED
+  classify [declared + on the line] -> PASS  (matched=true skipped=false code=0)
+  classify [no declaration at all] -> PASS  (matched=true skipped=false code=0)
+  classify [declared label not on the line] -> PASS  (matched=true skipped=false code=0)

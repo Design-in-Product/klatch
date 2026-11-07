@@ -18,6 +18,15 @@ import path from 'path';
 import { classify } from '../../../scripts/sweep-probes.mjs';
 
 const HERE = path.dirname(new URL(import.meta.url).pathname);
+/**
+ * Prefix for every artefact this invocation writes. Without it the clean re-drive
+ * would overwrite the cripple-present recordings under the same names, and a
+ * single-file artefact then holds only the last arm driven.
+ */
+const TAG = (() => {
+  const a = process.argv.slice(2).find((x) => x.startsWith('tag:'));
+  return a ? `${a.slice(4)}-` : '';
+})();
 const REPO = path.resolve(HERE, '../../..');
 const PROBE = 'scripts/probe-backfill-sidecar-neutrality.mts';
 
@@ -68,7 +77,7 @@ const say = (s: string) => {
   console.log(s);
 };
 
-const want = process.argv.slice(2);
+const want = process.argv.slice(2).filter((x) => !x.startsWith('tag:'));
 for (const arm of ARMS) {
   if (want.length && !want.includes(arm.name)) continue;
   const t0 = Date.now();
@@ -80,8 +89,8 @@ for (const arm of ARMS) {
   });
   const ms = Date.now() - t0;
   const out = r.stdout ?? '';
-  fs.writeFileSync(path.join(HERE, `${arm.name}.out`), out);
-  fs.writeFileSync(path.join(HERE, `${arm.name}.err`), r.stderr ?? '');
+  fs.writeFileSync(path.join(HERE, `${TAG}${arm.name}.out`), out);
+  fs.writeFileSync(path.join(HERE, `${TAG}${arm.name}.err`), r.stderr ?? '');
   const code = r.status ?? -1;
 
   say(`\n=== ${arm.name}  ${arm.note}`);
@@ -125,6 +134,6 @@ for (const arm of ARMS) {
 // Named for the arms actually driven, so a partial re-drive cannot silently
 // overwrite the full set's grading.
 fs.writeFileSync(
-  path.join(HERE, `grading-${want.length ? want.join('+') : 'all'}.txt`),
+  path.join(HERE, `${TAG}grading-${want.length ? want.join('+') : 'all'}.txt`),
   `${graded.join('\n')}\n`
 );

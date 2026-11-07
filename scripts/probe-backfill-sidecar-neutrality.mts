@@ -306,13 +306,6 @@ console.log('probe-backfill-sidecar-neutrality');
 //    than RED the entry must declare the label — see the note by `skipped` below.
 {
   const ATTEMPTS = 3;
-  /**
-   * X1, `unit-465skipE`: await the child's exit before opening the racer, so the
-   * cleanup has already removed the tool's `-wal` and the racer's `INSERT`
-   * necessarily makes its own file. Deterministic — a lost race on every attempt.
-   * The state builder for the skip path; it cripples nothing in the product.
-   */
-  const LOSE = process.env.KLATCH_U465SKIPE_LOSE === '1';
   type Race = {
     built: boolean;
     why: string;
@@ -339,20 +332,6 @@ console.log('probe-backfill-sidecar-neutrality');
 
     // The tool's own `-wal`: it cannot pre-exist, `build()` removed both sidecars.
     let toolIno = -1;
-    if (LOSE) {
-      // X1. Stat the `-wal` first so `toolIno` is a real inode (the arm must lose
-      // the race, not fail to see one), then let the child finish before the racer
-      // opens — the cleanup has run by then.
-      while (toolIno < 0 && !exited) {
-        try {
-          toolIno = fs.statSync(p + '-wal').ino;
-          break;
-        } catch {
-          await new Promise((r) => setTimeout(r, 1));
-        }
-      }
-      await done;
-    }
     while (toolIno < 0 && !exited) {
       try {
         toolIno = fs.statSync(p + '-wal').ino;
