@@ -932,7 +932,86 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-06 ~17:2x–17:5x PT (**STOP fire — third product-code fire of the day:
+- **Updated:** 2026-11-07 ~09:1x–10:3x PT (**START fire — substantive: both of Theseus's routed
+  §7 items cured and driven; the defect in my arm was worse than the one he named; and his
+  proposed fix, implemented as written, reddens on a healthy product.**)
+  Checkpoint is this seat's own `e57ad5d8` (11/06 STOP wrap log), re-derived with
+  `git log -1 --author='Daedalus'` — the three commits at the top of the session-start listing all
+  carry "11/07 START fire" subjects in my own shape and **none are mine** (Argus `d3d22348`,
+  Calliope `ef2f5ae1`, Iris `eef73c66`, `%an`-checked before citing).
+  `git rev-list --left-right --count HEAD...origin/main` = **0 0** at fire start. 17 new commits,
+  author-checked (Theseus 8, Calliope 3, Argus 2, Iris 2, Pard 1, Claude 1), none mine.
+  **Mail:** one inbound to this seat — Theseus's `i-took-the-§5-drive…`. Its §6 discharges the one
+  blocker I deferred yesterday, and discharges it by showing arm D **could not** have graded that
+  sketch: my blocker named the right instinct and the wrong instrument. Both §7 items **taken,
+  cured, driven and answered this fire**, not filed.
+  **Unit `docs/research/unit-465armd-2026-11-07/`** (pre-registration pushed as the only file in
+  the directory before any instrument in it existed, `git ls-tree -r origin/main` run, one path
+  returned; cripples `86aace84`; cure + recordings + RESULTS `01d62c65`; memo in its own commit).
+  **7 predictions: 6 HELD, 1 REFUTED** (6 + 1 = 7, added up here rather than asserted). **2
+  cripples. 3 unregistered defects, all mine, all in my own instruments.**
+  **The finding his §4.2 understated.** Arm D built its `-wal` with `writeFileSync(p + '-wal',
+  '')` — zero bytes. The truncate-in-place cripple **fired** and reported `destroyed 0B`. No
+  cripple at that site could move the arm at all: not a weak guard, an **ungradeable** one. P1/P2
+  are recorded **HELD vacuously** — arm D passed, the probe exited 0, and neither fact is evidence
+  about the assertion's key. Without the sentinel line a blind arm and a dead cripple produce the
+  same recording, and the flattering reading is the one I would have published.
+  **P3 REFUTED, and against his fix rather than for it:** byte-keying both sidecars in one check —
+  his §4.2 as literally written — reddens arm D with **no cripple at all**, on the innocent `-shm`
+  0 B → 32,768 B rewrite, failure text identical to the crippled drive. It trades a false green for
+  a false red and still cannot speak about the `-wal`. My P3 sentence was wrong and the reasoning
+  behind it was right. Cure is **three edits that only work together** (genuine committed frames in
+  the fixture, byte keying, a split check per sidecar) plus a fourth check so the arm **refuses
+  rather than passes** if its fixture stops carrying the property. Graded by the same cripple
+  **dead pre-cure (0 B) and live post-cure (`destroyed 329632B`, arm D red)**. Landing rule was
+  P4 + P5, set before the result; both held.
+  **His §4.1 confirmed, and the same false sentence found at a second site he could not see:**
+  censused by mechanism, not by the line he cited — the probe at `:124` **and**
+  `scripts/backfill-entity-bindings.mts:677`–`:678`, the product source. Both re-attributed rather
+  than deleted; drive 3 reproduces his "three green" (A, B **and C** green, D alone red) under my
+  own key in my own tree.
+  **Three defects of mine:** `execFileSync` exposes stderr only through the thrown error, so it
+  dropped the cripple's report on exactly the drive that mattered; the probe itself swallows the
+  tool's streams entirely, so no stream-based report is observable through it (cured with a
+  pid-scoped file sentinel); and my driver's own reason line printed *"the cripple did not fire"*
+  on every X2 drive, which drive 3 disproves. Drives 1/2/3/5/6/7 re-recorded from one driver
+  version; 4a/4b kept and said to be the older text rather than left mixed and unmentioned.
+  **Restoration verified:** `grep -rl 'U465ARMD' scripts/ packages/` → no files; `git diff
+  d3d22348 --stat -- packages/ scripts/` → exactly the two intended files; drive 8 green on the
+  restored tree. Arm D 2 checks → 4; probe 9 regression checks → 11. All **twelve** `.err` files
+  0 bytes, counted with `wc -c` over all twelve at once (twelve, not the nine drives 0–8 imply —
+  `drive2b`/`drive2c` are kept deliberately as the evidence for two of my three defects).
+  **Gate re-derived fresh:** `GATE ok exit=0` on all four stages; typecheck clean ×4; server
+  **143 · 2221 · 1 skipped (2222)** — byte-identical to 11/06 STOP, as expected since this unit
+  added no vitest test and the probe is not in that suite; client **26/39, 333/346** unchanged;
+  `sweep-probes --census` **154 / 43 / 111, CENSUS OK** unchanged.
+  **Thread deliberately left open in `docs/mail/`:** his §3 E4/E5 item (the `-shm` orphan when a
+  `-wal` pre-exists) is genuinely open on him and my reply leaves it there. Moving it would
+  reproduce the exact failure I closed yesterday — a thread whose last word reads wrongly for
+  days. Recorded so a later fire does not read it as unclosed debt of mine.
+  **The ma-smoke day-count disagreement I flagged yesterday now has a mechanism, and it is not an
+  arithmetic error by either seat.** `node -e` gives, for today, **elapsed 17** and **inclusive
+  18**. Argus's "17 → 18" is the inclusive key; Calliope's "16 → 17" is the elapsed key; both are
+  internally consistent. The rollup carries **both labels in adjacent lines** (line 11 "day 17
+  today", inclusive as of 11-06; line 108 heading "set up 16 days ago", elapsed) — that is what
+  lets two seats anchor differently and both be right. **Yesterday I compared the two figures as
+  if they shared a key, which was my error.** Routed to Calliope, not edited: it is her board, and
+  the fix is for it to carry one key. Branch still absent (`git branch -a` 0, `git ls-remote
+  --heads origin` 0); named blocker on xian unchanged.
+  **Rollup:** read directly — still **v176, needs-you 3**, unchanged. Neither item touching this
+  seat is mine to action.
+  **Cross-repo mail, all four fetched fresh**, read on two keys (filename, plus a content grep of
+  the actual `HEAD..origin/main` diffs for `daedalus|klatch`, because a filename key cannot see a
+  memo whose name omits the seat): `designinproduct` 10 new commits, **0** touching `docs/mail/`,
+  0 hits; `mediajunkie` 0 new; `dispatch` 1 new mail commit, 1 hit — the routine 11-07 inbox check
+  carrying forward **my own** 11-06 question-box letter, informational, no ask;
+  `piper-morgan-product` 5 new, 1 touching `mailboxes/`, 0 hits. No inbound for this seat.
+  **Drain:** census, the one inbound (both items cured, not filed), the two-site attribution
+  census, cross-repo mail on two keys, standing blockers, the day-count mechanism, rollup and gate
+  all drained this fire. **Deferred with a named blocker: none** — yesterday's single deferral was
+  discharged by this fire's inbound and then superseded by the work above.
+  Log: `docs/logs/2026-11-07-daedalus-log.md`.
+- **Prior update:** 2026-11-06 ~17:2x–17:5x PT (**STOP fire — third product-code fire of the day:
   Theseus's §2 and §3 both cured and driven; the one control I registered as the one that could
   redden came back clean; and a nine-day-stale "open" thread of mine closed with a measurement.**)
   Checkpoint is this seat's own `3d3809b9` (the 11/06 WORK-fire wrap log), re-derived with
