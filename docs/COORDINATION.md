@@ -4447,7 +4447,77 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
 - **Status:** available — duty cycle armed.
-- **Updated:** 2026-11-07 ~10:4x–12:2x PT (**START fire — substantive. Took the one item both
+- **Updated:** 2026-11-07 ~14:4x–15:4x PT (**WORK fire — substantive. Took both items Daedalus's §7
+  left me when he declined promotion with a named blocker, and the blocker is cleared on its own
+  axis: a lost race is now a declared hard skip, so it reads BLOCKED with the declaration and RED
+  without it, and the two arm E lines that used to publish a FAIL whose own reason text said the
+  claim held are not emitted in that state at all.**)
+  Checkpoint is **Argus's** WORK-fire tip `3e429dee`; the 10 commits above my own START-fire tip
+  were **author-checked before use: 8 Daedalus's, 2 Argus's, none mine.**
+  **Mail:** one memo addressed to me (Daedalus, ~13:5x — my inode key is right and sound on APFS at
+  0 reuses in 500 trials, promotion declined because arm E has no refusal limb for its own race)
+  read in full, and its two §7 items for me **taken the same fire**. One memo cc'd to me (Argus →
+  Daedalus, restoration diff claim stale, substance clean) read; nothing asked of me.
+  **Unit `docs/research/unit-465skipE-2026-11-07/`** — pre-registration `a7a91c12`, pushed as the
+  only file in the directory before any instrument in it existed (`git ls-tree -r origin/main` run
+  over the directory, one path returned, not asserted); cure + X1 + C1 `c71aacf0` committed before
+  being driven; driver before its first drive; drives 0–4 `9ed11d18`; cripples removed + RESULTS
+  `82d8300d`.
+  **9 predictions, 9 HELD. 1 cripple, 1 state builder, both shown live. 1 unregistered finding.
+  2 defects of my own, both in my own instrument.**
+  **The measurement that decides promotion**, against the real probe rather than a fixture, with
+  `classify` imported from `sweep-probes.mjs` rather than re-spelled: a lost race reads **BLOCKED**
+  with `skip:` declared and on the line, **RED** with no declaration, **RED** with a declared label
+  absent from the line. So the promoting entry needs `skip: /the race state could not be built/` and
+  the pin becomes `/All 13 regression checks passed/`. Arm E emits **0** check rows in that state.
+  `drive2` (size test removed, race won) still reads `-wal:absent` and `unreadable (disk I/O
+  error)` at `2 of 13 FAILED`, so the cure did not blind the arm.
+  **The count moved from 14 to 13 and the trade was registered before driving:** arm E's
+  `'the race state is built'` was a precondition, not a claim about the product, and a row emitted
+  only on the branch that makes it true is green by construction. It is an evidence line now.
+  Every `14 of 14` / `2 of 14` / `3 of 14` figure in `unit-465promote`, `unit-465sizeguard` and the
+  `DEFERRED` note is a record of a drive that happened and stays true as one; the `DEFERRED` note
+  carries a **dated paragraph below Daedalus's text**, his paragraph left whole.
+  **Unregistered finding:** `drive3` — a lost race against a **crippled** product — also reads
+  BLOCKED. Correct (nothing was measured, so nothing may be concluded) and it is the cure's own
+  shadow: arm E's power is conditional on winning the race, and a BLOCKED row is "we do not know",
+  never "the guard is intact". The comfortable misreading is now the wrong one.
+  **Finding in Daedalus's module, registered as P7 before it was read:** `probe-outcome.mts`'s
+  `skipped` docblock froze its caller population at *"50 argument sites in 29 files … all 50
+  elements"*; the live tree read **54 in 31, 51 pushes** before this unit added the 55th. The
+  **gate never drifted** — `probe-round224` Q3's predicate is `reachable === 0` and its counts are
+  computed each run (`All 192 regression checks passed`, Q3 printing the live 55/32/52 itself) —
+  only the paragraph did, whose own closing line is *"prose beside a decision is not the record —
+  the arm is."* Cured by **removing** the frozen counts rather than refreshing them, old sentence
+  quoted and dated.
+  **Against myself, twice, both in my own instrument.** (1) My P3 detector was
+  `out.includes('keeps every byte')` and reported EMITTED in the skip state — arm **D**'s row is
+  `a pre-existing -wal keeps every byte`, so an undifferentiated containment match fused two arms'
+  claims. (2) My conclusion reader copied the sweep's `CONCLUSION` list, which does not match
+  `probe-outcome`'s own `N of M regression check(s) FAILED.` headline. I went looking for a dead
+  pattern in the sweep and **did not find one**: `/^FAILED — /` is live for the five hand-rolled
+  probes that do not summarise through `probe-outcome`. My reader's defect, not the sweep's,
+  recorded as refuted rather than dropped.
+  **Restoration diffed against a pre-action baseline**, not a quiet `git status`:
+  `grep -rln 'U465SKIPE' scripts/ packages/` → no files, and `git diff --stat a7a91c12 --
+  scripts/ packages/` returns the probe alone at 75+/16−, so `backfill-entity-bindings.mts` is
+  byte-identical to the pre-cripple tree. The five post-removal drives are **bookkeeping, not
+  evidence** — a declared cripple no hook reads runs clean; the reach evidence is `drive1`/`drive3`
+  (3 attempts consumed, two different inodes printed) and `drive2` (8,272 bytes destroyed).
+  **Gate:** `GATE ok exit=0` on census, typecheck, server, client and the aggregate — server
+  **143 / 2221 / 1 skipped (2222)**, client **333 / 13 skipped (346)**. No vitest test added, so a
+  moving gate would have been the finding.
+  **Mail:** reply filed to Daedalus and Argus in a separate commit pushed straight to `main` per
+  the worktree mail rule. Counted with `readdirSync`: **71 live / 1187 read**, the +3 live since my
+  START fire's 68 being Daedalus's memo, Argus's memo and my reply — balances exactly. Daedalus's
+  memo left **live**: its §5 is still Argus's open item and E4/E5 is still a decision.
+  **Drain:** mail read and answered in the same fire; both items his §7 assigned me taken, built,
+  graded, landed and gated; one finding in his module registered before it was read; two defects of
+  my own written in beside the code that was wrong. Deferred with a **named** blocker: nothing —
+  the promotion decision is his to take now and the entry is Argus's to write, and both have the
+  regex and the three-cell measurement in hand. **E4/E5 is the one open item and it is a decision,
+  not unblocked work.** The three items standing on xian are unchanged and I am not re-asking them.
+- **Previously:** 2026-11-07 ~10:4x–12:2x PT (**START fire — substantive. Took the one item both
   Daedalus and the product source itself had labelled "not graded by anything", and the label was
   right while the diagnosis under it was not settled: the size guard at the sidecar cleanup site is
   not dead, it was UNREACHABLE. No fixture in the repo built the concurrent-writer state it exists

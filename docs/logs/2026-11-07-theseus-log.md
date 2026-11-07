@@ -223,3 +223,197 @@ staged — every commit in this fire staged **by name**, not by directory, which
 wrong yesterday.
 
 **Step 3** — this log's own commit lands after the lines above were read off the remote.
+
+---
+
+## 14:4x — Session resumed (WORK fire), model `claude-opus-5`
+
+Briefing done in order: `git fetch`, `docs/COORDINATION.md`, `ls docs/mail/`. Checkpoint is Argus's
+WORK-fire tip `3e429dee`. The 10 commits above my own START-fire tip (`b4164916`) were
+**author-checked before use** with `git log --format='%h %an'`: 8 Daedalus's, 2 Argus's, **none
+mine** — and this matters, because the memo I spent the fire on was one of Daedalus's and I would
+otherwise have been reading my own commit subjects as his.
+
+**Mail.** One memo addressed to me, landed after my START fire closed: Daedalus, ~13:5x — *my inode
+key is right and sound on APFS (0 reuses in 500 trials, both controls carried), and promotion is
+declined because arm E has no refusal limb for its own race.* Read in full. Its §7 assigns me two
+things by name — the §4 cure shape and the §1 platform line — and says explicitly why he did not
+write them himself: *"It is your arm, one fire old, and you asked for a reading rather than an
+edit."* One memo cc'd to me (Argus → Daedalus, restoration diff claim stale, substance clean); read,
+nothing asked of me. Also checked, before assuming it was new: his *"both your routed items are
+cured"* memo (`fefa3b8e`) predates my START fire and was already actioned there — `git log -1 --
+<path>` on each of the three, rather than reading the dates in the filenames.
+
+**Took both items, same fire.** Unit `docs/research/unit-465skipE-2026-11-07/`.
+
+## 15:0x — pre-registration, and the trade I had to declare before driving
+
+Pushed `PRE-REGISTRATION.md` as the only file in the directory before any instrument in it existed
+(`git ls-tree -r origin/main` over the directory, one path returned). 9 predictions, one cripple
+(C1, the size test removed), one **state builder** (X1, a deterministically lost race), landing rule
+set before any result: the cure reverts if the real probe does not produce exit 3 *and* the
+structural `did not run:` line. Daedalus measured that pair against a fixture, and *a foil must run
+at the granularity of its claim*.
+
+The thing that needed registering before driving rather than explaining afterwards: arm E's first
+check, `'the race state is built'`, is a **precondition**, not a claim about the product. Under the
+cure the exit code enforces it, so a row emitted only on the branch that makes it true is **green by
+construction**. It becomes an evidence line, the arm publishes two claims instead of three, and the
+green conclusion reads **13, not 14**. Declared with its consequence — every `14 of 14` / `2 of 14` /
+`3 of 14` figure in three units and the `DEFERRED` note is a record of a drive that happened and
+stays true as one; what needed handling was any live sentence asserting the count in the present
+tense.
+
+## 15:1x — cure, X1, C1, committed before being driven
+
+Cure: `skipped.push('the race state could not be built')` on the not-built path, through
+`probe-outcome.mts`'s hard-skip channel, with the two downstream claims moved into the `else`. The
+label carries **no attempt count** on purpose — `ATTEMPTS` is a constant above it and a number baked
+into a declared label drifts the moment it changes, while the sweep's `skip:` pattern is matched
+against that exact line. The count goes on the evidence line.
+
+`skipped` is a module-level `const … : string[] = []`, never re-assigned, elements pushed as string
+literals — the three properties `probe-round224` arm Q3 holds over every caller of that field. I
+read `lib/skipped-shape-census.mts` and Q3 **before** writing the caller rather than after, because
+the one thing that reddens Q3 is a caller shaped carelessly.
+
+Also in the same commit: the §1 platform line (the inode key is sound on APFS where this probe runs
+and would need re-measuring on ext4, with his figures cited at the place they were taken), and the
+`skip:` regex a promoting entry needs written into the probe's own `skipped` docblock — because the
+exit-3 pair is only half of what `classify`'s BLOCKED limb accepts and the other half is a
+declaration in a file I do not own.
+
+## 15:2x — drives 0–4, and a red from my own detector on the first pass
+
+`classify` **imported** from `sweep-probes.mjs`, never re-spelled. Five arms, each a real `npx tsx`
+run of the real probe:
+
+```
+drive0  control             exit 0  2558 ms  All 13 regression checks passed.           PASS
+drive1  X1, race lost       exit 3  3416 ms  did not run: the race state could not …    BLOCKED
+drive2  C1, size removed    exit 1  2692 ms  2 of 13 FAILED: -wal:absent / unreadable   RED
+drive3  X1 + C1             exit 3  3575 ms  did not run: …                             BLOCKED
+drive4  control, repeat     exit 0  2539 ms  All 13 regression checks passed.           PASS
+```
+
+**P4 is the one that decides promotion**, and the declaration is load-bearing in both directions:
+`drive1` reads BLOCKED with `skip:` declared and on the line, **RED** with no declaration, **RED**
+with a declared label absent from the line. Arm E emits **0** check rows in that state, so the two
+lines whose reason text used to contradict their own verdict are not reached rather than suppressed.
+
+**My own P3 detector went red, and it was the detector.** `out.includes('keeps every byte')`
+reported `EMITTED` in the skip state. Arm **D**'s row is `a pre-existing -wal keeps every byte` — an
+undifferentiated containment match, fusing two arms' claims. The substance of P3 was fine from the
+first drive; my reader could not say so. Re-keyed on arm E's own `[E]`-prefixed rows and re-driven.
+
+**And a second one.** My conclusion reader printed `(none)` for the red drive, because I had copied
+the sweep's `CONCLUSION` list — `[/^INCONCLUSIVE — /, /^FAILED — /, /^All \d+ …/]` — and
+`probe-outcome`'s failure headline is `N of M regression check(s) FAILED.`, matching none of the
+three. I went looking for a dead pattern in the sweep and **did not find one**: `/^FAILED — /` is
+live for the hand-rolled probes that do not summarise through `probe-outcome` (`probe-round298`,
+`-299`, `-305`, `verify-expand-reachability.mjs`, `probe-scratch-server.mjs`, censused with
+`grep -rn`), and the sweep reaches `probe-outcome`'s headline through its `NOT_A_CONCLUSION`
+fallback. A defect in my reader, none in his; recorded as **refuted** rather than dropped.
+
+Both repairs are written into the driver beside the code that was wrong. Also made the driver write
+its grading rows to a **file** — the first pass left them in a terminal, which makes the one artefact
+carrying a verdict the one artefact nobody can re-read — and gave every artefact a `tag:` prefix, so
+the clean re-drive could not overwrite the cripple-present recordings under the same names.
+
+## 15:3x — P6 and P7: a prose figure in his module had drifted five sites
+
+**P6 to every digit.** Predicted 55 sites, 32 files, 24 literal arrays, 31 identifiers (29 locals + 2
+params), 29 declarations all array-initialised with 0 re-assignments, 52 pushes all literal. Q3 —
+the gate, not my scratch reader — printed exactly that, at `All 192 regression checks passed`.
+
+**P7 held, and it is the finding.** `probe-outcome.mts`'s `skipped` docblock froze its caller
+population at *"50 argument sites in 29 files: 21 array literals and 29 bare identifiers (27 …
+locals …). All 50 elements …"*. Measured **before** this unit touched anything: **54 sites in 31
+files, 24 literal arrays, 30 identifiers, 51 pushes** — four sites and two files past the sentence,
+before I added the 55th. The **gate never drifted**: Q3's predicate is `reachable === 0` and every
+count in its label and `got` string is computed each run. Only the paragraph did, whose own closing
+line reads *"prose beside a decision is not the record — the arm is."* It had become its own
+counter-example.
+
+Cured by **removing** the frozen counts rather than refreshing them — a refresh re-arms the same
+drift at a later date — with the old sentence quoted and dated so the drift stays legible. And
+registered as a prediction before being read, which is the only reason it is a finding rather than a
+repair nobody can grade.
+
+**Unregistered finding from a drive nobody designed for it.** `drive3` — a lost race against a
+**crippled** product — also reads BLOCKED. Correct: nothing was measured, so nothing may be
+concluded. But it is the cure's own shadow — arm E's power is conditional on winning the race, and a
+BLOCKED row is *"we do not know"*, never *"the guard is intact"*. Before the cure that state was a
+red that looked like a product defect; after it, the comfortable misreading is the wrong one. In
+RESULTS §5, the memo §5 and the `DEFERRED` note.
+
+## 15:4x — restoration, gate, mail
+
+**Restoration against a pre-action baseline**, not a quiet `git status`:
+`grep -rln 'U465SKIPE' scripts/ packages/` → no files, and `git diff --stat a7a91c12 -- scripts/
+packages/` returns `scripts/probe-backfill-sidecar-neutrality.mts | 75 insertions(+), 16
+deletions(-)` and **nothing else**, so `backfill-entity-bindings.mts` is byte-identical to the
+pre-cripple tree. The five post-removal drives are **bookkeeping, not evidence** — *a declared
+cripple no hook reads runs clean*; the reach evidence is `drive1`/`drive3` (3 attempts consumed, two
+different inodes printed) and `drive2` (8,272 bytes destroyed).
+
+**Gate:** `GATE ok exit=0` on census, typecheck, server, client and the aggregate — server
+**143 / 2221 / 1 skipped (2222)**, client **26 / 13 skipped (39)** files and **333 / 13 skipped
+(346)** tests. This unit adds no vitest test, so a moving gate would have been the finding.
+
+**Mail out**, separate commit pushed straight to `main` per the worktree mail rule:
+`theseus-to-daedalus-argus-cc-…-both-your-items-are-in-the-probe-the-promoting-entry-needs-this-exact-regex-and-your-own-modules-prose-had-drifted-five-sites-2026-11-07.md`.
+Counted with `readdirSync`: **71 live / 1187 read** — the +3 live since my START fire's 68 being his
+memo, Argus's memo and my reply, which balances exactly. His memo left **live**: its §5 is still
+Argus's open item and E4/E5 is still a decision, and close-discipline says an open thread stays
+visible.
+
+**Drain:** mail read and answered in the same fire; both items his §7 assigned me taken, built,
+graded, landed and gated; one finding in his module registered before it was read; two defects of my
+own written in beside the code that was wrong. **Nothing deferred** — the promotion decision is his
+to take and the entry is Argus's to write, and both now have the regex and the three-cell
+measurement in hand. E4/E5 is the single open item and it is a decision, not unblocked work. The
+three items standing on xian are unchanged and I am not re-asking them.
+
+## Wrap verification
+
+**Step 1 — my commits on `origin/main`.**
+
+```
+$ git log origin/main --oneline --author=Theseus --since="2026-11-07 13:00"
+7840e10e mail: Theseus -> Daedalus, Argus — both §7 items landed, the promoting entry needs one regex, and probe-outcome's own prose had drifted
+82d8300d unit-465skipE: cripples removed, RESULTS — the cure lands, and a prose census figure had drifted five sites
+9ed11d18 unit-465skipE: drives 0-4 — a lost race is BLOCKED only with the declaration, and RED without it
+d2637ffe unit-465skipE: driver, committed before being driven — classify imported, not re-spelled
+c71aacf0 unit-465skipE: the cure + X1 + C1, committed before being driven
+a7a91c12 unit-465skipE: pre-registration — a lost race is a precondition failure, and the built row stops being a check
+```
+
+**Step 2 — every deliverable by path, read off `origin/main` rather than off the worktree.**
+
+`git ls-tree -r origin/main` over the unit directory returned **27** files: `PRE-REGISTRATION.md`,
+`RESULTS.md`, `drive-skipE.mts`, `drive0`–`drive4` and `clean-drive0`–`clean-drive4` as `.out`/`.err`
+pairs (20), two grading files and the `round224` pair — 3 + 20 + 2 + 2 = 27, and **no scratch**. A
+second `ls-tree` over the five named paths outside it — `scripts/probe-backfill-sidecar-neutrality.mts`,
+`scripts/backfill-entity-bindings.mts`, `scripts/lib/probe-outcome.mts`, `scripts/sweep-probes.mjs`
+and the outbound memo — returned all five. **32 asked for, 32 returned.** `docs/COORDINATION.md` and
+this log land in the commit below.
+
+**Step 2b — the cripples are gone from the published tree, read off the remote blobs rather than
+the worktree.** `git show origin/main:` on both files, grepped for `U465SKIPE`: **0 and 0**, and the
+cleanup block as published is
+
+```
+704:if (!sidecarsBefore['-wal']) {
+705-  try {
+706-    const wal = fs.existsSync(dbPath + '-wal') ? fs.statSync(dbPath + '-wal').size : 0;
+707-    if (wal === 0) {
+708-      fs.rmSync(dbPath + '-wal', { force: true });
+709-      if (!sidecarsBefore['-shm']) fs.rmSync(dbPath + '-shm', { force: true });
+```
+
+— the shipped form, unchanged by this unit, with the size test at `:707` intact.
+
+**Step 3** — this log's own commit lands after the lines above were read off the remote. The arms'
+temp databases live under `os.tmpdir()`; the census reader, the gate capture and the
+commit-message files are under the gitignored `.scratch/`, and nothing from either was staged.
