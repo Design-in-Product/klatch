@@ -163,3 +163,145 @@ from the quiet status output.
 
 Delivery is the wrapper's to log; what is verified above is presence on `origin/main`, not
 delivery.
+
+---
+
+## 13:2x — WORK fire resumed (model: claude-opus-5)
+
+Session-start protocol. `git fetch origin`; `git log --oneline HEAD..origin/main` **empty** — the
+wrapper had already synced the worktree.
+
+Checkpoint re-derived with `git log --author='Daedalus' -1` rather than read off the session-start
+listing: **`b4261648`** (my own START wrap log). The top commit, `6914730a`, carries a
+**"11/07 MID fire"** subject in exactly my own shape and is **Calliope's** — `%an`-checked before
+citing, and its two files are her log and COORDINATION. So I had no MID fire today; this is my
+second of the day, and my log already showed only the START entry, which is consistent.
+
+Census since `b4261648`: **10 commits**, author-checked (Theseus 9, Calliope 1), **none mine**.
+Pre-action baseline before any edit: `HEAD = 6914730a`, `git status --short -- packages/ scripts/`
+**empty**.
+
+**Mail:** one inbound addressed to this seat — Theseus's
+`the-size-guard-is-live-not-dead-it-was-unreachable-and-the-harm-is-unreadability-rather-than-loss`
+(2026-11-07). Read in full. His §5 hands this seat the promotion decision on
+`probe-backfill-sidecar-neutrality.mts` and asks for his inode-keyed arm E "read by someone other
+than its author first." Took both this fire.
+
+## 13:3x — the two facts I refused to take from the memo
+
+Before writing any prediction, read the live source for the two things the decision rests on:
+
+* The probe is in `DEFERRED` at **exactly one** site, `scripts/sweep-probes.mjs:1457`, and the note
+  above it at `:1451`–`:1456` is **mine** (`unit-465rowdelta`, 11/06). It says what he quoted.
+* `package.json:15` and `scripts/gate.mts:24` both invoke `sweep-probes.mjs` **`--census`**, and
+  `:2531`–`:2539` returns before the `for (const s of SWEPT)` driving loop.
+
+The second reframes the decision, so I recorded precisely what it does and does not impeach. His
+§5 sentence — "arm E is driven by hand, and `npm test` never runs it" — is **true as written**, and
+he wrote "in the sweep" where it counts. What a reader would infer and what is false is that
+promotion changes it. `npm test` still never runs it afterwards.
+
+Also read `classify` at `:2052` before predicting anything: `BLOCKED` needs `code === 2 && refused`
+against a declared `refusal:`, or `code === 3 && skipped` against a declared `skip:` **and** a
+structural `did not run: <label>` line. An undeclared non-zero exit is RED, full stop. That is what
+made the question answerable rather than a judgement call.
+
+## 13:4x–13:5x — unit-465promote
+
+`docs/research/unit-465promote-2026-11-07/`. Pre-registration pushed as the **only** file in the
+directory before any instrument in it existed; `git ls-tree -r origin/main` over the directory, one
+path returned. 5 predictions, 2 env-gated cripples committed before being driven, landing rule set
+before any result with both branches actionable.
+
+**P4 HELD — the inode key is sound, and I went after it the one way it can break.** Inode reuse
+would make arm E read "same inode" for a `-wal` the racer created *after* the cleanup — a false
+green in exactly the state the key exists to refuse. Measured: **0 reuses in 500
+unlink/create trials**, 1000 distinct inodes, platform and filesystem read off `df`
+(`/dev/disk3s5`, APFS) rather than inferred from `process.platform`. KP (two stats of one live file
+agree) and KN (two concurrently live files differ) both carried, so a reader that cannot tell any
+two inodes apart could not have scored. Scope stated: a claim about darwin's `os.tmpdir()`, not
+about ext4. His docblock reads as though the key were platform-independent; it is not.
+
+**P2 HELD, four legs.** X1 loses the race deterministically — await the child's exit before opening
+the racer, so cleanup has already removed the tool's `-wal` and the racer's INSERT necessarily makes
+its own file. Exit **1**, no `did not run:` line, `classify` → **RED**, reason
+`commit made its own -wal (ino 93736458 != 93736449) — 3 attempt(s)`. The red lands on a tree where
+the product behaved perfectly: all 8,272 bytes survive.
+
+```
+drive 0  control                exit 0  2607 ms  All 14 regression checks passed.  classify PASS
+drive 1  X1, race lost          exit 1  3413 ms                                    classify RED
+drive 2  X2, size test removed  exit 1  2556 ms                                    classify RED
+```
+
+`classify` **imported** from `sweep-probes.mjs`, not re-spelled — a grader at that call site could
+only grade its own copy of the key it is meant to be grading. `expect` **captured** off drive 0's
+own conclusion line, not typed: the probe is not in SWEPT, so no pin exists, and typing one would
+have made P3 a test of my spelling.
+
+**P3a/b/c HELD and I corrected my own headline.** I registered the two states as
+"indistinguishable at the sweep's granularity." They differ — `3 of 14 regression check(s) FAILED`
+against `2 of 14`. The narrower claim is the true one and still decides it: that count carries **no
+declared meaning** and moves the instant any unrelated arm breaks, so the sweep publishes no
+declared bit separating a lost race from a destroyed database. Registering the stronger sentence
+would have let a true-sounding claim stand on a reading that does not support it.
+
+**P3d held on its predicate, gloss REFUTED — and this is the finding.** I predicted the failing-arm
+blocks would differ "so the probe is readable by hand." They differ; the parenthetical is wrong. In
+the lost-race state **two of the three E arms publish a FAIL whose own reason text states the claim
+held**: `keeps every byte — -wal:8272B committed -> -wal:8272B` and `another process can still read
+the database it is writing — visible`, both under REGRESSIONS, because `:363` and `:369` each
+conjoin `r.built` with their own claim. Past silent about which conjunct reddened — the reason
+string contradicts the verdict printed beside it.
+
+**P5 HELD, five legs.** `lib/probe-outcome.mts`'s hard-skip channel already produces the exact pair
+the BLOCKED limb accepts: exit 3 + a structural `did not run:` line. Driven on a real fixture, with
+the two controls that keep it from being a tautology — no declaration → RED, and a declared label
+absent from the line → RED. So the cure is one branch in the probe and one `skip:` field in the
+entry, and it removes the contradictory text in P3d as a side effect because those lines stop being
+emitted where they are false. **Not written into his arm:** it is his instrument, one fire old, and
+he asked for a reading rather than an edit.
+
+Fixture placed **outside `scripts/`** deliberately — the census reddens the moment an unclassified
+`probe-*` file arrives there, so an instrument named `probe-…` would have reddened the very gate
+this unit is reasoning about. Census 154 files before and after, unchanged.
+
+**Unregistered, and mine:** my fixture omitted `probeName`, a required field of `SummariseInput`,
+and published `INCONCLUSIVE — undefined established 2 of its checks`. tsx does not enforce the type
+at runtime and `docs/research/` is outside the typecheck scope, so nothing caught it here. No grade
+depended on it — P5a–P5e key on the exit code and the `did not run:` line — but the recording was
+**re-taken** with it set, so the published output comes from one version of the file rather than a
+version I had already edited.
+
+**Landing rule fired on its first branch: promotion DECLINED this fire**, with a named blocker
+written onto the DEFERRED entry — "arm E has no refusal limb for its own race" — rather than a date.
+Declined, not refused: the moment the not-built path is a declared hard skip, every other axis is
+already measured and the answer flips.
+
+## 14:0x — restoration, gate, and the thread left open
+
+**Restoration verified two ways**, not from a quiet `git status`: `grep -rl 'U465PROMOTE' scripts/
+packages/` → **no files**; `git diff --stat 6914730a -- packages/ scripts/` → **empty**, i.e.
+byte-identical to the pre-action baseline across both product directories. The only intended
+`scripts/` change this fire is the DEFERRED note, committed separately from the cripple removal.
+
+**Gate:** `npx tsx scripts/gate.mts` → `GATE ok exit=0` on census, typecheck, server, client and
+the aggregate. Server **143 files · 2221 passed · 1 skipped (2222)**; client **26 passed | 13
+skipped (39) · 333 passed | 13 skipped (346)**. Both byte-identical to this morning's START
+figures, as expected since this unit added no vitest test.
+
+**Mail thread deliberately left open.** Replied in full
+(`daedalus-to-theseus-argus-…-your-inode-key-is-right-and-sound-on-apfs-…-2026-11-07.md`), committed
+and pushed on its own so it reaches `main` without waiting on anything else. **Not** moved to
+`docs/mail/read/`: the §4 cure is open on Theseus and E4/E5 stays with him. Recorded here so a
+later fire does not read the open thread as unclosed debt of mine.
+
+**Drain.** ma-smoke: no `smoke`/`managed` branch anywhere (`git branch -a` 0, `git ls-remote
+--heads origin` 0) — named blocker on xian, unchanged in substance. Rollup read directly: still
+**v176, needs-you 3**; item 3 is the ma-smoke item and is blocked on xian, not mine to action.
+Cross-repo mail, all four fetched fresh and read on both a filename key and a content grep of the
+`HEAD..origin/main` diffs: `designinproduct` 0 commits touching `docs/mail/`, `mediajunkie` 0,
+`piper-morgan-product` 0 touching `mailboxes/`, `dispatch` 1 — the routine 11-07 inbox check, whose
+single hit on this seat carries forward **my own** 11-06 question-box letter to xian,
+informational, no ask. **No inbound for this seat in any of the four.** No item deferred this fire
+with an unnamed blocker.

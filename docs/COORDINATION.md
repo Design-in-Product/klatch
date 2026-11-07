@@ -932,7 +932,66 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-07 ~09:1x–10:3x PT (**START fire — substantive: both of Theseus's routed
+- **Updated:** 2026-11-07 ~13:2x–14:0x PT (**WORK fire — substantive: Theseus's §5 promotion
+  decision taken and DECLINED with a named blocker; his inode key read as second reader and found
+  right, and sound on APFS at 0 reuses in 500 trials.**)
+  Checkpoint re-derived by author, not from the session-start listing: **`b4261648`** (my own
+  11/07 START wrap log). The top commit carries a "11/07 MID fire" subject in my own shape and is
+  **Calliope's**, `%an`-checked before citing. 10 commits since, author-checked (Theseus 9,
+  Calliope 1), **none mine**. Pre-action baseline `HEAD = 6914730a`,
+  `git status --short -- packages/ scripts/` **empty**.
+  **Mail:** one inbound to this seat — Theseus's `the-size-guard-is-live-not-dead…`. Read in full.
+  His §5 routes the promotion of `probe-backfill-sidecar-neutrality.mts` out of the sweep's
+  DEFERRED list to me and Argus, and asks for his inode key read by someone other than its author.
+  **Both taken this fire, not filed.** Thread deliberately **not** moved to `read/`: his §4 cure
+  shape and E4/E5 are open on him.
+  **Unit `docs/research/unit-465promote-2026-11-07/`** (pre-registration pushed as the only file
+  in the directory before any instrument existed, `git ls-tree -r origin/main` run, one path
+  returned; cripples + instruments committed before being driven; RESULTS; memo in its own commit).
+  **5 predictions: 4 HELD, 1 held on its predicate with my own gloss REFUTED. 2 cripples. 3
+  unregistered findings, 2 of them mine.** Gate `GATE ok exit=0` ×4 — server **143 / 2221 /
+  1 skipped (2222)**, client **333 / 13 skipped (346)**, both byte-identical to the START figures,
+  as expected since this unit added no vitest test. Census 154 files before and after.
+  **The key is right.** Keying "the state was built" on the `-wal`'s inode rather than its bytes
+  is the correct answer to the hazard Theseus faced. I attacked it the one way it can break —
+  **inode reuse** — and it holds: **0 reuses in 500 unlink/create trials**, 1000 distinct inodes,
+  with a KP (two stats of one live file agree) and a KN (two live files differ) so a reader that
+  cannot tell any two inodes apart could not have scored. Scope **named, not generalised**: darwin
+  `os.tmpdir()` on APFS, read off `df`. It is platform-dependent and his docblock does not say so.
+  **Why promotion is declined, and it is not the measurement.** Keying on identity turns a *lost*
+  race from a false green into a **red**, and `classify` makes an undeclared non-zero exit RED with
+  no further reading. Driven: X1 (race lost deterministically) → exit **1**, no `did not run:`
+  line, `classify` **RED** — on a tree where the product behaved perfectly and all 8,272 bytes
+  survived. X2 (size test removed, the destructive defect) → also RED, exit 1, pin unmatched.
+  `classify` **imported** from `sweep-probes.mjs` rather than re-spelled; `expect` **captured** off
+  the control drive's conclusion rather than typed.
+  **I am correcting my own registered headline.** I predicted the two states indistinguishable at
+  the sweep. They differ — `3 of 14` vs `2 of 14` failing checks — so the narrower true claim is
+  what lands: that count carries **no declared meaning** and moves if any unrelated arm breaks, so
+  the sweep publishes no declared bit separating a lost race from a destroyed database.
+  **The unregistered finding is worse than the registered one.** In the lost-race state **two of
+  the three E arms publish a FAIL whose own reason text says the claim held** — `keeps every byte
+  — -wal:8272B committed -> -wal:8272B`, FAIL; `another process can still read … — visible`, FAIL
+  — because `:363` and `:369` each conjoin `r.built` with their claim. Not merely silent about
+  which conjunct reddened: the reason string contradicts the verdict beside it.
+  **The cure needs no new machinery and is Theseus's to take.** `lib/probe-outcome.mts`'s
+  hard-skip channel already gives the exit-3 + `did not run:` pair `classify`'s BLOCKED limb
+  accepts — driven on a real fixture, 5 legs green including the two controls that keep it from
+  being a tautology (no declaration → RED; a declared label absent from the line → RED). Not
+  written into his arm: it is his instrument, one fire old, and he asked for a reading.
+  **For Argus, independent of the cure:** promotion does **not** put a probe in `npm test` —
+  `package.json:15` and `gate.mts:24` both pass `--census`, which returns before the driving loop.
+  Theseus's §5 sentence is true as written; the inference a reader would draw from it is not.
+  **Restoration** verified two ways, not from a quiet `git status`: `grep -rl 'U465PROMOTE'
+  scripts/ packages/` → no files; `git diff --stat 6914730a -- packages/ scripts/` → **empty**.
+  **Drain:** ma-smoke — still no `smoke`/`managed` branch (`git branch -a` 0, `git ls-remote
+  --heads origin` 0), named blocker on xian, unchanged. Rollup read directly — **v176, needs-you
+  3**, unchanged; item 3 is the ma-smoke item, blocked on xian, not mine to action. Cross-repo
+  mail, all four fetched fresh: `designinproduct` 0 mail commits, `mediajunkie` 0, `piper-morgan-
+  product` 0 touching `mailboxes/`, `dispatch` 1 — the routine 11-07 inbox check, whose only hit
+  on this seat carries forward **my own** 11-06 question-box letter to xian, informational, no ask.
+  **No inbound for this seat in any of the four.** No deferrals with unnamed blockers this fire.
+- **Previously:** 2026-11-07 ~09:1x–10:3x PT (**START fire — substantive: both of Theseus's routed
   §7 items cured and driven; the defect in my arm was worse than the one he named; and his
   proposed fix, implemented as written, reddens on a healthy product.**)
   Checkpoint is this seat's own `e57ad5d8` (11/06 STOP wrap log), re-derived with
