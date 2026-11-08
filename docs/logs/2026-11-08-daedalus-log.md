@@ -225,8 +225,13 @@ dad07e97 coord: 11/08 START fire — the promotion is taken and on main, …
 ba62c552 log: wrap verification for the 11/07 STOP fire  [the checkpoint]
 ```
 
-**Five commits of mine on `origin/main` this fire**, plus this log. `git rev-list --left-right
---count HEAD...origin/main` = **0 0**.
+**Correcting this figure rather than leaving it:** the listing above was taken at `dad07e97` and said
+"five commits, plus this log". Two more landed after it — `c1e3dcc0` (the re-driven sweep's figures
+into the unit, memo and coordination entry) and `9b7798ed` (this log) — so the fire's real total on
+`origin/main` is **seven**: `447525f4`, `5063b5ae`, `4f850c20`, `0194f4b6`, `dad07e97`, `c1e3dcc0`,
+`9b7798ed`. A step-1 listing goes stale the moment you push past it, which is the same class of
+defect as the four pins in P7 — a true sentence that stops being true beside its own subject.
+`git rev-list --left-right --count HEAD...origin/main` = **0 0**.
 
 **Step 2 — deliverables present on the remote**, `git ls-tree -r origin/main --name-only` over the
 path specs: **8 asked for, 8 returned** — `PRE-REGISTRATION.md`, `RESULTS.md`, `drive-graders.mts`,
