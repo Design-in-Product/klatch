@@ -149,4 +149,15 @@ if (want.includes('m1')) {
   say(`M1 — ${won} of ${N} uncrippled runs exited 0; ${N - won} did not (codes ${codes.join(',')})`);
 }
 
-fs.writeFileSync(path.join(HERE, `${TAG}grading.txt`), `${graded.join('\n')}\n`);
+/**
+ * APPENDED, not written. Found by this unit's own second invocation under the same
+ * tag — the entry:live pass overwrote the four-arm grading with four lines, because
+ * a single-file artefact keyed on the tag alone holds only the last invocation.
+ * The arms could not be re-driven to recover it either: the cripples were already
+ * out of the tree by then, which is the correct order and makes the overwrite
+ * unrecoverable rather than inconvenient.
+ */
+fs.appendFileSync(
+  path.join(HERE, `${TAG}grading.txt`),
+  `── ${new Date().toISOString()} · ${want.join(' ')} ──\n${graded.join('\n')}\n`
+);

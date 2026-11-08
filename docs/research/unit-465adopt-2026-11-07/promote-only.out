@@ -1,0 +1,7 @@
+promote-probes — 154 probe files · 43 SWEPT · 111 DEFERRED
+  hazard-clean DEFERRED candidates: 0
+  not driven (db): 1
+    · probe-backfill-sidecar-neutrality.mts — line 34: import Database from 'better-sqlite3';
+  driving this run: 0 (--only backfill-sidecar-neutrality)
+
+Nothing to drive. Either every hazard-clean DEFERRED probe is examined, or --only matched nothing.

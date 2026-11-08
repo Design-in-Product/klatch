@@ -22,3 +22,8 @@ entry:draft entryProblems -> [] (none)
 entry:draft measurementCheck -> {}
 entry:draft expect.source  -> All 13 regression checks passed
 entry:draft skip.source    -> the race state could not be built
+── 2026-11-08T01:30:30.570Z · entry:live ──
+entry:live entryProblems -> [] (none)
+entry:live measurementCheck -> {}
+entry:live expect.source  -> All 13 regression checks passed
+entry:live skip.source    -> the race state could not be built

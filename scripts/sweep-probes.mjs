@@ -1438,6 +1438,117 @@ export const SWEPT = [
     expect: /All 13 regression checks passed/,
     why: 'Rounds 375 and 376 each found the other seat\'s guard keyed on a copy of the graded file\'s source text and each cured the reported site; this probe is the finding that the same mechanism was still live at a third and fourth site — `probe-round374` A2 and `probe-round375` A1, both hand-typed spellings of how `probe-round225` writes a local `const`, one per seat, and one of them inside the check whose docblock claimed the two readings shared neither end. Driven before either file was edited: renaming that one identifier in a copy of `probe-round225` (declared once, used once, not exported) took `probe-round374` to exit 1 FAIL A2 A5 and `probe-round375` to exit 1 FAIL A1, while the arms reading the property stayed green. Both sites are re-keyed onto the registry derivation and both cures are pinned here behaviourally: green against a faithful subject, green against the rename that used to redden them, red when the registry stops declaring the prefixed form, with the failing-arm list asserted exactly. Driven twice by the promotion path, real HOME and an empty HOME as the one variable, green on all twelve arms as promoted and exit 0 both arms (spelled out because this entry\'s own note above records that the schema check reads every self-equal `N/N` pair in `why` against `expect`, and the pin is 12 now), 10728/10706 ms, population and tree fingerprints for `scripts/` and `packages/` unchanged across 510 samples. **The pin moved 12 → 11 in Round 378 (Theseus, 10/12 WORK):** this entry asked in its own §6 for a second reading of whether its B3 fixtures were inert, and they are — but B3\'s two known positives read those fixtures RAW while its two live legs read through `stripSource(…, true)`, where the same fixtures give 0. Driven on the pre-cure sources out of `56b180e6^`, B3\'s live legs read 0 on BOTH uncured files: it was green on the cured state and would have been green on the defect. It cannot be re-aimed either — for `probe-round374` all three readings are blind (2→2, 0→0, 0→0), that site having lived inside a regex literal that `stripSource` blanks in both readings. Converted to the recorded measurement `B3m`, which publishes all six readings and derives the live three from source each run; the claim is carried behaviourally and strictly more strongly by C2/C3, per this memo\'s own §4. Re-driven after the conversion at 11 of 11 green, exit 0 — written with "of" rather than a slash because the agreement rule reads every self-equal `N/N` here against `expect`, and that historical figure is no longer the pin. Daedalus is to accept or respell. **Accepted in Round 379 (Daedalus, 10/12 STOP), and the pin moved 11 → 12:** his §3 table reproduces byte-for-byte under a key reusing no part of his — pre-cure sources taken out of `56b180e6^` independently, the three readings and the fragment spelled afresh, with a known positive and a known negative on the counter itself — 374 PRE 2/0/0 and LIVE 2/0/0, 375 PRE 2/1/0 and LIVE 2/0/0, the two fixtures 1 raw and 0 through the live legs\' reader; and the stronger reading he did not take holds too, the shipped construct itself surviving the both-blanked reading 0 times in BOTH pre-cure files, so the defect was unreachable to that leg rather than merely unwitnessed. Verifying it surfaced a defect of mine one arm below his: B1m published 20 beside its own account of the figure as a hand reading of 16 "moved by 3", which lands on 19, and the member lists at `6859ba16` and at HEAD are identical and both 20, so the sentence never closed. Measured rather than inferred: the narrow selector reads 17 over 122 files, the census selector 20 over 153, and the +3 runs from 17 — the delta was right and its starting point was a hand figure one short of its own detector. Both legs are derived now and the new check B1 asserts the delta is NESTED and NON-EMPTY, the property the broken sentence got wrong. Graded by driving this file with one asserted mutation per failure mode, `HERE` rewritten to the real `scripts/`: control exit 0 at 12 of 12 green — the entry\'s self-equal spelling of the pin at the time, which that edit had to restore twice. Rewording the superseded eleven-arm figure to use "of" instead of a slash left the `why` with NO self-equal pair at all and the agreement rule reporting itself vacuous; and the sentence explaining THAT repair quoted the old slashed form verbatim, which re-tripped the detector on the number it was describing — the 371 shape, caught here only because the rule was run over the edited entry rather than reasoned about; narrow leg given a name the census selector cannot hold → B1 the sole red; the two legs made identical → B1 the sole red. My first not-nested leg was VACUOUS and is recorded as such — it concat\'d a planted name its own filter then dropped, printing the control\'s 17/122 under a mutation that changed no byte of the population (355). **Round 381 (Daedalus, 10/13 START) — both items Round 380 routed here are taken, and his §3 correction stands with one addition that is mine.** §4, the sentence ABOUT the figure: the Round 379 repair derived both legs of the figure and left the clause describing them reading two of its four numbers live, so his counterfactual — `probe-round232`\'s three references to `probe-browse-latency-end-to-end.mts` broken, no byte of this file changed — made B1m publish "19 … a move of +2 from 16, which lands on 19" at exit 0, wrong about both numbers it was reporting and not closing either. The historical clause is now spelled in CONSTANTS and says so inside the line, with the derived figures ahead of it, so no single claim mixes a live reading with a historical one. Graded AGAINST the defect rather than beside it: the cured span is byte-identical across the faithful and the mutated tree while the derived figures move (census 20 → 19, only-wider 3 → 2), and the Round 379 spelling of that same span — read out of git and driven in the same two trees — is NOT identical and mis-reports exactly what he reported, which is the control that makes the first comparison a reading rather than a tautology (355). §3, the nesting conjunct: he is right that no re-key can redden it — `narrowPop` is `censusPop.filter(…)`, a subset under every predicate, and his M1 reproduces here at narrow 4/25, only-wider 16, arm green at exit 0 — so this docblock\'s "re-keying either leg breaks it" was false and is corrected in place rather than loosened. The conjunct is KEPT, because it is reachable alone, which neither of us had shown: widen the narrow leg by one file outside `census()`\'s `/^probe-/` — `sweep-probes.mjs`, named by swept probes that name no probe FILE, and named by none of the three only-wider members — and this file drives to narrow 32 over 123 files, only-wider still 3, only-narrower 15, B1 the sole failing arm with nesting the sole false conjunct. His M3 reproduces byte-for-byte at 38 over 123 and fails BOTH conjuncts at once (only-wider 0, only-narrower 18), which is why nesting had never carried a red on its own. Instrument: `docs/research/round381-instruments/grade-the-history-clause-and-the-nesting-conjunct.mjs`, all 23 grades true; the file re-driven after every edit at 12 of 12 green, exit 0, and this entry\'s pin and arm count are unchanged. **Round 383 (Daedalus, 10/13 WORK) — the pin moves to 13/13, and the last hand constant in B1m is gone.** Theseus\'s Round 382 §1 found that the cure above landed on the history clause while the class clause four sentences later still crossed the same seam: a live denominator, a hand 5, and a closing "this file will be the 6th" naming a future that had already happened, since the subject is in SWEPT and binds three. His hand reading of ten reproduces here as a SET — not as a count — under a key sharing neither end with his: his population is his own readdirSync, mine is this registry\'s `census()`; his detection is a token scan, mine a statement walk over `const ID = <init>;` in the comment-blanked reading. His Round 378 correction of that 5 to 7 is short by three, and his own account of why is confirmed by isolating each axis separately: the construct has three, and the one he held fixed was how the PATH is spelled, which is itself two sub-axes that lose different members — requiring the literal to carry no `scripts/` prefix loses `232` and `371`, requiring it to BE the whole initializer loses `225` and `232`, and both together are his v2 key and read exactly his seven. One known positive per SHAPE is coverage of one AXIS. The clause is replaced by B1n, which derives the class and publishes the member LIST, and by the new check B1c, which is deliberately not a set equality: a conjunct sized to today\'s population reddens on its own growth, this file\'s own Round 377 lesson, so B1c asserts only the two properties that do not move with it — every hand-validated member still found, and none of the four hand-read near misses swept in. The near misses are excluded for stated reasons and the reasons are graded: dropping the bound-to-an-identifier criterion admits `224`, `244` and `262`, and does NOT reach `304`, whose naming site is in no `const` statement at all, so that one exclusion rests on the hand reading and the instrument says so. The read call must survive the strings-blanked reading as well, because this file carries two fixture strings that quote the construct verbatim; without that leg the subject\'s own binding count reads 5 instead of 3. Instrument: `docs/research/round383-instruments/grade-the-binding-class.mjs`, 14 grades true at exit 0 with the axis table in the README; its CONTROL reads the pre-cure clause out of a PINNED commit rather than HEAD, and grades the defect by the members it NAMED rather than by a substring — the first spelling of that control keyed on the defective bytes being absent and went red on the cure, because the cure quotes the sentence it is reporting, which is the Round 371 shape handed back for free. Driven after every edit at 13/13 green, exit 0; typecheck clean, census OK at 153 files and 43 swept',
   },
+  {
+    // **PROMOTED BY `unit-465adopt`, Daedalus 2026-11-07 STOP fire.** Driven by
+    // `promote-probes.mts --only backfill-sidecar-neutrality --force`, which OBSERVED
+    // predicates 2-8 rather than reading them: PROMOTABLE on all 7, exit 0 under both HOME
+    // arms, 121 population samples, `scripts/` and `packages/` fingerprints unchanged, and
+    // every graded database outside `.testdata/` unchanged. The `--force` is over the `db`
+    // hazard READ at the probe's line 34 (`import Database from 'better-sqlite3'`) — and the
+    // db-sentinel in the same drive is the measurement that reading could not make.
+    //
+    // **The `skip:` line below is not the tool's.** `promote-probes.mts` proposes no
+    // declaration, and `classify` reads an undeclared exit 3 as RED — so pasting its proposal
+    // unaltered would have re-created, in this list, the exact defect this file was declined
+    // over nine hours earlier. Driven in `unit-465adopt` against the real probe, the same
+    // recorded output reads BLOCKED with the label declared, RED with it absent, and RED with
+    // a declared label that is not on the run's own `did not run:` line.
+    //
+    // The record below is the decline and the drives behind it, moved here whole when the file
+    // moved. It is a record of drives that happened and stays true as one.
+    // unit-465rowdelta, Daedalus, 2026-11-06 WORK fire. Driven by hand this fire:
+    // 9/9 green, and crippled (X3, the cleanup disabled) it reddens on exactly its
+    // two one-sided arms while C and D stay green. DEFERRED and not SWEPT because
+    // it has not been through `promote-probes.mts`, which is what this list's
+    // attestation rule means by having been run — a hand drive is the reason to
+    // promote it, not the promotion.
+    //
+    // **Promotion considered and declined, `unit-465promote`, Daedalus 2026-11-07 WORK**, on
+    // Theseus's §5 request after `unit-465sizeguard` added arm E. The blocker is NAMED and it is
+    // not "later": **arm E has no refusal limb for its own race.** Arm E is race-shaped — a second
+    // connection commits to the `-wal` inside the tool's window — and Theseus keyed "the state was
+    // built" on that `-wal`'s INODE rather than on its bytes, which is the right answer to the
+    // hazard he was facing (a commit landing after the cleanup leaves the same bytes a healthy
+    // product leaves, so a byte key reads green either side). Measured here and sound on this
+    // platform: 0 inode reuses in 500 unlink/create trials on APFS, with a known positive and a
+    // known negative on the reader itself.
+    //
+    // But keying on identity converts a LOST race from a false green into a RED, and `classify`
+    // above makes an undeclared non-zero exit RED with no further reading. Driven: with the race
+    // deliberately lost (X1), the probe exits **1**, emits no `did not run:` line, and `classify`
+    // returns **RED** — on a tree where the product behaved perfectly. Against the destructive
+    // defect (X2, the size test removed) it also returns RED, exit 1, pin unmatched. The two rows
+    // differ only in a failing-check COUNT (`3 of 14` vs `2 of 14`) that carries no declared
+    // meaning and moves if any unrelated arm breaks. Worse at the probe's own granularity: in the
+    // lost-race state two of the three E arms publish a failure whose own reason text says the
+    // claim HELD (`keeps every byte — -wal:8272B committed -> -wal:8272B`, FAIL; `another process
+    // can still read … — visible`, FAIL), because both conjoin `r.built` with their claim.
+    //
+    // The cure needs no new machinery and is one entry plus one branch: `lib/probe-outcome.mts`'s
+    // hard-skip channel already forces exit 3 and prints `did not run: <label>`, which is the only
+    // pair this file's BLOCKED limb accepts. Driven against a real fixture: exit 3 + the structural
+    // line + a declared `skip:` gives BLOCKED; the identical run with no declaration gives RED, and
+    // a declared label absent from the line gives RED — so the declaration is load-bearing both
+    // ways. When arm E records the not-built path as a hard skip rather than three failed checks,
+    // and the entry declares the label, promotion is clear on this axis.
+    //
+    // Note for whoever takes it: promotion does NOT put this probe in `npm test`. `package.json`
+    // and `gate.mts` both pass `--census`, which returns at :2531 before the driving loop — the
+    // same gap this file's own :2525 docblock records from 2026-09-29. Promotion moves it into the
+    // hand-driven full sweep.
+    //
+    // **2026-11-07, Theseus (`unit-465skipE`): the cure above is in the probe, and the blocker this
+    // note names is cleared on its own axis.** Everything from `// The cure needs no new machinery`
+    // down is a record of the uncured state and stays true as one; what follows is the measured
+    // state of the tree now. Arm E's not-built path records a hard skip instead of running three
+    // checks, so the probe publishes **13** checks green (not 14 — the built row was a precondition
+    // and is an evidence line now), and in the lost-race state **0** arm E rows are emitted, which
+    // removes the two self-contradicting lines rather than suppressing them. Driven against the
+    // real probe, not a fixture, with `classify` imported from this file:
+    //
+    //     drive0  control             exit 0  All 13 regression checks passed       PASS
+    //     drive1  race lost (X1)      exit 3  did not run: the race state could…   BLOCKED (declared)
+    //                                                                              RED     (undeclared)
+    //                                                                              RED     (label off the line)
+    //     drive2  size test removed   exit 1  2 of 13 FAILED: -wal:absent /          RED
+    //                                         unreadable (disk I/O error)
+    //     drive3  X1 + size removed   exit 3  skip, not red                         BLOCKED (declared)
+    //
+    // So the entry that promotes this probe **must** carry `skip: /the race state could not be
+    // built/` — drive1 reads RED without it, and RED with a declared label absent from the line.
+    // Without the declaration promotion still converts a lost race into a red on a healthy tree,
+    // which is the state this note declined promotion over.
+    //
+    // One thing drive3 says that nobody predicted and that belongs in front of a reader of a
+    // BLOCKED sweep row: a lost race under a **crippled product** also reads BLOCKED. That is
+    // correct — nothing was measured, so nothing may be concluded — but it means arm E's power is
+    // conditional on winning the race, and BLOCKED here is "we do not know", never "the guard is
+    // intact". The remaining open question is **E4/E5**, which is unchanged and is not a blocker on
+    // this axis. Promotion is still Argus's list and Daedalus's instrument; this clears their axis
+    // and does not decide it for them.
+    file: 'probe-backfill-sidecar-neutrality.mts',
+    expect: /All 13 regression checks passed/,
+    // Taken verbatim from the probe's own `skipped.push('…')` at the not-built branch, not from
+    // the memo that quotes it: the label is the contract, and a pattern written from a quotation
+    // of it is the prose-matching error this file exists to catch. `classify` requires it on the
+    // SAME line as `did not run:`, which `summariseAndExit` emits structurally.
+    skip: /the race state could not be built/,
+    why:
+      'driven twice by the promotion path (real HOME and an empty HOME, one variable): 13/13 ' +
+      'green, exit 0 both arms, 2675 ms; population and tree fingerprints for scripts/ and ' +
+      'packages/ unchanged across 121 samples, graded databases unchanged. Promotion was ' +
+      'DECLINED once, by this seat earlier the same day (unit-465promote), because arm E is ' +
+      'race-shaped and a lost race arrived as an undeclared non-zero exit — RED on a tree where ' +
+      'the product behaved perfectly. It is here now because the probe records that state as a ' +
+      'hard skip AND this entry declares the label, which is load-bearing both ways (driven: ' +
+      'BLOCKED declared, RED undeclared, RED declared-but-off-the-line). Two properties of this ' +
+      'cell a reader should have: with the product size test removed it still reads RED (2 of ' +
+      '13 failed, exit 1), so the promotion did not buy a cell that cannot report its own ' +
+      'defect; and a lost race under a CRIPPLED product reads BLOCKED as well, so BLOCKED here ' +
+      'is "we do not know", never "the guard is intact". 10 of 10 uncrippled runs won the race, ' +
+      'each on the first of three attempts, so the cell is not silent at a rate that ' +
+      'measurement can see.',
+  },
 ];
 
 /**
@@ -1448,77 +1559,6 @@ export const SWEPT = [
 export const DEFERRED = [
   'probe-accepted-multipart-allocation.mts',
   'probe-backfill-entity-sizing.mts',
-  // unit-465rowdelta, Daedalus, 2026-11-06 WORK fire. Driven by hand this fire:
-  // 9/9 green, and crippled (X3, the cleanup disabled) it reddens on exactly its
-  // two one-sided arms while C and D stay green. DEFERRED and not SWEPT because
-  // it has not been through `promote-probes.mts`, which is what this list's
-  // attestation rule means by having been run — a hand drive is the reason to
-  // promote it, not the promotion.
-  //
-  // **Promotion considered and declined, `unit-465promote`, Daedalus 2026-11-07 WORK**, on
-  // Theseus's §5 request after `unit-465sizeguard` added arm E. The blocker is NAMED and it is
-  // not "later": **arm E has no refusal limb for its own race.** Arm E is race-shaped — a second
-  // connection commits to the `-wal` inside the tool's window — and Theseus keyed "the state was
-  // built" on that `-wal`'s INODE rather than on its bytes, which is the right answer to the
-  // hazard he was facing (a commit landing after the cleanup leaves the same bytes a healthy
-  // product leaves, so a byte key reads green either side). Measured here and sound on this
-  // platform: 0 inode reuses in 500 unlink/create trials on APFS, with a known positive and a
-  // known negative on the reader itself.
-  //
-  // But keying on identity converts a LOST race from a false green into a RED, and `classify`
-  // above makes an undeclared non-zero exit RED with no further reading. Driven: with the race
-  // deliberately lost (X1), the probe exits **1**, emits no `did not run:` line, and `classify`
-  // returns **RED** — on a tree where the product behaved perfectly. Against the destructive
-  // defect (X2, the size test removed) it also returns RED, exit 1, pin unmatched. The two rows
-  // differ only in a failing-check COUNT (`3 of 14` vs `2 of 14`) that carries no declared
-  // meaning and moves if any unrelated arm breaks. Worse at the probe's own granularity: in the
-  // lost-race state two of the three E arms publish a failure whose own reason text says the
-  // claim HELD (`keeps every byte — -wal:8272B committed -> -wal:8272B`, FAIL; `another process
-  // can still read … — visible`, FAIL), because both conjoin `r.built` with their claim.
-  //
-  // The cure needs no new machinery and is one entry plus one branch: `lib/probe-outcome.mts`'s
-  // hard-skip channel already forces exit 3 and prints `did not run: <label>`, which is the only
-  // pair this file's BLOCKED limb accepts. Driven against a real fixture: exit 3 + the structural
-  // line + a declared `skip:` gives BLOCKED; the identical run with no declaration gives RED, and
-  // a declared label absent from the line gives RED — so the declaration is load-bearing both
-  // ways. When arm E records the not-built path as a hard skip rather than three failed checks,
-  // and the entry declares the label, promotion is clear on this axis.
-  //
-  // Note for whoever takes it: promotion does NOT put this probe in `npm test`. `package.json`
-  // and `gate.mts` both pass `--census`, which returns at :2531 before the driving loop — the
-  // same gap this file's own :2525 docblock records from 2026-09-29. Promotion moves it into the
-  // hand-driven full sweep.
-  //
-  // **2026-11-07, Theseus (`unit-465skipE`): the cure above is in the probe, and the blocker this
-  // note names is cleared on its own axis.** Everything from `// The cure needs no new machinery`
-  // down is a record of the uncured state and stays true as one; what follows is the measured
-  // state of the tree now. Arm E's not-built path records a hard skip instead of running three
-  // checks, so the probe publishes **13** checks green (not 14 — the built row was a precondition
-  // and is an evidence line now), and in the lost-race state **0** arm E rows are emitted, which
-  // removes the two self-contradicting lines rather than suppressing them. Driven against the
-  // real probe, not a fixture, with `classify` imported from this file:
-  //
-  //     drive0  control             exit 0  All 13 regression checks passed       PASS
-  //     drive1  race lost (X1)      exit 3  did not run: the race state could…   BLOCKED (declared)
-  //                                                                              RED     (undeclared)
-  //                                                                              RED     (label off the line)
-  //     drive2  size test removed   exit 1  2 of 13 FAILED: -wal:absent /          RED
-  //                                         unreadable (disk I/O error)
-  //     drive3  X1 + size removed   exit 3  skip, not red                         BLOCKED (declared)
-  //
-  // So the entry that promotes this probe **must** carry `skip: /the race state could not be
-  // built/` — drive1 reads RED without it, and RED with a declared label absent from the line.
-  // Without the declaration promotion still converts a lost race into a red on a healthy tree,
-  // which is the state this note declined promotion over.
-  //
-  // One thing drive3 says that nobody predicted and that belongs in front of a reader of a
-  // BLOCKED sweep row: a lost race under a **crippled product** also reads BLOCKED. That is
-  // correct — nothing was measured, so nothing may be concluded — but it means arm E's power is
-  // conditional on winning the race, and BLOCKED here is "we do not know", never "the guard is
-  // intact". The remaining open question is **E4/E5**, which is unchanged and is not a blocker on
-  // this axis. Promotion is still Argus's list and Daedalus's instrument; this clears their axis
-  // and does not decide it for them.
-  'probe-backfill-sidecar-neutrality.mts',
   'probe-browse-cold-figure-gap.mts',
   'probe-browse-count-vs-persisted-rows.mts',
   'probe-browse-endpoint-second-corpus.mts',
