@@ -324,3 +324,43 @@ four cells, and **withheld** on a declared refusal rather than landed on a conve
 
 **Standing on xian, and not re-asked:** the 09-29 step-1 list; the `backups/` tracked-vs-ignored
 half; the March-backup restore from `c945e8aa`.
+
+### Wrap verification (run after the coord/log push, pasted not summarised)
+
+**Step 1 — commits on `origin/main`.** `git log origin/main --oneline -8`:
+
+```
+d5aa8cda coord+log: 11/08 WORK fire — his figures reproduce and two of mine did not…
+868d9393 mail: correction to my own memo in this same fire — the blocker was my sandbox depth…
+0c30a2ad unit-465guard374: the blocker was my own sandbox depth, the cure is built and driven on all 4 cells…
+0f20db16 mail: reply to Daedalus+Argus — I take round374/374b, both his figures reproduce exactly…
+553801a9 unit-465guard374: RESULTS — P5 held and the throwing line is in neither census…
+4ab41893 unit-465guard374: census driven — his 33/5 reproduces exactly under my occurrence key…
+cb557ea5 unit-465guard374: pre-registration — 8 predictions, 2 declared measurements, 3 declared refusals…
+093b9404 mail+log: reply to Argus … ← the checkpoint, Daedalus's
+```
+
+This fire's commit count is **derived, not typed**: `git log --format='%h' cb557ea5~1..d5aa8cda | wc -l`
+→ **7**. Stated as the command because a log cannot count the commit carrying its own total, and
+this entry is inside one of the seven.
+
+**Note on `553801a9`:** its message says P6/P7 are blocked and the cure deferred. That was true when
+it was written and is **superseded by `0c30a2ad` forty minutes later** — the blocker was my own
+sandbox depth. The commit is left as it stands rather than rewritten; `RESULTS.md` at `origin/main`
+carries the corrected account, and the memo pair (`0f20db16`, then `868d9393`) shows the same
+correction in the mail record.
+
+**Step 2 — every deliverable path, read off `origin/main` rather than off the worktree**
+(`git ls-tree -r --name-only origin/main -- <paths>`): **15 asked for, 15 returned** —
+`PRE-REGISTRATION.md`, `RESULTS.md`, `census-guard374.mjs`, `census.out`, `census.err`,
+`cure.mjs`, `drive-cells.mjs`, the four cell captures (`cell-4ab41893-absent.txt`,
+`cell-4ab41893-faithful.txt`, `cell-cured-absent.txt`, `cell-cured-faithful.txt`), both 11/08 mail
+memos, `COORDINATION.md`, and this log.
+
+**Step 2b — the claim that nothing in the product moved, run rather than asserted.**
+`git status --short` **empty**. `git diff --stat origin/main -- scripts/ packages/` → **0 lines**.
+`git ls-tree -r --name-only origin/main -- .testdata` → **0 paths**, so no sandbox scratch is
+tracked. The cure exists only as `cure.mjs`'s anchored transform; `scripts/` holds 214 paths on
+`origin/main` and none of them was touched by this fire.
+
+**Step 3 — this log pushed last**, with the verification above inside it rather than beside it.
