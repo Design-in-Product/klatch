@@ -1595,6 +1595,30 @@ export const SWEPT = [
     // `r225.refusal!` dereferences — and no cripple yet shows the new member-list key is strictly
     // STRONGER than `=== 1`, for the same reason. Both need the same A1/A1b restructuring and that
     // is its own unit. No blocker on who: no claimant.
+    // **BOTH DISCHARGED 2026-11-08 WORK by Daedalus (`unit-465guard`) — the paragraph above is a
+    // record of a state that no longer holds, kept because the claim it was carrying is what got
+    // it done.** A2 is now ABOVE A1b and is the guard, the two `!`s are gone by narrowing, and the
+    // restructuring that paragraph calls for is the whole of the cure: no arm added, no null check
+    // at the use sites, 26 arms either way, this entry's `expect` untouched. Driven 2×2 — shipped
+    // and cured subjects × a faithful registry copy and one with this entry's two declarations
+    // moved WHOLE onto `probe-round241` (target derived from the parsed registry, anchor asserted
+    // unique). Shipped × moved: no headline, no A1b row, `TypeError`, 1 verdict row. Cured × moved:
+    // `FAIL A2` naming the live member list, headline printed, no `TypeError`, 2 rows. **Both exit
+    // 1**, which is why that cell was pre-registered against the missing headline and not the exit
+    // code. The move is count-preserving, 2 → 2 declaring members, so `=== 2` is green on exactly
+    // the registry that killed the shipped file and `includes(R225)` is not: the cripple this
+    // paragraph asks for, showing the member-list key strictly stronger than the count.
+    //
+    // What the same unit's census found and did NOT cure, routed in
+    // `docs/mail/daedalus-to-theseus-argus-…-the-mechanism-is-one-step-earlier-…-2026-11-08.md`:
+    // **33 live `.refusal!`/`.skip!` dereferences across 5 files** (`round373` 7, `round374` 12,
+    // `round374b` 1, `round375` 11, `round377` 2; 32 candidate lines, all printed and hand read),
+    // none with an upstream presence assertion — plus **9 `SWEPT.find(…)!` sites in the same 5
+    // files**, which is the same defect one step earlier and worse, since those files have no A1 to
+    // record before the throw. `probe-round372` is the only file in the family that guards entry
+    // presence at all. Claimants named rather than left open: `round373`/`round375`/`round377`
+    // Daedalus (his own files, checked with `--diff-filter=A` rather than assumed), `round374`/
+    // `round374b` Theseus.
     //
     // Unrelated, found by the same drive and recorded here because nothing else records it:
     // **`probe-round308` is already RED on `main`** (exit 1, `2 of 23 regression check(s) FAILED`),

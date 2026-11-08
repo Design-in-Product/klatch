@@ -1,0 +1,78 @@
+files scanned under scripts/: 182 (.mts + .mjs, non-recursive)
+candidate lines: 32 in 7 file(s), 36 dereference tokens
+  LIVE CODE (comments blanked, strings kept): 29 line(s) in 5 file(s), 33 dereference(s)
+  PROSE ABOUT THE DEFECT (hits vanish under blanking): 3 line(s) in 2 file(s), 3 token(s)
+
+[prose] probe-round372-the-rows-are-keyed-on-the-limb-and-the-contradiction-is-latent.mts:140
+    r225.refusal!   * `litteral(r225.refusal!)`. `refusal` and `skip` are OPTIONAL registry fields, so each `!` was a
+[LIVE] probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts:159
+    r225.refusal!   const REFUSAL_LINE = `  ${r225.refusal!.source}`;
+[LIVE] probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts:160
+    r225.skip!   const SKIP_LINE = `  did not run: ${r225.skip!.source}`;
+[LIVE] probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts:247
+    r225.skip!   .filter((l) => l.includes('did not run:') && l.search(r225.skip!) >= 0);
+[LIVE] probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts:286
+    r225.refusal! r225.refusal!   const refusalRe = new RegExp(r225.refusal!.source, `${r225.refusal!.flags}g`);
+[LIVE] probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts:287
+    r225.skip! r225.skip!   const skipRe = new RegExp(r225.skip!.source, `${r225.skip!.flags}g`);
+[LIVE] probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts:171
+    r225.refusal!   once(sweepSrc, `refusal: /${r225.refusal!.source}/,`, `refusal: /${DRIFT_TARGET}/,`),
+[LIVE] probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts:245
+    r225.refusal!   const b4Literal = r225.refusal!.source;
+[LIVE] probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts:271
+    r225.refusal!   const PREFIXED = /^(probe-round\d+[a-z]?: )(.+)$/.exec(r225.refusal!.source);
+[LIVE] probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts:277
+    r225.refusal!   `\`${r225.refusal!.source}\` and what is left is \`${ownSpelling}\`, which occurs ` +
+[LIVE] probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts:292
+    r225.refusal!   r225.refusal!.source !== ownSpelling &&
+[LIVE] probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts:318
+    r225.skip!   const controlCount = occurrences(r225Src, r225.skip!.source);
+[LIVE] probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts:334
+    r225.refusal!   const ANCHOR = `refusal: /${r225.refusal!.source}/,`;
+[LIVE] probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts:350
+    mutantR225.refusal!   const registryKeyed = occurrences(r225Src, mutantR225.refusal!.source);
+[LIVE] probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts:362
+    mutantR225.refusal!   mutantR225.refusal!.source === ownSpelling && literalKeyed === 0 && registryKeyed > 0,
+[LIVE] probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts:396
+    mutantR225.skip! r225.skip!   mutantR225.skip!.source === r225.skip!.source,
+[LIVE] probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts:405
+    r225.refusal!   occurrences(r225Src, r225.refusal!.source) === 0 && controlCount > 0,
+[LIVE] probe-round374b-the-subject-reaches-the-state-itself-on-a-held-port.mts:203
+    r225.skip!   .filter((l) => l.includes('did not run:') && l.search(r225.skip!) >= 0);
+[LIVE] probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts:128
+    r225.refusal!   const shortFromRegistry = r225.refusal!.source.startsWith(PREFIX)
+[LIVE] probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts:129
+    r225.refusal!   ? r225.refusal!.source.slice(PREFIX.length)
+[LIVE] probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts:134
+    r225.refusal!   `probe-name prefix off \`${r225.refusal!.source}\` and what is left is \`${shortFromRegistry}\`` +
+[LIVE] probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts:140
+    r225.refusal!   shortFromRegistry !== r225.refusal!.source &&
+[LIVE] probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts:141
+    r225.refusal!   PREFIX + shortFromRegistry === r225.refusal!.source,
+[LIVE] probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts:167
+    r225.refusal!   const DECL = `refusal: /${r225.refusal!.source}/,`;
+[LIVE] probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts:181
+    mutantR225.refusal!   const regexKeyed = (r225Src.match(new RegExp(mutantR225.refusal!.source, 'g')) || []).length;
+[LIVE] probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts:186
+    r225.refusal!   `${occ(r225Src, r225.refusal!.source)}`,
+[LIVE] probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts:193
+    r225.refusal!   regexKeyed === 2 && occ(r225Src, r225.refusal!.source) === 0,
+[LIVE] probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts:219
+    mutantR225.skip! r225.skip!   mutantR225.skip!.source === r225.skip!.source,
+[LIVE] probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts:194
+    r225.refusal!   const short = r225.refusal!.source.replace(/^probe-round\d+[a-z]?: /, '');
+[LIVE] probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts:613
+    r225.refusal!   const DECL_ANCHOR = `refusal: /${r225.refusal!.source}/,`;
+[prose] sweep-probes.mjs:1594
+    r225.skip!   // control** — its deciding state crashes the file upstream at `A1b`'s `r225.skip!` /
+[prose] sweep-probes.mjs:1595
+    r225.refusal!   // `r225.refusal!` dereferences — and no cripple yet shows the new member-list key is strictly
+
+LIVE dereferences per file:
+  12  probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts
+  11  probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts
+  7  probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts
+  2  probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts
+  1  probe-round374b-the-subject-reaches-the-state-itself-on-a-held-port.mts
+
+probe-round372 (this unit's subject) live dereferences: 0
