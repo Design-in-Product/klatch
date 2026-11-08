@@ -4,9 +4,16 @@
 directory before any instrument in it existed (`git ls-tree -r --name-only cb557ea5 -- <dir>` → **1
 path**, run).
 
-**Scoreboard: 8 predictions — 3 held, 3 refuted, 2 BLOCKED and not graded. 2 declared measurements —
-1 taken, 1 not. 3 unregistered findings. 2 defects of my own instrument, one of which produced a
-false pass that is discarded below. The cure is NOT made, and the blocker is named.**
+**Scoreboard: 8 predictions — 4 held, 4 refuted. 2 declared measurements, both taken. 2 unregistered
+findings. 4 defects of my own instrument, one of which produced a false pass that is discarded
+below and one of which made me file a blocker I then cured in the same fire. The cure is BUILT and GRADED on all four cells of a 2×2 but deliberately NOT LANDED — it
+needs a registry `expect` 8 → 9 that this unit's own declared refusal forbids from this seat in this
+fire, so that one decision is routed with the measurement attached.**
+
+**P8 is vacuous and is not claimed.** It predicted the gate and sweep unmoved by the cure; no
+`scripts/` file was changed, so there is nothing for a sweep to be unmoved by. Driving 44 probes to
+report that would be 282 s spent measuring nothing about this unit. The census hook ran on each of
+this unit's commits and reported `CENSUS OK · 154 probe files · 44 swept` every time.
 
 ---
 
@@ -129,48 +136,79 @@ started. Two consequences, and the second is the load-bearing one:
 the key above is the **row count and the headline's presence**, which is the same conclusion
 Daedalus's §3 and Argus's reply reached from the other side.
 
-## P6, P7 — BLOCKED, NOT GRADED, and the cure is not made
+## The blocker, found and cured within the fire — and the subject's own docblock had written it down
 
-**The control cell is red for a reason in my harness, so no cured cell can be read against it yet.**
+The first `faithful` cell came back **2 of 8 FAILED (A0, A1)**: the child `probe-round373` copy
+reported `B1 B2 B3` red, and `A1` fails behind `A0` because `A1`'s claim is that B4 is the *only*
+failing arm. I wrote this up as a named blocker and then read `probe-round373:227`, which mints its
+child with the hard-coded relative import `'../../scripts/lib/probe-outcome.mts'`.
+
+**My `SANDBOX` rewrite had nested the child sandbox one level too deep** (`<sandbox>/inner-r373-child`
+rather than `<repo>/.testdata/<name>`), so the mint resolved `../../scripts/lib/` to
+`<repo>/.testdata/scripts/lib/` and the child failed to load. **`probe-round374:137` states this
+constraint explicitly** — "the child sandbox kept at the SAME DEPTH under `.testdata/` as the real
+one … so a copy one level deeper fails to load for a reason that has nothing to do with the
+registry. Daedalus's C1 caught exactly that; inheriting the constraint rather than rediscovering
+it." I rediscovered it. *A scratch copy at the wrong depth refuses every cell.*
+
+Flattened, the control is green and the 2×2 is readable.
+
+## P6 — REFUTED, and the refutation IS the decision this unit routes
+
+Predicted: the cure leaves the row count unmoved, as `round372`'s did. **It does not: 8 → 9.**
+
+`round372` could hold its figure because it already had an arm that asserted the declarations and
+only needed re-ordering. **`round374` has no such arm** — nothing in it checks the keyed entry's
+presence at any position — so a presence guard is necessarily a *new* arm, and the registry entry's
+`expect: /All 8 regression checks passed/` (`sweep-probes.mjs:1396`) stops matching.
+
+**So landing this cure requires `expect` 8 → 9, and the pre-registration's third declared refusal
+forbids a registry edit from this seat in this fire.** That refusal is honoured: the cure is
+**graded in the sandbox and not landed**, and the `expect` decision is routed with the measurement
+attached rather than taken quietly as bookkeeping. *Relaxing a gate to fit manufactures rows
+elsewhere.*
+
+## P7 — HELD. The guard arm is the sole red, and the crash becomes a diagnosis
+
+The full 2×2 — subject (shipped at `4ab41893` | cured from that same rev by `cure.mjs`'s one
+asserted edit) × registry (faithful | keyed entry renamed), one variable per comparison:
 
 ```
-subject=4ab41893  registry=faithful   exit 1   2 of 8 FAILED   failing: A0 A1
+                      exit  rows  failing  headline                           threw
+shipped × faithful      0     8    none    All 8 regression checks passed.    false   ← the control
+shipped × absent        1     0    none    (NONE PRINTED)                     TRUE    ← the defect
+cured   × faithful      0     9    none    All 9 regression checks passed.    false
+cured   × absent        1     1    A0g     1 of 1 regression check(s) FAILED. false   ← sole red
 ```
 
-`A0` is the subject's own control arm: a child copy of `probe-round373` driven against a verbatim
-registry, expected green on all 15. In my sandbox that child reports `exit 1 · B4 ok at 0 ·
-failing arm(s): B1 B2 B3`. `A1` then fails because its claim is that **B4 is the only** failing arm,
-and B1–B3 are red beside it.
+Exactly one red row in the deciding cell, and it is the guard. It names the missing entry in its
+own text rather than leaving the reader to infer it:
 
-The subject is green in the real tree (it is one of the 44 swept probes, and was green on this
-fire's own earlier sweep figures). So B1–B3 are red **because of my relocation of the child
-sandbox**, two levels down from the cell I am driving — not because of the registry variable. Until
-that is fixed:
+```
+FAIL A0g  the keyed entry is still in SWEPT and still declares both optional patterns —
+          `probe-round225-a-citation-is-not-a-call.mts` is ABSENT from the registry, and the
+          entries declaring either pattern are (…)
+```
 
-- **P6** (arm count and row count unmoved by the cure) cannot be measured — I have no green baseline
-  to compare a cured row count against.
-- **P7** (under the cripple the guard arm is the SOLE red) cannot be measured — the harness already
-  produces reds that are not the guard, and *a leg conjoining a harness defect with its claim cannot
-  say which reddened*.
+**Both failing cells exit 1.** The key that separates them is the row count and the headline's
+presence — `0 rows / no headline` for the crash, `1 row / headline present` for the diagnosis —
+which is the same conclusion Daedalus's §3 and Argus's reply reached from the other side, now
+driven on this subject.
 
-**So the cure is deferred, not attempted.** Editing a swept probe whose grading harness is known
-broken would produce exactly the thing this unit's declared refusals exist to prevent: a change with
-a story instead of a measurement.
-
-**NAMED BLOCKER:** `probe-round373`'s B1/B2/B3 go red when its sandbox is relocated by
-`drive-cells.mjs`'s `SANDBOX` rewrite. The next step is specific, not "investigate": read what
-B1–B3 read, and establish whether they key on a path my rewrite moved (`inner-r373-child`) or on
-something the child's own `lib/` copy does not provide. That is one sitting's work and it is the
-whole gate on P6/P7.
+**The cure is not in the tree.** `git status --short` is clean of any `scripts/` path; the cure
+exists as `cure.mjs`'s anchored transform, which refuses rather than mis-lands if its anchor moves.
 
 **Also recorded, because it changes what "driven" can mean here:** `probe-round374b` is **DEFERRED**,
 not swept (`sweep-probes.mjs:2122`) — it holds a port. The 44-probe sweep therefore does **not**
 drive it, and a green sweep would never have been evidence about the `374b` half of this item. Any
 cure there needs its own drive.
 
-## D1 — not taken
+## D1 — taken
 
-The cost of the guard in lines per file. Not measurable without the cure.
+The guard costs **one arm and one new row** in `probe-round374`, replacing a one-line lookup with a
+recorded arm plus an `=== undefined` exit. Reported, not budgeted. Nothing was added to
+`probe-round374b`: its lookup (`:90`) has the same shape and the same hazard, but it is **DEFERRED,
+not swept**, so a cure there cannot be graded by the sweep and needs its own drive (below).
 
 ## D2 — taken, and it splits `374b` off from `374`
 
@@ -195,13 +233,41 @@ is a different defect from the one routed. Not graded this fire; recorded.
   harness already does at `probe-round374:144`) is in `drive-cells.mjs` with that paragraph beside
   it. **Had I keyed P5 on the exit code rather than on the row count and headline, this unit would
   have published a held prediction off a cell that never ran.**
+- **D-3 — the child-sandbox depth**, which blocked P6/P7 for a reason the subject's own docblock had
+  already written down. Fully described above. The cost was that I filed a named blocker and a memo
+  saying the cure was deferred on it, and then cured it twenty minutes later by reading the file I
+  was driving. The lesson is narrower than "read more": the constraint was in the docblock of the
+  arm that went red, which is the first place to look when a control reddens and the subject is
+  green in the tree.
+- **D-4 — the headline reader published a `[MEAS]` line as a cell's headline.** The subject prints
+  measurement lines that quote a *child's* headline verbatim, and my first reader matched any line
+  containing "regression check". It is now anchored on `^(All \d+|\d+ of \d+) regression check`. No
+  published figure moved — the crash cell had no matching line under either reader, and the row
+  count and failing-arm list are what P6/P7 key on — but the cell captures were re-driven under the
+  tightened reader rather than left as they were.
 - **Declared, not fixed: `argEnd` in `census-guard374.mjs` is a FOURTH private copy** of the
   paren-balanced-argument question Round 257 named as duplicated and Round 258 measured.
   `lib/skipped-shape-census.mts:98` holds one, unexported. **Routed, not extracted** — extracting a
   shared reader while using it to census is how an instrument comes to grade its own change.
 
-## What this unit changed in the tree
+## What this unit changed in the tree, and the one decision it routes
 
-**No `scripts/` file, and no registry entry.** The declared refusal held: the cure appeared to need a
-green harness it does not have, so it was routed into the next sitting rather than made from this
-seat on a broken baseline.
+**No `scripts/` file, and no registry entry.** The cure is built, driven on all four cells, and
+left out of the tree on purpose.
+
+**ROUTED, with the figure attached — the `expect` 8 → 9 question.** Landing the guard needs
+`sweep-probes.mjs:1396`'s `expect: /All 8 regression checks passed/` to become 9, because the guard
+is necessarily a new arm in a file that has no presence arm to re-order. Everything needed to
+decide it is above: the cured file is green at **All 9** under a faithful registry, and under the
+cripple it reports **1 of 1 FAILED, A0g the sole red**, instead of a bare stack trace. Two ways to
+take it, and this seat does not pick between them unilaterally in the fire that measured them:
+
+1. Land guard + `expect` 9 together in one commit, the normal protocol when an arm is added —
+   several entries' `why` prose records pins moving exactly that way.
+2. Land nothing until the same guard is written for `round373`/`round375`/`round377` (Daedalus's
+   three) and `round374b` (mine), so the family moves once.
+
+**`round374b` is still open and is NOT covered by anything above.** Its lookup has the same shape;
+it is DEFERRED on a held port, so the 44-probe sweep never drove it and never would have told us
+anything about it. **Named next step:** drive `374b` in its own cell with the port it holds, since a
+sandbox copy of a port-holding probe is a different harness from the one built here.

@@ -20,6 +20,8 @@ import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import { cure } from './cure.mjs';
+
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO = join(HERE, '..', '..', '..');
 const SCRIPTS = join(REPO, 'scripts');
@@ -27,10 +29,13 @@ const SUBJECT_REL =
   'scripts/probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts';
 const R225_ENTRY_ANCHOR = "file: 'probe-round225-a-citation-is-not-a-call.mts',";
 
-const [subjectArg, registryArg] = process.argv.slice(2);
+const [subjectArg, registryArg, cureBaseArg] = process.argv.slice(2);
 if (!subjectArg || !['faithful', 'absent'].includes(registryArg)) {
-  throw new Error('usage: node drive-cells.mjs <shipped-rev|cured> <faithful|absent>');
+  throw new Error('usage: node drive-cells.mjs <shipped-rev|cured> <faithful|absent> [cure-base-rev]');
 }
+/** The rev the cured cells are built FROM, so both columns of the 2×2 share one baseline. */
+const CURE_BASE = cureBaseArg ?? '';
+if (subjectArg === 'cured' && !CURE_BASE) throw new Error('cured cells need a cure-base rev');
 
 const SANDBOX = join(REPO, '.testdata', `unit-465guard374-${subjectArg}-${registryArg}`);
 mkdirSync(join(SANDBOX, 'lib'), { recursive: true });
@@ -72,7 +77,18 @@ if (registryArg === 'faithful') {
 // --- the subject copy -----------------------------------------------------------------------
 let subjectSrc;
 if (subjectArg === 'cured') {
-  subjectSrc = readFileSync(join(REPO, SUBJECT_REL), 'utf8');
+  /**
+   * The cured subject is the SHIPPED source out of the same rev as the control cell, transformed by
+   * `cure.mjs`'s one asserted edit. Not a copy of the live tree: the tree is deliberately unedited
+   * (the `expect` 8 → 9 question is routed, not taken), so reading the tree here would silently
+   * grade the shipped file a second time and report it as the cure.
+   */
+  const show = spawnSync('git', ['-C', REPO, 'show', `${CURE_BASE}:${SUBJECT_REL}`], {
+    encoding: 'utf8',
+  });
+  if (show.status !== 0) throw new Error(`git show failed: ${show.stderr}`);
+  subjectSrc = cure(show.stdout);
+  if (subjectSrc === show.stdout) throw new Error('cure changed nothing — refusing to grade it');
 } else {
   const show = spawnSync('git', ['-C', REPO, 'show', `${subjectArg}:${SUBJECT_REL}`], {
     encoding: 'utf8',
@@ -103,10 +119,24 @@ s = once(
   "const SANDBOX = join(REPO, '.testdata', 'round374');",
   `const SANDBOX = ${JSON.stringify(join(SANDBOX, 'inner'))};`,
 );
+/**
+ * DEPTH IS LOAD-BEARING HERE, and the subject's own docblock (`probe-round374:137`) says so: the
+ * `probe-round373` copy MINTS a child whose import of the shared outcome module is the hard-coded
+ * relative `'../../scripts/lib/probe-outcome.mts'`, so this directory must sit exactly two levels
+ * below the repo root — `<repo>/.testdata/<name>` — and NOT nested inside this cell's sandbox.
+ *
+ * My first spelling nested it (`<sandbox>/inner-r373-child`, three levels down). The mint then
+ * resolved `../../scripts/lib/` to `<repo>/.testdata/scripts/lib/`, the child failed to load, and
+ * `probe-round373` went B1 B2 B3 red — which made the subject's A0 control red and A1 red behind it,
+ * because A1's claim is that B4 is the ONLY failing arm. That reddening was MY harness, not the
+ * registry variable, and it blocked P6/P7 for a reason the file I was driving had already written
+ * down. "Inheriting the constraint rather than rediscovering it" is the phrase in that docblock;
+ * I rediscovered it.
+ */
 s = once(
   s,
   "join(REPO, '.testdata', 'round374-r373-child')",
-  JSON.stringify(join(SANDBOX, 'inner-r373-child')),
+  JSON.stringify(join(REPO, '.testdata', `unit-465guard374-${subjectArg}-${registryArg}-r373-child`)),
 );
 const subjectPath = join(SANDBOX, 'subject.mts');
 writeFileSync(subjectPath, s, 'utf8');
@@ -123,7 +153,14 @@ writeFileSync(join(HERE, `cell-${subjectArg}-${registryArg}.txt`), out, 'utf8');
 const lines = out.split('\n');
 const rows = lines.filter((l) => /^(\[ok\]|FAIL) /.test(l));
 const failing = rows.filter((l) => l.startsWith('FAIL ')).map((l) => l.slice(5).split(/\s+/)[0]);
-const headline = lines.find((l) => /regression check/.test(l)) ?? '(NONE PRINTED)';
+/**
+ * The SUMMARY headline specifically — `All N …` or `N of M …` — and not merely any line mentioning
+ * a regression check. The subject prints `[MEAS]` lines that quote a child's headline verbatim, and
+ * the first spelling of this reader matched one of those and published it as this cell's headline.
+ * Anchored on the line's own shape instead.
+ */
+const headline =
+  lines.find((l) => /^\s*(All \d+|\d+ of \d+) regression check/.test(l)) ?? '(NONE PRINTED)';
 const threw = /^\s*(TypeError|Error|ReferenceError)\b/m.test(out) || /Cannot read properties/.test(out);
 
 console.log(`CELL        subject=${subjectArg}  registry=${registryArg}`);
