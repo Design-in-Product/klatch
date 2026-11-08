@@ -1,0 +1,69 @@
+POPULATION  205 .mts/.mjs files under scripts/ (readdirSync, recursive)
+
+=== P1/P3 — .refusal!/.skip! dereferences, OCCURRENCE-counted ===
+  raw matches:              38
+  LIVE (comments blanked):  33   across 5 files
+  comment prose:            5
+  LIVE by file:
+     12  probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts
+     11  probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts
+      7  probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts
+      2  probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts
+      1  probe-round374b-the-subject-reaches-the-state-itself-on-a-held-port.mts
+
+=== P2 — the two stripSource readings, and what the stricter one hides ===
+  LIVE sites invisible under blankStrings=true: 0
+
+=== P1 — THIS SEAT'S TWO FILES: 13 live dereferences ===
+  probe-round374-the-abs…:171  .refusal!  | once(sweepSrc, `refusal: /${r225.refusal!.source}/,`, `refusal: /${DRIFT_TARGET}/,`),
+  probe-round374-the-abs…:245  .refusal!  | const b4Literal = r225.refusal!.source;
+  probe-round374-the-abs…:271  .refusal!  | const PREFIXED = /^(probe-round\d+[a-z]?: )(.+)$/.exec(r225.refusal!.source);
+  probe-round374-the-abs…:277  .refusal!  | `\`${r225.refusal!.source}\` and what is left is \`${ownSpelling}\`, which occurs ` +
+  probe-round374-the-abs…:292  .refusal!  | r225.refusal!.source !== ownSpelling &&
+  probe-round374-the-abs…:318  .skip!  | const controlCount = occurrences(r225Src, r225.skip!.source);
+  probe-round374-the-abs…:334  .refusal!  | const ANCHOR = `refusal: /${r225.refusal!.source}/,`;
+  probe-round374-the-abs…:350  .refusal!  | const registryKeyed = occurrences(r225Src, mutantR225.refusal!.source);
+  probe-round374-the-abs…:362  .refusal!  | mutantR225.refusal!.source === ownSpelling && literalKeyed === 0 && registryKeyed > 0,
+  probe-round374-the-abs…:396  .skip!  | mutantR225.skip!.source === r225.skip!.source,
+  probe-round374-the-abs…:396  .skip!  | mutantR225.skip!.source === r225.skip!.source,
+  probe-round374-the-abs…:405  .refusal!  | occurrences(r225Src, r225.refusal!.source) === 0 && controlCount > 0,
+  probe-round374b-the-su…:203  .skip!  | .filter((l) => l.includes('did not run:') && l.search(r225.skip!) >= 0);
+
+=== P4 — non-null-asserted .find(…)! sites, ANY receiver ===
+  total: 25   across 19 files
+  probe-accepted-multipart-allocation.mts:68  receiver=process.argv
+  probe-parse-encoding-confound.mts:126  receiver=JSON.parse(process.argv
+  probe-parse-stage-allocation.mts:77  receiver=process.argv
+  probe-parse-stage-allocation.mts:443  receiver=rows
+  probe-round197-the-verdict-on-a-way-back-and-the-path-that-is-not-the-database.mts:352  receiver=byName.get(made
+  probe-round199-the-first-real-corpus-names-seven-agents-and-none-of-them-is-a-name.mts:190  receiver=REAL_SHAPES
+  probe-round204-the-undo-over-a-role-apply-driven-end-to-end.mts:316  receiver=)
+  probe-round207-the-import-confirms-a-name-and-the-name-is-not-unique.mts:201  receiver=planA.rows
+  probe-round217-multipart-guard-live-http.mts:382  receiver=cells
+  probe-round241-a-corpus-cast-is-resolved-not-pinned.mts:114  receiver=r.sources
+  probe-round301-the-limbs-partition-by-construction-and-the-price-landed-in-the-instrument-that-priced-it.mts:230  receiver=s225
+  probe-round311-the-nearer-of-argus-two-candidates-is-the-one-that-drops-a-failure-and-a-kind-field-is-what-breaks-it.mts:340  receiver=pushSitesOf(n)
+  probe-round327-the-pin-purpose-label-is-a-property-of-the-edge-and-retirability-is-a-property-of-the-target-line.mts:397  receiver=ARRAYS
+  probe-round372-the-rows-are-keyed-on-the-limb-and-the-contradiction-is-latent.mts:282  receiver=bothFlags
+  probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts:82  receiver=SWEPT
+  probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts:79  receiver=SWEPT
+  probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts:348  receiver=mutantSweep.SWEPT
+  probe-round374b-the-subject-reaches-the-state-itself-on-a-held-port.mts:90  receiver=SWEPT
+  probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts:96  receiver=SWEPT
+  probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts:180  receiver=mutantSweep.SWEPT
+  probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts:96  receiver=SWEPT
+  probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts:97  receiver=SWEPT
+  probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts:98  receiver=SWEPT
+  probe-scan-cost-model-control.mts:649  receiver=`${scores
+  probe-scan-cost-model-control.mts:650  receiver=${scores
+
+  of which in this seat's two files: 3
+
+=== ALL comment-prose matches, printed so the split is auditable ===
+  probe-round372-the-rows-are-keyed-on-the-limb-and-the-contradiction-is-latent.mts:140  * `litteral(r225.refusal!)`. `refusal` and `skip` are OPTIONAL registry fields, so each `!
+  sweep-probes.mjs:1594  // control** — its deciding state crashes the file upstream at `A1b`'s `r225.skip!` /
+  sweep-probes.mjs:1595  // `r225.refusal!` dereferences — and no cripple yet shows the new member-list key is stri
+  sweep-probes.mjs:1614  // **33 live `.refusal!`/`.skip!` dereferences across 5 files** (`round373` 7, `round374` 
+  sweep-probes.mjs:1614  // **33 live `.refusal!`/`.skip!` dereferences across 5 files** (`round373` 7, `round374` 
+
+SUMMARY live=33 files=5 mine=13 finds=25 minefinds=3 hidden=0
