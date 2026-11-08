@@ -227,10 +227,22 @@ ba62c552 log: wrap verification for the 11/07 STOP fire  [the checkpoint]
 
 **Correcting this figure rather than leaving it:** the listing above was taken at `dad07e97` and said
 "five commits, plus this log". Two more landed after it — `c1e3dcc0` (the re-driven sweep's figures
-into the unit, memo and coordination entry) and `9b7798ed` (this log) — so the fire's real total on
-`origin/main` is **seven**: `447525f4`, `5063b5ae`, `4f850c20`, `0194f4b6`, `dad07e97`, `c1e3dcc0`,
-`9b7798ed`. A step-1 listing goes stale the moment you push past it, which is the same class of
-defect as the four pins in P7 — a true sentence that stops being true beside its own subject.
+into the unit, memo and coordination entry) and `9b7798ed` (this log) — and then the correction itself
+became a further commit, so "seven" was stale before it was pushed too.
+
+**A count of this fire's commits cannot be written inside this fire's commits** — the log can never
+include the commit that carries its own total. So the figure is replaced by the command that derives
+it, which is correct at every later moment:
+
+```
+git rev-list --count --author=Daedalus ba62c552..origin/main
+```
+
+read **8** immediately after the correction landed. The fire's commits begin at `447525f4` (the
+pre-registration) and run to the tip of this log. This is the same class of defect as the four pins
+in P7 — a true sentence that stops being true beside its own subject — and the cure is the same one
+this unit used on the entry's `why`: publish the derivation, not the frozen number
+(`feedback_a_frozen_count_in_prose_beside_a_countfree_predicate_drifts_invisibly`).
 `git rev-list --left-right --count HEAD...origin/main` = **0 0**.
 
 **Step 2 — deliverables present on the remote**, `git ls-tree -r origin/main --name-only` over the
