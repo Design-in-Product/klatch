@@ -1,0 +1,18 @@
+probe-backfill-sidecar-neutrality
+  [A] ok   refusal exits 1 — exit 1
+  [A] ok   refusal names the rows — reason line
+  [A] ok   no sidecar beside the refused target — (nothing)
+  [B] ok   dry run exits 0 — exit 0
+  [B] ok   no sidecar beside the dry-run target — (nothing)
+  [C] ok   a clean database is not refused — exit 0
+  [C] ok   a writing run keeps its own sidecars — -wal -shm
+  [D] ok   fixture carries committed frames — -wal:329632B built
+  [D] ok   still refuses — exit 1
+  [D] ok   a pre-existing -wal keeps every byte — -wal:329632B -> -wal:329632B
+  [D] ok   a pre-existing -shm is still there — -shm:32768B -> -shm:32768B
+  [E] state NOT BUILT — commit made its own -wal (ino 93892726 != 93892717) — cleanup had already run — 3 attempt(s)
+
+  did not run: the race state could not be built
+
+INCONCLUSIVE — backfill-sidecar-neutrality established 11 of its checks and skipped 1 arm(s). This is not a pass.
+  (exit 3 — see scripts/lib/probe-outcome.mts. 0 established, 1 broke, 2 refused to start, 3 ran and established less than it set out to.)

@@ -1,0 +1,24 @@
+control exit 0   2661 ms  All 13 regression checks passed.
+       declared   -> PASS (matched=true skipped=false)
+       no skip:   -> PASS (skipped=false)
+       off-line:  -> PASS (skipped=false)
+       same-line  -> NO LINE carries both
+x1     exit 3   3379 ms  INCONCLUSIVE — backfill-sidecar-neutrality established 11 of its checks and skipped 1 arm(s). This is not a pass.
+       declared   -> BLOCKED (matched=false skipped=true)
+       no skip:   -> RED (skipped=false)
+       off-line:  -> RED (skipped=false)
+       same-line  -> "did not run: the race state could not be built"
+c1     exit 1   2540 ms  2 of 13 regression check(s) FAILED.
+       declared   -> RED (matched=false skipped=false)
+       no skip:   -> RED (skipped=false)
+       off-line:  -> RED (skipped=false)
+       same-line  -> NO LINE carries both
+x1c1   exit 3   3343 ms  INCONCLUSIVE — backfill-sidecar-neutrality established 11 of its checks and skipped 1 arm(s). This is not a pass.
+       declared   -> BLOCKED (matched=false skipped=true)
+       no skip:   -> RED (skipped=false)
+       off-line:  -> RED (skipped=false)
+       same-line  -> "did not run: the race state could not be built"
+entry:draft entryProblems -> [] (none)
+entry:draft measurementCheck -> {}
+entry:draft expect.source  -> All 13 regression checks passed
+entry:draft skip.source    -> the race state could not be built

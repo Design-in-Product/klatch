@@ -1,0 +1,152 @@
+[
+  {
+    "file": "probe-round224-a-skip-must-not-summarise-as-a-pass.mts",
+    "code": 0,
+    "conclusion": "All 192 regression checks passed.",
+    "ms": 11478
+  },
+  {
+    "file": "probe-round261-a-pin-whose-red-is-cleared-by-doing-something-is-a-gate.mts",
+    "code": 0,
+    "conclusion": "All 17 regression checks passed.",
+    "ms": 831
+  },
+  {
+    "file": "probe-round263-an-emptiness-claim-over-a-shared-window-is-not-strict-it-is-blind.mts",
+    "code": 0,
+    "conclusion": "All 12 regression checks passed.",
+    "ms": 1537
+  },
+  {
+    "file": "probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts",
+    "code": 0,
+    "conclusion": "All 56 regression checks passed, 3 measurements, 0 skips",
+    "ms": 2022
+  },
+  {
+    "file": "probe-round297-the-hazard-filter-reads-a-file-and-the-sweep-drives-a-closure.mts",
+    "code": 0,
+    "conclusion": "All 10 regression checks passed.",
+    "ms": 992
+  },
+  {
+    "file": "probe-round298-a-stale-pin-and-a-genuine-break-used-to-read-identically.mts",
+    "code": 0,
+    "conclusion": "All 20 regression checks passed, 2 measurements, 0 skips",
+    "ms": 671
+  },
+  {
+    "file": "probe-round299-admission-is-per-file-and-the-repair-that-missed-its-own-motivating-case.mts",
+    "code": 0,
+    "conclusion": "All 20 regression checks passed, 4 measurements, 0 skips",
+    "ms": 3324
+  },
+  {
+    "file": "probe-round300-the-screen-has-a-third-state-and-the-site-my-own-arm-named-is-in-it.mts",
+    "code": 0,
+    "conclusion": "All 13 regression checks passed, 5 measurements, 0 skips",
+    "ms": 1778
+  },
+  {
+    "file": "probe-round301-the-limbs-partition-by-construction-and-the-price-landed-in-the-instrument-that-priced-it.mts",
+    "code": 0,
+    "conclusion": "All 13 regression checks passed, 3 measurements, 0 skips",
+    "ms": 2489
+  },
+  {
+    "file": "probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts",
+    "code": 0,
+    "conclusion": "All 20 regression checks passed, 7 measurements, 0 skips",
+    "ms": 8787
+  },
+  {
+    "file": "probe-round304-the-deferral-was-repaired-with-a-declaration-and-both-repair-shapes-redden-the-arm-that-pinned-it.mts",
+    "code": 0,
+    "conclusion": "All 21 regression checks passed, 13 measurements, 0 skips",
+    "ms": 10826
+  },
+  {
+    "file": "probe-round307-the-return-half-is-gradeable-the-parameter-half-is-any-and-the-arity-check-covers-fourteen-of-eighteen.mts",
+    "code": 0,
+    "conclusion": "All 19 regression checks passed.",
+    "ms": 1334
+  },
+  {
+    "file": "probe-round308-the-general-arm-pointer-detector-reports-thirteen-findings-all-thirteen-false-and-the-narrow-one-is-green-on-package-json.mts",
+    "code": 1,
+    "conclusion": "2 of 23 regression check(s) FAILED.",
+    "ms": 1270
+  },
+  {
+    "file": "probe-round309-the-drop-one-reach-census-over-reported-three-where-the-population-is-one-because-a-predicate-does-not-carry-its-corpus.mts",
+    "code": 0,
+    "conclusion": "All 17 regression checks passed.",
+    "ms": 1415
+  },
+  {
+    "file": "probe-round311-the-nearer-of-argus-two-candidates-is-the-one-that-drops-a-failure-and-a-kind-field-is-what-breaks-it.mts",
+    "code": 0,
+    "conclusion": "All 18 regression checks passed.",
+    "ms": 1121
+  },
+  {
+    "file": "probe-round322-the-deferred-magnitude-audit-is-clean-and-eight-censused-probes-freeze-the-one-figure-they-cannot-report.mts",
+    "code": 0,
+    "conclusion": "All 13 regression checks passed.",
+    "ms": 715
+  },
+  {
+    "file": "probe-round323-the-cheap-cure-for-a-frozen-figure-empties-the-tripwire-and-leaves-the-exit-code-lying.mts",
+    "code": 0,
+    "conclusion": "All 14 regression checks passed.",
+    "ms": 1798
+  },
+  {
+    "file": "probe-round324-the-skips-figure-has-four-states-and-the-two-no-arm-claims-are-where-a-lowercase-channel-lands.mts",
+    "code": 0,
+    "conclusion": "All 15 regression checks passed.",
+    "ms": 663
+  },
+  {
+    "file": "probe-round325-the-fourth-exit-shape-returns-zero-and-restaging-an-inflated-pin-promotes-measurements-to-hard-checks.mts",
+    "code": 0,
+    "conclusion": "All 15 regression checks passed.",
+    "ms": 700
+  },
+  {
+    "file": "probe-round369-the-verdict-line-carries-the-blocked-kind.mts",
+    "code": 0,
+    "conclusion": "All 29 regression checks passed.",
+    "ms": 375
+  },
+  {
+    "file": "probe-round372-the-rows-are-keyed-on-the-limb-and-the-contradiction-is-latent.mts",
+    "code": 0,
+    "conclusion": "All 26 regression checks passed.",
+    "ms": 407
+  },
+  {
+    "file": "probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts",
+    "code": 0,
+    "conclusion": "All 15 regression checks passed.",
+    "ms": 750
+  },
+  {
+    "file": "probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts",
+    "code": 0,
+    "conclusion": "All 8 regression checks passed.",
+    "ms": 1924
+  },
+  {
+    "file": "probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts",
+    "code": 0,
+    "conclusion": "All 8 regression checks passed.",
+    "ms": 2175
+  },
+  {
+    "file": "probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts",
+    "code": 0,
+    "conclusion": "All 13 regression checks passed.",
+    "ms": 11570
+  }
+]
