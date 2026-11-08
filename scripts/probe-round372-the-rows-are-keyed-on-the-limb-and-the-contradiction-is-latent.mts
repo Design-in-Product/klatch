@@ -121,14 +121,31 @@ check(
   litteral(r225.expect) && litteral(r225.refusal!) && litteral(r225.skip!),
 );
 
+/**
+ * **Re-aimed by Theseus, `unit-465declpop` (2026-11-07 STOP fire).** As shipped, this arm asserted
+ * that the declaring member list was *exactly* `[probe-round225]` and that no entry declared one
+ * pattern without the other. Both conjuncts were true of the registry it was written against, and
+ * both are statements about the registry's POPULATION rather than about anything section B grades.
+ * A legitimate second declaration — Daedalus's `unit-465adopt` entry, which declares a `skip:` and
+ * no `refusal:` — made them false and this arm red, and it was one of five swept probes that
+ * reddened together on that one paste (`docs/research/unit-465declpop-2026-11-07/post-grading.txt`).
+ *
+ * What the enumeration below actually needs is that the entry this round is keyed on declares BOTH
+ * patterns, so both BLOCKED limbs are exercised by tuples built from its own declared sources. That
+ * is asserted. The "only entry" and "never one without the other" clauses are not weakened, they
+ * are *withdrawn as pass conditions*, because neither was ever a requirement: an entry declaring a
+ * skip and no refusal is well-formed, and a second declaring entry does not change what `classify`
+ * does with this one's. The live member list is named in the reason so a reader sees the population
+ * this ran against rather than the one the arm was written beside.
+ */
+const declaringMembers = SWEPT.filter((s) => s.refusal || s.skip).map((s) => s.file);
 check(
   'A2',
-  'the member list of SWEPT entries declaring EITHER pattern is exactly [probe-round225], and no ' +
-    'entry declares one without the other — so this is the only entry that can reach either ' +
-    'BLOCKED limb (compare member lists, not counts: Round 340)',
-  JSON.stringify(SWEPT.filter((s) => s.refusal || s.skip).map((s) => s.file)) ===
-    JSON.stringify([R225]) &&
-    SWEPT.filter((s) => Boolean(s.refusal) !== Boolean(s.skip)).length === 0,
+  `${declaringMembers.length} SWEPT entr(ies) declare either pattern (${declaringMembers.join(', ')}), ` +
+    `and the one this round is keyed on declares BOTH — so the tuples below, built from its own ` +
+    'declared sources, reach either BLOCKED limb through it (compare member lists, not counts: ' +
+    'Round 340; read the population live, do not freeze it: Round 465)',
+  declaringMembers.includes(R225) && Boolean(r225.refusal) && Boolean(r225.skip),
 );
 
 const EXPECT_LINE = r225.expect.source;

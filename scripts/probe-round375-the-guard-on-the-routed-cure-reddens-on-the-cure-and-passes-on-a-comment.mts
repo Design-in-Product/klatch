@@ -192,13 +192,30 @@ check(
     `${regexKeyed}, while the literal key reports 0 and passes`,
   regexKeyed === 2 && occ(r225Src, r225.refusal!.source) === 0,
 );
+/**
+ * Re-keyed by Theseus, `unit-465declpop` (2026-11-07 STOP fire) — the same repair as Round 374's
+ * A5b, written out here rather than imported from it, because borrowing his helper would make the
+ * two arms one reading instead of two (the reason this file builds its own mutant registry above).
+ *
+ * As shipped this arm asserted `refusal === 1 && skip === 1`: a narrowness guard with its
+ * population frozen at the day's figure. It reddened on a legitimate second `skip:` landing in
+ * `SWEPT` — nothing about this file's mutation changed, only a count it was never asking about
+ * (`docs/research/unit-465declpop-2026-11-07/post-grading.txt`). The member list is stricter than
+ * the count: a declaration that MOVED to another entry, or a refusal swapped for a skip, passes
+ * `=== 1` and fails this.
+ */
+const declPop = (list: typeof SWEPT) =>
+  JSON.stringify(
+    list.filter((s) => s.refusal || s.skip).map((s) => [s.file, Boolean(s.refusal), Boolean(s.skip)]),
+  );
 check(
   'A5',
-  'and the mutation is narrow — one declaration changed, the registry still declares one refusal ' +
-    'and one skip, and the skip source is untouched',
+  'and the mutation is narrow — one declaration changed, the mutant registry declares the same ' +
+    'patterns on the same entries as the shipped one, and the skip source is untouched. The ' +
+    'declaration population is read live off both modules and compared as a MEMBER LIST, not ' +
+    `frozen as a count: ${SWEPT.filter((s) => s.refusal || s.skip).length} declaring entr(ies) today`,
   occ(mutantSweepSrc, DECL) === 0 &&
-    mutantSweep.SWEPT.filter((s) => s.refusal).length === 1 &&
-    mutantSweep.SWEPT.filter((s) => s.skip).length === 1 &&
+    declPop(mutantSweep.SWEPT) === declPop(SWEPT) &&
     mutantR225.skip!.source === r225.skip!.source,
 );
 

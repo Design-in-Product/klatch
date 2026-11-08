@@ -113,12 +113,45 @@ check(
     `round225's own \`expect:\` line to ${kpOwner}`,
   kpOwner === R225,
 );
+/**
+ * **Re-keyed by Theseus, `unit-465declpop` (2026-11-07 STOP fire).** As shipped this arm asserted
+ * `owners.length === 2 && owners.every((o) => o === R225)` — the whole registry's declaration
+ * population frozen at the two lines it had the day the arm was written. A legitimate second
+ * `skip:` (Daedalus's `unit-465adopt` entry) made `owners.length` 3 and reddened it, along with
+ * four other swept probes (`docs/research/unit-465declpop-2026-11-07/post-grading.txt`), none of
+ * them for a reason either arm was about.
+ *
+ * The VALUE of this arm is the cross-key agreement, and that is what is kept: this selector reads
+ * the registry's source text and walks back to the nearest `file:` line; Round 372's A2 reads the
+ * imported objects. Two keys that share a selector agree vacuously (Round 339) — so the cure
+ * compares the two populations as MEMBER LISTS, with each entry's declaration count, and the
+ * agreement now holds however many entries declare. The round225 clause survives as what it was
+ * for: both of its declarations attribute to it, so the tuples below are built from an entry this
+ * selector can see whole.
+ */
+const ownerCount = (f: string) => owners.filter((o) => o === f).length;
+const objectPop = JSON.stringify(
+  SWEPT.filter((s) => s.refusal || s.skip)
+    .map((s) => [s.file, Number(Boolean(s.refusal)) + Number(Boolean(s.skip))]),
+);
+const sourcePop = JSON.stringify(
+  SWEPT.filter((s) => s.refusal || s.skip).map((s) => [s.file, ownerCount(s.file)]),
+);
 check(
   'A2',
-  'and under that independent selector the declared-pattern member list is exactly [round225] ' +
-    `twice over — one refusal and one skip, both on it, none anywhere else (${owners.length} ` +
-    'declaration line(s) found)',
-  owners.length === 2 && owners.every((o) => o === R225),
+  'and that independent selector AGREES with Round 372 A2\'s object-level one on the whole ' +
+    `declaration population, entry by entry and count by count (${sourcePop}), with round225's ` +
+    `own refusal and skip both attributing to it (${ownerCount(R225)} of ${owners.length} ` +
+    'declaration line(s) found). Keyed on the live populations rather than on the pair of lines ' +
+    'this registry happened to carry when the arm was written',
+  sourcePop === objectPop &&
+    ownerCount(R225) === 2 &&
+    // No ORPHAN declaration line: every line the source walk found attributes to an entry the
+    // object-level selector also calls a declarer. Without this the two member lists could agree
+    // while the source selector was additionally picking up a declaration in a DEFERRED comment
+    // block, which is the one thing a nearest-preceding-`file:` walk is liable to do.
+    owners.length ===
+      SWEPT.filter((s) => s.refusal || s.skip).reduce((n, s) => n + ownerCount(s.file), 0),
 );
 
 type Tuple = { state: ProbeState; code: number | null; refused: boolean; skipped: boolean };

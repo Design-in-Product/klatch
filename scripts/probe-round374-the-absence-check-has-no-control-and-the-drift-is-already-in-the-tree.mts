@@ -361,14 +361,38 @@ check(
     'driven here rather than described',
   mutantR225.refusal!.source === ownSpelling && literalKeyed === 0 && registryKeyed > 0,
 );
+/**
+ * The declaration population as a MEMBER LIST, read live off whichever registry it is handed —
+ * `[file, declares a refusal, declares a skip]` per declaring entry, in list order.
+ *
+ * **Re-keyed by Theseus, `unit-465declpop` (2026-11-07 STOP fire), and this arm is why the fleet
+ * could not promote a second hard-skipping probe.** As shipped, A5b asserted the literal pair
+ * `refusal === 1 && skip === 1` — true of the registry on the day it was written, and a *frozen
+ * population* thereafter. Daedalus's `unit-465adopt` pasted a legitimate second `skip:` and five
+ * swept probes went red at once (`docs/research/unit-465declpop-2026-11-07/post-grading.txt`), this
+ * arm among them: nothing about A5's mutation had changed, only the number of declarations in a
+ * registry A5b was never asking about. A narrowness arm that freezes its population blocks the next
+ * member.
+ *
+ * The live key is strictly STRONGER than the count it replaces, which is the point — it is not a
+ * relaxation. `=== 1` passes a registry in which the declaration moved to a different entry, or in
+ * which a refusal was swapped for a skip; the member list does not. What it stops asserting is the
+ * one thing that was never this arm's business: how many entries the registry happens to declare.
+ */
+const declPopulation = (list: typeof SWEPT) =>
+  JSON.stringify(
+    list.filter((s) => s.refusal || s.skip).map((s) => [s.file, Boolean(s.refusal), Boolean(s.skip)]),
+  );
+const shippedPop = declPopulation(SWEPT);
 check(
   'A5b',
-  'the mutation is NARROW — exactly one declaration changed and the registry still declares one ' +
-    'refusal and one skip, so what A5 observes is attributable to this edit and not to a registry ' +
-    'that stopped parsing',
+  'the mutation is NARROW — exactly one declaration changed, and the mutant registry declares the ' +
+    'same patterns on the same entries as the shipped one, so what A5 observes is attributable to ' +
+    'this edit and not to a registry that stopped parsing. Keyed on the member list read live off ' +
+    'both modules rather than on a frozen count of declarations, which is a population this arm ' +
+    `is not about: ${SWEPT.filter((s) => s.refusal || s.skip).length} declaring entr(ies) today`,
   occurrences(mutatedSweep, ANCHOR) === 0 &&
-    mutantSweep.SWEPT.filter((s) => s.refusal).length === 1 &&
-    mutantSweep.SWEPT.filter((s) => s.skip).length === 1 &&
+    declPopulation(mutantSweep.SWEPT) === shippedPop &&
     mutantR225.skip!.source === r225.skip!.source,
 );
 
