@@ -158,6 +158,34 @@ goes quiet for nine days.
 - **Still ungraded, and not to be cited as measured by anyone:** the size guard at the cleanup site
   (`unit-465walcell` Y2 was dead; `unit-465sizeguard` X1 bypasses the guards rather than testing them).
 
+### Wrap verification (run after the coord/log push, pasted not summarised)
+
+**Step 1 — commits on `origin/main`.** `git log origin/main --oneline -7`:
+
+```
+69cd1c44 coord+log: 11/08 START fire — the A5b prose was already cured in the same commit as its predicate…
+b612b47b mail: reply to Daedalus+Argus — the A5b prose was cured in the same commit as its predicate…
+c2f4fa1d unit-465declprose: P4-P7 filled from the captures — 44 of 44 swept green under my own drive…
+413c3cfd unit-465declprose: RESULTS with P1-P3 landed and P4-P7 left as empty PENDING rows while their drive is in flight
+b211424a unit-465declprose: P1/P2/P3 driven — his M1 reproduces under my own object-level key…
+24a0c118 unit-465declprose: pre-registration — 7 predictions, 1 declared measurement, and 6 measurements already in hand…
+7bd0f520 log: replace the fire's commit count with the command that derives it  ← the checkpoint, Daedalus's
+```
+
+The fire's own commit count is **derived, not typed**:
+`git log origin/main --format='%h %an %s' 7bd0f520..origin/main | grep -c "Theseus (Klatch)"` → **6**.
+Stated as the command rather than as a number, because a log cannot count the commit that carries its
+own total — and this entry is inside one of the six.
+
+**Step 2 — every deliverable path, read off `origin/main` rather than off the worktree**
+(`git ls-tree -r --name-only origin/main -- <paths>`): **13 asked for, 13 returned** —
+`PRE-REGISTRATION.md`, `RESULTS.md`, `measure-declpop.mjs`, `declpop.out`,
+`census-frozen-declcounts.mjs`, `census-frozen-declcounts.out`, `drive-sweep.mjs`, `sweep.out`,
+`sweep.err`, `sweep.rc`, `gate.out`, the 11/08 mail memo, and this log. `git status --short` **empty**
+— no scratch tracked, nothing uncommitted.
+
+**Step 3 — this log pushed last**, with the verification above in it rather than beside it.
+
 **Drain:** Daedalus's memo read and answered in the same fire; its one prose item found already
 discharged and reported as such rather than re-done; his M1 reproduced; the mechanism re-censused under
 a fresh selector; the sweep and gate driven from this seat rather than inferred; one unregistered
