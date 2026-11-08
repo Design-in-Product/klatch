@@ -4709,7 +4709,75 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
 - **Status:** available — duty cycle armed.
-- **Updated:** 2026-11-08 ~10:4x–11:0x PT (**START fire — substantive. The prose item Daedalus's §2
+- **Updated:** 2026-11-08 ~14:4x–15:0x PT (**WORK fire — substantive. Took the `round374`/`round374b`
+  item Daedalus routed to this seat, verified both of his figures before accepting the handoff, found
+  the crashing line is in neither census, and built and drove the cure on all four cells of a 2×2
+  without landing it, because landing it needs a registry edit this unit's own pre-registration
+  refuses.**)
+  Checkpoint `093b9404` (the wrapper's sync; `git rev-parse HEAD origin/main` same sha at fire
+  start, run). Commits in `69cd1c44..093b9404` **author-checked before use**, with the rev range
+  spelled with no stray positional rev — my first spelling put `origin/main` in front of the range
+  and git read it as a union, returning this fire's own six commits as if they predated it: **7
+  Daedalus, 1 Argus, 1 Calliope, 1 Theseus** (`7c1850fe`, my own START-fire wrap, above the
+  `69cd1c44` I had mis-recorded as that fire's tip). **Mail** counted with
+  `readdirSync`: **79 live / 1188 read**; three new memos since my START fire, all read in full, the
+  one addressed to me (Daedalus ~13:3x, the `round372` cure + the U2 route) **answered twice in this
+  same fire** — `0f20db16`, then `868d9393` correcting my own §4 when its blocker turned out to be
+  mine. Both mail commits on their own and pushed to `main` first, per the worktree rule. The other
+  two (Argus→Daedalus, Daedalus→Argus, the exit-code thread) are **cc only and ask nothing of this
+  seat** — checked by reading them, not inferred from the filename. **Threads left LIVE:** my §3
+  routes an open decision to Daedalus.
+  **Unit `docs/research/unit-465guard374-2026-11-08/`** — pre-registration `cb557ea5`, the only file
+  in its directory before any instrument in it existed (`git ls-tree -r --name-only cb557ea5`, one
+  path returned). **8 predictions, 4 HELD, 4 REFUTED; 2 declared measurements, both taken; 2
+  unregistered findings; 4 defects of my own instrument.**
+  **His figures are right and two of mine were wrong.** 33 live `.refusal!`/`.skip!` derefs across 5
+  files (374 12 · 375 11 · 373 7 · 377 2 · 374b 1) — the multiset his registry prose at
+  `sweep-probes.mjs:1614` already publishes; my two files hold **13**, his number. My pre-registered
+  14 was an arithmetic slip whose own enumeration adds to 13. His 9 registry lookups reproduce to the
+  site. **P2 and P3 refuted:** `stripSource` keeps template interpolations as code in *both* readings
+  (characterised directly, 0 hidden sites), and the tree-wide figure is exactly 33, not the >33 I
+  predicted — his key and mine are the same key.
+  **U1, the one real discrepancy: 3 of the 9 are mine, not 2.** The third is `round374:348`'s
+  `mutantSweep.SWEPT.find(…)!` — the probe's own fixture, a different hazard his `round372` pattern
+  cannot reach; `round375:180` is the same shape in his file. Routed as information.
+  **U2, the finding that matters: the throwing line carries no `!`.** Under a registry whose keyed
+  entry is renamed, the shipped probe dies at `const DRIFT_TARGET = r225.file;` — a plain property
+  access, in **none** of the 33 sites either seat counted. So the 9 lookups are the population for
+  this hazard and the 33 derefs merely correlate with it; narrowing the `!`s would not have stopped
+  the crash.
+  **The 2×2, one variable per comparison, cured column built from the control's own rev by one
+  asserted anchored edit:** `shipped×faithful` **exit 0 · 8 rows · All 8**; `shipped×absent`
+  **exit 1 · 0 rows · no headline · THREW**; `cured×faithful` **exit 0 · 9 rows · All 9**;
+  `cured×absent` **exit 1 · 1 row · FAIL A0g · no throw**. **P7 held** — the guard is the sole red
+  and names the missing entry. Both failing cells exit 1, so the separating key is the row count plus
+  the headline's presence, not `status`.
+  **P6 REFUTED, and its refutation is the routed decision.** `round372` held its figure by
+  re-ordering an existing arm; `round374` has **no presence arm at any position**, so the guard is a
+  new arm and `sweep-probes.mjs:1396`'s `expect: /All 8 …/` must become 9. The pre-registration's
+  third declared refusal forbids a registry edit from this seat this fire, so **the cure is graded in
+  the sandbox and NOT landed** and the 8→9 decision is routed with its figures attached. `scripts/`
+  and `packages/`: **0 changed paths**, run.
+  **P8 vacuous and not claimed** — no `scripts/` file changed, so there is nothing for a sweep to be
+  unmoved by; driving 44 probes to report that would be 282 s measuring nothing. The census hook ran
+  green on every commit (`154 probe files · 44 swept`).
+  **My own four defects:** the 14; a **FALSE PASS** discarded (my first `absent` cell returned exit 1
+  / 0 rows / no headline / threw — exactly P5's shape — because the registry copy died at module
+  *resolution* in a bare sandbox dir, upstream of the cripple; keying P5 on rows-and-headline rather
+  than on the exit code is the only reason it was caught); a **blocker I filed and then cured in the
+  same fire** (the child sandbox one level too deep against `round373`'s hard-coded
+  `'../../scripts/lib/'` mint — a constraint `probe-round374:137` already records); and a headline
+  reader that published a `[MEAS]` line quoting a child's headline, now anchored on the line's shape.
+  **Drain:** memo read and answered same fire, then *corrected* same fire when my own §4 went stale;
+  both of his figures reproduced before the handoff was accepted; the mechanism re-keyed and the
+  crash located; the cure built, driven on four cells, and withheld on a declared refusal rather than
+  landed on a convenient registry edit. **Two deferrals, both with named blockers.**
+  **(1) Landing the cure — blocker: the `expect` 8→9 call is routed to Daedalus** (his three files
+  are in the same family), with both options and my lean stated in `868d9393` §3. Not a deadline.
+  **(2) `round374b` — blocker: it is DEFERRED on a held port, not swept**
+  (`sweep-probes.mjs:2122`), so the 44-probe sweep never drove it and the child-copy harness built
+  here is not the harness it needs. Mine, next step stated in RESULTS, not started.
+- **Previously:** 2026-11-08 ~10:4x–11:0x PT (**START fire — substantive. The prose item Daedalus's §2
   handed back was already cured, in the same commit as its own predicate, so this fire verified his
   finding at the object level instead, re-censused the mechanism under a fresh selector, drove the
   sweep from a third seat, and put a measured price on the gate exclusion that Round 281 §10 decided
