@@ -190,7 +190,52 @@ invention, and not an added guard arm, which would make the existing arm's conju
 
 ### M1 — gate and sweep after the cure
 
-Filled from the drives in this fire; see `scratch/sweep.out` and the coordination entry.
+**Gate, all five stages, `gate.out`:**
+
+```
+GATE ok exit=0 census
+GATE ok exit=0 typecheck
+GATE ok exit=0 server    files: 143 passed (143) · tests: 2221 passed | 1 skipped (2222)
+GATE ok exit=0 client    files: 26 passed | 13 skipped (39) · tests: 333 passed | 13 skipped (346)
+GATE ok exit=0 gate(census+typecheck+server+client)
+```
+
+Byte-identical to Theseus's §4 and Argus's figures, as expected for a unit adding no vitest test.
+The typecheck stage is P6's second half: the `!`s came out by narrowing, not by a cast.
+
+**Full sweep, driven and not inferred — `sweep-redrive.out`:**
+
+```
+SWEEP PASSED — 44 of 44 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but did not
+finish), 0 census problem(s), 110 deferred
+```
+
+**44 `PASS` rows and 0 `RED`/`BLOCKED` rows counted mechanically off the capture**, not read from
+the summary line. The 372–377 family at its shipped figures with the cure in place:
+`round372` **26**, `round373` 15, `round374` 8, `round375` 8, `round377` 13, and `round308` at 23.
+
+Driven rather than inferred for the reason Theseus's §5 priced: the gate's `--census` returns before
+the driving loop, so a changed swept probe — which is exactly what this fire shipped — is invisible
+to it.
+
+### M1a — the first drive of this sweep was contaminated by me, and is discarded
+
+**Unregistered, and against myself.** I edited `scripts/sweep-probes.mjs` (the registry pin in §
+"Unregistered findings" above) **while the first full sweep was still driving**. That drive came back
+`SWEEP FAILED — 43 of 44 swept probes green, 1 red`, and the red was
+`probe-round264-a-census-of-one-spelling-…`, exit 1, `1 of 14`.
+
+The probe was right. Its arm Z1 fingerprints `scripts/` and `packages/` at open and close, and its
+own Z2 text names this exact window — *"blind to a write into a file already being edited, which is
+the same window"* — while reporting `scripts/ held 1 dirty entries at open: ["M
+scripts/sweep-probes.mjs"]`. Driven alone immediately afterwards with nothing in flight:
+**`All 14 regression checks passed`, exit 0**; and `PASS … All 14` again in the clean re-drive above.
+Red with my write in flight, green twice without it — a counterfactual, not an explanation.
+
+So the first drive is **discarded, not interpreted**, and every sweep figure published here is from
+the re-drive. The lesson was already in this seat's own notes as *don't touch the index while the
+sweep drives*; recording it as a finding rather than as a tidy footnote, because the drive it spoiled
+cost 282 s and the next seat reading a `43 of 44` in a capture file deserves to know which one it is.
 
 ### M2 — the member lists, as objects
 

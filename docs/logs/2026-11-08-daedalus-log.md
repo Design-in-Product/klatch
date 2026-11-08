@@ -259,3 +259,116 @@ touched no product code, only `scripts/sweep-probes.mjs`.
 **Step 3 — this log pushed last**, after steps 1 and 2.
 
 Delivery is the wrapper's to log; what is verified above is presence on `origin/main`, not delivery.
+
+---
+
+## 13:17 — WORK fire (model: claude-opus-5)
+
+**Substantive. The `round372` A2 item I claimed in this morning's §5 is cured, driven and routed:
+`docs/research/unit-465guard-2026-11-08/`. 7 predictions, 7 held; 1 unregistered control; 2 declared
+measurements; 3 unregistered findings, all three mine.**
+
+**Briefing.** Checkpoint re-derived by author: `7bd0f520` (09:37, this morning's last log push).
+8 commits since, `%an`-checked — **Theseus 7, Calliope 1, none mine.** `git diff --stat
+7bd0f520..origin/main -- packages/ scripts/` **empty**: no product or script code moved under me.
+Mail delta read off `git diff --name-status -- docs/mail/` rather than a re-read of the directory:
+**one new memo to this seat**, Theseus's `…the-a5b-prose-you-handed-back-was-already-cured…`, 170
+lines, read in full and actioned in the same fire.
+
+**His §1 is right and I took it without softening.** I handed him a repair for a sentence that was
+already gone; what I was reading was my own `unit-465adopt` DEFERRED note beside a frozen
+`post-round374.out`. Verified from this seat before replying rather than taken from his memo:
+`grep -rn "one refusal and one skip"` over live `.mts`/`.mjs` under `scripts/` returns **three lines,
+none an arm label** — two are his registry prose at `sweep-probes.mjs:1564`/`:1587`, the third is
+`round377` C0b where the phrase is scoped "for the subject" and is true. Second time this week one of
+us read a recording as a live claim, and it is the lesson already in my memory as *a cured figure
+leaves a live sentence about the old one*.
+
+**His §6 stood down from `round372` A2 explicitly** ("has not started it and will not start it"), so
+the claim I made this morning is unambiguous and this is the unit.
+
+**The cure.** `A2` moved **above** `A1b` and made the guard; the two `!`s removed by narrowing (two
+locals plus an explicit `=== undefined`). Not a null check at the use sites — a `?? fallback` for
+`REFUSAL_LINE` would build section A's tuple set out of a string of my own invention, which is the
+construction A1b exists to legitimise. Not an added arm — an upstream guard arm would make A2's
+second and third conjuncts true-by-filter. **26 arms either way; the registry `expect` untouched.**
+
+**The 2×2, pre-registered before driving.** Shipped subject from `git show d742de81:…` rather than a
+hand copy, because this unit cures its own subject.
+
+```
+shipped × faithful  exit=0  26 rows  All 26 regression checks passed.    ← the control
+shipped × moved     exit=1   1 row   headline: (NONE PRINTED)  TypeError: true
+cured   × faithful  exit=0  26 rows  All 26 regression checks passed.
+cured   × moved     exit=1   2 rows  1 of 2 regression check(s) FAILED.  FAIL A2 (names the member list)
+```
+
+**The crash and the legitimate red exit on the same code.** P1 was registered against the missing
+headline for that reason, and the two cells are now the evidence rather than the argument.
+
+**P3 — the control `sweep-probes.mjs:1593` says the arm never had.** The mutant registry moves this
+entry's two declarations whole onto `probe-round241` (target *derived* from the parsed registry,
+anchor asserted unique). Declaring members **2 → 2**: count-preserving, so `=== 2` is green on
+exactly the registry that killed the shipped file and `includes(R225)` is not.
+
+**Three unregistered findings.**
+
+- **U1 — my own census counted my own cure as an instance of the defect.** First version flagged
+  `probe-round372:140`, inside the docblock I had just written, where it *quotes*
+  `litteral(r225.refusal!)` to say what was removed. Fixed by splitting LIVE from prose with
+  `lib/strip-source.mjs` and printing both. Fourth instance this week of the same shape.
+- **U2 — the mechanism is one step earlier than the `!`s I pre-registered.** 33 live
+  `.refusal!`/`.skip!` dereferences across 5 files (32 candidate lines, all printed and hand read),
+  none with an upstream presence assertion — **plus 9 `SWEPT.find(…)!` sites in the same 5 files**,
+  which throws if the entry leaves `SWEPT` at all, and those files have no A1 to record first.
+  `probe-round372` is the only file in the family that guards entry presence. P7's selector could not
+  have found this, so it is recorded as unregistered rather than folded in.
+- **U3 — authorship checked rather than assumed, and I had it wrong.** `round373`/`round375`/
+  `round377` are mine, `round374`/`round374b` Theseus's. I was carrying `round377` as his until
+  `git log --diff-filter=A`.
+
+**The declared refusal was honoured.** Nothing outside the subject was cured. `round373`/`round375`/
+`round377` claimed by this seat as its own unit; `round374`/`round374b` routed to Theseus with the
+offer to take all five in one unit if he prefers.
+
+**And a fourth finding, against myself: I edited `scripts/sweep-probes.mjs` while the full sweep was
+driving**, which is the lesson in my memory as *don't touch the index while the sweep drives*.
+`probe-round264` went **RED, exit 1, `1 of 14`** in that drive — and it was right to: its Z1/Z2 pair
+fingerprints `scripts/` at open and close and its own Z2 text names this window ("blind to a write
+into a file already being edited, which is the same window"). Driven alone immediately after, with
+nothing in flight: **All 14 regression checks passed, exit 0.** So the probe caught a real mid-drive
+write, mine, and the first sweep of this fire is **contaminated and discarded, not explained away**.
+Re-driven clean; figures below are from the re-drive.
+
+**Gate, re-derived fresh, all five stages:** `GATE ok exit=0` ×5 — server **143 files · 2221 passed ·
+1 skipped (2222)**, client **26 passed | 13 skipped (39)** files and **333 passed | 13 skipped (346)**
+tests. Byte-identical to Theseus's §4 and Argus's figures. The typecheck stage is P6's second half:
+the `!`s came out by narrowing, not by a cast.
+
+**Full sweep, clean re-drive:** `SWEEP PASSED — 44 of 44 swept probes green, 0 red, 0 blocked (0
+could not run, 0 ran but did not finish), 0 census problem(s), 110 deferred` — **44 `PASS` rows and 0
+`RED`/`BLOCKED` rows counted mechanically off the capture**, not read from the summary line. The
+372–377 family at its shipped figures with the cure in place: `round372` **26**, `round373` 15,
+`round374` 8, `round375` 8, `round377` 13, `round308` 23. Driven rather than inferred, for the reason
+Theseus priced at 282 s: `--census` returns before the driving loop.
+
+**Standing items re-derived, not recalled:** ma-smoke — `git ls-remote --heads origin` and
+`git branch -a` both return **nothing** for `smoke`/`managed`, **day 19**, named blocker on xian
+unchanged. Rollup read directly at `docs/operations/attention-rollup.md:9`: **v176, needs-you 3**,
+last refreshed 11/06; item 3 is ma-smoke and is blocked on xian. Neither moved this fire.
+
+**Elapsed, run rather than estimated:** `date` at the sweep's end read **13:38** — 21 minutes in. I
+had been carrying ~14:10 from feel, and the memo went out with a `~14:1x` timestamp that I corrected
+before the final push. That is the note in my own memory as *run `date`, don't estimate elapsed from
+effort*, and the error was 30+ minutes in a single fire.
+
+**Drain:** mail (1 addressed-to-this-seat memo, read in full and actioned in the same fire; his §1
+correction accepted without softening and verified from this seat first; thread left open on his §5
+Argus item), the claimed `round372` A2 unit (opened, pre-registered, cured, driven 2×2, written up),
+the census it required (run, hand read, routed), the registry prose the cure falsified (pinned, not
+rewritten), the red my own mid-drive write caused (root-caused, counterfactual closed, drive
+discarded, sweep re-driven), gate, census, standing items. **Deferred with a named blocker:** the 33
+live dereferences + 9 `SWEPT.find(…)!` sites in the other five files — blocker is this unit's own
+pre-registered scope statement, which declared the refusal in advance; `round373`/`round375`/
+`round377` claimed by this seat for its own unit, `round374`/`round374b` routed to Theseus with the
+offer to take all five in one unit instead.
