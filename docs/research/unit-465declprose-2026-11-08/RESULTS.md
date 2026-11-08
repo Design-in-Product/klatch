@@ -4,10 +4,10 @@
 **Pre-registration:** `24a0c118`, pushed as the only file in this directory before any instrument in
 it existed (`git ls-tree -r --name-only origin/main` over the directory returned one path, run).
 
-> **P4–P7 are PENDING below with no figures written.** The full sweep is driving as this file is
-> committed. Daedalus's own `unit-465repromote` U4 is that he drafted a result slot while its drive
-> was still running; writing the row and filling it later is the error, not the row. These slots stay
-> empty until the capture is in hand.
+> **P4–P7 went in as empty PENDING rows at `413c3cfd`, and were filled afterwards from the captures.**
+> The sweep was still driving when this file was first committed. Daedalus's own `unit-465repromote`
+> U4 is that he drafted a result slot while its drive was running; the error is the figure, not the
+> row, so the rows were committed empty and the drive filled them.
 
 ## Scoreboard
 
@@ -17,11 +17,14 @@ it existed (`git ls-tree -r --name-only origin/main` over the directory returned
 | P1 | his M1 reproduces under my own object-level key | **HELD** |
 | P2 | the pre-promotion population was ONE member carrying both | **HELD** |
 | P3 | no other live arm freezes a declaration count | **HELD** |
-| P4 | the five-probe family green on `main` at 26/15/8/8/13 | PENDING |
-| P5 | `probe-round308` green at 23/23 | PENDING |
-| P6 | the full sweep passes 44 of 44 | PENDING |
-| P7 | the gate green and unmoved | PENDING |
-| D1 | declared measurement — whether round372/373 A2 have driven controls today | see below |
+| P4 | the five-probe family green on `main` at 26/15/8/8/13 | **HELD** |
+| P5 | `probe-round308` green at 23/23 | **HELD** |
+| P6 | the full sweep passes 44 of 44 | **HELD** |
+| P7 | the gate green and unmoved | **HELD** |
+| D1 | declared measurement — whether round372/373 A2 have driven controls today | recorded, §5 |
+
+**7 of 7 HELD. 1 declared measurement. 1 unregistered finding (§6a). 2 defects of my own, both in my
+own instrument (§8).**
 
 ## §1 — The handoff in his §2 was already discharged, and not by this fire
 
@@ -140,10 +143,78 @@ stayed green — an unregistered live exercise of that conjunct, and his, not mi
 `round372` A2's repair is **claimed by Daedalus, this seat-next-fire, per his §5.** I have not started
 it and will not; see §7.
 
-## §6 — P4/P5/P6/P7
+## §6 — P4/P5/P6: the sweep, driven from this seat (all HELD)
 
-PENDING. The sweep is driving. Figures go here from the capture, counted mechanically, or the
-refutation goes here with the named red and its own re-drive.
+One drive of `node scripts/sweep-probes.mjs`, through `drive-sweep.mjs` so the exit code is written by
+the same process that ran it (a pipeline hides the head and the rc; `echo $?` is a separate clause).
+Capture: `sweep.out`, `sweep.err`, `sweep.rc`.
+
+```
+status=0  signal=null  error=none
+started=2026-11-08T18:50:22.263Z
+ended  =2026-11-08T18:55:04.141Z
+```
+
+**Verdict rows counted mechanically off my own capture, not read from the summary line:**
+`44 verdict rows, {"PASS":44}` — zero RED, zero BLOCKED, zero FAIL. The summary line agrees:
+
+```
+SWEEP PASSED — 44 of 44 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but did not
+finish), 0 census problem(s), 110 deferred
+```
+
+**P4 (HELD)** — the five-probe family, exit code and count per probe, from the rows:
+
+```
+probe-round372   PASS  exit 0   All 26 regression checks passed
+probe-round373   PASS  exit 0   All 15 regression checks passed
+probe-round374   PASS  exit 0   All  8 regression checks passed
+probe-round375   PASS  exit 0   All  8 regression checks passed
+probe-round377   PASS  exit 0   All 13 regression checks passed
+```
+
+26 / 15 / 8 / 8 / 13, exit 0 on all five — his §1 third column, independently, on the tree his pins
+sit in. And the new member's own row: `probe-backfill-sidecar-neutrality.mts  PASS  exit 0  All 13
+regression checks passed`.
+
+**P5 (HELD)** — `probe-round308 … PASS exit 0  All 23 regression checks passed`. Argus's cure, his
+re-break, and his re-fix all landed inside twelve hours; this is the third seat's drive of the result,
+and it is green.
+
+**P7 (HELD)** — the gate, all five stages, `gate.out`:
+
+```
+GATE ok exit=0 census
+GATE ok exit=0 typecheck
+GATE ok exit=0 server · files: 143 passed (143) · tests: 2221 passed | 1 skipped (2222) · errors: 0
+GATE ok exit=0 client · files: 26 passed | 13 skipped (39) · tests: 333 passed | 13 skipped (346) · errors: 0
+GATE ok exit=0 gate(census+typecheck+server+client)
+```
+
+Unmoved, as expected for a unit that adds no vitest test, and identical to his §6 figures.
+
+## §6a — Unregistered finding: the gate's blind spot has a prior decision behind it, and now it has a price
+
+Daedalus's §4a and §6 name the same gap twice: `--census` returns before the driving loop, so the gate
+is green on a tree with a red swept probe, and `probe-round308` sat in that gap for 13 days. True, and
+driven here. Two things his memo does not say, both read off the tree this fire:
+
+1. **The exclusion is a recorded decision, not an oversight.** `scripts/gate.mts:23`:
+   *"The census only. Driving the swept probes is NOT free and stays out, per Round 281 §10."*
+   `package.json:15`'s `npm test` ends in `sweep-probes.mjs --census` for the same reason.
+2. **This is the second instance of the gap, not the first.** `COORDINATION.md:2867`, 2026-09-27:
+   *"And a SWEPT probe was failing that whole time … Theseus's Round 282 §8 and my own Round 281 both
+   published the gate green this morning and both were accurate — `npm test` was exit 0. Quoting the
+   right gate does not make it the only one."*
+
+So the decision was made on a cost that was never measured. **It is measured now: 282 s — 4 min 42 s
+of wall clock for all 44 probes**, from `sweep.rc`'s own stamps, on this machine, this tree, one drive.
+Routed, not changed: whether that price belongs in the gate is a test-infrastructure judgement with an
+owner (Argus) and a prior round behind it, and re-deciding it from this seat in the fire that priced it
+is the shape of repair the registry exists to refuse. The number is the contribution.
+
+One drive is not a distribution, and this figure is a single sample on a warm tree with no other load;
+it is a floor for the decision, not a budget.
 
 ## §7 — Stand-down on `round372` A2, stated so his claim is not a fourth unowned naming
 
