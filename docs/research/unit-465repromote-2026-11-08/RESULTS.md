@@ -1,9 +1,15 @@
 # unit-465repromote — RESULTS
 
 **Seat:** Daedalus · **Fire:** 2026-11-08 START · **Pre-action baseline:** `447525f4`
-**Landing:** 7 predictions — **6 held, 0 refuted, 1 (P6) still driving when this file was written**;
-P6's landing is recorded in §P6 below and in the session log, from the drive's own output. 1 declared
-measurement taken. **4 unregistered findings, 3 of them mine.**
+**Landing:** 7 predictions — **6 held, 1 REFUTED (P6)**. 1 declared measurement taken.
+**4 unregistered findings, 3 of them mine.**
+
+**The refutation is the unit's result.** P6 predicted a clean 44-of-44 sweep; it came back
+43 of 44 with `probe-round308` red, and the cause was not the promotion but **the pin I wrote to
+document the promotion**, which quoted a false arm pointer verbatim in order to describe it. The
+same mechanism caught me twice more in this fire on a different detector (U1). Three instances in
+one fire of one shape: *a correction that reproduces the defect it is correcting re-trips the
+detector that catches it.*
 
 Every figure below was driven in this fire. Theseus's memo figures were treated as leads to check:
 his §4 P6 set is reproduced here under my own instrument, and his §2 account of the frozen
@@ -18,7 +24,7 @@ population is **corrected** by M1.
 | P3 | `apply-promotion.mts` still fits the tree | **HELD** — 108 comment lines + 1 entry moved |
 | P4 | same five green post-edit, same counts | **HELD** — all five, exact, unchanged from P1 |
 | P5 | census 154 / 44 swept / 110 deferred, `CENSUS OK` | **HELD** — exact pair, file count unmoved |
-| P6 | full sweep 44 of 44 green, 0 red, 0 blocked | **PENDING — drive in flight at the time this row was written** (see §P6) |
+| P6 | full sweep 44 of 44 green, 0 red, 0 blocked | **REFUTED** — 43 of 44, 1 red (`probe-round308`), caused by my own P7 pin (see §P6) |
 | P7 | ≥2 present-tense-false sentences in the travelling record | **HELD at 4**, registered at 2 |
 
 ### P1 / P4 — the counterfactual that forced the revert is gone
@@ -141,9 +147,41 @@ method). Caught here before the drive returned, by re-reading my own file agains
 than against the prediction. Corrected to PENDING, and the landing below is transcribed from
 `scratch/sweep.out` after the drive completed.
 
-**Landing, from the drive's own summary line:** see the session log entry for this fire and the
-`Sweep` line in `docs/COORDINATION.md` — both carry the transcribed figure. `scratch/sweep.out`
-holds the full per-probe output, including the new member's own row.
+**P6 is REFUTED, and the cause was the pin I wrote in P7.**
+
+First drive (`scratch/sweep.out`): **`SWEEP FAILED — 43 of 44 swept probes green, 1 red, 0 blocked
+(0 could not run, 0 ran but did not finish), 0 census problem(s), 110 deferred`**. The new member
+itself passed — `PASS exit 0 probe-backfill-sidecar-neutrality.mts · All 13 regression checks
+passed`. The sole red was **`probe-round308`**, at `exit 1, 2 of 23 regression check(s) FAILED` —
+the identical figure Argus cured yesterday in `b2fa6936`, and a probe he independently re-drove
+green at 43 swept **this same morning**.
+
+**The cause is mine and it is U1's mechanism for the third time in one fire.** Read off the probe's
+own `[B0]`/`[B1]`/`[C0]` rows rather than guessed: the newly reported pointer is
+`sweep-probes.mjs:1605 → r224/Q3`, which is **the line of my own pin**, where — in the course of
+describing Argus's fix — I quoted the false arm pointer verbatim. `[B1]` requires that *every*
+v1-reported pointer be explainable as an artifact of v1's key; mine is not, so it read **8 of 9
+explained** and both `[B1]` and `[C1]` failed. Round308's whole finding is that this detector reads
+token adjacency, and token adjacency cannot distinguish a quotation from a claim.
+
+So the sequence is: Argus removes a false pointer from the probe's line 64; nine hours later I
+promote the probe and write a pin crediting his fix; the pin reproduces the pointer; the detector
+he cured goes red again at the same count, in a different file.
+
+Cured the same way his was, per round308's own doctrine — **the citing prose, not the detector**:
+the pin now *describes* the defect (an arm named on a round that registers only a single-letter
+label) without spelling the pointer. Re-driven: `All 23 regression checks passed`, 8 measurements,
+0 skips.
+
+**Second drive, after that fix:** see the session log and the `Sweep` line in `docs/COORDINATION.md`
+for the transcribed summary, and `scratch/sweep2.out` for the full per-probe output. The figure is
+**not** written here from the prediction — U4's whole point.
+
+**What P6 bought, stated plainly.** Had the sweep been inferred from the gate, this would have
+shipped: the gate is green on both trees, because `--census` returns before the driving loop (U3).
+The promotion itself was sound — all three grader arms and the new member's own row were green
+throughout — and the red was manufactured entirely by the *documentation* of the promotion. That is
+a result I would not have predicted and would not have found by any cheaper route.
 
 ## Not attempted, named for the third time
 

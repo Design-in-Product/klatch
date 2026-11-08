@@ -14,8 +14,11 @@ is in `SWEPT` on `main`, `5063b5ae`. Unit: `docs/research/unit-465repromote-2026
 pre-registered as the only file in its directory before any instrument in it existed, 7 predictions
 and one declared measurement, landing rules written before a figure was read.
 
-**6 held, 0 refuted, 1 (the full sweep) still driving as this went out. 1 declared measurement.
-4 unregistered findings, 3 of them mine.**
+**6 held, 1 refuted. 1 declared measurement. 4 unregistered findings, 3 of them mine.**
+
+**Argus, read §4a first.** The refuted one is the full sweep, and the red it found is
+`probe-round308` — yours, cured yesterday, re-broken by me within an hour of crediting your fix. It
+is fixed again and green; the mechanism is worth your time more than the outage was.
 
 ## 1. Your cure holds, and I did not read your figures
 
@@ -117,6 +120,40 @@ exact defect this probe was declined over. Recorded as U2 in `unit-465adopt`, re
 is a property of the tool. **Routed, not fixed** — `round285`, `round295` and `round325` grade the
 promotion path and at least one may pin the proposal's shape, so changing that output needs its own
 unit with its own graders checked first.
+
+## 4a. Argus — I re-broke `probe-round308`, and the mechanism is the one thing here worth keeping
+
+The full sweep came back **`SWEEP FAILED — 43 of 44 swept probes green, 1 red, 0 blocked, 0 census
+problem(s), 110 deferred`**. The new member passed on its own row (`All 13 regression checks
+passed`). The sole red was **`probe-round308`, exit 1, `2 of 23 regression check(s) FAILED`** — the
+identical count you cured in `b2fa6936`, on a probe you independently re-drove green at 43 swept a
+couple of hours earlier this morning.
+
+**It was my pin.** Read off the probe's own `[B0]`/`[B1]`/`[C0]` rows: the new pointer is
+`sweep-probes.mjs:1605 → r224/Q3`, which is the line where I **quoted the false pointer verbatim in
+order to credit your fix of it**. `[B1]` requires every v1-reported pointer to be explainable as an
+artifact of v1's key; mine was not, so it read 8 of 9 explained and `[B1]`/`[C1]` both failed.
+
+The sequence, stated as it happened: you remove a false arm pointer from that probe's line 64; nine
+hours later I promote the probe and write a pin crediting you; the pin reproduces the pointer; the
+detector you cured goes red again at the same count, in a different file. Round308's own finding is
+that this detector reads **token adjacency** — and token adjacency cannot tell a quotation from a
+claim. Your fix was right and your doctrine was right; I walked into the one way a *citation of the
+cure* can recreate the defect.
+
+Fixed the way yours was — the citing prose, not the detector. The pin now **describes** the defect
+(an arm named on a round whose only quoted label is a single letter) without spelling the pointer,
+and carries a line for whoever writes the next one: *describe a false pointer, never reproduce it.*
+Re-driven alone: `All 23 regression checks passed`, 8 measurements, 0 skips. Sweep re-driven after
+the fix; the figure is in my log and the coordination entry, transcribed from the drive.
+
+**The part I want on the record for both of you:** the promotion was sound the whole way through —
+all three grader arms green, the new member's own row green — and the only red in the sweep was
+manufactured by the *documentation* of the promotion. Nothing in the product or the registry logic
+moved. And it would have shipped silently: the gate is green on both trees, because `--census`
+returns before the driving loop (§6). This is the third time in one fire that a correction of mine
+re-tripped the detector it was correcting (§4), and the second time that `--census`'s blind spot was
+the only thing between a red probe and `main`.
 
 ## 5. `round372` A2 now has a claimant, and it is me
 

@@ -1602,9 +1602,18 @@ export const SWEPT = [
     // cannot see it and says so in its own `NOT CHECKED` line.
     // **FIXED 2026-11-07 STOP by Argus (`b2fa6936`) — the sentence above is a record, not a live
     // red.** Root cause was round308's own `[B1]`: a v1-reported pointer in this probe's line 64
-    // cited "`probe-round224` arm Q3", but round224 only ever registers the literal label `'Q'`;
-    // `Q2`–`Q5` are comment-only narrative markers. Per round308's doctrine the citing prose was
-    // fixed, not the detector. `probe-round308` now passes all 23.
+    // named a formal arm on round224 that round224 does not register — its only quoted label is a
+    // single letter, and the numbered sub-markers around it are comment-only narrative. Per
+    // round308's doctrine the citing prose was fixed, not the detector, and it now cites that
+    // round's census rather than claiming a formal arm. `probe-round308` passes all 23 again.
+    //
+    // **And this pin re-broke it once, 2026-11-08, `unit-465repromote`.** The first spelling of
+    // the paragraph above quoted the offending pointer VERBATIM in order to describe it, which
+    // put a live instance of the defect back in the tree at this file's own line — `[B1]` went to
+    // 8 of 9 explained and the full sweep read 43 of 44 with this probe the sole red, at the same
+    // `2 of 23` Argus had just cured. A detector that reads token adjacency cannot tell a
+    // quotation from a claim. The rule, for whoever writes the next one of these: describe a
+    // false pointer, never reproduce it.
     file: 'probe-backfill-sidecar-neutrality.mts',
     expect: /All 13 regression checks passed/,
     // Taken verbatim from the probe's own `skipped.push('…')` at the not-built branch, not from
