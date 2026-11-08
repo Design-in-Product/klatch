@@ -1,0 +1,293 @@
+files scanned:            146
+files with candidate(s):  52
+candidate lines:          184
+
+── every candidate, printed for hand reading ──
+
+backfill-entity-bindings.mts
+   1334  if (Object.keys(plan.summary.skipReasons).length) {
+
+probe-accepted-multipart-allocation.mts
+    473  console.log(`${results.length} checks, ${failed.length} failed, ${skipped.length} skipped.`);
+
+probe-backfill-sidecar-neutrality.mts
+    172  check('A', 'refusal exits 1', r.code === 1, `exit ${r.code}`);
+
+probe-browse-cold-figure-gap.mts
+    530  `${failed.length} failed, 0 skipped (this probe has no skip path — see the note by check())`,
+
+probe-browse-endpoint-second-corpus.mts
+    629  `${results.length - regressions.length} measurements), ${failed.length} failed, ${skipped.length} skipped`,
+
+probe-browse-latency-end-to-end.mts
+    780  // Deliberately NOT done: widening the tolerance, and skipping on `capped === 0`.
+    872  skip('O', `endpoint delta vs fingerprint delta — OPEN, NOT ESTABLISHED: the fingerprint delta ${delta(fingerprintDelta)} does not clear this corpus's cold-run noise band of ±${ms(band)}, so agreement and disagreement are indistinguishable here. Needs a corpus where the cap bites (cap fires on ${cappedFiles}/${files.length} files) or more generations (COLD_GENERATIONS=${COLD_GENERATIONS}).`);
+
+probe-fingerprint-cache-endpoint.mts
+    282  try { if (fs.statSync(p).size >= 100) out.push(p); } catch { /* skip */ }
+    304  try { bytes += fs.readFileSync(f).length; } catch { /* skip */ }
+
+probe-import-large-session.mts
+    625  console.log(`${results.length} checks, ${failures.length} failed, ${skipped.length} skipped`);
+    630  if (skipped.length) {
+
+probe-import-live-http.mts
+    359  skip('G', 'no session >=300 messages in reach — depth NOT established on this corpus');
+
+probe-import-multipart-cap.mts
+    532  console.log(`${results.length} checks, ${failed.length} failed, ${skipped.length} skipped.`);
+
+probe-multi-root-browse.mts
+    306  try { if (fs.statSync(p).size >= 100) out.push(p); } catch { /* skip */ }
+    329  try { equalised += fs.readFileSync(p).length; } catch { /* skip */ }
+    498  console.log(`${results.length} checks (${regressions.length} pass/fail, ${results.length - regressions.length} measurements), ${failed.length} failed, ${skipped.length} skipped`);
+
+probe-parse-encoding-confound.mts
+    476  skip('H', `only ${pool.length} real sessions in [${mb(POOL_MIN)}, ${mb(POOL_MAX)}] — `
+    638  + `${failed.length} failed, ${skipped.length} skipped`);
+
+probe-parse-stage-allocation.mts
+    143  sink = `${res.events.length} events / ${res.skippedLines} skipped`;
+    187  sink = `${events.length} events / ${skippedLines} skipped`;
+    696  + `${failed.length} failed, ${skipped.length} skipped`);
+
+probe-round176-backfill-cli-end-to-end.mts
+    415  check('C', 'moved channels no longer bind the default', stillDefault.n === 4, `${stillDefault.n} in-scope channels still on the default (expected 4: the four skips)`);
+    444  check('C', 'every skipped channel left exactly as found', skipUntouched.n === 4, `${skipUntouched.n}/4 skipped channels still bound to the default`);
+    494  measure(`default entity transcript after apply: ${defRows.length} rows (the four skipped channels are legitimately still its own)`);
+    524  open_('E', 'the undo round trip does not restore channel_entities.added_at', `Apply DELETEs the default binding and undo re-INSERTs it, so the restored row's \`added_at\` is the undo's clock, not the original (${differing.length} rows here). \`added_at\` is not decorative: it is the roster ordering key at \`queries.ts:486\` (\`ORDER BY ce.added_at ASC, ce.rowid ASC\`). Invisible on the single-bound channels a backfill touches — a multi-bound channel is skipped by design — and it becomes visible only if a channel gained a second entity between apply and undo, where the restored default would then sort last instead of first. The record already stores per-channel state; carrying the original \`added_at\` in \`BackfillUndoChannel\` would close it. Narrow, and the memo's "row-for-row identical" is true of \`messages\`, \`entities\` and the channel_entities *keys*.`);
+
+probe-round178-backfill-operator-error-paths.mts
+    170  check('R', 'every candidate skips, and the run exits 0', rNoop.code === 0, `exit ${rNoop.code}${rNoop.code ? ` · ${rNoop.err.slice(0, 160)}` : ''}`);
+
+probe-round179-backfill-flag-spellings-and-undo-errors.mts
+    297  `${backupsBeside().length} backup file(s) after 3 refusals`
+    500  `${backupsBeside().length} backup file(s) beside klatch.db after 3 refusals`
+
+probe-round182-backfill-every-argv-token-is-read.mts
+    300  `${backupsBeside().length - backupsBefore} new backup(s) after 2 refusals`
+
+probe-round198-a-way-back-has-tables-in-it-and-the-sidecar-is-not-the-database.mts
+    296  step4.code === 0 && ownLine(step4.out) === 'Candidates: 8 — 4 would move, 4 skipped.',
+
+probe-round221-probe-ownership-control.mts
+    158  code === 2, `exit code ${code} (2 = pre-flight refusal)`);
+
+probe-round223-twenty-one-probes-against-a-stranger.mts
+    207  `skips (somethingIsAlreadyAnswering as a condition): ${byCategory.skips.length} · ` +
+    212  byCategory.refuses.length + byCategory.skips.length + byCategory['no-preflight'].length === migrated.length,
+    213  `${byCategory.refuses.length} + ${byCategory.skips.length} + ${byCategory['no-preflight'].length} = ${migrated.length}`);
+    359  return run.lines.filter((l) => l.at >= first && /^SKIP\s*\[/.test(l.text.trim())).length;
+    429  `${all.length - before} arm(s) skipped after contact; a wrapper reading $? sees a passing run.`);
+
+probe-round224-a-skip-must-not-summarise-as-a-pass.mts
+     88  check('A', 'a clean run with checks and no skips exits 0', o.code === 0, `code ${o.code}`);
+    102  check('B', 'a run with a skip does NOT exit 0', o.code !== 0, `code ${o.code}`);
+    116  check('C', 'zero checks and zero skips still does not exit 0', o.code === 3, `code ${o.code}`);
+    160  check('E', 'one real skip alongside an inapplicable still forces 3', both.code === 3, `code ${both.code}`);
+    243  check('H', 'a skipped OPEN-ITEM arm alongside passing regression checks exits 0', o.code === 0, `code ${o.code}`);
+    246  check('H', 'the regression count is unaffected by the soft skip', o.ran === 2, `ran=${o.ran}`);
+    254  check('H', 'an UNTAGGED skip of the same shape still exits 3 — the default stays safe', hard.code === 3,
+    261  check('H', 'and an explicitly regression-tagged skip exits 3 too', tagged.code === 3, `code ${tagged.code}`);
+    267  check('H', 'one hard skip among soft ones still forces 3', mixed.code === 3,
+    270  summarise({ probeName: 's', results: [], skipped: [{ label: '[J] open', kind: 'open' }] }).code === 3,
+    312  missSkip.code === 3, `code ${missSkip.code}`);
+    357  bothSkip.code === 1 && bothSkip.failed.length === 1, `code ${bothSkip.code}, failed ${bothSkip.failed.length}`);
+    385  // `.length` is 1 against the string's 10 and the near-miss refusal's own length pre-test returns
+    496  skipKind.code === 3 && skipKind.reasons.some((r) => /not a string/.test(r))
+    879  skipInv.code === 3 && !/passed/.test(skipInv.headline),
+    896  skipDefault.code === 3 && /skipped 1 arm/.test(skipDefault.headline)
+    905  bareSkip.code === 3 && /skipped 1 arm/.test(bareSkip.headline),
+    922  skipInvBesideFailure.code === 1 && skipInvBesideFailure.failed.length === 1,
+    923  `code ${skipInvBesideFailure.code} failed ${skipInvBesideFailure.failed.length}`);
+    936  skipInvNearMiss.code === 3 && /one edit from/.test(skipInvNearMiss.headline)
+    942  skipInvBadType.code === 3 && skipInvBadType.reasons.some((r) => /regressionKind is object/.test(r)),
+    947  skipBadKind.code === 3 && skipBadKind.reasons.some((r) => /skip env missing — kind is number/.test(r))
+    958  hisCure.code === 3 && /1 row\(s\) carry/.test(hisCure.headline) && !/skip\(s\)/.test(hisCure.headline),
+    978  configLive.code === 3 && /skipped 1 arm/.test(configLive.headline)
+   1034  check('F', 'old and new disagree on the skipped run — 0 vs 3', oldA.code === 0 && newB.code === 3,
+   1337  'code 3 · reasons.length': { results: [ok('A', 'fine')], skipped: ['env missing'], inapplicable: HATCH },
+   1747  + `field paths, and ${census.sites.length} live \`skipped\` argument site(s) across `
+   1957  resultsOnly > 0 && skippedOnlyUnexplained.length === 0 && rhsDiffers > 0,
+   1958  skippedOnlyUnexplained.length === 0
+   1961  + `${skippedOnly.length} skipped-only, all spread-explained`
+
+probe-round225-a-citation-is-not-a-call.mts
+    322  if (code === 2 && R223B_REFUSAL.test(out)) return 'could-not-run';
+
+probe-round230-a-killed-probe-must-not-leave-its-server.mts
+    227  console.log(`SKIP [R] ${skipped[skipped.length - 1]}`);
+    239  console.log(`SKIP [R] ${skipped[skipped.length - 1]}`);
+    254  console.log(`SKIP [R] ${skipped[skipped.length - 1]}`);
+    293  console.log(`SKIP [R] ${skipped[skipped.length - 1]}`);
+
+probe-round261-a-pin-whose-red-is-cleared-by-doing-something-is-a-gate.mts
+     47  * `All ${pass} regression checks passed, ${meas.length} measurements, 0 skips` — the `0` a LITERAL
+     59  * The one thing NOT done is the cheap version of it — `0 skips` → `${skips.length} skips` over an
+
+probe-round262-the-population-is-a-tree-not-a-filename-convention.mts
+    243  `walkScripts skips dot-named entries; the tree at ${R256_COMMIT} has ${dotNamed.length} of them ` +
+
+probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts
+    241  `${SWEPT.filter((s: { refusal?: RegExp }) => s.refusal).length} of ${SWEPT.length} — only ` +
+   1202  red: [g, r, b].filter((x) => classify(x.code, x.out, EXPECT, REFUSAL).state === 'RED').length - 1,
+   1203  blocked: [g, r, b].filter((x) => classify(x.code, x.out, EXPECT, REFUSAL).state === 'BLOCKED').length,
+   1290  return src.search(e.skip) >= 0;
+   1315  console.log(`${fail === 0 ? `All ${pass} regression checks passed` : `FAILED — ${fail} of ${pass + fail}`}, ${meas.length} measurements, 0 skips`);
+
+probe-round284-the-census-has-a-reader-and-it-is-the-channel-three-seats-have-never-run.mts
+     89  * `${passed.length} check(s) passed · ${failed.length} failed`, in which a SKIP row is neither
+
+probe-round298-a-stale-pin-and-a-genuine-break-used-to-read-identically.mts
+    263  console.log(`${fail === 0 ? `All ${pass} regression checks passed` : `FAILED — ${fail} of ${pass + fail}`}, ${meas.length} measurements, 0 skips`);
+
+probe-round299-admission-is-per-file-and-the-repair-that-missed-its-own-motivating-case.mts
+    322  const BUCKET = 'if (h.length) for (const k of h) (skipped[k] ??= []).push(f);';
+    425  `${fail === 0 ? `All ${pass} regression checks passed` : `FAILED — ${fail} of ${pass + fail}`}, ${meas.length} measurements, 0 skips`,
+
+probe-round300-the-screen-has-a-third-state-and-the-site-my-own-arm-named-is-in-it.mts
+    343  `\n${fail === 0 ? `All ${pass} regression checks passed` : `${fail} of ${pass + fail} FAILED`}, ${meas} measurements, 0 skips`,
+
+probe-round301-the-limbs-partition-by-construction-and-the-price-landed-in-the-instrument-that-priced-it.mts
+    351  `\n${fail === 0 ? `All ${pass} regression checks passed` : `${fail} of ${pass + fail} FAILED`}, ${meas} measurements, 0 skips`,
+
+probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts
+    800  `\n${fail === 0 ? `All ${pass} regression checks passed` : `${fail} of ${pass + fail} FAILED`}, ${meas} measurements, 0 skips`,
+
+probe-round304-the-deferral-was-repaired-with-a-declaration-and-both-repair-shapes-redden-the-arm-that-pinned-it.mts
+    514  `\n${fail === 0 ? `All ${pass} regression checks passed` : `${fail} of ${pass + fail} FAILED`}, ${meas} measurements, 0 skips`,
+
+probe-round305-a-refusal-the-reader-could-not-check-can-now-print-its-own-site.mts
+    234  console.log(`${fail === 0 ? `All ${pass} regression checks passed` : `FAILED — ${fail} of ${pass + fail}`}, ${meas.length} measurements, 0 skips`);
+
+probe-round308-the-general-arm-pointer-detector-reports-thirteen-findings-all-thirteen-false-and-the-narrow-one-is-green-on-package-json.mts
+    918  console.log(`\n${measured.length} measurements, 0 skips`);
+
+probe-round309-the-drop-one-reach-census-over-reported-three-where-the-population-is-one-because-a-predicate-does-not-carry-its-corpus.mts
+    282  [...corpus.entries()].filter(([n, s]) => !skip.has(n) && fires(terms, s)).length;
+    324  reachOver(gTerms, normOf, skip) === 0 && reachOver(gWidened, normOf, skip) > 0;
+    327  reachOver(gWidened, normOf, skip) === 18 && reachOver(gTerms, normOf, skip) === 0;
+    349  'arm G has the right SHAPE over its own corpus and KEEPS it under every single-member paydown of the backlog: full reach 0, and the /SKIP/ drop reaching a non-empty hand-rolled population. REPAIRED Round 315 — the pre-315 form pinned `=== 18`, which Round 313\'s conversion of one member moved, and the known negative in this same arm proves the old form would have broken on every one of them',
+    350  gShape(NO_SKIP) && PAYDOWNS.length > 0 && PAYDOWNS.every((p) => gShape(p.skip))
+    351  && handRolled.length === (dropSkip?.reach ?? -1)
+    353  `scanned ${scriptNames.length} (measured, not pinned) · hand-rolled (arm G minus /SKIP/) ` +
+    354  `${handRolled.length}, agreeing with B1's independently computed ${dropSkip?.reach} · reached ` +
+    355  `${gFull} · shape holds under ${PAYDOWNS.filter((p) => gShape(p.skip)).length} of ` +
+    357  `${PAYDOWNS.filter((p) => !gMagnitudePin(p.skip)).length} of ${PAYDOWNS.length}. ` +
+    679  scriptNames.length !== 21 && (dropSkip?.reach ?? -1) !== 21 && (dropSkip?.reach ?? -1) + 1 !== 21,
+    680  `scripts ${scriptNames.length} · hand-rolled ${dropSkip?.reach} · at the red ${(dropSkip?.reach ?? 0) + 1}. ` +
+
+probe-round310-the-eighteen-file-backlog-is-three-harness-shapes-and-two-are-near-mechanical.mts
+    142  reachWithSkip.length === 0,
+    143  `${scriptNames.length} scripts scanned · reached with /SKIP/ present: ${reachWithSkip.length}`,
+    161  reachWithSkip.length === 0 && reachNoSkip.length > 0,
+    162  `reach with /SKIP/: ${reachWithSkip.length} · dropped: ${reachNoSkip.length} (MEASURED, not pinned — 18 at Round 310, and paydown moves it) · ${reachNoSkip.join(', ')}`,
+    171  `${reachNoSkip.filter((n) => /probe-outcome\.mts/.test(normOf.get(n) as string)).length} of 18 import it`,
+    221  counterOnly.length + objectWithPass.length + opaqueValue.length === reachNoSkip.length
+    222  && new Set(sorted.map((s) => s.n)).size === reachNoSkip.length,
+    225  `= ${counterOnly.length + objectWithPass.length + opaqueValue.length} of ${reachNoSkip.length} members`,
+    276  `subprocesses: none. Files read: ${scriptNames.length} under scripts/, all read-only. ${measCount + 1} measurements, 0 skips.`,
+
+probe-round311-the-nearer-of-argus-two-candidates-is-the-one-that-drops-a-failure-and-a-kind-field-is-what-breaks-it.mts
+    184  `${reachedByG.length} · with /SKIP/ dropped ${theEighteen.length}`);
+    201  `full reach ${reachedByG.length} (want 0) · dropped-/SKIP/ reach ${theEighteen.length} ` +
+
+probe-round322-the-deferred-magnitude-audit-is-clean-and-eight-censused-probes-freeze-the-one-figure-they-cannot-report.mts
+     16  * a `probe-outcome` exit code (`=== 2`, the pre-flight refusal), an HTTP status, or one latency
+     38  * `lib/probe-outcome.mts` derives properly (`allSkips`, hard vs soft, `skipped.length`). 7 of the 8
+    202  'if (code === 2) throw new Error("pre-flight refusal");',
+    306  measure('B0', `censused arm-G backlog members by skips figure: FROZEN ${frozen.length} · `
+    333  'console.log(`All ${pass} regression checks passed, ${meas} measurements, ${skips.length} skips`);',
+    388  'console.log(`All ${n} regression checks passed, ${s.length} skips`);',
+    398  '  `${fail === 0 ? `All ${pass} regression checks passed` : `${fail} FAILED`}, ${meas} measurements, 0 skips`,',
+    410  'const BUCKET = \'if (h.length) for (const k of h) (skipped[k] ??= []).push(f);\';',
+    448  + `Nothing under packages/ executed. ${measurements.length + 1} measurements, 0 skips — and that figure `
+
+probe-round323-the-cheap-cure-for-a-frozen-figure-empties-the-tripwire-and-leaves-the-exit-code-lying.mts
+     18  * its exit code on that skip: process.exit(fail === 0 ? 0 : 1) with fail=0 -> EXIT 0
+    206  ['skipsFigure: the absent branch — arm=B4 needs his B1 to read FALSE on the cheap-cured fixture', 'load-bearing', /if \(summaries\.length === 0\) return 'absent';/],
+    248  + `with a skip channel ${figures.filter((f) => f.chan).length}`);
+    266  'console.log(`All ${pass} regression checks passed, ${meas} measurements, ${skips.length} skips`);',
+    274  'console.log(`All ${pass} regression checks passed, ${meas} measurements, ${skips.length} skips`);',
+    281  check('B2', 'KNOWN POSITIVE: the cheap cure as §8 proposes it — `${skips.length}` over an array '
+    322  skippedOutcome.code === 3 && cleanOutcome.code === 0 && /INCONCLUSIVE/.test(skippedOutcome.headline)
+    361  'console.log(`All ${pass} regression checks passed, ${meas.length} measurements, 0 skips`);',
+    372  return src.slice(0, a) + src.slice(a, b).replace('0 skips', '${skips.length} skips') + src.slice(b);
+    374  const cureByFirstMatch = (src: string): string => src.replace('0 skips', '${skips.length} skips');
+
+probe-round324-the-skips-figure-has-four-states-and-the-two-no-arm-claims-are-where-a-lowercase-channel-lands.mts
+     34  * skip (`process.exit(failed.length === 0 ? 0 : 1)`, quoted from round222 in B0).
+    201  'console.log(`All ${pass} regression checks passed, ${meas} measurements, ${skips.length} skips`);',
+    221  'console.log(`All ${pass} regression checks passed again, ${skips.length} skips`);',
+    238  measure('A0', `censused arm-G backlog ${censused.length} of ${backlog.length}, by skipsFigure: `
+    241  + `With a live skip channel: ${liveFigures.filter((x) => x.chan).length}. `
+    269  && chanOf(ABSENT_LOWER) && exitOf(ABSENT_LOWER) && skipOutcome.code === 3,
+    308  ['round322 skipsFigure: the absent branch', R322, /if \(summaries\.length === 0\) return 'absent';/],
+    579  'console.log(`All ${pass} regression checks passed, ${meas} measurements, ${skips.length} skips`);',
+
+probe-round325-the-fourth-exit-shape-returns-zero-and-restaging-an-inflated-pin-promotes-measurements-to-hard-checks.mts
+    211  'console.log(`All ${pass} regression checks passed, ${meas} measurements, ${skips.length} skips`);',
+    218  'console.log(`All ${pass} regression checks passed, ${meas} measurements, ${skips.length} skips`);',
+    229  'console.log(`All ${pass} regression checks passed, ${meas} measurements, ${skips.length} skips`);',
+    250  ['round322 skipsFigure: the absent branch — arm=B2 needs it to return derived on CHEAP_CURED', 'load-bearing', R322, /if \(summaries\.length === 0\) return 'absent';/],
+    275  measure('A0', `arm-G backlog ${backlog.length}, censused ${censused.length}. By skips figure: `
+    413  + `a frozen skips figure, of which ${withVerdictKind.length} declare a VERDICT kind today — so `
+    465  // `.length` is 1 against the string's 10, so the refusal's own length pre-test returns false) and
+
+probe-round369-the-verdict-line-carries-the-blocked-kind.mts
+    202  meas('C1', `SWEPT entries declaring BOTH a refusal and a skip: ${bothDeclaring.length} — [${bothDeclaring.join(', ')}]`);
+    255  shipped.blockedSkipped === 1 &&
+    262  flagKeyed.refused + flagKeyed.skipped === 2,
+    278  t.blockedSkipped === 2 &&
+    293  return t.blocked === 0 && t.blockedRefused === 0 && t.blockedSkipped === 0;
+
+probe-round372-the-rows-are-keyed-on-the-limb-and-the-contradiction-is-latent.mts
+    232  (t) => Number(says(t, VERDICT_PHRASE.refused)) + Number(says(t, VERDICT_PHRASE.skipped)) === 1,
+    364  blockedTuples.filter((t) => !(t.refused && t.skipped)).length > 0,
+
+probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts
+    120  * `skip:` (Daedalus's `unit-465adopt` entry) made `owners.length` 3 and reddened it, along with
+    144  `own refusal and skip both attributing to it (${ownerCount(R225)} of ${owners.length} ` +
+    188  `${tuples.length} distinct tuples through the real classify; ${redSkipped.length} are RED ` +
+    196  redSkipped.length > 0 && redSkipped.every((t) => rowOf(t).includes(SKIP_HINT)),
+    247  .filter((l) => l.includes('did not run:') && l.search(r225.skip!) >= 0);
+    288  const refusalInSubject = (r225Src.match(refusalRe) || []).length;
+    289  const skipInSubject = (r225Src.match(skipRe) || []).length;
+    295  refusalInSubject === 0,
+
+probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts
+     96  * hand-typed spelling of HIS construction: `occurrences(masked, 'new RegExp(r225.refusal')  === 1`.
+    254  * syntax* — `[...r225Src.matchAll(/const R223B_REFUSAL = \/(.+?)\/;/g)]`, requiring `=== 1` — which
+    362  mutantR225.refusal!.source === ownSpelling && literalKeyed === 0 && registryKeyed > 0,
+    370  * `refusal === 1 && skip === 1` — true of the registry on the day it was written, and a *frozen
+    393  `is not about: ${SWEPT.filter((s) => s.refusal || s.skip).length} declaring entr(ies) today`,
+    405  occurrences(r225Src, r225.refusal!.source) === 0 && controlCount > 0,
+
+probe-round374b-the-subject-reaches-the-state-itself-on-a-held-port.mts
+    190  control.status === 3 && controlC.state === 'BLOCKED' && controlC.skipped === true,
+    203  .filter((l) => l.includes('did not run:') && l.search(r225.skip!) >= 0);
+
+probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts
+    109  *     occ(r225Src, `const R223B_REFUSAL = /${shortFromRegistry}/;`) === 1
+    129  ? r225.refusal!.source.slice(PREFIX.length)
+    181  const regexKeyed = (r225Src.match(new RegExp(mutantR225.refusal!.source, 'g')) || []).length;
+    193  regexKeyed === 2 && occ(r225Src, r225.refusal!.source) === 0,
+    200  * As shipped this arm asserted `refusal === 1 && skip === 1`: a narrowness guard with its
+    216  `frozen as a count: ${SWEPT.filter((s) => s.refusal || s.skip).length} declaring entr(ies) today`,
+
+probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts
+     15  *   probe-round374 A2   [...r225Src.matchAll(/const R223B_REFUSAL = \/(.+?)\/;/g)]   requires === 1
+     16  *   probe-round375 A1   occ(r225Src, `const R223B_REFUSAL = /${shortFromRegistry}/;`) === 1
+
+probe-scan-cost-model-control.mts
+    666  `${failed.length} failed, ${skipped.length} skipped`,
+
+promote-probes.mts
+    722  if (h.length) for (const k of h) (skipped[k] ??= []).push(f);
+    754  for (const [k, v] of Object.entries(skipped).sort((a, b) => b[1].length - a[1].length)) {
+
+sweep-probes.mjs
+   2275  skip && out.split('\n').some((l) => l.includes('did not run:') && l.search(skip) >= 0),
+   2279  : (code === 2 && refused) || (code === 3 && skipped)
+   2368  * are `(code === 2 && refused)` and `(code === 3 && skipped)`; a run has exactly one exit code, so
+   2407  if (code === 3) return 'skipped';

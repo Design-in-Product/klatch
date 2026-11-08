@@ -1,0 +1,27 @@
+
+── LIVE TREE (24a0c118) ──
+  SWEPT entries:        44
+  refusals:             1
+  skips:                2
+  declaring either:     2
+  declaring both:       1
+  MEMBER LIST:
+    probe-round225-a-citation-is-not-a-call.mts  refusal=true skip=true
+    probe-backfill-sidecar-neutrality.mts  refusal=false skip=true
+
+promotion commit 5063b5ae: sweep: probe-backfill-sidecar-neutrality PROMOTED into SWEPT — re-attested on today's tree, and the five graders green pre and post
+
+── BEFORE THE PROMOTION (447525f4) ──
+  SWEPT entries:        43
+  refusals:             1
+  skips:                1
+  declaring either:     1
+  declaring both:       1
+  MEMBER LIST:
+    probe-round225-a-citation-is-not-a-call.mts  refusal=true skip=true
+
+── landing ──
+P1 live population is exactly [round225 (both), backfill-sidecar-neutrality (skip only)]: true
+P1 counts are SWEPT 44 / refusals 1 / skips 2 / either 2 / both 1: true
+P2 pre-promotion population is a SINGLE member carrying BOTH patterns: true
+P2 so "one refusal and one skip" never described two members: true
