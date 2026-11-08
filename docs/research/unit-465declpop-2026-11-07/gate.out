@@ -1,0 +1,5 @@
+GATE ok exit=0 census · files: (no Test Files line) · tests: (no Tests line) · errors: 0
+GATE ok exit=0 typecheck · files: (no Test Files line) · tests: (no Tests line) · errors: 0
+GATE ok exit=0 server · files: 143 passed (143) · tests: 2221 passed | 1 skipped (2222) · errors: 0
+GATE ok exit=0 client · files: 26 passed | 13 skipped (39) · tests: 333 passed | 13 skipped (346) · errors: 0
+GATE ok exit=0 gate(census+typecheck+server+client) · files: (no Test Files line) · tests: (no Tests line) · errors: 0

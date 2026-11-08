@@ -1,0 +1,33 @@
+[ok] A1  the entry this round is keyed on is in SWEPT (`probe-round225-a-citation-is-not-a-call.mts`)
+[ok] A1b  the entry's three declared patterns are plain literals, so each pattern's own source is a known positive for it — the construction every cell below rests on
+[ok] A2  2 SWEPT entr(ies) declare either pattern (probe-round225-a-citation-is-not-a-call.mts, probe-backfill-sidecar-neutrality.mts), and the one this round is keyed on declares BOTH — so the tuples below, built from its own declared sources, reach either BLOCKED limb through it (compare member lists, not counts: Round 340; read the population live, do not freeze it: Round 465)
+[MEAS] A3  32 constructed outputs through the real classify yield 20 distinct tuples, 4 of them BLOCKED: 2/r1s0 2/r1s1 3/r0s1 3/r1s1
+[ok] A4  the both-flags BLOCKED state is reachable BY CONSTRUCTION through the real classify — Round 369's premise, re-driven here rather than taken from its docblock
+[ok] A5  and it is reachable at exit 3 specifically — the case for which "could not run" is false rather than merely loose
+[ok] B1  over EVERY reachable BLOCKED tuple, the row says "could not run" exactly when the limb that fired is the refusal limb — not when the refused FLAG is set
+[ok] B2  over every reachable BLOCKED tuple, the row says "ran but did not finish" exactly when the limb that fired is the skip limb
+[ok] B3  every reachable BLOCKED tuple gets EXACTLY ONE of the two verdict phrases — neither two (the residue) nor none (a BLOCKED row that annotates nothing)
+[ok] B4  the residue case itself: a both-flags run at exit 3 is annotated "ran but did not finish" and is NOT annotated "could not run"
+[ok] B5  and limb-keying is not LOSSY — the flag the limb did not use is still reported, as a hint rather than as a verdict
+[ok] B6  no non-BLOCKED tuple is annotated with either verdict phrase
+[ok] B7  the RED hint is unchanged and stays FLAG-keyed on purpose: a red carrying the declared refusal text still gets it, and `blockedKind` has nothing to say about a non-BLOCKED state
+[ok] B8  the hint legs carry NEITHER verdict phrase — without which every check in this section could pass on a hint instead of on the verdict it is supposed to be reading
+[ok] B9  a BLOCKED run at a code with no limb still REFUSES rather than annotating nothing — the inherited guard, re-driven through the rows rather than assumed from `blockedKind`'s own arm
+[ok] C1  each mutation anchor occurs exactly once in the shipped source (1/1), so the mutation below lands on the row key and not on its neighbour in `blockedTally`
+[ok] C1b  the mutation changed the file in exactly the two places it declared and nowhere else — the byte delta is the two anchors, so C2/C3 are attributable to the KEY
+[ok] C2  under the FLAG key the residue reproduces: the both-flags run at exit 3 is annotated BOTH "could not run" AND "ran but did not finish" — two verdicts about one run, which is the defect this round closed, driven rather than described
+[ok] C3  and B1's and B3's properties FAIL under that key — so neither is a check that would have passed either way
+[ok] C4  the mutation is NARROW: every single-flag BLOCKED tuple is annotated identically under both keys, so C2 is attributable to the both-flags case alone and not to a broken copy
+[ok] D1  the detector finds its known positive first (Round 355): the real `summariseAndExit` call survives comment- and string-blanking, so its zero on `process.exit(` means absence rather than a blanked reading
+[ok] D2  `probe-round225` has 0 live `process.exit(` (6 raw, all inside minted fixture strings) and exactly 1 `summariseAndExit(` — one exit path
+[ok] D3  and that exit path cannot produce a 2: `ProbeOutcome`'s code is typed `0 | 1 | 3`, so the `(code === 2 && refused)` limb has NO WITNESS over this population and "could not run" cannot print today
+[MEAS] D4  the occupied-port cell, driven in Round 372 and RECORDED here rather than re-driven every fire (cost: a held :3001 and ~2 min): :3001 bound in-process, probe-round225 exits 3, its declared refusal pattern occurs 0 times in its own 10210-byte output, real classify returns state=BLOCKED refused=false skipped=true. The both-flags run is not the run that occurs.
+[ok] E1  the function is exported from the sweep and identified by exactly one declaration site
+[ok] E2  `main()` PRINTS what the function returns and keeps no flag-keyed row guard of its own — without which the key could be graded here and forked there
+[ok] E3  each verdict phrase occurs exactly once in the function body (comments blanked, strings kept), so no second spelling of either verdict survives inside it
+[ok] E4  and both verdict legs are guarded on the LIMB rather than on a flag — the one property that, if it is ever quietly reverted, section C says what breaks
+
+[MEAS] A3  32 constructed outputs through the real classify yield 20 distinct tuples, 4 of them BLOCKED: 2/r1s0 2/r1s1 3/r0s1 3/r1s1
+[MEAS] D4  the occupied-port cell, driven in Round 372 and RECORDED here rather than re-driven every fire (cost: a held :3001 and ~2 min): :3001 bound in-process, probe-round225 exits 3, its declared refusal pattern occurs 0 times in its own 10210-byte output, real classify returns state=BLOCKED refused=false skipped=true. The both-flags run is not the run that occurs.
+
+All 26 regression checks passed.

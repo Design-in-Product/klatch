@@ -1,0 +1,8 @@
+/Users/xian/Development/klatch-worktrees/theseus/scripts/probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts:366
+const registryKeyed = occurrences(r225Src, mutantR225.refusal!.source);
+                                                               ^
+
+TypeError: Cannot read properties of undefined (reading 'source')
+    at <anonymous> (/Users/xian/Development/klatch-worktrees/theseus/scripts/probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts:366:64)
+
+Node.js v26.5.0
