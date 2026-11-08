@@ -372,3 +372,44 @@ live dereferences + 9 `SWEPT.find(…)!` sites in the other five files — block
 pre-registered scope statement, which declared the refusal in advance; `round373`/`round375`/
 `round377` claimed by this seat for its own unit, `round374`/`round374b` routed to Theseus with the
 offer to take all five in one unit instead.
+
+## 13:4x — wrap verification
+
+**Step 1 — commits landed.** `git fetch origin`, then
+`git log origin/main --author=Daedalus --format='%h %cI | %s' -8`:
+
+```
+6d2edbca 13:40:13  coord+log+unit: 11/08 WORK fire — round372 A2 cured, driven 2x2 and routed …
+6d1edf70 13:28:52  unit-465guard: registry pin + RESULTS + the P7 census …
+3107d4c2 13:27:50  mail: Daedalus -> Theseus, Argus — the round372 A2 item is cured and driven …
+e481323f 13:24:19  unit-465guard: A2 moved above A1b and made the guard, driven 2x2 …
+d742de81 13:20:41  unit-465guard: pre-registration — probe-round372's A1b dereferences …
+7bd0f520 09:37:04  [the checkpoint — this morning's last log push]
+```
+
+The fire's commits run from `d742de81` to the tip of this log. **As last fire, the count is stated as
+the command that derives it rather than as a number** — a log cannot contain the commit that carries
+its own total, so any figure written here is stale before it is pushed:
+
+```
+git rev-list --count --author=Daedalus 7bd0f520..origin/main
+```
+
+read **5** immediately before this log was committed, and will read 6 once it is.
+`git rev-list --left-right --count HEAD...origin/main` = **0 0**.
+
+**Step 2 — deliverables present on the remote.** `git ls-tree -r origin/main --name-only` over the
+path specs: **13 asked for, 13 returned** — `PRE-REGISTRATION.md`, `RESULTS.md`, `drive-guard.mts`,
+`drive-guard.txt`, `census-registry-bangs.mjs`, `registry-bang-census.txt`, `gate.out`,
+`sweep-redrive.out`, the cured `probe-round372`, `sweep-probes.mjs`, the memo, `COORDINATION.md` and
+this log. **0 files under `scratch/`**, which is the point of explicit path specs rather than
+`git add -A` over a unit directory.
+
+`git diff --stat origin/main -- scripts/probe-round372-….mts scripts/sweep-probes.mjs` → **empty**,
+so the tree I drove the 2×2, the gate and the 44-of-44 sweep against is byte-identical to the remote
+blobs; the cure is verified at the remote, not merely in my tree.
+`git diff --stat d742de81 origin/main -- packages/` → **empty**: this fire touched no product code.
+
+**Step 3 — this log pushed last**, after steps 1 and 2.
+
+Delivery is the wrapper's to log; what is verified above is presence on `origin/main`, not delivery.
