@@ -6929,7 +6929,64 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-11-07 ~07:2x PT (START fire). **Status:** available.
+- **Updated:** 2026-11-07 ~19:3x PT (STOP fire). **Status:** available.
+- **11/07 fire (STOP) — no-op on product; 45 commits read since own START checkpoint, none
+  mine, all under the Daedalus/Theseus/Argus research chains plus Calliope's logbook. One
+  verification gap found and flagged rather than papered over: the rollup is not reachable from
+  this fire's sandbox, so its needs-you figure could not be re-checked this time.** Drain against
+  own 11/07 ~07:2x PT START checkpoint (`eef73c66`): 45 new commits (checked `%an` per commit — 21
+  Daedalus, 16 Theseus, 5 Argus, 3 Calliope; none Iris). `git diff --stat eef73c66..HEAD --
+  packages/ scripts/` touches exactly 4 files, all under `scripts/`
+  (`backfill-entity-bindings.mts`, `probe-outcome.mts`, `probe-backfill-sidecar-neutrality.mts`,
+  `sweep-probes.mjs`) — zero `packages/client/src` touch, outside Iris's UX lane; `git diff
+  --dirstat` otherwise under `docs/research/unit-465{adopt,armd,promote,sizeguard,skipE}-2026-11-
+  07/`, `docs/logs/`, `docs/mail/`. **Mail:** 5 new local files since my own last commit, all
+  Daedalus/Theseus cripple-promotion exchange — checked each header directly, Iris cc-only on
+  all five, no routed action (one sixth file referencing Iris, Argus's empty-diff-claim memo, was
+  already self-closed to `docs/mail/read/` by its own participant before this fire); confirmed via
+  `grep -il "^to:.*iris" docs/mail/*.md` — zero hits, Iris is never primary `to:` on any open
+  thread. All four cross-repo mailboxes checked fresh via `git -C <repo> fetch` + `git log
+  --since` against the 07:2x PT checkpoint: `designinproduct` 0 new; `mediajunkie` 5 new (Notarios/
+  Epistrophikon chapter-writing chain, a Janus→Pard memo), content-grepped — 0 klatch/iris hits;
+  `dispatch` 2 new — a dinp inbox-check digest, and a fresh question-box letter from Daedalus
+  (`question-daedalus-2026-11-07-when-a-guard-starts-charging-rent.md`, "no answer needed to
+  proceed" per its own text, same convention as the two standing letters below) — neither routed
+  to this seat; `piper-morgan-product/mailboxes` 167 new, content-grepped — 3 hits, all the same
+  index line repeating an already-dated 2026-11-06 "Klatch R&D possibility" mention (exec→CIO,
+  research hub retired, Themis looped in), not new and not addressed here. Nothing owed from any.
+  Both briefs re-checked: `fire-depth-latest.md` unchanged since 06:50 PT, no UX signal;
+  cross-pollination (11/07) still points to the private `designinproduct` source, confirmed again
+  not independently fetchable from this seat. **Standing blockers re-derived fresh:** ground-
+  rules-UX question stays **closed** (ruled 11/03, closed 11/04, no re-opening signal);
+  reassign-picker live-browser drive still queued on Theseus, unchanged; `entityGuess` re-grepped
+  scoped to `packages/client/src` — **5 files/22 hits** (`grep -ro` for occurrences, `grep -rn` for
+  19 lines — both checked, the 22 figure is the comparable one), unchanged. The two standing
+  dispatch question-box letters (Theseus's 10-25 and 11-01) re-checked present and still
+  un-replied, not re-escalated. **Verification gap, flagged rather than carried forward: the
+  attention-rollup is not reachable this fire.** `designinproduct/docs/operations/` holds only
+  `duty-cycle/` on `main` (checked via `git ls-tree`); `mediajunkie` has no `docs/operations/
+  attention-rollup.md` either — only a stale `docs/attention-rollup.html` (last touched
+  2026-09-24) alongside a `docs/rollup-retired-pointer.html`, and this fire's sandbox only grants
+  read/write under the four repos' `docs/mail/` (confirmed by a blocked `find`/`head` outside
+  that scope). Prior fires' entries (including this morning's) asserted "still v176" directly;
+  I could not reproduce that path or figure from this seat this fire and am not repeating it as
+  current — recording the gap, not the number, per verify-before-asserting. **Verified, not
+  trusted:** `lsof -i :3001` port free; `npm run typecheck` clean ×4 workspaces; server **143
+  files · 2221 passed · 1 skipped (2222)**; client **26 passed|13 skipped (39) · 333 passed|13
+  skipped (346)** — byte-identical to this morning's START checkpoint; `sweep-probes --census`
+  **154 probe files, 43 swept/111 deferred**, CENSUS OK, unchanged; full driving sweep (HEAD
+  unchanged at `75ab19e4` before/after, tree clean throughout, backgrounded past the 120s
+  foreground limit, picked up via completion notification, verdict line read directly from the
+  task output) — **SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0 blocked (0 could not run,
+  0 ran but did not finish), 0 census problem(s), 111 deferred.** No `packages/` changes this
+  fire. Nothing new needs xian from this seat beyond the rollup-access gap noted above (not an
+  ask, a record). **Drain:** all unblocked items done (commit check, mail across all four
+  mailboxes plus local, both blockers re-derived, both briefs, dispatch letters re-checked, full
+  gate including the driving sweep); the rollup check is the one item this fire could not
+  complete, named with its specific blocker (sandbox path scope) rather than deferred silently.
+  Two consecutive checks found nothing further unblocked — fire closed bounded. Log:
+  `docs/logs/2026-11-07-iris-log.md`.
+- **Prior update:** 2026-11-07 ~07:2x PT (START fire). **Status:** available.
 - **11/07 fire (START) — no-op on product; 13 commits read since own 11/06 STOP checkpoint
   (`6538bf7b`), none mine — Theseus's `unit-465walcell` chain plus Calliope/Theseus wrap-
   verification and today's two brief-publishes. Nothing routed to this seat.** Drain against own
