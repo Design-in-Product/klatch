@@ -112,14 +112,11 @@ if (r225 === undefined) {
  * (Round 355). A1b is what makes that legitimate: all three patterns are plain literals today, so
  * each one's `source` is itself a matching string. If a future entry uses a metacharacter, A1b reds
  * and tells the next reader to build the fragments another way rather than silently matching less.
+ *
+ * The helper is declared here and A1b itself prints further down, below A2 — see A2's docblock for
+ * why that order is the repair rather than a tidy-up.
  */
 const litteral = (re: RegExp) => re.test(re.source);
-check(
-  'A1b',
-  "the entry's three declared patterns are plain literals, so each pattern's own source is a " +
-    'known positive for it — the construction every cell below rests on',
-  litteral(r225.expect) && litteral(r225.refusal!) && litteral(r225.skip!),
-);
 
 /**
  * **Re-aimed by Theseus, `unit-465declpop` (2026-11-07 STOP fire).** As shipped, this arm asserted
@@ -137,6 +134,31 @@ check(
  * skip and no refusal is well-formed, and a second declaring entry does not change what `classify`
  * does with this one's. The live member list is named in the reason so a reader sees the population
  * this ran against rather than the one the arm was written beside.
+ *
+ * **MOVED ABOVE `A1b` AND MADE THE GUARD by Daedalus, `unit-465guard` (2026-11-08 WORK fire),
+ * driven in `docs/research/unit-465guard-2026-11-08/`.** It sat below `A1b`, and `A1b` read
+ * `litteral(r225.refusal!)`. `refusal` and `skip` are OPTIONAL registry fields, so each `!` was a
+ * claim the type system cannot check and which is false in a reachable state: an entry that stays in
+ * `SWEPT` and stops declaring one of the two patterns. In that state `undefined.test(…)` threw while
+ * being evaluated as an ARGUMENT to `check`, so `results.push` never ran — the probe died with A1
+ * green, no A1b row and no summary headline, and **this arm, whose entire job is to report that the
+ * keyed entry no longer declares both, sat downstream of the crash.** A1b's own diagnostic intent
+ * was inverted the same way: it exists to tell the next reader that a declared pattern has stopped
+ * being a plain literal, and it could tell them nothing if the pattern was not there at all.
+ *
+ * The repair is an ORDERING, not a null check at the use sites: a `?? fallback` for `REFUSAL_LINE`
+ * would build section A's tuple set out of a string of my own invention, which is the construction
+ * A1b exists to legitimise. No arm was added either — a separate upstream guard would make this
+ * arm's second and third conjuncts true-by-filter, and a conjunct a filter makes true can never be
+ * re-keyed red. So this arm keeps both conjuncts and keeps its name (cited at
+ * `sweep-probes.mjs:1593`), and is now also the gate that `A1b` and the three `…_LINE` constants
+ * stand behind. The published arm ORDER changes — `A2` prints before `A1b` — and the figure does
+ * not: 26 either way.
+ *
+ * Driven both ways against a registry copy in which this entry's two declarations were moved whole
+ * onto another `SWEPT` entry — count-preserving, so `=== 2` on the declaring population is green on
+ * exactly the registry that killed the shipped file. That is the driven control
+ * `sweep-probes.mjs:1593` says this arm has never had.
  */
 const declaringMembers = SWEPT.filter((s) => s.refusal || s.skip).map((s) => s.file);
 check(
@@ -144,14 +166,38 @@ check(
   `${declaringMembers.length} SWEPT entr(ies) declare either pattern (${declaringMembers.join(', ')}), ` +
     `and the one this round is keyed on declares BOTH — so the tuples below, built from its own ` +
     'declared sources, reach either BLOCKED limb through it (compare member lists, not counts: ' +
-    'Round 340; read the population live, do not freeze it: Round 465)',
+    'Round 340; read the population live, do not freeze it: Round 465). This arm is also the GUARD ' +
+    'for everything below it — nothing downstream dereferences either optional declaration until it ' +
+    'has passed (Round 465, `unit-465guard`)',
   declaringMembers.includes(R225) && Boolean(r225.refusal) && Boolean(r225.skip),
 );
 
+/**
+ * The narrowing the two `!`s used to stand in for. Spelled as locals plus an explicit `undefined`
+ * test rather than a non-null assertion, so the compiler carries the claim A2 has just checked
+ * instead of being told to take it on trust. Reached only when A2 failed, and then the exit is the
+ * shape A1's guard above already uses: the arm is RECORDED first, so the run reports a red with its
+ * reason and a summary line rather than a stack trace. Keyed on `undefined` rather than on
+ * falsiness — a zero-length regex is not a missing one.
+ */
+const refusalRe = r225.refusal;
+const skipRe = r225.skip;
+if (refusalRe === undefined || skipRe === undefined) {
+  summariseAndExit({ probeName: 'probe-round372', results });
+  throw new Error('unreachable');
+}
+
+check(
+  'A1b',
+  "the entry's three declared patterns are plain literals, so each pattern's own source is a " +
+    'known positive for it — the construction every cell below rests on',
+  litteral(r225.expect) && litteral(refusalRe) && litteral(skipRe),
+);
+
 const EXPECT_LINE = r225.expect.source;
-const REFUSAL_LINE = `  ${r225.refusal!.source}`;
+const REFUSAL_LINE = `  ${refusalRe.source}`;
 // `skipped` requires BOTH the marker and the declared label on ONE line — see `classify`.
-const SKIP_LINE = `  did not run: ${r225.skip!.source}`;
+const SKIP_LINE = `  did not run: ${skipRe.source}`;
 
 /**
  * The tuple is spelled in the DECLARED types rather than in `string`/`number`, and that is a

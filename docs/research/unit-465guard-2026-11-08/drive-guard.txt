@@ -1,0 +1,48 @@
+── M2  declaring populations, printed as objects rather than counts ──
+  FAITHFUL  SWEPT 44  declaring 2
+    probe-round225-a-citation-is-not-a-call.mts  refusal=true skip=true
+    probe-backfill-sidecar-neutrality.mts  refusal=false skip=true
+  MOVED     SWEPT 44  declaring 2
+    probe-round241-a-corpus-cast-is-resolved-not-pinned.mts  refusal=true skip=true
+    probe-backfill-sidecar-neutrality.mts  refusal=false skip=true
+  P3  count-preserving=true (2 → 2)  member-list-changed=true  keyed-entry-still-declaring=false  insertion-target=probe-round241-a-corpus-cast-is-resolved-not-pinned.mts
+
+baseline rev for the SHIPPED subject: d742de81
+
+── shipped-x-faithful ──
+  exit=0 signal=null  verdict rows=26
+  headline: All 26 regression checks passed.
+  stderr TypeError: false
+  A1  : [ok] A1  the entry this round is keyed on is in SWEPT (`probe-round225-a-citation-is-not-a-call.
+  A2  : [ok] A2  2 SWEPT entr(ies) declare either pattern (probe-round225-a-citation-is-not-a-call.mts, probe-backfill-sidecar-neutrality.mts), and the one this round i
+  A1b : row present
+── shipped-x-moved ──
+  exit=1 signal=null  verdict rows=1
+  headline: (NONE PRINTED)
+  stderr TypeError: true
+  A1  : [ok] A1  the entry this round is keyed on is in SWEPT (`probe-round225-a-citation-is-not-a-call.
+  A2  : (no row)
+  A1b : (no row)
+── cured-x-faithful ──
+  exit=0 signal=null  verdict rows=26
+  headline: All 26 regression checks passed.
+  stderr TypeError: false
+  A1  : [ok] A1  the entry this round is keyed on is in SWEPT (`probe-round225-a-citation-is-not-a-call.
+  A2  : [ok] A2  2 SWEPT entr(ies) declare either pattern (probe-round225-a-citation-is-not-a-call.mts, probe-backfill-sidecar-neutrality.mts), and the one this round i
+  A1b : row present
+── cured-x-moved ──
+  exit=1 signal=null  verdict rows=2
+  headline: 1 of 2 regression check(s) FAILED.
+  stderr TypeError: false
+  A1  : [ok] A1  the entry this round is keyed on is in SWEPT (`probe-round225-a-citation-is-not-a-call.
+  A2  : FAIL A2  2 SWEPT entr(ies) declare either pattern (probe-round241-a-corpus-cast-is-resolved-not-pinned.mts, probe-backfill-sidecar-neutrality.mts), and the one 
+  A1b : (no row)
+
+[HELD] P0 control  the SHIPPED subject against a FAITHFUL registry copy is green at 26 — the copy is the file, so every other cell is attributable to the one variable
+[HELD] P1  SHIPPED × MOVED: no summary headline, no A1b row, TypeError on stderr — the crash, keyed on the headline rather than the exit code (which was 1, the same value a legitimate one-arm red produces)
+[HELD] P2  and the last thing a reader sees is a green row: A1 [ok], and it is the only verdict row in the run
+[HELD] P3  the move is count-preserving (2 → 2) while the member list changes and the keyed entry leaves it — so `=== N` is green on exactly the registry that kills the shipped file, and `includes(R225)` is not
+[HELD] P4  CURED × MOVED: A2 FAILs and names the live member list, a summary headline is printed, no TypeError, and nothing below the guard reports — a recorded red instead of a stack trace
+[HELD] P5  CURED × FAITHFUL is green at the shipped figure, and at the same number of verdict rows as the shipped subject (26 vs 26) — the cure moved no count, so the registry `expect` needs no edit
+
+6 of 6 held
