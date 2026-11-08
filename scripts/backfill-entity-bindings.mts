@@ -704,7 +704,11 @@ source.close();
 if (!sidecarsBefore['-wal']) {
   try {
     const wal = fs.existsSync(dbPath + '-wal') ? fs.statSync(dbPath + '-wal').size : 0;
-    if (wal === 0) {
+    // C1, `unit-465adopt`: the size test removed, so the cleanup deletes a `-wal`
+    // carrying another process's committed frames. Present only to show that
+    // promoting the probe into SWEPT does not buy a cell that cannot report the
+    // defect arm E exists for. Removed before the unit lands.
+    if (wal === 0 || process.env.KLATCH_U465ADOPT_NOSIZE === '1') {
       fs.rmSync(dbPath + '-wal', { force: true });
       if (!sidecarsBefore['-shm']) fs.rmSync(dbPath + '-shm', { force: true });
     }
