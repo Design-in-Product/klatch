@@ -187,5 +187,58 @@ is `GATE ok exit=0` on both trees, because `--census` returns before the driving
 time in two weeks that this blind spot was the only thing standing between a red swept probe and
 `main`.
 
-**Second drive, after the fix:** transcribed in the wrap-verification entry below from the drive's
-own summary line — not drafted ahead of it, per U4.
+**Second drive, after the fix** — transcribed from `scratch/sweep2.out:97`, not drafted ahead of it:
+
+```
+SWEEP PASSED — 44 of 44 swept probes green, 0 red, 0 blocked (0 could not run,
+0 ran but did not finish), 0 census problem(s), 110 deferred
+```
+
+44 `PASS` rows counted mechanically, 0 red. **P6 stays refuted** in the write-up rather than quietly
+upgraded: the state it predicted is the state on `main` now, but it is not the state it was driven
+against, and recording it as HELD would launder a refutation into a pass.
+
+Gate re-run on the fixed tree as well: `GATE ok exit=0` ×5, server **143 / 2221 / 1 skipped (2222)**,
+client **26 / 13 skipped (39)** and **333 / 13 skipped (346)** — byte-identical to the run on the red
+tree. That pair of runs is the **direct** evidence for U3 rather than an inference from it: the same
+gate verdict, the same figures, over one tree with a red swept probe and one without.
+
+**Cross-pollination brief:** `docs/briefs/cross-pollination/current.md` read — by design it carries
+no content in this public repo, only a pointer to a private URL. Its own commit subject (`2bafd23c`,
+"testing gaps hidden by coverage") is apposite to U3 and to this fire's red, but I did not read the
+brief body: **WebFetch is not a permitted tool in this fire** (requested, refused), and the private
+source lives in `mediajunkie/src/internal/`, which is outside the four mailbox paths this seat may
+touch. Named as a tool-permission constraint, not as "unreachable from this seat" — a claim of that
+shape from this seat has been wrong before.
+
+## 09:3x — wrap verification
+
+**Step 1 — commits landed.** `git fetch origin`, then
+`git log origin/main --author=Daedalus --oneline -6`:
+
+```
+dad07e97 coord: 11/08 START fire — the promotion is taken and on main, …
+0194f4b6 sweep+unit+log: P6 REFUTED — my own pin re-broke probe-round308, …
+4f850c20 mail+unit: Daedalus -> Theseus, Argus — the promotion is taken, …
+5063b5ae sweep: probe-backfill-sidecar-neutrality PROMOTED into SWEPT — …
+447525f4 unit-465repromote: pre-registration — the promotion re-taken …
+ba62c552 log: wrap verification for the 11/07 STOP fire  [the checkpoint]
+```
+
+**Five commits of mine on `origin/main` this fire**, plus this log. `git rev-list --left-right
+--count HEAD...origin/main` = **0 0**.
+
+**Step 2 — deliverables present on the remote**, `git ls-tree -r origin/main --name-only` over the
+path specs: **8 asked for, 8 returned** — `PRE-REGISTRATION.md`, `RESULTS.md`, `drive-graders.mts`,
+`count-declarations.mts`, `grader-grading.txt`, `declaration-population.txt`, the memo, and this log.
+**0 files under `scratch/`**, which is the point of using explicit path specs rather than `git add
+-A` over a unit directory.
+
+`git diff --stat origin/main -- scripts/sweep-probes.mjs` → **empty**, so the working tree I drove
+round308 and the full sweep against is byte-identical to the remote blob — the fix is verified at
+the remote, not merely in my tree. `git diff --stat 447525f4 -- packages/` → **empty**: this fire
+touched no product code, only `scripts/sweep-probes.mjs`.
+
+**Step 3 — this log pushed last**, after steps 1 and 2.
+
+Delivery is the wrapper's to log; what is verified above is presence on `origin/main`, not delivery.
