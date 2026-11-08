@@ -25,3 +25,25 @@ All four cross-repo mailboxes fetched fresh against this seat's own 11/07 21:42:
 **`log.html`:** not due this fire — `next_due` reads 2026-11-08, cadence is daily at the STOP fire, owed tonight.
 
 **Drain:** 3 new commits read and author-checked, none mine, confirmed via empty `packages/`/`scripts/` diff; both new briefs read, neither actionable; mail checked locally and across all four cross-repo mailboxes, nothing owed from any; standing blocker re-derived fresh (day 17→18); rollup read directly and confirmed consistent; gate re-derived fresh and byte-identical; `log.html` confirmed not yet due. Two consecutive checks found nothing further unblocked. Fire closed bounded.
+
+---
+
+## ~11:2x PT — MID fire
+
+Census-only no-op. Checkpoint is this seat's own 11/08 START-fire commit `84f3e040` (not the STOP-fire commit cited at the top of this file — that one was superseded by this seat's own START-fire entry this morning).
+
+`git log 84f3e040..HEAD --format='%h %an %ci %s'` showed 17 new commits, author-checked before citing, none mine: Argus's own START-fire census no-op (`9eea5a55`); Daedalus's `unit-465repromote` chain (9 commits — the `probe-backfill-sidecar-neutrality` promotion re-taken and landed in `SWEPT` on `main`, re-broken within the hour by his own citation pin reproducing the exact false pointer Argus had just cured, found and fixed again the same way, mail to Theseus/Argus, coord+log with a self-correcting commit-count citation); Theseus's `unit-465declprose` chain (7 commits — pre-registration, drives, RESULTS at 7 of 7 held, mail reply to Daedalus/Argus). `git diff --stat 84f3e040..HEAD -- packages/ scripts/` **not empty**: `scripts/sweep-probes.mjs` (+210/-109) — Daedalus's `unit-465repromote` promotion, already fully chronicled in his own COORDINATION entry and the two mail memos below; no separate chronicling owed, `log.html`'s narrative pass is once-daily at STOP fire.
+
+**Mail:** two new top-level memos since checkpoint, both read in full — Daedalus → Theseus/Argus (cc xian/Janus/Calliope/Iris: the promotion is taken and holds under his own drives; the "one refusal and one skip" figure both he and Theseus inherited was one entry carrying both; he re-broke `probe-round308` within the hour via a citation pin that reproduced the exact false pointer Argus had cured, fixed it again the same way; claims `round372` A2 as his own next unit) and Theseus → Daedalus/Argus (cc same: confirms the A5b prose item was already cured in the same commit as its predicate — nothing to hand over; reproduces Daedalus's M1 under his own key; a wider-selector census finds zero frozen declaration counts left anywhere; a third-seat drive confirms 44 of 44 swept green including `probe-round308` at 23/23; prices the gate's long-standing census-only exclusion at 282s and routes the re-decision to Argus; stands down from `round372` A2, confirming it's Daedalus's). Both are research-track cc's; neither names a bucket or ask for this seat. Same four standing Pard-from-10-20 threads, left in place (`ma-smoke` thread still open on xian).
+
+All four cross-repo mailboxes fetched fresh against this seat's own START-fire checkpoint (local `main` vs `origin/main` after `git fetch`, not eyeballed): `designinproduct` **1** new (`97f6ffe`, Pard→Janus internal "multiple Slacks method" card-item traffic, content-checked, 0 `klatch`/`calliope` hits); `mediajunkie` **0** new; `dispatch` **1** new (`a436ca3`, routine 11-08 inbox-check, content-checked, 0 hits); `piper-morgan-product/mailboxes` **5** new, pickaxe-searched (`git log -G`, not a raw `-p` dump) for `klatch`/`calliope`, **0** hits on either term. Nothing owed from any.
+
+**Standing blocker re-derived fresh:** ma-smoke — no `smoke`/`ma-smoke`/`managed` branch anywhere (`git branch -a` + `git ls-remote --heads origin`), day count recomputed fresh via `node -e` (2026-10-21→2026-11-08) = **day 18**, unchanged from this morning (same calendar day).
+
+**Rollup:** read directly, still v176, needs-you unchanged at 3 items.
+
+**Gate re-verified fresh:** `npx tsx scripts/gate.mts` — census OK, typecheck 0 errors across all workspaces; server **143 files/2221 passed/1 skipped (2222)**, client **26/39 files, 333/346 tests** — byte-identical to this morning's figures and to both mail memos' own cited figures.
+
+**`log.html`:** not due this fire — owed at tonight's STOP fire.
+
+**Drain:** 17 new commits read and author-checked, none mine; the one touched product-code file (`sweep-probes.mjs`) confirmed already chronicled by its author; two new mail memos read in full, no action item for this seat; mail checked locally and across all four cross-repo mailboxes, nothing owed from any; standing blocker re-derived fresh, unchanged; rollup read directly and confirmed consistent; gate re-derived fresh and byte-identical; `log.html` confirmed not yet due. Two consecutive checks found nothing further unblocked. Fire closed bounded.
