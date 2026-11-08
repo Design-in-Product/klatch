@@ -4614,6 +4614,78 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
 - **Status:** available — duty cycle armed.
+- **Updated:** 2026-11-08 ~10:4x–11:0x PT (**START fire — substantive. The prose item Daedalus's §2
+  handed back was already cured, in the same commit as its own predicate, so this fire verified his
+  finding at the object level instead, re-censused the mechanism under a fresh selector, drove the
+  sweep from a third seat, and put a measured price on the gate exclusion that Round 281 §10 decided
+  on an unmeasured cost.**)
+  Checkpoint `7bd0f520` (the wrapper's sync; `git rev-parse HEAD origin/main` same sha, run). Commits
+  above my own 11/07 STOP tip `a157779d` **author-checked before use**: 9 Daedalus, 2 Calliope,
+  1 Argus, 1 Iris, 1 Pard (Mediajunkie), 1 Claude (brief publish) — **none mine.**
+  **Mail** counted with `readdirSync`: **73 live / 1188 read**; one new memo addressed to me and Argus
+  (Daedalus `~09:2x`, "the promotion is taken") read in full and **answered the same fire**
+  (`b612b47b`, mail committed on its own and pushed to `main` first, per the worktree rule). **Thread
+  left LIVE** — my §5 routes an open judgement to Argus, and closing a thread carrying another seat's
+  open item is how an item goes quiet for nine days.
+  **Unit `docs/research/unit-465declprose-2026-11-08/`** — pre-registration `24a0c118`, the only file
+  in its directory before any instrument in it existed (`git ls-tree -r --name-only origin/main`, one
+  path returned). **7 predictions, 7 HELD; 1 declared measurement; 1 unregistered finding; 2 defects
+  of my own, both in my own instrument. Plus 6 measurements already in hand before the
+  pre-registration was written, recorded as M0a–f rather than back-dated into predictions.**
+  **His §2's handoff was already discharged.** `probe-round374` A5b's live label does **not** say "one
+  refusal and one skip"; it says "the same patterns on the same entries", with the declaring count
+  recomputed each run as evidence and `declPopulation(mutant) === shippedPop` as the predicate —
+  `round375` A5 likewise, both from `7b1214db`, **prose and predicate in one commit**. A `grep` over
+  the tree finds no hit in any live arm label: the hits are frozen `.out` recordings, coord/log prose
+  about the pre-cure state, two memos, his own pins, and `round377` C0b where the phrase is scoped
+  *"for the subject"* and is true. The `(347)` beside it is a round-number citation, not a count.
+  **So a cured arm was not re-worded to match a memo describing its pre-cure text.**
+  **P1/P2:** his M1 reproduced under my own object-level key with members printed — live
+  **SWEPT 44 · refusals 1 · skips 2 · either 2 · both 1** (`round225` both, `backfill-sidecar-
+  neutrality` skip-only); at `5063b5ae^` **43 · 1 · 1 · 1 · 1**, a **single member carrying both**, so
+  "one refusal and one skip" never named two entries. Old rev materialised from `git show` into a
+  scratch dir **outside the repo** so nothing was written into `scripts/` while a census was live.
+  **P3 (the mechanism, not the instances):** a selector wider than the three known sites and keyed on
+  neither of their spellings — **52 files, 184 candidate lines, every one printed and hand read**;
+  **zero frozen declaration counts remain**. A different selector from `unit-465declpop` P3, so a hit
+  would have refuted my own earlier census.
+  **P4/P5/P6:** sweep driven here — **44 verdict rows, `{"PASS":44}`, counted mechanically off my own
+  capture** rather than read from the summary line; `status=0`; round372 **26**, round373 **15**,
+  round374 **8**, round375 **8**, round377 **13**, the new member **13**, **round308 23**, all exit 0.
+  **P7:** `GATE ok exit=0` on all five stages, server **143 / 2221 / 1 skipped (2222)**, client
+  **26 / 13 skipped (39)** files and **333 / 13 skipped (346)** tests — unmoved.
+  **P4–P7 were committed as empty PENDING rows at `413c3cfd` while the drive was in flight** and
+  filled from the captures after.
+  **UNREGISTERED FINDING, routed to Argus:** the `--census` blind spot has a **recorded decision**
+  behind it (`scripts/gate.mts:23` — "Driving the swept probes is NOT free and stays out, per Round
+  281 §10"; `package.json:15` the same) and **round308 is its second instance, not its first**
+  (`COORDINATION.md:2867`, 9/27: `probe-round261` red at 2 of 17 while both seats accurately published
+  the gate green). That decision rested on an unmeasured cost. **Measured: 282 s — 4 min 42 s for all
+  44 probes**, from the drive's own stamps; one sample, warm tree, stated as a floor and not a budget.
+  **Routed, not changed** — re-deciding Round 281 §10 from the seat that priced it, in the fire that
+  priced it, is the shape of repair the registry exists to refuse.
+  **My own two defects:** a hand-typed filename in `measure-declpop.mjs`'s `expectedLive` array that
+  was wrong and `void`-ed rather than used (the loose key is what ran, so nothing published is wrong —
+  but it was never the key and should not have been written as if it were), and P3's strength being a
+  hand read rather than a scanner result, stated where the figure is stated.
+  **Drain:** memo read and answered same fire; its one prose item found already discharged and
+  reported as such rather than re-done; mechanism re-censused; sweep and gate driven rather than
+  inferred; the finding routed with a number. **Two deferrals, both with named blockers.**
+  **(1) `round372` A2 — STAND-DOWN CONFIRMED, it is Daedalus's** per his §5: not started here, will
+  not be. Carried for whoever drives it: his §1 third column was an **unregistered live exercise** of
+  `round373` A2's newest conjunct (his pins put `` `skip:` ``/`` `refusal:` `` prose into the
+  registry's *comments*, exactly what a nearest-preceding-`file:` walk picks up); it did not fire, and
+  that is his finding to claim.
+  **(2) E4/E5 — still mine, still a decision, sharpened rather than left as one word.** A pre-existing
+  `-wal` blocks cleanup of an `-shm` this script's own read-only open created. **Hypothesis, explicitly
+  not measured:** `:652`'s ordering contract may be **asymmetric** — `-shm` without `-wal` is the
+  half-state it names, but `-wal` without `-shm` is the ordinary state of a database closed with frames
+  pending, and nesting the `-shm` removal inside the `-wal` test conflates them. **Named blocker:**
+  that is a claim about SQLite, not our code, and needs a driven open of a `-wal`-only database — its
+  own unit with its own control. First step now defined instead of "a decision".
+  **Standing on xian, not re-asked:** the 09-29 step-1 list; `backups/` tracked-vs-ignored; the March
+  restore from `c945e8aa`. **Still ungraded and not to be cited as measured by anyone:** the size guard
+  at the cleanup site.
 - **Updated:** 2026-11-07 ~19:4x–20:0x PT (**STOP fire — substantive. Took Daedalus's §3 registry
   blocker, which his §6 assigned to me and Argus and Argus's own STOP entry carried forward
   *unclaimed*. `SWEPT` can hold more than one `skip:` now, so every hard-skipping promotion on the
