@@ -6972,7 +6972,52 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-11-07 ~19:3x PT (STOP fire). **Status:** available.
+- **Updated:** 2026-11-08 ~07:2x PT (START fire). **Status:** available.
+- **11/08 fire (START) — no-op on product; 10 commits read since own 11/07 STOP checkpoint
+  (`f9d3127f`), none mine — Theseus's `unit-465declpop` research chain plus Calliope's logbook
+  commit and today's two brief-publishes. Nothing routed to this seat. Two prior-fire
+  "unreachable from this seat" notes corrected: the cross-pollination brief and the
+  attention-rollup were both fetched directly this fire via `git -C designinproduct show
+  origin/main:<path>`.** Drain against own checkpoint: 10 new commits (checked `%an` per commit —
+  7 Theseus, 1 Calliope, 1 Pard(Mediajunkie), 1 Claude(brief-publish); none Iris). `git diff
+  --stat f9d3127f..HEAD -- packages/ scripts/` touches exactly 4 files, all under `scripts/`
+  (Theseus's `unit-465declpop` probe/driver/cure work) — zero `packages/client/src` touch,
+  outside Iris's UX lane. **Mail:** one new local file (Theseus's registry-blocker-cleared memo),
+  Iris cc-only, no routed action. All four cross-repo mailboxes checked fresh via `git -C <repo>
+  fetch` + `git log --since` against the 11/07 ~21:42 PT checkpoint: `designinproduct` 0 new;
+  `mediajunkie` 0 new; `dispatch` 0 new; `piper-morgan-product/mailboxes` 21 new,
+  content-grepped — 0 hits. Nothing owed from any. Both briefs read: fire-depth (0 fires matched,
+  105 unmatched, no UX signal); cross-pollination 11/08 fetched in full this time via `git -C
+  designinproduct show origin/main:src/internal/briefs/2026-11-08-brief.md` (two testing lessons —
+  a WAL-cleanup "unreachable" guard proven reachable under a concurrent connection, and a Piper
+  Morgan dispatcher floor hiding a missing handler) — no UX-lane signal, and this corrects prior
+  fires' repeated claim that the source isn't independently fetchable from this seat; it is, via
+  `git show` against the fetched ref, no file write needed. **Standing blockers re-derived
+  fresh:** ground-rules-UX stays **closed** (ruled 11/03, closed 11/04, no reopening signal);
+  reassign-picker live-browser drive still queued on Theseus, unchanged; `entityGuess` re-grepped
+  scoped to `packages/client/src` — **5 files/22 hits**, unchanged. Both standing dispatch
+  question-box letters (Theseus's 10-25, 11-01) re-checked present and still un-replied, not
+  re-escalated. **Attention-rollup reachability also corrected this fire:** rather than stopping
+  at `designinproduct/docs/operations/` (holds only `duty-cycle/`), checked the canonical path
+  named in `docs/agents/janus/attention-rollup.md` directly — `git -C designinproduct show
+  origin/main:docs/agents/janus/attention-rollup.html` returned in full. Still **v176** (Fri
+  START, unchanged) with the same three asks on Calliope's board: (1) a yes to board xian's 09-29
+  step-1 list with owners, (2) the Managed Agents smoke-test key (day 17 unrun), (3) a
+  blog-series angle/order talk with Calliope — none UX-lane, nothing new owed. **Verified, not
+  trusted:** `lsof -i :3001` port free; `npm run typecheck` clean ×4 workspaces; server **143
+  files · 2221 passed · 1 skipped (2222)**; client **26 passed|13 skipped (39) · 333 passed|13
+  skipped (346)** — byte-identical to the 11/07 STOP checkpoint; `sweep-probes --census` **154
+  probe files, 43 swept/111 deferred**, CENSUS OK, unchanged; full driving sweep (HEAD unchanged
+  at `a7635963` before/after, tree clean throughout, backgrounded past the 120s foreground limit,
+  picked up via completion notification, verdict line read directly from the task output) —
+  **SWEEP PASSED — 43 of 43 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but did
+  not finish), 0 census problem(s), 111 deferred.** No `packages/` changes this fire. Nothing new
+  needs xian from this seat. **Drain:** all unblocked items done (commit check, mail across all
+  four mailboxes plus local, both blockers re-derived, both briefs with two reachability
+  corrections recorded, dispatch letters re-checked, full gate including the driving sweep);
+  nothing deferred. Two consecutive checks found nothing further unblocked — fire closed
+  bounded. Log: `docs/logs/2026-11-08-iris-log.md`.
+- **Prior update:** 2026-11-07 ~19:3x PT (STOP fire). **Status:** available.
 - **11/07 fire (STOP) — no-op on product; 45 commits read since own START checkpoint, none
   mine, all under the Daedalus/Theseus/Argus research chains plus Calliope's logbook. One
   verification gap found and flagged rather than papered over: the rollup is not reachable from
