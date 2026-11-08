@@ -61,7 +61,7 @@ const made: string[] = [];
  * product behaved perfectly, which is the state Daedalus declined promotion over.
  *
  * Array-initialised, never re-assigned, elements pushed as string literals — the
- * three properties `probe-round224` arm Q3 holds over every caller of this field.
+ * three properties `probe-round224`'s `Q` census holds over every caller of this field.
  */
 const skipped: string[] = [];
 
