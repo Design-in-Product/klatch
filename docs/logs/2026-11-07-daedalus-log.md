@@ -435,3 +435,56 @@ not deferred. ma-smoke: re-derived, no `smoke`/`managed` branch (`git branch -a`
 needs-you 3**, unchanged; item 3 is the ma-smoke item and is blocked on xian. Nothing deferred this
 fire with an unnamed blocker; the one deferral is rounds 372–377, blocked on the seats that own
 them, and named in both the memo and the registry note.
+
+## 17:4x — wrap verification
+
+**Step 1 — commits landed.** `git fetch origin`, then
+`git log origin/main --author='Daedalus' --oneline -8`:
+
+```
+e1969f53 coord+log: 11/07 STOP fire — the promotion was taken, driven and reverted, and SWEPT
+         can hold exactly one skip:
+94e6558b mail+unit: Daedalus -> Theseus, Argus — the cure reproduces, the promotion is reverted,
+         and SWEPT can hold exactly one skip:
+27964e9d sweep: promotion REVERTED — the entry's second skip: declaration reddens five swept
+         probes, and the blocker is on the registry
+5b87f582 sweep: probe-backfill-sidecar-neutrality promoted into SWEPT, with the skip: declaration
+         the tool does not propose
+e989d9e5 unit-465adopt: cripples removed, arms and M1 recorded — all four cells land where the
+         pre-registration said
+c37cc00a unit-465adopt: two env-gated cripples + two instruments, committed before being driven
+6e5207dd unit-465adopt: pre-registration — the promotion turns on a string equality between his
+         label and my regex
+924328e7 log: wrap verification for the 11/07 WORK fire (the checkpoint this fire opened on)
+```
+
+**Seven commits of mine on `origin/main` this fire.** `git rev-list --left-right --count
+HEAD...origin/main` = **0 0**. The promotion (`5b87f582`) and its revert (`27964e9d`) are both on
+`main` on purpose: the promotion is what the five reds are evidence *about*, and squashing it away
+would leave the note asserting a counterfactual nobody can re-run.
+
+**Step 2 — deliverables present.** `git ls-tree -r origin/main --name-only` over **18** path specs,
+counted with `execFileSync` + `split` rather than a piped `wc`: **18 asked for, 18 returned.** The
+unit directory tracks **43 files, 0 under `scratch/`** — the commits used explicit path specs, and
+the one time a glob caught `scratch/msg*.txt` it was `git reset` before the commit.
+
+**The cripples are verified gone from the REMOTE blobs**, not merely from my working tree:
+`git show origin/main:<file>` for both crippled files → **0** occurrences of `U465ADOPT`.
+`git diff --stat 924328e7 origin/main -- packages/` → **EMPTY** (this fire touched no product code).
+`git diff --stat 5b87f582^ origin/main -- scripts/sweep-probes.mjs` → one file, **+38 lines, all 38
+matching `^+  //`** — the DEFERRED note's new blocker paragraph and nothing else, comment-only,
+counted rather than eyeballed.
+
+**Step 3 — question-box check (STOP step 4), and it is a yes.** Filed
+`dispatch/mail/question-daedalus-2026-11-07-when-a-guard-starts-charging-rent.md` — whether xian has
+a feel for when a discipline he built starts charging rent on the future, and whether that feel
+arrives before the bill. Tonight is the first time I watched Klatch's rigour make a correct,
+measured, two-sided improvement un-landable, with every gate green the whole time. Committed as
+`xian <xian@amber.attlocal.net>`, the identity that has actually pushed to `dispatch` from this
+machine (read off `git log` for my own 11-06 letter, `e711a1e`, rather than supplying an address
+that looked right); rebased onto `origin/main` (4 behind) and **verified at the remote** with
+`git -C dispatch ls-tree -r origin/main --name-only`, not from the local commit.
+
+**Step 4 — this log pushed last**, after steps 1–3.
+
+Delivery is the wrapper's to log; what is verified above is presence on `origin/main`, not delivery.
