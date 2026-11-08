@@ -938,7 +938,95 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-07 ~17:1x–17:4x PT (**STOP fire — substantive: the promotion Theseus handed
+- **Updated:** 2026-11-08 ~09:1x–09:3x PT (**START fire — substantive: the promotion Theseus handed
+  back is TAKEN and is on `main`; his cure holds under my own drives; `round374` A5b's "one refusal
+  and one skip" was one entry carrying both; and my own pin crediting Argus's round308 fix re-broke
+  round308, caught only because the full sweep was driven rather than inferred from a green gate.**)
+  Checkpoint re-derived by author: **`ba62c552`** (11/07 17:40, the STOP fire's wrap-verification log
+  push — *not* the `e1969f53` that fire's step-1 listing ended on, since the log push came after it).
+  The three most recent commits all carry "11/08 START fire" subjects in my own shape and are
+  **Argus's, Calliope's and Iris's** — `%an`-checked before citing; there was no 11/08 Daedalus log,
+  so this was the day's first fire for this seat. 16 commits since, author-checked (Theseus 7,
+  Argus 3, Calliope 2, Iris 2, Pard 1, Claude 1), **none mine**.
+  `git diff --stat ba62c552..HEAD -- packages/ scripts/` **not empty**: `probe-round37{2,3,4,5}.mts`
+  (+110/−19, Theseus's `unit-465declpop` cure) and a one-line comment fix in
+  `probe-backfill-sidecar-neutrality.mts` (Argus's round308 fix).
+  **Mail:** one new memo to this seat (read off `git diff --name-status -- docs/mail/`, so it is the
+  delta and not a re-read): Theseus's `…the-registry-blocker-is-cleared…`, 120 lines, read in full
+  and **actioned in the same fire as the read**. His §6 hands the attestation back. Thread left open
+  in `docs/mail/`: his E4/E5 are unchanged and §6's unclaimed item is now claimed by this seat.
+  **Unit `docs/research/unit-465repromote-2026-11-08/`**, pre-registration pushed as the only file
+  in its directory before any instrument in it existed (`447525f4`, verified by `git ls-tree -r
+  origin/main` over that path returning one file). **7 predictions: 6 held, 1 REFUTED. 1 declared
+  measurement. 4 unregistered findings, 3 of them mine.**
+  **The promotion is on `main` (`5063b5ae`).** Theseus's five grader probes driven by one instrument
+  with the tag off `argv`, three arms: **pre-edit, post-edit and post-pins all 26 / 15 / 8 / 8 / 13,
+  exit 0** — his §4 figures reproduced cell for cell under my own drives, where `unit-465adopt`
+  measured 1 of 26 / 1 of 15 / 3 of 8 / 2 of 8 / 5 of 13. The **post-pins** arm was unregistered and
+  nearly mattered: my pins put prose containing `` `skip:` ``/`` `refusal:` `` into the registry's
+  comments, and `round373` A2's cure carries a no-orphan-declaration conjunct keyed on a
+  nearest-preceding-`file:` source walk — the exact reader that picks a declaration out of a comment
+  block. It did not fire. Re-attested on today's tree rather than yesterday's recording: **PROMOTABLE
+  all 7, exit 0 both HOME arms, 2725/2663 ms, 124 population samples** (121 yesterday; `scripts/` had
+  moved, so the fingerprint predicate was a different question).
+  **M1, off the parsed registry rather than grepped:** the whole frozen declaration population was
+  **one entry — `probe-round225` — carrying both patterns**, not one refusal and one skip spread over
+  the list. `round374` A5b says "one refusal and one skip" and my own `unit-465adopt` note repeated
+  it; that phrasing describes a two-member population that never existed. Theseus's mechanism reading
+  is unaffected and M1 is what makes it legible — with one entry carrying both, his withdrawn "no
+  entry declares one without the other" conjunct was *trivially* true, which is why it read like a
+  requirement. A5b's prose left alone: his family, and re-wording a grader's own sentence from the
+  seat whose entry it grades is the shape I declined last time.
+  **P7 held at 4 where it registered 2.** The ~108-line record travels whole into the SWEPT entry;
+  four of its sentences were false about the tree the entry now sits in — the header credited the
+  **reverted** attestation (unregistered, and the worst, since every entry in that list is read for
+  who attested it); "taken, driven, and REVERTED" was its last word; "the cure belongs to the seats
+  that own those rounds" read as an open item though done; and round308 "is already RED on `main`".
+  Cured by **pins, nothing deleted**. The published `why` was re-pointed at today's drive too.
+  **P6 REFUTED, and it is the fire's result.** `SWEEP FAILED — 43 of 44 swept probes green, 1 red` —
+  the new member passed on its own row, and the sole red was **`probe-round308`, exit 1, `2 of 23`**:
+  the identical count **Argus** cured in `b2fa6936` yesterday and re-drove green at 43 swept two
+  hours before this fire. Cause read off the probe's own `[B0]`/`[B1]` rows: the new pointer is
+  `sweep-probes.mjs:1605 → r224/Q3`, **my own pin**, where I quoted the false arm pointer verbatim in
+  order to credit his fix of it; `[B1]` needs every v1 pointer explainable as an artifact of v1's key,
+  and mine was not — 8 of 9 explained. The detector reads token adjacency, which cannot tell a
+  quotation from a claim. Fixed per round308's own doctrine (the citing prose, not the detector),
+  re-driven alone at `All 23 regression checks passed`, and the pin now carries the rule: *describe a
+  false pointer, never reproduce it.* **The promotion was sound throughout** — the red was
+  manufactured entirely by the *documentation* of the promotion — and it would have shipped silently,
+  since the gate is `GATE ok exit=0` on both trees because `--census` returns before the driving loop.
+  **Three instances in one fire of one shape:** two census reds on the entry-schema agreement rule
+  (writing the graders' counts slash-separated put a self-equal pair in a `why`, which that rule reads
+  against the entry's own `expect`; my first correction re-tripped it by quoting the pair verbatim)
+  and this one. A correction that reproduces the defect it describes re-trips the detector that
+  catches it. **And a fourth of my own:** I drafted P6's result slot as HELD *while the sweep was
+  still driving* — the same error `unit-465adopt` recorded of me ten hours earlier, where the figures
+  happened to come back identical; caught here before the drive returned, and had I left it, the
+  published table would have claimed a clean sweep that failed.
+  **Gate re-derived fresh:** `GATE ok exit=0` ×5 — server **143 files · 2221 passed · 1 skipped
+  (2222)**, client **26 passed | 13 skipped (39)** and **333 passed | 13 skipped (346)** —
+  byte-identical to Theseus's and Argus's figures. Census **154 files, 43 swept/111 deferred → 44/110,
+  CENSUS OK**, file count unmoved.
+  **`round372` A2 — claimed, after three namings with no owner.** Theseus's §5/§6 named it unclaimed
+  with the blocker on nobody; Argus read the 440-line file this morning, confirmed the upstream crash,
+  scoped the repair as a restructuring of `A1b` and the `REFUSAL_LINE`/`SKIP_LINE` construction rather
+  than a null-check patch, and declined it the same way. Three namings with no owner is a deadline
+  with nothing behind it, so **this seat takes it next fire** as its own unit — it covers both the
+  missing driven control and the strictly-stronger-than-`=== 1` claim, since both need an entry whose
+  declarations can move without the upstream `r225.skip!`/`r225.refusal!` dereferences crashing
+  first. It will not touch Theseus's cure; offered back in the memo if either of them has started.
+  **Standing items re-derived, not recalled:** ma-smoke — `git ls-remote --heads origin` and `git
+  branch -a` both **0** for `smoke`/`managed`, day **19** (agreeing with Argus's figure this
+  morning), named blocker on xian unchanged. Rollup read directly at
+  `docs/operations/attention-rollup.md:9`: **v176, needs-you 3**, unchanged; item 3 is ma-smoke and is
+  blocked on xian.
+  **Drain:** mail (1 addressed-to-this-seat memo, read and actioned in the same fire, thread left open
+  on live items), the handed-back promotion (taken and driven, not deferred), the full sweep (driven
+  rather than inferred — which is the only reason the red was found), the red it found (root-caused
+  and fixed in the same fire), census, gate, standing items. **Nothing deferred with an unnamed
+  blocker, and the one item three fires had carried as "unclaimed" now has an owner.** Log:
+  `docs/logs/2026-11-08-daedalus-log.md`.
+- **Previously:** 2026-11-07 ~17:1x–17:4x PT (**STOP fire — substantive: the promotion Theseus handed
   back was taken, driven through the attestation tool, and REVERTED — `SWEPT` can hold exactly one
   `skip:` today, and the second one reddens five swept probes. Plus: `probe-round308` is already
   red on `main` and nothing was going to notice.**)
