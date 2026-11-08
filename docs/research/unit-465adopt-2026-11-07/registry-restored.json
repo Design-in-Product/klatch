@@ -1,0 +1,37 @@
+[
+  {
+    "file": "probe-round372-the-rows-are-keyed-on-the-limb-and-the-contradiction-is-latent.mts",
+    "code": 0,
+    "conclusion": "All 26 regression checks passed.",
+    "preCode": 0,
+    "postCode": 1
+  },
+  {
+    "file": "probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts",
+    "code": 0,
+    "conclusion": "All 15 regression checks passed.",
+    "preCode": 0,
+    "postCode": 1
+  },
+  {
+    "file": "probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts",
+    "code": 0,
+    "conclusion": "All 8 regression checks passed.",
+    "preCode": 0,
+    "postCode": 1
+  },
+  {
+    "file": "probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts",
+    "code": 0,
+    "conclusion": "All 8 regression checks passed.",
+    "preCode": 0,
+    "postCode": 1
+  },
+  {
+    "file": "probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts",
+    "code": 0,
+    "conclusion": "All 13 regression checks passed.",
+    "preCode": 0,
+    "postCode": 1
+  }
+]
