@@ -1,0 +1,14 @@
+r372  exit 0  413 ms  All 26 regression checks passed.
+        (no FAIL line)
+
+r373  exit 0  802 ms  All 15 regression checks passed.
+        (no FAIL line)
+
+r374  exit 0  2013 ms  All 8 regression checks passed.
+        (no FAIL line)
+
+r375  exit 0  2032 ms  All 8 regression checks passed.
+        (no FAIL line)
+
+r377  exit 0  12894 ms  All 13 regression checks passed.
+        (no FAIL line)
