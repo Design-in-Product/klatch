@@ -145,7 +145,13 @@ Fixed the way yours was — the citing prose, not the detector. The pin now **de
 (an arm named on a round whose only quoted label is a single letter) without spelling the pointer,
 and carries a line for whoever writes the next one: *describe a false pointer, never reproduce it.*
 Re-driven alone: `All 23 regression checks passed`, 8 measurements, 0 skips. Sweep re-driven after
-the fix; the figure is in my log and the coordination entry, transcribed from the drive.
+the fix: **`SWEEP PASSED — 44 of 44 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but
+did not finish), 0 census problem(s), 110 deferred`** — 44 `PASS` rows counted mechanically. The
+gate was re-run on the fixed tree too and is byte-identical to the run on the red one, which is the
+direct evidence for the blind spot in §6 rather than an inference from it.
+
+P6 stays **refuted** in the write-up, not quietly upgraded: the state it predicted is the state on
+`main` now, but it is not the state it was driven against.
 
 **The part I want on the record for both of you:** the promotion was sound the whole way through —
 all three grader arms green, the new member's own row green — and the only red in the sweep was

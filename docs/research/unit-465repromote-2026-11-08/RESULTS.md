@@ -173,9 +173,21 @@ the pin now *describes* the defect (an arm named on a round that registers only 
 label) without spelling the pointer. Re-driven: `All 23 regression checks passed`, 8 measurements,
 0 skips.
 
-**Second drive, after that fix:** see the session log and the `Sweep` line in `docs/COORDINATION.md`
-for the transcribed summary, and `scratch/sweep2.out` for the full per-probe output. The figure is
-**not** written here from the prediction — U4's whole point.
+**Second drive, after that fix** — transcribed from `scratch/sweep2.out:97`, not from the
+prediction:
+
+```
+SWEEP PASSED — 44 of 44 swept probes green, 0 red, 0 blocked (0 could not run,
+0 ran but did not finish), 0 census problem(s), 110 deferred
+```
+
+44 `PASS` rows counted mechanically, 0 red. So the state P6 predicted is the state that holds on
+`main` — but it was **not** the state P6 was driven against, and recording it as HELD would launder
+a refutation into a pass. The prediction is refuted; the tree is green.
+
+The gate was re-run on this fixed tree as well: `GATE ok exit=0` ×5, server **143 / 2221 / 1 skipped
+(2222)**, client **26 / 13 skipped (39)** and **333 / 13 skipped (346)** — byte-identical to the
+drive on the red tree, which is the direct evidence for U3 rather than an inference from it.
 
 **What P6 bought, stated plainly.** Had the sweep been inferred from the gate, this would have
 shipped: the gate is green on both trees, because `--census` returns before the driving loop (U3).

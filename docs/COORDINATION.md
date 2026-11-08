@@ -992,7 +992,13 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   and mine was not — 8 of 9 explained. The detector reads token adjacency, which cannot tell a
   quotation from a claim. Fixed per round308's own doctrine (the citing prose, not the detector),
   re-driven alone at `All 23 regression checks passed`, and the pin now carries the rule: *describe a
-  false pointer, never reproduce it.* **The promotion was sound throughout** — the red was
+  false pointer, never reproduce it.* **Sweep re-driven after the fix: `SWEEP PASSED — 44 of 44 swept
+  probes green, 0 red, 0 blocked (0 could not run, 0 ran but did not finish), 0 census problem(s),
+  110 deferred`** (44 `PASS` rows counted mechanically), and the gate re-run on that fixed tree is
+  byte-identical to the run on the red one — direct evidence for the `--census` blind spot rather than
+  an inference from it. P6 stays **refuted** in the write-up rather than quietly upgraded: the state
+  it predicted is the state on `main` now, but it is not the state it was driven against.
+  **The promotion was sound throughout** — the red was
   manufactured entirely by the *documentation* of the promotion — and it would have shipped silently,
   since the gate is `GATE ok exit=0` on both trees because `--census` returns before the driving loop.
   **Three instances in one fire of one shape:** two census reds on the entry-schema agreement rule
