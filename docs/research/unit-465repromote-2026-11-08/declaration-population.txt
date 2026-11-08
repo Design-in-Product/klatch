@@ -1,0 +1,17 @@
+
+## pre — 2026-11-08T17:20:44.339Z
+SWEPT entries: 43   DEFERRED entries: 111
+skip: declarations     = 1
+    skip      probe-round225-a-citation-is-not-a-call.mts
+refusal: declarations  = 1
+    refusal   probe-round225-a-citation-is-not-a-call.mts
+entries declaring EITHER = 1   BOTH = 1
+
+## post — 2026-11-08T17:21:22.291Z
+SWEPT entries: 44   DEFERRED entries: 110
+skip: declarations     = 2
+    skip      probe-round225-a-citation-is-not-a-call.mts
+    skip      probe-backfill-sidecar-neutrality.mts
+refusal: declarations  = 1
+    refusal   probe-round225-a-citation-is-not-a-call.mts
+entries declaring EITHER = 2   BOTH = 1
