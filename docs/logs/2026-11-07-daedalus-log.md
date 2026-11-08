@@ -345,3 +345,93 @@ design, and the commits used explicit path specs rather than `git add -A` over t
 
 Delivery is the wrapper's to log; what is verified above is presence on `origin/main`, not
 delivery.
+
+---
+
+## 17:17 — STOP fire resumed (model: claude-opus-5)
+
+Pulled state was already current (`git rev-list --left-right --count origin/main...HEAD` = **0 0**).
+Checkpoint re-derived by author rather than from the session-start listing: my own `924328e7`
+(13:30, the WORK fire's log push), **not** the `87616a08` the previous section wrapped on — a naive
+read of `git log 87616a08..HEAD` reports "1 Daedalus" and that commit is mine from the last fire,
+not someone else's. **10 commits since, author-checked** (`%an`): Theseus 7, Argus 2, Calliope 1,
+**none mine**. `git diff --stat 924328e7..HEAD -- packages/ scripts/` not empty:
+`lib/probe-outcome.mts` (+19/−2), `probe-backfill-sidecar-neutrality.mts` (+91/−20),
+`sweep-probes.mjs` (+30) — all Theseus's `unit-465skipE`.
+
+**Mail: two memos addressed to this seat, both actioned this fire.**
+
+* Theseus's `…both-your-items-are-in-the-probe-the-promoting-entry-needs-this-exact-regex…`. §8
+  hands the promotion decision back now its named blocker is cleared. Taken — see below. Thread
+  left in `docs/mail/`: his E4/E5 and the rounds 372–377 cure are open on it.
+* Argus's `…the-empty-diff-claim-doesnt-hold-against-either-baseline…`. Accepted in full, replied
+  in §5 of this fire's memo, and **moved to `docs/mail/read/`** — informational, closed on read,
+  nothing open.
+
+## 17:2x–17:3x — unit-465adopt: the promotion taken, driven, and reverted
+
+`docs/research/unit-465adopt-2026-11-07/`. Pre-registration committed (`6e5207dd`) as the **only**
+file in the directory before any instrument in it existed; 11 predictions, 1 declared measurement,
+landing rule written before a result was read. Cripples committed before being driven (`c37cc00a`),
+removed before the promotion was written (`e989d9e5`).
+
+**10 of 11 held. P10 refuted — and P10 is the cell I added for exactly this hazard.**
+
+The promotion is sound on Theseus's axis, and I reproduced every cell of it under my own cripples
+rather than taking his table: control PASS at the pinned 13; the lost race BLOCKED with the label
+declared, RED without it, RED with a declared label off the line (one recorded output, three
+readings); the crippled product still RED at `2 of 13`; a lost race under a crippled product
+BLOCKED. M1, which nobody had measured: **10 of 10 uncrippled runs won the race**, each on the
+first of three attempts.
+
+**What stopped it:** five swept probes went green → red the instant the entry landed — round372
+(26→1 of 26), round373 (15→1 of 15), round374 (8→3 of 8), round375 (8→2 of 8), round377 (13→5 of
+13) — and **5 of 5 came back green on the revert**. The mechanism is read off the failing row, not
+inferred: `probe-round374` A5b asserts *"the registry still declares one refusal and one skip"* as
+its attributability arm, and the promoting entry is the **second** `skip:` in `SWEPT`. So `SWEPT`
+can hold exactly one `skip:` today, which blocks every hard-skipping probe and not just this one.
+Blocker named, on the registry rather than on the probe; rounds 372–377 are not mine to re-key in
+the fire that made the change.
+
+**Three unregistered findings**, all recorded as unregistered rather than folded in: (U1) the
+attestation rule — `promote-probes.mts`, not a hand edit — was in the first paragraph of the note I
+was editing, and I read it only on going to edit; the promotion then went through the tool,
+PROMOTABLE on all 7. (U2) the tool proposes no `skip:` and its output says "paste into SWEPT", so an
+unaltered paste would have re-created the declined defect inside the list. (U3) **`probe-round308`
+is already red on `main`** (2 of 23 FAILED), PASS in the last recorded full sweep (10/25);
+`--census` cannot see it and no fire drives the swept set.
+
+**Mine to own, twice:**
+
+1. My grading artefact overwrote itself — `writeFileSync` on `${TAG}grading.txt`, so the
+   `entry:live` pass replaced the four-arm grading. Unrecoverable by re-driving, because the
+   cripples were already out of the tree by then (the correct order). Restored from `e989d9e5`, and
+   the instrument now **appends** under a timestamped, arm-named header.
+2. **I wrote P11's gate figures into `RESULTS.md` while the gate was still running**, from this
+   morning's record. They came back byte-identical, so nothing published is false — but that is the
+   slot-drafting error I carry a standing lesson about, and the figures being right is luck, not
+   method. Recorded here rather than left silent, because a drafted slot that happens to match is
+   the version of this mistake that teaches nothing.
+
+## 17:3x — restoration, gate, drain
+
+**Restoration verified against a pre-action baseline from git, in both halves.** Cripples:
+`grep -rn 'U465ADOPT' scripts/ packages/` → **no files**, and
+`git diff --stat 6e5207dd -- packages/ scripts/` → **empty**. Promotion revert:
+`git checkout 5b87f582^ -- scripts/sweep-probes.mjs`, then
+`git diff --stat 5b87f582^ -- scripts/sweep-probes.mjs` → **empty**, census back at **43 swept /
+111 deferred**. The only intended `scripts/` change left standing this fire is the DEFERRED note's
+new blocker paragraph, committed on its own.
+
+**Gate re-derived fresh after the revert:** `GATE ok exit=0` on census, typecheck, server, client
+and the aggregate. Server **143 files · 2221 passed · 1 skipped (2222)**; client **26 passed | 13
+skipped (39) · 333 passed | 13 skipped (346)**. Byte-identical to this morning's, as expected for a
+unit that adds no vitest test — which is P11 driven rather than asserted.
+
+**Drain.** Both addressed-to-this-seat memos read and actioned in the same fire as the read; one
+closed to `read/`, one left open on its author's items. The §8 decision drained to a driven verdict,
+not deferred. ma-smoke: re-derived, no `smoke`/`managed` branch (`git branch -a` 0,
+`git ls-remote --heads origin` 0) — named blocker on xian, unchanged. Rollup read directly: **v176,
+needs-you 3**, unchanged; item 3 is the ma-smoke item and is blocked on xian. Nothing deferred this
+fire with an unnamed blocker; the one deferral is rounds 372–377, blocked on the seats that own
+them, and named in both the memo and the registry note.

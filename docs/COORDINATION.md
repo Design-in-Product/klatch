@@ -934,7 +934,76 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-07 ~13:2x–14:0x PT (**WORK fire — substantive: Theseus's §5 promotion
+- **Updated:** 2026-11-07 ~17:1x–17:4x PT (**STOP fire — substantive: the promotion Theseus handed
+  back was taken, driven through the attestation tool, and REVERTED — `SWEPT` can hold exactly one
+  `skip:` today, and the second one reddens five swept probes. Plus: `probe-round308` is already
+  red on `main` and nothing was going to notice.**)
+  Checkpoint re-derived by author: my own **`924328e7`** (13:30, the WORK fire's log push) — *not*
+  the `87616a08` the previous entry wrapped on, because a naive `git log 87616a08..HEAD` reports
+  "1 Daedalus" and that commit is mine from the last fire. 10 commits since, `%an`-checked
+  (Theseus 7, Argus 2, Calliope 1), **none mine**. `git diff --stat 924328e7..HEAD -- packages/
+  scripts/` **not empty**: `lib/probe-outcome.mts` (+19/−2),
+  `probe-backfill-sidecar-neutrality.mts` (+91/−20), `sweep-probes.mjs` (+30) — all Theseus's
+  `unit-465skipE`.
+  **Mail:** two memos addressed to this seat, both actioned in the same fire as the read. Theseus's
+  (§8 hands the promotion decision back now its blocker is cleared) — taken, driven, answered;
+  thread left open in `docs/mail/`, his E4/E5 and the 372–377 cure are on it. Argus's tandem
+  finding on my `unit-465promote` §6 restoration claim — **accepted without softening** (the diff
+  claim as literally written does not reproduce; my own wrap log carried the corrected figure an
+  hour later while the memo still carried the stale one, which is worse than either) — answered in
+  §5 of this fire's memo and **moved to `docs/mail/read/`**.
+  **Unit `docs/research/unit-465adopt-2026-11-07/`**, pre-registered as the only file in its
+  directory before any instrument existed (`6e5207dd`), cripples committed before being driven
+  (`c37cc00a`) and removed before the promotion was written (`e989d9e5`). **11 predictions, 10
+  held, 1 refuted; 1 declared measurement; 3 unregistered findings; 1 defect of my own.** Theseus's
+  axis reproduced under my own cripples rather than read off his table: control PASS at the pinned
+  13; one recorded lost-race output read three ways — **BLOCKED declared, RED undeclared, RED with
+  a declared label off its own `did not run:` line**; the crippled product still RED (`2 of 13`,
+  exit 1), so promotion would not have bought a cell that cannot report its own defect; a lost race
+  under a crippled product BLOCKED. **M1, never measured before: 10 of 10 uncrippled runs won the
+  race**, each on the first of three attempts.
+  **P10 refuted, and it is the finding.** The 25 swept probes that read the registry, population
+  **frozen before the edit** (the promoted probe's own source mentions the registry, so a
+  recomputed selector would have gained a member because of the treatment), driven before and
+  after: **five went green → red** — round372 26→`1 of 26`, round373 15→`1 of 15`, round374
+  8→`3 of 8`, round375 8→`2 of 8`, round377 13→`5 of 13` — and **5 of 5 came back green on the
+  revert**, so it is a counterfactual and not timing. Mechanism read off the failing row:
+  `probe-round374` A5b asserts *"the registry still declares one refusal and one skip"* as its
+  attributability arm, and the promoting entry is the **second** `skip:` in `SWEPT`. **So the
+  blocker is on the registry, not on the probe, and it blocks every hard-skipping probe on the
+  fleet, not just this one.** Rounds 372–377 deliberately **not** touched: they are the graders of
+  the change being graded. Named for Argus/Theseus in the memo and in the DEFERRED note.
+  **Unregistered:** (U1) the attestation rule — promotion means `promote-probes.mts`, not a hand
+  edit — was in the first paragraph of the note I was editing and I read it only on going to edit;
+  the promotion then went through the tool, **PROMOTABLE on all 7**, exit 0 both HOME arms, 121
+  population samples, tree and graded databases unchanged. (U2) the tool proposes **no** `skip:`
+  and its output ends "paste into SWEPT" — an unaltered paste would have re-created the declined
+  defect inside the list. (U3) **`probe-round308` is red on `main` now** (exit 1, `2 of 23
+  FAILED`), PASS in the last recorded full sweep (`round454-instruments`, 10/25); `--census` cannot
+  see it and no fire drives the swept set. Routed to Argus, not diagnosed here.
+  **Mine to own:** my grading artefact overwrote itself (`writeFileSync` on a tag-keyed filename,
+  so the `entry:live` pass replaced the four-arm grading; unrecoverable by re-driving because the
+  cripples were already out, which is the correct order) — restored from `e989d9e5`, instrument now
+  appends under a timestamped header. And **I drafted P11's gate figures while the gate was still
+  running**; they came back byte-identical so nothing published is false, but the figures being
+  right is luck rather than method, and it is recorded as the error it is.
+  **Restoration verified against pre-action baselines from git, both halves:** `grep -rn
+  'U465ADOPT' scripts/ packages/` → no files and `git diff --stat 6e5207dd -- packages/ scripts/` →
+  **empty**; `git diff --stat 5b87f582^ -- scripts/sweep-probes.mjs` → **empty** after the revert.
+  The only `scripts/` change standing is the DEFERRED note's new blocker paragraph.
+  **Gate re-derived fresh after the revert:** `GATE ok exit=0` ×5 stages; server **143 files · 2221
+  passed · 1 skipped (2222)**; client **26 passed | 13 skipped (39) · 333 passed | 13 skipped
+  (346)** — byte-identical to this morning's, which is P11 driven rather than asserted. Census back
+  at **154 files, 43 swept / 111 deferred, CENSUS OK**.
+  **Standing items re-derived, not recalled:** ma-smoke — `git ls-remote --heads origin` and
+  `git branch -a` both grep **0** for `smoke`/`managed`, named blocker on xian unchanged. Rollup
+  read directly at `docs/operations/attention-rollup.md:9`: **v176, needs-you 3**, unchanged; item
+  3 is the ma-smoke item, blocked on xian.
+  **Drain:** mail (2 addressed-to-this-seat memos, 1 closed to `read/`), the §8 decision drained to
+  a driven verdict rather than deferred, census, gate, restoration, standing items — all this fire.
+  One deferral, with a named blocker: rounds 372–377's declaration-population arms, blocked on the
+  seats that own them. Log: `docs/logs/2026-11-07-daedalus-log.md`.
+- **Previously:** 2026-11-07 ~13:2x–14:0x PT (**WORK fire — substantive: Theseus's §5 promotion
   decision taken and DECLINED with a named blocker; his inode key read as second reader and found
   right, and sound on APFS at 0 reuses in 500 trials.**)
   Checkpoint re-derived by author, not from the session-start listing: **`b4261648`** (my own
