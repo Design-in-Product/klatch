@@ -4518,6 +4518,49 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
 - **Status:** available — duty cycle armed.
+- **Updated:** 2026-11-07 ~19:4x–20:0x PT (**STOP fire — substantive. Took Daedalus's §3 registry
+  blocker, which his §6 assigned to me and Argus and Argus's own STOP entry carried forward
+  *unclaimed*. `SWEPT` can hold more than one `skip:` now, so every hard-skipping promotion on the
+  fleet is unblocked — and his "five arms" were four arms over THREE mechanisms plus eight
+  inherited reds.**)
+  Checkpoint `f9d3127f` (the wrapper's sync, Iris's STOP-fire tip). Commits above my own WORK-fire
+  tip `8a69e03e` **author-checked before use: 4 Daedalus's, 2 Argus's, 1 Iris's, none mine.**
+  **Mail:** one new memo addressed to me (Daedalus `~17:3x`, `94e6558b` — the cure reproduces under
+  his cripples, the promotion reverted because `SWEPT` can hold exactly one `skip:`) read in full
+  and **answered the same fire**; live/read counted with `readdirSync` at **72 / 1188**, the +1
+  being my own reply. His memo stays **live**: E4/E5 is still an open decision of mine in his §6.
+  **Unit `docs/research/unit-465declpop-2026-11-07/`** — pre-registered at `ce5144fe` as the only
+  file in its directory, 8 predictions, one declared measurement, landing rule before any result.
+  **P1/P2 reproduced his table cell for cell under my own drives** rather than read off it (green
+  26/15/8/8/13; with his entry pasted verbatim, 1 of 26, 1 of 15, 3 of 8, 2 of 8, 5 of 13).
+  **P3, the finding his memo did not have:** eleven failing arms, **three** root mechanisms over
+  **four** arms — a frozen object-level MEMBER LIST (`round372` A2), the same population frozen
+  under an independent source-text selector (`round373` A2), and the frozen pair COUNT he named
+  (`round374` A5b, `round375` A5). A literal `skip:` grep sees none of the three: the predicate is
+  a property access. **P4:** the other **eight** arms are child drives against a verbatim copy of
+  the live registry, so `probe-round377` needed **no edit** and its five asserted arm lists did not
+  move. **Cure at `7b1214db`, committed before being driven under the treatment.** `round372` A2 was
+  **re-aimed rather than re-keyed** — its clauses were *true* and his entry falsified them
+  correctly, so a live read there would have been a deleted check; the two clauses are withdrawn as
+  pass conditions because neither was a requirement, and the load-bearing property is asserted
+  instead. **P7 (control) driven and recorded BEFORE the cure was committed**, green at the P1
+  counts. **P6:** cure in, entry pasted — 26/15/8/8/13, exit 0, 5 of 5 restored at full counts.
+  **P5:** three declared cripples, each the **sole** failing arm of its probe (X2 `round374` A5b
+  1/8, Y1 `round375` A5 1/8, Z1 `round373` A2 1/15). **`round372` A2 has NO driven control and
+  RESULTS says so** — its deciding state crashes `A1b`'s `r225.skip!` upstream, which cripple X1
+  measured directly (`TypeError` at `:366` before A5b ran; a crash is not the arm reddening). The
+  strictly-stronger claim is argued from the predicate, **labelled as argued, not driven**.
+  **Gate** `GATE ok exit=0` on all four stages, server **143 / 2221 / 1 skipped (2222)**, client
+  **333 / 13 skipped (346)** — unmoved, as expected for a unit adding no vitest test.
+  **Restoration** verified against git: no `U465DECLPOP` in the tree, empty diff against the cure
+  rev, and against `f9d3127f` exactly the four cure files (110+/19-) and nothing else;
+  `sweep-probes.mjs` back at 2 declarations.
+  **Drain:** his §3 taken and finished in one fire. **One deferral, named blocker:** `round372`
+  A2's deciding control and the strictly-stronger claim both need an entry whose declarations can
+  move without those probes' upstream `r225.skip!` / `r225.refusal!` dereferences crashing — a
+  change to their A1/A1b arms, its own unit. **The promotion itself is Daedalus's**: the graders are
+  green under his entry, driven here, and I did not re-take his attestation. E4/E5 unchanged; the
+  three items standing on xian unchanged and not re-asked.
 - **Updated:** 2026-11-07 ~14:4x–15:4x PT (**WORK fire — substantive. Took both items Daedalus's §7
   left me when he declined promotion with a named blocker, and the blocker is cleared on its own
   axis: a lost race is now a declared hard skip, so it reads BLOCKED with the declaration and RED

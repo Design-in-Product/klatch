@@ -417,3 +417,153 @@ cleanup block as published is
 **Step 3** — this log's own commit lands after the lines above were read off the remote. The arms'
 temp databases live under `os.tmpdir()`; the census reader, the gate capture and the
 commit-message files are under the gitignored `.scratch/`, and nothing from either was staged.
+
+---
+
+## 19:4x — Session resumed (STOP fire), model `claude-opus-5`
+
+Briefing: pulled state is `f9d3127f`. `COORDINATION.md` read. Mail: **one new memo addressed to
+me**, Daedalus's `~17:3x` (`…-swept-can-hold-exactly-one-skip-2026-11-07.md`, commit `94e6558b`),
+newer than my last-logged WORK-fire entry. Live/read mail counted with `readdirSync`: **72 / 1188**
+at wrap, the +1 live since my WORK fire being my own reply below — his memo was already in the 71 I
+counted then.
+
+His §6 assigned rounds 372–377's declaration-population arms to **me and Argus**. Argus's 11/07
+STOP entry in `COORDINATION.md` took his §4 (`probe-round308`, found red and fixed) and carried §3
+forward **unclaimed, "not urgent — currently green"**. Unblocked work with no named blocker, so it
+is this fire's unit: `docs/research/unit-465declpop-2026-11-07/`.
+
+## 19:4x — pre-registration, and the trap I registered before falling into it
+
+`PRE-REGISTRATION.md` pushed at `ce5144fe` as the only file in the directory. 8 predictions, one
+declared measurement, landing rule set before a result was read: **P1–P3 are publishable alone**,
+and P5/P7 are controls that void the cure on a miss.
+
+Registered, because it is the thing that would have made this unit wrong: **a literal grep for
+`skip:` across `scripts/` hits three files and none of them in the predicate that fires.** The real
+key is a property access, `SWEPT.filter((s) => s.skip).length === 1`, which a census over
+`.(skip|refusal)).length` finds in exactly **two** of the five files. Five probes redden, two carry
+the predicate the memo names — so **at least one further mechanism existed that neither the memo nor
+my grep had named**, and the unit had to census what each failing arm asserts narrowness *over*,
+read off the failing row. Also registered in advance (P4): `probe-round377` drives sandbox copies of
+374/375 as **children** (`c375Drift.failed` at `:718`), so some of its reds may be inherited.
+
+## 19:4x — driver, committed before being driven
+
+`drive-five.mts` at `e3dd28d3`. The arm scrape keys on `summariseAndExit`'s `REGRESSIONS:` block
+(`scripts/lib/probe-outcome.mts:938`) rather than on a `FAIL` token — my first draft scraped for
+`/\bFAIL\b/`, which is not what this family prints. Block terminated by the first blank line **after
+a row has been taken**, so the row I am looking for cannot become its own terminator.
+
+## 19:5x — P1 and P2: his table reproduced, and the census is bigger than his axis
+
+**P1 HELD:** 26/15/8/8/13, exit 0. **P2 HELD cell for cell** with his `apply-promotion.mts` run
+verbatim (three declarations in `SWEPT`, nothing else changed): 1 of 26, 1 of 15, 3 of 8, 2 of 8,
+5 of 13.
+
+**P3, the finding.** Eleven failing arms, **three** root mechanisms over **four** arms:
+
+1. `round372` A2 — a frozen **member list**, object-level, plus "no entry declares one without the
+   other", which his entry violates *legitimately* (a `skip:` and no `refusal:`).
+2. `round373` A2 — the same population frozen under an **independent source-text selector**
+   (nearest-preceding-`file:` walk, `owners.length === 2`).
+3. `round374` A5b / `round375` A5 — the frozen pair count. His, and the only one the grep could see.
+
+**P4 HELD:** the other **eight** arms (374 A0/A1, 375 C1, 377 C1–C5) are controls driving child
+copies against a verbatim copy of the live registry. They reddened because their children did.
+`probe-round377` needed **no edit** and its five asserted child-drive arm lists did not move.
+
+## 20:0x — the cure, and the one place his prescription needed changing
+
+Cure at `7b1214db`, **committed before being driven under the treatment**, so a restore-from-HEAD
+during the cripples could not discard it. `round374` A5b / `round375` A5 keyed on the declaring
+**member list** rather than a live count — stricter than `=== 1`, which passes a declaration that
+*moved* entries. `round372` A2 **re-aimed**, not re-keyed: its clauses were not stale freezes, they
+were *true*, and his entry made them *false* correctly, so keying them "live" would have been a
+deleted check. The two clauses are **withdrawn as pass conditions** because neither was ever a
+requirement of that probe, and the load-bearing property (the graded entry declares *both*) is now
+what is asserted. `round373` A2 keeps its cross-key agreement, compared entry-by-entry and
+count-by-count, plus a new no-**orphan**-declaration conjunct.
+
+Caught in my own draft before it was driven: I had written `owners.length === objectPop.length -
+objectPop.length + owners.length` as a conjunct — a tautology, which is the vacuous-conjunct defect
+this file family exists to refuse. Replaced with the orphan check, which is what I had meant.
+
+**P7 HELD and driven BEFORE the cure was committed:** green at the P1 counts on the clean tree, so
+the arms were not moved to fit the treatment. **P6 HELD:** cure in, entry pasted — 26/15/8/8/13,
+exit 0 on all five. The registry blocker is cleared.
+
+## 20:0x — P5, and the arm I could not grade
+
+Three declared cripples, each the **sole** failing arm of its probe: `X2` → `round374` A5b 1 of 8;
+`Y1` → `round375` A5 1 of 8; `Z1` → `round373` A2 1 of 15 (and it printed `3 of 45 declaration
+line(s) found`, so the orphan conjunct caught it too).
+
+**`round372` A2 has no driven control and RESULTS says so.** Its deciding state crashes `A1b`'s
+`r225.skip!` upstream. I know that shape is real rather than suspected because my **first** cripple
+walked into it: `X1` destroyed round225's declaration in `round374`'s mutant and the probe died at
+`:366` on `mutantR225.refusal!.source` (`TypeError`, `cripple-X1.err`) **before A5b ran**. A crash
+is a non-zero exit the sweep reads as red and it is **not the arm reddening** — X1 establishes
+nothing about A5b, and it is in the record as the reason X2 had to be built the way it was.
+
+**Named as argued rather than driven:** no cripple here shows the new key is strictly *stronger*
+than `=== 1`. X2/Y1/Z1 all move the population in ways the old count also caught; the separating
+state is a count-preserving membership *move*, unreachable through these arms for the same reason
+A2's control is.
+
+## 20:0x — gate, restoration, mail
+
+**Gate:** `GATE ok exit=0` on census, typecheck, server, client and the aggregate — server
+**143 / 2221 / 1 skipped (2222)**, client **26 / 13 skipped (39)** files and **333 / 13 skipped
+(346)** tests, byte-identical to this morning's. This unit adds no vitest test, so a moving gate
+would have been the finding.
+
+**Restoration, against a pre-action baseline from git rather than a quiet `git status`:**
+`grep -rln 'U465DECLPOP' scripts/ packages/` → no files; `git diff --stat 7b1214db -- scripts/
+packages/` → empty; `git diff --stat f9d3127f -- scripts/ packages/` → exactly the four cure files,
+**110 insertions / 19 deletions**, nothing else. `sweep-probes.mjs` untouched — his entry applied
+twice and restored twice, declaration count back at **2**.
+
+**Mail out**, separate commit pushed straight to `main` per the worktree mail rule: `theseus-to-
+daedalus-argus-cc-…-the-registry-blocker-is-cleared-…-2026-11-07.md`. His memo stays **live** in
+`docs/mail/`: E4/E5 is still an open decision of mine in his §6, and my reply opens the unclaimed
+item below, so close-discipline keeps the thread visible.
+
+**Drain:** his §3, which Argus named unclaimed, taken and finished in one fire — reproduced, cured,
+controlled, gated and routed. **One deferral with a named blocker:** `round372` A2's deciding
+control and the strictly-stronger claim for all four arms both need an entry whose declarations can
+move without the probes' upstream `r225.skip!` / `r225.refusal!` dereferences crashing first. That
+is a change to those probes' A1/A1b arms, not to the cure, and it is its own unit. The promotion
+itself is **his** — the graders are green under his entry and I did not re-take his attestation.
+E4/E5 unchanged; the three items standing on xian unchanged and not re-asked.
+
+## Wrap verification
+
+**Step 1 — my commits on `origin/main`.**
+
+```
+$ git log origin/main --oneline --author=Theseus --since="2026-11-07 19:40"
+a8ff43e0 mail: Theseus -> Daedalus, Argus — the registry blocker is cleared, and the five arms …
+e6bfb4e6 unit-465declpop: RESULTS — the registry blocker is cleared, 5 of 5 green under a second …
+7b1214db unit-465declpop: the cure — three root arms re-keyed on a live declaration population, …
+7571b1bb unit-465declpop: drives pre/post — P1 and P2 hold exactly, and the census finds THREE …
+e3dd28d3 unit-465declpop: driver, committed before being driven — the arm scrape keys on the …
+ce5144fe unit-465declpop: pre-registration — the frozen declaration pair blocks every hard-skipping …
+```
+
+**Step 2 — every deliverable by path, read off `origin/main` rather than off the worktree.**
+`git ls-tree -r origin/main` over the unit directory returned **56** files: `PRE-REGISTRATION.md`,
+`RESULTS.md`, `drive-five.mts`, `gate.out`, four drive tags × (5 `.out` + 5 `.err` + 1 grading) = 44,
+and four cripples × `.out`/`.err` = 8 — 4 + 44 + 8 = 56, and **no scratch**. A second `ls-tree` over
+the six named paths outside it (the four cured probes, `sweep-probes.mjs`, the outbound memo)
+returned all **6**. **62 asked for, 62 returned.** `docs/COORDINATION.md` and this log land in the
+commit below.
+
+**Step 2b — the cure and the cripples' absence, read off the remote blobs rather than the worktree.**
+`git show origin/main:` on `probe-round374…` grepped for `U465DECLPOP` → **0**. The same on
+`sweep-probes.mjs` grepped for `^    (skip|refusal): /` → **2**, so the published registry is back
+to one refusal and one skip and carries no entry of mine. `probe-round372…` as published carries the
+cure at `:148`: `declaringMembers.includes(R225) && Boolean(r225.refusal) && Boolean(r225.skip),`.
+
+**Step 3** — this log's own commit lands after the lines above were read off the remote. The probes'
+sandboxes are under the gitignored `.testdata/`; nothing from them was staged.
