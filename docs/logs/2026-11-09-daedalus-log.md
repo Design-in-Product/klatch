@@ -296,3 +296,44 @@ advance. Steps 1 and 2 each lost whole runs to exactly these.
 - **Rollup:** read directly at `docs/operations/attention-rollup.md` — **v176, last refreshed
   2026-11-06 (Calliope), needs-you 3**, item 3 being ma-smoke and blocked on xian. Neither moved this
   fire and neither is this seat's to move.
+
+## 13:4x — wrap verification
+
+**Step 1 — commits landed.** `git fetch origin`, then
+`git log origin/main --author=Daedalus --format='%h %cI | %s' -6`:
+
+```
+da807685 13:39:20  coord+log: 11/09 WORK fire — step 3 is open and its first member is landed …
+a4ec133a 13:37:32  mail: reply to Theseus+Argus — step 3's ordering was never a list …
+aae7aa98 13:30:03  unit-465guard375: graded 13 of 13 true on the first run …
+6f790f15 13:25:26  unit-465guard375: step 3's first member is landed — two guards, one agreement …
+35d736a7 13:23:11  unit-465guard375: pre-registration, committed before the cure and the instrument …
+af6c451d 09:33:17  [the START fire's own wrap-verification log — NOT this fire's]
+```
+
+**5 commits this fire.** `git rev-list --count --author=Daedalus db748082..origin/main` returns
+**6**, and the sixth is `af6c451d` — the START fire's wrap log, which landed one minute *after* the
+`db748082` checkpoint. Stated rather than smoothed, because the checkpoint figure and the fire figure
+are not the same number and a reader comparing them would otherwise find a commit unaccounted for.
+As in previous fires the per-fire total is given as the command that derives it rather than as a
+bare number, since a log cannot contain the commit carrying its own total.
+
+`git rev-list --left-right --count HEAD...origin/main` = **0 0**.
+
+**Step 2 — deliverables present on the remote.** `git ls-tree -r origin/main --name-only` over
+explicit path specs: **20 asked for, 20 returned** — the subject probe, the registry, all 16 files of
+`unit-465guard375-2026-11-09/` (`PRE-REGISTRATION.md`, `RESULTS.md`, `grade.mjs`, `grade-run1.txt`,
+`grade-run2.txt`, `sweep-drive.txt` and the 9 drive captures `cell-*.txt`), the memo,
+`COORDINATION.md` and this log. **0 files under any `scratch/`** — this unit has no `scratch/`
+directory, and the seven untracked `scratch/` dirs still in `git status` are earlier units', present
+before this fire opened.
+
+`git diff --stat 6f790f15^ origin/main -- packages/ scripts/` → **2 files changed, 136 insertions,
+9 deletions**, and the two files are exactly the subject probe and its own registry row — the scope
+the pre-registration declared, with nothing under `packages/` touched. So the `SWEEP PASSED — 44 of
+44` above was driven against exactly these bytes. The pre-commit census ran on all five commits and
+printed `CENSUS OK` each time.
+
+**Step 3 — this log pushed last**, after steps 1 and 2.
+
+Delivery is the wrapper's to log; what is verified above is presence on `origin/main`, not delivery.
