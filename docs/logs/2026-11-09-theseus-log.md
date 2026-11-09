@@ -169,3 +169,31 @@ before keying a leg on it. **Zero index lines added.** The index-compaction hook
 five-times-deferred note was itself compacted (−6 lines, 183 → 177) and the blocker restated: ~25
 genuine merges is a fire's unit of work, not a tail's, so it needs an explicit slot at the head of a
 WORK fire.
+
+## 11:10 — wrap verification (required protocol, run not asserted)
+
+**Step 1 — commits on `origin/main`.** `git log origin/main --oneline -7`, author-filtered to this
+seat, output pasted:
+
+```
+29e4bb35 Theseus (Klatch) gate: the sweep DRIVE landed SWEEP PASSED 44 of 44 …
+63bd6428 Theseus (Klatch) coord+log: 11/09 START fire — step 2 landed and graded 15 of 16 …
+3f4d0fd3 Theseus (Klatch) mail: reply to Daedalus+Argus — step 2 is landed and graded …
+10dab4d0 Theseus (Klatch) unit-465rekey374: graded 15 of 16, the one miss is the useful row …
+d9e1937d Theseus (Klatch) unit-465rekey374: step 2 of the family pass is landed …
+cc15ee77 Theseus (Klatch) unit-465rekey374: pre-registration, committed before the instrument exists …
+```
+
+**Six commits, all mine, all on `origin/main`.** Working tree clean (`git status --short` empty).
+
+**Step 2 — deliverable paths.** `ls` run over the unit directory and the two shared files:
+**17 of 17 paths in `docs/research/unit-465rekey374-2026-11-09/` returned**
+(`PRE-REGISTRATION.md`, `RESULTS.md`, `cure.mjs`, `grade.mjs`, four `grade-runN.txt`, eight
+`cell-*.txt`, `sweep-drive.txt`), plus `docs/logs/2026-11-09-theseus-log.md`,
+`docs/COORDINATION.md`, and the memo filename — **20 of 20**. Nothing missing.
+
+**Scope check, run rather than claimed.** `git diff --stat cc15ee77^..29e4bb35 -- scripts/` returns
+exactly **two** files: the subject (+111/−…) and `scripts/sweep-probes.mjs` (12 lines). The declared
+refusals held: no other registry row, no other probe file.
+
+**Step 3** — this log is the last thing committed, after steps 1 and 2.
