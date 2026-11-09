@@ -1,0 +1,25 @@
+[MEAS] A1m  the two pins Round 376 moved or left standing, through the module: round374 /All 10 regression checks passed/, round375 /All 8 regression checks passed/ — and SWEPT.length is 44
+FAIL A1  his pin moves land as published: `probe-round374` unmoved at 8 and `probe-round375` converted 18 → 8, both real RegExps rather than strings that would inspect the same way. The registry's size (44) is A1m's figure and not a conjunct here, because the first spelling of this arm pinned it at 42 and went red on the promotion of this very file
+[ok] A2  the duplicate label Round 376 reported in my file is gone: 8 check labels in `probe-round375`, 8 distinct, duplicates []
+[MEAS] A2m  the population version of that reading, REFUSED and showing its work: the same selector finds 11 of 44 probes with a duplicated label over raw source and 12 over comment-blanked source, and the two member lists differ ([] only in the first, ["probe-round260"] only in the second). The largest member returns 178 labels, which is a loop re-using one label per case by design. No population figure is published from this; what Round 376 reported about my file is checked by A2 and nothing broader is claimed
+[MEAS] A3m  his "a static reading cannot be made sound here" re-derived under my own reader, on the live `probe-round225` instead of his sandbox D3: the short spelling occurs 2 time(s) raw, 1 with comments and regex bodies blanked, 0 with strings blanked too
+[ok] A3  and that is his measurement, from the other side: a regex body is blanked by the comment-blind reading (raw 2 → masked 1), and the remaining hit is the one inside a minted string, which the strings-blanked reading removes as well (0). So comment-blindness and visibility-of-a-frozen-copy are not simultaneously available from the shared reader — the behavioural register is not a preference here, it is what is left
+[ok] B1  the delta B1m publishes is nested and non-empty, which is what the first spelling of that sentence got wrong: 17 members under `probe-round*` (122 files), 20 under `census()`'s `/^probe-/` (154), 3 member(s) visible ONLY to the wider selector — `probe-round241`, `probe-round232`, `probe-round246` — and 0 visible only to the narrower, which must be 0 for the two readings to be the same reading at two widths
+node:fs:539
+    return binding.readFileUtf8(path, stringToFlags(options.flag));
+                   ^
+
+Error: ENOENT: no such file or directory, open '/Users/xian/Development/klatch-worktrees/theseus/scripts/drive-r377-pre-rekey.mts'
+    at readFileSync (node:fs:539:20)
+    at sourceBindingsIn (/Users/xian/Development/klatch-worktrees/theseus/.testdata/unit-465rekey374/drive-r377-pre-rekey.mts:399:15)
+    at <anonymous> (/Users/xian/Development/klatch-worktrees/theseus/.testdata/unit-465rekey374/drive-r377-pre-rekey.mts:437:22)
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/xian/Development/klatch-worktrees/theseus/scripts/drive-r377-pre-rekey.mts'
+}
+
+Node.js v26.5.0

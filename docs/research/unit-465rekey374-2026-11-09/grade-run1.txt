@@ -1,0 +1,18 @@
+[ok] P2a  the full frozen literal is gone from the subject, raw
+        → raw occurrences PRE 2 → CUR 0 (predicted 2 → 0)
+[ok] P2b  the field named after the number is gone
+        → `all15` token PRE 5 → CUR 0 (predicted 5 → 0)
+[ok] P2c  no line of the subject mentions the number at all
+        → lines containing `15` PRE 9 → CUR 0 (predicted 9 → 0)
+FAIL P2d  and it is gone from live CODE, read through `scripts/lib/strip-source.mjs` rather than by grep
+        → code-only occurrences PRE 0 → CUR 0 (predicted 2 → 0)
+[NOTE] P2d-m  all three readings, published because the figure a reader would quote depends on which one was taken: raw PRE 2 / CUR 0 · comments blanked, strings kept PRE 1 / CUR 0 · both blanked PRE 0 / CUR 0. The two pre-cure sites were a REGEX BODY and a STRING LITERAL, and this reader blanks a regex body in both of its readings — the subject's own docblock states that, measured on Round 376 sandbox D3. So a code-only key is partly blind HERE in a way it was not blind for the identifier sites L2 was built for.
+file:///Users/xian/Development/klatch-worktrees/theseus/docs/research/unit-465guard374-2026-11-08/cure.mjs:38
+  if (n !== 1) throw new Error(`anchor occurs ${n} time(s), expected exactly 1: ${from}`);
+                     ^
+
+Error: anchor occurs 4 time(s), expected exactly 1:     expect: /All 15 regression checks passed/,
+    at once (file:///Users/xian/Development/klatch-worktrees/theseus/docs/research/unit-465guard374-2026-11-08/cure.mjs:38:22)
+    at file:///Users/xian/Development/klatch-worktrees/theseus/docs/research/unit-465rekey374-2026-11-09/grade.mjs:127:3
+
+Node.js v26.5.0

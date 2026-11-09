@@ -1,0 +1,36 @@
+[ok] P2a  the full frozen literal is gone from the subject, raw
+        → raw occurrences PRE 2 → CUR 0 (predicted 2 → 0)
+[ok] P2b  the field named after the number is gone
+        → `all15` token PRE 5 → CUR 0 (predicted 5 → 0)
+[ok] P2c  no line of the subject mentions the number at all
+        → lines containing `15` PRE 9 → CUR 0 (predicted 9 → 0)
+FAIL P2d  and it is gone from live CODE, read through `scripts/lib/strip-source.mjs` rather than by grep
+        → code-only occurrences PRE 0 → CUR 0 (predicted 2 → 0)
+[NOTE] P2d-m  all three readings, published because the figure a reader would quote depends on which one was taken: raw PRE 2 / CUR 0 · comments blanked, strings kept PRE 1 / CUR 0 · both blanked PRE 0 / CUR 0. The two pre-cure sites were a REGEX BODY and a STRING LITERAL, and this reader blanks a regex body in both of its readings — the subject's own docblock states that, measured on Round 376 sandbox D3. So a code-only key is partly blind HERE in a way it was not blind for the identifier sites L2 was built for.
+[ok] M0  every registry mutation below has a UNIQUE anchor in the shipped registry, so each lands on the entry it names and not on a sibling
+        → anchors in the shipped registry: round373 file-line 1, round225 file-line 1, round373 file+expect 1 — each expected 1. For contrast, the bare expect line alone occurs 4 time(s), which is what refused run 1
+FAIL P1  CONTROL — the cured subject, copied and pointed at a VERBATIM registry copy, is green at the count its own entry now declares
+        → exit 1 · own headline (none) · failing arm(s): (none)
+FAIL P3  A0r is REACHED and is the SOLE red when the sibling entry goes absent, and the run reports a red row and a summary headline rather than a stack trace
+        → exit 1 · failing arm(s): (none) · verdict rows 0 · summary line present: false
+FAIL P3b  and the conjunct is the SHAPE: an entry still present but no longer pinning a headline reddens A0r too — the state a presence-only guard would pass
+        → exit 1 · failing arm(s): (none) · verdict rows 0
+FAIL P4  THE DEFECT, driven rather than described: the PRE-cure subject is GREEN in the same state, because its predicate read a frozen string and never read the sibling entry at all
+        → exit 1 · own headline (none) · failing arm(s): (none)
+FAIL P5  A0g is REACHED and is the SOLE red when the keyed entry goes absent, with a red row and a headline instead of a stack trace
+        → exit 1 · failing arm(s): (none) · verdict rows 0 · summary line present: false
+[NOTE] P5-hist  HISTORICAL, hand-typed, NOT re-driven here: unit-465guard374 (11/08) measured the pre-cure subject in this same state at exit 1 with ZERO verdict rows and no headline, throwing at `const DRIFT_TARGET = r225.file;`. Its subject no longer exists on disk, so re-driving it would be driving a reconstruction and calling it a reading.
+[ok] P6a  the shipped row AGREES: entryProblems returns empty on the edited round374 entry
+        → expect pins `All 10 regression checks passed` · problems []
+[ok] P6b  and it would NOT have agreed without the respell — the superseded count is a real drift, not bookkeeping
+        → problems ["why says 8 where expect pins 10"]
+[ok] P6c  and deleting the pair instead of respelling it makes the rule VACUOUS rather than satisfied — the trap probe-round377's own entry fell into in Round 378
+        → problems ["why states no figure, so the agreement rule is vacuous on it (expect pins 10)"]
+[ok] P7  probe-round377 is INSENSITIVE to this bump, because its C1/C2 read the agreement rather than either number
+        → exit 0 · own headline All 13 regression checks passed · failing arm(s): (none)
+FAIL P8  THE ORDERING LEG: probe-round377 as it stood before this morning's re-key goes RED against today's registry — so landing this seat's bump first, as my 11/08 §2 proposed and his §4 routed, would have manufactured a red in his file
+        → REFUSED at an anchor rather than driven: anchor occurs 2 time(s), expected exactly 1: import { summariseAndExit, type ProbeVerdict } from './lib/probe-outcome.mts';
+[ok] P9  probe-round375 is insensitive to the bump, and the reason is DEADNESS rather than design: its only use of this subject is one read whose binding is never read again
+        → exit 0 · `r374Src` occurs 1 time(s) in probe-round375 (a read with no reader) · failing arm(s): (none)
+
+GRADES: 9 of 16 true — FAILED: P2d P1 P3 P3b P4 P5 P8

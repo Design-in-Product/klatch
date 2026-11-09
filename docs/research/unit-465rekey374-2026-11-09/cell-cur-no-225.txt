@@ -1,0 +1,6 @@
+FAIL A0g  the keyed entry is still in SWEPT and still declares both optional patterns — `probe-round225-a-citation-is-not-a-call.mts` is ABSENT from the registry, and the entries declaring either pattern are (probe-RENAMED-round225-a-citation-is-not-a-call.mts, probe-backfill-sidecar-neutrality.mts). Every dereference below stands behind this arm (Round 465, `unit-465guard374`): compare member lists, not counts, because a registry that moved these two declarations whole onto another entry keeps the count and still kills this file
+
+REGRESSIONS:
+  [A0g] the keyed entry is still in SWEPT and still declares both optional patterns — `probe-round225-a-citation-is-not-a-call.mts` is ABSENT from the registry, and the entries declaring either pattern are (probe-RENAMED-round225-a-citation-is-not-a-call.mts, probe-backfill-sidecar-neutrality.mts). Every dereference below stands behind this arm (Round 465, `unit-465guard374`): compare member lists, not counts, because a registry that moved these two declarations whole onto another entry keeps the count and still kills this file
+
+1 of 1 regression check(s) FAILED.
