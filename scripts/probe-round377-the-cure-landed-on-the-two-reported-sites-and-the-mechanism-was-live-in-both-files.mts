@@ -89,6 +89,48 @@ const once = (src: string, from: string, to: string) => {
   return src.replace(from, to);
 };
 
+/**
+ * **`unit-465rekey377` (2026-11-09 START): the shape of a headline pin, so that no arm below holds a COUNT
+ * belonging to another file.** This file carried `All 8 regression checks passed` hard-typed in six
+ * live conjuncts — two reading `probe-round374`'s and `probe-round375`'s registry pins, four reading
+ * what sandbox copies of those two files printed. Each of the four single-file guard-plus-bump moves
+ * the 372–377 family has queued raises one of those counts, so three of the six would have gone red
+ * on a LEGITIMATE move of a sibling's arm total, and the sibling's seat could not have seen it: the
+ * conjunct lives here.
+ *
+ * It is this arm's own lesson in a fourth register. `A1`'s first spelling pinned `SWEPT.length === 42`
+ * and went red on its own promotion (docblock below); 357 is the same shape; so is `B1c`'s refusal to
+ * be a set equality. A pin on a count is a pin on a fact the pinning act changes — and a count
+ * belonging to a file this one does not own is a fact ANOTHER seat's act changes.
+ *
+ * Two replacements, not one, because the two positions are not the same claim:
+ *
+ * - Reading the registry ALONE (`A1`), there is no second source to agree with, so the count is
+ *   replaced by the SHAPE. That is a strengthening of the clause it sits in — `A1` already claims
+ *   these are "real RegExps rather than strings that would inspect the same way", and a pattern that
+ *   is no longer a headline matcher is the same defect one step further on. The values themselves are
+ *   published by `A1m`, where a change to them is information rather than a false red.
+ * - Reading a DRIVE against the registry (`C1`/`C2`/`C3`), the count is replaced by AGREEMENT via
+ *   {@link agrees}. Shape-only would be a real weakening there, and the reason is the one Round 376
+ *   §4 reached from the other side: `/^All \d+ …$/` still passes when a member's arms silently
+ *   DISAPPEAR, which is most of what these arms are for. `expect.test(own)` keeps that, survives any
+ *   bump by either sibling's seat, and asserts the invariant the sweep itself is built on.
+ *
+ * What is NOT done: `e374.expect.source === e375.expect.source`. The two agree today — A1m prints
+ * both — and the family pass moves both, but nothing requires two independent probes to carry one
+ * arm total, and the pass could legitimately move one alone. That
+ * conjunct would pin a coincidence and manufacture the same false red one layer along.
+ */
+const HEADLINE_SHAPE = /^All \d+ regression checks passed$/;
+/**
+ * Registry-vs-drive agreement: the headline a driven copy PRINTED is the headline its own registry
+ * entry declares. `own` is `null` exactly when the drive went red (see {@link Drive}), and that is a
+ * failure of these arms rather than a vacancy, so it is spelled rather than defaulted — a `null` that
+ * coerced to the string `'null'` would read false here for the wrong reason, and one that short-
+ * circuited to `true` would make the arm pass on the failure it exists to catch.
+ */
+const agrees = (pin: RegExp, own: string | null) => own !== null && pin.test(own);
+
 const sweepSrc = readFileSync(SWEEP, 'utf8');
 const r225Src = readFileSync(join(HERE, R225), 'utf8');
 const r374Src = readFileSync(join(HERE, R374), 'utf8');
@@ -125,17 +167,27 @@ meas(
  * standing. The size is now a figure in A1m, where a change to it is information rather than a
  * false defect — and this is the same lesson as 357 in a third register: a pin on a count is a pin
  * on a fact about the world that the pinning act itself changes.
+ *
+ * **`unit-465rekey377`: the two VALUES went the same way, for the same reason one step out.** This arm used
+ * to conjoin `expect.source === 'All 8 regression checks passed'` for both siblings. Those are two
+ * other seats' arm totals, and both are queued to rise in the 372–377 family pass — so the conjunct
+ * would have reddened on a legitimate move made in a file this one does not own. What is left is the
+ * property: both pins are real RegExps AND both match {@link HEADLINE_SHAPE}. The values are A1m's
+ * figures, and file-vs-registry AGREEMENT — the stronger claim, and the one that still catches a
+ * member whose arms vanish — is C1's, driven, three sections down.
  */
 check(
   'A1',
-  `his pin moves land as published: \`probe-round374\` unmoved at 8 and \`probe-round375\` converted ` +
-    `18 → 8, both real RegExps rather than strings that would inspect the same way. The registry's ` +
-    `size (${SWEPT.length}) is A1m's figure and not a conjunct here, because the first spelling of ` +
-    'this arm pinned it at 42 and went red on the promotion of this very file',
+  `his pin moves land as published: both siblings' pins are real RegExps rather than strings that ` +
+    `would inspect the same way, and both are headline matchers (${HEADLINE_SHAPE.source}) rather ` +
+    `than some other pattern. Neither the values nor the registry's size (${SWEPT.length}) is a ` +
+    `conjunct here: they are A1m's figures, because the first spelling of this arm pinned the size ` +
+    "at 42 and went red on the promotion of this very file, and the siblings' counts are two other " +
+    "seats' totals to move. Agreement between each pin and what its own file prints is C1's",
   e374.expect instanceof RegExp &&
     e375.expect instanceof RegExp &&
-    e374.expect.source === String.raw`All 8 regression checks passed` &&
-    e375.expect.source === String.raw`All 8 regression checks passed`,
+    HEADLINE_SHAPE.test(e374.expect.source) &&
+    HEADLINE_SHAPE.test(e375.expect.source),
 );
 
 /**
@@ -643,8 +695,11 @@ const drive = (label: string, file: string, sbDecl: string, r225Path: string, sw
   const run = spawnSync('npx', ['tsx', p], { cwd: REPO, encoding: 'utf8', timeout: 300_000 });
   const out = `${run.stdout ?? ''}${run.stderr ?? ''}`;
   // The LAST verdict line, not the first: both subjects spawn CHILD probes that print their own
-  // headline, and `All 15 regression checks passed` in this output is the child's. My own first
-  // reading of these drives confounded the two and attributed a child's 15 to the parent.
+  // headline, so the earlier matches in this output belong to a grandchild (`probe-round373`) and
+  // not to the file under drive. My own first reading of these drives confounded the two and
+  // attributed a grandchild's total to the parent. The grandchild's number is deliberately NOT
+  // written here: it is another seat's arm total, queued to move in the family pass, and a sentence
+  // naming it would drift false beside a predicate that recomputes (`unit-465rekey377`).
   const hits = [...out.matchAll(/All \d+ regression checks passed/g)];
   const d: Drive = {
     status: run.status,
@@ -664,13 +719,16 @@ const c375Faithful = drive('375-faithful', R375, SB375, R225_FAITHFUL, SWEEP_FAI
 check(
   'C1',
   `CONTROL, and what makes the arms below attributable: both cured probes, copied and pointed at a ` +
-    `VERBATIM copy of \`probe-round225\` and a verbatim copy of the registry, are green on 8 — ` +
-    `round374 exit ${String(c374Faithful.status)}, round375 exit ${String(c375Faithful.status)}. ` +
-    'The copies are the files',
+    `VERBATIM copy of \`probe-round225\` and a verbatim copy of the registry, are green on the count ` +
+    `their OWN registry entry declares — round374 exit ${String(c374Faithful.status)} printing ` +
+    `${c374Faithful.own ?? '(red)'} against ${e374.expect.source}, round375 exit ` +
+    `${String(c375Faithful.status)} printing ${c375Faithful.own ?? '(red)'} against ` +
+    `${e375.expect.source}. The copies are the files, and the conjunct is the AGREEMENT rather than ` +
+    'either number, so a bump by either sibling is not a red here',
   c374Faithful.status === 0 &&
     c375Faithful.status === 0 &&
-    c374Faithful.own === 'All 8 regression checks passed' &&
-    c375Faithful.own === 'All 8 regression checks passed',
+    agrees(e374.expect, c374Faithful.own) &&
+    agrees(e375.expect, c375Faithful.own),
 );
 
 const c374Renamed = drive('374-renamed', R374, SB374, R225_RENAMED, SWEEP_FAITHFUL);
@@ -683,7 +741,7 @@ check(
     'yield and A5 is built on it',
   c374Renamed.status === 0 &&
     c374Renamed.failed.length === 0 &&
-    c374Renamed.own === 'All 8 regression checks passed',
+    agrees(e374.expect, c374Renamed.own),
 );
 
 const c375Renamed = drive('375-renamed', R375, SB375, R225_RENAMED, SWEEP_FAITHFUL);
@@ -695,7 +753,7 @@ check(
     'green through that state, still reads the subject through a registry-derived key',
   c375Renamed.status === 0 &&
     c375Renamed.failed.length === 0 &&
-    c375Renamed.own === 'All 8 regression checks passed',
+    agrees(e375.expect, c375Renamed.own),
 );
 
 const c374Drift = drive('374-unprefixed-registry', R374, SB374, R225_FAITHFUL, SWEEP_UNPREFIXED);
@@ -721,7 +779,8 @@ check(
     '(the regex-keyed count under a mutant registry) and C2 (the child drive against that mutant) ' +
     'all lose their input with it. The list is asserted exactly, so a future change that reddens a ' +
     'different set has to come back through this line. The narrowness that IS available is the ' +
-    'control: the same bytes against the faithful registry are green on 8 (C1), and the rename ' +
+    'control: the same bytes against the faithful registry are green on their own declared count ' +
+    '(C1), and the rename ' +
     'that used to redden A1 is green (C3). Four deciding states per file, the same cured bytes in ' +
     'each: green, green on the rename, red on the drift, and the figure A1 reports in each',
   c375Drift.status === 1 &&
