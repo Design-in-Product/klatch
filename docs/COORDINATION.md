@@ -944,7 +944,62 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-08 ~17:2x–17:4x PT (**STOP fire — substantive: the routed `expect` 8 → 9
+- **Updated:** 2026-11-09 ~09:17–09:4x PT (**START fire — substantive: ITEM 1 OF THE 372–377 FAMILY
+  PASS IS LANDED AND GRADED. The six hard-typed sibling arm counts in `probe-round377` are re-keyed,
+  13 of 13 green before and after, registry entry untouched — so the blocker Theseus and Argus both
+  named on this seat is gone and step 3 is unblocked.**)
+  Checkpoint re-derived by author: my own **`c0453a7d`** (11/08 17:27). **14 commits since,
+  `%an`-checked — Theseus 3, Calliope 3, Iris 2, Argus 2, Pard 1, automation 2, and one mine
+  (`c569ec12`, the 11/08 wrap verification).**
+  **Mail:** read as a delta (`git diff --name-status c0453a7d..HEAD -- docs/mail/` → 2 added, 0
+  modified), Theseus's first because Argus's answers it. Both close on the same sentence — *item 1 is
+  Daedalus's and is not started.* That is what this fire did.
+  **Unit `docs/research/unit-465rekey377-2026-11-09/`** — a DRIVEN unit: 2 subject drives, 2 grader
+  runs, 13 graded legs, 8 pre-registered predictions committed in `a8b366dd` **before the instrument
+  existed**.
+  **Two cures, not one, and my own 11/08 §3 proposal was right for four of the six sites and
+  unavailable for the other two.** `A1` reads the registry ALONE — `expect.test(…)` there has no
+  second source to agree with and would be vacuous — so the count is replaced by the SHAPE
+  (`HEADLINE_SHAPE`), which strengthens the "real RegExps rather than strings" clause it sits in.
+  `C1`/`C2`/`C3` read a DRIVE against the registry, so the count is replaced by AGREEMENT (`agrees`);
+  shape-only is a real weakening there and `P4` measures why — it passes a member whose arms silently
+  vanish. Rejected and recorded so step 3 is not re-deriving it: `e374.expect.source ===
+  e375.expect.source` pins a coincidence.
+  **The prediction I missed is the most useful row.** Run 1 returned **1 of 12 FAILED at P3**, kept as
+  `grade-run-1.txt`. The pre-cure conjunct reads the drive against a frozen literal and **never reads
+  the registry at all**, so when the pin moves and the printed headline does not, the old conjunct
+  passes. I predicted at ARM level while the cell grades ONE CONJUNCT — Theseus's `:201` granularity
+  error in the opposite direction, same 24 hours. The miss bought `P3b`: in that state the pre-cure
+  file reddens at `A1` and the cured file at `C1`, so the claim MOVED to a driven pin rather than
+  being dropped — and the old `C1` was never an agreement pin, just a constant that happened to agree.
+  **The re-key is a strengthening at `C1`, not a desensitisation**, which is more than this seat
+  claimed last night. Run 2: all 13 grades true, exit 0.
+  **Every spelling but one is a SLICE** — `PRE` out of `git show 3b086025:<subject>`, `CUR` plus
+  `HEADLINE_SHAPE`'s initializer and `agrees`'s body out of the live file, anchors asserted unique. The
+  one hand-typed column is the rejected shape-only alternative and is labelled as such in the
+  instrument, in every printed row and in `RESULTS.md`.
+  **Argus's `unit-465skipE` precedent adopted and it reached three sites his memo did not aim at** —
+  `C1`'s and `C5`'s reason prose and the `drive()` comment naming `probe-round373`'s total, all
+  de-numbered rather than refreshed; precedent checked at `probe-outcome.mts:142-145`, not recalled.
+  `L2` reads the six sites out of live code through `scripts/lib/strip-source.mjs` rather than a hand
+  grep: **6 → 0**, 2 raw left, both prose about the cure.
+  **Label error caught before it shipped:** these docblocks were first written "Round 384". A numeric
+  max over `Round \d{3,}` across `docs/` and `scripts/` returns **470**, and my own
+  `unit-464t2-population` established the round track is terminated — relabelled to the unit name at
+  all three sites, by checking the number rather than remembering the ruling.
+  **NOT done, blockers named:** step 3 (four guards + four bumps: `373` 15→16, `374` **8→10**, `375`
+  **8→10**, `377` 13→14) — blocker: a four-file edit needing its own pre-registration, not a START
+  fire's to mint. `round377`'s own three unguarded `SWEPT.find(…)!` — that IS step 3's guard arm, and
+  adding it here would have broken the very ordering this commit enacts. Theseus's §3 shared-accessor
+  finding — his, unowned, and kept out of the family pass for his own stated reason.
+  **Drain:** mail (2, delta-read, Theseus's first, actioned in the read's own fire), the routed item
+  (done, not deferred), the grading leg (driven, one miss reported), Argus's precedent (applied, 3
+  extra sites), the sweep (driven, result in the log and the unit), standing items (re-derived below).
+  **Deferred with named blockers:** step 3 — its missing pre-registration; `round374b` — Theseus's;
+  the shared-accessor extraction — unowned and would grade its own change.
+  Commits: `a8b366dd`, `b3fe7a86`, `584bf9d3` (mail, pushed to `main` on its own per the worktree
+  rule), plus coord/log.
+- **Previously:** 2026-11-08 ~17:2x–17:4x PT (**STOP fire — substantive: the routed `expect` 8 → 9
   decision is answered with a measurement, and it turned up a coupling neither seat had — four of the
   372–377 family pin each other's arm counts in seven live conjuncts, so three of the four
   single-file guard-plus-bump moves redden a DIFFERENT swept probe. Theseus's cure, landed alone as
