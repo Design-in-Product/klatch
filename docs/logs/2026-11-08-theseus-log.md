@@ -364,3 +364,132 @@ tracked. The cure exists only as `cure.mjs`'s anchored transform; `scripts/` hol
 `origin/main` and none of them was touched by this fire.
 
 **Step 3 — this log pushed last**, with the verification above inside it rather than beside it.
+
+---
+
+## 19:47 — Session resumed (STOP fire, model claude-opus-5)
+
+Checkpoint `eac330ac`; `git status --porcelain` empty at fire start. `date` read: 2026-11-08 19:47
+PST, again at 19:50 before the memo was written. Day-part per the wrapper's label, not inferred from
+the clock (19:47 is short of the ~23:00 threshold in `duty-cycle-klatch-v0.2.md:130`).
+
+### Census
+
+`git log --format='%an' bf582492..eac330ac | sort | uniq -c` — **8 commits, none mine**: 4 Daedalus,
+2 Calliope, 1 Argus, 1 Iris. Mail counted with `readdirSync`, not `ls | wc`: **81 live / 1188 read**.
+New mail isolated with `git log --name-only ... -- docs/mail/` rather than eyeballed off the
+directory listing: **exactly one** file, Daedalus ~17:3x, addressed to me and Argus.
+
+### The memo, and the three things I checked before using any of it
+
+`daedalus-to-theseus-argus-…-option-2-and-option-1-would-have-reddened-my-round377-on-three-arms-…`.
+It answers the `expect` 8 → 9 decision I routed to him at 15:04 — **option (2)**, i.e. do not land
+my cure alone, and the reason is not cost: three of the four single-file guard-plus-bump moves in
+this family redden a different swept probe.
+
+Reproduced here before accepting:
+
+1. **Registry `expect` sources, off the live module** — `import { SWEPT } from './scripts/sweep-probes.mjs'`,
+   filtered on filename, `.expect.source` printed per row: `round373` → `All 15 regression checks
+   passed`, `round374` → `All 8`, `round375` → `All 8`, `round377` → `All 13`, and **`round374b`
+   returns no row at all**, which is his UNGRADED confirmed rather than taken.
+2. **His six `round377` cross-pin sites** — `grep -n` for both literals: present at `:137`, `:138`,
+   `:672`, `:673`, `:686`, `:698`, the exact lines he quotes.
+3. **The lookups** — `round374:79` is `const r225 = SWEPT.find((s) => s.file === R225)!;`, and
+   `round377:96`/`:97`/`:98` are the same shape for `R225`/`R374`/`R375`. Read, not inferred from his
+   table's `!` column.
+
+So option (2) is accepted **on his reason rather than on mine**: my own stated reason for holding the
+cure this afternoon was my unit's pre-registration refusing a registry edit. His §2 shows the harder
+fact — landing it alone would have reddened his `round377` on three arms, including an
+`A0`-makes-`A1`-attributable cascade of exactly the shape I had spent that fire diagnosing from the
+inside. The right call for a reason the caller did not have.
+
+### Correction 1 — his item 2 names one site; my file hard-types the number at six
+
+His §4 step 2 is "`round374:201`'s `all15` re-keyed off `round373`'s entry". `:201` is **not the
+predicate** — it is the `meas` text. `grep -n "15"` on my own file:
+
+| site | what it is |
+|---|---|
+| `:191` | the predicate — `all15: /All 15 regression checks passed/.test(out)` |
+| `:200`–`:201` | the `meas` string printed per drive |
+| `:212` | **`A0`'s own published reason** — `'…is green on all 15 with B4 reading '` |
+| `:102`, `:108` | docblock prose |
+| `:179` + `:215`, `:233` | the identifier `all15`, declared once and read twice |
+
+A predicate-only re-key leaves **four live sentences** asserting a number the pass changes. `:212`
+is the worst of them: it is the reason string of the control arm that makes `A1` attributable, and
+nothing recomputes it. My own recorded lesson — a leg's reason string drifts false while its
+predicate stays true — found this time in my own file, from the outside.
+
+Note on how `:212` was found: `grep` for the full literal `All 15 regression checks passed` returns
+**two** sites and misses it, because `:212` spells it `green on all 15`. The six-site figure comes
+from grepping the **number**, not the sentence.
+
+### Correction 2 — item 2 is a second arm, so `round374` is 8 → 10
+
+Re-keying `:191` off `round373`'s entry needs a `SWEPT.find((s) => s.file === R373)` in my file.
+`R373` already exists as a constant there (`r373Src` is read at `:78`), so the lookup is one line.
+What it needs behind it is the problem.
+
+**`A0g` as driven does not cover it.** Quoted from `docs/research/unit-465guard374-2026-11-08/cure.mjs`,
+read this fire rather than recalled:
+
+```
+declaringMembers.includes(R225) &&
+  r225Entry !== undefined &&
+  r225Entry.refusal !== undefined &&
+  r225Entry.skip !== undefined,
+```
+
+Keyed on `R225` and on the two optional patterns `R225` declares; a `round373` entry is nowhere in
+it. Widening `A0g` to conjoin a second entry's presence produces one arm that cannot say which entry
+went absent — the thing I would route back at him if he proposed it. So it is a **second new arm**,
+and **`round374` is 8 → 10, not 8 → 9** — the same correction he made to his own `round375` in his
+§5, arriving from the other side, which puts two of the four members at +2 rather than one.
+
+Three alternatives considered and refused in writing so the pass does not re-derive them: an
+unguarded `SWEPT.find(…)!` is this family's own defect in the file whose cure is about it; shape-only
+`/^All \d+ …$/` is a real weakening and more so here than in his sites, because `A0`'s `15` does
+**control** work (the copy is the file, so a vanished arm is a real signal); and counting the copied
+child's own `check(` calls is a source-derived arm counter, which his §1 measured finding **1 arm in
+a 26-arm file**.
+
+Consequence for his order: item 2 changes `round374`'s `expect`, which `round377` pins at `:137`,
+`:672`, `:686` — the three sites step 1 exists to clear. **Item 2 folds into step 3.** It cannot run
+ahead of item 1 any more than my cure could.
+
+### Unregistered finding — the registry has no shared reader of any kind
+
+`scripts/lib/` holds **23** files (`readdirSync().length`, not a hand count off a listing — my first
+visual count said 24 and was wrong). `grep -rln "SWEPT" scripts/lib/` returns **nothing**; so does a
+grep for `requireEntry`/`entryFor`. Five members each hold a private unguarded lookup and each is
+about to grow a private guard arm around it.
+
+**Deliberately not folded into the family pass, and not claimed by this seat.** A pass that adds four
+guards and simultaneously replaces the thing they are made of cannot attribute its own red — the same
+hazard as my `argEnd` paren-balance finding (the fourth private copy of the Round 257/258 question),
+also still unclaimed. Flagged as a successor unit, unowned, no blocker.
+
+### Drain
+
+One memo in; read in full and answered in the same fire; both of its figures reproduced under my own
+reads first; two scope corrections and one unowned finding routed back. **One deferral, blocker
+named:**
+
+- **No edit to `scripts/` or `packages/` from this seat tonight — blocker: `round377`'s six-site
+  re-key is Daedalus's and is not started**, and my own file's arm count moved 9 → 10 *in this fire*,
+  which is a pre-registration's call rather than a STOP tail's. No deadline from me. The driven cure
+  stands unchanged; it is still the right transform, now one of two arms rather than one of one.
+
+**Question-box check (STOP procedure item 4): considered, and no, with the reason.** The question
+this fire raises — four independent instances of a count-keyed conjunct that cannot tell a legitimate
+move from a defect, each found by a different seat in another seat's instrument — is already filed as
+`dispatch/mail/question-theseus-2026-10-13-is-the-recurrence-the-point.md` and is unanswered.
+Re-filing it under a new date would be noise. The other candidate (whether a memo that grows a
+routed scope should carry a separate signal, since it reads as a refusal) is an ordinary work
+question and belongs in normal channels, which the procedure's own text says explicitly.
+
+**Standing on xian, not re-asked:** the 09-29 step-1 list; the `backups/` tracked-vs-ignored half;
+the March-backup restore from `c945e8aa`.

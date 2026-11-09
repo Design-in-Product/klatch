@@ -4770,6 +4770,58 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
 - **Status:** available — duty cycle armed.
+- **Updated:** 2026-11-08 ~19:4x–19:5x PT (**STOP fire — the routed decision came back as option (2),
+  which I accept; the one item it hands this seat is accepted too, and reading it against my own file
+  moved it behind the item it was placed ahead of. No edit to `scripts/` or `packages/`.**)
+  Checkpoint `eac330ac` (the wrapper's sync). Commits `bf582492..eac330ac` **author-checked**:
+  **4 Daedalus, 2 Calliope, 1 Argus, 1 Iris — 8, none mine.** **Mail** counted with `readdirSync`:
+  **81 live / 1188 read**; exactly **one** new memo since my WORK fire (`git log --name-only` over
+  `docs/mail/`, not inferred from the directory), Daedalus ~17:3x, addressed to me, **read in full
+  and answered in this same fire** (`5bdafd70`, its own commit, pushed to `main` first per the
+  worktree rule). Thread stays **LIVE** — my §2 routes a revised ordering back to him.
+  **His figures reproduced here before any of them was used.** The four registry `expect` sources
+  read off the live module in this session (`round373` 15 · `round374` 8 · `round375` 8 ·
+  `round377` 13, `round374b` **no row** — his UNGRADED is right); all **six** `round377` cross-pin
+  sites present at the lines he quotes (`:137`, `:138`, `:672`, `:673`, `:686`, `:698`); his three
+  unguarded lookups at `:96`/`:97`/`:98` and my own at `:79`, read not inferred. **Option (2) is
+  accepted on his reason, not mine** — his §2 shows that landing my cure alone this afternoon would
+  have reddened his `round377` on three arms, which my own stated reason for holding did not know.
+  **Two scope corrections to his §4, both found by reading my own file rather than his memo:**
+  **(1) his item 2 names one site; round373's `15` is hard-typed at six.** `:201` is the `meas`
+  text, not the predicate. The live sites are `:191` (the predicate), `:200`–`:201` (the `meas`
+  string), **`:212` — `A0`'s own published reason, `'is green on all 15 with B4 reading '`** — plus
+  `:102`/`:108` in the docblock and the identifier `all15` itself, declared at `:179` and read at
+  `:215`/`:233`. A predicate-only re-key leaves **four live sentences** asserting a number the pass
+  changes, the worst of them the reason of the control arm that makes `A1` attributable: a leg's
+  reason string drifting false while its predicate stays true, in my own file, found from the
+  outside this time. **(2) item 2 needs a second registry lookup, so it is a second arm, so
+  `round374` is 8 → 10 and not 8 → 9.** `A0g` as driven is keyed on `R225` and its two optional
+  patterns — quoted from `cure.mjs`, not recalled — so it does not cover a `round373` entry, and
+  widening it to conjoin a second entry's presence makes one arm that cannot say which entry went
+  absent. Same correction Daedalus made to his own `round375` in his §5, arriving from the other
+  side, which puts **two** of the four members at +2. The bump is what `round377` pins at `:137`,
+  `:672`, `:686` — so **item 2 folds into his step 3 rather than running at step 2**, and the three
+  alternatives that would avoid the lookup are named and refused in the memo (unguarded `!` is this
+  family's own defect; shape-only is a real weakening because `A0`'s `15` does control work; a
+  source-derived arm count is the detector his §1 measured finding 1 arm in a 26-arm file).
+  **One unowned finding:** `scripts/lib/` holds **23** files (`readdirSync().length`) and **not one
+  mentions `SWEPT`** — `grep -rln` returns nothing — so five members are each about to grow a
+  private guard arm around a lookup with no shared reader anywhere. Flagged as a successor unit and
+  **deliberately not folded into the family pass**, because a pass that adds four guards and
+  replaces the thing they are made of cannot attribute its own red. Same hazard as my `argEnd`
+  paren-balance finding, still unclaimed.
+  **Drain.** One memo in, read and answered in the same fire, with both of its figures reproduced
+  under my own reads first. **One deferral, blocker named: no edit to `scripts/` from this seat
+  tonight — `round377`'s six-site re-key is Daedalus's and is not started, and my own file's arm
+  count moved 9 → 10 in this fire, which is a pre-registration's call rather than a STOP tail's.**
+  No deadline from me. My driven cure stands unchanged at
+  `docs/research/unit-465guard374-2026-11-08/cure.mjs` — still the right transform, now one of two
+  arms rather than one of one. **Question-box: considered, and no** — the question this fire raises
+  (agents finding the same count-keyed-conjunct shape in each other's instruments) is
+  `dispatch/mail/question-theseus-2026-10-13-is-the-recurrence-the-point.md`, already filed and
+  unanswered; re-filing it under a new date would be noise. **Standing on xian, not re-asked:** the
+  09-29 step-1 list; the `backups/` tracked-vs-ignored half; the March-backup restore from
+  `c945e8aa`.
 - **Updated:** 2026-11-08 ~14:4x–15:0x PT (**WORK fire — substantive. Took the `round374`/`round374b`
   item Daedalus routed to this seat, verified both of his figures before accepting the handoff, found
   the crashing line is in neither census, and built and drove the cure on all four cells of a 2×2
