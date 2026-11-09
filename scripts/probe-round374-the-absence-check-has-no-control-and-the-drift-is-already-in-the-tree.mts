@@ -76,7 +76,95 @@ const meas = (arm: string, line: string) => {
 const sweepSrc = readFileSync(SWEEP, 'utf8');
 const r225Src = readFileSync(join(HERE, R225), 'utf8');
 const r373Src = readFileSync(join(HERE, R373), 'utf8');
-const r225 = SWEPT.find((s) => s.file === R225)!;
+/**
+ * **GUARD (Round 465, `unit-465guard374`), and it is the FIRST arm for a reason that was driven.**
+ *
+ * As shipped, this file's second statement was `SWEPT.find((s) => s.file === R225)!` — a claim the
+ * type system cannot check and which is false in three reachable states the registry itself names:
+ * a reverted promotion, a renamed file, an entry demoted to deferred. Driven under a registry copy
+ * in which that entry is renamed (one asserted replacement, nothing else changed): the shipped file
+ * exits **1 with ZERO verdict rows and no headline**, throwing at
+ * `const DRIFT_TARGET = r225.file;` — a PLAIN property access, which is why a census keyed on
+ * `.refusal!`/`.skip!` cannot see the crashing line in this very file. The `!`s are a spelling of
+ * the assumption; the unguarded lookup IS the assumption.
+ *
+ * The arm is recorded BEFORE the exit, so that state reports a red row naming the missing entry and
+ * a summary headline, rather than a stack trace a sweep-level reader cannot tell from a crash — the
+ * exit code is 1 either way, so the distinguishing key is the row count and the headline's presence.
+ *
+ * Keyed on the member LIST rather than on a count of declaring entries: a count is green on a
+ * registry that moved these declarations whole onto some other entry, which is exactly the state
+ * that would kill this file.
+ */
+const r225Entry = SWEPT.find((s) => s.file === R225);
+const declaringMembers = SWEPT.filter((s) => s.refusal || s.skip).map((s) => s.file);
+check(
+  'A0g',
+  `the keyed entry is still in SWEPT and still declares both optional patterns — ` +
+    `\`${R225}\` ${r225Entry === undefined ? 'is ABSENT from' : 'is present in'} the registry, and ` +
+    `the entries declaring either pattern are (${declaringMembers.join(', ')}). Every dereference ` +
+    `below stands behind this arm (Round 465, \`unit-465guard374\`): compare member lists, not ` +
+    `counts, because a registry that moved these two declarations whole onto another entry keeps ` +
+    `the count and still kills this file`,
+  declaringMembers.includes(R225) &&
+    r225Entry !== undefined &&
+    r225Entry.refusal !== undefined &&
+    r225Entry.skip !== undefined,
+);
+if (
+  r225Entry === undefined ||
+  r225Entry.refusal === undefined ||
+  r225Entry.skip === undefined
+) {
+  summariseAndExit({ probeName: 'probe-round374', results });
+  throw new Error('unreachable');
+}
+const r225 = r225Entry;
+
+/**
+ * **GUARD (Round 465, `unit-465rekey374`) — the SECOND registry lookup, and the one the arms
+ * below are re-keyed onto.**
+ *
+ * As shipped, this file asserted `probe-round373`'s arm total as a frozen headline string — the
+ * `All <N> regression checks passed` form with that seat's N typed into it, spelled WITHOUT its
+ * number here on purpose — at a predicate, at a `meas` text, inside `A0`'s own published reason,
+ * and in two docblock sentences, with the drive field NAMED after the number. A docblock that
+ * quoted the cured literal verbatim would leave the exact byte the cure exists to remove sitting
+ * in the file, and would re-trip any detector keyed on it: the Round 371 shape, handed back to
+ * this seat by its own grader on the first cured build of this very fragment.
+ * No predicate, no verdict and no consumer read any of those against the registry, so all five
+ * would have drifted false the moment the sibling pin moved while `A0` kept passing cleanly: a
+ * sentence nothing checks, sitting beside a predicate that recomputes (Argus, `unit-465skipE`).
+ * Cured by REMOVING the number rather than refreshing it — a refresh re-arms the identical drift
+ * at the next re-key, which is that unit's own measured precedent.
+ *
+ * Kept as its own arm rather than conjoined into `A0g`: one arm asserting two independent
+ * registry claims cannot say which entry went absent.
+ *
+ * The conjunct is the SHAPE and not a count (`HEADLINE_SHAPE` is `probe-round377:124`'s
+ * spelling). What the arms below need from this entry is a headline matcher; an entry whose
+ * `expect` has stopped being one is the same defect one step on, while a count conjunct here
+ * would go red on that seat's own legitimate bump.
+ */
+const HEADLINE_SHAPE = /^All \d+ regression checks passed$/;
+const e373 = SWEPT.find((s) => s.file === R373);
+const e373Pin = e373 === undefined ? '(no entry)' : e373.expect.source;
+check(
+  'A0r',
+  `the sibling entry these arms are re-keyed onto is still in SWEPT and still pins a HEADLINE: ` +
+    `\`${R373}\` ${e373 === undefined ? 'is ABSENT from' : 'is present in'} the registry, pinning ` +
+    `\`${e373Pin}\`, which ${HEADLINE_SHAPE.test(e373Pin) ? 'is' : 'is NOT'} a headline matcher. ` +
+    `The conjunct is the SHAPE and not the number, so this file does not redden on that seat's ` +
+    `legitimate bump; and it is a SECOND arm rather than a conjunct of A0g, because one arm ` +
+    `asserting two independent registry claims cannot say which entry went absent`,
+  e373 !== undefined && HEADLINE_SHAPE.test(e373Pin),
+);
+if (e373 === undefined || !HEADLINE_SHAPE.test(e373Pin)) {
+  summariseAndExit({ probeName: 'probe-round374', results });
+  throw new Error('unreachable');
+}
+/** The sibling's declared headline, read now. No arm below states its number. */
+const R373_HEADLINE = e373.expect;
 
 /** Occurrences of a literal string, counted by splitting rather than by a built regex. */
 const occurrences = (haystack: string, needle: string) => haystack.split(needle).length - 1;
@@ -99,13 +187,15 @@ const occurrences = (haystack: string, needle: string) => haystack.split(needle)
  *
  *   - **FALSE DEFECT.** Build the same two regexes from the same registry objects through a
  *     one-line helper — `const gOf = (p: RegExp) => new RegExp(p.source, `${p.flags}g`)` — and
- *     `probe-round373` stays at **exit 0, All 15**, and still goes **B4 FAIL at 2** under the
+ *     `probe-round373` stays at **exit 0 with its own declared headline green**, and still
+ *     goes **B4 FAIL at 2** under the
  *     shortened registry (sandboxes D2/D6: the property is fully present). The re-aimed A1 goes **RED**.
  *   - **FALSE PASS.** Re-key B4 to a frozen copy of the declared pattern in the shape a person
  *     would actually write it — a named `const FROZEN_REFUSAL = /probe-round223b: …/g` beside the
  *     registry-built regex, which is literally the drift the arm's own text said it catches — and
  *     the re-aimed A1 goes **green** (sandbox D3). Add the registry drift on top and `probe-round373`
- *     reports `0` and passes **All 15** while its claim is false by 2 (sandbox D4), against **B4 FAIL
+ *     reports `0` and passes **its own declared headline** while its claim is false by 2
+ *     (sandbox D4), against **B4 FAIL
  *     at 2** on the shipped key under the identical registry (sandbox D5, the one-variable control).
  *
  * **A static reading cannot be made sound here, and that is a measurement rather than a preference.**
@@ -176,7 +266,7 @@ type R373Drive = {
   status: number | null;
   b4: 'ok' | 'FAIL' | 'none';
   count: number;
-  all15: boolean;
+  headline: boolean;
   failed: string[];
 };
 const driveR373 = (label: string, sweepPath: string): R373Drive => {
@@ -188,7 +278,7 @@ const driveR373 = (label: string, sweepPath: string): R373Drive => {
     status: run.status,
     b4: m ? ((m[1] === 'FAIL' ? 'FAIL' : 'ok') as 'ok' | 'FAIL') : 'none',
     count: m ? Number(m[2]) : -1,
-    all15: /All 15 regression checks passed/.test(out),
+    headline: R373_HEADLINE.test(out),
     failed: out
       .split('\n')
       .filter((l) => l.startsWith('FAIL '))
@@ -197,8 +287,8 @@ const driveR373 = (label: string, sweepPath: string): R373Drive => {
   meas(
     `A-drive(${label})`,
     `exit ${String(d.status)} · B4 ${d.b4} at ${d.count} occurrence(s) · ` +
-      (d.all15
-        ? 'All 15 regression checks passed'
+      (d.headline
+        ? `headline green, matching the \`${R373_HEADLINE.source}\` its own entry declares`
         : `failing arm(s): ${d.failed.join(' ') || '(none printed)'}`),
   );
   return d;
@@ -209,10 +299,11 @@ check(
   'A0',
   'CONTROL, and the arm that makes A1 attributable: a sandbox copy of `probe-round373`, differing ' +
     'from the shipped file in four asserted import/path replacements and nothing else, driven as a ' +
-    'child against a VERBATIM copy of the registry module, is green on all 15 with B4 reading ' +
+    'child against a VERBATIM copy of the registry module, is green across the full set its ' +
+    `own registry entry declares (\`${R373_HEADLINE.source}\`) with B4 reading ` +
     `${faithful.count} — exit ${String(faithful.status)}. The copy is the file, so a red below is ` +
     'the mutated declaration and not the copy',
-  faithful.status === 0 && faithful.b4 === 'ok' && faithful.count === 0 && faithful.all15,
+  faithful.status === 0 && faithful.b4 === 'ok' && faithful.count === 0 && faithful.headline,
 );
 
 const drifted = driveR373('refusal-declared-as-the-entry-filename', SWEEP_REFUSAL_IS_FILE);
@@ -230,7 +321,7 @@ check(
   drifted.status === 1 &&
     drifted.b4 === 'FAIL' &&
     drifted.count === 1 &&
-    !drifted.all15 &&
+    !drifted.headline &&
     drifted.failed.length === 1 &&
     drifted.failed[0] === 'B4',
 );
