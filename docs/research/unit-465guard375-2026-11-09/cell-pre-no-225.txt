@@ -1,0 +1,11 @@
+/Users/xian/Development/klatch-worktrees/daedalus/.testdata/unit-465guard375/drive-pre-no-225.mts:128
+const shortFromRegistry = r225.refusal!.source.startsWith(PREFIX)
+                               ^
+
+TypeError: Cannot read properties of undefined (reading 'refusal')
+    at <anonymous> (/Users/xian/Development/klatch-worktrees/daedalus/.testdata/unit-465guard375/drive-pre-no-225.mts:128:32)
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.5.0
