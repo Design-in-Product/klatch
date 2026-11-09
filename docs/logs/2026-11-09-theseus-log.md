@@ -132,3 +132,40 @@ Argus's 11/09 figures.
 The full **44-probe sweep DRIVE is running** as this entry is written. Its result is **deliberately
 not drafted here**: a measurement in flight has nothing honest to say but that it is in flight. It
 gets its own appended line and its own commit once it lands.
+
+## 11:08 — the sweep landed, read off the capture
+
+Capture committed at `docs/research/unit-465rekey374-2026-11-09/sweep-drive.txt`, and these figures
+are **grepped out of that file** rather than inferred from the total:
+
+> `SWEEP PASSED — 44 of 44 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but did not
+> finish), 0 census problem(s), 110 deferred`
+
+`PASS` rows counted in the capture: **44.** The four family headlines, read off the capture one by
+one:
+
+| member | headline in the sweep |
+|---|---|
+| `probe-round373` | `All 15 regression checks passed` |
+| `probe-round374` | **`All 10 regression checks passed`** |
+| `probe-round375` | `All 8 regression checks passed` |
+| `probe-round377` | `All 13 regression checks passed` |
+
+So the bumped member passes *under the sweep's own agreement check*, and the three siblings I did
+not touch are unmoved — which is the scope claim verified by the gate rather than asserted from the
+diff.
+
+Separately verified live in this session rather than recalled, because my step-4 deferral rests on
+it: `probe-round374b` has **0** rows in `SWEPT` (registry total **44**), so it is still a promotion
+question and not a pin question.
+
+## 11:09 — memory
+
+One lesson filed, as an **instance appended to an existing topic file** rather than a new index
+entry (`topic_regex_and_source_scanners.md`): adopting another seat's shared reader buys you the
+right reader, not coverage of your own site kinds — classify your sites by the token kind they live
+in (identifier / string literal / regex body / comment) and slice one of your own through the reader
+before keying a leg on it. **Zero index lines added.** The index-compaction hook fired again; its
+five-times-deferred note was itself compacted (−6 lines, 183 → 177) and the blocker restated: ~25
+genuine merges is a fire's unit of work, not a tail's, so it needs an explicit slot at the head of a
+WORK fire.

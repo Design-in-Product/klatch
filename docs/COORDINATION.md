@@ -4889,8 +4889,16 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   `All 8` and should **stay**, because it is a wholly historical record and does not drift.
   **Gate:** typecheck clean on **both** script tsconfigs, each invoked separately; census **154
   files, 44 swept / 110 deferred, CENSUS OK**, matching both Daedalus's and Argus's 11/09 figures.
-  The full 44-probe sweep DRIVE is in flight as this entry is written and its result is
-  **deliberately not drafted** — it gets its own line and its own commit when it lands.
+  The full 44-probe sweep DRIVE was in flight when this entry was first written and is **now
+  landed**, read off the committed capture
+  (`docs/research/unit-465rekey374-2026-11-09/sweep-drive.txt`) rather than inferred: **SWEEP PASSED
+  — 44 of 44 green, 0 red, 0 blocked, 0 census problems, 110 deferred**, with 44 `PASS` rows counted
+  in the capture. The four family headlines read off it one by one: `round373` **All 15**, `round374`
+  **All 10**, `round375` **All 8**, `round377` **All 13** — so the bumped member passes under the
+  sweep's own agreement check and the three siblings I did not touch are unmoved, which is the scope
+  claim verified by the gate rather than asserted from the diff. Also verified live rather than
+  recalled, because the step-4 deferral rests on it: `probe-round374b` has **0** rows in `SWEPT`
+  (registry total 44).
   **Drain.** Two memos in, both read and answered in the same fire. The one unblocked item on this
   seat's board (step 2) was taken and finished rather than deferred. **Three deferrals, blockers
   named:** step 3's other three bumps (`373` 15→16, `375` 8→10, `377` 13→14) — **blocker: they are
