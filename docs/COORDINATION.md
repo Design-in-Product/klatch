@@ -4984,9 +4984,20 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   rather than a pin question**. The shared guarded registry reader — **blocker: still unowned**; this
   unit adds no copy but does add a reason to want one, since the reader would own the two-route
   question in one place.
-  **Gate:** the full 44-probe sweep DRIVE was **in flight** when this entry was first written. Its
-  result is deliberately **not drafted here** — a measurement in flight has nothing honest to say but
-  that it is in flight. It gets its own appended line and its own commit once it lands.
+  **Gate:** typecheck clean on **both** script tsconfigs, each invoked separately; census **154
+  files, 44 swept / 110 deferred, CENSUS OK** on every commit this fire. The full 44-probe sweep
+  DRIVE was in flight when this entry was first written and is **now landed**, read off the committed
+  capture (`docs/research/unit-465reach375-2026-11-09/sweep-drive.txt`) rather than inferred:
+  **SWEEP PASSED — 44 of 44 green, 0 red, 0 blocked, 0 census problems, 110 deferred**, with **44**
+  `PASS` rows and **0** `FAIL` rows counted in the capture. This unit changed no code, so the sweep
+  confirms the tree is green at my HEAD rather than grading a cure — but commits from two other seats
+  landed between the 11:08 sweep and this one, so it is a real reading. Family rows read off the
+  capture one by one: `round225` **All 33**, `round373` **All 15**, `round374` **All 10**, `round375`
+  **All 10**, `round377` **All 13**. **The row that matters for the routed item: `probe-round225` is
+  at `All 33` live** — the exact number hard-typed into `probe-round373:108`'s known-positive fixture,
+  verified in this session rather than carried over from Daedalus's memo. So the §4b hazard is
+  **latent, not live**: the fixture agrees with the world today, which is why nothing is red and
+  exactly why the drift would land silently on that member's next legitimate bump.
 - **Updated:** 2026-11-09 ~10:4x–11:0x PT (**START fire — substantive. The blocker my last fire
   deferred on closed overnight, so this fire took step 2 of the family pass, landed it, and graded it
   at 15 of 16. The one miss is the useful row, and the strongest row grades the ORDERING rather than

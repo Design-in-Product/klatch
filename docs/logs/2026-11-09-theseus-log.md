@@ -284,3 +284,64 @@ from effort instead of running**. The real clock was **14:56**. Both corrected; 
 left **visible** in `RESULTS.md` rather than quietly applied, because an estimated timestamp in a
 measurement record is this unit's own defect class — a figure nothing recomputes. Two mental
 estimates earlier in this fire were drifting the same way, which is why the clock got read again.
+
+## 15:0x — the sweep landed, read off the capture
+
+Capture committed at `docs/research/unit-465reach375-2026-11-09/sweep-drive.txt`; figures **grepped
+out of that file** rather than inferred from the total:
+
+> `SWEEP PASSED — 44 of 44 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but did not
+> finish), 0 census problem(s), 110 deferred`
+
+`PASS` rows counted in the capture: **44**. `FAIL` rows: **0**. Typecheck clean on **both** script
+tsconfigs, each invoked separately. This unit changed no code, so the sweep confirms the tree is
+green at my HEAD rather than grading a cure — but commits from two other seats landed between the
+11:08 sweep and this one, so it is a real reading and not a re-print.
+
+Family rows, read off the capture one by one: `round225` **All 33**, `round373` **All 15**,
+`round374` **All 10**, `round375` **All 10**, `round377` **All 13**.
+
+**The row that matters for the routed item: `probe-round225` is at `All 33` live** — the exact number
+hard-typed into `probe-round373:108`'s known-positive fixture. So the §4b hazard is **latent, not
+live**: the fixture agrees with the world today, which is why nothing is red, and exactly why the
+drift would land silently on that member's next legitimate bump. Verified in this session rather
+than carried over from Daedalus's memo.
+
+## Wrap verification (required protocol, run not asserted)
+
+**Step 1 — commits on `origin/main`.** `git fetch -q origin && git log origin/main --format='%h %an %s' -6`,
+output pasted:
+
+```
+d465c480 Theseus (Klatch) coord+log: 11/09 WORK fire — P8 confirmed, its guarantee re-keyed, and the delta is one row
+b273833d Theseus (Klatch) mail: reply to Daedalus+Argus — P8 is sound, and its guarantee is keyed on an identity 375 own drive of 373 breaks
+e8f1d56c Theseus (Klatch) unit-465reach375: P8 confirmed, and its guarantee is keyed on an identity this family already breaks once
+d75471ec Theseus (Klatch) unit-465reach375: pre-registration, committed before any drive
+70f8102e Argus (Klatch) Merge remote-tracking branch 'origin/main' into claude/argus-cycle
+54a18288 Argus (Klatch) coord+log: 11/09 WORK fire — census-only no-op on product …
+```
+
+**Four commits, all mine, all on `origin/main`** — plus this entry's own commit, pushed last.
+
+**Step 2 — deliverable paths.** `ls` run over the unit directory and the three shared files:
+**8 of 8 paths in `docs/research/unit-465reach375-2026-11-09/`** returned (`PRE-REGISTRATION.md`,
+`RESULTS.md`, `cell-x-import-only.mts.txt`, `cell-x-import-only.txt`, `cell-y-both-halves.mts.txt`,
+`cell-y-both-halves.txt`, `drive-375-live.txt`, `sweep-drive.txt`), plus
+`docs/logs/2026-11-09-theseus-log.md`, `docs/COORDINATION.md` and the memo filename — **11 of 11**.
+Nothing missing.
+
+**Scope check, run rather than claimed.** `git diff --stat -- scripts/` **empty** across this fire:
+no arm added, no probe cured, no registry row touched. `git status --short` **empty** — no
+`.testdata/` scratch tracked.
+
+**Step 3** — this log is the last thing committed, after steps 1 and 2.
+
+**Drain.** One memo in, read and answered in the same fire; the one thing it asked of this seat was
+done in the same fire. Four items deferred, each with a named blocker and no deadline from me:
+`373` 15→16 plus its `:108` fixture (unclaimed by either seat; I have not taken it), `377` 13→14
+(figure still not re-derived, and I did not re-derive it), `probe-round374b` promotion, and the
+shared guarded registry reader. **Memory:** one lesson filed as section 13 of an existing topic file
+rather than a new entry (a guard on the import route does not cover a site built from the text
+route), and one instance appended to the existing `date`-estimate lesson, which this fire tripped.
+**Zero index lines added**; the compaction hook fired again and its blocker is unchanged — ~25
+genuine merges is a fire's unit of work, not a tail's.

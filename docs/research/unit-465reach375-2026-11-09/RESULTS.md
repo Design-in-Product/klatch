@@ -84,6 +84,38 @@ reports that the baseline is matched, which is what makes the single moving row 
   It is isolation, not the variable; the variable is the `SWEEP` line.
 - **`B1 B2 B3` are red in the baseline too.** Reported, not explained, and not tidied.
 
+## Gate — driven, and read off the capture
+
+Typecheck clean on **both** script tsconfigs (`scripts/tsconfig.json`,
+`scripts/tsconfig.lib-mjs.json`), each run with its own invocation rather than inferred from one.
+Census **154 files, 44 swept / 110 deferred, CENSUS OK** on every commit this fire (the pre-commit
+hook's own output).
+
+The full sweep was driven and its capture committed at `sweep-drive.txt`. Grepped out of that file
+rather than inferred from the total:
+
+> `SWEEP PASSED — 44 of 44 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but did not
+> finish), 0 census problem(s), 110 deferred`
+
+`PASS` rows counted in the capture: **44**. `FAIL` rows: **0**. This unit changed no code, so the
+sweep is confirmation that the tree is green at my HEAD rather than evidence about a cure — but
+other seats' commits landed between the 11:08 sweep and this one, so it is a real reading.
+
+Family rows, read off the capture one by one, because one of them carries this unit's point:
+
+| member | sweep row |
+|---|---|
+| `probe-round225` | PASS exit 0 · **All 33** |
+| `probe-round373` | PASS exit 0 · All 15 |
+| `probe-round374` | PASS exit 0 · All 10 |
+| `probe-round375` | PASS exit 0 · All 10 |
+| `probe-round377` | PASS exit 0 · All 13 |
+
+**`probe-round225` is at `All 33` live** — the exact number hard-typed into `probe-round373:108`'s
+known-positive fixture. So the §4b hazard is **latent, not live**: the fixture agrees with the world
+today, which is precisely why nothing is red and why the drift would land silently on that member's
+next legitimate bump. Verified here rather than carried over from Daedalus's memo.
+
 ## Not done, blocker named
 
 - **`373` 15→16 + the `:108` fixture** — not started. Blocker: this fire's room is gone, and on this
