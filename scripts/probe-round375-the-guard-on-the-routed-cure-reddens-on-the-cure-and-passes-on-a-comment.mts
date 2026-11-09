@@ -6,7 +6,10 @@
  * hand-copied literal, no positive control, and the drift that falsifies it is a spelling already
  * running in the tree twice. All of that reproduces (section A), the cure is right, and the routed
  * item is taken: B4 is now keyed on `r225.refusal` and run as a regex, and **B4b** is the positive
- * control it shipped without. `probe-round373` is 15 checks, and its `expect` pin moved with it.
+ * control it shipped without, and `probe-round373`'s `expect` pin moved with its arm total. **That
+ * total is deliberately not written here** (`unit-465guard375`): it is another seat's count, this
+ * file does not own it, and the sentence that used to carry it was one of three sites where it had
+ * drifted — see `A0r` and `C1`, which read it from the registry instead.
  *
  * His memo offered the alternative of leaving B4 as it was, with his A1 standing as the guard from
  * outside. That alternative is the thing this round measures, because the guard does not survive
@@ -93,7 +96,102 @@ const sweepSrc = readFileSync(SWEEP, 'utf8');
 const r225Src = readFileSync(join(HERE, R225), 'utf8');
 const r373Src = readFileSync(join(HERE, R373), 'utf8');
 const r374Src = readFileSync(join(HERE, R374), 'utf8');
-const r225 = SWEPT.find((s) => s.file === R225)!;
+/**
+ * **GUARD (Round 465, `unit-465guard375`) — the FIRST arm, and it is first because the thing it
+ * guards is this file's next statement.**
+ *
+ * As shipped, that statement was `SWEPT.find((s) => s.file === R225)!` — a claim the type system
+ * cannot check and which three states the registry itself names make false: a reverted promotion, a
+ * renamed file, an entry demoted to deferred. The `!` is a spelling of the assumption; the
+ * unguarded lookup IS the assumption. The registry's own note at `sweep-probes.mjs:1622` counts
+ * eleven `.refusal!`/`.skip!` dereferences in this file and names this seat as the claimant.
+ *
+ * The arm is recorded BEFORE the exit, so the absent-entry state reports a red row naming the
+ * missing entry AND a summary headline, rather than a stack trace a sweep-level reader cannot tell
+ * from a crash — the exit code is 1 either way, so the distinguishing key is the row count and the
+ * headline's presence. `unit-465guard375` P3 drives the pre-cure bytes in the same state and gets
+ * exactly that: exit 1, zero verdict rows, no headline.
+ *
+ * Keyed on the member LIST rather than on a count of declaring entries, for the reason A5 below was
+ * already re-keyed once: a count is green on a registry that moved both declarations whole onto some
+ * other entry, which is exactly the state that would kill this file. Precedent read in this fire at
+ * `probe-round374:99-120` (Theseus, `unit-465guard374`), not recalled.
+ *
+ * **The `:180` mutant-registry lookup deliberately gets NO arm of its own**, and this is
+ * `unit-465guard375` P8 rather than an oversight. The mutant module is built by ONE asserted
+ * substitution (A3) from the same `sweepSrc` this arm read, so its member list cannot differ from
+ * the live one — A5 asserts that live, on both modules, as a member list. In the one state that
+ * could make that lookup `undefined`, this arm exits first and the line is never reached. A third
+ * arm there would be a vacuous pin. A census of unguarded dereference SITES is not a census of
+ * reachable defects.
+ */
+const r225Entry = SWEPT.find((s) => s.file === R225);
+const declaringMembers = SWEPT.filter((s) => s.refusal || s.skip).map((s) => s.file);
+check(
+  'A0g',
+  `the keyed entry is still in SWEPT and still declares both optional patterns — \`${R225}\` ` +
+    `${r225Entry === undefined ? 'is ABSENT from' : 'is present in'} the registry, and the entries ` +
+    `declaring either pattern are (${declaringMembers.join(', ')}). Every dereference below stands ` +
+    `behind this arm (Round 465, \`unit-465guard375\`): a MEMBER LIST and not a count, because a ` +
+    `registry that moved these two declarations whole onto another entry keeps the count and still ` +
+    `kills this file`,
+  declaringMembers.includes(R225) &&
+    r225Entry !== undefined &&
+    r225Entry.refusal !== undefined &&
+    r225Entry.skip !== undefined,
+);
+
+/**
+ * **GUARD (Round 465, `unit-465guard375`) — the sibling entry C1 is re-keyed onto.**
+ *
+ * As shipped, C1's third conjunct was `probe-round373`'s arm total frozen as a headline string —
+ * the `All <N> regression checks passed` form with that seat's N typed into it, spelled WITHOUT its
+ * number here on purpose, because a docblock quoting the cured literal verbatim leaves the exact
+ * byte the cure exists to remove sitting in the file and re-trips any detector keyed on it (the
+ * Round 371 shape, handed to this seat by its own grader in step 1 of this same pass). The number
+ * also stood in C1's published reason and in this file's own opening docblock. Nothing read any of
+ * them against the registry, so all three drifted false the moment the sibling's pin moved while C1
+ * kept passing cleanly — a sentence nothing checks, beside a predicate that recomputes (Argus,
+ * `unit-465skipE`). Cured by REMOVING the number rather than refreshing it: a refresh re-arms the
+ * identical drift at the next re-key.
+ *
+ * Kept as its own arm rather than conjoined into `A0g`: one arm asserting two independent registry
+ * claims cannot say which entry went absent.
+ *
+ * The conjunct is the SHAPE and not a count. What C1 needs from this entry is a headline matcher,
+ * and an entry whose `expect` has stopped being one is the same defect one step on — while a count
+ * conjunct here would go red on that seat's own legitimate bump, which is the whole reason this
+ * pass exists. P5 drives the shape half alone: an entry still PRESENT but pinning
+ * a `<N> of <N> checks are green` pattern reddens this arm, and a presence-only guard passes that
+ * state. The mutation's own numbers are not written here either, for the same reason.
+ */
+const HEADLINE_SHAPE = /^All \d+ regression checks passed$/;
+const e373 = SWEPT.find((s) => s.file === R373);
+const e373Pin = e373 === undefined ? '(no entry)' : e373.expect.source;
+check(
+  'A0r',
+  `the sibling entry C1 is re-keyed onto is still in SWEPT and still pins a HEADLINE: \`${R373}\` ` +
+    `${e373 === undefined ? 'is ABSENT from' : 'is present in'} the registry, pinning ` +
+    `\`${e373Pin}\`, which ${HEADLINE_SHAPE.test(e373Pin) ? 'is' : 'is NOT'} a headline matcher. ` +
+    `The conjunct is the SHAPE and not the number, so this file does not redden when that seat ` +
+    `bumps its own count; and it is a SECOND arm rather than a conjunct of A0g, because one arm ` +
+    `asserting two independent registry claims cannot say which entry went absent`,
+  e373 !== undefined && HEADLINE_SHAPE.test(e373Pin),
+);
+
+if (
+  r225Entry === undefined ||
+  r225Entry.refusal === undefined ||
+  r225Entry.skip === undefined ||
+  e373 === undefined ||
+  !HEADLINE_SHAPE.test(e373Pin)
+) {
+  summariseAndExit({ probeName: 'probe-round375', results });
+  throw new Error('unreachable');
+}
+const r225 = r225Entry;
+/** The sibling's declared headline pin, read now. No conjunct below states its number. */
+const R373_PIN = e373.expect;
 
 mkdirSync(join(SANDBOX, 'lib'), { recursive: true });
 
@@ -278,6 +376,29 @@ meas(
 // ── Section C — the cure, pinned behaviourally rather than by a source regex ──
 
 /**
+ * The driven child's OWN headline, and the agreement conjunct C1 is re-keyed onto
+ * (`unit-465guard375`).
+ *
+ * `headlines[last]`, not `[0]`: the `probe-round373` copy this section drives itself mints and
+ * spawns a child, so the output carries more than one headline and the first one is not the
+ * parent's. `summariseAndExit` is the last thing the parent prints. The old `C-drive` measurement
+ * line read `.exec(out)?.[0]` — the FIRST match — and published it as the drive's figure; corrected
+ * here rather than left standing, which is the mislabelled-field hazard Theseus called out one
+ * level up in his 11/09 §1.
+ *
+ * `null` exactly when the drive printed no headline at all — a red or a crash — and that is a
+ * FAILURE of these arms rather than a vacancy, so it is spelled rather than defaulted: a `null`
+ * coerced to `'null'` would read false for the wrong reason, and one short-circuited to `true`
+ * would make the arm pass on the failure it exists to catch (step 1's `agrees`, reused rather than
+ * reinvented).
+ */
+const ownHeadline = (out: string) => {
+  const all = [...out.matchAll(/All \d+ regression checks passed/g)].map((m) => m[0]);
+  return all.length === 0 ? null : all[all.length - 1];
+};
+const agrees = (pin: RegExp, own: string | null) => own !== null && pin.test(own);
+
+/**
  * A sandbox copy of MY repaired file, pointed at a copy of the registry module, with every anchor
  * asserted unique first. Two arms, one variable: whether the registry it imports declares the
  * refusal as shipped or shortened to the subject's own spelling. The faithful arm is the control
@@ -307,20 +428,26 @@ const driveSubject = (label: string, sweepPath: string) => {
   meas(
     `C-drive(${label})`,
     `exit ${String(run.status)} · B4 ${b4 ? `${b4[1]} at ${b4[2]} occurrence(s)` : '(no line)'} · ` +
-      `${/All (\d+) regression checks passed/.exec(out)?.[0] ?? `FAIL ${out.split('\n').filter((l) => l.startsWith('FAIL ')).map((l) => l.slice(5).split(/\s+/)[0]).join(' ')}`}`,
+      `${ownHeadline(out) ?? `FAIL ${out.split('\n').filter((l) => l.startsWith('FAIL ')).map((l) => l.slice(5).split(/\s+/)[0]).join(' ')}`}`,
   );
-  return { status: run.status, out, b4Fail: b4?.[1] === 'FAIL', b4Count: b4 ? Number(b4[2]) : -1 };
+  return { status: run.status, out, own: ownHeadline(out), b4Fail: b4?.[1] === 'FAIL', b4Count: b4 ? Number(b4[2]) : -1 };
 };
 const faithful = driveSubject('faithful-registry', FAITHFUL_SWEEP);
 check(
   'C1',
   `CONTROL: the sandbox copy of the repaired \`probe-round373\`, against a faithful copy of the ` +
-    `registry module, is green on all 15 — exit ${String(faithful.status)}, B4 at ` +
-    `${faithful.b4Count} occurrence(s). The copy is the file`,
+    `registry module, is green on its OWN declared count — exit ${String(faithful.status)}, B4 at ` +
+    `${faithful.b4Count} occurrence(s), and the headline it printed (${faithful.own ?? '(none)'}) ` +
+    `is the one its own registry entry pins (${R373_PIN.source}). The copy is the file. ` +
+    `The third conjunct is AGREEMENT and not a number (Round 465, \`unit-465guard375\`): as shipped ` +
+    `it was that seat's arm total typed in here, which nothing read against the registry, so it ` +
+    `drifted false the moment their pin moved while this arm kept passing. AGREEMENT rather than ` +
+    `A0r's SHAPE, because \`/All \\d+ …/\` still passes when a member's arms silently vanish, and ` +
+    `that is most of what this section is for`,
   faithful.status === 0 &&
     !faithful.b4Fail &&
     faithful.b4Count === 0 &&
-    /All 15 regression checks passed/.test(faithful.out),
+    agrees(R373_PIN, faithful.own),
 );
 const drifted = driveSubject('shortened-registry', MUTANT_SWEEP);
 check(
