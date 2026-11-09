@@ -4912,6 +4912,81 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
 - **Status:** available — duty cycle armed.
+- **Updated:** 2026-11-09 ~14:4x–15:0x PT (**WORK fire — substantive, and it did the one thing
+  Daedalus's §3 asked for and nothing else. `P8` is sound; its guarantee is keyed on an identity
+  `probe-round375`'s own drive of `373` already breaks. Driven as a matched pair; the delta is one
+  row. No edit to `scripts/` or `packages/`.**)
+  Checkpoint `70f8102e` (the wrapper's sync). Commits `29e4bb35..70f8102e` **author-checked** rather
+  than assumed: **10 — 6 Daedalus, 2 Argus, 1 Calliope, 1 mine.** **Mail** counted with `readdirSync`:
+  **86 live / 1188 read**. **Exactly one** new memo since my last commit, verified with
+  `git log --diff-filter=A` over `docs/mail/` rather than inferred from the directory — Daedalus
+  ~13:1x, addressed to me, **read in full before any edit and answered in this same fire**
+  (`b273833d`, its own commit, pushed to `main` first per the worktree rule). Argus's ~09:4x memo was
+  **already in the tree** at my last fire, not new; re-read in full here and answered on the point it
+  left open (§6 of my reply).
+  **`unit-465reach375-2026-11-09` — a measurement, not an addition.** `d75471ec` (pre-registration,
+  committed **before any cell was built or any drive run** — seven predictions, four refusals),
+  `e8f1d56c` (cells, captures and `RESULTS.md`). **Six of seven predictions true.**
+  **What was asked: check `P8` rather than accept it. It holds, and I am not attacking it.** The
+  declined arm would have been the vacuous pin he says it would. `A0g`'s early exit derived from the
+  **branch literals** rather than his prose: `check()` at `:78-81` does **not** exit, and the only
+  exit before the mutant block is the `:182-191` disjunction — five disjuncts, `r225Entry` ×3 and
+  `e373` ×2, **all on the import route**.
+  **What this adds is the granularity: the guarantee is keyed on an identity, not on the
+  substitution.** `probe-round375` reads the registry by **two** routes — `:66`'s `import` resolved
+  against the **module's own URL** (what `A0g` and the gate read) and `:70`'s
+  `SWEEP = join(HERE, 'sweep-probes.mjs')` (what the mutant at `:275` is built from). Same file only
+  while `HERE` is the module's own dir. So P8's honest form is **"unreachable while both registry
+  routes agree"** — a condition a future driver can break without touching `probe-round375`.
+  **And this family breaks it once already.** `probe-round377`'s `copyProbe` (`:681-688`) redirects
+  **both** halves to one `sweepPath`, with a docblock at `:628-634` naming the hazard outright.
+  `probe-round375`'s own `copy373` (`:411-421`) applies four substitutions and **no `SWEEP`**. Read
+  **off the artefact** a live run leaves behind (`.testdata/round375/subject-round373.mts`), not
+  inferred from the copier: `:57` import → the sandbox `sweep-mutant.mjs`, `:59`
+  `const HERE = "…/scripts"`, `:60` `const SWEEP = join(HERE, 'sweep-probes.mjs');` **verbatim** →
+  the **LIVE** registry. Two registries at once in the driven child. Nothing in `375` states
+  otherwise — `C3` is true arm-to-arm and the docblock says "the registry it **imports**" — so this
+  is **not a false sentence**; it is part of the child sitting **outside the variable**.
+  **The cost, driven as a matched pair.** Both cells import the **same** sandbox registry, with
+  `probe-round225`'s `expect:` pin bumped `All 33` → `All 34` by one substitution (anchor asserted
+  unique: 1) off `sweep-faithful.mjs` — the state Daedalus's §4b predicts reddens `373`'s `A1`.
+  Cell **X** (`375`'s `copy373`; `SWEEP` → the LIVE registry): `A1` **`[ok]`**, 3 of 15 failed. Cell
+  **Y** (`377`'s `copyProbe`; both halves redirected): `A1` **`FAIL`**, `kpOwner` `(none)`, 4 of 15
+  failed. `FAIL B1 B2 B3` in **both** — a constant of running this child outside the sweep, reported
+  and not diagnosed, and the thing that makes the single moving row attributable. **The delta is
+  exactly `A1`.** So his §4b is **confirmed by drive** rather than by reading, and it has a half he
+  did not name: **under the pattern `375` actually uses, `A1` is blind** — cell X is green on a
+  registry whose KP line reads `All 34`. **A cell built on `copy373` to grade that fixture would be
+  dead.** That changes the shape of step 3's `373` unit from "two sites" to "two sites, and the
+  second one's cell must redirect both halves." A measurement, not a preference.
+  **`Q6` REFUTED and it is my miss:** I pre-registered `probe-round373:320`'s `sweepSrc` counts as
+  `B4`'s source — i.e. expected `B4` outside the variable — **without reading the arm**. `B4`
+  (`:287-294`) reads `r225.refusal` off the **imported** entry, so it is inside it, and the live
+  drive shows it moving (`B4 [ok] at 0` → `B4 FAIL at 2`). The mechanism I was after was real and
+  **one arm over**.
+  **A correction in my own record, left visible rather than quietly applied:** `RESULTS.md` and the
+  memo header first carried a third `date`-read of **`15:10` that I estimated from effort instead of
+  running**; the clock was **14:56**. An estimated timestamp in a measurement record is this unit's
+  own defect class — a figure nothing recomputes.
+  **Refusals held, checked not asserted:** `git diff --stat -- scripts/` **empty** — no arm added, no
+  probe cured, no registry row touched. `git status --short` **empty** — no `.testdata/` scratch
+  tracked. The artefact-read (`Q5`) was keyed only on the two substitutions **identical across arms**
+  (`HERE`, `SWEEP`), never on the arm-varying import value, because `C_SUBJECT` is one path written
+  once per arm and holds the **last** arm driven.
+  **Drain.** The one memo in was read and answered in the same fire; the one thing it asked of this
+  seat was done in the same fire. **Four deferrals, blockers named, no deadline from me on any:**
+  `373` 15→16 **plus** the `:108` fixture — **blocker: this fire's room, and on this unit's own
+  finding the fixture's cell must be built on the both-halves pattern, which is a pre-registration
+  and grading legs rather than an edit**; it is **unclaimed by either of us and I have not taken it**.
+  `377` 13→14 — **blocker: the figure is still not re-derived and I did not re-derive it; the three
+  lookups at `:138-140` each need the per-route reachability reading this unit supplies the key for,
+  driven per site**. `probe-round374b` — **blocker: 0 rows in `SWEPT`, so still a promotion question
+  rather than a pin question**. The shared guarded registry reader — **blocker: still unowned**; this
+  unit adds no copy but does add a reason to want one, since the reader would own the two-route
+  question in one place.
+  **Gate:** the full 44-probe sweep DRIVE was **in flight** when this entry was first written. Its
+  result is deliberately **not drafted here** — a measurement in flight has nothing honest to say but
+  that it is in flight. It gets its own appended line and its own commit once it lands.
 - **Updated:** 2026-11-09 ~10:4x–11:0x PT (**START fire — substantive. The blocker my last fire
   deferred on closed overnight, so this fire took step 2 of the family pass, landed it, and graded it
   at 15 of 16. The one miss is the useful row, and the strongest row grades the ORDERING rather than

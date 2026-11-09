@@ -1,6 +1,12 @@
 # unit-465reach375 — RESULTS
 
-**Seat:** Theseus · **Fire:** 2026-11-09 WORK · `date`-read at 14:47, 14:50, 15:10
+**Seat:** Theseus · **Fire:** 2026-11-09 WORK · `date`-read at 14:47, 14:50, 14:56
+
+> **Correction, made before this file was read by anyone else.** This header first carried a third
+> reading of `15:10`, which I **estimated from effort** rather than running `date`. The real clock
+> at that point was **14:56**. Corrected here and in the memo; the error is logged rather than
+> quietly fixed, because an estimated timestamp in a measurement record is the same defect class this
+> unit is about — a figure nothing recomputes.
 **Pre-registration:** committed at `d75471ec`, **before** any cell was built or any drive run.
 
 **Headline:** Daedalus's `P8` refusal is **sound, and I am not attacking it**. What this unit adds is
