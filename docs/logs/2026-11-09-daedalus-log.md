@@ -186,3 +186,154 @@ against exactly these bytes, with no other code path touched in the interval. No
 **Step 3 — this log pushed last**, after steps 1 and 2.
 
 Delivery is the wrapper's to log; what is verified above is presence on `origin/main`, not delivery.
+
+---
+
+## 13:17 — Session resumed (WORK fire, model: Opus 5)
+
+`date`-read at 13:17, 13:22, 13:28, 13:30, 13:35 and 13:4x PT. Worktree synced by the wrapper;
+`git log origin/main -1` = `474d785b` at open.
+
+### Briefing
+
+- Checkpoint re-derived: my own **`db748082`** (09:32). **13 commits since, `%an`-checked — Theseus
+  7, Calliope 1, five mine.** Commit author checked before assuming any were mine.
+- Mail delta-read (`git diff --name-status db748082..HEAD -- docs/mail/`): **1 added, 0 modified** —
+  Theseus's step-2 memo. Read in full. It closes on *"step 3's other three bumps are yours and your
+  §5's blocker stands unchanged."* That blocker was the pre-registration slot, which a WORK fire has.
+
+### Work: `unit-465guard375` — step 3's first member, landed and graded
+
+Scope held to **two files**, as in steps 1 and 2: the subject
+`probe-round375-…-passes-on-a-comment.mts` and its own registry row.
+
+- **`35d736a7`** — pre-registration, committed **before the cure and before the grader existed**.
+  Eleven predictions, three refusals named in advance, and **one guard DECLINED in advance** (P8).
+- **`6f790f15`** — the cure. `A0g` (own `SWEPT.find(… R225)`, member-list keyed, arm recorded before
+  the exit), `A0r` (the sibling entry `C1` is re-keyed onto, SHAPE conjunct), `C1` re-keyed to
+  AGREEMENT, the sibling's frozen arm total **removed not refreshed** at all three live sites, pin
+  **8 → 10**, `why` respelled so the agreement rule is neither violated nor vacuous.
+- **`aae7aa98`** — grader, 9 drive captures, 2 runs. **13 of 13 grades true on the first run.**
+- **`a4ec133a`** — memo to Theseus+Argus, pushed to `main` on its own per the worktree rule.
+
+### The rows that did more than pass
+
+- **P6 — the ordering leg.** Both my own 11/09 entry and Theseus's §7 carried step 3's remainder as
+  an unordered list. It is not. `probe-round375`'s `C1` held `probe-round373`'s arm total as a live
+  predicate conjunct, so the `373` bump could not have gone first. Driven with the live sibling plus
+  one asserted inserted arm and its pin moved to match: **PRE exit 1, `C1` sole red, child printed
+  All 16; CUR exit 0 at All 10.**
+- **P7 — not a desensitisation.** Same cell, pin NOT moved → the **cured** `C1` reddens too. So
+  agreement beats a frozen number (reddens on a legitimate bump) *and* a shape (passes when a
+  member's arms vanish).
+- **P2/P3 — the defect, in two files now.** Cured: exit 1, `A0g` sole red, 2 rows, headline present.
+  Pre-cure, same registry copy: exit 1, **0 rows, no headline**, `TypeError: Cannot read properties
+  of undefined (reading 'refusal')`. Theseus's equivalent row was hand-typed HISTORICAL because its
+  subject was gone; mine is driven.
+- **P8 — the pre-registered refusal, and the finding.** The registry counts 11 unguarded
+  dereferences here; two are registry lookups; **one got an arm.** In the only state that could make
+  the second `undefined`, **only `A0g` and `A0r` report at all** — no `A3` row, no `A5` row. Guarded
+  by construction. An arm there would have been a vacuous pin counted as coverage. **A census of
+  SITES is not a census of reachable defects** — which is why `377`'s `13→14` is not being landed
+  until re-derived.
+
+### A sentence of mine refuted by the check I ran on it
+
+I wrote in the memo that the family grep now returns two lines, both prose in `probe-round377`, then
+ran it. **Three.** `probe-round373:108` is a live predicate hard-typing **`probe-round225`'s** arm
+total inside a known-positive fixture. Verified rather than inferred: that entry is
+`sweep-probes.mjs:433`, and this fire's own sweep capture drives `probe-round225` at `All 33`, exit
+0. One legitimate arm there reddens `probe-round373` `A1`. A **fourth** instance of the family
+mechanism, in a shape no census for "asserts a sibling's count" can see — the line *selects* rather
+than asserts — reaching outside the family to the file every member keys on. Corrected in the memo
+as §4b before it was committed; `373`'s unit therefore has two sites, not one.
+
+### Reported rather than tidied
+
+My grader's `own headline` column reads the LAST `All \d+ …` in a run's output, and `A0r` prints the
+pin it read — so the `A0g` cell shows `All 15 regression checks passed` while having 2 rows and never
+reaching section C. A pin echoed in a verdict row, not a headline. It **decided nothing**: no red
+cell's predicate reads the field, and `P3`'s `own === null` is conjoined with `rows === 0`. `[NOTE]
+OWN-FIELD` in run 2 says so in the output; run 1 is kept beside it so the diff is readable. Theseus
+flagged the same shape one level up this morning and I shipped it one level down the same day. The
+subject's own `C-drive` line had the identical defect and that one is **cured**.
+
+**Zero refusals this run** — all three were named in the pre-registration and spelled around in
+advance. Steps 1 and 2 each lost whole runs to exactly these.
+
+## Gate
+
+- **Typecheck:** `npm run typecheck:scripts` clean on both script tsconfigs.
+- **Census:** 154 files, **44 swept / 110 deferred, CENSUS OK** — ran via the pre-commit hook on all
+  five of this fire's commits.
+- **Full 44-probe sweep DRIVE** (`node scripts/sweep-probes.mjs`, no flag — the census flag drives
+  nothing and is not this gate): **SWEEP PASSED — 44 of 44 swept probes green, 0 red, 0 blocked
+  (0 could not run, 0 ran but did not finish), 0 census problems, 110 deferred.** Exit 0, 13:30:09 →
+  13:35:14. Capture: `docs/research/unit-465guard375-2026-11-09/sweep-drive.txt`.
+
+  The family's own rows, read off the capture rather than inferred from the total — this is the leg
+  that says only my file moved:
+
+  | member | sweep row |
+  |---|---|
+  | `probe-round372` | PASS exit 0 · All 26 |
+  | `probe-round373` | PASS exit 0 · All 15 |
+  | `probe-round374` | PASS exit 0 · All 10 |
+  | `probe-round375` | PASS exit 0 · **All 10 ← moved** |
+  | `probe-round377` | PASS exit 0 · All 13 |
+
+  And at the right granularity rather than the file's (P9): `probe-round377`'s `C5` asserts the EXACT
+  failing-arm list of a driven copy of my file under an unprefixed registry. Its row is `[ok]` and
+  the list is still `A1 A2 A4 C2`, so the two new arms did not change it.
+
+### Standing items, re-derived not recalled
+
+- **ma-smoke:** `git ls-remote --heads origin` → **27 refs**; case-insensitive filter for
+  `smoke`/`managed` → **0**. **Day 20** (day 1 = 2026-10-21). Named blocker on xian, unchanged, and
+  not this seat's to move.
+  Figures re-derived in this fire, not carried: `27`, `0`, and day 20 cross-checked against the
+  rollup's own "day 17 today" written on 11/06 rather than counted from memory.
+- **Rollup:** read directly at `docs/operations/attention-rollup.md` — **v176, last refreshed
+  2026-11-06 (Calliope), needs-you 3**, item 3 being ma-smoke and blocked on xian. Neither moved this
+  fire and neither is this seat's to move.
+
+## 13:4x — wrap verification
+
+**Step 1 — commits landed.** `git fetch origin`, then
+`git log origin/main --author=Daedalus --format='%h %cI | %s' -6`:
+
+```
+da807685 13:39:20  coord+log: 11/09 WORK fire — step 3 is open and its first member is landed …
+a4ec133a 13:37:32  mail: reply to Theseus+Argus — step 3's ordering was never a list …
+aae7aa98 13:30:03  unit-465guard375: graded 13 of 13 true on the first run …
+6f790f15 13:25:26  unit-465guard375: step 3's first member is landed — two guards, one agreement …
+35d736a7 13:23:11  unit-465guard375: pre-registration, committed before the cure and the instrument …
+af6c451d 09:33:17  [the START fire's own wrap-verification log — NOT this fire's]
+```
+
+**5 commits this fire.** `git rev-list --count --author=Daedalus db748082..origin/main` returns
+**6**, and the sixth is `af6c451d` — the START fire's wrap log, which landed one minute *after* the
+`db748082` checkpoint. Stated rather than smoothed, because the checkpoint figure and the fire figure
+are not the same number and a reader comparing them would otherwise find a commit unaccounted for.
+As in previous fires the per-fire total is given as the command that derives it rather than as a
+bare number, since a log cannot contain the commit carrying its own total.
+
+`git rev-list --left-right --count HEAD...origin/main` = **0 0**.
+
+**Step 2 — deliverables present on the remote.** `git ls-tree -r origin/main --name-only` over
+explicit path specs: **20 asked for, 20 returned** — the subject probe, the registry, all 16 files of
+`unit-465guard375-2026-11-09/` (`PRE-REGISTRATION.md`, `RESULTS.md`, `grade.mjs`, `grade-run1.txt`,
+`grade-run2.txt`, `sweep-drive.txt` and the 9 drive captures `cell-*.txt`), the memo,
+`COORDINATION.md` and this log. **0 files under any `scratch/`** — this unit has no `scratch/`
+directory, and the seven untracked `scratch/` dirs still in `git status` are earlier units', present
+before this fire opened.
+
+`git diff --stat 6f790f15^ origin/main -- packages/ scripts/` → **2 files changed, 136 insertions,
+9 deletions**, and the two files are exactly the subject probe and its own registry row — the scope
+the pre-registration declared, with nothing under `packages/` touched. So the `SWEEP PASSED — 44 of
+44` above was driven against exactly these bytes. The pre-commit census ran on all five commits and
+printed `CENSUS OK` each time.
+
+**Step 3 — this log pushed last**, after steps 1 and 2.
+
+Delivery is the wrapper's to log; what is verified above is presence on `origin/main`, not delivery.

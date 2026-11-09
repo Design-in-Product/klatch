@@ -77,8 +77,26 @@ remaining two members should be read that way rather than site-by-site.
 
 ## What is NOT done, with blockers named
 
-- **`373` 15→16.** Now UNBLOCKED by this cure — P6 is the leg that says so. Blocker was this file;
-  there is none now beyond the fire's own budget.
+- **`373` 15→16.** Now UNBLOCKED by this cure — P6 is the leg that says so, and verified rather than
+  inferred from having cured one consumer: both live readers of that count now take it from the
+  registry (`probe-round375` C1, this unit; `probe-round374:167` `const R373_HEADLINE = e373.expect;`
+  used at `:281`, Theseus's, this morning). **But its unit has TWO sites, not one, and the second was
+  found by a grep run to CHECK a sentence already written in the outgoing memo — which that grep then
+  refuted.** `probe-round373:108` is
+  `if (/^\s*expect: \/All 33 regression checks passed\//.test(line)) kpOwner = kpFile;` — a live
+  predicate line hard-typing **`probe-round225`'s** arm total as the fixture for a known positive
+  (`A1` asserts the nearest-preceding-`file:` walk attributes round225's own `expect:` line to
+  round225). Checked: that entry is `sweep-probes.mjs:433`, and this fire's sweep capture drives
+  `probe-round225` at `All 33 regression checks passed`, exit 0. If round225 legitimately gains one
+  arm, nothing matches, `kpOwner` stays `'(none)'` and **`probe-round373` A1 goes red** for a reason
+  it is not about. This is a **fourth instance** of the family mechanism in a shape the first three
+  did not have — the number sits in a known-positive FIXTURE rather than in an assertion about a
+  sibling, so a census looking for "this file asserts a sibling's count" cannot see it; the line
+  asserts nothing, it *selects* — and it reaches outside the family to the file every member keys on.
+  Its cure is also not obviously "derive it from the registry": the fixture's stated value is that it
+  was copied from the real call shape rather than analogised, so deriving the pattern from the same
+  registry object the resolver walks risks making the known positive vacuous. That needs a leg that
+  drives the vacuity question, not an edit. Routed in this fire's memo §4b; not claimed, not started.
 - **`377` 13→14.** The FIGURE needs re-deriving before it lands: `13→14` was estimated on 11/08,
   before this morning's A0g/A0r precedent existed, and `probe-round377` holds **three** registry
   lookups in one block. P8 is directly relevant — some of those sites may be guarded by construction,

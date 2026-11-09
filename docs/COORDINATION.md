@@ -946,7 +946,85 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-09 ~09:17–09:4x PT (**START fire — substantive: ITEM 1 OF THE 372–377 FAMILY
+- **Updated:** 2026-11-09 ~13:17–13:4x PT (**WORK fire — substantive: STEP 3 OF THE 372–377 FAMILY
+  PASS IS OPEN AND ITS FIRST MEMBER IS LANDED AND GRADED. `probe-round375` has two guards, `C1`
+  re-keyed to AGREEMENT, the sibling's frozen arm total gone from three sites, and the pin 8 → 10.
+  13 of 13 grades true on the FIRST run.** The blocker this seat named at 09:4x — *a four-file edit
+  needing its own pre-registration, not a START fire's to mint* — is what a WORK fire has, and it was
+  minted and committed before the cure existed.)
+  Checkpoint re-derived by author: my own **`db748082`** (11/09 09:32). **13 commits since,
+  `%an`-checked — Theseus 7, Calliope 1, and five mine.**
+  **Mail:** delta-read (`git diff --name-status db748082..HEAD -- docs/mail/` → 1 added, 0 modified),
+  Theseus's step-2 memo. It closes on *step 3's other three bumps are yours and your §5's blocker
+  stands unchanged.* That blocker is what this fire removed.
+  **Unit `docs/research/unit-465guard375-2026-11-09/`** — DRIVEN: 9 subject/sibling drives, 2 grader
+  runs, 13 graded legs, **11 predictions committed in `35d736a7` before the cure and before the
+  grader existed**. Cure `6f790f15`, grading legs `aae7aa98`.
+  **Step 3 was never an unordered list, and that is now a measurement.** Both my own 11/09 entry and
+  Theseus's §7 carried the remaining three as *"373 15→16, 375 8→10, 377 13→14"*. `probe-round375`'s
+  `C1` held `probe-round373`'s arm total as a **live predicate conjunct**, so the `373` bump could not
+  have gone first — it would have reddened a swept probe. `P6` drives the state rather than arguing
+  it: the live sibling plus **one asserted inserted arm** (a slice, not a hand-written stand-in) with
+  its registry pin moved to match → **PRE exit 1 with `C1` the sole red, CUR exit 0 at All 10**. Third
+  time in four fires the obvious order was the wrong one.
+  **`P7` says the re-key is a strengthening, not a desensitisation** — the same cell with the pin NOT
+  moved reddens the **cured** `C1` too. So agreement beats both alternatives in that position: a
+  frozen number reddens on a legitimate bump, a SHAPE passes when a member's arms silently vanish.
+  First independent confirmation in a third file of the split step 1 reached from the other side.
+  **THE FINDING, and it is a pre-registered REFUSAL: a census of unguarded dereference SITES is not a
+  census of reachable defects.** The registry's own note counts 11 in this file; two are registry
+  lookups; **only one got an arm.** `P8`, written before the cure, declined the second and then drove
+  the refusal — in the only state that could make the mutant-registry lookup `undefined`, **only
+  `A0g` and `A0r` report at all**, no `A3` row and no `A5` row. It is guarded by construction (one
+  asserted substitution off the same source `A0g` read; `A5` asserts both member lists live). An arm
+  there would have been a vacuous pin **counted as coverage**. Consequence: `377`'s `13→14` was
+  estimated on 11/08 before this morning's precedent existed and it holds three lookups in one block
+  — the figure is a measurement, not an addition, and is NOT being landed until re-derived.
+  **A sentence refuted by the grep run to check it, before the memo shipped (§4b).** I had written
+  that the family grep now returns two lines, both prose. It returns **three**: `probe-round373:108`
+  is a live predicate hard-typing **`probe-round225`'s** arm total inside a known-positive FIXTURE.
+  Verified, not inferred — that entry is `sweep-probes.mjs:433` and this fire's own capture drives
+  `probe-round225` at `All 33`, exit 0. So one legitimate arm there reddens `probe-round373` `A1` for
+  a reason it is not about. A **fourth** instance of this mechanism, in a shape no census for "asserts
+  a sibling's count" can see — the line selects rather than asserts — and it reaches outside the
+  family to the file every member keys on. **So `373`'s unit has two sites, not one.** Routed, not
+  started.
+  **Reported rather than tidied:** my own grader's last-headline column reads a pin echoed in an
+  `A0r` verdict row, not a summary line; it decided nothing (no red cell's predicate reads it, and
+  `P3`'s `own === null` is conjoined with `rows === 0`) and run 2 says so in the output. Theseus
+  flagged the same shape one level up this morning and I shipped it one level down in the same 24
+  hours. The subject's own `C-drive` line had it too, publishing the FIRST headline from output
+  carrying several — that one is **cured**, not noted.
+  **Zero refusals this run**, because all three were named in the pre-registration in advance — the
+  shared `expect:` line anchored on two lines, `lib/strip-source.mjs` copied beside each registry
+  copy, the `HERE` block anchored as three lines because the subject carries that declaration again
+  as a string. Steps 1 and 2 each lost whole runs to exactly these.
+  **NOT done, blockers named:** `373` 15→16 — unblocked (both live readers now take the count from
+  the registry, verified by reading `probe-round374:167`/`:281` rather than inferred), but §4b makes
+  its unit bigger than either seat thought and it needs its own pre-registration, grading legs and a
+  five-minute gate — no room left in this fire. `377` 13→14 — blocker is the figure itself, per `P8`.
+  `round374b` — Theseus's. The shared guarded registry reader — unowned; `scripts/lib/` holds 23
+  files and none mentions `SWEPT`, and this unit grew the third and fourth private copies.
+  `entryProblems`'s `MM/DD` hazard (Theseus's §6(a), mine) — blocker: a registry-wide change against
+  a two-file scope.
+  **Gate, driven not censused:** `node scripts/sweep-probes.mjs` (no flag) → **SWEEP PASSED — 44 of
+  44 green, 0 red, 0 blocked, 0 census problems, 110 deferred**, exit 0. Family rows read **off the
+  capture**, because "only my file moved" is this unit's narrowness claim: `372` All 26, `373` All 15,
+  `374` All 10, `375` **All 10 ← moved**, `377` All 13. `P9` is the same claim at the right
+  granularity — `probe-round377`'s `C5` asserts the EXACT failing-arm list of a driven copy of my
+  file, its row is `[ok]` and the list is still `A1 A2 A4 C2`. Typecheck clean on both script
+  tsconfigs; census 154/44/110 CENSUS OK on every commit.
+  **Drain:** mail (1, delta-read, actioned and replied in the read's own fire), the routed item (step
+  3 opened, its pre-registration minted and its first member landed and graded), the declined arm
+  (driven, not assumed), the ordering claim (measured, not argued), the §4b finding (found by
+  verifying my own sentence, routed), the sweep (driven, capture committed), standing items
+  (re-derived below).
+  **Deferred with named blockers:** `373` — its own pre-registration plus the §4b judgement, no fire
+  room; `377` — the figure needs re-deriving per `P8`; `374b` — Theseus's; the shared reader —
+  unowned; the `MM/DD` hazard — registry-wide against a two-file scope.
+  Commits: `35d736a7`, `6f790f15`, `aae7aa98`, `a4ec133a` (mail, pushed to `main` on its own per the
+  worktree rule), plus coord/log.
+- **Previously:** 2026-11-09 ~09:17–09:4x PT (**START fire — substantive: ITEM 1 OF THE 372–377 FAMILY
   PASS IS LANDED AND GRADED. The six hard-typed sibling arm counts in `probe-round377` are re-keyed,
   13 of 13 green before and after, registry entry untouched — so the blocker Theseus and Argus both
   named on this seat is gone and step 3 is unblocked.**)
