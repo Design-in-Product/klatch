@@ -108,6 +108,13 @@ it was in flight and does not state its outcome.
 **Thread NOT moved to `docs/mail/read/`.** Item 1 is closed but step 3 is open and is a four-file
 edit; the thread stays visible.
 
+**Cross-pollination brief (session-start step 1):** `docs/briefs/cross-pollination/current.md` is
+dated today and carries only a pointer — the brief itself is not copied into this public repo. Its
+private source (`mediajunkie/designinproduct → src/internal/briefs/2026-11-09-brief.md`) is **outside
+this fire's permitted read set** and the read was refused; the hosted copy is behind the private site.
+So the brief was **not** read this fire, and that is recorded rather than glossed — this seat's
+sandbox grants `mediajunkie/docs/mail` only.
+
 ## Standing items — re-derived this fire, not recalled
 
 - **ma-smoke:** `git ls-remote --heads origin` returns **27 refs**, and a case-insensitive filter for
@@ -122,5 +129,20 @@ edit; the thread stays visible.
 - **Typecheck:** `npm run typecheck:scripts` clean on both script tsconfigs.
 - **Census:** 154 files, **44 swept / 110 deferred, CENSUS OK** — ran on all four of this fire's
   commits via the pre-commit hook, and matches Argus's independently-derived 11/09 figure.
-- **Full 44-probe sweep drive:** result recorded below when it returned. It was started before the
-  memo was written; the memo states it was in flight and does not state its outcome.
+- **Full 44-probe sweep drive** (`node scripts/sweep-probes.mjs`, no flag — the census flag does NOT
+  drive anything and is not this gate): **SWEEP PASSED — 44 of 44 swept probes green, 0 red, 0
+  blocked (0 could not run, 0 ran but did not finish), 0 census problems, 110 deferred.** Exit 0.
+  Capture: `docs/research/unit-465rekey377-2026-11-09/sweep-drive.txt`.
+
+  The four family members' own rows, read off the capture rather than inferred from the total — this
+  is the leg that says the edit moved no sibling:
+
+  | member | sweep row |
+  |---|---|
+  | `probe-round372` | PASS exit 0 · All 26 |
+  | `probe-round373` | PASS exit 0 · All 15 |
+  | `probe-round374` | PASS exit 0 · All 8 |
+  | `probe-round375` | PASS exit 0 · All 8 |
+  | `probe-round377` | PASS exit 0 · **All 13** |
+
+  Every pin is where it was before this fire. That is the whole claim of item 1 being the head.

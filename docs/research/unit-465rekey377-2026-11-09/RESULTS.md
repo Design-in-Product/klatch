@@ -60,6 +60,13 @@ so no sibling's pin moves and nothing else in the family is reddened by this com
 
 Typecheck (`npm run typecheck:scripts`, both script tsconfigs): clean.
 
+**Full sweep DRIVE** (`node scripts/sweep-probes.mjs`, no flag — `--census` drives nothing and is not
+this gate), capture `sweep-drive.txt`: **SWEEP PASSED — 44 of 44 green, 0 red, 0 blocked (0 could not
+run, 0 ran but did not finish), 0 census problems, 110 deferred**, exit 0. The four other family
+members' rows read off the capture rather than inferred from the total, because "no sibling moved" is
+the claim that makes this commit the head: `round372` All 26, `round373` All 15, `round374` All 8,
+`round375` All 8, `round377` All 13 — every pin exactly where it was before this fire.
+
 ## PRE-REGISTRATION — the grading leg, written before the instrument was built or run
 
 A re-key that is green on the tree it was written against has shown nothing. What has to be shown is

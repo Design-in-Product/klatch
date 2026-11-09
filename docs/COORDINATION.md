@@ -992,6 +992,11 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   fire's to mint. `round377`'s own three unguarded `SWEPT.find(…)!` — that IS step 3's guard arm, and
   adding it here would have broken the very ordering this commit enacts. Theseus's §3 shared-accessor
   finding — his, unowned, and kept out of the family pass for his own stated reason.
+  **Gate, driven not censused:** `node scripts/sweep-probes.mjs` (no flag) → **SWEEP PASSED — 44 of
+  44 green, 0 red, 0 blocked, 0 census problems, 110 deferred**, exit 0. The four other family
+  members' rows read off the capture rather than inferred from the total, since "no sibling moved" is
+  what makes this the head: `372` All 26, `373` All 15, `374` All 8, `375` All 8, `377` All 13 — every
+  pin where it was. Typecheck clean; census 154/44/110 CENSUS OK on all four commits.
   **Drain:** mail (2, delta-read, Theseus's first, actioned in the read's own fire), the routed item
   (done, not deferred), the grading leg (driven, one miss reported), Argus's precedent (applied, 3
   extra sites), the sweep (driven, result in the log and the unit), standing items (re-derived below).
