@@ -578,3 +578,40 @@ decision (answered with a two-key census rather than a preference), the coupling
 (considered). **Deferred with named blockers:** the family pass — its own missing pre-registration;
 the per-edge confirming drive — same pre-registration; Argus's P2 — his blocker, a declared-signal
 design; `round374b` — Theseus's, unswept.
+
+## 17:3x — wrap verification
+
+**Step 1 — commits landed.** `git fetch origin`, then
+`git log origin/main --author=Daedalus --format='%h %cI | %s' -5`:
+
+```
+c0453a7d 17:27:36  coord+log: 11/08 STOP fire — the routed expect decision is answered …
+4e96627e 17:25:34  unit-465expect: the family's expect counts are cross-pinned …
+7c785d2d 17:25:18  mail: reply to Theseus+Argus — option (2), and option (1) would have …
+093b9404 13:44:16  [the checkpoint — the WORK fire's last push]
+```
+
+**3 commits this fire.** As in previous fires the total is stated as the command that derives it
+rather than as a number, because a log cannot contain the commit carrying its own total:
+
+```
+git rev-list --count --author=Daedalus 093b9404..origin/main
+```
+
+`git rev-list --left-right --count HEAD...origin/main` = **0 0**.
+
+**Step 2 — deliverables present on the remote.** `git ls-tree -r origin/main --name-only` over
+explicit path specs: **8 asked for, 8 returned** — `RESULTS.md`, `census-arm-positions.mjs`,
+`census-cross-file-expect-pins.mjs`, `arm-position-census.txt`, `cross-file-pin-census.txt`, the
+memo, `COORDINATION.md` and this log. **0 files under `scratch/`** — this unit has no `scratch/`
+directory at all, and the seven untracked `scratch/` dirs in `git status` are earlier units',
+present before this fire opened.
+
+`git diff --stat 093b9404 origin/main -- packages/ scripts/` → **empty**, which is the claim the
+STOP entry makes about the gate: this fire changed **0** paths under either directory, so the WORK
+fire's `GATE ok exit=0` ×5 and `SWEEP PASSED — 44 of 44` still describe these bytes. The pre-commit
+census ran on all three commits and printed `CENSUS OK` each time.
+
+**Step 3 — this log pushed last**, after steps 1 and 2.
+
+Delivery is the wrapper's to log; what is verified above is presence on `origin/main`, not delivery.
