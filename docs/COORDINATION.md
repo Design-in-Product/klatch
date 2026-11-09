@@ -7364,7 +7364,36 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-11-08 ~07:2x PT (START fire). **Status:** available.
+- **Updated:** 2026-11-08 ~19:1x PT (STOP fire). **Status:** available.
+- **11/08 fire (STOP) — no-op on product; 42 commits read since own START checkpoint (`f4b6dde4`), none mine
+  — the Daedalus/Theseus/Argus/Calliope round372-377 research chains plus Calliope's logbook. Nothing routed
+  to this seat.** Drain against own checkpoint: 42 new commits (checked `%an` per commit — Daedalus, Theseus,
+  Argus, Calliope only; none Iris). `git diff --stat f4b6dde4..HEAD -- packages/ scripts/` touches exactly 2
+  files, both under `scripts/` — zero `packages/client/src` touch, outside Iris's UX lane. **Mail:** 8 new
+  local files, all round372-377 exchanges, Iris cc-only on all eight (confirmed via `grep -il "^to:.*iris"
+  docs/mail/*.md` — zero hits). All four cross-repo mailboxes checked fresh via `git -C <repo> fetch` + `git
+  log --since` against the 07:27:10 PT checkpoint: `designinproduct` 2 new, content-grepped — 1 hit, a
+  Janus→Pard memo noting the shared non-PM login (Klatch/DinP/Mediajunkie seats) expires ~11-11 unless xian
+  runs `/login`; informational, already relayed to xian per its own text, no action for this seat;
+  `mediajunkie` 7 new — 0 klatch/iris hits; `dispatch` 3 new — 0 hits; `piper-morgan-product/mailboxes` ~95
+  new — 0 hits. Nothing owed from any. **Standing blockers re-derived fresh:** ground-rules-UX stays
+  **closed**; reassign-picker live-browser drive still queued on Theseus, unchanged; `entityGuess` re-grepped
+  scoped to `packages/client/src` — **5 files/19 lines**, unchanged. Both standing dispatch question-box
+  letters (Theseus's 10-25, 11-01) re-checked present and still un-replied, not re-escalated.
+  Attention-rollup re-checked — Klatch's board line still **v176** (Fri START, unchanged), same three asks,
+  none UX-lane. **Verified, not trusted:** `lsof -i :3001` port free; `npm run typecheck` clean ×4
+  workspaces; server **143 files · 2221 passed · 1 skipped (2222)**; client **26 passed|13 skipped (39) · 333
+  passed|13 skipped (346)** — byte-identical to the START checkpoint; `sweep-probes --census` **154 probe
+  files, 44 swept/110 deferred** (up from 43/111 — Daedalus's `probe-backfill-sidecar-neutrality` promotion
+  into SWEPT this fire's commit range, already chronicled by him, not a new finding), CENSUS OK; full driving
+  sweep (HEAD unchanged at `a0c06f80` before/after, tree clean throughout, backgrounded past the 120s
+  foreground limit, picked up via completion notification) — **SWEEP PASSED — 44 of 44 swept probes green, 0
+  red, 0 blocked, 0 census problem(s), 110 deferred.** No `packages/` changes this fire. Nothing new needs
+  xian from this seat. **Drain:** all unblocked items done (commit check, mail across all four mailboxes plus
+  local, both blockers re-derived, dispatch letters re-checked, attention-rollup re-checked, full gate
+  including the driving sweep). Two consecutive checks found nothing further unblocked — fire closed bounded.
+  Log: `docs/logs/2026-11-08-iris-log.md`.
+- **Prior update:** 2026-11-08 ~07:2x PT (START fire). **Status:** available.
 - **11/08 fire (START) — no-op on product; 10 commits read since own 11/07 STOP checkpoint
   (`f9d3127f`), none mine — Theseus's `unit-465declpop` research chain plus Calliope's logbook
   commit and today's two brief-publishes. Nothing routed to this seat. Two prior-fire
