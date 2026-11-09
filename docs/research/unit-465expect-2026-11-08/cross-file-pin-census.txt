@@ -1,0 +1,50 @@
+population: 182 .mts/.mjs files under scripts/ (LIVE only)
+files carrying at least one live `All N regression checks passed` literal: 11
+
+--- probe-round224-a-skip-must-not-summarise-as-a-pass.mts  [probe]  4 hit(s)
+    :411   All 2  cleanRun.code === 0 && cleanRun.headline === 'All 2 regression checks passed.',
+    :540   All 1  check('M', 'a non-string regressionKind refuses at 3 instead of printing "All 1 regression checks passed"',
+    :715   All 1  + 'at 3 instead of printing "All 1 regression checks passed"',
+    :878   All 1  + 'refuses at 3 instead of printing "All 1 regression checks passed"',
+--- probe-round261-a-pin-whose-red-is-cleared-by-doing-something-is-a-gate.mts  [probe]  2 hit(s)
+    :149   All 7  const good = 'blah  All 7 regression checks passed  ';
+    :150   All 6  const wrong = 'blah  All 6 regression checks passed  ';
+--- probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts  [probe]  1 hit(s)
+    :103   All 7  const GREEN = 'All 7 regression checks passed, 0 measurements, 0 skips';
+--- probe-round285-the-promotion-path-and-the-two-detectors-that-were-returning-a-smaller-number.mts  [probe]  4 hit(s)
+    :99    All 1  "console.log('All 1 regression checks passed');",
+    :105   All 1  ["await new Promise((r) => setTimeout(r, 600));", "console.log('All 1 regression checks passed');", ''].join('  '),
+    :275   All 19  ['a pass line', 'setup  All 19 regression checks passed  ', true, true],
+    :295   All 3  passPin('All 3 regression checks passed  segfault handler  ') !== null,
+--- probe-round287-the-sandbox-cannot-see-the-one-file-git-cannot-restore.mts  [probe]  1 hit(s)
+    :315   All 1  "console.log('All 1 regression checks passed');",
+--- probe-round289-the-deferred-breakdown-is-derived-and-the-sidecar-signature-is-not-evidence-of-no-write.mts  [probe]  2 hit(s)
+    :152   All 7  { label: 'the line in a COMMENT only', src: '// prints All 7 regression checks passed when it is done  console.log(table);  ', want: false }
+    :208   All 3  out: 'All 3 regression checks passed  ',
+--- probe-round298-a-stale-pin-and-a-genuine-break-used-to-read-identically.mts  [probe]  13 hit(s)
+    :77    All 10  pinDiagnosis('All 10 regression checks passed', 'All 12 regression checks passed')
+    :77    All 12  pinDiagnosis('All 10 regression checks passed', 'All 12 regression checks passed')
+    :79    All 10  `got: ${pinDiagnosis('All 10 regression checks passed', 'All 12 regression checks passed')}`);
+    :79    All 12  `got: ${pinDiagnosis('All 10 regression checks passed', 'All 12 regression checks passed')}`);
+    :82    All 10  pinDiagnosis('All 10 regression checks passed', 'All 10 regression checks passed') === undefined,
+    :82    All 10  pinDiagnosis('All 10 regression checks passed', 'All 10 regression checks passed') === undefined,
+    :83    All 10  `got: ${pinDiagnosis('All 10 regression checks passed', 'All 10 regression checks passed')}`);
+    :83    All 10  `got: ${pinDiagnosis('All 10 regression checks passed', 'All 10 regression checks passed')}`);
+    :86    All 10  pinDiagnosis('All 10 regression checks passed', 'INCONCLUSIVE — established 4, skipped 1') === undefined,
+    :87    All 10  `got: ${pinDiagnosis('All 10 regression checks passed', 'INCONCLUSIVE — established 4, skipped 1')}` +
+    :91    All 10  pinDiagnosis('regression checks passed', 'All 10 regression checks passed') === undefined,
+    :188   All 12  const staleFixture = mint('stale.mjs', 'console.log("All 12 regression checks passed, 0 measurements, 0 skips");  process.exit(0);  ');
+    :210   All 12  staleMsg === 'exit 0, pin says 10, observed says 12 — the pin needs bumping — All 12 regression checks passed, 0 measurements, 0 skips',
+--- probe-round323-the-cheap-cure-for-a-frozen-figure-empties-the-tripwire-and-leaves-the-exit-code-lying.mts  [probe]  1 hit(s)
+    :360   All 12  'const fixture = mint(  stale.mjs  ,   console.log("All 12 regression checks passed, 0 measurements, 0 skips");  );',
+--- probe-round325-the-fourth-exit-shape-returns-zero-and-restaging-an-inflated-pin-promotes-measurements-to-hard-checks.mts  [probe]  1 hit(s)
+    :348   All 2  + '.mts that pushes a skip, prints `All 2 regression checks passed, 1 measurements, 1 skips` and '
+--- probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts  [probe]  1 hit(s)
+    :201   All 15  ? 'All 15 regression checks passed'
+--- probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts  [probe]  6 hit(s)
+    :137   All 8  e374.expect.source === String.raw`All 8 regression checks passed` &&
+    :138   All 8  e375.expect.source === String.raw`All 8 regression checks passed`,
+    :672   All 8  c374Faithful.own === 'All 8 regression checks passed' &&
+    :673   All 8  c375Faithful.own === 'All 8 regression checks passed',
+    :686   All 8  c374Renamed.own === 'All 8 regression checks passed',
+    :698   All 8  c375Renamed.own === 'All 8 regression checks passed',

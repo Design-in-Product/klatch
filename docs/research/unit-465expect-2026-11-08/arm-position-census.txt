@@ -1,0 +1,81 @@
+====================================================================================================
+probe-round372-the-rows-are-keyed-on-the-limb-and-the-contradiction-is-latent.mts
+  detector self-check: found 26 arms, registry expect 26 -> SOUND
+  arms: A1@103 A2@164 A1b@190 A4@243 A5@249 B1@261 B2@267 B3@273 B4@283 B5@289 B6@295 B7@302 B8@312 B9@328 C1@354 C1b@368 C2@382 C3@389 C4@403 D1@420 D2@427 D3@434 E1@452 E2@461 E3@469 E4@475
+  first dereference: 102
+  arms strictly before it: 0 -> (none)
+  dereference sites:
+    find-plain :102   const r225 = SWEPT.find((s) => s.file === R225);
+====================================================================================================
+probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts
+  detector self-check: found 15 arms, registry expect 15 -> SOUND
+  arms: A1@110 A2@140 A3@192 A4@198 A5@206 B1@248 B2@257 B3@265 B4@290 B4b@297 C1@321 C1b@335 C2@347 C3@355 C4@361
+  first dereference: 82
+  arms strictly before it: 0 -> (none)
+  dereference sites:
+    find-plain :82    const r225 = SWEPT.find((s) => s.file === R225)!;
+    bang       :159   const REFUSAL_LINE = `  ${r225.refusal!.source}`;
+    bang       :160   const SKIP_LINE = `  did not run: ${r225.skip!.source}`;
+    bang       :247   .filter((l) => l.includes('did not run:') && l.search(r225.skip!) >= 0);
+    bang       :286   const refusalRe = new RegExp(r225.refusal!.source, `${r225.refusal!.flags}g`);
+    bang       :287   const skipRe = new RegExp(r225.skip!.source, `${r225.skip!.flags}g`);
+====================================================================================================
+probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts
+  detector self-check: found 8 arms, registry expect 8 -> SOUND
+  arms: A0@208 A1@219 A2@273 A4@319 A5a@336 A5@356 A5b@387 A6@399
+  first dereference: 79
+  arms strictly before it: 0 -> (none)
+  dereference sites:
+    find-plain :79    const r225 = SWEPT.find((s) => s.file === R225)!;
+    bang       :171   once(sweepSrc, `refusal: /${r225.refusal!.source}/,`, `refusal: /${DRIFT_TARGET}/,`),
+    bang       :245   const b4Literal = r225.refusal!.source;
+    bang       :271   const PREFIXED =                                 .exec(r225.refusal!.source);
+    bang       :277   `  ${r225.refusal!.source}   and what is left is   ${ownSpelling}  , which occurs ` +
+    bang       :292   r225.refusal!.source !== ownSpelling &&
+    bang       :318   const controlCount = occurrences(r225Src, r225.skip!.source);
+    bang       :334   const ANCHOR = `refusal: /${r225.refusal!.source}/,`;
+    find-plain :348   const mutantR225 = mutantSweep.SWEPT.find((s) => s.file === R225)!;
+    bang       :350   const registryKeyed = occurrences(r225Src, mutantR225.refusal!.source);
+    bang       :362   mutantR225.refusal!.source === ownSpelling && literalKeyed === 0 && registryKeyed > 0,
+    bang       :396   mutantR225.skip!.source === r225.skip!.source,
+    bang       :405   occurrences(r225Src, r225.refusal!.source) === 0 && controlCount > 0,
+====================================================================================================
+probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts
+  detector self-check: found 8 arms, registry expect 8 -> SOUND
+  arms: A1@131 A2@156 A3@168 A4@188 A5@211 C1@315 C2@326 C3@335
+  first dereference: 96
+  arms strictly before it: 0 -> (none)
+  dereference sites:
+    find-plain :96    const r225 = SWEPT.find((s) => s.file === R225)!;
+    bang       :128   const shortFromRegistry = r225.refusal!.source.startsWith(PREFIX)
+    bang       :129   ? r225.refusal!.source.slice(PREFIX.length)
+    bang       :134   `probe-name prefix off   ${r225.refusal!.source}   and what is left is   ${shortFromRegistry}  ` +
+    bang       :140   shortFromRegistry !== r225.refusal!.source &&
+    bang       :141   PREFIX + shortFromRegistry === r225.refusal!.source,
+    bang       :167   const DECL = `refusal: /${r225.refusal!.source}/,`;
+    find-plain :180   const mutantR225 = mutantSweep.SWEPT.find((s) => s.file === R225)!;
+    bang       :181   const regexKeyed = (r225Src.match(new RegExp(mutantR225.refusal!.source, 'g')) || []).length;
+    bang       :186   `${occ(r225Src, r225.refusal!.source)}`,
+    bang       :193   regexKeyed === 2 && occ(r225Src, r225.refusal!.source) === 0,
+    bang       :219   mutantR225.skip!.source === r225.skip!.source,
+====================================================================================================
+probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts
+  detector self-check: found 13 arms, registry expect 13 -> SOUND
+  arms: A1@129 A2@158 A3@204 B1@296 B1c@441 C0@597 C0b@619 C1@664 C2@677 C3@690 C4@702 C5@715 C6@737
+  first dereference: 96
+  arms strictly before it: 0 -> (none)
+  dereference sites:
+    find-plain :96    const r225 = SWEPT.find((s) => s.file === R225)!;
+    find-plain :97    const e374 = SWEPT.find((s) => s.file === R374)!;
+    find-plain :98    const e375 = SWEPT.find((s) => s.file === R375)!;
+    bang       :194   const short = r225.refusal!.source.replace(                         , '');
+    bang       :613   const DECL_ANCHOR = `refusal: /${r225.refusal!.source}/,`;
+====================================================================================================
+probe-round374b-the-subject-reaches-the-state-itself-on-a-held-port.mts
+  detector self-check: found 9 arms, registry expect (none) -> UNGRADED (no registry entry)
+  arms: B0@102 B0b@116 B1@169 B2@184 B2b@192 B3@210 B4@222 B5@232 B6@244
+  first dereference: 90
+  arms strictly before it: 0 -> (none)
+  dereference sites:
+    find-plain :90    const r225 = SWEPT.find((s) => s.file === R225)!;
+    bang       :203   .filter((l) => l.includes('did not run:') && l.search(r225.skip!) >= 0);
