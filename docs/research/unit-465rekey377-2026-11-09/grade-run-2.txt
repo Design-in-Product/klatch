@@ -1,0 +1,23 @@
+[MEAS] S1  PRE A1 sliced as: e374.expect.source === String.raw`All 8 regression checks passed`
+[MEAS] S2  CUR A1 sliced as: HEADLINE_SHAPE.test(e374.expect.source)
+[MEAS] S3  PRE C1 sliced as: c374Faithful.own === 'All 8 regression checks passed'
+[MEAS] S4  CUR C1 sliced as: agrees(e374.expect, c374Faithful.own)
+[MEAS] S5  HEADLINE_SHAPE initializer sliced as: /^All \d+ regression checks passed$/
+[MEAS] S6  agrees body sliced as: own !== null && pin.test(own)
+[MEAS] S7  SHP, HAND-TYPED and never shipped: /^All \d+ regression checks passed$/.test(c374Faithful.own ?? '')
+[ok] P1 FAITHFUL  pin All 8 regression checks passed · printed All 8 regression checks passed → PRE true (want true), CUR true (want true), SHP[hand-typed] true (want true)
+[ok] P2 BUMPED  pin All 10 regression checks passed · printed All 10 regression checks passed → PRE false (want false), CUR true (want true), SHP[hand-typed] true (want true)
+[ok] P3 DISAGREE  pin All 10 regression checks passed · printed All 8 regression checks passed → PRE true (want true), CUR false (want false), SHP[hand-typed] true (want true)
+[ok] P4 VANISHED  pin All 8 regression checks passed · printed All 2 regression checks passed → PRE false (want false), CUR false (want false), SHP[hand-typed] true (want true)
+[ok] P5 RED DRIVE  pin All 8 regression checks passed · printed (red) → PRE false (want false), CUR false (want false), SHP[hand-typed] false (want false)
+[ok] P3b  the DISAGREE state is caught by both versions at different arms: PRE's A1 conjunct false (so PRE reddens at A1), CUR's C1 conjunct false (so CUR reddens at C1)
+[ok] P6 A1 BUMPED  pin All 10 regression checks passed → PRE false (want false), CUR true (want true)
+[ok] P7 A1 NOT A HEADLINE  pin Done: 8 checks → PRE false (want false), CUR false (want false)
+[ok] P8 A1 A STRING  pin (string) All 8 regression checks passed → PRE false (want false), CUR false (want false)
+[ok] S-agrees(e375.expect, c375Faithful.own)  is the graded conjunct under [["374","375"]] (derived `agrees(e375.expect, c375Faithful.own)`) and occurs 1 time(s) live
+[ok] S-agrees(e374.expect, c374Renamed.own)  is the graded conjunct under [["Faithful","Renamed"]] (derived `agrees(e374.expect, c374Renamed.own)`) and occurs 1 time(s) live
+[ok] S-agrees(e375.expect, c375Renamed.own)  is the graded conjunct under [["374","375"],["Faithful","Renamed"]] (derived `agrees(e375.expect, c375Renamed.own)`) and occurs 1 time(s) live
+[MEAS] L1  headline literals in the subject: raw 7 → 2, and through stripSource(src, false) 6 → 0
+[ok] L2  every hard-typed headline literal is out of live code — 6 before, 0 after — while 2 remain raw, all of them comment prose describing this cure
+
+All 13 grades true.

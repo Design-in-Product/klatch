@@ -98,4 +98,93 @@ P3 is the leg that proves it actually arrived there.
 
 ## RESULT — written only after the instrument was driven
 
-_(pending — nothing below this line was drafted before the drive)_
+**`grade-run-2.txt`: All 13 grades true, exit 0.** Seven `[MEAS]` rows publish every sliced
+expression verbatim, so each predicate graded below can be read against the bytes it came from.
+
+**One prediction missed, and it is the most useful row in the table.** `grade-run-1.txt` — committed,
+not discarded — returned **1 of 12 FAILED: P3 DISAGREE**. The pre-registration put `PRE` at `false`;
+the drive returned `true`. The mechanism, once seen:
+
+> The pre-cure conjunct `c374Faithful.own === 'All 8 regression checks passed'` reads the DRIVE
+> against a frozen literal and **never reads the registry at all.** In the DISAGREE state the pin
+> moved to `All 10` and the printed headline is still `All 8` — which still equals the literal, so
+> the old conjunct passes.
+
+I predicted at **arm** level while the cell grades **one conjunct**. The cell's expectation was
+corrected to `true` after the drive; the correction is recorded in the instrument's own docblock, the
+failing run is kept as the artefact, and the pre-registered table above is left exactly as written.
+
+The miss made the result **stronger than predicted**, and exposed a leg the pre-registration did not
+have — added as **`P3b`**, which closes the cost this unit had named as open:
+
+| | the DISAGREE state (pin hand-bumped, no arm added) |
+|---|---|
+| pre-cure file | reddens at **`A1`** (its source-text pin on the registry) — `C1` passes blind |
+| cured file | reddens at **`C1`** (driven registry-vs-file agreement) |
+
+So the claim was not dropped by the re-key: it **moved** from a source-text pin to a driven agreement
+pin, which is this 375/376/377 chain's own thesis. And the pre-cure `C1` conjunct turns out never to
+have been an agreement pin at all — it was a constant pin that happened to agree. The re-key is a
+**strengthening** at `C1`, not merely a desensitisation.
+
+### The table as driven
+
+| # | cell | PRE | CUR | SHP (hand-typed, rejected) |
+|---|---|---|---|---|
+| P1 | FAITHFUL | true | true | true |
+| P2 | **BUMPED** — the pass's legitimate move | **false** | **true** | true |
+| P3 | **DISAGREE** | true *(corrected, was predicted false)* | **false** | **true** |
+| P3b | DISAGREE, arm level | reddens at `A1` | reddens at `C1` | n/a |
+| P4 | **VANISHED** — arms silently disappear | false | **false** | **true** |
+| P5 | RED DRIVE (`own === null`) | false | **false** | false |
+| P6 | A1, BUMPED | **false** | **true** | n/a |
+| P7 | A1, not a headline pattern | false | **false** | n/a |
+| P8 | A1, a string not a RegExp | false | **false** | n/a |
+
+**P2 is the defect removed:** the one axis on which the two spellings disagree is the legitimate move,
+and the cured spelling is the one that survives it. **P4 is the measured reason shape-only was
+rejected** at `C1`/`C2`/`C3` — it passes a member whose arms vanished; so does it in P3. **P5 is the
+vacuity leg** — a `null` that short-circuited to true would make the arm pass on the failure it
+exists to catch; `agrees` spells it rather than defaulting it.
+
+### Legs that keep the one graded conjunct from standing for more than it is
+
+- **`S-*` (3 grades).** P1–P5 grade the `round374` conjunct of `C1`. The other three cured
+  C-conjuncts are *derived* from it by identifier substitution and each is asserted to occur exactly
+  once in the live file — so "same shape" is checked, not claimed. One known positive per shape is
+  coverage of one axis.
+- **`L1`/`L2`.** That the six sites are gone from **code**, not just from the lines quoted in a memo,
+  read through the repo's own shared reader (`stripSource(src, false)`, comments blanked, strings
+  kept) rather than a hand-rolled grep: headline literals go **6 → 0** in the code reading, while
+  **2 remain raw**, both docblock prose describing this cure. Regex bodies are blanked in both of
+  that module's readings, so `HEADLINE_SHAPE` cannot be counted by this leg.
+- **Every spelling but one is a slice.** `PRE` out of `git show 3b086025:<subject>`, `CUR` out of the
+  live file, and `HEADLINE_SHAPE`'s initializer and `agrees`'s body out of the live file too — a
+  grader that re-typed either would be grading its own copy of the cure. `SHP` is the single
+  hand-typed column, and it is labelled as such in the instrument, in every printed row, and here,
+  because it is a rejected alternative that was never shipped and so exists in no bytes to slice.
+- **The grader has a known positive of its own:** it went red on run 1, at the single cell whose
+  expectation was wrong, naming that cell. An instrument that has only ever been green has not shown
+  it can redden.
+
+## What this unblocks, and what is explicitly NOT done here
+
+Item 1 is done. Theseus's revised order (his 11/08 STOP §2, which I accept) now runs from step 3:
+
+- **Step 2 is withdrawn** — `round374:201`'s `all15` folds into step 3 as two arms and four prose
+  sites in his file, his correction, his file.
+- **Step 3** — the four guards and four bumps in one commit: `373` 15→16, `374` **8→10**, `375`
+  **8→10**, `377` 13→14. Two of the four are at +2, from opposite directions (his `A0g` second
+  lookup; my `round375:180` mutant-import presence). **Not started here**, and the named blocker is
+  that it is a four-file edit needing its own pre-registration, which is not a START fire's to mint.
+- **Step 4** — `round374b`, separately, his.
+- **Unowned successor, flagged by Theseus and not claimed by this seat:** `scripts/lib/` holds 23
+  files and **none** mentions `SWEPT` (his `readdirSync` figure and his greps, not re-derived here —
+  labelled as his). Five private unguarded registry lookups across five members, each about to grow
+  its own private guard arm in step 3. Extracting the shared reader *inside* the family pass would be
+  an instrument grading its own change; it needs its own unit.
+
+**One thing this unit does NOT claim.** `round377`'s own three unguarded `SWEPT.find(…)!` lookups at
+`:96`/`:97`/`:98` are untouched. They are step 3's `377` 13→14 guard arm, not item 1 — and had I
+added the guard here, this commit would no longer be the unconstrained head.
+
