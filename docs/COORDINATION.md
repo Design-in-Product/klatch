@@ -4832,6 +4832,78 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
 - **Status:** available — duty cycle armed.
+- **Updated:** 2026-11-09 ~10:4x–11:0x PT (**START fire — substantive. The blocker my last fire
+  deferred on closed overnight, so this fire took step 2 of the family pass, landed it, and graded it
+  at 15 of 16. The one miss is the useful row, and the strongest row grades the ORDERING rather than
+  the cure.**)
+  Checkpoint `af6c451d` (the wrapper's sync). Commits `d79d20fb..af6c451d` **author-checked** rather
+  than assumed: **14 — 6 Daedalus, 3 Calliope, 2 Claude, 1 Argus, 1 Iris, 1 Pard (Mediajunkie); none
+  mine.** **Mail** counted with `readdirSync`: **84 live / 1188 read**; **two** new memos since my
+  last fire (`git log --name-only` over `docs/mail/`, not inferred from the directory), both addressed
+  to me, **both read in full before any edit and answered in this same fire** (`3f4d0fd3`, its own
+  commit, pushed to `main` first per the worktree rule). Cross-pollination brief read — a pointer to
+  the private 11/09 brief, as expected in a public repo.
+  **The 11/08 blocker is CLOSED, verified by reading his commits rather than his memo:** item 1
+  (`round377`'s six-site re-key) landed at `a8b366dd` + `b3fe7a86`, and Daedalus's reply hands step 2
+  to this seat ("your call, your file"). So this fire ran it.
+  **`unit-465rekey374-2026-11-09` — landed and graded.** `cc15ee77` (pre-registration, committed
+  **before the instrument existed** — nine predictions, four refusals), `d9e1937d` (the cure),
+  `10dab4d0` (the grading legs and four run captures). **Scope held to two files:** the subject and
+  the **`round374` row only**. `probe-round374` drives **10 of 10 green, exit 0**; pin **8 → 10**.
+  **Two guards, two arms, deliberately not one:** `A0g` is `unit-465guard374`'s already-graded
+  presence guard, **imported** rather than re-typed so this unit's green is not a reading of a copy;
+  `A0r` is the second registry lookup the re-key stands on, kept separate because one arm asserting
+  two independent registry claims cannot say which entry went absent. `A0r`'s conjunct is the
+  headline **SHAPE** (Daedalus's `probe-round377:124` spelling), not a count, so this file does not
+  redden when he takes `round373` 15 → 16 in step 3 — and `P3b` drives the shape as **reachable
+  alone**: an entry still present but no longer pinning a headline reddens `A0r` by itself, a state a
+  presence-only guard passes. **Five frozen sites cured by REMOVING the number** (Argus's
+  `unit-465skipE` precedent — a refresh re-arms the drift at the next re-key): raw literal 2 → 0,
+  `all15` token 5 → 0, lines containing the number at all 9 → 0. **Registry:** the superseded `8/8`
+  respelled to "8 of 8" with the reason noted, a live `10/10` added, and `entryProblems` **run** to
+  `[]` rather than inferred.
+  **`P4` is the defect driven rather than described:** the pre-cure subject, under a registry whose
+  `round373` entry is renamed away, exits **0** with its own `All 8` headline — a frozen-string
+  predicate is structurally blind to the registry, so the state that makes its claim unspeakable
+  cannot redden it. **`P8` grades the ORDERING:** `probe-round377` out of `a8b366dd^`, driven against
+  today's bumped registry, is **exit 1 FAIL `A1`** — so item 1 was the only available head and
+  landing my bump first would have manufactured a red in his file. **`P2d` MISSED and is the most
+  useful row:** I imported his `unit-465rekey377` L2 reader (sites read out of live code through
+  `scripts/lib/strip-source.mjs`) without re-deriving whether it can see **my** sites — his were
+  identifiers, mine a **regex body** and a **string literal**, and that reader blanks a regex body in
+  **both** readings, which my own subject's docblock already states. Measured PRE 0 → CUR 0: a
+  vacuous green that would have passed clean on an uncured file. Row stays FAIL; the claim is carried
+  by three raw readings. **And my own 11/08 memo is corrected:** it called the `all15` identifier
+  "declared once and read twice" (three); it is **five**.
+  **Three grader refusals, kept and committed, each naming a hazard:** the registry's
+  `expect: /All 15 …/,` line occurs **four** times (this family shares a pin) and the refusal crashed
+  **upstream of `M0`**, the narrowness arm meant to diagnose it, so `M0` moved ahead of the mutations
+  it grades; `const HERE = dirname(fileURLToPath(import.meta.url));` occurs **twice** in the subject,
+  once as a declaration and once as a **string** at `:218`, because the subject is itself a
+  probe-copying probe; and a registry copy needs `lib/strip-source.mjs` beside it.
+  **Routed, not claimed (all three in the memo):** (a) `entryProblems` reads a self-equal `MM/DD`
+  **datestamp** in `why` as a count claim — `11/09` is self-unequal and dropped, but a fire on
+  `10/10` would have had its date read as an arm count and would have **agreed** by coincidence,
+  worse than a red; (b) `probe-round375` is insensitive to the bump by **deadness** — `r374Src`
+  occurs exactly once in that file, a read with no reader; (c) `probe-round377:552`'s `B2m` names
+  `All 8` and should **stay**, because it is a wholly historical record and does not drift.
+  **Gate:** typecheck clean on **both** script tsconfigs, each invoked separately; census **154
+  files, 44 swept / 110 deferred, CENSUS OK**, matching both Daedalus's and Argus's 11/09 figures.
+  The full 44-probe sweep DRIVE is in flight as this entry is written and its result is
+  **deliberately not drafted** — it gets its own line and its own commit when it lands.
+  **Drain.** Two memos in, both read and answered in the same fire. The one unblocked item on this
+  seat's board (step 2) was taken and finished rather than deferred. **Three deferrals, blockers
+  named:** step 3's other three bumps (`373` 15→16, `375` 8→10, `377` 13→14) — **blocker: they are
+  Daedalus's files and his §5 names one four-file pre-registration that a START fire is not to
+  mint**; `round374b` — **blocker: it has no registry entry at all (UNGRADED), so it is a promotion
+  question rather than a pin question, and it sits behind step 3**; the shared guarded registry
+  reader — **blocker: unowned, and a pass that adds the guards and replaces the thing they are made
+  of cannot attribute its own red** (`scripts/lib/` still holds 23 files, none mentioning `SWEPT`).
+  No deadline from me on any of the three. **Question-box: considered, and no** — the recurrence
+  question is still `dispatch/mail/question-theseus-2026-10-13-is-the-recurrence-the-point.md`,
+  filed and unanswered; re-filing it under a new date would be noise. **Standing on xian, not
+  re-asked:** the 09-29 step-1 list; the `backups/` tracked-vs-ignored half; the March-backup restore
+  from `c945e8aa`.
 - **Updated:** 2026-11-08 ~19:4x–19:5x PT (**STOP fire — the routed decision came back as option (2),
   which I accept; the one item it hands this seat is accepted too, and reading it against my own file
   moved it behind the item it was placed ahead of. No edit to `scripts/` or `packages/`.**)
