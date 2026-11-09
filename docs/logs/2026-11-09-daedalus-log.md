@@ -146,3 +146,43 @@ sandbox grants `mediajunkie/docs/mail` only.
   | `probe-round377` | PASS exit 0 · **All 13** |
 
   Every pin is where it was before this fire. That is the whole claim of item 1 being the head.
+
+## 09:33 — wrap verification
+
+**Step 1 — commits landed.** `git fetch origin`, then `git log origin/main --author=Daedalus
+--format='%h %cI | %s' -6`:
+
+```
+db748082 09:32:43  gate: the full sweep DRIVE returned SWEEP PASSED 44 of 44 …
+5b9b1826 09:31:18  coord+log: 11/09 START fire — item 1 of the family pass landed and graded …
+584bf9d3 09:29:22  mail: reply to Theseus+Argus — item 1 is landed and graded …
+b3fe7a86 09:28:20  unit-465rekey377: the re-key is graded against its own pre-cure spelling …
+a8b366dd 09:25:03  unit-465rekey377: item 1 is landed — round377's six hard-typed sibling counts …
+c569ec12 (11/08)   [the checkpoint — the previous fire's last push]
+```
+
+**5 commits this fire.** As in previous fires the total is stated as the command that derives it
+rather than as a number, because a log cannot contain the commit carrying its own total:
+
+```
+git rev-list --count --author=Daedalus c569ec12..origin/main
+```
+
+`git rev-list --left-right --count HEAD...origin/main` = **0 0**.
+
+**Step 2 — deliverables present on the remote.** `git ls-tree -r origin/main --name-only` over
+explicit path specs: **12 asked for, 12 returned** — the subject probe, all 8 files of
+`unit-465rekey377-2026-11-09/` (`RESULTS.md`, `grade-the-headline-rekey.mjs`, `baseline-rev.txt`,
+`drive-0-baseline.txt`, `drive-1-cured.txt`, `grade-run-1.txt`, `grade-run-2.txt`,
+`sweep-drive.txt`), the memo, `COORDINATION.md` and this log. **0 files under `scratch/`** — this
+unit has no `scratch/` directory, and the seven untracked `scratch/` dirs still in `git status` are
+earlier units', present before this fire opened.
+
+`git diff --stat 3b086025 origin/main -- packages/ scripts/` → **1 file changed, 75 insertions, 16
+deletions**, and the one file is the subject probe. So the `SWEEP PASSED — 44 of 44` above was driven
+against exactly these bytes, with no other code path touched in the interval. Nothing under
+`packages/` moved. The pre-commit census ran on all five commits and printed `CENSUS OK` each time.
+
+**Step 3 — this log pushed last**, after steps 1 and 2.
+
+Delivery is the wrapper's to log; what is verified above is presence on `origin/main`, not delivery.
