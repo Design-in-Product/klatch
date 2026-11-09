@@ -47,3 +47,27 @@ All four cross-repo mailboxes fetched fresh against this seat's own START-fire c
 **`log.html`:** not due this fire — owed at tonight's STOP fire.
 
 **Drain:** 17 new commits read and author-checked, none mine; the one touched product-code file (`sweep-probes.mjs`) confirmed already chronicled by its author; two new mail memos read in full, no action item for this seat; mail checked locally and across all four cross-repo mailboxes, nothing owed from any; standing blocker re-derived fresh, unchanged; rollup read directly and confirmed consistent; gate re-derived fresh and byte-identical; `log.html` confirmed not yet due. Two consecutive checks found nothing further unblocked. Fire closed bounded.
+
+---
+
+## ~15:2x PT — SWEEP fire
+
+Census-only no-op. Checkpoint is this seat's own 11/08 MID-fire commit `9e2b256d`.
+
+`git log 9e2b256d..HEAD --format='%h %an %ci %s'` showed 17 new commits, author-checked before citing, none mine: Daedalus's `unit-465guard` chain (6 commits — `probe-round372` A1b's upstream optional-registry dereference moved and made the guard, driven 2x2 with P0-P5 held, the registry pin and P7 census discharging both items the 1593 paragraph named, routed to Argus, coord+log+unit, wrap-verification) and Theseus's `unit-465guard374` chain (7 commits — pre-registration, census drive confirming Daedalus's 33/5 exactly under Theseus's own occurrence key with P2/P3 refuted, RESULTS at P5 held/P6-P7 BLOCKED on a harness defect, mail to Daedalus/Argus claiming `round374`/`374b`, a same-fire correction naming the blocker as his own sandbox depth with the cure driven on all 4 cells and the 8→9 decision routed, coord+log, wrap verification), plus Argus's own WORK-fire coord+log+mail (round372 cured by Daedalus, the exit-code blind spot routed to Argus answered: the headline already splits crash from red, the count does not) and Daedalus's same-fire mail+log reply to Argus confirming the P2 sharpening.
+
+`git diff --stat 9e2b256d..HEAD -- packages/ scripts/` **not empty**: `scripts/probe-round372-the-rows-are-keyed-on-the-limb-and-the-contradiction-is-latent.mts` and `scripts/sweep-probes.mjs` — both inside the unit-465guard/unit-465guard374 chains, already fully chronicled in Daedalus's and Theseus's own COORDINATION entries and the mail below; no separate chronicling owed, `log.html`'s narrative pass is once-daily at the STOP fire.
+
+**Mail:** no new memo addressed to this seat by name since checkpoint (`grep -li "to:.*calliope" docs/mail/*.md`, excluding `read/`, returns only the same already-seen files). Checked by header the research-track memos that landed this fire — Argus → Daedalus (cc Theseus/xian/Janus/Calliope/Iris) and Daedalus → Argus (cc same) — both cc-only, neither names a bucket or ask for this seat. Same four standing Pard-from-10-20 threads, left in place (`ma-smoke` thread still open on xian).
+
+All four cross-repo mailboxes fetched fresh (local `main` vs `origin/main` after `git fetch`): `designinproduct` **1** new (`93f5c81`, Pard→Themis internal tally-heartbeat traffic, content-checked, 0 `klatch`/`calliope` hits); `mediajunkie` **0** new; `dispatch` **0** new since this seat's own MID-fire checkpoint (the one commit present, `a436ca3`, predates the checkpoint and was already accounted for at MID fire); `piper-morgan-product/mailboxes` **4** new, pickaxe-searched (`git log -G`, not a raw `-p` dump) for `klatch`/`calliope`, **0** hits on either term. Nothing owed from any.
+
+**Standing blocker re-derived fresh:** ma-smoke — no `smoke`/`ma-smoke`/`managed` branch anywhere (`git branch -a` + `git ls-remote --heads origin`), day count recomputed fresh via `node -e` (2026-10-21→2026-11-08) = **day 18**, unchanged from this morning and midday (same calendar day).
+
+**Rollup:** read directly, still v176, needs-you unchanged at 3 items.
+
+**Gate re-verified fresh:** `npx tsx scripts/gate.mts` — census OK, typecheck 0 `error TS` across all workspaces; server **143 files/2221 passed/1 skipped (2222)**, client **26/39 files, 333/346 tests** — byte-identical to every figure recorded today.
+
+**`log.html`:** not due this fire — `next_due` reads 2026-11-08, cadence is daily at the STOP fire, owed tonight.
+
+**Drain:** 17 new commits read and author-checked, none mine; both touched product-code files confirmed already chronicled by their own authors; no new memo addressed to this seat by name, two cc-only research-track memos checked by header with no action item; mail checked locally and across all four cross-repo mailboxes, nothing owed from any; standing blocker re-derived fresh, unchanged; rollup read directly and confirmed consistent; gate re-derived fresh and byte-identical; `log.html` confirmed not yet due. Two consecutive checks found nothing further unblocked. Fire closed bounded.
