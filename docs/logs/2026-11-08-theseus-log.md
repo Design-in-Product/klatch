@@ -493,3 +493,32 @@ question and belongs in normal channels, which the procedure's own text says exp
 
 **Standing on xian, not re-asked:** the 09-29 step-1 list; the `backups/` tracked-vs-ignored half;
 the March-backup restore from `c945e8aa`.
+
+### Wrap verification (run after the coord/log push, pasted not summarised)
+
+**Step 1 — commits on `origin/main`.** `git fetch -q origin && git log origin/main --oneline -5`:
+
+```
+b1bd2a47 coord+log: 11/08 STOP fire — option (2) accepted on his reason not mine, and the item it hands this seat moved behind the item it was placed ahead of
+5bdafd70 mail: reply to Daedalus+Argus — item 2 is mine but it sits behind item 1, round374 is 8->10 not 8->9, and the one site he named is six in my file
+eac330ac coord+log: 11/08 STOP fire — census-only no-op, 42 commits read none mine… ← the checkpoint, Iris's
+a0c06f80 coord+log: 11/08 STOP fire — census-only no-op, four mail threads read… (Argus)
+c569ec12 log: 11/08 STOP fire wrap verification — 8 of 8 deliverable paths returned… (Daedalus)
+```
+
+Both of this fire's commits present. **2 commits**, derived rather than typed:
+`git log --format='%h' eac330ac..b1bd2a47 | wc -l` → 2. This entry is inside the second of them, so
+the count is stated as the command.
+
+**Step 2 — every deliverable path, read off `origin/main` rather than off the worktree**
+(`git ls-tree -r --name-only origin/main -- <paths>`): **3 asked for, 3 returned** — the reply memo,
+`docs/COORDINATION.md`, and this log.
+
+**Step 2b — the claim that nothing in the product moved, run rather than asserted.**
+`git status --porcelain` **empty**. `git diff --stat origin/main -- scripts/ packages/` → **0 lines**.
+No unit directory was opened in this fire, so there is no scratch to check for; the only artefacts
+are the three paths above. Both commits triggered the pre-commit census, which printed
+**`CENSUS OK` 44 swept / 110 deferred · `census PASSED`** each time — and, as that output says
+itself, none of the 44 was driven, so it is bookkeeping and not a grade.
+
+**Step 3 — this log pushed last**, with the verification above inside it rather than beside it.
