@@ -445,3 +445,136 @@ blocker "a declared-signal design, not a patch" is the right resting state.
 files, so it goes into the claimed unit as a thing to check, not as new instrumentation. Replied in
 `docs/mail/daedalus-to-argus-…-your-p2-sharpening-is-confirmed-by-running-diagnosisline-on-the-crash-capture-2026-11-08.md`.
 Thread left in `docs/mail/` — his exit-code item is open by design.
+
+---
+
+## 17:17 — STOP fire (model: claude-opus-5)
+
+**Substantive. The `expect` 8 → 9 decision Theseus routed to this seat is answered with a
+measurement, and the measurement turned up a coupling neither of us had: four of the 372–377 family
+pin each other's arm counts in seven live conjuncts. Unit
+`docs/research/unit-465expect-2026-11-08/` — a source census under two declared keys, not a driven
+unit, no probe or registry file edited.**
+
+**Briefing.** Checkpoint re-derived by author: my own `093b9404` (13:44). **10 commits since,
+`%an`-checked — Theseus 8, Calliope 2, none mine.** The 17:0x `coord+log: 11/08 SWEEP fire` commits
+are **Calliope's**, not this seat's, which `--format='%an'` says and the subject line does not;
+checking the author first is the lesson in my own memory and it applied directly this fire.
+`git diff --stat 093b9404..origin/main -- packages/ scripts/` **empty**.
+
+**Mail delta read off `git diff --name-status -- docs/mail/`: two new memos, both Theseus's, both to
+this seat.** Read the **correction first** because it withdraws §4 of the other — reading them in
+directory order would have had me answer a blocker he had already cleared. Argus's
+`…both-cells-exit-1…` memo is dated `~15:0x` in its own front matter but is commit `b3e1d756` at
+**13:41**, and was already read and answered at 13:4x; checked rather than re-answered.
+
+**Why the gate is not re-driven, stated rather than skipped:** `git diff` against the WORK fire's
+checkpoint returns **0 changed paths** under `packages/` and `scripts/`, so the five probe files this
+fire reads are the same bytes the WORK fire drove `GATE ok exit=0` ×5 and `SWEEP PASSED — 44 of 44`
+against. This fire edits nothing under either directory. The pre-commit census ran on both commits:
+**`CENSUS OK`, 154 probe files, 44 swept, 110 deferred** — captured from the hook's own output, not
+recalled.
+
+### Key 1 — his P6 refutation is a property of the family, not of his file
+
+**The detector was characterised before any figure off it was used, and the first spelling was
+badly wrong: it found 1 arm in a 26-arm file**, because it required the label literal on the same
+line as `check(` and the probes put it on a continuation line. Had I published off that version, my
+answer to him would have been "none of these files has arms at all." The fixed spelling reproduces
+**every** registry `expect` pin in the family — 26 · 15 · 8 · 8 · 13 — and prints that self-check
+per row rather than asserting it here. `round374b` reports **UNGRADED (no registry entry)**, which is
+the honest reading: it is DEFERRED and has no `All N` pin to reproduce.
+
+No member except the already-cured `round372` carries a presence arm **at any position**. Read off
+the predicates rather than inferred from line order — `round373` A1 asserts a resolver's
+nearest-preceding-`file:` attribution, `round375` A1 a registry-derived drift target, `round377` A1
+the two sibling pins. So **a guard is a new arm in all four and four `expect` pins bump, not one**:
+`373` 15→16, `374` 8→9 (his, driven), `375` 8→9, `377` 13→14. `round372` held at 26 only because A1
+already was its presence arm — which is the same fact as my own WORK-fire U2 ("the only file in the
+family that guards entry presence"), now stated as a count rather than a remark.
+
+**Also recorded, unasked:** `round377` dereferences **three** registry entries at `:96`/`:97`/`:98`.
+Its guard is the widest of the four.
+
+### Key 2 — the counts are cross-pinned between the files
+
+182 `.mts`/`.mjs` under `scripts/`, LIVE split from prose. **11** files carry a live `All N
+regression checks passed` literal; **9** are fixtures that mint their own conclusion lines and name
+no family member; **2 pin a sibling's arm count as a live conjunct.** Quoted from the predicates:
+
+```
+probe-round374:201  (inside the A0 CONTROL, driving a copy of probe-round373)
+    all15: /All 15 regression checks passed/.test(out),
+    faithful.status === 0 && faithful.b4 === 'ok' && faithful.count === 0 && faithful.all15,
+
+probe-round377  :137/:138  e374.expect.source === String.raw`All 8 …` && e375… (registry text)
+                :672/:673  c374Faithful.own === 'All 8 …' && c375Faithful.own === 'All 8 …'
+                :686       c374Renamed.own  === 'All 8 …'        (driven child output)
+                :698       c375Renamed.own  === 'All 8 …'
+```
+
+| guard this | reddens | at |
+|---|---|---|
+| `round373` | `round374` A0 — and A1 behind it, A0 being what makes A1 attributable | `374:201` |
+| `round374` | `round377` A1, C1, C2 | `377:137`, `:672`, `:686` |
+| `round375` | `round377` A1, C1, C3 | `377:138`, `:673`, `:698` |
+| `round377` | nothing — no probe pins its count (`All 13` occurs only as registry declarations) | — |
+| `round374b` | nothing — unswept, no pin found on it | — |
+
+**So his cure, landed alone exactly as his own option (1) describes, would have reddened my
+`round377` on three arms** — including an A0-makes-A1-attributable cascade of the same shape he spent
+his own fire diagnosing from the inside. His third declared refusal (no registry edit from his seat
+in that fire) is what stopped it, and it stopped it for a reason better than the one he gave it.
+
+**Status held to, not softened: SOURCE-DERIVED, NOT DRIVEN.** It is deduction from quoted live
+predicates against hard-typed literals (`=== 'All 8 regression checks passed'`, `/All 15 …/.test`),
+not an observed red. The confirming drive is one cell per edge on the harness he already built and
+debugged. **Not started and not half-started** — a STOP fire that published one edge of five would be
+drafting the slot for a measurement it had not run, which is a note already in my own memory.
+
+### The repair is specified and deliberately not made
+
+The seven conjuncts must not be re-typed to the new numbers. `probe-round377`'s own docblock at
+`:117`–`:127` records why about **this very arm** — its first spelling pinned `SWEPT.length === 42`
+and went red on its own promotion. Same cure, one improvement: **derive the count from the registry
+the probe already imports** — `e374.expect.test(c374Faithful.own)` instead of
+`c374Faithful.own === 'All 8 regression checks passed'`. Shape-only (`/^All \d+ …$/`) would be a real
+weakening, because it stops catching a member whose arms silently *disappear*; deriving from the
+entry keeps that and survives any bump. The counts are already published as measurements in both
+files (`A1m`'s `inspect(e374.expect)`, the `A-drive`/`C-drive` `meas` lines), so nothing leaves the
+record.
+
+**Blocker, named rather than dated: the family pass's pre-registration, which does not exist yet.**
+Four swept probes plus the registry is not a 17:3x edit — which is the doctrine this seat applied at
+13:1x and Theseus applied at 15:0x, and it would be a poor fire that invoked it twice today and then
+broke it.
+
+### His U1 taken, and it costs an arm more than either of us said
+
+`round375:180`'s `mutantSweep.SWEPT.find(…)!` is confirmed live and is mine. He is right that
+`round372`'s pattern cannot reach it — the hazard is the probe's own fixture construction dropping
+the entry, not tree drift — so it needs a presence assertion **after** the mutant import, a second
+new arm. **`round375` is 8 → 10, not 8 → 9**, if both go in one pass. Flagged for the
+pre-registration; which arms a pass adds is that pass's call, not this census's.
+
+His `argEnd` paren-balance finding (a fourth private copy of the Round 257/258 question) is noted and
+**not** claimed by this seat — it needs a unit, and extracting a shared reader while using it to
+census is the hazard he already named.
+
+**Standing items re-derived, not recalled:** `git ls-remote --heads origin` returns **26 refs, none
+matching `smoke`/`ma-smoke`/`managed`** — ma-smoke **day 19**, named blocker on xian unchanged.
+Rollup read directly at `docs/operations/attention-rollup.md:9`: **v176, needs-you 3**, last
+refreshed 11/06, item 3 is ma-smoke and is blocked on xian. Neither moved this fire.
+
+**Question-box check (STOP step 4):** considered, and a no this fire — not an unconsidered one. The
+thing I would ask is still forming: every seat's recent findings are about pins that go red on their
+own cure, and I would like to ask xian whether he reads that as the instrument working or as a
+design smell, but I want one more fire's evidence before spending the question on it.
+
+**Drain:** mail (2 memos, correction first, both actioned in the read's own fire), the routed
+decision (answered with a two-key census rather than a preference), the coupling it surfaced
+(censused mechanism-wide over 182 files rather than only the reported instance), the repair
+(specified, blocker named), his U1 (taken and re-priced), standing items (re-derived), question box
+(considered). **Deferred with named blockers:** the family pass — its own missing pre-registration;
+the per-edge confirming drive — same pre-registration; Argus's P2 — his blocker, a declared-signal
+design; `round374b` — Theseus's, unswept.

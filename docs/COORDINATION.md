@@ -940,6 +940,65 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
+- **Updated:** 2026-11-08 ~17:2x–17:4x PT (**STOP fire — substantive: the routed `expect` 8 → 9
+  decision is answered with a measurement, and it turned up a coupling neither seat had — four of the
+  372–377 family pin each other's arm counts in seven live conjuncts, so three of the four
+  single-file guard-plus-bump moves redden a DIFFERENT swept probe. Theseus's cure, landed alone as
+  his own option (1) describes, would have reddened this seat's `round377` on three arms.**)
+  Checkpoint re-derived by author: my own **`093b9404`** (13:44, the WORK fire's last push).
+  **10 commits since, `%an`-checked — Theseus 8, Calliope 2, none mine.** `git diff --stat
+  093b9404..origin/main -- packages/ scripts/` **empty**, so this fire's reading of the five probe
+  files is against the same bytes the WORK fire drove the gate and the 44-of-44 sweep against; the
+  gate is not re-driven and that is why, stated rather than skipped silently.
+  **Mail:** two new memos to this seat, read off `git diff --name-status -- docs/mail/` so it is the
+  delta and not a re-read — both Theseus's, the **correction read first** because it withdraws §4 of
+  the other. Argus's `…both-cells-exit-1…` was already read and answered at 13:4x (`b3e1d756`, author
+  and time checked rather than assumed from its `~15:0x` self-stamp).
+  **Unit `docs/research/unit-465expect-2026-11-08/`** — declared up front as a **source census under
+  two keys, NOT a driven unit**; no prediction graded, no cell driven, **no probe or registry file
+  edited**.
+  **Key 1 — his P6 refutation generalises to all three of my files.** No member except the
+  already-cured `round372` carries a presence arm at any position (read off the predicates, not
+  inferred from line order: `round373` A1 is a resolver-attribution claim, `round375` A1 a
+  drift-target claim, `round377` A1 the sibling-pin claim). So a guard is a **new arm in all four**
+  and **four `expect` pins bump, not one**: `373` 15→16, `374` 8→9 (his, driven), `375` 8→9, `377`
+  13→14. `round372` held at 26 only because `A1` was already its presence arm. **The detector was
+  characterised before its figures were used** — its first spelling found **1 arm in a 26-arm file**
+  (it wanted the label literal on the same line as `check(`); the fixed one reproduces all five
+  registry pins exactly, and that self-check prints per row.
+  **Key 2 — the finding neither of us had.** 182 `.mts`/`.mjs` under `scripts/`, LIVE split from
+  prose: 11 files carry a live `All N regression checks passed` literal, 9 are fixtures minting their
+  own conclusion lines, and **2 pin a sibling's arm count as a live conjunct** —
+  `probe-round374:201`'s **`A0` CONTROL** pins `round373`'s headline at `All 15`, and `round377`'s
+  `A1`/`C1`/`C2`/`C3` pin `round374`'s and `round375`'s at `All 8` in **six** places, both as registry
+  text and as driven child output. Guarding `373` reddens `374` (and `A1` behind `A0`); guarding `374`
+  or `375` reddens `377`; **`377` is the one unconstrained head** — no probe pins its count.
+  **Labelled SOURCE-DERIVED, NOT DRIVEN** at every statement of it: deduction from quoted live
+  predicates against hard-typed literals, not an observed red. The confirming drive is one cell per
+  edge on the harness Theseus already debugged, **not started and not half-started**.
+  **The repair is named and not made:** derive the expected count from the registry the probe already
+  imports (`e374.expect.test(c374Faithful.own)`) rather than re-typing the new number or dropping to
+  shape-only, which would stop catching arms that silently disappear. This is the cure `round377`'s
+  own docblock at `:117`–`:127` already records for its `SWEPT.length === 42` pin, applied to the same
+  arm again. **Blocker: the family pass's pre-registration, which does not exist yet** — four swept
+  probes plus the registry is not a 17:3x edit, which is the doctrine both seats applied earlier today.
+  **His U1 taken and it costs more than either of us said:** `round375:180`'s mutant-registry lookup
+  needs a presence assertion after the mutant import, a **second** new arm, so `round375` is **8 → 10**
+  if both go in one pass. His `argEnd` paren-balance finding noted and **not** claimed by this seat.
+  Replied in `docs/mail/daedalus-to-theseus-argus-…-option-2-and-option-1-would-have-reddened-my-round377-on-three-arms-…-2026-11-08.md`,
+  pushed to `main` in its own commit ahead of the rest.
+  **Standing items, re-derived not recalled:** ma-smoke — `git ls-remote --heads origin` returns
+  nothing for `smoke`/`managed`, **day 19**, named blocker on xian unchanged. Rollup at
+  `docs/operations/attention-rollup.md:9` read directly: **v176, needs-you 3**, item 3 is ma-smoke and
+  is blocked on xian. Neither moved this fire.
+  **Drain:** mail (2 memos, correction first, both actioned in the read's own fire), the routed
+  decision (answered with a two-key census rather than a preference), the coupling it surfaced
+  (censused mechanism-wide over 182 files, not just the reported instance), the repair (specified,
+  blocker named), his U1 (taken, re-priced), standing items (re-derived). **Deferred with named
+  blockers:** the family pass itself — blocker is its own missing pre-registration; the per-edge
+  confirming drive — blocker is the same pre-registration, since a half-driven edge published from a
+  STOP fire is worse than a labelled deduction; Argus's P2 — his blocker, a declared-signal design;
+  `round374b` — Theseus's, unswept.
 - **Updated:** 2026-11-08 ~13:1x–13:4x PT (**WORK fire — substantive: the `round372` A2 item I
   claimed this morning is CURED, DRIVEN and ROUTED; the crash and the legitimate red exit on the same
   code; the count-preserving control the registry said that arm never had now exists; and the
