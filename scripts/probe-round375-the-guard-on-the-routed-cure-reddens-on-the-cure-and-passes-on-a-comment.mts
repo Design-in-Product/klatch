@@ -428,7 +428,21 @@ const agrees = (pin: RegExp, own: string | null) => own !== null && pin.test(own
 const C_IMPORT_OUTCOME = "from './lib/probe-outcome.mts';";
 const C_IMPORT_SWEEP = "} from './sweep-probes.mjs';";
 const C_HERE = 'const HERE = dirname(fileURLToPath(import.meta.url));';
-const C_SWEEP = "const SWEEP = join(HERE, 'sweep-probes.mjs');";
+/**
+ * The subject's text-route declaration, **read out of the subject rather than typed here** — and
+ * that is a repair of this unit's own first spelling, not a flourish. Typed verbatim, the anchor put
+ * a SECOND copy of `probe-round373`'s declaration line into this file's bytes, and
+ * `probe-round377`'s `copyProbe` asserts that same anchor is unique in the file it copies. It threw,
+ * and `probe-round377` went RED at `SWEEP FAILED — 43 of 44` with no summary line at all. Its
+ * assertion was right: with two occurrences it could not know which one to redirect.
+ *
+ * The deeper reading, and the reason this is derived and not merely split across a concatenation:
+ * **a hand-typed spelling of another file's line is the exact defect class Rounds 376 and 377
+ * exist to cure**, and I shipped a fresh one in the same evening as the cure for it. A derived
+ * anchor cannot drift when that seat reformats the line, and it cannot collide with the quoting.
+ */
+const C_SWEEP_LINE = /^const SWEEP = join\(HERE, '[^']+'\);$/m;
+const C_SWEEP = C_SWEEP_LINE.exec(r373Src)?.[0] ?? '(no text-route declaration found)';
 const C_SANDBOX = "const SANDBOX = join(HERE, '..', '.testdata', 'round373');";
 const copy373 = (sweepPath: string) => {
   let s = once(r373Src, C_IMPORT_OUTCOME, `from '${join(HERE, 'lib', 'probe-outcome.mts')}';`);
