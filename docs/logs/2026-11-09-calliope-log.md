@@ -48,3 +48,25 @@ Pulled from origin (already up to date). Checkpoint: own 11/09 START-fire commit
 **`log.html`:** not due this fire — cadence is daily at STOP fire, owed tonight.
 
 **Drain:** 14 new commits read and author-checked, none mine; both real script-pair chains confirmed already chronicled by their own authors; three new mail memos read in full, no action item for this seat; mail checked locally and across all four cross-repo mailboxes, nothing owed from any; standing blocker re-derived fresh, unchanged; rollup read directly and confirmed consistent; gate and sweep both re-derived fresh and matched against today's other authors' cited figures; `log.html` confirmed not yet due. Two consecutive checks found nothing further unblocked. Fire closed bounded.
+
+---
+
+## 17:0x — Session resumed (SWEEP fire)
+
+Pulled from origin (already up to date). Checkpoint: own 11/09 MID-fire commit `474d785b`.
+
+**Census:** `git log 474d785b..HEAD` showed 13 new commits, none mine: Daedalus's `unit-465guard375` chain (6 commits — step 3's first member landed, two guards, one agreement re-key, C1's hard-typed sibling-arm-total removed from three live sites, a third guard DECLINED in advance as vacuous and the refusal itself the finding, graded 13/13 true on the first run), Theseus's `unit-465reach375` chain (5 commits — P8 confirmed sound, its guarantee re-keyed onto an identity the family's own round375-reaches-373 drive already breaks once), and Argus's own WORK-fire coord+log+mail plus a merge of origin/main into his cycle branch (2 commits, author-checked individually). `git diff --stat 474d785b..HEAD -- packages/ scripts/` not empty: `probe-round375-...mts` plus `scripts/sweep-probes.mjs`, both inside Daedalus's chain and already chronicled in his own commit and coord entry.
+
+**Mail:** two new top-level memos since checkpoint — Daedalus→Theseus/Argus ("step 3's ordering was not a list...") and Theseus→Daedalus/Argus ("P8 is sound...") — both read in full, cc-only to this seat, research-track. Cross-checked against Janus's own independent cross-repo reconciliation (designinproduct fire 14:37/15:07 pulse-log: "Klatch: two Daedalus/Theseus cc memos, internal research, nothing for xian") rather than taken on his word alone — read both memos directly first. Same four standing Pard-from-10-20 threads; re-read the lead one (managed-agents-first memo) in full rather than assumed unchanged — still explicitly "setup is xian's." `ma-smoke` thread still open on xian. All four cross-repo mailboxes fetched fresh against this morning's 12:38:31 PT checkpoint: designinproduct 4 new, 2 pickaxe hits on klatch/calliope — checked individually, one (Janus's rollup v561) is the same two memos already read, the other (Themis's board rebuild) a false match on an unrelated "Klatch value proposition" parked-topic label, not about this seat; mediajunkie 2 new (0 hits); dispatch 0 new; piper-morgan-product 43 new, 1 hit (a host WATCH-fire line naming "Klatch R&D" in a standing deferral list, not an ask). Nothing owed from any.
+
+**Standing blocker:** ma-smoke re-derived fresh — no `smoke`/`ma-smoke`/`managed` branch anywhere. Unchanged. **Backfill instrument:** `backups/` unchanged (main backup still Nov 5 mtime).
+
+**Rollup:** read directly, still v176, needs-you unchanged at 3 items, headings re-confirmed.
+
+**Gate:** `npx tsx scripts/gate.mts` — census OK, typecheck 0 errors; server 143 files/2221 passed/1 skipped (2222); client 26/39 files, 333/346 tests. Byte-identical to today's prior figures.
+
+**Sweep — one false alarm caught before reporting it:** first `node scripts/sweep-probes.mjs` run, backgrounded with the default limit, was killed at the 10-minute mark with an empty output file. Before treating that as a hang, re-ran it foregrounded (280s) then let the harness carry it into a second background window rather than assuming a stall — the interim output showed 42-then-43 of 44 probes already PASS, printing in strict order with nothing stuck on one entry; it was simply slow this run (round377 and the backfill-sidecar probe, both known to spawn child processes, landed last). Completed clean: **SWEEP PASSED, 44 of 44 swept probes green, 0 red, 110 deferred** — matching Daedalus's own cited figure exactly.
+
+**`log.html`:** not due this fire — cadence is daily at STOP fire.
+
+**Drain:** 13 new commits read and author-checked, none mine; the one touched script pair confirmed already chronicled by its own author; two new mail memos read in full, no action item for this seat, cross-checked against Janus's independent reconciliation; mail checked locally and across all four cross-repo mailboxes, both pickaxe hits found and read individually, neither an ask; standing blocker and backfill instrument re-derived fresh, unchanged; rollup read directly and confirmed consistent; gate re-derived fresh and matched; sweep re-derived fresh after ruling out a false hang-alarm by checking interim progress rather than assuming, matched; `log.html` confirmed not yet due. Two consecutive checks found nothing further unblocked. Fire closed bounded.
