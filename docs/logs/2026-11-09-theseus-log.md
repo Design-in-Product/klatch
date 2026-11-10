@@ -419,3 +419,73 @@ draft of that header said `20:0x` and was corrected before the commit.
 
 Reply filed to Daedalus + Argus, its own commit, pushed to `main` ahead of this entry per the
 worktree rule: `f4df7146..ee3fae5d`.
+
+## 20:00 — gate, read off the capture rather than inferred
+
+`date`-read at **20:00**. Capture committed at
+`docs/research/unit-465anchor-census-2026-11-09/sweep-drive.txt`; figures **grepped out of that file**
+rather than inferred from the total:
+
+> `SWEEP PASSED — 44 of 44 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but did not
+> finish), 0 census problem(s), 110 deferred`
+
+`PASS` rows counted in the capture: **44**. `FAIL` rows: **0**. Typecheck clean on **both** script
+tsconfigs, each invoked separately (`scripts/tsconfig.json`, `scripts/tsconfig.lib-mjs.json`). Probe
+census **CENSUS OK — 154 files, 44 swept / 110 deferred** on every commit this fire, which also
+confirms the instrument did **not** enter the probe population: it lives in the unit directory, not
+`scripts/`.
+
+Family rows read off the capture one by one: `round225` **All 33**, `round373` **All 15**, `round374`
+**All 10**, `round375` **All 10**, `round377` **All 13**. **No family row moved** — same five figures
+as my 15:0x reading, and `375`/`377` match Daedalus's own post-repair figures. This unit changed no
+code, so the sweep confirms the tree is green at my HEAD rather than grading a cure; but 11 commits
+from four other seats landed between my last sweep and this one, so it is a real reading and not a
+re-print.
+
+## Wrap verification (required protocol, run not asserted)
+
+**Step 1 — commits on `origin/main`.** `git fetch -q origin && git log origin/main --format='%h %an %s' -6`,
+output pasted:
+
+```
+364a9745 Theseus (Klatch) coord+log: 11/09 STOP fire — the census neither seat had is built and driven…
+ee3fae5d Theseus (Klatch) mail: reply to Daedalus+Argus — the census neither of us had is built…
+5ab2f758 Theseus (Klatch) unit-465anchor-census: the census is built and driven — no collision is live…
+60d8edc8 Theseus (Klatch) unit-465anchor-census: pre-registration, committed before the census instrument exists…
+f4df7146 Iris (Klatch) coord+log: 11/09 STOP fire — census-only no-op, 31 commits read none mine…
+96b5375a Argus (Klatch) coord+log: 11/09 STOP fire — census-only no-op…
+```
+
+**Four commits, all mine, all on `origin/main`** — plus this entry's own commit and the sweep
+capture, pushed last.
+
+**Step 2 — deliverable paths.** `ls` run over the unit directory and the three shared files: **7 of 7
+paths in `docs/research/unit-465anchor-census-2026-11-09/`** returned (`PRE-REGISTRATION.md`,
+`RESULTS.md`, `census-anchors.mjs`, `census-run-1.txt`, `drive-375.txt`, `drive-377.txt`,
+`sweep-drive.txt`), plus `docs/logs/2026-11-09-theseus-log.md`, `docs/COORDINATION.md` and the memo
+filename — **10 of 10**. Nothing missing.
+
+**Scope check, run rather than claimed.** `git diff --stat -- scripts/ packages/` **empty** across
+this fire. `git status --short` clean apart from the sweep capture while it was being written;
+`.testdata/` confirmed ignored at `.gitignore:33`, so no scratch was tracked.
+
+**Step 3** — this log is the last thing committed, after steps 1 and 2.
+
+**Drain.** One memo in, read and answered in the same fire; the sentence it left open ("neither of us
+has such a census") was **built, driven and committed in the same fire**. Seven deferrals, each with
+a named blocker and no deadline from me: deriving my own seven hand-typed anchors (**blocker:
+`probe-round377`'s pin is cross-pinned by siblings via `C5`, so seven derivations plus a cripple per
+derivation is a unit**); promoting the census into the gate (**blocker: a gate leg needs its own red
+and I have not built the planted-duplicate state that reddens it**); teaching the extractor
+parameter-bound anchors and non-`probe-` subjects (**blocker: doing it in the fire that first ran the
+extractor leaves no honest reading of the version that shipped**); `373` 15→16 + the `:108` fixture
+(**still unclaimed by either seat; I have not taken it**); `377` 13→14 (**figure still not
+re-derived, by either seat**); `probe-round374b` (**0 rows in `SWEPT`**); the shared guarded registry
+reader (**still unowned — now wanted by a third independent finding**).
+
+**Memory.** Two lessons filed as **appends to existing entries**, not new ones: the hand-typed-anchor
+entry gains the measurement that turns its closing advice into a run instrument (`occ` at four
+revisions, `1 → 2 → 1`, and the 9-of-9 population figure), and the declaration-line-census entry
+gains its second instance (an anchor hoisted into a function **parameter**). **Zero index lines
+added**; one existing index line extended in place. The compaction hook fired again at 178 lines and
+its blocker is unchanged — ~25 genuine merges is a fire's unit of work, not a tail's.
