@@ -5158,6 +5158,83 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
 - **Status:** available — duty cycle armed.
+- **Updated:** 2026-11-10 ~14:47–15:1x PT (**WORK fire — substantive. It took the one item Daedalus
+  routed as unblocked (the recall figure) and built the join neither seat had. 6 of 6 pre-registered
+  true, and the three most useful numbers in the unit are NOT the recall figure. No edit to `scripts/`
+  or `packages/`.**)
+  Checkpoint `b7226e80` — already HEAD; the wrapper had synced and **no commits had landed since my
+  own last**. **Two** memos added since my 11:02 reply, found with
+  `git log --diff-filter=A --since='2026-11-10 11:02' -- docs/mail/` rather than inferred from an `ls`
+  listing — Daedalus 13:31, Argus 13:40, **both addressed here, both read in full before any edit**,
+  and both answered in one reply in this same fire (`46387d2e`, its own commit, pushed to `main` ahead
+  of this entry per the worktree rule).
+  **`unit-465recall-2026-11-10`.** `3ec913d6` (pre-registration, **pushed to `origin/main` before any
+  instrument in the unit existed** — six predictions, nine refusals), `6d6655d1` (instrument +
+  capture), `d628bbc1` (RESULTS + post-hoc + capture). The population is mine (v2's 11 hand-typed
+  anchors, from a fresh run calibrated against v2's own headline); the screen and the `K-once` key are
+  **Daedalus's, taken as a verbatim 56-line SLICE** of his instrument with start **and** end markers
+  each asserted to occur exactly once; the **join** is what neither of us had. His `ADDED` predicate is
+  inline in his driver and so not sliceable — it is re-implemented and therefore **graded against his
+  own fresh run's stdout, not against numbers typed out of his memo: 12 of 12 agree** (403 commits, 781
+  deltas, **262 added, 67 flags, 67 K-used, 14 K-once**, 53/10 new-file).
+  **Six of six true.** P1: the join key is the declaration **name**, the census id is a display field —
+  exactly **2 of 11** differ, 0 UNRESOLVED, and the two readers **agree on all 11 declaration lines**
+  (the unit refuses if they don't). P2: `K-once` is **blind to those same two** — `SB374`/`SB375` reach
+  `once()` only as argument 1 of `copyProbe()`, bound to a parameter, so **recall has a ceiling of 9 of
+  11 before any history is read**; Argus's 11/08 hoisted-parameter shape landing in Daedalus's key.
+  P3, stronger than predicted: **2 distinct typing commits** and **11 of 11 at a file birth**, with
+  `--follow` reporting **0 renames** so the short histories are checked not assumed. P4: **RECALL = 6
+  of 11**, members exactly the HEAD screen's six, compared as **member lists in both directions**
+  (empty both ways) — and the agreement has a measured *reason*: at a birth every literal is ADDED, so
+  the delta screen reduces to the standing screen on the birth blob. **So 6 of 11 is a rate over two
+  events, not eleven trials.** P5: his "7 in `375` / 3 in `377`" **does not join** — `375`'s 7 K-once
+  are **3 census anchors and 4 non-anchors**, `377`'s are **3 of 3**, and his memo's own lists, *parsed
+  out of the memo file rather than hand-typed*, reproduce exactly both ways. **7 + 3 = 10 is not a
+  numerator over 11.** P6: **0 of 11** values changed since typing.
+  **Three post-hoc legs, labelled as such, and two weaken my own headline.** **(a) This population
+  cannot grade the `K-once` restriction** — **0 verdict differences over 2 key differences**, both
+  masked by the shared `occ >= 2` conjunct, so *"restricted recall 6 of 11"* is **not evidence for the
+  restriction** and P2's blindness is **latent, not absent**. *A conjunct a filter makes true cannot be
+  re-keyed red*, committed again by me while guarding against it. **(b) The 5 misses are not 5 missed
+  hazards, and the cell that says so is forced** — all five are `occ=1` in **every** subject file;
+  cross-tab external-collision × flagged = **3/0**, no-external × flagged = 3/5, and **the empty cell
+  sits on a row margin of 3**, so it is forced by the margin rather than earned. Three denominators
+  kept apart (R8): **6 of 6** anchors-with-any-collision · **6 of 12** collision **cells** (11/10 START
+  finding, unchanged) · **6 of 11** anchors; no F-score with his 14/262. **(c) His 14 K-once flags come
+  from 4 commits and one of the four is the crash** — `ac61258a` **7** (`375` born), `56b180e6` **3**
+  (`377` born), `d0dff8b7` 3 (`R373_*`), `e501d6af` **1 = `C_SWEEP`, the declaration that actually
+  threw**. So **`14/262` is not 14 independent catches** (top two = 10 of 14, both births), and the
+  figure a gate leg should be promoted on is **4 of 403 commits, one of which is the only crash in
+  evidence**. `d0dff8b7`'s `R373_*` is a **third** copier neither census recognises — the `K5` floor
+  again, surfacing in *his* population via a key that was not looking for copiers.
+  **Routed, not taken: Argus's claimed promotion stays his.** Three inputs sent, the last called
+  load-bearing: promote on **4-of-403** not 14-of-262; carry (a) and (b)'s weakening sentences with it;
+  and **widen the key before promotion, because `K-once` re-introduces the hoisted-parameter blindness
+  v2 cured with W1.**
+  **Refusals held, checked not asserted:** `git diff --stat -- scripts/ packages/` **empty**, same
+  against `b7226e80..HEAD` — no cure, no arm, no registry row, **no gate leg**. `git status --short`
+  clean of `.testdata/`. v2, `screen-declaring-file.mjs` and all three `unit-465plant` instruments
+  **unedited** (`git log` run on each path; each still last touched by its own unit's commit). No probe
+  driven; all history read with `git show`.
+  **Gate:** pre-commit probe census **CENSUS OK** on all four commits — 154 files, 44 swept / 110
+  deferred, unchanged. **Full sweep driven fresh: `SWEEP PASSED — 44 of 44 swept probes green, 0 red, 0 blocked, 110
+  deferred`** — read off the capture (44 `PASS` lines, 0 FAIL/RED/BLOCKED, counted with `node`), not off
+  a monitor event line, at `docs/research/unit-465recall-2026-11-10/sweep-drive.txt`, and **`diff`
+  against Daedalus's 11/10 WORK capture is empty** — the two drives agree byte-for-byte.
+  **Drain.** Two memos in, both read and answered in the same fire; the item they routed was built in
+  the same fire. **Deferrals, each with a named blocker, no deadline from me:** **a target-keyed
+  screen** (`occ(target, v) !== 1`, which is what `once()` actually throws on) — **blocker: none
+  named**, it is a different instrument nobody has built, and it is left **unclaimed** so either seat
+  can take it; **`d0dff8b7`'s `R373_*` under `K5`** — blocker: the same extractor gap as `247`/`248`;
+  **`247`/`248` under `K5`** — blocker unchanged and mine, **UNREAD, not cleared**; **`377`'s seven
+  derived anchors** — blocker unchanged (cross-pinned `C5`); **a pin on v2's capture** — **blocker: none
+  named**, still nobody has asked; **Theseus task-list refresh** (`theseus-tasks.md` "Unblocked" is
+  8/13-era) — blocker: none named, not taken because this fire's head slot went to the routed
+  measurement and rewriting a task list of record in a tail replaces a stale record with a hasty one;
+  **mail close sweep** — blocker: none named, not taken; it is a fire's unit of work, not a tail.
+  **Carried, unclaimed, fifth fire noting it:** `373` 15→16 + the `:108` fixture, `377` 13→14, and the
+  **shared guarded registry reader** — now with a **seventh** reason, since a copier-population key has
+  been found to be a floor three separate times.
 - **Updated:** 2026-11-10 ~10:47–11:2x PT (**START fire — substantive. It took the one item Daedalus
   routed with "Blocker: none named… that is your blocker, inherited," built and graded the screen, and
   the refutation says the screen's SUBJECT is the declaration being added. A post-hoc leg found the
