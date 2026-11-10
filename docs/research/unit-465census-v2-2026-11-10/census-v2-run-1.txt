@@ -1,0 +1,186 @@
+scripts/ resolved to: /Users/xian/Development/klatch-worktrees/daedalus/scripts
+
+== 1. copiers (a line that THROWS on a non-unique anchor; prose mentions excluded) ==
+files scanned: 182
+  probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts  (throw at :91)
+  probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts  (throw at :88)
+  excluded (mentions, no throw): sweep-probes.mjs
+
+== 2. once() call sites in probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts ==
+  :273  const mutantSweepSrc = once(sweepSrc, DECL, `refusal: /${shortFromRegistry}/,`);
+  :448  let s = once(r373Src, C_IMPORT_OUTCOME, `from '${join(HERE, 'lib', 'probe-outcome.mts')}';`);
+  :449  s = once(s, C_IMPORT_SWEEP, `} from '${sweepPath}';`);
+  :450  s = once(s, C_HERE, `const HERE = ${JSON.stringify(HERE)};`);
+  :454  s = once(s, C_SWEEP, `const SWEEP = ${JSON.stringify(sweepPath)};`);
+  :459  s = once(s, C_SANDBOX, `const SANDBOX = ${JSON.stringify(join(REPO, '.testdata', 'round375-r373'))};`);
+
+== 2. once() call sites in probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts ==
+  :670  writeFileSync(SWEEP_UNPREFIXED, once(sweepSrc, DECL_ANCHOR, DRIFTED_DECL), 'utf8');
+  :676  occ(sweepSrc, DECL_ANCHOR) === 1 && occ(once(sweepSrc, DECL_ANCHOR, DRIFTED_DECL), DECL_ANCHOR) === 0,
+  :682  s = once(s, A_OUTCOME, `import { summariseAndExit, type ProbeVerdict } from '${join(HERE, 'lib', 'probe-outcom
+  :683  s = once(s, A_SWEPT, `import { SWEPT } from '${sweepPath}';`);
+  :684  s = once(s, A_HERE, `const HERE = ${JSON.stringify(HERE)};\nconst REPO = ${JSON.stringify(REPO)};`);
+  :685  s = once(s, sandboxDecl, `const SANDBOX = ${JSON.stringify(join(SANDBOX, `child-${file.slice(11, 19)}`))};`);
+  :686  s = once(s, A_R225_READ, `const r225Src = readFileSync(${JSON.stringify(r225Path)}, 'utf8');`);
+  :687  s = once(s, A_SWEEP_READ, `const SWEEP = ${JSON.stringify(sweepPath)};`);
+  W1: sandboxDecl is parameter 1 of copyProbe() declared :680 — resolving from its call sites
+
+== 3. anchors, with the declaration RHS printed verbatim so the classification is checkable ==
+  probe-round375-the… DECL @265 [derived] `refusal: /${r225.refusal!.source}/,`;
+  probe-round375-the… C_IMPORT_OUTCOME @428 [hand-typed] "from './lib/probe-outcome.mts';";
+  probe-round375-the… C_IMPORT_SWEEP @429 [hand-typed] "} from './sweep-probes.mjs';";
+  probe-round375-the… C_HERE @430 [hand-typed] 'const HERE = dirname(fileURLToPath(import.meta.url));';
+  probe-round375-the… C_SWEEP @445 [derived] C_SWEEP_LINE.exec(r373Src)?.[0] ?? '(no text-route declaration found)';
+  probe-round375-the… C_SANDBOX @446 [hand-typed] "const SANDBOX = join(HERE, '..', '.testdata', 'round373');";
+  probe-round377-the… DECL_ANCHOR @665 [derived] `refusal: /${r225.refusal!.source}/,`;
+  probe-round377-the… A_OUTCOME @624 [hand-typed] "import { summariseAndExit, type ProbeVerdict } from './lib/probe-outcome.mts';";
+  probe-round377-the… A_SWEPT @625 [hand-typed] "import { SWEPT } from './sweep-probes.mjs';";
+  probe-round377-the… A_HERE @626 [hand-typed] "const HERE = dirname(fileURLToPath(import.meta.url));\nconst REPO = join(HERE, '..');";
+  probe-round377-the… sandboxDecl←SB374 @690 [hand-typed] "const SANDBOX = join(REPO, '.testdata', 'round374');";
+        via W1: once(…, sandboxDecl, …) :685 → copyProbe(…) :811 arg1=SB374
+  probe-round377-the… sandboxDecl←SB375 @691 [hand-typed] "const SANDBOX = join(REPO, '.testdata', 'round375');";
+        via W1: once(…, sandboxDecl, …) :685 → copyProbe(…) :819 arg1=SB375
+  probe-round377-the… A_R225_READ @627 [hand-typed] "const r225Src = readFileSync(join(HERE, R225), 'utf8');";
+  probe-round377-the… A_SWEEP_READ @635 [hand-typed] "const SWEEP = join(HERE, 'sweep-probes.mjs');";
+  totals: 14 anchors — 11 hand-typed, 3 derived, 0 UNREAD
+  of which reached by W1 (parameter-bound): 2
+
+== 3b. W3 — does relaxing v1's column-0 `startsWith` to a trimmed match change anything? ==
+  no divergence: every anchor const resolved to the same line under both matches (v1's column-0 key lost nothing HERE).
+
+== 4. candidate files counted against (superset of the APPLIED pairs) ==
+  probe-round225-a-citation-is-not-a-call.mts  — v1 key: probe-round377-the… declares it as R225
+  probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts  — v1 key: probe-round375-the… declares it as R373
+  probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts  — v1 key: probe-round377-the… declares it as R374
+  probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts  — v1 key: probe-round377-the… declares it as R375
+  probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts  — v1 key: is itself a copier
+  sweep-probes.mjs  — W2: quoted in probe-round375-the… :70 and exists in scripts/
+  W2 admitted 1 file(s) v1's key excluded: sweep-probes.mjs
+
+== 5. CENSUS — occ(file, anchor) for each hand-typed anchor ==
+
+  anchor C_IMPORT_OUTCOME (probe-round375-the…:428)
+     1  probe-round225-a-citation-is-not-a-call.mts
+     1  probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts
+     2  probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts  <-- COLLISION (>1)
+     2  probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts  <-- COLLISION (>1)
+     2  probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts  <-- COLLISION (>1)
+     0  sweep-probes.mjs
+
+  anchor C_IMPORT_SWEEP (probe-round375-the…:429)
+     0  probe-round225-a-citation-is-not-a-call.mts
+     1  probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts
+     2  probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts  <-- COLLISION (>1)
+     2  probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts  <-- COLLISION (>1)
+     2  probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts  <-- COLLISION (>1)
+     0  sweep-probes.mjs
+
+  anchor C_HERE (probe-round375-the…:430)
+     0  probe-round225-a-citation-is-not-a-call.mts
+     1  probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts
+     2  probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts  <-- COLLISION (>1)
+     2  probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts  <-- COLLISION (>1)
+     2  probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts  <-- COLLISION (>1)
+     1  sweep-probes.mjs
+
+  anchor C_SANDBOX (probe-round375-the…:446)
+     0  probe-round225-a-citation-is-not-a-call.mts
+     1  probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts
+     1  probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts
+     1  probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts
+     0  probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts
+     0  sweep-probes.mjs
+
+  anchor A_OUTCOME (probe-round377-the…:624)
+     1  probe-round225-a-citation-is-not-a-call.mts
+     1  probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts
+     1  probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts
+     1  probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts
+     2  probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts  <-- COLLISION (>1)
+     0  sweep-probes.mjs
+
+  anchor A_SWEPT (probe-round377-the…:625)
+     0  probe-round225-a-citation-is-not-a-call.mts
+     0  probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts
+     1  probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts
+     1  probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts
+     1  probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts
+     0  sweep-probes.mjs
+
+  anchor A_HERE (probe-round377-the…:626)
+     0  probe-round225-a-citation-is-not-a-call.mts
+     0  probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts
+     1  probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts
+     1  probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts
+     1  probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts
+     1  sweep-probes.mjs
+
+  anchor sandboxDecl←SB374 (probe-round377-the…:690)
+     0  probe-round225-a-citation-is-not-a-call.mts
+     0  probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts
+     1  probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts
+     0  probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts
+     1  probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts
+     0  sweep-probes.mjs
+
+  anchor sandboxDecl←SB375 (probe-round377-the…:691)
+     0  probe-round225-a-citation-is-not-a-call.mts
+     0  probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts
+     0  probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts
+     1  probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts
+     1  probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts
+     0  sweep-probes.mjs
+
+  anchor A_R225_READ (probe-round377-the…:627)
+     0  probe-round225-a-citation-is-not-a-call.mts
+     1  probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts
+     1  probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts
+     1  probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts
+     2  probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts  <-- COLLISION (>1)
+     0  sweep-probes.mjs
+
+  anchor A_SWEEP_READ (probe-round377-the…:635)
+     0  probe-round225-a-citation-is-not-a-call.mts
+     1  probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts
+     1  probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts
+     1  probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts
+     2  probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts  <-- COLLISION (>1)
+     0  sweep-probes.mjs
+
+  anchor DECL (probe-round375-the…:265) — DERIVED, not counted: its value is computed from the subject at run time
+
+  anchor C_SWEEP (probe-round375-the…:445) — DERIVED, not counted: its value is computed from the subject at run time
+
+  anchor DECL_ANCHOR (probe-round377-the…:665) — DERIVED, not counted: its value is computed from the subject at run time
+
+== 5b. COLLISION cells, as a member list rather than a count (for the v1 superset check) ==
+  C_IMPORT_OUTCOME × probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts = 2
+  C_IMPORT_OUTCOME × probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts = 2
+  C_IMPORT_OUTCOME × probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts = 2
+  C_IMPORT_SWEEP × probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts = 2
+  C_IMPORT_SWEEP × probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts = 2
+  C_IMPORT_SWEEP × probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts = 2
+  C_HERE × probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts = 2
+  C_HERE × probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts = 2
+  C_HERE × probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts = 2
+  A_OUTCOME × probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts = 2
+  A_R225_READ × probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts = 2
+  A_SWEEP_READ × probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts = 2
+
+== 5c. the W2 column on its own — what a non-`probe-` subject actually costs ==
+   0  C_IMPORT_OUTCOME × sweep-probes.mjs
+   0  C_IMPORT_SWEEP × sweep-probes.mjs
+   1  C_HERE × sweep-probes.mjs
+   0  C_SANDBOX × sweep-probes.mjs
+   0  A_OUTCOME × sweep-probes.mjs
+   0  A_SWEPT × sweep-probes.mjs
+   1  A_HERE × sweep-probes.mjs
+   0  sandboxDecl←SB374 × sweep-probes.mjs
+   0  sandboxDecl←SB375 × sweep-probes.mjs
+   0  A_R225_READ × sweep-probes.mjs
+   0  A_SWEEP_READ × sweep-probes.mjs
+
+== 6. HEADLINE ==
+copiers: 2 · anchors: 14 (11 hand-typed, 3 derived, 0 UNREAD) · files: 6
+cells counted: 66 — 12 at >1 (COLLISION), 29 at exactly 1, 25 at 0
+W1 reached 2 anchor(s) v1 printed UNREAD · W2 added 1 subject file(s) · W3 divergences: 0
