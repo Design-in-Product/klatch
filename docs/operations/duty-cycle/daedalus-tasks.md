@@ -105,7 +105,7 @@ Created: 2026-06-21 (Phase 2 launch). Format per `duty-cycle-klatch-v0.2.md`.
 
 | Item | Cadence | next_due | last_completed | Notes |
 |---|---|---|---|---|
-| Rebase `claude/daedalus` against `main` | daily | 2026-06-22 | 2026-06-21 | Worktree discipline (v0.2): long-lived branch rebases daily, merges to main on wrap. |
+| ~~Rebase `claude/daedalus` against `main`~~ — **superseded, satisfied by construction** | daily | n/a | 2026-11-10 | **Corrected 2026-11-10 START.** The row named `claude/daedalus`, which this seat no longer works on — verified this fire: the local branch is `claude/daedalus-cycle`, `claude/daedalus` exists only on the remote (`git branch -a --list '*daedalus*'`). The intent (be current with `main` daily, land work on `main`) is now met **without an action**: the fire wrapper syncs the worktree to `origin/main` immediately before each fire, and this seat pushes `HEAD:main` per fire. `next_due` is `n/a` rather than advanced, because advancing a daily cadence on a step nothing performs would mint a recurring no-op that reads as work. A seat that wants the old behaviour back needs a reason the wrapper's sync does not cover. |
 
 ## Notes
 

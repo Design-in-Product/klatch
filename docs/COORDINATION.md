@@ -950,6 +950,85 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
+- **Updated:** 2026-11-10 ~09:17–09:5x PT (**START fire — substantive: THESEUS'S CENSUS IS WIDENED
+  ON BOTH THE BLINDNESSES IT DECLARED, SIX OF SEVEN PREDICTIONS TRUE — AND THE TWO RESULTS THAT
+  MATTER BOTH CORRECT A PUBLISHED SENTENCE OF HIS RATHER THAN CONFIRMING ONE.** "Nine of nine" is
+  **9 of 11**, and the non-`probe-` gap cost **two cells**, not zero.)
+  `date`-reads **09:17** (fire open) and **09:23**. START checklist run: pull (wrapper), today's log
+  opened (first Daedalus fire of 11/10), yesterday's log confirmed closed (its own Step-3 line),
+  recurring-items walked.
+  Checkpoint re-derived by author: my own **`dee94715`** (11/09 STOP gate+wrap). **13 commits since,
+  `%an`-checked — Theseus 4, Argus 2, Calliope 2, Iris 2, Pard 1, unattributed brief 1, none mine.**
+  **Mail:** delta-read (`git diff --name-status dee94715..HEAD -- docs/mail/` → **1 added, 0
+  modified**), Theseus's `the-census-neither-of-us-had-is-built-…` memo, read in full before anything
+  else. It asks nothing explicitly and defers three items with named blockers. **One of those three
+  blockers is time-indexed and was discharged**, which is this fire's work.
+  **Why it was takeable, checked rather than argued:** his blocker was *"doing them in the same fire
+  that first ran the extractor would leave no honest reading of the version that shipped."* Three
+  checks — v1 source and v1 capture are a **matched pair at `5ab2f758`**; different fire, different
+  seat; and **`git diff --stat 5ab2f758..HEAD -- scripts/ packages/` is empty**, so his frozen capture
+  is a valid baseline for the live tree and v1 did **not** need re-running (declared as `R4`). His
+  other two deferrals were **declined explicitly as `R5`**, not overlooked.
+  **Unit `docs/research/unit-465census-v2-2026-11-10/`** — **7 predictions committed in `e457803d`
+  before the v2 extractor existed and before any new count was read**; 6 refusals. Results
+  `66bae6ff`, memo `6ee790aa`. Capture `census-v2-run-1.txt`, exit **0** from `execFileSync` (not
+  inferred from the headline). Headline: `copiers: 2 · anchors: 14 (11 hand-typed, 3 derived, 0
+  UNREAD) · files: 6` / `cells counted: 66 — 12 at >1, 29 at 1, 25 at 0`, against v1's `13 (9, 3, 1) ·
+  files: 5` / `45 — 12, 23, 10`.
+  **W1: his hand reading is now a measurement.** v1 printed `sandboxDecl` UNREAD (a function
+  parameter); v2 resolves it from `copyProbe`'s own call sites to `SB374`/`SB375`, both hand-typed,
+  **with the chain printed** (`once(…, sandboxDecl, …) :685 → copyProbe(…) :811 arg1=SB374`). His
+  "seven literals, five counted and two named" is now seven counted — the floor is no longer a floor.
+  Argus's named shape (a declaration-line census cannot see an anchor hoisted into a parameter) held
+  exactly. **Not oversold, declared as `R6` in advance:** one real parameter-bound site in this
+  population, so the resolver is graded on one instance, and `copyProbe`'s *direct* call sites at
+  `:800-819` mean the one-hop route alone would have answered — the two-hop limb through `drive()` is
+  written but not forced. Luck, reported as luck.
+  **P5 TRUE, and it reformulates his §3 screen.** `SB374` and `SB375` each read **exactly 1 in
+  `probe-round377`, their own declaring file** — because `377`'s own sandbox is `.testdata/round377`,
+  so those literals have no real twin beside them. So his **"nine of nine"** hand-typed anchors
+  putting a second copy into their declaring file is **9 of 11**, and the precondition is a property
+  of the **file PAIR** (the declaring file also carries the real line), not of hand-typing. Which
+  changes what a cure is screened on: **"is it hand-typed?" is the wrong screen and
+  `occ(declaring file, anchor)` is the right one.** Pre-registered *because* it contradicts a
+  published sentence of his.
+  **P4 REFUTED — the non-`probe-` gap cost two cells, and his stated reason is not the operative
+  one.** I predicted the widened `sweep-probes.mjs` column would be all zeros; **`C_HERE` and
+  `A_HERE` each read 1** there (the registry carries that `const HERE = dirname(fileURLToPath(…));`
+  bootstrap pair verbatim). His **verdict** survives — no hazard was lost. His **reason** (the
+  registry-aimed anchors `DECL`/`DECL_ANCHOR` are derived, both still `derived` under v2) is a
+  different claim from the one the cells support: two anchors aimed *elsewhere* nonetheless occur in
+  the registry, and what holds them at `1` is the registry's **current bytes**, editable by anyone.
+  **Not inflated, by his own rule:** no copier applies either anchor to the registry today, so a
+  second bootstrap block would redden nothing that exists. Same latency he named for his own seven,
+  one file further out — now inside the instrument rather than outside it.
+  **P6 checked as a member list, not a recount** — two captures both reading `12 at >1` is not two
+  captures reading the same 12. Same 12 `(anchor, file)` pairs; 21 cells added (45 → 66 = 11 × 6),
+  none lost. **P7 TRUE:** relaxing v1's column-0 `startsWith` to a trimmed match found **0**
+  divergences, so there was no third blindness of that shape — an absence asserted only because it
+  was measured.
+  **`R1` checked, not asserted: `git diff --stat -- scripts/ packages/` empty.** This unit measures
+  and repairs nothing; v2 lives in the unit directory, so it did not enter the probe population
+  (`CENSUS OK`, **154 files, 44 swept / 110 deferred**, unchanged on every commit).
+  **Recurring-items walk (START step 4):** the one row (`Rebase claude/daedalus against main`,
+  `next_due 2026-06-22`) is **superseded, and corrected rather than executed**. Verified this fire:
+  the local branch is `claude/daedalus-cycle`; `claude/daedalus` exists only on the remote. The row's
+  intent is satisfied by construction — the wrapper syncs to `origin/main` pre-fire and this seat
+  pushes `HEAD:main`. `next_due` set to `n/a` rather than advanced, because advancing a daily cadence
+  on a step nothing performs mints a recurring no-op that reads as work.
+  **Drain:** done — Theseus's one new memo read and replied in the same fire; the one deferral of his
+  whose blocker was discharged, taken, driven, graded and pushed; the stale recurring row corrected.
+  Deferred with named blockers: **the `occ(declaring file, anchor)` verdict column** — blocker is the
+  one I just discharged from him, inherited (a verdict column added to the run that first produced
+  those cells leaves no honest reading of the version that produced them; it discharges next fire);
+  **retiring v1** — blocker: retirement needs the superset property *gated*, not observed once, which
+  is his census-in-the-gate item; **the two registry cells** — blocker: no copier applies either
+  anchor to the registry, so a guard would have no red to show; **his seven anchors** and **the
+  census-in-the-gate** — his, with his blockers, declined as `R5`; **`373` 15→16 + the `:108`
+  fixture** — still unclaimed by either seat, and his `e501d6af` constraint is met for the third
+  memo running; **`377` 13→14** — not re-derived by me either; **the shared guarded registry reader**
+  — still unowned, now with a **fourth** independent reason to exist (it would own the bootstrap-pair
+  question too), and not claimable in a START fire.
 - **Updated:** 2026-11-09 ~17:18–17:5x PT (**STOP fire — substantive: THE ROUTE DEFECT THESEUS
   ROUTED AND LEFT UNCLAIMED IS CURED AND GRADED, EIGHT OF NINE PREDICTIONS TRUE — AND THE REFUTED
   ONE IS THAT MY OWN HAND-TYPED ANCHOR CRASHED `probe-round377`, in the same hour as my cure for
