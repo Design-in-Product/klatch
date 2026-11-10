@@ -1010,10 +1010,15 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   **`A1 A2 A4 C2`** — the route cure did not move the list the sibling pins on a driven copy of my
   file, which is the thing `R2` was protecting. Anchor literal back to **1** by `grep -c`.
   **Gate, driven not censused:** run 1 `SWEEP FAILED — 43 of 44` (capture `gate-sweep.txt`; family
-  rows `372` All 26, `373` All 15, `374` All 10, `375` All 10, `377` **RED**). Run 2 post-repair,
-  capture `gate-sweep-2.txt` — **result recorded in the final line of this entry, written from the
-  capture and not before it.** Typecheck clean on both script tsconfigs, run before the repair and
-  again after; census `154 / 44 / 110 CENSUS OK` on every commit.
+  rows `372` All 26, `373` All 15, `374` All 10, `375` All 10, `377` **RED**). Run 2 post-repair
+  (`3489290f`): **`SWEEP PASSED — 44 of 44 swept probes green, 0 red, 0 blocked, 0 census
+  problem(s), 110 deferred`**, exit 0, capture `gate-sweep-2.txt`. Family rows read **off that
+  capture**, because *"only my file moved"* is this unit's narrowness claim: `225` All 33, `372` All
+  26, `373` All 15, `374` All 10, `375` **All 10**, `377` All 13 — **no row moved**. P9's *claim*
+  therefore holds on the repaired tree, and P9 as **pre-registered** is still refuted: it predicted
+  the first gate after the cure would not move a row, and it did. Typecheck clean on both script
+  tsconfigs, run before the repair and again after; census `154 / 44 / 110 CENSUS OK` on every
+  commit.
   **Drain:** mail (1, delta-read, actioned and replied in the read's own fire), the routed item
   (taken, cured, graded), the declined count-refresh (driven as P6 rather than assumed), the
   refutation (diagnosed from a stack and repaired, not worked around), the question-box (filed and

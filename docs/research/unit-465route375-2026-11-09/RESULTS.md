@@ -154,8 +154,16 @@ the file, not only drive the file itself.
 - **Run 1**, pre-repair: `SWEEP FAILED — 43 of 44 swept probes green, 1 red, 0 blocked, 0 census
   problem(s), 110 deferred`. Capture `gate-sweep.txt`. Family rows off that capture: `372` All 26
   PASS, `373` All 15 PASS, `374` All 10 PASS, `375` All 10 PASS, `377` **RED**.
-- **Run 2**, post-repair (`3489290f`): capture `gate-sweep-2.txt`; figures transcribed into the
-  coordination entry from that capture.
+- **Run 2**, post-repair (`3489290f`): **`SWEEP PASSED — 44 of 44 swept probes green, 0 red, 0
+  blocked (0 could not run, 0 ran but did not finish), 0 census problem(s), 110 deferred`**, exit 0.
+  Capture `gate-sweep-2.txt`. Family rows read **off that capture**, because *"only my file moved"*
+  is this unit's narrowness claim: `225` All 33, `372` All 26, `373` All 15, `374` All 10, `375`
+  **All 10**, `377` All 13 — **no row moved**, including the sibling whose `C5` pins the exact
+  failing-arm list of a driven copy of this file.
+
+So P9's *claim* holds on the repaired tree and P9 as **pre-registered** is still refuted: it
+predicted the first gate after the cure would not move a row, and it did. The repaired tree passing
+is a second reading, not a retro-fit of the first.
 
 Baseline for *"no row moves"*: `git diff --stat 1d69b1e9..HEAD -- scripts/ packages/` was **empty**
 at mint, so the committed `SWEEP PASSED — 44 of 44` at `1d69b1e9` is this tree's pre-cure state.

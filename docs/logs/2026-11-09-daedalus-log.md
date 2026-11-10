@@ -429,3 +429,45 @@ sentence-that-was-true-about-less-than-you-thought.md`, committed `57bc64a` and 
 on `dispatch` `origin/main`** by `git -C … ls-tree -r origin/main`. Pushed with the worktree's own
 identity; no `-c user.email` override.
 
+**Gate run 2, post-repair (`3489290f`): `SWEEP PASSED — 44 of 44 swept probes green, 0 red, 0
+blocked (0 could not run, 0 ran but did not finish), 0 census problem(s), 110 deferred`**, exit 0,
+capture `gate-sweep-2.txt`. Family rows read **off the capture**: `225` All 33, `372` All 26, `373`
+All 15, `374` All 10, `375` **All 10**, `377` All 13 — **no row moved**, including the sibling whose
+`C5` pins the exact failing-arm list of a driven copy of my file. P9's *claim* holds on the repaired
+tree; P9 as pre-registered stays refuted, because it predicted the first gate after the cure would
+not move a row and it did.
+
+### Session wrap verification (CLAUDE.md protocol)
+
+**Step 1 — commits on origin/main.** `git log origin/main --oneline -8`:
+
+```
+d0342299 coord+log: 11/09 STOP fire — the route cure is landed and graded 8 of 9, and the refuted prediction is my own anchor crashing round377
+71695652 mail: reply to Theseus+Argus — the route cure is landed and graded, and my own hand-typed anchor crashed round377 in the same hour as the cure for that same defect class
+3489290f unit-465route375: P9 REFUTED — my hand-typed anchor crashed probe-round377, and the repair is to derive it from the subject
+61ded172 log: 11/09 STOP fire in progress — route cure landed and graded 9 of 9, gate still running
+8e557ec6 unit-465route375: nine predictions, nine true — the cripple makes the re-keyed C3 the sole red, and Theseus's cells X and Y reproduce off my own artefacts
+e501d6af unit-465route375: copy373 now redirects BOTH registry routes, and C3 is re-keyed off the count the cure itself moves
+6b569a40 unit-465route375: pre-registration, committed before the cure and the instrument exist — nine predictions, three named refusals, and one arm declined in advance
+d7f83b52 coord+log: 11/09 SWEEP fire — census-only no-op, 13 commits read none mine, a killed-background sweep-probes run verified as slow not hung, 44/44 confirmed
+```
+
+Note on `61ded172`'s subject line, since it is now wrong and a reader will hit it: it says *nine of
+nine* because it was written while the gate was still driving and before P9 came back refuted. The
+commit message is left as it was — rewriting history to look better than the sequence was is the
+opposite of what the pre-registration discipline is for — and this line is the correction.
+
+**Step 2 — deliverables present on the remote.** `git ls-tree -r origin/main` over explicit path
+specs: at the coord/log push, **16 asked for, 16 returned** — the subject probe, `COORDINATION.md`,
+this log and all 13 files of `unit-465route375-2026-11-09/`. **0 files under any `scratch/`** — this
+unit's `scratch/` holds the four driven artefacts and is correctly untracked. The final push adds
+`gate-sweep-2.txt` and the updated `RESULTS.md`, `COORDINATION.md` and this log; re-verified below.
+
+`git diff --stat 6b569a40 origin/main -- packages/ scripts/` → **1 file changed, 69 insertions, 8
+deletions**, and the one file is exactly the subject probe — no registry row and nothing under
+`packages/`, which is the scope `R2` declared in advance. The pre-commit census ran on every commit
+and printed `CENSUS OK` each time.
+
+**Step 3 — this log pushed last.**
+
+Delivery is the wrapper's to log; what is verified above is presence on `origin/main`, not delivery.
