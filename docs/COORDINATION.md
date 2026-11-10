@@ -7878,7 +7878,36 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-11-09 ~19:2x PT (STOP fire). **Status:** available.
+- **Updated:** 2026-11-10 ~07:2x PT (START fire). **Status:** available.
+- **11/10 fire (START) — no-op on product; 7 commits read since own STOP checkpoint (`f4df7146`), none
+  mine — Theseus's `unit-465anchor-census` chain plus Daedalus/Calliope/Theseus's STOP-fire coord+log+gate
+  commits and the automated brief publishes. Nothing routed to this seat.** Drain against own checkpoint: 7
+  new commits (checked `%an` per commit — Pard, Claude(auto), Calliope, Theseus ×4; none Iris). `git diff
+  --stat f4df7146..HEAD -- packages/ scripts/` returns empty — zero touches to product code or probes.
+  **Mail:** zero new local mail files since checkpoint. All four cross-repo mailboxes fetched fresh against
+  the 11/09 ~19:30 PT checkpoint: `designinproduct` 0 new; `mediajunkie` 0 new; `dispatch` 0 new;
+  `piper-morgan-product/mailboxes` 11 new (Exec/CXO/PA/Lead sprint-length-tally traffic), content-grepped
+  for klatch/iris — 0 hits. Nothing owed from any. Both briefs read: cross-pollination 11-10 (hard-typed-value
+  defect recurring in its own cure; empty-list branch trap) — no UX-lane signal; fire-depth report (published
+  today by Pard) — Iris's only line is the unchanged 11-03 schedule entry, no new signal. **Standing blockers
+  re-derived fresh:** ground-rules-UX stays **closed** (attention-rollup confirms "Decided... Sent to
+  Calliope," no reopening signal); reassign-picker live-browser drive still queued on Theseus, unchanged;
+  `entityGuess` re-grepped scoped to `packages/client/src` — **5 files/19 hits**, unchanged. Both standing
+  dispatch question-box letters (Theseus's 10-25, 11-01) re-checked present and still un-replied, not
+  re-escalated. Attention-rollup re-checked (`git -C designinproduct show
+  origin/main:docs/agents/janus/attention-rollup.html`) — Klatch's board line still **v176** (Calliope), same
+  three asks, none UX-lane. **Verified, not trusted:** `npm run typecheck` clean across all 4 workspaces;
+  server **143 files · 2221 passed · 1 skipped (2222)**; client **26 passed|13 skipped (39) · 333
+  passed|13 skipped (346)** — byte-identical to the 11/09 STOP checkpoint; `sweep-probes --census` **154
+  probe files, 44 swept/110 deferred**, CENSUS OK, unchanged; full driving sweep (HEAD unchanged at
+  `5e3886d9` before/after, tree clean throughout, backgrounded past the 120s foreground limit, picked up via
+  completion notification) — **SWEEP PASSED — 44 of 44 swept probes green, 0 red, 0 blocked, 0 census
+  problem(s), 110 deferred**, matching the prior checkpoint exactly. `lsof -i :3001 -P` port free. No
+  `packages/` changes this fire. Nothing new needs xian from this seat. **Drain:** all unblocked items done
+  (commit check, mail across all four mailboxes plus local, both briefs, both blockers re-derived, dispatch
+  letters re-checked, attention-rollup re-checked, full gate including the driving sweep). Two consecutive
+  checks found nothing further unblocked — fire closed bounded. Log: `docs/logs/2026-11-10-iris-log.md`.
+- **Prior update:** 2026-11-09 ~19:2x PT (STOP fire). **Status:** available.
 - **11/09 fire (STOP) — no-op on product; 31 commits read since own START checkpoint (`a7ce88ab`), none
   mine — the Daedalus/Theseus/Argus/Calliope round375-377 research chain (`unit-465rekey377`,
   `unit-465guard375`, `unit-465rekey374`, `unit-465reach375`, `unit-465route375`). Nothing routed to this
