@@ -1,0 +1,129 @@
+== LEG 1 (P1). v2 re-run unedited in this worktree, vs. its committed capture ==
+  exit code (from spawnSync, not inferred from the output): 0
+  lines: fresh 187, committed 187 · differing line numbers: 1
+    L1 committed: scripts/ resolved to: /Users/xian/Development/klatch-worktrees/daedalus/scripts
+    L1 fresh    : scripts/ resolved to: /Users/xian/Development/klatch-worktrees/theseus/scripts
+
+== R6. parse completeness — parsed rows vs. the headline v2 printed in the same run ==
+  anchors     parsed  14 · headline  14 · OK
+  hand-typed  parsed  11 · headline  11 · OK
+  derived     parsed   3 · headline   3 · OK
+  files       parsed   6 · headline   6 · OK
+  cells       parsed  66 · headline  66 · OK
+  collisions  parsed  12 · headline  12 · OK
+
+== values recovered from the declaring file's own source (not from v2's 96-char-truncated print) ==
+  C_IMPORT_OUTCOME   probe-round375…:428  31 chars · "from './lib/probe-outcome.mts';"
+  C_IMPORT_SWEEP     probe-round375…:429  28 chars · "} from './sweep-probes.mjs';"
+  C_HERE             probe-round375…:430  53 chars · "const HERE = dirname(fileURLToPath(import.meta.url));"
+  C_SANDBOX          probe-round375…:446  58 chars · "const SANDBOX = join(HERE, '..', '.testdata', 'round373');"
+  A_OUTCOME          probe-round377…:624  78 chars · "import { summariseAndExit, type ProbeVerdict } from './lib/probe-outcom
+  A_SWEPT            probe-round377…:625  43 chars · "import { SWEPT } from './sweep-probes.mjs';"
+  A_HERE             probe-round377…:626  84 chars · "const HERE = dirname(fileURLToPath(import.meta.url));\nconst REPO = joi
+  sandboxDecl←SB374  probe-round377…:690  52 chars · "const SANDBOX = join(REPO, '.testdata', 'round374');"
+  sandboxDecl←SB375  probe-round377…:691  52 chars · "const SANDBOX = join(REPO, '.testdata', 'round375');"
+  A_R225_READ        probe-round377…:627  55 chars · "const r225Src = readFileSync(join(HERE, R225), 'utf8');"
+  A_SWEEP_READ       probe-round377…:635  45 chars · "const SWEEP = join(HERE, 'sweep-probes.mjs');"
+
+== R7. calibration — recompute all 66 cells with this reader's own occ ==
+  cells compared: 66 · divergences: 0
+  CALIBRATED — this reader's occ and its recovered values reproduce v2's cells exactly.
+
+== LEG 2 (P2/P3). Screen S — FLAGGED iff occ(declaring file, anchor) >= 2 ==
+   2  C_IMPORT_OUTCOME   declared in probe-round375…  FLAGGED
+   2  C_IMPORT_SWEEP     declared in probe-round375…  FLAGGED
+   2  C_HERE             declared in probe-round375…  FLAGGED
+   1  C_SANDBOX          declared in probe-round375…  clear
+   2  A_OUTCOME          declared in probe-round377…  FLAGGED
+   1  A_SWEPT            declared in probe-round377…  clear
+   1  A_HERE             declared in probe-round377…  clear
+   1  sandboxDecl←SB374  declared in probe-round377…  clear
+   1  sandboxDecl←SB375  declared in probe-round377…  clear
+   2  A_R225_READ        declared in probe-round377…  FLAGGED
+   2  A_SWEEP_READ       declared in probe-round377…  FLAGGED
+  FLAGGED 6 of 11 hand-typed: A_OUTCOME, A_R225_READ, A_SWEEP_READ, C_HERE, C_IMPORT_OUTCOME, C_IMPORT_SWEEP
+  by declaring file — probe-round375-the-g…: 3 of 4 FLAGGED (C_IMPORT_OUTCOME, C_IMPORT_SWEEP, C_HERE)
+  by declaring file — probe-round377-the-c…: 3 of 7 FLAGGED (A_OUTCOME, A_R225_READ, A_SWEEP_READ)
+  derived anchors: the screen is UNDEFINED on all 3 (DECL, C_SWEEP, DECL_ANCHOR) — their value is computed from the subject at run time, so there is no literal in the declaring file to count.
+
+== LEG 3 (P4). the 12 COLLISION cells, split by whether the file DECLARES the anchor ==
+  COLLISION cells: 12 · on the anchor's own declaring file (S can see): 6 · elsewhere (S cannot see at any threshold): 6
+  -- visible to S --
+     C_IMPORT_OUTCOME × probe-round375-the-guard-on-the-routed-cure-… = 2
+     C_IMPORT_SWEEP × probe-round375-the-guard-on-the-routed-cure-… = 2
+     C_HERE × probe-round375-the-guard-on-the-routed-cure-… = 2
+     A_OUTCOME × probe-round377-the-cure-landed-on-the-two-re… = 2
+     A_R225_READ × probe-round377-the-cure-landed-on-the-two-re… = 2
+     A_SWEEP_READ × probe-round377-the-cure-landed-on-the-two-re… = 2
+  -- INVISIBLE to S --
+     C_IMPORT_OUTCOME × probe-round374-the-absence-check-has-no-cont… = 2   (declared in probe-round375-the-g…)
+     C_IMPORT_OUTCOME × probe-round377-the-cure-landed-on-the-two-re… = 2   (declared in probe-round375-the-g…)
+     C_IMPORT_SWEEP × probe-round374-the-absence-check-has-no-cont… = 2   (declared in probe-round375-the-g…)
+     C_IMPORT_SWEEP × probe-round377-the-cure-landed-on-the-two-re… = 2   (declared in probe-round375-the-g…)
+     C_HERE × probe-round374-the-absence-check-has-no-cont… = 2   (declared in probe-round375-the-g…)
+     C_HERE × probe-round377-the-cure-landed-on-the-two-re… = 2   (declared in probe-round375-the-g…)
+
+== LEG 4 (P5). every occurrence behind each COLLISION cell, classified ==
+  C_IMPORT_OUTCOME × probe-round374-the-absence-check-has-no-… = 2  [elsewhere]  <-- NO census-anchor declaration among its occurrences
+      :  55  other-line-containing        import { summariseAndExit, type ProbeVerdict } from './lib/probe-outcome.mts';
+      : 216  other-const-literal          const R373_IMPORT_OUTCOME = "from './lib/probe-outcome.mts';";
+  C_IMPORT_OUTCOME × probe-round375-the-guard-on-the-routed-c… = 2  [own declaring file]
+      :  65  other-line-containing        import { summariseAndExit, type ProbeVerdict } from './lib/probe-outcome.mts';
+      : 428  census-anchor-decl (C_IMPORT_OUTCOME) const C_IMPORT_OUTCOME = "from './lib/probe-outcome.mts';";
+  C_IMPORT_OUTCOME × probe-round377-the-cure-landed-on-the-tw… = 2  [elsewhere]
+      :  58  other-line-containing        import { summariseAndExit, type ProbeVerdict } from './lib/probe-outcome.mts';
+      : 624  census-anchor-decl (A_OUTCOME) const A_OUTCOME = "import { summariseAndExit, type ProbeVerdict } from './lib/probe-ou
+  C_IMPORT_SWEEP × probe-round374-the-absence-check-has-no-… = 2  [elsewhere]  <-- NO census-anchor declaration among its occurrences
+      :  56  other-line-containing        import { SWEPT } from './sweep-probes.mjs';
+      : 217  other-const-literal          const R373_IMPORT_SWEEP = "} from './sweep-probes.mjs';";
+  C_IMPORT_SWEEP × probe-round375-the-guard-on-the-routed-c… = 2  [own declaring file]
+      :  66  other-line-containing        import { SWEPT } from './sweep-probes.mjs';
+      : 429  census-anchor-decl (C_IMPORT_SWEEP) const C_IMPORT_SWEEP = "} from './sweep-probes.mjs';";
+  C_IMPORT_SWEEP × probe-round377-the-cure-landed-on-the-tw… = 2  [elsewhere]
+      :  62  other-line-containing        import { census, SWEPT } from './sweep-probes.mjs';
+      : 625  census-anchor-decl (A_SWEPT) const A_SWEPT = "import { SWEPT } from './sweep-probes.mjs';";
+  C_HERE × probe-round374-the-absence-check-has-no-… = 2  [elsewhere]  <-- NO census-anchor declaration among its occurrences
+      :  58  exact-line                   const HERE = dirname(fileURLToPath(import.meta.url));
+      : 218  other-const-literal          const R373_HERE = 'const HERE = dirname(fileURLToPath(import.meta.url));';
+  C_HERE × probe-round375-the-guard-on-the-routed-c… = 2  [own declaring file]
+      :  68  exact-line                   const HERE = dirname(fileURLToPath(import.meta.url));
+      : 430  census-anchor-decl (C_HERE)  const C_HERE = 'const HERE = dirname(fileURLToPath(import.meta.url));';
+  C_HERE × probe-round377-the-cure-landed-on-the-tw… = 2  [elsewhere]
+      :  64  exact-line                   const HERE = dirname(fileURLToPath(import.meta.url));
+      : 626  census-anchor-decl (A_HERE)  const A_HERE = "const HERE = dirname(fileURLToPath(import.meta.url));\nconst REPO = jo
+  A_OUTCOME × probe-round377-the-cure-landed-on-the-tw… = 2  [own declaring file]
+      :  58  exact-line                   import { summariseAndExit, type ProbeVerdict } from './lib/probe-outcome.mts';
+      : 624  census-anchor-decl (A_OUTCOME) const A_OUTCOME = "import { summariseAndExit, type ProbeVerdict } from './lib/probe-ou
+  A_R225_READ × probe-round377-the-cure-landed-on-the-tw… = 2  [own declaring file]
+      : 135  exact-line                   const r225Src = readFileSync(join(HERE, R225), 'utf8');
+      : 627  census-anchor-decl (A_R225_READ) const A_R225_READ = "const r225Src = readFileSync(join(HERE, R225), 'utf8');";
+  A_SWEEP_READ × probe-round377-the-cure-landed-on-the-tw… = 2  [own declaring file]
+      :  66  exact-line                   const SWEEP = join(HERE, 'sweep-probes.mjs');
+      : 635  census-anchor-decl (A_SWEEP_READ) const A_SWEEP_READ = "const SWEEP = join(HERE, 'sweep-probes.mjs');";
+  cells whose occurrences include NO census-anchor declaration: 3 — C_IMPORT_OUTCOME×374-the-, C_IMPORT_SWEEP×374-the-, C_HERE×374-the-
+
+== LEG 5 (P6/P7). the screen at e501d6af, the rev whose collision crashed the gate ==
+  subject of the crash: the cell (A_SWEEP_READ × probe-round375). A_SWEEP_READ is declared in probe-round377.
+  6b569a40  A_SWEEP_READ declared probe-round377…:635 = "const SWEEP = join(HERE, 'sweep-probes.mjs');"
+            occ(375, A_SWEEP_READ) = 1   <-- the cell that threw
+            occ(377, A_SWEEP_READ) = 2   <-- what Screen S reads (its DECLARING file)
+            C_SWEEP in 375 @-: derived/not-a-literal
+  e501d6af  A_SWEEP_READ declared probe-round377…:635 = "const SWEEP = join(HERE, 'sweep-probes.mjs');"
+            occ(375, A_SWEEP_READ) = 2   <-- the cell that threw   ** COLLISION **
+            occ(377, A_SWEEP_READ) = 2   <-- what Screen S reads (its DECLARING file)
+            C_SWEEP in 375 @431: hand-typed literal = "const SWEEP = join(HERE, 'sweep-probes.mjs');", occ(375, C_SWEEP) = 2
+  3489290f  A_SWEEP_READ declared probe-round377…:635 = "const SWEEP = join(HERE, 'sweep-probes.mjs');"
+            occ(375, A_SWEEP_READ) = 1   <-- the cell that threw
+            occ(377, A_SWEEP_READ) = 2   <-- what Screen S reads (its DECLARING file)
+            C_SWEEP in 375 @445: derived/not-a-literal
+  HEAD      A_SWEEP_READ declared probe-round377…:635 = "const SWEEP = join(HERE, 'sweep-probes.mjs');"
+            occ(375, A_SWEEP_READ) = 1   <-- the cell that threw
+            occ(377, A_SWEEP_READ) = 2   <-- what Screen S reads (its DECLARING file)
+            C_SWEEP in 375 @445: derived/not-a-literal
+
+== HEADLINE ==
+P1 differing lines: 1 (1) · v2 exit 0
+calibration: 66 of 66 cells reproduced, 0 divergences
+Screen S at HEAD: 6 of 11 hand-typed FLAGGED — A_OUTCOME, A_R225_READ, A_SWEEP_READ, C_HERE, C_IMPORT_OUTCOME, C_IMPORT_SWEEP
+COLLISION cells: 12 — 6 visible to S, 6 INVISIBLE to S
+COLLISION cells with no census-anchor declaration among their occurrences: 3
