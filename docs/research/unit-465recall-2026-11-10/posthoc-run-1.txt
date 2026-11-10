@@ -1,0 +1,53 @@
+unit-465recall — POST-HOC: what "6 of 11" does not say
+slice OK: 56 lines of his extractor and key, markers unique
+census parse calibrated against v2's own headline: 66 cells, 12 collisions — OK
+
+== (a) Can this population grade the K-once restriction? ==
+  anchors where the two keys' VERDICTS differ: 0 — (none)
+  anchors where the KEY itself differs (K-once false): 2 — SB374, SB375
+    SB374: K-once false, but occ>=2 is false — so the restriction is masked by the shared conjunct
+    SB375: K-once false, but occ>=2 is false — so the restriction is masked by the shared conjunct
+  VERDICT (a): NO. The restriction changes no verdict here, and it changes none for a reason unrelated to its merit: every member the key differs on is already 0 under occ>=2. Reporting "restricted recall 6 of 11" as evidence FOR the restriction would be a vacuous agreement.
+
+== (b) The 5 misses, cross-tabbed against where each anchor actually collides ==
+  anchor             own-file occ  collisions in OTHER files  flagged at typing
+  C_IMPORT_OUTCOME             2                         2  true
+  C_IMPORT_SWEEP               2                         2  true
+  C_HERE                       2                         2  true
+  C_SANDBOX                    1                         0  false
+  A_OUTCOME                    2                         0  true
+  A_SWEPT                      1                         0  false
+  A_HERE                       1                         0  false
+  SB374                        1                         0  false
+  SB375                        1                         0  false
+  A_R225_READ                  2                         0  true
+  A_SWEEP_READ                 2                         0  true
+
+  2x2 — rows: has a collision in a file OTHER than its declaring file · cols: flagged at typing
+              flagged      not flagged
+  external      3            0
+  none          3            5
+    external+flagged     : C_IMPORT_OUTCOME, C_IMPORT_SWEEP, C_HERE
+    external+MISSED      : (none)
+    no-external+flagged  : A_OUTCOME, A_R225_READ, A_SWEEP_READ
+    no-external+missed   : C_SANDBOX, A_SWEPT, A_HERE, SB374, SB375
+  The empty cell is "external collision, missed" = 0. Its row margin is 3.
+  So that zero rests on 3 observation(s) — it is a FORCED empty, not a demonstrated property.
+  At ANCHOR granularity: 6 of 6 anchors with ANY collision cell are flagged.
+  At CELL granularity, the same screen has one row per anchor and the census has one per cell:
+    12 collision cells · 6 on the anchor's own declaring file · 6 not.
+  R8: 6/6, 6/12 and 6/11 are THREE different figures over three denominators. Not fused.
+
+== (c) His 14 K-once flags: how many distinct commits are behind them? ==
+  K-once flags re-derived here: 14 (run 1 graded this count against his own run: 14)
+  distinct commits behind them: 4
+    ac61258a   7 flag(s)  [NEW FILE] IMPORT_OUTCOME, IMPORT_SWEEP, HERE_DECL, R373_READ, C_IMPORT_OUTCOME, C_IMPORT_SWEEP, C_HERE
+    56b180e6   3 flag(s)  [NEW FILE] A_OUTCOME, A_R225_READ, A_SWEEP_READ
+    d0dff8b7   3 flag(s)  R373_IMPORT_OUTCOME, R373_IMPORT_SWEEP, R373_HERE
+    e501d6af   1 flag(s)  C_SWEEP
+  the largest single commit contributes 7 of 14; the top two contribute 10.
+
+================ POST-HOC VERDICT ================
+(a) This population CANNOT grade the K-once restriction: 0 verdict difference(s) over 2 key difference(s), all masked by occ>=2.
+(b) The 5 misses include 5 anchor(s) with no collision cell anywhere. "external collision & missed" is 0 on a row margin of 3 — forced, not demonstrated.
+(c) His 14 K-once flags come from 4 commit(s); the top two account for 10.
