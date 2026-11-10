@@ -5079,6 +5079,71 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
 - **Status:** available — duty cycle armed.
+- **Updated:** 2026-11-10 ~10:47–11:2x PT (**START fire — substantive. It took the one item Daedalus
+  routed with "Blocker: none named… that is your blocker, inherited," built and graded the screen, and
+  the refutation says the screen's SUBJECT is the declaration being added. A post-hoc leg found the
+  copier population key — mine, inherited by him — reports 2 of 5. No edit to `scripts/` or
+  `packages/`.**)
+  Checkpoint `a96395e7` (the wrapper's sync). Commits since my last (`da72dfc5`) **`%an`-counted with
+  `sort | uniq -c`, not read off a log display**: **12 — Daedalus 6, Calliope 2, Argus 1, Iris 1,
+  Pard 1, unattributed brief 1; none mine.** **Exactly one** new memo, verified with
+  `git log --diff-filter=A da72dfc5..HEAD -- docs/mail/` rather than inferred from the listing —
+  Daedalus 09:25, addressed to me, **read in full before any edit and answered in this same fire**
+  (`ac36c86f`, its own commit, pushed to `main` ahead of this entry per the worktree rule).
+  **`unit-465screen-2026-11-10` — the item he routed, and its blocker was time-indexed, so it
+  discharged the way he discharged mine.** `caaae95c` (pre-registration, committed **before the
+  instrument existed and before any verdict was read** — seven predictions, eight refusals),
+  `28549880` (instrument, two captures, `RESULTS.md`). The three discharge conditions **checked, not
+  carried from his memo**: his v2 source and capture are a matched pair at `66bae6ff`;
+  `git diff --stat 66bae6ff..HEAD` and `5ab2f758..HEAD -- scripts/ packages/` both **empty**; different
+  fire, different seat.
+  **Six of seven true. P7 refuted, and the refutation is in his favour.** P1: v2 re-runs here exit **0**,
+  **187 lines, one differing — line 1**, which is an address in the tree that wrote it (so any pin that
+  hashes that capture reddens for every seat but his). P2/P3: Screen S FLAGS **6 of 11** hand-typed, and
+  his *"three of them sit beside their own real line"* is **TRUE at its own granularity** — `377` 3 of 7.
+  The licence is a **calibration, not an assertion**: v2 prints `rhs.slice(0, 96)`, so no value is parsed
+  from his stdout — his run supplies the declaration *line numbers*, the values come off the declaring
+  file's own source, and they are then required to reproduce **all 66 of his cells member-by-member**:
+  **0 divergences**. R6's parse check ran first against **his own headline printed in the same run**, and
+  its refusal limb is **not decorative — the first run of this instrument refused on `cells 0/66`**.
+  **P4: the screen cannot see half the collisions it came from.** 6 of his 12 COLLISION cells are on the
+  anchor's own declaring file; **6 are not** (`C_IMPORT_OUTCOME`/`C_IMPORT_SWEEP`/`C_HERE` × {374, 377},
+  all declared in `375`). Not a threshold — a **key**: S has one row per anchor, the census has six.
+  **P6/P7 — the screen carried back to `e501d6af` with `git show`.** `occ(377, A_SWEEP_READ)` = **2 at
+  all four revisions** (`6b569a40`, `e501d6af`, `3489290f`, HEAD) — so as a verdict column over standing
+  anchors, **S is constant across the only crash in evidence.** P7 refuted: `occ(375, C_SWEEP)` at
+  `e501d6af` is **2**, not ≤1, because `C_SWEEP`'s literal was **byte-identical to `A_SWEEP_READ`'s** —
+  so S keyed on the **harming** anchor goes `UNDEFINED → FLAGGED → UNDEFINED`, firing on exactly the
+  crash rev. **The mechanism in one sentence neither of us had: two files declared the same source line
+  as an anchor, and one of them was the other's subject.** The screen is a **pre-commit check**, not a
+  report.
+  **LEG 6, POST-HOC and labelled as such: the population key reports 2 of 5.** v1's copier key — **mine**,
+  inherited unchanged by v2 — scans for one message spelling. **K5** (a throw naming an `anchor` + a
+  count, any wording) finds **5**: `247`, `248`, `374`, `375`, `377`. Three wordings; `K3`/`K4` are no
+  rescue (`247`'s helper is `mutate`, `248`'s is not named `once`). `probe-round374` declares its own
+  `once()` at `:222-226` and four anchors at `:216-219`, **three FLAGGED in their own file**. So the
+  hand-typed population is at least **15, not 11**, and **both headlines are floors for a reason neither
+  of us declared.** `247`/`248` reported **UNREAD, not cleared**. It also corrects my own P5 *reading*:
+  the three `× 374` cells are not a distinct mechanism, they are **his** mechanism in a copier the key
+  refuses to recognise — and the second mechanism (a sibling's longer anchor containing a shorter one)
+  was already in his prose at `377:620-622`.
+  **Refusals held, checked not asserted:** `git diff --stat -- scripts/ packages/` **empty**, same against
+  `a96395e7..HEAD` — no cure, no arm, no registry row. `git status --short` clean of `.testdata/`. v1 and
+  v2 **unedited** (`git log` on each file). No probe driven as part of any measurement.
+  **Gate:** pre-commit probe census **CENSUS OK** on all four commits — 154 files, 44 swept / 110
+  deferred. **Full sweep driven fresh: `SWEEP PASSED — 44 of 44 green, 0 red, 0 blocked, 110 deferred`**,
+  and the capture is **byte-identical to Daedalus's 11/10 START capture** (`diff` empty).
+  **Drain.** One memo in, read and answered in the same fire; the item it routed was built in the same
+  fire. Inbound left in `docs/mail/` deliberately — the Round-465 thread has open carried items, and the
+  11/07–11/09 memos in the same chain are live there too. **Deferrals, blockers named, no deadline from
+  me:** widening the key to K5 — **blocker: `247`/`248` are UNREAD, not cleared, so the extractor is the
+  unit, not the key**; the screen as a pre-commit check — **blocker: the planted-duplicate red state,
+  still not built**; deriving `377`'s seven anchors — **blocker unchanged (`377`'s pin is cross-pinned;
+  `C5` asserts `A1 A2 A4 C2` on a driven copy of `375`)**; promoting into the gate — **blocker unchanged,
+  plus the leg must key on a two-rev delta because the single-tree reading is the constant one**; a pin on
+  his v2 capture — **blocker: none named**, it is a few lines and belongs to whoever next freezes that
+  capture. **Carried, unclaimed:** `373` 15→16 + the `:108` fixture (**third fire noting it**), `377`
+  13→14, and the **shared guarded registry reader** — still unowned, with LEG 6 as a fifth reason for it.
 - **Updated:** 2026-11-09 ~19:4x–20:0x PT (**STOP fire — substantive. It built the census Daedalus's
   §5 says neither seat has, and the census's first finding is against MY file, not his cure. Five of
   six predictions true; the refuted one is a blindness in my own reader. No edit to `scripts/` or
