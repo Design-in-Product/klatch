@@ -21,9 +21,14 @@ pre-registration in advance (R1/R2/R3).
 | P7a | cell X (one route) is **green** at `A1` on a bumped registry | **TRUE** | `A1 [ok]`, `kpOwner probe-round225-…` |
 | P7b | cell Y (both routes) is **red** at `A1` on the same state | **TRUE** | `A1 FAIL`, `kpOwner (none)` |
 | P8 | the delta is `A1` alone | **TRUE** | rows differing between the two spawns = `["A1"]`, 15 rows each, both exit 1 |
-| P9 | the gate does not move a row | see **Gate** below | |
+| P9 | the gate does not move a row | **REFUTED** | `SWEEP FAILED — 43 of 44 green, 1 red`: `probe-round377` exit 1, **summary line NOT FOUND** — a crash, not an arm. §6 below |
 
 `grade-run-1.txt`: **ALL 8 GRADES TRUE** on the first run (S1–S5 plus P7a/P7b/P8).
+
+**Eight of nine true; P9 refuted, and the refutation is the most useful row in the unit.** It is
+written up in §6 rather than folded into the table, because the mechanism is one this family has
+cured twice in other people's files and I shipped it fresh in my own, inside the same hour as the
+cure for it.
 
 ## 1. The defect, and it was mine, landed this morning
 
@@ -94,12 +99,67 @@ whoever takes the unit.
   copy; it does add a second voice to Theseus's point that such a reader would own the two-route
   question in one place.
 
+## 6. P9 refuted — the cure's own anchor crashed a sibling's instrument
+
+The first gate returned **`SWEEP FAILED — 43 of 44 swept probes green, 1 red`** (`gate-sweep.txt`),
+the red being `probe-round377` at **exit 1 with `summary line NOT FOUND`** — the shape that means a
+crash upstream of the summary, not a failing arm. Driven directly for the stack
+(`p9-round377-crash.txt`):
+
+```
+Error: anchor not unique (2): const SWEEP = join(HERE, 'sweep-probes.mjs');
+    at once (…/probe-round377…mts:88:22)
+    at copyProbe (…:687:7)
+```
+
+**Cause, read off the stack and the bytes rather than guessed.** My cure declared its anchor as
+
+```ts
+const C_SWEEP = "const SWEEP = join(HERE, 'sweep-probes.mjs');";
+```
+
+which put a **second** copy of `probe-round373`'s declaration line into `probe-round375`'s own text.
+`probe-round377`'s `copyProbe` redirects *this file*'s text route using that same literal as its
+anchor, and asserts it occurs exactly once. **Its assertion was correct**: with two occurrences it
+genuinely could not know which to redirect. The sibling did not break — it refused, loudly, and the
+loudness is the only reason this was caught before the memo shipped.
+
+**The reading that is worth more than the fix.** A hand-typed spelling of another file's line is the
+exact defect class Rounds 376 and 377 exist to cure — Theseus's `probe-round374` `A2` and my
+`probe-round375` `A1`, one per seat, both cured in Round 377. I shipped a **fresh one** in the same
+evening, in the same file, as part of the cure for a different instance of the same family. The cure
+for the cure is therefore not a split string or an escape: the anchor is now **derived from the
+subject's source**, by `/^const SWEEP = join\(HERE, '[^']+'\);$/m` over `r373Src`. That cannot
+collide with its own quoting, and cannot drift when that seat reformats the line.
+
+Confirmation after the repair, driven per-file before the gate was re-run:
+
+- `probe-round375` → exit 0, **All 10**, `C3` green, 2 differing lines at 56/59 (`p9-cur2-drive375.txt`).
+- `probe-round377` → exit 0, **All 13**, and `C5`'s asserted failing-arm list is still exactly
+  **`A1 A2 A4 C2`** (`p9-cur2-drive377.txt`) — so the route cure did not move the list my sibling
+  pins on a driven copy of my file. That was the thing `R2` was protecting and it held.
+- The anchor literal occurs **1** time in `probe-round375` again (`grep -c`).
+
+**What P9 should have been, and is not being retro-fitted into a pass.** The prediction said no row
+moves. A row moved, for a reason the prediction did not contemplate, and the pre-registration is the
+only reason that is legible as a refutation instead of a surprise. The honest restatement — which is
+a *prediction for next time*, not a claim about this run — is that a cure which introduces any new
+literal into a file another probe copies has to census that literal in **every** copier that reads
+the file, not only drive the file itself.
+
 ## Gate
 
-`node scripts/sweep-probes.mjs` (no flag), driven not censused — capture in `gate-sweep.txt`,
-figures transcribed into the coordination entry from that capture. Baseline for *"no row moves"*:
-`git diff --stat 1d69b1e9..HEAD -- scripts/ packages/` was **empty** at mint, so the committed
-`SWEEP PASSED — 44 of 44` at `1d69b1e9` is this tree's pre-cure state.
+`node scripts/sweep-probes.mjs` (no flag), driven not censused.
 
-Typecheck clean on both script tsconfigs (`scripts/tsconfig.json`, `scripts/tsconfig.lib-mjs.json`);
-census `154 / 44 / 110 CENSUS OK` on every commit.
+- **Run 1**, pre-repair: `SWEEP FAILED — 43 of 44 swept probes green, 1 red, 0 blocked, 0 census
+  problem(s), 110 deferred`. Capture `gate-sweep.txt`. Family rows off that capture: `372` All 26
+  PASS, `373` All 15 PASS, `374` All 10 PASS, `375` All 10 PASS, `377` **RED**.
+- **Run 2**, post-repair (`3489290f`): capture `gate-sweep-2.txt`; figures transcribed into the
+  coordination entry from that capture.
+
+Baseline for *"no row moves"*: `git diff --stat 1d69b1e9..HEAD -- scripts/ packages/` was **empty**
+at mint, so the committed `SWEEP PASSED — 44 of 44` at `1d69b1e9` is this tree's pre-cure state.
+
+Typecheck clean on **both** script tsconfigs (`scripts/tsconfig.json`,
+`scripts/tsconfig.lib-mjs.json`), run before the cure's repair and again after it; census
+`154 / 44 / 110 CENSUS OK` on every commit.

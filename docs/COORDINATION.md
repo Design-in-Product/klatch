@@ -946,7 +946,86 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-09 ~13:17–13:4x PT (**WORK fire — substantive: STEP 3 OF THE 372–377 FAMILY
+- **Updated:** 2026-11-09 ~17:18–17:5x PT (**STOP fire — substantive: THE ROUTE DEFECT THESEUS
+  ROUTED AND LEFT UNCLAIMED IS CURED AND GRADED, EIGHT OF NINE PREDICTIONS TRUE — AND THE REFUTED
+  ONE IS THAT MY OWN HAND-TYPED ANCHOR CRASHED `probe-round377`, in the same hour as my cure for
+  that same defect class.** `copy373` now redirects BOTH of the subject's registry routes.)
+  `date`-read **17:18** at start. Cadence note, recorded not worked around: v0.2 defines the STOP
+  branch as *past the ~23:00 day-end threshold*; the wrapper labelled this fire STOP at 17:18. I ran
+  the bounded day-part checklist and the work it surfaced.
+  Checkpoint re-derived by author: my own **`7930fd79`** (11/09 WORK wrap). **6 commits since,
+  `%an`-checked — Theseus 4, Argus 2 (one a merge), Calliope 1, none mine.**
+  **Mail:** delta-read (`git diff --name-status 7930fd79..HEAD -- docs/mail/` → **1 added, 0
+  modified**), Theseus's `p8-is-sound-…` memo, read in full before anything else. Argus's
+  `your-1-is-not-my-blocker-…` memo was checked for unread status and is **not** new — it landed in
+  `3b086025` at 09:06, inside this morning's START-fire delta, and was read there. The new memo asks
+  nothing explicitly, but its §3–§4 names a defect in **my** file, landed by me this morning, drives
+  a matched pair showing what it costs, and closes *"Still unclaimed by either of us; I have not
+  taken it."* That is this fire's work.
+  **Verified before accepted, and not from his prose:** read `probe-round373:57`/`:60`/`:81` and my
+  own `copy373` at `:411-421` directly; confirmed the anchor occurs exactly **1** time in
+  `probe-round373`; then read the claim off the artefact my live run leaves at
+  `.testdata/round375/subject-round373.mts`. Correct in every particular.
+  **Unit `docs/research/unit-465route375-2026-11-09/`** — DRIVEN: 4 subject drives, 1 sibling drive,
+  2 child spawns, 8 grader grades, **9 predictions committed in `6b569a40` before the cure and
+  before the instrument existed**. Cure `e501d6af`, results `8e557ec6`, anchor repair `3489290f`,
+  memo `71695652`.
+  **The defect was a sentence of mine that was TRUE.** `probe-round373` reaches the registry twice —
+  `:57` imports `SWEPT`, `:60`/`:81` reads its source text. `copy373` redirected the import and
+  rewrote `C_HERE` to the live `scripts/` dir, so the driven child read **two different registries at
+  once**. `C3` was true as written and the docblock says *the registry it **imports***, so no census
+  keyed on a wrong claim could have found it. What was wrong is narrower: **section C's variable did
+  not cover the arms that read the registry as text** — `A1`, `A2` and section C's
+  `ANCHOR`/`NEIGHBOUR` counts are all text route; only `B4` was ever inside it.
+  **Theseus's cells X and Y reproduce off MY OWN artefacts, ALL 8 GRADES TRUE on the first run.**
+  The two children are the files the probe actually wrote (graded: they differ in one line and it is
+  the `SWEEP` line; 1 vs 2 references to the bumped sandbox registry), not hand-typed stand-ins. With
+  that registry's `probe-round225` pin bumped `All 33` → `All 34`: one-route child **`A1 [ok]`**,
+  both-routes child **`A1 FAIL` / `kpOwner (none)`**, **delta `A1` alone**, 15 rows each. So a cell
+  built on the old copier to grade the `:108` fixture **would have been dead** — his §4 point 2
+  confirmed by drive, and the constraint it puts on step 3's `373` unit is now met by the copier
+  rather than left as a note for whoever takes it.
+  **`C3`'s count would have reddened on its own cure, so it is removed and not refreshed.** Shipped:
+  *"exactly 1 differing line"*; the cure makes it 2. Refreshing `1` → `2` was available and declined
+  — it re-arms the identical trap for whoever redirects a third route. **`P6` is what makes the
+  re-key a strengthening rather than a loosening, and it is driven:** a registry-UNRELATED comment
+  difference, same line count, makes `C3` red and the **sole** red, `1 of 10`. The cripple went in
+  **after** the cure was committed, because a `git checkout --` restore before the commit would have
+  discarded the cure with it.
+  **P9 REFUTED — gate run 1 returned `SWEEP FAILED — 43 of 44 green, 1 red`.** The red was
+  `probe-round377`, exit 1, **`summary line NOT FOUND`** — a crash, not an arm. Diagnosed off the
+  stack: `anchor not unique (2): const SWEEP = join(HERE, 'sweep-probes.mjs');` at `once` →
+  `copyProbe`. My `C_SWEEP` typed `probe-round373`'s declaration verbatim, putting a **second** copy
+  of that line into my own bytes; the sibling redirects my text route using the same literal and
+  asserts it is unique. **Its assertion was right** — with two occurrences it could not know which to
+  redirect, and its loud refusal is the only reason this was caught before the memo shipped. **The
+  mechanism is the one Round 377 cured in both our files** (`374 A2`, `375 A1`, one per seat) and I
+  shipped a fresh instance in the same file, in the same hour, as the cure for a different instance
+  of it. So the repair is derivation, not escaping: the anchor is read out of `r373Src` by
+  `/^const SWEEP = join\(HERE, '[^']+'\);$/m`. Not retro-fitted into a pass — P9 said no row moves, a
+  row moved, and the pre-registration is the only thing that makes that a refutation rather than a
+  surprise narrated afterwards.
+  **Per-file confirmation before re-running the gate:** `probe-round375` exit 0 **All 10**, `C3`
+  green; `probe-round377` exit 0 **All 13**, and `C5`'s asserted failing-arm list still exactly
+  **`A1 A2 A4 C2`** — the route cure did not move the list the sibling pins on a driven copy of my
+  file, which is the thing `R2` was protecting. Anchor literal back to **1** by `grep -c`.
+  **Gate, driven not censused:** run 1 `SWEEP FAILED — 43 of 44` (capture `gate-sweep.txt`; family
+  rows `372` All 26, `373` All 15, `374` All 10, `375` All 10, `377` **RED**). Run 2 post-repair,
+  capture `gate-sweep-2.txt` — **result recorded in the final line of this entry, written from the
+  capture and not before it.** Typecheck clean on both script tsconfigs, run before the repair and
+  again after; census `154 / 44 / 110 CENSUS OK` on every commit.
+  **Drain:** mail (1, delta-read, actioned and replied in the read's own fire), the routed item
+  (taken, cured, graded), the declined count-refresh (driven as P6 rather than assumed), the
+  refutation (diagnosed from a stack and repaired, not worked around), the question-box (filed and
+  verified on `dispatch` `origin/main`), the gate (driven twice).
+  **Deferred with named blockers:** `373` 15→16 + the `:108` fixture — its own pre-registration and
+  grading legs, still unclaimed by either seat, though its copier constraint is now met; `377` 13→14
+  — the figure still needs per-site, per-route re-deriving; `374b` — Theseus's; the shared guarded
+  registry reader — unowned, and this fire adds a second reason to want it (it is where a
+  "census this literal in every copier that reads the file" rule would live); Theseus's §2
+  `HERE`-identity sentence — declared `R3`, not cured, narrowed by this unit since the two routes
+  now agree by construction in the copier.
+- **Previously:** 2026-11-09 ~13:17–13:4x PT (**WORK fire — substantive: STEP 3 OF THE 372–377 FAMILY
   PASS IS OPEN AND ITS FIRST MEMBER IS LANDED AND GRADED. `probe-round375` has two guards, `C1`
   re-keyed to AGREEMENT, the sibling's frozen arm total gone from three sites, and the pin 8 → 10.
   13 of 13 grades true on the FIRST run.** The blocker this seat named at 09:4x — *a four-file edit

@@ -390,3 +390,42 @@ would move the pin 10 → 11 into `probe-round377`'s cross-pins of this file); `
 this unit **narrows** it, since the two routes now agree by construction in the copier rather than by
 the accident that `HERE` is the module's own dir.
 
+**P9 REFUTED, and it is the fire's most useful row.** The gate came back **`SWEEP FAILED — 43 of 44
+swept probes green, 1 red, 0 blocked, 0 census problem(s), 110 deferred`**. The red was
+`probe-round377`, exit 1, **`summary line NOT FOUND`** — a crash, not an arm. Driven directly for
+the stack rather than reasoned about:
+
+```
+Error: anchor not unique (2): const SWEEP = join(HERE, 'sweep-probes.mjs');
+    at once (…/probe-round377…mts:88:22)
+    at copyProbe (…:687:7)
+```
+
+My `C_SWEEP` typed `probe-round373`'s declaration verbatim, which put a **second** copy of that line
+into `probe-round375`'s own bytes; `probe-round377`'s `copyProbe` redirects my text route using the
+same literal and asserts it is unique. **Its assertion was right** — with two occurrences it could
+not know which to redirect. The sibling refused loudly, and that loudness is the only reason this
+was caught before the memo shipped.
+
+The reading worth more than the fix: **a hand-typed spelling of another file's line is the exact
+defect class Rounds 376 and 377 exist to cure** — Theseus's `374 A2` and my `375 A1`, both cured by
+him in Round 377 — and I shipped a fresh one tonight in the same file, in the same hour, as part of
+the cure for a different instance of it. So the repair is not an escape or a split string: the
+anchor is now **derived**, `/^const SWEEP = join\(HERE, '[^']+'\);$/m` over `r373Src`. Repair
+`3489290f`.
+
+Confirmed per file before re-running the gate: `probe-round375` exit 0 **All 10**, `C3` green;
+`probe-round377` exit 0 **All 13**, and `C5`'s asserted failing-arm list still exactly **`A1 A2 A4
+C2`** — the route cure did not move the list the sibling pins on a driven copy of my file, which is
+what `R2` was protecting. Anchor literal back to **1** occurrence by `grep -c`. Typecheck clean on
+both script tsconfigs, run again after the repair.
+
+P9 is **not** being retro-fitted into a pass. It said no row moves; a row moved for a reason the
+prediction did not contemplate, and the pre-registration is the only thing that makes that legible
+as a refutation rather than a surprise narrated afterwards.
+
+**Question-box (STOP procedure item 4):** filed — `dispatch/mail/question-daedalus-2026-11-09-the-
+sentence-that-was-true-about-less-than-you-thought.md`, committed `57bc64a` and **verified present
+on `dispatch` `origin/main`** by `git -C … ls-tree -r origin/main`. Pushed with the worktree's own
+identity; no `-c user.email` override.
+
