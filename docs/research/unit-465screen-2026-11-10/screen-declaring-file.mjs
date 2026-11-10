@@ -275,6 +275,70 @@ for (const rev of REVS) {
   console.log(`            C_SWEEP in 375 @${csw.line ?? '-'}: ${cswKind}${csw.v === null ? '' : ` = ${JSON.stringify(csw.v)}`}` + (csw.v === null ? '' : `, occ(375, C_SWEEP) = ${occ(s375, csw.v)}`));
 }
 
+// ---- LEG 6 — POST-HOC, NOT PRE-REGISTERED -------------------------------------------------------
+// Found while classifying P5's occurrences: the three `× probe-round374` cells were labelled
+// `other-const-literal` because probe-round374 declares anchors of its own that the census does not
+// know are anchors. v1's copier key (inherited unchanged by v2) is a source scan for ONE MESSAGE
+// SPELLING — /throw new Error(`anchor not unique/ — so it is keyed on wording, not on mechanism.
+// This leg characterises that key against three others rather than asserting a replacement.
+console.log(`\n== LEG 6 (POST-HOC — not pre-registered). the copier population under five keys ==`);
+const allFiles = [...src.keys()];
+const THROW_ANCHOR = /throw new Error\(`[^`]*anchor (?:occurs|not unique)/;
+const KEYS = [
+  ['K1  v1/v2 as built: ONE message spelling, `anchor not unique`', (t) => /throw new Error\(`anchor not unique/.test(t)],
+  ['K2  the phrase `expected exactly 1` (phrase key — over-reports: matches non-anchor assertions)', (t) => /expected exactly 1/.test(t)],
+  ['K3  declares a helper literally named `once` (name key — misses a helper named otherwise)', (t) => /const once = \(/.test(t)],
+  ['K4  CALLS `once()` (consumer key — over-reports by construction)', (t) => /[^.\w]once\(/.test(t)],
+  ['K5  MECHANISM: a throw whose message names an `anchor` + a count, in ANY wording', (t) => THROW_ANCHOR.test(t)],
+];
+const byKey = new Map();
+for (const [name, pred] of KEYS) {
+  const hits = allFiles.filter((f) => pred(src.get(f)));
+  byKey.set(name, hits);
+  console.log(`  ${name}\n      ${hits.length} file(s): ${hits.map((f) => f.slice(0, 20)).join(', ')}`);
+}
+const k1 = new Set(byKey.get(KEYS[0][0]));
+const mechanism = byKey.get(KEYS[4][0]);
+const missed = mechanism.filter((f) => !k1.has(f));
+console.log(`  K5 \\ K1 — files that assert an anchor is unique but sit OUTSIDE the censused population: ${missed.length}`);
+for (const f of missed) console.log(`      ${f}`);
+
+/** The enclosing `function x(` / `const x = (` above a line — the substitution helper's own name. */
+const helperAbove = (lines, idx) => {
+  for (let i = idx; i >= 0; i--) {
+    const m = /^(?:function\s+([\w$]+)\s*\(|const\s+([\w$]+)\s*=\s*(?:async\s*)?\()/.exec(lines[i]);
+    if (m) return { name: m[1] || m[2], line: i + 1 };
+  }
+  return null;
+};
+for (const f of missed) {
+  const text = src.get(f);
+  const lines = text.split('\n');
+  const tIdx = lines.findIndex((l) => THROW_ANCHOR.test(l));
+  const helper = helperAbove(lines, tIdx);
+  console.log(`\n  -- ${f} --`);
+  console.log(`     throw :${tIdx + 1}  ${lines[tIdx].trim().slice(0, 104)}`);
+  if (!helper) { console.log(`     UNREAD — no enclosing function/const declaration above the throw, so no helper name to walk call sites of`); continue; }
+  console.log(`     helper derived from the source above the throw: \`${helper.name}\` declared :${helper.line}`);
+  const CALL = new RegExp(`[^.\\w]${helper.name}\\(\\s*[\\w$.]+\\s*,\\s*([\\w$]+)\\s*,`);
+  const ids = new Set();
+  lines.forEach((l, i) => {
+    const m = CALL.exec(l);
+    if (m && i + 1 !== helper.line) { ids.add(m[1]); console.log(`     ${helper.name}() site :${i + 1}  anchor id = ${m[1]}`); }
+  });
+  if (!ids.size) {
+    console.log(`     no single-line \`${helper.name}(<src>, <ID>, …)\` call site parsed — UNREAD, not cleared (this reader is single-line)`);
+    console.log(`     and the helper NAME above is itself derived and unverified here: the nearest enclosing declaration above a throw need not be the substitution helper.`);
+    continue;
+  }
+  for (const id of ids) {
+    const got = valueOfId(text, id);
+    if (got.v === null) { console.log(`     ${id.padEnd(22)} @${got.line ?? '-'}  UNREAD — not a plain string literal (derived, or declared off a top-level const)`); continue; }
+    const n = occ(text, got.v);
+    console.log(`     ${id.padEnd(22)} @${got.line}  occ(own file) = ${n}  ${n >= 2 ? 'FLAGGED by Screen S' : 'clear'}   ${JSON.stringify(got.v).slice(0, 60)}`);
+  }
+}
+
 console.log(`\n== HEADLINE ==`);
 console.log(`P1 differing lines: ${diffLines.length} (${diffLines.join(', ') || 'none'}) · v2 exit ${run.status}`);
 console.log(`calibration: ${cells.length} of ${cells.length} cells reproduced, 0 divergences`);
