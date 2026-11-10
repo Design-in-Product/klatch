@@ -1,0 +1,12 @@
+TRUE  S1  the kp anchor occurs exactly once in the sandbox registry (1), so the bump lands where it is declared and nowhere else
+TRUE  S2  and the bump is in the file both children import: 0 occurrence(s) of the old pin, 1 of the new
+TRUE  S3  the two children differ in exactly one line (at 60) and it is the SWEEP text-route line, so anything that moves below is attributable to the route and not to the copy
+TRUE  S4  and they import the same registry: 1 / 2 reference(s) to the bumped sandbox copy — the PRE child reaches it only through the module route, the CUR child through both
+[MEAS] cellX-pre-one-route  exit 1 · A1 [ok] · kpOwner probe-round225-a-citation-is-not-a-call.mts
+[MEAS] cellY-cur-both-routes  exit 1 · A1 FAIL · kpOwner (none)
+TRUE  P7a  CELL X (Theseus's), the one-route child: its A1 is [ok] on a registry whose kp line now reads All 34 — green because its walk reads the LIVE registry text, not the one it imports. A cell built on this copier to grade that fixture would be dead
+TRUE  P7b  CELL Y, the cured both-routes child: its A1 is FAIL on the same state — the walk now reads the registry the child is actually under, so the bumped pin is visible to it
+TRUE  P8  and the delta is A1 ALONE: rows differing between the two spawns = ["A1"] (X exit 1, 15 rows; Y exit 1, 15 rows)
+TRUE  S5  the sandbox registry is restored to the pre-bump bytes (1 occurrence(s) of the original pin), so this instrument leaves no state behind for the gate
+
+ALL 8 GRADES TRUE

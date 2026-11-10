@@ -403,15 +403,41 @@ const agrees = (pin: RegExp, own: string | null) => own !== null && pin.test(own
  * asserted unique first. Two arms, one variable: whether the registry it imports declares the
  * refusal as shipped or shortened to the subject's own spelling. The faithful arm is the control
  * that proves the copy is the same artefact as the file.
+ *
+ * **BOTH REGISTRY ROUTES, not one (Round 465, `unit-465route375`).** The subject reaches the
+ * registry twice — `:57` imports `SWEPT` from the MODULE, and `:60`/`:81`
+ * `readFileSync(join(HERE, 'sweep-probes.mjs'))` reads its SOURCE TEXT. As shipped this copier
+ * redirected the import and rewrote `C_HERE` to the live `scripts/` dir, so the driven child read
+ * **two different registries at once**: the sandbox copy through the module route and the shipped
+ * one through the text route. Read off the artefact rather than inferred — the live run's
+ * `.testdata/round375/subject-round373.mts` carried `import … from '…/.testdata/round375/
+ * sweep-mutant.mjs'` beside `const SWEEP = join(HERE, 'sweep-probes.mjs')` with `HERE` the real
+ * tree. Routed by Theseus, 11/09 §3–§4, from the convention `probe-round377`'s `copyProbe`
+ * (`:681-688`) already states: *"Redirecting only the import would leave the two halves
+ * disagreeing."*
+ *
+ * The cost was not a false sentence — `C3` was true as written and the section docblock says *the
+ * registry it imports* — it was that the subject's TEXT-route arms sat **outside this section's
+ * variable** and were pinned to the live tree in both cells. `A1` and `A2` (the nearest-preceding
+ * `file:` walk) and section C's `ANCHOR`/`NEIGHBOUR` counts are all text route; only `B4`, which
+ * reads `r225.refusal` off the imported entry, was ever inside it. Theseus drove what that buys:
+ * with the registry's `probe-round225` `expect:` pin bumped `All 33` → `All 34`, the child written
+ * by the one-route copier is GREEN at `A1` on a registry that no longer says 33 — a cell built on
+ * it to grade that fixture would have been dead.
  */
 const C_IMPORT_OUTCOME = "from './lib/probe-outcome.mts';";
 const C_IMPORT_SWEEP = "} from './sweep-probes.mjs';";
 const C_HERE = 'const HERE = dirname(fileURLToPath(import.meta.url));';
+const C_SWEEP = "const SWEEP = join(HERE, 'sweep-probes.mjs');";
 const C_SANDBOX = "const SANDBOX = join(HERE, '..', '.testdata', 'round373');";
 const copy373 = (sweepPath: string) => {
   let s = once(r373Src, C_IMPORT_OUTCOME, `from '${join(HERE, 'lib', 'probe-outcome.mts')}';`);
   s = once(s, C_IMPORT_SWEEP, `} from '${sweepPath}';`);
   s = once(s, C_HERE, `const HERE = ${JSON.stringify(HERE)};`);
+  // The text route, redirected to the SAME copy the import takes. `HERE` has to stay the real
+  // `scripts/` (the child resolves `lib/` and `probe-round225` through it), so this cannot be left
+  // to follow from the line above — it is its own asserted substitution.
+  s = once(s, C_SWEEP, `const SWEEP = ${JSON.stringify(sweepPath)};`);
   // Same DEPTH under `.testdata/` as the real one, not merely a different name: the child this file
   // mints imports the shared module through `../../scripts/lib/`, so a sandbox one level deeper
   // makes the child fail to load and the live half fail for a reason that has nothing to do with
@@ -459,16 +485,37 @@ check(
     'replaced would have reported 0 and passed here (A4m)',
   drifted.status === 1 && drifted.b4Fail && drifted.b4Count === 2,
 );
+/**
+ * **Re-keyed in Round 465, `unit-465route375`, and the re-key is the point rather than a
+ * consequence.** As shipped this arm asserted the two copies *"differ in one byte-range … exactly
+ * 1 line"*. That was true only while `copy373` redirected ONE of the registry's two routes; the
+ * cure above redirects both, which makes the difference two lines — so the frozen count would have
+ * reddened on its own cure, and refreshing `1` to `2` would only re-arm the same trap for the next
+ * route. The count is therefore removed rather than refreshed (Argus, `unit-465skipE`): the
+ * property C2 actually needs is that **every** differing line is one that names the registry path,
+ * and the number survives only as the predicate's non-emptiness.
+ *
+ * Non-vacuous, and driven rather than argued: a registry-UNRELATED difference injected between the
+ * two copies makes this arm red and the sole red (`unit-465route375` P6).
+ */
+const c3a = copy373(FAITHFUL_SWEEP).split('\n');
+const c3b = copy373(MUTANT_SWEEP).split('\n');
+const c3Diff = c3a.map((l, i) => (l === c3b[i] ? -1 : i)).filter((i) => i >= 0);
+/** Both copies' own sweep path blanked to one token, so a differing line can be compared. */
+const pathBlanked = (line: string, p: string) => line.split(p).join('<SWEEP-PATH>');
 check(
   'C3',
-  'the two arms differ in one byte-range: the subject copy is written from the same four ' +
-    'replacements both times and only the import path differs, so C2 is attributable to the ' +
-    'registry and not to the copy',
-  (() => {
-    const a = copy373(FAITHFUL_SWEEP).split('\n');
-    const b = copy373(MUTANT_SWEEP).split('\n');
-    return a.length === b.length && a.filter((l, i) => l !== b[i]).length === 1;
-  })(),
+  `the two arms differ ONLY where the registry path is named: same line count, ` +
+    `${c3Diff.length} differing line(s) at ${c3Diff.join(', ')}, and each of them is ` +
+    `byte-identical once each copy's own sweep path is blanked — so C2 is attributable to the ` +
+    `registry and not to the copy. Keyed on that property and not on a count (Round 465, ` +
+    `\`unit-465route375\`): the shipped spelling asserted exactly 1 differing line, which held ` +
+    `only while this copier redirected one of the subject's two registry routes`,
+  c3a.length === c3b.length &&
+    c3Diff.length > 0 &&
+    c3Diff.every(
+      (i) => pathBlanked(c3a[i], FAITHFUL_SWEEP) === pathBlanked(c3b[i], MUTANT_SWEEP),
+    ),
 );
 
 console.log('');
