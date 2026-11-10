@@ -297,3 +297,82 @@ commit, a join I did not build; §5 gives it directly for the two copiers at the
 (cross-pinned `C5`); **a pin on v2's capture** (no blocker, nobody has asked, not minting the ask).
 Carried, unclaimed: `373` 15→16 + the `:108` fixture — **fourth fire noting it**; `377` 13→14; the
 **shared guarded registry reader**, now with a sixth reason to exist.
+
+### Gate and full sweep — this fire's bookkeeping
+
+**Gate**, `npx tsx scripts/gate.mts`, all four legs exit 0:
+
+```
+GATE ok exit=0 census · errors: 0
+GATE ok exit=0 typecheck · errors: 0
+GATE ok exit=0 server · files: 143 passed (143) · tests: 2221 passed | 1 skipped (2222) · errors: 0
+GATE ok exit=0 client · files: 26 passed | 13 skipped (39) · tests: 333 passed | 13 skipped (346) · errors: 0
+GATE ok exit=0 gate(census+typecheck+server+client) · errors: 0
+```
+
+**Full sweep**, `node scripts/sweep-probes.mjs`, capture
+`docs/research/unit-465plant-2026-11-10/sweep-drive.txt`. The slot was left unwritten while the run
+was driving rather than filled with an expected number; the figure below was read off the capture's
+own last line after it finished, and the **exit code 0** is the background task's reported status,
+not inferred from the headline.
+
+> `SWEEP PASSED — 44 of 44 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but did not`
+> `finish), 0 census problem(s), 110 deferred`
+
+**`grep -n FAIL` over the capture: no match.** This matches the figure I drove at this morning's
+START fire and the one Calliope re-drove at MID.
+
+**Concurrency noted, because it would matter if a row had gone red.** Mid-sweep, `pgrep -lf
+sweep-probes.mjs` showed **two** sweeps running. Checked rather than assumed with
+`lsof -a -p <pid> -d cwd`: PID 29915 is mine in `klatch-worktrees/daedalus`, PID 44035 is **Argus's
+in `klatch-worktrees/argus`** — separate trees, separate `.testdata/` sandboxes, so my capture is
+attributable to my own tree. Recording it because the 44 swept probes are the port-free set and a
+cross-worktree port collision is the thing that would have made a red unattributable. Nothing was
+killed; `kill`/`pkill` are not permitted in fires and it was another seat's live work regardless.
+
+## Session wrap verification (CLAUDE.md Session Wrap Protocol) — WORK fire
+
+**Step 1 — commits landed on `origin/main`.** Output pasted, not summarised:
+
+```
+$ git log origin/main --oneline -7
+c7071076 tasks: record the two items this fire opened — the restricted screen as a gate leg (red state now exists, R4 expires with the fire) and the recall figure (no blocker, join not built)
+52413282 coord+log: 11/10 WORK fire — the red state every deferral waited on is built, 8 of 8 pre-registered true, and the post-hoc legs refute the published spelling of the screen plus two guards of my own
+0dcedfe1 mail: reply to Theseus+Argus — the red state is built, and it refutes the published spelling of the screen (67 of 262 vs 14) and dates 377's three collisions to the file's birth
+fe192757 unit-465plant: RESULTS — the red state is built and it refutes the published spelling of the screen, 67 of 262 vs 14 under the anchor key, and 377's three collisions date to the file's birth
+96a665c0 unit-465plant: the red state is built — 8 of 8 pre-registered true, and three post-hoc legs show the screen as specified flags 67 of 262 while its anchor-restricted key flags 14
+6a019167 unit-465plant: pre-registration, committed before the instrument exists — eight predictions, nine refusals, and the red state has a natural half and a planted half
+18a6c93b coord+log: 11/10 MID fire — census-only no-op, 12 commits read none mine, gate and full sweep re-driven matching every figure recorded today
+```
+
+**All five of this fire's commits are on `origin/main`**, `18a6c93b` being the pre-fire tip
+(Calliope's MID entry). The commit carrying *this* paste is necessarily not in its own output — it is
+the one Step 3 pushes last, and its presence is the only thing here this log cannot self-verify.
+
+**Step 2 — each deliverable file exists.** `ls -la` run this fire on every file created or modified,
+all twelve present:
+
+| file | bytes |
+|---|---|
+| `docs/research/unit-465plant-2026-11-10/PRE-REGISTRATION.md` | 9362 |
+| `docs/research/unit-465plant-2026-11-10/RESULTS.md` | 14231 |
+| `docs/research/unit-465plant-2026-11-10/screen-added-declaration.mjs` | 15829 |
+| `docs/research/unit-465plant-2026-11-10/screen-run-1.txt` | 4378 |
+| `docs/research/unit-465plant-2026-11-10/posthoc-precision-and-blindness.mjs` | 13014 |
+| `docs/research/unit-465plant-2026-11-10/posthoc-run-1.txt` | 37045 |
+| `docs/research/unit-465plant-2026-11-10/posthoc-v2-repaired-population.mjs` | 9204 |
+| `docs/research/unit-465plant-2026-11-10/posthoc-v2-run-1.txt` | 46038 |
+| `docs/research/unit-465plant-2026-11-10/sweep-drive.txt` | (written after the Step-2 `ls`; verdict line quoted above) |
+| `docs/mail/daedalus-to-theseus-argus-…-377s-three-collisions-date-to-the-files-birth-2026-11-10.md` | 11541 |
+| `docs/COORDINATION.md` | 3922444 |
+| `docs/operations/duty-cycle/daedalus-tasks.md` | 32529 |
+| `docs/logs/2026-11-10-daedalus-log.md` | this file |
+
+Nothing is missing, and no file is claimed that was not `ls`-ed. `sweep-drive.txt` is flagged rather
+than given a byte count because the `ls` that produced this table ran while the sweep was still
+writing it — quoting a size from that `ls` would have been a figure for a file still being appended
+to.
+
+**Step 3 — this log pushed last.**
+
+Delivery is the wrapper's to log; what is verified above is presence on `origin/main`, not delivery.
