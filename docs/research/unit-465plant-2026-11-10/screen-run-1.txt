@@ -1,0 +1,66 @@
+unit-465plant — the pre-commit screen, graded on a natural red state and a planted one
+repo: /Users/xian/Development/klatch-worktrees/daedalus
+  rev 6b569a40: 6b569a40 Daedalus (Klatch) 2026-11-09 17:21:37 -0800 unit-465route375: pre-registration, committed before the cure and the instrument exist — nine pre
+  rev e501d6af: e501d6af Daedalus (Klatch) 2026-11-09 17:25:09 -0800 unit-465route375: copy373 now redirects BOTH registry routes, and C3 is re-keyed off the count th
+  rev 3489290f: 3489290f Daedalus (Klatch) 2026-11-09 17:32:21 -0800 unit-465route375: P9 REFUTED — my hand-typed anchor crashed probe-round377, and the repair is to 
+
+== LEG 1 (P1,P2,P3) KP-REAL — the real crash delta ==  scripts/probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts
+  literal declarations: base 8 · candidate 9
+  ADDED: 1   FLAGGED (occ >= 2): 1
+    FLAG C_SWEEP @431  occ=2  [(no literal declaration at base)]
+         value: "const SWEEP = join(HERE, 'sweep-probes.mjs');"
+
+== LEG 2 (P4) CTRL-REAL — the cure I actually landed ==  scripts/probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts
+  literal declarations: base 9 · candidate 8
+  ADDED: 0   FLAGGED (occ >= 2): 0
+
+== LEG 3 (P5) CTRL-NOOP — HEAD against itself, 375 ==  scripts/probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts
+  literal declarations: base 8 · candidate 8
+  ADDED: 0   FLAGGED (occ >= 2): 0
+
+== LEG 3 (P5) CTRL-NOOP — HEAD against itself, 377 ==  scripts/probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts
+  literal declarations: base 14 · candidate 14
+  ADDED: 0   FLAGGED (occ >= 2): 0
+
+== LEG 4 (P6) — the planted red state, and its matched negative ==
+  plant source line, COPIED from scripts/probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts:69 (occ in the clean file: 1)
+    const REPO = join(HERE, '..');
+
+== LEG 4 (P6) KP-PLANT — a declaration whose value the file already carries ==  scripts/probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts +plant
+  literal declarations: base 8 · candidate 9
+  ADDED: 1   FLAGGED (occ >= 2): 1
+    FLAG PLANT_DUP @539  occ=2  [(no literal declaration at base)]
+         value: "const REPO = join(HERE, '..');"
+
+  nonce built at run time; occ in the clean file (must be 0): 0
+
+== LEG 4 (P6) CTRL-PLANT — same plant shape, one property apart ==  scripts/probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts +nonce
+  literal declarations: base 8 · candidate 9
+  ADDED: 1   FLAGGED (occ >= 2): 0
+         PLANT_DUP @539  occ=1  [(no literal declaration at base)]
+         value: "unit-465plant nonce 05f1126faef49b87"
+
+== LEG 5 (P7) — is a single-tree absolute reading constant across the crash delta? ==
+  A_SWEEP_READ declared 6b569a40 :635 · e501d6af :635
+  value identical across the two revs: true
+  occ(probe-round377, value)  —  6b569a40: 2   e501d6af: 2   <- what S reads
+  occ(probe-round375, value)  —  6b569a40: 1   e501d6af: 2   <- the cell that threw
+  S's reading is CONSTANT across the crash delta.
+
+== LEG 6 (P8) — the screen over EVERY scripts/ file touched by the KP-REAL commit ==
+  files touched under scripts/ in 6b569a40..e501d6af: 1
+    scripts/probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts
+      literal decls 9 · ADDED 1 · FLAGGED 1 → C_SWEEP(occ=2)
+
+================ GRADES ================
+  TRUE     P1 — KP-REAL adds >=1 literal decl in probe-round375 and C_SWEEP is among them
+  TRUE     P2 — the screen FLAGS it: occ(375@e501d6af, value(C_SWEEP)) >= 2
+  TRUE     P3 — exactly one flag, and it is (C_SWEEP, probe-round375)
+  TRUE     P4 — CTRL-REAL yields zero flags — the red clears on the cure
+  TRUE     P5 — CTRL-NOOP: 0 ADDED and 0 flags on both copiers
+  TRUE     P6 — KP-PLANT flags and CTRL-PLANT does not, same plant shape
+  TRUE     P7 — occ(377, value(A_SWEEP_READ)) is equal at 6b569a40 and e501d6af
+  TRUE     P8 — exactly one flag across every scripts/ file the KP commit touched, and no refused leg
+
+SCREEN GRADED — 8 of 8 predictions true
+RED STATE — natural KP: 1 flag(s) · planted KP: fires, matched negative silent

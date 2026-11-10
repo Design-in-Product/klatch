@@ -1,0 +1,386 @@
+unit-465plant — POST-HOC v2: the repaired population, and the restricted keys
+population: 403 non-merge commits touching scripts/ (whole history of scripts/, a rev range)
+fatal: path 'scripts/probe-backfill-sidecar-neutrality.mts' exists on disk, but not in '4d04227bf46b96c3fa5df59ff218ec6b02d82456'
+fatal: path 'scripts/tsconfig.lib-mjs.json' exists on disk, but not in '24c2d9d42f29de095e8393b61394fc3ef60cff2b'
+fatal: path 'scripts/probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts' exists on disk, but not in '5955169bfc9ce2062999490762eba19ed631365b'
+fatal: path 'scripts/probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts' exists on disk, but not in '4a739e3a23087eb95e55c1c485389093b402ce5d'
+fatal: path 'scripts/probe-round374-an-absence-check-with-no-control-and-the-subject-reaches-the-state-itself.mts' does not exist in '8124b3d36c372081e87526edefa3a4c896c5241e'
+fatal: path 'scripts/probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts' exists on disk, but not in '7984871a5644a4ff8cc7487cdbbaf669d7f78125'
+fatal: path 'scripts/probe-round374b-the-subject-reaches-the-state-itself-on-a-held-port.mts' exists on disk, but not in '7984871a5644a4ff8cc7487cdbbaf669d7f78125'
+fatal: path 'scripts/probe-round374-an-absence-check-with-no-control-and-the-subject-reaches-the-state-itself.mts' does not exist in '7597831bbef8fa89b000ce67176389a36923d67d'
+fatal: path 'scripts/probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts' exists on disk, but not in '35c4b4924c5e63795afed9ab5ab1650cfd42a89b'
+fatal: path 'scripts/probe-round372-the-rows-are-keyed-on-the-limb-and-the-contradiction-is-latent.mts' exists on disk, but not in '52aa2a8efda0fbacc3113414481c35f393451b39'
+fatal: path 'scripts/lib/characterisation-markers.d.mts' exists on disk, but not in '86f5b1a91fcc436dd57304c35e0242f50d554aed'
+fatal: path 'scripts/lib/characterisation-markers.mjs' exists on disk, but not in '86f5b1a91fcc436dd57304c35e0242f50d554aed'
+fatal: path 'scripts/probe-round371-the-characterisation-item-is-a-registry-not-a-sweep.mts' exists on disk, but not in '86f5b1a91fcc436dd57304c35e0242f50d554aed'
+fatal: path 'scripts/probe-round369-the-verdict-line-carries-the-blocked-kind.mts' exists on disk, but not in '7df8203b05689bcb528e8a5ccf4bab91d015941e'
+fatal: path 'scripts/lib/skipped-shape-census.mts' exists on disk, but not in '3915fc2e453fe05ff342c7db7ed55f4bc940ac45'
+fatal: path 'scripts/lib/round361-pin-grade.mts' exists on disk, but not in '91977d40032885bd95200ae3e754682fe6cbbab2'
+fatal: path 'scripts/probe-round329-the-cure-deletes-the-edge-its-own-pricing-arms-index-into-so-the-one-shot-mechanism-is-a-vanished-subject-and-not-a-double-anchor.mts' exists on disk, but not in 'c5f3810adbaf8c24cb328702f4aa84da59454a8b'
+fatal: path 'scripts/probe-round328-the-distinct-target-line-figure-is-keyed-on-the-pin-text-so-one-line-pinned-in-two-spellings-reads-as-two.mts' exists on disk, but not in '2e9b4cb9d4c65862c0129de96f8c05deb6250c32'
+fatal: path 'scripts/probe-round327-the-pin-purpose-label-is-a-property-of-the-edge-and-retirability-is-a-property-of-the-target-line.mts' exists on disk, but not in '9b95d0eae3efbda7b53c350a6a8df03d583f9cf2'
+fatal: path 'scripts/probe-round325-the-fourth-exit-shape-returns-zero-and-restaging-an-inflated-pin-promotes-measurements-to-hard-checks.mts' exists on disk, but not in '492d811caaa1ac47007ef908f76ca67fc182966e'
+fatal: path 'scripts/probe-round324-the-skips-figure-has-four-states-and-the-two-no-arm-claims-are-where-a-lowercase-channel-lands.mts' exists on disk, but not in 'c12401a1bca225446247f6ff01e41b0704a2a35d'
+fatal: path 'scripts/probe-round323-the-cheap-cure-for-a-frozen-figure-empties-the-tripwire-and-leaves-the-exit-code-lying.mts' exists on disk, but not in '1ccdc0c067a0c61e114543f1298a536d96e2c090'
+fatal: path 'scripts/probe-round322-the-deferred-magnitude-audit-is-clean-and-eight-censused-probes-freeze-the-one-figure-they-cannot-report.mts' exists on disk, but not in '3d98d550de0d54e846f3e3168fce7a6b3d103fc2'
+fatal: path 'scripts/probe-round311-the-nearer-of-argus-two-candidates-is-the-one-that-drops-a-failure-and-a-kind-field-is-what-breaks-it.mts' exists on disk, but not in '694f71a544219ff5d26a6144caf52c9b41f39b48'
+fatal: path 'scripts/probe-round310-the-eighteen-file-backlog-is-three-harness-shapes-and-two-are-near-mechanical.mts' exists on disk, but not in 'e8e2c4f40ab1d2e7f656deac3146622518f49b42'
+fatal: path 'scripts/probe-round309-the-drop-one-reach-census-over-reported-three-where-the-population-is-one-because-a-predicate-does-not-carry-its-corpus.mts' exists on disk, but not in '30f86863e21d14b7fe508dfc6e7e40973d6b75e5'
+fatal: path 'scripts/probe-round308-the-general-arm-pointer-detector-reports-thirteen-findings-all-thirteen-false-and-the-narrow-one-is-green-on-package-json.mts' exists on disk, but not in '662ae58137a0f96cedefea5676f1f8d29e22f822'
+fatal: path 'scripts/probe-round307-the-return-half-is-gradeable-the-parameter-half-is-any-and-the-arity-check-covers-fourteen-of-eighteen.mts' exists on disk, but not in '8e775fdb9366c03a0b7b32e0f95bb3f094b91764'
+fatal: path 'scripts/probe-round305-a-refusal-the-reader-could-not-check-can-now-print-its-own-site.mts' exists on disk, but not in 'aa5aa5c8dca015cc239f74913ae2eec814b6cceb'
+fatal: path 'scripts/package.json' exists on disk, but not in '245d20f9061bb0bcc6d39f1936b93d16e3f6ece7'
+fatal: path 'scripts/probe-round304-the-deferral-was-repaired-with-a-declaration-and-both-repair-shapes-redden-the-arm-that-pinned-it.mts' exists on disk, but not in '245d20f9061bb0bcc6d39f1936b93d16e3f6ece7'
+fatal: path 'scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts' exists on disk, but not in '57b81ae045bc27be7cdda61e959c85aa04906849'
+fatal: path 'scripts/probe-round301-the-limbs-partition-by-construction-and-the-price-landed-in-the-instrument-that-priced-it.mts' exists on disk, but not in '061445a1fc3a89d2b4eefc8614f967253ec107b9'
+fatal: path 'scripts/probe-round300-the-screen-has-a-third-state-and-the-site-my-own-arm-named-is-in-it.mts' exists on disk, but not in '2a3942c2f1948b2f9d5b9c4f5059812259f6ea01'
+fatal: path 'scripts/probe-round299-admission-is-per-file-and-the-repair-that-missed-its-own-motivating-case.mts' exists on disk, but not in '7c98fd7bdd96e0fe7f761371ad0f0b556d15c3c4'
+fatal: path 'scripts/probe-round298-a-stale-pin-and-a-genuine-break-used-to-read-identically.mts' exists on disk, but not in '708a70ca8c5de6bfc843abd520fd4638caee9b12'
+fatal: path 'scripts/probe-round297-the-hazard-filter-reads-a-file-and-the-sweep-drives-a-closure.mts' exists on disk, but not in '101adfbb7950dbf80c9b173162b5222771760c8c'
+fatal: path 'scripts/probe-round296-the-net-split-is-priced-at-zero-and-literal-only-cannot-tell-a-corpus-from-an-argv.mts' exists on disk, but not in 'd263f38e944ea8fd51b3897ea89d540156b5843d'
+fatal: path 'scripts/probe-round295-the-promotion-path-reaches-one-of-the-twenty-nine-and-the-refusals-are-its-own-fixtures.mts' exists on disk, but not in 'e89b6964f7c5ac5904670cb58f99964eec53d87d'
+fatal: path 'scripts/probe-round293-the-g4-fix-driven-live-and-the-window-before-its-fetch-returns.mts' exists on disk, but not in '8b7872abc654716db4d638b3b70be51db97c4f3b'
+fatal: path 'scripts/hooks/pre-commit' exists on disk, but not in '1bf9dc18efb8d06cd9c514d6aa880cc9de855e76'
+fatal: path 'scripts/probe-round292-the-reassign-picker-driven-live-in-a-real-browser.mts' exists on disk, but not in '777ab7b3e04d8e05a2e9d786236e814bae2c6182'
+fatal: path 'scripts/probe-round291-the-sentinel-did-not-grade-the-backups-that-are-the-recovery-path.mts' exists on disk, but not in 'f2a2df34676505062d8c947b269170decc035c38'
+fatal: path 'scripts/probe-round290-orphaned-sidecars-are-not-a-live-holder-and-w1-pinned-the-wrong-thing.mts' exists on disk, but not in 'efffd65584df77da1cf955bc1d383c297a6028fa'
+fatal: path 'scripts/probe-round289-the-deferred-breakdown-is-derived-and-the-sidecar-signature-is-not-evidence-of-no-write.mts' exists on disk, but not in 'dec656fc872e254257f623fb174117c81fe5e83a'
+fatal: path 'scripts/probe-round288-predicate-8s-red-branch-had-never-been-observed-to-fire.mts' exists on disk, but not in '49a378fc08de8e36fd37b4e782bc701b4bbb1f11'
+fatal: path 'scripts/lib/db-sentinel.mts' exists on disk, but not in '108fef449492d1cc10751e89126148a0a21196a1'
+fatal: path 'scripts/probe-round287-the-sandbox-cannot-see-the-one-file-git-cannot-restore.mts' exists on disk, but not in '108fef449492d1cc10751e89126148a0a21196a1'
+fatal: path 'scripts/probe-round285-the-promotion-path-and-the-two-detectors-that-were-returning-a-smaller-number.mts' exists on disk, but not in 'ca30c33d686c218c0829f95aca087a06119dd302'
+fatal: path 'scripts/promote-probes.mts' exists on disk, but not in '7d0c262102a45ab494a8767085cf3878008b128d'
+fatal: path 'scripts/probe-round284-the-census-has-a-reader-and-it-is-the-channel-three-seats-have-never-run.mts' exists on disk, but not in 'fd8bdab24d7caff3126d9a550f2a4513f6c8e692'
+fatal: path 'scripts/probe-round283-the-classification-theseus-asked-for-exists-and-it-has-been-red-since-yesterday.mts' exists on disk, but not in '839eb9ea5331ea0caac1026bf28cab0a434a19cc'
+fatal: path 'scripts/probe-round282-which-socket-actually-strands-the-raw-net-server-cell.mts' exists on disk, but not in 'c0e9d7ccf2a66eaf118958d35fb655f10f6238f1'
+fatal: path 'scripts/probe-round281-a-probe-that-only-runs-where-it-was-written-and-how-big-that-class-actually-is.mts' exists on disk, but not in 'f8471f09d25bf388a5ff274ae7f68a96e2afc0b0'
+fatal: path 'scripts/probe-round280-the-client-half-of-the-pair-and-what-it-leaves-behind.mts' exists on disk, but not in '7389bfc47db76774d4aad5f25f7db48ac58559fe'
+fatal: path 'scripts/lib/strip-source.d.mts' exists on disk, but not in 'a5e8874c1455ce87312bc647027c66b93c71150f'
+fatal: path 'scripts/lib/tsx-required.d.mts' exists on disk, but not in 'a5e8874c1455ce87312bc647027c66b93c71150f'
+fatal: path 'scripts/sweep-probes.d.mts' exists on disk, but not in 'a5e8874c1455ce87312bc647027c66b93c71150f'
+fatal: path 'scripts/tsconfig.json' exists on disk, but not in 'a5e8874c1455ce87312bc647027c66b93c71150f'
+fatal: path 'scripts/probe-round276-the-address-census-and-the-sentinel-that-hid-its-own-file.mts' exists on disk, but not in 'bb5fa8603b4622d0335f2dcbe5202cf52c192b26'
+fatal: path 'scripts/gate.mts' exists on disk, but not in '5c1615bb5182cc9953a5720ec8e431dbecbdf814'
+fatal: path 'scripts/lib/gate-line.mts' exists on disk, but not in '5c1615bb5182cc9953a5720ec8e431dbecbdf814'
+fatal: path 'scripts/probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts' exists on disk, but not in '95e0ffe5d91f463ec11983ce24f78c40996ecfea'
+fatal: path 'scripts/probe-round265-the-census-already-follows-imports-on-the-other-axis.mts' exists on disk, but not in 'e35dffb924f93b9711ca5f6d96972f196b3d7c12'
+fatal: path 'scripts/probe-round264-a-census-of-one-spelling-and-the-extraction-that-moved-the-rest-out-of-reach.mts' exists on disk, but not in '4390a6dc19322e12851d1f9322b6bc3b09a6cd50'
+fatal: path 'scripts/lib/tree-fingerprint.mts' exists on disk, but not in '596dd9a2a2f5c0dfa8fa0a80ca282e8bed6167de'
+fatal: path 'scripts/probe-round263-an-emptiness-claim-over-a-shared-window-is-not-strict-it-is-blind.mts' exists on disk, but not in '596dd9a2a2f5c0dfa8fa0a80ca282e8bed6167de'
+fatal: path 'scripts/probe-round262-the-population-is-a-tree-not-a-filename-convention.mts' exists on disk, but not in 'c74c1a69d1867359f19414e5f5ddabc00c8fc616'
+fatal: path 'scripts/probe-round261-a-pin-whose-red-is-cleared-by-doing-something-is-a-gate.mts' exists on disk, but not in '573f12cd68d03d63bff4d7e184aa7756c1c05a96'
+fatal: path 'scripts/sweep-probes.mjs' exists on disk, but not in '573f12cd68d03d63bff4d7e184aa7756c1c05a96'
+fatal: path 'scripts/probe-round260-a-census-pin-has-two-axes-and-the-round-number-in-a-filename-is-not-one-of-them.mts' exists on disk, but not in '79dc994426e70b6a787e89bd5edb08901e602504'
+fatal: path 'scripts/lib/strip-source.mjs' exists on disk, but not in 'afbce969275c2d71307a76cf08347476647c2097'
+fatal: path 'scripts/probe-round259-the-extraction-moved-nothing-and-closed-the-hole-in-the-file-it-moved-into.mts' exists on disk, but not in 'afbce969275c2d71307a76cf08347476647c2097'
+fatal: path 'scripts/probe-round258-three-readers-are-two-questions-and-the-shared-one-is-already-in-lib.mts' exists on disk, but not in '7b7437a701e6513279c489496df3508f5f4b3a59'
+fatal: path 'scripts/probe-round257-the-scanner-had-no-model-of-interpolation.mts' exists on disk, but not in '70ca2054a8a9e20847e6b0b036eb83b19d316318'
+fatal: path 'scripts/probe-round256-an-emptiness-assertion-grades-the-operator-and-a-sole-blocker-ranking-cannot-see-a-coupled-class.mts' exists on disk, but not in '1c7dce52a55556f27765acce8d16d533b656ff1f'
+fatal: path 'scripts/probe-round255-the-comment-shadow-census.mts' exists on disk, but not in '4bc002d5389a9ef331d145574ec2d62e65fff3b9'
+fatal: path 'scripts/probe-round255-the-comment-shadow-mutations.mjs' exists on disk, but not in '4bc002d5389a9ef331d145574ec2d62e65fff3b9'
+fatal: path 'scripts/probe-round254-the-mutate-class-is-an-unanchored-conjunction-and-most-of-it-never-writes-the-product.mts' exists on disk, but not in 'b4385ff810e4359a38698f77ee776de8b492145a'
+fatal: path 'scripts/probe-round253-the-db-path-mutations.mjs' exists on disk, but not in '5e3b9bd26f5aacdfa23149f2483c2ba3137a3ad0'
+fatal: path 'scripts/probe-round253-the-env-file-cannot-reach-the-database-path.mts' exists on disk, but not in '5e3b9bd26f5aacdfa23149f2483c2ba3137a3ad0'
+fatal: path 'scripts/probe-round252-the-db-class-is-unblocked-by-a-variable-the-product-already-reads.mts' exists on disk, but not in '13bcdb4af0083d44630ae684677b9593e2edf605'
+fatal: path 'scripts/probe-round251-the-port-lever-mutations.mjs' exists on disk, but not in '4fa5c0216936a155a0fe86aba633e84478bbc2ab'
+fatal: path 'scripts/probe-round250-the-drive-was-never-priced-and-the-port-is-one-line-of-product.mts' exists on disk, but not in '1799772d4c3d08a00427b37a3ed70e74b6b65692'
+fatal: path 'scripts/probe-round248-the-dot-guard-is-half-the-repair-and-a-copy-re-admits-the-original.mts' exists on disk, but not in '4a86ad6e244fbc0760e84bf3227cfe438ec61b48'
+fatal: path 'scripts/probe-round247-a-mutant-in-the-tree-is-in-the-population.mts' exists on disk, but not in 'c5e5505b0be4262e02b864199a57df38947988ff'
+fatal: path 'scripts/probe-round246-the-sweep-repaired-and-the-emit-spelling-was-the-bigger-blind-spot.mts' exists on disk, but not in 'edd84e079899ca9bdec4db1dfccddead4996c763'
+fatal: path 'scripts/probe-round245-the-shared-lib-coverage-floor.mts' exists on disk, but not in '38e7e1fcbdf9226f7d55a0cf8a927118d21799c7'
+fatal: path 'scripts/probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts' exists on disk, but not in 'fd3259fc79facbdc895bcdfed414c91fbb56cef4'
+fatal: path 'scripts/lib/mint-transcript.mts' exists on disk, but not in '2fd64b64bd3d633c7407b7d26a56e7cc53e16b06'
+fatal: path 'scripts/probe-round242-the-band-selects-bytes-and-arm-a-is-one-row.mts' exists on disk, but not in 'da07f1856c90cd3069f4f4228d51a099b38fb8b6'
+fatal: path 'scripts/lib/probe-corpus-sessions.mts' exists on disk, but not in '424112b1a54b9501e8da896385a054c52a9d1eb2'
+fatal: path 'scripts/probe-round241-a-corpus-cast-is-resolved-not-pinned.mts' exists on disk, but not in '424112b1a54b9501e8da896385a054c52a9d1eb2'
+fatal: path 'scripts/probe-round240-a-probe-pinned-to-a-moved-subject-is-failing-silently.mts' exists on disk, but not in '75f9363c95fd5c327d023bf1fffe6377fc1b635d'
+fatal: path 'scripts/probe-round233-arm-m-and-the-endpoint-can-walk-different-corpora.mts' exists on disk, but not in '6fc914255a8da43d0f28af24bed9fc19548d5b44'
+fatal: path 'scripts/probe-round232-the-remainder-verdict-can-go-red.mts' exists on disk, but not in 'e114df9ee75142ef0e8bde5c490d1bdf726d9dec'
+fatal: path 'scripts/probe-round231-the-handler-and-the-signal-are-in-different-processes.mts' exists on disk, but not in 'fc3bc5aa9e8c9e84e0ecc21667cf1811c9749fb8'
+fatal: path 'scripts/probe-round230-a-killed-probe-must-not-leave-its-server.mts' exists on disk, but not in 'e1615881add5c785ce368b6c42ccd8654cdfd154'
+fatal: path 'scripts/probe-round227-arm-o-on-a-corpus-where-the-cap-fires.mts' exists on disk, but not in '5ac9dc0422e0b6cd772266fc991fae7bf15c4d5d'
+fatal: path 'scripts/probe-round225-a-citation-is-not-a-call.mts' exists on disk, but not in '703f8495e3ef249a93717b6693003c2f06c32649'
+fatal: path 'scripts/lib/probe-outcome.mts' exists on disk, but not in '16f0b095a193eb0a90f8020392dc84d65b0120a1'
+fatal: path 'scripts/lib/probe-source-constants.mts' exists on disk, but not in '16f0b095a193eb0a90f8020392dc84d65b0120a1'
+fatal: path 'scripts/probe-round224-a-skip-must-not-summarise-as-a-pass.mts' exists on disk, but not in '16f0b095a193eb0a90f8020392dc84d65b0120a1'
+fatal: path 'scripts/probe-round224b-the-migrated-probes-against-a-stranger.mts' exists on disk, but not in '16f0b095a193eb0a90f8020392dc84d65b0120a1'
+fatal: path 'scripts/probe-round223-twenty-one-probes-against-a-stranger.mts' exists on disk, but not in 'fdc29bfaddfd0011f799fa26761e82776cc106cc'
+fatal: path 'scripts/probe-round223b-db-existence-is-not-identity.mts' exists on disk, but not in 'fdc29bfaddfd0011f799fa26761e82776cc106cc'
+fatal: path 'scripts/lib/probe-server-ownership.mts' exists on disk, but not in '4816aeae3185b6b38682b27fbad3223bae80e82c'
+fatal: path 'scripts/probe-round222-port-ownership-hoist.mts' exists on disk, but not in '4816aeae3185b6b38682b27fbad3223bae80e82c'
+fatal: path 'scripts/probe-round221-probe-ownership-control.mts' exists on disk, but not in '35f591aaf2caa835702aa51a50e210ed1394b4ee'
+fatal: path 'scripts/probe-round220-reassign-on-the-march-corpus.mts' exists on disk, but not in '98473e91a815636a0d3dc46108297c2eeff7c8d8'
+fatal: path 'scripts/probe-round219-files-cap-live-http.mts' exists on disk, but not in '9b17d18eff17bf5ea9c4d4708cc3f00cbf5f6e60'
+fatal: path 'scripts/probe-round218-hono-routes-introspection.mts' exists on disk, but not in 'ca73ffe2f2329a00f48ad842692146c2529d8926'
+fatal: path 'scripts/probe-round217-multipart-guard-live-http.mts' exists on disk, but not in '354e76d0cc68fdbf1440a0fcfda3624381472cb3'
+fatal: path 'scripts/probe-round213-reassign-live-http.mts' exists on disk, but not in '417c39ff0820e45ad7b26dec4e772f05cc5f6fd0'
+fatal: path 'scripts/probe-round207-the-import-confirms-a-name-and-the-name-is-not-unique.mts' exists on disk, but not in 'd829bf1cc7de64ae58169b0cc7846c57e3086e9e'
+fatal: path 'scripts/probe-round205-the-plan-and-the-apply-pick-opposite-ends-of-a-duplicated-name.mts' exists on disk, but not in 'bb8512111ae2c483967514b054db54ee76393d24'
+fatal: path 'scripts/probe-round204-the-undo-over-a-role-apply-driven-end-to-end.mts' exists on disk, but not in 'eff112f6610b2d77360b795b18b7d77084aa5b7f'
+fatal: path 'scripts/probe-round203-the-corpus-is-lineages-and-the-sheet-warns-about-one-of-them.mts' exists on disk, but not in '20be026866b8d766105b9ed02d256105c318de75'
+fatal: path 'scripts/probe-round202-the-grammar-not-the-distance-and-the-only-basis-the-corpus-supports.mts' exists on disk, but not in '7badf1c10b38bea2c2b768f604b0007317f3070b'
+fatal: path 'scripts/probe-round201-the-window-holds-this-corpus-and-not-the-class-and-the-corpus-has-no-names-in-it.mts' exists on disk, but not in '8ac974f8d0b7c2dde2573f10ba7ab3634ce07f61'
+fatal: path 'scripts/probe-round200-the-guess-declines-where-it-used-to-invent-and-the-window-is-what-does-it.mts' exists on disk, but not in 'e80d6d98c5df2814ddde98456ce65f546af322ff'
+fatal: path 'scripts/probe-round199-the-first-real-corpus-names-seven-agents-and-none-of-them-is-a-name.mts' exists on disk, but not in '7b06a1ad9b9274046c8371af087b9c9f209d5d0c'
+fatal: path 'scripts/probe-round198-a-way-back-has-tables-in-it-and-the-sidecar-is-not-the-database.mts' exists on disk, but not in '458a37d2cc6c8dbd5f6d876b1113202f1ed49604'
+fatal: path 'scripts/probe-round197-the-verdict-on-a-way-back-and-the-path-that-is-not-the-database.mts' exists on disk, but not in '75fec111ad10e5ace38275b1a6aae3ee0f57a0c2'
+fatal: path 'scripts/probe-round196-the-three-commands-after-a-bad-restore-answer-in-the-scripts-voice.mts' exists on disk, but not in '718df10c4d68cab9f0b91293b427f3e53e9f9f80'
+fatal: path 'scripts/probe-round195-the-check-step-and-the-undo-path-on-a-database-a-bad-restore-corrupted.mts' exists on disk, but not in '316e1087a5aed96c220c32832a19e8b607c90755'
+fatal: path 'scripts/probe-round194-step-4-quotes-a-line-the-operators-own-command-can-produce.mts' exists on disk, but not in '1cdb2b2275cb24ceae11ac59032ce4defd87cf27'
+fatal: path 'scripts/probe-round193-the-printed-steps-run-as-written-and-how-little-use-reopens-h.mts' exists on disk, but not in '9184b16c85460f34e693a1bfe6d41773944e1f9a'
+fatal: path 'scripts/probe-round192-what-a-wal-beside-the-database-says.mjs' exists on disk, but not in '8e873e99e61830c326f40f4f52207c9d5ce7eb61'
+fatal: path 'scripts/probe-round191-restoring-the-backup-the-way-a-person-does.mts' exists on disk, but not in 'be3a93b4e4e67a8d8ebc7ae3c25887ae5d8f7a52'
+fatal: path 'scripts/probe-round189-the-restore-wording-on-a-minted-channel.mts' exists on disk, but not in '723e8b70ca114dfc511e746536c1849d32934f3f'
+fatal: path 'scripts/probe-round187-the-binding-rule-at-the-inputs-it-was-argued-from.mts' exists on disk, but not in '4fd6e999c6c34fa58a517977542fbb9344212f31'
+fatal: path 'scripts/probe-round185-what-the-undo-classifier-knows-a-run-by.mts' exists on disk, but not in 'fd3c5e282c954909c0811d4072dac1c5fa3c110f'
+fatal: path 'scripts/probe-round183-undo-record-against-the-database-it-is-aimed-at.mts' exists on disk, but not in 'ff045eae9dfe8d18cf81eb7b1d33a51c103880f5'
+fatal: path 'scripts/probe-round182-backfill-every-argv-token-is-read.mts' exists on disk, but not in 'f186bc8cb0ddffecdd496703492a9554b94f2d64'
+fatal: path 'scripts/probe-round181-unrecognised-flags-and-undo-record-validation.mts' exists on disk, but not in '2506724ec8f8f21726aeb60761f22f8840bda1b3'
+fatal: path 'scripts/probe-round179-backfill-flag-spellings-and-undo-errors.mts' exists on disk, but not in '9c3a2c3e2015c45fa7dba1e5f9e82f9bd7a8f7e0'
+fatal: path 'scripts/probe-round178-backfill-operator-error-paths.mts' exists on disk, but not in 'fdfb91afe2804416484c4e2d3fd1bfb9f823c0de'
+fatal: path 'scripts/probe-round177-browse-done-seating-in-a-browser.mts' exists on disk, but not in '8de45d430fb35303cb1f2f087095469f78ee3f89'
+fatal: path 'scripts/probe-round176-backfill-cli-end-to-end.mts' exists on disk, but not in 'eebc8077fb584f1de81e6afe512e5cdd8e034ddc'
+fatal: path 'scripts/backfill-entity-bindings.mts' exists on disk, but not in '2558eb24e064f9b67553fb65f5b52f8437bacfd5'
+fatal: path 'scripts/probe-round174-browse-route-seating-in-a-browser.mts' exists on disk, but not in 'b1538e52808c3ab00d652023dc7210babbab1326'
+fatal: path 'scripts/probe-round172-path-b-confirm-step-redrive.mts' exists on disk, but not in 'afa504e566330d7a47f3827f474155318d09fcdb'
+fatal: path 'scripts/probe-round171-path-b-jit-import-browser.mts' exists on disk, but not in 'e9c6367605263d880faebeb09acca009b0526abd'
+fatal: path 'scripts/probe-round170-floor-frequency.mts' exists on disk, but not in 'bb11bb1254174440483dec99b11c8bfc23e0a72d'
+fatal: path 'scripts/probe-round167-floor-report-live.mts' exists on disk, but not in '27336635ea5b23948d2816a7f2ae76f681c1ad58'
+fatal: path 'scripts/probe-round166-terminal-floor-live.mts' exists on disk, but not in '2d85da09077518b7de43a32bccb909491c1cb52a'
+fatal: path 'scripts/probe-models-live.mjs' exists on disk, but not in '4a57460e77fdc2c449e20888111895f1cbc7f5f4'
+fatal: path 'scripts/probe-round164-layer5-terminality-live.mts' exists on disk, but not in 'ba7daf163619b0a5ae5e445fd36ddacf3db7bbc4'
+fatal: path 'scripts/probe-round162-preamble-drop-and-roster-live.mts' exists on disk, but not in '9ec6a1ac3a788eb9068c47f4fa5c256de967a900'
+fatal: path 'scripts/probe-path-c-chat-binding-live.mts' exists on disk, but not in 'e21bfc61cb705d1fb5dd27100d5ecc8085d66693'
+fatal: path 'scripts/probe-parse-encoding-confound.mts' exists on disk, but not in 'd2b466588897de642f0da0eb3d4df1d142318570'
+fatal: path 'scripts/probe-scan-cost-model-control.mts' exists on disk, but not in 'bdf70ec52a9f2becebee5e8069327b8042e3bfa6'
+fatal: path 'scripts/probe-parse-stage-allocation.mts' exists on disk, but not in 'c1565120f76b6a927522c0c9c3de4406f7bebd4f'
+fatal: path 'scripts/probe-pm-corpus-cap-delta.mts' exists on disk, but not in '74aec9c8ce466460193813adee6b3942c7aedf2c'
+fatal: path 'scripts/probe-accepted-multipart-allocation.mts' exists on disk, but not in '3c29aaa903fac254f323a82a3a9de150a617137d'
+fatal: path 'scripts/probe-browse-cold-figure-gap.mts' exists on disk, but not in '12e7f5f5eea724fdcc892764a3c17a3575737527'
+fatal: path 'scripts/probe-import-multipart-cap.mts' exists on disk, but not in '764be0a75cd7d3c1bc4f33921a587ecaa9a63b5c'
+fatal: path 'scripts/probe-import-large-session.mts' exists on disk, but not in '81dd5e66ff3341c38efb24e14204b274fd7700da'
+fatal: path 'scripts/probe-multi-root-browse.mts' exists on disk, but not in 'a54f7074a6eff87b1b52d230900c3d2b0bc84db9'
+fatal: path 'scripts/probe-browse-endpoint-second-corpus.mts' exists on disk, but not in '503a2294793637909b24ab0a978dad2866876019'
+fatal: path 'scripts/probe-fingerprint-cache-endpoint.mts' exists on disk, but not in '603c951e30a12c1c4fd3ede22e91d9753bc81b71'
+fatal: path 'scripts/probe-browse-endpoint-vs-channel-count.mts' exists on disk, but not in '380772c76032af4aecf114695b7b658a91e6f7c2'
+fatal: path 'scripts/probe-dedup-resolver-scaling.mts' exists on disk, but not in '9f643b6773b2102ac9558981e023ee07823233bd'
+fatal: path 'scripts/probe-browse-latency-end-to-end.mts' exists on disk, but not in '1fa846264f9fdd3c0a29e9315b5ded32cfc1e3c0'
+fatal: path 'scripts/probe-scan-latency-vs-cap.mts' exists on disk, but not in '2b77ac47abb6c3d397b49e781020c2c3ebdec827'
+fatal: path 'scripts/probe-turncount-live-http.mts' exists on disk, but not in '84966dbff2b195ee74d00f8e0d6f14e5e26ff2b0'
+fatal: path 'scripts/probe-browse-count-vs-persisted-rows.mts' exists on disk, but not in 'ec1b8ac958d537aa0ede6e290e7e8cc654f07dc4'
+fatal: path 'scripts/probe-import-live-http.mts' exists on disk, but not in 'e6a7eb23dd4b911e8922d2808033d045bb6468b4'
+fatal: path 'scripts/probe-backfill-entity-sizing.mts' exists on disk, but not in '2168012252cd6270bee1f9fdd5a603fde203cb83'
+fatal: path 'scripts/probe-import-entity-binding.mts' exists on disk, but not in 'd619605443954af8c45d0d1b236146abbcb8c6e6'
+fatal: path 'scripts/refresh-import-fixtures.mjs' exists on disk, but not in '45a261c596a2cc9dbad2105e40e2c889c3995279'
+fatal: path 'scripts/probe-import-sites.mjs' exists on disk, but not in '954cf1cfad1a39f96660d2d1c0ed2bf8b75c6794'
+fatal: path 'scripts/lib/tsx-required.mjs' exists on disk, but not in '9cd84fb2eb4dde6d1226f2f5f720e1104c946084'
+fatal: path 'scripts/verify-tsx-guard.mjs' exists on disk, but not in '9cd84fb2eb4dde6d1226f2f5f720e1104c946084'
+fatal: path 'scripts/verify-design-assertions-gated.mjs' exists on disk, but not in '88da8a5860bc096e6838cc4dcce21af6137f7ac7'
+fatal: path 'scripts/verify-x0-reachability.mjs' exists on disk, but not in '2ed07550305a868dc7196c70fc247413692e70d8'
+fatal: path 'scripts/verify-rule-discrimination-from-artifacts.mjs' exists on disk, but not in '35bebe6e41212507ae59288b49a8fe3f2e242fd8'
+fatal: path 'scripts/verify-rule-discrimination.mjs' exists on disk, but not in 'd0f74fb4b46bd60d32cf3b3ba0fff6631a7ae9db'
+fatal: path 'scripts/verify-verifier-exit-codes.mjs' exists on disk, but not in 'fe96306311095d5cd2c00f452bb0bab073ddee0a'
+fatal: path 'scripts/lib/premise-render.mjs' exists on disk, but not in 'e9c72c7653061c3f18d326fc4694b4b371b3d1a5'
+fatal: path 'scripts/verify-premise-render.mjs' exists on disk, but not in 'e9c72c7653061c3f18d326fc4694b4b371b3d1a5'
+fatal: path 'scripts/verify-appetite-readings.mjs' exists on disk, but not in 'a8e654063601ea5ce9c9d75b60234dd00c90c5c9'
+fatal: path 'scripts/lib/opaque-container.mjs' exists on disk, but not in '81f7bd3597c23d26a1b049b105c5cdf326bf95be'
+fatal: path 'scripts/lib/marker-floor.mjs' exists on disk, but not in '3e2ac6bf0f4b3c99e5a1d21d5739f91d012743ea'
+fatal: path 'scripts/measure-marker-floor.mjs' exists on disk, but not in '3e2ac6bf0f4b3c99e5a1d21d5739f91d012743ea'
+fatal: path 'scripts/lib/recall-tap.mjs' exists on disk, but not in '5a3d39e8e4469c374a90a8983d9c3b8f7b532934'
+fatal: path 'scripts/lib/recall-call-kind.mjs' exists on disk, but not in '27b5c5a381c6659b98680d4ed445037a2c049a84'
+fatal: path 'scripts/verify-empty-tail-detector.mjs' exists on disk, but not in '27b5c5a381c6659b98680d4ed445037a2c049a84'
+fatal: path 'scripts/verify-expand-reachability.mjs' exists on disk, but not in 'fb2b2391e4a01c7a859754b9b543859b17a5457d'
+fatal: path 'scripts/geometry-distance-arm.mjs' exists on disk, but not in 'aaf0da5b6a52882d901c1ec9d76e1f908b87e790'
+fatal: path 'scripts/geometry-marking-before-seed.mjs' exists on disk, but not in '73339565cd91c46d97bbca3e0856fac417c8e594'
+fatal: path 'scripts/probe-expand-continuation.mts' exists on disk, but not in '5185282b2356626639d8855640ff6b551ad62e83'
+fatal: path 'scripts/probe-scratch-server.mjs' exists on disk, but not in '3c1d4d5ea0dfad6373730c4e6a04f57ede037e96'
+fatal: path 'scripts/verify-filler-constraints.mjs' exists on disk, but not in '69004659a3710747679249295be685dc72f8f773'
+fatal: path 'scripts/lib/offer-choice.mjs' exists on disk, but not in 'c8524718f87e618d6d0ff92cb373433b8096c093'
+fatal: path 'scripts/verify-offer-choice.mjs' exists on disk, but not in 'c8524718f87e618d6d0ff92cb373433b8096c093'
+fatal: path 'scripts/exact-tests.mjs' exists on disk, but not in '2c98153646b8aa6c07d4c06364d584cd51480450'
+fatal: path 'scripts/lib/recall-recogniser.mjs' exists on disk, but not in 'b914af4516f55d3ea4cc99a5b98c6167f1e309c6'
+fatal: path 'scripts/verify-recogniser-equivalence.mjs' exists on disk, but not in 'b914af4516f55d3ea4cc99a5b98c6167f1e309c6'
+fatal: path 'scripts/round56-revert-probe.mjs' exists on disk, but not in 'aee860d3cb8d928cfcfe1bf071d795f1f757a658'
+fatal: path 'scripts/round54-revert-probe.mjs' exists on disk, but not in 'b5f207cc5bc5fa2bb1e7b4398064f34819d7486f'
+fatal: path 'scripts/probe-recall-tool.mjs' exists on disk, but not in '1c1b2af23587f635403a7dfa01269d1fd0cb2d78'
+fatal: path 'scripts/probe-carried-context-chip.mjs' exists on disk, but not in '41899c87b3f4de3128e9352c795fa5caff39cecd'
+fatal: path 'scripts/probe-carried-context-carveout-eviction.mjs' exists on disk, but not in '8d9fa0b7385c36fcdbd4f16f9fb2e94ecbb5a9dc'
+fatal: path 'scripts/probe-carried-context-carveout-truncation.mjs' exists on disk, but not in '8d9fa0b7385c36fcdbd4f16f9fb2e94ecbb5a9dc'
+fatal: path 'scripts/probe-carried-context-sensitivity.mjs' exists on disk, but not in '8d9fa0b7385c36fcdbd4f16f9fb2e94ecbb5a9dc'
+fatal: path 'scripts/probe-carried-context.mjs' exists on disk, but not in '37c5dad9f0ea79a2097abde6a16cea9557b19cf1'
+fatal: path 'scripts/serve-scratch.mjs' exists on disk, but not in '37c5dad9f0ea79a2097abde6a16cea9557b19cf1'
+fatal: path 'scripts/compare-klatch-corpora.mjs' exists on disk, but not in 'e9f455d41df90095f66c61ccdae746d5b1b4eab1'
+fatal: path 'scripts/inspect-klatch-db.mjs' exists on disk, but not in '5dc0ae74bd90ab2de623f4ac996f1a90a2044dd3'
+fatal: path 'scripts/aaxt-mcp-live-probe.ts' exists on disk, but not in '5025a274238df828283ccb4c3a624634febc5b02'
+fatal: path 'scripts/aaxt-seed.sh' exists on disk, but not in '17246425b02cfa448d3d510ecc44cabb8f9cab25'
+fatal: path 'scripts/record-demo.ts' exists on disk, but not in '87d3a33bfe40424cede059e372b6ab5d9deda65d'
+fatal: path 'scripts/seed-demo.sh' exists on disk, but not in '91bc5ec68099131c4b31466fb4304c15a2be1051'
+fatal: path 'scripts/demo-seed.sh' exists on disk, but not in 'b3f6f19e0f8663b9da15da5a856dfd9cc9b6ee52'
+
+== the repaired population ==
+  file-deltas with the file present at candidate: 781  (created 215 · modified 566)
+  deletions skipped (candidate absent — correctly out of scope): 1
+  candidate has 0 literal declarations (a legitimate empty, counted not refused): 466
+  diff failures: 0
+  ADDED literal declarations: 262
+  run 1 reached 218 graded deltas and 21 ADDED; this reaches 315 and 262.
+
+== precision, unrestricted vs. the two restricted keys ==
+  FLAGGED, unrestricted (every added literal):      67 / 262 added  = 25.6%
+  FLAGGED, K-used (name consumed anywhere):         67 / 262
+  FLAGGED, K-once (name on a line calling once()):  14 / 262
+  so the unrestricted key reports 53 flag(s) that no once() call can act on.
+
+== every flag, with its keys, so each is checkable rather than taken on a rate ==
+  ANCHOR   e501d6af probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts
+      C_SWEEP @431 occ=2  "const SWEEP = join(HERE, 'sweep-probes.mjs');"
+  used     070a4c00 probe-round371-the-characterisation-item-is-a-registry-not-a-sweep.mts
+      REC_REV @407 occ=4  "72886c0b"
+  used     56b180e6 [NEW FILE] probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts
+      PRECURE_375 @225 occ=2  "occ(r225Src, `const R223B_REFUSAL = /${shortFromRegistry}/;`)"
+  used     56b180e6 [NEW FILE] probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts
+      DECL_FRAGMENT @226 occ=6  "const R223B_REFUSAL = "
+  ANCHOR   56b180e6 [NEW FILE] probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts
+      A_OUTCOME @280 occ=2  "import { summariseAndExit, type ProbeVerdict } from './lib/probe-outcome.mts';"
+  ANCHOR   56b180e6 [NEW FILE] probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts
+      A_R225_READ @283 occ=2  "const r225Src = readFileSync(join(HERE, R225), 'utf8');"
+  ANCHOR   56b180e6 [NEW FILE] probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts
+      A_SWEEP_READ @291 occ=2  "const SWEEP = join(HERE, 'sweep-probes.mjs');"
+  used     56b180e6 [NEW FILE] probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts
+      RENAMED_FROM @301 occ=8  "R223B_REFUSAL"
+  ANCHOR   d0dff8b7 probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts
+      R373_IMPORT_OUTCOME @126 occ=2  "from './lib/probe-outcome.mts';"
+  ANCHOR   d0dff8b7 probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts
+      R373_IMPORT_SWEEP @127 occ=2  "} from './sweep-probes.mjs';"
+  ANCHOR   d0dff8b7 probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts
+      R373_HERE @128 occ=2  "const HERE = dirname(fileURLToPath(import.meta.url));"
+  used     ac61258a probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts
+      CALL @111 occ=3  "(r225Src.match("
+  used     ac61258a [NEW FILE] probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts
+      PREFIX @109 occ=2  "probe-round223b: "
+  ANCHOR   ac61258a [NEW FILE] probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts
+      IMPORT_OUTCOME @193 occ=3  "from './lib/probe-outcome.mts';"
+  ANCHOR   ac61258a [NEW FILE] probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts
+      IMPORT_SWEEP @195 occ=3  "from './sweep-probes.mjs';"
+  ANCHOR   ac61258a [NEW FILE] probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts
+      HERE_DECL @196 occ=3  "const HERE = dirname(fileURLToPath(import.meta.url));"
+  ANCHOR   ac61258a [NEW FILE] probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts
+      R373_READ @197 occ=2  "const r373Src = readFileSync(join(HERE, R373), 'utf8');"
+  ANCHOR   ac61258a [NEW FILE] probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts
+      C_IMPORT_OUTCOME @375 occ=3  "from './lib/probe-outcome.mts';"
+  ANCHOR   ac61258a [NEW FILE] probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts
+      C_IMPORT_SWEEP @376 occ=2  "} from './sweep-probes.mjs';"
+  ANCHOR   ac61258a [NEW FILE] probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts
+      C_HERE @377 occ=3  "const HERE = dirname(fileURLToPath(import.meta.url));"
+  used     8124b3d3 [NEW FILE] probe-round374b-the-subject-reaches-the-state-itself-on-a-held-port.mts
+      SKIP_VERDICT @87 occ=2  "ran but did not finish"
+  used     8124b3d3 [NEW FILE] probe-round374b-the-subject-reaches-the-state-itself-on-a-held-port.mts
+      IMPORT_OUTCOME @97 occ=2  "from './lib/probe-outcome.mts';"
+  used     7984871a [NEW FILE] probe-round374-an-absence-check-with-no-control-and-the-subject-reaches-the-state-itself.mts
+      SKIP_VERDICT @95 occ=2  "ran but did not finish"
+  used     7984871a [NEW FILE] probe-round374-an-absence-check-with-no-control-and-the-subject-reaches-the-state-itself.mts
+      IMPORT_OUTCOME @248 occ=2  "from './lib/probe-outcome.mts';"
+  used     eea42c26 [NEW FILE] probe-round371-the-characterisation-item-is-a-registry-not-a-sweep.mts
+      R5 @196 occ=2  "CHARACTERISATION (read only beside R6)"
+  used     9ec7f28e lib/probe-outcome.mts
+      MODULE_DEFAULT_KIND @235 occ=100  "regression"
+  used     6c1fc030 [NEW FILE] probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts
+      SELF @350 occ=2  "probe-round303"
+  used     610824e1 [NEW FILE] probe-round291-the-sentinel-did-not-grade-the-backups-that-are-the-recovery-path.mts
+      UNRECOVERABLE @122 occ=4  "klatch.db.backup-pre-round227-cleanup-20260918"
+  used     37e81ec9 [NEW FILE] probe-round284-the-census-has-a-reader-and-it-is-the-channel-three-seats-have-never-run.mts
+      GATE_BIRTH_COMMIT @79 occ=2  "d00a5e08"
+  used     12ec5b05 [NEW FILE] probe-round281-a-probe-that-only-runs-where-it-was-written-and-how-big-that-class-actually-is.mts
+      SCRIPTS @54 occ=5  "scripts"
+  used     5b551ca1 [NEW FILE] probe-round276-the-address-census-and-the-sentinel-that-hid-its-own-file.mts
+      PROBE @87 occ=2  "probe-round276-the-address-census-and-the-sentinel-that-hid-its-own-file"
+  used     cbb327f9 probe-round256-an-emptiness-assertion-grades-the-operator-and-a-sole-blocker-ranking-cannot-see-a-coupled-class.mts
+      R256_PIN @1361 occ=2  "6465346a"
+  used     d55d9ebe probe-round265-the-census-already-follows-imports-on-the-other-axis.mts
+      LIVE_LIB_REL @521 occ=11  "lib/tree-fingerprint.mts"
+  used     b3006ae1 [NEW FILE] probe-round264-a-census-of-one-spelling-and-the-extraction-that-moved-the-rest-out-of-reach.mts
+      R256_COMMIT @102 occ=3  "6465346a"
+  used     b3006ae1 [NEW FILE] probe-round264-a-census-of-one-spelling-and-the-extraction-that-moved-the-rest-out-of-reach.mts
+      CENSUS_COMMIT @106 occ=3  "c4bd5307"
+  used     e88a9b31 probe-round258-three-readers-are-two-questions-and-the-shared-one-is-already-in-lib.mts
+      R256_COMMIT @624 occ=3  "6465346a"
+  used     e88a9b31 [NEW FILE] probe-round262-the-population-is-a-tree-not-a-filename-convention.mts
+      R256_COMMIT @107 occ=4  "6465346a"
+  used     11b60cb2 probe-round259-the-extraction-moved-nothing-and-closed-the-hole-in-the-file-it-moved-into.mts
+      PRE_MOVE_TREE @143 occ=2  "27c5cac3~1"
+  used     11b60cb2 [NEW FILE] probe-round260-a-census-pin-has-two-axes-and-the-round-number-in-a-filename-is-not-one-of-them.mts
+      R256_COMMIT @78 occ=2  "6465346a"
+  used     11b60cb2 [NEW FILE] probe-round260-a-census-pin-has-two-axes-and-the-round-number-in-a-filename-is-not-one-of-them.mts
+      PRE_MOVE_COMMIT @80 occ=2  "8cbd7ea5"
+  used     3829a8ef [NEW FILE] probe-round254-the-mutate-class-is-an-unanchored-conjunction-and-most-of-it-never-writes-the-product.mts
+      ENTRY @403 occ=8  "packages/server/src/index.ts"
+  used     3829a8ef [NEW FILE] probe-round254-the-mutate-class-is-an-unanchored-conjunction-and-most-of-it-never-writes-the-product.mts
+      WS @424 occ=9  "packages/server"
+  used     0f88d5e9 probe-round223-twenty-one-probes-against-a-stranger.mts
+      SELF @138 occ=2  "probe-round223-twenty-one-probes-against-a-stranger.mts"
+  used     0f88d5e9 [NEW FILE] probe-round248-the-dot-guard-is-half-the-repair-and-a-copy-re-admits-the-original.mts
+      SELF_CANONICAL @74 occ=2  "probe-round248-the-dot-guard-is-half-the-repair-and-a-copy-re-admits-the-original.mts"
+  used     0f88d5e9 [NEW FILE] probe-round248-the-dot-guard-is-half-the-repair-and-a-copy-re-admits-the-original.mts
+      R223 @76 occ=2  "probe-round223-twenty-one-probes-against-a-stranger.mts"
+  used     0f88d5e9 [NEW FILE] probe-round248-the-dot-guard-is-half-the-repair-and-a-copy-re-admits-the-original.mts
+      R246 @77 occ=2  "probe-round246-the-sweep-repaired-and-the-emit-spelling-was-the-bigger-blind-spot.mts"
+  used     7c7dfdc0 [NEW FILE] probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts
+      knownBelow @143 occ=2  "scripts/lib/probe-corpus-sessions.mts"
+  used     7c7dfdc0 [NEW FILE] probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts
+      neverFixture @379 occ=2  "packages/a.ts"
+  used     7c7dfdc0 [NEW FILE] probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts
+      liveFixture @380 occ=2  "packages/server/src/db/queries.ts"
+  used     7c7dfdc0 [NEW FILE] probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts
+      presentSentinel @414 occ=2  "packages/server/src/db/queries.ts"
+  used     b208d553 [NEW FILE] probe-round240-a-probe-pinned-to-a-moved-subject-is-failing-silently.mts
+      scannerRel @270 occ=3  "packages/server/src/import/session-scanner.ts"
+  used     45956c61 [NEW FILE] probe-round233-arm-m-and-the-endpoint-can-walk-different-corpora.mts
+      PROBE @111 occ=2  "probe-round233-arm-m-and-the-endpoint-can-walk-different-corpora"
+  used     8946cae3 [NEW FILE] probe-round227-arm-o-on-a-corpus-where-the-cap-fires.mts
+      PROBE @101 occ=2  "probe-round227-arm-o-on-a-corpus-where-the-cap-fires"
+  used     54227261 probe-browse-endpoint-vs-channel-count.mts
+      PROBE @88 occ=2  "probe-browse-endpoint-vs-channel-count"
+  used     54227261 [NEW FILE] probe-round224-a-skip-must-not-summarise-as-a-pass.mts
+      PROBE @62 occ=2  "probe-round224-a-skip-must-not-summarise-as-a-pass"
+  used     54227261 [NEW FILE] probe-round224b-the-migrated-probes-against-a-stranger.mts
+      PROBE @50 occ=2  "probe-round224b-the-migrated-probes-against-a-stranger"
+  used     c3fe3c54 [NEW FILE] probe-round223-twenty-one-probes-against-a-stranger.mts
+      MODULE_BASENAME @55 occ=3  "probe-server-ownership"
+  used     dbc5f7f1 [NEW FILE] probe-round221-probe-ownership-control.mts
+      HOST @44 occ=2  "127.0.0.1"
+  used     6e6702d4 [NEW FILE] probe-round219-files-cap-live-http.mts
+      IMPORT_SITE @377 occ=2  "/import/claude-code"
+  used     d9b3578d [NEW FILE] probe-round207-the-import-confirms-a-name-and-the-name-is-not-unique.mts
+      uniqueName @334 occ=2  "Ariadne"
+  used     d35b9b01 backfill-entity-bindings.mts
+      SCRIPT_COMMAND @227 occ=7  "npx tsx scripts/backfill-entity-bindings.mts"
+  used     6a3086f6 [NEW FILE] probe-round176-backfill-cli-end-to-end.mts
+      DEFAULT_ENTITY_ID @46 occ=2  "default-entity"
+  used     01837688 [NEW FILE] probe-backfill-entity-sizing.mts
+      DEFAULT_ENTITY_ID @77 occ=3  "default-entity"
+  used     a7c58a79 [NEW FILE] lib/recall-tap.mjs
+      RAW_INPUT_FIELD @61 occ=13  "toolInput"
+  used     1a67e1c4 [NEW FILE] probe-recall-tool.mjs
+      RECALL_TOOL @79 occ=2  "search_my_other_conversations"
+  used     11c7476f [NEW FILE] probe-carried-context-carveout-eviction.mjs
+      MARK_PHRASE @66 occ=2  "keep this between the two of us"
+  used     e370b64f [NEW FILE] probe-carried-context.mjs
+      CODEWORD @83 occ=3  "basalt-heron-72"
+
+== what repair (c) recovered — flags inside files being CREATED, invisible to run 1 ==
+  flags on new files: 53 · of those anchor-like (K-once): 10
+    56b180e6 probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts  A_OUTCOME @280 occ=2
+    56b180e6 probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts  A_R225_READ @283 occ=2
+    56b180e6 probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts  A_SWEEP_READ @291 occ=2
+    ac61258a probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts  IMPORT_OUTCOME @193 occ=3
+    ac61258a probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts  IMPORT_SWEEP @195 occ=3
+    ac61258a probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts  HERE_DECL @196 occ=3
+    ac61258a probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts  R373_READ @197 occ=2
+    ac61258a probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts  C_IMPORT_OUTCOME @375 occ=3
+    ac61258a probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts  C_IMPORT_SWEEP @376 occ=2
+    ac61258a probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts  C_HERE @377 occ=3
+
+================ VERDICT ================
+REPAIRED POPULATION — 781 deltas vs. run 1's 218 · 262 added literals vs. run 1's 21
+PRECISION — unrestricted 67/262; K-once 14/262. The restricted key is the cure for (a).
+RECOVERED BY (c) — 53 flag(s) on created files, 10 of them anchor-like, all invisible to run 1.
