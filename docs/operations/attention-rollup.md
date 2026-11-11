@@ -6,7 +6,7 @@
 
 **Trust-instrument discipline** (Exec 2026-06-19): every render comes from a fresh **verified sweep** of source docs — never from memory. A false "all clear" is a trust breach. "Quiet" must mean *verified-clear*, not *haven't-checked*.
 
-**Last refreshed:** 2026-11-10 (STOP fire, Calliope) — v177. **needs-you 3 → 4: Theseus raised, twice today, that the real-API ("AAXT") test backlog hasn't moved in ~5.5 months and asked for a call — "xian or Calliope" — on retiring it or saying it's being crowded out. Not decided here; boarded.**
+**Last refreshed:** 2026-11-11 (MID fire, Calliope) — v178. **Metrics strip corrected 3 → 4** — the body/changelog/header had already read 4 since v177 (13 hours prior); only the hand-maintained strip table still said 3. Found by Theseus verifying this seat's own 11/10 boarding rather than taking the memo's word for it; routed rather than fixed on his side. Same mechanism as the v156 correction below: an item added to a section body without the strip being advanced.
 
 **New item 3, found this fire:** not a neglected item — this seat's own COORDINATION.md entry has re-derived "ma-smoke — day N, unchanged" fresh every single fire since 2026-10-21 (day 17 today) — but it has never once been promoted from that agent-facing log to *this* board, which is xian's actual skim surface. `git ls-remote --heads origin` still shows no `smoke`/`ma-smoke`/`managed` branch, confirmed fresh this fire, same zero Daedalus found 2026-10-27. His memo (`docs/mail/read/daedalus-to-calliope-argus-theseus-cc-iris-janus-xian-both-asks-answered-the-probe-is-blocked-on-xian-and-the-flat-census-cannot-see-the-track-2026-10-27.md`) named two links as xian's and closed the thread on his own side with that stated: "two of the three links are his — the key/trigger for test 1, and the §4.3 threshold." The item had been *removed* from needs-you on 2026-10-22 (v171) for a different, narrower reason (the MVP-feature sub-question closing); nobody re-added it to this board when Daedalus reopened the xian-blocked half five days later, even though it kept being tracked, correctly, in the other document. Boarded as item 3 below.
 
@@ -66,9 +66,15 @@
 
 ## Metrics strip
 
+<!-- This strip is hand-maintained beside the section bodies below, which are the actual source
+of truth. It has drifted stale twice now (v156, v177) by the same mechanism: an item added to a
+🔴/🟡 section's body without this table being advanced. Before publishing a changed number here,
+count the `### ` headings under 🔴 Needs you and 🟡 Lower-urgency directly — don't carry the prior
+render's figure forward. -->
+
 | Needs you | Blocked-on-others | Lower-urgency |
 |---|---|---|
-| **3** | **0** | **11** |
+| **4** | **0** | **11** |
 
 ---
 
@@ -285,6 +291,7 @@ Reopened 2026-09-02 and reframed around the Friday target — this is the same a
 
 Moved in full to the archive — every v1–v155 entry, byte-for-byte, under "Changelog (v1–v155)" in `docs/operations/attention-rollup-archive-2026-09-27.md`. This board's own version history starts fresh at v156 (this restructure); future entries append here, not there.
 
+- **v178 (2026-11-11, MID fire, Calliope)** — metrics strip **3 → 4**, no change to needs-you itself: the header, changelog, and section body had all read 4 since v177; the strip table alone still said 3. Theseus found it verifying this seat's own 11/10 boarding reply rather than taking it at face value (`docs/mail/theseus-to-calliope-cc-daedalus-argus-iris-janus-xian-your-boarding-is-verified-and-the-metrics-strip-does-not-count-it-needs-you-reads-3-against-four-items-2026-11-11.md`), routed rather than fixed on his side because it's this seat's own record. Verified directly before fixing: four `### ` headings under 🔴 Needs you (`:89`, `:96`, `:108`, `:116` as of this render), zero under blocked-on-others, eleven under 🟡 — strip now matches. `git log -L 71,71` (Theseus's own citation, re-checked) dates the drift to the row last moving in `6c4c7af7` (2026-11-06, 2→3) and not advancing with `5af31c9a` (2026-11-10 21:47, item 4 added) — one behind for ~13 hours. **Recurrence, not a new defect:** the same mechanism as the v156 correction below (a hand count beside a body that's the actual source, nothing asserting they agree) — this is the second instance seven weeks apart, both caught by a peer hand-counting rather than by this doc's own render step. Added a maintenance comment directly above the strip instructing future renders to count headings rather than carry the prior figure forward; did not build an automated counter this fire (one line fixed, the render step itself is unchanged markdown) — if it drifts a third time, Theseus's suggested cure (derive the figure or stop publishing it as a number) should be taken rather than hand-corrected again. Replying to Theseus (cc Daedalus/Argus/Iris/Janus/xian) confirming the fix.
 - **v177 (2026-11-10, STOP fire, Calliope)** — needs-you **3 → 4**: new item 4, found this fire. Theseus flagged the same thing twice today in `docs/COORDINATION.md` (~14:47 PT and ~16:35 PT, Theseus Prime section), addressed to "xian or Calliope" both times, not boarded by either fire: the real-API ("AAXT") test backlog hasn't moved in ~5.5 months while this seat alone ran 39 research-track units in 15 days — "retire it, or say it is being crowded out... this seat should not quietly decide which." Not decided here; boarded as item 4 with the verbatim quote and both source timestamps. Nothing else moved this render: items 1–3 unchanged, gate re-verified fresh (server 143/2222, 1 skipped; client 26/39 files, 333/346 tests — both byte-identical to every figure cited today), full sweep re-driven fresh (44/44 green, 0 red, 110 deferred).
 - **v174 (2026-11-03, STOP fire, Calliope)** — needs-you **2 → 1**: the ground-rules configuration question (item 2, parked since 2026-08-09) is RULED. xian via Janus: no defaults ship, the user's own rules become them (blank first klatch, save-as-default/template on submit, prior rules offered on later klatches). Moved to ✅ Recently closed with the full ruling text and an explicit flagged conflict: this supersedes the 2026-09-24 ruling, which shipped `DISCLOSURE_NORM` as one fixed string and named itself provisional, inviting this exact re-raise. Verified `carried-context.ts:120` directly before writing — still one hardcoded string, nothing per-klatch built. Replied to Janus (cc xian, team), thread moved to `docs/mail/read/`. 18 commits since v173 (research-track round-mail, none mine, `packages/`/`scripts/` diff empty) belong in `docs/COORDINATION.md`. Gate re-verified fresh: typecheck 0 `error TS` ×4 workspaces; server 140/2186 (1 skipped); client 26/346 (13 skipped) — all unchanged.
 
