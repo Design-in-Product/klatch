@@ -44,6 +44,7 @@ import {
   scanClaudeCodeSessions,
   clearSessionFingerprintCache,
 } from '../import/session-scanner.js';
+import { snapshotEnv, restoreEnv } from './env-snapshot.js';
 
 vi.mock('@anthropic-ai/sdk', () => ({
   default: class MockAnthropic { messages = { create: vi.fn() } },
@@ -54,10 +55,7 @@ vi.mock('../claude/client.js', async (importOriginal) => {
 });
 
 let tmp: string;
-const savedEnv = {
-  config: process.env.CLAUDE_CONFIG_DIR,
-  extra: process.env.KLATCH_EXTRA_SESSION_ROOTS,
-};
+const savedEnv = snapshotEnv(['CLAUDE_CONFIG_DIR', 'KLATCH_EXTRA_SESSION_ROOTS']);
 
 beforeEach(() => {
   clearSessionFingerprintCache();
@@ -68,10 +66,7 @@ beforeEach(() => {
 
 afterEach(() => {
   fs.rmSync(tmp, { recursive: true, force: true });
-  if (savedEnv.config === undefined) delete process.env.CLAUDE_CONFIG_DIR;
-  else process.env.CLAUDE_CONFIG_DIR = savedEnv.config;
-  if (savedEnv.extra === undefined) delete process.env.KLATCH_EXTRA_SESSION_ROOTS;
-  else process.env.KLATCH_EXTRA_SESSION_ROOTS = savedEnv.extra;
+  restoreEnv(savedEnv);
 });
 
 /**

@@ -55,6 +55,7 @@ import {
   getSessionFingerprint,
   clearSessionFingerprintCache,
 } from '../import/session-scanner.js';
+import { snapshotEnv, restoreEnv } from './env-snapshot.js';
 
 vi.mock('../claude/client.js', () => ({ streamClaude: vi.fn() }));
 
@@ -95,12 +96,12 @@ function writeSession(dir: string, sessionId: string, turns: number): string {
 }
 
 let tmp: string;
-const envBefore = {
-  cap: process.env.KLATCH_FINGERPRINT_LINE_CAP,
-  configDir: process.env.CLAUDE_CONFIG_DIR,
-  extraRoots: process.env.KLATCH_EXTRA_SESSION_ROOTS,
-  exportRoot: process.env.KLATCH_EXPORT_ROOT,
-};
+const envBefore = snapshotEnv([
+  'KLATCH_FINGERPRINT_LINE_CAP',
+  'CLAUDE_CONFIG_DIR',
+  'KLATCH_EXTRA_SESSION_ROOTS',
+  'KLATCH_EXPORT_ROOT',
+]);
 
 beforeEach(() => {
   clearSessionFingerprintCache();
@@ -111,14 +112,7 @@ beforeEach(() => {
 afterEach(() => {
   // Restore rather than delete: these are real levers an ambient environment may
   // legitimately have set, and this suite is not the only thing in the process.
-  if (envBefore.cap === undefined) delete process.env.KLATCH_FINGERPRINT_LINE_CAP;
-  else process.env.KLATCH_FINGERPRINT_LINE_CAP = envBefore.cap;
-  if (envBefore.configDir === undefined) delete process.env.CLAUDE_CONFIG_DIR;
-  else process.env.CLAUDE_CONFIG_DIR = envBefore.configDir;
-  if (envBefore.extraRoots === undefined) delete process.env.KLATCH_EXTRA_SESSION_ROOTS;
-  else process.env.KLATCH_EXTRA_SESSION_ROOTS = envBefore.extraRoots;
-  if (envBefore.exportRoot === undefined) delete process.env.KLATCH_EXPORT_ROOT;
-  else process.env.KLATCH_EXPORT_ROOT = envBefore.exportRoot;
+  restoreEnv(envBefore);
   clearSessionFingerprintCache();
   fs.rmSync(tmp, { recursive: true, force: true });
 });

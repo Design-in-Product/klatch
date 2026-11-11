@@ -52,6 +52,7 @@ import os from 'os';
 import path from 'path';
 import { getExportRoot, getProjectRoot } from '../paths.js';
 import { scanExportedSessions } from '../import/session-scanner.js';
+import { snapshotEnv, restoreEnv } from './env-snapshot.js';
 
 vi.mock('../claude/client.js', () => ({ streamClaude: vi.fn() }));
 
@@ -76,11 +77,7 @@ function writeExportCorpus(root: string, sessionId = SESSION_ID): string {
 
 let tmp: string;
 let cwdBefore: string;
-const envBefore = {
-  exportRoot: process.env.KLATCH_EXPORT_ROOT,
-  configDir: process.env.CLAUDE_CONFIG_DIR,
-  extraRoots: process.env.KLATCH_EXTRA_SESSION_ROOTS,
-};
+const envBefore = snapshotEnv(['KLATCH_EXPORT_ROOT', 'CLAUDE_CONFIG_DIR', 'KLATCH_EXTRA_SESSION_ROOTS']);
 
 beforeEach(() => {
   tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'klatch-round235-'));
@@ -91,12 +88,7 @@ afterEach(() => {
   process.chdir(cwdBefore);
   // Restore rather than delete: a `delete` would also clear a value the ambient
   // environment set, and these variables are real levers someone may be using.
-  if (envBefore.exportRoot === undefined) delete process.env.KLATCH_EXPORT_ROOT;
-  else process.env.KLATCH_EXPORT_ROOT = envBefore.exportRoot;
-  if (envBefore.configDir === undefined) delete process.env.CLAUDE_CONFIG_DIR;
-  else process.env.CLAUDE_CONFIG_DIR = envBefore.configDir;
-  if (envBefore.extraRoots === undefined) delete process.env.KLATCH_EXTRA_SESSION_ROOTS;
-  else process.env.KLATCH_EXTRA_SESSION_ROOTS = envBefore.extraRoots;
+  restoreEnv(envBefore);
   fs.rmSync(tmp, { recursive: true, force: true });
 });
 

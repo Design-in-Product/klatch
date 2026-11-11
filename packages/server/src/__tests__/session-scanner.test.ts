@@ -5,6 +5,7 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 import { importSession } from '../db/queries.js';
+import { snapshotEnv, restoreEnv } from './env-snapshot.js';
 
 // Mock the claude client to avoid real API calls
 vi.mock('../claude/client.js', () => ({
@@ -54,7 +55,7 @@ describe('GET /api/import/claude-code/sessions', () => {
   let app: ReturnType<typeof createApp>;
   let tmpDir: string;
   let origHomedir: typeof os.homedir;
-  let savedScanEnv: { config: string | undefined; extra: string | undefined };
+  let savedScanEnv: Record<string, string | undefined>;
 
   beforeEach(() => {
     app = createApp();
@@ -96,17 +97,14 @@ describe('GET /api/import/claude-code/sessions', () => {
     // (Claude Code 2.1.322 exports `CLAUDE_CONFIG_DIR` into child shells) bypasses the mock and
     // the assertions below run against the real `~/.claude/projects`. Same save/clear/restore
     // shape as `round149-multi-root-session-scan.test.ts`.
-    savedScanEnv = { config: process.env.CLAUDE_CONFIG_DIR, extra: process.env.KLATCH_EXTRA_SESSION_ROOTS };
+    savedScanEnv = snapshotEnv(['CLAUDE_CONFIG_DIR', 'KLATCH_EXTRA_SESSION_ROOTS']);
     delete process.env.CLAUDE_CONFIG_DIR;
     delete process.env.KLATCH_EXTRA_SESSION_ROOTS;
   });
 
   afterEach(() => {
     (os as any).homedir = origHomedir;
-    if (savedScanEnv.config === undefined) delete process.env.CLAUDE_CONFIG_DIR;
-    else process.env.CLAUDE_CONFIG_DIR = savedScanEnv.config;
-    if (savedScanEnv.extra === undefined) delete process.env.KLATCH_EXTRA_SESSION_ROOTS;
-    else process.env.KLATCH_EXTRA_SESSION_ROOTS = savedScanEnv.extra;
+    restoreEnv(savedScanEnv);
     fs.rmSync(tmpDir, { recursive: true, force: true });
   });
 
