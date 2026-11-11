@@ -41,7 +41,39 @@ const RADIUS = 2;   // RECALL_NEIGHBOUR_RADIUS (recall.ts:100)
 const WINDOW = 20;  // CARRIED_CONTEXT_MAX_MESSAGES
 const MAX_EXPAND = 30; // RECALL_MAX_EXPAND_ROWS (recall.ts:647)
 
-const LIST_LENGTHS = { FILLER: 12, FILLER_LONG: 17, FILLER_LEAD: 15 };
+// Corpus sizes this file depends on as *geometry inputs*. `FILLER` is the one the self-check
+// actually asserts (search `Self-check: the unswapped model` — cited by anchor, not by line:
+// this file's own docblock carries a line citation that went stale by 22 lines, and the
+// comment you are reading shifted the self-check down the file, so any line number written
+// here would have been wrong on arrival): if `FILLER` is wrong, N1's derived geometry moves
+// and this file exits 1 before printing a recommendation.
+// `FILLER_LONG` feeds the sweeps below and its
+// arithmetic is printed, but nothing here asserts it — so it is correct today by inspection
+// rather than by construction. See unit-465leadcure-2026-11-11/RESULTS.md § "FILLER_LONG is
+// the next FILLER_LEAD" before trusting it the way you can trust `FILLER`.
+const LIST_LENGTHS = { FILLER: 12, FILLER_LONG: 17 };
+
+// The sweeps below enumerate lead-pair counts 0..L_SWEEP_MAX. This is a **sweep extent, not
+// a claim about `FILLER_LEAD`'s length** — which is exactly why it no longer lives in
+// `LIST_LENGTHS` beside two figures that are corpus facts.
+//
+// It was spelled `FILLER_LEAD: 15` until 2026-11-11, by which time the live list had
+// outgrown it — stale for ~78 days. That sentence deliberately names no current length:
+// read it with `npx tsx scripts/verify-filler-constraints.mjs`, which prints the live
+// count (it read 20 on 2026-11-11). Stating the number here instead would reintroduce the
+// very thing this comment exists to explain, and the first draft of this comment did.
+// No output was ever wrong, because the bound is inert: driven at
+// 15 / 20 / 50 in unit-465leadbound (2026-11-10), the three runs differ in exactly two
+// lines — both sweep denominators — and every feasibility count is byte-identical, because
+// the binding ceiling on L is a constraint at L=2, thirteen below the bound. It drifted
+// unnoticed for the structural reason that it is the only figure here used as a loop bound
+// rather than as an input to a model whose output this file checks: a constant is only
+// guarded where something asserts it.
+//
+// Do not re-point this at the live corpus. It does not need to track it, and reading another
+// script's source to keep it honest would add the cross-file dependency this file's docblock
+// ("zero API calls, zero server, zero DB — this is arithmetic") exists to refuse.
+const L_SWEEP_MAX = 20;
 
 /**
  * Row-by-row layout. Returns 1-indexed seqs for every landmark plus the derived render.
@@ -217,7 +249,7 @@ function fmt(r) {
 console.log('\n── Sweep over the filler lists that exist today ─────────────────────────');
 for (const [name, P] of [['FILLER', LIST_LENGTHS.FILLER], ['FILLER_LONG', LIST_LENGTHS.FILLER_LONG]]) {
   const all = [];
-  for (let L = 0; L <= LIST_LENGTHS.FILLER_LEAD; L++) {
+  for (let L = 0; L <= L_SWEEP_MAX; L++) {
     for (let G = 0; G <= P; G++) all.push(evaluate({ L, G, P }));
   }
   const feasible = all.filter((r) => r.ok);
@@ -242,7 +274,7 @@ for (const [name, P] of [['FILLER', LIST_LENGTHS.FILLER], ['FILLER_LONG', LIST_L
 console.log('\n── Smallest filler list that admits a feasible configuration ────────────');
 let firstFeasibleP = null;
 for (let P = LIST_LENGTHS.FILLER; P <= 30 && !firstFeasibleP; P++) {
-  for (let L = 0; L <= LIST_LENGTHS.FILLER_LEAD && !firstFeasibleP; L++) {
+  for (let L = 0; L <= L_SWEEP_MAX && !firstFeasibleP; L++) {
     for (let G = 0; G <= P; G++) {
       const r = evaluate({ L, G, P });
       if (r.ok) { firstFeasibleP = { P, r }; break; }
@@ -256,7 +288,7 @@ if (firstFeasibleP) {
   console.log('  ' + fmt(r));
   // All feasible configurations at that P, so the choice among them is visible.
   const all = [];
-  for (let L = 0; L <= LIST_LENGTHS.FILLER_LEAD; L++) for (let G = 0; G <= P; G++) all.push(evaluate({ L, G, P }));
+  for (let L = 0; L <= L_SWEEP_MAX; L++) for (let G = 0; G <= P; G++) all.push(evaluate({ L, G, P }));
   const feasible = all.filter((x) => x.ok);
   console.log(`  all ${feasible.length} feasible configuration(s) at P=${P}:`);
   feasible.forEach((x) => console.log('    ' + fmt(x)));
@@ -273,7 +305,7 @@ console.log('\n── What one relaxation buys, on the existing lists ───�
 for (const relax of CONSTRAINTS.map((c) => c.key)) {
   for (const [name, P] of [['FILLER', LIST_LENGTHS.FILLER], ['FILLER_LONG', LIST_LENGTHS.FILLER_LONG]]) {
     const hits = [];
-    for (let L = 0; L <= LIST_LENGTHS.FILLER_LEAD; L++) {
+    for (let L = 0; L <= L_SWEEP_MAX; L++) {
       for (let G = 0; G <= P; G++) {
         const r = evaluate({ L, G, P });
         if (r.failed.length === 1 && r.failed[0] === relax) hits.push(r);

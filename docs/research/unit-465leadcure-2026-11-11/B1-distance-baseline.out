@@ -1,0 +1,25 @@
+# B1-distance-baseline
+# script: scripts/geometry-distance-arm.mjs
+# rc: 0
+# stdout: 1179 utf8Bytes / 1157 chars
+# stderr: 0 utf8Bytes / 0 chars
+# ---- stdout below this line ----
+formulas reproduce 2 measured arms exactly:
+  ✓ M  (Round 62, live ×5 + --dry)
+  ✓ N1 (Round 63, live ×5 + --dry ×2)
+
+carried window 20 · expand cap 30 · observed read appetite offered-start +6…+10
+
+  F   maxG  markOffset  margin   lead×trail (at closest-to-equal L)   verdict
+  12     3          +5       1   28×27 (L=15, 60 rows)               caps at +5: inside the appetite FLOOR — cannot miss
+  17     8         +15       1   38×37 (L=20, 80 rows)               +15: clear of the ceiling by 5
+  21    12         +23       1   46×45 (L=24, 96 rows)               +23: clear of the ceiling by 13
+  25    16         +31       1   54×53 (L=28, 112 rows)              +31: clear of the ceiling by 21
+
+FILLER is 12 pairs and FILLER_LONG is 17. Neither is a free choice:
+  · F=12 caps the offset at +5 and cannot produce the miss. The cheap arm is dead.
+  · F=17 reaches +15, but needs leadPairs 20 for the closest-to-equal offers —
+    FILLER_LEAD holds 15, so that is 5 new pairs, and both offers then exceed the
+    30-row expand cap, so reading one whole takes two calls.
+
+Nothing here licenses a build. It says which builds are arithmetically available.

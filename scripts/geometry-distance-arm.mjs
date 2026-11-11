@@ -133,6 +133,8 @@ for (const F of [12, 17, 21, 25]) {
 console.log(`\nFILLER is 12 pairs and FILLER_LONG is 17. Neither is a free choice:`);
 console.log(`  · F=12 caps the offset at +5 and cannot produce the miss. The cheap arm is dead.`);
 console.log(`  · F=17 reaches +15, but needs leadPairs 20 for the closest-to-equal offers —`);
-console.log(`    FILLER_LEAD holds 15, so that is 5 new pairs, and both offers then exceed the`);
-console.log(`    ${RECALL_MAX_EXPAND_ROWS}-row expand cap, so reading one whole takes two calls.`);
+console.log(`    which FILLER_LEAD must hold at least 20 pairs to seed. That is a corpus fact this`);
+console.log(`    file deliberately does not restate: probe-recall-tool.mjs hard-fails when leadPairs`);
+console.log(`    exceeds the live list, and verify-filler-constraints.mjs prints the live count.`);
+console.log(`    Both offers then exceed the ${RECALL_MAX_EXPAND_ROWS}-row expand cap, so reading one whole takes two calls.`);
 console.log(`\nNothing here licenses a build. It says which builds are arithmetically available.`);
