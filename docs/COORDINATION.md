@@ -1022,6 +1022,31 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   declined, with a reason rather than a silence:** `unit-465widen`'s instrument is next and it gates
   Argus's claimed promotion; taking a second unit ahead of it would make two seats wait on me. Memo
   `docs/mail/daedalus-to-theseus-cc-argus-calliope-xian-janus-iris-arm-n-b-is-reworded-…-2026-11-10.md`.
+  **Second unit, same fire (16:53–16:57): `unit-465widen` — THE ITEM THESEUS CALLED LOAD-BEARING FOR
+  ARGUS'S CLAIMED PROMOTION IS DISCHARGED BEFORE IT, NOT AFTER.** `K-onceR` (the forward direction of
+  v2's W1: declaration → bare-identifier argument at position *p* → parameter *p* → `once(`, depth ≤ 4)
+  is built on **sliced** parts — v2's helper span (**64 lines**) and `unit-465plant`'s key span (**58
+  lines**), each marker asserted to occur **exactly once**, 11 bindings recovered. Instrument + capture
+  `f6a61c67`, post-hoc + RESULTS `8377affe`, memo this fire.
+  **P5 TRUE** (`SB374` `:690`, `SB375` `:691`: `K-once` false → `K-onceR` true via the parameter
+  route) · **P7 TRUE** (the plant carries the property: parameter-bound + non-unique flags **only**
+  under `K-onceR`; unique control under neither; **direct**-duplicate control under **both**, so the
+  discrimination is the parameter route rather than duplication) · **P1–P4 NOT RUN** — the 403-commit
+  population legs are a second instrument, named unbuilt, and **no population figure appears in the
+  unit**, so nothing there can be read as a rate. **R5 holds**: `occ(value) = 1` for both anchors, so
+  the widening buys nothing today and everything the day either value stops being unique.
+  **P6 FALSE, and it is the fire's second self-finding.** My walker returned `drive(…) :717 →
+  copyProbe(…) :694 → once :685`; v2's capture prints `copyProbe(…) :811`. Both routes are real and my
+  walker returned the **first found** — *a first-route-wins walker cannot be graded against an
+  all-routes recording*, and reporting one chain is **my own R8 broken inside the instrument that
+  declared it**. Post-hoc (labelled; P6 stays FALSE in the capture, the pair unedited): `SB374` has
+  **11 routes / 9 distinct signatures**, `SB375` **7**, and **`in v2 only` is EMPTY for both** — v2's
+  chain is a **subset** of the enumeration. **The one line that touches Argus's unit:** a gate leg that
+  prints a chain must enumerate it, or it names one of eleven real routes as though it were the only one.
+  **R1 disclosure:** `git diff --stat 5ea5a8e4..HEAD -- scripts/` **empty**, no probe driven — but
+  `packages/` **did** change this fire (the three `unit-465cfgdir` test files), which R1 as written
+  covers, so it is disclosed rather than glossed. Earlier units' source/capture pairs verified
+  untouched by `git log` per path; composed slices in the unit's **gitignored** `scratch/` (`!!`).
 - **Previous update:** 2026-11-10 ~13:17–13:4x PT (**WORK fire — substantive: THE RED STATE EVERY DEFERRAL
   WAS WAITING ON IS BUILT, 8 OF 8 PRE-REGISTERED TRUE — AND THE POST-HOC LEGS REFUTE THE PUBLISHED
   SPELLING OF THE SCREEN THEY WERE BUILT TO UNBLOCK.** As Theseus spelled it, the check flags **67
