@@ -1,0 +1,59 @@
+
+[1m[46m RUN [49m[22m [36mv4.0.18 [39m[90m/Users/xian/Development/klatch-worktrees/daedalus/packages/server[39m
+
+ [31m❯[39m src/__tests__/import-context.test.ts [2m([22m[2m6 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[32m 50[2mms[22m[39m
+     [32m✓[39m captures CLAUDE.md from cwd when present[32m 31[2mms[22m[39m
+[31m     [31m×[31m captures MEMORY.md from Claude projects directory when present[39m[32m 6[2mms[22m[39m
+     [32m✓[39m succeeds without CLAUDE.md or MEMORY.md (best-effort)[32m 3[2mms[22m[39m
+     [32m✓[39m handles unreadable CLAUDE.md gracefully (permission denied)[32m 3[2mms[22m[39m
+     [32m✓[39m handles session without cwd (no context capture attempt)[32m 2[2mms[22m[39m
+[31m     [31m×[31m captures both CLAUDE.md and MEMORY.md when both present[39m[32m 3[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 2 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m src/__tests__/import-context.test.ts[2m > [22mImport context capture (CLAUDE.md + MEMORY.md)[2m > [22mcaptures MEMORY.md from Claude projects directory when present
+[31m[1mAssertionError[22m: expected undefined to be '# Memory\n\nUser prefers dark mode.' // Object.is equality[39m
+
+[32m- Expected:[39m 
+"# Memory
+
+User prefers dark mode."
+
+[31m+ Received:[39m 
+undefined
+
+[36m [2m❯[22m src/__tests__/import-context.test.ts:[2m142:27[22m[39m
+    [90m140| [39m    [35mconst[39m channel [33m=[39m [35mawait[39m [34mgetChannelById[39m(channelId)[33m;[39m
+    [90m141| [39m    [35mconst[39m meta [33m=[39m [33mJSON[39m[33m.[39m[34mparse[39m(channel[33m.[39msourceMetadata)[33m;[39m
+    [90m142| [39m    [34mexpect[39m(meta[33m.[39mmemoryMd)[33m.[39m[34mtoBe[39m([32m'# Memory\n\nUser prefers dark mode.'[39m)[33m;[39m
+    [90m   | [39m                          [31m^[39m
+    [90m143| [39m  })[33m;[39m
+    [90m144| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/__tests__/import-context.test.ts[2m > [22mImport context capture (CLAUDE.md + MEMORY.md)[2m > [22mcaptures both CLAUDE.md and MEMORY.md when both present
+[31m[1mAssertionError[22m: expected undefined to be 'User memory.' // Object.is equality[39m
+
+[32m- Expected:[39m 
+"User memory."
+
+[31m+ Received:[39m 
+undefined
+
+[36m [2m❯[22m src/__tests__/import-context.test.ts:[2m267:27[22m[39m
+    [90m265| [39m    [35mconst[39m meta [33m=[39m [33mJSON[39m[33m.[39m[34mparse[39m(channel[33m.[39msourceMetadata)[33m;[39m
+    [90m266| [39m    [34mexpect[39m(meta[33m.[39mclaudeMd)[33m.[39m[34mtoBe[39m([32m'Project rules.'[39m)[33m;[39m
+    [90m267| [39m    [34mexpect[39m(meta[33m.[39mmemoryMd)[33m.[39m[34mtoBe[39m([32m'User memory.'[39m)[33m;[39m
+    [90m   | [39m                          [31m^[39m
+    [90m268| [39m  })[33m;[39m
+    [90m269| [39m})[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m4 passed[39m[22m[90m (6)[39m
+[2m   Start at [22m 16:45:08
+[2m   Duration [22m 443ms[2m (transform 217ms, setup 42ms, import 261ms, tests 50ms, environment 0ms)[22m
+

@@ -1,0 +1,113 @@
+
+[1m[46m RUN [49m[22m [36mv4.0.18 [39m[90m/Users/xian/Development/klatch-worktrees/daedalus/packages/server[39m
+
+ [32m✓[39m src/__tests__/zz-baseline-from-git-round234.test.ts [2m([22m[2m8 tests[22m[2m)[22m[33m 11757[2mms[22m[39m
+     [33m[2m✓[22m[39m hands it the monorepo root [33m 11693[2mms[22m[39m
+ [31m❯[39m src/__tests__/zz-baseline-from-git-session-scanner.test.ts [2m([22m[2m10 tests[22m[2m | [22m[31m5 failed[39m[2m)[22m[33m 11997[2mms[22m[39m
+     [32m✓[39m decodes encoded cwd back to absolute path[32m 7[2mms[22m[39m
+     [32m✓[39m handles deeper paths[32m 0[2mms[22m[39m
+     [32m✓[39m handles single-segment paths[32m 0[2mms[22m[39m
+[31m     [31m×[31m returns 200 with project tree containing sessions[39m[33m 11753[2mms[22m[39m
+[31m     [31m×[31m includes session metadata (path, size, date)[39m[32m 55[2mms[22m[39m
+     [32m✓[39m skips tiny files (< 100 bytes)[32m 37[2mms[22m[39m
+[31m     [31m×[31m marks already-imported sessions[39m[32m 35[2mms[22m[39m
+[31m     [31m×[31m returns empty array when no projects exist[39m[32m 37[2mms[22m[39m
+[31m     [31m×[31m handles multiple projects[39m[32m 35[2mms[22m[39m
+     [32m✓[39m sorts sessions within a project by modification date (newest first)[32m 36[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 5 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m src/__tests__/zz-baseline-from-git-session-scanner.test.ts[2m > [22mGET /api/import/claude-code/sessions[2m > [22mreturns 200 with project tree containing sessions
+[31m[1mAssertionError[22m: expected 111 to be 1 // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 1[39m
+[31m+ 111[39m
+
+[36m [2m❯[22m src/__tests__/zz-baseline-from-git-session-scanner.test.ts:[2m104:32[22m[39m
+    [90m102| [39m
+    [90m103| [39m    [35mconst[39m body [33m=[39m [35mawait[39m res[33m.[39m[34mjson[39m()[33m;[39m
+    [90m104| [39m    [34mexpect[39m(body[33m.[39mtotalProjects)[33m.[39m[34mtoBe[39m([34m1[39m)[33m;[39m
+    [90m   | [39m                               [31m^[39m
+    [90m105| [39m    [34mexpect[39m(body[33m.[39mtotalSessions)[33m.[39m[34mtoBe[39m([34m2[39m)[33m;[39m
+    [90m106| [39m    [34mexpect[39m(body[33m.[39mprojects)[33m.[39m[34mtoHaveLength[39m([34m1[39m)[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/__tests__/zz-baseline-from-git-session-scanner.test.ts[2m > [22mGET /api/import/claude-code/sessions[2m > [22mincludes session metadata (path, size, date)
+[31m[1mAssertionError[22m: expected '<session-uuid-redacted>' to match /^sess-test-/[39m
+
+[32m- Expected:[39m 
+/^sess-test-/
+
+[31m+ Received:[39m 
+"<session-uuid-redacted>"
+
+[36m [2m❯[22m src/__tests__/zz-baseline-from-git-session-scanner.test.ts:[2m119:31[22m[39m
+    [90m117| [39m    [35mconst[39m session [33m=[39m body[33m.[39mprojects[[34m0[39m][33m.[39msessions[[34m0[39m][33m;[39m
+    [90m118| [39m
+    [90m119| [39m    [34mexpect[39m(session[33m.[39msessionId)[33m.[39m[34mtoMatch[39m([36m/^sess-test-/[39m)[33m;[39m
+    [90m   | [39m                              [31m^[39m
+    [90m120| [39m    [34mexpect[39m(session[33m.[39mpath)[33m.[39m[34mtoContain[39m([32m'.jsonl'[39m)[33m;[39m
+    [90m121| [39m    [34mexpect[39m(session[33m.[39msizeBytes)[33m.[39m[34mtoBeGreaterThan[39m([34m100[39m)[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/__tests__/zz-baseline-from-git-session-scanner.test.ts[2m > [22mGET /api/import/claude-code/sessions[2m > [22mmarks already-imported sessions
+[31m[1mTypeError[22m: Cannot read properties of undefined (reading 'alreadyImported')[39m
+[36m [2m❯[22m src/__tests__/zz-baseline-from-git-session-scanner.test.ts:[2m149:21[22m[39m
+    [90m147| [39m    const notImported = sessions.find((s: any) => s.sessionId === 'ses…
+    [90m148| [39m
+    [90m149| [39m    [34mexpect[39m(imported[33m.[39malreadyImported)[33m.[39m[34mtoBe[39m([35mtrue[39m)[33m;[39m
+    [90m   | [39m                    [31m^[39m
+    [90m150| [39m    [34mexpect[39m(imported[33m.[39mexistingChannelId)[33m.[39m[34mtoBeTruthy[39m()[33m;[39m
+    [90m151| [39m    [34mexpect[39m(imported[33m.[39mexistingChannelName)[33m.[39m[34mtoBe[39m([32m'Test Import'[39m)[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/__tests__/zz-baseline-from-git-session-scanner.test.ts[2m > [22mGET /api/import/claude-code/sessions[2m > [22mreturns empty array when no projects exist
+[31m[1mAssertionError[22m: expected 111 to be +0 // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 0[39m
+[31m+ 111[39m
+
+[36m [2m❯[22m src/__tests__/zz-baseline-from-git-session-scanner.test.ts:[2m162:32[22m[39m
+    [90m160| [39m    [34mexpect[39m(res[33m.[39mstatus)[33m.[39m[34mtoBe[39m([34m200[39m)[33m;[39m
+    [90m161| [39m    [35mconst[39m body [33m=[39m [35mawait[39m res[33m.[39m[34mjson[39m()[33m;[39m
+    [90m162| [39m    [34mexpect[39m(body[33m.[39mtotalProjects)[33m.[39m[34mtoBe[39m([34m0[39m)[33m;[39m
+    [90m   | [39m                               [31m^[39m
+    [90m163| [39m    [34mexpect[39m(body[33m.[39mtotalSessions)[33m.[39m[34mtoBe[39m([34m0[39m)[33m;[39m
+    [90m164| [39m    [34mexpect[39m(body[33m.[39mprojects)[33m.[39m[34mtoHaveLength[39m([34m0[39m)[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/__tests__/zz-baseline-from-git-session-scanner.test.ts[2m > [22mGET /api/import/claude-code/sessions[2m > [22mhandles multiple projects
+[31m[1mAssertionError[22m: expected 111 to be 2 // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 2[39m
+[31m+ 111[39m
+
+[36m [2m❯[22m src/__tests__/zz-baseline-from-git-session-scanner.test.ts:[2m180:32[22m[39m
+    [90m178| [39m    [35mconst[39m res [33m=[39m [35mawait[39m app[33m.[39m[34mrequest[39m([32m'/api/import/claude-code/sessions'[39m)[33m;[39m
+    [90m179| [39m    [35mconst[39m body [33m=[39m [35mawait[39m res[33m.[39m[34mjson[39m()[33m;[39m
+    [90m180| [39m    [34mexpect[39m(body[33m.[39mtotalProjects)[33m.[39m[34mtoBe[39m([34m2[39m)[33m;[39m
+    [90m   | [39m                               [31m^[39m
+    [90m181| [39m    [34mexpect[39m(body[33m.[39mtotalSessions)[33m.[39m[34mtoBe[39m([34m3[39m)[33m;[39m
+    [90m182| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m1 passed[39m[22m[90m (2)[39m
+[2m      Tests [22m [1m[31m5 failed[39m[22m[2m | [22m[1m[32m13 passed[39m[22m[90m (18)[39m
+[2m   Start at [22m 16:42:40
+[2m   Duration [22m 12.41s[2m (transform 451ms, setup 88ms, import 564ms, tests 23.75s, environment 0ms)[22m
+
