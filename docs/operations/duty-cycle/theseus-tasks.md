@@ -1,9 +1,36 @@
 # Theseus — Task List of Record
 
-**Role:** Manual testing & exploration — CLI side  
-**Cycle:** Phase 3, daily heartbeat (`31 9 * * *` — 09:31 AM PT)  
-**Worktree:** `.claude/worktrees/theseus` / `claude/theseus`  
-**Last updated:** 2026-08-13 (was 2026-06-22 — the June state below had gone stale and is corrected here, not appended to)
+**Role:** Manual testing & exploration, in tandem with the product owner (`CLAUDE.md` → Multi-Agent
+Coordination).
+**Cycle:** three launchd fires per day — **START 10:47, WORK 14:47, STOP 19:47 PT**
+(`~/Library/LaunchAgents/com.klatch.theseus-{START,WORK,STOP}.plist`, `StartCalendarInterval` read
+with `PlistBuddy` 2026-11-10).
+**Worktree:** `/Users/xian/Development/klatch-worktrees/theseus` on `claude/theseus-cycle`
+(`git worktree list`, 2026-11-10). Push target is `HEAD:main`.
+**Last updated:** 2026-11-10, WORK-part restart fire.
+
+---
+
+## What this refresh corrected, and why the file had gone stale
+
+Every claim below was checked with a tool call in the fire that wrote it. Four header facts were
+wrong, not merely old:
+
+- **Cadence.** Said "Phase 3, daily heartbeat (`31 9 * * *` — 09:31 AM PT)". There is no 09:31 job;
+  there are three day-part plists at 10:47 / 14:47 / 19:47.
+- **Worktree and branch.** Said `.claude/worktrees/theseus` / `claude/theseus`. Both have moved.
+- **"Last updated: 2026-08-13."** The file was *edited* 2026-10-19 (`f47edd69`) but only in the
+  standing-discipline section; the whole task body stayed 8/13-era.
+- **Two "blocked-on-others" items had been closed for three months.** Both were closed by
+  **Round 49 (`c9dd6110`, 2026-08-14 09:28)** — *the morning after* they were filed. A fire reading
+  this list would have gone looking for work that shipped the next day.
+
+The sharper problem: this seat authored **39 of the 80 `docs/research/unit-*` units** (first-commit
+author `Theseus (Klatch)`, counted this fire), **all of them since 2026-10-27**, and *none* of that
+work appeared anywhere in this file. The task list of record was not describing the seat's work. The
+cure is structural, not a one-off tidy: a **recurring row** now makes this refresh due monthly, so
+the next three-month drift is caught by the mechanism rather than by a restart that happened to land
+at the head of a fire.
 
 ---
 
@@ -11,41 +38,69 @@
 
 _Items the cycle can pick up without xian._
 
-- [ ] Session log at fire start; drain `docs/mail/` per the Mail Handling discipline
-- [ ] **Mail close sweep** — several threads addressed to this seat are old enough to be dead but
-      have not been read-and-closed into `docs/mail/read/`. Not done 8/13 (the sensitivity round
-      took the fire); each needs reading before moving, so it is a real work item, not bookkeeping.
-- [ ] **AAXT the chip in a rendered page** — the one thing 8/13 STOP's probe could not do. Confirms
-      (or refutes) that the chip is absent on the live turn and present after reload, from the
-      human's side rather than from the wire. Only worth a fire if Iris or Daedalus says so; if
-      either ships the `message_complete` field first, this becomes the acceptance test for it.
+- [ ] Session log at fire start; drain `docs/mail/` per the Mail Handling discipline.
+- [ ] **Mail close sweep** — **93 live / 1188 read** (counted with `fs.readdirSync`, not `grep`,
+      2026-11-10). Threads addressed to this seat are old enough to be dead but have not been
+      read-and-closed into `docs/mail/read/`. Each needs *reading* before moving, so this is a real
+      work item, not bookkeeping — and it is **a fire's unit of work, not a tail**: the 11/10 WORK
+      fire deferred it on exactly that ground, and the 8/13 revision of this file had already
+      recorded it undone. Those are the only two mentions of it in this seat's record (`grep -ric
+      "close sweep" docs/logs/*theseus*` → one file; `docs/COORDINATION.md` → one occurrence), so
+      earlier fires more likely skipped it silently than deferred it on the record. Do not move a thread with an open action item; the
+      Round-465 thread in particular is open by design.
+- [ ] **A target-keyed screen** — `occ(target, v) !== 1`, which is what `once()` actually throws on.
+      **No blocker named**; it is a different instrument nobody has built, and it is left
+      **unclaimed** so either this seat or Daedalus can take it. Opened in the 11/10 WORK entry of
+      `docs/COORDINATION.md`; whoever takes it should claim it here or there first.
+- [ ] **A pin on v2's capture** — **no blocker named**; nobody has asked for it. Carried from 11/10.
+- [ ] **AAXT the chip in a rendered page** — *the condition this item was waiting on was met on
+      2026-08-14 and nobody noticed.* The item said: "if either ships the `message_complete` field
+      first, this becomes the acceptance test for it." Round 49 (`c9dd6110`) ships exactly that —
+      `carriedContext` rides `message_complete` (`round49-carried-context-room-count-and-wire.test.ts:213`
+      "rides the event so the chip is present on the turn just watched") **and** the SSE replay paths
+      (`:333`). So this is no longer a question about the wire; it is the **human-side acceptance
+      test** of a shipped field. **In a fire: blocked** — a rendered-page run needs a server start,
+      and that approval is unavailable in a non-interactive fire (documented precedent:
+      `round97-…-2026-08-26.md:224`). **In an interactive/tandem session: ready to run.**
 - [ ] **Probe 3 single-variable rerun** — reinsert the owner's restriction into the *same* klatch
       prompt rather than comparing across channels, so "restriction visible → withheld, evicted →
       disclosed" becomes a licensed claim. ~4 live calls. See
-      `docs/research/carried-context-disclosure-sensitivity-2026-08-13.md` §"What probe 3 does not
-      establish".
-- [ ] **Replicate probe 3.** Currently n=1.
+      `docs/research/carried-context-disclosure-sensitivity-2026-08-13.md`
+      §"What probe 3 does not establish". **Same blocker as above in a fire** (live calls /
+      non-interactive approval); ready in a tandem session.
+- [ ] **Replicate probe 3.** Still **n=1** — checked this fire: no replication doc exists
+      (`grep -rl "probe 3" docs/research/ docs/logs/` returns only the two 8/13 write-ups and the
+      two 8/13 logs). Same live-call blocker.
 
 ---
 
 ## Blocked-on-others (not xian)
 
-- **Eviction defect** — handed to Daedalus 8/13 with three options and a recommendation. His
-  surface; the header's contract applies to every klatch. Nothing for me until he rules. *(Ruled
-  8/13 STOP: option 1 shipped, 2 deferred and now costlier, 3 recorded as the position. Residual
-  stays open as an accepted defect.)*
-- **Chip absent on the live turn** — filed to Iris cc Daedalus 8/13 STOP with three options. The
-  `StreamEvent` half is Daedalus's surface, the chip half is Iris's. Nothing for me until they
-  rule; if they want the visual confirmation, that's an AAXT run and they should say so.
-- **Room-count undercount on same-named channels** — filed to Daedalus 8/13 STOP, one-line fix
-  identified (count distinct `channelId`, not `channelName`). His surface.
-- **Staged `.testdata/` DBs missing** — reported to Pard cc xian 8/13 STOP. One line back from him
-  ("copies survive elsewhere" / "they were the only ones") closes it either way.
-- ~~**`omittedCount` on the carried-context chip**~~ — closed 8/13: Daedalus corrected the metric
-  (`omittedCount` is 0 in the motivating case; `hasOlderHistory` is the true one), Iris ruled the
-  chip stays existence-only. Both fields persisted, revisitable without backfill.
-- ~~**Canonicity line in Pard's 8/13 route ruling**~~ — closed 8/13: he retracted the line, confirmed
-  nothing is blocked on this seat and no narrower question exists. Thread moved to `read/`.
+- **Promotion of the restricted screen as a gate leg — Argus's, claimed by him 2026-11-10.** Three
+  inputs routed to him in `46387d2e`, the last called load-bearing: promote on **4-of-403 commits**
+  rather than 14-of-262; carry the two weakening sentences (this population cannot grade the
+  `K-once` restriction; the five misses are not five missed hazards) *with* the figure; and **widen
+  the key before promotion**, because `K-once` re-introduces the hoisted-parameter blindness v2
+  cured with W1. Nothing for this seat until he rules or asks.
+- **`377`'s seven derived anchors** — blocker: cross-pinned `C5`. *(As recorded in the 11/10
+  COORDINATION entry; not re-measured this fire.)*
+- **`373` 15→16 plus the `:108` fixture, and `377` 13→14** — carried, unclaimed. *(Same provenance;
+  figures not re-derived here, deliberately — they belong to their unit docs.)*
+- **The shared guarded registry reader** — carried, unclaimed, with a **seventh** reason as of
+  11/10: a copier-population key has now been found to be a floor three separate times.
+- **`d0dff8b7`'s `R373_*` under `K5`** — blocker: the same extractor gap as `247`/`248`.
+- **`247`/`248` under `K5`** — blocker unchanged and **mine**: UNREAD, not cleared.
+- ~~**Room-count undercount on same-named channels**~~ — **CLOSED 2026-08-14 by Round 49**
+  (`c9dd6110`), one day after it was filed, and carried here as open for three months. The count is
+  by `channelId` now (`carried-context.ts:339`, whose comment cites this seat's own 8/13
+  measurement), with six tests in that `describe`, including "counts two same-named conversations as two"
+  (`round49-…test.ts:119`).
+- ~~**Chip absent on the live turn**~~ — **CLOSED 2026-08-14 by the same commit** (see the AAXT item
+  above, which inherits it as an acceptance test).
+- ~~**Eviction defect**~~ — ruled 8/13 STOP: option 1 shipped, 2 deferred, 3 recorded as the
+  position; residual stays open as an accepted defect.
+- ~~**`omittedCount` on the carried-context chip**~~ — closed 8/13. Both fields persisted and are
+  still in the source (`carried-context.ts:236,246`), chip stays existence-only.
 
 ---
 
@@ -55,8 +110,15 @@ _Items batched for xian's attention. Calliope's sweep promotes these to the atte
 
 - **MAXT Session 02** — needs xian's live tandem attention; parked until he dedicates a session.
 - **Round-trip MAXT** (Daedalus 4/28 assignment) — also needs live tandem attention; parked.
-- **Staged test-data cleanup** — the four DBs in `.testdata/` are Pard's staging, held pending
-  xian's call. Not mine to delete; noted so no fire "tidies" them away.
+- **Is the AAXT standing queue still live?** — see the queue below. A question for xian or Calliope,
+  not a work item this seat should answer for itself.
+- ~~**Staged test-data cleanup**~~ — **removed; the 8/13 framing is void.** It said "the four DBs in
+  `.testdata/` are Pard's staging, held pending xian's call." Checked this fire: `.testdata/` holds
+  **345 top-level entries, among them 134 `.db` files** (found recursively), is in active use by
+  this seat's probe/corpus work, and
+  the **whole directory** is ignored (`git check-ignore -v` → `.gitignore:33  .testdata/`). There is
+  no four-DB decision pending and nothing for xian to rule on. *(The companion item "staged
+  `.testdata/` DBs missing", reported to Pard 8/13, dies with it for the same reason.)*
 
 ---
 
@@ -64,33 +126,49 @@ _Items batched for xian's attention. Calliope's sweep promotes these to the atte
 
 | name | cadence | next_due | last_completed | notes |
 |---|---|---|---|---|
-| Mail drain | per fire | 2026-08-14 | 2026-08-13 | Read on arrival, act/reply/surface in the same turn |
-| COORDINATION.md update | per fire | 2026-08-14 | 2026-08-13 | Update Theseus Prime section before any push |
-| Session log entry | per fire | 2026-08-14 | 2026-08-13 | Timestamped entries as work progresses, not reconstructed |
+| Mail drain | per fire | 2026-11-10 STOP | 2026-11-10 WORK | Read on arrival, act/reply/surface in the same turn |
+| COORDINATION.md update | per fire | 2026-11-10 STOP | 2026-11-10 WORK | Update Theseus Prime section before any push |
+| Session log entry | per fire | 2026-11-10 STOP | 2026-11-10 WORK | Timestamped entries as work progresses, not reconstructed |
+| **Task list of record refresh** | **monthly** | **2026-12-10** | **2026-11-10** | **New 2026-11-10.** The cure for this file's three-month drift. Refresh means *verify*: header facts against `git worktree list` and the plists, every open item against code or `git log`, and every "blocked on X" against whether X still holds. A refresh that only re-dates the header has not been done. |
 
 ---
 
 ## Standing discipline for this seat
 
-- **Scratch DBs and result files are deleted at end of fire.** Corrected 2026-10-19 (Round 418):
-  this line used to say `.testdata/` is "only gitignored for `*.db`/`-wal`/`-shm`, other files
-  there are committable". That is false and was already false when written — `.gitignore:33`
-  ignores the **whole** `.testdata/` directory, added 2026-08-13 by this seat on the same day this
-  task list was last revised, for exactly the reason the line gets wrong. So nothing under
-  `.testdata/` can be committed, and nothing there will ever appear in `git status`. Durable output
-  goes to `docs/research/`, quoted. Verified this fire with `git check-ignore -v`.
+- **Verify before asserting.** If a claim did not come from a tool call *in this session*, it is a
+  lead, not a source (`CLAUDE.md` §"Verify Before Asserting"). This file is the standing example of
+  the cost: two items carried as open for three months after the commit that closed them, and a
+  cadence line naming a cron job that does not exist.
+- **Scratch DBs and result files are deleted at end of fire.** Corrected 2026-10-19 (Round 418) and
+  **re-verified 2026-11-10**: `.gitignore:33` ignores the **whole** `.testdata/` directory, so
+  nothing under it can be committed and nothing there will ever appear in `git status`. Durable
+  output goes to `docs/research/`, quoted.
 - **Probes cost real money.** State the call count in the write-up.
 - **Every probe needs the control that makes its result readable.** An empty or errored control is
   void, not a datum — check `status`/`stop_reason` on the row before reading a non-answer as a
-  decision (this cost me a wrong write-up on 8/13 and was caught).
+  decision (this cost a wrong write-up on 8/13 and was caught).
+- **A unit's pre-registration is committed and pushed before its instrument exists.** The shape this
+  seat has run since 10/27: predictions and refusals first, in their own commit, then the
+  instrument + capture, then RESULTS with post-hoc legs labelled as post-hoc.
 
 ---
 
-## AAXT candidates (standing queue — pick up when assignment-free)
+## AAXT candidates (standing queue — green-lit 5/28 by Calliope relay, untouched since)
 
-From 5/18 wave, green-lit 5/28 by Calliope relay:
+All four surfaces exist in the client as of 2026-11-10 (`ls packages/client/src/components/`), and
+**no AAXT round doc is dedicated to any of them** — checked by filename across
+`docs/research/aaxt-*` and by content grep, whose hits are other rounds that merely name the file
+(Round 49's write-up among them):
 
-1. **ProjectSettings (F5.1)** — greenlit, not yet started
-2. **EntityManager** — greenlit, not yet started  
-3. **MessageList (F1.4)** — greenlit, not yet started
-4. **Composition gesture surface** — not yet ready (Daedalus mid-implementation 6/22); target when feature-complete
+1. **ProjectSettings (F5.1)** — `ProjectSettings.tsx` exists; greenlit, not started
+2. **EntityManager** — `EntityManager.tsx` exists; greenlit, not started
+3. **MessageList (F1.4)** — `MessageList.tsx` exists; greenlit, not started
+4. **Composition gesture surface** — `MessageInput.tsx` exists; was "not yet ready (Daedalus
+   mid-implementation 6/22)". His own task list now records the composition gesture as largely built
+   with sub-phases 1–7 done, so the readiness condition is likely met — **unverified here**, and his
+   to confirm.
+
+**Open question, raised not answered (and routed to xian/Calliope above):** this queue has not moved
+in ~5.5 months while the seat ran 39 adversarial units in 15 days. Either the queue is stale and
+should be retired, or AAXT is being crowded out and someone should say so. This seat should not
+quietly decide which.
