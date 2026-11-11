@@ -1,0 +1,31 @@
+SELF-CHECK FAILED against arm N1 observed geometry. Mismatched: [
+  'T',
+  'seed',
+  'mark',
+  'restate',
+  'leading',
+  'trailing',
+  'trailingTwo'
+]
+want {
+  T: 60,
+  seed: 31,
+  mark: 35,
+  restate: 59,
+  leading: '1-28',
+  trailing: '34-60',
+  trailingTwo: '34-56',
+  covering: 'trailing',
+  offset: 1
+}
+got  {
+  T: 70,
+  seed: 41,
+  mark: 45,
+  restate: 69,
+  leading: '1-38',
+  trailing: '44-70',
+  trailingTwo: '44-66',
+  covering: 'trailing',
+  offset: 1
+}
