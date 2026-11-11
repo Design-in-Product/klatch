@@ -1,0 +1,12 @@
+2c2
+<   N1  rows=60  fact=[31,59]  marking=[35]  offers 1-28 / 34-60 (two-excerpt trailing 34-56)
+---
+>   N1  rows=70  fact=[41,69]  marking=[45]  offers 1-38 / 44-70 (two-excerpt trailing 44-66)
+8c8
+< FILLER (P=12): 0 feasible of 208 configurations
+---
+> FILLER (P=12): 0 feasible of 273 configurations
+25c25
+< FILLER_LONG (P=17): 0 feasible of 288 configurations
+---
+> FILLER_LONG (P=17): 0 feasible of 378 configurations

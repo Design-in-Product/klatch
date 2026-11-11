@@ -1,0 +1,5 @@
+cells=60 equal=0 parityViolations=0
+trailingWidth - (2P+3) distinct deltas: [ '0' ]
+leadingWidth - (2L-2) distinct deltas: [ 0 ]
+anchor N1 L=15 P=12: leading=28 trailing=27
+L=20 P=12: leading=38 (MAX_EXPAND=30)
