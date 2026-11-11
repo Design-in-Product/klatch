@@ -1,0 +1,9 @@
+script: scripts/verify-filler-constraints.mjs
+args: []
+interpreter: tsx
+cwd: /Users/xian/Development/klatch-worktrees/theseus
+status: 0
+signal: null
+error: none
+stdout_bytes: 786
+stderr_bytes: 0

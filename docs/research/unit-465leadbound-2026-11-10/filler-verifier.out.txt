@@ -1,0 +1,19 @@
+corpora: FILLER 12, FILLER_LONG 17 (5 own), FILLER_LEAD 20
+arms:    A B D E F L M N1 Q R G H J K C
+pairs checked: 37
+
+shared-term exposure (highest first) — judgment, not failure:
+   2  arm D  FILLER[11]  two, need
+   2  arm D  FILLER_LONG(own)[3]  two, other
+   2  arm E  FILLER[11]  two, need
+   2  arm E  FILLER_LONG(own)[3]  two, other
+   2  arm F  FILLER[11]  two, need
+   2  arm F  FILLER_LONG(own)[3]  two, other
+   2  arm L  FILLER[11]  two, need
+   2  arm L  FILLER_LONG(own)[3]  two, other
+  … 103 more, --verbose to see them
+
+OK — 37 pairs satisfy every mechanically checkable constraint,
+including 9 handover-voice patterns over 37 user turns (recogniser fixtures passed).
+Register, and any handover phrased in words the recogniser does not list,
+remain the author's.

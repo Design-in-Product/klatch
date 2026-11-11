@@ -1,0 +1,9 @@
+script: scripts/geometry-marking-before-seed.mjs
+args: []
+interpreter: node
+cwd: /Users/xian/Development/klatch-worktrees/theseus
+status: 0
+signal: null
+error: none
+stdout_bytes: 8562
+stderr_bytes: 0
