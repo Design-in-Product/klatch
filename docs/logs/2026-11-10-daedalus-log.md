@@ -376,3 +376,128 @@ to.
 **Step 3 — this log pushed last.**
 
 Delivery is the wrapper's to log; what is verified above is presence on `origin/main`, not delivery.
+
+---
+
+## 16:36 — Session resumed (RESTART fire; model: Claude Opus 5 on Claude Code **2.1.322**)
+
+`date`-reads: **16:36** (fire open), **16:40**, **16:42**, **16:47**, **16:5x** (wrap).
+
+Restarted by Pard on xian's go onto 2.1.322. Briefing run in full: pull (already up to date at my
+own `5ea5a8e4`), `%an` check on the delta (**Calliope 1, none mine**), `docs/COORDINATION.md` read,
+mail delta-read (**3 added since my 13:31 memo** — Argus 13:40, Theseus ~15:1x, Calliope 16:3x, all
+addressed here, all read in full before any edit), cross-pollination brief (public-repo pointer only,
+read at its private URL per the file).
+
+### What I started on, and why I put it down
+
+Theseus's 15:1x memo names exactly one item load-bearing for my unit (§5.3): `K-once` cannot see an
+anchor consumed through a **function parameter**, so widen it **before** Argus promotes it. Verified
+the subject by hand before registering anything — `SB374` is a top-level const in
+`scripts/probe-round377-…mts`, consumed as `copyProbe(R374, SB374, …)` at `:811`/`:819`, and
+`copyProbe`'s parameter 1 `sandboxDecl` reaches `once(s, sandboxDecl, …)` at `:685`; v2's own
+capture prints the chain in the other direction (`census-v2-run-1.txt:40,42`).
+
+`docs/research/unit-465widen-2026-11-10/PRE-REGISTRATION.md` written and **pushed to `origin/main`
+before any instrument in the unit existed** — `9e3a5c2f`, 7 predictions, 11 refusals. Slice plan
+recorded in R9 (v2's `argsAt`/`callSites`/`FNDECL`/`enclosingFnFor` span and `unit-465plant`'s
+`occ`/`parseLiteral`/`literalDecls`/`keysFor` span, each marker asserted to occur exactly once; the
+forward walker is new code and therefore graded, not trusted).
+
+Then Calliope's 16:3x memo turned up in the same read: **a RED gate**, routed to Argus, root-caused
+to **my** `getClaudeProjectsDir()`. I put the widen instrument down for it. The pre-registration
+stays pushed and unbuilt, which is honest and is named in the memo, in COORDINATION.md and here.
+
+### The red gate
+
+Reproduced before touching anything: `npx vitest run src/__tests__/session-scanner.test.ts
+src/__tests__/round234-…test.ts` → **5 failed / 13 passed (18)**, with a real session UUID and a real
+project count (111) inside fixture assertions. `CLAUDE_CONFIG_DIR=/Users/xian/.claude` confirmed set
+in this seat's own shell; `claude --version` **2.1.322**.
+
+**Note to self, from the first run of this fire:** that reproduction was piped to `tail` and reported
+`EXIT=0` while the run had failed — the pipeline's exit code, not vitest's. Every later leg wrote to a
+capture file and read `$?` from the child directly. This is the pipe-hides-the-exit-code trap, caught
+in-fire rather than in review.
+
+Matrix, census, and the three cures are in `docs/research/unit-465cfgdir-2026-11-10/RESULTS.md` with
+eight captures (UUIDs and scratch paths redacted — public repo). Short form:
+
+| leg | subject | env | exit | result |
+|---|---|---|---|---|
+| A | patched | `CLAUDE_CONFIG_DIR` set | 0 | 18 passed |
+| B | patched | both unset | 0 | 18 passed |
+| C | **baseline from git** | `CLAUDE_CONFIG_DIR` set | **1** | **5 failed** / 13 passed |
+| D | baseline from git | both unset | 0 | 18 passed |
+| E | **baseline from git** | `KLATCH_EXTRA_SESSION_ROOTS` only, planted root | **1** | **3 failed** / 15 passed |
+| F | patched | same env as E | 0 | 18 passed |
+| G | **`import-context.test.ts` at HEAD** | config dir relocated | **1** | **2 failed** / 4 passed |
+| H | `import-context.test.ts` patched | config dir relocated | 0 | 6 passed |
+
+Legs C/D/E read the pre-cure files **out of git at the same directory depth**
+(`git show HEAD:<path> > <same dir>/zz-baseline-from-git-*.test.ts`), ran them, and deleted them —
+`git status --short` clean of both afterwards, checked. A patched file with the patch mentally
+subtracted is not a baseline.
+
+### Gate (Step 1/2 of the wrap)
+
+```
+npm test -w packages/server   exit 0   143 files · 2221 passed · 1 skipped (2222)
+npm test -w packages/client   exit 0   26 of 39 files · 333 of 346 tests
+npx tsc --noEmit -p packages/server   exit 0   0 diagnostics
+pre-commit probe census   CENSUS OK   154 files · 44 swept · 110 deferred   (every commit)
+```
+
+Full sweep **not** driven by me this fire — named in the memo with its blocker, not asserted green.
+
+### Commits (verified on `origin/main`, Step 1 of the wrap)
+
+```
+9e3a5c2f  unit-465widen: pre-registration, committed before the instrument exists
+5bc3c0e5  test-isolation: clear CLAUDE_CONFIG_DIR *and* KLATCH_EXTRA_SESSION_ROOTS in the two scanner fixtures
+ab5f3f54  test-isolation: the third exposure, green only by coincidence on this machine
+394ffaee  unit-465cfgdir: RESULTS + eight captures
+30c13db3  mail: reply to Argus+Calliope
+```
+
+### Next fire's first item
+
+`unit-465widen`'s instrument. Unblocked, mine, no deadline named because none is owed.
+
+### 17:0x — fire tail: three of Theseus's memos arrived mid-fire
+
+Read in full before replying, per the mail discipline, rather than batched to a sweep.
+
+1. **His 2221/1 from a second restarted 2.1.322 seat** confirms the `CLAUDE_CONFIG_DIR` half of
+   `5bc3c0e5` under the live condition — a separate process, the variable actually set. His own
+   addendum then **bounds his figure**: his tree sat on `5bc3c0e5` (reflog-pinned, 16:45:54–16:47:53)
+   and never contained `ab5f3f54`, so his green **observes** the third exposure's coincidence instead
+   of measuring its cure.
+2. **One correction routed back.** His *"needs a tree with the fix and a machine where the coincidence
+   does not hold"* overstates what the condition costs: the coincidence is
+   `CLAUDE_CONFIG_DIR === ~/.claude`, and **relocating the variable breaks it on this host** — legs
+   G/H are exactly that pair (HEAD exit 1, 2 failed / 4 passed; patched exit 0, 6 passed). His run and
+   my legs are the two halves, and I could not have produced his.
+3. **Arm N (b) re-worded in this fire** (`docs/operations/duty-cycle/daedalus-tasks.md:39`), not
+   promised for a later one. `FILLER_LEAD` holds **20** — counted bracket-balanced off the live
+   `const FILLER_LEAD = [` block (20 pairs, 37 lines), **not** read out of his memo nor out of my own
+   8/26 coordination entry, which would have been reproducing the figure I was checking. (b) is
+   therefore **superseded, not stale**; what replaces it is a question a count cannot settle, left on
+   my list and not re-routed.
+4. **His solver finding reaches a published ruling of mine.** `LIST_LENGTHS.FILLER_LEAD = 15` used as
+   a loop bound (`:220`/`:245`/`:259`/`:276`) with 20 live — re-read here, both halves — means my own
+   *"`leadPairs: 15` over `14`"* ruling and the `≤ 16` ceiling were argued off a search that never
+   enumerated `L > 15`. Marked **not settled** on my list in the same edit. **Unit declined with a
+   reason:** `unit-465widen`'s instrument is next and gates Argus's claimed promotion.
+
+### Wrap verification (Step 1 and Step 2, re-run after the tail)
+
+```
+git log origin/main --oneline -8   →   (pasted below after the final push)
+```
+
+Files confirmed present with `ls`: `docs/research/unit-465widen-2026-11-10/PRE-REGISTRATION.md`,
+`docs/research/unit-465cfgdir-2026-11-10/RESULTS.md` + 8 `leg-*.txt`, the three patched test files,
+both memos, `docs/operations/duty-cycle/daedalus-tasks.md`.
+
+**Step 3 — this log pushed last, after the rebase onto the seats that pushed during the tail.**
