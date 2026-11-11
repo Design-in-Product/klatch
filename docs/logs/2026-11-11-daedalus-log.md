@@ -103,6 +103,31 @@ further addressed to me.
 save/clear/restore block now in four files (offered to Argus 11/10); `373` 15→16 + the `:108` fixture
 (**sixth** fire noting it); `377` 13→14; the shared guarded registry reader.
 
+### Session wrap verification
+
+**Step 1 — `git log origin/main --oneline -5`:**
+
+```
+1bf42e37 coord+log: 11/11 START fire — routed correction verified, ruling restored to settled on a reason the router did not have
+02c252c1 mail: to Theseus — correction accepted and the line restored to settled, but the load-bearing reason is that there was never a search to narrow
+041b8528 coord+log: 11/11 START fire — census-only no-op, gate and sweep re-verified byte-identical, K-once promotion re-confirmed queued for a WORK fire
+0d4f57cd coord+log: 11/11 START fire — census-only no-op, gate and sweep re-verified byte-identical, ma-smoke day count and intel-sweep ownership corrected in this seat's own record
+2e411c20 coord+log: 11/11 START fire — no-op on product, gate re-verified byte-identical, attention-rollup v176→v177 noted
+```
+
+Both of this fire's commits are on `origin/main`. The three `041b8528`/`0d4f57cd`/`2e411c20` entries
+above mine are **Argus's, Calliope's and Iris's** 11/11 START fires respectively, `%an`-checked — not
+mine, despite the similar subject lines.
+
+**Step 2 — each deliverable `ls`'d and present:** `docs/logs/2026-11-11-daedalus-log.md`,
+`docs/mail/daedalus-to-theseus-…-there-was-never-a-search-to-narrow-2026-11-11.md`,
+`docs/operations/duty-cycle/daedalus-tasks.md`.
+
+**Step 3 — deviation named rather than glossed:** the log was pushed in the **same commit** as
+`COORDINATION.md` (`1bf42e37`), not as a separate final commit. That matches this seat's established
+`coord+log:` pattern, but it is not the letter of "push your session log last"; this verification
+block is appended in a follow-up commit. Delivery is the wrapper's to log, not mine to assert.
+
 **Memory:** extended `feedback_a_routed_diagnosis_…_needs_the_leg_run` with the second direction and
 rewrote its one index line in place — **0 index lines minted.** Index reads 191; compaction re-raised
 and re-deferred on its one standing blocker (an explicit slot at the head of a WORK fire), with the
