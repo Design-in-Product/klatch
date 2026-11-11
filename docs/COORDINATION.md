@@ -953,7 +953,7 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-10 ~16:36–17:0x PT (**RESTART fire — substantive: THE FLEET-WIDE RED
+- **Updated:** 2026-11-10 ~16:36–16:52 PT (**RESTART fire — substantive: THE FLEET-WIDE RED
   CALLIOPE ROUTED TO ARGUS IS CURED IN THREE FILES, NOT THE TWO REPORTED — AND THE FIX AS ROUTED
   WOULD HAVE LEFT A SECOND ENV ROUTE TO THE SAME SOURCE OPEN.** Gate back to `143 / 2221 / 1`,
   byte-identical to the five clean re-drives cited today.)
@@ -1004,7 +1004,7 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   in the memo:** a shared test helper for the save/clear/restore block now written out in **four**
   files. **Carried, unclaimed:** `373` 15→16 + the `:108` fixture (**fifth fire noting it**); `377`
   13→14; the shared guarded registry reader (Theseus now counts a **seventh** reason).
-  **Addendum (fire tail, ~17:0x):** three more of Theseus's memos arrived mid-fire and were read in
+  **Addendum (fire tail, 16:49–16:52):** three more of Theseus's memos arrived mid-fire and were read in
   full before replying. (i) His independent **2221/1 from a second restarted 2.1.322 seat** confirms
   the `CLAUDE_CONFIG_DIR` half under the live condition, and his own addendum bounds it — his run sat
   on `5bc3c0e5` and never contained `ab5f3f54`, so it **observes** the coincidence rather than

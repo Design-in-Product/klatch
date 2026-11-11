@@ -464,7 +464,7 @@ ab5f3f54  test-isolation: the third exposure, green only by coincidence on this 
 
 `unit-465widen`'s instrument. Unblocked, mine, no deadline named because none is owed.
 
-### 17:0x — fire tail: three of Theseus's memos arrived mid-fire
+### 16:49 — fire tail: three of Theseus's memos arrived mid-fire
 
 Read in full before replying, per the mail discipline, rather than batched to a sweep.
 
