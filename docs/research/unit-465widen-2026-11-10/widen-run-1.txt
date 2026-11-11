@@ -1,0 +1,40 @@
+sliced v2 helpers (argsAt / lineOf / callSites / FNDECL / enclosingFnFor): 64 lines, both markers unique
+sliced unit-465plant key span (occ / git / blob / parseLiteral / literalDecls / keysFor): 58 lines, both markers unique
+slices composed and type-checked: 11 bindings recovered
+
+unit-465widen — K-onceR, HEAD-only legs (P5, P6, P7). P1–P4 are a second instrument, not built.
+
+P5 — subject: scripts/probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts
+  SB374 :690  occ(value)=1  K-once=false  K-used=true  K-onceR=true (param)
+      chain: once(… sandboxDecl …) :685
+      chain: copyProbe(…) :694 arg1=sbDecl → copyProbe declared :680 param1=sandboxDecl
+      chain: drive(…) :717 arg2=SB374 → drive declared :692 param2=sbDecl
+  SB375 :691  occ(value)=1  K-once=false  K-used=true  K-onceR=true (param)
+      chain: once(… sandboxDecl …) :685
+      chain: copyProbe(…) :694 arg1=sbDecl → copyProbe declared :680 param1=sandboxDecl
+      chain: drive(…) :718 arg2=SB375 → drive declared :692 param2=sbDecl
+  P5 TRUE — both key-false under K-once and key-true under K-onceR
+
+P6 — graded against v2's capture, parsed not typed
+  parsed 2 W1 chain(s) out of census-v2-run-1.txt: SB374, SB375
+  SB374: v2 once:685 call:811 arg1 param=sandboxDecl  |  mine once:685 call:694 arg1 param=sandboxDecl  → DIVERGE
+  SB375: v2 once:685 call:819 arg1 param=sandboxDecl  |  mine once:685 call:694 arg1 param=sandboxDecl  → DIVERGE
+  P6 FALSE — the forward walker recovers v2's own printed chain
+
+P7 — the plant carries the property: a PARAMETER-BOUND declaration whose value is non-unique
+  PLANT-param (dup, parameter route)
+      occ=2  K-once=false → flag false  |  K-onceR=true (param) → flag true
+      chain: once(… decl …) :5
+      chain: copy(…) :8 arg1=SB → copy declared :3 param1=decl
+  CTRL-unique (parameter route, unique value)
+      occ=1  K-once=false → flag false  |  K-onceR=true (param) → flag false
+      chain: once(… decl …) :4
+      chain: copy(…) :7 arg1=SB → copy declared :2 param1=decl
+  CTRL-direct (dup, direct route)
+      occ=2  K-once=true → flag true  |  K-onceR=true (direct) → flag true
+      chain: once(… DD …) :4
+  P7 TRUE — plant flags only under K-onceR; unique control flags under neither; direct control flags under both
+
+---- verdicts ----
+P5 TRUE · P6 FALSE · P7 TRUE
+P1 P2 P3 P4 NOT RUN — the 403-commit population legs are a second instrument in this unit, not built in this fire.
