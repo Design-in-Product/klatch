@@ -5255,7 +5255,78 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** available — duty cycle armed. Restarted onto Claude Code 2.1.322 by Pard on xian's go, 16:35 PT; next scheduled fire is STOP 19:47.
+- **Status:** available — duty cycle armed on Claude Code 2.1.322; next scheduled fire is START 10:47 (11/11).
+- **Updated:** 2026-11-10 ~19:47–20:1x PT (**STOP fire — substantive, and it closed the unit this
+  seat routed to Daedalus and he handed back. `unit-465leadbound`: the widening is INERT over bound
+  0..50, my own routed diagnosis of his ruling was wrong, and the census found a second consumer of
+  the same stale constant that prints a FALSE SENTENCE on every run. No edit to `scripts/` or
+  `packages/`.**)
+  **Mail, two new files since my last commit (`8c47d10c`, 16:51), both read in full at the head of
+  this fire** — found with `git log --diff-filter=A --since='2026-11-10 16:51' -- docs/mail/`, not by
+  eyeballing the directory. (1) `daedalus-to-theseus-…-arm-n-b-is-reworded-…` (`d97b6a8e`): his legs
+  G/H of `unit-465cfgdir` already measure the non-coincident condition I said needed another machine
+  — **accepted, my claim was wrong and relocating the variable is that machine**; (b) superseded, my
+  count of 20 reproduces under his own read; and **he left the solver unit in my Unblocked and
+  declined it explicitly** so two seats would not wait on him. (2) `daedalus-to-argus-theseus-…-k-once-is-widened-…`
+  (`b784b53e`): read in full; its actionable half is Argus's promotion and its one routed line is for
+  Argus's gate leg. My §5.3 and §3 are confirmed in it (P5/P7 true, my §3 pre-registered as his P2,
+  **not run**, his next fire, no blocker). **No reply owed on (2); nothing asked of this seat.**
+  **The unit — `docs/research/unit-465leadbound-2026-11-10/`.** Pre-registration `4134dc9c`,
+  **pushed to `origin/main` before the instrument existed** (6 predictions); recordings `f18f0764`;
+  findings + grading `a4c11a51`; memo `5d85542c`.
+  **Measured: three solver arms — bound 15 (HEAD, blob `19cc7c9e`), 20 (the live length), 50
+  (exploratory, declared not pre-registered) — differ in EXACTLY TWO LINES, both denominators**
+  (`208 → 273 → 663` and `288 → 378 → 918`, each exactly `(bound+1) × (P+1)`). Self-check, every
+  near-miss group count, and Sweep 2's recommendation `L=2 G=10 P=21` are byte-identical in all
+  three. So the **155** configurations the widening adds (1085 at bound 50) each fail **≥2**
+  constraints: `0 feasible` unchanged rules out zero, and every "fails exactly one" count unchanged
+  rules out one. **Why it could not have mattered:** the mark's offset into the covering offer is
+  `2L` in every printed row, and `reachable-by-observed-appetite` wants `≤ 4`, so the binding
+  ceiling on `L` is a **constraint at 2** — thirteen below the bound. **Near-trap recorded:** all
+  three arms print **8562 bytes**, which reads as a dead arm and is a coincidence of three-digit
+  denominators.
+  **Grading, honestly: P2/P5/P6 TRUE, P1/P3 FALSE, P4 split** (its "cannot rise" half held, its
+  "will fall" half refuted). P5 was the control and held, which is the only reason the nulls are
+  interpretable. P6 keyed the live length on `verify-filler-constraints.mjs`, which **already prints
+  `FILLER_LEAD 20` on every run** — so the number came from an existing instrument, not from either
+  seat's hand count, and the disagreement has been observable since 8/25.
+  **A correction against my own routed finding.** Daedalus marked his `leadPairs: 15` ruling *"not
+  settled, downstream of a narrowed search"* **because my memo said so, and it is wrong twice over.**
+  (i) His subject is **N1, unswapped**, which reaches this solver only through a hard-coded `L: 15`
+  **literal** at `:125`; the four loop bounds govern the *swapped* sweeps, and the paths never meet.
+  (ii) His ruling text landed **08-18 17:32** (`d84b7342`, found with `git log -S"leading 28"` on his
+  task file, not read off the bullet's own label) — the solver was born **08-19 20:04** (`bc89d4bf`)
+  and the drift landed **08-25 15:02** (`c017af03`). **His to restore to settled; I did not edit his
+  list.**
+  **The live defect is the OTHER consumer.** Census (`grep -rn FILLER_LEAD scripts/`) splits four
+  consumers: two parse the live array (`literal()`) and cannot drift; two hard-code 15. The
+  unlooked-at one is `scripts/geometry-distance-arm.mjs:136`, which **prints** *"FILLER_LEAD holds
+  15, so that is 5 new pairs"* — captured live this fire. The array holds 20 and **`c017af03` is the
+  commit that wrote those five pairs**, at the very `leadPairs 20` the sentence recommends. Nothing
+  reddens because the figure **is** the output. **The mechanism:** that commit had both consumers
+  open and edited both (citation repairs, 32 and 93 lines from the stale figures), and its
+  append-only safety argument censused **slicing** consumers (`slice(0,4)`, `slice(0,15)`) — both
+  misses reason about the **length** instead.
+  **Refusals held, checked not asserted:** `git diff --stat -- scripts/ packages/` **empty** on
+  every commit — the bound deliberately **not** bumped and the false sentence deliberately **not**
+  patched, per the pre-registration. Gate: pre-commit probe census **CENSUS OK** on all four work
+  commits — 154 files, 44 swept / 110 deferred, unchanged from every seat's 11/10 reading. (This
+  coord+log commit's own census prints when it runs, so its reading is in the session log, not
+  pre-written here.)
+  **Drain.** Two memos in, both read on arrival; one answered with a measurement in the same fire,
+  one needing no reply. One memo out. **Deferrals, each with a named reason:** **both cures plus the
+  equality check** — claimed as this seat's next WORK-fire unit, *not blocked*: they belong in one
+  edit to `verify-filler-constraints.mjs` (which already has the reader and already prints the
+  length), and *"remove the number vs. parse it"* is a design call this unit made eligible and did
+  not settle; **arm N1's two `--dry` runs**, **AAXT chip in a rendered page**, **probe 3 rerun** —
+  blocker: server start / live calls, approval unavailable non-interactively, ready in a tandem
+  session; **mail close sweep** (93 live / 1188 read as of 11/10) — a fire's unit of work, not a
+  tail; **the target-keyed screen** — still unclaimed by either seat, and Daedalus's 11/10 memo
+  lists it as unclaimed from his side too. **Thread left OPEN deliberately:** the arm-N(b) thread
+  stays in `docs/mail/` rather than moving to `read/`, because my reply asks him to restore his own
+  ruling — that is an open action item on his side.
+  **For xian, unchanged and unanswered from the WORK fire:** the AAXT standing queue has not moved
+  in ~5.5 months while this seat ran 39 units in 15 days. Retire it, or say it is being crowded out.
 - **Updated:** 2026-11-10 ~16:35–17:0x PT (**restart WORK fire — substantive.** Pard restarted this
   seat onto Claude Code **2.1.322** on xian's go. CHECK dispatcher → not a new day, not past the
   day-end threshold, so **WORK part**. Checklist found **nothing new**: `git log --diff-filter=A
