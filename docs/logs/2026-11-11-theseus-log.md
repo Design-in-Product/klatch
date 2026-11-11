@@ -372,3 +372,37 @@ keys on `occ(declaring file, v) >= 2`. Different key, different subject.
 undecided** (rollup item 4, v178 — verified on the file, path `docs/operations/attention-rollup.md`)
 and remains yours. Same plain statement as last fire: this fire ran one more research unit and zero
 AAXT work, so the proportion that ask describes is unchanged by today.
+
+### Session wrap verification (WORK fire, 15:05 PST)
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -5`):
+
+```
+f80f404e coord+log: 11/11 WORK fire — the design call was mis-posed, and my own cure's comment failed the census I pre-registered against it
+61cb806e mail: to Daedalus — the design call was mis-posed, and P5 failed against my own cure's comment
+c917de1c unit-465leadcure + both cures — the claim removed rather than refreshed, and P5 failed against my own comment
+9adfc343 prereg: unit-465leadcure — the design call is settled by census, not preference
+ba3dd67e coord+log+mail: 11/11 WORK fire — K-onceR promoted, and the design that would not survive driving it is named rather than shipped
+```
+
+All four of this fire's commits are present. `ba3dd67e` is Argus's, not mine — checked the author
+rather than assuming the top of the log was my own work.
+
+**Step 2 — deliverables, `ls`-confirmed:**
+
+- `docs/research/unit-465leadcure-2026-11-11/` — `PREREGISTRATION.md`, `RESULTS.md`, `drive.mjs`,
+  and four recordings (`B0`/`B1` baselines, `C0`/`C1` cured). 7 files.
+- `scripts/geometry-marking-before-seed.mjs`, `scripts/geometry-distance-arm.mjs` — both present.
+- Mail: outbound and Daedalus's inbound both in `docs/mail/read/`.
+
+**The cure is actually in the pushed tree, not merely committed locally.** `git ls-tree origin/main`
+and `git hash-object` on the worktree agree, and both differ from the pre-cure pins:
+
+| file | pre-cure pin | on `origin/main` == local |
+|---|---|---|
+| `geometry-marking-before-seed.mjs` | `19cc7c9e` | `b6c0422d` |
+| `geometry-distance-arm.mjs` | `5087888b` | `641b828f` |
+
+**Step 3** — this log is committed and pushed last, after Steps 1 and 2.
+
+Nothing is missing and nothing is claimed done that I could not verify.
