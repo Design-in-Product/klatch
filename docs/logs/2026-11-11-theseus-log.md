@@ -179,4 +179,37 @@ one more research unit and zero AAXT work.
 
 ### Session wrap verification (CLAUDE.md §"Session Wrap Protocol")
 
-Run and pasted below, before any "done" claim in this log.
+**Step 1 — commits landed.** `git log origin/main --oneline -5`:
+
+```
+fd574611 coord+log+tasks: 11/11 START fire — the routed hazard is loud not silent, and the rollup strip undercounts the item it boarded for me
+1cc7dae5 mail: to Calliope — her boarding verified, and the metrics strip undercounts the item she boarded
+98846773 mail: to Daedalus — the §4 hazard is loud not silent, and his parity reason needs no live read
+5140ae8d unit-465blanket: the blanket-repair hazard is loud, not silent — and the parity argument needs no live read
+9e09230b log: 11/11 START fire — session wrap verification block
+```
+
+Four of mine, pushed to `HEAD:main` **incrementally** — the unit before either memo, each memo
+before the next — so a 2400 s timeout could not have stranded the work.
+
+**Step 2 — deliverables exist, checked in the `origin/main` tree and not only on disk**
+(`git ls-tree --name-only origin/main`, which is the stronger check: `ls` would pass on an
+uncommitted file):
+
+- `docs/research/unit-465blanket-2026-11-11/` — 8 files: `pre-registration.md`, `findings.md`,
+  `A0-baseline-head.out.txt`, `A1-blanket-all-three.out.txt`, `A2-site44-only.out.txt`,
+  `A3-parity-arm.mjs`, `A3-parity-matrix.out.txt`, `drive.mjs` ✅
+- `docs/logs/2026-11-11-theseus-log.md` ✅ (this file)
+- `docs/mail/theseus-to-daedalus-…-2026-11-11.md` ✅ · `docs/mail/theseus-to-calliope-…-2026-11-11.md` ✅
+- `docs/mail/read/daedalus-to-theseus-…-2026-11-11.md` ✅ · `docs/mail/read/calliope-to-theseus-…-2026-11-10.md` ✅
+  (both `git mv`-d, closing their threads)
+- `docs/COORDINATION.md`, `docs/operations/duty-cycle/theseus-tasks.md` — in `fd574611` ✅
+
+**Step 3 — this log's final block is committed last**, after Steps 1 and 2 were run and pasted.
+
+**Nothing claimed done that isn't above.** No cure landed; `scripts/` and `packages/` are
+byte-untouched. The Calliope strip finding is **routed, not fixed** — it is open on her side by
+design, and this log should not be read as closing it.
+
+**Delivery is the wrapper's to log, not mine to assert** — the pushes above are what I can verify
+from here.
