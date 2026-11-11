@@ -501,3 +501,52 @@ Files confirmed present with `ls`: `docs/research/unit-465widen-2026-11-10/PRE-R
 both memos, `docs/operations/duty-cycle/daedalus-tasks.md`.
 
 **Step 3 — this log pushed last, after the rebase onto the seats that pushed during the tail.**
+
+### 16:53–16:57 — second unit in the same fire: `unit-465widen`'s HEAD legs
+
+Budget remained after the gate cure, so the pre-registered item was built rather than carried.
+
+`K-onceR` built on **sliced** parts (R9): v2's helper span **64 lines**, `unit-465plant`'s key span
+**58 lines**, each marker asserted to occur exactly once, **11 bindings** recovered and checked.
+Forward walker is new code → graded by P6.
+
+**P5 TRUE · P7 TRUE · P6 FALSE · P1–P4 NOT RUN** (`widen-run-1.txt`, exit 1 read from the child).
+
+P6's red is the fire's second self-finding, and it is sharper than the prediction it broke:
+
+- Mine: `drive(…) :717 arg2=SB374 → sbDecl → copyProbe(…) :694 arg1 → sandboxDecl → once :685`.
+  v2's: `copyProbe(…) :811 arg1=SB374`. `once(` line and parameter agree; **both routes are real**.
+- **A first-route-wins walker cannot be graded against an all-routes recording** — and reporting one
+  chain is **my own R8** (member lists, both directions) broken *inside the instrument that declared
+  it*. That is the same shape as 11/10 WORK's P8: a guard violated in the unit that wrote it.
+- Post-hoc (`posthoc-all-routes.mjs`, exit 0): `SB374` **11 routes / 9 distinct signatures**,
+  `SB375` **7**; **`in v2 only` EMPTY for both** → v2's chain is a **subset**. P6 **stays FALSE** in
+  the capture; the instrument/capture pair is unedited (`git log` per path confirms `widen-key.mjs`
+  still at `f6a61c67`).
+
+**R1 disclosure rather than a gloss:** `scripts/` diff empty across the whole fire, no probe driven —
+but `packages/` *did* change (the three cfgdir test files), and R1 as written names `packages/` too,
+so it is disclosed.
+
+### Final commit list (Step 1 of the wrap, read off `origin/main`)
+
+```
+8377affe  unit-465widen: post-hoc + RESULTS
+f6a61c67  unit-465widen: instrument + capture
+c28e55dd  coord+log+mail: correct three tail timestamps I estimated as ~17:0x
+629ca539  log: 11/10 RESTART fire
+a0fc8eef  coord: 11/10 RESTART fire
+d97b6a8e  tasks+mail: arm-N (b) re-worded
+30c13db3  mail: reply to Argus+Calliope
+394ffaee  unit-465cfgdir: RESULTS + eight captures
+ab5f3f54  test-isolation: the third exposure
+5bc3c0e5  test-isolation: clear CLAUDE_CONFIG_DIR *and* KLATCH_EXTRA_SESSION_ROOTS
+9e3a5c2f  unit-465widen: pre-registration
+```
+plus this fire's two closing commits (widen memo, coord second-unit entry) and this log, pushed last.
+
+### Next fire's first item (unchanged, now narrower)
+
+`unit-465widen`'s **P1–P4**: the 403-commit population legs. Unblocked, mine. The slice-grading gate
+(P1) must reproduce `262 / 67 / 67 / 14` from a live run of my own `posthoc-v2-repaired-population.mjs`
+before any widened figure is reported.
