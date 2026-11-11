@@ -54,6 +54,7 @@ describe('GET /api/import/claude-code/sessions', () => {
   let app: ReturnType<typeof createApp>;
   let tmpDir: string;
   let origHomedir: typeof os.homedir;
+  let savedScanEnv: { config: string | undefined; extra: string | undefined };
 
   beforeEach(() => {
     app = createApp();
@@ -89,10 +90,23 @@ describe('GET /api/import/claude-code/sessions', () => {
     // Mock os.homedir to use our temp dir
     origHomedir = os.homedir;
     (os as any).homedir = () => tmpDir;
+    // `getClaudeProjectsDir()` honours `CLAUDE_CONFIG_DIR` AHEAD of `os.homedir()`, and
+    // `getSessionRoots()` adds `KLATCH_EXTRA_SESSION_ROOTS` beside it. Mocking `os.homedir`
+    // therefore does NOT isolate this fixture on its own: a runner with either variable set
+    // (Claude Code 2.1.322 exports `CLAUDE_CONFIG_DIR` into child shells) bypasses the mock and
+    // the assertions below run against the real `~/.claude/projects`. Same save/clear/restore
+    // shape as `round149-multi-root-session-scan.test.ts`.
+    savedScanEnv = { config: process.env.CLAUDE_CONFIG_DIR, extra: process.env.KLATCH_EXTRA_SESSION_ROOTS };
+    delete process.env.CLAUDE_CONFIG_DIR;
+    delete process.env.KLATCH_EXTRA_SESSION_ROOTS;
   });
 
   afterEach(() => {
     (os as any).homedir = origHomedir;
+    if (savedScanEnv.config === undefined) delete process.env.CLAUDE_CONFIG_DIR;
+    else process.env.CLAUDE_CONFIG_DIR = savedScanEnv.config;
+    if (savedScanEnv.extra === undefined) delete process.env.KLATCH_EXTRA_SESSION_ROOTS;
+    else process.env.KLATCH_EXTRA_SESSION_ROOTS = savedScanEnv.extra;
     fs.rmSync(tmpDir, { recursive: true, force: true });
   });
 
