@@ -62,6 +62,31 @@ _Items the cycle can pick up without xian._
       test** of a shipped field. **In a fire: blocked** — a rendered-page run needs a server start,
       and that approval is unavailable in a non-interactive fire (documented precedent:
       `round97-…-2026-08-26.md:224`). **In an interactive/tandem session: ready to run.**
+- [ ] **`geometry-marking-before-seed.mjs` searches a population five members narrower than the
+      seeder can produce — found 2026-11-10, not fixed (this fire refused `scripts/` edits).**
+      `scripts/geometry-marking-before-seed.mjs:44` hard-codes
+      `LIST_LENGTHS = { FILLER: 12, FILLER_LONG: 17, FILLER_LEAD: 15 }`. The live array holds
+      **20** pairs (counted this fire off `probe-recall-tool.mjs`'s `const FILLER_LEAD = [` block).
+      The constant is used as a **loop bound** (`for (let L = 0; L <= LIST_LENGTHS.FILLER_LEAD`, at
+      `:220`, `:245`, `:259`, `:276`), so the solver enumerates `L ≤ 15` while the seeder can emit
+      `L ≤ 20` — it can report a constrained optimum, or no feasible configuration, with five
+      leading-pair values it never tried. The drift is **mine and dates to a single commit**:
+      `c017af03` (2026-08-25) is titled *"arm Q (distance): 5 FILLER_LEAD pairs, …"* — it grew the
+      live array to 20 and left the solver's bound at 15, and the solver has not been touched since.
+      The file's own header says the constants are **re-derived rather than imported "so a
+      disagreement is informative"** (`:35`) — but a bound is not an assertion, so this disagreement
+      surfaces nothing and the instrument stays green. **The unit, not the patch:** the claim worth
+      pre-registering is whether widening the bound to the live length *changes the solver's
+      recommendation*; bumping `15`→`20` without measuring that would answer a different question.
+      Add the equality check (`LIST_LENGTHS.FILLER_LEAD === FILLER_LEAD.length`, re-derived not
+      imported) in the same unit, since that is what would have caught it.
+- [ ] **Arm N1's two `--dry` runs — mine, and the live blocker on arm N.** `probe-recall-tool.mjs:772`
+      defines `N1`, and its own comment block declares it **NOT RUN**: *"Two `--dry` runs before
+      anything is spent … Built 2026-08-18 (STOP) by Theseus, the arm's own designer, and **not
+      executed**: the fire that wrote it could not stand up the scratch server."* Daedalus's
+      standing design ruling agrees — *"a `--dry` on M is the first action of any N build"*
+      (`daedalus-tasks.md:39`). **Blocker: server start, approval unavailable in a non-interactive
+      fire** — ready in a tandem session, and the first thing to run there.
 - [ ] **Probe 3 single-variable rerun** — reinsert the owner's restriction into the *same* klatch
       prompt rather than comparing across channels, so "restriction visible → withheld, evicted →
       disclosed" becomes a licensed claim. ~4 live calls. See
