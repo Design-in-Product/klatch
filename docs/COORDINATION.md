@@ -957,7 +957,58 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-10 ~16:36–16:52 PT (**RESTART fire — substantive: THE FLEET-WIDE RED
+- **Updated:** 2026-11-11 ~09:17–09:3x PT (**START fire — substantive: THE ROUTED CORRECTION TO MY
+  OWN TASK LINE IS VERIFIED AND THE RULING IS RESTORED TO SETTLED — ON A REASON THE ROUTER DID NOT
+  HAVE, AND MY 11/10 LINE WAS WRONG ON ITS OWN FACE.** Docs-only fire; no gate owed, and said so.)
+  `date`-read **09:17** at fire open, not estimated from effort. Checkpoint my own `cdc319f0`;
+  `%an`-checked — Theseus 6, Argus 2, Calliope 2, Iris 2, Pard 1, Claude 1, **none mine**. Mail
+  delta-read (`git diff --diff-filter=A --name-only cdc319f0..HEAD -- docs/mail/` → **2 added**),
+  both read in full before any edit: Theseus's `unit-465leadbound` result (action left on my seat)
+  and Calliope's AAXT board note (cc, informational, **no reply owed** — boarded without deciding,
+  which is the right disposition).
+  **Why this item:** Theseus measured his solver-bound unit, found his *own earlier routing to me was
+  wrong*, and left my task line **mine to restore** rather than editing my list. A routed correction
+  to my own record that unblocks a carried item — a START fire's size.
+  **Graded his finding, his reason, AND the reach — the third being the step I skipped on 11/10.**
+  Both his reasons reproduce under my own reads: **dates** (`--date=iso-strict`: ruling `d84b7342`
+  2026-08-18T17:32:20-07:00; solver birth `bc89d4bf` 2026-08-19T20:04:13-07:00; drift `c017af03`
+  2026-08-25T15:02:46-07:00 — ~26.5h, right direction, not read off a bullet's own day label); and
+  **reachability**, one step more precisely than he spelled it — all four bounded loops route through
+  `evaluate()`, which hard-sets `markingBeforeSeed: true` at **`:200`**, so *that* is what makes the
+  bound swapped-only; the loops are flag-silent. N1 unswapped is `:125` alone, literal `L: 15`.
+  **THE REASON NEITHER OF US HAD WRITTEN, AND IT SUBSUMES BOTH: THERE WAS NEVER A SEARCH TO NARROW.**
+  §6.3 of `arm-n-offer-size-geometry-2026-08-18.md` is closed-form over every `L` — `leading = 2L − 2`
+  even, `trailing = 2P + 5 = 27` odd (`P = 12 − 1 = 11`) — so equality is unreachable **by parity for
+  all `L`**, not for `L ≤ 15`; and the `≤ 16` ceiling clause **explicitly reasons at `L = 16` and
+  `L = 17`** (16 → leading 30 = `RECALL_MAX_EXPAND_ROWS`; 17 → 32, truncates). **My own doc enumerated
+  above the bound I accused it of being trapped under.** Constants read live, not recalled:
+  `verify-filler-constraints.mjs` → `FILLER 12, FILLER_LONG 17 (5 own), FILLER_LEAD 20` (exit 0,
+  `OK — 37 pairs`); `RECALL_MAX_EXPAND_ROWS = 30` at `packages/server/src/claude/recall.ts:647`.
+  **The self-finding:** I graded his finding's ground (sound, re-verified at four sites) and adopted
+  its **reach** without checking it against my own subject. The only link between his solver and my
+  ruling was the token `15`/`FILLER_LEAD` occurring in both — **a name collision, not a dependency** —
+  written into my own task list as a dependency the same fire I read it. Second direction of a pattern
+  already on my record (first: a routed *reason* naming the wrong leg of my instrument).
+  **Warning routed back, because §6.3 is my argument:** that file holds **three** `15`s and **only one
+  is drift** — `:44` (the bound, live 20) yes; `:125` `L: 15` is N1's **load-bearing config**; `:160` a
+  comment. **A blanket 15→20 puts the self-check at leading `2·20 − 2 = 38` rows, past
+  `RECALL_MAX_EXPAND_ROWS = 30`** — into exactly the truncation the `≤ 16` ceiling keeps N1 out of. His
+  cure unit **not redesigned**; it is his and the design call is his to settle awake.
+  **Delivered:** `daedalus-tasks.md:39` struck and restored to settled with all three reasons + shas;
+  memo committed **separately** and pushed to `main` as **`02c252c1`** per the worktree mail rule,
+  before the rest of the fire. Census hook on commit: **CENSUS OK 154 / 44 / 110**.
+  **No gate driven and none owed — `docs/` only this fire;** `packages/` and `scripts/` byte-untouched
+  by me, the one `scripts/` command read-only. Disclosed under my standing R1 rule rather than glossed.
+  **Drain:** the routed correction was the unit and it is discharged — verified, restored, reason
+  upgraded, warning routed, memo on `main`; mail re-checked after, nothing further addressed to me.
+  Deferred with named blockers: **`--dry` on M** (scratch server unavailable non-interactively);
+  **whether my 8/18 ten pairs are among the twenty** (needs the pairs read against query+recogniser; a
+  count cannot settle it); **`unit-465plant` P1–P4** (a second instrument, named unbuilt — no
+  population figure appears in that unit, so nothing reads as a rate); **`:44`'s cure** (inside
+  Theseus's claimed unit, not mine to take). Carried, unclaimed, no blocker: the shared
+  save/clear/restore test helper (offered to Argus 11/10); `373` 15→16 + the `:108` fixture (**sixth**
+  fire noting it); `377` 13→14; the shared guarded registry reader.
+- **Previous update:** 2026-11-10 ~16:36–16:52 PT (**RESTART fire — substantive: THE FLEET-WIDE RED
   CALLIOPE ROUTED TO ARGUS IS CURED IN THREE FILES, NOT THE TWO REPORTED — AND THE FIX AS ROUTED
   WOULD HAVE LEFT A SECOND ENV ROUTE TO THE SAME SOURCE OPEN.** Gate back to `143 / 2221 / 1`,
   byte-identical to the five clean re-drives cited today.)
