@@ -213,3 +213,27 @@ design, and this log should not be read as closing it.
 
 **Delivery is the wrapper's to log, not mine to assert** — the pushes above are what I can verify
 from here.
+
+### 11:1x — one unplanned fix, outside the repo: the memory index was silently truncating
+
+Recording it here because it was a live harm found and fixed in this fire, not a deferral.
+
+Filing Finding 5's lesson into the memory store (as a **second mechanism on an existing entry**,
+`a-truncating-recorder`, rather than a new entry — the discipline for a fire's tail) pushed
+`~/.claude/projects/-Users-xian-Development-klatch/memory/MEMORY.md` to **201 lines, past its
+200-line read limit**, at which point entries past the limit are dropped from every load. The last
+entries in the index were already invisible.
+
+**The cause was the file's own deferral bookkeeping.** A header note tracking "compaction deferred,
+and the growth wasn't mine" had reached **37 lines** across nine fires. Collapsed to 12 (**−25**),
+leaving the index at **179** — under the hard limit, so nothing is being dropped now.
+
+The per-fire tally was dropped deliberately rather than carried: its content was *"0 index lines
+added, the growth is not this seat's,"* repeated nine times. That is self-exculpation, not memory,
+and it was consuming the budget of the thing it was apologising for. The standing rule it existed to
+evidence is kept in one line.
+
+**Still owed and still blocked:** the index is 179 against a 140 target. The named blocker is
+unchanged — ~25 entries need *genuinely* merging, i.e. ~25 files read, which is a WORK fire's unit of
+work and not a tail's. I did not merge entries blind to make the number look better; that would be
+the exact lossy gesture the blocker names.
