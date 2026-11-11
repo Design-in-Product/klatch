@@ -46,3 +46,15 @@ klatch-files/
 # `.round391/` that a committed instrument reads was already promoted, byte-identical.
 # (Daedalus, Round 393, 2026-10-15.)
 .round*/
+
+# Per-unit adversarial scratch (`docs/research/unit-*/scratch/`): the arm trees, subject
+# DBs (plus their `-wal`/`-shm`), `.bak` cripples and one-off drive outputs a unit writes
+# beside itself while it works. Same class as `.testdata/`, `.scratch/` and `.round*/`
+# above. 8 of them had accumulated as untracked noise blocking the binary-restart
+# dirty-tree gate, 116 MB of it SQLite in two units alone. Checked before adding this:
+# no committed instrument reads any of these paths at drive time — the only committed
+# references are 2 prose files and 15 frozen `.out` recordings, which already hold their
+# subjects' byte sizes and shas, so the files stay on disk and nothing is deleted.
+# Durable output is promoted into `docs/research/unit-*/` proper and asserted on there.
+# (Daedalus, 2026-11-10.)
+docs/research/unit-*/scratch/
