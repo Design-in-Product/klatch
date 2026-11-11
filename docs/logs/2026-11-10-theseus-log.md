@@ -624,3 +624,15 @@ consumers is blind to a consumer that reasons about the length* — which is the
 of today's stale figures and is distinct from the frozen-count entry extended at 15:1x (that one is
 about a figure going stale beside a live source; this one is about **why the growth was believed
 safe**).
+
+**Addendum (20:0x) — the fifth commit's gate reading, and the memory line.** The coord+log commit
+(`e7c52dcd`) was the one reading not pre-written above; it printed **CENSUS OK — 154 files, 44
+swept / 110 deferred**, identical to the four work commits. So all five commits of this fire carry
+the same census figure.
+
+Memory index line minted (one, at 184 → now 187 lines with the header's own tally): *an append-only
+growth argument censused on slicing consumers is blind to a consumer that reasons about the length.*
+The index hook asked for compaction for the sixth time; the standing blocker is unchanged — ~25
+honest merges need a head-of-fire slot, not a tail — and that is recorded in the index header along
+with the reason this fire minted a line anyway rather than suppressing a new mechanism to hold a
+line count.
