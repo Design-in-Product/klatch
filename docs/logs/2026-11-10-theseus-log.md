@@ -325,3 +325,197 @@ a different surface (a rate's numerator and population, not a cross-tab cell), i
 rewritten, and its single index line was rewritten in place. **0 index lines added**; the index's
 standing compaction deferral is unchanged and its blocker is still an explicit slot at the *head* of a
 fire.
+
+---
+
+## 16:35 — Session resumed (restart WORK fire; model: Claude Opus 5, Claude Code **2.1.322**)
+
+Pard restarted this seat onto Claude Code 2.1.322 on xian's go, asking for one identifying line and
+then the normal schedule. CHECK dispatcher: today's log exists (not a new day), 16:35 is short of the
+19:47 STOP, so **WORK part**.
+
+**Checklist, and it surfaced nothing new.** `git fetch` → `0 0` against `origin/main`. Mail added
+since my 15:02 reply, found with `git log --diff-filter=A --since='2026-11-10 15:02' -- docs/mail/`
+rather than an `ls`: **none**. `docs/COORDINATION.md` Theseus section unchanged, status `available`.
+Cross-pollination brief read (`current.md` → the brief itself lives in the private repo; this one is
+a pointer by design). One commit had landed since mine — Daedalus's `5ea5a8e4`, a gitignore line.
+
+So the fire took **the one item whose named blocker was literally "a head slot"**: the task list of
+record. Three fires had deferred it on the ground that rewriting a list of record in a tail replaces
+a stale record with a hasty one. A restart is a head.
+
+### The unit — `theseus-tasks.md`, refreshed against tool calls, not recollection
+
+Four header facts were **wrong**, not merely old, and I checked each:
+
+| claim in the file | what the tool said |
+|---|---|
+| "Phase 3, daily heartbeat (`31 9 * * *`)" | no such job; **three plists**, START 10:47 / WORK 14:47 / STOP 19:47 (`PlistBuddy -c "Print :StartCalendarInterval"`) |
+| `.claude/worktrees/theseus` / `claude/theseus` | `/Users/xian/Development/klatch-worktrees/theseus` on `claude/theseus-cycle` (`git worktree list`) |
+| "Last updated: 2026-08-13" | file edited **2026-10-19** (`f47edd69`) — but only its standing-discipline section |
+| room-count undercount + chip-absent-on-live-turn, both open | **both closed 2026-08-14 09:28 by Round 49 (`c9dd6110`)** — the morning after they were filed |
+
+Round 49 is the one that stings: the carried-context room count is by `channelId` now
+(`carried-context.ts:339`, whose comment cites *this seat's own 8/13 measurement*), with six tests in
+that `describe` including "counts two same-named conversations as two" (`:119`), and `carriedContext`
+rides `message_complete` (`:213`) plus the SSE replay paths (`:333`). **A fire executing the old list
+would have gone hunting for work that shipped the next day.**
+
+Two more corrections: the `.testdata/` "four DBs held pending xian's call" item is **void** — 345
+entries, **134 `.db` files**, and the **whole directory** ignored (`git check-ignore -v` →
+`.gitignore:33  .testdata/`), so there is nothing for xian to rule on and it comes off
+blocked-on-xian. And the AAXT-chip item's own stated trigger — *"if either ships the
+`message_complete` field first, this becomes the acceptance test for it"* — **fired on 2026-08-14**,
+so it is no longer a wire question at all.
+
+**The structural finding, which is the real one.** This seat is first-commit author on **39 of the
+80 `docs/research/unit-*` units**, and **every one of the 39 dates from 2026-10-27 or later**
+(counted this fire, not recalled). None of that work appeared anywhere in its own task list of
+record. The list was not describing the seat. **So the cure is a recurring row, not a tidy:** a
+`Task list of record refresh` row, cadence **monthly**, `next_due 2026-12-10`, with the row itself
+specifying that a refresh means *verify* — header facts against `git worktree list` and the plists,
+every open item against code or `git log`, every "blocked on X" against whether X still holds — and
+that a refresh which only re-dates the header has not been done.
+
+**Three figures in my own first draft were wrong, and I caught them by checking after writing**:
+"seven tests" → **six** (counted the `it(` lines in the `describe`); "134 `.db` files plus 346 other
+entries" → **345 entries total** (346 was the directory's *hard-link count* from `ls -la`, read as an
+entry count); and "four fires have now deferred it" → **the two mentions the record actually holds**
+(`grep -ric "close sweep"` over this seat's logs → one file; `docs/COORDINATION.md` → one). All three
+were fixed **before** the commit. They were in the draft because they felt already checked. That is
+the exact failure mode `CLAUDE.md` describes, committed inside the fire that was curing it.
+
+### Two items found while checking a peer's list, recorded not patched
+
+Reading `daedalus-tasks.md` to see whether anything of mine was mis-filed there turned up both.
+
+**(a) `geometry-marking-before-seed.mjs` searches a population five members narrower than its
+seeder.** `:44` pins `LIST_LENGTHS = { FILLER: 12, FILLER_LONG: 17, FILLER_LEAD: 15 }`; the live
+array holds **20** (counted off the `const FILLER_LEAD = [` block). The constant is a **loop bound**
+— `for (let L = 0; L <= LIST_LENGTHS.FILLER_LEAD` at `:220`, `:245`, `:259`, `:276` — so the solver
+enumerates `L ≤ 15` while the seeder can emit `L ≤ 20`: it can report a constrained optimum, or no
+feasible configuration, **having never tried five available values, and stay green.** The file's own
+header says the constants are re-derived rather than imported *"so a disagreement is informative"*
+(`:35`) — **but a bound cannot go red, so this disagreement informs nobody.** The drift is **mine and
+dates to one commit**: `c017af03` (2026-08-25), *"arm Q (distance): 5 FILLER_LEAD pairs, …"*, grew
+the array to 20 and left the bound at 15; nothing has touched the solver since. **Recorded as a unit,
+not a patch** — the claim worth pre-registering is whether widening the bound *changes the solver's
+recommendation*, because if it does, every configuration argued off this solver since 8/25 was argued
+off a narrowed search. A silent `15`→`20` answers a different question and destroys the evidence for
+this one. The equality check (`LIST_LENGTHS.FILLER_LEAD === FILLER_LEAD.length`, re-derived not
+imported) belongs in the same unit, since that is what would have caught it.
+
+**(b) Arm `N1` is written; the blocker on it is mine, not content.** `probe-recall-tool.mjs:772`
+defines the arm, with a `premiseRender` block promoted from prose in Round 102, and its own comment
+declares it **NOT RUN** — *"Two `--dry` runs before anything is spent … Built 2026-08-18 (STOP) by
+Theseus, the arm's own designer, and **not executed**: the fire that wrote it could not stand up the
+scratch server."* `FILLER_LEAD` holds **20** pairs, and Daedalus's own 8/26 entry already recorded
+20. So his *"the remaining blocker is his content — the 10 new `FILLER_LEAD` pairs"* describes a
+state the file moved past, while his *"a `--dry` on M is the first action of any N build"* is exactly
+right and now sits on my list. Memo sent; **I did not edit his list**, and I named what I did not
+verify — whether the specific ten pairs he meant are among the twenty.
+
+### Calliope's RED, confirmed from a second restarted seat — and then bounded
+
+Her memo (cc this seat) landed in the pull mid-fire and was read on arrival. It predicts *"every
+other Klatch seat will hit this exact RED the moment it restarts too."* **This seat is one of those**,
+so the useful contribution was not another root-cause but the cure measured under the real condition:
+
+```
+$ env | grep -E "CLAUDE_CONFIG_DIR|KLATCH_EXTRA_SESSION_ROOTS"
+CLAUDE_CONFIG_DIR=/Users/xian/.claude          # KLATCH_EXTRA_SESSION_ROOTS not set
+$ claude --version
+2.1.322 (Claude Code)
+$ npx vitest run src/__tests__/session-scanner.test.ts src/__tests__/round234-…test.ts
+ Test Files  2 passed (2) · Tests  18 passed (18)
+$ npx vitest run
+ Test Files  143 passed (143) · Tests  2221 passed | 1 skipped (2222)
+```
+
+**2221 / 1 over 143 files, with the variable left set** — identical to today's five prior clean
+re-drives. Her run proved the **diagnosis** by clearing the variable; this one proves the **cure**
+with it present. Different claims.
+
+**Then two public corrections of my own memo, three minutes after sending it.** First: the "are there
+only two such fixtures?" census I routed to Argus had **already been answered before I sent it** —
+Daedalus's `ab5f3f54` (16:46:16) found a **third**, `import-context.test.ts`, and `394ffaee`
+measured the second env route. That paragraph is **withdrawn**; Argus should not carry it. Second,
+and sharper — the reflog pins the ordering:
+
+```
+5bc3c0e5 HEAD@{2026-11-10 16:45:54}: rebase (start): checkout origin/main
+394ffaee HEAD@{2026-11-10 16:47:53}: rebase (start): checkout origin/main
+```
+
+My tree sat on `5bc3c0e5` for that whole window and the suite ran **inside** it (16:46:52, 7.28s),
+while `ab5f3f54` landed on `origin/main` at **16:46:16** unfetched. **So my green 2221 ran with
+`import-context.test.ts` unfixed** — an independent instance of his *"green only by coincidence on
+this machine"*, **and a bound on my own figure**: it shows nothing about `ab5f3f54`'s subject, which
+it never exercised. Confirming that one needs a tree containing it *and* a machine where the
+coincidence does not hold, and by construction this is not that machine.
+
+### Refusals held (checked, not asserted)
+
+`git diff --stat -- scripts/ packages/` **empty** on every commit this fire — no cure, no arm, no
+registry row, no gate leg, and the `FILLER_LEAD` bound deliberately **not** bumped. Daedalus's task
+list **not edited**. Calliope's memo **left in `docs/mail/`**, not closed into `read/`: the
+`KLATCH_EXTRA_SESSION_ROOTS` half and Argus's read are open, and the close is his.
+
+### Session Wrap Protocol
+
+**Step 1 — commits landed on `origin/main`** (run after `git fetch -q origin`, pasted verbatim):
+
+```
+$ git log origin/main --oneline -7
+9c80a0bc mail: addendum to Daedalus+Argus+Calliope — I withdraw the item I routed (he had already answered it) and my clean 2221 turns out to measure his coincidence, not his cure
+726b832d mail: to Argus+Calliope+Daedalus — cure confirmed from a second restarted 2.1.322 seat, 2221/1 with CLAUDE_CONFIG_DIR actually set
+c1d12d37 mail: to Daedalus — your arm-N blocker names my content but the arm is written, and my own solver's bound drifted five members behind its seeder
+7abbd822 tasks(theseus): two unblocked items found while checking a peer's stale blocker — a solver bound five members narrower than its seeder, and arm N1's unrun --dry
+c9382c27 tasks(theseus): refresh the task list of record — four header facts were wrong and two items had been closed for three months
+30c13db3 mail: reply to Argus+Calliope — the RED is cured (three files), the routed fix left a second env route open, and the third exposed file was green only by coincidence
+394ffaee unit-465cfgdir: RESULTS + eight captures — the 2x2, the second env route measured, and the third exposure that was green by coincidence
+```
+
+All five of this fire's commits are mine and all five are on `origin/main`. **Each of the three mail
+commits was pushed to `main` as its own commit before the next piece of work**, per the worktree mail
+rule — the two below carry this log and the coordination entry and are pushed last.
+
+The push took **three rebases onto a moving `origin/main`** (Daedalus landing `unit-465widen`'s
+pre-registration, then three test-isolation commits, then his reply to Calliope). All three rebases
+were clean, `git log --oneline` checked after each for my own commits' presence, and **no force push
+at any point**.
+
+**Step 2 — every deliverable file exists** (`ls -la`, run this fire):
+
+```
+-rw-r--r--  14222  docs/operations/duty-cycle/theseus-tasks.md
+-rw-r--r--   4982  docs/mail/theseus-to-daedalus-…-your-arm-n-blocker-names-my-content-…-2026-11-10.md
+-rw-r--r--   2941  docs/mail/theseus-to-argus-calliope-daedalus-…-confirmed-from-a-second-restarted-seat-…-2026-11-10.md
+-rw-r--r--   2799  docs/mail/theseus-to-daedalus-argus-calliope-…-addendum-my-clean-2221-ran-on-a-tree-without-your-third-fix-…-2026-11-10.md
+
+$ git diff --stat -- scripts/ packages/
+(empty — R1 held on every commit)
+
+$ git status --short
+ M docs/COORDINATION.md
+ M docs/logs/2026-11-10-theseus-log.md      (this file)
+```
+
+Nothing is claimed that was not `ls`-ed. No `.testdata/` leakage (and by `.gitignore:33` there could
+not be).
+
+**Gate — pre-commit probe census green on every commit.** `CENSUS OK` on all five: **154 files, 44
+swept / 110 deferred**, unchanged from this morning's figure and from Argus's, Daedalus's and
+Calliope's 11/10 readings. **The full `npm test` server suite was driven fresh this fire** — 143
+files / **2221 passed / 1 skipped** — but as the Calliope section above records, that run is a
+measurement of her RED's cure under the live env var, **not** a clean bill for `ab5f3f54`'s subject,
+which it never exercised. The full probe sweep was **not** re-driven: nothing under `scripts/` was
+touched, and Daedalus's and my own 11/10 WORK captures already agree byte-for-byte.
+
+**Step 3 — this log and the coordination entry pushed last.**
+
+**Memory.** No index line minted. This fire's lesson is a second measured instance of an entry that
+already exists — *a frozen count beside a live source drifts invisibly* — this time with the frozen
+number serving as a **loop bound** rather than as prose, which is why nothing reddened. Filed by
+extending that entry's file rather than adding a line to an index whose compaction is already five
+times deferred.

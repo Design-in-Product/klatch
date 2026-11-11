@@ -5159,7 +5159,74 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** available — duty cycle armed.
+- **Status:** available — duty cycle armed. Restarted onto Claude Code 2.1.322 by Pard on xian's go, 16:35 PT; next scheduled fire is STOP 19:47.
+- **Updated:** 2026-11-10 ~16:35–17:0x PT (**restart WORK fire — substantive.** Pard restarted this
+  seat onto Claude Code **2.1.322** on xian's go. CHECK dispatcher → not a new day, not past the
+  day-end threshold, so **WORK part**. Checklist found **nothing new**: `git log --diff-filter=A
+  --since='2026-11-10 15:02' -- docs/mail/` empty, no assignment changed, HEAD current. So the fire
+  took the one item whose named blocker was **a head slot** — and it surfaced two findings and one
+  confirmation nobody asked for.)
+  **The unit: the task list of record, refreshed and verified** (`c9382c27`, `7abbd822`).
+  `theseus-tasks.md` was 8/13-era in its body — the 10/19 edit touched only standing discipline.
+  **Four header facts were wrong, not merely old:** the cadence named `31 9 * * *`, a job that does
+  not exist (**three plists: START 10:47 / WORK 14:47 / STOP 19:47**, read with `PlistBuddy`); the
+  worktree and branch had both moved; "Last updated 2026-08-13" on a file edited 10/19; and **two
+  "blocked-on-others" items had been closed for three months** — both by **Round 49 (`c9dd6110`,
+  2026-08-14 09:28), the morning after they were filed.** A fire executing that list as written
+  would have gone looking for work that shipped the next day.
+  **The structural finding:** this seat authored **39 of the 80 `docs/research/unit-*` units**
+  (first-commit author, counted this fire), **all since 2026-10-27**, and *none* of it appeared in
+  its own task list of record. **Cure is a recurring row, not a tidy** — monthly refresh,
+  `next_due 2026-12-10`, so the next drift is caught by the mechanism rather than by a restart that
+  happens to land at a head. Also corrected: the `.testdata/` "four DBs pending xian's call" item is
+  **void** (345 entries, 134 `.db`, whole dir ignored at `.gitignore:33`) and removed from
+  blocked-on-xian; the AAXT-chip item's stated trigger (`message_complete`) **fired on 2026-08-14**,
+  making it the human-side acceptance test of a shipped field rather than a wire question.
+  **Three figures in my own first draft were wrong and were fixed before the commit** — seven tests
+  → six, "346 other entries" → 345 total, and "four fires deferred it" → the two mentions the record
+  actually holds. The draft had them because they felt checked; they were not.
+  **Two items found while checking a peer's blocker, recorded not patched (R1 held):**
+  **(a)** `scripts/geometry-marking-before-seed.mjs:44` pins `FILLER_LEAD: 15`; the live array holds
+  **20**. The constant is a **loop bound** (`:220`, `:245`, `:259`, `:276`), so the solver enumerates
+  `L ≤ 15` while the seeder can emit `L ≤ 20` — **five leading-pair values never tried, and no red,
+  because a bound is not an assertion.** The file's own header says the constants are re-derived
+  rather than imported *"so a disagreement is informative"* (`:35`); this disagreement informs
+  nobody. **Drift is mine, from one commit** — `c017af03` (8/25) grew the array to 20 and left the
+  bound at 15. Routed as a **unit** (does widening change the solver's recommendation?), not a
+  patch, because a silent bump answers a different question and destroys the evidence for this one.
+  **(b)** Arm `N1` is built (`probe-recall-tool.mjs:772`) and its own comment declares it **NOT
+  RUN** pending two `--dry` runs — so Daedalus's `daedalus-tasks.md:39` half *"the remaining blocker
+  is his content"* is stale while his *"a `--dry` on M is the first action of any N build"* is
+  exactly right. Memo sent (`c1d12d37`); **I did not edit his list**, and I named what I did not
+  verify (whether his specific ten pairs are among the twenty).
+  **Calliope's `CLAUDE_CONFIG_DIR` RED, confirmed from a second restarted seat** (`726b832d`).
+  Her memo predicts every restarted seat hits it; this seat is one (`env` → the variable set,
+  `claude --version` → 2.1.322). Her run proved the **diagnosis** by clearing the variable; mine
+  proves the **cure** with it left set: two scanner files 18/18, **full server suite 143 files /
+  2221 passed / 1 skipped** — identical to today's five prior clean re-drives.
+  **Then I corrected myself twice, in public** (`9c80a0bc`). The "are there only two such fixtures?"
+  census I routed to Argus had **already been answered before I sent it** — Daedalus's `ab5f3f54`
+  (16:46:16) found a **third**, `import-context.test.ts`; that paragraph is **withdrawn** and Argus
+  should not carry it. And the reflog pins my tree on `5bc3c0e5` from **16:45:54 to 16:47:53** with
+  the suite running at **16:46:52**, so my green 2221 ran with `import-context.test.ts` **unfixed** —
+  which makes it an independent instance of his *"green only by coincidence on this machine"* **and
+  a bound on my own claim**: that figure shows nothing about `ab5f3f54`'s subject, which it never
+  exercised.
+  **Refusals held, checked not asserted:** `git diff --stat -- scripts/ packages/` **empty** on
+  every commit — no cure, no arm, no gate leg, and the `FILLER_LEAD` bound deliberately **not**
+  bumped. Gate: pre-commit probe census **CENSUS OK** on all five docs commits — 154 files, 44
+  swept / 110 deferred, unchanged from every seat's 11/10 reading.
+  **Drain.** One memo in (Calliope's, cc this seat), read on arrival and **acted on in the same
+  turn** with a measurement rather than an ack. Three memos out. **Deferrals, each with a named
+  blocker:** the `FILLER_LEAD` widening unit — **unclaimed, no blocker**, offered to Daedalus;
+  **arm N1's two `--dry` runs** — blocker: scratch-server start, approval unavailable in a
+  non-interactive fire; **AAXT chip in a rendered page** and **probe 3 rerun/replication** — same
+  live-call blocker, ready in a tandem session; **mail close sweep** (93 live / 1188 read, counted
+  with `readdirSync`) — blocker: none named, still a fire's unit of work and not a tail; **the
+  target-keyed screen** — **still unclaimed by either seat** (Daedalus's `unit-465widen` took the
+  key-widening I routed, not this). **For xian or Calliope, raised not answered:** the AAXT standing
+  queue has not moved in ~5.5 months while this seat ran 39 units in 15 days — retire it, or say it
+  is being crowded out. This seat should not quietly decide which.
 - **Updated:** 2026-11-10 ~14:47–15:1x PT (**WORK fire — substantive. It took the one item Daedalus
   routed as unblocked (the recall figure) and built the join neither seat had. 6 of 6 pre-registered
   true, and the three most useful numbers in the unit are NOT the recall figure. No edit to `scripts/`
