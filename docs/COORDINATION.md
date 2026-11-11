@@ -8318,7 +8318,34 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Iris (UX design & front-end development)
 - **Branch:** `claude/iris-cycle` (Amber standing worktree `/Users/xian/Development/klatch-worktrees/iris`, tracks `origin/main`). Prior `.claude/worktrees/iris` + cron `a89f159d` are retired (session crons don't survive — Pard's shared answers §2). LaunchAgent duty cycle requested from Pard 8/4: 2 fires/day, 07:17 + 19:17 PT.
-- **Updated:** 2026-11-10 ~07:2x PT (START fire). **Status:** available.
+- **Updated:** 2026-11-10 ~16:4x PT (session resumed, Pard restart onto 2.1.322). **Status:** available.
+- **11/10 restart fire — no-op on product, but the routine gate check surfaced a real RED (5 of 2222
+  server tests) caused by the fleet-wide 2.1.322 restart itself: `CLAUDE_CONFIG_DIR`, newly exported into
+  the Bash tool's child shell, bypasses two fixtures' `os.homedir()` mock and sends the session scanner at
+  the real `~/.claude/projects` (103 projects) instead of the temp fixture. Root-caused and fixed
+  independently (`d1f17d8e`), then found Daedalus had already found and fixed the identical two files plus
+  a third exposure (`5bc3c0e5`/`ab5f3f54`), routed there by Calliope's 16:3x mail — merged to `main` while
+  this fire's own fix was in flight. Discarded the redundant local commit (`git reset --hard origin/main`,
+  never pushed, nothing lost) rather than duplicate it.** Confirmed via `baf9ed22`/`30c13db3` on `main`
+  that at least one other seat (Theseus) hit the identical race the same hour. 31 commits read against the
+  prior checkpoint (`5e3886d9`), all Daedalus/Theseus/Argus/Calliope on the `unit-465recall`/`unit-465plant`
+  /`unit-465screen`/`unit-465census-v2` chain; `git diff --stat` empty for `packages/`/`scripts/` at that
+  checkpoint. 5 new local mail files, all cc-only on Iris, zero primary-addressee hits. **Re-verified clean
+  at the final HEAD (`c28e55dd`):** `npm test` server 143/143, client 26/39 · 333/346; `tsc --noEmit` clean
+  ×4 workspaces; full driving sweep re-driven fresh — **SWEEP PASSED 44/44, 0 red, 0 blocked, 110
+  deferred**, HEAD unchanged throughout, and `git diff --stat` confirms zero `packages/`/`scripts/` churn
+  between the sweep's checkpoint and the final HEAD, so the result still holds. **Standing blockers
+  re-derived fresh:** ground-rules-UX stays **closed**; reassign-picker live-browser drive still queued on
+  Theseus, unchanged; `entityGuess` re-grepped scoped to `packages/client/src` — **5 files/19 hits**,
+  unchanged. Dispatch question-box letters (10-13, 10-21, 10-25, 11-01) re-checked present, still
+  un-replied, not re-escalated. Attention-rollup re-checked — Klatch's board line still **v176**, same
+  three asks, none UX-lane. `lsof -i :3001 -P` port free. No `packages/client/src` touch this fire.
+  Nothing new needs xian from this seat. **Drain:** all unblocked items done (commit check, mail, gate
+  re-verification including the surfaced RED and its reconciliation, both blockers re-derived, dispatch
+  letters re-checked, attention-rollup re-checked, full sweep re-driven at the final HEAD). Two consecutive
+  checks found nothing further unblocked — fire closed bounded. Log:
+  `docs/logs/2026-11-10-iris-log.md`.
+- **Prior update:** 2026-11-10 ~07:2x PT (START fire). **Status:** available.
 - **11/10 fire (START) — no-op on product; 7 commits read since own STOP checkpoint (`f4df7146`), none
   mine — Theseus's `unit-465anchor-census` chain plus Daedalus/Calliope/Theseus's STOP-fire coord+log+gate
   commits and the automated brief publishes. Nothing routed to this seat.** Drain against own checkpoint: 7
