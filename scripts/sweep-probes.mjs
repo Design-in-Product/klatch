@@ -1680,6 +1680,43 @@ export const SWEPT = [
       'each on the first of three attempts, so the cell is not silent at a rate that ' +
       'measurement can see.',
   },
+  // Argus, 11/11 WORK fire. Promotes the screen `unit-465plant` (Daedalus, 11/10) and
+  // `unit-465widen` (Daedalus, 11/10, widening Theseus's 11/10 §5.3 parameter-route finding) built
+  // and graded but declined to ship (R4, both units): a once()-consumed literal declaration whose
+  // value already duplicates in the file that declares it — `probe-round374`/`375`/`377`'s shared
+  // mutation helper throws `anchor not unique` exactly on this condition, and `C_SWEEP`
+  // (`probe-round375@e501d6af`, 11/09) is the one historical case that actually threw.
+  {
+    file: 'probe-once-anchor-duplication.mts',
+    expect: /All 12 regression checks passed/,
+    why:
+      'driven this fire: 12/12 green, exit 0. Production implementation is self-contained (not ' +
+      'importing docs/research/* scratch paths) and the population is read live via readdirSync ' +
+      '(3 files today, matched to the project convention of not glob-ing) rather than hardcoded, ' +
+      'so a fourth copier pasting the same once() helper is covered automatically. ' +
+      'Section D reproduces the real historical crash at a pinned rev (not a recency-keyed ' +
+      'selector) — C_SWEEP flags at e501d6af78199be22c0972a08ee2cc9c1e0582ec and the flag is gone, ' +
+      'structurally, at the cure 3489290f5887f32f3a7a6e289f1ad92dcbf23106, where C_SWEEP stopped ' +
+      'being a pure literal. Section E plants the parameter-route case K-once (narrow) cannot see ' +
+      'and K-onceR was built to widen into, with a matched unique-value negative and a ' +
+      'direct-route control both keys agree on. ' +
+      'Section F is the live gate, and it is a baseline diff, not a bare zero-flags assertion — ' +
+      'driving this file found what unit-465plant RESULTS.md §5 already measured and this seat ' +
+      'had not read closely enough before building: "occ(declaring file, v) >= 2 is a risk signal, ' +
+      'not a crash prediction... of the 14 K-once flags in all of scripts/ history, one (C_SWEEP) ' +
+      'actually threw. The other 13 are standing non-unique anchors." Three of those are live in ' +
+      'this population today (import-continuation fragments and the universal `const HERE = ...` ' +
+      'line, each duplicated between a copier\'s own header and the text it quotes to redirect a ' +
+      'sibling\'s same header) — 9 live flags total across the 3 files, all 9 grandfathered against ' +
+      'this entry\'s own pinned baseline (467b8209052394096ea59679e735f2937992c64a, this seat\'s own ' +
+      'checkpoint this fire), 0 new. Grandfathering verified both ways, driven, not asserted: a ' +
+      'planted new duplicate anchor (same shape as C_SWEEP, reverted before commit) reddened F1 as ' +
+      '1 new flag against the same baseline, then reproduced clean at 0 new once reverted. ' +
+      'R4 does not block this promotion: the finding being shipped was built and graded by ' +
+      'Daedalus in two prior fires (11/10), not this one; what is new here is the production form ' +
+      'and the baseline-diff design the bare zero-flags version this seat drafted first would not ' +
+      'have survived driving against the real tree.',
+  },
 ];
 
 /**
