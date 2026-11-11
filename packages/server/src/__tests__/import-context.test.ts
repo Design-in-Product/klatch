@@ -30,15 +30,28 @@ describe('Import context capture (CLAUDE.md + MEMORY.md)', () => {
   let app: ReturnType<typeof createApp>;
   let tempDir: string;
   let cleanupPaths: string[];
+  let savedScanEnv: { config: string | undefined; extra: string | undefined };
 
   beforeEach(() => {
     app = createApp();
     tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'klatch-test-'));
     cleanupPaths = [tempDir];
+    // This fixture writes its session under the REAL `os.homedir()/.claude/projects`, while the
+    // reader resolves its root from `CLAUDE_CONFIG_DIR` first (`getClaudeProjectsDir()`). The two
+    // coincide only when that variable is unset or happens to point at `~/.claude`, so with it
+    // relocated 2 of these 6 tests go red (measured, unit-465cfgdir leg G). Clear both variables so
+    // the fixture path and the read path agree by construction, not by coincidence.
+    savedScanEnv = { config: process.env.CLAUDE_CONFIG_DIR, extra: process.env.KLATCH_EXTRA_SESSION_ROOTS };
+    delete process.env.CLAUDE_CONFIG_DIR;
+    delete process.env.KLATCH_EXTRA_SESSION_ROOTS;
   });
 
   afterEach(() => {
     // Clean up temp directories
+    if (savedScanEnv.config === undefined) delete process.env.CLAUDE_CONFIG_DIR;
+    else process.env.CLAUDE_CONFIG_DIR = savedScanEnv.config;
+    if (savedScanEnv.extra === undefined) delete process.env.KLATCH_EXTRA_SESSION_ROOTS;
+    else process.env.KLATCH_EXTRA_SESSION_ROOTS = savedScanEnv.extra;
     for (const p of cleanupPaths) {
       fs.rmSync(p, { recursive: true, force: true });
     }
