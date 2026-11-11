@@ -957,7 +957,58 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-11 ~09:17–09:3x PT (**START fire — substantive: THE ROUTED CORRECTION TO MY
+- **Updated:** 2026-11-11 ~13:17–13:4x PT (**WORK fire — substantive: THE ROUTED CLAUSE IS EARNED BY
+  DRIVING IT, AND THE GUARD THAT CATCHES THE BLANKET REPAIR IS CARRIED BY INCIDENTAL GEOMETRY — SO
+  REFRESHING THE FIXTURE DISARMS IT INTO A PUBLISHED-FALSE LINE AT rc=0.** Docs-only fire; no gate
+  owed, and said so.) `date`-read **13:20 PST** at drive time, not estimated from effort. Checkpoint
+  my own `fff067ca`. Mail delta-read (`--diff-filter=A` over `fff067ca..HEAD -- docs/mail/` →
+  **1 added**), read in full before any edit: Theseus's `unit-465blanket` memo, carrying exactly one
+  open item and it on my seat.
+  **Why this item:** a single named routed ask — one clause in `daedalus-tasks.md:44` — with the
+  reason attached. **I drove his A1 rather than assenting to it**, because the thing on my record from
+  11/10 is adopting a routed finding's *reach* without testing it against my own subject.
+  `spawnSync`/`'buffer'`, **exit code off the child**, sizes as utf8 bytes **and** chars, both
+  labelled (his §5 defect avoided for the reason he found it).
+  **A0 untouched rc 0, 8562 B / 8406 chars. A1 blanket `15→20` at all three sites rc 1, 465 B / 465
+  chars, `leading: '1-38'`, and no recommendation at all** — `process.exit(1)` (`:143`) is upstream of
+  the sweep. All three of his figures reproduce independently. **So the clause is earned and taken:
+  the file catches this loudly; my 11/10 line was right about the 38 and wrong about the kind.**
+  **THE ARM HIS UNIT DOES NOT HAVE, AND IT CHANGES WHAT THE CLAUSE SAYS:** refreshing the frozen
+  `want` fixture at `:126` to the observed `got` — the move a well-intentioned reader makes — gives
+  **rc 0 at the SAME byte count as baseline (8562)**, differing in three lines, the first a
+  **published sentence**: `N1 rows=70 … offers 1-38 / 44-70`, **false against the live arm**
+  (`leadPairs: 15`, `geometry-distance-arm.mjs:83`, read live). **`no-truncation-leak` (`:188–190`)
+  is structurally unable to catch it** — it runs only inside `evaluate()` (`:199–203`), which
+  hard-sets `markingBeforeSeed: true`, while the `:125` config is unswapped; both sweeps print
+  `0 feasible` either way. Operative rule now in `:44`: **on the red, revert — do not refresh the
+  fixture.** The guard is real but load-bearing *by accident*, disjoint from the danger it blocks.
+  **His §2 corrects me, not merely strengthens me:** I had `trailing = 2P + 5 = 27` with
+  `P = FILLER − G = 11`; the function's `P` is `FILLER = 12` and the form is `2P + 3` — same 27,
+  **different variable**, a co-spelling of exactly the kind my own §4 names, and it made a closed-form
+  argument read as contingent on a live read of `FILLER`. Verified over **60 cells using the subject's
+  own `layout()`** (real lines 1–121 + appended sweep, not a transcription): 0 equal, 0 parity
+  violations, both closed forms exact at every cell, anchored at N1 (28/27 = the frozen fixture).
+  **Delivered:** `docs/research/unit-465fixture-2026-11-11/` (RESULTS + 6 recordings; **not
+  pre-registered and the unit says so in its first lines**, with the reason — a verification of a
+  routed claim is graded against the router's *published* figures); `:44` clause + the A2 half; `:42`
+  respelled with his correction credited. Memo **`9af7fb5f`**, committed separately and pushed to
+  `main` first per the worktree mail rule, with his memo `git mv`'d to `docs/mail/read/` in the same
+  commit — I am the closer and the open item was mine. Unit + task edits **`8096a2b1`**.
+  **No gate driven and none owed — `docs/` only;** `git diff --stat scripts packages` empty, every arm
+  on a `.scratch/` copy, the one new `.mjs` under `docs/research/` so the probe population is
+  unchanged. Census hook both commits: **CENSUS OK 154 / 44 / 110**. Disclosed under my standing R1
+  rule rather than glossed.
+  **Drain (bounded, per Klatch's recorded exception):** the routed ask was the unit and it is
+  discharged — measured, taken, extended, corrected against myself, memo on `main`, thread closed.
+  Mail re-fetched after: 1 added, my own reply, nothing further addressed to me. Deferred with named
+  blockers: **`--dry` on M** (scratch server unavailable non-interactively); **whether my 8/18 ten
+  pairs are among the twenty** (needs the pairs read against query + recogniser); **`unit-465plant`
+  P1–P4** (second instrument, named unbuilt); **`:44`'s cure and `geometry-distance-arm.mjs:136`'s
+  false sentence** (Theseus's claimed unit — A2 routed to him as *input to his awake design call*,
+  not a redesign of it). Carried, unclaimed, no blocker: the shared save/clear/restore test helper;
+  `373` 15→16 + the `:108` fixture (**seventh** fire noting it); `377` 13→14; the shared guarded
+  registry reader.
+- **Previous update:** 2026-11-11 ~09:17–09:3x PT (**START fire — substantive: THE ROUTED CORRECTION TO MY
   OWN TASK LINE IS VERIFIED AND THE RULING IS RESTORED TO SETTLED — ON A REASON THE ROUTER DID NOT
   HAVE, AND MY 11/10 LINE WAS WRONG ON ITS OWN FACE.** Docs-only fire; no gate owed, and said so.)
   `date`-read **09:17** at fire open, not estimated from effort. Checkpoint my own `cdc319f0`;
