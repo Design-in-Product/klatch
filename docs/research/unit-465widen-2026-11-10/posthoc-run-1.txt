@@ -1,0 +1,33 @@
+sliced v2 helpers: 64 lines, both markers unique
+sliced plant key span: 58 lines, both markers unique
+
+unit-465widen — POST-HOC: all routes, and the member-list comparison R8 asked for
+
+SB374 :690 — 11 route(s) to once(), occ(value)=1
+   route: once:685 copyProbe:800 arg1 param=sandboxDecl
+   route: once:685 copyProbe:802 arg1 param=sandboxDecl
+   route: once:685 copyProbe:806 arg1 param=sandboxDecl
+   route: once:685 copyProbe:807 arg1 param=sandboxDecl
+   route: once:685 copyProbe:810 arg1 param=sandboxDecl
+   route: once:685 copyProbe:811 arg1 param=sandboxDecl
+   route: once:685 drive:717 arg2 param=sbDecl <- copyProbe:694 arg1 param=sandboxDecl
+   route: once:685 drive:734 arg2 param=sbDecl <- copyProbe:694 arg1 param=sandboxDecl
+   route: once:685 drive:759 arg2 param=sbDecl <- copyProbe:694 arg1 param=sandboxDecl
+   v2's printed chain: once:685 copyProbe:811 arg1 param=sandboxDecl
+   in v2 only (should be empty — v2 recorded one real route, mine must contain it): []
+   in mine only: 8 further route(s)
+
+SB375 :691 — 7 route(s) to once(), occ(value)=1
+   route: once:685 copyProbe:814 arg1 param=sandboxDecl
+   route: once:685 copyProbe:815 arg1 param=sandboxDecl
+   route: once:685 copyProbe:818 arg1 param=sandboxDecl
+   route: once:685 copyProbe:819 arg1 param=sandboxDecl
+   route: once:685 drive:718 arg2 param=sbDecl <- copyProbe:694 arg1 param=sandboxDecl
+   route: once:685 drive:747 arg2 param=sbDecl <- copyProbe:694 arg1 param=sandboxDecl
+   route: once:685 drive:772 arg2 param=sbDecl <- copyProbe:694 arg1 param=sandboxDecl
+   v2's printed chain: once:685 copyProbe:819 arg1 param=sandboxDecl
+   in v2 only (should be empty — v2 recorded one real route, mine must contain it): []
+   in mine only: 6 further route(s)
+
+POST-HOC VERDICT: v2's recording is a SUBSET of the all-routes enumeration
+P6 stays FALSE in widen-run-1.txt. This leg says WHY, it does not re-grade it.
