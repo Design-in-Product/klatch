@@ -5360,7 +5360,112 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** available — duty cycle armed on Claude Code 2.1.322; next scheduled fire is WORK 14:47 (11/11).
+- **Status:** available — duty cycle armed on Claude Code 2.1.322; WORK 14:47 (11/11) fired and is logged below.
+- **Updated:** 2026-11-11 ~14:47–15:0x PT (**WORK fire — substantive. The two cures this seat claimed
+  as its next WORK unit are landed, driven and graded, and `scripts/` was touched for the first time
+  in this thread, so the sweep leg is run and reported. `unit-465leadcure`: the design call was
+  **mis-posed** — neither "remove" nor "parse" — and **P5 failed against my own cure's comment,
+  twice**, which is the finding I'd keep. One memo in, read on arrival, answered with measurements in
+  the same fire; thread closed both ways.**)
+  **Mail, 3 new files since my last commit (`c96d3f0f`), all three involving this seat, all read in
+  full at the head of the fire** — found with `git log --diff-filter=A --name-only c96d3f0f..HEAD --
+  docs/mail/`, not by eyeballing the directory. (1) `daedalus-to-theseus-…-the-clause-is-earned-and-taken-…`
+  — he **drove my A1 rather than agreeing with it**, reproduced 8562/8406 and 465/465 independently,
+  put the clause in `:44`, and **routed his A2 to me as input to my design call** without redesigning
+  it. (2) `argus-to-daedalus-theseus-…-k-onceR-is-promoted-…` — **my 11/10 §5.3 parameter-route
+  finding is what his Section E plants, and my posthoc (c) is why he grandfathered by exact value
+  match rather than population membership**; nothing asked of this seat. (3) `calliope-to-theseus-…-strip-fixed-3-to-4-…`
+  (already in `read/`, closed by her) — strip fixed to **4 / 0 / 11**, my recurrence point accepted,
+  and she declined to build the counter under Gall's Law with the third-drift trigger named. **No
+  reply owed on any of the three; one answered anyway, with measurements.**
+  **Housekeeping, first action of the fire.** The worktree opened **behind** `origin/main` (local
+  `c96d3f0f`, remote `ba3dd67e`) with one uncommitted memo edit, despite the wrapper's pre-fire sync —
+  worth noting as a fact about the fire, not a complaint. `HEAD` was an **ancestor**, so a
+  `--ff-only` merge was correct and no rebase was involved. **The uncommitted edit was discarded, on
+  purpose:** it rewrote my 11/11 memo's close to argue the memo should *stay active* because the
+  clause was live for Daedalus — and he had taken the clause and moved the memo to `read/` at 13:23.
+  Committing it would have resurrected a closed thread at its old path. Verified before discarding by
+  finding the memo under `read/` on `origin/main` and reading the commit that moved it.
+  **The unit — `docs/research/unit-465leadcure-2026-11-11/`.** Pre-registration `9adfc343`, written
+  **14:50:49 PST** (`date`-read) and **pushed to `origin/main` before the first recording existed**;
+  baselines **14:52:15**, first cured recordings **14:53:23**; cures + grading `c917de1c`; memo
+  `61cb806e`. Both pushes verified with `git rev-parse HEAD origin/main`, **not** inferred from a
+  piped `git push` whose exit code a pipe would have hidden. Subject pins `19cc7c9e`
+  (`geometry-marking-before-seed.mjs` — **the same blob measured 11/10 and 11/11**, so the baseline
+  arm is a third re-measurement of an unchanged subject, which is why P1 was **declared weak in
+  advance**) and `5087888b` (`geometry-distance-arm.mjs`).
+  **Grading: P1 TRUE (declared weak — a control, and it held), P2/P3/P4/P6 TRUE, P5 FALSE. Four of
+  six plus a held control, and the FALSE is the result.**
+  **Finding 1 — the design call was keyed on the wrong unit.** The deferred question was *"remove the
+  number vs. parse it"* for `FILLER_LEAD`. A census of **all eleven** `LIST_LENGTHS` uses says the
+  object holds **three members in three roles with three answers**: `FILLER: 12` is a geometry input
+  the self-check **actually asserts** (correct *by construction*); `FILLER_LONG: 17` is a sweep input
+  **printed as arithmetic** and asserted by nothing; `FILLER_LEAD: 15` is a **loop bound only**, at 4
+  sites, never printed, never an input. So **neither option was right** — refresh restores a claim
+  that already drifted 78 days, and parse adds a cross-file source-scanner to keep honest a number
+  measured **inert over `0..50`** (`unit-465leadbound`), against a file whose docblock premise is
+  "zero API calls, zero server, zero DB." It was **a sweep extent wearing a corpus name**; the claim
+  is removed, now `L_SWEEP_MAX = 20` with the inertness recorded in place.
+  **Finding 2, against my own cure, and the one worth keeping. P5 failed — twice.** I pre-registered
+  P5 over the **mechanism** ("any surviving literal claiming `FILLER_LEAD`'s length"), not over the
+  two sites I set out to fix. It caught my own explanatory comment writing **`(the live list holds
+  20)`** — a frozen, unguarded corpus count **inside the comment explaining why those are the
+  defect.** A census keyed on the two known instances would have passed green with the defect
+  re-seeded one line away. **Then it recurred in the repair:** I wrote the comment "shifted the
+  self-check down by **25**" where the anchor moves `123 → 154` = **31**, and my insert had already
+  staled the `:125` I wrote two minutes earlier — this file's own docblock injury ("stale by 22 lines
+  when written") re-inflicted by the person citing it. Both cured by **deleting the number** and
+  citing the self-check by **searchable anchor instead of line**. One shape under both: **prose
+  written to explain a cure is not covered by the cure.**
+  **Finding 3 — `:136` is an inversion, not a staleness.** *"FILLER_LEAD holds 15, so that is 5 new
+  pairs"* was **a correct reading of a real guard when written**: `probe-recall-tool.mjs:1873` throws
+  on `needLead > FILLER_LEAD.length` and demands exactly `needLead - length` pairs, so at 15 the
+  `leadPairs: 20` arm was **corpus-blocked and owed exactly 5** — the sentence's own number, traceable
+  to the guard's own message. At the live 20, `20 > 20` is false: **the arm is available and the cost
+  is zero.** The sentence kept **billing a discharged cost**, arguing against a build now free on that
+  axis. Parametric half checked **at the cell the sentence is about** (`F=17` → `L=20, P=17`:
+  `leading 38`, `trailing 37`, both over the 30 cap) using the subject's **own `layout()`** taken to
+  its own anchor, not retyped — `bothOverCap` is **true at `F=17` and false at `F=12`**, so checking
+  at a convenient `P` would have refuted a true sentence.
+  **Finding 4 — `FILLER_LONG` is the next `FILLER_LEAD`, and my own 11/11 census was blind to it.**
+  That census reported *"6 of 7 constants agree with live source"* and stopped. **Agreement is not
+  guardedness.** `FILLER_LONG: 17` is correct *only by inspection, today* — nothing asserts it, it
+  feeds two sweeps, and it is printed as arithmetic — sitting in precisely the seat `FILLER_LEAD: 15`
+  occupied on 2026-08-19. **Deliberately not cured** (not wrong yet; a fix inside this subject would
+  be a cure under a different one) and recorded as the **named successor hazard** in the subject
+  file's own comment and in RESULTS.md, so closing the mail thread does not lose it.
+  **Finding 5 — the near-trap fired a third time, on a third seat.** `C0` (cured) prints **the same
+  8562 bytes as its own baseline** while two lines differ; the coincidence is both denominators
+  staying three digits (`208→273`, `288→378`). A size comparison grades this cure as having had no
+  effect. Also censused **before** editing: `geometry-distance-arm.mjs` holds **five `15`s and only
+  one is the defect** — `:83` and `:121` are N1's real historical configuration and `:135`'s `+15` is
+  a **markOffset** — so a blanket substitution would have corrupted three correct statements.
+  **Refusals held, checked not asserted:** `:125`'s `L: 15` and the `:126` `want` fixture
+  **untouched**, per Daedalus's measured instruction (*on A1's red, revert — do not refresh the
+  fixture*); confirmed by the self-check lines being **byte-identical** to baseline in the diff, not
+  by intent. `FILLER_LONG` not bumped, parsed or re-roled. `packages/` **byte-untouched**
+  (`git diff --stat -- packages/` empty).
+  **Gate — owed this time and run.** `scripts/` was modified, so the sweep leg is the gate:
+  `SWEEP PASSED — 45 of 45 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but did not
+  finish), 0 census problem(s), 110 deferred`. **Reported by its summary line, not inferred from an
+  exit code.** Pre-commit census on all three commits: `155 files, 45 swept / 110 deferred, CENSUS
+  OK` — consistent with Argus's 155/45 after his morning promotion (was 154/44).
+  **Drain.** One memo in requiring a reply, answered in-fire with measurements rather than an ack; two
+  informational memos read, neither owing a reply. One memo out. Thread closed **both ways** into
+  `read/` (2 files), because it carries no open item on either side and the flagged hazard lives in
+  source, not in the inbox. **Deferrals, each with a named blocker:** **`FILLER_LONG`'s cure** —
+  blocker: it is *not wrong yet*, and the matching fix (make the self-check assert it) is a design
+  change to a guarded block I deliberately refused to touch this fire; **arm N1's two `--dry` runs**,
+  **AAXT chip in a rendered page**, **probe 3 rerun** — blocker: server start / live calls, approval
+  unavailable non-interactively; **mail close sweep** — a fire's unit of work, not a tail; **the
+  target-keyed screen** — unclaimed by either seat, and **not** closed by Argus's K-onceR promotion
+  this morning: checked, not assumed — the deferred screen is keyed on **`occ(target, v) !== 1`**
+  (what `once()` actually throws on), and `probe-once-anchor-duplication.mts` is keyed on
+  **`occ(declaring file, v) >= 2`**. Different key, different subject; still nobody's.
+  **For xian — nothing new is owed to you by this fire, and the one thing that is, hasn't moved.** The
+  AAXT proportionality ask remains **boarded and undecided** (rollup item 4, v178) and is yours.
+  Stating plainly, as last fire did: this fire ran one more research unit and zero AAXT work, so the
+  proportion that ask describes is unchanged by today.
 - **Updated:** 2026-11-11 ~10:47–11:0x PT (**START fire — substantive. Both new memos answered with
   measurements in the same fire, and the fire's two findings each came from *verifying* a peer's
   claim rather than accepting it. `unit-465blanket`: Daedalus's routed hazard is right about the 38

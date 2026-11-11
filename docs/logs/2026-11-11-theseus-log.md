@@ -237,3 +237,138 @@ evidence is kept in one line.
 unchanged — ~25 entries need *genuinely* merging, i.e. ~25 files read, which is a WORK fire's unit of
 work and not a tail's. I did not merge entries blind to make the number look better; that would be
 the exact lossy gesture the blocker names.
+
+---
+
+## 14:47 — Session resumed (WORK fire, Opus 5)
+
+Scheduled WORK fire. Substantive. The two cures this seat claimed as its next WORK unit are landed,
+driven and graded; `scripts/` was touched for the first time in this thread, so the sweep leg is
+owed and was run.
+
+### Housekeeping first, and one deliberate discard
+
+The worktree opened **behind** `origin/main` — local `c96d3f0f`, remote `ba3dd67e` — despite the
+wrapper's pre-fire sync. Recording it as a fact about the fire, not a complaint. `HEAD` was an
+**ancestor**, so `git merge --ff-only` was the correct move and no rebase was involved.
+
+There was also one uncommitted memo edit sitting in the tree. **Discarded on purpose.** It rewrote
+my 11/11 memo's closing paragraph to argue the memo should *stay active* in `docs/mail/` because
+§1's clause was still live for Daedalus — and Daedalus had taken the clause and moved that memo into
+`read/` at 13:23, two and a half hours before this fire opened. Committing the edit would have
+resurrected a closed thread at its old path. Verified before discarding: found the memo under
+`read/` on `origin/main` and read the commit that moved it (`9af7fb5f`), rather than assuming.
+
+Worth keeping: last fire I wrote that I was leaving two replies active *"deliberately"* because each
+carried an open item on the recipient's side. The recipient closed one himself within 2.5 h by
+taking the item. The close-discipline's rule — *the closer is the party with the context* — worked
+exactly as written, and my argument for keeping it open was the thing that went stale.
+
+### Mail — 3 new, all read at the head of the fire
+
+Found with `git log --diff-filter=A --name-only c96d3f0f..HEAD -- docs/mail/`, not by eyeballing the
+directory.
+
+1. **Daedalus** — he **drove my A1 instead of agreeing with it**, reproduced 8562/8406 and 465/465
+   independently, put the clause in `:44`, and **routed his A2 to me as input to my design call**
+   without redesigning it. Answered this fire with measurements.
+2. **Argus** — my 11/10 §5.3 parameter-route finding is what his Section E plants, and my posthoc
+   (c) is why he grandfathered by exact value match rather than population membership. Nothing asked.
+3. **Calliope** (already in `read/`, closed by her) — strip fixed to **4 / 0 / 11**; recurrence point
+   accepted; counter deliberately not built under Gall's Law with the third-drift trigger named.
+
+No reply owed on any of the three. One answered anyway, with measurements.
+
+### unit-465leadcure — P1 TRUE (weak, declared), P2/P3/P4/P6 TRUE, **P5 FALSE**
+
+Pre-registration `9adfc343` written **14:50:49 PST** (`date`-read) and **pushed to `origin/main`
+before the first recording existed**. Baselines 14:52:15; cured recordings 14:53:23; cures + grading
+`c917de1c`; memo `61cb806e`. Both pushes verified with `git rev-parse HEAD origin/main` — **not**
+read off a piped `git push`, whose exit code the pipe would have hidden.
+
+**The design call was mis-posed.** I came in to settle *"remove the number vs. parse it"* for
+`FILLER_LEAD: 15`. A census of **all eleven** `LIST_LENGTHS` uses says the question was keyed on the
+wrong unit: three members, three roles, three answers. `FILLER: 12` is a geometry input the
+self-check **actually asserts** — correct *by construction*. `FILLER_LONG: 17` is a sweep input
+**printed as arithmetic**, asserted by nothing. `FILLER_LEAD: 15` is a **loop bound only**, four
+sites, never printed, never an input — **a sweep extent wearing a corpus name**. So neither option
+was right: refresh restores a claim that already drifted 78 days, and parse adds a cross-file
+source-scanner to keep honest a number measured **inert over `0..50`**, against a file whose docblock
+premise is "zero API calls, zero server, zero DB." The claim is removed: `L_SWEEP_MAX = 20`, with the
+inertness recorded in place so the next reader doesn't re-derive the question.
+
+**P5 failed against my own cure, twice, and that is the finding.** I pre-registered P5 over the
+**mechanism** — "any surviving literal claiming `FILLER_LEAD`'s length" — not over the two sites I
+set out to fix. It caught my own explanatory comment containing `(the live list holds 20)`: a frozen,
+unguarded corpus count **inside the comment explaining why those are the defect**. A census keyed on
+the two known instances would have passed green with the defect re-seeded one line away. Then it
+**recurred in the repair**: I wrote that the comment "shifted the self-check down by **25**" where
+the anchor moves `123 → 154` = **31**, and my insert had already staled the `:125` I had written two
+minutes earlier — this file's own docblock injury ("stale by 22 lines when written") re-inflicted by
+the person citing it. Both cured by **deleting the number** and citing the self-check by
+**searchable anchor instead of line number**.
+
+One shape under both: **prose written to explain a cure is not covered by the cure.** The subject got
+the discipline; the sentence about the subject didn't, until a mechanism-keyed census ran over it.
+
+**`:136` is an inversion, not a staleness.** *"FILLER_LEAD holds 15, so that is 5 new pairs"* was **a
+correct reading of a real guard when written**: `probe-recall-tool.mjs:1873` throws on
+`needLead > FILLER_LEAD.length` and demands exactly `needLead - length` pairs, so at 15 the
+`leadPairs: 20` arm was **corpus-blocked and owed exactly 5** — the sentence's own number, traceable
+to the guard's own message. At the live 20, `20 > 20` is false: **the arm is available and the cost
+is zero.** The sentence kept **billing a cost discharged elsewhere**, arguing against a build now
+free on that axis. Parametric half checked **at the cell the sentence is about** (`F=17` → `L=20,
+P=17`: leading 38, trailing 37, both over the 30 cap), using the subject's **own `layout()`** taken
+to its own anchor rather than retyped. `bothOverCap` is **true at `F=17` and false at `F=12`** — a
+check at a convenient `P` would have refuted a true sentence.
+
+**`FILLER_LONG` is the next `FILLER_LEAD`, and my own 11/11 census was blind to it.** That census
+reported *"6 of 7 constants agree with live source"* and stopped there. **Agreement is not
+guardedness.** `FILLER_LONG: 17` is correct *only by inspection, today* — nothing asserts it, it
+feeds two sweeps, it is printed as arithmetic — sitting in precisely the seat `FILLER_LEAD: 15`
+occupied on 2026-08-19. **Deliberately not cured:** it isn't wrong yet, and a fix inside a unit
+scoped to `FILLER_LEAD` would be a cure under a different subject. Recorded as the named successor
+hazard **in the subject file's own comment and in RESULTS.md**, so closing the mail thread doesn't
+lose it.
+
+**The near-trap fired a third time, on a third seat.** `C0` (cured) prints **the same 8562 bytes as
+its own baseline** while two lines differ — both denominators staying three digits (`208→273`,
+`288→378`). A size comparison grades this cure as having had no effect. The diff is the instrument.
+
+**Censused before editing, not after:** `geometry-distance-arm.mjs` holds **five `15`s and only one
+is the defect** — `:83` and `:121` are N1's real historical configuration, `:135`'s `+15` is a
+**markOffset**, a different unit. A blanket substitution would have corrupted three correct
+statements, which is the same reason the blanket `15→20` arm reddens at exit 1.
+
+### Refusals and gate
+
+Refusals held and **checked, not asserted**: `:125`'s `L: 15` and the `:126` `want` fixture
+untouched, per Daedalus's measured instruction (*on A1's red, revert — do not refresh the fixture*),
+confirmed by the self-check lines being **byte-identical** to baseline **in the diff**. `FILLER_LONG`
+not bumped, parsed or re-roled. `packages/` byte-untouched (`git diff --stat -- packages/` empty).
+
+Gate owed this fire and run: `SWEEP PASSED — 45 of 45 swept probes green, 0 red, 0 blocked (0 could
+not run, 0 ran but did not finish), 0 census problem(s), 110 deferred`. **Its summary line, not an
+exit code.** Pre-commit census on all three commits: `155 files, 45 swept / 110 deferred, CENSUS OK`
+— consistent with Argus's 155/45 after his morning promotion (was 154/44).
+
+### Drain
+
+One memo in needing a reply, answered in-fire with measurements rather than an ack; two
+informational, neither owing one. One memo out. Thread closed **both ways** into `read/` (2 files) —
+no open item on either side, and the flagged hazard lives in source rather than in the inbox.
+
+**Deferrals, each with a named blocker:** **`FILLER_LONG`'s cure** — blocker: it is *not wrong yet*,
+and the matching fix (make the self-check assert it) is a design change to the guarded block I
+deliberately refused to touch this fire. **arm N1's two `--dry` runs**, **AAXT chip in a rendered
+page**, **probe 3 rerun** — blocker: server start / live calls, approval unavailable
+non-interactively. **mail close sweep** — a fire's unit of work, not a tail. **memory-index
+compaction to 140** — blocker unchanged from this morning: ~25 entries need genuinely merging, which
+is a fire's unit of work. **the target-keyed screen** — unclaimed, and **checked** as not closed by
+Argus's promotion: the deferred screen keys on `occ(target, v) !== 1`, `probe-once-anchor-duplication.mts`
+keys on `occ(declaring file, v) >= 2`. Different key, different subject.
+
+**For xian:** nothing new is owed to you by this fire. The AAXT proportionality ask is **boarded and
+undecided** (rollup item 4, v178 — verified on the file, path `docs/operations/attention-rollup.md`)
+and remains yours. Same plain statement as last fire: this fire ran one more research unit and zero
+AAXT work, so the proportion that ask describes is unchanged by today.
