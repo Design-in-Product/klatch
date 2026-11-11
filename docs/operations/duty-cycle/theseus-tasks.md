@@ -80,6 +80,21 @@ _Items the cycle can pick up without xian._
       recommendation*; bumping `15`→`20` without measuring that would answer a different question.
       Add the equality check (`LIST_LENGTHS.FILLER_LEAD === FILLER_LEAD.length`, re-derived not
       imported) in the same unit, since that is what would have caught it.
+      **MEASURED 2026-11-10 (`unit-465leadbound`): the widening is INERT over bound 0..50** — all
+      three arms differ in exactly two lines, both denominators, so the 155 configurations it adds
+      each fail ≥2 constraints. The unit question is answered; what is left is the **cure**, still
+      not landed, still this seat's next WORK unit — *not* blocked, deferred only because *"remove
+      the number vs. parse it"* is a design call that wants to be made awake.
+      **NARROWED 2026-11-11 (`unit-465blanket`), and this is the operative warning for whoever
+      lands it:** the file holds **three** `15`s and **only `:44` is drift**. `:125`'s `L: 15` is
+      N1's load-bearing config and `:160` is a comment citing N1's docblock (Daedalus's table,
+      reproduced by `grep -n "15"` this fire → exactly those 3 lines). **A blanket `15`→`20`
+      exits 1** — the self-check's frozen `want` fixture at `:126` reddens on 7 of 9 keys and prints
+      no recommendation at all — so the blanket error is loud, not silent. **`:44` alone exits 0**
+      with the self-check untouched, because the self-check never reads `LIST_LENGTHS.FILLER_LEAD`.
+      Drifted site and dangerous site are disjoint: **edit `:44`, never `:125`.**
+      Also censused that fire: **6 of the file's 7 re-derived figures agree with live source**, and
+      the drifted one is the only one used as a loop bound rather than a geometry input.
 - [ ] **Arm N1's two `--dry` runs — mine, and the live blocker on arm N.** `probe-recall-tool.mjs:772`
       defines `N1`, and its own comment block declares it **NOT RUN**: *"Two `--dry` runs before
       anything is spent … Built 2026-08-18 (STOP) by Theseus, the arm's own designer, and **not
@@ -151,9 +166,9 @@ _Items batched for xian's attention. Calliope's sweep promotes these to the atte
 
 | name | cadence | next_due | last_completed | notes |
 |---|---|---|---|---|
-| Mail drain | per fire | 2026-11-10 STOP | 2026-11-10 WORK | Read on arrival, act/reply/surface in the same turn |
-| COORDINATION.md update | per fire | 2026-11-10 STOP | 2026-11-10 WORK | Update Theseus Prime section before any push |
-| Session log entry | per fire | 2026-11-10 STOP | 2026-11-10 WORK | Timestamped entries as work progresses, not reconstructed |
+| Mail drain | per fire | 2026-11-11 WORK | 2026-11-11 START | Read on arrival, act/reply/surface in the same turn. 11/11 START: 2 in, 2 out, both answered with a measurement in the same fire |
+| COORDINATION.md update | per fire | 2026-11-11 WORK | 2026-11-11 START | Update Theseus Prime section before any push |
+| Session log entry | per fire | 2026-11-11 WORK | 2026-11-11 START | Timestamped entries as work progresses, not reconstructed |
 | **Task list of record refresh** | **monthly** | **2026-12-10** | **2026-11-10** | **New 2026-11-10.** The cure for this file's three-month drift. Refresh means *verify*: header facts against `git worktree list` and the plists, every open item against code or `git log`, and every "blocked on X" against whether X still holds. A refresh that only re-dates the header has not been done. |
 
 ---

@@ -5308,7 +5308,105 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** available — duty cycle armed on Claude Code 2.1.322; next scheduled fire is START 10:47 (11/11).
+- **Status:** available — duty cycle armed on Claude Code 2.1.322; next scheduled fire is WORK 14:47 (11/11).
+- **Updated:** 2026-11-11 ~10:47–11:0x PT (**START fire — substantive. Both new memos answered with
+  measurements in the same fire, and the fire's two findings each came from *verifying* a peer's
+  claim rather than accepting it. `unit-465blanket`: Daedalus's routed hazard is right about the 38
+  and wrong about the kind — the file reddens at exit 1. And verifying Calliope's boarding of my own
+  AAXT ask found the metrics strip undercounting it. No edit to `scripts/` or `packages/`.**)
+  **Mail, 2 new since my last commit (`cadd3126`), both addressed to this seat by name, both read in
+  full at the head of the fire** — found with `git log --diff-filter=A --name-only cadd3126..HEAD --
+  docs/mail/`, not by eyeballing the directory. Author counts keyed on `cadd3126..9e09230b` (HEAD
+  **as the fire opened**, so this fire's own commits are excluded): Daedalus 3, Calliope 2, Argus 1,
+  Iris 1, Pard 1, Claude 1 = **9, none mine**. (1) `daedalus-to-theseus-…-your-correction-is-accepted-…`
+  — **his `leadPairs: 15` ruling is restored to settled, verified by reading `daedalus-tasks.md:39`
+  on `main` rather than taking his memo for it.** He graded both my reasons as reproducing, added a
+  third that subsumes them (§6.3 is closed-form, so there was never a search to narrow), named his
+  own error, and **routed a warning at my claimed cure unit.** (2) `calliope-to-theseus-…-the-aaxt-backlog-ask-is-boarded-not-decided-…`
+  — she boarded my AAXT proportionality ask as rollup needs-you item 4 (v177) rather than deciding
+  it. **Nothing owed on either substance; both answered anyway, with measurements.**
+  **The unit — `docs/research/unit-465blanket-2026-11-11/`, commit `5140ae8d`, pushed before either
+  memo was written.** Pre-registration written to `.scratch/` at **10:50:48**, first recordings
+  **10:52:41** (`stat -f %Sm` both, 113 s apart); arm A3 **declared not pre-registered**. Subject
+  pin blob `19cc7c9ed56cf094e03d38ecfde9d02385853e08` (`git ls-tree HEAD`, `-C`-pinned) — **the same
+  blob `unit-465leadbound` measured on 11/10**, so A0 is a re-measurement on an unchanged subject
+  and it diffs **byte-clean** against 11/10's baseline recording.
+  **Four arms: A0 (HEAD) rc=0 / 8562 B; A1 (blanket, all three `15`s→`20`) rc=1 / 465 B; A2 (`:44`
+  only — the cure as scoped) rc=0 / 8562 B; A3 (parity matrix) rc=0.**
+  **Finding 1 — his 38 is exactly right and "silent" is wrong.** A1 prints `leading: '1-38'`, then
+  **exits 1**, naming **7 of 9 keys**, with **no recommendation printed at all** (8562 → 465 B;
+  `process.exit(1)` fires before the sweeps). The `want` fixture at `:126` is frozen from a live
+  2026-08-19 fire, so the file self-defends against the repair that would damage it. **The two keys
+  that don't move are `covering` and `offset` — the two the arm is *about*** — so the guard is
+  carried entirely by incidental geometry. **This is the inverse of the pattern this seat keeps
+  filing against itself:** normally a frozen figure beside a recomputing predicate drifts green;
+  here a frozen fixture beside a parametric model is the only guard. What decides which you have is
+  whether anything **asserts** the frozen figure — `:44` drifted 78 days because nothing did.
+  **Finding 2 — the cure as scoped is not exposed to the hazard.** A2 exits 0, self-check intact,
+  diff vs A0 **exactly two lines, both denominators** (`208→273`, `288→378`). The self-check never
+  reads `LIST_LENGTHS.FILLER_LEAD`; it is pinned to the literal `L: 15` at `:125`. **Drifted site
+  and dangerous site are disjoint.**
+  **Finding 3 — his parity reason is stronger than he wrote it.** He pins `trailing = 2P+5 = 27` on
+  *"the 12 read off the live array this fire"*; from `layout()` at `:82–86`, `trailing = 2·FILLER+3`,
+  and **`2P+3` is odd for every integer P**. A3's 5×8 matrix: `trailing` invariant in L and `=2P+3`
+  at all five P, `leading` even at every cell, **0 violations in 40 cells**. So equality is
+  unreachable closed-form over **both** L and P, and §6.3 survives `FILLER` growing — the point,
+  since `FILLER_LEAD` growing unwatched is why this thread exists. His ceiling clause also confirmed
+  **by measurement** at the two values it reasons at: `L=16 → 30` (exactly `RECALL_MAX_EXPAND_ROWS`),
+  `L=17 → 32`.
+  **Finding 4 — censused all seven re-derived constants, not just the reported one.** 6 of 7 agree
+  with live source (`RADIUS` 2 / `recall.ts:100`; `WINDOW` 20 / `carried-context.ts:38`;
+  `MAX_EXPAND` 30 / `recall.ts:647`; `FILLER` 12; `FILLER_LONG` 17) and **both `recall.ts` line
+  citations still resolve 78 days on.** The one drifted figure is the only one used as a **loop
+  bound** rather than a geometry input — the only one whose disagreement the file never gets to
+  report.
+  **Finding 5, against my own instrument.** `drive.mjs` first printed `bytes=${body.length}` —
+  **UTF-16 code units**, **8406** where the file is **8562**. One step from being reported as a
+  156-byte shrink against 11/10's `wc -c`. **The sharp edge: A1's failure output is pure ASCII, so
+  chars == bytes == 465 there** — a mislabelled character count *agrees* on the red arm and diverges
+  only on the green ones. Fixed to label `utf8Bytes` and `chars` separately, re-driven; the re-drive
+  overwrote the first `A0.out`, benign **only because** 11/10's independent recording of the same
+  blob exists to diff against.
+  **Grading: 4 of 4 pre-registered TRUE, which is a weak grade, not a strong one** — two were
+  re-statements of 11/10's measurement on an unchanged blob. The new information is in the
+  *un*-pre-registered arm and in Finding 5, which the fire did not predict at all.
+  **Second finding — the attention rollup's metrics strip undercounts by one, and the item it drops
+  is mine.** `attention-rollup.md` describes needs-you as **4** in three places (item body `:116`,
+  v177 changelog `:288`, Last-refreshed header `:9`) and states it as a **number** in one — the
+  metrics strip `:71`, reading **3**. Counted off the body: four `### N.` headings under 🔴 (`:89`,
+  `:96`, `:108`, `:116`); the other two columns are **right** (eleven 🟡 counted, zero blocked).
+  `git log -L 71,71`: the row last moved in `6c4c7af7` (11-06 08:39, `2→3`) and was **not** advanced
+  by `5af31c9a` (11-10 21:47) when item 4 landed — one behind for ~13 h, on xian's skim surface.
+  **Routed to Calliope, not fixed** — her board, her figure; the same call as Daedalus's task line
+  yesterday, which he confirmed was right. **And it is a recurrence:** her own v156 notes at `:59`
+  record the identical defect (same column, same off-by-one, same cause — an item added to the body
+  without the table advancing — with Janus hand-counting four against a stated three). The cure then
+  was a manual re-count, which fixes the instance and leaves the mechanism. **Caveat checked before
+  writing it:** `:63`'s *"Needs-you: 1"* is **not** a third disagreeing figure — it sits in the v156
+  "Prior" history block and is correct for its own render. Flagging it would have been the easier
+  and wronger finding.
+  **Refusals held, checked not asserted:** `git diff --stat -- scripts/ packages/` **empty** on
+  every commit — `:44` deliberately not bumped and `geometry-distance-arm.mjs:136`'s false sentence
+  deliberately not patched. Every edit was to a copy under `.scratch/` (gitignored, `.gitignore:49`).
+  One live-tree command, read-only: `verify-filler-constraints.mjs` → `OK — 37 pairs`. **No sweep
+  owed** (`scripts/`/`packages/` byte-untouched); pre-commit probe census on all three work commits
+  **154 files, 44 swept / 110 deferred, CENSUS OK** — unchanged from every seat's 11/10 and 11/11
+  readings.
+  **Drain.** Two memos in, both read on arrival, both answered with a measurement in the same fire
+  rather than an ack. Two memos out. Three mail files moved by hand (2 → `read/`; both replies left
+  **active**, deliberately — each carries an open item on the recipient's side, and a close that
+  buries a live finding in `read/` is a close that loses it). **Deferrals, each with a named
+  blocker:** **the two cures + the equality assertion** — *not blocked*, claimed as this seat's next
+  **WORK** unit; the named reason it isn't this fire is that a START fire is bounded and *"remove the
+  number vs. parse it"* is a design call this unit made eligible and did not settle (this fire
+  narrowed it usefully — the hazard is at `:125`, which the cure doesn't touch); **arm N1's two
+  `--dry` runs**, **AAXT chip in a rendered page**, **probe 3 rerun** — blocker: server start / live
+  calls, approval unavailable non-interactively; **mail close sweep** — a fire's unit of work, not a
+  tail; **the target-keyed screen** — still unclaimed by either seat.
+  **For xian — status changed, and honestly.** The AAXT ask is **boarded** (rollup item 4, v177) and
+  no longer unanswered-and-unsurfaced; Calliope boarded it last night and this fire verified it on
+  the file. It remains **undecided** and yours. Noting plainly that today did not improve the
+  proportion it describes: this fire ran one more research unit and zero AAXT work.
 - **Updated:** 2026-11-10 ~19:47–20:1x PT (**STOP fire — substantive, and it closed the unit this
   seat routed to Daedalus and he handed back. `unit-465leadbound`: the widening is INERT over bound
   0..50, my own routed diagnosis of his ruling was wrong, and the census found a second consumer of
