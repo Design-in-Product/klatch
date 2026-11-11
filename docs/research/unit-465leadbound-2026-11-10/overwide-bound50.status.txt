@@ -1,0 +1,9 @@
+script: docs/research/unit-465leadbound-2026-11-10/overwide-arm.mjs
+args: []
+interpreter: node
+cwd: /Users/xian/Development/klatch-worktrees/theseus
+status: 0
+signal: null
+error: none
+stdout_bytes: 8562
+stderr_bytes: 0

@@ -1,0 +1,90 @@
+self-check: unswapped model reproduces arm N1 exactly
+  N1  rows=60  fact=[31,59]  marking=[35]  offers 1-28 / 34-60 (two-excerpt trailing 34-56)
+  N1  covering offer = trailing, restriction sits +1 inside its start; fact margin 10, marking margin 6
+  M   rows=38  offers 1-6 / 12-38  (M's doc: 1-6 / 12-38)
+
+── Sweep over the filler lists that exist today ─────────────────────────
+
+FILLER (P=12): 0 feasible of 663 configurations
+  none. Configurations failing exactly one constraint, grouped by which:
+   · covering-offer-not-cheaper (3)
+       L= 0 G= 1 P=12 | rows 30 | mark@ 1 fact@ 5 | offers     1-2 ( 2) /    8-30 (23) | +0 into leading  | factMargin   6 | fails: covering-offer-not-cheaper
+       L= 1 G= 1 P=12 | rows 32 | mark@ 3 fact@ 7 | offers     1-4 ( 4) /   10-32 (23) | +2 into leading  | factMargin   6 | fails: covering-offer-not-cheaper
+       L= 2 G= 1 P=12 | rows 34 | mark@ 5 fact@ 9 | offers     1-6 ( 6) /   12-34 (23) | +4 into leading  | factMargin   6 | fails: covering-offer-not-cheaper
+   · fact-evicted-margin-5 (20)
+       L= 0 G= 7 P=12 | rows 30 | mark@ 1 fact@17 | offers    1-14 (14) /   20-30 (11) | +0 into leading  | factMargin  -6 | fails: fact-evicted-margin-5
+       L= 0 G= 8 P=12 | rows 30 | mark@ 1 fact@19 | offers    1-16 (16) /   22-30 ( 9) | +0 into leading  | factMargin  -8 | fails: fact-evicted-margin-5
+       L= 0 G= 9 P=12 | rows 30 | mark@ 1 fact@21 | offers    1-18 (18) /   24-30 ( 7) | +0 into leading  | factMargin -10 | fails: fact-evicted-margin-5
+       … and 17 more
+   · reachable-by-observed-appetite (4)
+       L=11 G= 1 P=12 | rows 52 | mark@23 fact@27 | offers    1-24 (24) /   30-52 (23) | +22 into leading  | factMargin   6 | fails: reachable-by-observed-appetite
+       L=12 G= 1 P=12 | rows 54 | mark@25 fact@29 | offers    1-26 (26) /   32-54 (23) | +24 into leading  | factMargin   6 | fails: reachable-by-observed-appetite
+       L=13 G= 1 P=12 | rows 56 | mark@27 fact@31 | offers    1-28 (28) /   34-56 (23) | +26 into leading  | factMargin   6 | fails: reachable-by-observed-appetite
+       … and 1 more
+
+FILLER_LONG (P=17): 0 feasible of 918 configurations
+  none. Configurations failing exactly one constraint, grouped by which:
+   · covering-offer-not-cheaper (12)
+       L= 0 G= 3 P=17 | rows 40 | mark@ 1 fact@ 9 | offers     1-6 ( 6) /   12-40 (29) | +0 into leading  | factMargin  12 | fails: covering-offer-not-cheaper
+       L= 0 G= 4 P=17 | rows 40 | mark@ 1 fact@11 | offers     1-8 ( 8) /   14-40 (27) | +0 into leading  | factMargin  10 | fails: covering-offer-not-cheaper
+       L= 0 G= 5 P=17 | rows 40 | mark@ 1 fact@13 | offers    1-10 (10) /   16-40 (25) | +0 into leading  | factMargin   8 | fails: covering-offer-not-cheaper
+       … and 9 more
+   · fact-evicted-margin-5 (19)
+       L= 0 G= 9 P=17 | rows 40 | mark@ 1 fact@21 | offers    1-18 (18) /   24-40 (17) | +0 into leading  | factMargin   0 | fails: fact-evicted-margin-5
+       L= 0 G=10 P=17 | rows 40 | mark@ 1 fact@23 | offers    1-20 (20) /   26-40 (15) | +0 into leading  | factMargin  -2 | fails: fact-evicted-margin-5
+       L= 0 G=11 P=17 | rows 40 | mark@ 1 fact@25 | offers    1-22 (22) /   28-40 (13) | +0 into leading  | factMargin  -4 | fails: fact-evicted-margin-5
+       … and 16 more
+   · reachable-by-observed-appetite (10)
+       L= 6 G= 6 P=17 | rows 52 | mark@13 fact@27 | offers    1-24 (24) /   30-52 (23) | +12 into leading  | factMargin   6 | fails: reachable-by-observed-appetite
+       L= 7 G= 6 P=17 | rows 54 | mark@15 fact@29 | offers    1-26 (26) /   32-54 (23) | +14 into leading  | factMargin   6 | fails: reachable-by-observed-appetite
+       L= 8 G= 5 P=17 | rows 56 | mark@17 fact@29 | offers    1-26 (26) /   32-56 (25) | +16 into leading  | factMargin   8 | fails: reachable-by-observed-appetite
+       … and 7 more
+
+── Smallest filler list that admits a feasible configuration ────────────
+P=21 — 4 pair(s) beyond FILLER_LONG, 9 beyond FILLER
+  L= 2 G=10 P=21 | rows 52 | mark@ 5 fact@27 | offers    1-24 (24) /   30-52 (23) | +4 into leading  | factMargin   6 | FEASIBLE
+  all 1 feasible configuration(s) at P=21:
+    L= 2 G=10 P=21 | rows 52 | mark@ 5 fact@27 | offers    1-24 (24) /   30-52 (23) | +4 into leading  | factMargin   6 | FEASIBLE
+
+── What one relaxation buys, on the existing lists ──────────────────────
+
+drop "fact-evicted-margin-5" on FILLER: 20 configuration(s)
+  L= 0 G= 7 P=12 | rows 30 | mark@ 1 fact@17 | offers    1-14 (14) /   20-30 (11) | +0 into leading  | factMargin  -6 | fails: fact-evicted-margin-5
+  L= 0 G= 8 P=12 | rows 30 | mark@ 1 fact@19 | offers    1-16 (16) /   22-30 ( 9) | +0 into leading  | factMargin  -8 | fails: fact-evicted-margin-5
+  L= 0 G= 9 P=12 | rows 30 | mark@ 1 fact@21 | offers    1-18 (18) /   24-30 ( 7) | +0 into leading  | factMargin -10 | fails: fact-evicted-margin-5
+  L= 0 G=10 P=12 | rows 30 | mark@ 1 fact@23 | offers    1-20 (20) /   26-30 ( 5) | +0 into leading  | factMargin -12 | fails: fact-evicted-margin-5
+  … and 16 more
+
+drop "fact-evicted-margin-5" on FILLER_LONG: 19 configuration(s)
+  L= 0 G= 9 P=17 | rows 40 | mark@ 1 fact@21 | offers    1-18 (18) /   24-40 (17) | +0 into leading  | factMargin   0 | fails: fact-evicted-margin-5
+  L= 0 G=10 P=17 | rows 40 | mark@ 1 fact@23 | offers    1-20 (20) /   26-40 (15) | +0 into leading  | factMargin  -2 | fails: fact-evicted-margin-5
+  L= 0 G=11 P=17 | rows 40 | mark@ 1 fact@25 | offers    1-22 (22) /   28-40 (13) | +0 into leading  | factMargin  -4 | fails: fact-evicted-margin-5
+  L= 0 G=12 P=17 | rows 40 | mark@ 1 fact@27 | offers    1-24 (24) /   30-40 (11) | +0 into leading  | factMargin  -6 | fails: fact-evicted-margin-5
+  … and 15 more
+
+drop "covering-offer-not-cheaper" on FILLER: 3 configuration(s)
+  L= 0 G= 1 P=12 | rows 30 | mark@ 1 fact@ 5 | offers     1-2 ( 2) /    8-30 (23) | +0 into leading  | factMargin   6 | fails: covering-offer-not-cheaper
+  L= 1 G= 1 P=12 | rows 32 | mark@ 3 fact@ 7 | offers     1-4 ( 4) /   10-32 (23) | +2 into leading  | factMargin   6 | fails: covering-offer-not-cheaper
+  L= 2 G= 1 P=12 | rows 34 | mark@ 5 fact@ 9 | offers     1-6 ( 6) /   12-34 (23) | +4 into leading  | factMargin   6 | fails: covering-offer-not-cheaper
+
+drop "covering-offer-not-cheaper" on FILLER_LONG: 12 configuration(s)
+  L= 0 G= 3 P=17 | rows 40 | mark@ 1 fact@ 9 | offers     1-6 ( 6) /   12-40 (29) | +0 into leading  | factMargin  12 | fails: covering-offer-not-cheaper
+  L= 0 G= 4 P=17 | rows 40 | mark@ 1 fact@11 | offers     1-8 ( 8) /   14-40 (27) | +0 into leading  | factMargin  10 | fails: covering-offer-not-cheaper
+  L= 0 G= 5 P=17 | rows 40 | mark@ 1 fact@13 | offers    1-10 (10) /   16-40 (25) | +0 into leading  | factMargin   8 | fails: covering-offer-not-cheaper
+  L= 0 G= 6 P=17 | rows 40 | mark@ 1 fact@15 | offers    1-12 (12) /   18-40 (23) | +0 into leading  | factMargin   6 | fails: covering-offer-not-cheaper
+  … and 8 more
+
+drop "reachable-by-observed-appetite" on FILLER: 4 configuration(s)
+  L=11 G= 1 P=12 | rows 52 | mark@23 fact@27 | offers    1-24 (24) /   30-52 (23) | +22 into leading  | factMargin   6 | fails: reachable-by-observed-appetite
+  L=12 G= 1 P=12 | rows 54 | mark@25 fact@29 | offers    1-26 (26) /   32-54 (23) | +24 into leading  | factMargin   6 | fails: reachable-by-observed-appetite
+  L=13 G= 1 P=12 | rows 56 | mark@27 fact@31 | offers    1-28 (28) /   34-56 (23) | +26 into leading  | factMargin   6 | fails: reachable-by-observed-appetite
+  L=14 G= 1 P=12 | rows 58 | mark@29 fact@33 | offers    1-30 (30) /   36-58 (23) | +28 into leading  | factMargin   6 | fails: reachable-by-observed-appetite
+
+drop "reachable-by-observed-appetite" on FILLER_LONG: 10 configuration(s)
+  L= 6 G= 6 P=17 | rows 52 | mark@13 fact@27 | offers    1-24 (24) /   30-52 (23) | +12 into leading  | factMargin   6 | fails: reachable-by-observed-appetite
+  L= 7 G= 6 P=17 | rows 54 | mark@15 fact@29 | offers    1-26 (26) /   32-54 (23) | +14 into leading  | factMargin   6 | fails: reachable-by-observed-appetite
+  L= 8 G= 5 P=17 | rows 56 | mark@17 fact@29 | offers    1-26 (26) /   32-56 (25) | +16 into leading  | factMargin   8 | fails: reachable-by-observed-appetite
+  L= 8 G= 6 P=17 | rows 56 | mark@17 fact@31 | offers    1-28 (28) /   34-56 (23) | +16 into leading  | factMargin   6 | fails: reachable-by-observed-appetite
+  … and 6 more
+
+Nothing above is a build. See docs/research/ for the decision this feeds.

@@ -1,0 +1,9 @@
+script: scripts/geometry-distance-arm.mjs
+args: []
+interpreter: node
+cwd: /Users/xian/Development/klatch-worktrees/theseus
+status: 0
+signal: null
+error: none
+stdout_bytes: 1179
+stderr_bytes: 0
