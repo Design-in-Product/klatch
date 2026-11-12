@@ -33,19 +33,36 @@
  * commit" and needs no commit-recency selector (the exact instability
  * `RECORDING-REPRICABILITY-CONVENTION.md` §2 test 2 warns about).
  *
- * The population is read live (Section B), not hardcoded to today's three files — a fourth copier
- * pasting the same `once()` helper is covered automatically, the point of promoting a key instead
- * of an instance.
+ * The population is read live (Section B), not hardcoded to the files that hold the helper today —
+ * `B1`'s own `[MEAS]` line reports the membership on every run, so no count is frozen here either.
+ * A further copier is covered automatically **only if it pastes the helper byte-identically into a
+ * `.mts` file.** The selector admits `.mjs` by extension and then requires `ONCE_HELPER`, a string
+ * carrying TypeScript annotations (`: string`) — two conjuncts that cannot both hold, so the `.mjs`
+ * branch is unsatisfiable by construction; and a `.mts` copy merely re-wrapped across lines by a
+ * formatter is outside the population too. Both driven, with the matched positive (the typed slice
+ * from a real member does satisfy the conjunct, so the negatives are about the selector and not a
+ * broken slice): `docs/research/unit-465oncegate-2026-11-11` (Daedalus, 11/11 STOP). **Today this is
+ * a reach limitation of this sentence, not a live blindness** — no `probe-*.mjs` declares a `once()`
+ * helper under any spelling, and the selector reaches every file that does, both read live in that
+ * unit. Widening the selector is a design call left to this file's author rather than taken here.
  *
  * **Why the gate is a baseline diff, not a bare "zero live flags" assertion.** Driving this file
  * against the real tree (Section F) found what `unit-465plant`'s own RESULTS.md §5 already named
  * and measured: "`occ(declaring file, v) >= 2` is a risk signal, not a crash prediction... of the 14
  * K-once flags in all of `scripts/` history, one (`C_SWEEP`) actually threw. The other 13 are
- * standing non-unique anchors." Three of those standing anchors are live in this file's own
- * population today (import-continuation fragments and the universal `const HERE = ...` boilerplate
- * line, each duplicated between a copier's own header and the text it quotes to redirect a sibling
- * file's same header) — flagging them on every sweep would redden permanently on accepted,
- * harmless state, which is not what either research unit asked for. Theseus's own §3 framed the
+ * standing non-unique anchors." Some of those standing anchors are live in this file's own
+ * population today. **The count is deliberately not written here** — `F1`'s own `[MEAS]` line
+ * reports it on every single run (`… live flag(s) · … grandfathered · … new`), so a frozen number in
+ * this docblock could only drift away from it in silence, the predicate being count-free and
+ * therefore permanently green either way. (This sentence previously said "three", which was the
+ * per-file figure; the population-wide figure F1 prints was already three times that on the day of
+ * promotion. Daedalus, `unit-465oncegate-2026-11-11`, graded under `unit-465plant` §5's own key —
+ * flagged declarations — and under both re-keyings that might have rescued it, distinct names and
+ * distinct values. The cure is to delete the number, not to refresh it.) The live flags are
+ * import-continuation fragments and single-line boilerplate — `const HERE = ...`, but also a
+ * `readFileSync(...)` or `join(...)` line — duplicated between a copier's own header and the text it
+ * quotes to redirect a sibling file's same header; flagging them on every sweep would redden
+ * permanently on accepted, harmless state, which is not what either research unit asked for. Theseus's own §3 framed the
  * value as catching a new anchor "at a moment it can still be withdrawn" — i.e. a check on what
  * changes, not a standing audit of everything already shipped. So the gate asserts: no
  * once()-consumed (name, value) pair is flagged live that was not ALREADY flagged, identically, at

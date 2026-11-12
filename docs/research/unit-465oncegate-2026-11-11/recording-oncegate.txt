@@ -1,0 +1,46 @@
+# unit-465oncegate recording
+subject-rev: b8fd9ae666d94409ee48d2a559cf06a28fa4f801
+subject-blob: f20d67105989d1588f53d19b48d57459139fec01
+driven-at: 2026-11-12T01:22:56.997Z
+
+[ok]   S1  the apparatus span [const occ = .. Section A) is locatable in the subject — a failed slice must not read as a clean arm
+[MEAS] S1  apparatus slice: 7108 utf8 bytes, 171 lines
+[ok]   S2  the sliced apparatus imports and exposes a callable flagsIn — the reader under every figure below is the subject's own, not a re-implementation
+[ok]   S3  the subject's ONCE_HELPER defining line is locatable and sliced, not retyped
+[MEAS] S3  ONCE_HELPER (sliced, 57 chars): "const once = (src: string, from: string, to: string) => {"
+[MEAS] POP  probe-* files: 142 .mts + 13 .mjs · population (ONCE_HELPER holders): 3
+[MEAS] P1   live flagged declarations: 9  (probe-round374-the=3 probe-round375-the=3 probe-round377-the=3)
+[MEAS] P2   distinct values: 6 · distinct names: 9
+[MEAS] P2     probe-round374-the R373_IMPORT_OUTCOME    occ=2 value="from './lib/probe-outcome.mts';"
+[MEAS] P2     probe-round374-the R373_IMPORT_SWEEP      occ=2 value="} from './sweep-probes.mjs';"
+[MEAS] P2     probe-round374-the R373_HERE              occ=2 value="const HERE = dirname(fileURLToPath(import.meta.url));"
+[MEAS] P2     probe-round375-the C_IMPORT_OUTCOME       occ=2 value="from './lib/probe-outcome.mts';"
+[MEAS] P2     probe-round375-the C_IMPORT_SWEEP         occ=2 value="} from './sweep-probes.mjs';"
+[MEAS] P2     probe-round375-the C_HERE                 occ=2 value="const HERE = dirname(fileURLToPath(import.meta.url));"
+[MEAS] P2     probe-round377-the A_OUTCOME              occ=2 value="import { summariseAndExit, type ProbeVerdict } from './lib/probe-outcom
+[MEAS] P2     probe-round377-the A_R225_READ            occ=2 value="const r225Src = readFileSync(join(HERE, R225), 'utf8');"
+[MEAS] P2     probe-round377-the A_SWEEP_READ           occ=2 value="const SWEEP = join(HERE, 'sweep-probes.mjs');"
+[ok]   P0  the docblock sentence under test is present in the subject as quoted (so P1/P2 are about live text, not a recollection of it)
+[ok]   P1  under unit-465plant §5's own key (flagged declarations) the live figure is NOT 3, so the docblock's "Three ... are live" is false under the key it cites (live=9)
+[ok]   P2  the sentence is not rescued by re-keying to distinct values (6) or distinct names (9) either — neither is 3
+[ok]   P2b  the sentence IS reconcilable per-file (every population member contributes the same number of flags), which is the charitable reading and the one the cure should make explicit
+[ok]   S4  the typed helper text is sliceable verbatim from a real population member (probe-round374-the)
+[MEAS] S4  typed helper slice (6 lines):
+[MEAS] S4    const once = (src: string, from: string, to: string) => {
+[MEAS] S4      const n = occurrences(src, from);
+[MEAS] S4      if (n !== 1) throw new Error(`anchor occurs ${n} time(s), expected exactly 1: ${from}`);
+[MEAS] S4      return src.replace(from, to);
+[MEAS] S4    };
+[MEAS] S4    
+[ok]   S5  the annotation-stripped variant actually differs from the slice it was derived from — an unchanged "stripped" text would make P3's negative vacuous
+[MEAS] S5  untyped variant first line: "const once = (src, from, to) => {"
+[ok]   P3a  MATCHED POSITIVE — the typed helper slice satisfies the subject's ONCE_HELPER conjunct, so P3b's negative is a statement about the selector and not about a broken slice
+[ok]   P3b  the annotation-stripped helper — i.e. any `.mjs` copy of the same six-line function — does NOT satisfy the ONCE_HELPER conjunct, so the selector's `.mjs` extension branch is unsatisfiable by construction
+[ok]   S6  the reformatted variant differs from the slice it was derived from
+[ok]   P3c  a `.mts` copier whose helper is merely RE-WRAPPED across lines (the default of any formatter at a narrower print width) is also outside the population — the gap is not only about `.mjs`
+[MEAS] P4   probe-*.mjs files: 13 · of those, declaring a top-level once(): 0
+[MEAS] P4   probe-* files declaring a top-level once() under ANY spelling: 3 · population reached by the selector: 3
+[ok]   P4  no `probe-*.mjs` declares a once() helper today, so P3 is a REACH limitation of the docblock's automatic-coverage claim, not a live blindness — stated rather than overclaimed
+[ok]   P4b  and the selector currently reaches every file that declares the helper under any spelling, so the population is exactly right TODAY
+
+ALL 15 checks passed
