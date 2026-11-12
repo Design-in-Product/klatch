@@ -115,6 +115,66 @@ _Items the cycle can pick up without xian._
       xian** — he runs the paste, then the keyless check — so it stays visible. See the new
       Blocked-on-xian entry; the memo would have been the cheapest thing in the directory to close
       wrongly.
+- [x] ~~**Daedalus's 10/28 §7 item 2 — re-key the attested-round census to exclude denials**~~ —
+      **DONE 2026-11-12 WORK (`unit-465attestdenial-2026-11-12`, pre-reg `3d8cac59`, maps
+      `684dea64`, results `aa82deb0`, all pushed to `origin/main`).** Built by **importing**
+      `attestedRounds`/`DENIAL_RE`/`LEGACY_DENIAL_RE` from `docs/research/lib/attested-rounds.mjs`,
+      not by editing the 10/28 recon, which is a stamped recording.
+      **P1 LANDED — his `175 / 174 / removed=[465] / max=467` reproduces exactly at his own rev
+      (`69cf9167`), under his own key, read by his own module.** Then **3 of 6 refuted.**
+      **P2 REFUTED: at HEAD the cure removes nothing** — `loss=0`, `removed=[]`. **Zero** commit
+      subjects in `69cf9167..HEAD` name round 465 either way, the **raw** population gained 0 and
+      lost 0 **member-for-member**, and 465 is credited by a non-subject source: three
+      `packages/server/src/__tests__/round465-{data,drop,schema}-delta.test.ts` files added
+      2026-11-06 by Daedalus in three commits **whose subjects name no round at all**. The key is
+      **subject-level**; membership is an **OR across four sources** — so the `[465]` loss was
+      **one test filename from zero**, and the filename landed 8 days after the figure was
+      published, by its author, in unrelated work. His cure is right; the **price** he measured was
+      an artefact too, not just the benefit.
+      **P4 REFUTED, and this is the fire's headline: the measure that replaced a dead measure is
+      dead in the same sense.** It gained **exactly one member (465)** over **765 commits** and
+      **83 new `unit-*` dirs** with **0** new `roundNNN-instruments/` dirs — and that one movement
+      is the denial filter *releasing* a member, not a round being attested.
+      `drive7.units-per-round.out`: **83 unit dirs attest exactly 2 round numbers** (464: 45,
+      465: 38). The stop condition counts **rounds** at `N_PROPOSED = 5`. Not staleness, not
+      saturation — a **unit mismatch**: the measure's unit is no longer the unit of work.
+      **P6 REFUTED on both conjuncts.** The standing cell now publishes `consecutive = 3` against
+      his `M8`'s 2, and the mover was a filename. **The other conjunct was my error:** I predicted
+      the child would exit 0; it exits 1 on `red=[T2b] refused=[T8]`, the cell's **standing** state,
+      published in his own `unit-464t8-2026-10-29/drive7.clean-final.out:262`. Read an exit-code
+      prediction off the subject's committed clean drive, never off its source.
+      **Three hits against my own apparatus, all from driving:** (a) `T3` is green in **every** arm
+      including the cripple built to redden it, and the green is **vacuous** — at HEAD neither key
+      removes anything, so it asserts two *empty removal sets* agree; it guards an empty filtered
+      population, which is the wrong emptiness. **Not re-keyed** (that re-scores a graded run);
+      named as the next edit and offered to Argus. (b) the `blind-key` arm **cannot grade `T2`** —
+      `T2` is red in the clean arm too, so the row is `[false,false]`, indistinguishable from an
+      untouched defect. (c) a cripple cell **matched while its note was false**: `T4` ok under
+      `blind-key` as predicted, but the note said the growth finding does not rest on the denial
+      key — it does, the cripple takes `T4` from RED to green. **`prior-as-now` did its job
+      exactly**: `refused=[G3,T4,T5]`, the predicted set to the member.
+      **Routed, not applied:** a fifth population source (`^docs/research/unit-(\d+)`) — **measured
+      price today: zero new members**, so it buys nothing now and does not fix the unit mismatch;
+      Daedalus's module and his standing line, his call. **To xian/Janus:** whether the stop
+      condition's unit becomes the unit or the condition is retired as unreachable.
+      **Declared blindness, carried:** nothing in the unit grades the census's **four source
+      patterns** — `selfTest()` grades the denial *key* — and since the finding is that the source
+      patterns carry the whole load, that is the blindness that matters most.
+- [ ] **Daedalus's 10/28 §7 item 1 — `C3` carrying the reading it is computed under.** **No blocker
+      named.** Named as this seat's in his 10/28 §6 (*"yours and still open; no complaint — you
+      named it rather than filing a half-edit"*) and still named open in his 11/12 §8.
+      **Boarded 2026-11-12 WORK, and the reason it is only now on a board is this seat's own 11/12
+      START finding in the mirror:** it has been named open in a memo, in `COORDINATION.md`, and in
+      `unit-464t2-surface-2026-10-28/README.md:133` — and in **none** of them on the task list of
+      record. `grep -n "C3" docs/operations/duty-cycle/theseus-tasks.md` returned **nothing** this
+      fire. A memo naming an item as yours is not a board; being named by both seats as somebody's
+      is not the same as being somebody's.
+- [ ] **Daedalus's 10/28 §7 item 3 — put his 10/28 §1–§4 under graded legs rather than recon.**
+      **No blocker named.** Same provenance and same boarding gap as the item above; boarded
+      2026-11-12 WORK for the same reason. Scope check before taking it: `unit-465attestdenial`
+      already put *part* of that territory under graded legs (the attested/dir population split and
+      the denial key), so whoever takes this should first read that unit's `RESULTS.md` and name
+      which of §1–§4 is still ungraded, rather than re-grading what is now done.
 - [ ] **A target-keyed screen** — `occ(target, v) !== 1`, which is what `once()` actually throws on.
       **No blocker named**; it is a different instrument nobody has built, and it is left
       **unclaimed** so either this seat or Daedalus can take it. Opened in the 11/10 WORK entry of

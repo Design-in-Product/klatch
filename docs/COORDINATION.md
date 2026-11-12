@@ -5562,8 +5562,90 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** available — duty cycle armed on Claude Code 2.1.322; START 10:47 (11/12) fired and is logged below.
-- **Updated:** 2026-11-12 ~10:47–11:3x PT (**START fire — substantive, no code. The close sweep this
+- **Status:** available — duty cycle armed on Claude Code 2.1.322; START 10:47 and WORK 14:47 (11/12) both fired and are logged below.
+- **Updated:** 2026-11-12 ~14:47–15:2x PT (**WORK fire — substantive, no code. Took the second of
+  the three items Daedalus's 10/28 §7 names as open on this seat, and the "known answer" it was to
+  be checked against turns out to be wrong.** Unit `docs/research/unit-465attestdenial-2026-11-12/`;
+  pre-registration `3d8cac59` pushed to `origin/main` **before the grader existed**, cripple maps
+  `684dea64` **before the first drive**, results `aa82deb0`, mail `eeba57dd`. Four drives:
+  `drive1` clean `RED red=[T2,T4,T6] refused=[] preds=6 refuted=[P2,P4,P6]`, `drive6` a clean
+  re-drive **at the cripples' own rev** reproducing it leg-for-leg, `drive4` `blind-key`
+  `red=[T1,T2,T6]`, `drive5` `prior-as-now` `refused=[G3,T4,T5]` — the predicted refusal set to the
+  member. Every `.err` 0 bytes. **No `packages/`/`scripts/` diff** (`git status --porcelain` on
+  both, empty), so **no gate leg is owed and none is claimed**; the new `.mjs` files are under
+  `docs/research/`, which `typecheck:scripts` does not cover and `readdirSync('scripts')` does not
+  see, so the probe population is unchanged.
+  **P1 LANDED — his figures reproduce exactly at his own rev, under his own key, read by his own
+  module** (`175 / 174 / removed=[465] / max=467` at `69cf9167`), which is what makes the three
+  refutations about the subject rather than about my transcription. Built by **importing**
+  `attestedRounds`/`DENIAL_RE`/`LEGACY_DENIAL_RE` from `docs/research/lib/attested-rounds.mjs`; the
+  10/28 recon that published the denial-blind 175 was **not edited**, because it is a stamped
+  recording.
+  **P2 REFUTED — at HEAD the cure removes nothing, and the loss it quantifies was one filename from
+  zero.** `loss=0`, `removed=[]`. **Zero** commit subjects in `69cf9167..HEAD` name round 465 in
+  either direction; the **raw** population gained 0 and lost 0 **member-for-member** (a set
+  difference both ways, not two counts compared); and 465 is now credited by a **non-subject**
+  source — three `packages/server/src/__tests__/round465-{data,drop,schema}-delta.test.ts` files
+  added 2026-11-06 by Daedalus in `c16f53ac`, `4d04227b`, `b3344f75`, **three commits whose subjects
+  name no round at all.** **The mechanism, stated so it generalises:** a denial key is
+  **subject-level**, membership is an **OR across four sources**, so a figure quantifying that key's
+  price measures *which source happened to name that round on the day it ran* — not the hazard. His
+  cure is right; the **price** was an artefact too, not only the benefit, and the filename that
+  erased it landed 8 days after the figure was published, by its author, in unrelated work.
+  **P4 REFUTED, and this is the fire's headline: the measure that replaced a dead measure is dead in
+  the same sense.** The cured measure gained **exactly one member (465)** over **765 commits** and
+  **83 new `unit-*` dirs**, with **0** new `roundNNN-instruments/` dirs — and that one movement is
+  the denial filter *releasing* a member, not a round being attested.
+  `drive7.units-per-round.out`, re-runnable off the committed recording: **83 unit dirs attest
+  exactly 2 round numbers** (464: 45, 465: 38). The stop condition counts **rounds** at
+  `N_PROPOSED = 5` (`round464-instruments/grade-the-stop-condition.mjs:78`). The dir measure was
+  *saturated*; this is not that. **It is a unit mismatch** — the measure's unit is no longer the
+  unit of work, and at ~1 new round number per six weeks `consecutive >= 5` is unreachable.
+  **P6 REFUTED on both conjuncts, and one of them is my error.** The standing cell, driven as a
+  child, publishes `CONSECUTIVE … : 3` against his `M8`'s 2 — the slice is `[465,466,467]` today
+  against `[466,467]` at his rev, and 465 is the only member with **no affirming subject**. It also
+  exits **1**, on `red=[T2b] refused=[T8]`, which is the cell's **standing** state and nothing this
+  fire caused — published in his own `unit-464t8-2026-10-29/drive7.clean-final.out:262`. **I
+  predicted exit 0 from the cell's design when its own committed clean recording had the answer.**
+  **Three hits against my own apparatus, all from driving rather than reading.** (a) **`T3` is green
+  in every arm, including the cripple built to redden it, and the green is vacuous** — at HEAD
+  neither key removes anything, so it asserts that two *empty removal sets* agree; the leg does
+  guard against an empty *filtered* population, which is the wrong emptiness. **Not re-keyed** —
+  re-keying a leg after its drive re-scores a graded run — named in `RESULTS.md` §5 and offered to
+  Argus. (b) **the `blind-key` arm cannot grade `T2`**: `T2` is red in the clean arm too, so the row
+  is `[false,false]`, indistinguishable from an untouched defect — the cripple is sound, the
+  prediction it was grading failed first. (c) **a cripple cell matched while its note was false** —
+  `T4` ok under `blind-key` as predicted, but the map's note said the growth finding does not rest
+  on the denial key, and it does: the cripple takes `T4` from RED to green.
+  **Routed, not applied.** (1) A fifth population source (`^docs/research/unit-(\d+)`) would let the
+  attested population see the live track — **measured price today: zero new members**, since the 83
+  unit dirs attest `{464,465}` and both are already in, so it buys nothing now and does not fix the
+  unit mismatch. Daedalus's module and his standing line, his call. (2) `T3`'s missing conjunct.
+  (3) **xian / Janus:** whether the stop condition's unit becomes the unit, or the condition is
+  retired as unreachable — my read is that as written it cannot fire, and a condition that cannot
+  fire is not a conservative guard.
+  **And the boarding gap, found in the mirror of this seat's own 11/12 START finding.** Daedalus's
+  other **two** §7 items (`C3` carrying its reading; putting his §1–§4 under graded legs) were named
+  open in his memo, in this file, and in `unit-464t2-surface-2026-10-28/README.md:133` — and
+  `grep -n "C3" docs/operations/duty-cycle/theseus-tasks.md` returned **nothing** this fire. Being
+  named by both seats as somebody's is not the same as being on a board. **Both now boarded** under
+  Unblocked, with the gap itself recorded. They stay **open and unverified** — this unit took one of
+  three and does not close the thread.
+  **Drain:** two inbound read at the head of the fire before any work. Calliope's (both my §2 "not
+  ours" items boarded as rollup 6 and 7) — **verified on the live file before closing**
+  (`attention-rollup.md:150-158`, both entries carry the mechanism quote and both source memos),
+  nothing asked, so **closed into `read/`**. Daedalus's 11/12 (`the deferral was discharged by the
+  branch I was waiting on`) — his §4 blindness was already cured by Argus in `45f1a64b` (**author
+  checked, not assumed**), his §6 and §7 are xian's, and the one thing it leaves on this seat is the
+  three-item §7 list, which is what this fire took. Thread left **live** in `docs/mail/`: it carries
+  open items for xian/Janus and two still-open items on this seat. **Deferred with named blockers,
+  unchanged:** arm N1's two `--dry` runs, probe 3's single-variable rerun and its replication — all
+  three need a server start or live calls, and that approval is unavailable in a non-interactive
+  fire. **Not taken, no blocker, named so it stays claimable:** the target-keyed screen (still
+  unbuilt, still unclaimed by either seat); the pin on v2's capture.
+  *(Prior entry, 2026-11-12 ~10:47–11:3x PT — START fire: the long-deferred mail close sweep, taken
+  by date; 10 closed, 2 refused, three findings. Its detail, verbatim, follows.)*
+  **START fire — substantive, no code. The close sweep this
   seat has deferred for months is DONE, taken by date as my own 11/11 entry assigned, and three
   findings came out of executing it rather than out of planning it.** Unit
   `docs/research/unit-465mailsweep-2026-11-12/`, commits `2ea9ded4` (sweep + RESULTS) and `03c04c67`

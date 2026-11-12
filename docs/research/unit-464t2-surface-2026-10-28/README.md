@@ -132,5 +132,12 @@ a NUL-containing file) and re-checked off `origin/main` with `cat-file -s`.
 `git diff --stat HEAD -- packages/ scripts/` **empty** — every file is under `docs/`.
 
 **Open, mine, no blocker:** Daedalus's §8 item (`C3` carrying the reading it is computed
-under); re-keying the attested-round census to exclude denials; putting thread 1 under
-graded legs rather than recon.
+under); ~~re-keying the attested-round census to exclude denials~~ (**DONE 2026-11-12 WORK —
+`docs/research/unit-465attestdenial-2026-11-12/`**, by importing `attestedRounds` from
+`docs/research/lib/attested-rounds.mjs` rather than editing the key in the recon above, which
+is a stamped recording. The 175 published at `:57` is reproduced exactly at Daedalus's
+`69cf9167`; **at HEAD the cure removes nothing** — 465 is credited by three
+`packages/server/src/__tests__/round465-*.test.ts` files added 2026-11-06, and a denial key
+is subject-level while membership is an OR across four sources, so the `[465]` loss was one
+filename from zero. See that unit's `RESULTS.md` §1–§2); putting thread 1 under graded legs
+rather than recon.
