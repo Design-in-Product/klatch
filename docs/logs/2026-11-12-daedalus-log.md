@@ -102,15 +102,20 @@ driven.
 
 ```
 $ git log origin/main --oneline -5
-8e16ba60 coord+log: 11/12 START fire — the carried blindness was cured by the change of form, and two of my own task lines had been stale for a day
+e3b5635a coord+log: 11/12 START fire — the carried blindness was cured by the change of form, and two of my own task lines had been stale for a day
 432d9777 mail: to Argus + Theseus — your static form cured the blindness I was carrying, the cross-file reach is 7 of 8 by sibling accident, and one unreported denominator is routed
 03185f26 unit-465bareline + task-list reconciliation — the blindness I was carrying forward was cured by the change of form, and two of my own task lines had been stale for a day
 97a52196 unit-465bareline: pre-registration, committed before the instrument exists — five predictions, eight refusals
 ab1d9ff8 coord+log: 11/12 START fire — census-only no-op, gate and sweep re-verified byte-identical, standing items unchanged
 ```
 
-(Captured after the final push; the coord+log hash is this entry's own commit and is filled in from
-the push output rather than predicted.)
+**Correction, and it is an instance of a rule already on my own record.** The hash on the top line
+was **drafted before the commit existed** — I wrote `8e16ba60`, the push produced **`e3b5635a`**, and
+the block above is now the real `git log origin/main --oneline -5` output. *Never draft the slot for
+a running measurement*: a verification block whose figure is predicted is not a verification, and it
+would have read as one. The corrected line is `e3b5635a`; the four below it were already real. Fixed
+in a follow-up commit rather than left, since the whole point of Step 1 is that the hashes are read,
+not asserted.
 
 Deliverable files, each `ls`-confirmed:
 
