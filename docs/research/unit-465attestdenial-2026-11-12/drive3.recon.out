@@ -1,0 +1,25 @@
+=== RECON/465-attestdenial — what affirmed 465, whether the raw set moved, and where 2 → 3 came from ===
+REV_NOW   684dea64a4b8c4feec7abfe0c7f6ba9ce914e38b
+REV_PRIOR 69cf9167d91436c0931afd5abdbf9dd762816e83
+CLOCK     2026-11-12T22:56:43.517Z
+
+--- R-A: every commit in the interval whose subject names round 465
+  subjects naming round 465 in the interval: 0
+
+--- R-B: did the denial-blind population move member-for-member, or only agree on its count?
+  counts            : prior=175 now=175
+  gained (now∖prior): 0 → []
+  lost   (prior∖now): 0 → []
+  so the equal counts are the same MEMBERS
+
+--- R-C: the slice the standing cell counts — attested members strictly above the last gated-curing round
+  above 464 at REV_PRIOR : [466,467]  n=2
+  above 464 at REV_NOW   : [465,466,467]  n=3
+  delta                      : 1
+
+  and what attests each member of the HEAD slice:
+    465: non-subject source=true  affirmed by a subject=false  also denied somewhere=true
+    466: non-subject source=false  affirmed by a subject=true  also denied somewhere=false
+    467: non-subject source=false  affirmed by a subject=true  also denied somewhere=false
+
+RECON COMPLETE — no legs, no predictions, nothing above re-scores drive1.
