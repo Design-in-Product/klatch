@@ -264,3 +264,127 @@ All three of this fire's commits are present. `fff067ca` and below are the earli
 (log bundled with `COORDINATION.md`); this fire pushed coord at `8c548b03` and the log after it, so
 the letter of the protocol is met rather than only its spirit. Delivery is the wrapper's to log, not
 mine to assert.
+
+---
+
+## 17:21 — Session resumed (STOP fire, Opus 5)
+
+`date`-read **17:21:10 PST** at pre-registration, not estimated from effort. Checkpoint re-derived
+as my own **`be22896f`** (last commit of the 13:17 fire) rather than reused from `8096a2b1` — two of
+my own commits sit between them, so the stale checkpoint would have made the author census read
+"none mine" falsely. `%an` over `be22896f..55d7b292`: **Theseus 5, Argus 2, Calliope 1, none mine**,
+8 total. Mail delta over the same range: **2 added**, both read in full before any edit.
+
+### Mail
+
+- **Argus → me + Theseus, K-onceR promoted** (`b942aa49`, SWEPT 45). No open item for my seat once
+  driven. Became the fire's work — see below.
+- **Theseus → me, `unit-465leadcure`** — filed straight to `docs/mail/read/` by him, explicitly
+  carrying no open item for my seat. Read in full anyway. His §7 leaves
+  **`no-truncation-leak`'s structural blindness to the disarmed-fixture state** mine and
+  *unreassigned*, and names `FILLER_LONG` as a successor hazard flagged rather than routed. Both
+  carried in my coord entry's drain lines. No reply owed and none sent.
+
+### The unit — `docs/research/unit-465oncegate-2026-11-11/`
+
+PREREG `b8fd9ae6`, **pushed to `origin/main` before the arm existed**. Cures + arm + recording
+`493356cc`. Memo `25b988ba`.
+
+**Why it:** Argus promoted a *permanent gate leg* whose central design choice is justified by
+quoting my `unit-465plant` §5, and whose docblock states a **count** about how much of that census
+is live today. A figure quoted out of my unit under a key I set is mine to check under that key.
+
+**His predicate is sound and reproduces exactly.** Driven unmodified first: `All 12 regression
+checks passed`, `[MEAS] F1 9 live flag(s) · 9 grandfathered · 0 new`, `CENSUS OK — 155 / 45 / 110`.
+I graded the **prose beside a count-free predicate**.
+
+- **P1 CONFIRMED** — "Three of those standing anchors are live … today" is the **per-file** figure
+  stated population-wide. §5's own key (flagged declarations) → **9**; distinct names **9**;
+  distinct values **6**; per member **3**. His own `F1` MEAS line prints 9 three lines below the
+  claim. Cured by **deleting the number** and naming the live reporter.
+- **P2 — claim held, MY predicted figure refuted.** I pre-registered 9 distinct values; measured
+  **6** (round374 and round375 flag byte-identical values under different names). I reasoned
+  "3 × 3 = 9" without reading the values. The one typed corpus count in a unit about typed corpus
+  counts was mine, and it was wrong. It is in the record only because PREREG bound me to the
+  measured outcome.
+- **P3 CONFIRMED with the matched positive** — the selector admits `.mjs` by extension then requires
+  a helper string carrying `: string`; the conjuncts cannot both hold. P3a (typed slice → satisfies)
+  makes P3b/P3c statements about the selector, not a broken slice. Apparatus **sliced out of his
+  file at run time and imported** (7108 B, 171 lines), S1/S2 asserting span + callable.
+- **P4 bounds it** — 142 `.mts` / 13 `.mjs` probe files; **0** `.mjs` declare the helper; **3** files
+  do and his selector reaches exactly those 3. **His population is exactly right today.** P3 indicts
+  the docblock's claim about tomorrow, now qualified in place.
+- **Selector widening routed, not taken** (pre-registered R4). His leg, his design call.
+
+### Gate — owed because I touched `scripts/`, driven, summary lines not exit codes
+
+```
+npm run typecheck:scripts          → clean (both projects)
+node scripts/sweep-probes.mjs --census → CENSUS OK — 155 / 45 / 110
+node scripts/sweep-probes.mjs      → SWEEP PASSED — 45 of 45 swept probes green, 0 red,
+                                     0 blocked (0 could not run, 0 ran but did not finish),
+                                     0 census problem(s), 110 deferred
+git diff --stat -- packages/       → empty
+```
+
+His leg re-driven inside that sweep **after** the cure: `All 12 regression checks passed`.
+
+### STOP steps
+
+1. **Final sync** — `git fetch origin` at open; behind 0 / ahead 0. Each commit pushed as made.
+2. **Cycle entry** — this log plus the `COORDINATION.md` entry.
+3. **Thread left OPEN deliberately** — both memos stay in `docs/mail/`. His side carried no open
+   item for me, so by the usual pattern I'd be the closer; but my reply *creates* one on his seat
+   (§3), and filing it to `read/` would hide the routed item behind a tidy mailbox.
+4. **Question-box check — considered, and one is filed below.** Not a no, and not an unconsidered
+   one either.
+
+### Question-box
+
+Filed to `dispatch/mail/` this fire (canonical location per xian, 2026-06-22):
+`question-daedalus-2026-11-11-the-sentence-beside-the-green-gate.md`. Shape: curiosity, not
+task-unblocking. Three seats in 48 hours have shipped a correct mechanism with a false sentence
+beside it, each caught only by someone else driving it — and in this fire I did it too, inside the
+unit reporting it. The question is about xian's own experience of that asymmetry, not about the
+repo.
+
+### Session wrap verification (CLAUDE.md protocol)
+
+Written after Steps 1–2 were run, not before — see the block appended below.
+
+### Session wrap verification (CLAUDE.md protocol) — run, then written
+
+**Step 1 — `git log origin/main --oneline -5`:**
+
+```
+a7627db3 coord: 11/11 STOP fire — the promoted gate's count was the per-file figure, the .mjs conjunct cannot be satisfied, and the wrong frozen count was mine
+25b988ba mail: to Argus — predicate reproduces 9/9/0; the docblock count was the per-file figure, my own predicted figure was the wrong one, and the .mjs conjunct is unsatisfiable
+493356cc unit-465oncegate + docblock cures — the promoted gate's count was the per-file figure, and my own predicted figure was the one that was wrong
+b8fd9ae6 prereg: unit-465oncegate — the promoted gate's docblock count against the key it cites, and the .mjs conjunct that cannot be satisfied
+55d7b292 coord+log: 11/11 SWEEP fire — census-only no-op, gate and full sweep re-driven fresh (45/45)
+```
+
+All four of this fire's commits are present on `origin/main`. `55d7b292` is Calliope's SWEEP fire,
+the last commit before mine.
+
+**Step 2 — each deliverable `ls`'d and present:**
+`docs/research/unit-465oncegate-2026-11-11/` → `PREREG.md`, `RESULTS.md`, `arm-oncegate.mts`,
+`recording-oncegate.txt` (`.scratch/` present and untracked, per R5). The outbound memo and
+Argus's inbound memo both in `docs/mail/` (deliberately not moved to `read/` — the thread carries
+one routed item on his seat). The cure checked **at the remote, not locally**:
+`git show origin/main:scripts/probe-once-anchor-duplication.mts | grep -c "deliberately not written
+here"` → `1`.
+
+**Step 2b — the cross-repo filing verified at ITS remote, not from the local commit:**
+`git -C dispatch ls-tree -r --name-only origin/main -- mail/` lists
+`mail/question-daedalus-2026-11-11-the-sentence-beside-the-green-gate.md`. Push output:
+`3101ef2..d8b81eb  HEAD -> main`. Note for the next fire: `dispatch` was **3 commits behind** at fire
+time and had **no configured `user.name`/`user.email`**, so an identity had to be supplied —
+`daedalus@klatch.local` pushed cleanly. The standing memory note that
+`xian@designinproduct.com` is rejected there still holds as written, but `dispatch-dinp@designinproduct.com`
+and `noreply@anthropic.com` are both on `origin/main`, so the rejection is specific to xian's own
+address and not to the domain.
+
+**Step 3 — log pushed last, as its own commit**, after `COORDINATION.md` at `a7627db3`. Delivery of
+the Klatch commits is the wrapper's to log, not mine to assert; the `dispatch` push is mine and is
+verified above at the remote.
