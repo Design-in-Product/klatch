@@ -1,0 +1,34 @@
+[ok] S1  start marker occurs exactly once in the subject (got 1)
+[ok] S2  end marker occurs exactly once in the subject (got 1)
+[ok] S3  sliced span is non-empty and shorter than the subject (9851 B of 31155 B)
+[MEAS] S4  slice written: 9851 B, 229 lines
+[ok] S5  all four bindings recovered and callable
+[ok] P0  the shipped leg drives green, exit code read off the child (rc=0)
+[ok] P1a  the shipped leg printed a B1 population line
+[ok] P1b  my population equals the subject's own B1 list (3 vs 3)
+[MEAS] P1c  population: probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts, probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts, probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts
+[MEAS] P3a  once()-consumed literal anchors in the live population: 17
+[MEAS] P3b  of those, at occ == 1: 8  ·  at occ >= 2 (flagged): 9
+[HELD] P3c  P3: at least one consumed anchor sits at occ == 1, so P1 is measurable on a real member (got 8)
+[ok] P5a  the flagged figure agrees with the shipped F1 line, read off the child (got 9)
+[HELD] P5b  P5: the subject reports flags only — its own output names no occ == 1 figure
+[MEAS] A0  victim read off the live file (R3): probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts R373_SANDBOX_DECL :219 occ=1
+[MEAS] A0b  probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts baseline flags: 3 (R373_IMPORT_OUTCOME, R373_IMPORT_SWEEP, R373_HERE)
+[HELD] A1a  P1: comment-planted bare duplicate is FLAGGED on R373_SANDBOX_DECL (occ 1 → 2)
+[ok] A1b  it added exactly one flag, no collateral (3 → 4)
+[ok] A1c  the plant added no literal declaration — it is a bare line, not a decl
+[MEAS] A2a  raw plant: R373_SANDBOX_DECL flagged occ=2 · flags 3 → 4 · declarations added by the plant: 0
+[REFUTED] A3a  P2: planting R373_SANDBOX_DECL's value into probe-round375-the… adds NO flag anywhere (9 → 10)
+[MEAS] A3c  flags appearing on the cross-file plant: C_SANDBOX in probe-round375-the… occ=2
+[MEAS] A3d  probe-round375-the… declares 1 anchor(s) with the SAME value as R373_SANDBOX_DECL: C_SANDBOX
+[MEAS] A3e  consumed occ==1 anchors whose value appears in NO other population file: 1 (e.g. R375 in probe-round377-the…)
+[ok] A3f  a value exclusive to its own file, planted into a sibling, adds NO flag (9 → 9) — the declaring-file key really is blind HERE
+[ok] A4a  baseline set rebuilt from 467b8209 with the sliced reader: 9 keys (shipped F1 says 9 grandfathered)
+[MEAS] A4b  already-flagged anchor R373_IMPORT_OUTCOME (occ 2): a bare-line plant takes it to occ=3 and is GRANDFATHERED → gate GREEN
+[HELD] A4c  P4: the plant on an already-flagged anchor stays grandfathered — occ is not in the key
+[ok] A4d  the A1 victim's flag IS new against the baseline — the gate would REDDEN on it
+[ok] R1  git diff --stat -- scripts packages is empty ("")
+
+APPARATUS: all checks passed
+PREDICTIONS: 4 held, 1 refuted (of 5 pre-registered)
+Exit code tracks the APPARATUS only — a refuted prediction is a result, not a failure.
