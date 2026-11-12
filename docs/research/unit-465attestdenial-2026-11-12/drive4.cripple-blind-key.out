@@ -1,0 +1,137 @@
+=== GRADE/465-attestdenial — the denial re-key, and whether the measure that replaced a dead one is itself moving ===
+REV_NOW   d6f5616a4fb488953fe27c73155a0dafbe991cb5
+REV_PRIOR 69cf9167d91436c0931afd5abdbf9dd762816e83  (literal 69cf9167)
+CLOCK     2026-11-12T22:57:45.592Z
+CRIPPLE   blind-key
+LIVE KEY  /$^/
+
+--- [MEAS] the census, three keys, two revs
+  M-prior-A  denial-blind (my 10/28 key)  rev=69cf9167  above 292:  175  max=467  removed=[]
+  M-prior-B  as-filed                     rev=69cf9167  above 292:  174  max=467  removed=[465]
+  M-prior-C  cured/live                   rev=69cf9167  above 292:  175  max=467  removed=[]
+  M-now-A  denial-blind (my 10/28 key)  rev=d6f5616a  above 292:  175  max=467  removed=[]
+  M-now-B  as-filed                     rev=d6f5616a  above 292:  175  max=467  removed=[]
+  M-now-C  cured/live                   rev=d6f5616a  above 292:  175  max=467  removed=[]
+  M-loss    the re-key's loss (A − C)         prior=0  now=0
+  M-dirs    round-DIR population              prior=n=91 max=464  now=n=91 max=464
+
+--- [MEAS] does the as-filed key still agree with the cure on this population
+  M-bc      B vs C at REV_NOW: identical, member for member
+
+--- [MEAS] the interval, and what moved in it
+  M-int     interval usable: yes
+  M-commits commits in REV_PRIOR..REV_NOW    : 766
+  M-attgrow attested members gained (cured key): 0 → []
+  M-attlost attested members lost  (cured key): 0 → []
+  M-units   unit-* dirs created in interval   : 83
+              + unit-464absorb-2026-10-31
+              + unit-464acons-2026-11-04
+              + unit-464addarm-2026-11-04
+              + unit-464authored-2026-10-31
+              + unit-464bucket-2026-11-01
+              + unit-464cell-2026-11-02
+              + unit-464class-2026-11-02
+              + unit-464conj-2026-11-03
+              + unit-464cons-2026-11-04
+              + unit-464cure3-2026-11-01
+              + unit-464dir-2026-11-02
+              + unit-464drift-2026-10-30
+              + unit-464frozen-2026-11-05
+              + unit-464gentry-2026-11-05
+              + unit-464grep-2026-11-01
+              + unit-464immov-2026-11-03
+              + unit-464inspan-2026-11-03
+              + unit-464kind-2026-11-05
+              + unit-464kpspan-2026-11-04
+              + unit-464mapkey-2026-10-30
+              + unit-464moves-2026-11-04
+              + unit-464mysites-2026-11-04
+              + unit-464nomoved-2026-10-30
+              + unit-464notes-2026-11-05
+              + unit-464order-2026-11-02
+              + unit-464outside-2026-11-03
+              + unit-464pins-2026-11-01
+              + unit-464prec-2026-11-03
+              + unit-464presc-2026-11-03
+              + unit-464reach-2026-10-31
+              + unit-464reach-2026-11-02
+              + unit-464rec-2026-10-31
+              + unit-464rec3-2026-11-01
+              + unit-464redkey-2026-11-05
+              + unit-464rekey-2026-10-30
+              + unit-464sat-2026-10-31
+              + unit-464steal-2026-11-01
+              + unit-464subkind-2026-11-02
+              + unit-464t2-t8-2026-10-29
+              + unit-464t2b-sat-2026-10-29
+              + unit-464t8-2026-10-29
+              + unit-464t8-mapdecay-2026-10-29
+              + unit-464v21map-2026-10-30
+              + unit-464v2map-2026-10-30
+              + unit-464vac-2026-10-31
+              + unit-465adopt-2026-11-07
+              + unit-465anchor-census-2026-11-09
+              + unit-465armd-2026-11-07
+              + unit-465attestdenial-2026-11-12
+              + unit-465bareline-2026-11-12
+              + unit-465blanket-2026-11-11
+              + unit-465census-v2-2026-11-10
+              + unit-465cfgdir-2026-11-10
+              + unit-465declpop-2026-11-07
+              + unit-465declprose-2026-11-08
+              + unit-465drop-2026-11-06
+              + unit-465expect-2026-11-08
+              + unit-465fixture-2026-11-11
+              + unit-465guard-2026-11-08
+              + unit-465guard374-2026-11-08
+              + unit-465guard375-2026-11-09
+              + unit-465keys-2026-11-06
+              + unit-465leadbound-2026-11-10
+              + unit-465leadcure-2026-11-11
+              + unit-465mailsweep-2026-11-12
+              + unit-465migrate-2026-11-06
+              + unit-465oncegate-2026-11-11
+              + unit-465plant-2026-11-10
+              + unit-465promote-2026-11-07
+              + unit-465reach375-2026-11-09
+              + unit-465recall-2026-11-10
+              + unit-465rekey374-2026-11-09
+              + unit-465rekey377-2026-11-09
+              + unit-465repromote-2026-11-08
+              + unit-465route375-2026-11-09
+              + unit-465rowdelta-2026-11-06
+              + unit-465rows-2026-11-06
+              + unit-465scanopts-2026-11-12
+              + unit-465screen-2026-11-10
+              + unit-465sizeguard-2026-11-07
+              + unit-465skipE-2026-11-07
+              + unit-465walcell-2026-11-06
+              + unit-465widen-2026-11-10
+  M-rounds  roundNNN-instruments created      : 0 → []
+
+--- [MEAS] the standing cell, driven as a child at REV_NOW
+  M-child   exit=1  stderrBytes=0  stdoutBytes=33608
+  M-consec  its own CONSECUTIVE line         : 3
+  M-fired   its own FIRED line               : false
+  M-parsekp the parse's KP/near-miss pair    : separates
+
+--- legs
+LEG G1 ok [GATE  ] attested-rounds.mjs selfTest() === true — true
+LEG G2 ok [GATE  ] every reader resolved at both revs — now=true prior=true dirs=true/true
+LEG G3 ok [GATE  ] the interval is real: two distinct revs, prior an ancestor of now — distinct=true rc=0
+LEG T1 RED [PIN   ] P1 his M3 reproduces at his rev: A=175/175 C=175/174 removed=[]/[465] max=467/467
+LEG T2 RED [CLAIM ] P2 the re-key still loses exactly 465 at HEAD: loss=0/1 removed=[]/[465]
+LEG T3 ok [CLAIM ] P3 as-filed and cured still agree member-for-member at HEAD: identical
+LEG T4 ok [CLAIM ] P4 the attested measure did not move over the interval: gained=0 lost=0
+LEG T5 ok [CLAIM ] P5 the interval carried work the measure cannot see: commits=766>=200 newUnits=83>=10 newRoundDirs=0==0
+LEG T6 RED [CLAIM ] P6 the standing cell still publishes 2 and still cannot fire: exit=1 consecutive=3/2 fired=false/false
+
+--- predictions
+PRED P1 REFUTED his 175/174/[465]/467 reproduces at his rev under the imported reader
+PRED P2 REFUTED the re-key still loses exactly one member at HEAD, and it is still 465
+PRED P3 LANDED the as-filed key and the cure still agree on this population 15 days on
+PRED P4 LANDED the attested measure gained and lost nothing over the interval
+PRED P5 LANDED the interval carried >=200 commits and >=10 unit dirs and 0 new round dirs
+PRED P6 REFUTED the standing cell still publishes consecutive=2 and fired=false
+
+VERDICT/1 RED legs=9 red=[T1,T2,T6] refused=[] preds=6 refuted=[P1,P2,P6] prefused=[]
