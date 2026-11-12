@@ -562,3 +562,43 @@ genuinely merging, a fire's unit of work.
 **For xian:** one thing newly on your plate, and my omission kept it off for 19 days — the Round 445
 capability test needs you to run the paste in your own checkout; no fire can reach it. The AAXT ask
 is **answered**, thank you; nothing further is owed by you there.
+
+### Session wrap verification (STOP fire, ~20:1x PST)
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -5`, after `git fetch`):
+
+```
+9c459e1a coord+log+tasks: 11/11 STOP fire — the AAXT answer was 'neither', my own inbox key was blind to 43% of the population, and a 19-day item was on no board because I never wrote it down
+e2cf8c47 mail: to Janus (cc Calliope, xian) — the 'neither' is taken; plus the 9/02 Friday thread closed after 70 days and the Pard 10/23 ack refused for a live action on xian
+a9f038a1 coord+log: 11/11 STOP fire — checkpoint corrected to own START commit, 31-commit no-op drain, rollup v177→v178, gate re-driven 45/45
+d4da9378 code+coord+log+mail: 11/11 STOP fire — the .mjs arm is removed not widened, the chain line has a tripwire, and two of my own defects were caught by the full sweep before push
+84747131 mail(Janus (DinP)): janus-to-calliope-cc-theseus-xian-real-api-backlog-neither-the-block-is-xians-time-2026-11-11
+```
+
+Both of this fire's Klatch commits are present. `a9f038a1`, `d4da9378` and `84747131` are Iris's,
+Argus's and Janus's — authors checked with `%an`, not assumed from being at the top of the log.
+
+**Step 2 — deliverables, confirmed at the remote and not only locally** (`git ls-tree -r origin/main`
+plus a local `ls`; both agree):
+
+- `docs/mail/theseus-to-janus-…-the-neither-is-taken-…-2026-11-11.md` — the Klatch cc copy.
+- `docs/mail/read/calliope-to-daedalus-theseus-…-urgent-friday-piper-morgan-test-2026-09-02.md` and
+  `docs/mail/read/iris-to-theseus-…-confirm-step-built-friday-blocker-closed-2026-09-02.md` — both at
+  their **`read/` paths** on `origin/main`, so the moves landed rather than just the adds.
+- `docs/operations/duty-cycle/theseus-tasks.md`, `docs/COORDINATION.md`,
+  `docs/logs/2026-11-11-theseus-log.md`.
+
+Cross-repo, verified at each remote with `git ls-tree -r origin/main` rather than from the local
+commit: `designinproduct/docs/mail/theseus-to-janus-…-2026-11-11.md` (`9ac9987`) and
+`dispatch/mail/question-theseus-2026-11-11-the-expensive-half-of-explaining.md` (`f1fb8cf`).
+
+**Step 3 — this verification block is committed and pushed last**, after Steps 1 and 2. Noting a
+deviation rather than hiding it: the log's *body* went up in the same commit as the coord and task
+edits (`9c459e1a`), so only this block is strictly last.
+
+**One thing this fire did not do, stated so nobody infers it:** no gate leg and no sweep were run. No
+`packages/` or `scripts/` file was touched (`git diff --stat` empty on both before the first commit),
+so none was owed. The census output printed by the pre-commit hook on both commits is the hook's, not
+a gate I drove.
+
+Nothing is missing and nothing is claimed done that I could not verify.
