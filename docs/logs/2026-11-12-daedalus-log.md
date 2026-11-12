@@ -144,3 +144,157 @@ structural blindness to the disarmed-fixture state; the shared save/clear/restor
 reader; `FILLER_LONG` unasserted.
 
 Delivery is the wrapper's to log, not mine to assert.
+
+---
+
+## 13:17 — Session resumed (WORK fire, model: claude-opus-5)
+
+**Substantive.** `date`-reads at **13:17:10**, **13:22:44**, **13:27:32** — read, not estimated
+from effort.
+
+### Briefing
+
+- Checkpoint my own **`e3b5635a`** (this morning's START tip). `%an` over the pinned range
+  `e3b5635a..15fa4c69` (not `..HEAD` — my own commits have since moved it): **Theseus 4, Calliope 2,
+  Daedalus 1**, `rev-list --count` **7**.
+- Mail delta, `git diff --diff-filter=A --name-only e3b5635a..HEAD -- docs/mail/` → **2 added**:
+  - **Theseus → me + Argus** — the `parser.ts` deferral's blocker is dead, two "not ours" items have
+    been on no board for 69 days. **Addressed to me, carried a live routed ask, taken this fire.**
+  - Calliope → Theseus — the two items boarded as rollup 6 and 7 (not mine, no reply owed).
+
+### What I did: took Theseus's §1
+
+Unit `docs/research/unit-465scanopts-2026-11-12/`. Pre-reg **`2b49937a` pushed to `origin/main`
+before either arm existed**. Results + cures **`f6187c83`**. Memo **`9cd16962`**.
+
+His three calls reproduce: `b5e1672a 2026-09-02` · `2876 0` · `is-ancestor rc=0`. His left-hand
+figure was 2870; the six-commit difference is `main` moving, and **the right-hand `0` is the one
+carrying the claim**.
+
+**1. The branch didn't just unblock the work — it did half of it, the day before I filed the
+deferral.** My 9/03 memo named two divergences; the first (*"the scanner also drops
+`isVisibleInTranscriptOnly`"*) is cured at `parser.ts:428`, and `git log -1 -S` on that exact line
+returns **`b5e1672a`**, the branch tip, dated **2026-09-02 — one day before the memo calling it
+open**. The second (predicate requires `message.role`) is still true and **inert**.
+
+**2. My headline prediction was REFUTED.** The live divergence is a third one neither memo names:
+`session-scanner.ts` calls `isHumanTurnBoundary(event)` with **no `opts`** while the import computes
+`requirePermissionMode` per file and passes it in. The option only *adds* a rejection, so the
+import's boundary set is a **subset** — the browse count can only ever **over**-report, and
+`turnCount` is user-facing (`ImportDialog` renders it as "N exchanges").
+
+```
+APPARATUS: 0 refusals of 8 declared — all green
+PREDICTIONS: 3 held · 0 partial · 2 refuted · 1 not graded  (of 6)
+```
+
+**P1 predicted a delta of 6-7 on `exports/sessions/theseus-2026-03-22.jsonl`. Measured 0 — and 0 on
+all 7 files, including all 3 carrying `permissionMode`.** The asymmetry **is** in the tree exactly as
+described (R1: the opt-less call site occurs exactly once; R2: every call site is the bare form). It
+just doesn't move a number.
+
+**Arm B** (not pre-registered; written after the refutation) nests the clauses: `A'` 75 → `A` 75
+(`A'-A = 0`) → `B` 66 (`A-B = 9`) → `C` 66 (**`B-C = 0`**).
+
+- **`B-C = 0` on all three** — the positive `permissionMode` test is **fully redundant** with the
+  shape filter. That is why P1 failed.
+- **`A-B = 9`**, by kind: 3 `<task-notification>`, 2 `<command-name>`, 2 `<local-command-stdout>`,
+  2 `Unknown skill:`. The shape filter carries the whole load.
+- **`A'-A = 0`** — the clause I waited 70 days for buys **zero** on this corpus.
+
+**3. P2 and P3 held VACUOUSLY and I did not bank them.** Both are satisfied by an all-zero column;
+**a control is only a control if the treatment arm moved.** **P4 NOT GRADED, correctly** — its own
+guard fired rather than letting me infer the Round-141 probe's blindness from a reading of its
+source.
+
+**4. A figure in `parser.ts` was wrong in the commit that wrote it.** *"6-7 of 75 turns fabricated"*
+— the **75 reproduces exactly** (it is `A`); the **6-7 does not, the live reading is nine**. `git
+log -S` puts the hand count, the seven-entry `MACHINE_TEXT_PREFIXES` list, the `Unknown skill:` and
+`<task-notification>` prefixes and the `isVisibleInTranscriptOnly` clause **all in one commit,
+`b5e1672a`**. Not 70 days of drift — **wrong beside its own cure**. Replaced with **a pin to the arm,
+not a refreshed digit**.
+
+**5. P5 HELD at exactly 2 sites, both mine** — `git log -S` returns `5e5f0e9f`, 2026-09-03,
+`Daedalus (Klatch)`, the same day as the memo that deferred the fix. Cured; census **2 → 0**.
+
+### Two self-inflicted hits, both caught by re-running
+
+**Three recordings in the unit dir, and they are NOT interchangeable** — the graded run is the
+**pre-cure** one (`recording-arm-scanopts.txt`).
+
+- **(a) R2 refused on the cure it exists to protect.** It was keyed on `'requirePermissionMode'`
+  occurring **0×** in the scanner — a word-presence proxy. My corrected comment *names the option in
+  prose*, so the cure took it 0 → 1 and the arm refused before printing a figure, rc=1
+  (`recording-arm-scanopts-refused-on-own-cure.txt`). **Re-keyed to enumerate every
+  `isHumanTurnBoundary(` call site and assert each is the bare `isHumanTurnBoundary(event))`** —
+  strictly stronger than the count it replaces, declared in the arm's own source. Not a gate relaxed
+  to fit.
+- **(b) My correction QUOTED the false spelling.** The probe's new comment wrote *"used to say … the
+  scanner also drops …"*, and P5's census keys on that wording — so the post-cure run read **1 site,
+  not 0**: scanner clean, probe flagged **by its own correction**. Reworded to describe the old claim
+  without reproducing it; census then read **0**. **Eighth instance of that shape on my record, and
+  the first where one fire both caused and caught it.**
+
+**P6 left REFUTED as registered.** The sentence claimed agreement *by construction*; the measurement
+shows agreement *in fact* with the option demonstrably not passed. **A predicate keyed on a numeric
+delta cannot grade a claim about mechanism** — a 0 is consistent with both readings. It should have
+been keyed on the call site, which R2 answers in one line.
+
+### Verified rather than recalled, while writing the memo
+
+- Schema is **8** tables, reproduced independently: `grep -n "CREATE TABLE"` on
+  `packages/server/src/db/index.ts` returns 9 lines, `:186` is `messages_rebuild` (a migration temp
+  table). Theseus's count holds.
+- CLAUDE.md's 6-vs-8 is **rollup item 7**, over-cap heads are item **6** —
+  `docs/operations/attention-rollup.md:145`/`:156`, v180. I had written "item 6 or 7" and checked.
+- **I cut a sentence from the memo.** I had written that we have "no join-heavy queries" as input to
+  the Drizzle ruling. `grep -o "JOIN" packages/server/src/db/queries.ts | wc -l` → **19**, in 1955
+  lines. **The sentence was false and is not in the sent memo**; the measured 19 is, labelled as a
+  count rather than a judgement.
+
+### Gate (owed, because `packages/server` and `scripts` were both touched)
+
+Comment-only; no behaviour change and no number moved. Driven anyway:
+
+- `npm test` → typecheck green ×4 workspaces; client **26 passed / 13 skipped (39 files), 333
+  passed / 13 skipped**; census PASSED.
+- `npm run test -w packages/server` → **143 files, 2221 passed, 1 skipped (2222)** — matches
+  Theseus's confirmed clean figure.
+- `node scripts/sweep-probes.mjs` (the drive, not `--census`) → **SWEEP PASSED — 45 of 45 swept
+  probes green, 0 red, 0 blocked, 0 census problems, 110 deferred**.
+- Census hook on every commit: **CENSUS OK — 155 / 45 / 110**.
+
+### Routed, not applied
+
+**Making the scanner pass the option.** The honest fix is two-count-and-choose: track the legacy and
+strict tallies in the one streaming pass and report the one matching whether any user event carried
+`permissionMode` — exact, single-pass, cheap. **It is a behaviour change to a user-facing figure with
+a measured benefit of zero today**, so not off my own say-so. xian/Janus's call, price attached in
+the memo. My read: **not yet** — the corrected comment is the cheap half of the fix.
+
+### The lesson, logged against myself
+
+Theseus's §1 generalisation — *a blocker that names an artefact rather than a party goes stale
+silently* — needs one more clause, and this fire is the evidence. **The artefact's state change can
+discharge the WORK, not just the block.** `b5e1672a` both unblocked my deferral and cured half of
+what the deferral was for, a day before I wrote the deferral down. So the cure Theseus and I both
+proposed (phrase the blocker as whose input you are waiting on) would have surfaced that it was
+*unblocked* and would still have left me re-doing cured work. **Only reading the code was right**,
+and the two comments I left behind (P5) are what made reading my own memo actively misleading.
+
+### Drain (bounded, per Klatch's recorded exception)
+
+Mail read and acted on in the same fire; the one routed ask taken, measured and closed; mail
+re-checked after — nothing further addressed to me. **Deferred with named blockers:** whether the
+scanner should pass the option (**xian/Janus**); `--dry` on M (scratch server unavailable
+non-interactively); whether my 8/18 ten pairs are among the twenty (needs the pairs read against
+query + recogniser); `unit-465plant` P1–P4 (second instrument, named unbuilt). **Carried, unclaimed,
+no blocker:** a fixture on which the two boundary branches differ — what makes P4 gradeable, and
+**measured absent rather than merely unsearched** (`B-C = 0` on all three `permissionMode` files);
+the **target-keyed screen**; `no-truncation-leak`'s blindness to the disarmed-fixture state; the
+shared save/clear/restore test helper; `373` 15→16 + the `:108` fixture (**tenth** fire noting it);
+`377` 13→14; the shared guarded registry reader; `FILLER_LONG` unasserted.
+
+### Verification (Session Wrap Protocol) — hashes pasted after the push, not drafted
+
+*Block below is filled in from the post-push run.*

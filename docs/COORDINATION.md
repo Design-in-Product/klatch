@@ -960,7 +960,68 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-12 ~09:17–09:3x PT (**START fire — substantive: THE BLINDNESS I WAS CARRYING
+- **Updated:** 2026-11-12 ~13:17–13:3x PT (**WORK fire — substantive: THE BRANCH I SPENT 70 DAYS
+  WAITING FOR HAD ALREADY DONE HALF THE WORK, A DAY BEFORE I FILED THE DEFERRAL; MY HEADLINE
+  PREDICTION WAS REFUTED; AND A FIGURE IN `parser.ts` WAS WRONG IN THE COMMIT THAT WROTE IT.**)
+  `date`-reads **13:17:10 / 13:22:44 / 13:27:32 PST**, read not estimated. Checkpoint my own
+  `e3b5635a`; `%an` over the fire-start range **`e3b5635a..15fa4c69`** (pinned, not `..HEAD`, which
+  my own commits have since moved) → **Theseus 4, Calliope 2, Daedalus 1 (my own hash correction)**,
+  `rev-list --count` **7**. Mail delta (`--diff-filter=A`) → **2 added**: Theseus → me + Argus (the
+  dead `parser.ts` blocker, **acted on this fire**); Calliope → Theseus (boarding, not mine).
+  **Took Theseus's §1.** Unit `docs/research/unit-465scanopts-2026-11-12/`, pre-reg **`2b49937a`
+  pushed to `main` before either arm existed**, results + cures **`f6187c83`**, memo **`9cd16962`**.
+  His three calls reproduce (`b5e1672a 2026-09-02` · `2876 0` · `is-ancestor rc=0`; his 2870 vs my
+  2876 is `main` moving — **the right-hand `0` carries the claim**).
+  **1. The branch didn't just unblock the work, it DID half of it.** `parser.ts:428` checks
+  `isVisibleInTranscriptOnly`; `git log -1 -S` on that line returns **`b5e1672a`**, dated
+  **2026-09-02 — one day BEFORE the memo that called it open.** So Theseus's §1 generalisation
+  sharpens: **an artefact-shaped blocker's state change can discharge the WORK, not just the block,
+  and re-reading the deferral would still have been wrong. Only reading the code was right.**
+  **2. MY HEADLINE PREDICTION WAS REFUTED.** The live divergence is a third one neither memo names:
+  `session-scanner.ts` calls `isHumanTurnBoundary(event)` with **no `opts`** (R2: every call site is
+  the bare form) while the import computes `requirePermissionMode` per file and passes it in — so the
+  import's boundary set is a **subset** and the browse count can only **over**-report. **P1 predicted
+  a delta of 6-7 on `theseus-2026-03-22.jsonl`. Measured 0 — and 0 on all 7 files, including all 3
+  carrying `permissionMode`.** Arm B prices each clause: `A'` 75 → `A` 75 (`A'-A = 0`) → `B` 66
+  (`A-B = 9`) → `C` 66 (**`B-C = 0`** — the positive test is **fully redundant** with the shape
+  filter, which is why P1 failed). `A-B = 9` by kind: 3 `<task-notification>`, 2 `<command-name>`,
+  2 `<local-command-stdout>`, 2 `Unknown skill:`. **`A'-A = 0`: the clause I waited 70 days for buys
+  zero.** Hazard is **latent and one-signed**.
+  **3. P2 and P3 held VACUOUSLY and are not banked** — both are satisfied by an all-zero column, and
+  **a control is only a control if the treatment arm moved.** **P4 NOT GRADED, correctly**: its own
+  guard fired rather than inferring blindness from a reading of the probe's source.
+  **4. A figure in `parser.ts` was wrong beside its own cure.** *"6-7 of 75 turns fabricated"* — the
+  **75 reproduces exactly**, the **6-7 does not; the live reading is nine**, and `git log -S` puts the
+  hand count, the seven-entry prefix list and the `isVisibleInTranscriptOnly` clause **all in one
+  commit (`b5e1672a`)**. **Replaced with a pin to the arm, not a refreshed digit.**
+  **5. P5 HELD at exactly 2 sites, both mine** (`5e5f0e9f`, 9/03, same day as the deferring memo).
+  Cured; census **2 → 0**.
+  **6. Two self-inflicted hits, both caught by re-running — three recordings, NOT interchangeable
+  (the graded run is the pre-cure one).** (a) **R2 refused on the cure it protects** (word-presence
+  proxy 0 → 1; `recording-arm-scanopts-refused-on-own-cure.txt`, rc=1) → **re-keyed to enumerate call
+  sites, strictly stronger than the count it replaced, declared in the arm's source — not a gate
+  relaxed to fit.** (b) **my correction QUOTED the false spelling**, so the census still flagged the
+  site it cured (1, not 0) until reworded. **Eighth instance on this seat's record; first caused and
+  caught in one fire.** **P6 left REFUTED as registered — a predicate keyed on a numeric delta cannot
+  grade a claim about MECHANISM.**
+  **Gate driven** (comment-only, no behaviour change, but `packages/server` + `scripts` both touched):
+  typecheck green, **2221 server + 333 client**, **SWEEP PASSED 45/45**, **CENSUS OK 155/45/110**.
+  **Routed, not applied:** making the scanner pass the option — a behaviour change to a user-facing
+  figure with **measured benefit zero today**; xian/Janus's call, price attached in the memo. Also
+  verified rather than recalled: schema is **8** tables (9 `CREATE TABLE`, `:186` is a migration temp
+  table), CLAUDE.md's 6-vs-8 is **rollup item 7** (over-cap heads are item 6), and I **cut a sentence
+  claiming "no join-heavy queries" from the memo after measuring 19 `JOIN`s in `queries.ts`**.
+  **Drain (bounded, per Klatch's recorded exception):** mail read and acted on in the same fire; the
+  one routed ask taken and closed; mail re-checked after, nothing further for me. **Deferred with
+  named blockers:** whether the scanner should pass the option (xian/Janus); `--dry` on M (scratch
+  server unavailable non-interactively); whether my 8/18 ten pairs are among the twenty (needs the
+  pairs read against query + recogniser); `unit-465plant` P1–P4 (second instrument, named unbuilt).
+  **Carried, unclaimed, no blocker:** a fixture on which the two boundary branches differ (what makes
+  P4 gradeable — measured absent, not merely unsearched); the **target-keyed screen**;
+  `no-truncation-leak`'s blindness to the disarmed-fixture state; the shared save/clear/restore test
+  helper; `373` 15→16 + the `:108` fixture (**tenth** fire noting it); `377` 13→14; the shared guarded
+  registry reader; `FILLER_LONG` unasserted.
+- **Previous:** 2026-11-12 ~09:17–09:3x PT (**START fire — substantive: THE BLINDNESS I WAS CARRYING
   FORWARD WAS CURED BY SOMEONE ELSE'S CHANGE OF FORM, THE CROSS-FILE REACH I PREDICTED WAS ABSENT IS
   7 OF 8 BY SIBLING ACCIDENT — AND TWO OF MY OWN TASK LINES HAD BEEN STALE FOR A DAY.** Docs-only
   fire; no gate owed, and said so.) `date`-reads **09:17 / 09:20:33 / 09:24:44 PST**, not estimated
