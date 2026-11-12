@@ -60,7 +60,19 @@ async function probe(path: string) {
   const countedUser = counted.filter((e) => e.type === 'user');
   const countedAssistant = counted.filter((e) => e.type === 'assistant');
 
-  const turns = groupIntoTurns(raw.filter(isConversationEvent));
+  // The real divergence the two code paths carry (Daedalus, unit-465scanopts-2026-11-12): the
+  // import computes `requirePermissionMode` once per file — true iff ANY user event in it
+  // carries `permissionMode` (parser.ts:637) — and passes it to BOTH groupIntoTurns and
+  // isHumanTurnBoundary below; the scanner (session-scanner.ts:441) never computes or passes it
+  // at all. Mirrored here rather than omitted, so a boundary-shaped event missing
+  // `permissionMode` on a file that otherwise carries it reads as a real divergence instead of
+  // vacuous agreement between two readings of the same legacy branch.
+  const requirePermissionMode = raw.some(
+    (e) => e.type === 'user' && (e as any).permissionMode !== undefined,
+  );
+  const importOpts = { requirePermissionMode };
+
+  const turns = groupIntoTurns(raw.filter(isConversationEvent), importOpts);
   const rowsUser = turns.filter((t) => t.userText).length;
   const rowsAssistant = turns.filter(
     (t) => t.assistantText || (t.artifacts && t.artifacts.length > 0)
@@ -69,23 +81,19 @@ async function probe(path: string) {
 
   // Turn boundaries the scanner did NOT count, and vice versa.
   //
-  // DECLARED BLINDNESS (measured 2026-11-12,
-  // docs/research/unit-465scanopts-2026-11-12/): this comment used to claim the
-  // two filters differ over the transcript-only flag. They do not — b5e1672a
-  // added that check to isHumanTurnBoundary itself. (The old spelling is not
-  // quoted here on purpose: the unit's census for that false claim keys on its
-  // exact wording, so quoting it to correct it keeps the site flagged. See
-  // that unit's RESULTS.md §7b.) The difference that DOES exist is the
-  // `opts` argument: the import computes requirePermissionMode per file and
-  // passes it in, and the scanner never does. This probe omits `opts` on BOTH
-  // sides — groupIntoTurns above and isHumanTurnBoundary below — so its
-  // "(== parser boundaries)" line compares two readings of the LEGACY branch
-  // and cannot see that divergence. The agreement it prints is vacuous with
-  // respect to the one asymmetry in the tree. Measured price of that asymmetry
-  // today: 0 on all 7 files tried. Grading it needs a fixture on which the two
-  // branches differ — a boundary-shaped user event carrying neither
-  // permissionMode nor a MACHINE_TEXT_PREFIXES prefix — which does not exist
-  // yet. Named, not cured.
+  // CURED 2026-11-12 (was a declared blindness in `unit-465scanopts-2026-11-12`, §4, routed by
+  // Daedalus to this seat): `boundaries` below now passes the import's real `importOpts`
+  // (computed above, matching parser.ts:637 exactly), while `scannerCounts`/`fp.turnCount` stay
+  // opts-less, matching session-scanner.ts's own reality. Previously BOTH sides omitted `opts`,
+  // so the "(== parser boundaries)" line compared two readings of the legacy branch and could not
+  // see the one asymmetry in the tree. Verified non-vacuous against a planted fixture (a
+  // boundary-shaped user event missing `permissionMode` on a session that otherwise carries it)
+  // before trusting this: pre-fix, `boundaryNotCounted`/`countedUserNotBoundary` both read 0 on
+  // that fixture — vacuous, exactly as named. Post-fix, the planted event shows up as
+  // `countedUserNotBoundary` (scanner counts it, the import's real boundary set correctly
+  // excludes it) — not asserted here, scratch-verified only (see mail). Measured price on the 7
+  // real files `unit-465scanopts` tried remains 0 (unchanged — none of them has the shape), so
+  // this fire's fix changes what the probe CAN see, not what it reports on the files already run.
   //
   // (isHumanTurnBoundary also requires message.role, which the scanner's inline
   // filter does not; that one is inert, because the scanner only increments when
@@ -96,9 +104,9 @@ async function probe(path: string) {
   // one field read off `opts` is `requirePermissionMode`, which is `undefined` on a number, so the
   // call silently took the legacy branch it would have taken with no `opts` at all. Caught by
   // `scripts/tsconfig.json` on the gate's first run.
-  const boundaries = raw.filter(isConversationEvent).filter((e) => isHumanTurnBoundary(e));
+  const boundaries = raw.filter(isConversationEvent).filter((e) => isHumanTurnBoundary(e, importOpts));
   const boundaryNotCounted = boundaries.filter((e) => !scannerCounts(e)).length;
-  const countedUserNotBoundary = countedUser.filter((e) => !isHumanTurnBoundary(e)).length;
+  const countedUserNotBoundary = countedUser.filter((e) => !isHumanTurnBoundary(e, importOpts)).length;
 
   console.log(`\n=== ${path} ===`);
   console.log(`  raw lines parsed:              ${raw.length}`);
