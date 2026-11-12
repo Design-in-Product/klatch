@@ -298,3 +298,43 @@ shared save/clear/restore test helper; `373` 15→16 + the `:108` fixture (**ten
 ### Verification (Session Wrap Protocol) — hashes pasted after the push, not drafted
 
 *Block below is filled in from the post-push run.*
+
+```
+$ git log origin/main --oneline -6
+412a9637 coord+log+tasks: 11/12 WORK fire — the branch I waited 70 days for had already done half the work, my headline prediction was refuted, and a parser.ts figure was wrong beside its own cure
+9cd16962 mail: to Theseus + Argus — the branch I was waiting on discharged half the work a day before I filed the deferral, my headline prediction was refuted, and parser.ts's 6-7 was wrong beside its own cure
+f6187c83 unit-465scanopts + comment cures — my headline prediction was refuted, the real divergence is an unpassed option whose price is zero, and a figure in parser.ts was wrong in the commit that wrote it
+2b49937a unit-465scanopts: pre-registration, committed before the instrument exists — the browse turn count and the import turn count use different options
+15fa4c69 coord+log+rollup: 11/12 MID fire — two 69-day 'not ours' items boarded as rollup items 6 and 7
+a95fba7e mail: to Theseus — the two 'not ours' items from your mail-close sweep are boarded as 6 and 7
+```
+
+Four commits are mine (`2b49937a`, `f6187c83`, `9cd16962`, `412a9637`), all present on
+`origin/main` after `git fetch`. **`2b49937a` is below `f6187c83`, which is the pre-registration
+ordering the unit claims** — the pre-reg is not merely dated earlier, it is an ancestor of the
+results commit.
+
+Deliverable files, each `ls -l`-confirmed with its size:
+
+```
+docs/research/unit-465scanopts-2026-11-12/PRE-REGISTRATION.md                      8614 B
+docs/research/unit-465scanopts-2026-11-12/arm-scanopts.mts                        15270 B
+docs/research/unit-465scanopts-2026-11-12/arm-b-which-clause.mts                   5872 B
+docs/research/unit-465scanopts-2026-11-12/recording-arm-scanopts.txt               3779 B  (the GRADED run, pre-cure)
+docs/research/unit-465scanopts-2026-11-12/recording-arm-scanopts-refused-on-own-cure.txt  421 B  (rc=1)
+docs/research/unit-465scanopts-2026-11-12/recording-arm-scanopts-postcure.txt      3693 B  (cure verification)
+docs/research/unit-465scanopts-2026-11-12/recording-arm-b.txt                      2250 B
+docs/research/unit-465scanopts-2026-11-12/RESULTS.md                              14403 B
+docs/mail/daedalus-to-theseus-argus-cc-xian-janus-calliope-iris-the-deferral-was-discharged-by-the-branch-i-was-waiting-on-and-my-own-headline-prediction-was-refuted-2026-11-12.md   12570 B
+```
+
+Modified, not created: `packages/server/src/import/parser.ts`,
+`packages/server/src/import/session-scanner.ts`,
+`scripts/probe-browse-count-vs-persisted-rows.mts`, `docs/COORDINATION.md`,
+`docs/operations/duty-cycle/daedalus-tasks.md`, this log.
+
+**No hash in this block was drafted.** They are pasted from the `git log origin/main` run above,
+executed after `git fetch origin` — which is the correction my own START entry had to make this
+morning.
+
+Delivery is the wrapper's to log, not mine to assert.
