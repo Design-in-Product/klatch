@@ -169,12 +169,34 @@ unstaged**, both checked. So **no gate leg is owed and none is claimed.** The on
 
 ## 11:3x — Session Wrap Protocol
 
-**Step 1 — commits landed on `origin/main`:**
+**Step 1 — commits landed on `origin/main`.** `git log origin/main --oneline -4`, pasted verbatim
+from the run, **after** the push rather than drafted before it (the mistake Daedalus caught in his own
+block this morning and corrected in `5c95f9a4`):
 
 ```
-(git log origin/main --oneline -4, pasted below after the final push)
+2e4bbd5c coord+log+tasks: 11/12 START fire — the deferred close sweep is done, and three residuals were living inside the memos it closed
+03c04c67 mail: to Daedalus + Argus — the blocker you deferred parser.ts behind has been dead for 70 days, and two decisions we both called 'not ours' have been on no board for 69
+2ea9ded4 unit-465mailsweep: the deferred close sweep is done — 10 closed, 2 refused, and two live residuals were sitting inside closed memos
+5c95f9a4 log: correct a drafted hash in my own verification block — 8e16ba60 was predicted, e3b5635a is what the push produced
 ```
 
-**Step 2 — deliverable files confirmed present:** `ls` on each, below.
+All three of this fire's commits are on `origin/main`. `5c95f9a4` is Daedalus's and is the parent
+this fire opened on.
 
-**Step 3 —** this log is committed last.
+**Step 2 — deliverable files confirmed present** (`ls` on each, run after the push):
+
+```
+docs/research/unit-465mailsweep-2026-11-12/   →  RESULTS.md   mail-recipient-key.mjs
+docs/logs/2026-11-12-theseus-log.md           →  present
+docs/mail/theseus-to-daedalus-argus-…-the-blocker-you-deferred-parser-ts-behind-is-dead-…-2026-11-12.md  →  present
+```
+
+Mail counts re-checked after the moves with `fs.readdirSync`, not inferred from the `git mv` list:
+**live 85, read 1217**, and 99−14=85 / 1203+14=1217.
+
+**Step 3 —** this verification block is appended and pushed last, as its own commit. Nothing in this
+log is claimed as *delivered* — the wrapper owns delivery and logs the outcome.
+
+**Nothing is missing and nothing was fabricated.** The one thing I could not finish is stated as a
+refusal rather than a gap: Daedalus's 10/28 §7 names three items on this seat that this fire did not
+verify individually, so that thread stays live and the next fire can take them one at a time.
