@@ -5500,14 +5500,94 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** available — duty cycle armed on Claude Code 2.1.322; STOP 19:47 (11/11) fired and is logged below.
-- **Updated:** 2026-11-11 ~19:47–20:1x PT (**STOP fire — substantive, no code. Three memos in, all
+- **Status:** available — duty cycle armed on Claude Code 2.1.322; START 10:47 (11/12) fired and is logged below.
+- **Updated:** 2026-11-12 ~10:47–11:3x PT (**START fire — substantive, no code. The close sweep this
+  seat has deferred for months is DONE, taken by date as my own 11/11 entry assigned, and three
+  findings came out of executing it rather than out of planning it.** Unit
+  `docs/research/unit-465mailsweep-2026-11-12/`, commits `2ea9ded4` (sweep + RESULTS) and `03c04c67`
+  (mail), both pushed to `origin/main`. **Live `docs/mail/` 99 → 85, read 1203 → 1217**, both
+  `fs.readdirSync`; 99−14=85 and 1203+14=1217 checked by arithmetic rather than asserted. Census hook
+  on both commits: **CENSUS OK — 155 / 45 / 110**, matching Daedalus's two commits this morning. No
+  `packages/`/`scripts/` diff (`git diff --stat` on both, staged and unstaged, empty), so **no gate
+  leg is owed and none is claimed**; the one new `.mjs` is under `docs/research/`, which
+  `typecheck:scripts` does not cover and `readdirSync('scripts')` does not see, so the probe
+  population is unchanged.
+  **12 candidates adjudicated — 10 closed, 2 refused, 4 of the closures being this seat's own paired
+  outbound memos.** Every verdict rests on a tool call against **live code or the live board**, never
+  on a memo's own claim and never on its age: the scan-cap ruling landed 2026-09-04
+  (`session-scanner.ts:250-251`, `FINGERPRINT_LINE_CAP = 50_000`); xian's `.env` option-3 ruling
+  landed 2026-08-12 **and the edit is in the tree with both of this seat's build notes taken**
+  (`packages/client/package.json:30` makes `dotenv` a real dependency, `__tests__/setup.ts:26`
+  resolves from `process.cwd()` rather than `import.meta.url`); the 9/17 routed arm-O item was
+  discharged by this seat in Round 233 the next day; the Round 146 probe re-pin Daedalus warned would
+  fire was done in Round 159.
+  **Both refusals carry named reasons, and they are the more useful half.** Pard's 10/23 still names
+  a live action on xian — `git log -1 -- docs/research/round445-capability-test/` still returns only
+  `a93ede8d`, the commit that created it, so **20 days and nothing has touched the directory**.
+  Daedalus's 10/28 §7 names **three** items on this seat (`C3` carrying its reading; re-keying the
+  attested-round census to exclude denials; putting §1–§4 under graded legs) and **this fire did not
+  verify them individually**, so the thread is not closed on them — a cure under a different subject
+  does not close a thread, and the Round-465 track having moved 15 memos past 10/28 is not evidence
+  those three landed.
+  **Finding 1 — a blocker of Daedalus's has been dead since the day he filed it, 70 days.** His 9/03
+  memo declined to unify the scanner's filter with `isHumanTurnBoundary` because `parser.ts` is *"the
+  file the unmerged `origin/claude/cowork-import-hardening` branch also changes"*. Measured:
+  `git rev-list --left-right --count origin/main...origin/claude/cowork-import-hardening` → **2870 /
+  0**, and `git merge-base --is-ancestor b5e1672a origin/main` → **rc=0**. The branch has **zero
+  commits not already in main**; its tip is an ancestor of main. Nothing to merge, nothing to
+  conflict with, so the xian ask it was parked behind is moot. **Routed to him, his file and his
+  call** — his measured divergence was 0 when he filed it, so this is a latent-hazard cleanup, not a
+  live defect. And it is **his own 11/12 §4 shape**: the blocker named *an artefact in a state*
+  rather than *a party whose input he was waiting on*, the state changed, and the sentence read live
+  for 70 days.
+  **Finding 2 — two decisions both seats correctly called "not ours" have been on no board for 69
+  days, and that is a mechanism rather than two incidents.** (a) *What the over-cap import heads
+  should DO instead of erroring* — three of the eleven department heads are offered in browse then
+  rejected on import; I named it 9/04, Daedalus agreed in his reply (*"product, not measurement …
+  I agree it isn't ours"*), and `attention-rollup.md` has **zero hits** for `over-cap`, `oversize`,
+  `too large to import`, `MAX_IMPORT_SIZE`, `50 MB`, `import size`, `a wall` — it lives only in this
+  file's 9/4 narrative, which is agent-facing, not xian's skim surface. (b) *CLAUDE.md says 6 tables;
+  the schema has 8, and CLAUDE.md's own rule triggers at 8* — flagged by Daedalus 9/04 and declined
+  as out of his lane, **unchanged 69 days later**. Counted live, and the naive count is wrong:
+  `grep -c 'CREATE TABLE'` returns **9** but `:186` is `messages_rebuild`, a migration's temp table;
+  the schema tables are **8** (`:43,52,63,73,224,248,294,304`), so **his 09-04 figure is exactly
+  right today** and the 2-table drift is CLAUDE.md's. **Not edited here, for a different reason than
+  his:** the sentence is a *rule with a threshold we have reached*, so fixing the number alone
+  publishes a doc instructing the next agent to adopt an ORM. Both boarded in
+  `theseus-tasks.md` → Blocked-on-xian and routed in the memo. **The mechanism, stated so it can be
+  argued with:** a decision both seats correctly identify as "not ours" then belongs to nobody —
+  naming it discharges the finder's duty *and* the routee's, and no protocol step moves it to a
+  board. **Second instance in two days**: Round 445 was the first, boarded 11/11, where three seats
+  including Daedalus's own 10/24 drain line had named it correctly and it was on no board. Candidate
+  cure, not adopted unilaterally: *"not ours" is not a terminal state — a memo routing a decision out
+  of both lanes should name the board it goes to, or it hasn't been routed.*
+  **Finding 3 — against this seat's own instrument, again, and the candidate set still reproduced
+  exactly.** The 11/11 figure was **28 to-me / 17 cc-only of 98 live**, **12 older than 11/07**. The
+  **12 reproduced exactly** — same 12 files, which is the number this fire acted on. The **aggregate
+  did not: 30 / 16 of 99**, and because the 11/11 key was never committed as code the 2-memo gap is
+  **recorded as unattributed rather than explained**. But the *first* key rebuilt from the 11/11
+  prose read **37 / 9**, inflating this seat's own inbox by 7: the prose preserved the **guard**
+  (`in-reply-to:` contains `to:`) and said nothing about the **field terminator**, and the
+  bold-markdown header is single-line and multi-field (`**To:** X · **cc:** Y · **Date:** Z`), so a
+  `[^\n]*` capture on `to:` swallows the `cc:` list and every cc-only memo reads as to-me. Caught by
+  printing the captured value beside the verdict and hand-reading it — **not** by the number looking
+  wrong, because 37 is as plausible as 30. **A spelling note is not an instrument**;
+  `mail-recipient-key.mjs` is committed with the terminator in it so the next sweep re-runs rather
+  than re-derives. **Declared blindness:** 3 of the 85 live memos have no `to:` header at all; none
+  is addressed *to* this seat (one is `cc-team`, a cc-only false negative), so the candidate set is
+  unaffected.
+  **And one stale line of this seat's own, found by reading my outbound before moving it.**
+  `theseus-to-daedalus-argus-…-the-corpus-was-never-the-cause-…-2026-09-17.md` stays live on two
+  genuinely-open items, but its third — *"§6(b) `DELETE /entities/:id` floor — parked on xian"* — is
+  stale: xian ruled it, `attention-rollup.md:147`, *"Ruling: allow."* Same mechanism as findings 1
+  and 2, my seat this time.
+  *(Prior entry, 2026-11-11 ~19:47–20:1x PT — STOP fire: substantive, no code. Three memos in, all
   cc-only, all read at the head of the fire; one of them is xian answering a question this seat asked
   twice, and the answer was *neither of my two options*. The fire's own product is a measurement
   correction: the key this seat has been using to size its own inbox was blind to 42 of 98 live
   memos, and the real close-sweep backlog is 11 memos, not the number the task list has carried for
   months. No `packages/`/`scripts/` diff (`git diff --stat` on both, empty), so no gate leg is owed
-  and none is claimed.**)
+  and none is claimed. Its detail, verbatim, follows.)*
   **Mail — 3 new since my last commit (`9a55f23d`), found with
   `git log --diff-filter=A --name-only 9a55f23d..HEAD -- docs/mail/`, not by eyeballing the
   directory.** (1) **Janus, relaying xian via Claude Duet (17:37 PT)** — the real-API/AAXT backlog
@@ -5593,6 +5673,27 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   pushes those repos with — read off `git log --format='%ae'` rather than guessed), **not** a force
   push. A Klatch copy of the Janus memo is filed in `docs/mail/` as well, because Calliope and xian
   are cc'd and read mail here; stated as a deliberate two-copy choice, not an accident.
+- **Drain (2026-11-12 START fire):** *Done, bounded* (Klatch is a recorded exception to the fleet
+  duty-cycle-drain baseline; see CLAUDE.md). **Drained:** 1 new memo (Daedalus, 11/12) read in full
+  at the head of the fire and answered in-fire with measurements — it owed me nothing, and its §4
+  generalisation is what made findings 1 and 3 legible; **the standing close-sweep item executed in
+  full rather than sliced** (12 candidates read, 10 closed into `read/` with 4 paired outbounds, 2
+  refused with named reasons); 3 residuals found inside the closed memos and boarded (2 to
+  Blocked-on-xian, 1 to Blocked-on-others as routed-to-Daedalus); 1 stale line of this seat's own
+  corrected on the record; the task list updated on five rows including the recurring-item dates; 1
+  memo out to Daedalus + Argus, committed and pushed to `main` separately from the work commit per
+  the worktree mail discipline.
+  **Deferrals, each with a named blocker — no deadlines attached to anything unblocked:**
+  (1) **Daedalus's 10/28 §7 three items** — blocker: *this seat has not verified them individually*,
+  which is work, not a wait; stated as a refusal rather than a promise, and the next fire can take
+  them one at a time. (2) **The target-keyed screen** — **no blocker**, still unclaimed by either
+  seat; not claimed this fire because the close sweep was the assigned unit, and left unclaimed
+  rather than silently taken. (3) **Pard's 10/23 capability test** — blocker: *xian*, whose checkout
+  is outside every worktree's sandbox. (4) **CLAUDE.md's table count and the over-cap-heads
+  question** — blocker: *xian* (with Daedalus on the first), now boarded where Calliope's sweep can
+  promote from. (5) **Arm N1's two `--dry` runs, probe 3's rerun and its replication, AAXT in a
+  rendered page** — blocker unchanged: *server start / live calls need an approval a non-interactive
+  fire cannot get*; all four are ready in a tandem session.
 - **Drain (2026-11-11 STOP fire):** *Done, bounded* (Klatch is a recorded exception to the fleet
   duty-cycle-drain baseline; see CLAUDE.md). Drained: 3 new memos read in full at the head, 1
   answered in-fire with measurements, 2 owing nothing; 2 threads closed into `read/` after reading

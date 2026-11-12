@@ -7,7 +7,9 @@ Coordination).
 with `PlistBuddy` 2026-11-10).
 **Worktree:** `/Users/xian/Development/klatch-worktrees/theseus` on `claude/theseus-cycle`
 (`git worktree list`, 2026-11-10). Push target is `HEAD:main`.
-**Last updated:** 2026-11-10, WORK-part restart fire.
+**Last updated:** 2026-11-12, START fire (mail close sweep executed; two residuals boarded, one
+blocker retired as dead). The monthly **refresh** row below is the one that governs whether the
+header facts have been *verified* — this line only records the last edit.
 
 ---
 
@@ -39,7 +41,36 @@ at the head of a fire.
 _Items the cycle can pick up without xian._
 
 - [ ] Session log at fire start; drain `docs/mail/` per the Mail Handling discipline.
-- [ ] **Mail close sweep** — **100 live / 1200 read at this fire's open, 98 / 1202 after the slice
+- [x] ~~**Mail close sweep**~~ — **DONE 2026-11-12 START (`unit-465mailsweep-2026-11-12`, `2ea9ded4`,
+      pushed to `origin/main`).** The 11-memo candidate set was taken **by date**, as the 11/11 entry
+      assigned, rather than re-deriving a population. **Live 99 → 85, read 1203 → 1217** (both
+      `fs.readdirSync`; 99−14=85 and 1203+14=1217 checked by arithmetic, not asserted).
+      **10 closed, 2 refused, 4 of the closures being this seat's own paired outbound memos.** Every
+      verdict rests on live code or the live board, never on a memo's own claim or its age — the cap
+      ruling landed 2026-09-04 (`session-scanner.ts:250-251`, `FINGERPRINT_LINE_CAP = 50_000`),
+      xian's `.env` option-3 ruling landed 2026-08-12 **and the edit is in the tree with both of this
+      seat's build notes taken** (`packages/client/package.json:30`, `__tests__/setup.ts:26`), the
+      9/17 routed arm-O item was discharged by Round 233 the next day, and the Round 146 probe re-pin
+      was done in Round 159. **Both refusals carry named reasons:** Pard's 10/23 still names a live
+      action on xian (`round445-capability-test/` untouched for 20 days — `git log -1` on the path
+      still returns only `a93ede8d`), and Daedalus's 10/28 §7 names **three** items on this seat that
+      this fire did not verify individually — a cure under a different subject does not close a
+      thread. **The candidate set reproduced exactly at 12; the aggregate did not** (30/16 today
+      against 11/11's published 28/17 for a population one smaller), and since the 11/11 key was
+      never committed as code the 2-memo gap is **recorded as unattributed** rather than explained.
+      **The method finding, and it is why the key is now on disk:** the 11/11 prose preserved the
+      key's *guard* (`in-reply-to:` contains `to:`) but not its **field terminator**, and the key
+      rebuilt from that prose returned **37/9** — the bold-markdown header is single-line and
+      multi-field (`**To:** X · **cc:** Y · **Date:** Z`), so a `[^\n]*` capture on `to:` swallows the
+      `cc:` list and every cc-only memo reads as to-me. Caught by printing the captured value beside
+      the verdict and hand-reading it; 37 is as plausible a number as 30. **A spelling note is not an
+      instrument** — `mail-recipient-key.mjs` is committed so the next sweep re-runs it.
+      **Declared blindness:** 3 of the 85 live memos have no `to:` header at all; none is addressed
+      *to* this seat (one is `cc-team`, a cc-only false negative), so the candidate set is unaffected.
+      **Residual for the next sweep:** 2 older-than-cut candidates remain, both the deliberate
+      refusals above; the 18 at-or-after 11/07 are the live Round-465 round track and closing them
+      would be wrong, not merely premature. Original item text, kept for provenance:
+      **100 live / 1200 read at the 11/11 fire's open, 98 / 1202 after the slice
       below** (both counted with `fs.readdirSync`, not `grep`, 2026-11-11 STOP), against **93 / 1188**
       at the 11/10 measurement. Two figures because this fire *moved* the count: a single number here
       would have been false by the end of the same fire that wrote it. **The live directory grew by
@@ -173,6 +204,18 @@ _Items the cycle can pick up without xian._
   `K-once` restriction; the five misses are not five missed hazards) *with* the figure; and **widen
   the key before promotion**, because `K-once` re-introduces the hoisted-parameter blindness v2
   cured with W1. Nothing for this seat until he rules or asks.
+- **The `parser.ts` unification Daedalus deferred on 2026-09-03 — his blocker is dead, measured this
+  fire.** His 9/03 memo declined to unify the scanner's filter with `isHumanTurnBoundary` because
+  *"that means editing `parser.ts`, which is exactly the file the unmerged
+  `origin/claude/cowork-import-hardening` branch also changes … not creating a conflict there before
+  that merge decision gets made."* Measured: `git rev-list --left-right --count
+  origin/main...origin/claude/cowork-import-hardening` → **2870 / 0**, and
+  `git merge-base --is-ancestor b5e1672a origin/main` → **rc=0**. **The branch has zero commits not
+  already in main; its tip is an ancestor of main.** There is nothing to merge and nothing to
+  conflict with, so the merge decision no longer exists as a decision — and the xian ask it was
+  parked on is moot. **Routed to Daedalus, his file and his call**; measured divergence on real
+  sessions was 0 when he filed it, so it is a latent-hazard cleanup, not a live defect. Nothing for
+  this seat until he rules or asks.
 - **`377`'s seven derived anchors** — blocker: cross-pinned `C5`. *(As recorded in the 11/10
   COORDINATION entry; not re-measured this fire.)*
 - **`373` 15→16 plus the `:108` fixture, and `377` 13→14** — carried, unclaimed. *(Same provenance;
@@ -217,6 +260,32 @@ _Items batched for xian's attention. Calliope's sweep promotes these to the atte
   different thing). Boarding it here is the whole cure; promotion is Calliope's call, not asserted
   here. **Caveat Pard stated and this seat repeats rather than drops:** a green run shows the surface
   works at a 2,000-token trigger and says nothing about behaviour at a real 160k context.
+- **What should the over-cap import heads DO instead of erroring? — a product question on no board
+  for 69 days, found inside a memo this fire closed.** Three of Piper Morgan's eleven department
+  heads exceed `MAX_IMPORT_SIZE`: they are **offered in browse and then rejected on import**. The
+  error is accurate and fast, and it is a wall. Named by this seat in
+  `theseus-to-daedalus-janus-iris-…-import-tested-at-size-three-heads-cannot-be-imported-2026-09-04.md`
+  and **agreed by Daedalus in his reply** — *"product, not measurement — Theseus flagged it and I
+  agree it isn't ours."* Searched `attention-rollup.md` for `over-cap`, `oversize`, `too large to
+  import`, `MAX_IMPORT_SIZE`, `50 MB`, `import size`, `a wall`: **zero hits.** It lives only in
+  `COORDINATION.md`'s 9/4 fire narrative, which is agent-facing, not xian's skim surface.
+  **This is the second instance of one mechanism and that is the reason it is written here rather
+  than just fixed:** on 11/11 this seat boarded the Round 445 capability test after finding it parked
+  on xian for 19 days while living only in a mail file and another agent's drain line. Same shape. **A
+  decision both seats correctly identify as "not ours" then belongs to nobody** — naming it
+  discharges both duties, and no step in the protocol moves it to the board. Boarding is the whole
+  cure; promotion to the rollup is Calliope's call and is not asserted here.
+- **CLAUDE.md says 6 tables; the schema has 8 — and CLAUDE.md's own rule triggers at 8.** Flagged by
+  Daedalus 2026-09-04 (in the cache memo closed this fire), who declined to act — *"shared doc, out
+  of my lane."* **Unchanged 69 days later.** Counted live this fire, and the naive count is wrong:
+  `grep -c 'CREATE TABLE'` on `packages/server/src/db/index.ts` returns **9**, but `:186` is
+  `messages_rebuild`, a migration's temp table. The schema tables are **8** — `channels`, `messages`,
+  `entities`, `channel_entities`, `message_artifacts`, `projects`, `files`, `file_refs`
+  (`:43,52,63,73,224,248,294,304`). **Daedalus's 09-04 figure of 8 is exactly right today**; the
+  drift is CLAUDE.md's, and it is 2 tables. **Not edited here, and for a different reason than his:**
+  the sentence is not merely stale, it is *a rule with a threshold we have reached* — correcting the
+  number without ruling on Drizzle publishes a doc instructing the next agent to adopt an ORM. That
+  is xian's call with Daedalus, not a typo fix. Routed to Daedalus in the 11/12 memo.
 - **MAXT Session 02** — needs xian's live tandem attention; parked until he dedicates a session.
 - **Round-trip MAXT** (Daedalus 4/28 assignment) — also needs live tandem attention; parked.
 - ~~**Is the AAXT standing queue still live?**~~ — **ANSWERED 2026-11-11, by xian, relayed by Janus
@@ -247,9 +316,9 @@ _Items batched for xian's attention. Calliope's sweep promotes these to the atte
 
 | name | cadence | next_due | last_completed | notes |
 |---|---|---|---|---|
-| Mail drain | per fire | 2026-11-11 STOP | 2026-11-11 STOP | Read on arrival, act/reply/surface in the same turn. 11/11 STOP: 3 in (all cc-only, all read in full), 1 out to Janus, 2 threads closed into read/, 1 refused for a named live action on xian |
-| COORDINATION.md update | per fire | 2026-11-11 STOP | 2026-11-11 STOP | Update Theseus Prime section before any push |
-| Session log entry | per fire | 2026-11-11 STOP | 2026-11-11 STOP | Timestamped entries as work progresses, not reconstructed |
+| Mail drain | per fire | 2026-11-12 START | 2026-11-12 START | Read on arrival, act/reply/surface in the same turn. 11/12 START: 1 new in (Daedalus, read in full at the head), **the deferred close sweep executed** — 12 candidates adjudicated, 10 closed / 2 refused with named reasons, live 99→85, read 1203→1217, 1 out to Daedalus+Argus |
+| COORDINATION.md update | per fire | 2026-11-12 START | 2026-11-12 START | Update Theseus Prime section before any push |
+| Session log entry | per fire | 2026-11-12 START | 2026-11-12 START | Timestamped entries as work progresses, not reconstructed |
 | **Task list of record refresh** | **monthly** | **2026-12-10** | **2026-11-10** | **New 2026-11-10.** The cure for this file's three-month drift. Refresh means *verify*: header facts against `git worktree list` and the plists, every open item against code or `git log`, and every "blocked on X" against whether X still holds. A refresh that only re-dates the header has not been done. |
 
 ---
