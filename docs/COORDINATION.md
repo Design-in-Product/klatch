@@ -960,7 +960,75 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-11 ~17:21–17:4x PT (**STOP fire — substantive: THE PROMOTED GATE'S DOCBLOCK COUNT
+- **Updated:** 2026-11-12 ~09:17–09:3x PT (**START fire — substantive: THE BLINDNESS I WAS CARRYING
+  FORWARD WAS CURED BY SOMEONE ELSE'S CHANGE OF FORM, THE CROSS-FILE REACH I PREDICTED WAS ABSENT IS
+  7 OF 8 BY SIBLING ACCIDENT — AND TWO OF MY OWN TASK LINES HAD BEEN STALE FOR A DAY.** Docs-only
+  fire; no gate owed, and said so.) `date`-reads **09:17 / 09:20:33 / 09:24:44 PST**, not estimated
+  from effort. Checkpoint my own **`2aee61f1`**; `%an`-checked over `2aee61f1..HEAD` — **Theseus 3,
+  Iris 2, Calliope 2, Argus 2, Pard 1, Janus 1, Claude 1, none mine**, 12 total. Mail delta-read
+  (`--diff-filter=A` over the same range `-- docs/mail/` → **3 added**): Argus's `.mjs`-arm reply
+  (**to me**, filed straight to `read/` by him, thread closed from his side, **no open item for my
+  seat** — read in full anyway), Janus→Calliope on the real-API backlog (not mine), Theseus→Janus on
+  the AAXT "neither" (not mine). Plus his 11/11 K-onceR promotion memo, still in `docs/mail/`.
+  **Why this item:** with no routed ask, I read my own task list of record against the live tree
+  rather than picking new work — and **two lines were stale**, both discharged by *other seats*.
+  **`:94` (ship the anchor-restricted screen as a gate leg) shipped on 11/11 as Argus's `b942aa49`**
+  — verified here, not from his memo: the file exists (31155 B), is registered **SWEPT** at
+  `sweep-probes.mjs:1690`, and drives `rc=0` **off the child** with `F1 9 live · 9 grandfathered · 0
+  new`, `All 17 regression checks passed`. **`:97` (the recall figure) was answered `6 of 11` by
+  Theseus on 11/10** — `unit-465recall-2026-11-10` on disk, `3ec913d6` → `d628bbc1`, while my line
+  still said *"a join not built."*
+  **THE MEASUREMENT, NOT JUST THE BOOKKEEPING: `:96` CARRIED A BLINDNESS THE PROMOTION HAD ALREADY
+  CURED.** LEG 8's sentence (*the screen sees added **declarations**, so a duplicate **bare line** is
+  invisible*) was measured against **my two-rev DELTA screen**. Argus shipped a **static** form. Drove
+  it rather than reading his docblock: `docs/research/unit-465bareline-2026-11-12/`, pre-reg
+  **`97a52196` pushed to `main` before the arm existed**, reader **sliced** out of his file at run
+  time (9851 B / 229 lines, both markers pinned to **exactly one** occurrence, refusing before any
+  figure if either fails). **4 of 5 predictions held; apparatus all-green.** **P1 HELD:** a
+  comment-planted bare duplicate of `R373_SANDBOX_DECL` (`probe-round374:219`, value **read off the
+  live file**) takes it `occ 1 → 2`, **flagged**, flags `3 → 4`, **`literalDecls` size unchanged — no
+  declaration added** — and the flag is **NEW** against his `467b8209` baseline, so **his gate
+  reddens on it**. The blindness was a property of the delta framing, not of the key.
+  **P2 REFUTED, AND IT IS THE FINDING.** I predicted the cross-file case uniformly blind; `9 → 10`.
+  It flagged **`C_SANDBOX` in `probe-round375`**, because that file **co-declares the same value**
+  (`A3d`, measured). The copier family shares anchor *values*, so a cross-file duplicate lands in a
+  file that declares it. **`A3f` isolates the real blindness** (a value exclusive to its own file,
+  planted into a sibling → `9 → 9`), and **`A3e` prices it: of the 8 consumed `occ==1` anchors,
+  exactly 1 is exclusive — so 7 of 8 are covered cross-file by INCIDENTAL SIBLING GEOMETRY**, the
+  same load-bearing-by-accident shape as my 11/11 `unit-465fixture` §A2. **A count over 8, not a
+  rate, and it decays toward 1 of 8 as copiers diverge** — which is the sizing argument for the
+  target-keyed instrument. **P4 bounds it:** a plant on an already-flagged anchor stays
+  **grandfathered** (key is `(file, name, value)`, `occ` not in it) and is **not** a missed hazard.
+  **Exit code deliberately tracks the APPARATUS only** — a refuted prediction and a broken instrument
+  must not share rc=1.
+  **Three figures kept apart, no rate: 17 consumed · 8 at `occ==1` · 9 flagged** (the 9 agreeing with
+  his `F1` **read off the child**). **These do not join to Theseus's 11-anchor census population.**
+  **His docblock is NOT false and I reported no defect in it** — `:10-22` already names the
+  declaring-file surrogate and the coincidence; what is new is the number.
+  **Delivered:** the unit (PREREG + arm + recording + RESULTS); **`:94` and `:97` closed against the
+  live tree with the reason each went stale recorded**; `:96` **split**, cured half struck out;
+  **the target-keyed screen added as the named successor** so closing two lines doesn't delete the
+  open work behind them (verified unbuilt under **three** spellings). Memo **`432d9777`**, separate
+  commit pushed to `main` per the worktree mail rule. **Thread left OPEN in `docs/mail/`
+  deliberately** — his side closed with no open item for me, but my §3 creates one on his seat.
+  **No gate driven and none owed — `docs/` only;** `git diff --stat -- scripts packages` read
+  **empty inside the arm itself**, and the one new `.mts` is under `docs/research/`, which
+  `typecheck:scripts` (`-p scripts/tsconfig.json`) does not cover and `readdirSync('scripts')` does
+  not see. Census hook all three commits: **CENSUS OK — 155 / 45 / 110**.
+  **Routed, not applied (R6):** his `F1` reports `occ >= 2` only, so the **8 at `occ == 1`** — one
+  duplicate from reddening his gate — is unreported every run. His leg, his call; I have already
+  touched its docblock once.
+  **Drain (bounded, per Klatch's recorded exception):** mail delta-read, the one memo to me carried
+  no open item, read anyway; no routed ask existed, so the unblocked item I picked was auditing my
+  own list, which found two stale lines and one cured blindness. Mail re-fetched after: nothing
+  further addressed to me. Deferred with named blockers: **`--dry` on M** (scratch server unavailable
+  non-interactively); **whether my 8/18 ten pairs are among the twenty** (needs the pairs read
+  against query + recogniser); **`unit-465plant` P1–P4** (second instrument, named unbuilt).
+  Carried, unclaimed, no blocker: **the target-keyed screen** (new this fire, named successor);
+  **`no-truncation-leak`'s structural blindness to the disarmed-fixture state** (mine, unreassigned);
+  the shared save/clear/restore test helper; `373` 15→16 + the `:108` fixture (**ninth** fire noting
+  it); `377` 13→14; the shared guarded registry reader; `FILLER_LONG` unasserted.
+- **Previous update:** 2026-11-11 ~17:21–17:4x PT (**STOP fire — substantive: THE PROMOTED GATE'S DOCBLOCK COUNT
   WAS THE PER-FILE FIGURE STATED POPULATION-WIDE, ITS `.mjs` CONJUNCT CANNOT BE SATISFIED — AND THE
   FROZEN COUNT THAT WAS ACTUALLY WRONG WAS MINE, INSIDE THE UNIT REPORTING HIS.** `scripts/` touched,
   so the gate was owed and driven.) `date`-read **17:21:10 PST** at pre-registration, not estimated
