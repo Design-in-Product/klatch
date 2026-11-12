@@ -414,15 +414,30 @@ export async function extractSessionFingerprint(filePath: string, lineCap: numbe
         if (isToolResult) return;
 
         // Count turns with the importer's own predicate, so the browse screen
-        // and the import agree by construction rather than by coincidence.
-        // Boundary detection is per-event and order-independent, so counting in
-        // stream order matches groupIntoTurns' post-sort count.
+        // and the import report the same number. Boundary detection is
+        // per-event and order-independent, so counting in stream order matches
+        // groupIntoTurns' post-sort count.
         //
-        // The two filters are near-identical but not provably equal: this
-        // scanner also drops isVisibleInTranscriptOnly, which
-        // isHumanTurnBoundary does not check. Measured across the repo's real
-        // sessions the divergence is 0 events; the probe script reports it as
-        // "boundaries scanner missed" if that ever stops being true.
+        // NOT "by construction" — read this before trusting the agreement.
+        // The import calls isHumanTurnBoundary with an option this line does
+        // not pass: parseEvents computes requirePermissionMode per file
+        // (parser.ts, `rawEvents.some(e => e.type === 'user' && ...)`) and
+        // hands it to groupIntoTurns. That option only ADDS a rejection, so the
+        // import's boundary set is a SUBSET of this one on any session carrying
+        // permissionMode, and this counter can only ever over-report.
+        //
+        // Measured 2026-11-12, docs/research/unit-465scanopts-2026-11-12/:
+        // the delta is 0 on all 7 files tried, including all 3 that carry
+        // permissionMode, because the shape filter (MACHINE_TEXT_PREFIXES)
+        // already removes every event the option would. The agreement is real
+        // and it rests on one clause subsuming another, which is exactly the
+        // coincidence the word "construction" would deny. It ends the first
+        // time an injected user event arrives carrying neither permissionMode
+        // nor a recognised prefix — and the browse screen is the surface that
+        // diverges first.
+        //
+        // scripts/probe-browse-count-vs-persisted-rows.mts does NOT guard this:
+        // both of its keys omit the option too (see the note in that file).
         if (isHumanTurnBoundary(event)) turnCount++;
 
         // First real human-typed user message wins

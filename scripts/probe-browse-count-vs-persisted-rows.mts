@@ -67,9 +67,29 @@ async function probe(path: string) {
   ).length;
   const persisted = rowsUser + rowsAssistant;
 
-  // Turn boundaries the scanner did NOT count, and vice versa — the two filters
-  // are near-identical but not identical (the scanner also drops
-  // isVisibleInTranscriptOnly; isHumanTurnBoundary also requires message.role).
+  // Turn boundaries the scanner did NOT count, and vice versa.
+  //
+  // DECLARED BLINDNESS (measured 2026-11-12,
+  // docs/research/unit-465scanopts-2026-11-12/): this comment used to claim the
+  // two filters differ over the transcript-only flag. They do not — b5e1672a
+  // added that check to isHumanTurnBoundary itself. (The old spelling is not
+  // quoted here on purpose: the unit's census for that false claim keys on its
+  // exact wording, so quoting it to correct it keeps the site flagged. See
+  // that unit's RESULTS.md §7b.) The difference that DOES exist is the
+  // `opts` argument: the import computes requirePermissionMode per file and
+  // passes it in, and the scanner never does. This probe omits `opts` on BOTH
+  // sides — groupIntoTurns above and isHumanTurnBoundary below — so its
+  // "(== parser boundaries)" line compares two readings of the LEGACY branch
+  // and cannot see that divergence. The agreement it prints is vacuous with
+  // respect to the one asymmetry in the tree. Measured price of that asymmetry
+  // today: 0 on all 7 files tried. Grading it needs a fixture on which the two
+  // branches differ — a boundary-shaped user event carrying neither
+  // permissionMode nor a MACHINE_TEXT_PREFIXES prefix — which does not exist
+  // yet. Named, not cured.
+  //
+  // (isHumanTurnBoundary also requires message.role, which the scanner's inline
+  // filter does not; that one is inert, because the scanner only increments when
+  // the predicate returns true.)
   // Round 279: wrapped rather than passed by reference. `isHumanTurnBoundary(event, opts?)` bound
   // `Array.prototype.filter`'s SECOND argument — the index — to `opts`, so every element after the
   // first was classified with `opts = <number>`. Behaviourally inert, and only inert by luck: the

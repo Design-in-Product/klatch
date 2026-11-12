@@ -1,0 +1,70 @@
+=== REFUSAL GATE (R1-R4) ===
+  ok R1 — scanner's opt-less call site occurs exactly 1x
+  ok R2 — 'requirePermissionMode' occurs 0x in the scanner
+  ok R3 — parser's per-file requirePermissionMode computation occurs exactly 1x
+  ok R4 — all 7 fixtures present
+
+=== MEASUREMENT ===
+(node:63384) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+  exports/sessions/theseus-2026-03-22.jsonl
+      usesPermissionMode=true  pmUserEvents=69  capped=false
+      scanner turnCount = 66   (legacy boundaries recomputed = 66)
+      import turns      = 66   (strict boundaries recomputed = 66)
+      DELTA             = 0
+  packages/server/src/__tests__/fixtures/real-shapes-2.1.241.jsonl
+      usesPermissionMode=true  pmUserEvents=2  capped=false
+      scanner turnCount = 2   (legacy boundaries recomputed = 2)
+      import turns      = 2   (strict boundaries recomputed = 2)
+      DELTA             = 0
+  packages/server/src/__tests__/fixtures/real-shapes-2.1.81.jsonl
+      usesPermissionMode=true  pmUserEvents=4  capped=false
+      scanner turnCount = 3   (legacy boundaries recomputed = 3)
+      import turns      = 3   (strict boundaries recomputed = 3)
+      DELTA             = 0
+  research/1f171719-1bab-4650-b61d-d5938807cc8d.jsonl
+      usesPermissionMode=false  pmUserEvents=0  capped=false
+      scanner turnCount = 0   (legacy boundaries recomputed = 0)
+      import turns      = 0   (strict boundaries recomputed = 0)
+      DELTA             = 0
+  packages/server/src/__tests__/fixtures/simple-session.jsonl
+      usesPermissionMode=false  pmUserEvents=0  capped=false
+      scanner turnCount = 2   (legacy boundaries recomputed = 2)
+      import turns      = 2   (strict boundaries recomputed = 2)
+      DELTA             = 0
+  packages/server/src/__tests__/fixtures/tool-heavy-session.jsonl
+      usesPermissionMode=false  pmUserEvents=0  capped=false
+      scanner turnCount = 1   (legacy boundaries recomputed = 1)
+      import turns      = 1   (strict boundaries recomputed = 1)
+      DELTA             = 0
+  packages/server/src/__tests__/fixtures/subagent-session.jsonl
+      usesPermissionMode=false  pmUserEvents=0  capped=false
+      scanner turnCount = 1   (legacy boundaries recomputed = 1)
+      import turns      = 1   (strict boundaries recomputed = 1)
+      DELTA             = 0
+
+=== GRADING ===
+  REFUTED   P1 — delta = 0 — not a strictly-positive divergence in [1,20]
+  HELD      P2 — no file under-reports: min delta = 0 over 7 files
+  HELD      P3 — all 4 zero-permissionMode files have delta exactly 0
+  probe rc=0  stderr_bytes=0
+      probe| scanner turnCount:             66  (== parser boundaries)
+      probe| turn boundaries:               66
+      probe| boundaries scanner missed:     0
+  NOT GRADED P4 — P1 delta is 0, so there is no divergence for the probe to be blind to
+  parser.ts checks isVisibleInTranscriptOnly: true
+  claim sites (2): packages/server/src/import/session-scanner.ts, scripts/probe-browse-count-vs-persisted-rows.mts
+  HELD      P5 — parser.ts checks it, and 2 live sites still assert otherwise: packages/server/src/import/session-scanner.ts, scripts/probe-browse-count-vs-persisted-rows.mts
+  session-scanner.ts "agree by construction" sentence present verbatim: true
+  REFUTED   P6 — the sentence is live and P1 found no divergence
+
+=== HEADLINE ===
+APPARATUS: 0 refusals of 8 declared — all green
+PREDICTIONS: 3 held · 0 partial · 2 refuted · 1 not graded  (of 6)
+
+=== FIGURES, KEPT APART ===
+  files measured: 7
+  permissionMode sessions: 3
+  sessions with a non-zero delta: 0
+  largest delta: 0
+  (these are three counts, not a rate; they share no denominator)

@@ -432,9 +432,20 @@ export function isHumanTurnBoundary(
   // it fails open: every format change is additive, so each new kind of injected user
   // event — /slash command echoes, local-command stdout, skill errors — arrives with no
   // flag at all, passes the negative test, and becomes a fabricated "You" turn that also
-  // splits the real turn it landed inside. Measured on
-  // exports/sessions/theseus-2026-03-22.jsonl: 6-7 of 75 turns fabricated, one of them
-  // stealing 269 characters of assistant text from the human turn before it.
+  // splits the real turn it landed inside. On exports/sessions/theseus-2026-03-22.jsonl
+  // one of those fabricated turns stole 269 characters of assistant text from the human
+  // turn before it.
+  //
+  // The count of fabricated turns on that file is deliberately NOT written here as a
+  // digit. It was "6-7 of 75" until 2026-11-12; the 75 reproduces exactly (it is the
+  // absence-only reading) but the 6-7 does not — the live reading is nine, by kind:
+  // 3 <task-notification>, 2 <command-name>, 2 <local-command-stdout>, 2 "Unknown skill:".
+  // `git log -S` puts the 6-7, the seven-entry MACHINE_TEXT_PREFIXES list above and the
+  // isVisibleInTranscriptOnly clause below all in ONE commit (b5e1672a), so the hand
+  // count was already wrong beside its own cure rather than drifting afterwards. A digit
+  // here rots invisibly, because the predicate recomputes and the sentence does not.
+  // Re-derive it: docs/research/unit-465scanopts-2026-11-12/arm-b-which-clause.mts
+  // prints the nested readings (A' / A / B / C) and names the excluded events by kind.
   //
   // Older transcripts predate permissionMode entirely, so the caller tells us whether
   // this session uses it (see parseEvents); when it doesn't, we fall back to the legacy

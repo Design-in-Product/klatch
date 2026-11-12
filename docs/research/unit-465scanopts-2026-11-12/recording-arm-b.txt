@@ -1,0 +1,42 @@
+=== REFUSAL GATE === all 3 nested clauses present exactly once in parser.ts
+
+(node:63609) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+=== exports/sessions/theseus-2026-03-22.jsonl ===
+  user-role events with text:                      82
+  A'  absence-only, pre-b5e1672a:                  75
+  A   absence-only, today's flags:                 75   (A'-A = 0)
+  B   + isMachineAuthoredText  [= scanner]:        66   (A-B  = 9)
+  C   + permissionMode required [= import]:        66   (B-C  = 0)
+  A-B by kind:
+      3  "<task-notification>"
+      2  "<command-name>"
+      2  "<local-command-stdout>"
+      1  "Unknown skill: rate-limi"
+      1  "Unknown skill: remote-co"
+  of B, carrying no permissionMode:                0   <- the option is REDUNDANT on this file: the shape filter already removed every one
+
+=== packages/server/src/__tests__/fixtures/real-shapes-2.1.241.jsonl ===
+  user-role events with text:                      2
+  A'  absence-only, pre-b5e1672a:                  2
+  A   absence-only, today's flags:                 2   (A'-A = 0)
+  B   + isMachineAuthoredText  [= scanner]:        2   (A-B  = 0)
+  C   + permissionMode required [= import]:        2   (B-C  = 0)
+  of B, carrying no permissionMode:                0   <- the option is REDUNDANT on this file: the shape filter already removed every one
+
+=== packages/server/src/__tests__/fixtures/real-shapes-2.1.81.jsonl ===
+  user-role events with text:                      9
+  A'  absence-only, pre-b5e1672a:                  7
+  A   absence-only, today's flags:                 7   (A'-A = 0)
+  B   + isMachineAuthoredText  [= scanner]:        3   (A-B  = 4)
+  C   + permissionMode required [= import]:        3   (B-C  = 0)
+  A-B by kind:
+      1  "<command-name>"
+      1  "<local-command-stdout>"
+      1  "Unknown skill: rate-limi"
+      1  "<task-notification>"
+  of B, carrying no permissionMode:                0   <- the option is REDUNDANT on this file: the shape filter already removed every one
+
+=== APPARATUS ===
+refusals: 0 of 3 declared — all green
+predictions: none — this arm is a characterisation, not a graded leg.

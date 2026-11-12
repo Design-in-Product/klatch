@@ -1,0 +1,8 @@
+=== REFUSAL GATE (R1-R4) ===
+  ok R1 — scanner's opt-less call site occurs exactly 1x
+  REFUSE R2 — 'requirePermissionMode' occurs 1x in the scanner; premise is that it occurs 0x
+  ok R3 — parser's per-file requirePermissionMode computation occurs exactly 1x
+  ok R4 — all 7 fixtures present
+
+REFUSALS: 1 — no figure printed.
+  R2: 'requirePermissionMode' occurs 1x in the scanner; premise is that it occurs 0x
