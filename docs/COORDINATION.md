@@ -5431,8 +5431,122 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** available — duty cycle armed on Claude Code 2.1.322; WORK 14:47 (11/11) fired and is logged below.
-- **Updated:** 2026-11-11 ~14:47–15:0x PT (**WORK fire — substantive. The two cures this seat claimed
+- **Status:** available — duty cycle armed on Claude Code 2.1.322; STOP 19:47 (11/11) fired and is logged below.
+- **Updated:** 2026-11-11 ~19:47–20:1x PT (**STOP fire — substantive, no code. Three memos in, all
+  cc-only, all read at the head of the fire; one of them is xian answering a question this seat asked
+  twice, and the answer was *neither of my two options*. The fire's own product is a measurement
+  correction: the key this seat has been using to size its own inbox was blind to 42 of 98 live
+  memos, and the real close-sweep backlog is 11 memos, not the number the task list has carried for
+  months. No `packages/`/`scripts/` diff (`git diff --stat` on both, empty), so no gate leg is owed
+  and none is claimed.**)
+  **Mail — 3 new since my last commit (`9a55f23d`), found with
+  `git log --diff-filter=A --name-only 9a55f23d..HEAD -- docs/mail/`, not by eyeballing the
+  directory.** (1) **Janus, relaying xian via Claude Duet (17:37 PT)** — the real-API/AAXT backlog
+  question this seat raised twice on 11/10 and declined to settle: xian's answer is **neither retire
+  nor crowded out**, in his words *"The API work requires further work but the challenge right now is
+  my availability to clarify and explain."* **I posed a priority question and the answer was a
+  capacity one** — the one shape I had not allowed for. Verified it is the same item before acting on
+  it: `docs/operations/attention-rollup.md:122` carries the heading verbatim, read on the live file
+  rather than taken off Janus's paraphrase. (2) **Daedalus → Argus** and (3) **Argus → Daedalus**, the
+  `.mjs`-arm pair — informational to this seat, closed by Argus from his side and already in `read/`;
+  nothing asked. Answered (1) in-fire with a memo; (2) and (3) owe nothing.
+  **The AAXT queue's blocker is now named, and the classification matters.** Item does **not** leave
+  `Blocked-on-xian` in `docs/operations/duty-cycle/theseus-tasks.md`; its blocker changes from
+  *unasked* to **xian's time to clarify and explain the work to the team**, written as a
+  **missing-input** blocker rather than a time-indexed one — so no later fire re-dates it, treats it
+  as ripening on its own, or quietly retires it. Both options this seat offered were wrong; a fire
+  that had picked one would have retired live work or mislabelled it, which is the case for having
+  declined to decide it here.
+  **The measurement finding, and it is against this seat's own instrument. Three tries, the first
+  two wrong in opposite directions.** Sizing the mail backlog, a key reading `^to:` off YAML front
+  matter reported **20 to-me / 9 cc-only** of the live directory. But **42 of the 98 live memos have
+  no YAML front matter at all** — they carry headers as bold markdown, and the common spelling puts
+  the label *mid-line* (`**From:** X · **To:** Y`), which a line-anchored key cannot see. It
+  **under-reported this seat's own inbox by 8 of 28 (29%)** and cc-only by 8 of 17 (47%). It did not
+  fail; it returned a plausible number, which is why nobody would have checked it. Unanchoring then
+  introduces the **opposite** error: `in-reply-to:` *contains* `to:`, and its values are memo
+  filenames that very often contain `theseus`, so an unguarded containment match reads a
+  reply-pointer as a recipient. Guarded (label not preceded by a letter or hyphen) and re-measured:
+  **28 / 17 both ways, unchanged** — the 28 is *checked* as not inflated by that mechanism, not
+  assumed clean. **One shape: a header key is a selector over optional metadata, and the optional
+  half was 43% of the population.**
+  **The backlog is far smaller than any figure this item has carried.** Of the 28 to-me live memos,
+  **16 are dated 11/07–11/11 and are the live Round-465 round track** — each memo opens the next
+  round and hands back, so closing them would be wrong rather than premature. **12 are older than
+  11/07**, one of which is refused below. **The real close-sweep candidate set for this seat is 11
+  memos**, 2026-08-09 to 2026-11-06. The item has been deferred for months as "a fire's unit of
+  work"; at 11 memos that premise is no longer true, and the next fire should take the 11 by date
+  instead of re-deriving a population.
+  **A declared slice, done rather than deferred whole — 2 memos, both read in full first.** Closed
+  the 9/02 "urgent Friday Piper Morgan test" root (Calliope → Daedalus, Theseus) and Iris's closing
+  reply on the same thread, **live for 70 days**, on three checked facts and not on age: this seat's
+  own answer is already in `read/`, Iris closes her side in her title and body, and the backfill
+  question behind it is **closed on the board** (Calliope, 11/05 §1 "Backfill — closed", read in the
+  memo body rather than off its filename). Live count **100 → 98**, read **1200 → 1202**; the task
+  list now carries both figures, because a single number there would have been false by the end of
+  the fire that wrote it.
+  **The refusal in the same pass is the more useful half.** Pard's 10/23 memo *reads* like an ack
+  ("Got it, thank you") and is the cheapest thing in the directory to close wrongly — but it **names
+  a live action on xian**: he runs the paste, then the keyless check, which Pard explicitly will not
+  run himself because it needs the pull in xian's tree. Left visible. **And it surfaced a 19-day gap
+  that is this seat's own:** the Round 445 capability test
+  (`docs/research/round445-capability-test/`, `a93ede8d`, 2026-10-23) has had **nothing touch the
+  directory since the commit that created it** (`git log -1` on the path returns `a93ede8d`), xian's
+  checkout is **outside every worktree's sandbox** so no fire can do it, and Daedalus recorded it as
+  *"Needs xian"* in his own 10/24 drain lines here — **but it was absent from this seat's
+  `Blocked-on-xian` section, the input Calliope's sweep promotes from, and absent from the rollup**
+  (searched `attention-rollup.md` for `445`, `capability test`, `verify-request-shapes`, `keyless`,
+  `paste`, `589 commits`: zero hits; the rollup's one Pard item at `:116` is her hosted-agent smoke
+  test, a different thing). Boarded here and in the task list; promotion is Calliope's call, not
+  asserted. Pard's caveat travels with it: a green run shows the surface works at a **2,000-token**
+  trigger and says nothing about behaviour at a real 160k context.
+  **Also closed on the record:** the `geometry-marking-before-seed.mjs` population item, which the
+  task list still carried as open **after this seat's own 14:47 fire cured it**. Verified off the
+  working file, not off the memo: `FILLER_LEAD` is gone from `LIST_LENGTHS` (`:54`, now
+  `{ FILLER: 12, FILLER_LONG: 17 }`), the four loop bounds read `L_SWEEP_MAX = 20` (`:76`), and the
+  N1 refusal survives at `L: 15` — which the old item called `:125` and is now **`:157`**, the line
+  having moved under the insert, which is exactly why the cure cites the self-check by searchable
+  anchor rather than line number. `FILLER_LONG: 17` is carried forward **uncured and named**, not
+  folded into the closure.
+  **Question-box: considered and filed**, `dispatch/mail/question-theseus-2026-11-11-the-expensive-half-of-explaining.md`,
+  verified at dispatch's own remote with `git ls-tree -r origin/main` rather than from the local
+  commit. Prompted by tonight's answer: whether the expensive half of explaining is *transmission*
+  (he holds it whole; the cost is getting it into five heads undeformed) or *construction* (the shape
+  isn't finished until he says it out loud, and we are the occasion rather than the audience) —
+  because the two want opposite things from this team, and writing things down so he needn't repeat
+  himself would, under the second, be subtracting the mechanism. Explicitly marked as needing no
+  answer and not the API question in disguise.
+  **Cross-repo delivery, two repos, both verified at the remote and not from a local commit.**
+  Memo to Janus → `designinproduct` (`9ac9987`); question-box → `dispatch` (`f1fb8cf`, after a
+  `--ff-only` from 3 behind). **The first push was rejected** — `GH007: Your push would publish a
+  private email address`, because the commit carried xian's own address; recovered with
+  `commit --amend --reset-author` under `theseus@klatch.local` (the identity every other Klatch seat
+  pushes those repos with — read off `git log --format='%ae'` rather than guessed), **not** a force
+  push. A Klatch copy of the Janus memo is filed in `docs/mail/` as well, because Calliope and xian
+  are cc'd and read mail here; stated as a deliberate two-copy choice, not an accident.
+- **Drain (2026-11-11 STOP fire):** *Done, bounded* (Klatch is a recorded exception to the fleet
+  duty-cycle-drain baseline; see CLAUDE.md). Drained: 3 new memos read in full at the head, 1
+  answered in-fire with measurements, 2 owing nothing; 2 threads closed into `read/` after reading
+  them, 1 deliberately refused with its reason recorded; the task list corrected on four items
+  (one closed as cured, one re-measured, one answered by xian, one newly boarded). **Deferrals, each
+  with a named blocker:** **mail close sweep** — blocker: it is now an 11-memo, date-ordered unit
+  and wants a fire's head, not a STOP tail; the population is written down so the next fire does not
+  re-derive it. **`FILLER_LONG`'s cure** — blocker: it is *not wrong yet*, and the matching fix is a
+  design change to the guarded block the 14:47 unit refused to touch. **arm N1's two `--dry` runs**,
+  **AAXT chip in a rendered page**, **probe 3 rerun and its replication** — blocker: server start /
+  live calls, approval unavailable non-interactively. **the AAXT queue itself** — blocker, now in
+  xian's own words: his availability to clarify and explain; classified missing-input, not
+  time-indexed. **the target-keyed screen** (`occ(target, v) !== 1`) — still unclaimed, still not
+  closed by Argus's promotion, which keys on `occ(declaring file, v) >= 2`: different key, different
+  subject. **memory-index compaction to 140** — blocker unchanged: ~25 entries need genuinely
+  merging, a fire's unit of work.
+  **For xian:** one thing is newly on your plate and it was my omission that kept it off: the
+  **Round 445 capability test**, parked on you 19 days, needs you to run the paste in your own
+  checkout — no fire can reach it. It is written into this seat's `Blocked-on-xian` now so
+  Calliope's sweep can board it. The AAXT ask is **answered** — thank you; nothing further is owed by
+  you there, and this fire ran no AAXT work, so the proportion that question described is unchanged
+  by today.
+- **Updated (prev):** 2026-11-11 ~14:47–15:0x PT (**WORK fire — substantive. The two cures this seat claimed
   as its next WORK unit are landed, driven and graded, and `scripts/` was touched for the first time
   in this thread, so the sweep leg is run and reported. `unit-465leadcure`: the design call was
   **mis-posed** — neither "remove" nor "parse" — and **P5 failed against my own cure's comment,

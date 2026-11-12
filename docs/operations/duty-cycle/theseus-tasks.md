@@ -39,15 +39,51 @@ at the head of a fire.
 _Items the cycle can pick up without xian._
 
 - [ ] Session log at fire start; drain `docs/mail/` per the Mail Handling discipline.
-- [ ] **Mail close sweep** — **93 live / 1188 read** (counted with `fs.readdirSync`, not `grep`,
-      2026-11-10). Threads addressed to this seat are old enough to be dead but have not been
-      read-and-closed into `docs/mail/read/`. Each needs *reading* before moving, so this is a real
-      work item, not bookkeeping — and it is **a fire's unit of work, not a tail**: the 11/10 WORK
-      fire deferred it on exactly that ground, and the 8/13 revision of this file had already
-      recorded it undone. Those are the only two mentions of it in this seat's record (`grep -ric
-      "close sweep" docs/logs/*theseus*` → one file; `docs/COORDINATION.md` → one occurrence), so
-      earlier fires more likely skipped it silently than deferred it on the record. Do not move a thread with an open action item; the
-      Round-465 thread in particular is open by design.
+- [ ] **Mail close sweep** — **100 live / 1200 read at this fire's open, 98 / 1202 after the slice
+      below** (both counted with `fs.readdirSync`, not `grep`, 2026-11-11 STOP), against **93 / 1188**
+      at the 11/10 measurement. Two figures because this fire *moved* the count: a single number here
+      would have been false by the end of the same fire that wrote it. **The live directory grew by
+      7 in one day while the deferral stood** — the sweep is losing ground, not holding, and that is
+      the first figure anyone has had on which direction it moves. Of the 100 live, **20 carry
+      `Theseus` as a `to:` recipient** and 17 more are cc-only — the live figure is **28 / 17 of the
+      98**, and 30 of the 100 at open by arithmetic over the two this fire closed, both of which name
+      this seat.
+      **That figure took three tries, and the first two were wrong in opposite directions — the
+      correction is the reusable part.** (1) A key reading `^to:` off YAML front matter reported
+      **20 / 9**. (2) **42 of the 98 live memos have no YAML front matter at all**, carrying headers
+      as bold markdown instead, and the common spelling puts the label *mid-line*
+      (`**From:** X · **To:** Y`), so a line-anchored key cannot see it: the anchored key
+      **under-reported this seat's own inbox by 8 of 28, 29%**, and cc-only by 8 of 17, 47%. It did
+      not fail — it returned a plausible number, which is why nobody would have checked it.
+      (3) Unanchoring it introduces the opposite error: `in-reply-to:` *contains* `to:`, and those
+      values are memo filenames that very often contain `theseus`, so an unguarded containment match
+      would read a reply-pointer as a recipient. Guarded it (label not preceded by a letter or
+      hyphen) and re-measured: **28 / 17 both ways, unchanged** — so the 28 is *checked* as not
+      inflated by that mechanism, not assumed clean.
+      Each needs *reading* before moving, so this is a real work item, not
+      bookkeeping — and it is **a fire's unit of work, not a tail**: the 11/10 WORK fire deferred it
+      on exactly that ground, and the 8/13 revision of this file had already recorded it undone.
+      Do not move a thread with an open action item; the Round-465 thread is open by design.
+      **And the backlog is far smaller than any figure this item has ever carried — measured, not
+      estimated.** Of the 28 to-me live memos, **16 are dated 11/07–11/11 and are the live Round-465
+      round track** (each memo opens the next round and hands back; closing them would be wrong, not
+      merely premature). **12 are older than 11/07**, and one of those is the Pard memo refused below
+      for a live action on xian. **So the real close-sweep candidate set for this seat is 11 memos**,
+      spanning 2026-08-09 to 2026-11-06 — not a fire's unit of work at the scale the item has been
+      claiming, and the next fire that picks it up should take the 11 by date rather than re-deriving
+      a population.
+      **Done 2026-11-11 STOP, a declared slice rather than another whole deferral — 2 memos,
+      both read in full first:** the 9/02 "urgent Friday Piper Morgan test" root (Calliope → Daedalus,
+      Theseus) and Iris's closing reply on the same thread, **live for 70 days**. Closed on three
+      checked facts, not on age: this seat's answer is already in `read/`
+      (`theseus-to-calliope-daedalus-…-friday-answer-measured-2026-09-02.md`), Iris's memo closes her
+      own side in its title and body, and the backfill question behind it is **closed on the board**
+      (Calliope, 11/05, §1 "Backfill — closed", read in the memo body rather than taken off its
+      filename). **Refused in the same pass, and the refusal is the more useful half:** Pard's 10/23
+      capability-test memo *reads* like an ack ("Got it, thank you") but **names a live action on
+      xian** — he runs the paste, then the keyless check — so it stays visible. See the new
+      Blocked-on-xian entry; the memo would have been the cheapest thing in the directory to close
+      wrongly.
 - [ ] **A target-keyed screen** — `occ(target, v) !== 1`, which is what `once()` actually throws on.
       **No blocker named**; it is a different instrument nobody has built, and it is left
       **unclaimed** so either this seat or Daedalus can take it. Opened in the 11/10 WORK entry of
@@ -62,8 +98,23 @@ _Items the cycle can pick up without xian._
       test** of a shipped field. **In a fire: blocked** — a rendered-page run needs a server start,
       and that approval is unavailable in a non-interactive fire (documented precedent:
       `round97-…-2026-08-26.md:224`). **In an interactive/tandem session: ready to run.**
-- [ ] **`geometry-marking-before-seed.mjs` searches a population five members narrower than the
-      seeder can produce — found 2026-11-10, not fixed (this fire refused `scripts/` edits).**
+- [x] ~~**`geometry-marking-before-seed.mjs` searches a population five members narrower than the
+      seeder can produce**~~ — **CURED AND CLOSED 2026-11-11 (WORK fire, `unit-465leadcure`,
+      `c917de1c`).** Verified live in this STOP fire off the working file, not off the memo:
+      `FILLER_LEAD` is **gone from `LIST_LENGTHS`** (now `{ FILLER: 12, FILLER_LONG: 17 }`) and the
+      four loop bounds read a separately named `L_SWEEP_MAX = 20` with the inertness and the
+      re-spelling recorded in place. The design call the item was deferred on was **mis-posed** —
+      neither "remove the number" nor "parse it": the object held three members in three roles with
+      three answers, and `FILLER_LEAD` was a **sweep extent wearing a corpus name**. **The refusal
+      held and is still checkable:** the N1 config survives at `L: 15`, which the old item called
+      `:125` and is now `:157` — the line moved under the insert, which is exactly why the cure cites
+      the self-check by searchable anchor rather than line number. **Live residual, carried
+      deliberately and NOT closed with this item:** `FILLER_LONG: 17` sits in the seat `FILLER_LEAD`
+      occupied on 2026-08-19 — asserted by nothing, printed as arithmetic, correct only by inspection
+      today. Blocker on curing it: *it is not wrong yet*, and the matching fix (make the self-check
+      assert it) is a design change to the guarded block that unit deliberately refused to touch.
+      Recorded in the subject file's own comment and that unit's `RESULTS.md`, so this closure does
+      not lose it. Original finding, kept for provenance:
       `scripts/geometry-marking-before-seed.mjs:44` hard-codes
       `LIST_LENGTHS = { FILLER: 12, FILLER_LONG: 17, FILLER_LEAD: 15 }`. The live array holds
       **20** pairs (counted this fire off `probe-recall-tool.mjs`'s `const FILLER_LEAD = [` block).
@@ -148,10 +199,40 @@ _Items the cycle can pick up without xian._
 
 _Items batched for xian's attention. Calliope's sweep promotes these to the attention rollup._
 
+- **The Round 445 / Round 418 §4 capability test — parked on xian for 19 days, and until tonight it
+  was not written in the one place that would surface it.** `docs/research/round445-capability-test/`
+  (`a93ede8d`, 2026-10-23) packages the test as one pasteable command with a pin guard. Pard checked
+  xian's own checkout and replied the same evening
+  (`docs/mail/pard-to-theseus-cc-janus-calliope-xian-capability-test-got-it-pull-will-refuse-stash-and-leave-it-2026-10-23.md`):
+  `/Users/xian/Development/klatch` is **589 commits behind** and doesn't have `a93ede8d`, so the paste
+  stashes-without-popping before pulling; **Pard will not run the keyless check himself** — it needs
+  the pull in xian's tree — and xian runs it as step one of the same sitting. **Nothing has touched
+  the directory since 10/23** (`git log -1` on it returns `a93ede8d`, i.e. the commit that created
+  it), so there is no record the sitting happened. **No fire can do this one:** xian's checkout is
+  outside every worktree's sandbox. **The gap, and it is this seat's:** Daedalus recorded it as
+  *"Needs xian — unchanged"* in his own 10/24 `COORDINATION.md` drain lines, but it is absent from
+  this section — the input Calliope's sweep promotes from — and absent from the rollup (searched
+  `attention-rollup.md` for `445`, `capability test`, `verify-request-shapes`, `keyless`, `paste`,
+  `589 commits`: zero hits; the rollup's one Pard item at `:116` is her hosted-agent smoke test, a
+  different thing). Boarding it here is the whole cure; promotion is Calliope's call, not asserted
+  here. **Caveat Pard stated and this seat repeats rather than drops:** a green run shows the surface
+  works at a 2,000-token trigger and says nothing about behaviour at a real 160k context.
 - **MAXT Session 02** — needs xian's live tandem attention; parked until he dedicates a session.
 - **Round-trip MAXT** (Daedalus 4/28 assignment) — also needs live tandem attention; parked.
-- **Is the AAXT standing queue still live?** — see the queue below. A question for xian or Calliope,
-  not a work item this seat should answer for itself.
+- ~~**Is the AAXT standing queue still live?**~~ — **ANSWERED 2026-11-11, by xian, relayed by Janus
+  via Claude Duet (`docs/mail/janus-to-calliope-cc-theseus-xian-real-api-backlog-neither-the-block-is-xians-time-2026-11-11.md`,
+  17:37 PT), in his words:** *"The answer for Calliope is neither. The API work requires further work
+  but the challenge right now is my availability to clarify and explain."* So **neither of the two
+  options this seat posed** — not retired, not crowded out. The queue stays live and still needs
+  doing. **The item does not leave this section; its blocker changes from "unasked" to a named one:
+  xian's time to clarify and explain the work to the team.** That is a *missing-input* blocker, not a
+  time-indexed one, so no fire should re-date it or treat it as ripening on its own. Janus's own
+  suggestion to Calliope — reframe her board item 4 as "a session with xian to clarify the API work,
+  when he has time" — is hers to take; recorded here because the question was this seat's and the
+  answer lands on this seat's queue. **Verified before writing this:** rollup item 4 is the same item
+  (`docs/operations/attention-rollup.md:122`, heading *"The real-API ('AAXT') test backlog hasn't
+  moved in ~5.5 months — retire it, or say it's being crowded out?"*), read on the file rather than
+  assumed from Janus's paraphrase.
 - ~~**Staged test-data cleanup**~~ — **removed; the 8/13 framing is void.** It said "the four DBs in
   `.testdata/` are Pard's staging, held pending xian's call." Checked this fire: `.testdata/` holds
   **345 top-level entries, among them 134 `.db` files** (found recursively), is in active use by
@@ -166,9 +247,9 @@ _Items batched for xian's attention. Calliope's sweep promotes these to the atte
 
 | name | cadence | next_due | last_completed | notes |
 |---|---|---|---|---|
-| Mail drain | per fire | 2026-11-11 WORK | 2026-11-11 START | Read on arrival, act/reply/surface in the same turn. 11/11 START: 2 in, 2 out, both answered with a measurement in the same fire |
-| COORDINATION.md update | per fire | 2026-11-11 WORK | 2026-11-11 START | Update Theseus Prime section before any push |
-| Session log entry | per fire | 2026-11-11 WORK | 2026-11-11 START | Timestamped entries as work progresses, not reconstructed |
+| Mail drain | per fire | 2026-11-11 STOP | 2026-11-11 STOP | Read on arrival, act/reply/surface in the same turn. 11/11 STOP: 3 in (all cc-only, all read in full), 1 out to Janus, 2 threads closed into read/, 1 refused for a named live action on xian |
+| COORDINATION.md update | per fire | 2026-11-11 STOP | 2026-11-11 STOP | Update Theseus Prime section before any push |
+| Session log entry | per fire | 2026-11-11 STOP | 2026-11-11 STOP | Timestamped entries as work progresses, not reconstructed |
 | **Task list of record refresh** | **monthly** | **2026-12-10** | **2026-11-10** | **New 2026-11-10.** The cure for this file's three-month drift. Refresh means *verify*: header facts against `git worktree list` and the plists, every open item against code or `git log`, and every "blocked on X" against whether X still holds. A refresh that only re-dates the header has not been done. |
 
 ---
@@ -208,7 +289,12 @@ All four surfaces exist in the client as of 2026-11-10 (`ls packages/client/src/
    with sub-phases 1–7 done, so the readiness condition is likely met — **unverified here**, and his
    to confirm.
 
-**Open question, raised not answered (and routed to xian/Calliope above):** this queue has not moved
-in ~5.5 months while the seat ran 39 adversarial units in 15 days. Either the queue is stale and
-should be retired, or AAXT is being crowded out and someone should say so. This seat should not
-quietly decide which.
+**Open question — ANSWERED 2026-11-11, and the answer was "neither."** The question this seat raised
+twice ("either the queue is stale and should be retired, or AAXT is being crowded out") was boarded by
+Calliope as rollup item 4 and answered by xian through Janus the same evening: *"The answer for
+Calliope is neither. The API work requires further work but the challenge right now is my
+availability to clarify and explain."* The queue is **live and unretired**; the four surfaces below
+stay queued. **The standing blocker is now named and is xian's time to clarify the work, not a
+priority call** — see the Blocked-on-xian entry above for the full quote and provenance. Declining to
+decide it unilaterally was the right call: both options this seat offered were wrong, and a fire that
+had picked one would have retired live work or mislabelled it.

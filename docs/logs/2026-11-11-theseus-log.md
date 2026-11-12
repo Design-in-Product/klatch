@@ -406,3 +406,159 @@ and `git hash-object` on the worktree agree, and both differ from the pre-cure p
 **Step 3** — this log is committed and pushed last, after Steps 1 and 2.
 
 Nothing is missing and nothing is claimed done that I could not verify.
+
+---
+
+## 19:47 — Session resumed (STOP fire, Opus 5)
+
+Scheduled STOP fire. Substantive, no code. `git diff --stat -- packages/ scripts/` is empty on both,
+so no gate leg is owed and none is claimed.
+
+### Mail — 3 new, all read at the head
+
+Found with `git log --diff-filter=A --name-only 9a55f23d..HEAD -- docs/mail/`. Authors checked with
+`%an` first: the three "STOP fire" commits above mine are Iris's, Argus's and Daedalus's, not mine.
+
+1. **Janus, relaying xian via Claude Duet, 17:37 PT.** The real-API/AAXT backlog question I raised
+   twice on 11/10 and declined to settle. xian's answer: **neither** — *"The API work requires
+   further work but the challenge right now is my availability to clarify and explain."*
+2. **Daedalus → Argus** and 3. **Argus → Daedalus**, the `.mjs`-arm pair. cc-only, closed by Argus
+   from his side, already in `read/`. Nothing asked of this seat.
+
+Answered (1) in-fire with a memo. (2) and (3) owe nothing and I didn't manufacture a reply.
+
+### I asked a priority question and the answer was a capacity one
+
+Both options I offered — retire it, or mark it crowded out — were wrong. Worth recording plainly:
+what I couldn't see from inside the loop was that the queue's stillness wasn't a ranking at all.
+
+Verified the item's identity before acting on it, rather than trusting Janus's paraphrase:
+`docs/operations/attention-rollup.md:122` carries the heading verbatim — *"The real-API ('AAXT') test
+backlog hasn't moved in ~5.5 months — retire it, or say it's being crowded out?"*
+
+The item stays in `Blocked-on-xian`; what changes is the blocker, from *unasked* to **xian's time to
+clarify and explain the work to the team**. Written as a **missing-input** blocker, explicitly not a
+time-indexed one, so no later fire re-dates it or treats it as ripening on its own. Declining to
+decide it from this seat was right — a fire that had picked either option would have retired live
+work or mislabelled it.
+
+### The fire's own finding, and it is against my own instrument
+
+I set out to re-measure the mail close sweep's figure (the task list carried "93 live / 1188 read",
+11/10). Three tries, the first two wrong in **opposite** directions:
+
+1. A key reading `^to:` off YAML front matter: **20 to-me / 9 cc-only**.
+2. **42 of the 98 live memos have no YAML front matter at all.** They carry headers as bold markdown,
+   and the common spelling puts the label *mid-line* — `**From:** X · **To:** Y` — which a
+   line-anchored key cannot see. The anchored key **under-reported my own inbox by 8 of 28 (29%)**
+   and cc-only by 8 of 17 (47%). It didn't fail. It returned a plausible number, which is why nobody
+   would have checked it.
+3. Unanchoring introduces the opposite error: `in-reply-to:` **contains** `to:`, and its values are
+   memo filenames that very often contain `theseus` — an unguarded containment match would read a
+   reply-pointer as a recipient. Guarded it (label not preceded by a letter or hyphen) and
+   re-measured: **28 / 17 both ways, unchanged.** So the 28 is *checked* as not inflated by that
+   mechanism rather than assumed clean.
+
+One shape: **a header key is a selector over optional metadata, and the optional half was 43% of the
+population.** Caught only because the first number disagreed with a file I had just read by hand —
+Iris's 9/02 memo is addressed to me and the anchored key could not see it.
+
+### The backlog is 11 memos, not the figure the item has carried for months
+
+Decomposed the 28: **16 dated 11/07–11/11 are the live Round-465 round track** (each memo opens the
+next round and hands back — closing them would be wrong, not premature), **12 older than 11/07**, one
+of which I refused below. **So the close-sweep candidate set for this seat is 11 memos**, 2026-08-09
+to 2026-11-06. The item has been deferred for months as "a fire's unit of work"; at 11 that premise
+is no longer true. Population written into the task list by date so the next fire doesn't re-derive
+it.
+
+### A declared slice done, and a refusal that was worth more
+
+**Done — 2 memos, read in full first.** The 9/02 "urgent Friday Piper Morgan test" root
+(Calliope → Daedalus, Theseus) and Iris's closing reply, **live for 70 days**. Closed on three
+checked facts, not on age: my own answer is already in `read/`
+(`theseus-to-calliope-daedalus-…-friday-answer-measured-2026-09-02.md`, `ls`-confirmed), Iris closes
+her side in title and body, and the backfill question behind it is closed on the board (Calliope,
+11/05 §1 "Backfill — closed", read in the memo body rather than off the filename). Live **100 → 98**,
+read **1200 → 1202**.
+
+The task list now carries **both** counts, at-open and post-slice. A single number there would have
+been false by the end of the fire that wrote it — the same shape as this morning's `25`-vs-`31`
+comment, caught before publishing this time instead of after.
+
+**Refused — and it's the more useful half.** Pard's 10/23 memo reads like an ack ("Got it, thank
+you") and was the cheapest thing in the directory to close wrongly. But it **names a live action on
+xian**: he runs the paste, then the keyless check, which Pard explicitly will not run himself because
+it needs the pull in xian's tree. Left visible.
+
+### The 19-day gap the refusal surfaced, and it is mine
+
+Chasing whether Pard's item was still live: `docs/research/round445-capability-test/` (`a93ede8d`,
+2026-10-23) has had **nothing touch it since the commit that created it** — `git log -1` on the path
+returns `a93ede8d` itself. xian's checkout is outside every worktree's sandbox, so no fire can do it.
+Daedalus recorded it as *"Needs xian — unchanged"* in his own 10/24 `COORDINATION.md` drain lines.
+
+But it was **absent from this seat's `Blocked-on-xian` section** — the input Calliope's sweep
+promotes from — **and absent from the rollup**. Searched `attention-rollup.md` for `445`,
+`capability test`, `verify-request-shapes`, `keyless`, `paste`, `589 commits`: zero hits. The
+rollup's one Pard item (`:116`) is her hosted-agent smoke test, a different thing — checked rather
+than assumed to be the same, since "we don't have X" is the highest-risk claim on this project.
+
+The item existed, in a memo and in another agent's section. It just wasn't in the one place that
+would have moved it. Boarded now; promotion is Calliope's call and I haven't asserted it.
+
+### Task list corrected on four items
+
+- **`geometry-marking-before-seed.mjs`** — closed. It was still open **after my own 14:47 fire cured
+  it**. Verified off the working file: `FILLER_LEAD` gone from `LIST_LENGTHS` (`:54`), four loop
+  bounds on `L_SWEEP_MAX = 20` (`:76`), N1's refusal alive at `L: 15` — which the old item called
+  `:125` and is now **`:157`**, the line having moved under the insert. That is exactly why the cure
+  cites the self-check by searchable anchor instead of line number, and the task list is the proof.
+  `FILLER_LONG: 17` carried forward **uncured and named**, not folded into the closure.
+- **Mail close sweep** — re-measured, decomposed, slice done, both counts carried.
+- **AAXT queue question** — answered, blocker named and classified missing-input.
+- **Round 445 capability test** — newly boarded in `Blocked-on-xian`.
+
+### Question-box — considered, and filed
+
+`dispatch/mail/question-theseus-2026-11-11-the-expensive-half-of-explaining.md`. Prompted by
+tonight's answer: whether the expensive half of explaining is **transmission** (he holds it whole;
+the cost is getting it into five heads undeformed) or **construction** (the shape isn't finished
+until he says it out loud, and we're the occasion rather than the audience). They want opposite
+things from this team — under the first, writing things down so he needn't repeat himself lowers the
+price; under the second it subtracts the mechanism. Marked explicitly as needing no answer and as not
+the API question in disguise.
+
+### Cross-repo delivery — and the first push was rejected
+
+Two repos, both verified **at the remote** with `git ls-tree -r origin/main`, not from the local
+commit:
+
+- `designinproduct` — memo to Janus, `9ac9987`.
+- `dispatch` — question-box, `f1fb8cf`, after a `--ff-only` from 3 behind (expected; other agents
+  sync it several times a day).
+
+**The first attempt failed:** `GH007: Your push would publish a private email address` — the commit
+carried xian's own address. Recovered with `commit --amend --reset-author` under
+`theseus@klatch.local`, the identity every other Klatch seat pushes those repos with, read off
+`git log --format='%ae'` rather than guessed. **Not** a force push. A committed memo is not a
+delivered memo, and only reading the push output said so.
+
+A Klatch copy of the Janus memo is also filed in `docs/mail/`, because Calliope and xian are cc'd and
+read mail here. A deliberate two-copy choice for a cross-repo cc, recorded as such.
+
+### Drain
+
+*Done, bounded* (Klatch is a recorded exception to the fleet drain baseline). **Deferrals, each with
+a named blocker:** mail close sweep — now an 11-memo date-ordered unit wanting a fire's head, not a
+STOP tail. `FILLER_LONG`'s cure — not wrong yet, and the fix is a design change to the block the
+14:47 unit refused to touch. arm N1's `--dry` runs / AAXT chip in a rendered page / probe 3 rerun and
+replication — server start and live calls, approval unavailable non-interactively. The AAXT queue —
+xian's availability to clarify, in his own words, classified missing-input. The target-keyed screen —
+unclaimed, and **still** not closed by Argus's promotion: his key is `occ(declaring file, v) >= 2`,
+the deferred one is `occ(target, v) !== 1`. Memory-index compaction to 140 — ~25 entries need
+genuinely merging, a fire's unit of work.
+
+**For xian:** one thing newly on your plate, and my omission kept it off for 19 days — the Round 445
+capability test needs you to run the paste in your own checkout; no fire can reach it. The AAXT ask
+is **answered**, thank you; nothing further is owed by you there.
