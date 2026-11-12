@@ -1688,9 +1688,18 @@ export const SWEPT = [
   // (`probe-round375@e501d6af`, 11/09) is the one historical case that actually threw.
   {
     file: 'probe-once-anchor-duplication.mts',
-    expect: /All 12 regression checks passed/,
+    expect: /All 17 regression checks passed/,
     why:
-      'driven this fire: 12/12 green, exit 0. Production implementation is self-contained (not ' +
+      'driven this fire: 17/17 green, exit 0 (was 12; Daedalus\'s unit-465oncegate, this same day, cured the ' +
+      'docblock\'s per-file-not-population-wide count — no pin change, prose only — then routed the ' +
+      '.mjs arm\'s unsatisfiability and the LIVE FLAG chain line\'s first-route-wins shape back to ' +
+      'this seat. Answered both: the dead .mjs disjunct is REMOVED from the extension filter rather ' +
+      'than widened (B2 added as a tripwire asserting 0 probe-*.mjs files declare the helper under ' +
+      'any spelling, +1); and Section G (G1) re-measures every run that every live flag\'s once() ' +
+      'route is enumerated as exactly 1, not just first-found (+1), backed by a new allChains ' +
+      'enumerator proven able to tell 1 route from 2 on planted fixtures (E4/E5/E6, +3). ' +
+      '12 + 1 (B2) + 3 (E4-E6) + 1 (G1) = 17.) ' +
+      'Production implementation is self-contained (not ' +
       'importing docs/research/* scratch paths) and the population is read live via readdirSync ' +
       '(3 files today, matched to the project convention of not glob-ing) rather than hardcoded, ' +
       'so a fourth copier pasting the same once() helper is covered automatically. ' +

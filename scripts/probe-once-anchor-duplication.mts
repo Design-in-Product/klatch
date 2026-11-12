@@ -36,15 +36,27 @@
  * The population is read live (Section B), not hardcoded to the files that hold the helper today —
  * `B1`'s own `[MEAS]` line reports the membership on every run, so no count is frozen here either.
  * A further copier is covered automatically **only if it pastes the helper byte-identically into a
- * `.mts` file.** The selector admits `.mjs` by extension and then requires `ONCE_HELPER`, a string
- * carrying TypeScript annotations (`: string`) — two conjuncts that cannot both hold, so the `.mjs`
- * branch is unsatisfiable by construction; and a `.mts` copy merely re-wrapped across lines by a
- * formatter is outside the population too. Both driven, with the matched positive (the typed slice
- * from a real member does satisfy the conjunct, so the negatives are about the selector and not a
- * broken slice): `docs/research/unit-465oncegate-2026-11-11` (Daedalus, 11/11 STOP). **Today this is
- * a reach limitation of this sentence, not a live blindness** — no `probe-*.mjs` declares a `once()`
- * helper under any spelling, and the selector reaches every file that does, both read live in that
- * unit. Widening the selector is a design call left to this file's author rather than taken here.
+ * `.mts` file**; a `.mts` copy merely re-wrapped across lines by a formatter is outside the
+ * population too. The extension filter admits `.mts` only — Daedalus's `unit-465oncegate-2026-11-11`
+ * (11/11 STOP) found that an `.mjs` arm here would have been unsatisfiable by construction (`ONCE_HELPER`
+ * carries TypeScript annotations no valid `.mjs` source can contain as executable code) and, driven
+ * live, that it was dead: of the 13 `probe-*.mjs` files that exist today, none declares a `once()`
+ * helper under any spelling. Declined rather than widened: matching the helper's body instead of its
+ * typed signature (to genuinely reach a hypothetical future `.mjs` copy) trades in an unmeasured
+ * precision risk for a copier that doesn't exist yet, against Gall's Law's smallest-working-increment
+ * default — so the dead arm is removed instead, which is a pure simplification (same population,
+ * same selector reach, one fewer unsatisfiable disjunct for a reader to puzzle over).
+ *
+ * **The LIVE FLAG line's `chain:` names A route, checked every run to still be THE only one.**
+ * `consumedByOnce` returns on the first route it finds — correct for the boolean flag (one route is
+ * enough), but Daedalus's `unit-465widen` (11/10) found his own research walker's first-found chain
+ * disagreed with a prior unit's chain for the same anchor, because both were real and his walker just
+ * returned a different one; the fix there was a separate full enumeration (`allChains` below, same
+ * idea). Full enumeration is not built into the printed walker itself — same reasoning as the `.mjs`
+ * decision above, unmeasured complexity for a case absent from the live population — but Section G
+ * re-measures that absence on every run rather than assuming it once: if a future flag ever has more
+ * than one route, G1 reddens and says so, instead of the LIVE FLAG output quietly continuing to print
+ * "chain:" as if there could only be one.
  *
  * **Why the gate is a baseline diff, not a bare "zero live flags" assertion.** Driving this file
  * against the real tree (Section F) found what `unit-465plant`'s own RESULTS.md §5 already named
@@ -253,6 +265,61 @@ function consumedByOnce(
   return { key: false, chain: [] };
 }
 
+/**
+ * Daedalus's 11/10 finding against his own `K-onceR` instrument, routed here: "if the gate leg
+ * prints a chain, enumerate it — a first-found chain would name one of eleven real routes and read
+ * as though it named the only one." `consumedByOnce` above returns on the first route it finds,
+ * which is correct for the boolean `key` (one route suffices) but means its printed `chain` is not
+ * necessarily the only one. This is the enumeration, kept separate from `consumedByOnce` so the
+ * walker that decides pass/fail stays the simple short-circuiting one — used only by the Section G
+ * tripwire below, not by `flagsIn`/`check`.
+ */
+function allChains(
+  src: string,
+  name: string,
+  declLine: number,
+  depth = 0,
+  seen: ReadonlySet<string> = new Set(),
+  scope: { body: string; bodyOffset: number } | null = null,
+): string[][] {
+  const lines = (scope ? scope.body : src).split('\n');
+  const lineBase = scope ? scope.bodyOffset : 0;
+  const re = new RegExp(`\\b${name}\\b`);
+  const routes: string[][] = [];
+  for (let i = 0; i < lines.length; i++) {
+    const absolute = lineBase + i + 1;
+    if (absolute === declLine) continue;
+    if (!re.test(lines[i])) continue;
+    if (/\bonce\s*\(/.test(lines[i])) routes.push([`once(… ${name} …) :${absolute}`]);
+  }
+  if (depth >= 4) return routes;
+  const callRe = /\b([A-Za-z_$][\w$]*)\s*\(/g;
+  const text = scope ? scope.body : src;
+  let m: RegExpExecArray | null;
+  while ((m = callRe.exec(text)) !== null) {
+    const fname = m[1];
+    if (fname === 'once' || fname === 'if' || fname === 'for' || fname === 'while' || fname === 'return') continue;
+    const open = m.index + m[0].length - 1;
+    const parsed = argsAt(text, open);
+    if (!parsed) continue;
+    const pos = parsed.args.findIndex((a) => a.trim() === name);
+    if (pos === -1) continue;
+    const callLine = lineBase + lineOf(text, open);
+    const fn = bodyOf(src, fname);
+    if (!fn) continue;
+    const param = fn.params[pos];
+    if (param === undefined) continue;
+    const cycleKey = `${fname}#${param}`;
+    if (seen.has(cycleKey)) continue; // guards against this branch's own ancestors only — a fresh
+    const seen2 = new Set(seen);      // Set per branch, not the shared mutable one consumedByOnce
+    seen2.add(cycleKey);               // uses, so independent sibling routes are not cross-pruned
+    for (const inner of allChains(src, param, fn.declLine, depth + 1, seen2, fn)) {
+      routes.push([...inner, `${fname}(…) :${callLine} arg${pos}=${name} → param${pos}=${param}`]);
+    }
+  }
+  return routes;
+}
+
 /** FLAG iff the declared name reaches `once(` and its value already occurs >=2 times in `src`. */
 function flagsIn(src: string): Array<{ name: string; value: string; line: number; occ: number; chain: string[] }> {
   const flags: Array<{ name: string; value: string; line: number; occ: number; chain: string[] }> = [];
@@ -293,13 +360,32 @@ const ONCE_HELPER = ['const once = (src', ': string, from', ': string, to', ': s
 const SELF = 'probe-once-anchor-duplication.mts';
 const scriptsDir = join(REPO, 'scripts');
 const population = readdirSync(scriptsDir)
-  .filter((f) => /^probe-/.test(f) && (f.endsWith('.mts') || f.endsWith('.mjs')) && f !== SELF)
+  .filter((f) => /^probe-/.test(f) && f.endsWith('.mts') && f !== SELF)
   .filter((f) => readFileSync(join(scriptsDir, f), 'utf8').includes(ONCE_HELPER))
   .sort();
 
 check('B1', 'at least one scripts/probe-*.mts file defines the once() mutation helper — a leg that ' +
   'cannot see its own population must not score clean', population.length >= 1);
 meas('B1', `${population.length} file(s) define the once() helper: ${population.join(', ')}`);
+
+// The `.mjs` arm was removed from the population filter above (declined-not-widened, see docblock)
+// because no live `.mjs` file could satisfy the TS-typed ONCE_HELPER text. That census is a point-in-
+// time read, not a standing guarantee — this tripwire re-takes it every run, matching the UNTYPED
+// signature too (what a real `.mjs` paste of the helper would actually look like), so the day a
+// `.mjs` copier appears, this reddens and names the file rather than the removed arm silently
+// missing it forever.
+const UNTYPED_ONCE_SIG = 'const once = (src, from, to) => {';
+const mjsOnceHits = readdirSync(scriptsDir)
+  .filter((f) => /^probe-/.test(f) && f.endsWith('.mjs'))
+  .filter((f) => {
+    const src = readFileSync(join(scriptsDir, f), 'utf8');
+    return src.includes(ONCE_HELPER) || src.includes(UNTYPED_ONCE_SIG);
+  })
+  .sort();
+check('B2', 'no scripts/probe-*.mjs file declares the once() helper (typed or untyped) — if this ever ' +
+  'flags, the .mjs arm removed from the population filter above needs to come back', mjsOnceHits.length === 0);
+meas('B2', mjsOnceHits.length === 0 ? '0 probe-*.mjs file(s) declare the once() helper' :
+  `.mjs once() helper found in: ${mjsOnceHits.join(', ')}`);
 
 // ── Section C — the walker reaches the live population it is meant to cover ──────────────────────
 
@@ -375,10 +461,32 @@ let s = readFileSync('f.mts', 'utf8');
 s = once(s, DD, 'replacement');
 `;
 
+// A real second route (not a duplicate of PLANT): the KNOWN NEGATIVE for G1/E4/E5's "exactly one" —
+// without this, those three checks would pass just as happily if allChains silently capped at 1.
+const MULTI_ROUTE = `const SB = "const SANDBOX = 'dup';";
+const ECHO = "const SANDBOX = 'dup';";
+const copy = (file, decl) => {
+  let s = readFileSync(file, 'utf8');
+  s = once(s, decl, 'replacement');
+  return s;
+};
+copy('f.mts', SB);
+copy('g.mts', SB);
+`;
+
 check('E1', 'PLANT (parameter route, duplicated value) flags — this is the case K-once (narrow) ' +
   'cannot see and K-onceR was built to widen into', flagsIn(PLANT_PARAM).length === 1 && flagsIn(PLANT_PARAM)[0].name === 'SB');
 check('E2', 'CTRL-unique (parameter route, unique value) does not flag — the matched negative on E1', flagsIn(CTRL_UNIQUE_PARAM).length === 0);
 check('E3', 'CTRL-direct (direct route, duplicated value) flags — the direct route both keys agree on', flagsIn(CTRL_DIRECT_DUP).length === 1 && flagsIn(CTRL_DIRECT_DUP)[0].name === 'DD');
+check('E4', 'allChains (Section G\'s enumerator, independent of consumedByOnce) finds exactly the one ' +
+  'parameter route on PLANT — sanity that it is not vacuously empty on the same fixture consumedByOnce ' +
+  'flags', allChains(PLANT_PARAM, 'SB', flagsIn(PLANT_PARAM)[0].line).length === 1);
+check('E5', 'allChains finds exactly the one direct route on CTRL-direct — sanity on the other route ' +
+  'shape too', allChains(CTRL_DIRECT_DUP, 'DD', flagsIn(CTRL_DIRECT_DUP)[0].line).length === 1);
+check('E6', 'allChains finds BOTH routes on MULTI-ROUTE (two call sites reaching once() through the ' +
+  'same parameter) — the known negative on E4/E5: without this, "exactly one" there could pass by ' +
+  'allChains always capping at 1 rather than by there genuinely being one',
+  allChains(MULTI_ROUTE, 'SB', flagsIn(MULTI_ROUTE)[0].line).length === 2);
 
 // ── Section F — the live gate: NEW flags beyond a fixed, grandfathered baseline ──────────────────
 //
@@ -417,6 +525,31 @@ check('F1', `every live once()-consumed duplicate-value anchor across the ${popu
   `population was already flagged, identically, at the baseline rev (${BASELINE_REV.slice(0, 8)}) — ` +
   'no new one has landed since', newFlags.length === 0);
 meas('F1', `${liveFlags.length} live flag(s) · ${grandfathered.length} grandfathered · ${newFlags.length} new`);
+
+// ── Section G — the printed `chain:` line names the only route, measured rather than assumed ────
+//
+// Daedalus's unit-465widen (11/10) found his own K-onceR research walker reported one route where
+// eleven existed, because it returns on the first match. The same shape is true of `consumedByOnce`
+// above, by the same design (correct for the boolean `key`, not a claim about uniqueness). Full
+// enumeration in the shipped walker is declined here for the reason named in the docblock's .mjs
+// decision — unmeasured complexity for a case that does not exist in the live population — but
+// unlike that case, this one is checked every run, not asserted once: if a future anchor ever
+// reaches once() by more than one route, this reddens and names it, rather than the LIVE FLAG
+// line continuing to print "chain:" as if singular.
+const routeCounts = liveFlags.map((f) => ({
+  f,
+  n: allChains(readFileSync(join(scriptsDir, f.file), 'utf8'), f.name, f.line).length,
+}));
+const multiRoute = routeCounts.filter((r) => r.n !== 1);
+check('G1', 'every live flag reaches once() by exactly one route, so the LIVE FLAG line\'s "chain:" ' +
+  'names the only one — if this ever finds a flag with more than one route, the printed chain is ' +
+  'no longer singular and needs widening to the full list (Daedalus\'s unit-465widen enumeration ' +
+  'method)', liveFlags.length > 0 && multiRoute.length === 0);
+meas('G1', multiRoute.length === 0
+  ? `${routeCounts.length} live flag(s), every one exactly 1 route`
+  : `${multiRoute.length} of ${routeCounts.length} live flag(s) have a route count other than 1 ` +
+    `(0 means allChains missed what consumedByOnce found — its own bug, not a real second route): ` +
+    multiRoute.map((r) => `${r.f.file} ${r.f.name} (${r.n})`).join(', '));
 
 console.log('');
 for (const m of measurements) console.log(`[MEAS] ${m}`);
