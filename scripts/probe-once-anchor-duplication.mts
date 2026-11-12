@@ -81,6 +81,14 @@
  * a fixed baseline rev. New members of the population (future copier files) are not grandfathered —
  * they have no baseline entry, so every flag on arrival is live, matching Theseus's own posthoc (c)
  * concern that a new file is "the highest-risk case there is."
+ *
+ * **F2 reports the near-miss denominator F1 doesn't.** `unit-465bareline` (Daedalus, 11/12 §3)
+ * measured that F1's flags (`occ >= 2`) are a subset of the once()-consumed population, and routed
+ * the gap as this seat's call rather than editing this file directly: the anchors sitting at
+ * `occ == 1`, one new duplicate away from reddening, are otherwise invisible between sweeps. F2
+ * prints that count every run, kept as its own line rather than a rate against F1 — the same guard
+ * his own §2 states for a different figure applies here: a count over today's population is not a
+ * forecast of the next duplicate.
  */
 
 import { execFileSync } from 'node:child_process';
@@ -320,6 +328,17 @@ function allChains(
   return routes;
 }
 
+/** Every once()-consumed literal declaration in `src`, regardless of its occurrence count — the
+ *  denominator `flagsIn`'s `occ >= 2` filter narrows from. */
+function onceConsumedDecls(src: string): Array<{ name: string; value: string; line: number; occ: number }> {
+  const out: Array<{ name: string; value: string; line: number; occ: number }> = [];
+  for (const [name, d] of literalDecls(src)) {
+    if (!consumedByOnce(src, name, d.line).key) continue;
+    out.push({ name, value: d.value, line: d.line, occ: occ(src, d.value) });
+  }
+  return out;
+}
+
 /** FLAG iff the declared name reaches `once(` and its value already occurs >=2 times in `src`. */
 function flagsIn(src: string): Array<{ name: string; value: string; line: number; occ: number; chain: string[] }> {
   const flags: Array<{ name: string; value: string; line: number; occ: number; chain: string[] }> = [];
@@ -525,6 +544,18 @@ check('F1', `every live once()-consumed duplicate-value anchor across the ${popu
   `population was already flagged, identically, at the baseline rev (${BASELINE_REV.slice(0, 8)}) — ` +
   'no new one has landed since', newFlags.length === 0);
 meas('F1', `${liveFlags.length} live flag(s) · ${grandfathered.length} grandfathered · ${newFlags.length} new`);
+
+// Daedalus, 11/12 (`unit-465bareline`, §3), routed rather than applied: F1 reports occ>=2 — the
+// flags — but not the denominator one duplicate away from becoming one. Kept as its own [MEAS],
+// not folded into a rate with F1 — "a count over N, not a rate with authority" (his own §2 guard
+// on a different figure, applied here too): a near-miss count rising says nothing about whether
+// the NEXT duplicate is coming, only how much margin today's tree happens to have.
+const allOnceConsumed = population.flatMap((f) =>
+  onceConsumedDecls(readFileSync(join(scriptsDir, f), 'utf8')).map((d) => ({ file: f, ...d })));
+const nearMiss = allOnceConsumed.filter((d) => d.occ === 1);
+meas('F2', `${allOnceConsumed.length} once()-consumed anchor(s) live · ${nearMiss.length} at occ==1 ` +
+  `(one duplicate away from flagging)${nearMiss.length > 0 ? ': ' +
+  nearMiss.map((d) => `${d.file}:${d.name}`).join(', ') : ''}`);
 
 // ── Section G — the printed `chain:` line names the only route, measured rather than assumed ────
 //
