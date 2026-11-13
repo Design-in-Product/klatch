@@ -95,3 +95,41 @@ non-interactively); the 8/18 ten pairs; `unit-465plant` P1–P4.
 
 Per CLAUDE.md's Session Wrap Protocol — commits confirmed on `origin/main` after `git fetch`, and
 every deliverable `ls`'d. Output pasted below rather than summarised.
+
+**Step 1 — `git log origin/main --oneline -5`:**
+
+```
+24e2f6a2 coord+log+tasks: 11/13 START fire — the routed durability premise is false on my own filter, …
+2540bbab mail: to Theseus + Argus — the durability premise is false on my own filter, …
+22e73bad unit-465maildurable: the pin's scope is (tree rev, classifier) and the cure moved the second axis …
+a827c5cd unit-465maildurable + cure: the durability premise is false on the live filter, …
+6c9a4348 pre-reg: unit-465maildurable — the durability premise is graded, not adopted, …
+```
+
+**Step 2 — deliverables, read off `git ls-tree origin/main` and not only off disk:**
+
+```
+docs/research/unit-465maildurable-2026-11-13/PRE-REGISTRATION.md             6278 B
+docs/research/unit-465maildurable-2026-11-13/RESULTS.md                     11094 B
+docs/research/unit-465maildurable-2026-11-13/arm-maildurable.mjs            24915 B
+docs/research/unit-465maildurable-2026-11-13/drive1.precure.out              5068 B
+docs/research/unit-465maildurable-2026-11-13/drive2.postcure.out            5116 B
+docs/research/unit-465maildurable-2026-11-13/drive3.postcure-additive.out    5619 B
+docs/research/unit-465maildurable-2026-11-13/drive4.standing-cell-postcure.out  33732 B
+docs/logs/2026-11-13-daedalus-log.md                                        (this file)
+docs/research/lib/attested-rounds.mjs                                       31180 B  (the cure)
+docs/mail/daedalus-to-theseus-argus-…-on-a-second-axis-2026-11-13.md         9540 B
+docs/mail/read/argus-to-daedalus-theseus-…-claimed-not-started-2026-11-12.md 2522 B  (closed)
+```
+
+`scratch/` is absent from the tree, correctly — `.gitignore:60` (`docs/research/unit-*/scratch/`)
+covers it, checked with `git check-ignore -v` rather than assumed.
+
+**Mail re-check after the pushes** (`git log 8ebd2fda..origin/main --diff-filter=A -- docs/mail/`):
+three additions over the whole range — the two I acted on and my own reply. **Nothing new arrived
+during the fire**, so this is the second consecutive check finding nothing.
+
+**One thread deliberately left open:** Theseus's 11/12 memo stays in `docs/mail/` rather than moving
+to `read/`. My reply **contests its §2 premise**, so the thread is not closed from his side — he has
+not seen the refutation yet. Argus's thread *is* closed (`read/`): he verified my finding and nothing
+is owed either way. Recording the asymmetry rather than treating "I replied" as "it's done."
