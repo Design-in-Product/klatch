@@ -252,6 +252,23 @@ export const S6_FOILS = {
 };
 
 /**
+ * The foils **most permissive first**, because they are **nested** and that changes what a witness
+ * can prove.
+ *
+ * Every path `boundaryFree` claims, `separatorTolerant` also claims (`[ -]?` is optional). So the
+ * first shape of this cure — *"each foil needs a case it claims and `classifyPath` refuses"* — was
+ * satisfied for **both** foils by the **single** case belonging to the stricter one, and deleting
+ * the other case left `selfTest()` green. That is Theseus's `T4p` surviving its own cure, found by
+ * this unit's `C4-separatorTolerant` and kept red in `drive3.armc.out`.
+ *
+ * What a nested chain needs is a witness per link that the **next** key refuses: each foil's case
+ * must show what that foil admits *and the next one does not*. Pairwise isolation cannot be asked
+ * for instead — `boundaryFree` has no path that `separatorTolerant` refuses, so that assertion
+ * would be unsatisfiable rather than merely weak.
+ */
+export const S6_FOIL_CHAIN = ['separatorTolerant', 'boundaryFree'];
+
+/**
  * Every source id `classifyPath` can return. Declared so `selfTest` can require a case for each
  * one **without counting** — a count in an assertion has to be edited by the same hand that adds
  * the source it was supposed to catch.
@@ -695,12 +712,39 @@ export function selfTest() {
   // case must exist that the foil claims and `classifyPath` refuses — otherwise "we rejected the
   // looser key" is a sentence no case makes true, and the case that made it true was deletable with
   // everything else green (Theseus's `T4p`). Keyed on the property, not on a filename or a count.
-  for (const [name, foil] of Object.entries(S6_FOILS)) {
-    const witness = pathCases.find(([p, s]) => s === null && foil.test(p) && classifyPath(p).source === null);
-    must(witness !== undefined,
-      `S6_FOILS.${name} is claimed by no near-miss case, so S6's refusal of it is asserted by nothing`);
-    must(foil.test(witness[0]) && classifyPath(witness[0]).source === null,
-      `S6_FOILS.${name}'s witness ${JSON.stringify(witness[0])} does not separate the foil from the live key`);
+  // The chain must cover the foils, keyed on the key SET and not on a count — a count here would
+  // have to be edited by the same hand that adds the foil it was supposed to catch.
+  must(
+    S6_FOIL_CHAIN.length === new Set(S6_FOIL_CHAIN).size &&
+      Object.keys(S6_FOILS).every((n) => S6_FOIL_CHAIN.includes(n)) &&
+      S6_FOIL_CHAIN.every((n) => n in S6_FOILS),
+    `S6_FOIL_CHAIN [${S6_FOIL_CHAIN}] is not a permutation of S6_FOILS [${Object.keys(S6_FOILS)}]`
+  );
+  for (let i = 0; i < S6_FOIL_CHAIN.length; i += 1) {
+    const name = S6_FOIL_CHAIN[i];
+    const foil = S6_FOILS[name];
+    const nextName = S6_FOIL_CHAIN[i + 1];
+    const next = nextName ? S6_FOILS[nextName] : null;
+    // The successor of the last foil is the LIVE key, so the last link's witness is a path the
+    // module actually refuses — which is what makes the live boundary, not just the chain, load-bearing.
+    const witness = pathCases.find(
+      ([p, s]) => s === null && classifyPath(p).source === null && foil.test(p) && (next === null || !next.test(p))
+    );
+    must(
+      witness !== undefined,
+      `S6_FOILS.${name} has no witness that ${nextName ? `S6_FOILS.${nextName}` : 'the live key'} refuses. ` +
+        'The foils are nested, so a case that merely satisfies this foil is satisfied by the stricter ' +
+        "one's witness too and asserts nothing about this link."
+    );
+  }
+  // …and the chain must be ordered most-permissive-first, or "the next key refuses it" is the wrong
+  // question at every link. Checked on the languages, over the cases, rather than declared.
+  for (let i = 0; i + 1 < S6_FOIL_CHAIN.length; i += 1) {
+    const wide = S6_FOILS[S6_FOIL_CHAIN[i]];
+    const narrow = S6_FOILS[S6_FOIL_CHAIN[i + 1]];
+    const counterexample = pathCases.find(([p]) => narrow.test(p) && !wide.test(p));
+    must(counterexample === undefined,
+      `S6_FOIL_CHAIN is misordered: ${S6_FOIL_CHAIN[i + 1]} claims ${JSON.stringify(counterexample && counterexample[0])} and ${S6_FOIL_CHAIN[i]} does not`);
   }
   // …and the live key must not BE either foil. Identity would make every witness above vacuous.
   for (const [name, foil] of Object.entries(S6_FOILS)) {

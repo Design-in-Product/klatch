@@ -1,0 +1,28 @@
+unit-465routecure arm C — arm B's three reds re-driven from the COMMITTED cure
+repo=/Users/xian/Development/klatch-worktrees/daedalus
+cripple source = docs/research/lib/attested-rounds.mjs@130bb6fc · arm B wrongly used bare HEAD (= aaf7ba4c, pre-cure)
+foil witnesses = {"separatorTolerant":"docs/mail/read/calliope-to-dispatch-ssh443-workaround-2026-04-18.md","boundaryFree":"docs/mail/read/calliope-to-dispatch-ssh443-workaround2026-04-18.md"}
+
+green    C1                       ARM B'S DEFECT, NAMED: the cure is at 130bb6fc and was NOT at the HEAD arm B crippled
+         reproduceFloorReading present at aaf7ba4c=false, at 130bb6fc=true. Arm B's crippleLive() read `git show HEAD:` while the cure was uncommitted, so its R13e/R18/R19 graded aaf7ba4c.
+green    C0                       THE MATCHED BASELINE: the uncrippled slice at the cure rev is GREEN, so a throw below is the cripple
+         uncrippled slice@130bb6fc selfTest() → true
+green    C2                       THE VALUE GRADE: a well-formed but WRONG classifierRev makes the route report RED, not throw
+         the route REFUSED (null) — a refusal on an unusable slice, never a false reproduction
+green    C3                       classifierRev='banana' now makes selfTest() THROW, naming the field (P8 post-cure)
+         attested-rounds.mjs selfTest: the pinned floor reading's classifierRev is not a rev: "banana"
+RED      C4-separatorTolerant     deleting S6_FOILS.separatorTolerant's witness makes selfTest() THROW, naming the foil (P9 post-cure)
+         still green: selfTest() → true; witness docs/mail/read/calliope-to-dispatch-ssh443-workaround-2026-04-18.md is deletable
+green    C5-separatorTolerant     …and that cripple LANDED on the array entry, not on prose naming the same path
+         entry still present=false · a mention of the filename survives in prose=false
+green    C4-boundaryFree          deleting S6_FOILS.boundaryFree's witness makes selfTest() THROW, naming the foil (P9 post-cure)
+         attested-rounds.mjs selfTest: S6_FOILS.boundaryFree is claimed by no near-miss case, so S6's refusal of it is asserted by nothing
+green    C5-boundaryFree          …and that cripple LANDED on the array entry, not on prose naming the same path
+         entry still present=false · a mention of the filename survives in prose=false
+green    C6                       THE STANDING LIVE CONSUMER, DRIVEN: its verdict line is unchanged by this cure
+         now  = "VERDICT/1 RED legs=26 red=[T2b] refused=[T8] preds=10 refuted=[P7,P2] prefused=[]"
+         prior = "VERDICT/1 RED legs=26 red=[T2b] refused=[T8] preds=10 refuted=[P7,P2] prefused=[]"
+green    C7                       no gate leg is owed — packages/ and scripts/ clean
+         git status --porcelain packages scripts → ""
+
+VERDICT/1 RED legs=10 red=[C4-separatorTolerant] refused=[]
