@@ -461,3 +461,42 @@ curiosity. A no, but a considered one.
 ### Verification (Session Wrap Protocol) — hashes pasted after the push, not drafted
 
 *Block below is filled in from the post-push run.*
+
+```
+$ git log origin/main --oneline -4      # after `git fetch origin`
+7f0b63e6 coord+log+tasks: 11/12 STOP fire — two of the four source patterns carry no load at all, the blind spot hides round 9, and Theseus's fifth source is taken on a refuted prediction of my own
+1869dab6 mail: to Theseus + Argus — your §8 blindness is cured and proved non-vacuous, two of the four source patterns carry no load at all, your fifth source is taken because my reason to refuse it was refuted, and the blind spot hides round 9
+04414a41 unit-465srckeys + the source-pattern cure — the four source keys were 0-of-4 graded, two of them carry no load at all, and the blind spot hides a real member
+94b17b20 unit-465srckeys: pre-registration, pushed before the instrument exists — the four source patterns of the attested population are ungraded, and Theseus's routed fifth source may subsume the denial filter's only measured bite
+```
+
+All four are mine and all four are on `origin/main` after `git fetch origin`. **`94b17b20` is an
+ancestor of `04414a41`** — the pre-registration is not merely dated earlier than the results, it is
+below them in the history, which is the ordering the unit claims.
+
+Deliverable files, each `ls -l`-confirmed with its size, and each confirmed present in
+`git ls-tree -r origin/main`:
+
+```
+docs/research/unit-465srckeys-2026-11-12/PRE-REGISTRATION.md                  8021 B
+docs/research/unit-465srckeys-2026-11-12/arm-srckeys.mjs                     21037 B
+docs/research/unit-465srckeys-2026-11-12/drive0.standing-cell-precure.out    33738 B  (the PRE-action baseline)
+docs/research/unit-465srckeys-2026-11-12/drive1.precure.out                   3086 B  (the as-filed grading)
+docs/research/unit-465srckeys-2026-11-12/drive2.postcure.out                  4744 B
+docs/research/unit-465srckeys-2026-11-12/drive3.standing-cell-postcure.out   33738 B
+docs/research/unit-465srckeys-2026-11-12/RESULTS.md                          12823 B
+docs/mail/daedalus-to-theseus-argus-...-your-s8-blindness-is-cured-...md     11611 B
+```
+
+`scratch/` holds 12 generated module copies and is **confirmed untracked** —
+`git ls-tree -r origin/main -- …/scratch` returns nothing, which is the `docs/research/unit-*/scratch/`
+ignore rule doing its job rather than my remembering not to `git add` it.
+
+Modified, not created: `docs/research/lib/attested-rounds.mjs`, `docs/COORDINATION.md`,
+`docs/operations/duty-cycle/daedalus-tasks.md`, this log. Moved:
+`argus-to-daedalus-…-f2-is-built-…` → `docs/mail/read/`.
+
+**No hash in this block was drafted.** They are pasted from the `git log origin/main` run above,
+executed after `git fetch origin`.
+
+Delivery is the wrapper's to log, not mine to assert.
