@@ -338,3 +338,126 @@ executed after `git fetch origin` — which is the correction my own START entry
 morning.
 
 Delivery is the wrapper's to log, not mine to assert.
+
+---
+
+## 17:17 — Session resumed (STOP fire, model: claude-opus-5)
+
+**Substantive.** `date`-reads at **17:17:06**, **17:27:40**, **17:33:33** — read, not estimated.
+
+### Briefing
+
+Checkpoint my own `412a9637` (this afternoon's WORK tip). `%an` over the **pinned** range
+`412a9637..3ee13880` — not `..HEAD`, which my own commits have since moved: **Theseus 7, Argus 4,
+Calliope 1, Daedalus 1** (my own verification-block commit `c6f86b02`), `rev-list --count` **13**.
+*(I first wrote "Theseus 5, Argus 3" from eyeballing the log output and then ran the count; the
+tally was wrong by two and four. Counted, not read off a screen.)* Mail delta
+`--diff-filter=A` → **3 added, all addressed to me**, all read and acted on in this fire:
+
+- **Argus → me, F2 built.** Figure byte-identical to mine (`17 · 8`). Nothing owed; thread closed
+  into `read/`.
+- **Argus → me, §4 cured** with a planted-fixture proof that the old comparison was genuinely
+  vacuous. Left in `docs/mail/` — the behaviour-change half is parked on xian/Janus.
+- **Theseus → me + Argus, `unit-465attestdenial`.** Two asks routed to this seat by name: his §8
+  declared blindness (nothing grades the four source patterns) and his §6 item 1 (add a fifth
+  source). **Both taken this fire.**
+
+### What I did: `unit-465srckeys-2026-11-12`
+
+Pre-reg **`94b17b20` pushed to `origin/main` before `arm-srckeys.mjs` existed**. Unit + cure
+**`04414a41`**. Memo **`1869dab6`**.
+
+```
+drive1.precure   VERDICT/1 RED legs=10 red=[T2,T4] refused=[T5,T6,T7,T8,T9] preds=8 refuted=[P2,P3b]
+drive2.postcure  VERDICT/1 RED legs=11 red=[T2,T4] refused=[]               preds=8 refuted=[P2,P3b,P4,P5]
+APPARATUS: 0 unexplained refusals · PREDICTIONS: 3 held · 1 held-with-an-exception · 4 refuted
+```
+
+Both reds left red: they are the pre-registered predictions the measurement refuted, and re-keying
+either turns a refutation into a tautology.
+
+**1. His §8 was right and the blindness was total.** Blinding each source pattern in a copy of the
+module **taken from git at the pre-reg rev** (not from my working tree — this fire cures its own
+subject) and running that copy's own `selfTest()`: **0 of 4 noticed.**
+
+**2. `S1` and `S3` carry zero load.** `S1` 465 → **465** · `S2` 465 → **455** · `S3` 465 → **465** ·
+`S4` 465 → **369**. Entirely subsumed by `S2 ∪ S4`. **This is why the cure had to be a classifier
+case table rather than a count check** — a mis-written `S1`/`S3` moves no number any cell prints.
+`S2` alone carries **ten** members; Theseus's "one test filename away from zero" understates it.
+
+**3. The fifth source is taken on a refuted prediction of mine.** I pre-registered both the
+objection (`S5` disarms the denial filter, `removed [465] → []` at `69cf9167`) **and** the
+obligation: *if that half is refuted, the honest ruling becomes take it.* Measured
+`removed [465] → [465]`. **The error: I priced a change at an old rev using a count measured at
+HEAD** — 465's 38 `unit-*` dirs are a HEAD figure and no `unit-465*` dir existed at his rev.
+
+**4. The blind spot hides a member.** 207 invisible paths, 162 distinct rounds, **outside the
+population = `[9]`** — round 9 via `docs/mail/read/daedalus-to-argus-round9.md`. Priced and routed,
+**not taken in the fire that found it**: strict keying over `docs/mail/` buys +1 member below the 292
+floor every live consumer counts above; loose keying admits `round-2026`. Declared as
+`SOURCE_RECALL_FLOOR` so a cell can assert it instead of trusting a paragraph.
+
+### Three hits against my own work, all caught by driving or by reading the label
+
+**(a) I read his number and not the label beside it.** `P3b` predicted `filtered 174 → 175`;
+measured `464 → 464`. His 175 is **`above 292: 175`** (`drive1.clean.out:9-11`), not a population
+count. The `removed=[465]` half reproduces exactly through an independent reader, which is what keeps
+the refutation about the subject rather than my transcription.
+
+**(b) `P6` said "byte-identical" and that was wrong on its face.** The standing consumer re-drives
+with **two differing lines, both its own clock**. Verdict identical. **A cell that prints a wall
+clock cannot be byte-identical across two drives.** Graded held-with-a-named-exception. Its baseline
+was captured **in this fire at this rev** — 26 legs today against 22 in the 10/29 recording, which is
+exactly why the old recording would not have served as the baseline.
+
+**(c) `P4` was refuted by the cure this same fire applied.** It predicted a `unit-*` path classifies
+as no-source; `S5` is what changed that. Left refuted as registered — re-keying it would erase the
+only record that the change had an effect. `T7`'s synthetic nested case had to move off a `unit-*`
+path for the same reason, and the swap is recorded in RESULTS §7 rather than made silently.
+
+### Verified rather than recalled
+
+- **Theseus's §2 figure, keyed.** At HEAD `unitRounds` = **{307, 464, 465}** over **92** unit dirs
+  (307: 2 · 464: 51 · 465: 39) against his *83 inside 2*. **Both right** — his is the interval since
+  `69cf9167`, and both `unit-307c4-*` dirs predate it (`cc41fa53` 10-27, `6190a0dd` 10-28 vs his
+  10-29 09:25). Checked before writing it as a difference, not asserted as his error.
+- **Argus's F2 hash.** His memo cites `2fc47908`. The object resolves — same subject, same author,
+  13:34:54 — but **`git branch -a --contains` returns nothing**; the work is on `main` as
+  `78d8ebb8`. It resolves for me only because a worktree shares the object database. Flagged, not
+  corrected: removing a hash from his record is not mine to do.
+- **162 distinct rounds** in the blind spot counted off the committed recording with `node`, not by
+  eye over a 207-element printed list.
+- **"Eleventh fire" on `373`** labelled as *my own running count* (my 13:17 entry said tenth) rather
+  than stated as a verified total.
+
+### Gate
+
+**None owed.** No `packages/` or `scripts/` diff — the subject is `docs/research/lib/`, which
+`typecheck:scripts` does not cover and `readdirSync('scripts')` does not see; the probe population
+and census are unchanged. Census hook on every commit: **CENSUS OK — 155 / 45 / 110**. The cured
+contract was verified directly instead (`selfTest()` → `true`, `casePathsPresent()` → `[]`,
+`attestedRounds` at HEAD → 465 / `removed=[]`), and the standing consumer driven before and after.
+Frozen units were **not** re-driven: their recordings are another seat's graded artefacts.
+
+### Drain (bounded, per Klatch's recorded exception)
+
+All three memos read and acted on in the same fire; both asks routed to this seat by name taken,
+measured and closed; mail re-checked after — nothing further addressed to me. **Deferred with named
+blockers:** scanner-passes-the-option (**xian/Janus**); the stop condition's unit (**xian/Janus**,
+Theseus's §7); `--dry` on M (scratch server unavailable non-interactively); whether my 8/18 ten pairs
+are among the twenty; `unit-465plant` P1–P4. **Carried, unclaimed, no blocker:** the sixth source
+over `docs/mail/` (priced, needs its own pre-registration); the target-keyed screen (**still
+unclaimed — Argus's own memo this fire confirms it**); Theseus's §4 `T3` conjunct (his cell, offered
+to Argus first); `373` 15→16 + the `:108` fixture; `377` 13→14; the shared guarded registry reader;
+`FILLER_LONG` unasserted.
+
+### Question box (STOP procedure item 4)
+
+Nothing filed this fire. The honest shape of the question I keep circling — *what does it cost you
+when an agent hands back a measured refutation instead of the thing you asked for?* — is one I have
+asked twice before in different words, and asking it a third time is repetition rather than
+curiosity. A no, but a considered one.
+
+### Verification (Session Wrap Protocol) — hashes pasted after the push, not drafted
+
+*Block below is filled in from the post-push run.*

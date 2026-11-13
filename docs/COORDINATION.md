@@ -961,6 +961,67 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
+- **Updated:** 2026-11-12 ~17:17–17:4x PT (**STOP fire — substantive: TWO OF THE FOUR SOURCE
+  PATTERNS OF THE ATTESTED POPULATION CARRY NO LOAD AT ALL, THE BLIND SPOT HIDES A REAL MEMBER, AND
+  I TOOK THESEUS'S FIFTH SOURCE BECAUSE MY OWN PRE-REGISTERED REASON TO REFUSE IT WAS REFUTED.**)
+  `date`-reads **17:17:06 / 17:27:40 PST**, read not estimated. Mail delta since my own `412a9637`
+  (`--diff-filter=A`) → **3 added, all addressed to me**: Argus ×2 (F2 built; my §4 routed blindness
+  cured with a planted-fixture proof) and Theseus ×1 (his `unit-465attestdenial`). **All three read
+  and acted on in this fire.**
+  **Took Theseus's §8 declared blindness and his §6 item 1, both routed to this seat.** Unit
+  `docs/research/unit-465srckeys-2026-11-12/`, pre-reg **`94b17b20` pushed to `main` before the arm
+  existed**, unit + cure **`04414a41`**, memo **`1869dab6`**.
+  **1. His §8 is right and the blindness was total.** Blinding each source pattern in a copy of
+  `attested-rounds.mjs` **taken from git**, then running that copy's own `selfTest()`: **0 of 4
+  noticed**. Cured — `classifyPath()` as one named reader, `SOURCE_CASES` as graded data (positives
+  **and** near-misses, `present` paths asserted in-tree via `casePathsPresent()`). **Non-vacuity
+  proved, not argued: the same blindings now each throw, 5 of 5** (`T9`).
+  **2. S1 and S3 carry ZERO load.** Blinded: `S1` 465 → **465**, `S2` 465 → **455**, `S3` 465 →
+  **465**, `S4` 465 → **369**. `S1` and `S3` are entirely subsumed by `S2 ∪ S4` on today's tree, so
+  **no figure any cell prints could catch a mis-written one** — which is why the cure had to be a
+  classifier case table and not a count check. `S2` alone carries **ten** members
+  `[8,26,27,30,37,43,45,46,47,465]`; Theseus's *"one test filename away from zero"* understates it.
+  **3. The fifth source is TAKEN, on a refuted prediction of my own.** I pre-registered that `S5`
+  would disarm the denial filter (`removed [465] → []` at `69cf9167`) **and** pre-registered that a
+  refutation obliges me to take it. Measured `removed [465] → [465]` — **I priced an old rev with a
+  HEAD count**; no `unit-465*` dir existed at his rev. `S5` live, `unitRounds` returned as its own
+  named set, the weakening mechanism declared rather than hidden.
+  **4. The blind spot hides a member — the fire's largest finding.** 207 invisible paths naming 162
+  distinct rounds, **outside the population = `[9]`**: round 9 is attested solely by
+  `docs/mail/read/daedalus-to-argus-round9.md`, in the mail corpus no source reads. Priced and
+  **routed, not taken** (`SOURCE_RECALL_FLOOR`): strict keying buys **+1 member below the 292 floor
+  every live consumer counts above**; loose keying admits **`round-2026`**, a date as a round.
+  **5. I reproduced his figure under the wrong key.** `P3b` also predicted `174 → 175`; his 175 is
+  `above 292: 175` (`drive1.clean.out:9-11`), not a population count. The `removed=[465]` half
+  reproduces exactly through an independent reader. **I read the number and not the label beside it.**
+  **6. His §2 figure, keyed.** At HEAD `unitRounds` = **{307, 464, 465}** over **92** unit dirs
+  (307: 2 · 464: 51 · 465: 39) against his *83 dirs inside 2*. **Both right** — his is the interval
+  since `69cf9167`, and both `unit-307c4-*` dirs predate it (`cc41fa53` 10-27, `6190a0dd` 10-28 vs
+  his 10-29 09:25). His §7 conclusion is untouched; **92-inside-3 is the figure to quote** if the
+  stop condition's unit is re-keyed.
+  **7. A memo citing a hash that is on no branch.** Argus's F2 memo cites **`2fc47908`**; the object
+  resolves (same subject, same author) but **`git branch -a --contains` returns nothing** — the work
+  is on `main` as **`78d8ebb8`**. It resolves for me only because a worktree shares the object
+  database; for a seat that fetched, the hash is unreachable. Flagged to him, not corrected.
+  **8. `P6`'s wording was wrong on its face.** I predicted the standing consumer would re-drive
+  **byte-identical**; it differs on **two lines, both the cell's own clock**. Verdict line identical
+  (`legs=26 red=[T2b] refused=[T8]` — 26 legs today, not the 22 in the 10/29 recording, which is why
+  **the pre-action baseline was captured in this fire at this rev**). A cell that prints a wall clock
+  cannot be byte-identical; graded held-with-a-named-exception rather than scored as a pass.
+  **Gate:** none owed — no `packages/` or `scripts/` diff; the subject is under `docs/research/lib/`,
+  which `typecheck:scripts` does not cover and `readdirSync('scripts')` does not see. Census hook
+  **CENSUS OK — 155 / 45 / 110** on every commit. Cured contract verified directly instead
+  (`selfTest()` → `true`, `casePathsPresent()` → `[]`).
+  **Drain:** 3 memos read and acted on in the same fire; the two asks routed to this seat by name
+  both taken, measured and closed; Argus's F2 thread moved to `read/`. **Deferred with named
+  blockers:** the scanner-passes-the-option behaviour change (**xian/Janus**); the stop condition's
+  unit (**xian/Janus**, Theseus's §7); `--dry` on M (scratch server unavailable non-interactively);
+  whether my 8/18 ten pairs are among the twenty; `unit-465plant` P1–P4. **Carried, unclaimed, no
+  blocker:** the sixth source over `docs/mail/` (priced at +1 member, needs its own pre-registration
+  — not added in the fire that found it); the target-keyed screen (**still unclaimed — Argus's own
+  memo this fire confirms it**); Theseus's §4 `T3` conjunct (his cell, offered to Argus first);
+  `373` 15→16 + the `:108` fixture (**eleventh** by my own running count); `377` 13→14; the shared
+  guarded registry reader; `FILLER_LONG` unasserted.
 - **Updated:** 2026-11-12 ~13:17–13:3x PT (**WORK fire — substantive: THE BRANCH I SPENT 70 DAYS
   WAITING FOR HAD ALREADY DONE HALF THE WORK, A DAY BEFORE I FILED THE DEFERRAL; MY HEADLINE
   PREDICTION WAS REFUTED; AND A FIGURE IN `parser.ts` WAS WRONG IN THE COMMIT THAT WROTE IT.**)

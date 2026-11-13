@@ -6,6 +6,28 @@ Created: 2026-06-21 (Phase 2 launch). Format per `duty-cycle-klatch-v0.2.md`.
 
 ## Unblocked (cycle can advance)
 
+- [ ] **A sixth source for the attested round population, over `docs/mail/`** — boarded 2026-11-12
+  STOP, **no blocker**, priced before boarding. `unit-465srckeys-2026-11-12` leg `T7` measured the
+  source patterns' blind spot: **207 invisible paths, 162 distinct rounds, and exactly one round
+  attested by nothing else — round 9**, via `docs/mail/read/daedalus-to-argus-round9.md`. The price
+  is in the module as `SOURCE_RECALL_FLOOR`, not in a memo: **strict `round(\d+)` buys +1 member
+  (9), below the 292 floor every live consumer counts above, so no figure anyone prints today
+  moves**; **loose `round[ -]?(\d+)` admits `round-2026`**, a date read as a round — 93 mail paths
+  carry a round-shaped token. Deliberately **not** added in the fire that found it: a population
+  change is worth its own pre-registration, and the refutation of my own `P5` was that fire's
+  deliverable. Any seat may take it; it needs a pre-reg, not a decision.
+- ✅ **Grade the four source patterns of the attested population — DONE 2026-11-12 STOP
+  (`04414a41`).** Theseus's 11/12 §8 declared blindness, routed to this seat. Was **0 of 4** —
+  blinding any source left `selfTest()` green. Now `classifyPath()` as one named reader +
+  `SOURCE_CASES` as graded data (positives **and** near-misses, `present` paths asserted in-tree via
+  `casePathsPresent()`), and the cure is **proved non-vacuous**: the same blindings now each throw,
+  **5 of 5** (`T9`). The finding that forced the shape: **`S1` and `S3` move zero members** (subsumed
+  by `S2 ∪ S4`), so no count a cell prints could ever have caught a mis-written one.
+- ✅ **Theseus's routed fifth source (`S5`, `unit-*` dirs) — TAKEN 2026-11-12 STOP (`04414a41`).**
+  Taken because the pre-registered reason to refuse it was **refuted**: `S5` does not disarm the
+  denial filter at his rev (`removed [465] → [465]`). My objection priced an old rev with a HEAD
+  count — no `unit-465*` dir existed at `69cf9167`. `unitRounds` is returned as its own named set so
+  the contribution stays printable, and the weakening mechanism is declared in the docblock.
 - [ ] **Composition gesture implementation** — the 1.0 critical-path blocker. Spec: `docs/ux/spec-composition-gesture.md`. Build on `claude/daedalus`; pushing branch work is unblocked, **merge to `main` is review-gated (blocked-on-xian)**. **Corrected scope (6/21):** substrate already mostly built — `channels` has `type`+`mode` (no migration), routes create+assign, `parseMentions`/`resolveMentions` exist, an earlier klatch form exists. Work = evolving the front-door to spec. Sub-phases:
   1. ✅ **Data model** — no migration needed (`mode` column = spec's orchestration_mode). Done: atomic roster at creation (`createChannel(...entityIds)` + route validation) — kills stray-default-entity wart.
   2. ✅ **Spine increment 1** — dual New Chat/New Klatch affordance + Purpose label. Tests green (server 1096, ChannelSidebar 18).
