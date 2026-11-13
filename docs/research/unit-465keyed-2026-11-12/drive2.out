@@ -1,0 +1,34 @@
+=== VERIFY/465-keyed drive2 — rev-keyed: whose figure was right where, and how the member got in ===
+HEAD_REV     d500c907cc29473c0558d69f51b51f2bd59b75fb
+HIS_REV      3ee13880   MY_REV 69cf9167   MY_DRIVE_REV 684dea64
+CLOCK        2026-11-13T03:53:01.941Z
+
+--- [MEAS] Q1 — the population move, as a set difference both ways
+  M-move  |filtered| 465 @3ee13880 → 466 @d500c907  gained=[9] lost=[]
+  ok      Q1a  gained=[9], predicted exactly [9]
+  ok      Q1b  lost=[], predicted []
+
+--- [MEAS] Q2 — which commit subjects in the interval attest the member
+  M-range  commits in 3ee13880..HEAD = 9
+  M-attest  7f0b63e6  denies=null  coord+log+tasks: 11/12 STOP fire — two of the four source patterns carry no load at all, the bli
+  M-attest  1869dab6  denies=null  mail: to Theseus + Argus — your §8 blindness is cured and proved non-vacuous, two of the four so
+  ok      Q2a  subjects attesting the member = 2 (7f0b63e6,1869dab6), predicted >=1
+  ok      Q2b  of those, denials = 0, predicted 0 (a denial would have dropped it back out)
+
+--- [MEAS] Q3 — is the membership subject-only
+  M-prov  9: nonSubject=false affirmedBySubject=true denied=false
+  ok      Q3  nonSubject=false affirmed=true, predicted false/true — subject-only, so a later denial subject can drop it out again
+
+--- [MEAS] Q4 — each dir figure at its own rev
+  M-dirs  @3ee13880=91  @69cf9167=8  @684dea64=91  added 69cf9167..684dea64=83
+  RED     Q4a  his standing dirs @3ee13880 = 91, predicted 92
+  ok      Q4b  dirs @69cf9167 = 8, predicted 8
+  ok      Q4c  my interval dirs @684dea64 = 83, predicted 83
+
+--- [MEAS] Q5 — the candidate sixth source, priced at his rev and at HEAD
+  M-mail  @3ee13880: distinct=60 adds=[9]  ·  @d500c907: distinct=60 adds=[]
+  ok      Q5a  adds at HIS rev = [9], predicted [9] — his price was right when he took it
+  ok      Q5b  adds at HEAD = [], predicted [] — and it is zero now
+
+  (floor context: the member is below the 292 floor, so no above-floor figure moves either way)
+VERDICT/1 RED legs=10 red=[Q4a] refused=[]

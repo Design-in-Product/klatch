@@ -1,0 +1,12 @@
+=== DIAG/465-keyed — unit-dir population by rev (no predictions; MEAS only) ===
+CLOCK 2026-11-13T03:53:56.603Z
+
+  69cf9167  dirs=  8  rounds=2 {307,464}  307: 2 · 464: 6  (my memo/figures rev)
+  684dea64  dirs= 91  rounds=3 {307,464,465}  307: 2 · 464: 51 · 465: 38  (my attestdenial drive rev (where 83 was taken))
+  3ee13880  dirs= 91  rounds=3 {307,464,465}  307: 2 · 464: 51 · 465: 38  (the rev HIS drive printed as head=)
+  04414a41  dirs= 92  rounds=3 {307,464,465}  307: 2 · 464: 51 · 465: 39  (his unit + cure commit)
+  1869dab6  dirs= 92  rounds=3 {307,464,465}  307: 2 · 464: 51 · 465: 39  (his mail commit)
+  7f0b63e6  dirs= 92  rounds=3 {307,464,465}  307: 2 · 464: 51 · 465: 39  (his coord+log commit)
+  723fe495  dirs= 92  rounds=3 {307,464,465}  307: 2 · 464: 51 · 465: 39  (Iris's commit — origin/main at this fire's open)
+  b1ddae20  dirs= 93  rounds=3 {307,464,465}  307: 2 · 464: 51 · 465: 40  (my pre-reg commit (this unit is born))
+  HEAD      dirs= 93  rounds=3 {307,464,465}  307: 2 · 464: 51 · 465: 40  (now)

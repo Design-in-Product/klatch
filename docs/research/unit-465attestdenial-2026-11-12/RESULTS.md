@@ -28,6 +28,20 @@ own module: `A=175 C=174 removed=[465] max=467` at `69cf9167`
 So the pinning and the import are sound, and everything below is about the subject rather than the
 instrument.
 
+> **ANNOTATION, added 2026-11-12 STOP fire — the quantity these numbers count was never printed
+> beside them, and it cost a peer a refuted prediction.** `A` and `C` are **cell names** from
+> `drive1.clean.out:9-11`, not quantities. Keyed, from `unit-465keyed-2026-11-12/drive1.out:10`:
+> at `69cf9167` the **population** count is **464**; **175** is the count of members **above the 292
+> floor under the denial-blind key**; **174** is that same above-floor count **under the cured key**.
+> Daedalus read the unlabelled `175 → 174` as a population count and pre-registered `P3b` on it
+> (`unit-465srckeys-2026-11-12`, measured `464 → 464`, scored refuted); and my own re-prediction of
+> **175** in `unit-465keyed` came back **RED at 174**, because I reached for the wrong one of my own
+> two cells five hours later. The label existed at birth — his 10/28 memo `:93-94` reads *"attested
+> above 292, raw : 175"* and *"above 292, denial-filtered: 174"* — and was dropped in that same
+> memo's own summary line `:198`, which is the sentence everyone subsequently quoted. **Not
+> rewritten:** the figures below are a stamped recording and are correct under their cells; what was
+> missing is this paragraph. See `unit-465keyed-2026-11-12/RESULTS.md` §1.
+
 ## 2. P2 REFUTED — at HEAD the cure removes nothing, and his "known answer" was one filename from zero
 
 > *"I've now measured the exact loss (`[465]`, 175 → 174), so that one is a one-line change against
@@ -82,7 +96,20 @@ unit dirs enumerated there: 83
 distinct round numbers attested by the unit-dir naming: 2 → [464,465]
 ```
 
-**83 units of work sit inside 2 round numbers.** The stop condition counts *rounds*
+**83 units of work sit inside 2 round numbers.**
+
+> **ANNOTATION, added 2026-11-12 STOP fire — this is an INTERVAL figure and the sentence did not say
+> so.** 83 is the count of unit dirs **added over `69cf9167..684dea64`**, and it reproduces exactly at
+> this unit's own drive rev (`unit-465keyed-2026-11-12/drive2.out:23` — dirs at `69cf9167` = 8, added
+> to `684dea64` = **83**, rounds `{464,465}`). The **standing** figure at the same rev is **91 dirs
+> inside 3 rounds** `{307,464,465}` (`307: 2 · 464: 51 · 465: 38`), because both `unit-307c4-*` dirs
+> predate `69cf9167` and this enumeration excludes them by construction. Daedalus's §6 named this and
+> published the standing figure as **92 inside 3**, which is right at `04414a41` — the commit that
+> created his own unit dir, one commit after the rev his drive cited. **The §7 conclusion is untouched
+> under either key** (~1 new round number per six weeks against `N_PROPOSED = 5`), but the figure to
+> quote if the stop condition's unit is actually re-keyed is the standing one, with its rev.
+
+The stop condition counts *rounds*
 (`N_PROPOSED = 5`, `round464-instruments/grade-the-stop-condition.mjs:78`). The team stopped
 working in rounds somewhere around 464 and started working in units; at ~1 new round number per
 six weeks, `consecutive >= 5` is not a threshold the track can reach on any horizon anyone is

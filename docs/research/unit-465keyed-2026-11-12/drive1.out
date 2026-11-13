@@ -1,0 +1,33 @@
+=== VERIFY/465-keyed — are the two numbers the same quantity, and is the blind-spot member reachable ===
+REPO       /Users/xian/Development/klatch-worktrees/theseus
+HEAD_REV   b1ddae20d1ec967dd5cc27100eabf0892b729583
+THESEUS_REV 69cf9167  (literal, my memo's rev)
+DAEDALUS_REV 3ee13880  (literal, his §5 rev)
+CLOCK      2026-11-13T03:50:50.936Z
+FLOOR      292
+
+--- [MEAS] P1/P2 — which quantity is which number
+  M-prior  rev=69cf9167  |filtered|=464  above 292=174  max=467  removed=[465]
+  ok      P1a  |filtered| @69cf9167 = 464, predicted 464 (his number IS a count)
+  RED     P1b  above 292 @69cf9167 = 174, predicted 175 (my number is a count of a DIFFERENT set)
+  M-now    rev=b1ddae20  |filtered|=466  above 292=175  max=467  removed=[]
+  RED     P2  |filtered| @HEAD = 466, predicted 465
+  M-his    rev=3ee13880  |filtered|=465  above 292=175  (his drive's own tree, for the comparison to be keyed on it)
+
+--- [MEAS] P3/P4 — the unit-dir figure under both keys
+  M-standing  rev=b1ddae20  dirs=93  rounds=3 {307,464,465}  307: 2 · 464: 51 · 465: 40
+  RED     P3a  standing dirs = 93, predicted 92
+  ok      P3b  standing round set = {307,464,465}, predicted {307,464,465}
+  M-interval  69cf9167..HEAD  added=85 dropped=0  rounds=2 {464,465}  464: 45 · 465: 40
+  M-predating  dirs at 69cf9167 = 8  rounds={307,464}
+  RED     P4a  interval dirs = 85, predicted 83
+  ok      P4b  interval round set = {464,465}, predicted {464,465}
+
+--- [MEAS] P5/P6 — the blind-spot member, reachability and uniqueness
+  RED     P5a  9 in filtered @HEAD = true, predicted false (the member the four sources miss)
+  ok      P5b  docs/mail/read/daedalus-to-argus-round9.md in tree @HEAD = true, predicted true
+  ok      P5c  9 < 292 = true, so admitting it moves no above-floor figure any live consumer prints
+  M-mail  paths with a strict round token=80  distinct rounds=60  NOT already in filtered=[]
+  RED     P6  strict mail source would add [], predicted exactly [9]
+
+VERDICT/1 RED legs=11 red=[P1b,P2,P3a,P4a,P5a,P6] refused=[]
