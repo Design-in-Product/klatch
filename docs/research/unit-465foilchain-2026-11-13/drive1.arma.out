@@ -1,0 +1,53 @@
+unit-465foilchain arm A — Daedalus's cure 5 (S6_FOIL_CHAIN) and its declared limit D4
+repo=/Users/xian/Development/klatch-worktrees/theseus
+cripple source = docs/research/lib/attested-rounds.mjs@a5667195 (committed; never the working tree)
+scratch = /Users/xian/Development/klatch-worktrees/theseus/docs/research/unit-465foilchain-2026-11-13/scratch/a (git check-ignore'd via .gitignore:60)
+
+green    A-src      the graded blob is the LIVE file: hash-object(worktree) == a5667195:docs/research/lib/attested-rounds.mjs
+         worktree=fb6278e1e826 a5667195=fb6278e1e826
+green    A-marker   the sourced bytes actually contain the cure under grade (S6_FOIL_CHAIN + the witness loop)
+         S6_FOIL_CHAIN=true witnessLoop=true
+green    A0         MATCHED BASELINE: the uncrippled slice is green, so every throw below is the cripple
+         selfTest() → true
+green    A1         deleting separatorTolerant's witness throws, naming it and boundaryFree (reproduces his D1)
+         attested-rounds.mjs selfTest: S6_FOILS.separatorTolerant has no witness that S6_FOILS.boundaryFree refuses. The foils are nested, so a case that merely satisfies this foil is satisfied by the stricter one's witness too and asserts nothing about this link.
+green    A2         deleting boundaryFree's witness throws, naming it and the LIVE key as the refuser
+         attested-rounds.mjs selfTest: S6_FOILS.boundaryFree has no witness that the live key refuses. The foils are nested, so a case that merely satisfies this foil is satisfied by the stricter one's witness too and asserts nothing about this link.
+green    A3         a REVERSED 2-chain throws via the WITNESS check, not the order check (reproduces his D4)
+         attested-rounds.mjs selfTest: S6_FOILS.boundaryFree has no witness that S6_FOILS.separatorTolerant refuses. The foils are nested, so a case that merely satisfies this foil is satisfied by the stricter one's witness too and asserts nothing about this link.
+green    B0         BASELINE for B: three strictly nested foils in the CORRECT order are green
+         selfTest() → true
+green    B1         THE FINDING: a MISORDERED 3-chain of nested foils still throws via the WITNESS check, never the order check
+         attested-rounds.mjs selfTest: S6_FOILS.workaroundOnly has no witness that S6_FOILS.boundaryFree refuses. The foils are nested, so a case that merely satisfies this foil is satisfied by the stricter one's witness too and asserts nothing about this link.
+green    C1         a CROSSING pair reaches the order check: order [mailDash, researchRound] throws "misordered"
+         attested-rounds.mjs selfTest: S6_FOIL_CHAIN is misordered: researchRound claims "docs/research/unit-999x/round999-notes.md" and mailDash does not
+green    C2         THE FINDING: the SWAPPED crossing pair throws "misordered" too — both permutations are red
+         attested-rounds.mjs selfTest: S6_FOIL_CHAIN is misordered: mailDash claims "docs/mail/read/calliope-to-dispatch-ssh443-workaround-2026-04-18.md" and researchRound does not
+green    D1         REMOVING a foil (separatorTolerant) from both the object and the chain leaves selfTest() GREEN
+         selfTest() → true
+green    D2         THE FINDING: S6_FOILS = {} with an empty chain is GREEN — the foil POPULATION has no floor
+         selfTest() → true
+green    D2b        and the same crippled text still carries classifyPath's sentence that both foils are in S6_FOILS
+         sentence present=true · any foil declared=false
+RED      D3         census: no committed consumer of S6_FOILS/S6_FOIL_CHAIN outside the module, this unit and his own unit
+         11 file(s) name them; outside=[docs/COORDINATION.md,docs/logs/2026-11-13-daedalus-log.md]
+green    A-land     every cripple LANDED: no leg above is a silent patch failure
+         patch-shaped refusals=0
+green    A-gate     no gate leg is owed — the live module, packages/ and scripts/ are clean
+         git status --porcelain docs/research/lib packages scripts → ""
+
+LANDED   P1         A0 baseline green
+LANDED   P2         A1 throws naming separatorTolerant/boundaryFree
+LANDED   P3         A2 throws naming boundaryFree and the live key
+LANDED   P4         A3 throws via the witness check and never says misordered
+LANDED   P5         B0 green — the manufactured 3-link state is otherwise healthy
+LANDED   P6         B1 throws via the witness check at length 3 — "kept for 3+" is false for nested foils
+LANDED   P7         C1 throws "misordered"
+LANDED   P8         C2 throws "misordered" as well — no order satisfies the only family that reaches the check
+LANDED   P9         D1 green — one foil can be removed with everything green
+LANDED   P10        D2 green AND D2b — green with a live false sentence
+REFUTED  P11        D3 — nothing outside the module and the two units would redden on D1/D2
+LANDED   P12        A-land — every patch applied exactly once
+LANDED   P13        A-gate — the live module is unedited by this unit
+
+VERDICT/1 RED legs=16 red=[D3] refused=[] preds=13 refuted=[P11] prefused=[]
