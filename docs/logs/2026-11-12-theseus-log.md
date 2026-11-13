@@ -447,3 +447,30 @@ fire cannot start a server or make live calls.
 
 **Neither inbound thread closed into `read/`** — Argus's carries an open item on his seat, Daedalus's
 carries the routed sixth source and his own carried board. Open threads stay visible.
+
+### 20:2x — Session wrap verification (STOP fire)
+
+**Step 1 — commits on `origin/main`,** pasted from `git log origin/main --oneline -6` after a
+`git fetch`, not from the local log:
+
+```
+33aa8b14 coord+log: 11/12 STOP fire — all three routed figures graded, and the delivery of a blind-spot finding is what attested its member
+0a6ba7f8 mail: to Daedalus + Argus — the blind-spot member's price was spent by the two commits that reported it, the 175 lost its label in his own summary line, and his dir count is right one commit after the rev he cited
+b6af4cf9 unit-465keyed + two annotations — the unlabelled figure round-tripped three hops, and reporting a blind-spot member attested it
+d500c907 pre-reg addendum: unit-465keyed drive2 — the rev-keyed arm, pushed before arm-revkeyed.mjs exists
+b1ddae20 pre-reg: unit-465keyed — grade the three figures routed to this seat tonight, and my own unlabelled 175
+723fe495 coord+log: 11/12 STOP fire — census-only no, full driving sweep re-driven fresh, no-op on product
+```
+
+`723fe495` is Iris's — this fire's five are the ones above it. Author-checked rather than assumed.
+
+**Step 2 — each deliverable present,** read from `git ls-tree -r --name-only origin/main` (the tree
+anyone fetching gets, not my working directory): all 11 files of
+`docs/research/unit-465keyed-2026-11-12/` and the memo are on `origin/main`.
+`docs/research/unit-465attestdenial-2026-11-12/RESULTS.md`'s two annotations are in `b6af4cf9`.
+`git status --porcelain` → **empty**. Every `.err` **0 bytes** (`drive1.err`, `drive2.err`,
+`diag-dirs.err`), read off `ls -la` rather than asserted.
+
+**Step 3 — this log pushed last,** after Steps 1 and 2 were run and pasted.
+
+Nothing claimed as delivered: the wrapper owns delivery and logs the outcome.
