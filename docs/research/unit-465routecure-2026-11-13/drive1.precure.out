@@ -1,0 +1,42 @@
+unit-465routecure arm A — the routed route, graded before it is cured
+repo=/Users/xian/Development/klatch-worktrees/daedalus
+subject=docs/research/lib/attested-rounds.mjs · classifierRev=6c9a4348 · treeRev=3ee13880
+
+green    R1    module@6c9a4348 does NOT export unattestedRoundsAt (P1, his T8a)
+                 typeof unattestedRoundsAt = undefined
+green    R2    module@6c9a4348 DOES export classifyPath and attestedRounds (P2)
+                 classifyPath=function attestedRounds=function
+green    R2b   the literal documented route, run as written — expected to raise (P1 consequence)
+                 TypeError: OLDMOD.unattestedRoundsAt is not a function
+green    R3    whole-slice route over tree@3ee13880 reproduces the pin (P3, his T8b figure)
+                 got paths=207 outside=[9] · pin paths=207 outside=[9]
+green    R3b   the pin also names the rev and classifier the route needs (scope completeness)
+                 rev=3ee13880 classifierRev=6c9a4348
+green    R4    module@6c9a4348's OWN selfTest() returns true (P4 — the load-bearing distinction)
+                 selfTest() → true
+green    R4b   his T8c, under my key: HEAD's SOURCE_IDS spliced onto the old classifier is inconsistent
+                 HEAD declares [S1,S2,S3,S5,S6]; classifier@6c9a4348 can return [S1,S2,S3,S5]; a splice would leave [S6] unproducible
+green    R5    live S6 reads the WORD TAIL of "workaround" as a round when the separator is gone (P5, his T1b)
+                 in-tree → null/null · separator removed → S6/2026
+green    R5b   the cured key refuses BOTH, and still claims the S6 known positive (cure, non-vacuity)
+                 in-tree=null nosep=null KP=9
+green    R6    the S6 boundary cure reclassifies ZERO live paths at HEAD (P6, his "0 of 80")
+                 mail paths naming "round": 114 · reclassified: 0
+green    R7b   the boundary cure, applied to a git-sliced HEAD copy: filtered gained=[] lost=[] (P7)
+                 |before|=466 |after|=466 gained=[] lost=[]
+green    R8    PRE-CURE: classifierRev='banana' leaves selfTest() green — the guard is a typeof (P8, his T5)
+                 crippled selfTest() → true (green on a non-rev, as predicted)
+green    R9    PRE-CURE: deleting the S6 near-miss ENTRY leaves selfTest() green (P9, his T4p)
+                 crippled selfTest() → true with 12 path cases left
+green    R9b   the cripple LANDED — the deleted line is the array entry, not the docblock mention
+                 entry present after cripple=false · a workaround mention survives in prose=true
+green    R10   classifyPath credits the LAST round of a multi-round path; the census key reads the FIRST (P10, his T6/T6b)
+                 multi-round paths=58 · credits other than first=5 · of those under docs/mail=2
+green    R11   rounds named by a CLAIMED multi-round path and not credited by it = 28 (P11, his T6c)
+                 uncredited rounds=28 → [163,205,248,270,303,316,322,368,393,394, …]
+green    R12   the boundary cure leaves the docs/mail multi-round figure AT 2 — the defects are independent (P12)
+                 under the CURED key: credits other than first=5 · under docs/mail=2
+green    R14   no gate leg is owed — packages/ and scripts/ are clean (P14)
+                 git status --porcelain packages scripts → ""
+
+VERDICT/0 GREEN legs=18 red=[] refused=[] preds=14
