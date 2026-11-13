@@ -111,6 +111,46 @@
  * back as its own set so a cell can print what `S5` contributed, and `SOURCE_CASES` grades it like
  * the other four. A source whose only effect would be to weaken the denial filter should be visible
  * at the call site, not folded into a total.
+ *
+ * ## The sixth source is taken — for durability, and not for the member it was priced on
+ *
+ * `S6` (`^docs/mail/.*round(\d+)`) was priced here as **+1 member (round 9)** and declined on the
+ * grounds that 9 sits far below the 292 floor every live consumer counts above. Both halves of that
+ * are now dead, and neither died the way the argument that replaced them said.
+ *
+ * Theseus's 11/12 §2 withdrew the +1 (it is **zero** at HEAD — see the floor section: reporting the
+ * member attested it) and offered **durability** instead: 9's whole claim to membership was two
+ * memo-shaped subjects, so *"one future subject of the form 'no round N' removes it again"*, and
+ * `S6` would move it into `nonSubject` where no subject can deny it away.
+ *
+ * **That premise is false, and it is false because of this file.** `affirmedBySubject` is built
+ * **per row**, so a round is removed only when *every* attestation of it is a denial. Round 9 has
+ * **two** committed non-denying subjects. Measured through this module's own `denialRe` seam
+ * (`unit-465maildurable-2026-11-13`, `T1`/`T2`): a synthetic key denying 9 on **one** of the two
+ * rows leaves `9 ∈ filtered` and `removed = []`; the same key extended to **both** rows removes it.
+ * One future denial cannot touch it. The durability case for round 9 is **vacuous**.
+ *
+ * It is taken anyway, because the set the argument should have been about is a different set:
+ *
+ * ```
+ * at-risk (in `filtered`, NOT in nonSubject, exactly ONE non-denying subject row)
+ *                              @6c9a4348 → [10, 270, 282, 319, 466]   5 members, 9 NOT among them
+ * strict S6 ∩ at-risk          → [10]                                 1 of the 5
+ * strict S6 at HEAD, members   → gained [] lost []                    moves no live figure
+ * strict S6 at 3ee13880        → gained [9]                           the old price, at its own rev
+ * ```
+ *
+ * So the honest size of this change is **one member made denial-proof (round 10) and no figure
+ * moved** — not +1 member, and not the member either memo argued over. The decision rule was
+ * pre-registered before the arm existed (take iff it moves no member set, protects ≥1 at-risk
+ * member, and reclassifies nothing outside `docs/mail/`); all three held, so it is taken.
+ *
+ * **The loose spelling stays rejected, and now there is a graded case for why.**
+ * `round[ -]?(\d+)` over `docs/mail/` admits **2026** — not from a date label, but from
+ * `…ssh443-workaround-2026-04-18.md`: the tail of the word *workaround*, followed by a year. That
+ * real in-tree path is `SOURCE_CASES`' near-miss for `S6`, so the rejection is a test and not a
+ * sentence. Strict claims 61 distinct rounds at `6c9a4348`, max **463**; loose claims 70, one of
+ * them ≥ 1000.
  */
 
 import { spawnSync } from 'node:child_process';
@@ -167,8 +207,8 @@ export const ALT_SPELLINGS = [
  * `S3`. Which set they land in is a decision, so it is tested (`SOURCE_CASES`) rather than left to
  * whoever next reads the loop body.
  *
- * Returns `{ source: 'S1'|'S2'|'S3'|'S5'|null, round: number|null }`. `S4` is not here: it keys on
- * a commit subject, not a path, and is `SUBJECT_ROUND_RE`.
+ * Returns `{ source: 'S1'|'S2'|'S3'|'S5'|'S6'|null, round: number|null }`. `S4` is not here: it keys
+ * on a commit subject, not a path, and is `SUBJECT_ROUND_RE`.
  */
 export function classifyPath(p) {
   let m = /^docs\/research\/round(\d+)-instruments\//.exec(p);
@@ -179,8 +219,21 @@ export function classifyPath(p) {
   if (m) return { source: 'S3', round: Number(m[1]) };
   m = /^docs\/research\/unit-(\d+)/.exec(p);
   if (m) return { source: 'S5', round: Number(m[1]) };
+  m = /^docs\/mail\/.*round(\d+)/i.exec(p);
+  if (m) return { source: 'S6', round: Number(m[1]) };
   return { source: null, round: null };
 }
+
+/**
+ * Every source id `classifyPath` can return. Declared so `selfTest` can require a case for each
+ * one **without counting** — a count in an assertion has to be edited by the same hand that adds
+ * the source it was supposed to catch.
+ *
+ * `selfTest` also derives the producible set from `classifyPath`'s own text and compares. That scan
+ * is deliberately allowed to under-report: if the quoting style changes, the comparison goes **red**
+ * rather than silently passing, which is the safe direction for a self-census.
+ */
+export const SOURCE_IDS = ['S1', 'S2', 'S3', 'S5', 'S6'];
 
 /**
  * Known positives and near-misses for every source pattern, as data a grader iterates.
@@ -198,6 +251,12 @@ export const SOURCE_CASES = {
     ['docs/research/round464-instruments/grade-the-stop-condition.mjs', 'S1', 464],
     ['packages/server/src/__tests__/round465-data-delta.test.ts', 'S2', 465],
     ['docs/research/unit-465attestdenial-2026-11-12/grade-the-denial-rekey.mjs', 'S5', 465],
+    // S6's positive is the witness that put it in the module: the single member the blind spot hid.
+    ['docs/mail/read/daedalus-to-argus-round9.md', 'S6', 9],
+    // S6's near-miss, and the reason the LOOSE spelling was rejected rather than merely disliked.
+    // `round[ -]?(\d+)` reads the tail of "workaround" plus a date as round 2026; the strict key
+    // requires the digits to touch "round", so this real in-tree path is claimed by nothing.
+    ['docs/mail/read/calliope-to-dispatch-ssh443-workaround-2026-04-18.md', null, null],
     ['docs/research/lib/attested-rounds.mjs', null, null],
   ],
   synthetic: [
@@ -230,23 +289,65 @@ export const SOURCE_CASES = {
  * `docs/mail/read/daedalus-to-argus-round9.md`. The pre-registered prediction was that the blind
  * spot hid no member; that was **refuted**, and this is the member.
  *
- * A sixth source over `docs/mail/` is therefore a real option with a measured price, and it is
- * **not taken here** — priced, routed, declared:
+ * **`S6` is now taken, and the reason is not the one that was priced here.** See the sixth-source
+ * section below; the figures are `unit-465maildurable-2026-11-13`.
  *
- *   - keyed strictly as `round(\d+)`: **+1 member (9)**, and 9 is far below the 292 floor every
- *     live consumer counts above, so no figure anyone prints today moves.
- *   - keyed loosely as `round[ -]?(\d+)` to catch the hyphenated mail spellings: admits
- *     **`round-2026`**, i.e. a date read as a round. 93 mail paths name a round-shaped token.
+ * ## The floor is a reading at a rev, so it is read at a rev
  *
- * So the loose key is wrong and the strict key buys one member below every live threshold. Printed
- * here as a constant so a cell can assert the floor instead of a reader trusting this paragraph.
+ * The first shape of this constant put `unattestedRounds: [9]` beside `rev: '3ee13880'` and trusted
+ * the reader to notice that the second field scopes the first. Theseus named the hazard the day it
+ * shipped: **the first cell that asserts the constant against a HEAD read goes red**, because the
+ * same quantity at HEAD is `[]`. Measured, not argued (`unit-465maildurable` `T6`/`T7`): `[9]` and
+ * 207 paths at `3ee13880`, and `[]` at `6c9a4348` through **one reader** pointed at two revs.
+ *
+ * Why it moved is the interesting half, and it is the mechanism this module exists to key on: the
+ * two commits that *reported* round 9 as unattested both end `"the blind spot hides round 9"`, and
+ * `SUBJECT_ROUND_RE` reads a subject naming a round as an attestation of it. **Delivering the
+ * finding destroyed it.**
+ *
+ * So the pinned reading is kept — it is a true known-positive and the live reader is graded against
+ * it — but it now lives under a key that *names its own rev*, `at3ee13880`. A consumer cannot write
+ * `SOURCE_RECALL_FLOOR.unattestedRounds` any more; the shortest thing it can write carries the rev,
+ * and anything else is `unattestedRoundsAt(repo, rev)`. The defect was not the number. It was that
+ * the honest number was reachable without its scope.
  */
 export const SOURCE_RECALL_FLOOR = {
+  /** The rev the pinned reading below was taken at. */
   rev: '3ee13880',
-  invisiblePaths: 207,
-  unattestedRounds: [9],
-  witness: 'docs/mail/read/daedalus-to-argus-round9.md',
+  /**
+   * The reading, under a key that cannot be quoted without its rev. A fact about `3ee13880` and
+   * about no other rev — at `6c9a4348` the same reader returns `[]` (measured, `T7`).
+   */
+  at3ee13880: {
+    invisiblePaths: 207,
+    unattestedRounds: [9],
+    witness: 'docs/mail/read/daedalus-to-argus-round9.md',
+  },
+  /** For any other rev, call this instead of reading the pin. */
+  readAnyRevWith: 'unattestedRoundsAt(repo, rev)',
 };
+
+/**
+ * The source patterns' recall floor **at a rev the caller names**: every round that some path in the
+ * tree names and **no** source pattern claims, and which nothing else attests.
+ *
+ * This is `unit-465srckeys-2026-11-12` leg `T7`'s key, promoted from a one-rev constant to a reader,
+ * because the constant's value is rev-dependent and its consumers could not see that. Returns
+ * `{ paths, rounds, outside }` — `outside` is the part that matters: rounds the blind spot hides
+ * *and nothing else credits*. `null` on refusal; a caller must not read a refusal as an empty set.
+ */
+export function unattestedRoundsAt(repo, rev) {
+  const tree = git(repo, ['ls-tree', '-r', '--name-only', rev]);
+  const pop = attestedRounds(repo, rev);
+  if (tree === null || pop === null) return null;
+  const invisible = tree.split('\n').filter((p) => /round\d+/i.test(p) && classifyPath(p).source === null);
+  const rounds = new Set(invisible.map((p) => Number(/round(\d+)/i.exec(p)[1])));
+  return {
+    paths: invisible.length,
+    rounds: [...rounds].sort((a, b) => a - b),
+    outside: [...rounds].filter((n) => !pop.filtered.has(n)).sort((a, b) => a - b),
+  };
+}
 
 /**
  * Which of `SOURCE_CASES.present` are missing from the tree at `rev`. `null` on refusal — a caller
@@ -296,7 +397,7 @@ export function attestedRounds(repo, rev, { denialRe = DENIAL_RE } = {}) {
   const subjects = git(repo, ['log', `--format=%H${SEP}%s`, rev]);
   if (tree === null || subjects === null) return null;
 
-  const bySource = { S1: new Set(), S2: new Set(), S3: new Set(), S5: new Set() };
+  const bySource = { S1: new Set(), S2: new Set(), S3: new Set(), S5: new Set(), S6: new Set() };
   for (const p of tree.split('\n')) {
     const c = classifyPath(p);
     if (c.source !== null) bySource[c.source].add(c.round);
@@ -305,6 +406,7 @@ export function attestedRounds(repo, rev, { denialRe = DENIAL_RE } = {}) {
   const tests = bySource.S2;
   const otherDocs = bySource.S3;
   const unitRounds = bySource.S5;
+  const mailRounds = bySource.S6;
 
   const subjectRounds = new Set();
   const deniedRounds = new Set();
@@ -318,7 +420,7 @@ export function attestedRounds(repo, rev, { denialRe = DENIAL_RE } = {}) {
     rows.push({ hash, subject, round: sm ? Number(sm[1]) : null, denies: dm ? Number(dm[1]) : null });
   }
 
-  const nonSubject = new Set([...dirs, ...tests, ...otherDocs, ...unitRounds]);
+  const nonSubject = new Set([...dirs, ...tests, ...otherDocs, ...unitRounds, ...mailRounds]);
   const raw = new Set([...nonSubject, ...subjectRounds]);
 
   // A round is removed ONLY when every attestation of it is a denial — credited by no non-subject
@@ -333,6 +435,7 @@ export function attestedRounds(repo, rev, { denialRe = DENIAL_RE } = {}) {
   return {
     raw, filtered, removed, nonSubject, subjectRounds, deniedRounds, affirmedBySubject,
     unitRounds,
+    mailRounds,
     dirs: [...dirs].sort((a, b) => a - b),
     sorted: [...filtered].sort((a, b) => a - b),
     rows,
@@ -372,10 +475,23 @@ export function selfTest() {
   // positives alone is satisfied by a pattern that matches everything.
   const pathCases = [...SOURCE_CASES.present, ...SOURCE_CASES.synthetic];
   must(pathCases.length >= 8, `SOURCE_CASES has only ${pathCases.length} path case(s)`);
-  must(
-    pathCases.some(([, s]) => s === null) && new Set(pathCases.map(([, s]) => s)).size >= 5,
-    'SOURCE_CASES does not cover every source plus a near-miss'
-  );
+
+  // Coverage, keyed on the SOURCE IDS and not on a count. The previous spelling of this assertion
+  // was `size >= 5`, which a sixth source satisfied without being covered by a single case — a
+  // count in a coverage assertion has to be edited by the same hand that adds the thing it was
+  // supposed to catch, so it catches nothing.
+  const covered = new Set(pathCases.map(([, s]) => s));
+  must(covered.has(null), 'SOURCE_CASES has no near-miss: a table of positives alone is satisfied by a pattern matching everything');
+  for (const id of SOURCE_IDS) must(covered.has(id), `SOURCE_CASES covers no case for source ${id}`);
+
+  // …and the declared id list is checked against what `classifyPath` can actually return, so adding
+  // a seventh source without a case is caught. The scan is allowed to UNDER-report: a quoting change
+  // makes this comparison fail, which is red, not a silent pass.
+  const producible = new Set([...classifyPath.toString().matchAll(/source:\s*'(S\d+)'/g)].map((m) => m[1]));
+  const undeclared = [...producible].filter((s) => !SOURCE_IDS.includes(s));
+  const unproducible = SOURCE_IDS.filter((s) => !producible.has(s));
+  must(undeclared.length === 0, `classifyPath can return ${undeclared} but SOURCE_IDS does not declare it`);
+  must(unproducible.length === 0, `SOURCE_IDS declares ${unproducible} but classifyPath cannot return it`);
   for (const [p, wantSource, wantRound] of pathCases) {
     const got = classifyPath(p);
     must(
@@ -390,6 +506,15 @@ export function selfTest() {
     const got = m ? Number(m[1]) : null;
     must(got === wantRound, `SUBJECT_ROUND_RE on ${JSON.stringify(subject)} → ${got}, want ${wantRound}`);
   }
+
+  // The floor's pinned reading must stay unreachable WITHOUT its rev. A future edit that re-adds a
+  // bare `unattestedRounds` at the top level re-seeds the exact consumer trap this shape cured, and
+  // would do it while every other assertion here stayed green.
+  const floorKeys = Object.keys(SOURCE_RECALL_FLOOR);
+  must(!floorKeys.includes('unattestedRounds') && !floorKeys.includes('invisiblePaths'),
+    `SOURCE_RECALL_FLOOR exposes a rev-free reading again: [${floorKeys}]`);
+  must(floorKeys.includes(`at${SOURCE_RECALL_FLOOR.rev}`),
+    `SOURCE_RECALL_FLOOR.rev is ${SOURCE_RECALL_FLOOR.rev}, but no \`at${SOURCE_RECALL_FLOOR.rev}\` key holds the reading`);
 
   // The declared recall floor is a floor: neither key reaches any of them. If one ever does, this
   // throws rather than leaving the exported list claiming something false.

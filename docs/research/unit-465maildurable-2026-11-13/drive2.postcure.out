@@ -1,0 +1,55 @@
+# unit-465maildurable · base=6c9a4348 now=6c9a4348 floor-pin=3ee13880
+# module sliced from git, S6 inserted at 4 pinned anchors · generated 2026-11-13T17:25:59.673Z
+
+ok       A1   the sliced baseline is the real module: its own selfTest() passes and its KPs are in-tree
+             selfTest=true · casePathsPresent@6c9a4348=[]
+ok       A2   the two arms differ from the baseline in source, and only by the inserted source
+             strict≠base=true loose≠base=true · +179 chars
+ok       T1   a synthetic key denying 9 on exactly ONE affirming row leaves 9 in the population
+             affirming rows at base=2 [7f0b63e6,1869dab6] · rows denying 9 under the one-row key=1 [7f0b63e6] · rows still affirming=1 · 9∈filtered=true · removed=[]
+PRED P1   HELD     the durability premise is FALSE: one future denial does not remove 9
+                  affirming rows at base=2 [7f0b63e6,1869dab6] · rows denying 9 under the one-row key=1 [7f0b63e6] · rows still affirming=1 · 9∈filtered=true · removed=[]
+ok       T2   a synthetic key denying 9 on BOTH affirming rows DOES remove it
+             rows denying 9=2 of 2 affirming · 9∈filtered=false · removed=[9]
+PRED P2   HELD     removal requires EVERY attestation to be a denial
+                  rows denying 9=2 of 2 affirming · 9∈filtered=false · removed=[9]
+ok       T3   strict S6 at 6c9a4348 adds no member, as a set difference both ways
+             |filtered| 466 → 466 · gained=[] lost=[] · S6 claims 61 distinct round(s) · nonSubject gains 13: [2,9,10,12,213,217,292,294,298,302,305,322, …]
+PRED P3   HELD     strict S6 adds zero members at the current rev
+                  |filtered| 466 → 466 · gained=[] lost=[] · S6 claims 61 distinct round(s) · nonSubject gains 13: [2,9,10,12,213,217,292,294,298,302,305,322, …]
+ok       T4   strict S6 at 3ee13880 adds exactly [9]
+             |filtered| 465 → 466 · gained=[9] lost=[]
+PRED P4   HELD     the pinned-rev figure reproduces: strict S6 adds [9] there
+                  |filtered| 465 → 466 · gained=[9] lost=[]
+ok       T5   the loose key admits a date as a round; the strict key does not
+             loose S6 claims 70 round(s), 1 of them ≥1000: [2026] · strict claims 61, max=463, ≥1000: [] · loose gained=[2026] of which ≥1000: [2026]
+PRED P5   HELD     the loose key admits ≥1 member ≥1000 and the strict key admits none
+                  loose S6 claims 70 round(s), 1 of them ≥1000: [2026] · strict claims 61, max=463, ≥1000: [] · loose gained=[2026] of which ≥1000: [2026]
+ok       T6   the floor reader reproduces SOURCE_RECALL_FLOOR exactly at the constant's OWN rev
+             @3ee13880: paths=207 (pinned 207) · distinct rounds=162 · outside=[9] (pinned [9])
+PRED P6   HELD     the pin was right at its own rev
+                  @3ee13880: paths=207 (pinned 207) · distinct rounds=162 · outside=[9] (pinned [9])
+ok       T7   the SAME reader at the current rev returns an empty unattested set — the trap
+             @6c9a4348: paths=207 · distinct rounds=162 · outside=[] · a consumer asserting the pinned [9] against this read goes RED=true
+PRED P7   HELD     the constant is false against a current-rev read — the consumer hazard is real
+                  @6c9a4348: paths=207 · distinct rounds=162 · outside=[] · a consumer asserting the pinned [9] against this read goes RED=true
+ok       T8   the real at-risk set is non-empty and does NOT contain 9
+             at-risk (1 affirming row, no non-subject source) = 5 member(s): [10,270,282,319,466] · 9∈at-risk=false (9 has 2 affirming rows)
+PRED P8   HELD     the rounds one denial could remove are a different set than {9}
+                  at-risk (1 affirming row, no non-subject source) = 5 member(s): [10,270,282,319,466] · 9∈at-risk=false (9 has 2 affirming rows)
+ok       T9   strict S6 protects at least one at-risk member
+             |S6strict ∩ at-risk| = 1 of 5: [10]
+PRED P9   HELD     the durability case is non-vacuous — S6 covers ≥1 at-risk member
+                  |S6strict ∩ at-risk| = 1 of 5: [10]
+ok       T10  S6 is inserted last and reclassifies ONLY docs/mail/ paths
+             80 path(s) reclassified · outside docs/mail/=0 · from a non-null source=0 [] · member set unchanged=true
+PRED P10  HELD     behaviour-preserving at the current rev, and nothing else reclassifies
+                  80 path(s) reclassified · outside docs/mail/=0 · from a non-null source=0 [] · member set unchanged=true
+RED      T11  the LIVE module exports a rev-taking floor reader that reproduces this arm's own reading
+             live@3ee13880 paths=127 outside=[] (arm: 207/[9]) · live@6c9a4348 paths=127 outside=[] (arm: 207/[]) · agree pin=false now=false · live selfTest=true
+ok       T12  the LIVE module claims the same S6 set as this arm's derived copy, or declares S6 absent
+             live S6 rounds=61 · live-only=[] arm-only=[]
+
+DIAG (ungraded, live) HEAD=6c9a4348 · unattested@HEAD paths=207 outside=[] · graded figures above are at 6c9a4348
+
+VERDICT/1 RED legs=14 red=[T11] refused=[] preds-refuted=[]
