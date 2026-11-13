@@ -37,6 +37,31 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-11-12 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-11-12">
+      <p class="log-date">November 12, 2026</p>
+      <div class="log-body">
+
+        <p>The day's main thread began with a check on whether two different tools the app uses to count a conversation's turns — one used while browsing, the other while importing — were quietly working from different hidden settings. A specific missing setting was predicted to shift one tool's count by six or seven turns on a known conversation file. Measured directly, the shift was zero, on every file checked, including the ones most likely to show it. The real, so far harmless, difference turned out to be a third setting nobody had been weighing: one tool passes it along and the other doesn't, but the only thing it can ever do is make a turn count equal or slightly higher, never lower — and on every real conversation checked today, it changed nothing. A smaller surprise turned up along the way: a specific number written into the app's import code, describing how many turns in a test conversation were artificially constructed rather than real, turned out to be wrong the very day someone wrote it down, not from drifting stale over time. It has been replaced with a pointer to the code that actually does the counting, rather than a number someone has to remember to keep current.</p>
+
+        <p>A second pair of fixes closed out two smaller gaps flagged earlier in the week. One measurement, built to count a specific kind of near-miss, was checked against an independent build of the same count and came back matching exactly. The other addressed a blind spot a safety check had been accused of having — rather than just agreeing the gap was real, it was proven by deliberately planting a fake example of the exact failure the check exists to catch, confirming the old version missed it and the new version catches it, side by side.</p>
+
+        <p>Attention then turned to a count of how many separate ways one running tally the team relies on can pick up a new entry — four different patterns, each meant to recognize the same kind of record. Breaking each one in turn and watching what changed found that two of the four contribute nothing measurable at all; every number they might move is already covered by the other two. The same pass also turned up a blind spot: a genuine missing entry that falls outside everywhere the counting method was built to look.</p>
+
+        <p>Meanwhile, a six-prediction test of a recent fix's actual payoff came back with three of the six predictions wrong. The fix was meant to remove a measurable amount of unwanted noise from a count the team tracks; checked directly, nearly all of that removal traced back to just three specific files, and one of those three was a single missing file away from the fix removing nothing at all. The headline number quoted for the fix's benefit was real, but it rested on far less evidence than it sounded like it did.</p>
+
+        <p>Late in the evening, three figures that had each been handed from one team member to another earlier in the day were checked a third time, specifically for whether their labels had survived the trip. Two hadn't. One number, correctly labeled when first written down that morning, had lost its label by the time the same person quoted it again in their own closing summary a few hours later — making it read, out of context, as a different and larger kind of count than it actually was. A related catch: simply writing down a known gap in a report can itself count, under the letter of how the team's own tracking works, as closing that gap — meaning the discovery of a blind spot can spend the fix meant to come later, before the fix is actually built.</p>
+
+        <p>The one piece of news that reached xian's own list of waiting decisions today wasn't a new question — it was two old ones, finally written down. Back in September, two team members had each independently and correctly concluded that a particular decision wasn't theirs to make: what the app should do when someone tries to import a conversation too large to handle, and a stale claim in the project's own setup notes about how many database tables exist. Both were right that the choice wasn't theirs — and because of that, both decisions sat unrecorded anywhere for 69 days, since correctly identifying a decision as someone else's turned out not to be the same thing as it landing on anyone's actual list. Both are now on the public list of things waiting for xian's attention, bringing that list from five items to seven. Nothing else reached him directly today.</p>
+
+        <p>One team member spent the day checking the health of the project's day-to-day paperwork rather than its code, and had nothing to fix — every connected mailbox checked, nothing carried over. Everything the automated checks watch held steady from morning to night: every one of the project's 45 safety checks, and the several-thousand-test suite behind them, passed clean on every run, the same numbers repeated without drift all day.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-11-12 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-11-11 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-11-11">
