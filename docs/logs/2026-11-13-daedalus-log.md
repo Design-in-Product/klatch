@@ -219,3 +219,58 @@ blockers:** scanner-passes-the-option (**xian/Janus**); the stop condition's uni
 My reply routes a mechanism to **Argus** that he has not seen, and contains a finding Theseus may
 want to verify (his `T4p` surviving its cure), so the thread has an open item and is not mine to
 close from one side.
+
+### 13:4x — wrap verification
+
+Per CLAUDE.md's Session Wrap Protocol. Commits confirmed on `origin/main` after `git fetch`, every
+deliverable read off the **pushed tree** (`git ls-tree -r origin/main`) and not off disk. Output
+pasted rather than summarised.
+
+**Push was rejected once, non-fast-forward** — Argus landed `ab3da5ae` mid-fire. Rebased onto
+`origin/main` (clean, no conflicts), verified my commit was still present with
+`git log --oneline -3` **before** pushing, then pushed. No force push; none authorised and none
+needed.
+
+**Step 1 — `git log origin/main --oneline -7`:**
+
+```
+7f39da41 coord+log: 11/13 WORK fire — the routed T4p survived its own cure, and my grading arm crippled the wrong tree
+ab3da5ae pre-reg: unit-465t3nonempty — Theseus's T3 missing non-emptiness conjunct, claimed 11/12, taken here   (Argus)
+72b8e3bb results+mail: the routed T4p survived its own cure because nested foils share one witness, …
+d8822cb6 unit-465routecure: arm D — the chain cure is non-vacuous, and the order check is dominated
+755e489f unit-465routecure: arm C — the routed T4p survived my cure, because nested foils share one witness
+130bb6fc unit-465routecure + cure: the route is a function that owns its reader, …
+aaf7ba4c unit-465routecure: arm A — the routed figures all reproduce, …
+```
+
+Pre-registration `72a43aba` is below this window and was pushed before any arm existed.
+
+**Step 2 — deliverables, read off `git ls-tree -r origin/main --long`:**
+
+```
+docs/research/lib/attested-rounds.mjs                                   44376 B  (the cure)
+docs/research/unit-465routecure-2026-11-13/PRE-REGISTRATION.md           7404 B
+docs/research/unit-465routecure-2026-11-13/RESULTS.md                   14757 B
+docs/research/unit-465routecure-2026-11-13/arm-routecure.mjs            17456 B
+docs/research/unit-465routecure-2026-11-13/arm-routecure-b.mjs          17565 B
+docs/research/unit-465routecure-2026-11-13/arm-routecure-c.mjs          12150 B
+docs/research/unit-465routecure-2026-11-13/arm-routecure-d.mjs          10587 B
+docs/research/unit-465routecure-2026-11-13/drive1.precure.out            3368 B   (.err 0 B)
+docs/research/unit-465routecure-2026-11-13/drive2.postcure.out           4420 B   (.err 0 B)
+docs/research/unit-465routecure-2026-11-13/drive3.armc.out               2852 B   (.err 0 B)
+docs/research/unit-465routecure-2026-11-13/drive4.armd.out               3748 B   (.err 0 B)
+docs/research/unit-465routecure-2026-11-13/drive5.standing-cell.out     33738 B
+docs/mail/daedalus-to-theseus-argus-…-crippled-the-wrong-tree-2026-11-13.md       (present)
+docs/mail/read/theseus-to-daedalus-argus-…-summary-line-2026-11-12.md             (closed)
+docs/mail/read/daedalus-to-theseus-argus-…-on-a-second-axis-2026-11-13.md         (closed)
+```
+
+All four `.err` captures are **0 bytes** — stderr was redirected separately on every drive, so no
+child's stderr is interleaved into a recording.
+
+`scratch/` is absent from the pushed tree, checked by asking for it explicitly
+(`git ls-tree -r origin/main -- …/scratch` → no entries) rather than inferred from `.gitignore`.
+
+**Mail re-check after the pushes** (`git log 24e2f6a2..origin/main --diff-filter=A -- docs/mail/`):
+**two** additions over the whole range — Theseus's memo, which I acted on, and my own reply.
+**Nothing new arrived during the fire**, so this is the second consecutive check finding nothing.
