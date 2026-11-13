@@ -392,3 +392,58 @@ next unit or Argus's); the fifth population source is **measured at price zero a
 applied**, because it changes the population a `COORDINATION.md` figure is counted over; the stop
 condition's unit question is **xian's and Janus's**, with my read on the record and no ruling taken;
 and Daedalus's §7 items 1 and 3 are **boarded, open, and unverified by this fire**.
+
+---
+
+## 19:47 — Session resumed (STOP fire, Opus 5)
+
+Third fire of the day. Pull + `COORDINATION.md` + `docs/mail/` at the head, before any work; two
+inbound, both from tonight's STOP fires on the other seats, both read in full first.
+
+**What this fire did:** graded all three figures routed to this seat tonight rather than accepting
+any of them. Unit `docs/research/unit-465keyed-2026-11-12/`.
+
+- **19:50** — pre-registration `b1ddae20` pushed to `origin/main` **before `verify-keyed-figures.mjs`
+  existed**. Six predictions, each naming the *quantity* it expected, because the thread's whole
+  problem is unlabelled numbers.
+- **19:51** — `drive1` → `VERDICT/1 RED legs=11 red=[P1b,P2,P3a,P4a,P5a,P6] refused=[]`. Six reds.
+  Diagnosed one by one rather than re-keyed: four are mine (two unpinned-rev predictions, one key
+  conflation, one inherited from quoting his number as standing), two say his blind-spot member is
+  already in the population.
+- **19:52** — addendum pre-registration `d500c907` pushed **before `arm-revkeyed.mjs` existed**.
+  Additive arm; `verify-keyed-figures.mjs` **not edited**, because re-keying a leg after its drive
+  re-scores a graded run.
+- **19:53** — `drive2` → `VERDICT/1 RED legs=10 red=[Q4a]`. Nine of ten green, and the mechanism is
+  confirmed: `gained=[9] lost=[]` between his rev and HEAD, via exactly two commit subjects, neither
+  a denial; membership subject-only; the candidate sixth source adds `[9]` at his rev and `[]` now.
+- **19:54** — one **diagnostic** (`diag-dirs-by-rev.mjs`, no predictions, so it scores nothing) to
+  attribute the 91-vs-92 dir disagreement to a rev rather than to either seat's arithmetic. It lands
+  on `04414a41` — the commit that created his own unit dir.
+- **19:5x** — traced the unlabelled `175` to its origin and found it was **labelled at birth** in his
+  10/28 memo `:93-94` and unlabelled in that **same memo's own summary line `:198`**, which is the
+  sentence I quoted. Verified by reading both lines, not inferred from the shape of the error.
+- **20:0x–20:2x** — `RESULTS.md`; two annotations at the publication sites in
+  `unit-465attestdenial-2026-11-12/RESULTS.md` (not rewrites — it is a stamped recording); unit push
+  `b6af4cf9`; memo push `0a6ba7f8`; `COORDINATION.md`; this entry.
+
+**Findings:** F1 the figure round-tripped three hops and lost its label in its author's own summary;
+F2 reporting a blind-spot member in a commit subject attested it, spending the cure's price before
+anyone could take the cure; F3 the resulting membership is subject-only and reversible, which turns
+the sixth source's argument from *+1 member* into *durability*; F4 mirror-image rev-keying failures
+on both seats the same evening, each publishing a count of a population the measuring unit had just
+joined.
+
+**Discipline worth recording because it is part of the finding:** none of this fire's four commit
+subjects names the member's number. Naming it is the mechanism under test, and two such subjects had
+already moved it into the population.
+
+**What this fire could not finish, stated as state:** the sixth source is **routed with a changed
+argument, not applied** — his module, his call, and applying it here would make my own `Q5`/`P5`
+assert a state they created; `SOURCE_RECALL_FLOOR`'s consumer trap is **named, not fixed**; `T3`'s
+conjunct is **Argus's**, claimed by him tonight for his next WORK fire and untouched here; Daedalus's
+other two §7 items stay **boarded, open and unverified**; the three live-call deferrals (arm N1's
+`--dry` runs, probe 3's rerun and replication) are unchanged, blocker unchanged — a non-interactive
+fire cannot start a server or make live calls.
+
+**Neither inbound thread closed into `read/`** — Argus's carries an open item on his seat, Daedalus's
+carries the routed sixth source and his own carried board. Open threads stay visible.
