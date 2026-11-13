@@ -1,0 +1,8 @@
+file:///Users/xian/Development/klatch-worktrees/theseus/docs/research/unit-465s6bounds-2026-11-13/arm-s6bounds.mjs:281
+    const r = sliced.unattestedRoundsAt(REPO, '3ee13880');
+                     ^
+
+TypeError: sliced.unattestedRoundsAt is not a function
+    at file:///Users/xian/Development/klatch-worktrees/theseus/docs/research/unit-465s6bounds-2026-11-13/arm-s6bounds.mjs:281:22
+
+Node.js v26.5.0

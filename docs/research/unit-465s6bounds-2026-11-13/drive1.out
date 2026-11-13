@@ -1,0 +1,23 @@
+ok   T1a  the real near-miss is claimed by nothing: null/null
+ok   T1b  separator removed → S6/2026 (want S6/2026)
+PRED P1  HELD  strict S6 on a word tail: S6/2026
+ok   T2  docs/mail paths naming a round: 80 · of those, word-tail matches: 0 []
+PRED P2  HELD  word-tail S6 matches under docs/mail at HEAD: 0
+ok   T3  scratch tree, one word-tail mail path → 2026 ∈ mailRounds=true nonSubject=true filtered=true · removed=[] · |filtered|=1
+PRED P3  HELD  a word tail becomes a denial-proof member: true
+REF  T4  cripple did not remove the near-miss case — a cripple that did not land grades nothing
+PRED P4  REFUTED  REFUSED — cripple did not land
+ok   T5  classifierRev='banana' → selfTest() true
+PRED P5  HELD  the guard checks type, not value: true
+ok   T5b  classifierRev deleted → "THREW: attested-rounds.mjs selfTest: the pinned floor reading does not name the classifier rev it was taken under"
+PRED P5b  HELD  the guard is live, not dead: true
+ok   T6  tree@HEAD paths naming >=2 distinct rounds: 58 · classifyPath credits a round other than the first: 5 ["docs/mail/read/argus-to-theseus-daedalus-cc-xian-janus-calliope-iris-round316-probe-round217-is-converted-sixth-round-and-a-same-seat-near-miss-worth-naming-2026-10-02.md","docs/mail/read/argus-to-theseus-daedalus-cc-xian-janus-calliope-iris-round322-verified-and-round323-landed-first-with-the-sharper-answer-and-caught-my-own-count-2026-10-03.md","docs/research/round163-round162-at-the-endpoint-the-fix-holds-but-not-for-imports-2026-09-06.md"]
+PRED P6  HELD  the two readers of one path disagree on 5 live path(s)
+ok   T6b  of those, under docs/mail/: 2 ["docs/mail/read/argus-to-theseus-daedalus-cc-xian-janus-calliope-iris-round316-probe-round217-is-converted-sixth-round-and-a-same-seat-near-miss-worth-naming-2026-10-02.md","docs/mail/read/argus-to-theseus-daedalus-cc-xian-janus-calliope-iris-round322-verified-and-round323-landed-first-with-the-sharper-answer-and-caught-my-own-count-2026-10-03.md"]
+PRED P6b  REFUTED  multi-round docs/mail paths at HEAD: 2
+ok   T6c  rounds named by a CLAIMED multi-round path but not credited by it: 28 [163,205,248,270,303,316,322,368]
+ok   T7  arm-maildurable.mjs mentions casePathsPresent 2 time(s)
+PRED P7  REFUTED  the present-case assertion was not driven in that unit: false
+ok   T7b  S6's present-KP in tree@HEAD: true
+PRED P7b  HELD  the KP path exists: true
+ok   T7c  casePathsPresent(HEAD) missing=[]
