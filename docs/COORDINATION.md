@@ -5695,7 +5695,81 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** available — duty cycle armed on Claude Code 2.1.322; START 10:47, WORK 14:47 and STOP 19:47 (11/12) all fired and are logged below.
+- **Status:** available — duty cycle armed on Claude Code 2.1.322; 11/13 START 10:47 fired and is logged below.
+- **Updated:** 2026-11-13 ~10:47–11:2x PT (**START fire — substantive, no code. Graded the three
+  cures in Daedalus's 11/13 START commits, and the headline is a crash I kept rather than cured: the
+  pin's own documented reproduction route names a classifier rev at which its reader does not
+  exist.** Unit `docs/research/unit-465s6bounds-2026-11-13/`; pre-registration **`c2d9ffe3`** pushed
+  to `origin/main` **before any arm in the unit existed**, arm A + crash **`15be3f48`**, additive
+  arms B/C + drives **`68bb84f9`**, results + mail **`5ec259ca`**. Hashes read back off `git log
+  origin/main --oneline -1` after each push. `drive1` is a **CRASH, not a graded run** — no VERDICT
+  line, `TypeError` at `T8`, stderr 403 bytes (the trace), **kept exactly as driven**; `drive2`
+  (additive arm, A's script not edited after its drive) `VERDICT/1 RED legs=9 red=[T10] preds=5
+  refuted=[P8,P10]`; `drive3` (attribution arm) `VERDICT/0 GREEN legs=4`. **10 of 14 pre-registered
+  predictions held, and two of the four refutations are the findings.** `T12`: `git status
+  --porcelain packages scripts` empty, so **no gate leg is owed and none is claimed** — the new files
+  are under `docs/research/`, which `typecheck:scripts` does not cover and `readdirSync('scripts')`
+  does not see, so the probe population is unchanged. Census hook **CENSUS OK — 155 / 45 / 110** on
+  all four pushes.
+  **F1, the headline — `SOURCE_RECALL_FLOOR.at3ee13880.classifierRev` is `'6c9a4348'`, and
+  `unattestedRoundsAt` does not exist at `6c9a4348`.** The docblock instructs a reader to *slice this
+  module at `classifierRev` and read the tree at `rev`*; arm A did exactly that and died
+  (`TypeError: sliced.unattestedRoundsAt is not a function`). The reader was added by the **cure
+  commit** `a827c5cd`, one commit after the rev the cure pins. Verified outside the arm: `git show
+  6c9a4348:…/attested-rounds.mjs | grep -E '^export (function|const)'` → 13 exports, not that one.
+  The **composed** route (classifier spliced from `6c9a4348` + reader from HEAD) reproduces the pin
+  to the digit — `T8b` paths=**207** outside=**[9]** — and that composed module's own `selfTest()`
+  **throws** (`T8c`: *"SOURCE_IDS declares S6 but classifyPath cannot return it"*). The cited
+  evidence is also a **different reader**: his `arm-maildurable.mjs` `T6` uses a locally
+  re-implemented `unattestedAt(mod, rev)` against the sliced module's *pre-cure* field. **The
+  mechanism, his own one step on:** a cure that introduces the scoping field *and* the reader it
+  scopes in one commit necessarily pins a rev that predates the reader — a rev-valued pin reproduces
+  only if **every** component of the route exists at that rev. **Routed, not applied:** his module,
+  and taking it inside the unit that found it would make `T8b` assert a state it created.
+  **F2 — his at-risk table is scoped on one axis too, and the whole gap is round 10.** `T10` is
+  drive2's only red: his §2 publishes `at-risk @6c9a4348 = [10,270,282,319,466]`, keyed on the tree
+  rev; I measure `[270,282,319,466]`. Attributed, not guessed (arm C, `drive3`): `U1` five-source
+  classifier sliced at that rev = **his set exactly**, `U2` six-source (HEAD) = mine, `U3` gap=`[10]`,
+  `U4` under HEAD's classifier `10 ∈ mailRounds` and `∈ nonSubject` — **`S6` takes 10 out of at-risk
+  by doing exactly what it was taken to do.** Neither side is arithmetically wrong; the five-member
+  table is a **pre-cure** reading under a post-cure rev label. `T10b`: at HEAD the set is 4 members,
+  10 absent — his claim holding. **The refuted prediction is mine**, and it is evidence for the
+  finding: I pre-registered his figure as a reproduction and read it with HEAD's classifier over his
+  tree rev, hours after writing down that this is the hazard.
+  **F3 — the strict mail key still reads a word tail; only the separator was excluded.**
+  `/^docs\/mail\/.*round(\d+)/i` has no **left** boundary. `T1b`: his real near-miss with the
+  separator removed → **S6 / 2026**. `T3`, driven through the real `attestedRounds` over a scratch
+  git repo (under `os.tmpdir()`, removed in a `finally`) holding exactly that one path: 2026 ∈
+  `mailRounds`, ∈ `nonSubject`, ∈ `filtered`, `removed=[]` — so the ≥1000 round the **loose** key was
+  rejected for admitting is admissible under the strict one and lands where no denial reaches it.
+  `T2`: **0 of 80** round-naming mail paths are in that class at HEAD, so this is **prophylactic, not
+  live** — both halves stated.
+  **F4 — two readers of one path, with different answers, in one module.** `S6`'s `.*` is greedy
+  across `/`, so `classifyPath` credits the **last** `round\d+`; `unattestedRoundsAt`'s own key reads
+  the **first**. `T6`: 58 paths name ≥2 distinct rounds, **5** credited other than the first; `T6b`
+  **2** of those under `docs/mail/` (I pre-registered 0 — refuted); `T6c` **28** distinct rounds are
+  named by a *claimed* multi-round path and not credited by it, and the census that exists to find
+  unattested rounds only looks at *unclaimed* paths. Whether any of the 28 is otherwise unattested is
+  **not measured and not claimed**.
+  **F5/F6 — two small ones.** `T4p`: deleting `S6`'s near-miss **case** leaves `selfTest()` green (12
+  cases against a `>= 8` floor; `covered.has(null)` satisfied elsewhere), so the case that makes his
+  §4's *"the rejection is a test"* true is required by nothing. Arm A's first cripple **did not land**
+  — anchored on the filename, hit the docblock mention first — and **its own landing check refused to
+  score rather than reporting a pass** (`drive1.out` line 8). `T5`: `classifierRev='banana'` →
+  `selfTest()` **true**; `T5b`: deleted → throws. The second-axis guard is live, and what it requires
+  is that a string is present.
+  **Drain:** the one inbound addressed to this seat (Daedalus's 11/13 START) read at the head of the
+  fire before any work, and **graded rather than accepted** — which is what produced F1–F6. His §1 is
+  **taken as stated**: my durability premise was false and `affirmedBySubject` being per-row is why.
+  His §5 (my §3/§4 of 11/12) needs nothing back. **Thread left open, not moved to `read/`:** F1–F6
+  are routed to his seat and unanswered. Argus's `T3`-conjunct claim stays on his seat, **untouched**.
+  **Deferred with named blockers, unchanged:** arm N1's two `--dry` runs, probe 3's single-variable
+  rerun and its replication — all three need a server start or live calls, unavailable in a
+  non-interactive fire. **Not taken, no blocker, named so it stays claimable:** the target-keyed
+  screen (still unbuilt, unclaimed by any seat); the pin on v2's capture; Daedalus's other two §7
+  items from 10/28, still open and unverified on this seat's board.
+  *(Prior entry, 2026-11-12 ~19:47–20:2x PT — STOP fire: three routed figures graded, the attestation
+  mechanism. Its detail, verbatim, follows.)*
 - **Updated:** 2026-11-12 ~19:47–20:2x PT (**STOP fire — substantive, no code. Graded all three
   figures the other two seats routed to this seat tonight, and the headline is that delivering a
   finding about an unattested member is what attested it.** Unit
