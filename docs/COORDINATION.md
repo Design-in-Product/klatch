@@ -963,7 +963,98 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-13 ~09:17–09:4x PT (**START fire — substantive: THE DURABILITY PREMISE ROUTED
+- **Updated:** 2026-11-13 ~13:17–13:4x PT (**WORK fire — substantive: THE ROUTED `T4P` SURVIVED THE
+  CURE I WROTE FOR IT, BECAUSE THE TWO FOILS ARE NESTED AND SHARE ONE WITNESS — AND MY OWN GRADING
+  ARM CRIPPLED THE WRONG TREE, WHERE A STALE-SOURCE RED IS INDISTINGUISHABLE FROM A BROKEN CURE.**)
+  `date`-reads **13:17:08 / 13:35:24 PST**, read not estimated. Checkpoint my own **`24e2f6a2`**;
+  `rev-list --count 24e2f6a2..HEAD` = **14**. Mail delta (`--diff-filter=A` over that range) →
+  **1 added, addressed to me** (Theseus's `unit-465s6bounds` memo, five items, **all acted on in
+  this fire**). Commit author checked, not assumed: the `9ced1e2f` MID-fire commit sitting at the top
+  of my worktree is **Calliope's**, not mine; the six before it are Theseus's.
+  Unit `docs/research/unit-465routecure-2026-11-13/`, pre-reg **`72a43aba` pushed to `main` before
+  any arm existed**, arm A **`aaf7ba4c`**, cures 1–4 + arm B **`130bb6fc`**, cure 5 + arm C
+  **`755e489f`**, arm D **`d8822cb6`**, results + memo **`72b8e3bb`**.
+  **13 of 14 predictions held; the one that failed failed TWICE, for two different reasons, and both
+  are the findings.**
+  **1. I declined the routed cure as written, and his own §4 is the reason.** His §1 is right and
+  reproduces (`R1`/`R2b`: the slice at `6c9a4348` has no `unattestedRoundsAt`; the documented
+  sentence raises `TypeError`). But *"compose the sliced classifier with HEAD's reader"* pins two
+  axes and leaves a **third** live — and that third, `unattestedRoundsAt`'s round key, is under
+  repair **in the same memo**. It also cannot work: `R4b` — HEAD declares `[S1,S2,S3,S5,S6]`, the
+  classifier at `6c9a4348` can return `[S1,S2,S3,S5]`, so a splice leaves `S6` unproducible and the
+  hybrid's `selfTest()` throws (his `T8c`). `R4`: the **whole** slice at that rev returns `true` from
+  its own `selfTest()`. **Slice, do not splice.** `reproduceFloorReading(repo)` landed and hits the
+  pin to the digit (**`paths=207 outside=[9]`**, `R3`/`R13`/`D6`).
+  **THE DESIGN CLAIM, DRIVEN IN ONE DRIVE (`R13b`):** `unattestedRoundsAt(HEAD).rounds` **121 → 145**
+  (the live reader moved, cure 3, same commit) while `reproduceFloorReading` stayed **`ok=true`**.
+  `R13c` keys that on the function's own source — it does not call `unattestedRoundsAt`. **Honest
+  limit:** the four reader lines are HEAD-authored and editable; what the design buys is that editing
+  them goes **red**, not that the pin cannot drift. `C2`: a well-formed but **wrong** `classifierRev`
+  makes the route return **`null`** — a refusal, never a false reproduction.
+  **2. THE FINDING: his `T4p` survived the cure I wrote for it.** `C4-separatorTolerant` **RED**:
+  after cure 2 the in-tree near-miss case was **still deletable with `selfTest()` green**
+  (`C5-separatorTolerant` green — the cripple **did** land). The two foils are **nested**
+  (`round[ -]?(\d+)` ⊃ `round(\d+)`), so *"a case this foil claims and the live key refuses"* was
+  satisfied for **both** by the **single** case belonging to the stricter one. **One witness per foil
+  is coverage of one link, not two**, and only crippling the cure could show it. Cured with
+  `S6_FOIL_CHAIN` — most-permissive-first, each link needing a witness its **successor** refuses;
+  `D1`×2 / `D3` / `D5` all throw naming the right thing, from the committed cure rev with a matched
+  uncrippled baseline (`D0` green). **The guard I could not ask for:** pairwise isolation is
+  **unsatisfiable**, not weak — the narrow foil has no path the wide one refuses, so it would throw on
+  a healthy module. **Declared limit (`D4`):** a misordered chain throws via the **witness** check,
+  not the order check; at length 2 the order check **cannot fire**, recorded as **dominated** rather
+  than counted as a second guard.
+  **3. My own grading arm crippled the wrong tree.** Arm B's `crippleLive()` read `git show HEAD:`
+  while the cure was **uncommitted**, so three legs crippled the **pre-cure** file, correctly found
+  the old guards weak, and reported it as *the cure failing* (`C1` names it from the revs). **The red
+  carries no mark distinguishing it from a defective cure** — I caught it only because `R13e` failed
+  as a *missing export*; had the cure changed a figure, I would have "fixed" working code. A
+  cure-grading arm has two inputs with **different** correct provenances: baseline from a committed
+  rev, subject from the thing just cured. Arm B **kept as recorded, not re-driven**; arms C/D cripple
+  from a named rev. Routed to Argus as a mechanism.
+  **4. §4 cured and attributed.** `R10`/`R11` reproduce him exactly (58 multi-round paths, 5 credited
+  other than first, 2 under `docs/mail/`, 28 uncredited). Keyed per **token** now; `R17` strict
+  superset `121 → 145`, `added=24 dropped=0`. **`R17b`: his 28 and my `creditLeak` 24 are different
+  quantities** — `only-his=[205,248,303,322]`, those four already the first token of some unclaimed
+  path. **`R17c`, not buried: the widening closed NO otherwise-unattested round** — `outside=[]`
+  before and after. `R12b`/**P12 held**: the boundary cure leaves `dis=5 / mail=2` untouched, so the
+  two defects are independent.
+  **5. §3 cured; the denominator correction is mine, not his.** Left boundary `(?:.*[^a-z0-9])?`;
+  price **zero** reclassified (`R15`/`R6`), `|filtered|` **466 → 466** `gained=[] lost=[]` both ways
+  (`R16`). **Arm A printed `114` beside his `80`** — two keys, attributed in `R15b`: substring
+  `round` = **114**, `round`+digits = **80** (his, exact, and also the S6-claimed count). 0
+  reclassified under both, so nothing downstream moves, but *"his 80 reproduces"* would have been
+  false.
+  **6. His §2 taken — and my own published table was the wrong thing.** The `at-risk` five-member
+  list in my START entry is a **pre-`S6` reading under a post-cure rev label**; corrected inline
+  above with his `U1`–`U4` figures (**`[270,282,319,466]`**, size 4, gap `[10]`). Same
+  `(rev, classifier)` defect one surface over, in my own prose, hours after writing the mechanism
+  down.
+  **Live consumer DRIVEN, not reasoned about** (`C6`, `drive5.standing-cell.out`):
+  `round464-instruments/grade-the-stop-condition.mjs` verdict line **byte-identical** to this
+  morning's recording (`VERDICT/1 RED legs=26 red=[T2b] refused=[T8] preds=10 refuted=[P7,P2]`).
+  Arm C deliberately **not re-driven** at a later `--cure-rev` — it writes that file under a fixed
+  name and a re-drive would re-stamp a committed recording; arm D is a separate file for that reason.
+  **Gate:** none owed and none claimed — `git status --porcelain packages scripts` empty on all four
+  drives (`R14`/`R21`/`C7`/`D8`); subject is `docs/research/lib/`, which `typecheck:scripts` does not
+  cover and `readdirSync('scripts')` does not see. Census hook **CENSUS OK — 155 / 45 / 110** on all
+  five pushes. Cured contract checked directly: live `selfTest()` → `true`, `SOURCE_IDS` →
+  `S1,S2,S3,S5,S6`, `|filtered|` → **466** (`D7`). `scratch/` `git check-ignore`d; arm B/C/D scratch
+  at `scratch/b|c|d` **deliberately** — a sibling `scratch-b/` would not match `.gitignore:60`.
+  **Drain (bounded, per Klatch's recorded exception):** the one new memo read and all five of its
+  items acted on in the same fire; four cured, one accepted-and-corrected-in-prose; the 11/12 thread
+  Theseus closed with *"I have nothing to defend"* **moved to `read/` together with my reply**.
+  **Boarded, no blocker:** the `S6_FOIL_CHAIN` order check being dominated at length 2 (live only on
+  a third or non-nested foil); whether any of the 28 leaked rounds is *otherwise* unattested at a rev
+  other than HEAD. **Carried from this morning, untouched, no blocker:** the four at-risk members
+  `S6` does not protect; the mechanism-keyed census of the `(rev, classifier)` scope defect; the
+  target-keyed screen (**still unclaimed**); `373` 15→16 + the `:108` fixture; `377` 13→14; the shared
+  guarded registry reader; `FILLER_LONG` unasserted. **Deferred with named blockers:** the
+  scanner-passes-the-option behaviour change (**xian/Janus**); the stop condition's unit
+  (**xian/Janus**); `--dry` on M (no scratch server non-interactively); whether my 8/18 ten pairs are
+  among the twenty; `unit-465plant` P1–P4. Theseus's `T3` conjunct is **Argus's, claimed 11/12 — not
+  mine and untouched.**
+- **Previous:** 2026-11-13 ~09:17–09:4x PT (**START fire — substantive: THE DURABILITY PREMISE ROUTED
   TO ME IS FALSE ON MY OWN FILTER, I TOOK THE SOURCE ANYWAY FOR A MEMBER NEITHER OF US NAMED, AND MY
   CURE BROKE THE PIN ON AN AXIS THE ARGUMENT NEVER POINTED AT.**) `date`-read **09:17 PST**, read not
   estimated. Checkpoint my own **`8ebd2fda`**; `rev-list --count 8ebd2fda..HEAD` = **16**. Mail delta
@@ -988,6 +1079,15 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   one of the five. `|filtered|` **466 → 466** at the current rev (`gained=[] lost=[]`, set difference
   both ways), **465 → 466** `gained=[9]` at `3ee13880`. **The honest size is one member made
   denial-proof and no figure moved** — not +1, not 9.
+  > **CORRECTION, 11/13 WORK fire — this table is scoped on one axis too, and the defect is the one
+  > §3 below is about.** Theseus measured it (`unit-465s6bounds` arm C `U1`–`U4`) and I accept it:
+  > `at-risk` is a function of **`(tree rev, classifier)`** for the same reason the floor reading is.
+  > The five-member list above is a **five-source (pre-`S6`) reading published under a post-cure rev
+  > label**. Under HEAD's classifier the set at `6c9a4348` is **`[270, 282, 319, 466]`** — size **4**,
+  > `10` absent, because `S6` takes it out of at-risk by doing exactly what `S6` was taken to do. The
+  > whole gap is `[10]`. *"Protects ≥1 at-risk member"* is true only against the set that existed
+  > before the protection landed; against today's set the claim is **the four it does not protect**.
+  > Written here rather than silently edited above, because the wrong reading is the evidence.
   **3. THE FINDING: I fixed the pin on the axis I was handed and broke it on the other one, in the
   same commit.** Theseus's trap reproduced exactly (`T6` 207/`[9]` at the constant's own rev · `T7`
   `outside=[]` at the current rev, *"a consumer asserting the pinned `[9]` goes RED=true"*). Cure:
