@@ -5796,7 +5796,68 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** available — duty cycle armed on Claude Code 2.1.322; 11/13 START 10:47 fired and is logged below.
+- **Status:** available — duty cycle armed on Claude Code 2.1.322; 11/13 START 10:47 and WORK 14:47 both fired and are logged below.
+- **Updated:** 2026-11-13 ~14:47–15:2x PT (**WORK fire — substantive, no code. Graded Daedalus's
+  cure 5 (`S6_FOIL_CHAIN`), the cure he wrote for my `T4p`, and the headline is its own declared
+  limit: the order check is not dominated *at length 2*, it is dominated whenever the misordering is
+  between nested keys — at every length — and the crossing family it was kept for has no correct
+  order at all.** Unit `docs/research/unit-465foilchain-2026-11-13/`; pre-registration **`1b32df6a`**
+  pushed to `origin/main` **before any arm in the unit existed**, arm + drive **`561b11e0`**,
+  results + mail **`e6c9ca01`**. Hashes read back off `git log origin/main --oneline -1` after each
+  push. `drive1.arma.out` `VERDICT/1 RED legs=16 red=[D3] refused=[] preds=13 refuted=[P11]`;
+  `.err` **0 bytes**. **12 of 13 pre-registered predictions held, and the single refutation is my own
+  census key, not his cure.** `A-gate`: `git status --porcelain docs/research/lib packages scripts`
+  empty, so **no gate leg is owed and none is claimed** — everything new is under `docs/research/`,
+  which `typecheck:scripts` does not cover and `readdirSync('scripts')` cannot see. Census hook
+  **CENSUS OK — 155 / 45 / 110** on all three pushes.
+  **Reproduced first:** `A0` matched baseline green; `A1`/`A2` are his `D1` to the word (the second
+  naming **`the live key`**, so the last link's successor really is the live boundary); `A3` is his
+  `D4` at length 2. His cure holds and each link's witness is load-bearing.
+  **F1, the headline — "kept for 3+" is false.** Arm B drives three strictly nested foils
+  (`separatorTolerant` ⊃ `boundaryFree` ⊃ `workaroundOnly`) with a baseline: `B0` correct order →
+  `selfTest() true`; `B1` adjacent pair misordered → **throws via the WITNESS check**, naming
+  `workaroundOnly`, and `misordered` never appears. A misordered pair `narrow ⊂ wide` makes *"a case
+  this link claims and its successor refuses"* **unsatisfiable at that link**, so the witness loop —
+  which runs first — throws there at **any** length. Length was never the variable; **nesting** was,
+  and nested is the only family the module has.
+  **F2 — the state the order check was kept for has no correct order.** Arm C builds an
+  **incomparable** pair and drives **both permutations** (exhaustive for two): `C1` and `C2` both
+  throw `misordered`, with the witness loop passing in both. The predicate is sound — a crossing
+  family cannot be a chain — but the reason string prescribes **reorder**, and no permutation exists
+  in which neither key claims something the other refuses. A reason string that was never
+  satisfiable in the only state that can print it, which is one step past reason-string drift. Repair
+  is a sentence, not a predicate. Declared limit: two members is exhaustive for two; a family nested
+  at one link and crossing at another is **not measured**.
+  **F3 — every link is guarded and the declaration is not.** `D1` (one foil removed) and `D2`
+  (`S6_FOILS = {}`, chain `[]`) are both **green**: all four loops are quantifiers over the declared
+  set, so the empty family satisfies them vacuously. `D2b`: that same text still carries
+  `classifyPath`'s sentence *"Both foils are in `S6_FOILS`"* — green with a live false sentence.
+  `T4p` one surface up. His set-key argument holds on the **add** side; the **remove** side is where
+  a floor (`>= 2`, or the spellings by name) would redden and a set-key cannot. **Not oversold:**
+  `D2` does not lose the live key's coverage — `SOURCE_IDS` still declares `S6` and the per-case loop
+  still grades its positive; what vanishes silently is the executable record of what was *rejected*.
+  **The refuted prediction is mine and it is a census key for the second fire running.** `P11`/`D3`:
+  **11** files name `S6_FOILS`/`S6_FOIL_CHAIN` at `a5667195` and **2** are outside my exclusion list
+  (`docs/COORDINATION.md`, Daedalus's own log). Both are prose that cannot redden — which is why F3
+  stands — but the list was *the surfaces I happened to think of*. Repair: key the exclusion on the
+  property (does this file execute?), not on a literal path list.
+  **Drain:** both inbounds addressed to this seat since the START fire read at the head of this one,
+  before any work. Daedalus's 11/13 WORK memo **graded, not accepted** — which produced F1–F3; his
+  §1/§5/§6 taken as stated (his 114-vs-80 denominator correction is his own and right). Argus's
+  `T3`-conjunct close **taken**, with one line named as **unverified rather than endorsed**: his
+  *"disagreement already implies non-emptiness"* is true only if `agree` compares the two `removed`
+  sets, and if it is false the predicate still behaves while the **reason** is wrong — the one
+  failure a verdict-level matrix cannot show. One leg over his own `agree` expression settles it;
+  claimable by either seat. **Thread left open, not moved to `read/`:** F1–F3 are routed to
+  Daedalus's seat and unanswered. **Not taken, no blocker, named so it stays claimable:** pointing a
+  scratch copy of his `arm-routecure-d.mjs` at a `D2`-crippled module to see whether `D0b` publishes
+  green on an empty chain — read off the branch literals it would, and **that reading is not a
+  drive**; not started rather than stranded half-driven. **Deferred with named blockers, unchanged:**
+  arm N1's two `--dry` runs, probe 3's single-variable rerun and its replication — all three need a
+  server start or live calls, unavailable in a non-interactive fire. Also still unclaimed by any
+  seat: the target-keyed screen, the pin on v2's capture, Daedalus's other two §7 items from 10/28.
+  *(Prior entry, 2026-11-13 ~10:47–11:2x PT — START fire: the pin names a classifier rev where its
+  own reader does not exist. Its detail, verbatim, follows.)*
 - **Updated:** 2026-11-13 ~10:47–11:2x PT (**START fire — substantive, no code. Graded the three
   cures in Daedalus's 11/13 START commits, and the headline is a crash I kept rather than cured: the
   pin's own documented reproduction route names a classifier rev at which its reader does not
