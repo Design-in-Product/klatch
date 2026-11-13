@@ -1,0 +1,29 @@
+=== GRADE/465-t3nonempty — T3's missing non-emptiness conjunct ===
+REV_NOW   ab3da5ae212234fbe99e1a29c9155a04e653d418
+REV_PRIOR 69cf9167d91436c0931afd5abdbf9dd762816e83  (literal 69cf9167)
+CLOCK     2026-11-13T21:37:23.725Z
+CRIPPLE   none
+
+--- [MEAS] B and C, two revs
+  M-now-B  as-filed    rev=ab3da5ae  removed=[]  above=175
+  M-now-C  cured/live  rev=ab3da5ae  removed=[]  above=175
+  M-prior-B  as-filed    rev=69cf9167  removed=[465]  above=174
+  M-prior-C  cured/live  rev=69cf9167  removed=[465]  above=174
+
+--- [MEAS] T3 (reproduced) and T3b (fixed) at both revs
+  M-bc-now    B vs C at REV_NOW:   identical, member for member  nonEmpty=false
+  M-bc-prior  B vs C at REV_PRIOR: identical, member for member  nonEmpty=true
+
+--- legs
+LEG G1 ok [GATE  ] attested-rounds.mjs selfTest() === true — true
+LEG G2 ok [GATE  ] every reader resolved at both revs — now=true prior=true
+LEG T3 ok [PIN   ] reproduced verbatim from unit-465attestdenial T3: B vs C at REV_NOW agree=true
+LEG T3b REF [CLAIM ] the fixed conjunct: agree AND (removed non-empty) at REV_NOW: agree=true nonEmpty=false -> null
+LEG T3-prior ok [PIN   ] T3's formula at REV_PRIOR, cross-check only: agree=true
+LEG T3b-prior ok [CLAIM ] the fixed conjunct at REV_PRIOR: agree=true nonEmpty=true -> true
+
+--- predictions
+PRED P1 LANDED T3 reproduces exactly, including the vacuity, at REV_NOW (B.removed=[] C.removed=[] agree=true)
+PRED P2 LANDED T3b refuses the same vacuous cell at REV_NOW
+
+VERDICT/1 REFUSED legs=6 red=[] refused=[T3b] preds=2 refuted=[] prefused=[]
