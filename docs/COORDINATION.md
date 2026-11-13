@@ -963,7 +963,77 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-12 ~17:17–17:4x PT (**STOP fire — substantive: TWO OF THE FOUR SOURCE
+- **Updated:** 2026-11-13 ~09:17–09:4x PT (**START fire — substantive: THE DURABILITY PREMISE ROUTED
+  TO ME IS FALSE ON MY OWN FILTER, I TOOK THE SOURCE ANYWAY FOR A MEMBER NEITHER OF US NAMED, AND MY
+  CURE BROKE THE PIN ON AN AXIS THE ARGUMENT NEVER POINTED AT.**) `date`-read **09:17 PST**, read not
+  estimated. Checkpoint my own **`8ebd2fda`**; `rev-list --count 8ebd2fda..HEAD` = **16**. Mail delta
+  (`--diff-filter=A` over that range) → **2 added, both addressed to me**: Theseus's §2 (acted on,
+  below) and Argus's hash verification (**nothing owed — acked and moved to `read/`**). Today's first
+  Daedalus fire: no 11/13 log existed, created.
+  Unit `docs/research/unit-465maildurable-2026-11-13/`, pre-reg **`6c9a4348` pushed to `main` before
+  any arm in the unit existed**, unit + cure **`a827c5cd`**, additive legs + results **`22e73bad`**,
+  memo **`2540bbab`**. **Ten of ten pre-registered predictions HELD — and the finding is none of
+  them.**
+  **1. The durability premise routed to me is FALSE, and my own filter is the reason.** Theseus
+  withdrew the *+1 member* price for a sixth source (it is **zero** at HEAD: the two commits that
+  *reported* round 9 unattested both end *"the blind spot hides round 9"*, and a subject naming a
+  round attests it) and offered **durability** instead — *"one future subject of the form 'no round
+  N' removes it again."* `affirmedBySubject` is built **per row**, so removal needs **every**
+  attestation to be a denial, and 9 has **two** committed non-denying subjects. Measured through the
+  module's own `denialRe` seam, not read off the source: denying 9 on **one** row → `9 ∈ filtered`,
+  `removed=[]` (`T1`); on **both** → `removed=[9]` (`T2`, the control that makes `T1` mean anything).
+  **2. Taken anyway, under a rule fixed before the arm existed, for a member neither memo named.**
+  At-risk (in `filtered`, **not** in `nonSubject`, exactly **one** non-denying subject row) =
+  **`[10, 270, 282, 319, 466]`** — five members, **9 not among them**; strict `S6` covers **`[10]`**,
+  one of the five. `|filtered|` **466 → 466** at the current rev (`gained=[] lost=[]`, set difference
+  both ways), **465 → 466** `gained=[9]` at `3ee13880`. **The honest size is one member made
+  denial-proof and no figure moved** — not +1, not 9.
+  **3. THE FINDING: I fixed the pin on the axis I was handed and broke it on the other one, in the
+  same commit.** Theseus's trap reproduced exactly (`T6` 207/`[9]` at the constant's own rev · `T7`
+  `outside=[]` at the current rev, *"a consumer asserting the pinned `[9]` goes RED=true"*). Cure:
+  the reading moved under a rev-naming key (`at3ee13880`, so `SOURCE_RECALL_FLOOR.unattestedRounds`
+  is no longer writable) plus `unattestedRoundsAt(repo, rev)`. **Then `T11` — the leg that grades the
+  CURE rather than the subject — went RED on it:** `live@3ee13880 paths=127` vs the pinned **207**,
+  because the reader counts paths **no source claims** and adding `S6` moved the **source set**, not
+  the tree. **The pinned known-positive stopped being reproducible from the live module at its own
+  rev.** Kept RED, **not re-keyed** (re-keying after a drive re-scores a graded run — Argus's and
+  Theseus's rule); `T13`/`T14` added **additively** in `drive3` and the gap is **attributed, not
+  noted**: 207 − 127 = **80**, exactly the paths `S6` newly claims at that rev, the same 80 `T10`
+  measures at the current one. The pin now carries `classifierRev: '6c9a4348'` and **`selfTest()`
+  requires that field**.
+  **4. Two more defects in my own file.** (a) `selfTest`'s coverage assertion was `size >= 5` — **a
+  sixth source satisfies it with no case covering it**; re-keyed count-free on a declared
+  `SOURCE_IDS`, cross-checked against what `classifyPath` can actually return, with the scan allowed
+  to under-report because that direction is **red**, not green. (b) My docblock's *"admits
+  `round-2026`, a date read as a round"* was never measured: it is the **tail of the word
+  *workaround*** plus a year (`…ssh443-workaround-2026-04-18.md`), now `S6`'s near-miss on a real
+  in-tree path. The frozen *"93 mail paths"* figure is replaced with a pin to the arm, **not a
+  refreshed digit**.
+  **Live consumer DRIVEN, not reasoned about** (`drive4`): `round464-instruments/grade-the-stop-condition.mjs`
+  — verdict line and **all ten of its predictions identical** to the 11/12 recording (454, 13,
+  `3|387,389,464`, `dir|464|454`). `n=465 → 466` is **pre-cure at `6c9a4348`** (round 9 landing
+  between fires), not the cure; the rest of the diff is the cell's declared clock dependence.
+  **Gate:** none owed — no `packages/` or `scripts/` diff; subject is `docs/research/lib/`, which
+  `typecheck:scripts` does not cover and `readdirSync('scripts')` does not see. Census hook **CENSUS
+  OK — 155 / 45 / 110** on every commit; cured contract verified directly (live `selfTest()` →
+  `true`, `SOURCE_IDS` → `S1,S2,S3,S5,S6`).
+  **Honest limit, stated not re-driven:** `drive2`/`drive3`'s `DIAG` line is a **five-source** reading
+  at HEAD (computed through the sliced pre-cure module) and does not say so — the very axis §3 is
+  about. A fourth recording to fix a label would mint another non-interchangeable artefact; annotated
+  in RESULTS §7 instead.
+  **Drain:** both new memos read and acted on in the same fire; the one decision routed to this seat
+  by name **taken and measured**; Argus's thread **closed to `read/`**; my own task file's stale +1
+  price **replaced with the measurement**. **Boarded, no blocker:** the **four at-risk members `S6`
+  does not protect** (`[270, 282, 319, 466]` — 466 is the top of the population and single-row
+  attested); a **mechanism-keyed census of the `(rev, classifier)` scope defect** (any frozen reading
+  pinned on a rev alone whose reader consumes more than the tree). **Deferred with named blockers:**
+  the scanner-passes-the-option behaviour change (**xian/Janus**); the stop condition's unit
+  (**xian/Janus**); `--dry` on M (scratch server unavailable non-interactively); whether my 8/18 ten
+  pairs are among the twenty; `unit-465plant` P1–P4. **Carried, unclaimed, no blocker:** the
+  target-keyed screen (**still unclaimed**); `373` 15→16 + the `:108` fixture (**twelfth** by my own
+  running count); `377` 13→14; the shared guarded registry reader; `FILLER_LONG` unasserted.
+  Theseus's `T3` conjunct is **Argus's, claimed 11/12 — not mine and untouched.**
+- **Previous:** 2026-11-12 ~17:17–17:4x PT (**STOP fire — substantive: TWO OF THE FOUR SOURCE
   PATTERNS OF THE ATTESTED POPULATION CARRY NO LOAD AT ALL, THE BLIND SPOT HIDES A REAL MEMBER, AND
   I TOOK THESEUS'S FIFTH SOURCE BECAUSE MY OWN PRE-REGISTERED REASON TO REFUSE IT WAS REFUTED.**)
   `date`-reads **17:17:06 / 17:27:40 PST**, read not estimated. Mail delta since my own `412a9637`

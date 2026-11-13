@@ -6,16 +6,19 @@ Created: 2026-06-21 (Phase 2 launch). Format per `duty-cycle-klatch-v0.2.md`.
 
 ## Unblocked (cycle can advance)
 
-- [ ] **A sixth source for the attested round population, over `docs/mail/`** — boarded 2026-11-12
-  STOP, **no blocker**, priced before boarding. `unit-465srckeys-2026-11-12` leg `T7` measured the
-  source patterns' blind spot: **207 invisible paths, 162 distinct rounds, and exactly one round
-  attested by nothing else — round 9**, via `docs/mail/read/daedalus-to-argus-round9.md`. The price
-  is in the module as `SOURCE_RECALL_FLOOR`, not in a memo: **strict `round(\d+)` buys +1 member
-  (9), below the 292 floor every live consumer counts above, so no figure anyone prints today
-  moves**; **loose `round[ -]?(\d+)` admits `round-2026`**, a date read as a round — 93 mail paths
-  carry a round-shaped token. Deliberately **not** added in the fire that found it: a population
-  change is worth its own pre-registration, and the refutation of my own `P5` was that fire's
-  deliverable. Any seat may take it; it needs a pre-reg, not a decision.
+- ✅ **A sixth source for the attested round population, over `docs/mail/` — TAKEN 2026-11-13 START
+  (`a827c5cd`, results `22e73bad`).** Boarded 11/12 STOP at a price that was **already dead when it
+  was written**: strict `S6` buys **+1 member (9)** only at `3ee13880`; at the current rev it buys
+  **zero**, because the two commits that *reported* round 9 as unattested both end *"the blind spot
+  hides round 9"* and a subject naming a round attests it. Theseus's 11/12 §2 withdrew the price and
+  offered **durability** instead; **that premise is false** (`unit-465maildurable-2026-11-13` `T1`/
+  `T2`) — `affirmedBySubject` is per-row, removal needs *every* attestation to be a denial, and 9 has
+  two committed non-denying subjects, so no single future denial can reach it. Taken anyway under a
+  pre-registered rule, for the set the argument should have been about: **at-risk = `[10, 270, 282,
+  319, 466]`** (one affirming row, no non-subject source) and **strict `S6` covers one of them,
+  round 10**. So the measured size is **one member made denial-proof, no figure moved**. The loose
+  key stays rejected and the rejection is now a `SOURCE_CASES` near-miss on a real in-tree path —
+  it reads the tail of the word *workaround* plus a year, not a date label.
 - ✅ **Grade the four source patterns of the attested population — DONE 2026-11-12 STOP
   (`04414a41`).** Theseus's 11/12 §8 declared blindness, routed to this seat. Was **0 of 4** —
   blinding any source left `selfTest()` green. Now `classifyPath()` as one named reader +
@@ -28,6 +31,22 @@ Created: 2026-06-21 (Phase 2 launch). Format per `duty-cycle-klatch-v0.2.md`.
   denial filter at his rev (`removed [465] → [465]`). My objection priced an old rev with a HEAD
   count — no `unit-465*` dir existed at `69cf9167`. `unitRounds` is returned as its own named set so
   the contribution stays printable, and the weakening mechanism is declared in the docblock.
+- [ ] **The four at-risk members `S6` does NOT protect** — boarded 2026-11-13 START, **no blocker**,
+  measured before boarding. `unit-465maildurable` `T8`/`T9`: five members of the attested population
+  sit on **exactly one** non-denying subject row with no non-subject source — `[10, 270, 282, 319,
+  466]` at `6c9a4348` — so one future subject of the form `no round N` removes each of them, and
+  nothing in the tree records the loss. `S6` covers **only 10**. The other four are the live version
+  of the hazard Theseus described; whoever takes this should price a source that reaches them (or
+  argue the population should record removals instead of silently dropping), with its own pre-reg.
+  Note **466 is in the set**, so the top of the population is itself single-row attested.
+- [ ] **Census the `(rev, classifier)` scope defect, not just the instance** — boarded 2026-11-13
+  START, **no blocker**. `unit-465maildurable` `T11` caught `SOURCE_RECALL_FLOOR`'s pinned reading
+  going unreproducible *at its own rev* because the **classifier** moved, not the tree: I scoped it
+  on the axis that was pointed out and broke it on the other one, in the same commit. The cured shape
+  names `classifierRev` and `selfTest()` requires it. **The mechanism, not the instance, is what
+  needs the census:** any frozen reading in `docs/research/` pinned on a rev alone whose reader
+  consumes anything *besides* the tree at that rev carries the same defect. Keyed on what the reader
+  consumes, not on the word "rev".
 - [ ] **Composition gesture implementation** — the 1.0 critical-path blocker. Spec: `docs/ux/spec-composition-gesture.md`. Build on `claude/daedalus`; pushing branch work is unblocked, **merge to `main` is review-gated (blocked-on-xian)**. **Corrected scope (6/21):** substrate already mostly built — `channels` has `type`+`mode` (no migration), routes create+assign, `parseMentions`/`resolveMentions` exist, an earlier klatch form exists. Work = evolving the front-door to spec. Sub-phases:
   1. ✅ **Data model** — no migration needed (`mode` column = spec's orchestration_mode). Done: atomic roster at creation (`createChannel(...entityIds)` + route validation) — kills stray-default-entity wart.
   2. ✅ **Spine increment 1** — dual New Chat/New Klatch affordance + Purpose label. Tests green (server 1096, ChannelSidebar 18).
