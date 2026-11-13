@@ -1,0 +1,5 @@
+ok   U1  at-risk@6c9a4348 under the FIVE-source classifier (sliced at 6c9a4348) = [10,270,282,319,466] — his published set
+ok   U2  at-risk@6c9a4348 under the SIX-source classifier (HEAD) = [270,282,319,466] — arm B's reading
+ok   U3  the whole gap is round 10, and it is the member his own §2 says S6 protects: gap=[10]
+ok   U4  under HEAD's classifier, 10 ∈ mailRounds=true and ∈ nonSubject=true — so S6 removes it from at-risk by doing exactly what it was taken to do
+VERDICT/0 GREEN legs=4 red=[] refused=[] preds=0 refuted=[]

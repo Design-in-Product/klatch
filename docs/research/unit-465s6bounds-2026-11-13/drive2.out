@@ -1,0 +1,15 @@
+ok   T4p  S6's near-miss CASE deleted (line 259) → selfTest() true · path cases left=12, floor is >= 8
+PRED P4  HELD  the near-miss is unguarded: true
+ok   T8a  LITERAL route: module sliced at classifierRev=6c9a4348 exports unattestedRoundsAt: false — the pin's documented route CANNOT execute; arm A crashed here
+PRED P8  REFUTED  the literal route runs: false
+ok   T8b  COMPOSED route (classifier@6c9a4348 + reader@HEAD) over tree@3ee13880 → paths=207 outside=[9] vs pin 207/[9]
+ok   T8c  the composed module's own selfTest(): "THREW: attested-rounds.mjs selfTest: SOURCE_IDS declares S6 but classifyPath cannot return it"
+ok   T9  classifier@HEAD over tree@3ee13880 → paths=127 outside=[] (his T11: 127 / [])
+PRED P9  HELD  his T11 reproduces: true
+RED  T10  at-risk@6c9a4348 = [270,282,319,466] (his T8: [10,270,282,319,466])
+PRED P10  REFUTED  his T8 reproduces: false
+ok   T10b  at-risk@HEAD = [270,282,319,466] · 10 absent=true · size=4
+PRED P10b  HELD  S6 made 10 denial-proof and the set did not grow: true
+ok   T11  live selfTest() → true
+ok   T12  git status --porcelain packages scripts → "" (empty ⇒ no gate leg owed)
+VERDICT/1 RED legs=9 red=[T10] refused=[] preds=5 refuted=[P8,P10]
