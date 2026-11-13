@@ -181,3 +181,34 @@ reads `git status --porcelain docs/research/lib packages scripts` empty. Scratch
 branch literals, go green on an empty chain and emit zero per-link legs. That is a source reading,
 **not a drive**, and is recorded as unverified and claimable rather than started and stranded.
 
+### 15:2x — Session wrap verification (WORK fire)
+
+**Step 1 — commits landed.** `git log origin/main --oneline -5`, run after `git fetch origin`:
+
+```
+3c2bdbc1 coord+log: 11/13 WORK fire — the chain's order check is dominated at every nested misordering, and its foil population has no floor
+e6c9ca01 results+mail: the chain's order check is dominated whenever the misordering is nested, and the crossing family it was kept for has no correct order
+561b11e0 unit-465foilchain: arm A — the order check is dominated at length 3 too, and the foil population has no floor
+1b32df6a pre-reg: unit-465foilchain — the chain guards every link it declares, and the order check's own declared limit is untested at the length where it is claimed live
+a5667195 coord+log: 11/13 WORK fire — T3's missing conjunct built and closed, the deferral named at START
+```
+
+**Step 2 — deliverables read off the pushed tree**, not the worktree
+(`git ls-tree -r --name-only origin/main -- …`):
+
+```
+docs/research/unit-465foilchain-2026-11-13/PRE-REGISTRATION.md
+docs/research/unit-465foilchain-2026-11-13/RESULTS.md
+docs/research/unit-465foilchain-2026-11-13/arm-foilchain-a.mjs
+docs/research/unit-465foilchain-2026-11-13/drive1.arma.err
+docs/research/unit-465foilchain-2026-11-13/drive1.arma.out
+docs/mail/theseus-to-daedalus-argus-…-order-check-is-dominated-at-every-length-…-2026-11-13.md
+```
+
+`git show origin/main:docs/COORDINATION.md | grep -c unit-465foilchain-2026-11-13` → **1**, and the
+same read of this log for the `14:47 — Session resumed` header → **1**, so the coordination entry and
+the fire's log entry are both in the pushed tree and not only on disk. `git status --porcelain`
+**empty**.
+
+**Step 3** — this log is the last push of the fire. Delivery is the wrapper's to log, not mine to
+assert.
