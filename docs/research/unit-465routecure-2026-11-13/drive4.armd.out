@@ -1,0 +1,32 @@
+unit-465routecure arm D — the chain cure's own non-vacuity
+repo=/Users/xian/Development/klatch-worktrees/daedalus
+cripple source = docs/research/lib/attested-rounds.mjs@755e489f (committed; never the working tree, never bare HEAD)
+chain = [separatorTolerant,boundaryFree]
+
+green    D0                         MATCHED BASELINE: the UNCRIPPLED slice@755e489f is green, so every throw below is the cripple
+         selfTest() → true
+green    D0b                        the chain and its witnesses are distinct per link — nested foils, one case each
+         separatorTolerant → docs/mail/read/calliope-to-dispatch-ssh443-workaround-2026-04-18.md  ·  boundaryFree → docs/mail/read/calliope-to-dispatch-ssh443-workaround2026-04-18.md
+green    D1-separatorTolerant       deleting link 0's witness makes selfTest() THROW, naming separatorTolerant (the leg arm C had RED)
+         attested-rounds.mjs selfTest: S6_FOILS.separatorTolerant has no witness that S6_FOILS.boundaryFree refuses. The foils are nested, so a case that merely satisfies this foil is satisfied by the stricter one's witness too and asserts nothing about this link.
+green    D1b-separatorTolerant      …and that cripple landed on the ARRAY ENTRY, not on prose naming the same path
+         entry removed=true
+green    D1-boundaryFree            deleting link 1's witness makes selfTest() THROW, naming boundaryFree (the leg arm C had RED)
+         attested-rounds.mjs selfTest: S6_FOILS.boundaryFree has no witness that the live key refuses. The foils are nested, so a case that merely satisfies this foil is satisfied by the stricter one's witness too and asserts nothing about this link.
+green    D1b-boundaryFree           …and that cripple landed on the ARRAY ENTRY, not on prose naming the same path
+         entry removed=true
+green    D3                         deleting EVERY link witness throws — no link is covered by another link's case
+         attested-rounds.mjs selfTest: S6_FOILS.separatorTolerant has no witness that S6_FOILS.boundaryFree refuses. The foils are nested, so a case that merely satisfies this foil is satisfied by the stricter one's witness too and asserts nothing about this link.
+green    D4                         misordering the chain throws — but via the WITNESS check, so the order check is dominated at length 2
+         attested-rounds.mjs selfTest: S6_FOILS.boundaryFree has no witness that S6_FOILS.separatorTolerant refuses. The foils are nested, so a case that merely satisfies this foil is satisfied by the stricter one's witness too and asserts nothing about this link.
+         → fired by the witness check=true, by the order check=false. For a 2-link NESTED chain the order check cannot fire: the witness loop runs first and the narrow foil has no path the wide one refuses. It is kept for chains of 3+ or non-nested foils, and this leg is the record that it is dominated today rather than a second independent guard.
+green    D5                         adding a foil WITHOUT adding it to the chain throws, naming the permutation check
+         attested-rounds.mjs selfTest: S6_FOIL_CHAIN [separatorTolerant,boundaryFree] is not a permutation of S6_FOILS [separatorTolerant,boundaryFree,invented]
+green    D6                         the pin STILL reproduces through the function after this second cure landed (P13 again)
+         ok=true got paths=207 outside=[9] · want paths=207 outside=[9]
+green    D7                         the live module is green and the population has not moved
+         selfTest()=true |filtered|=466
+green    D8                         no gate leg is owed — packages/ and scripts/ clean
+         git status --porcelain packages scripts → ""
+
+VERDICT/0 GREEN legs=12 red=[] refused=[]
