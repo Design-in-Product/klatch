@@ -1,0 +1,44 @@
+unit-465routecure arm B — the cure, graded (additive; arm A is not re-driven)
+repo=/Users/xian/Development/klatch-worktrees/daedalus
+pre-cure baseline = docs/research/lib/attested-rounds.mjs@aaf7ba4c (sliced from git) · post-cure = the live file
+
+green    R13a                   the pre-cure module@aaf7ba4c has NO reproduceFloorReading, and the live one does
+         before=undefined after=function
+green    R13                    reproduceFloorReading(repo) hits the pin to the digit — the route is runnable (P3/P13)
+         ok=true got paths=207 outside=[9] · want paths=207 outside=[9] · route=whole module@6c9a4348 · tree@3ee13880 · reader expression at HEAD
+green    R13b                   THE DESIGN CLAIM: the live census reader MOVED in this same commit, and the pin did not (P13)
+         unattestedRoundsAt(HEAD).rounds 121 → 145 (moved=true); pin still reproduces=true. A route carrying HEAD's reader would have moved with it.
+green    R13c                   the reader expression in reproduceFloorReading is NOT a call to unattestedRoundsAt
+         calls unattestedRoundsAt=false · uses sliced.classifyPath=true
+RED      R13e                   THE VALUE GRADE: a well-formed but WRONG classifierRev makes the route RED, not green
+         it threw instead of reporting red: m.reproduceFloorReading is not a function
+green    R15                    the boundary cure reclassified ZERO live paths — re-measured through the LIVE module (P6)
+         reclassified=0
+green    R15b                   the denominator is MINE, not the memo's 80 — two keys, attributed (P6 scope)
+         docs/mail paths: naming "round" (my arm-A key)=114 · naming round+DIGITS=80 · actually claimed by S6=80. Arm A printed 114 beside a memo figure of 80; the two keys are different, and 0 reclassified under both.
+green    R16                    attestedRounds(HEAD).filtered unchanged by the whole cure, both directions (P7)
+         |before|=466 |after|=466 gained=[] lost=[]
+green    R12b                   the multi-round figure is UNCHANGED by the boundary cure — independent defects (P12)
+         pre-cure dis=5/mail=2 · post-cure dis=5/mail=2
+green    R17                    the census widening is a STRICT superset of what the old key saw (§4 cure)
+         old=121 new=145 added=24 dropped=0 · creditLeak=24
+green    R17b                   my creditLeak (24) and the memo's 28 are DIFFERENT KEYS, and the gap is attributed
+         memo key (claimed multi-round paths)=28 · my creditLeak (widened set minus what the first-token key saw)=24 · only-memo=[205,248,303,322] only-mine=[]. Neither is wrong; they are not the same quantity.
+green    R17c                   the widening closed NO otherwise-unattested round at HEAD — stated, not buried
+         outside before=[] after=[]. The leak was real and the population does not move: every leaked round is attested elsewhere at HEAD.
+RED      R18                    POST-CURE: classifierRev='banana' now makes selfTest() THROW (P8)
+         still green: selfTest() → true — the guard is still not a value guard
+green    R18b                   the shape guard is honest about its limit: a WELL-FORMED wrong rev passes selfTest
+         'deadbeef' satisfies the shape guard=true. The VALUE grade is R13, which needs a repo and cannot live in selfTest().
+RED      R19-separatorTolerant  POST-CURE: deleting S6_FOILS.separatorTolerant's witness makes selfTest() THROW (P9)
+         still green: selfTest() → true; witness docs/mail/read/calliope-to-dispatch-ssh443-workaround-2026-04-18.md is deletable
+REFUSED  R19-boundaryFree       POST-CURE: deleting S6_FOILS.boundaryFree's witness makes selfTest() THROW (P9)
+         leg declared a refusal
+green    R19c                   the two foil witnesses are DIFFERENT paths — one case cannot cover both edges
+         {"separatorTolerant":"docs/mail/read/calliope-to-dispatch-ssh443-workaround-2026-04-18.md","boundaryFree":"docs/mail/read/calliope-to-dispatch-ssh443-workaround2026-04-18.md"}
+green    R20                    the live module selfTest() returns true, and SOURCE_IDS is unchanged
+         selfTest()=true SOURCE_IDS=S1,S2,S3,S5,S6
+green    R21                    no gate leg is owed — packages/ and scripts/ clean (P14)
+         git status --porcelain packages scripts → ""
+
+VERDICT/1 RED legs=19 red=[R13e,R18,R19-separatorTolerant] refused=[R19-boundaryFree] preds=14

@@ -154,6 +154,10 @@
  */
 
 import { spawnSync } from 'node:child_process';
+import { mkdtempSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { pathToFileURL } from 'node:url';
 
 const SEP = '\u0001';
 
@@ -219,10 +223,33 @@ export function classifyPath(p) {
   if (m) return { source: 'S3', round: Number(m[1]) };
   m = /^docs\/research\/unit-(\d+)/.exec(p);
   if (m) return { source: 'S5', round: Number(m[1]) };
-  m = /^docs\/mail\/.*round(\d+)/i.exec(p);
+  // `S6` needs a boundary on BOTH sides of `round`. The right-hand one (digits must touch the word)
+  // is why the separator-tolerant spelling was rejected. The left-hand one was missing until
+  // `unit-465routecure`: with only `.*` in front, the pattern reads the **tail of the word
+  // *workaround*** as a round, so a mail path ending `…workaround2026-04-18.md` was claimed as round
+  // 2026 and landed in `nonSubject`, where no denial can reach it. Both foils are in `S6_FOILS` and
+  // `selfTest` requires a live case each one claims and this key refuses.
+  m = /^docs\/mail\/(?:.*[^a-z0-9])?round(\d+)/i.exec(p);
   if (m) return { source: 'S6', round: Number(m[1]) };
   return { source: null, round: null };
 }
+
+/**
+ * The two **rejected** spellings of `S6`, kept as foils rather than described in prose.
+ *
+ * A pattern is only as good as what it refuses, and "we rejected the looser key" is a claim a cell
+ * can grade only if the looser key is still executable. `selfTest` requires, for **each** foil, a
+ * path case the foil claims and `classifyPath` refuses — so deleting the case that makes the
+ * rejection true throws, which is the defect Theseus found in the first shape of this (his `T4p`:
+ * the near-miss entry was deletable with `selfTest()` green, because nothing was keyed on what it
+ * proved).
+ */
+export const S6_FOILS = {
+  /** Reads `…workaround-2026-04-18.md` as round 2026: the digits need not touch the word. */
+  separatorTolerant: /^docs\/mail\/.*round[ -]?(\d+)/i,
+  /** Reads `…workaround2026-04-18.md` as round 2026: no boundary on the LEFT of the word. */
+  boundaryFree: /^docs\/mail\/.*round(\d+)/i,
+};
 
 /**
  * Every source id `classifyPath` can return. Declared so `selfTest` can require a case for each
@@ -272,6 +299,12 @@ export const SOURCE_CASES = {
     // Near-misses: no digits, and a test file whose round label is not at a component boundary.
     ['docs/research/round-notes.test.ts', null, null],
     ['packages/server/src/__tests__/for-round465-data.test.ts', null, null],
+    // `S6`'s LEFT-boundary foil, and the only case that proves the boundary does work. Declared
+    // synthetic because it is the in-tree `…workaround-2026-04-18.md` path with its separator
+    // removed — no live path occupies this edge (measured: 0 of 114 mail paths naming `round` are
+    // reclassified by the boundary, `unit-465routecure` R6/R15), so claiming it were real would be
+    // the defect `synthetic` exists to avoid.
+    ['docs/mail/read/calliope-to-dispatch-ssh443-workaround2026-04-18.md', null, null],
   ],
   /** `S4` keys on a subject, not a path. One affirming subject and one that names no round. */
   subjects: [
@@ -334,14 +367,90 @@ export const SOURCE_RECALL_FLOOR = {
      * kept red in `drive2.postcure.out`: scoping the pin to a rev and then changing the classifier
      * in the same commit is the same defect one axis over.
      *
-     * To reproduce the reading: slice this module at `classifierRev` and read the tree at `rev`.
-     * `unit-465maildurable`'s arm does exactly that (`T6`, green at 207 / `[9]`).
+     * **The route is `reproduceFloorReading(repo)`, not this sentence.** The first shape of this
+     * docblock said *"slice this module at `classifierRev` and read the tree at `rev`"* — and that
+     * route **raises a `TypeError` on the first reader who follows it**, because
+     * `unattestedRoundsAt` was added by the cure commit `a827c5cd`, one commit *after* the
+     * `6c9a4348` named here. Theseus found it by doing exactly what the sentence said
+     * (`unit-465s6bounds` arm A, `drive1.out`, kept as a crash).
+     *
+     * A rev-valued pin is reproducible only if **every** component of the route exists at that rev,
+     * and when a cure adds the scoping field and the reader that field scopes in the same commit,
+     * the scope value necessarily points at a rev that predates the reader. The cure is not a better
+     * sentence: it is that the route is a **function**, so a reader cannot follow a stale one and a
+     * cell can grade the pin's *value* instead of the presence of a string.
      */
     classifierRev: '6c9a4348',
   },
   /** For any other rev, call this instead of reading the pin. */
   readAnyRevWith: 'unattestedRoundsAt(repo, rev)',
+  /** And to reproduce the pin itself, call this — a function, never a described procedure. */
+  reproducibleBy: 'reproduceFloorReading(repo)',
 };
+
+/**
+ * Re-derive the pinned floor reading from a **whole module sliced out of `classifierRev`**, and
+ * grade it against the pin. Returns `{ ok, got, want, route }`, or `null` on refusal — a caller must
+ * not read a refusal as a reproduction.
+ *
+ * ## Why a whole slice and not a spliced classifier
+ *
+ * The cure routed to this seat was *"compose `classifyPath` sliced at `classifierRev` with the
+ * reader from HEAD."* That pins two axes and leaves a third live, and the third one was under
+ * repair in the same memo (`unattestedRoundsAt`'s round-extraction key — see its own docblock). A
+ * route whose reader is live is not a pin; it is an unscoped axis wearing a pinned label.
+ *
+ * It also does not work. Splicing `6c9a4348`'s classifier into today's module leaves `SOURCE_IDS`
+ * declaring `S6` that classifier cannot return, so the composed module's own `selfTest()` **throws**
+ * (measured twice: Theseus's `T8c`, and `unit-465routecure` `R4b` as the set relation that causes
+ * it). The **whole** slice at that rev is self-consistent — its own `selfTest()` returns `true`
+ * (`R4`) — because a module at a rev is a thing that once passed its own tests, while a hybrid of
+ * two revs is a thing no drive has ever graded.
+ *
+ * ## What is still HEAD-authored, stated rather than hidden
+ *
+ * The four lines below that build `invisible` and `rounds` are the reader expression, and they live
+ * at HEAD. They are deliberately **not** a call to `unattestedRoundsAt`: that function is free to
+ * move (and did, in the same commit as this one), and the pin must not move with it. The guarantee
+ * this buys is not that the expression cannot be edited — it is that editing it turns the grading
+ * cell **red** instead of letting the pin drift silently, which is the whole difference between a
+ * pin and a number in a comment.
+ */
+export async function reproduceFloorReading(repo, { modPath = 'docs/research/lib/attested-rounds.mjs' } = {}) {
+  const treeRev = SOURCE_RECALL_FLOOR.rev;
+  const pin = SOURCE_RECALL_FLOOR[`at${treeRev}`];
+  if (!pin) return null;
+
+  const src = git(repo, ['show', `${pin.classifierRev}:${modPath}`]);
+  if (src === null) return null;
+  let sliced;
+  try {
+    const file = join(mkdtempSync(join(tmpdir(), 'attested-rounds-pin-')), 'sliced.mjs');
+    writeFileSync(file, src);
+    sliced = await import(pathToFileURL(file).href);
+  } catch {
+    return null;
+  }
+  if (typeof sliced.classifyPath !== 'function' || typeof sliced.attestedRounds !== 'function') return null;
+
+  const tree = git(repo, ['ls-tree', '-r', '--name-only', treeRev]);
+  const pop = sliced.attestedRounds(repo, treeRev);
+  if (tree === null || pop === null) return null;
+
+  const invisible = tree.split('\n').filter((p) => /round\d+/i.test(p) && sliced.classifyPath(p).source === null);
+  const rounds = new Set(invisible.map((p) => Number(/round(\d+)/i.exec(p)[1])));
+  const got = {
+    paths: invisible.length,
+    outside: [...rounds].filter((n) => !pop.filtered.has(n)).sort((a, b) => a - b),
+  };
+  const want = { paths: pin.invisiblePaths, outside: [...pin.unattestedRounds] };
+  return {
+    ok: got.paths === want.paths && String(got.outside) === String(want.outside),
+    got,
+    want,
+    route: `whole module@${pin.classifierRev} · tree@${treeRev} · reader expression at HEAD`,
+  };
+}
 
 /**
  * The source patterns' recall floor **at a rev the caller names**: every round that some path in the
@@ -349,19 +458,54 @@ export const SOURCE_RECALL_FLOOR = {
  *
  * This is `unit-465srckeys-2026-11-12` leg `T7`'s key, promoted from a one-rev constant to a reader,
  * because the constant's value is rev-dependent and its consumers could not see that. Returns
- * `{ paths, rounds, outside }` — `outside` is the part that matters: rounds the blind spot hides
- * *and nothing else credits*. `null` on refusal; a caller must not read a refusal as an empty set.
+ * `{ paths, rounds, outside, creditLeak }` — `outside` is the part that matters: rounds the blind
+ * spot hides *and nothing else credits*. `null` on refusal; a caller must not read a refusal as an
+ * empty set.
+ *
+ * ## The round key is per **token**, not per path, and that is a cure
+ *
+ * The first shape of this reader had **two readers of one path with different answers**, which
+ * Theseus found (`unit-465s6bounds` §4): `classifyPath`'s `S6` uses a greedy `.*` and so credits the
+ * **last** `round\d+` in a path, while this census took `/round(\d+)/i.exec(p)[1]` — the **first**.
+ * The harm was not a count error. It was a leak in the one census whose whole job is finding rounds
+ * nothing attests: a path claimed for its *last* round hid **every other round it names**, and 28
+ * distinct rounds were in that position at HEAD (his `T6c`, reproduced as `R11`).
+ *
+ * So the key is now every round **token** a path names, minus the one that path's own classification
+ * credits — which is a strict widening of the old set, and `creditLeak` is exactly the part the old
+ * spelling could not see, so the change is attributable rather than merely different.
+ *
+ * `paths` keeps its old definition — paths **no source claims** — because that is the quantity
+ * `SOURCE_RECALL_FLOOR` pins. The pin is reproduced by `reproduceFloorReading()`, which carries its
+ * own reader expression and so does **not** move when this one does; that independence is the
+ * design claim, and it is graded (`unit-465routecure` `R13`), not asserted.
  */
 export function unattestedRoundsAt(repo, rev) {
   const tree = git(repo, ['ls-tree', '-r', '--name-only', rev]);
   const pop = attestedRounds(repo, rev);
   if (tree === null || pop === null) return null;
-  const invisible = tree.split('\n').filter((p) => /round\d+/i.test(p) && classifyPath(p).source === null);
-  const rounds = new Set(invisible.map((p) => Number(/round(\d+)/i.exec(p)[1])));
+
+  const paths = tree.split('\n').filter(Boolean);
+  const invisible = paths.filter((p) => /round\d+/i.test(p) && classifyPath(p).source === null);
+
+  // Every round token any path names, minus the one that path itself credits.
+  const rounds = new Set();
+  const firstOnly = new Set();
+  for (const p of paths) {
+    const named = [...p.matchAll(/round(\d+)/gi)].map((m) => Number(m[1]));
+    if (named.length === 0) continue;
+    const credited = classifyPath(p).round;
+    for (const n of named) if (n !== credited) rounds.add(n);
+    // What the superseded per-path key would have seen, kept so the widening is attributable.
+    if (credited === null) firstOnly.add(named[0]);
+  }
+
   return {
     paths: invisible.length,
     rounds: [...rounds].sort((a, b) => a - b),
     outside: [...rounds].filter((n) => !pop.filtered.has(n)).sort((a, b) => a - b),
+    /** Rounds the superseded first-token-of-an-unclaimed-path key could not see. */
+    creditLeak: [...rounds].filter((n) => !firstOnly.has(n)).sort((a, b) => a - b),
   };
 }
 
@@ -534,8 +678,35 @@ export function selfTest() {
   // …and it must name the CLASSIFIER it was taken under, not only the tree rev. The quantity counts
   // paths no source claims, so it moves when the source set moves: a reading pinned to a rev alone
   // is still unscoped on the axis this module's own cure travelled.
-  must(typeof SOURCE_RECALL_FLOOR[`at${SOURCE_RECALL_FLOOR.rev}`].classifierRev === 'string',
-    'the pinned floor reading does not name the classifier rev it was taken under');
+  // …and it must name the CLASSIFIER rev as a REV. The first spelling of this was `typeof ===
+  // 'string'`, which `classifierRev: 'banana'` satisfied (Theseus's `T5`, reproduced as `R8`): a
+  // guard on type is not a guard on value. This is a SHAPE guard — an abbreviated hex object name —
+  // and it is worth saying what it still does not catch: a well-formed hash that is the wrong
+  // commit passes here. The value grade is `reproduceFloorReading(repo)`, which needs a repo and so
+  // cannot live in this function; `R13` drives it.
+  const pinnedFloor = SOURCE_RECALL_FLOOR[`at${SOURCE_RECALL_FLOOR.rev}`];
+  must(/^[0-9a-f]{7,40}$/.test(String(pinnedFloor.classifierRev)),
+    `the pinned floor reading's classifierRev is not a rev: ${JSON.stringify(pinnedFloor.classifierRev)}`);
+  must(SOURCE_RECALL_FLOOR.reproducibleBy === 'reproduceFloorReading(repo)',
+    `the floor does not name a runnable reproduction route: ${JSON.stringify(SOURCE_RECALL_FLOOR.reproducibleBy)}`);
+  must(typeof reproduceFloorReading === 'function', 'the named reproduction route does not exist');
+
+  // S6's REJECTED spellings are graded as refusals, not described in prose. For each foil, some path
+  // case must exist that the foil claims and `classifyPath` refuses — otherwise "we rejected the
+  // looser key" is a sentence no case makes true, and the case that made it true was deletable with
+  // everything else green (Theseus's `T4p`). Keyed on the property, not on a filename or a count.
+  for (const [name, foil] of Object.entries(S6_FOILS)) {
+    const witness = pathCases.find(([p, s]) => s === null && foil.test(p) && classifyPath(p).source === null);
+    must(witness !== undefined,
+      `S6_FOILS.${name} is claimed by no near-miss case, so S6's refusal of it is asserted by nothing`);
+    must(foil.test(witness[0]) && classifyPath(witness[0]).source === null,
+      `S6_FOILS.${name}'s witness ${JSON.stringify(witness[0])} does not separate the foil from the live key`);
+  }
+  // …and the live key must not BE either foil. Identity would make every witness above vacuous.
+  for (const [name, foil] of Object.entries(S6_FOILS)) {
+    must(!classifyPath.toString().includes(String(foil)),
+      `classifyPath contains S6_FOILS.${name} verbatim — the rejected spelling is the live one`);
+  }
 
   // The declared recall floor is a floor: neither key reaches any of them. If one ever does, this
   // throws rather than leaving the exported list claiming something false.
