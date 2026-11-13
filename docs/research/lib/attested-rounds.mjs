@@ -65,6 +65,52 @@
  * `ALT_SPELLINGS` are four denial shapes neither key reaches. Theseus measured **0** instances of
  * them in the corpus, so this is a floor on the key's recall and not a defect — and it is exported
  * so that a cell can print it rather than a reader having to trust this paragraph.
+ *
+ * ## The SOURCE patterns were ungraded, and two of them carry no load
+ *
+ * Until `unit-465srckeys-2026-11-12`, `selfTest()` graded the denial *key* and nothing else — every
+ * case was a commit subject. Theseus named that blindness in his 11/12 §8 (*"a mis-written source
+ * regex would be green in all four of my arms"*), and it was equally true here. Measured, by
+ * blinding each source pattern in a copy of this file taken from git and running that copy's own
+ * `selfTest()`: **0 of 4 blindings were noticed** (`drive1.precure.out`, leg `T1`).
+ *
+ * A population-level check cannot close it, because two of the sources do not move the population:
+ *
+ * ```
+ * S1 (round dirs)        blinded → filtered 465 → 465   lost 0      <- redundant at HEAD
+ * S2 (roundNNN*.test.ts) blinded → filtered 465 → 455   lost 10
+ * S3 (other docs paths)  blinded → filtered 465 → 465   lost 0      <- redundant at HEAD
+ * S4 (commit subjects)   blinded → filtered 465 → 369   lost 96
+ * ```
+ *
+ * `S1` and `S3` are **entirely subsumed by `S2 ∪ S4`** on today's tree, so a mis-written `S1` or
+ * `S3` is invisible to every count a cell could print. That is why the cases below are graded as
+ * **classifications of a path**, not as effects on a figure — and why `classifyPath` exists as one
+ * named reader instead of three regex literals inside a loop body.
+ *
+ * The ten members `S2` alone carries are `[8,26,27,30,37,43,45,46,47,465]`. Nine of them have no
+ * subject attestation at all; **465 is the one that is also denied by a subject**, which is the
+ * mechanism behind Theseus's 11/12 §1 — *the cure's whole measured price was one test filename away
+ * from zero.* Measured here, the dependency is wider than that one round.
+ *
+ * ## Why there is a fifth source, and what taking it cost
+ *
+ * `S5` (`^docs/research/unit-(\d+)`) is Theseus's 11/12 §6 item 1, routed to this seat. It is taken
+ * because the reason to refuse it was **pre-registered and then refuted**. The objection was that
+ * crediting a round from a `unit-*` dir moves it into `nonSubject`, where the denial filter can no
+ * longer drop it — so `S5` would buy no member and quietly disarm the filter. Predicted: at
+ * `69cf9167` it takes `removed` from `[465]` to `[]`.
+ *
+ * **It does not** (`drive1.precure.out`, leg `T4`): `removed` is `[465]` under both keys at that
+ * rev, and `[]` under both at HEAD. The prediction imported a count measured at HEAD (465's 38
+ * `unit-*` dirs) into a rev predating every one of them — at `69cf9167` no `unit-465*` dir existed,
+ * so `S5` credits nothing there. Zero measured effect at both revs, in both directions, as a set
+ * difference rather than a count comparison.
+ *
+ * The mechanism is still real and is therefore **declared rather than hidden**: `unitRounds` comes
+ * back as its own set so a cell can print what `S5` contributed, and `SOURCE_CASES` grades it like
+ * the other four. A source whose only effect would be to weaken the denial filter should be visible
+ * at the call site, not folded into a total.
  */
 
 import { spawnSync } from 'node:child_process';
@@ -113,6 +159,106 @@ export const ALT_SPELLINGS = [
   'Round 465 was skipped',
 ];
 
+/**
+ * The non-subject source patterns, as ONE reader over a path string.
+ *
+ * First match wins, and the order is part of the key: `docs/research/round464-instruments/x.mjs`
+ * satisfies both `S1` and `S3`, and `docs/research/round465-notes.test.ts` satisfies both `S2` and
+ * `S3`. Which set they land in is a decision, so it is tested (`SOURCE_CASES`) rather than left to
+ * whoever next reads the loop body.
+ *
+ * Returns `{ source: 'S1'|'S2'|'S3'|'S5'|null, round: number|null }`. `S4` is not here: it keys on
+ * a commit subject, not a path, and is `SUBJECT_ROUND_RE`.
+ */
+export function classifyPath(p) {
+  let m = /^docs\/research\/round(\d+)-instruments\//.exec(p);
+  if (m) return { source: 'S1', round: Number(m[1]) };
+  m = /(?:^|\/)round(\d+)[^/]*\.test\.tsx?$/.exec(p);
+  if (m) return { source: 'S2', round: Number(m[1]) };
+  m = /^docs\/research\/[^/]*round(\d+)/.exec(p);
+  if (m) return { source: 'S3', round: Number(m[1]) };
+  m = /^docs\/research\/unit-(\d+)/.exec(p);
+  if (m) return { source: 'S5', round: Number(m[1]) };
+  return { source: null, round: null };
+}
+
+/**
+ * Known positives and near-misses for every source pattern, as data a grader iterates.
+ *
+ * `present` paths are asserted to exist in the tree — `casePathsPresent()` is how, and a cell must
+ * drive it, because a KP that has been deleted is not a slice of anything. `synthetic` paths are
+ * declared synthetic: they sit on discrimination edges no live path happens to occupy, and claiming
+ * they are real would be the defect this field exists to avoid.
+ *
+ * Every entry is `[path, source, round]`. The `null` entries are the near-misses: a case table with
+ * only positives is satisfied by a pattern that matches everything.
+ */
+export const SOURCE_CASES = {
+  present: [
+    ['docs/research/round464-instruments/grade-the-stop-condition.mjs', 'S1', 464],
+    ['packages/server/src/__tests__/round465-data-delta.test.ts', 'S2', 465],
+    ['docs/research/unit-465attestdenial-2026-11-12/grade-the-denial-rekey.mjs', 'S5', 465],
+    ['docs/research/lib/attested-rounds.mjs', null, null],
+  ],
+  synthetic: [
+    // S3 reaches a round-named file only in the FIRST component under docs/research/ …
+    ['docs/research/round999-notes.md', 'S3', 999],
+    // … so the same filename one level down is reached by nothing. Measured, not supposed: see
+    // `unit-465srckeys-2026-11-12` leg T7 for the live count of paths in this blind spot.
+    ['docs/research/unit-999x/round999-notes.md', 'S5', 999],
+    ['docs/research/notes-2026/round999-notes.md', null, null],
+    // S1 wins over S3 on a path both match; S2 wins over S3 on a path both match.
+    ['docs/research/round464-instruments/notes.md', 'S1', 464],
+    ['docs/research/round465-notes.test.ts', 'S2', 465],
+    // Near-misses: no digits, and a test file whose round label is not at a component boundary.
+    ['docs/research/round-notes.test.ts', null, null],
+    ['packages/server/src/__tests__/for-round465-data.test.ts', null, null],
+  ],
+  /** `S4` keys on a subject, not a path. One affirming subject and one that names no round. */
+  subjects: [
+    ['round467: re-key probe-round307 C4 after the population moved', 467],
+    ['coord+log: 11/12 STOP fire — the population is the finding', null],
+  ],
+};
+
+/**
+ * The source patterns' own recall floor, measured rather than asserted.
+ *
+ * `unit-465srckeys-2026-11-12` leg `T7` enumerated every path in the tree at `3ee13880` that names
+ * a round and is claimed by **no** source pattern: **207 paths**, naming 162 distinct round numbers,
+ * of which **exactly one is not attested by any other source** — round **9**, via
+ * `docs/mail/read/daedalus-to-argus-round9.md`. The pre-registered prediction was that the blind
+ * spot hid no member; that was **refuted**, and this is the member.
+ *
+ * A sixth source over `docs/mail/` is therefore a real option with a measured price, and it is
+ * **not taken here** — priced, routed, declared:
+ *
+ *   - keyed strictly as `round(\d+)`: **+1 member (9)**, and 9 is far below the 292 floor every
+ *     live consumer counts above, so no figure anyone prints today moves.
+ *   - keyed loosely as `round[ -]?(\d+)` to catch the hyphenated mail spellings: admits
+ *     **`round-2026`**, i.e. a date read as a round. 93 mail paths name a round-shaped token.
+ *
+ * So the loose key is wrong and the strict key buys one member below every live threshold. Printed
+ * here as a constant so a cell can assert the floor instead of a reader trusting this paragraph.
+ */
+export const SOURCE_RECALL_FLOOR = {
+  rev: '3ee13880',
+  invisiblePaths: 207,
+  unattestedRounds: [9],
+  witness: 'docs/mail/read/daedalus-to-argus-round9.md',
+};
+
+/**
+ * Which of `SOURCE_CASES.present` are missing from the tree at `rev`. `null` on refusal — a caller
+ * must not read a refused check as "nothing missing".
+ */
+export function casePathsPresent(repo, rev = 'HEAD') {
+  const tree = git(repo, ['ls-tree', '-r', '--name-only', rev]);
+  if (tree === null) return null;
+  const have = new Set(tree.split('\n'));
+  return SOURCE_CASES.present.map(([p]) => p).filter((p) => !have.has(p));
+}
+
 /** `git -C repo …`, refusing with `null` rather than throwing or returning an empty string. */
 export function git(repo, args) {
   const r = spawnSync('git', ['-C', repo, ...args], { stdio: 'pipe', encoding: 'utf8' });
@@ -150,17 +296,15 @@ export function attestedRounds(repo, rev, { denialRe = DENIAL_RE } = {}) {
   const subjects = git(repo, ['log', `--format=%H${SEP}%s`, rev]);
   if (tree === null || subjects === null) return null;
 
-  const dirs = new Set();
-  const tests = new Set();
-  const otherDocs = new Set();
+  const bySource = { S1: new Set(), S2: new Set(), S3: new Set(), S5: new Set() };
   for (const p of tree.split('\n')) {
-    let m = /^docs\/research\/round(\d+)-instruments\//.exec(p);
-    if (m) { dirs.add(Number(m[1])); continue; }
-    m = /(?:^|\/)round(\d+)[^/]*\.test\.tsx?$/.exec(p);
-    if (m) { tests.add(Number(m[1])); continue; }
-    m = /^docs\/research\/[^/]*round(\d+)/.exec(p);
-    if (m) otherDocs.add(Number(m[1]));
+    const c = classifyPath(p);
+    if (c.source !== null) bySource[c.source].add(c.round);
   }
+  const dirs = bySource.S1;
+  const tests = bySource.S2;
+  const otherDocs = bySource.S3;
+  const unitRounds = bySource.S5;
 
   const subjectRounds = new Set();
   const deniedRounds = new Set();
@@ -174,7 +318,7 @@ export function attestedRounds(repo, rev, { denialRe = DENIAL_RE } = {}) {
     rows.push({ hash, subject, round: sm ? Number(sm[1]) : null, denies: dm ? Number(dm[1]) : null });
   }
 
-  const nonSubject = new Set([...dirs, ...tests, ...otherDocs]);
+  const nonSubject = new Set([...dirs, ...tests, ...otherDocs, ...unitRounds]);
   const raw = new Set([...nonSubject, ...subjectRounds]);
 
   // A round is removed ONLY when every attestation of it is a denial — credited by no non-subject
@@ -188,6 +332,7 @@ export function attestedRounds(repo, rev, { denialRe = DENIAL_RE } = {}) {
 
   return {
     raw, filtered, removed, nonSubject, subjectRounds, deniedRounds, affirmedBySubject,
+    unitRounds,
     dirs: [...dirs].sort((a, b) => a - b),
     sorted: [...filtered].sort((a, b) => a - b),
     rows,
@@ -220,6 +365,31 @@ export function selfTest() {
   const ctlWas = LEGACY_DENIAL_RE.exec(KEY_CASES.denialSubject);
   must(ctlNow !== null && Number(ctlNow[1]) === 465, `the cure stopped matching a genuine denial: ${ctlNow}`);
   must(ctlWas !== null && Number(ctlWas[1]) === 465, `the as-filed key stopped matching a genuine denial: ${ctlWas}`);
+
+  // THE SOURCE PATTERNS. Graded as classifications of a path, because two of the five move no
+  // figure at all (S1 and S3 are subsumed by S2 ∪ S4 on today's tree — measured, see the docblock),
+  // so nothing a cell prints could catch a mis-written one. Positives AND near-misses: a table of
+  // positives alone is satisfied by a pattern that matches everything.
+  const pathCases = [...SOURCE_CASES.present, ...SOURCE_CASES.synthetic];
+  must(pathCases.length >= 8, `SOURCE_CASES has only ${pathCases.length} path case(s)`);
+  must(
+    pathCases.some(([, s]) => s === null) && new Set(pathCases.map(([, s]) => s)).size >= 5,
+    'SOURCE_CASES does not cover every source plus a near-miss'
+  );
+  for (const [p, wantSource, wantRound] of pathCases) {
+    const got = classifyPath(p);
+    must(
+      got.source === wantSource && got.round === wantRound,
+      `classifyPath(${JSON.stringify(p)}) → ${got.source}/${got.round}, want ${wantSource}/${wantRound}`
+    );
+  }
+
+  // S4, the one source that keys on a subject rather than a path.
+  for (const [subject, wantRound] of SOURCE_CASES.subjects) {
+    const m = SUBJECT_ROUND_RE.exec(subject);
+    const got = m ? Number(m[1]) : null;
+    must(got === wantRound, `SUBJECT_ROUND_RE on ${JSON.stringify(subject)} → ${got}, want ${wantRound}`);
+  }
 
   // The declared recall floor is a floor: neither key reaches any of them. If one ever does, this
   // throws rather than leaving the exported list claiming something false.

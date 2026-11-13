@@ -1,0 +1,36 @@
+subject AS FILED: docs/research/lib/attested-rounds.mjs@94b17b20  11817 chars
+working tree: classifyPath ABSENT — pre-cure drive
+revs: as-filed=94b17b20 head=3ee13880 theseus=69cf9167
+
+[T0] ok   as-filed selfTest() returns true :: returned true
+clean@3ee13880: raw=465 filtered=465 removed=[] max=467
+
+  as-filed selfTest with S1 (round dirs) blinded: green
+  as-filed selfTest with S2 (roundNNN*.test.ts[x]) blinded: green
+  as-filed selfTest with S3 (other docs/research round paths) blinded: green
+  as-filed selfTest with S4 (commit subjects) blinded: green
+[T1] ok   as-filed selfTest is blind to all four source patterns :: noticed=[] of [S1,S2,S3,S4]
+[P1] HELD     the as-filed selfTest returns true under all 4 blindings :: noticed 0 of 4: []
+  S1 blinded: filtered=465 (clean 465) lost=0 gained=0 removed=[]
+  S2 blinded: filtered=455 (clean 465) lost=10 gained=0 removed=[465]
+  S3 blinded: filtered=465 (clean 465) lost=0 gained=0 removed=[]
+  S4 blinded: filtered=369 (clean 465) lost=96 gained=0 removed=[]
+[T2] RED  every blinding is measurable (no blinding is a no-op on the population) :: no-op blindings=[S1,S3]
+[P2] REFUTED  blinding S2 costs exactly one member, 465, and the other three cost more than one :: S2 lost=[8,26,27,30,37,43,45,46,47,465] removed=[465] · S1 lost 0 · S3 lost 0 · S4 lost 96
+  S5 @3ee13880: filtered 465 → 465 · removed [] → [] · added=[] dropped=[]
+  S5 @69cf9167: filtered 464 → 464 · removed [465] → [465] · added=[] dropped=[]
+[T3] ok   S5 adds no member at HEAD (3ee13880) :: added=[] dropped=[] removed [] → []
+[T4] RED  S5 subsumes the denial filter's bite at 69cf9167 :: removed [465] → [465] · filtered 464 → 464
+[P3a] HELD     S5 is a 0-member change at HEAD, set-differenced both ways :: added=[] dropped=[] removed [] → []
+[P3b] REFUTED  S5 takes removed [465] → [] and filtered 174 → 175 at 69cf9167 :: removed [465] → [465] · filtered 464 → 464
+[T5] REFUSED every "present" case path is actually in the tree at HEAD :: classifyPath absent — pre-cure drive
+[T6] REFUSED classifyPath assigns every declared case to its declared source :: classifyPath absent — pre-cure drive
+[P4] PREFUSED the three real tree paths classify S1-only / S2-only / no-source :: classifyPath absent
+[T7] REFUSED S3 is first-component-anchored, and the live blind spot hides no member :: classifyPath absent — pre-cure drive
+[P5] PREFUSED the blind spot is non-empty and its round numbers are a subset of the population :: classifyPath absent
+[T8] REFUSED cured attestedRounds returns the identical member set at HEAD :: classifyPath absent — pre-cure drive
+[P6pop] PREFUSED the cure is behaviour-preserving on the population (the member-set half of P6) :: classifyPath absent
+[T9] REFUSED cured selfTest notices all four blindings :: classifyPath absent — pre-cure drive
+[P1inv] PREFUSED the inversion half named in P1's own text — the cure notices all four blindings :: classifyPath absent
+
+VERDICT/1 RED legs=10 red=[T2,T4] refused=[T5,T6,T7,T8,T9] preds=8 refuted=[P2,P3b] prefused=[P4,P5,P6pop,P1inv]
