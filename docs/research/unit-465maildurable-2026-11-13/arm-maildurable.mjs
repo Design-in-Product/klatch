@@ -384,6 +384,48 @@ leg('T12', 'the LIVE module claims the same S6 set as this arm\'s derived copy, 
 });
 
 // ---------------------------------------------------------------------------------------------
+// T13 / T14 — ADDITIVE, added after drive2 recorded T11 RED. T11 is NOT re-keyed: re-keying a leg
+// after its drive re-scores a graded run. These legs grade the CORRECTED contract instead — the pin
+// is a reading of (tree rev, classifier), and the difference is attributable, not just present.
+// ---------------------------------------------------------------------------------------------
+
+leg('T13', 'the pin names the classifier it was taken under, and that rev predates S6', () => {
+  const pin = live.SOURCE_RECALL_FLOOR[`at${live.SOURCE_RECALL_FLOOR.rev}`];
+  if (!pin || typeof pin.classifierRev !== 'string') {
+    return { ok: false, note: `pinned reading carries no classifierRev: ${JSON.stringify(pin)}` };
+  }
+  // The named classifier rev must actually BE pre-S6 — asserted against git, not trusted.
+  const srcThere = git(['show', `${pin.classifierRev}:${MODPATH}`]);
+  const hasS6 = /source: 'S6'/.test(srcThere);
+  const liveHasS6 = /source: 'S6'/.test(git(['show', `HEAD:${MODPATH}`]));
+  return {
+    ok: !hasS6 && liveHasS6 && pin.invisiblePaths === (fPin && fPin.paths) && String(pin.unattestedRounds) === String(fPin && fPin.outside),
+    note: `classifierRev=${pin.classifierRev} declares S6=${hasS6} (want false) · HEAD declares S6=${liveHasS6} · `
+      + `pin ${pin.invisiblePaths}/[${pin.unattestedRounds}] vs the arm's five-source read ${fPin && fPin.paths}/[${fPin && fPin.outside}]`,
+  };
+});
+
+leg('T14', 'the live reader\'s disagreement with the pin is EXACTLY the mail paths S6 now claims', () => {
+  if (typeof live.unattestedRoundsAt !== 'function') return { refused: true, why: 'no live reader' };
+  const a = live.unattestedRoundsAt(REPO, floor.rev);
+  if (a === null || fPin === null) return { refused: true, why: 'a read refused' };
+  // How many paths at the pinned rev does S6 claim, and were previously claimed by nothing?
+  const tree = base.git(REPO, ['ls-tree', '-r', '--name-only', floor.rev]);
+  if (tree === null) return { refused: true, why: 'tree read refused at the pinned rev' };
+  const newlyClaimed = tree.split('\n').filter((p) =>
+    /round\d+/i.test(p) && base.classifyPath(p).source === null && live.classifyPath(p).source === 'S6');
+  const gap = fPin.paths - a.paths;
+  // `floor` is the PRE-cure constant (flat shape, from BASE_REV); the witness is read off it, and
+  // the live constant's nested shape is read off `live`. Mixing the two shapes would throw here.
+  const witnessClaimed = live.classifyPath(floor.witness).source;
+  return {
+    ok: gap === newlyClaimed.length && gap > 0 && a.outside.length === 0 && witnessClaimed === 'S6',
+    note: `five-source=${fPin.paths} six-source=${a.paths} · gap=${gap} · S6 newly claims ${newlyClaimed.length} `
+      + `previously-invisible path(s) at ${floor.rev} · live outside=[${a.outside}] · the witness is now claimed by ${witnessClaimed}`,
+  };
+});
+
+// ---------------------------------------------------------------------------------------------
 // Declared, UNGRADED diagnostic: the same two quantities at a live HEAD.
 // ---------------------------------------------------------------------------------------------
 const headRev = git(['rev-parse', '--short', 'HEAD']).trim();

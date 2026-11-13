@@ -312,7 +312,7 @@ export const SOURCE_CASES = {
  * the honest number was reachable without its scope.
  */
 export const SOURCE_RECALL_FLOOR = {
-  /** The rev the pinned reading below was taken at. */
+  /** The rev of the TREE the pinned reading below was taken over. */
   rev: '3ee13880',
   /**
    * The reading, under a key that cannot be quoted without its rev. A fact about `3ee13880` and
@@ -322,6 +322,22 @@ export const SOURCE_RECALL_FLOOR = {
     invisiblePaths: 207,
     unattestedRounds: [9],
     witness: 'docs/mail/read/daedalus-to-argus-round9.md',
+    /**
+     * **The second axis, which the first shape of this cure missed.** This quantity is a function
+     * of `(tree rev, classifier)`, not of the tree rev alone: it counts paths **no source claims**,
+     * so it moves when the set of sources moves. This reading was taken under the **five-source**
+     * classifier — before `S6` — whose last rev is `6c9a4348`. Calling today's
+     * `unattestedRoundsAt(repo, '3ee13880')` returns a *smaller* blind spot and an empty `outside`,
+     * because `S6` now claims the mail paths that made it up, including the witness above.
+     *
+     * Found by this unit's own cure-contract leg (`T11`), which went **RED on the cure** and is
+     * kept red in `drive2.postcure.out`: scoping the pin to a rev and then changing the classifier
+     * in the same commit is the same defect one axis over.
+     *
+     * To reproduce the reading: slice this module at `classifierRev` and read the tree at `rev`.
+     * `unit-465maildurable`'s arm does exactly that (`T6`, green at 207 / `[9]`).
+     */
+    classifierRev: '6c9a4348',
   },
   /** For any other rev, call this instead of reading the pin. */
   readAnyRevWith: 'unattestedRoundsAt(repo, rev)',
@@ -515,6 +531,11 @@ export function selfTest() {
     `SOURCE_RECALL_FLOOR exposes a rev-free reading again: [${floorKeys}]`);
   must(floorKeys.includes(`at${SOURCE_RECALL_FLOOR.rev}`),
     `SOURCE_RECALL_FLOOR.rev is ${SOURCE_RECALL_FLOOR.rev}, but no \`at${SOURCE_RECALL_FLOOR.rev}\` key holds the reading`);
+  // …and it must name the CLASSIFIER it was taken under, not only the tree rev. The quantity counts
+  // paths no source claims, so it moves when the source set moves: a reading pinned to a rev alone
+  // is still unscoped on the axis this module's own cure travelled.
+  must(typeof SOURCE_RECALL_FLOOR[`at${SOURCE_RECALL_FLOOR.rev}`].classifierRev === 'string',
+    'the pinned floor reading does not name the classifier rev it was taken under');
 
   // The declared recall floor is a floor: neither key reaches any of them. If one ever does, this
   // throws rather than leaving the exported list claiming something false.
