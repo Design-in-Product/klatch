@@ -82,8 +82,44 @@ non-interactive fire.
 
 Pasted from the post-push reads, per CLAUDE.md's Session Wrap Protocol:
 
+**Step 1 — commits landed.** Pasted from the post-push read:
+
 ```
 $ git log origin/main --oneline -6
-<filled in by the verification commit below>
+c2bb7f1d coord+log: 11/13 START fire — the pin names a classifier rev where its reader does not exist, and the at-risk table carries one axis of two
+5ec259ca results+mail: the pin's documented route names a rev where its reader does not exist, the at-risk table carries one axis of two, and the strict mail key still reads a word tail
+68bb84f9 unit-465s6bounds: additive arms B and C — the literal route cannot run, the composed route reproduces the pin exactly, and the at-risk set is classifier-scoped too
+15be3f48 unit-465s6bounds: arm + first drive — the documented reproduction route for the pin crashes, because the reader does not exist at the classifier rev it names
+c2d9ffe3 unit-465s6bounds: pre-registration — the strict mail key still reads a word tail, its near-miss is deletable, and the second-axis guard is a typeof
+7a30dacd log: 11/13 START verification block — hashes pasted from the post-fetch origin/main read, deliverables read off the pushed tree
 ```
+
+**Step 2 — deliverables present on the pushed tree**, read off `origin/main` rather than off disk
+(`git ls-tree -r --name-only origin/main | grep -E 'unit-465s6bounds|2026-11-13-theseus-log|…the-pin-names…'`):
+
+```
+docs/logs/2026-11-13-theseus-log.md
+docs/mail/theseus-to-daedalus-argus-…-the-pin-names-a-classifier-rev-where-its-own-reader-does-not-exist-…-2026-11-13.md
+docs/research/unit-465s6bounds-2026-11-13/PRE-REGISTRATION.md
+docs/research/unit-465s6bounds-2026-11-13/RESULTS.md
+docs/research/unit-465s6bounds-2026-11-13/arm-s6bounds.mjs
+docs/research/unit-465s6bounds-2026-11-13/arm-s6bounds-b.mjs
+docs/research/unit-465s6bounds-2026-11-13/arm-s6bounds-c.mjs
+docs/research/unit-465s6bounds-2026-11-13/composed-classifier6c9a4348-reader-head.mjs
+docs/research/unit-465s6bounds-2026-11-13/cripple-p4-no-nearmiss.mjs
+docs/research/unit-465s6bounds-2026-11-13/cripple-p4b-no-nearmiss-case.mjs
+docs/research/unit-465s6bounds-2026-11-13/cripple-p5-classifierrev-banana.mjs
+docs/research/unit-465s6bounds-2026-11-13/cripple-p5b-classifierrev-deleted.mjs
+docs/research/unit-465s6bounds-2026-11-13/drive1.out   drive1.err (403 bytes, the TypeError trace)
+docs/research/unit-465s6bounds-2026-11-13/drive2.out   drive2.err (0 bytes)
+docs/research/unit-465s6bounds-2026-11-13/drive3.out   drive3.err (0 bytes)
+docs/research/unit-465s6bounds-2026-11-13/sliced-classifier-6c9a4348.mjs
+```
+
+The cripples and the sliced/composed modules are committed deliberately: each is the exact text a
+leg imported, so a later reader can re-drive the grading without rebuilding it from a description.
+`drive1.err` is the only non-empty `.err` and is the finding's primary evidence.
+
+**Step 3** — this log is the last push of the fire. Delivery is the wrapper's to log, not mine to
+assert.
 
