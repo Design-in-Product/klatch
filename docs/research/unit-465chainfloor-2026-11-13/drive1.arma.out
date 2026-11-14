@@ -1,0 +1,40 @@
+unit-465chainfloor arm A — my own arm D under an emptied foil family
+repo=/Users/xian/Development/klatch-worktrees/daedalus
+subject  = docs/research/lib/attested-rounds.mjs@755e489f (crippled: S6_FOILS={} / S6_FOIL_CHAIN=[])
+instrument = docs/research/unit-465routecure-2026-11-13/arm-routecure-d.mjs@d8822cb6 (byte-identical copy, run with --cure-rev 755e489f)
+
+green    A0                           the cripple landed on BOTH export statements at docs/research/lib/attested-rounds.mjs@755e489f
+         S6_FOILS={} true · S6_FOIL_CHAIN=[] true · neither spelling declared true
+green    A0b                          the instrument copy is BYTE-IDENTICAL to docs/research/unit-465routecure-2026-11-13/arm-routecure-d.mjs@d8822cb6
+         bytes=10552 identical=true
+green    A1                           P1 — the EMPTIED module's own selfTest() returns true: all four loops are quantifiers over the declared set
+         selfTest() → true
+HELD     pred:P1                      the emptied live module's own selfTest() returns true
+green    A1b                          …and the prose asserting the family is still present beside the emptied family (Theseus's D2b)
+         the sentence "Both foils are in `S6_FOILS`" present=true
+green    A2                           the copied arm RAN against the crippled tree — a headline exists, so nothing below reads an absent output
+         exit=1 · headline="VERDICT/1 REFUSED legs=8 red=[] refused=[D3,D4]" · stderr bytes=0
+green    A3                           P2 — D0b ('the chain and its witnesses are distinct per link') is GREEN on an empty array
+         D0b → green · line="green    D0b                        the chain and its witnesses are distinct per link — nested foils, one case each"
+HELD     pred:P2                      arm D's D0b leg is green under an empty chain
+green    A4                           P3 — ZERO per-link legs are emitted: the D1/D1b loop is bounded by CHAIN.length
+         per-link legs=0 []
+HELD     pred:P3                      arm D emits zero legs matching /^D1b?-/
+green    A5                           P4 — the instrument reports NO RED in the state §4 reaches: red=[]
+         red=[] from "VERDICT/1 REFUSED legs=8 red=[] refused=[D3,D4]"
+HELD     pred:P4                      arm D's headline carries red=[]
+green    A6                           P5 — D3 and D4 are REFUSED, and their detail is the SAME string a non-landing patch yields
+         D3 → REFUSED · D4 → REFUSED · the published detail for both is "leg declared a refusal", which is what selfTestUnder emits for "the edit did not land" — a dead guard and a failed patch are one row
+HELD     pred:P5                      D3 and D4 are both REFUSED via the edit-did-not-land branch
+green    A7                           P6 — D7 ('the live module is green and the population has not moved') is GREEN under the cripple
+         D7 → green · line="green    D7                         the live module is green and the population has not moved"
+HELD     pred:P6                      D7 is green under the cripple — the reassuring leg is true BECAUSE of the vacuity
+green    A8                           P7 — legs=8
+         legs=8 (predicted 8: D0 D0b D3 D4 D5 D6 D7 D8)
+HELD     pred:P7                      arm D publishes legs=8 under the empty chain
+green    A9                           CONTROL: the same arm copy against an UNCRIPPLED lib publishes the per-link legs it is missing above
+         per-link legs=4 [D1-separatorTolerant,D1b-separatorTolerant,D1-boundaryFree,D1b-boundaryFree] · headline="VERDICT/0 GREEN legs=12 red=[] refused=[]"
+green    A10                          no gate leg is owed — packages/ and scripts/ clean
+         git status --porcelain packages scripts → ""
+
+VERDICT/0 GREEN legs=13 red=[] refused=[] preds=7 refuted=[]
