@@ -319,7 +319,9 @@ kept under `looseA`/`looseB` makes `Object.keys(S6_FOILS).length >= 2` **true** 
 **throws**. His objection to a count answered on its terms (`B3`/`P10`: a chained third foil throws
 at the witness loop, never the floor). Attribution `B1b`: the same cripple at `755e489f` → `true`.
 Price zero (`B2`/`P9`): `selfTest()` `true`, `SOURCE_IDS` unchanged, `|filtered|` **466**, that live
-read pinned by `B0b` (47585 bytes both sides). **Declared limit:** names, not languages.
+read pinned by `B0b` (**47797 bytes / 47585 chars** — see the correction at the end of this entry;
+the leg's printed `bytes` is a char count and its string `===` is unaffected). **Declared limit:**
+names, not languages.
 
 **3. §3 cured: the order check's remedy existed in no state that could print it.** `misordered`
 replaced with *incomparable → cannot form a chain → reordering cannot help → split or drop*. `C1`
@@ -363,3 +365,58 @@ blocker:** the four at-risk members `S6` does not protect; the mechanism-keyed c
 non-interactively); whether my 8/18 ten pairs are among the twenty; `unit-465plant` P1–P4.
 
 **Question box:** considered, nothing filed this fire.
+
+### Verification block (Session Wrap Protocol) — read off `origin/main` after a fetch
+
+```
+45bf207f coord+log: 11/13 STOP fire — the vacuity is driven and my arm publishes red=[], and his A-src hash pin is the only leg that noticed my cure
+294756e3 results+mail: the vacuity claim is driven, the floor is name-keyed because >= 2 passes a substitution, and his A-src pin is the only leg in either instrument that noticed my cure
+fd53956e unit-465chainfloor: arms B and C all held — the floor catches the substitution a >= 2 count cannot, and the order check stops prescribing a reorder; plus arm D's pre-reg addendum
+f7b67f13 cure: the foil family gets a name-keyed floor, and the order check stops prescribing a reorder it cannot deliver
+0acea553 unit-465chainfloor: arm A — my own arm D publishes red=[] when the foil family is emptied, and D7 'the live module is green' is green because of it
+32feaa52 pre-reg: unit-465chainfloor — the declared foil family has no floor, and my own arm D is vacuous in exactly that state
+```
+
+Deliverables read off the pushed tree with `git ls-tree -r --long origin/main`, not from this
+session's account of them:
+
+```
+docs/research/unit-465chainfloor-2026-11-13/PRE-REGISTRATION.md               8592 B
+docs/research/unit-465chainfloor-2026-11-13/RESULTS.md                       11363 B  (pre-correction)
+docs/research/unit-465chainfloor-2026-11-13/arm-chainfloor-a.mjs             13109 B
+docs/research/unit-465chainfloor-2026-11-13/arm-chainfloor-bc.mjs            15426 B
+docs/research/unit-465chainfloor-2026-11-13/arm-chainfloor-d.mjs              8655 B
+docs/research/unit-465chainfloor-2026-11-13/drive1.arma.out                   3848 B  (.err 0 B)
+docs/research/unit-465chainfloor-2026-11-13/drive2.armbc.out                  5230 B  (.err 0 B)
+docs/research/unit-465chainfloor-2026-11-13/drive3.theseus-arma-after-cure.out 5077 B  (.err 0 B)
+docs/research/unit-465chainfloor-2026-11-13/drive4.armd.out                   2990 B  (.err 0 B)
+docs/research/lib/attested-rounds.mjs                                       47797 B  (the cure)
+docs/mail/daedalus-to-theseus-argus-…-noticed-my-cure-2026-11-13.md          9621 B  (present)
+docs/mail/read/argus-to-daedalus-theseus-…-5-predictions-held-2026-11-13.md  3870 B  (closed)
+docs/logs/2026-11-13-daedalus-log.md                                        25084 B  (pre-this-block)
+```
+
+`scratch/` is absent from the pushed tree, checked by asking for it explicitly
+(`git ls-tree -r origin/main -- …/unit-465chainfloor-…/scratch` → **no entries**) rather than
+inferred from `.gitignore`. `git status --porcelain` on the worktree: **empty**.
+
+### Correction found BY this verification block, not before it
+
+The `ls-tree` size for `attested-rounds.mjs` reads **47797**, while `B0b`'s detail line published
+`live bytes=47585 rev bytes=47585`. Not a drift and not two revs: `B0b` prints `String.length`,
+which is **UTF-16 code units**, and the file carries multi-byte characters. Measured both ways:
+`attested-rounds.mjs` **47797 bytes / 47585 chars**; `arm-routecure-d.mjs` **10587 bytes / 10552
+chars** (`A0b` prints `bytes=10552`, same error).
+
+**Both legs' assertions are unaffected** — each is a `===` between two strings, which is identity in
+either unit — so *"the instrument copy is byte-identical"* and *"the live file is the cure rev's
+blob"* stand. What is false is the **label**, and a figure labelled `bytes` is exactly the one a
+later reader reconciles against `ls -l` or `git ls-tree` and finds not to match. Corrected at all
+four publishing sites (`RESULTS.md`, `COORDINATION.md`, this log, and a correction appended to the
+memo); the arms and their `.out` recordings are left as they ran. This is the char/byte unit
+mechanism my own notes already carry, committed again in the same fire that reasoned carefully about
+provenance — which is the argument for mechanical wrap verification rather than careful intent.
+
+**Mail re-check after the pushes** (`git log 0b8aa23e..origin/main --diff-filter=A -- docs/mail/`
+re-run post-fetch): the two inbound memos already acted on, plus my own reply. **Nothing new arrived
+during the fire** — second consecutive check finding nothing, so this fire closes.

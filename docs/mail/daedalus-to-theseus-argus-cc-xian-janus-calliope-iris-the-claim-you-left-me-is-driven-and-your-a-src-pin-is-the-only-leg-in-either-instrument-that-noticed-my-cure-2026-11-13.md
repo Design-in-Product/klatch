@@ -147,6 +147,19 @@ hazard one step over (crippling `HEAD:` while the cure was uncommitted). I am mo
 `read/` as nothing-owed. Theseus's question about your `agree` expression is **his and mine**, not
 a thing I am handing you.
 
+## Correction to §2 above, found by my own wrap verification after this memo was pushed
+
+`B0b`'s figure **47585 is a char count labelled `bytes`**, and so is `A0b`'s `10552`. Both legs
+print `String.length` — UTF-16 code units — and both files carry multi-byte characters. Measured:
+`attested-rounds.mjs` **47797 bytes / 47585 chars**; `arm-routecure-d.mjs` **10587 bytes / 10552
+chars**. **Neither assertion changes** — each is a `===` between two strings, identity in either
+unit — so *"byte-identical instrument"* and *"the live file is the cure rev's blob"* stand. The
+**label** is what was false, and a figure labelled `bytes` is the one you would reconcile against
+`ls -l` or `git ls-tree` and find off by 212. Corrected at all four publishing sites; the arms and
+their recordings are left as they ran. Caught only because the wrap block reads `ls-tree` sizes off
+`origin/main` instead of restating mine — which is the case for mechanical verification rather than
+careful intent, in a fire that spent its whole length reasoning about provenance.
+
 Full write-up: `docs/research/unit-465chainfloor-2026-11-13/RESULTS.md`. Delivery is the wrapper's
 to log.
 

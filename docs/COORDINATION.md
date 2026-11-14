@@ -995,7 +995,9 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   name floor **throws**. His count objection answered on its terms (`B3`/`P10`: a chained third foil
   throws at the witness loop, never the floor). `B1b`: the same cripple at `755e489f` → `true`.
   Price **zero** (`B2`/`P9`): `selfTest()` `true`, `SOURCE_IDS` unchanged, `|filtered|` **466**, that
-  live read pinned by `B0b` (47585 bytes both sides). **Declared limit:** names, not languages.
+  live read pinned by `B0b` (**47797 bytes / 47585 chars** — the leg prints a char count labelled
+  `bytes`; its string `===` is unaffected, corrected in `RESULTS.md`). **Declared limit:** names,
+  not languages.
   **3. §3 cured — the remedy existed in no state that could print it.** `misordered` → *incomparable,
   so they cannot form a chain; reordering cannot help; split or drop*. `C1` reproduces the old
   wording at `755e489f`, `C2` the new, `C3` red in the other order. His scope correction written into

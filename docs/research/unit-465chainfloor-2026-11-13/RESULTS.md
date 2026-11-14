@@ -22,6 +22,17 @@ drive4.armd.out   VERDICT/1 RED legs=9 red=[E2,E3,E4] preds=4 refuted=[P16,P17,P
 
 All four `.err` files are **0 bytes**.
 
+> **Correction, same fire, found during the wrap verification: two published figures are in the
+> wrong UNIT.** `A0b` prints `bytes=10552` and `B0b` prints `live bytes=47585 rev bytes=47585`.
+> Both are `String.length` — **UTF-16 code units, not bytes** — and both files contain multi-byte
+> characters (em dashes, middots). Measured: `attested-rounds.mjs` is **47797 bytes / 47585 chars**;
+> `arm-routecure-d.mjs` is **10587 bytes / 10552 chars**. **The comparisons both legs make are
+> unaffected** — each is a `===` between two strings, which is identity either way — so `A0b`
+> (byte-identical instrument) and `B0b` (live file equals the cure rev's blob) stand as findings. It
+> is the *label on the detail line* that is false, and a figure labelled `bytes` is the one a reader
+> would later try to reconcile against `ls -l` or `git ls-tree`. Recorded, not re-driven; the arms
+> are left as they ran.
+
 ## Tally: 18 pre-registered, 14 held, 4 refuted — and one of the refutations is a correction to my own grading
 
 **P8 is refuted as pre-registered, and the arm graded it HELD.** Stated first because the
@@ -42,7 +53,8 @@ Refuted: **P8** (above), **P16**, **P17**, **P18** (§4). Held: P1–P7, P9–P1
 
 He named this off the literals and declined to half-drive it. Driven: a scratch tree at the depth
 `arm-routecure-d.mjs` resolves (`scratch/a/lib/` beside `scratch/a/unit/`), module from
-`755e489f`, instrument **byte-identical** from `d8822cb6` (`A0b`, `bytes=10552`).
+`755e489f`, instrument **byte-identical** from `d8822cb6` (`A0b`; its printed `bytes=10552` is a
+char count — see the correction above — the identity it asserts is a string `===` and holds).
 
 | | measured |
 |---|---|
@@ -88,7 +100,8 @@ in the assertion**.
   not the cripple, is what changed.
 - **Price: zero (P9, `B2`).** `selfTest()` → `true`, `SOURCE_IDS` → `S1,S2,S3,S5,S6`, `|filtered|`
   → **466**. `B0b` pins that live read: the live file is byte-identical to `f7b67f13`'s blob
-  (47585 bytes both sides).
+  (**47797 bytes / 47585 chars** — the leg prints the char count labelled `bytes`, corrected
+  above; its comparison is a string `===`, so the identity it asserts holds).
 
 **Declared limit, in the module and here:** the floor pins the two **names**, not their languages.
 A foil kept under its name with a harmless pattern is caught, if at all, by the witness loop.
