@@ -1,0 +1,56 @@
+          --- pin: 5966f86d; rhs line cap 4, chain depth 3
+  ok      B1  population at the pin reproduces arm A's 20: 20
+          --- each bare-skip site, its loop array, the derivation chain, and the denominator it binds
+          round448-instruments/grade-the-four-list-scorer.mjs
+              @167  RESOLVED   loop over `population` @165
+                      chain=["population","candidates","p","selfDir","all","HERE","SELF_REL","git","REV"] enumerated-in=["all"]
+                      denominator sites bound to the chain: 0
+          round452-instruments/census-the-legacy-id-grammar-and-the-liveness-reader.mjs
+              @126  RESOLVED   loop over `texts` @124
+                      chain=["texts","outs","blob","git","PRE_ROUND_REV","SELF_DIR"] enumerated-in=["outs"]
+                      denominator sites bound to the chain: 1  ** P12 **
+                      denom@136 via `outs`  console.log('Q3  = ' + aliveButUnreadable + ' of ' + outs.length);
+          round452-instruments/census2-reconcile-his-26-and-hand-read-the-drops.mjs
+              @47   RESOLVED   loop over `texts` @46
+                      chain=["texts","all","blob","git","PRE_ROUND_REV","n","SELF_DIR","byId"] enumerated-in=["all"]
+                      denominator sites bound to the chain: 1  ** P12 **
+                      denom@55 via `all`  console.log(`R1  mine, whole corpus            = ${aliveUnreadable.length} of ${all.length}`);
+          round452-instruments/no-id-class-separates-and-the-liveness-reader-is-cured.mjs
+              @248  RESOLVED   loop over `texts` @247
+                      chain=["texts","outsAll","git","PRE_ROUND_REV","n","SELF_DIR","weight"] enumerated-in=["outsAll"]
+                      denominator sites bound to the chain: 0
+          round462-instruments/grade-the-pred-half-refusal.mjs
+              @184  UNRESOLVED nearest enclosing block is a function
+              @187  UNRESOLVED nearest enclosing block is a function
+              @340  UNRESOLVED nearest enclosing block is a function
+  ok      B2  declaration RHS joins that hit the 4-line cap without finding a `;`: 11
+  ok      B3  bare-skip sites: 7 total · RESOLVED 4 · of those, denominator bound to the chain 2 · chain reaches an enumeration 4
+  LANDED  R1  the `texts` loop resolves to `outs` through the chain and `outs` is an enumerated binding: ["census-the-legacy-id-grammar-and-the-liveness-reader.mjs@126 chain=texts|outs|blob|git|PRE_ROUND_REV|SELF_DIR","census2-reconcile-his-26-and-hand-read-the-drops.mjs@47 chain=texts|all|blob|git|PRE_ROUND_REV|n|SELF_DIR|byId","no-id-class-separates-and-the-liveness-reader-is-cured.mjs@248 chain=texts|outsAll|git|PRE_ROUND_REV|n|SELF_DIR|weight"]
+  LANDED  R3  the chain walk does NOT bind all 4 RESOLVED sites — residue is declared, not zero: bound 2, unbound 2 ["grade-the-four-list-scorer.mjs@167 loop=population","no-id-class-separates-and-the-liveness-reader-is-cured.mjs@248 loop=texts"]
+          --- HAND VERIFICATION: verbatim slices for every P12 positive, read at the pin
+          round452-instruments/census-the-legacy-id-grammar-and-the-liveness-reader.mjs
+              loop   @124  for (const [path, text] of texts) {
+              drop   @126  if (v.ok !== true) continue;
+              denom  @136  console.log('Q3  = ' + aliveButUnreadable + ' of ' + outs.length);
+              slices match the pinned source: true
+          round452-instruments/census2-reconcile-his-26-and-hand-read-the-drops.mjs
+              loop   @46  for (const [path, text] of texts) {
+              drop   @47  if (readVerdict(text).ok !== true) continue;
+              denom  @55  console.log(`R1  mine, whole corpus            = ${aliveUnreadable.length} of ${all.length}`);
+              slices match the pinned source: true
+  ok      B4  every published P12 positive's three slices (loop, drop, denominator) re-read from the pinned source and match: 2 of 2
+  ok      B5  CORRECTED P12 over the pinned population: 2 of 20 members ["round452-instruments/census-the-legacy-id-grammar-and-the-liveness-reader.mjs","round452-instruments/census2-reconcile-his-26-and-hand-read-the-drops.mjs"] (3 sites excluded from both halves as not resolvable at the site)
+  LANDED  R2  over his 12 the chain-following key returns to the hand-verified 2, both the round452 pair: 2 ["round452-instruments/census-the-legacy-id-grammar-and-the-liveness-reader.mjs","round452-instruments/census2-reconcile-his-26-and-hand-read-the-drops.mjs"]
+  ok      B6  arm A's token-identity key re-run here over the same 4 RESOLVED sites: 0 sites bind (chain-following key: 2)
+  LANDED  R5  the two keys disagree on every positive — token identity 0, chain 2: total disagreement, not marginal
+          --- R4: the NEITHER cell — a fall-through bucket, characterised rather than trusted
+          round451-instruments/settle-the-subset-question-on-real-exemplars.mjs
+              reader calls=1  `.ok` tests=0  .refusal mentions=0  bare skips=0
+              → NEVER TESTS `.ok` — a third fate: the refusal is neither declared nor dropped at a tested site
+          unit-465headpop-2026-11-14/arm-headpop-a.mjs
+              reader calls=1  `.ok` tests=2  .refusal mentions=0  bare skips=0
+              → tests `.ok` but neither skips bare nor names the refusal
+  ok      B7  NEITHER cell members: 2; of those, calling a reader and NEVER testing `.ok`: 1 ["round451-instruments/settle-the-subset-question-on-real-exemplars.mjs"]
+  LANDED  R4  the NEITHER cell is not clean — at least one member calls a reader and never tests `.ok`, so the published cross-tab mislabels a third fate as the absence of a problem: 1 of 2
+  ok      B-gate  git status --porcelain packages scripts docs/research/lib → ""
+VERDICT/0 GREEN legs=8 red=[] refused=[] preds=5 refuted=[] prefused=[]
