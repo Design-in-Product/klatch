@@ -1,0 +1,25 @@
+  ok      A-src  live=8310290fda3f a00c6fe8=8310290fda3f identical=true
+  ok      A-marker  floor loop occurrences in a00c6fe8 = 1 (want exactly 1)
+  ok      A-tail  floor message 'Declared: [...]' tail occurrences = 1 (want exactly 1)
+  ok      A0  uncrippled sourced copy: selfTest() → true
+  ok      E1  both removed: threw=true
+  ok      E2  both removed, message names: separatorTolerant=true boundaryFree=false
+  LANDED  P9  his CORRECTED grade reproduces: the emptying cripple throws and the message names exactly one spelling
+          E msg: attested-rounds.mjs selfTest: S6_FOILS no longer declares separatorTolerant as a RegExp — the rejected spellings are the family's whole point and every check below quantifies over them, so an empty or substituted family passes vacuously. Declared: []
+  ok      R1a  boundaryFree removed: threw=true
+  ok      R1b  boundaryFree removed, message names BOTH: separatorTolerant=true boundaryFree=true
+          R1 msg: attested-rounds.mjs selfTest: S6_FOILS no longer declares boundaryFree as a RegExp — the rejected spellings are the family's whole point and every check below quantifies over them, so an empty or substituted family passes vacuously. Declared: [separatorTolerant]
+  ok      R2a  separatorTolerant removed: threw=true
+  ok      R2b  separatorTolerant removed, message names BOTH: separatorTolerant=true boundaryFree=true
+          R2 msg: attested-rounds.mjs selfTest: S6_FOILS no longer declares separatorTolerant as a RegExp — the rejected spellings are the family's whole point and every check below quantifies over them, so an empty or substituted family passes vacuously. Declared: [boundaryFree]
+  ok      R2c  R2's throw is the FIRST loop iteration (names separatorTolerant as the miss) = true
+  LANDED  P10  his stated REASON is refuted: in both one-removed states a single throw names BOTH spellings
+  LANDED  P11  refuted on the reason's own terms: a FIRST-miss throw names both spellings
+  ok      A-carrier1  R1's second spelling arrives in the 'Declared: [...]' tail = true
+  ok      A-carrier2  R2's second spelling arrives in the 'Declared: [...]' tail = true
+  LANDED  P12  the mechanism is the `Declared: [Object.keys(S6_FOILS)]` tail, which the stated reason does not mention
+  ok      A-why  the emptied state names one spelling because its tail is EMPTY: 'Declared: []' = true
+  LANDED  P13  the true cause of his verdict is the emptied tail, not the loop's first-miss control flow
+  ok      A-gate  git status --porcelain docs/research/lib packages scripts → ""
+  ok      A-gate2  live module unchanged by this arm: 8310290fda3f → 8310290fda3f
+VERDICT/0 GREEN legs=16 red=[] refused=[] preds=5 refuted=[] prefused=[]

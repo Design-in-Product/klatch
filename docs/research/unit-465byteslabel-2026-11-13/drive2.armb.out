@@ -1,0 +1,193 @@
+  ok      B-store1  docs/research/lib/attested-rounds.mjs@f7b67f13: cat-file -s=47797 Buffer.byteLength=47797 (two independent byte reads agree)
+  ok      B-store2  docs/research/unit-465routecure-2026-11-13/arm-routecure-d.mjs@d8822cb6: cat-file -s=10587 Buffer.byteLength=10587
+  ok      B1  attested-rounds.mjs@f7b67f13: bytes=47797 chars=47585 (he published 47797 / 47585)
+  ok      B2  arm-routecure-d.mjs@d8822cb6: bytes=10587 chars=10552 (he published 10587 / 10552)
+  LANDED  P8  his two re-measured byte/char pairs are both right, measured under his own revs
+  ok      B-delta  multi-byte overhead: attested-rounds 212 bytes, arm-routecure-d 35 bytes
+  ok      B-pop  population at HEAD: 462 .mjs · 3268 .md · 1895 recordings
+          prose sites naming 47585/10552: 18 (corrected=12 uncorrected=6)
+            CORRECTED docs/COORDINATION.md:999  live read pinned by `B0b` (**47797 bytes / 47585 chars** — the leg prints a char count labelled
+            CORRECTED docs/logs/2026-11-13-daedalus-log.md:322  read pinned by `B0b` (**47797 bytes / 47585 chars** — see the correction at the end of this entry;
+            BARE      docs/logs/2026-11-13-daedalus-log.md:406  `live bytes=47585 rev bytes=47585`. Not a drift and not two revs: `B0b` prints `String.length`,
+            CORRECTED docs/logs/2026-11-13-daedalus-log.md:408  `attested-rounds.mjs` **47797 bytes / 47585 chars**; `arm-routecure-d.mjs` **10587 bytes / 10552
+            CORRECTED docs/logs/2026-11-13-daedalus-log.md:409  chars** (`A0b` prints `bytes=10552`, same error).
+            BARE      docs/mail/daedalus-to-theseus-argus-cc-xian-janus-calliope-iris-the-claim-you-left-me-is-driven-and-your-a-src-pin-is-the-only-leg-in-either-instrument-that-noticed-my-cure-2026-11-13.md:79  (byte-identical to the cure rev, 47585 both sides). **Declared limit:** the floor pins the two
+            CORRECTED docs/mail/daedalus-to-theseus-argus-cc-xian-janus-calliope-iris-the-claim-you-left-me-is-driven-and-your-a-src-pin-is-the-only-leg-in-either-instrument-that-noticed-my-cure-2026-11-13.md:152  `B0b`'s figure **47585 is a char count labelled `bytes`**, and so is `A0b`'s `10552`. Both legs
+            CORRECTED docs/mail/daedalus-to-theseus-argus-cc-xian-janus-calliope-iris-the-claim-you-left-me-is-driven-and-your-a-src-pin-is-the-only-leg-in-either-instrument-that-noticed-my-cure-2026-11-13.md:154  `attested-rounds.mjs` **47797 bytes / 47585 chars**; `arm-routecure-d.mjs` **10587 bytes / 10552
+            CORRECTED docs/research/unit-465byteslabel-2026-11-13/PRE-REGISTRATION.md:12  > `B0b`'s figure **47585 is a char count labelled `bytes`**, and so is `A0b`'s `10552`. Both legs
+            BARE      docs/research/unit-465byteslabel-2026-11-13/PRE-REGISTRATION.md:34  figure**: at `a00c6fe8`, no `.md` file states `47585` or `10552` as a *byte* count without an
+            CORRECTED docs/research/unit-465byteslabel-2026-11-13/PRE-REGISTRATION.md:64  `B0b` read is **47797 bytes / 47585 chars**, and `arm-routecure-d.mjs` at `d8822cb6` is **10587
+            CORRECTED docs/research/unit-465byteslabel-2026-11-13/PRE-REGISTRATION.md:65  bytes / 10552 chars**. Measured under **his** key (his revs, his reader's notion of the file), not
+            BARE      docs/research/unit-465byteslabel-2026-11-13/PRE-REGISTRATION.md:74  the two reported numbers. Keying it on `47585`/`10552` would find exactly the two instances
+            BARE      docs/research/unit-465chainfloor-2026-11-13/RESULTS.md:26  > wrong UNIT.** `A0b` prints `bytes=10552` and `B0b` prints `live bytes=47585 rev bytes=47585`.
+            CORRECTED docs/research/unit-465chainfloor-2026-11-13/RESULTS.md:28  > characters (em dashes, middots). Measured: `attested-rounds.mjs` is **47797 bytes / 47585 chars**;
+            CORRECTED docs/research/unit-465chainfloor-2026-11-13/RESULTS.md:29  > `arm-routecure-d.mjs` is **10587 bytes / 10552 chars**. **The comparisons both legs make are
+            BARE      docs/research/unit-465chainfloor-2026-11-13/RESULTS.md:56  `755e489f`, instrument **byte-identical** from `d8822cb6` (`A0b`; its printed `bytes=10552` is a
+            CORRECTED docs/research/unit-465chainfloor-2026-11-13/RESULTS.md:103  (**47797 bytes / 47585 chars** — the leg prints the char count labelled `bytes`, corrected
+  RED     B3  prose sites stating 47585/10552 with no char/correction wording (excluding this unit's own files): 4
+  ok      B3b  distinct publishing FILES carrying the figures: 4 → docs/COORDINATION.md, docs/logs/2026-11-13-daedalus-log.md, docs/mail/daedalus-to-theseus-argus-cc-xian-janus-calliope-iris-the-claim-you-left-me-is-driven-and-your-a-src-pin-is-the-only-leg-in-either-instrument-that-noticed-my-cure-2026-11-13.md, docs/research/unit-465chainfloor-2026-11-13/RESULTS.md
+  REFUTED P1  his correction reached every prose site: no .md states either figure as a byte count without correction wording
+  ok      B4  recordings still printing the uncorrected 'bytes=' label: 2 → docs/research/unit-465chainfloor-2026-11-13/drive1.arma.out:9, docs/research/unit-465chainfloor-2026-11-13/drive2.armbc.out:8
+  LANDED  P2  the recordings still carry the uncorrected label — left as they ran, which is correct discipline, NOT a finding
+          K1 (same-line bytes + .length): 90 total, 90 outside this unit
+            DEFECT-POP code    docs/research/round381-instruments/grade-the-history-clause-and-the-nesting-conjunct.mjs:178  `${headSrc?.length ?? 0} bytes`,
+            DEFECT-POP code    docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs:215  const bytesConjunctPresent = n3Conjuncts.filter((c) => c === BYTES_CONJUNCT).length === 1;
+            DEFECT-POP code    docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs:253  `${n3Conjuncts.length}. \`${BYTES_CONJUNCT}\` is present exactly once ` +
+            DEFECT-POP code    docs/research/round403-instruments/live-census-over-all-fifteen.mjs:157  return { ...p, attested, reachable: blob !== null, bytes: blob === null ? null : blob.length, hits };
+            DEFECT-POP code    docs/research/round404-instruments/grade-the-three-cures.mjs:101  check('P2', 'the pinned object is REACHABLE and its anchors resolve in order', pinBlob ? ordered(pinBlob).ok : 'UNREACHABLE', true
+            DEFECT-POP code    docs/research/round419-instruments/drive-his-418.mjs:45  say(`exit: ${r.status}   stdout bytes: ${(r.stdout || '').length}   stderr bytes: ${(r.stderr || '').length}`);
+            DEFECT-POP code    docs/research/round419-instruments/fetch-changelog.mjs:38  console.log(`FETCH: ok, ${fetched.length} bytes written to ${OUT}`);
+            DEFECT-POP code    docs/research/round419-instruments/grade-the-417-repairs.mjs:115  gate(0, 'the pre-repair blob is non-empty', old.length > 0, `${old.length} bytes`);
+            DEFECT-POP code    docs/research/round420-instruments/drive-his-419.mjs:120  say(`exit: ${r.status}  stdout bytes: ${(r.stdout || '').length}  stderr bytes: ${(r.stderr || '').length}`);
+            DEFECT-POP code    docs/research/round421-instruments/grade-the-420-repair.mjs:126  gate('the OLD spelling was extracted from the derived rev, non-empty', OLD_SRC.length > 0, `${OLD_SRC.length} bytes`);
+            DEFECT-POP code    docs/research/round424-instruments/the-resolver-reads-one-pattern-per-body.mjs:86  say(`  sliced ${slice.length} bytes of his resolver, executed as written (not re-typed)`);
+            DEFECT-POP code    docs/research/round425-instruments/a-crash-cannot-print-separates.mjs:109  gate('…and subject A is readable', A_SRC_PIN !== null, A_REL_PIN ? `${A_REL_PIN} — ${A_SRC_PIN?.length ?? 0} bytes` : '(no path)')
+            DEFECT-POP code    docs/research/round425-instruments/position-vs-property-confusion-matrix.mjs:77  curedSlice !== null, curedSlice === null ? '(no match)' : `${curedSlice.split('\n').length} lines, ${curedSlice.length} bytes`);
+            DEFECT-POP code    docs/research/round425-instruments/position-vs-property-confusion-matrix.mjs:163  oldSelector !== null, oldSelector === null ? '(no match)' : `${oldSelector.split('\n').length} lines, ${oldSelector.length} bytes`
+            DEFECT-POP code    docs/research/round425-instruments/position-vs-property-confusion-matrix.mjs:288  gate('…and that file is readable and non-empty', POP_SRC.length > 0, `${POP_REL} — ${POP_SRC.length} bytes`);
+            DEFECT-POP code    docs/research/round426-instruments/a-published-sentence-is-not-its-discriminator.mjs:126  for (const [k, v] of Object.entries(SENT)) say(`  sentence   ${k.padEnd(16)} ${v.split('\n').length} lines, ${v.length} bytes`);
+            DEFECT-POP code    docs/research/round426-instruments/a-published-sentence-is-not-its-discriminator.mjs:127  for (const [k, v] of Object.entries(DISC)) say(`  discrimin. ${k.padEnd(16)} ${v.split('\n').length} lines, ${v.length} bytes`);
+            DEFECT-POP code    docs/research/round426-instruments/a-retyped-constant-from-another-file-is-not-a-pin.mjs:93  gate(`evaluated ${k} (${v.length} bytes)`, typeof v === 'string' && v.length > 0,
+            DEFECT-POP code    docs/research/round426-instruments/a-retyped-constant-from-another-file-is-not-a-pin.mjs:210  gate('that rev\'s blob of the subject is readable', OLD_B.length > 0, `${OLD_B.length} bytes`);
+            DEFECT-POP code    docs/research/round427-capability-test-pointer/the-history-window-is-200-messages-not-the-file.mjs:189  const bytes = readFileSync(abs).length;
+            DEFECT-POP code    docs/research/round434-instruments/grade-the-two-cures-and-the-prose.mjs:71  `slice === blob at ${PRE_REV}: ${blob !== null && blob === sliceText} · bytes ${sliceText.length}`
+            DEFECT-POP code    docs/research/round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs:95  `slice === blob at ${PRE_REV}: ${blob !== null && blob === sliceText} · bytes ${sliceText.length}`
+            DEFECT-POP code    docs/research/round436-instruments/grade-the-cures-against-a-runtime-oracle.mjs:349  const sameBytes = subj.startsWith(HEAD_TEXT) && subj.slice(HEAD_TEXT.length, -1) === BODY(ret);
+            DEFECT-POP code    docs/research/round436-instruments/grade-the-cures-against-a-runtime-oracle.mjs:361  `subject text identical to conventionOf's on ${rows.filter((r) => r.sameBytes).length}/${rows.length} cells · `
+            DEFECT-POP code    docs/research/round436-instruments/grade-the-cures-against-a-runtime-oracle.mjs:367  rows.every((r) => r.sameBytes) && refusals.length === 0
+            DEFECT-POP code    docs/research/round451-instruments/strip-zwsp.mjs:11  console.log(`removed=${n} remaining=${after.split(zwsp).length - 1} bytes ${before.length}->${after.length}`);
+            DEFECT-POP code    docs/research/round454-instruments/probe0-why-449s-two-reader-slices-return-null.mjs:81  out.bytes = src.length;
+            DEFECT-POP code    docs/research/round454-instruments/probe0-why-449s-two-reader-slices-return-null.mjs:97  out.stmtBytes = stmt.length;
+            DEFECT-POP code    docs/research/round455-instruments/dispose-of-w10-and-repair-the-lifter-it-needs.mjs:220  return { ...a, occurrences: span?.occurrences ?? 0, spanBytes: span?.raw.length ?? 0, newText: n.text, newWhy: n.why, oldText: o }
+            DEFECT-POP code    docs/research/round457-instruments/grade-recording-completeness-across-the-whole-corpus.mjs:236  `CONTROL for the slicer: readTail slice ${sliceOk ? `${tailSrc.length} bytes` : 'REFUSED'}; `
+            DEFECT-POP comment docs/research/unit-464absorb-2026-10-31/drive.mjs:99  // Both figures in BYTES. `String.length` is UTF-16 code units and this stdout carries §, —
+            DEFECT-POP code    docs/research/unit-464bucket-2026-11-01/grade-his-armreach-gate.mjs:77  `git status --porcelain -- packages/ scripts/ is ${liveDirty.length} bytes in the LIVE tree`);
+            DEFECT-POP code    docs/research/unit-464bucket-2026-11-01/grade-his-attrib-gate.mjs:102  `git status --porcelain -- packages/ scripts/ is ${liveDirty.length} bytes in the LIVE tree`);
+            DEFECT-POP comment docs/research/unit-464bucket-2026-11-01/regrade-saturation.mjs:12  // are genuinely upstream of the verdict figure. `bytes` is `src.length`: a different quantity,
+            DEFECT-POP code    docs/research/unit-464bucket-2026-11-01/regrade-saturation.mjs:157  `${mv('comments').padEnd(9)} ${mv('bytes').padEnd(15)} ${under.length ? under.join(' / ') : '(none)'}`);
+            DEFECT-POP code    docs/research/unit-464bucket-2026-11-01/regrade-saturation.mjs:167  console.log(`  witnesses once \`bytes\` is dropped:              ${propertyWitnesses.join(', ') || '(none)'} (${propertyWitnesses.
+            DEFECT-POP code    docs/research/unit-464cell-2026-11-02/grade-cell.mjs:99  `my HAND-COUNTS-CONJ.tsv is byte-identical at HEAD and in the worktree (${myHead.length} bytes), so the input graded below is the 
+            DEFECT-POP code    docs/research/unit-464class-2026-11-02/classify-and-grade.mjs:185  `git status --porcelain -- packages/ scripts/ is ${porcelain.length} bytes`);
+            DEFECT-POP code    docs/research/unit-464class-2026-11-02/enumerate-legs.mjs:250  `git status --porcelain -- packages/ scripts/ is ${porcelain.length} bytes`);
+            DEFECT-POP code    docs/research/unit-464conj-2026-11-03/grade-conj.mjs:74  `my HAND-P5P6.tsv is byte-identical at HEAD and in the worktree (${myHead.length} bytes), so what is graded below is what was file
+            DEFECT-POP code    docs/research/unit-464conj-2026-11-03/occupy-conj-history.mjs:114  refuse('GLIFT', `${MY_READER} differs between HEAD and the worktree (${readerSrc.length} vs ${readerWork.length} bytes) — the read
+            DEFECT-POP code    docs/research/unit-464conj-2026-11-03/occupy-conj-history.mjs:138  `spanOf/countOps lifted from ${MY_READER} at HEAD (blob byte-identical to the worktree, ${readerSrc.length} bytes): ${region.split
+            DEFECT-POP code    docs/research/unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:80  `git status --porcelain -- packages/ scripts/ is ${liveDirty.length} bytes in the LIVE tree`);
+            DEFECT-POP comment docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:4  //   `bytes` is `src.length`, so the leg that distinguishes "the read could not express the
+            DEFECT-POP code    docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:109  `git status --porcelain -- packages/ scripts/ is ${liveDirty.length} bytes in the LIVE tree`);
+            DEFECT-POP code    docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:107  `git status --porcelain -- packages/ scripts/ is ${liveDirty.length} bytes in the LIVE tree`);
+            DEFECT-POP code    docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:167  bytes: src.length,
+            DEFECT-POP code    docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:242  console.log(`   UPSTREAM figures (raw/comments/bytes) that moved:  ${upstreamMoved.length ? upstreamMoved.map((r) => r.label).join
+            DEFECT-POP code    docs/research/unit-464dir-2026-11-02/across-one-operator-v2.mjs:169  gate('GNODEPEND', g(['status', '--porcelain', '--', 'packages/', 'scripts/']).length === 0, 'git status --porcelain -- packages/ s
+            DEFECT-POP code    docs/research/unit-464dir-2026-11-02/across-one-operator.mjs:145  gate('GNODEPEND', g(['status', '--porcelain', '--', 'packages/', 'scripts/']).length === 0, 'git status --porcelain -- packages/ s
+            DEFECT-POP code    docs/research/unit-464dir-2026-11-02/grade-direction.mjs:122  gate('GHISDIRCLEAN', touched.length === 0, `git status --porcelain over HIS unit dir is ${touched.length} bytes — this unit reads 
+            DEFECT-POP code    docs/research/unit-464dir-2026-11-02/grade-direction.mjs:123  gate('GNODEPEND', g(['status', '--porcelain', '--', 'packages/', 'scripts/']).length === 0, 'git status --porcelain -- packages/ s
+            DEFECT-POP code    docs/research/unit-464dir-2026-11-02/slice-closure.mjs:175  gate('GNODEPEND', status.length === 0, `git status --porcelain -- packages/ scripts/ is ${status.length} bytes`);
+            DEFECT-POP code    docs/research/unit-464dir-2026-11-02/slice-spans.mjs:173  gate('GNODEPEND', status.length === 0, `git status --porcelain -- packages/ scripts/ is ${status.length} bytes`);
+            DEFECT-POP code    docs/research/unit-464drift-2026-10-30/drive.mjs:85  console.log(`DRIVES ${rows.length} recorded · non-empty .err: ${rows.filter((x) => x.errBytes > 0).length}`);
+            DEFECT-POP code    docs/research/unit-464frozen-2026-11-05/drive1-arms.mjs:78  console.log(`   (A7DOC re-derived span: ${span.length} bytes, ends at ${heads.length ? heads[0][0].slice(0, 20) : '(eof)'}; ` +
+            DEFECT-POP code    docs/research/unit-464frozen-2026-11-05/drive1-arms.mjs:123  console.log(`   landed: ${before.length} -> ${after.length} bytes, ${changed.length} line(s) differ` +
+            DEFECT-POP code    docs/research/unit-464frozen-2026-11-05/drive4-anchor.mjs:47  console.log(`   (tail dropped at byte ${m.index}, ${t.length - m.index} bytes removed)`);
+            DEFECT-POP code    docs/research/unit-464frozen-2026-11-05/drive4-anchor.mjs:73  console.log(`   landed: ${before.length} -> ${after.length} bytes`);
+            DEFECT-POP code    docs/research/unit-464frozen-2026-11-05/probe-notes.mjs:58  console.log(`   ${leg.padEnd(11)} ok@${okRow.arm.padEnd(10)} RED@${redRow.arm.padEnd(10)} note ${okRow.note.length}/${redRow.note.
+            DEFECT-POP code    docs/research/unit-464gentry-2026-11-05/drive1-measure.mjs:40  : `tight span (### 2.1g -> ### 2.1h) is ${tight.text.length} bytes over ${tightHeads.length} ` +
+            DEFECT-POP code    docs/research/unit-464gentry-2026-11-05/drive1-measure.mjs:53  : `tight span at gate pin ${GATE_PIN.slice(0, 8)} is ${pinTight.text.length} bytes / sha ` +
+            DEFECT-POP code    docs/research/unit-464gentry-2026-11-05/drive1-measure.mjs:54  `${sha(pinTight.text)}; live is ${tight.text.length} bytes / sha ${sha(tight.text)} — ` +
+            DEFECT-POP code    docs/research/unit-464gentry-2026-11-05/drive3-matrix.mjs:107  rows.push({ arm, pre: drive(PRE, p), post: drive(SUBJECT, p), bytes: mutated.length });
+            DEFECT-POP code    docs/research/unit-464kind-2026-11-05/probe-entrygate.mjs:44  console.log(`  slice = doc[indexOf('### 2.1g') .. indexOf('### 2.1a')]  =  ${entry.length} bytes`);
+            DEFECT-POP code    docs/research/unit-464kind-2026-11-05/probe-entrygate.mjs:54  console.log(`  so the slice is wider than the entry by               : ${entry.length - firstLen} bytes`);
+            DEFECT-POP code    docs/research/unit-464notes-2026-11-05/drive-arms.mjs:101  console.log(`PRE  = git show ${PRE_REV}:<subject>  (${subjectPre.length} bytes)`);
+            DEFECT-POP code    docs/research/unit-464notes-2026-11-05/drive-arms.mjs:102  console.log(`POST = live worktree                  (${subjectPost.length} bytes)`);
+            DEFECT-POP code    docs/research/unit-464order-2026-11-02/grade-order.mjs:409  + `(${want.length} checked, ${bytes(v12)} bytes of fence); absent [${absent.join(',')}]`);
+            DEFECT-POP code    docs/research/unit-464order-2026-11-02/grade-order.mjs:422  `git status --porcelain -- packages/ scripts/ is ${dirty.length} bytes, asserted INSIDE the harness `
+            DEFECT-POP code    docs/research/unit-464prec-2026-11-03/grade-entry-v15.mjs:93  ['SPAN', !span.err, span.err ?? `§2.1g → ${span.end}, ${span.text.length} bytes`],
+            DEFECT-POP code    docs/research/unit-464prec-2026-11-03/grade-entry-v15.mjs:99  : `${baseSpan ? baseSpan.text.length : '—'} bytes at ${ENTRY_REV.slice(0, 8)} vs ${span.err ? '—' : span.text.length} live`],
+            DEFECT-POP code    docs/research/unit-464reach-2026-11-02/grade-reach.mjs:323  check('GNODEPEND', dirty.length === 0, `git status --porcelain -- packages/ scripts/ is ${dirty.length} bytes`);
+            DEFECT-POP code    docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs:107  `git status --porcelain -- packages/ scripts/ is ${liveDirty.length} bytes in the LIVE tree`);
+            DEFECT-POP code    docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs:203  bytes: src.length,
+            DEFECT-POP comment docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs:275  // CURED 2026-11-01 STOP (Theseus's §2). `bytes` was in this union and is `src.length`, which moves
+            DEFECT-POP code    docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs:302  `${bytesOnly.length ? bytesOnly.map((r) => r.label).join(', ') : '(none)'}` +
+            DEFECT-POP code    docs/research/unit-465attestdenial-2026-11-12/grade-the-denial-rekey.mjs:234  console.log(`  M-child   exit=${child.status}  stderrBytes=${(child.stderr ?? '').length}  stdoutBytes=${childOut.length}`);
+            DEFECT-POP comment docs/research/unit-465blanket-2026-11-11/drive.mjs:22  // `body.length` is UTF-16 code units, NOT bytes — the output carries `…`, `—`, `≤`,
+            DEFECT-POP code    docs/research/unit-465blanket-2026-11-11/drive.mjs:27  console.log(`${a}  rc=${r.status}  signal=${r.signal ?? 'none'}  utf8Bytes=${utf8}  chars=${body.length}`);
+            DEFECT-POP code    docs/research/unit-465chainfloor-2026-11-13/arm-chainfloor-a.mjs:129  return { ok: same, detail: `bytes=${armSrc.length} identical=${same}` };
+            DEFECT-POP code    docs/research/unit-465chainfloor-2026-11-13/arm-chainfloor-a.mjs:169  detail: `exit=${run.status} · headline=${JSON.stringify(headline)} · stderr bytes=${(run.stderr || '').length}`,
+            DEFECT-POP code    docs/research/unit-465chainfloor-2026-11-13/arm-chainfloor-bc.mjs:194  return { ok: live === blob, detail: `live bytes=${live.length} rev bytes=${blob.length} identical=${live === blob}` };
+            DEFECT-POP code    docs/research/unit-465declprose-2026-11-08/drive-sweep.mjs:25  `status=${r.status}\nsignal=${r.signal}\nerror=${r.error ? r.error.message : 'none'}\nstarted=${started}\nended=${ended}\nstdout_b
+            DEFECT-POP comment docs/research/unit-465leadcure-2026-11-11/drive.mjs:10  * `body.length` as "bytes" and got 8406 where the file is 8562 — one step from being
+            DEFECT-POP code    docs/research/unit-465migrate-2026-11-06/drive-arms.mjs:174  console.log(`--- stdout (${out.length} bytes) ---`);
+            DEFECT-POP code    docs/research/unit-465migrate-2026-11-06/drive-arms.mjs:176  console.log(`--- stderr (${err.length} bytes) ---`);
+            DEFECT-POP code    docs/research/unit-465recall-2026-11-10/recall-at-typing-commit.mjs:60  console.log(`  sliced ${sliced.length} bytes, ${sliced.split('\n').length} lines, from his line ` +
+            DEFECT-POP code    scripts/measure-marker-floor.mjs:296  `(${((chars / bytes) * 100).toFixed(2)}%), from ${contributing.length} of ${accounting.length} files`);
+            DEFECT-POP code    scripts/measure-marker-floor.mjs:394  report(`every tracked file, raw bytes, no parser (${files.length} files) — enumeration check`, t);
+          K2 (bytes + a char-valued variable): 26 total, 26 outside this unit
+            DEFECT-POP comment docs/research/round385-instruments/grade-the-sentence-against-the-literals.mjs:151  [from] * on those bytes being absent from the working tree would be red on a correct cure — the exact
+            DEFECT-POP code    docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs:436  [bareCount] `mine to carry: the live subject counts ${bareCount(subjectSrc)}, and the same bytes plus one ` +
+            DEFECT-POP code    docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:82  [bare] `same bytes plus ONE comment that names the anchor, the bare anchor reads ${bare(mention)} — ` +
+            DEFECT-POP comment docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs:12  [a] *   Q2b — and a second live conjunct in the same verdict: `bytesIdentical`, my file at my pin
+            DEFECT-POP comment docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs:57  [a] * their LIVE copies. A `git show` at a pin returns the same bytes in any clone; a `readFileSync`
+            DEFECT-POP comment docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs:128  [a] * for. It is now a digest of the PINNED bytes, which is what the recorded drive was actually
+            DEFECT-POP code    docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs:136  [a] `${hisPinnedBytesAsRecorded}), driven at \`${DRIVE_PIN}\` in a DETACHED worktree whose ` +
+            DEFECT-POP code    docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs:254  [bytesConjunctPresent] `(${bytesConjunctPresent}) and is defined as \`his390AtPin === his390Live\` (${bytesDefn}) — ` +
+            DEFECT-POP code    docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs:265  [bytesConjunctPresent] bytesConjunctPresent && bytesDefn && myCureMovedIt && hisSentencePresent && quoteControl,
+            DEFECT-POP code    docs/research/round403-instruments/live-census-over-all-fifteen.mjs:256  [hits] console.log(`    ${p.reachable ? 'REACHABLE' : 'UNREACHABLE'} ${p.rev} · ${p.bytes ?? '-'} bytes · needle hits ${p.hits 
+            DEFECT-POP comment docs/research/round427-capability-test-pointer/the-history-window-is-200-messages-not-the-file.mjs:28  [bytes] *     (`db/queries.ts`), and `buildPanelHistory` filters on `m.content`. So artifact bytes are in
+            DEFECT-POP code    docs/research/round427-capability-test-pointer/the-history-window-is-200-messages-not-the-file.mjs:192  [bytes] measurements.push({ file: f, bytes, refused: parsed.why });
+            DEFECT-POP code    docs/research/round427-capability-test-pointer/the-history-window-is-200-messages-not-the-file.mjs:200  [bytes] bytes,
+            DEFECT-POP code    docs/research/round427-capability-test-pointer/the-history-window-is-200-messages-not-the-file.mjs:257  [bytes] lines.push(`  ${m.file} — ${m.bytes} bytes on disk`);
+            DEFECT-POP code    docs/research/round427-capability-test-pointer/the-history-window-is-200-messages-not-the-file.mjs:268  [bytes] lines.push(`    artifact rows excluded from history content: ${m.bytes - m.historyCharsWhole} bytes of the file are not 
+            DEFECT-POP code    docs/research/round427-capability-test-pointer/the-history-window-is-200-messages-not-the-file.mjs:286  [bytes] lines.push(`  The repo's one reachable corpus is ${only.bytes} bytes and yields ${only.historyMessagesWhole}`);
+            DEFECT-POP code    docs/research/round436-instruments/grade-the-cures-against-a-runtime-oracle.mjs:353  [sameBytes] label, kind, sameBytes, orc, cured,
+            DEFECT-POP code    docs/research/round444-instruments/grade-the-round-trip-cure.mjs:606  [same] const same = Object.entries(BYTES_AT_ENTRY)
+            DEFECT-POP code    docs/research/round449-instruments/resolve-the-variable-write-targets.mjs:579  [a] + '— `writeFileSync(` is one of several ways to put bytes over a tracked path. Reported as '
+            DEFECT-POP code    docs/research/unit-464absorb-2026-10-31/mint-kp.mjs:91  [ok] console.log('MINT ok  both maps derived from V22-MAP.md, identical inserted bytes, destination the only variable');
+            DEFECT-POP comment docs/research/unit-464addarm-2026-11-04/grade-addarm.mjs:30  [from] // from my tree is the same bytes and is reproducible from any clone.
+            DEFECT-POP code    docs/research/unit-464bucket-2026-11-01/regrade-saturation.mjs:163  [saturated] const bytesOnly = rows.filter((r) => derive(['bytes'], [r]).saturated
+            DEFECT-POP code    docs/research/unit-464bucket-2026-11-01/regrade-saturation.mjs:173  [saturated] console.log(`  P2  ${p2 ? 'LANDS  ' : 'REFUTED'}  dropping bytes: saturated=${derive(PROPERTY_FIELDS).saturated}, ` +
+            DEFECT-POP code    docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:298  [p2] console.log(`  P2  ${p2 ? 'LANDS  ' : 'REFUTED'}  files whose bytes moved while raw and comments did not: ` +
+            DEFECT-POP code    docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:290  [saturated] : saturated ? `verdict figure is 0 at both revs while raw/comments/bytes moved for ` +
+            DEFECT-POP code    docs/research/unit-465route375-2026-11-09/grade-the-two-routes.mjs:126  [occ] `the sandbox registry is restored to the pre-bump bytes (${occ(readFileSync(SANDBOX_REG, 'utf8'), KP)} ` +
+  ok      B5  mechanism census: 104 executable site(s) labelling a char-valued expression 'bytes' (outside this unit)
+  LANDED  P3  the mechanism recurs beyond A0b/B0b: 104 executable site(s) found
+  ok      B6  distinct files holding an executable site: 64 → docs/research/round381-instruments/grade-the-history-clause-and-the-nesting-conjunct.mjs, docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs, docs/research/round403-instruments/live-census-over-all-fifteen.mjs, docs/research/round404-instruments/grade-the-three-cures.mjs, docs/research/round419-instruments/drive-his-418.mjs, docs/research/round419-instruments/fetch-changelog.mjs, docs/research/round419-instruments/grade-the-417-repairs.mjs, docs/research/round420-instruments/drive-his-419.mjs, docs/research/round421-instruments/grade-the-420-repair.mjs, docs/research/round424-instruments/the-resolver-reads-one-pattern-per-body.mjs, docs/research/round425-instruments/a-crash-cannot-print-separates.mjs, docs/research/round425-instruments/position-vs-property-confusion-matrix.mjs, docs/research/round426-instruments/a-published-sentence-is-not-its-discriminator.mjs, docs/research/round426-instruments/a-retyped-constant-from-another-file-is-not-a-pin.mjs, docs/research/round427-capability-test-pointer/the-history-window-is-200-messages-not-the-file.mjs, docs/research/round434-instruments/grade-the-two-cures-and-the-prose.mjs, docs/research/round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs, docs/research/round436-instruments/grade-the-cures-against-a-runtime-oracle.mjs, docs/research/round451-instruments/strip-zwsp.mjs, docs/research/round454-instruments/probe0-why-449s-two-reader-slices-return-null.mjs, docs/research/round455-instruments/dispose-of-w10-and-repair-the-lifter-it-needs.mjs, docs/research/round457-instruments/grade-recording-completeness-across-the-whole-corpus.mjs, docs/research/unit-464bucket-2026-11-01/grade-his-armreach-gate.mjs, docs/research/unit-464bucket-2026-11-01/grade-his-attrib-gate.mjs, docs/research/unit-464bucket-2026-11-01/regrade-saturation.mjs, docs/research/unit-464cell-2026-11-02/grade-cell.mjs, docs/research/unit-464class-2026-11-02/classify-and-grade.mjs, docs/research/unit-464class-2026-11-02/enumerate-legs.mjs, docs/research/unit-464conj-2026-11-03/grade-conj.mjs, docs/research/unit-464conj-2026-11-03/occupy-conj-history.mjs, docs/research/unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs, docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs, docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs, docs/research/unit-464dir-2026-11-02/across-one-operator-v2.mjs, docs/research/unit-464dir-2026-11-02/across-one-operator.mjs, docs/research/unit-464dir-2026-11-02/grade-direction.mjs, docs/research/unit-464dir-2026-11-02/slice-closure.mjs, docs/research/unit-464dir-2026-11-02/slice-spans.mjs, docs/research/unit-464drift-2026-10-30/drive.mjs, docs/research/unit-464frozen-2026-11-05/drive1-arms.mjs, docs/research/unit-464frozen-2026-11-05/drive4-anchor.mjs, docs/research/unit-464frozen-2026-11-05/probe-notes.mjs, docs/research/unit-464gentry-2026-11-05/drive1-measure.mjs, docs/research/unit-464gentry-2026-11-05/drive3-matrix.mjs, docs/research/unit-464kind-2026-11-05/probe-entrygate.mjs, docs/research/unit-464notes-2026-11-05/drive-arms.mjs, docs/research/unit-464order-2026-11-02/grade-order.mjs, docs/research/unit-464prec-2026-11-03/grade-entry-v15.mjs, docs/research/unit-464reach-2026-11-02/grade-reach.mjs, docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs, docs/research/unit-465attestdenial-2026-11-12/grade-the-denial-rekey.mjs, docs/research/unit-465blanket-2026-11-11/drive.mjs, docs/research/unit-465chainfloor-2026-11-13/arm-chainfloor-a.mjs, docs/research/unit-465chainfloor-2026-11-13/arm-chainfloor-bc.mjs, docs/research/unit-465declprose-2026-11-08/drive-sweep.mjs, docs/research/unit-465migrate-2026-11-06/drive-arms.mjs, docs/research/unit-465recall-2026-11-10/recall-at-typing-commit.mjs, scripts/measure-marker-floor.mjs, docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs, docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs, docs/research/round444-instruments/grade-the-round-trip-cure.mjs, docs/research/round449-instruments/resolve-the-variable-write-targets.mjs, docs/research/unit-464absorb-2026-10-31/mint-kp.mjs, docs/research/unit-465route375-2026-11-09/grade-the-two-routes.mjs
+          byte-truth spellings (Buffer.byteLength / TextEncoder / cat-file -s / ls-tree -l) in .mjs: 33
+            docs/research/round409-instruments/record-gate.mjs:6
+            docs/research/round451-instruments/recon-the-out-corpus.mjs:18
+            docs/research/unit-464absorb-2026-10-31/drive.mjs:104
+            docs/research/unit-464absorb-2026-10-31/drive.mjs:105
+            docs/research/unit-464grep-2026-11-01/grep-census.mjs:225
+            docs/research/unit-464grep-2026-11-01/grep-census.mjs:250
+            docs/research/unit-464grep-2026-11-01/lift-reader.mjs:39
+            docs/research/unit-464grep-2026-11-01/lift-reader.mjs:78
+            docs/research/unit-464grep-2026-11-01/lift-reader.mjs:83
+            docs/research/unit-464order-2026-11-02/grade-order.mjs:31
+            docs/research/unit-464reach-2026-11-02/grade-reach.mjs:74
+            docs/research/unit-464rec-2026-10-31/rec-census.mjs:335
+            docs/research/unit-464rec-2026-10-31/rec-census.mjs:352
+            docs/research/unit-464rec-2026-10-31/rec-census.mjs:353
+            docs/research/unit-464rec3-2026-11-01/probe-does-the-drift-change-the-value.mjs:41
+            docs/research/unit-464subkind-2026-11-02/grade-subkind.mjs:472
+            docs/research/unit-464subkind-2026-11-02/grade-subkind.mjs:475
+            docs/research/unit-464t2-denial-2026-10-28/verify-wrap.mjs:86
+            docs/research/unit-464t2-population-2026-10-28/drive.mjs:58
+            docs/research/unit-464t2-population-2026-10-28/drive.mjs:59
+            docs/research/unit-464t2-surface-2026-10-28/drive.mjs:58
+            docs/research/unit-464t2-surface-2026-10-28/drive.mjs:59
+            docs/research/unit-464vac-2026-10-31/grade-cure.mjs:65
+            docs/research/unit-464vac-2026-10-31/grade-cure.mjs:71
+            docs/research/unit-464vac-2026-10-31/grade-cure.mjs:75
+            docs/research/unit-465blanket-2026-11-11/drive.mjs:26
+            docs/research/unit-465leadbound-2026-11-10/run-capture.mjs:52
+            docs/research/unit-465leadbound-2026-11-10/run-capture.mjs:57
+            docs/research/unit-465leadcure-2026-11-11/drive.mjs:6
+            docs/research/unit-465leadcure-2026-11-11/drive.mjs:35
+            scripts/lib/opaque-container.mjs:172
+            scripts/measure-marker-floor.mjs:256
+            scripts/measure-marker-floor.mjs:390
+  ok      B7  byte-truth spellings OUTSIDE this unit: 33
+  REFUTED P5  no site outside this unit derives a genuine byte count (33 found) — if 0, the corpus has no correct spelling of a byte count at all
+  ok      B8  arm-routecure-d.mjs hash-pin occurrences (hash-object|createHash|rev-parse <rev>:<path>): 0 → []
+  LANDED  P7  his §4 claim holds: nothing in his arm D asserts the live module is the rev it claims to grade
+  ok      B9  arms in the corpus carrying a 'hash-object' provenance pin: 15 → docs/research/unit-464addarm-2026-11-04/grade-addarm.mjs, docs/research/unit-464conj-2026-11-03/delta-cripple.mjs, docs/research/unit-464conj-2026-11-03/occupy-conj-history.mjs, docs/research/unit-464cons-2026-11-04/grade-cons.mjs, docs/research/unit-464frozen-2026-11-05/drive1-arms.mjs, docs/research/unit-464frozen-2026-11-05/probe-cwd.mjs, docs/research/unit-464immov-2026-11-03/verify-entry-v13.mjs, docs/research/unit-464kpspan-2026-11-04/grade-kpspan.mjs, docs/research/unit-464outside-2026-11-03/census-outside.mjs, docs/research/unit-464prec-2026-11-03/grade-entry-v15.mjs, docs/research/unit-464prec-2026-11-03/grade-prec.mjs, docs/research/unit-464presc-2026-11-03/census-presc.mjs, docs/research/unit-464subkind-2026-11-02/grade-subkind.mjs, docs/research/unit-465chainfloor-2026-11-13/arm-chainfloor-d.mjs, docs/research/unit-465foilchain-2026-11-13/arm-foilchain-a.mjs
+  LANDED  P6  graded in arm A (A-marker/A-tail + R2c): the floor IS a for-loop over the two names whose body throws at the first miss — but see arm A, that structure does NOT make 'names both' unsatisfiable
+VERDICT/1 RED legs=14 red=[B3] refused=[] preds=7 refuted=[P1,P5] prefused=[]
