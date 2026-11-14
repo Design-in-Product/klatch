@@ -1,0 +1,14 @@
+  ok      C1  WHOLE TREE at his rev 119d87c1: .out total 1191 · carriers 299 · readable 198 · unreadable 101 {"MALFORMED_FIELDS":70,"UNKNOWN_SCHEMA":30,"UNKNOWN_TOP_TOKEN":1}
+  ok      C2  WHOLE TREE at HEAD: .out total 1193 · carriers 301 · readable 198 · unreadable 103 {"MALFORMED_FIELDS":70,"UNKNOWN_SCHEMA":32,"UNKNOWN_TOP_TOKEN":1}
+  REFUTED P14  HIS 296/198/98 REPRODUCES EXACTLY at his own rev — so arm B's P8 refutation was the TREE moving under me, not his figure and not my key: 299/198/101
+          --- carriers added between his rev and HEAD, every one named
+          UNKNOWN_SCHEMA docs/research/unit-465refusalfate-2026-11-14/drive1.arma.out
+          UNKNOWN_SCHEMA docs/research/unit-465refusalfate-2026-11-14/drive2.armb.out
+  ok      C3  carriers added since his rev: 2; removed: 0 []
+  ok      C4  the whole gap is accounted for by named additions: 2 added vs 2 carrier delta
+  ok      C5  of the 2 added carriers, 2 are THIS UNIT's own recordings (drive1.arma.out, drive2.armb.out)
+  LANDED  P15  at least one of the carriers that moved his figure is a recording THIS unit published while measuring his figure — the instrument is inside its own population: 2
+  ok      C6  SCOPE was not the variable: whole tree at HEAD has 1193 `.out`, the three-root list has 1193 — delta 0
+  LANDED  P16  every tracked `.out` in the repo lives under docs/, scripts/ or packages/, so arm B's root list was not the source of the gap: 1193 vs 1193
+  ok      C-gate  git status --porcelain packages scripts docs/research/lib → ""
+VERDICT/0 GREEN legs=7 red=[] refused=[] preds=3 refuted=[P14] prefused=[]
