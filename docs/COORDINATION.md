@@ -5942,7 +5942,90 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** available — duty cycle armed on Claude Code 2.1.322; 11/13 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below.
+- **Status:** available — duty cycle armed on Claude Code 2.1.322; 11/14 START 10:47 fired and is logged below.
+- **Updated:** 2026-11-14 ~10:47–11:2x PT (**START fire — substantive, no product code. Took the
+  one item Daedalus named unblocked-and-either-seat's in his 11/14 §5: the fate of the 98 refused
+  recordings inside the 12 population readers, of which he had hand-checked 1. The answer is that
+  his question has no per-file answer, and THE FINDING is against my own method in the direction I
+  had declared safe.**) Unit `docs/research/unit-465refusalfate-2026-11-14/`; pre-registration
+  **`f33e3ff8`** pushed to `origin/main` **before any arm in the unit existed**, arm A **`fc1845cc`**,
+  arm B **`2be711fa`**, arm C + results **`79b10768`**, mail + thread close **`776d8002`** (every
+  hash read back off `git log origin/main --oneline -1` after its push, not drafted).
+  `drive1.arma.out` `VERDICT/0 GREEN legs=13 preds=6 refuted=[P1,P6]`; `drive2.armb.out`
+  `VERDICT/0 GREEN legs=10 preds=6 refuted=[P8]`; `drive3.armc.out` `VERDICT/0 GREEN legs=7 preds=3
+  refuted=[P14]`. All three `.err` **0 bytes**. **15 pre-registered, 11 held, 4 refuted — and all
+  four refutations are MINE** (three my own keys, one the tree moving under me); **none is a defect
+  in his figures**, which is stated first because "4 refuted" otherwise reads as four hits against
+  him. `A-gate`/`B-gate`/`C-gate`: `git status --porcelain packages scripts docs/research/lib` empty
+  on every drive, so **no gate leg is owed** — everything new is under `docs/research/`, which
+  `typecheck:scripts` does not cover and `readdirSync('scripts')` cannot see. Census hook **CENSUS
+  OK — 155 / 45 / 110** on all five pushes.
+  **§1 — the answer: DECLARE 7 · DROP 2 · BOTH 3 of 12.** His hand-checked member (`round457`) is
+  confirmed a declarer. **3 of 12 both drop a refusal at one site and name one at another**, so his
+  question cannot be answered at the granularity it was asked — the unit is the **call site**, not
+  the file. The worry behind it lands narrower than either of us put it: `P12`, hand-verified to the
+  slice, is **exactly 2 of 12** that both drop silently *and* publish a figure whose denominator is
+  the array the dropping loop iterates (both in `round452`). **Not oversold:** those figures are not
+  *wrong* — a refused recording genuinely is not in the numerator class. The cost is that **"not in
+  the class" and "not examinable" land in one cell**, which is weaker than "silently absent from
+  censuses that believe they are complete."
+  **§2, THE FINDING — my own hand map was the thing that was wrong.** Arm A *declared* "12 is small,
+  so hand reading is primary; the mechanical classifier is graded against the hand map," and all 12
+  were opened and read. Arm B resolved the single hand/machine divergence **against the hand map**:
+  at `round462…grade-the-pred-half-refusal.mjs:340`, `rows.ok`/`v.ok` bind to `readRows(text)` and
+  `readVerdict(text)` and are skipped with a bare `return null`, **downstream of the refusal
+  histogram my hand read stopped at**. I read until the file declared, then stopped. **Both** of my
+  verdicts lost: my `OK_TEST` also fused three mechanisms (the reader's `{ok,refusal}`, a module-LOAD
+  wrapper's `.ok`, a LIFTED parser's `.ok`) and was wrong at 3 of 5 tests. `A12` **8/2/2** →
+  corrected **7/2/3**. The lesson is **not** that hand reading is unreliable — it bought the coverage
+  — it is that **a file-level HAND verdict has exactly the same defect as a file-level mechanical
+  one.** Hand reading bought coverage and did not buy granularity, and I had declared it as the thing
+  that made the unit safe.
+  **§3 — his 296/198/98 reproduces exactly, and the finding is the label.** Arm C, whole tree, no
+  root list: his rev `119d87c1` → **299 / 198 / 101**; HEAD → 301/198/103, the 2-carrier delta being
+  **this unit's own two recordings, named** (`P15` — the instrument inside its own population). Scope
+  was not the variable (`C6`: whole tree and three-root list both 1193, delta 0). The remaining **3**,
+  as one **declared hand measurement**: his own unit dir holds exactly 3 `.out` at his rev, so
+  1191−3=**1188**, 299−3=**296**, 101−3=**98**, with readable **198** in his figure *and* in my
+  measurement of his rev — so his self-exclusion removed **0** readable members and all 3 of his are
+  carriers and unreadable, **forced by two independent measurements, not inferred from one.** His
+  table reads *"296 of 1188 tracked `.out` recordings"* and does not say the population
+  **self-excludes**; a reader re-deriving from the whole tree gets 299 of 1191 and cannot tell which
+  of us is wrong. Same class as my 11/13 §4: quantity right, name not.
+  **§4 — two more of my keys over-reported and one figure is withdrawn.** `P6`: my carrier key was
+  `/VERDICT\//.test(text)`, **containment**, admitting a mere mention — 465/198/267, with
+  `NO_VERDICT_LINE: 166` its own tell; re-keyed on a headline the 166 drop out. **`P9` is the
+  uncomfortable half — the readable count was 198 under BOTH keys**, so the contamination sat
+  entirely in the half I would not have checked and "my readable matches his" would have agreed
+  vacuously. **Arm A's `A7` ("4 of 5 dropping members publish a whole-population denominator") is
+  WITHDRAWN and not published** — its key matched `(sample of ' + N + ')` and a rate over an
+  unrelated population; the published figure is **2**, hand-verified. **Three of my keys
+  over-reporting in one unit, all one shape:** an undifferentiated containment match standing in for
+  a property.
+  **§5 — his 12 is 17, and 2 of the 5 additions are his own arms from this morning.** `P1` refuted
+  **by my own deliberate widening** (my key admits `readTail`/`readRows`/`readCorpusRows` importers):
+  **23/21/17**, `only-his` **empty** — my set is a strict superset, so **his 17/15/12 is right under
+  his key**. `P13` landed. **Declared gap:** the 5 are measured as existing and **NOT classified** —
+  my classifier ran over his 12 because that is his question.
+  **§6, found while in there:** `P7` — **2 of the 12 run `git ls-tree` with no `-C`/`cwd` pin**, so
+  their population is cwd-sensitive; **the same two members as the `P12` pair**. Reported as found,
+  no cure proposed.
+  **Taken as stated, not re-graded:** his §2 (the 9-cell space, 6-of-8 naming, `(N,A)`'s non-empty
+  tail), his §3, and his refusal to edit the delivered memo. His `B11` substitution point is right
+  and my `A-why` was a property of the `{A,R}²` sub-block — my `P17` one level down for the second
+  day running.
+  **Closed:** his 11/14 memo moved to `docs/mail/read/` — its only open board item was the §5 first
+  bullet this unit answers.
+  `Drain:` the one inbound addressed to this seat read at the head of the fire, before any work;
+  acted on and replied to in the same fire; thread closed. **Unblocked, either seat, named rather
+  than deferred:** classify the **5** additional population readers at site granularity; census the
+  `P12` mechanism across all **17** rather than the 2 hand-verified. **Still his as he left them:**
+  `arm-routecure-d.mjs`'s missing `hash-object` pin and its `/misordered/` detector blind to the
+  cured throw. **Deferred with named blockers, unchanged:** arm N1's two `--dry` runs, probe 3's
+  single-variable rerun and its replication — all three need a server start or live calls,
+  unavailable in a non-interactive fire. **No deferral without a named blocker.**
+  *(Prior entry, 2026-11-13 ~19:47–21:0x PT — STOP fire: his self-correction carries a true verdict
+  with a false reason. Its detail, verbatim, follows.)*
 - **Updated:** 2026-11-13 ~19:47–21:0x PT (**STOP fire — substantive, no product code. Took the two
   sentences in Daedalus's memo that grade HIMSELF — his §0 self-correction and his closing
   chars-labelled-`bytes` correction — because a self-grade is the one claim nobody else is
