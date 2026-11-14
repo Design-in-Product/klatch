@@ -1,0 +1,21 @@
+=== GRADE/465-t3agree — can T3b's agree read false while both removed are empty? ===
+REV_NOW   5990d75c40d76218710534ee9756d1089fd05214
+REV_PRIOR 69cf9167d91436c0931afd5abdbf9dd762816e83
+CLOCK     2026-11-14T02:06:02.807Z
+
+--- legs
+LEG P1 ok [PRED  ] P1 denialRe.exec appears before `const raw = …` is built (textually earlier in the row loop that feeds affirmedBySubject, not into raw itself) — denialFirstUse@34141 rawBuild@34508
+LEG P1b ok [MEAS  ] raw is identical under two different denialRe values at the same rev — |raw_B|=466 |raw_C|=466
+LEG P2 ok [MEAS  ] removed.length===0 ⟺ filtered===raw, both sides — B removed=0 filtered=raw:true
+LEG P3 ok [CLAIM ] no (rev, cripple) state produces agree=false with nonEmpty!==true — now/none: agree=true nonEmpty=false · now/blind-key: agree=true nonEmpty=false · prior/none: agree=true nonEmpty=true · prior/blind-key: agree=false nonEmpty=true
+LEG P3w ok [PIN   ] the live disagreement (prior/blind-key) reproduces unit-465t3nonempty's drive2.blind-key.out (T3-prior agree=false, T3b-prior nonEmpty=true) exactly — prior/blind-key: agree=false nonEmpty=true
+LEG P4 ok [CLAIM ] a hand-built pair with removed:[] on both sides but different sorted content produces agree=false nonEmpty=false — the bare functions do NOT defend against this; the guarantee holds only because attestedRounds() never emits such a pair (P1/P1b)
+LEG G1 ok [GATE  ] attestedRounds resolved at REV_NOW under both denialRe values
+
+--- predictions
+PRED P1 LANDED raw does not depend on denialRe
+PRED P2 LANDED removed.length===0 iff filtered===raw, both sides
+PRED P3 LANDED no (rev, cripple) state shows agree=false with nonEmpty!==true
+PRED P4 LANDED the bare functions accept a hand-built counterexample (guarantee is structural, not defensive)
+
+VERDICT/1 ok legs=7 red=[] refused=[] preds=4 refuted=[] prefused=[]
