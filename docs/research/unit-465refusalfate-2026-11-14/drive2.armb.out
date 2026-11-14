@@ -1,0 +1,35 @@
+  ok      B1  tracked .out total 1192; containment key 466; HEADLINE key 300
+  ok      B2  headline-keyed partition: readable 198 · unreadable 102 {"MALFORMED_FIELDS":70,"UNKNOWN_SCHEMA":31,"UNKNOWN_TOP_TOKEN":1}
+  ok      B3  recordings arm A's containment key admitted and the headline key excludes: 166 (first: round442-instruments/vacuity.final.out, round442-instruments/vacuity.out)
+  REFUTED P8  HIS 296/198/98 REPRODUCES under a headline key — so arm A's P6 refutation was arm A's key and not his figure: 300/198/102
+  LANDED  P9  the readable half was already identical under BOTH keys (arm A also got 198), which is why the contamination was invisible in the half I would have checked first: 198
+          --- the three sites arm A called DROP in round462, resolved by binding
+          @184 `l.ok`  binding=parameter@183  from-lib-reader=false
+               rhs: const arms = (baseText, headText, l) => {
+          @187 `b.ok`  binding=binding@185  from-lib-reader=false
+               rhs: l.api.parse(baseText);
+          @187 `h.ok`  binding=binding@186  from-lib-reader=false
+               rhs: l.api.parse(headText);
+          @340 `rows.ok`  binding=binding@338  from-lib-reader=true
+               rhs: readRows(text);
+          @340 `v.ok`  binding=binding@339  from-lib-reader=true
+               rhs: readVerdict(text);
+  ok      B4  every tested identifier resolved to a binding: 5 tested, 0 unresolved
+  ok      B5  of 5 `.ok` tests at those three lines, 2 are the LIBRARY reader's (rows@340, v@340) and 3 are not (l@184, b@187, h@187)
+  LANDED  P10  arm A's OK_TEST fused mechanisms AND round462 really does drop: both halves true, so the divergence resolves against BOTH of arm A's verdicts rather than one of them
+  ok      B6  ARM A's A12 IS CORRECTED: hand-read {"DECLARE":8,"DROP":2,"BOTH":2} → site-resolved {"DECLARE":7,"DROP":2,"BOTH":3}. round462 moves DECLARE→BOTH because line 340 skips a readRows AND a readVerdict refusal with no name, downstream of the histogram my hand read stopped at
+  LANDED  P11  the mechanical cross-tab's 7/2/3 was right and my hand map's 8/2/2 was wrong — the opposite direction from the limit arm A declared ("hand reading is primary"); a FILE-level hand verdict has the same defect as a FILE-level mechanical one
+          --- the hand-verified drop/denominator pairs, sliced not typed
+          round452-instruments/census-the-legacy-id-grammar-and-the-liveness-reader.mjs
+              drop@126   if (v.ok !== true) continue;   bare=true
+              figure@136 console.log('Q3  = ' + aliveButUnreadable + ' of ' + outs.length);   names `outs`=true
+          round452-instruments/census2-reconcile-his-26-and-hand-read-the-drops.mjs
+              drop@47   if (readVerdict(text).ok !== true) continue;   bare=true
+              figure@55 console.log(`R1  mine, whole corpus            = ${aliveUnreadable.length} of ${all.length}`);   names `all`=true
+  ok      B7  hand-verified drop/whole-population-denominator pairs that slice as claimed: 2 of 2
+  ok      B8  arm A's A7 "4 of 5" is WITHDRAWN and not published: its DENOM key matched `sample of N` lines and rates over unrelated populations. The published figure is 2, hand-verified.
+  LANDED  P12  exactly 2 of the 12 both drop silently and publish a figure whose denominator is the population they dropped from — so the cost is "unreadable" and "not in the numerator class" fused into one cell, NOT a wrong rate: 2
+  ok      B9  the 5 population readers my wider key found and arm A did NOT classify all exist at HEAD: 5 of 5; 2 of them were written THIS MORNING (arm-schemacollide-a.mjs, arm-schemacollide-b.mjs)
+  LANDED  P13  the exposed population is 17 rather than his 12, and 2 of the 5 additions are his own arms from this fire's morning — the mechanism was still being written while the question about it was asked: 2
+  ok      B-gate  git status --porcelain packages scripts docs/research/lib → ""
+VERDICT/0 GREEN legs=10 red=[] refused=[] preds=6 refuted=[P8] prefused=[]
