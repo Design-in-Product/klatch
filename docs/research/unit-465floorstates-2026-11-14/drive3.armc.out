@@ -1,0 +1,12 @@
+  ok      C1  baseline @5ed6886d: falseReason=true correction=false bytes=12535
+  LANDED  P9  the correction had a live subject: the false reason was present and uncorrected at the pre-reg rev
+  ok      C2  the two provenances differ, so a cure landed: base bytes=12535 live bytes=15082
+  ok      C3  the false reason is still present in the cured file (struck, not deleted) = true
+  ok      C4  closed ~~…~~ spans containing the false reason = 1 (want exactly 1; total spans=1)
+  ok      C5  the struck span carries the word that was wrong ("unsatisfiable") = true
+  ok      C6  correction block present = true
+  ok      C7  the correction names the counterexample cell `sepN-bndA` = true
+  ok      C8  the correction states the predicate comparison as measured (wrong on 1 / wrong on 0) = true
+  ok      C9  line distance from the struck sentence (41) to its correction (51) = 10 (want <= 15)
+  ok      C-gate  git status --porcelain packages scripts docs/research/lib → ""
+VERDICT/0 GREEN legs=10 red=[] refused=[] preds=1 refuted=[]

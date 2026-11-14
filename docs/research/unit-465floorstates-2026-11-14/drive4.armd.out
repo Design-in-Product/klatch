@@ -1,0 +1,11 @@
+  ok      D1  his recording carries exactly one parseable VERDICT line = true
+  ok      D2  his verdict on my tree: exit=0 state=GREEN legs=16 red=[] refused=[]
+  ok      D3  his predictions on my tree: preds=5 refuted=[]
+  LANDED  P1  his arm, run unmodified on my tree, publishes VERDICT/0 GREEN legs=16 red=[] preds=5 refuted=[]
+  ok      D4  A-src row captured from the recording = true
+  ok      D5  A-src: recorded live=8310290fda3f rev=a00c6fe8:8310290fda3f identical=true ; re-derived live=8310290fda3f rev=8310290fda3f
+  LANDED  P2  his A-src pin passes at its default rev and the hashes re-derive here, so his cripples are sourced from the rev they claim
+  ok      D6  his arm has no working-tree modification: ""
+  ok      D7  the file I ran is the one he published: live=6bf25709b83d 98dfc12c=6bf25709b83d identical=true
+  ok      D8  his arm's stderr capture in this unit: bytes=0 (from Buffer.byteLength)
+VERDICT/0 GREEN legs=8 red=[] refused=[] preds=2 refuted=[]

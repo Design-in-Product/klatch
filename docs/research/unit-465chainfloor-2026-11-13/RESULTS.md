@@ -37,15 +37,45 @@ All four `.err` files are **0 bytes**.
 
 **P8 is refuted as pre-registered, and the arm graded it HELD.** Stated first because the
 discrepancy is mine and in my own favour. P8 said the emptying cripple throws *"and the message
-names **both** `separatorTolerant` and `boundaryFree`."* The floor is a `for` over the two required
+names **both** `separatorTolerant` and `boundaryFree`."* ~~The floor is a `for` over the two required
 names and `must` throws at the **first** miss, so a single throw can only ever name one — "names
-both" is **unsatisfiable**, not merely unmet. The leg I then wrote tested
+both" is **unsatisfiable**, not merely unmet.~~ **This reason is false — struck, not deleted. See
+the correction under this paragraph (`unit-465floorstates-2026-11-14`).** The leg I then wrote tested
 `/separatorTolerant/ || /boundaryFree/`, which is weaker than the text it was grading, and the
 `pred()` call restated the claim as *"names a required spelling."* The measured throw is
 `S6_FOILS no longer declares separatorTolerant as a RegExp … Declared: []`. **Corrected grade: P8
 refuted on its second conjunct, held on its first.** Not re-driven; recorded. The arm is left as it
 ran, with this correction standing over it, because editing the arm to match the grade is the move
 this note exists to refuse.
+
+> **Correction to the correction, 2026-11-14 — the verdict above stands, the reason given for it was
+> false, and the reason Theseus offered in its place is also too narrow.** Routed by Theseus's
+> `unit-465byteslabel-2026-11-13` §1 (`98dfc12c`), driven and extended in
+> [`unit-465floorstates-2026-11-14`](../unit-465floorstates-2026-11-14/RESULTS.md)
+> (`drive2.armb.out`, GREEN, 19 legs, 8/8 pre-registered predictions held).
+>
+> - **The verdict is unchanged.** Under the emptying cripple the message names exactly one spelling;
+>   `P8` is still refuted on its second conjunct. That part was right.
+> - **My reason was false.** The message's tail is `Declared: [${Object.keys(S6_FOILS)}]`, which my
+>   reason never mentioned. Remove `separatorTolerant` alone and the throw is the **first** loop
+>   iteration *and* names both spellings (`sepA-bndR`, tail `[boundaryFree]`) — so iteration order
+>   was never what made the verdict true. "Names both" is **satisfiable**; it was **unmet under my
+>   cripple**, which is the exact distinction I was drawing and I put it on the wrong side.
+> - **His reason — *"your cripple empties the tail"* — is also too narrow,** and this is the finding
+>   this correction adds. The floor asserts **two** conjuncts (presence `&&` `instanceof RegExp`);
+>   his four states vary only presence. Each required name has three reachable states (absent,
+>   present-non-RegExp, present-RegExp), so the space is **9**, of which 1 is green and **6 of the 8
+>   throwing cells name both spellings** — a wider satisfying set than either of us had. The second
+>   non-naming cell is **`sepN-bndA`** (`separatorTolerant` declared as a non-RegExp,
+>   `boundaryFree` absent): its tail is **non-empty** (`Declared: [separatorTolerant]`) and it still
+>   names one spelling. Graded as a predicate over all 8 throwing cells, *"the tail is non-empty"* is
+>   wrong on 1; **"the tail carries a name other than the first miss"** is wrong on 0.
+> - **And 9 is not closed either.** Under substitution (both required names absent, an unrelated
+>   RegExp declared) the message names one required spelling plus a **non-required** name — so the
+>   9 is exhaustive over the two *required* names only.
+>
+> Recorded, not re-driven here: the arm is still left as it ran, and the struck sentence above is
+> struck rather than removed so the false reason stays findable next to its replacement.
 
 Refuted: **P8** (above), **P16**, **P17**, **P18** (§4). Held: P1–P7, P9–P15.
 

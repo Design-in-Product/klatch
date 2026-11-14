@@ -1,0 +1,37 @@
+  ok      B-src  live=8310290fda3f a00c6fe8=8310290fda3f identical=true
+  ok      B-srcsize  sourced module: bytes=47797 chars=47585 (bytes from Buffer.byteLength, not String.length)
+  ok      B-marker  floor loop occurrences = 1 (want 1)
+  ok      B1  floor condition conjuncts=2 presence=true valueKind=true :: "Object.prototype.hasOwnProperty.call(S6_FOILS, required) && S6_FOILS[required] instanceof RegExp"
+  LANDED  P3a  the floor asserts exactly two conjuncts: presence AND value kind
+  cell    sep=R bnd=R  threw=false firstMiss=null              tail=null namesBoth=false
+  cell    sep=R bnd=N  threw=true  firstMiss=boundaryFree      tail="separatorTolerant,boundaryFree" namesBoth=true
+  cell    sep=R bnd=A  threw=true  firstMiss=boundaryFree      tail="separatorTolerant" namesBoth=true
+  cell    sep=N bnd=R  threw=true  firstMiss=separatorTolerant tail="separatorTolerant,boundaryFree" namesBoth=true
+  cell    sep=N bnd=N  threw=true  firstMiss=separatorTolerant tail="separatorTolerant,boundaryFree" namesBoth=true
+  cell    sep=N bnd=A  threw=true  firstMiss=separatorTolerant tail="separatorTolerant" namesBoth=false
+  cell    sep=A bnd=R  threw=true  firstMiss=separatorTolerant tail="boundaryFree" namesBoth=true
+  cell    sep=A bnd=N  threw=true  firstMiss=separatorTolerant tail="boundaryFree" namesBoth=true
+  cell    sep=A bnd=A  threw=true  firstMiss=separatorTolerant tail="" namesBoth=false
+  ok      B2  the matrix over two required names x three kinds has 9 cells (want 9)
+  ok      B3  green cells=1 (sepR-bndR) value=true
+  ok      B4  throwing cells=8
+  ok      B5  of the 8 throwing cells, names-both=6 names-one=2 (names-one: sepN-bndA,sepA-bndA)
+  LANDED  P6  1 green, and 6 of the 8 throwing cells name both required spellings
+  ok      B6  (sep=R, bnd=N) nothing removed: threw=true namesBoth=true tail="separatorTolerant,boundaryFree"
+  LANDED  P4  degradation with NOTHING removed throws and names both — "names both" is satisfiable without any removal
+  ok      B7  (sep=N, bnd=R): threw=true firstMiss=separatorTolerant namesBoth=true tail="separatorTolerant,boundaryFree"
+  LANDED  P5  the mirror degradation is a FIRST-iteration throw and still names both
+  ok      B8  (sep=N, bnd=A): threw=true tail="separatorTolerant" nonEmptyTail=true namesBoth=false
+  LANDED  P7  THE KEEPER: a non-naming state with a NON-EMPTY tail exists, so "the cripple empties the tail" is not the mechanism
+  ok      B9  his cause as a predicate over all 8 throwing cells: wrong on 1 (sepN-bndA)
+  ok      B10  "tail carries a name other than the first miss" over all 8: wrong on 0 ()
+  LANDED  P7b  the replacement predicate is right on all 8 cells where his is right on 7 — a reason graded over its domain, not its witness
+  ok      B11  substitution (both required absent, looseA declared): threw=true namesSep=true namesBnd=false tail="looseA"
+  LANDED  P8  substitution names one required spelling plus a NON-required name: the 9 is exhaustive over the two required names only
+  ok      B12  his four states reproduce as my {A,R}² sub-block: cripples=true control=true
+  ok      B13  cells his enumeration cannot reach (any member = N): 5 (sepR-bndN,sepN-bndR,sepN-bndN,sepN-bndA,sepA-bndN)
+  LANDED  P3b  his four states are exactly the {A,R}² sub-block of a 9-cell space; the 5 cells varying the second conjunct are unreached
+  ok      B-gate  git status --porcelain docs/research/lib packages scripts → ""
+  ok      B-gate2  live module unchanged by this arm: 8310290fda3f → 8310290fda3f
+  ok      B-gate3  his arm unmodified by this unit: ""
+VERDICT/0 GREEN legs=19 red=[] refused=[] preds=8 refuted=[] prefused=[]
