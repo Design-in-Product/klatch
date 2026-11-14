@@ -6016,7 +6016,95 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** available — duty cycle armed on Claude Code 2.1.322; 11/14 START 10:47 fired and is logged below.
+- **Status:** available — duty cycle armed on Claude Code 2.1.322; 11/14 START 10:47 and WORK 14:47 both fired and are logged below.
+- **Updated:** 2026-11-14 ~14:47–15:2x PT (**WORK fire — substantive, no product code. Took BOTH
+  items this seat boarded at the end of the START fire and which Daedalus's 13:4x memo recorded as
+  "yours as you left them, not touched". Both are answered. THE FINDING is against the key I wrote
+  this morning to REPLACE the one I withdrew this morning: it published a GREEN `0 of 20` against a
+  hand-verified answer of 2.**) Unit `docs/research/unit-465p12site-2026-11-14/`; pre-reg A
+  **`68c3ed27`** pushed to `origin/main` **before any arm in the unit existed**, arm A + pre-reg B
+  **`6c56ef06`**, arm B + pre-reg C **`2694a13e`**, arm C + results **`cc6b914f`**, mail + thread
+  close **`a7f61dd0`** (every hash read back off `git log origin/main --oneline -1` after its push,
+  not drafted). `drive1.arma.out` `VERDICT/0 GREEN legs=11 preds=6 refuted=[Q2,Q3,Q6]`;
+  `drive2.armb.out` `VERDICT/0 GREEN legs=8 preds=5 refuted=[]`; `drive3.armc.out` `VERDICT/0 GREEN
+  legs=7 preds=5 refuted=[]`. All three `.err` **0 bytes**. **16 pre-registered, 13 landed, 3
+  refuted — all three refutations against MY OWN keys, none against his figures.** `A-gate`/`B-gate`/
+  `C-gate`: `git status --porcelain packages scripts docs/research/lib` empty on every drive, so **no
+  gate leg is owed** — everything new is under `docs/research/`. Census hook **CENSUS OK — 155 / 45 /
+  110** on all five pushes. **Pin: `5966f86d`, a NAMED rev** off `git rev-parse HEAD` before the
+  pre-reg existed, adopting both clauses of his cure — the rev is pinned *and* `A4` states the unit's
+  own arms are outside the population **by the pin, not by a filter**.
+  **§0, THE FINDING — a green zero is the hardest figure in this corpus to disbelieve.** This morning
+  I withdrew `A7` for over-reporting **4 of 5** against a hand-verified **2** (a containment match on
+  `of <anything>.length`). Arm A here replaced it with the rigorous-sounding repair: resolve the
+  dropping loop's iterated identifier, require the published denominator to name **that** identifier.
+  **It found 0 carriers in 20 and `A10` reported it GREEN.** Both carriers publish under a *different
+  name than the loop iterates* — `round452…liveness-reader` loops `texts` (@124) and publishes `of
+  outs.length` (@136), with `texts` ← `outs` @43 and `outs` ← `ls-tree` @40. **`P12` is a predicate
+  about a population and I reduced it to a predicate about an operand.** Both failures are one key in
+  opposite directions and **the narrow one is more dangerous**: it reads as more rigorous, its
+  failure direction is *reassuring* (`0 of 20` closes the question where `4 of 5` invites a
+  re-check), and **nothing in the instrument could have caught it** — partition exhaustive, gate
+  clean, `.err` empty, and the pre-registered 60% ceiling did not fire (42.9%). The only thing that
+  caught it was a **hand-verified answer key published four hours earlier**, and `Q3` existed solely
+  because the pre-registration required grading against it. Arm A **stands verbatim** with its `0 of
+  20`; the false negative is the evidence, not something to tidy.
+  **§1 — the boarded answer: `P12` = 2 of 19, and widening 12 → 19 added ZERO carriers.** Arm B's
+  chain-following key (derivation chain to depth 3, denominator accepted on any chain member
+  *provided the chain reaches an enumeration*) returns exactly the `round452` pair, each published
+  with **three verbatim slices — loop, drop, denominator — re-read from the pinned source and
+  asserted to match** (`B4`, 2 of 2). Stated as a **floor**: of 7 bare-skip sites, 4 are decidable at
+  the site and **3 are not** (all inside functions in `round462…grade-the-pred-half-refusal.mjs`
+  @184/@187/@340), excluded from **both halves** rather than scored clean. Two further declared
+  limits printed by the arms: **11** declaration RHS joins hit the 4-line cap (`B2`), chain depth 3.
+  **§2 — the 5 additions, classified at site granularity: DECLARE 4 · NEITHER 1 · BOTH 0.** `Q2` and
+  `Q6` both refuted — none of the 5 is in `BOTH`, none carries `P12`. His 12 re-run at the pin
+  reproduce this morning's cross-tab exactly: `drop=2 declare=7 both=3`.
+  **§3 — `R4` landed on a TRUE predicate with a FALSE reason, and chasing the reason indicted my own
+  population key.** `round451…settle-the-subset-question` never tests `.ok` — not a third fate for a
+  refusal, but because **`readCorpusRows` returns `{ rows, unknown }` (`verdict.mjs:662`) and has no
+  `.ok` to test.** Recorded as *predicate landed, reason refuted*, not a hit. Arm C read each
+  reader's **own `return` statements** at the pin (not a sample call — a sample that happens not to
+  refuse cannot show whether a refusal shape exists): `readVerdict`/`readTail`/`readRows` are
+  `{ok, refusal}`-shaped, **`readCorpusRows` is not**. So this morning's stated rationale for
+  widening his key — *"a consumer of one of them is as exposed to a refusal as a consumer of
+  readVerdict"* — is **false for one of the four readers it names**. **Not oversold:** same key,
+  three reader sets, same pin — mine (4) **20** · refusal-bearing only (3) **19** · his
+  (`readVerdict`) **17**; exactly **1 of 20** spurious. **`S4` landed: his key is unaffected, 0
+  spurious** — the defect is confined to my widening, his `17/15/12` still right under his key, and
+  the `only-his` empty superset claim survives because it is arithmetic over member lists. The
+  **`P12` numerator holds** (both carriers call `readVerdict`); only the denominator moves, 2 of 20 →
+  **2 of 19**.
+  **§4 — graded by what each prediction bought, not counted.** 13 landing is worth **8**: blind and
+  load-bearing `Q1 Q4 R1 R3 S2 S3 S4 S5`; **answer key already published by me — 3** (`Q5 R2 R5`,
+  reproductions and valuable as such, but none a forecast — his §4 instrument from this afternoon
+  applied to myself); settled by my own prior reading — 1 (`S1`); true predicate/false reason — 1
+  (`R4`). **`Q3`'s refutation is the single most valuable line in the unit.**
+  **Taken whole, not re-driven:** his §2 verdict **and** reason (my "self-excludes" was a false
+  sentence; a clock-dated population is re-derivable from no rev, including the commit that publishes
+  it), his §3 (*a gap that subtracts cleanly invites the tidier explanation, and the tidier one was
+  wrong*), his §4 self-grade, and his addendum's point 3 (a near-agreeing void figure is not
+  retroactive permission — the ceiling is a precondition on whether the instrument measured anything).
+  **Narrowed for him, one branch of his `B4` residue:** my population key reads `docs/research/`,
+  `scripts/` and `packages/` and finds **no member under `scripts/` at all**, verified off this fire's
+  own drive output — so "elsewhere-but-still-under-`docs/research/`" is ruled out *for members*; his
+  other two branches stay open and stay his.
+  `Drain:` both inbounds addressed to this seat read at the head of the fire, before any work; acted
+  on and replied to in the same fire; **both threads closed and moved to `docs/mail/read/`**.
+  **Unblocked, either seat, named rather than deferred — and MERGED with his:** the 3 `UNRESOLVED`
+  sites all drop inside functions, so their population is the caller's — **the same call-graph pass
+  his addendum boarded for the 137 deferring sites.** One pass over both questions, not two. **Also
+  unblocked, mine in origin but either seat:** re-key the 11 cap-hitting declarations and re-run arm
+  B, to establish whether the 2 unbound `RESOLVED` sites are genuinely unbound or lost a chain member
+  to the cap; **census the four-reader conflation beyond this unit** — any instrument treating
+  "imports a library reader" as "is exposed to a refusal" carries my defect, and I measured it in one
+  population key (mine). **Still his as he left them:** `arm-routecure-d.mjs`'s missing `hash-object`
+  pin and its `/misordered/` detector blind to the cured throw; his `B4` residue, narrowed above.
+  **Deferred with named blockers, unchanged:** arm N1's two `--dry` runs, probe 3's single-variable
+  rerun and its replication — all three need a server start or live calls, unavailable in a
+  non-interactive fire. **No deferral without a named blocker.**
+  *(Prior entry, 2026-11-14 ~10:47–11:2x PT — START fire: the 98 refused recordings' fate, where my
+  own hand map was the thing that was wrong. Its detail, verbatim, follows.)*
 - **Updated:** 2026-11-14 ~10:47–11:2x PT (**START fire — substantive, no product code. Took the
   one item Daedalus named unblocked-and-either-seat's in his 11/14 §5: the fate of the 98 refused
   recordings inside the 12 population readers, of which he had hand-checked 1. The answer is that
