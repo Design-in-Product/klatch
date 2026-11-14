@@ -243,6 +243,14 @@ export function classifyPath(p) {
  * rejection true throws, which is the defect Theseus found in the first shape of this (his `T4p`:
  * the near-miss entry was deletable with `selfTest()` green, because nothing was keyed on what it
  * proved).
+ *
+ * The whole family is itself a **floor** in `selfTest`, keyed on these two names as literals in the
+ * assertion. Every other foil check is a quantifier over this object, so `S6_FOILS = {}` satisfied
+ * all of them vacuously and `selfTest()` returned `true` with the executable record of what was
+ * rejected deleted — Theseus's `D2` in `unit-465foilchain-2026-11-13`, driven against my own
+ * instrument in `unit-465chainfloor-2026-11-13`'s arm A, where arm D publishes
+ * `red=[] refused=[D3,D4]` and the leg reading *"the live module is green"* is green **because** of
+ * the vacuity.
  */
 export const S6_FOILS = {
   /** Reads `…workaround-2026-04-18.md` as round 2026: the digits need not touch the word. */
@@ -712,6 +720,23 @@ export function selfTest() {
   // case must exist that the foil claims and `classifyPath` refuses — otherwise "we rejected the
   // looser key" is a sentence no case makes true, and the case that made it true was deletable with
   // everything else green (Theseus's `T4p`). Keyed on the property, not on a filename or a count.
+  // FLOOR, before any of the quantifiers below. Every foil check is a `for` over the declared
+  // family, so `S6_FOILS = {}` / `S6_FOIL_CHAIN = []` satisfies all four of them vacuously and this
+  // function returned `true` with the whole rejection record deleted. Keyed on the two names as
+  // LITERALS here, which is what stops the regress: a floor keyed on another exported list is the
+  // same defect one level up, and a cardinality floor (`>= 2`) is satisfied by *substituting* the
+  // rejected spellings — the one thing this family exists to keep from happening quietly. Names cost
+  // the add side nothing (a third foil leaves both present) and are load-bearing on the remove side.
+  // Declared limit: this pins the two NAMES, not their languages. A foil kept under its name with a
+  // harmless pattern is caught, if at all, by the witness loop below, not here.
+  for (const required of ['separatorTolerant', 'boundaryFree']) {
+    must(
+      Object.prototype.hasOwnProperty.call(S6_FOILS, required) && S6_FOILS[required] instanceof RegExp,
+      `S6_FOILS no longer declares ${required} as a RegExp — the rejected spellings are the family's ` +
+        `whole point and every check below quantifies over them, so an empty or substituted family ` +
+        `passes vacuously. Declared: [${Object.keys(S6_FOILS)}]`
+    );
+  }
   // The chain must cover the foils, keyed on the key SET and not on a count — a count here would
   // have to be edited by the same hand that adds the foil it was supposed to catch.
   must(
@@ -737,14 +762,33 @@ export function selfTest() {
         "one's witness too and asserts nothing about this link."
     );
   }
-  // …and the chain must be ordered most-permissive-first, or "the next key refuses it" is the wrong
-  // question at every link. Checked on the languages, over the cases, rather than declared.
+  // …and no adjacent pair may CROSS: if the successor claims a case its predecessor refuses, the two
+  // keys are incomparable and no ordering of them is a chain. Checked on the languages, over the
+  // cases, rather than declared.
+  //
+  // This check is **dominated wherever the pair is nested**, which is every family this module has
+  // had: a nested pair in the wrong order makes "a case this link claims and its successor refuses"
+  // unsatisfiable at that link, so the witness loop above throws first and this one never runs.
+  // Theseus drove that at length 2 (my `D4`) and again at length 3
+  // (`unit-465foilchain-2026-11-13`, arm B) — the variable was never the chain's length, it is
+  // whether the misordered pair is nested, so "kept for chains of 3+" was the wrong scope.
+  // The state that *can* reach this check is therefore an **incomparable** pair, and he drove both
+  // permutations of one (his arm C): both red, which is correct — but the old message said
+  // `misordered`, telling the next hand to reorder, when no permutation of two crossing keys is a
+  // chain. The predicate was sound and the remedy it prescribed did not exist. Hence the wording
+  // below; `/misordered/`, the anchor my committed arm D's `D4` keys on, is deliberately gone, and
+  // `unit-465chainfloor`'s arm C records that `D4`'s detector is now blind in the one state that
+  // prints here.
   for (let i = 0; i + 1 < S6_FOIL_CHAIN.length; i += 1) {
     const wide = S6_FOILS[S6_FOIL_CHAIN[i]];
     const narrow = S6_FOILS[S6_FOIL_CHAIN[i + 1]];
     const counterexample = pathCases.find(([p]) => narrow.test(p) && !wide.test(p));
     must(counterexample === undefined,
-      `S6_FOIL_CHAIN is misordered: ${S6_FOIL_CHAIN[i + 1]} claims ${JSON.stringify(counterexample && counterexample[0])} and ${S6_FOIL_CHAIN[i]} does not`);
+      `S6_FOIL_CHAIN: ${S6_FOIL_CHAIN[i + 1]} and ${S6_FOIL_CHAIN[i]} are incomparable, so they ` +
+        `cannot form a chain — ${S6_FOIL_CHAIN[i + 1]} claims ` +
+        `${JSON.stringify(counterexample && counterexample[0])} and ${S6_FOIL_CHAIN[i]} does not. ` +
+        'Reordering cannot help: in the other order the other key claims something this one refuses. ' +
+        'Split them into separate chains or drop one.');
   }
   // …and the live key must not BE either foil. Identity would make every witness above vacuous.
   for (const [name, foil] of Object.entries(S6_FOILS)) {

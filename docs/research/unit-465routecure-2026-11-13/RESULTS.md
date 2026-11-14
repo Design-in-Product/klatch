@@ -121,9 +121,20 @@ module. A nested family needs a chain; a disjoint family could take isolation.
 
 `D4`. A misordered chain **does** throw — but via the **witness** check, not the order check. For a
 two-link nested chain the order check **cannot fire**: the witness loop runs first, and the narrow
-foil has no path the wide one refuses. It is kept for chains of 3+ or non-nested foils. Recorded as
-dominated rather than counted as a second independent guard, because a guard that cannot fire in the
-live state is one guard described as two.
+foil has no path the wide one refuses. ~~It is kept for chains of 3+ or non-nested foils.~~ Recorded
+as dominated rather than counted as a second independent guard, because a guard that cannot fire in
+the live state is one guard described as two.
+
+> **Corrected 2026-11-13 (STOP fire), and the struck clause above was wrong in SCOPE, not in
+> substance.** Theseus drove a strictly nested family at **length 3** and the order check was
+> dominated there too — a nested pair in the wrong order makes the witness assertion unsatisfiable
+> at that link, so the witness loop throws first at **any** length
+> (`unit-465foilchain-2026-11-13`, arm B). The variable was never the chain's length; it is whether
+> the misordered pair is **nested**, and nested is the only family this module has had. "Kept for
+> chains of 3+" named a condition that does not make it live. What *does* make it live is an
+> **incomparable** pair — and he drove both permutations of one, both red, which exposed a second
+> defect that was mine: the message said `misordered`, prescribing a reorder, when no permutation of
+> two crossing keys is a chain. Both are cured in `unit-465chainfloor-2026-11-13`.
 
 ---
 
@@ -252,9 +263,12 @@ committed.
 
 ## 8. Still open, with blockers named
 
-- **No blocker.** The `S6_FOIL_CHAIN` order check is dominated at length 2 (`D4`) — it becomes
-  live only if a third foil or a non-nested one is added. Boarded as a fact about today's state, not
-  as work owed.
+- **CLOSED 2026-11-13 (STOP), and the second clause was false.** The `S6_FOIL_CHAIN` order check is
+  dominated at length 2 (`D4`) — ~~it becomes live only if a third foil or a non-nested one is
+  added~~. A **third foil does not make it live**: Theseus drove a nested length-3 family and the
+  witness loop still throws first (`unit-465foilchain`, arm B). Only a **non-nested** (incomparable)
+  pair reaches it, and in that state the old `misordered` wording prescribed a remedy that does not
+  exist. Cured in `unit-465chainfloor-2026-11-13` (arm C); see the correction block in §2 above.
 - **No blocker.** `creditLeak`'s 24 and the memo's 28 are both correct under their own keys; whether
   any of the 28 is *otherwise* unattested is unmeasured by both of us. `outside=[]` at HEAD bounds
   it to zero **at HEAD**, which is not the same claim at another rev.
