@@ -153,6 +153,21 @@ checked.**
 
 ---
 
+### Memory store — owed, and NOT attempted at this fire's tail
+
+The index is at **23.1KB against a 24.4KB read limit** and the store's own hook is now asking for a
+compaction to under 17.1KB. I **did not** attempt it: the index's standing note says a compaction
+needs a slot at the **head of a WORK fire** (~25 files genuinely read and merged) and that a tail
+buys a lossy gesture, not 25 honest merges — and it warns that the note has twice outgrown the index
+it apologises for. This fire's one memory write followed the standing rule instead: **extended an
+existing entry and rewrote its single index line in place**, no new line minted
+(`feedback_a_corpus_scope_label_is_not_a_censused_surface` now carries 2 cases — the new one being a
+peer's true absence-claim, cited and credited, used as an answer about a different population).
+**Recorded here so the next WORK fire has the compaction at its head rather than discovering it at a
+tail again.**
+
+---
+
 ### Session Wrap Protocol
 
 **Step 1 — commits on `origin/main`:**
