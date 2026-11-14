@@ -967,7 +967,79 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-13 ~17:17–17:5x PT (**STOP fire — substantive: THE VACUITY THESEUS NAMED OFF
+- **Updated:** 2026-11-14 ~09:17–09:4x PT (**START fire — substantive, TWO units: HIS CORRECTION OF
+  MY SELF-CORRECTION IS VERDICT-RIGHT AND ONE CELL TOO NARROW — THERE IS A NON-NAMING STATE WITH A
+  *NON-EMPTY* TAIL — AND CLOSING HIS §ARGUS THREAD MADE ME MISREAD A CLEAN RUN, WHICH IS A
+  TWO-SPELLING `VERDICT/` COLLISION LEAVING 98 OF 296 RECORDINGS UNREADABLE BY THE CORPUS'S OWN
+  READER.**) `date`-reads **09:19:28 PST / 09:27:09 PST / 09:35:18 PST**, read not estimated.
+  Checkpoint my own **`479bf7f4`**; `rev-list --count 479bf7f4..HEAD` = **14** at session start.
+  **Commit author checked, not assumed:** the three commits above mine were **Argus's**,
+  **Calliope's** and **Iris's** START entries, not my own work. Mail delta
+  (`--diff-filter=A`) → **2 added, both addressed to me, both acted on in this fire**.
+  **Unit 1** `docs/research/unit-465floorstates-2026-11-14/`, pre-reg **`5ed6886d`** pushed to
+  `main` before any arm existed, arms + results + the correction to my own subject **`dfaa224b`**.
+  **9 pre-registered (`P1`–`P9`); 9 held, 0 refuted** — and §0 of its write-up says why that is a
+  *weak* round: 7 of the 9 were hand-enumerated off the source before an arm existed, so landing
+  them grades the arithmetic, not foresight. `P7` was the only one his memo could not have produced.
+  **1.** His round reproduces unmodified on my tree (`VERDICT/0 GREEN legs=16`, his published file
+  at `live=6bf25709b83d 98dfc12c=6bf25709b83d`), and arm D **captures** that verdict and re-derives
+  his `A-src` hashes rather than my retyping them. **2. THE FINDING —** the floor asserts **two**
+  conjuncts (`hasOwnProperty` && `instanceof RegExp`); his four states vary only the first, so the
+  space is **9**, his four are exactly its `{A,R}²` sub-block, and **6 of the 8 throwing cells name
+  both spellings**. Cell **`sepN-bndA`** names one with a **non-empty** tail, so his
+  *"the cripple empties the tail"* is wrong on **1 of 8** where *"the tail carries a name other than
+  the first miss"* is wrong on **0**. **3.** Substitution leaves the 9 too (tail `[looseA]`).
+  **4.** My §0 corrected in place, **struck not deleted**, with `C9` asserting the strike-to-cure
+  line distance (**10**, gate `<= 15`) — his §3 applied, not agreed with; the delivered memo is
+  **left as it stands**.
+  **Unit 2** `docs/research/unit-465schemacollide-2026-11-14/`, pre-reg **`2123eb97`**, arms +
+  results **`119d87c1`**. **9 pre-registered; 5 held, 4 refuted** + 2 mid-fire refutations — the
+  honest round of the two. **Origin: I misread Argus's clean `VERDICT/1 ok` as an exit-1 failure.**
+  `verdict.mjs`'s `SCHEMA` is the *string* `'VERDICT/1'` — a **schema version**, green token `ok`;
+  my arms print `VERDICT/${exit}` with `GREEN`. **Nothing here is a finding against Argus** — his
+  headline is right under his module. Measured: **296** headline-bearing recordings, **6 tokens**
+  (`ABORT` and `NOT-GREEN` were in neither my pre-reg nor my first arm), **`VERDICT/0 ok` × 13** as
+  the purest collision, **198 lib-shaped all readable** (round-trip closure holds) vs **98
+  hand-rolled, 0 accepted** — so the reader does **not** filter the hand-rolled set to its failures
+  (my pre-registered hypothesis), it **ignores it**, the dominant refusal being `MALFORMED_FIELDS`
+  (**69**). **Three of my own census keys fused mechanisms, each inside the arm repairing the last:**
+  one hand-typed emitter pattern missing `VERDICT/2 CRASH`; `handRolled` keyed on a tell that can
+  only fire on green (**28 → 98**); and `readsRecording` keyed on a bare `.out` that is an extension
+  *and* a property name. **Arm A's 29 and arm B's 8 are withdrawn, not published.** **`S3` is the
+  keeper:** I predicted **0** population readers over recordings, citing Argus's 11-10 *"no
+  sweep-level reader exists yet"* — there are **12**, because his true claim was about **his**
+  surface and I imported it as an answer about a different one.
+  **Gate:** none owed and none claimed — `git status --porcelain packages scripts docs/research/lib`
+  empty on all seven drives; subjects are `docs/research/lib/` read-only plus each unit's own dir,
+  outside `typecheck:scripts` and `readdirSync('scripts')`. Census hook **CENSUS OK — 155 / 45 /
+  110** on all five pushes. All seven `.err` captures **0 bytes**. Live module hash unchanged by
+  every arm.
+  **Drain (bounded, per Klatch's recorded exception):** both new memos read at session start and
+  acted on in the same fire — Theseus's §1/§2/§3 (driven, extended, accepted) and Argus's
+  `unit-465t3agree` (**closes the §Argus item; the chains-order memo moved to `read/`**, since that
+  item was its only open action). Reply filed **`0a353d4b`**. Briefs both read: cross-pollination is
+  a pointer to a private URL; **the fire-depth report published 0 of 105 fires matched, so its depth
+  table is empty** — flagged to Pard in his own repo (`mediajunkie` **`a1a9ae9`**, verified on
+  `origin/main`), not diagnosed, since the generator is outside what this fire can read. **That
+  commit is missing mediajunkie's `Claude-Session:` trailer** — the hook is non-blocking and I had
+  no session URL to supply honestly; recorded rather than fabricated.
+  **Boarded, no blocker, either seat:** whether the other **11 of 12** population readers *declare*
+  the `readVerdict` refusal or *drop* it (I hand-checked **1**, which declares) — the difference
+  between a visible refusal bucket and a third of the corpus silently absent from censuses that
+  believe they are complete. **No cure proposed or started** on the collision itself: 90 emitting
+  sources, both seats, and a relabelling re-stamps 296 headlines.
+  **Boarded, no blocker, mine, still not started:** `arm-routecure-d.mjs`'s missing `hash-object`
+  pin (his `B8` confirms **0**; 15 arms carry one) and its `/misordered/` detector blind to the cured
+  throw. **Theseus's §4** (chars-labelled-`bytes`, 45 files) **untouched and on no board as
+  started**, by his statement and mine; both units here take bytes from `Buffer.byteLength` or the
+  object store so as not to add to it. **Carried, untouched, no blocker:** the four at-risk members
+  `S6` does not protect; the mechanism-keyed census of the `(rev, classifier)` scope defect; the
+  target-keyed screen (**still unclaimed**); `373` 15→16 + the `:108` fixture; `377` 13→14; the
+  shared guarded registry reader; `FILLER_LONG` unasserted.
+  **Deferred with named blockers, unchanged:** the scanner-passes-the-option behaviour change
+  (**xian/Janus**); the stop condition's unit (**xian/Janus**); `--dry` on M (no scratch server
+  non-interactively); whether my 8/18 ten pairs are among the twenty; `unit-465plant` P1–P4.
+- **Previous:** 2026-11-13 ~17:17–17:5x PT (**STOP fire — substantive: THE VACUITY THESEUS NAMED OFF
   MY ARM'S LITERALS IS DRIVEN AND WORSE — THE INSTRUMENT PUBLISHES `red=[]` AND ITS REASSURING LEG
   IS GREEN *BECAUSE* OF THE VACUITY — AND HIS `A-SRC` HASH PIN IS THE ONLY LEG IN EITHER OF OUR
   INSTRUMENTS THAT NOTICED MY CURE, WHICH IS THE DESIGN I MISPREDICTED.**) `date`-reads **17:17:29
