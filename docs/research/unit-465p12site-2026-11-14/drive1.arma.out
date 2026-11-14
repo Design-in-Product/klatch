@@ -1,0 +1,92 @@
+          --- pin: 5966f86d (5966f86db3a650b2858448eccb8796f5517e03e2); every source below is read at this rev
+  ok      A1  population at the pin, arm A's key verbatim: 26 / 24 / 20 (this morning at the then-HEAD: 23 / 21 / 17)
+  ok      A2  the foils partition this morning's 17: his 12 = 12, the unclassified additions = 5
+  ok      A3  population vs this morning's 17 at the pin: now=20 gone=[] added=["unit-465headpop-2026-11-14/arm-headpop-a.mjs","unit-465refusalfate-2026-11-14/arm-refusalfate-b.mjs","unit-465refusalfate-2026-11-14/arm-refusalfate-c.mjs"]
+  ok      A4  the instrument is outside its own population BY THE PIN, not by a filter: this unit's members in the population = 0
+  LANDED  Q1  the population at the pin is larger than this morning's 17 (point prediction 19 or 20): 20 — inside the point range
+          --- site classification over the whole pinned population; (+5) marks a member arm A left unclassified
+          DECLARE  round448-instruments/census-pred-occupancy.mjs
+              sites=1 bare-skip=0 .refusal-mentions=2
+          BOTH     round448-instruments/grade-the-four-list-scorer.mjs
+              sites=8 bare-skip=1 .refusal-mentions=4
+              DROP@167   if (rv.ok !== true) continue;
+          DECLARE  round450-instruments/grade-the-row-guards.mjs (+5)
+              sites=5 bare-skip=0 .refusal-mentions=18
+          NEITHER  round451-instruments/settle-the-subset-question-on-real-exemplars.mjs (+5)
+              sites=0 bare-skip=0 .refusal-mentions=0
+          DROP     round452-instruments/census-the-legacy-id-grammar-and-the-liveness-reader.mjs
+              sites=1 bare-skip=1 .refusal-mentions=0
+              DROP@126   if (v.ok !== true) continue;
+          DROP     round452-instruments/census2-reconcile-his-26-and-hand-read-the-drops.mjs
+              sites=1 bare-skip=1 .refusal-mentions=0
+              DROP@47   if (readVerdict(text).ok !== true) continue;
+          BOTH     round452-instruments/no-id-class-separates-and-the-liveness-reader-is-cured.mjs
+              sites=3 bare-skip=1 .refusal-mentions=1
+              DROP@248   if (readVerdict(text).ok !== true) continue;
+          DECLARE  round456-instruments/drift-census-over-the-verdict-publishing-population.mjs
+              sites=7 bare-skip=0 .refusal-mentions=2
+          DECLARE  round457-instruments/grade-recording-completeness-across-the-whole-corpus.mjs
+              sites=7 bare-skip=0 .refusal-mentions=4
+          DECLARE  round460-instruments/grade-the-pred-gate-landing.mjs (+5)
+              sites=6 bare-skip=0 .refusal-mentions=17
+          BOTH     round462-instruments/grade-the-pred-half-refusal.mjs
+              sites=17 bare-skip=3 .refusal-mentions=10
+              DROP@184   if (l.ok !== true) return null;
+              DROP@187   if (b.ok !== true || h.ok !== true) return null;
+              DROP@340   if (!rows.ok || !v.ok) return null;
+          DECLARE  round462-instruments/recon.mjs
+              sites=3 bare-skip=0 .refusal-mentions=2
+          DECLARE  round463-instruments/grade-the-57-of-461-class.mjs
+              sites=24 bare-skip=0 .refusal-mentions=12
+          DECLARE  round463-instruments/recon.mjs
+              sites=5 bare-skip=0 .refusal-mentions=3
+          DECLARE  round463-instruments/which-residue-member-postdates.mjs
+              sites=2 bare-skip=0 .refusal-mentions=2
+          NEITHER  unit-465headpop-2026-11-14/arm-headpop-a.mjs (new since 10:47)
+              sites=2 bare-skip=0 .refusal-mentions=0
+          DECLARE  unit-465refusalfate-2026-11-14/arm-refusalfate-b.mjs (new since 10:47)
+              sites=1 bare-skip=0 .refusal-mentions=2
+          DECLARE  unit-465refusalfate-2026-11-14/arm-refusalfate-c.mjs (new since 10:47)
+              sites=2 bare-skip=0 .refusal-mentions=3
+          DECLARE  unit-465schemacollide-2026-11-14/arm-schemacollide-a.mjs (+5)
+              sites=10 bare-skip=0 .refusal-mentions=8
+          DECLARE  unit-465schemacollide-2026-11-14/arm-schemacollide-b.mjs (+5)
+              sites=6 bare-skip=0 .refusal-mentions=9
+  ok      A5  whole pinned population (20): drop=2 declare=13 both=3 neither=2
+  ok      A6  THE 5 ADDITIONS arm A left unclassified, now classified: drop=0 declare=4 both=0 neither=1
+          --- the 5 additions, member by member
+          DECLARE  round450-instruments/grade-the-row-guards.mjs
+          NEITHER  round451-instruments/settle-the-subset-question-on-real-exemplars.mjs
+          DECLARE  round460-instruments/grade-the-pred-gate-landing.mjs
+          DECLARE  unit-465schemacollide-2026-11-14/arm-schemacollide-a.mjs
+          DECLARE  unit-465schemacollide-2026-11-14/arm-schemacollide-b.mjs
+  ok      A7  his 12 re-run at the pin (this morning: drop=2 declare=7 both=3): drop=2 declare=7 both=3 neither=0
+  REFUTED Q2  at least one of the 5 additions lands in BOTH: []
+          --- the corrected P12 key: resolve each bare-skip site's loop array, then bind the denominator to IT
+          round448-instruments/grade-the-four-list-scorer.mjs
+              @167  RESOLVED   loop over `population` @165 → published `of population.length` × 0
+          round452-instruments/census-the-legacy-id-grammar-and-the-liveness-reader.mjs
+              @126  RESOLVED   loop over `texts` @124 → published `of texts.length` × 0
+          round452-instruments/census2-reconcile-his-26-and-hand-read-the-drops.mjs
+              @47   RESOLVED   loop over `texts` @46 → published `of texts.length` × 0
+          round452-instruments/no-id-class-separates-and-the-liveness-reader-is-cured.mjs
+              @248  RESOLVED   loop over `texts` @247 → published `of texts.length` × 0
+          round462-instruments/grade-the-pred-half-refusal.mjs
+              @184  UNRESOLVED nearest enclosing block is a function
+              @187  UNRESOLVED nearest enclosing block is a function
+              @340  UNRESOLVED nearest enclosing block is a function
+  ok      A9  bare-skip sites across the pinned population partition three ways: total=7 RESOLVED=4 DERIVED=0 UNRESOLVED=3 (not-resolved rate 42.9%)
+  LANDED  Q4  the UNRESOLVED/DERIVED class is at least 25% of bare-skip sites: 42.9% (3 of 7)
+  ok      A10  P12 members under the corrected two-conjunct key: 0 of 20 (sites 0 of 4 RESOLVED; 3 sites excluded from BOTH halves) []
+  REFUTED Q3  over his 12 the corrected key reproduces the hand-verified 2, both the round452 pair: 0 []
+  REFUTED Q6  at least one P12 carrier outside his 12, so the wider census is strictly more than the 2: 0 []
+          --- Q5: A7's withdrawn containment key, re-run verbatim over the same 5 dropping members
+          round448-instruments/grade-the-four-list-scorer.mjs  withdrawn-key sites = 0
+          round452-instruments/census-the-legacy-id-grammar-and-the-liveness-reader.mjs  withdrawn-key sites = 4
+          round452-instruments/census2-reconcile-his-26-and-hand-read-the-drops.mjs  withdrawn-key sites = 2
+          round452-instruments/no-id-class-separates-and-the-liveness-reader-is-cured.mjs  withdrawn-key sites = 1
+          round462-instruments/grade-the-pred-half-refusal.mjs  withdrawn-key sites = 4
+  ok      A14  A7's withdrawn key, re-run verbatim: 4 of 5 (it published "4 of 5"); corrected key over the same members: 0 of 5
+  LANDED  Q5  the withdrawn key reproduces its own 4 of 5, so the withdrawal diagnosed the KEY and not a transcription slip: 4 of 5
+  ok      A-gate  git status --porcelain packages scripts docs/research/lib → ""
+VERDICT/0 GREEN legs=11 red=[] refused=[] preds=6 refuted=["Q2","Q3","Q6"] prefused=[]
