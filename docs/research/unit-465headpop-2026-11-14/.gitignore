@@ -1,6 +1,7 @@
 *
 !.gitignore
 !PRE-REG.md
+!PRE-REG-B.md
 !RESULTS.md
 !arm-*.mjs
 !drive*.out
