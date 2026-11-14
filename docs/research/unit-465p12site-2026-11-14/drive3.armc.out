@@ -1,0 +1,38 @@
+          --- each reader's return statements, read verbatim at the pin
+          readVerdict  (lines 670–705)  ok-field=true refusal-field=true
+              return@689  return refuse('MALFORMED_FIELDS');
+              return@696  return refuse('MALFORMED_FIELDS');
+              return@704  return { ok: true, refusal: null, verdict: { token, legs, red, refused, preds, refuted, prefused } };
+          readTail  (lines 515–568)  ok-field=true refusal-field=true
+              return@522  return {
+              return@528  return {
+              return@561  return {
+              return@567  return { ok: true, refusal: null, detail: null, verdict: v.verdict, rows: r.rows };
+          readRows  (lines 461–492)  ok-field=true refusal-field=true
+              return@477  return refuseRow(otherKind === undefined ? 'UNKNOWN_ROW_TOKEN' : 'WRONG_KIND_TOKEN', line);
+              return@491  return { ok: true, refusal: null, detail: null, rows };
+          readCorpusRows  (lines 640–663)  ok-field=false refusal-field=false
+              return@662  return { rows, unknown };
+  ok      C1  reader shapes at the pin: readVerdict=OK-SHAPED · readTail=OK-SHAPED · readRows=OK-SHAPED · readCorpusRows=NO-OK
+  LANDED  S1  readVerdict returns an {ok, refusal}-shaped result: ok=true refusal=true
+  ok      C2  the four "library readers" split by shape: refusal-bearing ["readVerdict","readTail","readRows"] · no `.ok` at all ["readCorpusRows"]
+  LANDED  S2  the four readers do NOT share one shape — "the library's readers" names a set whose members answer different questions: 3 refusal-bearing, 1 refusal-free
+  ok      C3  my widened key at the pin reproduces arm A's 20: 20
+  ok      C4  the same key under three reader sets: mine(4 readers)=20 · refusal-bearing-only(3)=19 · his(readVerdict)=17
+          --- members admitted by my key that call NO refusal-bearing reader
+          round451-instruments/settle-the-subset-question-on-real-exemplars.mjs
+              readers actually called: ["readCorpusRows"] — none of them can refuse
+  ok      C5  members in a population defined by exposure-to-refusal that have NO such exposure: 1 of 20 ["round451-instruments/settle-the-subset-question-on-real-exemplars.mjs"]
+  LANDED  S3  at least one member is admitted only by a refusal-free reader, round451 among them: 1, round451 present=true
+  LANDED  S4  Daedalus's 12 are unaffected — every member of his key calls a refusal-bearing reader: spurious under his key = 0 []
+  LANDED  S5  the corrected population is strictly between his 17 and my 20: 19
+  ok      C6  the corrected P12 rate: numerator 2 of 2 survive the corrected key (both carriers call readVerdict: true) · arm B published 2 of 20, corrected 2 of 19
+          --- figures that move, and figures that do not
+          MOVES   arm A A5 cross-tab denominator:      20 → 19
+          MOVES   arm A A10 / arm B B5 denominator:    20 → 19
+          MOVES   this morning's arm A A3 "17":        17 → 16 at THIS pin (not his rev — not comparable as a correction)
+          HOLDS   the P12 member list (both call readVerdict): ["census-the-legacy-id-grammar-and-the-liveness-reader.mjs","census2-reconcile-his-26-and-hand-read-the-drops.mjs"]
+          HOLDS   arm A A6, the 5 additions' classification: each was classified on its OWN sites, not on the denominator
+          HOLDS   this morning's superset claim (only-his empty): arithmetic, unaffected by what the extra members MEAN
+  ok      C-gate  git status --porcelain packages scripts docs/research/lib → ""
+VERDICT/0 GREEN legs=7 red=[] refused=[] preds=5 refuted=[] prefused=[]
