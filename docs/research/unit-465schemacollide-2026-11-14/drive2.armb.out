@@ -1,0 +1,83 @@
+  ok      B1a  arm A's fixture: ok=false refusal=TOKEN_LIST_CONTRADICTION — token REFUSED with refused=[] is a contradiction
+  ok      B1b  a CONSISTENT REFUSED fixture: ok=true refusal=null refused=["X"]
+  LANDED  R1  arm A's A7 red was its own fixture: the reader accepts REFUSED when the list agrees with the token
+          fixture exit 0 / GREEN     accepted=false UNKNOWN_SCHEMA
+          fixture exit 1 / RED       accepted=true  
+          fixture exit 1 / REFUSED   accepted=true  
+          fixture exit 2 / CRASH     accepted=false UNKNOWN_SCHEMA
+  ok      B2  with self-consistent fixtures the reader accepts ["exit 1 / RED","exit 1 / REFUSED"] and refuses the GREEN one
+  LANDED  R2  the asymmetry is real AT THE LINE LEVEL: a full-field hand-rolled line is accepted iff the run failed
+  ok      B3  recordings carrying a VERDICT/ headline = 296 (arm A measured 296)
+          --- (number, token) vocabulary, every pair present, no fall-through
+          VERDICT/1 RED           171 / 296
+          VERDICT/1 ok             79 / 296
+          VERDICT/0 GREEN          15 / 296
+          VERDICT/1 REFUSED        14 / 296
+          VERDICT/0 ok             13 / 296
+          VERDICT/1 ABORT           3 / 296
+          VERDICT/1 NOT-GREEN       1 / 296
+  ok      B4  distinct numbers in the corpus's headlines: ["VERDICT/0","VERDICT/1"]
+  ok      B5  distinct tokens in the corpus's headlines: ["ABORT","GREEN","NOT-GREEN","RED","REFUSED","ok"]
+  LANDED  R3  both spellings are present in the recordings, undistinguished: the number takes 0/1 (exit) and 1 (schema), the token takes GREEN and ok
+          --- refusal code x field count
+          ACCEPTED nFields=6                  198 / 296
+          MALFORMED_FIELDS nFields=3           32 / 296
+          MALFORMED_FIELDS nFields=2           22 / 296
+          MALFORMED_FIELDS nFields=4           12 / 296
+          UNKNOWN_SCHEMA nFields=6             10 / 296
+          UNKNOWN_SCHEMA nFields=4              6 / 296
+          UNKNOWN_SCHEMA nFields=5              5 / 296
+          UNKNOWN_SCHEMA nFields=2              4 / 296
+          UNKNOWN_SCHEMA nFields=3              3 / 296
+          MALFORMED_FIELDS nFields=5            2 / 296
+          MALFORMED_FIELDS nFields=18           1 / 296
+          UNKNOWN_TOP_TOKEN nFields=6           1 / 296
+  ok      B6  partition: lib-shaped=198 hand-rolled=98 of 296
+  ok      B7  hand-rolled by outcome: green-ish=42 failing=52; accepted by the reader=0
+  LANDED  R4  arm A's 28 was a floor: keyed on the FIELD LIST instead of the outcome, the hand-rolled population is 98
+  LANDED  R5  THE CORRECTION TO MY OWN HYPOTHESIS: no hand-rolled recording in the corpus is accepted — green or failing. The reader does not filter to failures; it ignores the hand-rolled population entirely
+  ok      B8  lib-shaped recordings the reader refuses = 0 — round-trip closure holds across the corpus
+          --- emitter source kinds (what follows VERDICT/ in the source)
+          computed                         26 / 90
+          literal:1                        17 / 90
+          computed+literal:1                8 / 90
+          bare                              6 / 90
+          bare+computed+literal:0           6 / 90
+          literal:0                         6 / 90
+          bare+computed                     5 / 90
+          computed+literal:2                4 / 90
+          bare+computed+literal:1           3 / 90
+          bare+literal:1+literal:9          2 / 90
+          bare+literal:1                    2 / 90
+          literal:0+literal:1               2 / 90
+          computed+literal:0+literal:1      2 / 90
+          bare+computed+literal:2           1 / 90
+  ok      B9  sources computing the number (exit) = 55; literal VERDICT/1 = 36; literal VERDICT/2 (the CRASH spelling arm A missed entirely) = 5; total emitting sources = 90
+  LANDED  R6  a THIRD spelling exists that arm A's one hand-typed pattern could not see: VERDICT/2 CRASH, a number that is neither a schema version nor 0/1
+          --- readVerdict call sites outside the lib and outside this unit
+          READS-RECORDINGS docs/research/round442-instruments/grade-the-shared-verdict-emitter.mjs
+          READS-RECORDINGS docs/research/round443-instruments/grade-the-emitter-at-its-published-line.mjs
+          READS-RECORDINGS docs/research/round444-instruments/grade-the-round-trip-cure.mjs
+          READS-RECORDINGS docs/research/round446-instruments/grade-my-own-oracle-predicate.mjs
+          line-level only   docs/research/round448-instruments/census-pred-occupancy.mjs
+          READS-RECORDINGS docs/research/round448-instruments/grade-the-four-list-scorer.mjs
+          line-level only   docs/research/round448-instruments/record-cripples.mjs
+          line-level only   docs/research/round449-instruments/grade-the-cripples.mjs
+          READS-RECORDINGS docs/research/round449-instruments/postcommit-rediff.mjs
+          line-level only   docs/research/round452-instruments/census-the-legacy-id-grammar-and-the-liveness-reader.mjs
+          line-level only   docs/research/round452-instruments/census2-reconcile-his-26-and-hand-read-the-drops.mjs
+          READS-RECORDINGS docs/research/round452-instruments/no-id-class-separates-and-the-liveness-reader-is-cured.mjs
+          line-level only   docs/research/round453-instruments/census2-separate-the-eight.mjs
+          line-level only   docs/research/round456-instruments/drift-census-over-the-verdict-publishing-population.mjs
+          line-level only   docs/research/round457-instruments/grade-recording-completeness-across-the-whole-corpus.mjs
+          line-level only   docs/research/round462-instruments/grade-the-pred-half-refusal.mjs
+          line-level only   docs/research/round462-instruments/recon.mjs
+          line-level only   docs/research/round463-instruments/grade-the-57-of-461-class.mjs
+          line-level only   docs/research/round463-instruments/recon.mjs
+          line-level only   docs/research/round463-instruments/which-residue-member-postdates.mjs
+          READS-RECORDINGS scripts/verify-verifier-exit-codes.mjs
+  ok      B10  candidate files after removing recordings/README/own-source: 22 (arm A's raw mention count was 54)
+  ok      B11  real call sites = 21, of which read a .out recording = 8
+  LANDED  R7  consumers of recordings DO exist, so arm A's Q9 is refuted in direction as well as in count — the collision is not costless by construction
+  ok      B-gate  git status --porcelain packages scripts docs/research/lib → ""
+VERDICT/0 GREEN legs=13 red=[] refused=[] preds=7 refuted=[] prefused=[]

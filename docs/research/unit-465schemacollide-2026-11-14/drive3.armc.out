@@ -1,0 +1,67 @@
+  ok      C1  scripts/verify-verifier-exit-codes.mjs: defines its own readVerdict=true imports the library's=false
+  ok      C2  scripts/verify-verifier-exit-codes.mjs: bare `.out` tokens=15 (property accesses), quoted ".out" paths=0 — arm B's key counted the former as the latter
+  LANDED  S1  arm B's `8` includes a file that neither imports the library's reader nor opens a recording: its own key fused three mechanisms
+          --- every file that imports, defines, or calls a readVerdict
+          CALL-ONLY  calls= 5 quoted.out= 9  docs/research/round442-instruments/grade-the-shared-verdict-emitter.mjs
+          CALL-ONLY  calls= 5 quoted.out= 7  docs/research/round443-instruments/grade-the-emitter-at-its-published-line.mjs
+          CALL-ONLY  calls= 6 quoted.out= 6  docs/research/round444-instruments/grade-the-round-trip-cure.mjs
+          LIB-IMPORT calls= 8 quoted.out= 7  docs/research/round446-instruments/grade-my-own-oracle-predicate.mjs
+          LIB-IMPORT calls= 2 quoted.out= 1  docs/research/round448-instruments/census-pred-occupancy.mjs
+          LIB-IMPORT calls= 9 quoted.out= 7  docs/research/round448-instruments/grade-the-four-list-scorer.mjs
+          LIB-IMPORT calls= 2 quoted.out= 4  docs/research/round448-instruments/record-cripples.mjs
+          LIB-IMPORT calls= 1 quoted.out= 0  docs/research/round449-instruments/grade-the-cripples.mjs
+          LIB-IMPORT calls= 2 quoted.out= 3  docs/research/round449-instruments/postcommit-rediff.mjs
+          LIB-IMPORT calls= 0 quoted.out=12  docs/research/round449-instruments/resolve-the-variable-write-targets.mjs
+          LIB-IMPORT calls= 1 quoted.out= 2  docs/research/round452-instruments/census-the-legacy-id-grammar-and-the-liveness-reader.mjs
+          LIB-IMPORT calls= 1 quoted.out= 1  docs/research/round452-instruments/census2-reconcile-his-26-and-hand-read-the-drops.mjs
+          LIB-IMPORT calls= 3 quoted.out= 4  docs/research/round452-instruments/no-id-class-separates-and-the-liveness-reader-is-cured.mjs
+          LIB-IMPORT calls= 1 quoted.out= 0  docs/research/round453-instruments/census2-separate-the-eight.mjs
+          LIB-IMPORT calls= 1 quoted.out= 3  docs/research/round456-instruments/drift-census-over-the-verdict-publishing-population.mjs
+          LIB-IMPORT calls= 1 quoted.out= 6  docs/research/round457-instruments/grade-recording-completeness-across-the-whole-corpus.mjs
+          LIB-IMPORT calls= 1 quoted.out= 4  docs/research/round462-instruments/grade-the-pred-half-refusal.mjs
+          LIB-IMPORT calls= 1 quoted.out= 2  docs/research/round462-instruments/recon.mjs
+          LIB-IMPORT calls= 7 quoted.out= 4  docs/research/round463-instruments/grade-the-57-of-461-class.mjs
+          LIB-IMPORT calls= 2 quoted.out= 2  docs/research/round463-instruments/recon.mjs
+          LIB-IMPORT calls= 1 quoted.out= 1  docs/research/round463-instruments/which-residue-member-postdates.mjs
+          OWN-LOCAL  calls= 3 quoted.out= 0  scripts/verify-verifier-exit-codes.mjs
+  ok      C3  files mentioning a readVerdict at all (non-lib, non-this-unit): 22
+  ok      C4  files defining their OWN readVerdict rather than importing the library's: 1 (scripts/verify-verifier-exit-codes.mjs)
+  ok      C5  consumers of the LIBRARY's reader: 17
+          --- library-reader consumers that also name a quoted .out path
+          docs/research/round446-instruments/grade-my-own-oracle-predicate.mjs  (quoted .out literals = 7)
+          docs/research/round448-instruments/census-pred-occupancy.mjs  (quoted .out literals = 1)
+          docs/research/round448-instruments/grade-the-four-list-scorer.mjs  (quoted .out literals = 7)
+          docs/research/round448-instruments/record-cripples.mjs  (quoted .out literals = 4)
+          docs/research/round449-instruments/postcommit-rediff.mjs  (quoted .out literals = 3)
+          docs/research/round452-instruments/census-the-legacy-id-grammar-and-the-liveness-reader.mjs  (quoted .out literals = 2)
+          docs/research/round452-instruments/census2-reconcile-his-26-and-hand-read-the-drops.mjs  (quoted .out literals = 1)
+          docs/research/round452-instruments/no-id-class-separates-and-the-liveness-reader-is-cured.mjs  (quoted .out literals = 4)
+          docs/research/round456-instruments/drift-census-over-the-verdict-publishing-population.mjs  (quoted .out literals = 3)
+          docs/research/round457-instruments/grade-recording-completeness-across-the-whole-corpus.mjs  (quoted .out literals = 6)
+          docs/research/round462-instruments/grade-the-pred-half-refusal.mjs  (quoted .out literals = 4)
+          docs/research/round462-instruments/recon.mjs  (quoted .out literals = 2)
+          docs/research/round463-instruments/grade-the-57-of-461-class.mjs  (quoted .out literals = 4)
+          docs/research/round463-instruments/recon.mjs  (quoted .out literals = 2)
+          docs/research/round463-instruments/which-residue-member-postdates.mjs  (quoted .out literals = 1)
+  ok      C6  of the 17 library-reader consumers, 15 name a quoted .out path
+  REFUTED S2  the publishable figure for recording-reading consumers of the library's reader is 15, strictly below arm B's contaminated 8
+          --- which of those enumerate a population rather than named files
+          named files only docs/research/round446-instruments/grade-my-own-oracle-predicate.mjs
+          ls-tree          docs/research/round448-instruments/census-pred-occupancy.mjs
+          ls-tree          docs/research/round448-instruments/grade-the-four-list-scorer.mjs
+          named files only docs/research/round448-instruments/record-cripples.mjs
+          named files only docs/research/round449-instruments/postcommit-rediff.mjs
+          ls-tree          docs/research/round452-instruments/census-the-legacy-id-grammar-and-the-liveness-reader.mjs
+          ls-tree          docs/research/round452-instruments/census2-reconcile-his-26-and-hand-read-the-drops.mjs
+          ls-tree          docs/research/round452-instruments/no-id-class-separates-and-the-liveness-reader-is-cured.mjs
+          ls-tree          docs/research/round456-instruments/drift-census-over-the-verdict-publishing-population.mjs
+          ls-tree          docs/research/round457-instruments/grade-recording-completeness-across-the-whole-corpus.mjs
+          ls-tree          docs/research/round462-instruments/grade-the-pred-half-refusal.mjs
+          ls-tree          docs/research/round462-instruments/recon.mjs
+          ls-tree          docs/research/round463-instruments/grade-the-57-of-461-class.mjs
+          ls-tree          docs/research/round463-instruments/recon.mjs
+          ls-tree          docs/research/round463-instruments/which-residue-member-postdates.mjs
+  ok      C7  recording-reading library consumers that enumerate a population: 12 of 15
+  REFUTED S3  no consumer of the library reader enumerates a recording POPULATION — so the 98 refused hand-rolled recordings cost nothing TODAY, which is a fact about the absent sweep and not about the collision
+  ok      C-gate  git status --porcelain packages scripts docs/research/lib → ""
+VERDICT/0 GREEN legs=8 red=[] refused=[] preds=3 refuted=[S2,S3] prefused=[]

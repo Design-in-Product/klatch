@@ -1,0 +1,90 @@
+  ok      A1  verdict.mjs SCHEMA = "VERDICT/1"
+  ok      A2  topToken over its three branches = ["ok","RED","REFUSED"] ; emits GREEN = false
+  ok      A3  the number is invariant across outcome: green="VERDICT/1 ok" red="VERDICT/1 RED" constant=true
+  LANDED  Q1  the library number is a schema version and its green token is `ok`, never GREEN
+          emitter unit-465floorstates-2026-11-14/arm-floorstates-b.mjs: VERDICT/${exit}=true GREEN=true exitDerived=true
+          emitter unit-465chainfloor-2026-11-13/arm-chainfloor-a.mjs: VERDICT/${exit}=false GREEN=true exitDerived=true
+          emitter unit-465byteslabel-2026-11-13/arm-byteslabel-a.mjs: VERDICT/${exit}=true GREEN=true exitDerived=true
+  RED     A4  all 3 sampled hand-rolled emitters put the EXIT CODE in the number and spell green GREEN = false
+  REFUTED Q2  the hand-rolled number is a process exit code and its green token is GREEN — the same prefix, a different quantity
+  ok      A5  readVerdict('VERDICT/0 GREEN …') → ok=false refusal=UNKNOWN_SCHEMA
+  LANDED  Q3  a hand-rolled GREEN headline is refused, and refused on the SCHEMA — the token is never reached
+  ok      A6  readVerdict('VERDICT/1 RED …') → ok=true refusal=null red=["X"]
+  LANDED  Q4  a hand-rolled RED headline is ACCEPTED — exit 1 collides with schema 1 and RED is a valid token
+  RED     A7  readVerdict('VERDICT/1 REFUSED …') → ok=false refusal=TOKEN_LIST_CONTRADICTION
+  REFUTED Q5  a hand-rolled REFUSED headline is accepted too
+  RED     A8  of the three outcomes a hand-rolled arm publishes, the reader accepts: ["exit 1 / RED"]
+  ok      A9  tracked *.out recordings under docs/research/ = 1188
+  ok      A10  recordings carrying a VERDICT/ headline = 296 of 1188 tracked *.out
+          census ACCEPTED                 198 / 296
+          census MALFORMED_FIELDS         69 / 296
+          census UNKNOWN_SCHEMA           28 / 296
+          census UNKNOWN_TOP_TOKEN        1 / 296
+  RED     A11  refusal codes present: ["MALFORMED_FIELDS","UNKNOWN_SCHEMA","UNKNOWN_TOP_TOKEN"]
+  REFUTED Q6  every refusal is UNKNOWN_SCHEMA or UNKNOWN_TOP_TOKEN and no other code appears
+  ok      A12  hand-rolled recordings = 28 / 296; of those, GREEN = 15, refused by the corpus's own reader = 28
+  RED     A13  the refused set IS the green set: green=15 refused=28 equal=false
+  LANDED  Q7  more than half of hand-rolled recordings are green and therefore refused: 15 of 28
+  RED     A14  hand-rolled recordings the reader ACCEPTS (all of them failing runs) = 0
+  ok      A15  every accepted hand-rolled recording is a FAILING run = true
+  ok      A16  this morning's unit-465floorstates recordings: 4 found, refused=4 (UNKNOWN_SCHEMA,UNKNOWN_SCHEMA,UNKNOWN_SCHEMA,UNKNOWN_SCHEMA)
+  LANDED  Q8  all four recordings I published an hour ago are invisible to the corpus's own reader
+          readVerdict mentioned in 55 tracked files; outside verdict.mjs: 54
+            docs/research/round442-instruments/grade-the-shared-verdict-emitter.mjs
+            docs/research/round443-instruments/README.md
+            docs/research/round443-instruments/grade-the-emitter-at-its-published-line.mjs
+            docs/research/round444-instruments/drive1.out
+            docs/research/round444-instruments/drive2.out
+            docs/research/round444-instruments/drive3.refuted-on-a-head-sourced-baseline.out
+            docs/research/round444-instruments/drive4.baseline-reader-crossed-a-newline.out
+            docs/research/round444-instruments/drive5.final.out
+            docs/research/round444-instruments/grade-the-round-trip-cure.mjs
+            docs/research/round444-instruments/his-r443-instrument-dies-at-this-rev.out
+            docs/research/round446-instruments/drive2.child-stderr-leaked-into-the-recording.out
+            docs/research/round446-instruments/drive4.h5-refuses-before-the-cure.out
+            docs/research/round446-instruments/drive5.h5-conjunct-re-keyed.out
+            docs/research/round446-instruments/drive6.out
+            docs/research/round446-instruments/drive8.postcommit.out
+            docs/research/round446-instruments/grade-my-own-oracle-predicate.mjs
+            docs/research/round448-instruments/README.md
+            docs/research/round448-instruments/census-pred-occupancy.mjs
+            docs/research/round448-instruments/drive1.r446-unmodified-at-his-g4-repaired-rev.out
+            docs/research/round448-instruments/drive10.live.out
+            docs/research/round448-instruments/drive11.final.out
+            docs/research/round448-instruments/drive12.r446-after-the-sentence-cure.out
+            docs/research/round448-instruments/drive13.postcommit.out
+            docs/research/round448-instruments/drive15.hygiene-key-widened.out
+            docs/research/round448-instruments/drive16.postcommit-hygiene-widened.out
+            docs/research/round448-instruments/drive2.census.out
+            docs/research/round448-instruments/drive3.out
+            docs/research/round448-instruments/drive4.rows-selected-and-seams-collapsed.out
+            docs/research/round448-instruments/drive5.pin-keyed-on-the-repair-marker.out
+            docs/research/round448-instruments/drive6.legonly-crippled.out
+            docs/research/round448-instruments/drive7.blindpin-crippled.out
+            docs/research/round448-instruments/drive8.inert-name.out
+            docs/research/round448-instruments/grade-the-four-list-scorer.mjs
+            docs/research/round448-instruments/record-cripples.mjs
+            docs/research/round449-instruments/grade-the-cripples.mjs
+            docs/research/round449-instruments/postcommit-rediff.mjs
+            docs/research/round449-instruments/resolve-the-variable-write-targets.mjs
+            docs/research/round452-instruments/census-the-legacy-id-grammar-and-the-liveness-reader.mjs
+            docs/research/round452-instruments/census2-reconcile-his-26-and-hand-read-the-drops.mjs
+            docs/research/round452-instruments/drive7.r446-alive-again.out
+            docs/research/round452-instruments/no-id-class-separates-and-the-liveness-reader-is-cured.mjs
+            docs/research/round453-instruments/census2-separate-the-eight.mjs
+            docs/research/round453-instruments/drive4.restamps-the-sweep-caused.diff
+            docs/research/round453-instruments/pin450/lib/verdict.mjs
+            docs/research/round456-instruments/drift-census-over-the-verdict-publishing-population.mjs
+            docs/research/round457-instruments/grade-recording-completeness-across-the-whole-corpus.mjs
+            docs/research/round462-instruments/README.md
+            docs/research/round462-instruments/grade-the-pred-half-refusal.mjs
+            docs/research/round462-instruments/recon.mjs
+            docs/research/round463-instruments/grade-the-57-of-461-class.mjs
+            docs/research/round463-instruments/recon.mjs
+            docs/research/round463-instruments/which-residue-member-postdates.mjs
+            docs/research/unit-465schemacollide-2026-11-14/PRE-REGISTRATION.md
+            scripts/verify-verifier-exit-codes.mjs
+  ok      A17  files that both call readVerdict( and name a .out path = 29 ["docs/research/round442-instruments/grade-the-shared-verdict-emitter.mjs","docs/research/round443-instruments/README.md","docs/research/round443-instruments/grade-the-emitter-at-its-published-line.mjs","docs/research/round444-instruments/drive1.out","docs/research/round444-instruments/drive2.out","docs/research/round444-instruments/drive3.refuted-on-a-head-sourced-baseline.out","docs/research/round444-instruments/drive4.baseline-reader-crossed-a-newline.out","docs/research/round444-instruments/drive5.final.out","docs/research/round444-instruments/grade-the-round-trip-cure.mjs","docs/research/round446-instruments/drive2.child-stderr-leaked-into-the-recording.out","docs/research/round446-instruments/grade-my-own-oracle-predicate.mjs","docs/research/round448-instruments/census-pred-occupancy.mjs","docs/research/round448-instruments/grade-the-four-list-scorer.mjs","docs/research/round448-instruments/record-cripples.mjs","docs/research/round449-instruments/postcommit-rediff.mjs","docs/research/round452-instruments/census-the-legacy-id-grammar-and-the-liveness-reader.mjs","docs/research/round452-instruments/census2-reconcile-his-26-and-hand-read-the-drops.mjs","docs/research/round452-instruments/no-id-class-separates-and-the-liveness-reader-is-cured.mjs","docs/research/round453-instruments/census2-separate-the-eight.mjs","docs/research/round453-instruments/pin450/lib/verdict.mjs","docs/research/round456-instruments/drift-census-over-the-verdict-publishing-population.mjs","docs/research/round457-instruments/grade-recording-completeness-across-the-whole-corpus.mjs","docs/research/round462-instruments/grade-the-pred-half-refusal.mjs","docs/research/round462-instruments/recon.mjs","docs/research/round463-instruments/grade-the-57-of-461-class.mjs","docs/research/round463-instruments/recon.mjs","docs/research/round463-instruments/which-residue-member-postdates.mjs","docs/research/unit-465schemacollide-2026-11-14/PRE-REGISTRATION.md","scripts/verify-verifier-exit-codes.mjs"]
+  REFUTED Q9  no consumer reads recordings through readVerdict, which is why the collision has cost nothing yet (Argus, 2026-11-10: no sweep-level reader exists)
+  ok      A-gate  git status --porcelain packages scripts docs/research/lib → ""
+VERDICT/1 RED legs=18 red=[A4,A7,A8,A11,A13,A14] refused=[] preds=9 refuted=[Q2,Q5,Q6,Q9]
