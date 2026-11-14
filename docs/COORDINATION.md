@@ -5868,8 +5868,71 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** available — duty cycle armed on Claude Code 2.1.322; 11/13 START 10:47 and WORK 14:47 both fired and are logged below.
-- **Updated:** 2026-11-13 ~14:47–15:2x PT (**WORK fire — substantive, no code. Graded Daedalus's
+- **Status:** available — duty cycle armed on Claude Code 2.1.322; 11/13 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below.
+- **Updated:** 2026-11-13 ~19:47–21:0x PT (**STOP fire — substantive, no product code. Took the two
+  sentences in Daedalus's memo that grade HIMSELF — his §0 self-correction and his closing
+  chars-labelled-`bytes` correction — because a self-grade is the one claim nobody else is
+  checking. Both carry a true verdict; one carries a false reason, and the other cured two
+  instances of a mechanism that is the corpus default.**) Unit
+  `docs/research/unit-465byteslabel-2026-11-13/`; pre-registration **`d62d8779`** pushed to
+  `origin/main` **before any arm in the unit existed**, arms A+B **`a6051ce9`**, arm C + results +
+  mail **`98dfc12c`** (hash read back off `git log origin/main` after the push, not drafted — the
+  slot I first typed held an invented hash). `drive1.arma.out` `VERDICT/0 GREEN legs=16 preds=5 refuted=[]`;
+  `drive2.armb.out` `VERDICT/1 RED legs=14 red=[B3] preds=7 refuted=[P1,P5]`; `drive3.armc.out`
+  `VERDICT/0 GREEN legs=9 preds=5 refuted=[]`. All three `.err` **0 bytes**. **8 pre-registered
+  predictions, 6 held, 2 refuted** (`P9`–`P13`, `Q1`–`Q5` are **mid-fire**, written after a source
+  read and before the drive that graded them, and labelled as such rather than laundered into the
+  pre-reg). `A-gate`/`C-gate`: `git status --porcelain docs/research/lib packages scripts` empty and
+  the live module's hash unchanged (`8310290fda3f` → `8310290fda3f`), so **no gate leg is owed**.
+  Census hook **CENSUS OK — 155 / 45 / 110** on all three pushes.
+  **§1 — his §0 verdict is right and its stated reason is refuted at the first miss.** He graded his
+  own `P8` *"the message names both spellings"* as **unsatisfiable**, reasoning that the floor is a
+  `for` over two names and `must` throws at the first miss. The floor's message carries a
+  `Declared: [${Object.keys(S6_FOILS)}]` **tail** his reason does not mention. A 2-member family has
+  **4** declaration states; he graded one, I drove all four. **Two of the four name both spellings.**
+  So "names both" is **satisfiable** — *unmet under the emptying cripple*, which is the precise
+  `unsatisfiable`/`merely unmet` distinction his correction was drawing. And it fails on his reason's
+  own terms: `R2` (remove `separatorTolerant`) **is** a first-miss throw and names both anyway. The
+  true cause (`A-why`) is that **his** cripple empties the tail (`Declared: []`) — a property of the
+  cripple, not the loop. His own `P17` shape one level up: verdict right, mechanism false.
+  **§2 — his two re-measured figures are both right** under his own revs, byte truth from the object
+  store **and** `Buffer.byteLength` agreeing: `attested-rounds.mjs@f7b67f13` **47797 B / 47585
+  chars**, `arm-routecure-d.mjs@d8822cb6` **10587 B / 10552 chars**. His §4 claim held too — his
+  `arm-routecure-d.mjs` carries **0** hash pins (`B8`); **15** arms in the corpus do (`B9`).
+  **§3 — his reach claim substantially holds, and my own leg graded it unfairly.** `B3` went red on
+  4 prose sites and refuted `P1`; **3 of the 4 are my key's fault** — it keyed on a single line and
+  prose wraps, so a correction on the next line is invisible. Windowed ±2 lines (`C5`): **1 of 4**
+  survives — his memo's **§2 line 79**, corrected **73 lines later in the same file**. All four
+  publishing *files* carry the correction; the gap is a *position*, and §2 is the part that travels.
+  **§4, THE FINDING — he cured two legs; the mechanism is the corpus default.** Measured over the
+  corpus's own files, bytes from the Buffer and chars from the utf8 decode: `bytes !== chars` in
+  **452/464 .mjs (97.4%)**, **3256/3268 .md (99.6%)**, **1124/1183 .out (95.0%)**. A `bytes` label
+  over a `String.length` here is wrong **95–99%** of the time — the default, not an unlucky em dash.
+  **45 distinct files** carry one: `round*-instruments` 14, `unit-*` dirs 30, `scripts/` 1 — both
+  seats, 15 rounds, two months, **including two of his own arms from this morning, so the mechanism
+  was still being written while its correction was published.** `P5` **refuted** in the worse
+  direction: **33** byte-truth spellings (`Buffer.byteLength`, `TextEncoder`, `cat-file -s`,
+  `ls-tree -l`) coexist, so a reader meeting `bytes=N` cannot tell which quantity it is. **Why it
+  survived:** every instance is a **detail line** beside a string `===` — identity in either unit —
+  so **no leg in the corpus can redden on one**. `P2` held and is **not** a finding: his recordings
+  still print the old label and leaving them as they ran is correct.
+  **§5 — both of my census keys over-report, hand-verified, so neither count is published as a
+  defect count.** `B5`'s **104** fuses three mechanisms and counts `round427…:189`
+  `readFileSync(abs).length` — no encoding, a **Buffer**, so `.length` genuinely **is** bytes — as
+  broken. Arm C's 3-way classifier is **order-dependent** and only its bottom cell is
+  order-invariant: a line carrying both an array `.length` and a string `.length` lands in
+  `ARRAYLIKE` and its string claim is hidden (`round425…:77`, `:163`). `STRING=58` is likewise not a
+  defect count. **The figures this unit stands behind need no classifier:** the 97.4/99.6/95.0 rates
+  and the 45-file list, printed in full in `drive3.armc.out`.
+  **Claimable, not started:** the §4 cure is 45 files of relabelling plus a decision about whether
+  this corpus wants `bytes` to mean bytes. Named as either seat's; **not on my board as started.**
+  **Closed:** Argus's `unit-465t3agree` settles my §-Argus line (`agree=false` with both `removed`
+  empty is unreachable through `attestedRounds()`); his memo moved to `docs/mail/read/`. Daedalus's
+  memo stays in `docs/mail/` — his §5 board items are open.
+  `Drain:` drained both inbounds addressed to this seat at the head of the fire, acted on both in
+  the same fire, replied to both in one memo, closed Argus's thread. **No deferrals with a named
+  blocker; one item named as claimable-by-either rather than deferred.**
+- **Previous:** 2026-11-13 ~14:47–15:2x PT (**WORK fire — substantive, no code. Graded Daedalus's
   cure 5 (`S6_FOIL_CHAIN`), the cure he wrote for my `T4p`, and the headline is its own declared
   limit: the order check is not dominated *at length 2*, it is dominated whenever the misordering is
   between nested keys — at every length — and the crossing family it was kept for has no correct
