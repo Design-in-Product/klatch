@@ -211,3 +211,175 @@ statement and mine; both units here take bytes from `Buffer.byteLength` or the o
 **Deferred, named blockers, unchanged:** scanner-passes-the-option (**xian/Janus**); the stop
 condition's unit (**xian/Janus**); `--dry` on M; whether my 8/18 ten pairs are among the twenty;
 `unit-465plant` P1–P4.
+
+---
+
+## 13:17 — Session resumed (WORK fire)
+
+**Model:** Claude Opus 5. `date`-reads: **13:17 / 13:21:18 / 13:26:08 / 13:30:21 PST** — run, not
+estimated from effort.
+
+**Checkpoint:** my own `9e6c9930`. **Author-checked before concluding anything:** the top commit at
+session start was `4aeaa0b8` "coord+log: 11/14 MID fire", which is **Calliope's**, not mine. The MID
+fire on this repo was hers; my last was the 09:39 START. Mail delta `--diff-filter=A`: **2 added,
+both addressed to me.**
+
+### Mail, read on sight and both acted on in this fire
+
+1. **Theseus's 11/14 reply** (`theseus-to-daedalus-argus-…-your-11-of-12-is-7-2-3-…`). Substantive;
+   answered below. Closed to `read/`.
+2. **Pard's fire-depth DST memo** (`pard-to-daedalus-cc-calliope-…-fire-depth-was-blind-since-dst-ended-…`).
+   `fire-depth.sh` had a hard-coded UTC−7; DST ended 11-01 so every fire sat an hour outside the 180s
+   match window — 0 of 105 matched for 13 days with `ok` published beside it. Offset now read from
+   the system tz; a sub-50% match rate now logs `DEGRADED`. Its own text closes it — "No action
+   needed from Klatch." Read in full, closed to `read/`.
+
+### Unit `unit-465headpop-2026-11-14` — one unit, three arms, two pre-regs pushed before their arms
+
+| commit | what |
+|---|---|
+| `ff175191` | pre-reg (arm A), pushed to `main` before any arm existed |
+| `de144502` | arm A + results + the label correction to my own earlier unit |
+| `04425f56` | pre-reg B (the census), pushed **blind** before arm B existed |
+| `1dab7054` | arms B + C + results |
+| `78729f65`, `8c999690` | the reply and the addendum |
+
+All three `.err` captures **0 bytes**. Arm A **18 legs green**; arm C **5 legs green**; arm B **RED
+on its own pre-registered refusal ceiling**, deliberately, and its recording stands as taken.
+
+**1. His verdict holds; his reason is refuted.** He read my `296 of 1188` as right-but-unlabelled
+because *my population self-excludes my own unit directory*. Read before filing the pre-reg and
+recorded there as **verified, not predicted**: `THIS_UNIT` is used at `:201` and `:246`, both on the
+**`.mjs` source** population, **never** on the recordings population (`ls-tree … HEAD` at `:100`).
+`git log --diff-filter=A` on `drive1.arma.out` → **`119d87c1`**, the publishing commit itself, so the
+run read the parent.
+
+```
+119d87c1^   1188 / 296 / 198 / 98     <- exactly my three published figures
+119d87c1    1191 / 299 / 198 / 101    <- exactly his arm C row, under my key
+ff175191    1194                       <- same selector, verbatim, three hours later
+```
+
+Not a seam — a clock. And **worse** than the label he proposed: a documented self-exclusion
+re-derives stably from any rev, while an unpinned ref re-derives from **none**, including the commit
+that publishes it. Correction filed at `unit-465schemacollide/RESULTS.md:52` with the original
+sentence **left standing**, so it stays reproducible against its own drive recording.
+
+**2.** `A18`: his subtract-3 route and my parent-rev route agree on **all three** figures. The two
+explanations are numerically indistinguishable; only reading the selector or the delta's add-commit
+separates them. *A gap that subtracts cleanly invites the tidier explanation, and the tidier one was
+wrong.*
+
+**3. 7 of 7 landed; the unit is worth 3.** Blind: `H1`–`H3`. Answer key he had already published:
+`H4`, `H5`. Settled by my own read before filing: `H6`. Arithmetic: `H7`.
+
+**4. The census refused itself, on a blindness already in my own store.** Arm B: 159 of 254 sites
+`UNCLASSIFIED` = **62.6%** vs the **10%** ceiling `B5` pre-registered → leg RED, other four figures
+void by my own terms. Cause: the resolver read only `const`/`let`/`var` bindings, so **65 sites whose
+ref is a function parameter** were invisible. That is the hoisted-into-a-**parameter** blindness I
+already had written down. Arm C adds positively-keyed `DEFERRED_TO_CALLER` / `DERIVED_REF` /
+`NOT_A_CALL` and keeps `UNCLASSIFIED` as a real refusal bucket:
+
+```
+UNPINNED_HEAD  23/16f   NO_REF  48/29f   PINNED  22/17f   UNPINNED_NAMED 1
+DEFERRED_TO_CALLER 60/33f        DERIVED_REF 77/58f       NOT_A_CALL 6     UNCLASSIFIED 17/11f
+decidable at the site 94 of 248 (37.9%) | defer 137 (55.2%) | refuse 17 (6.9%)
+```
+
+**The finding is the split, not a defect count:** a site census is the wrong granularity for the
+published-figure question, because most sites take their ref from somewhere a source scan cannot see.
+Among decidable sites, defective beats pinned **71 to 22**; `NO_REF` is **48 across 29 files**
+against Round 416's recorded **30 across 24** — nobody re-keyed them and the population grew.
+
+**5. Withheld rather than published.** `B3` landed **by one site** (23 vs 22) → flagged not robust,
+not published as "unpinned outnumbers pinned in the corpus". `B4` **refuted**: 0 defective sites
+under `scripts/`, against my own store's "5 `ls-files` sites outside research instruments" —
+unresolved and **not** assumed cured. And arm B's void figures (23/49/22) agreed with arm C's
+legitimate ones (23/48/22) almost exactly: **the refusal was still right to fire**, because the
+ceiling is a precondition on whether the instrument measured anything, not a forecast of how wrong
+it would be.
+
+### Memory store — the owed WORK-fire head item, attempted and measured
+
+Opened at the head of this fire, as the 11/14 START tail entry asked.
+
+- **Measured first:** index **23,828 B / 160 entries**, and **delivered whole — not truncated**
+  (on-disk tail byte-identical to the tail received this session). Index fully consistent: 0
+  duplicate pointers, 0 referenced-but-absent, 0 on-disk-but-unindexed.
+- **I briefly concluded the 17.1 KB target was unsourceable** — `~/.claude/hooks/` does not exist and
+  `settings.json` has no memory reference — and wrote that into the index note. **The hook then fired
+  on my own edit and named 17.1 KB.** My prior log was right; I corrected the note in the same fire
+  rather than leave a false claim in the store.
+- **Decisive arithmetic, which changes the approach:** **bare title+link lines alone are 18,606 B**,
+  so trimming every hook off every line *still* lands over target. Only removing entries works.
+- **2 genuine mechanism-merges done**, both absorbing files that already cross-referenced each other:
+  `their_round_reproduces_must_read_their_tree` → `a_key_compared_against_a_drive_must_read_the_drives_tree`;
+  `a_drive_can_restamp_someone_elses_recording` → `a_restore_lands_on_the_last_restamp_not_the_original`.
+  5 stale `[[wikilinks]]` repointed at the merge targets; 158 entries, 158 files, still 0/0/0
+  inconsistencies.
+- **Honest result: pointer bytes −122; the note explaining the compaction ate +115; whole file −7 B.**
+  That is the third time this note has outgrown the index it apologises for, and it is now the
+  measured reason the store drifted up *while* "merge and rewrite in place" was the standing rule:
+  **a merge that annotates its survivor spends what the removed line saved.** New rule written into
+  the note: merge, and **do not annotate the survivor**. ~**44** line-removals still needed.
+- This fire's own lesson went into the **existing** `ls_files_irreproducible` entry with **no index
+  line added**: that entry's standing cure reads *"select with `git ls-tree -r --name-only <rev>`"*,
+  and my arm obeyed it with `<rev>` = **`HEAD`** — **the cure as written has a hole**, and the class
+  is an unpinned **ref** of any kind, not a choice of command.
+
+**Merge groups already derived by mechanism, recorded here and NOT in the index** (so the next
+WORK-fire head starts from the grouping instead of re-reading 158 descriptions):
+
+- *rev / frozen-vs-live family:* `an_old_cell_sourced_from_head` + `ls_files_irreproducible` +
+  `a_bare_date_since_is_keyed_on_the_drive_clock`; `a_frozen_readings_scope` +
+  `a_leg_reading_a_frozen_artefact` + `a_unit_that_cures_its_own_subject`;
+  `an_instrument_reading_live_needs_a_pin` + `an_instruments_own_input_cannot_be_pinned`;
+  `verbatim_source_pin` + `a_gates_pin_can_predate`.
+- *hand-typed-fixture family:* `a_hand_typed_kp` + `a_hand_typed_reader` +
+  `an_aligned_row_token_is_padded` + `slicing_the_inputs_but_retyping`; and
+  `a_known_positive_must_carry_the_property` + `one_kp_per_shape`.
+
+### Session Wrap Protocol
+
+**Step 1 — commits on `origin/main`** (verbatim re-read appended after the coord+log commit lands):
+
+```
+8c999690 mail: addendum to Theseus + Argus — the unpinned-ref census is off the board…
+1dab7054 arms B+C(unit-465headpop): the census refused itself at 62.6%…
+78729f65 mail: reply to Theseus + Argus — his verdict holds, his reason is refuted…
+04425f56 pre-reg B(unit-465headpop): 5 blind predictions… before the census exists
+de144502 arm A + results(unit-465headpop): his verdict holds, his reason is refuted…
+ff175191 pre-reg(unit-465headpop): his verdict holds and his reason is the wrong mechanism…
+4aeaa0b8 coord+log: 11/14 MID fire — (Calliope's, not mine)
+```
+
+**Step 2 — deliverable files:** `ls` run on every file claimed; verification block below.
+
+**Step 3 — this log and COORDINATION pushed last.**
+
+**Gate:** none owed and none claimed, **measured not assumed** — `git status --porcelain packages
+scripts docs/research/lib` **empty**, and root `typecheck:scripts` is `scripts/tsconfig.json` +
+`scripts/tsconfig.lib-mjs.json`, so no gate leg covers `docs/research/`. Subjects were this unit's
+own directory plus one `RESULTS.md` of my own earlier unit; `docs/research/lib/` read-only. Census
+hook **CENSUS OK — 155 / 45 / 110** on all five pushes.
+
+**Drain (bounded, per Klatch's recorded exception):** both new memos read on sight and acted on in
+the same fire; reply and addendum filed; both threads closed to `read/`. The census I boarded in my
+own reply at ~13:4x I then **took in the same fire**, and the addendum says so explicitly so the
+other seat does not spend a round on it — a board item routed and discharged inside one fire rather
+than left to look available. Memory compaction opened at the fire head, measured, partly done, and
+its remaining work handed forward with the grouping derived. Deferrals below keep named blockers.
+
+**Boarded, either seat, named, no blocker:** resolve the **callers** of the 137 deferring sites
+(call-graph pass, not a source scan); which of the **71** decidable defective sites ever *publish*
+their number; the **17** remaining `UNCLASSIFIED` sites, listed by path and line in
+`drive3.armc.out`.
+**Mine, no blocker, not started:** `arm-routecure-d.mjs`'s missing `hash-object` pin; its
+`/misordered/` detector blind to the cured throw; both schemacollide arms still key recordings on
+`HEAD`.
+**Theseus's, untouched, still his as he left them:** classify the 5 additional population readers at
+site granularity; census the `P12` drop-site-plus-denominating-figure mechanism across all 17.
+**Named, unresolved:** where Round 416's "5 `ls-files` sites outside research instruments" went.
+**Deferred, named blockers, unchanged:** scanner-passes-the-option (**xian/Janus**); the stop
+condition's unit (**xian/Janus**); `--dry` on M; whether my 8/18 ten pairs are among the twenty;
+`unit-465plant` P1–P4.

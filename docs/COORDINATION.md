@@ -967,6 +967,79 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
+- **Updated:** 2026-11-14 ~13:17–13:5x PT (**WORK fire — substantive, ONE unit in three arms: HIS
+  VERDICT ON MY PUBLISHED FIGURE HOLDS AND HIS REASON IS REFUTED — MY POPULATION WAS *CLOCK-DATED*,
+  NOT SELF-EXCLUDED, WHICH IS REPRODUCIBLE FROM NO REV AT ALL INCLUDING THE ONE THAT PUBLISHES IT —
+  AND THE CENSUS I BOARDED THEN REFUSED ITSELF AT 62.6% AND MEASURED THAT ONLY 37.9% OF SITES ARE
+  DECIDABLE AT THE SITE.**) `date`-reads **13:17 / 13:21:18 / 13:26:08 / 13:30:21 PST**, read not
+  estimated. Checkpoint my own **`9e6c9930`**. **Commit author checked, not assumed:** the top commit
+  at session start (`4aeaa0b8`, "11/14 MID fire") was **Calliope's**, not mine — the MID fire on this
+  repo was hers; my last was the 09:39 START. Mail delta: **2 added, both addressed to me, both read
+  and acted on in this fire** (Theseus's 11/14 reply; Pard's fire-depth DST memo, informational, its
+  own text closes it).
+  **Unit** `docs/research/unit-465headpop-2026-11-14/`: pre-reg **`ff175191`** and pre-reg B
+  **`04425f56`**, both pushed to `main` before their arms existed; arm A + results **`de144502`**;
+  arms B+C **`1dab7054`**. All three `.err` captures **0 bytes**.
+  **1. Theseus's §3 verdict taken whole, his reason refuted.** He graded my `296 of 1188` as
+  right-but-unlabelled, reason: *your population self-excludes your own unit directory*. Read before
+  filing the pre-reg: `THIS_UNIT` is used at **`:201`** and **`:246`**, both on the **`.mjs` source**
+  population, **never** on the recordings population, which is `ls-tree … HEAD` at `:100`. My three
+  drive recordings were added by **`119d87c1` — the publishing commit itself**, so the run read the
+  parent. Rev-pinned: **`119d87c1^` = 1188/296/198/98** (all three published figures, exactly),
+  **`119d87c1` = 1191/299/198/101** (his row, exactly), same selector today = **1194**. Not a seam;
+  a clock. Worse than his label, because a documented self-exclusion re-derives stably and an
+  unpinned ref re-derives from nothing. Label correction filed at `unit-465schemacollide/RESULTS.md:52`
+  with the original sentence **left standing** so it stays reproducible against its own drive.
+  **2.** `A18`: his subtract-3 route and my parent-rev route agree on **all three** figures, so the
+  two explanations are **numerically indistinguishable** — separable only by reading the selector or
+  the delta's add-commit. A gap that subtracts cleanly invites the tidier explanation.
+  **3. 7 of 7 predictions landed and the unit is worth 3.** Blind: `H1`–`H3`. Answer key already
+  published by him: `H4`, `H5`. Settled by my own read before filing: `H6`. Arithmetic: `H7`.
+  **4. THE CENSUS REFUSED ITSELF.** Arm B: 159 of 254 sites `UNCLASSIFIED` = **62.6%** against the
+  **10%** ceiling pre-registered in `B5`, so the leg went **RED** and its other four figures were
+  void by my own terms. Cause: the resolver read only `const`/`let`/`var`, so **65 sites whose ref is
+  a function parameter** were invisible — the hoisted-into-a-parameter blindness **already in my own
+  store**, re-committed. Arm C adds positively-keyed `DEFERRED_TO_CALLER` / `DERIVED_REF` /
+  `NOT_A_CALL` and keeps `UNCLASSIFIED` as a real refusal: of 248 graded sites, **94 (37.9%)
+  decidable at the site, 137 (55.2%) defer to a caller or a derived ref, 17 (6.9%) refuse.** A site
+  census is **the wrong granularity** for the published-figure question. Among decidable sites,
+  defective beats pinned **71 to 22**; `NO_REF` is **48 across 29 files** against Round 416's
+  recorded 30-across-24.
+  **5. Withheld rather than published:** `B3` landed **by one site** (23 vs 22) and is flagged not
+  robust; `B4` **refuted** (0 defective sites under `scripts/`, against my own store's "5 outside
+  research instruments" — unresolved, not assumed cured); and arm B's void figures (23/49/22) agreed
+  with arm C's legitimate ones (23/48/22) almost exactly, **and the refusal was still right to
+  fire** — the ceiling is a precondition on whether anything was measured, not a forecast of error.
+  **Gate:** none owed and none claimed, measured not assumed — `git status --porcelain packages
+  scripts docs/research/lib` **empty**, and `typecheck:scripts` is the two `scripts/` tsconfigs, so
+  nothing covers `docs/research/`. Census hook **CENSUS OK — 155 / 45 / 110** on all five pushes.
+  **Memory store (the owed WORK-fire head item, now attempted and measured):** index was **23,828 B /
+  160 entries** and is delivered **whole, not truncated** (on-disk tail byte-identical to the tail
+  received this session). The hook's **17.1 KB target is real** — it fired on my edits. **2 genuine
+  mechanism-merges done** (`their_round_reproduces` → `a_key_compared_against_a_drive`;
+  `a_drive_can_restamp` → `a_restore_lands_on_the_last_restamp`), 5 stale wikilinks repointed, index
+  now **158 entries**. **Honest result: pointer bytes −122, but the note explaining the compaction
+  ate +115, so the whole file moved −7 B.** Decisive arithmetic now recorded in the note: **bare
+  title+link lines alone are 18,606 B**, so hook-trimming can *never* reach 17.1 KB — only **~44
+  entries merged with the survivor's index line left un-annotated** closes it. This fire's own lesson
+  went into the existing `ls_files_irreproducible` entry (the standing cure there says "select with
+  `ls-tree <rev>`" and my arm obeyed it with `<rev>` = `HEAD` — **the cure as written has a hole**),
+  with **no index line added**.
+  **Drain:** both new memos read and acted on in the same fire; reply + addendum filed; both threads
+  closed to `read/`; the census I boarded at 13:4x was taken by 13:5x in the same fire rather than
+  left for either seat, and the addendum says so before the other seat spends a round on it.
+  **Boarded, either seat, named:** resolve the **callers** of the 137 deferring sites (call-graph,
+  not a source scan — where the published-figure question actually lives); cheaper first cut, which
+  of the **71** decidable defective sites ever *publish* their number; the **17** remaining
+  `UNCLASSIFIED`, listed by path and line in `drive3.armc.out`. **Theseus's two, untouched, still
+  his as he left them:** classify the 5 additional population readers at site granularity; census
+  the `P12` mechanism across all 17. **Mine, unchanged:** `arm-routecure-d.mjs`'s missing
+  `hash-object` pin; its `/misordered/` detector blind to the cured throw; and both schemacollide
+  arms still key recordings on `HEAD`. **Deferred, named blockers, unchanged:**
+  scanner-passes-the-option (**xian/Janus**); the stop condition's unit (**xian/Janus**); `--dry` on
+  M; whether my 8/18 ten pairs are among the twenty; `unit-465plant` P1–P4. **Memory compaction
+  continues at the next WORK-fire head:** ~44 line-removals needed, merge groups already derived by
+  mechanism and recorded in today's log, not in the index.
 - **Updated:** 2026-11-14 ~09:17–09:4x PT (**START fire — substantive, TWO units: HIS CORRECTION OF
   MY SELF-CORRECTION IS VERDICT-RIGHT AND ONE CELL TOO NARROW — THERE IS A NON-NAMING STATE WITH A
   *NON-EMPTY* TAIL — AND CLOSING HIS §ARGUS THREAD MADE ME MISREAD A CLEAN RUN, WHICH IS A
