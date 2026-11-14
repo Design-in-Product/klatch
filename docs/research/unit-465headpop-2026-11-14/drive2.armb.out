@@ -1,0 +1,190 @@
+B-pop  .mjs under docs/research/ + scripts/ at de144502, self-dir excluded = 474
+B-cls  sites=254  UNPINNED_HEAD=23  NO_REF=49  PINNED=22  UNPINNED_NAMED=1  UNCLASSIFIED=159
+B-files  files with >=1 UNPINNED_HEAD or NO_REF = 43  (of 474 .mjs)
+B-files  NO_REF files = 29
+B-scripts  defective sites under scripts/ = 0 in 0 files
+B-unc  every UNCLASSIFIED site, with its reason:
+   docs/research/lib/attested-rounds.mjs:461 ls-tree — ref treeRev binds to non-literal SOURCE_RECALL_FLOOR.rev;
+   docs/research/lib/attested-rounds.mjs:509 ls-tree — ref is identifier rev, no binding found
+   docs/research/lib/attested-rounds.mjs:542 ls-tree — ref is identifier rev, no binding found
+   docs/research/lib/attested-rounds.mjs:560 ls-tree — ref is identifier rev, no binding found
+   docs/research/lib/attested-rounds.mjs:581 ls-tree — ref is identifier rev, no binding found
+   docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs:313 ls-tree — ref is identifier pin, no binding found
+   docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs:381 ls-tree — ref is identifier pin, no binding found
+   docs/research/round393-instruments/my-independent-key-for-his-q4-census.mjs:48 ls-tree — ref is identifier pin, no binding found
+   docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs:422 ls-tree — ref CENSUS_REV binds to non-literal MY_392_PIN_PRE_CURE;
+   docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs:472 ls-tree — ref CENSUS_REV binds to non-literal MY_392_PIN_PRE_CURE;
+   docs/research/round395-instruments/grade-the-refusal-that-deletes-the-verdict.mjs:421 ls-tree — ref is identifier rev, no binding found
+   docs/research/round406-instruments/hand-read-the-inline-seven.mjs:119 ls-tree — ref is identifier rev, no binding found
+   docs/research/round407-instruments/census-the-fixture-as-string-class.mjs:241 ls-tree — no enclosing call span
+   docs/research/round407-instruments/census-the-fixture-as-string-class.mjs:388 ls-tree — ref is identifier rev, no binding found
+   docs/research/round407-instruments/census-the-fixture-as-string-class.mjs:241 ls-files — no enclosing call span
+   docs/research/round408-instruments/stratify-the-live-interval.mjs:undefined ls-tree — no enclosing call span
+   docs/research/round408-instruments/stratify-the-live-interval.mjs:400 ls-tree — ref is identifier rev, no binding found
+   docs/research/round408-instruments/stratify-the-live-interval.mjs:404 ls-tree — ref is identifier rev, no binding found
+   docs/research/round408-instruments/stratify-the-live-interval.mjs:439 ls-tree — ref is identifier rev, no binding found
+   docs/research/round408-instruments/stratify-the-live-interval.mjs:undefined ls-files — no enclosing call span
+   docs/research/round414-instruments/grade-the-refusing-half-and-reconcile-the-ten.mjs:290 ls-tree — ref is identifier rev, no binding found
+   docs/research/round415-instruments/census-the-index-keyed-population.mjs:87 ls-tree — ref is identifier rev, no binding found
+   docs/research/round415-instruments/census-the-index-keyed-population.mjs:192 ls-tree — no enclosing call span
+   docs/research/round415-instruments/census-the-index-keyed-population.mjs:undefined ls-files — no enclosing call span
+   docs/research/round415-instruments/census-the-index-keyed-population.mjs:undefined ls-files — no enclosing call span
+   docs/research/round415-instruments/census-the-index-keyed-population.mjs:undefined ls-files — no enclosing call span
+   docs/research/round415-instruments/census-the-index-keyed-population.mjs:192 ls-files — no enclosing call span
+   docs/research/round416-instruments/grade-the-rev-stamp-against-a-dirty-index.mjs:undefined ls-tree — no enclosing call span
+   docs/research/round416-instruments/grade-the-rev-stamp-against-a-dirty-index.mjs:undefined ls-files — no enclosing call span
+   docs/research/round416-instruments/grade-the-rev-stamp-against-a-dirty-index.mjs:undefined ls-files — no enclosing call span
+   docs/research/round416-instruments/grade-the-rev-stamp-against-a-dirty-index.mjs:undefined ls-files — no enclosing call span
+   docs/research/round418-instruments/compaction-capability-computed-then-discarded.mjs:24 ls-tree — ref rev binds to non-literal execFileSync('git', ['rev-parse', REV], 
+   docs/research/round419-instruments/sec3-rekeyed-on-the-call-shape.mjs:81 ls-tree — ref REV binds to non-literal git('rev-parse', 'HEAD').stdout.trim();
+   docs/research/round420-instruments/tool-surface-is-a-scope-label-not-a-censused-surface.mjs:230 ls-tree — ref REV binds to non-literal git('rev-parse', 'HEAD').stdout.trim();
+   docs/research/round429-instruments/does-any-other-instrument-retype-a-verdict-it-slices.mjs:79 ls-tree — ref REV binds to non-literal git('rev-parse', 'HEAD').trim();
+   docs/research/round433-instruments/grade-his-cure-and-census-its-reach.mjs:248 ls-tree — ref REV binds to non-literal git('rev-parse', 'HEAD').trim();
+   docs/research/round434-instruments/grade-the-two-cures-and-the-prose.mjs:287 ls-tree — ref REV binds to non-literal git('rev-parse', 'HEAD').trim();
+   docs/research/round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs:310 ls-tree — ref REV binds to non-literal git('rev-parse', 'HEAD').trim();
+   docs/research/round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs:408 ls-tree — ref is identifier rev, no binding found
+   docs/research/round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs:543 ls-tree — ref REV binds to non-literal git('rev-parse', 'HEAD').trim();
+   docs/research/round437-instruments/grade-his-cure-and-the-live-keyed-finding-leg.mjs:490 ls-tree — ref REV binds to non-literal git('rev-parse', 'HEAD').trim();
+   docs/research/round437-instruments/grade-his-cure-and-the-live-keyed-finding-leg.mjs:524 ls-tree — ref REV binds to non-literal git('rev-parse', 'HEAD').trim();
+   docs/research/round438-instruments/grade-the-binding-position-cures.mjs:304 ls-tree — ref REV binds to non-literal git('rev-parse', 'HEAD').trim();
+   docs/research/round439-instruments/attribute-the-ungradeable-red.mjs:66 ls-tree — ref is identifier rev, no binding found
+   docs/research/round440-instruments/census-the-gate-line-grammar-his-cure-must-cover.mjs:82 ls-tree — ref is identifier rev, no binding found
+   docs/research/round441-instruments/key-the-silent-class-from-source.mjs:96 ls-tree — ref is identifier rev, no binding found
+   docs/research/round441-instruments/key-the-silent-class-from-source.mjs:602 ls-tree — ref REV binds to non-literal git('rev-parse', 'HEAD').trim();
+   docs/research/round442-instruments/grade-the-shared-verdict-emitter.mjs:112 ls-tree — ref REV binds to non-literal git('rev-parse', 'HEAD').trim();
+   docs/research/round442-instruments/grade-the-shared-verdict-emitter.mjs:212 ls-tree — ref REV binds to non-literal git('rev-parse', 'HEAD').trim();
+   docs/research/round442-instruments/grade-the-shared-verdict-emitter.mjs:391 ls-tree — ref REV binds to non-literal git('rev-parse', 'HEAD').trim();
+   docs/research/round442-instruments/grade-the-shared-verdict-emitter.mjs:400 ls-tree — ref REV binds to non-literal git('rev-parse', 'HEAD').trim();
+   docs/research/round442-instruments/grade-the-shared-verdict-emitter.mjs:457 ls-tree — ref REV binds to non-literal git('rev-parse', 'HEAD').trim();
+   docs/research/round443-instruments/grade-the-emitter-at-its-published-line.mjs:538 ls-tree — ref REV binds to non-literal git('rev-parse', 'HEAD').trim();
+   docs/research/round443-instruments/grade-the-emitter-at-its-published-line.mjs:636 ls-tree — ref REV binds to non-literal git('rev-parse', 'HEAD').trim();
+   docs/research/round443-instruments/grade-the-emitter-at-its-published-line.mjs:705 ls-tree — ref REV binds to non-literal git('rev-parse', 'HEAD').trim();
+   docs/research/round443-instruments/grade-the-emitter-at-its-published-line.mjs:728 ls-tree — ref REV binds to non-literal git('rev-parse', 'HEAD').trim();
+   docs/research/round444-instruments/grade-the-round-trip-cure.mjs:426 ls-tree — ref REV binds to non-literal git('rev-parse', 'HEAD').trim();
+   docs/research/round448-instruments/census-pred-occupancy.mjs:35 ls-tree — ref REV binds to non-literal git('rev-parse', 'HEAD').trim();
+   docs/research/round448-instruments/census-topToken-callers.mjs:29 ls-tree — ref REV binds to non-literal git('rev-parse', 'HEAD').trim();
+   docs/research/round448-instruments/grade-the-four-list-scorer.mjs:158 ls-tree — ref REV binds to non-literal git('rev-parse', 'HEAD').trim();
+   docs/research/round449-instruments/probe-the-argument-shapes.mjs:27 ls-tree — ref REV binds to non-literal git('rev-parse', 'HEAD').trim();
+   docs/research/round449-instruments/resolve-the-variable-write-targets.mjs:131 ls-tree — ref REV binds to non-literal git('rev-parse', 'HEAD').trim();
+   docs/research/round449-instruments/resolve-the-variable-write-targets.mjs:135 ls-tree — ref REV binds to non-literal git('rev-parse', 'HEAD').trim();
+   docs/research/round449-instruments/resolve-the-variable-write-targets.mjs:137 ls-tree — ref REV binds to non-literal git('rev-parse', 'HEAD').trim();
+   docs/research/round449-instruments/resolve-the-variable-write-targets.mjs:740 ls-tree — ref REV binds to non-literal git('rev-parse', 'HEAD').trim();
+   docs/research/round450-instruments/census-the-row-vocabulary.mjs:52 ls-tree — ref REV binds to non-literal git(['rev-parse', 'HEAD']);
+   docs/research/round450-instruments/grade-the-row-guards.mjs:393 ls-tree — ref REV binds to non-literal git(['rev-parse', 'HEAD']);
+   docs/research/round451-instruments/recon-the-out-corpus.mjs:9 ls-tree — ref REV binds to non-literal git(['rev-parse', 'HEAD']).trim();
+   docs/research/round453-instruments/census1-drive-every-at-risk-instrument.mjs:36 ls-tree — ref REV binds to non-literal git(['rev-parse', 'HEAD']).trim();
+   docs/research/round454-instruments/census1-row-helpers-that-embed-a-newline.mjs:34 ls-tree — ref REV binds to non-literal git('rev-parse', process.argv[2] ?? 'HEA
+   docs/research/round454-instruments/census2-does-any-call-site-feed-stripsource-a-non-string.mjs:159 ls-tree — ref REV binds to non-literal git('rev-parse', 'HEAD').trim();
+   docs/research/round454-instruments/census3-resolve-the-324-unmodelled-one-level.mjs:155 ls-tree — ref REV binds to non-literal git('rev-parse', 'HEAD').trim();
+   docs/research/round456-instruments/drift-census-over-the-verdict-publishing-population.mjs:100 ls-tree — ref REV binds to non-literal git(['rev-parse', 'HEAD']).trim();
+   docs/research/round457-instruments/grade-recording-completeness-across-the-whole-corpus.mjs:100 ls-tree — ref REV binds to non-literal git(['rev-parse', 'HEAD']).trim();
+   docs/research/round459-instruments/grade-the-two-routed-sites-and-census-the-laundering-idioms.mjs:109 ls-tree — ref REV binds to non-literal git(['rev-parse', 'HEAD']).trim();
+   docs/research/round459-instruments/grade-the-two-routed-sites-and-census-the-laundering-idioms.mjs:127 ls-tree — ref REV binds to non-literal git(['rev-parse', 'HEAD']).trim();
+   docs/research/round459-instruments/grade-the-two-routed-sites-and-census-the-laundering-idioms.mjs:128 ls-tree — ref REV binds to non-literal git(['rev-parse', 'HEAD']).trim();
+   docs/research/round459-instruments/grade-the-two-routed-sites-and-census-the-laundering-idioms.mjs:129 ls-tree — ref REV binds to non-literal git(['rev-parse', 'HEAD']).trim();
+   docs/research/round459-instruments/grade-the-two-routed-sites-and-census-the-laundering-idioms.mjs:130 ls-tree — ref REV binds to non-literal git(['rev-parse', 'HEAD']).trim();
+   docs/research/round460-instruments/grade-the-pred-gate-landing.mjs:110 ls-tree — ref REV binds to non-literal git(['rev-parse', 'HEAD']).trim();
+   docs/research/round462-instruments/grade-the-pred-half-refusal.mjs:162 ls-tree — ref NOW_REV binds to non-literal git(['rev-parse', 'HEAD']).trim();
+   docs/research/round462-instruments/recon.mjs:24 ls-tree — ref REV binds to non-literal git(['rev-parse', 'HEAD']).trim();
+   docs/research/round463-instruments/grade-the-57-of-461-class.mjs:129 ls-tree — ref REV binds to non-literal git(['rev-parse', 'HEAD']).trim();
+   docs/research/round463-instruments/recon.mjs:32 ls-tree — ref REV binds to non-literal git(['rev-parse', 'HEAD']).trim();
+   docs/research/round463-instruments/which-residue-member-postdates.mjs:18 ls-tree — ref REV binds to non-literal git(['rev-parse', 'HEAD']).trim();
+   docs/research/round464-instruments/grade-the-stop-condition.mjs:1119 ls-tree — ref REV binds to non-literal git(['rev-parse', 'HEAD']).trim();
+   docs/research/unit-307c4-blast-radius-2026-10-27/recon.mjs:115 ls-tree — ref REV binds to non-literal git(['rev-parse', 'HEAD']).trim();
+   docs/research/unit-464addarm-2026-11-04/grade-addarm.mjs:198 ls-tree — ref POP_PIN binds to non-literal process.env.POP_PIN ?? '0ae48068';
+   docs/research/unit-464cell-2026-11-02/grade-cell.mjs:149 ls-tree — ref PIN binds to non-literal process.env.PIN ?? '0c23e551';
+   docs/research/unit-464cons-2026-11-04/grade-cons.mjs:146 ls-tree — ref POP_PIN binds to non-literal process.env.POP_PIN ?? '0ae48068';
+   docs/research/unit-464cons-2026-11-04/grade-cons.mjs:347 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-464grep-2026-11-01/foil-plain-text-grep.mjs:27 ls-tree — ref REV binds to non-literal readFileSync(`${HERE}/baseline.rev`, 'ut
+   docs/research/unit-464grep-2026-11-01/grep-census.mjs:233 ls-tree — ref REV binds to non-literal readFileSync(`${HERE}/baseline.rev`, 'ut
+   docs/research/unit-464inspan-2026-11-03/grade-inspan.mjs:222 ls-tree — ref PIN binds to non-literal process.env.PIN ?? '0ae48068';          
+   docs/research/unit-464inspan-2026-11-03/grade-inspan.mjs:414 ls-tree — ref MY_PIN binds to non-literal process.env.MY_PIN ?? 'bba2aa3c';    // 
+   docs/research/unit-464kind-2026-11-05/kind-resolve.mjs:106 ls-tree — ref is identifier $, no binding found
+   docs/research/unit-464kind-2026-11-05/kind-resolve.mjs:222 ls-tree — ref PIN binds to non-literal opt('pin', '0ae48068');
+   docs/research/unit-464kind-2026-11-05/probe-redundant.mjs:43 ls-tree — ref is identifier $, no binding found
+   docs/research/unit-464kind-2026-11-05/probe-redundant2.mjs:41 ls-tree — ref is identifier $, no binding found
+   docs/research/unit-464kpspan-2026-11-04/grade-kpspan.mjs:225 ls-tree — ref POP_PIN binds to non-literal process.env.POP_PIN ?? '0ae48068';
+   docs/research/unit-464moves-2026-11-04/grade-census-keys.mjs:84 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-464moves-2026-11-04/grade-census-keys.mjs:95 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-464moves-2026-11-04/grade-moves.mjs:267 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-464moves-2026-11-04/grade-moves.mjs:275 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-464moves-2026-11-04/probe-hiskey.mjs:29 ls-tree — ref is identifier pin, no binding found
+   docs/research/unit-464mysites-2026-11-04/probe-entries.mjs:23 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-464outside-2026-11-03/census-outside.mjs:151 ls-tree — ref is identifier $, no binding found
+   docs/research/unit-464outside-2026-11-03/census-outside.mjs:187 ls-tree — ref is identifier $, no binding found
+   docs/research/unit-464presc-2026-11-03/census-presc.mjs:155 ls-tree — ref PIN binds to non-literal process.env.PIN ?? '0ae48068';
+   docs/research/unit-464reach-2026-10-31/reach-census.mjs:274 ls-tree — ref BASELINE_REV binds to non-literal readFileSync('baseline.rev', 'utf8').tri
+   docs/research/unit-464rec-2026-10-31/probe-is-it-live.mjs:31 ls-tree — ref BASELINE_REV binds to non-literal readFileSync('baseline.rev', 'utf8').tri
+   docs/research/unit-464rec-2026-10-31/rec-census.mjs:273 ls-tree — ref REV binds to non-literal readFileSync(`${HERE}/baseline.rev`, 'ut
+   docs/research/unit-464sat-2026-10-31/argv-census.mjs:80 ls-tree — ref BASELINE_REV binds to non-literal readFileSync('baseline.rev', 'utf8').tri
+   docs/research/unit-464sat-2026-10-31/grepro.mjs:40 ls-tree — ref BASELINE_REV binds to non-literal readFileSync('baseline.rev', 'utf8').tri
+   docs/research/unit-464sat-2026-10-31/sat-census.mjs:99 ls-tree — ref BASELINE_REV binds to non-literal readFileSync('baseline.rev', 'utf8').tri
+   docs/research/unit-464t2-denial-2026-10-28/grade-the-denial-model.mjs:129 ls-tree — ref REV binds to non-literal process.env.REV || '10ebefaaae00f7dd4202
+   docs/research/unit-464t2-population-2026-10-28/grade-the-round-population.mjs:103 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-464t2-population-2026-10-28/grade-the-round-population.mjs:115 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-464t2-surface-2026-10-28/grade-the-exit-code.mjs:461 ls-tree — ref REV binds to non-literal (git(['rev-parse', 'HEAD']) ?? 'UNRESOLV
+   docs/research/unit-464t2-surface-2026-10-28/recon-run-length-and-cure.mjs:71 ls-tree — ref REV binds to non-literal (git(['rev-parse', 'HEAD']) ?? 'UNRESOLV
+   docs/research/unit-465attestdenial-2026-11-12/grade-the-denial-rekey.mjs:182 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-465keyed-2026-11-12/arm-revkeyed.mjs:101 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-465keyed-2026-11-12/arm-revkeyed.mjs:135 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-465keyed-2026-11-12/diag-dirs-by-rev.mjs:34 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-465keyed-2026-11-12/verify-keyed-figures.mjs:94 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-465keyed-2026-11-12/verify-keyed-figures.mjs:158 ls-tree — ref headRev binds to non-literal (git(REPO, ['rev-parse', 'HEAD']) ?? '')
+   docs/research/unit-465maildurable-2026-11-13/arm-maildurable.mjs:258 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-465maildurable-2026-11-13/arm-maildurable.mjs:332 ls-tree — ref NOW_REV binds to non-literal BASE_REV;
+   docs/research/unit-465maildurable-2026-11-13/arm-maildurable.mjs:374 ls-tree — ref NOW_REV binds to non-literal BASE_REV;
+   docs/research/unit-465maildurable-2026-11-13/arm-maildurable.mjs:413 ls-tree — ref is identifier floor.rev, no binding found
+   docs/research/unit-465refusalfate-2026-11-14/arm-refusalfate-a.mjs:85 ls-tree — no enclosing call span
+   docs/research/unit-465refusalfate-2026-11-14/arm-refusalfate-a.mjs:86 ls-files — no enclosing call span
+   docs/research/unit-465refusalfate-2026-11-14/arm-refusalfate-c.mjs:52 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-465routecure-2026-11-13/arm-routecure.mjs:90 ls-tree — ref is identifier treeRev, no binding found
+   docs/research/unit-465s6bounds-2026-11-13/composed-classifier6c9a4348-reader-head.mjs:354 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-465s6bounds-2026-11-13/composed-classifier6c9a4348-reader-head.mjs:371 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-465s6bounds-2026-11-13/composed-classifier6c9a4348-reader-head.mjs:389 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-465s6bounds-2026-11-13/composed-classifier6c9a4348-reader-head.mjs:410 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-465s6bounds-2026-11-13/cripple-p4-no-nearmiss.mjs:355 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-465s6bounds-2026-11-13/cripple-p4-no-nearmiss.mjs:372 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-465s6bounds-2026-11-13/cripple-p4-no-nearmiss.mjs:390 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-465s6bounds-2026-11-13/cripple-p4-no-nearmiss.mjs:411 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-465s6bounds-2026-11-13/cripple-p4b-no-nearmiss-case.mjs:355 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-465s6bounds-2026-11-13/cripple-p4b-no-nearmiss-case.mjs:372 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-465s6bounds-2026-11-13/cripple-p4b-no-nearmiss-case.mjs:390 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-465s6bounds-2026-11-13/cripple-p4b-no-nearmiss-case.mjs:411 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-465s6bounds-2026-11-13/cripple-p5-classifierrev-banana.mjs:356 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-465s6bounds-2026-11-13/cripple-p5-classifierrev-banana.mjs:373 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-465s6bounds-2026-11-13/cripple-p5-classifierrev-banana.mjs:391 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-465s6bounds-2026-11-13/cripple-p5-classifierrev-banana.mjs:412 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-465s6bounds-2026-11-13/cripple-p5b-classifierrev-deleted.mjs:355 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-465s6bounds-2026-11-13/cripple-p5b-classifierrev-deleted.mjs:372 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-465s6bounds-2026-11-13/cripple-p5b-classifierrev-deleted.mjs:390 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-465s6bounds-2026-11-13/cripple-p5b-classifierrev-deleted.mjs:411 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-465s6bounds-2026-11-13/sliced-classifier-6c9a4348.mjs:256 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-465s6bounds-2026-11-13/sliced-classifier-6c9a4348.mjs:274 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-465s6bounds-2026-11-13/sliced-classifier-6c9a4348.mjs:295 ls-tree — ref is identifier rev, no binding found
+   docs/research/unit-465schemacollide-2026-11-14/arm-schemacollide-c.mjs:155 ls-tree — no enclosing call span
+   docs/research/unit-465schemacollide-2026-11-14/arm-schemacollide-c.mjs:156 ls-files — no enclosing call span
+B-head  UNPINNED_HEAD sites:
+   docs/research/round415-instruments/census-the-index-keyed-population.mjs:100 — ref=HEAD via lit
+   docs/research/round415-instruments/census-the-index-keyed-population.mjs:198 — ref=HEAD via lit
+   docs/research/round416-instruments/grade-the-rev-stamp-against-a-dirty-index.mjs:280 — ref=HEAD via lit
+   docs/research/round416-instruments/grade-the-rev-stamp-against-a-dirty-index.mjs:282 — ref=HEAD via lit
+   docs/research/round430-instruments/grade-the-convention-gate.mjs:428 — ref=HEAD via lit
+   docs/research/round451-instruments/settle-the-subset-question-on-real-exemplars.mjs:96 — ref=HEAD via lit
+   docs/research/unit-464t2-keychoice-2026-10-28/grade-the-surface-predicate.mjs:439 — ref=HEAD via lit
+   docs/research/unit-465byteslabel-2026-11-13/arm-byteslabel-b.mjs:86 — ref=HEAD via lit
+   docs/research/unit-465byteslabel-2026-11-13/arm-byteslabel-c.mjs:57 — ref=HEAD via lit
+   docs/research/unit-465refusalfate-2026-11-14/arm-refusalfate-a.mjs:61 — ref=HEAD via lit
+   docs/research/unit-465refusalfate-2026-11-14/arm-refusalfate-a.mjs:191 — ref=HEAD via lit
+   docs/research/unit-465refusalfate-2026-11-14/arm-refusalfate-b.mjs:59 — ref=HEAD via lit
+   docs/research/unit-465refusalfate-2026-11-14/arm-refusalfate-c.mjs:106 — ref=HEAD via lit
+   docs/research/unit-465routecure-2026-11-13/arm-routecure-b.mjs:162 — ref=HEAD via lit
+   docs/research/unit-465routecure-2026-11-13/arm-routecure-b.mjs:175 — ref=HEAD via lit
+   docs/research/unit-465routecure-2026-11-13/arm-routecure-b.mjs:202 — ref=HEAD via lit
+   docs/research/unit-465routecure-2026-11-13/arm-routecure-b.mjs:239 — ref=HEAD via lit
+   docs/research/unit-465routecure-2026-11-13/arm-routecure.mjs:208 — ref=HEAD via lit
+   docs/research/unit-465s6bounds-2026-11-13/arm-s6bounds.mjs:55 — ref=HEAD via lit
+   docs/research/unit-465schemacollide-2026-11-14/arm-schemacollide-a.mjs:142 — ref=HEAD via lit
+   docs/research/unit-465schemacollide-2026-11-14/arm-schemacollide-b.mjs:100 — ref=HEAD via lit
+   docs/research/unit-465schemacollide-2026-11-14/arm-schemacollide-b.mjs:199 — ref=HEAD via lit
+   docs/research/unit-465schemacollide-2026-11-14/arm-schemacollide-c.mjs:89 — ref=HEAD via lit
+VERDICT/1 RED legs=4 red=[B3] refused=[] preds=5 refuted=[P-B4,P-B5] prefused=[]

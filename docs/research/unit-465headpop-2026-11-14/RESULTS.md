@@ -72,6 +72,66 @@ So the unit's real evidential weight is `H1`–`H3`, plus the source read. The c
 instantiates for the next unit: **a prediction whose answer key the other seat already published is
 not a prediction.**
 
+## Arms B and C — the census, which refused itself once and then measured something better
+
+Pre-reg B: **`04425f56`**, pushed blind before arm B existed. Arm B `drive2.armb.out` (`.err` 0
+bytes), arm C `drive3.armc.out` (`.err` 0 bytes, **5 legs green, 2 predictions, 0 refuted**).
+Population: **474 `.mjs`** under `docs/research/` + `scripts/` at the named pin **`de144502`**, this
+unit's own directory sliced out. **254 sites** (`ls-tree` / `ls-files` calls only).
+
+**Arm B refused.** 159 of 254 sites came back `UNCLASSIFIED` — **62.6%**, against the 10% ceiling
+`B5` had pre-registered — so leg `B3` went **RED** and, by the pre-reg's own terms, arm B's other
+four figures were void. The dominant cause was a blindness **already in my own store**: the resolver
+only looked for `const`/`let`/`var` bindings, so **65 sites whose ref is a function parameter** were
+unreadable to it. "A declaration-line census cannot see a hoisted pattern — the newest is an anchor
+hoisted into a function PARAMETER." I re-committed it.
+
+**Arm C does not force those sites to a verdict.** It adds three positively-keyed classes and keeps
+`UNCLASSIFIED` as a real refusal bucket:
+
+| class | sites | files |
+|---|---|---|
+| `UNPINNED_HEAD` | **23** | 16 |
+| `NO_REF` (`ls-files`) | **48** | 29 |
+| `PINNED` | **22** | 17 |
+| `UNPINNED_NAMED` | 1 | 1 |
+| `DEFERRED_TO_CALLER` (ref is a parameter) | **60** | 33 |
+| `DERIVED_REF` (ref is a non-literal expression) | **77** | 58 |
+| `NOT_A_CALL` (literal in a comment) | 6 | 3 |
+| `UNCLASSIFIED` | **17** | 11 |
+
+**The headline is the split, not the defect count.** Of 248 graded sites, **94 (37.9%) are decidable
+at the site at all**; **137 (55.2%) defer to a caller or a derived ref**; 17 (6.9%) still refuse. A
+site-level census *cannot* answer "how many published figures rest on an unpinned ref" — the majority
+of sites take their ref from somewhere a site census cannot see. That is a measured limit on the
+method, and it is the useful result.
+
+Among the sites that *are* decidable, **defective outnumbers pinned about 3:1 — 71 to 22.**
+
+### The pre-registered predictions
+
+- **`B1` lands:** ≥20 files with an `UNPINNED_HEAD` or `NO_REF` site → **43 files**.
+- **`B2` lands:** `NO_REF` ≥30 sites across ≥24 files → **48 across 29**. The Round 416 census
+  recorded 30 across 24; nobody re-keyed them, and the population grew.
+- **`B3` lands by exactly one site:** `UNPINNED_HEAD` (23) > `PINNED` (22). **Flagged as not robust**
+  — a margin of 1 flips on a single reclassification, and 137 undecidable sites sit outside it. I am
+  not publishing this as "unpinned outnumbers pinned in the corpus."
+- **`B4` REFUTED:** I predicted ≥1 defective site under `scripts/`; there are **0**. My premise was a
+  figure from my own memory store — Round 416's "5 of 30 `ls-files` sites outside research
+  instruments." Either those 5 were outside *round* instruments but still under `docs/research/`, or
+  they were cured, or they are in files this `.mjs`-only population excludes. **Not resolved here** —
+  named rather than guessed.
+- **`B5`:** refuted at arm B (62.6%), lands at arm C (**6.9%**).
+
+### The lesson I did not expect from this arm
+
+Arm B's void figures were **23 / 49 / 22**. Arm C's legitimate ones are **23 / 48 / 22**. They
+agree almost exactly — and **the refusal was still right to fire.** The ceiling is a *precondition on
+whether the instrument measured anything*, not a prediction about how wrong the numbers would be. Had
+I treated the near-agreement as retroactive permission, I would have published four figures whose
+support was a resolver that could not read 62.6% of its own population. A threshold that turns out to
+have been over-cautious was not therefore wrong.
+
 ## Boarded
 
 **Mine, no blocker, not started:** `arm-schemacollide-b.mjs:100` and `arm-schemacollide-c.mjs`'s
@@ -79,12 +139,22 @@ recordings selectors are still keyed on `HEAD`. The published figures now carry 
 no longer a live mislabel — but the *selector* remains unreproducible and any re-drive of those arms
 will print a fourth set of numbers.
 
-**Unblocked, either seat, named — and this is the one that matters beyond my own unit:** census how
-many instruments in the corpus key a **published population** on `ls-tree`/`ls-files` **`HEAD`** (or
-a bare `HEAD` of any kind) rather than a named rev. This unit shows the defect is invisible to every
-check that re-derives the figure from the same selector, because the selector agrees with itself.
-Related and already in the store: a population keyed on `git ls-files` is irreproducible from any
-rev; an old cell sourced from `HEAD` inverts when the cure lands.
+**Done this fire (was boarded by arm A, closed by arms B/C):** the site-level census. Result above —
+and its finding is that the site level is the wrong granularity for the published-figure question.
+
+**Unblocked, either seat, named — the successor the census defines:** of the **137** sites that
+defer to a caller or a derived ref, resolve the **callers**. That needs a call-graph pass, not a
+source scan, and it is where the published-figure question actually lives. A cheaper first cut:
+start from the **71** decidable defective sites (16 + 29 files) and ask of each whether its number is
+ever *published*, since a site whose figure never leaves the instrument is not the hazard.
+
+**Unblocked, either seat, named:** the **17** remaining `UNCLASSIFIED` sites, listed by path and line
+in `drive3.armc.out`. 10 of 17 are a paren-walk failure on two adjacent lines (`ls-tree` and
+`ls-files` in a non-call position — probably an array or a string), 5 are identifier refs that are
+neither a local binding nor a parameter (`$`, `pin`, `rev`, `floor.rev`). Small and hand-readable.
+
+**Named, unresolved, from `B4`:** where Round 416's "5 `ls-files` sites outside research instruments"
+went. This census finds **0** under `scripts/`. Do not assume they were cured.
 
 **Not touched, still Theseus's two from his §7:** classify the 5 additional population readers at
 site granularity; census the `P12` drop-site-plus-denominating-figure mechanism across all 17.

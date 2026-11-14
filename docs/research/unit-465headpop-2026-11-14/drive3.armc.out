@@ -1,0 +1,33 @@
+C-pop  .mjs at de144502, self-dir excluded = 474;  sites = 254
+C-cls  UNPINNED_HEAD         23 sites   16 files
+C-cls  NO_REF                48 sites   29 files
+C-cls  PINNED                22 sites   17 files
+C-cls  UNPINNED_NAMED         1 sites    1 files
+C-cls  DEFERRED_TO_CALLER    60 sites   33 files
+C-cls  DERIVED_REF           77 sites   58 files
+C-cls  NOT_A_CALL             6 sites    3 files
+C-cls  UNCLASSIFIED          17 sites   11 files
+C-split  decidable at the site = 94 of 248 graded sites (37.9%)
+C-split  defer to a caller or a derived ref = 137 (55.2%)
+C-split  still refused = 17 (6.9%)
+C-def  UNPINNED_HEAD or NO_REF: 71 sites in 43 files
+C-def  of those, under scripts/: 0
+C-unc  every remaining UNCLASSIFIED site:
+   docs/research/round407-instruments/census-the-fixture-as-string-class.mjs:241 ls-tree — no enclosing call span and not a comment
+   docs/research/round407-instruments/census-the-fixture-as-string-class.mjs:241 ls-files — no enclosing call span and not a comment
+   docs/research/round408-instruments/stratify-the-live-interval.mjs:230 ls-tree — no enclosing call span and not a comment
+   docs/research/round408-instruments/stratify-the-live-interval.mjs:230 ls-files — no enclosing call span and not a comment
+   docs/research/round415-instruments/census-the-index-keyed-population.mjs:192 ls-tree — no enclosing call span and not a comment
+   docs/research/round415-instruments/census-the-index-keyed-population.mjs:192 ls-files — no enclosing call span and not a comment
+   docs/research/round416-instruments/grade-the-rev-stamp-against-a-dirty-index.mjs:89 ls-tree — no enclosing call span and not a comment
+   docs/research/round416-instruments/grade-the-rev-stamp-against-a-dirty-index.mjs:89 ls-files — no enclosing call span and not a comment
+   docs/research/unit-464kind-2026-11-05/probe-redundant.mjs:43 ls-tree — ref identifier $: no binding and not a parameter name
+   docs/research/unit-464kind-2026-11-05/probe-redundant2.mjs:41 ls-tree — ref identifier $: no binding and not a parameter name
+   docs/research/unit-464moves-2026-11-04/probe-hiskey.mjs:29 ls-tree — ref identifier pin: no binding and not a parameter name
+   docs/research/unit-465keyed-2026-11-12/diag-dirs-by-rev.mjs:34 ls-tree — ref identifier rev: no binding and not a parameter name
+   docs/research/unit-465maildurable-2026-11-13/arm-maildurable.mjs:413 ls-tree — ref identifier floor.rev: no binding and not a parameter name
+   docs/research/unit-465refusalfate-2026-11-14/arm-refusalfate-a.mjs:85 ls-tree — no enclosing call span and not a comment
+   docs/research/unit-465refusalfate-2026-11-14/arm-refusalfate-a.mjs:86 ls-files — no enclosing call span and not a comment
+   docs/research/unit-465schemacollide-2026-11-14/arm-schemacollide-c.mjs:155 ls-tree — no enclosing call span and not a comment
+   docs/research/unit-465schemacollide-2026-11-14/arm-schemacollide-c.mjs:156 ls-files — no enclosing call span and not a comment
+VERDICT/1 ok legs=5 red=[] refused=[] preds=2 refuted=[] prefused=[]
