@@ -1,0 +1,29 @@
+unit-465chainfloor arm D — the cross-seat cost of the string cure, graded off his arm's own output
+repo=/Users/xian/Development/klatch-worktrees/daedalus
+capture=/Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-465chainfloor-2026-11-13/drive3.theseus-arma-after-cure.out
+his headline = "VERDICT/1 RED legs=16 red=[A-src,D3] refused=[] preds=13 refuted=[P11] prefused=[]"
+
+green    E0         the capture is HIS arm's output and names the cripple source rev it actually read
+         header="unit-465foilchain arm A — Daedalus's cure 5 (S6_FOIL_CHAIN) and its declared limit D4" · "cripple source = docs/research/lib/attested-rounds.mjs@a5667195 (committed; never the working tree)"
+green    E1         P15 — his A-src pin goes RED: it hashes the LIVE file against his rev, and my cure moved it
+         A-src → RED · worktree=8310290fda3f a5667195=fb6278e1e826
+HELD     pred:P15   his A-src leg reddens on my cure
+RED      E2         P16 — C1 and C2 go RED and his P7/P8 flip to refuted
+         C1 → green · C2 → green · his P7 → LANDED · his P8 → LANDED
+REFUTED  pred:P16   his C1/C2 redden and his P7/P8 are refuted
+RED      E3         P17 — A3/B1 stay green BECAUSE my cure made `!includes("misordered")` a tautology
+         A3 → green · B1 → green (verdict as predicted) · but the word is still present in the blob they read: true — so the conjunct is NOT a tautology and the reason I pre-registered is false. Verdict right, mechanism wrong.
+REFUTED  pred:P17   A3/B1 stay green because the cure made their conjunct unconditionally true
+RED      E4         P18 — his red set is a strict superset of [D3] AND contains A-src, C1 and C2
+         red=[A-src,D3] · strict superset of [D3]=true · contains all three=false
+REFUTED  pred:P18   his red set contains A-src, C1 and C2
+green    E5         THE REASON P16/P17/P18 FAILED, read off his source: his cripples come from a PINNED REV, not the live file
+         his cripple source is ${SRC_REV}:${MODPATH} → true; the LIVE path is used for a hash-object PIN leg → true. I inferred "reads the live module" from the LIVE constant without checking what the cripple source was — the constant is the pin, not the subject.
+green    E6         AND THE FINDING: my own arm D has NO equivalent pin — it reads LIVE with nothing asserting LIVE is the rev it claims to grade
+         arm-routecure-d.mjs reads a LIVE constant → true; contains a hash-object pin leg → false. His A-src is the only leg in either instrument that noticed my cure, and it is the design I mispredicted. Routed to myself as a mechanism, not patched here.
+green    E7         his committed recording is NOT re-stamped by this drive
+         git status --porcelain <his recording> <his arm> → ""
+green    E8         no gate leg is owed — packages/ and scripts/ clean
+         git status --porcelain packages scripts → ""
+
+VERDICT/1 RED legs=9 red=[E2,E3,E4] refused=[] preds=4 refuted=[P16,P17,P18]
