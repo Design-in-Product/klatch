@@ -1,0 +1,130 @@
+  ok      C-cost-mjs  .mjs files where bytes !== chars: 452/464 (97.4%) · worst delta 5953 B (docs/research/round443-instruments/grade-the-emitter-at-its-published-line.mjs)
+  ok      C-cost-md  .md  files where bytes !== chars: 3256/3268 (99.6%) · worst delta 37380 B (docs/COORDINATION.md)
+  ok      C-cost-out  .out recordings where bytes !== chars: 1124/1183 (95.0%) · worst delta 1037 B (docs/research/round460-instruments/drive4.r457-regrade-precommit.out)
+  LANDED  Q1  a 'bytes' label over a corpus .mjs file's String.length is wrong MOST of the time, not occasionally: 452/464 (97.4%)
+  LANDED  Q2  the corpus's own recorded stdout is multi-byte more often than not (1124/1183 (95.0%)), so every 'stdout bytes: ${x.length}' leg is wrong on a majority of its possible inputs
+          TIGHT key candidates (code lines only): 67
+            STRING                     docs/research/round381-instruments/grade-the-history-clause-and-the-nesting-conjunct.mjs:178  `${headSrc?.length ?? 0} bytes`,
+            STRING                     docs/research/round404-instruments/grade-the-three-cures.mjs:101  check('P2', 'the pinned object is REACHABLE and its anchors resolve in order', pinBlob ? ordered(pinBlob).ok : 'UNREACHA
+            STRING                     docs/research/round419-instruments/drive-his-418.mjs:45  say(`exit: ${r.status}   stdout bytes: ${(r.stdout || '').length}   stderr bytes: ${(r.stderr || '').length}`);
+            STRING                     docs/research/round419-instruments/fetch-changelog.mjs:38  console.log(`FETCH: ok, ${fetched.length} bytes written to ${OUT}`);
+            STRING                     docs/research/round419-instruments/grade-the-417-repairs.mjs:115  gate(0, 'the pre-repair blob is non-empty', old.length > 0, `${old.length} bytes`);
+            STRING                     docs/research/round420-instruments/drive-his-419.mjs:120  say(`exit: ${r.status}  stdout bytes: ${(r.stdout || '').length}  stderr bytes: ${(r.stderr || '').length}`);
+            STRING                     docs/research/round421-instruments/grade-the-420-repair.mjs:126  gate('the OLD spelling was extracted from the derived rev, non-empty', OLD_SRC.length > 0, `${OLD_SRC.length} bytes`);
+            STRING                     docs/research/round424-instruments/the-resolver-reads-one-pattern-per-body.mjs:86  say(`  sliced ${slice.length} bytes of his resolver, executed as written (not re-typed)`);
+            STRING                     docs/research/round425-instruments/a-crash-cannot-print-separates.mjs:109  gate('…and subject A is readable', A_SRC_PIN !== null, A_REL_PIN ? `${A_REL_PIN} — ${A_SRC_PIN?.length ?? 0} bytes` : '(
+            ARRAYLIKE-not-a-byte-claim docs/research/round425-instruments/position-vs-property-confusion-matrix.mjs:77  curedSlice !== null, curedSlice === null ? '(no match)' : `${curedSlice.split('\n').length} lines, ${curedSlice.length} 
+            ARRAYLIKE-not-a-byte-claim docs/research/round425-instruments/position-vs-property-confusion-matrix.mjs:163  oldSelector !== null, oldSelector === null ? '(no match)' : `${oldSelector.split('\n').length} lines, ${oldSelector.leng
+            STRING                     docs/research/round425-instruments/position-vs-property-confusion-matrix.mjs:288  gate('…and that file is readable and non-empty', POP_SRC.length > 0, `${POP_REL} — ${POP_SRC.length} bytes`);
+            ARRAYLIKE-not-a-byte-claim docs/research/round426-instruments/a-published-sentence-is-not-its-discriminator.mjs:126  for (const [k, v] of Object.entries(SENT)) say(`  sentence   ${k.padEnd(16)} ${v.split('\n').length} lines, ${v.length} 
+            ARRAYLIKE-not-a-byte-claim docs/research/round426-instruments/a-published-sentence-is-not-its-discriminator.mjs:127  for (const [k, v] of Object.entries(DISC)) say(`  discrimin. ${k.padEnd(16)} ${v.split('\n').length} lines, ${v.length} 
+            STRING                     docs/research/round426-instruments/a-retyped-constant-from-another-file-is-not-a-pin.mjs:93  gate(`evaluated ${k} (${v.length} bytes)`, typeof v === 'string' && v.length > 0,
+            STRING                     docs/research/round426-instruments/a-retyped-constant-from-another-file-is-not-a-pin.mjs:210  gate('that rev\'s blob of the subject is readable', OLD_B.length > 0, `${OLD_B.length} bytes`);
+            STRING                     docs/research/round434-instruments/grade-the-two-cures-and-the-prose.mjs:71  `slice === blob at ${PRE_REV}: ${blob !== null && blob === sliceText} · bytes ${sliceText.length}`
+            STRING                     docs/research/round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs:95  `slice === blob at ${PRE_REV}: ${blob !== null && blob === sliceText} · bytes ${sliceText.length}`
+            ARRAYLIKE-not-a-byte-claim docs/research/round436-instruments/grade-the-cures-against-a-runtime-oracle.mjs:361  `subject text identical to conventionOf's on ${rows.filter((r) => r.sameBytes).length}/${rows.length} cells · `
+            ARRAYLIKE-not-a-byte-claim docs/research/round451-instruments/strip-zwsp.mjs:11  console.log(`removed=${n} remaining=${after.split(zwsp).length - 1} bytes ${before.length}->${after.length}`);
+            STRING                     docs/research/round457-instruments/grade-recording-completeness-across-the-whole-corpus.mjs:236  `CONTROL for the slicer: readTail slice ${sliceOk ? `${tailSrc.length} bytes` : 'REFUSED'}; `
+            STRING                     docs/research/unit-464bucket-2026-11-01/grade-his-armreach-gate.mjs:77  `git status --porcelain -- packages/ scripts/ is ${liveDirty.length} bytes in the LIVE tree`);
+            STRING                     docs/research/unit-464bucket-2026-11-01/grade-his-attrib-gate.mjs:102  `git status --porcelain -- packages/ scripts/ is ${liveDirty.length} bytes in the LIVE tree`);
+            STRING                     docs/research/unit-464bucket-2026-11-01/regrade-saturation.mjs:157  `${mv('comments').padEnd(9)} ${mv('bytes').padEnd(15)} ${under.length ? under.join(' / ') : '(none)'}`);
+            STRING                     docs/research/unit-464cell-2026-11-02/grade-cell.mjs:99  `my HAND-COUNTS-CONJ.tsv is byte-identical at HEAD and in the worktree (${myHead.length} bytes), so the input graded bel
+            STRING                     docs/research/unit-464class-2026-11-02/classify-and-grade.mjs:185  `git status --porcelain -- packages/ scripts/ is ${porcelain.length} bytes`);
+            STRING                     docs/research/unit-464class-2026-11-02/enumerate-legs.mjs:250  `git status --porcelain -- packages/ scripts/ is ${porcelain.length} bytes`);
+            STRING                     docs/research/unit-464conj-2026-11-03/grade-conj.mjs:74  `my HAND-P5P6.tsv is byte-identical at HEAD and in the worktree (${myHead.length} bytes), so what is graded below is wha
+            STRING                     docs/research/unit-464conj-2026-11-03/occupy-conj-history.mjs:114  refuse('GLIFT', `${MY_READER} differs between HEAD and the worktree (${readerSrc.length} vs ${readerWork.length} bytes) 
+            ARRAYLIKE-not-a-byte-claim docs/research/unit-464conj-2026-11-03/occupy-conj-history.mjs:138  `spanOf/countOps lifted from ${MY_READER} at HEAD (blob byte-identical to the worktree, ${readerSrc.length} bytes): ${re
+            STRING                     docs/research/unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:80  `git status --porcelain -- packages/ scripts/ is ${liveDirty.length} bytes in the LIVE tree`);
+            STRING                     docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:109  `git status --porcelain -- packages/ scripts/ is ${liveDirty.length} bytes in the LIVE tree`);
+            STRING                     docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:107  `git status --porcelain -- packages/ scripts/ is ${liveDirty.length} bytes in the LIVE tree`);
+            STRING                     docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:167  bytes: src.length,
+            STRING                     docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:242  console.log(`   UPSTREAM figures (raw/comments/bytes) that moved:  ${upstreamMoved.length ? upstreamMoved.map((r) => r.l
+            STRING                     docs/research/unit-464dir-2026-11-02/grade-direction.mjs:122  gate('GHISDIRCLEAN', touched.length === 0, `git status --porcelain over HIS unit dir is ${touched.length} bytes — this u
+            STRING                     docs/research/unit-464dir-2026-11-02/slice-closure.mjs:175  gate('GNODEPEND', status.length === 0, `git status --porcelain -- packages/ scripts/ is ${status.length} bytes`);
+            STRING                     docs/research/unit-464dir-2026-11-02/slice-spans.mjs:173  gate('GNODEPEND', status.length === 0, `git status --porcelain -- packages/ scripts/ is ${status.length} bytes`);
+            STRING                     docs/research/unit-464frozen-2026-11-05/drive1-arms.mjs:78  console.log(`   (A7DOC re-derived span: ${span.length} bytes, ends at ${heads.length ? heads[0][0].slice(0, 20) : '(eof)
+            STRING                     docs/research/unit-464frozen-2026-11-05/drive1-arms.mjs:123  console.log(`   landed: ${before.length} -> ${after.length} bytes, ${changed.length} line(s) differ` +
+            STRING                     docs/research/unit-464frozen-2026-11-05/drive4-anchor.mjs:47  console.log(`   (tail dropped at byte ${m.index}, ${t.length - m.index} bytes removed)`);
+            STRING                     docs/research/unit-464frozen-2026-11-05/drive4-anchor.mjs:73  console.log(`   landed: ${before.length} -> ${after.length} bytes`);
+            STRING                     docs/research/unit-464frozen-2026-11-05/probe-notes.mjs:58  console.log(`   ${leg.padEnd(11)} ok@${okRow.arm.padEnd(10)} RED@${redRow.arm.padEnd(10)} note ${okRow.note.length}/${re
+            STRING                     docs/research/unit-464gentry-2026-11-05/drive1-measure.mjs:40  : `tight span (### 2.1g -> ### 2.1h) is ${tight.text.length} bytes over ${tightHeads.length} ` +
+            STRING                     docs/research/unit-464gentry-2026-11-05/drive1-measure.mjs:53  : `tight span at gate pin ${GATE_PIN.slice(0, 8)} is ${pinTight.text.length} bytes / sha ` +
+            STRING                     docs/research/unit-464gentry-2026-11-05/drive1-measure.mjs:54  `${sha(pinTight.text)}; live is ${tight.text.length} bytes / sha ${sha(tight.text)} — ` +
+            STRING                     docs/research/unit-464gentry-2026-11-05/drive3-matrix.mjs:107  rows.push({ arm, pre: drive(PRE, p), post: drive(SUBJECT, p), bytes: mutated.length });
+            STRING                     docs/research/unit-464kind-2026-11-05/probe-entrygate.mjs:44  console.log(`  slice = doc[indexOf('### 2.1g') .. indexOf('### 2.1a')]  =  ${entry.length} bytes`);
+            STRING                     docs/research/unit-464kind-2026-11-05/probe-entrygate.mjs:54  console.log(`  so the slice is wider than the entry by               : ${entry.length - firstLen} bytes`);
+            STRING                     docs/research/unit-464notes-2026-11-05/drive-arms.mjs:101  console.log(`PRE  = git show ${PRE_REV}:<subject>  (${subjectPre.length} bytes)`);
+            STRING                     docs/research/unit-464notes-2026-11-05/drive-arms.mjs:102  console.log(`POST = live worktree                  (${subjectPost.length} bytes)`);
+            STRING                     docs/research/unit-464order-2026-11-02/grade-order.mjs:422  `git status --porcelain -- packages/ scripts/ is ${dirty.length} bytes, asserted INSIDE the harness `
+            STRING                     docs/research/unit-464prec-2026-11-03/grade-entry-v15.mjs:93  ['SPAN', !span.err, span.err ?? `§2.1g → ${span.end}, ${span.text.length} bytes`],
+            STRING                     docs/research/unit-464prec-2026-11-03/grade-entry-v15.mjs:99  : `${baseSpan ? baseSpan.text.length : '—'} bytes at ${ENTRY_REV.slice(0, 8)} vs ${span.err ? '—' : span.text.length} li
+            STRING                     docs/research/unit-464reach-2026-11-02/grade-reach.mjs:323  check('GNODEPEND', dirty.length === 0, `git status --porcelain -- packages/ scripts/ is ${dirty.length} bytes`);
+            STRING                     docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs:107  `git status --porcelain -- packages/ scripts/ is ${liveDirty.length} bytes in the LIVE tree`);
+            STRING                     docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs:203  bytes: src.length,
+            STRING                     docs/research/unit-465attestdenial-2026-11-12/grade-the-denial-rekey.mjs:234  console.log(`  M-child   exit=${child.status}  stderrBytes=${(child.stderr ?? '').length}  stdoutBytes=${childOut.length
+            STRING                     docs/research/unit-465chainfloor-2026-11-13/arm-chainfloor-a.mjs:129  return { ok: same, detail: `bytes=${armSrc.length} identical=${same}` };
+            STRING                     docs/research/unit-465chainfloor-2026-11-13/arm-chainfloor-a.mjs:169  detail: `exit=${run.status} · headline=${JSON.stringify(headline)} · stderr bytes=${(run.stderr || '').length}`,
+            STRING                     docs/research/unit-465chainfloor-2026-11-13/arm-chainfloor-bc.mjs:194  return { ok: live === blob, detail: `live bytes=${live.length} rev bytes=${blob.length} identical=${live === blob}` };
+            STRING                     docs/research/unit-465declprose-2026-11-08/drive-sweep.mjs:25  `status=${r.status}\nsignal=${r.signal}\nerror=${r.error ? r.error.message : 'none'}\nstarted=${started}\nended=${ended}
+            STRING                     docs/research/unit-465migrate-2026-11-06/drive-arms.mjs:174  console.log(`--- stdout (${out.length} bytes) ---`);
+            STRING                     docs/research/unit-465migrate-2026-11-06/drive-arms.mjs:176  console.log(`--- stderr (${err.length} bytes) ---`);
+            ARRAYLIKE-not-a-byte-claim docs/research/unit-465recall-2026-11-10/recall-at-typing-commit.mjs:60  console.log(`  sliced ${sliced.length} bytes, ${sliced.split('\n').length} lines, from his line ` +
+            STRING                     scripts/measure-marker-floor.mjs:296  `(${((chars / bytes) * 100).toFixed(2)}%), from ${contributing.length} of ${accounting.length} files`);
+            ARRAYLIKE-not-a-byte-claim scripts/measure-marker-floor.mjs:394  report(`every tracked file, raw bytes, no parser (${files.length} files) — enumeration check`, t);
+  ok      C1  tight key: 67 code candidates vs arm B's 104 loose hits — STRING=58 BUFFER-correct=0 ARRAYLIKE=9
+  ok      C2  the loose key DID fuse distinct mechanisms — at least one candidate is a correct label or not a byte claim at all
+  LANDED  Q3  arm B's 104 over-reports: the tight key keeps 67, and even those need hand reading
+  ok      C3  files holding a STRING-receiver 'bytes' label: 45
+            docs/research/round381-instruments/grade-the-history-clause-and-the-nesting-conjunct.mjs
+            docs/research/round404-instruments/grade-the-three-cures.mjs
+            docs/research/round419-instruments/drive-his-418.mjs
+            docs/research/round419-instruments/fetch-changelog.mjs
+            docs/research/round419-instruments/grade-the-417-repairs.mjs
+            docs/research/round420-instruments/drive-his-419.mjs
+            docs/research/round421-instruments/grade-the-420-repair.mjs
+            docs/research/round424-instruments/the-resolver-reads-one-pattern-per-body.mjs
+            docs/research/round425-instruments/a-crash-cannot-print-separates.mjs
+            docs/research/round425-instruments/position-vs-property-confusion-matrix.mjs
+            docs/research/round426-instruments/a-retyped-constant-from-another-file-is-not-a-pin.mjs
+            docs/research/round434-instruments/grade-the-two-cures-and-the-prose.mjs
+            docs/research/round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs
+            docs/research/round457-instruments/grade-recording-completeness-across-the-whole-corpus.mjs
+            docs/research/unit-464bucket-2026-11-01/grade-his-armreach-gate.mjs
+            docs/research/unit-464bucket-2026-11-01/grade-his-attrib-gate.mjs
+            docs/research/unit-464bucket-2026-11-01/regrade-saturation.mjs
+            docs/research/unit-464cell-2026-11-02/grade-cell.mjs
+            docs/research/unit-464class-2026-11-02/classify-and-grade.mjs
+            docs/research/unit-464class-2026-11-02/enumerate-legs.mjs
+            docs/research/unit-464conj-2026-11-03/grade-conj.mjs
+            docs/research/unit-464conj-2026-11-03/occupy-conj-history.mjs
+            docs/research/unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs
+            docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs
+            docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs
+            docs/research/unit-464dir-2026-11-02/grade-direction.mjs
+            docs/research/unit-464dir-2026-11-02/slice-closure.mjs
+            docs/research/unit-464dir-2026-11-02/slice-spans.mjs
+            docs/research/unit-464frozen-2026-11-05/drive1-arms.mjs
+            docs/research/unit-464frozen-2026-11-05/drive4-anchor.mjs
+            docs/research/unit-464frozen-2026-11-05/probe-notes.mjs
+            docs/research/unit-464gentry-2026-11-05/drive1-measure.mjs
+            docs/research/unit-464gentry-2026-11-05/drive3-matrix.mjs
+            docs/research/unit-464kind-2026-11-05/probe-entrygate.mjs
+            docs/research/unit-464notes-2026-11-05/drive-arms.mjs
+            docs/research/unit-464order-2026-11-02/grade-order.mjs
+            docs/research/unit-464prec-2026-11-03/grade-entry-v15.mjs
+            docs/research/unit-464reach-2026-11-02/grade-reach.mjs
+            docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs
+            docs/research/unit-465attestdenial-2026-11-12/grade-the-denial-rekey.mjs
+            docs/research/unit-465chainfloor-2026-11-13/arm-chainfloor-a.mjs
+            docs/research/unit-465chainfloor-2026-11-13/arm-chainfloor-bc.mjs
+            docs/research/unit-465declprose-2026-11-08/drive-sweep.mjs
+            docs/research/unit-465migrate-2026-11-06/drive-arms.mjs
+            scripts/measure-marker-floor.mjs
+  ok      C4  STRING-receiver files by area: round-instruments (mixed)=14 · unit dirs (mixed)=30 · scripts (shared)=1
+  LANDED  Q4  the mechanism is not two legs in one unit: 45 distinct files carry a STRING-receiver 'bytes' label
+          prose sites still BARE under a +/-2 line window: 1
+            docs/mail/daedalus-to-theseus-argus-cc-xian-janus-calliope-iris-the-claim-you-left-me-is-driven-and-your-a-src-pin-is-the-only-leg-in-either-instrument-that-noticed-my-cure-2026-11-13.md:79  (byte-identical to the cure rev, 47585 both sides). **Declared limit:** the floor pins the two
+  ok      C5  bare prose sites under a window (vs 4 under arm B's line key): 1
+  LANDED  Q5  arm B's B3 red was partly its own line-granularity: a windowed read leaves 1 of 4
+  ok      C-gate  git status --porcelain docs/research/lib packages scripts → ""
+VERDICT/0 GREEN legs=9 red=[] refused=[] preds=5 refuted=[] prefused=[]
