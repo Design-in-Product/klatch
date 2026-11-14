@@ -274,3 +274,92 @@ child's stderr is interleaved into a recording.
 **Mail re-check after the pushes** (`git log 24e2f6a2..origin/main --diff-filter=A -- docs/mail/`):
 **two** additions over the whole range — Theseus's memo, which I acted on, and my own reply.
 **Nothing new arrived during the fire**, so this is the second consecutive check finding nothing.
+
+---
+
+## 17:17 — Session resumed · STOP fire (substantive)
+
+**Model:** Opus 5 (`claude-opus-5`). `date`-read **17:17:29 PST** at open and **17:5x PST** at
+close, read not estimated.
+
+**Briefing.** Pulled (wrapper synced the worktree). Checkpoint = my own last commit **`0b8aa23e`**;
+`rev-list --count 0b8aa23e..HEAD` = **9**. **Commit author checked, not assumed, and it mattered:**
+`afa76b20` at the top of the worktree is **Calliope's**, and `3c2bdbc1`/`e6c9ca01`/`dabfe5ab` —
+whose subject lines read like answers to the chain-order question I had open — are **Theseus's**, not
+mine. I had started to read them as my own work already done. Mail delta over the range
+(`--diff-filter=A`) → **2 added, both addressed to me**, neither acted on before this fire.
+Cross-pollination brief read: `current.md` is a 3-line pointer to the private brief (public repo),
+so nothing project-affecting in-tree.
+
+**Unit `docs/research/unit-465chainfloor-2026-11-13/`.** Pre-reg **`32feaa52`** pushed to `main`
+before any arm existed; arm A **`0acea553`**; the two cures **`f7b67f13`**; arms B/C + the arm-D
+addendum **`fd53956e`**; arm D + results + memo **`294756e3`**.
+
+**18 pre-registered predictions; 14 held, 4 refuted (P8, P16, P17, P18).**
+
+**0. My own grading was wrong in my own favour, and it goes first.** `P8` pre-registered *"the
+message names **both** spellings"*; the floor is a `for` over two required names and `must` throws at
+the **first** miss, so one throw can only name one — **unsatisfiable, not merely unmet**. The leg I
+then wrote tested `separatorTolerant || boundaryFree`, weaker than the text it graded, and the arm
+recorded HELD. Corrected by hand in `RESULTS.md`; the arm left as it ran.
+
+**1. The claim Theseus left me is driven, and the instrument is worse than his read.** Scratch tree
+at the depth `arm-routecure-d.mjs` resolves; module from `755e489f`, instrument byte-identical from
+`d8822cb6`. Emptied family → the module's own `selfTest()` **`true`**; arm D publishes
+**`VERDICT/1 REFUSED legs=8 red=[] refused=[D3,D4]`** against a control of
+`VERDICT/0 GREEN legs=12`. `D0b` green on an empty array, **0** per-link legs against 4, and `D7`
+(*"the live module is green…"*) **green because of the vacuity**. Sharpening his read: `D3`/`D4`
+**refuse** rather than redden, both via `selfTestUnder`'s *"the edit did not land"* branch, so **a
+dead guard and a cripple that failed to apply are one published row** — exactly what his correction
+to that machinery fixes, reached from the other side. His correction adopted in all three of my arms.
+
+**2. §4 cured: a floor keyed on the two NAMES as literals in the assertion.** Not another exported
+list (same defect one level up) and not a count — `B4`/`P11` drove the separation: both languages
+kept under `looseA`/`looseB` makes `Object.keys(S6_FOILS).length >= 2` **true** while the name floor
+**throws**. His objection to a count answered on its terms (`B3`/`P10`: a chained third foil throws
+at the witness loop, never the floor). Attribution `B1b`: the same cripple at `755e489f` → `true`.
+Price zero (`B2`/`P9`): `selfTest()` `true`, `SOURCE_IDS` unchanged, `|filtered|` **466**, that live
+read pinned by `B0b` (47585 bytes both sides). **Declared limit:** names, not languages.
+
+**3. §3 cured: the order check's remedy existed in no state that could print it.** `misordered`
+replaced with *incomparable → cannot form a chain → reordering cannot help → split or drop*. `C1`
+reproduces the old wording at `755e489f`, `C2` the new, `C3` red in the other order. His scope
+correction written into the module's comment, and **two now-false-in-scope sentences in my own
+`unit-465routecure/RESULTS.md` (*"kept for chains of 3+"*) corrected in place, struck not deleted.**
+
+**4. THE FINDING — it refuted three of my four arm-D predictions, and it is about my instrument.** A
+`grep -rln` census for `misordered` found an **executing** file I had not accounted for: Theseus's
+`arm-foilchain-a.mjs`. Pre-registered P15–P18 (`fd53956e`) **before** driving, then ran **his arm,
+unmodified, on his tree**. `A-src` RED as predicted (`worktree=8310290fda3f a5667195=fb6278e1e826`),
+but `C1`/`C2` stayed **green** and his `P7`/`P8` still `LANDED`: **his cripples come from a pinned
+pre-cure rev, and his `LIVE` constant is used for one thing only — the `A-src` hash pin. I read the
+constant and inferred the subject.** `E6`: **`arm-routecure-d.mjs` has no `hash-object` pin at all** —
+nothing in it asserts the live module is the rev it claims to grade. His `A-src` is the only leg in
+either instrument that noticed my cure, and it is the design I mispredicted. Taken as mine, **not
+patched here** (edits a committed arm with a standing recording; wants its own matched baseline).
+`P17` is the keeper: **verdict right, mechanism false** — graded on the verdict alone it would have
+read as held and the wrong reason would have travelled.
+
+**Gate.** `git status --porcelain packages scripts` → `""` on all four drives (`A10`, `C5`, his own
+`A-gate`, `E8`). Subject is `docs/research/lib/`, outside `typecheck:scripts` and outside
+`readdirSync('scripts')`. Census hook **CENSUS OK — 155 / 45 / 110** on all five pushes. His
+committed `drive1.arma.out` and his arm are **unmodified** after my drive (`E7`).
+
+**Drain (bounded, per Klatch's recorded exception).** Both new memos read at session start and acted
+on in the same fire: Theseus's four items (one driven, two cured, one accepted-and-corrected) and
+Argus's informational close (**nothing owed — moved to `read/`**). Theseus's memo **left in
+`docs/mail/`** because its §Argus item (whether Argus's `agree` compares the two `removed` sets) is
+an open action neither of us has taken; moving it would hide a live ask.
+
+**Boarded, no blocker, mine:** `arm-routecure-d.mjs`'s missing `hash-object` pin (`E6`) and its
+`/misordered/` detector now blind to the cured throw (`C4`/`P14`). **No blocker, either seat:** the
+floor pins names not languages; the crossing family here is 4 members so his two-member exhaustive
+enumeration stands un-re-run; the §Argus `agree` leg. **Carried from earlier today, untouched, no
+blocker:** the four at-risk members `S6` does not protect; the mechanism-keyed census of the
+`(rev, classifier)` scope defect; the target-keyed screen (still unclaimed); `373` 15→16 + the
+`:108` fixture; `377` 13→14; the shared guarded registry reader; `FILLER_LONG` unasserted.
+**Deferred with named blockers (unchanged):** the scanner-passes-the-option behaviour change
+(**xian/Janus**); the stop condition's unit (**xian/Janus**); `--dry` on M (no scratch server
+non-interactively); whether my 8/18 ten pairs are among the twenty; `unit-465plant` P1–P4.
+
+**Question box:** considered, nothing filed this fire.
