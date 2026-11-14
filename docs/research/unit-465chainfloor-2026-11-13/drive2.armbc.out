@@ -1,0 +1,38 @@
+unit-465chainfloor arms B and C — the floor, the `>= 2` rival, and the order check's reason string
+repo=/Users/xian/Development/klatch-worktrees/daedalus
+subject = docs/research/lib/attested-rounds.mjs@f7b67f13 · prior = @755e489f · baseline green = true
+
+green    B0                           MATCHED BASELINE: the UNCRIPPLED module@f7b67f13 is green, so every throw below is the cripple
+         selfTest() → true
+green    B0b                          the LIVE file is byte-identical to docs/research/lib/attested-rounds.mjs@f7b67f13, so the live reads below are attributable to that rev
+         live bytes=47585 rev bytes=47585 identical=true
+green    B1                           P8 — the EMPTYING cripple now THROWS, naming both required spellings (it returned true before the floor)
+         attested-rounds.mjs selfTest: S6_FOILS no longer declares separatorTolerant as a RegExp — the rejected spellings are the family's whole point and every check below quantifies over them, so an empty or substituted family passes vacuously. Declared: []
+HELD     pred:P8                      with the floor, emptying the family throws and the message names a required spelling
+green    B1b                          …and the SAME cripple at the PRIOR rev returns true — the floor, not the cripple, is what changed
+         selfTest()@755e489f → true
+green    B2                           P9 — uncrippled, the floor changes nothing measurable: selfTest() true, SOURCE_IDS unchanged, |filtered| 466
+         selfTest()=true SOURCE_IDS=S1,S2,S3,S5,S6 |filtered|=466
+HELD     pred:P9                      the cured module is still green and the population has not moved
+green    B3                           P10 — ADD side: adding and chaining a third foil does NOT charge the floor (any throw names something else)
+         threw, and NOT at the floor: attested-rounds.mjs selfTest: S6_FOILS.invented has no witness that the live key refuses. The foils are nested, so a case that merely satisfies this foil is satisfied by the stricter one's witness too and asserts nothing about this link.
+HELD     pred:P10                     adding a third foil does not make the floor throw
+green    B4                           P11 — THE DIFFERENTIAL: the two languages kept under NEW NAMES — the name floor throws, the `>= 2` rival is true
+         rival `Object.keys(S6_FOILS).length >= 2` → true on keys [looseA,looseB] · name-keyed floor → THREW: attested-rounds.mjs selfTest: S6_FOILS no longer declares separatorTolerant as a RegExp — the rejected spellings are the family's whole point and every check below quantifies over them, so an empty or substituted family passes vacuously. Declared: [looseA,looseB]
+HELD     pred:P11                     a cardinality floor passes the substitution the name floor catches
+green    C1                           P12 — at the PRIOR rev (755e489f) an incomparable adjacent pair throws saying "misordered"
+         attested-rounds.mjs selfTest: S6_FOIL_CHAIN is misordered: mailDash claims "docs/mail/read/calliope-to-dispatch-ssh443-workaround-2026-04-18.md" and boundaryFree does not
+HELD     pred:P12                     the pre-cure wording reproduces: an incomparable pair throws "misordered"
+green    C2                           P13 — at the CURE rev the same state throws WITHOUT "misordered" and WITH "cannot form a chain"
+         misordered gone=true anchor=true remedy=true
+         attested-rounds.mjs selfTest: S6_FOIL_CHAIN: mailDash and boundaryFree are incomparable, so they cannot form a chain — mailDash claims "docs/mail/read/calliope-to-dispatch-ssh443-workaround-2026-04-18.md" and boundaryFree does not. Reordering cannot help: in the other order the other key claims something this one refuses. Split them into separate chains or drop one.
+HELD     pred:P13                     the cured message drops "misordered" and carries the incomparability anchor
+green    C3                           the OTHER order of the added pair is red too — reordering is not a remedy, driven rather than argued
+         attested-rounds.mjs selfTest: S6_FOIL_CHAIN: notesRound and boundaryFree are incomparable, so they cannot form a chain — notesRound claims "docs/research/notes-2026/round999-notes.md" and boundaryFree does not. Reordering cannot help: in the other order the other key claims something this one refuses. Split them into separate chains or drop one.
+green    C4                           P14 — THE BLINDNESS THIS CURE CREATES: arm D's own `viaOrder` expression reads false on a throw the order check DID produce
+         arm D@f7b67f13 still contains `const viaOrder = /misordered/.test(r.thrown);` → true; applied to this throw it yields false while the order check DID fire (true). Its D4 assertion `viaOrder === false` stays green and its published detail "by the order check=false" is now true for the wrong reason.
+HELD     pred:P14                     arm D's /misordered/ detector is blind to the cured order-check throw
+green    C5                           no gate leg is owed — packages/ and scripts/ clean
+         git status --porcelain packages scripts → ""
+
+VERDICT/0 GREEN legs=12 red=[] refused=[] preds=7 refuted=[]

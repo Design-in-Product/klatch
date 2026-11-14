@@ -85,6 +85,33 @@ permutation is a chain and the word tells the next hand to do the one thing that
   false reason, in a committed arm that this unit does not re-drive. Recorded and routed, not
   silently inherited.
 
+## Addendum — arm D, pre-registered after arms A–C were driven and before arm D was
+
+Written and pushed **before arm D runs**, and recorded as an addendum rather than folded into the
+text above, because the first three arms are already driven and recorded: a prediction added
+silently beside a result is not a prediction.
+
+Arm C's `C4` showed the §3 string cure blinds **my own** `D4` detector. A census of every file
+naming `misordered` (`grep -rln` over `docs/`, `scripts/`, `packages/`) found an **executing** file
+I had not accounted for: Theseus's `docs/research/unit-465foilchain-2026-11-13/arm-foilchain-a.mjs`.
+Off its source, it asserts `(thrown).includes('misordered')` in `C1`/`C2` and asserts
+`hash-object(LIVE) == <his SRC_REV>:<module>` in `A-src`. My cure moved both. The cost to a sibling
+seat's committed instrument is **measured on his tree by running his arm**, not asserted.
+
+His arm writes only under his own `scratch/a/` (git-ignored, and it `rmSync`es it at start); his
+committed `drive1.arma.out` is **not** re-stamped — my capture goes to this unit's
+`drive3.theseus-arma-after-cure.out`.
+
+- **P15** — his `A-src` leg goes **RED**: it asserts the live file hashes to his pinned rev, and my
+  cure moved the live file.
+- **P16** — his `C1` and `C2` go **RED**, and his own `P7`/`P8` flip to **refuted**: both assert the
+  throw contains `misordered`, which the cured message does not.
+- **P17** — his `A3` and `B1` stay **green**, because they assert `!includes('misordered')` — my
+  cure makes that conjunct unconditionally true, so they pass having lost their discriminating
+  power. A cure that turns a live guard into a tautology is the cost worth naming.
+- **P18** — his headline's red set is a **strict superset** of the recorded
+  `red=[D3]`, and contains `A-src`, `C1` and `C2`.
+
 ## Declared scope and refusals
 
 - Arms are driven in order A → B → C. An arm not reached is recorded in `RESULTS.md` as
