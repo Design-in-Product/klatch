@@ -1,0 +1,96 @@
+  ok      A1  library-reader importers that call one: 23 (his C5 = 17)
+  ok      A2  of those, naming a quoted .out literal: 21 (his C6 = 15)
+  ok      A3  of those, enumerating a population: 17 (his C7 = 12)
+  ok      A4  member-for-member vs his 12: mine=17 his=12 only-his=[] only-mine=["docs/research/round450-instruments/grade-the-row-guards.mjs","docs/research/round451-instruments/settle-the-subset-question-on-real-exemplars.mjs","docs/research/round460-instruments/grade-the-pred-gate-landing.mjs","docs/research/unit-465schemacollide-2026-11-14/arm-schemacollide-a.mjs","docs/research/unit-465schemacollide-2026-11-14/arm-schemacollide-b.mjs"]
+  REFUTED P1  his 17/15/12 reproduce under an independently written key AND the member lists are identical: 23/21/17, set-diff 5
+          --- every `.ok` test in each of the 12, with its fate on that line
+          round448-instruments/census-pred-occupancy.mjs
+              sites=1 bare-skip=0 naming=0 .refusal-mentions=2
+          round448-instruments/grade-the-four-list-scorer.mjs
+              sites=8 bare-skip=1 naming=2 .refusal-mentions=4
+              DROP@167   if (rv.ok !== true) continue;
+              NAME@240   if (rv.ok !== true) return { landed: null, why: `his output is unreadable: ${rv.refusal}` };
+              NAME@719   if (rv.ok !== true) return { landed: null, why: `unreadable: ${rv.refusal}` };
+          round452-instruments/census-the-legacy-id-grammar-and-the-liveness-reader.mjs
+              sites=1 bare-skip=1 naming=0 .refusal-mentions=0
+              DROP@126   if (v.ok !== true) continue;
+          round452-instruments/census2-reconcile-his-26-and-hand-read-the-drops.mjs
+              sites=1 bare-skip=1 naming=0 .refusal-mentions=0
+              DROP@47   if (readVerdict(text).ok !== true) continue;
+          round452-instruments/no-id-class-separates-and-the-liveness-reader-is-cured.mjs
+              sites=3 bare-skip=1 naming=0 .refusal-mentions=1
+              DROP@248   if (readVerdict(text).ok !== true) continue;
+          round456-instruments/drift-census-over-the-verdict-publishing-population.mjs
+              sites=7 bare-skip=0 naming=2 .refusal-mentions=2
+              NAME@168   if (v.ok !== true) return { ok: false, why: `verdict ${v.refusal}` };
+              NAME@184   rowsRefusal: r.ok === true ? null : r.refusal,
+          round457-instruments/grade-recording-completeness-across-the-whole-corpus.mjs
+              sites=7 bare-skip=0 naming=2 .refusal-mentions=4
+              NAME@154   + `${t.ok === true ? 'ok' : t.refusal}`;
+              NAME@164   tailOk: t.ok === true, tailRefusal: t.ok === true ? null : t.refusal,
+          round462-instruments/grade-the-pred-half-refusal.mjs
+              sites=17 bare-skip=3 naming=2 .refusal-mentions=10
+              DROP@184   if (l.ok !== true) return null;
+              DROP@187   if (b.ok !== true || h.ok !== true) return null;
+              DROP@340   if (!rows.ok || !v.ok) return null;
+              NAME@171   if (r.ok !== true && r.refusal === 'PRED_ROW_COUNT_DISAGREEMENT') libDropped.push(p);
+              NAME@298   return r.ok === true || r.refusal === 'PRED_ROW_COUNT_DISAGREEMENT';
+          round462-instruments/recon.mjs
+              sites=3 bare-skip=0 naming=2 .refusal-mentions=2
+              NAME@35   const code = r.ok === true ? 'ok' : String(r.refusal);
+              NAME@70   console.log(`   ${v.ok === true ? `preds=${v.verdict.preds} legs=${v.verdict.legs}` : `REFUSED ${v.refusal}`}`
+          round463-instruments/grade-the-57-of-461-class.mjs
+              sites=24 bare-skip=0 naming=9 .refusal-mentions=12
+              NAME@139   const code = r.ok === true ? 'ok' : String(r.refusal);
+              NAME@168   return r.ok === true || r.refusal === 'PRED_ROW_COUNT_DISAGREEMENT';
+          round463-instruments/recon.mjs
+              sites=5 bare-skip=0 naming=3 .refusal-mentions=3
+              NAME@45   const code = r.ok === true ? 'ok' : String(r.refusal);
+              NAME@66   sample.push(`   ${v.ok === true ? `legs=${v.verdict.legs} preds=${v.verdict.preds}` : `V:${v.refusal}`}`
+          round463-instruments/which-residue-member-postdates.mjs
+              sites=2 bare-skip=0 naming=2 .refusal-mentions=2
+              NAME@28   if (r.ok === true || r.refusal !== 'ROW_GRAMMAR_ABSENT') continue;
+              NAME@37   console.log(`       verdict ${v.ok === true ? JSON.stringify(v.verdict) : v.refusal}`);
+  ok      A5  cross-tab partitions all 12: drops-only=2 names-only=7 BOTH=3 neither=0
+  ok      A6  the BOTH cell, which a per-file verdict cannot state: ["round448-instruments/grade-the-four-list-scorer.mjs","round452-instruments/no-id-class-separates-and-the-liveness-reader-is-cured.mjs","round462-instruments/grade-the-pred-half-refusal.mjs"]
+  LANDED  P2  the declaring count is strictly greater than his 1 hand-check: names-only=7 plus both=3
+  LANDED  P3  at least one member drops a refusal with a bare same-line skip: 5 do
+  LANDED  P5  no member can be classified from the `!ok` test alone — the BOTH cell is non-empty (3), so the fate is decided per SITE and a per-file key must refuse
+          --- for each dropping member, whether a whole-population denominator is published beside the figure
+          round452-instruments/census-the-legacy-id-grammar-and-the-liveness-reader.mjs  whole-population-denominator sites = 4
+              @109  console.log('Q2  K2 DROPS (sample of ' + droppedByK2.length + ') — is this prose?');
+              @111  console.log('Q2  K2 keeps but K3 drops (sample of ' + keptByK2DroppedByK3.length + '):');
+              @136  console.log('Q3  = ' + aliveButUnreadable + ' of ' + outs.length);
+          round452-instruments/census2-reconcile-his-26-and-hand-read-the-drops.mjs  whole-population-denominator sites = 2
+              @55  console.log(`R1  mine, whole corpus            = ${aliveUnreadable.length} of ${all.length}`);
+              @57  console.log(`R1  excluding his dir (his denom) = ${notHis.length} of ${all.filter((p) => !p.startsWith(HIS_DIR)).length}
+          round448-instruments/grade-the-four-list-scorer.mjs  whole-population-denominator sites = 0
+          round452-instruments/no-id-class-separates-and-the-liveness-reader-is-cured.mjs  whole-population-denominator sites = 1
+              @186  + `construction. Legacy rows whose id ID_GRAMMAR rejects: ${rejectedByIdGrammar} of ${rows.length}. `
+          round462-instruments/grade-the-pred-half-refusal.mjs  whole-population-denominator sites = 4
+              @309  say(`E7  lifted parse DROPPED ${mineDropped.length} of ${outs.length} = reached-the-PRED-gate `
+              @372  + `${mineDropped.length} of ${outs.length} have printed PRED rows disagreeing with their own `
+              @396  : `${got.filter((x) => x.ok).length} of ${got.length} correct${got.some((x) => !x.ok) ? ` — wrong: ${got.filter((x) => !
+  ok      A7  dropping members that publish a figure against a whole-population denominator: 4 of 5
+  ok      A8  tracked .out carrying a VERDICT/ headline: 465; readable 198; unreadable 267 {"NO_VERDICT_LINE":166,"MALFORMED_FIELDS":70,"UNKNOWN_SCHEMA":30,"UNKNOWN_TOP_TOKEN":1}
+  REFUTED P6  his 296 / 198 readable / 98 unreadable partition reproduces: 465 / 198 / 267
+  ok      A9  members enumerating with ls-tree and carrying NO -C/cwd pin: 2 ["round452-instruments/census-the-legacy-id-grammar-and-the-liveness-reader.mjs","round452-instruments/census2-reconcile-his-26-and-hand-read-the-drops.mjs"]
+  LANDED  P7  at least one of the 12 runs ls-tree with no -C pin, making its population cwd-sensitive: 2
+          --- hand map vs mechanical cross-tab, member by member
+          agree    hand=DECLARE  mech=DECLARE  round448-instruments/census-pred-occupancy.mjs
+          agree    hand=BOTH     mech=BOTH     round448-instruments/grade-the-four-list-scorer.mjs
+          agree    hand=DROP     mech=DROP     round452-instruments/census-the-legacy-id-grammar-and-the-liveness-reader.mjs
+          agree    hand=DROP     mech=DROP     round452-instruments/census2-reconcile-his-26-and-hand-read-the-drops.mjs
+          agree    hand=BOTH     mech=BOTH     round452-instruments/no-id-class-separates-and-the-liveness-reader-is-cured.mjs
+          agree    hand=DECLARE  mech=DECLARE  round456-instruments/drift-census-over-the-verdict-publishing-population.mjs
+          agree    hand=DECLARE  mech=DECLARE  round457-instruments/grade-recording-completeness-across-the-whole-corpus.mjs
+          DIVERGE  hand=DECLARE  mech=BOTH     round462-instruments/grade-the-pred-half-refusal.mjs
+          agree    hand=DECLARE  mech=DECLARE  round462-instruments/recon.mjs
+          agree    hand=DECLARE  mech=DECLARE  round463-instruments/grade-the-57-of-461-class.mjs
+          agree    hand=DECLARE  mech=DECLARE  round463-instruments/recon.mjs
+          agree    hand=DECLARE  mech=DECLARE  round463-instruments/which-residue-member-postdates.mjs
+  ok      A10  hand/mechanical divergences: 1 ["round462-instruments/grade-the-pred-half-refusal.mjs: hand=DECLARE mech=BOTH"]
+  ok      A11  the hand map covers every member and only members: hand=12 population=12
+  ok      A12  THE ANSWER TO HIS §5, hand-read: DECLARE 8 · DROP 2 · BOTH 2 of 12
+  ok      A-gate  git status --porcelain packages scripts docs/research/lib → ""
+VERDICT/0 GREEN legs=13 red=[] refused=[] preds=6 refuted=[P1,P6] prefused=[]
