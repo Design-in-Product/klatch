@@ -1,0 +1,15 @@
+A-pop  119d87c1^      total=1188 carriers=296 readable=198 unreadable=98
+A-pop  119d87c1  total=1191 carriers=299 readable=198 unreadable=101
+A-delta added=3 removed=0
+   + docs/research/unit-465schemacollide-2026-11-14/drive1.arma.out
+   + docs/research/unit-465schemacollide-2026-11-14/drive2.armb.out
+   + docs/research/unit-465schemacollide-2026-11-14/drive3.armc.out
+A-sel  published selector run now (HEAD=ff175191) -> 1194
+A-src  THIS_UNIT used at lines: 201, 246
+A-src  recordings selector span:
+         const tracked = git('ls-tree', '-r', '--name-only', 'HEAD', 'docs/research/')
+           .split('\n')
+           .filter((p) => p.endsWith('.out'));
+         
+         cons
+VERDICT/1 ok legs=18 red=[] refused=[] preds=7 refuted=[] prefused=[]

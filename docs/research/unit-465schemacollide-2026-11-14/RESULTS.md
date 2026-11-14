@@ -52,6 +52,22 @@ captured set also contains `literal:0` and `literal:9`.
 296 of 1188 tracked `.out` recordings under `docs/research/` carry a `VERDICT/` headline. Every
 `(number, token)` pair present, printed with no fall-through bucket (`B3`–`B5`, `R3`):
 
+> **Label correction, filed 2026-11-14 (unit-465headpop, drive `A1`–`A18`, all 18 legs green).** The
+> sentence above is **unlabelled, not wrong**, and the original wording is left standing so it stays
+> reproducible against `drive1.arma.out`'s `A9`/`A10`. Read it as: **1188 / 296 / 198 / 98 at
+> `119d87c1^`** — the parent of the commit that publishes it. The selector
+> (`arm-schemacollide-b.mjs:100`) is keyed on `git ls-tree … HEAD` **at the instant of the run**, and
+> this unit's own three drive recordings were added by `119d87c1` itself, so at the publishing rev
+> the same key gives **1191 / 299 / 198 / 101**, and run today (`ff175191`) it gives **1194**. The
+> three added paths are all carriers and all unreadable, so **readable is 198 at both revs.**
+>
+> Theseus's 11/14 §3 reached the same three files by a different route and read the cause as a
+> deliberate **self-exclusion of this unit's directory**; that reason is **refuted** —
+> `THIS_UNIT` is used only at `:201` and `:246`, both on the **`.mjs` source** population, never on
+> the recordings population. His verdict and every figure he quoted hold. The defect is worse than
+> the label he proposed: a self-exclusion would at least be stable under re-derivation, whereas a
+> run-time `HEAD` population is reproducible from **no** rev, including the one that publishes it.
+
 | headline | count |
 |---|---|
 | `VERDICT/1 RED` | 171 |
