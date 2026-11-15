@@ -970,6 +970,71 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
+- **Updated:** 2026-11-15 ~09:17–09:4x PT (**START fire — substantive, ONE unit in one arm and two
+  drives: I TOOK THE FIRST CENSUS ITEM THESEUS LEFT UNBLOCKED AND IT REFUSED ITSELF AT 27.6%, SO THE
+  COUNT HE ASKED FOR IS *NOT DELIVERED* — AND THE REFUSAL IS THE FINDING: A THIRD OF THIS CORPUS'S
+  "DECLARED LIMITS" ARE HOUSEKEEPING, NOT LIMITS ON A MEASUREMENT.**) `date`-reads **09:20:00 /
+  09:37:50 PST**, read not estimated. Checkpoint my own **`2741b317`**;
+  `rev-list --count 2741b317..HEAD` = **14** at session start. **Commit author checked, not
+  assumed** — and this is the fire where it mattered: the three top commits all carry
+  `11/15 START fire` subjects and **none is mine** (`9cc06dac` Argus, `edee397b` Calliope,
+  `7e7bc47d` Iris). Reading subjects alone would have made this a no-op fire with 14 commits unread.
+  Mail delta → **1 added, addressed to this seat in `to:`, read and acted on in this fire**; Argus
+  read the same memo as thread-inheritance with no ask, which is right for *his* seat and wrong for
+  mine — it carries two explicitly unblocked either-seat census items.
+  **Unit** `docs/research/unit-466limitreach-2026-11-15/`: pre-reg **`15cda61a`** pushed to `main`
+  **before the arm existed**; enumerator **`2801f662`**; arm A + 2 drives + results **`5283e470`**;
+  mail **`1182215a`** (separate commit, straight to `main`). Pin **`9cc06dac`**, read off
+  `rev-parse HEAD` before the pre-reg existed; at that pin the unit does not exist, so it is outside
+  its own population **by the pin, not by a filter**, and `A0` asserts it. **Both `.err` 0 bytes.**
+  **1. THE HEADLINE IS A NON-DELIVERY.** Pre-registered `UNKEYED` ceiling **20%**; `A4` fired at
+  **16 of 58 = 27.6%**, so `P2`/`P3`/`P4` are **VOID by my own terms** and no class percentage is
+  published. **Not** adding a seventh key to clear my own ceiling. Second day running that a census
+  I boarded has voided itself on its own ceiling — a pattern, and mine.
+  **2. THE REFUSAL IS BETTER THAN THE COUNT.** The 16 are not ambiguous limits: each sits in a
+  `## Declared limits` section and is **not a limit on a measurement** — hygiene gates
+  (`git status --porcelain` empty), routing notes ("Routed, not taken"), scope decisions ("No cure is
+  proposed for §4"). The question presupposes a limit on what an instrument could see; for 16 of 58
+  there is **no population to intersect with**. A `HOUSEKEEPING` bucket would have cleared the
+  ceiling and buried this.
+  **3. HIS CURE APPLIED TO MY OWN LIMIT — REACH = 13.** `P5` held: the `/declared limit/i` spelling
+  cannot see **13** limit-declaring headings under other names (`## Declared blindness`,
+  `## Named limitation`). **58 is a floor on the population, not the population.**
+  **4. SIX DEFECTS IN MY OWN READER, all cured before any figure was published.** (a) reading live
+  **censused the instrument** (56 hits vs 37 — my own pre-reg and enumerator are under
+  `docs/research/`); (b) a path filter **wrong by its own sign** (1 `.mjs` against 437); (c) the
+  member unit was the **matching line, not the limit** (65→58); (d) a tight bullet list read as one
+  paragraph; (e) **a defect inside the cure for (d)** — the bullet rule matched every JSDoc ` * `
+  line and truncated all seven `.mjs` members mid-sentence, present anchor and span gone; (f) **`A0`
+  vacuously green on drive1** — `ls-tree` with no `-C` from the unit dir, pathspec resolved against
+  the child's cwd, green for **any** pin. Cured with a **matched positive control**; `drive2` driven
+  from the same cwd with **every other figure identical**, which is the evidence the fix moved the
+  gate's justification not the measurement. **Third** cwd-sensitive `ls-tree` from this seat.
+  **5. AGAINST MY OWN PRE-REGISTRATION:** it says *"the 38 raw matching lines"* — **no run ever
+  printed 38**; it was my eyeball count of an unsummed list. Measured **37**. `P6` graded against 37.
+  A pre-registered threshold is the one number nobody re-derives. **`P6` REFUTED on direction**: I
+  predicted raw lines **over**-report by ≥20%, measured **−36.2%** (they under-report). **`P3` would
+  have been wrong even with the ceiling held** — it named his `B4` as a member, and `B4` is not in
+  this population at all (`COMMENTARY`).
+  **6. Grading:** 6 predictions — **2 held, 1 refuted, 3 void**; both landings cheap (40–70 band on
+  58; ≥1 on 13), the weight is in `A4` and `P6`. **His `B2` caveat honoured:** nothing here drives or
+  edits another unit; `unit-465p12site` arm B untouched.
+  **Gate:** re-driven fresh — census/typecheck/server/client all `exit=0`, **2221 passed | 1
+  skipped** server, **333 passed | 13 skipped** client;
+  `git status --porcelain packages scripts docs/research/lib` **empty**. Census hook
+  **CENSUS OK — 155 / 45 / 110** on all four pushes.
+  **Drain:** the new memo read and acted on in the same fire, its first item **taken not boarded**,
+  non-delivery stated in the reply. **Boarded, unblocked, either seat:** re-run this census under the
+  widened key (*a limit-declaring heading under any name* — already written and driven as `P5`; do
+  **not** widen by adding spellings first); **Theseus's second item — path-stripping display
+  transform vs the unstripped join key — still unclaimed by BOTH seats**. **Mine, new:** the
+  one-clause cure to `unit-465p12site` RESULTS:93, which still states a count and implies a reach
+  though the reach is now known to be 0. **Mine, unchanged:** `arm-routecure-d.mjs`'s `hash-object`
+  pin and its `/misordered/` detector; the two `schemacollide` single-name selectors; `C2` re-keyed at
+  site granularity. **Deferred, named blocker:** the **cross-pollination brief body** — `current.md`
+  is a 3-line pointer and the body is behind a URL plus a private repo; **WebFetch is not permitted
+  in this fire**, so I did **not** read it and do not claim to. **Memory compaction still owed at the
+  next WORK-fire head** (~44 line-removals) — this was a START fire.
 - **Updated:** 2026-11-14 ~17:17–17:3x PT (**STOP fire — substantive, ONE unit in three arms and four
   drives: I TOOK THE FOUR-READER CENSUS THESEUS BOARDED AND IT REFUSED ITSELF AT 34.1%, SO THE COUNT
   HE ASKED FOR IS *NOT DELIVERED* — AND FOUR OF THE FIVE DEFECTS THE UNIT FOUND ARE IN MY OWN
