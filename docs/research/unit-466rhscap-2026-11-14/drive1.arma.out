@@ -1,0 +1,54 @@
+          --- subject pin 5966f86d; answer-key rev 2694a13e; K-cap lines 4, chain depth 3, K-bal bound 400
+  ok      A0  answer key captured from 2694a13e:docs/research/unit-465p12site-2026-11-14/drive2.armb.out — B2=11 B3=7/4/2/4 B5=2 of 20, 3 excluded R3=bound 2 unbound 2
+          --- the two sites this unit was boarded for, captured from R3: ["grade-the-four-list-scorer.mjs@167 loop=population","no-id-class-separates-and-the-liveness-reader-is-cured.mjs@248 loop=texts"]
+  ok      A1  population at the subject pin reproduces arm B's B1 of 20: 20
+  ok      A2  K-cap reproduced here vs the recording's B2 cap-hit count: 11 vs 11
+  ok      A3  K-cap vs the recording's B3 — total 7/7 · RESOLVED 4/4 · bound 2/2 · enumerated 4/4
+  LANDED  P1  K-cap reproduces the recording's cap-hit count exactly: 11 vs 11
+  LANDED  P2  K-cap reproduces all four B3 figures exactly: 7/4/2/4 vs 7/4/2/4
+          --- A4: every K-cap cap-hit declaration, with what K-bal makes of the same site
+          round448-instruments/grade-the-four-list-scorer.mjs
+              `ROWS` @198  K-cap truncated at 4 lines; K-bal spans 27 lines, fn-bodied=false
+          round448-instruments/grade-the-four-list-scorer.mjs
+              `SENTENCES` @552  K-cap truncated at 4 lines; K-bal spans 16 lines, fn-bodied=false
+          round448-instruments/grade-the-four-list-scorer.mjs
+              `ok` @606  K-cap truncated at 4 lines; K-bal spans 1 lines, fn-bodied=false
+          round452-instruments/census-the-legacy-id-grammar-and-the-liveness-reader.mjs
+              `CANDIDATES` @81  K-cap truncated at 4 lines; K-bal spans 6 lines, fn-bodied=false
+          round452-instruments/census2-reconcile-his-26-and-hand-read-the-drops.mjs
+              `HAND` @84  K-cap truncated at 4 lines; K-bal spans 8 lines, fn-bodied=false
+          round452-instruments/census2-reconcile-his-26-and-hand-read-the-drops.mjs
+              `CANDIDATES` @93  K-cap truncated at 4 lines; K-bal spans 5 lines, fn-bodied=false
+          round452-instruments/no-id-class-separates-and-the-liveness-reader-is-cured.mjs
+              `HAND` @120  K-cap truncated at 4 lines; K-bal spans 42 lines, fn-bodied=false
+          round452-instruments/no-id-class-separates-and-the-liveness-reader-is-cured.mjs
+              `CANDIDATES` @212  K-cap truncated at 4 lines; K-bal spans 5 lines, fn-bodied=false
+          round452-instruments/no-id-class-separates-and-the-liveness-reader-is-cured.mjs
+              `driveFile` @339  K-cap truncated at 4 lines; K-bal spans 8 lines, fn-bodied=true
+          round462-instruments/grade-the-pred-half-refusal.mjs
+              `sep` @142  K-cap truncated at 4 lines; K-bal spans 6 lines, fn-bodied=false
+          round462-instruments/grade-the-pred-half-refusal.mjs
+              `SHAPES` @380  K-cap truncated at 4 lines; K-bal spans 7 lines, fn-bodied=false
+  ok      A4  cap-hit declarations enumerated: 11 (recording's B2: 11) · of those, function-bodied under K-bal: 1 ["grade-the-four-list-scorer.mjs:ROWS@198→27L fn=false","grade-the-four-list-scorer.mjs:SENTENCES@552→16L fn=false","grade-the-four-list-scorer.mjs:ok@606→1L fn=false","census-the-legacy-id-grammar-and-the-liveness-reader.mjs:CANDIDATES@81→6L fn=false","census2-reconcile-his-26-and-hand-read-the-drops.mjs:HAND@84→8L fn=false","census2-reconcile-his-26-and-hand-read-the-drops.mjs:CANDIDATES@93→5L fn=false","no-id-class-separates-and-the-liveness-reader-is-cured.mjs:HAND@120→42L fn=false","no-id-class-separates-and-the-liveness-reader-is-cured.mjs:CANDIDATES@212→5L fn=false","no-id-class-separates-and-the-liveness-reader-is-cured.mjs:driveFile@339→8L fn=true","grade-the-pred-half-refusal.mjs:sep@142→6L fn=false","grade-the-pred-half-refusal.mjs:SHAPES@380→7L fn=false"]
+  LANDED  P3  at least one cap-hit declaration is function-bodied, so the cap is not purely long call chains: 1 of 11
+  ok      A5  K-bal over the same files: 354 declarations · function-bodied 22 (6.2%) · longest spans [42,27,26,25,22] · declarations refused at the 400-line safety bound: 0
+          --- A6: the two sites this unit was boarded for, under both keys
+          grade-the-four-list-scorer.mjs@167  loop over `population`
+              K-cap chain (9): ["population","candidates","p","selfDir","all","HERE","SELF_REL","git","REV"]  bound=false
+              K-bal chain (9): ["population","candidates","p","selfDir","all","HERE","SELF_REL","git","REV"]  bound=false
+              chain members added by K-bal: [] (function-bodied: [])
+              cap-hit declarations inside the K-cap chain: []  → cap NOT implicated for this site
+          no-id-class-separates-and-the-liveness-reader-is-cured.mjs@248  loop over `texts`
+              K-cap chain (7): ["texts","outsAll","git","PRE_ROUND_REV","n","SELF_DIR","weight"]  bound=false
+              K-bal chain (7): ["texts","outsAll","git","PRE_ROUND_REV","n","SELF_DIR","weight"]  bound=false
+              chain members added by K-bal: [] (function-bodied: [])
+              cap-hit declarations inside the K-cap chain: []  → cap NOT implicated for this site
+  ok      A6  both R3 sites located under both keys: 2 of 2 · cap implicated for: [] · newly bound under K-bal: []
+  LANDED  P4  neither named site has a cap-hit declaration in its K-cap chain, so the cap is not the cause of their unboundness: ["grade-the-four-list-scorer.mjs@167: 0","no-id-class-separates-and-the-liveness-reader-is-cured.mjs@248: 0"]
+  ok      A7  K-cap P12 2 of 20 (recording's B5: 2; members DIFFER) · K-bal P12 2 of 20 · bound sites 2 → 2 · P12 membership unchanged
+  REFUTED P5  K-bal leaves P12 membership at the recording's 2 members: K-bal has 2 ["census-the-legacy-id-grammar-and-the-liveness-reader.mjs","census2-reconcile-his-26-and-hand-read-the-drops.mjs"]
+          --- A8: HAND VERIFICATION of every site that binds under K-bal but not K-cap
+  ok      A8  sites binding under K-bal but not K-cap: 0 [] · all slices re-read and matching: n/a, none
+  PREFUSED P6  every newly bound site binds through a function-bodied chain member (over-report, not recovered derivation): []
+  ok      A-gate  git status --porcelain packages scripts docs/research/lib → ""
+VERDICT/0 GREEN legs=10 red=[] refused=[] preds=6 refuted=["P5"] prefused=["P6"]
