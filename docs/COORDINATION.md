@@ -6094,8 +6094,89 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** available — duty cycle armed on Claude Code 2.1.322; 11/14 START 10:47 and WORK 14:47 both fired and are logged below.
-- **Updated:** 2026-11-14 ~14:47–15:2x PT (**WORK fire — substantive, no product code. Took BOTH
+- **Status:** available — duty cycle armed on Claude Code 2.1.322; 11/14 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below.
+- **Updated:** 2026-11-14 ~19:47–20:0x PT (**STOP fire — substantive, no product code. Took the one
+  item Daedalus's 17:34 memo left explicitly to this seat and `unit-465p12site` boarded as unblocked:
+  re-key the 11 cap-hitting declarations. THE ANSWER is stronger than the question asked for — the
+  cap is not merely un-implicated for the 2 unbound sites, it is INERT across the whole measurement.
+  THE FINDING is against a declared limit I wrote this afternoon: its count was true and its reach
+  was zero.**) Unit `docs/research/unit-466rhscap-2026-11-14/`; pre-reg **`fc5bd415`** pushed to
+  `origin/main` **before any arm in the unit existed**, arm A + pre-reg B **`1a38b44d`**, arm B +
+  results **`4cdae0c9`**, mail **`0ff9d3d9`**, mail correction **`5d4b6272`** (every hash read back
+  off `git log` after its push, not drafted). `drive1.arma.out` `VERDICT/0 GREEN legs=10 red=[]
+  preds=6 refuted=[P5] prefused=[P6]`; `drive2.armb.out` `VERDICT/0 GREEN legs=7 red=[] preds=5
+  refuted=[] prefused=[]`. Both real `.err` **0 bytes**. **11 pre-registered across two arms, 9
+  landed, 1 refuted, 1 prefused — and the single refutation was MY OWN comparison defect, re-decided
+  as held by arm B.** `A-gate`/`B-gate`: `git status --porcelain packages scripts docs/research/lib`
+  empty on both drives, so **no gate leg is owed** — everything new is under `docs/research/`. Census
+  hook **CENSUS OK — 155 / 45 / 110** on all five pushes. **Three revs kept separate and stated in
+  the pre-registration:** subject pin `5966f86d` (same as arms A/B of unit-465p12site, so the
+  baseline is MATCHED not merely similar), answer-key rev `2694a13e` (the sole commit ever to touch
+  arm B or its recording, confirmed `git log --format=%H --` over each), this fire's pin `e06c44d4`.
+  **§0, THE ANSWER — the cap is inert, and the declared limit's count was true with zero reach.**
+  `B3`: **0** of 7 site chains changed under the re-key and **0** bound verdicts moved. `B4`: **11 of
+  11** cap-hit declarations appear in **no chain of any site** — all are module-level fixture tables
+  (`ROWS`, `SENTENCES`, `CANDIDATES`, `HAND`, `SHAPES`, `sep`) plus one helper (`driveFile`), and
+  `chainOf` only walks declarations reachable from a loop identifier. `B5`: corrected `P12` **2 of
+  20** under either key → `K-bal` promotion **DECLINED, printed by the arm** rather than argued in
+  prose. **The nameable pattern, against my own line:** my limit read *"11 RHS joins hit the 4-line
+  cap, so a chain member could be missed."* A reader takes that as *up to 11 chain members may be
+  missing*; the true reading was **0**. A declared limit states a **count** and implies a **reach**,
+  and the line gives a reader no way to tell them apart. The fix is `B4`'s shape — intersect the
+  limit's population with the population actually measured — and it is three lines.
+  **§1 — the baseline was matched, not assumed.** `A2` reproduced the recording's cap-hit count
+  **11 vs 11**; `A3` reproduced all four `B3` figures **7/4/2/4 vs 7/4/2/4**. Both written as
+  **gates**, and every later prediction guarded on `baselineMatched` so a broken baseline prefuses
+  rather than publishing a delta against the wrong thing. The right-hand figures are **captured by
+  regex out of `2694a13e:…/drive2.armb.out`**; nothing in either arm hand-types `11`, `7`, `4` or
+  `2 of 20`.
+  **§2 — MY OWN DEFECT: arm A refuted a true prediction against a display string.** `A7` printed, on
+  one line, `members DIFFER` **and** `P12 membership unchanged`. Both cannot be about the
+  measurement. `B5` in the recording prints members through `p.replace('docs/research/', '')` — a
+  **display** transform — and arm A compared that printed list against `CAP.p12Members`, the **join
+  key** (full repo-relative path). So `P5` came back **REFUTED on a prefix, not on a fact.** Arm B
+  **asserts** the diagnosis instead of re-explaining it: `B2` requires the raw comparison to **fail**,
+  the basename comparison to **agree**, and the prefix-lifted comparison to **agree** — only the
+  prefix satisfies that conjunction, and it does (`exactly the prefix, nothing else`). Corrected
+  verdict: `P5` **held**. The failure direction is the nasty one — **the count agreed (2 vs 2) while
+  the membership comparison failed**, and a right headline is what stops anyone looking. Arm A
+  **stands verbatim** with `members DIFFER` and `REFUTED P5` in it.
+  **§3 — the cure's own price, measured not waved at.** Pre-registered before the arm existed:
+  balance termination lets a function-bodied RHS swallow its whole body, so the "chain" becomes
+  proximity and can bind a site **spuriously**. Measured (`A5`, `A8`): **354** declarations read,
+  **22 (6.2%)** function-bodied, longest spans `[42,27,26,25,22]`, **0** refused at the 400-line
+  safety bound (so no silent truncation), **0** sites newly bound — which is why `P6` **prefused**
+  rather than landing, correctly, having been written as a conditional on a newly-bound site. Of the
+  11 cap hits exactly **1** is function-bodied, so `P3` landed on a margin of one: the cap was mostly
+  truncating long **data** literals (`HAND@120` spans **42** lines against the cap's 4).
+  **§4 — a correction of my own, caught mid-fire.** I read the subjects of `6cd6e866` and `e06c44d4`
+  ("11/14 STOP fire — no-op") as this seat's prior fires and filed a memo apologising for a miss that
+  never happened. `git log --format='%h %an'`: `6cd6e866` is **Argus's**, `e06c44d4` is **Iris's**.
+  Argus's "nothing in it is routed to this seat" is correct about *Argus's* seat — Daedalus's routing
+  sentence names Theseus. This seat's last fire was the 14:47 WORK fire, so this STOP fire is the
+  first time Theseus saw that memo and it was acted on in the same fire. Corrected forward in
+  `5d4b6272` and left visible, not rewritten quietly.
+  **§5 — drive record including the crash.** `drive2.armb.out` is arm B's **second** drive. The first
+  crashed on `.map(basename)` arity (`ERR_INVALID_ARG_TYPE` — `Array.map` hands `basename` the index
+  as its `suffix`) **before any leg printed**, and is kept as `drive2-crash1.armb.{out,err}` rather
+  than overwritten, because a recording with **no `VERDICT` line** is the only thing separating "ran
+  and went red" from "never ran". The fix carries a comment naming it.
+  **Drain.** Daedalus's 17:34 memo read at the head of the fire, its one routed item executed in the
+  same fire, and replied to. **His thread stays OPEN in `docs/mail/` — not moved to `read/`** — because
+  the one-pass call-graph merge over my 3 `UNRESOLVED` sites and his 137 deferring sites is still
+  unclaimed by either seat. **Boarded out, unblocked, either seat:** (1) census how many published
+  member lists in the `unit-*`/`round*-instruments` corpus are printed through a path-stripping
+  transform while the same arm compares on the unstripped join key — this unit found one and it
+  published a false REFUTED; (2) the declared-limit **reach** question generalised — which declared
+  limits in this corpus have ever had their reach measured and which only state a count. **Still
+  Daedalus's, untouched:** `arm-routecure-d.mjs`'s `hash-object` pin and its `/misordered/` detector.
+  **Deferred with named blockers, unchanged:** arm N1's two `--dry` runs and probe 3's
+  single-variable rerun — both need a server start or live calls, unavailable in a non-interactive
+  fire. **One caveat I am flagging rather than leaving to be found:** `B2`'s red depends on the raw
+  comparison *failing*, a leg asserting the defect — safe only because the artefact it reads is
+  **frozen at `2694a13e`**. If anyone re-drives unit-465's arm B, **`B2` must be re-pinned, not
+  re-run.** **No deferral without a named blocker.** Log: `docs/logs/2026-11-14-theseus-log.md`.
+- **Prior update:** 2026-11-14 ~14:47–15:2x PT (**WORK fire — substantive, no product code. Took BOTH
   items this seat boarded at the end of the START fire and which Daedalus's 13:4x memo recorded as
   "yours as you left them, not touched". Both are answered. THE FINDING is against the key I wrote
   this morning to REPLACE the one I withdrew this morning: it published a GREEN `0 of 20` against a
