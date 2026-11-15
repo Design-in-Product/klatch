@@ -1,0 +1,269 @@
+ok  A0a      matched POSITIVE control — the pinned ls-tree FINDS docs/research/unit-465p12site-2026-11-14/arm-p12site-b.mjs: true (total paths under docs/research at 70e58f2a: 3254)
+ok  A0b      matched NEGATIVE control — this unit's own pre-registration, committed after 70e58f2a, is absent: true. A call reading HEAD, or matching nothing, cannot satisfy A0a and A0b together.
+ok  A1       source population at 70e58f2a: 472 .mjs/.mts of 3254 files under docs/research
+ok  A2       K-strip enumerated 60 site(s) — a <ident>.map( line carrying at least one of the five strip spellings — across 38 file(s). The pre-registration's scoping figure was 60; THIS is the figure.
+ok  A-kp     known-positive — the found instance docs/research/unit-465p12site-2026-11-14/arm-p12site-b.mjs:283 is enumerated by K-strip: true [ident=p12Members spellings=R class=INVERTIBLE_PREFIX]
+
+UNEXTRACTED (printed, NOT folded into NOT_A_MEMBER_PATH): 1
+  docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs:628
+NOT_A_MEMBER_PATH members (the category-error bucket, printed in full): 5
+  docs/research/round456-instruments/drift-census-over-the-verdict-publishing-population.mjs:361 [matches] toks=["o"]
+  docs/research/unit-464addarm-2026-11-04/grade-addarm.mjs:451 [overCredited] toks=["r"]
+  docs/research/unit-464addarm-2026-11-04/grade-addarm.mjs:478 [underCredited] toks=["r"]
+  docs/research/unit-464class-2026-11-02/enumerate-legs.mjs:275 [kpGLegs] toks=["KP_G"]
+  docs/research/unit-464sat-2026-10-31/grepro.mjs:133 [cands] toks=["r.from"]
+ok  A3       pre-registered CEILING: NOT_A_MEMBER_PATH = 5 of 60 = 8.3% (ceiling 25%). Class tally is PUBLISHABLE. No sixth spelling and no fourth class was added to clear it.
+
+── per-site rows — the evidence; the tally below is a roll-up of these ──
+  LOSSY_BASENAME      MEMBER_PATH       S  round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs:479
+      ident=uniqReads  toks=["S:f","S:p"]
+      `**${uniqReads.length}**: ${uniqReads.map(([f, fn, p]) => `${fn} in \`${f.split('/').pop()}\` → \`${p.split('/').pop()}\``).join('; ')}. ` +
+  LOSSY_BASENAME      MEMBER_PATH       S  round395-instruments/grade-the-refusal-that-deletes-the-verdict.mjs:460
+      ident=rows  toks=["S:f"]
+      rows.length === 0 ? '(none)' : rows.map(([f, n]) => `${f.split('/').pop()} (${n})`).join('; ');
+  LOSSY_BASENAME      MEMBER_PATH       S  round395-instruments/grade-the-refusal-that-deletes-the-verdict.mjs:567
+      ident=arrivals  toks=["S:f"]
+      `did not exist at the pin — ${arrivals.length === 0 ? 'none' : arrivals.map((f) => f.split('/').pop()).join('; ')}. ` +
+  LOSSY_BASENAME      MEMBER_PATH       S  round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs:451
+      ident=WRAPPED  toks=["S:r.path"]
+      + WRAPPED.map((r) => `${r.path.split('/').pop()}:${r.line} ${r.name} [${r.stratum}]`).join(' | '));
+  LOSSY_BASENAME      UNEXTRACTED       S  round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs:628
+      ident=rows  toks=[]
+      const names = rows.map((r) => `${(r.path ?? R408).split('/').pop()}:${r.line} ${r.name}`);
+  LOSSY_BASENAME      MEMBER_PATH       S  round413-instruments/attack-g7-and-grade-the-branch-layer.mjs:286
+      ident=hisTern  toks=["S:r.path"]
+      + `[${hisTern.map((r) => `${r.path.split('/').pop()}:${r.line} ${r.ident}`).join(' | ')}] · `
+  LOSSY_BASENAME      MEMBER_PATH       S  round413-instruments/attack-g7-and-grade-the-branch-layer.mjs:303
+      ident=readmitted  toks=["S:r.path"]
+      + `[${[...new Set(readmitted.map((r) => r.path.split('/').pop()))].join(' | ')}] · `
+  LOSSY_BASENAME      MEMBER_PATH       S  round415-instruments/census-the-index-keyed-population.mjs:120
+      ident=pairs  toks=["S:p.file"]
+      () => pairs.map((p) => `    round${p.round} ${p.file.split('/').pop()} rev ${p.rev.slice(0, 8)} `
+  LOSSY_BASENAME      MEMBER_PATH       S  round415-instruments/census-the-index-keyed-population.mjs:299
+      ident=KPS  toks=["S:kp.f"]
+      () => KPS.map((kp) => `    ${kp.ok ? 'ok ' : 'RED'} ${kp.f.split('/').pop()}:${kp.l} want `
+  NONLOSSY_NORMALISE  MEMBER_PATH       V  round423-instruments/grade-the-422-cures.mjs:284
+      ident=strays  toks=["V:f(arg1=REPO)"]
+      strays.length === 0, strays.map((f) => path.relative(REPO, f)).join(' | ') || '(none)');
+  NONLOSSY_NORMALISE  MEMBER_PATH       V  round425-instruments/a-crash-cannot-print-separates.mjs:167
+      ident=strays  toks=["V:f(arg1=REPO)"]
+      strays.length === 0, strays.map((f) => path.relative(REPO, f)).join(' | ') || '(none)');`;
+  NONLOSSY_NORMALISE  MEMBER_PATH       V  round425-instruments/a-crash-cannot-print-separates.mjs:366
+      ident=strays  toks=["V:f(arg1=REPO)"]
+      strays.length === 0, strays.map((f) => path.relative(REPO, f)).join(' | ') || '(none)');
+  LOSSY_BASENAME      MEMBER_PATH       S  round429-instruments/does-any-other-instrument-retype-a-verdict-it-slices.mjs:130
+      ident=UNRESOLVED  toks=["S:p"]
+      `resolved ${CAND_ROWS.length - UNRESOLVED.length} · UNRESOLVED ${UNRESOLVED.length}${UNRESOLVED.length ? ': ' + UNRESOLVED.map((p) => p.split('/').pop()).join('
+  LOSSY_BASENAME      MEMBER_PATH       S  round430-instruments/grade-the-convention-gate.mjs:398
+      ident=answers  toks=["S:x.r.path"]
+      + `${answers.length} [${answers.map((x) => `${x.r.path.split('/').pop()}:${x.r.line}`).join(' | ')}]`
+  LOSSY_BASENAME      MEMBER_PATH       S  round430-instruments/grade-the-convention-gate.mjs:473
+      ident=authors  toks=["S:c.path"]
+      + `[${authors.map((c) => `${c.path.split('/').pop()} ×${c.hits}`).join(' | ')}] · so P4's `
+  LOSSY_BASENAME      MEMBER_PATH       B  round439-instruments/attribute-the-ungradeable-red.mjs:223
+      ident=mem  toks=["B:r.path"]
+      : mem.map((r) => `${basename(r.path)} → ${r.state}${r.redLegs ? ` ${JSON.stringify(r.redLegs)}` : ''}`).join(' · ')
+  LOSSY_BASENAME      MEMBER_PATH       S  round441-instruments/key-the-silent-class-from-source.mjs:404
+      ident=rows  toks=["S:r.p"]
+      + rows.map((r) => `\n        ${r.declared === undefined ? 'UNDECLARED' : r.declared === true ? 'capable   ' : r.declared === false ? 'no label  ' : 'no gate ln'
+  LOSSY_BASENAME      MEMBER_PATH       S  round443-instruments/grade-the-emitter-at-its-published-line.mjs:681
+      ident=doublePrinters  toks=["S:f"]
+      + `${JSON.stringify(doublePrinters.map((f) => f.split('/').pop()))}, committed 1 fully `
+  INVERTIBLE_PREFIX   MEMBER_PATH       V  round446-instruments/grade-my-own-oracle-predicate.mjs:221
+      ident=scored  toks=["V:r.rel(arg1='docs/research')"]
+      + scored.map((r) => `        ${r.bucket.padEnd(21)} ${relative('docs/research', r.rel)}\n`
+  INVERTIBLE_PREFIX   MEMBER_PATH       R  round448-instruments/grade-the-four-list-scorer.mjs:285
+      ident=CENSUS.okRefuted  toks=["R:r.p"]
+      + `${JSON.stringify(CENSUS.okRefuted.map((r) => r.p.replace('docs/research/', '')))}\n`
+  INVERTIBLE_PREFIX   MEMBER_PATH       L  round452-instruments/census2-reconcile-his-26-and-hand-read-the-drops.mjs:56
+      ident=his  toks=["L:p"]
+      console.log(`R1  of those, in HIS round dir    = ${his.length}  ${JSON.stringify(his.map((p) => p.slice(HIS_DIR.length)))}`);
+  INVERTIBLE_PREFIX   MEMBER_PATH       L  round452-instruments/no-id-class-separates-and-the-liveness-reader-is-cured.mjs:261
+      ident=hisOwn  toks=["L:p"]
+      + `${JSON.stringify(hisOwn.map((p) => p.slice(HIS_DIR.length)))}. On his denominator: `
+  LOSSY_BASENAME      MEMBER_PATH       S  round455-instruments/attribute-each-restamp-to-the-file-it-stamps.mjs:276
+      ident=r449  toks=["S:r.path"]
+      `449 subject(s): ${JSON.stringify(r449.map((r) => r.path.split('/').pop()))} · controls reaching `
+  LOSSY_BASENAME      MEMBER_PATH       S  round455-instruments/attribute-each-restamp-to-the-file-it-stamps.mjs:278
+      ident=hisTimedOut  toks=["S:r.path"]
+      + `${JSON.stringify(hisTimedOut.map((r) => r.path.split('/').pop()))}) · quiet among those `
+  LOSSY_BASENAME      MEMBER_PATH       S  round455-instruments/attribute-each-restamp-to-the-file-it-stamps.mjs:280
+      ident=hisRows  toks=["S:r.path"]
+      + JSON.stringify(hisRows.map((r) => `${r.path.split('/').pop()}→${r.timedOut ? 'TIMEOUT' : r.stamped.length}`)),
+  LOSSY_BASENAME      NOT_A_MEMBER_PATH S  round456-instruments/drift-census-over-the-verdict-publishing-population.mjs:361
+      ident=matches  toks=["S:o"]
+      const cmps = matches.map(({ o, b }) => ({ o: o.split('/').pop(), c: compare(b, head) }));
+  INVERTIBLE_PREFIX   MEMBER_PATH       V  round456-instruments/drift-census-over-the-verdict-publishing-population.mjs:449
+      ident=beyondKp  toks=["V:p(arg1='docs/research')"]
+      `drifted members beyond the W10 KP: ${beyondKp.length}${beyondKp.length ? ` — ${beyondKp.map((p) => relative('docs/research', p)).join(', ')}` : ''}`);
+  INVERTIBLE_PREFIX   MEMBER_PATH       V  round457-instruments/grade-recording-completeness-across-the-whole-corpus.mjs:309
+      ident=buckets.PRED_COUNT_MISMATCH  toks=["V:p(arg1='docs/research')"]
+      + `${buckets.PRED_COUNT_MISMATCH.length ? ` — ${buckets.PRED_COUNT_MISMATCH.map((p) => relative('docs/research', p)).join(', ')}` : ''}`);
+  INVERTIBLE_PREFIX   MEMBER_PATH       V  round459-instruments/grade-the-two-routed-sites-and-census-the-laundering-idioms.mjs:308
+      ident=unpinnedSites  toks=["V:s.p(arg1='docs/research')"]
+      + JSON.stringify(unpinnedSites.map((s) => `${relative('docs/research', s.p)}:${s.fn}`)),
+  LOSSY_BASENAME      MEMBER_PATH       S  round462-instruments/grade-the-pred-half-refusal.mjs:312
+      ident=onlyLib  toks=["S:p"]
+      + `lib-only ${onlyLib.length} ${onlyLib.map((p) => p.split('/').pop()).join(',')} · `
+  LOSSY_BASENAME      MEMBER_PATH       S  round462-instruments/grade-the-pred-half-refusal.mjs:313
+      ident=onlyMine  toks=["S:p"]
+      + `lifted-only ${onlyMine.length} ${onlyMine.map((p) => p.split('/').pop()).join(',')}`);
+  INVERTIBLE_PREFIX   NOT_A_MEMBER_PATH R  unit-464addarm-2026-11-04/grade-addarm.mjs:451
+      ident=overCredited  toks=["R:r"]
+      (overCredited.length ? ` → ${overCredited.map((r) => r.replace('docs/research/', '')).join(', ')}` : ''));
+  INVERTIBLE_PREFIX   NOT_A_MEMBER_PATH R  unit-464addarm-2026-11-04/grade-addarm.mjs:478
+      ident=underCredited  toks=["R:r"]
+      (underCredited.length ? ` → ${underCredited.map((r) => r.replace('docs/research/', '')).join(', ')}` : ''));
+  INVERTIBLE_PREFIX   NOT_A_MEMBER_PATH R  unit-464class-2026-11-02/enumerate-legs.mjs:275
+      ident=kpGLegs  toks=["R:KP_G"]
+      `the hand-found g( site is reached: ${kpGLegs.length} leg(s) in ${KP_G.replace('docs/research/', '')} [${kpGLegs.map((l) => l.id).join(',')}]`);
+  LOSSY_BASENAME      MEMBER_PATH       S  unit-464prec-2026-11-03/grade-prec.mjs:81
+      ident=blobs  toks=["S:b.p"]
+      blobs.map((b) => `${b.p.split('/').pop()} ${b.got}${b.got === b.want ? '' : ` != ${b.want}`}`).join(' · '));
+  LOSSY_BASENAME      MEMBER_PATH       S  unit-464reach-2026-10-31/reach-census.mjs:470
+      ident=offMechanism  toks=["S:o.path"]
+      : `: [${offMechanism.map((o) => `${o.name}@${o.path.split('/').pop()}:${o.cls}`).join(', ')}]`),
+  LOSSY_BASENAME      NOT_A_MEMBER_PATH B  unit-464sat-2026-10-31/grepro.mjs:133
+      ident=cands  toks=["B:r.from"]
+      console.log(`GREPRO ok  ${tag}: ${cands.length} committed no-cripple recording(s) agree with my live drive on GTYPEDDEF, TYPED and MAPVERDICT [${cands.map((r) =
+  INVERTIBLE_PREFIX   MEMBER_PATH       R  unit-464subkind-2026-11-02/grade-subkind.mjs:261
+      ident=multi  toks=["R:h.p"]
+      `>1 commit [${multi.map((h) => `${h.p.replace('docs/research/', '')}=${h.n}`).join(',') || 'none'}] — ` +
+  LOSSY_BASENAME      MEMBER_PATH       S  unit-464t2-surface-2026-10-28/grade-the-exit-code.mjs:220
+      ident=preDriveSilent  toks=["S:PRE_DRIVE_RECORD","S:p"]
+      console.log(`  groundTruth from ${PRE_DRIVE_RECORD.split('/').pop()}: ${preDriveSilent === null ? 'UNREADABLE — refusing' : preDriveSilent.map((p) => p.split('/
+  LOSSY_BASENAME      MEMBER_PATH       S  unit-464t2-surface-2026-10-28/grade-the-exit-code.mjs:351
+      ident=silentSet  toks=["S:p"]
+      `silent=${silentSet.length} → ${silentSet.map((p) => p.split('/').pop()).join(', ') || '(none)'}`
+  LOSSY_BASENAME      MEMBER_PATH       S  unit-464t2-surface-2026-10-28/grade-the-exit-code.mjs:389
+      ident=tokenWrong  toks=["S:d.rel"]
+      `printedTokenWrong=${tokenWrong.length} → ${tokenWrong.map((d) => `${d.rel.split('/').pop()}(token=${d.token},status=${d.status})`).join(', ') || '(none)'}`
+  LOSSY_BASENAME      MEMBER_PATH       S  unit-464t2-surface-2026-10-28/grade-the-exit-code.mjs:454
+      ident=driven  toks=["S:d.rel"]
+      driven.map((d) => `${d.rel.split('/').pop()}:${d.word}/${d.status}`).join(' ')
+  INVERTIBLE_PREFIX   MEMBER_PATH       R  unit-465p12site-2026-11-14/arm-p12site-a.mjs:155
+      ident=gone  toks=["R:p"]
+      `gone=${JSON.stringify(gone.map((p) => p.replace('docs/research/', '')))} ` +
+  INVERTIBLE_PREFIX   MEMBER_PATH       R  unit-465p12site-2026-11-14/arm-p12site-a.mjs:156
+      ident=added  toks=["R:p"]
+      `added=${JSON.stringify(added.map((p) => p.replace('docs/research/', '')))}`);
+  INVERTIBLE_PREFIX   MEMBER_PATH       R  unit-465p12site-2026-11-14/arm-p12site-a.mjs:327
+      ident=p12Members  toks=["R:p"]
+      `${JSON.stringify(p12Members.map((p) => p.replace('docs/research/', '')))}`);
+  INVERTIBLE_PREFIX   MEMBER_PATH       R  unit-465p12site-2026-11-14/arm-p12site-a.mjs:337
+      ident=p12InHis12  toks=["R:p"]
+      `${p12InHis12.length} ${JSON.stringify(p12InHis12.map((p) => p.replace('docs/research/', '')))}`);
+  INVERTIBLE_PREFIX   MEMBER_PATH       R  unit-465p12site-2026-11-14/arm-p12site-a.mjs:342
+      ident=p12Outside  toks=["R:p"]
+      `${p12Outside.length} ${JSON.stringify(p12Outside.map((p) => p.replace('docs/research/', '')))}`);
+  INVERTIBLE_PREFIX   MEMBER_PATH       R  unit-465p12site-2026-11-14/arm-p12site-b.mjs:283
+      ident=p12Members  toks=["R:p"]
+      `${JSON.stringify(p12Members.map((p) => p.replace('docs/research/', '')))} ` +
+  INVERTIBLE_PREFIX   MEMBER_PATH       R  unit-465p12site-2026-11-14/arm-p12site-b.mjs:288
+      ident=p12InHis12  toks=["R:p"]
+      `${p12InHis12.length} ${JSON.stringify(p12InHis12.map((p) => p.replace('docs/research/', '')))}`);
+  INVERTIBLE_PREFIX   MEMBER_PATH       R  unit-465p12site-2026-11-14/arm-p12site-b.mjs:325
+      ident=neverTests  toks=["R:n.p"]
+      `${neverTests.length} ${JSON.stringify(neverTests.map((n) => n.p.replace('docs/research/', '')))}`);
+  INVERTIBLE_PREFIX   MEMBER_PATH       R  unit-465p12site-2026-11-14/arm-p12site-c.mjs:150
+      ident=spurious  toks=["R:p"]
+      `${spurious.length} of ${popWide.length} ${JSON.stringify(spurious.map((p) => p.replace('docs/research/', '')))}`);
+  LOSSY_BASENAME      MEMBER_PATH       B  unit-465p12site-2026-11-14/arm-p12site-c.mjs:180
+      ident=P12_MEMBERS  toks=["B:p"]
+      console.log(`          HOLDS   the P12 member list (both call readVerdict): ${JSON.stringify(P12_MEMBERS.map((p) => basename(p)))}`);
+  INVERTIBLE_PREFIX   MEMBER_PATH       R  unit-465refusalfate-2026-11-14/arm-refusalfate-a.mjs:161
+      ident=both  toks=["R:c.p"]
+      leg('A6', true, `the BOTH cell, which a per-file verdict cannot state: ${JSON.stringify(both.map((c) => c.p.replace('docs/research/', '')))}`);
+  INVERTIBLE_PREFIX   MEMBER_PATH       R  unit-465refusalfate-2026-11-14/arm-refusalfate-a.mjs:221
+      ident=unpinned  toks=["R:p"]
+      `${JSON.stringify(unpinned.map((p) => p.replace('docs/research/', '')))}`);
+  LOSSY_BASENAME      MEMBER_PATH       S  unit-465refusalfate-2026-11-14/arm-refusalfate-b.mjs:200
+      ident=extraFromToday  toks=["S:p"]
+      `(${extraFromToday.map((p) => p.split('/').pop()).join(', ')})`);
+  LOSSY_BASENAME      MEMBER_PATH       S  unit-465refusalfate-2026-11-14/arm-refusalfate-c.mjs:99
+      ident=mine  toks=["S:p"]
+      `(${mine.map((p) => p.split('/').pop()).join(', ')})`);
+  INVERTIBLE_PREFIX   MEMBER_PATH       R  unit-465schemacollide-2026-11-14/arm-schemacollide-c.mjs:119
+      ident=ownLocal  toks=["R:r.p"]
+      `(${ownLocal.map((r) => r.p.replace('docs/research/', '')).join(', ')})`
+  LOSSY_BASENAME      MEMBER_PATH       B  unit-466rhscap-2026-11-14/arm-rhscap-a.mjs:342
+      ident=capHitDetail  toks=["B:d.p"]
+      `${JSON.stringify(capHitDetail.map((d) => `${basename(d.p)}:${d.ident}@${d.at}→${d.balLines}L fn=${d.fnBodied}`))}`);
+  LOSSY_BASENAME      MEMBER_PATH       B  unit-466rhscap-2026-11-14/arm-rhscap-a.mjs:408
+      ident=BAL.p12Members  toks=["B:p"]
+      `${BAL.p12Members.length} ${JSON.stringify(BAL.p12Members.map((p) => basename(p)))}`);
+  LOSSY_BASENAME      MEMBER_PATH       B  unit-466rhscap-2026-11-14/arm-rhscap-b.mjs:265
+      ident=CAP.p12Members  toks=["B:p","B:p"]
+      const baseEq = JSON.stringify(CAP.p12Members.map((p) => basename(p)).sort()) === JSON.stringify(KEY_P12_DISPLAY.map((p) => basename(p)).sort());
+ok  A4       SAME_FILE_UNSTRIPPED, computed and reported PER SITE (a per-file verdict would mis-state a per-site question): 16 of 60 site(s) have a comparison on the same identifier elsewhere in the same file. Evidence lines printed below, so the key is auditable; this is a FILE-WIDE key and over-reports where one identifier is reused for two purposes.
+
+── SAME_FILE_UNSTRIPPED evidence (first 2 lines per site) ──
+  round415-instruments/census-the-index-keyed-population.mjs:120 [pairs] → 4 line(s)
+      :275 via everySome on `pairs`  + `pair reproduces: ${pairs.length > 0 && pairs.every((p) => p.reproduces === true)}`);
+      :367 via everySome on `pairs`  P8: hisHasRevStamp === false && pairs.length > 0 && pairs.every((p) => p.reproduces === true),
+  round415-instruments/census-the-index-keyed-population.mjs:299 [KPS] → 2 line(s)
+      :353 via everySome on `KPS`  D2: KPS.every((kp) => kp.ok),
+      :353 via everySome on `KPS`  D2: KPS.every((kp) => kp.ok),
+  round429-instruments/does-any-other-instrument-retype-a-verdict-it-slices.mjs:130 [UNRESOLVED] → 2 line(s)
+      :129 via includes on `UNRESOLVED`  CAND_ROWS.every((r) => r.subjects.length > 0 || UNRESOLVED.includes(r.p)),
+      :129 via includes on `UNRESOLVED`  CAND_ROWS.every((r) => r.subjects.length > 0 || UNRESOLVED.includes(r.p)),
+  round439-instruments/attribute-the-ungradeable-red.mjs:223 [mem] → 6 line(s)
+      :216 via strictEq on `mem`  const ok = mem !== null && mem.length === 2 && crip.length === 1 && rest.length === 1
+      :222 via strictEq on `mem`  mem === null ? `REFUSED at drive depth ${DEPTH}`
+  round446-instruments/grade-my-own-oracle-predicate.mjs:221 [scored] → 6 line(s)
+      :201 via everySome on `scored`  const allWanted = scored.every((r) => r.old === r.want.old && r.new === r.want.new);
+      :543 via strictEq on `scored`  const ok = scored === null ? null : scored.every((r) => r.agree);
+  round462-instruments/grade-the-pred-half-refusal.mjs:312 [onlyLib] → 2 line(s)
+      :319 via strictEq on `onlyLib`  // `onlyLib===0 && onlyMine===0 && reached+upstream===dropped` — every conjunct of which is true
+      :319 via strictEq on `onlyLib`  // `onlyLib===0 && onlyMine===0 && reached+upstream===dropped` — every conjunct of which is true
+  round462-instruments/grade-the-pred-half-refusal.mjs:313 [onlyMine] → 2 line(s)
+      :319 via strictEq on `onlyMine`  // `onlyLib===0 && onlyMine===0 && reached+upstream===dropped` — every conjunct of which is true
+      :319 via strictEq on `onlyMine`  // `onlyLib===0 && onlyMine===0 && reached+upstream===dropped` — every conjunct of which is true
+  unit-464prec-2026-11-03/grade-prec.mjs:81 [blobs] → 2 line(s)
+      :79 via everySome on `blobs`  check('GPIN', blobs.every((b) => b.got === b.want),
+      :79 via everySome on `blobs`  check('GPIN', blobs.every((b) => b.got === b.want),
+  unit-464t2-surface-2026-10-28/grade-the-exit-code.mjs:220 [preDriveSilent] → 16 line(s)
+      :216 via strictEq on `preDriveSilent`  preDriveSilent === null ? null : preSourceSilent.filter((p) => !preDriveSilent.includes(p));
+      :218 via strictEq on `preDriveSilent`  preDriveSilent === null ? null : preDriveSilent.filter((p) => !preSourceSilent.includes(p));
+  unit-465p12site-2026-11-14/arm-p12site-a.mjs:156 [added] → 2 line(s)
+      :195 via includes on `added`  const tag = THE_5.includes(p) ? ' (+5)' : added.includes(p) ? ' (new since 10:47)' : '';
+      :195 via includes on `added`  const tag = THE_5.includes(p) ? ' (+5)' : added.includes(p) ? ' (new since 10:47)' : '';
+  unit-465p12site-2026-11-14/arm-p12site-a.mjs:337 [p12InHis12] → 2 line(s)
+      :335 via includes on `p12InHis12`  pred('Q3', voided ? null : (p12InHis12.length === 2 && ROUND452_PAIR.every((p) => p12InHis12.includes(p))),
+      :335 via includes on `p12InHis12`  pred('Q3', voided ? null : (p12InHis12.length === 2 && ROUND452_PAIR.every((p) => p12InHis12.includes(p))),
+  unit-465p12site-2026-11-14/arm-p12site-b.mjs:288 [p12InHis12] → 2 line(s)
+      :286 via everySome on `p12InHis12`  pred('R2', unmeasurable ? null : (p12InHis12.length === 2 && ROUND452_PAIR.every((t) => p12InHis12.some((p) =>
+      :286 via everySome on `p12InHis12`  pred('R2', unmeasurable ? null : (p12InHis12.length === 2 && ROUND452_PAIR.every((t) => p12InHis12.some((p) =>
+  unit-465p12site-2026-11-14/arm-p12site-c.mjs:150 [spurious] → 4 line(s)
+      :151 via everySome on `spurious`  pred('S3', spurious.length > 0 && spurious.some((p) => p.includes('round451-instruments/settle-the-subset-ques
+      :153 via everySome on `spurious`  `${spurious.length}, round451 present=${spurious.some((p) => p.includes('round451-instruments/settle-the-subse
+  unit-465p12site-2026-11-14/arm-p12site-c.mjs:180 [P12_MEMBERS] → 2 line(s)
+      :170 via everySome on `P12_MEMBERS`  const numeratorSurvives = P12_MEMBERS.every((p) => popOk.includes(p));
+      :170 via everySome on `P12_MEMBERS`  const numeratorSurvives = P12_MEMBERS.every((p) => popOk.includes(p));
+  unit-466rhscap-2026-11-14/arm-rhscap-a.mjs:408 [BAL.p12Members] → 3 line(s)
+      :400 via stringify on `BAL.p12Members`  const sameP12 = JSON.stringify(CAP.p12Members) === JSON.stringify(BAL.p12Members);
+      :405 via includes on `BAL.p12Members`  `${BAL.bound.length} · P12 membership ${sameP12 ? 'unchanged' : `changed: +${JSON.stringify(BAL.p12Members.fil
+  unit-466rhscap-2026-11-14/arm-rhscap-b.mjs:265 [CAP.p12Members] → 3 line(s)
+      :245 via stringify on `CAP.p12Members`  const capEqKey = JSON.stringify(CAP.p12Members) === JSON.stringify(KEY_P12);
+      :251 via stringify on `CAP.p12Members`  console.log(`              K-cap p12Members        : ${JSON.stringify(CAP.p12Members)}`);
+
+── class tally over MEMBER_PATH sites (n=54) ──
+  {"LOSSY_BASENAME":31,"NONLOSSY_NORMALISE":3,"INVERTIBLE_PREFIX":20}
+  per-spelling (sites may carry more than one; not fused): {"S":26,"V":7,"B":5,"R":14,"L":2}
+  V split on its first argument: {"INVERTIBLE_PREFIX":4,"NONLOSSY_NORMALISE":3}
+LANDED  P1     LOSSY_BASENAME is the majority class among member-path sites: 31 of 54 = 57.4% (threshold ≥50%)
+LANDED  P2     the found instance unit-465p12site-2026-11-14/arm-p12site-b.mjs:283 classes INVERTIBLE_PREFIX, not LOSSY_BASENAME: got INVERTIBLE_PREFIX. If LANDED, every published finding about this defect to date is about the RECOVERABLE class.
+LANDED  P3     at least one site is LOSSY_BASENAME and SAME_FILE_UNSTRIPPED — the §2 shape in the strictly worse class, which no finding has named: 11 ["round415-instruments/census-the-index-keyed-population.mjs:120","round415-instruments/census-the-index-keyed-population.mjs:299","round429-instruments/does-any-other-instrument-retype-a-verdict-it-slices.mjs:130","round439-instruments/attribute-the-ungradeable-red.mjs:223","round462-instruments/grade-the-pred-half-refusal.mjs:312","round462-instruments/grade-the-pred-half-refusal.mjs:313","unit-464prec-2026-11-03/grade-prec.mjs:81","unit-464t2-surface-2026-10-28/grade-the-exit-code.mjs:220","unit-465p12site-2026-11-14/arm-p12site-c.mjs:180","unit-466rhscap-2026-11-14/arm-rhscap-a.mjs:408","unit-466rhscap-2026-11-14/arm-rhscap-b.mjs:265"]
+LANDED  P4     the same member list is published under two different strip classes inside unit-465p12site, so no single inverse recovers both: 1 group(s) — ["p12members: arm-p12site-a.mjs:327=INVERTIBLE_PREFIX + arm-p12site-b.mjs:283=INVERTIBLE_PREFIX + arm-p12site-c.mjs:180=LOSSY_BASENAME"]
+
+── P5: reach of the LOSSY_BASENAME hazard, measured over what the population HAS ──
+  files under docs/research at 70e58f2a: 3254 · distinct basenames: 2541
+  worst colliding basenames: ["RESULTS.md ×97","README.md ×86","PRE-REGISTRATION.md ×85","drive1.out ×23","drive1.err ×19","baseline.rev ×19"]
+LANDED  P5     >10% of corpus files share a basename with another file: 853 of 3254 = 26.2%. This is the reach: a basename-published member list is ambiguous for this fraction of possible members, with NO inverse available.
+LANDED  P6     SAME_FILE_UNSTRIPPED is true for a MINORITY of member-path sites: 29.6% (threshold <50%) — i.e. most strips are display-only and the hazard is concentrated
+ok  A-lim1   DECLARED LIMIT 1, reach MEASURED not implied — K-strip is single-line. Sites with a .map( whose strip lands within the next 3 lines: 6. Against 60 enumerated, the key sees 90.9% of the single-plus-multiline population.
+      missed (paths printed, not just counted): ["round439-instruments/attribute-the-ungradeable-red.mjs:336→+1","round448-instruments/grade-the-four-list-scorer.mjs:373→+2","round449-instruments/resolve-the-variable-write-targets.mjs:381→+3","unit-465p12site-2026-11-14/arm-p12site-a.mjs:353→+3","unit-465refusalfate-2026-11-14/arm-refusalfate-a.mjs:179→+2","unit-466rhscap-2026-11-14/arm-rhscap-b.mjs:309→+1"]
+ok  A-lim2   DECLARED LIMIT 2, reach MEASURED — basename renamed on import: 0 [] · local strip-named helpers (a PROXY, declared as one — name-keyed, so it neither proves nor excludes a stripping body): 322 ["lib/verdict.mjs:938 shortTail","lib/verdict.mjs:946 predShort","round365-instruments/grade-a1b.mjs:56 stripComments","round376-instruments/build-sandboxes.mjs:8 BASE","round380-instruments/drive-b1m-history-clause-population.mjs:81 relocated","round380-instruments/grade-b1-under-rekeys.mjs:53 A_IMPORT_STRIP","round380-instruments/grade-b1-under-rekeys.mjs:62 relocate","round381-instruments/grade-the-history-clause-and-the-nesting-conjunct.mjs:236 A_IMPORT_STRIP","round381-instruments/grade-the-history-clause-and-the-nesting-conjunct.mjs:242 relocate","round381-instruments/grade-the-history-clause-and-the-nesting-conjunct.mjs:251 driveRelocated","round382-instruments/grade-the-class-count-and-the-seam.mjs:83 short","round382-instruments/grade-the-class-count-and-the-seam.mjs:238 unrelated"]
+ok  A-lim3   DECLARED LIMIT 3 — SAME_FILE_UNSTRIPPED is keyed on one file, so the CROSS-FILE case, which is the one that actually fired on 11/14 (producer arm-p12site-b, consumer arm-rhscap-a, different units), is out of scope BY CONSTRUCTION. P2 is what carries the found instance. The cross-unit producer/consumer join is BOARDED, not measured, and this leg is the declaration of that, not a pass.
+ok  A-gate   git status --porcelain packages scripts docs/research/lib → ""
+VERDICT/0 GREEN legs=11 red=[] refused=[] preds=6 refuted=[] prefused=[]
