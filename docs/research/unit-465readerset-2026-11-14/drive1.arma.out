@@ -1,0 +1,43 @@
+── arm A · the library reader supply at pin e96741bf ──
+
+exported functions parsed: 22 (verdict.mjs 15 · attested-rounds.mjs 7)
+reader-shaped: 9  (NAME_READ 4 · STATE_READ 5)
+NEITHER (named class, not a fall-through): 13
+
+  NO-SHAPE NEITHER    topToken             verdict.mjs@156-160 rets=3 ok=false lit=false helper=false
+  NO-SHAPE NEITHER    allOf                verdict.mjs@208-217 rets=3 ok=false lit=false helper=false
+  NO-SHAPE NEITHER    measured             verdict.mjs@235-242 rets=2 ok=false lit=false helper=false
+  NO-SHAPE NEITHER    renderVerdict        verdict.mjs@249-249 rets=0 ok=false lit=false helper=false
+  NO-SHAPE NEITHER    renderRows           verdict.mjs@435-437 rets=1 ok=false lit=false helper=false
+  NO-SHAPE NEITHER    renderPredRows       verdict.mjs@449-451 rets=1 ok=false lit=false helper=false
+  BEARING  NAME_READ  readRows             verdict.mjs@461-492 rets=5 ok=true lit=true helper=true
+  BEARING  NAME_READ  readTail             verdict.mjs@515-568 rets=6 ok=true lit=true helper=true
+  NO-SHAPE NAME_READ  readCorpusRows       verdict.mjs@640-663 rets=1 ok=false lit=false helper=false
+  BEARING  NAME_READ  readVerdict          verdict.mjs@670-705 rets=12 ok=true lit=true helper=true
+  NO-SHAPE STATE_READ isTracked            verdict.mjs@724-733 rets=2 ok=false lit=false helper=false
+  NO-SHAPE NEITHER    liveSibling          verdict.mjs@736-740 rets=1 ok=false lit=false helper=false
+  NO-SHAPE NEITHER    writeRecording       verdict.mjs@747-747 rets=0 ok=false lit=false helper=false
+  NO-SHAPE NEITHER    selfTest             verdict.mjs@764-1092 rets=2 ok=false lit=false helper=false
+  NO-SHAPE NEITHER    renderTail           verdict.mjs@1106-1106 rets=0 ok=false lit=false helper=false
+  NO-SHAPE NEITHER    classifyPath         attested-rounds.mjs@217-235 rets=6 ok=false lit=false helper=false
+  NO-SHAPE STATE_READ unattestedRoundsAt   attested-rounds.mjs@508-535 rets=2 ok=false lit=false helper=false
+  NO-SHAPE STATE_READ casePathsPresent     attested-rounds.mjs@541-546 rets=2 ok=false lit=false helper=false
+  NO-SHAPE STATE_READ git                  attested-rounds.mjs@549-553 rets=2 ok=false lit=false helper=false
+  NO-SHAPE STATE_READ dirRounds            attested-rounds.mjs@559-568 rets=2 ok=false lit=false helper=false
+  NO-SHAPE NEITHER    attestedRounds       attested-rounds.mjs@580-580 rets=0 ok=false lit=false helper=false
+  NO-SHAPE NEITHER    selfTest             attested-rounds.mjs@634-807 rets=4 ok=false lit=false helper=false
+
+PROPERTY AXIS (arm B reads this, it does not retype it):
+{
+  "readRows": true,
+  "readTail": true,
+  "readCorpusRows": false,
+  "readVerdict": true,
+  "isTracked": false,
+  "unattestedRoundsAt": false,
+  "casePathsPresent": false,
+  "git": false,
+  "dirRounds": false
+}
+
+VERDICT/1 RED legs=5 red=[A5] refused=[] preds=3 refuted=[] prefused=[]
