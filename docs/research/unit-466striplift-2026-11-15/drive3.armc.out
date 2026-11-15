@@ -1,0 +1,39 @@
+ok  C1        the site key is untouched, so the population is unchanged: 60 site(s) (arms A and B: 60). If this moved, arms A/B/C measure different things and every figure below is uninterpretable.
+ok  C2        FROZEN at a3c58818: arm B's recording states 60; agrees with the live derivation: true
+
+── R1: extracted token roots under K-strip3 (n=62) ──
+  distinct roots: [["p",25],["r",15],["f",7],["d",3],["c",2],["o",2],["kp",1],["x",1],["s",1],["KP_G",1],["b",1],["h",1],["PRE_DRIVE_RECORD",1],["n",1]]
+  arm B, from its FROZEN recording: 30 of 38 printed tokRoots sets contain a '$'
+LANDED  R1   zero extracted token roots are non-identifiers under K-strip3: 0 bad of 62 []. Arm B's sigil defect is gone.
+ok  C3        every HAND key is still an enumerated site: 6 of 6. The hand map cannot drift onto a population that no longer contains it.
+
+── R2: K-strip3 vs HAND on the 6-site residue (arm A's proxy: 1 of 6; arm B: 5 of 6) ──
+  agree  hand=MEMBER_PATH       k3=MEMBER_PATH       round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs:628
+         params=["r"] roots=["r"] derived=1
+  agree  hand=MEMBER_PATH       k3=MEMBER_PATH       round456-instruments/drift-census-over-the-verdict-publishing-population.mjs:361
+         params=["o","b"] roots=["o"] derived=1
+  agree  hand=MEMBER_PATH       k3=MEMBER_PATH       unit-464addarm-2026-11-04/grade-addarm.mjs:451
+         params=["r"] roots=["r"] derived=1
+  agree  hand=MEMBER_PATH       k3=MEMBER_PATH       unit-464addarm-2026-11-04/grade-addarm.mjs:478
+         params=["r"] roots=["r"] derived=1
+  agree  hand=NOT_A_MEMBER_PATH k3=NOT_A_MEMBER_PATH unit-464class-2026-11-02/enumerate-legs.mjs:275
+         params=["l"] roots=["KP_G"] derived=0
+  agree  hand=MEMBER_PATH       k3=MEMBER_PATH       unit-464sat-2026-10-31/grepro.mjs:133
+         params=["r"] roots=["r"] derived=1
+LANDED  R2   K-strip3 agrees with the hand read on all 6 residue sites: 6 of 6
+LANDED  R5   enumerate-legs.mjs:275 is still excluded, now for the RIGHT reason — roots are real identifiers ["KP_G"] (sound=true), params=["l"], and none of the roots is a callback parameter (derived=0). Arm A excluded it off a name list; arm B off a token (`in`) that is not in the line's expression at all.
+
+── R3: sites arm A called MEMBER_PATH that K-strip3 excludes (arm B excluded 15) ──
+  (none — the co-located-but-unrelated shape is unique to enumerate-legs.mjs:275)
+LANDED  R3   Q2 collapses: K-strip3 excludes 0 of arm A's 54 positives (threshold ≤3; arm B reported 15, of which 15 printed with evidence). []
+
+── the corrected tally: HAND over the residue, K-strip3 over the rest (n=59) ──
+  K-strip3 : {"LOSSY_BASENAME":34,"NONLOSSY_NORMALISE":3,"INVERTIBLE_PREFIX":22}  → LOSSY 34/59 = 57.6%
+  arm A    : {"LOSSY_BASENAME":31,...} of 54 = 57.4%   (name proxy, wrong on 5 of its 6 residue sites)
+  arm B    : {"LOSSY_BASENAME":20,...} of 44 = 45.5%   (VOID — sigil defect)
+LANDED  R4   arm A's P1 headline is RESTORED by measurement, not by retraction: LOSSY_BASENAME = 34 of 59 = 57.6% (threshold ≥50%). Arm B's 45.5% is superseded and was never a finding about arm A.
+ok  C-lim1    DECLARED LIMIT 1, reach MEASURED — K-strip3 has no scope analysis, so a callback parameter shadowing a module-level binding of the same name would be mis-attributed. Sites where a derived token's root is ALSO declared at module level in the same file: 0 []
+ok  C-lim2    DECLARED LIMIT 2 — the hand map still covers 6 of 60 = 10.0%. K-strip3 is the THIRD key over the same 54 unchecked positives, and three keys agreeing is not a hand read. R3's exclusions are hand-sliced in RESULTS.md; the remaining 54 positives are not.
+ok  C-lim3    DECLARED LIMIT 3 — R4 restores a FIGURE; it does not validate arm A's proxy, which was wrong on 5 of its 6 residue sites whatever K-strip3 says about the other 54. A restored headline and a sound key are different claims and this unit makes only the first.
+ok  C-gate    git status --porcelain packages scripts docs/research/lib → ""
+VERDICT/0 GREEN legs=7 red=[] refused=[] preds=5 refuted=[] prefused=[]
