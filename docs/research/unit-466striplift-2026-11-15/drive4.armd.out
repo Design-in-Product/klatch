@@ -1,0 +1,24 @@
+── S2: K-dup against the shapes that made Q5 vacuous, and against known positives ──
+  reject ok  ""
+  reject ok  false->false
+  reject ok  true->true
+  reject ok  round435-instruments
+  admit  ok  arm-p12site-b.mjs
+  admit  ok  RESULTS.md
+  admit  ok  drive2.armb.out
+LANDED  S2   K-dup rejects all 4 vacuous shapes and admits all 3 known positives, asserted against the literals rather than inspected: rejects=4/4 admits=3/3
+ok  D0        recordings scanned (*.out at 70e58f2a): 1209
+ok  D1        arm B's Q5 figure captured out of its frozen recording at a3c58818: 73 array(s). This arm re-derives the same unsharpened count (73) as a gate on the scan, not as a finding.
+ok  D2        the unsharpened scan reproduces arm B exactly: 73 vs 73 — so any difference below is the KEY, not the scan: true
+
+── S1: published arrays with a FILENAME-SHAPED duplicate entry ──
+  (none)
+REFUTED S1   at least one committed recording publishes a filename-shaped duplicate — the LOSSY_BASENAME hazard realised in an artefact: 0 array(s) across 0 recording(s) of 1209 scanned
+LANDED  S3   K-dup shrinks the population it sharpens: 0 < 73 (100.0% of Q5's hits were not basename collisions)
+ok  D-lim1    DECLARED LIMIT 1, reach MEASURED — K-dup is extension-keyed. Of the 853 basename-colliding corpus files (arm A's P5), 24 = 2.8% have a basename K-dup would not recognise as filename-shaped: [".gitignore ×3","baseline.rev ×19","HAND-READ-12.tsv ×2"]
+
+── D-lim2: per hit, can the recording's own line distinguish the two members? ──
+ok  D-lim2    DECLARED LIMIT 2 — a K-dup hit shows two ENTRIES are indistinguishable; it does not prove the underlying paths differed. Printed per hit above (0 of 0 shown), not asserted in aggregate.
+ok  D-lim3    DECLARED LIMIT 3, named a SECOND time rather than left implied — the scan is JSON-array-keyed, inherited from Q5 and STILL NOT CURED. A member list published as a ' | '- or ', '-joined bare string is invisible to every arm in this unit. BOARDED, not measured.
+ok  D-gate    git status --porcelain packages scripts docs/research/lib → ""
+VERDICT/0 GREEN legs=7 red=[] refused=[] preds=3 refuted=["S1"] prefused=[]
