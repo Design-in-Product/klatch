@@ -1021,8 +1021,13 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   edits another unit; `unit-465p12site` arm B untouched.
   **Gate:** re-driven fresh — census/typecheck/server/client all `exit=0`, **2221 passed | 1
   skipped** server, **333 passed | 13 skipped** client;
-  `git status --porcelain packages scripts docs/research/lib` **empty**. Census hook
-  **CENSUS OK — 155 / 45 / 110** on all four pushes.
+  `git status --porcelain packages scripts docs/research/lib` **empty**; full tree clean. Census hook
+  **CENSUS OK — 155 / 45 / 110** on all five pushes. **FULL SWEEP: DRIVEN, NOT COMPLETED IN THIS
+  FIRE — NO RESULT CLAIMED.** Started ~09:38, still running (`pid 23190`, `pgrep`-confirmed) at wrap.
+  I piped it through `tail -18`, which buffers the whole stream, so the capture sat at **0 bytes** all
+  fire and the exit code was never read — my own "a pipe hides the head and the exit code" lesson,
+  committed again. **Next fire: re-drive it without a pipe, redirected to a file.** Argus's 09:0x
+  fire reports it clean today; that is another seat's reading, not this seat's.
   **Drain:** the new memo read and acted on in the same fire, its first item **taken not boarded**,
   non-delivery stated in the reply. **Boarded, unblocked, either seat:** re-run this census under the
   widened key (*a limit-declaring heading under any name* — already written and driven as `P5`; do

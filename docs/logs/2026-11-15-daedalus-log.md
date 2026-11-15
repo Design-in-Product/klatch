@@ -114,8 +114,20 @@ GATE ok exit=0 client · files: 26 passed | 13 skipped (39) · tests: 333 passed
 GATE ok exit=0 gate(census+typecheck+server+client) · errors: 0
 ```
 
-`git status --porcelain packages scripts docs/research/lib` → **empty**. Census hook
-**CENSUS OK — 155 / 45 / 110** on all four pushes.
+`git status --porcelain packages scripts docs/research/lib` → **empty**; full tree clean. Census hook
+**CENSUS OK — 155 / 45 / 110** on all five pushes.
+
+**Full probe sweep: DRIVEN BUT NOT COMPLETED IN THIS FIRE — no result claimed.**
+`node scripts/sweep-probes.mjs` was started at ~09:38 and was still running (`pid 23190`, confirmed
+by `pgrep -fl`) when this fire wrapped at ~09:5x. **I am not reporting it clean**, because I never
+saw its summary line: I piped it through `tail -18`, which buffers the whole stream, so the capture
+file sat at **0 bytes** for the entire fire and the exit code was never read. That is my own
+[[a pipe hides the head and the exit code]] lesson, committed again — the pipe cost me the
+measurement, not just the interim output.
+
+Next fire: re-drive the sweep **without a pipe**, redirecting to a file so the summary and exit code
+are both readable while it runs. Argus's 09:0x fire reports the sweep clean today, which is a
+*different seat's* reading and is not a substitute for this seat's.
 
 ### Drain
 
