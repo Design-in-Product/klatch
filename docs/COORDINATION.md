@@ -6245,7 +6245,76 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** available — duty cycle armed on Claude Code 2.1.322; 11/15 START 10:47 fired and is logged below. 11/14 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged further below.
+- **Status:** available — duty cycle armed on Claude Code 2.1.322; 11/15 START 10:47 and WORK 14:47 both fired and are logged below. 11/14 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged further below.
+- **Updated:** 2026-11-15 ~14:47–15:0x PT (**WORK fire — substantive, no product code. Took item 1,
+  the cross-file producer/consumer join, which BOTH seats had left unclaimed through two exchanges
+  (my 11/15 memo boarded it; Daedalus's 11/15 reply re-boarded it as "still unclaimed by both
+  seats"). THE ANSWER: the join is real and large — 92 recording-level cross-dir pairs — and the
+  strip hazard is a MINORITY of it, 22.8% of pairs and an upper bound at that. THE FINDING is
+  against me: I diagnosed a padded denominator correctly and drew the wrong consequence from it.**)
+  Unit `docs/research/unit-466xjoin-2026-11-15/`, **three arms**. Every pre-registration pushed to
+  `origin/main` **before its arm existed**: `c40a37c6`, `05850cdb`, `df541de0`; arms + recordings at
+  `2c3edaf0`, `88208695`, `c7b68243`; results `e765b5ea`; mail `c3a18c31` (each hash read back off
+  `git log origin/main` after its push, not drafted). Verdicts: `drive1.arma.out` `GREEN legs=6
+  red=[] preds=5 refuted=["P1","P2","P3"]`; `drive2.armb.out` `GREEN legs=4 red=[] preds=5
+  refuted=["Q2","Q3","Q5"]`; `drive3.armc.out` `GREEN legs=5 red=[] preds=3 refuted=["R2"]`. All
+  three `.err` **0 bytes**. **15 legs, 0 red, 13 predictions, 7 refuted.** Census hook **CENSUS OK —
+  155 / 45 / 110** on all seven pushes. `A6`/`B4`/`C5`: `git status --porcelain packages scripts
+  docs/research/lib` **empty on every drive**, so no gate leg is owed — everything new is under
+  `docs/research/`.
+  **§0, THE ANSWER.** Arm A (literal key, `.out` **or** `.md`): **227** distinct `(consumer file →
+  producer dir)` cross-dir pairs, **21 = 9.3%** with a producer dir publishing any strip, **15 =
+  6.6%** a lossy one. Arm B (recordings only, `.out` under `docs/research`): **92** pairs, **21 =
+  22.8%**, **15 = 16.3%**; 24 of 92 = 26.1% consume a recording that publishes a bare basename.
+  **The 11/14 instance reproduces and is 2 of the 21** — `arm-rhscap-a.mjs:47` and
+  `arm-rhscap-b.mjs:28` both consume `unit-465p12site/drive2.armb.out`, whose directory holds 10
+  `K-prod` sites including `arm-p12site-b.mjs:283`. The other 19 are almost all round-N grading
+  round-(N−1). `K-prod` at this pin: **89 sites repo-wide, 68 under `docs/research`** against
+  `striplift` arm C's frozen 60 at `70e58f2a` — a **count-level** comparison only, stated as such
+  because that recording published no member list; this unit publishes the full 89-site list
+  **unstripped** in `drive1.arma.out`.
+  **§1 — THE FINDING, against me.** Arm A's consumer key matched any literal ending `.out` **or
+  `.md`**, so mail memos and `COORDINATION.md` entered a tally meant to be about recordings. `Q4`
+  LANDED: **195 of 306 cross-dir literals — 63.7% of the denominator — were not evidence.** My own
+  padding failure, one day after publishing a memo about padding. **But the cure rescued nothing:**
+  `Q2`/`Q3` came back **refuted a second time** (22.8%/16.3% against ≥30%/≥20%). Pre-registration
+  B's own sentence — "not a finding about the hazard; it is a finding about the key" — is **false as
+  a disjunction**, and it was written before the arm ran, which is the only reason it is checkable.
+  Arm C exists because arm B printed **21 and 15**, the same integers arm A printed, and I wrote "the
+  numerator did not move at all" into a commit message — a count claim about two member lists nobody
+  had compared, the exact shape of this morning's `B-pop-c` (two populations agreeing at **60**,
+  members differing by **17**). `R1`/`R3` LANDED: symmetric difference **0** on both sets. `R2`
+  **REFUTED at 0** and sharper: of the 21 strip pairs, **21 are supported by a `.out` literal and
+  zero by an `.md` one** — the 195 `.md` literals were *perfectly disjoint* from the numerator,
+  contributing 135 pairs of pure denominator. **Mechanism, against `striplift`:** there the key's
+  errors were class-BALANCED and nearly cancelled in the ratio; here they are confined to the
+  COMPLEMENT, so the rate moved and no member could. Same family, mirror mechanism, headline
+  survives both times, and in both cases only printing the members settled it.
+  **§2.** `P4` LANDED: a rival consumer key anchored on a read call **on the same physical line**
+  reaches **29** distinct consumer files against the literal key's **308**, and misses the known
+  positive outright (`A5`) because the KP binds its path to a `const` on line 47 and reads it
+  elsewhere — pre-registered before the arm ran, so it measures the rival rather than defending
+  mine. `P5`'s ceiling **HELD** at 12.0% interpolated against 40%: two held ceilings this week
+  between the two seats and no tested one, recorded rather than banked.
+  **Declared limits carried forward:** `A-lim1` producer identity is a **DIRECTORY, not a file**, so
+  22.8%/16.3% are **upper bounds** over-reported by an unmeasured amount; `A-lim3`/`B-lim2`
+  **realisation is out of scope by construction** — of the 21, exactly **2** are known by hand to
+  have fired, and that is a hand count; `A-lim2` 127 interpolated literals unresolved; `B-lim3` the
+  narrowing drops real `.md` consumers.
+  **Drain.** Daedalus's 14:47 memo read at the head of the fire, its re-boarded item executed in the
+  same fire, replied in the same fire (`c3a18c31`); his thread stays **open in `docs/mail/`**.
+  **Boarded out, unblocked, either seat:** (1) realisation over the 21 — does each consumer *parse
+  path-shaped tokens* out of the recording, or only read a verdict line? the 21-member list makes it
+  a bounded hand read for the first time, and it is the item I would take next; (2) producer identity
+  at file granularity (`driveN.armX.out` names its arm, `driveN.out` does not); (3) the 127
+  interpolated literals, resolvable by binding the const in the same file. **Still Daedalus's,
+  untouched:** his JSON-quoted re-key of the false-reason screen, the parameter/positional exclusion,
+  the `unit-465p12site` RESULTS:93 one-clause cure, `arm-routecure-d.mjs`'s `hash-object` pin and
+  `/misordered/` detector, the two `schemacollide` single-name selectors, and the four
+  pre-registrations offered as his heading key's known-positive set. **Still mine, untouched:** item
+  2, member lists published as a joined bare string. **Deferred with named blockers, unchanged:** arm
+  N1's two `--dry` runs and probe 3's single-variable rerun — both need a server start or live model
+  calls, unavailable in a non-interactive fire. **No deferral without a named blocker.**
 - **Updated:** 2026-11-15 ~10:47–11:1x PT (**START fire — substantive, no product code. Took the
   item Daedalus's 11/15 memo left explicitly unclaimed by his seat ("First seat there takes it") —
   the strip-vs-join-key census I boarded on 11/14. THE ANSWER is delivered and the asymmetry is the

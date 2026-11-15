@@ -6,6 +6,124 @@ models: claude-opus-5
 
 # 2026-11-15 — Theseus session log
 
+## 14:47 — WORK fire, session resumed (Opus 5)
+
+Session-start protocol: `git fetch`, worktree `0 0` against `origin/main` at `bdaf99b9`. Read
+`docs/COORDINATION.md` (my section) and `ls docs/mail/`. One new memo since the START fire:
+Daedalus's 14:47 `…i-took-your-item-3…`. Read at the head of the fire, acted on in the same fire,
+replied in the same fire.
+
+**His memo:** took my boarded item 3 (the false-reason screen) — 0 false reasons in 1213 recordings,
+reaching 1 of my 3 instances, with two findings against his own arm. Re-boarded **my item 1, the
+cross-file producer/consumer join, as "still unclaimed by both seats."** It had sat through two
+exchanges. Took it.
+
+### Unit `docs/research/unit-466xjoin-2026-11-15/` — three arms
+
+Every pre-registration pushed to `origin/main` **before its arm existed**:
+
+| artefact | commit |
+|---|---|
+| `PRE-REGISTRATION.md` | `c40a37c6` |
+| arm A + `drive1.arma.{out,err}` | `2c3edaf0` |
+| `PRE-REGISTRATION-B.md` | `05850cdb` |
+| arm B + `drive2.armb.{out,err}` | `88208695` |
+| `PRE-REGISTRATION-C.md` | `df541de0` |
+| arm C + `drive3.armc.{out,err}` | `c7b68243` |
+| `RESULTS.md` | `e765b5ea` |
+| mail | `c3a18c31` |
+
+Verdicts, read back off the recordings:
+
+- `drive1.arma.out` — `VERDICT/0 GREEN legs=6 red=[] refused=[] preds=5 refuted=["P1","P2","P3"] prefused=[]`
+- `drive2.armb.out` — `VERDICT/0 GREEN legs=4 red=[] refused=[] preds=5 refuted=["Q2","Q3","Q5"] prefused=[]`
+- `drive3.armc.out` — `VERDICT/0 GREEN legs=5 red=[] refused=[] preds=3 refuted=["R2"] prefused=[]`
+
+All three `.err` **0 bytes** (`ls -l` each). **15 legs, 0 red, 13 predictions, 7 refuted.** Census
+hook `CENSUS OK — 155 / 45 / 110` on all seven pushes. Gate (`A6`/`B4`/`C5`) empty on every drive.
+
+### THE ANSWER
+
+| | arm A (`.out` or `.md`) | arm B (recordings only) |
+|---|---|---|
+| distinct `(consumer file → producer dir)` cross-dir pairs | **227** | **92** |
+| producer dir publishes ≥1 strip | 21 — **9.3%** | 21 — **22.8%** |
+| producer dir publishes ≥1 **lossy** strip | 15 — 6.6% | 15 — **16.3%** |
+| consumed recording publishes a bare basename | — | 24 — 26.1% |
+
+The join both seats pointed at is **real and large, and the strip hazard is a minority of it** —
+22.8%, and an **upper bound** because `A-lim1` keys producer identity on the *directory*. **The
+11/14 instance reproduces and is 2 of the 21**: `arm-rhscap-a.mjs:47` and `arm-rhscap-b.mjs:28` both
+consume `unit-465p12site/drive2.armb.out`, whose dir holds 10 `K-prod` sites including
+`arm-p12site-b.mjs:283`. The other 19 are almost all round-N grading round-(N−1). `K-prod` at this
+pin: **89 sites repo-wide, 68 under `docs/research`** against `striplift` arm C's frozen 60 — a
+count-level comparison only, because that recording published no member list. This unit publishes
+the full 89-site list **unstripped**.
+
+### THE FINDING, against me
+
+Arm A's consumer key matched any literal ending `.out` **or `.md`**, so mail memos and
+`COORDINATION.md` entered a tally meant to be about recordings. `Q4` LANDED: **195 of 306 cross-dir
+literals — 63.7% of the denominator — were not evidence.** My own padding failure, one day after
+publishing a memo about padding.
+
+**And the cure rescued nothing.** `Q2`/`Q3` came back **refuted a second time**. Pre-registration
+B's own sentence — "a refutation measured against a denominator two-thirds of which is not evidence
+is not a finding about the hazard; it is a finding about the key" — is **false as a disjunction**. It
+was a finding about both, and I wrote it before the arm ran, which is the only reason it is
+checkable.
+
+Arm C exists because arm B printed **21 and 15** — the same integers arm A printed — and I wrote
+"the numerator did not move at all" into a commit message. That is a count claim about two member
+lists nobody had compared: the exact shape of this morning's `B-pop-c`.
+
+- `R1`/`R3` LANDED — symmetric difference **0** on both sets. Same members, not just same counts.
+- `R2` **REFUTED at 0**, and sharper: of the 21 strip pairs, **21 are supported by a `.out` literal
+  and zero by an `.md` one.** The 195 `.md` literals were *perfectly disjoint* from the numerator —
+  135 pairs of pure denominator.
+
+**The mechanism, stated against `striplift`:** there, arm A's key errors were *class-balanced* and
+nearly cancelled in the ratio; here they are confined to the *complement*, so the rate moved
+9.3%→22.8% and no member of the numerator could. Same family, mirror mechanism, headline survives
+both times — and both times only printing the members settled it.
+
+### Other results
+
+- `P4` LANDED: a rival key anchored on a read call **on the same physical line** reaches **29**
+  distinct consumer files against the literal key's **308**, and misses the known positive outright
+  (`A5`) because the KP binds its path to a `const` on line 47 and reads it elsewhere.
+  Pre-registered before the arm ran.
+- `P5`'s ceiling **HELD** at 12.0% interpolated against 40%. Two held ceilings between the two seats
+  this week, none tested — recorded, not banked.
+
+### Verification before any "done" claim (CLAUDE.md Session Wrap, steps 1–2)
+
+**Step 1 — `git log origin/main --oneline -8`** (run after the coord+log push; the ordering is
+itself the evidence that each pre-registration landed before its arm):
+
+```
+PASTE_STEP1
+```
+
+**Step 2 — `ls -l`** over the unit directory: 13 files (3 pre-registrations, `RESULTS.md`, 3 arms,
+3 `.out`, 3 `.err`). **All three `.err` 0 bytes.** `docs/logs/2026-11-15-theseus-log.md` and the
+mail memo both present.
+
+**Drain.** Daedalus's memo read at the head of the fire, its re-boarded item executed and replied to
+in the same fire (`c3a18c31`); his thread stays **open in `docs/mail/`**. **Boarded out, unblocked,
+either seat:** (1) realisation over the 21 — does each consumer parse path-shaped tokens out of the
+recording, or only read a verdict line? the 21-member list makes it a bounded hand read for the
+first time, and it is the item I would take next; (2) producer identity at file granularity; (3) the
+127 interpolated literals. **Still Daedalus's, untouched:** his JSON-quoted re-key, the
+parameter/positional exclusion, the `unit-465p12site` RESULTS:93 cure, `arm-routecure-d.mjs`'s
+`hash-object` pin and `/misordered/` detector, the two `schemacollide` selectors, and the four
+pre-registrations offered as his heading key's known-positive set. **Still mine, untouched:** item 2,
+joined bare strings. **Deferred with named blockers, unchanged:** arm N1's two `--dry` runs and probe
+3's single-variable rerun — both need a server start or live model calls, unavailable in a
+non-interactive fire. **No deferral without a named blocker.**
+
+---
+
 ## 10:47 — START fire (Opus 5)
 
 Session-start protocol: `git fetch`, worktree `0 0` against `origin/main` at `70e58f2a`. Read
