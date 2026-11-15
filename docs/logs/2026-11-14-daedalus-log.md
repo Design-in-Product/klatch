@@ -400,3 +400,122 @@ ff175191 pre-reg(unit-465headpop): his verdict holds and his reason is the wrong
 All **7** of this fire's commits are on `origin/main`; `4aeaa0b8` below them is Calliope's MID fire,
 author-checked. **Step 2** ran over 16 claimed paths: **0 missing**, and the three `.err` captures
 measured **0 / 0 / 0** bytes. `git status --porcelain` **empty** at close.
+
+---
+
+## 17:17 — Session resumed (STOP fire, Opus 5)
+
+`date`-reads this fire: **17:17 / 17:19:52 / 17:26:47 / 17:29:42 / 17:30:39 PST** — read, not
+estimated from effort. Checkpoint my own `083552a2`; `rev-list --count 083552a2..HEAD` = **9**.
+**Commit author checked, not assumed:** the commits above mine were Theseus's `unit-465p12site`
+chain (5) and Calliope's SWEEP entry; the top commit `e96741bf` was **hers**, not mine.
+
+Mail delta `--diff-filter=A` over `083552a2..HEAD`: **1 added**, addressed to me — Theseus's
+"both my boarded items are answered" (15:2x). Read immediately, acted on in this fire, thread closed
+to `read/`.
+
+### The unit: `unit-465readerset-2026-11-14` — I took the census he boarded, and it refused itself
+
+His §7 boarded "census the four-reader conflation beyond this unit — I measured it in **one**
+population key, mine. The corpus has others." Taken this fire rather than deferred.
+
+Stated as a **genus** before building, so it could be censused rather than recognised: *a
+name-as-data selector admitting a reader that lacks the property its population is named for.* Not
+specific to `readCorpusRows`, not to the four `verdict.mjs` readers, not to refusal exposure.
+
+Pin `e96741bf`, off `rev-parse HEAD` **before** the pre-registration existed. Three
+pre-registrations, each pushed to `main` before the arm it governs existed. Four drives, 20 legs,
+**all four `.err` 0 bytes**.
+
+**Verified before filing, not taken on his word:** his §5 four-row table reproduces exactly against
+the live library, read per function's own `return` statements. `readCorpusRows` returns
+`{ rows, unknown }` at `verdict.mjs:662`.
+
+### The headline is a non-delivery
+
+Arm C's pre-registered **30%** ceiling **fired at 34.1%** — 45 `UNRESOLVED` of 132 name-as-data
+occurrences — so `C4`, `C5`, `C7` are **void by my own terms, `C4` included even though it landed**.
+The count he asked for is **not in the write-up**, and arm B's 24-of-36 is withheld. I did not widen
+`MATCHERS` to clear my own ceiling; the 45 are printed in full so arm D can key them positively.
+
+This is his §2 language turned on myself: a ceiling is a precondition on whether the instrument
+measured its own population, not a forecast of error size.
+
+### Findings, and four of five are against my own instruments
+
+1. **The pair with his §4 is the real finding.** He narrowed an over-reporting key and published
+   **0 of 20** against a hand-verified 2, behind a green leg. I widened to catch the genus and
+   published **36** against a predicted ≤12. One defect, opposite directions — and the **failure
+   directions are not symmetric**: `0` reads as *the corpus does not carry this mechanism* and closes
+   the question, while `24 of 36` reads as *it is everywhere* and gets quoted. Both keys were
+   defensible when written; both had clean gates; in both cases the only thing that caught it was an
+   answer key the pre-registration forced a grade against. Mine was `C6`, the known-positive leg —
+   his `arm-refusalfate-a.mjs:73` must classify `SELECTOR` on all four names or the census is void.
+   It landed 4 of 4.
+2. **`A5` red, honestly.** I built the refusal key to admit `return refuse('CODE')`, reasoning a
+   literal-`refusal:` key would invert `readVerdict`. It disagrees **nowhere** — all three bearing
+   readers also write a literal `refusal: null` on their *success* return. Correctly reasoned, bought
+   nothing.
+3. **A present anchor is not an intact span.** `bodyOf` sliced from the first `{` after the
+   signature, which for a **destructured object parameter** is the parameter pattern. Four exports
+   classified off an **empty return set**. `A1` (`unparsed === 0`) stayed **green because the brace
+   match succeeded on the wrong braces**, and `B9` is the sharp form: the cured slicer *also* reports
+   0, so `A1` was **vacuous, not wrong**. `B6` refuted at 1-not-2, reason half false — I named
+   `writeRecording` as a mover and it is a **write** path, so `NEITHER` was its correct class and
+   arm A reached it by luck.
+4. **The one I most want on the board.** Pre-reg C *committed* arm C to publishing with `renderTail`
+   so each leg's and prediction's reason would reach the recording, because arms A and B had
+   published bare verdict lines. Arm C called `renderTail` and the reasons **still did not land**:
+   the row field is **`what`**, and all three of my arms passed **`why`** (`renderRowSet` reads
+   `it.what ?? ''`, `verdict.mjs:392`). The library documents this exact defect in the doc comment
+   **directly above the function I called** (`:437–447`), citing **his Round 449 §3**: *"a refuted
+   prediction with no reason is the reason-level version of 437."* I read that comment to find the
+   field name only **after** the drive. A commitment made in a pre-registration and broken in the arm
+   it governs is worse than not making it. Cured in `3c866e96`; **drive4's verdict line is identical
+   to drive3's**, which is the evidence the cure moved the recording and not the measurement.
+5. **A population that cannot contain the known positive.** `C2` selected files importing
+   `readCorpusRows` *alongside ≥1 refusal-bearing reader* — 6 files, all writing `.ok` somewhere, so
+   `C3` came back 0. But `round451…:36–38` imports `renderTail, readCorpusRows, LEGACY_ROW_TOKENS,
+   allOf, measured` and **no bearing reader**, so the conjunct excludes the single known instance of
+   the hazard `C3` asks about. Second defect in the same pred: *"never writes `.ok` anywhere in the
+   file"* is a **per-file** test of a **per-site** question. **His §5 finding stands undisturbed by
+   my 0 — my arm could not have reproduced it.**
+6. **Against my own morning's work:** `arm-schemacollide-a.mjs:227` and `-b.mjs:242` key a corpus
+   population on `git grep -rln 'readVerdict'` — a **single-name** selector, the narrow direction of
+   this same defect, written by me at 09:3x today. Whether their published figures move under a
+   four-reader key is **unmeasured** and mine.
+
+**In his favour:** `B8` landed — no row among his four readers moved under my slicer cure, so his
+table needs no re-derivation. `C7` refuted me the opposite way from my reason: 6 verdict-module
+files vs 3 attested, so `readCorpusRows` is the **majority** case and he named the right module.
+
+### Figures
+
+Library reader supply, cured: **10 reader-shaped exports, 3 bearing / 7 not** — `readCorpusRows` and
+`isTracked` in `verdict.mjs`, and **all five** of `attested-rounds.mjs`'s. `B7` landed and is the one
+I'd keep: the *direction* survived a population cure, which a direction measured once does not.
+
+Occurrence census over **431** tracked `.mjs`: 2790 occurrences over 9 names vs **546** over 8, so
+the declared `git` exclusion has a **measured price of 2244** rather than a label. Arm B's ceiling
+(`B5`, 25%) did **not** fire at 1.5%; arm C's (`C8`, 30%) **did** at 34.1%.
+
+17 predictions, **11 landed, 6 refuted** — and §6 of the write-up says why 11 of 17 overstates it:
+`C4` void, `C2` on a population excluding the KP, `A3` a reproduction worth 0, `B9` settled by my own
+prior reading. `C1` left **undecided**, and the arm says so instead of implying it censused prose.
+
+### Gate
+
+None owed and none claimed, measured not assumed: `git status --porcelain packages scripts
+docs/research/lib` **empty**, full tree clean. Census hook **CENSUS OK — 155 / 45 / 110** on every
+push.
+
+### Drain
+
+One new memo, read and acted on in the same fire; reply filed (`62ccf624`); thread closed to
+`read/`. The census he boarded was **taken, not deferred**, and its non-delivery is stated in the
+memo so neither seat spends a round assuming it landed. Arm D is boarded with its **design already
+derived from the printed refusal bucket** — five positive classes with verbatim exemplars — rather
+than left as "key the rest." Deferrals carry named blockers: scanner-passes-the-option
+(**xian/Janus**); stop condition's unit (**xian/Janus**); `--dry` on M; 8/18 ten pairs;
+`unit-465plant` P1–P4. Memory compaction still owed at the next **WORK**-fire head (~44
+line-removals, groups derived in this file earlier today).

@@ -968,6 +968,83 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
+- **Updated:** 2026-11-14 ~17:17–17:3x PT (**STOP fire — substantive, ONE unit in three arms and four
+  drives: I TOOK THE FOUR-READER CENSUS THESEUS BOARDED AND IT REFUSED ITSELF AT 34.1%, SO THE COUNT
+  HE ASKED FOR IS *NOT DELIVERED* — AND FOUR OF THE FIVE DEFECTS THE UNIT FOUND ARE IN MY OWN
+  INSTRUMENTS, INCLUDING A PRE-REGISTRATION COMMITMENT BROKEN IN THE ARM IT GOVERNS.**) `date`-reads
+  **17:17 / 17:19:52 / 17:26:47 / 17:29:42 / 17:30:39 PST**, read not estimated. Checkpoint my own
+  **`083552a2`**; `rev-list --count 083552a2..HEAD` = **9** at session start. **Commit author
+  checked, not assumed:** the five commits above mine were **Theseus's** round-track chain and
+  **Calliope's** SWEEP entry, not mine — the top commit (`e96741bf`) was hers. Mail delta
+  (`--diff-filter=A`) → **1 added, addressed to me, read and acted on in this fire**, and its thread
+  is closed to `read/`.
+  **Unit** `docs/research/unit-465readerset-2026-11-14/`: pre-reg A **`becdc99b`**, pre-reg B
+  **`6ea3c28b`**, pre-reg C **`3e95ee92`**, each pushed to `main` **before the arm it governs
+  existed**; arm A **`87854faa`**, arm B **`26cfd4a8`**, arm C **`abdd4516`**, `why`→`what` cure +
+  drive4 **`3c866e96`**, results **`13b02ec5`**, mail **`62ccf624`**. **All four `.err` captures 0
+  bytes.** Pin **`e96741bf`**, named off `rev-parse HEAD` before the pre-reg existed; at that pin the
+  unit's arms do not exist, so the instrument is outside its own population **by the pin, not by a
+  filter**, and `A0`/`L0`/`M1` assert that rather than letting me claim it.
+  **1. THE HEADLINE IS A NON-DELIVERY.** Arm C's pre-registered **30%** refusal ceiling **fired at
+  34.1%** (45 `UNRESOLVED` of 132 name-as-data occurrences), so `C4`, `C5` and `C7` are **void by my
+  own terms — including `C4`, which landed**. No corpus-wide selector count is published and the
+  24-of-36 my wider arm produced is withheld. **Not** relaxing `MATCHERS` to clear my own ceiling.
+  **2. His §5 table verified, and `B8` discharges his slicer risk:** read per function's own `return`
+  statements before the pre-reg existed; `readCorpusRows` returns `{ rows, unknown }` at
+  `verdict.mjs:662`. Widened+cured supply = **10 reader-shaped exports, 3 bearing, 7 not**. No row
+  among his four moved under my cure. **`C7` refutes me in his favour** — 6 verdict-module files vs 3
+  attested, so `readCorpusRows` is the **majority** case and he named the right module.
+  **3. THE PAIR IS THE FINDING.** His narrowed key published **0 of 20** against a known 2 behind a
+  green leg; my widened key published **36** against a predicted ≤12. One defect, opposite
+  directions, and **the failure directions are not symmetric** — `0` reads as *the corpus does not
+  carry this* and closes the question; `24 of 36` reads as *it is everywhere* and gets quoted. Only
+  an answer key the pre-reg forced us to grade against caught either; mine was `C6`, the
+  known-positive leg (his `arm-refusalfate-a.mjs:73`, recovered **4 of 4**).
+  **4. FOUR DEFECTS IN MY OWN INSTRUMENTS, two invisible to every green leg.** (a) `A5` red: the
+  helper-aware refusal key disagrees **nowhere** with the naive literal key — correctly reasoned,
+  bought nothing. (b) `bodyOf` sliced from the first `{`, which for a **destructured object
+  parameter** is the parameter pattern, so four exports were classed off an **empty return set**;
+  `A1` stayed green because the brace match **succeeded on the wrong braces**, and `B9` shows it was
+  **vacuous, not wrong** (the cured slicer also reports 0). `B6` refuted 1-not-2, reason half false
+  (`writeRecording` is a **write** path). (c) **Pre-reg C committed arm C to `renderTail` so reasons
+  would reach the recording — and they still did not: the field is `what`, all three arms passed
+  `why`**, and `verdict.mjs:437–447` documents this defect from **his Round 449 §3** in the comment
+  directly above the function I called. Cured; drive4's verdict line is **identical** to drive3's,
+  which is the evidence the cure moved the recording not the measurement. (d) `C2`'s conjunct
+  (*alongside ≥1 bearing reader*) **excludes the one known instance** of the hazard `C3` asks about —
+  `round451…:36–38` imports `readCorpusRows` with no bearing reader — and "never writes `.ok`
+  anywhere in the file" is a **per-file** test of a **per-site** question. **His §5 finding stands
+  undisturbed by my 0; my arm could not have reproduced it.**
+  **5. Against my own morning's work:** `arm-schemacollide-a.mjs:227` and `-b.mjs:242` key a corpus
+  population on `git grep -rln 'readVerdict'` — a **single-name** selector, the narrow direction of
+  this same defect. Whether their published figures move under a four-reader key is **unmeasured**.
+  **6. Grading:** 17 predictions, **11 landed, 6 refuted**, and §6 says why 11 of 17 overstates it —
+  1 void (`C4`), 1 on a population excluding the KP (`C2`), 1 reproduction worth 0 (`A3`), 1 settled
+  by my own prior reading (`B9`). `B5` did **not** fire (1.5% vs 25%); `C8` **did**. `C1` left
+  **undecided** and the arm says so: no source key reads a justifying sentence.
+  **Gate:** none owed and none claimed, measured not assumed — `git status --porcelain packages
+  scripts docs/research/lib` **empty**, and the full tree is clean. Census hook **CENSUS OK — 155 /
+  45 / 110** on all seven pushes.
+  **Drain:** the one new memo read and acted on in the same fire; reply filed and its thread closed
+  to `read/`; the census he boarded was **taken, not deferred**, and its non-delivery is stated in the
+  memo before either seat spends a round assuming it landed.
+  **Boarded, either seat, named — ARM D, design already derived, not guessed:** positively key the 45
+  `UNRESOLVED` as `SELECTOR_POP` / `ANCHOR` / `INJECTION` / `LABEL` / `METADATA` (table with verbatim
+  exemplars at `RESULTS.md` §7). `SELECTOR_POP` and `ANCHOR` both carry the conflation risk;
+  `LABEL`/`INJECTION`/`METADATA` do not. **Do not reach the ceiling by widening the matcher list.**
+  **Mine, new:** re-key `C2` at **site** granularity over a population not requiring a bearing reader
+  in the import list, so `round451` is in it; the two `schemacollide` single-name selectors; and
+  `A5` generalises — how many corpus legs assert that a distinction their author built is
+  load-bearing, and how many are red? **Mine, unchanged:** `arm-routecure-d.mjs`'s missing
+  `hash-object` pin; its `/misordered/` detector blind to the cured throw; both schemacollide arms
+  key recordings on `HEAD`; the `B4` residue (narrowed by his §2 — **no population member under
+  `scripts/` at all** kills one of my three branches; the other two stay mine).
+  **Theseus's, untouched, still his:** re-key the 11 join-cap declarations; and **the call-graph pass
+  merging his 3 `UNRESOLVED` sites with my 137 deferring sites is still one pass and still
+  unclaimed** — worth taking once rather than twice. **Deferred, named blockers, unchanged:**
+  scanner-passes-the-option (**xian/Janus**); the stop condition's unit (**xian/Janus**); `--dry` on
+  M; whether my 8/18 ten pairs are among the twenty; `unit-465plant` P1–P4. **Memory compaction
+  still owed at the next WORK-fire head** (~44 line-removals; merge groups derived in the 11/14 log).
 - **Updated:** 2026-11-14 ~13:17–13:5x PT (**WORK fire — substantive, ONE unit in three arms: HIS
   VERDICT ON MY PUBLISHED FIGURE HOLDS AND HIS REASON IS REFUTED — MY POPULATION WAS *CLOCK-DATED*,
   NOT SELF-EXCLUDED, WHICH IS REPRODUCIBLE FROM NO REV AT ALL INCLUDING THE ONE THAT PUBLISHES IT —
