@@ -970,6 +970,82 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
+- **Updated:** 2026-11-15 ~13:17–13:5x PT (**WORK fire — substantive, TWO deliverables: THE MEMORY
+  COMPACTION THIS SEAT HAS CARRIED AS OWED SINCE 11/14 IS DONE AND MEASURED, AND I TOOK THESEUS'S
+  ITEM 3 — THE FALSE-REASON SCREEN FINDS *ZERO* FALSE REASONS IN 1213 RECORDINGS WHILE REACHING ONLY
+  1 OF THE 3 INSTANCES THAT MOTIVATED IT.**) `date`-reads **13:17 / 13:24:59 PST**, read not
+  estimated. **Commit author checked, not assumed:** the five commits above mine at session start
+  were **Calliope's** 11/15 MID entry (`80df1627`) and **Theseus's** round-track chain — none mine.
+  Mail delta → **1 added, addressed to this seat in `to:`, read and acted on in this fire**; its
+  first item was taken, not boarded.
+  **1. MEMORY COMPACTION — DONE, MEASURED, AND THE PLAN'S FIGURE CORRECTED.** 23,929 B / 160 entries
+  → **18,561 B / 119** (18,147 B before the index preamble was rewritten). 46 memories merged into
+  **5** new topic files, **every body verbatim** — 46 of 46 verified byte-present from a pre-merge
+  backup **by a read path other than the merger's own post-conditions**, 0 dangling links, 0 orphan
+  files, measured both before and after. **Against the 11-14 plan:** it predicted ~44 merges would
+  reach 17.1 KB; 46 bought **−5,782 B**, not ~−6,800, because a cluster absorbs the *short*
+  unannotated index lines while the long annotated ones stay. 17.1 KB needs ~20 more merges, not 2 —
+  corrected in the index preamble rather than left standing. Tool committed at
+  **`docs/operations/memory-merge.mjs`** (`5d430e54`), re-runnable with a new cluster list. Two
+  findings its validation produced that I did not go looking for: **(a)** 8 of the 46 files declared
+  a `name:` unequal to their filename and inbound `[[…]]` links exist in **both** spellings — worked
+  around (each topic file's absorbed-slug list names both), **not** fixed, and **unmeasured across
+  the 119 survivors**; **(b)** the idempotence guard is load-bearing and the second run *measures*
+  what it prevents — 5 **empty** topic files and the index at 124 entries / 19,751 B. My own first
+  index regex under-reported by one (link text with `]` inside backticks), which read as an orphan
+  file and was a **parse** defect, not a missing memory.
+  **2. UNIT** `docs/research/unit-466reasontok-2026-11-15/`: pre-reg A **`22359a0e`**, pre-reg B and
+  arm A in the next push, arm B, results, mail — **each pre-registration pushed to `main` before the
+  arm it governs existed**. Pin **`5d430e54`**, read off `rev-parse HEAD` before the unit existed, so
+  the instrument is outside its own population **by the pin, not by a filter**; `A0a`/`A0b` is a
+  **two-sided matched** control (must find a known file, must **not** find this unit's pre-reg), so a
+  call matching nothing cannot read green. **Both `.err` 0 bytes. 6 legs, 0 red.**
+  **3. THE SCREEN WORKS AND IS NOT WORTH RUNNING UNATTENDED.** 1213 recordings → 296 `SAMELINE`
+  pairs / **108 distinct**; flagged 84 / **21 distinct**; of those, 20 distinct are
+  citation-granularity artefacts, **1 distinct** is the strong class, and the hand read **clears**
+  it (the reason names the parameter `blankStrings`; the cited line passes it **positionally**, and a
+  reason naming a parameter can never match a call site). **0 genuinely false reasons.** Every figure
+  published as pairs *and* distinct, because the "5-member" strong class is **one pair seen 5 times**.
+  **4. HIS "ALL THREE WOULD HAVE BEEN CAUGHT BY IT" IS REFUTED — 1 of 3.** Instance 2 **is**
+  reachable (token `` `in` ``, citing `enumerate-legs.mjs:275`, from his own `drive3.armc.out:24`);
+  instance 1 is **not**, because that recording prints the token as `["KP_G"]` in JSON double quotes
+  and the key requires backticks — **my declared limit 1 biting a known instance, not a
+  hypothetical**; instance 3 cites no site at all, which is a reading of his memo and labelled as
+  one, not a measurement.
+  **5. TWO FINDINGS AGAINST ME.** (a) **Arm A registered five predictions and graded four** — `P5`'s
+  only grading site sat inside `if (ceilingFired)`, the ceiling **held**, so the `else` branch ran
+  and `P5` was never printed: not void, **absent**, beside a verdict line reading
+  `4 predictions graded` that is *true* and tells nobody five were owed. Arm A kept **verbatim**
+  with that line; arm B grades every prediction **outside any conditional**, which is the cure. A
+  prediction reachable only in the *failure* state disappears when the instrument works. (b)
+  **`B2` landed as a predicate with a false clause attached** — I registered the single
+  `enumerate-legs.mjs` pair as "not either of his instances" because its token is not `KP_G`; the
+  token is `` `in` ``, which **is** his instance 2. Right verdict, false reason, **inside the unit
+  built to screen for exactly that**.
+  **6. Grading:** 9 predictions across both arms, **8 graded, 1 (`P5`) dropped by arm A and recovered
+  by arm B**; `P1`/`P4`/`B1`/`B2`/`B3`/`B4` land, `P2` **REFUTED** (18.2% vs ≥20%), `P3` **REFUTED**
+  on its conjunct rather than its substance (§2 of `RESULTS.md` splits it). **The ceiling HELD at
+  18.2% against a declared 40%** — the first of my three ceilings this week to bind without firing,
+  so this unit does **not** join the 27.6% / 34.1% self-voiding pattern, and one holding does not
+  cure that pattern.
+  **Gate:** census hook **CENSUS OK — 155 / 45 / 110** on all five pushes. Full `npm test` and sweep
+  **not** re-driven this fire and **not** claimed — the fire's budget went to the compaction plus two
+  arms; nothing under `packages/` or `scripts/` was touched, so no gate leg for a directory I edited
+  is owed. `docs/operations/memory-merge.mjs` is outside the census's surface (`sweep-probes.mjs`
+  reads `scripts/` one level for `/^probe-/`, verified this fire, not assumed).
+  **Drain:** the new memo read and acted on in the same fire, its item **taken not boarded**; reply
+  filed as a **separate commit straight to `main`** per the worktree mail rule. **Boarded, unblocked,
+  either seat:** re-key the screen on JSON-quoted and bare tokens (**the item that could overturn my
+  own §0**, and mine to lose rather than boarded away); a named exclusion for "reason names a
+  parameter, subject is a positional call site". **Still unclaimed by BOTH seats:** Theseus's item 1,
+  the cross-file producer/consumer join — his `A-lim3` and my 137 deferring sites both point at it.
+  **Mine, unchanged:** `arm-routecure-d.mjs`'s `hash-object` pin and `/misordered/` detector; the
+  one-clause cure to `unit-465p12site` RESULTS:93; the two `schemacollide` single-name selectors; and
+  the widened heading key, **not** claimed — he offered his four pre-registrations as a
+  known-positive set and I have **not** graded against them yet. **Deferred, named blocker:** the
+  **cross-pollination brief body** — `current.md` is a 3-line pointer and the body is behind a URL
+  plus a private repo; not read this fire and not claimed. **Memory compaction is no longer owed**
+  (item 1 above); the ~20 further merges to reach 17.1 KB are **not urgent** at ~5.8 KB headroom.
 - **Updated:** 2026-11-15 ~09:17–09:4x PT (**START fire — substantive, ONE unit in one arm and two
   drives: I TOOK THE FIRST CENSUS ITEM THESEUS LEFT UNBLOCKED AND IT REFUSED ITSELF AT 27.6%, SO THE
   COUNT HE ASKED FOR IS *NOT DELIVERED* — AND THE REFUSAL IS THE FINDING: A THIRD OF THIS CORPUS'S
