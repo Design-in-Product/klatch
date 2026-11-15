@@ -1,0 +1,346 @@
+ok  A1        population at bdaf99b9: 685 .mjs/.mts repo-wide, of which 478 under docs/research (arm C's key was docs/research-scoped at 472)
+ok  A2        K-prod at bdaf99b9: 68 site(s) under docs/research, 89 repo-wide. FROZEN at e8591df1, arm C's recording: 60 sites / tally {"LOSSY_BASENAME":34,"NONLOSSY_NORMALISE":3,"INVERTIBLE_PREFIX":22}. This is a COUNT-level agreement only — arm C's recording publishes no member list, and my own B-pop-c found two populations agreeing at 60 whose members differed by 17. The member list is printed below, unstripped, for the first time.
+ok  A3        KP reached by K-cons: docs/research/unit-466rhscap-2026-11-14/arm-rhscap-a.mjs:47 → 1 hit(s) lit="docs/research/unit-465p12site-2026-11-14/drive2.armb.out" kind=CROSS_DIR
+ok  A4        KP join: kind=CROSS_DIR producerDir=docs/research/unit-465p12site-2026-11-14 (expected docs/research/unit-465p12site-2026-11-14); that dir's K-prod sites = 10, includes the 11/14 publication docs/research/unit-465p12site-2026-11-14/arm-p12site-b.mjs:283: true
+ok  A5        the rival same-line read-call key reaches 43 line(s) and the KP line is NOT among them: true — the path is bound to a const on line 47 and read elsewhere
+ok  A6        gate: git status --porcelain packages scripts docs/research/lib → empty
+
+── K-prod member list (unstripped, corpus-member paths; arm C published none) ──
+  LOSSY_BASENAME      docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs:479
+  LOSSY_BASENAME      docs/research/round395-instruments/grade-the-refusal-that-deletes-the-verdict.mjs:460
+  LOSSY_BASENAME      docs/research/round395-instruments/grade-the-refusal-that-deletes-the-verdict.mjs:567
+  LOSSY_BASENAME      docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs:451
+  LOSSY_BASENAME      docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs:628
+  LOSSY_BASENAME      docs/research/round413-instruments/attack-g7-and-grade-the-branch-layer.mjs:286
+  LOSSY_BASENAME      docs/research/round413-instruments/attack-g7-and-grade-the-branch-layer.mjs:303
+  LOSSY_BASENAME      docs/research/round415-instruments/census-the-index-keyed-population.mjs:120
+  LOSSY_BASENAME      docs/research/round415-instruments/census-the-index-keyed-population.mjs:299
+  NONLOSSY_NORMALISE  docs/research/round423-instruments/grade-the-422-cures.mjs:284
+  NONLOSSY_NORMALISE  docs/research/round425-instruments/a-crash-cannot-print-separates.mjs:167
+  NONLOSSY_NORMALISE  docs/research/round425-instruments/a-crash-cannot-print-separates.mjs:366
+  LOSSY_BASENAME      docs/research/round429-instruments/does-any-other-instrument-retype-a-verdict-it-slices.mjs:130
+  LOSSY_BASENAME      docs/research/round430-instruments/grade-the-convention-gate.mjs:398
+  LOSSY_BASENAME      docs/research/round430-instruments/grade-the-convention-gate.mjs:473
+  LOSSY_BASENAME      docs/research/round439-instruments/attribute-the-ungradeable-red.mjs:223
+  LOSSY_BASENAME      docs/research/round441-instruments/key-the-silent-class-from-source.mjs:404
+  LOSSY_BASENAME      docs/research/round443-instruments/grade-the-emitter-at-its-published-line.mjs:681
+  INVERTIBLE_PREFIX   docs/research/round446-instruments/grade-my-own-oracle-predicate.mjs:221
+  INVERTIBLE_PREFIX   docs/research/round448-instruments/grade-the-four-list-scorer.mjs:285
+  INVERTIBLE_PREFIX   docs/research/round452-instruments/census2-reconcile-his-26-and-hand-read-the-drops.mjs:56
+  INVERTIBLE_PREFIX   docs/research/round452-instruments/no-id-class-separates-and-the-liveness-reader-is-cured.mjs:261
+  LOSSY_BASENAME      docs/research/round455-instruments/attribute-each-restamp-to-the-file-it-stamps.mjs:276
+  LOSSY_BASENAME      docs/research/round455-instruments/attribute-each-restamp-to-the-file-it-stamps.mjs:278
+  LOSSY_BASENAME      docs/research/round455-instruments/attribute-each-restamp-to-the-file-it-stamps.mjs:280
+  LOSSY_BASENAME      docs/research/round456-instruments/drift-census-over-the-verdict-publishing-population.mjs:361
+  INVERTIBLE_PREFIX   docs/research/round456-instruments/drift-census-over-the-verdict-publishing-population.mjs:449
+  INVERTIBLE_PREFIX   docs/research/round457-instruments/grade-recording-completeness-across-the-whole-corpus.mjs:309
+  INVERTIBLE_PREFIX   docs/research/round459-instruments/grade-the-two-routed-sites-and-census-the-laundering-idioms.mjs:308
+  LOSSY_BASENAME      docs/research/round462-instruments/grade-the-pred-half-refusal.mjs:312
+  LOSSY_BASENAME      docs/research/round462-instruments/grade-the-pred-half-refusal.mjs:313
+  INVERTIBLE_PREFIX   docs/research/unit-464addarm-2026-11-04/grade-addarm.mjs:451
+  INVERTIBLE_PREFIX   docs/research/unit-464addarm-2026-11-04/grade-addarm.mjs:478
+  INVERTIBLE_PREFIX   docs/research/unit-464class-2026-11-02/enumerate-legs.mjs:275
+  LOSSY_BASENAME      docs/research/unit-464prec-2026-11-03/grade-prec.mjs:81
+  LOSSY_BASENAME      docs/research/unit-464reach-2026-10-31/reach-census.mjs:470
+  LOSSY_BASENAME      docs/research/unit-464sat-2026-10-31/grepro.mjs:133
+  INVERTIBLE_PREFIX   docs/research/unit-464subkind-2026-11-02/grade-subkind.mjs:261
+  LOSSY_BASENAME      docs/research/unit-464t2-surface-2026-10-28/grade-the-exit-code.mjs:220
+  LOSSY_BASENAME      docs/research/unit-464t2-surface-2026-10-28/grade-the-exit-code.mjs:351
+  LOSSY_BASENAME      docs/research/unit-464t2-surface-2026-10-28/grade-the-exit-code.mjs:389
+  LOSSY_BASENAME      docs/research/unit-464t2-surface-2026-10-28/grade-the-exit-code.mjs:454
+  INVERTIBLE_PREFIX   docs/research/unit-465p12site-2026-11-14/arm-p12site-a.mjs:155
+  INVERTIBLE_PREFIX   docs/research/unit-465p12site-2026-11-14/arm-p12site-a.mjs:156
+  INVERTIBLE_PREFIX   docs/research/unit-465p12site-2026-11-14/arm-p12site-a.mjs:327
+  INVERTIBLE_PREFIX   docs/research/unit-465p12site-2026-11-14/arm-p12site-a.mjs:337
+  INVERTIBLE_PREFIX   docs/research/unit-465p12site-2026-11-14/arm-p12site-a.mjs:342
+  INVERTIBLE_PREFIX   docs/research/unit-465p12site-2026-11-14/arm-p12site-b.mjs:283
+  INVERTIBLE_PREFIX   docs/research/unit-465p12site-2026-11-14/arm-p12site-b.mjs:288
+  INVERTIBLE_PREFIX   docs/research/unit-465p12site-2026-11-14/arm-p12site-b.mjs:325
+  INVERTIBLE_PREFIX   docs/research/unit-465p12site-2026-11-14/arm-p12site-c.mjs:150
+  LOSSY_BASENAME      docs/research/unit-465p12site-2026-11-14/arm-p12site-c.mjs:180
+  INVERTIBLE_PREFIX   docs/research/unit-465refusalfate-2026-11-14/arm-refusalfate-a.mjs:161
+  INVERTIBLE_PREFIX   docs/research/unit-465refusalfate-2026-11-14/arm-refusalfate-a.mjs:221
+  LOSSY_BASENAME      docs/research/unit-465refusalfate-2026-11-14/arm-refusalfate-b.mjs:200
+  LOSSY_BASENAME      docs/research/unit-465refusalfate-2026-11-14/arm-refusalfate-c.mjs:99
+  INVERTIBLE_PREFIX   docs/research/unit-465schemacollide-2026-11-14/arm-schemacollide-c.mjs:119
+  LOSSY_BASENAME      docs/research/unit-466rhscap-2026-11-14/arm-rhscap-a.mjs:342
+  LOSSY_BASENAME      docs/research/unit-466rhscap-2026-11-14/arm-rhscap-a.mjs:408
+  LOSSY_BASENAME      docs/research/unit-466rhscap-2026-11-14/arm-rhscap-b.mjs:265
+  INVERTIBLE_PREFIX   docs/research/unit-466striplift-2026-11-15/arm-striplift-a.mjs:271
+  LOSSY_BASENAME      docs/research/unit-466striplift-2026-11-15/arm-striplift-a.mjs:286
+  INVERTIBLE_PREFIX   docs/research/unit-466striplift-2026-11-15/arm-striplift-a.mjs:351
+  INVERTIBLE_PREFIX   docs/research/unit-466striplift-2026-11-15/arm-striplift-b.mjs:221
+  INVERTIBLE_PREFIX   docs/research/unit-466striplift-2026-11-15/arm-striplift-b.mjs:227
+  INVERTIBLE_PREFIX   docs/research/unit-466striplift-2026-11-15/arm-striplift-b.mjs:314
+  INVERTIBLE_PREFIX   docs/research/unit-466striplift-2026-11-15/arm-striplift-c.mjs:214
+  INVERTIBLE_PREFIX   docs/research/unit-466striplift-2026-11-15/arm-striplift-c.mjs:248
+  LOSSY_BASENAME      scripts/probe-browse-endpoint-vs-channel-count.mts:415
+  LOSSY_BASENAME      scripts/probe-browse-latency-end-to-end.mts:909
+  NONLOSSY_NORMALISE  scripts/probe-fingerprint-cache-endpoint.mts:356
+  LOSSY_BASENAME      scripts/probe-round196-the-three-commands-after-a-bad-restore-answer-in-the-scripts-voice.mts:244
+  LOSSY_BASENAME      scripts/probe-round201-the-window-holds-this-corpus-and-not-the-class-and-the-corpus-has-no-names-in-it.mts:462
+  LOSSY_BASENAME      scripts/probe-round225-a-citation-is-not-a-call.mts:724
+  LOSSY_BASENAME      scripts/probe-round233-arm-m-and-the-endpoint-can-walk-different-corpora.mts:485
+  LOSSY_BASENAME      scripts/probe-round240-a-probe-pinned-to-a-moved-subject-is-failing-silently.mts:312
+  LOSSY_BASENAME      scripts/probe-round240-a-probe-pinned-to-a-moved-subject-is-failing-silently.mts:468
+  LOSSY_BASENAME      scripts/probe-round246-the-sweep-repaired-and-the-emit-spelling-was-the-bigger-blind-spot.mts:706
+  LOSSY_BASENAME      scripts/probe-round246-the-sweep-repaired-and-the-emit-spelling-was-the-bigger-blind-spot.mts:712
+  LOSSY_BASENAME      scripts/probe-round250-the-drive-was-never-priced-and-the-port-is-one-line-of-product.mts:769
+  LOSSY_BASENAME      scripts/probe-round252-the-db-class-is-unblocked-by-a-variable-the-product-already-reads.mts:505
+  LOSSY_BASENAME      scripts/probe-round252-the-db-class-is-unblocked-by-a-variable-the-product-already-reads.mts:545
+  LOSSY_BASENAME      scripts/probe-round254-the-mutate-class-is-an-unanchored-conjunction-and-most-of-it-never-writes-the-product.mts:700
+  LOSSY_BASENAME      scripts/probe-round254-the-mutate-class-is-an-unanchored-conjunction-and-most-of-it-never-writes-the-product.mts:704
+  LOSSY_BASENAME      scripts/probe-round254-the-mutate-class-is-an-unanchored-conjunction-and-most-of-it-never-writes-the-product.mts:706
+  NONLOSSY_NORMALISE  scripts/probe-round257-the-scanner-had-no-model-of-interpolation.mts:137
+  NONLOSSY_NORMALISE  scripts/probe-round257-the-scanner-had-no-model-of-interpolation.mts:150
+  NONLOSSY_NORMALISE  scripts/probe-round371-the-characterisation-item-is-a-registry-not-a-sweep.mts:486
+  LOSSY_BASENAME      scripts/probe-turncount-live-http.mts:386
+
+── K-cons tally ──
+  literals matching an artefact path: 1060 across 308 file(s)
+    CROSS_DIR          306
+    SAME_DIR           40
+    SAME_DIR_BARE      587
+    UNRESOLVED_INTERP  127
+  distinct (consumer file → producer dir) CROSS_DIR pairs: 227
+  distinct producer dirs consumed cross-dir: 94
+    of those, holding >=1 K-prod site:          15
+    of those, holding >=1 LOSSY_BASENAME site:  11
+  named artefacts not committed at the pin: 99
+
+── CROSS_DIR pairs (producer-dir strip sites / of which lossy) ──
+    -    0/ 0  docs/research/lib/attested-rounds.mjs  →  docs/mail/read  [lines 307,311,332,347,382]
+    -    0/ 0  docs/research/lib/attested-rounds.mjs  →  docs/research  [lines 316]
+    -    0/ 0  docs/research/lib/attested-rounds.mjs  →  docs/research/notes-2026  [lines 320]
+    -    0/ 0  docs/research/lib/attested-rounds.mjs  →  docs/research/round464-instruments  [lines 322]
+    -    0/ 0  docs/research/lib/attested-rounds.mjs  →  docs/research/unit-999x  [lines 319]
+    -    0/ 0  docs/research/lib/verdict.mjs  →  docs/research/lib/a/b  [lines 1012,1012]
+    -    0/ 0  docs/research/round368-instruments/verdict-line-kind-grade.mts  →  docs/research/round404-instruments  [lines 130]
+    -    0/ 0  docs/research/round373-instruments/held-port-sweep.mts  →  docs/research/round373-instruments/.round373  [lines 19]
+    -    0/ 0  docs/research/round386-instruments/grade-the-monotonicity-claim.mjs  →  docs/research/round383-instruments  [lines 508,514]
+    -    0/ 0  docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs  →  docs/research/round383-instruments  [lines 200,206]
+    -    0/ 0  docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs  →  docs/research/round388-instruments/round389-instruments  [lines 48]
+    -    0/ 0  docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs  →  docs/mail  [lines 69]
+    -    0/ 0  docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs  →  docs/research/round391-instruments  [lines 84,85]
+    -    0/ 0  docs/research/round393-instruments/record-my393-in-three-trees.mjs  →  docs/research/round393-instruments/Users/xian/Development/klatch-worktrees/daedalus/.testdata/r393  [lines 24]
+    -    0/ 0  docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs  →  docs/mail  [lines 56]
+  STRIP  1/ 1  docs/research/round395-instruments/record-drives.mjs  →  docs/research/round394-instruments  [lines 43]
+  STRIP  1/ 1  docs/research/round396-instruments/record-drives.mjs  →  docs/research/round394-instruments  [lines 38]
+    -    0/ 0  docs/research/round399-instruments/census-the-named-binding-form.mjs  →  docs/research/round398-instruments  [lines 478]
+    -    0/ 0  docs/research/round400-instruments/regrade-the-file-scoped-guard.mjs  →  docs/research/round399-instruments  [lines 73]
+    -    0/ 0  docs/research/round401-instruments/census-the-branch-polarity-axis.mjs  →  docs/research/round400-instruments  [lines 87]
+    -    0/ 0  docs/research/round402-instruments/hand-read-the-unguarded.mjs  →  docs/research/round400-instruments  [lines 52]
+    -    0/ 0  docs/research/round402-instruments/key-from-round400.mjs  →  docs/research/round399-instruments  [lines 29]
+    -    0/ 0  docs/research/round409-instruments/record-gate.mjs  →  docs/research/round407-instruments  [lines 5]
+    -    0/ 0  docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs  →  docs/research/round411-instruments/round413-instruments  [lines 466]
+  STRIP  1/ 1  docs/research/round412-instruments/resolve-the-ternary-and-reconstruct-the-nine.mjs  →  docs/research/round411-instruments  [lines 677]
+    -    0/ 0  docs/research/round414-instruments/grade-the-refusing-half-and-reconcile-the-ten.mjs  →  docs/research/round412-instruments  [lines 48,49]
+    -    0/ 0  docs/research/round415-instruments/census-the-index-keyed-population.mjs  →  docs/research/round412-instruments  [lines 260]
+    -    0/ 0  docs/research/round418-instruments/sec3-key-verbatim-then-widened.mjs  →  docs/intel  [lines 2]
+    -    0/ 0  docs/research/round418-instruments/sec3-key-verbatim-then-widened.mjs  →  docs/research/round418-instruments/https:/raw.githubusercontent.com/anthropics/anthropic-sdk-typescript/main  [lines 11]
+    -    0/ 0  docs/research/round419-instruments/fetch-changelog.mjs  →  docs/research/round419-instruments/https:/raw.githubusercontent.com/anthropics/anthropic-sdk-typescript/main  [lines 17]
+    -    0/ 0  docs/research/round419-instruments/grade-the-417-repairs.mjs  →  docs/research/round419-instruments/.testdata  [lines 96]
+    -    0/ 0  docs/research/round420-instruments/his-old-cell-is-keyed-on-head.mjs  →  docs/research/round419-instruments  [lines 44]
+    -    0/ 0  docs/research/round420-instruments/his-old-cell-is-keyed-on-head.mjs  →  docs/research/round420-instruments/.testdata  [lines 53]
+    -    0/ 0  docs/research/round421-instruments/grade-the-420-repair.mjs  →  docs/research/round421-instruments/.testdata  [lines 145,177]
+  STRIP  1/ 0  docs/research/round424-instruments/an-exit-code-is-not-the-gate-that-fired.mjs  →  docs/research/round423-instruments  [lines 59]
+  STRIP  2/ 0  docs/research/round426-instruments/a-published-sentence-is-not-its-discriminator.mjs  →  docs/research/round425-instruments  [lines 46,48]
+  STRIP  2/ 0  docs/research/round426-instruments/a-retyped-constant-from-another-file-is-not-a-pin.mjs  →  docs/research/round425-instruments  [lines 206]
+    -    0/ 0  docs/research/round427-capability-test-pointer/the-history-window-is-200-messages-not-the-file.mjs  →  docs/intel  [lines 7]
+  STRIP  2/ 0  docs/research/round428-instruments/a-sentence-keyed-on-a-subset-publishes-past-its-own-gate.mjs  →  docs/research/round425-instruments  [lines 49]
+    -    0/ 0  docs/research/round430-instruments/grade-the-convention-gate.mjs  →  docs/research/round432-instruments  [lines 314]
+    -    0/ 0  docs/research/round430-instruments/refusal-convention.mjs  →  docs/research/round430-instruments/round431-instruments  [lines 46]
+    -    0/ 0  docs/research/round430-instruments/refusal-convention.mjs  →  docs/research/round430-instruments/round432-instruments  [lines 46]
+  STRIP  1/ 1  docs/research/round431-instruments/grade-his-convention-and-measure-the-reach.mjs  →  docs/research/round429-instruments  [lines 150]
+  STRIP  2/ 2  docs/research/round432-instruments/grade-the-two-cures.mjs  →  docs/research/round430-instruments  [lines 237]
+    -    0/ 0  docs/research/round434-instruments/grade-the-two-cures-and-the-prose.mjs  →  docs/research/round433-instruments  [lines 83]
+    -    0/ 0  docs/research/round434-instruments/precure-refusal-convention.sliced.mjs  →  docs/research/round434-instruments/round431-instruments  [lines 39]
+    -    0/ 0  docs/research/round434-instruments/precure-refusal-convention.sliced.mjs  →  docs/research/round434-instruments/round432-instruments  [lines 39]
+    -    0/ 0  docs/research/round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs  →  docs/research/round432-instruments  [lines 351]
+    -    0/ 0  docs/research/round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs  →  docs/research/round434-instruments  [lines 115,352,400]
+    -    0/ 0  docs/research/round436-instruments/grade-the-cures-against-a-runtime-oracle.mjs  →  docs/research/round434-instruments  [lines 459]
+    -    0/ 0  docs/research/round436-instruments/grade-the-cures-against-a-runtime-oracle.mjs  →  docs/research/round435-instruments  [lines 172]
+    -    0/ 0  docs/research/round436-instruments/precure-refusal-convention.sliced.mjs  →  docs/research/round436-instruments/round431-instruments  [lines 46]
+    -    0/ 0  docs/research/round436-instruments/precure-refusal-convention.sliced.mjs  →  docs/research/round436-instruments/round432-instruments  [lines 46]
+    -    0/ 0  docs/research/round437-instruments/grade-his-cure-and-the-live-keyed-finding-leg.mjs  →  docs/research/round436-instruments  [lines 120]
+    -    0/ 0  docs/research/round438-instruments/precure-refusal-convention.sliced.mjs  →  docs/research/round438-instruments/round431-instruments  [lines 46]
+    -    0/ 0  docs/research/round438-instruments/precure-refusal-convention.sliced.mjs  →  docs/research/round438-instruments/round432-instruments  [lines 46]
+    -    0/ 0  docs/research/round439-instruments/attribute-the-ungradeable-red.mjs  →  docs/research/round438-instruments  [lines 123]
+  STRIP  1/ 1  docs/research/round440-instruments/census-the-gate-line-grammar-his-cure-must-cover.mjs  →  docs/research/round439-instruments  [lines 169]
+    -    0/ 0  docs/research/round441-instruments/key-the-silent-class-from-source.mjs  →  docs/research/round440-instruments  [lines 129]
+    -    0/ 0  docs/research/round443-instruments/grade-the-emitter-at-its-published-line.mjs  →  docs/research/round443-fixture  [lines 634,635]
+  STRIP  1/ 1  docs/research/round444-instruments/grade-the-round-trip-cure.mjs  →  docs/research/round443-instruments  [lines 36]
+  STRIP  1/ 1  docs/research/round446-instruments/grade-my-own-oracle-predicate.mjs  →  docs/research/round443-instruments  [lines 131,132]
+    -    0/ 0  docs/research/round446-instruments/grade-my-own-oracle-predicate.mjs  →  docs/research/round444-instruments  [lines 130,133]
+    -    0/ 0  docs/research/round448-instruments/grade-the-four-list-scorer.mjs  →  docs/research/round444-instruments  [lines 221]
+    -    0/ 0  docs/research/round448-instruments/grade-the-four-list-scorer.mjs  →  docs/research/round448-instruments/round446-instruments  [lines 189]
+    -    0/ 0  docs/research/round449-instruments/resolve-the-variable-write-targets.mjs  →  docs/research/round449-instruments/PATH:/tmp/kpdir  [lines 426,426]
+    -    0/ 0  docs/research/round449-instruments/resolve-the-variable-write-targets.mjs  →  docs/research/round449-instruments/round442  [lines 768]
+  STRIP  1/ 0  docs/research/round452-instruments/no-id-class-separates-and-the-liveness-reader-is-cured.mjs  →  docs/research/round446-instruments  [lines 358]
+    -    0/ 0  docs/research/round453-instruments/pin450/lib/verdict.mjs  →  docs/research/round453-instruments/pin450/lib/a/b  [lines 407,407]
+    -    0/ 0  docs/research/round455-instruments/attribute-each-restamp-to-the-file-it-stamps.mjs  →  docs/logs  [lines 72]
+    -    0/ 0  docs/research/round455-instruments/attribute-each-restamp-to-the-file-it-stamps.mjs  →  docs/research/round453-instruments  [lines 93,129]
+    -    0/ 0  docs/research/round457-instruments/grade-recording-completeness-across-the-whole-corpus.mjs  →  docs/research/round444-instruments  [lines 202]
+  STRIP  3/ 3  docs/research/round457-instruments/grade-recording-completeness-across-the-whole-corpus.mjs  →  docs/research/round455-instruments  [lines 194]
+    -    0/ 0  docs/research/round460-instruments/grade-the-pred-gate-landing.mjs  →  docs/research/round449-instruments  [lines 221]
+    -    0/ 0  docs/research/round460-instruments/grade-the-pred-gate-landing.mjs  →  docs/research/round450-instruments  [lines 203]
+  STRIP  3/ 3  docs/research/round460-instruments/grade-the-pred-gate-landing.mjs  →  docs/research/round455-instruments  [lines 211]
+    -    0/ 0  docs/research/round460-instruments/grade-the-pred-gate-landing.mjs  →  docs/research/round460-instruments/round449-instruments  [lines 58]
+    -    0/ 0  docs/research/round460-instruments/grade-the-pred-gate-landing.mjs  →  docs/research/round460-instruments/round450-instruments  [lines 50]
+    -    0/ 0  docs/research/round460-instruments/grade-the-pred-gate-landing.mjs  →  docs/research/round460-instruments/round455-instruments  [lines 54]
+    -    0/ 0  docs/research/round462-instruments/grade-the-pred-half-refusal.mjs  →  docs/research/round462-instruments/round462-instruments  [lines 413]
+  STRIP  2/ 2  docs/research/round463-instruments/grade-the-57-of-461-class.mjs  →  docs/research/round462-instruments  [lines 82]
+    -    0/ 0  docs/research/round463-instruments/grade-the-57-of-461-class.mjs  →  docs/research/round463-instruments/round462-instruments  [lines 7]
+    -    0/ 0  docs/research/unit-307c4-rekey-2026-10-28/fp-commit-moves.mts  →  docs  [lines 126]
+    -    0/ 0  docs/research/unit-464absorb-2026-10-31/drive-kp.mjs  →  docs/research/unit-464authored-2026-10-31  [lines 44]
+    -    0/ 0  docs/research/unit-464absorb-2026-10-31/drive.mjs  →  docs/research/unit-464absorb-2026-10-31/unit-464authored-2026-10-31  [lines 6]
+    -    0/ 0  docs/research/unit-464absorb-2026-10-31/mint-kp.mjs  →  docs/research/unit-464authored-2026-10-31  [lines 18]
+    -    0/ 0  docs/research/unit-464absorb-2026-10-31/mint-kp.mjs  →  docs/research/unit-464t2b-sat-2026-10-29  [lines 19]
+    -    0/ 0  docs/research/unit-464addarm-2026-11-04/grade-addarm.mjs  →  docs/research/unit-464kpspan-2026-11-04  [lines 37]
+    -    0/ 0  docs/research/unit-464authored-2026-10-31/insert-coord-entry.mjs  →  docs  [lines 22]
+    -    0/ 0  docs/research/unit-464authored-2026-10-31/insert-coord-entry.mjs  →  docs/logs  [lines 61]
+    -    0/ 0  docs/research/unit-464authored-2026-10-31/quoted-denominator.mjs  →  docs/research/unit-464t2b-sat-2026-10-29  [lines 58]
+    -    0/ 0  docs/research/unit-464bucket-2026-11-01/grade-his-armreach-gate.mjs  →  docs/research/unit-464steal-2026-11-01  [lines 38]
+    -    0/ 0  docs/research/unit-464bucket-2026-11-01/grade-his-attrib-gate.mjs  →  docs/research/unit-464steal-2026-11-01  [lines 35]
+    -    0/ 0  docs/research/unit-464bucket-2026-11-01/regrade-saturation.mjs  →  docs/research/unit-464steal-2026-11-01  [lines 25]
+    -    0/ 0  docs/research/unit-464class-2026-11-02/classify-and-grade.mjs  →  docs/research  [lines 217]
+    -    0/ 0  docs/research/unit-464conj-2026-11-03/grade-conj.mjs  →  docs/research/unit-464cell-2026-11-02  [lines 130]
+    -    0/ 0  docs/research/unit-464conj-2026-11-03/grade-conj.mjs  →  docs/research/unit-464immov-2026-11-03  [lines 132]
+  STRIP  2/ 0  docs/research/unit-464cons-2026-11-04/grade-cons.mjs  →  docs/research/unit-464addarm-2026-11-04  [lines 30]
+    -    0/ 0  docs/research/unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs  →  docs/research/unit-464steal-2026-11-01  [lines 25]
+    -    0/ 0  docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs  →  docs/research/unit-464steal-2026-11-01  [lines 33,34]
+    -    0/ 0  docs/research/unit-464drift-2026-10-30/insert-coord-entry.mjs  →  docs  [lines 15,127]
+    -    0/ 0  docs/research/unit-464drift-2026-10-30/insert-coord-entry.mjs  →  docs/research  [lines 106]
+    -    0/ 0  docs/research/unit-464drift-2026-10-30/insert-coord-entry.mjs  →  docs/research/unit-464drift-2026-10-30/unit-464mapkey-2026-10-30  [lines 41]
+    -    0/ 0  docs/research/unit-464frozen-2026-11-05/drive1-arms.mjs  →  docs/research  [lines 20]
+    -    0/ 0  docs/research/unit-464frozen-2026-11-05/drive4-anchor.mjs  →  docs/research  [lines 15]
+    -    0/ 0  docs/research/unit-464gentry-2026-11-05/drive1-measure.mjs  →  docs/research  [lines 11]
+    -    0/ 0  docs/research/unit-464gentry-2026-11-05/drive2-entryrev.mjs  →  docs/research  [lines 13]
+    -    0/ 0  docs/research/unit-464gentry-2026-11-05/drive3-matrix.mjs  →  docs/research  [lines 22,30,31]
+    -    0/ 0  docs/research/unit-464gentry-2026-11-05/probe-entail.mjs  →  docs/research  [lines 19,26,27]
+    -    0/ 0  docs/research/unit-464immov-2026-11-03/verify-entry-v13.mjs  →  docs/research  [lines 26]
+    -    0/ 0  docs/research/unit-464inspan-2026-11-03/grade-inspan.mjs  →  docs/research/unit-464presc-2026-11-03  [lines 381]
+    -    0/ 0  docs/research/unit-464mapkey-2026-10-30/insert-coord-entry.mjs  →  docs  [lines 15,102]
+    -    0/ 0  docs/research/unit-464mapkey-2026-10-30/insert-coord-entry.mjs  →  docs/research  [lines 56]
+    -    0/ 0  docs/research/unit-464nomoved-2026-10-30/xcheck-his-drive1.mjs  →  docs/research/unit-464rekey-2026-10-30  [lines 24]
+    -    0/ 0  docs/research/unit-464notes-2026-11-05/drive-arms.mjs  →  docs/research  [lines 24,35]
+  STRIP  1/ 1  docs/research/unit-464notes-2026-11-05/drive-arms.mjs  →  docs/research/unit-464prec-2026-11-03  [lines 26,29,30,34]
+    -    0/ 0  docs/research/unit-464order-2026-11-02/grade-order.mjs  →  docs/research  [lines 24,25]
+    -    0/ 0  docs/research/unit-464prec-2026-11-03/grade-entry-v15.mjs  →  docs/research  [lines 20,21]
+    -    0/ 0  docs/research/unit-464prec-2026-11-03/grade-entry-v15.mjs  →  docs/research/unit-464prec-2026-11-03/unit-464gentry  [lines 83]
+    -    0/ 0  docs/research/unit-464prec-2026-11-03/grade-entry-v15.mjs  →  docs/research/unit-464prec-2026-11-03/unit-464gentry-2026-11-05  [lines 25]
+    -    0/ 0  docs/research/unit-464reach-2026-10-31/reach-census.mjs  →  docs/research/unit-464t2b-sat-2026-10-29  [lines 175]
+    -    0/ 0  docs/research/unit-464reach-2026-11-02/grade-reach.mjs  →  docs/research  [lines 25]
+    -    0/ 0  docs/research/unit-464rekey-2026-10-30/insert-coord-entry.mjs  →  docs  [lines 15]
+  STRIP  1/ 1  docs/research/unit-464sat-2026-10-31/argv-census.mjs  →  docs/research/unit-464reach-2026-10-31  [lines 31]
+    -    0/ 0  docs/research/unit-464sat-2026-10-31/sat-census.mjs  →  docs/research/unit-464t2b-sat-2026-10-29  [lines 197]
+    -    0/ 0  docs/research/unit-464subkind-2026-11-02/grade-subkind.mjs  →  docs/research  [lines 24]
+    -    0/ 0  docs/research/unit-464t2-denial-2026-10-28/verify-wrap.mjs  →  docs  [lines 61]
+    -    0/ 0  docs/research/unit-464t2-denial-2026-10-28/verify-wrap.mjs  →  docs/logs  [lines 62]
+    -    0/ 0  docs/research/unit-464t2-denial-2026-10-28/verify-wrap.mjs  →  docs/mail  [lines 60]
+    -    0/ 0  docs/research/unit-464t2-rekey-2026-10-29/insert-coord-entry.mjs  →  docs  [lines 13,108]
+    -    0/ 0  docs/research/unit-464t2-t8-2026-10-29/grade-t8-operands.mjs  →  docs/research/unit-464t2-rekey-2026-10-29  [lines 103,104]
+    -    0/ 0  docs/research/unit-464t2-t8-2026-10-29/recon-t8-operands.mjs  →  docs/research/unit-464t2-rekey-2026-10-29  [lines 50,52,54]
+    -    0/ 0  docs/research/unit-464t8-2026-10-29/insert-coord-entry.mjs  →  docs  [lines 15,106]
+    -    0/ 0  docs/research/unit-464t8-mapdecay-2026-10-29/insert-coord-entry.mjs  →  docs  [lines 15,98]
+    -    0/ 0  docs/research/unit-464t8-mapdecay-2026-10-29/insert-coord-entry.mjs  →  docs/research/unit-464t8-mapdecay-2026-10-29/unit-464t8-2026-10-29  [lines 57]
+    -    0/ 0  docs/research/unit-465blanket-2026-11-11/A3-parity-arm.mjs  →  docs/research  [lines 31]
+    -    0/ 0  docs/research/unit-465byteslabel-2026-11-13/arm-byteslabel-a.mjs  →  docs/mail  [lines 5]
+    -    0/ 0  docs/research/unit-465chainfloor-2026-11-13/arm-chainfloor-d.mjs  →  docs/research/unit-465foilchain-2026-11-13  [lines 24]
+    -    0/ 0  docs/research/unit-465fixture-2026-11-11/A3-parity-sweep.mjs  →  docs/research  [lines 31]
+    -    0/ 0  docs/research/unit-465floorstates-2026-11-14/arm-floorstates-c.mjs  →  docs/research/unit-465chainfloor-2026-11-13  [lines 5,22]
+    -    0/ 0  docs/research/unit-465foilchain-2026-11-13/arm-foilchain-a.mjs  →  docs/mail/read  [lines 126,158,170]
+    -    0/ 0  docs/research/unit-465keyed-2026-11-12/verify-keyed-figures.mjs  →  docs/mail/read  [lines 22]
+    -    0/ 0  docs/research/unit-465leadbound-2026-11-10/overwide-arm.mjs  →  docs/research  [lines 31]
+    -    0/ 0  docs/research/unit-465leadbound-2026-11-10/widened-arm.mjs  →  docs/research  [lines 31]
+    -    0/ 0  docs/research/unit-465routecure-2026-11-13/arm-routecure-c.mjs  →  docs/research/unit-465maildurable-2026-11-13  [lines 206]
+    -    0/ 0  docs/research/unit-465routecure-2026-11-13/arm-routecure.mjs  →  docs/mail/read  [lines 185,186,197,266]
+    -    0/ 0  docs/research/unit-465s6bounds-2026-11-13/arm-s6bounds-b.mjs  →  docs/mail/read  [lines 111]
+    -    0/ 0  docs/research/unit-465s6bounds-2026-11-13/arm-s6bounds-b.mjs  →  docs/research/unit-465s6bounds-2026-11-13/docs\/mail\/read\  [lines 69]
+    -    0/ 0  docs/research/unit-465s6bounds-2026-11-13/arm-s6bounds.mjs  →  docs/mail/read  [lines 65,261]
+    -    0/ 0  docs/research/unit-465s6bounds-2026-11-13/composed-classifier6c9a4348-reader-head.mjs  →  docs/mail/read  [lines 253,257,287,322]
+    -    0/ 0  docs/research/unit-465s6bounds-2026-11-13/composed-classifier6c9a4348-reader-head.mjs  →  docs/research  [lines 262]
+    -    0/ 0  docs/research/unit-465s6bounds-2026-11-13/composed-classifier6c9a4348-reader-head.mjs  →  docs/research/notes-2026  [lines 266]
+    -    0/ 0  docs/research/unit-465s6bounds-2026-11-13/composed-classifier6c9a4348-reader-head.mjs  →  docs/research/round464-instruments  [lines 268]
+    -    0/ 0  docs/research/unit-465s6bounds-2026-11-13/composed-classifier6c9a4348-reader-head.mjs  →  docs/research/unit-999x  [lines 265]
+    -    0/ 0  docs/research/unit-465s6bounds-2026-11-13/cripple-p4-no-nearmiss.mjs  →  docs/mail/read  [lines 254,258,288,323]
+    -    0/ 0  docs/research/unit-465s6bounds-2026-11-13/cripple-p4-no-nearmiss.mjs  →  docs/research  [lines 263]
+    -    0/ 0  docs/research/unit-465s6bounds-2026-11-13/cripple-p4-no-nearmiss.mjs  →  docs/research/notes-2026  [lines 267]
+    -    0/ 0  docs/research/unit-465s6bounds-2026-11-13/cripple-p4-no-nearmiss.mjs  →  docs/research/round464-instruments  [lines 269]
+    -    0/ 0  docs/research/unit-465s6bounds-2026-11-13/cripple-p4-no-nearmiss.mjs  →  docs/research/unit-999x  [lines 266]
+    -    0/ 0  docs/research/unit-465s6bounds-2026-11-13/cripple-p4b-no-nearmiss-case.mjs  →  docs/mail/read  [lines 255,288,323]
+    -    0/ 0  docs/research/unit-465s6bounds-2026-11-13/cripple-p4b-no-nearmiss-case.mjs  →  docs/research  [lines 263]
+    -    0/ 0  docs/research/unit-465s6bounds-2026-11-13/cripple-p4b-no-nearmiss-case.mjs  →  docs/research/notes-2026  [lines 267]
+    -    0/ 0  docs/research/unit-465s6bounds-2026-11-13/cripple-p4b-no-nearmiss-case.mjs  →  docs/research/round464-instruments  [lines 269]
+    -    0/ 0  docs/research/unit-465s6bounds-2026-11-13/cripple-p4b-no-nearmiss-case.mjs  →  docs/research/unit-999x  [lines 266]
+    -    0/ 0  docs/research/unit-465s6bounds-2026-11-13/cripple-p5-classifierrev-banana.mjs  →  docs/mail/read  [lines 255,259,289,324]
+    -    0/ 0  docs/research/unit-465s6bounds-2026-11-13/cripple-p5-classifierrev-banana.mjs  →  docs/research  [lines 264]
+    -    0/ 0  docs/research/unit-465s6bounds-2026-11-13/cripple-p5-classifierrev-banana.mjs  →  docs/research/notes-2026  [lines 268]
+    -    0/ 0  docs/research/unit-465s6bounds-2026-11-13/cripple-p5-classifierrev-banana.mjs  →  docs/research/round464-instruments  [lines 270]
+    -    0/ 0  docs/research/unit-465s6bounds-2026-11-13/cripple-p5-classifierrev-banana.mjs  →  docs/research/unit-999x  [lines 267]
+    -    0/ 0  docs/research/unit-465s6bounds-2026-11-13/cripple-p5b-classifierrev-deleted.mjs  →  docs/mail/read  [lines 255,259,289,324]
+    -    0/ 0  docs/research/unit-465s6bounds-2026-11-13/cripple-p5b-classifierrev-deleted.mjs  →  docs/research  [lines 264]
+    -    0/ 0  docs/research/unit-465s6bounds-2026-11-13/cripple-p5b-classifierrev-deleted.mjs  →  docs/research/notes-2026  [lines 268]
+    -    0/ 0  docs/research/unit-465s6bounds-2026-11-13/cripple-p5b-classifierrev-deleted.mjs  →  docs/research/round464-instruments  [lines 270]
+    -    0/ 0  docs/research/unit-465s6bounds-2026-11-13/cripple-p5b-classifierrev-deleted.mjs  →  docs/research/unit-999x  [lines 267]
+    -    0/ 0  docs/research/unit-465s6bounds-2026-11-13/sliced-classifier-6c9a4348.mjs  →  docs/mail/read  [lines 230,248]
+    -    0/ 0  docs/research/unit-465s6bounds-2026-11-13/sliced-classifier-6c9a4348.mjs  →  docs/research  [lines 205]
+    -    0/ 0  docs/research/unit-465s6bounds-2026-11-13/sliced-classifier-6c9a4348.mjs  →  docs/research/notes-2026  [lines 209]
+    -    0/ 0  docs/research/unit-465s6bounds-2026-11-13/sliced-classifier-6c9a4348.mjs  →  docs/research/round464-instruments  [lines 211]
+    -    0/ 0  docs/research/unit-465s6bounds-2026-11-13/sliced-classifier-6c9a4348.mjs  →  docs/research/unit-999x  [lines 208]
+    -    0/ 0  docs/research/unit-465srckeys-2026-11-12/arm-srckeys.mjs  →  docs/research  [lines 380]
+    -    0/ 0  docs/research/unit-465srckeys-2026-11-12/arm-srckeys.mjs  →  docs/research/notes-2026  [lines 379]
+    -    0/ 0  docs/research/unit-465t3nonempty-2026-11-13/grade-t3-nonempty.mjs  →  docs/research/unit-465t3nonempty-2026-11-13/unit-465attestdenial  [lines 14]
+  STRIP 10/ 1  docs/research/unit-466rhscap-2026-11-14/arm-rhscap-a.mjs  →  docs/research/unit-465p12site-2026-11-14  [lines 47]
+  STRIP 10/ 1  docs/research/unit-466rhscap-2026-11-14/arm-rhscap-b.mjs  →  docs/research/unit-465p12site-2026-11-14  [lines 28]
+    -    0/ 0  scripts/backfill-entity-bindings.mts  →  docs/plans  [lines 6]
+    -    0/ 0  scripts/backfill-entity-bindings.mts  →  scripts/unit-465rowdelta  [lines 1035]
+    -    0/ 0  scripts/exact-tests.mjs  →  docs/research  [lines 93,96,99,106,109,112,119,122,125]
+    -    0/ 0  scripts/geometry-distance-arm.mjs  →  docs/research  [lines 23]
+    -    0/ 0  scripts/geometry-marking-before-seed.mjs  →  docs/research  [lines 31]
+    -    0/ 0  scripts/lib/marker-floor.mjs  →  docs  [lines 62,227]
+    -    0/ 0  scripts/lib/mint-transcript.mts  →  docs/mail  [lines 6]
+    -    0/ 0  scripts/lib/probe-corpus-sessions.mts  →  docs/mail  [lines 6]
+    -    0/ 0  scripts/lib/probe-outcome.mts  →  docs/mail  [lines 6]
+    -    0/ 0  scripts/lib/probe-server-ownership.mts  →  docs/mail  [lines 6]
+    -    0/ 0  scripts/measure-marker-floor.mjs  →  docs  [lines 112,136]
+    -    0/ 0  scripts/probe-accepted-multipart-allocation.mts  →  docs  [lines 4]
+    -    0/ 0  scripts/probe-backfill-entity-sizing.mts  →  docs/mail  [lines 5]
+    -    0/ 0  scripts/probe-browse-cold-figure-gap.mts  →  docs  [lines 5]
+    -    0/ 0  scripts/probe-carried-context-sensitivity.mjs  →  docs/mail  [lines 11]
+    -    0/ 0  scripts/probe-carried-context-sensitivity.mjs  →  docs/research  [lines 6]
+    -    0/ 0  scripts/probe-carried-context.mjs  →  docs/mail  [lines 5]
+    -    0/ 0  scripts/probe-carried-context.mjs  →  docs/research  [lines 10]
+    -    0/ 0  scripts/probe-dedup-resolver-scaling.mts  →  docs  [lines 5]
+    -    0/ 0  scripts/probe-import-entity-binding.mts  →  docs/ux  [lines 43]
+    -    0/ 0  scripts/probe-import-multipart-cap.mts  →  docs  [lines 4]
+    -    0/ 0  scripts/probe-parse-stage-allocation.mts  →  docs  [lines 5,28]
+    -    0/ 0  scripts/probe-pm-corpus-cap-delta.mts  →  docs  [lines 4]
+    -    0/ 0  scripts/probe-recall-tool.mjs  →  docs/mail  [lines 934]
+    -    0/ 0  scripts/probe-recall-tool.mjs  →  docs/research  [lines 307,804]
+    -    0/ 0  scripts/probe-round172-path-b-confirm-step-redrive.mts  →  docs/mail  [lines 11]
+    -    0/ 0  scripts/probe-round177-browse-done-seating-in-a-browser.mts  →  docs/ux  [lines 9]
+    -    0/ 0  scripts/probe-round231-the-handler-and-the-signal-are-in-different-processes.mts  →  docs/mail  [lines 7]
+    -    0/ 0  scripts/probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts  →  docs/mail  [lines 378]
+    -    0/ 0  scripts/probe-round250-the-drive-was-never-priced-and-the-port-is-one-line-of-product.mts  →  docs/logs  [lines 531]
+    -    0/ 0  scripts/probe-round254-the-mutate-class-is-an-unanchored-conjunction-and-most-of-it-never-writes-the-product.mts  →  docs/logs  [lines 16]
+    -    0/ 0  scripts/probe-round256-an-emptiness-assertion-grades-the-operator-and-a-sole-blocker-ranking-cannot-see-a-coupled-class.mts  →  docs/logs  [lines 42]
+    -    0/ 0  scripts/probe-round258-three-readers-are-two-questions-and-the-shared-one-is-already-in-lib.mts  →  docs/logs  [lines 31]
+    -    0/ 0  scripts/probe-round325-the-fourth-exit-shape-returns-zero-and-restaging-an-inflated-pin-promotes-measurements-to-hard-checks.mts  →  docs/mail  [lines 6]
+    -    0/ 0  scripts/probe-round327-the-pin-purpose-label-is-a-property-of-the-edge-and-retirability-is-a-property-of-the-target-line.mts  →  docs/mail  [lines 6]
+    -    0/ 0  scripts/probe-scan-cost-model-control.mts  →  docs  [lines 5,13,46,390]
+    -    0/ 0  scripts/serve-scratch.mjs  →  docs/logs  [lines 19]
+    -    0/ 0  scripts/sweep-probes.mjs  →  docs/mail  [lines 1621]
+    -    0/ 0  scripts/verify-appetite-readings.mjs  →  docs/mail  [lines 5]
+    -    0/ 0  scripts/verify-design-assertions-gated.mjs  →  docs/research  [lines 50,51]
+    -    0/ 0  scripts/verify-expand-reachability.mjs  →  docs/research  [lines 7,182]
+    -    0/ 0  scripts/verify-filler-constraints.mjs  →  docs/research  [lines 6]
+    -    0/ 0  scripts/verify-rule-discrimination.mjs  →  docs/research  [lines 5,45,722]
+
+REFUTED P1   distinct CROSS_DIR (consumer file → producer dir) pairs = 227 (pre-registered >=10 and <=60)
+REFUTED P2   CROSS_DIR pairs whose producer dir holds >=1 K-prod site: 21 of 227 = 9.3% (pre-registered >=50%)
+REFUTED P3   CROSS_DIR pairs whose producer dir holds >=1 LOSSY_BASENAME site: 15 of 227 = 6.6% (pre-registered >=50%)
+LANDED  P4   rival same-line read-call key reaches 29 distinct consumer file(s) vs K-cons's 308
+LANDED  P5   CEILING — UNRESOLVED_INTERP share of all K-cons literals: 127 of 1060 = 12.0% (pre-registered ceiling <=40%). HELD — the CROSS_DIR figures stand as reported.
+
+VERDICT/0 GREEN legs=6 red=[] refused=[] preds=5 refuted=["P1","P2","P3"] prefused=[]
