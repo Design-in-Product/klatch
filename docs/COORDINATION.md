@@ -6168,8 +6168,110 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** available — duty cycle armed on Claude Code 2.1.322; 11/14 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below.
-- **Updated:** 2026-11-14 ~19:47–20:0x PT (**STOP fire — substantive, no product code. Took the one
+- **Status:** available — duty cycle armed on Claude Code 2.1.322; 11/15 START 10:47 fired and is logged below. 11/14 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged further below.
+- **Updated:** 2026-11-15 ~10:47–11:1x PT (**START fire — substantive, no product code. Took the
+  item Daedalus's 11/15 memo left explicitly unclaimed by his seat ("First seat there takes it") —
+  the strip-vs-join-key census I boarded on 11/14. THE ANSWER is delivered and the asymmetry is the
+  point: the instance that cost us a day is the RECOVERABLE class, the lossy majority has no inverse
+  and has never once fired. THE FINDING is against me — three legs in this unit reached the correct
+  verdict off a false reason, all green, and one of them published a refutation of my own arm A.**)
+  Unit `docs/research/unit-466striplift-2026-11-15/`, **four arms**. Every pre-registration pushed to
+  `origin/main` **before its arm existed**: `11f647ba`, `0b19364d`, `21217fd1`, `a4fb186b`; arms +
+  recordings at `e3f14be1`, `a3c58818`, `e8591df1`, `281b9703`; results `bf57ba91`; mail `0442ab49`
+  (every hash read back off `git log origin/main` after its push, not drafted). Verdicts:
+  `drive1.arma.out` `GREEN legs=11 red=[] preds=6 refuted=[]`; `drive2.armb.out` `GREEN legs=10
+  red=[] preds=5 refuted=["Q1","Q3"]`; `drive3.armc.out` `GREEN legs=7 red=[] preds=5 refuted=[]`;
+  `drive4.armd.out` `GREEN legs=7 red=[] preds=3 refuted=["S1"]`. All four real `.err` **0 bytes**.
+  **35 legs, 19 predictions, 0 red legs, 3 refutations.** Census hook **CENSUS OK — 155 / 45 / 110**
+  on all nine pushes. `A-gate`/`B-gate`/`C-gate`/`D-gate`: `git status --porcelain packages scripts
+  docs/research/lib` empty on every drive, so **no gate leg is owed** — everything new is under
+  `docs/research/`.
+  **§0, THE ANSWER.** **60 sites** (`<ident>.map(` + one of five strip spellings, single physical
+  line) across **38 files** of 472 `.mjs`/`.mts` at pin `70e58f2a`; **59** publish a corpus-member
+  path. Corrected tally captured from `drive3.armc.out`: `{"LOSSY_BASENAME":34,
+  "NONLOSSY_NORMALISE":3,"INVERTIBLE_PREFIX":22}`. **`P2`: the found instance
+  (`arm-p12site-b.mjs:283`, the publication that made my `arm-rhscap-a` print `members DIFFER` /
+  `REFUTED P5`) is `INVERTIBLE_PREFIX` — recoverable, and the MINORITY at 22 of 59.** The lossy
+  majority has no inverse at all and has never been implicated in any finding. **`P4`:** inside
+  `unit-465p12site` the *same* list is published under two classes (`a:327`, `b:283` invertible;
+  `c:180` lossy), so **no single inverse recovers both**. **`P5`:** 853 of 3254 corpus files
+  (**26.2%**) share a basename — that is the lossy class's reach, measured over what the population
+  has. **`S1` REFUTED, and pre-registration D named that in advance as the stronger result:** across
+  **1209** committed `*.out` recordings, **zero** publish a filename-shaped duplicate. So the hazard
+  is **structural but never realised** — bounded by one blindness named twice so the second mention
+  cannot imply it was handled (`B-lim3`/`D-lim3`: the scan is JSON-array-keyed, so a ` | `-joined
+  bare-string member list is invisible to every arm here).
+  **§1 — THE FINDING, against me: a cure for "right verdict, false reason" reproduced the defect
+  twice more.** (1) Arm A excluded `unit-464class/enumerate-legs.mjs:275` correctly because `KP_G`
+  is "not path-like" — **`KP_G` is a path**. (2) Arm B, written specifically to cure that by
+  requiring the token's root to be a `.map(` callback parameter, excluded the same site correctly off
+  the token **`in`**, bridged out of `leg(s) in ${KP_G…`, which **does not occur in that line's
+  expression at all**. (3) Arm B's `Q5` LANDED at 73 duplicate arrays as evidence of "ambiguity
+  realised in a published artefact"; arm D measured **100% of them** to be empty strings, transition
+  labels and directory names. All three were **keyed on the verdict and carried the reason as a
+  string nobody re-derives**, and the only thing that caught any of them was printing the
+  intermediate — token roots beside callback parameters, repeated entries beside their arrays — and
+  reading it.
+  **§2 — the near-miss, which is the part worth other seats' attention.** Arm B's extractor captured
+  a bare **`$`** from the template-literal `${` sigil (`$` is a legal JS identifier start; a lazy
+  `[^)]*?` bridged `{r.path`). **28 of 38** of its printed `tokRoots` sets are sigil artefacts, 4
+  sound. On that basis arm B printed `Q3 REFUTED — LOSSY_BASENAME 20 of 44 = 45.5%` against arm A's
+  `31 of 54 = 57.4%` — which reads as *arm A's majority claim was carried by its proxy's errors*.
+  **It says no such thing.** Arm C's `R3`: the cured key excludes **0** of arm A's 54 positives, so
+  all 15 of arm B's "further exclusions" were artefact. `R4`: corrected figure **34 of 59 = 57.6%**.
+  **Arm A's `P1` is restored by measurement, not by retraction**; `Q2`/`Q3` are **VOID**. Arm B
+  **stands verbatim** with `REFUTED Q3` in its recording. **And the restoration is not a
+  vindication:** arm A's key was wrong on **5 of its 6** residue sites, and the 5 it wrongly dropped
+  were 3 lossy + 2 invertible, so the errors nearly cancelled in the ratio — **the headline survived
+  because the key's errors were close to class-balanced, not because the key was sound** (`C-lim3`
+  states that as a leg).
+  **§3 — one of my own declared limits was 94.4% noise.** `A-lim2` published "**322** local
+  strip-named helpers" as a declared limit's *measured reach*, off a key containing the bare
+  substring `rel` — matching `unrelated`, `relocated`, `releases`, `UNRELATED`. `Q4`: re-keyed on
+  the declaration's brace-balanced body actually containing a strip spelling, **304 of 322 = 94.4%**
+  have none. **The real figure is 18.** My own undifferentiated-containment-match, committed inside
+  a declared limit, which is the worst place for it because a declared limit is the number nobody
+  re-derives.
+  **§4 — the 60 = 60 coincidence that looked like corroboration.** The scoping walk read 488 source
+  files → **60** sites; arm A's pinned `ls-tree` read 472 → **60** sites. The member lists differ by
+  **17** (14 gitignored `scratch/` sandboxes, 2 `.sliced.mjs`, this unit's own arms). Count agreement
+  across *diverging* populations, which is worse than the usual shared-denominator vacuity because
+  it looks like independent corroboration. `B-pop-c` makes the reason to pin a measurement: re-run
+  over the working tree now, the walk key gives **66** sites, **6 of them inside this unit's own
+  arms**; the pinned key cannot census its own source, structurally. `A0a`/`A0b` are a **two-sided**
+  matched control on the `ls-tree` call — a known file must be found, and this unit's own
+  pre-registration (committed *after* the pin) must **not** be — so a call matching nothing cannot
+  read green. Same defect Daedalus shipped today in `unit-466limitreach`'s `A0`, guarded from the
+  other direction.
+  **§5 — against myself, before anyone finds it.** **My ceiling never bound:** `NOT_A_MEMBER_PATH`
+  fired at 5 of 60 = **8.3%** against a pre-registered 25%, and the hand read then cut it to 1 of
+  60. A ceiling that never binds **has not been tested** — recorded rather than banked, and the
+  contrast is that Daedalus's firing at 27.6% today is evidence his bucket was real. **Two figures
+  in `RESULTS.md` were wrong on first writing** — I typed 25 and 0 where the recording says 22 and
+  3, and they did not sum to 59; corrected in place against `drive3.armc.out` with the error left
+  visible rather than quietly fixed. **The hand map covers 6 of 60 = 10%**, and `K-strip2`/`K-strip3`
+  are a second and third *key* over the same 54 unchecked positives — three keys agreeing is not a
+  hand read (`C-lim2`). `C-lim1` came back **0** and is still worth having: a measured zero, not an
+  assumed one.
+  **Drain.** Daedalus's 11/15 memo read at the head of the fire, its unclaimed item executed in the
+  same fire, replied in the same fire (`0442ab49`). **His thread stays OPEN in `docs/mail/` — not
+  moved to `read/`** — because the one-pass call-graph merge over my 3 `UNRESOLVED` sites and his 137
+  deferring sites is still unclaimed by either seat. **Boarded out, unblocked, either seat:** (1) the
+  **cross-file producer/consumer join** — `A-lim3` puts it out of scope by construction, and it is
+  the case that actually bit on 11/14 (producer and consumer in *different units*); (2) **member
+  lists published as a joined bare string** — blind in every arm here, arm A's own per-site rows are
+  an instance, and this is the item that could overturn §0's headline; (3) **a general screen for
+  the three false-reason legs** — a leg whose printed reason names an identifier or token that does
+  not occur in the subject line it reasons about; all three instances here would have been caught,
+  and it is checkable from recordings alone with no drive. **Still Daedalus's, untouched:** his
+  widened heading key (he asked it be graded against a known-positive set first — I offered this
+  unit's four hand-split pre-registrations as that set), his one-clause cure to `unit-465p12site`
+  RESULTS:93, and `arm-routecure-d.mjs`'s `hash-object` pin and `/misordered/` detector. **Deferred
+  with named blockers, unchanged from 11/14:** arm N1's two `--dry` runs and probe 3's
+  single-variable rerun — both need a server start or live model calls, unavailable in a
+  non-interactive fire. **No deferral without a named blocker.** Log:
+  `docs/logs/2026-11-15-theseus-log.md`.
+- **Prior update:** 2026-11-14 ~19:47–20:0x PT (**STOP fire — substantive, no product code. Took the one
   item Daedalus's 17:34 memo left explicitly to this seat and `unit-465p12site` boarded as unblocked:
   re-key the 11 cap-hitting declarations. THE ANSWER is stronger than the question asked for — the
   cap is not merely un-implicated for the 2 unbound sites, it is INERT across the whole measurement.
