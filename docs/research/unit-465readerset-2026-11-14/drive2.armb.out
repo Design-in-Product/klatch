@@ -1,0 +1,141 @@
+── arm B · cured slicer + name-as-data census, pin e96741bf ──
+
+PART 1 — the cure
+
+  NO-SHAPE NEITHER    topToken             verdict.mjs@156-160 rets=3 (arm A: NEITHER@156-160 rets=3)
+  NO-SHAPE NEITHER    allOf                verdict.mjs@208-217 rets=3 (arm A: NEITHER@208-217 rets=3)
+  NO-SHAPE NEITHER    measured             verdict.mjs@235-242 rets=2 (arm A: NEITHER@235-242 rets=2)
+  NO-SHAPE NEITHER    renderVerdict        verdict.mjs@249-332 rets=2 (arm A: NEITHER@249-249 rets=0)  <<< MOVED
+  NO-SHAPE NEITHER    renderRows           verdict.mjs@435-437 rets=1 (arm A: NEITHER@435-437 rets=1)
+  NO-SHAPE NEITHER    renderPredRows       verdict.mjs@449-451 rets=1 (arm A: NEITHER@449-451 rets=1)
+  BEARING  NAME_READ  readRows             verdict.mjs@461-492 rets=5 (arm A: NAME_READ@461-492 rets=5)
+  BEARING  NAME_READ  readTail             verdict.mjs@515-568 rets=6 (arm A: NAME_READ@515-568 rets=6)
+  NO-SHAPE NAME_READ  readCorpusRows       verdict.mjs@640-663 rets=1 (arm A: NAME_READ@640-663 rets=1)
+  BEARING  NAME_READ  readVerdict          verdict.mjs@670-705 rets=12 (arm A: NAME_READ@670-705 rets=12)
+  NO-SHAPE STATE_READ isTracked            verdict.mjs@724-733 rets=2 (arm A: STATE_READ@724-733 rets=2)
+  NO-SHAPE NEITHER    liveSibling          verdict.mjs@736-740 rets=1 (arm A: NEITHER@736-740 rets=1)
+  NO-SHAPE NEITHER    writeRecording       verdict.mjs@747-757 rets=1 (arm A: NEITHER@747-747 rets=0)  <<< MOVED
+  NO-SHAPE NEITHER    selfTest             verdict.mjs@764-1092 rets=2 (arm A: NEITHER@764-1092 rets=2)
+  NO-SHAPE NEITHER    renderTail           verdict.mjs@1106-1113 rets=1 (arm A: NEITHER@1106-1106 rets=0)  <<< MOVED
+  NO-SHAPE NEITHER    classifyPath         attested-rounds.mjs@217-235 rets=6 (arm A: NEITHER@217-235 rets=6)
+  NO-SHAPE STATE_READ unattestedRoundsAt   attested-rounds.mjs@508-535 rets=2 (arm A: STATE_READ@508-535 rets=2)
+  NO-SHAPE STATE_READ casePathsPresent     attested-rounds.mjs@541-546 rets=2 (arm A: STATE_READ@541-546 rets=2)
+  NO-SHAPE STATE_READ git                  attested-rounds.mjs@549-553 rets=2 (arm A: STATE_READ@549-553 rets=2)
+  NO-SHAPE STATE_READ dirRounds            attested-rounds.mjs@559-568 rets=2 (arm A: STATE_READ@559-568 rets=2)
+  NO-SHAPE STATE_READ attestedRounds       attested-rounds.mjs@580-628 rets=2 (arm A: NEITHER@580-580 rets=0)  <<< MOVED
+  NO-SHAPE NEITHER    selfTest             attested-rounds.mjs@634-807 rets=4 (arm A: NEITHER@634-807 rets=4)
+
+reader-shaped: arm A 9 → cured 10
+refusal shape: WITH 3 [readRows,readTail,readVerdict] · WITHOUT 7 [readCorpusRows,isTracked,unattestedRoundsAt,casePathsPresent,git,dirRounds,attestedRounds]
+
+PART 2 — occurrence census over 431 tracked .mjs under docs/research/ (lib/ excluded as the subject)
+
+  all 9 axis names: 2790 occurrences
+      CALL           1148
+      DATA_STRING    823
+      COMMENT        428
+      REF_VALUE      202
+      IMPORT         67
+      MEMBER_CALL    55
+      DATA_REGEX     54
+      UNCLASSIFIED   13
+      UNCLASSIFIED rate 0.5%
+
+  8 names, `git` declared out: 546 occurrences
+      CALL           171
+      DATA_STRING    122
+      COMMENT        100
+      IMPORT         60
+      MEMBER_CALL    51
+      REF_VALUE      23
+      DATA_REGEX     11
+      UNCLASSIFIED   8
+      UNCLASSIFIED rate 1.5%
+
+name-as-data sites, by file:
+
+  one docs/research/round442-instruments/cripple-and-regrade.mjs ADMITS-NON-BEARING
+        isTracked@90/str
+  one docs/research/round442-instruments/grade-the-shared-verdict-emitter.mjs ADMITS-NON-BEARING
+        isTracked@363/str
+  one docs/research/round443-instruments/grade-the-emitter-at-its-published-line.mjs
+        readVerdict@219/str readVerdict@221/str
+  one docs/research/round444-instruments/grade-the-round-trip-cure.mjs
+        readVerdict@198/str
+  one docs/research/round446-instruments/grade-my-own-oracle-predicate.mjs
+        readVerdict@463/str readVerdict@463/str readVerdict@463/str readVerdict@504/rx readVerdict@528/str readVerdict@529/str readVerdict@547/str readVerdict@554/str
+  one docs/research/round448-instruments/census-pred-occupancy.mjs
+        readVerdict@71/str readVerdict@72/str
+  one docs/research/round448-instruments/grade-the-four-list-scorer.mjs
+        readVerdict@278/str readVerdict@314/str readVerdict@364/str readVerdict@439/str
+  one docs/research/round451-instruments/settle-the-subset-question-on-real-exemplars.mjs ADMITS-NON-BEARING
+        readCorpusRows@380/str
+  one docs/research/round452-instruments/no-id-class-separates-and-the-liveness-reader-is-cured.mjs ADMITS-NON-BEARING
+        readCorpusRows@258/str readCorpusRows@282/rx readCorpusRows@282/rx readCorpusRows@289/rx readCorpusRows@290/rx readCorpusRows@295/str readCorpusRows@296/str
+  one docs/research/round457-instruments/grade-recording-completeness-across-the-whole-corpus.mjs
+        readTail@153/str readTail@177/str readTail@217/str readTail@236/str readTail@280/str readTail@302/str readTail@305/str
+  one docs/research/round460-instruments/grade-the-pred-gate-landing.mjs
+        readTail@103/str readTail@131/str readTail@154/str readTail@194/str
+  SET docs/research/round462-instruments/grade-the-pred-half-refusal.mjs
+        readRows@113/str readTail@174/str readTail@311/str readVerdict@113/str
+  SET docs/research/round463-instruments/grade-the-57-of-461-class.mjs
+        readRows@114/str readTail@292/str readTail@292/str readTail@319/str readTail@319/str readVerdict@114/str
+  one docs/research/round464-instruments/grade-the-stop-condition.mjs ADMITS-NON-BEARING
+        dirRounds@1050/str dirRounds@1079/str dirRounds@1096/str
+  one docs/research/unit-464t2-reaim-2026-10-28/recon-credit-provenance.mjs ADMITS-NON-BEARING
+        dirRounds@167/str dirRounds@167/str
+  one docs/research/unit-464t8-2026-10-29/insert-coord-entry.mjs ADMITS-NON-BEARING
+        dirRounds@70/str
+  SET docs/research/unit-465maildurable-2026-11-13/arm-maildurable.mjs ADMITS-NON-BEARING
+        unattestedRoundsAt@357/str casePathsPresent@138/str
+  SET docs/research/unit-465p12site-2026-11-14/arm-p12site-a.mjs ADMITS-NON-BEARING
+        readRows@92/str readTail@92/str readCorpusRows@92/str readVerdict@92/str
+  SET docs/research/unit-465p12site-2026-11-14/arm-p12site-b.mjs ADMITS-NON-BEARING
+        readRows@81/str readTail@81/str readCorpusRows@81/str readVerdict@81/str
+  SET docs/research/unit-465p12site-2026-11-14/arm-p12site-c.mjs ADMITS-NON-BEARING
+        readRows@48/str readTail@48/str readCorpusRows@48/str readVerdict@48/str readVerdict@91/str readVerdict@91/str readVerdict@92/str readVerdict@92/str readVerdict@93/str readVerdict@133/str readVerdict@138/str readVerdict@173/str readVerdict@180/str
+  SET docs/research/unit-465refusalfate-2026-11-14/arm-refusalfate-a.mjs ADMITS-NON-BEARING
+        readRows@73/str readTail@73/str readCorpusRows@73/str readVerdict@73/str
+  SET docs/research/unit-465refusalfate-2026-11-14/arm-refusalfate-b.mjs ADMITS-NON-BEARING
+        readRows@93/str readRows@145/str readTail@93/str readCorpusRows@93/str readVerdict@93/str readVerdict@146/str
+  SET docs/research/unit-465routecure-2026-11-13/arm-routecure-b.mjs ADMITS-NON-BEARING
+        unattestedRoundsAt@121/str unattestedRoundsAt@126/str unattestedRoundsAt@129/rx unattestedRoundsAt@130/str unattestedRoundsAt@130/str attestedRounds@188/str
+  SET docs/research/unit-465routecure-2026-11-13/arm-routecure.mjs ADMITS-NON-BEARING
+        unattestedRoundsAt@123/str unattestedRoundsAt@125/str unattestedRoundsAt@125/str attestedRounds@128/str attestedRounds@131/str
+  one docs/research/unit-465s6bounds-2026-11-13/arm-s6bounds-b.mjs ADMITS-NON-BEARING
+        unattestedRoundsAt@99/str
+  SET docs/research/unit-465s6bounds-2026-11-13/arm-s6bounds.mjs ADMITS-NON-BEARING
+        unattestedRoundsAt@283/str unattestedRoundsAt@297/str casePathsPresent@257/rx casePathsPresent@258/str casePathsPresent@268/str casePathsPresent@269/str attestedRounds@123/str attestedRounds@324/str attestedRounds@333/str
+  one docs/research/unit-465s6bounds-2026-11-13/composed-classifier6c9a4348-reader-head.mjs ADMITS-NON-BEARING
+        unattestedRoundsAt@341/str
+  one docs/research/unit-465s6bounds-2026-11-13/cripple-p4-no-nearmiss.mjs ADMITS-NON-BEARING
+        unattestedRoundsAt@342/str
+  one docs/research/unit-465s6bounds-2026-11-13/cripple-p4b-no-nearmiss-case.mjs ADMITS-NON-BEARING
+        unattestedRoundsAt@342/str
+  one docs/research/unit-465s6bounds-2026-11-13/cripple-p5-classifierrev-banana.mjs ADMITS-NON-BEARING
+        unattestedRoundsAt@343/str
+  one docs/research/unit-465s6bounds-2026-11-13/cripple-p5b-classifierrev-deleted.mjs ADMITS-NON-BEARING
+        unattestedRoundsAt@342/str
+  one docs/research/unit-465schemacollide-2026-11-14/arm-schemacollide-a.mjs
+        readVerdict@109/str readVerdict@118/str readVerdict@123/str readVerdict@227/str readVerdict@231/str readVerdict@237/rx readVerdict@242/str readVerdict@247/str
+  one docs/research/unit-465schemacollide-2026-11-14/arm-schemacollide-b.mjs
+        readVerdict@242/str readVerdict@251/rx readVerdict@256/str
+  one docs/research/unit-465schemacollide-2026-11-14/arm-schemacollide-c.mjs
+        readVerdict@66/rx readVerdict@73/str readVerdict@97/rx readVerdict@104/str readVerdict@114/str readVerdict@118/str
+  one docs/research/unit-465srckeys-2026-11-12/arm-srckeys.mjs ADMITS-NON-BEARING
+        attestedRounds@398/str
+  one docs/research/unit-465t3agree-2026-11-13/grade-t3-agree.mjs ADMITS-NON-BEARING
+        attestedRounds@123/str attestedRounds@126/str
+
+UNCLASSIFIED occurrences (the refusal bucket B5 reads), listed so arm C can hand-read them:
+
+  docs/research/round442-instruments/grade-the-shared-verdict-emitter.mjs:362 isTracked
+  docs/research/round460-instruments/grade-the-pred-gate-landing.mjs:131 readTail
+  docs/research/round464-instruments/grade-the-stop-condition.mjs:1038 dirRounds
+  docs/research/round464-instruments/grade-the-stop-condition.mjs:1075 dirRounds
+  docs/research/round464-instruments/grade-the-stop-condition.mjs:1093 dirRounds
+  docs/research/round464-instruments/grade-the-stop-condition.mjs:1290 dirRounds
+  docs/research/unit-465maildurable-2026-11-13/arm-maildurable.mjs:356 unattestedRoundsAt
+  docs/research/unit-465maildurable-2026-11-13/arm-maildurable.mjs:409 unattestedRoundsAt
+
+VERDICT/1 ok legs=5 red=[] refused=[] preds=9 refuted=[B6,B1,B4] prefused=[]
