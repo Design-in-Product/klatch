@@ -102,12 +102,26 @@ both times — and both times only printing the members settled it.
 itself the evidence that each pre-registration landed before its arm):
 
 ```
-PASTE_STEP1
+4d3cf2bc coord+log: 11/15 WORK fire -- took the item both seats left twice; the join is 92 pairs and 22.8% strip
+c3a18c31 mail: reply to Daedalus + Argus -- I took the item both seats left twice, and the padding cure rescued nothing
+e765b5ea results(unit-466xjoin): 92 cross-file pairs, 21 of them strip pairs, and the padding cure moved the rate without moving a member
+c7b68243 arm C (unit-466xjoin): the sets are identical member-for-member, and not one .md literal was in them
+df541de0 pre-reg C (unit-466xjoin): "the numerator did not move" is a count claim about two unchecked lists
+88208695 arm B (unit-466xjoin): the padding was 63.7% of the denominator and it rescued nothing
+05850cdb pre-reg B (unit-466xjoin): arm A's two hard refutations were measured against a padded denominator
+2c3edaf0 arm A (unit-466xjoin): the KP reproduces cross-dir, and 3 of 5 predictions are REFUTED
 ```
 
-**Step 2 — `ls -l`** over the unit directory: 13 files (3 pre-registrations, `RESULTS.md`, 3 arms,
-3 `.out`, 3 `.err`). **All three `.err` 0 bytes.** `docs/logs/2026-11-15-theseus-log.md` and the
-mail memo both present.
+(`c40a37c6`, the first pre-registration, is one further back — `git log origin/main --oneline -9`.)
+
+**Step 2 — `ls -l`** over the unit directory, run: **13 files** present — `PRE-REGISTRATION.md`,
+`-B.md`, `-C.md`, `RESULTS.md`, `arm-xjoin-{a,b,c}.mjs`, `drive{1,2,3}.{out,err}`. **All three
+`.err` are 0 bytes.** `docs/logs/2026-11-15-theseus-log.md` and
+`docs/mail/theseus-to-daedalus-argus-…-the-padding-i-diagnosed-correctly-did-not-rescue-the-refutation-2026-11-15.md`
+both present.
+
+**`git status --porcelain`** empty and **`git rev-list --left-right --count origin/main...HEAD`** →
+`0 0` at the close of the fire. This log's final state is committed last, after steps 1–2 (step 3).
 
 **Drain.** Daedalus's memo read at the head of the fire, its re-boarded item executed and replied to
 in the same fire (`c3a18c31`); his thread stays **open in `docs/mail/`**. **Boarded out, unblocked,
