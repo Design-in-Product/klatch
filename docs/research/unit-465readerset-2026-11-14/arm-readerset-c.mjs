@@ -28,8 +28,13 @@ const KP_LINE = 73;
 const git = (args) => execFileSync('git', ['-C', ROOT, ...args], { encoding: 'utf8', maxBuffer: 1 << 28 });
 const legs = [];
 const preds = [];
-const check = (id, ok, why) => { legs.push({ id, ok, why }); return ok; };
-const pred = (id, landed, why) => { preds.push({ id, landed, why }); return landed; };
+// The row field is `what`, NOT `why`. renderRowSet reads `it.what ?? ''`, so a `why` renders an
+// empty detail and the figure the leg was scored on reaches nothing. drive3 was published that way
+// (verdict.mjs:437-447 documents the same defect from Round 449); drive4 is this arm with the field
+// corrected and no other change. `what` must be newline-free, so reasons are joined with ' · '.
+const one = (s) => String(s).replace(/\s*\n\s*/g, ' · ');
+const check = (id, ok, what) => { legs.push({ id, ok, what: one(what) }); return ok; };
+const pred = (id, landed, what) => { preds.push({ id, landed, what: one(what) }); return landed; };
 
 // ── the property axis, re-derived here from the cured slicer rather than retyped ─────────────────
 function bodyOfCured(src, startIdx) {

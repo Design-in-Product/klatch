@@ -1,0 +1,153 @@
+── arm C · selector/label split over 431 tracked .mjs, pin e96741bf ──
+
+name-as-data occurrences (8 names, `git` out): 132
+  SELECTOR   35  in 13 files
+  LABEL      52  in 19 files
+  UNRESOLVED 45  (34.1%, ceiling 30%)
+
+SELECTOR occurrences, verbatim source line, for the hand map:
+
+docs/research/round446-instruments/grade-my-own-oracle-predicate.mjs
+     504 rx  readVerdict         enc={                │ const usesReader = region !== null && /readVerdict\s*\(/.test(region);
+
+docs/research/round452-instruments/no-id-class-separates-and-the-liveness-reader-is-cured.mjs  ADMITS-NON-BEARING
+     282 rx  readCorpusRows      enc=none             │ const stripperKeptCode = /readCorpusRows/.test(code446) && /readCorpusRows/.test(code448);
+     282 rx  readCorpusRows      enc=none             │ const stripperKeptCode = /readCorpusRows/.test(code446) && /readCorpusRows/.test(code448);
+     289 rx  readCorpusRows      enc=none             │ const uses446 = /readCorpusRows/.test(code446);
+     290 rx  readCorpusRows      enc=none             │ const uses448 = /readCorpusRows/.test(code448);
+
+docs/research/unit-464t8-2026-10-29/insert-coord-entry.mjs  ADMITS-NON-BEARING
+      70 str dirRounds           enc=[                │ + " `creditEdges`, which come from `c.dirRounds`, so the self-attested cure set is a **subset** of the"
+
+docs/research/unit-465p12site-2026-11-14/arm-p12site-a.mjs  ADMITS-NON-BEARING
+      92 str readRows            enc=[                │ const READERS = ['readVerdict', 'readTail', 'readRows', 'readCorpusRows'];
+      92 str readTail            enc=[                │ const READERS = ['readVerdict', 'readTail', 'readRows', 'readCorpusRows'];
+      92 str readCorpusRows      enc=[                │ const READERS = ['readVerdict', 'readTail', 'readRows', 'readCorpusRows'];
+      92 str readVerdict         enc=[                │ const READERS = ['readVerdict', 'readTail', 'readRows', 'readCorpusRows'];
+
+docs/research/unit-465p12site-2026-11-14/arm-p12site-b.mjs  ADMITS-NON-BEARING
+      81 str readRows            enc=[                │ const READERS = ['readVerdict', 'readTail', 'readRows', 'readCorpusRows'];
+      81 str readTail            enc=[                │ const READERS = ['readVerdict', 'readTail', 'readRows', 'readCorpusRows'];
+      81 str readCorpusRows      enc=[                │ const READERS = ['readVerdict', 'readTail', 'readRows', 'readCorpusRows'];
+      81 str readVerdict         enc=[                │ const READERS = ['readVerdict', 'readTail', 'readRows', 'readCorpusRows'];
+
+docs/research/unit-465p12site-2026-11-14/arm-p12site-c.mjs  ADMITS-NON-BEARING
+      48 str readRows            enc=[                │ const READERS = ['readVerdict', 'readTail', 'readRows', 'readCorpusRows'];
+      48 str readTail            enc=[                │ const READERS = ['readVerdict', 'readTail', 'readRows', 'readCorpusRows'];
+      48 str readCorpusRows      enc=[                │ const READERS = ['readVerdict', 'readTail', 'readRows', 'readCorpusRows'];
+      48 str readVerdict         enc=[                │ const READERS = ['readVerdict', 'readTail', 'readRows', 'readCorpusRows'];
+      91 str readVerdict         enc=(:get            │ pred('S1', shapes.get('readVerdict').hasOk && shapes.get('readVerdict').hasRefusal,
+      91 str readVerdict         enc=(:get            │ pred('S1', shapes.get('readVerdict').hasOk && shapes.get('readVerdict').hasRefusal,
+     133 str readVerdict         enc=[                │ const popHis = populationUnder(['readVerdict']);   // Daedalus's key
+
+docs/research/unit-465refusalfate-2026-11-14/arm-refusalfate-a.mjs  ADMITS-NON-BEARING
+      73 str readRows            enc=[                │ const READERS = ['readVerdict', 'readTail', 'readRows', 'readCorpusRows'];
+      73 str readTail            enc=[                │ const READERS = ['readVerdict', 'readTail', 'readRows', 'readCorpusRows'];
+      73 str readCorpusRows      enc=[                │ const READERS = ['readVerdict', 'readTail', 'readRows', 'readCorpusRows'];
+      73 str readVerdict         enc=[                │ const READERS = ['readVerdict', 'readTail', 'readRows', 'readCorpusRows'];
+
+docs/research/unit-465refusalfate-2026-11-14/arm-refusalfate-b.mjs  ADMITS-NON-BEARING
+      93 str readRows            enc=[                │ const LIB_READERS = ['readVerdict', 'readTail', 'readRows', 'readCorpusRows'];
+      93 str readTail            enc=[                │ const LIB_READERS = ['readVerdict', 'readTail', 'readRows', 'readCorpusRows'];
+      93 str readCorpusRows      enc=[                │ const LIB_READERS = ['readVerdict', 'readTail', 'readRows', 'readCorpusRows'];
+      93 str readVerdict         enc=[                │ const LIB_READERS = ['readVerdict', 'readTail', 'readRows', 'readCorpusRows'];
+
+docs/research/unit-465routecure-2026-11-13/arm-routecure-b.mjs  ADMITS-NON-BEARING
+     129 rx  unattestedRoundsAt  enc={                │ ok: /unattestedRoundsAt/.test(src) === false && /sliced\.classifyPath/.test(src),
+
+docs/research/unit-465s6bounds-2026-11-13/arm-s6bounds.mjs  ADMITS-NON-BEARING
+     257 rx  casePathsPresent    enc=(:match          │ const hits = (arm.match(/casePathsPresent/g) || []).length;
+
+docs/research/unit-465schemacollide-2026-11-14/arm-schemacollide-a.mjs
+     237 rx  readVerdict         enc={                │ return /readVerdict\s*\(/.test(src) && /\.out\b/.test(src);
+
+docs/research/unit-465schemacollide-2026-11-14/arm-schemacollide-b.mjs
+     251 rx  readVerdict         enc=(:if             │ if (!/readVerdict\s*\(/.test(src)) continue;             // an import is not a call site
+
+docs/research/unit-465schemacollide-2026-11-14/arm-schemacollide-c.mjs
+      66 rx  readVerdict         enc=none             │ const vveDefinesOwn = /function readVerdict\s*\(/.test(vveSrc);
+      97 rx  readVerdict         enc={                │ const definesOwn = /function readVerdict\s*\(/.test(src);
+
+UNRESOLVED occurrences — the refusal bucket, listed so the ceiling is auditable:
+
+   docs/research/round442-instruments/cripple-and-regrade.mjs:90 isTracked enc={ │ why: 'Make `isTracked` always answer false. The property under test is G7\'s write guard. The '
+   docs/research/round442-instruments/grade-the-shared-verdict-emitter.mjs:363 isTracked enc={ │ detail = `scratch repo · target tracked: ${isTracked} · threw TrackedTargetError: ${named} · `
+   docs/research/round443-instruments/grade-the-emitter-at-its-published-line.mjs:219 readVerdict enc={ │ present: 'const rt = readVerdict(line);',
+   docs/research/round443-instruments/grade-the-emitter-at-its-published-line.mjs:221 readVerdict enc={ │ replace: '  const rt = readVerdict(line);\n'
+   docs/research/round444-instruments/grade-the-round-trip-cure.mjs:198 readVerdict enc={ │ const A_RT = '  const rt = readVerdict(line);';
+   docs/research/round446-instruments/grade-my-own-oracle-predicate.mjs:529 readVerdict enc=(:importSource │ + 'const NEW = { readVerdict, topToken };\n'
+   docs/research/round448-instruments/grade-the-four-list-scorer.mjs:314 readVerdict enc=(:Function │ retired = new Function('readVerdict', 'topToken', `${retiredSrc}\n  return scoreP1;`)(readVerdict, topToken);
+   docs/research/round457-instruments/grade-recording-completeness-across-the-whole-corpus.mjs:153 readTail enc={ │ note = `${predRows} PRED row(s) vs preds=${v.verdict.preds}; readTail says `
+   docs/research/round457-instruments/grade-recording-completeness-across-the-whole-corpus.mjs:177 readTail enc=(:say │ + '— the class readTail could not refuse at df5a27cc, refused by name since Round 460');
+   docs/research/round457-instruments/grade-recording-completeness-across-the-whole-corpus.mjs:217 readTail enc=none │ const ANCHOR = 'export function readTail(text) {';
+   docs/research/round460-instruments/grade-the-pred-gate-landing.mjs:103 readTail enc=(:say │ say('═══ ROUND 460 — THE readTail PRED GATE, GRADED OVER THE COMMITTED CORPUS ═══');
+   docs/research/round460-instruments/grade-the-pred-gate-landing.mjs:131 readTail enc={ │ if (typeof m.readTail !== 'function') importProblem = 'the pinned source has no readTail export';
+   docs/research/round462-instruments/grade-the-pred-half-refusal.mjs:113 readRows enc=(:Function │ api = new Function('readVerdict', 'readRows', `${slice}\nreturn { parse, compare, sig, show,`
+   docs/research/round462-instruments/grade-the-pred-half-refusal.mjs:174 readTail enc=(:say │ say(`INPUTS  ${outs.length} committed .out; lib readTail: DROPPED ${libDropped.length}, `
+   docs/research/round462-instruments/grade-the-pred-half-refusal.mjs:311 readTail enc=(:say │ say(`E7  lib readTail PRED_ROW_COUNT_DISAGREEMENT ${libDropped.length} · `
+   docs/research/round462-instruments/grade-the-pred-half-refusal.mjs:113 readVerdict enc=(:Function │ api = new Function('readVerdict', 'readRows', `${slice}\nreturn { parse, compare, sig, show,`
+   docs/research/round463-instruments/grade-the-57-of-461-class.mjs:114 readRows enc=(:Function │ api = new Function('readVerdict', 'readRows', `${slice}\nreturn { parse, compare, sig, show };`)(
+   docs/research/round463-instruments/grade-the-57-of-461-class.mjs:292 readTail enc=(:say │ + `round-trip of the complete tail → ${readTail(withRows).ok === true ? 'ok' : readTail(withRows).refusal}`);
+   docs/research/round463-instruments/grade-the-57-of-461-class.mjs:292 readTail enc=(:say │ + `round-trip of the complete tail → ${readTail(withRows).ok === true ? 'ok' : readTail(withRows).refusal}`);
+   docs/research/round463-instruments/grade-the-57-of-461-class.mjs:319 readTail enc={ │ say(`T6  his artifact: ${hisText === null ? 'UNREACHABLE' : `${hisTail.ok === true ? 'readTail ok' : `readTail
+   docs/research/round463-instruments/grade-the-57-of-461-class.mjs:319 readTail enc={ │ say(`T6  his artifact: ${hisText === null ? 'UNREACHABLE' : `${hisTail.ok === true ? 'readTail ok' : `readTail
+   docs/research/round463-instruments/grade-the-57-of-461-class.mjs:114 readVerdict enc=(:Function │ api = new Function('readVerdict', 'readRows', `${slice}\nreturn { parse, compare, sig, show };`)(
+   docs/research/unit-465maildurable-2026-11-13/arm-maildurable.mjs:357 unattestedRoundsAt enc={ │ return { refused: true, why: 'live module exports no unattestedRoundsAt — pre-cure drive' };
+   docs/research/unit-465maildurable-2026-11-13/arm-maildurable.mjs:138 casePathsPresent enc={ │ note: `selfTest=${st} · casePathsPresent@${NOW_REV}=[${missing === null ? 'REFUSED' : missing}]`,
+   docs/research/unit-465routecure-2026-11-13/arm-routecure-b.mjs:121 unattestedRoundsAt enc={ │ `unattestedRoundsAt(HEAD).rounds ${uPre.rounds.length} → ${uNow.rounds.length} (moved=${readerMoved}); ` +
+   docs/research/unit-465routecure-2026-11-13/arm-routecure-b.mjs:130 unattestedRoundsAt enc={ │ detail: `calls unattestedRoundsAt=${/unattestedRoundsAt/.test(src)} · uses sliced.classifyPath=${/sliced\.clas
+   docs/research/unit-465routecure-2026-11-13/arm-routecure-b.mjs:130 unattestedRoundsAt enc={ │ detail: `calls unattestedRoundsAt=${/unattestedRoundsAt/.test(src)} · uses sliced.classifyPath=${/sliced\.clas
+   docs/research/unit-465routecure-2026-11-13/arm-routecure.mjs:125 unattestedRoundsAt enc={ │ return { ok: has === false, detail: `typeof unattestedRoundsAt = ${typeof OLDMOD.unattestedRoundsAt}` };
+   docs/research/unit-465routecure-2026-11-13/arm-routecure.mjs:125 unattestedRoundsAt enc={ │ return { ok: has === false, detail: `typeof unattestedRoundsAt = ${typeof OLDMOD.unattestedRoundsAt}` };
+   docs/research/unit-465routecure-2026-11-13/arm-routecure.mjs:131 attestedRounds enc={ │ return { ok: c === 'function' && a === 'function', detail: `classifyPath=${c} attestedRounds=${a}` };
+   docs/research/unit-465s6bounds-2026-11-13/arm-s6bounds.mjs:283 unattestedRoundsAt enc=(:refuse │ refuse('T8', 'sliced unattestedRoundsAt refused');
+   docs/research/unit-465s6bounds-2026-11-13/arm-s6bounds.mjs:297 unattestedRoundsAt enc=(:refuse │ refuse('T9', 'live unattestedRoundsAt refused');
+   docs/research/unit-465s6bounds-2026-11-13/arm-s6bounds.mjs:268 casePathsPresent enc=(:refuse │ if (missing === null) refuse('T7c', 'casePathsPresent refused');
+   docs/research/unit-465s6bounds-2026-11-13/arm-s6bounds.mjs:123 attestedRounds enc=(:refuse │ refuse('T3', 'attestedRounds refused on the scratch repo');
+   docs/research/unit-465s6bounds-2026-11-13/arm-s6bounds.mjs:324 attestedRounds enc=(:refuse │ refuse('T10', 'attestedRounds refused at 6c9a4348');
+   docs/research/unit-465s6bounds-2026-11-13/arm-s6bounds.mjs:333 attestedRounds enc=(:refuse │ refuse('T10b', 'attestedRounds refused at HEAD');
+   docs/research/unit-465s6bounds-2026-11-13/composed-classifier6c9a4348-reader-head.mjs:341 unattestedRoundsAt enc={ │ readAnyRevWith: 'unattestedRoundsAt(repo, rev)',
+   docs/research/unit-465s6bounds-2026-11-13/cripple-p4-no-nearmiss.mjs:342 unattestedRoundsAt enc={ │ readAnyRevWith: 'unattestedRoundsAt(repo, rev)',
+   docs/research/unit-465s6bounds-2026-11-13/cripple-p4b-no-nearmiss-case.mjs:342 unattestedRoundsAt enc={ │ readAnyRevWith: 'unattestedRoundsAt(repo, rev)',
+   docs/research/unit-465s6bounds-2026-11-13/cripple-p5-classifierrev-banana.mjs:343 unattestedRoundsAt enc={ │ readAnyRevWith: 'unattestedRoundsAt(repo, rev)',
+   docs/research/unit-465s6bounds-2026-11-13/cripple-p5b-classifierrev-deleted.mjs:342 unattestedRoundsAt enc={ │ readAnyRevWith: 'unattestedRoundsAt(repo, rev)',
+   docs/research/unit-465schemacollide-2026-11-14/arm-schemacollide-a.mjs:227 readVerdict enc=(:git │ const callers = git('grep', '-rln', 'readVerdict', '--', 'docs/research', 'scripts', 'packages')
+   docs/research/unit-465schemacollide-2026-11-14/arm-schemacollide-b.mjs:242 readVerdict enc=(:git │ const candidates = git('grep', '-rln', 'readVerdict', '--', 'docs/research', 'scripts', 'packages')
+   docs/research/unit-465t3agree-2026-11-13/grade-t3-agree.mjs:123 attestedRounds enc=(:add │ `guarantee holds only because attestedRounds() never emits such a pair (P1/P1b)`);
+   docs/research/unit-465t3agree-2026-11-13/grade-t3-agree.mjs:126 attestedRounds enc=(:add │ add('G1', b !== null && c !== null, '[GATE  ] attestedRounds resolved at REV_NOW under both denialRe values');
+
+LABEL occurrences, by file (arm B counted every one of these as a selector):
+
+   docs/research/round446-instruments/grade-my-own-oracle-predicate.mjs: readVerdict@463 readVerdict@463 readVerdict@463 readVerdict@547 readVerdict@554
+   docs/research/round448-instruments/census-pred-occupancy.mjs: readVerdict@71 readVerdict@72
+   docs/research/round448-instruments/grade-the-four-list-scorer.mjs: readVerdict@278 readVerdict@364 readVerdict@439
+   docs/research/round451-instruments/settle-the-subset-question-on-real-exemplars.mjs: readCorpusRows@380
+   docs/research/round452-instruments/no-id-class-separates-and-the-liveness-reader-is-cured.mjs: readCorpusRows@258 readCorpusRows@295 readCorpusRows@296
+   docs/research/round457-instruments/grade-recording-completeness-across-the-whole-corpus.mjs: readTail@236 readTail@280 readTail@302 readTail@305
+   docs/research/round460-instruments/grade-the-pred-gate-landing.mjs: readTail@154 readTail@194
+   docs/research/round464-instruments/grade-the-stop-condition.mjs: dirRounds@1050 dirRounds@1079 dirRounds@1096
+   docs/research/unit-464t2-reaim-2026-10-28/recon-credit-provenance.mjs: dirRounds@167 dirRounds@167
+   docs/research/unit-465p12site-2026-11-14/arm-p12site-c.mjs: readVerdict@92 readVerdict@92 readVerdict@93 readVerdict@138 readVerdict@173 readVerdict@180
+   docs/research/unit-465refusalfate-2026-11-14/arm-refusalfate-b.mjs: readRows@145 readVerdict@146
+   docs/research/unit-465routecure-2026-11-13/arm-routecure-b.mjs: unattestedRoundsAt@126 attestedRounds@188
+   docs/research/unit-465routecure-2026-11-13/arm-routecure.mjs: unattestedRoundsAt@123 attestedRounds@128
+   docs/research/unit-465s6bounds-2026-11-13/arm-s6bounds-b.mjs: unattestedRoundsAt@99
+   docs/research/unit-465s6bounds-2026-11-13/arm-s6bounds.mjs: casePathsPresent@258 casePathsPresent@269
+   docs/research/unit-465schemacollide-2026-11-14/arm-schemacollide-a.mjs: readVerdict@109 readVerdict@118 readVerdict@123 readVerdict@231 readVerdict@242 readVerdict@247
+   docs/research/unit-465schemacollide-2026-11-14/arm-schemacollide-b.mjs: readVerdict@256
+   docs/research/unit-465schemacollide-2026-11-14/arm-schemacollide-c.mjs: readVerdict@73 readVerdict@104 readVerdict@114 readVerdict@118
+   docs/research/unit-465srckeys-2026-11-12/arm-srckeys.mjs: attestedRounds@398
+
+LEG M0 ok axis re-derived here, not retyped: 10 reader-shaped exports, bearing=[readRows,readTail,readVerdict]
+LEG M1 ok self-dir members at the pin: 0 (0 — pin, not filter)
+LEG M2 RED C8 ceiling: UNRESOLVED 45 of 132 name-as-data occurrences = 34.1% against 30% — FIRED, C4/C5/C7 are VOID
+LEG M3 ok KNOWN POSITIVE docs/research/unit-465refusalfate-2026-11-14/arm-refusalfate-a.mjs:73 classified SELECTOR on 4 of 4 names [readCorpusRows,readRows,readTail,readVerdict] — a census that loses it is measuring something else
+LEG M4 ok C1 is NOT decided by this arm: it asks whether a site's prose justifies its population in refusal terms, which is a hand read over the 9 C5 survivors, listed below
+PRED C6 LANDED KP recovered on all four names: readCorpusRows,readRows,readTail,readVerdict
+PRED C4 LANDED files with >=1 SELECTOR occurrence: 13 (<=15?), down from arm B's 36 name-as-data files
+PRED C5 REFUTED SELECTOR files admitting a NON-refusal-bearing reader: 9 (<=8?), against arm B's 24 on the un-split key [round452-instruments/no-id-class-separates-and-the-liveness-reader-is-cured.mjs, unit-464t8-2026-10-29/insert-coord-entry.mjs, unit-465p12site-2026-11-14/arm-p12site-a.mjs, unit-465p12site-2026-11-14/arm-p12site-b.mjs, unit-465p12site-2026-11-14/arm-p12site-c.mjs, unit-465refusalfate-2026-11-14/arm-refusalfate-a.mjs, unit-465refusalfate-2026-11-14/arm-refusalfate-b.mjs, unit-465routecure-2026-11-13/arm-routecure-b.mjs, unit-465s6bounds-2026-11-13/arm-s6bounds.mjs]
+PRED C7 REFUTED admitting SELECTOR files by which module's non-bearing reader they name: attested-rounds only 3 · verdict only 6 · both 0 (occurrences: attested 3, verdict 9)
+PRED C2 LANDED files importing readCorpusRows alongside >=1 bearing reader: 6 (>=2?) [docs/research/round446-instruments/grade-my-own-oracle-predicate.mjs, docs/research/round448-instruments/record-cripples.mjs, docs/research/round450-instruments/grade-the-row-guards.mjs, docs/research/round452-instruments/census-the-legacy-id-grammar-and-the-liveness-reader.mjs, docs/research/round452-instruments/census2-reconcile-his-26-and-hand-read-the-drops.mjs, docs/research/round452-instruments/no-id-class-separates-and-the-liveness-reader-is-cured.mjs]
+PRED C3 REFUTED of those, files that never write `.ok` at all: 0 (>=1?) []
+
+VERDICT/1 RED legs=5 red=[M2] refused=[] preds=6 refuted=[C5,C7,C3] prefused=[]
