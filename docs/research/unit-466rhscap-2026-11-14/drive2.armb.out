@@ -1,0 +1,26 @@
+  ok      B0  recording re-captured at 2694a13e — B5 2 of 20, R3 unbound 2
+          --- B1: the recording's display strings lifted to the join key, both sides compared in one form
+              recording B5 as printed : ["round452-instruments/census-the-legacy-id-grammar-and-the-liveness-reader.mjs","round452-instruments/census2-reconcile-his-26-and-hand-read-the-drops.mjs"]
+              lifted to the join key  : ["docs/research/round452-instruments/census-the-legacy-id-grammar-and-the-liveness-reader.mjs","docs/research/round452-instruments/census2-reconcile-his-26-and-hand-read-the-drops.mjs"]
+              K-cap p12Members        : ["docs/research/round452-instruments/census-the-legacy-id-grammar-and-the-liveness-reader.mjs","docs/research/round452-instruments/census2-reconcile-his-26-and-hand-read-the-drops.mjs"]
+              K-bal p12Members        : ["docs/research/round452-instruments/census-the-legacy-id-grammar-and-the-liveness-reader.mjs","docs/research/round452-instruments/census2-reconcile-his-26-and-hand-read-the-drops.mjs"]
+  ok      B1  normalised comparison: K-cap identical to the recording, K-bal identical to it
+  LANDED  Q1  arm A's REFUTED P5 was an artefact of its own comparison — normalised, K-cap's P12 membership is identical to the recording's
+  ok      B2  the display prefix is the sole cause: raw comparison fails · basename comparison agrees · lifted comparison agrees → exactly the prefix, nothing else
+  LANDED  Q2  no member differs for any reason other than `docs/research/`: true
+          --- B3: per-site chain delta under the two keys, every site in the measurement
+              grade-the-four-list-scorer.mjs@167  RESOLVED   chain IDENTICAL  bound false→false   ← one of R3's two
+              census-the-legacy-id-grammar-and-the-liveness-reader.mjs@126  RESOLVED   chain IDENTICAL  bound true→true
+              census2-reconcile-his-26-and-hand-read-the-drops.mjs@47  RESOLVED   chain IDENTICAL  bound true→true
+              no-id-class-separates-and-the-liveness-reader-is-cured.mjs@248  RESOLVED   chain IDENTICAL  bound false→false   ← one of R3's two
+              grade-the-pred-half-refusal.mjs@184  UNRESOLVED chain IDENTICAL  bound false→false
+              grade-the-pred-half-refusal.mjs@187  UNRESOLVED chain IDENTICAL  bound false→false
+              grade-the-pred-half-refusal.mjs@340  UNRESOLVED chain IDENTICAL  bound false→false
+  ok      B3  sites compared under both keys: 7 (RESOLVED 4) · chains that changed: 0 [] · bound verdicts that moved: 0
+  LANDED  Q3  no RESOLVED site's chain differs between the keys — the 11 cap hits are inert across the whole measurement, not just for R3's two: 0 of 4 changed
+  ok      B4  cap-hit declarations: 11 · appearing in NO chain of any site: 11 · appearing in at least one: 0 []
+  LANDED  Q4  the cap-hit count overstates the cap's reach into this measurement — 11 of 11 cap-hit declarations are in no chain at all
+  ok      B5  CORRECTED P12, both keys, normalised: 2 of 20 under K-cap and 2 of 20 under K-bal, membership identical to the recording's — bound sites 2 vs 2. K-bal promotion: DECLINED — it moves nothing on this question
+  LANDED  Q5  the corrected P12 is 2 of 20 under either key, so the re-key buys nothing here: K-cap 2, K-bal 2
+  ok      B-gate  git status --porcelain packages scripts docs/research/lib → ""
+VERDICT/0 GREEN legs=7 red=[] refused=[] preds=5 refuted=[] prefused=[]

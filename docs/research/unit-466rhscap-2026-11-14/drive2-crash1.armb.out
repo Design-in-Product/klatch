@@ -1,0 +1,8 @@
+  ok      B0  recording re-captured at 2694a13e — B5 2 of 20, R3 unbound 2
+          --- B1: the recording's display strings lifted to the join key, both sides compared in one form
+              recording B5 as printed : ["round452-instruments/census-the-legacy-id-grammar-and-the-liveness-reader.mjs","round452-instruments/census2-reconcile-his-26-and-hand-read-the-drops.mjs"]
+              lifted to the join key  : ["docs/research/round452-instruments/census-the-legacy-id-grammar-and-the-liveness-reader.mjs","docs/research/round452-instruments/census2-reconcile-his-26-and-hand-read-the-drops.mjs"]
+              K-cap p12Members        : ["docs/research/round452-instruments/census-the-legacy-id-grammar-and-the-liveness-reader.mjs","docs/research/round452-instruments/census2-reconcile-his-26-and-hand-read-the-drops.mjs"]
+              K-bal p12Members        : ["docs/research/round452-instruments/census-the-legacy-id-grammar-and-the-liveness-reader.mjs","docs/research/round452-instruments/census2-reconcile-his-26-and-hand-read-the-drops.mjs"]
+  ok      B1  normalised comparison: K-cap identical to the recording, K-bal identical to it
+  LANDED  Q1  arm A's REFUTED P5 was an artefact of its own comparison — normalised, K-cap's P12 membership is identical to the recording's

@@ -1,0 +1,15 @@
+node:path:1474
+      validateString(suffix, 'suffix');
+      ^
+
+TypeError [ERR_INVALID_ARG_TYPE]: The "suffix" argument must be of type string. Received type number (0)
+    at basename (node:path:1474:7)
+    at Array.map (<anonymous>)
+    at file:///Users/xian/Development/klatch-worktrees/theseus/docs/research/unit-466rhscap-2026-11-14/arm-rhscap-b.mjs:263:46
+    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  code: 'ERR_INVALID_ARG_TYPE'
+}
+
+Node.js v26.5.0
