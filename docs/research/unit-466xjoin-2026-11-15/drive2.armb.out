@@ -1,0 +1,119 @@
+ok  B1        containment: 146 narrow hit(s), 0 not present in arm A's resolved hit set
+ok  B2        KP survives the narrowing: kind=CROSS_DIR producerDir=docs/research/unit-465p12site-2026-11-14; that dir holds 10 K-prod site(s) incl. docs/research/unit-465p12site-2026-11-14/arm-p12site-b.mjs:283: true
+ok  B3        arm A's 306 CROSS_DIR literals decompose exactly: 195 .md + 0 .out outside docs/research + 111 surviving = 306
+ok  B4        gate: empty
+
+── K-cons-narrow: recordings only (.out under docs/research) ──
+  narrow hits: 146   CROSS_DIR: 111   SAME_DIR: 35
+  distinct (consumer file → producer dir) CROSS_DIR pairs: 92
+    producer dir holds >=1 K-prod site:         21
+    producer dir holds >=1 LOSSY_BASENAME site: 15
+  consumed artefact publishes a bare basename: 24 | clean 41 | artefact not committed 27
+
+── arm A's CROSS_DIR padding, decomposed ──
+  .md literals dropped:                       195
+  .out outside docs/research dropped:         0
+  surviving research recordings:              111  of 306
+
+── narrowed CROSS_DIR pairs (strip/lossy sites in producer dir, bare-basename in artefact) ──
+    -    0/ 0       docs/research/lib/verdict.mjs  →  docs/research/lib/a/b
+    -    0/ 0 BARE  docs/research/round368-instruments/verdict-line-kind-grade.mts  →  docs/research/round404-instruments
+    -    0/ 0       docs/research/round373-instruments/held-port-sweep.mts  →  docs/research/round373-instruments/.round373
+    -    0/ 0       docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs  →  docs/research/round388-instruments/round389-instruments
+    -    0/ 0 BARE  docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs  →  docs/research/round391-instruments
+    -    0/ 0       docs/research/round393-instruments/record-my393-in-three-trees.mjs  →  docs/research/round393-instruments/Users/xian/Development/klatch-worktrees/daedalus/.testdata/r393
+  STRIP  1/ 1 BARE  docs/research/round395-instruments/record-drives.mjs  →  docs/research/round394-instruments
+  STRIP  1/ 1 BARE  docs/research/round396-instruments/record-drives.mjs  →  docs/research/round394-instruments
+    -    0/ 0       docs/research/round399-instruments/census-the-named-binding-form.mjs  →  docs/research/round398-instruments
+    -    0/ 0       docs/research/round400-instruments/regrade-the-file-scoped-guard.mjs  →  docs/research/round399-instruments
+    -    0/ 0       docs/research/round401-instruments/census-the-branch-polarity-axis.mjs  →  docs/research/round400-instruments
+    -    0/ 0       docs/research/round402-instruments/hand-read-the-unguarded.mjs  →  docs/research/round400-instruments
+    -    0/ 0       docs/research/round402-instruments/key-from-round400.mjs  →  docs/research/round399-instruments
+    -    0/ 0       docs/research/round409-instruments/record-gate.mjs  →  docs/research/round407-instruments
+    -    0/ 0       docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs  →  docs/research/round411-instruments/round413-instruments
+  STRIP  1/ 1       docs/research/round412-instruments/resolve-the-ternary-and-reconstruct-the-nine.mjs  →  docs/research/round411-instruments
+    -    0/ 0 BARE  docs/research/round414-instruments/grade-the-refusing-half-and-reconcile-the-ten.mjs  →  docs/research/round412-instruments
+    -    0/ 0       docs/research/round415-instruments/census-the-index-keyed-population.mjs  →  docs/research/round412-instruments
+    -    0/ 0       docs/research/round420-instruments/his-old-cell-is-keyed-on-head.mjs  →  docs/research/round419-instruments
+  STRIP  1/ 0       docs/research/round424-instruments/an-exit-code-is-not-the-gate-that-fired.mjs  →  docs/research/round423-instruments
+  STRIP  2/ 0 BARE  docs/research/round426-instruments/a-published-sentence-is-not-its-discriminator.mjs  →  docs/research/round425-instruments
+  STRIP  2/ 0       docs/research/round426-instruments/a-retyped-constant-from-another-file-is-not-a-pin.mjs  →  docs/research/round425-instruments
+  STRIP  2/ 0 BARE  docs/research/round428-instruments/a-sentence-keyed-on-a-subset-publishes-past-its-own-gate.mjs  →  docs/research/round425-instruments
+    -    0/ 0 BARE  docs/research/round430-instruments/grade-the-convention-gate.mjs  →  docs/research/round432-instruments
+    -    0/ 0       docs/research/round430-instruments/refusal-convention.mjs  →  docs/research/round430-instruments/round431-instruments
+    -    0/ 0       docs/research/round430-instruments/refusal-convention.mjs  →  docs/research/round430-instruments/round432-instruments
+  STRIP  1/ 1 BARE  docs/research/round431-instruments/grade-his-convention-and-measure-the-reach.mjs  →  docs/research/round429-instruments
+  STRIP  2/ 2 BARE  docs/research/round432-instruments/grade-the-two-cures.mjs  →  docs/research/round430-instruments
+    -    0/ 0       docs/research/round434-instruments/grade-the-two-cures-and-the-prose.mjs  →  docs/research/round433-instruments
+    -    0/ 0       docs/research/round434-instruments/precure-refusal-convention.sliced.mjs  →  docs/research/round434-instruments/round431-instruments
+    -    0/ 0       docs/research/round434-instruments/precure-refusal-convention.sliced.mjs  →  docs/research/round434-instruments/round432-instruments
+    -    0/ 0       docs/research/round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs  →  docs/research/round432-instruments
+    -    0/ 0 BARE  docs/research/round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs  →  docs/research/round434-instruments
+    -    0/ 0 BARE  docs/research/round436-instruments/grade-the-cures-against-a-runtime-oracle.mjs  →  docs/research/round434-instruments
+    -    0/ 0       docs/research/round436-instruments/grade-the-cures-against-a-runtime-oracle.mjs  →  docs/research/round435-instruments
+    -    0/ 0       docs/research/round436-instruments/precure-refusal-convention.sliced.mjs  →  docs/research/round436-instruments/round431-instruments
+    -    0/ 0       docs/research/round436-instruments/precure-refusal-convention.sliced.mjs  →  docs/research/round436-instruments/round432-instruments
+    -    0/ 0       docs/research/round437-instruments/grade-his-cure-and-the-live-keyed-finding-leg.mjs  →  docs/research/round436-instruments
+    -    0/ 0       docs/research/round438-instruments/precure-refusal-convention.sliced.mjs  →  docs/research/round438-instruments/round431-instruments
+    -    0/ 0       docs/research/round438-instruments/precure-refusal-convention.sliced.mjs  →  docs/research/round438-instruments/round432-instruments
+    -    0/ 0       docs/research/round439-instruments/attribute-the-ungradeable-red.mjs  →  docs/research/round438-instruments
+  STRIP  1/ 1 BARE  docs/research/round440-instruments/census-the-gate-line-grammar-his-cure-must-cover.mjs  →  docs/research/round439-instruments
+    -    0/ 0       docs/research/round441-instruments/key-the-silent-class-from-source.mjs  →  docs/research/round440-instruments
+    -    0/ 0       docs/research/round443-instruments/grade-the-emitter-at-its-published-line.mjs  →  docs/research/round443-fixture
+  STRIP  1/ 1       docs/research/round444-instruments/grade-the-round-trip-cure.mjs  →  docs/research/round443-instruments
+  STRIP  1/ 1       docs/research/round446-instruments/grade-my-own-oracle-predicate.mjs  →  docs/research/round443-instruments
+    -    0/ 0       docs/research/round446-instruments/grade-my-own-oracle-predicate.mjs  →  docs/research/round444-instruments
+    -    0/ 0       docs/research/round448-instruments/grade-the-four-list-scorer.mjs  →  docs/research/round444-instruments
+    -    0/ 0       docs/research/round448-instruments/grade-the-four-list-scorer.mjs  →  docs/research/round448-instruments/round446-instruments
+    -    0/ 0       docs/research/round449-instruments/resolve-the-variable-write-targets.mjs  →  docs/research/round449-instruments/PATH:/tmp/kpdir
+    -    0/ 0       docs/research/round449-instruments/resolve-the-variable-write-targets.mjs  →  docs/research/round449-instruments/round442
+  STRIP  1/ 0 BARE  docs/research/round452-instruments/no-id-class-separates-and-the-liveness-reader-is-cured.mjs  →  docs/research/round446-instruments
+    -    0/ 0       docs/research/round453-instruments/pin450/lib/verdict.mjs  →  docs/research/round453-instruments/pin450/lib/a/b
+    -    0/ 0 BARE  docs/research/round455-instruments/attribute-each-restamp-to-the-file-it-stamps.mjs  →  docs/research/round453-instruments
+    -    0/ 0       docs/research/round457-instruments/grade-recording-completeness-across-the-whole-corpus.mjs  →  docs/research/round444-instruments
+  STRIP  3/ 3 BARE  docs/research/round457-instruments/grade-recording-completeness-across-the-whole-corpus.mjs  →  docs/research/round455-instruments
+    -    0/ 0       docs/research/round460-instruments/grade-the-pred-gate-landing.mjs  →  docs/research/round449-instruments
+    -    0/ 0       docs/research/round460-instruments/grade-the-pred-gate-landing.mjs  →  docs/research/round450-instruments
+  STRIP  3/ 3 BARE  docs/research/round460-instruments/grade-the-pred-gate-landing.mjs  →  docs/research/round455-instruments
+    -    0/ 0       docs/research/round460-instruments/grade-the-pred-gate-landing.mjs  →  docs/research/round460-instruments/round449-instruments
+    -    0/ 0       docs/research/round460-instruments/grade-the-pred-gate-landing.mjs  →  docs/research/round460-instruments/round450-instruments
+    -    0/ 0       docs/research/round460-instruments/grade-the-pred-gate-landing.mjs  →  docs/research/round460-instruments/round455-instruments
+    -    0/ 0       docs/research/round462-instruments/grade-the-pred-half-refusal.mjs  →  docs/research/round462-instruments/round462-instruments
+  STRIP  2/ 2       docs/research/round463-instruments/grade-the-57-of-461-class.mjs  →  docs/research/round462-instruments
+    -    0/ 0       docs/research/round463-instruments/grade-the-57-of-461-class.mjs  →  docs/research/round463-instruments/round462-instruments
+    -    0/ 0       docs/research/unit-464absorb-2026-10-31/drive.mjs  →  docs/research/unit-464absorb-2026-10-31/unit-464authored-2026-10-31
+    -    0/ 0       docs/research/unit-464absorb-2026-10-31/mint-kp.mjs  →  docs/research/unit-464t2b-sat-2026-10-29
+    -    0/ 0       docs/research/unit-464addarm-2026-11-04/grade-addarm.mjs  →  docs/research/unit-464kpspan-2026-11-04
+    -    0/ 0       docs/research/unit-464authored-2026-10-31/quoted-denominator.mjs  →  docs/research/unit-464t2b-sat-2026-10-29
+    -    0/ 0       docs/research/unit-464bucket-2026-11-01/grade-his-armreach-gate.mjs  →  docs/research/unit-464steal-2026-11-01
+    -    0/ 0       docs/research/unit-464bucket-2026-11-01/grade-his-attrib-gate.mjs  →  docs/research/unit-464steal-2026-11-01
+    -    0/ 0       docs/research/unit-464bucket-2026-11-01/regrade-saturation.mjs  →  docs/research/unit-464steal-2026-11-01
+    -    0/ 0       docs/research/unit-464conj-2026-11-03/grade-conj.mjs  →  docs/research/unit-464cell-2026-11-02
+    -    0/ 0       docs/research/unit-464conj-2026-11-03/grade-conj.mjs  →  docs/research/unit-464immov-2026-11-03
+  STRIP  2/ 0       docs/research/unit-464cons-2026-11-04/grade-cons.mjs  →  docs/research/unit-464addarm-2026-11-04
+    -    0/ 0       docs/research/unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs  →  docs/research/unit-464steal-2026-11-01
+    -    0/ 0       docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs  →  docs/research/unit-464steal-2026-11-01
+    -    0/ 0       docs/research/unit-464drift-2026-10-30/insert-coord-entry.mjs  →  docs/research/unit-464drift-2026-10-30/unit-464mapkey-2026-10-30
+    -    0/ 0 BARE  docs/research/unit-464inspan-2026-11-03/grade-inspan.mjs  →  docs/research/unit-464presc-2026-11-03
+    -    0/ 0 BARE  docs/research/unit-464nomoved-2026-10-30/xcheck-his-drive1.mjs  →  docs/research/unit-464rekey-2026-10-30
+  STRIP  1/ 1 BARE  docs/research/unit-464notes-2026-11-05/drive-arms.mjs  →  docs/research/unit-464prec-2026-11-03
+    -    0/ 0       docs/research/unit-464prec-2026-11-03/grade-entry-v15.mjs  →  docs/research/unit-464prec-2026-11-03/unit-464gentry
+    -    0/ 0       docs/research/unit-464prec-2026-11-03/grade-entry-v15.mjs  →  docs/research/unit-464prec-2026-11-03/unit-464gentry-2026-11-05
+    -    0/ 0       docs/research/unit-464reach-2026-10-31/reach-census.mjs  →  docs/research/unit-464t2b-sat-2026-10-29
+  STRIP  1/ 1 BARE  docs/research/unit-464sat-2026-10-31/argv-census.mjs  →  docs/research/unit-464reach-2026-10-31
+    -    0/ 0       docs/research/unit-464sat-2026-10-31/sat-census.mjs  →  docs/research/unit-464t2b-sat-2026-10-29
+    -    0/ 0       docs/research/unit-464t2-t8-2026-10-29/grade-t8-operands.mjs  →  docs/research/unit-464t2-rekey-2026-10-29
+    -    0/ 0       docs/research/unit-464t2-t8-2026-10-29/recon-t8-operands.mjs  →  docs/research/unit-464t2-rekey-2026-10-29
+    -    0/ 0 BARE  docs/research/unit-465chainfloor-2026-11-13/arm-chainfloor-d.mjs  →  docs/research/unit-465foilchain-2026-11-13
+    -    0/ 0       docs/research/unit-465routecure-2026-11-13/arm-routecure-c.mjs  →  docs/research/unit-465maildurable-2026-11-13
+  STRIP 10/ 1 BARE  docs/research/unit-466rhscap-2026-11-14/arm-rhscap-a.mjs  →  docs/research/unit-465p12site-2026-11-14
+  STRIP 10/ 1 BARE  docs/research/unit-466rhscap-2026-11-14/arm-rhscap-b.mjs  →  docs/research/unit-465p12site-2026-11-14
+
+LANDED  Q1   narrowed distinct CROSS_DIR pairs = 92 (pre-registered >=20 and <=150)
+REFUTED Q2   producer dir holds >=1 K-prod site: 21 of 92 = 22.8% (pre-registered >=30%; arm A's padded figure 9.3%)
+REFUTED Q3   producer dir holds >=1 LOSSY_BASENAME site: 15 of 92 = 16.3% (pre-registered >=20%; arm A's padded figure 6.6%)
+LANDED  Q4   share of arm A's CROSS_DIR literals dropped by the narrowing: 195 of 306 = 63.7% (pre-registered >=50%)
+REFUTED Q5   narrowed pairs whose consumed artefact publishes a bare basename: 24 of 92 = 26.1% (pre-registered >=30%). NOT realisation — B-lim2: this is what the artefact publishes, not what the consumer keys on.
+
+FROZEN comparison, arm A at 2c3edaf0 (docs/research/unit-466xjoin-2026-11-15/drive1.arma.out): 227 pairs, 9.3% strip, 6.6% lossy. Arm A stands verbatim; nothing here edits it.
+VERDICT/0 GREEN legs=4 red=[] refused=[] preds=5 refuted=["Q2","Q3","Q5"] prefused=[]
