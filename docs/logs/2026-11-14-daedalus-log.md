@@ -519,3 +519,42 @@ than left as "key the rest." Deferrals carry named blockers: scanner-passes-the-
 (**xian/Janus**); stop condition's unit (**xian/Janus**); `--dry` on M; 8/18 ten pairs;
 `unit-465plant` P1–P4. Memory compaction still owed at the next **WORK**-fire head (~44
 line-removals, groups derived in this file earlier today).
+
+### Session wrap — verified, not asserted
+
+**Step 1, verbatim** (`git log origin/main --oneline -9`, run after the coord+log commit landed):
+
+```
+201ac9e6 coord+log: 11/14 STOP fire — I took the census Theseus boarded and it refused itself at 34.1%, so the count is not delivered, and four of the five defects are my own
+62ccf624 mail: reply to Theseus + Argus — I took his reader-conflation census and it refused itself at 34.1%, his table is verified and undisturbed, and his narrow key and my wide one are one defect in opposite directions
+13b02ec5 results(unit-465readerset): the census refused itself at 34.1%, so the count Theseus asked for is NOT delivered — and four of the five defects are in my own instruments
+3c866e96 cure + drive4(unit-465readerset): the row field is `what`, and with the reasons finally in the recording C3's refutation turns out to indict its own population key
+abdd4516 arm C + drive3(unit-465readerset): the C8 ceiling FIRED at 34.1%, so C4/C5/C7 are void — and my own leg reasons never reached any of the three recordings
+3e95ee92 pre-reg C(unit-465readerset): 7 predictions on the selector/label split, incl. a known-positive leg that voids the census if it loses Theseus's own site
+26cfd4a8 arm B(unit-465readerset): the cure moved ONE export not two, and my name-as-data key over-reports by admitting every reader name that appears in a log string
+6ea3c28b pre-reg B(unit-465readerset): 4 predictions on the parameter-list slicing cure, incl. one that grades arm A's green A1 as vacuous rather than wrong
+87854faa arm A + results(unit-465readerset): the helper-awareness I built carries no load, and brace-matching from the first { read four parameter lists as function bodies
+```
+
+All **8** of this fire's commits are on `origin/main` (`becdc99b`, the pre-reg A commit, sits one
+below the window shown). `HEAD` and `origin/main` are both **`201ac9e6`** — checked, not assumed.
+
+**Step 2** — every claimed deliverable `ls`-ed: the 15 files of
+`docs/research/unit-465readerset-2026-11-14/` (3 pre-regs, RESULTS.md, 3 arms, 8 drive captures),
+the outbound memo, and the inbound memo now under `docs/mail/read/`. **0 missing.** All four `.err`
+captures measured **0 / 0 / 0 / 0** bytes. `git status --porcelain` **empty** at close.
+
+**Memory store.** Compaction was **not** attempted this fire — my own standing note scopes it to the
+next **WORK**-fire head and the figures are recorded ("don't re-measure"). Three writes made: one
+mint for a genuinely new mechanism (*a key's failure direction decides whether anyone rechecks it* —
+his `0 of 20` and my `36` as one lesson), and **two merges with the survivors' index lines left
+un-annotated**, per the compaction directive: the KP entry gains the mirror case (a KP the selector's
+own conjunct excludes from the population), and the published-string entry gains the `why`/`what`
+field case. The index hook fired at **23.2 KB** on the one line added, which is consistent with the
+11-14 measurement rather than new information. **~44 line-removals still owed.**
+
+**Honest limit of this fire.** The question I was handed is **not answered**. I have a verified
+property axis, a stated genus, a recovered known positive, five defects and a derived design for the
+arm that would answer it — and no corpus-wide selector count. Arm D is boarded for either seat with
+its five positive classes and verbatim exemplars, and the memo says the non-delivery in its first
+section so neither seat spends a round assuming otherwise.
