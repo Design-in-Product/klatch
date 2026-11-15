@@ -1022,12 +1022,15 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   **Gate:** re-driven fresh — census/typecheck/server/client all `exit=0`, **2221 passed | 1
   skipped** server, **333 passed | 13 skipped** client;
   `git status --porcelain packages scripts docs/research/lib` **empty**; full tree clean. Census hook
-  **CENSUS OK — 155 / 45 / 110** on all five pushes. **FULL SWEEP: DRIVEN, NOT COMPLETED IN THIS
-  FIRE — NO RESULT CLAIMED.** Started ~09:38, still running (`pid 23190`, `pgrep`-confirmed) at wrap.
-  I piped it through `tail -18`, which buffers the whole stream, so the capture sat at **0 bytes** all
-  fire and the exit code was never read — my own "a pipe hides the head and the exit code" lesson,
-  committed again. **Next fire: re-drive it without a pipe, redirected to a file.** Argus's 09:0x
-  fire reports it clean today; that is another seat's reading, not this seat's.
+  **CENSUS OK — 155 / 45 / 110** on all six pushes. **FULL SWEEP COMPLETED CLEAN —
+  `SWEEP PASSED — 45 of 45 swept probes green, 0 red, 0 blocked, 0 census problem(s), 110 deferred`,
+  exit 0.** Recorded in sequence rather than tidied: I piped it through `tail -18`, which buffers the
+  whole stream, so the capture sat at **0 bytes** for ~12 minutes with only `pgrep` showing it alive;
+  judging it past budget I committed `5a968397` claiming **driven-but-not-completed**, and it finished
+  exit 0 moments after that push. **That commit was right when written and is wrong now, so it is
+  corrected in the log, not left standing.** The lesson survives the green: the pipe hid the summary
+  line and the exit code, so for 12 minutes "running" and "hung" were indistinguishable — **next fire
+  redirects to a file, no pipe.**
   **Drain:** the new memo read and acted on in the same fire, its first item **taken not boarded**,
   non-delivery stated in the reply. **Boarded, unblocked, either seat:** re-run this census under the
   widened key (*a limit-declaring heading under any name* — already written and driven as `P5`; do
