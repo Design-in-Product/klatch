@@ -1,0 +1,135 @@
+==============================================================================
+unit-466reasontok arm B — PIN 5d430e5411885ffe56bdcbd19a4fd9664564748e
+==============================================================================
+ok   B0 — reproduces arm A's population from the same pin: flagged=84 (A: 84), clean=158 (A: 158), unresolvable=54 (A: 54)
+
+classify the 84 flagged pairs:
+  ELSEWHERE_IN_FILE (token absent from the LINE, present in the FILE): 79
+  ABSENT_FROM_FILE  (token occurs nowhere in the cited file at the pin): 5
+ok   B5 — the two classes PARTITION the flagged set: 79 + 5 = 84 vs 84 — no fall-through bucket
+
+B2 evidence — every SAMELINE pair citing enumerate-legs.mjs (1):
+  token `in` -> enumerate-legs.mjs:275
+  recording: docs/research/unit-466striplift-2026-11-15/drive3.armc.out:24
+  rec line:  "LANDED  R5   enumerate-legs.mjs:275 is still excluded, now for the RIGHT reason — roots are real identifiers [\"KP_G\"] (sound=true), params=[\"l\"], and none of the roots is a callback parameter (derived=0). Arm A excluded "
+
+--- ABSENT_FROM_FILE, every member (5) — the class worth a human's time ---
+
+[blankStrings] absent from all of docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs (cited at :263)
+  recording: docs/research/round391-instruments/his390-at-50ed611b-detached-no-scratch.out:13
+  rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `88af8540` holds 208 `stripSource(` call s"
+  subject:   "const codeCatch = (src) => (stripSource(src, false).match(/\\bcatch\\s*[({]/g) || []).length;"
+
+[blankStrings] absent from all of docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs (cited at :263)
+  recording: docs/research/round391-instruments/his390-at-50ed611b-detached-scratch-planted.out:13
+  rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `88af8540` holds 208 `stripSource(` call s"
+  subject:   "const codeCatch = (src) => (stripSource(src, false).match(/\\bcatch\\s*[({]/g) || []).length;"
+
+[blankStrings] absent from all of docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs (cited at :263)
+  recording: docs/research/round391-instruments/his390-at-c0e0fc46-before-my-cure.out:13
+  rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `88af8540` holds 208 `stripSource(` call s"
+  subject:   "const codeCatch = (src) => (stripSource(src, false).match(/\\bcatch\\s*[({]/g) || []).length;"
+
+[blankStrings] absent from all of docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs (cited at :263)
+  recording: docs/research/round392-instruments/my390-cured-in-a-scratch-free-detached-worktree.out:13
+  rec line:  "NOT TRUE T4: false — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `88af8540` holds 208 `stripSource(` ca"
+  subject:   "const codeCatch = (src) => (stripSource(src, false).match(/\\bcatch\\s*[({]/g) || []).length;"
+
+[blankStrings] absent from all of docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs (cited at :263)
+  recording: docs/research/round392-instruments/my390-cured-live.out:13
+  rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `88af8540` holds 208 `stripSource(` call s"
+  subject:   "const codeCatch = (src) => (stripSource(src, false).match(/\\bcatch\\s*[({]/g) || []).length;"
+
+--- ELSEWHERE_IN_FILE, token + site only (79) ---
+  `blankStrings` -> docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:83  [his390-at-50ed611b-detached-no-scratch.out:13]
+  `blankStrings` -> docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:84  [his390-at-50ed611b-detached-no-scratch.out:13]
+  `blankStrings` -> docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:108  [his390-at-50ed611b-detached-no-scratch.out:13]
+  `blankStrings` -> docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:123  [his390-at-50ed611b-detached-no-scratch.out:13]
+  `blankStrings` -> docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:171  [his390-at-50ed611b-detached-no-scratch.out:13]
+  `blankStrings` -> docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:184  [his390-at-50ed611b-detached-no-scratch.out:13]
+  `blankStrings` -> docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:242  [his390-at-50ed611b-detached-no-scratch.out:13]
+  `blankStrings` -> docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:172  [his390-at-50ed611b-detached-no-scratch.out:13]
+  `blankStrings` -> docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:286  [his390-at-50ed611b-detached-no-scratch.out:13]
+  `blankStrings` -> docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:83  [his390-at-50ed611b-detached-scratch-planted.out:13]
+  `blankStrings` -> docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:84  [his390-at-50ed611b-detached-scratch-planted.out:13]
+  `blankStrings` -> docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:108  [his390-at-50ed611b-detached-scratch-planted.out:13]
+  `blankStrings` -> docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:123  [his390-at-50ed611b-detached-scratch-planted.out:13]
+  `blankStrings` -> docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:171  [his390-at-50ed611b-detached-scratch-planted.out:13]
+  `blankStrings` -> docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:184  [his390-at-50ed611b-detached-scratch-planted.out:13]
+  `blankStrings` -> docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:242  [his390-at-50ed611b-detached-scratch-planted.out:13]
+  `blankStrings` -> docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:172  [his390-at-50ed611b-detached-scratch-planted.out:13]
+  `blankStrings` -> docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:286  [his390-at-50ed611b-detached-scratch-planted.out:13]
+  `blankStrings` -> docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:83  [his390-at-c0e0fc46-before-my-cure.out:13]
+  `blankStrings` -> docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:84  [his390-at-c0e0fc46-before-my-cure.out:13]
+  `blankStrings` -> docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:108  [his390-at-c0e0fc46-before-my-cure.out:13]
+  `blankStrings` -> docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:123  [his390-at-c0e0fc46-before-my-cure.out:13]
+  `blankStrings` -> docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:171  [his390-at-c0e0fc46-before-my-cure.out:13]
+  `blankStrings` -> docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:184  [his390-at-c0e0fc46-before-my-cure.out:13]
+  `blankStrings` -> docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:242  [his390-at-c0e0fc46-before-my-cure.out:13]
+  `blankStrings` -> docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:172  [his390-at-c0e0fc46-before-my-cure.out:13]
+  `blankStrings` -> docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:286  [his390-at-c0e0fc46-before-my-cure.out:13]
+  `blankStrings` -> docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:83  [my390-cured-in-a-scratch-free-detached-worktree.out:13]
+  `blankStrings` -> docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:84  [my390-cured-in-a-scratch-free-detached-worktree.out:13]
+  `blankStrings` -> docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:108  [my390-cured-in-a-scratch-free-detached-worktree.out:13]
+  `blankStrings` -> docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:123  [my390-cured-in-a-scratch-free-detached-worktree.out:13]
+  `blankStrings` -> docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:171  [my390-cured-in-a-scratch-free-detached-worktree.out:13]
+  `blankStrings` -> docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:184  [my390-cured-in-a-scratch-free-detached-worktree.out:13]
+  `blankStrings` -> docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:242  [my390-cured-in-a-scratch-free-detached-worktree.out:13]
+  `blankStrings` -> docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:172  [my390-cured-in-a-scratch-free-detached-worktree.out:13]
+  `blankStrings` -> docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:286  [my390-cured-in-a-scratch-free-detached-worktree.out:13]
+  `blankStrings` -> docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:83  [my390-cured-live.out:13]
+  `blankStrings` -> docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:84  [my390-cured-live.out:13]
+  `blankStrings` -> docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:108  [my390-cured-live.out:13]
+  `blankStrings` -> docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:123  [my390-cured-live.out:13]
+  `blankStrings` -> docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:171  [my390-cured-live.out:13]
+  `blankStrings` -> docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:184  [my390-cured-live.out:13]
+  `blankStrings` -> docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:242  [my390-cured-live.out:13]
+  `blankStrings` -> docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:172  [my390-cured-live.out:13]
+  `blankStrings` -> docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:286  [my390-cured-live.out:13]
+  `loopStart` -> docs/research/round368-instruments/verdict-line-kind-grade.mts:128  [census-the-named-binding-form.out:23]
+  `eol` -> docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:88  [census-the-named-binding-form.out:50]
+  `eol` -> docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:88  [census-the-named-binding-form.out:53]
+  `idx` -> docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:108  [census-the-named-binding-form.out:76]
+  `eq` -> scripts/backfill-entity-bindings.mts:186  [census-the-named-binding-form.out:82]
+  `eq` -> scripts/backfill-entity-bindings.mts:190  [census-the-named-binding-form.out:83]
+  `eq` -> scripts/backfill-entity-bindings.mts:234  [census-the-named-binding-form.out:84]
+  `fnStart` -> scripts/probe-round263-an-emptiness-claim-over-a-shared-window-is-not-strict-it-is-blind.mts:314  [census-the-named-binding-form.out:93]
+  `loopStart` -> docs/research/round368-instruments/verdict-line-kind-grade.mts:128  [his399-live.out:23]
+  `eol` -> docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:88  [his399-live.out:50]
+  `eol` -> docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:88  [his399-live.out:53]
+  `idx` -> docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:108  [his399-live.out:76]
+  `eq` -> scripts/backfill-entity-bindings.mts:186  [his399-live.out:82]
+  `eq` -> scripts/backfill-entity-bindings.mts:190  [his399-live.out:83]
+  `eq` -> scripts/backfill-entity-bindings.mts:234  [his399-live.out:84]
+  `fnStart` -> scripts/probe-round263-an-emptiness-claim-over-a-shared-window-is-not-strict-it-is-blind.mts:314  [his399-live.out:93]
+  `eol` -> docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:88  [regrade-the-file-scoped-guard.out:28]
+  `idx` -> docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:108  [regrade-the-file-scoped-guard.out:29]
+  `idx` -> docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:108  [regrade-the-file-scoped-guard.out:32]
+  `eq` -> scripts/backfill-entity-bindings.mts:186  [regrade-the-file-scoped-guard.out:37]
+  `eq` -> scripts/backfill-entity-bindings.mts:190  [regrade-the-file-scoped-guard.out:38]
+  `eq` -> scripts/backfill-entity-bindings.mts:234  [regrade-the-file-scoped-guard.out:39]
+  `eq` -> scripts/backfill-entity-bindings.mts:190  [census-the-branch-polarity-axis.out:61]
+  `fnStart` -> scripts/probe-round263-an-emptiness-claim-over-a-shared-window-is-not-strict-it-is-blind.mts:314  [census-the-branch-polarity-axis.out:74]
+  `eq` -> scripts/backfill-entity-bindings.mts:190  [control-pre-label-repair.out:47]
+  `fnStart` -> scripts/probe-round263-an-emptiness-claim-over-a-shared-window-is-not-strict-it-is-blind.mts:314  [control-pre-label-repair.out:55]
+  `loopStart` -> docs/research/round368-instruments/verdict-line-kind-grade.mts:128  [hand-read-the-unguarded.out:56]
+  `idx` -> docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:108  [hand-read-the-unguarded.out:62]
+  `eol` -> docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:88  [hand-read-the-unguarded.out:65]
+  `eol` -> docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:88  [hand-read-the-unguarded.out:66]
+  `B0b` -> docs/COORDINATION.md:999  [drive2.armb.out:9]
+  `d8822cb6` -> docs/research/unit-465chainfloor-2026-11-13/RESULTS.md:56  [drive2.armb.out:25]
+  `A0b` -> docs/research/unit-465chainfloor-2026-11-13/RESULTS.md:56  [drive2.armb.out:25]
+  `bytes` -> docs/research/unit-465chainfloor-2026-11-13/RESULTS.md:103  [drive2.armb.out:26]
+
+==============================================================================
+PREDICTIONS — every one graded outside any conditional
+==============================================================================
+LANDS    B1 — P5 at last: the MAJORITY of flagged pairs are ELSEWHERE_IN_FILE (not false reasons): 79 of 84 = 94.0%
+LANDS    B2 — the enumerate-legs.mjs pair(s) are NOT Theseus's instances 1-2 (token not KP_G): `in`
+LANDS    B3 — ABSENT_FROM_FILE is non-empty: 5
+DEFERRED B4 — fewer than half of ABSENT_FROM_FILE survive a hand read as genuinely false reasons — 5 members printed above; the hand read is recorded in RESULTS.md, this arm does not score its own hand read
+
+==============================================================================
+VERDICT: 2 legs, 0 red; 4 predictions printed, of which 3 graded and 1 deferred to a hand read — pre-registration B registered 4
+FIGURES: pairs=296 flagged=84 clean=158 unresolvable=54 elsewhereInFile=79 absentFromFile=5 enumLegsPairs=1
+==============================================================================
