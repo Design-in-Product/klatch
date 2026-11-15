@@ -1,0 +1,98 @@
+ok  B1a         LIVE from 70e58f2a: K-strip enumerates 60 site(s) (arm A: 60). Note B's token extractor is WIDER than A's (it admits a parenthesised receiver), so site identity is unchanged while token extraction is not — the site key is the <ident>.map( + spelling conjunction, which B did not touch.
+ok  B1b         FROZEN at e3f14be1: arm A's recording states 60 site(s); captured by regex out of the committed artefact, not hand-typed. Agrees with B1a: true
+ok  B-pop-a     the two population keys DIVERGE: walk(working tree)=490 vs ls-tree@70e58f2a=472; walk-only=18 ["round413-instruments/his412-prefix.sliced.mjs","round414-instruments/mine412-prefix.sliced.mjs","unit-465byteslabel-2026-11-13/scratch/a/attested-rounds.1.control.mjs","unit-465byteslabel-2026-11-13/scratch/a/attested-rounds.2.E-both-removed.mjs"]…  (gitignored scratch/ sandboxes, .sliced.mjs artefacts, and this unit's own arms)
+ok  B-pop-b     and the COUNTS agreed anyway: the scoping read's walk key printed 60 at 488 files, arm A's pinned key printed 60 at 472. Agreement on the count, divergence of 17 in the member list — which is why "60 = 60" is NOT corroboration. Stated as a leg, not narrated in prose.
+ok  B-pop-c     the walk key censuses its own source: re-run NOW it enumerates 66 site(s), of which 6 are in this unit itself ["arm-striplift-a.mjs:271","arm-striplift-a.mjs:286","arm-striplift-a.mjs:351","arm-striplift-b.mjs:221","arm-striplift-b.mjs:227","arm-striplift-b.mjs:314"]. The pinned key cannot, structurally — which is the reason to pin, stated as a measurement.
+ok  B-hand-keys the HAND map's keys are exactly arm A's residue (UNEXTRACTED + NOT_A_MEMBER_PATH), captured out of the frozen recording at e3f14be1: hand=6 rec=6 match=true. A frozen population means the hand map cannot silently cover a different set.
+
+── Q1: K-strip2 vs HAND on arm A's 6-site residue ──
+  DIFFER  hand=MEMBER_PATH       k2=NOT_A_MEMBER_PATH round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs:628
+         params=["r"] tokRoots=["$"] derived=0
+  agree  hand=MEMBER_PATH       k2=MEMBER_PATH       round456-instruments/drift-census-over-the-verdict-publishing-population.mjs:361
+         params=["o","b"] tokRoots=["o"] derived=1
+  agree  hand=MEMBER_PATH       k2=MEMBER_PATH       unit-464addarm-2026-11-04/grade-addarm.mjs:451
+         params=["r"] tokRoots=["r"] derived=1
+  agree  hand=MEMBER_PATH       k2=MEMBER_PATH       unit-464addarm-2026-11-04/grade-addarm.mjs:478
+         params=["r"] tokRoots=["r"] derived=1
+  agree  hand=NOT_A_MEMBER_PATH k2=NOT_A_MEMBER_PATH unit-464class-2026-11-02/enumerate-legs.mjs:275
+         params=["l"] tokRoots=["in"] derived=0
+  agree  hand=MEMBER_PATH       k2=MEMBER_PATH       unit-464sat-2026-10-31/grepro.mjs:133
+         params=["r"] tokRoots=["r"] derived=1
+REFUTED Q1   K-strip2 reproduces the HAND verdict on all 6 residue sites: 5 of 6 agree. Arm A's proxy scored 1 of 6, and that one for a false reason.
+
+── Q2: sites arm A called MEMBER_PATH that K-strip2 excludes ──
+  round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs:479 [uniqReads] params=["f","fn","p"] tokRoots=["$","$"]
+      `**${uniqReads.length}**: ${uniqReads.map(([f, fn, p]) => `${fn} in \`${f.split('/').pop()}\` → \`${p.split('/').pop()}\``).join('; ')}. ` +
+  round395-instruments/grade-the-refusal-that-deletes-the-verdict.mjs:460 [rows] params=["f","n"] tokRoots=["$"]
+      rows.length === 0 ? '(none)' : rows.map(([f, n]) => `${f.split('/').pop()} (${n})`).join('; ');
+  round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs:451 [WRAPPED] params=["r"] tokRoots=["$"]
+      + WRAPPED.map((r) => `${r.path.split('/').pop()}:${r.line} ${r.name} [${r.stratum}]`).join(' | '));
+  round413-instruments/attack-g7-and-grade-the-branch-layer.mjs:286 [hisTern] params=["r"] tokRoots=["$"]
+      + `[${hisTern.map((r) => `${r.path.split('/').pop()}:${r.line} ${r.ident}`).join(' | ')}] · `
+  round415-instruments/census-the-index-keyed-population.mjs:120 [pairs] params=["p"] tokRoots=["round$"]
+      () => pairs.map((p) => `    round${p.round} ${p.file.split('/').pop()} rev ${p.rev.slice(0, 8)} `
+  round415-instruments/census-the-index-keyed-population.mjs:299 [KPS] params=["kp"] tokRoots=["$"]
+      () => KPS.map((kp) => `    ${kp.ok ? 'ok ' : 'RED'} ${kp.f.split('/').pop()}:${kp.l} want `
+  round430-instruments/grade-the-convention-gate.mjs:398 [answers] params=["x"] tokRoots=["$"]
+      + `${answers.length} [${answers.map((x) => `${x.r.path.split('/').pop()}:${x.r.line}`).join(' | ')}]`
+  round430-instruments/grade-the-convention-gate.mjs:473 [authors] params=["c"] tokRoots=["$"]
+      + `[${authors.map((c) => `${c.path.split('/').pop()} ×${c.hits}`).join(' | ')}] · so P4's `
+  round441-instruments/key-the-silent-class-from-source.mjs:404 [rows] params=["r"] tokRoots=["anchor"]
+      + rows.map((r) => `\n        ${r.declared === undefined ? 'UNDECLARED' : r.declared === true ? 'capable   ' : r.declared === false ? 'no label  ' : 'n
+  round455-instruments/attribute-each-restamp-to-the-file-it-stamps.mjs:280 [hisRows] params=["r"] tokRoots=["$"]
+      + JSON.stringify(hisRows.map((r) => `${r.path.split('/').pop()}→${r.timedOut ? 'TIMEOUT' : r.stamped.length}`)),
+  unit-464prec-2026-11-03/grade-prec.mjs:81 [blobs] params=["b"] tokRoots=["$"]
+      blobs.map((b) => `${b.p.split('/').pop()} ${b.got}${b.got === b.want ? '' : ` != ${b.want}`}`).join(' · '));
+  unit-464reach-2026-10-31/reach-census.mjs:470 [offMechanism] params=["o"] tokRoots=["$"]
+      : `: [${offMechanism.map((o) => `${o.name}@${o.path.split('/').pop()}:${o.cls}`).join(', ')}]`),
+  unit-464subkind-2026-11-02/grade-subkind.mjs:261 [multi] params=["h"] tokRoots=["$"]
+      `>1 commit [${multi.map((h) => `${h.p.replace('docs/research/', '')}=${h.n}`).join(',') || 'none'}] — ` +
+  unit-464t2-surface-2026-10-28/grade-the-exit-code.mjs:389 [tokenWrong] params=["d"] tokRoots=["$"]
+      `printedTokenWrong=${tokenWrong.length} → ${tokenWrong.map((d) => `${d.rel.split('/').pop()}(token=${d.token},status=${d.status})`).join(', ') || '(no
+  unit-464t2-surface-2026-10-28/grade-the-exit-code.mjs:454 [driven] params=["d"] tokRoots=["$"]
+      driven.map((d) => `${d.rel.split('/').pop()}:${d.word}/${d.status}`).join(' ')
+LANDED  Q2   the co-located-but-unrelated shape is not unique — K-strip2 excludes 15 further site(s) from among arm A's 54 positives ["round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs:479","round395-instruments/grade-the-refusal-that-deletes-the-verdict.mjs:460","round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs:451","round413-instruments/attack-g7-and-grade-the-branch-layer.mjs:286","round415-instruments/census-the-index-keyed-population.mjs:120","round415-instruments/census-the-index-keyed-population.mjs:299","round430-instruments/grade-the-convention-gate.mjs:398","round430-instruments/grade-the-convention-gate.mjs:473","round441-instruments/key-the-silent-class-from-source.mjs:404","round455-instruments/attribute-each-restamp-to-the-file-it-stamps.mjs:280","unit-464prec-2026-11-03/grade-prec.mjs:81","unit-464reach-2026-10-31/reach-census.mjs:470","unit-464subkind-2026-11-02/grade-subkind.mjs:261","unit-464t2-surface-2026-10-28/grade-the-exit-code.mjs:389","unit-464t2-surface-2026-10-28/grade-the-exit-code.mjs:454"]
+
+── corrected tally (HAND over the residue, K-strip2 over the rest), n=44 ──
+  {"LOSSY_BASENAME":20,"NONLOSSY_NORMALISE":3,"INVERTIBLE_PREFIX":21}
+  arm A published, under the proxy: {"LOSSY_BASENAME":31,...} of 54 = 57.4%
+REFUTED Q3   arm A's headline SURVIVES the correction: LOSSY_BASENAME = 20 of 44 = 45.5% (threshold ≥50%; arm A published 57.4% off a proxy that was wrong on its whole residue). If refuted, P1 was carried by the proxy's errors.
+LANDED  Q4   A-lim2's "322 local strip-named helpers" is mostly artefact: of 322 name-matched declarations, 304 = 94.4% have NO strip spelling in their brace-balanced body (threshold ≥50%). Real, body-confirmed: 18. Matched purely on 'rel' inside an unrelated word: 7 ["relocated","relocate","driveRelocated","unrelated","releases","UNRELATED"]
+
+── Q5: published JSON string arrays with a literal duplicate entry ──
+  recordings scanned (*.out at 70e58f2a): 1209
+  round411-instruments/listing-under-the-409-key.out:84  len=3  repeated=[""]
+  round411-instruments/listing-under-the-409-key.out:96  len=3  repeated=[""]
+  round411-instruments/listing-under-the-409-key.out:111  len=3  repeated=[""]
+  round411-instruments/listing-under-the-409-key.out:138  len=3  repeated=[""]
+  round411-instruments/listing-under-the-409-key.out:155  len=3  repeated=[""]
+  round435-instruments/drive1.before-my-two-corrections.out:31  len=7  repeated=["false->false","true->true"]
+  round435-instruments/drive2.out:31  len=7  repeated=["false->false","true->true"]
+  round435-instruments/drive3.red-on-its-own-promotion.out:31  len=7  repeated=["false->false","true->true"]
+  round435-instruments/drive4.after-promotion.out:31  len=7  repeated=["false->false","true->true"]
+  round436-instruments/his-round435-postcure.out:31  len=7  repeated=["false->false","true->true"]
+  round436-instruments/his-round435-postcure.out:34  len=10  repeated=["round435-instruments","round436-instruments","round437-instruments"]
+  round436-instruments/reproduce-his-round435.out:31  len=7  repeated=["false->false","true->true"]
+LANDED  Q5   at least one committed recording publishes a JSON string array with a literal duplicate entry — ambiguity realised in a published artefact, not argued in principle: 73 array(s) across 53 recording(s) of 1209 scanned
+ok  B-lim1      DECLARED LIMIT 1, reach MEASURED — K-strip2 is still single-line regex. Sites with callback parameters but NO strip token rooted in one: 17. Printed below with their text, so the residue is hand-checkable rather than assumed empty.
+      round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs:479 params=["f","fn","p"] tokRoots=["$","$"]
+      round395-instruments/grade-the-refusal-that-deletes-the-verdict.mjs:460 params=["f","n"] tokRoots=["$"]
+      round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs:451 params=["r"] tokRoots=["$"]
+      round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs:628 params=["r"] tokRoots=["$"]
+      round413-instruments/attack-g7-and-grade-the-branch-layer.mjs:286 params=["r"] tokRoots=["$"]
+      round415-instruments/census-the-index-keyed-population.mjs:120 params=["p"] tokRoots=["round$"]
+      round415-instruments/census-the-index-keyed-population.mjs:299 params=["kp"] tokRoots=["$"]
+      round430-instruments/grade-the-convention-gate.mjs:398 params=["x"] tokRoots=["$"]
+      round430-instruments/grade-the-convention-gate.mjs:473 params=["c"] tokRoots=["$"]
+      round441-instruments/key-the-silent-class-from-source.mjs:404 params=["r"] tokRoots=["anchor"]
+      round455-instruments/attribute-each-restamp-to-the-file-it-stamps.mjs:280 params=["r"] tokRoots=["$"]
+      unit-464class-2026-11-02/enumerate-legs.mjs:275 params=["l"] tokRoots=["in"]
+      unit-464prec-2026-11-03/grade-prec.mjs:81 params=["b"] tokRoots=["$"]
+      unit-464reach-2026-10-31/reach-census.mjs:470 params=["o"] tokRoots=["$"]
+      unit-464subkind-2026-11-02/grade-subkind.mjs:261 params=["h"] tokRoots=["$"]
+      unit-464t2-surface-2026-10-28/grade-the-exit-code.mjs:389 params=["d"] tokRoots=["$"]
+      unit-464t2-surface-2026-10-28/grade-the-exit-code.mjs:454 params=["d"] tokRoots=["$"]
+ok  B-lim2      DECLARED LIMIT 2, reach stated as a FRACTION not as "hand-verified" — the hand map covers 6 of 60 sites = 10.0%. The other 54 are probed by K-strip2, an independent key, not by a second reading of the same one; Q2's exclusions are the hand-sliced residue.
+ok  B-lim3      DECLARED LIMIT 3 — Q5's scan is keyed on JSON-rendered string arrays only. A member list published as a ' | '- or ', '-joined bare string is invisible to it, and such lists exist in this corpus (arm A's own per-site rows are one). Not measured; BOARDED.
+ok  B-gate      git status --porcelain packages scripts docs/research/lib → ""
+VERDICT/0 GREEN legs=10 red=[] refused=[] preds=5 refuted=["Q1","Q3"] prefused=[]
