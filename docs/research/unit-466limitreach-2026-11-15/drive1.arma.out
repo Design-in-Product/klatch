@@ -1,0 +1,57 @@
+unit-466limitreach arm A — have this corpus's declared limits ever had their reach measured?
+pin=9cc06dacef31fb173bca29bb590cbb059943ae21
+corpus at pin: 745 files (435 .mjs + 310 .md)
+raw selector lines: 37   members: 58
+enumeration dedupe: 2 collapsed to their paragraph, 5 already inside a section member
+
+class tally (printed in full; see A4 for whether it is publishable)
+  SCOPE_NO_COUNT      25
+  COUNT_WITH_REACH     3
+  COUNT_NO_REACH       4
+  BLOCKED              0
+  COMMENTARY          10
+  UNKEYED             16
+
+COUNT_NO_REACH members — the defect Theseus named, in full:
+  [MINE] docs/research/round458-instruments/README.md:133
+          - **The 5 remaining leg-level sites are not all defects, and none is graded here.** They are `round432` `G6`, `round455` `G3`, `round456` `D2`/`D3`, `
+  [MINE] docs/research/unit-465p12site-2026-11-14/RESULTS.md:93
+          **Two further declared limits**, printed by the arms rather than left implicit: 11 declaration right-hand sides hit the 4-line join cap without reachi
+  [    ] docs/research/unit-465refusalfate-2026-11-14/RESULTS.md:204
+          - The 5 additional exposed readers are **unclassified**, as above.
+  [    ] docs/research/unit-465refusalfate-2026-11-14/RESULTS.md:205
+          - `P12`'s pair is hand-verified at 2 members. It is **not** a census of the mechanism across the 17.
+
+COUNT_WITH_REACH members:
+  [MINE] docs/research/round456-instruments/README.md:188
+  [MINE] docs/research/round458-instruments/README.md:130
+  [MINE] docs/research/unit-465schemacollide-2026-11-14/RESULTS.md:164
+
+P5 — declared limits invisible to my own selector (13):
+  docs/research/round427-capability-test-pointer/README.md:46  ## Declared blindness, and which way it can move
+  docs/research/round431-instruments/README.md:1  # Round 431 — the twelfth hit cured, its reach measured, and his reason for my blindness refuted
+  docs/research/round441-instruments/README.md:142  ## 5. Named limitation of `G7`, not cured this round
+  docs/research/round447-instruments/README.md:62  ## 3. Comment-blindness is not enough, and only the CONTROL row showed it
+  docs/research/unit-464reach-2026-11-02/PRE-REGISTRATION.md:17  ## Blindness, declared up front
+  docs/research/unit-465declprose-2026-11-08/RESULTS.md:196  ## §6a — Unregistered finding: the gate's blind spot has a prior decision behind it, and now it has a price
+  docs/research/unit-465mailsweep-2026-11-12/RESULTS.md:64  ### 1b. Declared blindness of this key
+  docs/research/unit-465migrate-2026-11-06/RESULTS.md:117  ### 4b. §6 named a blind spot, so §6's claim is gone and the hole is closed instead
+  docs/research/unit-465oncegate-2026-11-11/RESULTS.md:89  ## 4. P4 — CONFIRMED, and it is the bound on §3. This is a reach limitation, not a live blindness
+  docs/research/unit-465rekey374-2026-11-09/RESULTS.md:12  ### `P2d` — MISSED, and the mechanism is this file's own documented blindness
+  docs/research/unit-465rows-2026-11-06/RESULTS.md:102  ## D — the sibling blindness in the cured key (3 registered: 1 MISS, 1 VOID, 1 HIT)
+  docs/research/unit-465srckeys-2026-11-12/RESULTS.md:27  ## 1. Theseus's §8 blindness is confirmed, and it is total — `T1`, `P1` HELD
+  docs/research/unit-465srckeys-2026-11-12/RESULTS.md:108  ## 5. The blind spot hides a member — `P5` REFUTED, and this is the fire's largest finding
+
+legs
+  A0   GREEN    GATE: the pin contains no file of this unit, and no member is this unit's own text
+  A1   GREEN    GATE: at the pin, /declared limit/i = 9 .mjs + 28 .md = 37 lines over 745 corpus files
+  A2   GREEN    members with no verdict: 0; verdicts naming no member: 0
+  P1   GREEN    members = 58, predicted 40-70
+  A4   RED      CEILING: UNKEYED = 16/58 = 27.6% (pre-registered ceiling 20%)
+  P2   REFUSED  VOID by the pre-registered ceiling — no class percentage is published
+  P3   REFUSED  VOID by the pre-registered ceiling — no class percentage is published
+  P4   REFUSED  VOID by the pre-registered ceiling — no class percentage is published
+  P5   GREEN    limit-declaring headings under another name, in files the selector never matches: 13
+  P6   RED      COMMENTARY = 10 (predicted >= 8); raw lines 37 vs members 58 = -36.2% (predicted >= +20%)
+
+VERDICT/1 RED legs=10 red=[A4,P6] refused=[P2,P3,P4] preds=6 refuted=[P6] prefused=[P2,P3,P4]

@@ -192,9 +192,45 @@ export function enumerateMembers() {
         dupes.insideSection++;
         continue;
       }
+      // Paragraph span, then narrowed to a single bullet if the hit sits in a
+      // tight bullet list.
       let s = i, e = i;
       while (s > 0 && lines[s - 1].trim() !== "" && headingLevel(lines[s - 1]) === 0) s--;
       while (e < lines.length - 1 && lines[e + 1].trim() !== "") e++;
+
+      // A markdown bullet list written without blank lines between bullets is
+      // ONE blank-line-delimited paragraph, so the span above fuses a
+      // `- **Declared limit:** ...` bullet with whatever bullets surround it.
+      // unit-465chainfloor RESULTS.md:146 and :210 each fused one real declared
+      // limit with three unrelated bullets (prediction results; routing notes).
+      // The member unit is one declared limit, so when the hit lies inside a
+      // bullet, the member is THAT bullet and its continuation lines — not its
+      // neighbours. Walk back to the bullet's own first line, because the hit can
+      // be on a continuation line rather than the bullet opener.
+      //
+      // MARKDOWN ONLY. The first form of this rule ran on every file, and in a
+      // `.mjs` JSDoc block every continuation line begins ` * ` — which matches
+      // the bullet pattern at the same indent. So each JSDoc line read as a new
+      // bullet, `be` stopped at the line after the hit, and all seven .mjs
+      // members were truncated mid-sentence: `verify-request-shapes.mjs:23`
+      // became the single line "DECLARED LIMIT OF THE 401 LEG ... carries:" with
+      // the limit it introduces cut off. The anchor was present and the span was
+      // gone. The rule is derived from markdown list syntax, so it is applied
+      // where that syntax means what it looks like.
+      const bulletAt = (k) => f.endsWith(".md") && /^\s*[-*]\s/.test(lines[k]);
+      let bs = i;
+      while (bs > s && !bulletAt(bs)) bs--;
+      if (bulletAt(bs)) {
+        const indent = lines[bs].match(/^(\s*)/)[1].length;
+        let be = bs;
+        while (be < e) {
+          const n = be + 1;
+          if (bulletAt(n) && lines[n].match(/^(\s*)/)[1].length <= indent) break;
+          be = n;
+        }
+        s = bs;
+        e = be;
+      }
       const span = s + ":" + e;
       if (seenSpans.has(span)) {
         dupes.paragraphCollapsed++;
