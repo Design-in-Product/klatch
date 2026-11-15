@@ -1,0 +1,595 @@
+==============================================================================
+unit-466reasontok arm A — PIN 5d430e5411885ffe56bdcbd19a4fd9664564748e
+==============================================================================
+ok   A0a — ls-tree at the pin FINDS a known corpus file: "docs/research/lib/attested-rounds.mjs"
+ok   A0b — ls-tree at the pin does NOT find this unit's pre-registration (committed after the pin): ""
+
+population: 1213 committed *.out recordings at the pin, 6589 files in tree
+
+SAMELINE: 296 (token,site) pairs on 213 recording lines in 25 recordings
+WINDOW3 (+/-3 lines, same-line excluded): 3424 pairs — UPPER BOUND, a proximity window pairs tokens with citations that are not their subject
+
+resolve: screenable 242, unresolvable 54 (18.2%) — {"noFileInTree":54,"noBlob":0,"lineOutOfRange":0}
+screen:  FLAGGED 84 (token absent from the cited line), clean 158
+
+CEILING (>40% unresolvable): held at 18.2%
+ok   KP+ — screen does NOT flag a pair whose token IS in the cited line — `abs` in docs/research/round382-instruments/grade-the-class-count-and-the-seam.mjs:216
+      KP+ subject line: "if (blanked.slice(abs, abs + 13) !== 'readFileSync(') continue;"
+      KP+ recording:    docs/research/round399-instruments/census-the-named-binding-form.out:26
+ok   KP- — screen DOES flag a pair whose token is NOT in the cited line — `blankStrings` vs docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs:263
+      KP- subject line: "const codeCatch = (src) => (stripSource(src, false).match(/\\bcatch\\s*[({]/g) || []).length;"
+      KP- recording:    docs/research/round391-instruments/his390-at-50ed611b-detached-no-scratch.out:13
+
+P3 evidence:
+  his unit's committed recordings in the population: 4
+  SAMELINE pairs drawn from his unit's recordings:   1
+  SAMELINE pairs citing enumerate-legs.mjs anywhere: 1
+  SAMELINE pairs whose token is `KP_G` anywhere:     0
+    his pair: `in` -> enumerate-legs.mjs:275  [drive3.armc.out:24]
+
+--- every FLAGGED pair (84) ---
+FLAG `blankStrings` absent from docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs:263
+     recording: docs/research/round391-instruments/his390-at-50ed611b-detached-no-scratch.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "const codeCatch = (src) => (stripSource(src, false).match(/\\bcatch\\s*[({]/g) || []).length;"
+FLAG `blankStrings` absent from docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:83
+     recording: docs/research/round391-instruments/his390-at-50ed611b-detached-no-scratch.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "`which is what threw my Round 386 cut at module load with zero grades — and the header still ` +"
+FLAG `blankStrings` absent from docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:84
+     recording: docs/research/round391-instruments/his390-at-50ed611b-detached-no-scratch.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "`reads ${headers(mention)}. A header cannot be mentioned into existence. Taken this round`,"
+FLAG `blankStrings` absent from docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:108
+     recording: docs/research/round391-instruments/his390-at-50ed611b-detached-no-scratch.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "`a 0 above is a reading and not a blindness (355)`,"
+FLAG `blankStrings` absent from docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:123
+     recording: docs/research/round391-instruments/his390-at-50ed611b-detached-no-scratch.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "codeCatch: count(stripSource(his386Shipped, false), CODE_CATCH),"
+FLAG `blankStrings` absent from docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:171
+     recording: docs/research/round391-instruments/his390-at-50ed611b-detached-no-scratch.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "const cb = (src) => callsIn(stripSource(src, false));"
+FLAG `blankStrings` absent from docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:184
+     recording: docs/research/round391-instruments/his390-at-50ed611b-detached-no-scratch.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "const codeOf388 = stripSource(his388AtPin, false);"
+FLAG `blankStrings` absent from docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:242
+     recording: docs/research/round391-instruments/his390-at-50ed611b-detached-no-scratch.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "const squash = (s) => stripSource(s, false).replace(/\\s+/g, '');"
+FLAG `blankStrings` absent from docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:172
+     recording: docs/research/round391-instruments/his390-at-50ed611b-detached-no-scratch.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "const sb = (src) => callsIn(stripSource(src, true));"
+FLAG `blankStrings` absent from docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:286
+     recording: docs/research/round391-instruments/his390-at-50ed611b-detached-no-scratch.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "const his388Code = stripSource(his388AtPin, true);"
+FLAG `blankStrings` absent from docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs:263
+     recording: docs/research/round391-instruments/his390-at-50ed611b-detached-scratch-planted.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "const codeCatch = (src) => (stripSource(src, false).match(/\\bcatch\\s*[({]/g) || []).length;"
+FLAG `blankStrings` absent from docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:83
+     recording: docs/research/round391-instruments/his390-at-50ed611b-detached-scratch-planted.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "`which is what threw my Round 386 cut at module load with zero grades — and the header still ` +"
+FLAG `blankStrings` absent from docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:84
+     recording: docs/research/round391-instruments/his390-at-50ed611b-detached-scratch-planted.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "`reads ${headers(mention)}. A header cannot be mentioned into existence. Taken this round`,"
+FLAG `blankStrings` absent from docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:108
+     recording: docs/research/round391-instruments/his390-at-50ed611b-detached-scratch-planted.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "`a 0 above is a reading and not a blindness (355)`,"
+FLAG `blankStrings` absent from docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:123
+     recording: docs/research/round391-instruments/his390-at-50ed611b-detached-scratch-planted.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "codeCatch: count(stripSource(his386Shipped, false), CODE_CATCH),"
+FLAG `blankStrings` absent from docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:171
+     recording: docs/research/round391-instruments/his390-at-50ed611b-detached-scratch-planted.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "const cb = (src) => callsIn(stripSource(src, false));"
+FLAG `blankStrings` absent from docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:184
+     recording: docs/research/round391-instruments/his390-at-50ed611b-detached-scratch-planted.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "const codeOf388 = stripSource(his388AtPin, false);"
+FLAG `blankStrings` absent from docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:242
+     recording: docs/research/round391-instruments/his390-at-50ed611b-detached-scratch-planted.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "const squash = (s) => stripSource(s, false).replace(/\\s+/g, '');"
+FLAG `blankStrings` absent from docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:172
+     recording: docs/research/round391-instruments/his390-at-50ed611b-detached-scratch-planted.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "const sb = (src) => callsIn(stripSource(src, true));"
+FLAG `blankStrings` absent from docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:286
+     recording: docs/research/round391-instruments/his390-at-50ed611b-detached-scratch-planted.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "const his388Code = stripSource(his388AtPin, true);"
+FLAG `blankStrings` absent from docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs:263
+     recording: docs/research/round391-instruments/his390-at-c0e0fc46-before-my-cure.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "const codeCatch = (src) => (stripSource(src, false).match(/\\bcatch\\s*[({]/g) || []).length;"
+FLAG `blankStrings` absent from docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:83
+     recording: docs/research/round391-instruments/his390-at-c0e0fc46-before-my-cure.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "`which is what threw my Round 386 cut at module load with zero grades — and the header still ` +"
+FLAG `blankStrings` absent from docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:84
+     recording: docs/research/round391-instruments/his390-at-c0e0fc46-before-my-cure.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "`reads ${headers(mention)}. A header cannot be mentioned into existence. Taken this round`,"
+FLAG `blankStrings` absent from docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:108
+     recording: docs/research/round391-instruments/his390-at-c0e0fc46-before-my-cure.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "`a 0 above is a reading and not a blindness (355)`,"
+FLAG `blankStrings` absent from docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:123
+     recording: docs/research/round391-instruments/his390-at-c0e0fc46-before-my-cure.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "codeCatch: count(stripSource(his386Shipped, false), CODE_CATCH),"
+FLAG `blankStrings` absent from docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:171
+     recording: docs/research/round391-instruments/his390-at-c0e0fc46-before-my-cure.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "const cb = (src) => callsIn(stripSource(src, false));"
+FLAG `blankStrings` absent from docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:184
+     recording: docs/research/round391-instruments/his390-at-c0e0fc46-before-my-cure.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "const codeOf388 = stripSource(his388AtPin, false);"
+FLAG `blankStrings` absent from docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:242
+     recording: docs/research/round391-instruments/his390-at-c0e0fc46-before-my-cure.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "const squash = (s) => stripSource(s, false).replace(/\\s+/g, '');"
+FLAG `blankStrings` absent from docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:172
+     recording: docs/research/round391-instruments/his390-at-c0e0fc46-before-my-cure.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "const sb = (src) => callsIn(stripSource(src, true));"
+FLAG `blankStrings` absent from docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:286
+     recording: docs/research/round391-instruments/his390-at-c0e0fc46-before-my-cure.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "const his388Code = stripSource(his388AtPin, true);"
+FLAG `blankStrings` absent from docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs:263
+     recording: docs/research/round392-instruments/my390-cured-in-a-scratch-free-detached-worktree.out:13
+     rec line:  "NOT TRUE T4: false — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree a"
+     subject:   "const codeCatch = (src) => (stripSource(src, false).match(/\\bcatch\\s*[({]/g) || []).length;"
+FLAG `blankStrings` absent from docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:83
+     recording: docs/research/round392-instruments/my390-cured-in-a-scratch-free-detached-worktree.out:13
+     rec line:  "NOT TRUE T4: false — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree a"
+     subject:   "`which is what threw my Round 386 cut at module load with zero grades — and the header still ` +"
+FLAG `blankStrings` absent from docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:84
+     recording: docs/research/round392-instruments/my390-cured-in-a-scratch-free-detached-worktree.out:13
+     rec line:  "NOT TRUE T4: false — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree a"
+     subject:   "`reads ${headers(mention)}. A header cannot be mentioned into existence. Taken this round`,"
+FLAG `blankStrings` absent from docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:108
+     recording: docs/research/round392-instruments/my390-cured-in-a-scratch-free-detached-worktree.out:13
+     rec line:  "NOT TRUE T4: false — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree a"
+     subject:   "`a 0 above is a reading and not a blindness (355)`,"
+FLAG `blankStrings` absent from docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:123
+     recording: docs/research/round392-instruments/my390-cured-in-a-scratch-free-detached-worktree.out:13
+     rec line:  "NOT TRUE T4: false — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree a"
+     subject:   "codeCatch: count(stripSource(his386Shipped, false), CODE_CATCH),"
+FLAG `blankStrings` absent from docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:171
+     recording: docs/research/round392-instruments/my390-cured-in-a-scratch-free-detached-worktree.out:13
+     rec line:  "NOT TRUE T4: false — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree a"
+     subject:   "const cb = (src) => callsIn(stripSource(src, false));"
+FLAG `blankStrings` absent from docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:184
+     recording: docs/research/round392-instruments/my390-cured-in-a-scratch-free-detached-worktree.out:13
+     rec line:  "NOT TRUE T4: false — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree a"
+     subject:   "const codeOf388 = stripSource(his388AtPin, false);"
+FLAG `blankStrings` absent from docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:242
+     recording: docs/research/round392-instruments/my390-cured-in-a-scratch-free-detached-worktree.out:13
+     rec line:  "NOT TRUE T4: false — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree a"
+     subject:   "const squash = (s) => stripSource(s, false).replace(/\\s+/g, '');"
+FLAG `blankStrings` absent from docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:172
+     recording: docs/research/round392-instruments/my390-cured-in-a-scratch-free-detached-worktree.out:13
+     rec line:  "NOT TRUE T4: false — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree a"
+     subject:   "const sb = (src) => callsIn(stripSource(src, true));"
+FLAG `blankStrings` absent from docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:286
+     recording: docs/research/round392-instruments/my390-cured-in-a-scratch-free-detached-worktree.out:13
+     rec line:  "NOT TRUE T4: false — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree a"
+     subject:   "const his388Code = stripSource(his388AtPin, true);"
+FLAG `blankStrings` absent from docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs:263
+     recording: docs/research/round392-instruments/my390-cured-live.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "const codeCatch = (src) => (stripSource(src, false).match(/\\bcatch\\s*[({]/g) || []).length;"
+FLAG `blankStrings` absent from docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:83
+     recording: docs/research/round392-instruments/my390-cured-live.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "`which is what threw my Round 386 cut at module load with zero grades — and the header still ` +"
+FLAG `blankStrings` absent from docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:84
+     recording: docs/research/round392-instruments/my390-cured-live.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "`reads ${headers(mention)}. A header cannot be mentioned into existence. Taken this round`,"
+FLAG `blankStrings` absent from docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:108
+     recording: docs/research/round392-instruments/my390-cured-live.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "`a 0 above is a reading and not a blindness (355)`,"
+FLAG `blankStrings` absent from docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:123
+     recording: docs/research/round392-instruments/my390-cured-live.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "codeCatch: count(stripSource(his386Shipped, false), CODE_CATCH),"
+FLAG `blankStrings` absent from docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:171
+     recording: docs/research/round392-instruments/my390-cured-live.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "const cb = (src) => callsIn(stripSource(src, false));"
+FLAG `blankStrings` absent from docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:184
+     recording: docs/research/round392-instruments/my390-cured-live.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "const codeOf388 = stripSource(his388AtPin, false);"
+FLAG `blankStrings` absent from docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:242
+     recording: docs/research/round392-instruments/my390-cured-live.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "const squash = (s) => stripSource(s, false).replace(/\\s+/g, '');"
+FLAG `blankStrings` absent from docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:172
+     recording: docs/research/round392-instruments/my390-cured-live.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "const sb = (src) => callsIn(stripSource(src, true));"
+FLAG `blankStrings` absent from docs/research/round389-instruments/grade-the-census-key-and-the-asymmetric-pins.mjs:286
+     recording: docs/research/round392-instruments/my390-cured-live.out:13
+     rec line:  "GRADE T4: true — Y4 HOLDS and was incomplete — THE FINDING, half one. `scripts/lib/strip-source.d.mts` declares `blankStrings` a REQUIRED boolean (true), and the tracked tree at `8"
+     subject:   "const his388Code = stripSource(his388AtPin, true);"
+FLAG `loopStart` absent from docs/research/round368-instruments/verdict-line-kind-grade.mts:128
+     recording: docs/research/round399-instruments/census-the-named-binding-form.out:23
+     rec line:  "[UNRESOLVABLE] docs/research/round368-instruments/verdict-line-kind-grade.mts:128  (`loopStart` bound at :126)"
+     subject:   "// exported pure function, so `verdictLog` went to -1, `span` became the rest of the file minus a"
+FLAG `eol` absent from docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:88
+     recording: docs/research/round399-instruments/census-the-named-binding-form.out:50
+     rec line:  "[FAILS OPEN] docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:88  (`eol` bound at :87)"
+     subject:   "`#   \"type Row\"  × ${typeRowHits} (first at byte ${typeRowAt}, which is ` +"
+FLAG `eol` absent from docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:88
+     recording: docs/research/round399-instruments/census-the-named-binding-form.out:53
+     rec line:  "[FAILS WIDE] docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:88  (`eol` bound at :87)"
+     subject:   "`#   \"type Row\"  × ${typeRowHits} (first at byte ${typeRowAt}, which is ` +"
+FLAG `idx` absent from docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:108
+     recording: docs/research/round399-instruments/census-the-named-binding-form.out:76
+     rec line:  "[FAILS OPEN] docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:108  (`idx` bound at :107)"
+     subject:   "const CASES = ["
+FLAG `eq` absent from scripts/backfill-entity-bindings.mts:186
+     recording: docs/research/round399-instruments/census-the-named-binding-form.out:82
+     rec line:  "[FAILS WIDE] scripts/backfill-entity-bindings.mts:186  (`eq` bound at :185)"
+     subject:   "// `undefined` is also \"not given\". Theseus's Round 181: `--channel=<id>` (the"
+FLAG `eq` absent from scripts/backfill-entity-bindings.mts:190
+     recording: docs/research/round399-instruments/census-the-named-binding-form.out:83
+     rec line:  "[FAILS OPEN] scripts/backfill-entity-bindings.mts:190  (`eq` bound at :185)"
+     subject:   "// same fixture: a second `--bases=none` dropped behind the first (4 would move"
+FLAG `eq` absent from scripts/backfill-entity-bindings.mts:234
+     recording: docs/research/round399-instruments/census-the-named-binding-form.out:84
+     rec line:  "[FAILS WIDE] scripts/backfill-entity-bindings.mts:234  (`eq` bound at :233)"
+     subject:   "return ` — did you mean --${near}=<value>?`;"
+FLAG `fnStart` absent from scripts/probe-round263-an-emptiness-claim-over-a-shared-window-is-not-strict-it-is-blind.mts:314
+     recording: docs/research/round399-instruments/census-the-named-binding-form.out:93
+     rec line:  "[UNRESOLVABLE] scripts/probe-round263-an-emptiness-claim-over-a-shared-window-is-not-strict-it-is-blind.mts:314  (`fnStart` bound at :303)"
+     subject:   "// The first version of this arm compared `preMove(p)` with `fingerprint(REPO, p)` over"
+FLAG `loopStart` absent from docs/research/round368-instruments/verdict-line-kind-grade.mts:128
+     recording: docs/research/round400-instruments/his399-live.out:23
+     rec line:  "[UNRESOLVABLE] docs/research/round368-instruments/verdict-line-kind-grade.mts:128  (`loopStart` bound at :126)"
+     subject:   "// exported pure function, so `verdictLog` went to -1, `span` became the rest of the file minus a"
+FLAG `eol` absent from docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:88
+     recording: docs/research/round400-instruments/his399-live.out:50
+     rec line:  "[FAILS OPEN] docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:88  (`eol` bound at :87)"
+     subject:   "`#   \"type Row\"  × ${typeRowHits} (first at byte ${typeRowAt}, which is ` +"
+FLAG `eol` absent from docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:88
+     recording: docs/research/round400-instruments/his399-live.out:53
+     rec line:  "[FAILS WIDE] docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:88  (`eol` bound at :87)"
+     subject:   "`#   \"type Row\"  × ${typeRowHits} (first at byte ${typeRowAt}, which is ` +"
+FLAG `idx` absent from docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:108
+     recording: docs/research/round400-instruments/his399-live.out:76
+     rec line:  "[FAILS OPEN] docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:108  (`idx` bound at :107)"
+     subject:   "const CASES = ["
+FLAG `eq` absent from scripts/backfill-entity-bindings.mts:186
+     recording: docs/research/round400-instruments/his399-live.out:82
+     rec line:  "[FAILS WIDE] scripts/backfill-entity-bindings.mts:186  (`eq` bound at :185)"
+     subject:   "// `undefined` is also \"not given\". Theseus's Round 181: `--channel=<id>` (the"
+FLAG `eq` absent from scripts/backfill-entity-bindings.mts:190
+     recording: docs/research/round400-instruments/his399-live.out:83
+     rec line:  "[FAILS OPEN] scripts/backfill-entity-bindings.mts:190  (`eq` bound at :185)"
+     subject:   "// same fixture: a second `--bases=none` dropped behind the first (4 would move"
+FLAG `eq` absent from scripts/backfill-entity-bindings.mts:234
+     recording: docs/research/round400-instruments/his399-live.out:84
+     rec line:  "[FAILS WIDE] scripts/backfill-entity-bindings.mts:234  (`eq` bound at :233)"
+     subject:   "return ` — did you mean --${near}=<value>?`;"
+FLAG `fnStart` absent from scripts/probe-round263-an-emptiness-claim-over-a-shared-window-is-not-strict-it-is-blind.mts:314
+     recording: docs/research/round400-instruments/his399-live.out:93
+     rec line:  "[UNRESOLVABLE] scripts/probe-round263-an-emptiness-claim-over-a-shared-window-is-not-strict-it-is-blind.mts:314  (`fnStart` bound at :303)"
+     subject:   "// The first version of this arm compared `preMove(p)` with `fingerprint(REPO, p)` over"
+FLAG `eol` absent from docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:88
+     recording: docs/research/round400-instruments/regrade-the-file-scoped-guard.out:28
+     rec line:  "docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:88  (`eol` bound at :87)"
+     subject:   "`#   \"type Row\"  × ${typeRowHits} (first at byte ${typeRowAt}, which is ` +"
+FLAG `idx` absent from docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:108
+     recording: docs/research/round400-instruments/regrade-the-file-scoped-guard.out:29
+     rec line:  "docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:108  (`idx` bound at :107)"
+     subject:   "const CASES = ["
+FLAG `idx` absent from docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:108
+     recording: docs/research/round400-instruments/regrade-the-file-scoped-guard.out:32
+     rec line:  "[FAILS OPEN] docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:108  (`idx` bound at :107) — 2 guard(s) in file, 0 accepted — guard is BELOW the site"
+     subject:   "const CASES = ["
+FLAG `eq` absent from scripts/backfill-entity-bindings.mts:186
+     recording: docs/research/round400-instruments/regrade-the-file-scoped-guard.out:37
+     rec line:  "scripts/backfill-entity-bindings.mts:186 (`eq`) 3 in file, 2 accepted"
+     subject:   "// `undefined` is also \"not given\". Theseus's Round 181: `--channel=<id>` (the"
+FLAG `eq` absent from scripts/backfill-entity-bindings.mts:190
+     recording: docs/research/round400-instruments/regrade-the-file-scoped-guard.out:38
+     rec line:  "scripts/backfill-entity-bindings.mts:190 (`eq`) 3 in file, 2 accepted"
+     subject:   "// same fixture: a second `--bases=none` dropped behind the first (4 would move"
+FLAG `eq` absent from scripts/backfill-entity-bindings.mts:234
+     recording: docs/research/round400-instruments/regrade-the-file-scoped-guard.out:39
+     rec line:  "scripts/backfill-entity-bindings.mts:234 (`eq`) 3 in file, 1 accepted"
+     subject:   "return ` — did you mean --${near}=<value>?`;"
+FLAG `eq` absent from scripts/backfill-entity-bindings.mts:190
+     recording: docs/research/round401-instruments/census-the-branch-polarity-axis.out:61
+     rec line:  "scripts/backfill-entity-bindings.mts:190 (`eq`) — guard at :186: OUT OF SCOPE: a ternary test, and the site is in neither arm"
+     subject:   "// same fixture: a second `--bases=none` dropped behind the first (4 would move"
+FLAG `fnStart` absent from scripts/probe-round263-an-emptiness-claim-over-a-shared-window-is-not-strict-it-is-blind.mts:314
+     recording: docs/research/round401-instruments/census-the-branch-polarity-axis.out:74
+     rec line:  "scripts/probe-round263-an-emptiness-claim-over-a-shared-window-is-not-strict-it-is-blind.mts:314 (`fnStart`) — 1 unmodelled of 1 in file"
+     subject:   "// The first version of this arm compared `preMove(p)` with `fingerprint(REPO, p)` over"
+FLAG `eq` absent from scripts/backfill-entity-bindings.mts:190
+     recording: docs/research/round401-instruments/control-pre-label-repair.out:47
+     rec line:  "scripts/backfill-entity-bindings.mts:190 (`eq`) — guard at :186: NON-EXITING: refusal branch neither exits nor repairs, and the site is after it"
+     subject:   "// same fixture: a second `--bases=none` dropped behind the first (4 would move"
+FLAG `fnStart` absent from scripts/probe-round263-an-emptiness-claim-over-a-shared-window-is-not-strict-it-is-blind.mts:314
+     recording: docs/research/round401-instruments/control-pre-label-repair.out:55
+     rec line:  "scripts/probe-round263-an-emptiness-claim-over-a-shared-window-is-not-strict-it-is-blind.mts:314 (`fnStart`) — 1 unmodelled of 1 in file"
+     subject:   "// The first version of this arm compared `preMove(p)` with `fingerprint(REPO, p)` over"
+FLAG `loopStart` absent from docs/research/round368-instruments/verdict-line-kind-grade.mts:128
+     recording: docs/research/round402-instruments/hand-read-the-unguarded.out:56
+     rec line:  "docs/research/round368-instruments/verdict-line-kind-grade.mts:128  `loopStart`  [HAS ALREADY FIRED — and loudly]"
+     subject:   "// exported pure function, so `verdictLog` went to -1, `span` became the rest of the file minus a"
+FLAG `idx` absent from docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:108
+     recording: docs/research/round402-instruments/hand-read-the-unguarded.out:62
+     rec line:  "docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:108  `idx`  [none]"
+     subject:   "const CASES = ["
+FLAG `eol` absent from docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:88
+     recording: docs/research/round402-instruments/hand-read-the-unguarded.out:65
+     rec line:  "docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:88  `eol`  [none]"
+     subject:   "`#   \"type Row\"  × ${typeRowHits} (first at byte ${typeRowAt}, which is ` +"
+FLAG `eol` absent from docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:88
+     recording: docs/research/round402-instruments/hand-read-the-unguarded.out:66
+     rec line:  "docs/research/round397-instruments/probe-the-anchor-that-is-not-guarded.mjs:88  `eol`  [none]"
+     subject:   "`#   \"type Row\"  × ${typeRowHits} (first at byte ${typeRowAt}, which is ` +"
+FLAG `B0b` absent from docs/COORDINATION.md:999
+     recording: docs/research/unit-465byteslabel-2026-11-13/drive2.armb.out:9
+     rec line:  "CORRECTED docs/COORDINATION.md:999  live read pinned by `B0b` (**47797 bytes / 47585 chars** — the leg prints a char count labelled"
+     subject:   "ceiling and buried this."
+FLAG `d8822cb6` absent from docs/research/unit-465chainfloor-2026-11-13/RESULTS.md:56
+     recording: docs/research/unit-465byteslabel-2026-11-13/drive2.armb.out:25
+     rec line:  "BARE      docs/research/unit-465chainfloor-2026-11-13/RESULTS.md:56  `755e489f`, instrument **byte-identical** from `d8822cb6` (`A0b`; its printed `bytes=10552` is a"
+     subject:   ">"
+FLAG `A0b` absent from docs/research/unit-465chainfloor-2026-11-13/RESULTS.md:56
+     recording: docs/research/unit-465byteslabel-2026-11-13/drive2.armb.out:25
+     rec line:  "BARE      docs/research/unit-465chainfloor-2026-11-13/RESULTS.md:56  `755e489f`, instrument **byte-identical** from `d8822cb6` (`A0b`; its printed `bytes=10552` is a"
+     subject:   ">"
+FLAG `bytes` absent from docs/research/unit-465chainfloor-2026-11-13/RESULTS.md:103
+     recording: docs/research/unit-465byteslabel-2026-11-13/drive2.armb.out:26
+     rec line:  "CORRECTED docs/research/unit-465chainfloor-2026-11-13/RESULTS.md:103  (**47797 bytes / 47585 chars** — the leg prints the char count labelled `bytes`, corrected"
+     subject:   "the source unchanged; the `D4` anchor interpolates `CHAIN[0]`/`CHAIN[1]` and becomes"
+
+--- every CLEAN pair (158) ---
+clean `abs` in docs/research/round382-instruments/grade-the-class-count-and-the-seam.mjs:216  [census-the-named-binding-form.out:26]
+clean `cutAt` in docs/research/round383-instruments/grade-the-binding-class.mjs:744  [census-the-named-binding-form.out:29]
+clean `abs` in docs/research/round384-instruments/grade-the-near-miss-attribution.mjs:89  [census-the-named-binding-form.out:32]
+clean `c1Name` in docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:169  [census-the-named-binding-form.out:35]
+clean `r1Start` in docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:198  [census-the-named-binding-form.out:38]
+clean `end` in docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs:133  [census-the-named-binding-form.out:41]
+clean `i` in docs/research/round396-instruments/the-key-counterfactuals.mjs:87  [census-the-named-binding-form.out:44]
+clean `i` in docs/research/round396-instruments/the-key-counterfactuals.mjs:87  [census-the-named-binding-form.out:47]
+clean `lineStart` in scripts/lib/skipped-shape-census.mts:255  [census-the-named-binding-form.out:56]
+clean `ls` in scripts/probe-round224-a-skip-must-not-summarise-as-a-pass.mts:1931  [census-the-named-binding-form.out:59]
+clean `defStart` in scripts/probe-round283-the-classification-theseus-asked-for-exists-and-it-has-been-red-since-yesterday.mts:162  [census-the-named-binding-form.out:62]
+clean `i` in docs/research/round376-instruments/convert-r375-section-b.mjs:78  [census-the-named-binding-form.out:67]
+clean `j` in docs/research/round376-instruments/convert-r375-section-b.mjs:78  [census-the-named-binding-form.out:68]
+clean `seamIdx` in docs/research/round382-instruments/grade-the-class-count-and-the-seam.mjs:391  [census-the-named-binding-form.out:69]
+clean `v2From` in docs/research/round382-instruments/grade-the-class-count-and-the-seam.mjs:453  [census-the-named-binding-form.out:70]
+clean `i` in docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs:338  [census-the-named-binding-form.out:71]
+clean `i` in docs/research/round393-instruments/counterfactuals-for-the-p2-detector.mjs:14  [census-the-named-binding-form.out:72]
+clean `i` in docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs:136  [census-the-named-binding-form.out:73]
+clean `i` in docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs:170  [census-the-named-binding-form.out:74]
+clean `rekeyBlockAt` in docs/research/round396-instruments/grade-the-grade-that-reddens-on-its-own-routed-cure.mjs:325  [census-the-named-binding-form.out:75]
+clean `at` in docs/research/round398-instruments/property-pins.mjs:35  [census-the-named-binding-form.out:77]
+clean `at` in docs/research/round398-instruments/the-refusable-anchor-counterfactuals.mjs:129  [census-the-named-binding-form.out:78]
+clean `blockStart` in packages/client/src/__tests__/round33-typography-contrast.test.ts:91  [census-the-named-binding-form.out:79]
+clean `boundaryIdx` in packages/server/src/claude/client.ts:287  [census-the-named-binding-form.out:80]
+clean `boundaryIdx` in packages/server/src/claude/client.ts:319  [census-the-named-binding-form.out:81]
+clean `end` in scripts/probe-import-multipart-cap.mts:341  [census-the-named-binding-form.out:85]
+clean `firstMarked` in scripts/probe-recall-tool.mjs:2680  [census-the-named-binding-form.out:86]
+clean `at` in scripts/probe-round185-what-the-undo-classifier-knows-a-run-by.mts:392  [census-the-named-binding-form.out:87]
+clean `at` in scripts/probe-round187-the-binding-rule-at-the-inputs-it-was-argued-from.mts:250  [census-the-named-binding-form.out:88]
+clean `start` in scripts/probe-round257-the-scanner-had-no-model-of-interpolation.mts:76  [census-the-named-binding-form.out:89]
+clean `start` in scripts/probe-round258-three-readers-are-two-questions-and-the-shared-one-is-already-in-lib.mts:131  [census-the-named-binding-form.out:90]
+clean `a` in scripts/probe-round259-the-extraction-moved-nothing-and-closed-the-hole-in-the-file-it-moved-into.mts:140  [census-the-named-binding-form.out:91]
+clean `start` in scripts/probe-round262-the-population-is-a-tree-not-a-filename-convention.mts:124  [census-the-named-binding-form.out:92]
+clean `start` in scripts/probe-round264-a-census-of-one-spelling-and-the-extraction-that-moved-the-rest-out-of-reach.mts:122  [census-the-named-binding-form.out:94]
+clean `start` in scripts/probe-round265-the-census-already-follows-imports-on-the-other-axis.mts:162  [census-the-named-binding-form.out:95]
+clean `i` in scripts/probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts:429  [census-the-named-binding-form.out:96]
+clean `i` in scripts/probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts:429  [census-the-named-binding-form.out:97]
+clean `end` in scripts/probe-round299-admission-is-per-file-and-the-repair-that-missed-its-own-motivating-case.mts:398  [census-the-named-binding-form.out:98]
+clean `i` in scripts/probe-round301-the-limbs-partition-by-construction-and-the-price-landed-in-the-instrument-that-priced-it.mts:203  [census-the-named-binding-form.out:99]
+clean `i` in scripts/probe-round301-the-limbs-partition-by-construction-and-the-price-landed-in-the-instrument-that-priced-it.mts:219  [census-the-named-binding-form.out:100]
+clean `i` in scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts:186  [census-the-named-binding-form.out:101]
+clean `open` in scripts/probe-round327-the-pin-purpose-label-is-a-property-of-the-edge-and-retirability-is-a-property-of-the-target-line.mts:160  [census-the-named-binding-form.out:102]
+clean `open` in scripts/probe-round328-the-distinct-target-line-figure-is-keyed-on-the-pin-text-so-one-line-pinned-in-two-spellings-reads-as-two.mts:170  [census-the-named-binding-form.out:103]
+clean `abs` in docs/research/round382-instruments/grade-the-class-count-and-the-seam.mjs:216  [his399-live.out:26]
+clean `cutAt` in docs/research/round383-instruments/grade-the-binding-class.mjs:744  [his399-live.out:29]
+clean `abs` in docs/research/round384-instruments/grade-the-near-miss-attribution.mjs:89  [his399-live.out:32]
+clean `c1Name` in docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:169  [his399-live.out:35]
+clean `r1Start` in docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:198  [his399-live.out:38]
+clean `end` in docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs:133  [his399-live.out:41]
+clean `i` in docs/research/round396-instruments/the-key-counterfactuals.mjs:87  [his399-live.out:44]
+clean `i` in docs/research/round396-instruments/the-key-counterfactuals.mjs:87  [his399-live.out:47]
+clean `lineStart` in scripts/lib/skipped-shape-census.mts:255  [his399-live.out:56]
+clean `ls` in scripts/probe-round224-a-skip-must-not-summarise-as-a-pass.mts:1931  [his399-live.out:59]
+clean `defStart` in scripts/probe-round283-the-classification-theseus-asked-for-exists-and-it-has-been-red-since-yesterday.mts:162  [his399-live.out:62]
+clean `i` in docs/research/round376-instruments/convert-r375-section-b.mjs:78  [his399-live.out:67]
+clean `j` in docs/research/round376-instruments/convert-r375-section-b.mjs:78  [his399-live.out:68]
+clean `seamIdx` in docs/research/round382-instruments/grade-the-class-count-and-the-seam.mjs:391  [his399-live.out:69]
+clean `v2From` in docs/research/round382-instruments/grade-the-class-count-and-the-seam.mjs:453  [his399-live.out:70]
+clean `i` in docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs:338  [his399-live.out:71]
+clean `i` in docs/research/round393-instruments/counterfactuals-for-the-p2-detector.mjs:14  [his399-live.out:72]
+clean `i` in docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs:136  [his399-live.out:73]
+clean `i` in docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs:170  [his399-live.out:74]
+clean `rekeyBlockAt` in docs/research/round396-instruments/grade-the-grade-that-reddens-on-its-own-routed-cure.mjs:325  [his399-live.out:75]
+clean `at` in docs/research/round398-instruments/property-pins.mjs:35  [his399-live.out:77]
+clean `at` in docs/research/round398-instruments/the-refusable-anchor-counterfactuals.mjs:129  [his399-live.out:78]
+clean `blockStart` in packages/client/src/__tests__/round33-typography-contrast.test.ts:91  [his399-live.out:79]
+clean `boundaryIdx` in packages/server/src/claude/client.ts:287  [his399-live.out:80]
+clean `boundaryIdx` in packages/server/src/claude/client.ts:319  [his399-live.out:81]
+clean `end` in scripts/probe-import-multipart-cap.mts:341  [his399-live.out:85]
+clean `firstMarked` in scripts/probe-recall-tool.mjs:2680  [his399-live.out:86]
+clean `at` in scripts/probe-round185-what-the-undo-classifier-knows-a-run-by.mts:392  [his399-live.out:87]
+clean `at` in scripts/probe-round187-the-binding-rule-at-the-inputs-it-was-argued-from.mts:250  [his399-live.out:88]
+clean `start` in scripts/probe-round257-the-scanner-had-no-model-of-interpolation.mts:76  [his399-live.out:89]
+clean `start` in scripts/probe-round258-three-readers-are-two-questions-and-the-shared-one-is-already-in-lib.mts:131  [his399-live.out:90]
+clean `a` in scripts/probe-round259-the-extraction-moved-nothing-and-closed-the-hole-in-the-file-it-moved-into.mts:140  [his399-live.out:91]
+clean `start` in scripts/probe-round262-the-population-is-a-tree-not-a-filename-convention.mts:124  [his399-live.out:92]
+clean `start` in scripts/probe-round264-a-census-of-one-spelling-and-the-extraction-that-moved-the-rest-out-of-reach.mts:122  [his399-live.out:94]
+clean `start` in scripts/probe-round265-the-census-already-follows-imports-on-the-other-axis.mts:162  [his399-live.out:95]
+clean `i` in scripts/probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts:429  [his399-live.out:96]
+clean `i` in scripts/probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts:429  [his399-live.out:97]
+clean `end` in scripts/probe-round299-admission-is-per-file-and-the-repair-that-missed-its-own-motivating-case.mts:398  [his399-live.out:98]
+clean `i` in scripts/probe-round301-the-limbs-partition-by-construction-and-the-price-landed-in-the-instrument-that-priced-it.mts:203  [his399-live.out:99]
+clean `i` in scripts/probe-round301-the-limbs-partition-by-construction-and-the-price-landed-in-the-instrument-that-priced-it.mts:219  [his399-live.out:100]
+clean `i` in scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts:186  [his399-live.out:101]
+clean `open` in scripts/probe-round327-the-pin-purpose-label-is-a-property-of-the-edge-and-retirability-is-a-property-of-the-target-line.mts:160  [his399-live.out:102]
+clean `open` in scripts/probe-round328-the-distinct-target-line-figure-is-keyed-on-the-pin-text-so-one-line-pinned-in-two-spellings-reads-as-two.mts:170  [his399-live.out:103]
+clean `boundaryIdx` in packages/server/src/claude/client.ts:287  [regrade-the-file-scoped-guard.out:35]
+clean `boundaryIdx` in packages/server/src/claude/client.ts:319  [regrade-the-file-scoped-guard.out:36]
+clean `i` in scripts/probe-round301-the-limbs-partition-by-construction-and-the-price-landed-in-the-instrument-that-priced-it.mts:203  [regrade-the-file-scoped-guard.out:40]
+clean `i` in scripts/probe-round301-the-limbs-partition-by-construction-and-the-price-landed-in-the-instrument-that-priced-it.mts:219  [regrade-the-file-scoped-guard.out:41]
+clean `i` in scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts:186  [regrade-the-file-scoped-guard.out:42]
+clean `v2From` in docs/research/round382-instruments/grade-the-class-count-and-the-seam.mjs:453  [census-the-branch-polarity-axis.out:60]
+clean `i` in docs/research/round376-instruments/convert-r375-section-b.mjs:78  [census-the-branch-polarity-axis.out:64]
+clean `j` in docs/research/round376-instruments/convert-r375-section-b.mjs:78  [census-the-branch-polarity-axis.out:66]
+clean `v2From` in docs/research/round382-instruments/grade-the-class-count-and-the-seam.mjs:453  [census-the-branch-polarity-axis.out:68]
+clean `end` in scripts/probe-import-multipart-cap.mts:341  [census-the-branch-polarity-axis.out:70]
+clean `a` in scripts/probe-round259-the-extraction-moved-nothing-and-closed-the-hole-in-the-file-it-moved-into.mts:140  [census-the-branch-polarity-axis.out:72]
+clean `i` in scripts/probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts:429  [census-the-branch-polarity-axis.out:76]
+clean `i` in scripts/probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts:429  [census-the-branch-polarity-axis.out:78]
+clean `i` in scripts/probe-round301-the-limbs-partition-by-construction-and-the-price-landed-in-the-instrument-that-priced-it.mts:203  [census-the-branch-polarity-axis.out:80]
+clean `i` in scripts/probe-round301-the-limbs-partition-by-construction-and-the-price-landed-in-the-instrument-that-priced-it.mts:219  [census-the-branch-polarity-axis.out:82]
+clean `v2From` in docs/research/round382-instruments/grade-the-class-count-and-the-seam.mjs:453  [control-pre-label-repair.out:46]
+clean `i` in docs/research/round376-instruments/convert-r375-section-b.mjs:78  [control-pre-label-repair.out:50]
+clean `j` in docs/research/round376-instruments/convert-r375-section-b.mjs:78  [control-pre-label-repair.out:51]
+clean `v2From` in docs/research/round382-instruments/grade-the-class-count-and-the-seam.mjs:453  [control-pre-label-repair.out:52]
+clean `end` in scripts/probe-import-multipart-cap.mts:341  [control-pre-label-repair.out:53]
+clean `a` in scripts/probe-round259-the-extraction-moved-nothing-and-closed-the-hole-in-the-file-it-moved-into.mts:140  [control-pre-label-repair.out:54]
+clean `i` in scripts/probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts:429  [control-pre-label-repair.out:56]
+clean `i` in scripts/probe-round269-blocked-is-a-third-outcome-and-the-exit-code-that-carries-it-dies-one-level-down.mts:429  [control-pre-label-repair.out:57]
+clean `i` in scripts/probe-round301-the-limbs-partition-by-construction-and-the-price-landed-in-the-instrument-that-priced-it.mts:203  [control-pre-label-repair.out:58]
+clean `i` in scripts/probe-round301-the-limbs-partition-by-construction-and-the-price-landed-in-the-instrument-that-priced-it.mts:219  [control-pre-label-repair.out:59]
+clean `end` in docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs:133  [hand-read-the-unguarded.out:57]
+clean `i` in docs/research/round396-instruments/the-key-counterfactuals.mjs:87  [hand-read-the-unguarded.out:58]
+clean `i` in docs/research/round396-instruments/the-key-counterfactuals.mjs:87  [hand-read-the-unguarded.out:59]
+clean `abs` in docs/research/round382-instruments/grade-the-class-count-and-the-seam.mjs:216  [hand-read-the-unguarded.out:69]
+clean `abs` in docs/research/round384-instruments/grade-the-near-miss-attribution.mjs:89  [hand-read-the-unguarded.out:70]
+clean `cutAt` in docs/research/round383-instruments/grade-the-binding-class.mjs:744  [hand-read-the-unguarded.out:73]
+clean `c1Name` in docs/research/round388-instruments/grade-the-uncaught-drive-and-the-window.mjs:169  [hand-read-the-unguarded.out:74]
+clean `r1Start` in docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs:198  [hand-read-the-unguarded.out:75]
+clean `defStart` in scripts/probe-round283-the-classification-theseus-asked-for-exists-and-it-has-been-red-since-yesterday.mts:162  [hand-read-the-unguarded.out:76]
+clean `lineStart` in scripts/lib/skipped-shape-census.mts:255  [hand-read-the-unguarded.out:79]
+clean `ls` in scripts/probe-round224-a-skip-must-not-summarise-as-a-pass.mts:1931  [hand-read-the-unguarded.out:80]
+clean `occursInCorpus` in docs/research/round410-instruments/README.md:20  [handread-the-body-sites.out:15]
+clean `occursInCorpus` in docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs:12  [handread-the-body-sites.out:16]
+clean `occursInCorpus` in docs/research/round410-instruments/README.md:20  [my410-handread-command-redriven.out:42]
+clean `occursInCorpus` in docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs:12  [my410-handread-command-redriven.out:43]
+clean `B0b` in docs/logs/2026-11-13-daedalus-log.md:322  [drive2.armb.out:10]
+clean `B0b` in docs/logs/2026-11-13-daedalus-log.md:406  [drive2.armb.out:11]
+clean `A0b` in docs/logs/2026-11-13-daedalus-log.md:409  [drive2.armb.out:13]
+clean `B0b` in docs/mail/daedalus-to-theseus-argus-cc-xian-janus-calliope-iris-the-claim-you-left-me-is-driven-and-your-a-src-pin-is-the-only-leg-in-either-instrument-that-noticed-my-cure-2026-11-13.md:152  [drive2.armb.out:15]
+clean `bytes` in docs/mail/daedalus-to-theseus-argus-cc-xian-janus-calliope-iris-the-claim-you-left-me-is-driven-and-your-a-src-pin-is-the-only-leg-in-either-instrument-that-noticed-my-cure-2026-11-13.md:152  [drive2.armb.out:15]
+clean `A0b` in docs/mail/daedalus-to-theseus-argus-cc-xian-janus-calliope-iris-the-claim-you-left-me-is-driven-and-your-a-src-pin-is-the-only-leg-in-either-instrument-that-noticed-my-cure-2026-11-13.md:152  [drive2.armb.out:15]
+clean `B0b` in docs/research/unit-465byteslabel-2026-11-13/PRE-REGISTRATION.md:12  [drive2.armb.out:17]
+clean `bytes` in docs/research/unit-465byteslabel-2026-11-13/PRE-REGISTRATION.md:12  [drive2.armb.out:17]
+clean `A0b` in docs/research/unit-465byteslabel-2026-11-13/PRE-REGISTRATION.md:12  [drive2.armb.out:17]
+clean `a00c6fe8` in docs/research/unit-465byteslabel-2026-11-13/PRE-REGISTRATION.md:34  [drive2.armb.out:18]
+clean `B0b` in docs/research/unit-465byteslabel-2026-11-13/PRE-REGISTRATION.md:64  [drive2.armb.out:19]
+clean `d8822cb6` in docs/research/unit-465byteslabel-2026-11-13/PRE-REGISTRATION.md:64  [drive2.armb.out:19]
+clean `A0b` in docs/research/unit-465chainfloor-2026-11-13/RESULTS.md:26  [drive2.armb.out:22]
+clean `B0b` in docs/research/unit-465chainfloor-2026-11-13/RESULTS.md:26  [drive2.armb.out:22]
+clean `bytes` in docs/research/unit-464bucket-2026-11-01/regrade-saturation.mjs:12  [drive2.armb.out:66]
+clean `bytes` in docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:4  [drive2.armb.out:76]
+clean `bytes` in docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs:275  [drive2.armb.out:108]
+clean `bytesIdentical` in docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs:12  [drive2.armb.out:127]
+clean `readFileSync` in docs/research/round392-instruments/grade-the-finding-that-is-its-own-finding.mjs:57  [drive2.armb.out:128]
+clean `buildPanelHistory` in docs/research/round427-capability-test-pointer/the-history-window-is-200-messages-not-the-file.mjs:28  [drive2.armb.out:134]
+clean `isTracked` in docs/research/round442-instruments/cripple-and-regrade.mjs:90  [drive3.armc.out:73]
+clean `isTracked` in docs/research/round442-instruments/cripple-and-regrade.mjs:90  [drive4.armc.out:73]
+clean `G7` in docs/research/round441-instruments/README.md:142  [drive1.arma.out:33]
+clean `P2d` in docs/research/unit-465rekey374-2026-11-09/RESULTS.md:12  [drive1.arma.out:40]
+clean `T1` in docs/research/unit-465srckeys-2026-11-12/RESULTS.md:27  [drive1.arma.out:42]
+clean `P1` in docs/research/unit-465srckeys-2026-11-12/RESULTS.md:27  [drive1.arma.out:42]
+clean `P5` in docs/research/unit-465srckeys-2026-11-12/RESULTS.md:108  [drive1.arma.out:43]
+clean `G7` in docs/research/round441-instruments/README.md:142  [drive2.arma.out:33]
+clean `P2d` in docs/research/unit-465rekey374-2026-11-09/RESULTS.md:12  [drive2.arma.out:40]
+clean `T1` in docs/research/unit-465srckeys-2026-11-12/RESULTS.md:27  [drive2.arma.out:42]
+clean `P1` in docs/research/unit-465srckeys-2026-11-12/RESULTS.md:27  [drive2.arma.out:42]
+clean `P5` in docs/research/unit-465srckeys-2026-11-12/RESULTS.md:108  [drive2.arma.out:43]
+
+--- every UNRESOLVABLE pair (54) ---
+noFileInTree  `execFileSync` -> grade-the-routed-cure-against-its-own-pins.mjs:206  [his388-against-my-cure.out:13]
+noFileInTree  `C1` -> grade-the-routed-cure-against-its-own-pins.mjs:206  [his388-against-my-cure.out:13]
+noFileInTree  `execFileSync` -> grade-the-routed-cure-against-its-own-pins.mjs:206  [his388-at-his-own-commit.out:15]
+noFileInTree  `C1` -> grade-the-routed-cure-against-its-own-pins.mjs:206  [his388-at-his-own-commit.out:15]
+noFileInTree  `G0` -> unit-464vac-2026-10-31/measure.mjs:79  [drive2.subkind.out:58]
+noFileInTree  `G0` -> unit-464vac-2026-10-31/measure.mjs:80  [drive2.subkind.out:58]
+noFileInTree  `GCTRLPRE` -> unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:161  [drive2.subkind.out:59]
+noFileInTree  `GCTRLPRE` -> unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:194  [drive2.subkind.out:59]
+noFileInTree  `GCURE` -> unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:71  [drive2.subkind.out:60]
+noFileInTree  `GCURE` -> unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:90  [drive2.subkind.out:60]
+noFileInTree  `GROWREPRO` -> unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:211  [drive2.subkind.out:61]
+noFileInTree  `GCTRLPRE` -> unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:71  [drive2.subkind.out:62]
+noFileInTree  `GCTRLPRE` -> unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:90  [drive2.subkind.out:62]
+noFileInTree  `GCTRLPRE` -> unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:161  [drive2.subkind.out:62]
+noFileInTree  `GCTRLPRE` -> unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:194  [drive2.subkind.out:62]
+noFileInTree  `GCTRLPRE` -> unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:161  [drive2.subkind.out:62]
+noFileInTree  `GCTRLPRE` -> unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:194  [drive2.subkind.out:62]
+noFileInTree  `conjunctive` -> measure.mjs:79  [drive2.subkind.out:72]
+noFileInTree  `G0` -> unit-464vac-2026-10-31/measure.mjs:79  [drive3.subkind-repaired.out:57]
+noFileInTree  `G0` -> unit-464vac-2026-10-31/measure.mjs:80  [drive3.subkind-repaired.out:57]
+noFileInTree  `GCTRLPRE` -> unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:161  [drive3.subkind-repaired.out:58]
+noFileInTree  `GCTRLPRE` -> unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:194  [drive3.subkind-repaired.out:58]
+noFileInTree  `GCURE` -> unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:71  [drive3.subkind-repaired.out:59]
+noFileInTree  `GCURE` -> unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:90  [drive3.subkind-repaired.out:59]
+noFileInTree  `GROWREPRO` -> unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:211  [drive3.subkind-repaired.out:60]
+noFileInTree  `GCTRLPRE` -> unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:71  [drive3.subkind-repaired.out:61]
+noFileInTree  `GCTRLPRE` -> unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:90  [drive3.subkind-repaired.out:61]
+noFileInTree  `GCTRLPRE` -> unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:161  [drive3.subkind-repaired.out:61]
+noFileInTree  `GCTRLPRE` -> unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:194  [drive3.subkind-repaired.out:61]
+noFileInTree  `GCTRLPRE` -> unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:161  [drive3.subkind-repaired.out:61]
+noFileInTree  `GCTRLPRE` -> unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:194  [drive3.subkind-repaired.out:61]
+noFileInTree  `conjunctive` -> measure.mjs:79  [drive3.subkind-repaired.out:71]
+noFileInTree  `G0` -> unit-464vac-2026-10-31/measure.mjs:79  [drive4.c1-reader.out:57]
+noFileInTree  `G0` -> unit-464vac-2026-10-31/measure.mjs:80  [drive4.c1-reader.out:57]
+noFileInTree  `GCTRLPRE` -> unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:161  [drive4.c1-reader.out:58]
+noFileInTree  `GCTRLPRE` -> unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:194  [drive4.c1-reader.out:58]
+noFileInTree  `GCURE` -> unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:71  [drive4.c1-reader.out:59]
+noFileInTree  `GCURE` -> unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:90  [drive4.c1-reader.out:59]
+noFileInTree  `GROWREPRO` -> unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:211  [drive4.c1-reader.out:60]
+noFileInTree  `GCTRLPRE` -> unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:71  [drive4.c1-reader.out:61]
+noFileInTree  `GCTRLPRE` -> unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:90  [drive4.c1-reader.out:61]
+noFileInTree  `GCTRLPRE` -> unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:161  [drive4.c1-reader.out:61]
+noFileInTree  `GCTRLPRE` -> unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:194  [drive4.c1-reader.out:61]
+noFileInTree  `GCTRLPRE` -> unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:161  [drive4.c1-reader.out:61]
+noFileInTree  `GCTRLPRE` -> unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:194  [drive4.c1-reader.out:61]
+noFileInTree  `conjunctive` -> measure.mjs:79  [drive4.c1-reader.out:78]
+noFileInTree  `refusal` -> probe-round372-the-rows-are-keyed-on-the-limb-and-the-contradiction-is-latent.mts:140  [census.out:63]
+noFileInTree  `skip` -> probe-round372-the-rows-are-keyed-on-the-limb-and-the-contradiction-is-latent.mts:140  [census.out:63]
+noFileInTree  `A1b` -> sweep-probes.mjs:1594  [census.out:64]
+noFileInTree  `round373` -> sweep-probes.mjs:1614  [census.out:66]
+noFileInTree  `round374` -> sweep-probes.mjs:1614  [census.out:66]
+noFileInTree  `round373` -> sweep-probes.mjs:1614  [census.out:67]
+noFileInTree  `round374` -> sweep-probes.mjs:1614  [census.out:67]
+noFileInTree  `in` -> enumerate-legs.mjs:275  [drive3.armc.out:24]
+
+==============================================================================
+PREDICTIONS
+==============================================================================
+LANDS    P1 — SAMELINE yield >=1 flagged pair: flagged=84
+REFUTED  P2 — >=20% of SAMELINE cited sites unresolvable at the pin: 18.2%
+REFUTED  P3 — his instances 1-2 NOT in the SAMELINE population: pairs citing enumerate-legs.mjs=1, pairs with token KP_G=0
+LANDS    P4 — WINDOW3 >= 2x SAMELINE: 3424 vs 296 (11.6x)
+
+==============================================================================
+VERDICT: 4 legs, 0 red; 4 predictions graded
+FIGURES: recordings=1213 samelinePairs=296 samelineLines=213 samelineRecordings=25 window3=3424 screenable=242 unresolvable=54 flagged=84 clean=158 unresolvableRate=18.2%
+==============================================================================
