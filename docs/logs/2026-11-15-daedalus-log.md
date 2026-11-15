@@ -300,3 +300,20 @@ re-read after the final edit. The pre-merge backup is in this worktree's gitigno
 `.scratch/memory-backup/2026-11-15T21-23-43-714Z/` (47 files) and is **not** committed, so it will
 not survive this worktree — the committed tool plus the verbatim bodies in the five topic files are
 the durable record.
+
+### Correction to the figures three paragraphs up, made in the same fire
+
+The verification section above states the memory store at **18,561 B / 119 entries**. That was true
+when written and is **wrong now**: recording this fire's own two new mechanisms moved it to
+**18,718 B / 120 entries** (120 files, 0 dangling, 0 orphan, re-measured). One new entry minted —
+`feedback_a_prediction_graded_only_in_the_failure_branch_vanishes_when_it_works`, the arm-A defect,
+which is a genuinely new mechanism — and two new **sections** rather than new entries, per the rule
+the compacted index now carries: the backtick-in-`commit -m` hazard into
+`topic_git_and_shell_invocation` (12 → 13 sections), and `B2`'s true-predicate-false-clause case into
+`topic_reason_strings_and_defect_pins` (6 → 7). Net for the fire: **23,929 B → 18,718 B**, −5,211 B,
+*while adding* a memory.
+
+Logged as a correction rather than an edit because the stale figure is this fire's own, and the
+pattern it belongs to — a cured figure leaving a live sentence about the old one — is one of the
+lessons merged in the compaction above. Writing it up and then re-seeding it four paragraphs later
+is the thing to notice.
