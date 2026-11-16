@@ -1,0 +1,48 @@
+unit-467rawjson arm B — pin 1f675ebf76eb283cec6ee97294ba782b6b147678, arm A recording at 0eda091b
+HEAD now: 256d76815fe67736c7b6321249668ee206b8a655
+
+ok  S1        parsed 12 names out of the model bucket in drive1.arma.out (expect 12)
+ok  S1b       parsed INADMISSIBLE: 7 (expect 7), of which -live-suffixed: 6 (expect 6)
+ok  S5        the quoted detector /\b(Anthropic|ANTHROPIC_API_KEY|messages\s*\.\s*create)\b/ appears verbatim in promote-probes.mts: true
+ok  S2        files unreadable or stripSource threw: none
+ok  S3        arm A sites reproduced by arm B: 12/12
+
+── every model-branch match in each of the 12 (L = survives blankStrings:true, i.e. live code) ──
+  probe-round223-twenty-one-probes-against-a-stranger.mts — 1 match(es), 1 live-code
+      L  line 301: delete env.ANTHROPIC_API_KEY;
+  probe-round224b-the-migrated-probes-against-a-stranger.mts — 2 match(es), 1 live-code
+      L  line 114: delete env.ANTHROPIC_API_KEY;
+      .  line 219: 'ANTHROPIC_API_KEY stripped from every child env', 'measurement');
+  probe-round227-arm-o-on-a-corpus-where-the-cap-fires.mts — 2 match(es), 2 live-code
+      L  line 203: ANTHROPIC_API_KEY: '',
+      L  line 568: env: { ...process.env, KLATCH_DB: spawnEnvDb, ANTHROPIC_API_KEY: '' },
+  probe-round230-a-killed-probe-must-not-leave-its-server.mts — 1 match(es), 1 live-code
+      L  line 184: env: { ...process.env, ANTHROPIC_API_KEY: '' },
+  probe-round231-the-handler-and-the-signal-are-in-different-processes.mts — 2 match(es), 2 live-code
+      L  line 310: env: { ...process.env, ANTHROPIC_API_KEY: '' },
+      L  line 429: env: { ...process.env, ANTHROPIC_API_KEY: '' },
+  probe-round233-arm-m-and-the-endpoint-can-walk-different-corpora.mts — 2 match(es), 2 live-code
+      L  line 225: env: { ...process.env, KLATCH_DB: DB, ANTHROPIC_API_KEY: '' },
+      L  line 510: const childEnv: NodeJS.ProcessEnv = { ...process.env, ANTHROPIC_API_KEY: '' };
+  probe-round250-the-drive-was-never-priced-and-the-port-is-one-line-of-product.mts — 1 match(es), 0 live-code
+      .f line 341: model: mint('model.mts', `import Anthropic from '@anthropic-ai/sdk';  const c = new Anthropic();  await c.messages.create({});  `),
+  probe-round252-the-db-class-is-unblocked-by-a-variable-the-product-already-reads.mts — 1 match(es), 0 live-code
+      .  line 634: check('Z4', 'CONTROL — 0 model calls: nothing here IMPORTS the Anthropic SDK',
+  probe-round253-the-env-file-cannot-reach-the-database-path.mts — 2 match(es), 0 live-code
+      .  line 154: 'ANTHROPIC_API_KEY=r253-dummy-no-calls-are-made',
+      .  line 178: 'ANTHROPIC_API_KEY=r253-dummy-no-calls-are-made',
+  probe-round254-the-mutate-class-is-an-unanchored-conjunction-and-most-of-it-never-writes-the-product.mts — 1 match(es), 0 live-code
+      .  line 925: check('Z4', 'CONTROL — 0 model calls: nothing here IMPORTS the Anthropic SDK',
+  probe-round285-the-promotion-path-and-the-two-detectors-that-were-returning-a-smaller-number.mts — 1 match(es), 0 live-code
+      .  line 160: model: "const c = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });",
+  probe-round305-a-refusal-the-reader-could-not-check-can-now-print-its-own-site.mts — 1 match(es), 0 live-code
+      .  line 131: model: 'const key = process.env.ANTHROPIC_API_KEY;',
+
+LANDED  Q1   members with a model-branch match on a line OTHER than their arm-A site: 5 of 12. Total matches across the 12: 17 (arm A printed 12). Arm A's site column is a SLICE.
+LANDED  Q2   messages.create surviving blankStrings:true (live code): 0 []; inside a string literal (fixture): 1 ["probe-round250-the-drive-was-never-priced-and-the-port-is-one-line-of-product.mts:341"]. NOT ONE of the 12 calls the SDK in live code. The `model` class is not the live-round population.
+LANDED  Q3   of the six -live probes, those owning a model-branch token in their own (comment-blanked) source: 0 []. They are refused for a SPAWN relation only — DETECTORS.model never saw a call in them.
+REFUTED Q4   of the six, those naming an /api/...messages path in their own source: 0 []. No HTTP message route in their source either — the route is somewhere a third reading has to find.
+LANDED  Q5   probe-round230-a-killed-probe-must-not-leave-its-server.mts: 1 model match(es), 1 live-code, live messages.create: 0. The root of all six refusals makes no SDK call of its own.
+ok  S4        gate (packages, scripts, docs/research/lib): empty
+
+VERDICT/0 GREEN legs=6 red=[] refused=[] preds=5 refuted=["Q4"] prefused=[]
