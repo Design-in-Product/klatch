@@ -973,7 +973,78 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-16 ~09:17–09:3x PT (**START fire — substantive, PRODUCT not research: I BUILT
+- **Updated:** 2026-11-16 ~13:17–13:4x PT (**WORK fire — substantive, PRODUCT again: PHASE 1 OF THE
+  11-03 GROUND-RULES RULING IS BUILT, CRIPPLE-PROVED FOUR WAYS AND ON `main` — 13 DAYS FROM RULING TO
+  BUILD, 0 DAYS FROM SPEC TO BUILD — AND THE ARM I WROTE FOR ITS "ONE EMPTY STATE" WAS MEASURING THE
+  MAPPER, NOT THE COLUMN, WHICH NO CRIPPLE COULD REDDEN UNTIL I WROTE A FIFTH ONE.**) `date`-read
+  **13:17 PST**, read not estimated. **Commit author checked, not assumed:** the one commit above my
+  09:29 head was **Calliope's** `13539ea1` MID-fire rollup/scoping push — **not mine.** Mail delta →
+  **2 added**: Theseus's `unit-467rawjson` memo (this seat in `to:`) and Calliope's ground-rules
+  scoping memo (`to:` this seat, already `git mv`'d to `read/` by her on close). Both read in full
+  and acted on **in this fire**.
+  **1. BUILT AND PUSHED: ground rules phase 1 — `77a45d66`, plus `619238e1` for the test the cripples
+  found wanting.** Calliope's MID fire wrote the scoping (`docs/ux/ground-rules-scope-2026-11-16.md`)
+  in answer to the memo I filed at 09:2x, and closed her thread with *"if you want to take phase 1,
+  it's shippable standalone against the spec as written."* Taken. `channels.ground_rules TEXT`
+  nullable (guarded `ALTER TABLE`, the idiom `db/index.ts` already uses six times), a blank
+  klatch-only textarea with four static examples beside it, rendered at **layer 4a** as its own
+  labelled `parts.push`, plus the `PATCH` half. **Built against her spec, not my own earlier read of
+  the ruling** — in two places she corrected my 13-days-unbuilt memo (a field for `system_prompt`
+  does already exist, labelled "Purpose"; the two must not be conflated) and I built hers. I extended
+  her storage argument to the prompt layer, which it did not cover: **the part is labelled**, because
+  an unlabelled push would reintroduce the same conflation one layer down. Her open note (clone-from-
+  klatch) decided and built: it carries, because clone already carries purpose/mode/project/roster.
+  **2. THE FINDING AGAINST MY OWN TEST, AND IT IS WHAT PHASES 2–3 WOULD HAVE STOOD ON.** 18 arms
+  green, then four cripples. *"Absent, blank and whitespace-only all read back `undefined` — one empty
+  state"* is phrased on `channel.groundRules`, and `rowToChannel` maps `row.ground_rules || undefined`
+  — **the empty string is collapsed on the way out.** A cripple storing `''` instead of `NULL` left
+  **all 18 green.** The new raw-column arm is the **sole** red under it. **Phase 3's offer-previous-
+  rules is the natural place for a SQL predicate, and `IS NOT NULL` and `!= ''` are the same question
+  only while one of the two states never occurs.** Rule carried forward: **a claim about what is
+  *stored* cannot be measured through a mapper that normalises it — the read path is the lens, and
+  asserting the property through the lens measures the lens.**
+  **3. THE CRIPPLE THAT PRODUCED A CORPUS QUESTION FOR ARGUS, ROUTED NOT CLAIMED.** Delete the
+  migration, keep `__tests__/setup.ts`'s hand-typed DDL → **2 red, and only 2**: the two arms that run
+  `applySchema` over a fresh database. **17 of 19 arms in a file whose whole subject is a new column
+  stayed green against a schema the app never writes.** They are green *correctly* — the fixture
+  builds its own `channels` — and I added the column to both, so this file is sound. Routed to Argus
+  as a measurement question on the other 143 server test files; **not mine to bound from here.**
+  Other cripples: fuse-into-purpose → 4 red; ride-on-layer-4's-boilerplate-condition → 2 red;
+  client-side klatch-gate removed → 1 red. Each reddened its own arms and nothing else. One arm
+  hardened as a result: prompt-debug's `ACTIVE on rules alone` is derived from `channel.groundRules`,
+  so it **reported ACTIVE while the assembly dropped the rules** — it now checks the report against
+  the run in the same arm that makes the claim.
+  **4. ROUTED, NOT EDITED: `attention-rollup.md:319` now carries a false sentence.** The RULED entry
+  closes *"Nothing is built yet — no field, no default/template persistence, no prefill-from-previous-
+  klatch."* As of `77a45d66` **the field exists**; the other two do not. Routed to Calliope on the
+  same discipline Theseus used on v181 and she recorded in v183 — it is her trust instrument, and a
+  silent edit is how a board stops being checkable. Her scope doc untouched too.
+  **5. NOT BUILT, NAMED RATHER THAN LEFT IMPLICIT.** Phases 2–3 (coupled by her argument: phase 3
+  reads what phase 2 writes, so phase 3 alone is nothing, and phase 2 carries a UX call that is not
+  mine). **No edit surface for an existing klatch's rules** — `PATCH` accepts and clears them, no UI
+  sends it, so rules written at creation cannot be changed afterwards: a real rough edge of phase 1
+  *as specced*, flagged rather than silently scope-widened. **`api/client.ts`'s `createChannel` is
+  now eight positional parameters** and wants an options bag, the move `PromptAssemblyOptions` made
+  for the assembly — named as an unclaimed follow-on, not half-done.
+  **6. GATE, re-driven against my own change.** `npm run typecheck` → **0 `error TS`** ×4 workspaces.
+  Server **144 files / 2249 passed / 1 skipped (2250)** — standing 2230 + my 18 + 1, nothing else
+  moved. Client **28 files / 344 passed / 13 skipped (357)** — standing 337 + my 7.
+  `sweep-probes --census` → **CENSUS OK, 155 files, 45 swept / 110 deferred** (also run by the
+  pre-commit hook on both pushes). Full driving sweep: see the log's own filled slot — **written from
+  the output file after the process exited, per my 09:29 finding, not from the standing figure.**
+  **Drain:** pull + author-checked delta; `COORDINATION.md` read; both mail files read and acted on in
+  the same fire; a ruled product item taken from spec to `main` with five cripples driven; one false
+  board line and one corpus question routed; memo to Calliope + Iris filed; gate re-driven.
+  **Deferred with named reasons, no deadlines:** my three boarded research items (SAMELINE pairing
+  key, form-aware precision census, sha/round-label exclusion) — **no blocker, a choice**, a ruled
+  13-day-unbuilt product item with a fresh spec outranked them, second fire running. Theseus's
+  `client.ts` raw-JSON seam, which he named as nearer mine — **not taken, and that is a choice, not a
+  blocker**; unclaimed and unstarted, so nobody is racing him for it. His §2 detector blindness —
+  **Argus's**, and I agree with his routing. Still mine and unclaimed: the parameter/positional
+  exclusion, `arm-routecure-d.mjs`'s `hash-object` pin and `/misordered/` detector, the
+  `unit-465p12site` RESULTS:93 one-clause cure, the two `schemacollide` single-name selectors.
+  Log: `docs/logs/2026-11-16-daedalus-log.md`.
+- **Previously:** 2026-11-16 ~09:17–09:3x PT (**START fire — substantive, PRODUCT not research: I BUILT
   THE PREVIEW ENDPOINT IRIS NAMED AS THE REASON THE ASK-FIRST HALF OF xian's ENTITY-DELETE RULING
   STAYED UNBUILT, AND BOTH CRIPPLES LANDED EXACTLY AS PRE-REGISTERED — PLUS A THIRD RULED ITEM FOUND
   AND ROUTED AT 13 DAYS RATHER THAN AT 40.**) `date`-reads **09:17:07 / 09:26:07 / 09:27:12 PST**,

@@ -210,3 +210,162 @@ fd341b76 feat(entity-delete): GET /entities/:id/delete-preview — ask before, n
 Deliverables confirmed present, and the code confirmed **at the remote** rather than only locally:
 `git show origin/main:packages/server/src/routes/entities.ts | grep -n delete-preview` → **`197:`**;
 same against the test file → **8 occurrences**. Both mail files and this log `ls`-confirmed.
+
+---
+
+## 13:17 — Session resumed (WORK fire)
+
+Model: claude-opus-5. `date` → **2026-11-16 13:17 PST**, read not estimated.
+
+**Briefing.** One commit above my 09:29 head: `13539ea1`, **Calliope's** MID fire — author checked,
+not assumed. Mail delta **2**: Theseus's `unit-467rawjson` memo (this seat in `to:`) and Calliope's
+ground-rules scoping reply (`to:` this seat; she had already `git mv`'d it to `read/` on closing her
+side). Both read in full before any work.
+
+## 1. The fire's work: phase 1 of the 11-03 ground-rules ruling, built
+
+At 09:2x I routed the scoping of this ruling to Calliope rather than taking it, with the engineering
+half attached so she wasn't waiting on me. By 12:42 she had written
+`docs/ux/ground-rules-scope-2026-11-16.md` and closed her thread with *"if you want to take phase 1,
+it's shippable standalone against the spec as written."* So the item that was **13 days from ruling
+to build** at 09:2x became **0 days from spec to build** at 13:2x.
+
+**Built against her spec, not my own read of the ruling.** Two places her doc corrected my memo:
+
+1. My memo's "no field like this exists" needed a footnote — `channels.system_prompt` has had a live
+   klatch-form field all along, labelled *"Purpose — what is this klatch for?"*. Her call: a separate
+   column, because a later offer-previous-rules read path over a shared column would leak Purpose.
+2. Her phasing: phase 1 alone is shippable; **phases 2 and 3 are coupled, not sequential** — phase 3
+   reads what phase 2 writes, so phase 3 alone is not a smaller increment, it is nothing.
+
+**What I added that her spec did not cover, because it is a prompt-layer fact rather than a storage
+one:** layer 4a's part is **labelled** (`GROUND_RULES_PREFIX`). An unlabelled `parts.push` would have
+put two user-authored paragraphs in one prompt with nothing saying which field either came from —
+the same conflation her storage decision rejects, one layer down.
+
+Her one open note, decided inline as she left it: **clone-from-klatch carries ground rules.** Clone
+already carries purpose, mode, project and roster; "copy this setup, except the house rules" would
+surprise. Not phase 3 arriving early — it fires only on an explicit clone gesture, and a test asserts
+a fresh klatch form is blank.
+
+Commits: **`77a45d66`** (increment), **`619238e1`** (the test §2 found wanting). Both pushed to
+`main` individually rather than batched, per the 2400s-timeout lesson.
+
+## 2. The finding this fire produced against its own test
+
+18 arms green on the first run. **Green on the first run is not evidence an arm can redden**, so I
+crippled the implementation four ways.
+
+**One arm could not redden for the thing it is named after.** *"Absent, blank and whitespace-only
+all read back `undefined` — one empty state"* is phrased in terms of `channel.groundRules`.
+`rowToChannel` maps `row.ground_rules || undefined`, so **`''` is collapsed to `undefined` on the way
+out**. Cripple 4 — `createChannel` storing `?? ''` instead of `|| null`, i.e. a writer minting the
+second empty state the design forbids — left **all 18 arms green**.
+
+The replacement arm reads the raw column (`SELECT ground_rules FROM channels WHERE id = ?`) and is
+the **sole red** under that same cripple, re-driven to confirm rather than assumed.
+
+**Why it is not a hygiene footnote:** phase 3's offer-previous-rules is the natural place for a SQL
+predicate, and `ground_rules IS NOT NULL` and `ground_rules != ''` are the same question **only
+while one of the two states never occurs**. The arm as written would have let a future writer
+introduce the second state silently, and phase 3 would have inherited it.
+
+**Carried forward:** *a claim about what is **stored** cannot be measured through a mapper that
+normalises it.* The read path is a lens; asserting the property through the lens measures the lens.
+Nearest existing lesson in my store is the mapper/column distinction's cousin — a joined-string
+comparison that cannot see an empty member — and this is the same defect one layer lower.
+
+## 3. The cripple whose result is a question about the corpus, not about my file
+
+**Cripple 2: delete the migration, keep the test fixture's hand-typed DDL.** Result: **2 red, and
+only 2** — the two arms that run `applySchema` over a fresh in-memory database.
+
+**17 of the 19 arms in a file whose entire subject is a new column stayed green against a schema the
+app never writes to `klatch.db`.** They are green correctly: `__tests__/setup.ts` builds its own
+`channels` table, so every arm reaching through `createChannel` measures the fixture, not the
+migration. I added the column to both, so this file is sound — and I only *have* the two measuring
+arms because `round465` had already built the `applySchema`-over-a-temp-db pattern for a different
+reason.
+
+Routed to Argus as a measurement question (how many of the 144 server test files assert a schema fact,
+and how many assert it against the fixture?). **Not claimed**: it is a census, which is his seat, and
+my file is not the instance that would fail.
+
+**The other cripples, each reddening its own arms and nothing else:**
+
+| cripple | red |
+|---|---|
+| 1 — fuse rules into the purpose part, unlabelled | 4 (both conflation checks, the floor arm, debug/assembly agreement) |
+| 2 — migration omitted, fixture kept | 2 (and *only* 2 — §3) |
+| 3 — rules ride on layer 4's boilerplate-Purpose condition | 2 (the independence arms) |
+| 4 — blank stored as `''` | 0 of 18 → 1 of 19 after the new arm |
+| 5 — client-side klatch gate removed from `handleSubmit` | 1 (the gate arm) |
+
+**One arm hardened by cripple 3 rather than by reasoning.** prompt-debug's *"ACTIVE on rules alone"*
+line is derived from `channel.groundRules`, so **it reported ACTIVE while the assembly was dropping
+the rules** — it stayed green under cripple 3 while only the assembled-string assertions in the
+sibling test went red. It now checks the report against the run, in the same arm that makes the
+claim. Same shape as the lesson about a report derived from source attesting the source.
+
+**One honest limitation recorded:** cripple 2's second red arm (*"applying the schema twice is a
+no-op"*) conjoins idempotence with presence — under cripple 2 the `not.toThrow()` half passed and the
+`toHaveLength(1)` half failed. The vitest output names the failing assertion, so a reader can tell
+which; a bare red could not. Left as one arm because idempotence means nothing if the column is
+absent, but noted rather than left for someone to rediscover.
+
+## 4. Routed, not edited: a false line on the board
+
+`attention-rollup.md:319`'s RULED entry closes *"Nothing is built yet — no field, no default/template
+persistence, no prefill-from-previous-klatch."* As of `77a45d66` **the field exists**; the other two
+clauses are still true. Routed to Calliope in the memo rather than edited here — her trust
+instrument, her render discipline, and the precedent is Theseus's v181 correction which she recorded
+approvingly in v183. Her scope doc likewise untouched.
+
+## 5. Gate, re-driven fresh against my own change
+
+- `npm run typecheck` → **0 `error TS`**, all four workspaces
+- server **144 files / 2249 passed / 1 skipped (2250)**. Standing was 2230/1 (2231); 2230 + 18 + 1 =
+  **2249** — exactly my arms, nothing else moved
+- client **28 files / 344 passed / 13 skipped (357)**. Standing 337/13 (350); 337 + 7 = **344**
+- `sweep-probes --census` → **CENSUS OK, 155 files, 45 swept / 110 deferred**, run twice by the
+  pre-commit hook
+- full driving sweep — launched at 13:3x, **this slot deliberately left unwritten**; filled below
+  from the output file after the process exits. `wc -c` at the time of writing this line: the file
+  was still growing.
+
+Two pre-existing client assertions updated, not weakened: `toHaveBeenCalledWith` compares arity, so
+a seventh argument on `onCreateChannel` reddens them. They now pin `undefined` in that slot, which is
+also the assertion that **a chat sends no ground rules**.
+
+## 6. What I did not do, with reasons that are not deadlines
+
+- **Phases 2 and 3** — Calliope's coupling argument, plus phase 2's submit-time prompt is a UX call.
+- **No edit surface for an existing klatch's rules.** `PATCH /channels/:id` accepts and clears them;
+  no UI sends it. A user can write rules at creation and not change them after. A genuine rough edge
+  of phase 1 *as specced*, flagged rather than silently scope-widened.
+- **`api/client.ts`'s `createChannel` is at eight positional parameters** and wants an options bag.
+  Not done: it touches every caller and mock for a one-field change, and a half-converted signature
+  is worse than either shape. Named as an unclaimed follow-on.
+- **Theseus's `client.ts` raw-JSON seam**, which he named as nearer mine: **a choice, not a blocker.**
+  A ruled product item 13 days unbuilt with a spec written three hours earlier outranked it. Unstarted
+  and unclaimed, so he is not being raced.
+- **His §2 detector blindness** (`DETECTORS.model` and the route population perfectly disjoint):
+  **Argus's**, and his routing is right. His reason not to patch is stronger than he put it — widening
+  cannot help *because the route population holds no model token to widen to*.
+
+## 7. Sweep verdict — typed from the output file after the process exited
+
+The run launched at 13:3x exited with code 0. Verdict read off `.sweep-gr.out` (7,322 bytes at exit,
+`.sweep-gr.err` **0 bytes**) after the process had exited, not from the standing figure:
+
+```
+SWEEP PASSED — 45 of 45 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but
+did not finish), 0 census problem(s), 110 deferred
+```
+
+Matching this morning's 09:29 run and Argus's 09:10 run — so the ground-rules increment moved nothing
+in the probe corpus, which is what a schema column plus a prompt layer with no probe coverage should
+do. **The mechanical rule from 09:29 held this fire:** the slot above was written as "deliberately
+left unwritten" with a `wc -c` taken at the time, and this figure was typed only now. It is the same
+figure I would have drafted; that remains the hazard rather than the exoneration, and the difference
+is that this one is a measurement.
