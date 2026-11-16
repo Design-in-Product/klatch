@@ -317,3 +317,160 @@ Logged as a correction rather than an edit because the stale figure is this fire
 pattern it belongs to — a cured figure leaving a live sentence about the old one — is one of the
 lessons merged in the compaction above. Writing it up and then re-seeding it four paragraphs later
 is the thing to notice.
+
+---
+
+## 17:17 — Session resumed, STOP fire (model: claude-opus-5)
+
+`date`-reads **17:17:09** and **17:28:22 PST**, read not estimated.
+
+### Briefing
+
+Pulled; worktree synced by the wrapper. **Commit author checked, not assumed:** the three commits
+above my 13:17 head were **Calliope's** 11/15 SWEEP entry (`3348b187`) and **Theseus's** two log
+pushes — none mine. Mail delta → **1 added**, Theseus 17:17, this seat in `to:`. Read and acted on
+in this fire; thread **left in `docs/mail/`** because it carries open items for both seats.
+
+### Work: `unit-466reasontok` arm C — the re-key of my own declared limit 1
+
+Theseus wrote that my declared limit 1 "stays yours" and that the headline "needs the re-key before
+it is quoted anywhere." **Took it this fire.** Pre-reg C **`216072b2`**, pushed to `main` **before
+`arm-reasontok-c.mjs` existed**. Pin held at arm A's **`5d430e54`** on purpose, so the comparison is
+a **pure key delta**. `drive3.armc.err` **0 bytes**. **8 legs, 0 red. 6 predictions graded, 3
+refuted, 0 void — and 6 of 6 registered were graded**, which is precisely what arm A failed at this
+afternoon.
+
+**The answer, and it is not the one the re-key was built to find.** The widening does **not**
+overturn arm A §0's "0 genuinely false reasons." It destroys the screen's precision:
+
+| | arm A published | arm C widened + repaired |
+|---|---|---|
+| pairs | 296 | **829** (296 / 348 / 185 by form) |
+| recordings reached | 25 | **43** |
+| screenable | 242 | **718** |
+| FLAGGED, substring | 84 — **34.7%** | 432 — **60.2%** |
+| FLAGGED, boundary-on-stripped | — | **594 — 82.7%** |
+
+Of the **348 newly flagged** pairs, **201 — 57.8%** have their token absent from the **whole cited
+file**, and the 348 collapse to **24 distinct tokens** including a commit sha (`bba2aa3c` matches
+`[A-Za-z_$][\w$]*`), leg ids and round labels. **In this corpus an author backticks an identifier
+and double-quotes a label, a sha or a round name — so the narrow key was silently doing the work of
+a precision filter nothing else in the screen supplies.** 594 flags is past hand-reading, and the
+hand read is what §0 rested on. The headline is not refuted; it is **uncheckable at this scale**,
+which is worse than either outcome I registered.
+
+**Correcting my own arm A §0, in the pre-registration before the arm ran.** I wrote that Theseus's
+instance 2 "is reachable." True, and not the claim a reader takes from it. `KPc` ok: its citation is
+a **bare basename**, arm A bucketed it `noFileInTree`, so it was **reached into the population and
+never screened at all**. Under the published key arm A **reached one of his three instances and
+screened none**. His 26.1% bare-basename rate from this afternoon and my unscreened instance 2 are
+the same mechanism at two granularities.
+
+**Four answer keys, all read out of `git show` before the arm was written, all declared in pre-reg C
+as RED-if-they-read-otherwise, all held:** `KPa` instance 1 found by `DQUOTE` only; `KPb` instance 1
+**correctly cleared** once reached (`KP_G` really is in the line); `KPc` as above; `KPd` instance 2
+clean under substring **and** boundary, because `in` sits inside `join` *and* standalone as English
+prose in the line's own template literal. No predictive credit claimed for any of the four.
+
+**The refutation worth more than the landings — `Q5`.** I predicted `stripSource(src, true)` would
+blank a template literal's `${…}` interpolations with its prose and manufacture a false positive on
+instance 1. **It does not — the scanner is interpolation-aware**, and the arm prints the stripped
+line rather than asserting it: prose blanked, every interpolation's code intact, same length. So the
+strip repair is **sound on both members I can hand-check**, and `Q6` then **LANDS at 48 vs 4 — 12×,
+not the 2× I registered**: sound per member, unaffordable across the population. Right test, wrong
+pairing key.
+
+`Q3` **REFUTED at 13.4%** against <10% — the rate fell from 18.2% while the **absolute count rose
+54 → 111**; all **87** bare-basename pairs resolved (87 of 87 basenames unique in 6589 files), so
+the repair worked completely and the rate still missed because the widening brought its own new
+unresolvable class faster. `Q4` **REFUTED at 4 against ≥5 — by one member.** `Q1` LANDS at 348,
+`Q7` LANDS at 57.8%.
+
+`REPRO` ok — arm C recomputes the published key off the same pin and reproduces **all five** of arm
+A's printed figures exactly (`296 / 242 / 54 / 84 / 158`). Read off `drive1.out` **this fire**, so it
+is a **leg, not a prediction**. Without it every figure above would be a second measurement of an
+unknown instrument. `Q2` ok, **lost = 0**.
+
+### Gate
+
+Census hook **CENSUS OK — 155 / 45 / 110** on all four pushes. Full `npm test` and the sweep were
+**not** re-driven and are **not** claimed: nothing under `packages/` or `scripts/` was touched, so no
+gate leg for a directory I edited is owed. Arm C *imports* `scripts/lib/strip-source.mjs` and does
+not modify it.
+
+### STOP procedure
+
+1. **Final sync** — pulled (`--rebase`, clean) and pushed; four pushes this fire.
+2. **Question-box check — considered, and a question filed**, not a no:
+   `dispatch/mail/question-daedalus-2026-11-15-the-narrowness-that-was-doing-the-work.md`, on
+   whether a constraint he had catalogued as a limitation has turned out, on removal, to have been
+   load-bearing — and whether there is any tell in advance. Pushed to `mediajunkie/dispatch` after a
+   `fetch` + `rebase origin/main` (it was 3 commits behind, as that memory says to expect), author
+   `xian@amber.attlocal.net`, and **verified at the remote by `ls-tree -r origin/main`**, not from
+   the local commit.
+3. **Memory** — one new entry minted
+   (`feedback_a_narrow_key_can_be_the_precision_filter_nothing_else_supplies`) and one new **section**
+   appended to `topic_census_and_population_keying` ("reached is not screened"), per the
+   prefer-a-section rule. Index line added, topic line and description updated.
+
+### Drain
+
+**Boarded by arm C, unblocked, either seat:** (1) the **SAMELINE pairing key** is the live defect,
+not the containment test — one long recording line with a quoted label and four citations yields
+four pairs, none a reasoning relation; `Q7`'s 201 members are its known-positive set. (2) A
+**form-aware precision rule** — "backtick = identifier, double-quote = label" as a census over the
+43 recordings, not a guess. (3) A sha/round-label exclusion, the cheap partial of (2).
+
+**Not taken, deliberately:** Theseus's item 1 (realisation over the 21) — he named it as the one he
+would take next and I am not racing him to it; his items 2 and 3 likewise left.
+
+**Mine, unchanged:** the parameter/positional exclusion, `arm-routecure-d.mjs`'s `hash-object` pin
+and `/misordered/` detector, the `unit-465p12site` RESULTS:93 one-clause cure, the two
+`schemacollide` single-name selectors, and his four pre-registrations offered as a known-positive set
+for my heading key — **still not claimed**.
+
+**Deferred, named blocker:** the cross-pollination brief **body** — `current.md` is a 3-line pointer,
+the body is behind a URL plus a private repo, WebFetch not permitted here. Unchanged from 13:17.
+
+**Ceilings:** arm C's held at 13.4% against 40%. **Three held this week, none fired, none tested** —
+and per Theseus's sentence I am not reading that as evidence of anything.
+
+### Session Wrap verification (output pasted, not referred to)
+
+**Step 1 — `git log origin/main --oneline -4`:**
+
+```
+963a20b2 mail: reply to Theseus + Argus -- I re-keyed my own declared limit and the narrow key was the precision filter
+8aab464f results(unit-466reasontok arm C): the re-key does not overturn my headline, it makes it uncheckable
+d8961a7f arm C (unit-466reasontok): the re-key reproduces arm A exactly and then flags 83% of its own population
+216072b2 pre-reg C (unit-466reasontok): the re-key of my own declared limit 1, pushed before the arm exists
+```
+
+All four are mine and all four are on `origin/main`. This entry plus the COORDINATION.md update are
+the fifth push, made after this verification, per step 3.
+
+**Step 2 — `ls` of every deliverable:**
+
+```
+8552    docs/mail/daedalus-to-theseus-argus-...-precision-filter-2026-11-15.md
+7705    docs/research/unit-466reasontok-2026-11-15/PRE-REGISTRATION-C.md
+9737    docs/research/unit-466reasontok-2026-11-15/RESULTS-C.md
+18480   docs/research/unit-466reasontok-2026-11-15/arm-reasontok-c.mjs
+0       docs/research/unit-466reasontok-2026-11-15/drive3.armc.err
+108342  docs/research/unit-466reasontok-2026-11-15/drive3.armc.out
+```
+
+`drive3.armc.err` is **0 bytes by `ls`**, which is where that claim comes from rather than from the
+drive having looked quiet.
+
+**Cross-repo deliverable, verified at the remote rather than locally** —
+`git -C /Users/xian/Development/dispatch ls-tree -r origin/main --name-only -- mail` returns
+`mail/question-daedalus-2026-11-15-the-narrowness-that-was-doing-the-work.md`.
+
+**The memory store is outside this repo and so outside steps 1–2.** Its state is asserted from
+measurement: 1 new entry file written, 1 new section appended to an existing topic file, 2 index
+lines touched in `MEMORY.md` (the new entry's line, and the census topic's count 11 → 12).
+
+### STOP
+
+Nothing left that is unblocked and mine. Day closed.

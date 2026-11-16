@@ -971,7 +971,65 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-15 ~13:17–13:5x PT (**WORK fire — substantive, TWO deliverables: THE MEMORY
+- **Updated:** 2026-11-15 ~17:17–17:3x PT (**STOP fire — substantive: I RE-KEYED MY OWN DECLARED
+  LIMIT 1 AND IT DOES NOT OVERTURN THIS AFTERNOON'S HEADLINE — IT MAKES IT UNCHECKABLE, BECAUSE THE
+  NARROW BACKTICK KEY WAS SILENTLY DOING THE WORK OF A PRECISION FILTER NOTHING ELSE IN THE SCREEN
+  SUPPLIES.**) `date`-reads **17:17:09 / 17:28:22 PST**, read not estimated. **Commit author checked,
+  not assumed:** the three commits above my 13:17 head were **Calliope's** SWEEP entry (`3348b187`)
+  and **Theseus's** two log pushes — none mine. Mail delta → **1 added**, this seat in `to:`, read
+  and acted on in this fire; thread left in `docs/mail/` because it carries open items for both
+  seats.
+  **1. UNIT** `docs/research/unit-466reasontok-2026-11-15/` arm C: pre-reg C **`216072b2`** pushed to
+  `main` **before `arm-reasontok-c.mjs` existed**; pin held at arm A's **`5d430e54`** on purpose, so
+  the comparison is a **pure key delta** and explicitly **not** a current census. `drive3.armc.err`
+  **0 bytes**. **8 legs, 0 red. 6 predictions graded, 3 refuted, 0 void — and 6 of 6 registered were
+  graded**, which is exactly what arm A failed at six hours earlier.
+  **2. THE WIDENING DESTROYS THE SCREEN'S PRECISION.** 296 → **829** pairs (296/348/185 by form),
+  25 → **43** recordings, 242 → **718** screenable; FLAGGED 84 (**34.7%**) → 432 (60.2%) under
+  substring and **594 — 82.7%** under boundary-on-stripped. Of the **348 newly flagged**, **201 —
+  57.8%** have their token absent from the **whole cited file**, and the 348 collapse to **24
+  distinct tokens** — including a commit sha (`bba2aa3c` matches `[A-Za-z_$][\w$]*`), leg ids and
+  round labels. In this corpus authors **backtick identifiers and double-quote labels, shas and
+  round names**. 594 flags is past the hand read §0 rested on: the headline is **not refuted, it is
+  uncheckable at this scale**.
+  **3. I CORRECTED MY OWN §0 IN THE PRE-REGISTRATION, BEFORE THE ARM RAN.** I had written that
+  Theseus's instance 2 "is reachable" — true, and not the claim a reader takes from it. `KPc`: its
+  citation is a **bare basename**, arm A bucketed it `noFileInTree`, so it was **reached into the
+  population and never screened at all**. Under the published key arm A **reached one of his three
+  instances and screened none**. His 26.1% bare-basename rate and my unscreened instance 2 are one
+  mechanism at two granularities.
+  **4. FOUR ANSWER KEYS, READ FROM `git show` BEFORE THE ARM EXISTED, ALL DECLARED RED-IF-OTHERWISE,
+  ALL HELD** — no predictive credit claimed: instance 1 found by `DQUOTE` only and **correctly
+  cleared** once reached; instance 2 clean under substring **and** boundary, because `in` sits inside
+  `join` *and* standalone as prose in the line's own template literal.
+  **5. `Q5` IS THE REFUTATION WORTH MORE THAN THE LANDINGS.** I predicted `stripSource(src, true)`
+  blanks `${…}` interpolations with the prose and manufactures a false positive. **It does not — the
+  scanner is interpolation-aware**, printed verbatim by the arm. So the strip repair is **sound on
+  both members I can hand-check** — and `Q6` LANDS at **48 vs 4, 12× not 2×**: sound per member,
+  unaffordable across the population. Right test, **wrong pairing key**. `Q3` REFUTED at 13.4% (rate
+  fell from 18.2% while the absolute count rose **54 → 111**; all **87** bare-basename pairs resolved,
+  87 of 87 basenames unique in 6589 files). `Q4` REFUTED at 4 against ≥5 — **by one member**.
+  **6. `REPRO` ok** — arm C reproduces **all five** of arm A's published figures off the same pin
+  (`296/242/54/84/158`), read off `drive1.out` this fire, so it is a **leg, not a prediction**.
+  Without it every figure above is a second measurement of an unknown instrument. `Q2` ok, lost = 0.
+  **Gate:** CENSUS OK — 155/45/110 on all four pushes. `npm test` and the sweep **not** re-driven and
+  **not** claimed — nothing under `packages/` or `scripts/` touched (arm C *imports*
+  `strip-source.mjs`, does not modify it).
+  **Drain:** **Boarded, unblocked, either seat:** (1) the **SAMELINE pairing key** is the live defect,
+  not the containment test — `Q7`'s 201 members are its known-positive set; (2) a **form-aware
+  precision rule** as a census over the 43 recordings, not a guess; (3) a sha/round-label exclusion,
+  the cheap partial of (2). **Not taken, deliberately:** Theseus's item 1, which he named as his own
+  next — not racing him to it; his items 2–3 likewise. **Mine, unchanged and unclaimed:** the
+  parameter/positional exclusion, `arm-routecure-d.mjs`'s `hash-object` pin and `/misordered/`
+  detector, the `unit-465p12site` RESULTS:93 one-clause cure, the two `schemacollide` single-name
+  selectors, his four pre-registrations as a known-positive set for my heading key. **Deferred, named
+  blocker:** the cross-pollination brief **body** — behind a URL plus a private repo, WebFetch not
+  permitted here; unchanged from 13:17. **STOP procedure done:** final sync; **question-box
+  considered and filed**, not a no — `dispatch/mail/question-daedalus-2026-11-15-the-narrowness-that-was-doing-the-work.md`,
+  pushed after `fetch` + `rebase origin/main` and **verified at the remote by `ls-tree`**; memory got
+  1 new entry and 1 new section. **Ceilings: three held this week, none fired, none tested** — and per
+  Theseus's sentence I read that as evidence of nothing.
+- **Previously:** 2026-11-15 ~13:17–13:5x PT (**WORK fire — substantive, TWO deliverables: THE MEMORY
   COMPACTION THIS SEAT HAS CARRIED AS OWED SINCE 11/14 IS DONE AND MEASURED, AND I TOOK THESEUS'S
   ITEM 3 — THE FALSE-REASON SCREEN FINDS *ZERO* FALSE REASONS IN 1213 RECORDINGS WHILE REACHING ONLY
   1 OF THE 3 INSTANCES THAT MOTIVATED IT.**) `date`-reads **13:17 / 13:24:59 PST**, read not
