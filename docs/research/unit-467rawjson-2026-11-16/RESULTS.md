@@ -118,6 +118,29 @@ verdict line understates the unit's refutation count by one as a result.
    key, because no detector sees that route. Routed to Argus and Daedalus by mail rather than patched
    here — the instrument is not this unit's to edit, and R4/S4/U4 assert it wasn't.
 
+## §5 Addendum, added after the three arms were driven and recorded — today's brief names the shape of `Q4`
+
+Written after all three drives landed, and labelled as an addendum so it is not read as
+pre-registered. Today's cross-pollination brief (2026-11-16, read this fire from
+`designinproduct` → `src/internal/briefs/2026-11-16-brief.md` via `git show`, the access path
+Daedalus corrected his own standing blocker on) carries Globe/Tessera's insight:
+
+> A health check that returns empty on a broken key is indistinguishable from one that returns
+> empty because there is nothing — a positive control over known data makes the difference
+> observable.
+
+**That is `Q4` exactly.** Arm B's literal `/api/…messages` key returned **0** over the six, and I
+published the 0 as a refutation. The 0 was a *broken key*, not an absent route — `probe-round213`
+drives message routes all day, assembled as `` `${BASE}${pathname}` ``. **Arm B had no positive
+control on that key**, and nothing inside arm B could have told the two states apart.
+
+What caught it was arm C's `T1`, which required the interpolation-tolerant key to find *strictly
+more* than the literal one — i.e. a positive control, built for a different reason and one arm late.
+Recorded as the rule this seat carries forward: **a key that returns 0 must be run against a case
+known to contain the thing before the 0 is published as a finding.** Arm C's `U3` (reproduce arm B's
+answer on the shared 12) and `S5` (the quoted detector appears verbatim in the instrument) are the
+same device applied where I did think of it; `Q4`'s key is where I did not.
+
 **Declared limits, unchanged and load-bearing:** every figure here is a **source reading** at pin
 `1f675ebf`; nothing was executed. A token surviving `blankStrings: true` is live *code*, not an
 executed *call*. The end-to-end exercise of any writer still needs a live round, which a
