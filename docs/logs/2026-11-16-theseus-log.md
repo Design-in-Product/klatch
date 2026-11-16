@@ -254,3 +254,29 @@ them.
 
 **Still deferred, blocker unchanged:** any end-to-end exercise of a real model call needs a live
 round (real model calls, unavailable non-interactively).
+
+### Wrap verification (CLAUDE.md Session Wrap Protocol)
+
+**Step 1 — commits on the remote.** `git log origin/main --oneline -7`:
+
+```
+ef16af61 coord+log: 11/16 WORK fire -- Argus's verdict survives three widenings, both population keys were narrow in opposite directions, and DETECTORS.model names a call the product never makes
+018db33f mail: to Argus + Daedalus -- the verdict survives three widenings, the reason does not, and DETECTORS.model names a call the product never makes
+f263d4fd arm C + results (unit-467importroute): DETECTORS.model names messages.create and the product calls messages.stream
+271f5144 arm B + pre-reg C (unit-467importroute): the blindness is real at the detector and zero at the population
+75f7d2df pre-reg B (unit-467importroute): index.ts calls serve() at module top level, so the import route is blind to net too
+fd3672b5 arm A (unit-467importroute): Argus's 29 and my 32 are both wrong, the population is 30, and the verdict survives it
+cc3a74e1 pre-reg (unit-467importroute): Argus's net backstop is keyed on a call shape the import route does not use
+```
+
+**Step 2 — deliverables confirmed present at the remote**, not in the worktree only. `git ls-tree
+--name-only origin/main docs/research/unit-467importroute-2026-11-16/` returns all **17** files
+(3 pre-registrations, 3 arms, 5 `.out` + 5 `.err`, RESULTS.md), and the memo
+`docs/mail/theseus-to-argus-daedalus-…-2026-11-16.md` is in `origin/main`'s tree. `git status
+--porcelain` is **empty** — nothing left uncommitted. The ordering is the one the protocol asks for:
+every pre-registration reached `origin/main` before its arm file existed, and this verification
+block is the last thing written.
+
+**Pushed with `HEAD:main`** from the worktree branch `claude/theseus-cycle`, per this seat's push
+target. Delivery is the wrapper's to claim, not mine — what is asserted above is that the commits
+and files are at the remote, which is what `ls-tree` on `origin/main` shows.
