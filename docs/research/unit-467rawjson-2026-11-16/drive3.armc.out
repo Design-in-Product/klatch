@@ -1,0 +1,39 @@
+unit-467rawjson arm C — pin 1f675ebf76eb283cec6ee97294ba782b6b147678, arm B at 8618e343
+HEAD now: fc823d167e147d4ab98e9a783b70b92119685666
+
+ok  U1        population: 155 probe files (SWEPT 45 + DEFERRED 110 = 155); expect 155
+ok  U2        stripSource failures: none
+ok  U3        arm C reproduces arm B's "0 live messages.create" on the shared 12: 12/12 agree
+ok  U3b       model-token hits over DEFERRED (no exemption/admission applied, so this is NOT the instrument's 12): 12
+
+── /messages route key over all 155 probes ──
+  names a /messages route:                        10
+  … and spawns a child process:                   3
+  … and does NOT scrub ANTHROPIC_API_KEY:         3
+  live-code messages.create anywhere in the 155:  0
+
+── route + spawn + no scrub, named (T2's candidate population) ──
+  DEFERRED probe-import-large-session.mts
+  DEFERRED probe-round213-reassign-live-http.mts
+  DEFERRED probe-round219-files-cap-live-http.mts
+
+LANDED  T1   of the six -live probes, those naming a /messages route under the interpolation-tolerant key: 1 ["probe-round213-reassign-live-http.mts"] (arm B's literal key found 0). Over all 155: 10.
+LANDED  T2   probes that name a /messages route AND spawn AND do not scrub the key: 3. A live-round population candidate EXISTS in the probe corpus and is named above.
+LANDED  T3   live-code messages.create across all 155 probes: 0 []. Not one probe calls the SDK directly, anywhere in the corpus.
+LANDED  T4   |model \ route| = 12, |route \ model| = 10 (model 12, route 10). The two keys are MISALIGNED, not nested: widening the token key cannot reach the route population.
+
+── route-key members NOT flagged by DETECTORS.model (the misalignment, named) ──
+  DEFERRED spawn=n scrub=n probe-backfill-entity-sizing.mts
+  DEFERRED spawn=n scrub=n probe-carried-context-carveout-eviction.mjs
+  DEFERRED spawn=n scrub=n probe-carried-context-carveout-truncation.mjs
+  DEFERRED spawn=n scrub=n probe-carried-context-chip.mjs
+  DEFERRED spawn=n scrub=n probe-carried-context-sensitivity.mjs
+  DEFERRED spawn=n scrub=n probe-carried-context.mjs
+  DEFERRED spawn=Y scrub=n probe-import-large-session.mts
+  DEFERRED spawn=n scrub=n probe-recall-tool.mjs
+  DEFERRED spawn=Y scrub=n probe-round213-reassign-live-http.mts
+  DEFERRED spawn=Y scrub=n probe-round219-files-cap-live-http.mts
+
+ok  U4        gate (packages, scripts, docs/research/lib): empty
+
+VERDICT/0 GREEN legs=5 red=[] refused=[] preds=4 refuted=[] prefused=[]
