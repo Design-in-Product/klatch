@@ -6304,7 +6304,78 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** available — duty cycle armed on Claude Code 2.1.322; 11/15 START 10:47 and WORK 14:47 both fired and are logged below. 11/14 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged further below.
+- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/15 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below. 11/14 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged further below.
+- **Updated:** 2026-11-15 ~19:47–20:0x PT (**STOP fire — PRODUCT CODE, the first `packages/` touch
+  from this seat since 2026-09-14. I ran my own standing countermeasure before taking the next
+  research item — grep the attention rollup for already-RULED-but-unassigned items first — and it
+  fired on TWO xian-ruled items, unbuilt 40 and 48 days, both unassigned. Built the first, claimed
+  the second.**)
+  **`72172a52` — `DELETE /entities/:id` now names the channels it empties.** Daedalus's Round 220
+  half of xian's 2026-10-06 entity-delete ruling, the half he stated was *"correct either way and
+  buildable now without waiting on xian"*; the rollup carried it as **"Still not built"**
+  (`attention-rollup.md:175`) for **40 days**. Verified still unbuilt before touching anything, not
+  taken off the board's word: route returned `{ deleted: true }`, and `grep -rni "emptied\|empties"`
+  over `packages/` found no naming of this anywhere. `getChannelsEmptiedByEntityDelete()` keys on
+  sole-seat membership (`COUNT(*) = 1`, sound because `channel_entities` has
+  `PRIMARY KEY (channel_id, entity_id)` — schema read, not assumed), is called **before** the delete
+  (afterwards the rows it keys on are gone and every answer is `[]`), and `emptiedChannels` is always
+  present so a client can branch on length without telling "none emptied" from "an old server."
+  **The four new tests were verified load-bearing rather than assumed:** with the response field
+  reverted to `{ deleted: true }`, **exactly 4 of 36** cases in `entities.test.ts` go red and the
+  other 32 pass — sole failing arms, and no pre-existing case depended on the new field. Cripple
+  reverted, no marker left in the tree (`grep -rn CRIPPLE packages/` empty).
+  **Deliberately not built here:** `client.ts:218` types `deleteEntity` `Promise<void>` and discards
+  the body, so no UI surfaces the names — Iris's lane, routed to her by mail, not built in it. The
+  now-false rollup line is routed to Calliope rather than edited on this side (her trust instrument,
+  same as the v178 strip correction).
+  **The second ruled item, CLAIMED by this seat and not left nameless:** raw live-round JSONs under
+  `docs/research/raw/roundNN/` — **RULED 2026-09-28**, xian verbatim via Janus *"Yes that's fine,"*
+  board says implementation *"is Daedalus's or Theseus's"* (`attention-rollup.md:209-211`). Verified
+  fresh: `ls docs/research/raw` → no such directory; `grep -rln "research/raw"` over `scripts/`,
+  `packages/`, `docs/plans/` → **one hit, the plan doc that proposed it.** No writer exists. **48
+  days.** This is exactly my own 11/12 finding — *a decision both seats call "not ours" belongs to
+  nobody* — except not ambiguous: it is named as either of ours and we both left it. Claimed here
+  with my name on it; Daedalus offered the hand-back and silence means I take it. **Honest shape of
+  the work, stated rather than discovered later:** a writer with no call site is dead code and the
+  end-to-end exercise needs a live round, which a non-interactive fire cannot run — but the writer
+  *plus its wiring* is buildable and unit-testable with no live call, so **the first step is a census
+  of which probes actually produce a per-run `results` array, not a module.** That step has no
+  blocker.
+  **Proportionality, computed live this fire, not recalled:** **2657 commits since 2026-09-14, 54
+  touching `packages/` — 2.0%**; `packages/` last touched 2026-11-12 (Daedalus), `packages/client/src`
+  **2026-10-06** (Iris). Not escalated to xian: the direction was already on the board in his own
+  two rulings, and the 9/06 discriminator — *a research track whose tail runs on while a scheduled or
+  ruled product item sits unbuilt* — was met exactly. The countermeasure found it by grep, not by
+  being told.
+  **A correction on my own arithmetic, recorded because I nearly published it:** I first read the
+  standing suite figure as 2222 *passed* off other seats' commit-message shorthand, which made my +4
+  look like +3 and sent me hunting a one-test discrepancy that does not exist. Argus's and Iris's own
+  logs say **2221 passed / 1 skipped (2222 total)**. 2221 + 4 = **2225**. The passed count and the
+  total sit one character apart in a commit subject and are not the same number.
+  **Gate, re-driven fresh this fire:** typecheck clean ×4 workspaces; server **143 files / 2225
+  passed / 1 skipped (2226)**; client **26/39 files, 333/346 (13 skipped)**; `--census` **CENSUS OK**
+  (155 probe files, 45 swept / 110 deferred); full driving sweep re-driven (backgrounded past the
+  foreground limit, output to gitignored `.scratch/`) — **still running when this entry was
+  committed, 21 of 45 reported, 21 PASS / 0 red**; its verdict is appended to the session log when
+  the run ends rather than drafted here, and if the fire dies first the missing line is the honest
+  record of that.
+  **Step 1 of the claimed item is also done and pushed this fire** (`155c5985`,
+  `docs/research/raw-json-writer-step1-census-2026-11-15.md`): the live-model-call census. **The
+  detector I was about to hand-roll already existed** — `scripts/promote-probes.mts`'s `model`
+  detector, comment-blanked and known-positive-validated by `probe-round285`, reports **12**; my
+  hand key reported **17** and was wrong three ways (`messages\.create` matching
+  `messages.created_at`; `probe-round223` matching a comment *and* its own
+  `delete env.ANTHROPIC_API_KEY`, i.e. sign-inverted; and `promote-probes.mts` matching because it
+  *contains* the detector regex — the instrument captured as a subject). **Declared limit:** `--list`
+  counts the 12 without naming them and the 6 INADMISSIBLE `-live` probes are flagged by a different
+  rule, so **`12 + 6 = 18` is not asserted.** Naming the 12 is the next step, not by another hand key.
+  **Drain.** Daedalus's 11/15 arm-C memo read at the head of the fire and replied in the same fire;
+  his thread stays open in `docs/mail/` (open items both ways). **Not taken this fire, with the
+  reason named as a choice and not dressed up as a blocker:** my research item 1 (realisation over
+  the 21) — two xian-ruled product items outrank an unclaimed research item. Items 2, 3 and the
+  joined-bare-string item likewise stand; his §5's three I have claimed nothing in. **Still deferred
+  with named blockers, unchanged:** arm N1's two `--dry` runs and probe 3's single-variable rerun
+  (both need a server start or live model calls, unavailable non-interactive).
 - **Updated:** 2026-11-15 ~14:47–15:0x PT (**WORK fire — substantive, no product code. Took item 1,
   the cross-file producer/consumer join, which BOTH seats had left unclaimed through two exchanges
   (my 11/15 memo boarded it; Daedalus's 11/15 reply re-boarded it as "still unclaimed by both

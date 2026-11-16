@@ -6,6 +6,172 @@ models: claude-opus-5
 
 # 2026-11-15 — Theseus session log
 
+## 19:47 — STOP fire, session resumed (Opus 5)
+
+Session-start protocol: `git fetch`, worktree at `4eb217ba`. Read `docs/COORDINATION.md` (my
+section), `ls docs/mail/`, `docs/briefs/cross-pollination/current.md` (unchanged — points at today's
+hosted brief, nothing new since the START fire read it).
+
+**Checkpoint `b055ace5`** (my own 11/15 15:00 commit). `git log --format='%h %an …' -14`: 8 new
+commits, **none mine** — Calliope 1 (SWEEP no-op), Daedalus 5 (`unit-466reasontok` arm C), Argus 1
+(STOP no-op), Iris 1 (STOP no-op + one mail move). Author-checked rather than inferred from the
+subject lines: three of the eight carry *my* findings in their subject (`"I re-keyed my own declared
+limit"`), which reads at a glance like my own work and is Daedalus's.
+
+**Mail:** one new memo naming this seat in `to:` — Daedalus's arm-C reply. Read in full at the head
+of the fire, acted on and replied in the same fire.
+
+### The fire's actual finding: I was one grep away from spending it on the wrong thing
+
+My next research item was queued and the other seat had explicitly declined to race me to it. Before
+taking it I ran my own standing countermeasure from the 11/05 proportionality note — *grep the
+attention rollup for already-RULED-but-unassigned items before escalating or choosing a track* — and
+it fired on **two** xian-ruled items, **both unassigned, unbuilt 40 and 48 days**.
+
+The countermeasure was written for a different failure (escalating to xian for a direction he'd
+already given). It caught this one too, which is the first time it has paid out on *track selection*
+rather than on an escalation.
+
+### Item 1 — built and pushed: `DELETE /entities/:id` names the channels it empties (`72172a52`)
+
+Daedalus's Round 220 half of xian's 2026-10-06 entity-delete ruling — the half he stated was
+*"correct either way and could be built now without waiting on xian."* `attention-rollup.md:175`
+carried **"Still not built"** for 40 days.
+
+**Verified still unbuilt before touching anything**, not taken off the board:
+
+```
+packages/server/src/routes/entities.ts:182-183   deleteEntity(id); return c.json({ deleted: true });
+grep -rni "emptied\|empties" packages/ --include='*.ts' --include='*.tsx'
+  → 7 hits, every one unrelated (drift-canary prose, a round-166/167 test name, an import comment)
+```
+
+- `getChannelsEmptiedByEntityDelete(entityId)` — sole-seat membership via
+  `(SELECT COUNT(*) … ) = 1`. **Sound because the schema was read, not assumed:** `channel_entities`
+  has `PRIMARY KEY (channel_id, entity_id)` (`db/index.ts:73-78`), so `= 1` cannot be satisfied by
+  two copies of one seat. Returns `{id, name}` only — the base `channels` columns are the one thing
+  every migration state shares, and `type`/`project_id` arrive by migration.
+- Called **before** `deleteEntity(id)`: afterwards the `channel_entities` rows it keys on are gone
+  and every answer is the empty set. No `await` between them and better-sqlite3 is synchronous.
+- `emptiedChannels` always present (`[]` when the entity was nobody's last seat), so a client can
+  branch on length without telling "none emptied" from "an older server that didn't say."
+
+**The four tests were verified load-bearing rather than assumed** — the discipline that keeps a new
+case from being a green that proves nothing. Response field reverted to `{ deleted: true }`:
+
+```
+Failed Tests 4 | Test Files 1 failed (1) | Tests 4 failed | 32 passed (36)
+```
+
+Exactly the 4 new cases, and **no pre-existing case depended on the new field** — which is the other
+half of what that cripple measures and the half easy to forget to read. Cripple reverted via Edit
+(not `git checkout --`, which would have discarded the uncommitted cure alongside it);
+`grep -rn CRIPPLE packages/` empty afterwards.
+
+**Not built here, deliberately:** `client.ts:218` types `deleteEntity` `Promise<void>` and discards
+the body, so no UI surfaces the names. Iris's lane — routed to her by mail, not built in it. The
+now-false rollup line routed to Calliope rather than edited on this side.
+
+### Item 2 — verified also unbuilt, 48 days, and CLAIMED rather than named-and-left
+
+`attention-rollup.md:209-211` — raw live-round JSONs under `docs/research/raw/roundNN/`, **RULED
+2026-09-28**, xian verbatim via Janus *"Yes that's fine."* Board: implementation *"is Daedalus's or
+Theseus's."* My own yes is recorded in that item from 8/18.
+
+```
+ls docs/research/raw                                    → No such file or directory
+grep -rln "research/raw" scripts/ packages/ docs/plans  → docs/plans/continuity-3-carried-context.md
+```
+
+One hit, and it is the plan doc that *proposed* it. No writer exists. This is my own 11/12 mechanism
+— *a decision both seats call "not ours" belongs to nobody* — in its least ambiguous form: the board
+names it as either of ours, and both of us have left it for 48 days. **Claimed in `COORDINATION.md`
+with my name on it**, with the hand-back offered to Daedalus explicitly.
+
+**The work's honest shape, stated now rather than discovered mid-build:** a writer with no call site
+is dead code (`an import is not a call site`), and the end-to-end exercise needs a live round, which
+a non-interactive fire cannot run. The writer *plus its wiring* is buildable and unit-testable with
+no live call — so **step one is a census of which probes actually produce a per-run `results` array,
+not a module.** No blocker on that step.
+
+### The arithmetic error I nearly published
+
+I read the standing suite figure as **2222 passed** off two seats' commit-message shorthand, got
+2225 after adding 4 tests, and went hunting a missing test that did not exist. The seats' own logs
+state it in full: **2221 passed / 1 skipped (2222 total)**. 2221 + 4 = 2225. Exactly +4, reconciled.
+
+The trap is worth naming because it is not carelessness: *a commit subject's "143/2222" and a log's
+"2221 passed (2222)" differ by one character and by semantics*, and the recalled one felt identical
+to a verified one. Caught only because I refused to cite the discrepancy before measuring it, and
+the measurement was reading the other seats' logs rather than re-running anything.
+
+### Verification before any "done" claim (CLAUDE.md Session Wrap, steps 1–2)
+
+**Step 1 — commits on `origin/main`:**
+
+```
+8bd7c62d mail: to Iris + Calliope + Daedalus -- the ruled entity-delete half is built after 40 days…
+72172a52 feat(entity-delete): DELETE /entities/:id names the channels it empties -- the ruled half…
+```
+
+Both read back off `git push`'s own `4eb217ba..72172a52` / `72172a52..8bd7c62d` ref update, and the
+coord+log commit follows this entry (step 3).
+
+**Step 2 — deliverables exist:** `packages/server/src/db/queries.ts`,
+`packages/server/src/routes/entities.ts`, `packages/server/src/__tests__/entities.test.ts` (all three
+in `git diff --stat` at `+101/−1`), the memo file, this log.
+
+**Gate, re-driven fresh this fire:** `npm run typecheck` clean ×4 workspaces; server **143 files /
+2225 passed / 1 skipped (2226)**; client **26/39 files, 333/346 (13 skipped)**; `--census` **CENSUS
+OK**, 155 probe files, 45 swept / 110 deferred. Full driving sweep re-driven (backgrounded past the
+foreground limit; output to gitignored `.scratch/`): **still running at the time this entry was
+committed — 21 of 45 probes reported, 21 PASS / 0 red.** Deliberately not given a final figure here:
+the slot for a running measurement does not get drafted. Its verdict is appended below as its own
+timestamped line when the run ends, and if this fire dies first, the absence of that line is the
+honest record that it did.
+
+### The second finding of the fire: the detector I was about to hand-roll already existed
+
+Step 1 of the item I claimed in §"Item 2" — *which probes actually make a live model call* — is
+done and pushed (`155c5985`, `docs/research/raw-json-writer-step1-census-2026-11-15.md`).
+
+I hand-rolled a source key and got **17 files**. `scripts/promote-probes.mts` already carries a
+`model` detector in its `DETECTORS` map, comment-blanked so prose cannot vote, two-sided validated
+against known positives by `probe-round285`, with its own prose documenting two prior corrections to
+itself. `npx tsx scripts/promote-probes.mts --list` reports **not driven (model): 12**.
+
+My key was wrong three ways, each a pattern this corpus has already measured:
+
+1. `messages\.create` matched `inspect-klatch-db.mjs:128`'s `messages.created_at` — a **substring
+   match on a longer token**, the third instance in one day (`rel`/`unrelated` in my own `striplift`
+   this morning, Daedalus's `bba2aa3c` this afternoon).
+2. `probe-round223` matched a **comment** and matched line 301, `delete env.ANTHROPIC_API_KEY` — a
+   probe that exists to run **without** a model call, matched by a key for making one. **The sign is
+   inverted, not merely noisy.**
+3. `promote-probes.mts` itself matched because line 165 *contains the detector regex* — **the
+   instrument captured as a subject.** I counted the file whose answer I should have been reading.
+
+**Why this is worth more than the 5-file delta:** 17 and 12 are close enough that neither looks
+wrong on its face, and the hand key took ten minutes to write and read as plausible. What separated
+them was not care — one had been validated against known positives by a committed probe and the
+other had not. The standing rule (*check `scripts/lib` and `promote-probes.mts` before hand-rolling
+a detector*) exists precisely because the failure is invisible from inside the key.
+
+**Declared limit, and it is load-bearing:** `--list` reports the 12 as a count and does **not** name
+them; the 6 INADMISSIBLE `-live` probes are flagged by a different rule (spawn closure, inheriting
+`[model]` from a literal drive of `probe-round230`). So **`12 + 6 = 18` is not asserted** — I cannot
+show the sets are disjoint, and the document says so in those terms. Naming the 12 is step 1 of the
+next fire, and **not** by re-deriving the class with another hand key.
+
+**Drain.** Mail read and replied in the same fire. **Not taken, reason named as a choice and not
+dressed as a blocker:** research item 1 (realisation over the 21) — two xian-ruled product items
+outrank an unclaimed research item, and I would make the same call again. Items 2, 3 and the
+joined-bare-string item stand; Daedalus's §5 three I have claimed nothing in. **Deferred with named
+blockers, unchanged:** arm N1's two `--dry` runs, probe 3's single-variable rerun — both need a
+server start or live model calls, unavailable in a non-interactive fire.
+
+---
+
 ## 14:47 — WORK fire, session resumed (Opus 5)
 
 Session-start protocol: `git fetch`, worktree `0 0` against `origin/main` at `bdaf99b9`. Read
