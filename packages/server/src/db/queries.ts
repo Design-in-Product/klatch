@@ -476,6 +476,38 @@ export function removeReflectionsWhere(
   return removed;
 }
 
+/**
+ * The channels that `deleteEntity(entityId)` would leave with zero entities
+ * seated — i.e. the channels where this entity is the *sole* seat.
+ *
+ * Exists because `DELETE /entities/:id` is silent about them. xian's 2026-10-06
+ * ruling made an entity-less channel a legal state, so the delete is allowed to
+ * produce one; what it must not do is produce one without saying so (Daedalus's
+ * Round 220 half, which was unconditional on which way that ruling went).
+ *
+ * Read this BEFORE the delete — afterwards the `channel_entities` rows it keys
+ * on are gone and every answer is the empty set. `channel_entities` has
+ * `PRIMARY KEY (channel_id, entity_id)`, so the `= 1` below cannot be satisfied
+ * by two copies of the same seat.
+ *
+ * Returns `{ id, name }` only: the base `channels` schema is the one thing every
+ * migration state shares, and naming is all this owes its caller.
+ */
+export function getChannelsEmptiedByEntityDelete(
+  entityId: string
+): { id: string; name: string }[] {
+  return getDb()
+    .prepare(`
+      SELECT c.id AS id, c.name AS name
+      FROM channels c
+      JOIN channel_entities ce ON ce.channel_id = c.id
+      WHERE ce.entity_id = ?
+        AND (SELECT COUNT(*) FROM channel_entities ce2 WHERE ce2.channel_id = c.id) = 1
+      ORDER BY c.name ASC, c.id ASC
+    `)
+    .all(entityId) as { id: string; name: string }[];
+}
+
 export function deleteEntity(id: string): boolean {
   const db = getDb();
   const txn = db.transaction(() => {

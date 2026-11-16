@@ -5,6 +5,7 @@ import {
   createEntity,
   updateEntity,
   deleteEntity,
+  getChannelsEmptiedByEntityDelete,
   getChannel,
   getChannelEntities,
   assignEntityToChannel,
@@ -179,8 +180,19 @@ app.delete('/entities/:id', (c) => {
     return c.json({ error: 'Entity not found' }, 404);
   }
 
+  // Read the channels this is about to empty BEFORE deleting — afterwards the
+  // `channel_entities` rows the query keys on are gone. No `await` separates the
+  // two calls and better-sqlite3 is synchronous, so nothing can seat or unseat
+  // an entity between them within this process.
+  //
+  // xian's 2026-10-06 ruling allows an entity-less channel; it does not allow
+  // producing one silently. `emptiedChannels` is always present (`[]` when the
+  // entity was nobody's last seat) so a client can branch on its length without
+  // having to tell "no channels emptied" from "an older server that didn't say."
+  const emptiedChannels = getChannelsEmptiedByEntityDelete(id);
+
   deleteEntity(id);
-  return c.json({ deleted: true });
+  return c.json({ deleted: true, emptiedChannels });
 });
 
 // ── Channel-Entity Assignment ────────────────────────────────

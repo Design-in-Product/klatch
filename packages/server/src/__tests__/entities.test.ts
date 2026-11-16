@@ -207,6 +207,62 @@ describe('DELETE /api/entities/:id', () => {
     const res = await req('DELETE', '/entities/nonexistent');
     expect(res.status).toBe(404);
   });
+
+  // ── Round 220's half of the 2026-10-06 entity-delete ruling ──────────
+  //
+  // xian ruled an entity-less channel legal; Daedalus's unconditional half was
+  // that the delete must *name* the channels it empties, which it did not.
+  // These four cases are the floor for that: the sole-seat case, the
+  // other-seats-remain case (the one a naive "every channel it was in" key gets
+  // wrong), a multi-channel case, and the seated-nowhere case.
+
+  it('names the channel it empties when the entity was its sole seat', async () => {
+    const solo = createEntity('XSoleSeat', DEFAULT_MODEL, 'p', '#abc123');
+    const ch = createChannel('x-emptied-by-delete', 'p', undefined, undefined, 'klatch', [solo.id]);
+
+    const res = await req('DELETE', `/entities/${solo.id}`);
+    expect(res.status).toBe(200);
+    const data = await res.json();
+    expect(data.deleted).toBe(true);
+    expect(data.emptiedChannels).toEqual([{ id: ch.id, name: 'x-emptied-by-delete' }]);
+  });
+
+  it('does not name a channel where another entity remains seated', async () => {
+    const going = createEntity('XGoing', DEFAULT_MODEL, 'p', '#abc123');
+    const staying = createEntity('XStaying', DEFAULT_MODEL, 'p', '#def456');
+    const shared = createChannel('x-survives-delete', 'p', undefined, 'panel', 'klatch', [going.id, staying.id]);
+
+    const res = await req('DELETE', `/entities/${going.id}`);
+    const data = await res.json();
+    expect(data.emptiedChannels).toEqual([]);
+
+    // And the channel really does still have a seat — the response is not just
+    // quiet about a channel it emptied anyway.
+    const roster = await req('GET', `/channels/${shared.id}/entities`);
+    expect((await roster.json()).map((e: any) => e.id)).toEqual([staying.id]);
+  });
+
+  it('names every channel it empties and only those', async () => {
+    const multi = createEntity('XMulti', DEFAULT_MODEL, 'p', '#abc123');
+    const other = createEntity('XOtherSeat', DEFAULT_MODEL, 'p', '#def456');
+    const a = createChannel('x-multi-a', 'p', undefined, undefined, 'klatch', [multi.id]);
+    const b = createChannel('x-multi-b', 'p', undefined, undefined, 'klatch', [multi.id]);
+    createChannel('x-multi-shared', 'p', undefined, 'panel', 'klatch', [multi.id, other.id]);
+    createChannel('x-multi-elsewhere', 'p', undefined, undefined, 'klatch', [other.id]);
+
+    const res = await req('DELETE', `/entities/${multi.id}`);
+    const data = await res.json();
+    expect(data.emptiedChannels.map((ch: any) => ch.id).sort()).toEqual([a.id, b.id].sort());
+  });
+
+  it('returns an empty list — not a missing field — when the entity was seated nowhere', async () => {
+    const create = await req('POST', '/entities', { name: 'XSeatedNowhere' });
+    const { id } = await create.json();
+
+    const res = await req('DELETE', `/entities/${id}`);
+    const data = await res.json();
+    expect(data.emptiedChannels).toEqual([]);
+  });
 });
 
 // ── Phase 6c: Channel-Entity Assignment ─────────────────────
