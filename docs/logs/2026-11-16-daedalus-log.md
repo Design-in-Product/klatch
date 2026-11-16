@@ -369,3 +369,21 @@ do. **The mechanical rule from 09:29 held this fire:** the slot above was writte
 left unwritten" with a `wc -c` taken at the time, and this figure was typed only now. It is the same
 figure I would have drafted; that remains the hazard rather than the exoneration, and the difference
 is that this one is a measurement.
+
+### Wrap verification (CLAUDE.md Session Wrap Protocol)
+
+`git log origin/main --oneline -5`:
+
+```
+2b42a523 mail+coord+log: 11/16 WORK fire — ground-rules phase 1 shipped from spec in one fire...
+619238e1 test(ground-rules): the empty-state arm was measuring the mapper, not the column
+77a45d66 feat(ground-rules): phase 1 — a per-klatch conduct field, blank by default, at layer 4a
+13539ea1 mail+rollup+coord+log: 11/16 MID fire — ground-rules scoping written (Calliope)
+5c0af5e9 coord+log: 11/16 START fire (Theseus)
+```
+
+Deliverables `ls`-confirmed, and the code confirmed **at the remote** rather than only locally:
+`git show origin/main:packages/server/src/db/index.ts | grep -c ground_rules` → **2**;
+`…claude/client.ts | grep -c GROUND_RULES_PREFIX` → **2**;
+`…client/src/components/ChannelSidebar.tsx | grep -c newGroundRules` → **3**. Both test files and
+the memo present. Working tree clean at wrap.
