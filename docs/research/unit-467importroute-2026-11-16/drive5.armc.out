@@ -1,0 +1,35 @@
+ok  C0a       packages/server/src modules in the graph: 45
+ok  C0b       resolved intra-tree edges: 102
+ok  C0d       SINK in force for this recording: /\bmessages\s*\.\s*(create|stream)\b/
+ok  C0c       modules with a DIRECT sink site: 4 — aaxt/runner.ts, claude/client.ts, export/briefing.ts, routes/export.ts
+LANDED  C0   KNOWN POSITIVE: claude/client.ts in the reaching set: true
+LANDED  C1   modules transitively reaching messages.create: 18
+     · aaxt/runner.ts
+     · claude/client.ts
+     · export/assemble.ts
+     · export/briefing.ts
+     · export/external-extraction.ts
+     · export/package-builder.ts
+     · export/transport-claude-code.ts
+     · import/klatch-import.ts
+     · index.ts
+     · mcp/bin.ts
+     · mcp/server.ts
+     · routes/aaxt.ts
+     · routes/channels.ts
+     · routes/export.ts
+     · routes/files.ts
+     · routes/import.ts
+     · routes/messages.ts
+     · routes/mount.ts
+ok  C1b       probe population: 155
+LANDED  C2   probes importing a transitively model-reaching module: 2
+     · probe-round170-floor-frequency.mts → claude/client.ts  hazards [net+db]
+     · probe-round207-the-import-confirms-a-name-and-the-name-is-not-unique.mts → routes/import.ts  hazards [net+db+homedir]
+REFUTED C3   of those, carrying NEITHER model NOR net: 0
+ok  C3b       of the clean reachers, whose whole hazard set is author-exemptible: 0
+ok  C4a       unattended candidate pool, read from --list by name: 6
+LANDED  C4   pool members importing a transitively model-reaching module: 0 (LANDED = none, which is the safe reading)
+ok  C5        git status --porcelain packages scripts: ""
+
+VERDICT/1 ok legs=8 red=[] refused=[] preds=5 refuted=[C3] prefused=[]

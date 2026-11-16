@@ -1,0 +1,29 @@
+ok  C0a       packages/server/src modules in the graph: 45
+ok  C0b       resolved intra-tree edges: 102
+ok  C0c       modules with a DIRECT messages.create site: 3 — aaxt/runner.ts, export/briefing.ts, routes/export.ts
+REFUTED C0   KNOWN POSITIVE: claude/client.ts in the reaching set: false
+LANDED  C1   modules transitively reaching messages.create: 14
+     · aaxt/runner.ts
+     · export/assemble.ts
+     · export/briefing.ts
+     · export/external-extraction.ts
+     · export/package-builder.ts
+     · export/transport-claude-code.ts
+     · import/klatch-import.ts
+     · index.ts
+     · mcp/bin.ts
+     · mcp/server.ts
+     · routes/aaxt.ts
+     · routes/export.ts
+     · routes/import.ts
+     · routes/mount.ts
+ok  C1b       probe population: 155
+LANDED  C2   probes importing a transitively model-reaching module: 1
+     · probe-round207-the-import-confirms-a-name-and-the-name-is-not-unique.mts → routes/import.ts  hazards [net+db+homedir]
+REFUTED C3   of those, carrying NEITHER model NOR net: 0
+ok  C3b       of the clean reachers, whose whole hazard set is author-exemptible: 0
+ok  C4a       unattended candidate pool, read from --list by name: 6
+LANDED  C4   pool members importing a transitively model-reaching module: 0 (LANDED = none, which is the safe reading)
+ok  C5        git status --porcelain packages scripts: ""
+
+VERDICT/1 ok legs=7 red=[] refused=[] preds=5 refuted=[C0,C3] prefused=[]
