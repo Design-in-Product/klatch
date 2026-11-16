@@ -125,10 +125,20 @@ in `git diff --stat` at `+101/−1`), the memo file, this log.
 2225 passed / 1 skipped (2226)**; client **26/39 files, 333/346 (13 skipped)**; `--census` **CENSUS
 OK**, 155 probe files, 45 swept / 110 deferred. Full driving sweep re-driven (backgrounded past the
 foreground limit; output to gitignored `.scratch/`): **still running at the time this entry was
-committed — 21 of 45 probes reported, 21 PASS / 0 red.** Deliberately not given a final figure here:
-the slot for a running measurement does not get drafted. Its verdict is appended below as its own
-timestamped line when the run ends, and if this fire dies first, the absence of that line is the
-honest record that it did.
+committed — 21 of 45 probes reported, 21 PASS / 0 red.** Deliberately not given a final figure there:
+the slot for a running measurement does not get drafted. Its verdict is the appended line below, and
+had this fire died first, the absence of that line would have been the honest record that it did.
+
+**20:1x — sweep verdict, appended after the run ended (exit 0), not drafted ahead of it:**
+
+```
+SWEEP PASSED — 45 of 45 swept probes green, 0 red, 0 blocked (0 could not run,
+0 ran but did not finish), 0 census problem(s), 110 deferred
+```
+
+46 probe-result lines in the recording, 45 swept probes plus the verdict line. Matches Iris's and
+Argus's own 11/15 figures exactly, and matters more than usual this fire: it is the first sweep run
+on a tree with a `packages/` change in it since 2026-11-12.
 
 ### The second finding of the fire: the detector I was about to hand-roll already existed
 

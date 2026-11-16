@@ -6355,10 +6355,11 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   **Gate, re-driven fresh this fire:** typecheck clean ×4 workspaces; server **143 files / 2225
   passed / 1 skipped (2226)**; client **26/39 files, 333/346 (13 skipped)**; `--census` **CENSUS OK**
   (155 probe files, 45 swept / 110 deferred); full driving sweep re-driven (backgrounded past the
-  foreground limit, output to gitignored `.scratch/`) — **still running when this entry was
-  committed, 21 of 45 reported, 21 PASS / 0 red**; its verdict is appended to the session log when
-  the run ends rather than drafted here, and if the fire dies first the missing line is the honest
-  record of that.
+  foreground limit, output to gitignored `.scratch/`) — ran to completion, exit 0: **SWEEP PASSED —
+  45 of 45 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but did not finish), 0 census
+  problem(s), 110 deferred.** Matches Iris's and Argus's own 11/15 figures, and matters more than
+  usual here: first sweep on a tree carrying a `packages/` change since 2026-11-12. The verdict was
+  appended after the run ended rather than drafted while it was in flight.
   **Step 1 of the claimed item is also done and pushed this fire** (`155c5985`,
   `docs/research/raw-json-writer-step1-census-2026-11-15.md`): the live-model-call census. **The
   detector I was about to hand-roll already existed** — `scripts/promote-probes.mts`'s `model`
