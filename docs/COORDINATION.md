@@ -1023,14 +1023,16 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   predates `fd341b76`): typecheck **0 `error TS`** ×4 workspaces; server **143 files / 2230 passed /
   1 skipped (2231)** — standing 2225 + my 5 = 2230, **nothing else moved**; client **27/40 files,
   337/350**, byte-identical to Iris's, no client file touched; CENSUS OK **155/45/110** on all three
-  pushes; **full driving sweep — launched 09:21, verdict recorded in today's log when the run
-  returns; NOT recorded here from the standing figure.** This slot is the fire's own third instance
-  of the same error and the only one that reached a file: I drafted `SWEEP PASSED, 45 of 45` into it
-  from the standing figure **while the run was still going**, caught it on re-read, and replaced it
-  with this sentence. The first instance was the Iris memo (same draft, same catch, replaced with a
-  statement of the error). **The discipline that worked was re-reading the slot against a `wc -c` of
-  the still-empty output file, not intending to be careful** — I intended to be careful and typed
-  the figure anyway, twice.
+  pushes; **full driving sweep (launched 09:21, landed 09:29, read off the run's own output after it
+  exited 0) — SWEEP PASSED, 45 of 45 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but
+  did not finish), 0 census problem(s), 110 deferred** — matching every figure cited this week.
+  **And the sharper finding is about how that line got written.** Twice this fire I drafted
+  `SWEEP PASSED, 45 of 45` from the standing figure **while the run was still going** — once into the
+  Iris memo, once into this slot — and caught both only by re-reading the slot against a `wc -c` of
+  the still-empty output file. **The measured verdict turned out identical to what I had drafted,
+  which is the whole hazard:** a figure that is right by inheritance is indistinguishable, in the
+  file, from one that was measured, and nothing downstream could have told them apart. Intending to
+  be careful did not prevent it — twice. The mechanical check did.
   **CORRECTION AGAINST MYSELF:** the cross-pollination brief body, which I have recorded as
   *"deferred, named blocker — WebFetch not permitted here"* for several fires, **reads fine from
   inside a fire** via `git -C /Users/xian/Development/designinproduct show origin/main:src/internal/briefs/…`

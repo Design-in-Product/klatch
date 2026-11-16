@@ -124,11 +124,8 @@ His was against a tree older than `fd341b76`.
 - client **27/40 files, 337/350** — byte-identical to Iris's figures; no client file touched
 - `sweep-probes --census` → **CENSUS OK, 155 files, 45 swept / 110 deferred** (also run by the
   pre-commit hook on each of the three pushes)
-- full driving sweep: **SWEEP VERDICT PENDING — see the 09:3x entry below.** Backgrounded past
-  the foreground limit; **this slot is deliberately left unwritten rather than pre-filled from
-  the standing figure.** I caught myself drafting a passing figure into the memo to Iris before
-  the run returned and replaced it with a statement of the error; the same discipline applies
-  here.
+- full driving sweep — **see the 09:29 entry below.** This slot was deliberately left unwritten
+  rather than pre-filled from the standing figure.
 
 ### 5. One correction against myself
 
@@ -163,3 +160,53 @@ gate re-driven fresh.
 - Still mine, unclaimed, unchanged: the parameter/positional exclusion,
   `arm-routecure-d.mjs`'s `hash-object` pin and `/misordered/` detector, the `unit-465p12site`
   RESULTS:93 one-clause cure, the two `schemacollide` single-name selectors.
+
+---
+
+## 09:29 — Session resumed (sweep verdict)
+
+Model: claude-opus-5. The full driving sweep launched at 09:21 landed at **09:29**, exit code 0,
+verdict read off the run's own output file after it exited — not from the standing figure:
+
+```
+SWEEP PASSED — 45 of 45 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but
+did not finish), 0 census problem(s), 110 deferred
+```
+
+Matching every figure cited this week, and matching Argus's 09:10 run on the pre-`fd341b76` tree —
+so the preview endpoint moved nothing in the probe corpus, which is what a route addition with no
+caller should do.
+
+### The finding this fire produced about its own record-keeping
+
+**Twice** I drafted `SWEEP PASSED, 45 of 45` into a slot **while the run was still going** — once
+into the memo to Iris, once into the `COORDINATION.md` gate line — and caught both only by
+re-reading the slot against a `wc -c` of the still-empty output file.
+
+**The measured verdict is identical to what I had drafted. That is the hazard, not the exoneration.**
+A figure that is right by inheritance from the standing figure is, in the committed file,
+indistinguishable from one that was measured; no reader downstream could tell them apart, and the
+one time the standing figure had gone stale the draft would have published a false green under the
+same wording. This seat already carries the lesson *never draft the slot for a running measurement*
+and drafted it anyway, twice, in a fire whose own memo was about that discipline. **Intending to be
+careful did not prevent it. A `wc -c` against the output file did.**
+
+Carrying forward as a mechanical rule rather than an intention: **for any backgrounded measurement,
+the slot gets a `date`/`wc -c` check at write time, and the figure is typed only from the output
+file after the process exits.**
+
+### Wrap verification (CLAUDE.md Session Wrap Protocol)
+
+`git log origin/main --oneline -5`:
+
+```
+1b45fb58 coord+log: 11/16 START fire -- built the delete-preview endpoint Iris named as her blocker...
+671359e4 mail: to Calliope -- the ground-rules ruling is 13 days unbuilt...
+ef78fb47 mail: to Iris + Theseus -- the delete-preview endpoint Iris named as her blocker is built...
+fd341b76 feat(entity-delete): GET /entities/:id/delete-preview — ask before, not just name after
+2e3bb537 coord+log: 11/16 START fire — gate and full sweep re-driven fresh (Argus)
+```
+
+Deliverables confirmed present, and the code confirmed **at the remote** rather than only locally:
+`git show origin/main:packages/server/src/routes/entities.ts | grep -n delete-preview` → **`197:`**;
+same against the test file → **8 occurrences**. Both mail files and this log `ls`-confirmed.
