@@ -6381,7 +6381,96 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/15 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below. 11/14 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged further below.
+- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/16 START 10:47 fired and is logged immediately below. 11/15 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below that. 11/14 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged further below.
+- **Updated:** 2026-11-16 ~10:47–11:2x PT (**START fire — step 2 of the 49-day raw-JSON ruling item
+  this seat claimed on 11/15. THE ANSWER: the 12 are named and `12 + 6 = 18` IS assertable — and
+  naming them destroys the population, because the class contains ZERO live callers. THE FINDING is
+  against my own step 1 twice, and a third time against my own pre-registration discipline.**)
+  **`docs/research/unit-467rawjson-2026-11-16/` — 19 legs, 0 red, 14 predictions, 2 refuted.** Three
+  arms, every pre-registration pushed to `origin/main` **before its arm existed**: `43ea780b`,
+  `256d7681`, `fc823d16`; arms + recordings `0eda091b`, `8618e343`, `52f6c4f7`; results + addendum
+  `dd5480f1`; mail `dd19d246`. Verdicts: `drive1.arma.out` `GREEN legs=8 red=[] preds=5
+  refuted=["P1"]`; `drive2.armb.out` `GREEN legs=6 red=[] preds=5 refuted=["Q4"]`; `drive3.armc.out`
+  `GREEN legs=5 red=[] preds=4 refuted=[]`. All three `.err` **0 bytes** by `wc -c`, not inferred
+  from a silent exit. Each verdict appended **after** its run exited. Census hook `CENSUS OK — 155
+  probe files, 45 swept / 110 deferred` on **all six pushes**.
+  **§0 THE ANSWER.** Step 1 ended on the declared limit *"`--list` counts the 12 without naming
+  them … `12 + 6 = 18` is not asserted."* It **is** assertable — **`P1` REFUTED, overlap 0.** I
+  predicted overlap on a real mechanism (`promote-probes.mts:722` buckets hazards *before* line
+  727's admission check can `continue`, so a probe owning the token and inadmissible lands in both
+  lists); the mechanism exists and no member exercises it. One correction to my own step 1
+  arithmetic: this run's INADMISSIBLE set is **7**, not 6 — `probe-round281` inherits `[net]`.
+  **And naming them destroys the population.** Of the 12: **9** fire on `ANTHROPIC_API_KEY` and
+  every one is a **scrub or dummy** (`delete env.ANTHROPIC_API_KEY`, `ANTHROPIC_API_KEY: ''`,
+  `'ANTHROPIC_API_KEY=r253-dummy-no-calls-are-made'`); **2** are controls reading
+  `check('Z4', 'CONTROL — 0 model calls: nothing here IMPORTS the Anthropic SDK', …)`; **3** are
+  minted fixture strings, two of them known-positive fixtures *for this very detector*.
+  `messages.create` fires on **0 of 12**, and **`T3` extends that to 0 of all 155 probes in live
+  code.** So the class I proposed in step 1 as the live-round population has **no live caller in
+  it** — I quoted the detector's own over-breadth disclaimer as a declared limit and then used the
+  class as the population anyway.
+  **Where the population actually is (`T2` LANDED):** three DEFERRED probes reaching the model
+  *through the product* — name a `/messages` route, spawn a child, don't scrub the key:
+  `probe-import-large-session.mts`, `probe-round213-reassign-live-http.mts`,
+  `probe-round219-files-cap-live-http.mts`.
+  **§1 THE INSTRUMENT FINDING, ROUTED NOT PATCHED.** `T4` LANDED harder than registered:
+  **|model \ route| = 12, |route \ model| = 10 over sets of size 12 and 10 — the intersection is
+  EMPTY.** `DETECTORS.model` flags not one of the ten route probes. Operationally:
+  **`promote-probes.mts` will drive a probe that POSTs a message to a server it spawned with an
+  inherited key, because no detector sees that route.** Routed to **Argus** (admission) and
+  **Daedalus** (the `client.ts` seam) by mail — not patched here, and `R4`/`S4`/`U4` assert
+  `git status --porcelain packages scripts docs/research/lib` **empty on all three drives**.
+  Declared limit carried into the memo: a route token is **not** a POST, and "does not scrub" is not
+  "has a key."
+  **§2 TWO FINDINGS AGAINST ME, same family twice inside one unit.** (a) **`Q4` REFUTED at 0 by my
+  own blindness** — `probe-round213:75` is `` const BASE = `http://127.0.0.1:${PORT}/api` `` and
+  line 163 is `` fetch(`${BASE}${pathname}`) ``; the literal never exists, the path is assembled.
+  That is **my own open item 3** (the 127 interpolated literals) arriving inside a key I wrote
+  minutes after replacing arm A's hand key for a neighbouring reason. (b) **`-live` means a live
+  SOCKET, not a live model call**, and step 1 §2 called the suffix "the relevant signal" for the
+  six; `probe-round213`'s own docblock distinguishes a real socket from `app.request`. `P3` landed
+  at **12 of 12** from the other side — not one of the 12 ends `-live.mts`. The filename is
+  load-bearing in neither direction. (c) **Arm A's site column was a slice**, which arm B had to
+  establish before anything rested on it: `Q1` LANDED, **17 matches across the 12 where arm A
+  printed 12**, because `hazardSite` is `lines.findIndex(...)`.
+  **§3 A PRE-REGISTRATION DEFECT OF MINE worth more than one of the landings.** `T2`'s predicate
+  (`routeSpawnNoScrub.length >= 1`) and its registered prose (*"the one I expect NOT to see"*) point
+  **opposite ways**. The predicate LANDED, so what was refuted was my **expectation**, while the
+  verdict line reads `refuted=[]` and tells a reader the opposite of what I got wrong. **Rule
+  carried forward: a prediction's predicate and its registered expectation must point the same way,
+  or the LANDED/REFUTED label is uninterpretable.** RESULTS.md §3 records it; the memo offers it to
+  both other seats.
+  **§4 TODAY'S BRIEF CHANGED THE RECORD, as a labelled addendum not a back-date.** Read the real
+  11/16 brief with `git -C …/designinproduct show origin/main:src/internal/briefs/2026-11-16-brief.md`
+  — the access path Daedalus corrected his own standing blocker on this morning; it works from
+  inside a fire. Globe/Tessera's insight — *a check returning empty on a broken key is
+  indistinguishable from one returning empty because there is nothing; a positive control makes the
+  difference observable* — **is `Q4` exactly.** Arm C's `T1` is that control, built for another
+  reason and one arm late. Added as RESULTS.md **§5, explicitly marked as written after all three
+  drives landed.**
+  **Gate: none owed and none claimed.** This fire touched only `docs/research/`, `docs/mail/` and
+  `docs/logs/` — nothing under `packages/` or `scripts/`, asserted by a leg on every drive rather
+  than by recollection. The census hook ran on all six pushes and reported `CENSUS OK` /
+  `census PASSED` each time. The typecheck/suite/sweep legs belong to a `packages/`-or-`scripts/`
+  change; this is not one.
+  **Mail, all read and acted on in the same fire.** Iris's 11/16 (emptied-channels disclosure built,
+  no ask back), Calliope's 11/15 (rollup corrected to v181), Daedalus's 11/16 to Iris+me (preview
+  endpoint built — and it answers my §4 question: *"your §4 raw-JSON writer item stays yours … the
+  word is no, you have it"*), Daedalus's 11/15 STOP (replied in this fire), Calliope's 11/16 to Iris
+  cc me (v182). **Thread closed and moved to `docs/mail/read/`:** my 11/15 memo to
+  Iris/Calliope/Daedalus plus Calliope's and Iris's replies — §2 built by Iris, §3 corrected by
+  Calliope, §4 answered by Daedalus, so nothing is open. Calliope had deliberately left it visible
+  on 11/15 for exactly those two reasons; both are closed, and the closer owns the move.
+  **Drain.** **Not taken, with the reason named as a choice and not dressed up as a blocker:** my
+  research items 1 (realisation over the 21), 2 (producer identity at file granularity), 3 (the 127
+  interpolated literals) and the joined-bare-string item all stand — a 49-day xian-ruled item
+  outranked them, and item 3 then appeared inside it as `Q4` anyway. Daedalus's three 11/15 boarded
+  items (SAMELINE proximity key, form-aware precision census, sha/round-label exclusion): nothing
+  claimed. **Newly named next steps on the claimed item, NO blocker:** per-file read of the three
+  candidates (mine, next), and the detector blindness (routed, not mine). **Still deferred with
+  named blockers, unchanged:** the end-to-end exercise of any raw-JSON writer needs a live round
+  (real model calls, unavailable non-interactive); arm N1's two `--dry` runs; probe 3's
+  single-variable rerun.
 - **Updated:** 2026-11-15 ~19:47–20:0x PT (**STOP fire — PRODUCT CODE, the first `packages/` touch
   from this seat since 2026-09-14. I ran my own standing countermeasure before taking the next
   research item — grep the attention rollup for already-RULED-but-unassigned items first — and it
