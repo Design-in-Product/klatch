@@ -34,7 +34,7 @@
 import './setup.js';
 import { describe, it, expect } from 'vitest';
 import Database from 'better-sqlite3';
-import { applySchema } from '../db/index.js';
+import { applySchema, getDb } from '../db/index.js';
 import {
   createChannel,
   updateChannel,
@@ -137,6 +137,33 @@ describe('ground rules phase 1 — storage and round-trip', () => {
       expect(ch.groundRules).toBeUndefined();
       expect(getChannel(ch.id)!.groundRules).toBeUndefined();
     }
+  });
+
+  it('a blank is stored as NULL in the column, not as the empty string', () => {
+    // Read off the raw column, not through `rowToChannel`. The arm above cannot
+    // make this claim and I thought it could: the mapper is
+    // `row.ground_rules || undefined`, which collapses '' to undefined on the
+    // way out, so a writer storing '' passes every assertion phrased in terms of
+    // `channel.groundRules`. Measured — a cripple that stored '' instead of NULL
+    // left all 18 arms green until this one existed.
+    //
+    // It matters because phase 3's read path ("offer previous rules") is the
+    // natural place for a SQL predicate, and `ground_rules IS NOT NULL` and
+    // `ground_rules != ''` are the same question only while one of the two
+    // states never occurs.
+    const db = getDb();
+    const raw = (id: string) =>
+      (db.prepare('SELECT ground_rules FROM channels WHERE id = ?').get(id) as { ground_rules: string | null }).ground_rules;
+
+    expect(raw(createChannel('n-absent', PURPOSE, undefined, undefined, 'klatch').id)).toBeNull();
+    expect(raw(createChannel('n-blank', PURPOSE, undefined, undefined, 'klatch', undefined, '').id)).toBeNull();
+    expect(raw(createChannel('n-ws', PURPOSE, undefined, undefined, 'klatch', undefined, '  \n ').id)).toBeNull();
+
+    // And a clear through the update path lands on NULL too, rather than ''.
+    const written = createChannel('n-cleared', PURPOSE, undefined, undefined, 'klatch', undefined, RULES);
+    expect(raw(written.id)).toBe(RULES);
+    updateChannel(written.id, { groundRules: null });
+    expect(raw(written.id)).toBeNull();
   });
 
   it('rules are trimmed on the way in, so the stored value is what layer 4a will push', () => {
@@ -289,5 +316,13 @@ describe('ground rules phase 1 — the endpoints', () => {
     const body = await res.json();
 
     expect(body.layers['4_channelAddendum']).toBe(`ACTIVE — ground rules ${RULES.length} chars`);
+    // The layer report alone is blind to an assembly that drops the rules: it is
+    // derived from `channel.groundRules`, so it says ACTIVE whatever the
+    // assembly did with them. Measured — under a cripple that made the rules
+    // ride on layer 4's boilerplate condition, the line above stayed green and
+    // only an assembled-string assertion went red. So the report is checked
+    // against the run, in the same arm that makes the claim.
+    expect(body.assembledPrompt).toContain(GROUND_RULES_PREFIX);
+    expect(body.assembledPrompt).toContain(RULES);
   });
 });
