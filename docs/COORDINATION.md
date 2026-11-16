@@ -973,7 +973,81 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-15 ~17:17–17:3x PT (**STOP fire — substantive: I RE-KEYED MY OWN DECLARED
+- **Updated:** 2026-11-16 ~09:17–09:3x PT (**START fire — substantive, PRODUCT not research: I BUILT
+  THE PREVIEW ENDPOINT IRIS NAMED AS THE REASON THE ASK-FIRST HALF OF xian's ENTITY-DELETE RULING
+  STAYED UNBUILT, AND BOTH CRIPPLES LANDED EXACTLY AS PRE-REGISTERED — PLUS A THIRD RULED ITEM FOUND
+  AND ROUTED AT 13 DAYS RATHER THAN AT 40.**) `date`-reads **09:17:07 / 09:26:07 / 09:27:12 PST**,
+  read not estimated. **Commit author checked, not assumed:** the five commits above my 11/15 head
+  were **Argus's** 09:10 gate re-drive, **Calliope's** 08:40 rollup v182, **Iris's** 07:26
+  entity-delete client half, **Pard-Mediajunkie's** fire-depth report and two Claude-auto brief
+  pushes — **none mine.** Mail delta → **2 added**, this seat in `to:` on one (Theseus's ruled-items
+  memo) and cc on the other (Iris's); both read in full and acted on **in this fire**.
+  **0. WHY THIS FIRE WAS PRODUCT WORK.** I ran **Theseus's** countermeasure first — grep the rollup
+  for already-RULED items before anything else. His 11/15 proportionality figure (2.0% of commits
+  since 09-14 touching `packages/`) and the two ruled items he found at **40 and 48 days** are why my
+  three boarded research items stayed untouched. **A choice, not a blocker**, named as one. The grep
+  fired twice.
+  **1. BUILT AND PUSHED: `GET /entities/:id/delete-preview` — `fd341b76`.** Iris's own clause named
+  the blocker: *"the server has no preview endpoint to ask 'what would this empty' before
+  committing."* xian's 2026-10-06 ruling asks *before* the write; the delete names what it emptied
+  *after* (Theseus `72172a52`, client banner Iris `f26a44d4`). **Verified absent before building, not
+  taken on her word:** `delete-preview|deletePreview|would-empty|wouldEmpty` over
+  `packages/ scripts/ docs/plans/` → **0 hits**. It calls **`getChannelsEmptiedByEntityDelete` — the
+  same function the delete calls**, so preview and delete can only disagree if a seat is written
+  between the two requests; and it **mirrors the delete's refusals exactly** (404/400, identical
+  message) rather than 200 + `deletable:false`, because a preview of a delete the server will refuse
+  is worse than no preview. The prompt itself is **client-side and stays Iris's**; zero callers, one
+  fire old, shape offered as changeable.
+  **2. BOTH CRIPPLES PRE-REGISTERED BEFORE EITHER RAN, BOTH LANDED.** A (route unreachable):
+  predicted all 5 new red / 36 green → **5 failed / 36 passed**, so the new cases are the **sole**
+  failing arms. B (preview reimplemented on the naive "every klatch it's in" key, same shape):
+  predicted cases 1 and 3 red, 2/4/5 green → **2 failed / 39 passed, cases 1 and 3**. **B is the one
+  worth having** — it says the agreement arms catch the divergent-duplicate implementation, which is
+  the whole reason the endpoint shares the delete's query. Case 2 staying green was predicted and
+  correct. **Declared limit:** the agreement arms **cannot** catch a defect in the *shared* query —
+  cripple it and both routes move together, staying in agreement and staying wrong. Theseus's four
+  cases grade the query; mine grade the seam. **Cripple hygiene:** cure committed *before* either
+  cripple existed, so the restore could not discard an uncommitted cure; tree clean, no `CRIPPLED`
+  marker surviving.
+  **3. ROUTED AT 13 DAYS, NOT TAKEN: the ground-rules ruling — `671359e4`.** `attention-rollup.md:317`,
+  RULED 2026-11-03. **Checked against the code, not the board's sentence:** `groundRules|ground_rules`
+  over `packages/ scripts/` → **0 hits**. Filed to **Calliope** because the board names the scoping
+  as her seat's and xian ruled a *direction*, not a spec — **filed at 13 precisely because the two
+  Theseus found reached 40 and 48 by nobody naming them at 13.** Engineering half supplied so her
+  scoping isn't waiting on me: one more `PRAGMA`-guarded `ALTER TABLE … ADD COLUMN` in the idiom
+  `db/index.ts` already uses five times; the **only** new storage is the default/template half; the
+  ruling's three behaviours decompose unequally and **(1) ships alone**. One spec question flagged as
+  hers: replace `DISCLOSURE_NORM` (`carried-context.ts:120`, verified still one hardcoded string) or
+  sit beside it — my read is beside-and-additive, **labelled a read**.
+  **Gate — re-driven fresh against my own change, NOT trusted from Argus's 09:10 run** (his tree
+  predates `fd341b76`): typecheck **0 `error TS`** ×4 workspaces; server **143 files / 2230 passed /
+  1 skipped (2231)** — standing 2225 + my 5 = 2230, **nothing else moved**; client **27/40 files,
+  337/350**, byte-identical to Iris's, no client file touched; CENSUS OK **155/45/110** on all three
+  pushes; **full driving sweep — launched 09:21, verdict recorded in today's log when the run
+  returns; NOT recorded here from the standing figure.** This slot is the fire's own third instance
+  of the same error and the only one that reached a file: I drafted `SWEEP PASSED, 45 of 45` into it
+  from the standing figure **while the run was still going**, caught it on re-read, and replaced it
+  with this sentence. The first instance was the Iris memo (same draft, same catch, replaced with a
+  statement of the error). **The discipline that worked was re-reading the slot against a `wc -c` of
+  the still-empty output file, not intending to be careful** — I intended to be careful and typed
+  the figure anyway, twice.
+  **CORRECTION AGAINST MYSELF:** the cross-pollination brief body, which I have recorded as
+  *"deferred, named blocker — WebFetch not permitted here"* for several fires, **reads fine from
+  inside a fire** via `git -C /Users/xian/Development/designinproduct show origin/main:src/internal/briefs/…`
+  — which is what Iris has been doing all week. Read today's in full (Globe's positive-control
+  technique, independently the same shape as this fire's non-vacuity arms). **A blocker named on one
+  access path is not a blocker on the artefact.** Dropped from my standing deferral list.
+  **Drain:** pull + author-checked delta; `COORDINATION.md`; both mail files read and acted on same
+  fire; brief read in full (blocker dissolved); RULED-item countermeasure run, fired twice; item 1
+  built/tested/cripple-proved-twice/pushed; item 2 routed with the engineering half attached; gate
+  re-driven including the full sweep. **Deferred with named reasons, no deadlines:** my three boarded
+  research items (SAMELINE pairing key, form-aware precision census, sha/round-label exclusion) —
+  **no blocker, a choice**, two ruled product items outranked them; Theseus's item 1 and his §4
+  raw-JSON writer — **his**, and I have now said yes explicitly rather than letting silence carry it;
+  still mine and unclaimed: the parameter/positional exclusion, `arm-routecure-d.mjs`'s `hash-object`
+  pin and `/misordered/` detector, the `unit-465p12site` RESULTS:93 one-clause cure, the two
+  `schemacollide` single-name selectors. Log: `docs/logs/2026-11-16-daedalus-log.md`.
+- **Previously:** 2026-11-15 ~17:17–17:3x PT (**STOP fire — substantive: I RE-KEYED MY OWN DECLARED
   LIMIT 1 AND IT DOES NOT OVERTURN THIS AFTERNOON'S HEADLINE — IT MAKES IT UNCHECKABLE, BECAUSE THE
   NARROW BACKTICK KEY WAS SILENTLY DOING THE WORK OF A PRECISION FILTER NOTHING ELSE IN THE SCREEN
   SUPPLIES.**) `date`-reads **17:17:09 / 17:28:22 PST**, read not estimated. **Commit author checked,
