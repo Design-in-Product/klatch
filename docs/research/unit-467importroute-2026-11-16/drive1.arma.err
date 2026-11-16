@@ -1,0 +1,44 @@
+node:internal/errors:999
+  const err = new Error(message);
+              ^
+
+Error: Command failed: npx tsx /Users/xian/Development/klatch-worktrees/theseus/scripts/promote-probes.mts --list --only probe-browse-cold-figure-gap.mts
+    at genericNodeError (node:internal/errors:999:15)
+    at wrappedFn (node:internal/errors:544:14)
+    at checkExecSyncError (node:child_process:942:11)
+    at execFileSync (node:child_process:978:15)
+    at tsx (/Users/xian/Development/klatch-worktrees/theseus/docs/research/unit-467importroute-2026-11-16/arm-importroute-a.mts:63:3)
+    at <anonymous> (/Users/xian/Development/klatch-worktrees/theseus/docs/research/unit-467importroute-2026-11-16/arm-importroute-a.mts:120:15) {
+  status: 2,
+  signal: null,
+  output: [
+    null,
+    'promote-probes — 155 probe files · 45 SWEPT · 110 DEFERRED\n' +
+      '  hazard-clean DEFERRED candidates: 0\n' +
+      '  not driven (net): 1\n' +
+      "    · probe-browse-cold-figure-gap.mts — line 218: try { if ((await fetch(`${BASE}/api/channels`, { headers: { connection: 'close' } })).ok) return; } catch {             \n" +
+      '  not driven (db): 1\n' +
+      '    · probe-browse-cold-figure-gap.mts — line 201: const env: NodeJS.ProcessEnv = { ...process.env, KLATCH_DB: DB, KLATCH_EXPORT_ROOT: EXPORT_FREE_ROOT };\n' +
+      '  not driven (homedir): 1\n' +
+      '    · probe-browse-cold-figure-gap.mts — line 105: const HOME = os.homedir();\n' +
+      '  driving this run: 0 (--only probe-browse-cold-figure-gap.mts)\n' +
+      '\n' +
+      '--list: selection only, nothing driven.\n',
+    ''
+  ],
+  pid: 38400,
+  stdout: 'promote-probes — 155 probe files · 45 SWEPT · 110 DEFERRED\n' +
+    '  hazard-clean DEFERRED candidates: 0\n' +
+    '  not driven (net): 1\n' +
+    "    · probe-browse-cold-figure-gap.mts — line 218: try { if ((await fetch(`${BASE}/api/channels`, { headers: { connection: 'close' } })).ok) return; } catch {             \n" +
+    '  not driven (db): 1\n' +
+    '    · probe-browse-cold-figure-gap.mts — line 201: const env: NodeJS.ProcessEnv = { ...process.env, KLATCH_DB: DB, KLATCH_EXPORT_ROOT: EXPORT_FREE_ROOT };\n' +
+    '  not driven (homedir): 1\n' +
+    '    · probe-browse-cold-figure-gap.mts — line 105: const HOME = os.homedir();\n' +
+    '  driving this run: 0 (--only probe-browse-cold-figure-gap.mts)\n' +
+    '\n' +
+    '--list: selection only, nothing driven.\n',
+  stderr: ''
+}
+
+Node.js v26.5.0

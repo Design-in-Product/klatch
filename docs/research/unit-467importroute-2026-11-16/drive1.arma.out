@@ -1,0 +1,8 @@
+ok  A0        subject imported without driving it: hazards=function EXEMPTIBLE=db+homedir
+ok  A1a       population: 155 probe files (promote-probes' own predicate)
+ok  A1b       --list printed a model bucket: 12
+LANDED  A1   not driven (model) = 12; Argus reported 12 (= my own count)
+ok  A1c       --list printed a net bucket: 55
+ok  A2a       plain grep on the string: 40 files; real spawn sites: 32
+REFUTED A2   spawn-call population over src/index.ts = 32; Argus reported 29
+     grep-only (named but not spawned): probe-round191-restoring-the-backup-the-way-a-person-does.mts, probe-round231-the-handler-and-the-signal-are-in-different-processes.mts, probe-round233-arm-m-and-the-endpoint-can-walk-different-corpora.mts, probe-round251-the-port-lever-mutations.mjs, probe-round253-the-db-path-mutations.mjs, probe-round256-an-emptiness-assertion-grades-the-operator-and-a-sole-blocker-ranking-cannot-see-a-coupled-class.mts, probe-round276-the-address-census-and-the-sentinel-that-hid-its-own-file.mts, probe-scratch-server.mjs

@@ -1,0 +1,25 @@
+ok  A0        subject imported without driving it: hazards=function EXEMPTIBLE=db+homedir
+ok  A1a       population: 155 probe files (promote-probes' own predicate)
+ok  A1b       --list printed a model bucket: 12
+LANDED  A1   not driven (model) = 12; Argus reported 12 (= my own count)
+ok  A1c       --list printed a net bucket: 55
+ok  A2a       plain grep on the string: 40 files; real spawn sites: 32
+REFUTED A2   spawn-call population over src/index.ts = 32; Argus reported 29
+     grep-only (named but not spawned): probe-round191-restoring-the-backup-the-way-a-person-does.mts, probe-round231-the-handler-and-the-signal-are-in-different-processes.mts, probe-round233-arm-m-and-the-endpoint-can-walk-different-corpora.mts, probe-round251-the-port-lever-mutations.mjs, probe-round253-the-db-path-mutations.mjs, probe-round256-an-emptiness-assertion-grades-the-operator-and-a-sole-blocker-ranking-cannot-see-a-coupled-class.mts, probe-round276-the-address-census-and-the-sentinel-that-hid-its-own-file.mts, probe-scratch-server.mjs
+ok  A2b       Argus's literal key matches 28 files; mine 32. |mine \ Argus| = 4, |Argus \ mine| = 0
+     · in mine, not Argus's: probe-round170-floor-frequency.mts
+         execFileSync('npx', ['tsx', 'scripts/probe-round170-floor-frequency.mts', '--build-fixture-only', FIXTURE], {
+     · in mine, not Argus's: probe-round250-the-drive-was-never-priced-and-the-port-is-one-line-of-product.mts
+         execFileSync('git', args, { cwd: REPO, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+     · in mine, not Argus's: probe-round252-the-db-class-is-unblocked-by-a-variable-the-product-already-reads.mts
+         execFileSync('git', args, { cwd: REPO, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+     · in mine, not Argus's: probe-round254-the-mutate-class-is-an-unanchored-conjunction-and-most-of-it-never-writes-the-product.mts
+         execFileSync('git', args, { cwd: REPO, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+ok  A3a       spawners the tool reports as DRIVABLE under --only (exit 0): 0
+REFUTED A3   net-refused by name under --only: 30 of 32 — NOT in the net bucket: probe-round252-the-db-class-is-unblocked-by-a-variable-the-product-already-reads.mts, probe-round254-the-mutate-class-is-an-unanchored-conjunction-and-most-of-it-never-writes-the-product.mts
+ok  A3b       spawners that are SWEPT (never reach a bucket; driven by the sweep, not by promote-probes): 0
+ok  A3c       every spawner is in exactly one of SWEPT/DEFERRED (census partition holds over my population)
+LANDED  A4   EXEMPTIBLE = {db, homedir} — net exemptible: false, model exemptible: false
+ok  A5        git status --porcelain packages scripts: ""
+
+VERDICT/1 ok legs=10 red=[] refused=[] preds=4 refuted=[A2,A3] prefused=[]
