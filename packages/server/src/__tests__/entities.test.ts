@@ -265,6 +265,93 @@ describe('DELETE /api/entities/:id', () => {
   });
 });
 
+// ── GET /entities/:id/delete-preview — the ask-before half of the ruling ──
+//
+// The delete above names what it emptied *afterwards*. xian's ruling asks the
+// user first ("also delete this klatch?"), which needs the answer before the
+// write. Every case here is keyed on the preview *agreeing with the delete*
+// rather than on a hand-typed expectation: an endpoint whose answer is right in
+// isolation and disagrees with the route it previews is the defect this exists
+// to prevent, and a literal typed into both tests cannot see it.
+describe('GET /api/entities/:id/delete-preview', () => {
+  it('names the channels the delete then reports emptying — the two agree', async () => {
+    const solo = createEntity('XPreviewSole', DEFAULT_MODEL, 'p', '#abc123');
+    const other = createEntity('XPreviewOther', DEFAULT_MODEL, 'p', '#def456');
+    const a = createChannel('x-preview-a', 'p', undefined, undefined, 'klatch', [solo.id]);
+    const b = createChannel('x-preview-b', 'p', undefined, undefined, 'klatch', [solo.id]);
+    // Shared and elsewhere: neither is emptied by this delete.
+    createChannel('x-preview-shared', 'p', undefined, 'panel', 'klatch', [solo.id, other.id]);
+    createChannel('x-preview-elsewhere', 'p', undefined, undefined, 'klatch', [other.id]);
+
+    const preview = await req('GET', `/entities/${solo.id}/delete-preview`);
+    expect(preview.status).toBe(200);
+    const previewed = (await preview.json()).emptiedChannels;
+    expect(previewed.map((ch: any) => ch.id).sort()).toEqual([a.id, b.id].sort());
+
+    // The claim worth pinning is not the list — it is that the delete's own
+    // answer is the same one. Compared whole (ids *and* names), because two
+    // lists can agree on count and ids while a name drifts.
+    const del = await req('DELETE', `/entities/${solo.id}`);
+    expect(del.status).toBe(200);
+    expect((await del.json()).emptiedChannels).toEqual(previewed);
+  });
+
+  it('is read-only — the entity and its seats survive a preview', async () => {
+    const solo = createEntity('XPreviewReadOnly', DEFAULT_MODEL, 'p', '#abc123');
+    const ch = createChannel('x-preview-readonly', 'p', undefined, undefined, 'klatch', [solo.id]);
+
+    const first = await req('GET', `/entities/${solo.id}/delete-preview`);
+    expect((await first.json()).emptiedChannels).toEqual([{ id: ch.id, name: 'x-preview-readonly' }]);
+
+    // Entity still listed, seat still seated, and a second preview still finds
+    // the channel — a preview that consumed the seats it reports would answer
+    // `[]` the second time, which the single-call assertion above cannot see.
+    const list = await req('GET', '/entities');
+    expect((await list.json()).some((e: any) => e.id === solo.id)).toBe(true);
+    const roster = await req('GET', `/channels/${ch.id}/entities`);
+    expect((await roster.json()).map((e: any) => e.id)).toEqual([solo.id]);
+    const second = await req('GET', `/entities/${solo.id}/delete-preview`);
+    expect((await second.json()).emptiedChannels).toEqual([{ id: ch.id, name: 'x-preview-readonly' }]);
+  });
+
+  it('returns an empty list — not a missing field — when nothing would be emptied', async () => {
+    const going = createEntity('XPreviewGoing', DEFAULT_MODEL, 'p', '#abc123');
+    const staying = createEntity('XPreviewStaying', DEFAULT_MODEL, 'p', '#def456');
+    createChannel('x-preview-survives', 'p', undefined, 'panel', 'klatch', [going.id, staying.id]);
+
+    const res = await req('GET', `/entities/${going.id}/delete-preview`);
+    expect(res.status).toBe(200);
+    const data = await res.json();
+    expect(data.emptiedChannels).toEqual([]);
+    expect('emptiedChannels' in data).toBe(true);
+  });
+
+  it('refuses an unknown entity exactly as the delete does', async () => {
+    const preview = await req('GET', '/entities/does-not-exist/delete-preview');
+    const del = await req('DELETE', '/entities/does-not-exist');
+    expect(preview.status).toBe(404);
+    expect(preview.status).toBe(del.status);
+    const previewBody = await preview.json();
+    // Non-vacuity first: two empty bodies would satisfy the equality below
+    // while telling a client nothing.
+    expect(typeof previewBody.error).toBe('string');
+    expect(previewBody.error.length).toBeGreaterThan(0);
+    expect(previewBody).toEqual(await del.json());
+  });
+
+  it('refuses the default entity exactly as the delete does', async () => {
+    const preview = await req('GET', `/entities/${DEFAULT_ENTITY_ID}/delete-preview`);
+    const del = await req('DELETE', `/entities/${DEFAULT_ENTITY_ID}`);
+    expect(preview.status).toBe(400);
+    expect(preview.status).toBe(del.status);
+    const previewBody = await preview.json();
+    expect(previewBody.error).toContain('default');
+    // Compared against the delete rather than typed here: if either side's
+    // wording changes, this goes red instead of the two silently diverging.
+    expect(previewBody).toEqual(await del.json());
+  });
+});
+
 // ── Phase 6c: Channel-Entity Assignment ─────────────────────
 
 describe('GET /api/channels/:id/entities', () => {

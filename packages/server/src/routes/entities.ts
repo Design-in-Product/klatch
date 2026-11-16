@@ -168,6 +168,49 @@ app.patch('/entities/:id', async (c) => {
   return c.json(updated);
 });
 
+/**
+ * Dry run of the DELETE below: which channels *would* be left with no entity
+ * seated if this entity were deleted now. Read-only — nothing is written.
+ *
+ * Why it exists: `DELETE /entities/:id` names what it emptied *afterwards*
+ * (Theseus, 2026-11-15) and the client surfaces that as a post-hoc banner
+ * (Iris, 2026-11-16). xian's 2026-10-06 ruling asks for more than not-silent —
+ * *"the best UX would be to ask if the person also wants to delete the Klatch
+ * but to allow them not to"* — and asking requires knowing before committing.
+ * Iris named the absence of this endpoint as the reason that half stayed
+ * unbuilt; the query it needs already existed, so this is the exposure, not
+ * new logic. The pre-delete prompt itself is client-side and still hers.
+ *
+ * It calls `getChannelsEmptiedByEntityDelete` — the same function the delete
+ * path calls, not a reimplementation — so a preview can only disagree with the
+ * delete that follows it if a seat is written between the two requests. One
+ * query, one truth; a second copy of the sole-seat SQL is how the preview
+ * starts lying.
+ *
+ * It mirrors the delete's refusals exactly (404 unknown, 400 default entity,
+ * same message) rather than answering 200 with a `deletable: false` field. A
+ * preview that cheerfully previews a delete the server will refuse is worse
+ * than no preview: a client would build the confirm dialog, then eat the 400.
+ * The equality is pinned by a test comparing the two routes' bodies, so the
+ * wording cannot drift on one side only.
+ */
+app.get('/entities/:id/delete-preview', (c) => {
+  const id = c.req.param('id');
+
+  if (id === DEFAULT_ENTITY_ID) {
+    return c.json({ error: 'Cannot delete the default entity' }, 400);
+  }
+
+  if (!getEntity(id)) {
+    return c.json({ error: 'Entity not found' }, 404);
+  }
+
+  // Always present, `[]` when this entity is nobody's last seat — same contract
+  // as the delete response, for the same reason: a client branches on length
+  // without having to tell "none" from "an older server that didn't say."
+  return c.json({ emptiedChannels: getChannelsEmptiedByEntityDelete(id) });
+});
+
 app.delete('/entities/:id', (c) => {
   const id = c.req.param('id');
 
