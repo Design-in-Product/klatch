@@ -1,0 +1,885 @@
+==============================================================================
+unit-466reasontok arm C — PIN 5d430e5411885ffe56bdcbd19a4fd9664564748e
+==============================================================================
+ok   A0a — ls-tree at the pin FINDS a known corpus file: "docs/research/lib/attested-rounds.mjs"
+ok   A0b — ls-tree at the pin does NOT find THIS arm's pre-registration C: ""
+
+population: 1213 committed *.out recordings at the pin, 6589 files in tree
+basename index: 5837 distinct basenames; 5683 unique, 154 shared
+
+K1 pair counts, per form (one line may yield the same token in two forms — not fused):
+  BACKTICK  pairs=  296  distinct=  290  recordings=25
+  DQUOTE    pairs=  348  distinct=  346  recordings=12
+  SQUOTE    pairs=  185  distinct=  183  recordings=11
+  ALL-FORMS pairs=829  distinct=819  recordings=43
+
+REPRO of arm A's published key (BACKTICK + AS_PRINTED + SUBSTRING):
+  pairs=296 screenable=242 unresolvable=54 flagged=84 clean=158
+  arm A drive1.out printed: pairs=296 screenable=242 unresolvable=54 flagged=84 clean=158
+ok   REPRO — arm C reproduces arm A's five published figures exactly off the same pin — all five match
+
+WIDENED (all forms + BASENAME_UNIQUE): screenable 718, unresolvable 111 (13.4%) — {"noFileInTree_hadDir":111}
+  resolved how: {"basenameUnique":87,"exact":631}
+
+K2 containment, same screened set (718 pairs), three tests:
+  FLAGGED under SUBSTRING          432
+  FLAGGED under BOUNDARY           436
+  FLAGGED under BOUNDARY_STRIPPED  594  (null-stripped: 0)
+ok   Q2 — monotonicity: every pair screened by the published key is still screened by the widened one — lost=0
+ok   KPa — instance 1 is reached by DQUOTE and still missed by BACKTICK — forms that find it: ["DQUOTE"]
+ok   KPb — instance 1, once reached, reads CLEAN under SUBSTRING (true) and BOUNDARY (true) — the widening reaches it and the screen clears it
+      KPb subject:  "`the hand-found g( site is reached: ${kpGLegs.length} leg(s) in ${KP_G.replace('docs/research/', '')} [${kpGLegs.map((l) => l.id).join(',')}]`);"
+      KPb stripped: "`                                   ${kpGLegs.length}           ${KP_G.replace('              ', '')}  ${kpGLegs.map((l) => l.id).join(' ')} `);"
+      KPb resolved: docs/research/unit-464class-2026-11-02/enumerate-legs.mjs via exact
+ok   KPc — instance 2 was REACHED and never SCREENED by the published key (why=noFileInTree), and BASENAME_UNIQUE screens it (why=resolved)
+ok   KPd — instance 2 reads CLEAN under SUBSTRING (true) AND under BOUNDARY (true) — the boundary repair alone does not rescue it; the word "in" is prose inside the subject's own template literal
+      KPd subject:  "`the hand-found g( site is reached: ${kpGLegs.length} leg(s) in ${KP_G.replace('docs/research/', '')} [${kpGLegs.map((l) => l.id).join(',')}]`);"
+      KPd stripped: "`                                   ${kpGLegs.length}           ${KP_G.replace('              ', '')}  ${kpGLegs.map((l) => l.id).join(' ')} `);"
+      KPd BOUNDARY_STRIPPED verdict: false  (false = FLAGGED, i.e. the stripped repair reaches it)
+      KPd resolved: docs/research/unit-464class-2026-11-02/enumerate-legs.mjs via basenameUnique
+
+CEILING (>40% unresolvable after BASENAME_UNIQUE): held at 13.4%
+
+delta vs arm A: newly FLAGGED (substring test, widened keys) = 348; of those, token absent from the WHOLE cited file = 201
+flips among arm A's own 158 CLEAN pairs: SUBSTRING->BOUNDARY 4, SUBSTRING->BOUNDARY_STRIPPED 48
+
+--- every pair arm A's CLEAN set loses under BOUNDARY (4) ---
+FLIP `i` -> docs/research/round393-instruments/counterfactuals-for-the-p2-detector.mjs:14  [census-the-named-binding-form.out:72]
+     subject: "// NOT in the 15: the census keys a window call to a `const <name> =` binding, and this one is"
+FLIP `i` -> docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs:136  [census-the-named-binding-form.out:73]
+     subject: "// that belongs to another one — silently, with no row lost and no count moved. The tell that"
+FLIP `i` -> docs/research/round393-instruments/counterfactuals-for-the-p2-detector.mjs:14  [his399-live.out:72]
+     subject: "// NOT in the 15: the census keys a window call to a `const <name> =` binding, and this one is"
+FLIP `i` -> docs/research/round393-instruments/grade-the-grade-that-is-green-on-one-machine.mjs:136  [his399-live.out:73]
+     subject: "// that belongs to another one — silently, with no row lost and no count moved. The tell that"
+
+--- every NEWLY FLAGGED pair whose token is absent from the whole cited file (201) ---
+NEW[DQUOTE] `DEFECT` absent from all of docs/research/round411-instruments/list-the-declarations-under-the-409-key.mjs (cited line 24)
+     recording: docs/research/round452-instruments/drive11.graded-after-448-rerecord.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "const CORPUS = git(['ls-files', 'docs/research', 'scripts']).split('\\n')"
+NEW[DQUOTE] `DEFECT` absent from all of docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs (cited line 555)
+     recording: docs/research/round452-instruments/drive11.graded-after-448-rerecord.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "const SELF_TRACKED = git(['ls-files', '--', SELF]).trim() !== '';"
+NEW[DQUOTE] `DEFECT` absent from all of scripts/lib/tree-fingerprint.mts (cited line 160)
+     recording: docs/research/round452-instruments/drive11.graded-after-448-rerecord.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "* `git ls-files` separates the three cases — 200 / 0 / 1 — and does so regardless of dirty state,"
+NEW[DQUOTE] `REFUTED` absent from all of docs/research/round411-instruments/list-the-declarations-under-the-409-key.mjs (cited line 24)
+     recording: docs/research/round452-instruments/drive11.graded-after-448-rerecord.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "const CORPUS = git(['ls-files', 'docs/research', 'scripts']).split('\\n')"
+NEW[DQUOTE] `REFUTED` absent from all of scripts/lib/tree-fingerprint.mts (cited line 160)
+     recording: docs/research/round452-instruments/drive11.graded-after-448-rerecord.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "* `git ls-files` separates the three cases — 200 / 0 / 1 — and does so regardless of dirty state,"
+NEW[DQUOTE] `GRADE` absent from all of docs/research/round411-instruments/list-the-declarations-under-the-409-key.mjs (cited line 24)
+     recording: docs/research/round452-instruments/drive11.graded-after-448-rerecord.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "const CORPUS = git(['ls-files', 'docs/research', 'scripts']).split('\\n')"
+NEW[DQUOTE] `GRADE` absent from all of docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs (cited line 555)
+     recording: docs/research/round452-instruments/drive11.graded-after-448-rerecord.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "const SELF_TRACKED = git(['ls-files', '--', SELF]).trim() !== '';"
+NEW[DQUOTE] `GRADE` absent from all of scripts/lib/tree-fingerprint.mts (cited line 160)
+     recording: docs/research/round452-instruments/drive11.graded-after-448-rerecord.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "* `git ls-files` separates the three cases — 200 / 0 / 1 — and does so regardless of dirty state,"
+NEW[DQUOTE] `MAX_HISTORY_MESSAGES` absent from all of docs/research/round411-instruments/list-the-declarations-under-the-409-key.mjs (cited line 24)
+     recording: docs/research/round452-instruments/drive11.graded-after-448-rerecord.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "const CORPUS = git(['ls-files', 'docs/research', 'scripts']).split('\\n')"
+NEW[DQUOTE] `MAX_HISTORY_MESSAGES` absent from all of docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs (cited line 555)
+     recording: docs/research/round452-instruments/drive11.graded-after-448-rerecord.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "const SELF_TRACKED = git(['ls-files', '--', SELF]).trim() !== '';"
+NEW[DQUOTE] `MAX_HISTORY_MESSAGES` absent from all of scripts/lib/tree-fingerprint.mts (cited line 160)
+     recording: docs/research/round452-instruments/drive11.graded-after-448-rerecord.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "* `git ls-files` separates the three cases — 200 / 0 / 1 — and does so regardless of dirty state,"
+NEW[DQUOTE] `DEFECT` absent from all of docs/research/round411-instruments/list-the-declarations-under-the-409-key.mjs (cited line 24)
+     recording: docs/research/round452-instruments/drive12.postcommit.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "const CORPUS = git(['ls-files', 'docs/research', 'scripts']).split('\\n')"
+NEW[DQUOTE] `DEFECT` absent from all of docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs (cited line 555)
+     recording: docs/research/round452-instruments/drive12.postcommit.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "const SELF_TRACKED = git(['ls-files', '--', SELF]).trim() !== '';"
+NEW[DQUOTE] `DEFECT` absent from all of scripts/lib/tree-fingerprint.mts (cited line 160)
+     recording: docs/research/round452-instruments/drive12.postcommit.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "* `git ls-files` separates the three cases — 200 / 0 / 1 — and does so regardless of dirty state,"
+NEW[DQUOTE] `REFUTED` absent from all of docs/research/round411-instruments/list-the-declarations-under-the-409-key.mjs (cited line 24)
+     recording: docs/research/round452-instruments/drive12.postcommit.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "const CORPUS = git(['ls-files', 'docs/research', 'scripts']).split('\\n')"
+NEW[DQUOTE] `REFUTED` absent from all of scripts/lib/tree-fingerprint.mts (cited line 160)
+     recording: docs/research/round452-instruments/drive12.postcommit.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "* `git ls-files` separates the three cases — 200 / 0 / 1 — and does so regardless of dirty state,"
+NEW[DQUOTE] `GRADE` absent from all of docs/research/round411-instruments/list-the-declarations-under-the-409-key.mjs (cited line 24)
+     recording: docs/research/round452-instruments/drive12.postcommit.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "const CORPUS = git(['ls-files', 'docs/research', 'scripts']).split('\\n')"
+NEW[DQUOTE] `GRADE` absent from all of docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs (cited line 555)
+     recording: docs/research/round452-instruments/drive12.postcommit.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "const SELF_TRACKED = git(['ls-files', '--', SELF]).trim() !== '';"
+NEW[DQUOTE] `GRADE` absent from all of scripts/lib/tree-fingerprint.mts (cited line 160)
+     recording: docs/research/round452-instruments/drive12.postcommit.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "* `git ls-files` separates the three cases — 200 / 0 / 1 — and does so regardless of dirty state,"
+NEW[DQUOTE] `MAX_HISTORY_MESSAGES` absent from all of docs/research/round411-instruments/list-the-declarations-under-the-409-key.mjs (cited line 24)
+     recording: docs/research/round452-instruments/drive12.postcommit.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "const CORPUS = git(['ls-files', 'docs/research', 'scripts']).split('\\n')"
+NEW[DQUOTE] `MAX_HISTORY_MESSAGES` absent from all of docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs (cited line 555)
+     recording: docs/research/round452-instruments/drive12.postcommit.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "const SELF_TRACKED = git(['ls-files', '--', SELF]).trim() !== '';"
+NEW[DQUOTE] `MAX_HISTORY_MESSAGES` absent from all of scripts/lib/tree-fingerprint.mts (cited line 160)
+     recording: docs/research/round452-instruments/drive12.postcommit.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "* `git ls-files` separates the three cases — 200 / 0 / 1 — and does so regardless of dirty state,"
+NEW[DQUOTE] `round431` absent from all of docs/research/round411-instruments/list-the-declarations-under-the-409-key.mjs (cited line 24)
+     recording: docs/research/round452-instruments/drive2.census2.out:13
+     rec line:  "R2  unclassified: [\"list-the-declarations-under-the-409-key.mjs:24\",\"cure-the-wrapped-call-and-the-body-key.mjs:555\",\"tree-fingerprint.mts:160\",\"client.ts\",\"round431\",\"ro"
+     subject:   "const CORPUS = git(['ls-files', 'docs/research', 'scripts']).split('\\n')"
+NEW[DQUOTE] `round431` absent from all of docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs (cited line 555)
+     recording: docs/research/round452-instruments/drive2.census2.out:13
+     rec line:  "R2  unclassified: [\"list-the-declarations-under-the-409-key.mjs:24\",\"cure-the-wrapped-call-and-the-body-key.mjs:555\",\"tree-fingerprint.mts:160\",\"client.ts\",\"round431\",\"ro"
+     subject:   "const SELF_TRACKED = git(['ls-files', '--', SELF]).trim() !== '';"
+NEW[DQUOTE] `round431` absent from all of scripts/lib/tree-fingerprint.mts (cited line 160)
+     recording: docs/research/round452-instruments/drive2.census2.out:13
+     rec line:  "R2  unclassified: [\"list-the-declarations-under-the-409-key.mjs:24\",\"cure-the-wrapped-call-and-the-body-key.mjs:555\",\"tree-fingerprint.mts:160\",\"client.ts\",\"round431\",\"ro"
+     subject:   "* `git ls-files` separates the three cases — 200 / 0 / 1 — and does so regardless of dirty state,"
+NEW[DQUOTE] `round433` absent from all of docs/research/round411-instruments/list-the-declarations-under-the-409-key.mjs (cited line 24)
+     recording: docs/research/round452-instruments/drive2.census2.out:13
+     rec line:  "R2  unclassified: [\"list-the-declarations-under-the-409-key.mjs:24\",\"cure-the-wrapped-call-and-the-body-key.mjs:555\",\"tree-fingerprint.mts:160\",\"client.ts\",\"round431\",\"ro"
+     subject:   "const CORPUS = git(['ls-files', 'docs/research', 'scripts']).split('\\n')"
+NEW[DQUOTE] `round433` absent from all of docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs (cited line 555)
+     recording: docs/research/round452-instruments/drive2.census2.out:13
+     rec line:  "R2  unclassified: [\"list-the-declarations-under-the-409-key.mjs:24\",\"cure-the-wrapped-call-and-the-body-key.mjs:555\",\"tree-fingerprint.mts:160\",\"client.ts\",\"round431\",\"ro"
+     subject:   "const SELF_TRACKED = git(['ls-files', '--', SELF]).trim() !== '';"
+NEW[DQUOTE] `round433` absent from all of scripts/lib/tree-fingerprint.mts (cited line 160)
+     recording: docs/research/round452-instruments/drive2.census2.out:13
+     rec line:  "R2  unclassified: [\"list-the-declarations-under-the-409-key.mjs:24\",\"cure-the-wrapped-call-and-the-body-key.mjs:555\",\"tree-fingerprint.mts:160\",\"client.ts\",\"round431\",\"ro"
+     subject:   "* `git ls-files` separates the three cases — 200 / 0 / 1 — and does so regardless of dirty state,"
+NEW[DQUOTE] `round435` absent from all of docs/research/round411-instruments/list-the-declarations-under-the-409-key.mjs (cited line 24)
+     recording: docs/research/round452-instruments/drive2.census2.out:13
+     rec line:  "R2  unclassified: [\"list-the-declarations-under-the-409-key.mjs:24\",\"cure-the-wrapped-call-and-the-body-key.mjs:555\",\"tree-fingerprint.mts:160\",\"client.ts\",\"round431\",\"ro"
+     subject:   "const CORPUS = git(['ls-files', 'docs/research', 'scripts']).split('\\n')"
+NEW[DQUOTE] `round435` absent from all of docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs (cited line 555)
+     recording: docs/research/round452-instruments/drive2.census2.out:13
+     rec line:  "R2  unclassified: [\"list-the-declarations-under-the-409-key.mjs:24\",\"cure-the-wrapped-call-and-the-body-key.mjs:555\",\"tree-fingerprint.mts:160\",\"client.ts\",\"round431\",\"ro"
+     subject:   "const SELF_TRACKED = git(['ls-files', '--', SELF]).trim() !== '';"
+NEW[DQUOTE] `round435` absent from all of scripts/lib/tree-fingerprint.mts (cited line 160)
+     recording: docs/research/round452-instruments/drive2.census2.out:13
+     rec line:  "R2  unclassified: [\"list-the-declarations-under-the-409-key.mjs:24\",\"cure-the-wrapped-call-and-the-body-key.mjs:555\",\"tree-fingerprint.mts:160\",\"client.ts\",\"round431\",\"ro"
+     subject:   "* `git ls-files` separates the three cases — 200 / 0 / 1 — and does so regardless of dirty state,"
+NEW[DQUOTE] `DEFECT` absent from all of docs/research/round411-instruments/list-the-declarations-under-the-409-key.mjs (cited line 24)
+     recording: docs/research/round452-instruments/drive4.graded.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "const CORPUS = git(['ls-files', 'docs/research', 'scripts']).split('\\n')"
+NEW[DQUOTE] `DEFECT` absent from all of docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs (cited line 555)
+     recording: docs/research/round452-instruments/drive4.graded.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "const SELF_TRACKED = git(['ls-files', '--', SELF]).trim() !== '';"
+NEW[DQUOTE] `DEFECT` absent from all of scripts/lib/tree-fingerprint.mts (cited line 160)
+     recording: docs/research/round452-instruments/drive4.graded.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "* `git ls-files` separates the three cases — 200 / 0 / 1 — and does so regardless of dirty state,"
+NEW[DQUOTE] `REFUTED` absent from all of docs/research/round411-instruments/list-the-declarations-under-the-409-key.mjs (cited line 24)
+     recording: docs/research/round452-instruments/drive4.graded.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "const CORPUS = git(['ls-files', 'docs/research', 'scripts']).split('\\n')"
+NEW[DQUOTE] `REFUTED` absent from all of scripts/lib/tree-fingerprint.mts (cited line 160)
+     recording: docs/research/round452-instruments/drive4.graded.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "* `git ls-files` separates the three cases — 200 / 0 / 1 — and does so regardless of dirty state,"
+NEW[DQUOTE] `GRADE` absent from all of docs/research/round411-instruments/list-the-declarations-under-the-409-key.mjs (cited line 24)
+     recording: docs/research/round452-instruments/drive4.graded.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "const CORPUS = git(['ls-files', 'docs/research', 'scripts']).split('\\n')"
+NEW[DQUOTE] `GRADE` absent from all of docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs (cited line 555)
+     recording: docs/research/round452-instruments/drive4.graded.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "const SELF_TRACKED = git(['ls-files', '--', SELF]).trim() !== '';"
+NEW[DQUOTE] `GRADE` absent from all of scripts/lib/tree-fingerprint.mts (cited line 160)
+     recording: docs/research/round452-instruments/drive4.graded.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "* `git ls-files` separates the three cases — 200 / 0 / 1 — and does so regardless of dirty state,"
+NEW[DQUOTE] `MAX_HISTORY_MESSAGES` absent from all of docs/research/round411-instruments/list-the-declarations-under-the-409-key.mjs (cited line 24)
+     recording: docs/research/round452-instruments/drive4.graded.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "const CORPUS = git(['ls-files', 'docs/research', 'scripts']).split('\\n')"
+NEW[DQUOTE] `MAX_HISTORY_MESSAGES` absent from all of docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs (cited line 555)
+     recording: docs/research/round452-instruments/drive4.graded.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "const SELF_TRACKED = git(['ls-files', '--', SELF]).trim() !== '';"
+NEW[DQUOTE] `MAX_HISTORY_MESSAGES` absent from all of scripts/lib/tree-fingerprint.mts (cited line 160)
+     recording: docs/research/round452-instruments/drive4.graded.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "* `git ls-files` separates the three cases — 200 / 0 / 1 — and does so regardless of dirty state,"
+NEW[DQUOTE] `DEFECT` absent from all of docs/research/round411-instruments/list-the-declarations-under-the-409-key.mjs (cited line 24)
+     recording: docs/research/round452-instruments/drive8.graded-final.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "const CORPUS = git(['ls-files', 'docs/research', 'scripts']).split('\\n')"
+NEW[DQUOTE] `DEFECT` absent from all of docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs (cited line 555)
+     recording: docs/research/round452-instruments/drive8.graded-final.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "const SELF_TRACKED = git(['ls-files', '--', SELF]).trim() !== '';"
+NEW[DQUOTE] `DEFECT` absent from all of scripts/lib/tree-fingerprint.mts (cited line 160)
+     recording: docs/research/round452-instruments/drive8.graded-final.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "* `git ls-files` separates the three cases — 200 / 0 / 1 — and does so regardless of dirty state,"
+NEW[DQUOTE] `REFUTED` absent from all of docs/research/round411-instruments/list-the-declarations-under-the-409-key.mjs (cited line 24)
+     recording: docs/research/round452-instruments/drive8.graded-final.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "const CORPUS = git(['ls-files', 'docs/research', 'scripts']).split('\\n')"
+NEW[DQUOTE] `REFUTED` absent from all of scripts/lib/tree-fingerprint.mts (cited line 160)
+     recording: docs/research/round452-instruments/drive8.graded-final.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "* `git ls-files` separates the three cases — 200 / 0 / 1 — and does so regardless of dirty state,"
+NEW[DQUOTE] `GRADE` absent from all of docs/research/round411-instruments/list-the-declarations-under-the-409-key.mjs (cited line 24)
+     recording: docs/research/round452-instruments/drive8.graded-final.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "const CORPUS = git(['ls-files', 'docs/research', 'scripts']).split('\\n')"
+NEW[DQUOTE] `GRADE` absent from all of docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs (cited line 555)
+     recording: docs/research/round452-instruments/drive8.graded-final.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "const SELF_TRACKED = git(['ls-files', '--', SELF]).trim() !== '';"
+NEW[DQUOTE] `GRADE` absent from all of scripts/lib/tree-fingerprint.mts (cited line 160)
+     recording: docs/research/round452-instruments/drive8.graded-final.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "* `git ls-files` separates the three cases — 200 / 0 / 1 — and does so regardless of dirty state,"
+NEW[DQUOTE] `MAX_HISTORY_MESSAGES` absent from all of docs/research/round411-instruments/list-the-declarations-under-the-409-key.mjs (cited line 24)
+     recording: docs/research/round452-instruments/drive8.graded-final.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "const CORPUS = git(['ls-files', 'docs/research', 'scripts']).split('\\n')"
+NEW[DQUOTE] `MAX_HISTORY_MESSAGES` absent from all of docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs (cited line 555)
+     recording: docs/research/round452-instruments/drive8.graded-final.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "const SELF_TRACKED = git(['ls-files', '--', SELF]).trim() !== '';"
+NEW[DQUOTE] `MAX_HISTORY_MESSAGES` absent from all of scripts/lib/tree-fingerprint.mts (cited line 160)
+     recording: docs/research/round452-instruments/drive8.graded-final.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "* `git ls-files` separates the three cases — 200 / 0 / 1 — and does so regardless of dirty state,"
+NEW[DQUOTE] `DEFECT` absent from all of docs/research/round411-instruments/list-the-declarations-under-the-409-key.mjs (cited line 24)
+     recording: docs/research/round453-instruments/drive0.his-452-redriven-here.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "const CORPUS = git(['ls-files', 'docs/research', 'scripts']).split('\\n')"
+NEW[DQUOTE] `DEFECT` absent from all of docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs (cited line 555)
+     recording: docs/research/round453-instruments/drive0.his-452-redriven-here.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "const SELF_TRACKED = git(['ls-files', '--', SELF]).trim() !== '';"
+NEW[DQUOTE] `DEFECT` absent from all of scripts/lib/tree-fingerprint.mts (cited line 160)
+     recording: docs/research/round453-instruments/drive0.his-452-redriven-here.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "* `git ls-files` separates the three cases — 200 / 0 / 1 — and does so regardless of dirty state,"
+NEW[DQUOTE] `REFUTED` absent from all of docs/research/round411-instruments/list-the-declarations-under-the-409-key.mjs (cited line 24)
+     recording: docs/research/round453-instruments/drive0.his-452-redriven-here.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "const CORPUS = git(['ls-files', 'docs/research', 'scripts']).split('\\n')"
+NEW[DQUOTE] `REFUTED` absent from all of scripts/lib/tree-fingerprint.mts (cited line 160)
+     recording: docs/research/round453-instruments/drive0.his-452-redriven-here.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "* `git ls-files` separates the three cases — 200 / 0 / 1 — and does so regardless of dirty state,"
+NEW[DQUOTE] `GRADE` absent from all of docs/research/round411-instruments/list-the-declarations-under-the-409-key.mjs (cited line 24)
+     recording: docs/research/round453-instruments/drive0.his-452-redriven-here.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "const CORPUS = git(['ls-files', 'docs/research', 'scripts']).split('\\n')"
+NEW[DQUOTE] `GRADE` absent from all of docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs (cited line 555)
+     recording: docs/research/round453-instruments/drive0.his-452-redriven-here.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "const SELF_TRACKED = git(['ls-files', '--', SELF]).trim() !== '';"
+NEW[DQUOTE] `GRADE` absent from all of scripts/lib/tree-fingerprint.mts (cited line 160)
+     recording: docs/research/round453-instruments/drive0.his-452-redriven-here.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "* `git ls-files` separates the three cases — 200 / 0 / 1 — and does so regardless of dirty state,"
+NEW[DQUOTE] `MAX_HISTORY_MESSAGES` absent from all of docs/research/round411-instruments/list-the-declarations-under-the-409-key.mjs (cited line 24)
+     recording: docs/research/round453-instruments/drive0.his-452-redriven-here.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "const CORPUS = git(['ls-files', 'docs/research', 'scripts']).split('\\n')"
+NEW[DQUOTE] `MAX_HISTORY_MESSAGES` absent from all of docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs (cited line 555)
+     recording: docs/research/round453-instruments/drive0.his-452-redriven-here.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "const SELF_TRACKED = git(['ls-files', '--', SELF]).trim() !== '';"
+NEW[DQUOTE] `MAX_HISTORY_MESSAGES` absent from all of scripts/lib/tree-fingerprint.mts (cited line 160)
+     recording: docs/research/round453-instruments/drive0.his-452-redriven-here.out:3
+     rec line:  "LEG A2 ok NO CHARACTER CLASS ON THE ID SEPARATES, AND THE PROOF IS TWO NON-EMPTY SETS IN ONE POPULATION. LEGROWs with a LOWERCASE id: 3 spellings / 12 rows [\"list-the-dec"
+     subject:   "* `git ls-files` separates the three cases — 200 / 0 / 1 — and does so regardless of dirty state,"
+NEW[DQUOTE] `sites` absent from all of docs/research/round378-instruments/grade-b3-known-positive.mjs (cited line 67)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const author = execFileSync('git', ['log', '-1', '--format=%h %an %s', CURE], { encoding: 'utf8' }).trim();"
+NEW[DQUOTE] `sites` absent from all of docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs (cited line 316)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const moveLog = git(['log', '--format=%h %an', '--diff-filter=D', '-1', '--', MOVED_MEMO]).trim();"
+NEW[DQUOTE] `sites` absent from all of docs/research/round418-instruments/installed-sdk-and-sec4-by-shape.mjs (cited line 86)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "execFileSync('git', ['-C', REPO, 'log', '-1', '--format=%h %an %ad', '--date=short', '--', 'package-lock.json'], { encoding: 'utf8' }).trim());"
+NEW[DQUOTE] `sites` absent from all of docs/research/round463-instruments/grade-the-57-of-461-class.mjs (cited line 361)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "return git(['log', '--diff-filter=A', '--format=%H', '-1', '--', p]).trim();"
+NEW[DQUOTE] `sites` absent from all of docs/research/round463-instruments/which-residue-member-postdates.mjs (cited line 29)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const add = git(['log', '--diff-filter=A', '--format=%H %ad %an', '-1', '--date=short', '--', p]).trim();"
+NEW[DQUOTE] `sites` absent from all of docs/research/unit-464reach-2026-11-02/grade-reach.mjs (cited line 200)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const newest = g(['log', '-1', '--format=%h', '--', H396]).trim();"
+NEW[DQUOTE] `sites` absent from all of docs/research/unit-464rec-2026-10-31/probe-is-it-live.mjs (cited line 53)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const newest = (git('log', '-1', '--format=%H', '--', f) ?? '').trim();"
+NEW[DQUOTE] `sites` absent from all of docs/research/unit-464rec-2026-10-31/probe-is-it-live.mjs (cited line 54)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const added = (git('log', '--diff-filter=A', '--format=%H', '-1', '--', f) ?? '').trim();"
+NEW[DQUOTE] `sites` absent from all of docs/research/unit-464rec-2026-10-31/probe-is-it-live.mjs (cited line 58)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const n = (git('log', '-1', '--format=%h %ad %an', '--date=short', '--', f) ?? '').trim();"
+NEW[DQUOTE] `sites` absent from all of docs/research/unit-464rec-2026-10-31/probe-is-it-live.mjs (cited line 59)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const a = (git('log', '--diff-filter=A', '--format=%h %ad %an', '-1', '--date=short', '--', f) ?? '').trim();"
+NEW[DQUOTE] `sites` absent from all of docs/research/unit-464rec3-2026-11-01/grade-p4-the-conjunct-no-movement-can-falsify.mjs (cited line 49)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "'NO-CRIPPLE (live: log -1 on the path)': (git(['log', '-1', '--format=%h %s', '--', MY_395_PATH]) ?? '').trim(),"
+NEW[DQUOTE] `sites` absent from all of docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs (cited line 95)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const atRecency = liftAt((git(['log', '-1', '--format=%h', '--', HIS_396_PATH]) ?? '').trim());"
+NEW[DQUOTE] `sites` absent from all of docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs (cited line 115)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const resolve = (rev) => (git(['log', '-1', '--format=%h %s', rev]) ?? '').trim();"
+NEW[DQUOTE] `sites` absent from all of docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs (cited line 121)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "(git(['log', '-1', '--format=%h %s', '--', MY_395_PATH]) ?? '').trim(),"
+NEW[DQUOTE] `sites` absent from all of docs/research/unit-464sat-2026-10-31/grepro.mjs (cited line 115)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const recCommit = (git('log', '--diff-filter=A', '--format=%H', '-1', '--', r.from) ?? '').trim();"
+NEW[DQUOTE] `files` absent from all of docs/research/round378-instruments/grade-b3-known-positive.mjs (cited line 67)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const author = execFileSync('git', ['log', '-1', '--format=%h %an %s', CURE], { encoding: 'utf8' }).trim();"
+NEW[DQUOTE] `files` absent from all of docs/research/round463-instruments/which-residue-member-postdates.mjs (cited line 29)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const add = git(['log', '--diff-filter=A', '--format=%H %ad %an', '-1', '--date=short', '--', p]).trim();"
+NEW[DQUOTE] `files` absent from all of docs/research/unit-464reach-2026-11-02/grade-reach.mjs (cited line 200)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const newest = g(['log', '-1', '--format=%h', '--', H396]).trim();"
+NEW[DQUOTE] `files` absent from all of docs/research/unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs (cited line 75)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const s2Recency = (git(['log', '-1', '--format=%h', '--', HIS_396_PATH]) ?? '').trim() || null;"
+NEW[DQUOTE] `files` absent from all of docs/research/unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs (cited line 105)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const s3Recency = (git(['log', '-1', '--format=%h %s', '--', MY_395_PATH]) ?? '').trim() || null;"
+NEW[DQUOTE] `files` absent from all of docs/research/unit-464rec3-2026-11-01/grade-p4-the-conjunct-no-movement-can-falsify.mjs (cited line 49)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "'NO-CRIPPLE (live: log -1 on the path)': (git(['log', '-1', '--format=%h %s', '--', MY_395_PATH]) ?? '').trim(),"
+NEW[DQUOTE] `files` absent from all of docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs (cited line 95)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const atRecency = liftAt((git(['log', '-1', '--format=%h', '--', HIS_396_PATH]) ?? '').trim());"
+NEW[DQUOTE] `files` absent from all of docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs (cited line 115)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const resolve = (rev) => (git(['log', '-1', '--format=%h %s', rev]) ?? '').trim();"
+NEW[DQUOTE] `files` absent from all of docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs (cited line 121)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "(git(['log', '-1', '--format=%h %s', '--', MY_395_PATH]) ?? '').trim(),"
+NEW[DQUOTE] `members` absent from all of docs/research/round378-instruments/grade-b3-known-positive.mjs (cited line 67)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const author = execFileSync('git', ['log', '-1', '--format=%h %an %s', CURE], { encoding: 'utf8' }).trim();"
+NEW[DQUOTE] `members` absent from all of docs/research/round406-instruments/hand-read-the-inline-seven.mjs (cited line 176)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "git(['log', '--format=%h', '--diff-filter=A', '-1', '--', R404_INSTRUMENT]).trim().startsWith(PROMOTION),"
+NEW[DQUOTE] `members` absent from all of docs/research/round418-instruments/installed-sdk-and-sec4-by-shape.mjs (cited line 86)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "execFileSync('git', ['-C', REPO, 'log', '-1', '--format=%h %an %ad', '--date=short', '--', 'package-lock.json'], { encoding: 'utf8' }).trim());"
+NEW[DQUOTE] `members` absent from all of docs/research/round463-instruments/which-residue-member-postdates.mjs (cited line 29)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const add = git(['log', '--diff-filter=A', '--format=%H %ad %an', '-1', '--date=short', '--', p]).trim();"
+NEW[DQUOTE] `members` absent from all of docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs (cited line 142)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const preCureAnswer = g(['log', '-1', '--format=%H', '--grep=' + PHRASE], CLONE);"
+NEW[DQUOTE] `members` absent from all of docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs (cited line 252)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const identity = (rev) => g(['log', '-1', '--format=%h %an %s', rev], CLONE);"
+NEW[DQUOTE] `members` absent from all of docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs (cited line 256)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "console.log('    S1 prints: \"curing commit (read with %an, never --oneline): <log -1 %h %an %s>\"');"
+NEW[DQUOTE] `members` absent from all of docs/research/unit-464reach-2026-11-02/grade-reach.mjs (cited line 200)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const newest = g(['log', '-1', '--format=%h', '--', H396]).trim();"
+NEW[DQUOTE] `members` absent from all of docs/research/unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs (cited line 75)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const s2Recency = (git(['log', '-1', '--format=%h', '--', HIS_396_PATH]) ?? '').trim() || null;"
+NEW[DQUOTE] `members` absent from all of docs/research/unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs (cited line 105)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const s3Recency = (git(['log', '-1', '--format=%h %s', '--', MY_395_PATH]) ?? '').trim() || null;"
+NEW[DQUOTE] `members` absent from all of docs/research/unit-464rec3-2026-11-01/grade-p4-the-conjunct-no-movement-can-falsify.mjs (cited line 49)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "'NO-CRIPPLE (live: log -1 on the path)': (git(['log', '-1', '--format=%h %s', '--', MY_395_PATH]) ?? '').trim(),"
+NEW[DQUOTE] `members` absent from all of docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs (cited line 95)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const atRecency = liftAt((git(['log', '-1', '--format=%h', '--', HIS_396_PATH]) ?? '').trim());"
+NEW[DQUOTE] `members` absent from all of docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs (cited line 115)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const resolve = (rev) => (git(['log', '-1', '--format=%h %s', rev]) ?? '').trim();"
+NEW[DQUOTE] `members` absent from all of docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs (cited line 121)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "(git(['log', '-1', '--format=%h %s', '--', MY_395_PATH]) ?? '').trim(),"
+NEW[DQUOTE] `members` absent from all of docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs (cited line 178)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const preCureAnswer = g(['log', '-1', '--format=%H', '--grep=' + PHRASE], CLONE);"
+NEW[DQUOTE] `members` absent from all of docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs (cited line 313)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const identity = (rev) => g(['log', '-1', '--format=%h %an %s', rev], CLONE);"
+NEW[DQUOTE] `members` absent from all of docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs (cited line 317)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "console.log('    S1 prints: \"curing commit (read with %an, never --oneline): <log -1 %h %an %s>\"');"
+NEW[DQUOTE] `members` absent from all of docs/research/unit-464subkind-2026-11-02/grade-subkind.mjs (cited line 279)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "`C2b's SECOND anchor is \\`git log -1 --format=%h -- HIS_396_PATH\\` — a recency SELECTOR ` +"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/round378-instruments/grade-b3-known-positive.mjs (cited line 67)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const author = execFileSync('git', ['log', '-1', '--format=%h %an %s', CURE], { encoding: 'utf8' }).trim();"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs (cited line 316)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const moveLog = git(['log', '--format=%h %an', '--diff-filter=D', '-1', '--', MOVED_MEMO]).trim();"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/round406-instruments/hand-read-the-inline-seven.mjs (cited line 176)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "git(['log', '--format=%h', '--diff-filter=A', '-1', '--', R404_INSTRUMENT]).trim().startsWith(PROMOTION),"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/round418-instruments/installed-sdk-and-sec4-by-shape.mjs (cited line 86)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "execFileSync('git', ['-C', REPO, 'log', '-1', '--format=%h %an %ad', '--date=short', '--', 'package-lock.json'], { encoding: 'utf8' }).trim());"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/round463-instruments/grade-the-57-of-461-class.mjs (cited line 361)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "return git(['log', '--diff-filter=A', '--format=%H', '-1', '--', p]).trim();"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/round463-instruments/which-residue-member-postdates.mjs (cited line 29)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const add = git(['log', '--diff-filter=A', '--format=%H %ad %an', '-1', '--date=short', '--', p]).trim();"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs (cited line 142)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const preCureAnswer = g(['log', '-1', '--format=%H', '--grep=' + PHRASE], CLONE);"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs (cited line 252)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const identity = (rev) => g(['log', '-1', '--format=%h %an %s', rev], CLONE);"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs (cited line 256)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "console.log('    S1 prints: \"curing commit (read with %an, never --oneline): <log -1 %h %an %s>\"');"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464reach-2026-11-02/grade-reach.mjs (cited line 200)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const newest = g(['log', '-1', '--format=%h', '--', H396]).trim();"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464rec-2026-10-31/probe-is-it-live.mjs (cited line 53)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const newest = (git('log', '-1', '--format=%H', '--', f) ?? '').trim();"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464rec-2026-10-31/probe-is-it-live.mjs (cited line 54)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const added = (git('log', '--diff-filter=A', '--format=%H', '-1', '--', f) ?? '').trim();"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464rec-2026-10-31/probe-is-it-live.mjs (cited line 58)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const n = (git('log', '-1', '--format=%h %ad %an', '--date=short', '--', f) ?? '').trim();"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464rec-2026-10-31/probe-is-it-live.mjs (cited line 59)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const a = (git('log', '--diff-filter=A', '--format=%h %ad %an', '-1', '--date=short', '--', f) ?? '').trim();"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs (cited line 75)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const s2Recency = (git(['log', '-1', '--format=%h', '--', HIS_396_PATH]) ?? '').trim() || null;"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs (cited line 105)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const s3Recency = (git(['log', '-1', '--format=%h %s', '--', MY_395_PATH]) ?? '').trim() || null;"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464rec3-2026-11-01/grade-p4-the-conjunct-no-movement-can-falsify.mjs (cited line 49)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "'NO-CRIPPLE (live: log -1 on the path)': (git(['log', '-1', '--format=%h %s', '--', MY_395_PATH]) ?? '').trim(),"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs (cited line 95)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const atRecency = liftAt((git(['log', '-1', '--format=%h', '--', HIS_396_PATH]) ?? '').trim());"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs (cited line 115)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const resolve = (rev) => (git(['log', '-1', '--format=%h %s', rev]) ?? '').trim();"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs (cited line 121)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "(git(['log', '-1', '--format=%h %s', '--', MY_395_PATH]) ?? '').trim(),"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464sat-2026-10-31/grepro.mjs (cited line 115)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const recCommit = (git('log', '--diff-filter=A', '--format=%H', '-1', '--', r.from) ?? '').trim();"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs (cited line 178)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const preCureAnswer = g(['log', '-1', '--format=%H', '--grep=' + PHRASE], CLONE);"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs (cited line 313)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const identity = (rev) => g(['log', '-1', '--format=%h %an %s', rev], CLONE);"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs (cited line 317)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "console.log('    S1 prints: \"curing commit (read with %an, never --oneline): <log -1 %h %an %s>\"');"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464subkind-2026-11-02/grade-subkind.mjs (cited line 279)
+     recording: docs/research/unit-464cell-2026-11-02/drive2.cell.out:37
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "`C2b's SECOND anchor is \\`git log -1 --format=%h -- HIS_396_PATH\\` — a recency SELECTOR ` +"
+NEW[DQUOTE] `sites` absent from all of docs/research/round378-instruments/grade-b3-known-positive.mjs (cited line 67)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const author = execFileSync('git', ['log', '-1', '--format=%h %an %s', CURE], { encoding: 'utf8' }).trim();"
+NEW[DQUOTE] `sites` absent from all of docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs (cited line 316)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const moveLog = git(['log', '--format=%h %an', '--diff-filter=D', '-1', '--', MOVED_MEMO]).trim();"
+NEW[DQUOTE] `sites` absent from all of docs/research/round418-instruments/installed-sdk-and-sec4-by-shape.mjs (cited line 86)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "execFileSync('git', ['-C', REPO, 'log', '-1', '--format=%h %an %ad', '--date=short', '--', 'package-lock.json'], { encoding: 'utf8' }).trim());"
+NEW[DQUOTE] `sites` absent from all of docs/research/round463-instruments/grade-the-57-of-461-class.mjs (cited line 361)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "return git(['log', '--diff-filter=A', '--format=%H', '-1', '--', p]).trim();"
+NEW[DQUOTE] `sites` absent from all of docs/research/round463-instruments/which-residue-member-postdates.mjs (cited line 29)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const add = git(['log', '--diff-filter=A', '--format=%H %ad %an', '-1', '--date=short', '--', p]).trim();"
+NEW[DQUOTE] `sites` absent from all of docs/research/unit-464reach-2026-11-02/grade-reach.mjs (cited line 200)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const newest = g(['log', '-1', '--format=%h', '--', H396]).trim();"
+NEW[DQUOTE] `sites` absent from all of docs/research/unit-464rec-2026-10-31/probe-is-it-live.mjs (cited line 53)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const newest = (git('log', '-1', '--format=%H', '--', f) ?? '').trim();"
+NEW[DQUOTE] `sites` absent from all of docs/research/unit-464rec-2026-10-31/probe-is-it-live.mjs (cited line 54)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const added = (git('log', '--diff-filter=A', '--format=%H', '-1', '--', f) ?? '').trim();"
+NEW[DQUOTE] `sites` absent from all of docs/research/unit-464rec-2026-10-31/probe-is-it-live.mjs (cited line 58)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const n = (git('log', '-1', '--format=%h %ad %an', '--date=short', '--', f) ?? '').trim();"
+NEW[DQUOTE] `sites` absent from all of docs/research/unit-464rec-2026-10-31/probe-is-it-live.mjs (cited line 59)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const a = (git('log', '--diff-filter=A', '--format=%h %ad %an', '-1', '--date=short', '--', f) ?? '').trim();"
+NEW[DQUOTE] `sites` absent from all of docs/research/unit-464rec3-2026-11-01/grade-p4-the-conjunct-no-movement-can-falsify.mjs (cited line 49)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "'NO-CRIPPLE (live: log -1 on the path)': (git(['log', '-1', '--format=%h %s', '--', MY_395_PATH]) ?? '').trim(),"
+NEW[DQUOTE] `sites` absent from all of docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs (cited line 95)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const atRecency = liftAt((git(['log', '-1', '--format=%h', '--', HIS_396_PATH]) ?? '').trim());"
+NEW[DQUOTE] `sites` absent from all of docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs (cited line 115)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const resolve = (rev) => (git(['log', '-1', '--format=%h %s', rev]) ?? '').trim();"
+NEW[DQUOTE] `sites` absent from all of docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs (cited line 121)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "(git(['log', '-1', '--format=%h %s', '--', MY_395_PATH]) ?? '').trim(),"
+NEW[DQUOTE] `sites` absent from all of docs/research/unit-464sat-2026-10-31/grepro.mjs (cited line 115)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const recCommit = (git('log', '--diff-filter=A', '--format=%H', '-1', '--', r.from) ?? '').trim();"
+NEW[DQUOTE] `files` absent from all of docs/research/round378-instruments/grade-b3-known-positive.mjs (cited line 67)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const author = execFileSync('git', ['log', '-1', '--format=%h %an %s', CURE], { encoding: 'utf8' }).trim();"
+NEW[DQUOTE] `files` absent from all of docs/research/round463-instruments/which-residue-member-postdates.mjs (cited line 29)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const add = git(['log', '--diff-filter=A', '--format=%H %ad %an', '-1', '--date=short', '--', p]).trim();"
+NEW[DQUOTE] `files` absent from all of docs/research/unit-464reach-2026-11-02/grade-reach.mjs (cited line 200)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const newest = g(['log', '-1', '--format=%h', '--', H396]).trim();"
+NEW[DQUOTE] `files` absent from all of docs/research/unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs (cited line 75)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const s2Recency = (git(['log', '-1', '--format=%h', '--', HIS_396_PATH]) ?? '').trim() || null;"
+NEW[DQUOTE] `files` absent from all of docs/research/unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs (cited line 105)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const s3Recency = (git(['log', '-1', '--format=%h %s', '--', MY_395_PATH]) ?? '').trim() || null;"
+NEW[DQUOTE] `files` absent from all of docs/research/unit-464rec3-2026-11-01/grade-p4-the-conjunct-no-movement-can-falsify.mjs (cited line 49)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "'NO-CRIPPLE (live: log -1 on the path)': (git(['log', '-1', '--format=%h %s', '--', MY_395_PATH]) ?? '').trim(),"
+NEW[DQUOTE] `files` absent from all of docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs (cited line 95)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const atRecency = liftAt((git(['log', '-1', '--format=%h', '--', HIS_396_PATH]) ?? '').trim());"
+NEW[DQUOTE] `files` absent from all of docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs (cited line 115)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const resolve = (rev) => (git(['log', '-1', '--format=%h %s', rev]) ?? '').trim();"
+NEW[DQUOTE] `files` absent from all of docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs (cited line 121)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "(git(['log', '-1', '--format=%h %s', '--', MY_395_PATH]) ?? '').trim(),"
+NEW[DQUOTE] `members` absent from all of docs/research/round378-instruments/grade-b3-known-positive.mjs (cited line 67)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const author = execFileSync('git', ['log', '-1', '--format=%h %an %s', CURE], { encoding: 'utf8' }).trim();"
+NEW[DQUOTE] `members` absent from all of docs/research/round406-instruments/hand-read-the-inline-seven.mjs (cited line 176)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "git(['log', '--format=%h', '--diff-filter=A', '-1', '--', R404_INSTRUMENT]).trim().startsWith(PROMOTION),"
+NEW[DQUOTE] `members` absent from all of docs/research/round418-instruments/installed-sdk-and-sec4-by-shape.mjs (cited line 86)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "execFileSync('git', ['-C', REPO, 'log', '-1', '--format=%h %an %ad', '--date=short', '--', 'package-lock.json'], { encoding: 'utf8' }).trim());"
+NEW[DQUOTE] `members` absent from all of docs/research/round463-instruments/which-residue-member-postdates.mjs (cited line 29)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const add = git(['log', '--diff-filter=A', '--format=%H %ad %an', '-1', '--date=short', '--', p]).trim();"
+NEW[DQUOTE] `members` absent from all of docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs (cited line 142)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const preCureAnswer = g(['log', '-1', '--format=%H', '--grep=' + PHRASE], CLONE);"
+NEW[DQUOTE] `members` absent from all of docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs (cited line 252)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const identity = (rev) => g(['log', '-1', '--format=%h %an %s', rev], CLONE);"
+NEW[DQUOTE] `members` absent from all of docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs (cited line 256)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "console.log('    S1 prints: \"curing commit (read with %an, never --oneline): <log -1 %h %an %s>\"');"
+NEW[DQUOTE] `members` absent from all of docs/research/unit-464reach-2026-11-02/grade-reach.mjs (cited line 200)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const newest = g(['log', '-1', '--format=%h', '--', H396]).trim();"
+NEW[DQUOTE] `members` absent from all of docs/research/unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs (cited line 75)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const s2Recency = (git(['log', '-1', '--format=%h', '--', HIS_396_PATH]) ?? '').trim() || null;"
+NEW[DQUOTE] `members` absent from all of docs/research/unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs (cited line 105)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const s3Recency = (git(['log', '-1', '--format=%h %s', '--', MY_395_PATH]) ?? '').trim() || null;"
+NEW[DQUOTE] `members` absent from all of docs/research/unit-464rec3-2026-11-01/grade-p4-the-conjunct-no-movement-can-falsify.mjs (cited line 49)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "'NO-CRIPPLE (live: log -1 on the path)': (git(['log', '-1', '--format=%h %s', '--', MY_395_PATH]) ?? '').trim(),"
+NEW[DQUOTE] `members` absent from all of docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs (cited line 95)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const atRecency = liftAt((git(['log', '-1', '--format=%h', '--', HIS_396_PATH]) ?? '').trim());"
+NEW[DQUOTE] `members` absent from all of docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs (cited line 115)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const resolve = (rev) => (git(['log', '-1', '--format=%h %s', rev]) ?? '').trim();"
+NEW[DQUOTE] `members` absent from all of docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs (cited line 121)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "(git(['log', '-1', '--format=%h %s', '--', MY_395_PATH]) ?? '').trim(),"
+NEW[DQUOTE] `members` absent from all of docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs (cited line 178)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const preCureAnswer = g(['log', '-1', '--format=%H', '--grep=' + PHRASE], CLONE);"
+NEW[DQUOTE] `members` absent from all of docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs (cited line 313)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const identity = (rev) => g(['log', '-1', '--format=%h %an %s', rev], CLONE);"
+NEW[DQUOTE] `members` absent from all of docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs (cited line 317)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "console.log('    S1 prints: \"curing commit (read with %an, never --oneline): <log -1 %h %an %s>\"');"
+NEW[DQUOTE] `members` absent from all of docs/research/unit-464subkind-2026-11-02/grade-subkind.mjs (cited line 279)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "`C2b's SECOND anchor is \\`git log -1 --format=%h -- HIS_396_PATH\\` — a recency SELECTOR ` +"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/round378-instruments/grade-b3-known-positive.mjs (cited line 67)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const author = execFileSync('git', ['log', '-1', '--format=%h %an %s', CURE], { encoding: 'utf8' }).trim();"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/round394-instruments/grade-the-census-that-could-not-reach-a-wrapped-call.mjs (cited line 316)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const moveLog = git(['log', '--format=%h %an', '--diff-filter=D', '-1', '--', MOVED_MEMO]).trim();"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/round406-instruments/hand-read-the-inline-seven.mjs (cited line 176)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "git(['log', '--format=%h', '--diff-filter=A', '-1', '--', R404_INSTRUMENT]).trim().startsWith(PROMOTION),"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/round418-instruments/installed-sdk-and-sec4-by-shape.mjs (cited line 86)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "execFileSync('git', ['-C', REPO, 'log', '-1', '--format=%h %an %ad', '--date=short', '--', 'package-lock.json'], { encoding: 'utf8' }).trim());"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/round463-instruments/grade-the-57-of-461-class.mjs (cited line 361)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "return git(['log', '--diff-filter=A', '--format=%H', '-1', '--', p]).trim();"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/round463-instruments/which-residue-member-postdates.mjs (cited line 29)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const add = git(['log', '--diff-filter=A', '--format=%H %ad %an', '-1', '--date=short', '--', p]).trim();"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs (cited line 142)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const preCureAnswer = g(['log', '-1', '--format=%H', '--grep=' + PHRASE], CLONE);"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs (cited line 252)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const identity = (rev) => g(['log', '-1', '--format=%h %an %s', rev], CLONE);"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs (cited line 256)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "console.log('    S1 prints: \"curing commit (read with %an, never --oneline): <log -1 %h %an %s>\"');"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464reach-2026-11-02/grade-reach.mjs (cited line 200)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const newest = g(['log', '-1', '--format=%h', '--', H396]).trim();"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464rec-2026-10-31/probe-is-it-live.mjs (cited line 53)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const newest = (git('log', '-1', '--format=%H', '--', f) ?? '').trim();"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464rec-2026-10-31/probe-is-it-live.mjs (cited line 54)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const added = (git('log', '--diff-filter=A', '--format=%H', '-1', '--', f) ?? '').trim();"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464rec-2026-10-31/probe-is-it-live.mjs (cited line 58)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const n = (git('log', '-1', '--format=%h %ad %an', '--date=short', '--', f) ?? '').trim();"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464rec-2026-10-31/probe-is-it-live.mjs (cited line 59)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const a = (git('log', '--diff-filter=A', '--format=%h %ad %an', '-1', '--date=short', '--', f) ?? '').trim();"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs (cited line 75)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const s2Recency = (git(['log', '-1', '--format=%h', '--', HIS_396_PATH]) ?? '').trim() || null;"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464rec3-2026-11-01/census-the-three-routed-sites.mjs (cited line 105)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const s3Recency = (git(['log', '-1', '--format=%h %s', '--', MY_395_PATH]) ?? '').trim() || null;"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464rec3-2026-11-01/grade-p4-the-conjunct-no-movement-can-falsify.mjs (cited line 49)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "'NO-CRIPPLE (live: log -1 on the path)': (git(['log', '-1', '--format=%h %s', '--', MY_395_PATH]) ?? '').trim(),"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs (cited line 95)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const atRecency = liftAt((git(['log', '-1', '--format=%h', '--', HIS_396_PATH]) ?? '').trim());"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs (cited line 115)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const resolve = (rev) => (git(['log', '-1', '--format=%h %s', rev]) ?? '').trim();"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs (cited line 121)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "(git(['log', '-1', '--format=%h %s', '--', MY_395_PATH]) ?? '').trim(),"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464sat-2026-10-31/grepro.mjs (cited line 115)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const recCommit = (git('log', '--diff-filter=A', '--format=%H', '-1', '--', r.from) ?? '').trim();"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs (cited line 178)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const preCureAnswer = g(['log', '-1', '--format=%H', '--grep=' + PHRASE], CLONE);"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs (cited line 313)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "const identity = (rev) => g(['log', '-1', '--format=%h %an %s', rev], CLONE);"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs (cited line 317)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "console.log('    S1 prints: \"curing commit (read with %an, never --oneline): <log -1 %h %an %s>\"');"
+NEW[DQUOTE] `knownPositiveSeen` absent from all of docs/research/unit-464subkind-2026-11-02/grade-subkind.mjs (cited line 279)
+     recording: docs/research/unit-464cell-2026-11-02/drive3.nocripple.out:39
+     rec line:  "measured:   {\"sites\":25,\"files\":15,\"members\":[\"docs/research/round378-instruments/grade-b3-known-positive.mjs:67\",\"docs/research/round394-instruments/grade-the-census-tha"
+     subject:   "`C2b's SECOND anchor is \\`git log -1 --format=%h -- HIS_396_PATH\\` — a recency SELECTOR ` +"
+NEW[BACKTICK] `conjunctive` absent from all of docs/research/unit-464vac-2026-10-31/measure.mjs (cited line 79)
+     recording: docs/research/unit-464subkind-2026-11-02/drive2.subkind.out:72
+     rec line:  "P4  LANDS     criterion 4 is TRUE of measure.mjs:79, so the consequence attached to `conjunctive` does not hold there"
+     subject:   "if (unreadable.length > 0) refuse('G0', `${unreadable.length} subject(s) unreadable at one of the two revs: [${unreadable.map(basename).join(',')}]`);"
+NEW[BACKTICK] `conjunctive` absent from all of docs/research/unit-464vac-2026-10-31/measure.mjs (cited line 79)
+     recording: docs/research/unit-464subkind-2026-11-02/drive3.subkind-repaired.out:71
+     rec line:  "P4  LANDS     registered: criterion 4 evaluates TRUE on measure.mjs:79. Measured: true — so the consequence I attached to `conjunctive` (\"reddens twice on a cure\") does n"
+     subject:   "if (unreadable.length > 0) refuse('G0', `${unreadable.length} subject(s) unreadable at one of the two revs: [${unreadable.map(basename).join(',')}]`);"
+NEW[BACKTICK] `conjunctive` absent from all of docs/research/unit-464vac-2026-10-31/measure.mjs (cited line 79)
+     recording: docs/research/unit-464subkind-2026-11-02/drive4.c1-reader.out:78
+     rec line:  "P4  LANDS     registered: criterion 4 evaluates TRUE on measure.mjs:79. Measured: true — so the consequence I attached to `conjunctive` (\"reddens twice on a cure\") does n"
+     subject:   "if (unreadable.length > 0) refuse('G0', `${unreadable.length} subject(s) unreadable at one of the two revs: [${unreadable.map(basename).join(',')}]`);"
+
+--- distinct tokens among ALL newly flagged (24) ---
+["A1b","C1","DEFECT","E","GRADE","HEAD","MAX_HISTORY_MESSAGES","REFUTED","bba2aa3c","conjunctive","execFileSync","files","git","knownPositiveSeen","members","pin","round373","round374","round431","round433","round435","show","sites","utf8"]
+
+--- every unresolvable class member count, widened pass ---
+{
+ "noFileInTree_hadDir": 111
+}
+
+bare-basename citations among all-forms pairs: 87; of those, basename unique in tree: 87
+
+==============================================================================
+PREDICTIONS (every one graded here, outside any conditional)
+==============================================================================
+LANDS    Q1 — DQUOTE at least doubles arm A's 296: DQUOTE pairs=348
+REFUTED  Q3 — BASENAME_UNIQUE cuts the unresolvable rate below 10% (arm A: 18.2%): 13.4%
+REFUTED  Q4 — BOUNDARY flips >=5 of arm A's 158 CLEAN pairs to flagged: 4
+REFUTED  Q5 — instance 1 reads FLAGGED under BOUNDARY_STRIPPED (i.e. stripSource blanks ${…} interpolations too): BOUNDARY_STRIPPED=true — the scanner IS interpolation-aware
+LANDS    Q6 — BOUNDARY_STRIPPED costs >=2x BOUNDARY among arm A's CLEAN pairs: 48 vs 4
+LANDS    Q7 — >=30% of newly flagged pairs have their token absent from the whole cited file: 201/348 = 57.8%
+
+==============================================================================
+VERDICT: 8 legs, 0 red; 6 predictions graded, 3 refuted, 0 void
+FIGURES: recordings=1213 backtickPairs=296 dquotePairs=348 squotePairs=185 allFormsPairs=829 allFormsDistinct=819 widenedScreenable=718 widenedUnresolvable=111 widenedUnresolvableRate=13.4% flaggedSubstring=432 flaggedBoundary=436 flaggedBoundaryStripped=594 newlyFlagged=348 newlyAbsentWholeFile=201 flipBoundaryAmongPubClean=4 flipStrippedAmongPubClean=48 bareBasenamePairs=87 bareUnique=87
+==============================================================================
