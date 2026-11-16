@@ -418,11 +418,13 @@ export default function App() {
 
   const handleDeleteEntity = async (id: string) => {
     try {
-      await deleteEntity(id);
+      const { emptiedChannels } = await deleteEntity(id);
       setAllEntities((prev) => prev.filter((e) => e.id !== id));
       setChannelEntities((prev) => prev.filter((e) => e.id !== id));
+      return emptiedChannels;
     } catch (err) {
       console.error('Failed to delete entity:', err);
+      return [];
     }
   };
 

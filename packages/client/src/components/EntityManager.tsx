@@ -8,13 +8,18 @@ interface Props {
   entities: Entity[];
   onCreateEntity: (data: { name: string; handle?: string; model?: ModelId; effort?: EffortLevel; systemPrompt?: string; color?: string }) => void;
   onUpdateEntity: (id: string, updates: { name?: string; handle?: string | null; model?: ModelId; effort?: EffortLevel; systemPrompt?: string; color?: string }) => void;
-  onDeleteEntity: (id: string) => void;
+  onDeleteEntity: (id: string) => Promise<Array<{ id: string; name: string }>>;
   onClose: () => void;
 }
 
 export function EntityManager({ entities, onCreateEntity, onUpdateEntity, onDeleteEntity, onClose }: Props) {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [creating, setCreating] = useState(false);
+  // Deleting an entity is allowed to empty a channel (xian's 2026-10-06 ruling)
+  // but not to do so silently — the server always names what it emptied,
+  // surfaced here since the deleted entity's own row is gone by the time this
+  // resolves.
+  const [emptiedChannels, setEmptiedChannels] = useState<Array<{ id: string; name: string }> | null>(null);
 
   return (
     <div className="fixed inset-0 z-50 flex">
@@ -36,6 +41,25 @@ export function EntityManager({ entities, onCreateEntity, onUpdateEntity, onDele
           </button>
         </div>
 
+        {emptiedChannels && emptiedChannels.length > 0 && (
+          <div className="mx-5 mt-4 rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 px-3 py-2 text-xs text-amber-700 dark:text-amber-300 flex items-start justify-between gap-2">
+            <span>
+              {emptiedChannels.length === 1
+                ? `Deleting that agent left 1 channel with no agent: ${emptiedChannels[0].name}`
+                : `Deleting that agent left ${emptiedChannels.length} channels with no agent: ${emptiedChannels.map((c) => c.name).join(', ')}`}
+            </span>
+            <button
+              onClick={() => setEmptiedChannels(null)}
+              className="text-amber-600 dark:text-amber-400 hover:text-amber-900 dark:hover:text-amber-200 flex-shrink-0"
+              aria-label="Dismiss"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        )}
+
         <div className="px-5 py-4 space-y-3">
           {entities.map((entity) =>
             editingId === entity.id ? (
@@ -53,7 +77,11 @@ export function EntityManager({ entities, onCreateEntity, onUpdateEntity, onDele
                 key={entity.id}
                 entity={entity}
                 onEdit={() => setEditingId(entity.id)}
-                onDelete={() => onDeleteEntity(entity.id)}
+                onDelete={() => {
+                  onDeleteEntity(entity.id).then((emptied) => {
+                    if (emptied.length > 0) setEmptiedChannels(emptied);
+                  });
+                }}
               />
             )
           )}

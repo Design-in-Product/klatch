@@ -215,11 +215,18 @@ export async function updateEntity(
   return res.json();
 }
 
-export async function deleteEntity(id: string): Promise<void> {
+export interface DeleteEntityResponse {
+  deleted: true;
+  /** Channels where this was the sole remaining agent. Always present — `[]` when none. */
+  emptiedChannels: Array<{ id: string; name: string }>;
+}
+
+export async function deleteEntity(id: string): Promise<DeleteEntityResponse> {
   const res = await fetch(`${BASE}/entities/${id}`, {
     method: 'DELETE',
   });
   if (!res.ok) throw new Error(`Failed to delete entity: ${res.statusText}`);
+  return res.json();
 }
 
 export async function assignEntityToChannel(channelId: string, entityId: string): Promise<Entity[]> {

@@ -443,7 +443,7 @@ describeIfEnabled('Round 42 — UI-as-context AAXT (EntityManager)', () => {
           entities={SAMPLE_ENTITIES}
           onCreateEntity={() => {}}
           onUpdateEntity={() => {}}
-          onDeleteEntity={() => {}}
+          onDeleteEntity={() => Promise.resolve([])}
           onClose={() => {}}
         />,
       );
@@ -481,7 +481,7 @@ describeIfEnabled('Round 42 — UI-as-context AAXT (EntityManager)', () => {
           entities={SAMPLE_ENTITIES}
           onCreateEntity={() => {}}
           onUpdateEntity={() => {}}
-          onDeleteEntity={() => {}}
+          onDeleteEntity={() => Promise.resolve([])}
           onClose={() => {}}
         />,
       );
@@ -531,7 +531,7 @@ describeIfEnabled('Round 42 — UI-as-context AAXT (EntityManager)', () => {
           entities={SAMPLE_ENTITIES}
           onCreateEntity={() => {}}
           onUpdateEntity={() => {}}
-          onDeleteEntity={() => {}}
+          onDeleteEntity={() => Promise.resolve([])}
           onClose={() => {}}
         />,
       );

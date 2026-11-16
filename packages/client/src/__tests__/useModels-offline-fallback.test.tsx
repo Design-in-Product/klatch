@@ -37,7 +37,7 @@ async function openCreateForm() {
         entities={[]}
         onCreateEntity={() => {}}
         onUpdateEntity={() => {}}
-        onDeleteEntity={() => {}}
+        onDeleteEntity={() => Promise.resolve([])}
         onClose={() => {}}
       />,
     ));
