@@ -1,0 +1,84 @@
+unit-467rawjson arm A — pin 1f675ebf76eb283cec6ee97294ba782b6b147678
+HEAD now: 43ea780bdcd3417b8fdece49b0460af18b1cbde5
+
+ok  R2        exit codes: bare=0, --only probe=0 (admissible: 0 or 2)
+ok  C2        repro of step 1 (155/45/110 · db81 net55 homedir29 model12 suite12): got 155/45/110 · db81 net55 homedir29 model12 suite12
+ok  C1        --only probe vs bare: header identical, bucket diffs none — the listing names every member
+ok  R1        listed-vs-counted per bucket: all agree (model: count=12 listed=12)
+ok  R3        model members absent from sweep-probes DEFERRED: none (DEFERRED has 110, SWEPT 45)
+ok  A4        INADMISSIBLE reported this run: 7
+
+── the model bucket, named (the 12) ──
+  probe-round223-twenty-one-probes-against-a-stranger.mts
+      line 301: delete env.ANTHROPIC_API_KEY;
+  probe-round224b-the-migrated-probes-against-a-stranger.mts
+      line 114: delete env.ANTHROPIC_API_KEY;
+  probe-round227-arm-o-on-a-corpus-where-the-cap-fires.mts
+      line 203: ANTHROPIC_API_KEY: '',
+  probe-round230-a-killed-probe-must-not-leave-its-server.mts
+      line 184: env: { ...process.env, ANTHROPIC_API_KEY: '' },
+  probe-round231-the-handler-and-the-signal-are-in-different-processes.mts
+      line 310: env: { ...process.env, ANTHROPIC_API_KEY: '' },
+  probe-round233-arm-m-and-the-endpoint-can-walk-different-corpora.mts
+      line 225: env: { ...process.env, KLATCH_DB: DB, ANTHROPIC_API_KEY: '' },
+  probe-round250-the-drive-was-never-priced-and-the-port-is-one-line-of-product.mts
+      line 341: model: mint('model.mts', `import Anthropic from '@anthropic-ai/sdk';  const c = new Anthropic();  await c.messages.creat
+  probe-round252-the-db-class-is-unblocked-by-a-variable-the-product-already-reads.mts
+      line 634: check('Z4', 'CONTROL — 0 model calls: nothing here IMPORTS the Anthropic SDK',
+  probe-round253-the-env-file-cannot-reach-the-database-path.mts
+      line 154: 'ANTHROPIC_API_KEY=r253-dummy-no-calls-are-made',
+  probe-round254-the-mutate-class-is-an-unanchored-conjunction-and-most-of-it-never-writes-the-product.mts
+      line 925: check('Z4', 'CONTROL — 0 model calls: nothing here IMPORTS the Anthropic SDK',
+  probe-round285-the-promotion-path-and-the-two-detectors-that-were-returning-a-smaller-number.mts
+      line 160: model: "const c = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });",
+  probe-round305-a-refusal-the-reader-could-not-check-can-now-print-its-own-site.mts
+      line 131: model: 'const key = process.env.ANTHROPIC_API_KEY;',
+
+── INADMISSIBLE (spawn closure), named ──
+  probe-path-c-chat-binding-live.mts
+      inherits [model] from a literal drive of probe-round230-a-killed-probe-must-not-leave-its-server.mts
+  probe-round162-preamble-drop-and-roster-live.mts
+      inherits [model] from a literal drive of probe-round230-a-killed-probe-must-not-leave-its-server.mts
+  probe-round164-layer5-terminality-live.mts
+      inherits [model] from a literal drive of probe-round230-a-killed-probe-must-not-leave-its-server.mts
+  probe-round166-terminal-floor-live.mts
+      inherits [model] from a literal drive of probe-round230-a-killed-probe-must-not-leave-its-server.mts
+  probe-round167-floor-report-live.mts
+      inherits [model] from a literal drive of probe-round230-a-killed-probe-must-not-leave-its-server.mts
+  probe-round213-reassign-live-http.mts
+      inherits [model] from a literal drive of probe-round230-a-killed-probe-must-not-leave-its-server.mts
+  probe-round281-a-probe-that-only-runs-where-it-was-written-and-how-big-that-class-actually-is.mts
+      inherits [net] from a literal drive of probe-round280-the-client-half-of-the-pair-and-what-it-leaves-behind.mts
+
+ok  A5        step1's six still INADMISSIBLE this run: 6/6; this run's INADMISSIBLE set size 7
+
+REFUTED P1   overlap(step1's six, the 12) = 0 []; overlap(this run's INADMISSIBLE, the 12) = 0 []. the two sets are disjoint, so 12 + 7 = 19 IS assertable, and step 1's "inherit rather than own" holds.
+LANDED  P2   probe-round230-a-killed-probe-must-not-leave-its-server.mts in the 12: true
+LANDED  P3   of the 12, 12 do NOT end "-live.mts": ["probe-round223-twenty-one-probes-against-a-stranger.mts","probe-round224b-the-migrated-probes-against-a-stranger.mts","probe-round227-arm-o-on-a-corpus-where-the-cap-fires.mts","probe-round230-a-killed-probe-must-not-leave-its-server.mts","probe-round231-the-handler-and-the-signal-are-in-different-processes.mts","probe-round233-arm-m-and-the-endpoint-can-walk-different-corpora.mts","probe-round250-the-drive-was-never-priced-and-the-port-is-one-line-of-product.mts","probe-round252-the-db-class-is-unblocked-by-a-variable-the-product-already-reads.mts","probe-round253-the-env-file-cannot-reach-the-database-path.mts","probe-round254-the-mutate-class-is-an-unanchored-conjunction-and-most-of-it-never-writes-the-product.mts","probe-round285-the-promotion-path-and-the-two-detectors-that-were-returning-a-smaller-number.mts","probe-round305-a-refusal-the-reader-could-not-check-can-now-print-its-own-site.mts"]. A writer keyed on the filename suffix would miss these.
+LANDED  P4   members with no named site: 0 []
+
+── which detector branch fired, per member (a member can appear twice) ──
+   9 ANTHROPIC_API_KEY:
+       probe-round223-twenty-one-probes-against-a-stranger.mts
+       probe-round224b-the-migrated-probes-against-a-stranger.mts
+       probe-round227-arm-o-on-a-corpus-where-the-cap-fires.mts
+       probe-round230-a-killed-probe-must-not-leave-its-server.mts
+       probe-round231-the-handler-and-the-signal-are-in-different-processes.mts
+       probe-round233-arm-m-and-the-endpoint-can-walk-different-corpora.mts
+       probe-round253-the-env-file-cannot-reach-the-database-path.mts
+       probe-round285-the-promotion-path-and-the-two-detectors-that-were-returning-a-smaller-number.mts
+       probe-round305-a-refusal-the-reader-could-not-check-can-now-print-its-own-site.mts
+   0 messages.create
+
+   4 Anthropic:
+       probe-round250-the-drive-was-never-priced-and-the-port-is-one-line-of-product.mts
+       probe-round252-the-db-class-is-unblocked-by-a-variable-the-product-already-reads.mts
+       probe-round254-the-mutate-class-is-an-unanchored-conjunction-and-most-of-it-never-writes-the-product.mts
+       probe-round285-the-promotion-path-and-the-two-detectors-that-were-returning-a-smaller-number.mts
+   0 (none — site text did not re-match)
+
+
+LANDED  P5   members whose site fires ONLY the bare `Anthropic` branch: 3 ["probe-round250-the-drive-was-never-priced-and-the-port-is-one-line-of-product.mts","probe-round252-the-db-class-is-unblocked-by-a-variable-the-product-already-reads.mts","probe-round254-the-mutate-class-is-an-unanchored-conjunction-and-most-of-it-never-writes-the-product.mts"]
+ok  R4        gate (packages, scripts, docs/research/lib): empty
+
+VERDICT/0 GREEN legs=8 red=[] refused=[] preds=5 refuted=["P1"] prefused=[]
