@@ -38,12 +38,19 @@ export async function createChannel(
   type?: ChannelType,
   mode?: InteractionMode,
   projectId?: string,
-  entityIds?: string[]
+  entityIds?: string[],
+  // Eighth positional, and the chain is past the point where that is a good
+  // shape — an options bag is the right next move for this function, as
+  // `PromptAssemblyOptions` was for the assembly. Not done here: it would touch
+  // every caller and mock of a function this increment is only adding one field
+  // to, and a half-converted signature (positional for six, bag for two) is
+  // worse than either. Named as a follow-on, not left implicit.
+  groundRules?: string
 ): Promise<Channel> {
   const res = await fetch(`${BASE}/channels`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, systemPrompt, model, type, mode, projectId, entityIds }),
+    body: JSON.stringify({ name, systemPrompt, model, type, mode, projectId, entityIds, groundRules }),
   });
   if (!res.ok) throw new Error(`Failed to create channel: ${res.statusText}`);
   return res.json();
@@ -51,7 +58,7 @@ export async function createChannel(
 
 export async function updateChannelApi(
   id: string,
-  updates: { name?: string; systemPrompt?: string; model?: ModelId; mode?: InteractionMode; projectId?: string | null }
+  updates: { name?: string; systemPrompt?: string; model?: ModelId; mode?: InteractionMode; projectId?: string | null; groundRules?: string | null }
 ): Promise<Channel> {
   const res = await fetch(`${BASE}/channels/${id}`, {
     method: 'PATCH',

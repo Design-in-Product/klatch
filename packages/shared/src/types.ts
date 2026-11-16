@@ -370,6 +370,13 @@ export interface Channel {
   name: string;
   type: ChannelType;         // 'chat' (1:1) or 'klatch' (multi-entity group)
   systemPrompt: string;
+  // How participants should behave in this room, in the user's own words.
+  // Distinct from `systemPrompt` ("Purpose — what is this klatch for?"), which
+  // says why the room exists. Undefined means the user wrote none; "" is not a
+  // state any writer produces (blank input is stored as NULL → undefined), and
+  // phase 3 of the 2026-11-03 ruling keys "offer previous rules" on the
+  // difference. Ruling + phasing: docs/ux/ground-rules-scope-2026-11-16.md.
+  groundRules?: string;
   model: ModelId;
   mode: InteractionMode;
   createdAt: string;

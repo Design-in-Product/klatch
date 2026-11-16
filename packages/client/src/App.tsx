@@ -350,13 +350,14 @@ export default function App() {
   const handleCreateChannel = async (
     name: string, systemPrompt: string,
     type?: ChannelType, mode?: InteractionMode,
-    projectId?: string, entityIds?: string[]
+    projectId?: string, entityIds?: string[],
+    groundRules?: string
   ) => {
     try {
       // Atomic creation: pass the selected roster so the klatch is seeded with
       // exactly those agents (no stray default entity). createChannel falls back
       // to the default entity when entityIds is empty/undefined.
-      const channel = await createChannel(name, systemPrompt, undefined, type, mode, projectId, entityIds);
+      const channel = await createChannel(name, systemPrompt, undefined, type, mode, projectId, entityIds, groundRules);
       // Refresh full channel list (enriched query includes projectName, counts)
       const updated = await fetchChannels();
       setChannels(updated);

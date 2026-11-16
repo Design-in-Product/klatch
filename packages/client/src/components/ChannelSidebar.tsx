@@ -10,7 +10,7 @@ interface Props {
   channels: Channel[];
   activeChannelId: string;
   onSelectChannel: (id: string) => void;
-  onCreateChannel: (name: string, systemPrompt: string, type?: ChannelType, mode?: InteractionMode, projectId?: string, entityIds?: string[]) => void;
+  onCreateChannel: (name: string, systemPrompt: string, type?: ChannelType, mode?: InteractionMode, projectId?: string, entityIds?: string[], groundRules?: string) => void;
   onOpenEntities?: () => void;
   onOpenImport?: () => void;
   onOpenProjectSettings?: (projectId: string) => void;
@@ -77,6 +77,12 @@ export function ChannelSidebar({
   const [showForm, setShowForm] = useState(false);
   const [newName, setNewName] = useState('');
   const [newPrompt, setNewPrompt] = useState('');
+  // Ground rules (2026-11-03 ruling, phase 1). Starts blank on every klatch and
+  // stays blank: no default ships, by the ruling's own terms — the guidance
+  // beside the field is static example text, not a prefill. Phase 3's
+  // "offer previous rules" is what fills it, and it depends on phase 2's
+  // storage, which does not exist yet.
+  const [newGroundRules, setNewGroundRules] = useState('');
   const [newType, setNewType] = useState<ChannelType>('chat');
   const [newProjectId, setNewProjectId] = useState('');
   const [newMode, setNewMode] = useState<InteractionMode>('panel');
@@ -89,6 +95,7 @@ export function ChannelSidebar({
   const resetForm = () => {
     setNewName('');
     setNewPrompt('');
+    setNewGroundRules('');
     setNewType('chat');
     setNewProjectId('');
     setNewMode('panel');
@@ -220,7 +227,12 @@ export function ChannelSidebar({
       // Sent for chats too (composition spec §3 Path C, "Continue existing role"): a
       // one-agent roster binds the new chat to an existing agent rather than the shared
       // default entity. Empty stays undefined — that is the pre-existing new-assistant path.
-      selectedEntityIds.size > 0 ? [...selectedEntityIds] : undefined
+      selectedEntityIds.size > 0 ? [...selectedEntityIds] : undefined,
+      // Klatch-only, matching where the field is offered. Sending it on a chat
+      // would persist a value the chat form never showed the user — the state
+      // is held in one component across both types, so the gate has to be here
+      // rather than relying on the field having been hidden.
+      newType === 'klatch' ? (newGroundRules.trim() || undefined) : undefined
     );
     resetForm();
   };
@@ -232,6 +244,13 @@ export function ChannelSidebar({
     if (!source) return;
     setNewName(`Copy of ${source.name}`);
     setNewPrompt(source.systemPrompt === DEFAULT_CHANNEL_PREAMBLE ? '' : source.systemPrompt);
+    // Ground rules carry too (the non-blocking note left open in the scope doc,
+    // decided here). Clone already carries purpose, mode, project and roster —
+    // "copy this klatch's setup" and "except the house rules" would be a
+    // surprise, and the user can still clear the field before submitting.
+    // Not a prefill from history: this fires only on an explicit clone gesture,
+    // so it is not the phase-3 behaviour arriving early.
+    setNewGroundRules(source.groundRules || '');
     setNewMode((source.mode as InteractionMode) || 'panel');
     setNewProjectId(source.projectId || '');
     try {
@@ -822,6 +841,35 @@ export function ChannelSidebar({
                 rows={2}
                 className="w-full rounded bg-input border border-line px-2.5 py-1.5 text-sm text-primary placeholder-muted focus:outline-none focus:border-accent resize-none"
               />
+
+              {/* Ground rules — klatch-only, blank by default, static guidance beside it.
+                  2026-11-03 ruling phase 1; scope: docs/ux/ground-rules-scope-2026-11-16.md.
+
+                  Klatch-only for the same reason the mode selector is: the ruling is
+                  about how a room full of participants behaves. The column is on
+                  `channels` and the route accepts it for either type, so surfacing it
+                  on chats later is a UI change and nothing else.
+
+                  The guidance is a fixed example set, deliberately. "Scenario-specific
+                  suggestions" is named in the ruling itself as a later enhancement, and
+                  a dynamic suggestion that lands in the field would be the default the
+                  ruling says must not ship. */}
+              {newType === 'klatch' && (
+                <div className="space-y-1">
+                  <textarea
+                    value={newGroundRules}
+                    onChange={(e) => setNewGroundRules(e.target.value)}
+                    placeholder="Ground rules — how should people behave in this klatch? (optional)"
+                    rows={2}
+                    className="w-full rounded bg-input border border-line px-2.5 py-1.5 text-sm text-primary placeholder-muted focus:outline-none focus:border-accent resize-none"
+                  />
+                  <p className="px-0.5 text-[11px] leading-snug text-muted">
+                    For example: “Challenge each other's assumptions rather than agreeing.”
+                    · “No jargon — explain it plainly.” · “Keep what's said here to this room.”
+                    · “Say when you don't know.”
+                  </p>
+                </div>
+              )}
               <div className="flex gap-2">
                 <button
                   type="submit"

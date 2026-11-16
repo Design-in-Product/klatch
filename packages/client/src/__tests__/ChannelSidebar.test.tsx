@@ -270,7 +270,10 @@ describe('ChannelSidebar', () => {
     await user.type(screen.getByPlaceholderText('Chat name'), 'my-channel');
     await user.click(screen.getByText('Create Chat'));
 
-    expect(onCreateChannel).toHaveBeenCalledWith('my-channel', 'You are a helpful assistant.', undefined, undefined, undefined, undefined);
+    // Seventh argument is ground rules (2026-11-03 ruling phase 1), `undefined`
+    // on a chat: the field is klatch-only, and `toHaveBeenCalledWith` compares
+    // arity, so this assertion is also the pin that a chat sends nothing there.
+    expect(onCreateChannel).toHaveBeenCalledWith('my-channel', 'You are a helpful assistant.', undefined, undefined, undefined, undefined, undefined);
   });
 
   it('does not submit empty channel name', async () => {

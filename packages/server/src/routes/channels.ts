@@ -92,6 +92,11 @@ app.get('/channels/:id/prompt-debug', (c) => {
         const parts: string[] = [];
         const boilerplate = isDefaultChannelPreamble(channel.systemPrompt);
         if (channel.systemPrompt?.trim() && !boilerplate) parts.push(`${channel.systemPrompt.length} chars`);
+        // Reported separately from the purpose char count, not added to it. The
+        // two are separate parts in the assembly (layer 4 / 4a), and a reader
+        // debugging "why is the room ignoring my ground rules" needs to see
+        // which of the two is empty — a summed count cannot answer that.
+        if (channel.groundRules?.trim()) parts.push(`ground rules ${channel.groundRules.length} chars`);
         if (channelFileList.length > 0) parts.push(`${channelFileList.length} file(s) pinned: ${channelFileList.map((f) => f.name).join(', ')}`);
         if (parts.length > 0) return `ACTIVE — ${parts.join('; ')}`;
         return boilerplate ? 'EMPTY — default purpose, not sent' : 'EMPTY';
@@ -140,7 +145,7 @@ app.get('/channels/:id/stats', (c) => {
 });
 
 app.post('/channels', async (c) => {
-  const { name, systemPrompt, model, mode, type, projectId, entityIds } = await readJsonBody<{
+  const { name, systemPrompt, model, mode, type, projectId, entityIds, groundRules } = await readJsonBody<{
     name: string;
     systemPrompt?: string;
     model?: ModelId;
@@ -148,6 +153,7 @@ app.post('/channels', async (c) => {
     type?: ChannelType;
     projectId?: string;
     entityIds?: string[];
+    groundRules?: string;
   }>(c);
 
   if (!name?.trim()) {
@@ -203,13 +209,24 @@ app.post('/channels', async (c) => {
     return c.json({ error: 'A chat is 1:1 — use type "klatch" for multiple agents' }, 400);
   }
 
+  // Ground rules get no boilerplate substitute, unlike Purpose above: a blank
+  // Purpose becomes DEFAULT_CHANNEL_PREAMBLE for historical reasons that layer 4
+  // then has to skip again, and repeating that here would mint a second string
+  // the assembly has to recognise and drop. Blank in, NULL stored.
+  //
+  // Accepted on chats as well as klatches even though only the klatch form
+  // offers the field today. The type/roster coherence guard above is an API
+  // invariant (a chat with two agents is structurally incoherent); "a chat with
+  // conduct rules" is not incoherent, just not yet surfaced, so rejecting it
+  // would be the route enforcing a UI decision.
   const channel = createChannel(
     name.trim(),
     systemPrompt?.trim() || DEFAULT_CHANNEL_PREAMBLE,
     model,
     mode,
     type,
-    distinctEntityIds
+    distinctEntityIds,
+    groundRules
   );
 
   if (projectId) {
@@ -228,6 +245,9 @@ app.patch('/channels/:id', async (c) => {
     model?: ModelId;
     mode?: InteractionMode;
     projectId?: string | null;
+    // `null` clears the rules, `undefined` leaves them — same two-valued
+    // convention `projectId` uses on this route.
+    groundRules?: string | null;
   }>(c);
 
   if (body.model && !(await isValidModel(body.model))) {
@@ -248,6 +268,11 @@ app.patch('/channels/:id', async (c) => {
     systemPrompt: body.systemPrompt?.trim(),
     model: body.model,
     mode: body.mode,
+    // Passed through unmodified, not `?.trim()`d like the two fields above:
+    // `null?.trim()` is `undefined`, which is this field's "leave alone" value,
+    // so trimming here would silently swallow an explicit clear. `updateChannel`
+    // does the trimming, where `null` and `undefined` are already distinguished.
+    groundRules: body.groundRules,
   });
 
   if (!updated) {

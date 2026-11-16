@@ -9,6 +9,11 @@ function rowToChannel(row: any): Channel {
     name: row.name,
     type: (row.type as ChannelType) || 'chat',
     systemPrompt: row.system_prompt,
+    // NULL (no rules written, or a channel predating the column) and '' both
+    // read as undefined — the one shape layer 4 skips. Both list paths
+    // (`getAllChannels`, `getAllChannelsEnriched`) spread this mapper, so the
+    // field reaches the sidebar without a second read site.
+    groundRules: row.ground_rules || undefined,
     model: row.model || DEFAULT_MODEL,
     mode: (row.mode as InteractionMode) || DEFAULT_INTERACTION_MODE,
     createdAt: row.created_at,
@@ -159,7 +164,7 @@ export function getChannelStats(channelId: string): ChannelStats | undefined {
   };
 }
 
-export function createChannel(name: string, systemPrompt: string, model?: ModelId, mode?: InteractionMode, type?: ChannelType, entityIds?: string[]): Channel {
+export function createChannel(name: string, systemPrompt: string, model?: ModelId, mode?: InteractionMode, type?: ChannelType, entityIds?: string[], groundRules?: string): Channel {
   const db = getDb();
   const id = uuidv4();
   const now = new Date().toISOString();
@@ -178,20 +183,25 @@ export function createChannel(name: string, systemPrompt: string, model?: ModelI
     ? [...new Set(entityIds)]
     : [DEFAULT_ENTITY_ID];
 
+  // Blank input is stored as NULL, not '': "the user wrote no ground rules" has
+  // to stay one state, whichever writer produced it, or phase 3's
+  // offer-previous-rules read path sees two.
+  const rules = groundRules?.trim() || null;
+
   const txn = db.transaction(() => {
-    db.prepare('INSERT INTO channels (id, name, system_prompt, model, mode, type, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)')
-      .run(id, name, systemPrompt, channelModel, channelMode, channelType, now);
+    db.prepare('INSERT INTO channels (id, name, system_prompt, model, mode, type, ground_rules, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)')
+      .run(id, name, systemPrompt, channelModel, channelMode, channelType, rules, now);
     const assign = db.prepare('INSERT OR IGNORE INTO channel_entities (channel_id, entity_id) VALUES (?, ?)');
     for (const eid of idsToAssign) assign.run(id, eid);
   });
   txn();
 
-  return { id, name, type: channelType, systemPrompt, model: channelModel, mode: channelMode, createdAt: now, source: 'native' as ChannelSource };
+  return { id, name, type: channelType, systemPrompt, groundRules: rules || undefined, model: channelModel, mode: channelMode, createdAt: now, source: 'native' as ChannelSource };
 }
 
 export function updateChannel(
   id: string,
-  updates: { name?: string; systemPrompt?: string; model?: ModelId; mode?: InteractionMode }
+  updates: { name?: string; systemPrompt?: string; model?: ModelId; mode?: InteractionMode; groundRules?: string | null }
 ): Channel | undefined {
   const channel = getChannel(id);
   if (!channel) return undefined;
@@ -200,12 +210,19 @@ export function updateChannel(
   const systemPrompt = updates.systemPrompt ?? channel.systemPrompt;
   const model = updates.model ?? channel.model;
   const mode = updates.mode ?? channel.mode;
+  // `null` clears, `undefined` leaves alone — the same two-valued distinction
+  // `projectId` already carries at the route. Without it there is no way to
+  // remove ground rules once written, and '' would store the second empty state
+  // the column is specifically avoiding.
+  const groundRules = updates.groundRules === undefined
+    ? (channel.groundRules ?? null)
+    : (updates.groundRules?.trim() || null);
 
   getDb()
-    .prepare('UPDATE channels SET name = ?, system_prompt = ?, model = ?, mode = ? WHERE id = ?')
-    .run(name, systemPrompt, model, mode, id);
+    .prepare('UPDATE channels SET name = ?, system_prompt = ?, model = ?, mode = ?, ground_rules = ? WHERE id = ?')
+    .run(name, systemPrompt, model, mode, groundRules, id);
 
-  return { ...channel, name, systemPrompt, model, mode };
+  return { ...channel, name, systemPrompt, model, mode, groundRules: groundRules || undefined };
 }
 
 /**

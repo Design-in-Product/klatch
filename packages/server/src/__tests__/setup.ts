@@ -48,6 +48,7 @@ function createFreshDb(): Database.Database {
       source_metadata TEXT,
       compaction_state TEXT,
       project_id TEXT,
+      ground_rules TEXT,
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
 

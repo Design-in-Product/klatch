@@ -267,6 +267,23 @@ function runMigrations(db: Database.Database) {
     db.exec(`ALTER TABLE channels ADD COLUMN type TEXT NOT NULL DEFAULT 'chat'`);
   }
 
+  // ── Ground rules, phase 1 (2026-11-03 ruling; scope: docs/ux/ground-rules-scope-2026-11-16.md)
+  //
+  // Its own column rather than a reuse of `system_prompt`. The two fields answer
+  // different questions — Purpose is *why this room exists*, ground rules is *how
+  // participants should behave in it* — and phases 2–3 of the ruling add a
+  // save-as-default / offer-previous read path over ground rules alone. Sharing one
+  // column would make that read path leak Purpose and a future "save as default"
+  // on one field silently save the other.
+  //
+  // Nullable with no default: a channel that predates the field has no ground
+  // rules, which is a different state from "" and must stay distinguishable from
+  // it for phase 3 ("offer previous rules") to have anything to key on.
+  const channelCols6 = db.prepare("PRAGMA table_info(channels)").all() as { name: string }[];
+  if (!channelCols6.some((c) => c.name === 'ground_rules')) {
+    db.exec(`ALTER TABLE channels ADD COLUMN ground_rules TEXT`);
+  }
+
   // ── Decision 1: MEMORY.md → project level ──────────────────
   const projectCols = db.prepare("PRAGMA table_info(projects)").all() as { name: string }[];
   if (!projectCols.some((c) => c.name === 'memory')) {

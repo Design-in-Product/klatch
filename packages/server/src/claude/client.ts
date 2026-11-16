@@ -432,7 +432,7 @@ export interface PromptAssemblyOptions {
  *   1. Kit briefing (imported channels only — orientation + capability awareness)
  *   2. Project instructions (from projects.instructions — CLAUDE.md / prompt_template)
  *   3. Project memory (from projects.memory — MEMORY.md / claude.ai memories)
- *   4. Channel addendum (channel-specific system prompt)
+ *   4. Channel addendum (channel-specific system prompt, then ground rules)
  *   5. Entity's own system prompt
  *   6. Carried context (klatches only — the entity's recent activity elsewhere)
  *
@@ -494,6 +494,16 @@ export function buildSystemPrompt(entity: Entity, channelPreamble?: string, chan
  * endpoint under test already emitted — aligning upward moves bytes only at the
  * two `aaxt.ts` sites, which are source-compared, not endpoint-pinned.
  */
+/**
+ * The label layer 4a puts above a channel's ground rules.
+ *
+ * Exported, and keyed on by the tests, for the reason `FLOOR_REPORT` is: the
+ * alternative is a literal retyped at the assertion site, which can agree with a
+ * stale copy of the prompt instead of with the prompt. Consumers should treat the
+ * constant as the contract, not its current wording.
+ */
+export const GROUND_RULES_PREFIX = 'Ground rules for this room, set by the person who created it:';
+
 export const FLOOR_REPORT = {
   active: 'ACTIVE — layers 1–6 assembled nothing; DEFAULT_CHANNEL_PREAMBLE substituted so the prompt is not zero-length',
   inactive: 'INACTIVE — layers 1–6 assembled content, floor not needed',
@@ -542,6 +552,34 @@ export function assembleSystemPrompt(entity: Entity, channelPreamble?: string, c
   // opened with "You are a helpful assistant." at char 0, above the identity
   // the user picked the room to get. See DEFAULT_CHANNEL_PREAMBLE.
   if (channelPreamble?.trim() && !isDefaultChannelPreamble(channelPreamble)) parts.push(channelPreamble.trim());
+
+  // 4a. Ground rules — how participants should behave in this room, in the
+  // user's own words (2026-11-03 ruling, phase 1; scope doc:
+  // docs/ux/ground-rules-scope-2026-11-16.md).
+  //
+  // Its own part, not appended to the Purpose string above, for the same reason
+  // it is its own column: the two answer different questions, and fusing them
+  // here would reintroduce at the prompt level exactly the conflation the
+  // storage decision rejected.
+  //
+  // Labelled, unlike Purpose. Purpose can be pushed raw because it reads as
+  // framing; an unlabelled list of conduct rules is indistinguishable from the
+  // room's purpose once both are in the same prompt, and the label is what tells
+  // the model whose words these are.
+  //
+  // Read off `channel`, which the assembly already takes, rather than a new
+  // parameter — every caller (senders, prompt-debug, AAXT, the export
+  // assembler) passes the channel already, so no call site changes and no
+  // caller can accidentally drop the field by not knowing about it.
+  //
+  // Independent of the Purpose skip above: a klatch whose Purpose is the
+  // boilerplate default still sends its ground rules. The two conditions are
+  // separate `if`s, deliberately — the boilerplate skip is about a string the
+  // *create route* writes, and has nothing to say about what the user wrote in a
+  // different field.
+  if (channel?.groundRules?.trim()) {
+    parts.push(`${GROUND_RULES_PREFIX}\n\n${channel.groundRules.trim()}`);
+  }
 
   // 4b. Channel files listing (pinned files visible in this channel)
   if (channelFileNames && channelFileNames.length > 0) {

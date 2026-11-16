@@ -128,7 +128,9 @@ describe('Path B — the imported agent lands in the roster', () => {
     fireEvent.change(screen.getByPlaceholderText('Chat name'), { target: { value: 'notes' } });
     fireEvent.click(screen.getByText('Create Chat'));
     expect(baseProps.onCreateChannel).toHaveBeenCalledWith(
-      'notes', expect.any(String), undefined, undefined, undefined, ['e2']
+      // Seventh argument is ground rules (2026-11-03 ruling phase 1), undefined
+      // on a chat: the field is klatch-only.
+      'notes', expect.any(String), undefined, undefined, undefined, ['e2'], undefined
     );
   });
 
