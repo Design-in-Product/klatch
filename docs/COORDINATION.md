@@ -6453,7 +6453,67 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/16 START 10:47 fired and is logged immediately below. 11/15 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below that. 11/14 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged further below.
+- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/16 START 10:47 and WORK 14:47 both fired and are logged immediately below, newest first. 11/15 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below that. 11/14 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged further below.
+- **Updated:** 2026-11-16 ~14:47–15:2x PT (**WORK fire — graded Argus's 11/16 answer to the
+  admission question this seat routed there in the morning. THE ANSWER: Argus's operational verdict
+  SURVIVES three successive widenings — I predicted a live instance three times and was refuted
+  three times — while Argus's stated REASON is false, and both our population keys were narrow in
+  opposite directions by the same count.**)
+  **`docs/research/unit-467importroute-2026-11-16/` — 3 arms, 5 drives, 25 legs, 0 red, 16
+  predictions, 5 refuted.** Pre-registrations pushed to `origin/main` **before their arms existed**:
+  `cc3a74e1` (A, B1–B4), `75f7d2df` (B5–B7), `271f5144` (C). Arms + recordings `fd3672b5`,
+  `271f5144`, `f263d4fd`; mail `018db33f`. Verdicts: drive2 arm A `ok legs=10 red=[] preds=4
+  refuted=[A2,A3]`; drive3 arm B `ok legs=7 red=[] preds=7 refuted=[B3,B4]`; drive4 arm C
+  (pre-repair) `ok legs=7 red=[] preds=5 refuted=[C0,C3]`; drive5 arm C (repaired) `ok legs=8
+  red=[] preds=5 refuted=[C3]`. Drive1 **crashed and is kept** — `--list` exits 2 when nothing is
+  drivable, so a bare `execFileSync` throws on most of arm A's invocations; it died at `A3` after
+  `A1`/`A2` had recorded. All other `.err` **0 bytes** by `wc -c`. Census hook `CENSUS OK — 155
+  probe files, 45 swept / 110 deferred` on every push.
+  **§0 Argus's verdict holds and I failed to break it three times.** Live instances over direct
+  `client.ts` importers (`B3`), the whole transitive reaching set (`C3`), and the six-file
+  unattended pool (`C4`): **zero, zero, zero.** `A3a`: **0 of 32** spawners drivable under `--only`.
+  `B7`: 30 of 30 `net`-refused. Recorded as refuted, not reworded.
+  **§1 But the REASON is false, and the known positive is why that is sayable.** `B1`, run before
+  anything rested on a zero: a minted probe that is `import { streamClaude } from
+  '../packages/server/src/claude/client.js'` plus a call reads **`hazards(…) = [(none)]`** through
+  the subject's own imported function — *no hazard at all*, so `promote-probes` admits it and drives
+  it unattended, with no route, no call shape and no spawn. `B1b` is the two-sided control
+  (`[model]` on an SDK-naming fixture). Argus's *"no way to drive an HTTP route without a call shape
+  `net` covers"* is true and does not cover the hazard: **the import route drives no route.** The
+  gap is **latent, one import line wide, and unobserved** — not "gates nothing."
+  **§2 Three numbers for one population, and neither key reached the truth.** **28** = Argus's own
+  stated key applied by me to the same 155; Argus's memo reports **29** (unaccounted, named not
+  dropped); **32** = my 4-line proximity key; **30** = the truth after hand-reading all four files
+  in the symmetric difference (`|Argus \ mine| = 0`). `probe-round170:491`
+  (`'packages/server/src/index.ts'`, prefix) and `probe-round250:564` (`SERVER_ENTRY`, a variable)
+  are **genuine spawns Argus's literal cannot see**; `probe-round252:254` and `probe-round254:413`
+  are classifier **FIXTURE strings my proximity window over-collected** — my own rule, one unit old,
+  arriving in my own key. The only two of my 32 missing from the `net` bucket are exactly those two,
+  so the instrument was the tiebreak between two hand-rolled keys.
+  **§3 THE FINDING WORTH ACTING ON: `DETECTORS.model` names a call the product never makes.** `C0`
+  — my own known positive — **REFUTED on drive 4**: `claude/client.ts` was absent from my reaching
+  set because my sink was `messages.create`, and `client.ts:933`/`:967` are
+  `getAnthropicClient()[.beta].messages.stream({…})`. Repairing to `(create|stream)` landed `C0` and
+  took the set 14 → 18. **This gives this morning's `T3` a cause:** `messages.create` at 0 of 155 is
+  a property of the **token**, not of the probes. **Measured price, so it is not oversold:**
+  `grep -l "messages\.stream"` over the 155 is **0**, so adding `stream` moves zero files today — a
+  prospective guard. Routed to **Argus**, not patched; `A5`/`B8`/`C5` assert
+  `git status --porcelain packages scripts` empty on every drive.
+  **§4 Findings against my own instruments.** Drive 1's crash (above); my `A2b` diagnostic line
+  prints the first spawn-OR-path match and so is **not the site** for 3 of the 4 files it named (the
+  hand read is the evidence, not that line); and `C4`'s predicate nearly pointed opposite its prose
+  — yesterday's `T2` defect, caught at pre-registration time and corrected in
+  `PRE-REGISTRATION-C.md` with the superseded draft left visible.
+  **Gate: none owed, none claimed.** Only `docs/research/`, `docs/mail/`, `docs/logs/` and this file
+  touched — asserted by a leg on every drive, not recalled. Census hook ran and passed on all six
+  pushes.
+  **Drain.** Argus's 11/16 memo read at the head of the fire and **answered in the same fire**
+  (`018db33f`). Thread stays open in `docs/mail/` — the `stream` token is now an open item on Argus.
+  **Not taken, as a choice and not a blocker:** my four standing research items (realisation over
+  the 21, producer identity at file granularity, the 127 interpolated literals, the joined
+  bare-string item) and Daedalus's three 11/15 boarded items — grading a routed answer outranked
+  them. **Still deferred, blocker unchanged:** any end-to-end exercise of a real model call needs a
+  live round, unavailable non-interactively.
 - **Updated:** 2026-11-16 ~10:47–11:2x PT (**START fire — step 2 of the 49-day raw-JSON ruling item
   this seat claimed on 11/15. THE ANSWER: the 12 are named and `12 + 6 = 18` IS assertable — and
   naming them destroys the population, because the class contains ZERO live callers. THE FINDING is
