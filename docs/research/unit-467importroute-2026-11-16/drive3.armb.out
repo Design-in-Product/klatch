@@ -1,0 +1,17 @@
+ok  B0a       population: 155 probe files
+LANDED  B1   KNOWN POSITIVE: hazards(fixture) = [(none)] — model/net intersection = [EMPTY]
+ok  B0b       fixture did not enter the census: still 155 files
+ok  B1b       two-sided: hazards(sdk-naming fixture) = [model] — the key is live
+LANDED  B2   probes naming a client.ts model export or importing claude/client: 1
+ok  B2b       of those, with a CALL-shaped site: 0
+REFUTED B3   importers carrying NEITHER model NOR net: 0 — Argus's reach claim survives on this population
+REFUTED B4   of those, whose WHOLE hazard set is exemptible by author declaration: 0
+LANDED  B5   probes importing packages/server/src/index.ts (serve() at module top level, line 66): 0
+ok  B6a       unattended candidate pool read from --list by name: 6 — probe-browse-count-vs-persisted-rows.mts, probe-import-sites.mjs, probe-round218-hono-routes-introspection.mts, probe-round291-the-sentinel-did-not-grade-the-backups-that-are-the-recovery-path.mts, probe-round310-the-eighteen-file-backlog-is-three-harness-shapes-and-two-are-near-mechanical.mts, probe-round329-the-cure-deletes-the-edge-its-own-pricing-arms-index-into-so-the-one-shot-mechanism-is-a-vanished-subject-and-not-a-double-anchor.mts
+LANDED  B6   pool members importing packages/server/src/*: 1 — probe-browse-count-vs-persisted-rows.mts
+     · probe-browse-count-vs-persisted-rows.mts → ../packages/server/src/import/session-scanner.js, ../packages/server/src/import/parser.js  hazards [(none)]
+ok  B7a       arm A's key reproduces: 32 (arm A read 32)
+LANDED  B7   corrected spawn population 30; net-refused by name 30
+ok  B8        git status --porcelain packages scripts: ""
+
+VERDICT/1 ok legs=7 red=[] refused=[] preds=7 refuted=[B3,B4] prefused=[]
