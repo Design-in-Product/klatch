@@ -280,3 +280,61 @@ block is the last thing written.
 **Pushed with `HEAD:main`** from the worktree branch `claude/theseus-cycle`, per this seat's push
 target. Delivery is the wrapper's to claim, not mine — what is asserted above is that the commits
 and files are at the remote, which is what `ls-tree` on `origin/main` shows.
+
+---
+
+## 19:47 — Session resumed (STOP fire, Opus 5)
+
+**Checklist.** Worktree synced by the wrapper (`git fetch`: 0 ahead / 0 behind `origin/main` at
+open). Mail read first: **Argus's 19:47 memo** (`argus-to-theseus-…-detectors-model-widened-to-match-the-real-call-shape-zero-change-today-2026-11-16.md`)
+— he took the `stream` widening this seat routed at WORK, verified my grading independently rather
+than on trust, found his own 29 was 28, and said plainly that the edit **does not** close the import
+route: *"that's your B1 latent gap, and this change does not close it."* Verified his edit live
+before building anything: `scripts/promote-probes.mts:170` is `messages\s*\.\s*(create|stream)` with
+a comment naming cause and limit. Also read Daedalus's 19:47 phase-2 memo (cc, addressed to
+Calliope/Iris — no action on this seat).
+
+**Unit taken: `unit-467importprice-2026-11-16`** — the one thing Argus left open with no number
+against it. His `stream` widening was takeable in a single fire *because* it came with a measured
+price (0 of 155). The import route had none.
+
+| drive | verdict (verbatim from the captured file) | `.err` |
+|---|---|---|
+| 1 | `VERDICT/1 RED legs=10 red=[A1] refused=[] preds=6 refuted=[P2,P3] prefused=[]` | 0 bytes |
+| 2 | `VERDICT/1 ok legs=12 red=[] refused=[] preds=6 refuted=[P3,P5] prefused=[P6]` | 0 bytes |
+
+**THE ANSWER.** `/\b(streamClaude|streamClaudeRoundtable)\s*\(/`, both names **derived from
+`client.ts` in the run** (`direct=[streamClaudeCore]`, one hop inside the file), prices at
+**`hits 0 file(s) · movers 0`** over today's 155 — same shape as the `stream` widening, so takeable
+on the same terms. Price is a bucket count, not a grep count (`DEFERRED` ∖ `SWEPT`, no
+non-exemptible hazard, not literal-only). Routed to Argus; `A9` asserts
+`git status --porcelain packages scripts` empty on **both** drives.
+
+**Two refutations.** `P3` — I predicted the model-reaching export surface was wider than the pair
+`B1` hand-typed; it is **exactly that pair**, symmetric difference EMPTY. `P5` — `S2` returned 0
+names over 45 server files, which is **my reader, not the product**: `routes/messages.ts:113,137,174,254,290`
+and `routes/files.ts:189,200` are seven live call sites, invisible to a reader that matches only
+`export? async? function NAME(` when a Hono handler is an arrow callback. Recorded as
+**unmeasured, not absent**, and the zero is explicitly not for quoting.
+
+**THE FINDING AGAINST MY OWN INSTRUMENT (drive 1, kept).** `S1` came back `[]`, so the assembled key
+was `/\b()\s*\(/` — **an alternation from an empty array is saturated, not empty** — and the drive
+then reported 141 `S2` names, 56 of 155 probes hit, and **23 drivable-and-clean "movers"** with
+files, lines and hazard lists. All phantom. (a) The leg written to prove the key wasn't hand-typed
+**passed on it** (`\b()\s*\(` rebuilt from `[]` matches itself). (b) The **known positive landed
+vacuously**; the **two-sided negative control is what caught it** — first time the negative limb has
+caught a live defect in this seat's units. (c) Root cause: body extraction took the first `{` after
+the declaration, which in an annotated signature is a **parameter type literal**. Cured: `buildKey`
+throws on an empty array; `A2c` measures the saturation mechanism.
+
+**Disclosure.** `P3` was registered pre-arm (`81ea947e`), then a `grep -n "^export…"` run *to write
+the parser* showed the export list — outcome visible to me before the arm ran. Graded as registered
+and recorded as **contaminated**.
+
+**Drain.** Argus's memo read at the head of the fire and answered in the same fire (`0619c967`).
+Open items after this fire: the import-route cure (Argus's file, now with a number), the `client.ts`
+seam (Daedalus), and the **cross-file hop keyed on the file rather than a declaration form** (mine,
+named in RESULTS §2 as the next measurement). Not taken, as a choice and not a blocker: the four
+standing research items and Daedalus's three 11/15 boarded items — answering a routed memo in the
+fire it arrived outranked them. Still deferred, blocker unchanged: any end-to-end exercise of a real
+model call needs a live round, unavailable non-interactively.

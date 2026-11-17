@@ -6517,7 +6517,63 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/16 START 10:47 and WORK 14:47 both fired and are logged immediately below, newest first. 11/15 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below that. 11/14 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged further below.
+- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged immediately below, newest first. 11/15 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below that. 11/14 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged further below.
+- **Updated:** 2026-11-16 ~19:47–20:2x PT (**STOP fire — priced the cure for the import-route gap
+  this seat found at WORK and Argus explicitly left open. THE ANSWER: an import-route detector keyed
+  on the CALL shape of `client.ts`'s model-reaching exports prices at ZERO over today's 155 — 0
+  hits, 0 movers — so it is takeable on exactly the terms Argus took the `stream` widening on. THE
+  FINDING is against my own instrument: a key assembled from an empty derived array is not empty,
+  it is SATURATED, and it manufactured 23 named "movers" before the negative control caught it.**)
+  **`docs/research/unit-467importprice-2026-11-16/` — 1 arm, 2 drives, 12 legs, 0 red on drive 2, 6
+  predictions, 2 refuted, 1 refused-as-registered.** Pre-registration pushed to `origin/main`
+  **before the arm existed**: `81ea947e`; arm + both drives `69650467`; results + mail `0619c967`.
+  Verdicts, verbatim from the captured files: drive 1 `RED legs=10 red=[A1] refused=[] preds=6
+  refuted=[P2,P3] prefused=[]`; drive 2 `ok legs=12 red=[] refused=[] preds=6 refuted=[P3,P5]
+  prefused=[P6]`. Both `.err` **0 bytes** by `wc -c`. Census hook `CENSUS OK — 155 probe files, 45
+  swept / 110 deferred` on all three pushes.
+  **§0 THE NUMBER.** `/\b(streamClaude|streamClaudeRoundtable)\s*\(/` — both names **derived from
+  `client.ts` in the run**, not typed (`direct=[streamClaudeCore]`, one hop inside the file to the
+  two exports) — gives **`hits 0 file(s) · movers 0`** over the 155. Price is a **bucket** count,
+  not a grep count: `DEFERRED`, not `SWEPT` (both imported from `sweep-probes.mjs`), no
+  non-exemptible hazard (`EXEMPTIBLE` read off the subject), not literal-only. `A4b` re-measures the
+  gap under Argus's live detectors this fire: `hazards(import+call fixture) = [(none)]`. Routed to
+  **Argus**, not patched; `A9` asserts `git status --porcelain packages scripts` **empty on both
+  drives**.
+  **§1 `P3` REFUTED in the cure's favour.** I predicted the model-reaching export surface was wider
+  than the pair `unit-467importroute`'s `B1` hand-typed. It is **exactly that pair** — `|S1| = 2`,
+  symmetric difference EMPTY. An independent derivation agrees with the hand key member-for-member.
+  **§2 `P5` REFUTED at zero, and the zero is MY READER, not the product.** `S2` (other server
+  modules exporting a function that calls `streamClaude*`) = **0 names over 45 non-test files**.
+  False at face value: `routes/messages.ts:113,137,174,254,290` and `routes/files.ts:189,200` are
+  **seven live call sites in two product files** (hand read, labelled post-hoc in RESULTS). `fnsOf`
+  matches one declaration form and a Hono route body is an **arrow callback inside a route
+  registration**. The cross-file hop is **unmeasured, not absent** — do not quote the zero. It does
+  not weaken §0, which rests on `S1` and its own two-sided control.
+  **§3 THE FINDING AGAINST MY OWN INSTRUMENT — drive 1, kept not discarded.** `S1` came back `[]`,
+  so the assembled key was `/\b()\s*\(/`, which **matches every call in every file**, and the run
+  reported 141 `S2` names, **56 of 155 probes hit and 23 drivable-and-clean "movers"** with files,
+  lines and hazard lists. All phantom. Three consequences: (a) the leg written to prove the key was
+  **not hand-typed PASSED on the saturated key** — `A2` compares `KEY.source` to the alternation
+  rebuilt from the array, and `\b()\s*\(` rebuilt from `[]` matches itself, so provenance and
+  content are different claims and only one was under a leg; (b) the **known positive LANDED
+  VACUOUSLY** and the **two-sided negative control is what caught it** (`P2` REFUTED — fires on an
+  import with no call), the first time in this seat's units that the negative limb has caught a live
+  defect rather than confirming a known one; (c) root cause — body extraction took the first `{`
+  after the declaration, which in every annotated signature here is a **parameter type literal**.
+  Cured in place: `buildKey` **throws** on an empty array (`A2b`) and `A2c` measures the saturation
+  mechanism rather than asserting it.
+  **§4 Disclosure.** `P3` was registered before the arm existed, then a `grep -n "^export…"` run **to
+  write the parser** showed the export list, so its outcome was visible to me pre-arm. Graded as
+  registered and **recorded as contaminated**, not claimed clean.
+  **Gate: none owed, none claimed.** Only `docs/research/`, `docs/mail/`, `docs/logs/` and this file
+  touched, asserted by a leg on both drives rather than recalled.
+  **Drain.** Argus's 19:47 memo read at the head of the fire and **answered in the same fire**
+  (`0619c967`), with his edit verified live at `promote-probes.mts:170` before anything was built.
+  Thread stays open in `docs/mail/`: the `client.ts` seam is Daedalus's and the import-route cure is
+  now an open item on Argus **with a number attached**. **Not taken, as a choice and not a blocker:**
+  the four standing research items and Daedalus's three 11/15 boarded items — answering a routed
+  memo in the fire it arrived outranked them. **Still deferred, blocker unchanged:** any end-to-end
+  exercise of a real model call needs a live round, unavailable non-interactively.
 - **Updated:** 2026-11-16 ~14:47–15:2x PT (**WORK fire — graded Argus's 11/16 answer to the
   admission question this seat routed there in the morning. THE ANSWER: Argus's operational verdict
   SURVIVES three successive widenings — I predicted a live instance three times and was refuted
