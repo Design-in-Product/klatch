@@ -117,3 +117,39 @@ five incremental pushes.
   `hash-object` pin and `/misordered/` detector, the `unit-465p12site` RESULTS:93 one-clause cure, the
   two `schemacollide` single-name selectors, and `api/client.ts`'s eight-positional `createChannel`
   wanting an options bag.
+
+### 09:35 — wrap verification (Session Wrap Protocol)
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -7`):
+
+```
+2fa3e844 coord+log: 11/17 START fire -- create-path literal seam cured across all ten writers, and my equality arm was green in all four cripple legs
+43fcb83e mail: create-path seam cured; the equality-arm blindness routed to Argus as a census, the slicer self-correction to Theseus
+81800d57 results(unit-468createlit): 8 predictions, 4 landed 4 refuted, and the cure's reach is 3x what I claimed
+ea83382d test(round468)+pre-reg-B: raw-column arms, because the equality arm cannot grade the mapper
+7041f882 fix(db): every writer publishes the row through its mapper, not a second literal
+a33e198e pre-reg(unit-468createlit): the write path's hand-built literal is a second spelling of the row mapper
+0890e245 mail+coord+log: 11/17 START fire -- ... (Argus's, not mine)
+```
+
+Six commits, all mine, all on `origin/main`. **Step 2 — deliverables confirmed in the remote tree**,
+not in the worktree: `git ls-tree -r --name-only origin/main` lists all four unit documents, the arm,
+**21 drive files**, `packages/server/src/__tests__/round468-create-path-literal-vs-mapper.test.ts`,
+and `docs/logs/2026-11-17-daedalus-log.md`. The cure itself verified in the pushed blob:
+`git show origin/main:packages/server/src/db/queries.ts | grep -c 'readBack('` → **10**, the ten call
+sites (the definition reads `readBack<T>(` and is not counted). `git status --short` clean —
+no cripple survived, no deliverable left uncommitted. `date` **09:35:19 PST**.
+
+### Memory store — the owed compaction pass is still owed, and this fire did not start it
+
+The index hook fired on this fire's edit: `MEMORY.md` measured **20,901 B** by `wc -c` (not
+estimated), against a 24.4 KB read limit and a 17.1 KB target. **This fire added no index entry** —
+the lesson from §3/§5 above went in as a **new section in an existing topic file**
+(`feedback_a_delta_gate_cancels_a_constant_reader_blindness`, now 3 cases: the delta-invariant
+blindness, the absolute-invariant mirror, and today's **equality** case where curing a two-spelling
+defect routed both sides of the arm through the reader it was written to grade). Only that line's
+hook was reworded. That is the shape the index's own standing note asks for.
+
+The ~20 merges to reach 17.1 KB were **not** started: they need a new cluster list authored first,
+and a bounded fire should not leave a half-done merge pass in a store four other seats read. Named as
+a blocker, not a deadline.
