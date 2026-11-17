@@ -1,0 +1,20 @@
+arm-createlit-a · packages/server/src/db/queries.ts
+mappers found: 9 -> rowToChannel:Channel, rowToProject:Project, rowToMessage:Message, rowToEntity:Entity, rowToGroundRulesPreset:GroundRulesPreset, rowToArtifact:MessageArtifact, rowToFile:KlatchFile, rowToFileRef:FileRef, rowToFileWithRef:FileWithRef
+
+  literal createChannel@167  ret=Channel  mapper=rowToChannel
+  literal createGroundRulesPreset@261  ret=GroundRulesPreset  mapper=rowToGroundRulesPreset
+  literal insertMessage@348  ret=Message  mapper=rowToMessage
+  literal createEntity@498  ret=Entity  mapper=rowToEntity
+  other   reassignChannelEntity@720  ret=ReassignChannelEntityResult  mapper=-
+            terminal: return txn();
+  literal createProject@1384  ret=Project  mapper=rowToProject
+  literal importSession@1555  ret=ImportResult  mapper=-
+  literal createFileArtifact@1767  ret=MessageArtifact  mapper=rowToArtifact
+  literal createCarriedContextArtifact@1825  ret=MessageArtifact  mapper=rowToArtifact
+  literal createToolUseArtifact@1862  ret=MessageArtifact  mapper=rowToArtifact
+  literal createFile@1983  ret=KlatchFile  mapper=rowToFile
+  literal createFileRef@1999  ret=FileRef  mapper=rowToFileRef
+  literal createFileWithMessageRef@2064  ret={ file: KlatchFile; ref: FileRef }  mapper=-
+
+CONCLUSION population=13 literal=12 mapper=0 other=1 undelimited=0
+CONCLUSION literal-with-a-sibling-mapper=10 -> createChannel,createGroundRulesPreset,insertMessage,createEntity,createProject,createFileArtifact,createCarriedContextArtifact,createToolUseArtifact,createFile,createFileRef

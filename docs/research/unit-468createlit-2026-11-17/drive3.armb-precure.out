@@ -1,0 +1,140 @@
+
+[1m[46m RUN [49m[22m [36mv4.0.18 [39m[90m/Users/xian/Development/klatch-worktrees/daedalus/packages/server[39m
+
+ [31m❯[39m src/__tests__/round468-create-path-literal-vs-mapper.test.ts [2m([22m[2m10 tests[22m[2m | [22m[31m4 failed[39m[2m)[22m[32m 29[2mms[22m[39m
+     [32m✓[39m createChannel: whitespace ground rules[32m 18[2mms[22m[39m
+     [32m✓[39m createGroundRulesPreset: unnamed default, untrimmed body[32m 1[2mms[22m[39m
+[31m     [31m×[31m insertMessage: empty model and empty entityId[39m[32m 5[2mms[22m[39m
+     [32m✓[39m createEntity: empty handle[32m 1[2mms[22m[39m
+     [32m✓[39m createProject: empty instructions and memory[32m 1[2mms[22m[39m
+     [32m✓[39m createFileArtifact: all fields populated[32m 1[2mms[22m[39m
+     [32m✓[39m createCarriedContextArtifact: counts[32m 0[2mms[22m[39m
+[31m     [31m×[31m createToolUseArtifact: empty inputSummary[39m[32m 1[2mms[22m[39m
+[31m     [31m×[31m createFile: empty createdBy[39m[32m 1[2mms[22m[39m
+[31m     [31m×[31m createFileRef: empty addedBy[39m[32m 1[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 4 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m src/__tests__/round468-create-path-literal-vs-mapper.test.ts[2m > [22mround468 — the writer's return equals a read of the row it wrote[2m > [22minsertMessage: empty model and empty entityId
+[31m[1mAssertionError[22m: expected { …(8) } to deeply equal { …(11) }[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[2m    "channelId": "default",[22m
+[2m    "content": "hi",[22m
+[2m    "createdAt": "2026-11-17T17:23:14.868Z",[22m
+[32m-   "entityId": undefined,[39m
+[31m+   "entityId": "",[39m
+[2m    "id": "7eb9a3c8-7c74-4b76-8579-ac06e2596d7d",[22m
+[32m-   "model": undefined,[39m
+[32m-   "originalId": undefined,[39m
+[32m-   "originalTimestamp": undefined,[39m
+[31m+   "model": "",[39m
+[2m    "role": "user",[22m
+[2m    "status": "complete",[22m
+[32m-   "stopReason": undefined,[39m
+[2m  }[22m
+
+[36m [2m❯[22m src/__tests__/round468-create-path-literal-vs-mapper.test.ts:[2m73:21[22m[39m
+    [90m 71| [39m    [90m// (`model || null`), so the stored state is "no model" either way.[39m
+    [90m 72| [39m    const created = insertMessage('default', 'user', 'hi', 'complete',…
+    [90m 73| [39m    [34mexpect[39m(created)[33m.[39m[34mtoEqual[39m([34mgetMessage[39m(created[33m.[39mid))[33m;[39m
+    [90m   | [39m                    [31m^[39m
+    [90m 74| [39m  })[33m;[39m
+    [90m 75| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/__tests__/round468-create-path-literal-vs-mapper.test.ts[2m > [22mround468 — the writer's return equals a read of the row it wrote[2m > [22mcreateToolUseArtifact: empty inputSummary
+[31m[1mAssertionError[22m: expected { …(6) } to deeply equal { …(11) }[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  {[22m
+[32m-   "content": undefined,[39m
+[2m    "createdAt": "2026-11-17T17:23:14.875Z",[22m
+[32m-   "fileMimeType": undefined,[39m
+[32m-   "fileName": undefined,[39m
+[32m-   "fileSizeBytes": undefined,[39m
+[32m-   "fileStorageKey": undefined,[39m
+[2m    "id": "79794219-fbaf-48c9-87ae-29435bc1a5c5",[22m
+[32m-   "inputSummary": undefined,[39m
+[31m+   "inputSummary": "",[39m
+[2m    "messageId": "6b653ade-d034-4bfd-a9d4-aedcb9b15c67",[22m
+[2m    "toolName": "recall",[22m
+[2m    "type": "tool_use",[22m
+[2m  }[22m
+
+[36m [2m❯[22m src/__tests__/round468-create-path-literal-vs-mapper.test.ts:[2m109:21[22m[39m
+    [90m107| [39m    [35mconst[39m created [33m=[39m [34mcreateToolUseArtifact[39m(msg[33m.[39mid[33m,[39m [32m'recall'[39m[33m,[39m [32m''[39m)[33m;[39m
+    [90m108| [39m    const read = getMessageArtifacts(msg.id).find((a) => a.id === crea…
+    [90m109| [39m    [34mexpect[39m(created)[33m.[39m[34mtoEqual[39m(read)[33m;[39m
+    [90m   | [39m                    [31m^[39m
+    [90m110| [39m  })[33m;[39m
+    [90m111| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/__tests__/round468-create-path-literal-vs-mapper.test.ts[2m > [22mround468 — the writer's return equals a read of the row it wrote[2m > [22mcreateFile: empty createdBy
+[31m[1mAssertionError[22m: expected { …(7) } to deeply equal { …(7) }[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[33m@@ -1,8 +1,8 @@[39m
+[2m  {[22m
+[2m    "createdAt": "2026-11-17T17:23:14.876Z",[22m
+[32m-   "createdBy": undefined,[39m
+[31m+   "createdBy": "",[39m
+[2m    "id": "eff4c588-4e9e-449c-aa33-43a9fee75f63",[22m
+[2m    "mimeType": "text/plain",[22m
+[2m    "name": "f.txt",[22m
+[2m    "sizeBytes": 12,[22m
+[2m    "storageKey": "store/key-468",[22m
+
+[36m [2m❯[22m src/__tests__/round468-create-path-literal-vs-mapper.test.ts:[2m114:21[22m[39m
+    [90m112| [39m  [34mit[39m([32m'createFile: empty createdBy'[39m[33m,[39m () [33m=>[39m {
+    [90m113| [39m    const created = createFile('f.txt', 'text/plain', 12, 'store/key-4…
+    [90m114| [39m    [34mexpect[39m(created)[33m.[39m[34mtoEqual[39m([34mgetFile[39m(created[33m.[39mid))[33m;[39m
+    [90m   | [39m                    [31m^[39m
+    [90m115| [39m  })[33m;[39m
+    [90m116| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/__tests__/round468-create-path-literal-vs-mapper.test.ts[2m > [22mround468 — the writer's return equals a read of the row it wrote[2m > [22mcreateFileRef: empty addedBy
+[31m[1mAssertionError[22m: expected { …(7) } to deeply equal { …(7) }[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[33m@@ -1,8 +1,8 @@[39m
+[2m  {[22m
+[2m    "addedAt": "2026-11-17T17:23:14.877Z",[22m
+[32m-   "addedBy": undefined,[39m
+[31m+   "addedBy": "",[39m
+[2m    "fileId": "c51c1ba0-64d8-4e1d-8e1b-5b7f4d6c287e",[22m
+[2m    "id": "3f26ba4b-e2b9-45b1-bf0b-962e5c2309fa",[22m
+[2m    "refType": "pinned",[22m
+[2m    "scope": "channel",[22m
+[2m    "scopeId": "default",[22m
+
+[36m [2m❯[22m src/__tests__/round468-create-path-literal-vs-mapper.test.ts:[2m121:21[22m[39m
+    [90m119| [39m    const created = createFileRef(file.id, 'channel', 'default', 'pinn…
+    [90m120| [39m    [35mconst[39m read [33m=[39m [34mgetFileRefs[39m(file[33m.[39mid)[33m.[39m[34mfind[39m((r) [33m=>[39m r[33m.[39mid [33m===[39m created[33m.[39mid)[33m;[39m
+    [90m121| [39m    [34mexpect[39m(created)[33m.[39m[34mtoEqual[39m(read)[33m;[39m
+    [90m   | [39m                    [31m^[39m
+    [90m122| [39m  })[33m;[39m
+    [90m123| [39m})[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m4 failed[39m[22m[2m | [22m[1m[32m6 passed[39m[22m[90m (10)[39m
+[2m   Start at [22m 09:23:14
+[2m   Duration [22m 267ms[2m (transform 90ms, setup 55ms, import 71ms, tests 29ms, environment 0ms)[22m
+

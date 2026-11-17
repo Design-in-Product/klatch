@@ -196,7 +196,45 @@ export function createChannel(name: string, systemPrompt: string, model?: ModelI
   });
   txn();
 
-  return { id, name, type: channelType, systemPrompt, groundRules: rules || undefined, model: channelModel, mode: channelMode, createdAt: now, source: 'native' as ChannelSource };
+  return readBack('channels', id, rowToChannel);
+}
+
+/**
+ * Publish a row by **reading it back through its mapper**, never by building a
+ * second literal from the writer's own arguments.
+ *
+ * Why this helper exists (round468, `docs/research/unit-468createlit-2026-11-17/`):
+ * every writer in this file used to return a hand-built object. A hand-built
+ * object is a *second spelling of the row*, and it carries none of the
+ * normalisation the `rowTo*` mappers perform (`|| undefined`, `|| ''`, `=== 1`,
+ * `|| DEFAULT_MODEL`). Two consequences, both measured before this changed:
+ *
+ *  1. **The create response and a later read could disagree in value.** Four of
+ *     ten writers did, under an empty-string optional field: `insertMessage`
+ *     (`model`, `entityId`), `createToolUseArtifact` (`inputSummary`),
+ *     `createFile` (`createdBy`), `createFileRef` (`addedBy`) each published
+ *     `''` where every subsequent read of the same row said `undefined`.
+ *  2. **A mapper defect was invisible on the create path.** 11/16's C4 cripple
+ *     (`rowToGroundRulesPreset` returning the raw `is_default` column) reddened
+ *     three read arms and left `POST … makeDefault` green, because that response
+ *     never went through the mapper. A cripple that cannot reach a path cannot
+ *     grade it.
+ *
+ * Price, stated rather than hidden: one extra indexed primary-key SELECT per
+ * write. This is a single-user local SQLite app; the write already cost a
+ * transaction.
+ *
+ * The caller passes its own mapper, so there is exactly one mapper per type and
+ * this helper never becomes a place where a type's shape is decided.
+ */
+function readBack<T>(table: string, id: string, mapper: (row: any) => T): T {
+  const row = getDb().prepare(`SELECT * FROM ${table} WHERE id = ?`).get(id) as any;
+  // Unreachable in practice: we just inserted this id inside a committed
+  // transaction on the same connection. Thrown rather than returned as
+  // `undefined` so a schema or trigger change that *does* make it reachable
+  // fails loudly instead of handing a caller a hole where a row should be.
+  if (!row) throw new Error(`readBack: ${table} row ${id} vanished between write and read`);
+  return mapper(row);
 }
 
 export function updateChannel(
@@ -279,7 +317,9 @@ export function createGroundRulesPreset(
   });
   txn();
 
-  return { id, name: name || undefined, body: trimmedBody, isDefault: makeDefault, createdAt: now };
+  // Read back through the mapper (round468). This is the writer whose literal
+  // made 11/16's C4 cripple unreachable on the create path.
+  return readBack('ground_rules_presets', id, rowToGroundRulesPreset);
 }
 
 /**
@@ -360,7 +400,10 @@ export function insertMessage(
       'INSERT INTO messages (id, channel_id, role, content, status, model, entity_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
     )
     .run(id, channelId, role, content, status, model || null, entityId || null, now);
-  return { id, channelId, role, content, status, model, entityId, createdAt: now };
+  // Read back through the mapper (round468): `model || null` and
+  // `entityId || null` collapse '' at the INSERT, so the literal this replaced
+  // published '' where every read said undefined.
+  return readBack('messages', id, rowToMessage);
 }
 
 /** Create a user message + assistant placeholder in a single transaction */
@@ -509,7 +552,7 @@ export function createEntity(
   getDb()
     .prepare('INSERT INTO entities (id, name, handle, model, effort, system_prompt, color, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)')
     .run(id, name, handle || null, model, entityEffort, systemPrompt, color, now);
-  return { id, name, handle: handle || undefined, model, effort: entityEffort, systemPrompt, color, createdAt: now };
+  return readBack('entities', id, rowToEntity); // round468
 }
 
 export function updateEntity(
@@ -1393,7 +1436,7 @@ export function createProject(
   getDb()
     .prepare('INSERT INTO projects (id, name, instructions, memory, source, source_metadata, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)')
     .run(id, name, instructions, memory, source, JSON.stringify(sourceMetadata), now);
-  return { id, name, instructions, memory, source, sourceMetadata: JSON.stringify(sourceMetadata), createdAt: now };
+  return readBack('projects', id, rowToProject); // round468
 }
 
 export function updateProject(
@@ -1777,17 +1820,7 @@ export function createFileArtifact(
     `INSERT INTO message_artifacts (id, message_id, type, tool_name, input_summary, file_name, file_mime_type, file_size_bytes, file_storage_key, created_at)
      VALUES (?, ?, 'file', NULL, ?, ?, ?, ?, ?, ?)`
   ).run(id, messageId, `Attached: ${fileName}`, fileName, fileMimeType, fileSizeBytes, fileStorageKey, now);
-  return {
-    id,
-    messageId,
-    type: 'file',
-    inputSummary: `Attached: ${fileName}`,
-    fileName,
-    fileMimeType,
-    fileSizeBytes,
-    fileStorageKey,
-    createdAt: now,
-  };
+  return readBack('message_artifacts', id, rowToArtifact); // round468
 }
 
 /**
@@ -1835,7 +1868,7 @@ export function createCarriedContextArtifact(
     `INSERT INTO message_artifacts (id, message_id, type, tool_name, input_summary, content, created_at)
      VALUES (?, ?, 'carried_context', NULL, ?, ?, ?)`
   ).run(id, messageId, inputSummary, content, now);
-  return { id, messageId, type: 'carried_context', inputSummary, content, createdAt: now };
+  return readBack('message_artifacts', id, rowToArtifact); // round468
 }
 
 /**
@@ -1870,7 +1903,11 @@ export function createToolUseArtifact(
     `INSERT INTO message_artifacts (id, message_id, type, tool_name, input_summary, created_at)
      VALUES (?, ?, 'tool_use', ?, ?, ?)`
   ).run(id, messageId, toolName, inputSummary, now);
-  return { id, messageId, type: 'tool_use', toolName, inputSummary, createdAt: now };
+  // Read back through the mapper (round468). This writer is the *other*
+  // sub-mechanism: the INSERT stores '' as '' (no `|| null`), and
+  // `rowToArtifact`'s `row.input_summary || undefined` is what collapses it. A
+  // cure applied only at the INSERT side would have left this one standing.
+  return readBack('message_artifacts', id, rowToArtifact);
 }
 
 /** Get all file artifacts for a list of message IDs (batch query for context injection) */
@@ -1992,7 +2029,7 @@ export function createFile(
   getDb().prepare(
     'INSERT INTO files (id, name, mime_type, size_bytes, storage_key, created_by, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)'
   ).run(id, name, mimeType, sizeBytes, storageKey, createdBy || null, now);
-  return { id, name, mimeType, sizeBytes, storageKey, createdBy, createdAt: now };
+  return readBack('files', id, rowToFile); // round468
 }
 
 /** Create a file reference at a given scope */
@@ -2008,7 +2045,7 @@ export function createFileRef(
   getDb().prepare(
     'INSERT INTO file_refs (id, file_id, scope, scope_id, ref_type, added_at, added_by) VALUES (?, ?, ?, ?, ?, ?, ?)'
   ).run(id, fileId, scope, scopeId, refType, now, addedBy || null);
-  return { id, fileId, scope, scopeId, refType, addedAt: now, addedBy };
+  return readBack('file_refs', id, rowToFileRef); // round468
 }
 
 /** Remove a file reference */
