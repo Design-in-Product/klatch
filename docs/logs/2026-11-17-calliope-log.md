@@ -58,3 +58,57 @@ this fire's scope (per this seat's own standing note). Blocked-on-xian and Watch
 Drain: mail checked twice (session-start read, then the four cross-repo mailboxes) — nothing
 further found either pass. The one actionable item (the rollup/STATE.md correction) is done.
 Nothing deferred; no named blocker outstanding.
+
+---
+
+## 12:3x — Session resumed (MID fire)
+
+Pulled clean, working tree clean at start. `git log --oneline 248db1df..HEAD` (own last
+checkpoint, the START-fire ground-rules/STATE.md correction) showed 13 new commits, none mine
+by author (`git log 248db1df..HEAD --format='%an' | sort | uniq -c`: Argus 1, Daedalus 7,
+Theseus 5) — Daedalus's create-path literal-vs-mapper seam (`unit-468createlit`, cured across
+all ten writers), Theseus's brace-balance slicer census (`unit-469braceslice`, 62 slicers, 52
+unguarded, 45 live, both seats already had the cure), Argus's mail/gate re-drive. `git diff
+--stat 248db1df..HEAD -- packages/ scripts/` not empty (2 files, the `queries.ts` cure plus its
+test) but already covered by Daedalus's own cited gate figures — no further diff this fire.
+
+**Mail:** re-ran `grep -l "^to:.*Calliope" docs/mail/*.md` — same five files as this morning's
+START fire (Daedalus's phase-1 §4, already closed by this seat's own 11-16 SWEEP reply; four
+Pard ma-smoke memos from 10-20, re-confirmed still correctly boarded — `git ls-remote --heads
+origin` re-checked fresh, still no `smoke`/`ma-smoke`/`managed` branch). Nothing new addressed
+to this seat since this morning.
+
+**Found and corrected one real staleness, verified before editing:** `docs/operations/duty-
+cycle/calliope-tasks.md`'s recurring-items table still read `next_due 2026-11-16`/`last_completed
+2026-11-15` for the `log.html` logbook item, even though the 11-16 STOP-fire entry was written
+and exists (`grep -n "ENTRY: 2026-11-16" log.html` confirmed present, commit `ac9ed14a`). Same
+bookkeeping-gap shape as the 10-17/10-20/10-23 instances already on record in this file — the
+entry itself was never missing, only this row's own tracking fields went stale. Corrected
+`next_due` to 2026-11-17, `last_completed` to 2026-11-16, with a short summary of what the 11-16
+entry actually covers (read directly from `log.html`, not reconstructed from memory).
+
+**Cross-repo mailboxes:** all four pulled fresh (`git -C <repo> pull origin main`) — new
+content landed in `designinproduct` (two exec/Janus memos, keychain/gate-related, no klatch
+mention), `piper-morgan-product` (three dev-cycle code logs, no klatch mention — note: Piper's
+`dev/` tree sits outside this sandbox's allowed paths, checked only via grep inside
+`mailboxes/`), and `dispatch` (a fresh 2026-11-17 cross-pollination brief plus routine
+daily/inbox-check memos). `mediajunkie` had nothing new. Fetched today's cross-pollination
+brief fresh from its real source (`git -C mediajunkie show origin/main:docs/briefs/cross-
+pollination/2026-11-17.md`) to confirm it matches what this morning's START fire already read —
+it does, byte-for-byte in substance (the `wc -c`-at-write-time fix and Globe's probe-retry/
+UNMEASURABLE item), nothing new. Searched `piper-morgan-product/mailboxes` and `dispatch/mail`
+(the two allowed cross-repo mail directories) for any `klatch`/`calliope` hits among today's new
+files — none found; the historical hits are all already in `read/` or otherwise closed threads
+from months ago.
+
+**Standing items re-derived fresh, all unchanged:** `attention-rollup.md` still v185, needs-you
+8; `docs/STATE.md` mtime unchanged since this morning's edit; Blocked-on-xian and Watch-items
+sections in `calliope-tasks.md` re-checked, nothing triggered; no `docs/intel/2026-11-17-*` file
+yet. Today's mandatory `log.html` entry is a STOP-fire item, not this fire's scope. Gate not
+re-driven — `git diff --stat -- packages/ scripts/` confirmed empty for this seat's own changes
+(doc-only this fire).
+
+**Drain:** mail checked twice (session-start, then all four cross-repo mailboxes after pulling
+fresh), nothing further found either pass beyond the one correction made. Nothing deferred; no
+named blocker outstanding. Two consecutive checks found nothing further unblocked. Fire closed
+bounded.
