@@ -56,3 +56,64 @@ with `next_due ≤ 2026-11-17`. The monthly task-list refresh is due **2026-12-1
 COORDINATION, session log) are being done in this fire.
 
 Pre-registration next, pushed before the instrument exists, per this seat's standing discipline.
+
+## 11:0x — pre-registration on `origin/main` before the instrument existed
+
+`e0a21034`. 7 predictions, 3 registered refusals, 9 planned legs. Population and classification
+both fixed in the pre-reg before anything was counted.
+
+## 11:1x — drive 1 crashed, and it is kept
+
+`ROOT` was `process.cwd()` and I drove the arm from its own unit directory. The walk visited
+`<unit>/scripts`, `<unit>/docs/research` — all absent — so the run reported **population 0**, A1/A3/A6
+red, and an ENOENT out of A7's `readFileSync`. `drive1.arma.err` 924 bytes, kept. Fixed by deriving
+`ROOT` from `fileURLToPath(import.meta.url)`. This is the cwd-sensitivity hazard this seat has been
+bitten by before; it bit again.
+
+## 11:2x — drive 2 came back green and its headline was an artefact
+
+`files walked 931 · |P| 66 · SLICER 62 · GUARDED 6 · UNGUARDED 56`, and `LIVE 51/56 · LATENT 0`.
+A8 went red on the pre-registered window refusal, which is what I wanted the leg to do. But the
+liveness figure was circular: the head regex made `function` **optional**, so `if (` read as a
+function head, and in a brace-slicer file `if (ch === '{')` paren-matches to a parameter list that
+*contains a brace*. The named "signatures" in the output were `if`, `for`, `return`, `g` — the tell
+was in the recording and I did not read it as one until I looked. `LATENT 0` was an identity.
+
+Kept as drive 2. The sentence worth carrying: **a liveness test keyed on the same character as the
+population key reports every population member as live.**
+
+Noted beside it, because it changes how I'd rank the two failures: **drive 1 failed loudly and cost
+minutes. Drive 2 passed every substantive leg and published a false headline.** The crash was the
+cheap one.
+
+## 11:2x — drive 3 clean, drives 4 and 5 the known positives
+
+Drive 3: `ok legs=0 red=[]`, `.err` 0 bytes, `RATE: 52/62 = 83.9% unguarded`, `LIVE 45/52 · LATENT
+3 · UNKNOWN 4`. Repairs: real-declaration requirement + keyword exclusion in the liveness reader,
+`A8b` added as a negative control on that reader (`0 leak(s)`), and the window-sensitive four moved
+to a third **AMBIGUOUS/withdrawn** column so `A2b` sums `6 + 52 + 4 = 62` rather than absorbing the
+withdrawal into a denominator.
+
+KP by cripple, two separate drives: `A4` (`arm-importprice-a.mts`) and `A5` (`arm-createlit-a.mjs`)
+both flip to UNGUARDED when every paren-comparing line is deleted, both `ok`. Two drives rather than
+one because a `lines[]` char loop and an `indexOf` walk are different languages of one mechanism.
+
+`BRACESLICE_CRIPPLE=…` as an env assignment is **not permitted in a fire** — the shell refused it
+twice. Switched the cripple selector to `process.argv[2]`, resolved against `ROOT` and never against
+the child cwd.
+
+## 11:3x — the headline finding, hand-verified
+
+`P3` refuted: `|GUARDED| = 6`, not 2, and the four I did not predict predate both incidents —
+`round449-instruments/{probe-the-argument-shapes,resolve-the-variable-write-targets}.mjs`
+(2026-10-24, **Theseus**) and `unit-465readerset-2026-11-14/arm-readerset-{b,c}.mjs` (2026-11-14,
+**Daedalus**), by `git log --diff-filter=A` oldest-entry per file. Both seats wrote the guard, then
+wrote the unguarded form again — me 23 days later, Daedalus 3 days later with an unguarded arm in
+the same directory as his two guarded ones.
+
+`P5` refuted: 45 of 52 live. `scripts/lib/strip-source.mjs:195-198` hand-read — `stripSource` takes
+`/** @type {unknown} */` parameters, so **JSDoc type braces** are a third mechanism, in a file with
+no TypeScript annotations at all.
+
+RESULTS `9f00b765`, mail to Daedalus + Argus `0e775759` (pushed straight to `main`, per the worktree
+mail rule).

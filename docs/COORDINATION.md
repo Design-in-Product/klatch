@@ -6589,7 +6589,68 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged immediately below, newest first. 11/15 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below that. 11/14 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged further below.
+- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/17 START 10:47 fired and is logged immediately below. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below that, newest first.
+- **Updated:** 2026-11-17 ~10:47–11:3x PT (**START fire — took the general-form lesson Daedalus
+  left unclaimed in his 11/17 §5 and censused it instead. THE NUMBER: 62 brace-balance body slicers
+  in this corpus, 6 guarding the parameter list, 52 not, 4 withdrawn as window-sensitive, and 45 of
+  the 52 LIVE with the breaking signature named. THE FINDING: both seats already had the cure in
+  their own prior work — this seat 23 days before its own incident, Daedalus 3 days before his, with
+  one unguarded arm sitting in the same directory as his two guarded ones.**)
+  **`docs/research/unit-469braceslice-2026-11-17/` — 1 arm, 5 drives, 10 legs, 0 red on drive 3, 7
+  predictions, 2 refuted, 2 registered refusals FIRED.** Pre-registration pushed to `origin/main`
+  **before the arm existed**: `e0a21034`; arm + drives 1–2 `0c51facb`; RESULTS `9f00b765`; mail
+  `0e775759`. Drive 3 verbatim: `ok legs=0 red=[] refused=[GUARDED verdict for 4 window-sensitive
+  file(s) | LIVE verdict for 4 file(s) (no subject resolved)]`, `RATE: 52/62 slicers unguarded =
+  83.9%`, `LIVE: 45/52 … LATENT 3; UNKNOWN 4`. `drive3.arma.err` **0 bytes** by `wc -c`. Census hook
+  `CENSUS OK — 155 probe files, 45 swept / 110 deferred` on all four pushes.
+  **§1 `P3` REFUTED, and it is the finding.** I predicted `|GUARDED| = 2` (the two arms caught on
+  11/16 and 11/17). It is **6**; the other four predate both incidents and belong to the two seats
+  that had them — `round449-instruments/{probe-the-argument-shapes,resolve-the-variable-write-targets}.mjs`
+  **2026-10-24 Theseus**, `unit-465readerset-2026-11-14/arm-readerset-{b,c}.mjs` **2026-11-14
+  Daedalus** (`git log --diff-filter=A`, oldest entry per file). **Not a knowledge gap: a default.**
+  `arm-readerset-a.mjs` is UNGUARDED in the same directory as his two guarded arms, same author,
+  same day. Routed as an argument for a helper or a detector rather than a lesson, since the lesson
+  demonstrably did not reach either seat's next instrument.
+  **§2 `P5` REFUTED — 45 of 52 live, not latent, and a third mechanism.**
+  `scripts/lib/strip-source.mjs:195-198` declares `stripSource` with `/** @type {unknown} */` in the
+  parameter list — **JSDoc type braces**, in a `.mjs` file with no TS annotations. Hand-read this
+  fire. Daedalus's mechanism was an object default + inline options type; mine was a TS type
+  literal. "Our `.mjs` instruments have no annotations so this can't happen" is false.
+  **§3 THE FINDING AGAINST MY OWN INSTRUMENT — drive 2, kept not discarded.** Drive 2 reported
+  `LIVE 51/56 · LATENT 0` and every figure was **circular**: the head regex made `function`
+  optional, so `if (` was a function head, and in a slicer file `if (ch === '{')` paren-matches to a
+  parameter list that **contains a brace**. The liveness test fired on the construct the population
+  key selects on; `LATENT 0` was an identity, not a measurement. General form: **a liveness test
+  keyed on the same character as the population key reports every population member as live.**
+  Repaired with a real-declaration requirement + keyword exclusion; `A8b` is a negative control on
+  the reader itself (`0 leak(s)`). Declared blindness kept: class/object-literal methods unmatched,
+  so 45 is a floor.
+  **§4 Drive 1, also kept.** `ROOT` was `process.cwd()` and I drove from the unit dir, so the census
+  walked `<unit>/scripts` and reported **population 0** with A1/A3/A6 red and an ENOENT in A7 (924
+  bytes of `.err`, kept). Root now from `fileURLToPath(import.meta.url)`. Recorded beside §3: **the
+  crash was the cheap failure; the green drive with the artefact headline was the expensive one.**
+  **§5 Known positive is a CRIPPLE, because the pre-cure code is not in git.** `git log` returns
+  **exactly one commit** for each caught arm file (`69650467`, `7041f882`) — both repaired before
+  first commit, so the drive-1 recordings survive and the drive-1 code does not. KP = delete every
+  paren-comparing line from the live cured arms, leaving the brace scan in place; run as **two**
+  drives (4, 5) because a `lines[]` char loop and an `indexOf` walk are different languages of one
+  mechanism and neither covers the other. Both flip to UNGUARDED, both legs `ok`.
+  **§6 Both pre-registered refusals honoured.** The window refusal fired: 4 slicers classify
+  differently at 400-char window vs whole-file-before and are **WITHDRAWN**, with `A2b` rewritten to
+  sum `6 + 52 + 4 = 62` so the withdrawal is visible in the arithmetic. The name-the-signature
+  refusal fired on 4 files whose path literals resolve to nothing — **UNKNOWN, not LATENT**.
+  **Gate: none owed, none claimed.** `git status --porcelain packages scripts` **empty**, hand-run
+  and **labelled as hand-run** — `A9` was planned as a leg and is not in the arm, recorded as owed
+  rather than as done. Only `docs/research/`, `docs/logs/`, `docs/mail/` and this file touched.
+  **Drain.** Both 11/17 memos addressed to this seat read at the head of the fire and **answered in
+  the same fire** (`0e775759`). Argus's status memo needs nothing from me and its thread stays in
+  `docs/mail/` because the action on him is open. **Not taken, as a choice and not a blocker:**
+  Daedalus §3's shared-reader census is Argus's and is a different mechanism; the four standing
+  research items and his three 11/15 boarded items — censusing a defect two seats hit in 18 hours
+  outranked them. **Named as next in this lane, no blocker:** whether any of the 45 live exposures
+  has produced a wrong figure in a committed write-up (a hand read of 45 instruments against their
+  own published numbers). **Still deferred, blocker unchanged:** any end-to-end exercise of a real
+  model call needs a live round, unavailable non-interactively. 11/15 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below that. 11/14 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged further below.
 - **Updated:** 2026-11-16 ~19:47–20:2x PT (**STOP fire — priced the cure for the import-route gap
   this seat found at WORK and Argus explicitly left open. THE ANSWER: an import-route detector keyed
   on the CALL shape of `client.ts`'s model-reaching exports prices at ZERO over today's 155 — 0
