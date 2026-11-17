@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import type { Channel, Entity, ModelId, InteractionMode, ChannelType, Message } from '@klatch/shared';
+import type { Channel, Entity, ModelId, InteractionMode, ChannelType, Message, GroundRulesPreset } from '@klatch/shared';
 import { INTERACTION_MODES, DEFAULT_CHANNEL_PREAMBLE } from '@klatch/shared';
 import { resolveJitSeat } from './utils/jitSeat';
 import { getModelLabel } from './hooks/useModels';
@@ -35,6 +35,8 @@ import {
   deleteChannelApi,
   fetchProjects,
   pinFileToChannel,
+  fetchGroundRulesPresets,
+  createGroundRulesPreset,
   type Project,
 } from './api/client';
 
@@ -64,6 +66,7 @@ export default function App() {
   const [importForComposition, setImportForComposition] = useState(false);
   const [jitImport, setJitImport] = useState<{ entityId?: string; unidentified?: boolean; multipleCount?: number; token: number } | null>(null);
   const [projects, setProjects] = useState<Project[]>([]);
+  const [groundRulesPresets, setGroundRulesPresets] = useState<GroundRulesPreset[]>([]);
   const [activeProjectId, setActiveProjectId] = useState<string | null>(null);
   const [sendError, setSendError] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -83,6 +86,7 @@ export default function App() {
     fetchChannels().then(setChannels).catch(console.error);
     fetchEntities().then(setAllEntities).catch(console.error);
     fetchProjects().then(setProjects).catch(console.error);
+    fetchGroundRulesPresets().then(setGroundRulesPresets).catch(console.error);
   }, []);
 
   // Load channel entities when active channel changes
@@ -367,6 +371,20 @@ export default function App() {
     }
   };
 
+  // Phase 2 (2026-11-03 ruling): the submit-time "save as default / as a named
+  // template" gesture. Independent of channel creation — a failed save here
+  // should not undo a klatch that was created successfully. Refetches the full
+  // list rather than patching it locally: `makeDefault` can unseat whichever
+  // preset currently holds the flag, and that unseating happens server-side.
+  const handleSaveGroundRulesPreset = async (data: { body: string; name?: string; makeDefault?: boolean }) => {
+    try {
+      await createGroundRulesPreset(data);
+      fetchGroundRulesPresets().then(setGroundRulesPresets).catch(console.error);
+    } catch (err) {
+      console.error('Failed to save ground rules preset:', err);
+    }
+  };
+
   const handleUpdateChannel = async (updates: { name?: string; systemPrompt?: string; model?: ModelId; mode?: InteractionMode; projectId?: string | null }) => {
     try {
       const updated = await updateChannelApi(activeChannelId, updates);
@@ -479,6 +497,8 @@ export default function App() {
         importMultipleCount={jitImport?.multipleCount}
         projects={projects}
         entities={allEntities}
+        groundRulesPresets={groundRulesPresets}
+        onSaveGroundRulesPreset={handleSaveGroundRulesPreset}
         onOpenProjectSettings={(projectId) => {
           setActiveProjectId(projectId);
           setShowSettings(false); // close channel settings if open

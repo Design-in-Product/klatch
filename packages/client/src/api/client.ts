@@ -1,4 +1,4 @@
-import type { Channel, Entity, Message, ModelId, InteractionMode, ChannelType, ImportResult, FileWithRef, DiscoveredModel, EffortLevel } from '@klatch/shared';
+import type { Channel, Entity, Message, ModelId, InteractionMode, ChannelType, ImportResult, FileWithRef, DiscoveredModel, EffortLevel, GroundRulesPreset } from '@klatch/shared';
 
 const BASE = '/api';
 
@@ -20,6 +20,29 @@ export interface ModelsResponse {
 export async function fetchModels(): Promise<ModelsResponse> {
   const res = await fetch(`${BASE}/models`);
   if (!res.ok) throw new Error(`Failed to fetch models: ${res.statusText}`);
+  return res.json();
+}
+
+// ── Ground rules presets API (2026-11-03 ruling, phase 2/3) ───
+
+export async function fetchGroundRulesPresets(): Promise<GroundRulesPreset[]> {
+  const res = await fetch(`${BASE}/ground-rules/presets`);
+  if (!res.ok) throw new Error(`Failed to fetch ground rules presets: ${res.statusText}`);
+  const data = await res.json();
+  return data.presets;
+}
+
+export async function createGroundRulesPreset(data: {
+  body: string;
+  name?: string;
+  makeDefault?: boolean;
+}): Promise<GroundRulesPreset> {
+  const res = await fetch(`${BASE}/ground-rules/presets`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error(`Failed to save ground rules preset: ${res.statusText}`);
   return res.json();
 }
 

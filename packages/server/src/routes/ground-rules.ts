@@ -15,12 +15,12 @@ import { readJsonBody } from './json-body.js';
  * textarea, the layer-4a prompt part). This is the store that phase 2's
  * save-on-submit gesture writes and phase 3's offer-previous-rules reads.
  *
- * **Zero callers today, and that is named rather than hidden.** The submit-time
- * prompt ("save these as your default?" / "name this template") and the
- * creation-time picker are client work and stay Iris's; this is the surface they
- * code against, deliberately landed first so neither is waiting on a server.
- * Same shape as `GET /entities/:id/delete-preview` this morning: the endpoint is
- * one fire old, has no caller, and its shape is offered as changeable.
+ * **Wired to both client halves as of 2026-11-17** (`ChannelSidebar.tsx`): the
+ * submit-time prompt (a "make this my default" checkbox plus an optional
+ * template-name field, both one `POST`) and the creation-time offer (the
+ * default prefills the field on opening a klatch; named presets appear in a
+ * picker). Shape stays offered as changeable — this correction is only that
+ * "zero callers" above is no longer true.
  *
  * **Not built, so nobody has to infer it from the absence:** re-designating an
  * existing preset as the default after the fact (the ruling asks for

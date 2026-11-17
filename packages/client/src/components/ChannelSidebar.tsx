@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import type { Channel, Entity, ChannelType, InteractionMode } from '@klatch/shared';
+import type { Channel, Entity, ChannelType, InteractionMode, GroundRulesPreset } from '@klatch/shared';
 import { INTERACTION_MODES, DEFAULT_CHANNEL_PREAMBLE } from '@klatch/shared';
 import { getModelLabel } from '../hooks/useModels';
 import { KlatchLogo } from './KlatchLogo';
@@ -48,6 +48,10 @@ interface Props {
   importMultipleCount?: number;
   projects?: Project[];
   entities?: Entity[];
+  /** Saved ground-rules sets (2026-11-03 ruling, phase 2/3) — default first, then named templates. */
+  groundRulesPresets?: GroundRulesPreset[];
+  /** Submit-time "save as default / as a named template" gesture. Fires independently of channel creation. */
+  onSaveGroundRulesPreset?: (data: { body: string; name?: string; makeDefault?: boolean }) => void;
   isOpen?: boolean;
   onClose?: () => void;
   theme: 'light' | 'dark';
@@ -69,6 +73,8 @@ export function ChannelSidebar({
   importMultipleCount,
   projects = [],
   entities = [],
+  groundRulesPresets = [],
+  onSaveGroundRulesPreset,
   isOpen,
   onClose,
   theme,
@@ -77,12 +83,17 @@ export function ChannelSidebar({
   const [showForm, setShowForm] = useState(false);
   const [newName, setNewName] = useState('');
   const [newPrompt, setNewPrompt] = useState('');
-  // Ground rules (2026-11-03 ruling, phase 1). Starts blank on every klatch and
-  // stays blank: no default ships, by the ruling's own terms — the guidance
-  // beside the field is static example text, not a prefill. Phase 3's
-  // "offer previous rules" is what fills it, and it depends on phase 2's
-  // storage, which does not exist yet.
+  // Ground rules (2026-11-03 ruling). Starts blank; a saved default (phase 3,
+  // below) is the only thing allowed to fill it before the user types — no
+  // *hard-coded* default ever ships, which is what the ruling's "no defaults
+  // ship" actually rules out. The guidance beside the field stays static
+  // example text either way.
   const [newGroundRules, setNewGroundRules] = useState('');
+  // Phase 2's submit-time gesture: "make this my default" and/or "save as a
+  // named template, named ___" — not mutually exclusive, matching the API
+  // (`makeDefault` and `name` are independent fields on one POST).
+  const [saveAsDefault, setSaveAsDefault] = useState(false);
+  const [saveTemplateName, setSaveTemplateName] = useState('');
   const [newType, setNewType] = useState<ChannelType>('chat');
   const [newProjectId, setNewProjectId] = useState('');
   const [newMode, setNewMode] = useState<InteractionMode>('panel');
@@ -96,6 +107,8 @@ export function ChannelSidebar({
     setNewName('');
     setNewPrompt('');
     setNewGroundRules('');
+    setSaveAsDefault(false);
+    setSaveTemplateName('');
     setNewType('chat');
     setNewProjectId('');
     setNewMode('panel');
@@ -125,6 +138,18 @@ export function ChannelSidebar({
       setSelectedEntityIds((prev) => (prev.size > 1 ? new Set([[...prev][0]]) : prev));
     }
   };
+
+  const defaultGroundRulesPreset = groundRulesPresets.find((p) => p.isDefault);
+
+  // Phase 3 (2026-11-03 ruling): "later klatches, previous rules are offered —
+  // pre-filled as the default." Fires on every transition into Klatch, not only
+  // the first — only guarded by the field still being blank, so it never
+  // overwrites something the user typed or that clone-from-klatch just carried.
+  useEffect(() => {
+    if (newType !== 'klatch' || newGroundRules.trim()) return;
+    if (defaultGroundRulesPreset) setNewGroundRules(defaultGroundRulesPreset.body);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [newType, defaultGroundRulesPreset]);
 
   // Path B: a completed just-in-time import seats its agent in the roster being composed.
   // Keyed on `importToken`, so the caller controls when this fires; `importedAgentId` alone
@@ -234,6 +259,17 @@ export function ChannelSidebar({
       // rather than relying on the field having been hidden.
       newType === 'klatch' ? (newGroundRules.trim() || undefined) : undefined
     );
+    // Phase 2's save gesture, independent of channel creation: only fires if the
+    // user actually asked for it (checked the box or named a template) — typing
+    // ground rules without either leaves the store untouched, same as today.
+    const groundRulesBody = newType === 'klatch' ? newGroundRules.trim() : '';
+    if (groundRulesBody && (saveAsDefault || saveTemplateName.trim())) {
+      onSaveGroundRulesPreset?.({
+        body: groundRulesBody,
+        name: saveTemplateName.trim() || undefined,
+        makeDefault: saveAsDefault || undefined,
+      });
+    }
     resetForm();
   };
 
@@ -843,7 +879,7 @@ export function ChannelSidebar({
               />
 
               {/* Ground rules — klatch-only, blank by default, static guidance beside it.
-                  2026-11-03 ruling phase 1; scope: docs/ux/ground-rules-scope-2026-11-16.md.
+                  2026-11-03 ruling, all three phases; scope: docs/ux/ground-rules-scope-2026-11-16.md.
 
                   Klatch-only for the same reason the mode selector is: the ruling is
                   about how a room full of participants behaves. The column is on
@@ -856,6 +892,27 @@ export function ChannelSidebar({
                   ruling says must not ship. */}
               {newType === 'klatch' && (
                 <div className="space-y-1">
+                  {/* Phase 3's "choice among templates" — only the named presets, since
+                      the unnamed default is already offered by the prefill above. */}
+                  {groundRulesPresets.some((p) => p.name) && (
+                    <select
+                      value=""
+                      onChange={(e) => {
+                        const preset = groundRulesPresets.find((p) => p.id === e.target.value);
+                        if (preset) setNewGroundRules(preset.body);
+                      }}
+                      className="w-full rounded bg-input border border-line px-2.5 py-1.5 text-xs text-secondary focus:outline-none focus:border-accent"
+                    >
+                      <option value="">Use a saved ground rules template…</option>
+                      {groundRulesPresets
+                        .filter((p) => p.name)
+                        .map((p) => (
+                          <option key={p.id} value={p.id}>
+                            {p.name}{p.isDefault ? ' (default)' : ''}
+                          </option>
+                        ))}
+                    </select>
+                  )}
                   <textarea
                     value={newGroundRules}
                     onChange={(e) => setNewGroundRules(e.target.value)}
@@ -868,6 +925,29 @@ export function ChannelSidebar({
                     · “No jargon — explain it plainly.” · “Keep what's said here to this room.”
                     · “Say when you don't know.”
                   </p>
+                  {/* Phase 2's submit-time gesture — only worth offering once there's a
+                      body to save; an empty-rules klatch has nothing for either control
+                      to do. */}
+                  {newGroundRules.trim() && (
+                    <div className="flex items-center gap-2 px-0.5">
+                      <label className="flex items-center gap-1 text-[11px] text-secondary whitespace-nowrap">
+                        <input
+                          type="checkbox"
+                          checked={saveAsDefault}
+                          onChange={(e) => setSaveAsDefault(e.target.checked)}
+                          className="accent-accent"
+                        />
+                        Make this my default
+                      </label>
+                      <input
+                        type="text"
+                        value={saveTemplateName}
+                        onChange={(e) => setSaveTemplateName(e.target.value)}
+                        placeholder="or save as a template, named…"
+                        className="flex-1 min-w-0 rounded bg-input border border-line px-2 py-1 text-[11px] text-primary placeholder-muted focus:outline-none focus:border-accent"
+                      />
+                    </div>
+                  )}
                 </div>
               )}
               <div className="flex gap-2">
