@@ -976,7 +976,78 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-16 ~17:17–17:3x PT (**STOP fire — substantive, PRODUCT for the third fire
+- **Updated:** 2026-11-17 ~09:17–09:3x PT (**START fire — substantive: THE CREATE-PATH LITERAL SEAM
+  IS CURED ACROSS ALL TEN WRITERS, THE ROUTE'S POST RESPONSE IS GRADEABLE BY THE MAPPER FOR THE FIRST
+  TIME — AND MY OWN EQUALITY ARM TURNED OUT TO BE UNABLE TO GRADE THE MAPPER IT WAS WRITTEN FOR,
+  GREEN IN ALL FOUR LEGS.**) `date`-reads **09:17:10**, **09:20:17**, **09:25:42**, **09:30:29 PST**,
+  read not estimated. **Commit authors checked, not assumed:** the five commits above my 11/16 head
+  are **Argus's**, **Calliope's**, **Iris's** ×2 and **Pard's** — **none mine**, though three carry
+  "11/17 START fire" in the subject line. Mail delta by `git diff --name-status`, not mtime →
+  **4 added to `docs/mail/`** (all `cc:` me, the Argus↔Theseus import-route lane, **no ask of this
+  seat**), **4 added straight to `read/`**, 6 moved. All 8 read in this fire.
+  **1. THE GROUND-RULES RULING IS BUILT END TO END.** Iris's `d67e85c4` landed phases 2 and 3's
+  client halves against the preset API I shipped yesterday, contract unchanged and checked by her
+  first; Calliope **accepted the one-table shape** and retracted her two-store split with a dated
+  addendum, and corrected `CLAUDE.md`'s table count to nine off the live source. 14 days from ruling
+  to complete. The Drizzle call stays xian's.
+  **2. BUILT AND PUSHED: `unit-468createlit`, five commits — `a33e198e`, `7041f882`, +3.** Took the
+  seam I named unclaimed in my own 11/16 §5. `readBack(table, id, mapper)`; **all ten** writers with
+  a sibling mapper return through it. Price named: one extra primary-key SELECT per write.
+  **3. THE IDIOM WAS TOTAL, NOT PREDOMINANT.** Census keyed on *"exported function in `queries.ts`
+  containing an `INSERT INTO`"* — not on the name `create*`, which misses `insertMessage` and admits
+  `createChannelBySessionIdResolver`. **13 writers, 12 hand-built literals, 0 through a mapper.**
+  Predicted 8/2: **refuted**, and it explains the survival better than "nobody noticed" — there was
+  no in-house counter-example to point at.
+  **4. FOUR OF TEN DISAGREED IN VALUE, BY TWO SUB-MECHANISMS.** `insertMessage`, `createToolUse-
+  Artifact`, `createFile`, `createFileRef` each published `''` where every read of the same row said
+  `undefined`. All four named before driving; no unnamed member diverged. **(a)** the INSERT
+  collapsing via `|| null` (three) vs **(b)** the mapper collapsing a stored `''` (one) — a cure at
+  one side only would have come back green on three of four and been reported complete.
+  **5. MY OWN EQUALITY ARM CANNOT GRADE THE MAPPER IT WAS WRITTEN FOR.** Cripple C5 on
+  `rowToFile.createdBy`, whole suite, four legs: **cured/clean 0 · cured/crippled 0 ·
+  pre-cure/clean 4 · pre-cure/crippled 4.** Nothing reddened in either tree. **P6 refuted in both
+  directions, for two different reasons:** post-cure `expect(created).toEqual(read)` compares two
+  readings that **share** the mapper, so a mapper defect moves both sides and the difference is
+  invariant; pre-cure those arms were **already red** and had no spare signal. The mirror of the
+  delta-vs-absolute pattern: there only the delta carried signal, here only the absolute does.
+  Cure: five arms against the **raw column**. Routed to Argus as a mechanically-detectable census
+  (how many comparison arms in the corpus have both sides through one reader?), unclaimed, no
+  deadline.
+  **6. THE CURE'S REACH IS 3× WHAT I PREDICTED, AT THE ROUTE LEVEL.** C6 = 11/16's **C4 re-run**,
+  each leg with its own matched clean baseline on the same tree: **4 attributable reds pre-cure,
+  6 post-cure**, net **+3 / −1**. Predicted 4 and 1 of new reach. The two unpredicted ones are route
+  arms on the **POST response** — the API's create response is now graded by the mapper's
+  correctness, exactly what 11/16 §5 said was missing. 11/16's "C4 → 3 red" figure **confirmed**, not
+  trusted. The **−1** (a preset equality arm that *had* reach pre-cure and lost it) is recorded as
+  cost.
+  **7. SELF-CORRECTION: CENSUS DRIVE 1 SILENTLY DROPPED THE MEMBER THE UNIT IS ABOUT.** Brace-balance
+  body slicing started at the first `{` after the function head, so a brace in the **parameter list**
+  (`opts?: { … }`, `= {}`) opened and closed the "body" on the signature's own line — the slice held
+  no `INSERT INTO`, and `createGroundRulesPreset` and `createProject` fell out of the population
+  **with no error**. Drive 1 read 11/10/0 and looked clean. Both drives kept; fix commented as
+  load-bearing; general form routed to Theseus.
+  **8. PREDICTION LEDGER: 8 registered, 4 landed, 4 refuted.**
+  **9. GATE, DRIVEN FRESH.** Typecheck **0 `error TS`** ×4 workspaces (twice — after the cure and on
+  the restored tree). Server **146 files / 2287 passed / 1 skipped (2288)** = standing 2272 + this
+  unit's 15 arms, nothing else moved. Client **29/42, 354/367**, untouched and equal to Iris's 11/17
+  figure, checked not assumed. Census OK, 155 files, 45/110, on every push. **Cripples restored and
+  verified** after each leg; the cure was committed **before** the first cripple so no restore could
+  discard it, and the pre-cure legs used `git checkout a33e198e -- …`, the real pre-cure file.
+  **Drain:** pull + author-checked delta; `COORDINATION.md` read; mail delta from git and all 8 new
+  files read in-fire, with the one still-open thread's remaining item (Calliope's §3,
+  `setup.ts`'s hand-typed DDL, routed to Argus) **verified** still unanswered rather than closed on a
+  guess; one product seam taken from pre-registration to `main` with 2 cripples and 7 legs; one
+  census routed, one self-correction routed; gate re-driven; five incremental pushes.
+  **Deferred with named blockers, no deadlines:** writers **outside `queries.ts`** are uncensused
+  (`routes/`, both importers, `db/index.ts`) — a choice, scope was one file, and RESULTS §7 says so
+  rather than implying coverage it lacks. The **memory-store compaction pass** (~20 merges, needs a
+  cluster list authored first) — blocker: a bounded fire should not leave a half-done merge pass in a
+  shared store. Still mine and unclaimed: the parameter/positional exclusion,
+  `arm-routecure-d.mjs`'s `hash-object` pin and `/misordered/` detector, the `unit-465p12site`
+  RESULTS:93 one-clause cure, the two `schemacollide` single-name selectors, and `api/client.ts`'s
+  eight-positional `createChannel` wanting an options bag.
+  Log: `docs/logs/2026-11-17-daedalus-log.md`.
+- **Previously:** 2026-11-16 ~17:17–17:3x PT (**STOP fire — substantive, PRODUCT for the third fire
   running: PHASE 2 OF THE GROUND-RULES RULING HAS ITS SERVER HALF, BUILT ON ONE TABLE INSTEAD OF
   THE SCOPE DOC'S TWO WITH THE COST DECLARED IN THE PRE-REG RATHER THAN AFTER — AND TWO OF MY FOUR
   CRIPPLE PREDICTIONS WERE REFUTED ON COUNT, ONE OF THEM BECAUSE I FORGOT AN ARM IN MY OWN FILE.**)
