@@ -106,9 +106,17 @@ const SITES = [
 ];
 // A3: the control — a declaration whose parameter list and return type carry NO brace. Both
 // readers must agree, or the cripple leg below cannot show that the guard is what moved.
+//
+// **Drive 3 defect, repaired here; drive 3 is kept.** The control was
+// `scripts/lib/strip-source.mjs` → `regexLiteralEnd`, chosen as "a declaration with no brace before
+// the body" — and its parameter list is `(/** @type {string} */ src, /** @type {number} */ i)`.
+// It carries the JSDoc-brace mechanism itself. A3a went red reporting naive=8ch vs helper=433ch,
+// which is the *differential working*, not the control failing: I had picked a fourth positive and
+// called it the negative. A control must LACK the property, and reading the two figures as a
+// disagreement would have been a defect report against a correct reader.
 const CONTROL = {
-  mechanism: 'control: no brace before the body',
-  file: 'scripts/lib/strip-source.mjs', decl: 'regexLiteralEnd', wants: 'regex',
+  mechanism: 'control: no brace in the parameter list or the return type',
+  file: 'packages/server/src/db/queries.ts', decl: 'getChannel', wants: 'rowToChannel',
 };
 
 console.log('\nA2 — P3: naive vs shared helper, on three real corpus declarations');
@@ -128,6 +136,31 @@ for (const s of SITES) {
 }
 check('A2a naive is wrong on 3 of 3', naiveWrong === 3, `naiveWrong=${naiveWrong}/3`);
 check('A2b helper is right on 3 of 3', helperRight === 3, `helperRight=${helperRight}/3`);
+
+// **Added at drive 7, because cripple C2 reddened nothing and should have.** A2b's predicate is
+// `body.includes(<token>)`, and C2 (the `stripSource` composition removed) returned a body for
+// `stripSource` that was 1545ch where the cured reader returns 4902ch — a span that stops early on
+// a brace inside a string or comment in the body, and still contains the token. A containment
+// predicate cannot tell a correct span from a wrong one that happens to hold the needle, so the
+// second cure had no leg able to grade it.
+//
+// The invariant that distinguishes them, and it is not a hand-typed answer key: the body text must
+// be brace-balanced UNDER THE STRIPPED READING. The cured reader's span is balanced there by
+// construction; C2's span is balanced in the RAW text and unbalanced once comment and string bodies
+// are blanked. Declared residual: stripping the slice standalone is not identical to stripping the
+// whole file (a comment opened before `bodyStart` is not seen), which can only make this leg
+// MISS a defect, never invent one.
+let balanced = 0;
+for (const s of SITES) {
+  const h = bodyOf(src(s.file), s.decl);
+  if (h === null) continue;
+  const hc = stripSource(h, true);
+  const o = (hc.match(/\x7b/g) || []).length; const c = (hc.match(/\x7d/g) || []).length;
+  if (o === c && o > 0) balanced++;
+  else console.log(`      UNBALANCED ${s.decl}: open=${o} close=${c} len=${h.length}`);
+}
+check('A2c every returned body is brace-balanced under the stripped reading', balanced === 3,
+  `balanced=${balanced}/3`);
 
 const ctext = src(CONTROL.file);
 const cn = naiveBody(ctext, CONTROL.decl);
@@ -198,9 +231,17 @@ check('A5b no refusal is the catch-all shape (every refusal carries a named reas
   Object.keys(reasons).every((r) => r && r !== 'undefined'), `reasons=${Object.keys(reasons).length}`);
 
 /* ========================== A6 — the mirror: how exposed is the corpus, and are the GUARDED six? */
+// **Drive 3 defect, repaired here; drive 3 is kept.** This read `startsWith('GUARDED ')` on the
+// trimmed line, and the census's own SECTION HEADER is
+// `GUARDED (paren-match within 400 chars before): 6` — which starts with exactly that, so the
+// header entered the file list and `|GUARDED|` read 7 for a set of 6. The `readFileSync` of
+// `"(paren-match"` threw into the `catch` and returned `false`, so the bogus member scored as
+// *not* colon-aware: a parse defect that INFLATED the denominator and silently strengthened the
+// claim A6b makes. The row key now requires the remainder to look like a repo path.
 const guarded = readFileSync(resolve(process.cwd(), armOut), 'utf8')
   .split('\n').filter((l) => l.trim().startsWith('GUARDED '))
-  .map((l) => l.trim().slice('GUARDED '.length).trim());
+  .map((l) => l.trim().slice('GUARDED '.length).trim())
+  .filter((p) => /^[\w.-]+\/[\w./-]+$/.test(p));
 // A necessary condition for handling the return-type region is comparing against, or skipping, a
 // `:`. This is a PROXY and is declared as one: it over-credits (a `:` comparison may be for
 // something else) and so can only support the claim that the six are exposed, never refute it.

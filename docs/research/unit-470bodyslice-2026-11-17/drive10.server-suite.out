@@ -1,0 +1,3 @@
+npm error No workspaces found:
+npm error   --workspace=packages/server
+npm error A complete log of this run can be found in: /Users/xian/.npm/_logs/2026-11-17T21_28_46_645Z-debug-0.log

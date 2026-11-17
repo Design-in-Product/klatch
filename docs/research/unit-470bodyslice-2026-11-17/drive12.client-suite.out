@@ -1,0 +1,88 @@
+
+> @klatch/client@0.0.1 test
+> vitest run
+
+
+[1m[46m RUN [49m[22m [36mv4.0.18 [39m[90m/Users/xian/Development/klatch-worktrees/daedalus/packages/client[39m
+
+ [32m✓[39m src/__tests__/ImportDialog.test.tsx [2m([22m[2m66 tests[22m[2m)[22m[33m 8200[2mms[22m[39m
+     [33m[2m✓[22m[39m lets the operator reassign off an ambiguous single-import bind, and the disclosure clears [33m 313[2mms[22m[39m
+     [33m[2m✓[22m[39m shows the server refusal when a reassign fails, and leaves the picker open [33m 310[2mms[22m[39m
+     [33m[2m✓[22m[39m disables a candidate already bound to the channel instead of offering a click that can only be refused (Round 292 G4) [33m 470[2mms[22m[39m
+     [33m[2m✓[22m[39m calls onImported and closes when "Go to channel" is clicked [33m 351[2mms[22m[39m
+ [32m✓[39m src/__tests__/round173-import-identity-on-every-route.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[33m 1826[2mms[22m[39m
+     [33m[2m✓[22m[39m submit · typed path — carries the name (Theseus drove this one at the endpoint) [33m 333[2mms[22m[39m
+ [32m✓[39m src/__tests__/composition-path-b-jit-import.test.tsx [2m([22m[2m16 tests[22m[2m)[22m[33m 1202[2mms[22m[39m
+ [32m✓[39m src/__tests__/round171-manual-import-identity.test.tsx [2m([22m[2m13 tests[22m[2m)[22m[33m 1036[2mms[22m[39m
+ [32m✓[39m src/__tests__/ChannelSidebar.test.tsx [2m([22m[2m22 tests[22m[2m)[22m[33m 591[2mms[22m[39m
+ [32m✓[39m src/__tests__/composition-path-c-continue-existing-role.test.tsx [2m([22m[2m13 tests[22m[2m)[22m[33m 527[2mms[22m[39m
+ [32m✓[39m src/__tests__/useModels-offline-fallback.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[33m 417[2mms[22m[39m
+ [32m✓[39m src/__tests__/round174-browse-done-seating.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[33m 651[2mms[22m[39m
+ [32m✓[39m src/__tests__/ground-rules-phase23.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[33m 404[2mms[22m[39m
+ [32m✓[39m src/__tests__/ground-rules-phase1.test.tsx [2m([22m[2m7 tests[22m[2m)[22m[33m 429[2mms[22m[39m
+ [32m✓[39m src/__tests__/composition-picker-extended.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[33m 402[2mms[22m[39m
+[90mstderr[2m | src/__tests__/round33b-remaining-ui.test.tsx[2m > [22m[2mRound 33b T2.1 — EntityManager surfaces "in N conversations" with pluralization[2m > [22m[2msingular: channelCount === 1 renders "in 1 conversation"
+[22m[39mModels API unavailable, using fallback
+
+[90mstderr[2m | src/__tests__/round33b-remaining-ui.test.tsx[2m > [22m[2mRound 33b T2.1 — EntityManager surfaces "in N conversations" with pluralization[2m > [22m[2msingular: channelCount === 1 renders "in 1 conversation"
+[22m[39mAn update to EntityCard inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+An update to EntityCard inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ [32m✓[39m src/__tests__/round33b-remaining-ui.test.tsx [2m([22m[2m17 tests[22m[2m)[22m[33m 448[2mms[22m[39m
+[90mstderr[2m | src/__tests__/entity-manager-emptied-channels.test.tsx[2m > [22m[2mEntityManager — emptied-channels disclosure on delete[2m > [22m[2mshows a singular banner naming the one channel emptied
+[22m[39mModels API unavailable, using fallback
+
+ [32m✓[39m src/__tests__/entity-manager-emptied-channels.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[32m 289[2mms[22m[39m
+ [32m✓[39m src/__tests__/MessageInput.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[33m 389[2mms[22m[39m
+ [32m✓[39m src/__tests__/ExportReviewPanel.test.tsx [2m([22m[2m21 tests[22m[2m)[22m[32m 270[2mms[22m[39m
+ [32m✓[39m src/__tests__/ChannelSettings.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[33m 346[2mms[22m[39m
+ [32m✓[39m src/__tests__/SidebarRedesign.test.tsx [2m([22m[2m11 tests[22m[2m)[22m[32m 240[2mms[22m[39m
+ [32m✓[39m src/__tests__/clone-from-klatch.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 216[2mms[22m[39m
+ [32m✓[39m src/__tests__/round167-entity-edit-omits-unchanged.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[32m 76[2mms[22m[39m
+ [32m✓[39m src/__tests__/MessageList.test.tsx [2m([22m[2m19 tests[22m[2m)[22m[32m 84[2mms[22m[39m
+ [32m✓[39m src/__tests__/round48-carried-context-chip.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[32m 51[2mms[22m[39m
+ [32m✓[39m src/__tests__/round220-attach-gate-reads-the-shared-cap.test.tsx [2m([22m[2m7 tests[22m[2m)[22m[32m 45[2mms[22m[39m
+ [32m✓[39m src/__tests__/useStreams.test.ts [2m([22m[2m18 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+ [32m✓[39m src/__tests__/CrossRefStrip.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 28[2mms[22m[39m
+ [32m✓[39m src/__tests__/useStream.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32m✓[39m src/__tests__/round33-typography-contrast.test.ts [2m([22m[2m18 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+ [32m✓[39m src/__tests__/useMessages.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 17[2mms[22m[39m
+ [32m✓[39m src/__tests__/import-claude-ai-export-409.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 4[2mms[22m[39m
+ [32m✓[39m src/__tests__/extractFilename.test.ts [2m([22m[2m23 tests[22m[2m)[22m[32m 3[2mms[22m[39m
+ [2m[90m↓[39m[22m src/__tests__/exp-fixture-randomization.test.tsx [2m([22m[2m1 test[22m[2m | [22m[33m1 skipped[39m[2m)[22m
+ [2m[90m↓[39m[22m src/__tests__/round36-ui-context-aaxt.test.tsx [2m([22m[2m1 test[22m[2m | [22m[33m1 skipped[39m[2m)[22m
+ [2m[90m↓[39m[22m src/__tests__/round37-ui-context-aaxt-export-review.test.tsx [2m([22m[2m1 test[22m[2m | [22m[33m1 skipped[39m[2m)[22m
+ [2m[90m↓[39m[22m src/__tests__/round38-ui-context-aaxt-import-browser.test.tsx [2m([22m[2m1 test[22m[2m | [22m[33m1 skipped[39m[2m)[22m
+ [2m[90m↓[39m[22m src/__tests__/round39-ui-context-aaxt-channel-settings.test.tsx [2m([22m[2m1 test[22m[2m | [22m[33m1 skipped[39m[2m)[22m
+ [2m[90m↓[39m[22m src/__tests__/round40-ui-context-aaxt-channel-settings-reprobe.test.tsx [2m([22m[2m1 test[22m[2m | [22m[33m1 skipped[39m[2m)[22m
+ [2m[90m↓[39m[22m src/__tests__/round41-composition-surface-aaxt.test.tsx [2m([22m[2m1 test[22m[2m | [22m[33m1 skipped[39m[2m)[22m
+ [2m[90m↓[39m[22m src/__tests__/round42-entity-manager-aaxt.test.tsx [2m([22m[2m1 test[22m[2m | [22m[33m1 skipped[39m[2m)[22m
+ [2m[90m↓[39m[22m src/__tests__/round43-message-list-aaxt.test.tsx [2m([22m[2m1 test[22m[2m | [22m[33m1 skipped[39m[2m)[22m
+ [2m[90m↓[39m[22m src/__tests__/round44-project-settings-aaxt.test.tsx [2m([22m[2m1 test[22m[2m | [22m[33m1 skipped[39m[2m)[22m
+ [2m[90m↓[39m[22m src/__tests__/round45-crossref-strip-aaxt.test.tsx [2m([22m[2m1 test[22m[2m | [22m[33m1 skipped[39m[2m)[22m
+ [2m[90m↓[39m[22m src/__tests__/round46-clone-from-klatch-aaxt.test.tsx [2m([22m[2m1 test[22m[2m | [22m[33m1 skipped[39m[2m)[22m
+ [2m[90m↓[39m[22m src/__tests__/round47-mention-override-aaxt.test.tsx [2m([22m[2m1 test[22m[2m | [22m[33m1 skipped[39m[2m)[22m
+
+[2m Test Files [22m [1m[32m29 passed[39m[22m[2m | [22m[33m13 skipped[39m[90m (42)[39m
+[2m      Tests [22m [1m[32m354 passed[39m[22m[2m | [22m[33m13 skipped[39m[90m (367)[39m
+[2m   Start at [22m 13:30:02
+[2m   Duration [22m 36.93s[2m (transform 626ms, setup 1.23s, import 3.28s, tests 18.24s, environment 11.61s)[22m
+
