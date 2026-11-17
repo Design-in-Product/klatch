@@ -1,0 +1,22 @@
+ok  B3   subject imported: EXEMPTIBLE=[db+homedir] DEFERRED=110 SWEPT=45
+ok  B0a  population: 155 probe files
+ok  B1   M derived (modules that call an S1 member, + client.ts): 3 [packages/server/src/claude/client.ts, packages/server/src/routes/files.ts, packages/server/src/routes/messages.ts] over 46 non-test .ts files
+ok  B1b  packages/server/src/routes/files.ts — S1 call sites at 189,200
+ok  B1b  packages/server/src/routes/messages.ts — S1 call sites at 113,137,174,254,290
+ok  B2   key assembled from M, builder throws on empty=true
+     KEY_IMP = from\s*['"`][^'"`]*(?:server\/src\/claude\/client|server\/src\/routes\/files|server\/src\/routes\/messages)(?:\.[jt]s)?['"`]|require\s*\(\s*['"`][^'"`]*(?:server\/src\/claude\/client|server\/src\/routes\/files|server\/src\/routes\/messages)(?:\.[jt]s)?['"`]|import\s*\(\s*['"`][^'"`]*(?:server\/src\/claude\/client|server\/src\/routes\/files|server\/src\/routes\/messages)(?:\.[jt]s)?['"`]
+LANDED  Q1  KNOWN POSITIVE: key fires on a routes/messages import = true
+LANDED  Q2  two-sided negative: key fires on a db/queries import = false
+ok  B0b  fixtures stayed in memory: still 155 files
+LANDED  Q3  |M| = 3 [packages/server/src/claude/client.ts, packages/server/src/routes/files.ts, packages/server/src/routes/messages.ts]
+
+── import-route hits over the 155 (1) ──
+   probe-round170-floor-frequency.mts:257 literalOnly=true drivable=true hazards=[net+db] nonExempt=[net] MOVER=false
+      const { assembleSystemPrompt } = await import('../packages/server/src/claude/client.js');
+ok  B4   every hit printed with file, line, literal-only status and bucket: 1
+LANDED  Q4  probes importing a member of M: 1
+LANDED  Q5  movers 0 < hits 1: true — the rest are already refused by a non-exemptible hazard or are literal-only
+REFUTED Q6  PRICE: 0 mover(s) [EMPTY]
+ok  B9   git status --porcelain packages scripts: ""
+
+VERDICT/1 ok legs=9 red=[] refused=[] preds=6 refuted=[Q6] prefused=[]

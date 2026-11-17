@@ -131,6 +131,8 @@ it. Repair: paren-match the parameter list, then take the first `{` after its cl
 - **`blankStrings` is mine, not the subject's `stripSource`** (which is not exported). It does not
   model nested template interpolation, so a `literalOnly` value here is a **report**, never a graded
   leg.
+- **`fnsOf`'s single declaration form was taken, not boarded.** §5 below is arm B, built and driven
+  in the same fire, and it closes this limit at the file level.
 - **`P3`'s grading is contaminated and this is the disclosure.** `P3` was registered in `81ea947e`
   before the arm existed, but I then ran `grep -n "^export…" packages/server/src/claude/client.ts`
   **to write the reader's parser**, and that output showed the export list — so `P3`'s outcome was
