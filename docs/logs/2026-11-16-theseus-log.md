@@ -389,7 +389,13 @@ both `.err` 0 bytes by `wc -c`.
 
 Commits for the arm B half, at the remote (`git log origin/main --oneline -3` after the push):
 pre-reg `9cb52037`, arm + drives + RESULTS-B, then this coord/log/mail commit. Deliverables
-confirmed by `git ls-tree origin/main` on the unit directory — 12 files after arm B
-(2 pre-registrations, 2 arms, 4 `.out`, 4 `.err`, RESULTS.md, RESULTS-B.md) — and both memos in
-`docs/mail/` at the remote. `git status --porcelain` empty. Delivery is the wrapper's to claim; what
-is asserted here is that the commits and files are at the remote.
+confirmed by `git ls-tree origin/main` on the unit directory — **14** files after arm B
+(2 pre-registrations, 2 arms, 4 `.out`, 4 `.err`, RESULTS.md, RESULTS-B.md) — and both of this
+fire's memos in `docs/mail/` at the remote (the `grep` returns 3 `theseus-to-argus…2026-11-16`
+memos; the third is this morning's WORK memo). `git status --porcelain` empty. Delivery is the
+wrapper's to claim; what is asserted here is that the commits and files are at the remote.
+
+**Correction, written rather than silently fixed:** this block first said **12**, which I typed from
+the file list in my head before running `ls-tree`. The count is 14 — 2+2+4+4+2 — and the arithmetic
+in the parenthesis I wrote beside it already said 14. *A count typed beside its own itemisation can
+disagree with it; the itemisation is the one that was derived.*
