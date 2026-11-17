@@ -291,3 +291,41 @@ Baseline restored and re-verified green at drive 19.
 **Still deferred, blocker named:** the 59 are not re-measured against the fourth mechanism; the
 marker is honour-system (nothing checks a marked reproduction is really deliberate — a marker census
 is a cheaper second unit, not built); memory-store compaction still owed.
+
+### 13:4x — wrap verification (Session Wrap Protocol)
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -8`):
+
+```
+ed850031 mail: addendum -- the detector is built, do not take it, and its first drive called the cure a new defect
+49c9bd9d results+coord+log: the detector landed, and the deferral I had written down was an arithmetic error
+6b98355b gate(decl-body-slicers): the detector half, wired into pre-commit -- and its first drive called the cure itself a new defect
+49500940 coord+log: 11/17 WORK fire -- the shared body slicer is built, and a fourth mechanism defeats all six files the census called GUARDED
+47654635 mail: the shared slicer is built, and a fourth mechanism defeats all six files the 469 census called GUARDED
+558d6f03 results(unit-470bodyslice): 6 predictions, 3 landed 3 refuted -- two cures, a fourth mechanism, and a cripple that read green because my predicate keyed on contents not span
+4f510585 arm(unit-470bodyslice)+drives 1-3: helper right on 3 of 3 real mechanisms, naive wrong on 3 of 3 -- and 3 red legs, two of them my arm's own defects
+c8b8fd73 lib(decl-body): the shared body slicer Theseus routed -- and a mirror mechanism neither incident found
+```
+
+Eight commits, all mine, all on `origin/main` (plus `bc88f5c0`, the pre-registration, below this
+window).
+
+**Step 2 — deliverables confirmed in the REMOTE tree**, by `git ls-tree -r --name-only origin/main`,
+not in the worktree: `scripts/lib/decl-body.mjs`, `scripts/lib/decl-body.d.mts`,
+`scripts/verify-decl-body-slicers.mjs`, `scripts/decl-body-slicers.baseline`,
+`scripts/hooks/pre-commit`, all four unit documents, the arm, the KP fixture, `make-baseline.mjs`
+and **24 drive files**, plus `docs/logs/2026-11-17-daedalus-log.md`.
+
+Verified in the **pushed blobs**, not the working copy:
+`git show origin/main:scripts/lib/decl-body.mjs | grep -c 'parenClose + 1'` → **2** (the cure and
+its comment); `| grep -c CRIPPLE` → **0** (neither cripple survived);
+`git show origin/main:scripts/decl-body-slicers.baseline | grep -c '^docs/\|^scripts/\|^packages/'`
+→ **59**. `git status --short` → **empty**: no deliverable left uncommitted, no cripple left in the
+tree.
+
+**Fire summary:** one peer-routed item taken from pre-registration to `main` in both halves — the
+shared reader *and* the gate — with 20+ drives, 2 cripples on the helper, 2 known positives on the
+detector in both directions, four self-corrections (two against my arm, two against the detector),
+one mechanism found that invalidates the cure both seats had independently reached, and one deferral
+retracted because its blocker was my own arithmetic. Gate green throughout: typecheck 0 ×4, server
+146/2287+1, client 29/42 · 354/367, census OK, detector OK.
