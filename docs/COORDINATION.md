@@ -1024,14 +1024,29 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   the deliverable built**, not with an ack; one finding that invalidates a cure both seats had
   reached; two self-corrections; one lesson filed as a **section in an existing memory topic file**
   (no new index line); gate re-driven; five pushes.
-  **Deferred with named blockers, no deadlines:** the **detector is specified and priced** (RESULTS
-  §6: key on `git ls-files`, baseline the 50 tracked members, carry a site marker for deliberate
-  reproductions, cover the return type or it certifies the six GUARDED files as cured) — ~120 lines
-  plus a baseline and 2 known positives, **a second unit, not a tail on this one**; blocker: a scope
-  choice, this fire's budget went to the helper's two cures and twelve drives. **Unclaimed, either
-  seat.** The **56 are not re-measured against the fourth mechanism** — printed as a refusal in the
-  arm's own verdict line, not just in prose. Memory-store compaction still owed (index **20,749 B**
-  by `wc -c` this fire).
+  **9. THE DETECTOR IS BUILT TOO (`6b98355b`), AND THE DEFERRAL I HAD ALREADY WRITTEN DOWN WAS AN
+  ARITHMETIC ERROR.** RESULTS §6 and an earlier draft of this entry deferred it as "a scope choice"
+  on a belief that ~45 minutes had elapsed — **estimated from effort, against 14 actual by `date`.**
+  The blocker was my own arithmetic. `scripts/verify-decl-body-slicers.mjs` +
+  `scripts/decl-body-slicers.baseline` (59 entries, generated from a **recorded drive**, since a gate
+  that can rewrite its own baseline can always be made green by running it), **wired into
+  `scripts/hooks/pre-commit`** beside the census self-enrolment leg and exercised by the commit that
+  landed it. Green: **62 tracked slicers — 59 UNGUARDED (baselined), 2 GUARDED, 1 MARKED.**
+  **10. THE DETECTOR'S FIRST DRIVE CALLED THE CURE ITSELF A NEW DEFECT.** `0 GUARDED across 62`,
+  with `scripts/lib/decl-body.mjs` listed as a new hand-rolled slicer: the guard key was read from
+  the **strings-blanked** reading, where `=== '('` has become `===  `, so the conjunct was
+  **unsatisfiable** while the population key (raw) matched. **The tell was the saturated verdict.**
+  Repaired to `stripSource(raw, false)`. Second finding: the **ADOPTED** class credited **this unit's
+  own arm** — which imports the shared reader *and* hand-rolls a naive slicer on purpose — because an
+  import is a **file-level** fact about a **site-level** defect; dropped in favour of a
+  `brace-slicer-deliberate:` marker **at the site**. KP both directions: drive 16 red and names the
+  path, 17 green under the marker, 18 red ×2 with a reason per stale baseline entry.
+  **Deferred with named blockers, no deadlines:** the **59 are not re-measured against the fourth
+  mechanism** — printed as a refusal in the arm's own verdict line, not just in prose. The
+  **marker is honour-system** (nothing checks that a marked reproduction is deliberate — a marker
+  census is a cheaper second unit, not built). Memory-store compaction still owed (index
+  **20,749 B** by `wc -c` this fire; one lesson filed as a section in an existing topic file, no new
+  index line).
   Log: `docs/logs/2026-11-17-daedalus-log.md`.
 - **Previously:** 2026-11-17 ~09:17–09:3x PT (**START fire — substantive: THE CREATE-PATH LITERAL SEAM
   IS CURED ACROSS ALL TEN WRITERS, THE ROUTE'S POST RESPONSE IS GRADEABLE BY THE MAPPER FOR THE FIRST

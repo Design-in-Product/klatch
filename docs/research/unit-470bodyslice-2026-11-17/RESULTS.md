@@ -122,7 +122,67 @@ invariant rather than a hand-typed answer key — and it reddens exactly one sit
 > that shortens a span by 3357 characters reads green. Grade the span by an invariant it must
 > satisfy (balance, non-overlap, boundary characters), not by what it contains.
 
-## §6 THE DETECTOR — specified and priced, NOT built in this fire
+## §6 THE DETECTOR — **BUILT**, after this section was written saying it would not be
+
+**This section's heading read "specified and priced, NOT built in this fire" when it was written,
+with "a scope choice" as the deferral.** The deferral rested on an elapsed-time estimate made *from
+effort expended* rather than from `date`: at the point of writing I believed ~45 minutes had gone,
+against **14** actual (`date` 13:17:07 → 13:31:47). The blocker was my own arithmetic, so the item
+was unblocked and is now done. `scripts/verify-decl-body-slicers.mjs` +
+`scripts/decl-body-slicers.baseline`, commit `6b98355b`, **wired into `scripts/hooks/pre-commit` as
+a second leg** beside the census self-enrolment check and exercised by the commit that landed it.
+
+**Green state (`drive19`):** population **62 tracked slicers — 59 UNGUARDED (baselined),
+2 GUARDED, 1 MARKED**; 968 tracked files read. `DECL-BODY SLICERS OK`.
+
+**Known positives, both directions, because a detector that reports zero has not been shown able to
+report one:**
+
+| drive | state | result |
+|---|---|---|
+| 16 | a new unguarded slicer staged, unmarked | **RED**, 1 new slicer, names the path |
+| 17 | the same file with the site marker | **GREEN**, `MARKED 2` |
+| 18 | baseline entries pointing at a now-GUARDED file and an absent one | **RED ×2, with the reason per entry** (`→ now GUARDED`, `→ now ABSENT`) |
+
+### §6a The detector's first drive called the cure itself a new defect
+
+`drive13`: **0 GUARDED across a population of 62**, with `scripts/lib/decl-body.mjs` — the module
+this unit exists to add — reported as a new hand-rolled slicer that must be baselined.
+
+The guard key was read from `stripSource(raw, true)`, the **strings-blanked** reading, where
+`=== '('` has become `===  `. **Every one of this detector's keys is a comparison against a quoted
+character, so the guard conjunct was unsatisfiable** while the population key (read from the raw
+text) matched fine. The repair is `stripSource(raw, false)` — comments blanked, strings kept, which
+is the reading `strip-source.mjs`'s own header names for a caller looking for a quoted literal — and
+it is now used for the population key as well, so a brace comparison quoted inside a comment no
+longer puts a file in the population at all.
+
+**The tell was the saturated verdict.** A three-way classification returning zero in one class is
+evidence about reachability before it is evidence about the tree. I had the lesson filed
+(`feedback_a_selectors_two_conjuncts_can_be_mutually_unsatisfiable`) and still wrote it.
+
+### §6b The ADOPTED class was dropped, because it credited this unit's own arm
+
+`drive13` classified files importing `lib/decl-body.mjs` as ADOPTED, and the one member of that
+class was **`arm-bodyslice-a.mjs` — which imports the shared reader *and* hand-rolls a naive slicer
+beside it, deliberately, as §3's comparison arm.** An import is a **file-level** fact and this defect
+is **site-level**, so an adoption key over-credits exactly the files most likely to carry both.
+There is now no ADOPTED class: a file that genuinely delegates has no brace comparison of its own and
+is out of the population by the key itself, and a deliberate reproduction carries
+`brace-slicer-deliberate: <reason>` **at the site** — which travels with the code, unlike the path
+allowlist §9 warned against.
+
+### §6c What the detector does not claim
+
+- It grades **the reader each file uses, not the figures any file has published**. Printed in its own
+  green output, not only here.
+- Its GUARDED key is the three-conjunct one (paren ×2 + colon), so **the six files `unit-469braceslice`
+  called GUARDED are in the baseline as unguarded**, deliberately: they paren-match the parameter
+  list and do not handle the return type (§4). The baseline header says so.
+- The marker is honour-system: nothing checks that a marked file's reproduction is really
+  deliberate. A marker census is a cheaper second unit and is not built.
+
+## §6-OLD THE DETECTOR AS SPECIFIED BEFORE IT WAS BUILT (kept, because §6a is a finding against it)
 
 Named with its blocker, not a date. What it must be, from §1 and §4:
 
@@ -137,9 +197,14 @@ Named with its blocker, not a date. What it must be, from §1 and §4:
 4. Its population key must cover the **return-type** mechanism as well as the parameter list, or it
    will certify the six GUARDED files as cured when §4 says they are not.
 
-**Price:** ~120 lines plus a baseline list and two known-positive fixtures, which is a second unit,
-not a tail on this one. **Blocker:** none technical — it is a scope choice, and this fire's budget
-went to the helper, its two cures and the eight drives. Unclaimed; either seat.
+**Price, as estimated before building:** ~120 lines plus a baseline list and two known-positive
+fixtures, "a second unit, not a tail on this one." **Measured: 150 lines, a 59-entry generated
+baseline, one fixture driven twice and one baseline cripple — inside the same fire.** The estimate
+was not far wrong on size; what was wrong was the elapsed-time belief that made it unaffordable.
+
+All four requirements above survived contact, and requirement 4 is the one that changed the output:
+under the three-conjunct guard key the six files `unit-469braceslice` called GUARDED are baselined as
+unguarded, which is the whole point of §4 and would have been invisible under a paren-only key.
 
 ## §7 P6 LANDS, with a figure
 

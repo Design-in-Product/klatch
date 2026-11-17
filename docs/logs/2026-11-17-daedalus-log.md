@@ -249,3 +249,45 @@ incremental pushes.
   Printed as a refusal in the arm's own verdict line.
 - The **memory-store compaction pass** (index 20,749 B by `wc -c` at this fire's write, target
   17.1 KB). Still owed, still needs a cluster list authored first.
+
+### 13:33–13:4x — the detector, which this fire's own RESULTS had deferred
+
+`date` **13:37:41 PST**. **Correction to the entry above:** the detector is **built and on `main`**
+(`6b98355b`), not deferred. The deferral in RESULTS §6 and in my COORDINATION entry rested on an
+elapsed-time belief — ~45 minutes — that I had estimated **from effort expended** rather than read
+off `date`. Actual elapsed at the moment I wrote "a scope choice" was **14 minutes**. The blocker was
+my own arithmetic, so the item was never blocked. `feedback_run_date_dont_estimate_elapsed_from_effort`
+fired twice in one fire: once as a noticing, once as a deferral I had already written down.
+
+`scripts/verify-decl-body-slicers.mjs` + `scripts/decl-body-slicers.baseline` (59 entries, generated
+by `make-baseline.mjs` from a **recorded drive**, not a live re-scan — a gate that can rewrite its
+own baseline can always be made green by running it). **Wired into `scripts/hooks/pre-commit`** as a
+second leg beside the census self-enrolment check, and exercised by the commit that landed it.
+
+**Green state (drive 19/20):** 62 tracked slicers — **59 UNGUARDED (baselined), 2 GUARDED,
+1 MARKED**; typecheck re-run clean after wiring.
+
+**Two findings against the detector, from its own first drive:**
+
+1. **It called the cure itself a new defect.** `drive13`: **0 GUARDED across 62**, with
+   `scripts/lib/decl-body.mjs` listed as a new hand-rolled slicer. The guard key was read from
+   `stripSource(raw, true)` — **strings blanked** — where `=== '('` has become `===  `, so the
+   conjunct was **unsatisfiable** while the population key (raw) matched fine. Repair:
+   `stripSource(raw, false)`, the reading strip-source's header names for a caller looking for a
+   quoted literal, now used for the population key too. **The tell was the saturated verdict** —
+   zero in one class of a three-way split is evidence about reachability first. I hold
+   `feedback_a_selectors_two_conjuncts_can_be_mutually_unsatisfiable` and wrote it anyway.
+2. **The ADOPTED class credited this unit's own arm and was dropped.** Its one member was
+   `arm-bodyslice-a.mjs`, which imports the shared reader *and* hand-rolls a naive slicer beside it
+   on purpose. An import is a **file-level** fact about a **site-level** defect. Deliberate
+   reproductions now carry `brace-slicer-deliberate: <reason>` at the site, which travels with the
+   code — the path allowlist my own §9 had warned against.
+
+**Known positives, both directions:** drive 16 (new unguarded slicer staged, unmarked) → **RED**,
+names the path; drive 17 (same file, marker added) → **GREEN**, `MARKED 2`; drive 18 (baseline
+entries pointing at a now-GUARDED file and an absent one) → **RED ×2 with the reason per entry**.
+Baseline restored and re-verified green at drive 19.
+
+**Still deferred, blocker named:** the 59 are not re-measured against the fourth mechanism; the
+marker is honour-system (nothing checks a marked reproduction is really deliberate — a marker census
+is a cheaper second unit, not built); memory-store compaction still owed.
