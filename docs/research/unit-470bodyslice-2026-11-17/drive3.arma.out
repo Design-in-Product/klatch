@@ -1,0 +1,67 @@
+
+A1 — P2: where the unguarded slicers are
+  |UNGUARDED| = 56
+      docs/research    51
+      scripts          5
+  UNTRACKED members (in my worktree, not in the repo): 6
+      untracked docs/research/round413-instruments/his412-prefix.sliced.mjs
+      untracked docs/research/round414-instruments/mine412-prefix.sliced.mjs
+      untracked docs/research/unit-465bareline-2026-11-12/.scratch/apparatus-sliced.mts
+      untracked docs/research/unit-465oncegate-2026-11-11/.scratch/apparatus-sliced.mts
+      untracked docs/research/unit-465widen-2026-11-10/scratch/composed-slices-posthoc.mjs
+      untracked docs/research/unit-465widen-2026-11-10/scratch/composed-slices.mjs
+  RED  A1a |scripts/| <= 4  scripts=5
+  ok   A1b |docs/research/| >= 44  docs/research=51
+  RED  A1c the untracked members explain the P1 delta exactly (4)  untracked=6, his 52 + 4 = my 56
+
+A2 — P3: naive vs shared helper, on three real corpus declarations
+  JSDoc @type braces
+      scripts/lib/strip-source.mjs → stripSource
+      naive  body=9ch contains('StripSourceInputError')=false
+      helper body=4902ch contains('StripSourceInputError')=true
+  object default / inline options type
+      packages/server/src/db/queries.ts → createGroundRulesPreset
+      naive  body=40ch contains('INSERT INTO')=false
+      helper body=786ch contains('INSERT INTO')=true
+  brace-bearing return type (the mirror, found by this unit)
+      packages/server/src/claude/client.ts → assembleSystemPrompt
+      naive  body=2ch contains('floorApplied')=false
+      helper body=5558ch contains('floorApplied')=true
+  ok   A2a naive is wrong on 3 of 3  naiveWrong=3/3
+  ok   A2b helper is right on 3 of 3  helperRight=3/3
+
+A3 — P4 control: a declaration with no brace before the body
+      scripts/lib/strip-source.mjs → regexLiteralEnd
+      naive=8ch helper=433ch
+  RED  A3a both readers agree on the control  equal=false
+
+A4 — the declaration and the implementation export the same names
+      impl=DeclBodyInputError,DECL_HEAD_SOURCE,parenSpanEnd,braceSpanEnd,declHeads,declBodyAt,declBodies,bodyOf
+      decl=DeclBodyInputError,DECL_HEAD_SOURCE,parenSpanEnd,braceSpanEnd,declHeads,declBodyAt,declBodies,bodyOf
+  ok   A4a no export missing from the .d.mts  missing=[]
+  ok   A4b no export in the .d.mts that does not exist  extra=[]
+
+A5 — P6: the helper over 72 tracked files of the imported + server surface
+      heads matched: 488  block=401  concise=28  refused=59
+      refused: no-body-brace-after-the-parameter-list ×33
+      refused: return-type-annotation-on-an-arrow-declaration ×25
+      refused: no-body-brace-after-the-return-type ×1
+      single-identifier arrows the head key does NOT match: 0
+  ok   A5a P6 lands: at least one real form is outside the matched set  unmatched-arrows=0 refused=59
+  ok   A5b no refusal is the catch-all shape (every refusal carries a named reason)  reasons=3
+
+A6 — the mirror mechanism: brace-bearing return types
+      live sites in packages/ (counted by the helper): 16
+          packages/server/src/aaxt/auxiliary.ts:getAuxiliaryInfo
+          packages/server/src/claude/client.ts:assembleSystemPrompt
+          packages/server/src/claude/client.ts:executeTool
+          packages/server/src/db/queries.ts:createMessagePair
+          packages/server/src/db/queries.ts:getChannelsEmptiedByEntityDelete
+          packages/server/src/db/queries.ts:searchClauses
+          packages/server/src/db/queries.ts:entityTranscriptWhere
+          packages/server/src/db/queries.ts:findEntityTranscriptChannelsByName
+      of the 7 files the 469 census called GUARDED, 0 compare against a ':'
+  ok   A6a the mirror is live in the product tree  sites=16
+  ok   A6b none of the GUARDED six handles the return-type region (proxy)  colonAware=0/7
+
+FAIL legs=3 red=[A1a |scripts/| <= 4 | A1c the untracked members explain the P1 delta exactly (4) | A3a both readers agree on the control] refused=[the 56 unguarded slicers were NOT re-measured against the mirror mechanism; A6a establishes that the exposure exists, not its size across the 56]
