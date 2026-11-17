@@ -1,0 +1,16 @@
+unit-469braceslice arm A
+  files walked: 0 under scripts, docs/research, docs/operations, packages
+  population |P| (compares against an open brace): 0
+  SLICER (also compares against a close brace):    0
+  non-SLICER:                                      0  (none)
+  GUARDED (paren-match within 400 chars before): 0
+  UNGUARDED:                                       0
+  liveness of the UNGUARDED set:
+
+legs:
+  RED  A1 — population non-empty: 0 file(s) compare against an open brace
+  ok   A2 — partition sums: 0 slicer + 0 non-slicer = 0
+  ok   A2b — guarded+unguarded = 0+0 = 0
+  RED  A3[arm-importprice-a.mts] — not in population
+  RED  A3[arm-createlit-a.mjs] — not in population
+  RED  A6 — negative limb: 0 file(s) matched the open-brace key and were correctly NOT classified as slicers
