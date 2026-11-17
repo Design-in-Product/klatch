@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { getDb } from './index.js';
-import type { Channel, ChannelType, ChannelStats, Message, MessageStopReason, Entity, Project, ModelId, InteractionMode, ChannelSource, KlatchFile, FileRef, FileRefScope, FileRefType, FileWithRef, EffortLevel, MicroReflection } from '@klatch/shared';
+import type { Channel, ChannelType, ChannelStats, GroundRulesPreset, Message, MessageStopReason, Entity, Project, ModelId, InteractionMode, ChannelSource, KlatchFile, FileRef, FileRefScope, FileRefType, FileWithRef, EffortLevel, MicroReflection } from '@klatch/shared';
 import { DEFAULT_MODEL, DEFAULT_ENTITY_ID, DEFAULT_EFFORT, ENTITY_COLORS, DEFAULT_INTERACTION_MODE } from '@klatch/shared';
 
 function rowToChannel(row: any): Channel {
@@ -223,6 +223,94 @@ export function updateChannel(
     .run(name, systemPrompt, model, mode, groundRules, id);
 
   return { ...channel, name, systemPrompt, model, mode, groundRules: groundRules || undefined };
+}
+
+// ── Saved ground-rules sets (phase 2, storage half) ──────────────────────────
+//
+// Ruling: 2026-11-03, `docs/operations/attention-rollup.md:319`. Scope:
+// `docs/ux/ground-rules-scope-2026-11-16.md`. Shape divergence and its cost:
+// `docs/research/ground-rules-phase2-2026-11-16/PRE-REG.md`.
+
+function rowToGroundRulesPreset(row: any): GroundRulesPreset {
+  return {
+    id: row.id,
+    // NULL name = an unnamed save ("make these my default"). '' is not a state
+    // any writer produces: the route refuses a blank name rather than storing
+    // one, so this collapse has nothing to hide.
+    name: row.name || undefined,
+    body: row.body,
+    // `=== 1`, not truthiness, and not the raw column. SQLite hands back a
+    // number; a consumer doing `preset.isDefault === true` on a raw 1 would be
+    // false while the row says default. The arms that claim something about
+    // what is *stored* read the column directly rather than through here —
+    // this morning's finding (`rowToChannel`'s `|| undefined` collapsing '')
+    // was invisible to 18 arms phrased on the mapped field.
+    isDefault: row.is_default === 1,
+    createdAt: row.created_at,
+  };
+}
+
+/**
+ * Save a set of ground rules. `makeDefault` moves the designation: the previous
+ * default is cleared in the same transaction, so the partial unique index can
+ * never see two.
+ *
+ * Callers validate `body` — a blank preset is the one thing this store must not
+ * hold, and the route owns that sentence. This function trims and stores.
+ */
+export function createGroundRulesPreset(
+  body: string,
+  opts?: { name?: string; makeDefault?: boolean }
+): GroundRulesPreset {
+  const db = getDb();
+  const id = uuidv4();
+  const now = new Date().toISOString();
+  const trimmedBody = body.trim();
+  const name = opts?.name?.trim() || null;
+  const makeDefault = opts?.makeDefault === true;
+
+  const txn = db.transaction(() => {
+    if (makeDefault) {
+      db.prepare('UPDATE ground_rules_presets SET is_default = 0 WHERE is_default = 1').run();
+    }
+    db.prepare(
+      'INSERT INTO ground_rules_presets (id, name, body, is_default, created_at) VALUES (?, ?, ?, ?, ?)'
+    ).run(id, name, trimmedBody, makeDefault ? 1 : 0, now);
+  });
+  txn();
+
+  return { id, name: name || undefined, body: trimmedBody, isDefault: makeDefault, createdAt: now };
+}
+
+/**
+ * Every saved set, default first, then newest-first. One list with one member
+ * marked — the shape phase 3's "offer previous rules as option or default"
+ * renders directly, with no union of two stores and no second spelling of
+ * which one is the default.
+ */
+export function listGroundRulesPresets(): GroundRulesPreset[] {
+  const rows = getDb()
+    .prepare('SELECT * FROM ground_rules_presets ORDER BY is_default DESC, created_at DESC')
+    .all();
+  return rows.map(rowToGroundRulesPreset);
+}
+
+export function getDefaultGroundRulesPreset(): GroundRulesPreset | undefined {
+  const row = getDb()
+    .prepare('SELECT * FROM ground_rules_presets WHERE is_default = 1')
+    .get();
+  return row ? rowToGroundRulesPreset(row) : undefined;
+}
+
+export function getGroundRulesPreset(id: string): GroundRulesPreset | undefined {
+  const row = getDb().prepare('SELECT * FROM ground_rules_presets WHERE id = ?').get(id);
+  return row ? rowToGroundRulesPreset(row) : undefined;
+}
+
+/** Returns false when there was no such preset, so the route can 404 honestly. */
+export function deleteGroundRulesPreset(id: string): boolean {
+  const result = getDb().prepare('DELETE FROM ground_rules_presets WHERE id = ?').run(id);
+  return result.changes > 0;
 }
 
 /**

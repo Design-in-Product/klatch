@@ -122,6 +122,20 @@ function createFreshDb(): Database.Database {
     CREATE INDEX IF NOT EXISTS idx_file_refs_scope ON file_refs(scope, scope_id);
     CREATE INDEX IF NOT EXISTS idx_file_refs_file ON file_refs(file_id);
 
+    -- Saved ground-rules sets (phase 2 storage half). The partial unique index
+    -- is copied deliberately: it is the storage-level guarantee the suite's
+    -- own "two defaults cannot coexist" arm measures, and a fixture without it
+    -- would make that arm green against a database that permits two.
+    CREATE TABLE IF NOT EXISTS ground_rules_presets (
+      id TEXT PRIMARY KEY,
+      name TEXT,
+      body TEXT NOT NULL,
+      is_default INTEGER NOT NULL DEFAULT 0,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_ground_rules_presets_default
+      ON ground_rules_presets(is_default) WHERE is_default = 1;
+
     -- The shared constant, not a copy of its text. This fixture is a second
     -- definition of the schema (the first is db/index.ts), and these two seeds
     -- are what the whole suite reads. Hardcoding the string here lets the test

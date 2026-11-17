@@ -8,6 +8,7 @@ import { modelRoutes } from './models.js';
 import { fileRoutes } from './files.js';
 import { aaxtRoutes } from './aaxt.js';
 import { exportRoutes } from './export.js';
+import { groundRulesRoutes } from './ground-rules.js';
 
 /**
  * The API mount list — **one list, used by the real server and by the tests.**
@@ -70,5 +71,6 @@ export function mountApiRoutes(app: Hono): Hono {
   app.route('/api', fileRoutes);
   app.route('/api', aaxtRoutes);
   app.route('/api', exportRoutes);
+  app.route('/api', groundRulesRoutes);
   return app;
 }

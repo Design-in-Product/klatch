@@ -284,6 +284,37 @@ function runMigrations(db: Database.Database) {
     db.exec(`ALTER TABLE channels ADD COLUMN ground_rules TEXT`);
   }
 
+  // ── Ground rules, phase 2 (storage half) ───────────────────
+  //
+  // Saved ground-rules sets: what "save these as my default / as a named
+  // template" writes, and what phase 3's "offer previous rules" reads. One
+  // table, not a default slot plus a template table — `is_default` is a
+  // designation on a saved set, because the ruling asks for one list with one
+  // member marked and a separate slot would hold a second copy of the body.
+  // Divergence from `docs/ux/ground-rules-scope-2026-11-16.md` and its cost:
+  // `docs/research/ground-rules-phase2-2026-11-16/PRE-REG.md`.
+  //
+  // `name` nullable: an unnamed row is the "make these my default" gesture, a
+  // named one is a template. Both can be the default.
+  //
+  // The partial unique index is the point of the shape. "At most one default"
+  // enforced only in `createGroundRulesPreset` would hold exactly as long as
+  // every writer goes through it — and `db/` has hand-written INSERTs in
+  // scripts, tests and the import path. In the schema it holds against any
+  // writer, including one that doesn't exist yet.
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS ground_rules_presets (
+      id TEXT PRIMARY KEY,
+      name TEXT,
+      body TEXT NOT NULL,
+      is_default INTEGER NOT NULL DEFAULT 0,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_ground_rules_presets_default
+      ON ground_rules_presets(is_default) WHERE is_default = 1;
+  `);
+
   // ── Decision 1: MEMORY.md → project level ──────────────────
   const projectCols = db.prepare("PRAGMA table_info(projects)").all() as { name: string }[];
   if (!projectCols.some((c) => c.name === 'memory')) {

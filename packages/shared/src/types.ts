@@ -390,6 +390,29 @@ export interface Channel {
   lastMessageAt?: string | null; // populated by enriched list endpoint
 }
 
+/**
+ * A saved set of ground rules — what phase 2 of the 2026-11-03 ruling writes and
+ * phase 3 reads back ("offer previous ground rules as option or default").
+ *
+ * `isDefault` is a **designation on a saved set**, not a second store: the
+ * ruling's phase-3 sentence asks for one list with one member marked, and a
+ * default kept in its own slot would be a second copy of the same body with no
+ * way to tell it from a template carrying the same text. At most one preset
+ * carries it, enforced by a partial unique index in the schema, not only by the
+ * write path. Shape divergence from the scope doc is declared, with its cost, in
+ * `docs/research/ground-rules-phase2-2026-11-16/PRE-REG.md`.
+ *
+ * `name` undefined means an unnamed save (the "make these my default" gesture);
+ * a name means a named template. Both can be the default.
+ */
+export interface GroundRulesPreset {
+  id: string;
+  name?: string;
+  body: string;
+  isDefault: boolean;
+  createdAt: string;
+}
+
 // Project: shared context across multiple channels
 export interface Project {
   id: string;
