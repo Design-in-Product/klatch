@@ -974,7 +974,70 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-16 ~13:17–13:4x PT (**WORK fire — substantive, PRODUCT again: PHASE 1 OF THE
+- **Updated:** 2026-11-16 ~17:17–17:3x PT (**STOP fire — substantive, PRODUCT for the third fire
+  running: PHASE 2 OF THE GROUND-RULES RULING HAS ITS SERVER HALF, BUILT ON ONE TABLE INSTEAD OF
+  THE SCOPE DOC'S TWO WITH THE COST DECLARED IN THE PRE-REG RATHER THAN AFTER — AND TWO OF MY FOUR
+  CRIPPLE PREDICTIONS WERE REFUTED ON COUNT, ONE OF THEM BECAUSE I FORGOT AN ARM IN MY OWN FILE.**)
+  `date`-reads **17:17** and **17:28:53 PST**, read not estimated. **Commit authors checked, not
+  assumed:** the three commits above my 13:36 head are **Argus's** admission answer, **Theseus's**
+  five-commit `unit-467importroute` chain, and **Calliope's** 17:09 rollup push — **none mine.**
+  Mail delta → **3 added**, all read in full in this fire; one owed me nothing (Argus→Theseus),
+  one is informational and deliberately left open by its author for other parties
+  (Calliope→me, §4 taken and the rollup corrected), one carries a *smaller* version of what was
+  routed to me this morning with "no ask" attached (Theseus→Argus+me).
+  **1. BUILT AND PUSHED: phase 2's storage + HTTP half — `0ae38749`, `996775be`, `97b710a8`.**
+  `ground_rules_presets` (id, name NULL, body NOT NULL, is_default, created_at) + a **partial
+  unique index** `WHERE is_default = 1`, in the real migration and in `__tests__/setup.ts`'s
+  hand-typed fixture; five queries; `GET|POST /api/ground-rules/presets` and `DELETE …/:id`;
+  `GroundRulesPreset` in shared. **Zero callers, named not hidden** — the submit prompt (phase 2's
+  UX) and the creation-time picker (phase 3) are Iris's, and this is the surface they code against,
+  landed first so neither waits on a server. Same posture as this morning's delete-preview.
+  **2. DIVERGED FROM CALLIOPE'S STORAGE SHAPE, IN THE PRE-REG, WITH THE PRICE STATED.** Her spec
+  names two stores (a settings-shaped default slot + a templates table); I built one table where
+  *default* is a **designation on a saved set**, because the ruling's phase-3 sentence asks for one
+  list with one member marked and a separate slot holds a second copy of the body. **Price named:**
+  migrations are additive-forever, so this table does not *become* the two-store shape — overruling
+  is cheapest now, and the HTTP surface is deliberately the stable layer so Iris is not hostage to
+  the call either way.
+  **3. THE ARGUMENT I DIDN'T USE, BECAUSE I CHECKED IT: `CLAUDE.md`'s TABLE COUNT IS STALE AND ITS
+  THRESHOLD IS CROSSED.** It says six tables and "add Drizzle at 8+". Live count off
+  `grep -n 'CREATE TABLE IF NOT EXISTS' packages/server/src/db/index.ts`: **eight before this fire,
+  nine after** — the listed six omit `files` and `file_refs`. Two separate things, not conflated:
+  the **count** is a doc fact that drifted (routed to Calliope), **whether to adopt an ORM now the
+  stated trigger has fired** is xian's (raised, not answered). Not edited on the way past.
+  **4. FOUR CRIPPLES, TWO REFUTED ON COUNT.** C3 (blank-body 400 removed → 1 red) and C4
+  (`rowToPreset` returns the raw column → 3 red, all mapped-field arms, every raw-column arm green)
+  landed. **C1** (index dropped): predicted 1, measured **2** — the second is my own index-presence
+  arm reading `sqlite_master`, which I was not thinking about while predicting. **C2** (the
+  default-clear removed): predicted ≥2, measured **1**, and the mechanism I was least sure of is the
+  one that landed (`SqliteError: UNIQUE constraint failed`, not a wrong value) — so **the index
+  converts a silently-wrong flag into an error**, and the two guards are not redundant.
+  **5. A FINDING THAT WAS NONE OF THE FOUR PREDICTIONS.** C4 did not redden the `POST … makeDefault`
+  arm, because `createGroundRulesPreset` returns a **hand-built object literal** rather than a
+  re-read through the mapper — so the create path publishes a second spelling the mapper never
+  touches, and a mapper defect is invisible on the create response, visible only on reads.
+  `createChannel` has the identical shape: a house idiom, not a slip in my file. Named, unclaimed,
+  needs its own unit. Same mechanism as this morning's mapper finding in different clothes.
+  **6. GATE.** Typecheck **0 `error TS`** ×4 workspaces. Server **145 files / 2272 passed / 1 skipped
+  (2273)** — standing 2249 + my 23, nothing else moved. Client **28 / 344 / 13 skipped (357)**,
+  unchanged. Census OK, 155 files, 45/110, on all five pushes. **Two count pins moved and were
+  re-counted off live source, not incremented:** body-guard call sites 15 → **16**, exported routers
+  9 → **10**. Full driving sweep: see the log's own filled slot — written after the process exited,
+  never drafted while it ran.
+  **Drain:** pull + author-checked delta; `COORDINATION.md` read; all three mail files read and
+  dispositioned in the same fire; a ruled product item taken from scope doc to `main` with four
+  cripples; one stale doc figure and one ORM threshold routed; memo to Calliope + Iris filed; gate
+  re-driven; five incremental pushes so a 2400s death could not strand the unit.
+  **Deferred with named reasons, no deadlines:** Theseus's `client.ts` seam question — **a choice,
+  not a blocker**, he marks it "no ask" and it is unclaimed. My three boarded research items
+  (SAMELINE pairing key, form-aware precision census, sha/round-label exclusion) — **no blocker, a
+  choice**, third fire outranked by ruled product work. Still mine and unclaimed: the create-path
+  literal seam (new this fire), the parameter/positional exclusion, `arm-routecure-d.mjs`'s
+  `hash-object` pin and `/misordered/` detector, the `unit-465p12site` RESULTS:93 one-clause cure,
+  the two `schemacollide` single-name selectors, and `api/client.ts`'s eight-positional
+  `createChannel` wanting an options bag.
+  Log: `docs/logs/2026-11-16-daedalus-log.md`.
+- **Previously:** 2026-11-16 ~13:17–13:4x PT (**WORK fire — substantive, PRODUCT again: PHASE 1 OF THE
   11-03 GROUND-RULES RULING IS BUILT, CRIPPLE-PROVED FOUR WAYS AND ON `main` — 13 DAYS FROM RULING TO
   BUILD, 0 DAYS FROM SPEC TO BUILD — AND THE ARM I WROTE FOR ITS "ONE EMPTY STATE" WAS MEASURING THE
   MAPPER, NOT THE COLUMN, WHICH NO CRIPPLE COULD REDDEN UNTIL I WROTE A FIFTH ONE.**) `date`-read

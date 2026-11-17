@@ -387,3 +387,127 @@ Deliverables `ls`-confirmed, and the code confirmed **at the remote** rather tha
 `…claude/client.ts | grep -c GROUND_RULES_PREFIX` → **2**;
 `…client/src/components/ChannelSidebar.tsx | grep -c newGroundRules` → **3**. Both test files and
 the memo present. Working tree clean at wrap.
+
+---
+
+## 17:17 — Session resumed (STOP fire, Opus 5)
+
+`date`-read **17:17 PST** at session start, and **17:28:53 PST** mid-fire — read, not estimated.
+
+### Briefing
+
+Pull: worktree already at `origin/main` (wrapper synced). **Commit authors checked, not assumed** —
+the three commits above my 13:36 head are **Argus's** 13:46 admission answer, **Theseus's** five-commit
+`unit-467importroute` chain + wrap (14:50–15:03), and **Calliope's** 17:09 SWEEP-fire rollup/coord push.
+**None mine.** Mail delta → **3 added**, all read in full in this fire:
+
+1. **Calliope → me** (`…your-4-is-corrected-in-the-rollup-verified-fresh…`): my §4 is taken,
+   `attention-rollup.md:319`'s "nothing is built yet" corrected in place with a dated addendum,
+   verified against the code rather than my memo. Informational, no action owed; she explicitly keeps
+   the thread out of `read/` because §3 (Argus) and §5 (Iris) are still open. Not moved.
+2. **Theseus → Argus + me**: his verdict-grading of Argus's admission answer. The half addressed to me
+   is now *smaller* than this morning's routing — "whether `streamClaude`/`streamClaudeRoundtable`
+   should be callable at all from a `scripts/` importer" — with "no ask, and no blocker on me"
+   attached. Not taken this fire; see deferrals.
+3. **Argus → Theseus, me cc**: the three candidate probes read clean, `net` backstops every real
+   server-spawner, no `promote-probes` change. Nothing owed by this seat.
+
+### The unit: phase 2 of the ground-rules ruling, server half
+
+`docs/research/ground-rules-phase2-2026-11-16/{PRE-REG,RESULTS}.md`. Pre-registration pushed as
+`592d1309` **before any of the code or tests existed**; then `0ae38749` (schema + queries + shared
+type + route + mount), `996775be` (23 arms), `97b710a8` (two count pins), `858c77b3` (memo + results).
+
+**Why product again, third fire running.** Theseus's 11/15 proportionality countermeasure, run first:
+grep the rollup for RULED items before anything else. Phase 1 shipped at 13:3x; Calliope's scope doc
+names phase 2's storage as the only genuinely new schema and its UX as additive. The storage + HTTP
+half is the part no UX call is waiting on, so it is this seat's and it was unblocked.
+
+**One table, not the two the scope doc specifies — declared up front, in the pre-reg, not after.**
+`ground_rules_presets` with `is_default` as a **designation on a saved set**, plus a partial unique
+index `WHERE is_default = 1`, instead of a settings-shaped default slot beside a templates table.
+Reasons in the memo; the cost named too (migrations are additive-forever, so overruling is cheapest
+now, and the HTTP surface is deliberately the stable layer so Iris is not hostage to the call).
+
+**The table-count argument everyone would reach for here is void, and I checked rather than repeating
+it.** `CLAUDE.md` says six tables and "add Drizzle at 8+". Live count off
+`grep -n 'CREATE TABLE IF NOT EXISTS' packages/server/src/db/index.ts`: **eight before this fire,
+nine after**. The listed six omit `files` and `file_refs`. So the stated threshold was already crossed
+before I added anything — routed to Calliope (count) and raised for xian (whether to adopt an ORM now),
+not edited on the way past.
+
+### Cripples: four, two refutations, and one of them is my own blind spot
+
+Cure committed (`996775be`) before any cripple existed; tree verified clean and marker-free after the
+last restore.
+
+- **C3** (blank-body 400 removed) → predicted exactly 1 red, measured **1**. LANDED.
+- **C4** (`rowToPreset` returns the raw column) → predicted the mapped-field arms redden and the
+  raw-column arms don't; measured **3 red**, all mapped, every raw-column arm green. LANDED. This
+  cripple exists *because of* this morning's mapper finding, applied prospectively.
+- **C1** (index dropped) → predicted **1**, measured **2**: the raw-INSERT arm *and* my own
+  index-presence arm reading `sqlite_master`. **REFUTED on count**, landed on substance. A cripple on
+  a schema object reddens both the behavioural arm that needs it and the arm that asserts it exists —
+  I was thinking only about the behavioural half while holding the other arm in the same file.
+- **C2** (default-clear removed) → predicted **≥2**, measured **1**; the mechanism I was less sure of
+  is the one that landed (`SqliteError: UNIQUE constraint failed`, not a wrong value).
+  **REFUTED on count**, landed on mechanism — and it says the index and the clear are not redundant:
+  **the index converts a silently-wrong flag into an error.**
+
+**A finding that was none of the four predictions.** C4 did not redden the `POST … makeDefault` arm,
+because `createGroundRulesPreset` returns a **hand-built object literal** rather than a re-read of the
+row through the mapper. So the create path publishes a second spelling the mapper never touches, and a
+mapper defect is invisible on the create response and visible only on reads. `createChannel` has the
+identical shape — a house idiom, not a slip in my file. Named, not fixed: it touches more than one
+function. Same mechanism as the morning's finding in different clothes; the cure both times is to read
+the column.
+
+### Gate, re-driven against my own change
+
+- `npm run typecheck` → **0 `error TS`** ×4 workspaces.
+- Server **145 files / 2272 passed / 1 skipped (2273)** — standing 2249 + my 23, and 2249 + 23 = 2272,
+  so nothing else moved.
+- Client **28 files / 344 passed / 13 skipped (357)** — unchanged, no client file touched.
+- `sweep-probes --census` → CENSUS OK, 155 files, 45 swept / 110 deferred (also run by the pre-commit
+  hook on all five pushes this fire).
+- **Full driving sweep — the slot was left unwritten while the process ran, and this figure was read
+  off the finished file.** `wc -c .sweep-1716.txt` taken twice while it ran (**6103** then **7322**
+  bytes) to prove the file was still growing rather than asserting it; the task reported exit **0**;
+  then the figure:
+
+```
+SWEEP PASSED — 45 of 45 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but did not
+finish), 0 census problem(s), 110 deferred
+```
+
+  Matching this morning's two runs and Argus's 09:10 run exactly — so a new table, a new router and
+  two re-counted pins moved nothing in the probe corpus, which is what server-side storage with no
+  probe coverage should do. **Fourth fire of holding the mechanical rule**, and as before the figure
+  is the one I would have drafted; that is the hazard, not the exoneration — the difference is that
+  this one is a measurement.
+
+### Two count pins moved, which is the pin working
+
+`round214-json-body-guard.test.ts` `callSites` 15 → **16**; `round218-one-mount-list…` exported routers
+9 → **10** and its comment's export-style split 6/3 → 6/**4**. Both reddened on the new router
+*existing*, not on anything weakening — the sibling arm ("no route reads a body with a bare
+`c.req.json()`") stayed green throughout. Both figures **re-counted off the live directory** in this
+fire (2+4+1+1+2+4+2 = 16; `grep -rl` per export style → 6 and 4), not incremented from the old number.
+
+### Drain
+
+Pull + author-checked delta; `COORDINATION.md` read; all three new mail files read in the same fire and
+each either acted on or explicitly recorded as owing nothing; a ruled product item taken from scope doc
+to `main` with four cripples driven and two of my own predictions refuted; one stale `CLAUDE.md` figure
+and one ORM threshold routed rather than edited; memo to Calliope + Iris filed; gate re-driven; five
+incremental pushes so a 2400s death cannot strand the unit.
+
+**Deferred with named reasons, no deadlines.** Theseus's `client.ts` seam question (should
+`streamClaude` be callable from a `scripts/` importer) — **not taken, a choice, not a blocker**; he
+marks it "no ask," it is unclaimed and nobody is racing. My three boarded research items (SAMELINE
+pairing key, form-aware precision census, sha/round-label exclusion) — **no blocker, a choice**, third
+fire outranked by ruled product work. The create-path-literal seam above — named this fire, unclaimed,
+needs its own unit. Still mine and unclaimed from before: the parameter/positional exclusion,
+`arm-routecure-d.mjs`'s `hash-object` pin and `/misordered/` detector, the `unit-465p12site` RESULTS:93
+one-clause cure, the two `schemacollide` single-name selectors, and `api/client.ts`'s eight-positional
+`createChannel` wanting an options bag.
