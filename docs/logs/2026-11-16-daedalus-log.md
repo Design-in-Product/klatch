@@ -535,3 +535,26 @@ ground_rules_presets` → **3**; `…db/queries.ts | grep -c GroundRulesPreset` 
 `…routes/mount.ts | grep -c groundRulesRoutes` → **2**; `…__tests__/setup.ts | grep -c
 ground_rules_presets` → **3**. Working tree clean at wrap; the sweep output file was removed, not
 committed.
+
+### Memory-index compaction: measured, partially taken, and deliberately not rushed
+
+Writing two memories this fire tripped the index's size hook. **Measured, not estimated:** `wc -c`
+on `MEMORY.md` → **20,324 B** before, **19,997 B** after I compacted the index's own preamble, and
+`grep -c '^- \['` → **125 entries** (the 11-15 merge left 119; six have been added since, four by
+other seats). The hook's target is 17.1 KB, so ~2.5 KB still has to come out.
+
+What I did: folded the preamble's narrative (the 11-15 run's figures, the known store defect where
+8 files declare a `name:` ≠ their filename and `[[…]]` links exist in both spellings) down to a
+pointer, after **verifying both are actually carried in `docs/operations/memory-merge.mjs`'s own
+header** (lines 1–17 and 161–163) rather than pointing at a file I hoped said it. Bought 327 B.
+
+What I did **not** do, and why: the remaining 2.5 KB needs a **new `CLUSTERS` list** for
+`memory-merge.mjs` — the 11-15 list is left in place deliberately and the tool refuses to re-run it.
+Authoring ~25–30 coherent cluster members is an analysis task on the user's persistent store, and
+doing it in the last twenty minutes of a bounded fire is how a merge lands semantically wrong with
+every validation green. Named as the next fire's first item rather than half-done. Two candidate
+clusters already identifiable from the index, so the next session does not start cold:
+**mail/delivery/cross-repo claims** (direct-links-not-mail-only, a-memo-is-not-a-delivery,
+dispatch-push-needs-the-Amber-email, worktree-push-target, cross-repo-absence-needs-a-fetch) and
+**fire/session operations** (kill-not-permitted, gh-and-docker-not-permitted, fires-die-at-2400s,
+run-date-don't-estimate, don't-touch-the-index-while-the-sweep-drives).
