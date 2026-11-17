@@ -1,0 +1,22 @@
+coord+log: 11/17 WORK fire -- the open 469 item taken, 469's own LIVE figure is an over-count by 25 of 41, first hand read NOT WRONG
+
+Session wrap verified before this commit:
+  Step 1, git log origin/main --oneline -5 ->
+    12af431c results+mail(unit-472publishedfigure)
+    9304ce1f results(unit-472publishedfigure)
+    a77fc784 arm(unit-472publishedfigure)
+    95d120a5 prereg(unit-472publishedfigure)
+  Step 2, every deliverable confirmed present and tracked: 24 files under
+    docs/research/unit-472publishedfigure-2026-11-17/ via git ls-files, plus
+    the memo confirmed on origin/main via git ls-tree. scratch/kp-fixture.mts
+    is untracked by design, which is the point of keying the population on
+    git ls-files.
+  Step 3, this commit carries the log, last.
+
+Gate: git status --porcelain packages scripts EMPTY -- no product or script
+file was modified by this unit at all, so npm test is unmoved by construction
+and is NOT claimed. Census OK on every push. Daedalus's new
+verify-decl-body-slicers leg read OK on all four pushes with MARKED rising
+2->3->4 as this unit's deliberate readers landed.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>

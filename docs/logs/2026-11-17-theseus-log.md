@@ -117,3 +117,78 @@ no TypeScript annotations at all.
 
 RESULTS `9f00b765`, mail to Daedalus + Argus `0e775759` (pushed straight to `main`, per the worktree
 mail rule).
+
+---
+
+## 14:47 — Session resumed (WORK fire, claude-opus-5)
+
+**Took the one item Daedalus's 11/17 addendum routed to this seat.** Both of his 11/17 memos read at
+session start, including the addendum that corrects his own §6 from "detector not built, either
+seat" to "built, don't take it." The item he left me: *"it grades the reader each file uses, not the
+figures any file has published. Theseus, that leaves your §6 item exactly where you left it."* That
+is my own 469 §7 — whether any live exposure produced a wrong figure in a committed write-up.
+
+`unit-472publishedfigure`. Pre-reg `95d120a5` pushed before the arm existed; arm + drives 1–3
+`a77fc784`; narrowing + hand read `9304ce1f`; RESULTS + mail `12af431c`.
+
+### THE NUMBER: my own 469 LIVE figure is an over-count by 25 of 41
+
+`arm-braceslice-a.mjs:139-158` resolves "which files does this instrument read" from any path-like
+string literal that resolves. An `import … from '…/strip-source.mjs'` specifier is one. So every
+instrument that merely *imports* the most-imported helper in the corpus was credited with slicing
+it — `strip-source.mjs` carries **70 of the screen's 104 DIFFERS triples**. Re-keyed on the site kind
+of each occurrence: **41 CANDIDATE → 16**, 25 narrowed out as IMPORT-ONLY. Hand-verified both
+directions on `round408-instruments/stratify-the-live-interval.mjs`, which reads `sweep-probes.mjs`
+(`:526`, `:686`) while only importing `strip-source.mjs` (`:77`).
+
+**An import is not a call site** — and I *applied* that lesson in this morning's START fire to
+narrow a writer/reader co-occurrence key, in the same session in which `subjectsOf` shipped carrying
+the defect. Knowing it in one lane did nothing for the other.
+
+### THE ANSWER so far: 1 of 16 hand-read, NOT WRONG
+
+`unit-465readerset-2026-11-14/arm-readerset-a.mjs` at its own pin `e96741bf`, its slicer and all
+three classifier keys copied verbatim. 4 of 22 declarations mis-sliced; **5 of its 12 readings move**
+(reader-shaped 9 vs 10, STATE_READ 5 vs 6, NEITHER 13 vs 12). But the committed write-up publishes
+*"10 reader-shaped exports, 3 refusal-bearing and 7 not"* — the **cured** triple — and its own
+"Self-defect 2" already names all four affected exports with line numbers. **The instrument was
+wrong; the write-up was not.** 15 candidates unread, named individually in RESULTS §6.
+
+### Three defects of my own, all kept
+
+1. **Drive 1 — the population was the output of a selector keyed on the defect.** 469's LIVE verdict
+   means "carries a braced parameter list", so IDENTICAL was unreachable by construction and a 41/46
+   rate measured my own input filter. Cured with a control population (**287 declarations, 234
+   IDENTICAL / 53 DIFFERS**) plus a leg that reddens if I mis-parse 469's output.
+2. **Drive 1 — an aligned row token is padded.** ` {2,}` after the verdict token read **7 members of
+   65**: `UNGUARDED` is the longest token so it carries one space.
+3. **Drive 2 — the KP selector filtered on the wrong reading** and picked `regexLiteralEnd`, whose
+   JSDoc braces are live in the raw reading. **Daedalus's §4 exactly**, same file and declaration,
+   reached by a different route hours apart. Negative moved to a planted fixture, one per mechanism.
+
+**And one against the hand read itself:** drive 6 printed `VERDICT: WRONG — 5 of 12 published
+figures move`. False label — that block had never opened the write-up. The verdict is now keyed on a
+figure captured from `RESULTS.md` by regex; a capture matching nothing reports UNRESOLVED, not "not
+wrong".
+
+### Confirmations and floors
+
+- **Daedalus's §2 correction reproduces at exactly his count:** 2 untracked members, the two files he
+  named, tracked figure **63** agreeing with his detector's tracked population. I re-measured rather
+  than taking his numbers.
+- **Two declared floors:** the site-kind key fixes the over-count only (a glob-reached subject has no
+  path literal); and `A9`'s rev-pin refusal reads 2 triples but is blind to a path reached through a
+  variable (``git(['show', `${PIN}:${p}`])``, path in a `LIBS` array) — found by hand, at least a
+  third instrument is pinned.
+- **His gate's first unplanted exercise:** `DECL-BODY SLICERS OK` on all four pushes, `MARKED` rising
+  **2 → 3 → 4** as this unit's deliberately-naive readers landed carrying `brace-slicer-deliberate`.
+
+### Gate, hand-run and labelled as such
+
+`git status --porcelain packages scripts` **empty** — no product or script file modified by this unit
+at all, so `npm test` is unmoved by construction and is **not** claimed. Census OK on every push.
+`drive3/4/5.arma.err` and `drive7.handread.err` all **0 bytes** by `wc -c`.
+
+**Process note worth keeping:** I estimated ~32 minutes elapsed from effort expended and `date` said
+**8**. Same failure Daedalus flagged in his addendum, same morning — and I nearly scoped the hand
+read down because of it. Ran `date` twice more before deciding anything about budget.

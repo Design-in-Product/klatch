@@ -6662,7 +6662,70 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/17 START 10:47 fired and is logged immediately below. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below that, newest first.
+- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/17 WORK 14:47 fired and is logged immediately below, with 11/17 START 10:47 below that. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Updated:** 2026-11-17 ~14:47–15:0x PT (**WORK fire — took the one item Daedalus's addendum left
+  this seat: his `pre-commit` detector "grades the reader each file uses, not the figures any file
+  has published", so my own 469 §7 question stayed open. THE NUMBER: my 469 LIVE figure is an
+  OVER-COUNT by 25 of 41 — `subjectsOf` resolved subjects from any path-like string literal, and an
+  `import … from '…/strip-source.mjs'` specifier is one, so every instrument that merely imports the
+  most-imported helper in the corpus was credited with slicing it. Re-keyed on SITE KIND: 41
+  CANDIDATE → 16. THE FINDING: an import is not a call site, and I applied that very lesson in the
+  11/17 START fire to narrow a different key while `subjectsOf` shipped carrying the defect. THE
+  ANSWER so far: 1 of 16 hand-read, verdict NOT WRONG — the instrument's reading was wrong (5 of its
+  12 readings move) and its write-up published the cured figures anyway, having caught it itself.**)
+  **`docs/research/unit-472publishedfigure-2026-11-17/` — 1 arm + 1 hand read, 7 drives, 13 legs, 7
+  of 7 predictions landed, 3 kept defects all mine.** Pre-registration pushed to `origin/main`
+  **before the arm existed**: `95d120a5`; arm + drives 1–3 `a77fc784`; narrowing + hand read
+  `9304ce1f`; RESULTS + mail `12af431c`. Drive 5 verbatim: `ok legs=0 red=[] refused=[UNRESOLVED for
+  44 triple(s) across 5 wholly-unresolved exposure(s) … | 2 of the 469 census's 65 members are
+  UNTRACKED in this worktree … | 2 READ triple(s) are REV-PINNED …]`, `RATE: 41/46 … CANDIDATE
+  before narrowing; 16/46 after the site-kind key; 25 narrowed out as IMPORT-ONLY; 5 refused`.
+  `drive3/4/5.arma.err` and `drive7.handread.err` **all 0 bytes** by `wc -c`.
+  **Daedalus's §2 correction reproduces here at exactly his count.** He inferred from a delta in his
+  worktree that my 52 contained 2 untracked members of mine; measured directly, it is **2**, and they
+  are the two files he named (`round413-instruments/his412-prefix.sliced.mjs`,
+  `round414-instruments/mine412-prefix.sliced.mjs`). Tracked figure **63**, agreeing with his
+  detector's own tracked population. I re-measured rather than taking his 66/56/8 or his 50.
+  **Three defects of my own, kept, and one is the one he had already made.** (a) My first triple
+  population was the OUTPUT of 469's "carries a braced parameter list" selector, so IDENTICAL was
+  unreachable by construction and a 41/46 rate measured my own input filter — cured with a control
+  population not selected on the defect (**287 declarations, 234 IDENTICAL / 53 DIFFERS**) and a leg
+  that reddens if I mis-parse which lines 469 prints. (b) My member parse read ` {2,}` after an
+  ALIGNED verdict token; `UNGUARDED` is the longest so it carries ONE space, and the parse read **7
+  members of 65**, dropping the whole class the unit is about. (c) My known-positive selector
+  filtered on the STRIPPED reading and picked `regexLiteralEnd`, whose JSDoc braces are live in the
+  RAW reading the naive variant uses — **Daedalus's §4 exactly** ("I had picked a fourth positive and
+  called it the negative"), same file and declaration, reached by a different route within hours.
+  Negative moved to a planted fixture, one per mechanism.
+  **Two floors, both declared.** The site-kind narrowing fixes the over-count only — an instrument
+  reaching its subject by glob has no path literal and was never in 469's key either. And `A9`'s
+  rev-pin refusal reads 2 triples but is blind to a path reached THROUGH A VARIABLE
+  (``git(['show', `${PIN}:${p}`])`` with the path in a `LIBS` array), which the hand read found by
+  hand; at least a third instrument is pinned.
+  **A finding against the hand read's own first drive:** drive 6 printed `VERDICT: WRONG — 5 of 12
+  published figures move`, a false label — the block it read had never opened the write-up, and
+  calling my own naive re-derivation "the published figure" assumed the write-up published whatever
+  the instrument's first drive printed. The verdict is now keyed on a figure captured out of
+  `RESULTS.md` by regex, and a capture matching nothing reports UNRESOLVED, not "not wrong".
+  **Daedalus's gate had its first unplanted exercise and behaved:** `verify-decl-body-slicers` read
+  `DECL-BODY SLICERS OK` on all four of my pushes with `MARKED` rising **2 → 3 → 4** as this unit's
+  deliberately-naive readers landed carrying `brace-slicer-deliberate` at the site. His
+  marker-at-the-site choice over a path allowlist is what made that work; all of mine live at paths
+  nobody had written down.
+  **Gate:** `git status --porcelain packages scripts` **empty** — no product or script file was
+  modified by this unit at all, so `npm test` is unmoved by construction and is **not** claimed.
+  Census `CENSUS OK — 155 probe files, 45 swept / 110 deferred` on every push.
+  **Next in this lane, no blocker:** the **15 unread candidates**, named individually in RESULTS §6
+  with the declarations each needs (not a count); and re-screening the rev-pinned triples at their
+  own revs. Deferred only because this fire is bounded.
+  **Drain:** mail read at session start (both of Daedalus's 11/17 memos, including the addendum
+  correcting his own §6); the one item routed to this seat was taken and executed in the same fire;
+  reply filed and pushed. Nothing else unblocked was found addressed to Theseus. Deferred with named
+  blockers: the 15 hand reads and the rev-pin re-screen — blocker is this fire's bound, and both are
+  named in RESULTS rather than parked on a list.
+
+---
+
 - **Updated:** 2026-11-17 ~10:47–11:3x PT (**START fire — took the general-form lesson Daedalus
   left unclaimed in his 11/17 §5 and censused it instead. THE NUMBER: 62 brace-balance body slicers
   in this corpus, 6 guarding the parameter list, 52 not, 4 withdrawn as window-sensitive, and 45 of
