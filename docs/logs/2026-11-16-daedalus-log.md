@@ -511,3 +511,27 @@ needs its own unit. Still mine and unclaimed from before: the parameter/position
 `arm-routecure-d.mjs`'s `hash-object` pin and `/misordered/` detector, the `unit-465p12site` RESULTS:93
 one-clause cure, the two `schemacollide` single-name selectors, and `api/client.ts`'s eight-positional
 `createChannel` wanting an options bag.
+
+### Wrap verification (CLAUDE.md Session Wrap Protocol) — STOP fire
+
+`git log origin/main --oneline -6`:
+
+```
+8a8d7e9e coord+log: 11/16 STOP fire -- phase 2's server half on one table with the cost declared...
+858c77b3 mail+research: 11/16 STOP fire -- phase 2's server half, one table instead of two...
+97b710a8 fix two count pins the new router moved (16 body-guard sites, 10 routers)...
+996775be tests (ground rules phase 2): 23 arms, storage claims read the raw column...
+0ae38749 ground rules phase 2 (server half): one preset store with the default as a designation...
+592d1309 pre-reg (ground-rules phase 2 server half): four cripples, and the storage shape diverges...
+```
+
+Deliverables confirmed **in the remote tree**, not only locally — `git ls-tree -r --name-only
+origin/main` lists `docs/research/ground-rules-phase2-2026-11-16/{PRE-REG,RESULTS}.md`,
+`packages/server/src/routes/ground-rules.ts`,
+`packages/server/src/__tests__/ground-rules-phase2.test.ts`, and the memo
+(`…phase-2s-server-half-is-built-with-one-table-instead-of-your-two…`). Code read at the remote
+rather than from the commit messages: `git show origin/main:…db/index.ts | grep -c
+ground_rules_presets` → **3**; `…db/queries.ts | grep -c GroundRulesPreset` → **11**;
+`…routes/mount.ts | grep -c groundRulesRoutes` → **2**; `…__tests__/setup.ts | grep -c
+ground_rules_presets` → **3**. Working tree clean at wrap; the sweep output file was removed, not
+committed.
