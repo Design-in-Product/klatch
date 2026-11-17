@@ -976,7 +976,64 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-17 ~09:17–09:3x PT (**START fire — substantive: THE CREATE-PATH LITERAL SEAM
+- **Updated:** 2026-11-17 ~13:17–13:3x PT (**WORK fire — substantive: THE SHARED BODY SLICER
+  THESEUS ROUTED IS BUILT AND ON `main`, AND IT FOUND A FOURTH MECHANISM — A BRACE-BEARING RETURN
+  TYPE — THAT DEFEATS ALL SIX FILES HIS CENSUS CALLED GUARDED, INCLUDING TWO OF MINE.**)
+  `date`-reads **13:17:07**, **13:31:47 PST**, read not estimated — and the correction is worth
+  recording: at 13:31 I had been estimating ~45 minutes elapsed *from effort expended*, against 14
+  actual. **Commit authors checked:** the two commits above my 09:35 head are **Theseus's** (×5) and
+  **Calliope's** MID-fire commit — none mine. One new memo addressed to me, read and **acted on in
+  the same fire**: his `unit-469braceslice` §2 asked for "a shared helper or a detector, not a
+  lesson", which is this seat's lane.
+  **1. BUILT AND PUSHED: `scripts/lib/decl-body.mjs` + `.d.mts` (`c8b8fd73`), under
+  `tsconfig.lib-mjs.json`'s program.** `unit-470bodyslice` — 1 arm, 12 drives, 11 legs, 2 cripples,
+  five incremental pushes (`bc88f5c0` pre-reg before the helper existed → `558d6f03` RESULTS →
+  `47654635` mail).
+  **2. A FOURTH MECHANISM, AND IT BEATS THE CURE AS ROUTED.** A brace-bearing **return type** —
+  `assembleSystemPrompt(…): { prompt: string; floorApplied: boolean } {`,
+  `packages/server/src/claude/client.ts:512`. Paren-match the parameter list (the cure *both* bitten
+  seats reached independently), take the first `{`, land on the return type. **All six GUARDED files
+  are exposed**, including my own two `unit-465readerset` arms. **16 live sites in `packages/`**,
+  five of them in `queries.ts` — the file I censused yesterday.
+  **3. P1 REFUTED — HIS FIGURE DOES NOT REPRODUCE, AND NEITHER NUMBER IS THE REPO'S.** His
+  unmodified arm, driven from my worktree: **66/56/8** against his **62/52/4**, 1007 files walked
+  against 931. The census walks the **filesystem, not the index**: **6 of my 56 members are
+  untracked**, and the delta is 4 — so **his 52 holds 2 untracked members of his own worktree**.
+  **The tracked figure is 50.** Nothing wrong with his arm; the key is under-specified.
+  **4. ONE CRIPPLE COULD NOT GRADE TWO CURES.** C1 (routed cure removed) reddened **2 of 3** — the
+  JSDoc site survived, because the *other* cure (every depth walk over `stripSource(src, true)`)
+  covers it. C2 (composition removed) **reddened nothing** and returned **1545 ch where the cured
+  reader returns 4902 ch**: a span 3357 characters short that still held the token my leg looked for.
+  **A cure whose damage is a wrong SPAN cannot be graded by a predicate keyed on the span's
+  CONTENTS.** Leg A2c (brace-balance under the stripped reading — an invariant, not a hand-typed
+  key) reddens exactly that site under C2, green 3/3 restored.
+  **5. TWO SELF-CORRECTIONS AGAINST MY OWN ARM, drives kept.** My A3 **control** was
+  `regexLiteralEnd`, whose parameter list carries JSDoc braces — a fourth positive called the
+  negative. And my GUARDED parse ate his **section header**, whose `readFileSync` threw into a
+  `catch` returning `false`, **inflating the denominator of the claim I was making**.
+  **6. CURING IT RAISED HIS UNGUARDED COUNT BY ONE.** 68/57 now: the helper is GUARDED (P5 lands),
+  and the other new member is **my own arm, UNGUARDED and correctly so** — it carries the naive walk
+  deliberately. The obvious detector would redden on an honest arm; it needs a **declared marker at
+  the site**, not a path allowlist.
+  **7. LEDGER: 6 registered, 3 landed (P3, P5, P6), 3 refuted (P1, P2, P4).**
+  **8. GATE, DRIVEN FRESH.** Typecheck **0 errors** ×4; server **146 files / 2287 passed / 1 skipped
+  (2288)** = this morning's standing figure, unmoved (the helper is additive); client **29/42,
+  354/367**; census OK on every push. Cripples restored and verified (`grep -c CRIPPLE` → 0,
+  `git status` clean) before the gate ran; helper committed **before** the first cripple.
+  **Drain:** author-checked delta; `COORDINATION.md` read; the one new memo read and **answered with
+  the deliverable built**, not with an ack; one finding that invalidates a cure both seats had
+  reached; two self-corrections; one lesson filed as a **section in an existing memory topic file**
+  (no new index line); gate re-driven; five pushes.
+  **Deferred with named blockers, no deadlines:** the **detector is specified and priced** (RESULTS
+  §6: key on `git ls-files`, baseline the 50 tracked members, carry a site marker for deliberate
+  reproductions, cover the return type or it certifies the six GUARDED files as cured) — ~120 lines
+  plus a baseline and 2 known positives, **a second unit, not a tail on this one**; blocker: a scope
+  choice, this fire's budget went to the helper's two cures and twelve drives. **Unclaimed, either
+  seat.** The **56 are not re-measured against the fourth mechanism** — printed as a refusal in the
+  arm's own verdict line, not just in prose. Memory-store compaction still owed (index **20,749 B**
+  by `wc -c` this fire).
+  Log: `docs/logs/2026-11-17-daedalus-log.md`.
+- **Previously:** 2026-11-17 ~09:17–09:3x PT (**START fire — substantive: THE CREATE-PATH LITERAL SEAM
   IS CURED ACROSS ALL TEN WRITERS, THE ROUTE'S POST RESPONSE IS GRADEABLE BY THE MAPPER FOR THE FIRST
   TIME — AND MY OWN EQUALITY ARM TURNED OUT TO BE UNABLE TO GRADE THE MAPPER IT WAS WRITTEN FOR,
   GREEN IN ALL FOUR LEGS.**) `date`-reads **09:17:10**, **09:20:17**, **09:25:42**, **09:30:29 PST**,

@@ -153,3 +153,99 @@ hook was reworded. That is the shape the index's own standing note asks for.
 The ~20 merges to reach 17.1 KB were **not** started: they need a new cluster list authored first,
 and a bounded fire should not leave a half-done merge pass in a store four other seats read. Named as
 a blocker, not a deadline.
+
+---
+
+## 13:17 — WORK fire (model: claude-opus-5)
+
+`date`-reads this fire: **13:17:07**, **13:31:47 PST**. Read, not estimated — and the correction
+matters: by 13:31 I had been estimating ~45 minutes elapsed from effort expended, against 14 actual.
+The memory lesson is `feedback_run_date_dont_estimate_elapsed_from_effort` and it fired again.
+
+**Briefing.** Worktree synced by the wrapper, `git status` clean at open. **Commit authors checked:**
+the two commits above my 09:35 head are **Theseus's** (×5, his `unit-469braceslice`) and
+**Calliope's** MID-fire coord/doc commit — none mine. `COORDINATION.md` §Daedalus read. One new memo
+addressed to me, read in this fire:
+
+- **Theseus → me + Argus (START fire):** `unit-469braceslice` censuses the brace-slicer mechanism I
+  routed to him this morning as a general-form *sentence*. His §2 refutes the premise of that
+  routing — `|GUARDED| = 6`, four written **before** the two incidents, two of those four **mine**,
+  one in the same directory on the same day as an unguarded sibling. **Explicit ask: "an argument for
+  a shared helper or a detector, not for a lesson."** That is this seat's lane.
+
+### Work: unit-470bodyslice — the shared body slicer, built and pushed
+
+`docs/research/unit-470bodyslice-2026-11-17/` — PRE-REGISTRATION (P1–P6), RESULTS, arm, 12 drive
+files. Four pushes, so a 2400s death could not strand the unit:
+
+| commit | what |
+|---|---|
+| `bc88f5c0` | pre-registration, before the helper or the arm existed |
+| `c8b8fd73` | `scripts/lib/decl-body.mjs` + `.d.mts` — **before the first cripple** |
+| `4f510585` | arm + drives 1–3 (3 red legs, two of them the arm's own defects) |
+| `558d6f03` | RESULTS + drives 4–12 |
+| `47654635` | mail to Theseus + Argus |
+
+**Findings, shortest form:**
+
+1. **There is a FOURTH mechanism and it defeats the cure as routed.** A brace-bearing **return
+   type** — `assembleSystemPrompt(…): { prompt: string; floorApplied: boolean } {` at
+   `packages/server/src/claude/client.ts:512`. Paren-match the parameter list, take the first `{`,
+   land on the return type. **All six files the 469 census calls GUARDED are exposed**, including my
+   own two `unit-465readerset` arms. **16 live sites in `packages/`**, counted by the helper itself.
+2. **P1 refuted: his census does not reproduce in my worktree, and neither figure is the repo's.**
+   66/56/8 against his 62/52/4; 1007 files walked against 931. The census walks the **filesystem**,
+   so **6 of my 56 members are untracked** — and the delta is 4, which means his 52 holds 2
+   untracked members of his own. **The tracked figure is 50.** Load-bearing for any detector.
+3. **P3 lands on real declarations, not fixtures:** naive wrong 3/3 (9 ch, 40 ch, **2 ch** bodies),
+   helper right 3/3.
+4. **One cripple could not grade two cures.** C1 (routed cure removed) reddened **2 of 3** — the
+   JSDoc site survived because the *other* cure (every depth walk over `stripSource(src, true)`)
+   covers it. C2 (composition removed) **reddened nothing**, and returned **1545 ch where the cured
+   reader returns 4902 ch**: a span 3357 characters too short that still contained the token my leg
+   looked for. Leg **A2c** added at drive 7 — brace-balance under the stripped reading, an invariant
+   rather than a hand-typed key — reddens exactly that site under C2 and is green 3/3 restored.
+5. **Two of drive 3's three reds were my arm's own defects.** (a) My A3 *control* was
+   `regexLiteralEnd`, whose parameter list carries JSDoc braces — **a fourth positive called the
+   negative**, and I nearly read the differential working as the control failing. (b) My GUARDED
+   parse ate the census's own **section header** (`GUARDED (paren-match within 400 chars before): 6`
+   starts with `GUARDED `), `readFileSync('(paren-match')` threw into a `catch` returning `false`,
+   and the bogus member scored as not-colon-aware — **inflating the denominator of the claim I was
+   making**. Both drives kept, repaired at drive 4.
+6. **Curing this raised the census's unguarded count by one.** 68 slicers / 57 unguarded now. The
+   helper is **GUARDED** (P5 lands); the other new member is **my own arm, UNGUARDED and correctly
+   so** — it carries the naive walk deliberately as the comparison arm. So the obvious detector
+   reddens on an honest arm, and needs a **declared marker at the site**, not a path allowlist.
+7. **Prediction ledger: 6 registered, 3 landed (P3, P5, P6), 3 refuted (P1, P2, P4).** P4's
+   refutation is the informative one.
+
+**Gate, driven fresh this fire, not carried:** typecheck **0 errors** ×4 workspaces; server
+**146 files / 2287 passed / 1 skipped (2288)** — equal to this morning's standing figure, unmoved,
+the helper being additive; client **29/42 files, 354/367**; census OK, 155 probe files, 45/110, on
+every push. **Cripples restored** with `git checkout HEAD -- scripts/lib/decl-body.mjs` after C1 and
+C2, each verified by `grep -c CRIPPLE` → **0** and `git status --short -- scripts/` empty before the
+gate ran; the helper was committed **before** the first cripple, so no restore could discard it.
+
+**One invocation defect worth recording:** `npm --prefix <root> test -w packages/server` failed with
+`No workspaces found` — `-w` resolves against the **child cwd**, which was the unit directory, not
+`--prefix`. Re-driven as `npm --prefix <root>/packages/server test` (`drive10b`). Same family as
+`topic_git_and_shell_invocation`'s argv-path entry.
+
+**Drain:** pull + author-checked delta; `COORDINATION.md` read; the one new memo read and acted on in
+the same fire with the routed deliverable built and pushed, not acknowledged; one finding (the fourth
+mechanism) that invalidates the cure both seats had independently reached; two self-corrections
+against my own arm; one lesson filed as a **new section in an existing memory topic file**
+(`topic_cripples_and_counterfactuals`, now 9 — no new index line); gate re-driven fresh; five
+incremental pushes.
+
+**Deferred, with named blockers — no deadlines:**
+- **The detector is specified and priced in RESULTS §6 and NOT built** (~120 lines + a baseline list
+  + 2 known positives; must key on `git ls-files`, carry a site marker for deliberate
+  reproductions, and cover the return-type mechanism or it certifies the six GUARDED files as
+  cured). Blocker: none technical — a scope choice; this fire's budget went to the helper, its two
+  cures and twelve drives. Unclaimed; either seat.
+- **The 56 unguarded slicers are NOT re-measured against the fourth mechanism.** I know the exposure
+  exists and its size in `packages/`; I do not know how many of the 56 read a file carrying one.
+  Printed as a refusal in the arm's own verdict line.
+- The **memory-store compaction pass** (index 20,749 B by `wc -c` at this fire's write, target
+  17.1 KB). Still owed, still needs a cluster list authored first.
