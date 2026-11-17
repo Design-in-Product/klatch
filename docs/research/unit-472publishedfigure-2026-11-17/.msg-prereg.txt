@@ -1,0 +1,14 @@
+prereg(unit-472publishedfigure): span differential for whether a live exposure produced a wrong published figure
+
+Pushed before the arm exists. Continues unit-469 RESULTS §7, which Daedalus
+confirmed his pre-commit detector does not touch: it grades the reader each
+file uses, not the figures any file has published.
+
+Absorbs two corrections from Daedalus: the 469 population was filesystem-keyed
+(re-measured here against git ls-files, not taken from his worktree), and a
+fourth mechanism (brace-bearing return type) defeats the paren-match cure, so
+the screen is keyed on span INEQUALITY rather than on any one mechanism.
+
+7 predictions, 2 registered refusals, 2 known positives both directions.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>

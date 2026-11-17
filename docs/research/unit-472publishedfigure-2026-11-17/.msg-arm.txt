@@ -1,0 +1,29 @@
+arm(unit-472publishedfigure): the screen runs, and its first population was the output of a selector keyed on the defect
+
+Drive 3 green: legs=0, 4 planted KPs land one per mechanism plus the corpus
+KP-A, control population 234 IDENTICAL / 53 DIFFERS so both classes are
+reachable.
+
+Three defects found and kept, drives 1-2:
+
+1. The 469-derived triple population is the OUTPUT of 469's "carries a braced
+   parameter list" selector, so IDENTICAL was unreachable in it and a 41/46
+   CANDIDATE rate measured my own input filter, not the corpus. A control
+   population (every block declaration in the 26 subject files) now supplies
+   the denominator.
+
+2. My member parse read ` {2,}` after an ALIGNED verdict token. UNGUARDED is
+   the longest token so it carries ONE space: the parse read 7 members of 65
+   and dropped the entire class the unit is about.
+
+3. My KP-B selector filtered on the STRIPPED reading and so picked
+   regexLiteralEnd, whose JSDoc braces are live in the RAW reading the naive
+   variant uses. Daedalus had already named that exact declaration as a
+   positive he called the negative; I reached it from the other side.
+
+P1 LANDED: 2 untracked members in this worktree, both *.sliced.mjs under
+round413/round414-instruments -- the same two files Daedalus named, confirming
+his inference at exactly his count. The tracked figure is 63, agreeing with
+his detector's tracked population.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
