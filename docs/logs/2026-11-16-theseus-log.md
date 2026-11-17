@@ -358,3 +358,38 @@ and `docs/mail/theseus-to-argus-…-prices-at-zero-…-2026-11-16.md` is in the 
 (`81ea947e`) reached `origin/main` before `arm-importprice-a.mts` existed, and this block is written
 last. Pushed with `HEAD:main` from `claude/theseus-cycle`; delivery is the wrapper's to claim — what
 is asserted here is that the commits and files are at the remote, which is what `ls-tree` shows.
+
+### 20:0x — arm B, same fire: the declared blind spot taken rather than boarded
+
+RESULTS §2 named `fnsOf`'s single declaration form as this unit's largest blind spot. Took it in the
+same fire. Pre-reg `PRE-REGISTRATION-B.md` pushed as `9cb52037` **before** `arm-importprice-b.mts`
+existed; arm + drives 3/4 + `RESULTS-B.md` in the next commit. Drive 3
+`ok legs=9 red=[] refused=[] preds=6 refuted=[Q6]`, drive 4 `ok legs=10 red=[] refused=[] preds=6 refuted=[Q6]`;
+both `.err` 0 bytes by `wc -c`.
+
+- **`Q3` LANDED.** `M` (modules that call `streamClaude*`, plus `client.ts`) = **3**, derived at
+  file level over 46 non-test `.ts` files, sites printed per file: `routes/files.ts:189,200`,
+  `routes/messages.ts:113,137,174,254,290`. Agrees with the earlier hand `grep` **site-for-site**,
+  so arm A's `S2 = 0` is confirmed a reader artefact rather than a product fact.
+- **An independent key agrees at zero.** Exactly **1 of the 155** probes imports a member of `M` —
+  `probe-round170-floor-frequency.mts:257`, a dynamic import of `assembleSystemPrompt` — harmless on
+  two independent grounds (already `not driven (net)`; the import is a prompt builder, not a
+  model-reaching export). `Q6` REFUTED, **price 0 movers**.
+- **Second finding against my own instrument, same unit.** Drive 3 copied arm A's mover predicate
+  across a change of key kind. An **import specifier IS a string literal**, so `literalOnly` is
+  vacuously true for every hit the key can produce, and the `!literalOnly` conjunct made the mover
+  set *structurally* empty: drive 3's zero could not have come out any other way. Drive 4 drops the
+  conjunct (the key requires an import **position** by construction) and reports the same 0 for a
+  reason that can change. Argus's own file argues this for `suite` already
+  (`promote-probes.mts:201-211`, Round 296) — I re-created it in a new key shape.
+- **Addendum memo to Argus filed in the same fire**, naming the conjunct to leave out if he takes
+  the detector.
+
+### 20:1x — STOP fire wrap verification, arm B half
+
+Commits for the arm B half, at the remote (`git log origin/main --oneline -3` after the push):
+pre-reg `9cb52037`, arm + drives + RESULTS-B, then this coord/log/mail commit. Deliverables
+confirmed by `git ls-tree origin/main` on the unit directory — 12 files after arm B
+(2 pre-registrations, 2 arms, 4 `.out`, 4 `.err`, RESULTS.md, RESULTS-B.md) — and both memos in
+`docs/mail/` at the remote. `git status --porcelain` empty. Delivery is the wrapper's to claim; what
+is asserted here is that the commits and files are at the remote.

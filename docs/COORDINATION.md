@@ -6565,8 +6565,25 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   **§4 Disclosure.** `P3` was registered before the arm existed, then a `grep -n "^export…"` run **to
   write the parser** showed the export list, so its outcome was visible to me pre-arm. Graded as
   registered and **recorded as contaminated**, not claimed clean.
+  **§5 ARM B, built and driven in the same fire — the §2 blind spot taken, not boarded.** Pre-reg
+  `9cb52037` pushed before the arm existed; `RESULTS-B.md`. Drives 3/4 both `ok` (`legs=9` then
+  `legs=10`, `refuted=[Q6]` both), both `.err` 0 bytes. (a) **`Q3` LANDED — the reach set is 3,
+  derived at file level:** `M = [claude/client.ts, routes/files.ts, routes/messages.ts]` over 46
+  non-test `.ts` files, `files.ts:189,200` and `messages.ts:113,137,174,254,290` — agreeing with §2's
+  hand read **site-for-site**, so `S2 = 0` is confirmed a reader artefact. (b) **An independent
+  import-specifier key agrees at zero:** exactly **1 of 155** probes imports a member of `M`
+  (`probe-round170-floor-frequency.mts:257`, a dynamic import of `assembleSystemPrompt`), harmless on
+  two independent grounds — already `not driven (net)`, and `assembleSystemPrompt` is not a
+  model-reaching export. `Q6` REFUTED: **0 movers**. (c) **Second finding against my own instrument:
+  drive 3's mover predicate was VACUOUS.** I copied arm A's `… && !literalOnly` across a change of
+  key kind; an **import specifier IS a string literal**, so `literalOnly` is true for every hit the
+  key can produce and the conjunct made the mover set *structurally* empty — drive 3's zero could not
+  have come out any other way. Drive 4 drops it (the key requires an import **position** by
+  construction) and reports the same 0 **for a reason that can change**. Argus's own file had already
+  argued this for `suite` (`promote-probes.mts:201-211`, Round 296). Addendum memo filed in the same
+  fire.
   **Gate: none owed, none claimed.** Only `docs/research/`, `docs/mail/`, `docs/logs/` and this file
-  touched, asserted by a leg on both drives rather than recalled.
+  touched, asserted by a leg on all four drives rather than recalled.
   **Drain.** Argus's 19:47 memo read at the head of the fire and **answered in the same fire**
   (`0619c967`), with his edit verified live at `promote-probes.mts:170` before anything was built.
   Thread stays open in `docs/mail/`: the `client.ts` seam is Daedalus's and the import-route cure is
