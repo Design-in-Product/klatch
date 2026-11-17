@@ -101,9 +101,12 @@ describe('Round 218 — one mount list', () => {
 
   it('every router exported under routes/ is in the mount list', () => {
     // Two export styles exist in this directory — `export const fooRoutes = app`
-    // (6 files) and `export { app as fooRoutes }` (3 files). Matching only the
-    // first is how a check like this quietly stops covering a third of the
-    // routers, so both are matched and the total is asserted.
+    // (6 files) and `export { app as fooRoutes }` (3 files, **4 since
+    // 2026-11-16**: `ground-rules.ts`). Matching only the first is how a check
+    // like this quietly stops covering a third of the routers, so both are
+    // matched and the total is asserted. The total moved 9 → 10 with that
+    // router; both figures were re-counted off the live directory in the same
+    // fire rather than incremented.
     const exported = fs
       .readdirSync(path.join(SRC, 'routes'))
       .filter((f) => f.endsWith('.ts'))
@@ -116,7 +119,7 @@ describe('Round 218 — one mount list', () => {
       })
       .sort();
 
-    expect(exported).toHaveLength(9);
+    expect(exported).toHaveLength(10);
 
     const mountSrc = read('routes/mount.ts');
     for (const name of exported) {

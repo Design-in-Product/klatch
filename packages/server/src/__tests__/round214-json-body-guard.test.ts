@@ -240,7 +240,14 @@ describe('Round 214 — malformed JSON bodies refuse with a sentence', () => {
 
   it('the guard is actually wired at every body-reading route site', () => {
     // Pairs with the test above: that one proves the old call is gone, this one
-    // proves it was replaced rather than deleted. 15 sites, per Theseus's count.
+    // proves it was replaced rather than deleted. 15 sites, per Theseus's count;
+    // **16 since 2026-11-16**, when `routes/ground-rules.ts` added the
+    // ground-rules-preset POST. The pin moved because the corpus did, not
+    // because the claim weakened — a new route reading a body through the guard
+    // is exactly what this number is here to make visible, and a new route
+    // reading one *without* it still reddens the sibling arm above. Counted off
+    // the live source (`grep -rc 'await readJsonBody<' routes/*.ts`), not
+    // incremented from the old figure.
     const routesDir = path.join(__dirname, '..', 'routes');
     let callSites = 0;
 
@@ -250,7 +257,7 @@ describe('Round 214 — malformed JSON bodies refuse with a sentence', () => {
       callSites += (src.match(/await readJsonBody</g) || []).length;
     }
 
-    expect(callSites).toBe(15);
+    expect(callSites).toBe(16);
   });
 
   it('no blanket onError is registered that could flatten 500s into 4xx', () => {
