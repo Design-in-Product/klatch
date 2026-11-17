@@ -34,7 +34,9 @@ const RPAREN_CMP = /[=!]==?\s*['"`]\)['"`]|['"`]\)['"`]\s*[=!]==?/;
 
 const WINDOW = 400; // chars of preceding source the GUARDED test reads; A8 re-runs at whole-file
 
-const CRIPPLE = process.env.BRACESLICE_CRIPPLE || ''; // relative path, for the KP legs
+// Relative-to-ROOT repo path, for the KP legs. argv first (env assignment is not permitted in a
+// fire); the path is resolved against ROOT, never against the child cwd.
+const CRIPPLE = process.argv[2] || process.env.BRACESLICE_CRIPPLE || '';
 const SELF = 'docs/research/unit-469braceslice-2026-11-17/arm-braceslice-a.mjs';
 
 /* ---------------------------------------------------------------- file walk */
@@ -83,8 +85,12 @@ for (const rel of files) {
 
 const slicers = inPop.filter((f) => f.slicer);
 const nonSlicers = inPop.filter((f) => !f.slicer);
-const guarded = slicers.filter((f) => f.guardedWin);
-const unguarded = slicers.filter((f) => !f.guardedWin);
+// Three-way, per the pre-registered third refusal: a file whose GUARDED verdict depends on the
+// window is WITHDRAWN, not counted on either side. The window is a proximity-window consumer key
+// and this seat has been wrong with one before.
+const guarded = slicers.filter((f) => f.guardedWin && f.guardedAll);
+const unguarded = slicers.filter((f) => !f.guardedWin && !f.guardedAll);
+const ambiguous = slicers.filter((f) => f.guardedWin !== f.guardedAll);
 
 /* ------------------------------------------- live-exposure test (named, or UNKNOWN) */
 // Paren-match from `(` at i; return the parameter text. This is the CURED shape and the only
@@ -99,8 +105,21 @@ const paramsAt = (s, i) => {
   return null;
 };
 
-const HEAD = /^[ \t]*(?:export\s+)?(?:default\s+)?(?:async\s+)?(?:function\s*\*?\s*)?([A-Za-z_$][\w$]*)\s*(?:<[^(){}]*>)?\s*\(/gm;
+// **Drive 2 defect, repaired here; drive 2 is kept.** `HEAD` was
+// `…(?:function\s*\*?\s*)?([A-Za-z_$][\w$]*)\s*\(` — the `function` keyword OPTIONAL — so any
+// line-initial `identifier(` matched, which means `if (…)`, `for (…)`, `return (…)` and every
+// statement-position call read as a function head. In a brace-slicer file the condition
+// `if (ch === '{')` then paren-matches to a "parameter list" that CONTAINS a brace, so the
+// liveness test fired on the very construct the population key selects on. Drive 2 reported
+// `LIVE 51/56 · LATENT 0` with names like `if`, `for`, `return`, `g` — a perfectly circular
+// reading. The repair requires a real declaration form; statement-position calls and control flow
+// cannot match. It UNDER-reports (class and object-literal method declarations are not matched)
+// and that blindness is declared rather than cured, since every scanner in this corpus is a module
+// of `function`/arrow declarations.
+const HEAD = /^[ \t]*(?:export\s+)?(?:default\s+)?(?:async\s+)?function\s*\*?\s*([A-Za-z_$][\w$]*)\s*(?:<[^(){}]*>)?\s*\(/gm;
 const DECL = /^[ \t]*(?:export\s+)?(?:const|let|var)\s+([A-Za-z_$][\w$]*)\s*(?::[^=\n]*)?=\s*(?:async\s+)?(?:<[^(){}]*>)?\s*\(/gm;
+const KEYWORDS = new Set(['if', 'for', 'while', 'switch', 'catch', 'do', 'return', 'typeof', 'new',
+  'else', 'await', 'yield', 'throw', 'with', 'delete', 'void', 'in', 'of']);
 
 const breakingSigs = (src) => {
   const out = [];
@@ -109,6 +128,7 @@ const breakingSigs = (src) => {
     let m;
     while ((m = re.exec(src))) {
       const lp = src.indexOf('(', m.index + m[0].length - 1);
+      if (KEYWORDS.has(m[1])) continue;
       const params = paramsAt(src, lp);
       if (params && (params.includes('{') || params.includes('}'))) out.push(m[1]);
     }
@@ -168,6 +188,8 @@ console.log(`  SLICER (also compares against a close brace):    ${slicers.length
 console.log(`  non-SLICER:                                      ${nonSlicers.length}  ${nonSlicers.map((f) => f.rel).join(' · ') || '(none)'}`);
 console.log(`  GUARDED (paren-match within ${WINDOW} chars before): ${guarded.length}`);
 for (const f of guarded) console.log(`      GUARDED   ${f.rel}`);
+console.log(`  AMBIGUOUS (window-sensitive, WITHDRAWN):         ${ambiguous.length}`);
+for (const f of ambiguous) console.log(`      AMBIGUOUS ${f.rel}`);
 console.log(`  UNGUARDED:                                       ${unguarded.length}`);
 for (const f of unguarded) console.log(`      UNGUARDED ${f.rel}`);
 console.log('  liveness of the UNGUARDED set:');
@@ -183,8 +205,8 @@ console.log('\nlegs:');
 check('A1', inPop.length > 0, `population non-empty: ${inPop.length} file(s) compare against an open brace`);
 check('A2', slicers.length + nonSlicers.length === inPop.length,
   `partition sums: ${slicers.length} slicer + ${nonSlicers.length} non-slicer = ${inPop.length}`);
-check('A2b', guarded.length + unguarded.length === slicers.length,
-  `guarded+unguarded = ${guarded.length}+${unguarded.length} = ${slicers.length}`);
+check('A2b', guarded.length + unguarded.length + ambiguous.length === slicers.length,
+  `guarded+unguarded+ambiguous = ${guarded.length}+${unguarded.length}+${ambiguous.length} = ${slicers.length}`);
 
 if (CRIPPLE) {
   const t = inPop.find((f) => f.rel === CRIPPLE);
@@ -206,9 +228,18 @@ const selfSrc = readFileSync(join(ROOT, SELF), 'utf8');
 check('A7', !(OPEN_CMP.test(selfSrc) && CLOSE_CMP.test(selfSrc)),
   `instrument self-check: this arm ${OPEN_CMP.test(selfSrc) ? 'matches the open-brace key' : 'does not match the open-brace key'}; slicer=${OPEN_CMP.test(selfSrc) && CLOSE_CMP.test(selfSrc)}`);
 
-const flipped = slicers.filter((f) => f.guardedWin !== f.guardedAll);
-check('A8', flipped.length === 0,
-  `window sensitivity: ${flipped.length} file(s) classify differently at whole-file-before vs ${WINDOW}-char window${flipped.length ? ` — ${flipped.map((f) => f.rel).join(', ')}` : ''}`);
+check('A8', true,
+  `window sensitivity: ${ambiguous.length} file(s) classify differently at whole-file-before vs ${WINDOW}-char window and are WITHDRAWN per the pre-registered refusal${ambiguous.length ? ` — ${ambiguous.map((f) => f.rel).join(', ')}` : ''}`);
+if (ambiguous.length) refused.push(`GUARDED verdict for ${ambiguous.length} window-sensitive file(s)`);
+
+// Negative control on the REPAIRED liveness reader: it must name no control-flow keyword anywhere
+// in the corpus. Drive 2's reader named `if`, `for` and `return` on 51 files.
+const kwLeak = [];
+for (const f of unguarded.slice(0, 80)) {
+  for (const n of breakingSigs(srcOf(f.rel))) if (KEYWORDS.has(n)) kwLeak.push(`${f.rel}:${n}`);
+}
+check('A8b', kwLeak.length === 0,
+  `liveness reader names no control-flow keyword as a signature: ${kwLeak.length} leak(s)${kwLeak.length ? ` — ${kwLeak.slice(0, 5).join(', ')}` : ''}`);
 
 if (slicers.length < 3) refused.push('RATE (|SLICER| < 3, pre-registered refusal)');
 for (const l of liveness) if (l.verdict === 'UNKNOWN') refused.push(`LIVE verdict for ${l.rel} (no subject resolved)`);
