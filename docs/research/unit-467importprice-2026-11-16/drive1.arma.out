@@ -1,0 +1,138 @@
+ok  A3    subject imported: hazards=function EXEMPTIBLE=[db+homedir] admission=function DEFERRED=110 SWEPT=45
+ok  A0a   population: 155 probe files under scripts/
+RED A1    S1 derived from client.ts: direct=[] one-hop=[] EXPORTED-and-reaching S1=[] (of 21 functions, 8 exported)
+ok  A2    candidate key assembled from the derived array, not typed: \b()\s*\(
+LANDED  P1  KNOWN POSITIVE: key fires on import+call fixture = true
+REFUTED P2  two-sided negative: key fires on import-WITHOUT-call fixture = true
+ok  A4    P1 and P2 graded by one RegExp object: \b()\s*\(
+ok  A0b   fixtures stayed in memory: still 155 probe files
+ok  A4b   subject's view of the KP: hazards(import+call fixture) = [(none)]
+REFUTED P3  |S1| = 0 [] vs B1's hand-typed pair [streamClaude,streamClaudeRoundtable] — symmetric difference = [streamClaude,streamClaudeRoundtable]
+ok  A1b   S2 (one cross-file hop, exported): 141 name(s) [_setModelsCacheForTest,adaptToClaudeAi,adaptToClaudeCode,ambiguousNameNote,appendReflection,applyEntityBackfill,applySchema,assignEntityToChannel,buildManifest,checkUndoRecord,classifySubagent,clearChannelCompaction,clearSessionFingerprintCache,countChannelsByOriginalSessionId,createCarriedContextArtifact,createChannel,createChannelBySessionIdResolver,createEntity,createFile,createFileArtifact,createFileRef,createKlatchMcpServer,createToolUseArtifact,decodeProjectPath,defaultDbPath,deleteAllMessages,deleteChannel,deleteEntity,deleteFile,deleteFileRef,deleteGroundRulesPreset,deleteMessage,deleteProject,describeDataDelta,describeSchemaDelta,diffCensus,effortLevelsForModel,encodeProjectDirName,expandConversationRange,extractBehavioralPatterns,extractConversationsFromZip,extractFromZip,extractJson,extractSessionFingerprint,extractSessionId,extractTextContent,extractToolArtifacts,findChannelByOriginalSessionId,findOrCreateProject,findProjectRoot,findUniqueProjectByName,formatTranscriptLine,fromEnv,generateHandoffBriefing,generateProbes,getAllChannels,getAllChannelsEnriched,getAllEntities,getAllProjects,getArtifactsForChannel,getChannel,getChannelEntities,getChannelEntityCount,getChannelFiles,getChannelStats,getClaudeProjectsDir,getDb,getDefaultGroundRulesPreset,getEntity,getEntityChannels,getEntityFiles,getEntityReflections,getExportRoot,getFile,getFileArtifactsForMessages,getFileByStorageKey,getFilePath,getFileRefs,getFilesAtScope,getFilesDir,getGroundRulesPreset,getKlatchesForEntity,getLastAssistantMessage,getLastRoundAssistantMessages,getMessage,getMessageArtifacts,getMessageFiles,getMessages,getProject,getProjectFiles,getProjectForChannel,getSessionFingerprint,getSessionRoots,guessEntityName,importKlatchPackage,importSession,insertMessage,isConversationEvent,isImageFile,isMachineAuthoredText,isTextFile,isValidModel,listGroundRulesPresets,mergeFieldNotes,mintAlongsideNote,mountApiRoutes,negotiateFormatVersion,parseClaudeAiConversation,parseClaudeCodeSession,parseClaudeCodeSessionFromContent,parseEvents,parseJsonlContent,parseSourceMetadata,planEntityUndo,queryAuxiliary,readFile,readFormBody,readJsonBody,readJsonlFile,reassignChannelEntity,recallFromOtherConversations,rejectOversizeBeforeRead,removeEntityFromChannel,removeReflectionsWhere,resolveDbPath,resolveFingerprintCacheEnabled,resolveFingerprintLineCap,resolveImportEntity,resolvePort,restoreInstructions,runAAXT,saveFile,scanClaudeCodeSessions,scanExportedSessions,schemaDelta,scoreResponse,setChannelProject,summarizeToolInput,tokenizeRecallQuery,undoEntityBackfill,updateMessage] from packages/server/src/aaxt/auxiliary.ts, packages/server/src/aaxt/json-extract.ts, packages/server/src/aaxt/probe-generator.ts, packages/server/src/aaxt/runner.ts, packages/server/src/aaxt/scorer.ts, packages/server/src/claude/carried-context.ts, packages/server/src/claude/recall.ts, packages/server/src/db/entity-backfill.ts, packages/server/src/db/index.ts, packages/server/src/db/queries.ts, packages/server/src/db/schema-delta.ts, packages/server/src/dbPath.ts, packages/server/src/export/briefing.ts, packages/server/src/export/external-extraction.ts, packages/server/src/export/package-builder.ts, packages/server/src/export/transport-claude-ai.ts, packages/server/src/export/transport-claude-code.ts, packages/server/src/files/storage.ts, packages/server/src/import/claude-ai-parser.ts, packages/server/src/import/claude-ai-zip.ts, packages/server/src/import/entity-guess.ts, packages/server/src/import/entity-resolve.ts, packages/server/src/import/klatch-import.ts, packages/server/src/import/parser.ts, packages/server/src/import/session-scanner.ts, packages/server/src/mcp/server.ts, packages/server/src/paths.ts, packages/server/src/port.ts, packages/server/src/routes/form-body.ts, packages/server/src/routes/json-body.ts, packages/server/src/routes/models.ts, packages/server/src/routes/mount.ts, packages/server/src/routes/size-cap.ts; 45 non-test .ts files under packages/server/src scanned
+
+── S1 hits over the 155 (0) ──
+   (none)
+
+── S2 hits over the 155 (56) ──
+   probe-accepted-multipart-allocation.mts:122 parseClaudeCodeSessionFromContent( literalOnly=false drivable=true hazards=[db] nonExempt=[(none)] MOVER=true
+      const session = parseClaudeCodeSessionFromContent(content);
+   probe-backfill-entity-sizing.mts:262 guessEntityName( literalOnly=false drivable=true hazards=[db] nonExempt=[(none)] MOVER=true
+      const full = guessEntityName(opener, project);
+   probe-backfill-sidecar-neutrality.mts:80 applySchema( literalOnly=false drivable=false hazards=[db] nonExempt=[(none)] MOVER=false
+      applySchema(db);
+   probe-browse-cold-figure-gap.mts:63 resolveFingerprintLineCap( literalOnly=false drivable=true hazards=[net+db+homedir] nonExempt=[net] MOVER=false
+      * `resolveFingerprintLineCap()` is the lever that retires it. Arm C now sets
+   probe-browse-count-vs-persisted-rows.mts:13 extractSessionFingerprint( literalOnly=false drivable=true hazards=[(none)] nonExempt=[(none)] MOVER=true
+      *   browse count   = extractSessionFingerprint().messageCount   (session-scanner.ts)
+   probe-browse-endpoint-second-corpus.mts:13 getClaudeProjectsDir( literalOnly=false drivable=true hazards=[net+db+homedir] nonExempt=[net] MOVER=false
+      *            directory, ~/.claude-pm/projects, which getClaudeProjectsDir()
+   probe-browse-endpoint-vs-channel-count.mts:7 createChannelBySessionIdResolver( literalOnly=false drivable=true hazards=[net+db+homedir] nonExempt=[net] MOVER=false
+      * Daedalus landed `createChannelBySessionIdResolver()` this afternoon
+   probe-browse-latency-end-to-end.mts:101 getDb( literalOnly=false drivable=true hazards=[net+db] nonExempt=[net] MOVER=false
+      * `process.env.KLATCH_DB` immediately before its own `getDb()` — but by then
+   probe-dedup-resolver-scaling.mts:13 createChannelBySessionIdResolver( literalOnly=false drivable=true hazards=[db] nonExempt=[(none)] MOVER=true
+      * `createChannelBySessionIdResolver()`, on the same scratch DB, same lookup
+   probe-expand-continuation.mts:43 getDb( literalOnly=false drivable=true hazards=[db] nonExempt=[(none)] MOVER=true
+      * below. A static import would bind `getDb()`'s path at module load, and with
+   probe-import-entity-binding.mts:190 getAllEntities( literalOnly=false drivable=true hazards=[net+db] nonExempt=[net] MOVER=false
+      const baselineEntities = q.getAllEntities();
+   probe-import-large-session.mts:51 getClaudeProjectsDir( literalOnly=false drivable=true hazards=[net+db+homedir] nonExempt=[net] MOVER=false
+      * without patching `getClaudeProjectsDir()`. Arm B needs multi-root browse and
+   probe-multi-root-browse.mts:20 getClaudeProjectsDir( literalOnly=true drivable=true hazards=[net+db+homedir] nonExempt=[net] MOVER=false
+      * `getClaudeProjectsDir()` on disk to reach the second corpus and restore it
+   probe-parse-encoding-confound.mts:95 parseClaudeCodeSessionFromContent( literalOnly=false drivable=true hazards=[homedir] nonExempt=[(none)] MOVER=true
+      const session = parseClaudeCodeSessionFromContent(content);
+   probe-parse-stage-allocation.mts:141 parseJsonlContent( literalOnly=false drivable=true hazards=[db+homedir] nonExempt=[(none)] MOVER=true
+      const res = parseJsonlContent(content);
+   probe-path-c-chat-binding-live.mts:11 getChannelEntities( literalOnly=false drivable=true hazards=[net+db] nonExempt=[net] MOVER=false
+      *    getChannelEntities (messages.ts:87) with no default hardcode, and
+   probe-pm-corpus-cap-delta.mts:399 getDb( literalOnly=false drivable=true hazards=[net+db+homedir] nonExempt=[net] MOVER=false
+      getDb(); // creates the scratch DB with the full schema
+   probe-recall-tool.mjs:158 getDb( literalOnly=false drivable=true hazards=[net+db] nonExempt=[net] MOVER=false
+      // Nothing called `getDb()` from here before Round 53, so it was latent; it is not
+   probe-round170-floor-frequency.mts:28 getDb( literalOnly=false drivable=true hazards=[net+db] nonExempt=[net] MOVER=false
+      * `getDb()` (`packages/server/src/db/index.ts:30-38`) runs `initSchema()` and
+   probe-round171-path-b-jit-import-browser.mts:60 getExportRoot( literalOnly=true drivable=true hazards=[net+db+homedir] nonExempt=[net] MOVER=false
+      * is the suppression mechanism, because `getExportRoot()` has replace semantics
+   probe-round176-backfill-cli-end-to-end.mts:96 importSession( literalOnly=false drivable=true hazards=[db] nonExempt=[(none)] MOVER=true
+      const r = importSession({
+   probe-round183-undo-record-against-the-database-it-is-aimed-at.mts:65 createEntity( literalOnly=false drivable=true hazards=[db] nonExempt=[(none)] MOVER=true
+      const kestrel = q.createEntity('Kestrel', 'claude-opus-5', '', '#3366aa');
+   probe-round185-what-the-undo-classifier-knows-a-run-by.mts:66 createEntity( literalOnly=false drivable=true hazards=[db] nonExempt=[(none)] MOVER=true
+      const kestrel = q.createEntity('Kestrel', 'claude-opus-5', '', '#3366aa');
+   probe-round187-the-binding-rule-at-the-inputs-it-was-argued-from.mts:62 getChannelEntityCount( literalOnly=false drivable=true hazards=[db] nonExempt=[(none)] MOVER=true
+      if (q.getChannelEntityCount(ch) >= 5) throw new Error('route would refuse: cap');
+   probe-round189-the-restore-wording-on-a-minted-channel.mts:64 createEntity( literalOnly=false drivable=true hazards=[db] nonExempt=[(none)] MOVER=true
+      const kestrel = q.createEntity('Kestrel', 'claude-opus-5', '', '#3366aa');
+   probe-round191-restoring-the-backup-the-way-a-person-does.mts:15 getDb( literalOnly=false drivable=true hazards=[db] nonExempt=[(none)] MOVER=true
+      * - The server opens it lazily through `getDb()` and has no shutdown handler (`packages/server/src/index.ts`).
+   probe-round193-the-printed-steps-run-as-written-and-how-little-use-reopens-h.mts:6 restoreInstructions( literalOnly=false drivable=true hazards=[db] nonExempt=[(none)] MOVER=true
+      * - `restoreInstructions()` prints four steps wherever the CLI names a backup;
+   probe-round199-the-first-real-corpus-names-seven-agents-and-none-of-them-is-a-name.mts:102 guessEntityName( literalOnly=false drivable=true hazards=[db] nonExempt=[(none)] MOVER=true
+      const g = guessEntityName(s.opener);
+   probe-round200-the-guess-declines-where-it-used-to-invent-and-the-window-is-what-does-it.mts:130 guessEntityName( literalOnly=false drivable=true hazards=[db] nonExempt=[(none)] MOVER=true
+      const g = guessEntityName(s.opener);
+   probe-round201-the-window-holds-this-corpus-and-not-the-class-and-the-corpus-has-no-names-in-it.mts:137 guessEntityName( literalOnly=false drivable=true hazards=[db] nonExempt=[(none)] MOVER=true
+      const g = guessEntityName(s.opener);
+   probe-round202-the-grammar-not-the-distance-and-the-only-basis-the-corpus-supports.mts:92 guessEntityName( literalOnly=false drivable=true hazards=[db] nonExempt=[(none)] MOVER=true
+      const earlyMinted = EARLY_FALSE.filter((o) => guessEntityName(o).basis !== 'none');
+   probe-round203-the-corpus-is-lineages-and-the-sheet-warns-about-one-of-them.mts:220 guessEntityName( literalOnly=false drivable=true hazards=[db] nonExempt=[(none)] MOVER=true
+      const g = guessEntityName(text, undefined);
+   probe-round204-the-undo-over-a-role-apply-driven-end-to-end.mts:88 getDb( literalOnly=true drivable=true hazards=[db] nonExempt=[(none)] MOVER=false
+      * the schema on the way in (`getDb()` runs migrations), so a file-level or
+   probe-round205-the-plan-and-the-apply-pick-opposite-ends-of-a-duplicated-name.mts:7 getAllEntities( literalOnly=false drivable=true hazards=[db] nonExempt=[(none)] MOVER=true
+      * later reuse-by-name resolve "binds to whichever `getAllEntities()` returns
+   probe-round207-the-import-confirms-a-name-and-the-name-is-not-unique.mts:270 getDb( literalOnly=false drivable=true hazards=[net+db+homedir] nonExempt=[net] MOVER=false
+      const dbC = getDb();
+   probe-round213-reassign-live-http.mts:524 getFile( literalOnly=true drivable=true hazards=[net+db] nonExempt=[net] MOVER=false
+      // of 14 routes and false of `POST /files/:id/promote`, which calls `getFile()` and
+   probe-round217-multipart-guard-live-http.mts:576 readFormBody( literalOnly=true drivable=true hazards=[net+db] nonExempt=[net] MOVER=false
+      // The grep uses the CALL form `readFormBody(c)`, not the bare name: `form-body.ts`'s own
+   probe-round219-files-cap-live-http.mts:674 mountApiRoutes( literalOnly=true drivable=true hazards=[net+db] nonExempt=[net] MOVER=false
+      check('G', `all ${routers.length} routers mounted by mountApiRoutes() answer on the running server`,
+   probe-round220-reassign-on-the-march-corpus.mts:95 getDb( literalOnly=false drivable=true hazards=[db] nonExempt=[(none)] MOVER=true
+      const db = getDb();
+   probe-round227-arm-o-on-a-corpus-where-the-cap-fires.mts:349 extractSessionFingerprint( literalOnly=false drivable=true hazards=[net+model+db+homedir] nonExempt=[net+model] MOVER=false
+      fpCapped.set(f, await extractSessionFingerprint(f, SHIPPED_CAP));
+   probe-round233-arm-m-and-the-endpoint-can-walk-different-corpora.mts:191 getSessionRoots( literalOnly=false drivable=true hazards=[net+model+db+homedir] nonExempt=[net+model] MOVER=false
+      * this copy against `getSessionRoots()` and called the disagreement the finding —
+   probe-round242-the-band-selects-bytes-and-arm-a-is-one-row.mts:167 parseClaudeCodeSession( literalOnly=false drivable=true hazards=[net+db] nonExempt=[net] MOVER=false
+      const parsed = await parseClaudeCodeSession(entry.path);
+   probe-round246-the-sweep-repaired-and-the-emit-spelling-was-the-bigger-blind-spot.mts:11 getDb( literalOnly=true drivable=false hazards=[(none)] nonExempt=[(none)] MOVER=false
+      * `getDb()` appearing here later re-flags the file with the marker still in place.
+   probe-round250-the-drive-was-never-priced-and-the-port-is-one-line-of-product.mts:614 getDb( literalOnly=false drivable=true hazards=[net+model+db+suite] nonExempt=[net+model+suite] MOVER=false
+      // imported getDb() call. Prose only — no assertion, threshold or measurement is touched,
+   probe-round251-the-port-lever-mutations.mjs:30 resolvePort( literalOnly=true drivable=true hazards=[net+db+suite] nonExempt=[net+suite] MOVER=false
+      from: 'const port = resolvePort(fromEnv(portFromCaller) ?? fromEnv(process.env.PORT));',
+   probe-round252-the-db-class-is-unblocked-by-a-variable-the-product-already-reads.mts:158 getDb( literalOnly=true drivable=true hazards=[model+db] nonExempt=[model] MOVER=false
+      * through `getDb()` honours it for free. A probe that writes `path.join(REPO, 'klatch.db')`
+   probe-round253-the-db-path-mutations.mjs:37 resolveDbPath( literalOnly=true drivable=true hazards=[db+suite] nonExempt=[suite] MOVER=false
+      from: "    db = new Database(resolveDbPath(process.env.KLATCH_DB));",
+   probe-round253-the-env-file-cannot-reach-the-database-path.mts:87 getDb( literalOnly=true drivable=true hazards=[model+db] nonExempt=[model] MOVER=false
+      `const db = getDb();\n` +
+   probe-round287-the-sandbox-cannot-see-the-one-file-git-cannot-restore.mts:16 resolveDbPath( literalOnly=true drivable=true hazards=[db+homedir] nonExempt=[(none)] MOVER=false
+      *   2. `resolveDbPath(undefined)` returns repo-root `klatch.db` (`packages/server/src/dbPath.ts`).
+   probe-round288-predicate-8s-red-branch-had-never-been-observed-to-fire.mts:144 resolveDbPath( literalOnly=true drivable=true hazards=[db+homedir] nonExempt=[(none)] MOVER=false
+      'and repo-root klatch.db is in it, the path resolveDbPath(undefined) returns',
+   probe-round296-the-net-split-is-priced-at-zero-and-literal-only-cannot-tell-a-corpus-from-an-argv.mts:45 getDb( literalOnly=true drivable=true hazards=[db+suite] nonExempt=[suite] MOVER=false
+      * holding: a marker with no literal-only test launders a live `getDb()` (C2); a literal-only test
+   probe-round305-a-refusal-the-reader-could-not-check-can-now-print-its-own-site.mts:22 getDb( literalOnly=true drivable=true hazards=[net+model+db+suite+homedir] nonExempt=[net+model+suite] MOVER=false
+      * (`createServer(`), `model` (`ANTHROPIC_API_KEY`), `db` (`getDb(`), `suite` (a `vitest` spawn
+   probe-scan-cost-model-control.mts:298 extractSessionFingerprint( literalOnly=false drivable=true hazards=[homedir] nonExempt=[(none)] MOVER=true
+      const f = await extractSessionFingerprint(fp, lineCap);
+   probe-scan-latency-vs-cap.mts:85 extractSessionFingerprint( literalOnly=false drivable=true hazards=[homedir] nonExempt=[(none)] MOVER=true
+      const fp = await extractSessionFingerprint(f, cap);
+   probe-scratch-server.mjs:238 getDb( literalOnly=true drivable=true hazards=[net+db] nonExempt=[net] MOVER=false
+      // `getDb()`, which reads as a server bug rather than a setup gap. `.testdata/`
+   probe-turncount-live-http.mts:339 extractSessionFingerprint( literalOnly=false drivable=true hazards=[net+db+homedir] nonExempt=[net] MOVER=false
+      const capped = await extractSessionFingerprint(f);
+ok  A5    every hit printed with file, line, literal-only status and bucket: S1=0 S2=56
+LANDED  P4  price at S1 granularity: 0 hit(s), 0 mover(s) [EMPTY]
+LANDED  P5  S2 matches over the 155: 56 [probe-accepted-multipart-allocation.mts, probe-backfill-entity-sizing.mts, probe-backfill-sidecar-neutrality.mts, probe-browse-cold-figure-gap.mts, probe-browse-count-vs-persisted-rows.mts, probe-browse-endpoint-second-corpus.mts, probe-browse-endpoint-vs-channel-count.mts, probe-browse-latency-end-to-end.mts, probe-dedup-resolver-scaling.mts, probe-expand-continuation.mts, probe-import-entity-binding.mts, probe-import-large-session.mts, probe-multi-root-browse.mts, probe-parse-encoding-confound.mts, probe-parse-stage-allocation.mts, probe-path-c-chat-binding-live.mts, probe-pm-corpus-cap-delta.mts, probe-recall-tool.mjs, probe-round170-floor-frequency.mts, probe-round171-path-b-jit-import-browser.mts, probe-round176-backfill-cli-end-to-end.mts, probe-round183-undo-record-against-the-database-it-is-aimed-at.mts, probe-round185-what-the-undo-classifier-knows-a-run-by.mts, probe-round187-the-binding-rule-at-the-inputs-it-was-argued-from.mts, probe-round189-the-restore-wording-on-a-minted-channel.mts, probe-round191-restoring-the-backup-the-way-a-person-does.mts, probe-round193-the-printed-steps-run-as-written-and-how-little-use-reopens-h.mts, probe-round199-the-first-real-corpus-names-seven-agents-and-none-of-them-is-a-name.mts, probe-round200-the-guess-declines-where-it-used-to-invent-and-the-window-is-what-does-it.mts, probe-round201-the-window-holds-this-corpus-and-not-the-class-and-the-corpus-has-no-names-in-it.mts, probe-round202-the-grammar-not-the-distance-and-the-only-basis-the-corpus-supports.mts, probe-round203-the-corpus-is-lineages-and-the-sheet-warns-about-one-of-them.mts, probe-round204-the-undo-over-a-role-apply-driven-end-to-end.mts, probe-round205-the-plan-and-the-apply-pick-opposite-ends-of-a-duplicated-name.mts, probe-round207-the-import-confirms-a-name-and-the-name-is-not-unique.mts, probe-round213-reassign-live-http.mts, probe-round217-multipart-guard-live-http.mts, probe-round219-files-cap-live-http.mts, probe-round220-reassign-on-the-march-corpus.mts, probe-round227-arm-o-on-a-corpus-where-the-cap-fires.mts, probe-round233-arm-m-and-the-endpoint-can-walk-different-corpora.mts, probe-round242-the-band-selects-bytes-and-arm-a-is-one-row.mts, probe-round246-the-sweep-repaired-and-the-emit-spelling-was-the-bigger-blind-spot.mts, probe-round250-the-drive-was-never-priced-and-the-port-is-one-line-of-product.mts, probe-round251-the-port-lever-mutations.mjs, probe-round252-the-db-class-is-unblocked-by-a-variable-the-product-already-reads.mts, probe-round253-the-db-path-mutations.mjs, probe-round253-the-env-file-cannot-reach-the-database-path.mts, probe-round287-the-sandbox-cannot-see-the-one-file-git-cannot-restore.mts, probe-round288-predicate-8s-red-branch-had-never-been-observed-to-fire.mts, probe-round296-the-net-split-is-priced-at-zero-and-literal-only-cannot-tell-a-corpus-from-an-argv.mts, probe-round305-a-refusal-the-reader-could-not-check-can-now-print-its-own-site.mts, probe-scan-cost-model-control.mts, probe-scan-latency-vs-cap.mts, probe-scratch-server.mjs, probe-turncount-live-http.mts] — movers 23
+LANDED  P6  literal-only among 56 match(es): 16
+
+PRICE — a DETECTORS key of /\b(_setModelsCacheForTest|adaptToClaudeAi|adaptToClaudeCode|ambiguousNameNote|appendReflection|applyEntityBackfill|applySchema|assignEntityToChannel|buildManifest|checkUndoRecord|classifySubagent|clearChannelCompaction|clearSessionFingerprintCache|countChannelsByOriginalSessionId|createCarriedContextArtifact|createChannel|createChannelBySessionIdResolver|createEntity|createFile|createFileArtifact|createFileRef|createKlatchMcpServer|createToolUseArtifact|decodeProjectPath|defaultDbPath|deleteAllMessages|deleteChannel|deleteEntity|deleteFile|deleteFileRef|deleteGroundRulesPreset|deleteMessage|deleteProject|describeDataDelta|describeSchemaDelta|diffCensus|effortLevelsForModel|encodeProjectDirName|expandConversationRange|extractBehavioralPatterns|extractConversationsFromZip|extractFromZip|extractJson|extractSessionFingerprint|extractSessionId|extractTextContent|extractToolArtifacts|findChannelByOriginalSessionId|findOrCreateProject|findProjectRoot|findUniqueProjectByName|formatTranscriptLine|fromEnv|generateHandoffBriefing|generateProbes|getAllChannels|getAllChannelsEnriched|getAllEntities|getAllProjects|getArtifactsForChannel|getChannel|getChannelEntities|getChannelEntityCount|getChannelFiles|getChannelStats|getClaudeProjectsDir|getDb|getDefaultGroundRulesPreset|getEntity|getEntityChannels|getEntityFiles|getEntityReflections|getExportRoot|getFile|getFileArtifactsForMessages|getFileByStorageKey|getFilePath|getFileRefs|getFilesAtScope|getFilesDir|getGroundRulesPreset|getKlatchesForEntity|getLastAssistantMessage|getLastRoundAssistantMessages|getMessage|getMessageArtifacts|getMessageFiles|getMessages|getProject|getProjectFiles|getProjectForChannel|getSessionFingerprint|getSessionRoots|guessEntityName|importKlatchPackage|importSession|insertMessage|isConversationEvent|isImageFile|isMachineAuthoredText|isTextFile|isValidModel|listGroundRulesPresets|mergeFieldNotes|mintAlongsideNote|mountApiRoutes|negotiateFormatVersion|parseClaudeAiConversation|parseClaudeCodeSession|parseClaudeCodeSessionFromContent|parseEvents|parseJsonlContent|parseSourceMetadata|planEntityUndo|queryAuxiliary|readFile|readFormBody|readJsonBody|readJsonlFile|reassignChannelEntity|recallFromOtherConversations|rejectOversizeBeforeRead|removeEntityFromChannel|removeReflectionsWhere|resolveDbPath|resolveFingerprintCacheEnabled|resolveFingerprintLineCap|resolveImportEntity|resolvePort|restoreInstructions|runAAXT|saveFile|scanClaudeCodeSessions|scanExportedSessions|schemaDelta|scoreResponse|setChannelProject|summarizeToolInput|tokenizeRecallQuery|undoEntityBackfill|updateMessage)\s*\(/ over today's 155:
+   hits 56 file(s) · drivable-and-clean movers 23 [probe-accepted-multipart-allocation.mts, probe-backfill-entity-sizing.mts, probe-browse-count-vs-persisted-rows.mts, probe-dedup-resolver-scaling.mts, probe-expand-continuation.mts, probe-parse-encoding-confound.mts, probe-parse-stage-allocation.mts, probe-round176-backfill-cli-end-to-end.mts, probe-round183-undo-record-against-the-database-it-is-aimed-at.mts, probe-round185-what-the-undo-classifier-knows-a-run-by.mts, probe-round187-the-binding-rule-at-the-inputs-it-was-argued-from.mts, probe-round189-the-restore-wording-on-a-minted-channel.mts, probe-round191-restoring-the-backup-the-way-a-person-does.mts, probe-round193-the-printed-steps-run-as-written-and-how-little-use-reopens-h.mts, probe-round199-the-first-real-corpus-names-seven-agents-and-none-of-them-is-a-name.mts, probe-round200-the-guess-declines-where-it-used-to-invent-and-the-window-is-what-does-it.mts, probe-round201-the-window-holds-this-corpus-and-not-the-class-and-the-corpus-has-no-names-in-it.mts, probe-round202-the-grammar-not-the-distance-and-the-only-basis-the-corpus-supports.mts, probe-round203-the-corpus-is-lineages-and-the-sheet-warns-about-one-of-them.mts, probe-round205-the-plan-and-the-apply-pick-opposite-ends-of-a-duplicated-name.mts, probe-round220-reassign-on-the-march-corpus.mts, probe-scan-cost-model-control.mts, probe-scan-latency-vs-cap.mts]
+ok  A9    git status --porcelain packages scripts: ""
+
+VERDICT/1 RED legs=10 red=[A1] refused=[] preds=6 refuted=[P2,P3] prefused=[]

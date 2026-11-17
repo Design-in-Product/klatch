@@ -1,0 +1,29 @@
+ok  A3    subject imported: hazards=function EXEMPTIBLE=[db+homedir] admission=function DEFERRED=110 SWEPT=45
+ok  A0a   population: 155 probe files under scripts/
+ok  A1    S1 derived from client.ts: direct=[streamClaudeCore] one-hop=[streamClaude,streamClaudeRoundtable] EXPORTED-and-reaching S1=[streamClaude,streamClaudeRoundtable] (of 21 functions, 8 exported)
+ok  A2c   drive 1 mechanism, measured not asserted: the empty alternation \b()\s*\( matches an arbitrary call
+ok  A2b   buildKey refuses an empty array rather than returning a saturated key: throws=true
+ok  A2    candidate key assembled from the derived array, not typed: \b(streamClaude|streamClaudeRoundtable)\s*\(
+LANDED  P1  KNOWN POSITIVE: key fires on import+call fixture = true
+LANDED  P2  two-sided negative: key fires on import-WITHOUT-call fixture = false
+ok  A4    P1 and P2 graded by one RegExp object: \b(streamClaude|streamClaudeRoundtable)\s*\(
+ok  A0b   fixtures stayed in memory: still 155 probe files
+ok  A4b   subject's view of the KP: hazards(import+call fixture) = [(none)]
+REFUTED P3  |S1| = 2 [streamClaude,streamClaudeRoundtable] vs B1's hand-typed pair [streamClaude,streamClaudeRoundtable] — symmetric difference = [EMPTY]
+ok  A1b   S2 (one cross-file hop, exported): 0 name(s) [EMPTY] from (no file); 45 non-test .ts files under packages/server/src scanned
+
+── S1 hits over the 155 (0) ──
+   (none)
+
+── S2 hits over the 155 (0) ──
+   (none)
+ok  A5    every hit printed with file, line, literal-only status and bucket: S1=0 S2=0
+LANDED  P4  price at S1 granularity: 0 hit(s), 0 mover(s) [EMPTY]
+REFUTED P5  S2 matches over the 155: 0 [EMPTY] — movers 0
+REFUSED P6  REFUSED by registration: the match set is empty, so "at least one is literal-only" is unsatisfiable, not false
+
+PRICE — a DETECTORS key of /\b(streamClaude|streamClaudeRoundtable)\s*\(/ over today's 155:
+   hits 0 file(s) · drivable-and-clean movers 0 [EMPTY]
+ok  A9    git status --porcelain packages scripts: ""
+
+VERDICT/1 ok legs=12 red=[] refused=[] preds=6 refuted=[P3,P5] prefused=[P6]
