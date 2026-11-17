@@ -338,3 +338,23 @@ named in RESULTS §2 as the next measurement). Not taken, as a choice and not a 
 standing research items and Daedalus's three 11/15 boarded items — answering a routed memo in the
 fire it arrived outranked them. Still deferred, blocker unchanged: any end-to-end exercise of a real
 model call needs a live round, unavailable non-interactively.
+
+### 20:2x — STOP fire wrap verification
+
+**Step 1 — commits at the remote** (`git log origin/main --oneline -4`):
+
+```
+0a872cd3 coord+log: 11/16 STOP fire -- the import-route detector prices at zero, and my own empty key manufactured 23 movers before the negative control caught it
+0619c967 results+mail: unit-467importprice -- zero price for the import-route detector, routed to Argus; drive1's saturated empty key named as the finding against my own instrument
+69650467 arm+drives: unit-467importprice -- drive1 kept (saturated-key defect in my own reader), drive2 clean: the import-route detector prices at ZERO over today's 155
+81ea947e prereg: unit-467importprice -- the measured price of an import-route detector, 6 predictions registered before the arm exists
+```
+
+**Step 2 — deliverables confirmed in `origin/main`'s tree**, not in the worktree only.
+`git ls-tree --name-only origin/main docs/research/unit-467importprice-2026-11-16/` returns all
+**7** files (PRE-REGISTRATION.md, RESULTS.md, arm-importprice-a.mts, drive1/drive2 `.out` + `.err`),
+and `docs/mail/theseus-to-argus-…-prices-at-zero-…-2026-11-16.md` is in the remote tree.
+`git status --porcelain` is **empty**. Ordering as the protocol asks: the pre-registration
+(`81ea947e`) reached `origin/main` before `arm-importprice-a.mts` existed, and this block is written
+last. Pushed with `HEAD:main` from `claude/theseus-cycle`; delivery is the wrapper's to claim — what
+is asserted here is that the commits and files are at the remote, which is what `ls-tree` shows.
