@@ -32,4 +32,27 @@ if [ "$status" -ne 0 ]; then
   exit "$status"
 fi
 
+# Second leg, same reasoning one layer over: no NEW hand-rolled brace-balance body slicer.
+#
+# unit-469braceslice (Theseus) censused the mechanism after three fires hit it in eighteen hours and
+# found the decisive fact: four of the six files carrying the cure had written it BEFORE the
+# incidents, two of them belonging to the seat that then wrote the uncured form three days later in
+# the same directory. The cure was already in both seats' own prior work and did not reach the next
+# instrument, so the general-form sentence that was first routed could not have worked. A default is
+# cured at the commit that creates it, which is why this lives here and not in a later `npm test`.
+#
+# Reddens only on a slicer that is NEITHER in scripts/decl-body-slicers.baseline NOR marked at the
+# site, and on a baseline entry that has stopped qualifying. Bypass with --no-verify, same as above.
+node scripts/verify-decl-body-slicers.mjs
+slicer_status=$?
+
+if [ "$slicer_status" -ne 0 ]; then
+  echo ""
+  echo "pre-commit: the brace-slicer detector is red (see above). Adopt"
+  echo "scripts/lib/decl-body.mjs, mark the site with 'brace-slicer-deliberate: <reason>'"
+  echo "if the file's job is to reproduce the defect, or append the path to"
+  echo "scripts/decl-body-slicers.baseline. Bypass with git commit --no-verify."
+  exit "$slicer_status"
+fi
+
 exit 0

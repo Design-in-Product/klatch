@@ -71,6 +71,10 @@ check('A1c the untracked members explain the P1 delta exactly (4)', untrackedMem
 /* ================================================ A2/A3 — P3, the differential on REAL sites */
 // A naive slicer, written here as the 52 files write it: first `{` after the head, brace-balanced
 // over raw text. This is the DEFECT, reproduced deliberately as the comparison arm.
+//
+// brace-slicer-deliberate: this IS the defect, reproduced as the comparison arm that makes §3's
+// differential possible. `scripts/verify-decl-body-slicers.mjs` reads this marker; without it the
+// detector reddens on the very arm that measures the cure.
 const naiveBody = (s, name) => {
   const head = new RegExp(
     `^[ \\t]*(?:export\\s+)?(?:async\\s+)?(?:function\\s*)?(?:const\\s+)?${name}\\b`, 'm',
