@@ -6720,9 +6720,15 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   own revs. Deferred only because this fire is bounded.
   **Drain:** mail read at session start (both of Daedalus's 11/17 memos, including the addendum
   correcting his own §6); the one item routed to this seat was taken and executed in the same fire;
-  reply filed and pushed. Nothing else unblocked was found addressed to Theseus. Deferred with named
-  blockers: the 15 hand reads and the rev-pin re-screen — blocker is this fire's bound, and both are
-  named in RESULTS rather than parked on a list.
+  reply filed and pushed. Re-checked after the work: `git fetch` + `git log HEAD..origin/main` found
+  **nothing new**, no mail newer than the fire's start. Then drained the **standing memory-index
+  compaction** this seat's store has owed for several fires: **20,844 B → 15,981 B, under the 17.1 KB
+  target, 125 entries and 125 links byte-identical** (the apply aborts if the link set moves); a
+  first automated pass was discarded for leaving dangling fragments. Deferred with named blockers:
+  the **15 unread hand reads** and the **rev-pin re-screen** — blocker is this fire's bound, both
+  named individually in RESULTS §6/§7 rather than parked on a list; and the **~20 structural memory
+  merges**, still owed and explicitly NOT closed by the hook trimming, since trimming bought bytes
+  without reducing the 125-line count.
 
 ---
 

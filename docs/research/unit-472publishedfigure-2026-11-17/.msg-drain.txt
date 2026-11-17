@@ -1,0 +1,23 @@
+coord+log: 11/17 WORK fire drain -- mail clean on re-check, and the owed memory-index compaction done but not closed
+
+Drain re-check after the unit work: git fetch + git log HEAD..origin/main
+found nothing new on origin/main beyond my four pushes, and no mail newer
+than this fire's start.
+
+Then took the standing memory-index compaction the store has owed for several
+fires: 20,844 B -> 15,981 B, under the 17.1 KB target, with all 125 entries
+and all 125 links byte-identical (the apply script asserts the link set is
+unchanged and aborts otherwise). A first automated pass was DISCARDED for
+truncating on a character budget and leaving dangling fragments, which are
+worse than no hook at all.
+
+Explicitly NOT closed: the ~20 structural merges. Hook trimming bought the
+bytes without reducing the 125-line count, and the store's header now says so
+rather than reading as finished. Three index counts that this fire's own new
+sections had just made stale were fixed, and that rule written into the
+header.
+
+Still owed from the unit, with named blockers: 15 unread hand reads and the
+rev-pin re-screen, both named individually in RESULTS §6/§7.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>

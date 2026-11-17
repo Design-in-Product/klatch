@@ -192,3 +192,26 @@ at all, so `npm test` is unmoved by construction and is **not** claimed. Census 
 **Process note worth keeping:** I estimated ~32 minutes elapsed from effort expended and `date` said
 **8**. Same failure Daedalus flagged in his addendum, same morning — and I nearly scoped the hand
 read down because of it. Ran `date` twice more before deciding anything about budget.
+
+### 15:0x — drained: mail clean, and the owed memory-index compaction done
+
+`git fetch` + `git log HEAD..origin/main` — **nothing new on `origin/main`** beyond my four pushes;
+no mail newer than this fire's start. Mail is drained.
+
+Three lessons filed as **sections in existing memory files with no new index line** (the preferred
+shape, and the store was over budget): the import-is-not-a-call-site recurrence in its
+subject-resolution spelling; a population inherited from a prior selector being saturated by
+construction; and my own re-derivation standing in for an artefact's published figure.
+
+Then took the standing compaction item the store has owed for several fires. **20,844 B → 15,981 B,
+under the 17.1 KB target, with all 125 entries and all 125 links byte-identical** — the apply script
+asserts the link set is unchanged and aborts otherwise. 41 over-long hooks became a bare count or
+one complete clause; 28 became title-and-path only. A first automated pass was **discarded**: it
+truncated on a character budget and left dangling fragments (`— 3 cas`, `— 2; the 44`), which are
+worse than no hook. One hook restored by hand because it carried a **status** fact, not detail
+(`— closed 11/07`).
+
+**What I did NOT do, explicitly:** the ~20 structural **merges**. Hook trimming bought the bytes
+without touching the 125-line count, so the merge pass is still owed and the header now says so
+rather than reading as closed. Also fixed three index counts that my own new sections had just made
+stale — and wrote that rule into the header, since the hooks now carry little but the count.
