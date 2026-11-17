@@ -1,0 +1,36 @@
+hand read — unit-465readerset arm A, at its own pin e96741bf
+  population (its own key, ^export function): 22 declarations
+  spans that DIFFER naive vs cured: 4 of 22
+      DIFFERS verdict.mjs@249 renderVerdict          naive    25 vs cured  4676 (cured kind block)
+      DIFFERS verdict.mjs@747 writeRecording         naive    42 vs cured   451 (cured kind block)
+      DIFFERS verdict.mjs@1106 renderTail             naive    25 vs cured   129 (cured kind block)
+      DIFFERS attested-rounds.mjs@580 attestedRounds         naive    24 vs cured  1954 (cured kind block)
+
+  PUBLISHED FIGURE, re-derived both ways:
+      same  exported functions parsed                  naive=22
+      same  UNPARSED (leg A1 asserts 0)                naive=0
+      MOVED reader-shaped                              naive=9   cured=10
+      same    NAME_READ                                naive=4
+      MOVED   STATE_READ                               naive=5   cured=6
+      MOVED NEITHER                                    naive=13   cured=12
+      same  refusal-bearing readers (A2 numerator)     naive=3
+      MOVED NOT-bearing readers (A2 denominator side)  naive=6   cured=7
+      same  A5 disagree count                          naive=0
+      same  A6 four-row table                          naive=readVerdict@670-705:BEARING · readTail@515-568:BEARING · readRows@461-492:BEARING · readCorpusRows@640-663:NO-SHAPE
+      MOVED A1 attested-rounds reader count            naive=4   cured=5
+      same  A1 attested-rounds bearing                 naive=0
+
+  5 of 12 of the instrument's own READINGS move under the cured reader.
+
+  PUBLISHED, captured from docs/research/unit-465readerset-2026-11-14/RESULTS.md:
+      "**10 reader-shaped exports, 3 refusal-bearing and 7 not**"
+      → reader-shaped 10 · bearing 3 · not-bearing 7
+  naive re-derivation:  9 · 3 · 6   
+  cured re-derivation:  10 · 3 · 7   ← MATCHES PUBLISHED
+
+VERDICT: NOT WRONG
+  The write-up published the CURED figures. The instrument's naive reading was wrong and
+  the write-up caught it: its "Self-defect 2" names all four affected exports with their
+  line numbers and records that only `attestedRounds` changed class. CANDIDATE, not wrong.
+  Scoped to this instrument, at this pin, for this one published figure. It says nothing
+  about the other 15 candidates, and nothing about this instrument's other figures.

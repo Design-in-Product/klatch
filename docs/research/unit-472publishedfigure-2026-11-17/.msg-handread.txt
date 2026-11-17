@@ -1,0 +1,30 @@
+results(unit-472publishedfigure): 469's LIVE count is an over-count by 25 of 41, and the first hand read says NOT WRONG
+
+THE NARROWING. unit-469's subject key resolves "which files does this
+instrument read" from ANY path-like string literal that resolves -- which
+includes an `import ... from '.../strip-source.mjs'` specifier. strip-source
+is the most-imported helper in the corpus and carries 70 of this screen's 104
+DIFFERS triples. Re-keyed on the SITE KIND of the literal: 41 CANDIDATE ->
+16, with 25 narrowed out as IMPORT-ONLY. An import is not a call site; I hold
+that lesson and wrote the key anyway, one fire earlier.
+
+THE HAND READ, instrument 1 of 16 (unit-465readerset arm A, at its own pin
+e96741bf): 4 of 22 declarations mis-sliced, and 5 of 12 of the instrument's
+own readings move under the cured reader -- reader-shaped 9 vs 10, STATE_READ
+5 vs 6, NEITHER 13 vs 12. VERDICT NOT WRONG: the committed write-up published
+the CURED figures (10/3/7, captured from RESULTS.md by regex, not typed) and
+its "Self-defect 2" already names all four affected exports with line numbers.
+
+A FINDING AGAINST THIS SCRIPT'S OWN FIRST DRIVE. Drive 6 printed "VERDICT:
+WRONG -- 5 of 12 published figures move". The block it read compares the
+instrument's naive reading against the cured one and had never opened the
+write-up. Calling the naive re-derivation "the published figure" assumed the
+write-up published whatever the first drive printed. The answer key now comes
+out of the artefact by regex.
+
+Also: arm A's rev-pin key (A9) catches 2 triples and is a FLOOR. It keys on
+`show`/`cat-file` near the PATH LITERAL; unit-465readerset reaches its subject
+as `git(['show', `${PIN}:${p}`])` with the path in a LIBS array, so a
+literal-adjacency key is blind to a path reached through a variable.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>

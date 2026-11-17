@@ -332,6 +332,142 @@ check(
 );
 
 /* ------------------------------------------------------------------ *
+ * A8 — THE NARROWING, and the finding against my own 469 liveness key.
+ *
+ * unit-469's `subjectsOf` resolves "which files does this scanner read"
+ * from ANY path-like string literal in the instrument's own source
+ * (arm-braceslice-a.mjs:139-158). An `import … from '…/strip-source.mjs'`
+ * specifier is a path-like string literal that resolves. So every
+ * instrument that merely IMPORTS the shared stripper was credited with
+ * it as a SUBJECT IT SLICES — and `strip-source.mjs` is the most-imported
+ * helper in the corpus, carrying 70 of this screen's 104 DIFFERS triples.
+ *
+ * An import is not a call site. I hold that lesson and wrote the key
+ * anyway, one fire earlier.
+ *
+ * This leg re-keys each DIFFERS triple on the SITE KIND of the literal:
+ *   IMPORT-ONLY — every occurrence of that path in the instrument's source
+ *                 sits in an `import … from` / `require(` / `import(`
+ *                 position. The instrument loads it as a module; it never
+ *                 reads it as text, so it cannot have sliced it.
+ *   READ        — at least one occurrence is somewhere else. Conservative:
+ *                 a file both imported and read counts READ.
+ *
+ * DECLARED LIMIT, and it runs one way only: this narrows the OVER-count.
+ * It does nothing about the under-count — an instrument that reaches its
+ * subject through a glob or a directory walk has no path literal at all,
+ * and 469's key never saw those either (they are its UNKNOWN bucket).
+ * So the READ figure below is a floor, not the true exposure.
+ * ------------------------------------------------------------------ */
+
+/** Every byte offset at which `needle` occurs in `hay`. */
+const occurrences = (hay, needle) => {
+  const out = [];
+  for (let i = hay.indexOf(needle); i >= 0; i = hay.indexOf(needle, i + 1)) out.push(i);
+  return out;
+};
+
+/**
+ * Is the string literal containing offset `at` in a module-specifier position?
+ * Keyed on the ~40 characters before the literal's opening quote, which is where
+ * `from`, `import(` and `require(` sit. Read over raw source: a specifier is
+ * never inside a comment in a file that actually runs.
+ */
+const isSpecifierPosition = (src, at) => {
+  const q = Math.max(src.lastIndexOf("'", at), src.lastIndexOf('"', at), src.lastIndexOf('`', at));
+  if (q < 0) return false;
+  const before = src.slice(Math.max(0, q - 48), q);
+  return /\bfrom\s*$|\bimport\s*\(\s*$|\brequire\s*\(\s*$|\bimport\s+$/.test(before);
+};
+
+const siteKindFor = (instPath, subjectPath) => {
+  const src = readSrc(instPath);
+  if (src === null) return { kind: 'UNRESOLVED', why: 'instrument unreadable' };
+  // The literal as the instrument spells it: try the repo-relative tail, longest first, so a
+  // relative spelling (`../../../scripts/lib/strip-source.mjs`) still matches on its tail.
+  const segs = subjectPath.split('/');
+  let hits = [];
+  let used = null;
+  for (let take = segs.length; take >= 1; take--) {
+    const tail = segs.slice(segs.length - take).join('/');
+    const occ = occurrences(src, tail);
+    if (occ.length > 0) { hits = occ; used = tail; break; }
+  }
+  if (hits.length === 0) return { kind: 'UNRESOLVED', why: `no literal spelling of ${subjectPath} found in instrument source` };
+  const nonSpecifier = hits.filter((at) => !isSpecifierPosition(src, at));
+  return nonSpecifier.length > 0
+    ? { kind: 'READ', why: `${nonSpecifier.length}/${hits.length} occurrence(s) of "${used}" outside a module-specifier position` }
+    : { kind: 'IMPORT-ONLY', why: `all ${hits.length} occurrence(s) of "${used}" are module specifiers` };
+};
+
+for (const r of results) {
+  for (const p of r.differs) {
+    const sk = siteKindFor(r.inst, p.subject);
+    p.siteKind = sk.kind;
+    p.siteWhy = sk.why;
+  }
+  r.readDiffers = r.differs.filter((p) => p.siteKind === 'READ');
+  r.narrowed = r.bucket === 'CANDIDATE' && r.readDiffers.length === 0;
+}
+
+/*
+ * A9 — REV PINNING, found by hand-verifying A8's key and not by a leg.
+ *
+ * `round408-instruments/stratify-the-live-interval.mjs:526` reads its subject as
+ * `git(['show', `${HIS_REV}:scripts/sweep-probes.mjs`])` — at a PINNED REV, not at the working
+ * tree. This screen reads every subject at the working tree. For such a triple the DIFFERS reading
+ * is a fact about HEAD's bytes and not about the bytes that instrument actually sliced: a subject
+ * and its instrument's input can take different revs.
+ *
+ * Classified and REFUSED rather than counted. Re-screening each pinned triple at its own rev is
+ * real work (resolve each rev expression, check out each blob, re-run both readers) and is named as
+ * owed in RESULTS, not estimated here.
+ */
+const revPinnedFor = (instPath, subjectPath) => {
+  const src = readSrc(instPath);
+  if (src === null) return false;
+  const segs = subjectPath.split('/');
+  for (let take = segs.length; take >= 1; take--) {
+    const tail = segs.slice(segs.length - take).join('/');
+    for (const at of occurrences(src, tail)) {
+      // A rev-pinned read spells `<rev>:<path>`: a colon immediately before the path, inside a
+      // literal, with `show`/`cat-file` nearby.
+      const before = src.slice(Math.max(0, at - 120), at);
+      if (/:\s*$|:$/.test(before) && /\b(show|cat-file)\b/.test(before)) return true;
+    }
+    if (occurrences(src, tail).length > 0) break;
+  }
+  return false;
+};
+
+for (const r of results) {
+  for (const p of r.readDiffers ?? []) {
+    p.revPinned = revPinnedFor(r.inst, p.subject);
+  }
+}
+const revPinnedTriples = results.flatMap((r) => r.readDiffers ?? []).filter((p) => p.revPinned);
+check(
+  'A9',
+  revPinnedTriples.length > 0,
+  'the rev-pinning key matched nothing, but round408-instruments/stratify-the-live-interval.mjs:526 reads sweep-probes.mjs via `git show <rev>:` by hand inspection — the key is blind, not the tree clean',
+);
+
+const narrowedOut = results.filter((r) => r.narrowed);
+const trueCandidates = results.filter((r) => r.bucket === 'CANDIDATE' && r.readDiffers.length > 0);
+const siteUnresolved = results.flatMap((r) => r.differs).filter((p) => p.siteKind === 'UNRESOLVED');
+
+check(
+  'A8a',
+  narrowedOut.length > 0,
+  'no CANDIDATE is narrowed out by the site-kind key — either every subject really is read as text, or the specifier key matches nothing. Check the key against a known import before believing the tree.',
+);
+check(
+  'A8b',
+  trueCandidates.length > 0,
+  'the site-kind key narrowed EVERY candidate away — a key that empties its own population is a defect before it is a finding',
+);
+
+/* ------------------------------------------------------------------ *
  * A7 — the refusals, declared and fired rather than printed away.
  * ------------------------------------------------------------------ */
 
@@ -342,6 +478,10 @@ if (unresolvedPairs.length > 0)
   );
 if (untrackedMembers.length > 0)
   refused.push(`${untrackedMembers.length} of the 469 census's ${censusMembers.length} members are UNTRACKED in this worktree — the 469 figure is worktree-local`);
+if (revPinnedTriples.length > 0)
+  refused.push(
+    `${revPinnedTriples.length} READ triple(s) are REV-PINNED — the instrument sliced a blob at a pinned rev and this screen read the working tree; their DIFFERS is not a claim about what was sliced`,
+  );
 
 /* ------------------------------------------------------------------ *
  * Report.
@@ -372,10 +512,31 @@ out.push(`  CANDIDATE   ${byBucket('CANDIDATE').length}   (≥1 triple DIFFERS �
 out.push(`  UNRESOLVED  ${byBucket('UNRESOLVED').length}   (no triple resolved — a refusal, NOT clean)`);
 out.push('');
 
-out.push('  --- CANDIDATE, with the affected declaration(s) ---');
+out.push(`  --- A8 SITE-KIND NARROWING (an import is not a call site) ---`);
+out.push(`  CANDIDATE before    ${byBucket('CANDIDATE').length}`);
+out.push(`  narrowed out        ${narrowedOut.length}   (every DIFFERS subject is IMPORT-ONLY — loaded as a module, never read as text)`);
+out.push(`  CANDIDATE after     ${trueCandidates.length}   (≥1 DIFFERS subject the instrument actually READS)`);
+out.push(`  site-kind UNRESOLVED triples ${siteUnresolved.length}`);
+out.push(`  REV-PINNED READ triples      ${revPinnedTriples.length}   (read via \`git show <rev>:<path>\` — this screen read HEAD, so DIFFERS is about HEAD's bytes, NOT the bytes sliced. REFUSED.)`);
+for (const p of revPinnedTriples) out.push(`      REV-PINNED ${p.subject}: ${p.decl}`);
+out.push(`  FLOOR, not the exposure: this narrows the over-count only. An instrument reaching its`);
+out.push(`  subject by glob or directory walk has no path literal and was never in 469's key either.`);
+out.push('');
+out.push('  --- CANDIDATE after narrowing, with the declaration(s) actually read ---');
+for (const r of trueCandidates) {
+  out.push(`      CANDIDATE ${r.inst}`);
+  for (const p of r.readDiffers) out.push(`                  READ     ${p.subject}: ${p.decl} — ${p.reason}`);
+  for (const p of r.differs.filter((x) => x.siteKind !== 'READ'))
+    out.push(`                  ${p.siteKind.padEnd(8)} ${p.subject}: ${p.decl} — ${p.siteWhy}`);
+}
+out.push('');
+out.push('  --- narrowed out (IMPORT-ONLY throughout) ---');
+for (const r of narrowedOut) out.push(`      IMPORT-ONLY ${r.inst}  (${r.differs.length} DIFFERS triple(s), all module specifiers)`);
+out.push('');
+out.push('  --- all DIFFERS triples, as screened before narrowing ---');
 for (const r of byBucket('CANDIDATE')) {
   out.push(`      CANDIDATE ${r.inst}`);
-  for (const p of r.differs) out.push(`                  DIFFERS  ${p.subject}: ${p.decl} — ${p.reason}`);
+  for (const p of r.differs) out.push(`                  DIFFERS  [${p.siteKind}] ${p.subject}: ${p.decl} — ${p.reason}`);
 }
 out.push('');
 out.push('  --- UNRESOLVED triples (every one, named) ---');
@@ -398,5 +559,5 @@ for (const s of affectedSubjects) out.push(`      AFFECTED ${s}`);
 console.log(out.join('\n'));
 console.log('');
 console.log(`${red.length === 0 ? 'ok' : 'RED'} legs=${red.length} red=[${red.join(' | ')}] refused=[${refused.join(' | ')}]`);
-console.log(`RATE: ${byBucket('CANDIDATE').length}/${results.length} live exposures are CANDIDATE; ${byBucket('CLEAN').length} refuted mechanically; ${byBucket('UNRESOLVED').length} refused`);
+console.log(`RATE: ${byBucket('CANDIDATE').length}/${results.length} live exposures are CANDIDATE before narrowing; ${trueCandidates.length}/${results.length} after the site-kind key; ${narrowedOut.length} narrowed out as IMPORT-ONLY; ${byBucket('UNRESOLVED').length} refused`);
 process.exit(red.length === 0 ? 0 : 1);
