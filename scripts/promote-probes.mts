@@ -162,7 +162,12 @@ const population = (): string[] => readdirSync(SCRIPTS).filter((f) => /^probe-/.
  */
 const DETECTORS: Record<string, RegExp> = {
   net: /\b(createServer|listen|net\.connect|createConnection|http\.request|http\.get|fetch|request)\s*\(/,
-  model: /\b(Anthropic|ANTHROPIC_API_KEY|messages\s*\.\s*create)\b/,
+  // `client.ts` calls `messages.stream`, never `messages.create` (unit-467importroute, Theseus,
+  // 2026-11-16) — the old alternation matched a call shape the product never makes. Widening costs
+  // nothing measured today (0 of 155 probes contain the literal `messages.stream`) and only guards a
+  // probe that mints that literal directly; it does not reach a probe that imports `streamClaude`
+  // and calls that instead, since this scan reads the probe's own source, not its callee's.
+  model: /\b(Anthropic|ANTHROPIC_API_KEY|messages\s*\.\s*(create|stream))\b/,
   db: /\b(better-sqlite3|Database|getDb|KLATCH_DB)\b/,
   // `npm` and its subcommand are separated by whatever the CALL SHAPE puts between them, which for
   // the dominant spelling in this repo is not whitespace: `spawnSync('npm', ['test'])` has `', ['`
