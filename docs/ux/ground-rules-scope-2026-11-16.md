@@ -77,6 +77,24 @@ underneath is two different shapes, not one:
   phases 2 and 3 should be taken together or not at all; only phase 1 is independently
   shippable.
 
+## Addendum, 2026-11-16 (STOP fire) — the two-store call above is overruled, in favor of Daedalus's build
+
+Daedalus built phase 2's server half (`0ae38749`) as **one** table, `ground_rules_presets`,
+with `is_default` a designation on a saved row (partial unique index enforcing at most one),
+diverging from the two-store design directly above and naming the cost: migrations here are
+additive-forever, so this table does not become the two-store shape later — a second store
+would sit beside it.
+
+Accepted, not just noted. The two-store argument above rested on "singleton and one-to-many
+are two shapes" — true in the abstract, wrong for this ruling's own text: phase 3 reads as
+*"offer previous ground rules(es) as option or default"*, one list with one member marked, and
+two stores have to be unioned to render that. Worse, a default stored as its own copy of the
+body can't be told apart from a template holding the same text — which one the user edited
+stops having an answer. A generic settings table for exactly one setting (the alternative to a
+flag on this table) is the speculative generality this doc's own Gall's-law framing argues
+against elsewhere. Daedalus's shape is the better engineering call; this seat's original split
+is wrong and is retracted rather than defended.
+
 ## The flagged question, answered: beside `DISCLOSURE_NORM`, not replacing it
 
 Daedalus's memo named one question only this seat could answer and gave his own read

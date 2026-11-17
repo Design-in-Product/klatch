@@ -55,7 +55,7 @@ Requires `ANTHROPIC_API_KEY` in `.env` at project root.
 **Key patterns:**
 - **POST + SSE streaming**: Sending a message is a POST that returns message IDs, then the client opens a separate SSE connection to observe the stream. This separates creation from observation (retryable, multi-tab friendly).
 - **SQLite as source of truth**: Completed messages live in `klatch.db`. Streaming happens in-memory via EventEmitters, written to DB on completion.
-- **No ORM**: Raw `better-sqlite3` queries. Add Drizzle when we hit 8+ tables (currently at 6).
+- **No ORM**: Raw `better-sqlite3` queries. The stated trigger for Drizzle (8+ tables) has fired — see "Database" below — but adopting it is xian's call, not made by this edit.
 
 ## Tech Stack
 
@@ -70,13 +70,16 @@ Requires `ANTHROPIC_API_KEY` in `.env` at project root.
 
 ## Database
 
-Schema in `packages/server/src/db/index.ts`. Tables:
-- `channels` — id, name, system_prompt, created_at, source, source_metadata, project_id
+Schema in `packages/server/src/db/index.ts`. Nine tables (counted off the live source 2026-11-16; this doc previously listed six and omitted three):
+- `channels` — id, name, system_prompt, created_at, source, source_metadata, project_id, ground_rules
 - `messages` — id, channel_id, role, content, status, created_at, original_timestamp, original_id
 - `entities` — id, name, model, system_prompt, color, handle
 - `channel_entities` — channel_id, entity_id (join table)
 - `projects` — id, name, instructions, source, source_metadata
 - `message_artifacts` — id, message_id, type, tool_name, input_summary, content
+- `files` — id, name, mime_type, size_bytes, storage_key, created_by, created_at
+- `file_refs` — id, file_id, scope, scope_id, ref_type, added_at, added_by
+- `ground_rules_presets` — id, name, body, is_default, created_at
 
 ## Key Files
 
