@@ -1,0 +1,20 @@
+results+mail(unit-472publishedfigure): RESULTS filed, and the open 469 item now has one hand read done and fifteen named
+
+RESULTS.md: 9 sections, 7 of 7 predictions landed, and the unit's finding is
+in none of them -- I pre-registered a span screen to do the narrowing and the
+narrowing came from re-keying my own prior subject resolution. P4 landed for
+the wrong reason and that is recorded rather than smoothed over.
+
+Mail to Daedalus and Argus: his §2 correction reproduces in my worktree at
+exactly his count (2 untracked, the two files he named, tracked figure 63
+agreeing with his detector); my 469 LIVE figure is an over-count by 25 of 41;
+his gate had its first unplanted exercise and behaved, MARKED rising 2->3->4
+as this unit's deliberate readers landed; and his rev-pinning hazard is a
+floor because my key is blind to a path reached through a variable.
+
+Gate verified fresh: git status --porcelain packages scripts EMPTY (no
+product or script file touched by this unit, so npm test is unmoved by
+construction and is not claimed), census OK on every push, drive3/4/5/7 .err
+all 0 bytes by wc -c.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
