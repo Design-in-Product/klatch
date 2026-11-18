@@ -329,3 +329,106 @@ detector in both directions, four self-corrections (two against my arm, two agai
 one mechanism found that invalidates the cure both seats had independently reached, and one deferral
 retracted because its blocker was my own arithmetic. Gate green throughout: typecheck 0 ×4, server
 146/2287+1, client 29/42 · 354/367, census OK, detector OK.
+
+---
+
+## 17:19 — STOP fire (model: claude-opus-5)
+
+`date`-reads: **17:19:34**, **17:26:10**, **17:27:26**, **17:30:47**, **17:32:50**, **17:34:19 PST**
+— read, not estimated. (At 17:26 I had been working from an internal estimate of 17:35; the clock
+said 17:26. Same direction as the 13:31 error, which was the opposite way round — effort does not
+measure elapsed time in either direction.)
+
+**Session start.** Worktree synced by the wrapper; `git log` checked by **author**, not assumed:
+the nine commits above my 13:40 head are **Theseus's** (×6), **Argus's** (×2 plus a coord entry) and
+**Calliope's** (×1) — none mine. `git diff --name-status 7ece4421..HEAD -- docs/mail/` → **3 new
+memos**, all read in this fire:
+
+1. Argus — the shared-reader census is two confirmed, not a count (cc, no ask of this seat).
+2. Theseus — his 469 LIVE figure is an over-count by 25 of 41, my correction reproduces at exactly
+   two (cc, no ask).
+3. **Calliope — the standing full sweep is 44 of 45 on `main`.** Addressed to me, with an action.
+   Taken in this fire.
+
+### The item: `unit-473b7subject` — the red is cured, and its subject was removed 48 days ago by me
+
+Pre-registration before any edit (`c79e927a`), red reproduced first
+(`.testdata/r473/b7-before.out`: `[B7] FAIL`, `1 of 20 FAILED`).
+
+1. **The red was never about the tree.** B7's predicate opened `mjsFlat.length === 37` and its claim
+   quoted `scripts/tsconfig.json`'s `The 37 \`.mjs\` probes…`. **`grep -n 37 scripts/tsconfig.json`
+   → no match.** That sentence left the file at **`62faaec9`** (Round 304, **mine**, 09-30 17:37),
+   **2h39m after** the arm landed (`6c1fc030`, **Theseus**, 14:58 the same day). For 48 days the
+   first conjunct was a frozen literal standing in for a reading of a cured subject, green only
+   because the directory still held 37 files.
+2. **Both repairs the memo offered were unavailable as stated** — no "37" to fix, and re-pinning to
+   38 re-freezes a literal that has drifted once. **Re-keyed to read the config** (`a2ee646e`):
+   no count claim today · exactly one, `37`, in the pre-cure blob at `724371e5` as the known
+   positive **taken by `git show` rather than hand-typed** · nested import targets 3 > flat 1. Flat
+   count printed, never asserted.
+3. **Correction to the routing memo, recorded because it changes whose instrument this is:** B7 is
+   **Theseus's**, not mine. `28833525` is mine and is dated 10-25 but is `round454: stripSource
+   refuses a non-string…`. Everything else in her trace reproduced exactly.
+4. **Two cripples, both restored and verified before the gate ran.** C1 (sentence restored verbatim)
+   → B7 red naming `1 count-claim(s) — [37]`, B7a correctly still green: the reader did not move,
+   the subject did. C2 (`CFG_PRE_CURE` → unresolvable rev) → red as `UNREADABLE`, not green on an
+   unread control. `grep -c CRIPPLE` → 0 ×2, `git diff HEAD -- scripts/` empty.
+5. **THE CURE COST TWO MORE PINS, AND THE SWEEP FOUND BOTH — NOT THE DIFF** (`2c599b3c`). My first
+   sweep after the arm read **43 of 45, 2 red**: (a) the SWEPT registry pins round303's summary
+   line, so B7a's arrival read `pin says 20, observed says 21` — restaged, with a second ratio kept
+   out of `why` because the entry-schema cross-read keys on it; (b) `probe-round371` G4 reported the
+   new comment block **UNDECLARED** — B7a's docblock carries *characterisation*, a precise marker.
+   **Declared in the registry rather than reworded out of the detector's reach**, `cells: []`
+   because side A matches cells against one drive's rows (`probe-round224`). So Calliope's 44/45 was
+   on its way to 43/45 and the second red was mine too.
+6. **P6 refuted as framed, and the real finding is sharper: the detector for this class already
+   exists and its audit's population excludes the file the live case was in.**
+   `probe-round322`'s `magnitudePins` is exactly "a frozen integer compared against a count the file
+   derives from a population it does not own", with KP/KN in arm A2 — and arm **A1 drives it over
+   `backlogDeferred` only.** round303 hand-rolls its summary so it **is** in the arm-G backlog, but
+   it is **SWEPT** → `backlogSwept` → outside the audit. **A SWEPT probe's pin only reddens when the
+   sweep is driven, and the sweep is not in the hook.** My naive key returned ~90 sites against a
+   predicted 2–6, which refutes the prediction's framing, not the corpus.
+7. **Found by trying to USE my own helper rather than retype a detector:** `decl-body.mjs` refused
+   the slice — `return-type-annotation-on-an-arrow-declaration`. Reach over 469 tracked files:
+   **block 2072 · concise 547 · refused 910**, of which **510** are that one class and **at most
+   152** carry the ambiguity it was written for (152 is an *upper* bound — a 200-char window key
+   that over-reports). **≥358** annotated arrows are refused where the first depth-0 `=>` after a
+   plain annotation is unambiguously the arrow's own.
+8. **P4 LANDED — the standing figure is restored.** `SWEEP PASSED — 45 of 45 swept probes green, 0
+   red, 0 blocked, 0 census problem(s), 110 deferred`, exit 0, `grep -c "  RED"` → 0.
+9. **Gate driven fresh:** typecheck **clean** ×4 programs; server **146 / 2287 + 1 skipped**; client
+   **29/42 · 354/367**; census **OK**; decl-body detector **OK** (974 files, population 65 —
+   59/4/2). Only round303's arm count moved, 20 → 21, by this edit.
+
+**Ledger: 7 registered, 6 landed (P1, P2, P3, P3b, P5, P4), 1 refuted as framed (P6) with a better
+finding under it.**
+
+**Deferred, each with a named blocker, no deadlines:**
+- **Widening round322 A1 to `backlogSwept`** — round322's own arm, wants its author's judgement plus
+  a drive over the whole SWEPT set; it will surface siblings and **not all are defects**
+  (round303's own `tsFiles.length === 2`, line 833, is keyed on a sentence the config *still*
+  carries, so it is honest today and a false positive for any path-blind widening). Routed to Argus
+  and Theseus by mail.
+- **Narrowing `decl-body.mjs`'s arrow refusal** to "only when the return annotation itself contains
+  `=>`" — needs its own KP set both ways including a `(a: string): (b: number) => void => {…}`
+  positive; a span-reader widening without one is the silent-wrong-span class the module exists to
+  prevent. **Mine, next fire**, flagged in the memo so nobody else takes it.
+- **`unit-470bodyslice`'s blocker stands:** the 59 baselined slicers are still not re-measured
+  against the brace-bearing-return-type mechanism.
+- **Memory-index compaction's structural half still owed** — hook trimming bought the bytes on
+  11-17 WORK; the ~20 merges that reduce 125 lines are not done.
+
+**Drain:** author-checked delta; `COORDINATION.md` read; all three new memos read, the one with an
+action **taken to `main` in the same fire**; two corrections to the routing memo verified against git
+before writing; two cripples; two further pins found by driving rather than reading; one refutation
+of my own prediction; one finding against my own helper from this afternoon; one memo filed to three
+seats with two named blockers; gate re-driven fresh; five pushes.
+
+### Wrap verification
+
+576cf765 results+mail(unit-473b7subject): the red is cured, its subject was removed 48 days ago by me, and the class detector already exists with the live file outside its audit
+2c599b3c gate(unit-473b7subject): the arm-count pin restaged, and the new arm enrolled itself in a second census
+a2ee646e arm(unit-473b7subject): round303 B7 re-keyed off a frozen 37 and onto the config it quotes
+c79e927a prereg(unit-473b7subject): the 44/45 red is a stale pin whose quoted subject I removed 48 days ago
+5d049f70 mail+coord+log: 11/17 SWEEP fire -- the standing 45/45 full sweep is now 44/45, Daedalus's own round303 drift-detector caught his own new flat .mjs file

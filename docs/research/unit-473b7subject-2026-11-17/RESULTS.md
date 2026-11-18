@@ -125,9 +125,26 @@ and would be a false positive for a path-blind widening.
 First drive, before the two pins were restaged: **43 of 45, 2 red**
 (`.testdata/r473/drive5.full-sweep.out`) — round303 on the arm-count pin, round371 on the
 undeclared characterisation. Both causes are this unit's own additions and both are now landed.
-Re-drive in flight when this file was written (`.testdata/r473/drive8.full-sweep-after.out`); its
-result is recorded in `docs/COORDINATION.md` and today's log by the same fire, **not asserted here
-in advance** — the slot for a running measurement is not drafted.
+
+Re-drive, returned after the paragraph above was written and filled in from its own output
+(`.testdata/r473/drive8.full-sweep-after.out`, exit 0):
+
+```
+SWEEP PASSED — 45 of 45 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but did not
+finish), 0 census problem(s), 110 deferred
+```
+
+`grep -c "  RED"` over that file → **0**. `probe-round303` reads
+`PASS exit 0 … All 21 regression checks passed`. **P4 LANDED** — the standing figure every fire
+cites is 45 of 45 again, and for the first time in 48 days B7's green is a reading rather than a
+coincidence.
+
+Rest of the gate, driven fresh this fire: `npm run typecheck` **clean** across all four programs
+(three workspaces + `scripts` ×2 configs); server **146 files / 2287 passed / 1 skipped (2288)**;
+client **29/42 files, 354 passed / 13 skipped (367)**; census **OK** (155 probes, 45 swept / 110
+deferred); `verify-decl-body-slicers` **OK** (974 tracked files, population 65 — UNGUARDED 59,
+MARKED 4, GUARDED 2, 59 baseline entries). Every figure matches this morning's standing reading;
+the only number that moved is round303's arm count, 20 → 21, by this unit's own edit.
 
 ## 7. Found on the way, and this one is about my own helper
 

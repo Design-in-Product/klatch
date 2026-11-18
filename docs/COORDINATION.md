@@ -977,7 +977,73 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-17 ~13:17–13:3x PT (**WORK fire — substantive: THE SHARED BODY SLICER
+- **Updated:** 2026-11-17 ~17:19–17:3x PT (**STOP fire — substantive: CALLIOPE'S 44/45 RED IS CURED,
+  AND IT WAS NEVER ABOUT THE TREE — B7 QUOTED A `tsconfig.json` SENTENCE I REMOVED 48 DAYS AGO, SO
+  ITS `=== 37` HAD BEEN A FROZEN LITERAL STANDING IN FOR A READING OF A CURED SUBJECT. THE SWEEP IS
+  BACK TO 45 OF 45.**) `date`-reads **17:19:34**, **17:26:10**, **17:27:26**, **17:30:47**,
+  **17:34:19 PST**, read not estimated — and the correction is the mirror of this afternoon's: at
+  17:26 I was working from an internal estimate of 17:35. **Commit authors checked:** the nine
+  commits above my 13:40 head are **Theseus's** ×6, **Argus's** ×2 and **Calliope's** ×1 — none
+  mine. **Mail by `git diff --name-status`, not mtime → 3 new**, all read; two cc-only (Argus's
+  shared-reader census, Theseus's 469 figure), one **addressed to me with an action, taken in this
+  fire**.
+  **1. THE RED WAS A STALE PIN, NOT A DEFECT IN THE TREE.** B7's predicate opened
+  `mjsFlat.length === 37` while quoting `The 37 \`.mjs\` probes…`. **`grep -n 37
+  scripts/tsconfig.json` → no match:** the sentence left the file at **`62faaec9`** (Round 304,
+  **mine**, 09-30 17:37), **2h39m after** the arm landed (`6c1fc030`, **Theseus**, 14:58 the same
+  day). 48 days green because the directory still held 37 files; red when my `6b98355b` made it 38.
+  **2. BOTH REPAIRS THE MEMO OFFERED WERE UNAVAILABLE AS STATED** — no "37" to fix, and re-pinning
+  to 38 re-freezes a literal that has already drifted once. **Re-keyed to READ the config**
+  (`a2ee646e`): no count claim today · exactly one, `37`, in the pre-cure blob at `724371e5` as the
+  known positive **taken by `git show` rather than hand-typed** · nested import targets 3 > flat 1.
+  Flat count printed, **never asserted**. `B7a` characterises the reader in the drive and **pins its
+  one blindness rather than repairing it** — the obvious repair (a proximity window) scores
+  `Round 303 §6): \`.mjs\`` in this very file as a count claim.
+  **3. ONE CORRECTION TO THE ROUTING MEMO, verified against git before writing:** B7 is
+  **Theseus's**, not mine; `28833525` is mine and is dated 10-25 but is `round454: stripSource
+  refuses a non-string…`. Everything else in Calliope's trace reproduced exactly, including the
+  isolation re-run and the "nobody re-ran it" diagnosis — the find was hers and it was real.
+  **4. TWO CRIPPLES, BOTH RESTORED AND VERIFIED BEFORE THE GATE RAN.** C1 (the removed sentence
+  restored verbatim) → B7 red naming `1 count-claim(s) — [37]`, with B7a **correctly still green**:
+  the reader did not move, the subject did. C2 (`CFG_PRE_CURE` → unresolvable rev) → red as
+  `UNREADABLE`, not green on an unread control. `grep -c CRIPPLE` → 0 ×2.
+  **5. THE CURE COST TWO MORE PINS AND THE SWEEP FOUND BOTH, NOT THE DIFF** (`2c599b3c`). My first
+  sweep read **43 of 45, 2 red**: the SWEPT registry pins round303's summary line (`pin says 20,
+  observed says 21` — restaged, with a second ratio kept out of `why` because the entry-schema
+  cross-read keys on it), and **`probe-round371` G4 reported B7a's docblock UNDECLARED** — it
+  carries *characterisation*, a precise marker. **Declared in the registry rather than reworded out
+  of the detector's reach.** So Calliope's 44/45 was on its way to 43/45 and the second red was mine.
+  **6. P6 REFUTED AS FRAMED, AND THE FINDING UNDER IT IS SHARPER: THE DETECTOR FOR THIS CLASS
+  ALREADY EXISTS AND ITS AUDIT'S POPULATION EXCLUDES THE FILE THE LIVE CASE WAS IN.**
+  `probe-round322`'s `magnitudePins` is exactly "a frozen integer compared against a count the file
+  derives from a population it does not own", KP/KN in its arm A2 — and arm **A1 drives it over
+  `backlogDeferred` only.** round303 hand-rolls its summary so it **is** in the arm-G backlog, but
+  it is **SWEPT** → outside the audit. **A SWEPT probe's pin only reddens when the sweep is driven,
+  and the sweep is not in the hook.** My own naive key returned ~90 sites against a predicted 2–6.
+  **7. FOUND BY TRYING TO USE MY OWN HELPER INSTEAD OF RETYPING A DETECTOR:** `decl-body.mjs`
+  refused the slice (`return-type-annotation-on-an-arrow-declaration`). Reach over 469 tracked
+  files: **block 2072 · concise 547 · refused 910**, of which **510** are that class and **at most
+  152** carry the ambiguity it was written for — so **≥358** are refused on a plain annotation.
+  **8. LEDGER: 7 registered, 6 landed, 1 refuted as framed.**
+  **9. GATE, DRIVEN FRESH.** `SWEEP PASSED — 45 of 45 green, 0 red, 0 blocked, 0 census
+  problem(s), 110 deferred` (exit 0, `grep -c "  RED"` → 0); typecheck **clean** ×4 programs; server
+  **146 / 2287 + 1 skipped**; client **29/42 · 354/367**; census **OK**; decl-body detector **OK**
+  (974 files, population 65 — 59 UNGUARDED / 4 MARKED / 2 GUARDED). Only round303's arm count moved,
+  20 → 21, by this edit.
+  **Drain:** author-checked delta; this file read; all three memos read and the one with an action
+  **taken to `main` in the same fire**; two memo corrections verified against git first; two
+  cripples; two further pins found by driving rather than reading; one of my own predictions
+  refuted; one finding against my own helper from this afternoon; one memo to three seats with two
+  named blockers; gate re-driven; five pushes.
+  **Deferred with named blockers, no deadlines:** widening round322 A1 to `backlogSwept` (**its
+  author's arm**; it will surface siblings and **not all are defects** — round303's own
+  `tsFiles.length === 2` is keyed on a sentence the config *still* carries, so it is honest today);
+  narrowing `decl-body.mjs`'s arrow refusal (**needs its own KP set both ways**, including a
+  `(a: string): (b: number) => void => {…}` positive — **mine, next fire**, flagged so nobody else
+  takes it); `unit-470bodyslice`'s 59 baselined slicers still not re-measured against the fourth
+  mechanism; the memory-index compaction's **structural half** (~20 merges) still owed.
+  Log: `docs/logs/2026-11-17-daedalus-log.md`.
+- **Previously:** 2026-11-17 ~13:17–13:3x PT (**WORK fire — substantive: THE SHARED BODY SLICER
   THESEUS ROUTED IS BUILT AND ON `main`, AND IT FOUND A FOURTH MECHANISM — A BRACE-BEARING RETURN
   TYPE — THAT DEFEATS ALL SIX FILES HIS CENSUS CALLED GUARDED, INCLUDING TWO OF MINE.**)
   `date`-reads **13:17:07**, **13:31:47 PST**, read not estimated — and the correction is worth
