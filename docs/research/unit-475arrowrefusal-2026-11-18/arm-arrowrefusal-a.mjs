@@ -224,8 +224,20 @@ if (WRITE_BASELINE) {
   for (const l of lost.slice(0, 10)) console.log(`          LOST   ${l}`);
   for (const g of gained.slice(0, 6)) console.log(`          gained ${g}`);
   check('A6a the baseline is non-empty', before.size > 0, `baseline=${before.size}`);
-  check('A6b P4 HIT: every span that resolved before resolves to the IDENTICAL bytes now',
-    lost.length === 0, `lost=${lost.length}`);
+  // The key is `file|name|bodyStart|bodyEnd`, so EDITING a file moves every span in it and the
+  // diff cannot tell that from a mis-sliced span. The reader under cure is the one file this unit
+  // edits, so its own entries are excluded here and accounted for separately below — an exclusion
+  // stated at the leg rather than a `lost` count quietly tolerated.
+  const EDITED = 'scripts/lib/decl-body.mjs';
+  const lostElsewhere = lost.filter((k) => !String(k).startsWith(`${EDITED}|`));
+  const lostInEdited = lost.filter((k) => String(k).startsWith(`${EDITED}|`));
+  check('A6b P4 HIT: every span OUTSIDE the edited reader resolves to the identical bytes',
+    lostElsewhere.length === 0, `lost elsewhere=${lostElsewhere.length} (in ${EDITED}: ${lostInEdited.length})`);
+  const editedNames = new Set(lostInEdited.map((k) => String(k).split('|')[1]));
+  const stillBlock = blockSpans.filter((b) => b.f === EDITED && editedNames.has(b.n));
+  check('A6c every declaration whose span moved inside the edited reader still resolves to a block',
+    stillBlock.length === editedNames.size && editedNames.size > 0,
+    `moved=${editedNames.size} still block=${stillBlock.length}`);
 } else {
   check('A6a a baseline exists to diff against (run --baseline-write at HEAD first)', false,
     `missing ${BASELINE}`);

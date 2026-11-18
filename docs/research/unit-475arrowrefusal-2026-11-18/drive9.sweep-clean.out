@@ -1,0 +1,15 @@
+sweep-probes — 155 probe files under scripts/
+  swept:    45
+  deferred: 110  (not cleared — most open ports, databases, corpora or model calls)
+            verdict-bearing: 34 · no conclusion line: 76  (derived from source each run, not recorded; a no-conclusion-line file cannot go red, so it is an investigation, not a probe awaiting a drive)
+
+CENSUS OK — every probe under scripts/ is in exactly one list, and every entry is well-formed.
+
+  PASS    exit   0  probe-round241-a-corpus-cast-is-resolved-not-pinned.mts
+          All 19 regression checks passed
+  PASS    exit   0  probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts
+          All 5 regression checks passed
+  PASS    exit   0  probe-round255-the-comment-shadow-census.mts
+          All 3 regression checks passed
+  PASS    exit   0  probe-round232-the-remainder-verdict-can-go-red.mts
+          All 7 regression checks passed

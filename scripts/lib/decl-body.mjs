@@ -61,11 +61,31 @@
  * never a span running to end-of-file, and never dropped from the result. The refusable reasons are
  * `unbalanced-parameter-list`, `unbalanced-body-brace`, `declaration-without-a-body` (a TS overload
  * signature or an ambient declaration), `no-body-brace-after-the-parameter-list`,
- * `no-body-brace-after-the-return-type`, `unbalanced-brace-in-the-return-type`, and
- * `return-type-annotation-on-an-arrow-declaration` — the last because a depth-0 `=>` inside a
- * function-type return annotation is not distinguishable by character scan from the arrow's own.
- * A refusal under-reports visibly; a wrong span under-reports silently, and that is the whole
- * defect this module was routed to cure.
+ * `no-body-brace-after-the-return-type`, `no-arrow-after-the-return-type-annotation`,
+ * `unbalanced-brace-in-the-return-type`, and
+ * `function-type-return-annotation-on-an-arrow-declaration` — the last because a depth-0 `=>`
+ * inside a function-type return annotation is not distinguishable by character scan from the
+ * arrow's own. A refusal under-reports visibly; a wrong span under-reports silently, and that is
+ * the whole defect this module was routed to cure.
+ *
+ * **Corrected 2026-11-18 (`unit-475arrowrefusal`), and the correction is the reason this paragraph
+ * is long.** Until then the last reason was `return-type-annotation-on-an-arrow-declaration` and it
+ * refused **every** arrow carrying **any** return-type annotation — 534 declarations in the
+ * 975-file tracked tree — on the ground quoted above. The ground is sound and its live population
+ * was **zero**: a TS function type has no unparenthesised parameter list, so its `=>` is always
+ * preceded by `)`, and **none of the 534 was**. 246 were block bodies and 288 concise. The refusal
+ * now looks back one non-space character at the first depth-0 `=>` and refuses only the
+ * `)`-preceded form, which is why the reason string names a form rather than a class.
+ *
+ * ## The limit this reader does NOT declare, and it is the biggest refusal reason in the corpus
+ *
+ * `DECL_HEAD_SOURCE`'s second alternative matches `const NAME = (`, which is also the shape of a
+ * **parenthesised initialiser** — `const pkp = (assignLegSites(PAREN_KP) ?? [])[0];`. These are
+ * matched as heads and then refused with `no-body-brace-after-the-parameter-list`, correctly as far
+ * as the body question goes, and **968 of the 971 remaining refusals in the tracked tree are this**.
+ * A consumer that reports refused members as 'declarations I could not grade' is carrying a
+ * 968-member phantom population. Measured in `docs/research/unit-475arrowrefusal-2026-11-18`; the
+ * head-key fix is a separate unit because it moves `declHeads`'s population for every consumer.
  */
 
 import { stripSource } from './strip-source.mjs';
@@ -210,12 +230,40 @@ export const declBodyAt = (
   // 0, then look at what follows. A `{…}` followed by `{` or by type-continuation syntax
   // (`|`, `&`, `[`, `,`, `>`, `)`) was a type literal; anything else means that group WAS the body.
   if (code[i] === ':') {
-    if (isArrow) return refuse('return-type-annotation-on-an-arrow-declaration');
+    // THE THIRD CURE (`unit-475arrowrefusal`, 2026-11-18). Two corrections, both measured over the
+    // 975-file tracked tree before being written:
+    //
+    // (a) **`=>` is ONE token, and its `>` is not a closing angle bracket.** The first version of
+    //     this scan decremented `depth` on it, so on `function f(): (a: number) => void { … }` the
+    //     depth went to −1, the body `{` was never seen at depth 0, and the reader refused with
+    //     `no-body-brace-after-the-return-type` — a reason string that says there is no body brace
+    //     about a declaration that has one. **Five live tracked sites**, one of them product code
+    //     (`packages/server/src/db/queries.ts:1724 createChannelBySessionIdResolver`).
+    //
+    // (b) **An arrow with a return-type annotation is no longer refused as a class.** The old
+    //     refusal covered every such declaration on the ground that a depth-0 `=>` inside a
+    //     function-type annotation is indistinguishable from the arrow's own. The ground is sound
+    //     and its live population was **0 of 534**: a TS function type has no unparenthesised
+    //     parameter list, so its `=>` is **always** preceded by `)`, and not one of the 534 was.
+    //     So: look back one non-space character at the first depth-0 `=>`. Not `)` → the arrow is
+    //     the declaration's own and the body starts after it. `)` → genuinely ambiguous, still
+    //     refused, under a reason that now names the form rather than the class.
     let j = i + 1;
     let depth = 0;
     let found = -1;
     while (j < code.length) {
       const c = code[j];
+      if (c === '=' && code[j + 1] === '>') {
+        if (depth === 0 && isArrow) {
+          let p = j - 1;
+          while (p > i && /\s/.test(code[p])) p--;
+          if (code[p] === ')') return refuse('function-type-return-annotation-on-an-arrow-declaration');
+          found = j; // the arrow's own; the `=>` handling below resolves block vs concise
+          break;
+        }
+        j += 2;
+        continue;
+      }
       if (c === '(' || c === '[' || c === '<') depth++;
       else if (c === ')' || c === ']' || c === '>') depth--;
       else if (c === ';' && depth === 0) return refuse('declaration-without-a-body');
@@ -224,13 +272,20 @@ export const declBodyAt = (
         if (end === -1) return refuse('unbalanced-brace-in-the-return-type');
         let k = end + 1;
         while (k < code.length && /\s/.test(code[k])) k++;
-        if (code[k] === '{' || /[|&[,>)]/.test(code[k] ?? '')) { j = end + 1; continue; }
+        // `=>` joins the type-continuation set: a depth-0 `{…}` followed by an arrow was an object
+        // type returned by a function type, not the body — 23 live sites reach this branch.
+        const nextIsArrow = code[k] === '=' && code[k + 1] === '>';
+        if (code[k] === '{' || nextIsArrow || /[|&[,>)]/.test(code[k] ?? '')) { j = end + 1; continue; }
         found = j;
         break;
       }
       j++;
     }
-    if (found === -1) return refuse('no-body-brace-after-the-return-type');
+    if (found === -1) {
+      return refuse(isArrow
+        ? 'no-arrow-after-the-return-type-annotation'
+        : 'no-body-brace-after-the-return-type');
+    }
     i = found;
   }
 

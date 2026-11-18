@@ -1,0 +1,54 @@
+A1 — P1: kinds and refusal reasons over 978 tracked files
+      kind block: 4267
+      kind concise: 2117
+      kind refused: 971
+      reason no-body-brace-after-the-parameter-list: 968
+      reason unbalanced-body-brace: 2
+      reason unbalanced-parameter-list: 1
+
+  class 0 of 971 refusals = 0.0%
+  RED    A1a the class is a non-empty population (a zero would make every leg below vacuous) — class=0
+  RED    A1b P1 HIT: the class is > 50% of all refusals — 0/971 = 0.0%
+  green  A1c the collected class list is the same size as the counter says — list=0 counter=0
+
+A2 — P2: the 0 class members under the region key
+  green  A2a every class member landed in exactly one named bucket (no silent drop) — sum=0 class=0
+  green  A2b no class member is `no-annotation` (it would mean the reason string and the region key disagree) — no-annotation=0
+
+  resolvable 0 of 0 = 0.0%
+  RED    A2c P2 HIT: >= 60% of the class is unambiguous under the conservative key — 0/0 = 0.0%
+
+A3 — KP-A: a plain annotation, SLICED from a tracked file
+  RED    A3a a live plain-annotation member exists to slice — none found
+
+A4 — KP-B: the function-type return annotation on an arrow
+      live members in the ambiguous bucket: 0
+      KP-B itself is SYNTHETIC (typed here, labelled as such): const kpb = (a: string): (b: number) => void => { return; };
+  green  A4a KP-B is matched as a head at all (a head miss would make A4b vacuous) — head=kpb isArrow=true
+  RED    A4b P5: KP-B is REFUSED (resolving it to concise is the silent-under-report harm) — kind=concise reason=null
+  green  A4c the region key calls KP-B ambiguous, so a cure keyed on it leaves KP-B refused — bucket=arrow-then-other
+
+A5 — KP-C / P3: a `function` declaration with a function-type return annotation
+      KP-C is SYNTHETIC unless a live site is named below: function kpc(a: number): (b: number) => void {
+      HEAD verdict: kind=block reason=null
+  green  A5a KP-C is matched as a NON-arrow head (the scan under test is the function-declaration one) — isArrow=false
+  RED    A5b P3 HIT at HEAD: the form refuses as `no-body-brace-after-the-return-type` — kind=block reason=null
+  RED    A5c the region key finds the body KP-C has (so the refusal is the scan, not the source) — bucket=arrow-then-other
+      live function-declaration sites refused that way: 0
+
+A6 — P4: block spans over the tracked tree (4267 spans)
+      baseline 4013 spans · now 4267 · lost 3 · gained 257
+          LOST   scripts/lib/decl-body.mjs|bodyOf|13948|14036
+          LOST   scripts/lib/decl-body.mjs|declBodies|13334|13558
+          LOST   scripts/lib/decl-body.mjs|declBodyAt|9107|12868
+          gained docs/research/round368-instruments/verdict-line-kind-grade.mts|row|5818|5940
+          gained docs/research/unit-307c4-rekey-2026-10-28/fp-commit-moves.mts|check|3845|3973
+          gained docs/research/unit-465bareline-2026-11-12/arm-bareline.mts|blob|11179|11344
+          gained docs/research/unit-465declpop-2026-11-07/drive-five.mts|failingLines|2237|2562
+          gained docs/research/unit-465declpop-2026-11-07/drive-five.mts|summaryLine|2611|2750
+          gained docs/research/unit-465guard-2026-11-08/drive-guard.mts|drive|7140|8173
+  green  A6a the baseline is non-empty — baseline=4013
+  green  A6b P4 HIT: every span OUTSIDE the edited reader resolves to the identical bytes — lost elsewhere=0 (in scripts/lib/decl-body.mjs: 3)
+  green  A6c every declaration whose span moved inside the edited reader still resolves to a block — moved=3 still block=3
+
+ARM A RED — 7 leg(s)
