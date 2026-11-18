@@ -351,6 +351,30 @@ export const REGISTRY = [
       + 'separate a live characterisation from its own cured history',
     cells: [],
   },
+  {
+    // Daedalus, `unit-473b7subject`, 2026-11-17 STOP fire. Enrolled by this census the moment the
+    // member landed: `probe-round303` arm B7a's docblock carries `characterising`, so the reconcile
+    // reported it UNDECLARED and `probe-round371` G4 went red in the same sweep that was driven to
+    // confirm B7's repair. The member is a real characterisation and not an accident of wording —
+    // B7a's second row pins a blindness in B7's count reader instead of repairing it — so it is
+    // declared here rather than reworded out of the detector's reach.
+    //
+    // `cells: []`, and the reason is a limit of side A rather than a choice: side A matches cells
+    // against the rows of ONE drive, `SUBJECT` = `probe-round224`. A cell named here would be
+    // looked for in that probe's output and reported missing. So this entry pins the declaration
+    // SITE (side B, which is corpus-wide) and leaves the cell-level grading to the arm itself,
+    // which carries its three reader rows in its own predicate and reddens without this registry.
+    id: 'r303/B7a-the-count-readers-pinned-blindness',
+    file: 'scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts',
+    surface: 'comment',
+    status: 'live',
+    anchor: 'DECLARED BLINDNESS pinned rather than repaired',
+    claim: 'B7\'s count reader finds a count stated adjacent to `.mjs` and misses one stated in the '
+      + 'other word order; the miss is pinned by a row in B7a rather than repaired, because the '
+      + 'obvious repair — a proximity window — scores `Round 303 §6): `.mjs`` in this very file as '
+      + 'a count claim',
+    cells: [],
+  },
 ];
 
 /**
