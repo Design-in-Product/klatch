@@ -1,0 +1,53 @@
+unit-479braceslicekeys arm B — the 69th member, the ignored population, the disagreement mechanism
+  HEAD: 9c7a1dc5f4c7c052151aecbb7c3fa4c92c76eb61
+  three readings of one reader: published 62 · START fire 69 · live 68
+
+E1 — START reading (69) vs live (68)
+      - START-ONLY docs/research/unit-476phantomdenom-2026-11-18/precure/strip-source.mjs
+  CHAIN: published 62 + 6 arrivals = 68; the START reading held 1 transient member(s) on top of that = 69
+
+E2 — the population the two instruments cannot share
+      git ls-files --others (ignored included), code files under the four roots: 17
+      IGNORED  in-469-pop=true  seen-by-porcelain=false  docs/research/round413-instruments/his412-prefix.sliced.mjs  ← docs/research/round413-instruments/.gitignore:1:his412-prefix.sliced.mjs
+      IGNORED  in-469-pop=true  seen-by-porcelain=false  docs/research/round414-instruments/mine412-prefix.sliced.mjs  ← docs/research/round414-instruments/.gitignore:1:mine412-prefix.sliced.mjs
+      IGNORED  in-469-pop=false  seen-by-porcelain=false  docs/research/unit-465byteslabel-2026-11-13/scratch/a/attested-rounds.1.control.mjs  ← .gitignore:60:docs/research/unit-*/scratch/
+      IGNORED  in-469-pop=false  seen-by-porcelain=false  docs/research/unit-465byteslabel-2026-11-13/scratch/a/attested-rounds.2.E-both-removed.mjs  ← .gitignore:60:docs/research/unit-*/scratch/
+      IGNORED  in-469-pop=false  seen-by-porcelain=false  docs/research/unit-465byteslabel-2026-11-13/scratch/a/attested-rounds.3.R1-boundaryFree-removed.mjs  ← .gitignore:60:docs/research/unit-*/scratch/
+      IGNORED  in-469-pop=false  seen-by-porcelain=false  docs/research/unit-465byteslabel-2026-11-13/scratch/a/attested-rounds.4.R2-separatorTolerant-removed.mjs  ← .gitignore:60:docs/research/unit-*/scratch/
+      IGNORED  in-469-pop=false  seen-by-porcelain=false  docs/research/unit-465foilchain-2026-11-13/scratch/a/a1.baseline.mjs  ← .gitignore:60:docs/research/unit-*/scratch/
+      IGNORED  in-469-pop=false  seen-by-porcelain=false  docs/research/unit-465foilchain-2026-11-13/scratch/a/a10.no-foils.mjs  ← .gitignore:60:docs/research/unit-*/scratch/
+      IGNORED  in-469-pop=false  seen-by-porcelain=false  docs/research/unit-465foilchain-2026-11-13/scratch/a/a2.nowitness-sep.mjs  ← .gitignore:60:docs/research/unit-*/scratch/
+      IGNORED  in-469-pop=false  seen-by-porcelain=false  docs/research/unit-465foilchain-2026-11-13/scratch/a/a3.nowitness-bf.mjs  ← .gitignore:60:docs/research/unit-*/scratch/
+      IGNORED  in-469-pop=false  seen-by-porcelain=false  docs/research/unit-465foilchain-2026-11-13/scratch/a/a4.reversed-2.mjs  ← .gitignore:60:docs/research/unit-*/scratch/
+      IGNORED  in-469-pop=false  seen-by-porcelain=false  docs/research/unit-465foilchain-2026-11-13/scratch/a/a5.nested3-ordered.mjs  ← .gitignore:60:docs/research/unit-*/scratch/
+      IGNORED  in-469-pop=false  seen-by-porcelain=false  docs/research/unit-465foilchain-2026-11-13/scratch/a/a6.nested3-misordered.mjs  ← .gitignore:60:docs/research/unit-*/scratch/
+      IGNORED  in-469-pop=false  seen-by-porcelain=false  docs/research/unit-465foilchain-2026-11-13/scratch/a/a7.crossing-ab.mjs  ← .gitignore:60:docs/research/unit-*/scratch/
+      IGNORED  in-469-pop=false  seen-by-porcelain=false  docs/research/unit-465foilchain-2026-11-13/scratch/a/a8.crossing-ba.mjs  ← .gitignore:60:docs/research/unit-*/scratch/
+      IGNORED  in-469-pop=false  seen-by-porcelain=false  docs/research/unit-465foilchain-2026-11-13/scratch/a/a9.one-foil.mjs  ← .gitignore:60:docs/research/unit-*/scratch/
+      IGNORED  in-469-pop=false  seen-by-porcelain=false  docs/research/unit-472publishedfigure-2026-11-17/scratch/kp-fixture.mts  ← .gitignore:60:docs/research/unit-*/scratch/
+      arm A's R1 refusal reported 1 untracked code file; the population that differs is 17 ignored one(s) — the refusal was keyed on the wrong class and under-reported it
+
+E3 — the gate's requirement 4, against the PUBLISHED GUARDED class
+      published GUARDED (6): docs/research/round449-instruments/probe-the-argument-shapes.mjs · docs/research/round449-instruments/resolve-the-variable-write-targets.mjs · docs/research/unit-465readerset-2026-11-14/arm-readerset-b.mjs · docs/research/unit-465readerset-2026-11-14/arm-readerset-c.mjs · docs/research/unit-467importprice-2026-11-16/arm-importprice-a.mts · docs/research/unit-468createlit-2026-11-17/arm-createlit-a.mjs
+      gate=UNGUARDED ∧ 469=GUARDED (6): docs/research/round449-instruments/probe-the-argument-shapes.mjs · docs/research/round449-instruments/resolve-the-variable-write-targets.mjs · docs/research/unit-465readerset-2026-11-14/arm-readerset-b.mjs · docs/research/unit-465readerset-2026-11-14/arm-readerset-c.mjs · docs/research/unit-467importprice-2026-11-16/arm-importprice-a.mts · docs/research/unit-468createlit-2026-11-17/arm-createlit-a.mjs
+
+E4 — locality: the 469 window is 400 chars; the gate has no locality at all
+      REVERSE  docs/research/round401-instruments/census-the-branch-polarity-axis.mjs
+               open-brace cmp at char 6296 · nearest preceding paren cmp at 6270 · distance 26
+               gate keys over the file: LPAREN=true RPAREN=true COLON=true
+
+legs:
+  ok   C0 — duplicated parser against arm A's printed figures: published 62=6+4+52 (arm A: 62=6+4+52) · live 68=8+4+56 (arm A: 68=8+4+56)
+  ok   Q1 — registered: exactly one START-only member, the vendored copy that fire deleted; measured 1 → docs/research/unit-476phantomdenom-2026-11-18/precure/strip-source.mjs
+  ok   Q2 — registered: never tracked and not on disk; git log --all → EMPTY, on disk false
+  ok   Q3 — registered 0 live-only-vs-START members; measured 0
+  ok   Q4 — registered: every 469-only member is an ignored file and none is visible to --porcelain; 469-only 2 → docs/research/round413-instruments/his412-prefix.sliced.mjs, docs/research/round414-instruments/mine412-prefix.sliced.mjs; of those, ignored 2, porcelain-visible 0
+  ok   Q5 — registered >= 2 ignored code files in the 469 population; measured 2 of 17 ignored code file(s)
+  ok   Q6 — registered: the gate-UNGUARDED/469-GUARDED set is EXACTLY the published GUARDED class; 6 vs 6 members, identical=true
+  RED  Q7 — registered: the reverse disagreement(s) are locality failures — gate keys all match the file while the nearest preceding paren comparison is beyond 400 chars; 1 member(s), all qualifying=false
+  ok   Q8 — registered <= 3 gate-GUARDED files whose guard is beyond the 400-char window; measured 0 of 3 gate-GUARDED — none
+
+red legs=1 red=[Q7: registered: the reverse disagreement(s) are locality failures — gate keys all match the file while the nearest preceding paren comparison is beyond 400 chars; 1 member(s), all qualifying=false] refused=[]
+CHAIN: 62 published → 69 at the START fire → 68 live; 6 tracked arrivals, 1 transient, 0 departures
+DIVERGENCE: gate 66 · 469 68 · 469-only 2, all ignored-by-.gitignore · gate-only 0
+VERDICTS: 6 gate-UNGUARDED/469-GUARDED · 1 gate-GUARDED/469-UNGUARDED · the second direction is the gate's locality blindness, BOARDED NOT CURED (S3)

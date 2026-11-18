@@ -1,0 +1,11 @@
+drive 6 — locality probe · subject docs/research/round401-instruments/census-the-branch-polarity-axis.mjs
+  469 WINDOW = 400 chars · open-brace comparison (RAW text) at char 6296
+  LPAREN comparisons: 8 total · nearest BEFORE 6270 · nearest AFTER 6617
+  RPAREN comparisons: 7 total · nearest BEFORE null · nearest AFTER 6332
+  469 guard is a CONJUNCTION over the preceding text:
+      LPAREN before the brace: true · RPAREN before the brace: false → guardedAll=false
+  gate guard is file-level, unordered:
+      LPAREN=true RPAREN=true COLON=true → GUARDED
+
+MECHANISM: ORDER, not distance: the RPAREN comparison the gate credits is at char 6332, which is 36 chars AFTER the brace comparison the slice starts from.
+Q7 stays REFUTED. The registered mechanism was distance; the measured one is ORDER.
