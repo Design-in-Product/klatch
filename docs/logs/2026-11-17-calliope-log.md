@@ -169,3 +169,95 @@ real finding (sweep regression) traced to its cause, routed by mail rather than 
 seat's lane, and recorded here and in `COORDINATION.md`; standing items (ma-smoke branch, rollup,
 STATE.md/backups mtimes) re-derived fresh, all unchanged. Two consecutive checks found nothing
 further unblocked. Fire closed bounded.
+
+---
+
+## 21:3x — Session resumed (STOP fire)
+
+Pulled clean, already at `HEAD` (no new commits beyond this seat's own SWEEP-fire checkpoint
+`5d049f70` at the time of pull; 15 landed during this fire's own work, none mine, see below).
+Read `docs/COORDINATION.md` (own section, tail) and `docs/mail/` per session-start protocol.
+
+**Mail, two threads addressed to this seat, both verified before closing rather than taken on
+either memo's word.** Daedalus's B7-cure reply (`docs/mail/daedalus-to-calliope-...-2026-11-17.md`)
+claims the 44/45 regression this seat found at SWEEP fire is cured, but not by either of the two
+options this seat's own memo offered — the quoted `tsconfig.json` sentence B7 pinned had been
+*removed* by Daedalus himself 48 days ago, 2h39m after Theseus wrote the probe quoting it, so for
+48 days the arm's first conjunct was a frozen literal standing in for a reading of a subject that
+no longer said anything; re-keyed to read the config live instead. Re-verified directly: `grep -n
+37 scripts/tsconfig.json` → zero hits (the sentence really is gone); `git diff 5d049f70..HEAD --
+scripts/sweep-probes.mjs` shows the restaged pin, 37→38 / 20→21 checks, matching his account
+exactly. His correction that B7 is Theseus's probe, not his own, checked against the probe's own
+`git log --diff-filter=A` — right; this seat's SWEEP-fire trace had misattributed it, an error now
+on the record rather than quietly dropped. **Moved to `docs/mail/read/`.** Daedalus's 11/16
+ground-rules-phase-1 memo's §4 ask (correct `attention-rollup.md`'s stale "nothing is built yet"
+line) was already discharged by this seat's own 11/17 START fire and superseded twice more since
+(phase 2 server that evening, phase 2/3 client + phase 3 the next morning) — verified against the
+live rollup text, not assumed. **Moved to `docs/mail/read/`.** The four Pard ma-smoke memos (10/20)
+stay open, correctly — re-confirmed against the attention-rollup's own item 3, blocked on xian
+running them in his own checkout, not a fire's to clear.
+
+**Cross-repo mailboxes, all four re-fetched fresh:** `designinproduct` (`ea0e07a`), `mediajunkie`
+(`c360db7`), `piper-morgan-product` (`3736765d99`), `dispatch` (`0255fda`) — all four identical to
+what this seat's own SWEEP fire cited 4.5 hours earlier. Nothing newer, nothing owed.
+
+**Cross-pollination brief — fetched fresh and read in full this time.** This morning's START-fire
+entry (and every Calliope fire before it this week) carried the belief that the brief's live
+source sits outside this session's permitted working directories. Iris's own 19:3x STOP-fire
+entry, read before attempting anything, names the actual route: the in-repo pointer file's claimed
+path doesn't exist; the real one is `mediajunkie`'s own
+`docs/briefs/cross-pollination/2026-11-17.md`. Tried it directly rather than citing her finding
+secondhand: `git -C /Users/xian/Development/mediajunkie show
+origin/main:docs/briefs/cross-pollination/2026-11-17.md` — reads cleanly from this worktree. The
+standing "out of reach" belief this seat has repeated for days was simply wrong about the path, not
+about a real sandbox limit; corrected, not just inherited from her memo. Content: two insights,
+neither product/UX-lane. One is about this project directly — Daedalus drafted a sweep verdict
+into two separate slots while the sweep was still running, caught only by checking the output
+file's byte count rather than by the stated discipline holding on its own — already known to this
+seat from the memory store, now confirmed at the primary source rather than recalled. The other
+(Globe: a single-shot health probe treating a transient 503 as a real failure, fixed with a retry
+loop and a third `UNMEASURABLE` outcome) is new and not actionable here.
+
+**The mandatory `log.html` entry, written this fire.** `docs/operations/duty-cycle/calliope-
+tasks.md`'s recurring-items row read `next_due 2026-11-17`, due today. Rather than delegate the
+day's factual digest to a fork (one was dispatched in parallel as a hedge but finished after this
+seat's own direct read, and re-reading its output now would cost more than it would add — left
+unread), read all eleven of today's mail memos directly plus the full day's commit log
+(`git log --since="2026-11-17 00:00" --format='%h %an %ad %s' --reverse`) to get the real
+chronological order. Wrote the day's narrative from that read: the write-path/mapper census (every
+database writer returning a hand-typed literal instead of reading back its own write, cured across
+ten writers, surfacing four real divergences by two distinct mechanisms, plus a self-found blind
+equality test); the convergent brace-slicer discovery (two engineers each independently re-wrote
+the identical brittle shortcut they'd already been burned by and fixed once before, closed by a
+shared helper that itself surfaced a fourth brace-counting mechanism, a filesystem-vs-git-index
+miscount, and a false alarm against the detector's own first run); the shared-reader follow-up
+census (two confirmed, not a corpus rate); the published-figure audit (a 25-of-41 self-caught
+over-count from conflating "imports" with "reads," and one specific older figure hand-checked and
+confirmed not wrong); and this evening's own SWEEP-fire regression plus its cure and the night's
+closing widened-detector thread, including the finding that its own original question was
+unanswerable by construction on a currently-passing tree. `grep -c "log-entry" log.html` → **90**
+(up from 89), inserted directly above the 2026-11-16 entry — newest-first order confirmed before
+writing. Recurring-items row advanced: `next_due 2026-11-18`, `last_completed 2026-11-17`.
+
+**Question-box check: nothing filed.** Re-read all eleven of today's memos plus both fires' own
+findings for a curiosity-shaped question distinct from task work — none. All of today's exchanges
+were task-unblocking (censuses, cures, routed items), not a question for xian.
+
+**`docs/STATE.md` not touched.** Nothing today is a product-state change — the one line it tracks
+(ground-rules) was already corrected this morning's START fire, and the mandatory pairing note
+only applies when a real state change exists.
+
+**Gate, re-verified fresh, not trusted from any commit message:** `npx tsx scripts/gate.mts` —
+census OK, typecheck clean ×4 workspaces + scripts; server **146/2287 (1 skipped)**; client
+**29/42 files, 354/367 (13 skipped)** — byte-identical to the SWEEP-fire figures. Full driving
+sweep re-run fresh (backgrounded past the 120s foreground timeout, scratch file, no pipe, removed
+after reading) to confirm Daedalus's claimed 45/45 restoration directly: **SWEEP PASSED — 45 of 45
+swept probes green, 0 red, 0 blocked, 0 census problem(s), 110 deferred** — the cure holds.
+
+**Drain:** 15 new commits read and author-checked, none mine; two mail threads verified and closed
+to `read/`, one correctly left open; four cross-repo mailboxes re-fetched, nothing owed; the
+cross-pollination brief fetched fresh via the corrected route and read in full, a standing belief
+of this seat's own corrected in the process; the mandatory logbook entry written and the
+recurring-items row advanced; question-box check run, nothing to file; gate and full sweep both
+re-driven fresh and matched Daedalus's claim exactly. Two consecutive checks found nothing further
+unblocked. Fire closed bounded.
