@@ -1,0 +1,105 @@
+
+== unit-474sweptmagnitude arm A ==
+ROOT /Users/xian/Development/klatch-worktrees/theseus
+subject probe-round322-the-deferred-magnitude-audit-is-clean-and-eight-censused-probes-freeze-the-one-figure-they-cannot-report.mts
+  [A1] PASS  CAPTURE: SPEC_FROZEN, the line filter and the comparison regex all sliced out of round322 source rather than typed (R4)
+        SPEC_FROZEN 19 member(s) [0 1 2 3 200 201 204 301 302 400 401 403 404 409 413 422 500 3001 5173] · line filter /(?:\.length|\.size|\bcount\b)/ · comparison /(?:===|!==|==|!=|>=|<=)\s*(\d+)\b/
+  [A0] MEAS  SWEPT 45 · DEFERRED 110 · arm-G backlog 15 (= 6 SWEPT + 3 DEFERRED)
+  [A2] PASS  AGREEMENT: the sliced detector reproduces round322 A1's live result over backlogDeferred
+        3 DEFERRED backlog member(s) scanned -> 0 hit(s)
+  [A3] PASS  KP1: driven over the PRE-CURE blob of probe-round303, the detector reports the 48-day-live `=== 37` magnitude pin
+        rev a2ee646e^ · 6 hit(s) total, 2 naming 37 -> === 37 on: mjsFlat.length === 37 &&
+  [A4] FAIL  KP2: a second real historical pin (`pins.length === 8`, the Round-314 repair round322 cites) is found by the same sliced detector, in a different file
+        no rev introduced or removed `pins.length === 8`
+  [A7] PASS  NEGATIVE CONTROL: an exit-code comparison and an emptiness claim produce no hit (SPEC_FROZEN and the zero-pin shape both still exclude)
+        0 hit(s)
+  [A5] MEAS  backlogSwept = [probe-round298-a-stale-pin-and-a-genuine-break-used-to-read-identically.mts, probe-round299-admission-is-per-file-and-the-repair-that-missed-its-own-motivating-case.mts, probe-round300-the-screen-has-a-third-state-and-the-site-my-own-arm-named-is-in-it.mts, probe-round301-the-limbs-partition-by-construction-and-the-price-landed-in-the-instrument-that-priced-it.mts, probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts, probe-round304-the-deferral-was-repaired-with-a-declaration-and-both-repair-shapes-redden-the-arm-that-pinned-it.mts] -> 6 pin(s) in 3 file(s)
+  [A6] MEAS  FULL SWEPT SET: 45 file(s) scanned -> 55 pin(s) in 14 file(s) — the population A1 does not drive
+
+── the hit set, for classification (A8, by hand, in RESULTS) ──
+
+  probe-round311-the-nearer-of-argus-two-candidates-is-the-one-that-drops-a-failure-and-a-kind-field-is-what-breaks-it.mts  (11)
+      === 5 on: return ['arm', 'check', 'pass', 'detail', 'kind'].every((x) => f.includes(x)) && f.length 
+      === 6 on: inNeither.length === 6 &&
+      === 8 on: `the count, and the pre-314   === 8   form is why acting on this very arm turned it red`);
+      === 18 on: v.members.length === 18 &&
+      === 5 on: v.pushesPass.length === 5 && v.bareCounter.length === 10 && v.neither.length === 3 &&
+      === 10 on: v.pushesPass.length === 5 && v.bareCounter.length === 10 && v.neither.length === 3 &&
+      === 8 on: v.inSwept.length === 8 && v.inDeferred.length === 4 && v.inNeither.length === 6 &&
+      === 4 on: v.inSwept.length === 8 && v.inDeferred.length === 4 && v.inNeither.length === 6 &&
+      === 6 on: v.inSwept.length === 8 && v.inDeferred.length === 4 && v.inNeither.length === 6 &&
+      === 8 on: v.pins.length === 8 && pinSurvivorsIn(v).length === 8;
+      === 8 on: v.pins.length === 8 && pinSurvivorsIn(v).length === 8;
+
+  probe-round262-the-population-is-a-tree-not-a-filename-convention.mts  (8)
+      === 137 on: onlyWalked.length === 0 && onlyDerived.length === 0 && walked.length === 137,
+      === 13 on: pinned.cmp.length === 13 && pinned.asserted.length === 10,
+      === 10 on: pinned.cmp.length === 13 && pinned.asserted.length === 10,
+      !== 13 on: unmasked.cmp.length !== 13 || unmasked.asserted.length !== 10,
+      !== 10 on: unmasked.cmp.length !== 13 || unmasked.asserted.length !== 10,
+      === 14 on: withSelf.cmp.length === 14 && withSelf.asserted.length === 11,
+      === 11 on: withSelf.cmp.length === 14 && withSelf.asserted.length === 11,
+      <= 256 on: `Over today's ${liveFiles.length} modules the   roundOf(r) <= 256   test admits ` +
+
+  probe-round328-the-distinct-target-line-figure-is-keyed-on-the-pin-text-so-one-line-pinned-in-two-spellings-reads-as-two.mts  (8)
+      === 324 on: const posEdge = edges.find((e) => e.pinner === 324 && e.hits.length > 1);
+      === 148 on: posEdge !== undefined && posEdge.hits.length === 2 && posEdge.hits[0] === 148 && posEdge.h
+      === 351 on: posEdge !== undefined && posEdge.hits.length === 2 && posEdge.hits[0] === 148 && posEdge.h
+      === 322 on: const uniqueOn322 = edges.find((e) => e.target === 322 && e.hits.length === 1);
+      === 322 on: const subject = edges.find((e) => e.target === 322 && hitsOfBody(bare(e.re)).length > 1);
+      === 148 on: anchoredHits.length === 1 && anchoredHits[0] === 148,
+      === 148 on: return { c4: h.length === 1 && h[0] === 148, c5: no === false && wm === true };
+      === 328 on: `edges contributed by this file: ${edges.filter((e) => e.pinner === 328).length}; pinning 
+
+  probe-round224-a-skip-must-not-summarise-as-a-pass.mts  (5)
+      >= 4 on: }).length >= 4,
+      >= 5 on: migrated.length >= 5, `${migrated.length} scripts import the shared reader: ${migrated.joi
+      >= 6 on: outcomes.size >= 6, `${outcomes.size} distinct code+headline pairs across ${Object.keys(LI
+      >= 20 on: shorthandSeen >= 20, `${shorthandSeen} shorthand site(s) of ${census.sites.length}`);
+      === 4 on: const r8 = tableRows.length === 4 && hardRow !== undefined
+
+  probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts  (4)
+      >= 100 on: MTS_ON_DISK.length >= 100 &&
+      === 10 on: fixtureFails.length === 0 && PARAM_FIXTURES.length === 10,
+      >= 14 on: nameProblems.length === 0 && namesChecked >= 14,
+      >= 14 on: arityProblems.length === 0 && signaturesChecked >= 14,
+
+  probe-round309-the-drop-one-reach-census-over-reported-three-where-the-population-is-one-because-a-predicate-does-not-carry-its-corpus.mts  (4)
+      === 18 on: `${PAYDOWNS.length} paydowns · KNOWN NEGATIVE: the pre-315   === 18   form fails under ` +
+      !== 21 on: scriptNames.length !== 21 && (dropSkip?.reach ?? -1) !== 21 && (dropSkip?.reach ?? -1) + 1
+      !== 21 on: scriptNames.length !== 21 && (dropSkip?.reach ?? -1) !== 21 && (dropSkip?.reach ?? -1) + 1
+      !== 21 on: scriptNames.length !== 21 && (dropSkip?.reach ?? -1) !== 21 && (dropSkip?.reach ?? -1) + 1
+
+  probe-round258-three-readers-are-two-questions-and-the-shared-one-is-already-in-lib.mts  (3)
+      <= 12 on: (stringDiffFiles.length <= 12 ? `          ${stringDiffFiles.join('          ')}` :
+      === 13 on: r256cmp.length === 13 && r256asserted.length === 10,
+      === 10 on: r256cmp.length === 13 && r256asserted.length === 10,
+
+  probe-round260-a-census-pin-has-two-axes-and-the-round-number-in-a-filename-is-not-one-of-them.mts  (3)
+      <= 256 on: `${unparsed.length} of ${allFiles.length} files under scripts/ score roundOf = 0, and 0 <=
+      === 13 on: bothPinned.cmp.length === 13 && bothPinned.asserted.length === 10,
+      === 10 on: bothPinned.cmp.length === 13 && bothPinned.asserted.length === 10,
+
+  probe-round307-the-return-half-is-gradeable-the-parameter-half-is-any-and-the-arity-check-covers-fourteen-of-eighteen.mts  (3)
+      >= 20 on: PAIRS.length >= 3 && ALL_VALUES.length >= 20 && ALL_CONST.length + ALL_FUNCTION.length >= 
+      >= 15 on: PAIRS.length >= 3 && ALL_VALUES.length >= 20 && ALL_CONST.length + ALL_FUNCTION.length >= 
+      === 4 on: mineReach(WIDENED).length === 4,
+
+  probe-round322-the-deferred-magnitude-audit-is-clean-and-eight-censused-probes-freeze-the-one-figure-they-cannot-report.mts  (2)
+      === 8 on: 'check(  E1  ,   one pin per SWEPT member  , pins.length === 8, `${pins.length}`);',
+      === 8 on: check('A2', 'KNOWN POSITIVE/NEGATIVE: the magnitude-pin detector flags a real `pins.length
+
+  probe-round300-the-screen-has-a-third-state-and-the-site-my-own-arm-named-is-in-it.mts  (1)
+      === 5 on: opq225.length === 3 && spawnScan(read(R225), R225, ALL).unresolved === 5,
+
+  probe-round304-the-deferral-was-repaired-with-a-declaration-and-both-repair-shapes-redden-the-arm-that-pinned-it.mts  (1)
+      >= 100 on: MTS_ON_DISK.length >= 100 &&
+
+  probe-round308-the-general-arm-pointer-detector-reports-thirteen-findings-all-thirteen-false-and-the-narrow-one-is-green-on-package-json.mts  (1)
+      === 13 on: `in the filename and docblock. Live total ${V1.length + V2.length === 13 ? 'matches' : 'DI
+
+  probe-round327-the-pin-purpose-label-is-a-property-of-the-edge-and-retirability-is-a-property-of-the-target-line.mts  (1)
+      === 327 on: `edges contributed by this file: ${resolvedEdges.filter((e) => e.pinner === 327).length}; 
+  [A6b] MEAS  P5 subject — probe-round303 at HEAD: 4 pin(s), 2-naming: 0
+
+RED legs=[A4]
