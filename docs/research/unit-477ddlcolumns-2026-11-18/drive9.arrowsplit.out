@@ -1,0 +1,55 @@
+unit-477 arm B — the arrow class's concise/block split (P7) and the cure's non-additivity (P8)
+pre-cure reader: 7e8b4ab1^:scripts/lib/decl-body.mjs → /Users/xian/Development/klatch-worktrees/daedalus/docs/research/unit-477ddlcolumns-2026-11-18/.tmp-precure-decl-body.mjs (untracked)
+  green  the rewrite touched exactly one line and the blob is otherwise the git blob — 14039 B → 14234 B
+  green  the two readers are genuinely different modules — if these were identical every cell below would be a diagonal and the arm would say "no effect"
+
+A1 — population: 984 tracked files, 7380 declaration heads (cured head reader, both sides)
+
+A2 — CROSS-TAB of kind_before → kind_after
+   4033  block→block
+   1835  concise→concise
+    972  refused→refused
+    288  refused→concise
+    252  refused→block
+
+A3 — refused-before rows, by reason, with where they landed
+    969  no-body-brace-after-the-parameter-list  →  refused=969
+    535  return-type-annotation-on-an-arrow-declaration  →  concise=288 · block=247
+      5  no-body-brace-after-the-return-type  →  block=5
+      2  unbalanced-body-brace  →  refused=2
+      1  unbalanced-parameter-list  →  refused=1
+
+A4 — P7: the 534 class's split under the cured reader
+  class size: 535
+  concise:    288  (53.8%)
+  block:      247  (46.2%)
+  refused:    0
+  RED    P7: the class reproduces at 534 — measured 535
+  green  P7: block-bodied members are 249 ± 5, i.e. the class is NOT all concise-bodied — measured 247
+  green  P7: and it IS still majority concise, so the sentence was half right — concise 288 vs block 247
+  first 12 block-bodied members (the class my §1 sentence said did not exist):
+    docs/research/round368-instruments/verdict-line-kind-grade.mts :: row
+    docs/research/unit-307c4-rekey-2026-10-28/fp-commit-moves.mts :: check
+    docs/research/unit-465bareline-2026-11-12/arm-bareline.mts :: blob
+    docs/research/unit-465declpop-2026-11-07/drive-five.mts :: failingLines
+    docs/research/unit-465declpop-2026-11-07/drive-five.mts :: summaryLine
+    docs/research/unit-465guard-2026-11-08/drive-guard.mts :: drive
+    docs/research/unit-467importprice-2026-11-16/arm-importprice-a.mts :: bodyFrom
+    docs/research/unit-467importprice-2026-11-16/arm-importprice-a.mts :: fnsOf
+    docs/research/unit-467importprice-2026-11-16/arm-importprice-a.mts :: buildKey
+    docs/research/unit-467importprice-2026-11-16/arm-importprice-a.mts :: walk
+    docs/research/unit-467importprice-2026-11-16/arm-importprice-a.mts :: scan
+    docs/research/unit-467importprice-2026-11-16/arm-importprice-b.mts :: walk
+
+A5 — P8: was the cure purely additive?
+  declarations refused before and resolved after: 540
+  declarations NOT refused before that changed kind: 0
+  RED    P8: at least one already-resolving declaration changed kind (predicted 4) — measured 0; if 0, one of my three published figures is wrong instead
+
+A6 — my own published figures, re-derived from this cross-tab
+  refused  published 1510 → 971 · re-measured 1512 → 972 · delta-of-deltas -1
+  block    published 4013 → 4267 · re-measured 4033 → 4285 · delta-of-deltas -2
+  concise  published 1828 → 2117 · re-measured 1835 → 2123 · delta-of-deltas -1
+  published movement sums to 543 against a refusal drop of 539 — an excess of 4, which is P8's subject.
+
+ARM B — 2 RED leg(s)
