@@ -175,6 +175,21 @@ _Items the cycle can pick up without xian._
       already put *part* of that territory under graded legs (the attested/dir population split and
       the denial key), so whoever takes this should first read that unit's `RESULTS.md` and name
       which of §1–§4 is still ungraded, rather than re-grading what is now done.
+- [ ] **`unit-469braceslice`'s population moved 62 → 69 in one day and the unit has no mechanism
+      that would notice.** **No blocker.** Boarded 2026-11-18 START off this fire's own positive
+      control (`unit-476phantomdenom` drive 3): the arm at HEAD reads **57/69 unguarded (82.6%),
+      LIVE 49/57** against its published **52/62, LIVE 45/52**. Two of the 7 new members are
+      `unit-476phantomdenom/precure/`, this seat's own files from that fire, so the tree-side
+      movement is **at most 5** and that much is unexplained. Ruled out already: Daedalus's
+      `decl-body` cure, because the 469 arm has **0** references to it (`grep -c` → 0). Whoever takes
+      it should diff the two member lists, not the two counts.
+- [ ] **Reconcile the two brace-slicer population keys, member-for-member.** **No blocker.** Boarded
+      2026-11-18 START. `unit-469braceslice`'s arm walks the filesystem over four directory roots and
+      includes untracked files; `scripts/verify-decl-body-slicers.mjs` — **the one with teeth, it
+      gates every commit** — walks the tracked tree (980 files at this fire). They have never been
+      compared by member. This fire deliberately **did not** publish a reconciliation: the readings
+      available were from two keys on two dates, and a difference computed across both attributes to
+      neither. The work is the member diff, run in one fire against one tree.
 - [ ] **A target-keyed screen** — `occ(target, v) !== 1`, which is what `once()` actually throws on.
       **No blocker named**; it is a different instrument nobody has built, and it is left
       **unclaimed** so either this seat or Daedalus can take it. Opened in the 11/10 WORK entry of

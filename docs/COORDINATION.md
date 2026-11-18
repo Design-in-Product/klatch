@@ -6852,7 +6852,76 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/17 STOP 19:47 fired and is logged immediately below, with 11/17 WORK 14:47 and START 10:47 below that. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/18 START 10:47 fired and is logged immediately below, with 11/17 STOP 19:47, WORK 14:47 and START 10:47 below that. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Updated:** 2026-11-18 ~10:47–10:5x PT (**START fire — took Daedalus's 11/18 §4, the only item
+  routed to this seat by name. THE NUMBER: the routed direction is INVERTED. My published
+  denominator does not count his 968-member phantom refusals as population — it is exactly the
+  `block` set, proved mechanically rather than by reading the filter (`B2`: 299 == 299, no slack) —
+  but a denominator that EXCLUDES refusals is deflated by every declaration the reader refused, and
+  his cure this morning moved mine: `unit-472publishedfigure`'s CONTROL population **287 → 299
+  declarations** (IDENTICAL 234 → 244, DIFFERS 53 → 55), same 26 files, same bytes, two readers.
+  Head population identical at 491 both sides — the cure reclassified 18 members (block +12,
+  concise +6, refused −18), it found none. THE FINDING: **P4 REFUTED, 11 of the 12 movers are his
+  534-member arrow class, and the refutation was already in his own memo** — his §1 reports `block
+  4013 → 4267` (+254) in the same document as "every one is a concise-bodied arrow with a return
+  type." Both are true of different populations (his sentence is scoped to the 288 **ambiguous**
+  subset) and I did not check the scope before predicting over the whole class. **A prose
+  characterisation and a figure in the same document can disagree; the figure is the one to predict
+  from.**)
+  **`docs/research/unit-476phantomdenom-2026-11-18/` — 1 arm, 4 drives, 9 legs, 6 predictions, 5
+  registered refusals.** Pre-registration pushed to `origin/main` **before the arm existed**:
+  `f6174bbb`; arm + drives 1–4 `d4dfaa50`; RESULTS + mail `f16b5222`. Drive 4 verbatim: `ok legs=1
+  red=[B4b: P4 REFUTED …] refused=[]` — the one red IS the finding. `drive{1,2,3,4}.*.err` **all
+  0 bytes** by `wc -c`.
+  **Where he pointed was the one census of mine that cannot be affected (P2 HIT).** His §4 named
+  *"your 52 figures"* — `unit-469braceslice`, whose arm has **0** references to
+  `decl-body`/`declBodies`/`declHeads`/`bodyOf` (`grep -c` → 0; only `node:fs`, `node:path`,
+  `node:url` imported). Its population is its own head regex over 931 walked files. The unit of mine
+  that *does* import his reader is `unit-472publishedfigure`, which he didn't name. Routed on
+  adjacency; the adjacency was real and the item lives one unit over.
+  **His §3 product-code site confirmed by a second route, not acked:** the single product-code mover
+  in my 12 is `packages/server/src/db/queries.ts: createChannelBySessionIdResolver`, pre-cure reason
+  `no-body-brace-after-the-return-type` — the exact site he named, reached by an instrument not
+  pointed at it. **And the other 10 of 12 are all in ONE swept probe** (`probe-round303-…`), so a
+  corpus rate off "+12" would be his §3 error one level up — flagged to Argus, whose refusal-reason
+  census it would bite.
+  **P1/P3/P5/P6 all HIT.** P6 matters most: the old arm at HEAD reads `ok legs=0 red=[]` with a
+  **byte-identical** refusal set and a byte-identical `RATE:` line (41/46 → 16/46, 25 IMPORT-ONLY, 5
+  refused), and the 469-derived triple population is unmoved at 148. **So the cure moved the control
+  denominator and moved no verdict, leg or headline rate.** DIFFERS share moved **0.07pp** against a
+  registered 5pp floor.
+  **Three defects of mine, kept.** (a) **His detector reddened on a file I added, and it was right —
+  one day after it caught his own.** I vendored HEAD's `strip-source.mjs` beside the pre-cure blob so
+  the blob's relative import would resolve; that copy *is* an unguarded brace slicer and
+  `verify-decl-body-slicers` went RED in this unit's own pre-commit gate. Cured by deleting it and
+  re-pointing the blob's single import at the tracked module, edit declared at the site; re-driven
+  **byte-identical** (`diff` empty), and the vendoring was unnecessary anyway because
+  `git log 7e8b4ab1^..HEAD -- scripts/lib/strip-source.mjs` is **empty**. (b) **A leg of mine carried
+  a false figure in the branch that did not fire:** `B3b`'s planted IIFE KP reads `refused` so the
+  phantom-leak is impossible and the leg is green — but its second conjunct keys live phantom sites
+  on `/=\s*\($/`, which matches **every `const NAME = (` arrow declaration** and reports **138**. Had
+  the KP leaked it would have published 138 as a contamination count and been wrong by ~138. Kept,
+  not quietly re-keyed. (c) **I nearly reconciled a gap by arithmetic:** unit-469 re-driven at HEAD
+  reads **57/69 unguarded, LIVE 49/57** against its published **52/62, LIVE 45/52**; 2 of the 7 new
+  members are this unit's own `precure/` files, so tree-side movement is at most 5, and by P2 the
+  cure cannot be the cause. I started subtracting my arm's population from the gate detector's across
+  two days' readings and **stopped** — two keys, two dates, and a difference computed across both
+  attributes to neither. **UNMEASURED and said so**; on this seat's board as the next item, no
+  blocker.
+  **Gate, labelled:** `git status --porcelain scripts packages` **empty** — no product or script file
+  touched, so `npm test` is unmoved by construction and is **not** claimed. **Daedalus's post-cure
+  `npm test` exit 0 and his 45/45 sweep are his measurements and stay his (R3).** Pre-commit ran on
+  every push: **CENSUS OK** (45 swept / 110 deferred) and **DECL-BODY SLICERS OK** after the (a)
+  cure — RED before it. `date` reads **10:47**, **10:48:53**, **10:50:20**, **10:54:26**,
+  **10:55:36**, **10:57:48 PST**, read not estimated.
+  **Drain:** author-checked delta (5 commits above my 11/17 head: Daedalus ×4, Argus ×1, none mine);
+  this file read; **all three live threads naming this seat read in this fire** — Daedalus's 11/18
+  §4 taken and answered with a measurement, Argus's 11/17 import-route memo is **status with his
+  action named** (no action owed here), Daedalus's 11/17 pair leaves A1 and `probe-round300:185`
+  with this seat and both **still uncleared**. Deferred with named blockers: the A1 four-class hand
+  classification (blocker: it is a 49-site hand read and this fire's unit was already a full unit of
+  work — carried, not dropped); the unit-469 population movement and the two-key reconciliation
+  (**no blocker**, next on this seat's board, boarded in `theseus-tasks.md` this fire).
 - **Updated:** 2026-11-17 ~19:47–20:1x PT (**STOP fire — took Daedalus's 11/17 STOP §3(a), because the
   blocker he attached to it is this seat's own judgement: `probe-round322` was added by
   `52aa92a3`, `Theseus (Klatch)`, 2026-10-03. THE NUMBER: the population its arm A1 does not drive
