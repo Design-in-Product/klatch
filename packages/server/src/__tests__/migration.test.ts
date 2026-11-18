@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import Database from 'better-sqlite3';
 import { MODEL_ALIASES, AVAILABLE_MODELS, DEFAULT_MODEL, DEFAULT_ENTITY_ID, ENTITY_COLORS, DEFAULT_INTERACTION_MODE } from '@klatch/shared';
+import { applySchema } from '../db/index.js';
 
 describe('Model configuration', () => {
   it('MODEL_ALIASES maps old IDs to current AVAILABLE_MODELS keys', () => {
@@ -60,9 +61,13 @@ describe('Model migration behavior', () => {
 
 // ── Step 8: Import schema additions ─────────────────────────────
 // These tests verify that the Step 8 migration adds the columns and tables
-// needed for Claude Code session import. The migration runs in db/index.ts
-// runMigrations(). We create a fresh DB with the base schema, run the
-// migration function, and verify the new columns/tables exist.
+// needed for Claude Code session import. Each starts from the oldest column
+// set `initSchema` has ever shipped, missing only the column(s) under test,
+// then calls the REAL `applySchema` (initSchema + runMigrations) — not a
+// hand-typed simulation of it. (unit-478migrationarm, 2026-11-18: the prior
+// hand-typed `ALTER TABLE channels ADD COLUMN source TEXT`, with no default,
+// made the third test below pass; the real migration carries `DEFAULT
+// 'native'` and backfills existing rows with that, not NULL.)
 
 describe('Step 8 import schema — channels', () => {
   function createBaseDb(): Database.Database {
@@ -83,8 +88,7 @@ describe('Step 8 import schema — channels', () => {
 
   it('adds source column to channels table', () => {
     const db = createBaseDb();
-    // Simulate migration: add source column
-    db.exec("ALTER TABLE channels ADD COLUMN source TEXT");
+    applySchema(db);
     const cols = db.prepare("PRAGMA table_info(channels)").all() as { name: string }[];
     expect(cols.some((c) => c.name === 'source')).toBe(true);
     db.close();
@@ -92,18 +96,18 @@ describe('Step 8 import schema — channels', () => {
 
   it('adds source_metadata column to channels table', () => {
     const db = createBaseDb();
-    db.exec("ALTER TABLE channels ADD COLUMN source_metadata TEXT");
+    applySchema(db);
     const cols = db.prepare("PRAGMA table_info(channels)").all() as { name: string }[];
     expect(cols.some((c) => c.name === 'source_metadata')).toBe(true);
     db.close();
   });
 
-  it('source column defaults to NULL for existing channels', () => {
+  it('source column backfills existing channels with the native default', () => {
     const db = createBaseDb();
     db.exec("INSERT INTO channels (id, name) VALUES ('test-ch', 'test')");
-    db.exec("ALTER TABLE channels ADD COLUMN source TEXT");
+    applySchema(db);
     const row = db.prepare("SELECT source FROM channels WHERE id = 'test-ch'").get() as { source: string | null };
-    expect(row.source).toBeNull();
+    expect(row.source).toBe('native');
     db.close();
   });
 });
@@ -136,7 +140,7 @@ describe('Step 8 import schema — messages', () => {
 
   it('adds original_timestamp column to messages table', () => {
     const db = createBaseDb();
-    db.exec("ALTER TABLE messages ADD COLUMN original_timestamp TEXT");
+    applySchema(db);
     const cols = db.prepare("PRAGMA table_info(messages)").all() as { name: string }[];
     expect(cols.some((c) => c.name === 'original_timestamp')).toBe(true);
     db.close();
@@ -144,7 +148,7 @@ describe('Step 8 import schema — messages', () => {
 
   it('adds original_id column to messages table', () => {
     const db = createBaseDb();
-    db.exec("ALTER TABLE messages ADD COLUMN original_id TEXT");
+    applySchema(db);
     const cols = db.prepare("PRAGMA table_info(messages)").all() as { name: string }[];
     expect(cols.some((c) => c.name === 'original_id')).toBe(true);
     db.close();
@@ -152,8 +156,7 @@ describe('Step 8 import schema — messages', () => {
 
   it('original_timestamp preserves imported event time', () => {
     const db = createBaseDb();
-    db.exec("ALTER TABLE messages ADD COLUMN original_timestamp TEXT");
-    db.exec("ALTER TABLE messages ADD COLUMN original_id TEXT");
+    applySchema(db);
     const originalTs = '2026-01-15T10:00:00.000Z';
     db.prepare(
       "INSERT INTO messages (id, channel_id, role, content, original_timestamp, original_id) VALUES (?, ?, ?, ?, ?, ?)"
@@ -169,6 +172,11 @@ describe('Step 8 import schema — messages', () => {
 });
 
 describe('Step 8 import schema — message_artifacts', () => {
+  // system_prompt included even though no assertion below reads it: it is
+  // part of the oldest column set `initSchema` has ever shipped, and its
+  // absence here made the real `applySchema` throw ("no such column:
+  // system_prompt") from the `INSERT OR IGNORE INTO channels (id, name,
+  // system_prompt)` seed it runs unconditionally (unit-478migrationarm, P2).
   function createBaseDb(): Database.Database {
     const db = new Database(':memory:');
     db.pragma('foreign_keys = ON');
@@ -176,6 +184,7 @@ describe('Step 8 import schema — message_artifacts', () => {
       CREATE TABLE channels (
         id TEXT PRIMARY KEY,
         name TEXT NOT NULL,
+        system_prompt TEXT NOT NULL DEFAULT '',
         created_at TEXT NOT NULL DEFAULT (datetime('now'))
       );
       CREATE TABLE messages (
@@ -193,17 +202,7 @@ describe('Step 8 import schema — message_artifacts', () => {
 
   it('creates message_artifacts table', () => {
     const db = createBaseDb();
-    db.exec(`
-      CREATE TABLE message_artifacts (
-        id TEXT PRIMARY KEY,
-        message_id TEXT NOT NULL REFERENCES messages(id) ON DELETE CASCADE,
-        type TEXT NOT NULL,
-        tool_name TEXT,
-        input_summary TEXT,
-        content TEXT,
-        created_at TEXT NOT NULL DEFAULT (datetime('now'))
-      );
-    `);
+    applySchema(db);
     const tables = db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='message_artifacts'").all();
     expect(tables.length).toBe(1);
     db.close();
@@ -211,17 +210,7 @@ describe('Step 8 import schema — message_artifacts', () => {
 
   it('message_artifacts has correct columns', () => {
     const db = createBaseDb();
-    db.exec(`
-      CREATE TABLE message_artifacts (
-        id TEXT PRIMARY KEY,
-        message_id TEXT NOT NULL REFERENCES messages(id) ON DELETE CASCADE,
-        type TEXT NOT NULL,
-        tool_name TEXT,
-        input_summary TEXT,
-        content TEXT,
-        created_at TEXT NOT NULL DEFAULT (datetime('now'))
-      );
-    `);
+    applySchema(db);
     const cols = db.prepare("PRAGMA table_info(message_artifacts)").all() as { name: string }[];
     const colNames = cols.map((c) => c.name);
     expect(colNames).toContain('id');
@@ -235,17 +224,7 @@ describe('Step 8 import schema — message_artifacts', () => {
 
   it('CASCADE deletes artifacts when message is deleted', () => {
     const db = createBaseDb();
-    db.exec(`
-      CREATE TABLE message_artifacts (
-        id TEXT PRIMARY KEY,
-        message_id TEXT NOT NULL REFERENCES messages(id) ON DELETE CASCADE,
-        type TEXT NOT NULL,
-        tool_name TEXT,
-        input_summary TEXT,
-        content TEXT,
-        created_at TEXT NOT NULL DEFAULT (datetime('now'))
-      );
-    `);
+    applySchema(db);
     // Insert a message and artifact
     db.prepare("INSERT INTO messages (id, channel_id, role, content) VALUES (?, ?, ?, ?)").run(
       'msg-1', 'ch-1', 'assistant', 'hello'
@@ -268,15 +247,16 @@ describe('Step 8 import schema — message_artifacts', () => {
 describe('Phase 2: Compaction state column', () => {
   it('channels table supports compaction_state column', () => {
     const db = new Database(':memory:');
+    db.pragma('foreign_keys = ON');
     db.exec(`
       CREATE TABLE channels (
         id TEXT PRIMARY KEY,
         name TEXT NOT NULL,
         system_prompt TEXT NOT NULL DEFAULT '',
-        compaction_state TEXT,
         created_at TEXT NOT NULL DEFAULT (datetime('now'))
       )
     `);
+    applySchema(db);
     db.prepare("INSERT INTO channels (id, name) VALUES ('ch-1', 'test')").run();
 
     // Initially null
