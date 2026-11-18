@@ -112,3 +112,60 @@ re-driven — `git diff --stat -- packages/ scripts/` confirmed empty for this s
 fresh), nothing further found either pass beyond the one correction made. Nothing deferred; no
 named blocker outstanding. Two consecutive checks found nothing further unblocked. Fire closed
 bounded.
+
+---
+
+## 17:0x — Session resumed (SWEEP fire)
+
+Pulled clean (already up to date on `main`). Checkpoint is this seat's own MID-fire commit
+`61c96d10`. `git log 61c96d10..HEAD --format='%h %an %s'` showed 16 new commits, none mine:
+Daedalus's `unit-470bodyslice` chain (10 commits — a shared body-slicer helper, a detector wired
+into pre-commit, a landed fix, an addendum) and Theseus's `unit-472publishedfigure` chain (5
+commits, plus a WORK-fire drain coord entry). `git diff --stat 61c96d10..HEAD -- packages/
+scripts/` **not empty**: five new `scripts/` files (`lib/decl-body.{mjs,d.mts}`,
+`verify-decl-body-slicers.mjs`, `decl-body-slicers.baseline`, `hooks/pre-commit`) — no `packages/`
+touch.
+
+**Mail:** `grep -liE "^to:.*calliope"` — same standing set (Daedalus's phase-1 §4, already closed
+on this seat's side; four Pard ma-smoke memos, still correctly boarded). The four new mail files
+since checkpoint are all cc-only to this seat (Argus↔Daedalus/Theseus, Theseus↔Daedalus/Argus),
+read in full, no ask of Calliope.
+
+**The substantive finding, from this fire's own re-verification, not from any memo:** ran the full
+driving sweep fresh (backgrounded past the 120s foreground timeout, output to a gitignored scratch
+file, no pipe, removed after reading) — **SWEEP FAILED — 44 of 45 swept probes green, 1 red**,
+where every prior fire this week cited 45/45. Re-ran the one red probe
+(`probe-round303-...typecheck-grades-the-declaration...mts`) isolated to confirm it wasn't a
+flake — deterministic. Its **B7** arm pins `mjsFlat.length === 37` (the flat-`.mjs`-file count
+`tsconfig.json`'s own comment claims); counted fresh, `ls scripts/*.mjs | wc -l` → **38** today.
+Traced to `6b98355b` (Daedalus, 13:37 PT this afternoon) — `scripts/verify-decl-body-slicers.mjs`
+landed flat, not under `scripts/lib/`, pushing the count from 37 to 38. Round303's own B7 arm was
+written by Daedalus himself (`28833525`, 10-25) to catch exactly this drift, and did — nobody had
+re-run the full sweep since his last commit (`7ece4421`'s wrap verification checked typecheck,
+server/client tests, census, and the new detector, not the full probe drive; Argus's own fresh
+45/45 this afternoon, `3d23b6de`, predates `6b98355b` by several commits). **Not fixed by this
+seat** — scripts/ instrumentation is Daedalus's/Argus's lane; mailed Daedalus (cc Argus, Theseus,
+xian, Janus, Iris) with the full trace and two unforced options (re-pin B7 to 38, or fix
+`tsconfig.json`'s "37" comment at the same time, since B7's own commentary already calls that
+sentence a mislabel on a different axis). Not boarded on the rollup — an internal gate question,
+not a product decision for xian.
+
+Gate otherwise unaffected: typecheck clean ×4 workspaces + scripts; server 146/146 files,
+2287/2287 (1 skipped); client 29/42 files, 354/367 (13 skipped); census OK, 155 files, 45
+swept/110 deferred — all byte-identical to standing. No `smoke`/`ma-smoke`/`managed` branch,
+unchanged. Rollup re-checked directly: still v185, needs-you 8, unchanged — nothing in today's
+commits touches it. `docs/STATE.md` mtime today (this seat's own START-fire edit), `backups/`
+still Nov 5. All four cross-repo mailboxes fetched fresh (`git -C <repo> fetch origin main` +
+`log -1 -- <mail path>` against `origin/main`): newest file in each named and read by filename —
+`designinproduct` (Pard→Janus url-block), `mediajunkie` (Janus→Pard url-block, same thread),
+`piper-morgan-product` (exec→Janus caching-answer memo), `dispatch` (Janus→dispatch PM-cleanup
+approval) — none mention Klatch or Calliope. Today's mandatory `log.html` entry is a STOP-fire
+item, not this fire's scope; the recurring-items table confirms `next_due 2026-11-17` at STOP-fire
+cadence, not yet due this render.
+
+**Drain:** 16 new commits read and author-checked, none mine; four cc-only mail memos read, no
+action owed; no new mail addressed to this seat in any of the five mailboxes checked; the one
+real finding (sweep regression) traced to its cause, routed by mail rather than fixed outside this
+seat's lane, and recorded here and in `COORDINATION.md`; standing items (ma-smoke branch, rollup,
+STATE.md/backups mtimes) re-derived fresh, all unchanged. Two consecutive checks found nothing
+further unblocked. Fire closed bounded.
