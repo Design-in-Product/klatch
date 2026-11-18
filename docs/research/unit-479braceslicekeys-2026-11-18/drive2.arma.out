@@ -1,0 +1,57 @@
+unit-479braceslicekeys arm A — two population keys, one tree
+  HEAD: 4eddc526e50e1f753375011ecdc46bfa6a662ba8
+  R1 — git status --porcelain: 5 entr(ies); untracked code files under the four 469 roots: 1
+      UNTRACKED docs/research/unit-479braceslicekeys-2026-11-18/arm-braceslicekeys-a.mjs
+
+D1 — 469 SLICER membership, published (62) vs this tree (68)
+  arrivals:   6
+      + ADDED-AFTER                docs/research/unit-470bodyslice-2026-11-17/arm-bodyslice-a.mjs  4f51058578e081c1002e5df82769e024e2c22623 2026-11-17
+      + ADDED-AFTER                docs/research/unit-470bodyslice-2026-11-17/kp-fixture-new-unguarded-slicer.mjs  6b98355b3d015134ad522c3b09c5a2ab7674c8e7 2026-11-17
+      + ADDED-AFTER                docs/research/unit-472publishedfigure-2026-11-17/arm-publishedfigure-a.mjs  a77fc7847aa318b77a673ded427dcbf8ae590ba0 2026-11-17
+      + ADDED-AFTER                docs/research/unit-472publishedfigure-2026-11-17/handread-readerset-a.mjs  9304ce1f25156feff1f2b4e10d1c177ec27d5a6a 2026-11-17
+      + ADDED-AFTER                docs/research/unit-476phantomdenom-2026-11-18/precure/decl-body.precure.mjs  d4dfaa50e778e19e4e21f8bd20c44ddc532fb403 2026-11-18
+      + ADDED-AFTER                scripts/lib/decl-body.mjs  c8b8fd735b17a11c1ded32a2831257788d705001 2026-11-17
+  departures: 0
+
+  keys captured from scripts/verify-decl-body-slicers.mjs: cmp({ } ( ) :) · MARKER /brace-slicer-deliberate:\s*\S+/ · EXTS .ts .mts .js .mjs .cts .cjs .tsx · SELF 2 path(s)
+
+D2 — populations over ONE tree: gate 66 · 469 SLICER 68 · in both 66
+  GATE-ONLY: 0
+  469-ONLY: 2
+      A UNEXPLAINED                UNGUARDED  docs/research/round413-instruments/his412-prefix.sliced.mjs
+      A UNEXPLAINED                UNGUARDED  docs/research/round414-instruments/mine412-prefix.sliced.mjs
+
+D3 — verdicts over the 66 shared members (cross-tab, not two totals)
+      gate=UNGUARDED 469=UNGUARDED        49
+      gate=UNGUARDED 469=GUARDED           6
+      gate=UNGUARDED 469=AMBIGUOUS         4
+      gate=MARKED 469=UNGUARDED            4
+      gate=GUARDED 469=GUARDED             2
+      gate=GUARDED 469=UNGUARDED           1
+  hard disagreements (one says GUARDED, the other UNGUARDED): 7
+      X gate=GUARDED 469=UNGUARDED docs/research/round401-instruments/census-the-branch-polarity-axis.mjs
+      X gate=UNGUARDED 469=GUARDED docs/research/round449-instruments/probe-the-argument-shapes.mjs
+      X gate=UNGUARDED 469=GUARDED docs/research/round449-instruments/resolve-the-variable-write-targets.mjs
+      X gate=UNGUARDED 469=GUARDED docs/research/unit-465readerset-2026-11-14/arm-readerset-b.mjs
+      X gate=UNGUARDED 469=GUARDED docs/research/unit-465readerset-2026-11-14/arm-readerset-c.mjs
+      X gate=UNGUARDED 469=GUARDED docs/research/unit-467importprice-2026-11-16/arm-importprice-a.mts
+      X gate=UNGUARDED 469=GUARDED docs/research/unit-468createlit-2026-11-17/arm-createlit-a.mjs
+
+legs:
+  ok   A0 — 469 arm in this worktree vs 9f00b765: sha256/16 f4a9f4ae6478e353 vs f4a9f4ae6478e353
+  ok   A1 — published list captured from drive3.arma.out: |P| 66, SLICER 62 = 6 guarded + 4 ambiguous + 52 unguarded, all reproduced from the member rows
+  ok   A2 — same reader over this tree: |P| 74, SLICER 68 = 8 + 4 + 56
+  RED  P1 — registered SLICER >= 69 and UNGUARDED >= 57 (the 11/18 START incidental reading was 57/69); measured 56/68 — REFUTED
+  ok   P2 — registered: every arrival is a path added after 9f00b765. arrivals 6 = 6 added-after + 0 existed-at-rev + 0 untracked/no-add — HIT
+  ok   P3 — registered 0 departures; measured 0 — HIT
+  ok   B1 — captured-key reader vs the LIVE gate's own printed figures (rc=0): population 66/66, UNGUARDED 59/59, MARKED 4/4, GUARDED 3/3
+  RED  P4 — registered gate-only >= 1 with every member explained by root-or-.tsx; measured 0 (none) — REFUTED
+  RED  P5 — registered 469-only >= 1 with >= 1 comment-only comparison; measured 2 (UNEXPLAINED=2) — REFUTED
+  RED  P6 — registered: the gate's docblock claim "cannot disagree about who is in the population" is FALSE, with both differences non-empty; measured gate-only 0, 469-only 2 — REFUTED (claim survives)
+  ok   P8 — registered gate-only <= 5; measured 0 — HIT
+  ok   P7 — registered >= 1 hard verdict disagreement over the shared population; measured 7 — HIT
+
+red legs=4 red=[P1: registered SLICER >= 69 and UNGUARDED >= 57 (the 11/18 START incidental reading was 57/69); measured 56/68 — REFUTED | P4: registered gate-only >= 1 with every member explained by root-or-.tsx; measured 0 (none) — REFUTED | P5: registered 469-only >= 1 with >= 1 comment-only comparison; measured 2 (UNEXPLAINED=2) — REFUTED | P6: registered: the gate's docblock claim "cannot disagree about who is in the population" is FALSE, with both differences non-empty; measured gate-only 0, 469-only 2 — REFUTED (claim survives)] refused=[P5 mechanism claim WITHDRAWN per R1: 1 untracked code file(s) under the four roots at drive time]
+POPULATIONS: gate 66 · 469 68 · shared 66 · gate-only 0 · 469-only 2
+MOVEMENT: published SLICER 62 → this tree 68; arrivals 6, departures 0
+NOT MEASURED (R4): the published LIVE 45/52 → 48/56 movement is not explained by this arm.
