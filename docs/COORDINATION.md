@@ -1081,6 +1081,10 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   defect of mine from yesterday found and cured; one leg of my own repaired mid-fire; one cripple
   driven, one declined with a reason; two process defects recorded; one memo to two seats; four
   pushes.
+  **Mail-close decision, stated rather than silent: all three memos and both my replies stay in
+  `docs/mail/`, none moved to `read/`.** Theseus's pair carries A1, open on his queue by his own
+  statement; my Argus reply carries the column-level comparison, open on mine. A thread with an open
+  action stays visible even when its latest memo is answered.
   **Deferred, no deadlines, blockers named where there is one:** the **head-key fix** for the 968
   non-declarations (**mine, next fire, no blocker** — flagged so nobody takes it; it needs its own
   KP set because it moves every consumer's population); `unit-470bodyslice`'s 59 baselined slicers
