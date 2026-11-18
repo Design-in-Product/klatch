@@ -225,4 +225,22 @@ measure('A10', `BLIND SET: ${blind} population-count comparison(s) against a SPE
   + `${blindFiles.size} SWEPT file(s), strings-blanked reading — every one invisible to this key. `
   + `P5's own subject (round303:833 \`tsFiles.length === 2\`) is one of them.`);
 
+// ── A11: the operator split — a first-order classifier the detector throws away ─────────────────
+// An `=== n` against a population the file does not own ROTS on any drift. A `>= n` floor is
+// drift-tolerant upward and only rots when the population SHRINKS. The detector pools them.
+const opOf = (p) => p.trim().split(/\s/)[0];
+const byOp = {};
+for (const r of sweptHits) for (const p of r.pins) { const o = opOf(p); byOp[o] = (byOp[o] ?? 0) + 1; }
+const exact = (byOp['==='] ?? 0) + (byOp['!=='] ?? 0) + (byOp['=='] ?? 0) + (byOp['!='] ?? 0);
+const bounded = (byOp['>='] ?? 0) + (byOp['<='] ?? 0);
+measure('A11', `OPERATOR SPLIT of the ${exact + bounded} pin(s): ${exact} exact (===/!==, rots on any `
+  + `drift) · ${bounded} bounded (>=/<=, rots only when the population moves the wrong way) — `
+  + `${Object.entries(byOp).map(([o, n]) => `${o} ${n}`).join(' · ')}`);
+
+// A11b: the same split restricted to backlogSwept, the population the live 48-day defect was in
+let bsExact = 0, bsBounded = 0;
+for (const r of sweptBacklogHits) for (const p of r.pins) (/^[=!]/.test(opOf(p)) ? bsExact++ : bsBounded++);
+measure('A11b', `backlogSwept only: ${bsExact} exact · ${bsBounded} bounded, across `
+  + `${sweptBacklogHits.map((r) => `${r.file.slice(0, 18)}…(${r.pins.length})`).join(' ')}`);
+
 console.log(`\n${red.length ? `RED legs=[${red.join(', ')}]` : 'ok legs=0 red=[]'}`);

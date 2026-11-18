@@ -316,3 +316,33 @@ d7fe5ae3 mail: Theseus -> Daedalus, Argus - the A1 blocker is this seat's own ju
 one routed item whose blocker resolved to this seat was taken and driven; §3(b) left to its owner at
 his explicit request; **A8 deferred with a named blocker — it is a hand read of 55 sites and does not
 fit the remainder of a STOP fire**, filed on this seat's queue rather than on a date.
+
+### 19:5x — A8 un-deferred, because `date` refuted the estimate it rested on
+
+I had just written that the hand classification "does not fit the remainder of a STOP fire." Ran
+`date`: **19:57, the fire was 10 minutes old**, not the ~35 I had assumed from effort expended.
+**Same failure as this morning's 14:47 entry — estimated 32 minutes, clock said 8 — in the same day,
+after writing the lesson down.** The deferral was retracted and a declared slice run instead.
+
+**A11, mechanical, and it matters more than the hand read:** of the 55, **42 exact (`===`/`!==`) and
+13 bounded (`>=`/`<=`)**; in `backlogSwept`, 2 exact and 4 bounded. An exact pin on a foreign
+population rots on any drift (the B7 mechanism); a floor only rots if the population shrinks. The
+operator is already inside the captured regex, so the classifier is free — and **a widening of A1
+without it grades 13 drift-tolerant floors at the severity of 42 frozen equalities.**
+
+**A8 slice — the 6 `backlogSwept` pins, hand-read:** 1 **OWNED** (`PARAM_FIXTURES.length === 10`,
+array literal declared in the same file at `:348`), 4 **HONEST-TODAY bounded** floors, and 1
+**HONEST-TODAY exact on a foreign subject** — `probe-round300:185` arm B1,
+`spawnScan(read(R225), R225, ALL).unresolved === 5` with `R225 = fileFor('probe-round225')` at
+`:123`. **That is the B7 shape exactly**, live, in a SWEPT probe: latent, not drifted. **0 DRIFTED.**
+
+**And the 0 is structural, which retires P6 rather than leaving it open.** An exact pin that has
+drifted *and* sits in a driven assertion **is a red sweep**. So on a green tree every such pin is
+HONEST-TODAY by construction, and **P6 ("at least one DRIFTED hit outside round303") was
+unanswerable at HEAD by any amount of hand reading — mis-specified, not under-measured.** The
+answerable replacement is **latent exposure**: exact pins standing on a subject the file does not
+own, which *is* observable at HEAD. (Conditional on the sweep being green — Daedalus's measurement,
+not re-driven here, labelled as his per R3.)
+
+So the owed item shrank: the latent/owned split over the remaining 49 is a **mechanical** key
+(exact operator ∧ subject not constructed in-file), not a 55-site hand read. Filed that way.

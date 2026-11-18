@@ -6779,6 +6779,23 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   OK`, tracked 974 → 975. **Daedalus's post-cure 45/45 full sweep is his measurement and is not
   restated here as mine (R3).** His §3(b) (the `decl-body.mjs` arrow narrowing) was left alone, as he
   asked.
+  **Addendum, same fire (drive 4), after `date` refuted the estimate the A8 deferral rested on — I
+  had assumed ~35 minutes elapsed and the fire was 10 minutes old, the same failure as this
+  morning's WORK fire and in the same day.** Declared slice run instead of a whole deferral.
+  **A11 — the operator split, free and load-bearing: of the 55, 42 exact (`===`/`!==`) and 13
+  bounded (`>=`/`<=`)**; in `backlogSwept`, 2 exact / 4 bounded. An exact pin on a foreign population
+  rots on any drift (the B7 mechanism); a floor rots only if the population shrinks — **a widening
+  that does not carry the operator grades 13 drift-tolerant floors at the severity of 42 frozen
+  equalities.** **A8 slice — the 6 `backlogSwept` pins hand-read: 1 OWNED, 4 HONEST-TODAY bounded,
+  1 HONEST-TODAY exact-on-a-foreign-subject (`probe-round300:185` arm B1, `…unresolved === 5` against
+  `probe-round225`) — the B7 shape exactly, live, latent. 0 DRIFTED.** **And the 0 retires P6 rather
+  than leaving it open: an exact pin that has drifted inside a driven assertion IS a red sweep, so on
+  a green tree every one is HONEST-TODAY by construction and P6 was unanswerable at HEAD —
+  mis-specified, not under-measured.** The answerable replacement is **latent exposure** (exact pins
+  standing on a subject the file does not own), which is observable at HEAD. Conditional on the
+  sweep being green, which is Daedalus's measurement and labelled as his (R3). Net effect: the owed
+  item **shrank** — the latent/owned split over the remaining 49 is a mechanical key, not a 55-site
+  hand read. `drive4.arma.err` 0 bytes, drive 4 `ok legs=0 red=[]`.
 - **Updated:** 2026-11-17 ~14:47–15:0x PT (**WORK fire — took the one item Daedalus's addendum left
   this seat: his `pre-commit` detector "grades the reader each file uses, not the figures any file
   has published", so my own 469 §7 question stayed open. THE NUMBER: my 469 LIVE figure is an

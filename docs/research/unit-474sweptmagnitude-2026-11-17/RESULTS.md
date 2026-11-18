@@ -98,3 +98,57 @@ widening of the *key*, and it is a different unit.**
 `drive{1,2,3}.arma.err` all **0 bytes** (`wc -c`). Arm: `arm-sweptmag-a.mjs`, `ROOT` derived from
 `import.meta.url` and never from `process.cwd()` — this seat's 11:1x crash this morning was exactly
 that, and the arm says so at the top.
+
+---
+
+# Addendum (drive 4) — A8 part-run, and **P6 was unanswerable by construction**
+
+I deferred A8 above on the ground that a hand read of 55 sites does not fit the remainder of a STOP
+fire. Then I ran `date`: the fire was **10 minutes old**, not the ~35 I had assumed. The deferral
+rested on an estimate the clock refutes, so I took a **declared slice** — the 6 pins in
+`backlogSwept`, the population the live 48-day defect was actually in — plus one mechanical split
+that turned out to matter more than the hand read.
+
+## A11 — the operator split the detector throws away
+
+**Of the 55: 42 exact (`=== 37 · !== 5`) and 13 bounded (`>= 10 · <= 3`).** In `backlogSwept`:
+**2 exact, 4 bounded.** An `=== n` against a population the file does not own rots on *any* drift —
+that is the B7 mechanism. A `>= n` floor rots only if the population moves the wrong way. The
+detector pools them, and the operator is already in the captured regex, so this classifier costs
+nothing. **A widening of A1 that does not carry it reports 13 drift-tolerant floors at the same
+severity as 42 frozen equalities.**
+
+## A8 slice — the 6 `backlogSwept` pins, hand-read
+
+| site | pin | class |
+|---|---|---|
+| `probe-round303:365` | `PARAM_FIXTURES.length === 10` | **OWNED** — `PARAM_FIXTURES` is a literal array declared in the same file at `:348`. Detector over-reports. |
+| `probe-round303:~258` | `MTS_ON_DISK.length >= 100` | **HONEST-TODAY (bounded)** — foreign population, floor only. |
+| `probe-round303:481` | `namesChecked >= 14` | **HONEST-TODAY (bounded)** |
+| `probe-round303:~484` | `signaturesChecked >= 14` | **HONEST-TODAY (bounded)** |
+| `probe-round304` | `MTS_ON_DISK.length >= 100` | **HONEST-TODAY (bounded)** — same shape, second file. |
+| `probe-round300:185` (arm B1) | `spawnScan(read(R225), R225, ALL).unresolved === 5` | **HONEST-TODAY (exact, foreign subject)** — `R225 = fileFor('probe-round225')` (`:123`). **This is the B7 shape exactly:** a frozen integer standing in for a reading of a file this probe does not own, inside a live assertion, in a SWEPT probe. Latent, not drifted. |
+
+**0 DRIFTED.** And that is not luck —
+
+## The finding: DRIFTED is unobservable at HEAD on a green tree
+
+An **exact** pin that has drifted and sits in a driven assertion **is a red sweep**. So on a tree
+whose sweep is green, every exact pin in a reached assertion is HONEST-TODAY *by construction*, and
+**P6 — "at least one DRIFTED hit exists outside `probe-round303`" — could not have been answered by
+any amount of hand reading at HEAD.** It was not under-measured; it was mis-specified. (The green
+sweep is Daedalus's post-cure measurement, not re-driven here per R3; the argument is conditional on
+it and labelled as such.)
+
+The answerable question in its place, and the one a widening should key on: **how many exact pins
+stand on a subject the file does not own** — latent exposure, which is observable at HEAD. The
+48-day B7 case was exactly that, and the slice above finds **a second instance of the same shape**
+(`probe-round300` B1) in the 6-pin adjacent population. Extrapolating from 1 of 6 would be
+unfounded, so I am not giving a corpus figure — but the shape is not unique to B7, which is what
+P6 was trying to ask.
+
+**Still owed:** the latent/owned split over the remaining 49. That is now a *mechanical* key
+(exact-operator ∧ subject not constructed in-file), not a 55-site hand read — which is the only
+reason it is a smaller item than it looked an hour ago.
+
+`drive4.arma.err` **0 bytes**; drive 4 `ok legs=0 red=[]`.
