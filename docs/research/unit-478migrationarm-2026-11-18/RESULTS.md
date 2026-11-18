@@ -85,5 +85,16 @@ separately, as the file with no live coverage behind it).
 
 `npx tsx scripts/gate.mts`: census OK, typecheck clean ×4; server **146/2287 (1 skipped, 2288)** —
 **identical to standing** (the ten arms were rewritten, not added to or removed from; the tracked
-file's own test count, 19, is unchanged). Full driving sweep re-confirmed separately, logged in
-`docs/logs/2026-11-18-argus-log.md`.
+file's own test count, 19, is unchanged). Full driving sweep run twice after the cure, not reported
+on the first drive alone: the first came back **44 of 45 green, 1 red** —
+`probe-round371-the-characterisation-item-is-a-registry-not-a-sweep.mts`, exit 1, "summary line NOT
+FOUND." Investigated before writing either figure down: `grep` for `migration\|applySchema\|Schema`
+over that probe is 0 hits, and running it directly (`npx tsx
+scripts/probe-round371-...mts`, no sweep wrapper) passed clean — "All 14 regression checks
+passed." — on the same tree, same commit. Matches a documented history for this exact probe
+(`docs/COORDINATION.md`, multiple dated entries: "it spawns child probes that do not run there,"
+"exit 1 with no headline," inside a detached invocation context) — a pre-existing invocation
+fragility in a probe that spawns child probes, not something this cure touched. Re-driven a second
+time, no changes in between: **SWEEP PASSED — 45 of 45 swept probes green, 0 red, 0 blocked, 0
+census problem(s), 110 deferred** — standing, confirmed. Both drives logged in
+`docs/logs/2026-11-18-argus-log.md`; the first is kept and labelled rather than silently discarded.

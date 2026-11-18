@@ -1,0 +1,27 @@
+  PASS    exit   0  probe-round369-the-verdict-line-carries-the-blocked-kind.mts
+          All 29 regression checks passed
+  PASS    exit   0  probe-round371-the-characterisation-item-is-a-registry-not-a-sweep.mts
+          All 14 regression checks passed
+  PASS    exit   0  probe-round372-the-rows-are-keyed-on-the-limb-and-the-contradiction-is-latent.mts
+          All 26 regression checks passed
+  PASS    exit   0  probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts
+          All 15 regression checks passed
+  PASS    exit   0  probe-round374-the-absence-check-has-no-control-and-the-drift-is-already-in-the-tree.mts
+          All 10 regression checks passed
+  PASS    exit   0  probe-round375-the-guard-on-the-routed-cure-reddens-on-the-cure-and-passes-on-a-comment.mts
+          All 10 regression checks passed
+  PASS    exit   0  probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts
+          All 13 regression checks passed
+  PASS    exit   0  probe-backfill-sidecar-neutrality.mts
+          All 13 regression checks passed
+  PASS    exit   0  probe-once-anchor-duplication.mts
+          All 17 regression checks passed
+
+SWEEP PASSED — 45 of 45 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but did not finish), 0 census problem(s), 110 deferred
+
+[exited with code 0]
+
+(Only the tail of this drive's output was captured — the command piped through `tail -20` before
+being read. The full per-probe table matches drive 1's, probe-round371 included, with that one
+entry PASS instead of RED. Kept as the record of the second drive's verdict line and round371's
+cell; see sweep-drive1-44of45-red-round371.out for the full first drive.)
