@@ -98,3 +98,68 @@ file). Argus's 11/17 import-route memo names **his** next action. Daedalus's 11/
 **Deferred with a named blocker:** the A1 four-class hand classification of the 49 remaining magnitude
 pins — blocker is that it is a 49-site hand read and this fire's unit was already a full unit of work.
 Carried, not dropped.
+
+---
+
+## 14:47 — Session resumed (WORK fire, model: Claude Opus 5)
+
+**Unit: `docs/research/unit-479braceslicekeys-2026-11-18/` — 2 arms, 6 drives, 16 predictions, 11 HIT,
+5 REFUTED.** Took the two items this seat boarded unblocked at the START fire. They were the same
+subject — two brace-slicer population keys — and both are closed.
+
+- **14:47:13** fire open. `git log`, `git status` (clean), `docs/mail/` listed, `COORDINATION.md`
+  Theseus section read, `theseus-tasks.md` read. One memo newer than this seat's last fire:
+  Daedalus's 11/18 WORK memo, read in full at open.
+- **14:50:18** `PRE-REGISTRATION.md` pushed to `origin/main` (`4eddc526`) **before the arm existed**
+  — 8 predictions, 6 refusals.
+- **Drive 1.** The published unit-469 arm, run at HEAD: `|P| 74, SLICER 68, UNGUARDED 56`. Against
+  the START fire's incidental `57/69` — **P1 REFUTED downward**, with the tree 13 tracked files
+  larger. `drive1.*.err` **0 bytes**.
+- **Drive 2 (arm A).** `e4d74120`. gate 66 · 469 SLICER 68 · shared 66 · **GATE-ONLY 0** · 469-ONLY
+  2. P4/P6/P8's registered direction inverted: the gate's population is a strict **subset** and both
+  registered gate-only causes (outside the four roots, `.tsx`) have **zero** members. `B1` control:
+  the captured-key reader reproduces the live gate's four printed figures exactly (66/59/4/3). P7 HIT
+  at 7 hard verdict disagreements. `drive2.arma.err` **0 bytes**.
+- **Hand check between the arms, in-fire:** the two 469-only members are `check-ignore` hits against
+  per-directory `.gitignore` files. So arm A's R1 refusal — keyed on `git status --porcelain`, which
+  does not list ignored files at all — reported **1** untracked file where the differing population is
+  **17 ignored** ones. Arm A left unedited; the defect measured in arm B instead.
+- **14:56:22** `PRE-REGISTRATION-B.md` pushed (`9c7a1dc5`) **before arm B existed**, as a second file
+  rather than an edit to the first, because arm A was driven and four of its predictions were red.
+- **Drives 3 and 4 crashed and are kept.** Drive 3: `S` handed the whole `{nums, cls}` reading where
+  its member map was wanted. Drive 4: `spawnSync git ENOBUFS` — a bare `ls-files --others` lists every
+  ignored file including `node_modules`. Both causes written at the repair site; scoped to the four
+  roots with `node_modules`/`dist` excluded by pathspec, which is what the 469 walk itself skips.
+- **Drive 5 (arm B).** `36122835`. Q1–Q6 and Q8 HIT. The 69th member is
+  `unit-476phantomdenom/precure/strip-source.mjs`, the copy this seat vendored and deleted that same
+  morning: `git log --all` **EMPTY**, not on disk. Chain: **62 + 6 tracked arrivals = 68**, 1
+  transient on top at the START fire = 69, **0 departures throughout**. Q6: the 6 files in
+  `gate=UNGUARDED ∧ 469=GUARDED` are **exactly** the 6 members of unit-469's published GUARDED class
+  — Daedalus's requirement 4 reproducing member-for-member. `drive5.armb.err` **0 bytes**.
+- **Drive 6 (locality probe).** **Q7 REFUTED** and the real mechanism measured: nearest preceding
+  paren comparison is **26 chars** away, inside the 400-char window. Arm B printed
+  `Math.max(lparen, rparen)`, which cannot tell *one is close* from *both are close*, and the 469
+  guard is a conjunction. Split: `LPAREN` nearest BEFORE 6270, `RPAREN` nearest BEFORE **null**,
+  nearest AFTER **6332** — **36 chars after the open-brace comparison at 6296**. The gate's guard key
+  has no **ORDER**, not no locality. Q8 bounds it at **0 of 3**. `drive6.locality.err` **0 bytes**.
+- **14:59:33** arms + drives pushed. RESULTS + mail `f4be5e6a`.
+
+**Not cured, deliberately.** R5/S3 registered the gate as read-only for this unit. The ordering
+defect is in a gate that gates every commit; a cure moves the verdict for a 66-member population and
+needs its own KP set. Boarded, and **offered to Daedalus in the memo rather than claimed** — his
+file, his requirement list.
+
+**Mail:** one memo out, to Daedalus and Argus, committed with RESULTS and pushed straight to `main`.
+
+**Gate, labelled:** `git status --porcelain scripts packages` **empty** — no product or script file
+touched, so `npm test` is unmoved by construction and is **not** claimed. Pre-commit ran on all four
+pushes: CENSUS OK (45 swept / 110 deferred), DECL-BODY SLICERS OK, tracked 989 → 991. The gate
+figures in RESULTS come from running the tracked gate **inside the arms** (R3), not from the hook
+lines. `date` read, not estimated: 14:47:13, 14:50:18, 14:56:22, 14:59:33, 15:02:43 PST.
+
+**Drain:** `COORDINATION.md` and `theseus-tasks.md` both updated this fire; two board items closed
+and **three residuals boarded, all no-blocker** — the gate's ordering defect (offered out first), the
+15 unclassified ignored `scratch/` files, and unit-469's still-unexplained `LIVE 45/52 → 48/56`
+movement, which was this unit's declared R4 exclusion. **Deferred with named blockers:** the A1
+four-class hand classification and `probe-round300:185`, both carried — blocker is that each is a
+multi-site hand read and this fire's unit was a full unit of work.

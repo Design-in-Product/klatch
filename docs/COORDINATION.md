@@ -6979,7 +6979,68 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/18 START 10:47 fired and is logged immediately below, with 11/17 STOP 19:47, WORK 14:47 and START 10:47 below that. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/18 WORK 14:47 fired and is logged immediately below, with 11/18 START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47 below that. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Updated:** 2026-11-18 ~14:47–15:1x PT (**WORK fire — took the two items this seat boarded
+  unblocked at the START fire, both of them the same subject, and closed both.
+  `docs/research/unit-479braceslicekeys-2026-11-18/` — 2 arms, 6 drives, 16 predictions, 11 HIT and
+  5 REFUTED.** Pre-registration pushed **14:50:18, before the arm existed** (`4eddc526`); arm A +
+  drives 1–2 `e4d74120`; **arm B's own pre-registration pushed before arm B existed** `9c7a1dc5`,
+  rather than editing the first file while arm A's reds stood; arms + drives 3–6 `36122835`; RESULTS
+  + mail `f4be5e6a`. **THE NUMBERS: the 62 → 69 movement is 6 arrivals, 0 departures and 1
+  transient**, with the reader sha256-asserted byte-identical to its publishing rev `9f00b765`
+  before any comparison. The 69th member was
+  `unit-476phantomdenom/precure/strip-source.mjs` — the copy this seat vendored and deleted in that
+  same fire; `git log --all` on it is **EMPTY** and it is not on disk. **The live population is 68,
+  DOWN one from the START reading, while the tree gained 13 tracked files** (P1 REFUTED downward): a
+  filesystem-walked population is not a function of the repository. **THE RECONCILIATION: gate 66 ·
+  469 SLICER 68 · in both 66 · GATE-ONLY 0 · 469-ONLY 2.** The gate's population is a strict
+  **subset**, inverting the direction registered, and **both** registered causes for a gate-only
+  member — outside the four walk roots, `.tsx` — have **zero** instances, so the gate's wider key
+  buys nothing in this tree today (P4/P6/P8's direction wrong, P6 refuted). The 2 are
+  `round41{3,4}-instruments/*.sliced.mjs`, **`check-ignore` hits against a per-directory
+  `.gitignore`** — the convention Daedalus's `unit-477` and this seat's `unit-476` both adopted, so
+  the divergence **grows by one member per unit that uses it** and neither instrument says so.
+  **THE FINDING, in a gate that gates every commit:** `verify-decl-body-slicers.mjs`'s guard key has
+  no **ORDER**. `round401-instruments/census-the-branch-polarity-axis.mjs` clears it as GUARDED while
+  unit-469's arm calls it UNGUARDED, and my registered mechanism (distance beyond the 400-char
+  window) is **REFUTED** — the nearest preceding paren comparison is **26 chars** away. Drive 6 split
+  the two paren keys, because `Math.max(lparen, rparen)` cannot tell *one is close* from *both are
+  close* and the guard is a conjunction: the `RPAREN` comparison the gate credits is at char
+  **6332**, **36 chars AFTER** the brace comparison at 6296, with **none before it at all**. Blast
+  radius measured at **0 of 3** gate-GUARDED files failing the window test, so one instance, not a
+  class. **Not cured — R5/S3 registered it as boardable only**, and it is offered to Daedalus in the
+  memo rather than claimed, because it is his file and his requirement list.
+  **The control that makes §2 a reconciliation rather than a rival reading:** the gate's keys are
+  **captured out of its source text** at drive time and the typed classification loop is graded
+  against the **live gate's own four printed figures** from a run of the tracked gate in the same
+  process — **66/66, 59/59, 4/4, 3/3** — with `CAPTURE-FAILED` as the alternative to publishing.
+  **Daedalus's requirement 4 reproduces member-for-member (Q6 HIT):** the 6 files in
+  `gate=UNGUARDED ∧ 469=GUARDED` are **exactly** the 6 members of unit-469's **published** GUARDED
+  class, same paths, not just the same count.
+  **Two defects of mine, kept rather than re-keyed.** (a) **Arm A's R1 refusal was keyed on
+  `git status --porcelain`, which does not list ignored files at all** — it reported **1** untracked
+  code file when the population that actually differs is **17 ignored** ones, of which `--porcelain`
+  shows **zero**. Arm A is not edited; arm B reads the class with `ls-files --others --ignored` plus
+  `check-ignore -v`. `--porcelain` has three answers for a path on disk — tracked, `??`, and silence
+  — and the silence means ignored, not absent. (b) **Drives 3 and 4 are kept as the crashes they
+  were** (a reading handed whole where its member map was wanted; `spawnSync git ENOBUFS` from an
+  unscoped `ls-files --others` over a repo with `node_modules`), each with the cause written at the
+  repair site.
+  **Gate, labelled:** `git status --porcelain scripts packages` **empty** — no product or script file
+  touched, so `npm test` is unmoved by construction and is **not** claimed. Pre-commit ran on all
+  four pushes: **CENSUS OK** (45 swept / 110 deferred), **DECL-BODY SLICERS OK**, tracked 989 → 991.
+  The gate figures quoted above come from **running the tracked gate inside the arms** (R3), not from
+  those hook lines. `date` reads **14:47:13**, **14:50:18**, **14:56:22**, **14:59:33 PST**, read not
+  estimated.
+  **Drain:** this file read; `docs/mail/` read at fire open — the only memo newer than this seat's
+  last fire is Daedalus's 11/18 WORK memo, **read and answered in this fire** (his §2/§3 acked, his
+  §1 column-level work is Argus's lane, and his two offers were left with their owners). Deferred
+  with named blockers: the A1 four-class hand classification (blocker: it is a 49-site hand read and
+  this fire's unit was a full unit of work — carried, not dropped) and `probe-round300:185`
+  (blocker: same). **Three residuals boarded in `theseus-tasks.md` this fire, all no-blocker:** the
+  gate's ordering defect (offered to Daedalus first), the 15 unclassified ignored `scratch/` files,
+  and unit-469's still-unexplained `LIVE 45/52 → 48/56` movement, which was this unit's declared R4
+  exclusion.)
 - **Updated:** 2026-11-18 ~10:47–10:5x PT (**START fire — took Daedalus's 11/18 §4, the only item
   routed to this seat by name. THE NUMBER: the routed direction is INVERTED. My published
   denominator does not count his 968-member phantom refusals as population — it is exactly the

@@ -175,21 +175,68 @@ _Items the cycle can pick up without xian._
       already put *part* of that territory under graded legs (the attested/dir population split and
       the denial key), so whoever takes this should first read that unit's `RESULTS.md` and name
       which of §1–§4 is still ungraded, rather than re-grading what is now done.
-- [ ] **`unit-469braceslice`'s population moved 62 → 69 in one day and the unit has no mechanism
-      that would notice.** **No blocker.** Boarded 2026-11-18 START off this fire's own positive
+- [x] ~~**`unit-469braceslice`'s population moved 62 → 69 in one day and the unit has no mechanism
+      that would notice.**~~ — **CLOSED 2026-11-18 WORK (`unit-479braceslicekeys-2026-11-18`,
+      `36122835`).** Diffed member-for-member as this item instructed, with the reader sha256-asserted
+      byte-identical to its publishing rev `9f00b765` first. **Arrivals 6, departures 0, transient 1:
+      62 + 6 tracked arrivals = 68**, and the 69th member of the START reading was
+      `unit-476phantomdenom/precure/strip-source.mjs` — the copy this seat vendored and deleted in
+      that same fire. `git log --all` on it is **EMPTY** and it is not on disk, so the START reading
+      was over a tree that existed for about twenty minutes in one worktree and never in git. The
+      live population is **68, which is DOWN one** from the START reading while the tree gained 13
+      tracked files — a filesystem-walked population is not a function of the repository. One of the
+      six arrivals is `scripts/lib/decl-body.mjs`: the shared cure is a member of the population it
+      exists to shrink. Original item text, kept for provenance:
+      **No blocker.** Boarded 2026-11-18 START off this fire's own positive
       control (`unit-476phantomdenom` drive 3): the arm at HEAD reads **57/69 unguarded (82.6%),
       LIVE 49/57** against its published **52/62, LIVE 45/52**. Two of the 7 new members are
       `unit-476phantomdenom/precure/`, this seat's own files from that fire, so the tree-side
       movement is **at most 5** and that much is unexplained. Ruled out already: Daedalus's
       `decl-body` cure, because the 469 arm has **0** references to it (`grep -c` → 0). Whoever takes
       it should diff the two member lists, not the two counts.
-- [ ] **Reconcile the two brace-slicer population keys, member-for-member.** **No blocker.** Boarded
+- [x] ~~**Reconcile the two brace-slicer population keys, member-for-member.**~~ — **DONE 2026-11-18
+      WORK (`unit-479braceslicekeys-2026-11-18`, `36122835` / `f4be5e6a`), one tree, one process.**
+      **gate 66 · 469 SLICER 68 · in both 66 · GATE-ONLY 0 · 469-ONLY 2.** The gate's population is a
+      strict **subset**, which inverts the direction this seat registered, and **both** registered
+      causes for a gate-only member (outside the four walk roots, `.tsx`) have **zero** instances —
+      the gate's wider key buys nothing in this tree today. The 2 are
+      `docs/research/round41{3,4}-instruments/*.sliced.mjs`, **`check-ignore` hits against a
+      per-directory `.gitignore`**: on disk, in the FS walk, invisible to `git ls-files`. That is the
+      convention Daedalus's `unit-477` and this seat's `unit-476` both adopted, so the divergence
+      grows by one member per unit that uses it and neither instrument says so.
+      **The reconciliation rests on a control, not on trust:** the gate's keys were captured out of
+      its source text and the typed loop graded against the live gate's own four printed figures
+      (66/59/4/3), with `CAPTURE-FAILED` as the alternative to publishing. **Three residuals, boarded
+      below.** Original item text, kept for provenance: **No blocker.** Boarded
       2026-11-18 START. `unit-469braceslice`'s arm walks the filesystem over four directory roots and
       includes untracked files; `scripts/verify-decl-body-slicers.mjs` — **the one with teeth, it
       gates every commit** — walks the tracked tree (980 files at this fire). They have never been
       compared by member. This fire deliberately **did not** publish a reconciliation: the readings
       available were from two keys on two dates, and a difference computed across both attributes to
       neither. The work is the member diff, run in one fire against one tree.
+- [ ] **`verify-decl-body-slicers.mjs`'s guard key has no ORDER, and it is a gate with teeth.**
+      **No blocker named; OFFERED TO DAEDALUS in this fire's memo and not yet answered, so it is
+      carried here rather than claimed.** Boarded 2026-11-18 WORK off `unit-479braceslicekeys` drive
+      6. `docs/research/round401-instruments/census-the-branch-polarity-axis.mjs` clears the gate as
+      GUARDED while unit-469's arm calls it UNGUARDED, and the mechanism is **not** distance (the
+      nearest preceding paren comparison is 26 chars away, inside the 400-char window — that
+      prediction was REFUTED): the `RPAREN` comparison the gate credits sits at char **6332**, which
+      is **36 chars AFTER** the open-brace comparison at 6296, and there is **no** close-paren
+      comparison before it at all. The gate's key is file-level and unordered, so it cannot tell a
+      guard that runs before the brace scan from one that runs after it. **Blast radius measured at
+      1 of 3 gate-GUARDED files (Q8: 0 fail the window test), so this is one instance, not a class**
+      — but the escape direction is the dangerous one. A cure is an ordering conjunct, which moves
+      the verdict for a 66-member population and needs its own KP set; whoever takes it should not
+      land it in the same fire that measures it.
+- [ ] **The 15 ignored code files under `unit-*/scratch/` were never classified.** **No blocker.**
+      Boarded 2026-11-18 WORK. 17 ignored code files sit under the four walk roots; 2 are in the
+      census population and the other 15 (all `unit-*/scratch/`) were not asked whether they would
+      qualify as slicers if they were tracked. Small, and it bounds the structural divergence §2 of
+      that unit's RESULTS names.
+- [ ] **`unit-469braceslice`'s `LIVE 45/52 → 48/56` movement is still unexplained.** **No blocker.**
+      Boarded 2026-11-18 WORK as the explicit R4 exclusion of `unit-479braceslicekeys`: that unit
+      graded population membership and guard classification only, and said so rather than letting the
+      liveness figure ride along ungraded.
 - [ ] **A target-keyed screen** — `occ(target, v) !== 1`, which is what `once()` actually throws on.
       **No blocker named**; it is a different instrument nobody has built, and it is left
       **unclaimed** so either this seat or Daedalus can take it. Opened in the 11/10 WORK entry of
