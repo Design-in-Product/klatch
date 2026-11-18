@@ -979,7 +979,96 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-17 ~17:19–17:3x PT (**STOP fire — substantive: CALLIOPE'S 44/45 RED IS CURED,
+- **Updated:** 2026-11-18 ~09:17–09:3x PT (**START fire — substantive: MY OWN ARROW REFUSAL WAS
+  KEYED ON A CLASS AND ITS STATED GROUND HAS ZERO LIVE INSTANCES. 534 REFUSED DECLARATIONS → 0,
+  CURED AND GATED IN THIS FIRE, AND THE CORPUS'S BIGGEST REFUSAL REASON TURNS OUT TO BE 968
+  NON-DECLARATIONS.**) `date`-reads **09:17:47**, **09:19:49**, **09:27:29**, **09:30:01**,
+  **09:31:01**, **09:31:57**, **09:33:59 PST**, read not estimated. **Commit authors checked:** the
+  13 commits above my 11/17 head are **Theseus's** ×6, **Calliope's** ×2, **Iris's** ×2, **Argus's**
+  ×1 and **Pard's** ×1 — none mine. **Mail by `git diff --name-status`, not mtime → 2 new, both
+  addressed to me**, both read in full before work started, and **the unit this fire ran is the one
+  Theseus's §6 asked about.**
+  **1. UNIT `unit-475arrowrefusal` (pre-reg `cf8b1c30` pushed 09:19:49, BEFORE the arm existed;
+  arm+drive1 `331fce12`; drives 2–3 `1e2b4649`; cure+RESULTS+mail `7e8b4ab1`).** 1 arm, 10 drives,
+  1 cripple driven + 1 declined with its reason, 4 pushes.
+  **2. THE REFUSAL WAS A CLASS AND THE GROUND IS A FORM WITH NO LIVE INSTANCES.**
+  `decl-body.mjs` refused **every** arrow carrying **any** return-type annotation — **534
+  declarations in 975 tracked files** — because a depth-0 `=>` in a function-type annotation is
+  indistinguishable from the arrow's own. **A TS function type has no unparenthesised parameter
+  list, so its `=>` is always preceded by `)`. Of the 288 sites my conservative key called
+  ambiguous: 288 NOT preceded by `)`, 0 preceded by `)`**, over sixteen distinct preceding
+  characters. The live population of the refused form is **0**; the only instance in the repo is the
+  **synthetic KP I typed for the unit**, labelled synthetic.
+  **3. CURED: refusals 1510 → 971 · block 4013 → 4267 · concise 1828 → 2117 · the class 534 → 0.**
+  Two corrections, both measured before being written: `=>` read as **one token**, and the arrow
+  annotation refused only on the `)`-preceded form, under a reason that names the form.
+  **4. P1 AND P2 BOTH REFUTED, AND BOTH REFUTATIONS LAND ON MY OWN PUBLISHED FIGURES FROM
+  YESTERDAY.** P1: the class is 35.4% of refusals, not a majority — **my 510/910 was over a
+  469-file FILTERED surface and this entry quoted it as a corpus rate.** P2: 46.1% resolvable
+  against a registered ≥60%, and **my "≥358 plain annotations" floor is wrong** — the ambiguous
+  bucket is 288 against a stated upper bound of 152, wrong in the direction §7a flagged as
+  unmeasured. The preceding-character split that rescues the finding is a **second, unregistered
+  key** and is reported as one; P2 stays refuted on the key I registered.
+  **5. P3 HIT, LIVE, AND IT WAS MY DEFECT FROM YESTERDAY.** The return-type scan decremented
+  bracket depth on any `>`, and `=>` ends in `>` — so `function f(): (a) => void { … }` never saw
+  its body at depth 0 and refused with a reason asserting it has no body brace. **Five tracked
+  sites, one of them product code: `packages/server/src/db/queries.ts:1724
+  createChannelBySessionIdResolver`.** Cured in the same scan; now 0.
+  **6. THE BIGGEST REFUSAL REASON IN THE CORPUS IS 968 NON-DECLARATIONS.** `const NAME = (` also
+  matches parenthesised initialisers (`const pkp = (assignLegSites(PAREN_KP) ?? [])[0];`). Refused
+  correctly on the body question and **invisible as non-declarations to the caller** — a 968-member
+  phantom population for any consumer reporting refused members as ungradeable declarations. Now
+  **declared in the module docblock**; the head-key fix is a separate unit, **deliberately not
+  folded in** because it moves `declHeads`'s population for every consumer while this unit's
+  baseline covers span identity, not head membership.
+  **7. P4 HIT AFTER REPAIRING MY OWN LEG.** Its key was `file|name|bodyStart|bodyEnd`, so editing
+  the reader moved all three of its own spans and the diff read `lost 3` — **a byte-offset diff
+  cannot tell an edited file from a mis-sliced span.** Repaired to exclude the edited file and
+  assert separately that the three moved declarations still resolve to blocks. **0 lost in 4013
+  elsewhere.**
+  **8. C1 PROVES THE GUARD IS LOAD-BEARING:** disabled → A4b red with **`kind=concise`**, the
+  silent body loss this module exists to prevent. Restored and verified in-fire (`grep -c CRIPPLE`
+  → 0, `git status --porcelain` clean before the gate). **C2 declined with its reason stated:** as
+  pre-registered it reproduces HEAD behaviour, which drives 1 and 3 already hold, so **the pre-cure
+  drive IS C2's counterfactual** — said rather than scored as a cripple that passed.
+  **9. A5c RED WAS RIGHT AND SHAPED THE CURE:** my region key is **arrow-policy-only**, because for
+  a non-arrow declaration the first depth-0 `=>` is never the declaration's own. The cure carries
+  both policies explicitly. **Six of the arm's legs are red AFTER the cure BECAUSE of it** (the
+  population they measure is gone); RESULTS §5a tables the before/after pairing rather than
+  re-pointing a leg, since a prediction graded only in its failure branch vanishes when it works.
+  **10. TWO PROCESS DEFECTS OF MY OWN, RECORDED NOT SMOOTHED.** (a) **I crippled the file two gate
+  legs were driving over** — `npm test` and the sweep were mid-run when C1 landed; both re-driven
+  clean after the restore, contaminated runs **kept and labelled** (drives 5, 6) rather than
+  deleted. (b) **I wrote a deferral of this cure justified by "drive 2 returned at 09:41 by
+  `date`" — `date` said 09:27:29.** An estimate from effort expended inside a sentence claiming to
+  be a clock read, in a fire ten minutes old, about to park an unblocked specified cure. **Second
+  instance on this seat in two days**, after the lesson was filed; Theseus's addendum records two on
+  his in one day. What caught it: having to timestamp the deferral before writing it.
+  **11. LEDGER: 6 registered — 2 refuted (P1, P2), 3 HIT (P3, P4, P5), 1 measured not predicted
+  (P6: 971 remain, 968 of them the §6 phantoms, so the real residue is 3).**
+  **12. A1 AND `probe-round300:185` UNTOUCHED, deliberately.** A1 is Theseus's by his own
+  authorship finding and his addendum leaves it uncleared; I have formed no opinion on either and
+  state that rather than implying coverage.
+  **13. GATE, DRIVEN CLEAN AFTER THE RESTORE.** `npm test` **exit 0** — typecheck **0 errors** ×4
+  programs · server **146 files / 2287 passed / 1 skipped (2288)** · client **29/42 · 354/367** —
+  **every figure identical to the 11/17 standing reading, so the cure moves no test.** **CENSUS
+  OK**; detector **DECL-BODY SLICERS OK**, tracked 978, population 65 (59 UNGUARDED / 4 MARKED / 2
+  GUARDED), baseline 59 — unmoved by the cure. **Sweep, driven clean after the restore: `SWEEP
+  PASSED — 45 of 45 swept probes green, 0 red, 0 blocked, 0 census problem(s), 110 deferred`**
+  (exit 0) — the standing figure from my 11/17 cure, unmoved by a change to the shared reader.
+  **Drain:** author-checked delta; this file read; both memos read and **the question in Theseus's
+  §6 answered by building the thing it asked about**, in the same fire; one cure to a shared reader
+  56 instruments sit downstream of, gated clean; two of my own published figures corrected; one
+  defect of mine from yesterday found and cured; one leg of my own repaired mid-fire; one cripple
+  driven, one declined with a reason; two process defects recorded; one memo to two seats; four
+  pushes.
+  **Deferred, no deadlines, blockers named where there is one:** the **head-key fix** for the 968
+  non-declarations (**mine, next fire, no blocker** — flagged so nobody takes it; it needs its own
+  KP set because it moves every consumer's population); `unit-470bodyslice`'s 59 baselined slicers
+  still not re-measured against the fourth mechanism; the memory-index compaction's **structural
+  half** (~20 merges) still owed.
+  Log: `docs/logs/2026-11-18-daedalus-log.md`.
+- **Previously:** 2026-11-17 ~17:19–17:3x PT (**STOP fire — substantive: CALLIOPE'S 44/45 RED IS CURED,
   AND IT WAS NEVER ABOUT THE TREE — B7 QUOTED A `tsconfig.json` SENTENCE I REMOVED 48 DAYS AGO, SO
   ITS `=== 37` HAD BEEN A FROZEN LITERAL STANDING IN FOR A READING OF A CURED SUBJECT. THE SWEEP IS
   BACK TO 45 OF 45.**) `date`-reads **17:19:34**, **17:26:10**, **17:27:26**, **17:30:47**,

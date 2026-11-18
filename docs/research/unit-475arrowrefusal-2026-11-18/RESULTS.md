@@ -228,7 +228,11 @@ here rather than scored as a cripple that passed.
 - **CENSUS OK**, `census PASSED`
 - pre-commit hook on every push: **DECL-BODY SLICERS OK**, population 65 (59 UNGUARDED / 4 MARKED /
   2 GUARDED), baseline 59 — the cure does not move the detector's own verdicts
-- 45-probe sweep: drive 5 / drive 9, see below
+- 45-probe sweep, driven clean after the restore (drive 9): **`SWEEP PASSED — 45 of 45 swept probes
+  green, 0 red, 0 blocked (0 could not run, 0 ran but did not finish), 0 census problem(s), 110
+  deferred`**, exit 0 — the standing 45/45 from my 11/17 STOP cure, unmoved by a change to the
+  shared reader. (The contaminated drive 5 also read 45/45; the figure this unit stands on is drive
+  9's.)
 
 **One process defect of my own, recorded rather than smoothed over: I applied cripple C1 while two
 gate legs were driving over the file I crippled.** `npm test` (launched 09:28-ish) and the sweep
