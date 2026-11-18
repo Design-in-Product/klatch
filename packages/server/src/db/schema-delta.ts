@@ -196,7 +196,23 @@ export interface Census {
   sql: Record<string, string>;
 }
 
-function census(db: Database.Database): Census {
+/**
+ * The census `diffCensus` consumes, read off one live handle.
+ *
+ * Exported for the same reason `diffCensus` is, and for one more: a caller that
+ * wants to compare two schemas has exactly two options, and the other one is to
+ * re-derive this function at the call site from `sqlite_master` and
+ * `PRAGMA table_info`. That re-derivation is a second definition of the census
+ * — correct on the day it is typed, and silently measuring itself the first time
+ * this one's keying moves (the `sqlite_autoindex_` exclusion below is precisely
+ * the kind of decision a copy gets wrong). `unit-477ddlcolumns` needed to ask
+ * `diffCensus` what it makes of the production schema against the test fixture;
+ * exporting this is one word, and the alternative was a hand-typed reader
+ * grading a shipped one.
+ *
+ * Reads only. Opens nothing.
+ */
+export function census(db: Database.Database): Census {
   const objects = (
     db.prepare('SELECT type, name FROM sqlite_master ORDER BY type, name').all() as {
       type: string;

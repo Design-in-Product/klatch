@@ -1,6 +1,7 @@
 import Database from 'better-sqlite3';
 import { describe, it, expect } from 'vitest';
 import { applySchema, getDb } from '../../../packages/server/src/db/index.js';
+import { census as shippedCensus, diffCensus } from '../../../packages/server/src/db/schema-delta.js';
 
 /**
  * unit-477ddlcolumns — arm.
@@ -223,6 +224,167 @@ describe('unit-477ddlcolumns — do the two DDL definitions agree at column leve
     // passes C1 and fails here, which is why both cripples exist.
     expect(after.fixOnlyCols).toEqual(before.fixOnlyCols);
     expect(after.fixOnlyCols.some((c) => c.includes('kp_planted_prod'))).toBe(false);
+  });
+
+  it('A3: the order difference, put to the SHIPPED comparator in both directions', () => {
+    const prod = prodHandle();
+    const fix = getDb();
+
+    // `census` and `diffCensus` are both the real exported functions from
+    // `db/schema-delta.ts`. Nothing about the census is re-derived here: a
+    // hand-typed copy of it would be the thing grading the shipped one, and
+    // this corpus has already paid for that mistake twice.
+    const pc = shippedCensus(prod);
+    const fc = shippedCensus(fix);
+
+    const fixToProd = diffCensus(fc, pc);
+    const prodToFix = diffCensus(pc, fc);
+    prod.close();
+
+    const L = (s: string) => console.log(s);
+    L('');
+    L('=== A3 SHIPPED diffCensus ===');
+    L(`fixture -> production: empty=${fixToProd.empty}`);
+    L(`  addedObjects   (${fixToProd.addedObjects.length}): ${fixToProd.addedObjects.join(', ') || '(none)'}`);
+    L(`  droppedObjects (${fixToProd.droppedObjects.length}): ${fixToProd.droppedObjects.join(', ') || '(none)'}`);
+    L(`  addedColumns   (${fixToProd.addedColumns.length}): ${fixToProd.addedColumns.join(', ') || '(none)'}`);
+    L(`  rebuiltTables  (${fixToProd.rebuiltTables.length}): ${fixToProd.rebuiltTables.join(', ') || '(none)'}`);
+    L(`  alteredTables  (${fixToProd.alteredTables.length}): ${fixToProd.alteredTables.join(', ') || '(none)'}`);
+    L(`production -> fixture: empty=${prodToFix.empty}`);
+    L(`  addedObjects   (${prodToFix.addedObjects.length}): ${prodToFix.addedObjects.join(', ') || '(none)'}`);
+    L(`  droppedObjects (${prodToFix.droppedObjects.length}): ${prodToFix.droppedObjects.join(', ') || '(none)'}`);
+    L(`  addedColumns   (${prodToFix.addedColumns.length}): ${prodToFix.addedColumns.join(', ') || '(none)'}`);
+    L(`  rebuiltTables  (${prodToFix.rebuiltTables.length}): ${prodToFix.rebuiltTables.join(', ') || '(none)'}`);
+    L(`  alteredTables  (${prodToFix.alteredTables.length}): ${prodToFix.alteredTables.join(', ') || '(none)'}`);
+
+    // Measurement, not a gate — the printed cells are what is graded. The one
+    // assertion is that both censuses were actually taken.
+    expect(Object.keys(fc.cols).length).toBeGreaterThan(0);
+    expect(Object.keys(pc.cols).length).toBeGreaterThan(0);
+  });
+
+  it('A4: constraint granularity — the one thing PRAGMA table_info cannot see', () => {
+    const prod = prodHandle();
+    const pc = shippedCensus(prod);
+    const fc = shippedCensus(getDb());
+    prod.close();
+
+    // `PRAGMA table_info` carries name/type/notnull/dflt_value/pk and NOTHING
+    // about CHECK, FOREIGN KEY or UNIQUE. A1 could therefore report perfect
+    // agreement over two tables whose constraints differ — which is also why
+    // `alteredTables` exists in the shipped comparator at all. The census's
+    // `sql` field is SQLite's own stored `CREATE TABLE` text, so it is the
+    // right surface for this question and no DDL file is parsed here either.
+    const L = (s: string) => console.log(s);
+    L('');
+    L('=== A4 CONSTRAINT / CREATE TABLE TEXT ===');
+    const tables = Object.keys(pc.cols).sort();
+    let identical = 0;
+    const differing: string[] = [];
+    for (const t of tables) {
+      const same = pc.sql[t] === fc.sql[t];
+      if (same) identical++;
+      else differing.push(t);
+      L(`${t}: CREATE TABLE text ${same ? 'BYTE-IDENTICAL' : 'DIFFERS'}`);
+    }
+    L(`byte-identical: ${identical} of ${tables.length} · differing: ${differing.join(', ') || '(none)'}`);
+
+    // For the differing ones, compare the CONSTRAINT CLAUSES as sets rather
+    // than the whole text: the text necessarily differs wherever the column
+    // ORDER differs, and reporting that as a constraint difference would fuse
+    // two mechanisms A1 has already told apart.
+    const clauses = (sql: string, kw: RegExp) =>
+      (sql.match(kw) ?? []).map((s) => s.replace(/\s+/g, ' ').trim()).sort();
+    const CHECKS = /CHECK[\s]*\([^)]*\)/gi;
+    const FKS = /REFERENCES[\s]+[A-Za-z_"]+[\s]*\([^)]*\)/gi;
+    const UNIQ = /UNIQUE[\s]*\([^)]*\)|\bUNIQUE\b/gi;
+    const PKS = /PRIMARY[\s]+KEY[\s]*\([^)]*\)|\bPRIMARY[\s]+KEY\b/gi;
+    L('');
+    for (const t of differing) {
+      for (const [label, kw] of [
+        ['CHECK', CHECKS],
+        ['REFERENCES', FKS],
+        ['UNIQUE', UNIQ],
+        ['PRIMARY KEY', PKS],
+      ] as const) {
+        const p = clauses(pc.sql[t], kw);
+        const f = clauses(fc.sql[t], kw);
+        const agree = JSON.stringify(p) === JSON.stringify(f);
+        L(`${t} ${label}: ${agree ? 'AGREE' : 'DIFFER'} — prod ${JSON.stringify(p)} · fixture ${JSON.stringify(f)}`);
+      }
+    }
+
+    // The four buckets above are a PREFIX comparison and the output shows it:
+    // `CHECK\([^)]*\)` stops at the first `)`, so it captures
+    // `CHECK (status IN ('complete', ...'` without its closing paren, and a
+    // difference after that point is invisible. Rather than leave a truncating
+    // reader as the evidence for a clean verdict, the complete key:
+    //
+    //   split the CREATE TABLE body on TOP-LEVEL commas (depth 0 only, so a
+    //   CHECK's own internal commas do not split it), normalise whitespace,
+    //   SORT, and compare.
+    //
+    // If the two sides are equal under that key, then everything the DDL says
+    // is the same on both sides and the ONLY difference is the order in which
+    // it is said. That is a complete statement, not a prefix of one.
+    const topLevelClauses = (sql: string): string[] => {
+      const open = sql.indexOf('(');
+      const close = sql.lastIndexOf(')');
+      if (open < 0 || close <= open) return [];
+      const body = sql.slice(open + 1, close);
+      const out: string[] = [];
+      let depth = 0;
+      let cur = '';
+      let quote: string | null = null;
+      for (const ch of body) {
+        if (quote) {
+          cur += ch;
+          if (ch === quote) quote = null;
+          continue;
+        }
+        if (ch === "'" || ch === '"') {
+          quote = ch;
+          cur += ch;
+          continue;
+        }
+        if (ch === '(') depth++;
+        if (ch === ')') depth--;
+        if (ch === ',' && depth === 0) {
+          out.push(cur.replace(/\s+/g, ' ').trim());
+          cur = '';
+          continue;
+        }
+        cur += ch;
+      }
+      if (cur.trim()) out.push(cur.replace(/\s+/g, ' ').trim());
+      return out;
+    };
+
+    L('');
+    L('--- A5: equal up to permutation? (complete key, top-level clause multiset) ---');
+    let permutationOnly = 0;
+    const realDiffs: string[] = [];
+    for (const t of tables) {
+      const p = topLevelClauses(pc.sql[t]);
+      const f = topLevelClauses(fc.sql[t]);
+      const same = JSON.stringify([...p].sort()) === JSON.stringify([...f].sort());
+      const orderSame = JSON.stringify(p) === JSON.stringify(f);
+      if (same) permutationOnly++;
+      else realDiffs.push(t);
+      L(
+        `${t}: clauses ${p.length}/${f.length} · multiset ${same ? 'EQUAL' : 'DIFFERENT'} · order ${orderSame ? 'same' : 'DIFFERENT'}`
+      );
+      if (!same) {
+        L(`  prod-only clauses: ${JSON.stringify(p.filter((c) => !f.includes(c)))}`);
+        L(`  fixture-only clauses: ${JSON.stringify(f.filter((c) => !p.includes(c)))}`);
+      }
+    }
+    L(
+      `equal up to permutation: ${permutationOnly} of ${tables.length} · genuinely different: ${realDiffs.join(', ') || '(none)'}`
+    );
+
+    // Measurement leg. The printed cells are the gradeable claims.
+    expect(tables.length).toBe(9);
   });
 
   it('A2: P6 — messages_rebuild is in neither effective schema', () => {

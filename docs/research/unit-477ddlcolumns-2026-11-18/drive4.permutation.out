@@ -1,0 +1,145 @@
+
+[1m[46m RUN [49m[22m [36mv4.0.18 [39m[90m/Users/xian/Development/klatch-worktrees/daedalus[39m
+
+[90mstdout[2m | docs/research/unit-477ddlcolumns-2026-11-18/arm-schemaagreement.test.ts[2m > [22m[2munit-477ddlcolumns — do the two DDL definitions agree at column level?[2m > [22m[2mA1: baseline comparison, production effective schema vs the live test fixture
+[22m[39m
+=== A1 BASELINE ===
+tables: prod 9 · fixture 9 · shared 9
+prod-only tables (0): (none)
+fixture-only tables (0): (none)
+shared tables whose column NAME SET differs: 0 of 9
+  (none)
+PROD-ONLY columns (0):
+FIXTURE-ONLY columns (0):
+ATTRIBUTE differences on same-named columns (0):
+ORDER differences over shared columns (5):
+  channels: prod=[id name system_prompt model mode created_at source source_metadata compaction_state project_id type ground_rules] fixture=[id name type system_prompt model mode source source_metadata compaction_state project_id ground_rules created_at]
+  entities: prod=[id name handle model system_prompt color created_at effort reflections] fixture=[id name handle model effort system_prompt color reflections created_at]
+  message_artifacts: prod=[id message_id type tool_name input_summary content created_at file_name file_mime_type file_size_bytes file_storage_key] fixture=[id message_id type tool_name input_summary content file_name file_mime_type file_size_bytes file_storage_key created_at]
+  messages: prod=[id channel_id role content status stop_reason model created_at entity_id original_timestamp original_id] fixture=[id channel_id role content status stop_reason model entity_id original_timestamp original_id created_at]
+  projects: prod=[id name instructions source source_metadata created_at memory] fixture=[id name instructions memory source source_metadata created_at]
+objects: prod 13 · fixture 13
+  prod-only objects: (none)
+  fixture-only objects: (none)
+
+[90mstdout[2m | docs/research/unit-477ddlcolumns-2026-11-18/arm-schemaagreement.test.ts[2m > [22m[2munit-477ddlcolumns — do the two DDL definitions agree at column level?[2m > [22m[2mC1: a column planted on the FIXTURE side only must surface as fixture-only, and nothing else may move
+[22m[39m
+=== C1 AFTER FIXTURE-SIDE PLANT ===
+tables: prod 9 · fixture 9 · shared 9
+prod-only tables (0): (none)
+fixture-only tables (0): (none)
+shared tables whose column NAME SET differs: 1 of 9
+  files
+PROD-ONLY columns (0):
+FIXTURE-ONLY columns (1):
+  files.kp_planted_fixture
+ATTRIBUTE differences on same-named columns (0):
+ORDER differences over shared columns (5):
+  channels: prod=[id name system_prompt model mode created_at source source_metadata compaction_state project_id type ground_rules] fixture=[id name type system_prompt model mode source source_metadata compaction_state project_id ground_rules created_at]
+  entities: prod=[id name handle model system_prompt color created_at effort reflections] fixture=[id name handle model effort system_prompt color reflections created_at]
+  message_artifacts: prod=[id message_id type tool_name input_summary content created_at file_name file_mime_type file_size_bytes file_storage_key] fixture=[id message_id type tool_name input_summary content file_name file_mime_type file_size_bytes file_storage_key created_at]
+  messages: prod=[id channel_id role content status stop_reason model created_at entity_id original_timestamp original_id] fixture=[id channel_id role content status stop_reason model entity_id original_timestamp original_id created_at]
+  projects: prod=[id name instructions source source_metadata created_at memory] fixture=[id name instructions memory source source_metadata created_at]
+objects: prod 13 · fixture 13
+  prod-only objects: (none)
+  fixture-only objects: (none)
+
+[90mstdout[2m | docs/research/unit-477ddlcolumns-2026-11-18/arm-schemaagreement.test.ts[2m > [22m[2munit-477ddlcolumns — do the two DDL definitions agree at column level?[2m > [22m[2mC2: a column planted on the PRODUCTION side only must surface as prod-only and NOT as fixture-only
+[22m[39m
+=== C2 AFTER PRODUCTION-SIDE PLANT ===
+tables: prod 9 · fixture 9 · shared 9
+prod-only tables (0): (none)
+fixture-only tables (0): (none)
+shared tables whose column NAME SET differs: 1 of 9
+  files
+PROD-ONLY columns (1):
+  files.kp_planted_prod
+FIXTURE-ONLY columns (0):
+ATTRIBUTE differences on same-named columns (0):
+ORDER differences over shared columns (5):
+  channels: prod=[id name system_prompt model mode created_at source source_metadata compaction_state project_id type ground_rules] fixture=[id name type system_prompt model mode source source_metadata compaction_state project_id ground_rules created_at]
+  entities: prod=[id name handle model system_prompt color created_at effort reflections] fixture=[id name handle model effort system_prompt color reflections created_at]
+  message_artifacts: prod=[id message_id type tool_name input_summary content created_at file_name file_mime_type file_size_bytes file_storage_key] fixture=[id message_id type tool_name input_summary content file_name file_mime_type file_size_bytes file_storage_key created_at]
+  messages: prod=[id channel_id role content status stop_reason model created_at entity_id original_timestamp original_id] fixture=[id channel_id role content status stop_reason model entity_id original_timestamp original_id created_at]
+  projects: prod=[id name instructions source source_metadata created_at memory] fixture=[id name instructions memory source source_metadata created_at]
+objects: prod 13 · fixture 13
+  prod-only objects: (none)
+  fixture-only objects: (none)
+
+[90mstdout[2m | docs/research/unit-477ddlcolumns-2026-11-18/arm-schemaagreement.test.ts[2m > [22m[2munit-477ddlcolumns — do the two DDL definitions agree at column level?[2m > [22m[2mA3: the order difference, put to the SHIPPED comparator in both directions
+[22m[39m
+=== A3 SHIPPED diffCensus ===
+fixture -> production: empty=false
+  addedObjects   (0): (none)
+  droppedObjects (0): (none)
+  addedColumns   (0): (none)
+  rebuiltTables  (5): channels, entities, message_artifacts, messages, projects
+  alteredTables  (0): (none)
+production -> fixture: empty=false
+  addedObjects   (0): (none)
+  droppedObjects (0): (none)
+  addedColumns   (0): (none)
+  rebuiltTables  (5): channels, entities, message_artifacts, messages, projects
+  alteredTables  (0): (none)
+
+[90mstdout[2m | docs/research/unit-477ddlcolumns-2026-11-18/arm-schemaagreement.test.ts[2m > [22m[2munit-477ddlcolumns — do the two DDL definitions agree at column level?[2m > [22m[2mA4: constraint granularity — the one thing PRAGMA table_info cannot see
+[22m[39m
+=== A4 CONSTRAINT / CREATE TABLE TEXT ===
+channel_entities: CREATE TABLE text BYTE-IDENTICAL
+channels: CREATE TABLE text DIFFERS
+entities: CREATE TABLE text DIFFERS
+file_refs: CREATE TABLE text BYTE-IDENTICAL
+files: CREATE TABLE text BYTE-IDENTICAL
+ground_rules_presets: CREATE TABLE text BYTE-IDENTICAL
+message_artifacts: CREATE TABLE text DIFFERS
+messages: CREATE TABLE text DIFFERS
+projects: CREATE TABLE text DIFFERS
+byte-identical: 4 of 9 · differing: channels, entities, message_artifacts, messages, projects
+
+channels CHECK: AGREE — prod [] · fixture []
+channels REFERENCES: AGREE — prod [] · fixture []
+channels UNIQUE: AGREE — prod [] · fixture []
+channels PRIMARY KEY: AGREE — prod ["PRIMARY KEY"] · fixture ["PRIMARY KEY"]
+entities CHECK: AGREE — prod [] · fixture []
+entities REFERENCES: AGREE — prod [] · fixture []
+entities UNIQUE: AGREE — prod [] · fixture []
+entities PRIMARY KEY: AGREE — prod ["PRIMARY KEY"] · fixture ["PRIMARY KEY"]
+message_artifacts CHECK: AGREE — prod [] · fixture []
+message_artifacts REFERENCES: AGREE — prod ["REFERENCES messages(id)"] · fixture ["REFERENCES messages(id)"]
+message_artifacts UNIQUE: AGREE — prod [] · fixture []
+message_artifacts PRIMARY KEY: AGREE — prod ["PRIMARY KEY"] · fixture ["PRIMARY KEY"]
+messages CHECK: AGREE — prod ["CHECK (role IN ('user', 'assistant')","CHECK (status IN ('complete', 'streaming', 'error', 'incomplete')"] · fixture ["CHECK (role IN ('user', 'assistant')","CHECK (status IN ('complete', 'streaming', 'error', 'incomplete')"]
+messages REFERENCES: AGREE — prod ["REFERENCES channels(id)"] · fixture ["REFERENCES channels(id)"]
+messages UNIQUE: AGREE — prod [] · fixture []
+messages PRIMARY KEY: AGREE — prod ["PRIMARY KEY"] · fixture ["PRIMARY KEY"]
+projects CHECK: AGREE — prod [] · fixture []
+projects REFERENCES: AGREE — prod [] · fixture []
+projects UNIQUE: AGREE — prod [] · fixture []
+projects PRIMARY KEY: AGREE — prod ["PRIMARY KEY"] · fixture ["PRIMARY KEY"]
+
+--- A5: equal up to permutation? (complete key, top-level clause multiset) ---
+channel_entities: clauses 4/4 · multiset EQUAL · order same
+channels: clauses 12/12 · multiset EQUAL · order DIFFERENT
+entities: clauses 9/9 · multiset EQUAL · order DIFFERENT
+file_refs: clauses 7/7 · multiset EQUAL · order same
+files: clauses 7/7 · multiset EQUAL · order same
+ground_rules_presets: clauses 5/5 · multiset EQUAL · order same
+message_artifacts: clauses 11/11 · multiset EQUAL · order DIFFERENT
+messages: clauses 11/11 · multiset EQUAL · order DIFFERENT
+projects: clauses 7/7 · multiset EQUAL · order DIFFERENT
+equal up to permutation: 9 of 9 · genuinely different: (none)
+
+[90mstdout[2m | docs/research/unit-477ddlcolumns-2026-11-18/arm-schemaagreement.test.ts[2m > [22m[2munit-477ddlcolumns — do the two DDL definitions agree at column level?[2m > [22m[2mA2: P6 — messages_rebuild is in neither effective schema
+[22m[39m
+=== A2 P6 ===
+prod tables: channel_entities, channels, entities, file_refs, files, ground_rules_presets, message_artifacts, messages, projects
+fixture tables: channel_entities, channels, entities, file_refs, files, ground_rules_presets, message_artifacts, messages, projects
+messages_rebuild present: prod=false fixture=false
+
+ [32m✓[39m docs/research/unit-477ddlcolumns-2026-11-18/arm-schemaagreement.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m6 passed[39m[22m[90m (6)[39m
+[2m   Start at [22m 13:25:47
+[2m   Duration [22m 182ms[2m (transform 58ms, setup 42ms, import 34ms, tests 19ms, environment 0ms)[22m
+
