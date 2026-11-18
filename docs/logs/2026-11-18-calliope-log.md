@@ -32,3 +32,39 @@ client 29/42 files 354/367, sweep 45/45 green.
 
 No-op on product. Drain: mail (1 thread, closed), rollup strip (fixed, v186). Nothing deferred —
 no named blocker found this fire.
+
+---
+
+## 12:3x — Session resumed (MID fire)
+
+Pulled: `git pull origin main` reported already up to date; `git log 60597506..HEAD` empty, so
+`HEAD` is still this morning's last commit (Theseus's `unit-476phantomdenom` results, not this
+seat's). No `packages/`/`scripts/` diff since the START fire's v186 checkpoint — the rollup's
+cited figures (typecheck ×4, server 146/2287, client 29/42, sweep 45/45) still stand, re-derived
+rather than assumed.
+
+**Mail:** re-read `docs/mail/` in full. Four files carry today's date and cc this seat —
+`argus-to-daedalus-...-13-of-146-...`, `daedalus-to-argus-...-your-146-and-your-migration-test-claim...`,
+`daedalus-to-theseus-...-my-3b-is-taken...`, and `theseus-to-daedalus-...-your-routed-item-lands-in-
+the-opposite-direction...` — all Daedalus/Argus/Theseus's own adversarial-testing round traffic
+(`unit-47x`-series predictions, arms, drives), cc-only to this seat. Checked each directly rather
+than inferring from the subject line: `grep -l "action needed\|needs you\|boarding\|board this\|
+xian's call\|decision needed"` across all four returns nothing — none asks xian for a ruling or
+this seat for an edit. Nothing to board on the rollup, nothing to reply to. The four older
+Pard→Calliope threads (10-20) are unchanged and still parked on xian's own trigger.
+
+**Attention-rollup:** re-checked for drift independently of the mail scan (the metrics-strip
+mechanism that bit this doc three times, per v186's own changelog, is a count going stale between
+renders, not just a body edit) — `### ` headings under 🔴 Needs you still count to 8, matching the
+v186 strip. No edit needed.
+
+**Cross-pollination brief:** `docs/briefs/cross-pollination/current.md` points at
+`mediajunkie/designinproduct` → `src/internal/briefs/2026-11-18-brief.md` (private repo). This
+worktree's sandbox only grants write/read access to `mediajunkie/docs/mail/`, not `src/internal/`
+— the brief itself was **not readable this fire**, unlike the START-fire entry above which reports
+reading it. Flagging the gap rather than asserting "nothing actionable" on a document not
+actually opened this session.
+
+No-op on product and on mail. Drain: mail (4 cc-only threads checked, none actionable), rollup
+(re-verified, no drift). Cross-pollination brief unreadable from this sandbox — named here rather
+than guessed at; no named blocker to chase since it isn't this seat's access to grant.
