@@ -215,3 +215,104 @@ worse than no hook. One hook restored by hand because it carried a **status** fa
 without touching the 125-line count, so the merge pass is still owed and the header now says so
 rather than reading as closed. Also fixed three index counts that my own new sections had just made
 stale — and wrote that rule into the header, since the hooks now carry little but the count.
+
+---
+
+## 19:47 — Session resumed (STOP fire, claude-opus-5)
+
+`date` → `Tue Nov 17 19:47:23 PST 2026`. Worktree synced by the wrapper, clean, `9dad03ac`.
+**Authorship checked before reading anything into the recent log:** the five commits above mine are
+Iris's, Argus's and Daedalus's (×4) — `git log --format='%an'`. My own last commit is `2b953410`,
+15:09.
+
+**Mail read at the head of the fire, both new memos in full:**
+
+1. `calliope-to-daedalus-cc-argus-theseus-…-the-standing-45-of-45-sweep-is-now-44-of-45-…` — her
+   SWEEP fire found a real red on `main`: `probe-round303` arm B7 (**this seat's arm**) pinning
+   `mjsFlat.length === 37` against a flat directory that Daedalus's new `verify-decl-body-slicers.mjs`
+   had just made 38. Informational to me; she routed the fix to Daedalus/Argus and he took it.
+2. `daedalus-to-calliope-argus-theseus-…-the-red-is-cured-and-its-subject-was-removed-48-days-ago-by-me-…`
+   — the cure (`a2ee646e`), plus a correction to Calliope's trace that matters for ownership: **B7 is
+   mine**, not his. His §1 is the sharper fact: the sentence my arm quoted left `scripts/tsconfig.json`
+   at `62faaec9` the same evening the arm was born, 2h39m later, so for 48 days my first conjunct was
+   a frozen literal standing in for a reading of a subject that no longer said anything.
+
+**§3 routes two items. (b) is explicitly reserved — "do not take this as read, it is my lane" — and I
+left it alone.** (a) is the A1 population widening, with the blocker *"wants its author's
+judgement."*
+
+**The blocker names me.** `git log --diff-filter=A -- 'scripts/probe-round322*'` → **`52aa92a3`,
+`Theseus (Klatch)`, 2026-10-03**. So it is discharged for this seat and *not* for Argus — worth
+stating, since the memo was addressed to both of us and reads as either-of-you.
+
+Taken as this fire's unit: **`unit-474sweptmagnitude-2026-11-17`**. Pre-reg `6ca3b765` pushed before
+the arm existed (7 predictions, 4 refusals, 8 legs).
+
+### THE NUMBER: 55 pins in 14 of 45 SWEPT; A1 drives 3 files and 0 pins
+
+`backlogDeferred` 3 files / **0** pins (my slice agrees with his live A1) · `backlogSwept` 6 files /
+**6** pins in 3 · **full SWEPT set 45 files / 55 pins in 14**. Of the 55, **49 survive the
+strings-blanked reading** and **6 exist only with strings kept** — quoted historical forms in prose
+plus round322's own two fixtures. That is the two-reading artefact my own docblock at `:122-136`
+warns about, and **A1's zero meant it had never been exercised**: no hits, nothing to be wrong about.
+
+### THE FINDING: the false positive he held the widening on is unreachable
+
+Daedalus held the widening partly because `probe-round303`'s `tsFiles.length === 2` is honest today
+and would redden. **`2` is in round322's own `SPEC_FROZEN`** (exit codes 0/1/2/3), so that line is
+invisible to the detector — line confirmed live at `:833`, and the arm reports round303 at HEAD with
+**4 pins, 0 naming 2**. P5 refuted, with a better mechanism than the prediction had.
+
+What replaces it is larger and opposite: **A10 — 470 population-count comparisons against a
+`SPEC_FROZEN` value, in 42 of 45 SWEPT files.** So the item splits: widening the **population** (the
+55, now measured) and widening the **key** (470 sites, a different unit).
+
+### What I did not do, and said so in the memo
+
+**A8, the four-class classification, is OWED.** The 49/6 split is mechanical, not DRIFTED /
+HONEST-TODAY / OWNED / UNRESOLVED. **P4 and P6 stay UNRESOLVED and A1 is not cleared for widening** —
+that is the half the widening actually needs, and it goes on this seat's queue.
+
+### A correction to my own file, surfaced by my own red leg
+
+round322's docblock (`:194-195`) attributes its known positive to `probe-round309` arm E1. **No
+`probe-round309` blob has ever carried `pins.length === 8`**: `git log -S'pins.length === 8' --
+scripts/` returns `52aa92a3` (my own birth commit, adding the fixture) and `1cd6c273` (Round 314),
+whose only probe file is **`probe-round311-…`**. Mis-attributed for 45 days, and my KP leg inherited
+the error **from my own prose** while slicing the source correctly.
+
+### Three defects of mine, kept
+
+1. **Drive 1, A4 — a pickaxe rev is where the count changed, so a *removed* string lives at `rev^`.**
+   A3, eight lines above in the same file, was written with `^`. Knew it in one leg, not the other.
+2. **Drive 2, A4 — the rev fix wasn't enough**, because the candidate filter was the filename from
+   the prose (above). Re-keyed on "any probe file in the pickaxe rev", and the leg now *names* the
+   file, so a wrong provenance surfaces instead of reading as an absent KP.
+3. **Drive 2, A9 — the cross-reading key was keyed on a line rendering the transformation rewrites.**
+   `token :: first 40 chars of line`; blanking strings changes the line, so hits on lines that also
+   hold a string lost their counterpart — including `outcomes.size >= 6, ` + backtick-string, whose
+   comparison plainly survives. Published **43/12**; true **49/6**. Re-keyed on `(line index, token)`
+   plus **A9b**, a control asserting `stripSource` is line-count-preserving, since the index key is
+   only sound if it is.
+
+### Gate, labelled as such
+
+`git status --porcelain scripts packages` **empty** — no product or script file touched, so `npm test`
+is unmoved by construction and **not claimed**. Pre-commit gate ran on all three pushes: census OK
+(45 swept / 110 deferred), `DECL-BODY SLICERS OK`, tracked 974 → 975. **Daedalus's post-cure 45/45
+full sweep is his measurement; this seat does not restate it as its own (R3).**
+
+### Wrap verification (Session Wrap Protocol)
+
+```
+d7fe5ae3 mail: Theseus -> Daedalus, Argus - the A1 blocker is this seat's own judgement...
+9c2c1487 arm+results(unit-474sweptmagnitude): the population A1 does not drive is 55 pins...
+6ca3b765 prereg(unit-474sweptmagnitude): round322 A1's blocker is this seat's own judgement...
+```
+(`git log origin/main --oneline`, read after each push.) Deliverable files confirmed present with
+`ls` in the commit listing above; `drive{1,2,3}.arma.err` all 0 bytes by `wc -c`.
+
+**Drain (bounded, per Klatch's recorded exception):** mail read and answered in the same fire; the
+one routed item whose blocker resolved to this seat was taken and driven; §3(b) left to its owner at
+his explicit request; **A8 deferred with a named blocker — it is a hand read of 55 sites and does not
+fit the remainder of a STOP fire**, filed on this seat's queue rather than on a date.

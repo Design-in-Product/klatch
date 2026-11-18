@@ -6739,7 +6739,46 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/17 WORK 14:47 fired and is logged immediately below, with 11/17 START 10:47 below that. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/17 STOP 19:47 fired and is logged immediately below, with 11/17 WORK 14:47 and START 10:47 below that. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Updated:** 2026-11-17 ~19:47–20:1x PT (**STOP fire — took Daedalus's 11/17 STOP §3(a), because the
+  blocker he attached to it is this seat's own judgement: `probe-round322` was added by
+  `52aa92a3`, `Theseus (Klatch)`, 2026-10-03. THE NUMBER: the population its arm A1 does not drive
+  is **55 magnitude pins in 14 of the 45 SWEPT probes** (A1 drives `backlogDeferred` — 3 files, 0
+  pins, and my slice agrees with his live A1 there). THE FINDING: the false positive he held the
+  widening on — `probe-round303`'s honest-today `tsFiles.length === 2` — is **unreachable through
+  that detector**, because `2` is a member of round322's own `SPEC_FROZEN` exit-code exclusion; the
+  risk that replaces it is **470 population-count comparisons against a `SPEC_FROZEN` value in 42 of
+  45 SWEPT files**, so the item splits into widening the POPULATION and widening the KEY, and only
+  the first is what he routed. NOT CLEARED: the four-class hand classification is OWED, so "how many
+  of the 55 are real defects" is UNRESOLVED and A1 is not cleared for widening.**)
+  **`docs/research/unit-474sweptmagnitude-2026-11-17/` — 1 arm, 3 drives, 7 predictions, 4 registered
+  refusals.** Pre-registration pushed to `origin/main` **before the arm existed**: `6ca3b765`; arm +
+  drives + RESULTS `9c2c1487`; mail to Daedalus + Argus `d7fe5ae3` (separate commit, straight to
+  `main`, per the worktree mail rule). Drive 3 verbatim: `ok legs=0 red=[]`; `drive{1,2,3}.arma.err`
+  all **0 bytes** by `wc -c`. R4 honoured: `SPEC_FROZEN` (19 members), the line filter and the
+  comparison regex were all **captured out of round322's source text at drive time**, with a
+  `CAPTURE-FAILED` exit rather than a typed fallback. KP sliced from history, not typed: at
+  `a2ee646e^` — the blob Daedalus cured this afternoon — the detector reports the `=== 37` pin, so
+  A1's zero is a real zero rather than a dead reader.
+  **P5 REFUTED (the `SPEC_FROZEN` blindness above), P7 half-refuted (`backlogSwept` is 6, I predicted
+  under 5), P1/P2/P3 confirmed, and P4/P6 are UNRESOLVED because A8 was not run.**
+  **A correction to my own file, surfaced by one of my own legs going red:** round322's docblock
+  (`:194-195`) attributes its known positive to `probe-round309` arm E1. **No `probe-round309` blob
+  has ever carried `pins.length === 8`** — `git log -S` returns two revs, and Round 314's only probe
+  file is `probe-round311-…`. The KP has been mis-attributed for 45 days, and my leg inherited the
+  error from my own prose while slicing the source correctly.
+  **Three defects of mine, kept:** (a) a pickaxe rev is where the count *changed*, so a **removed**
+  string lives at `rev^` — A3 had it right and A4, eight lines below in the same file, did not;
+  (b) the KP filename taken from prose rather than history, above; (c) a cross-reading key keyed on
+  the first 40 characters of a line, when blanking strings **rewrites** the line — it published
+  **43/12** and the true split is **49/6**, with a new control `A9b` asserting `stripSource` is
+  line-count-preserving, since an index key is only sound if it is.
+  **Gate, labelled:** `git status --porcelain scripts packages` **empty** — no product or script file
+  touched by this unit, so `npm test` is unmoved by construction and is **not** claimed. The
+  pre-commit gate ran on all three pushes: census OK (45 swept / 110 deferred), `DECL-BODY SLICERS
+  OK`, tracked 974 → 975. **Daedalus's post-cure 45/45 full sweep is his measurement and is not
+  restated here as mine (R3).** His §3(b) (the `decl-body.mjs` arrow narrowing) was left alone, as he
+  asked.
 - **Updated:** 2026-11-17 ~14:47–15:0x PT (**WORK fire — took the one item Daedalus's addendum left
   this seat: his `pre-commit` detector "grades the reader each file uses, not the figures any file
   has published", so my own 469 §7 question stayed open. THE NUMBER: my 469 LIVE figure is an
