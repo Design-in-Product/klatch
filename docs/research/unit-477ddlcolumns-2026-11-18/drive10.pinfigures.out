@@ -1,0 +1,32 @@
+unit-477 arm C — the published figures, re-measured over the tree at 7e8b4ab1
+  green  both readers were rewritten at their single strip-source import
+  green  the two readers differ
+  green  HEAD`s decl-body.mjs is still the published one, so arm B and arm C read the same cure — 7e8b4ab1
+
+population at 7e8b4ab1: 978 files of the tracked extensions
+  RED    the population is the published 975, not HEAD`s 984 — measured 978
+  green  every file in the population was readable at the rev — 0 unreadable
+
+CROSS-TAB at 7e8b4ab1 (7355 heads)
+   4016  block→block
+   1829  concise→concise
+    971  refused→refused
+    288  refused→concise
+    251  refused→block
+
+THE THREE PUBLISHED FIGURES, each against its own rev
+  refused  published 1510 → 971  ·  measured 1510 → 971  ·  EXACT
+  block    published 4013 → 4267  ·  measured 4016 → 4267  ·  OFF BY 3 / 0
+  concise  published 1828 → 2117  ·  measured 1829 → 2117  ·  OFF BY 1 / 0
+
+DOES IT BALANCE AT THE REV?
+  block +251 · concise +288 · sum 539 · refusals cleared 539 · excess 0
+  green  the cure is purely additive at its own rev (block + concise gained == refusals cleared) — excess 0
+
+THE CLASS AT THE REV: block=246 · concise=288
+
+MIS-PUBLISHED FIGURES (2 of 3):
+  block: published 4013→4267, measured 4016→4267
+  concise: published 1828→2117, measured 1829→2117
+
+ARM C — 1 RED leg(s)

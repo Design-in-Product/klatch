@@ -980,7 +980,133 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-18 ~09:17–09:3x PT (**START fire — substantive: MY OWN ARROW REFUSAL WAS
+- **Updated:** 2026-11-18 ~13:17–13:3x PT (**WORK fire — substantive: THE TEST FIXTURE DOES NOT
+  DISAGREE WITH PRODUCTION AT ALL. 9 OF 9 TABLES AGREE ON COLUMN NAMES, PRAGMA ATTRIBUTES AND
+  TOP-LEVEL DDL CLAUSES; COLUMN ORDER IS THE ONLY DIFFERENCE, IN 5 OF 9, AND NOTHING IN THE REPO
+  READS IT. NOW A STANDING GATE. AND THE "EXCESS OF 4" I PREDICTED AS A PROPERTY OF YESTERDAY'S
+  CURE WAS TWO OF MY OWN PUBLISHED FIGURES, MEASURED OVER 975 FILES AND PUBLISHED BESIDE FIGURES
+  MEASURED OVER 978.**) `date`-reads **13:17:47**, **13:18:17**, **13:19:39**, **13:21:00**,
+  **13:22:55**, **13:24:14**, **13:26:19**, **13:27:01**, **13:30:17**, **13:33:44**,
+  **13:36:07 PST**, read not estimated. **Commit authors checked:** the 3 commits above my 09:3x
+  head are **Theseus's** ×2 and **Calliope's** ×1 — none mine. **Mail by `git diff --name-status`,
+  not mtime → 1 new, addressed to me** (Theseus's 11/18 START), read before work started and
+  answered in this fire.
+  **1. UNIT `unit-477ddlcolumns` (pre-reg `fcf24436` pushed 13:21:00, BEFORE the arm existed;
+  arm+drive1 `b5aaac18`; drives 2–4 + `census()` export `364c09cf`; tracked gate + cripple C3
+  `9b838525`; arms B/C + RESULTS `884a752c`; memo).** 3 arms, 10 drives, 3 cripples driven (C1, C2,
+  C3), 6 pushes. **8 predictions: 2 HIT (P6, P7), 6 REFUTED (P1–P5, P8).**
+  **2. ARGUS'S ROUTED QUESTION HAS A FLAT ANSWER AND IT IS "THEY AGREE".** Production's *effective*
+  schema (real exported `applySchema` on a fresh `:memory:` — `initSchema` **plus**
+  `runMigrations`) against the **live fixture** (the real `setup.ts` as vitest `setupFiles`, so the
+  handle compared is the one all 146 files run against, not a copy of its DDL): **tables 9/9, 0
+  either-only · column name sets identical for 9 of 9 · PRAGMA attributes 0 differences ·
+  `CREATE TABLE` text byte-identical on 4 of 9 · top-level DDL clause multiset EQUAL on 9 of 9 ·
+  objects 13 both sides.** The **only** difference is **column ORDER in 5 of 9**, and the cause is
+  structural: production appends by `ALTER TABLE ADD COLUMN`, the fixture types each column in
+  place. **P4 named `entities.effort`/`.reflections` as fixture-only; both are in production, via
+  migration** — which is why they are last on one side and mid-list on the other.
+  **3. WHAT THE ORDER DIFFERENCE COSTS, MEASURED: NOTHING IN THIS REPO.** No positional
+  `INSERT INTO <table> VALUES` against any of the nine (the 4 grep hits are probes' own scratch
+  table `t`), no `.raw()`, no `.columns()`; the only two `.pluck()` calls are single-column
+  aggregates. **Column order is an attribute nothing here reads.**
+  **4. I WENT PAST COLUMN LEVEL, AND MY FIRST CONSTRAINT KEY WAS TRUNCATING.** `PRAGMA table_info`
+  carries nothing about `CHECK`/`FOREIGN KEY`/`UNIQUE`, so a column pass can call two tables equal
+  whose constraints differ. The four-regex key stopped at the first `)` —
+  `CHECK (status IN ('complete', …'` — visible in its own output. Replaced by a **complete** key
+  (top-level comma split, depth- and quote-aware), **9 of 9 EQUAL, 0 genuinely different**. The
+  crude version is **kept with that said**, not deleted: a truncating reader is not evidence for a
+  clean verdict.
+  **5. CURED — THE MEASUREMENT IS NOW A STANDING GUARANTEE.**
+  `packages/server/src/__tests__/schema-fixture-agreement.test.ts`, **7 legs, tracked**, asserting
+  **equality up to permutation** (order free to differ — a stricter key reddens on the next
+  migration for a reason that is not drift; a names-only key passes a diverged `CHECK`).
+  **6. C3, THE CRIPPLE FOUR OF THOSE LEGS NEEDED** — all four are of the form *two things are
+  equal*, which passes when the comparison is blind. One column planted in `setup.ts`'s `files`
+  DDL: **7 passed → 4 FAILED / 3 passed.** Red: names, attributes, equal-up-to-permutation, the
+  fixture-side KP. Green and correctly: same-tables (a column is not a table), production-side KP,
+  fixture-clean-again. **Restored and verified in-fire** (`grep -c` → 0, path clean). **Local,
+  never pushed, and no gate leg of mine was running over the file** — this morning I crippled a
+  tracked module while two of my own gate legs were mid-run, and that is the mistake being avoided.
+  **7. `census()` EXPORTED from `db/schema-delta.ts`, with the reason at the site:** the only other
+  way to compare two schemas was to re-derive it at the call site, and **a second definition of the
+  census is the defect this unit is about.** One word versus a hand-typed reader grading a shipped
+  one.
+  **8. THE FINDING THE REFUTATIONS LEFT STANDING: `rebuiltTables` IS A FALL-THROUGH AND A
+  PERMUTATION LANDS IN IT.** Through the real exported `census()`/`diffCensus()`, **both directions
+  report the same 5 rebuilt tables** with `addedColumns 0`, `droppedObjects 0`, `alteredTables 0`,
+  `empty=false`. **The symmetry is the tell — a real rebuild is directional.** **No
+  `permutedTables` bucket added, and the reason is not timidity:** the ambiguity is **unreachable
+  through `schemaDelta()`** (two censuses, one handle) and the only reachable path is the
+  two-database comparison **my own `census()` export created twenty minutes earlier in the same
+  fire.** A second-order defect that **is** reachable is handed to Argus: for a non-`appendOnly`
+  table the constraint check sits in the `else`, so **the constraint question is never asked of
+  exactly the tables reported as rebuilt**. Verdict unaffected (both make `empty` false); it is a
+  disclosure-detail defect.
+  **9. P7 HIT — THE ARROW CLASS IS 46% BLOCK-BODIED AND MY §1 SENTENCE WAS WRONG ABOUT 246
+  DECLARATIONS.** Theseus's 11/18 §3 refuted his own P4 off my *"every one is a concise-bodied
+  arrow"*, true of the **288 ambiguous subset** and false of the 534 class; he measured 11
+  block-bodied in 26 files as a lower bound. From a **cross-tab** of the pre-cure and cured readers
+  over one tree: **concise 288 (53.9%) / block 246 (46.1%) at the published rev; 288 / 247 at
+  HEAD.** Registered **249 ± 5** before measuring — **HIT both ways**. And **`refused→concise` is
+  exactly 288, the ambiguous bucket to the declaration**: the sentence was precisely true of the
+  population I had been looking at and precisely false of the class I attached it to. **His 11 was a
+  lower bound on 246.**
+  **10. P8 REFUTED, AND THE EXCESS OF 4 IS TWO OF MY OWN FIGURES TO THE UNIT.** I predicted
+  yesterday's cure was not purely additive because `+254 block` and `+289 concise` against `−539
+  refusals` sum to 543. **Zero already-resolving declarations changed kind**, and at its own rev the
+  cure **balances exactly** (block +251, concise +288, sum 539, cleared 539, excess 0). Pinned each
+  figure against the tree **as it was at the publishing commit** (`git ls-tree` + `git show
+  <rev>:<path>`, nothing from the working tree): **`refused 1510 → 971` EXACT · `block` pre-cure
+  published 4013, measured **4016** · `concise` pre-cure published 1828, measured **1829**. 3 + 1 =
+  4.** Mechanism **verified from this morning's own artefacts**, not reconstructed:
+  `drive1.head-baseline-write.out:1` reads *"over **975** tracked files"*, `drive4.cured.out:1` and
+  `drive7.cured-p4-repaired.out:1` read *"over **978**"*. **I published a before/after pair whose
+  two halves were measured over different populations**, the three files between them being that
+  unit's own arm and drive scripts. **The `refused` pair survived only because those three files
+  contributed zero refusals — right by coincidence, not by care**, and the coincidence is what kept
+  the excess small enough to read as a rounding. **"534 declarations in 975 tracked files" is wrong
+  the same way** (the rev holds 978; the class is 534 at both, so what moved is the **denominator**)
+  — Theseus's `unit-476` shape, landing on my side of the board the day after he drove it.
+  **11. KEEPABLE, AND IT IS NOT "BE CAREFUL": every unit here commits its own arm into the tree it
+  measures, so a before-leg and an after-leg are over different populations BY DEFAULT.** The
+  mechanical fix is that **a published before/after pair must carry its population on both
+  halves** — `4013 → 4267` hides it, `4013 (975 files) → 4267 (978 files)` cannot be written down
+  without the error becoming visible.
+  **12. GATE, EXIT CODE CAPTURED NOT INFERRED.** `npm test` **exit=0** (drive 8, via a node runner,
+  because drive 7's `&&` chain did not record its own rc — a chain that printed its last success
+  line has *almost certainly* exited 0, and that is not a measurement). typecheck **0 errors** ×4
+  programs · server **147 files / 2294 passed / 1 skipped (2295)** — was 146 / 2287 / 1 (2288) ·
+  client **29/42 · 354/367 unmoved** · **census PASSED**. **+1 file and +7 tests, exactly
+  `schema-fixture-agreement.test.ts`; nothing else moved.** **Argus's memo's 146 and my own START
+  entry's 146 are now 147, and the mover is named** so neither of us has to go find it. Pre-commit
+  hook on all 6 pushes: **CENSUS OK** (45 swept / 110 deferred) and **DECL-BODY SLICERS OK**
+  (tracked 980 → 986 across the fire as other seats pushed; population 66, baseline 59, unmoved).
+  **13. ARMS B AND C STAY RED — 3 legs across the two** (P7's 534-at-HEAD, which is 535 because the
+  tree grew; P8; arm C's registered 975 population against the rev's 978). **A refuted prediction
+  is a red leg** and re-pointing it would be the defect this corpus keeps finding. **Both pre-cure
+  readers are materialised from git at drive time and kept UNTRACKED**, `.gitignore` in the unit
+  directory carrying the reason: a committed pre-cure `decl-body.mjs` is itself an unguarded brace
+  slicer and the detector would redden on it, as it did on Theseus's vendored `strip-source.mjs`.
+  **Theseus's §5(a) re-verified independently:** `git log 7e8b4ab1^..HEAD --
+  scripts/lib/strip-source.mjs` is **empty**, so the re-point is sound rather than assumed.
+  **Drain:** author-checked delta; this file read; **the one new memo read before work started and
+  answered in the same fire**; both items I boarded in the START fire with no blocker **taken in the
+  next fire, as written**; one routed question answered flat; one cure landed as a tracked gate with
+  a cripple proving it can redden; one export with its reason; two of my own published figures
+  corrected and the mechanism named; two items handed to Argus's lane explicitly rather than
+  implied; six pushes.
+  **Mail-close decision, stated rather than silent: Theseus's 11/18 memo and my reply stay in
+  `docs/mail/`; nothing moved to `read/`.** The thread carries A1 and `probe-round300:185`, both
+  open on his queue by his own statement, and the head-key fix open on mine.
+  **Deferred, no deadlines, blockers named where there is one:** the **head-key fix** for the 968
+  non-declarations (**mine, no blocker** — flagged so nobody takes it; it needs its own KP set
+  because it moves `declHeads`'s population for every consumer); the `diffCensus` constraint-branch
+  defect (**Argus's lane, offered explicitly, not boarded as mine**); the **architecture call on
+  three DDL sources, which is xian's** — today's measurement says they are not drifting, which
+  lowers the urgency and changes nothing about the shape; `unit-470bodyslice`'s 59 baselined slicers
+  still not re-measured against the fourth mechanism; the memory-index compaction's **structural
+  half** (~20 merges) still owed.
+- **Previously:** 2026-11-18 ~09:17–09:3x PT (**START fire — substantive: MY OWN ARROW REFUSAL WAS
   KEYED ON A CLASS AND ITS STATED GROUND HAS ZERO LIVE INSTANCES. 534 REFUSED DECLARATIONS → 0,
   CURED AND GATED IN THIS FIRE, AND THE CORPUS'S BIGGEST REFUSAL REASON TURNS OUT TO BE 968
   NON-DECLARATIONS.**) `date`-reads **09:17:47**, **09:19:49**, **09:27:29**, **09:30:01**,

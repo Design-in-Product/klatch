@@ -1,0 +1,122 @@
+
+[1m[46m RUN [49m[22m [36mv4.0.18 [39m[90m/Users/xian/Development/klatch-worktrees/daedalus/packages/server[39m
+
+ [31m❯[39m src/__tests__/schema-fixture-agreement.test.ts [2m([22m[2m7 tests[22m[2m | [22m[31m4 failed[39m[2m)[22m[32m 21[2mms[22m[39m
+     [32m✓[39m has the same tables on both sides[32m 6[2mms[22m[39m
+[31m     [31m×[31m has the same column names, in or out of order, for every table[39m[32m 5[2mms[22m[39m
+[31m     [31m×[31m has the same column attributes — type, nullability, default, pk[39m[32m 2[2mms[22m[39m
+[31m     [31m×[31m is equal up to permutation: every top-level DDL clause matches on both sides[39m[32m 2[2mms[22m[39m
+[31m     [31m×[31m known positive: a column added on the fixture side alone is detected[39m[32m 2[2mms[22m[39m
+     [32m✓[39m known positive: a column added on the production side alone is detected[32m 2[2mms[22m[39m
+     [32m✓[39m known positive: the fixture handle is clean again after the plant[32m 1[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 4 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m src/__tests__/schema-fixture-agreement.test.ts[2m > [22mtest fixture vs production schema[2m > [22mhas the same column names, in or out of order, for every table
+[31m[1mAssertionError[22m: column names for files: expected [ 'created_at', 'created_by', …(6) ] to deeply equal [ 'created_at', 'created_by', …(5) ][39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[33m@@ -1,8 +1,9 @@[39m
+[2m  [[22m
+[2m    "created_at",[22m
+[2m    "created_by",[22m
+[31m+   "cripple_c3_drift",[39m
+[2m    "id",[22m
+[2m    "mime_type",[22m
+[2m    "name",[22m
+[2m    "size_bytes",[22m
+[2m    "storage_key",[22m
+
+[36m [2m❯[22m src/__tests__/schema-fixture-agreement.test.ts:[2m92:70[22m[39m
+    [90m 90| [39m    prod[33m.[39m[34mclose[39m()[33m;[39m
+    [90m 91| [39m    [35mfor[39m ([35mconst[39m t [35mof[39m [33mObject[39m[33m.[39m[34mkeys[39m(p[33m.[39mcols)) {
+    [90m 92| [39m      expect([...(f.cols[t] ?? [])].sort(), `column names for ${t}`).t…
+    [90m   | [39m                                                                     [31m^[39m
+    [90m 93| [39m        [[33m...[39mp[33m.[39mcols[t]][33m.[39m[34msort[39m()
+    [90m 94| [39m      )[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/__tests__/schema-fixture-agreement.test.ts[2m > [22mtest fixture vs production schema[2m > [22mhas the same column attributes — type, nullability, default, pk
+[31m[1mAssertionError[22m: column attributes for files: expected [ …(8) ] to deeply equal [ …(7) ][39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[33m@@ -1,8 +1,9 @@[39m
+[2m  [[22m
+[2m    "created_at TEXT notnull=1 default=datetime('now') pk=0",[22m
+[2m    "created_by TEXT notnull=0 default=null pk=0",[22m
+[31m+   "cripple_c3_drift TEXT notnull=1 default='' pk=0",[39m
+[2m    "id TEXT notnull=0 default=null pk=1",[22m
+[2m    "mime_type TEXT notnull=1 default=null pk=0",[22m
+[2m    "name TEXT notnull=1 default=null pk=0",[22m
+[2m    "size_bytes INTEGER notnull=1 default=null pk=0",[22m
+[2m    "storage_key TEXT notnull=1 default=null pk=0",[22m
+
+[36m [2m❯[22m src/__tests__/schema-fixture-agreement.test.ts:[2m112:59[22m[39m
+    [90m110| [39m        [33m.[39m[34msort[39m()[33m;[39m
+    [90m111| [39m    [35mfor[39m ([35mconst[39m t [35mof[39m [33mObject[39m[33m.[39m[34mkeys[39m([34mcensus[39m(prod)[33m.[39mcols)) {
+    [90m112| [39m      expect(attrs(fix, t), `column attributes for ${t}`).toEqual(attr…
+    [90m   | [39m                                                          [31m^[39m
+    [90m113| [39m    }
+    [90m114| [39m    prod[33m.[39m[34mclose[39m()[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/__tests__/schema-fixture-agreement.test.ts[2m > [22mtest fixture vs production schema[2m > [22mis equal up to permutation: every top-level DDL clause matches on both sides
+[31m[1mAssertionError[22m: DDL clauses for files: expected [ …(7) ] to deeply equal [ …(8) ][39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[33m@@ -1,9 +1,8 @@[39m
+[2m  [[22m
+[2m    "created_at TEXT NOT NULL DEFAULT (datetime('now'))",[22m
+[2m    "created_by TEXT",[22m
+[32m-   "cripple_c3_drift TEXT NOT NULL DEFAULT ''",[39m
+[2m    "id TEXT PRIMARY KEY",[22m
+[2m    "mime_type TEXT NOT NULL",[22m
+[2m    "name TEXT NOT NULL",[22m
+[2m    "size_bytes INTEGER NOT NULL",[22m
+[2m    "storage_key TEXT NOT NULL",[22m
+
+[36m [2m❯[22m src/__tests__/schema-fixture-agreement.test.ts:[2m123:77[22m[39m
+    [90m121| [39m    prod[33m.[39m[34mclose[39m()[33m;[39m
+    [90m122| [39m    [35mfor[39m ([35mconst[39m t [35mof[39m [33mObject[39m[33m.[39m[34mkeys[39m(p[33m.[39mcols)) {
+    [90m123| [39m      expect([...topLevelClauses(p.sql[t])].sort(), `DDL clauses for $…
+    [90m   | [39m                                                                            [31m^[39m
+    [90m124| [39m        [[33m...[39m[34mtopLevelClauses[39m(f[33m.[39msql[t] [33m??[39m [32m''[39m)][33m.[39m[34msort[39m()
+    [90m125| [39m      )[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/__tests__/schema-fixture-agreement.test.ts[2m > [22mtest fixture vs production schema[2m > [22mknown positive: a column added on the fixture side alone is detected
+[31m[1mAssertionError[22m: expected [ 'files.cripple_c3_drift', …(1) ] to deeply equal [ 'files.kp_fixture_only' ][39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[2m  [[22m
+[31m+   "files.cripple_c3_drift",[39m
+[2m    "files.kp_fixture_only",[22m
+[2m  ][22m
+
+[36m [2m❯[22m src/__tests__/schema-fixture-agreement.test.ts:[2m140:28[22m[39m
+    [90m138| [39m    [35mconst[39m d [33m=[39m [34mdiffCensus[39m([34mcensus[39m(prod)[33m,[39m [34mcensus[39m(fix))[33m;[39m
+    [90m139| [39m    prod[33m.[39m[34mclose[39m()[33m;[39m
+    [90m140| [39m    [34mexpect[39m(d[33m.[39maddedColumns)[33m.[39m[34mtoEqual[39m([[32m'files.kp_fixture_only'[39m])[33m;[39m
+    [90m   | [39m                           [31m^[39m
+    [90m141| [39m    [34mexpect[39m(d[33m.[39mempty)[33m.[39m[34mtoBe[39m([35mfalse[39m)[33m;[39m
+    [90m142| [39m    // `beforeEach` in setup.ts rebuilds the fixture handle for the ne…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m4 failed[39m[22m[2m | [22m[1m[32m3 passed[39m[22m[90m (7)[39m
+[2m   Start at [22m 13:27:33
+[2m   Duration [22m 170ms[2m (transform 53ms, setup 40ms, import 30ms, tests 21ms, environment 0ms)[22m
+

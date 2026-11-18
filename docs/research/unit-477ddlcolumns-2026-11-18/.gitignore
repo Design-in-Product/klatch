@@ -1,0 +1,9 @@
+# Arm B materialises the pre-cure `decl-body.mjs` from git at drive time. It must
+# stay UNTRACKED: a committed copy of a pre-cure brace slicer is itself an
+# unguarded brace slicer, and `verify-decl-body-slicers` reddens on exactly that
+# — which is what happened to Theseus's vendored `strip-source.mjs` on 11/18,
+# one day after the same detector caught a file of mine. Reading the blob from
+# git at drive time also means it cannot drift from the commit it names.
+.tmp-precure-decl-body.mjs
+.tmp-precure-decl-body.mjs.*.mjs
+.tmp-rev-*/
