@@ -1,0 +1,48 @@
+unit-476phantomdenom arm A — does my published denominator carry refused members, and did the cure move it?
+  control subjects (captured, cross-checked against the drive's own count): 26
+
+  THE DENOMINATOR, published vs re-driven at HEAD:
+      published 11/17   287 declarations · IDENTICAL 234 · DIFFERS 53  (18.47% DIFFERS)
+      HEAD      11/18   299 declarations · IDENTICAL 244 · DIFFERS 55  (18.39% DIFFERS)
+      delta             +12 declarations · ratio moved 0.07pp
+
+  KIND TALLY over the same 26 files, same bytes, two readers:
+      pre-cure (7e8b4ab1^)  total 491  block 287  concise 111  refused 93  other 0
+      HEAD                  total 491  block 299  concise 117  refused 75  other 0
+      ^ the published denominator is the BLOCK column. The REFUSED column is the phantom
+        population it would have carried had the kind filter been absent: 93 pre-cure, 75 now.
+
+  B4 ATTRIBUTION — what each HEAD block member was before the cure:
+       287  block
+        11  refused:return-type-annotation-on-an-arrow-declaration
+         1  refused:no-body-brace-after-the-return-type
+
+  NEWLY GRADEABLE (not block pre-cure, block now): 12
+      packages/server/src/db/queries.ts: createChannelBySessionIdResolver — was refused:no-body-brace-after-the-return-type
+      scripts/probe-once-anchor-duplication.mts: blob — was refused:return-type-annotation-on-an-arrow-declaration
+      scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts: check — was refused:return-type-annotation-on-an-arrow-declaration
+      scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts: measure — was refused:return-type-annotation-on-an-arrow-declaration
+      scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts: scriptsFiles — was refused:return-type-annotation-on-an-arrow-declaration
+      scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts: paramCount — was refused:return-type-annotation-on-an-arrow-declaration
+      scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts: argsAt — was refused:return-type-annotation-on-an-arrow-declaration
+      scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts: exportedNames — was refused:return-type-annotation-on-an-arrow-declaration
+      scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts: declaredNames — was refused:return-type-annotation-on-an-arrow-declaration
+      scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts: declaredUnmodelledKinds — was refused:return-type-annotation-on-an-arrow-declaration
+      scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts: fixture — was refused:return-type-annotation-on-an-arrow-declaration
+      scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts: treeState — was refused:return-type-annotation-on-an-arrow-declaration
+
+  B3 phantom-leak probe: planted IIFE KP read as [refused]; leaks=false; live `= (`-initialised block heads in the 26 subjects: 138
+      docs/research/lib/attested-rounds.mjs: const must = (
+      docs/research/lib/verdict.mjs: const refuse = (
+      docs/research/lib/verdict.mjs: const refuseRow = (
+      docs/research/lib/verdict.mjs: const parseList = (
+      docs/research/lib/verdict.mjs: const bucket = (
+      docs/research/lib/verdict.mjs: const must = (
+      docs/research/round413-instruments/attack-g7-and-grade-the-branch-layer.mjs: const g = (
+      docs/research/round413-instruments/attack-g7-and-grade-the-branch-layer.mjs: const twoByTwo = (
+      docs/research/round413-instruments/attack-g7-and-grade-the-branch-layer.mjs: const hisDescribedVariant = (
+      docs/research/round414-instruments/grade-the-refusing-half-and-reconcile-the-ten.mjs: const g = (
+  reason literals captured from the pre-cure blob: return-type-annotation-on-an-arrow-declaration, declaration-without-a-body, unbalanced-brace-in-the-return-type, no-body-brace-after-the-return-type, no-body-brace-after-the-parameter-list, unbalanced-body-brace
+  arrow-class key: return-type-annotation-on-an-arrow-declaration · return-type-class key: no-body-brace-after-the-return-type
+  of the 12 newly gradeable, attributed to the arrow class: 11
+RED legs=1 red=[B4b: P4 REFUTED: 11 of the 12 newly-gradeable member(s) were refused pre-cure as 'return-type-annotation-on-an-arrow-declaration' — the headline 534-member class DOES reach this denominator, contrary to the prediction that a concise-bodied class cannot] refused=[]

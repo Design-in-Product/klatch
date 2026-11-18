@@ -1,0 +1,347 @@
+unit-472publishedfigure arm A
+  469 drive read: docs/research/unit-472publishedfigure-2026-11-17/redrive469.out
+  469 census members (GUARDED+UNGUARDED+AMBIGUOUS): 65
+  of those, UNTRACKED in this worktree (git ls-files): 2
+      UNTRACKED UNGUARDED docs/research/round413-instruments/his412-prefix.sliced.mjs
+      UNTRACKED UNGUARDED docs/research/round414-instruments/mine412-prefix.sliced.mjs
+  TRACKED census members: 63
+
+  LIVE exposures screened: 46
+  469-derived triples: 148  (IDENTICAL 0 · DIFFERS 104 · UNRESOLVED 44)
+      ^ this population is the OUTPUT of 469's "carries a braced parameter list" selector.
+        IDENTICAL is unreachable in it by construction; its CANDIDATE rate measures the
+        input filter, not the corpus. The control population below is the denominator.
+
+  CONTROL population — every block declaration in the 26 subject file(s) these
+  instruments read, NOT selected on the defect: 299 declarations
+      IDENTICAL  244
+      DIFFERS    55
+      UNRESOLVED 0
+
+  CLEAN       0   (every resolved triple byte-identical — refuted mechanically)
+  CANDIDATE   41   (≥1 triple DIFFERS — needs the hand read, NOT yet wrong)
+  UNRESOLVED  5   (no triple resolved — a refusal, NOT clean)
+
+  --- A8 SITE-KIND NARROWING (an import is not a call site) ---
+  CANDIDATE before    41
+  narrowed out        25   (every DIFFERS subject is IMPORT-ONLY — loaded as a module, never read as text)
+  CANDIDATE after     16   (≥1 DIFFERS subject the instrument actually READS)
+  site-kind UNRESOLVED triples 0
+  REV-PINNED READ triples      2   (read via `git show <rev>:<path>` — this screen read HEAD, so DIFFERS is about HEAD's bytes, NOT the bytes sliced. REFUSED.)
+      REV-PINNED scripts/sweep-probes.mjs: probeRowAnnotations
+      REV-PINNED scripts/sweep-probes.mjs: verdictLine
+  FLOOR, not the exposure: this narrows the over-count only. An instrument reaching its
+  subject by glob or directory walk has no path literal and was never in 469's key either.
+
+  --- CANDIDATE after narrowing, with the declaration(s) actually read ---
+      CANDIDATE docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs
+                  READ     scripts/sweep-probes.mjs: probeRowAnnotations — raw 33 ch vs cured 1665 ch | stripped 33 ch vs cured 1665 ch
+                  READ     scripts/sweep-probes.mjs: verdictLine — raw 70 ch vs cured 420 ch | stripped 70 ch vs cured 420 ch
+                  READ     scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  READ     scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+      CANDIDATE docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs
+                  READ     scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  READ     scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+      CANDIDATE docs/research/round399-instruments/census-the-named-binding-form.mjs
+                  READ     scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  READ     scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+      CANDIDATE docs/research/round400-instruments/regrade-the-file-scoped-guard.mjs
+                  READ     scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  READ     scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+      CANDIDATE docs/research/round408-instruments/stratify-the-live-interval.mjs
+                  READ     scripts/sweep-probes.mjs: probeRowAnnotations — raw 33 ch vs cured 1665 ch | stripped 33 ch vs cured 1665 ch
+                  READ     scripts/sweep-probes.mjs: verdictLine — raw 70 ch vs cured 420 ch | stripped 70 ch vs cured 420 ch
+                  READ     scripts/probe-import-large-session.mts: startServer — raw 2 ch vs cured 958 ch | stripped 2 ch vs cured 958 ch
+                  READ     scripts/probe-import-large-session.mts: importOne — raw 17 ch vs cured 1731 ch | stripped 17 ch vs cured 1731 ch
+                  IMPORT-ONLY scripts/lib/strip-source.mjs: regexLiteralEnd — all 1 occurrence(s) of "scripts/lib/strip-source.mjs" are module specifiers
+                  IMPORT-ONLY scripts/lib/strip-source.mjs: stripSource — all 1 occurrence(s) of "scripts/lib/strip-source.mjs" are module specifiers
+      CANDIDATE docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs
+                  READ     scripts/probe-import-large-session.mts: startServer — raw 2 ch vs cured 958 ch | stripped 2 ch vs cured 958 ch
+                  READ     scripts/probe-import-large-session.mts: importOne — raw 17 ch vs cured 1731 ch | stripped 17 ch vs cured 1731 ch
+                  IMPORT-ONLY scripts/lib/strip-source.mjs: regexLiteralEnd — all 1 occurrence(s) of "scripts/lib/strip-source.mjs" are module specifiers
+                  IMPORT-ONLY scripts/lib/strip-source.mjs: stripSource — all 1 occurrence(s) of "scripts/lib/strip-source.mjs" are module specifiers
+      CANDIDATE docs/research/round441-instruments/key-the-silent-class-from-source.mjs
+                  READ     docs/research/round430-instruments/grade-the-convention-gate.mjs: retyped — raw 43 ch vs cured 396 ch | stripped 43 ch vs cured 396 ch
+      CANDIDATE docs/research/round454-instruments/census2-does-any-call-site-feed-stripsource-a-non-string.mjs
+                  READ     scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  READ     scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+      CANDIDATE docs/research/round454-instruments/census3-resolve-the-324-unmodelled-one-level.mjs
+                  READ     scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  READ     scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+      CANDIDATE docs/research/unit-465census-v2-2026-11-10/census-anchors-v2.mjs
+                  READ     scripts/sweep-probes.mjs: probeRowAnnotations — raw 33 ch vs cured 1665 ch | stripped 33 ch vs cured 1665 ch
+                  READ     scripts/sweep-probes.mjs: verdictLine — raw 70 ch vs cured 420 ch | stripped 70 ch vs cured 420 ch
+      CANDIDATE docs/research/unit-465readerset-2026-11-14/arm-readerset-a.mjs
+                  READ     docs/research/lib/verdict.mjs: renderVerdict — raw 25 ch vs cured 4676 ch | stripped 25 ch vs cured 4676 ch
+                  READ     docs/research/lib/verdict.mjs: writeRecording — raw 42 ch vs cured 451 ch | stripped 42 ch vs cured 451 ch
+                  READ     docs/research/lib/verdict.mjs: renderTail — raw 25 ch vs cured 129 ch | stripped 25 ch vs cured 129 ch
+                  READ     docs/research/lib/attested-rounds.mjs: reproduceFloorReading — raw 53 ch vs cured 1360 ch | stripped 53 ch vs cured 1360 ch
+                  READ     docs/research/lib/attested-rounds.mjs: attestedRounds — raw 24 ch vs cured 1954 ch | stripped 24 ch vs cured 1954 ch
+      CANDIDATE docs/research/unit-470bodyslice-2026-11-17/arm-bodyslice-a.mjs
+                  READ     scripts/lib/decl-body.mjs: codeOf — raw 9 ch vs cured 556 ch
+                  READ     scripts/lib/decl-body.mjs: parenSpanEnd — raw 8 ch vs cured 250 ch
+                  READ     scripts/lib/decl-body.mjs: braceSpanEnd — raw 8 ch vs cured 250 ch
+                  READ     scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  READ     scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+                  READ     packages/server/src/db/queries.ts: updateChannel — raw 110 ch vs cured 980 ch | stripped 110 ch vs cured 980 ch
+                  READ     packages/server/src/db/queries.ts: createGroundRulesPreset — raw 40 ch vs cured 786 ch | stripped 40 ch vs cured 786 ch
+                  READ     packages/server/src/db/queries.ts: updateChannelCompaction — raw 63 ch vs cured 120 ch | stripped 63 ch vs cured 120 ch
+                  READ     packages/server/src/claude/client.ts: injectFileContent — raw 28 ch vs cured 2925 ch | stripped 28 ch vs cured 2925 ch
+                  READ     packages/server/src/claude/client.ts: buildSystemPrompt — raw 2 ch vs cured 129 ch | stripped 2 ch vs cured 129 ch
+                  READ     packages/server/src/claude/client.ts: assembleSystemPrompt — raw 2 ch vs cured 5558 ch | stripped 2 ch vs cured 5558 ch
+      CANDIDATE scripts/lib/strip-source.mjs
+                  READ     scripts/verify-filler-constraints.mjs: literal — raw 2 ch vs cured 505 ch | stripped 2 ch vs cured 505 ch
+      CANDIDATE scripts/probe-once-anchor-duplication.mts
+                  READ     scripts/probe-once-anchor-duplication.mts: consumedByOnce — raw 36 ch vs cured 1537 ch | stripped 36 ch vs cured 1537 ch
+                  READ     scripts/probe-once-anchor-duplication.mts: allChains — raw 36 ch vs cured 1712 ch | stripped 36 ch vs cured 1712 ch
+      CANDIDATE scripts/probe-round257-the-scanner-had-no-model-of-interpolation.mts
+                  READ     scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  READ     scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+      CANDIDATE scripts/probe-round260-a-census-pin-has-two-axes-and-the-round-number-in-a-filename-is-not-one-of-them.mts
+                  READ     scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  READ     scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+
+  --- narrowed out (IMPORT-ONLY throughout) ---
+      IMPORT-ONLY docs/research/round352-valuation-leg-key.mjs  (2 DIFFERS triple(s), all module specifiers)
+      IMPORT-ONLY docs/research/round401-instruments/census-the-branch-polarity-axis.mjs  (2 DIFFERS triple(s), all module specifiers)
+      IMPORT-ONLY docs/research/round402-instruments/key-from-round400.mjs  (2 DIFFERS triple(s), all module specifiers)
+      IMPORT-ONLY docs/research/round407-instruments/census-the-fixture-as-string-class.mjs  (2 DIFFERS triple(s), all module specifiers)
+      IMPORT-ONLY docs/research/round409-instruments/census-the-hand-typed-known-positive.mjs  (2 DIFFERS triple(s), all module specifiers)
+      IMPORT-ONLY docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs  (2 DIFFERS triple(s), all module specifiers)
+      IMPORT-ONLY docs/research/round411-instruments/list-the-declarations-under-the-409-key.mjs  (2 DIFFERS triple(s), all module specifiers)
+      IMPORT-ONLY docs/research/round412-instruments/resolve-the-ternary-and-reconstruct-the-nine.mjs  (2 DIFFERS triple(s), all module specifiers)
+      IMPORT-ONLY docs/research/round413-instruments/his412-prefix.sliced.mjs  (2 DIFFERS triple(s), all module specifiers)
+      IMPORT-ONLY docs/research/round414-instruments/mine412-prefix.sliced.mjs  (2 DIFFERS triple(s), all module specifiers)
+      IMPORT-ONLY docs/research/round430-instruments/his412-prefix.sliced.mjs  (2 DIFFERS triple(s), all module specifiers)
+      IMPORT-ONLY docs/research/round430-instruments/mutant-m1-refused-false-on-success.sliced.mjs  (2 DIFFERS triple(s), all module specifiers)
+      IMPORT-ONLY docs/research/round430-instruments/mutant-m2-refusal-key-renamed.sliced.mjs  (2 DIFFERS triple(s), all module specifiers)
+      IMPORT-ONLY docs/research/round430-instruments/mutant-m3-control-message-reworded.sliced.mjs  (2 DIFFERS triple(s), all module specifiers)
+      IMPORT-ONLY docs/research/round430-instruments/refusal-convention.mjs  (2 DIFFERS triple(s), all module specifiers)
+      IMPORT-ONLY docs/research/round432-instruments/precure-refusal-convention.sliced.mjs  (2 DIFFERS triple(s), all module specifiers)
+      IMPORT-ONLY docs/research/round434-instruments/precure-refusal-convention.sliced.mjs  (2 DIFFERS triple(s), all module specifiers)
+      IMPORT-ONLY docs/research/round436-instruments/precure-refusal-convention.sliced.mjs  (2 DIFFERS triple(s), all module specifiers)
+      IMPORT-ONLY docs/research/round438-instruments/precure-refusal-convention.sliced.mjs  (2 DIFFERS triple(s), all module specifiers)
+      IMPORT-ONLY docs/research/round454-instruments/probe0-why-449s-two-reader-slices-return-null.mjs  (2 DIFFERS triple(s), all module specifiers)
+      IMPORT-ONLY docs/research/round455-instruments/dispose-of-w10-and-repair-the-lifter-it-needs.mjs  (5 DIFFERS triple(s), all module specifiers)
+      IMPORT-ONLY docs/research/round458-instruments/grade-the-conjunct-cure.mjs  (3 DIFFERS triple(s), all module specifiers)
+      IMPORT-ONLY docs/research/unit-466rhscap-2026-11-14/arm-rhscap-a.mjs  (2 DIFFERS triple(s), all module specifiers)
+      IMPORT-ONLY docs/research/unit-466rhscap-2026-11-14/arm-rhscap-b.mjs  (2 DIFFERS triple(s), all module specifiers)
+      IMPORT-ONLY scripts/probe-round265-the-census-already-follows-imports-on-the-other-axis.mts  (2 DIFFERS triple(s), all module specifiers)
+
+  --- all DIFFERS triples, as screened before narrowing ---
+      CANDIDATE docs/research/round352-valuation-leg-key.mjs
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+      CANDIDATE docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs
+                  DIFFERS  [READ] scripts/sweep-probes.mjs: probeRowAnnotations — raw 33 ch vs cured 1665 ch | stripped 33 ch vs cured 1665 ch
+                  DIFFERS  [READ] scripts/sweep-probes.mjs: verdictLine — raw 70 ch vs cured 420 ch | stripped 70 ch vs cured 420 ch
+                  DIFFERS  [READ] scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  DIFFERS  [READ] scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+      CANDIDATE docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs
+                  DIFFERS  [READ] scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  DIFFERS  [READ] scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+      CANDIDATE docs/research/round399-instruments/census-the-named-binding-form.mjs
+                  DIFFERS  [READ] scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  DIFFERS  [READ] scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+      CANDIDATE docs/research/round400-instruments/regrade-the-file-scoped-guard.mjs
+                  DIFFERS  [READ] scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  DIFFERS  [READ] scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+      CANDIDATE docs/research/round401-instruments/census-the-branch-polarity-axis.mjs
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+      CANDIDATE docs/research/round402-instruments/key-from-round400.mjs
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+      CANDIDATE docs/research/round407-instruments/census-the-fixture-as-string-class.mjs
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+      CANDIDATE docs/research/round408-instruments/stratify-the-live-interval.mjs
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+                  DIFFERS  [READ] scripts/sweep-probes.mjs: probeRowAnnotations — raw 33 ch vs cured 1665 ch | stripped 33 ch vs cured 1665 ch
+                  DIFFERS  [READ] scripts/sweep-probes.mjs: verdictLine — raw 70 ch vs cured 420 ch | stripped 70 ch vs cured 420 ch
+                  DIFFERS  [READ] scripts/probe-import-large-session.mts: startServer — raw 2 ch vs cured 958 ch | stripped 2 ch vs cured 958 ch
+                  DIFFERS  [READ] scripts/probe-import-large-session.mts: importOne — raw 17 ch vs cured 1731 ch | stripped 17 ch vs cured 1731 ch
+      CANDIDATE docs/research/round409-instruments/census-the-hand-typed-known-positive.mjs
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+      CANDIDATE docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+                  DIFFERS  [READ] scripts/probe-import-large-session.mts: startServer — raw 2 ch vs cured 958 ch | stripped 2 ch vs cured 958 ch
+                  DIFFERS  [READ] scripts/probe-import-large-session.mts: importOne — raw 17 ch vs cured 1731 ch | stripped 17 ch vs cured 1731 ch
+      CANDIDATE docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+      CANDIDATE docs/research/round411-instruments/list-the-declarations-under-the-409-key.mjs
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+      CANDIDATE docs/research/round412-instruments/resolve-the-ternary-and-reconstruct-the-nine.mjs
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+      CANDIDATE docs/research/round413-instruments/his412-prefix.sliced.mjs
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+      CANDIDATE docs/research/round414-instruments/mine412-prefix.sliced.mjs
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+      CANDIDATE docs/research/round430-instruments/his412-prefix.sliced.mjs
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+      CANDIDATE docs/research/round430-instruments/mutant-m1-refused-false-on-success.sliced.mjs
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+      CANDIDATE docs/research/round430-instruments/mutant-m2-refusal-key-renamed.sliced.mjs
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+      CANDIDATE docs/research/round430-instruments/mutant-m3-control-message-reworded.sliced.mjs
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+      CANDIDATE docs/research/round430-instruments/refusal-convention.mjs
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+      CANDIDATE docs/research/round432-instruments/precure-refusal-convention.sliced.mjs
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+      CANDIDATE docs/research/round434-instruments/precure-refusal-convention.sliced.mjs
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+      CANDIDATE docs/research/round436-instruments/precure-refusal-convention.sliced.mjs
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+      CANDIDATE docs/research/round438-instruments/precure-refusal-convention.sliced.mjs
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+      CANDIDATE docs/research/round441-instruments/key-the-silent-class-from-source.mjs
+                  DIFFERS  [READ] docs/research/round430-instruments/grade-the-convention-gate.mjs: retyped — raw 43 ch vs cured 396 ch | stripped 43 ch vs cured 396 ch
+      CANDIDATE docs/research/round454-instruments/census2-does-any-call-site-feed-stripsource-a-non-string.mjs
+                  DIFFERS  [READ] scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  DIFFERS  [READ] scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+      CANDIDATE docs/research/round454-instruments/census3-resolve-the-324-unmodelled-one-level.mjs
+                  DIFFERS  [READ] scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  DIFFERS  [READ] scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+      CANDIDATE docs/research/round454-instruments/probe0-why-449s-two-reader-slices-return-null.mjs
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+      CANDIDATE docs/research/round455-instruments/dispose-of-w10-and-repair-the-lifter-it-needs.mjs
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+                  DIFFERS  [IMPORT-ONLY] docs/research/lib/verdict.mjs: renderVerdict — raw 25 ch vs cured 4676 ch | stripped 25 ch vs cured 4676 ch
+                  DIFFERS  [IMPORT-ONLY] docs/research/lib/verdict.mjs: writeRecording — raw 42 ch vs cured 451 ch | stripped 42 ch vs cured 451 ch
+                  DIFFERS  [IMPORT-ONLY] docs/research/lib/verdict.mjs: renderTail — raw 25 ch vs cured 129 ch | stripped 25 ch vs cured 129 ch
+      CANDIDATE docs/research/round458-instruments/grade-the-conjunct-cure.mjs
+                  DIFFERS  [IMPORT-ONLY] docs/research/lib/verdict.mjs: renderVerdict — raw 25 ch vs cured 4676 ch | stripped 25 ch vs cured 4676 ch
+                  DIFFERS  [IMPORT-ONLY] docs/research/lib/verdict.mjs: writeRecording — raw 42 ch vs cured 451 ch | stripped 42 ch vs cured 451 ch
+                  DIFFERS  [IMPORT-ONLY] docs/research/lib/verdict.mjs: renderTail — raw 25 ch vs cured 129 ch | stripped 25 ch vs cured 129 ch
+      CANDIDATE docs/research/unit-465census-v2-2026-11-10/census-anchors-v2.mjs
+                  DIFFERS  [READ] scripts/sweep-probes.mjs: probeRowAnnotations — raw 33 ch vs cured 1665 ch | stripped 33 ch vs cured 1665 ch
+                  DIFFERS  [READ] scripts/sweep-probes.mjs: verdictLine — raw 70 ch vs cured 420 ch | stripped 70 ch vs cured 420 ch
+      CANDIDATE docs/research/unit-465readerset-2026-11-14/arm-readerset-a.mjs
+                  DIFFERS  [READ] docs/research/lib/verdict.mjs: renderVerdict — raw 25 ch vs cured 4676 ch | stripped 25 ch vs cured 4676 ch
+                  DIFFERS  [READ] docs/research/lib/verdict.mjs: writeRecording — raw 42 ch vs cured 451 ch | stripped 42 ch vs cured 451 ch
+                  DIFFERS  [READ] docs/research/lib/verdict.mjs: renderTail — raw 25 ch vs cured 129 ch | stripped 25 ch vs cured 129 ch
+                  DIFFERS  [READ] docs/research/lib/attested-rounds.mjs: reproduceFloorReading — raw 53 ch vs cured 1360 ch | stripped 53 ch vs cured 1360 ch
+                  DIFFERS  [READ] docs/research/lib/attested-rounds.mjs: attestedRounds — raw 24 ch vs cured 1954 ch | stripped 24 ch vs cured 1954 ch
+      CANDIDATE docs/research/unit-466rhscap-2026-11-14/arm-rhscap-a.mjs
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+      CANDIDATE docs/research/unit-466rhscap-2026-11-14/arm-rhscap-b.mjs
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+      CANDIDATE docs/research/unit-470bodyslice-2026-11-17/arm-bodyslice-a.mjs
+                  DIFFERS  [READ] scripts/lib/decl-body.mjs: codeOf — raw 9 ch vs cured 556 ch
+                  DIFFERS  [READ] scripts/lib/decl-body.mjs: parenSpanEnd — raw 8 ch vs cured 250 ch
+                  DIFFERS  [READ] scripts/lib/decl-body.mjs: braceSpanEnd — raw 8 ch vs cured 250 ch
+                  DIFFERS  [READ] scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  DIFFERS  [READ] scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+                  DIFFERS  [READ] packages/server/src/db/queries.ts: updateChannel — raw 110 ch vs cured 980 ch | stripped 110 ch vs cured 980 ch
+                  DIFFERS  [READ] packages/server/src/db/queries.ts: createGroundRulesPreset — raw 40 ch vs cured 786 ch | stripped 40 ch vs cured 786 ch
+                  DIFFERS  [READ] packages/server/src/db/queries.ts: updateChannelCompaction — raw 63 ch vs cured 120 ch | stripped 63 ch vs cured 120 ch
+                  DIFFERS  [READ] packages/server/src/claude/client.ts: injectFileContent — raw 28 ch vs cured 2925 ch | stripped 28 ch vs cured 2925 ch
+                  DIFFERS  [READ] packages/server/src/claude/client.ts: buildSystemPrompt — raw 2 ch vs cured 129 ch | stripped 2 ch vs cured 129 ch
+                  DIFFERS  [READ] packages/server/src/claude/client.ts: assembleSystemPrompt — raw 2 ch vs cured 5558 ch | stripped 2 ch vs cured 5558 ch
+      CANDIDATE scripts/lib/strip-source.mjs
+                  DIFFERS  [READ] scripts/verify-filler-constraints.mjs: literal — raw 2 ch vs cured 505 ch | stripped 2 ch vs cured 505 ch
+      CANDIDATE scripts/probe-once-anchor-duplication.mts
+                  DIFFERS  [READ] scripts/probe-once-anchor-duplication.mts: consumedByOnce — raw 36 ch vs cured 1537 ch | stripped 36 ch vs cured 1537 ch
+                  DIFFERS  [READ] scripts/probe-once-anchor-duplication.mts: allChains — raw 36 ch vs cured 1712 ch | stripped 36 ch vs cured 1712 ch
+      CANDIDATE scripts/probe-round257-the-scanner-had-no-model-of-interpolation.mts
+                  DIFFERS  [READ] scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  DIFFERS  [READ] scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+      CANDIDATE scripts/probe-round260-a-census-pin-has-two-axes-and-the-round-number-in-a-filename-is-not-one-of-them.mts
+                  DIFFERS  [READ] scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  DIFFERS  [READ] scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+      CANDIDATE scripts/probe-round265-the-census-already-follows-imports-on-the-other-axis.mts
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: regexLiteralEnd — raw 8 ch vs cured 433 ch
+                  DIFFERS  [IMPORT-ONLY] scripts/lib/strip-source.mjs: stripSource — raw 9 ch vs cured 4902 ch
+
+  --- UNRESOLVED triples (every one, named) ---
+      UNRESOLVED scripts/sweep-probes.mjs: sweepExit — cured reader kind=concise for sweepExit
+      UNRESOLVED scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts: TREE_AT_START — cured reader kind=refused (no-body-brace-after-the-parameter-list) for TREE_AT_START
+      UNRESOLVED scripts/sweep-probes.mjs: sweepExit — cured reader kind=concise for sweepExit
+      UNRESOLVED scripts/probe-import-large-session.mts: poll — cured reader kind=refused (no-body-brace-after-the-parameter-list) for poll
+      UNRESOLVED scripts/probe-import-large-session.mts: poll — cured reader kind=refused (no-body-brace-after-the-parameter-list) for poll
+      UNRESOLVED docs/research/round413-instruments/attack-g7-and-grade-the-branch-layer.mjs: spans — cured reader kind=refused (no-body-brace-after-the-parameter-list) for spans
+      UNRESOLVED docs/research/round413-instruments/attack-g7-and-grade-the-branch-layer.mjs: g7 — cured reader kind=refused (no-body-brace-after-the-parameter-list) for g7
+      UNRESOLVED docs/research/round413-instruments/attack-g7-and-grade-the-branch-layer.mjs: isRealTernary — cured reader kind=refused (no-body-brace-after-the-parameter-list) for isRealTernary
+      UNRESOLVED docs/research/round414-instruments/grade-the-refusing-half-and-reconcile-the-ten.mjs: recorded — cured reader kind=refused (no-body-brace-after-the-parameter-list) for recorded
+      UNRESOLVED docs/research/round414-instruments/grade-the-refusing-half-and-reconcile-the-ten.mjs: selfRows — cured reader kind=refused (no-body-brace-after-the-parameter-list) for selfRows
+      UNRESOLVED docs/research/round430-instruments/grade-the-convention-gate.mjs: ROUND413_PINNED_CUT — cured reader kind=refused (no-body-brace-after-the-parameter-list) for ROUND413_PINNED_CUT
+      UNRESOLVED docs/research/round430-instruments/grade-the-convention-gate.mjs: preCure — cured reader kind=refused (no-body-brace-after-the-parameter-list) for preCure
+      UNRESOLVED docs/research/round430-instruments/grade-the-convention-gate.mjs: drive — cured reader kind=refused (no-body-brace-after-the-parameter-list) for drive
+      UNRESOLVED docs/research/round433-instruments/grade-his-cure-and-census-its-reach.mjs: diffLines — cured reader kind=refused (no-body-brace-after-the-parameter-list) for diffLines
+      UNRESOLVED docs/research/round433-instruments/grade-his-cure-and-census-its-reach.mjs: precureFromGit — cured reader kind=refused (no-body-brace-after-the-parameter-list) for precureFromGit
+      UNRESOLVED docs/research/round433-instruments/grade-his-cure-and-census-its-reach.mjs: precureSlice — cured reader kind=refused (no-body-brace-after-the-parameter-list) for precureSlice
+      UNRESOLVED docs/research/round433-instruments/grade-his-cure-and-census-its-reach.mjs: round430Rerun — cured reader kind=refused (no-body-brace-after-the-parameter-list) for round430Rerun
+      UNRESOLVED docs/research/round434-instruments/grade-the-two-cures-and-the-prose.mjs: blob — cured reader kind=refused (no-body-brace-after-the-parameter-list) for blob
+      UNRESOLVED docs/research/round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs: blob — cured reader kind=refused (no-body-brace-after-the-parameter-list) for blob
+      UNRESOLVED docs/research/round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs: hisKeyCells — cured reader kind=refused (no-body-brace-after-the-parameter-list) for hisKeyCells
+      UNRESOLVED docs/research/round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs: cf — cured reader kind=refused (no-body-brace-after-the-parameter-list) for cf
+      UNRESOLVED docs/research/round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs: recRev — cured reader kind=refused (no-body-brace-after-the-parameter-list) for recRev
+      UNRESOLVED docs/research/round436-instruments/grade-the-cures-against-a-runtime-oracle.mjs: out — cured reader kind=refused (no-body-brace-after-the-parameter-list) for out
+      UNRESOLVED docs/research/round436-instruments/grade-the-cures-against-a-runtime-oracle.mjs: verdict — cured reader kind=refused (no-body-brace-after-the-parameter-list) for verdict
+      UNRESOLVED docs/research/round449-instruments/resolve-the-variable-write-targets.mjs: tokenCount — cured reader kind=refused (no-body-brace-after-the-parameter-list) for tokenCount
+      UNRESOLVED docs/research/round449-instruments/resolve-the-variable-write-targets.mjs: tokenCount — cured reader kind=refused (no-body-brace-after-the-parameter-list) for tokenCount
+      UNRESOLVED docs/research/round446-instruments/grade-my-own-oracle-predicate.mjs: edits — cured reader kind=refused (no-body-brace-after-the-parameter-list) for edits
+      UNRESOLVED docs/research/unit-464presc-2026-11-03/census-presc.mjs: authors — cured reader kind=refused (no-body-brace-after-the-parameter-list) for authors
+      UNRESOLVED docs/research/unit-464rec3-2026-11-01/grade-the-three-cures.mjs: s1Pin — cured reader kind=refused (no-body-brace-after-the-parameter-list) for s1Pin
+      UNRESOLVED docs/research/unit-464presc-2026-11-03/census-presc.mjs: authors — cured reader kind=refused (no-body-brace-after-the-parameter-list) for authors
+      UNRESOLVED docs/research/unit-464class-2026-11-02/classify-and-grade.mjs: spanRev — cured reader kind=refused (no-body-brace-after-the-parameter-list) for spanRev
+      UNRESOLVED docs/research/unit-464class-2026-11-02/classify-and-grade.mjs: docPin — cured reader kind=refused (no-body-brace-after-the-parameter-list) for docPin
+      UNRESOLVED docs/research/unit-464prec-2026-11-03/grade-prec.mjs: handLive — cured reader kind=refused (no-body-brace-after-the-parameter-list) for handLive
+      UNRESOLVED docs/research/unit-464prec-2026-11-03/grade-prec.mjs: w194 — cured reader kind=refused (no-body-brace-after-the-parameter-list) for w194
+      UNRESOLVED docs/research/round434-instruments/grade-the-two-cures-and-the-prose.mjs: blob — cured reader kind=refused (no-body-brace-after-the-parameter-list) for blob
+      UNRESOLVED docs/research/unit-464mapkey-2026-10-30/grade-filed-maps.mjs: CRIPPLE — cured reader kind=refused (no-body-brace-after-the-parameter-list) for CRIPPLE
+      UNRESOLVED docs/research/unit-464mapkey-2026-10-30/grade-filed-maps.mjs: MEMBER — cured reader kind=refused (no-body-brace-after-the-parameter-list) for MEMBER
+      UNRESOLVED docs/research/unit-464mapkey-2026-10-30/grade-filed-maps.mjs: REPO_ROOT — cured reader kind=refused (no-body-brace-after-the-parameter-list) for REPO_ROOT
+      UNRESOLVED docs/research/unit-464mapkey-2026-10-30/grade-filed-maps.mjs: GABS (+15) — cured reader does not locate decl GABS (+15)
+      UNRESOLVED docs/research/unit-464vac-2026-10-31/grade-cure.mjs: PRECURE_REV — cured reader kind=refused (no-body-brace-after-the-parameter-list) for PRECURE_REV
+      UNRESOLVED scripts/sweep-probes.mjs: sweepExit — cured reader kind=concise for sweepExit
+      UNRESOLVED scripts/lib/decl-body.mjs: declHeads (+4) — cured reader does not locate decl declHeads (+4)
+      UNRESOLVED packages/server/src/db/queries.ts: updateEntity (+9) — cured reader does not locate decl updateEntity (+9)
+      UNRESOLVED packages/server/src/claude/client.ts: streamClaudeCore (+1) — cured reader does not locate decl streamClaudeCore (+1)
+
+  --- CLEAN ---
+
+  KP-A corpus positive  packages/server/src/claude/client.ts: assembleSystemPrompt → DIFFERS  raw 2 ch vs cured 5558 ch | stripped 2 ch vs cured 5558 ch
+  KP fixture  kpNegativePlain          want IDENTICAL got IDENTICAL 
+  KP fixture  kpPositiveReturnType     want DIFFERS   got DIFFERS   raw 32 ch vs cured 60 ch | stripped 32 ch vs cured 60 ch
+  KP fixture  kpPositiveDestructured   want DIFFERS   got DIFFERS   raw 8 ch vs cured 19 ch | stripped 8 ch vs cured 19 ch
+  KP fixture  kpPositiveObjectDefault  want DIFFERS   got DIFFERS   raw 12 ch vs cured 28 ch | stripped 12 ch vs cured 28 ch
+  (reported, not a leg) strip-source.mjs plain-declaration selector → <no match>: selector matched no plain declaration in this file
+
+  subjects carrying ≥1 DIFFERS declaration: 11
+      AFFECTED docs/research/lib/attested-rounds.mjs
+      AFFECTED docs/research/lib/verdict.mjs
+      AFFECTED docs/research/round430-instruments/grade-the-convention-gate.mjs
+      AFFECTED packages/server/src/claude/client.ts
+      AFFECTED packages/server/src/db/queries.ts
+      AFFECTED scripts/lib/decl-body.mjs
+      AFFECTED scripts/lib/strip-source.mjs
+      AFFECTED scripts/probe-import-large-session.mts
+      AFFECTED scripts/probe-once-anchor-duplication.mts
+      AFFECTED scripts/sweep-probes.mjs
+      AFFECTED scripts/verify-filler-constraints.mjs
+
+ok legs=0 red=[] refused=[UNRESOLVED for 44 triple(s) across 5 wholly-unresolved exposure(s) — named below, NOT counted clean | 2 of the 469 census's 65 members are UNTRACKED in this worktree — the 469 figure is worktree-local | 2 READ triple(s) are REV-PINNED — the instrument sliced a blob at a pinned rev and this screen read the working tree; their DIFFERS is not a claim about what was sliced]
+RATE: 41/46 live exposures are CANDIDATE before narrowing; 16/46 after the site-kind key; 25 narrowed out as IMPORT-ONLY; 5 refused
