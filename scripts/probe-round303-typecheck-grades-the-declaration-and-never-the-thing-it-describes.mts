@@ -109,6 +109,16 @@
  * already 46/37/9 at the config's own birth commit (`724371e5`), so this is a mislabel and not
  * staleness.
  *
+ * (**The sentence this section corrects was removed the same evening, and arm B7 went on quoting it
+ * for 48 days.** `62faaec9` — Round 304, Daedalus, 2026-09-30 17:37, 2h39m after this file landed —
+ * replaced it with one that states the population instead of counting it, which is this section's
+ * correction applied. The prose above is left as Theseus wrote it, because it is the record of his
+ * fire and was true when measured; what was NOT left alone is B7, whose predicate opened on a
+ * frozen `37` and therefore went on being green for 48 days without reading anything. It reddened
+ * on 2026-11-17 when the flat directory reached 38, and is re-keyed at the site to read the config
+ * rather than a literal — Daedalus, `unit-473b7subject`, 2026-11-17. The figures in the paragraph
+ * above are at `6c1fc030`; today's are 49/38/11, printed by B6 every drive.)
+ *
  * Polarity, deliberately: every population figure here is a [MEAS]. The load-bearing arms are
  * properties — the program boundary, the completeness of the declaration surface, and the fixture
  * behaviour — each with an other-answer fixture beside it, because "nothing is in the program"
@@ -579,16 +589,83 @@ measure(
   'B6',
   `.mjs total ${mjsAll.length} · directly under scripts/ ${mjsFlat.length} · nested ${mjsLib.length} · named probe-* ${mjsAll.filter((f) => /(^|\/)probe-/.test(f)).length}`,
 );
+// ── B7, re-keyed off a literal and onto the subject. Daedalus, unit-473b7subject, 2026-11-17 ─────
+//
+// What this arm was, and why it reddened: its predicate opened `mjsFlat.length === 37`, and its
+// claim quoted `scripts/tsconfig.json`'s sentence "The 37 `.mjs` probes are plain ESM and are not
+// typechecked". That sentence has not existed since `62faaec9` (Round 304, Daedalus, 2026-09-30
+// 17:37), which replaced it with one that states the population instead of counting it — 2h39m
+// after this probe was written (`6c1fc030`, Theseus, 14:58 the same day), so the arm was true when
+// written and its subject was cured out from under it the same evening. For the 48 days after
+// that, the first conjunct was a frozen literal standing in for a reading of a subject that no
+// longer said anything, and it stayed green because the flat directory still happened to hold 37
+// files. It went red on 2026-11-17 when `scripts/verify-decl-body-slicers.mjs` landed flat as the
+// 38th (`6b98355b`, Daedalus) — a true red reporting a stale pin, not a defect in the tree. Found
+// by Calliope's SWEEP-fire re-drive of the full sweep, which is the only instrument that drives
+// this arm: the pre-commit hook runs the census and the decl-body detector, not the sweep.
+//
+// Not re-pinned to 38, because that re-freezes a literal that has already drifted once. Re-keyed
+// to READ the config: the claim is now the state of the cure — the comment states no count of the
+// `.mjs` population at all — with the pre-cure text supplying the known positive from git rather
+// than from a hand-typed string, and the surviving substantive half (the nested modules hold more
+// of the import-target set than the flat ones do) kept as the third conjunct. The flat count is
+// printed, never asserted, so a tree that drifts back to 37 cannot make this arm green again.
+const CFG_PRE_CURE = '724371e5'; // the config's birth commit, where the counting sentence still stood
+/** The `//` lines of a JSONC config, joined — the comment, with the JSON body excluded. */
+const commentLinesOf = (src: string): string =>
+  src.split('\n').filter((l) => /^\s*\/\//.test(l)).join('\n');
+/** Every count this comment states OF the `.mjs` population: a digit run adjacent to `.mjs`. */
+const mjsCountClaims = (src: string): string[] =>
+  [...commentLinesOf(src).matchAll(/(\d+)\s*`?\.mjs`?/g)].map((m) => m[1]!);
+const preCure = spawnSync('git', ['show', `${CFG_PRE_CURE}:scripts/tsconfig.json`], {
+  cwd: REPO,
+  encoding: 'utf8',
+});
+const claimsNow = mjsCountClaims(read('tsconfig.json'));
+const claimsPre = preCure.status === 0 ? mjsCountClaims(preCure.stdout ?? '') : null;
+const flatTargets = [...importTargets.keys()].filter((t) => !t.includes('/')).length;
+const nestedTargets = [...importTargets.keys()].filter((t) => t.includes('/')).length;
+// The reader's characterisation rows, evaluated in the drive rather than asserted in prose. The
+// second row is a DECLARED BLINDNESS pinned rather than repaired: a count in the other word order
+// is invisible to an adjacency key, and the obvious repair — a proximity window around `.mjs` —
+// over-reports on this very file, because today's comment contains "Round 303 §6): `.mjs`" and a
+// ±40-character window scores `303` as a count claim.
+const READER_ROWS: ReadonlyArray<readonly [string, readonly string[]]> = [
+  ['  // The 37 `.mjs` probes are plain ESM\n', ['37']],
+  ['  // the `.mjs` files number 38 today\n', []], // the declared blindness, in the arm, not in a comment
+  ['"include": ["37 .mjs"]\n', []], // not a `//` line, so outside the reader by construction
+];
+const readerRowFails = READER_ROWS.filter(([src, want]) => {
+  const got = mjsCountClaims(src);
+  return got.length !== want.length || !want.every((w, i) => got[i] === w);
+});
+check(
+  'B7a',
+  "B7's count reader finds a count claim where one stands and reports none where none does, and its one blindness is pinned rather than repaired",
+  readerRowFails.length === 0 && READER_ROWS.length === 3,
+  readerRowFails.length === 0
+    ? `${READER_ROWS.length} rows, 0 problems: adjacent count found, other-word-order count NOT found `
+      + `(the pinned blindness), JSON-body line outside the reader. Without the second row this arm `
+      + `would read as a complete reader; it is not one, and the alternative over-reports on this `
+      + `file's own comment.`
+    : readerRowFails.map(([src]) => `BAD ${JSON.stringify(src.slice(0, 40))} → [${mjsCountClaims(src)}]`).join(' | '),
+);
 check(
   'B7',
-  "the config's \"37 .mjs probes\" is an exact count of the flat directory and a wrong label for it: the excluded nested modules hold more of the import-target set than the 37 do",
-  mjsFlat.length === 37 &&
-    mjsAll.length !== 37 &&
-    [...importTargets.keys()].filter((t) => t.includes('/')).length >
-      [...importTargets.keys()].filter((t) => !t.includes('/')).length,
-  `37 flat · ${mjsLib.length} nested · ${mjsAll.length} total; import targets split ` +
-    `${[...importTargets.keys()].filter((t) => !t.includes('/')).length} flat / ` +
-    `${[...importTargets.keys()].filter((t) => t.includes('/')).length} nested.`,
+  'the config states no COUNT of the `.mjs` population it does not grade — it states the population, which is the Round 304 cure holding — and the excluded nested modules still hold more of the import-target set than the flat ones do',
+  claimsNow.length === 0 &&
+    claimsPre !== null &&
+    claimsPre.length === 1 &&
+    claimsPre[0] === '37' &&
+    nestedTargets > flatTargets,
+  `subject today: ${claimsNow.length} count-claim(s)${claimsNow.length ? ` — [${claimsNow}]` : ''} · ` +
+    `known positive from ${CFG_PRE_CURE} (git exit ${preCure.status}): ` +
+    `${claimsPre === null ? 'UNREADABLE — this arm reds rather than passing on an unread control' : `[${claimsPre}]`} · ` +
+    `import targets ${flatTargets} flat / ${nestedTargets} nested · ` +
+    `flat .mjs on disk ${mjsFlat.length} against the 37 the removed sentence counted, ` +
+    `${mjsLib.length} nested, ${mjsAll.length} total — printed as a measurement, never asserted, ` +
+    `because a tree that drifts back to 37 must not make this arm green. ` +
+    `Each conjunct is printed separately so a red names which one moved.`,
 );
 
 // ── Section C: the consequence, on minted fixtures under the real compilerOptions ────────────────
