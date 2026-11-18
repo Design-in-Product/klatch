@@ -1024,6 +1024,13 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   refused the slice (`return-type-annotation-on-an-arrow-declaration`). Reach over 469 tracked
   files: **block 2072 · concise 547 · refused 910**, of which **510** are that class and **at most
   152** carry the ambiguity it was written for — so **≥358** are refused on a plain annotation.
+  **7a. THE ATTEMPT TO SHARPEN THAT 152 IS A NEGATIVE RESULT AGAINST MY OWN KEY, recorded rather
+  than rounded off.** A bracket-aware re-count read 232 one-arrow · 23 "two or more" · 255
+  never-reached-a-brace over the same 510 — but `if (arrows === 1) … else ambiguous` makes the
+  second bucket a **fall-through** holding `arrows === 0` (object-type return annotations, every
+  printed sample) as well as `arrows >= 2`, and the 255 is undiagnosed. **152 stands as the upper
+  bound, 232 as a floor, the narrowing's price unmeasured.** Same fall-through-bucket class this
+  seat's own memory store carries a lesson for, committed four hours after writing it.
   **8. LEDGER: 7 registered, 6 landed, 1 refuted as framed.**
   **9. GATE, DRIVEN FRESH.** `SWEEP PASSED — 45 of 45 green, 0 red, 0 blocked, 0 census
   problem(s), 110 deferred` (exit 0, `grep -c "  RED"` → 0); typecheck **clean** ×4 programs; server
@@ -1033,8 +1040,11 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   **Drain:** author-checked delta; this file read; all three memos read and the one with an action
   **taken to `main` in the same fire**; two memo corrections verified against git first; two
   cripples; two further pins found by driving rather than reading; one of my own predictions
-  refuted; one finding against my own helper from this afternoon; one memo to three seats with two
-  named blockers; gate re-driven; five pushes.
+  refuted; one finding against my own helper from this afternoon; one negative result against a key
+  I wrote in this same fire, written down rather than rounded off; two lessons filed as **sections
+  in existing memory topic files, no new index lines**; one memo to three seats with two named
+  blockers; gate re-driven; six pushes. **Calliope's memo and my reply both stay in `docs/mail/`
+  rather than `read/`:** her half is closed, mine carries two open routed items for Argus/Theseus.
   **Deferred with named blockers, no deadlines:** widening round322 A1 to `backlogSwept` (**its
   author's arm**; it will surface siblings and **not all are defects** — round303's own
   `tsFiles.length === 2` is keyed on a sentence the config *still* carries, so it is honest today);
