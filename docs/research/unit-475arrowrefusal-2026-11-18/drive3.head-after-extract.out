@@ -1,0 +1,69 @@
+A1 — P1: kinds and refusal reasons over 976 tracked files
+      kind block: 4015
+      kind concise: 1829
+      kind refused: 1510
+      reason no-body-brace-after-the-parameter-list: 968
+      reason return-type-annotation-on-an-arrow-declaration: 534
+      reason no-body-brace-after-the-return-type: 5
+      reason unbalanced-body-brace: 2
+      reason unbalanced-parameter-list: 1
+
+  class 534 of 1510 refusals = 35.4%
+  green  A1a the class is a non-empty population (a zero would make every leg below vacuous) — class=534
+  RED    A1b P1 HIT: the class is > 50% of all refusals — 534/1510 = 35.4%
+  green  A1c the collected class list is the same size as the counter says — list=534 counter=534
+
+A2 — P2: the 534 class members under the region key
+      bucket arrow-then-other: 288
+          e.g. docs/research/unit-307c4-rekey-2026-10-28/fp-commit-moves.mts:64 sha
+          e.g. docs/research/unit-307c4-rekey-2026-10-28/fp-commit-moves.mts:65 git
+          e.g. docs/research/unit-307c4-rekey-2026-10-28/fp-commit-moves.mts:108 comp
+      bucket arrow-then-brace: 223
+          e.g. docs/research/round368-instruments/verdict-line-kind-grade.mts:83 row
+          e.g. docs/research/unit-307c4-rekey-2026-10-28/fp-commit-moves.mts:59 check
+          e.g. docs/research/unit-465bareline-2026-11-12/arm-bareline.mts:173 blob
+      bucket type-literal-then-body: 23
+          e.g. docs/research/unit-467importroute-2026-11-16/arm-importroute-a.mts:68 tsx
+          e.g. docs/research/unit-467importroute-2026-11-16/arm-importroute-b.mts:123 tsx
+          e.g. docs/research/unit-467importroute-2026-11-16/arm-importroute-c.mts:170 tsx
+  green  A2a every class member landed in exactly one named bucket (no silent drop) — sum=534 class=534
+  green  A2b no class member is `no-annotation` (it would mean the reason string and the region key disagree) — no-annotation=0
+
+  resolvable 246 of 534 = 46.1%
+  RED    A2c P2 HIT: >= 60% of the class is unambiguous under the conservative key — 246/534 = 46.1%
+
+A3 — KP-A: a plain annotation, SLICED from a tracked file
+      KP-A = docs/research/round368-instruments/verdict-line-kind-grade.mts:83 row
+      head: const row = (code: number, out: string): Row => {
+  green  A3a KP-A is refused at HEAD with the class reason (the before half of the KP) — kind=refused reason=return-type-annotation-on-an-arrow-declaration
+  green  A3b KP-A carries NO depth-0 `=>` before its body (it is the unambiguous form) — bucket=arrow-then-brace char-at-bodyAt="{"
+  green  A3c the body the region key points at is brace-balanced (the span a cure would return) — bodyAt=5818 end=5940
+
+A4 — KP-B: the function-type return annotation on an arrow
+      live members in the ambiguous bucket: 288 (e.g. docs/research/unit-307c4-rekey-2026-10-28/fp-commit-moves.mts:64 sha)
+      KP-B itself is SYNTHETIC (typed here, labelled as such): const kpb = (a: string): (b: number) => void => { return; };
+  green  A4a KP-B is matched as a head at all (a head miss would make A4b vacuous) — head=kpb isArrow=true
+  green  A4b P5: KP-B is REFUSED (resolving it to concise is the silent-under-report harm) — kind=refused reason=return-type-annotation-on-an-arrow-declaration
+  green  A4c the region key calls KP-B ambiguous, so a cure keyed on it leaves KP-B refused — bucket=arrow-then-other
+
+A5 — KP-C / P3: a `function` declaration with a function-type return annotation
+      KP-C is SYNTHETIC unless a live site is named below: function kpc(a: number): (b: number) => void {
+      HEAD verdict: kind=refused reason=no-body-brace-after-the-return-type
+  green  A5a KP-C is matched as a NON-arrow head (the scan under test is the function-declaration one) — isArrow=false
+  green  A5b P3 HIT at HEAD: the form refuses as `no-body-brace-after-the-return-type` — kind=refused reason=no-body-brace-after-the-return-type
+  RED    A5c the region key finds the body KP-C has (so the refusal is the scan, not the source) — bucket=arrow-then-other
+      live function-declaration sites refused that way: 5
+          packages/server/src/__tests__/round25b-mcp-server-extended.test.ts:64 connectClient
+          packages/server/src/__tests__/round26b-mcp-tools-extended.test.ts:43 connectClient
+          packages/server/src/__tests__/round27b-mcp-server-5c-i-extended.test.ts:72 connectClient
+          packages/server/src/__tests__/round34-reflection-validity.test.ts:38 connectClient
+          packages/server/src/db/queries.ts:1724 createChannelBySessionIdResolver
+
+A6 — P4: block spans over the tracked tree (4015 spans)
+      baseline 4013 spans · now 4015 · lost 0 · gained 2
+          gained docs/research/unit-475arrowrefusal-2026-11-18/arm-arrowrefusal-a.mjs|check|1812|1917
+          gained docs/research/unit-475arrowrefusal-2026-11-18/arm-arrowrefusal-a.mjs|codeFor|4652|4788
+  green  A6a the baseline is non-empty — baseline=4013
+  green  A6b P4 HIT: every span that resolved before resolves to the IDENTICAL bytes now — lost=0
+
+ARM A RED — 3 leg(s)
