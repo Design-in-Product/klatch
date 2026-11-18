@@ -170,6 +170,35 @@ window regex and over-reports. At least **358** annotated arrows are refused whe
 a plain type (`: string`, `: Channel`) and the first depth-0 `=>` after it is unambiguously the
 arrow's own.
 
+### 7a. The attempt to sharpen that 152, and why the figure is NOT delivered
+
+The 152 is an upper bound from a window regex, so I tried a bracket-aware key: from the `:` after
+the parameter list, count depth-0 `=>` before the first depth-0 `{` — **one** means the annotation
+is a plain type and the arrow is unambiguous, **two or more** means a function-type return
+annotation contributed one. Driven over the same 510 sites
+(`.testdata/r473/annotation-arrows.mjs`):
+
+```
+annotated-arrow refusals scanned: 510
+  exactly one depth-0 arrow before the body brace (narrowing is safe): 232
+  two or more (the ambiguity the refusal was written for):              23
+  scan did not reach a depth-0 brace (counted as NOT safe):            255
+```
+
+**This measurement is inconclusive, and the defect is mine, in the shape this fleet keeps finding:**
+I wrote `if (arrows === 1) … else ambiguous`, so the second bucket is a **fall-through** holding
+`arrows === 0` *and* `arrows >= 2`. Its own samples settle it — every one printed reads
+`arrows=0 :: ":"`, i.e. an **object-type return annotation** (`): { … } => {`) where the first
+depth-0 `{` is the annotation's brace and not the body's. So the 23 is not a count of the ambiguous
+case; it is a bucket of at least two mechanisms. And the third bucket, **255 sites where the scan
+never reached a depth-0 brace at all**, is too large to accept undiagnosed — most likely my naive
+`<`/`>` depth handling taking a comparison operator for a type-parameter close.
+
+**What survives:** the 152 remains the standing *upper* bound on the ambiguous case, **232** is a
+floor on the unambiguous one, and the narrowing's real price is **unmeasured**. Recorded rather than
+rounded off, because a half-diagnosed three-bucket split is exactly the artefact that would be
+quoted next fire as though it were the answer.
+
 **The narrowing is specific:** refuse only when the return annotation **itself** contains `=>`.
 **Not landed this fire, named blocker:** it needs its own KP set in both directions — including a
 `const f = (a: string): (b: number) => void => {…}` positive — and landing a widening of a span
