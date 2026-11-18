@@ -1,0 +1,44 @@
+
+[1m[46m RUN [49m[22m [36mv4.0.18 [39m[90m/Users/xian/Development/klatch-worktrees/argus[39m
+
+ [31m❯[39m docs/research/unit-478migrationarm-2026-11-18/arm-migrationpoint.test.ts [2m([22m[2m12 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 36[2mms[22m[39m
+     [32m✓[39m [orig 1] adds source column to channels table[32m 17[2mms[22m[39m
+     [32m✓[39m [orig 2] adds source_metadata column to channels table[32m 1[2mms[22m[39m
+[31m     [31m×[31m [orig 3 / P1] source column defaults to NULL for existing channels -- registered to REFUTE[39m[32m 4[2mms[22m[39m
+     [32m✓[39m [P1, other direction] what the real migration actually backfills existing rows with[32m 1[2mms[22m[39m
+     [32m✓[39m [orig 4] adds original_timestamp column to messages table[32m 2[2mms[22m[39m
+     [32m✓[39m [orig 5] adds original_id column to messages table[32m 2[2mms[22m[39m
+     [32m✓[39m [orig 6] original_timestamp preserves imported event time[32m 2[2mms[22m[39m
+     [32m✓[39m [P2] the tracked file's legacy base (no channels.system_prompt) throws under the real applySchema[32m 1[2mms[22m[39m
+     [32m✓[39m [orig 7] creates message_artifacts table[32m 2[2mms[22m[39m
+     [32m✓[39m [orig 8 / P5] message_artifacts has correct columns[32m 2[2mms[22m[39m
+     [32m✓[39m [orig 9 / P4] CASCADE deletes artifacts when message is deleted[32m 2[2mms[22m[39m
+     [32m✓[39m [orig 10] channels table supports compaction_state column[32m 1[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m docs/research/unit-478migrationarm-2026-11-18/arm-migrationpoint.test.ts[2m > [22munit-478migrationarm — pointing the ten simulated arms at the real applySchema[2m > [22m[orig 3 / P1] source column defaults to NULL for existing channels -- registered to REFUTE
+[31m[1mAssertionError[22m: expected 'native' to be null[39m
+
+[32m- Expected:[39m 
+null
+
+[31m+ Received:[39m 
+"native"
+
+[36m [2m❯[22m docs/research/unit-478migrationarm-2026-11-18/arm-migrationpoint.test.ts:[2m65:24[22m[39m
+    [90m 63| [39m    }[33m;[39m
+    [90m 64| [39m    [90m// Original assertion, unedited:[39m
+    [90m 65| [39m    [34mexpect[39m(row[33m.[39msource)[33m.[39m[34mtoBeNull[39m()[33m;[39m
+    [90m   | [39m                       [31m^[39m
+    [90m 66| [39m    db[33m.[39m[34mclose[39m()[33m;[39m
+    [90m 67| [39m  })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m11 passed[39m[22m[90m (12)[39m
+[2m   Start at [22m 13:37:38
+[2m   Duration [22m 210ms[2m (transform 51ms, setup 0ms, import 68ms, tests 36ms, environment 0ms)[22m
+
