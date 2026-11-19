@@ -1,0 +1,33 @@
+# drive10.posthoc-drift-cured
+# cmd: node docs/research/unit-484popnarrow-2026-11-19/posthoc-drift-cured.mjs 68c0bd5f
+# rc (read off the child): 0
+# when: 2026-11-19T21:36:35.730Z
+
+=== the two populations at HEAD ===
+  tracked code files:                    1006
+  population under the OLD (wide) key:   74
+  population under the LIVE (narrow) key: 65
+  departures:                            9
+
+=== this unit's own new code files — the drift test ===
+  code files added since 68c0bd5f: 6
+      docs/research/unit-483columnnarrow-2026-11-19/arm-columnnarrow.mjs
+      docs/research/unit-483columnnarrow-2026-11-19/posthoc-name-the-survivors.mjs
+      docs/research/unit-484popnarrow-2026-11-19/arm.mjs
+      docs/research/unit-484popnarrow-2026-11-19/cripple-span-extension.mjs
+      docs/research/unit-484popnarrow-2026-11-19/posthoc-readings-unmoved.mjs
+      docs/research/unit-484popnarrow-2026-11-19/run.mjs
+  of those, in the population under the OLD key:  2
+  of those, in the population under the LIVE key: 0
+
+  The published drift is "+1 per instrument that carries a brace comparison".
+  This unit added 6 code file(s), 2 of which the OLD key would have
+  admitted — so the old reading would have moved the population by +2.
+  Under the live key it moves by +0.
+
+  DRIFT CURED for the fixture-carrying class — and NOT by a declaration: these are this
+  very fire's files, measured after the cure landed, not a class promised for the next one.
+
+  SCOPE, stated so it is not over-read: this cures the drift for instruments that carry
+  their comparison as QUOTED FIXTURE TEXT. An instrument that hand-rolls a LIVE brace
+  comparison still enters the population, correctly — that is what the gate is for.
