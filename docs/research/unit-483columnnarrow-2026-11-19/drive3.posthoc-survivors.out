@@ -1,0 +1,59 @@
+published column 58 · K-DEPTH 16 · K-QUOTED 3 · survivors 39
+
+=== the survivors, NAMED by live gate verdict ===
+
+  GUARDED — 1 member(s)
+      baselined=false docs/research/round401-instruments/census-the-branch-polarity-axis.mjs
+
+  MARKED — 4 member(s)
+      baselined=false docs/research/unit-470bodyslice-2026-11-17/arm-bodyslice-a.mjs
+      baselined=false docs/research/unit-470bodyslice-2026-11-17/kp-fixture-new-unguarded-slicer.mjs
+      baselined=false docs/research/unit-472publishedfigure-2026-11-17/arm-publishedfigure-a.mjs
+      baselined=false docs/research/unit-472publishedfigure-2026-11-17/handread-readerset-a.mjs
+
+  UNGUARDED — 34 member(s)
+      baselined=true  docs/research/round407-instruments/census-the-fixture-as-string-class.mjs
+      baselined=true  docs/research/round408-instruments/stratify-the-live-interval.mjs
+      baselined=true  docs/research/round409-instruments/census-the-hand-typed-known-positive.mjs
+      baselined=true  docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs
+      baselined=true  docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs
+      baselined=true  docs/research/round411-instruments/list-the-declarations-under-the-409-key.mjs
+      baselined=true  docs/research/round412-instruments/resolve-the-ternary-and-reconstruct-the-nine.mjs
+      baselined=false docs/research/round413-instruments/his412-prefix.sliced.mjs
+      baselined=false docs/research/round414-instruments/mine412-prefix.sliced.mjs
+      baselined=true  docs/research/round430-instruments/his412-prefix.sliced.mjs
+      baselined=true  docs/research/round430-instruments/mutant-m1-refused-false-on-success.sliced.mjs
+      baselined=true  docs/research/round430-instruments/mutant-m2-refusal-key-renamed.sliced.mjs
+      baselined=true  docs/research/round430-instruments/mutant-m3-control-message-reworded.sliced.mjs
+      baselined=true  docs/research/round430-instruments/refusal-convention.mjs
+      baselined=true  docs/research/round432-instruments/precure-refusal-convention.sliced.mjs
+      baselined=true  docs/research/round434-instruments/precure-refusal-convention.sliced.mjs
+      baselined=true  docs/research/round436-instruments/precure-refusal-convention.sliced.mjs
+      baselined=true  docs/research/round438-instruments/precure-refusal-convention.sliced.mjs
+      baselined=true  docs/research/round441-instruments/key-the-silent-class-from-source.mjs
+      baselined=true  docs/research/round454-instruments/census3-resolve-the-324-unmodelled-one-level.mjs
+      baselined=true  docs/research/unit-464acons-2026-11-04/read-consumers.mjs
+      baselined=true  docs/research/unit-464class-2026-11-02/enumerate-legs.mjs
+      baselined=true  docs/research/unit-464grep-2026-11-01/lifted-reader.mjs
+      baselined=true  docs/research/unit-464kind-2026-11-05/kind-resolve.mjs
+      baselined=true  docs/research/unit-464mysites-2026-11-04/grade-mysites.mjs
+      baselined=true  docs/research/unit-464rec-2026-10-31/rec-census.mjs
+      baselined=true  docs/research/unit-464redkey-2026-11-05/probe-kind.mjs
+      baselined=true  docs/research/unit-464redkey-2026-11-05/scan.mjs
+      baselined=true  docs/research/unit-465readerset-2026-11-14/arm-readerset-a.mjs
+      baselined=true  docs/research/unit-466striplift-2026-11-15/arm-striplift-b.mjs
+      baselined=true  scripts/lib/strip-source.mjs
+      baselined=true  scripts/probe-once-anchor-duplication.mts
+      baselined=true  scripts/probe-round260-a-census-pin-has-two-axes-and-the-round-number-in-a-filename-is-not-one-of-them.mts
+      baselined=true  scripts/probe-round265-the-census-already-follows-imports-on-the-other-axis.mts
+      (… the undeclared class; listed in full above)
+
+=== what the survivor count is, and is not ===
+  survivors:                                         39
+  of those, gate=GUARDED — the two instruments disagree and unit-481 hand-read the gate
+  as RIGHT, so this is a false census verdict NEITHER key reaches: 1  docs/research/round401-instruments/census-the-branch-polarity-axis.mjs
+  of those, gate=MARKED — a naive slicer DECLARED at the site, so the census is right
+  about it and the gate merely knows why:                          4
+  remaining undeclared unguarded slicers:                          34
+
+rc=0
