@@ -982,7 +982,95 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-19 ~09:17–09:3x PT (**START fire — substantive: THESEUS'S ROUTED §2 IS
+- **Updated:** 2026-11-19 ~13:17–13:4x PT (**WORK fire — substantive: THE POPULATION-KEY NARROWING
+  I BOARDED THIS MORNING IS **LANDED IN THE GATE**, NOT JUST MEASURED — **73 → 65**, AND THE ONE
+  BASELINED DEPARTURE THESEUS NAMED AS "AN EXEMPTION FOR NOTHING TO EXEMPT" IS MIGRATED OUT **WITH
+  THE GATE'S OWN RED DRIVEN FIRST**. THE CURE CONVERTED **1 STALE BASELINE ENTRY THE GATE REDDENS
+  ON INTO 7 STALE SITE MARKERS IT CANNOT SEE** (`MARKED 11 → 4`) — UNREGISTERED, AND THE SHARPEST
+  THING IN THE UNIT. MY CRIPPLE'S FIRST KP CARRIED THE HARM INSTEAD OF THE PROPERTY **ONE LEG AFTER
+  MY OWN PRE-REGISTRATION QUOTED THAT LESSON**, AND THE REPAIRED CRIPPLE **REFUTED MY OWN DOCBLOCK**.
+  AND THE +1-PER-INSTRUMENT DRIFT BOTH SEATS HAVE PUBLISHED FOUR TIMES IS **CURED FOR THE
+  FIXTURE-CARRYING CLASS, MEASURED ON THIS FIRE'S OWN FILES.**) `date`-reads **13:18:51**,
+  **13:23:22**, **13:23:58**, **13:24:23**, **13:25:21**, **13:25:57**, **13:26:49**, **13:27:10**,
+  **13:28:07**, **13:32:21**, **13:36:33**, **13:39:08 PST**, read not estimated. **Commit authors
+  checked:** the 5 commits above my 09:3x head are **Theseus ×4 and Calliope ×1 — none mine.**
+  **Mail by `git diff --name-status 68c0bd5f..HEAD -- docs/mail/`, not mtime → 2 new, both addressed
+  to me**, both read in full before work started and both answered in one memo this fire.
+  **UNIT `unit-484popnarrow` — 1 arm, 1 cripple, 2 post-hoc legs, 11 drives, 10 predictions. 8 HIT,
+  1 REFUTED, 1 SPLIT.** Pre-reg `8149d6d3` pushed **before the arm, the cure or the migration
+  existed**; arm+cure+migration `60ac5efc`; legs+scope `f105e101`; results+drift `defb30a7`; mail
+  `27f1b322` as its own commit per the worktree mail rule.
+  **1. THE CURE, AND THE RED DRIVEN BEFORE IT WAS CLEARED.** The gate's population key read
+  `stripSource(raw, false)` — all string bodies KEPT — so any file that merely **quotes** a
+  comparison was a member. It now reads `blankLongStrings(raw, 2)`: **a key's operand is a
+  ONE-character body (`'{'`) and a fixture carrying a whole comparison is a many-character one**,
+  which is the entire discrimination. `drive0` **1002 / 73 / 59·11·3 / baseline 59 rc=0** →
+  `drive2` **cure with NO migration: 1003 / 65 / 58·4·3 / 59 rc=1**, 1 stale entry
+  (`probe-round257-…interpolation.mts → ABSENT`), 0 new slicers → `drive3` **after: 1003 / 65 /
+  58·4·3 / 58 rc=0.** The migration is evidenced by the gate's own output, not asserted in a commit
+  message. The reading is a **third export of `scripts/lib/strip-source.mjs`** derived from the two
+  it already produces — not a fourth scanner, not hand-rolled in the gate — with its `.d.mts`.
+  **2. P1 LANDED AT THE TOP OF ITS BAND AND MY POINT ESTIMATE WAS WRONG.** Registered 4..8, estimate
+  **5**, measured **8**. Four more fixture-carrying arms landed between my `unit-482` reading of
+  **4 of 69** and this one — two mine, Theseus's `unit-483` arm, one of my own post-hocs. His 3 and
+  my 4 were both right about their trees; **a figure recorded against a tree is not a figure about
+  the key**, which is his 62 → 69 → 68 chain arriving on me.
+  **3. THE UNREGISTERED FINDING IS THE SHARPEST: ONE VISIBLE DEFECT BECAME SEVEN INVISIBLE ONES.**
+  **7 of the 8 departures were `MARKED`** — they carry `brace-slicer-deliberate:` at a site, and
+  they are now **out of the population entirely**, so those markers grant an exemption nothing
+  needs. **The gate reddens on a stale BASELINE entry (requirement 2) and has no staleness check
+  for a MARKER at all.** Not built, blocker named: it would redden **7 files, 5 of them arms of
+  published units**, and whether a frozen instrument may be edited to drop a dead marker is a
+  two-seat decision — **routed to Theseus by name**, four of the seven being his or mine as author.
+  **4. MY CRIPPLE'S FIRST KP CARRIED THE HARM, NOT THE PROPERTY — ONE LEG AFTER MY OWN PRE-REG
+  QUOTED THAT LESSON FROM HIS §5.** `drive5` refused **rc=4** and published nothing. The fixture
+  `"if (s[i] === '{') d += 1;"` was registered to SURVIVE the cripple; it does not, because without
+  the extension loop the body fragments at its own spaces and **the fragment carrying the operand is
+  4 characters, still ≥ `minLen`** — a brace key's operand is a 3-byte run that fragmentation cannot
+  push below 2. **`drive6` splits P9 and both halves are published:** READING level **HIT** (`"a b"`
+  blanked live, KEPT crippled — the loop is what makes a span mean *the whole body*), VERDICT level
+  **REFUTED** (**0 of 65** members move). **And it refuted my own docblock**, which had claimed the
+  wider version; the paragraph now carries the scope and names the refutation.
+  **5. THE TWO-READINGS INCOHERENCE NEVER SHIPPED, AND THAT WAS A MEASUREMENT.** The narrowing was
+  pre-registered for the POPULATION key alone, which would have left the gate reading two keys from
+  two readings — the shape its own drive-13 note warns about. The arm's post-hoc column drove the
+  **guard** key under both readings across the whole population: **0 members change verdict**, so one
+  reading serves every key at zero cost. Had anybody moved, the registered scope would have held: a
+  `GUARDED → UNGUARDED` move can **redden** a file, which P7's "a narrowing only removes members"
+  does not cover.
+  **6. THE DRIFT BOTH SEATS PUBLISHED FOUR TIMES IS CURED FOR THE FIXTURE-CARRYING CLASS.**
+  `drive10`: at HEAD **tracked 1006 · population 74 under the OLD key · 65 under the LIVE key ·
+  departures 9**; of the **6** code files added since `68c0bd5f` the old key admits **2** and the
+  live key **0**. Pre-commit reads it from the other side: **tracked 1003 → 1004 → 1006 → 1007 with
+  population FLAT AT 65** across four pushes. **Measured on this fire's own files after the cure
+  landed, not promised for the next fire.** Scoped so it is not over-read: an instrument that
+  hand-rolls a **LIVE** brace comparison still enters the population, correctly.
+  **7. THE SWEEP READ 44/45 MID-FIRE AND THE CAUSE WAS MINE BUT NOT MY CHANGE'S.** `drive8`
+  **44 of 45**, `probe-round260-a-census-pin-has-two-axes…` red at `[F2]` — which is
+  `git status --porcelain -- scripts/verify-tsx-guard.mjs scripts/lib/strip-source.mjs` being empty,
+  Round 260 asserting its own blast radius. **My edit was uncommitted at that moment**; `drive9`
+  after the commit, nothing else changed, is **45 of 45**. Calliope's 11/17 observation with a
+  different pin. **A sweep figure quoted from a dirty tree is not the sweep figure** — recorded, not
+  cured, because the pin is correct by its own key.
+  **8. GATE, EXIT CODES READ OFF THE CHILD** (node runner `run.mjs`): `npx tsx scripts/gate.mts`
+  **rc=0** · census 0 errors · typecheck 0 errors · server **147 files / 2294 passed / 1 skipped
+  (2295)** · client **29/42 · 354/367 (13 skipped)**. `node scripts/sweep-probes.mjs` **rc=0 — 45 of
+  45 green, 0 red, 0 blocked, 0 census problems, 110 deferred.** `drive4`: **both pre-existing
+  readings of `strip-source.mjs` byte-identical before and after**, across **all 1004 tracked code
+  files**, length preservation re-asserted, with a KP proving the comparison can report a difference
+  at all. **`git status --porcelain packages` empty throughout** — the four changed files under
+  `scripts/` are exactly R1's four permits. The cripple ran on a `.gitignore`d scratch copy; **the
+  tracked module was never edited for it.**
+  **Drain:** both new memos answered in-fire in one memo. The **R3 population-key item taken and
+  CLOSED**, not re-deferred — its only deferral reason this morning was "not this fire." Deferred
+  **only** with named blockers: **marker-staleness check** (would redden 5 published units' arms; a
+  two-seat decision, routed to Theseus by name) and **`setup.ts` → `applySchema`** (xian's call, now
+  rollup item 9 with figures Calliope verified under her own key; nothing further owed by me — my
+  §8 and Theseus's 11/18 decline both stand). Still flagged, unclaimed, **not** taken: **head-key fix
+  for the 968 non-declarations** (mine, no blocker), **`LIVE 45/52 → 48/56`** (no lane claimed),
+  **A1 `probe-round322`** and **latent `probe-round300:185`** (Theseus's by his own authorship
+  finding).
+- **Previously:** 2026-11-19 ~09:17–09:3x PT (**START fire — substantive: THESEUS'S ROUTED §2 IS
   CONCEDED AND **CLOSED AS A FLOOR**, NOT DEFERRED. THE CLASS "NEVER SLICES A DECLARATION BODY" IS
   NOT TEXTUALLY MEASURABLE: BOTH CANDIDATE UPPER-BOUND KEYS CONTRADICT THE FLOOR ON 9 OF ITS 20
   MEMBERS AND BOTH EXCLUDE THE ONE FILE BOTH SEATS HAND-READ AS A MEMBER, SO THE INTERVAL `[20, 43]`

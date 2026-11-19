@@ -148,3 +148,67 @@ Deferred **only with named blockers**:
 Still flagged, unclaimed, **not** taken, so nobody double-takes them: head-key fix for the 968
 non-declarations (mine, **no blocker**), `LIVE 45/52 → 48/56` (no lane claimed), A1
 `probe-round322` and latent `probe-round300:185` (Theseus's by his own authorship finding).
+
+---
+
+## 13:17 — Session resumed (WORK fire, Opus 5)
+
+**Unit `unit-484popnarrow` — the population-key narrowing I boarded this morning, taken rather than
+re-deferred.** 1 arm, 1 cripple, 2 post-hoc legs, 11 drives, 10 predictions: **8 HIT, 1 REFUTED, 1
+SPLIT.** Pre-reg `8149d6d3` pushed before the arm, the cure or the migration existed. `date`-reads
+**13:18:51 · 13:23:22 · 13:23:58 · 13:24:23 · 13:25:21 · 13:25:57 · 13:26:49 · 13:27:10 · 13:28:07
+· 13:32:21 · 13:36:33 · 13:39:08 PST**, read not estimated.
+
+**Mail:** `git diff --name-status 68c0bd5f..HEAD -- docs/mail/` → **2 new, both addressed to me**
+(Theseus's `unit-483` reply, Calliope's item-9 boarding). Both read in full before any work started,
+both answered in one memo this fire. Commit authors checked: the 5 commits above my 09:3x head were
+**Theseus ×4, Calliope ×1 — none mine.**
+
+**Landed in `scripts/` (the four R1 permits, and no others):**
+- `lib/strip-source.mjs` — `blankLongStrings(src, minLen = 2)`, a **third reading** derived from the
+  two the module already produces. Blank character read off the scanner's own output, not asserted.
+- `lib/strip-source.d.mts` — the declaration, with its `minLen` default and the reason the
+  implementation annotation matches it here but deliberately does not for `stripSource`.
+- `verify-decl-body-slicers.mjs` — population key **and** guard key now read the narrow reading.
+- `decl-body-slicers.baseline` — **59 → 58**, `probe-round257-…interpolation.mts` removed.
+
+**Figures.** `drive0` 1002 / 73 / 59·11·3 / baseline 59 rc=0 → `drive2` (cure, **no migration**)
+1003 / **65** / 58·4·3 / 59 **rc=1**, 1 stale entry, 0 new slicers → `drive3` (after) 1003 / 65 /
+58·4·3 / **58** rc=0. **The red was driven before the migration cleared it.**
+
+**Six things worth the next fire's attention:**
+1. **P1 landed at the top of a band and my point estimate was wrong** — registered 4..8 est. 5,
+   measured **8**. Four more fixture-carrying arms landed between my `unit-482` reading of 4-of-69
+   and this one. *A figure recorded against a tree is not a figure about the key.*
+2. **The unregistered finding is the sharpest: 7 of the 8 departures were `MARKED`**, so the cure
+   converted **1 stale baseline entry the gate reddens on** into **7 stale site markers it cannot
+   see.** `MARKED 11 → 4`. Not built — it would redden 5 published units' arms, and whether a frozen
+   instrument may be edited to drop a dead marker is a two-seat decision. Routed to Theseus.
+3. **The cripple's first KP carried the harm instead of the property**, one leg after this unit's own
+   pre-registration quoted that lesson from Theseus's `unit-483` §5. `drive5` rc=4, kept.
+   **`drive6` splits P9:** READING level HIT, VERDICT level REFUTED (0 of 65 move) — and **it refuted
+   my own docblock**, which claimed the wider version. The paragraph now carries the scope.
+4. **The two-readings incoherence never shipped and that was a measurement**, not taste: the guard
+   key moves **0** verdicts under the narrow reading, so one reading serves every key at zero cost.
+5. **The drift we have both published four times is cured for the fixture-carrying class** —
+   `drive10`: old key 74, live key 65; of 6 code files added since `68c0bd5f` the old key admits 2
+   and the live key **0**. Pre-commit reads tracked **1003 → 1004 → 1006 → 1007 with population flat
+   at 65**. Scoped: a **live** hand-rolled comparison still enters, correctly.
+6. **`drive8` read 44/45 and the cause was my own uncommitted edit** tripping `probe-round260`'s
+   `[F2]` working-tree assertion; `drive9` is 45/45 after the commit with nothing else changed. The
+   11/17 round303 incident with a different pin. **A sweep figure quoted from a dirty tree is not the
+   sweep figure.**
+
+**Gate:** `npx tsx scripts/gate.mts` **rc=0** — census 0 · typecheck 0 · server **147 files / 2294
+passed / 1 skipped (2295)** · client **29/42 · 354/367 (13 skipped)**. `node scripts/sweep-probes.mjs`
+**rc=0, 45 of 45 green, 0 red, 0 blocked, 0 census problems, 110 deferred.** `drive4`: both
+pre-existing readings byte-identical before and after, across **all 1004 tracked code files**.
+`git status --porcelain packages` **empty throughout**.
+
+**Drain:** both new memos read and answered in-fire in one memo (`27f1b322`, own commit, pushed to
+`main` per the worktree mail rule). The R3 item **taken and closed**, not re-deferred. Deferred only
+with named blockers: **marker-staleness check** (would redden 5 published units' arms; two-seat
+decision, routed to Theseus by name); **`setup.ts` → `applySchema`** (xian's call, now rollup item 9,
+nothing further owed by me). Still flagged, unclaimed, not taken: **head-key fix for the 968
+non-declarations** (mine, no blocker), **`LIVE 45/52 → 48/56`** (no lane claimed), **A1
+`probe-round322`** and **latent `probe-round300:185`** (Theseus's by his own authorship finding).
