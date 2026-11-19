@@ -1,0 +1,80 @@
+=== CAPTURE ===
+  cmp body: [=!]==?\s*['"`]\{['"`]|['"`]\{['"`]\s*[=!]==?
+  chars: {"OPEN_BRACE":"{","CLOSE_BRACE":"}","LPAREN":"(","RPAREN":")","COLON":":"}
+  MARKER: /brace-slicer-deliberate:\s*\S+/
+  EXTS: .ts .mts .js .mjs .cts .cjs .tsx
+  SELF: scripts/verify-decl-body-slicers.mjs scripts/decl-body-slicers.baseline
+
+=== CONTROL — re-derived unordered key vs the LIVE gate's printed figures ===
+  tracked      captured  993  live  993  OK
+  population   captured   68  live   68  OK
+  UNGUARDED    captured   59  live   59  OK
+  MARKED       captured    6  live    6  OK
+  GUARDED      captured    3  live    3  OK
+  → the reader below IS the gate's reader.
+
+=== KNOWN POSITIVES ===
+  KP-A   unordered=GUARDED   ordered=UNGUARDED want GUARDED/UNGUARDED  PASS
+  KP-B   unordered=GUARDED   ordered=GUARDED   want GUARDED/GUARDED  PASS
+  KP-C   scripts/lib/decl-body.mjs in population: true  want false  FAIL
+
+=== P1/P2 — cross-tab, unordered (live gate) × ordered (candidate cure) ===
+  UNGUARDED → UNGUARDED      59
+  MARKED → MARKED            6
+  GUARDED → UNGUARDED        3
+  movers: 3 · UNGUARDED→GUARDED: 0 (P1 wants 0)
+  of the 3 gate-GUARDED files, 3 move (P2 wants 1)
+
+=== the movers, with offsets ===
+  docs/research/round401-instruments/census-the-branch-polarity-axis.mjs
+      first OPEN_BRACE comparison at char 6296 (of 8 brace comparison(s))
+      LPAREN  nearest BEFORE 6270 · nearest AFTER 6617
+      RPAREN  nearest BEFORE null · nearest AFTER 6332   ← 36 chars AFTER the brace comparison, none before it
+      COLON   nearest BEFORE null · nearest AFTER 14702   ← 8406 chars AFTER the brace comparison, none before it
+      in baseline: false   (P3 wants false)
+  docs/research/unit-476phantomdenom-2026-11-18/precure/decl-body.precure.mjs
+      first OPEN_BRACE comparison at char 8037 (of 6 brace comparison(s))
+      LPAREN  nearest BEFORE 7641 · nearest AFTER 12254
+      RPAREN  nearest BEFORE 7674 · nearest AFTER 12315
+      COLON   nearest BEFORE null · nearest AFTER 12036   ← 3999 chars AFTER the brace comparison, none before it
+      in baseline: false   (P3 wants false)
+  scripts/lib/decl-body.mjs
+      first OPEN_BRACE comparison at char 8687 (of 6 brace comparison(s))
+      LPAREN  nearest BEFORE 8291 · nearest AFTER 14752
+      RPAREN  nearest BEFORE 8324 · nearest AFTER 14497
+      COLON   nearest BEFORE null · nearest AFTER 12686   ← 3999 chars AFTER the brace comparison, none before it
+      in baseline: false   (P3 wants false)
+
+=== P3 — what the ordered gate would exit ===
+  ordered UNGUARDED: 62 · NEW (not baselined): 3 · stale baseline entries: 0
+  → ordered gate exit would be 1
+      NEW: docs/research/round401-instruments/census-the-branch-polarity-axis.mjs
+      NEW: docs/research/unit-476phantomdenom-2026-11-18/precure/decl-body.precure.mjs
+      NEW: scripts/lib/decl-body.mjs
+
+=== P4/P5 — what the conjunct must NOT move ===
+  MARKED unordered 6 → ordered 6  (P4 wants equal)
+  population 68 (P5 wants 66) · tracked files read 993
+
+=== P6 — is a FILE-level ordering key the right size? ===
+  population members with ≥2 OPEN_BRACE comparisons: 40 of 68  (P6 wants ≥5)
+      1 brace comparison(s): 28
+      2 brace comparison(s): 18
+      3 brace comparison(s): 10
+      4 brace comparison(s): 5
+      5+ brace comparison(s): 7
+
+=== P7 — site-level residue among files the ORDERED key still calls GUARDED ===
+  files with site-level residue: 0 of 0 ordered-GUARDED
+
+=== P8 — order vs distance, on the 3 gate-GUARDED files ===
+  docs/research/round401-instruments/census-the-branch-polarity-axis.mjs
+      ordered verdict UNGUARDED · min |distance| L/R/C = 26 / 36 / 8406 · all within 400: false
+  docs/research/unit-476phantomdenom-2026-11-18/precure/decl-body.precure.mjs
+      ordered verdict UNGUARDED · min |distance| L/R/C = 396 / 363 / 3999 · all within 400: false
+  scripts/lib/decl-body.mjs
+      ordered verdict UNGUARDED · min |distance| L/R/C = 396 / 363 / 3999 · all within 400: false
+
+KP-C (shared cure stays out of population): FAIL
+
+--- rc=0 ---

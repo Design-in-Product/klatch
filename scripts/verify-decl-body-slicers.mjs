@@ -69,8 +69,25 @@ const SELF = new Set([
 ]);
 
 /* ---------------------------------------------------------------- the keys */
-// Character comparisons, either operand order — the same shape as unit-469's census key, so the two
-// instruments are keyed on one question and cannot disagree about who is in the population.
+// Character comparisons, either operand order — the same shape as unit-469's census key.
+//
+// **This comment used to end "…so the two instruments are keyed on one question and cannot disagree
+// about who is in the population." That was false, and the correction is a measurement, not a
+// hedge** (Theseus, `unit-479braceslicekeys`, 11/18; reproduced in `unit-480guardorder` before it
+// was written here). The two populations differ by **2 members**, one-directionally: this gate's is
+// a strict SUBSET of the filesystem-walked census's. The cause is `.gitignore` —
+// `docs/research/round41{3,4}-instruments/*.sliced.mjs` are on disk, matched by a per-directory
+// ignore file, and invisible to `git ls-files`. **17 ignored code files sit under the census's four
+// walk roots; 2 of them are in its population.** The divergence is structural and grows by one per
+// unit that materialises a pre-cure blob under `unit-*/scratch/` — `unit-480`'s own cripple added
+// the 18th while measuring this.
+//
+// The gap is **not** a reason to re-point this key at a filesystem walk. Requirement 1 exists
+// because a filesystem-keyed gate gives every seat a different number; Theseus's own figures moved
+// 62 → 69 → 68 across three fires for exactly that reason, one of the 69 being a file that has
+// never existed in git. **The tracked subset is the right population for a shared gate and the
+// wrong one for a census of what is on disk. Both instruments are right; they answer different
+// questions, and this comment previously claimed they answered one.**
 const cmp = (ch) => new RegExp(`[=!]==?\\s*['"\`]\\${ch}['"\`]|['"\`]\\${ch}['"\`]\\s*[=!]==?`);
 const OPEN_BRACE = cmp('{');
 const CLOSE_BRACE = cmp('}');
@@ -118,6 +135,26 @@ for (const rel of tracked) {
   // looking for a quoted literal", which is exactly this caller. Comments are still blanked, so a
   // paren comparison quoted inside a comment cannot credit a file with a guard it does not run.
   const code = stripSource(raw, false);
+  // **The population key OVER-ADMITS, and the figure is large enough to change what the baseline
+  // means** (`unit-480guardorder` arm B, 11/18). "Compares against both braces" admits any
+  // multi-bracket depth counter, not just a declaration-body slicer. **18 of the 68 population
+  // members have EVERY brace comparison sitting in a `'(' || '[' || '{'` disjunction — correct
+  // bracket walkers that never slice a declaration body — and all 18 are in the baseline**, whose
+  // stated meaning is "a known unguarded slicer is being added on purpose". For roughly 30% of that
+  // list, that sentence is not true of the file.
+  //
+  // Not narrowed here, and the reason is the same one that stopped the ordering conjunct: a
+  // membership change moves verdicts across the whole population and needs its own KP set. What the
+  // measurement does buy immediately is that **a baseline entry is weaker evidence than it reads
+  // as** — it means "this file compares characters against braces and carries no paren/colon
+  // comparison", not "this file slices bodies naively."
+  //
+  // The key also cannot see a slice start that carries no comparison operator —
+  // `src.slice(src.indexOf('{') + 1, src.lastIndexOf('}'))`, the spelling this file's own header
+  // calls "the obvious way to find a body". **Arm B censused it: 11 tracked files use an
+  // `indexOf`-style brace slice and all 11 are already in the population, caught by a character
+  // comparison elsewhere in the same file. Zero invisible instances today** — a real reach with no
+  // members, held open by a KP rather than by a claim.
   if (!OPEN_BRACE.test(code) || !CLOSE_BRACE.test(code)) continue; // not a slicer: out of population
 
   // The marker is read from RAW text: it lives in a comment, which `code` has blanked.
@@ -129,6 +166,40 @@ for (const rel of tracked) {
   // key over-credits exactly the files most likely to carry both. A file that genuinely delegates
   // has no character comparison against a brace and is out of the population by the key itself;
   // one that still has them must say why at the site.
+  // **The guard key is FILE-LEVEL and UNORDERED, and that is a deliberate choice with a measured
+  // refutation behind it, not an oversight.** `unit-480guardorder` (11/18) took Theseus's routed
+  // §4 — *"the close-paren comparison your gate credits is 36 characters AFTER the brace comparison
+  // the slice starts from"* — and tried to cure it with an ordering conjunct. **The conjunct is
+  // refuted three ways; do not re-propose it without reading all three.**
+  //
+  // 1. **Full ordering (each of LPAREN/RPAREN/COLON must first-match before the first brace
+  //    comparison) condemns the shared cure.** It moves **3 of 3** GUARDED files to UNGUARDED,
+  //    among them `scripts/lib/decl-body.mjs` — the file this gate tells every seat to adopt. Its
+  //    EXECUTION order is right (`declBodyAt` calls `parenSpanEnd`, then the `code[i] === ':'`
+  //    return-type scan, then `braceSpanEnd`); its TEXTUAL order is paren-helper, brace-helper,
+  //    colon-scan. **A correctly factored file — peer helpers ordered by an orchestrator — is
+  //    exactly what defeats a textual-order key.**
+  // 2. **The paren-pair-only variant holds that file by coincidence, and a cripple proves it.**
+  //    Order LPAREN/RPAREN only, leave COLON file-level, and `decl-body.mjs` stays GUARDED — but
+  //    only because `parenSpanEnd` happens to sit above `braceSpanEnd`. Swapping those two peer
+  //    exported blocks is behaviour-preserving and byte-length-preserving, and it flips the variant
+  //    to UNGUARDED while this gate stays GUARDED. **A key a no-op reorder can redden is keeping a
+  //    coincidence, not a promise.**
+  // 3. **The one file it was proposed to catch has nothing to catch.** In
+  //    `docs/research/round401-instruments/census-the-branch-polarity-axis.mjs` all **8** brace
+  //    comparisons are correct: seven are operands of `if (c === '(' || c === '[' || c === '{')
+  //    depth += 1`, and the three offsets read as *guard, slice, guard* (6270 / 6296 / 6332) are
+  //    **operands of one two-line depth counter**. The eighth is a block-start test at a known
+  //    statement position, handed straight to a depth matcher. **This gate's GUARDED verdict on it
+  //    is correct in outcome; the census's UNGUARDED verdict is the wrong one.**
+  //
+  // **What IS still blind, stated so the next seat does not have to re-derive it:** the key cannot
+  // tell execution order from textual order at all, so a genuinely naive slicer that happens to
+  // carry a paren and colon comparison elsewhere in the file reads GUARDED. **Zero instances
+  // measured in this tree** (`unit-480` arm A). The honest shape of that sentence is a declared
+  // reach with no members, which is what Theseus's own §2 said about this gate's wider extension
+  // key — and it is why the fix is a SITE-level key, not an ordered file-level one. Unbuilt:
+  // moving a 68-member population's verdicts needs its own KP set and a baseline migration.
   if (MARKER.test(raw)) verdicts.set(rel, 'MARKED');
   else if (LPAREN.test(code) && RPAREN.test(code) && COLON.test(code)) verdicts.set(rel, 'GUARDED');
   else verdicts.set(rel, 'UNGUARDED');
