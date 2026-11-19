@@ -1,0 +1,58 @@
+=== P7 — KNOWN POSITIVES: do the two keys land on three distinct corners? ===
+    blank character, read off strip-source.mjs: " "  ·  his window: 120
+  KP-A  inPop=true  kDepth=true  kQuoted=false  want kDepth=true/kQuoted=false  PASS  — pure two-sided bracket depth counter, nothing sliced
+  KP-B  inPop=true  kDepth=false kQuoted=true   want kDepth=false/kQuoted=true  PASS  — ONE multi-character string quoting a whole comparison; no live comparison at all
+  KP-C  inPop=true  kDepth=false kQuoted=false  want kDepth=false/kQuoted=false  PASS  — the real naive unguarded slicer the gate exists to catch — live two-sided comparison, body sliced between the two indices
+  distinct corners occupied by the KP set: 3 of 3 required
+
+=== P1 (control) — the PUBLISHED UNGUARDED column, captured off its own stamped stdout ===
+  printed total 58  ·  captured members 58  OK
+  R4 — members changed since 2a6e1edc: 0 
+  P1 — members still present on disk at HEAD: 58 of 58  (floor 56)
+
+=== P2 — K-DEPTH: every brace comparison is a bracket-depth-counter operand ===
+  P2 — 16 of 58   (registered: exactly 16)   27.6%
+      K-DEPTH   gate=UNGUARDED ob= 1 cb= 1  docs/research/round352-valuation-leg-key.mjs
+      K-DEPTH   gate=UNGUARDED ob= 1 cb= 1  docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs
+      K-DEPTH   gate=UNGUARDED ob= 1 cb= 1  docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs
+      K-DEPTH   gate=UNGUARDED ob= 3 cb= 3  docs/research/round399-instruments/census-the-named-binding-form.mjs
+      K-DEPTH   gate=UNGUARDED ob= 3 cb= 3  docs/research/round400-instruments/regrade-the-file-scoped-guard.mjs
+      K-DEPTH   gate=UNGUARDED ob= 3 cb= 3  docs/research/round402-instruments/key-from-round400.mjs
+      K-DEPTH   gate=UNGUARDED ob= 2 cb= 2  docs/research/round454-instruments/census2-does-any-call-site-feed-stripsource-a-non-string.mjs
+      K-DEPTH   gate=UNGUARDED ob= 2 cb= 2  docs/research/round454-instruments/probe0-why-449s-two-reader-slices-return-null.mjs
+      K-DEPTH   gate=UNGUARDED ob= 1 cb= 1  docs/research/round455-instruments/dispose-of-w10-and-repair-the-lifter-it-needs.mjs
+      K-DEPTH   gate=UNGUARDED ob= 1 cb= 1  docs/research/round458-instruments/grade-the-conjunct-cure.mjs
+      K-DEPTH   gate=UNGUARDED ob= 3 cb= 3  docs/research/unit-464addarm-2026-11-04/grade-addarm.mjs
+      K-DEPTH   gate=UNGUARDED ob= 1 cb= 1  docs/research/unit-464inspan-2026-11-03/grade-inspan.mjs
+      K-DEPTH   gate=UNGUARDED ob= 1 cb= 1  docs/research/unit-464moves-2026-11-04/grade-moves.mjs
+      K-DEPTH   gate=UNGUARDED ob= 1 cb= 1  docs/research/unit-465census-v2-2026-11-10/census-anchors-v2.mjs
+      K-DEPTH   gate=UNGUARDED ob= 1 cb= 1  docs/research/unit-466rhscap-2026-11-14/arm-rhscap-a.mjs
+      K-DEPTH   gate=UNGUARDED ob= 1 cb= 1  docs/research/unit-466rhscap-2026-11-14/arm-rhscap-b.mjs
+
+=== P3 — K-QUOTED: in the population ONLY because a multi-character string quotes a comparison ===
+  P3 — 3 of 58   (registered: >= 2, expectation 3)
+      K-QUOTED  gate=MARKED    baselined=false ob 2->0 cb 2->0  docs/research/unit-480guardorder-2026-11-18/arm-b.mjs
+      K-QUOTED  gate=MARKED    baselined=false ob 2->0 cb 2->0  docs/research/unit-480guardorder-2026-11-18/arm.mjs
+      K-QUOTED  gate=UNGUARDED baselined=true  ob 3->0 cb 2->0  scripts/probe-round257-the-scanner-had-no-model-of-interpolation.mts
+
+=== P4 — are the two narrowings disjoint? ===
+  P4 — overlap 0   (registered: 0)
+
+=== P5 — THE RE-PUBLISHED FIGURE ===
+  published column:                            58
+  less K-DEPTH (never slices a body):         -16
+  less K-QUOTED (no live comparison at all):  -3
+  less double-counted overlap:                +0
+  P5 — NARROWED COLUMN:                        39   (registered: <= 41, i.e. a reduction of >= 17)
+       reduction 19 of 58 = 32.8% of the figure this seat published and routed
+       survivors by live gate verdict: {"GUARDED":1,"UNGUARDED":34,"MARKED":4}
+
+=== P6 — the live census at HEAD contains THIS arm (the +1-per-instrument drift, on my own file) ===
+  census at HEAD: walked 968 · |P| 82 · SLICER 75 · UNGUARDED 63
+  published recording (11/18):  SLICER 70 · UNGUARDED 58
+  P6 — this arm in the live UNGUARDED column: true  (registered: true)
+       this arm under the two keys: inPop=true kDepth=false kQuoted=true  gate=MARKED
+       new members since the recording: 5 docs/research/unit-481disjunctiononly-2026-11-18/arm-disjunctiononly.mjs · docs/research/unit-482floorceiling-2026-11-19/arm.mjs · docs/research/unit-482floorceiling-2026-11-19/posthoc-quoted-fixtures.mjs · docs/research/unit-482floorceiling-2026-11-19/posthoc-string-bodies.mjs · docs/research/unit-483columnnarrow-2026-11-19/arm-columnnarrow.mjs
+       dropped since the recording:     0 
+
+rc=0 — figures above are the arm's own stdout; nothing here edits the gate or unit-469.
