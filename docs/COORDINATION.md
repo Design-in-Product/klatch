@@ -7165,8 +7165,71 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/18 STOP 19:49 fired and is logged immediately below, with 11/18 WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47 below that. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
-- **Updated:** 2026-11-18 ~19:49–20:0x PT (**STOP fire — Daedalus took the gate-ordering item this
+- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/19 START 10:47 fired and is logged immediately below, with 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47 below that. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Updated:** 2026-11-19 ~10:47–10:5x PT (**START fire — the narrowing Daedalus routed to this seat
+  is taken, driven and PUBLISHED: the UNGUARDED column of 58 this seat published and routed is
+  re-published as 34. `docs/research/unit-483columnnarrow-2026-11-19/` — 1 arm, 1 post-hoc leg,
+  4 drives, 7 predictions, 7 HIT, 0 REFUTED.** Pre-reg pushed **10:50:37, before the arm existed**
+  (`f26e36c7`); arm + drives `a196cc19`; post-hoc `drive3`; RESULTS + mail `f6222196`.
+  `date`-reads 10:47:16 · 10:49:54 · 10:50:37 · 10:53:27 · 10:54:23 PST.
+  **THE NUMBER: 58 − 16 − 3 − 1 − 4 = 34.** Less **16** K-DEPTH (every brace comparison a
+  bracket-depth-counter operand — `unit-481`'s 16, now under the **conjunction** of his open class
+  and the mirror class, reproducing exactly at a tree nine commits later); less **3** K-QUOTED (in
+  the population only because a multi-character string quotes a comparison); less **1**
+  (`round401`, where the gate's GUARDED is right and **neither key reaches it**); less **4**
+  `gate=MARKED` (naive by declaration, so the census is right about them). **24 of 58 — 41.4% — of a
+  figure this seat published and routed is withdrawn or reclassified.** Of the 34, **32** tracked and
+  baselined, **2** verified `.gitignore`-only and untracked (`git check-ignore -v` names the ignoring
+  line). **Still an upper bound, and his §2 is why** — a line-local textual key cannot separate an
+  argument-splitting depth counter beside its own slice from a body slicer.
+  **HIS FIGURE REPRODUCED UNDER THIS SEAT'S SUBJECT, not taken across:** `keepShortStrings` captured
+  and `eval`'d out of his `posthoc-quoted-fixtures.mjs`, his blank-character probe running here as
+  its own rc=3 guard → **exactly 3** of the 58 (registered floor 2, expectation 3). The third,
+  `scripts/probe-round257-…interpolation.mts`, is **baselined** — an exemption in
+  `scripts/decl-body-slicers.baseline` for a file whose brace-comparison count is **zero** once
+  multi-character string bodies go blank. **Boarded, blocker named:** a baseline migration cannot
+  land in a fire that is also measuring the gate.
+  **P4 — the two keys are DISJOINT (overlap 0)**, which is what makes the headline a subtraction
+  rather than a union count; R5 stood ready to withdraw the arithmetic at any overlap ≥ 1.
+  **THE FINDING AGAINST THIS SEAT'S OWN INSTRUMENT: the first KP-C carried the harm, not the
+  property.** `src.slice(src.indexOf('{') + 1, …)` read `inPop=false` and the arm **refused rc=4,
+  publishing nothing** — the population key is *"**compares** against an open brace"* and
+  `indexOf('{')` is a search. **The keeper is which check caught it:** the broken KP still occupied
+  the `false/false` corner, so the `corners.size === 3` coverage check **PASSED** and only the
+  per-KP registered-side assertion failed. A corner-coverage check cannot tell a fixture that
+  reaches a corner for the registered reason from one that reaches it by not being in the population
+  at all.
+  **P6 — the population drift reproduces a fourth time and is SHARPENED.** Live census at HEAD:
+  walked 968 · |P| 82 · SLICER 75 · **UNGUARDED 63** against the 11/18 recording's 70 / 58; **all 5
+  new members are instruments, 0 product or script code.** Gate reads across this unit's own three
+  pushes: `1000 · 72 · 59 · 10 · 3` → `1001 · 73 · 59 · **11** · 3` (arm: +1 population, +1 MARKED)
+  → `1002 · **73** · 59 · 11 · 3` (post-hoc: **+1 tracked, population UNMOVED** — it parses the
+  arm's stdout and uses no brace comparison as a reader). So the drift is **+1 per instrument that
+  CARRIES a brace comparison**, not +1 per instrument, and **UNGUARDED held at 59 across 1000, 1001
+  and 1002 tracked** — a fourth consecutive reading.
+  **Mail:** 1 new since `2a6e1edc` (`git diff --name-status`, not mtime), this seat primary, read in
+  full before any work and answered in the same fire —
+  `theseus-to-daedalus-argus-…-the-narrowing-is-taken-and-published-58-becomes-34-…-2026-11-19.md`.
+  His memo stays in `docs/mail/` (not `read/`): its §8 carries an open question to **xian** —
+  *should `packages/server/src/__tests__/setup.ts` stop hand-rolling DDL and call `applySchema`?*
+  This seat's 11/18 decline stands for the same reason his does; no fourth decline added.
+  **Cross-pollination brief (11-19)** read in full from the private source (the copy here is a
+  pointer by design): Piper Morgan's pre-commit hook refusing estimated timestamps (~60 commits,
+  0 false refusals in five hours) and Klatch's own `unit-480` cripple write-up. Neither is this
+  seat's lane to adopt; noted.
+  **Gate, verified this fire:** pre-commit on all four pushes — **CENSUS OK** (45 swept / 110
+  deferred) and **DECL-BODY SLICERS OK** each time. Full driving sweep driven fresh:
+  **SWEEP PASSED — 45 of 45 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but did not
+  finish), 0 census problem(s), 110 deferred** (`drive4.sweep.out`).
+  `git status --porcelain scripts packages` **empty** at close → **R1 discharged, nothing cured**,
+  and `npm test` is **not** claimed: `scripts` and `packages` are untouched by construction, so
+  Daedalus's 147 files / 2294 passed stays his measurement, reproduced at his tree this morning.
+  **Drain:** mail delta read and answered in-fire; brief read in full; the one routed item taken,
+  driven, published and answered; **two items boarded with named blockers** (the baselined quoted
+  fixture needs a non-gate-measuring fire; the `round401` verdict needs dataflow, unavailable to a
+  line-local key); one item declined with the decline already standing. No deferral without a named
+  blocker. Log: `docs/logs/2026-11-19-theseus-log.md`.)
+- **11/18 fire (STOP) — ~19:49–20:0x PT** (**Daedalus took the gate-ordering item this
   seat offered him and REFUTED it; the false verdict was this seat's, and the follow-on found the
   same error shape in this seat's own registered cure. `docs/research/unit-481disjunctiononly-2026-11-18/`
   — 1 arm, 1 post-hoc probe, 4 drives, 8 predictions, 8 HIT.** Pre-reg pushed **19:50:13, before the
