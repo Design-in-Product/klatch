@@ -7254,8 +7254,76 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/19 START 10:47 fired and is logged immediately below, with 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47 below that. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
-- **Updated:** 2026-11-19 ~10:47–10:5x PT (**START fire — the narrowing Daedalus routed to this seat
+- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/19 WORK 14:47 fired and is logged immediately below, with 11/19 START 10:47, 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47 below that. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Updated:** 2026-11-19 ~14:47–14:5x PT (**WORK fire — Daedalus's §2 two-seat ask is answered with
+  a MEASUREMENT rather than an opinion, and the radius he framed the decision on was a delta.
+  `docs/research/unit-486markerstale-2026-11-19/` — 1 arm, 1 post-hoc leg, 5 drives, 6 predictions,
+  6 HIT, 0 REFUTED, KP set PASSES.** Pre-reg pushed **14:49:56, before the arm existed** (`cf08e3cf`);
+  arm + post-hoc `ece443c9`; RESULTS + mail `857e4bd1`. `date`-reads 14:47:08 · 14:48:24 · 14:49:56 ·
+  14:54:00 · 14:57:06 PST.
+  **THE NUMBER: the blast radius of a marker-staleness check is 13 files, not 7.** 17 marker-bearing
+  tracked code files; **4 NEEDED** (= the gate's whole `MARKED` column, same **set** not just the same
+  count) and **13 STALE**. Of the 13: **8** made stale by his narrowing this morning, and **5 stale
+  under BOTH readings — markers that never exempted anything on any fire**, three of those five being
+  post-hoc legs that parse another arm's stdout and have no comparison to exempt. **So the
+  convention's real failure mode is not markers going stale, it is markers that were never
+  load-bearing**, and a membership-keyed check cannot tell the two apart. Every key — `MARKER`,
+  `cmp`, the brace constants, `SELF`, `blankLongStrings(raw, 2)` — **captured out of his gate**, never
+  re-typed; capture failure rc=3.
+  **HIS 7 REPRODUCES EXACTLY AND IS A STRICT SUBSET** (`drive3`, from git not from reading): his
+  `drive0` tree is `60ac5efc^` = `8149d6d3`, where `MARKED` = 4 still-needed + 7 departed = **11**,
+  which is what his drive0 printed. **The 8th is his own `unit-484popnarrow/arm.mjs`, added in the
+  same commit as the cure**, so it entered the tree already out of the population and appears in
+  **neither column** of his before/after table — an instrument landing in the cure's commit is
+  invisible to its own two-row table.
+  **P5 — requirement 3 says "a marker AT THE SITE" and the gate reads the FILE:** **0 of 4** marker
+  occurrences in still-NEEDED files sit on a line carrying a brace comparison; distances **8, 10, 13,
+  21**; all four in docblocks. A site-level check needs a **window constant no fire has registered** —
+  declined with a measured reason, not a preference.
+  **THE WORD GIVEN: build it as a REPORT line, not a red.** A red costs **13** edits to frozen
+  published instruments (6 arms, 5 post-hoc legs, 1 cripple, 1 probe), **5 of them removing a marker
+  that never did anything**; **requirements 2 and 3 cannot be made symmetric by adding a list**,
+  because a record of files-whose-markers-are-dead is itself an exemption record needing a staleness
+  check and a marker is site-local *precisely* so it needs no list; and a third `NOT CHECKED:` line
+  cures the harm he named (*"the instrument that caught the one cannot see the seven"*) at zero cost
+  to any published file. Consent given for the **3** files that are this seat's, conditional on
+  migrate-first; **withheld** for a red that lands first and leaves 13 files failing the gate. If he
+  wants the red anyway it is one line to xian and this seat takes either ruling. **Blocker named for
+  the build: R2 — a fire measuring the marker convention does not also edit the gate**, so the build
+  is his.
+  **THE FINDING AGAINST THIS SEAT'S OWN INSTRUMENT, `drive1` kept:** the control leg read gate figures
+  with an unanchored label key, and the gate prints verdict rows sorted by count descending, so
+  **`/GUARDED\s+(\d+)/` matched inside `UNGUARDED  58`** — reporting `GUARDED` as **58** and refuting
+  P1 on a gate that had not moved a byte. **The error direction is the dangerous one: it manufactured
+  a figure MOVE out of a stable instrument**, which is the shape of a regression report. Wrong on 1 of
+  6 figures; the five labels that are not substrings of anything were all correct, so every spot check
+  aimed at those passes. **The tell was arithmetic, not inspection — the bogus value equalled another
+  printed row exactly.** Repaired in `drive2` with the separation asserted over a literal three-row
+  probe. **Routed to Argus as a candidate pin:** a reader keyed on a label from a printed partition
+  where one label is a substring of another. No census of other printed partitions claimed.
+  **Drift this unit put into its own subject, named not absorbed:** `drive5`, after this unit's two
+  files were committed, reads **marker-bearing 18 · STALE 14**. The registered subject is the tracked
+  tree at HEAD and HEAD moved by this seat's own commit, so **13 at the registered subject, 14 once
+  the measuring instrument is tracked, and the increment is the instrument.** **The instrument
+  measuring dead markers added a dead marker** — its brace comparisons are all inside KP source
+  strings of 2+ chars, which his narrowing blanks. It carries **5** marker occurrences, the first file
+  in the corpus with more than one; **all 17 at the registered subject carry exactly 1**, which is why
+  nothing has had to notice that a count of marker-bearing *files* is not a count of markers. **His §5
+  drift cure holds on this seat's new files:** population flat at **65** across `tracked 1007 → 1009`.
+  **Mail:** 3 new since `fbec2817` (`git diff --name-status`, not mtime), 1 with this seat primary,
+  all read in full before any work and the primary answered in the same fire. Daedalus's memo stays in
+  `docs/mail/` — open action (his build, or a disagreement to put to xian). The two cc-only memos are
+  not moved: not this seat's threads to close.
+  **Gate, verified this fire:** pre-commit ran on all three pushes — **CENSUS OK** (45 swept / 110
+  deferred) and **DECL-BODY SLICERS OK** each time, the last at `tracked 1009 · population 65 ·
+  UNGUARDED 58 · MARKED 4 · GUARDED 3 · baseline 58`. **Sweep driven fresh: `SWEEP PASSED — 45 of 45
+  swept probes green, 0 red, 0 blocked, 0 census problem(s), 110 deferred`.** **R1 held — not one
+  marker was removed; R2 held — the gate was not edited.** `git status --porcelain scripts packages`
+  **empty** at close, so `npm test` is **not** claimed: both trees are untouched by construction.
+  **Drain:** 3 mail read, 1 answered; the one routed decision taken to a measured answer; one finding
+  routed to Argus; one build left with Daedalus under a named blocker. No deferral without a named
+  blocker.)
+- **Previously:** 2026-11-19 ~10:47–10:5x PT (**START fire — the narrowing Daedalus routed to this seat
   is taken, driven and PUBLISHED: the UNGUARDED column of 58 this seat published and routed is
   re-published as 34. `docs/research/unit-483columnnarrow-2026-11-19/` — 1 arm, 1 post-hoc leg,
   4 drives, 7 predictions, 7 HIT, 0 REFUTED.** Pre-reg pushed **10:50:37, before the arm existed**

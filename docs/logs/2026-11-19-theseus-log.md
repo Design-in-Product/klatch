@@ -130,3 +130,155 @@ the wrapper owns delivery and logs the outcome.
 **Fire closed bounded** (Klatch is an approved exception to the platform drain baseline): day-part
 checklist done, the one routed item taken through to a published result and an answered memo, two
 items boarded with named blockers, state written down.
+
+---
+
+## 14:47 — Session resumed (WORK fire) · model: Claude Opus 5
+
+**Day-part checklist.** Worktree synced by the wrapper; `git status --short` **empty** at open;
+`date` read **14:47:08 PST** (not estimated). `COORDINATION.md` read (Theseus section at line 7255,
+the 11/19 START entry at its head). **Mail delta by `git diff --name-status fbec2817..HEAD --
+docs/mail/`, not mtime → 3 new**, all read in full before any work began:
+
+1. `daedalus-to-theseus-argus-…-the-narrowing-is-landed-in-the-gate-…-2026-11-19.md` — **this seat
+   primary.** §2 routes a **two-seat decision** and offers to build the marker-staleness check "on
+   your word." **Answered in this same fire by memo + a measured unit.** Left in `docs/mail/`:
+   open action (his build, or a disagreement to put to xian).
+2. `argus-to-daedalus-…-the-rebuilttables-item-is-closed-as-a-documented-gap-not-a-cure-…` — cc only,
+   informational, no action for this seat. Not moved: not this seat's thread to close.
+3. `calliope-to-daedalus-…-your-s8-is-boarded-as-item-9-…` — cc only, informational, no action.
+
+**The item taken: `unit-486markerstale`.** Daedalus's ask framed the blast radius of a
+marker-staleness check as **7 files, 5 of them arms of published units**. A decision taken on a
+recalled radius is what CLAUDE.md forbids, so the radius was **measured before the word was given**.
+
+**Pre-registration pushed `cf08e3cf` at 14:49:56 PST, BEFORE the arm existed.** 6 predictions,
+3 KPs, 5 declared refusals. Arm + post-hoc `ece443c9`; RESULTS + mail `857e4bd1`.
+`date`-reads: **14:47:08 · 14:48:24 · 14:49:56 · 14:54:00 · 14:57:06 PST.**
+
+### THE NUMBER: the blast radius is 13, not 7
+
+**17** marker-bearing tracked code files (his own `MARKER`, `SELF`, `cmp`, the brace constants and
+the `blankLongStrings(raw, 2)` reading all **captured** out of the gate, never re-typed; capture
+failure = rc=3). Of those: **4 NEEDED** (= the gate's whole `MARKED` column, same **set**, not merely
+the same count — P1's member-level leg) and **13 STALE**.
+
+- **8** stale because of his narrowing this morning (in the population under the OLD reading).
+- **5 stale under BOTH readings — markers that never exempted anything on any fire.** Three of the
+  five are **post-hoc legs that parse another arm's stdout** and have no comparison to exempt. So the
+  convention's real failure mode is not markers going stale, it is **markers that were never
+  load-bearing**, and a membership-keyed check cannot tell the two apart.
+
+**His 7 reproduces EXACTLY and is a strict subset** (`drive3`, from git not from reading): his
+`drive0` tree is `60ac5efc^` = **`8149d6d3`**, and `MARKED` there = 4 still-needed (4 of 4 present)
++ 7 departed (7 of 7 present) = **11**, which is what his drive0 printed. **The 8th is his own
+`unit-484popnarrow/arm.mjs`, added in the same commit as the cure**, so it entered the tree already
+out of the population and appears in **neither column** of his before/after table. An instrument
+landing in the cure's commit is invisible to its own two-row table.
+
+**P5 — requirement 3 says "a marker AT THE SITE"; the gate reads the FILE.** **0 of 4** marker
+occurrences in still-NEEDED files sit on a line carrying a brace comparison; distances **8, 10, 13,
+21** lines; all four in docblocks. A site-level check therefore needs a **window constant no fire has
+registered** — declined with a measured reason, not a preference.
+
+**All 6 predictions HIT, KP set PASSES** (each KP asserted against its own registered side; corner
+coverage reported and explicitly **not** the gate, per `unit-483` §5).
+
+### THE FINDING AGAINST THIS SEAT'S OWN INSTRUMENT — `drive1` kept
+
+The control leg read gate figures with `new RegExp(label + '\s+(\d+)')`. The gate prints verdict rows
+sorted by count descending, so **`/GUARDED\s+(\d+)/` matched inside `UNGUARDED  58`** and the leg
+reported `GUARDED` as **58**, refuting P1 on a gate that had not moved a byte.
+
+- **The error direction is the dangerous one:** it manufactured a *figure move* out of a stable
+  instrument — `GUARDED 3 → 58` is the shape of a regression report, and a seat acts on it.
+- **Wrong on 1 of 6 figures.** The five labels that are not substrings of anything were all correct,
+  so every spot check aimed at those labels passes.
+- **The tell was arithmetic, not inspection:** the bogus value **equalled another printed row
+  exactly.** Repaired in `drive2` with the separation **asserted** over a literal three-row probe.
+
+Routed to Argus as a candidate pin: *a reader keyed on a label from a printed partition where one
+label is a substring of another.* No census of other printed partitions is claimed.
+
+### The word given, and what it is not
+
+**Build it as a REPORT line, not a red.** Three measured reasons: (1) a red costs **13** edits to
+frozen published instruments — 6 arms, 5 post-hoc legs, 1 cripple, 1 probe — **5 of them removing a
+marker that never did anything**; (2) **requirements 2 and 3 cannot be made symmetric by adding a
+list** — a 13-entry record of files-whose-markers-are-dead is itself an exemption record needing a
+staleness check, and a marker is site-local *precisely* so it needs no list; (3) a third
+`NOT CHECKED:` line cures the harm he actually named — *"the instrument that caught the one cannot
+see the seven"* — at zero cost to any published file. **Consent given for the 3 files that are this
+seat's to give, conditional on migrate-first.** Consent **withheld** for a red that lands first and
+leaves 13 files failing the gate. If he wants the red anyway, that is one line to xian and this seat
+takes either ruling.
+
+### Drift this unit put into its own subject, named not absorbed
+
+**`drive5`, after this unit's two files were committed: marker-bearing 18 · STALE 14.** The registered
+subject is the tracked tree at HEAD and HEAD moved by this seat's own commit, so the headline is
+**13 at the registered subject, 14 once the measuring instrument is tracked, and the increment is the
+instrument.** **The instrument measuring dead markers added a dead marker** — its brace comparisons
+are all inside KP source strings of 2+ chars, which his narrowing blanks. It carries **5** marker
+occurrences, the first in the corpus with more than one; **all 17 at the registered subject carry
+exactly 1**, which is why nothing has had to notice that a count of marker-bearing *files* is not a
+count of markers. **His §5 drift cure holds on this seat's new files:** population flat at **65**
+across `tracked 1007 → 1009`.
+
+### Gate, verified this fire (not recalled)
+
+Pre-commit ran on **all three** pushes — **CENSUS OK** (45 swept / 110 deferred) and **DECL-BODY
+SLICERS OK** each time; the last read `tracked 1009 · population 65 · UNGUARDED 58 · MARKED 4 ·
+GUARDED 3 · baseline 58`, rc=0. **Sweep driven fresh this fire:** `SWEEP PASSED — 45 of 45 swept
+probes green, 0 red, 0 blocked (0 could not run, 0 ran but did not finish), 0 census problem(s), 110
+deferred` (`drive4.sweep.out`). **R1 held — not one marker was removed**; **R2 held — the gate was not
+edited**. `git status --porcelain scripts packages` **empty** at close, so `npm test` is **not**
+claimed: `scripts` and `packages` are untouched by construction. Daedalus's §6 note (a sweep figure
+quoted from a dirty tree is not the sweep figure, and `probe-round260` pins exactly that) is why the
+sweep was driven from a tree with `scripts/` clean.
+
+**Drain:** mail delta read (3 new, 1 primary, answered in the same fire); the one routed decision
+taken through to a **measured** answer rather than an opinion; one finding routed to Argus; one
+candidate build left with Daedalus because R2 forbids this seat touching the gate it is measuring —
+**a named blocker, not a priority**. No deferral without a named blocker.
+
+### Session wrap verification (required before any "done" claim)
+
+**Step 1 — commits landed.** `git log origin/main --oneline -5`, run this fire:
+
+```
+857e4bd1 results+mail(unit-486markerstale): the word is BUILD IT AS A REPORT -- the radius is 13 not 7, requirements 2 and 3 cannot be made symmetric by adding a list
+ece443c9 arm+posthoc(unit-486markerstale): the blast radius is 13 files, not 7 -- 5 markers never exempted anything under any reading, and his own arm is the invisible 8th
+cf08e3cf pre-reg(unit-486markerstale): size the marker-staleness check's real blast radius before giving the word -- the 7 is a delta, the check reddens on the whole stale set
+3b16077e mail+coord+log: 11/19 WORK fire -- the rebuiltTables disclosure item is closed as documented, not cured
+94e8b121 log: 11/19 WORK fire -- session wrap verification, 6 commits on main, rebase not force, tree clean
+```
+
+All three of this fire's commits are on `origin/main` (this worktree's push target per the seat
+convention; the stale `origin/claude/theseus-cycle` ref dates to 2026-08 and is not the target).
+
+**Step 2 — deliverable files present** (`ls`, this fire):
+
+```
+docs/research/unit-486markerstale-2026-11-19/PRE-REGISTRATION.md
+docs/research/unit-486markerstale-2026-11-19/RESULTS.md
+docs/research/unit-486markerstale-2026-11-19/arm-markerstale.mjs
+docs/research/unit-486markerstale-2026-11-19/posthoc-whose-seven.mjs
+docs/research/unit-486markerstale-2026-11-19/drive0.live-gate.out
+docs/research/unit-486markerstale-2026-11-19/drive1.arm.out|.err            (KEPT — the reader defect)
+docs/research/unit-486markerstale-2026-11-19/drive2.arm-repaired.out|.err
+docs/research/unit-486markerstale-2026-11-19/drive3.posthoc-whose-seven.out|.err
+docs/research/unit-486markerstale-2026-11-19/drive4.sweep.out
+docs/research/unit-486markerstale-2026-11-19/drive5.arm-post-commit.out|.err
+docs/logs/2026-11-19-theseus-log.md
+docs/mail/theseus-to-daedalus-argus-cc-xian-janus-calliope-iris-the-word-is-yes-as-a-report-not-a-red-the-radius-is-13-not-7-and-your-eighth-departure-is-your-own-arm-2026-11-19.md
+```
+
+`git status --porcelain scripts packages` → **empty**, run after the last push.
+
+**Step 3 — this log is pushed last**, after Steps 1 and 2 were run. Nothing is claimed delivered:
+the wrapper owns delivery and logs the outcome.
+
+**Fire closed bounded** (Klatch is an approved exception to the platform drain baseline): day-part
+checklist done, the one routed decision taken through to a measured answer and an answered memo, one
+finding routed to Argus, the build left with Daedalus under a named blocker (R2), state written down.
