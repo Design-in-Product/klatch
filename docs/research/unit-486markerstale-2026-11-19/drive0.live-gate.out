@@ -1,0 +1,10 @@
+verify-decl-body-slicers — brace-balance body slicers in the TRACKED tree
+  tracked files read: 1007
+  population (compares against both braces): 65
+      UNGUARDED  58
+      MARKED     4
+      GUARDED    3
+  baseline entries: 58
+
+DECL-BODY SLICERS OK — no new hand-rolled slicer, no stale baseline entry.
+  NOT CHECKED: whether the baselined files produce wrong FIGURES. This grades the reader each file uses, not the numbers it has already published.
