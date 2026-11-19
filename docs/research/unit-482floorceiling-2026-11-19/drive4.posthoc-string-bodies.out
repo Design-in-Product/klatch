@@ -1,0 +1,99 @@
+# drive4.posthoc-string-bodies
+# cmd: node docs/research/unit-482floorceiling-2026-11-19/posthoc-string-bodies.mjs 995 69 59 7 3
+# rc (read off the child): 0
+# when: 2026-11-19T17:24:54.822Z
+
+=== the gate's own reading, captured from its comments-blanked source: const code = stripSource(raw, false)
+
+=== CONTROL — the string-KEEPING column vs the LIVE gate ===
+  tracked     captured  995  live  995  OK
+  population  captured   69  live   69  OK
+  UNGUARDED   captured   59  live   59  OK
+  MARKED      captured    7  live    7  OK
+  GUARDED     captured    3  live    3  OK
+
+=== KNOWN POSITIVE — a file whose ONLY brace comparison is inside a quoted fixture ===
+  KP-K  string-keeping: UNGUARDED (1 open-brace site(s))  ·  strings-blanked: OUT (0)
+  KP-K  PASS — the reading, not the reader, decides membership
+
+=== MEASUREMENT — how much of the population is string-literal text? ===
+  population, gate's string-keeping reading:   69
+  population, strings-blanked reading:         0
+  members present ONLY under the gate's reading: 69
+  members present ONLY under strings-blanked:    0   (must be 0 — blanking can only remove matches)
+  verdict columns  keeping: UNGUARDED 59 · MARKED 7 · GUARDED 3
+                   blanked: UNGUARDED 0 · MARKED 0 · GUARDED 0
+
+  the members that are in the population only because a STRING contains the comparison:
+      UNGUARDED baselined  1 site(s)  docs/research/round352-valuation-leg-key.mjs
+      UNGUARDED baselined  1 site(s)  docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs
+      UNGUARDED baselined  1 site(s)  docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs
+      UNGUARDED baselined  2 site(s)  docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs
+      UNGUARDED baselined  3 site(s)  docs/research/round399-instruments/census-the-named-binding-form.mjs
+      UNGUARDED baselined  3 site(s)  docs/research/round400-instruments/regrade-the-file-scoped-guard.mjs
+      GUARDED     —        8 site(s)  docs/research/round401-instruments/census-the-branch-polarity-axis.mjs
+      UNGUARDED baselined  3 site(s)  docs/research/round402-instruments/key-from-round400.mjs
+      UNGUARDED baselined  3 site(s)  docs/research/round407-instruments/census-the-fixture-as-string-class.mjs
+      UNGUARDED baselined  5 site(s)  docs/research/round408-instruments/stratify-the-live-interval.mjs
+      UNGUARDED baselined  1 site(s)  docs/research/round409-instruments/census-the-hand-typed-known-positive.mjs
+      UNGUARDED baselined  1 site(s)  docs/research/round410-instruments/census-the-wrapped-call-and-the-body-granularity.mjs
+      UNGUARDED baselined  2 site(s)  docs/research/round411-instruments/cure-the-wrapped-call-and-the-body-key.mjs
+      UNGUARDED baselined  1 site(s)  docs/research/round411-instruments/list-the-declarations-under-the-409-key.mjs
+      UNGUARDED baselined  4 site(s)  docs/research/round412-instruments/resolve-the-ternary-and-reconstruct-the-nine.mjs
+      UNGUARDED baselined  4 site(s)  docs/research/round430-instruments/his412-prefix.sliced.mjs
+      UNGUARDED baselined  4 site(s)  docs/research/round430-instruments/mutant-m1-refused-false-on-success.sliced.mjs
+      UNGUARDED baselined  4 site(s)  docs/research/round430-instruments/mutant-m2-refusal-key-renamed.sliced.mjs
+      UNGUARDED baselined  4 site(s)  docs/research/round430-instruments/mutant-m3-control-message-reworded.sliced.mjs
+      UNGUARDED baselined  3 site(s)  docs/research/round430-instruments/refusal-convention.mjs
+      UNGUARDED baselined  1 site(s)  docs/research/round432-instruments/precure-refusal-convention.sliced.mjs
+      UNGUARDED baselined  1 site(s)  docs/research/round434-instruments/precure-refusal-convention.sliced.mjs
+      UNGUARDED baselined  2 site(s)  docs/research/round436-instruments/precure-refusal-convention.sliced.mjs
+      UNGUARDED baselined  3 site(s)  docs/research/round438-instruments/precure-refusal-convention.sliced.mjs
+      UNGUARDED baselined  1 site(s)  docs/research/round441-instruments/key-the-silent-class-from-source.mjs
+      UNGUARDED baselined  1 site(s)  docs/research/round449-instruments/probe-the-argument-shapes.mjs
+      UNGUARDED baselined  5 site(s)  docs/research/round449-instruments/resolve-the-variable-write-targets.mjs
+      UNGUARDED baselined  2 site(s)  docs/research/round454-instruments/census2-does-any-call-site-feed-stripsource-a-non-string.mjs
+      UNGUARDED baselined  2 site(s)  docs/research/round454-instruments/census3-resolve-the-324-unmodelled-one-level.mjs
+      UNGUARDED baselined  2 site(s)  docs/research/round454-instruments/probe0-why-449s-two-reader-slices-return-null.mjs
+      UNGUARDED baselined  1 site(s)  docs/research/round455-instruments/dispose-of-w10-and-repair-the-lifter-it-needs.mjs
+      UNGUARDED baselined  1 site(s)  docs/research/round458-instruments/grade-the-conjunct-cure.mjs
+      UNGUARDED baselined  3 site(s)  docs/research/unit-464acons-2026-11-04/read-consumers.mjs
+      UNGUARDED baselined  3 site(s)  docs/research/unit-464addarm-2026-11-04/grade-addarm.mjs
+      UNGUARDED baselined  2 site(s)  docs/research/unit-464class-2026-11-02/enumerate-legs.mjs
+      UNGUARDED baselined  2 site(s)  docs/research/unit-464dir-2026-11-02/across-one-operator-v2.mjs
+      UNGUARDED baselined  2 site(s)  docs/research/unit-464dir-2026-11-02/slice-spans.mjs
+      UNGUARDED baselined  6 site(s)  docs/research/unit-464grep-2026-11-01/lifted-reader.mjs
+      UNGUARDED baselined  1 site(s)  docs/research/unit-464inspan-2026-11-03/grade-inspan.mjs
+      UNGUARDED baselined  2 site(s)  docs/research/unit-464kind-2026-11-05/kind-resolve.mjs
+      UNGUARDED baselined  1 site(s)  docs/research/unit-464moves-2026-11-04/grade-moves.mjs
+      UNGUARDED baselined  2 site(s)  docs/research/unit-464mysites-2026-11-04/grade-mysites.mjs
+      UNGUARDED baselined  6 site(s)  docs/research/unit-464rec-2026-10-31/rec-census.mjs
+      UNGUARDED baselined  2 site(s)  docs/research/unit-464redkey-2026-11-05/probe-kind.mjs
+      UNGUARDED baselined  1 site(s)  docs/research/unit-464redkey-2026-11-05/scan.mjs
+      UNGUARDED baselined  1 site(s)  docs/research/unit-465census-v2-2026-11-10/census-anchors-v2.mjs
+      UNGUARDED baselined  1 site(s)  docs/research/unit-465readerset-2026-11-14/arm-readerset-a.mjs
+      UNGUARDED baselined  2 site(s)  docs/research/unit-465readerset-2026-11-14/arm-readerset-b.mjs
+      UNGUARDED baselined  2 site(s)  docs/research/unit-465readerset-2026-11-14/arm-readerset-c.mjs
+      UNGUARDED baselined  1 site(s)  docs/research/unit-466rhscap-2026-11-14/arm-rhscap-a.mjs
+      UNGUARDED baselined  1 site(s)  docs/research/unit-466rhscap-2026-11-14/arm-rhscap-b.mjs
+      UNGUARDED baselined  1 site(s)  docs/research/unit-466striplift-2026-11-15/arm-striplift-b.mjs
+      UNGUARDED baselined  1 site(s)  docs/research/unit-467importprice-2026-11-16/arm-importprice-a.mts
+      UNGUARDED baselined  1 site(s)  docs/research/unit-468createlit-2026-11-17/arm-createlit-a.mjs
+      MARKED      —        1 site(s)  docs/research/unit-470bodyslice-2026-11-17/arm-bodyslice-a.mjs
+      MARKED      —        1 site(s)  docs/research/unit-470bodyslice-2026-11-17/kp-fixture-new-unguarded-slicer.mjs
+      MARKED      —        1 site(s)  docs/research/unit-472publishedfigure-2026-11-17/arm-publishedfigure-a.mjs
+      MARKED      —        1 site(s)  docs/research/unit-472publishedfigure-2026-11-17/handread-readerset-a.mjs
+      GUARDED     —        6 site(s)  docs/research/unit-476phantomdenom-2026-11-18/precure/decl-body.precure.mjs
+      MARKED      —        2 site(s)  docs/research/unit-480guardorder-2026-11-18/arm-b.mjs
+      MARKED      —        2 site(s)  docs/research/unit-480guardorder-2026-11-18/arm.mjs
+      MARKED      —        3 site(s)  docs/research/unit-481disjunctiononly-2026-11-18/arm-disjunctiononly.mjs
+      GUARDED     —        6 site(s)  scripts/lib/decl-body.mjs
+      UNGUARDED baselined  2 site(s)  scripts/lib/strip-source.mjs
+      UNGUARDED baselined  2 site(s)  scripts/probe-once-anchor-duplication.mts
+      UNGUARDED baselined  1 site(s)  scripts/probe-round256-an-emptiness-assertion-grades-the-operator-and-a-sole-blocker-ranking-cannot-see-a-coupled-class.mts
+      UNGUARDED baselined  3 site(s)  scripts/probe-round257-the-scanner-had-no-model-of-interpolation.mts
+      UNGUARDED baselined  1 site(s)  scripts/probe-round260-a-census-pin-has-two-axes-and-the-round-number-in-a-filename-is-not-one-of-them.mts
+      UNGUARDED baselined  3 site(s)  scripts/probe-round265-the-census-already-follows-imports-on-the-other-axis.mts
+
+  of those, sitting in the baseline as "a known unguarded slicer added on purpose": 59
+  of those, MARKED (declared naive on purpose): 7 of 7

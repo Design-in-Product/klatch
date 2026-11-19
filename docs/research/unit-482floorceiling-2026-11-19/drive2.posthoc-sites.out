@@ -1,0 +1,54 @@
+# drive2.posthoc-sites
+# cmd: node docs/research/unit-482floorceiling-2026-11-19/posthoc-name-the-sites.mjs
+# rc (read off the child): 0
+# when: 2026-11-19T17:23:03.011Z
+
+
+=== scripts/lib/decl-body.mjs
+    P6 — D1 FIRED here and I registered that it would not
+    6 open-brace comparison site(s) · 4 slice-family call site(s)
+             cmp L 146  if (code[open] !== '{') return -1;
+             cmp L 150  if (c === '{') depth++;
+             cmp L 270  else if (c === '{' && depth === 0) {
+             cmp L 278  if (code[k] === '{' || nextIsArrow || /[|&[,>)]/.test(code[k] ?? '')) { j = end + 1; c
+    D1-FIRES cmp L 296  if (code[i] !== '{') {
+             +-> slice L 300 at +184 chars  params: s.slice(parenOpen + 1, parenClose), body: null,
+    D1-FIRES cmp L 304  if (code[i] !== '{') return refuse('no-body-brace-after-the-parameter-list');
+             +-> slice L 300 at -80 chars  params: s.slice(parenOpen + 1, parenClose), body: null,
+
+=== docs/research/round401-instruments/census-the-branch-polarity-axis.mjs
+    P8 — D1/D2 FIRED on the one file both seats hand-read as a NON-slicer
+    8 open-brace comparison site(s) · 41 slice-family call site(s)
+             cmp L 103  if (c === '(' || c === '[' || c === '{') depth += 1;
+    D1-FIRES cmp L 118  if (c === '(' || c === '[' || c === '{') depth += 1;
+             +-> slice L 120 at +139 chars  else if (c === ',' && depth === 0) { args.push(inner.slice(start, i)); s
+             +-> slice L 122 at +196 chars  args.push(inner.slice(start));
+             cmp L 217  else if (c === '(' || c === '[' || c === '{') {
+             cmp L 240  if (masked[i] === '{') {
+             cmp L 247  if (c === '(' || c === '[' || c === '{') depth += 1;
+             cmp L 304  if (c === '(' || c === '[' || c === '{') depth += 1;
+             cmp L 312  if (z === '(' || z === '[' || z === '{') d += 1;
+             cmp L 424  if (c === '(' || c === '[' || c === '{') depth += 1;
+
+=== scripts/lib/strip-source.mjs
+    M2 — a baselined file with no slice-family call at all
+    2 open-brace comparison site(s) · 0 slice-family call site(s)
+             cmp L 239  if (quote === '`' && c === '$' && src[i + 1] === '{') {
+             cmp L 260  if (interp.length && c === '{') interp[interp.length - 1] += 1;
+    D1 fires on NO site in this file.
+
+=== docs/research/round399-instruments/census-the-named-binding-form.mjs
+    P9 — a floor-AND-D1 contradiction member
+    3 open-brace comparison site(s) · 39 slice-family call site(s)
+             cmp L  79  if (c === '(' || c === '[' || c === '{') depth += 1;
+    D1-FIRES cmp L  95  if (c === '(' || c === '[' || c === '{') depth += 1;
+             +-> slice L  97 at +139 chars  else if (c === ',' && depth === 0) { args.push(inner.slice(start, i)); s
+             +-> slice L  99 at +196 chars  args.push(inner.slice(start));
+             cmp L 201  if (c === '(' || c === '[' || c === '{') depth += 1;
+
+=== docs/research/unit-480guardorder-2026-11-18/arm-b.mjs
+    P5 — a MARKED file D1 MISSED
+    2 open-brace comparison site(s) · 8 slice-family call site(s)
+             cmp L 111  const kpe = kp('KP-E', "let i=0; while (s[i] !== '{') i++; if (s[j] === '}') done = tr
+             cmp L 113  const kpf = kp('KP-F', "if (s[i] === '{') d++; if (s[i] === '}') d--; const k = s.inde
+    D1 fires on NO site in this file.

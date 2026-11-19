@@ -1,0 +1,36 @@
+# drive5.posthoc-quoted-fixtures
+# cmd: node docs/research/unit-482floorceiling-2026-11-19/posthoc-quoted-fixtures.mjs 995 69 59 7 3
+# rc (read off the child): 0
+# when: 2026-11-19T17:26:30.171Z
+
+=== the blank character, read off strip-source.mjs: " "
+
+=== KNOWN POSITIVES — is the length-aware reading non-vacuous? ===
+  KP-L  in population: true  (1 site(s), UNGUARDED)  want true  PASS   a real two-sided depth counter — 1-char operands KEPT
+  KP-M  in population: false (0 site(s), OUT)  want false  PASS   the same comparison inside a quoted fixture — BLANKED
+  KP-N  in population: true  (1 site(s), UNGUARDED)  want true  PASS   both in one file — the real reader survives the blanking
+
+=== CONTROL — the gate column vs the LIVE gate ===
+  tracked     captured  995  live  995  OK
+  population  captured   69  live   69  OK
+  UNGUARDED   captured   59  live   59  OK
+  MARKED      captured    7  live    7  OK
+  GUARDED     captured    3  live    3  OK
+
+=== MEASUREMENT — population members that are in it only because of a QUOTED FIXTURE ===
+  population, gate reading (all strings kept):     69
+  population, 1-char strings only:                 65
+  members present ONLY under the gate's reading:    4
+  members present ONLY under the narrow reading:    0   (must be 0)
+  verdicts  gate:   UNGUARDED 59 · MARKED 7 · GUARDED 3
+            narrow: UNGUARDED 58 · MARKED 4 · GUARDED 3
+
+  in the population ONLY because a multi-character string quotes a comparison:
+      MARKED      —        2 site(s)  docs/research/unit-480guardorder-2026-11-18/arm-b.mjs
+      MARKED      —        2 site(s)  docs/research/unit-480guardorder-2026-11-18/arm.mjs
+      MARKED      —        3 site(s)  docs/research/unit-481disjunctiononly-2026-11-18/arm-disjunctiononly.mjs
+      UNGUARDED baselined  3 site(s)  scripts/probe-round257-the-scanner-had-no-model-of-interpolation.mts
+
+  of those, baselined as "a known unguarded slicer added on purpose": 1 of 59
+  of those, MARKED (declared naive on purpose):                       3 of 7
+  scripts/lib/decl-body.mjs survives the narrow reading: GUARDED  (must NOT be OUT)

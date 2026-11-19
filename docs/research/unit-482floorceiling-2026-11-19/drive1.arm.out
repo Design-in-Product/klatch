@@ -1,0 +1,67 @@
+# drive1.arm
+# cmd: node docs/research/unit-482floorceiling-2026-11-19/arm.mjs 995 69 59 7 3
+# rc (read off the child): 0
+# when: 2026-11-19T17:22:17.893Z
+
+=== CONTROL — re-derived vs the LIVE gate (P1) ===
+  tracked     captured  995  live  995  OK
+  population  captured   69  live   69  OK
+  UNGUARDED   captured   59  live   59  OK
+  MARKED      captured    7  live    7  OK
+  GUARDED     captured    3  live    3  OK
+  DEPTH_LINE captured from arm-b.mjs, window 120: /(?:[=!]==?\s*['"`][([{]['"`][\s\S]{0,80}?\|\|[\s\S]{0,40}?[=!]==?\s*['"`][([{]['"`])|(?:['"`][([{]['"`]\s*,\s*['"`][([{]['"`])|(?:\.includes\s*\(\s*c\s*\))/
+
+=== KNOWN POSITIVES — all four keys satisfiable in both directions ===
+  KP-H  m1=true  m2=true  d1=false d2=false  want t/t/f/*  PASS   pure two-sided depth counter, no slice
+  KP-I  m1=false m2=false d1=true  d2=false  want f/f/t/*  PASS   indexOf('{') + slice beside a comparison
+  KP-J  m1=false m2=false d1=false d2=false  want f/f/f/f  PASS   CRUX: comparison -> helper, slice far away
+
+=== ANSWER KEY — present in the tree? ===
+  MARKED members (declared slicers):      7
+  scripts/lib/decl-body.mjs:  present, inPop=true
+  docs/research/round401-instruments/census-the-branch-polarity-axis.mjs: present, inPop=true
+
+=== FLOOR — sufficient conditions for "never slices a declaration body" ===
+  P2  M1 depth-counter-only:                 18 of 69        (expect 18)
+      of those, baselined:                   18 of 59
+  P3  M2 no slice-family call at all:        2 of 69
+      M2 members M1 does not have:           2        (P3 expects >= 1)
+        + MARKED              docs/research/unit-480guardorder-2026-11-18/arm.mjs
+        + UNGUARDED baselined scripts/lib/strip-source.mjs
+      UNION FLOOR |M1 u M2|:                 20 of 69        (P3 expects >= 19)
+      of the union floor, baselined:         19 of 59   (32.2% of the baseline)
+  P4  round401 in the union floor:           false        (expect false)
+      round401: m1=false m2=false (41 slice-family call(s), 8 open-brace comparison(s))
+
+=== UPPER BOUND — graded against the 8 known body-slicers ===
+  P5  MARKED files D1 reaches:               4 of 7        (expect >= 5)
+        REACHED  d2=true  docs/research/unit-470bodyslice-2026-11-17/arm-bodyslice-a.mjs
+        REACHED  d2=true  docs/research/unit-470bodyslice-2026-11-17/kp-fixture-new-unguarded-slicer.mjs
+        REACHED  d2=true  docs/research/unit-472publishedfigure-2026-11-17/arm-publishedfigure-a.mjs
+        REACHED  d2=false docs/research/unit-472publishedfigure-2026-11-17/handread-readerset-a.mjs
+        MISSED   d2=false docs/research/unit-480guardorder-2026-11-18/arm-b.mjs
+        MISSED   d2=false docs/research/unit-480guardorder-2026-11-18/arm.mjs
+        MISSED   d2=false docs/research/unit-481disjunctiononly-2026-11-18/arm-disjunctiononly.mjs
+  P6  D1 reaches scripts/lib/decl-body.mjs: true        (expect false — the headline)
+  P7  D2 reaches scripts/lib/decl-body.mjs: false        (expect false)
+      scripts/lib/decl-body.mjs: 4 slice-family call(s), 6 open-brace comparison(s)
+  P8  round401 in D1 u D2:                   true        (expect false)
+      round401: d1=true d2=true ident "i"
+      |D1| = 26 of 69 · |D2| = 31 of 69 · |D1 u D2| = 45
+
+=== SOUNDNESS AND THE INTERVAL ===
+  P9  |union floor n D1|:                    9        (expect 0)
+        CONTRADICTION  m1=true m2=false d1=true  docs/research/round399-instruments/census-the-named-binding-form.mjs
+        CONTRADICTION  m1=true m2=false d1=true  docs/research/round400-instruments/regrade-the-file-scoped-guard.mjs
+        CONTRADICTION  m1=true m2=false d1=true  docs/research/round402-instruments/key-from-round400.mjs
+        CONTRADICTION  m1=true m2=false d1=true  docs/research/round449-instruments/probe-the-argument-shapes.mjs
+        CONTRADICTION  m1=true m2=false d1=true  docs/research/round449-instruments/resolve-the-variable-write-targets.mjs
+        CONTRADICTION  m1=true m2=false d1=true  docs/research/round454-instruments/probe0-why-449s-two-reader-slices-return-null.mjs
+        CONTRADICTION  m1=true m2=false d1=true  docs/research/round455-instruments/dispose-of-w10-and-repair-the-lifter-it-needs.mjs
+        CONTRADICTION  m1=true m2=false d1=true  docs/research/round458-instruments/grade-the-conjunct-cure.mjs
+        CONTRADICTION  m1=true m2=false d1=true  docs/research/unit-464addarm-2026-11-04/grade-addarm.mjs
+  P10 ceiling (population - |D1|):           43
+      floor:                                 20
+      interval width:                        23        (P10 expects >= 20)
+      the class size is somewhere in [20, 43] of 69 —
+      and the ceiling EXCLUDES scripts/lib/decl-body.mjs, which every seat agrees slices bodies.

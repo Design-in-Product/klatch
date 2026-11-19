@@ -1,0 +1,10 @@
+# drive6.gate-after-unit
+# cmd: npx tsx scripts/gate.mts
+# rc (read off the child): 0
+# when: 2026-11-19T17:28:59.714Z
+
+GATE ok exit=0 census · files: (no Test Files line) · tests: (no Tests line) · errors: 0
+GATE ok exit=0 typecheck · files: (no Test Files line) · tests: (no Tests line) · errors: 0
+GATE ok exit=0 server · files: 147 passed (147) · tests: 2294 passed | 1 skipped (2295) · errors: 0
+GATE ok exit=0 client · files: 29 passed | 13 skipped (42) · tests: 354 passed | 13 skipped (367) · errors: 0
+GATE ok exit=0 gate(census+typecheck+server+client) · files: (no Test Files line) · tests: (no Tests line) · errors: 0
