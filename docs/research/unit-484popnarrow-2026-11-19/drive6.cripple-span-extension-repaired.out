@@ -1,0 +1,27 @@
+# drive6.cripple-span-extension-repaired
+# cmd: node docs/research/unit-484popnarrow-2026-11-19/cripple-span-extension.mjs
+# rc (read off the child): 0
+# when: 2026-11-19T21:26:52.320Z
+
+=== the cripple: delete the span-extension loop. match count: 1 (must be exactly 1)
+
+=== KP-S — the READING-level property: a span is the whole body ===
+  body under the live reader:     "   "  all blank: true   (want true)
+  body under the crippled reader: "a b"  all blank: false   (want false)
+
+=== drive5's failed KP, re-driven as an assertion about the KEY FAMILY ===
+  the quoted fixture matches the key — live false, crippled false
+  both false means the operand's 3-byte run cannot fragment below minLen: true
+
+=== P9 — the population under the live reader and the crippled one ===
+  population, live reader:      65
+  population, extension deleted: 65
+  members the cripple RETAINS that the live reader drops: 0   (P9 registered >= 1)
+
+  P9, VERDICT level: REFUTED — registered >= 1, measured 0.
+  P9, READING level: HIT — KP-S above, asserted on the reader's own output.
+
+  The two halves disagree, and the disagreement is the finding: the loop is load-bearing for
+  what the READING means (a span is the whole body) and NOT for this key family's verdicts,
+  because the brace key's operand is a 3-byte run that fragmentation cannot push below minLen.
+  The module's declared-blindness paragraph needs that scope, and did not have it.

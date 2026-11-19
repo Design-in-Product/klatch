@@ -1,0 +1,7 @@
+# drive5.cripple-span-extension
+# cmd: node docs/research/unit-484popnarrow-2026-11-19/cripple-span-extension.mjs
+# rc (read off the child): 4
+# when: 2026-11-19T21:25:57.121Z
+
+
+KP-FAILED — the cripple did not fragment the span, or the live reader did not blank it. Nothing published.

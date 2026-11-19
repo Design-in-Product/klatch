@@ -1,0 +1,20 @@
+# drive4.posthoc-readings-unmoved
+# cmd: node docs/research/unit-484popnarrow-2026-11-19/posthoc-readings-unmoved.mjs 8149d6d3
+# rc (read off the child): 0
+# when: 2026-11-19T21:25:23.517Z
+
+=== the two modules, as sources ===
+  8149d6d3:scripts/lib/strip-source.mjs   18944 bytes
+  working tree                          24224 bytes
+
+=== KP — the comparison is live ===
+  same reading, two modules differ:      false   (want false)
+  different readings, same input differ: true   (want true — else the test is dead)
+
+=== P10 — both pre-existing readings, over every tracked code file ===
+  files read:                              1004
+  strings-KEPT reading differs:            0   (want 0)
+  strings-BLANKED reading differs:         0   (want 0)
+  length no longer preserved (new module): 0   (want 0)
+
+  P10 (readings half): HIT — the two existing readings are byte-identical across all 1004 files

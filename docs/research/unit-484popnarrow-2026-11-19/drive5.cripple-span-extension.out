@@ -1,0 +1,10 @@
+# drive5.cripple-span-extension
+# cmd: node docs/research/unit-484popnarrow-2026-11-19/cripple-span-extension.mjs
+# rc (read off the child): 4
+# when: 2026-11-19T21:25:57.121Z
+
+=== the cripple: delete the span-extension loop. match count: 1 (must be exactly 1)
+
+=== KP — one quoted fixture, the two readers ===
+  live      blanks the body, key matches: false   (want false)
+  crippled  blanks the body, key matches: false   (want true — the body fragmented)

@@ -331,10 +331,24 @@ export const stripSource = (
  *
  * A seed is a byte the two readings disagree on. Inside a string body, a byte that is ALREADY a
  * space in the strings-kept reading — an ordinary space, or either half of the two blanks an escape
- * emits — is blank in both and seeds nothing. Without the extension, `"if (s[i] === '{') d++;"`
- * fragments into nine short spans, none reaching `minLen`, and the file this function exists to
- * exclude survives as a member. `unit-484popnarrow` P9 asserts this with a cripple: deleting the
- * extension loop must move at least one member, or the loop is decoration.
+ * emits — is blank in both and seeds nothing. Without the extension a body fragments at its own
+ * spaces, and `blankLongStrings(src, 2)` then answers a different question: `"a b"` reads as two
+ * one-character spans and is KEPT, where the body it belongs to is three characters and must be
+ * blanked. **The loop is what makes a span mean "the whole body" rather than "a run of non-space
+ * bytes".**
+ *
+ * **SCOPED by a measurement that refuted the wider claim this paragraph used to make**
+ * (`unit-484popnarrow` P9, cripple on a scratch copy, `drive5` and `drive6`). It said the
+ * extension is what stops a quoted fixture surviving as a population member in
+ * `verify-decl-body-slicers.mjs`. **That is false, and the cripple proved it: deleting the loop
+ * moves 0 of the gate's 65 members.** A brace key's operand is the 3-byte run `'{'` — quote,
+ * character, quote — which fragmentation cannot push below `minLen = 2`, so that key family cannot
+ * detect this loop's absence at all. The loop is load-bearing for **what this reading means** and
+ * not for **that gate's verdicts**, and the two are worth keeping apart: a caller passing a larger
+ * `minLen`, or keying on something whose spelling CAN fall under it, is relying on the loop.
+ *
+ * (The first cripple fixture asserted the harm — "the fixture survives" — instead of the property,
+ * and failed. One leg after this module's own unit quoted that lesson. `drive5` is kept.)
  *
  * The extension cannot overrun a body, and the reason is structural rather than empirical: the
  * scanner emits the **quote characters themselves verbatim in both readings**, so a quote is never
