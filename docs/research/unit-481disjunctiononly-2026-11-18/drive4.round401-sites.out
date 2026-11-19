@@ -1,0 +1,19 @@
+
+=== OPEN_BRACE sites in census-the-branch-polarity-axis.mjs: 8 ===
+  char  6296  L103  DEPTH_LINE=MATCH     if (c === '(' || c === '[' || c === '{') depth += 1;
+  char  6643  L118  DEPTH_LINE=MATCH     if (c === '(' || c === '[' || c === '{') depth += 1;
+  char 10784  L217  DEPTH_LINE=MATCH     else if (c === '(' || c === '[' || c === '{') {
+  char 11551  L240  DEPTH_LINE=NO-MATCH  if (masked[i] === '{') {
+  char 11776  L247  DEPTH_LINE=MATCH     if (c === '(' || c === '[' || c === '{') depth += 1;
+  char 14453  L304  DEPTH_LINE=MATCH     if (c === '(' || c === '[' || c === '{') depth += 1;
+  char 14903  L312  DEPTH_LINE=MATCH     if (z === '(' || z === '[' || z === '{') d += 1;
+  char 21326  L424  DEPTH_LINE=MATCH     if (c === '(' || c === '[' || c === '{') depth += 1;
+
+=== CLOSE_BRACE sites in census-the-branch-polarity-axis.mjs: 7 ===
+  char  6358  L104  DEPTH_LINE=NO-MATCH  else if (c === ')' || c === ']' || c === '}') {
+  char  6705  L119  DEPTH_LINE=NO-MATCH  else if (c === ')' || c === ']' || c === '}') depth -= 1;
+  char 10722  L216  DEPTH_LINE=MATCH     if (c === ')' || c === ']' || c === '}') depth += 1;
+  char 11838  L248  DEPTH_LINE=NO-MATCH  else if (c === ')' || c === ']' || c === '}') { if (depth === 0) return null; depth -= 1; }
+  char 14515  L305  DEPTH_LINE=NO-MATCH  else if (c === ')' || c === ']' || c === '}') { if (depth === 0) return null; depth -= 1; }
+  char 14965  L313  DEPTH_LINE=NO-MATCH  else if (z === ')' || z === ']' || z === '}') {
+  char 21390  L425  DEPTH_LINE=NO-MATCH  else if (c === ')' || c === ']' || c === '}') depth -= 1;

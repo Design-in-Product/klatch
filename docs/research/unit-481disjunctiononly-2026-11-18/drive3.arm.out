@@ -1,0 +1,53 @@
+=== KNOWN POSITIVES — is the V1/V2 distinction demonstrably satisfiable? (R6) ===
+  KP-G  his=true  V1=false V2=true   want his=true/V2=true  PASS  — pure two-sided bracket depth counter
+  KP-H  his=true  V1=false V2=false  want his=true/V2=false  PASS  — open brace in a disjunction, close brace a naive slice END
+  KP-I  his=false V1=false V2=false  want his=false/V2=false  PASS  — the naive slicer the gate exists to catch
+
+=== C1 — his figure, re-derived here, graded against his own driven stdout ===
+  population   mine  68  his  68  OK
+  depthOnly    mine  18  his  18  OK
+  P6 — of my 18: baselined 18, gate verdicts {"UNGUARDED":18}
+  P7 — scripts/lib/decl-body.mjs depthOnly=false (want false), in population=true
+
+=== C2 — the census UNGUARDED column, captured off its own stdout ===
+  printed total 58  ·  captured members 58  OK
+  census at HEAD: walked 960 · SLICER 70 · UNGUARDED 58
+
+=== P3/P4 — how much of the published UNGUARDED column never slices a body? ===
+  census UNGUARDED members unreadable from this seat: 0 
+  P3 — disjunction-only (never slices a declaration body): 16 of 58   (floor 15)
+  P4 — share: 27.6%   (floor 25%)
+      DISJ-ONLY  tracked=true  gate=UNGUARDED ob= 1 cb= 1  docs/research/round352-valuation-leg-key.mjs
+      DISJ-ONLY  tracked=true  gate=UNGUARDED ob= 1 cb= 1  docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs
+      DISJ-ONLY  tracked=true  gate=UNGUARDED ob= 1 cb= 1  docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs
+      DISJ-ONLY  tracked=true  gate=UNGUARDED ob= 3 cb= 3  docs/research/round399-instruments/census-the-named-binding-form.mjs
+      DISJ-ONLY  tracked=true  gate=UNGUARDED ob= 3 cb= 3  docs/research/round400-instruments/regrade-the-file-scoped-guard.mjs
+      DISJ-ONLY  tracked=true  gate=UNGUARDED ob= 3 cb= 3  docs/research/round402-instruments/key-from-round400.mjs
+      DISJ-ONLY  tracked=true  gate=UNGUARDED ob= 2 cb= 2  docs/research/round454-instruments/census2-does-any-call-site-feed-stripsource-a-non-string.mjs
+      DISJ-ONLY  tracked=true  gate=UNGUARDED ob= 2 cb= 2  docs/research/round454-instruments/probe0-why-449s-two-reader-slices-return-null.mjs
+      DISJ-ONLY  tracked=true  gate=UNGUARDED ob= 1 cb= 1  docs/research/round455-instruments/dispose-of-w10-and-repair-the-lifter-it-needs.mjs
+      DISJ-ONLY  tracked=true  gate=UNGUARDED ob= 1 cb= 1  docs/research/round458-instruments/grade-the-conjunct-cure.mjs
+      DISJ-ONLY  tracked=true  gate=UNGUARDED ob= 3 cb= 3  docs/research/unit-464addarm-2026-11-04/grade-addarm.mjs
+      DISJ-ONLY  tracked=true  gate=UNGUARDED ob= 1 cb= 1  docs/research/unit-464inspan-2026-11-03/grade-inspan.mjs
+      DISJ-ONLY  tracked=true  gate=UNGUARDED ob= 1 cb= 1  docs/research/unit-464moves-2026-11-04/grade-moves.mjs
+      DISJ-ONLY  tracked=true  gate=UNGUARDED ob= 1 cb= 1  docs/research/unit-465census-v2-2026-11-10/census-anchors-v2.mjs
+      DISJ-ONLY  tracked=true  gate=UNGUARDED ob= 1 cb= 1  docs/research/unit-466rhscap-2026-11-14/arm-rhscap-a.mjs
+      DISJ-ONLY  tracked=true  gate=UNGUARDED ob= 1 cb= 1  docs/research/unit-466rhscap-2026-11-14/arm-rhscap-b.mjs
+
+=== P5 — his loop ranges over OPEN-brace sites only; his comment says "every brace comparison site" ===
+  of the 16 disjunction-only members of the census column:
+      V1 (pre-registered: HIS key applied to the close-brace sites too): 3 survive
+      V2 (POST-HOC: close-brace sites graded against the MIRROR class):  16 survive
+  same two variants over HIS tracked 18: V1 4 · V2 18   (P5 wants V1 < 18)
+
+=== P8 — do the .gitignore-only members contribute any disjunction-only verdict? ===
+  disjunction-only census-UNGUARDED members NOT in the gate's tracked population: 0
+
+=== cross-tab: census UNGUARDED × gate verdict × disjunction-only ===
+   33  tracked / gate=UNGUARDED / disj=false
+   16  tracked / gate=UNGUARDED / disj=true
+    6  tracked / gate=MARKED / disj=false
+    2  ignored / gate=UNGUARDED / disj=false
+    1  tracked / gate=GUARDED / disj=false
+
+ARM COMPLETE
