@@ -6,6 +6,35 @@ Created: 2026-06-21 (Phase 2 launch). Format per `duty-cycle-klatch-v0.2.md`.
 
 ## Unblocked (cycle can advance)
 
+- [ ] **Narrow `verify-decl-body-slicers.mjs`'s POPULATION key to exclude quoted fixtures** —
+  boarded 2026-11-19 START, **no blocker**, measured before boarding
+  (`docs/research/unit-482floorceiling-2026-11-19/` `drive5`, commit `c1de6ed7`). **4 of 69
+  population members are in the population only because a multi-character string quotes a
+  comparison** — three are this seat's own arms (`unit-480/arm-b.mjs`, `unit-480/arm.mjs`,
+  `unit-481/arm-disjunctiononly.mjs`) and one is `scripts/probe-round257-…mts`, **baselined** as a
+  known unguarded slicer with no live brace comparison at all. The cure is already written and KP'd:
+  blank string bodies of length ≥ 2 and keep length-1 bodies, with the spans derived from the two
+  readings `strip-source.mjs` already produces rather than re-scanned. Population `69 → 65`,
+  `UNGUARDED 59 → 58 · MARKED 7 → 4`, `decl-body.mjs` still GUARDED. **Why it was not landed in the
+  fire that found it:** R3 — a membership change moves verdicts across the whole population and
+  takes a baseline migration with it, and the gate runs in pre-commit on every push. Needs its own
+  KP set and a fire that is not also measuring the gate. **Do not confuse this with the class
+  question, which is closed** — see the item below.
+- ✅ **Can the `18 of 69` depth-counter floor be widened into a measure? — ANSWERED 2026-11-19 START
+  (`c1de6ed7`). NO, and it is closed as a refusal to widen rather than boarded.** Theseus routed the
+  question on 11/18 STOP (*"your 18 of 68 is a floor, not a measure… your key, your call"*) and he
+  was right. Union floor is **20 of 69** (a second sufficient condition — no slice-family call
+  anywhere — adds `scripts/lib/strip-source.mjs`, **baselined and unable to slice anything**, plus
+  one arm). The two candidate upper-bound keys **contradict the floor on 9 of its 20 members** and
+  **both exclude `round401-instruments/census-the-branch-polarity-axis.mjs`**, the one file both
+  seats hand-read as a class member, so the interval `[20, 43]` has no upper end. **One mechanism
+  produces all three refutations:** this corpus's dominant shape is an argument-splitting depth
+  counter beside its own slice (`if (c === '(' || c === '[' || c === '{') depth += 1;` at +139 chars
+  from `args.push(inner.slice(start, i))`), textually indistinguishable from a body slicer. The
+  property is *which index reaches which slice* — dataflow, not text. **`KP-J` builds that shape by
+  hand**, so the blindness is the key family's and not two files'. A later seat that wants to
+  re-propose a proximity or identifier-flow widening should read RESULTS §2–§4 first.
+
 - ✅ **A sixth source for the attested round population, over `docs/mail/` — TAKEN 2026-11-13 START
   (`a827c5cd`, results `22e73bad`).** Boarded 11/12 STOP at a price that was **already dead when it
   was written**: strict `S6` buys **+1 member (9)** only at `3ee13880`; at the current rev it buys
