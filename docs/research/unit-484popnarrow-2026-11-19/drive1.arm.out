@@ -1,0 +1,53 @@
+# drive1.arm
+# cmd: node docs/research/unit-484popnarrow-2026-11-19/arm.mjs 1003 73 59 11 3
+# rc (read off the child): 0
+# when: 2026-11-19T21:23:24.003Z
+
+=== keys captured out of the gate: OPEN_BRACE, CLOSE_BRACE, LPAREN, RPAREN, COLON
+    EXTS 7 · SELF 2 · MARKER brace-slicer-deliberate:\s*\S+
+
+=== KNOWN POSITIVES — sides AND site counts AND corner coverage ===
+  KP-L  wide true  (ob 1, want 1)  narrow true  (ob 1, want 1)  side PASS count PASS   a real two-sided depth counter — 1-char operands KEPT
+  KP-M  wide true  (ob 1, want 1)  narrow false (ob 0, want 0)  side PASS count PASS   the identical comparison inside a quoted multi-char fixture — BLANKED
+  KP-N  wide true  (ob 2, want 2)  narrow true  (ob 1, want 1)  side PASS count PASS   both in one file — the real reader survives beside the fixture
+  KP-Q  wide false (ob 0, want 0)  narrow false (ob 0, want 0)  side PASS count PASS   P8: the escaped spelling was ALREADY unreachable under the gate reading
+  corners occupied: 3 — false/false true/false true/true
+
+=== CONTROL — the wide column vs the LIVE gate (figures from drive0, passed in) ===
+  tracked     captured 1003  live 1003  OK
+  population  captured   73  live   73  OK
+  UNGUARDED   captured   59  live   59  OK
+  MARKED      captured   11  live   11  OK
+  GUARDED     captured    3  live    3  OK
+
+=== P1/P6 — the population under each reading ===
+  population wide   (all string bodies kept):  73   UNGUARDED 59 · MARKED 11 · GUARDED 3
+  population narrow (bodies >= 2 blanked):     65   UNGUARDED 58 · MARKED 4 · GUARDED 3
+  P1 dropped: 8   (registered 4..8, point estimate 5)
+  P4 added:   0   (registered 0 — the fourth corner must be unreachable)
+
+=== P2 — the dropped members, named, with baseline membership ===
+  MARKED        —      ob 2 -> 0   docs/research/unit-480guardorder-2026-11-18/arm-b.mjs
+  MARKED        —      ob 2 -> 0   docs/research/unit-480guardorder-2026-11-18/arm.mjs
+  MARKED        —      ob 3 -> 0   docs/research/unit-481disjunctiononly-2026-11-18/arm-disjunctiononly.mjs
+  MARKED        —      ob 3 -> 0   docs/research/unit-482floorceiling-2026-11-19/arm.mjs
+  MARKED        —      ob 1 -> 0   docs/research/unit-482floorceiling-2026-11-19/posthoc-quoted-fixtures.mjs
+  MARKED        —      ob 1 -> 0   docs/research/unit-482floorceiling-2026-11-19/posthoc-string-bodies.mjs
+  MARKED        —      ob 2 -> 0   docs/research/unit-483columnnarrow-2026-11-19/arm-columnnarrow.mjs
+  UNGUARDED BASELINED  ob 3 -> 0   scripts/probe-round257-the-scanner-had-no-model-of-interpolation.mts
+  of the dropped: BASELINED 1 of 59 · MARKED 7 of 11 · UNGUARDED-unbaselined 0
+
+=== P5 — the shared cure must stay in the population and stay GUARDED ===
+  scripts/lib/decl-body.mjs   wide GUARDED  narrow GUARDED  (narrow must be GUARDED)   HIT
+
+=== P3/P7 — what the gate would print, before and after the migration ===
+  newOnes wide 0 · narrow 0   (P7: both 0)
+  stale   wide 0 · narrow 1   (P3: narrow > 0 before the migration)
+      stale under narrow: scripts/probe-round257-the-scanner-had-no-model-of-interpolation.mts  -> now OUT
+
+  P3 predicts the cure WITHOUT the migration prints rc=1 with exactly these 1 stale entry and 0 new slicers.
+  P6 predicts that after removing them the gate prints: population 65 · UNGUARDED 58 · MARKED 4 · GUARDED 3 · baseline 58
+
+=== POST-HOC (unregistered) — the guard key under the narrow reading ===
+  members whose VERDICT differs between the readings (excluding departures): 0
+  0 means the gate may read ONE reading for every key with no verdict cost.

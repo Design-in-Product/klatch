@@ -54,7 +54,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { join, dirname, resolve, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
-import { stripSource } from './lib/strip-source.mjs';
+import { blankLongStrings } from './lib/strip-source.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(HERE, '..');
@@ -134,7 +134,36 @@ for (const rel of tracked) {
   // `blankStrings: false` is the reading `strip-source.mjs`'s own header names for "the caller is
   // looking for a quoted literal", which is exactly this caller. Comments are still blanked, so a
   // paren comparison quoted inside a comment cannot credit a file with a guard it does not run.
-  const code = stripSource(raw, false);
+  // **NARROWED 2026-11-19 (`unit-484popnarrow`): string bodies of 2+ characters are blanked, 1-char
+  // bodies KEPT.** `stripSource`'s two readings are both wrong for a quoted-character key, in
+  // opposite directions, and this gate shipped each mistake in turn. Strings-blanked is drive 13
+  // above. Strings-KEPT — what this line read until today — admits any file that merely QUOTES a
+  // comparison: **8 of 73 members were in the population only because a fixture string contains
+  // `"if (s[i] === '{') d += 1;"`**, 7 of them `MARKED` arms and **one of them BASELINED**
+  // (`probe-round257-…interpolation.mts`, 3 sites → 0), which is an exemption recorded for a file
+  // with no live comparison to exempt. Found as `unit-482floorceiling` §5 (4 of 69), reproduced at
+  // exactly 3 under Theseus's own subject in `unit-483columnnarrow` §2, which named the baseline
+  // consequence I had only counted.
+  //
+  // A key's operand is a ONE-character body (`'{'`); a fixture that carries a whole comparison is a
+  // many-character one. That threshold is the entire discrimination, and it lives in
+  // `strip-source.mjs` as a third reading derived from the two that module already produces — not
+  // hand-rolled here, because Round 258's finding was three independent answers to *'which bytes
+  // are code?'* disagreeing on live input.
+  //
+  // **ONE reading for every key, and that is measured rather than assumed.** The narrowing was
+  // pre-registered for the POPULATION key alone, which would have left this gate reading two keys
+  // from two readings — the shape the drive-13 note above warns about. `unit-484popnarrow`'s
+  // post-hoc leg drove the guard key under both readings across the whole population: **0 members
+  // change verdict.** So the coherent spelling costs nothing, and the incoherent one never shipped.
+  //
+  // **What the narrowing does NOT fix, measured in the same arm:** it converts 1 stale BASELINE
+  // entry — which this gate reddens on, by requirement 2 — into **7 site MARKERS that are no longer
+  // needed and that nothing here can see.** Requirement 3's exemption has no staleness counterpart.
+  // Not built in that fire: reddening on an unneeded marker would redden 7 files, 5 of them arms of
+  // published units, and whether a frozen instrument may be edited to drop a marker is a decision
+  // and not a detail.
+  const code = blankLongStrings(raw, 2);
   // **The population key OVER-ADMITS, and the figure is large enough to change what the baseline
   // means** (`unit-480guardorder` arm B, 11/18). "Compares against both braces" admits any
   // multi-bracket depth counter, not just a declaration-body slicer. **18 of the 68 population

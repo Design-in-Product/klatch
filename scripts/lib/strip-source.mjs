@@ -301,3 +301,95 @@ export const stripSource = (
   }
   return out;
 };
+
+/**
+ * **The third reading: string bodies of `minLen` characters or more blanked, shorter ones KEPT.**
+ *
+ * The reading a QUOTED-CHARACTER key wants. `stripSource`'s two readings are both wrong for it, in
+ * opposite directions, and a gate shipped each mistake before this existed:
+ *
+ * - **Strings blanked** turns the key's own operand into blanks — `c === '{'` becomes `c ===    ` —
+ *   and unsatisfies every such key universally. `verify-decl-body-slicers.mjs` drive 13 did this
+ *   and reported `0 GUARDED` across a population of 62, naming the shared cure as a new defect.
+ * - **Strings kept** admits any file that merely QUOTES a comparison. 4 of 69 members of that
+ *   gate's population were in it only because a fixture string contains
+ *   `"if (s[i] === '{') d++;"` (`unit-482floorceiling` §5, 11/19; reproduced at exactly 3 under
+ *   Theseus's own subject in `unit-483columnnarrow` §2), and one of them was **baselined** — an
+ *   exemption recorded for a file with no live comparison to exempt.
+ *
+ * A key's operand is a **one-character** body; a fixture that carries a whole comparison is a
+ * **many-character** one. So the threshold is the whole discrimination, and `minLen` is a parameter
+ * rather than a constant because that is the claim a caller should have to state.
+ *
+ * **Derived from the two readings this module already produces, not from a fourth scanner.** The
+ * spans come from where the readings disagree; nothing here re-scans for a quote. That is
+ * deliberate: Round 258 measured three independent answers to *'which bytes are code?'* in this
+ * tree and found them disagreeing on live input, which is why this module exists at all. A reading
+ * built on the scanner cannot disagree with the scanner about where a string ends.
+ *
+ * ## Why a span must extend through blank bytes, with the refutation that proves it
+ *
+ * A seed is a byte the two readings disagree on. Inside a string body, a byte that is ALREADY a
+ * space in the strings-kept reading — an ordinary space, or either half of the two blanks an escape
+ * emits — is blank in both and seeds nothing. Without the extension, `"if (s[i] === '{') d++;"`
+ * fragments into nine short spans, none reaching `minLen`, and the file this function exists to
+ * exclude survives as a member. `unit-484popnarrow` P9 asserts this with a cripple: deleting the
+ * extension loop must move at least one member, or the loop is decoration.
+ *
+ * The extension cannot overrun a body, and the reason is structural rather than empirical: the
+ * scanner emits the **quote characters themselves verbatim in both readings**, so a quote is never
+ * blank in the strings-blanked reading and always stops the walk. A span is bounded by its own
+ * delimiters.
+ *
+ * ## DECLARED BLINDNESS, and the proof that it cannot move a verdict
+ *
+ * A string body made ENTIRELY of the blank character (`' '`, `'   '`) produces no disagreement
+ * between the readings, so it is invisible here and is kept however long it is. Harmless by
+ * construction: such a body contains no character other than a space, so it cannot contain a
+ * comparison, an identifier, or anything else a code key reads. The blindness is exactly the set of
+ * spans no key can be looking for.
+ *
+ * NOT a blindness of this function, stated because it looks like one: an operand written as an
+ * ESCAPE (`'{'`, `'\{'`) has a body of 2 or more characters and is blanked here — but the
+ * escape bytes are already blanked in BOTH of `stripSource`'s readings, so a `['"\`]\{['"\`]` key
+ * never matched that spelling under any reading. Nothing is lost that was previously reachable
+ * (`unit-484popnarrow` P8, held open by `KP-Q` rather than by this paragraph).
+ */
+// The blank character, read off the scanner's own output rather than asserted to be `' '`. This
+// reading's whole job is telling blanked bytes from kept ones, so a literal `' '` here would be a
+// second, independent claim about the module it is derived from — and the one place the two could
+// drift apart silently. `PROBE`'s body is one run of a character the scanner cannot itself produce.
+const BLANK_PROBE = "'ABCDEFGH'";
+const BLANK = stripSource(BLANK_PROBE, true)[1];
+
+export const blankLongStrings = (
+  /** @type {string} */ src,
+  /** @type {number} */ minLen = 2,
+) => {
+  if (typeof src !== 'string') {
+    throw new StripSourceInputError(
+      `blankLongStrings: source must be a string, got a ${typeof src}`
+      + ' — see stripSource, whose refusal this shares the reason for.',
+    );
+  }
+  const kept = stripSource(src, false);
+  const blanked = stripSource(src, true);
+  const n = src.length;
+  const inBody = new Uint8Array(n);
+  for (let i = 0; i < n; i += 1) if (kept[i] !== blanked[i]) inBody[i] = 1;
+  for (let i = 0; i < n; i += 1) {
+    if (!inBody[i]) continue;
+    for (let j = i - 1; j >= 0 && blanked[j] === BLANK && !inBody[j]; j -= 1) inBody[j] = 1;
+    for (let j = i + 1; j < n && blanked[j] === BLANK && !inBody[j]; j += 1) inBody[j] = 1;
+  }
+  const out = kept.split('');
+  let i = 0;
+  while (i < n) {
+    if (!inBody[i]) { i += 1; continue; }
+    let j = i;
+    while (j < n && inBody[j]) j += 1;
+    if (j - i >= minLen) for (let k = i; k < j; k += 1) out[k] = out[k] === '\n' ? '\n' : BLANK;
+    i = j;
+  }
+  return out.join('');
+};

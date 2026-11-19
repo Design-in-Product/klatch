@@ -1,0 +1,12 @@
+# drive2.gate-cure-no-migration
+# cmd: node scripts/verify-decl-body-slicers.mjs
+# rc (read off the child): 1
+# when: 2026-11-19T21:24:00.150Z
+
+verify-decl-body-slicers — brace-balance body slicers in the TRACKED tree
+  tracked files read: 1003
+  population (compares against both braces): 65
+      UNGUARDED  58
+      MARKED     4
+      GUARDED    3
+  baseline entries: 59

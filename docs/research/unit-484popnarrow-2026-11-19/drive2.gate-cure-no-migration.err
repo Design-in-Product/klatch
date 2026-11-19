@@ -1,0 +1,10 @@
+# drive2.gate-cure-no-migration
+# cmd: node scripts/verify-decl-body-slicers.mjs
+# rc (read off the child): 1
+# when: 2026-11-19T21:24:00.150Z
+
+
+RED — 1 stale baseline entry/entries (no longer unguarded, or gone):
+      scripts/probe-round257-the-scanner-had-no-model-of-interpolation.mts  → now ABSENT
+
+  Remove them from the baseline. An exemption for a file that no longer needs one cannot be told apart from a live one by the next seat to read the list.

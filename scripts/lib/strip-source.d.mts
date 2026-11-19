@@ -61,3 +61,26 @@ export declare const regexLiteralEnd: (src: string, i: number) => number;
  * reading at all, and the type below rejects it under either declaration. Pass a boolean.
  */
 export declare const stripSource: (src: string, blankStrings?: boolean) => string;
+
+/**
+ * The third reading: string bodies of `minLen` characters or more blanked, shorter ones KEPT — the
+ * reading a QUOTED-CHARACTER key wants, since both of `stripSource`'s readings are wrong for it in
+ * opposite directions. Same length as `src`, like the other two.
+ *
+ * `minLen` is declared OPTIONAL and the implementation defaults it to `2`, which is the whole
+ * discrimination this reading exists for: a key's operand is a one-character body (`'{'`), a
+ * fixture that quotes a comparison is a many-character one. It is a parameter rather than a
+ * constant because that threshold is a claim the caller should state; the default exists because
+ * every caller in the tree today states the same one.
+ *
+ * Unlike `stripSource`'s `blankStrings`, this parameter is used as a NUMBER and not for
+ * truthiness — `blankLongStrings(s, 0)` blanks every body, which is a real reading and not the
+ * default-by-accident that a falsy `blankStrings` gives. The implementation annotation is `number`,
+ * matching this declaration, because there is no refusal here that a narrower type would make
+ * unreachable (contrast `stripSource`, whose `unknown` is deliberately wider than its declaration).
+ *
+ * Declared here, with its `minLen` default, because this file is not checked against the `.mjs`:
+ * a previous round shipped three exports that existed in one and not the other with typecheck green
+ * throughout, which is the hazard this comment exists to keep visible.
+ */
+export declare const blankLongStrings: (src: string, minLen?: number) => string;

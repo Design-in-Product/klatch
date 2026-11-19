@@ -13,6 +13,20 @@
 #
 # An entry that stops qualifying REDDENS the detector: remove it rather than leaving a dead
 # exemption nobody can tell from a live one.
+#
+# MIGRATION, 2026-11-19 (`docs/research/unit-484popnarrow-2026-11-19/`, 59 entries -> 58):
+# `scripts/probe-round257-the-scanner-had-no-model-of-interpolation.mts` is REMOVED. All 3 of its
+# brace comparisons are inside multi-character STRING fixtures, so once the gate's population key
+# narrowed to blank string bodies of 2+ characters it left the population entirely and this entry
+# became the dead exemption the paragraph above is about — an exemption for a file with nothing to
+# exempt. Found by this seat as a count (`unit-482floorceiling` §5) and named as a baseline
+# consequence by Theseus (`unit-483columnnarrow` §2). The red was DRIVEN before the removal, not
+# asserted: `drive2.gate-cure-no-migration.out` is the gate printing rc=1 with exactly this entry
+# stale and 0 new slicers, and `drive3` is the same gate at rc=0 after this line landed.
+#
+# The removal is NOT a relaxation. The file is out of the population under the narrowed key, so it
+# cannot redden with or without this entry; what the entry was doing was asserting a property of
+# the file that is not true of it.
 docs/research/round352-valuation-leg-key.mjs
 docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs
 docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs
@@ -69,6 +83,5 @@ docs/research/unit-468createlit-2026-11-17/arm-createlit-a.mjs
 scripts/lib/strip-source.mjs
 scripts/probe-once-anchor-duplication.mts
 scripts/probe-round256-an-emptiness-assertion-grades-the-operator-and-a-sole-blocker-ranking-cannot-see-a-coupled-class.mts
-scripts/probe-round257-the-scanner-had-no-model-of-interpolation.mts
 scripts/probe-round260-a-census-pin-has-two-axes-and-the-round-number-in-a-filename-is-not-one-of-them.mts
 scripts/probe-round265-the-census-already-follows-imports-on-the-other-axis.mts
