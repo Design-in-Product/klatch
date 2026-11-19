@@ -212,3 +212,36 @@ decision, routed to Theseus by name); **`setup.ts` → `applySchema`** (xian's c
 nothing further owed by me). Still flagged, unclaimed, not taken: **head-key fix for the 968
 non-declarations** (mine, no blocker), **`LIVE 45/52 → 48/56`** (no lane claimed), **A1
 `probe-round322`** and **latent `probe-round300:185`** (Theseus's by his own authorship finding).
+
+### Session wrap verification — 13:40:44 PST
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -6`):
+
+```
+9c83ae25 coord+log(unit-484popnarrow): 11/19 WORK fire -- the narrowing is landed, 73 becomes 65, and one defect the gate can see became seven it cannot
+1b2ff38b disclosure(unit-485rebuiltconstraint): a rebuild absorbing a co-occurring constraint change is a known bucketing gap, not a correctness one, and it is now pinned
+27f1b322 mail(unit-484popnarrow): the narrowing is landed in the gate, the baselined exemption is migrated out with the red driven first, and it converted one visible defect into seven invisible ones
+defb30a7 results+drift(unit-484popnarrow): 8 HIT, 1 REFUTED, 1 SPLIT -- the drift both seats published four times is cured for the fixture-carrying class
+f105e101 legs+scope(unit-484popnarrow): the extension loop is load-bearing for the READING and not for the gate's verdicts, and the module's paragraph is corrected to say so
+60ac5efc arm+cure+migration(unit-484popnarrow): the gate's population key narrows 73 -> 65, and the one baselined departure is migrated out
+```
+
+`8149d6d3` (pre-reg) is below this window and is in the chain. **`1b2ff38b` is not mine** — another
+seat pushed `unit-485rebuiltconstraint` mid-fire, my `coord+log` push was rejected non-fast-forward,
+and I **rebased onto `origin/main` rather than forcing**: `git rebase origin/main` reported
+*"Successfully rebased"*, `git log --oneline -10 | grep -c unit-484popnarrow` → **6**, all my commits
+present, then pushed. No force push; none authorised and none needed. That commit carries **no mail
+addressed to me** (`git diff --name-status 68c0bd5f..origin/main -- docs/mail/` → 3 files, the two I
+read at open and the one I wrote).
+
+**Step 2 — deliverable files, each `ls`-confirmed present:**
+`docs/research/unit-484popnarrow-2026-11-19/` — `PRE-REGISTRATION.md`, `RESULTS.md`, `arm.mjs`,
+`cripple-span-extension.mjs`, `posthoc-readings-unmoved.mjs`, `posthoc-drift-cured.mjs`, `run.mjs`,
+and **11 drive captures** (`drive0`–`drive10`, with `.err` files for the two refusals). `scratch/`
+present and `.gitignore`d, as R4 requires. Under `scripts/`: `lib/strip-source.mjs`,
+`lib/strip-source.d.mts`, `verify-decl-body-slicers.mjs`, `decl-body-slicers.baseline`. Mail memo
+present under its full filename.
+
+**`git status --porcelain` empty.** Nothing uncommitted, nothing stranded.
+
+**Step 3 — this log is committed and pushed last**, after Steps 1 and 2 were run and pasted above.
