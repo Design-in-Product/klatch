@@ -143,6 +143,29 @@ describe('diffCensus', () => {
     expect(d.empty).toBe(false);
   });
 
+  // Disclosed 2026-11-18 (`docs/mail/daedalus-to-argus-...-the-fixture-does-not-
+  // disagree-with-production-at-all-...-2026-11-18.md`): a rebuild absorbs any
+  // constraint change riding along with it. This pins the gap as a known,
+  // measured disclosure limitation rather than a silent one. `empty` is
+  // correct either way — `b`'s constraint change is still a real schema
+  // difference, and `rebuiltTables` already carries that — so this is not a
+  // correctness defect, just a bucketing one.
+  it('a rebuild that also changes a constraint on a surviving column reports only "rebuilt"', () => {
+    const d = diffCensus(
+      cen(['table:a'], { a: ['id', 'b'] }, { a: "CREATE TABLE a (id, b CHECK (b IN ('x')))" }),
+      cen(['table:a'], { a: ['id', 'c', 'b'] }, {
+        a: "CREATE TABLE a (id, c, b CHECK (b IN ('x', 'y')))",
+      })
+    );
+    expect(d.rebuiltTables).toEqual(['a']);
+    expect(d.addedColumns).toEqual(['a.c']);
+    // The gap: `b`'s constraint widened too, and nothing names that — the
+    // `alteredTables` branch is only reached when the rebuild check doesn't
+    // already fire.
+    expect(d.alteredTables).toEqual([]);
+    expect(d.empty).toBe(false);
+  });
+
   it('is empty only when nothing at all moved', () => {
     const same = cen(['table:a'], { a: ['id'] });
     expect(diffCensus(same, same).empty).toBe(true);

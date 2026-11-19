@@ -271,6 +271,16 @@ export function diffCensus(before: Census, after: Census): SchemaDelta {
     const appendOnly = was.every((c, i) => cols[i] === c);
     if (!appendOnly) {
       rebuiltTables.push(table);
+      // A constraint change riding along with a column move is absorbed here
+      // and not also surfaced as `alteredTables`: once a table needed a rebuild
+      // for a column reason, the per-column `CREATE TABLE` text has moved too,
+      // so "did a constraint also change" has no cheap test independent of "did
+      // a column move" — distinguishing the two needs a real per-column DDL
+      // diff, not a column-set/order comparison. `rebuiltTables` is already the
+      // stronger disclosure and `empty` is correct either way, so this is a
+      // known gap in which *bucket* names the table, not a correctness gap.
+      // Pinned by the "also changes a constraint" case in
+      // `round465-schema-delta.test.ts`.
     } else if (cols.length === was.length && before.sql[table] !== after.sql[table]) {
       // Same columns, same order, different `CREATE TABLE` text: a constraint
       // moved and nothing else did. Only reachable by a rebuild, and invisible
