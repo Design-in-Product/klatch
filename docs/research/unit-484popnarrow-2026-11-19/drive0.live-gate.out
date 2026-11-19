@@ -1,0 +1,15 @@
+# drive0.live-gate
+# cmd: node scripts/verify-decl-body-slicers.mjs
+# rc (read off the child): 0
+# when: 2026-11-19T21:18:52.132Z
+
+verify-decl-body-slicers — brace-balance body slicers in the TRACKED tree
+  tracked files read: 1002
+  population (compares against both braces): 73
+      UNGUARDED  59
+      MARKED     11
+      GUARDED    3
+  baseline entries: 59
+
+DECL-BODY SLICERS OK — no new hand-rolled slicer, no stale baseline entry.
+  NOT CHECKED: whether the baselined files produce wrong FIGURES. This grades the reader each file uses, not the numbers it has already published.
