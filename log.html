@@ -37,6 +37,27 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-11-18 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-11-18">
+      <p class="log-date">November 18, 2026</p>
+      <div class="log-body">
+
+        <p>A quiet morning fix opened the day: the project's own attention board had been showing a summary count of seven items needing the lead's attention for a full day after the detailed list underneath it had already moved to eight — a colleague caught the mismatch and it was corrected within the hour. Alongside it, one engineer picked up a flagged question about a narrow safety check that refuses to look inside any function whose return type is written with an arrow, out of worry that the refusal might be hiding a large, genuinely ambiguous class of code. Measured directly: the class the check worries about covers roughly a third of all function declarations in the codebase, but narrowed to the exact shape that would actually be ambiguous, there turned out to be zero live instances anywhere. The check still refuses on the form; the refusal just no longer maps to any real risk behind it.</p>
+
+        <p>A second engineer spent the morning asking a more basic question: how much of the server's test suite is actually anchored to the real shape of the database, rather than to a stand-in? Of 146 test files, only 13 assert anything about the database's structure at all — and of those, the large majority check their claim against a second, hand-maintained copy of the table layout rather than the real one the running system builds from. A third group of ten tests turned out to call neither the stand-in nor the real builder: they simply typed out, by hand, what the database should look like after the real upgrade step finishes, without ever running that step. Those ten would stay green even if the actual upgrade logic were deleted outright.</p>
+
+        <p>By midday, the two hand-maintained database layouts from that finding were compared against each other directly rather than assumed equivalent: they agree on every column name and every property, differing only in the listed order of columns, in five of nine tables — a smaller and more precise disagreement than the comparison tool's own language ("tables needing rebuilding," in both directions) had implied. The ten hand-typed tests were then pointed at the real upgrade logic instead of their stand-in: nine of the ten held up once wired to the truth, and the tenth caught something real — a default value the test expected does not actually exist in the running system, a small, previously invisible gap now on record. A third engineer, separately, closed out the week's long-running reconciliation between two competing ways of finding where curly-brace counting goes wrong: both counting methods now agree, member for member, on the full tracked list.</p>
+
+        <p>The evening's main thread was a disagreement worked all the way through rather than left standing. One engineer had flagged what looked like an ordering bug in a safety guard elsewhere in the toolkit — a check that appeared to test things in the wrong sequence. The engineer who had written that guard investigated directly and found no ordering bug at all: what looked like three sequential checks were actually three branches of one either-or test, misread as a sequence. The fix implied by the original flag, had it landed, would have broken the very thing the guard protects. Having settled that, the same engineer went further and found that a long-standing list of deliberately exempted files — each one labeled, in its own description, as "a known case of the risky shortcut, added on purpose" — overstates what is actually true of roughly a third of its own membership: those files do compare characters against braces, but never in the specific way their label claims.</p>
+
+        <p>The engineer who had raised the original flag took the correction after verifying it character-by-character himself rather than on request, then turned the same scrutiny on his own published numbers from earlier in the week. A count of at-risk files he had reported and handed off turned out to include a sizeable minority — better than one in four — that were never actually at risk, caught by the identical either-or pattern his colleague had just found. The fix he had been about to propose for the real cases, had it shipped, would have mislabeled more files as safe than it actually corrected — the same mistake, pointed the other way. He also showed that his colleague's own exempted-files count, while correct, is a floor rather than an exact measure: the two engineers' detection methods disagree, by design, about one specific file, each catching something real that the other method can't see. Left open and named for next time, by two different engineers independently today: whether an internal test-setup file should stop hand-maintaining its own copy of the database layout and start calling the real upgrade logic the way production code does.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-11-18 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-11-17 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-11-17">

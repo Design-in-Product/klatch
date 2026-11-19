@@ -152,3 +152,87 @@ drift; `entityGuess` re-derived fresh, found to disagree with Iris's own figure 
 morning, mailed her the correction; full gate re-verified including a fresh driving sweep
 confirming the 11/17 regression stays cured. Two consecutive checks found nothing further
 unblocked. Fire closed bounded.
+
+---
+
+## 21:3x — Session resumed (STOP fire, model: Sonnet 5)
+
+Checkpoint: this seat's own SWEEP-fire commit `7ddd2da7`. `git log 7ddd2da7..HEAD
+--format='%h %an %s'` — 13 new commits, author-checked before citing, none mine: Daedalus's
+`unit-480guardorder` chain (7 commits) and Theseus's `unit-481disjunctiononly` chain (4
+commits), plus STOP-fire coord/mail entries from Daedalus, Argus, and Iris. Read both chains
+in full via their results+mail memos rather than taken from commit subjects alone:
+
+- Daedalus took Theseus's routed flag that a safety guard tests things in the wrong order and
+  found it isn't a defect at all — the three things that looked like sequential checks are
+  three branches of one either-or test. The cure the flag implied would have broken the shared
+  helper it was meant to protect. Went on to find that 18 of a 68-member exemption list (a
+  "these files knowingly do the risky thing on purpose" list) don't actually do the risky thing
+  the list's own description claims — about a third of that list is mislabelled.
+- Theseus took the correction, verified it himself at the byte level before accepting it, then
+  turned the same check on his own earlier published figures: of a column of files he'd
+  reported and handed off as genuinely at-risk, 16 of 58 (27.6%) carry the identical blind spot
+  and were never really at risk. His own pre-registered fix for the real cases would have
+  manufactured 13 false "safe" verdicts out of 16 had it shipped — the same mistake, inverted.
+  Also showed Daedalus's 18-of-68 figure is a floor rather than an exact count, since the two
+  engineers' detection methods disagree by design about one specific file.
+
+`git diff --stat 7ddd2da7..HEAD -- packages/ scripts/`: 5 files, all already chronicled by
+their authors — `migration.test.ts`'s cure, the new `schema-fixture-agreement.test.ts`,
+`schema-delta.ts`, and the two `decl-body`/`verify-decl-body-slicers` script files. Nothing
+here is unaccounted for.
+
+**Mail:** 11 new files since checkpoint, all research-track traffic among
+Daedalus/Argus/Theseus, every header and body read directly. One notable thread: Argus's own
+"identical to standing" gate claim this afternoon compared his drive against a remembered
+figure without citing which revision the figure was from — the same rev-less-comparison
+mistake Daedalus named in Theseus this morning and in himself this evening, landing a third
+time across three seats inside 18 hours. None of the 11 asks anything of this seat or of xian.
+The four standing Pard ma-smoke memos (10-20) unchanged, still correctly boarded. All four
+cross-repo mailboxes (`designinproduct`, `mediajunkie`, `piper-morgan-product`, `dispatch`)
+fetched fresh and pickaxed for `klatch|calliope` — zero hits in any, nothing owed.
+
+**Cross-pollination brief:** already read in full at this seat's own SWEEP fire this
+afternoon; re-confirmed unchanged on this pass — both insights are already Klatch's own
+`unit-474sweptmagnitude` work, nothing new.
+
+**Rollup:** `### ` headings under 🔴 Needs you still count to 8 (v186), no drift. Today's
+`packages/`/`scripts/` diff is test/gate-infrastructure engineering, not a product decision or
+UX change — nothing boarded.
+
+**The mandatory `log.html` entry, written this fire:** read all ten of today's round-mail
+memos plus the day's full commit log directly (not delegated) and wrote today's narrative
+from that — the arrow-return-type refusal narrowed from a 534-declaration class to zero live
+ambiguous instances; the schema-fact census (13 of 146 test files assert anything about the
+real database structure, most against a hand-maintained stand-in, plus a third, previously
+unnamed source of ten tests that hand-type the migration's result and would stay green if the
+real migration broke); the DDL-column agreement-up-to-order finding and the migration-arm
+repointing (nine of ten held, the tenth catching a real default-value discrepancy); and the
+evening's guard-ordering disagreement, resolved in both directions. `grep -c "log-entry"
+log.html` → **91** (up from 90), inserted directly above the 2026-11-17 entry (newest-first
+order confirmed before writing). This morning's metrics-strip fix and the entityGuess
+watch-figure clarification (both already closed by mail earlier today) are noted in the
+recurring-items row but correctly left out of the public logbook entry as non-substantive
+housekeeping, not board-worthy narrative. Recurring-items row in `calliope-tasks.md` advanced
+(`next_due` → 2026-11-19, `last_completed` → 2026-11-18).
+
+**Not boarded on the rollup** — nothing today was a product decision for xian. **Question-box
+check:** nothing filed. **`docs/STATE.md` not touched** — no product-state change today.
+
+**Gate, re-verified fresh, not trusted from any commit message:** `npx tsx scripts/gate.mts`
+— census OK, typecheck clean ×4 workspaces + scripts; server **147 files · 2294 passed · 1
+skipped (2295)**; client **29/42 files, 354/367 (13 skipped)** — matching every figure cited by
+Daedalus/Argus/Theseus today. `node scripts/verify-decl-body-slicers.mjs` — **995 tracked / 69
+population / 59 UNGUARDED / 7 MARKED / 3 GUARDED / 59 baseline**, matching Theseus's own cited
+figures exactly. Full driving sweep re-run fresh (backgrounded past the 120s foreground
+timeout, scratch file inside the worktree at `docs/research/.scratch-stop-sweep.out`, no pipe,
+removed after reading, tree confirmed clean): **SWEEP PASSED — 45 of 45 swept probes green, 0
+red, 0 blocked, 0 census problem(s), 110 deferred** — matches standing exactly. `lsof -i :3001`
+port free throughout.
+
+**Drain:** 13 new commits read and author-checked, none mine; 11 new mail files read in full,
+nothing owed; all four cross-repo mailboxes re-fetched fresh, nothing owed; cross-pollination
+brief re-confirmed unchanged; rollup re-verified, no drift; the mandatory logbook entry
+written and the recurring-items row advanced; gate, decl-body census, and full sweep all
+re-driven fresh and matched exactly. Two consecutive checks found nothing further unblocked.
+Fire closed bounded.
