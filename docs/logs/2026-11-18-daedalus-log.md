@@ -247,3 +247,100 @@ Theseus's**, by his own authorship finding; I have formed no opinion on either t
 architecture call on three DDL sources is xian's** — today's measurement says they are not drifting,
 which lowers the urgency and changes nothing about the shape. **The head-key fix for the 968
 non-declarations remains mine with no blocker**, flagged so nobody takes it.
+
+---
+
+## 17:17 — Session resumed (STOP fire, Opus 5)
+
+**Substantive. `unit-480guardorder` — I took the item Theseus offered and the answer is that it is
+not a defect.** 2 arms, 6 drives, 1 cripple, 14 questions registered across two pre-registrations
+both pushed before their arm existed. **8 HIT, 5 REFUTED, 1 unsatisfiable as written.**
+`date`-reads, not estimated: **17:18:23 · 17:18:51 · 17:19:35 · 17:23:08 · 17:23:47 · 17:25:30 ·
+17:27:56 · 17:29:34 PST**.
+
+**Briefing.** Pulled state was current (wrapper synced). **Commit authors checked:** the 8 commits
+above my 13:41 head are **Calliope's ×1** and **Theseus's ×7** — none mine. **Mail by
+`git diff --name-status dab4a33e..HEAD`, not mtime → 3 new, 2 addressed to me** (Argus's
+`applySchema` memo, Theseus's brace-slicer memo), both read before work started, both answered in
+this fire.
+
+**1. Theseus's §2 is real and is cured.** The gate's docblock claimed its population key and
+unit-469's census key "cannot disagree about who is in the population". **Reproduced before
+correcting it**: `git check-ignore -v` names `docs/research/round41{3,4}-instruments/.gitignore:1`
+for both `*.sliced.mjs` paths, `git ls-files` lists neither. 2 members, one-directional, this gate's
+population a strict subset. Sentence replaced by the gap, the cause, and the reason **not** to close
+it — requirement 1 exists because an FS-keyed gate gives every seat a different number.
+
+**2. His structural prediction landed on me in the same fire.** My cripple's scratch copy is matched
+by `.gitignore:60` (`docs/research/unit-*/scratch/`). His 15 ignored files are now **16**, and I
+added the one. The divergence grows by one per unit, as he said.
+
+**3. §4 IS NOT A DEFECT, and the offsets are the tell.**
+`round401-instruments/census-the-branch-polarity-axis.mjs:103` is a single
+`if (c === LPAREN || c === LBRACKET || c === LBRACE) depth += 1;` line (character literals in the
+source) — **6270 / 6296 / 6332 are three operands of that one `if`.** The "36 chars after the brace
+comparison the slice starts from" is the distance between two operands of one disjunction. All **8**
+brace comparisons in the file are correct (seven disjunction operands; the eighth a block-start test
+at a whitespace-skipped statement position, handed to `callEnd`). **There is no body slice there to
+be naive.** The direction inverts: my gate's GUARDED is right in outcome, his census's UNGUARDED is
+the wrong verdict.
+
+**4. The ordering conjunct is refuted three ways.** (a) Full ordering moves **3 of 3** GUARDED files,
+not the 1 I registered, and one is `scripts/lib/decl-body.mjs` — the file the gate tells every seat
+to adopt. Its execution order is right (`declBodyAt`: `parenSpanEnd` L200 → the colon return-type
+scan L232 → `braceSpanEnd` L271/307); its textual order is paren-helper, brace-helper, colon-scan.
+**A correctly factored file is exactly what defeats a textual-order key.** (b) The paren-pair salvage
+holds that file and moves only his — a fit. (c) **The cripple settles it:** swapping the two peer
+exported helper blocks (17 lines each, byte-length preserved, behaviour-identical in an ES module)
+flips the variant **GUARDED → UNGUARDED** while the shipped gate stays GUARDED. **A key a no-op
+reorder can redden keeps a coincidence, not a promise.** Scratch string + ignored copy; the tracked
+module was never edited — this seat crippled a tracked module mid-gate-run on 11/18 morning and that
+is the mistake being avoided.
+
+**5. What I found instead: 18 of 68 population members never slice a body**, every brace comparison
+being an operand of a multi-bracket disjunction — and **all 18 sit in the 59-entry baseline** whose
+stated meaning is "a known unguarded slicer is being added on purpose". **~30% of that list carries
+a sentence that is not true of the file.** Written at the population key: a baseline entry means
+"compares characters against braces, carries no paren/colon comparison", nothing stronger.
+
+**6. Q1 refuted at zero instances, and the KP is what keeps it honest.** I expected the gate blind
+to an `indexOf`-style brace slice — the spelling its own header calls the obvious way to find a body
+— since its key is a *comparison* regex. **All 11 such tracked files are already in the population**,
+caught by a character comparison elsewhere in the same file. Reach real, members zero, held open by
+**KP-D** rather than a sentence. **A real reach with no instances — Theseus's own §2 phrase, now on
+my side.**
+
+**7. Two of my own errors, both findable in my mailbox before I made them.** **KP-C failed:** I
+pre-registered `decl-body.mjs` as out of the population because "it delegates". It *is* the
+brace-balance reader, and **Theseus's §1 said so this morning** ("the shared cure is a member of the
+population it exists to shrink"). I wrote the opposite four hours later. **A KP assumption
+contradicted by a memo already in my mailbox is not a blind prediction, it is an unread one.**
+**P7 was unsatisfiable as written** — a guard preceding the first brace comparison precedes every
+later one — counted as a refusal of my framing, not a HIT. **Drive 2 kept:** the KP gate caught a
+4-arg call into a 3-arg grader and **exited 4 without publishing** rather than printing three FAILs
+as findings.
+
+**8. Argus's standing gate figure is stale by exactly one merge.** His memo reports server
+**146/2287 (1 skipped, 2288)** and labels it "identical to standing". Live this fire, `rc=0`
+captured: **147/2294 (1 skipped, 2295)**. His drive predates his own merge of my 13:3x cure
+(`schema-fixture-agreement.test.ts`, +1 file / +7 tests); `b5b54ef6` lands after the figure. True of
+the tree he drove, not of `main`. **"Identical to standing" is a before/after claim and needs the
+rev on both halves** — the rule that cost me two published figures this morning, now landing a third
+time in eighteen hours across three seats, which makes it a property of how we work.
+
+**9. Gate, exit code captured not inferred** (node runner, not an `&&` chain):
+`npx tsx scripts/gate.mts` **rc=0** · census OK · typecheck **0 errors ×4 programs** · server
+**147 files / 2294 passed / 1 skipped (2295)** · client **29/42 · 354/367**.
+`verify-decl-body-slicers` **993 / 68 / UNGUARDED 59 / MARKED 6 / GUARDED 3** — identical before and
+after the cure, and **arm A's capture control still reproduces the live gate after the docblock
+edit**, which is the check that the edit did not move the keys it quotes.
+
+**Drain:** both new memos addressed to me answered in-fire (one reply covering both, filed to
+`docs/mail/`). Theseus's offered §4 item **taken and closed** — refuted, not deferred. §2 **cured**.
+Deferred with named blockers only: **site-level guard key** (R2/R9 — moving a 68-member population's
+verdicts needs its own KP set and a baseline migration; not startable inside a fire that measures the
+same gate); **population-key narrowing** (same blocker); **`LIVE 45/52 → 48/56`** (unexplained by
+anyone, nobody's lane claimed); **`setup.ts` calling `applySchema`** (xian's architecture call,
+unclaimed by Argus or me — flagged, not taken); **A1 `probe-round322` and latent
+`probe-round300:185`** still Theseus's by his own authorship finding; **head-key fix for the 968
+non-declarations** still mine, no blocker, flagged so nobody takes it.
