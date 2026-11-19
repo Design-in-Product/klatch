@@ -1,0 +1,73 @@
+unit-486markerstale — the marker-staleness check's blast radius, measured
+  keys captured from scripts/verify-decl-body-slicers.mjs: cmp · OPEN_BRACE('{') · CLOSE_BRACE('}') · MARKER · EXTS(7) · SELF(2) · blankLongStrings minLen=2
+  SELF (excluded by construction, captured not re-listed): scripts/verify-decl-body-slicers.mjs , scripts/decl-body-slicers.baseline
+
+## P6 — KP set (each KP asserted against its OWN registered side)
+  KP-A  marker=true pop=true popOld=true  — live two-sided brace comparison PLUS a marker — the marker is NEEDED
+        on the registered side
+  KP-B  marker=true pop=false popOld=true  — a marker plus ONLY a multi-character string quoting a comparison — the marker is STALE, and it was NEEDED under the old reading
+        on the registered side
+  KP-C  marker=false pop=true popOld=true  — live two-sided brace comparison and NO marker — outside this subject entirely
+        on the registered side
+  corner coverage: 3 of 3 registered corners reached (true/true , true/false , false/true) — REPORTED, NOT THE GATE (unit-483 §5)
+
+## P1 — control: the arm reads the GATE's population, not a lookalike
+  tracked      registered 1007  live 1007  HIT
+  population   registered 65    live 65    HIT
+  UNGUARDED    registered 58    live 58    HIT
+  MARKED       registered 4     live 4     HIT
+  GUARDED      registered 3     live 58    MOVED
+  baseline     registered 58    live 58    HIT
+  MARKED set: gate prints 4, arm derives 4, arm's needed-marker set 4 — SAME SET, HIT
+  P1: REFUTED
+
+## P2 — marker-bearing tracked code files (K-MARKER, SELF excluded)
+  17  (registered floor 15, point estimate 17) — HIT
+  of 1007 tracked code files — 1.7%
+
+## P3 — THE HEADLINE: the stale-marker set (K-MARKER ∧ ¬K-POP)
+  stale:  13   (registered: strictly > 7; point estimate 13)
+  needed: 4
+  P3: HIT  — Daedalus's published delta is 7; the check would redden on 13.
+      STALE  docs/research/unit-480guardorder-2026-11-18/arm-b.mjs  (1 marker site, popOld=true)
+      STALE  docs/research/unit-480guardorder-2026-11-18/arm.mjs  (1 marker site, popOld=true)
+      STALE  docs/research/unit-481disjunctiononly-2026-11-18/arm-disjunctiononly.mjs  (1 marker site, popOld=true)
+      STALE  docs/research/unit-481disjunctiononly-2026-11-18/probe-round401-sites.mjs  (1 marker site, popOld=false)
+      STALE  docs/research/unit-482floorceiling-2026-11-19/arm.mjs  (1 marker site, popOld=true)
+      STALE  docs/research/unit-482floorceiling-2026-11-19/posthoc-name-the-sites.mjs  (1 marker site, popOld=false)
+      STALE  docs/research/unit-482floorceiling-2026-11-19/posthoc-quoted-fixtures.mjs  (1 marker site, popOld=true)
+      STALE  docs/research/unit-482floorceiling-2026-11-19/posthoc-string-bodies.mjs  (1 marker site, popOld=true)
+      STALE  docs/research/unit-483columnnarrow-2026-11-19/arm-columnnarrow.mjs  (1 marker site, popOld=true)
+      STALE  docs/research/unit-483columnnarrow-2026-11-19/posthoc-name-the-survivors.mjs  (1 marker site, popOld=false)
+      STALE  docs/research/unit-484popnarrow-2026-11-19/arm.mjs  (1 marker site, popOld=true)
+      STALE  docs/research/unit-484popnarrow-2026-11-19/cripple-span-extension.mjs  (1 marker site, popOld=false)
+      STALE  docs/research/unit-484popnarrow-2026-11-19/posthoc-drift-cured.mjs  (1 marker site, popOld=false)
+      NEEDED docs/research/unit-470bodyslice-2026-11-17/arm-bodyslice-a.mjs  (1 marker site)
+      NEEDED docs/research/unit-470bodyslice-2026-11-17/kp-fixture-new-unguarded-slicer.mjs  (1 marker site)
+      NEEDED docs/research/unit-472publishedfigure-2026-11-17/arm-publishedfigure-a.mjs  (1 marker site)
+      NEEDED docs/research/unit-472publishedfigure-2026-11-17/handread-readerset-a.mjs  (1 marker site)
+
+## P4 — which mechanism made each stale marker stale
+  stale AND in the population under the OLD reading (made stale by the narrowing): 8
+  stale under BOTH readings (never exempted anything on any fire):                  5
+  P4: HIT — registered >= 1 never-needed marker
+      NEVER-NEEDED  docs/research/unit-481disjunctiononly-2026-11-18/probe-round401-sites.mjs
+      NEVER-NEEDED  docs/research/unit-482floorceiling-2026-11-19/posthoc-name-the-sites.mjs
+      NEVER-NEEDED  docs/research/unit-483columnnarrow-2026-11-19/posthoc-name-the-survivors.mjs
+      NEVER-NEEDED  docs/research/unit-484popnarrow-2026-11-19/cripple-span-extension.mjs
+      NEVER-NEEDED  docs/research/unit-484popnarrow-2026-11-19/posthoc-drift-cured.mjs
+  his MARKED 11 -> 4 sentence located in unit-484 RESULTS.md: 11 → 4 found in his RESULTS
+
+## P5 — requirement 3 says "a marker AT THE SITE"; the gate reads the FILE
+  marker occurrences in NEEDED files: 4  (on a line that itself carries a brace comparison: 0; not: 4)
+  P5: HIT — registered >= 1 off-site marker occurrence
+      OFF-SITE docs/research/unit-470bodyslice-2026-11-17/arm-bodyslice-a.mjs:75  nearest brace-comparison line 13 line(s) away  (2 brace-comparison line(s) in file)
+      OFF-SITE docs/research/unit-470bodyslice-2026-11-17/kp-fixture-new-unguarded-slicer.mjs:11  nearest brace-comparison line 10 line(s) away  (2 brace-comparison line(s) in file)
+      OFF-SITE docs/research/unit-472publishedfigure-2026-11-17/arm-publishedfigure-a.mjs:89  nearest brace-comparison line 8 line(s) away  (2 brace-comparison line(s) in file)
+      OFF-SITE docs/research/unit-472publishedfigure-2026-11-17/handread-readerset-a.mjs:23  nearest brace-comparison line 21 line(s) away  (2 brace-comparison line(s) in file)
+  marker-to-nearest-comparison distance: min 8 · max 21 line(s). A site-level staleness check needs a WINDOW constant, and no fire has registered one.
+
+==============================================================================
+SUMMARY — marker-bearing 17 · NEEDED 4 · STALE 13 (by the narrowing 8 · never needed 5) · off-site marker occurrences in NEEDED files 4 of 4
+BLAST RADIUS of a file-level marker-staleness check: 13 file(s), not the 7 of the delta.
+==============================================================================

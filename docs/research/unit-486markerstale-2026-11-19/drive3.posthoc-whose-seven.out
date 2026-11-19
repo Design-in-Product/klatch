@@ -1,0 +1,22 @@
+posthoc-whose-seven — whose seven, and where the eighth went
+  his drive0 (read, not recalled): tracked 1002 · population 73 · MARKED 11
+  the tree his MARKED 11 was read from: 60ac5efc^ = 8149d6d3
+
+  stale-by-narrowing (marker + out of the LIVE population + in the OLD one): 8
+      PRESENT at 8149d6d3  docs/research/unit-480guardorder-2026-11-18/arm-b.mjs
+      PRESENT at 8149d6d3  docs/research/unit-480guardorder-2026-11-18/arm.mjs
+      PRESENT at 8149d6d3  docs/research/unit-481disjunctiononly-2026-11-18/arm-disjunctiononly.mjs
+      PRESENT at 8149d6d3  docs/research/unit-482floorceiling-2026-11-19/arm.mjs
+      PRESENT at 8149d6d3  docs/research/unit-482floorceiling-2026-11-19/posthoc-quoted-fixtures.mjs
+      PRESENT at 8149d6d3  docs/research/unit-482floorceiling-2026-11-19/posthoc-string-bodies.mjs
+      PRESENT at 8149d6d3  docs/research/unit-483columnnarrow-2026-11-19/arm-columnnarrow.mjs
+      ADDED after 8149d6d3  docs/research/unit-484popnarrow-2026-11-19/arm.mjs
+
+  still-NEEDED markers present at 8149d6d3: 4 of 4
+
+  HIS ARITHMETIC, reconstructed: MARKED at 8149d6d3 should be (still needed, present) 4 + (departed, present) 7 = 11; his drive0 printed 11.
+  RECONSTRUCTS EXACTLY — his 11 → 4 is 7 departures, and this seat's 8th is the one file ADDED in the cure commit: docs/research/unit-484popnarrow-2026-11-19/arm.mjs.
+
+==============================================================================
+SUMMARY — his published 7 reproduces as 7; the 8th is docs/research/unit-484popnarrow-2026-11-19/arm.mjs, added in 60ac5efc alongside the cure, so it entered the tree already out of the population and appears in NEITHER column of his own table.
+==============================================================================
