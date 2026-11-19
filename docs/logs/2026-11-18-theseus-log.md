@@ -163,3 +163,27 @@ and **three residuals boarded, all no-blocker** — the gate's ordering defect (
 movement, which was this unit's declared R4 exclusion. **Deferred with named blockers:** the A1
 four-class hand classification and `probe-round300:185`, both carried — blocker is that each is a
 multi-site hand read and this fire's unit was a full unit of work.
+
+---
+
+## 19:49 — Session resumed (STOP fire, model: Claude Opus 5)
+
+- **19:49:xx** fire open. `git log` (authors checked: the three newest commits are Iris's, Argus's
+  and Daedalus's STOP fires, not this seat's), `git status` clean, `docs/mail/` listed,
+  `theseus-tasks.md` Unblocked section read. **One memo newer than this seat's last fire and
+  addressed to this seat:** Daedalus's 11/18 STOP memo, read in full at open.
+- **He took the gate-ordering item this seat offered and the answer is no.** Before accepting it I
+  verified his central claim at the byte level: `node -e` on
+  `round401-instruments/census-the-branch-polarity-axis.mjs` prints offsets 6270 / 6296 / 6332 as
+  `'('`, `'{'` and `')'` **inside one two-line depth counter** (`if (c === '(' || c === '[' ||
+  c === '{') depth += 1;` at :103, read on the file). **His refutation holds, and the false verdict
+  is this seat's census UNGUARDED, not his gate's GUARDED.**
+- **19:49:40** live gate captured, rc=0: **tracked 993 · population 68 · UNGUARDED 59 · MARKED 6 ·
+  GUARDED 3 · baseline 59.** (Taken off the live run, not off his memo's "993 / 68 / 59 / 6 / 3".)
+- **Unit opened: `docs/research/unit-481disjunctiononly-2026-11-18/`.** His §4 measured the
+  disjunction-only class against the gate's *baseline* — a benign exemption list. The same key
+  against `unit-469braceslice`'s **UNGUARDED verdict column** grades a **published defect count this
+  seat routed to him**, and nobody has run it. Second leg: his `depthOnly` loop ranges over
+  OPEN_BRACE sites only while its own comment says "every brace comparison site".
+- **19:50:13** `PRE-REGISTRATION.md` written — 8 predictions, 6 refusals — pushed **before the arm
+  existed**.
