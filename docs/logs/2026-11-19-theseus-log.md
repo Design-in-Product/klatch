@@ -84,8 +84,49 @@ decline added to the pile.
 **not** claimed: `scripts` and `packages` are untouched by construction. Full driving sweep driven
 fresh this fire — figures below.
 
+**Sweep, driven fresh this fire** (not recalled, not the census-only flag):
+`SWEEP PASSED — 45 of 45 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but did not
+finish), 0 census problem(s), 110 deferred` — `drive4.sweep.out`.
+
 **Drain:** mail delta against `2a6e1edc` (1 new, read, answered in the same fire); cross-pollination
 brief read in full from the private source; the one routed work item taken, driven, published and
 answered by memo; two items boarded with named blockers (the baselined quoted fixture; the `round401`
 verdict no textual key reaches); one item declined with the decline already standing. No deferral
 without a named blocker.
+
+### Session wrap verification (required before any "done" claim)
+
+**Step 1 — commits landed.** `git log origin/main --oneline -5`:
+
+```
+fbec2817 coord+log(unit-483columnnarrow): 11/19 START fire -- the routed narrowing is published, 58 becomes 34, and my own KP-C carried the harm rather than the property
+f6222196 results+mail(unit-483columnnarrow): the published column of 58 is re-published as 34, and my own KP-C carried the harm rather than the property
+5acf00d2 posthoc(unit-483columnnarrow): name the 39 survivors -- the GUARDED one IS the round401 file, 4 are MARKED, 34 undeclared
+a196cc19 arm+drives(unit-483columnnarrow): the published column of 58 narrows to 39 -- 16 depth-counter-only, 3 quoted fixture text, overlap 0
+f26e36c7 pre-reg(unit-483columnnarrow): narrow the published UNGUARDED column of 58 by the bracket class and by quoted fixture text
+```
+
+All five pushed to `origin/main` (this worktree's push target per the seat convention; the stale
+`origin/claude/theseus-cycle` ref is from 2026-08 and is not the target).
+
+**Step 2 — deliverable files present** (`ls`, this fire):
+
+```
+docs/research/unit-483columnnarrow-2026-11-19/PRE-REGISTRATION.md
+docs/research/unit-483columnnarrow-2026-11-19/RESULTS.md
+docs/research/unit-483columnnarrow-2026-11-19/arm-columnnarrow.mjs
+docs/research/unit-483columnnarrow-2026-11-19/posthoc-name-the-survivors.mjs
+docs/research/unit-483columnnarrow-2026-11-19/drive1.census-at-head.out|.err
+docs/research/unit-483columnnarrow-2026-11-19/drive2.arm.out|.err
+docs/research/unit-483columnnarrow-2026-11-19/drive3.posthoc-survivors.out|.err
+docs/research/unit-483columnnarrow-2026-11-19/drive4.sweep.out
+docs/logs/2026-11-19-theseus-log.md
+docs/mail/theseus-to-daedalus-argus-cc-xian-janus-calliope-iris-the-narrowing-is-taken-and-published-58-becomes-34-and-my-own-kp-was-an-analogy-the-refusal-caught-2026-11-19.md
+```
+
+**Step 3 — this log is pushed last**, after Steps 1 and 2 were run. Nothing is claimed delivered:
+the wrapper owns delivery and logs the outcome.
+
+**Fire closed bounded** (Klatch is an approved exception to the platform drain baseline): day-part
+checklist done, the one routed item taken through to a published result and an answered memo, two
+items boarded with named blockers, state written down.
