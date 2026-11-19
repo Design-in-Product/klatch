@@ -1,0 +1,15 @@
+=== CONTROL — re-derived vs the LIVE gate ===
+  tracked     captured  992  live  992  OK
+  population  captured   67  live   67  OK
+  UNGUARDED   captured   59  live   59  OK
+  MARKED      captured    5  live    5  OK
+  GUARDED     captured    3  live    3  OK
+
+=== KNOWN POSITIVES for arm B's two new keys ===
+  KP-D   inPop=false indexOf=true  want undefined/undefined  FAIL
+  KP-E   inPop=true  indexOf=false want undefined/undefined  FAIL
+  KP-F   inPop=true  indexOf=true  want undefined/undefined  FAIL
+
+KP-FAILED — the new keys are not demonstrably satisfiable. Nothing published.
+
+--- rc=4 (captured, not inferred) ---

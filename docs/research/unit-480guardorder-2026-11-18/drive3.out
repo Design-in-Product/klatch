@@ -1,0 +1,56 @@
+=== CONTROL — re-derived vs the LIVE gate ===
+  tracked     captured  992  live  992  OK
+  population  captured   67  live   67  OK
+  UNGUARDED   captured   59  live   59  OK
+  MARKED      captured    5  live    5  OK
+  GUARDED     captured    3  live    3  OK
+
+=== KNOWN POSITIVES for arm B's two new keys ===
+  KP-D   inPop=false indexOf=true  want false/true  PASS
+  KP-E   inPop=true  indexOf=false want true/false  PASS
+  KP-F   inPop=true  indexOf=true  want true/true  PASS
+
+=== Q1/Q2 — is the gate blind to indexOf('{')? ===
+  tracked files with an indexOf/search/split-style brace slice start: 11
+  of those, NOT in the gate's population (invisible to it):          0   (Q1 wants >= 1)
+  of those, in the population and so already graded:                 11
+      graded UNGUARDED docs/research/round454-instruments/census3-resolve-the-324-unmodelled-one-level.mjs  (1 indexOf site(s))
+      graded UNGUARDED docs/research/unit-465readerset-2026-11-14/arm-readerset-a.mjs  (1 indexOf site(s))
+      graded UNGUARDED docs/research/unit-465readerset-2026-11-14/arm-readerset-b.mjs  (2 indexOf site(s))
+      graded UNGUARDED docs/research/unit-465readerset-2026-11-14/arm-readerset-c.mjs  (1 indexOf site(s))
+      graded UNGUARDED docs/research/unit-467importprice-2026-11-16/arm-importprice-a.mts  (1 indexOf site(s))
+      graded MARKED    docs/research/unit-470bodyslice-2026-11-17/arm-bodyslice-a.mjs  (1 indexOf site(s))
+      graded MARKED    docs/research/unit-470bodyslice-2026-11-17/kp-fixture-new-unguarded-slicer.mjs  (1 indexOf site(s))
+      graded MARKED    docs/research/unit-472publishedfigure-2026-11-17/arm-publishedfigure-a.mjs  (1 indexOf site(s))
+      graded MARKED    docs/research/unit-472publishedfigure-2026-11-17/handread-readerset-a.mjs  (1 indexOf site(s))
+      graded UNGUARDED scripts/probe-round256-an-emptiness-assertion-grades-the-operator-and-a-sole-blocker-ranking-cannot-see-a-coupled-class.mts  (1 indexOf site(s))
+      graded UNGUARDED scripts/probe-round260-a-census-pin-has-two-axes-and-the-round-number-in-a-filename-is-not-one-of-them.mts  (1 indexOf site(s))
+
+=== Q3/Q4/Q5 — does the population over-admit depth counters? ===
+  population members whose EVERY brace comparison is a multi-bracket depth counter: 18 of 67   (Q3 wants >= 8)
+  of those, sitting in the baseline as "a known unguarded slicer added on purpose":  18 of 59   (Q4 wants >= 10)
+  scripts/lib/decl-body.mjs depth-counter-only: false   (Q5 wants false)
+  first 12 depth-counter-only members:
+      baselined  UNGUARDED docs/research/round352-valuation-leg-key.mjs
+      baselined  UNGUARDED docs/research/round390-instruments/grade-the-declaration-and-the-object-key.mjs
+      baselined  UNGUARDED docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs
+      baselined  UNGUARDED docs/research/round399-instruments/census-the-named-binding-form.mjs
+      baselined  UNGUARDED docs/research/round400-instruments/regrade-the-file-scoped-guard.mjs
+      baselined  UNGUARDED docs/research/round402-instruments/key-from-round400.mjs
+      baselined  UNGUARDED docs/research/round449-instruments/probe-the-argument-shapes.mjs
+      baselined  UNGUARDED docs/research/round449-instruments/resolve-the-variable-write-targets.mjs
+      baselined  UNGUARDED docs/research/round454-instruments/census2-does-any-call-site-feed-stripsource-a-non-string.mjs
+      baselined  UNGUARDED docs/research/round454-instruments/probe0-why-449s-two-reader-slices-return-null.mjs
+      baselined  UNGUARDED docs/research/round455-instruments/dispose-of-w10-and-repair-the-lifter-it-needs.mjs
+      baselined  UNGUARDED docs/research/round458-instruments/grade-the-conjunct-cure.mjs
+
+=== Q6 — CRIPPLE: is the paren-pair ordering variant keeping a promise or a coincidence? ===
+  baseline (as shipped):            GUARDED
+  swapped a 17-line and a 17-line peer export block, no other edit
+  byte-length preserved: true  (a pure reorder)
+  paren-ordered verdict after the no-op reorder:  UNGUARDED   (Q6 wants UNGUARDED)
+  unordered (live gate) verdict after the reorder: GUARDED   (the shipped gate is indifferent, as it should be)
+  scratch copy written to docs/research/unit-480guardorder-2026-11-18/scratch/decl-body.swapped.mjs
+  NOTE: the tracked scripts/lib/decl-body.mjs was NOT edited; the reorder lives only in the scratch string.
+
+--- rc=0 (captured, not inferred) ---
