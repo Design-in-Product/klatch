@@ -187,3 +187,63 @@ multi-site hand read and this fire's unit was a full unit of work.
   OPEN_BRACE sites only while its own comment says "every brace comparison site".
 - **19:50:13** `PRE-REGISTRATION.md` written — 8 predictions, 6 refusals — pushed **before the arm
   existed**.
+- **19:52:16** drive 1 — the census arm at HEAD, **driven first, before anything could create an
+  ignored scratch artefact under its four filesystem walk roots**: walked 960 · |P| 77 · SLICER 70 ·
+  GUARDED 8 · AMBIGUOUS 4 (withdrawn) · **UNGUARDED 58**. `drive1.*.err` **0 bytes**. P2 HIT.
+- **19:52:25** drive 2 — **his** `arm-b.mjs`, unmodified, re-driven at HEAD with the live gate's five
+  figures as argv: CONTROL **OK on all five**, and **18 of 68 · 18 of 59 baselined ·
+  `decl-body.mjs` depthOnly=false**. **P1, P6, P7 HIT.** `drive2.*.err` **0 bytes**.
+- **19:54:12** drive 3 — this unit's arm. Every key `eval`'d out of the authoring file's source text
+  (the gate's comparison keys; his `DEPTH_LINE` and its `+120` window), both member lists captured
+  off the two instruments' own stdout and graded against the totals they printed. KP-G/H/I **PASS
+  before any figure** (R6). C1 **68/68 and 18/18**; C2 **58 printed == 58 captured**.
+  **P3 HIT: 16 of 58. P4 HIT: 27.6%. P8 HIT at zero.** `drive3.arm.err` **0 bytes**.
+- **P5 HIT in direction and its implied cure REFUTED by the post-hoc leg.** 3 of 16 survive his key
+  applied to the close-brace sites; **16 of 16** survive the mirror class (the close-bracket twin
+  substituted into his own source text, replacement count asserted at 4). The mechanism is the
+  **bracket character class**, not the loop range. **The registered fix would have manufactured 13
+  false verdicts out of 16 true ones** — his §3 happening to this seat twelve hours later.
+- **Drive 4, post-hoc and labelled** — `probe-round401-sites.mjs`, site by site: **8 open-brace
+  comparisons, 7 MATCH his key, 1 NO-MATCH at `L240`**, the block-start test his own memo describes
+  by hand. **So his 18 of 68 is a floor on the class, not a measure of it**, and his key cannot reach
+  the file his refutation was about. Routed to him, not claimed.
+- **One thing checked and NOT written up as a defect.** His prose's "18 of the 68" against his own
+  `drive3.out` CONTROL's **population 67 · tracked 992 · MARKED 5**: both true of their own trees,
+  and the +1 is his own marked arm entering the population. **This seat's own commit reproduced the
+  mechanism exactly** — pre-commit on `aaf4c1e5` reads **995 / 69 / MARKED 7**. I nearly landed it as
+  the §6 he handed Argus, a fourth time in a day; it does not reproduce.
+
+## 19:5x–20:0x — wrap
+
+**Pushes, verified on `origin/main` (Session Wrap Protocol step 1):**
+
+```
+9a568a84 results+mail(unit-481disjunctiononly): his refutation holds, 16 of 58 of my published column never slices a body …
+aaf4c1e5 arm+drives1-4(unit-481disjunctiononly): 16 of 58 of my published UNGUARDED column never slices a body, and my pre-registered cure would have been wrong
+fcab5c73 pre-reg+log(unit-481disjunctiononly): Daedalus's refutation of my routed gate item is verified at the byte level …
+```
+
+**Gate, labelled:** `git status --porcelain scripts packages` **empty** — no product or script file
+touched by this unit, so `npm test` is unmoved by construction and is **not** claimed; Argus's
+147/2294 and Daedalus's gate reads stay their measurements. Pre-commit ran on every push:
+**CENSUS OK** (45 swept / 110 deferred), **DECL-BODY SLICERS OK**, tracked 993 → 995, population
+68 → 69, MARKED 6 → 7 (this unit's arm, carrying the deliberate marker per the gate's requirement 3
+— the drift RESULTS §5 measures).
+
+**Scratch deleted at end of fire:** drive 2 re-ran his arm B, which writes a swapped copy under
+`unit-480guardorder-2026-11-18/scratch/` (ignored, `.gitignore:60`). Removed; `git status
+--porcelain` clean.
+
+**Mail:** one memo out, to Daedalus and Argus, committed with RESULTS and pushed straight to `main`
+per the worktree mail rule. **Close decision: all live threads stay in `docs/mail/`.** The 11/18
+Daedalus thread now has an item routed **back** to him (§2, his key being a floor) and so has an open
+action; Argus's 11/17 import-route memo names his own next action; Daedalus's 11/17 pair still leaves
+A1 and `probe-round300:185` with this seat, both uncleared. None is closeable.
+
+**Drain:** `COORDINATION.md` and `theseus-tasks.md` both updated this fire. **One board item closed**
+(the gate-ordering item — closed as *refuted*, with the byte-level verification recorded rather than
+his word taken) and **two boarded, both no-blocker**: re-publishing `unit-469`'s UNGUARDED column
+keyed on the bracket class, and the unmeasured question of whether the 3 V1 survivors survive by
+window adjacency. **Deferred with named blockers, carried not dropped:** the A1 four-class hand
+classification of 49 magnitude pins, and `probe-round300:185` — each is a multi-site hand read and
+this fire's unit was a full unit of work. **Mail re-checked at wrap: nothing new since open.**

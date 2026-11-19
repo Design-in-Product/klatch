@@ -214,10 +214,22 @@ _Items the cycle can pick up without xian._
       compared by member. This fire deliberately **did not** publish a reconciliation: the readings
       available were from two keys on two dates, and a difference computed across both attributes to
       neither. The work is the member diff, run in one fire against one tree.
-- [ ] **`verify-decl-body-slicers.mjs`'s guard key has no ORDER, and it is a gate with teeth.**
-      **No blocker named; OFFERED TO DAEDALUS in this fire's memo and not yet answered, so it is
-      carried here rather than claimed.** Boarded 2026-11-18 WORK off `unit-479braceslicekeys` drive
-      6. `docs/research/round401-instruments/census-the-branch-polarity-axis.mjs` clears the gate as
+- [x] ~~**`verify-decl-body-slicers.mjs`'s guard key has no ORDER, and it is a gate with teeth.**~~
+      — **CLOSED 2026-11-18 STOP: the routed defect is not one, and this seat's verdict was the wrong
+      one.** Daedalus took the offer the same day (`unit-480guardorder-2026-11-18`) and refuted it
+      three ways. **Verified here at the byte level before accepting it, not taken on his word:**
+      `node -e` on the subject file prints offsets 6270 / 6296 / 6332 as `'('`, `'{'` and `')'`
+      **inside one two-line depth counter** (`:103`, `if (c === '(' || c === '[' || c === '{') depth
+      += 1;`). The "36 chars after" is the distance between two operands of the same disjunction.
+      **The gate's GUARDED verdict is correct in outcome and `unit-469`'s UNGUARDED is the wrong
+      one.** His other two refutations: a full ordering conjunct moves **3 of 3** GUARDED files
+      including `scripts/lib/decl-body.mjs`, the shared cure — a correctly factored file is exactly
+      what defeats a textual-order key — and his cripple shows the paren-pair salvage holds that file
+      only by a behaviour-preserving, byte-length-preserving ordering coincidence. **All three are now
+      written at the key in the gate's own source**, so the conjunct cannot be re-proposed without
+      reading them. `unit-481disjunctiononly` is the follow-on and found the same error shape in this
+      seat's *own* registered cure (see the two new items below). Original item text, kept for
+      provenance: `docs/research/round401-instruments/census-the-branch-polarity-axis.mjs` clears the gate as
       GUARDED while unit-469's arm calls it UNGUARDED, and the mechanism is **not** distance (the
       nearest preceding paren comparison is 26 chars away, inside the 400-char window — that
       prediction was REFUTED): the `RPAREN` comparison the gate credits sits at char **6332**, which
@@ -228,6 +240,22 @@ _Items the cycle can pick up without xian._
       — but the escape direction is the dangerous one. A cure is an ordering conjunct, which moves
       the verdict for a 66-member population and needs its own KP set; whoever takes it should not
       land it in the same fire that measures it.
+- [ ] **`unit-469braceslice`'s published UNGUARDED column overstates the live class by 16 of 58.**
+      **No blocker.** Boarded 2026-11-18 STOP off `unit-481disjunctiononly`. **27.6% of a figure this
+      seat published and routed** are files that never slice a declaration body: two-sided bracket
+      depth counters, every one tracked, `gate=UNGUARDED` and baselined, with equal open- and
+      close-brace comparison counts. Re-publishing the column is a **new arm with its own KP set**,
+      not an edit to a stamped recording — and after that unit's §3 it must be keyed on the **bracket
+      character class**, not on the loop range. The other rows of the column are already classified:
+      33 carry a non-depth-counter brace comparison, 6 are `gate=MARKED` (naive on purpose, declared
+      at the site, so the census is right about them), 2 are the `.gitignore`-only members, 1 is the
+      round401 file where the gate is right and this seat was wrong.
+- [ ] **Does the 3-of-16 V1 survivor set survive by window adjacency?** **No blocker.** Boarded
+      2026-11-18 STOP as the declared UNMEASURED residual of `unit-481disjunctiononly` §3. In the
+      round401 file the **only** close-brace site matching Daedalus's `DEPTH_LINE` is `L216`, whose
+      `+120` lookahead reaches into the open-bracket disjunction on `L217` — adjacency, not the key
+      working. Whether the three census survivors share that mechanism was not measured, and the
+      unit said so rather than assuming it.
 - [ ] **The 15 ignored code files under `unit-*/scratch/` were never classified.** **No blocker.**
       Boarded 2026-11-18 WORK. 17 ignored code files sit under the four walk roots; 2 are in the
       census population and the other 15 (all `unit-*/scratch/`) were not asked whether they would

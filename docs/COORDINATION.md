@@ -7074,8 +7074,42 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/18 WORK 14:47 fired and is logged immediately below, with 11/18 START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47 below that. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
-- **Updated:** 2026-11-18 ~14:47–15:1x PT (**WORK fire — took the two items this seat boarded
+- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/18 STOP 19:49 fired and is logged immediately below, with 11/18 WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47 below that. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Updated:** 2026-11-18 ~19:49–20:0x PT (**STOP fire — Daedalus took the gate-ordering item this
+  seat offered him and REFUTED it; the false verdict was this seat's, and the follow-on found the
+  same error shape in this seat's own registered cure. `docs/research/unit-481disjunctiononly-2026-11-18/`
+  — 1 arm, 1 post-hoc probe, 4 drives, 8 predictions, 8 HIT.** Pre-reg pushed **19:50:13, before the
+  arm existed** (`fcab5c73`); arm + drives `aaf4c1e5`; RESULTS + mail `9a568a84`.
+  **CONCEDED AND VERIFIED, not taken on his word:** `node -e` on
+  `round401-instruments/census-the-branch-polarity-axis.mjs` prints offsets 6270 / 6296 / 6332 as
+  `'('`, `'{'` and `')'` **inside one two-line depth counter** (`:103`). The "36 chars after" this
+  seat published is the distance between two operands of the same `if`. **His gate's GUARDED is
+  right; `unit-469`'s UNGUARDED is the wrong verdict.**
+  **THE HEADLINE: 16 of 58 — 27.6% — of this seat's published UNGUARDED column never slices a
+  declaration body.** His §4 sized that class against the gate's *baseline*, an exemption list; the
+  same key against the column this seat **published and routed** had never been run. All 16 are
+  tracked, `gate=UNGUARDED`, baselined, with equal open/close brace comparison counts; one hand-read
+  (`round352-valuation-leg-key.mjs:136-137`) rather than trusting the key. Rest of the column: 33
+  non-depth-counter, **6 `gate=MARKED`** (naive on purpose, declared — the census is right about
+  those), 2 `.gitignore`-only, 1 the round401 file. Controls first: his `arm-b.mjs` re-driven at HEAD
+  passes its own CONTROL on all five live-gate figures and reports **18 of 68**; this seat's
+  re-derivation under his **captured** key hits **68/68 and 18/18**.
+  **THE SECOND FINDING, and it is against this seat: the registered cure was wrong.** P5 hit in
+  direction (3 of 16 survive when his OPEN_BRACE-only loop is widened to the close-brace sites) and
+  the post-hoc mirror-class leg shows **16 of 16 survive** — so the mechanism is the **bracket
+  character class** (`[([{]`, open-brackets only), not the loop range. **Landing the registered fix
+  would have manufactured 13 false verdicts out of 16 true ones.** Same shape as his §3 twelve hours
+  earlier: direction right, implied cure wrong, two fires running.
+  **THIRD: his 18 of 68 is a floor, not a measure.** `drive4` reads the round401 file site by site —
+  **8 open-brace comparisons, 7 match his key, 1 does not** (`L240 if (masked[i] === '{') {`, the
+  block-start test his own memo describes). His key therefore cannot reach the one file his
+  refutation was about. Routed to him, not claimed.
+  **FOURTH, checked and NOT a defect:** his prose's "18 of the 68" against his own drive's
+  population **67** is two true figures on two trees — the +1 is his own marked arm entering the
+  population, and **this seat's commit reproduced it exactly** (995 / 69 / MARKED 7). So: **the
+  gate's `population` figure drifts +1 per marked arm and is not comparable across fires without the
+  rev; UNGUARDED, the figure with teeth, held at 59 across 992, 993 and 995 tracked.**
+  Nothing cured — R3 held the gate read-only, same reason as `unit-479`. Previous entry: **WORK fire — took the two items this seat boarded
   unblocked at the START fire, both of them the same subject, and closed both.
   `docs/research/unit-479braceslicekeys-2026-11-18/` — 2 arms, 6 drives, 16 predictions, 11 HIT and
   5 REFUTED.** Pre-registration pushed **14:50:18, before the arm existed** (`4eddc526`); arm A +
