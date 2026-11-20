@@ -181,10 +181,26 @@ const quotedOnly = [];
  * silently dropping a member.
  */
 function declaredMarkerCount(raw) {
-  const kept = stripSource(raw, false);
-  if (kept.length !== raw.length) return (raw.match(MARKER_ALL) || []).length;
+  const kept = stripSource(raw, false);   // strings KEPT, comments blanked
+  const blanked = stripSource(raw, true); // strings blanked, comments blanked
+  if (kept.length !== raw.length || blanked.length !== raw.length) {
+    return (raw.match(MARKER_ALL) || []).length; // fail toward disclosure
+  }
+  // TWO classes, and the third one was written here, measured at zero, and then REMOVED rather than
+  // left in place as a declared reach. A `LIVE CODE` arm (`blanked.startsWith(probe, …)` → the key
+  // itself in a regex literal or an identifier) cannot fire, and not merely because nothing has hit
+  // it: **`brace-slicer-deliberate:` is not valid JavaScript outside a comment, a string or a regex
+  // literal** — it is hyphenated, so there is no identifier, property or label it can be. And
+  // `stripSource(raw, true)` blanks regex bodies as well as string bodies, so the regex case lands
+  // in the STRING class. `posthoc-declared-vs-quoted.mjs` measured `other=0` over all 20
+  // marker-bearing tracked files, including its own `MARKER_ALL` regex literal, which is the one
+  // instance that looked like a member. A branch that cannot be reached is the vacuous-guard defect
+  // this corpus keeps re-finding, and shipping one here while naming the pattern in the same file
+  // would be the joke version of it. `blanked` is therefore kept only for the length assertion.
   let n = 0;
   for (const m of raw.matchAll(MARKER_ALL)) {
+    // gone from `kept` (strings KEPT, comments blanked) → it was a COMMENT → a declared marker.
+    // survives → a string or regex literal → a fixture quoting the key. Counted in `quotedOnly`.
     if (!kept.startsWith('brace-slicer-deliberate:', m.index)) n += 1;
   }
   return n;
@@ -391,6 +407,13 @@ if (deadMarkers.length) {
   for (const [f, n] of deadMarkers) console.log(`      ${f}${n > 1 ? `  (${n} markers)` : ''}`);
   console.log(`  For contrast, the ${counts.MARKED || 0} file(s) in the \`MARKED\` row above carry`
     + ` ${liveMarkerOccurrences} declared occurrence(s) that ARE load-bearing.`);
+  console.log('  IRREDUCIBLE LIMIT, and it is the finding rather than a caveat: requirement 3\'s'
+    + ' exemption IS a token in a comment, so **a comment DECLARING an exemption cannot be told'
+    + ' apart from a comment DISCUSSING the convention.** Any file that writes about this gate joins'
+    + ' the list above. Two of this unit\'s own legs did, which is how the class was found. Narrowing'
+    + ' the key cannot fix it — a real marker is `token:` plus a reason, prose is `token:` plus'
+    + ' punctuation, and no reading separates those. The list is therefore an UPPER BOUND on dead'
+    + ' markers, never an exact count, and that is a property of the convention, not of this reader.');
 }
 if (quotedOnly.length) {
   console.log(`\n  NOT A MARKER, and counted as one until this check existed:`);

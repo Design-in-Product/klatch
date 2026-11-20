@@ -1,0 +1,42 @@
+posthoc-declared-vs-quoted — is a counted marker a DECLARED exemption or a QUOTED token?
+  (POST-HOC, not registered. 20 marker-bearing tracked code file(s).)
+
+  stripSource length-preservation failures: 0  (non-zero invalidates every offset below)
+
+  IN the population — the gate's MARKED column, which GRANTS the exemption: 4 file(s) · declared=4 quoted=0 other=0
+      docs/research/unit-470bodyslice-2026-11-17/arm-bodyslice-a.mjs  (1 declared)
+      docs/research/unit-470bodyslice-2026-11-17/kp-fixture-new-unguarded-slicer.mjs  (1 declared)
+      docs/research/unit-472publishedfigure-2026-11-17/arm-publishedfigure-a.mjs  (1 declared)
+      docs/research/unit-472publishedfigure-2026-11-17/handread-readerset-a.mjs  (1 declared)
+
+  OUT of the population — this fire's dead-marker disclosure: 16 file(s) · declared=17 quoted=6 other=0
+      docs/research/unit-480guardorder-2026-11-18/arm-b.mjs  (1 declared)
+      docs/research/unit-480guardorder-2026-11-18/arm.mjs  (1 declared)
+      docs/research/unit-481disjunctiononly-2026-11-18/arm-disjunctiononly.mjs  (1 declared)
+      docs/research/unit-481disjunctiononly-2026-11-18/probe-round401-sites.mjs  (1 declared)
+      docs/research/unit-482floorceiling-2026-11-19/arm.mjs  (1 declared)
+      docs/research/unit-482floorceiling-2026-11-19/posthoc-name-the-sites.mjs  (1 declared)
+      docs/research/unit-482floorceiling-2026-11-19/posthoc-quoted-fixtures.mjs  (1 declared)
+      docs/research/unit-482floorceiling-2026-11-19/posthoc-string-bodies.mjs  (1 declared)
+      docs/research/unit-483columnnarrow-2026-11-19/arm-columnnarrow.mjs  (1 declared)
+      docs/research/unit-483columnnarrow-2026-11-19/posthoc-name-the-survivors.mjs  (1 declared)
+      docs/research/unit-484popnarrow-2026-11-19/arm.mjs  (1 declared)
+      docs/research/unit-484popnarrow-2026-11-19/cripple-span-extension.mjs  (1 declared)
+      docs/research/unit-484popnarrow-2026-11-19/posthoc-drift-cured.mjs  (1 declared)
+      docs/research/unit-486markerstale-2026-11-19/arm-markerstale.mjs  (1 declared, 4 QUOTED)
+      docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs  (1 QUOTED)
+      docs/research/unit-487markerreport-2026-11-19/posthoc-declared-vs-quoted.mjs  (3 declared, 1 QUOTED)
+
+
+  PASS  offsets are valid — stripSource preserved length on every file read
+  PASS  this unit's own cripple is in the dead set and its marker is QUOTED, not declared
+
+  THE REACH, both directions:
+    MARKED files whose ONLY marker is a quoted token (a silent, undeclared exemption): 0
+    dead-marker files whose ONLY marker is a quoted token (my report over-admitting): 1
+        docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs
+
+  If the first number is 0, requirement 3's exemption class is CLEAN TODAY and this is a declared reach with no members — held open by this leg rather than by a claim.
+  If it is non-zero, the gate is exempting files nobody exempted, and that is a red's worth of finding rather than a disclosure's.
+
+--- exit code read off the child process: rc=0 (signal=null) ---

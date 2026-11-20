@@ -1,0 +1,7 @@
+GATE ok exit=0 census · files: (no Test Files line) · tests: (no Tests line) · errors: 0
+GATE ok exit=0 typecheck · files: (no Test Files line) · tests: (no Tests line) · errors: 0
+GATE ok exit=0 server · files: 147 passed (147) · tests: 2295 passed | 1 skipped (2296) · errors: 0
+GATE ok exit=0 client · files: 29 passed | 13 skipped (42) · tests: 354 passed | 13 skipped (367) · errors: 0
+GATE ok exit=0 gate(census+typecheck+server+client) · files: (no Test Files line) · tests: (no Tests line) · errors: 0
+
+--- exit code read off the child process: rc=0 (signal=null) ---
