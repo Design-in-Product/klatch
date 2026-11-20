@@ -1,0 +1,18 @@
+drive0 — gate at 064e241a (before the report line existed), relocated to .scratch/
+
+verify-decl-body-slicers — brace-balance body slicers in the TRACKED tree
+  tracked files read: 1009
+  population (compares against both braces): 65
+      UNGUARDED  58
+      MARKED     4
+      GUARDED    3
+  baseline entries: 58
+
+DECL-BODY SLICERS OK — no new hand-rolled slicer, no stale baseline entry.
+  NOT CHECKED: whether the baselined files produce wrong FIGURES. This grades the reader each file uses, not the numbers it has already published.
+
+--- rc read off the child: 0 ---
+
+  dead-marker disclosure present at 064e241a: NO  ← NO is the whole point: the gate could not see them.
+
+--- exit code read off the child process: rc=0 (signal=null) ---

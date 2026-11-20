@@ -1,0 +1,30 @@
+verify-decl-body-slicers — brace-balance body slicers in the TRACKED tree
+  tracked files read: 1009
+  population (compares against both braces): 65
+      UNGUARDED  58
+      MARKED     4
+      GUARDED    3
+  baseline entries: 58
+
+  NOT CHECKED: whether a `brace-slicer-deliberate:` marker is still needed.
+  14 tracked file(s), carrying 18 marker occurrence(s), are OUT of the population, so those markers exempt nothing. Reported, never reddened: a marker is a site-local exemption so that it needs no list, and the price is that it has no staleness counterpart. Removing one is nobody's obligation and clears no red.
+      docs/research/unit-480guardorder-2026-11-18/arm-b.mjs
+      docs/research/unit-480guardorder-2026-11-18/arm.mjs
+      docs/research/unit-481disjunctiononly-2026-11-18/arm-disjunctiononly.mjs
+      docs/research/unit-481disjunctiononly-2026-11-18/probe-round401-sites.mjs
+      docs/research/unit-482floorceiling-2026-11-19/arm.mjs
+      docs/research/unit-482floorceiling-2026-11-19/posthoc-name-the-sites.mjs
+      docs/research/unit-482floorceiling-2026-11-19/posthoc-quoted-fixtures.mjs
+      docs/research/unit-482floorceiling-2026-11-19/posthoc-string-bodies.mjs
+      docs/research/unit-483columnnarrow-2026-11-19/arm-columnnarrow.mjs
+      docs/research/unit-483columnnarrow-2026-11-19/posthoc-name-the-survivors.mjs
+      docs/research/unit-484popnarrow-2026-11-19/arm.mjs
+      docs/research/unit-484popnarrow-2026-11-19/cripple-span-extension.mjs
+      docs/research/unit-484popnarrow-2026-11-19/posthoc-drift-cured.mjs
+      docs/research/unit-486markerstale-2026-11-19/arm-markerstale.mjs  (5 markers)
+  For contrast, the 4 file(s) in the `MARKED` row above carry 4 occurrence(s) that ARE load-bearing.
+
+DECL-BODY SLICERS OK — no new hand-rolled slicer, no stale baseline entry.
+  NOT CHECKED: whether the baselined files produce wrong FIGURES. This grades the reader each file uses, not the numbers it has already published.
+
+--- exit code read off the child process: rc=0 (signal=null) ---

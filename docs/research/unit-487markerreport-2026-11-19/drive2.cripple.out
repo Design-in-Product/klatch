@@ -1,0 +1,29 @@
+cripple-dead-marker-key — two-sided, on a relocated .scratch copy
+
+  CONTROL — relocated, uncrippled
+      rc=0 · trackedRead=1009 · population=65 · UNGUARDED=58 · MARKED=4 · GUARDED=3 · deadFiles=14 · deadOcc=18 · liveOcc=4
+  (a) MARKER never matches
+      rc=1 · trackedRead=1009 · population=65 · UNGUARDED=62 · MARKED=null · GUARDED=3 · deadFiles=null · deadOcc=null · liveOcc=null
+  (b) MARKER matches every file
+      rc=1 · trackedRead=1009 · population=65 · UNGUARDED=null · MARKED=65 · GUARDED=null · deadFiles=943 · deadOcc=943 · liveOcc=65
+
+  PASS  CONTROL rc is the tracked gate's rc
+  PASS  CONTROL population reproduces the tracked gate
+  PASS  CONTROL MARKED reproduces the tracked gate
+  PASS  CONTROL deadFiles reproduces the tracked gate
+  PASS  CONTROL deadOcc reproduces the tracked gate
+  PASS  (a) deadFiles
+  PASS  (a) MARKED
+  PASS  (a) population unchanged — the cripple hits the marker key, not membership
+  PASS  (a) the 4 former MARKED files land in the other two classes
+  PASS  (b) MARKED saturates to the whole population
+  PASS  (b) deadFiles = classifiable − population
+  PASS  (b) deadOcc = deadFiles (one match per file under `/^/` without `m`)
+  PASS  (b) UNGUARDED and GUARDED are emptied
+  PASS  (b) population unchanged
+  PASS  no two distinct printed cells of the CONTROL partition share a value by accident
+
+  15 of 15 checks passed.
+  classifiable = trackedRead(1009) − SELF-with-code-ext(1) = 1008; 1008 − population(65) = 943
+
+--- exit code read off the child process: rc=0 (signal=null) ---

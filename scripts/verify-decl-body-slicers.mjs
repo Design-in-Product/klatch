@@ -30,6 +30,11 @@
  *    Landing the cure *raised* the census's unguarded count by one, because the arm that measures
  *    the differential has to carry the naive walk on purpose (RESULTS §9). The next such arm will
  *    live at a path nobody has written down yet, so the exemption has to travel with the code.
+ *    **This requirement has no staleness counterpart, and cannot be given one by adding a list —
+ *    it is the one asymmetry between requirements 2 and 3** (Theseus, `unit-486markerstale` §4.2,
+ *    11/19). Dead markers are therefore DISCLOSED on every run and never reddened; see the
+ *    `REQUIREMENT 3 HAS NO STALENESS COUNTERPART` block at the report, which carries the figures
+ *    and the measured decline of the site-level variant.
  * 4. **The guard key covers the RETURN TYPE as well as the parameter list.** A brace-bearing return
  *    type (`): { prompt: string; floorApplied: boolean } {`) defeats a paren-match-only guard, and
  *    it is live at 16 sites in `packages/`. A key that accepts the paren-match alone would certify
@@ -95,6 +100,19 @@ const LPAREN = cmp('(');
 const RPAREN = cmp(')');
 const COLON = cmp(':');
 const MARKER = /brace-slicer-deliberate:\s*\S+/;
+// The same key, global, for OCCURRENCES rather than files. Derived from `MARKER.source` so the two
+// cannot drift: a second literal spelling of the marker vocabulary is the duplicated-literal defect
+// `lib/marker-floor.mjs` describes one level out. **A count of marker-bearing FILES is not a count
+// of MARKERS** — Theseus's `unit-486markerstale` §6 found the first file in this corpus to carry
+// more than one (his own arm, 5), and until that fire all 17 carried exactly 1, which is why nothing
+// had yet had to notice the difference.
+// **Flags are carried over, not just the source, and that is a defect found while designing this
+// unit's cripple rather than a precaution.** `new RegExp(MARKER.source, 'g')` — the first spelling
+// here — silently DROPS every flag `MARKER` carries. `MARKER` carries none today, so there is no
+// live divergence; the point is that adding `i` or `u` to the file-level key would leave the
+// occurrence key reading a different pattern under the same name, which is the derived-reader drift
+// this corpus keeps re-finding. The `Set` is because a duplicate `g` in the flag string throws.
+const MARKER_ALL = new RegExp(MARKER.source, [...new Set(`${MARKER.flags}g`)].join(''));
 
 /* ------------------------------------------------------------- the tracked tree (req. 1) */
 let tracked;
@@ -117,6 +135,13 @@ const baselineSet = new Set(baseline);
 
 /* ------------------------------------------------------------------- classify */
 const verdicts = new Map();
+// Requirement 3 has no staleness counterpart, and this is the disclosure that says so out loud.
+// `[rel, occurrences]` for every tracked code file that carries a marker and is OUT of the
+// population — the marker grants an exemption to a file with no live comparison to exempt.
+// Collected inside the population loop, at the one point where `raw` is in hand and membership is
+// already decided, rather than in a second pass with a second reading of the tree.
+const deadMarkers = [];
+let liveMarkerOccurrences = 0;
 for (const rel of tracked) {
   if (SELF.has(rel) || !EXTS.has(extname(rel))) continue;
   let raw;
@@ -184,7 +209,15 @@ for (const rel of tracked) {
   // `indexOf`-style brace slice and all 11 are already in the population, caught by a character
   // comparison elsewhere in the same file. Zero invisible instances today** — a real reach with no
   // members, held open by a KP rather than by a claim.
-  if (!OPEN_BRACE.test(code) || !CLOSE_BRACE.test(code)) continue; // not a slicer: out of population
+  if (!OPEN_BRACE.test(code) || !CLOSE_BRACE.test(code)) {
+    // Out of the population — not a slicer. **But if it carries a marker, that marker exempts
+    // nothing**, and before 2026-11-19 this `continue` was where the gate stopped being able to
+    // see it. Reported below, not reddened: see the `REQUIREMENT 3 HAS NO STALENESS COUNTERPART`
+    // block at the report.
+    const n = (raw.match(MARKER_ALL) || []).length;
+    if (n) deadMarkers.push([rel, n]);
+    continue;
+  }
 
   // The marker is read from RAW text: it lives in a comment, which `code` has blanked.
   //
@@ -229,7 +262,10 @@ for (const rel of tracked) {
   // reach with no members, which is what Theseus's own §2 said about this gate's wider extension
   // key — and it is why the fix is a SITE-level key, not an ordered file-level one. Unbuilt:
   // moving a 68-member population's verdicts needs its own KP set and a baseline migration.
-  if (MARKER.test(raw)) verdicts.set(rel, 'MARKED');
+  if (MARKER.test(raw)) {
+    verdicts.set(rel, 'MARKED');
+    liveMarkerOccurrences += (raw.match(MARKER_ALL) || []).length;
+  }
   else if (LPAREN.test(code) && RPAREN.test(code) && COLON.test(code)) verdicts.set(rel, 'GUARDED');
   else verdicts.set(rel, 'UNGUARDED');
 }
@@ -251,6 +287,61 @@ for (const [v, n] of Object.entries(counts).sort((a, b) => b[1] - a[1])) {
   console.log(`      ${v.padEnd(10)} ${n}`);
 }
 console.log(`  baseline entries: ${baseline.length}`);
+
+/* ------------------------------------- REQUIREMENT 3 HAS NO STALENESS COUNTERPART (2026-11-19) */
+// **This is a REPORT and never a red, and that is a two-seat decision rather than a preference.**
+//
+// `unit-484popnarrow` §3 (Daedalus, 11/19 WORK) found that narrowing the population key converted
+// **1 stale BASELINE entry this gate reddens on, by requirement 2, into 7 stale site MARKERS it
+// could not see at all.** The check was declined in that fire with a named blocker — it would
+// redden files that are frozen published instruments — and routed to Theseus by name.
+// `unit-486markerstale` (Theseus, 11/19 WORK) sized it before giving the word, and the word was
+// **build it as a report**. Three reasons, the middle one structural:
+//
+// 1. A reddening check costs **13 edits to frozen published instruments**, and **5 of the 13 carry
+//    a marker that never exempted anything under EITHER reading of the population key** — three of
+//    those five are post-hoc legs whose whole job is to parse another arm's stdout, so they never
+//    had a comparison to exempt. The real failure mode of the convention is therefore not markers
+//    going stale; it is **markers that were never load-bearing**, written defensively by an author
+//    whose sibling file had just reddened. A check keyed on *is the file in the population* catches
+//    both and cannot tell them apart.
+// 2. **The requirement-2 mechanism cannot be reused here, and that is why these two requirements
+//    are not symmetric.** Requirement 2 cures baseline staleness by reddening when a listed entry
+//    stops qualifying — it works because the baseline IS a list. Applied to markers it needs a
+//    second list, and a list of files-whose-markers-are-dead is itself an exemption record needing
+//    its own staleness check. **A marker is a site-local exemption precisely so that it needs no
+//    list; the price of that is that it has no staleness counterpart.** Quoted from his §4.2
+//    because it is a general statement about requirement 3 rather than a figure about this tree.
+// 3. A report costs nothing and cures the harm actually named — *the instrument that caught the one
+//    cannot see the seven* — without asserting that any of these files is wrong.
+//
+// **The site-level (window) variant is measured and declined, not merely unbuilt.** Requirement 3
+// promises an exemption *at the site*; the implementation grants a file-wide one. His §3: **0 of 4**
+// live marker occurrences sit on a line that itself carries a brace comparison — distances **8, 10,
+// 13, 21** lines, all four in file docblocks. A site-level check needs a WINDOW constant no fire has
+// registered, and any window covering today's four is wide enough to grant a short file one blanket
+// exemption. The file-level test is a faithful proxy for 4 of 4 today **only** because no file yet
+// carries both a deliberate and an accidental slicer: a real reach with no members.
+//
+// **Format note, and it is a finding rather than a style choice.** The number comes FIRST and no
+// bare count follows a label on these lines. His §5 found `/GUARDED\s+(\d+)/` matching inside
+// `UNGUARDED  58` in the verdict rows above — one label is a suffix of another — which manufactured
+// a `GUARDED 3 → 58` figure move out of an instrument that had not moved by a byte. A label-keyed
+// reader pointed at a number-first line returns NOTHING rather than the wrong row, so the failure is
+// loud instead of silent. **The pre-existing `UNGUARDED`/`GUARDED` instance in the rows above is NOT
+// cured here** — reformatting this gate's published partition would move every captured drive's
+// comparability — and is reported by `posthoc-label-substring.mjs` in this unit instead.
+if (deadMarkers.length) {
+  const occ = deadMarkers.reduce((n, [, k]) => n + k, 0);
+  console.log(`\n  NOT CHECKED: whether a \`brace-slicer-deliberate:\` marker is still needed.`);
+  console.log(`  ${deadMarkers.length} tracked file(s), carrying ${occ} marker occurrence(s), are`
+    + ' OUT of the population, so those markers exempt nothing. Reported, never reddened: a marker'
+    + ' is a site-local exemption so that it needs no list, and the price is that it has no'
+    + ' staleness counterpart. Removing one is nobody\'s obligation and clears no red.');
+  for (const [f, n] of deadMarkers) console.log(`      ${f}${n > 1 ? `  (${n} markers)` : ''}`);
+  console.log(`  For contrast, the ${counts.MARKED || 0} file(s) in the \`MARKED\` row above carry`
+    + ` ${liveMarkerOccurrences} occurrence(s) that ARE load-bearing.`);
+}
 
 if (newOnes.length === 0 && stale.length === 0) {
   console.log('\nDECL-BODY SLICERS OK — no new hand-rolled slicer, no stale baseline entry.');
