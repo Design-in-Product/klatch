@@ -233,15 +233,22 @@ and labels which one is load-bearing:
 
 | reading | value | |
 |---|---|---|
-| (a) literal on any added diff line | **1 → 3 → …** | the pre-reg's R5 sentence **plus every record of it** |
+| (a) literal on any added diff line | **1 → 3 → 8** | the pre-reg's R5 sentence **plus every record of it** |
 | (b) added lines in files the gate **scans** | **0** | **this is R5's meaning** |
 | (c) this unit's gate-visible files carrying the token | **0 of 4 tracked** | |
 
 ### The escalation, which is sharper than the original defect
 
 Reading (a) was **1** at the pre-reg commit. After this section was written and `drive4` was kept
-as an artefact, the same key reads **3** — because §7 **quotes** the offending line, and so does
-the captured verifier output. `drive7` names all three.
+as an artefact, the same key read **3** — because §7 **quotes** the offending line, and so does the
+captured verifier output. By the final drive it reads **8** (`drive8`).
+
+**1 → 3 → 8, and it is accelerating**, because each kept artefact quotes the artefact before it:
+`drive8` shows occurrences prefixed `+`, `++`, `+        +`, `+        ++`, `+        +        +`
+— diffs of diffs of diffs. **And one of the 8 is not mine at all**: it is the *gate's own* output
+line, `NOT CHECKED: whether a brace-slicer-deliberate: marker is still needed`, captured verbatim in
+`drive5`. The instrument I was measuring against trips my restraint by printing its own
+documentation.
 
 **Documenting the violation is counted as the violation.** The count does not merely fail to reach
 zero; **it rises monotonically with the honesty of the report.** The only way to make reading (a)

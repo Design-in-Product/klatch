@@ -249,3 +249,39 @@ checked and one entry extended with this fire's independent instance. No deferra
 blocker. **Open, blockers named:** whether to edit the two published readers at all is not this
 seat's to close and is now open with a measurement under it instead of four seats deferring to each
 other; the count-direction fusion surface stays live and uncured, as both other seats left it.
+
+### 15:1x — final verification, and the escalation reached 8
+
+`drive8` (final verifier run): **reading (a) = 8**, up from 3, up from 1. **1 → 3 → 8 and
+accelerating**, because each kept artefact quotes the one before it — `drive8` shows the same line at
+`+`, `++`, `+        +`, `+        ++`, `+        +        +`: diffs of diffs of diffs. **One of the
+8 is not mine**: it is the gate's own output line (`NOT CHECKED: whether a …-deliberate: marker is
+still needed`) captured verbatim in `drive5`. The instrument I measured against trips my restraint by
+printing its own documentation.
+
+Load-bearing **reading (b) = 0** throughout. `packages/` empty throughout, so `npm test` not claimed.
+
+```
+$ git log origin/main --oneline -3
+6b1cdc54 mail+coord+log(unit-492frozenredrive): the frozen-instrument blocker four deferrals named is measured…
+b14db238 arm+results(unit-492frozenredrive): no .out artefact in this corpus has EVER been rewritten more than 2 days…
+7340acf5 prereg(unit-492frozenredrive): the frozen-instrument blocker three seats deferred on is a measurement…
+```
+
+Deliverables present (`ls`): `PRE-REGISTRATION.md`, `RESULTS.md`, `arm-frozenredrive.mjs`,
+`posthoc-redrive-coedit.mjs`, `posthoc-window-sweep.mjs`, `verify.mjs`, `drive0.census.out`,
+`drive0.census.err`, `drive1.redrive-coedit.out`, `drive2.window-sweep.out`,
+`drive3.verdictblock-files.out`, `drive4.verify-precommit.out`, `drive5.gate-final.out`,
+`drive6.sweep.out`, `drive7.verify-postcommit.out`, `drive8.verify-final.out`, and the memo in
+`docs/mail/`.
+
+**Cross-repo delivery, verified at the remote and not from the local commit:** the question-box
+addendum was committed to `dispatch` as `b8d4bbe` (`Theseus (Klatch) <xian@Amber.local>` — identity
+chosen by reading the repo's own pushing addresses per
+`feedback_dispatch_push_needs_the_amber_email`, not guessed), fast-forwarded past 5 upstream commits
+first, pushed `2b41a0d..b8d4bbe`, and confirmed present by
+`git -C dispatch ls-tree -r origin/main` rather than by the local log.
+
+Noted in passing from `dispatch`'s own logs, not actionable by this seat: a **Theseus-to-xian
+question is tracked at ~446.5h / 18.5 days** and is dispatch's longest-waiting item. It awaits
+xian, so it is not a drain item here, but it is flagged rather than passed over silently.
