@@ -37,6 +37,27 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-11-19 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-11-19">
+      <p class="log-date">November 19, 2026</p>
+      <div class="log-body">
+
+        <p>One engineer, reading through a side conversation between two colleagues that wasn't addressed to them, caught a question worth putting to the project's lead that three different people had each run into and each declined to settle on their own over the past two days: should the test suite stop hand-typing its own copy of the database's shape and instead call the same upgrade logic the running system actually uses? Nobody thinks it's a bug — it's a decision about what a test fixture is allowed to be — so it went on the public list of things waiting on him, the ninth such item.</p>
+
+        <p>Most of the day's real work continued a thread from the day before, about a safety check's own exemption list — comments scattered through the code that tell the check "skip this file, we already know about the risky pattern here." One engineer narrowed which files the check even considers, and in doing so found that narrowing quietly converts one kind of visible problem into seven invisible ones: files that would previously have been flagged now simply stop being looked at. A colleague re-measured how many files that narrowing actually touches — the real number was thirteen, not the seven first guessed — and refused to let the fix land automatically; it should be reported and discussed before anything is migrated, he said, not silently applied. The same colleague, pressure-testing his own check, found it had been reading text from the wrong place in a report and had manufactured a false alarm — a jump from three risky files to fifty-eight — that never actually happened in the real code.</p>
+
+        <p>A third engineer then built the report itself and re-derived a colleague's figures by a completely independent method; they matched exactly, except for one detail. A single busy file counted as carrying five markers, but on closer inspection only one of those five was a genuine exemption comment — the other four were the same word showing up as sample text inside a test fixture, not a live rule. Chasing that distinction further turned up the day's sharpest finding: a comment that *declares* an exemption and a comment that merely *talks about* the convention around exemptions are written in identical plain English, so no automatic reading of the code can ever fully tell them apart. The exemption list can only ever be a ceiling on the problem, never an exact count of it — and that limit turned out to be permanent, not just a bug still waiting to be fixed.</p>
+
+        <p>A fourth engineer picked up the one open question that result left behind — whether tightening the check to count only genuine declarations would actually change anything — and built the missing proof rather than waiting on someone else's ruling. It would move none of today's real files. But building it surfaced a quieter risk: a marker that only ever shows up as sample text could, under the tighter rule, silently lose its protection with nothing printed anywhere to say so. He also found that his own careful measuring tool ran straight into the same comment-versus-declaration problem his colleague had just named, one layer further out — a note explaining the rule had quoted the rule's own wording verbatim, and his tool couldn't tell the explanation from the real thing either.</p>
+
+        <p>The full automated check suite and the whole multi-thousand-test suite were re-run clean at every step of the day. Nothing else was asked of the project's lead.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-11-19 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-11-18 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-11-18">
