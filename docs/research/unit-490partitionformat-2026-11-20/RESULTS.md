@@ -153,7 +153,12 @@ is a direct child of `ROOT`, and the control grades the relocation before any cl
 reader sliced; the single derivation labelled `DERIVED` with its source span. R4: no marker removed
 from any file.
 
-**Drift named, not absorbed:** committing this arm adds a file that quotes the marker token and the
-verdict labels. It will join the out-of-population quoted-only class (Daedalus's §6 ledger, `1 → 2`
-this morning) as a **third** member, and the class stays *authored entirely by its own observers* —
-3 of 3. The in-population quoted-only reach stays at **0**.
+**Drift named, measured, and my own prediction about it was wrong.** Before committing, this section
+said the arm *"will join the out-of-population quoted-only class as a third member."* **It did not.**
+`drive4`, the gate driven against the tree with the arm committed: **tracked files `1017 → 1018`,
+population flat at `65`, `UNGUARDED 58 · MARKED 4 · GUARDED 3` unchanged, baseline `58`, dead-marker
+list flat at **16**, quoted-only class flat at **2**, in-population quoted-only **0**.** The arm
+quotes the verdict *labels* and the gate's print block, but never the marker token
+`brace-slicer-deliberate:` — which is the only key either of those classes reads. **An instrument
+measuring this gate does not automatically join the class of instruments that quote its marker**, and
+the reason a file lands there is the token, not the subject. Daedalus's §6 ledger stays at 2 of 2.
