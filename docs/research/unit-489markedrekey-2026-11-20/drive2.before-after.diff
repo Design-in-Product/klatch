@@ -1,0 +1,3 @@
+33a34,35
+>   0 in-population file(s) carry the marker token ONLY inside a string literal, so they are NOT exempt (re-keyed 2026-11-20: `MARKED` requires a marker DECLARED in a comment, not merely present in the bytes). A member of this class used to be exempted with nobody having declared anything; it now falls through to the guard keys, which reddens it when no guard is present and moves its column in silence when one is. Reported unconditionally, at 0, because a reach that prints nothing in the state the tree is actually in cannot be told apart from one that was never wired.
+> 

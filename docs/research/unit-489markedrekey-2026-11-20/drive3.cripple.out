@@ -1,0 +1,34 @@
+unit-489markedrekey — two-sided cripple of the re-keyed MARKED verdict
+  subject: scripts/verify-decl-body-slicers.mjs (37194 bytes)
+  crippled line: the `!` in the declared/quoted discriminator
+    from: if (!kept.startsWith('brace-slicer-deliberate:', m.index)) n += 1;
+    to:   if (kept.startsWith('brace-slicer-deliberate:', m.index)) n += 1;
+
+TRACKED GATE (the reference): rc=0 population=65 UNGUARDED=58 MARKED=4 GUARDED=3 inPopQuotedOnly=0
+
+arm CONTROL — relocated copy, UNCRIPPLED. Grades the relocation, not the key.
+  FAIL     CONTROL rc matches tracked  got=1 want=0
+  FAIL     CONTROL population matches tracked  got=0 want=65
+  REFUSED  CONTROL MARKED matches tracked  (got=null want=4)
+  REFUSED  CONTROL GUARDED matches tracked  (got=null want=3)
+  REFUSED  CONTROL UNGUARDED matches tracked  (got=null want=58)
+  PASS     CONTROL in-population quoted-only matches tracked  (0)
+
+side (a) — discriminator INVERTED: comments stop counting, strings start counting.
+  REFUSED  (a) MARKED collapses to 0  (got=null want=0)
+  FAIL     (a) population is UNCHANGED — the cripple moved the verdict key, not membership  got=0 want=65
+  REFUSED  (a) UNGUARDED absorbs all 4 former MARKED files  (got=null want=62)
+  REFUSED  (a) GUARDED is unchanged  (got=null want=3)
+  PASS     (a) the gate REDDENS  (1)
+  REFUSED  (a) and it reddens on exactly the 4 files whose exemption was withdrawn  (got=null want=4)
+
+side (b) — the same run's in-population quoted-only list. A count of 0 cannot be told from a list that never ran, so the inversion must make it SATURATE.
+  FAIL     (b) in-population quoted-only saturates at the former MARKED count  got=0 want=4
+  FAIL     (b) and it NAMES them, one line each  got=0 want=4
+  FAIL     (b) every named member fell through to UNGUARDED, not to a silent GUARDED column  got=0 want=4
+  PASS     (b) the tracked run reports the same reach at ZERO — the two sides bracket the list  (0)
+
+  checks: 3 PASS · 6 FAIL · 7 REFUSED
+  CONTROL WAS NOT CLEAN — sides (a) and (b) above are NOT evidence about the key.
+
+--- rc=1 ---

@@ -146,6 +146,16 @@ let liveMarkerOccurrences = 0;
 // exemption. Kept as its own list rather than folded into `deadMarkers`, because the two are
 // different statements about the author's intent and the report is read by the next seat.
 const quotedOnly = [];
+// The same class, IN the population — a file that slices bodies and whose only marker token is a
+// quoted fixture. **Its own list, and printed unconditionally, for a reason that is the opposite of
+// the one above.** `quotedOnly` is an out-of-population bookkeeping note: those markers exempt
+// nothing either way. These files are the ones the re-key actually moves, and their direction is the
+// SILENT one — `unit-488markedkeykp`'s post-hoc `KP4` showed a quoted-only marker beside
+// paren/colon comparisons changing column from `MARKED` to `GUARDED` with no red and no line
+// printed. Today the class has zero members, which is exactly why a `if (list.length)` print would
+// be wrong: a reach that is invisible in the only state the tree is ever in cannot be told from a
+// reach that was never wired. Requested by name in Theseus's 11/19 memo §1.
+const inPopQuotedOnly = [];
 
 /**
  * **DECLARED markers only — occurrences inside a COMMENT, which is what requirement 3 means.**
@@ -328,12 +338,42 @@ for (const rel of tracked) {
   // reach with no members, which is what Theseus's own §2 said about this gate's wider extension
   // key — and it is why the fix is a SITE-level key, not an ordered file-level one. Unbuilt:
   // moving a 68-member population's verdicts needs its own KP set and a baseline migration.
-  if (MARKER.test(raw)) {
+  // **RE-KEYED 2026-11-20 (`unit-489markedrekey`): `MARKED` requires a DECLARED marker.** Until
+  // today this branch read `MARKER.test(raw)` — raw text — so a file whose only marker token sat
+  // inside a STRING LITERAL was granted the exemption with nobody having declared anything. The
+  // discriminator below has existed since 11/19 but was deliberately applied to the DISCLOSURE only,
+  // because re-keying the class that GRANTS exemptions is a two-seat decision and the KP set proving
+  // the new reading can report a difference did not exist. Both halves are now closed:
+  //
+  //  - `unit-488markedkeykp` (Theseus, 11/19 STOP) built the KP set. `KP2` (population + quoted)
+  //    moves `MARKED` → `UNGUARDED`; his post-hoc `KP4` (population + guard + quoted) moves
+  //    `MARKED` → `GUARDED`. **1 of 5 pre-registered KPs move, so the key can report a difference.**
+  //  - Both seats said yes: his memo of 11/19, `unit-489markedrekey`'s pre-registration for this one.
+  //
+  // **Priced at 0 verdict moves and that is measured twice, not assumed:** his live leg read today's
+  // 4 in-population `MARKED` files as **4 DECLARED, 0 quoted-only**, and this gate's own
+  // `in-population quoted-only` line below reports the same reach from inside the gate every run.
+  //
+  // **`MARKER.test(raw)` is KEPT as the outer admission test, and that is the point rather than
+  // leftover code.** Dropping it and keying the branch on `declaredMarkerCount(raw)` alone would
+  // classify a quoted-only in-population file identically to a file carrying no marker at all —
+  // which is the *invisible* direction of this defect. His `KP4` is the loud reminder: a quoted-only
+  // marker sitting beside paren/colon comparisons does not redden, it **changes column in silence**.
+  // So the file is admitted on the raw token, and then either declared (→ `MARKED`) or named in the
+  // report on its way down to the guard branches.
+  const declared = MARKER.test(raw) ? declaredMarkerCount(raw) : 0;
+  if (declared) {
     verdicts.set(rel, 'MARKED');
-    liveMarkerOccurrences += declaredMarkerCount(raw);
+    liveMarkerOccurrences += declared;
   }
-  else if (LPAREN.test(code) && RPAREN.test(code) && COLON.test(code)) verdicts.set(rel, 'GUARDED');
-  else verdicts.set(rel, 'UNGUARDED');
+  else {
+    // Marker token present, nothing declared → every occurrence is QUOTED. Recorded here, where
+    // `raw` is in hand and membership is already decided, rather than in a second pass with a
+    // second reading of the tree.
+    if (MARKER.test(raw)) inPopQuotedOnly.push(rel);
+    if (LPAREN.test(code) && RPAREN.test(code) && COLON.test(code)) verdicts.set(rel, 'GUARDED');
+    else verdicts.set(rel, 'UNGUARDED');
+  }
 }
 
 const unguarded = [...verdicts].filter(([, v]) => v === 'UNGUARDED').map(([k]) => k);
@@ -424,6 +464,27 @@ if (quotedOnly.length) {
     + ' this class:');
   for (const f of quotedOnly) console.log(`      ${f}`);
 }
+
+/* ---------------------------------- IN-POPULATION QUOTED-ONLY — the re-key's own reach (11/20) */
+// **Printed every run, including when the count is 0, and that is the whole design.** This is the
+// class the `MARKED` re-key above moves, and the class whose movement is SILENT: before 2026-11-20
+// a member here was `MARKED` — exempt — on the strength of a marker token nobody had declared.
+// After the re-key it falls through to the guard branches, which is correct, and which produces
+// either a red (no guard) or a quiet column change (guard present elsewhere in the file). The quiet
+// case is `unit-488markedkeykp`'s `KP4` and it is why this line exists at all: an exemption revoked
+// in silence is the same harm as one granted in silence.
+//
+// Number-first, no bare count after a label, for `unit-486markerstale` §5's reason — `/GUARDED\s+
+// (\d+)/` matches inside `UNGUARDED  58`, so a label-keyed reader pointed at a number-first line
+// returns NOTHING rather than the wrong row. The failure is loud instead of silent.
+console.log(`\n  ${inPopQuotedOnly.length} in-population file(s) carry the marker token ONLY inside`
+  + ' a string literal, so they are NOT exempt (re-keyed 2026-11-20: `MARKED` requires a marker'
+  + ' DECLARED in a comment, not merely present in the bytes). A member of this class used to be'
+  + ' exempted with nobody having declared anything; it now falls through to the guard keys, which'
+  + ' reddens it when no guard is present and moves its column in silence when one is. Reported'
+  + ' unconditionally, at 0, because a reach that prints nothing in the state the tree is actually'
+  + ' in cannot be told apart from one that was never wired.');
+for (const f of inPopQuotedOnly) console.log(`      ${f}  → ${verdicts.get(f)}`);
 
 if (newOnes.length === 0 && stale.length === 0) {
   console.log('\nDECL-BODY SLICERS OK — no new hand-rolled slicer, no stale baseline entry.');
