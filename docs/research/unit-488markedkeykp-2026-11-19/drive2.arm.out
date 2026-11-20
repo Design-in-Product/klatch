@@ -1,0 +1,34 @@
+unit-488markedkeykp — the KP set for the MARKED re-key
+  subject: scripts/verify-decl-body-slicers.mjs (32262 bytes)
+  captured OLD key:  if (MARKER.test(raw)) {
+  captured branches: else if (LPAREN.test(code) && RPAREN.test(code) && COLON.test(code)) verdicts.set(rel, 'GUARDED'…
+  captured NEW key:  declaredMarkerCount(raw) > 0  (1764-byte span, verbatim)
+  captured keys module: .scratch/unit-488markedkeykp/captured-keys.mjs
+
+  SPANS (sliced verbatim, never typed):
+    P  ← docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs
+         |       if (c === '{') {
+         |       if (c === '}') {
+    D  ← docs/research/unit-470bodyslice-2026-11-17/arm-bodyslice-a.mjs
+         | // brace-slicer-deliberate: this IS the defect, reproduced as the comparison arm that makes §3's
+    Q  ← docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs
+         | const KEY_LINE = "const MARKER = /brace-slicer-deliberate:\\s*\\S+/;";
+
+  VERDICT MATRIX — same classifier, same population reading, only the MARKED key differs:
+    KP     OLD (MARKER.test(raw))   NEW (declared only)    moves?
+    KP1    MARKED                   MARKED                 no   P + D — a declared exemption in the population
+    KP2    MARKED                   UNGUARDED              YES   P + Q — the difference this KP set exists to prove
+    KP3    UNGUARDED                UNGUARDED              no   P alone — the marker key fires on neither reading
+    KN-D   OUT-OF-POPULATION        OUT-OF-POPULATION      no   D alone — a marker is not a verdict
+    KN-Q   OUT-OF-POPULATION        OUT-OF-POPULATION      no   Q alone — a fixture is not a verdict
+    → 1 of 5 KP(s) move. The KP set can report a difference: YES
+
+  LIVE LEG 1 — every in-population marker-bearing tracked file, DECLARED vs QUOTED:
+      DECLARED 1 docs/research/unit-470bodyslice-2026-11-17/arm-bodyslice-a.mjs
+      DECLARED 1 docs/research/unit-470bodyslice-2026-11-17/kp-fixture-new-unguarded-slicer.mjs
+      DECLARED 1 docs/research/unit-472publishedfigure-2026-11-17/arm-publishedfigure-a.mjs
+      DECLARED 1 docs/research/unit-472publishedfigure-2026-11-17/handread-readerset-a.mjs
+    → 4 in-population MARKED: 4 declared, 0 quoted-only.
+    → the re-key moves 0 verdict(s) on this tree today.
+
+  LIVE LEG 2 — the verdict each MARKED file would FALL THROUGH to, and whether that reddens:

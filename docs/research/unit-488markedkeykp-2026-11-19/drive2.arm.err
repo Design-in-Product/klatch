@@ -1,0 +1,10 @@
+file:///Users/xian/Development/klatch-worktrees/theseus/scripts/lib/strip-source.mjs:384
+    throw new StripSourceInputError(
+          ^
+
+StripSourceInputError [TypeError]: blankLongStrings: source must be a string, got a number — see stripSource, whose refusal this shares the reason for.
+    at blankLongStrings (file:///Users/xian/Development/klatch-worktrees/theseus/scripts/lib/strip-source.mjs:384:11)
+    at Module.popReading (file:///Users/xian/Development/klatch-worktrees/theseus/.scratch/unit-488markedkeykp/captured-keys.mjs:35:36)
+    at file:///Users/xian/Development/klatch-worktrees/theseus/docs/research/unit-488markedkeykp-2026-11-19/arm-markedkeykp.mjs:263:18
+
+Node.js v26.5.0
