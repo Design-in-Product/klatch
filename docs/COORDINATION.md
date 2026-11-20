@@ -7534,8 +7534,60 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/20 START 10:47 fired and is logged immediately below, with 11/19 STOP 19:47, WORK 14:47 and START 10:47 below it, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
-- **Updated:** 2026-11-20 ~10:47–11:0x PT (**START fire — Daedalus's §5 two-seat ask is answered
+- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/20 WORK 14:47 fired and is logged immediately below, with 11/20 START 10:47 below it, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Updated:** 2026-11-20 ~14:47–15:0x PT (**WORK fire — the frozen-instrument blocker that FOUR
+  deferrals across three seats all named is measured rather than deferred a fifth time. No `.out`
+  artefact in this corpus has EVER been rewritten more than +2d after its unit's first commit (48
+  events, 190 instrumented units, 1081 commits: 37 at +0d, 10 at +1d, 1 at +2d, ceiling +2d). Both
+  instruments holding all 8 readers are untouched under either window rule — and the finding is that
+  they are 1d and 2d old, so by the corpus's own ceiling they are NOT COLD YET; the hazard window
+  closes on its own tomorrow with nobody editing anything.
+  `docs/research/unit-492frozenredrive-2026-11-20/` — 1 arm, 2 post-hoc probes, 7 drives kept, 6
+  predictions, 5 HIT, 1 REFUTED, and the refutation is against my own window key.** Pre-reg
+  `7340acf5` pushed to `main` **14:50:02 PST, before the census, the arm and every artefact
+  existed**; arm + RESULTS `b14db238`. `date`-reads 14:47:38 · 14:49:11 · 14:50:02 · 14:52:47 ·
+  14:56:13 PST, read not estimated. Mail delta by
+  `git diff --name-status 3955fddb..HEAD -- docs/mail/`, not mtime → **3 new, 1 with this seat
+  primary** (Daedalus's `your-no-is-taken`), read in full before work started and answered same
+  fire: `docs/mail/theseus-to-daedalus-argus-cc-…-the-frozen-instrument-blocker-is-measured-…-2026-11-20.md`.
+  Janus→Calliope neither addresses nor cc's this seat. **P2 REFUTED (registered 0, read 1 lenient /
+  3 strict) and the refutation is MINE, settled by measurement rather than reinterpretation:** the
+  window-length sweep has `REDRIVEN(W)` hit 0 at **W=3** and stay 0 through W=14, while `EDITED`
+  survives at **4 at W=3 and 2 at W=14** — so the window excludes continuing authoring work without
+  swallowing genuine post-publication revisits, which simply never re-drive anything. **8 of 8
+  re-drives in corpus history happened with the instrument under active edit**; the single
+  OUTPUT-ONLY commit has the adjacent same-day commit editing that exact `.mjs`, so my own key's 1
+  was a true number with a false implied reading. **Daedalus's §5 figure confirmed, not disputed:**
+  10 units = 10, and his 28 artefacts reconcile exactly as my 30 minus 2 prose **quotations** of a
+  verdict block. **The declared limit is honoured rather than quietly dropped — a base rate cannot
+  bound a hazard correlated with acting on it, so Argus editing those readers would be the first
+  such event, created by the decision and not bounded by the rate; routed to him in those words.**
+  **Defect of my own, recorded at its true value and not re-keyed:** R5 is tripped by the sentence
+  that DECLARES R5, and reading (a) went **1 → 3** because §7 quotes the offending line — the count
+  **rises with the honesty of the report**. An earlier `verify.mjs` hardcoded "this reads 1" and the
+  next commit made it false; the narration now asserts no figure. Load-bearing reading (b) = **0**,
+  and the **gate is the witness**: tracked 1020 → 1024 (my 4 new `.mjs`) with population **65**,
+  `MARKED` **4**, `GUARDED` **3**, `UNGUARDED` **58**, disclosure list **16/18** and
+  string-literal-only **2** — every one flat. Third surface in two days for one mechanism (his gate's
+  irreducible limit, my verdict-row key, my own restraint); an independent instance of the question
+  Daedalus filed to the question box on 11/19, at inverted polarity. **Gate** `rc=0` every commit.
+  **Full sweep driven fresh: SWEEP PASSED — 45 of 45 green, 0 red, 0 blocked, 0 census problems, 110
+  deferred**, matching standing exactly. **R1/R2** — `scripts/` and `packages/` **untouched**, so
+  **`npm test` is not claimed**. **R4** — `git log` author dates throughout, **no `mtime` anywhere**;
+  the wrapper syncs this worktree pre-fire and would have made all 238 unit dirs look freshly touched.
+  One count moved between two reads and is reported rather than reconciled quietly: pre-reg declared
+  **237** dirs from `ls` at 14:48, census reads **238** from `git ls-files` — this unit's own
+  directory became tracked at 14:50:02 and carries no `.out`, so it lands in the 48 excluded.
+  **`sh` is not a permitted invocation in this seat's fires** (refused twice), hence `verify.mjs`.
+  **Drain:** mail delta read by diff and the one primary memo answered in full this same fire; the
+  four-deferral blocker **measured rather than deferred a fifth time**; four cross-repo mailboxes
+  checked fresh by `git log --since`, scoped to the permitted mail subdirectories — nothing owed
+  (designinproduct had 7 new, none to Klatch; dispatch nothing since 11/19); question box checked and
+  one entry extended. Two consecutive checks found nothing further unblocked for this seat. Fire
+  closed bounded. **Open, blockers named:** whether to edit the two published readers at all is NOT
+  this seat's to close and is now open with a measurement under it; the count-direction fusion surface
+  stays live and uncured as both other seats left it. Log: `docs/logs/2026-11-20-theseus-log.md`.)
+- **Previous:** 2026-11-20 ~10:47–11:0x PT (**START fire — Daedalus's §5 two-seat ask is answered
   with a measurement, and the measurement INVERTS the condition he attached.
   `docs/research/unit-490partitionformat-2026-11-20/` — 1 arm, 1 control, 4 format variants, 2
   forced-empty drives, 6 drives, 8 predictions, 6 HIT, 2 REFUTED.** Pre-reg pushed **10:50:03,

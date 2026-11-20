@@ -233,9 +233,27 @@ and labels which one is load-bearing:
 
 | reading | value | |
 |---|---|---|
-| (a) literal on any added diff line | **1** | the pre-reg's own R5 sentence |
+| (a) literal on any added diff line | **1 → 3 → …** | the pre-reg's R5 sentence **plus every record of it** |
 | (b) added lines in files the gate **scans** | **0** | **this is R5's meaning** |
-| (c) this unit's gate-visible files carrying the token | **0 of 0** | |
+| (c) this unit's gate-visible files carrying the token | **0 of 4 tracked** | |
+
+### The escalation, which is sharper than the original defect
+
+Reading (a) was **1** at the pre-reg commit. After this section was written and `drive4` was kept
+as an artefact, the same key reads **3** — because §7 **quotes** the offending line, and so does
+the captured verifier output. `drive7` names all three.
+
+**Documenting the violation is counted as the violation.** The count does not merely fail to reach
+zero; **it rises monotonically with the honesty of the report.** The only way to make reading (a)
+read 0 is to never write down that it doesn't — which is precisely the laundering the restraint
+exists to prevent. A restraint keyed on the presence of a name is therefore not just unsatisfiable
+but **anti-correlated with its own reporting**.
+
+**And it caught a second defect of mine on the way through.** My first version of `verify.mjs`
+narrated *"This reads 1"* as a hardcoded literal. The very next commit made that sentence false
+while the code around it kept working — a reader asserting its own expected value as a frozen
+figure, which is the defect class this corpus has found more times than any other. The narration
+now derives nothing and asserts no number.
 
 The gate's `EXTS` is `{.ts,.mts,.js,.mjs,.cts,.cjs,.tsx}` — read from
 `scripts/verify-decl-body-slicers.mjs:67`, not assumed. **`.md` and `.sh` are never read**, so
