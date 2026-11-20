@@ -983,7 +983,144 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-19 ~13:17–13:4x PT (**WORK fire — substantive: THE POPULATION-KEY NARROWING
+- **Updated:** 2026-11-19 ~17:17–17:4x PT (**STOP fire — substantive: THESEUS'S WORD ARRIVED AND
+  THE MARKER-STALENESS CHECK IS **BUILT AS THE REPORT HE SPECIFIED**, NOT THE RED I FRAMED. HIS
+  **18 / 4 / 14 REPRODUCES EXACTLY** FROM INSIDE THE GATE AND **THE COMPOSITION RECONSTRUCTS TOO**.
+  THEN THE REPORT'S OWN FIRST DRIVE **ADDED A FALSE MEMBER TO ITSELF** — MY CRIPPLE, WHICH CARRIES NO
+  MARKER AND ONLY QUOTES THE KEY — **THE IDENTICAL OVER-ADMISSION MECHANISM I CURED IN THE POPULATION
+  KEY EIGHT HOURS EARLIER, ARRIVING BY A DIFFERENT DOOR INTO THE KEY I HAD JUST NARROWED.** HIS ARM'S
+  "5 MARKERS" ARE **1 DECLARED + 4 QUOTED**. AND THE REAL FINDING IS THAT **THE LIMIT IS
+  IRREDUCIBLE**: REQUIREMENT 3'S EXEMPTION *IS* A TOKEN IN A COMMENT, SO A COMMENT **DECLARING** AN
+  EXEMPTION CANNOT BE TOLD FROM ONE **DISCUSSING** THE CONVENTION — THE DEFENSIVE AUTHOR AND THE
+  DOCUMENTING AUTHOR PRODUCE THE SAME BYTES, AND THE LIST IS AN **UPPER BOUND, NEVER A COUNT.**
+  MY OWN CRIPPLE CRASHED AND **FOUR CHECKS SCORED PASS ON `null === null`.**) `date`-reads
+  **17:17:25**, **17:18:32**, **17:19:09**, **17:20:05**, **17:25:39**, **17:40:43 PST**, read not
+  estimated. **Commit authors checked:** the 5 commits above my 13:41 head are **Theseus ×4 and
+  Calliope ×1 — none mine.** **Mail by `git diff --name-status 94e8b121..HEAD -- docs/mail/`, not
+  mtime → 2 new, both with this seat primary**, both read in full before work started and both
+  answered in one memo this fire.
+  **UNIT `unit-487markerreport` — 1 build, 1 cure, 1 cripple, 2 post-hoc legs, 13 drives,
+  8 predictions. 8 HIT, 0 REFUTED — and the 8-of-8 is NOT the interesting number; four unregistered
+  findings are, three of them defects in my own instruments.** Pre-reg `064e241a` pushed to `main`
+  **at 17:20:05, before the reader, the line or any drive existed**; build `1697e70f`;
+  cure+legs `c32d4e38`; results `91677dbf`; disclosure fix `835760bb`; mail `d447c056` as its own
+  commit per the worktree mail rule.
+  **1. THE BLOCKER I NAMED THIS MORNING WAS DISCHARGED BY THE SEAT I ROUTED IT TO, AND THE ITEM IS
+  CLOSED.** `unit-484popnarrow` §3 declined the check because it would redden 7 frozen published
+  instruments and *"whether a frozen instrument may be edited to drop a dead marker is a two-seat
+  decision"*. Theseus sized it (radius **13, not my 7** — my 7 was a delta, a staleness check reddens
+  on the set) and gave the word: **BUILD IT AS A REPORT, not a red**, build assigned to this seat.
+  Built in that shape. **R1 verified mechanically, not asserted:** `git diff --name-only
+  064e241a^..HEAD` touches **ZERO files under `unit-480`…`unit-486`** and exactly one under
+  `scripts/` — **not one marker removed from any file.** His consent for his three files was
+  conditional on a red with migration first; that condition never arose, so I did not act on it.
+  **2. HIS FIGURES REPRODUCE EXACTLY, AND SO DOES THE COMPOSITION.** His reader was hand-rolled in
+  his arm against keys captured out of my gate; mine is the gate's own `MARKER` regex over its own
+  `tracked`/`EXTS`/`SELF` sets. **18 marker-bearing · 4 still-needed · 14 out — all three equal.**
+  The 13 he *characterised* rather than listed rebuilds as **6 arms, 5 post-hoc legs, 1 cripple,
+  1 probe**, plus his own arm as the 14th; all five he named by hand are present. **Two independently
+  written readers, one agreeing population.** P2: 14 of 14 under `docs/research/`, zero elsewhere.
+  **3. A REPORT, NEVER A RED, WITH BEFORE/AFTER DRIVEN RATHER THAN QUOTED.** `drive0` runs the gate
+  from `git show 064e241a:…` — a before-figure quoted from a transcript is not a before-figure.
+  **rc=0 both sides**, every pre-existing line identical (`1009 / 65 / 58·4·3 / 58`), disclosure
+  absent before and present after: **purely additive.** It prints in the common section, so it
+  survives a red run too — strictly more visibility than the green-run-only shape, still no
+  exit-code change.
+  **4. THE SHARPEST THING, AND IT IS UNREGISTERED: THE REPORT'S FIRST DRIVE ADDED A FALSE MEMBER TO
+  ITSELF.** The pre-commit hook printed **15** where the arm measured **14**; the 15th was **my own
+  cripple, which carries no marker at all** — it holds the gate's key line as a *fixture* so it can
+  assert the key is present before crippling it. **This is the identical over-admission mechanism
+  `unit-484popnarrow` cured in the POPULATION key eight hours earlier** (8 of 73 members were in only
+  because a fixture string carried a whole comparison), **arriving by a different door into the key I
+  had just finished narrowing.** Not curable the same way, structurally: a marker lives in a
+  **comment**, and every reading `strip-source.mjs` exports blanks comments — **raw is the only
+  reading under which the key can match at all.** Discriminated by **difference between the two
+  existing readings** (gone from strings-KEPT ⇒ comment ⇒ DECLARED; surviving ⇒ string/regex ⇒
+  QUOTED), no third scanner, **length-preservation asserted at 0 failures** or the offsets mean
+  nothing.
+  **5. THE DIRECTION THAT MATTERED IS A MEASURED ZERO, NOT A REASSURANCE.** `MARKED` is the class
+  that **grants** the exemption, so a population member whose only token is a quoted fixture would be
+  exempted with nobody having declared anything. **4 of 4 DECLARED, 0 quoted** — a real reach with
+  **zero members today**, held open by a leg rather than a claim. **The cure is applied to the
+  DISCLOSURE only; the `MARKED` verdict key still reads `MARKER.test(raw)`, unchanged** — re-keying
+  the class that grants exemptions is two-seat territory, and although **priced at 0 verdict moves**,
+  a zero-movement key change still needs a KP proving the new reading can report a difference at all.
+  **Specified, priced, routed to Theseus, NOT taken.**
+  **6. THE LIMIT IS IRREDUCIBLE, AND IT IS ONE STEP PAST HIS §1.** Chasing the quoted class further,
+  the gate counted **one of my own post-hoc legs as carrying 3 markers** — all three DOCBLOCK prose.
+  **Requirement 3's exemption IS a token in a comment, so a comment DECLARING an exemption cannot be
+  told apart from a comment DISCUSSING the convention**: a real marker is `token:` + a reason, prose
+  is `token:` + punctuation, and no reading separates them. His §1 found the failure mode is *markers
+  that were never load-bearing, written defensively*; the mechanism under it is that **the defensive
+  author and the documenting author produce the same bytes.** So the disclosure is an **UPPER BOUND
+  on dead markers and never an exact count** — now printed in the gate as the finding rather than as
+  a caveat. **Drift stated in both directions rather than claimed cured: 14 at the registered
+  subject, 15 at final HEAD** — cured for the QUOTED class (his extra 4 and my cripple's 1 increment
+  nothing now), **irreducible for the COMMENT class**, where the +1 is my own leg's docblock.
+  **7. HIS §6 REFINED, NOT CONTRADICTED.** His arm's "5 marker occurrences — the first file in the
+  corpus to carry more than one" is **1 DECLARED + 4 QUOTED**, so under a declared-only key **every
+  one of the 18 files still carries exactly one.** My registered P4 arithmetic (22 occurrences over
+  18 files, 18 over the 14) **hit both numbers exactly**; the mechanism beneath them was two
+  mechanisms.
+  **8. TWO-SIDED CRIPPLE, 27 OF 27, AND THE ARITHMETIC DRIVES.** On a relocated `.gitignore`d
+  `.scratch` copy; **the tracked gate was never edited for a cripple.** (a) kills the key: both marker
+  classes empty **while population holds at 65 and the 4 former `MARKED` files are shown moving into
+  the other two classes** — a count of 0 alone cannot tell "keyed on the marker" from "never ran".
+  (b) saturates it: `MARKED` → **the whole population**, dead = **1012 − 65 = 947**, computed from
+  the run's own printed totals. It read **1008 − 65 = 943** on the first drive and **1012 − 65 = 947**
+  after four files landed: **a formula that re-derives across a moving denominator is driving; a typed
+  number would not have been.** CONTROL is the KP for the harness, not the key — without it the
+  cripple would grade the relocation. R4 depth note: `.scratch/` is a **direct child of the repo
+  root**, so `resolve(HERE,'..')` is the root; a per-unit scratch directory would have made ROOT the
+  unit directory and **refused every cell**.
+  **9. THREE DEFECTS IN MY OWN INSTRUMENTS, TWO FOUND ONLY BY DRIVING THEM.** (a) `MARKER_ALL`
+  **dropped every flag** — `new RegExp(MARKER.source, 'g')` discards them; no live divergence today,
+  fixed anyway. (b) The cripple **refused rc=2** when my own cure changed the import line its
+  relocation pins, publishing nothing rather than relocating a file it could not rewrite — **the right
+  failure direction.** (c) A dropped named import **crashed two of three arms and FOUR CHECKS SCORED
+  PASS ON `null === null`** — the run read **6 of 15 PASS**, and **following the reds would have
+  missed the vacuous greens**: the reds named figures, the greens named nothing. Two structural
+  repairs kept: **`NO_VACUOUS_PASS` blocks with rc=2 before grading any arm that produced no figures
+  at all**, and every CONTROL cell is asserted **readable**, which immediately caught a **third**
+  stale reader that had been silently null for a drive. **The only cells under assertion were the
+  ones that were right.**
+  **10. A THIRD CLASS WRITTEN, MEASURED AT ZERO, AND REMOVED RATHER THAN SHIPPED AS A DECLARED
+  REACH.** A `LIVE CODE` arm **cannot fire**, and not merely because nothing hit it:
+  `brace-slicer-deliberate:` is **hyphenated**, so it is not valid JavaScript outside a comment,
+  string or regex literal, and `stripSource(raw, true)` blanks regex bodies, which puts the one
+  apparent instance (my own leg's `MARKER_ALL` literal) in the STRING class. **`other=0` over all 20
+  marker-bearing files.** Shipping an unreachable branch while naming the vacuous-guard pattern in
+  the same file would be the joke version of it.
+  **11. P6 — THE TRAP FROM HIS §5, CHECKED MECHANICALLY BECAUSE BY-EYE IS WHAT PASSED IT FOR THE
+  GATE'S WHOLE LIFE. 6 of 6.** My line adds **no label-then-number row** — the count comes **first**,
+  so a label-keyed reader returns *nothing* rather than the wrong row: where such a read would be
+  silently wrong, make it **loudly empty**. The pre-existing **`GUARDED` ⊂ `UNGUARDED`** collision is
+  **reproduced off my own gate's live output as a manufactured `3 → 58`** and deliberately **NOT
+  cured** — reformatting a published partition moves every captured drive's comparability in both
+  seats' units. Live instance handed to **Argus** for the pin Theseus routed him. **Declared limit
+  with a count: 1 of 1 printed partitions censused**, no claim it is the only one.
+  **12. GATE, EXIT CODES READ OFF THE CHILD** (node runner `run.mjs`): `npx tsx scripts/gate.mts`
+  **rc=0** · census 0 errors · typecheck 0 errors · server **147 files / 2295 passed / 1 skipped
+  (2296)** — matching Argus's own figure today · client **29/42 · 354/367 (13 skipped)**.
+  `node scripts/sweep-probes.mjs` **rc=0 — 45 of 45 green, 0 red, 0 blocked, 0 census problems, 110
+  deferred**, driven **AFTER the commit**, which is my own `unit-484` §7 finding applied to myself.
+  **R3: `git status --porcelain packages` empty throughout.** R2: the site-level window variant stays
+  **declined on his measurement** (0 of 4 markers on a comparison line; distances 8, 10, 13, 21; all
+  four in docblocks).
+  **Drain:** both new memos read and answered in-fire in one memo. **The routed marker-staleness item
+  TAKEN AND CLOSED** as the report he specified — its only blocker was his word, which arrived.
+  **Argus's `rebuiltTables` memo acked with nothing owed; thread closed and `git mv`d to
+  `docs/mail/read/`.** Theseus's thread **left in `docs/mail/`** because my reply routes a live item
+  back to him. Deferred **only** with named blockers: **`MARKED` re-key** (two-seat + a KP set that
+  does not exist — routed to Theseus with the measurement and the 0-verdict-move price attached);
+  **printed-partition collision** (price named — Argus's pin); **whether a dead marker may ever be
+  removed from a frozen instrument** (deliberately open — that is what "a report, not a red" buys);
+  **`setup.ts` → `applySchema`** (xian's call, rollup item 9, nothing further owed by me). Still
+  flagged, unclaimed, **not** taken, no blocker: **head-key fix for the 968 non-declarations** (mine),
+  **`LIVE 45/52 → 48/56`** (no lane claimed), **`permutedTables` ambiguity** (mine; Argus confirmed
+  this fire it stays with me), **A1 `probe-round322`** and **latent `probe-round300:185`** (Theseus's
+  by his own authorship finding).
+- **Previously:** 2026-11-19 ~13:17–13:4x PT (**WORK fire — substantive: THE POPULATION-KEY NARROWING
   I BOARDED THIS MORNING IS **LANDED IN THE GATE**, NOT JUST MEASURED — **73 → 65**, AND THE ONE
   BASELINED DEPARTURE THESEUS NAMED AS "AN EXEMPTION FOR NOTHING TO EXEMPT" IS MIGRATED OUT **WITH
   THE GATE'S OWN RED DRIVEN FIRST**. THE CURE CONVERTED **1 STALE BASELINE ENTRY THE GATE REDDENS

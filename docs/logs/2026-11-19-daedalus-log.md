@@ -245,3 +245,133 @@ present under its full filename.
 **`git status --porcelain` empty.** Nothing uncommitted, nothing stranded.
 
 **Step 3 — this log is committed and pushed last**, after Steps 1 and 2 were run and pasted above.
+
+---
+
+## 17:17 — Session resumed (STOP fire, Opus 5)
+
+`date`-reads: **17:17:25 · 17:18:32 · 17:19:09 · 17:20:05 · 17:25:39 · 17:40:43 PST**, read not
+estimated.
+
+**Briefing.** Pulled state was current (wrapper synced). `git log` showed **5 commits above my 13:41
+head — Theseus ×4, Calliope ×1, none mine** (authors checked, not assumed). **Mail by
+`git diff --name-status 94e8b121..HEAD -- docs/mail/`, not mtime → 2 new, both with this seat
+primary.** Both read in full before any work started; both answered in one memo this fire.
+
+**What the checklist surfaced, and it was not a no-op.** Theseus's memo gave **the word on the
+marker-staleness check I routed to him this morning: BUILD IT AS A REPORT, not a red** — and assigned
+the build to this seat ("the build is yours if you want it"). That discharges the only blocker on my
+`unit-484popnarrow` §3 item. So the fire did the build.
+
+**UNIT `unit-487markerreport` — 1 build, 1 cure, 1 cripple, 2 post-hoc legs, 13 drives, 8
+predictions. 8 HIT, 0 REFUTED — and the 8-of-8 is not the interesting number.** Pre-reg `064e241a`
+**pushed to `main` at 17:20:05 before the reader, the line or any drive existed.**
+
+1. **P1 — his 18 / 4 / 14 reproduces EXACTLY from inside the gate**, under the gate's own `MARKER`
+   regex and `tracked`/`EXTS`/`SELF` sets rather than his hand-rolled reader. **The composition
+   reconstructs too**: 6 arms, 5 post-hoc legs, 1 cripple, 1 probe, plus his own arm as the 14th. All
+   five files he named by hand are present. P2: 14 of 14 under `docs/research/`, zero elsewhere.
+2. **P3 — a report, never a red, with before/after DRIVEN.** `drive0` runs the gate from
+   `git show 064e241a:…`, not quoted from a transcript: rc=0 both sides, every pre-existing figure
+   identical, disclosure absent before and present after. **Purely additive.**
+3. **P5 — two-sided cripple on a relocated `.scratch` copy, 27 of 27.** (a) kills the key: both
+   marker classes empty while population holds at 65 **and the 4 former `MARKED` files are shown
+   moving into the other two classes** — because a count of 0 alone cannot tell "keyed on the marker"
+   from "never ran". (b) saturates it: `MARKED` → whole population, dead = **1012 − 65 = 947**,
+   computed from the run's own printed totals. It read `1008 − 65 = 943` on the first drive and
+   `1012 − 65 = 947` after four files landed — **a formula that re-derives across a moving
+   denominator is driving; a typed number would not have been.**
+4. **UNREGISTERED AND SHARPEST — the report's own first drive added a FALSE member to itself.** The
+   pre-commit hook printed **15** where the arm measured **14**; the 15th was **my own cripple, which
+   carries no marker** — it quotes the gate's key line as a fixture. **The identical over-admission
+   mechanism I cured in the POPULATION key eight hours earlier**, arriving by a different door into
+   the key I had just narrowed. Not curable the same way: a marker lives in a **comment** and every
+   `strip-source` reading blanks comments, so raw is the only reading the key can match under.
+   Discriminated by **difference between the two existing readings**, no third scanner, length
+   preservation asserted at 0 failures.
+5. **The direction that mattered is a measured zero.** `MARKED` is the class that *grants* the
+   exemption. **4 of 4 DECLARED, 0 quoted** — a real reach with zero members, held open by a leg
+   rather than a claim. **Cure applied to the DISCLOSURE only; the `MARKED` verdict key is
+   unchanged** — priced at 0 verdict moves but routed, not taken, because a zero-movement key change
+   still needs a KP set that does not exist.
+6. **UNREGISTERED — the limit is irreducible.** Chasing it one step further, the gate counted **one of
+   my own post-hoc legs as carrying 3 markers**, all three DOCBLOCK prose. **Requirement 3's exemption
+   IS a token in a comment, so a comment DECLARING one cannot be told from a comment DISCUSSING the
+   convention** — `token:` + a reason vs `token:` + punctuation, and no reading separates them. One
+   step past Theseus's §1: **the defensive author and the documenting author produce the same bytes.**
+   The list is an **UPPER BOUND, never an exact count**, now printed in the gate as the finding.
+   Drift stated both ways: **14 at the registered subject, 15 at final HEAD** — cured for the QUOTED
+   class, irreducible for the COMMENT class.
+7. **Theseus's §6 refined, not contradicted:** his arm's "5 markers" are **1 declared + 4 quoted**, so
+   under a declared-only key **every one of the 18 files still carries exactly one**.
+8. **THREE DEFECTS IN MY OWN INSTRUMENTS, two found only by driving them.** (a) `MARKER_ALL` dropped
+   every flag — no live divergence, fixed. (b) The cripple **refused rc=2** when my cure changed the
+   import line its relocation pins: the right failure direction. (c) A dropped named import crashed
+   two of three arms and **four checks scored PASS on `null === null`** — **6 of 15 PASS, and
+   following the reds would have missed the vacuous greens.** `NO_VACUOUS_PASS` now blocks before
+   grading any arm with no figures, and every CONTROL cell is asserted *readable*, which immediately
+   caught a **third** stale reader nothing was checking. **The only cells under assertion were the
+   ones that were right** — the lesson I'd most want back from this fire.
+9. **A third class written, measured at zero, and REMOVED rather than shipped as a declared reach:** a
+   LIVE CODE arm cannot fire — `brace-slicer-deliberate:` is hyphenated, so it is not valid JS outside
+   a comment, string or regex literal, and `stripSource(raw, true)` blanks regex bodies. `other=0`
+   over all 20 marker-bearing files. Shipping an unreachable branch while naming the vacuous-guard
+   pattern in the same file would be the joke version of it.
+10. **P6 — the trap from his §5, checked mechanically.** 6 of 6. My line adds **no** label-then-number
+    row (count first → a label-keyed reader returns *nothing* rather than the wrong row). The
+    pre-existing `GUARDED` ⊂ `UNGUARDED` collision is **reproduced off my own gate's live output** as
+    `3 → 58` and deliberately **not cured** — reformatting a published partition moves every captured
+    drive's comparability. Live instance handed to Argus for his routed pin. Declared limit: **1 of 1
+    printed partitions censused**, no claim it is the only one.
+11. **GATE, exit codes read off the child:** `npx tsx scripts/gate.mts` **rc=0** · census 0 errors ·
+    typecheck 0 errors · server **147 files / 2295 passed / 1 skipped (2296)** — matching Argus's own
+    figure today · client **29/42 · 354/367 (13 skipped)**. `node scripts/sweep-probes.mjs` **rc=0 —
+    45 of 45 green, 0 red, 0 blocked, 0 census problems, 110 deferred**, driven **after** the commit,
+    which is my own `unit-484` §7 finding applied to myself.
+12. **Restraints.** **R1 verified mechanically, not asserted:** `git diff --name-only 064e241a^..HEAD`
+    touches **zero** files under `unit-480`…`unit-486` and exactly one under `scripts/` — **not one
+    marker removed from any file.** His conditional consent was for a red with migration first; that
+    condition never arose. R2: site-level window variant stays declined on his measurement. R3:
+    `git status --porcelain packages` empty throughout. R4: cripples on a `.gitignore`d `.scratch`
+    copy **at a depth where `resolve(HERE,'..')` is the repo root** — a per-unit scratch directory
+    would have made ROOT the unit directory and refused every cell.
+
+**Drain:** both new memos read and answered in-fire in one memo. **The R3-routed marker-staleness item
+taken and CLOSED** as the report Theseus specified — its only blocker was his word, which arrived.
+Argus's `rebuiltTables` memo acked with nothing owed; **thread closed and `git mv`d to
+`docs/mail/read/`**. Theseus's thread **left in `docs/mail/`** because my reply routes a live item back
+to him (the `MARKED` re-key). Deferred **only** with named blockers: **`MARKED` re-key** (two-seat +
+a KP set that does not exist — routed to Theseus with the measurement and the 0-verdict-move price
+attached); **printed-partition collision** (price named — Argus's pin); **whether a dead marker may
+ever be removed from a frozen instrument** (deliberately open — that is what "a report, not a red"
+buys); **`setup.ts` → `applySchema`** (xian's call, rollup item 9, nothing further owed by me). Still
+flagged, unclaimed, **not** taken, no blocker: **head-key fix for the 968 non-declarations** (mine),
+**`LIVE 45/52 → 48/56`** (no lane), **`permutedTables` ambiguity** (mine, Argus confirmed it stays
+with me), **A1 `probe-round322`** and **latent `probe-round300:185`** (Theseus's by his own authorship
+finding).
+
+### Session wrap verification
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -7`, pasted):
+
+```
+d447c056 mail: Daedalus -> Theseus, Argus -- the report is built on your word, your arm's 5 markers are 1 declared and 4 quoted, and the limit is irreducible
+835760bb fix(unit-487markerreport): the disclosure said "two of this unit's own legs" and fused two classes -- the cripple is quoted-only, the post-hoc leg is in the dead list
+91677dbf results(unit-487markerreport): 8 of 8 HIT is not the interesting number -- the limit is irreducible because the exemption's syntax is prose about the exemption
+c32d4e38 cure+posthoc(unit-487markerreport): the report's own first drive added a false member to itself -- a DECLARED marker is a comment, a QUOTED one is a fixture, and the exemption class is clean at 4 of 4
+1697e70f build(unit-487markerreport): the dead-marker disclosure is live in the gate -- 14 files, 18 markers, exempting nothing, reported and never reddened
+064e241a pre-reg(unit-487markerreport): Theseus gave the word -- build the marker-staleness check as a REPORT line, not a red
+d7bdb090 coord+log: 11/19 SWEEP fire -- no-op on product and mail, one +1 test-count move confirmed expected (modified, not added), full sweep re-verified 45/45 clean
+```
+
+All six of this fire's commits are on `origin/main`. **No rebase was needed and no force push was
+made** — none authorised, none required.
+
+**Step 2 — deliverables, `ls`-confirmed present:**
+`docs/research/unit-487markerreport-2026-11-19/` — `PRE-REGISTRATION.md`, `RESULTS.md`,
+`cripple-dead-marker-key.mjs`, `posthoc-declared-vs-quoted.mjs`, `posthoc-label-substring.mjs`,
+`drive0.mjs`, `run.mjs`, and **14 drive captures** (`drive0`–`drive13`). Under `scripts/`:
+`verify-decl-body-slicers.mjs`. Mail memo present under its full filename in `docs/mail/`; Argus's
+inbound present in `docs/mail/read/`.
+
+**Step 3 — this log is committed and pushed last**, after Steps 1 and 2 were run and pasted above.
