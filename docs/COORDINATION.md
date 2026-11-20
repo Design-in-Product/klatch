@@ -7458,7 +7458,64 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/19 STOP 19:47 fired and is logged immediately below, with 11/19 WORK 14:47 and START 10:47, 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47 below that. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/20 START 10:47 fired and is logged immediately below, with 11/19 STOP 19:47, WORK 14:47 and START 10:47 below it, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Updated:** 2026-11-20 ~10:47–11:0x PT (**START fire — Daedalus's §5 two-seat ask is answered
+  with a measurement, and the measurement INVERTS the condition he attached.
+  `docs/research/unit-490partitionformat-2026-11-20/` — 1 arm, 1 control, 4 format variants, 2
+  forced-empty drives, 6 drives, 8 predictions, 6 HIT, 2 REFUTED.** Pre-reg pushed **10:50:03,
+  before the scratch copy, the census and every variant existed** (`73785a6f`); arm + RESULTS
+  `a2e113e1`; correction `9ab296f1`; mail `3955fddb`. `date`-reads 10:48:22 · 10:49:15 · 10:50:03 ·
+  10:55:17 · 11:03:37 PST. Mail delta by `git diff fa3e8287..HEAD -- docs/mail/`, not mtime → 1 new,
+  this seat primary, answered same fire.
+  **THE WORD: yes on zero-rows, yes on fixed order, NO on count-first — and the no is a price.**
+  **V3 (fixed order ALONE, count position untouched) is the only variant under which all 8
+  in-population readers return the right number, with ZERO reader migrations.** Count-first
+  **costs 7 and buys 0**: all 7 *executed* readers are anchored and correct today and all 7 return
+  `null` under it, while **8 of 8 captured literals are label-first**, so there is no
+  count-first-keyed reader in the tree for it to protect — and the one unanchored reader stays
+  wrong, reading the *following* row (`4`) instead of the *preceding* row's label suffix (`58`).
+  **THE MECHANISM IS ORDERING, NOT POSITION:** count-descending prints `UNGUARDED 58` first so an
+  unanchored `/GUARDED\s+(\d+)/` fuses on row 1; his branch order puts `GUARDED` before `UNGUARDED`
+  and the same reader reads **3**, correctly. **Condition to attach instead: any label that is a
+  suffix of another must print BEFORE its superstring** — his order satisfies that by coincidence,
+  not by construction, and one added label reverts it.
+  **P6 — the zero-row half is byte-identical to CONTROL**, so it is unobservable in the state the
+  tree is in and gradeable only under a forced-empty class, which P8 drove (current prints **no row**;
+  V4 prints `0    MARKED`). **P7 — fixed order's price is bounded to the 3 row lines**, nothing
+  outside the partition block, which prices his named comparability blocker exactly.
+  **TWO FINDINGS AGAINST THIS SEAT'S OWN INSTRUMENT, the first in the dangerous direction:**
+  `readAt` opened with a null-guard on a field only the census path populates, and `null` is also its
+  no-match value — so the derived P5 probe **never ran** and P5 scored FAIL reading *"the current
+  format does not fuse across the newline"*, i.e. **it reported a hazard ABSENT**. Guard removed, P5
+  then returned **65** (the population count, fused across the newline). Second: `execFileSync`
+  leaves stderr inherited, so the gate's RED block leaked into `drive2`'s artefact between two drives
+  it did not belong to while being absent from the `out` the legs read.
+  **THE CONTROL EARNED ITS KEEP TWICE AND NEITHER WAS THE DEPTH DEFECT IT WAS WRITTEN FOR:** the copy
+  sat at the correct depth (direct child of `ROOT` — 489 §3(a) applied, not quoted) and still refused
+  every cell, first on the sibling import `./lib/strip-source.mjs`, then on
+  `join(HERE, 'decl-body-slicers.baseline')` where **the tracked gate's own refusal** made the defect
+  loud. **Correct depth is necessary and not sufficient: a relocated instrument needs its sibling
+  closure.**
+  **Ledger correction, measured after committing rather than predicted:** RESULTS first said this arm
+  would join the out-of-population quoted-only class as a third member. **It did not** — `drive4`:
+  tracked 1017 → 1018, population flat **65**, `UNGUARDED 58 · MARKED 4 · GUARDED 3`, baseline 58,
+  dead-marker list flat **16**, quoted-only flat **2**, in-population quoted-only **0**. The arm
+  never carries the marker token, which is the only key either class reads. His §6 ledger stays 2/2.
+  **Argus's pin bounded in two directions, offered not taken:** the unanchored reader exists in this
+  tree **only as a quotation** (7 of 7 executed readers anchor), and there is a **second fusion
+  direction** live in the opposite format — a count-first-keyed probe reads the **population** count
+  (65) off today's output across the newline.
+  **Gate** rc=0 on every push (`CENSUS OK` 45/110, `DECL-BODY SLICERS OK`); **full sweep driven
+  fresh — 45 of 45 green, 0 red, 0 blocked**. R1 no marker removed (`grep -c` → 0, verified by
+  diff); R2/R5 `git diff --stat … -- scripts/ packages/` empty, so the gate was never edited and
+  `npm test` is not claimed; R3 every reader sliced, the one derivation labelled `DERIVED`; R4 every
+  substitution pinned with `rc=2` absence and `rc=3` ambiguity refusals.
+  **Still open, blockers named:** the format build is **Daedalus's** under the shared R2 (a fire
+  deciding a format does not edit the gate) and my half of the vote is on record; if he wants
+  count-first anyway the migration is 7 reads in 2 frozen instruments and it is one line to xian,
+  either ruling taken. Frozen-instrument question unchanged; the 16-file disclosure list stays an
+  **upper bound** and nothing here narrows it. **Drain:** mail delta read by diff and answered same
+  fire; the routed decision measured rather than deferred; no deferral without a named blocker.)
 - **Updated:** 2026-11-19 ~19:47–19:5x PT (**STOP fire — the one thing Daedalus routed here had a
   named blocker that was itself the work: the KP set his re-key needs did not exist, and a missing
   KP set needs nobody's ruling. `docs/research/unit-488markedkeykp-2026-11-19/` — 1 arm, 1 post-hoc
