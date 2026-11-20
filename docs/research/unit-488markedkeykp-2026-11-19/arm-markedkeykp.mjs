@@ -201,6 +201,35 @@ for (const m of qEntry[1].matchAll(new RegExp(K.MARKER.source, 'g'))) {
 }
 if (!Q) refuse(`${Q_FROM} yields no one-line span whose marker token is quoted rather than declared`);
 
+/* ----------------------------------------------------------- POST-HOC, added after drive 3 */
+// **`G` and `KP4` are POST-HOC.** Drive 3 graded all seven registered predictions (7 HIT, 0
+// REFUTED) and `drive3.arm.out` is kept as that record, unmodified. What drive 3 showed is that the
+// re-key's failure direction on this tree is LOUD — all 4 live `MARKED` files would fall through to
+// `UNGUARDED` and none is baselined, so each would redden. That makes the opposite direction worth
+// a KP too: a file carrying a quoted-only marker **and** paren/colon comparisons would fall through
+// to `GUARDED` and change column in SILENCE. `LIVE LEG 1` measures that class at **zero members
+// today** (0 quoted-only in the population), so without a KP it would be a declared reach held open
+// by a claim rather than by an instrument. `G` is sliced out of a live `GUARDED` file.
+let G = null;
+for (const [rel, raw] of files) {
+  if (classify(raw, 'OLD') !== 'GUARDED') continue;
+  const code = K.popReading(raw);
+  if (code.length !== raw.length) continue;
+  const parts = [];
+  for (const re of [K.LPAREN, K.RPAREN, K.COLON]) {
+    const m = code.match(re);
+    if (m) parts.push(lineAt(raw, m.index));
+  }
+  if (parts.length !== 3) continue;
+  const joined = [...new Set(parts)].join('\n');
+  const jc = K.popReading(joined);
+  if (!K.LPAREN.test(jc) || !K.RPAREN.test(jc) || !K.COLON.test(jc)) continue;
+  if (K.MARKER.test(joined)) continue;
+  G = { from: rel, text: joined };
+  break;
+}
+if (!G) refuse('no live GUARDED file yields spans carrying all three of LPAREN/RPAREN/COLON');
+
 /* ------------------------------------------------------------------------------- the KP set */
 const KPS = [
   ['KP1', `${P.text}\n${D.text}\n`, 'P + D — a declared exemption in the population'],
@@ -208,6 +237,7 @@ const KPS = [
   ['KP3', `${P.text}\n`, 'P alone — the marker key fires on neither reading'],
   ['KN-D', `${D.text}\n`, 'D alone — a marker is not a verdict'],
   ['KN-Q', `${Q.text}\n`, 'Q alone — a fixture is not a verdict'],
+  ['KP4', `${P.text}\n${G.text}\n${Q.text}\n`, 'POST-HOC: P + G + Q — the SILENT direction'],
 ];
 
 console.log('unit-488markedkeykp — the KP set for the MARKED re-key');
@@ -224,6 +254,8 @@ console.log(`    D  ← ${D.from}`);
 console.log(`         | ${D.text}`);
 console.log(`    Q  ← ${Q.from}`);
 console.log(`         | ${Q.text}`);
+console.log(`    G  ← ${G.from}   (POST-HOC)`);
+for (const l of G.text.split('\n')) console.log(`         | ${l}`);
 console.log('');
 console.log('  VERDICT MATRIX — same classifier, same population reading, only the MARKED key differs:');
 console.log(`    ${'KP'.padEnd(6)} ${'OLD (MARKER.test(raw))'.padEnd(24)} ${'NEW (declared only)'.padEnd(22)} moves?`);
@@ -238,7 +270,11 @@ for (const [name, src, why] of KPS) {
   matrix.push([name, o, n, diff, why]);
   console.log(`    ${name.padEnd(6)} ${o.padEnd(24)} ${n.padEnd(22)} ${diff ? 'YES' : 'no'}   ${why}`);
 }
-console.log(`    → ${moved} of ${KPS.length} KP(s) move. The KP set can report a difference: ${moved > 0 ? 'YES' : 'NO'}`);
+console.log(`    → ${moved} of ${KPS.length} KP(s) move (5 registered + 1 post-hoc).`
+  + ` The KP set can report a difference: ${moved > 0 ? 'YES' : 'NO'}`);
+const kp4 = matrix.find((r) => r[0] === 'KP4');
+console.log(`    → POST-HOC, the silent direction: KP4 OLD=${kp4[1]} NEW=${kp4[2]} — a quoted-only`
+  + ` marker beside paren/colon comparisons ${kp4[2] === 'GUARDED' ? 'CHANGES COLUMN WITHOUT REDDENING' : `lands ${kp4[2]}`}.`);
 
 /* ------------------------------- LIVE LEG 1 (P6): the re-key's measured price on this tree today */
 console.log('');

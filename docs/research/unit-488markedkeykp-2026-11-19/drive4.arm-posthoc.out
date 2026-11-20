@@ -1,0 +1,58 @@
+unit-488markedkeykp — the KP set for the MARKED re-key
+  subject: scripts/verify-decl-body-slicers.mjs (32262 bytes)
+  captured OLD key:  if (MARKER.test(raw)) {
+  captured branches: else if (LPAREN.test(code) && RPAREN.test(code) && COLON.test(code)) verdicts.set(rel, 'GUARDED'…
+  captured NEW key:  declaredMarkerCount(raw) > 0  (1764-byte span, verbatim)
+  captured keys module: .scratch/unit-488markedkeykp/captured-keys.mjs
+
+  SPANS (sliced verbatim, never typed):
+    P  ← docs/research/round398-instruments/census-slice-from-a-refusable-index.mjs
+         |       if (c === '{') {
+         |       if (c === '}') {
+    D  ← docs/research/unit-470bodyslice-2026-11-17/arm-bodyslice-a.mjs
+         | // brace-slicer-deliberate: this IS the defect, reproduced as the comparison arm that makes §3's
+    Q  ← docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs
+         | const KEY_LINE = "const MARKER = /brace-slicer-deliberate:\\s*\\S+/;";
+    G  ← docs/research/round401-instruments/census-the-branch-polarity-axis.mjs   (POST-HOC)
+         |     if (c === '(' || c === '[' || c === '{') depth += 1;
+         |     else if (c === ')' || c === ']' || c === '}') {
+         |     else if (depth === 0 && c === ':') {
+
+  VERDICT MATRIX — same classifier, same population reading, only the MARKED key differs:
+    KP     OLD (MARKER.test(raw))   NEW (declared only)    moves?
+    KP1    MARKED                   MARKED                 no   P + D — a declared exemption in the population
+    KP2    MARKED                   UNGUARDED              YES   P + Q — the difference this KP set exists to prove
+    KP3    UNGUARDED                UNGUARDED              no   P alone — the marker key fires on neither reading
+    KN-D   OUT-OF-POPULATION        OUT-OF-POPULATION      no   D alone — a marker is not a verdict
+    KN-Q   OUT-OF-POPULATION        OUT-OF-POPULATION      no   Q alone — a fixture is not a verdict
+    KP4    MARKED                   GUARDED                YES   POST-HOC: P + G + Q — the SILENT direction
+    → 2 of 6 KP(s) move (5 registered + 1 post-hoc). The KP set can report a difference: YES
+    → POST-HOC, the silent direction: KP4 OLD=MARKED NEW=GUARDED — a quoted-only marker beside paren/colon comparisons CHANGES COLUMN WITHOUT REDDENING.
+
+  LIVE LEG 1 — every in-population marker-bearing tracked file, DECLARED vs QUOTED:
+      DECLARED 1 docs/research/unit-470bodyslice-2026-11-17/arm-bodyslice-a.mjs
+      DECLARED 1 docs/research/unit-470bodyslice-2026-11-17/kp-fixture-new-unguarded-slicer.mjs
+      DECLARED 1 docs/research/unit-472publishedfigure-2026-11-17/arm-publishedfigure-a.mjs
+      DECLARED 1 docs/research/unit-472publishedfigure-2026-11-17/handread-readerset-a.mjs
+    → 4 in-population MARKED: 4 declared, 0 quoted-only.
+    → the re-key moves 0 verdict(s) on this tree today.
+
+  LIVE LEG 2 — the verdict each MARKED file would FALL THROUGH to, and whether that reddens:
+      UNGUARDED  baselined=false reddens=true  docs/research/unit-470bodyslice-2026-11-17/arm-bodyslice-a.mjs
+      UNGUARDED  baselined=false reddens=true  docs/research/unit-470bodyslice-2026-11-17/kp-fixture-new-unguarded-slicer.mjs
+      UNGUARDED  baselined=false reddens=true  docs/research/unit-472publishedfigure-2026-11-17/arm-publishedfigure-a.mjs
+      UNGUARDED  baselined=false reddens=true  docs/research/unit-472publishedfigure-2026-11-17/handread-readerset-a.mjs
+    → 4 of 4 would REDDEN the gate if its marker stopped counting.
+
+  population (this arm, same key as the gate): 65
+  tracked code files read: 1014 · baseline entries: 58
+
+  REGISTERED PREDICTIONS (pre-reg §4, graded here):
+    HIT      P1 — KP2 exists and the keys DISAGREE on it: OLD MARKED, NEW not MARKED
+    HIT      P2 — KP1 is MARKED under BOTH keys — no declared exemption is lost
+    HIT      P3 — KP3 is IN the population and MARKED under neither key
+    HIT      P4 — KN-D and KN-Q are both OUT of the population under both keys
+    HIT      P5 — KP2's NEW verdict is UNGUARDED, not GUARDED
+    HIT      P6 — in-population quoted-only = 0 (4 of 4 declared), so the re-key prices at 0 moves today
+    HIT      P7 — at least 1 of the MARKED files would fall through to UNGUARDED and is NOT baselined
+  → 7 HIT, 0 REFUTED, of 7.
