@@ -1,0 +1,8 @@
+unit-490partitionformat — arm: the price of the §5 partition-format change
+
+  derived fixed order (from the gate's own verdict-branch order): MARKED, GUARDED, UNGUARDED
+verify-decl-body-slicers: BLOCKED — baseline missing at /Users/xian/Development/klatch-worktrees/theseus/.scratch/decl-body-slicers.baseline. A detector with no baseline would redden on the whole frozen population; it refuses rather than reporting a pass it cannot support.
+
+CONTROL — rc=2, population=null, partition rows=null
+
+CONTROL FAILED — the relocated copy does not reproduce the tracked gate. Exiting 3 WITHOUT grading any claim leg: a reach printed at 0 on a run that classified nothing scores a vacuous PASS, which is exactly the finding this harness was told to respect.

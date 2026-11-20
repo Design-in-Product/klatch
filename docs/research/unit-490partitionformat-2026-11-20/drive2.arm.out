@@ -1,0 +1,117 @@
+unit-490partitionformat — arm: the price of the §5 partition-format change
+
+  derived fixed order (from the gate's own verdict-branch order): MARKED, GUARDED, UNGUARDED
+
+CONTROL — rc=0, population=65, partition rows=3
+    |      UNGUARDED  58|
+    |      MARKED     4|
+    |      GUARDED    3|
+  live counts read off CONTROL: {"UNGUARDED":58,"MARKED":4,"GUARDED":3}
+
+CENSUS — 23 captured reader literal(s) in 9 tracked file(s); 5 line(s) refused for span ambiguity (counted, not dropped).
+  IN-POPULATION (own bytes match inside a live partition row): 8
+      docs/research/unit-479braceslicekeys-2026-11-18/arm-braceslicekeys-a.mjs:213  label-first  /^ {6}UNGUARDED {2}(\d+)$/m  → 58
+      docs/research/unit-479braceslicekeys-2026-11-18/arm-braceslicekeys-a.mjs:214  label-first  /^ {6}MARKED {5}(\d+)$/m  → 4
+      docs/research/unit-479braceslicekeys-2026-11-18/arm-braceslicekeys-a.mjs:215  label-first  /^ {6}GUARDED {4}(\d+)$/m  → 3
+      docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs:96  label-first  /^\s*MARKED\s+(\d+)/m  → 4
+      docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs:97  label-first  /^\s*GUARDED\s+(\d+)/m  → 3
+      docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs:98  label-first  /^\s*UNGUARDED\s+(\d+)/m  → 58
+      docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs:157  label-first  /^\s*MARKED\s+(\d+)/m  → 4
+      docs/research/unit-487markerreport-2026-11-19/posthoc-label-substring.mjs:13  label-first PROSE  /GUARDED\s+(\d+)/  → 58
+  OUT-OF-POPULATION (reads a different instrument's format): 15
+      docs/research/round400-instruments/regrade-the-file-scoped-guard.mjs:343  /^ {2}(UNGUARDED|GUARDED) \((\d+)\)/
+      docs/research/round401-instruments/census-the-branch-polarity-axis.mjs:679  /^ {2}(file|pos|bind|both) +sites (\d+) {2}GUARDED (\d+) {2}UNGUARDED (\d+)$/
+      docs/research/round401-instruments/census-the-branch-polarity-axis.mjs:685  /^ {2}UNGUARDED \+ FAILS OPEN: \d+ under his file-scoped guard, (\d+) under BOTH:$/
+      docs/research/round401-instruments/census-the-branch-polarity-axis.mjs:702  /^ {2}sites his key called GUARDED that lose their guard under BOTH \((\d+)\):$/
+      docs/research/round401-instruments/census-the-branch-polarity-axis.mjs:860  /^ {2}(file|pos|bind|both|sense) +sites (\d+) {2}GUARDED (\d+) {2}UNGUARDED (\d+)$/
+      docs/research/round401-instruments/census-the-branch-polarity-axis.mjs:864  /^ {2}sites the polarity model moves OUT of GUARDED \((\d+)\):$/
+      docs/research/round402-instruments/hand-read-the-unguarded.mjs:350  /^ {2}file {2}sites (\d+) {2}GUARDED (\d+) {2}UNGUARDED (\d+)$/m
+      docs/research/round402-instruments/hand-read-the-unguarded.mjs:351  /^ {2}both {2}sites (\d+) {2}GUARDED (\d+) {2}UNGUARDED (\d+)$/m
+      docs/research/unit-479braceslicekeys-2026-11-18/arm-braceslicekeys-a.mjs:86  /^ {2}GUARDED \(paren-match within 400 chars before\): (\d+)$/m
+      docs/research/unit-479braceslicekeys-2026-11-18/arm-braceslicekeys-a.mjs:88  /^ {2}UNGUARDED: +(\d+)$/m
+      docs/research/unit-479braceslicekeys-2026-11-18/arm-braceslicekeys-b.mjs:52  /^ {2}GUARDED \(paren-match within 400 chars before\): (\d+)$/m
+      docs/research/unit-479braceslicekeys-2026-11-18/arm-braceslicekeys-b.mjs:54  /^ {2}UNGUARDED: +(\d+)$/m
+      docs/research/unit-481disjunctiononly-2026-11-18/arm-disjunctiononly.mjs:168  /^\s+UNGUARDED:\s+(\d+)$/m
+      docs/research/unit-483columnnarrow-2026-11-19/arm-columnnarrow.mjs:166  /^\s+UNGUARDED:\s+(\d+)$/m
+      docs/research/unit-483columnnarrow-2026-11-19/arm-columnnarrow.mjs:233  /^\s+UNGUARDED:\s+(\d+)$/m
+
+V1-zero-only — rc=0
+    |      UNGUARDED  58|
+    |      MARKED     4|
+    |      GUARDED    3|
+
+V2-count-first — rc=0
+    |      58   UNGUARDED|
+    |      4    MARKED|
+    |      3    GUARDED|
+
+V3-fixed-order — rc=0
+    |      MARKED     4|
+    |      GUARDED    3|
+    |      UNGUARDED  58|
+
+V4-proposal — rc=0
+    |      4    MARKED|
+    |      3    GUARDED|
+    |      58   UNGUARDED|
+
+RED — 4 new hand-rolled brace-balance body slicer(s):
+      docs/research/unit-470bodyslice-2026-11-17/arm-bodyslice-a.mjs
+      docs/research/unit-470bodyslice-2026-11-17/kp-fixture-new-unguarded-slicer.mjs
+      docs/research/unit-472publishedfigure-2026-11-17/arm-publishedfigure-a.mjs
+      docs/research/unit-472publishedfigure-2026-11-17/handread-readerset-a.mjs
+
+  A brace scan that starts at the first `{` is wrong on four live mechanisms in this tree: a TS type literal or an object default in the parameter list, a JSDoc `@type` brace, and a brace-bearing return type. Clear this by, in preference order:
+    1. import { bodyOf, declBodies } from '<…>/scripts/lib/decl-body.mjs';
+    2. put `brace-slicer-deliberate: <reason>` at the site, if the file's job is to reproduce the defect (a comparison arm, a mutant, a fixture);
+    3. append the path to scripts/decl-body-slicers.baseline, which states that a known unguarded slicer is being added on purpose.
+
+RED — 4 new hand-rolled brace-balance body slicer(s):
+      docs/research/unit-470bodyslice-2026-11-17/arm-bodyslice-a.mjs
+      docs/research/unit-470bodyslice-2026-11-17/kp-fixture-new-unguarded-slicer.mjs
+      docs/research/unit-472publishedfigure-2026-11-17/arm-publishedfigure-a.mjs
+      docs/research/unit-472publishedfigure-2026-11-17/handread-readerset-a.mjs
+
+  A brace scan that starts at the first `{` is wrong on four live mechanisms in this tree: a TS type literal or an object default in the parameter list, a JSDoc `@type` brace, and a brace-bearing return type. Clear this by, in preference order:
+    1. import { bodyOf, declBodies } from '<…>/scripts/lib/decl-body.mjs';
+    2. put `brace-slicer-deliberate: <reason>` at the site, if the file's job is to reproduce the defect (a comparison arm, a mutant, a fixture);
+    3. append the path to scripts/decl-body-slicers.baseline, which states that a known unguarded slicer is being added on purpose.
+
+EMPTY/current-format (MARKED forced empty) — rc=1
+    |      UNGUARDED  62|
+    |      GUARDED    3|
+
+EMPTY/V4-proposal (MARKED forced empty) — rc=1
+    |      0    MARKED|
+    |      3    GUARDED|
+    |      62   UNGUARDED|
+
+PASS P1 — in-population reader census is >=4 and <=12 literals, members named
+    8 literal(s) across 3 file(s): docs/research/unit-479braceslicekeys-2026-11-18/arm-braceslicekeys-a.mjs, docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs, docs/research/unit-487markerreport-2026-11-19/posthoc-label-substring.mjs
+
+PASS P2 — at least half of the in-population readers are label-first
+    8 label-first of 8
+
+FAIL P3 — every in-population label-first reader returns NULL against count-first, never a number
+    loud(null)=7 [docs/research/unit-479braceslicekeys-2026-11-18/arm-braceslicekeys-a.mjs:213→null docs/research/unit-479braceslicekeys-2026-11-18/arm-braceslicekeys-a.mjs:214→null docs/research/unit-479braceslicekeys-2026-11-18/arm-braceslicekeys-a.mjs:215→null docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs:96→null docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs:97→null docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs:98→null docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs:157→null] · silent(number)=1 [docs/research/unit-487markerreport-2026-11-19/posthoc-label-substring.mjs:13→4]
+
+FAIL P4 — under the V4 proposal no reader returns another row's number
+    docs/research/unit-487markerreport-2026-11-19/posthoc-label-substring.mjs:13 claims GUARDED but read 58
+
+  P5 probe (DERIVED by operand swap on /GUARDED\s+(\d+)/ at docs/research/unit-487markerreport-2026-11-19/posthoc-label-substring.mjs:13): /(\d+)\s+UNGUARDED/ → null on line ||
+
+FAIL P5 — the derived count-first probe reads the POPULATION count (65), not 58 and not null, off the CURRENT format
+    got null; population=65, UNGUARDED=58
+    same probe against V4-proposal → null on line ||
+
+PASS P6 — adding zero rows alone leaves the live rendering byte-identical
+    V1 === CONTROL byte-for-byte, so the design cannot be graded by driving the live tree
+
+PASS P7 — fixed order MOVES the live partition block, and nothing outside it
+    moved=true · no diff outside the partition block · sorted=[UNGUARDED,MARKED,GUARDED] fixed=[MARKED,GUARDED,UNGUARDED]
+
+PASS P8 — with MARKED forced empty the current format prints NO row and the proposal prints 0
+    current rows=[UNGUARDED  62 | GUARDED    3] · proposal MARKED row=|      0    MARKED|
+
+--- 5 PASS · 3 FAIL · 0 REFUSED ---
+R1/R5 — git status --porcelain scripts packages: EMPTY (clean)
