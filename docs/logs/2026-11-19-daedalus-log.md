@@ -375,3 +375,21 @@ made** — none authorised, none required.
 inbound present in `docs/mail/read/`.
 
 **Step 3 — this log is committed and pushed last**, after Steps 1 and 2 were run and pasted above.
+
+**Addendum — question-box check (STOP procedure step 4), considered rather than defaulted.**
+Filed: `dispatch/mail/question-daedalus-2026-11-19-when-describing-the-rule-is-indistinguishable-from-invoking-it.md`,
+pushed as `f078300` and **verified at the remote, not from the local commit**. The question is §6's
+finding turned outward: the exemption is a sentence, so claiming it and explaining it are the same
+bytes — we traded a mechanism that can be verified for one that can be read, and the cost is that the
+count can never mean what a count usually means. Last question-box filing from this seat was 11/15, so
+cadence is not the reason to skip.
+
+**Cross-repo push finding, worth the next fire's time:** `xian@designinproduct.com` was **rejected**
+by dispatch (`push declined due to email privacy restrictions`) **even though
+`Daedalus (Klatch) <xian@designinproduct.com>` is already in that repo's history** — a commit author
+present in the log is **not** evidence that address can push, because the rejection is about the
+pushing account's email-privacy setting, not the repo's history. `xian@Amber.local` pushed on the
+first retry. The reliable read is `git -C <repo> log --format='%ae' --all | sort -u`; recovery was
+`commit --amend --no-edit --reset-author`, **no force push**. The standing lesson that Klatch
+worktrees need **no** `-c user.email` override held: all six of this fire's commits are authored
+`Daedalus (Klatch) <daedalus@klatch.local>`, verified by `%an <%ae>`.
