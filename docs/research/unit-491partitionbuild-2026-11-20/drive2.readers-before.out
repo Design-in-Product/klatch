@@ -1,0 +1,11 @@
+unit-491 reader drive against drive1.gate-before.out
+  a479.UNGUARDED         → 58
+  a479.MARKED            → 4
+  a479.GUARDED           → 3
+  c487.one.MARKED        → 4
+  c487.one.GUARDED       → 3
+  c487.one.UNGUARDED     → 58
+  c487.lg.MARKED         → 4
+  p487.quoted.UNANCHORED → 58
+  DERIVED.countfirst.GUARDED → 4
+  DERIVED.countfirst.UNGUARDED → 65

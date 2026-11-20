@@ -1,0 +1,22 @@
+unit-491 reader census — 8 literals sliced from source, 0 hand-typed
+  a479.UNGUARDED         ANCHORED   /^ {6}UNGUARDED {2}(\d+)$/m
+      docs/research/unit-479braceslicekeys-2026-11-18/arm-braceslicekeys-a.mjs:213
+  a479.MARKED            ANCHORED   /^ {6}MARKED {5}(\d+)$/m
+      docs/research/unit-479braceslicekeys-2026-11-18/arm-braceslicekeys-a.mjs:214
+  a479.GUARDED           ANCHORED   /^ {6}GUARDED {4}(\d+)$/m
+      docs/research/unit-479braceslicekeys-2026-11-18/arm-braceslicekeys-a.mjs:215
+  c487.one.MARKED        ANCHORED   /^\s*MARKED\s+(\d+)/m
+      docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs:96
+  c487.one.GUARDED       ANCHORED   /^\s*GUARDED\s+(\d+)/m
+      docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs:97
+  c487.one.UNGUARDED     ANCHORED   /^\s*UNGUARDED\s+(\d+)/m
+      docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs:98
+  c487.lg.MARKED         ANCHORED   /^\s*MARKED\s+(\d+)/m
+      docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs:157
+  p487.quoted.UNANCHORED UNANCHORED /GUARDED\s+(\d+)/
+      docs/research/unit-487markerreport-2026-11-19/posthoc-label-substring.mjs:13
+  DERIVED.countfirst.GUARDED DERIVED    /(\d+)\s+GUARDED/
+      DERIVED by operand swap on docs/research/unit-487markerreport-2026-11-19/posthoc-label-substring.mjs:13 (GUARDED\s+(\d+))
+  DERIVED.countfirst.UNGUARDED DERIVED    /(\d+)\s+UNGUARDED/
+      DERIVED by operand swap on docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs:98 (^\s*UNGUARDED\s+(\d+))
+  anchored 7 · unanchored 1 · derived 2

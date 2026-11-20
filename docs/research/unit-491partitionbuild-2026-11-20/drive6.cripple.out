@@ -1,0 +1,36 @@
+unit-491partitionbuild — cripple of the partition format (order, zero rows, 2 assertions)
+  subject: scripts/verify-decl-body-slicers.mjs (41470 bytes)
+  before-state: the same file at 1bbfd429 (37194 bytes)
+
+CONTROL — relocated copy, uncrippled (rc=0, ran=true)
+  PASS     CONTROL rc matches the tracked gate  (0)
+  PASS     CONTROL population matches  (65)
+  PASS     CONTROL rows match the tracked gate exactly (labels, counts AND order)  ([["MARKED",4],["GUARDED",3],["UNGUARDED",58]])
+  PASS     CONTROL order is the gate's branch order  ("MARKED,GUARDED,UNGUARDED")
+  PASS     CONTROL fires neither assertion  ([false,null])
+
+(a) cured gate, MARKED forced empty (rc=1, ran=true)
+  PASS     (a) MARKED prints a row, reading 0  (0)
+  PASS     (a) the other two classes still print  ([true,true])
+  PASS     (a) the three rows account for the population  (65)
+  PASS     (a) order survives a collapsed class  ("MARKED,GUARDED,UNGUARDED")
+(a') pre-cure gate at 1bbfd429, same substitution (rc=1, ran=true)
+  PASS     (a') MARKED printed NO ROW before the cure  ("NO ROW")
+  PASS     (a') and the population was unchanged between the two  (65)
+
+(b) LABELS reordered so UNGUARDED precedes GUARDED (rc=2, ran=true)
+  PASS     (b) refuses rc=2  (2)
+  PASS     (b) names the suffix-ordering violation  (true)
+  PASS     (b) names the pair, suffix<superstring  ("GUARDED<UNGUARDED")
+  REFUSED  (b) prints no partition at all  (got=null want=null)
+(b2) LABELS set to the count-descending order this gate published until today (rc=2, ran=true)
+  PASS     (b2) refuses rc=2 — the assertion rejects the format that shipped  (2)
+  PASS     (b2) names the same pair  ("GUARDED<UNGUARDED")
+
+(c) a fourth verdict class produced by a branch and absent from LABELS (rc=2, ran=true)
+  PASS     (c) refuses rc=2  (2)
+  PASS     (c) names the class the classifier produced  ("SUSPECT")
+  REFUSED  (c) prints no partition at all  (got=null want=null)
+  PASS     (c) does NOT misreport this as an ordering violation  (false)
+
+  19 PASS · 0 FAIL · 2 REFUSED

@@ -1,0 +1,13 @@
+--- drive1.gate-before.out	2026-11-20 13:22:48
++++ drive3.gate-after.out	2026-11-20 13:23:34
+@@ -1,9 +1,9 @@
+ verify-decl-body-slicers — brace-balance body slicers in the TRACKED tree
+   tracked files read: 1018
+   population (compares against both braces): 65
+-      UNGUARDED  58
+       MARKED     4
+       GUARDED    3
++      UNGUARDED  58
+   baseline entries: 58
+ 
+   NOT CHECKED: whether a `brace-slicer-deliberate:` marker is still needed.

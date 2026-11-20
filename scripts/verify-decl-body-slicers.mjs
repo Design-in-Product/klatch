@@ -384,13 +384,73 @@ const newOnes = unguarded.filter((f) => !baselineSet.has(f));
 const stale = baseline.filter((f) => verdicts.get(f) !== 'UNGUARDED');
 
 /* --------------------------------------------------------------------- report */
+// **THE PARTITION'S FORMAT IS A TWO-SEAT DECISION, DECIDED 2026-11-20 (`unit-490partitionformat`
+// Theseus / `unit-491partitionbuild` this seat), AND THE ORDER IS LOAD-BEARING RATHER THAN TIDY.**
+//
+// These rows used to print count-descending, which put `UNGUARDED  58` on row 1 — and
+// `/GUARDED\s+(\d+)/`, the one unanchored reader in this tree, finds its token INSIDE `UNGUARDED`
+// there and never reaches row 3. It read `GUARDED` as **58**, manufacturing a `3 → 58` figure move
+// out of an instrument that had not moved by a byte (`unit-486markerstale` §5; the surface Argus
+// holds a pin on). **The hazard is ORDERING, not the count's position.** In branch order `GUARDED`
+// precedes `UNGUARDED`, so the same reader lands on the real row and reads 3.
+//
+// **`count-first` was this seat's condition and it is WITHDRAWN, because it was measured.** Theseus
+// drove all four variants against every reader in the tree that reads these rows: fixed order alone
+// is the only one under which **8 of 8** are correct, with **0** migrations. Count-first breaks **7
+// executed anchored readers in 2 frozen published instruments** and protects nobody — 8 of 8
+// captured literals are label-first, so there is no count-first-keyed reader here to protect — and
+// the unanchored reader it was aimed at stays wrong under it, reading the FOLLOWING row's count
+// instead of the PRECEDING row's label suffix. **A format change that relocates an error is not a
+// cure for it.** The cure for an unanchored reader is anchoring, which is the reader's property.
+//
+// The two assertions below are the reason this is a property rather than a coincidence, and the
+// second one guards a hazard THIS CURE INTRODUCES. Quoted from his §1 because the sentence is the
+// design: *"any label that is a suffix of another must print BEFORE its superstring. Your derived
+// branch order satisfies that by coincidence, not by construction — alphabetical order, or one
+// added label, reverts it."*
+const LABELS = ['MARKED', 'GUARDED', 'UNGUARDED'];
+// (a) SUFFIX-ORDERING. Refuses rather than reddens: a partition no reader can read unambiguously is
+// a measurement this detector cannot publish, which is the `rc=2` class — "three outcomes, not two".
+for (let i = 0; i < LABELS.length; i += 1) {
+  for (let j = i + 1; j < LABELS.length; j += 1) {
+    if (LABELS[i].endsWith(LABELS[j])) {
+      console.error(`verify-decl-body-slicers: BLOCKED — the verdict row order is unreadable:`
+        + ` \`${LABELS[j]}\` is a suffix of \`${LABELS[i]}\` and prints AFTER it, so an unanchored`
+        + ` label-keyed reader aimed at \`${LABELS[j]}\` matches inside \`${LABELS[i]}\`'s row and`
+        + ' reports the wrong row\'s count as a figure move. Print the suffix first.');
+      process.exit(2);
+    }
+  }
+}
+// (b) CLOSED LABEL SET, and this is the price of (a) paid back rather than a precaution. The old
+// `Object.entries(counts)` printed whatever the branches produced, so a fourth verdict class would
+// have disclosed itself automatically. Iterating a DECLARED list buys a readable order and sells
+// that disclosure: a class added to the branches and not to `LABELS` would be **silently absent
+// from the published partition** — a loud defect traded for a quiet one, which is the shape this
+// corpus keeps re-finding. So the gate asserts its own list is closed over what it actually
+// produced.
+for (const v of new Set(verdicts.values())) {
+  if (!LABELS.includes(v)) {
+    console.error(`verify-decl-body-slicers: BLOCKED — verdict class \`${v}\` is produced by the`
+      + ' classifier and absent from `LABELS`, so it would not print at all. The published partition'
+      + ' must be closed over the classifier\'s own output; add it in suffix-safe order.');
+    process.exit(2);
+  }
+}
 const counts = {};
-for (const v of verdicts.values()) counts[v] = (counts[v] || 0) + 1;
+for (const v of LABELS) counts[v] = 0;
+for (const v of verdicts.values()) counts[v] += 1;
 console.log('verify-decl-body-slicers — brace-balance body slicers in the TRACKED tree');
 console.log(`  tracked files read: ${tracked.filter((f) => EXTS.has(extname(f))).length}`);
 console.log(`  population (compares against both braces): ${verdicts.size}`);
-for (const [v, n] of Object.entries(counts).sort((a, b) => b[1] - a[1])) {
-  console.log(`      ${v.padEnd(10)} ${n}`);
+// Every class prints, INCLUDING at 0. Under the old object-keyed loop an empty class printed no row
+// at all — `unit-489markedrekey` §3's REFUSED check, which turned out to be the subject's property
+// rather than that reader's bug — so a class that had just been emptied by a key change could not be
+// told apart from one that was never wired. Live-unobservable today (no class is empty), which is
+// why it ships with a cripple: a branch whose only observable state requires a cripple has no other
+// grader.
+for (const v of LABELS) {
+  console.log(`      ${v.padEnd(10)} ${counts[v]}`);
 }
 console.log(`  baseline entries: ${baseline.length}`);
 
