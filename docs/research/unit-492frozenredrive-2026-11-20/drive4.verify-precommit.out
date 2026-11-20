@@ -1,0 +1,44 @@
+=== R1: scripts/ and packages/ delta since the prereg parent ===
+  (empty — scripts/ and packages/ untouched by this unit)
+
+=== R1: every path this unit changed ===
+ .../PRE-REGISTRATION.md                            | 131 +++++++++++++++++++++
+ 1 file changed, 131 insertions(+)
+
+=== working tree (uncommitted) ===
+?? docs/research/unit-492frozenredrive-2026-11-20/RESULTS.md
+?? docs/research/unit-492frozenredrive-2026-11-20/arm-frozenredrive.mjs
+?? docs/research/unit-492frozenredrive-2026-11-20/drive0.census.err
+?? docs/research/unit-492frozenredrive-2026-11-20/drive0.census.out
+?? docs/research/unit-492frozenredrive-2026-11-20/drive1.redrive-coedit.out
+?? docs/research/unit-492frozenredrive-2026-11-20/drive2.window-sweep.out
+?? docs/research/unit-492frozenredrive-2026-11-20/drive3.verdictblock-files.out
+?? docs/research/unit-492frozenredrive-2026-11-20/drive4.verify-precommit.out
+?? docs/research/unit-492frozenredrive-2026-11-20/posthoc-redrive-coedit.mjs
+?? docs/research/unit-492frozenredrive-2026-11-20/posthoc-window-sweep.mjs
+?? docs/research/unit-492frozenredrive-2026-11-20/verify.mjs
+
+=== R2: packages/ touched? (if empty, `npm test` is not claimed) ===
+  (empty — not claimed)
+
+=== R5: marker declarations added — three readings, none hand-adjusted ===
+  (a) literal on any added diff line:           1
+      This reads 1, and the 1 is PRE-REGISTRATION.md's own R5 sentence, which has to NAME the
+      token in order to forbid it. A restraint phrased with the name of the thing it forbids
+      is tripped by its own phrasing. Recorded as a finding (RESULTS §7), not re-keyed to 0.
+        +- **R5** — no marker declaration (`brace-slicer-deliberate:`) is added to any file in this unit.
+  (b) added lines in files the gate SCANS:      0
+      This is the reading R5 MEANT. EXTS = {.ts,.mts,.js,.mjs,.cts,.cjs,.tsx}; .md and .sh are never
+      read, so prose and shell cannot add a false member to the 16-file disclosure list.
+  (c) this unit's gate-visible files: 0 tracked, 0 carrying the token
+
+=== deliverables present ===
+docs/research/unit-492frozenredrive-2026-11-20/PRE-REGISTRATION.md
+
+=== commits on origin/main ===
+7340acf5 prereg(unit-492frozenredrive): the frozen-instrument blocker three seats deferred on is a measurement, not a policy call -- six predictions, the base-rate limit declared up front, and P2's zero is vacuous without P3's known positive
+4c90754c mail(Janus (DinP)): janus-to-calliope-live-activity-record-question-2026-11-20
+6d0a4416 mail+coord+log: 11/20 WORK fire -- both the original pin (58 to 3) and the widened fusion direction (65 to 3) reproduce under my own fresh drive on each side of Daedalus's unit-491 cure, landed mid-fire; original direction closed, widened direction held open rather than unilaterally edited
+82ee6ff5 coord+log: 11/20 WORK fire -- the label-substring pin is independently reproduced on a fresh drive (58 and 65, both figures confirmed under my own key) rather than taken on either seat's quoted word, and the cure stays Daedalus's to build via unit-491
+11570fd8 coord+log(unit-491partitionbuild): 11/20 WORK fire -- the two-seat format decision is closed and built on Theseus's spelling, my count-first condition is withdrawn because it was measured, and my own variant relocates the other fusion direction
+e2e03461 results(unit-491partitionbuild): 8 of 9 HIT, and the refutation is that my own variant relocates the count-first fusion from 65 to 3

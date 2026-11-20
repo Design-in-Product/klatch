@@ -1,0 +1,86 @@
+unit-492 frozen-instrument re-drive census — git log only, never mtime
+  tracked files under docs/research/: 3685
+  unit directories (any tracked file):   238
+  |P| instrumented (>=1 tracked *.out):  190
+  excluded (no .out artefact, re-drive undefined): 48
+  commits touching docs/research/ (no-merges): 1081
+
+== LENIENT window {first, first+1} ==
+  FROZEN     181  95.3%
+  EDITED       8  (outside-window touch, no .out rewritten)
+  REDRIVEN     1  (M on an existing .out outside the window)
+  APPENDED     0  (A on a new .out outside the window)
+  gap(max outside date - first) over the 9 non-frozen: median 2d · <=2d 5/9 (55.6%) · max 17d
+
+== STRICT window {first} ==
+  FROZEN     162  85.3%
+  EDITED      25  (outside-window touch, no .out rewritten)
+  REDRIVEN     3  (M on an existing .out outside the window)
+  APPENDED     2  (A on a new .out outside the window)
+  gap(max outside date - first) over the 28 non-frozen: median 1d · <=2d 24/28 (85.7%) · max 17d
+
+== P3 known positive: M-on-.out with NO window restriction ==
+  hits: 48
+    2026-11-19 857e4bd1 docs/research/unit-486markerstale-2026-11-19/drive4.sweep.out
+    2026-11-18 cd05c15c docs/research/unit-475arrowrefusal-2026-11-18/drive10.npm-test-clean.out
+    2026-11-18 cd05c15c docs/research/unit-475arrowrefusal-2026-11-18/drive9.sweep-clean.out
+    2026-10-28 8e212c20 docs/research/unit-307c4-rekey-2026-10-28/gate-sweep-full-3.out
+    2026-10-25 9ca2b261 docs/research/round454-instruments/drive10.probe-sweep-after-the-repin.out
+    2026-10-25 2e23293a docs/research/round448-instruments/drive6.legonly-crippled.out
+    2026-10-25 2e23293a docs/research/round448-instruments/drive7.blindpin-crippled.out
+    2026-10-25 2e23293a docs/research/round448-instruments/drive8.inert-name.out
+    2026-10-25 2e23293a docs/research/round448-instruments/drive9.cripple-grading.out
+    2026-10-22 0332a688 docs/research/round436-instruments/his-round435-postcure.out
+    2026-10-22 0332a688 docs/research/round436-instruments/round430-gate-postcure.out
+    2026-10-22 625eaff0 docs/research/round438-instruments/his-round437-postcure.out
+    … 36 more
+
+== P4 the two instruments holding all 8 readers ==
+  docs/research/unit-479braceslicekeys-2026-11-18
+     in P: yes · first=2026-11-18
+     lenient=FROZEN (outside commits 0) · strict=FROZEN (outside 0)
+  docs/research/unit-487markerreport-2026-11-19
+     in P: yes · first=2026-11-19
+     lenient=FROZEN (outside commits 0) · strict=FROZEN (outside 0)
+
+== P6 verdict-row block (all three labels as row-shaped lines) ==
+  files: 30
+  unit directories: 10
+    docs/research/unit-470bodyslice-2026-11-17
+    docs/research/unit-479braceslicekeys-2026-11-18
+    docs/research/unit-480guardorder-2026-11-18
+    docs/research/unit-482floorceiling-2026-11-19
+    docs/research/unit-484popnarrow-2026-11-19
+    docs/research/unit-486markerstale-2026-11-19
+    docs/research/unit-487markerreport-2026-11-19
+    docs/research/unit-489markedrekey-2026-11-20
+    docs/research/unit-490partitionformat-2026-11-20
+    docs/research/unit-491partitionbuild-2026-11-20
+
+== non-frozen units, named (lenient) ==
+  EDITED   gap= 17d  docs/research/round397-instruments
+      2026-11-01 cb91d048  M:grade-the-anchor-that-is-not-guarded.mjs M:probe-the-anchor-that-is-not-guarded.mjs
+  EDITED   gap=  3d  docs/research/round413-instruments
+      2026-10-21 8f412aaa  M:attack-g7-and-grade-the-branch-layer.mjs
+      2026-10-21 04c25e6d  M:attack-g7-and-grade-the-branch-layer.mjs
+  EDITED   gap=  3d  docs/research/round414-instruments
+      2026-10-21 eddaacfd  M:grade-the-refusing-half-and-reconcile-the-ten.mjs
+  REDRIVEN gap=  2d  docs/research/round421-instruments
+      2026-10-21 d6f002ac  M:scope-label-legs-are-a-class-of-three.mjs M:scope-label-legs-are-a-class-of-three.out
+  EDITED   gap=  2d  docs/research/round450-instruments
+      2026-10-26 ef487c70  M:grade-the-row-guards.mjs
+      2026-10-26 c1291f07  M:grade-the-row-guards.mjs
+  EDITED   gap=  2d  docs/research/round451-instruments
+      2026-10-26 c1291f07  M:settle-the-subset-question-on-real-exemplars.mjs
+  EDITED   gap=  2d  docs/research/round464-instruments
+      2026-10-29 2cf37348  M:grade-the-stop-condition.mjs
+      2026-10-29 969beec8  M:grade-the-stop-condition.mjs
+      2026-10-29 bee9a977  M:grade-the-stop-condition.mjs
+      2026-10-29 69cf9167  M:grade-the-stop-condition.mjs
+  EDITED   gap=  2d  docs/research/unit-464prec-2026-11-03
+      2026-11-05 c19d22b0  M:grade-entry-v15.mjs
+      2026-11-05 8fcf3f00  M:grade-entry-v15.mjs
+      2026-11-05 b785c227  M:grade-entry-v15.mjs
+      2026-11-05 5ada0e73  M:grade-entry-v15.mjs
+  EDITED   gap= 15d  docs/research/unit-464t2-surface-2026-10-28
+      2026-11-12 c54d2af1  M:README.md

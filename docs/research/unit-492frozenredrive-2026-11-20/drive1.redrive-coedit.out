@@ -1,0 +1,76 @@
+======== LENIENT {first, first+1} ========
+-- REDRIVEN units: 1
+   docs/research/round421-instruments  (first 2026-10-19)
+      2026-10-21 (+2d) d6f002ac CO-EDITED
+         .out rewritten:   scope-label-legs-are-a-class-of-three.out
+         instrument edited same commit: scope-label-legs-are-a-class-of-three.mjs
+   re-drive commits CO-EDITED: 1 · OUTPUT-ONLY: 0
+
+-- EDITED-not-redriven units: 8
+   gap= 17d commits=1  docs/research/round397-instruments
+   gap=  3d commits=2  docs/research/round413-instruments
+   gap=  3d commits=1  docs/research/round414-instruments
+   gap=  2d commits=2  docs/research/round450-instruments
+   gap=  2d commits=1  docs/research/round451-instruments
+   gap=  2d commits=4  docs/research/round464-instruments
+   gap=  2d commits=4  docs/research/unit-464prec-2026-11-03
+   gap= 15d commits=1  docs/research/unit-464t2-surface-2026-10-28
+
+======== STRICT {first} ========
+-- REDRIVEN units: 3
+   docs/research/round421-instruments  (first 2026-10-19)
+      2026-10-21 (+2d) d6f002ac CO-EDITED
+         .out rewritten:   scope-label-legs-are-a-class-of-three.out
+         instrument edited same commit: scope-label-legs-are-a-class-of-three.mjs
+      2026-10-20 (+1d) 513f6409 CO-EDITED
+         .out rewritten:   scope-label-legs-are-a-class-of-three.out
+         instrument edited same commit: scope-label-legs-are-a-class-of-three.mjs
+      2026-10-20 (+1d) 6224ff56 CO-EDITED
+         .out rewritten:   scope-label-legs-are-a-class-of-three.out
+         instrument edited same commit: scope-label-legs-are-a-class-of-three.mjs
+      2026-10-20 (+1d) 70e89cf6 CO-EDITED
+         .out rewritten:   grade-the-420-repair.out
+         instrument edited same commit: grade-the-420-repair.mjs
+   docs/research/round425-instruments  (first 2026-10-20)
+      2026-10-21 (+1d) 2b6e680a CO-EDITED
+         .out rewritten:   position-vs-property-confusion-matrix.out
+         instrument edited same commit: position-vs-property-confusion-matrix.mjs
+      2026-10-21 (+1d) b5619e2b OUTPUT-ONLY
+         .out rewritten:   a-crash-cannot-print-separates.out
+         instrument edited same commit: (none)
+      2026-10-21 (+1d) c996d84a CO-EDITED
+         .out rewritten:   position-vs-property-confusion-matrix.out
+         instrument edited same commit: a-crash-cannot-print-separates.mjs position-vs-property-confusion-matrix.mjs
+   docs/research/round448-instruments  (first 2026-10-24)
+      2026-10-25 (+1d) 2e23293a CO-EDITED
+         .out rewritten:   drive6.legonly-crippled.out drive7.blindpin-crippled.out drive8.inert-name.out drive9.cripple-grading.out
+         instrument edited same commit: record-cripples.mjs
+   re-drive commits CO-EDITED: 7 · OUTPUT-ONLY: 1
+
+-- EDITED-not-redriven units: 25
+   gap=  1d commits=1  docs/research/round391-instruments
+   gap=  1d commits=1  docs/research/round392-instruments
+   gap=  1d commits=1  docs/research/round393-instruments
+   gap=  1d commits=1  docs/research/round396-instruments
+   gap= 17d commits=1  docs/research/round397-instruments
+   gap=  3d commits=2  docs/research/round413-instruments
+   gap=  3d commits=1  docs/research/round414-instruments
+   gap=  1d commits=4  docs/research/round430-instruments
+   gap=  1d commits=1  docs/research/round443-instruments
+   gap=  1d commits=1  docs/research/round444-instruments
+   gap=  1d commits=1  docs/research/round446-instruments
+   gap=  1d commits=1  docs/research/round449-instruments
+   gap=  2d commits=2  docs/research/round450-instruments
+   gap=  2d commits=1  docs/research/round451-instruments
+   gap=  1d commits=1  docs/research/round455-instruments
+   gap=  1d commits=2  docs/research/round456-instruments
+   gap=  1d commits=2  docs/research/round457-instruments
+   gap=  1d commits=1  docs/research/round462-instruments
+   gap=  2d commits=6  docs/research/round464-instruments
+   gap=  1d commits=1  docs/research/unit-464mapkey-2026-10-30
+   gap=  2d commits=4  docs/research/unit-464prec-2026-11-03
+   gap=  1d commits=1  docs/research/unit-464t2-population-2026-10-28
+   gap= 15d commits=1  docs/research/unit-464t2-surface-2026-10-28
+   gap=  1d commits=1  docs/research/unit-465chainfloor-2026-11-13
+   gap=  1d commits=1  docs/research/unit-465walcell-2026-11-06
+

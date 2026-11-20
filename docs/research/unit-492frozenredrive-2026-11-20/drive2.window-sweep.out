@@ -1,0 +1,35 @@
+unit-492 post-hoc: window-length sweep — is P2's refutation the corpus's, or my window's?
+  today (date-read): 2026-11-20 · |P| = 190
+
+   W  REDRIVEN  EDITED  FROZEN   (W = authoring window length in calendar days)
+   1         3      25     162
+   2         1       8     181
+   3         0       4     186
+   4         0       2     188
+   5         0       2     188
+   6         0       2     188
+   7         0       2     188
+   8         0       2     188
+   9         0       2     188
+  10         0       2     188
+  11         0       2     188
+  12         0       2     188
+  13         0       2     188
+  14         0       2     188
+
+  REDRIVEN first reaches 0 at W=3; stays 0 for all larger W: YES
+  DISCRIMINATOR — at W=3, EDITED is 4 (not 0), so the window is not
+  merely swallowing every post-window event: non-redrive revisits survive it.
+
+== age of the two instruments holding all 8 readers, as of today ==
+  docs/research/unit-479braceslicekeys-2026-11-18
+     first=2026-11-18 last=2026-11-18 · age today = 2d · own span = 0d
+  docs/research/unit-487markerreport-2026-11-19
+     first=2026-11-19 last=2026-11-19 · age today = 1d · own span = 0d
+
+== observed re-drive gap distribution (every M-on-.out, any window) ==
+  48 M-on-.out events total; gap-from-first histogram:
+    + 0d  ##################################### 37
+    + 1d  ########## 10
+    + 2d  # 1
+  max gap at which ANY .out has ever been rewritten: +2d
