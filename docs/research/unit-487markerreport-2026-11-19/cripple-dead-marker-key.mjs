@@ -46,7 +46,13 @@ if (!TRACKED_SRC.includes(KEY_LINE)) {
   console.error('  Expected: ' + KEY_LINE);
   process.exit(2);
 }
-const IMPORT_LINE = "import { blankLongStrings } from './lib/strip-source.mjs';";
+// **Re-pinned mid-fire, and the refusal is worth more than the pin.** This read
+// `import { blankLongStrings } from './lib/strip-source.mjs';` until the declared-vs-quoted cure
+// added `stripSource` to the same import. The cripple REFUSED with rc=2 — *"the strip-source import
+// is not present verbatim; relocation would fail"* — instead of relocating a file whose import it
+// could not rewrite and reporting whatever that produced. A cripple whose pinned literal goes stale
+// when its subject is repaired must fail LOUD; this one did, on the first drive after the change.
+const IMPORT_LINE = "import { blankLongStrings, stripSource } from './lib/strip-source.mjs';";
 if (!TRACKED_SRC.includes(IMPORT_LINE)) {
   console.error('BLOCKED — the strip-source import is not present verbatim; relocation would fail.');
   process.exit(2);
@@ -55,9 +61,16 @@ if (!TRACKED_SRC.includes(IMPORT_LINE)) {
 /** @param {string} replacement  the `const MARKER = …;` line to substitute, or null for control */
 function drive(name, replacement) {
   mkdirSync(SCRATCH, { recursive: true });
+  // **The named-import list is carried over, not retyped, and that is a defect this file shipped
+  // once.** The first spelling hard-coded `import { blankLongStrings } from …`, so when the gate
+  // gained a second named import the relocated copy lost it and every arm that reached
+  // `stripSource` died with a ReferenceError — CONTROL and (b) printed nothing, and four checks
+  // then scored PASS on `null === null`. A crashed arm must not be able to read green; see
+  // `NO_VACUOUS_PASS` below, which is the structural half of that repair.
+  const names = IMPORT_LINE.match(/^import\s*(\{[^}]*\})/)[1];
   let src = TRACKED_SRC.replace(
     IMPORT_LINE,
-    `import { blankLongStrings } from ${JSON.stringify(join(ROOT, 'scripts/lib/strip-source.mjs'))};`,
+    `import ${names} from ${JSON.stringify(join(ROOT, 'scripts/lib/strip-source.mjs'))};`,
   );
   if (replacement) src = src.replace(KEY_LINE, replacement);
   const copy = join(SCRATCH, 'crippled-gate.mjs');
@@ -85,7 +98,12 @@ function drive(name, replacement) {
     UNGUARDED: one(/^\s*UNGUARDED\s+(\d+)/m),
     deadFiles: one(/^\s*(\d+) tracked file\(s\), carrying/m),
     deadOcc: one(/carrying (\d+) marker occurrence\(s\)/),
-    liveOcc: one(/carry\s+(\d+) occurrence\(s\) that ARE load-bearing/),
+    // Re-pinned: the gate's wording became "declared occurrence(s)" with the declared-vs-quoted
+    // cure, and this reader went silently null. **A printed cell that reads null and is asserted by
+    // nothing is a dead reader**, which is why `liveOcc` is in the CONTROL assertions below now —
+    // it was the one cell in this table no check looked at, and it was the one cell that was wrong.
+    liveOcc: one(/carry\s+(\d+) declared occurrence\(s\) that ARE load-bearing/),
+    quotedOnly: one(/^\s*(\d+) tracked file\(s\) contain the marker token ONLY inside a string/m),
     out,
   };
 }
@@ -96,6 +114,30 @@ const live = drive('(b) MARKER matches every file', 'const MARKER = /^/;');
 
 const rows = [control, dead, live];
 console.log('cripple-dead-marker-key — two-sided, on a relocated .scratch copy\n');
+
+/**
+ * **NO_VACUOUS_PASS — every arm must have RUN before any of its cells is compared.**
+ *
+ * Added after this file crashed all three arms on one drive (a dropped named import) and the
+ * equality checks below scored 6 of 15 PASS, of which four were `null === null`. A crash upstream
+ * makes an arm read whatever the comparison's identity case happens to say, and a null-vs-null
+ * equality says PASS. **Following the reds would have missed the vacuous greens**: the four reds
+ * named a figure, and the four greens named nothing.
+ *
+ * The population and tracked-read cells are the right witnesses because every arm must produce
+ * them: the cripples target the MARKER key, which is downstream of both.
+ */
+const ranAtAll = (r) => r.trackedRead !== null && r.population !== null;
+const crashed = rows.filter((r) => !ranAtAll(r));
+if (crashed.length) {
+  console.error(`\nBLOCKED — ${crashed.length} of ${rows.length} arm(s) produced no figures at all,`
+    + ' so no cell below is gradeable. A crashed arm is not a measurement:');
+  for (const r of crashed) {
+    console.error(`      ${r.name}  rc=${r.rc}`);
+    console.error(`        ${(r.out || '').trim().split('\n').slice(-3).join('\n        ')}`);
+  }
+  process.exit(2);
+}
 for (const r of rows) {
   console.log(`  ${r.name}`);
   console.log(`      rc=${r.rc} · trackedRead=${r.trackedRead} · population=${r.population}`
@@ -115,10 +157,18 @@ const tracked4 = {
   MARKED: lg(/^\s*MARKED\s+(\d+)/m),
   deadFiles: lg(/^\s*(\d+) tracked file\(s\), carrying/m),
   deadOcc: lg(/carrying (\d+) marker occurrence\(s\)/),
+  liveOcc: lg(/carry\s+(\d+) declared occurrence\(s\) that ARE load-bearing/),
+  quotedOnly: lg(/^\s*(\d+) tracked file\(s\) contain the marker token ONLY inside a string/m),
 };
 eq('CONTROL rc is the tracked gate\'s rc', control.rc, liveGate.status);
 for (const k of Object.keys(tracked4)) {
   eq(`CONTROL ${k} reproduces the tracked gate`, control[k], tracked4[k]);
+}
+// Every CONTROL cell this table prints must be non-null. The `liveOcc` reader was stale for one
+// drive and no check noticed, because the only cells under assertion were the ones that were right.
+for (const [k, v] of Object.entries(control)) {
+  if (k === 'name' || k === 'out') continue;
+  checks.push([`CONTROL cell \`${k}\` is readable at all (not a dead reader)`, v !== null, `got ${v}`]);
 }
 
 // (a) the key is what produces the report: kill it and BOTH marker classes empty.

@@ -59,7 +59,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { join, dirname, resolve, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
-import { blankLongStrings } from './lib/strip-source.mjs';
+import { blankLongStrings, stripSource } from './lib/strip-source.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(HERE, '..');
@@ -142,6 +142,53 @@ const verdicts = new Map();
 // already decided, rather than in a second pass with a second reading of the tree.
 const deadMarkers = [];
 let liveMarkerOccurrences = 0;
+// Files whose ONLY occurrence of the marker token is QUOTED INSIDE A STRING — a fixture, never an
+// exemption. Kept as its own list rather than folded into `deadMarkers`, because the two are
+// different statements about the author's intent and the report is read by the next seat.
+const quotedOnly = [];
+
+/**
+ * **DECLARED markers only — occurrences inside a COMMENT, which is what requirement 3 means.**
+ *
+ * Found by this unit's own first build commit: the pre-commit hook reported 15 dead-marker files
+ * where the arm had measured 14, and the 15th was this unit's own cripple, which carries the string
+ * `"const MARKER = /brace-slicer-deliberate:…/;"` as a FIXTURE so it can assert the gate's key line
+ * is present verbatim. `MARKER.test(raw)` — read from raw text — cannot tell a declared exemption
+ * from a quoted one. **This is the same over-admission mechanism `unit-484popnarrow` cured in the
+ * POPULATION key hours earlier** (8 of 73 members were in only because a fixture string contained a
+ * whole comparison), arriving by a different door.
+ *
+ * It cannot be cured the same way, and the reason is structural: a marker lives in a comment, and
+ * every reading `lib/strip-source.mjs` exports blanks comments. Reading from raw is the only reading
+ * under which this key can match at all. So the discrimination is done by DIFFERENCE between the two
+ * existing readings instead — no third scanner, for Round 258's reason:
+ *
+ *   - blanked in `stripSource(raw, false)` (strings KEPT, comments blanked) → it was a COMMENT
+ *     → **DECLARED.**
+ *   - survives there → it was in live code or a string literal → **not a declared exemption.**
+ *
+ * **Scope, and it is deliberately narrow.** This discriminator is applied to the DISCLOSURE below
+ * and NOT to the `MARKED` verdict key above, which still reads `MARKER.test(raw)` unchanged. The
+ * `MARKED` class is what GRANTS the exemption, so re-keying it changes exemption semantics, and that
+ * is the two-seat territory this fire was explicitly told not to move unilaterally. The change is
+ * specified and priced: `unit-487markerreport`'s `posthoc-declared-vs-quoted.mjs` measured all four
+ * current `MARKED` files as **4 declared, 0 quoted**, so applying it there moves **0 verdicts** —
+ * but a key change with zero measured movement still needs a KP proving the new reading can report a
+ * difference at all, and that KP set does not exist yet. Routed, not taken.
+ *
+ * Offsets across the two readings are only comparable because `stripSource` is LENGTH-PRESERVING.
+ * If it ever is not, this **fails toward disclosure** — the file stays in the report — rather than
+ * silently dropping a member.
+ */
+function declaredMarkerCount(raw) {
+  const kept = stripSource(raw, false);
+  if (kept.length !== raw.length) return (raw.match(MARKER_ALL) || []).length;
+  let n = 0;
+  for (const m of raw.matchAll(MARKER_ALL)) {
+    if (!kept.startsWith('brace-slicer-deliberate:', m.index)) n += 1;
+  }
+  return n;
+}
 for (const rel of tracked) {
   if (SELF.has(rel) || !EXTS.has(extname(rel))) continue;
   let raw;
@@ -214,8 +261,11 @@ for (const rel of tracked) {
     // nothing**, and before 2026-11-19 this `continue` was where the gate stopped being able to
     // see it. Reported below, not reddened: see the `REQUIREMENT 3 HAS NO STALENESS COUNTERPART`
     // block at the report.
-    const n = (raw.match(MARKER_ALL) || []).length;
-    if (n) deadMarkers.push([rel, n]);
+    if (MARKER.test(raw)) {
+      const n = declaredMarkerCount(raw);
+      if (n) deadMarkers.push([rel, n]);
+      else quotedOnly.push(rel);
+    }
     continue;
   }
 
@@ -264,7 +314,7 @@ for (const rel of tracked) {
   // moving a 68-member population's verdicts needs its own KP set and a baseline migration.
   if (MARKER.test(raw)) {
     verdicts.set(rel, 'MARKED');
-    liveMarkerOccurrences += (raw.match(MARKER_ALL) || []).length;
+    liveMarkerOccurrences += declaredMarkerCount(raw);
   }
   else if (LPAREN.test(code) && RPAREN.test(code) && COLON.test(code)) verdicts.set(rel, 'GUARDED');
   else verdicts.set(rel, 'UNGUARDED');
@@ -340,7 +390,15 @@ if (deadMarkers.length) {
     + ' staleness counterpart. Removing one is nobody\'s obligation and clears no red.');
   for (const [f, n] of deadMarkers) console.log(`      ${f}${n > 1 ? `  (${n} markers)` : ''}`);
   console.log(`  For contrast, the ${counts.MARKED || 0} file(s) in the \`MARKED\` row above carry`
-    + ` ${liveMarkerOccurrences} occurrence(s) that ARE load-bearing.`);
+    + ` ${liveMarkerOccurrences} declared occurrence(s) that ARE load-bearing.`);
+}
+if (quotedOnly.length) {
+  console.log(`\n  NOT A MARKER, and counted as one until this check existed:`);
+  console.log(`  ${quotedOnly.length} tracked file(s) contain the marker token ONLY inside a string`
+    + ' literal — a fixture quoting the key, not an exemption. Excluded from the figures above.'
+    + ' Every file that measures this gate has to quote its key, so the instrument is the author of'
+    + ' this class:');
+  for (const f of quotedOnly) console.log(`      ${f}`);
 }
 
 if (newOnes.length === 0 && stale.length === 0) {

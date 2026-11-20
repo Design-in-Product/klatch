@@ -1,0 +1,41 @@
+cripple-dead-marker-key — two-sided, on a relocated .scratch copy
+
+  CONTROL — relocated, uncrippled
+      rc=0 · trackedRead=1013 · population=65 · UNGUARDED=58 · MARKED=4 · GUARDED=3 · deadFiles=14 · deadOcc=14 · liveOcc=4
+  (a) MARKER never matches
+      rc=1 · trackedRead=1013 · population=65 · UNGUARDED=62 · MARKED=null · GUARDED=3 · deadFiles=null · deadOcc=null · liveOcc=null
+  (b) MARKER matches every file
+      rc=1 · trackedRead=1013 · population=65 · UNGUARDED=null · MARKED=65 · GUARDED=null · deadFiles=947 · deadOcc=947 · liveOcc=65
+
+  PASS  CONTROL rc is the tracked gate's rc
+  PASS  CONTROL population reproduces the tracked gate
+  PASS  CONTROL MARKED reproduces the tracked gate
+  PASS  CONTROL deadFiles reproduces the tracked gate
+  PASS  CONTROL deadOcc reproduces the tracked gate
+  PASS  CONTROL liveOcc reproduces the tracked gate
+  PASS  CONTROL quotedOnly reproduces the tracked gate
+  PASS  CONTROL cell `rc` is readable at all (not a dead reader)
+  PASS  CONTROL cell `trackedRead` is readable at all (not a dead reader)
+  PASS  CONTROL cell `population` is readable at all (not a dead reader)
+  PASS  CONTROL cell `MARKED` is readable at all (not a dead reader)
+  PASS  CONTROL cell `GUARDED` is readable at all (not a dead reader)
+  PASS  CONTROL cell `UNGUARDED` is readable at all (not a dead reader)
+  PASS  CONTROL cell `deadFiles` is readable at all (not a dead reader)
+  PASS  CONTROL cell `deadOcc` is readable at all (not a dead reader)
+  PASS  CONTROL cell `liveOcc` is readable at all (not a dead reader)
+  PASS  CONTROL cell `quotedOnly` is readable at all (not a dead reader)
+  PASS  (a) deadFiles
+  PASS  (a) MARKED
+  PASS  (a) population unchanged — the cripple hits the marker key, not membership
+  PASS  (a) the 4 former MARKED files land in the other two classes
+  PASS  (b) MARKED saturates to the whole population
+  PASS  (b) deadFiles = classifiable − population
+  PASS  (b) deadOcc = deadFiles (one match per file under `/^/` without `m`)
+  PASS  (b) UNGUARDED and GUARDED are emptied
+  PASS  (b) population unchanged
+  PASS  no two distinct printed cells of the CONTROL partition share a value by accident
+
+  27 of 27 checks passed.
+  classifiable = trackedRead(1013) − SELF-with-code-ext(1) = 1012; 1012 − population(65) = 947
+
+--- exit code read off the child process: rc=0 (signal=null) ---

@@ -1,0 +1,23 @@
+posthoc-label-substring — is any printed label a proper substring of another?
+
+  gate rc=0 (read off the child), 3 label-then-number row(s):
+      UNGUARDED    58
+      MARKED       4
+      GUARDED      3
+
+  Q2 — pairwise containment over 3 labels: 1 collision(s).
+      /GUARDED\s+(\d+)/ matches inside "UNGUARDED  58"
+        → an unanchored reader reports GUARDED=58; the true row is GUARDED=3.  MANUFACTURED MOVE: 3 → 58
+
+  PASS  Q1 the dead-marker disclosure is present in the gate output
+  PASS  Q1 its count is readable, number-first
+  PASS  Q1 it added NO new label-then-number row
+  PASS  Q1 no label-keyed reader can reach the dead-marker count at all (fails LOUD, not wrong)
+  PASS  Q2 the pre-existing partition DOES carry the defect (expected, uncured, reported)
+  PASS  Q2 the collision is exactly GUARDED inside UNGUARDED and nothing else
+
+  6 of 6 checks passed.
+
+  DECLARED LIMIT, with a count rather than a hedge: this leg censuses ONE printed partition — this gate's. Theseus routed the general shape to Argus as a candidate pin ("any reader keyed on a label from a printed partition where one label is a substring of another"). I have NOT censused the corpus's other printed partitions and am not claiming this is the only instance; 1 of 1 surfaces examined is the honest figure.
+
+--- exit code read off the child process: rc=0 (signal=null) ---
