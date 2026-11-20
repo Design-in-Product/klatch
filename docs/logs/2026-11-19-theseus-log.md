@@ -282,3 +282,147 @@ the wrapper owns delivery and logs the outcome.
 **Fire closed bounded** (Klatch is an approved exception to the platform drain baseline): day-part
 checklist done, the one routed decision taken through to a measured answer and an answered memo, one
 finding routed to Argus, the build left with Daedalus under a named blocker (R2), state written down.
+
+---
+
+## 19:47 — Session resumed (STOP fire) · model: Claude Opus 5
+
+**Day-part checklist.** Worktree synced by the wrapper; `git status` clean at open; `date` read
+**19:47:07 PST** (run, not estimated). Checkpoint for all deltas this fire: **`857e4bd1`**, this
+seat's last 11/19 WORK commit. HEAD at open **`82bf0057`** (Iris), `origin/main` identical.
+
+- **COORDINATION.md** read; this seat's section is *Theseus Prime*, last updated 11/19 ~14:47–14:5x
+  (the WORK fire above).
+- **Mail**, read by `git diff --name-status 857e4bd1..HEAD -- docs/mail/` rather than mtime:
+  **1 new, this seat primary** —
+  `daedalus-to-theseus-argus-…-the-report-is-built-and-your-5-markers-are-1-declared-and-4-quoted-and-the-limit-is-irreducible-2026-11-19.md`.
+  Read in full before any work. It takes the word this seat gave at WORK ("build it as a REPORT, not
+  a red"), lands the dead-marker disclosure in the gate, reproduces this seat's 18/4/14 exactly,
+  refines the §6 "5 markers" sentence to **1 declared + 4 quoted**, and **routes exactly one thing
+  here with a named blocker**: the `MARKED` re-key, *"priced at 0 verdict moves — but a key change
+  with zero measured movement still needs a KP proving the new reading can report a difference at
+  all, and that KP set does not exist."*
+- **Cross-pollination brief (11-19)** read in full from the private source
+  (`git -C designinproduct show origin/main:src/internal/briefs/2026-11-19-brief.md`; the copy here
+  is a pointer by design). Two insights; the first is Piper Morgan's **pre-commit hook that refuses
+  estimated timestamps** (~60 commits, 0 false refusals in five hours), the second is Klatch's own
+  `unit-480` cripple. The first is already this seat's practice (`date`-reads, run not estimated, in
+  every unit header) — noted as convergence, no action owed.
+
+**The work: `docs/research/unit-488markedkeykp-2026-11-19/` — 1 arm, 1 post-hoc KP, 5 drives, 7
+registered predictions, 7 HIT, 0 REFUTED.** A missing KP set is something this seat can build
+without anyone's ruling, so the named blocker was the work rather than a reason to defer. Pre-reg
+pushed **19:49:58, before the arm, the KP inputs or any drive existed** (`f46854cd`); arm + drives
+`847286a6`. `date`-reads 19:47:07 · 19:48:43 · 19:49:12 · 19:49:58 · 19:53:35 PST.
+
+**THE BLOCKER IS DISCHARGED, IN BOTH DIRECTIONS.** `KP2` (P + Q) moves `MARKED` → **`UNGUARDED`**:
+the new reading can report a difference. `KP1` (P + D) is `MARKED` under both keys — no declared
+exemption is lost. `KP3` is in the population and `MARKED` under neither. `KN-D`/`KN-Q` are out of
+the population under both, which is the vacuity guard. **`KP4` is POST-HOC and is the one that
+changes how the re-key should ship:** a quoted-only marker beside paren/colon comparisons moves
+`MARKED` → **`GUARDED`**, i.e. **changes column in silence** — exemption revoked, nothing said. So
+`KP2`'s direction is loud and `KP4`'s is not, and the memo asks for one line of report alongside the
+re-key rather than vetoing it.
+
+**No KP is hand-typed.** Every KP is assembled from **verbatim one-line slices out of named live
+tracked files**: `P` ← `round398-instruments/census-slice-from-a-refusable-index.mjs`, `D` ←
+`unit-470bodyslice/arm-bodyslice-a.mjs`, `Q` ← Daedalus's `unit-487` cripple, `G` ←
+`round401-instruments/census-the-branch-polarity-axis.mjs` (the file `unit-480` §3 argues is
+*correctly* GUARDED). `P` is selected by a **stated rule** — first population member whose two
+candidate lines carry no paren/colon comparison — so `KP2` lands in the reddening direction by
+construction, not by luck. `MARKER`, `MARKER_ALL`, `declaredMarkerCount` (a 1,764-byte verbatim
+span), `cmp`, all five character keys, the population reading `blankLongStrings(raw, 2)` and **all
+four verdict branch lines** are sliced out of the gate and re-materialised beside the real
+`lib/strip-source.mjs`. Capture failure is `rc=3`, never a fallback literal.
+
+**HIS 4-OF-4 REPRODUCES, AND THE NUMBER UNDER IT IS BETTER THAN THE PRICE.** LIVE LEG 1: **4
+in-population `MARKED`, 4 DECLARED, 0 quoted-only** — the re-key moves **0 verdicts** today, measured
+under a reader written in this seat rather than taken on his word. LIVE LEG 2, which neither of us
+had: **4 of 4** of those files fall through to **`UNGUARDED`** if their marker stops counting and
+**none of the four is baselined** — so each would **redden the gate**. No live `MARKED` file's
+exemption is decorative, which bounds the open frozen-instrument question to the 16-file disclosure
+list and never to the `MARKED` column.
+
+**DRIVE 1 REFUSED, AND THE REFUSAL IS THE FINDING.** `rc=3`, `capture ambiguous: MARKER appears more
+than once in the gate`. The anchor was `const MARKER = /brace-slicer-deliberate:` and the gate holds
+it **twice** — the declaration, and `declaredMarkerCount`'s own docblock quoting the line it
+explains. **That is Daedalus's §4 irreducible limit one layer further out**: a docblock quoting a
+declaration cannot be told from the declaration. The cure available here is the one unavailable to
+his key — anchor on the whole declaration **including its terminator**, which the prose copy elides
+to `…/;`. His key has no terminator to anchor on, because the terminator of a marker is prose.
+**Drive 2** then crashed inside `strip-source.mjs`'s own refusal (`blankLongStrings: got a number`):
+LIVE LEG 1 built rows as `[rel, declaredCount]` and LIVE LEG 2 read element 2 as `raw`. A reader that
+coerced would have graded leg 2 off a digit string. Both drives kept, not discarded.
+
+### Drift this unit put into its own subject, named not absorbed
+
+Committing the arm moved the gate's disclosure **15 files / 17 occurrences → 16 / 18**. The 16th is
+`arm-markedkeykp.mjs`, in for **one DECLARED occurrence — the comment explaining why drive 1
+refused.** Not defensive, not a fixture: a comment *about* the convention. **That is the second
+independent instance of his §4 mechanism** (*"the defensive author and the documenting author produce
+the same bytes"*) — his own was authored by the seat that wrote the claim; this one by the other seat,
+in a different unit, within four hours, while trying to *describe* the limit. The quoted-only class
+stayed at **1**. His §5 drift cure holds on this seat's new file: **population flat at 65**,
+`UNGUARDED 58 · MARKED 4 · GUARDED 3`, baseline 58, across `tracked files read` **1014 → 1015**.
+
+### Gate and sweep, verified this fire (not recalled)
+
+Pre-commit ran on **all three** pushes — **CENSUS OK** (45 swept / 110 deferred) and **DECL-BODY
+SLICERS OK** each time, rc=0; the last read `tracked 1015 · population 65 · UNGUARDED 58 · MARKED 4
+· GUARDED 3 · baseline 58`. **Sweep driven fresh this fire** from a clean `scripts/`, finished
+19:58:2x PST: `SWEEP PASSED — 45 of 45 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran
+but did not finish), 0 census problem(s), 110 deferred` (`drive5.sweep.out`), driven **after** the arm
+commit rather than from a dirty tree (`unit-484` §7 applied here).
+
+**R1 and R2 verified mechanically, not asserted:** `git diff --name-only 82bf0057..HEAD -- scripts`
+is **empty** — not one marker removed from any file and the gate not edited.
+`git status --porcelain scripts packages` **empty** at close, so `npm test` is **not** claimed:
+both trees are untouched by construction.
+
+### Session wrap verification (required before any "done" claim)
+
+**Step 1 — commits landed.** `git log origin/main --oneline -5`, run this fire:
+
+```
+01a564be results+mail(unit-488markedkeykp): the KP set the MARKED re-key was blocked on exists and reports the difference in both directions
+847286a6 arm(unit-488markedkeykp): the KP set exists and reports a difference -- KP2 moves MARKED -> UNGUARDED, and all 4 live MARKED files would redden rather than reclassify
+f46854cd pre-reg(unit-488markedkeykp): build the KP set the MARKED re-key is blocked on -- the KPs are assembled from captured spans, not hand-typed
+82bf0057 coord+log: 11/19 STOP fire -- no-op on product, 46 commits read and attributed, rollup re-read at v187 (needs-you 8->9), sweep re-driven clean 45/45 after one background-limit retry
+4441a42f coord+log: 11/19 STOP fire -- mail triage only, a label-substring reader-defect pin is named mine and deferred to a dedicated fire, gate and sweep both re-driven fresh and clean
+```
+
+All three of this fire's commits are on `origin/main` (this worktree's push target per the seat
+convention; the stale `origin/claude/theseus-cycle` ref dates to 2026-08 and is not the target).
+
+**Step 2 — deliverable files present** (`ls`, this fire):
+
+```
+docs/research/unit-488markedkeykp-2026-11-19/PRE-REGISTRATION.md
+docs/research/unit-488markedkeykp-2026-11-19/RESULTS.md
+docs/research/unit-488markedkeykp-2026-11-19/arm-markedkeykp.mjs
+docs/research/unit-488markedkeykp-2026-11-19/drive1.arm.out|.err   (KEPT — the ambiguous-anchor refusal)
+docs/research/unit-488markedkeykp-2026-11-19/drive2.arm.out|.err   (KEPT — the row-shape crash)
+docs/research/unit-488markedkeykp-2026-11-19/drive3.arm.out|.err   (the registered grading, 7 HIT)
+docs/research/unit-488markedkeykp-2026-11-19/drive4.arm-posthoc.out|.err
+docs/research/unit-488markedkeykp-2026-11-19/drive5.sweep.out
+docs/logs/2026-11-19-theseus-log.md
+docs/mail/theseus-to-daedalus-argus-cc-xian-janus-calliope-iris-the-kp-set-exists-and-both-directions-are-held-and-your-irreducible-limit-caught-my-capture-anchor-2026-11-19.md
+```
+
+**Step 3 — this log is pushed last**, after Steps 1 and 2 were run. Nothing is claimed delivered:
+the wrapper owns delivery and logs the outcome.
+
+**Mail close-discipline:** Daedalus's inbound memo stays in `docs/mail/` rather than moving to
+`read/`. The thread has an **open action** — the `MARKED` re-key is two-seat and his half is
+outstanding — and open threads stay visible by the convention.
+
+**Drain:** mail delta read (1 new, this seat primary, answered in the same fire); the single routed
+item taken by **building the thing its blocker named** rather than deferring it, with both failure
+directions held by a KP; one measurement (4-of-4 would redden) produced that neither seat had; the
+re-key itself left **not taken** because it is two-seat territory — **a named blocker, not a
+priority**; Argus's label-substring pin left his, with two further reproduction surfaces offered. No
+deferral without a named blocker.
+
+**Fire closed bounded** (Klatch is an approved exception to the platform drain baseline): day-part
+checklist done, the routed blocker discharged by measurement, the memo filed, the drift this unit put
+into its own subject named rather than absorbed, state written down.

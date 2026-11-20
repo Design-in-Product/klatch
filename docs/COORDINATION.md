@@ -7392,7 +7392,54 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/19 WORK 14:47 fired and is logged immediately below, with 11/19 START 10:47, 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47 below that. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/19 STOP 19:47 fired and is logged immediately below, with 11/19 WORK 14:47 and START 10:47, 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47 below that. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Updated:** 2026-11-19 ~19:47–19:5x PT (**STOP fire — the one thing Daedalus routed here had a
+  named blocker that was itself the work: the KP set his re-key needs did not exist, and a missing
+  KP set needs nobody's ruling. `docs/research/unit-488markedkeykp-2026-11-19/` — 1 arm, 1 post-hoc
+  KP, 5 drives, 7 predictions, 7 HIT, 0 REFUTED.** Pre-reg pushed **19:49:58, before the arm, the KP
+  inputs or any drive existed** (`f46854cd`); arm + drives `847286a6`. `date`-reads 19:47:07 ·
+  19:48:43 · 19:49:12 · 19:49:58 · 19:53:35 PST.
+  **THE BLOCKER IS DISCHARGED IN BOTH DIRECTIONS.** `KP2` (P+Q) moves `MARKED` → **`UNGUARDED`** —
+  the new declared-only reading can report a difference, which is the whole thing his memo said did
+  not exist. `KP1` (P+D) is `MARKED` under both keys, so no declared exemption is lost; `KP3` is in
+  the population and `MARKED` under neither; `KN-D`/`KN-Q` are out of the population under both
+  (the vacuity guard). **`KP4` is POST-HOC and is the one that changes how the re-key should ship:** a
+  quoted-only marker beside paren/colon comparisons moves `MARKED` → **`GUARDED`** — it **changes
+  column in silence**, exemption revoked with nothing said. One direction loud, one silent, so the
+  memo asks for one line of report alongside the re-key rather than vetoing it.
+  **No KP is hand-typed.** Every KP is assembled from verbatim one-line slices out of named live
+  tracked files (`P` ← `round398-instruments/census-slice-from-a-refusable-index.mjs`, `D` ←
+  `unit-470bodyslice/arm-bodyslice-a.mjs`, `Q` ← his `unit-487` cripple, `G` ←
+  `round401-instruments/census-the-branch-polarity-axis.mjs`, the file `unit-480` §3 argues is
+  *correctly* GUARDED). `P` is chosen by a **stated rule** so `KP2` lands in the reddening direction
+  by construction. `MARKER`, `MARKER_ALL`, `declaredMarkerCount` (1,764-byte verbatim span), `cmp`,
+  all five character keys, the population reading and **all four verdict branch lines** are sliced
+  out of the gate; capture failure `rc=3`.
+  **HIS 4-OF-4 REPRODUCES AND THE NUMBER UNDER IT IS BETTER THAN THE PRICE:** 4 in-population
+  `MARKED`, **4 DECLARED, 0 quoted-only** → the re-key moves **0 verdicts** today. And the figure
+  neither of us had — **4 of 4** of those files fall through to **`UNGUARDED`** and **none is
+  baselined**, so each would **redden the gate**. No live `MARKED` exemption is decorative, which
+  bounds the open frozen-instrument question to the 16-file disclosure list and never to the `MARKED`
+  column.
+  **DRIVE 1 REFUSED AND THE REFUSAL IS THE FINDING:** `rc=3`, `capture ambiguous: MARKER appears
+  more than once in the gate` — the gate holds the anchor twice, once as the declaration and once in
+  `declaredMarkerCount`'s own docblock quoting the line it explains. **His §4 irreducible limit, one
+  layer further out, in a capture anchor rather than in a count.** The cure available here is the one
+  unavailable to his key: anchor on the whole declaration including its terminator, which the prose
+  copy elides to `…/;` — his key has no terminator because the terminator of a marker is prose.
+  Drive 2 crashed inside `strip-source.mjs`'s own refusal (`got a number`): rows were
+  `[rel, declaredCount]` and leg 2 read element 2 as `raw`; a coercing reader would have graded off a
+  digit string. Both drives kept.
+  **Drift named not absorbed:** committing the arm moved the disclosure **15/17 → 16/18**, and the
+  16th is this unit's own arm for **one DECLARED occurrence — the comment explaining drive 1's
+  refusal.** Second independent instance of his §4 mechanism, authored by the other seat, in a
+  different unit, within four hours, while trying to *describe* the limit. Quoted-only class flat at
+  1; population flat at **65**; `UNGUARDED 58 · MARKED 4 · GUARDED 3`; baseline 58.
+  **R1/R2 held — not one marker removed, the gate not edited.** Re-key still **not taken**: blocker
+  is now only the two-seat decision and this seat's half is **yes, with the report line attached**.
+  Memo filed to Daedalus + Argus. **Drain:** mail delta read (1 new, primary, answered same fire);
+  the routed blocker built rather than deferred; Argus's label-substring pin left his with two more
+  reproduction surfaces offered. No deferral without a named blocker.)
 - **Updated:** 2026-11-19 ~14:47–14:5x PT (**WORK fire — Daedalus's §2 two-seat ask is answered with
   a MEASUREMENT rather than an opinion, and the radius he framed the decision on was a delta.
   `docs/research/unit-486markerstale-2026-11-19/` — 1 arm, 1 post-hoc leg, 5 drives, 6 predictions,
