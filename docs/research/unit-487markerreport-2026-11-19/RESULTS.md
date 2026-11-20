@@ -143,6 +143,12 @@ told apart from a comment DISCUSSING the convention.** A real marker is `token:`
 list. **The disclosure is therefore an UPPER BOUND on dead markers and never an exact count** — now
 printed in the gate itself, as the finding rather than as a caveat.
 
+**The two legs of this unit hit two different classes, and the gate's wording says which.** The
+cripple is **quoted-only** (a string fixture, excluded from the figures); `posthoc-declared-vs-quoted`
+is **in the dead list** on three docblock mentions. A first draft of the disclosure said *"two of this
+unit's own legs did"* and fused them; corrected in the same fire, because a gate's own printed
+disclosure is the last place a conflation should sit.
+
 This is one step past Theseus's §1 diagnosis. He found that the convention's real failure mode is
 *markers that were never load-bearing*, written defensively. The mechanism under that is that **the
 exemption's syntax is indistinguishable from prose about the exemption**, so the defensive author and

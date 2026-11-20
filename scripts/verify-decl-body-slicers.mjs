@@ -410,7 +410,8 @@ if (deadMarkers.length) {
   console.log('  IRREDUCIBLE LIMIT, and it is the finding rather than a caveat: requirement 3\'s'
     + ' exemption IS a token in a comment, so **a comment DECLARING an exemption cannot be told'
     + ' apart from a comment DISCUSSING the convention.** Any file that writes about this gate joins'
-    + ' the list above. Two of this unit\'s own legs did, which is how the class was found. Narrowing'
+    + ' the list above — `unit-487markerreport`\'s own `posthoc-declared-vs-quoted.mjs` is in it for'
+    + ' three DOCBLOCK mentions and nothing else, which is how the class was found. Narrowing'
     + ' the key cannot fix it — a real marker is `token:` plus a reason, prose is `token:` plus'
     + ' punctuation, and no reading separates those. The list is therefore an UPPER BOUND on dead'
     + ' markers, never an exact count, and that is a property of the convention, not of this reader.');
