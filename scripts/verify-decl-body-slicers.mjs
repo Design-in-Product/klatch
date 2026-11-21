@@ -59,6 +59,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { join, dirname, resolve, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
+import { format } from 'node:util';
 import { blankLongStrings, stripSource } from './lib/strip-source.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -437,12 +438,106 @@ for (const v of new Set(verdicts.values())) {
     process.exit(2);
   }
 }
+/* --------------- (c) ONE EMITTER, AND NO PUBLISHED LINE ENDS IN A BARE LABEL (unit-495, 11/21) */
+/**
+ * **What this guards, in one sentence, because the reach is easy to overstate and the last comment
+ * here did:** it breaks **one conjunct of a two-conjunct hazard**, and the other conjunct is
+ * unasserted publication ORDER.
+ *
+ * The hazard is the unanchored reader `/GUARDED\s+(\d+)/`. `\s+` crosses a newline, so such a
+ * reader can fuse the END of one published line with the START of the next. Theseus measured the
+ * conjunction (`unit-494lineendingreach` §5, 11/20), expectation committed before the drive:
+ *
+ *   | plant above the real row                       | `/GUARDED\s+(\d+)/` |
+ *   | CONTROL                                        | 3   |
+ *   | (i) a label-ending line only                   | 3   |
+ *   | (ii) a count-leading line only                 | 3   |
+ *   | **both, label-ending THEN count-leading**      | **777 ← moved** |
+ *   | both, reversed                                 | 3   |
+ *
+ * - **(i) no published line ends with a bare verdict label.** This is the conjunct constructed
+ *   below. Until today it was true **by coincidence** — measured empty by `unit-493` §5 (this seat)
+ *   and again under a different key by `unit-494` §3 (his), never asserted by anything.
+ * - **(ii) no count-leading line sits above the real row.** **Guarded by nothing, and left that
+ *   way deliberately.** It is a fact about publication order relative to the prose, and no
+ *   assertion over the published string can state it without hard-coding which rows come first —
+ *   which is exactly what the two-seat format decision of 2026-11-20 exists to stop either seat
+ *   doing alone. Blocker named, not a deadline.
+ *
+ * Breaking one conjunct breaks the conjunction, so this is a real cure rather than a partial one.
+ * **Do not write that a line ending in a label re-opens the label direction on its own** — his §4
+ * measured that false at **0 of 3** live plant positions, because the real `GUARDED  3` row is
+ * published at line 5, above all three count-leading lines, and a first-match reader reaches the
+ * true row first. A comment claiming more reach than its mechanism has is this gate's own subject.
+ *
+ * ## Three properties of the implementation, each one a measurement rather than a taste
+ *
+ * 1. **The check runs BEFORE the line is published, so the invariant is a CONSTRUCTION and not a
+ *    detector of its own past output.** A guard that inspected the finished capture would have to
+ *    publish the offending line first in order to complain about it.
+ * 2. **Chunks are split on `\n`, which is his condition and it is load-bearing.** This report makes
+ *    34 `console.log` calls and publishes 38 lines: **4 of 38 published lines (10.5%) are not the
+ *    first line of their chunk**, and all four are section-break prose — precisely the class a
+ *    guard over the rows array cannot see. A per-CALL guard is blind to them. (The rows array is
+ *    3 of 38.)
+ * 3. **The key is derived from `LABELS`**, so the vocabulary cannot drift from the partition it
+ *    protects — the duplicated-literal defect `MARKER_ALL` above exists to avoid. `endsWith` over
+ *    the label set also catches a trailing superstring (`MISGUARDED`), which is a hazard for the
+ *    same reader for the same reason.
+ *
+ * ## The two sites in THIS FILE that the construction found, and the cure for both
+ *
+ * Both render a verdict token LAST, and both live in lists that are **empty in the state the tree
+ * is actually in** — which is why (i) was true, and how close to false it was:
+ *
+ * - **stdout:** the in-population quoted-only list, printed unconditionally *because* it is empty.
+ * - **stderr:** the stale-baseline red block, whose `→ now <verdict>` is label-terminal for an
+ *   entry that still exists and is NOT for one that is gone (`ABSENT` is not in `LABELS` — a
+ *   declared limit of keying on the partition's own vocabulary, not an oversight).
+ *
+ * The cure at both sites is to **quote the token**: `` `GUARDED` `` ends in a backtick, so no
+ * label-keyed reader can fuse across it and `endsWith` is false. The refusal below quotes the
+ * offending line for the same reason — a prohibition whose own phrasing trips it is the joke
+ * version of this gate.
+ *
+ * ## What does NOT route through the emitter
+ *
+ * **Refusals bypass it, by design.** A refusal says *this report is not publishable*; it is not
+ * part of the report, and routing it through the guard that protects the report would re-enter the
+ * guard from inside its own refusal path. The three `BLOCKED` exits — missing baseline, `git`
+ * unavailable, and this one — print directly. The **RED** blocks do route through it, because a red
+ * IS the report, which is why a red whose own lines are unpublishable becomes an `rc=2` rather than
+ * an `rc=1`; that conversion is observable only under a cripple and is what the cripple is for.
+ */
+function refuse(message) {
+  console.error(`verify-decl-body-slicers: BLOCKED — ${message}`);
+  process.exit(2);
+}
+function publish(sink, args) {
+  const chunk = format(...args);
+  for (const line of chunk.split('\n')) {
+    const label = LABELS.find((v) => line.endsWith(v));
+    if (label) {
+      refuse(`a published line would END with the bare verdict label \`${label}\`, which supplies`
+        + ' conjunct (i) of the fusion hazard this report\'s format exists to close: an unanchored'
+        + ' `/LABEL\\s+(\\d+)/` reader whose `\\s+` crosses the newline would read the FOLLOWING'
+        + ' line\'s leading number as this label\'s count. The offending line, quoted so this very'
+        + ` message is not label-terminal itself: ${JSON.stringify(line)}. Cure it where it is`
+        + ' emitted by quoting the token (`` `GUARDED` `` ends in a backtick, so nothing can fuse'
+        + ' across it), not by relaxing this check.');
+    }
+  }
+  sink(chunk);
+}
+const emit = (...args) => publish((c) => console.log(c), args);
+const emitErr = (...args) => publish((c) => console.error(c), args);
+
 const counts = {};
 for (const v of LABELS) counts[v] = 0;
 for (const v of verdicts.values()) counts[v] += 1;
-console.log('verify-decl-body-slicers — brace-balance body slicers in the TRACKED tree');
-console.log(`  tracked files read: ${tracked.filter((f) => EXTS.has(extname(f))).length}`);
-console.log(`  population (compares against both braces): ${verdicts.size}`);
+emit('verify-decl-body-slicers — brace-balance body slicers in the TRACKED tree');
+emit(`  tracked files read: ${tracked.filter((f) => EXTS.has(extname(f))).length}`);
+emit(`  population (compares against both braces): ${verdicts.size}`);
 // Every class prints, INCLUDING at 0. Under the old object-keyed loop an empty class printed no row
 // at all — `unit-489markedrekey` §3's REFUSED check, which turned out to be the subject's property
 // rather than that reader's bug — so a class that had just been emptied by a key change could not be
@@ -450,9 +545,9 @@ console.log(`  population (compares against both braces): ${verdicts.size}`);
 // why it ships with a cripple: a branch whose only observable state requires a cripple has no other
 // grader.
 for (const v of LABELS) {
-  console.log(`      ${v.padEnd(10)} ${counts[v]}`);
+  emit(`      ${v.padEnd(10)} ${counts[v]}`);
 }
-console.log(`  baseline entries: ${baseline.length}`);
+emit(`  baseline entries: ${baseline.length}`);
 
 /* ------------------------------------- REQUIREMENT 3 HAS NO STALENESS COUNTERPART (2026-11-19) */
 // **This is a REPORT and never a red, and that is a two-seat decision rather than a preference.**
@@ -525,15 +620,15 @@ console.log(`  baseline entries: ${baseline.length}`);
 // comparability — and is reported by `posthoc-label-substring.mjs` in this unit instead.
 if (deadMarkers.length) {
   const occ = deadMarkers.reduce((n, [, k]) => n + k, 0);
-  console.log(`\n  NOT CHECKED: whether a \`brace-slicer-deliberate:\` marker is still needed.`);
-  console.log(`  ${deadMarkers.length} tracked file(s), carrying ${occ} marker occurrence(s), are`
+  emit(`\n  NOT CHECKED: whether a \`brace-slicer-deliberate:\` marker is still needed.`);
+  emit(`  ${deadMarkers.length} tracked file(s), carrying ${occ} marker occurrence(s), are`
     + ' OUT of the population, so those markers exempt nothing. Reported, never reddened: a marker'
     + ' is a site-local exemption so that it needs no list, and the price is that it has no'
     + ' staleness counterpart. Removing one is nobody\'s obligation and clears no red.');
-  for (const [f, n] of deadMarkers) console.log(`      ${f}${n > 1 ? `  (${n} markers)` : ''}`);
-  console.log(`  For contrast, the ${counts.MARKED || 0} file(s) in the \`MARKED\` row above carry`
+  for (const [f, n] of deadMarkers) emit(`      ${f}${n > 1 ? `  (${n} markers)` : ''}`);
+  emit(`  For contrast, the ${counts.MARKED || 0} file(s) in the \`MARKED\` row above carry`
     + ` ${liveMarkerOccurrences} declared occurrence(s) that ARE load-bearing.`);
-  console.log('  IRREDUCIBLE LIMIT, and it is the finding rather than a caveat: requirement 3\'s'
+  emit('  IRREDUCIBLE LIMIT, and it is the finding rather than a caveat: requirement 3\'s'
     + ' exemption IS a token in a comment, so **a comment DECLARING an exemption cannot be told'
     + ' apart from a comment DISCUSSING the convention.** Any file that writes about this gate joins'
     + ' the list above — `unit-487markerreport`\'s own `posthoc-declared-vs-quoted.mjs` is in it for'
@@ -543,12 +638,12 @@ if (deadMarkers.length) {
     + ' markers, never an exact count, and that is a property of the convention, not of this reader.');
 }
 if (quotedOnly.length) {
-  console.log(`\n  NOT A MARKER, and counted as one until this check existed:`);
-  console.log(`  ${quotedOnly.length} tracked file(s) contain the marker token ONLY inside a string`
+  emit(`\n  NOT A MARKER, and counted as one until this check existed:`);
+  emit(`  ${quotedOnly.length} tracked file(s) contain the marker token ONLY inside a string`
     + ' literal — a fixture quoting the key, not an exemption. Excluded from the figures above.'
     + ' Every file that measures this gate has to quote its key, so the instrument is the author of'
     + ' this class:');
-  for (const f of quotedOnly) console.log(`      ${f}`);
+  for (const f of quotedOnly) emit(`      ${f}`);
 }
 
 /* ---------------------------------- IN-POPULATION QUOTED-ONLY — the re-key's own reach (11/20) */
@@ -566,38 +661,49 @@ if (quotedOnly.length) {
 // and true by coincidence** — `unit-493ceilingreplication` P5/P6, and the full statement is in the
 // Format note above: what makes it true is that no published line ends with a bare verdict label,
 // and nothing in this gate asserts that.
-console.log(`\n  ${inPopQuotedOnly.length} in-population file(s) carry the marker token ONLY inside`
+emit(`\n  ${inPopQuotedOnly.length} in-population file(s) carry the marker token ONLY inside`
   + ' a string literal, so they are NOT exempt (re-keyed 2026-11-20: `MARKED` requires a marker'
   + ' DECLARED in a comment, not merely present in the bytes). A member of this class used to be'
   + ' exempted with nobody having declared anything; it now falls through to the guard keys, which'
   + ' reddens it when no guard is present and moves its column in silence when one is. Reported'
   + ' unconditionally, at 0, because a reach that prints nothing in the state the tree is actually'
   + ' in cannot be told apart from one that was never wired.');
-for (const f of inPopQuotedOnly) console.log(`      ${f}  → ${verdicts.get(f)}`);
+// **The verdict token is QUOTED, and that is assertion (c)'s own finding rather than house style.**
+// Unquoted, this line ENDS in a bare verdict label, which is conjunct (i) of the fusion hazard —
+// and the only reason it has never published one is that this list is empty in the state the tree
+// is actually in, which is the very reason the line prints unconditionally. A backtick after the
+// token means no `/LABEL\s+(\d+)/` reader can fuse across it. Driven: forced to one member
+// unquoted, (c) refuses; quoted, it prints. Zero published bytes move today.
+for (const f of inPopQuotedOnly) emit(`      ${f}  → \`${verdicts.get(f)}\``);
 
 if (newOnes.length === 0 && stale.length === 0) {
-  console.log('\nDECL-BODY SLICERS OK — no new hand-rolled slicer, no stale baseline entry.');
-  console.log('  NOT CHECKED: whether the baselined files produce wrong FIGURES. This grades the'
+  emit('\nDECL-BODY SLICERS OK — no new hand-rolled slicer, no stale baseline entry.');
+  emit('  NOT CHECKED: whether the baselined files produce wrong FIGURES. This grades the'
     + ' reader each file uses, not the numbers it has already published.');
   process.exit(0);
 }
 
 if (newOnes.length) {
-  console.error(`\nRED — ${newOnes.length} new hand-rolled brace-balance body slicer(s):`);
-  for (const f of newOnes) console.error(`      ${f}`);
-  console.error('\n  A brace scan that starts at the first `{` is wrong on four live mechanisms in'
+  emitErr(`\nRED — ${newOnes.length} new hand-rolled brace-balance body slicer(s):`);
+  for (const f of newOnes) emitErr(`      ${f}`);
+  emitErr('\n  A brace scan that starts at the first `{` is wrong on four live mechanisms in'
     + ' this tree: a TS type literal or an object default in the parameter list, a JSDoc `@type`'
     + ' brace, and a brace-bearing return type. Clear this by, in preference order:');
-  console.error('    1. import { bodyOf, declBodies } from \'<…>/scripts/lib/decl-body.mjs\';');
-  console.error('    2. put `brace-slicer-deliberate: <reason>` at the site, if the file\'s job is'
+  emitErr('    1. import { bodyOf, declBodies } from \'<…>/scripts/lib/decl-body.mjs\';');
+  emitErr('    2. put `brace-slicer-deliberate: <reason>` at the site, if the file\'s job is'
     + ' to reproduce the defect (a comparison arm, a mutant, a fixture);');
-  console.error(`    3. append the path to ${BASELINE.replace(`${ROOT}/`, '')}, which states that a`
+  emitErr(`    3. append the path to ${BASELINE.replace(`${ROOT}/`, '')}, which states that a`
     + ' known unguarded slicer is being added on purpose.');
 }
 if (stale.length) {
-  console.error(`\nRED — ${stale.length} stale baseline entry/entries (no longer unguarded, or gone):`);
-  for (const f of stale) console.error(`      ${f}  → now ${verdicts.get(f) ?? 'ABSENT'}`);
-  console.error('\n  Remove them from the baseline. An exemption for a file that no longer needs one'
+  emitErr(`\nRED — ${stale.length} stale baseline entry/entries (no longer unguarded, or gone):`);
+  // Quoted for assertion (c)'s reason, and this site is the one with a DECLARED LIMIT attached: an
+  // entry that still exists renders `→ now \`GUARDED\`` and WOULD have been label-terminal unquoted;
+  // one that is gone renders `ABSENT`, which is not in `LABELS` and which (c) therefore cannot see.
+  // Keying the guard on the partition's own vocabulary is what makes it drift-proof, and the price
+  // is that a non-label token in a label position is outside its reach. Stated, not cured.
+  for (const f of stale) emitErr(`      ${f}  → now \`${verdicts.get(f) ?? 'ABSENT'}\``);
+  emitErr('\n  Remove them from the baseline. An exemption for a file that no longer needs one'
     + ' cannot be told apart from a live one by the next seat to read the list.');
 }
 process.exit(1);
