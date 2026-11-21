@@ -1,0 +1,20 @@
+unit-497paddedlabelclosure — post-hoc: whose bytes moved?
+
+## H1 vs H2 — the same tree, read by the wide key and by the narrow key
+  wide key   rc=0  stdout 4160 B  stderr 0 B
+  narrow key rc=0  stdout 4160 B  stderr 0 B
+  stdout byte-identical: true   stderr byte-identical: true
+  bytes attributable to the WIDENING: 0
+  → H1 is dead. H2 stands: the widening printed nothing.
+
+## decomposition of the 4065 → 4160 move
+  tracked files read:        1036 → 1039  (registered in P5)
+  out-of-population markers: 18/20 → 19/22  (NOT registered)
+  lines naming this unit's own files in that list: 0 → 1
+
+## why: the token is in this unit's own docblocks
+  arm-padded-closure.mjs       occurrences of the marker token: 0
+  cripple-padded-closure.mjs   occurrences of the marker token: 0
+  posthoc-whose-bytes.mjs      occurrences of the marker token: 2
+
+POST-HOC OK — P5 is refuted and the refutation is against this seat's own docblock phrasing rather than against the cure: the widening's own cost is 0 published bytes, measured at one tree by two keys.

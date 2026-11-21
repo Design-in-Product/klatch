@@ -15,7 +15,9 @@
  * The POST form is produced from the PRE form by ONE textual substitution whose match count is
  * asserted to be exactly 1 — so the two columns differ in the key and in nothing else.
  *
- * brace-slicer-deliberate: none. This file hand-rolls no slicer; it imports the shared one.
+ * This file hand-rolls no brace-balance slicer; it imports the shared one, so it needs no exemption
+ * and deliberately does NOT write the exemption token — writing the token to say "not needed" is
+ * what put the first draft of this file into the gate's own dead-marker list (see the post-hoc).
  */
 import { readFileSync, writeFileSync, rmSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
@@ -47,14 +49,30 @@ const sliceReport = {
 };
 if (!sliceReport.byteIdentical) throw new Error('arm: slice is not byte-identical to the file span');
 
-// --- one substitution, asserted to be exactly one ---------------------------------------------
+// --- one substitution, asserted to be exactly one, in WHICHEVER direction the tree is in -------
+//
+// The first draft of this arm assumed the live body carried the PRE key and derived POST from it.
+// That assumption held for exactly as long as the cure was unlanded: the moment the widened key
+// went into the gate, this arm threw `the PRE key occurs 0× in the sliced body`. A harness keyed on
+// the hazard's spelling dies when the hazard is fixed — the same shape as Theseus's own 11-21 §3
+// refutation (a detector keyed on the hazard's form goes silent *because* the hazard was fixed),
+// reproduced here one fire later in a harness rather than in a census. The arm is therefore
+// direction-agnostic: it reads which form the tree is in, asserts exactly one of the two is
+// present, and derives its counterfactual in whichever direction is needed.
 const PRE_KEY = 'LABELS.find((v) => line.endsWith(v))';
 const POST_KEY = 'LABELS.find((v) => line.trimEnd().endsWith(v))';
 const preHits = body.split(PRE_KEY).length - 1;
-if (preHits !== 1) throw new Error(`arm: the PRE key occurs ${preHits}× in the sliced body, expected 1`);
-const preBody = body;
-const postBody = body.replace(PRE_KEY, POST_KEY);
+const postHits = body.split(POST_KEY).length - 1;
+// `POST_KEY` contains `.endsWith(v)` but not the exact `line.endsWith(v)` substring, so the two
+// counts are independent rather than nested; assert that, don't assume it.
+if (preHits + postHits !== 1) {
+  throw new Error(`arm: the sliced body carries PRE×${preHits} and POST×${postHits}; exactly one form must be present`);
+}
+const liveForm = postHits === 1 ? 'POST (cured)' : 'PRE (uncured)';
+const preBody = postHits === 1 ? body.replace(POST_KEY, PRE_KEY) : body;
+const postBody = postHits === 1 ? body : body.replace(PRE_KEY, POST_KEY);
 if (postBody === preBody) throw new Error('arm: substitution produced an identical body');
+if (preBody.split(PRE_KEY).length - 1 !== 1) throw new Error('arm: PRE key not present exactly once');
 if (postBody.split(POST_KEY).length - 1 !== 1) throw new Error('arm: POST key not present exactly once');
 
 // --- plants ------------------------------------------------------------------------------------
@@ -101,7 +119,8 @@ console.log(`  sliced body: ${sliceReport.bytes} bytes / ${sliceReport.codeUnits
 console.log(`  occurrences in file: ${sliceReport.occurrencesInFile}  start offset: ${sliceReport.startOffset}`
   + `  (declaration head at ${headOffset})`);
 console.log(`  byte-identical to the file span: ${sliceReport.byteIdentical}`);
-console.log(`  PRE key present exactly once: true   POST key present exactly once: true`);
+console.log(`  live form in the tree: ${liveForm}  (PRE×${preHits}, POST×${postHits} — exactly one asserted)`);
+console.log('  PRE key present exactly once in the PRE form: true   POST key likewise in the POST form: true');
 console.log('');
 
 // --- P2 / P3 matrix -----------------------------------------------------------------------------

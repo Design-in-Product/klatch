@@ -1,0 +1,39 @@
+unit-497paddedlabelclosure — arm
+
+## slice provenance (the subject is the real `publish()`, not a re-typing)
+  sliced body: 833 bytes / 833 UTF-16 code units
+  occurrences in file: 1  start offset: 37472  (declaration head at 37443)
+  byte-identical to the file span: true
+  live form in the tree: POST (cured)  (PRE×0, POST×1 — exactly one asserted)
+  PRE key present exactly once in the PRE form: true   POST key likewise in the POST form: true
+
+## P2 (PRE column) and P3 (POST column) — same plants, keys differing by one substitution
+  kp-bare                  PRE: rc=2 REFUSED             POST: rc=2 REFUSED
+  padded-one-space         PRE: rc=0 published 14 B      POST: rc=2 REFUSED
+  padded-two-spaces        PRE: rc=0 published 15 B      POST: rc=2 REFUSED
+  padded-tab               PRE: rc=0 published 14 B      POST: rc=2 REFUSED
+  padded-cr                PRE: rc=0 published 14 B      POST: rc=2 REFUSED
+  control-quoted           PRE: rc=0 published 15 B      POST: rc=0 published 15 B
+  control-absent-terminal  PRE: rc=0 published 20 B      POST: rc=0 published 20 B
+
+  P2: KP (bare) refuses PRE = true; padded published PRE = 4 of 4
+  P3: padded refused POST = 4 of 4; bare still refuses = true; quoted still publishes = true; ABSENT still publishes = true
+
+## P4 — `trimEnd()` vs the hazard reader's own `\s*$`, over a DERIVED whitespace set
+  whitespace characters derived from /\s/ over U+0000..U+FFFF: 25
+  disagreements between trimEnd-key and /LABEL\s*$/ on the whitespace set: 0
+  non-whitespace control set (6 chars, both predicates must be false): disagreements = 0, both-false = 6
+
+## P1 — reach in the live tree, with a KP for the zero
+  gate rc=0  published stdout lines: 41
+  lines ending in whitespace: 0
+  label-terminal under bare endsWith: 0
+  label-terminal under trimEnd key:   0
+  KP over a synthetic line that MUST report 1: ends-in-whitespace=1  trimEnd-key=1  bare-key=0  (expected 1 · 1 · 0)
+
+## P6 — this seat's own 3888 mechanism, re-derived rather than recalled
+  stdout: 4160 bytes (Buffer.byteLength) · 4150 UTF-16 code units · delta 10
+  em-dashes in stdout: 5  × 2 extra UTF-8 bytes each = 10
+  delta accounted for by em-dashes alone: true
+
+ARM OK — every registered cell above is a drive of the real sliced `publish()`; the PRE column is the counterfactual that makes the POST column a measurement.

@@ -1,0 +1,16 @@
+unit-497paddedlabelclosure — cripple, 9 arms against the whole landed gate
+  real gate: rc=0  stdout 4160 B  stderr 0 B
+
+  OK   drive0-identity-no-plant   expected publishes  got publishes  — identity copy at the right depth, no plant  stdout byte-identical to real gate: true
+  OK   padded-one-space           expected refuses    got refuses    — the whole point: one trailing space
+  OK   padded-two-spaces          expected refuses    got refuses    — more than one
+  OK   padded-tab                 expected refuses    got refuses    — a tab, not a space
+  OK   bare-label                 expected refuses    got refuses    — the reach the narrow key already had
+  OK   C0-padded-narrow-key       expected publishes  got publishes  — CONTROL: same plant, key reverted
+  OK   C0b-padded-key-disabled    expected publishes  got publishes  — CONTROL: assertion dead
+  OK   control-quoted-token       expected publishes  got publishes  — no over-refusal on the cure form
+  OK   control-absent-terminal    expected publishes  got publishes  — ABSENT is not in LABELS, hole unchanged
+
+  depth arm: identity copy stdout byte-identical to the real gate = true
+
+CRIPPLE OK — 9 of 9: the widened key refuses every padded spelling end to end, both controls show the refusal is assertion (c) and not the gate's other work, and neither cure form is over-refused.

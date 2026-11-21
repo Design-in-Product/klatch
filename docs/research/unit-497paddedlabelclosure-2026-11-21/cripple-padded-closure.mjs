@@ -11,7 +11,8 @@
  * `drive0` is an identity copy with no plant at all, asserted byte-identical in stdout to the real
  * gate — if that arm is not green, no other arm's verdict means anything.
  *
- * brace-slicer-deliberate: none. No slicer is hand-rolled here.
+ * No brace-balance slicer is hand-rolled here, so this file needs no exemption and deliberately
+ * does not write the exemption token (see the post-hoc for why that sentence is phrased this way).
  */
 import { readFileSync, writeFileSync, rmSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
