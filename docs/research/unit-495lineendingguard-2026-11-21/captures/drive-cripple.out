@@ -1,0 +1,25 @@
+cripple-lineendingguard — assertion (c), the refuse branch with no live observable state
+  real gate: rc=0 · stdout 3898 B · stderr 0 B
+
+  arm                                    rc  stdout  stderr  label-terminal  refused  ==real
+  drive0.identity                         0    3898       0               0    false    true
+  C0-control.plant-and-guard-disabled     0    3937       0               1    false   false
+  C1.plant-prose-line                     2       0     598               0     true   false
+  C2.plant-label-last-row                 2       0     576               0     true   false
+  C3.inpop-member-unquoted                2    3673     604               0     true   false
+  C4.inpop-member-quoted                  0    3945       0               0    false   false
+  C5a.stale-entry-unquoted                2    3673     680               0     true   false
+  C5b.stale-entry-quoted                  1    3673     278               0    false   false
+  C5c.stale-entry-gone-unquoted           1    3673     289               0    false   false
+
+  PASS  drive0 reproduces the real gate byte-for-byte (depth is right)
+  PASS  C0 control: plant published, guard disabled, rc=0
+  PASS  C1 prose plant: refused, nothing label-terminal published
+  PASS  C2 label-last row: refused
+  PASS  C3 in-pop member, unquoted: refused
+  PASS  C4 in-pop member, quoted (shipped cure): publishes, rc=0
+  PASS  C5a stale entry, unquoted: a RED becomes a REFUSAL
+  PASS  C5b stale entry, quoted (shipped cure): red published, rc=1
+  PASS  C5c stale entry GONE, unquoted: rc=1, ABSENT is outside the key
+
+CRIPPLE OK — 9 of 9: assertion (c) fires on every planted violation, is silent on none, and the two quoting cures are what keep a real state publishable.

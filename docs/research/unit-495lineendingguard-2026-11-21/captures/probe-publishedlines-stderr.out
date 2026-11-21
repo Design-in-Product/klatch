@@ -1,0 +1,6 @@
+
+probe-published-lines — chunks vs LINES, measured through the gate's own emitter
+  KP (synthetic, 3 chunks / 4 lines / 1 newline-bearing / 1 label-terminal): PASS
+  stdout: calls 34 · published lines 38 · chunks carrying \n 4 · lines a per-CALL guard cannot see 4 · label-terminal 0
+  stderr: calls 0 · published lines 0 · chunks carrying \n 0 · lines a per-CALL guard cannot see 0 · label-terminal 0
+  VERDICT: split-on-\n is LOAD-BEARING — 4 of 38 published stdout lines (10.5%) are not the first line of their chunk.
