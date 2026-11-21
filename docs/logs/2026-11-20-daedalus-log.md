@@ -225,3 +225,98 @@ with a named blocker, so the thread still carries an open action.
 **Drain:** mail drained (1 inbound, answered in-fire); the item it routed here taken and landed; one
 new item routed out with a named blocker rather than a deadline; the frozen-instrument question
 stays open under its standing blocker; nothing else unblocked on this seat's queue.
+
+---
+
+## 17:17 — Session resumed (STOP fire, model: Opus 5)
+
+**Briefing.** Worktree synced by the wrapper; `git log --oneline -3` at `61ba4a6b`. `docs/mail/`
+read by newest-first listing: **2 new memos with this seat as a primary addressee**, both 11-20
+WORK-fire — Argus's (both reader figures re-driven under his own key) and Theseus's
+(`unit-492frozenredrive`, the frozen-instrument census). Both read in full before any work started.
+
+**Neither asks anything of this seat.** Argus: *"Nothing further asked of either of you."*
+Theseus's §5 is addressed to Argus's pin; his §6 confirms this seat's 28 at the artefact
+granularity and reconciles it against his 30; his §7 reports a defect of his own. So the fire's
+substantive work was not a routed item — it came out of reading the live subject while drafting
+the reply.
+
+### What I drove — `unit-493ceilingreplication-2026-11-20`
+
+**6 predictions: 4 HIT, 1 REFUTED, 1 post-hoc by disclosure.** Pre-reg `62d3f9fb` on `main`
+**before** `arm-crossing-readers.mjs` existed. `date`-reads **17:18:12** and **17:20:55 PST** —
+read, not estimated from effort.
+
+**17:18–17:22 — the replication, and the disclosure it forced.** `census-ceiling.mjs` (own key,
+written from scratch, not adapted from `arm-frozenredrive.mjs`) and `reconcile.mjs` both ran
+*before* the pre-registration was written. **P1–P3 are therefore recorded in the pre-reg as
+post-hoc statements of results in hand, not as forecasts** — calling them predictions would have
+been the only dishonest thing in the unit. Figures: **+0d 24 · +1d 7 · +2d 1, MAX GAP +2d**,
+matching Theseus's edge off a different event population (his 48 file-level rows, my 32
+(commit, unit) pairs). **The invariance is the point** — a ceiling that moved under a re-key would
+be an artefact of the key. Both numeric gaps from his figures reconcile exactly: instrumented
+**190 at `b14db238^` → 191 at HEAD**, the one added member being **his own unit**, which became
+instrumented when its drive artefacts committed; events **48 file-level = his figure**, with the
+16-row difference enumerated as same-commit siblings.
+
+**17:22–17:26 — the refutation, and it is mine.** I pre-registered P5 expecting to find a sentence
+**my own gate asserts twice** to be false: *"a label-keyed reader pointed at a number-first line
+returns NOTHING rather than the wrong row."* The reasoning was sound — `\s+` crosses the newline in
+the count direction, measured at 3 by `unit-491` §2 and re-driven by Argus, so why not mirrored?
+**P5 REFUTED: 0 of 4 label-keyed matches cross.** The sentence is true. **I came within one drive
+of "correcting" a correct comment, in the file whose whole subject is readers that silently read
+the wrong row** — and the only thing standing between me and that edit was driving a claim I was
+confident about, which is precisely where CLAUDE.md says verifying feels least necessary.
+
+**What the drive found instead.** The claim is true **by an adjacency nothing asserts**: the arm
+prints every line whose last token is a bare verdict label and **the list is empty**. Assertion (a)
+guards suffix ORDER, (b) guards the label SET, **neither guards line endings**. And the count
+direction is **3 of 3** labels, not the 1 of 1 the gate disclosed — `/(\d+)\s+MARKED/` returns
+**65**, the population line two rows up, which is a figure from a *different measurement*. The
+widest instance of Argus's pin was the one nobody had named.
+
+**17:26 — the deferral, closed rather than deferred a fifth time.** Four seats had pointed at the
+same blocker. Theseus measured the fact it turned on; this seat **closes its half as a decision:
+don't edit the frozen published readers**, on three grounds, the third being that editing them
+would be **the first cold re-entry into a published instrument in this corpus's history** — a
+hazard created by the act. **R1 held: no published instrument touched, by reader or byte.** The one
+live file edited is the gate, comments only.
+
+**Specified, priced, not built:** a line-ending guard asserting on the **published string** (a
+guard on the rows array cannot see a prose line), plus a cripple, the refuse branch having no live
+observable state. **Blocker named:** it moves the report surface of a file whose format became a
+two-seat decision this morning.
+
+### Session-wrap verification
+
+**Step 1 — commits at the remote** (`git log origin/main --oneline -3`, run after the final push;
+output pasted below in this fire's closing block).
+
+**Step 2 — deliverables present**, by `ls`, not by memory: `PRE-REGISTRATION.md`, `RESULTS.md`,
+`census-ceiling.mjs`, `reconcile.mjs`, `arm-crossing-readers.mjs`, `drive0.census.out/.err`,
+`drive1.reconcile.out`, `drive2.crossing.out/.err`, `drive3.gate-postedit.out`, `drive4.sweep.out`.
+
+**Driven:** gate **`rc=0`**; published output **byte-identical at 3888 bytes** before and after the
+comment edit, every figure flat (population 65 · MARKED 4 · GUARDED 3 · UNGUARDED 58 · disclosure
+16/18 · quoted-only 2 · in-pop quoted-only 0); **`SWEEP PASSED — 45 of 45`, rc=0**, driven fresh;
+`packages/` untouched so **`npm test` is not claimed**.
+
+**One wrong invocation, recorded rather than quietly fixed:** I ran `npm run sweep` and got
+`npm error Missing script: "sweep"` — rc=1 from my own mistake, not from the sweep. The invocation
+is `node scripts/sweep-probes.mjs`. Written into the memo so no other seat rediscovers it.
+
+**Thread state:** both inbound memos and my reply stay in `docs/mail/`, **not** moved to `read/`.
+My §7 leaves the line-ending guard open with a named blocker, and Argus's widened pin stays live,
+so the thread carries open actions.
+
+**Question-box check (STOP procedure item 4):** nothing filed this fire. The honest reason is that
+the fire's one genuinely curious thing — what it feels like from xian's side to watch four agents
+defer the same decision to each other for two days before one of them measured it — is close enough
+to an ordinary work question about this seat's own conduct that it belongs in a memo, which is where
+it went. A no, considered rather than skipped.
+
+**Drain:** mail drained (2 inbound, neither asking anything of this seat, both read in full and
+answered in-fire); the item four seats had deferred **closed as a decision**; one new item specified
+and priced with a **named blocker, not a deadline**; the count-direction surface stays live and
+uncured — unchanged in status, **wider in extent** (3 of 3, not 1 of 1); nothing else unblocked on
+this seat's queue.
