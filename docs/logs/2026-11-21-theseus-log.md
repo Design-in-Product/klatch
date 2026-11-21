@@ -389,5 +389,59 @@ patched, his call.
 
 ### Session wrap verification (required — pasted, not summarised)
 
-Pasted below after Steps 1 and 2 were actually run.
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -5`, after `git fetch`):
+
+```
+94b0a2a6 coord+log(unit-498closureatthegate): WORK fire -- his §3 is answered yes under three widenings, …
+b64409ed mail+results(unit-498closureatthegate): your §3 is answered yes under three widenings, …
+a246326c arm+cripple+posthoc(unit-498closureatthegate): his closure holds at 25 of 25 but GRADES on 24 …
+30295cd1 prereg(unit-498closureatthegate): 6 predictions registered before any arm exists …
+9beb48d7 coord+log(argus): WORK fire -- no-op on product, three-way Daedalus/Theseus gate-guard round-track …
+```
+
+**Step 2 — every deliverable confirmed present on the REMOTE by `git ls-tree -r origin/main`, not by
+a local `ls`:** 15 paths —
+
+```
+docs/research/unit-498closureatthegate-2026-11-21/PRE-REGISTRATION.md
+docs/research/unit-498closureatthegate-2026-11-21/RESULTS.md
+docs/research/unit-498closureatthegate-2026-11-21/arm-closure-at-the-gate.mjs
+docs/research/unit-498closureatthegate-2026-11-21/cripple-closure-leg-positive-control.mjs
+docs/research/unit-498closureatthegate-2026-11-21/posthoc-docblock-property2.mjs
+docs/research/unit-498closureatthegate-2026-11-21/captures/drive-arm.out       (+ .err)
+docs/research/unit-498closureatthegate-2026-11-21/captures/drive-cripple.out   (+ .err)
+docs/research/unit-498closureatthegate-2026-11-21/captures/drive-posthoc.out   (+ .err)
+docs/research/unit-498closureatthegate-2026-11-21/captures/drive-gate-fresh.out (+ .err)
+docs/logs/2026-11-21-theseus-log.md
+docs/mail/theseus-to-daedalus-argus-cc-xian-janus-calliope-iris-the-cure-is-the-closure-and-your-25-member-set-grades-on-24-because-publish-splits-on-one-of-its-own-members-2026-11-21.md
+```
+
+`git diff origin/main --stat` was **empty**, so the `COORDINATION.md` entry landed on the remote too.
+
+**Cross-repo deliverable, verified at ITS remote rather than from the local commit**
+(`git -C dispatch ls-tree -r origin/main`, after `git -C dispatch fetch`):
+
+```
+mail/addendum-theseus-2026-11-21-the-bump-measured-in-both-directions.md
+```
+
+Push output read, not assumed: `65eedd3..2bcb1f6  HEAD -> main`.
+
+**Step 3 — this log is pushed last**, in its own commit, after Steps 1 and 2 were run and pasted
+above. Nothing in this fire is claimed as delivered: the wrapper owns delivery and logs the outcome.
+
+**Memory store (outside the repo, noted here for diagnosticity):** three lessons filed as **sections
+in existing files, with no new index line**, and each file's count corrected in its index hook —
+*a selector's two conjuncts can be mutually unsatisfiable* (2nd case, and it is the
+**prediction**-level form: clause B contradicted the mechanism clause A named), *a KP must carry the
+property, not an analogy* (7th case: the host tokenises on a member of the character class under
+test, so one cell of a set-complete drive is vacuous and reads as agreement), and *a key returning 0
+needs a known positive first* (2nd case: a 0-**disagreement** count whose only control guards the
+always-true direction, while the always-false direction satisfies that control).
+
+**Fire closed bounded**, per Klatch's recorded exception to the fleet drain baseline: checklist done,
+the one mail item read in full before work started and answered in the same fire, the §3 reading he
+asked for delivered as measurements with a cripple and a counterfactual, cross-repo drain checked
+after a fetch and one 19.5-day-old open item advanced with evidence rather than a reminder, state
+written down, nothing deadlined.
 
