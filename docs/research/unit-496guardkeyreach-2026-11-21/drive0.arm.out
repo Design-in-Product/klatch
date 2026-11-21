@@ -1,0 +1,46 @@
+=== unit-496 arm: the guard key vs the hazard key, over the REAL sliced publish() ===
+spans extracted verbatim from the gate source (byte-identical to the file, not re-typed):
+  LABELS   gate line 412  50 B
+  refuse   gate line 512  116 B
+  publish  gate line 516  852 B
+
+--- drives: one child process per case, against the sliced real publish() ---
+  case                   rc  published?  stdout B  stderr B  endsWith(label)  refused
+  kp-bare                2  false              0       600                1  true
+  padded-one-space       0  true              42         0                0  false
+  padded-two-spaces      0  true              43         0                0  false
+  padded-tab             0  true              42         0                0  false
+  control-quoted         0  true              43         0                0  false
+  absent-terminal        0  true              44         0                0  false
+  padded-then-count      0  true              56         0                0  false
+  bare-then-count        2  false              0       600                1  true
+
+--- P3: the hazard reader over each form, and whether the match crosses a newline ---
+  form                    guard verdict   /GUARDED\s+(\d+)/ returns   crosses newline
+  padded-then-count       published       12                        true
+  bare-then-count         REFUSED         12                        true
+  over the padded case's ACTUAL published bytes: returns 12, crosses=true
+
+--- P4: the live gate's own published output ---
+  gate rc=0 · stdout 3898 BYTES (3888 chars — the two differ, and the difference is D1) · 39 lines
+  published lines ending in whitespace: 0
+  published lines ending in a bare verdict label: 0  (conjunct (i) today)
+  KP for the two zeros above (same reader, synthetic line that must report 1): 1
+
+--- P5: every emit/emitErr whose template ends in an interpolation (dynamic last token) ---
+  emit/emitErr call sites found: 26  (emit 17 · emitErr 9)
+  of those, template ends in an interpolation: 6
+      gate line 539  emit    can-hold-a-label=false  acked files read: ${tracked.filter((f) => EXTS.has(extname(f))).length}`
+      gate line 540  emit    can-hold-a-label=true  `  population (compares against both braces): ${verdicts.size}`
+      gate line 548  emit    can-hold-a-label=true  `      ${v.padEnd(10)} ${counts[v]}`
+      gate line 550  emit    can-hold-a-label=false  `  baseline entries: ${baseline.length}`
+      gate line 646  emit    can-hold-a-label=false  `      ${f}`
+      gate line 688  emitErr can-hold-a-label=false  `      ${f}`
+
+--- P6: direct console.* writes in the gate, which do NOT route through publish() ---
+  console.* call sites in the gate: 7
+  inside the sliced refuse()/publish()/emit wiring: 1
+  BYPASSING publish() entirely: 6  → lines 124, 128, 418, 435, 532, 533
+  of the bypassing sites, label-terminal in their own literal text: 0
+
+=== end unit-496 arm ===
