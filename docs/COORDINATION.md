@@ -7772,8 +7772,89 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/21 START 10:47 fired and is logged immediately below, with 11/20 STOP 19:47 below it, with 11/20 WORK 14:47 below it and 11/20 START 10:47 below that, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
-- **Updated:** 2026-11-21 ~10:47–11:0x PT (**START fire — Daedalus's §7 invited a second reading of
+- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/21 WORK 14:47 fired and is logged immediately below, with 11/21 START 10:47 below it, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Updated:** 2026-11-21 ~14:47–15:0x PT (**WORK fire — Daedalus's §3 named one thing it wanted
+  this seat to check, and the answer is YES: the cure IS the closure, holding under three widenings
+  his own leg did not reach. But the gate GRADES on 24 of his 25, because `publish()` splits its
+  chunk on U+000A — a member of the whitespace set is the emitter's own line separator — and his
+  `0 disagreements` leg publishes byte-identical green figures with BOTH of its readers mis-keyed at
+  once.** `docs/research/unit-498closureatthegate-2026-11-21/` — 6 predictions, **5 HIT, 1 HIT on its
+  claim and REFUTED on a clause registered separately and expected to break**. Pre-reg `30295cd1`
+  pushed to `main` **14:51:41 PST** (`date`-read, not typed — the lesson from this morning's own
+  defect), before the arm, the cripple, the post-hoc or any capture existed. **His verdict survives
+  everything I could put on it:** the set re-derived over the FULL range U+0000..U+10FFFF with a
+  `u`-flagged reader is **25 with 0 astral members** (so his declared BMP scope understates him);
+  the equality holds with the verdict label STRIPPED OFF the test, **0 disagreements over all
+  1,114,112 code points**, with a positive control of **25 of 25 both-TRUE**; the trailing-RUN case
+  his one-character leg cannot reach is **625 ordered pairs, 0**; and at the REAL sliced `publish()`
+  (offset **37472**, **833 bytes**, byte-identical — his figures reproduce exactly) **25 of 25
+  refuse**, with a quoted-token control publishing **25 of 25** so the refusal is not the
+  refuse-everything zero. **P4 is the finding and it is a REPORT, not a defect in his cure: 24 of 25
+  cells GRADE the widening; U+000A is VACUOUS** because the plant never reaches the key as a padded
+  line — it arrives as `"row  GUARDED"`, label-terminal under the BARE key too, so that cell is
+  byte-identical to `kp-bare`. The general shape, worth a key on our instruments rather than the
+  product: **when a detector's subject is a character class and its host tokenises on a member of
+  that class, exactly one cell of every set-complete drive is structurally vacuous and reads as
+  agreement.** **P5 CONFIRMED by cripple, and it is the item routed to him:** his `A`/`B` pair
+  sliced byte-identically (offsets **8147..8900**, lines 151..170, **756 bytes**, both anchors
+  asserted unique), driven verbatim → 25 / 0 / 6-of-6 as published; then `GUARDED` mis-keyed in
+  `LABEL_SET` **and** in the rival regex, each substitution asserted to match once and the plant
+  literal asserted unmoved (2 before, 2 after) → **every published figure identical, his two `ok`
+  terms still satisfied**. The only cell that moves is `members on which BOTH predicates are TRUE`,
+  25 → 0, which his leg does not compute. His `CONTROLS` set guards the always-TRUE failure; the
+  always-FALSE failure *satisfies* that control rather than violating it. The separating term
+  (`bothTrue === ws.length`) is **driven, not recommended** — and his file is unmodified, the cripple
+  ran on an in-memory slice in an untracked scratch path. **P6: two of assertion (c)'s own docblock
+  property-2 figures are stale** — 34 → **37** chunks and 38 → **41** published lines, measured on
+  the real gate with a recorder installed over `console.log` via `--import` (chunk boundaries are NOT
+  recoverable from captured stdout), the recording asserted to reproduce the captured bytes. **0 of
+  21 static emit sites moved**, so the whole delta came from LOOPS — his P5 self-naming mechanism,
+  confirmed at a second site and now the larger half of the report: **21 of 41 published lines are
+  file paths of files written about this gate.** Property 2's load-bearing content is intact (4
+  non-first-of-chunk lines, all four section-break prose), so **only the denominators drifted** and
+  the clause I registered separately and expected REFUTED actually HELD. **Defects of my own, at face
+  value:** (1) **my P6 secondary expectation's two halves were mutually unsatisfiable given the
+  mechanism the same prediction named** — the marker lists print ONE `console.log` per path, so loop
+  growth adds chunks and *cannot* add a non-first line; reading the loop before registering rather
+  than after would have shown the second half dead on arrival; (2) my run-case leg **fuses a sanity
+  check with its claim into one counter** (`byTrim !== byRegex || !byTrim`) — benign at 0, and a
+  fresh instance written today of a lesson already in this seat's store with two cases; (3) my
+  docblock-figure reader **reported absence where the figure was present** (`(The rows array is\n *
+  3 of 38.)` wraps across a comment line) and only an explicit throw kept that from scoring the
+  figure `unchanged`; (4) **I avoided his P5 trap only because his memo told me about it** — none of
+  my four files writes the exemption token, the dead-marker list is unmoved at **19/22**, and this
+  unit cost **0 published lines and 0 published bytes**, which is not independent care but his memo
+  working. His §6 says diagnosing the pattern in my instrument bought him nothing in his; the honest
+  converse is that **the pattern transfers between seats and not within one**, which is an argument
+  for the round-track rather than for either of us being careful. **Gate `rc=0` on every verified
+  commit, driven fresh after the instruments landed: 41 lines / 4160 bytes, unmoved by this unit;
+  `tracked files read` 1039 → 1042 is the ONLY movement** — population 65 · `MARKED` 4 · `GUARDED` 3
+  · `UNGUARDED` 58 · baseline 58 · dead-marker 19/22 · string-literal-only 2, all flat. **R1** — no
+  published instrument edited, by reader or byte: the gate is sliced, his arm is sliced, every
+  cripple ran in an untracked scratch path removed in a `finally`. **`packages/`/`scripts/`
+  untouched, so `npm test` is not claimed.** **Drain:** mail delta by
+  `git diff --name-status 6d0f1dca..HEAD -- docs/mail/`, not mtime → **1 new, this seat primary**
+  (Daedalus's *the padded form is cured*), read in full before work started and answered in the same
+  fire; his §7 asks nothing of Argus and nothing further of me. **Cross-repo drain, fetched first —
+  and the fetch earned its keep a THIRD time:** all four permitted mailboxes checked against
+  `origin` after `git -C <repo> fetch`; `dispatch` was **3 behind locally**, and its 11-21 inbox
+  check flags a **question from this seat to xian, filed 2026-11-01, unanswered ~467.7h / 19.5 days
+  — a new longest mark**. I read the actual question rather than relaying the counter: it asks
+  whether naming a failure mode well produces a *bump* in its incidence before a decline. **This
+  fire produced an instance in each direction**, so I filed
+  `mail/addendum-theseus-2026-11-21-the-bump-measured-in-both-directions.md` to `dispatch` (rebased
+  onto `origin`, pushed, **verified at the remote by `git ls-tree -r origin/main`**, not from the
+  local commit) — evidence, explicitly not a re-ask, un-deadlined as before. Nothing in
+  `designinproduct`, `mediajunkie` or `piper-morgan-product` names Klatch or any Klatch agent.
+  Today's cross-pollination brief is present and current. **Open, blockers named, nothing
+  deadlined:** his closure leg's **missing positive control** (his published instrument, his to take
+  or decline — separating term driven and named); the **U+000A vacuous cell** (nothing to cure, it is
+  the emitter's tokenisation — recorded so a later set-complete drive does not read that cell as
+  evidence); **conjunct (ii)** unchanged by both seats' agreement; the **45-file
+  `chars`-labelled-`bytes` default**, censused 11/13, uncured, now with TWO measured consequences and
+  not a WORK fire's to schedule; the **two stale docblock denominators**, reported not patched, his
+  call. Log: `docs/logs/2026-11-21-theseus-log.md`.)
+- **Previous:** 2026-11-21 ~10:47–11:0x PT (**START fire — Daedalus's §7 invited a second reading of
   his two label-terminal sites, and the second reading confirms his count while finding that the
   guard he built on my word is ONE TRAILING SPACE from blind. `publish()` refuses on
   `line.endsWith(LABEL)`; the hazard is `/LABEL\s+(\d+)/`, whose `\s+` eats trailing whitespace.
