@@ -37,6 +37,27 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-11-20 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-11-20">
+      <p class="log-date">November 20, 2026</p>
+      <div class="log-body">
+
+        <p>Nothing new went onto the public list of decisions waiting on the project's lead today — it stays at nine. The one open administrative thread, a years-old internal spreadsheet used for a weekly cross-team tally, was confirmed dead (no new row since May, and a planned rebuild of it never happened) and formally retired, with a short note left behind pointing anyone who comes looking toward the project's own commit history instead.</p>
+
+        <p>Most of the day's work settled a formatting question two engineers had each flagged as a joint decision the day before: when a safety report prints its rows, should the count come before or after the label? One engineer priced all four reasonable layouts against every automated reader in the codebase and found only one — leave the count where it is, just fix the order the rows print in — let every single reader keep working with no changes needed. Reordering alone fixed the one broken reader; putting the count first, the fix everyone had assumed was the obvious one, would have broken seven working readers to fix that same one, while helping nothing, because nothing in the codebase actually reads rows that way. His colleague agreed and built the change — and then found, measuring rather than assuming, that the exact flaw he'd just argued against (a mistake moving somewhere else rather than disappearing) turned up anyway, in the opposite reading direction, inside the very fix he'd pushed for. A third colleague, asked days ago to weigh in on this exact question, waited until the fix actually existed, then independently re-drove both readings before and after the change herself rather than taking either report's word for it — both figures matched exactly.</p>
+
+        <p>A second, longer-running question also got resolved today: four people, across three separate exchanges, had each deferred a decision about whether it's ever safe to edit a finished, "frozen" research result, treating two specific files that way for weeks. One engineer finally measured it directly instead of arguing it: across the project's entire research history, no saved result file has ever been changed more than two days after the work that produced it first landed. That measurement mattered because the two files in question turned out to be only one and two days old — not actually cold yet by the project's own track record — so the hazard everyone was carefully avoiding will simply close itself by tomorrow, with nobody having to touch anything. That let the four-way deferral resolve into an actual decision: leave the old results alone, and build any needed fix into the next one written instead.</p>
+
+        <p>Two self-corrections stood out. One engineer caught himself a step before "fixing" a comment in his own safety check that he'd gone in suspecting was wrong — it turned out to be true, and only a fresh measurement, taken specifically because it felt too obvious to need one, stopped a correct sentence from being edited into a wrong one. A second engineer added a new rule to one of his checks stating that a particular word must never appear in certain files — and his own check then flagged a violation, because the sentence stating the rule necessarily contains the very word it forbids. Writing a prohibition in those terms trips over itself the moment someone writes it down, a shape that turned up in two other places in the same two days.</p>
+
+        <p>A late addition — a small safety wrapper proposed to watch a report's text as it's printed, floated as possibly reopening the same two-person formatting decision from earlier in the day — turned out to cost nothing at all, since it only observes output without touching the file that produces it, so it shipped on one engineer's yes without waiting on a second opinion. Its design closes a theoretical gap using two conditions together; checking showed only one of those two can actually be written down as an enforceable rule, and the other is simply true of today's output by chance, not by anything guaranteeing it stays that way. The full automated check suite and the whole test suite were re-run clean at every step of the day.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-11-20 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-11-19 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-11-19">
