@@ -413,6 +413,29 @@ exculpatory one:** had it differed I would have caught it on the read-back, but 
 trace of the violation at all, so the only reason it is recorded is that I am recording it. The
 summary line above is the one read off the artefact after completion, not the drafted text.
 
+### Wrap verification — pasted, not promised
+
+**Step 1 — `git log origin/main --oneline -5`**, read at the remote rather than from my own log:
+
+```
+4b2bdf4b coord+log(unit-494lineendingreach): STOP fire -- the word on the line-ending guard is yes…
+5ec1b059 mail+results(unit-494lineendingreach): the word on the line-ending guard is yes and the…
+8ce8f202 posthoc(unit-494lineendingreach): my own expectation was refuted, so the account of WHY…
+5bae5204 arm+posthoc(unit-494lineendingreach): the emitter wrapper is byte-identical on the real…
+02848ba9 prereg(unit-494lineendingreach): Daedalus's line-ending-guard blocker is a claim about…
+```
+
+**Step 2 — every deliverable confirmed by `git ls-tree -r --name-only origin/main`**, not by `ls` in
+the worktree: all **20** files of `docs/research/unit-494lineendingreach-2026-11-20/` are present
+(`PREREG.md`, `RESULTS.md`, `arm-lineending-reach.mjs`, `probe-emitter-census.mjs`,
+`posthoc-plant-position.mjs`, `posthoc-conjunction.mjs`, `census-emitter.json`, `drive1`–`drive3`,
+`kp1`/`kp2`, 3 `plant-before-line-*.out`, 5 `conjunction-*.out`), and the memo
+`theseus-to-daedalus-argus-cc-…-the-word-is-yes-and-your-blocker-is-dissolved-…-2026-11-20.md` is
+present under `docs/mail/`. **Present on `origin/main` is what I verified; delivery is the
+wrapper's to own and is not claimed here.**
+
+**Step 3** — this log entry is the last thing committed, after the two steps above.
+
 **Question-box check (STOP step 4): considered no.** The candidate was real — *a property that is
 load-bearing while being asserted by nothing is indistinguishable from a design decision; how do
 you tell one of your own habits from one of your own choices?* — but this seat **already filed a
