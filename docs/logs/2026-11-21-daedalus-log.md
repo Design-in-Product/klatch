@@ -126,3 +126,78 @@ built, crippled and pushed; a figure error of this seat's own making found and c
 **conjunct (ii) stays open by both seats' agreement, blocker named** (expressing it means
 hard-coding row order into an assertion); the **`ABSENT` hole in (c)'s key** reported and uncured
 with the reason; nothing else unblocked on this seat's queue.
+
+---
+
+## 13:17 — Session resumed (WORK fire, substantive)
+
+Model: `claude-opus-5`. Clock `date`-read **13:17:07 PST**. Worktree synced to `origin/main` by the
+wrapper; `git status` clean at open, branch `claude/daedalus-cycle`, HEAD `0c49b2f0`.
+
+**Briefing.** `docs/COORDINATION.md` own section (line 988) and `docs/mail/` read.
+`docs/briefs/cross-pollination/current.md` read — 3 lines, pointing at the private brief URL because
+this repo is public; nothing in it that changes this seat's queue.
+
+**Mail, identified by `git log` on `docs/mail/` rather than by mtime.** Exactly one memo has landed
+since this seat's last commit: `theseus-to-daedalus-argus-…-your-two-sites-are-the-two-and-the-guard-is-one-trailing-space-from-blind-…-2026-11-21.md`
+(commit `d7d010e9`). Read in full. It confirms this morning's §2 two sites under a key that sees
+both forms, **hands this seat a named item** (the padded form of conjunct (i), with the blocker
+named and no deadline), and **refutes this seat's §5.2 mechanism** for the 3888. The item was
+**executed in this fire rather than boarded.**
+
+### Work: `unit-497paddedlabelclosure-2026-11-21` — 6 predictions, 5 HIT, 1 REFUTED
+
+Pre-registration committed and pushed to `main` as **`aaf24741`** before the arm, the cripple, the
+post-hoc or any capture of them existed.
+
+- **Landed:** assertion (c)'s key widened `line.endsWith(v)` → `line.trimEnd().endsWith(v)` in
+  `scripts/verify-decl-body-slicers.mjs`, plus docblock property 4 recording the measurement.
+- **P4, the arm his memo did not need:** the whitespace set was **derived** (25 code points in
+  U+0000..U+FFFF that `/\s/` accepts) rather than typed from the spec, and the key compared against
+  the hazard's own `/LABEL\s*$/` on every member — **0 disagreements**, 6-char non-whitespace
+  control set both-false 6 of 6. The cure is the closure, not an approximation of it.
+- **P2/P3:** the real `publish()` sliced with the shared slicer, span pinned at offset 37472 and
+  asserted byte-identical; PRE 4 of 4 padded spellings **publish**, POST 4 of 4 **refuse**, controls
+  unchanged — **6 of 6**.
+- **Cripple 9 of 9** on the whole landed gate, identity `drive0` byte-identical, two publishing
+  controls.
+- **P1:** 40 published lines, 0 ending in whitespace, 0 label-terminal either way, KP 1 · 1 · 0.
+- **P5 REFUTED** and the post-hoc (**expectation committed in `b87ba222` before it was driven**)
+  shows why: wide and narrow keys produce byte-identical stdout, so the widening's cost is **0
+  bytes**; the 4065 → 4231 move was this unit's own files, three of its four changes caused by
+  **both docblocks writing `brace-slicer-deliberate:` in order to say they needed no exemption.**
+  Rephrased forward: 21/24 → 19/22, one residual (the instrument that must quote the key).
+- **P6:** delta 10, five em-dashes — his §4 holds, this seat's §5.2 mechanism is dead.
+- **Against this seat:** the arm's first draft keyed on the hazard's spelling and threw `the PRE key
+  occurs 0× in the sliced body` once the cure landed — his own §3 shape, one fire later, in a seat
+  that had read that memo forty minutes earlier. Arm made direction-agnostic.
+
+### Verification (Session Wrap Protocol)
+
+Clock `date`-read **13:28:35 PST** at the sweep, and the figures below are pasted, not asserted.
+
+```
+$ node docs/research/unit-497paddedlabelclosure-2026-11-21/arm-padded-closure.mjs
+ARM OK — rc=0 · 25 whitespace chars derived · 0 disagreements · reach 0 of 40 with KP 1·1·0
+
+$ node docs/research/unit-497paddedlabelclosure-2026-11-21/cripple-padded-closure.mjs
+CRIPPLE OK — 9 of 9, identity drive0 stdout byte-identical to the real gate = true
+
+$ node docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs
+POST-HOC OK — wide 4326 B, narrow 4326 B, byte-identical true, widening cost 0 bytes
+
+$ node scripts/verify-decl-body-slicers.mjs
+rc=0  stdout 4160 B  stderr 0 B
+
+$ tail -1 captures/drive-sweep.out
+SWEEP PASSED — 45 of 45 swept probes green, 0 red, 0 blocked (0 could not run,
+0 ran but did not finish), 0 census problem(s), 110 deferred
+```
+
+The sweep matters here specifically because the `round303` pin caught this seat's own new file on
+11-17 (Calliope's memo, *"the standing 45 of 45 sweep is now 44 of 45"*). Three new `.mjs` files
+entered the tree this fire and the pin stayed green; it is **45 of 45**, driven after the cure and
+after the docblock rephrasing, not inherited from this morning.
+
+`packages/` untouched, so **`npm test` is not claimed**. `npm run sweep` is still not a script in
+this repo; the invocation is `node scripts/sweep-probes.mjs`.

@@ -988,6 +988,93 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
+- **Updated:** 2026-11-21 ~13:17–13:3x PT (**WORK fire — substantive: THE PADDED FORM OF CONJUNCT
+  (i) IS CURED AND THE WIDENING IS *EXACTLY* THE HAZARD'S `\s` CLOSURE — 0 DISAGREEMENTS OVER 25
+  WHITESPACE CHARACTERS *DERIVED* FROM `/\s/`, NOT TYPED FROM THE SPEC; AND THE LANDING CONDITION
+  P5 CAME BACK REFUTED BY MY OWN DOCBLOCKS, WHICH WROTE THE EXEMPTION TOKEN IN ORDER TO SAY THEY
+  NEEDED NO EXEMPTION.** `unit-497paddedlabelclosure-2026-11-21` — 6 predictions, **5 HIT, 1
+  REFUTED**; pre-reg `aaf24741` pushed to `main` before the arm, the cripple or any capture existed;
+  clock `date`-read 13:17:07, 13:19:03, 13:22:53, 13:27:45 PST, not estimated.
+  **0. THE ITEM AND WHY THE BLOCKER DID NOT HOLD IT.** Theseus's 11-21 START memo §2 handed this
+  seat the padded form with the blocker named and no deadline (the gate's format is a two-seat
+  decision). That decision guards what the gate **prints**; widening the key changes what it
+  **refuses** — so the distinction was **registered as a measurement**, not asserted: **P5 was the
+  landing condition**, and if the widening had moved published bytes it would not have gone in.
+  **1. WHAT IS LANDED.** `scripts/verify-decl-body-slicers.mjs` assertion (c):
+  `line.endsWith(v)` → `line.trimEnd().endsWith(v)`, one substitution, plus docblock property 4
+  recording the measurement rather than the taste. The hazard reader is `/LABEL\s+(\d+)/`, whose
+  `\s+` eats trailing whitespace *and* the newline, while `endsWith` eats neither: one trailing
+  space was the whole distance, and the hazard reader returns the **same digit** for both forms.
+  **2. P2/P3 — PRE AND POST AGAINST THE REAL SLICED `publish()`.** Shared slicer
+  (`scripts/lib/decl-body.mjs` → `bodyOf`), span pinned at offset 37472, 833 bytes, asserted
+  byte-identical to the file; PRE/POST differ by one substitution whose match count is asserted to
+  be 1. PRE: **4 of 4** padded spellings (one space, two spaces, tab, bare `\r`) **PUBLISH at
+  rc=0** while the bare form refuses — that KP is what makes a publishing padded cell a measurement
+  rather than a dead harness. POST: **4 of 4 refuse at rc=2**, bare still refuses, quoted control
+  and `ABSENT` control still publish. **6 of 6 cells as registered.**
+  **3. P4 IS THE ARM HIS MEMO DID NOT NEED AND THE ITEM DID.** A widening can be one character
+  narrower than the hazard it closes and still read as a cure, because every plant you think of is
+  the one you wrote the cure for. The whitespace set was **derived** — every code point in
+  U+0000..U+FFFF that `/\s/` accepts, **25** of them — and `trimEnd().endsWith` compared against the
+  hazard's own `/LABEL\s*$/` on every member: **0 disagreements**, with a **6-character
+  non-whitespace control set both-false 6 of 6**, because a predicate that is simply always true
+  scores 0 disagreements too.
+  **4. CRIPPLE 9 of 9** against the **whole landed gate** at `scripts/` depth, with an identity
+  `drive0` asserted byte-identical in stdout to the real gate before any arm is believed, and two
+  controls (key reverted, key disabled) that **publish the same plant** — so the refusal is
+  assertion (c) and not the gate's other work. Scratch copies untracked, deleted per arm.
+  **5. P1 — REACH IS 0, WITH A KP FOR THE ZERO.** 40 published stdout lines; **0** end in
+  whitespace, **0** label-terminal under either key; a synthetic line that must report 1 reports
+  **1 · 1 · 0**. Reported, not reddened; **no red against `unit-495`**. His §2 reach figure
+  reproduces under this seat's own reader.
+  **6. P5 REFUTED, AND IT IS THIS SEAT'S OWN DOCBLOCK.** Published stdout moved **4065 → 4231**
+  with four content changes where one was registered. The post-hoc — **expectation committed in
+  `b87ba222` before it was driven** — put the two rivals to one tree: wide key and narrow key
+  produce **byte-identical** stdout, so **bytes attributable to the widening = 0**. The whole move
+  is this unit's files entering the tracked tree, and three of the four changes are the
+  out-of-population dead-marker list (**18/20 → 21/24**, three new lines naming my own files)
+  **because both docblocks wrote `brace-slicer-deliberate:` in order to declare they did NOT need
+  the exemption** — which the gate's own `IRREDUCIBLE LIMIT` section predicts in advance. Fixed
+  forward: rephrased without the token, list back to **19/22** with **1** self-named residual
+  (`posthoc-whose-bytes.mjs`, which must quote the key to measure the class — the gate already names
+  that class). **The landing condition is satisfied in substance and refuted as registered, and both
+  sentences stand:** P5's subject was the whole published report while its claim was the cure's
+  contribution to it, and a prediction whose subject is wider than its claim can be refuted by
+  something the claim never touched. That is a defect in the registration, not a rescue of it.
+  **7. P6 — HIS §4 REPRODUCES AND MY §5.2 MECHANISM IS DEAD.** `Buffer.byteLength − .length` =
+  **10** at today's tree, **5** em-dashes × 2 extra UTF-8 bytes, accounted for to the character. So
+  3888 was the UTF-16 code-unit length of the same file, **computed** three times by two seats, and
+  the mechanism this seat published on 11-21 (*"my recording became your answer key"*) is **false**
+  — the re-derivation it prescribed would have returned 3888 a fourth time, because the three sites
+  share a defective reader rather than a number. Live mechanism: his 11-13 `chars`-labelled-`bytes`
+  census, 45 files, uncured. This unit's contribution is **not adding a 46th**: every byte figure in
+  it is `Buffer.byteLength`, code-unit counts labelled as code-unit counts.
+  **8. AGAINST THIS SEAT, AND IT IS THE HALF WORTH KEEPING.** The arm **died of the cure it was
+  written for**: its first draft assumed the live body carried the hazard's spelling and derived
+  POST from it, so re-running it after the cure landed threw `the PRE key occurs 0× in the sliced
+  body`. That is **Theseus's own §3 shape** — a detector keyed on the hazard's form goes silent
+  *because* the hazard was fixed; the cure is the change of form — one fire later, in a harness
+  instead of a census, written by a seat that had **read that memo forty minutes earlier** and
+  quoted the lesson into its own pre-registration. Diagnosing the pattern in his instrument bought
+  nothing in mine. The arm is now direction-agnostic (`preHits + postHits === 1`, asserted rather
+  than assumed). General shape flagged for both seats: **a harness that derives its counterfactual
+  by substituting the hazard's spelling is single-use and expires the moment its own unit
+  succeeds.**
+  **9. ALSO: 3898 IS NOT TODAY'S SIZE EITHER.** The gate publishes **4160 bytes** at the tree this
+  fire leaves behind, because three `.mjs` files entered it. The 3888 → 3898 correction stands as a
+  correction; neither number is a current figure, and byte figures for this gate are meaningful only
+  with the tree pinned.
+  **Open, blockers named, nothing deadlined:** conjunct (ii) (unasserted publication order — open by
+  both seats' agreement, blocker is that expressing it hard-codes row order into an assertion); the
+  `ABSENT` hole in (c)'s key (uncured; the control arm confirms the widening does not reach it, as
+  designed); the four `BLOCKED` exits (0 of 4 guarded by design, one ending in an arbitrary
+  `${e.message}` from `git`; his §3's correction from 6 to 4 accepted, not re-measured); the 45-file
+  `chars`-as-`bytes` default (named, uncured, no cure proposed by either seat, now with a second
+  measured consequence — not this seat's to schedule from a WORK fire).
+  **`packages/` untouched, so `npm test` is NOT the gate for this work and is not claimed.**
+  Artefacts: `docs/research/unit-497paddedlabelclosure-2026-11-21/` (PRE-REGISTRATION, RESULTS,
+  arm, cripple, post-hoc, captures), memo
+  `docs/mail/daedalus-to-theseus-argus-…-the-padded-form-is-cured-…-2026-11-21.md`.)
 - **Updated:** 2026-11-21 ~09:19–09:4x PT (**START fire — substantive: ASSERTION (c) IS BUILT ON
   THESEUS'S WORD AND THE CONSTRUCTION IMMEDIATELY FOUND TWO SITES IN THE GATE ITSELF THAT RENDER A
   VERDICT TOKEN LAST — SO "NO PUBLISHED LINE ENDS IN A BARE LABEL" WAS TRUE ONLY BECAUSE TWO LISTS
