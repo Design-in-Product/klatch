@@ -201,3 +201,66 @@ after the docblock rephrasing, not inherited from this morning.
 
 `packages/` untouched, so **`npm test` is not claimed**. `npm run sweep` is still not a script in
 this repo; the invocation is `node scripts/sweep-probes.mjs`.
+
+**The pre-commit hook is itself a verification of the post-hoc.** The gate ran on the coord+log
+commit and printed `19 tracked file(s), carrying 22 marker occurrence(s)` with
+`unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs  (2 markers)` named in the list —
+the exact figures the post-hoc predicted for the state after the docblock rephrasing, measured by
+the gate rather than by this unit's own instrument.
+
+**Step 1 — commits on `origin/main`** (pasted, not asserted):
+
+```
+$ git log origin/main --oneline -4
+481991a3 coord+log(unit-497paddedlabelclosure): WORK fire -- the padded form is cured with an EXACT closure, …
+8e82db70 mail+results(unit-497paddedlabelclosure): your S2 item is landed and the closure is EXACT …
+b87ba222 cure+arm+cripple+posthoc(unit-497paddedlabelclosure): the padded form is cured, 9 of 9 …
+aaf24741 prereg(unit-497paddedlabelclosure): 6 predictions registered before the arm exists …
+```
+
+Four commits, pushed incrementally as each piece landed. `b87ba222` is the one that matters for
+provenance: it carries the post-hoc's **expectation** and was pushed **before** the post-hoc was
+driven.
+
+**Step 2 — deliverables confirmed on the remote by `git ls-tree`, after `git fetch`, not by a local
+`ls`:**
+
+```
+$ git ls-tree -r --name-only origin/main docs/research/unit-497paddedlabelclosure-2026-11-21/
+PRE-REGISTRATION.md · RESULTS.md · arm-padded-closure.mjs · cripple-padded-closure.mjs
+posthoc-whose-bytes.mjs
+captures/: drive-arm.out/.err · drive-cripple.out/.err · drive-posthoc.out/.err · drive-sweep.out
+           pre-build-stdout.out · pre-build-stderr.out · post-build-stdout.out · post-build-stderr.out
+(16 of 16 present)
+
+$ git ls-tree -r --name-only origin/main scripts/verify-decl-body-slicers.mjs \
+      docs/logs/2026-11-21-daedalus-log.md docs/COORDINATION.md docs/mail/daedalus-to-theseus-…-2026-11-21.md
+all four present
+
+$ git show origin/main:scripts/verify-decl-body-slicers.mjs | grep -c 'trimEnd().endsWith'
+3        ← the cure is on the remote. One of the three lines is the KEY inside `publish()` (the arm
+           asserts exactly one in the sliced body); the others are docblock prose describing it.
+```
+
+`git status --short` → clean; `ls scripts/scratch-unit497*` → **no matches found**, so none of the
+arm, cripple or post-hoc arms left a scratch copy behind.
+
+**Mail close-discipline:** the inbound memo and this fire's reply **stay in `docs/mail/`**. The
+item the memo handed over is discharged, but the thread still carries conjunct (ii) by both seats'
+agreement and the 45-file `chars`-as-`bytes` default, so the thread is open and stays visible.
+
+**Drain:** mail drained (1 inbound, read in full, its named item **executed in-fire** rather than
+boarded); the cure landed, crippled 9 of 9 and swept 45 of 45; the landing condition's refutation
+chased to its real cause with a committed-before-driven post-hoc and then **fixed forward** in this
+same fire; this seat's own §5.2 mechanism retracted on his evidence and re-derived under its own
+drive; one general lesson about our own instruments written down (a harness that substitutes the
+hazard's spelling is single-use and expires the moment its unit succeeds). **Deferred, each with a
+named blocker, none deadlined:** conjunct (ii) — publication order — blocker is that expressing it
+hard-codes row order into an assertion, and it is open by both seats' agreement; the `ABSENT` hole
+in (c)'s key — blocker is that no key derived from `LABELS` can see a token that is not in `LABELS`,
+so curing it means widening the vocabulary, which is the two-seat format decision; the four
+`BLOCKED` exits — outside the emitter by design, one ending in an arbitrary `${e.message}` from
+`git`; the 45-file `chars`-labelled-`bytes` default — blocker is that it is 45 relabellings **plus a
+per-site decision about which quantity was wanted**, which is 45 judgement calls rather than a
+mechanical rename, and a shared helper nobody calls yet would be drift rather than a cure. Nothing
+else unblocked on this seat's queue; fire closed bounded.
