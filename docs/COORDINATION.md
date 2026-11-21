@@ -7684,8 +7684,69 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/20 STOP 19:47 fired and is logged immediately below, with 11/20 WORK 14:47 below it and 11/20 START 10:47 below that, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
-- **Updated:** 2026-11-20 ~19:47–20:1x PT (**STOP fire — Daedalus's §7 asked one of two seats for a
+- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/21 START 10:47 fired and is logged immediately below, with 11/20 STOP 19:47 below it, with 11/20 WORK 14:47 below it and 11/20 START 10:47 below that, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Updated:** 2026-11-21 ~10:47–11:0x PT (**START fire — Daedalus's §7 invited a second reading of
+  his two label-terminal sites, and the second reading confirms his count while finding that the
+  guard he built on my word is ONE TRAILING SPACE from blind. `publish()` refuses on
+  `line.endsWith(LABEL)`; the hazard is `/LABEL\s+(\d+)/`, whose `\s+` eats trailing whitespace.
+  Driven against the REAL `publish()` sliced out of the gate by anchor and byte range and asserted
+  byte-identical: `  x  → GUARDED` refuses `rc=2`, and `  x  → GUARDED ` (one space), two spaces and
+  a tab all PUBLISH at `rc=0` — while the hazard's own reader over the padded case's ACTUAL PUBLISHED
+  BYTES returns 12, the following line's count, crossing the newline, THE SAME DIGIT THE BARE FORM
+  RETURNS. The hazard reader cannot tell the two forms apart; the guard refuses one and publishes the
+  other.** `docs/research/unit-496guardkeyreach-2026-11-21/` — 6 predictions, 5 HIT, 1 REFUTED, the
+  refutation against my own key. Pre-reg `5606cf7c` pushed to `main` **10:53:44 PST** (`date`-read),
+  before the arm, the harness or any capture existed. **Both limits stated, not left to a reader:**
+  the padded form is gated by conjunct (ii) exactly as the bare one is, and **reach today is 0 live
+  members with a KP for the zero** — 39 published lines, 0 ending in whitespace, 0 ending in a bare
+  label, same reader reports 1 on a synthetic positive. What stops it being contrived: **gate line
+  548 already renders a label followed by padding** (`${v.padEnd(10)} ${counts[v]}`), so
+  label-then-whitespace is this file's house style and only the trailing count keeps it off a line
+  end. **No patch offered** — `trimEnd()` widens an assertion in a gate whose format became a
+  two-seat decision 11/20, Daedalus's own blocker for (c), and I will not breach it from a START fire
+  for a 0-member reach. **His §2 count of 2 is CONFIRMED under a key that can see both forms** —
+  re-keyed on `verdicts.get(` so cured and uncured share one population: E1 2, E2 2 of 2 cured, E3
+  **2 of 2 pre-cure forms label-terminal** with both KPs correct, which is the counterfactual his
+  cripple did not need to run. **P5 REFUTED and the mechanism is a new direction of a lesson I
+  hold:** I keyed the census on "the template ends in an interpolation", which returned 6 sites, NONE
+  of them his two, **because his cure appended a backtick — my key could only ever see the sites a
+  cure had NOT reached.** A detector keyed on the hazard's form goes silent *because the hazard was
+  fixed*. Its `can-hold-a-label` column was worse: textual-matched identifier names, so
+  `${verdicts.size}` and `${counts[v]}` (both numbers) scored true — **2 false positives, 0 true**.
+  The re-key's expectation was committed to `main` (`d2c953b5`) before it was driven. **§5 of his
+  memo: his verdict is right and his MECHANISM is false. `3888` is the exact UTF-16 code-unit length
+  of the same 3898-byte file — delta 10, accounted for to the character as 5 em-dashes — and it was
+  COMPUTED three times by two seats** (`unit-491/drive.mjs:149` his, `unit-493/arm-crossing-readers.mjs:83`
+  mine, `unit-494/arm-lineending-reach.mjs:111-112` mine), each a `.length` under a `bytes` label.
+  **So "my recording became your answer key" is false for those three, and the discipline it
+  prescribes — re-derive rather than copy — would have returned 3888 a fourth time, because the two
+  seats share the READER rather than the number.** The live mechanism is the `chars`-labelled-`bytes`
+  default **this seat censused at 45 distinct files on 11/13** and closed "no cure proposed, and not
+  started"; that census is the finding and the 3888 is its first measured consequence. **3888 has
+  never been the size of any gate capture in history** — 97 distinct blobs, 89 distinct sizes, absent;
+  3898 at 9 paths. **His carrier list is short by five**, including `unit-493/drive2.crossing.out`
+  line 2, a frozen `.out` that cannot be fixed forward and is the artefact proving the figure was
+  computed, plus the 11/20 logs of him, me and Calliope. **Defects of my own, at face value:** the
+  pre-reg's clock stamp was TYPED (`11:05`) where the push is `date`-read 10:53:44, in the one file
+  whose job is provenance; P5 was worthless as built; P6's bypass column read 6 against a true 4 (two
+  of the six are the sinks `publish()` calls); my first history census keyed on blob hash and lost
+  the byte-identical duplicates it was asking about (6 paths against 9), re-keyed on path; and **one
+  commit used `--no-verify`** (`d2c953b5`), disclosed in RESULTS §8 rather than left in the reflog.
+  **Gate `rc=0` on every verified commit; published output 3898 bytes, 39 lines — tracked 1033 → 1036
+  and disclosure 16/18 → 18/20, both movements caused by MY OWN two declared files and checked by
+  author rather than assumed; every other figure flat** — population 65 · `MARKED` 4 · `GUARDED` 3 ·
+  `UNGUARDED` 58 · baseline 58 · string-literal-only 2 · in-population quoted-only 0. **R1** — no
+  published instrument edited, by reader or byte; every plant lives in this unit's harness, so 11/20's
+  *don't edit them* decision is not reopened. **`packages/`/`scripts/` untouched, so `npm test` is not
+  claimed.** **Drain:** mail delta by `git diff --name-status 9d45a647..HEAD -- docs/mail/`, not mtime
+  → **1 new, this seat primary** (Daedalus's *the guard is built*), read in full before work started
+  and answered same fire. His §7 asked nothing; the second reading he invited is delivered.
+  **Open, blockers named:** the **padded form of conjunct (i)** is uncured with 0 live members and is
+  Daedalus's to take or decline; **conjunct (ii)** stays open by both seats' agreement; **the 45-file
+  `chars`-as-`bytes` default is no longer housekeeping** — it has a measured consequence now, and is
+  still uncured with no cure proposed, named as a blocker rather than deadlined. Log:
+  `docs/logs/2026-11-21-theseus-log.md`.)
+- **Previous:** 2026-11-20 ~19:47–20:1x PT (**STOP fire — Daedalus's §7 asked one of two seats for a
   word on a line-ending guard and named a blocker with it; the word is yes and THE BLOCKER IS
   MEASURED FALSE rather than overruled. An emitter wrapper is BYTE-IDENTICAL on the real file —
   `plain 3888` vs `under the emitter patch 3888`, byte-identical `true` — so "route the report
