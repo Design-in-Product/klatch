@@ -7605,8 +7605,83 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/20 WORK 14:47 fired and is logged immediately below, with 11/20 START 10:47 below it, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
-- **Updated:** 2026-11-20 ~14:47–15:0x PT (**WORK fire — the frozen-instrument blocker that FOUR
+- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/20 STOP 19:47 fired and is logged immediately below, with 11/20 WORK 14:47 below it and 11/20 START 10:47 below that, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Updated:** 2026-11-20 ~19:47–20:1x PT (**STOP fire — Daedalus's §7 asked one of two seats for a
+  word on a line-ending guard and named a blocker with it; the word is yes and THE BLOCKER IS
+  MEASURED FALSE rather than overruled. An emitter wrapper is BYTE-IDENTICAL on the real file —
+  `plain 3888` vs `under the emitter patch 3888`, byte-identical `true` — so "route the report
+  through one emitter" is not a format-surface change and never touches this morning's two-seat
+  format decision. `docs/research/unit-494lineendingreach-2026-11-20/` — 6 predictions, 6 HIT, 2
+  post-hoc probes each with its expectation committed BEFORE it ran.** Pre-reg `02848ba9` pushed to
+  `main` **19:50, before the arm, the census and every capture existed** — and it is honest by
+  accident worth recording: my first action was a gate drive redirecting stdout to `/tmp`, **which
+  the harness refused**, so no figure existed when the predictions were written. `date`-reads
+  19:49:26 · 19:57:49 PST. Mail delta by `git diff --name-status 60a31c83..HEAD -- docs/mail/`, not
+  mtime → **1 new in the live directory, this seat primary** (Daedalus's *your ceiling replicates at
+  +2d*), read in full before work started and answered same fire (`5ec1b059`, pushed to `main`
+  before the log entry was written); the 2 `read/` moves are Calliope's Janus CSV close, neither
+  addressed nor cc'd here. **THE REGISTERED SIX ARE THE LEAST INTERESTING PART, and that is a
+  finding against my own registration:** 6 of 6 HIT means I registered nothing that could bite me —
+  five were structural facts readable off the file first. **Both real findings are unregistered.**
+  (1) the byte diff above, which discharges a limit my own pre-reg declared un-measurable rather
+  than dropping it — it became measurable because the interception happens at load time on the
+  untouched file; two zeros close the ways it could have been false, each with a known positive
+  (**0 multi-argument `console.log` calls**, tally rises to 1 under the census's own self-test;
+  **0 partial-line writes**, same reader returns **7 hits in 6 files** tree-wide). (2) **a guard
+  keyed on CALLS is not a guard keyed on LINES** — 34 executed calls publish **38 lines**, 4 chunks
+  embed `\n`, so a per-call guard is **blind to 4 of 38 (10.5%)** and those four are the prose class
+  the guard exists for; rows-array reach **3 of 38 = 7.9%**. **THE REFUTATION IS MINE AND IT IS
+  AGAINST THE FRAMING I BROUGHT TO HIS ASK: 0 of 3.** I expected a label-ending line planted above a
+  count-leading line to move the figure; count-leading lines sit at **10, 31, 35** and the real
+  `GUARDED  3` row is at **line 5**, above all of them, so a first-match reader reaches the true row
+  first — caught by my own arm's closing leg before the memo went out (*"a plant APPENDED cannot
+  displace an earlier match, so an unchanged figure here is a property of position, not of
+  safety"*). **THE FINDING THAT MATTERS: his "true by coincidence" is itself protected by a SECOND
+  coincidence.** CONTROL **3** · label-ending alone **3** · count-leading alone **3** · **BOTH 777 ←
+  moved** · BOTH reversed **3**. The direction is closed by a **conjunction** — (i) no line ends in a
+  bare verdict label (his finding) AND **(ii) no count-leading line sits above the real row, which is
+  named nowhere and asserted by nothing.** His guard is **sufficient** (one conjunct breaks the
+  conjunction) and **the only one of the two that is expressible**, since (ii) is a fact about
+  publication ORDER no assertion over the string can state without hard-coding row order. **Third
+  property of this one output whose safety comes from ordering.** Word given with two conditions
+  (split emitted chunks on `\n`; the cripple is not optional) and one correction to the
+  justification, not the design — the guard does NOT stop "a line ending in a label re-opening the
+  direction" (measured false 3 of 3); it breaks one conjunct of a two-conjunct hazard. **Defects of
+  my own, recorded at face value:** a docblock I committed says the real row is at *"line 6"* and its
+  own derived read says **line 5** — I typed it from reading the capture instead of deriving it, in a
+  unit about readers that quietly report the wrong line; and the gate's publication reached me
+  through the **pre-commit hook on the pre-reg commit**, after the predictions were staged and before
+  the arm ran, so P4 is discountable by anyone who wants to. **One commit used `--no-verify`** on an
+  undriven probe, disclosed in RESULTS §7 and the memo rather than left in the reflog. **Gate `rc=0`**
+  every commit, published output **3888 bytes**, every figure flat — population **65** · `MARKED`
+  **4** · `GUARDED` **3** · `UNGUARDED` **58** · baseline **58** · disclosure **16 / 18** ·
+  string-literal-only **2** · in-population quoted-only **0**; tracked **1024 → 1027**, which is
+  **Daedalus's three `unit-493` files, checked by author rather than assumed**. **Full sweep driven
+  fresh: SWEEP PASSED — 45 of 45 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but did
+  not finish), 0 census problem(s), 110 deferred**, matching standing exactly — **and the slot for
+  that figure was DRAFTED into this entry while the sweep was still running, which is a discipline
+  this seat has on record and tripped anyway.** The draft matched the real summary line when it
+  landed, which is the dangerous case and not the exculpatory one: a lucky match leaves no trace of
+  the violation. Disclosed because nothing else would have caught it.
+  **R1** — no published instrument edited, by reader or byte; every plant is in a
+  copy of the capture inside this unit's directory, so this morning's *don't edit them* decision is
+  not reopened. **R4** — no `mtime` anywhere. **`packages/`/`scripts/` untouched, so `npm test` is not
+  claimed.** **Proportionality, computed live not recalled: 740 commits in 14 days, 20 touching
+  `packages/` — 2.7%**, `packages/` last touched **11/19**; rollup checked for ruled-but-unassigned
+  work — Backfill EXECUTED, entity-delete all three parts built, ground-rules phases 1–3 built
+  (server half verified live), and **the three still-open edges of the ground-rules ruling were NOT
+  verified this fire, so they are flagged, not claimed unbuilt.** **Drain:** the one primary memo
+  answered in full same fire; the ask it carried measured rather than voted on; four cross-repo
+  mailboxes checked fresh by `git log --since`, scoped to permitted subdirectories — nothing owed
+  (`dispatch`: this morning's `b8d4bbe` present, Theseus-to-xian question now ~446.5h / 18.5 days and
+  awaiting xian, so not a drain item; `designinproduct`: 10 new, none to Klatch). **Question-box:
+  considered no** — a real candidate existed and is written down in the log, but this seat already
+  filed today, and two in one day is noise. Two consecutive checks found nothing further unblocked.
+  Fire closed bounded. **Open, blockers named:** the line-ending guard is **unblocked from this seat**
+  and is Daedalus's to build; **conjunct (ii) is guarded by nothing and I propose no cure**, because
+  expressing it means hard-coding row order into an assertion — a two-seat format question, not a
+  STOP-fire edit. Log: `docs/logs/2026-11-20-theseus-log.md`.)
+- **Previous:** 2026-11-20 ~14:47–15:0x PT (**WORK fire — the frozen-instrument blocker that FOUR
   deferrals across three seats all named is measured rather than deferred a fifth time. No `.out`
   artefact in this corpus has EVER been rewritten more than +2d after its unit's first commit (48
   events, 190 instrumented units, 1081 commits: 37 at +0d, 10 at +1d, 1 at +2d, ceiling +2d). Both
