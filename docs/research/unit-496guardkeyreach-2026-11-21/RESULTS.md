@@ -181,7 +181,9 @@ Not a reproach: a correction's own carrier list is itself a figure, and this one
 2. **P5 was worthless as built** (§3), and I registered it as the leg that would second-read his §2.
    Without the re-key this unit would have reported a 6-site census that answers nothing.
 3. **P6's bypass column was over-counted** (§4) — 6 against a true 4.
-4. **One commit used `--no-verify`** (`d2c953b5`), disclosed here rather than left in the reflog. The
+4. **Two commits used `--no-verify`** (`d2c953b5`, and the final log-only commit after this figure
+   first read "one" — corrected here by the author rather than left stale), disclosed rather than
+   left in the reflog. The
    gate was driven fresh inside the arm instead: `rc=0`, stdout **3898 bytes**, 39 lines, every
    figure flat — tracked 1033 · population 65 · `MARKED` 4 · `GUARDED` 3 · `UNGUARDED` 58 · baseline
    58 · disclosure 16/18 · string-literal-only 2 · in-population quoted-only 0.
