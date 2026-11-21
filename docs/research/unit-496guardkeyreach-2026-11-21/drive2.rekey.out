@@ -1,0 +1,24 @@
+=== unit-496 post-hoc: verdict-terminal emit sites, re-keyed so cured and uncured share a key ===
+  emit/emitErr statements: 26
+  of those, rendering a verdict via `verdicts.get(`: 2
+
+  line  fn       tail of template                                            after-verdict  cured
+   677  emit     `      ${f}  → \`${verdicts.get(f)}\``                      "\\`"          true
+   705  emitErr  `      ${f}  → now \`${verdicts.get(f) ?? 'ABSENT'}\``      "\\`"          true
+
+  E1 verdict-bearing sites : 2
+  E2 cured (a literal backtick after the verdict): 2 of 2
+
+  E3 counterfactual: the SAME template with the cure's backticks removed, rendered:
+      line 677:
+        as shipped (cured) : "      scripts/lib/decl-body.mjs  → \\`GUARDED\\`"  label-terminal=false
+        backticks removed  : "      scripts/lib/decl-body.mjs  → GUARDED"  label-terminal=true
+      line 705:
+        as shipped (cured) : "  scripts/lib/decl-body.mjs  → now \\`GUARDED\\`"  label-terminal=false
+        backticks removed  : "      scripts/lib/decl-body.mjs  → now GUARDED"  label-terminal=true
+
+  E3 pre-cure forms that are label-terminal: 2 of 2
+  KP (negative): the cured form must NOT be label-terminal → false (must be false)
+  KP (positive): the bare form must BE label-terminal → true (must be true)
+
+=== end post-hoc ===
