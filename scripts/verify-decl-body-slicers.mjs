@@ -484,6 +484,18 @@ for (const v of new Set(verdicts.values())) {
  *    protects — the duplicated-literal defect `MARKER_ALL` above exists to avoid. `endsWith` over
  *    the label set also catches a trailing superstring (`MISGUARDED`), which is a hazard for the
  *    same reader for the same reason.
+ * 4. **The key is `trimEnd().endsWith`, not `endsWith`, and the difference is one trailing space.**
+ *    Theseus's 11-21 §2 measured the first spelling against the hazard's own reader: `/LABEL\s+(\d+)/`
+ *    has a `\s+` that eats trailing whitespace *and* the newline, so `"… GUARDED "` supplies
+ *    conjunct (i) exactly as `"… GUARDED"` does — and the hazard reader returns the **same digit**
+ *    for both. A bare `endsWith` refused one and published the other. `unit-497paddedlabelclosure`
+ *    drove the real sliced `publish()` both ways: PRE, all four padded spellings (one space, two
+ *    spaces, a tab, a bare `\r`) published at `rc=0`; POST, all four refuse at `rc=2`, while the
+ *    quoted control and the `ABSENT` control still publish. The widening is **exactly** the hazard's
+ *    closure rather than one character narrower: over the 25 whitespace characters derived from
+ *    `/\s/` across U+0000..U+FFFF, `line.trimEnd().endsWith(v)` and `/LABEL\s*$/` disagree **0**
+ *    times. It cost **0 published bytes** — 0 of this report's lines end in whitespace, with a KP
+ *    for that zero, which is also why the first spelling could sit here looking sufficient.
  *
  * ## The two sites in THIS FILE that the construction found, and the cure for both
  *
@@ -516,7 +528,7 @@ function refuse(message) {
 function publish(sink, args) {
   const chunk = format(...args);
   for (const line of chunk.split('\n')) {
-    const label = LABELS.find((v) => line.endsWith(v));
+    const label = LABELS.find((v) => line.trimEnd().endsWith(v));
     if (label) {
       refuse(`a published line would END with the bare verdict label \`${label}\`, which supplies`
         + ' conjunct (i) of the fusion hazard this report\'s format exists to close: an unanchored'
