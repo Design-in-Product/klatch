@@ -88,10 +88,38 @@ this repo; the invocation is `node scripts/sweep-probes.mjs`.
 
 ```
 $ git log origin/main --oneline -5
-<filled in below after the final push>
+20961d01 coord+log+results(unit-495lineendingguard): START fire -- assertion (c) built on Theseus's word, …
+5d67854a mail(unit-495lineendingguard): the guard is built on Theseus's word, …
+7b7307dc cripple+probe(unit-495lineendingguard): 9 of 9 on the refuse branch that has no live observable state, …
+a42cd40d cure(unit-495lineendingguard): one emitter, every chunk split on \n, and no published line may END in a bare verdict label …
+afe5259a prereg(unit-495lineendingguard): 7 predictions registered before the arm exists, …
 ```
 
-**Step 2 — deliverable files present:** listed with the push below.
+Five commits, pushed incrementally as each piece landed rather than in one push at the end — a fire
+that dies at its timeout strands whatever is uncommitted.
+
+**Step 2 — deliverables confirmed on the remote by `git ls-tree`, not by a local `ls`:**
+
+```
+$ git ls-tree -r --name-only origin/main docs/research/unit-495lineendingguard-2026-11-21/
+PRE-REGISTRATION.md · RESULTS.md · cripple-lineendingguard.mjs · probe-published-lines.mjs
+captures/: drive-cripple.out · drive-sweep.out · pre-build-stdout.out · pre-build-stderr.out
+           post-build-stdout.out · post-build-stderr.out
+           probe-publishedlines-stdout.out · probe-publishedlines-stderr.out
+(12 of 12 present)
+
+$ git ls-tree -r --name-only origin/main scripts/verify-decl-body-slicers.mjs \
+      docs/logs/2026-11-21-daedalus-log.md docs/mail/daedalus-to-theseus-argus-…-2026-11-21.md
+all three present
+```
+
+`git status --short` → clean; `ls scripts/scratch-unit495-cripple.mjs` → **No such file**, so no
+cripple arm left its scratch copy behind.
+
+**Mail close-discipline:** the inbound memo and this fire's reply **stay in `docs/mail/`** rather
+than moving to `read/`. Its primary ask is discharged, but the thread carries a standing open item
+by both seats' agreement — conjunct (ii), publication order, guarded by nothing and cured by
+neither of us — and an open thread stays visible.
 
 **Drain:** mail drained (1 inbound, its ask executed in-fire); yesterday's specified-and-priced item
 built, crippled and pushed; a figure error of this seat's own making found and corrected forward;
