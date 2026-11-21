@@ -1,0 +1,55 @@
+unit-498closureatthegate — arm
+
+## slice provenance (the subject is the real `publish()`, not a re-typing)
+  sliced body: 833 bytes (Buffer.byteLength) / 833 UTF-16 code units
+  occurrences in file: 1  start offset: 37472  (declaration head at 37443)
+  byte-identical to the file span: true   live form in the tree: POST (cured)
+
+## P1 — the derived set, re-derived over the FULL range with a `u`-flagged reader
+  his scope  U+0000..U+FFFF   members: 25
+  full range U+0000..U+10FFFF members: 25   astral members: 0
+  the set: U+0009 U+000A U+000B U+000C U+000D U+0020 U+00A0 U+1680 U+2000 U+2001 U+2002 U+2003 U+2004 U+2005 U+2006 U+2007 U+2008 U+2009 U+200A U+2028 U+2029 U+202F U+205F U+3000 U+FEFF
+
+## P2 — set-level equality, with the verdict label stripped OFF the test
+  code points scanned: 1114112
+  disagreements between /\s/.test(c) and c.trimEnd() === '': 0
+  POSITIVE CONTROL — members reporting TRUE on both sides: 25 of 25
+  trailing RUN case (his leg appends one char): 625 ordered pairs, disagreements or false cells: 0
+
+## P3 / P4 — set-complete at the GATE, against the real sliced `publish()`
+  kp-bare                  PRE: rc=2 REFUSED   POST: rc=2 REFUSED
+  control-absent-terminal  POST: rc=0 published
+
+  U+0009   PRE: rc=0 published 14 B    POST: rc=2 REFUSED     quoted-POST: rc=0 published 16 B    DIFFERENTIAL
+  U+000A   PRE: rc=2 REFUSED           POST: rc=2 REFUSED     quoted-POST: rc=0 published 16 B    vacuous (PRE refuses too)
+  U+000B   PRE: rc=0 published 14 B    POST: rc=2 REFUSED     quoted-POST: rc=0 published 16 B    DIFFERENTIAL
+  U+000C   PRE: rc=0 published 14 B    POST: rc=2 REFUSED     quoted-POST: rc=0 published 16 B    DIFFERENTIAL
+  U+000D   PRE: rc=0 published 14 B    POST: rc=2 REFUSED     quoted-POST: rc=0 published 16 B    DIFFERENTIAL
+  U+0020   PRE: rc=0 published 14 B    POST: rc=2 REFUSED     quoted-POST: rc=0 published 16 B    DIFFERENTIAL
+  U+00A0   PRE: rc=0 published 15 B    POST: rc=2 REFUSED     quoted-POST: rc=0 published 17 B    DIFFERENTIAL
+  U+1680   PRE: rc=0 published 16 B    POST: rc=2 REFUSED     quoted-POST: rc=0 published 18 B    DIFFERENTIAL
+  U+2000   PRE: rc=0 published 16 B    POST: rc=2 REFUSED     quoted-POST: rc=0 published 18 B    DIFFERENTIAL
+  U+2001   PRE: rc=0 published 16 B    POST: rc=2 REFUSED     quoted-POST: rc=0 published 18 B    DIFFERENTIAL
+  U+2002   PRE: rc=0 published 16 B    POST: rc=2 REFUSED     quoted-POST: rc=0 published 18 B    DIFFERENTIAL
+  U+2003   PRE: rc=0 published 16 B    POST: rc=2 REFUSED     quoted-POST: rc=0 published 18 B    DIFFERENTIAL
+  U+2004   PRE: rc=0 published 16 B    POST: rc=2 REFUSED     quoted-POST: rc=0 published 18 B    DIFFERENTIAL
+  U+2005   PRE: rc=0 published 16 B    POST: rc=2 REFUSED     quoted-POST: rc=0 published 18 B    DIFFERENTIAL
+  U+2006   PRE: rc=0 published 16 B    POST: rc=2 REFUSED     quoted-POST: rc=0 published 18 B    DIFFERENTIAL
+  U+2007   PRE: rc=0 published 16 B    POST: rc=2 REFUSED     quoted-POST: rc=0 published 18 B    DIFFERENTIAL
+  U+2008   PRE: rc=0 published 16 B    POST: rc=2 REFUSED     quoted-POST: rc=0 published 18 B    DIFFERENTIAL
+  U+2009   PRE: rc=0 published 16 B    POST: rc=2 REFUSED     quoted-POST: rc=0 published 18 B    DIFFERENTIAL
+  U+200A   PRE: rc=0 published 16 B    POST: rc=2 REFUSED     quoted-POST: rc=0 published 18 B    DIFFERENTIAL
+  U+2028   PRE: rc=0 published 16 B    POST: rc=2 REFUSED     quoted-POST: rc=0 published 18 B    DIFFERENTIAL
+  U+2029   PRE: rc=0 published 16 B    POST: rc=2 REFUSED     quoted-POST: rc=0 published 18 B    DIFFERENTIAL
+  U+202F   PRE: rc=0 published 16 B    POST: rc=2 REFUSED     quoted-POST: rc=0 published 18 B    DIFFERENTIAL
+  U+205F   PRE: rc=0 published 16 B    POST: rc=2 REFUSED     quoted-POST: rc=0 published 18 B    DIFFERENTIAL
+  U+3000   PRE: rc=0 published 16 B    POST: rc=2 REFUSED     quoted-POST: rc=0 published 18 B    DIFFERENTIAL
+  U+FEFF   PRE: rc=0 published 16 B    POST: rc=2 REFUSED     quoted-POST: rc=0 published 18 B    DIFFERENTIAL
+
+  P3: padded refused under POST = 25 of 25
+  P3 control (keeps the above off the refuse-everything zero): quoted `GUARDED` + same char still publishes = 25 of 25
+  P4: cells that GRADE the widening (PRE published, POST refused) = 24 of 25
+  P4: cells that are VACUOUS (PRE refused as well)               = 1  -> U+000A
+  P4: PRE-refused members = U+000A
+
+ARM OK — every gate cell above is a drive of the real sliced `publish()`, and every predicate-level zero above carries a positive control for the zero.

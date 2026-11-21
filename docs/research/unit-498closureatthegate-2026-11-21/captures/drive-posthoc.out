@@ -1,0 +1,36 @@
+unit-498closureatthegate — post-hoc: assertion (c) docblock property 2 (P6)
+
+## the docblock's own figures, parsed off the live file rather than quoted from memory
+  stated: 34 console.log calls · 38 published lines · 4 of 38 not first-of-chunk · rows array 3 of 38
+  measured at: a42cd40d (the unit-495 cure, by `git log -S`)
+
+## today's tree, measured on the REAL gate with a recorder over console.log
+  gate rc=0  stdout 4160 bytes (Buffer.byteLength) / 4150 UTF-16 code units
+  recording reproduces the captured stdout byte-for-byte: true
+  console.log calls (stdout chunks): 37   stderr chunks: 0
+  published stdout lines: 41
+  not the first line of their chunk: 4 of 41 (9.8%)
+  rows array: 3 of 41
+  file-path (self-naming class) lines: 21 of 41
+
+## each stated figure against its re-derivation
+  console.log calls      docblock  34   today  37   STALE (+3)
+  published lines        docblock  38   today  41   STALE (+3)
+  not first-of-chunk     docblock   4   today   4   unchanged
+  rows array             docblock   3   today   3   unchanged
+
+## the separately-registered clause: "all four are section-break prose"
+  non-first-of-chunk lines by kind: {"prose":4}
+  every non-first line is prose: true
+    chunk  7  prose                 "  NOT CHECKED: whether a `brace-slicer-deliberate:` marker is..."
+    chunk 30  prose                 "  NOT A MARKER, and counted as one until this check existed:"
+    chunk 34  prose                 "  0 in-population file(s) carry the marker token ONLY inside ..."
+    chunk 35  prose                 "DECL-BODY SLICERS OK — no new hand-rolled slicer, no stale ba..."
+
+## attribution — did the STATIC emit sites move, or only the loops?
+  emit/emitErr call sites at a42cd40d: 21   at HEAD: 21
+  sites added since a42cd40d: 0
+  sites removed since a42cd40d: 0
+  so every line the two trees do not share came from a LOOP: true
+
+POST-HOC — P6 HIT on staleness; the separately-registered prose clause is HELD.

@@ -1,0 +1,23 @@
+unit-498closureatthegate — cripple on the closure leg (P5)
+
+## provenance — his leg, sliced byte-identically, never edited in place
+  subject: docs/research/unit-497paddedlabelclosure-2026-11-21/arm-padded-closure.mjs
+  span: offsets 8147..8900 (source lines 151..170), 756 bytes (Buffer.byteLength) / 753 UTF-16 code units
+  byte-identical to the file span: true   both anchors unique: true
+  plant literal occurrences, before cripple 2 / after 2  (cripple is reader-only)
+
+## the two drives
+  CONTROL — his leg verbatim
+      ws members 25   disagreements 0   control disagreements 0   controls both-false 6 of 6
+      members on which BOTH predicates are TRUE: 25 of 25
+      his two terms of `ok` satisfied: true      proposed positive control satisfied: true
+  CRIPPLE — `GUARDED` mis-keyed in LABEL_SET *and* in the rival regex, plant untouched
+      ws members 25   disagreements 0   control disagreements 0   controls both-false 6 of 6
+      members on which BOTH predicates are TRUE: 0 of 25
+      his two terms of `ok` satisfied: true      proposed positive control satisfied: false
+
+  P5 — leg reports GREEN under the cripple: true
+  the proposed positive control separates the two drives: true  (control true / cripple false)
+  control reproduces his published figures (25 / 0 / 6 of 6): true
+
+CRIPPLE CONFIRMS P5 — the cripple is applied to a byte-identical slice in an untracked scratch path; his published instrument is unmodified.
