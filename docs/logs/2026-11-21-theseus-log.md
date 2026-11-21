@@ -130,8 +130,58 @@ so 11/20's *don't edit them* decision is not reopened. **`packages/` and `script
 
 The one primary memo read in full before work started and answered in the same fire; the reading its
 §7 invited is delivered rather than acknowledged. Nothing else in the delta names this seat.
+
+**Cross-repo check, and the fetch earned its keep — second instance for this seat.** The four
+permitted mailboxes checked by `git log --since` against the LOCAL checkouts reported
+**"nothing since my last fire" in all four**. After `git -C <repo> fetch`, three new mail files
+existed on `origin`:
+
+```
+designinproduct  local d502335 / origin 558f4f7  → 2 files (Themis ↔ another project's agent, ideathon, cc xian)
+dispatch         local 92afcf7 / origin 65eedd3  → 1 file (a dinp signal to dispatch-pm, inbox check)
+mediajunkie      local d695a16 / origin d695a16  → none
+piper-morgan     local b93e7b9f05 / origin 6df9260ada → none
+```
+
+**None names Klatch, this seat, or any Klatch agent, so nothing is owed** — but the un-fetched
+version of this check would have reported four clean repos while three files sat unseen on two
+remotes. *A cross-repo absence claim needs a fetch first* is in my own store; the local answer and
+the fetched answer differed in two of four repos this fire.
 **Open, each with a named blocker:** the padded form of conjunct (i) — uncured, 0 live members,
 Daedalus's to take or decline; conjunct (ii) — unasserted publication order, open by both seats'
 agreement; the 45-file `chars`-as-`bytes` default — uncured since 11/13, now with a measured
 consequence, no cure proposed because it is 45 relabellings plus a per-site decision about which
 quantity was wanted. None deadlined.
+
+### Session wrap verification (required — pasted, not summarised)
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -5`):
+
+```
+6d0f1dca coord+log(unit-496guardkeyreach): START fire -- his two sites confirmed with the counterfactual, …
+d7d010e9 mail+results(unit-496guardkeyreach): your two sites are the two with the counterfactual, …
+d2c953b5 arm+posthoc(unit-496guardkeyreach): the padded form publishes and fuses at 12, …
+5606cf7c prereg(unit-496guardkeyreach): 6 predictions registered before the arm exists, …
+de2d71be log(daedalus): paste the Step-1 and Step-2 remote verification the wrap protocol requires …
+```
+
+**Step 2 — every deliverable confirmed present on the REMOTE by `git ls-tree -r origin/main`, not
+by a local `ls`:** 11 unit artefacts —
+
+```
+docs/research/unit-496guardkeyreach-2026-11-21/PRE-REGISTRATION.md
+docs/research/unit-496guardkeyreach-2026-11-21/RESULTS.md
+docs/research/unit-496guardkeyreach-2026-11-21/probe-guard-key-reach.mjs
+docs/research/unit-496guardkeyreach-2026-11-21/posthoc-verdict-terminal-rekey.mjs
+docs/research/unit-496guardkeyreach-2026-11-21/harness-sliced-publish.mjs
+docs/research/unit-496guardkeyreach-2026-11-21/drive0.arm.out   (+ .err)
+docs/research/unit-496guardkeyreach-2026-11-21/drive1.gate-fresh.out
+docs/research/unit-496guardkeyreach-2026-11-21/drive2.rekey.out (+ .err)
+docs/logs/2026-11-21-theseus-log.md
+docs/mail/theseus-to-daedalus-argus-cc-xian-janus-calliope-iris-your-two-sites-are-the-two-and-the-guard-is-one-trailing-space-from-blind-and-the-3888-was-computed-not-copied-so-re-deriving-it-returns-3888-2026-11-21.md
+```
+
+`git diff origin/main --stat` was **empty**, so the `COORDINATION.md` entry landed on the remote too.
+
+**Step 3 — this log is pushed last**, in its own commit, after Steps 1 and 2 were run and pasted
+above. Nothing in this fire is claimed as delivered: the wrapper owns delivery and logs the outcome.
