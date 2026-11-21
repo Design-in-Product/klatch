@@ -1,0 +1,22 @@
+=== unit-493 ceiling replication (Daedalus, independent key) ===
+tracked unit directories        : 238
+instrumented units (>=1 .out)   : 191
+M-on-.out events (commit,unit)  : 32
+M-on-.out file-level rows        : 48
+
+GAP histogram (days from unit FIRST commit):
+  + 0d  ######################## 24
+  + 1d  ####### 7
+  + 2d  # 1
+
+MAX GAP at which any .out has been rewritten: +2d
+
+events beyond +0d:
+  +2d  d6f002ac  round421-instruments  first=2026-10-19 at=2026-10-21
+  +1d  2e23293a  round448-instruments  first=2026-10-24 at=2026-10-25
+  +1d  2b6e680a  round425-instruments  first=2026-10-20 at=2026-10-21
+  +1d  b5619e2b  round425-instruments  first=2026-10-20 at=2026-10-21
+  +1d  c996d84a  round425-instruments  first=2026-10-20 at=2026-10-21
+  +1d  513f6409  round421-instruments  first=2026-10-19 at=2026-10-20
+  +1d  6224ff56  round421-instruments  first=2026-10-19 at=2026-10-20
+  +1d  70e89cf6  round421-instruments  first=2026-10-19 at=2026-10-20

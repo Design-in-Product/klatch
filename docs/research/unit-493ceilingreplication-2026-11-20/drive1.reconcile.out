@@ -1,0 +1,21 @@
+=== A. instrumented-unit gap ===
+instrumented at b14db238^ (pre Theseus RESULTS commit): 190
+instrumented at HEAD                                  : 191
+unit-492frozenredrive instrumented before : false
+unit-492frozenredrive instrumented at HEAD: true
+units that became instrumented in between: ["unit-492frozenredrive-2026-11-20"]
+
+=== B. event-granularity gap ===
+file-level M-on-.out rows        : 48
+distinct (commit, unit) pairs    : 32
+difference (same-commit siblings): 16
+commits rewriting >1 .out in one unit:
+  4 files  2e23293a  round448-instruments
+  4 files  ba5b1206  round436-instruments
+  3 files  8939ca5c  round436-instruments
+  3 files  f0bedd24  round436-instruments
+  3 files  77bd142c  round398-instruments
+  2 files  cd05c15c  unit-475arrowrefusal-2026-11-18
+  2 files  0332a688  round436-instruments
+  2 files  fb8a12c5  round436-instruments
+  2 files  fd638579  round413-instruments
