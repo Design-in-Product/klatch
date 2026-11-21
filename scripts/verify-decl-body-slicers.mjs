@@ -494,7 +494,33 @@ console.log(`  baseline entries: ${baseline.length}`);
 // `UNGUARDED  58` in the verdict rows above — one label is a suffix of another — which manufactured
 // a `GUARDED 3 → 58` figure move out of an instrument that had not moved by a byte. A label-keyed
 // reader pointed at a number-first line returns NOTHING rather than the wrong row, so the failure is
-// loud instead of silent. **The pre-existing `UNGUARDED`/`GUARDED` instance in the rows above is NOT
+// loud instead of silent.
+//
+// **That sentence is MEASURED TRUE and it is true by coincidence, which is a different claim
+// (`unit-493ceilingreplication`, 11/20 STOP, this seat).** The suspicion under test was that it was
+// simply false: `\s+` crosses a newline, and if it crosses in the count direction — which
+// `unit-491` §2 measured at 3 — it crosses in the label direction too. **P5 REFUTED.** Over a fresh
+// capture, **0 of 4** label-keyed matches cross a newline, so no label-keyed reader returns a digit
+// off another line, and **0 crossing matches of any kind land on a number-first report line** (P6
+// HIT). The claim survives in content and in reach.
+//
+// **The reason it survives is an adjacency nothing here asserts: no published line ENDS with a bare
+// verdict label** — every verdict row is `LABEL<pad>count`, and no prose line happens to end in one.
+// Measured, not assumed: the arm prints every such line and the list is **empty**. Assertion (a)
+// below guards suffix ORDER and (b) guards the label SET; **neither guards line endings**, so one
+// prose line ending in a label, or one row printed label-last, silently re-opens the label direction
+// the way count-descending order opened it in `unit-486markerstale` §5. **Specified and not built
+// here**: the guard wants the report routed through one emitter so it checks the PUBLISHED STRING
+// rather than the rows array — a guard on the array cannot see a prose line — plus a cripple, since
+// the refuse branch has no live observable state. Blocker: that is a format-surface change to a file
+// whose format became a two-seat decision today, not a quiet edit inside a STOP fire.
+//
+// **And the count direction is 3 of 3, not the 1 of 1 the comment above discloses.** Same fresh
+// capture, first-match reachable in every case: `/(\d+)\s+MARKED/` → **65** (the population line,
+// two lines up), `/(\d+)\s+GUARDED/` → **4** (`MARKED`'s count), `/(\d+)\s+UNGUARDED/` → **3**
+// (`GUARDED`'s count). Every count-keyed reader of this partition reads the PRECEDING row's number.
+// Fixed order cures the label direction for every reader that exists and cures the count direction
+// for none of them; the cure for an unanchored reader is still anchoring. **The pre-existing `UNGUARDED`/`GUARDED` instance in the rows above is NOT
 // cured here** — reformatting this gate's published partition would move every captured drive's
 // comparability — and is reported by `posthoc-label-substring.mjs` in this unit instead.
 if (deadMarkers.length) {
@@ -536,7 +562,10 @@ if (quotedOnly.length) {
 //
 // Number-first, no bare count after a label, for `unit-486markerstale` §5's reason — `/GUARDED\s+
 // (\d+)/` matches inside `UNGUARDED  58`, so a label-keyed reader pointed at a number-first line
-// returns NOTHING rather than the wrong row. The failure is loud instead of silent.
+// returns NOTHING rather than the wrong row. The failure is loud instead of silent. **Measured true
+// and true by coincidence** — `unit-493ceilingreplication` P5/P6, and the full statement is in the
+// Format note above: what makes it true is that no published line ends with a bare verdict label,
+// and nothing in this gate asserts that.
 console.log(`\n  ${inPopQuotedOnly.length} in-population file(s) carry the marker token ONLY inside`
   + ' a string literal, so they are NOT exempt (re-keyed 2026-11-20: `MARKED` requires a marker'
   + ' DECLARED in a comment, not merely present in the bytes). A member of this class used to be'

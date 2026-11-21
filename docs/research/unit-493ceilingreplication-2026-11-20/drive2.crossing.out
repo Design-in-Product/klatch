@@ -1,0 +1,23 @@
+=== unit-493 arm: crossing readers over the gate's published output ===
+captured stdout: 3888 bytes, 39 lines
+
+ALL matches (first-match rows marked *, which is what a real reader returns):
+  * LABEL-KEYED  MARKED     ->    4   labelLine=  4 digitLine=  4   crossing=no   digitOnNumberFirstLine=false
+  * COUNT-KEYED  MARKED     ->   65   labelLine=  4 digitLine=  3   crossing=YES  digitOnNumberFirstLine=false
+  * LABEL-KEYED  GUARDED    ->    3   labelLine=  5 digitLine=  5   crossing=no   digitOnNumberFirstLine=false
+    LABEL-KEYED  GUARDED    ->   58   labelLine=  6 digitLine=  6   crossing=no   digitOnNumberFirstLine=false
+  * COUNT-KEYED  GUARDED    ->    4   labelLine=  5 digitLine=  4   crossing=YES  digitOnNumberFirstLine=false
+  * LABEL-KEYED  UNGUARDED  ->   58   labelLine=  6 digitLine=  6   crossing=no   digitOnNumberFirstLine=false
+  * COUNT-KEYED  UNGUARDED  ->    3   labelLine=  6 digitLine=  5   crossing=YES  digitOnNumberFirstLine=false
+
+--- grades ---
+P4  any crossing match at all                     : HIT  (3 crossing of 7 matches; 3 of them first-match)
+P5  a LABEL-KEYED reader returns a wrong-line digit: REFUTED  (0 crossing label-keyed matches; 0 reachable as first match)
+P6  no crossing match lands on a number-first line : HIT  (0 crossing matches whose digit is on a number-first report line)
+
+number-first lines in the published output (the lines the docblock claim is about):
+  line  10:   16 tracked file(s), carrying 18 marker occurrence(s), are OUT of the population, so those mark
+  line  31:   2 tracked file(s) contain the marker token ONLY inside a string literal — a fixture quoting th
+  line  35:   0 in-population file(s) carry the marker token ONLY inside a string literal, so they are NOT e
+
+lines whose LAST token is a bare verdict label (the adjacency P4 needs):
