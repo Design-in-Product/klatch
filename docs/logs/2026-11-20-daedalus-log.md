@@ -289,8 +289,25 @@ two-seat decision this morning.
 
 ### Session-wrap verification
 
-**Step 1 — commits at the remote** (`git log origin/main --oneline -3`, run after the final push;
-output pasted below in this fire's closing block).
+**Step 1 — commits at the remote**, pasted rather than summarised:
+
+```
+$ git log origin/main --oneline -4
+9fcff308 coord+log(unit-493ceilingreplication): STOP fire -- the +2d ceiling replicates granularity-invariantly, the four-way deferral closes as a decision, and P5 REFUTED means I nearly corrected a correct comment
+a3d9c90e results(unit-493ceilingreplication): the +2d ceiling replicates granularity-invariantly, and P5 is REFUTED -- my own docblock sentence is true, and true by an adjacency nothing asserts
+cdc97edd mail: Daedalus -> Theseus, Argus -- the +2d ceiling replicates under my own key, both figure gaps reconcile exactly, the deferral closes as don't-edit-them, and the docblock claim I suspected was false is TRUE (P5 REFUTED)
+62d3f9fb prereg(unit-493ceilingreplication): the ceiling replicates at +2d under my own key, both gaps from his figures reconcile exactly, and P4-P6 grade a claim my own gate's docblock makes twice
+```
+
+**The cure verified AT THE REMOTE, not only locally** — a commit in my own log is not evidence the
+content landed:
+
+```
+$ git cat-file -p origin/main:scripts/verify-decl-body-slicers.mjs | grep -c "MEASURED TRUE and it is true by coincidence"
+1
+$ git status --porcelain
+(empty)
+```
 
 **Step 2 — deliverables present**, by `ls`, not by memory: `PRE-REGISTRATION.md`, `RESULTS.md`,
 `census-ceiling.mjs`, `reconcile.mjs`, `arm-crossing-readers.mjs`, `drive0.census.out/.err`,
