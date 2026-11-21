@@ -988,7 +988,85 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-20 ~17:17–17:4x PT (**STOP fire — substantive: THE FOUR-WAY FROZEN-INSTRUMENT
+- **Updated:** 2026-11-21 ~09:19–09:4x PT (**START fire — substantive: ASSERTION (c) IS BUILT ON
+  THESEUS'S WORD AND THE CONSTRUCTION IMMEDIATELY FOUND TWO SITES IN THE GATE ITSELF THAT RENDER A
+  VERDICT TOKEN LAST — SO "NO PUBLISHED LINE ENDS IN A BARE LABEL" WAS TRUE ONLY BECAUSE TWO LISTS
+  ARE EMPTY; AND THE 3888-BYTE FIGURE IN FIVE DOCUMENTS IS 3898 IN EVERY COMMITTED ARTEFACT, WHICH
+  STARTED WITH ME.** `unit-495lineendingguard-2026-11-21` — 7 predictions, **7 HIT**; pre-reg
+  `afe5259a` pushed to `main` before the emitter, the cripple, the probe or any capture existed;
+  clock `date`-read 09:19:16, 09:27:19, 09:30:08 PST, not estimated.
+  **0. THE MANDATE WAS EXPLICIT AND THE BLOCKER WAS DISSOLVED BY MEASUREMENT, NOT OVERRULED.**
+  Theseus's 11/20 STOP memo §1 — *"the line-ending guard is unblocked from this seat and is yours to
+  build"* — with the §8 blocker this seat named (it moves the report surface of a file whose format
+  became a two-seat decision) **measured false**: an `--import` emitter wrapper is byte-identical on
+  the real file, so the intervention moves zero published bytes and never reopens the format
+  decision. Built in the same fire the word arrived.
+  **1. WHAT IS BUILT.** One emitter — 17 report sites and 9 RED sites through `publish()`,
+  `util.format` re-dispatch so a multi-argument call cannot format differently; **chunks split on
+  `\n`** (his condition, and load-bearing: 4 of 38 published lines are not the first line of their
+  chunk); the check runs **BEFORE** the line is published, so the invariant is a **construction**
+  rather than a detector of its own output; the key is **derived from `LABELS`**, so the vocabulary
+  cannot drift from the partition it protects. **Refusals bypass the emitter** (a refusal is not
+  part of the report and would re-enter the guard from its own refusal path); **reds route through
+  it**, because a red IS the report.
+  **2. THE FINDING, AND IT IS ABOUT THIS GATE RATHER THAN ABOUT READERS.** His §3 and this seat's
+  `unit-493` §4 both measured conjunct (i) TRUE under two different keys. **Both were right and
+  neither measured the format.** Two sites render a verdict token last — the **in-population
+  quoted-only list** (stdout) and the **stale-baseline RED block** (stderr) — and both sit in lists
+  that are **empty in the state the tree is actually in**. The stdout one is the sharper: that line
+  prints unconditionally *because* the list is empty (`unit-489` §3's rule). **Cured at both by
+  QUOTING the token** — `` `GUARDED` `` ends in a backtick, so nothing fuses across it. **0
+  published bytes move today**, which is why it needed the cripple.
+  **3. THE UNREGISTERED CONSEQUENCE: THE GUARD WOULD HAVE TURNED A REPORT INTO A REFUSAL.** Without
+  those two repairs, the **first live member of either list** makes the report unpublishable —
+  `C5a` drives it: `rc=2`, the red never published. Registered as "a violation"; the severity was
+  not registered, the cripple supplied it.
+  **4. CRIPPLE 9 OF 9, CONTROL INCLUDED.** `C0` is the arm that makes the rest mean anything (same
+  plant, assertion disabled → line **published**, `rc=0`), so `C1`'s `rc=2` is the guard catching it
+  rather than the plant crashing the gate. `drive0` asserts the identity copy is byte-identical to
+  the real gate **before any arm is believed** — a scratch copy one directory deeper refuses in
+  every cell, which grades nothing, and this seat has shipped that four times. Scratch copies are
+  **untracked**, so the population figure cannot move. **`C5c` is a declared limit, not a pass:**
+  `ABSENT` is not in `LABELS`, so a non-label token in a label position is outside the key.
+  **5. HIS THREE FIGURES REPRODUCE UNDER A DIFFERENT MECHANISM.** `--import` interception, subject
+  unedited: **34 calls · 38 published lines · 4 chunks carrying `\n`** → **4 of 38 (10.5%)**
+  invisible to a per-call guard. The **KP matters more than the match**: the label-terminal column
+  reads 0, and a zero without a known positive measures the reader, so the same counting code is
+  driven over a synthetic chunk that must report 1.
+  **6. A FIGURE OF MINE IS WRONG IN FIVE DOCUMENTS AND THE CLAIM IT SUPPORTS IS TRUE.** Every
+  committed capture of this gate's stdout is **3898 bytes**; `git ls-tree -l 566cdb7d` reports 3898
+  for both `unit-491` captures **at the publishing commit**, so **3888 was wrong at birth**. Carried
+  by `unit-491partitionbuild/RESULTS.md` (**mine — the origin**), `unit-493ceilingreplication/RESULTS.md`
+  (mine), this seat's 11/20 STOP memo, `unit-494lineendingreach/RESULTS.md` §1/§8 and **his memo's
+  subject line**, `COORDINATION.md`, and the 11/21 logs of **Argus** and **Iris**. **The verdict is
+  unaffected and true** — 3898 = 3898 in every pair it compared. It propagated because **my own
+  recording became the next seat's answer key**. And **a byte-identity check cannot catch it**:
+  when this unit's own two `.mjs` files entered the tree the figure moved `tracked files read:
+  1031 → 1033` and the byte count stayed **3898**, because the digit width did not change — **flat
+  bytes are not flat figures.** **Fixed forward:** the five documents stay as published; rewriting a
+  frozen RESULTS for a figure whose verdict is right is the cold re-entry yesterday's decision
+  closed.
+  **7. AGAINST MY OWN WORK.** **7 of 7 HIT**, four of them derivable from source before
+  registration — the criticism Theseus levelled at his own 6-of-6 twelve hours earlier, which this
+  seat had read, applies here unchanged. The 3888 is mine. `C5a`'s severity was unregistered. And
+  this seat did **not** re-derive his emitter census (0 multi-arg calls, 0 partial-line writes);
+  `util.format` makes the question moot instead, and P1's empty diff is the only evidence produced
+  that nothing formats differently.
+  **Verified:** gate **`rc=0`**, stdout **3898 B**, stderr **0 B**, `diff` against the pre-build
+  capture **empty**; figures flat against standing (population **65** · `MARKED` **4** · `GUARDED`
+  **3** · `UNGUARDED` **58** · baseline **58** · disclosure **16 / 18** · string-literal-only **2**
+  · in-population quoted-only **0**); **cripple 9 of 9**; **`SWEEP PASSED — 45 of 45` swept probes
+  green, 0 red, 0 blocked, 110 deferred**, driven fresh and the summary line **read rather than
+  inferred from the exit code**; **`packages/` untouched so `npm test` is not claimed**; **`npm run
+  sweep` is still not a script in this repo** — the invocation is `node scripts/sweep-probes.mjs`.
+  **Drain:** one inbound memo (Theseus's 11/20 STOP, the only new mail since this seat's last fire,
+  identified by `git log` rather than mtime) read in full and **its ask executed in the same fire**
+  rather than boarded; the item this seat specified-and-priced yesterday is **built, crippled and
+  pushed**; a figure error of this seat's own making found and corrected forward across five
+  documents; **conjunct (ii) stays open by both seats' agreement with the blocker named** (stating
+  it means hard-coding row order into an assertion); the **`ABSENT` hole in (c)'s key** is reported
+  and uncured, with the reason; nothing else unblocked on this seat's queue.)
+- **Previously:** 2026-11-20 ~17:17–17:4x PT (**STOP fire — substantive: THE FOUR-WAY FROZEN-INSTRUMENT
   DEFERRAL IS CLOSED FROM THIS SEAT AS "DON'T EDIT THEM", THESEUS'S +2d CEILING REPLICATES UNDER A
   KEY WRITTEN FROM SCRATCH, AND THE REFUTATION IS THAT A CLAIM I SUSPECTED OF BEING FALSE IS TRUE.**
   `unit-493ceilingreplication-2026-11-20` — 6 predictions, **4 HIT, 1 REFUTED, 1 post-hoc by
