@@ -1,0 +1,129 @@
+unit-502streampin — arm
+  gate sha256 f97300f26b9c96fb2c248aaba51b290f520f29ed272ea48710289d16c6541619
+
+FAMILY A — the `newOnes` limb, OUT OF SAMPLE (predictions from the literal-derived law)
+  A1 plant docs/research/unit-502streampin-2026-11-22/plants/pppppppppppppppppppppppppp-a1.mjs  (length 83)
+     rc=1 stdout 4005B/39L stderr 748B/8L
+  HIT   P1.A1.rc  A1 exit code
+          predicted 1
+          measured  1
+  HIT   P1.A1.errbytes  A1 stderr bytes = 658 + (83 + 7)
+          predicted 748
+          measured  748
+  HIT   P1.A1.errlines  A1 stderr lines = 7 + 1
+          predicted 8
+          measured  8
+  MISS  P1.A1.outbytes  A1 stdout bytes
+          predicted 3935
+          measured  4005
+  MISS  P1.A1.outlines  A1 stdout lines
+          predicted 38
+          measured  39
+  A2 plants 84, 85, 86 chars
+     rc=1 stdout 4005B/39L stderr 1024B/11L
+  HIT   P1.A2.rc  A2 exit code
+          predicted 1
+          measured  1
+  MISS  P1.A2.errbytes  A2 stderr bytes = 658 + (84+7)+(85+7)+(86+7)
+          predicted 934
+          measured  1024
+  MISS  P1.A2.errlines  A2 stderr lines = 7 + 3
+          predicted 10
+          measured  11
+  MISS  P1.A2.outbytes  A2 stdout bytes
+          predicted 3935
+          measured  4005
+  HIT   P2.count  A1/A2 stdout byte COUNT equal
+          predicted true
+          measured  true
+  HIT   P2.sha  A1/A2 stdout BYTES differ (sha256)
+          predicted true
+          measured  true
+  HIT   P2.difflines  A1 vs A2 differing published lines
+          predicted 3
+          measured  3
+       L2  "  tracked files read: 1056"  ->  "  tracked files read: 1059"   widths 26 / 26
+       L3  "  population (compares against both braces): 66"  ->  "  population (compares against both braces): 69"   widths 47 / 47
+       L6  "      UNGUARDED  59"  ->  "      UNGUARDED  62"   widths 19 / 19
+
+  REVERSAL of family A, asserted rather than assumed:
+     plants surviving on disk: 0  (expected 0)
+     plant lines in `git status --porcelain`: 0  (expected 0)
+
+FAMILY B — the `stale` limb, which no seat has ever driven
+  scratch dir is .gitignore'd: true  (git check-ignore rc=0)
+  HIT   P3.copy.sha  the driven copy is byte-identical to the tracked gate
+          predicted f97300f26b9c96fb2c248aaba51b290f520f29ed272ea48710289d16c6541619
+          measured  f97300f26b9c96fb2c248aaba51b290f520f29ed272ea48710289d16c6541619
+     rc=1 stdout 800B/9L stderr 292B/5L
+  HIT   P3.B1.rc  B1 exit code
+          predicted 1
+          measured  1
+  HIT   P3.B1.errbytes  B1 stderr bytes = 227 + (40 + 25)
+          predicted 292
+          measured  292
+  HIT   P3.B1.errlines  B1 stderr lines = 4 + 1
+          predicted 5
+          measured  5
+  HIT   P3.B1.refusals  B1 refusals (rc would be 2)
+          predicted 0
+          measured  0
+     B1 stderr, verbatim:
+       | 
+       | RED — 1 stale baseline entry/entries (no longer unguarded, or gone):
+       |       eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea  → now `ABSENT`
+       | 
+       |   Remove them from the baseline. An exemption for a file that no longer needs one cannot be told apart from a live one by the next seat to read the list.
+       | 
+     rc=1 stdout 800B/9L stderr 425B/7L
+  HIT   P3.B2.rc  B2 exit code
+          predicted 1
+          measured  1
+  HIT   P3.B2.errbytes  B2 stderr bytes = 227 + (65+66+67)
+          predicted 425
+          measured  425
+  HIT   P3.B2.errlines  B2 stderr lines = 4 + 3
+          predicted 7
+          measured  7
+
+FAMILY C — the `ABSENT` hole in assertion (c)'s label key, and its known positive
+  HIT   P4.cripple.sites  the entry literal appears exactly once in the gate source
+          predicted 1
+          measured  1
+     rc=1 stdout 800B/9L stderr 290B/5L
+  HIT   P4.C1.rc  C1 (unquoted, ABSENT) exit code — the hole: it PUBLISHES
+          predicted 1
+          measured  1
+  HIT   P4.C1.publishes  C1 stderr carries the stale block
+          predicted true
+          measured  true
+  HIT   P4.C1.refused  C1 refusal
+          predicted false
+          measured  false
+     rc=2 stdout 800B/9L stderr 695B/3L
+  HIT   P4.C2.rc  C2 (unquoted, a real LABEL) exit code — the known positive
+          predicted 2
+          measured  2
+  HIT   P4.C2.refused  C2 refuses, naming the label
+          predicted true
+          measured  true
+     C2 stderr, verbatim:
+       | 
+       | RED — 1 stale baseline entry/entries (no longer unguarded, or gone):
+       | verify-decl-body-slicers: BLOCKED — a published line would END with the bare verdict label `GUARDED`, which supplies conjunct (i) of the fusion hazard this report's format exists to close: an unanchored `/LABEL\s+(\d+)/` reader whose `\s+` crosses the newline would read the FOLLOWING line's leading number as this label's count. The offending line, quoted so this very message is not label-terminal itself: "      eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea  → now GUARDED". Cure it where it is emitted by quoting the token (`` `GUARDED` `` ends in a backtick, so nothing can fuse across it), not by relaxing this check.
+       | 
+
+  scratch tree removed: true
+
+P7 — hazards, measured
+  arm-stream-pin.mjs: 0 literal occurrence(s) of the exemption token
+  PRE-REGISTRATION.md: 0 literal occurrence(s) of the exemption token
+  (derive-limb-laws.mjs necessarily QUOTES the token — it slices the route-2 literal by its own
+   text — so it joins the quoted-only list by construction. See RESULTS P7.)
+
+SUMMARY — 21 of 26 graded assertions HIT
+  MISS  P1.A1.outbytes  predicted 3935  measured 4005
+  MISS  P1.A1.outlines  predicted 38  measured 39
+  MISS  P1.A2.errbytes  predicted 934  measured 1024
+  MISS  P1.A2.errlines  predicted 10  measured 11
+  MISS  P1.A2.outbytes  predicted 3935  measured 4005

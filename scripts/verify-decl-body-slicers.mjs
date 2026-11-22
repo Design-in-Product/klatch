@@ -481,7 +481,10 @@ for (const v of new Set(verdicts.values())) {
  *    guard over the rows array cannot see. A per-CALL guard is blind to them. (The rows array is 3.)
  *
  *    **The two load-bearing figures above — 4 and 3 — are the whole property, and they are stable.
- *    The DENOMINATORS are not, and are therefore pinned rather than stated flat.** At
+ *    The DENOMINATORS are not, and are therefore pinned rather than stated flat.** **Every figure
+ *    in this paragraph is about the GREEN branch's STDOUT and about nothing else** — named here
+ *    because until 2026-11-22 no figure about this gate said which of its two streams it came from,
+ *    and three of them are different documents (see WHICH STREAM, AND HOW TO PIN IT, below). At
  *    `unit-499livekeypositivecontrol-2026-11-21` (2026-11-21, measured through a
  *    `process.stdout.write` recorder, and independently at a `console.log` recorder by Theseus the
  *    same day — both seams returned the same four numbers): **37 calls · 41 published lines · 4
@@ -543,6 +546,60 @@ for (const v of new Set(verdicts.values())) {
  *      member of that class, exactly one cell of every set-complete drive is vacuous — and it looks
  *      exactly like a pass.**
  *
+ * ## WHICH STREAM, AND HOW TO PIN IT (two-seat call, 2026-11-22)
+ *
+ * **This gate publishes two documents, not two views of one.** `emit → console.log` is a report
+ * about the TREE; `emitErr → console.error` is a report about the DEFECTS. Every figure either
+ * seat had published about this gate up to 2026-11-22 — `4160` bytes, `41` lines, `21 of 41`, the
+ * whole pin — came from the green branch's stdout, and nobody had captured the red branch at all
+ * until `unit-500trackedcomplement` (this seat, 11-22 START).
+ *
+ * **A BYTE COUNT IS NOT A PIN ON EITHER STREAM.** Measured, not argued:
+ *
+ * - Two seats' green stdout captures taken a day apart are both `4160 B` and are **not the same
+ *   bytes** — they differ on `tracked files read` and no reader notices, because the digit width
+ *   did not change (Theseus, `unit-501redbranchpin` §1). The coincidence does not keep the figure
+ *   alive across a tree change; **it makes the figure unable to report one.** Five consecutive
+ *   units have now landed inside that window.
+ * - The red branch's stdout moved `3935 → 4005 B` **inside a single fire**, because the unit
+ *   measuring the gate contained the exemption token in a string and therefore joined the
+ *   `quotedOnly` list the report prints — a published LIST line, not a digit
+ *   (`unit-502streampin` P1, refuted as written, this seat, 11-22 WORK). The same mechanism as
+ *   the `21 of 41` caveat, arriving on the other stream.
+ * - A third stdout document exists: at an empty population the report is `800 B / 9 lines`.
+ *
+ * **What IS pinnable, by stream:**
+ *
+ * - **stdout — pin the NAMED figures, each read by name**, never the byte or line count:
+ *   `tracked files read`, `population`, `MARKED` / `GUARDED` / `UNGUARDED`, `baseline entries`.
+ *   These are the figures a reader actually wants, and a tree change moves them *visibly*.
+ * - **stderr — pin a CONTENT predicate and a LINE FORMULA**, both of which are functions of the
+ *   defects rather than of the tree, and both of which are **derivable from the branch literals
+ *   below rather than fitted to captures**:
+ *
+ *       newOnes limb:  bytes = 658 + SUM(len(path_i) + 7)      lines = 7 + N
+ *       stale limb:    bytes = 227 + SUM(len(path_i) + 25)     lines = 4 + N   (all ABSENT)
+ *
+ *   Both hold for `N ≤ 9` only — the header interpolates the count, so a two-digit N adds a byte.
+ *   The byte terms are **path-length-dependent by construction**, which is why Theseus's `742` and
+ *   his own `722` are the same drive at a 20-character-longer path and neither is a property of
+ *   this gate. The two laws were derived from the literals and then graded out of sample: 6 of 6
+ *   newOnes drives and 4 of 4 stale drives agree to the byte, across two seats and three units.
+ *   Content predicate for a red: the path is named, the count is announced, and all three clearing
+ *   routes print in preference order; the integers outside the path lines are `[1, 1, 2, 3]`
+ *   (Theseus, `unit-501` §2–§3, keyed on integers rather than words because route 3 prints the
+ *   baseline PATH and a word-keyed predicate would be wrong about this stderr by construction).
+ * - **Named figures are ABSENT from stderr and PRESENT on stdout; the plant path and the announced
+ *   count are PRESENT on stderr and ABSENT from stdout.** Green stdout does not identify *which*
+ *   file reddened — two different plants produce byte-identical green-side rows.
+ *
+ * **Both red limbs are now measured.** The `stale` limb — `baseline.filter(…!== 'UNGUARDED')`, a
+ * listed entry that no longer qualifies or is gone — had never been driven by anyone before
+ * `unit-502streampin`, because reaching it means changing the baseline the tracked tree holds. It
+ * is reachable without touching a tracked file: drive a **byte-identical copy** of this file from
+ * an already-`.gitignore`d directory, where `git -C <ROOT> ls-files` is empty, the population is
+ * empty, and every baseline entry renders `ABSENT`.
+ *
  * ## The two sites in THIS FILE that the construction found, and the cure for both
  *
  * Both render a verdict token LAST, and both live in lists that are **empty in the state the tree
@@ -552,6 +609,16 @@ for (const v of new Set(verdicts.values())) {
  * - **stderr:** the stale-baseline red block, whose `→ now <verdict>` is label-terminal for an
  *   entry that still exists and is NOT for one that is gone (`ABSENT` is not in `LABELS` — a
  *   declared limit of keying on the partition's own vocabulary, not an oversight).
+ *
+ *   **That declared limit is no longer only declared — it is measured, with its known positive**
+ *   (`unit-502streampin` P4, 11-22 WORK; a reader-only cripple of the entry literal, applied to an
+ *   ignored byte-identical copy and never to this file). Un-quote the token and: with the verdict
+ *   `ABSENT` the report **publishes at `rc=1`** — the hole — while with a real label in the same
+ *   position the guard **refuses at `rc=2`** and names it. The second cell is why the first one
+ *   means anything: *publishes* on its own cannot be told from *the guard never runs on stderr*,
+ *   and this gate's own history is full of that shape. So the hole is **real and latent**: the
+ *   quoting closes it, the key cannot, and a future seat who un-quotes for tidiness re-opens it
+ *   in the one branch where the key is blind.
  *
  * The cure at both sites is to **quote the token**: `` `GUARDED` `` ends in a backtick, so no
  * label-keyed reader can fuse across it and `endsWith` is false. The refusal below quotes the

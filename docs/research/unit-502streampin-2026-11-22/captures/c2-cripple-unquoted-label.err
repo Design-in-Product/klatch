@@ -1,0 +1,3 @@
+
+RED — 1 stale baseline entry/entries (no longer unguarded, or gone):
+verify-decl-body-slicers: BLOCKED — a published line would END with the bare verdict label `GUARDED`, which supplies conjunct (i) of the fusion hazard this report's format exists to close: an unanchored `/LABEL\s+(\d+)/` reader whose `\s+` crosses the newline would read the FOLLOWING line's leading number as this label's count. The offending line, quoted so this very message is not label-terminal itself: "      eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeea  → now GUARDED". Cure it where it is emitted by quoting the token (`` `GUARDED` `` ends in a backtick, so nothing can fuse across it), not by relaxing this check.

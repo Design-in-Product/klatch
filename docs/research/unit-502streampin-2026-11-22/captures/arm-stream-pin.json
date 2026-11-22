@@ -1,0 +1,184 @@
+[
+  {
+    "id": "P1.A1.rc",
+    "claim": "A1 exit code",
+    "predicted": 1,
+    "measured": 1,
+    "hit": true
+  },
+  {
+    "id": "P1.A1.errbytes",
+    "claim": "A1 stderr bytes = 658 + (83 + 7)",
+    "predicted": 748,
+    "measured": 748,
+    "hit": true
+  },
+  {
+    "id": "P1.A1.errlines",
+    "claim": "A1 stderr lines = 7 + 1",
+    "predicted": 8,
+    "measured": 8,
+    "hit": true
+  },
+  {
+    "id": "P1.A1.outbytes",
+    "claim": "A1 stdout bytes",
+    "predicted": 3935,
+    "measured": 4005,
+    "hit": false
+  },
+  {
+    "id": "P1.A1.outlines",
+    "claim": "A1 stdout lines",
+    "predicted": 38,
+    "measured": 39,
+    "hit": false
+  },
+  {
+    "id": "P1.A2.rc",
+    "claim": "A2 exit code",
+    "predicted": 1,
+    "measured": 1,
+    "hit": true
+  },
+  {
+    "id": "P1.A2.errbytes",
+    "claim": "A2 stderr bytes = 658 + (84+7)+(85+7)+(86+7)",
+    "predicted": 934,
+    "measured": 1024,
+    "hit": false
+  },
+  {
+    "id": "P1.A2.errlines",
+    "claim": "A2 stderr lines = 7 + 3",
+    "predicted": 10,
+    "measured": 11,
+    "hit": false
+  },
+  {
+    "id": "P1.A2.outbytes",
+    "claim": "A2 stdout bytes",
+    "predicted": 3935,
+    "measured": 4005,
+    "hit": false
+  },
+  {
+    "id": "P2.count",
+    "claim": "A1/A2 stdout byte COUNT equal",
+    "predicted": true,
+    "measured": true,
+    "hit": true
+  },
+  {
+    "id": "P2.sha",
+    "claim": "A1/A2 stdout BYTES differ (sha256)",
+    "predicted": true,
+    "measured": true,
+    "hit": true
+  },
+  {
+    "id": "P2.difflines",
+    "claim": "A1 vs A2 differing published lines",
+    "predicted": 3,
+    "measured": 3,
+    "hit": true
+  },
+  {
+    "id": "P3.copy.sha",
+    "claim": "the driven copy is byte-identical to the tracked gate",
+    "predicted": "f97300f26b9c96fb2c248aaba51b290f520f29ed272ea48710289d16c6541619",
+    "measured": "f97300f26b9c96fb2c248aaba51b290f520f29ed272ea48710289d16c6541619",
+    "hit": true
+  },
+  {
+    "id": "P3.B1.rc",
+    "claim": "B1 exit code",
+    "predicted": 1,
+    "measured": 1,
+    "hit": true
+  },
+  {
+    "id": "P3.B1.errbytes",
+    "claim": "B1 stderr bytes = 227 + (40 + 25)",
+    "predicted": 292,
+    "measured": 292,
+    "hit": true
+  },
+  {
+    "id": "P3.B1.errlines",
+    "claim": "B1 stderr lines = 4 + 1",
+    "predicted": 5,
+    "measured": 5,
+    "hit": true
+  },
+  {
+    "id": "P3.B1.refusals",
+    "claim": "B1 refusals (rc would be 2)",
+    "predicted": 0,
+    "measured": 0,
+    "hit": true
+  },
+  {
+    "id": "P3.B2.rc",
+    "claim": "B2 exit code",
+    "predicted": 1,
+    "measured": 1,
+    "hit": true
+  },
+  {
+    "id": "P3.B2.errbytes",
+    "claim": "B2 stderr bytes = 227 + (65+66+67)",
+    "predicted": 425,
+    "measured": 425,
+    "hit": true
+  },
+  {
+    "id": "P3.B2.errlines",
+    "claim": "B2 stderr lines = 4 + 3",
+    "predicted": 7,
+    "measured": 7,
+    "hit": true
+  },
+  {
+    "id": "P4.cripple.sites",
+    "claim": "the entry literal appears exactly once in the gate source",
+    "predicted": 1,
+    "measured": 1,
+    "hit": true
+  },
+  {
+    "id": "P4.C1.rc",
+    "claim": "C1 (unquoted, ABSENT) exit code — the hole: it PUBLISHES",
+    "predicted": 1,
+    "measured": 1,
+    "hit": true
+  },
+  {
+    "id": "P4.C1.publishes",
+    "claim": "C1 stderr carries the stale block",
+    "predicted": true,
+    "measured": true,
+    "hit": true
+  },
+  {
+    "id": "P4.C1.refused",
+    "claim": "C1 refusal",
+    "predicted": false,
+    "measured": false,
+    "hit": true
+  },
+  {
+    "id": "P4.C2.rc",
+    "claim": "C2 (unquoted, a real LABEL) exit code — the known positive",
+    "predicted": 2,
+    "measured": 2,
+    "hit": true
+  },
+  {
+    "id": "P4.C2.refused",
+    "claim": "C2 refuses, naming the label",
+    "predicted": true,
+    "measured": true,
+    "hit": true
+  }
+]

@@ -1,0 +1,15 @@
+{
+  "head": "d3d0818e5460635eaca8d171122da583887a0c0b",
+  "rc": 0,
+  "bytes": 4230,
+  "lines": 42,
+  "sha": "c1ff558dabefd5595360f3fee5d6bb2b4f3421f7db148894ac1942a726aa4d22",
+  "named": {
+    "read": "1055",
+    "pop": "65",
+    "marked": "4",
+    "guarded": "3",
+    "unguarded": "58",
+    "baseline": "58"
+  }
+}

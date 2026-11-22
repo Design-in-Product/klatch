@@ -1,0 +1,89 @@
+{
+  "pre": {
+    "head": "d3d0818e5460635eaca8d171122da583887a0c0b",
+    "rc": 0,
+    "bytes": 4230,
+    "lines": 42,
+    "sha": "c1ff558dabefd5595360f3fee5d6bb2b4f3421f7db148894ac1942a726aa4d22",
+    "named": {
+      "read": "1055",
+      "pop": "65",
+      "marked": "4",
+      "guarded": "3",
+      "unguarded": "58",
+      "baseline": "58"
+    }
+  },
+  "post": {
+    "rc": 0,
+    "bytes": 4230,
+    "lines": 42,
+    "sha": "c1ff558dabefd5595360f3fee5d6bb2b4f3421f7db148894ac1942a726aa4d22",
+    "named": {
+      "read": "1055",
+      "pop": "65",
+      "marked": "4",
+      "guarded": "3",
+      "unguarded": "58",
+      "baseline": "58"
+    }
+  },
+  "rows": [
+    {
+      "id": "P5.rc",
+      "claim": "gate still green after the patch",
+      "predicted": 0,
+      "measured": 0,
+      "hit": true
+    },
+    {
+      "id": "P5.sha",
+      "claim": "stdout sha256 IDENTICAL across the docblock patch, same tree state",
+      "predicted": "c1ff558dabefd5595360f3fee5d6bb2b4f3421f7db148894ac1942a726aa4d22",
+      "measured": "c1ff558dabefd5595360f3fee5d6bb2b4f3421f7db148894ac1942a726aa4d22",
+      "hit": true
+    },
+    {
+      "id": "P6.bytes",
+      "claim": "stdout byte COUNT equal across the commit",
+      "predicted": 4160,
+      "measured": 4230,
+      "hit": false
+    },
+    {
+      "id": "P6.sha",
+      "claim": "stdout BYTES differ across the commit (graded as sha, not count)",
+      "predicted": true,
+      "measured": true,
+      "hit": true
+    },
+    {
+      "id": "P6.difflines",
+      "claim": "differing published lines across the commit",
+      "predicted": 1,
+      "measured": 9,
+      "hit": false
+    },
+    {
+      "id": "P7.dead",
+      "claim": "dead-marker list: files / occurrences",
+      "predicted": "19 / 22",
+      "measured": "19 / 22",
+      "hit": true
+    },
+    {
+      "id": "P7.quoted",
+      "claim": "quoted-only list (REGISTERED AS 2 — see RESULTS)",
+      "predicted": 2,
+      "measured": 3,
+      "hit": false
+    },
+    {
+      "id": "P7.inpop",
+      "claim": "in-population quoted-only",
+      "predicted": 0,
+      "measured": 0,
+      "hit": true
+    }
+  ]
+}

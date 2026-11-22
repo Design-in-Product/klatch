@@ -1,0 +1,49 @@
+posthoc-why-both-figures-moved — a declared post-hoc; the MISSes stand as registered
+
+MISS 1  P1.A2.errbytes / P1.A2.errlines — the LAW held; my PREDICTION'S POPULATION did not.
+  entry lines actually published by the drive: 4
+     len  83  docs/research/unit-502streampin-2026-11-22/plants/pppppppppppppppppppppppppp-a1.mjs
+     len  84  docs/research/unit-502streampin-2026-11-22/plants/pppppppppppppppppppppppppp-a2x.mjs
+     len  85  docs/research/unit-502streampin-2026-11-22/plants/ppppppppppppppppppppppppppp-a2y.mjs
+     len  86  docs/research/unit-502streampin-2026-11-22/plants/pppppppppppppppppppppppppppp-a2z.mjs
+  the literal-derived law at the ACTUAL population: 658 + SUM(len + 7) = 1024
+  measured stderr: 1024   lines 11   law lines 7 + 4 = 11
+  LAW AGREES AT THE TRUE N: true
+
+  Cause, and it is a defect in the ARM and not in the law: family A never reset A1's plant
+  before adding A2's three, so the A2 drive ran at N=4. I registered "N=3" from the arm I
+  intended to write rather than from the arm I wrote — the prediction asserted a population
+  the drive then chose for itself. The registered prediction is REFUTED; the law it was
+  derived from now has a fifth and sixth in-sample datapoint (N=1 at 83, N=4) and zero
+  disagreements across six.
+
+MISS 2  P1.A*.outbytes / outlines — the published RED stdout figure went stale inside this
+        fire, and THIS UNIT'S OWN FILE is what moved it.
+  measured A1 red stdout: 4005 B / 39 lines
+  predicted from the figure BOTH seats published hours earlier: 3935 B / 38 lines
+  delta: 70 B, +1 line
+     the new published line: "      docs/research/unit-502streampin-2026-11-22/derive-limb-laws.mjs"  (70 B with its newline)
+
+  Mechanism: `derive-limb-laws.mjs` SLICES the gate's route-2 literal, so it necessarily
+  contains the exemption token inside a string. The gate's own `quotedOnly` list — printed
+  unconditionally — therefore grew from 2 files to 3, and a published LIST line is a path.
+  The gate says this about itself in the IRREDUCIBLE LIMIT block: "Every file that measures
+  this gate has to quote its key, so the instrument is the author of this class."
+
+  This is the SAME mechanism as the `21 of 41 published lines are paths` caveat, reaching the
+  RED report rather than the green one — and it is the strongest argument available for the
+  pin call, because it arrived as a refutation of my own leg rather than as an argument.
+  A byte figure for the red branch is no more pinnable than one for the green branch: I used
+  a four-hour-old published figure as an answer key and it was already stale.
+
+WHAT HELD, and it is what the recommendation should be keyed on:
+  - stderr bytes/lines: exact, on both limbs, from literals, at N=1, N=4 (newOnes) and
+    N=1, N=3 (stale) — 0 disagreements. stderr is a DEFECT report: its content is a
+    function of the defects, not of the tree.
+  - stdout: every NAMED figure read by name was correct where predicted; only the byte
+    COUNT and the line COUNT failed. stdout is a TREE report.
+  That asymmetry is the pin.
+
+  Footnote, because it bears on the stale limb's own stdout: at an EMPTY population the
+  scratch copy's stdout is 800 B / 9 lines, against 4160 / 41 green and 4005 / 39 red in
+  the real tree. Three different stdout documents from one gate. A byte figure names one.
