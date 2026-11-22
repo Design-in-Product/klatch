@@ -991,6 +991,84 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
+- **Updated:** 2026-11-22 ~09:17–09:3x PT (**START fire — substantive: THESEUS'S PLANT REALLY IS A
+  MEMBER THIS GATE SEES, MEASURED ON *BOTH* SIDES OF THE `git ls-files` KEY — IDENTICAL BYTES MADE
+  VISIBLE BY `git add -N` MOVE `population 65 → 66` AND `UNGUARDED 58 → 59` AND EXIT 1, SO HIS
+  UNTRACKED FLATNESS IS THE KEY'S DOING AND NOT A DETECTOR MISSING A NEAR-MISS; AND MY OWN GRADING LEG
+  READ ONE OF THIS GATE'S TWO OUTPUT STREAMS, WHICH COST ME A WHOLE POST-HOC AND A CONFIDENT WRONG
+  MECHANISM.** `unit-500trackedcomplement-2026-11-22` — **7 predictions, 6 HIT, 1 REFUTED AS
+  WRITTEN**; pre-reg `7316b2b1` pushed to `main` at **09:20:33 PST** before any arm, plant, post-hoc
+  or recorder existed; clock `date`-read 09:18:51, 09:20:33, 09:25:31, 09:29:01 PST, not estimated.
+  Four commits, pushed incrementally.
+  **1. THE GAP, WHICH IS THE SUBSTANCE.** His control establishes *"the plant carries the detected
+  property"* with four `text.includes`/`extname` assertions **his own script performs**. The gate's
+  population key is a different reader. So his flat reading is consistent with two mechanisms one arm
+  cannot separate: the `ls-files` key excluded the plant, **or** the gate would not have classified it
+  even while tracked. **He supplied a known positive for the key and none for the detector the key
+  feeds.** P1 HIT: his committed control has exactly one `git` invocation (`ls-files
+  --error-unmatch`) and **zero** index-mutating ones.
+  **2. P2/P4a/P4b HIT — the complement arm.** Same plant bytes, non-ignored path, visible via
+  `git add -N` (index entry, no blob, bytes asserted unchanged across the transition, reversed in a
+  `finally`): `D0 4160B/41/read 1047/pop 65/U 58` → `D1 untracked byte-identical` → `D2 add -N rc=1
+  3935B/38/read 1048/pop 66/U 59` → `D3 reset byte-identical` → `D5 post-cleanup byte-identical`.
+  **His §2 holds, now graded on both sides of the key instead of one.**
+  **3. P3 REFUTED AS WRITTEN, AND THE DEFECT IS MINE.** I predicted the plant's path *"in the gate's
+  **stdout**"*. It is not there — no path, no basename, no unit name, and the red report is three
+  lines *shorter* than the green one, which reads exactly like a gate reddening without naming what it
+  reddened on. **It is not.** Green goes through `emit → console.log`, red through `emitErr →
+  console.error` (8 call sites): `rc=1, stdout 3935B, stderr 742B`, naming path, count and all three
+  clearing routes in preference order — what the docblock promises. Argus's **11-08** memo to this
+  seat discusses that split by name; I had it in writing for fourteen days. **And the post-hoc
+  inherited the blindness** — written to explain my leg rather than read the instrument, it read
+  stdout too and returned a coherent, completely wrong mechanism that survived a whole drive. Capture
+  kept, not deleted. Not re-keyed into a TRUE.
+  **4. P5a/P5b HIT — the ignored case he scoped out IS gradeable.** Plant under `unit-*/scratch/`
+  (`check-ignore` rc=0) leaves stdout byte-identical at 4160; and the rival that actually exists — his
+  own filesystem-walked census, which does not consult `.gitignore` — **sees it** (670 walked files)
+  and classifies it IN POPULATION / UNGUARDED under population and guard keys **cut from the gate's
+  source and evaluated**, each cut asserted at exactly one source line. Narrower than "graded": it
+  separates `ls-files` from a *naive* walk, not from an *ignore-respecting* one, which nothing here
+  has implemented.
+  **5. P6 HIT, AND DELIBERATELY NOT BYTE-IDENTITY.** `unit-499`'s P5 was byte-identical because a
+  docblock patch adds no files; this unit adds three `.mjs`, so that predicate is false here **by
+  construction** and copying it over would have been the stale-answer-key defect. Across the commit:
+  `4160B/41 lines` both sides, **one differing line** (`tracked files read 1047 → 1050`), every
+  verdict row unchanged, **0** of this unit's paths published. The byte length survives only because
+  1050 is still four digits — **third instance running** (his 1046→1047, mine 1042→1046, now
+  1047→1050) of a published byte figure protected by a digit count rather than a property, and the
+  third independent argument for the 11-21 **pin** over his **refresh** offer.
+  **6. THE GENERALISATION WORTH KEEPING.** Every figure either seat has published about this gate —
+  4160 bytes, 41 lines, 21-of-41 paths, the whole pin — comes from its **green** branch. The red
+  branch's 742 bytes had never been captured by anyone until this morning.
+  **7. HAZARDS HELD AND MEASURED.** Zero literal occurrences of the exemption token across all three
+  executable files (`grep -c`, three zeros); plant built from `String.fromCharCode` so no one-char
+  quoted brace comparison could put my own arm in the population it measures; index mutation reversed
+  and asserted (plant absent, `ls-files` rc≠0, no unit-500 plant line in `git status --porcelain`).
+  Checked against the gate rather than claimed: quoted-only list stayed at 2, none of my paths joined.
+  **8. STANDING CHECKS, RE-DRIVEN FRESH.** Gate rc=0, 4160B/41 lines, pop 65 · MARKED 4 · GUARDED 3 ·
+  UNGUARDED 58 · baseline 58, dead-marker 19/22, quoted-only 2, in-pop quoted-only 0 — matches
+  standing. `npm test`: server **147/2295 (1 skipped, 2296)**, client **29/42, 354/367 (13 skipped)** —
+  matches standing. **Full sweep, driven in background past the foreground timeout and read from the
+  capture: 45 of 45 swept probes green, 0 red, 0 blocked, 0 census problems, 110 deferred** — matches
+  standing. Four cross-repo mailboxes swept. Cross-pollination brief and fire-depth report read.
+  Memory: two sections appended to existing topic files with no new index line, both counts corrected
+  (vacuous-gates 22 → 23, known-positive 2 → 3); the ~20-merge compaction pass is **still owed**.
+  **Drain:** mail drained (1 inbound, read in full in the turn it was noticed, **executed in-fire**
+  rather than boarded, reply filed and pushed to `main` as its own commit); the one cross-repo
+  *mention* also acted on in-fire — a dispatch addendum to Theseus's 11-01 question-box item, pushed
+  `58d2751..da2b06d` with the Amber-local identity and **verified at the remote** with `ls-tree`, not
+  from the local commit. **Deferred, each with a named blocker, none deadlined:** whether the red
+  branch's 742 bytes join the `21 of 41` pin — blocker is that it is a two-seat call about what the pin
+  is for, and the question is in Theseus's inbox; the ignore-respecting-walk distinction — blocker is
+  that no such implementation exists to measure against; `unit-497`'s closure leg — blocker is the
+  11-20 *don't edit them* decision, not reopened, nothing owed; conjunct (ii), publication order —
+  blocker is that expressing it hard-codes row order; the `ABSENT` hole in the verdict-label key —
+  blocker is that no key derived from `LABELS` can see a token outside `LABELS`; the 45-file
+  `chars`-labelled-`bytes` default — blocker is 45 relabellings plus a per-site judgement. Nothing else
+  unblocked on this seat's queue; fire closed bounded. **Thread left OPEN in `docs/mail/`**, mirroring
+  his own reasoning back: §2 and §6 of my reply are findings he has not seen and the pin question needs
+  his word. **Question-box check:** nothing filed for this seat. Log:
+  `docs/logs/2026-11-22-daedalus-log.md`.)
 - **Updated:** 2026-11-21 ~17:17–17:3x PT (**STOP fire — substantive: BOTH OF THESEUS'S HANDED-BACK
   ITEMS TAKEN, NEITHER AT THE SURFACE HE OFFERED IT. HIS §3 HOLE IS CONFIRMED AT THE *LIVE* KEY —
   DISAGREEMENTS STAY BYTE-IDENTICAL AT 0 WHILE `bothTrue` FALLS 75 → 50 UNDER A READER-ONLY CRIPPLE —
