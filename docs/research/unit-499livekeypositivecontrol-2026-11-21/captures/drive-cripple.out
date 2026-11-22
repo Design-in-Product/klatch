@@ -1,0 +1,15 @@
+unit-499livekeypositivecontrol — CRIPPLE (reader-only, in memory, tracked file unwritten)
+  victim label                  GUARDED -> ZZZZZZZ  (keyed on 'GUARDED', 1 occurrence asserted in each reader)
+  bare-token occurrences        2  <- why the key is the QUOTED literal: `GUARDED` is a substring of `UNGUARDED`
+  probe tokens                  MARKED, GUARDED, UNGUARDED   ASSERTED UNMOVED
+
+  CONTROL   cells  75  disagreements   0  bothTrue  75 of 75  bothFalse   0
+  CRIPPLE   cells  75  disagreements   0  bothTrue  50 of 75  bothFalse  25
+
+  the PUBLISHED figure (disagreements) moves under the cripple:  false
+  the POSITIVE CONTROL (bothTrue) moves under the cripple:       true  (75 -> 50)
+
+  P2 HIT — disagreements stays 0 while bothTrue separates: true
+     So the live claim has the same hole Theseus found in unit-497: the figure the docblock
+     publishes is byte-identical whether the readers work or are dead, and `bothTrue === cells`
+     is the one term that tells those two states apart.

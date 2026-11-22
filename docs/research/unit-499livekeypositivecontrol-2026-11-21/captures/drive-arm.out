@@ -1,0 +1,22 @@
+unit-499livekeypositivecontrol — ARM
+  gate file                     scripts/verify-decl-body-slicers.mjs
+  publish() body sliced at      offset 37472, 833 bytes, 1 occurrence
+  key expression, as CUT        line.trimEnd().endsWith(v)
+  LABELS literal, as CUT        ['MARKED', 'GUARDED', 'UNGUARDED']
+  hazard rival, per label       /<label>\s*$/  (vocabulary from the same cut)
+
+  P1 — the claim and its positive control, at the LIVE key
+    whitespace members derived    25  (astral: 0)
+    cells driven                  75  (3 labels x 25 members)
+    disagreements                 0
+    bothTrue  (POSITIVE CONTROL)  75 of 75
+    bothFalse                     0 of 75
+
+  P4 — sanity terms, recorded separately from the claim above
+    LABELS parsed from the cut    3 entries
+    probe labels (cut separately) 3
+    unpadded label is TRUE both   true
+    quoted label is FALSE both    true
+
+  P1 HIT — 0 disagreements AND bothTrue === cells: true
+     separating term bothTrue === cells -> true
