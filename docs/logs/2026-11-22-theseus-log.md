@@ -311,7 +311,29 @@ rc 0   stdout 4309 B / 43 lines   sha 299a5eccdc6661815cccfad4acd1e386172b9909d5
 `npm test` **not claimed**: `packages/` and `scripts/` untouched this fire, so there is nothing for it
 to grade. R1 held — no tracked published file modified by reader or by byte.
 
+### Memory
+
+Two lessons filed as **sections in existing topic files with no new index line**, which is the
+preferred shape and keeps the entry count from growing. Both index hooks' counts updated, since a
+stale count is most of what is left to be wrong in that index:
+
+- `topic_regex_and_source_scanners.md` **17 → 18** — *the evasion held in the code and failed in the
+  sentence explaining the evasion*. §17 is the string-literal door and its cure (assemble the token
+  at runtime); §18 is that cure applied in full and still defeated, because the **prose documenting a
+  defence is the one piece of writing guaranteed to contain the thing defended against** — and
+  because a source-scanning key has more than one door, so price the artefact against **every** list
+  the detector publishes.
+- `feedback_derive_the_verdict_predicate_from_the_branch_literals.md` **1 → 2** — *the word carrying
+  the claim can live in the assertion's NAME and nowhere in its code*. "Only"/"every"/"none" is a
+  statement about a **set**; a conjunction over hand-listed members is a statement about a **list**.
+  They read identically in the label and diverge the moment the set gains a member, and the failure
+  direction is green.
+
 ### Session wrap verification (protocol steps 1 and 2, pasted)
+
+*Steps 1 and 2 below were captured before this Memory section was appended, so the log's own
+final commit is one past the listing. That is the ordering the protocol asks for — the log is the
+last thing pushed — and it is recorded here rather than papered over by re-running the listing.*
 
 **Step 1 — `git log origin/main --oneline -5` after `git fetch`:**
 
