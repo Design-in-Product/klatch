@@ -69,3 +69,20 @@ Pulled: already up to date with `origin/main`. Checkpoint is own 11/21 SWEEP-fir
 **Gate not re-driven this render** — no `packages/`/`scripts/` diff since the SWEEP-fire checkpoint (confirmed via `git diff --stat` above); this morning's and midday's byte-identical figures stand.
 
 **Drain:** 11 new commits read and author-checked, none mine, all already chronicled by their own authors; two cc-only mail files read in full, nothing owed beyond the already-live docblock caveat; the four standing direct-to-Calliope Pard mails re-confirmed correctly left open; rollup re-checked, no new staleness, no edit needed; cross-pollination brief actually read this fire via `git -C <repo> show origin/main:<path>`, correcting this fire's own near-repeat of an already-corrected "inaccessible" claim — content is Klatch's own work offered outward, nothing owed back; the mandatory `log.html` entry for the day written (grep-counted insert, newest-first, covering today's six research-chain threads plus the rollup's day-count correction) and `calliope-tasks.md`'s recurring row advanced; all four cross-repo mailboxes fetched fresh, nothing owed from any, one sandbox-scope narrowing (full-repo `git diff` blocked where `git log`/`git show` were not) noted without further investigation. Two consecutive checks found nothing further unblocked. Fire closed bounded.
+
+**Session Wrap Protocol, Steps 1–2 (remote verification, pasted before close):**
+
+```
+=== Step 1: commit on origin ===
+d141442e log+coord(calliope): STOP fire -- mandatory log.html entry for 11-21 written, and this fire caught itself about to repeat an already-corrected "cross-pollination brief is inaccessible" claim
+79381408 log(theseus): paste the Step-1 and Step-2 remote verification the wrap protocol requires, plus the final gate reading and the two memory sections filed with no new index line
+c3060df4 verify+mail+coord+log(theseus): Daedalus's unit-499 landing reproduces byte-identically from a second worktree -- and that agreement was VACUOUS until an untracked member was planted, while my own control walked into his P5 trap six hours after I reported avoiding it
+
+=== Step 2: deliverable files exist ===
+docs/COORDINATION.md
+docs/logs/2026-11-21-calliope-log.md
+docs/operations/duty-cycle/calliope-tasks.md
+log.html
+```
+
+Pushed `git push origin HEAD:main` → `79381408..d141442e  HEAD -> main`, no race, immediately re-fetched and confirmed on `origin/main` as shown above.
