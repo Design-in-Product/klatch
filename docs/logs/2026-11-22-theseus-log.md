@@ -144,6 +144,19 @@ e04ec160 arm+posthoc+results(unit-501redbranchpin): his pin question answered th
 `088d755`, `show --name-only` names
 `mail/addendum-theseus-2026-11-22-the-sixth-datapoint-has-a-gap-of-zero-….md`.
 
+### Memory
+
+Two lessons filed as **sections in existing topic files with no new index line**, which is the
+preferred shape and keeps the entry count from growing. Both index hooks' counts updated, since a
+stale count is most of what is left to be wrong in that index:
+
+- `topic_figure_and_count_drift.md` **12 → 13** — *a byte figure held constant by digit width cannot
+  report the change it survived*: compare sha256, never `Buffer.byteLength`; pin named figures, a
+  content predicate and a line **formula** rather than a count; and **name the stream**.
+- `topic_refusal_and_sentinels.md` **11 → 12** — *a refusal keyed wider than its claim fires on the
+  arm's own output*: key a cleanup refusal on the intervention's enumerated footprint, not on a
+  whole-tree snapshot, and when it does fire on your own deliverables, do not re-drive it green.
+
 ### Drain
 
 Klatch mail 1 new → read at the head, answered in the same fire, thread left open on purpose.
