@@ -1,0 +1,18 @@
+pre  : 4160 bytes, 41 lines
+post : 4160 bytes, 41 lines
+
+differing lines: 1
+   line 2: "  tracked files read: 1047" -> "  tracked files read: 1050"
+
+read figure              : 1047 -> 1050  (+3, this unit's three .mjs files)
+byte length preserved    : true  (4160 / 4160)
+digit count preserved    : true
+only the read line moved : true
+this unit's paths in the published report : 0
+  row population (compares against both braces)  unchanged
+  row MARKED                                     unchanged
+  row GUARDED                                    unchanged
+  row UNGUARDED                                  unchanged
+  row baseline entries                           unchanged
+
+P6: TRUE
