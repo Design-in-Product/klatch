@@ -25,3 +25,21 @@ Nothing owed from any mailbox.
 `calliope-tasks.md`'s mandatory `log.html` item correctly not due this render (last written 11-21 STOP fire, next due tonight's STOP fire). Blocked-on-xian and Watch-items sections re-read, nothing newly triggered.
 
 **Drain:** 3 new commits read and author-checked, none mine; local mail swept, nothing new beyond the four standing correctly-open Pard threads; all four cross-repo mailboxes fetched fresh (one, piper-morgan-product, checked via its `mailboxes/`-scoped log rather than top-level commits, which are unrelated CMS traffic), nothing owed from any; standing blockers and rollup re-derived fresh and unchanged; typecheck, test suites, and census all re-driven fresh and byte-identical to standing. Two consecutive checks found nothing further unblocked. Fire closed bounded.
+
+---
+
+## 12:3x — MID fire
+
+No-op on product, verified not assumed. Checkpoint is own START-fire commit `afae6192`.
+
+`git log afae6192..HEAD --format='%h %an %ci %s'` — 13 new commits, none mine: Argus's START no-op; Daedalus's `unit-500trackedcomplement` chain (6 commits — the complement arm to Theseus's untracked-plant control, 6 of 7 predictions HIT, P3 refuted as written because his own grading leg read the gate's stdout when the red report is published on stderr); Theseus's `unit-501redbranchpin` chain (6 commits — answers Daedalus's own §6 pin question the other way: neither stream's byte count is a pin, since two already-committed captures share one byte count on different content; self-catches a byte-identity/byte-count-identity conflation in his own P4). `git diff --stat afae6192..HEAD -- packages/ scripts/` — empty. No-op on product.
+
+**Mail:** 2 new files since checkpoint, both cc-only to this seat (Daedalus↔Theseus, cc xian/Janus/Calliope/Iris), read in full. Neither poses a question for this seat; each leaves the pin-naming call to the other, explicitly not to Calliope. Both surface (not action) the same dispatch question-box item (Theseus's 11-01 question, now ~495h/20.6 days) with "a no is a fine answer" — a different repo's thread, already visible via the cross-repo check below. Four standing direct-to-Calliope Pard mails (`-2026-10-20.md` ×4) re-checked, still correctly left open per this seat's 2026-11-06 memo — ma-smoke thread boarded as rollup item 3, still open on xian.
+
+**Rollup:** re-read at its own v188 banner — needs-you unchanged at 9. Nothing from today's mail is decision-track.
+
+**Cross-repo, all four fetched fresh and diffed from this morning's START-fire checkpoints:** `designinproduct` (1 new, `b64b1b3`, Themis's 08:38 bulletin — timestamp brackets the START check; content-grepped, 0 `klatch|calliope` hits); `mediajunkie` — 0 new; `piper-morgan-product` — `mailboxes/`'s own log unchanged at `22322f40`, same commit START already read; `dispatch` (2 new — Daedalus's and Theseus's own addenda to the same 11-01 thread just read in the local mail above). Nothing owed from any.
+
+**Gate not re-driven this render** — no `packages/`/`scripts/` diff since the START-fire checkpoint; morning's figures stand (server 147/2295 [1 skipped]; client 29/42, 354/367 [13 skipped]; sweep 45 of 45, census OK).
+
+**Drain:** 13 new commits read and author-checked, none mine, all already chronicled by their own authors; two cc-only mail files read in full, nothing owed; four standing Pard mails re-confirmed correctly left open; rollup re-checked, no new staleness; all four cross-repo mailboxes fetched fresh and diffed from this morning's checkpoints, nothing owed from any. Two consecutive checks found nothing further unblocked. Fire closed bounded.
