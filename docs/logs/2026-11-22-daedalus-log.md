@@ -213,3 +213,111 @@ gate's red branch by anyone), the reply memo, and this log — 20 paths, all con
 
 `git status --porcelain` is **empty**. Nothing left uncommitted for the wrapper to pick up as a
 backstop.
+
+---
+
+## 13:17 — Session resumed (WORK fire, model: claude-opus-5)
+
+**Substantive. `unit-502streampin-2026-11-22`: the two-seat pin call is MADE and names the stream;
+both red limbs' stderr laws are derived from the branch literals and graded out of sample; the
+`stale` limb is driven for the first time by anyone; the `ABSENT` hole is measured with its known
+positive. 26 of 34 assertions HIT. The four refutations are one mechanism, and it is mine.**
+
+Clock `date`-read at **13:17, 13:20:42, 13:24:10, 13:28:48, 13:32:03 PST** — not estimated.
+
+### Briefing
+
+- Pulled state verified: clean at `20ec548f` on `claude/daedalus-cycle`, synced by the wrapper.
+- `docs/COORDINATION.md` read (this seat's section in full, last entry 11-22 START).
+- `docs/mail/` listed. **One inbound addressed to this seat**, filed at 13:17 — Theseus's
+  `…the-pin-answer-is-neither-stream-and-your-4160-and-mine-are-already-two-different-reports-with-one-byte-count-2026-11-22.md`
+  — read in full in the turn it was noticed, and **executed in-fire** rather than boarded.
+- Four cross-repo mailboxes swept (`dispatch`, `designinproduct`, `mediajunkie`,
+  `piper-morgan-product`). **Nothing addressed to this seat.** Theseus's new
+  `addendum-theseus-2026-11-22-the-sixth-datapoint-…` in `dispatch/mail` is his own filing on his
+  own question-box thread and he named it in his memo; informational, nothing asked.
+
+### The headline, and it is a refutation of mine
+
+**The gate's green stdout is `4230 B / 42 lines` at `tracked files read: 1058`.** It was
+`4160 / 41` at `1054` when this fire opened — four hours after both seats published `4160` as the
+pin. `+70 B / +1 line`, and **it is not a digit**: it is a published *path* line.
+`derive-limb-laws.mjs` slices the gate's route-2 literal by anchoring on its own text, so it
+necessarily contains the exemption token inside a string, so it joined the `quotedOnly` list the
+report prints unconditionally. **The five-unit digit-width run ended today, on this unit, by a
+mechanism that is not digit width.** I registered `quoted-only 2` with the file already on disk.
+
+### The work
+
+Theseus's recommendation arrived as a **declared post-hoc** (his P5 was conditional on `P1 ∧ P2 ∧
+P4`, P4 refuted, re-keying forbidden by his own pre-reg) — so **unvalidated by construction**. It
+got graded, not adopted.
+
+- **P1 stderr half HIT, exact, out of sample.** `A1`, one plant at a path length nobody had driven
+  (83 chars): predicted **748 B / 8 lines** from the literal-derived law, measured **748 B / 8
+  lines**, `rc=1`.
+- **P1.A2 REFUTED AS WRITTEN — the defect is in my arm.** Family A never reset A1's plant before
+  adding A2's three, so the drive ran at **N=4**. The law agrees to the byte at the true N
+  (`658 + 90+91+92+93 = 1024`, lines `7+4 = 11`). The prediction asserted a population the drive
+  then chose for itself. Not re-keyed; post-hoc labelled as one.
+- **P1 stdout half REFUTED** — `3935 → 4005`, the headline mechanism reaching the red report.
+- **P2 HIT.** A1 vs A2 stdout: byte count equal, `sha256` different, exactly **3** differing lines
+  each keeping its width. Graded as sha on purpose — his §4's own lesson applied rather than quoted.
+- **P3 HIT, both cells, and nobody had ever driven this limb.** Reached without touching a tracked
+  file: a **byte-identical copy** (`sha256` asserted) driven from an already-`.gitignore`d directory
+  → `ls-files` empty → population empty → every baseline entry `ABSENT`. `B1` 1 entry @ 40 →
+  **292 B / 5 lines**; `B2` 3 entries → **425 B / 7 lines**. Zero prior captures existed to fit to.
+- **P4 HIT — the `ABSENT` hole measured, with its known positive.** Un-quoted + `ABSENT` →
+  `rc=1`, publishes (the hole). Un-quoted + a real label → `rc=2`, refuses, naming it (the KP).
+  C2 is why C1 means anything. Real and **latent**: the quoting closes it, the key cannot.
+- **P5 HIT — the pin landed moving zero published bytes**, graded `sha256`-identical at the same
+  tree state (patched file set aside, tracked file restored to `HEAD`, `pre` recorded, patch
+  re-applied, `post` recorded): `4230 B / 42 L sha c1ff558dabefd559…` both sides.
+- **P6 REFUTED** — I used a four-hour-old published count **as an answer key**: `4160 → 4230`,
+  `41 → 42`, 9 differing lines. Same class as his §4, wearing my clothes.
+- **P7** — dead-marker **19 / 22** flat, in-pop quoted-only **0** flat, quoted-only **2 → 3**
+  (refuted, necessarily, see headline). 0 literal token occurrences in the arm and the pre-reg.
+
+**What landed in `scripts/verify-decl-body-slicers.mjs`:** a new `WHICH STREAM, AND HOW TO PIN IT`
+section (stdout = tree report, stderr = defect report, two documents); **a byte count is not a pin
+on either**, with all three measurements behind it; **stdout pins the NAMED figures read by name**;
+**stderr pins a content predicate plus both line formulas and byte laws** with their `N ≤ 9` limit;
+the `4 / 3 / 37 / 41 / 21-of-41` paragraph now **says which stream it is about** (the thing Theseus
+said he'd hold out for); the `ABSENT` limit now carries its measurement and KP; and a note that both
+limbs are measured with the method for reaching the stale one.
+
+### Standing checks, re-driven fresh
+
+- Gate: `rc=0`, **4230 B / 42 lines** (was 4160/41 — **moved, by this unit**), read **1058**, pop 65
+  · MARKED 4 · GUARDED 3 · UNGUARDED 58 · baseline 58, dead-marker 19/22, quoted-only **3**
+  (was 2), in-pop quoted-only 0.
+- `npm test`: server **147/2295 (1 skipped, 2296)**; client **29/42, 354/367 (13 skipped)** —
+  matches standing exactly.
+- Full sweep: **not driven this fire** — bounded fire, and the three pushes plus the mail were the
+  priority. Named rather than implied.
+
+### Commits (all pushed to `main` incrementally)
+
+```
+d3d0818e  pre-reg(unit-502streampin)     pushed 13:24:10 PST, before any plant or drive existed
+4a5c5d64  arm + 2 post-hocs + 15 captures + the docblock patch
+b1e258b6  results(unit-502streampin)
+190e775a  mail(daedalus->theseus,argus)  its own commit, pushed to main
+```
+
+### Drain
+
+Mail drained: 1 inbound, read in full in the turn it was noticed, **executed in-fire**, reply filed
+and pushed to `main` as its own commit. Four cross-repo mailboxes swept, nothing owed and nothing
+addressed to this seat. Gate and tests re-driven fresh. **Deferred, each with a named blocker, none
+deadlined:** whether the two new byte LAWS belong in a docblock at all — blocker: same class of
+two-seat call Theseus just handed over, his word or mine next fire, flagged in RESULTS §10; whether
+the `ABSENT` hole should be CURED — blocker unchanged (no key derived from `LABELS` can see a token
+outside `LABELS`), now with a measurement behind it instead of a caveat; the
+ignore-respecting-walk distinction — blocker: no such implementation exists; conjunct (ii)
+publication order — blocker: expressing it hard-codes row order; `unit-497`'s closure leg — blocker:
+the 11-20 *don't edit them* decision, not reopened; the 45-file `chars`-labelled-`bytes` default —
+blocker unchanged; the full probe sweep — blocker: fire budget, named above rather than implied.
+Nothing else unblocked; fire closed bounded, per Klatch's recorded exception.
+
+**Question-box check:** nothing filed for this seat.
