@@ -1,0 +1,56 @@
+{
+  "before": {
+    "source": "captures/d4-clean-after-reset.out",
+    "bytes": 4230,
+    "lines": 42,
+    "sha": "8336542115671b74bdc0abd8de68f9b076be162e87abe1e59fdf66e58174ccd0"
+  },
+  "after": {
+    "source": "driven fresh in this post-hoc",
+    "bytes": 4309,
+    "lines": 43,
+    "sha": "0c09106c743864848a10bfe26c7361ea24317be075f1ef6ccaca1229a0f01bdc"
+  },
+  "delta": 79,
+  "addedLines": [
+    {
+      "bytes": 27,
+      "text": "  tracked files read: 1063"
+    },
+    {
+      "bytes": 313,
+      "text": "  20 tracked file(s), carrying 23 marker occurrence(s), are OUT of the population, so those markers exempt nothing. R..."
+    },
+    {
+      "bytes": 79,
+      "text": "      docs/research/unit-503stalelabelwidth-2026-11-22/arm-stalelabelwidth.mjs"
+    }
+  ],
+  "removedLines": [
+    {
+      "bytes": 27,
+      "text": "  tracked files read: 1059"
+    },
+    {
+      "bytes": 313,
+      "text": "  19 tracked file(s), carrying 22 marker occurrence(s), are OUT of the population, so those markers exempt nothing. R..."
+    }
+  ],
+  "addedBytes": 419,
+  "removedBytes": 340,
+  "publishedPathRowAdded": [
+    "      docs/research/unit-503stalelabelwidth-2026-11-22/arm-stalelabelwidth.mjs"
+  ],
+  "publishedPathRowBytes": 79,
+  "comparisonWithUnit502": {
+    "his": "+70 B / +1 line, one published path row, in the `quoted-only` list (token only in a string)",
+    "mine": "+79 B / +1 line, one published path row, in the DEAD MARKERS list (token in a COMMENT, file out of population) — a different list, the same unconditional-print mechanism, and the door his §1 did not name"
+  },
+  "verdict": {
+    "the whole stdout delta is accounted for by the line multiset": true,
+    "exactly ONE published path row was added": true,
+    "that row is this unit's own arm": true,
+    "the path row alone is the entire byte delta — every re-rendered count kept its digit width": true,
+    "the two re-rendered figure lines are byte-length-equal before and after": true
+  }
+}

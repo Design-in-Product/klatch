@@ -1,0 +1,131 @@
+{
+  "prereg": {
+    "outBytes": 4230,
+    "outLines": 42,
+    "outSha": "e3e7252d2a37fc6c91cf4f17a18733b1feadef757e819d3c960645afd9b5e8ee",
+    "trackedRead": 1058,
+    "population": 65,
+    "baselineEntries": 58,
+    "quotedOnly": 3
+  },
+  "now": {
+    "rc": 0,
+    "outBytes": 4309,
+    "outLines": 43,
+    "outSha": "0c09106c743864848a10bfe26c7361ea24317be075f1ef6ccaca1229a0f01bdc",
+    "trackedRead": 1063,
+    "population": 65,
+    "baselineEntries": 58,
+    "quotedOnly": 3
+  },
+  "myTrackedCodeFiles": [
+    "docs/research/unit-503stalelabelwidth-2026-11-22/arm-realgate-newones.mjs",
+    "docs/research/unit-503stalelabelwidth-2026-11-22/arm-stalelabelwidth.mjs",
+    "docs/research/unit-503stalelabelwidth-2026-11-22/derive-stale-entry-cost.mjs",
+    "docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs",
+    "docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs"
+  ],
+  "myFilesNamedInReport": [
+    "docs/research/unit-503stalelabelwidth-2026-11-22/arm-stalelabelwidth.mjs"
+  ],
+  "diffLines": {
+    "available": true,
+    "subject": "docs/research/unit-503stalelabelwidth-2026-11-22/captures/d4-clean-after-reset.out",
+    "subjectTrackedRead": 1059,
+    "count": 17,
+    "differing": [
+      {
+        "line": 2,
+        "before": "  tracked files read: 1059",
+        "after": "  tracked files read: 1063"
+      },
+      {
+        "line": 10,
+        "before": "  19 tracked file(s), carrying 22 marker occurrence(s), are OUT of the population, so those markers exempt nothing. Reported, never reddened: a marker is a site-local exemption so that it needs no list, and the price is that it has no staleness counterpart. Removing one is nobody's obligation and clears no red.",
+        "after": "  20 tracked file(s), carrying 23 marker occurrence(s), are OUT of the population, so those markers exempt nothing. Reported, never reddened: a marker is a site-local exemption so that it needs no list, and the price is that it has no staleness counterpart. Removing one is nobody's obligation and clears no red."
+      },
+      {
+        "line": 30,
+        "before": "  For contrast, the 4 file(s) in the `MARKED` row above carry 4 declared occurrence(s) that ARE load-bearing.",
+        "after": "      docs/research/unit-503stalelabelwidth-2026-11-22/arm-stalelabelwidth.mjs"
+      },
+      {
+        "line": 31,
+        "before": "  IRREDUCIBLE LIMIT, and it is the finding rather than a caveat: requirement 3's exemption IS a token in a comment, so **a comment DECLARING an exemption cannot be told apart from a comment DISCUSSING the convention.** Any file that writes about this gate joins the list above — `unit-487markerreport`'s own `posthoc-declared-vs-quoted.mjs` is in it for three DOCBLOCK mentions and nothing else, which is how the class was found. Narrowing the key cannot fix it — a real marker is `token:` plus a reason, prose is `token:` plus punctuation, and no reading separates those. The list is therefore an UPPER BOUND on dead markers, never an exact count, and that is a property of the convention, not of this reader.",
+        "after": "  For contrast, the 4 file(s) in the `MARKED` row above carry 4 declared occurrence(s) that ARE load-bearing."
+      },
+      {
+        "line": 32,
+        "before": "",
+        "after": "  IRREDUCIBLE LIMIT, and it is the finding rather than a caveat: requirement 3's exemption IS a token in a comment, so **a comment DECLARING an exemption cannot be told apart from a comment DISCUSSING the convention.** Any file that writes about this gate joins the list above — `unit-487markerreport`'s own `posthoc-declared-vs-quoted.mjs` is in it for three DOCBLOCK mentions and nothing else, which is how the class was found. Narrowing the key cannot fix it — a real marker is `token:` plus a reason, prose is `token:` plus punctuation, and no reading separates those. The list is therefore an UPPER BOUND on dead markers, never an exact count, and that is a property of the convention, not of this reader."
+      },
+      {
+        "line": 33,
+        "before": "  NOT A MARKER, and counted as one until this check existed:",
+        "after": ""
+      },
+      {
+        "line": 34,
+        "before": "  3 tracked file(s) contain the marker token ONLY inside a string literal — a fixture quoting the key, not an exemption. Excluded from the figures above. Every file that measures this gate has to quote its key, so the instrument is the author of this class:",
+        "after": "  NOT A MARKER, and counted as one until this check existed:"
+      },
+      {
+        "line": 35,
+        "before": "      docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs",
+        "after": "  3 tracked file(s) contain the marker token ONLY inside a string literal — a fixture quoting the key, not an exemption. Excluded from the figures above. Every file that measures this gate has to quote its key, so the instrument is the author of this class:"
+      },
+      {
+        "line": 36,
+        "before": "      docs/research/unit-489markedrekey-2026-11-20/cripple-marked-rekey.mjs",
+        "after": "      docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs"
+      },
+      {
+        "line": 37,
+        "before": "      docs/research/unit-502streampin-2026-11-22/derive-limb-laws.mjs",
+        "after": "      docs/research/unit-489markedrekey-2026-11-20/cripple-marked-rekey.mjs"
+      },
+      {
+        "line": 38,
+        "before": "",
+        "after": "      docs/research/unit-502streampin-2026-11-22/derive-limb-laws.mjs"
+      },
+      {
+        "line": 39,
+        "before": "  0 in-population file(s) carry the marker token ONLY inside a string literal, so they are NOT exempt (re-keyed 2026-11-20: `MARKED` requires a marker DECLARED in a comment, not merely present in the bytes). A member of this class used to be exempted with nobody having declared anything; it now falls through to the guard keys, which reddens it when no guard is present and moves its column in silence when one is. Reported unconditionally, at 0, because a reach that prints nothing in the state the tree is actually in cannot be told apart from one that was never wired.",
+        "after": ""
+      },
+      {
+        "line": 40,
+        "before": "",
+        "after": "  0 in-population file(s) carry the marker token ONLY inside a string literal, so they are NOT exempt (re-keyed 2026-11-20: `MARKED` requires a marker DECLARED in a comment, not merely present in the bytes). A member of this class used to be exempted with nobody having declared anything; it now falls through to the guard keys, which reddens it when no guard is present and moves its column in silence when one is. Reported unconditionally, at 0, because a reach that prints nothing in the state the tree is actually in cannot be told apart from one that was never wired."
+      },
+      {
+        "line": 41,
+        "before": "DECL-BODY SLICERS OK — no new hand-rolled slicer, no stale baseline entry.",
+        "after": ""
+      },
+      {
+        "line": 42,
+        "before": "  NOT CHECKED: whether the baselined files produce wrong FIGURES. This grades the reader each file uses, not the numbers it has already published.",
+        "after": "DECL-BODY SLICERS OK — no new hand-rolled slicer, no stale baseline entry."
+      },
+      {
+        "line": 43,
+        "before": "",
+        "after": "  NOT CHECKED: whether the baselined files produce wrong FIGURES. This grades the reader each file uses, not the numbers it has already published."
+      },
+      {
+        "line": 44,
+        "after": ""
+      }
+    ]
+  },
+  "verdict": {
+    "P7.a  green stdout is still 4230 B / 42 lines": false,
+    "P7.b  population unchanged at 65 — no file of mine is admitted": true,
+    "P7.c  quoted-only unchanged at 3 — no file of mine joins the printed list": true,
+    "P7.d  tracked files read is the ONLY figure that moved, and keeps its digit width": true,
+    "P7.e  sha DIFFERS, byte count does NOT, and exactly one line differs": false,
+    "P7.f  none of this unit's code files is named anywhere in the gate's report": false
+  }
+}
