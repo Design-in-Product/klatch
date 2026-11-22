@@ -1,0 +1,22 @@
+green rc=0 bytes=4160 lines=41
+red   rc=1 bytes=3935 lines=38
+
+plant path anywhere in the RED stdout : false
+plant BASENAME anywhere in the RED    : false
+the word "unit-500" in the RED        : false
+
+lines present in RED and absent from GREEN:
+  + "  tracked files read: 1048"
+  + "  population (compares against both braces): 66"
+  + "      UNGUARDED  59"
+
+lines present in GREEN and absent from RED:
+  - "  tracked files read: 1047"
+  - "  population (compares against both braces): 65"
+  - "      UNGUARDED  58"
+  - "DECL-BODY SLICERS OK — no new hand-rolled slicer, no stale baseline entry."
+  - "  NOT CHECKED: whether the baselined files produce wrong FIGURES. This grades the reader each file uses, not the numbers it has already published."
+
+emit-shaped sites in the gate source  : 5
+captures written                      : docs/research/unit-500trackedcomplement-2026-11-22/captures/gate-green-no-plant.out, docs/research/unit-500trackedcomplement-2026-11-22/captures/gate-red-tracked-plant.out
+plant removed / index clean           : true / true

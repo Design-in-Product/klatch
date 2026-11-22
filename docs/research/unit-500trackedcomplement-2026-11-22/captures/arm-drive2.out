@@ -1,0 +1,71 @@
+P1 — index-visible arm in the subject control
+  git invocations found      : 1
+     'ls-files', '--error-unmatch', plant
+  index-mutating invocations : 0
+  P1: TRUE — no arm in which the plant is visible to `git ls-files`
+
+D0 — baseline, no plant anywhere
+  D0 baseline                rc=0 bytes=4160 lines=41 read=1047 pop=65 M=4 G=3 U=58 base=58
+
+plant properties (untracked arm) — asserted BEFORE the drive that depends on them
+  on disk                    : true
+  ext in gate EXTS           : true
+  tracked by git             : false (ls-files rc=1)
+  ignored by git             : false (check-ignore rc=1)
+  carries the exemption      : false
+  imports the shared reader  : false
+  D1 untracked plant         rc=0 bytes=4160 lines=41 read=1047 pop=65 M=4 G=3 U=58 base=58
+  P4a (read unchanged while untracked): true 1047 -> 1047
+  byte-identical to D0       : true
+
+plant properties (tracked arm) — SAME BYTES on disk, index entry only
+  git add -N rc              : 0
+  tracked by git             : true (ls-files rc=0)
+  bytes on disk unchanged    : true
+  D2 add -N plant            rc=1 bytes=3935 lines=38 read=1048 pop=66 M=4 G=3 U=59 base=58
+  P2 (pop +1 AND UNGUARDED +1): true pop 65 -> 66, U 58 -> 59
+  P3 (rc=1 AND path named)   : false rc=1, path printed=false
+  P4b (read +1 under add -N) : true 1047 -> 1048
+
+index entry reversed
+  git reset rc               : 0
+  tracked by git             : false (ls-files rc=1)
+  D3 after reset             rc=0 bytes=4160 lines=41 read=1047 pop=65 M=4 G=3 U=58 base=58
+  byte-identical to D0       : true
+
+plant properties (ignored arm)
+  ignored by git             : true (check-ignore rc=0) rule: docs/research/unit-500trackedcomplement-2026-11-22/scratch/plant-unguarded-slicer.mjs
+  tracked by git             : false (ls-files rc=1)
+  D4 ignored plant           rc=0 bytes=4160 lines=41 read=1047 pop=65 M=4 G=3 U=58 base=58
+  P5a (byte-identical to D0) : true 4160 / 4160
+
+P5b — rival naive walk, population key CUT from the gate source
+     const cmp = (ch) => new RegExp(`[=!]==?\\s*['"\`]\\${ch}['"\`]|['"\`]\\${ch}['"\`]\\s*[=!]==?`);
+     const OPEN_BRACE = cmp('{');
+     const CLOSE_BRACE = cmp('}');
+     const LPAREN = cmp('(');
+     const RPAREN = cmp(')');
+     const COLON = cmp(':');
+  walked .mjs/.ts under docs/research : 672
+  naive walk SEES the ignored plant   : true
+  git ls-files sees it                : false
+  under the gate's cut population key : IN POPULATION
+  under the gate's cut guard key      : UNGUARDED
+  P5b: true — the ignored case IS gradeable against the rival that exists
+
+cleanup
+  plant paths on disk        : []
+  index entry for open plant : false
+  porcelain lines for unit   : ["?? docs/research/unit-500trackedcomplement-2026-11-22/arm-tracked-complement.mjs","?? docs/research/unit-500trackedcomplement-2026-11-22/captures/","?? docs/research/unit-500trackedcomplement-2026-11-22/posthoc-the-red-is-on-stderr.mjs","?? docs/research/unit-500trackedcomplement-2026-11-22/posthoc-what-the-red-says.mjs"]
+  D5 post-cleanup            rc=0 bytes=4160 lines=41 read=1047 pop=65 M=4 G=3 U=58 base=58
+  byte-identical to D0       : true
+
+VERDICTS
+  P1: TRUE
+  P2: TRUE
+  P3: FALSE
+  P4a: TRUE
+  P4b: TRUE
+  P5a: TRUE
+  P5b: TRUE
+  (P6 is the landing condition and is measured outside this arm, across the commit.)
