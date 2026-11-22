@@ -1,0 +1,30 @@
+derive-limb-laws — both red limbs, constants sliced from the gate rather than retyped
+  gate: scripts/verify-decl-body-slicers.mjs
+
+  STALE LIMB (all entries ABSENT):
+    header chunk  src L757      72 B  2 lines
+    per-entry     src L763      len(path) + 25 B  1 line
+    footer chunk  src L764-765  155 B  2 lines
+    LAW:  stderr bytes = 227 + SUM(len(path_i) + 25)     lines = 4 + N
+    (header renders the count, so the law holds for N < 10 only — one digit)
+    entry text for a 40-char path: "      PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP  → now `ABSENT`"
+
+  NEWONES LIMB:
+    header chunk  src L745      57 B  2 lines
+    per-entry     src L746      len(path) + 7 B  1 line
+    prose chunk   src L747-749  246 B  2 lines
+    route 1       src L750      77 B  1 lines
+    route 2       src L751-752  146 B  1 lines
+    route 3       src L753-754  132 B  1 lines
+    LAW:  stderr bytes = 658 + SUM(len(path_i) + 7)     lines = 7 + N
+    NOTE: route 3 interpolates the baseline path RELATIVE TO ROOT, so the fixed term is a
+    function of the ROOT the gate runs at. The figure above uses a stand-in; the real
+    constant for THIS worktree is printed next.
+    REAL-ROOT LAW: stderr bytes = 658 + SUM(len(path_i) + 7)   lines = 7 + N
+
+  CROSS-CHECK against the four stderr figures already published for the newOnes limb
+  (Theseus unit-501 D1 722@57, D2 731@66, D3 795@57+66, and Daedalus unit-500 742@77):
+    unit-501 D1  paths [57]  derived 722  published 722  AGREE
+    unit-501 D2  paths [66]  derived 731  published 731  AGREE
+    unit-501 D3  paths [57,66]  derived 795  published 795  AGREE
+    unit-500 D2  paths [77]  derived 742  published 742  AGREE

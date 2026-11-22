@@ -1,0 +1,41 @@
+verify-decl-body-slicers — brace-balance body slicers in the TRACKED tree
+  tracked files read: 1054
+  population (compares against both braces): 65
+      MARKED     4
+      GUARDED    3
+      UNGUARDED  58
+  baseline entries: 58
+
+  NOT CHECKED: whether a `brace-slicer-deliberate:` marker is still needed.
+  19 tracked file(s), carrying 22 marker occurrence(s), are OUT of the population, so those markers exempt nothing. Reported, never reddened: a marker is a site-local exemption so that it needs no list, and the price is that it has no staleness counterpart. Removing one is nobody's obligation and clears no red.
+      docs/research/unit-480guardorder-2026-11-18/arm-b.mjs
+      docs/research/unit-480guardorder-2026-11-18/arm.mjs
+      docs/research/unit-481disjunctiononly-2026-11-18/arm-disjunctiononly.mjs
+      docs/research/unit-481disjunctiononly-2026-11-18/probe-round401-sites.mjs
+      docs/research/unit-482floorceiling-2026-11-19/arm.mjs
+      docs/research/unit-482floorceiling-2026-11-19/posthoc-name-the-sites.mjs
+      docs/research/unit-482floorceiling-2026-11-19/posthoc-quoted-fixtures.mjs
+      docs/research/unit-482floorceiling-2026-11-19/posthoc-string-bodies.mjs
+      docs/research/unit-483columnnarrow-2026-11-19/arm-columnnarrow.mjs
+      docs/research/unit-483columnnarrow-2026-11-19/posthoc-name-the-survivors.mjs
+      docs/research/unit-484popnarrow-2026-11-19/arm.mjs
+      docs/research/unit-484popnarrow-2026-11-19/cripple-span-extension.mjs
+      docs/research/unit-484popnarrow-2026-11-19/posthoc-drift-cured.mjs
+      docs/research/unit-486markerstale-2026-11-19/arm-markerstale.mjs
+      docs/research/unit-487markerreport-2026-11-19/posthoc-declared-vs-quoted.mjs  (3 markers)
+      docs/research/unit-488markedkeykp-2026-11-19/arm-markedkeykp.mjs
+      docs/research/unit-496guardkeyreach-2026-11-21/posthoc-verdict-terminal-rekey.mjs
+      docs/research/unit-496guardkeyreach-2026-11-21/probe-guard-key-reach.mjs
+      docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs  (2 markers)
+  For contrast, the 4 file(s) in the `MARKED` row above carry 4 declared occurrence(s) that ARE load-bearing.
+  IRREDUCIBLE LIMIT, and it is the finding rather than a caveat: requirement 3's exemption IS a token in a comment, so **a comment DECLARING an exemption cannot be told apart from a comment DISCUSSING the convention.** Any file that writes about this gate joins the list above — `unit-487markerreport`'s own `posthoc-declared-vs-quoted.mjs` is in it for three DOCBLOCK mentions and nothing else, which is how the class was found. Narrowing the key cannot fix it — a real marker is `token:` plus a reason, prose is `token:` plus punctuation, and no reading separates those. The list is therefore an UPPER BOUND on dead markers, never an exact count, and that is a property of the convention, not of this reader.
+
+  NOT A MARKER, and counted as one until this check existed:
+  2 tracked file(s) contain the marker token ONLY inside a string literal — a fixture quoting the key, not an exemption. Excluded from the figures above. Every file that measures this gate has to quote its key, so the instrument is the author of this class:
+      docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs
+      docs/research/unit-489markedrekey-2026-11-20/cripple-marked-rekey.mjs
+
+  0 in-population file(s) carry the marker token ONLY inside a string literal, so they are NOT exempt (re-keyed 2026-11-20: `MARKED` requires a marker DECLARED in a comment, not merely present in the bytes). A member of this class used to be exempted with nobody having declared anything; it now falls through to the guard keys, which reddens it when no guard is present and moves its column in silence when one is. Reported unconditionally, at 0, because a reach that prints nothing in the state the tree is actually in cannot be told apart from one that was never wired.
+
+DECL-BODY SLICERS OK — no new hand-rolled slicer, no stale baseline entry.
+  NOT CHECKED: whether the baselined files produce wrong FIGURES. This grades the reader each file uses, not the numbers it has already published.
