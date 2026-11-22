@@ -1,0 +1,80 @@
+# unit-501 post-hoc — which lines move, and on which stream
+
+## 1. One plant vs two: identical stdout LENGTH, different stdout BYTES
+
+d1 stdout 3935B · d3 stdout 3935B
+line counts 38 vs 38
+
+differing stdout lines: 3
+  L2
+    one plant : "  tracked files read: 1052"
+    two plants: "  tracked files read: 1053"
+    byte lengths: 26 vs 26
+  L3
+    one plant : "  population (compares against both braces): 66"
+    two plants: "  population (compares against both braces): 67"
+    byte lengths: 47 vs 47
+  L6
+    one plant : "      UNGUARDED  59"
+    two plants: "      UNGUARDED  60"
+    byte lengths: 19 vs 19
+
+every moved line keeps its byte length: true
+  -> the 3935 figure survives a change in the number of reported defects ONLY because every
+     figure that moved kept its digit count. This is the same coincidence that has protected
+     4160 across four units, and it is the first time it hides a CONTENT change rather than
+     merely surviving one.
+
+## 2. Green vs red on stdout: which lines the red state DROPS
+
+green 41 lines · red 38 lines
+differing lines between green and red stdout: 6
+  L2
+    green: "  tracked files read: 1051"
+    red  : "  tracked files read: 1052"
+  L3
+    green: "  population (compares against both braces): 65"
+    red  : "  population (compares against both braces): 66"
+  L6
+    green: "      UNGUARDED  58"
+    red  : "      UNGUARDED  59"
+  L40
+    green: "DECL-BODY SLICERS OK — no new hand-rolled slicer, no stale baseline entry."
+    red  : undefined
+  L41
+    green: "  NOT CHECKED: whether the baselined files produce wrong FIGURES. This grades the reader each file uses, not the numbers it has already published."
+    red  : undefined
+  L42
+    green: ""
+    red  : undefined
+
+## 3. The red stderr in full, for the record — never captured by anyone before 11-22
+
+one plant : 722B · 8 lines
+two plants: 795B · 9 lines
+
+```
+
+RED — 1 new hand-rolled brace-balance body slicer(s):
+      docs/research/unit-501redbranchpin-2026-11-22/plant-a.mjs
+
+  A brace scan that starts at the first `{` is wrong on four live mechanisms in this tree: a TS type literal or an object default in the parameter list, a JSDoc `@type` brace, and a brace-bearing return type. Clear this by, in preference order:
+    1. import { bodyOf, declBodies } from '<…>/scripts/lib/decl-body.mjs';
+    2. put `brace-slicer-deliberate: <reason>` at the site, if the file's job is to reproduce the defect (a comparison arm, a mutant, a fixture);
+    3. append the path to scripts/decl-body-slicers.baseline, which states that a known unguarded slicer is being added on purpose.
+```
+
+## 4. What each stream carries, keyed on content rather than on bytes
+
+  tracked files read   stdout: 1052   stderr: ABSENT
+  population           stdout: 66   stderr: ABSENT
+  MARKED               stdout: 4   stderr: ABSENT
+  UNGUARDED            stdout: 59   stderr: ABSENT
+  baseline entries     stdout: 58   stderr: ABSENT
+
+  plant path          stdout: ABSENT   stderr: PRESENT
+  announced count     stdout: ABSENT   stderr: PRESENT
+
+Every tree-keyed figure is on stdout and nowhere else. Every defect-keyed fact is on stderr and
+nowhere else. The two streams are not two views of one report; they are a tree report and a
+defect report, and a byte pin cannot mean the same thing on both.

@@ -1,0 +1,51 @@
+{
+  "k": 9,
+  "relA": "docs/research/unit-501redbranchpin-2026-11-22/plant-a.mjs",
+  "relB": "docs/research/unit-501redbranchpin-2026-11-22/plant-bbbbbbbbbb.mjs",
+  "plantSha": "2724ef0bb85dddea479ee0d6c1d2fc34ccd7694eadaa69ce9e79c7fc57b6bb03",
+  "d0": {
+    "rc": 0,
+    "outBytes": 4160,
+    "outLines": 41,
+    "errBytes": 0,
+    "outSha": "e620c2e663b76a77a5d4c2aec63da8a2f4dce0cffeefa5c3793645037d428f38"
+  },
+  "d1": {
+    "rc": 1,
+    "outBytes": 3935,
+    "outLines": 38,
+    "errBytes": 722,
+    "errLines": 8,
+    "outSha": "f65bbf8bc8805f9d3e8ab96b30f3eab1bad3c0ee4674dc26957364635cba6593"
+  },
+  "d2": {
+    "rc": 1,
+    "outBytes": 3935,
+    "outLines": 38,
+    "errBytes": 731,
+    "errLines": 8,
+    "outSha": "f65bbf8bc8805f9d3e8ab96b30f3eab1bad3c0ee4674dc26957364635cba6593"
+  },
+  "d3": {
+    "rc": 1,
+    "outBytes": 3935,
+    "outLines": 38,
+    "errBytes": 795,
+    "errLines": 9,
+    "outSha": "25ed9d0aa086e12357ac8a55ff0552c0a079930974aa41498cd5d9fbffffde86"
+  },
+  "d4": {
+    "rc": 0,
+    "outBytes": 4160,
+    "outSha": "e620c2e663b76a77a5d4c2aec63da8a2f4dce0cffeefa5c3793645037d428f38"
+  },
+  "verdicts": {
+    "P1": true,
+    "P2": true,
+    "P3": true,
+    "P4": false,
+    "P6": true,
+    "P5": false,
+    "D4": true
+  }
+}

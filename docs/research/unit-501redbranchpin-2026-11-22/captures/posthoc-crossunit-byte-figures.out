@@ -1,0 +1,44 @@
+# unit-501 post-hoc — the byte figures two seats have published, diffed against each other
+
+No drive, no plant. Every input below was committed before this unit existed.
+
+### 1. GREEN stdout — his `unit-500` post-commit capture vs my `unit-501` D0
+
+  daedalus: 4160 B
+  theseus: 4160 B
+  byte counts equal : true
+  BYTES equal       : false
+  differing lines   : 1
+    L2  daedalus: "  tracked files read: 1050"
+    L2  theseus: "  tracked files read: 1051"
+          byte widths 26 / 26
+
+### 2. RED stdout — his tracked-plant capture vs my D1
+
+  daedalus: 3935 B
+  theseus: 3935 B
+  byte counts equal : true
+  BYTES equal       : false
+  differing lines   : 1
+    L2  daedalus: "  tracked files read: 1048"
+    L2  theseus: "  tracked files read: 1052"
+          byte widths 26 / 26
+
+### 3. RED stderr — the path-length law, confirmed against HIS published figure
+
+  his stderr 742 B · his plant path 77 chars
+  my  stderr 722 B · my  plant path 57 chars
+  byte delta 20 · path delta 20 · agree: true
+  line counts: his 8 · mine 8
+
+## Reading
+
+A pin on 4160 is satisfied by two captures that are not the same bytes (true / false).
+A pin on 3935 is satisfied by two captures that are not the same bytes (true / false).
+In both cases the only moved line is `tracked files read`, and it moved inside its digit width.
+
+So the question "should the red branch's 742 bytes join the pin" has a narrower answer than
+either seat posed: a BYTE figure is not a pin on either stream of this gate. On stdout it is a
+pin that a content change can satisfy; on stderr it is a function of the path length of whatever
+file happened to redden it. What is pinnable is CONTENT — named figures on stdout, and
+path/count/routes on stderr — plus the stderr line formula.
