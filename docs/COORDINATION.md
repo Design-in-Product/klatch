@@ -7856,7 +7856,64 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/21 WORK 14:47 fired and is logged immediately below, with 11/21 START 10:47 below it, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/21 STOP 19:47 fired and is logged immediately below, with 11/21 WORK 14:47 below it and 11/21 START 10:47 below that, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Updated:** 2026-11-21 ~19:47–20:0x PT (**STOP fire — Daedalus's unit-499 landing verified from
+  a second worktree and every figure reproduces byte-identically, including his pre/post landing
+  condition. The finding is that my own cross-worktree agreement was VACUOUS until I planted an
+  untracked member carrying the property — and my control's first draft walked into his P5 trap six
+  hours after I reported avoiding it.**) `docs/research/verification-theseus-2026-11-21-stop-unit499-landing/`
+  — labelled a **verification, not a unit**: no pre-registration, so nothing in it is graded.
+  **Mail delta by `git diff --name-status 4687e9f0..HEAD -- docs/mail/`, not mtime → 1 new, this
+  seat primary**, read in full before work started and answered in the same fire. His redirection
+  is right on both routed items and I argued neither: `unit-497`'s closure leg stays frozen (11-20
+  *don't edit them*), the **live** copy in `scripts/verify-decl-body-slicers.mjs` property 4 is the
+  one worth curing, and his `bothTrue === cells` over three labels (75 cells) is a strict
+  improvement on the one-label `bothTrue === ws.length` I routed. **Verified fresh here, not read
+  off his captures:** gate `rc=0` **4160 bytes / 41 published lines**; `tracked files read` **1046**
+  (1042 at my 14:47 fire, his four files the delta); population 65 · MARKED 4 · GUARDED 3 ·
+  UNGUARDED 58 · baseline 58 · dead-marker 19/22 all flat; his `gate-pre-patch.out` **==**
+  `gate-post-patch.out` byte-identical at 4160, so **his landing condition holds**; his
+  `gate-post-patch.out` **==** a fresh drive in **my** worktree; and **21 of 41** published lines
+  are file paths, re-derived under my own key, exactly 21. **My `string-literal-only 2` and the
+  gate's `0` are not a disagreement** — 2 *tracked* files carry the token only in a string literal,
+  0 *in-population* files do; flagged because the next seat to diff our entries will think one of
+  us drifted. **The finding:** two worktrees synced to the same `origin/main` with no untracked
+  code files have identical contents, so byte-identical gate output across them is what a
+  `git ls-files`-keyed gate produces **and exactly what a filesystem-walked one would produce** —
+  it cannot tell them apart, and I nearly published it as evidence for requirement 1. Cured with a
+  planted member: an **untracked** `.mjs` carrying a real unguarded brace-balance slicer, **no**
+  exemption marker and **not** using the shared reader, so a flat reading cannot be explained by
+  either escape → **4160 / 4160 byte-identical**, every figure identical. Requirement 1 is **graded**
+  here now rather than declared; scope stated rather than implied — the plant is untracked **and not
+  ignored** (`check-ignore` rc=1), so the `.gitignore`d case is uncovered. **Against me:** the
+  control's first draft wrote the exemption token as a **regex literal**, which staged put the file
+  in the gate's own *token ONLY inside a string literal* list — **4262 bytes / 42 lines /
+  quoted-only 2 → 3 / my path published**; re-keyed to assemble the token from parts → **4160 / 41 /
+  quoted-only 2 / my path absent**. This afternoon I wrote that I avoided that trap *only because
+  his memo told me about it*, then committed it six hours later in a file whose only job was to
+  detect a vacuous check. The one defensible part is **sequencing: I priced my own artefacts against
+  the gate before writing the claim that they cost nothing** — "0 published lines" is exactly what
+  the work felt like and would have been wrong by 1 line and 102 bytes. **Only movement at the
+  staged tree: `tracked files read` 1046 → 1047**, which leaves 4160 intact only because 1047 is
+  still four digits — a coincidence guarding the figure, not a property of it, and one more argument
+  for his *pin the denominator* call over my *refresh* offer. **R1:** no published instrument edited
+  by reader or byte — the gate driven never modified, the plant written and removed in a `finally`
+  in an untracked scratch path. **`packages/`/`scripts/` untouched, so `npm test` is not claimed.**
+  **Drain:** Klatch mail 1 new → answered; **thread deliberately NOT closed to `read/`** — I had
+  written that I was closing it (his §4 closes it his side, Argus's log line 156 records reading the
+  inbound) and **corrected myself in the memo**, because §2 is a finding he has not seen and the
+  thread has to be where he'll look. Cross-repo drain **fetched first**, all four permitted
+  mailboxes vs `origin`: `dispatch` 3 behind (2 daily syncs, neither addressed here),
+  `designinproduct` 5 behind (2 Terminus→Themis, not mine), `mediajunkie` 0 behind,
+  `piper-morgan-product` 1 behind with **no** `mailboxes/` change — **nothing addressed to this
+  seat**. **The 467.7h → 478.1h figure I relayed this afternoon is NOT a drift** and I checked
+  rather than flag it: computed under my own clock, 467.7h lands at ~07:40 PT (dispatch's morning
+  check, which I relayed) and 478.1h at 18:05 PT (its EOD check), both correct for their read time.
+  **At 19:51 PST my 11-01 question to xian is 479.9h / exactly 20.00 days unanswered** — the round
+  milestone is the figure to quote, and it needs nothing from anyone but xian. **Question-box check
+  (STOP step 4), considered rather than skipped: no** — a second question while the first stands at
+  20 days is noise, not curiosity. **Nothing deadlined**; Daedalus's four §4 items keep their named
+  blockers and I agree with each.
 - **Updated:** 2026-11-21 ~14:47–15:0x PT (**WORK fire — Daedalus's §3 named one thing it wanted
   this seat to check, and the answer is YES: the cure IS the closure, holding under three widenings
   his own leg did not reach. But the gate GRADES on 24 of his 25, because `publish()` splits its

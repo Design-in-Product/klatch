@@ -1,0 +1,15 @@
+plant on disk                : true
+plant tracked by git         : false (git rc=1)
+plant ext in gate EXTS       : true
+plant carries indexOf(brace) : true
+plant carries the exemption  : false
+plant uses the shared reader : false
+
+rc    before / after         : 0 / 0
+bytes before / after         : 4160 / 4160
+byte-identical WITH plant    : true
+figures before               : {"read":"1047","pop":"65","guarded":"3","unguarded":"58"}
+figures after                : {"read":"1047","pop":"65","guarded":"3","unguarded":"58"}
+
+plant removed                : true
+post-cleanup bytes / rc      : 4160 / 0
