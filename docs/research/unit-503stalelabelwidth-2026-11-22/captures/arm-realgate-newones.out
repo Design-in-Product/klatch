@@ -1,0 +1,81 @@
+{
+  "plantSha": "3d365a4fca4ca521ed19760ce83646cee36d09877469cc564a856f223ecd1b66",
+  "paths": {
+    "p5": "docs/research/unit-503stalelabelwidth-2026-11-22/plnt.mjs",
+    "p5len": 57,
+    "p6": "docs/research/unit-503stalelabelwidth-2026-11-22/p00.mjs",
+    "p6len": 56
+  },
+  "morningD1ForComparison": {
+    "errBytes": 722,
+    "errLines": 8,
+    "trackedRead": 1054
+  },
+  "derivedLaw": {
+    "n1": 722,
+    "n9": 1225,
+    "n10": 1288
+  },
+  "cells": {
+    "d1_p5": {
+      "rc": 1,
+      "outBytes": 4005,
+      "outLines": 39,
+      "outSha": "47c97221819ffc07140a89c63533cfbfb4709d5786a8687be434c4dca8aa8149",
+      "errBytes": 722,
+      "errLines": 8,
+      "errSha": "526616719029354a1e1eedfd365baae43b83a9344f0050c9cd644ce4db19c887",
+      "trackedRead": 1060
+    },
+    "d2_p6_n9": {
+      "rc": 1,
+      "outBytes": 4005,
+      "outLines": 39,
+      "outSha": "436c6d81a32f30fae9d2531a4e3982372275c72e687f9f7099bc821fbaa3631a",
+      "errBytes": 1225,
+      "errLines": 16,
+      "errSha": "50070b43273bfb46ee785ab17d0fca00fd56dd6801afe74e80a03f07118a3397",
+      "trackedRead": 1068
+    },
+    "d3_p6_n10": {
+      "rc": 1,
+      "outBytes": 4005,
+      "outLines": 39,
+      "outSha": "88ffa3249547bbf4773ad09173b2c2f20cc605cdcfb5395e2644614d17165b0d",
+      "errBytes": 1289,
+      "errLines": 17,
+      "errSha": "fe71fff2a68e0b5a522514e9153f5a819b0cdb76f342822085e69b13d398fcbf",
+      "trackedRead": 1069
+    },
+    "d4_clean": {
+      "rc": 0,
+      "outBytes": 4230,
+      "outLines": 42,
+      "outSha": "8336542115671b74bdc0abd8de68f9b076be162e87abe1e59fdf66e58174ccd0",
+      "errBytes": 0,
+      "errLines": 0,
+      "errSha": null,
+      "trackedRead": 1059
+    }
+  },
+  "byteCountVsBytes": {
+    "note": "P5 agrees on a COUNT across two trees. The shas differ because the path spelling differs, which is registered as P5.d-adjacent and is the distinction this unit is about.",
+    "morningD1Sha": "see unit-501redbranchpin/captures/figures.json — d1 errSha was not recorded there",
+    "thisFireErrSha": "526616719029354a1e1eedfd365baae43b83a9344f0050c9cd644ce4db19c887"
+  },
+  "leftoverPorcelain": [],
+  "verdict": {
+    "P5.a  rc = 1": true,
+    "P5.b  stderr = 722 B, byte-count-identical to this morning d1 at a CHANGED tree": true,
+    "P5.c  stderr lines = 8": true,
+    "P5.d  the tree really did change: tracked files read > 1054": true,
+    "P5.e  derived law reproduces it with no fit: 658 + (57 + 7) = 722": true,
+    "P6.d  N = 9 at len 56: the law is EXACT (658 + 9*63 = 1225)": true,
+    "P6.d2 N = 9 lines = 7 + 9 = 16": true,
+    "P6.a  N = 10 rc = 1": true,
+    "P6.b  N = 10 overflows the law by EXACTLY 1 (1288 predicted, 1289 measured)": true,
+    "P6.c  N = 10 LINE law does NOT break: lines = 7 + 10 = 17": true,
+    "CLEANUP  the gate is green again after the reset": true,
+    "CLEANUP  no plant is left in the working tree or the index": true
+  }
+}

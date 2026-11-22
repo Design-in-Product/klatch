@@ -1,0 +1,51 @@
+{
+  "gateSha": "eead4ea211582e3b5dbedda3d164e097a099e57009bcc5d6dad6d81fdf0e27d1",
+  "fixturePath": "src/fxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs",
+  "fixturePathLength": 40,
+  "publishedLaw": "bytes = 227 + SUM(len(path_i) + 25), declared scope: all ABSENT",
+  "cells": {
+    "C-GUARDED": {
+      "rc": 1,
+      "errBytes": 293,
+      "errLines": 5,
+      "errSha": "a3485e44b01a0b74aa6a41abef9e30aec5184fa8a0bdca85ec446b1b645ca00c",
+      "outBytes": 800
+    },
+    "C-MARKED": {
+      "rc": 1,
+      "errBytes": 292,
+      "errLines": 5,
+      "errSha": "b9b1b28914e036cd85ff9db61224a50a65bcc09e63695699305a73f97ccf59b3",
+      "outBytes": 800
+    },
+    "C-ABSENT": {
+      "rc": 1,
+      "errBytes": 292,
+      "errLines": 5,
+      "errSha": "1ccaa068b948235f8588f7e0c21feff7dcf1945efe8a21a17c78037fd720410d",
+      "outBytes": 800
+    }
+  },
+  "stderrTexts": {
+    "C-GUARDED": "\nRED — 1 stale baseline entry/entries (no longer unguarded, or gone):\n      src/fxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs  → now `GUARDED`\n\n  Remove them from the baseline. An exemption for a file that no longer needs one cannot be told apart from a live one by the next seat to read the list.\n",
+    "C-MARKED": "\nRED — 1 stale baseline entry/entries (no longer unguarded, or gone):\n      src/fxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs  → now `MARKED`\n\n  Remove them from the baseline. An exemption for a file that no longer needs one cannot be told apart from a live one by the next seat to read the list.\n",
+    "C-ABSENT": "\nRED — 1 stale baseline entry/entries (no longer unguarded, or gone):\n      src/fxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs  → now `ABSENT`\n\n  Remove them from the baseline. An exemption for a file that no longer needs one cannot be told apart from a live one by the next seat to read the list.\n"
+  },
+  "verdict": {
+    "P2.a  C-GUARDED rc = 1": true,
+    "P2.b  C-GUARDED stderr = 227 + 40 + 26 = 293 (his law + 1)": true,
+    "P2.c  C-GUARDED stderr lines = 5": true,
+    "P2.d  C-GUARDED newOnes block ABSENT from stderr": true,
+    "P2.e  C-GUARDED renders the token GUARDED": true,
+    "P3.a  C-ABSENT rc = 1": true,
+    "P3.b  C-ABSENT stderr = 227 + 40 + 25 = 292 (his law EXACT)": true,
+    "P3.c  C-ABSENT stderr lines = 5": true,
+    "P3.d  C-ABSENT reproduces his out-of-sample B1 figure (292 B / 5 L @ len 40)": true,
+    "P4.a  C-MARKED rc = 1": true,
+    "P4.b  C-MARKED stderr = 227 + 40 + 25 = 292 (his law exact, with a PRESENT label)": true,
+    "P4.c  C-MARKED stderr lines = 5": true,
+    "P4.d  C-MARKED renders the token MARKED": true,
+    "DIFFERENTIAL (restates P2.b/P3.b/P4.b)  C-GUARDED is exactly 1 byte more than BOTH controls": true,
+    "POST-HOC, not pre-registered  the two 6-char-label cells agree in COUNT and differ in BYTES": true
+  }
+}

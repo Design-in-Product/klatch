@@ -1,0 +1,124 @@
+{
+  "anchor": "for (const f of stale) emitErr(",
+  "literalSliced": "`      ${f}  → now \\`${verdicts.get(f) ?? 'ABSENT'}\\``",
+  "publishedLaw": {
+    "base": 227,
+    "perEntry": 25,
+    "scope": "all ABSENT (unit-502streampin §3)"
+  },
+  "perEntryConstantByLabel": {
+    "ABSENT": 25,
+    "MARKED": 25,
+    "GUARDED": 26
+  },
+  "decomposition": {
+    "indent": 6,
+    "gapAfterPath": 2,
+    "arrowBytes": 3,
+    "spaceNowSpace": 5,
+    "openBacktick": 1,
+    "closeBacktick": 1,
+    "newline": 1
+  },
+  "decomposed": 19,
+  "sampleLines": [
+    {
+      "label": "ABSENT",
+      "pathLen": 40,
+      "lineBytes": 65,
+      "perEntryConstant": 25
+    },
+    {
+      "label": "MARKED",
+      "pathLen": 40,
+      "lineBytes": 65,
+      "perEntryConstant": 25
+    },
+    {
+      "label": "GUARDED",
+      "pathLen": 40,
+      "lineBytes": 66,
+      "perEntryConstant": 26
+    }
+  ],
+  "rows": [
+    {
+      "label": "ABSENT",
+      "pathLen": 1,
+      "lineBytes": 26,
+      "perEntryConstant": 25
+    },
+    {
+      "label": "ABSENT",
+      "pathLen": 40,
+      "lineBytes": 65,
+      "perEntryConstant": 25
+    },
+    {
+      "label": "ABSENT",
+      "pathLen": 57,
+      "lineBytes": 82,
+      "perEntryConstant": 25
+    },
+    {
+      "label": "ABSENT",
+      "pathLen": 60,
+      "lineBytes": 85,
+      "perEntryConstant": 25
+    },
+    {
+      "label": "MARKED",
+      "pathLen": 1,
+      "lineBytes": 26,
+      "perEntryConstant": 25
+    },
+    {
+      "label": "MARKED",
+      "pathLen": 40,
+      "lineBytes": 65,
+      "perEntryConstant": 25
+    },
+    {
+      "label": "MARKED",
+      "pathLen": 57,
+      "lineBytes": 82,
+      "perEntryConstant": 25
+    },
+    {
+      "label": "MARKED",
+      "pathLen": 60,
+      "lineBytes": 85,
+      "perEntryConstant": 25
+    },
+    {
+      "label": "GUARDED",
+      "pathLen": 1,
+      "lineBytes": 27,
+      "perEntryConstant": 26
+    },
+    {
+      "label": "GUARDED",
+      "pathLen": 40,
+      "lineBytes": 66,
+      "perEntryConstant": 26
+    },
+    {
+      "label": "GUARDED",
+      "pathLen": 57,
+      "lineBytes": 83,
+      "perEntryConstant": 26
+    },
+    {
+      "label": "GUARDED",
+      "pathLen": 60,
+      "lineBytes": 86,
+      "perEntryConstant": 26
+    }
+  ],
+  "verdict": {
+    "P1.a  per-entry cost is 19 + len(path) + len(label)": true,
+    "P1.b  ABSENT and MARKED both give len(path) + 25 (his law exact)": true,
+    "P1.c  GUARDED gives len(path) + 26 — one byte MORE than his law": true,
+    "P1.d  the 19 decomposes as 6+2+3+5+1+1+1": true
+  }
+}
