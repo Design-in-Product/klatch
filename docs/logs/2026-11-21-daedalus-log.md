@@ -264,3 +264,145 @@ so curing it means widening the vocabulary, which is the two-seat format decisio
 per-site decision about which quantity was wanted**, which is 45 judgement calls rather than a
 mechanical rename, and a shared helper nobody calls yet would be drift rather than a cure. Nothing
 else unblocked on this seat's queue; fire closed bounded.
+
+---
+
+## 17:17 — Session resumed (STOP fire, substantive)
+
+**Model:** claude-opus-5. Clock `date`-read at 17:17:17, 17:19:21, 17:24:12, 17:27:05, 17:29:19 PST
+— not estimated from effort.
+
+**Session-start protocol, done first.** Pulled (worktree synced by the wrapper to `a3dfb7e0`);
+`docs/COORDINATION.md` read at this seat's own section; `docs/mail/` listed by mtime. **One new
+inbound memo, read in full in the same turn it was noticed:**
+`theseus-to-daedalus-argus-...-the-cure-is-the-closure-and-your-25-member-set-grades-on-24-because-publish-splits-on-one-of-its-own-members-2026-11-21.md`.
+Cross-pollination brief read (it points at the private DinP URL; this repo is public and the brief
+body is deliberately not copied here). Four cross-repo mailboxes checked — `dispatch/mail`,
+`designinproduct/docs/mail`, `mediajunkie/docs/mail`, `piper-morgan-product/mailboxes` — **nothing
+addressed to this seat in any of them.**
+
+### What the memo asked, and the redirection that is the substance of this fire
+
+Theseus closed this seat's §3 question with **yes** and handed back two items marked "yours to take
+or decline" plus one report. Both items taken, **neither at the surface he offered it**:
+
+- **His §3** — unit-497's closure leg has no positive control; its control set guards *both
+  predicates always TRUE*, so the *both always FALSE* failure **satisfies** it. He offered to fix
+  that leg. The leg is **published and frozen** and the 11-20 *don't edit them* decision stands, so
+  it was not touched, by reader or by byte. But **the same claim is written into the LIVE docblock**
+  of `scripts/verify-decl-body-slicers.mjs` property 4 ("disagree **0** times") — a live file, where
+  a reader actually meets the claim. That copy is the one cured. His finding did not need his target
+  to be editable to be worth acting on.
+- **His §4** — two stale denominators (`34` calls / `38` published lines, written at `a42cd40d`;
+  he measures 37/41). Taken, but **pinned rather than refreshed** — see below.
+- **His §2** — the U+000A vacuous cell. Nothing to cure, agreed; recorded in the live docblock as the
+  general shape so a later set-complete drive does not read that cell as evidence.
+
+### `unit-499livekeypositivecontrol-2026-11-21` — 6 predictions registered, 6 HIT
+
+Pre-reg `023d0f58` pushed to `main` at **17:19:21 PST**, before the arm, the cripple, the recorder or
+the patch existed. Five commits, pushed incrementally as each piece landed.
+
+**P1 HIT — the positive control reads TRUE at the live key.** Key expression **cut** from the live
+`publish()` by the shared slicer (`scripts/lib/decl-body.mjs` → `bodyOf`), not re-typed. Theseus's
+slice figures reproduce exactly under this seat's own independent re-slice: **offset 37472, 833
+bytes, 1 occurrence**. Member set **derived** by scanning U+0000..U+10FFFF with a `u`-flagged `/\s/`
+— **25 members, 0 astral**. Drive widened from his one label to all three: **75 cells (3 labels x 25
+members), disagreements 0, bothTrue 75 of 75.**
+
+**P2 HIT — the control separates.** Reader-only cripple, in memory, tracked file never written,
+unit-497 untouched: `CONTROL disagreements 0 / bothTrue 75 of 75` vs `CRIPPLE disagreements 0 /
+bothTrue 50 of 75`. **The published figure is byte-identical; only `bothTrue` moves.** His §3 hole is
+confirmed at the live surface, and `bothTrue === cells` is now written into the docblock beside the
+`0` it separates, with his name on it.
+
+**P3 HIT — the denominators reproduce under an independent seam.** He recorded `console.log`; this
+unit recorded **`process.stdout.write`** (one write per call, the next seam down). All four figures
+agree across two independently-written recorders at two seams: **37 calls · 41 published lines · 4
+not-first-of-chunk · rows 3.**
+
+**P4 HIT — recorder honesty, as its own term.** Reconstruction byte-identical to the plain capture at
+**4160 bytes** (his figure, reproduced). Recorded with its own verdict and own counter, deliberately
+**not fused** into P3's numbers; the post-hoc refuses to print any P3 figure at all if P4 reads
+false, rather than printing numbers it cannot attribute.
+
+**P5 HIT — landing condition.** `cmp` over the gate's stdout captured immediately before and
+immediately after the docblock patch: **byte-identical, rc=0**. A docblock that moved the report it
+describes would not have gone in.
+
+**P6 HIT on the count — and the finding is what it licensed.** Measured three times (before this
+unit's `.mjs` files were committed, after, and after the patch): **41 every time.** This unit's files
+moved `tracked files read` **1042 → 1044 → 1046** and landed in no published list (dead-marker list
+unmoved at **19 files / 22 occurrences**, quoted-only at **2**). So the number *was* writable — and
+it still was not written flat, because **21 of the 41 published lines are file paths of files written
+about this gate**, making the denominator a function of the tree rather than of the file. What went
+in instead: the two **stable** figures (4 not-first-of-chunk, rows 3) stated as the property; the
+denominators **pinned** to the unit and date measured, naming both seams; the reason they drift (0 of
+21 static emit sites moved between `a42cd40d` and today — the entire `+3` came from the self-naming
+loops); and an instruction to **re-measure rather than treat a mismatch as a defect**. A figure that
+has gone stale twice does not want refreshing; it wants a pin and a reason.
+
+### Against this seat — both defects found are in this unit's own instrument
+
+1. **The arm's first draft typed the docblock's `LABEL` metavariable as a five-character literal.**
+   All 25 cells disagreed (**25 disagreements, bothTrue 0, bothFalse 0**) — the *same defect class as
+   the subject*: a reader keyed on a token that is not in the vocabulary it reads. Named by the
+   **separate** P4 sanity term `unpadded label is TRUE on both` reading `false`. Had that term been
+   fused into the disagreement counter — exactly as unit-497's leg fuses, which is what Theseus came
+   to say — the leg would have reported `25 disagreements` with no way to tell subject from
+   instrument. **The lesson this unit exists to apply caught this unit on its first drive.**
+2. **The cripple's first substitution key was the bare token and refused at 2 occurrences.**
+   `GUARDED` is a substring of `UNGUARDED`, so a bare-token substitution would have crippled **two**
+   vocabulary entries while claiming one. Re-keyed on the quoted literal `'GUARDED'`, asserted at
+   exactly 1. It is the superstring hazard property 3 of this very docblock names (`MISGUARDED`), met
+   from the writer's side.
+3. **Three sources, not two.** The first cripple draft fused the probe tokens with a reader. Two
+   sources **cannot express this failure**: crippling a reader also rewrites the lines being read, so
+   the drive changes subject instead of going blind and scores green for the wrong reason. Probe
+   tokens asserted unmoved.
+4. **A declared limit stated rather than patched.** `posthoc-denominators.mjs` carries
+   `docblock = { calls: 34, publishedLines: 38 }` as a literal, true when driven and **stale relative
+   to the patched file** from the moment the patch landed. Left as driven rather than re-stamped —
+   re-stamping an instrument after its drive is how a reading stops being a reading. Recorded in
+   RESULTS §7.3; its `docblock` column reads as *"the docblock as it stood at `a42cd40d`."*
+
+### Standing checks, re-driven fresh this fire
+
+**Gate** (`npx tsx scripts/gate.mts`): census OK, typecheck clean; **server 147 files / 2295 passed,
+1 skipped (2296)**; **client 29 passed | 13 skipped (42) files, 354 passed | 13 skipped (367)**;
+`GATE ok exit=0` on all five legs — **matches standing exactly.**
+
+### Session Wrap Protocol
+
+**Step 1 — commits on `origin/main`** (pasted, not asserted):
+
+```
+$ git log origin/main --oneline -5
+e5335694 mail(unit-499livekeypositivecontrol): both of Theseus's items taken, neither at the surface he offered …
+05d1d803 cure+results(unit-499livekeypositivecontrol): 6 of 6 HIT -- the live docblock's bare 0 now carries the separating term …
+d480ab46 recorder+posthoc(unit-499livekeypositivecontrol): P3, P4, P6 HIT -- the stdout.write seam reproduces all four figures …
+a0df47a5 arm+cripple(unit-499livekeypositivecontrol): P1 and P2 HIT -- Theseus's separating term reproduces at the LIVE key …
+023d0f58 prereg(unit-499livekeypositivecontrol): 6 predictions registered before the arm, the cripple, the recorder or the patch exists …
+```
+
+**Step 2 — deliverables confirmed on the remote by `git ls-tree`, after `git fetch`, not by a local
+`ls`:**
+
+```
+$ git ls-tree -r --name-only origin/main docs/research/unit-499livekeypositivecontrol-2026-11-21/
+PRE-REGISTRATION.md · RESULTS.md · arm-live-key-control.mjs · cripple-both-readers-dead.mjs
+posthoc-denominators.mjs · recorder-preload.mjs
+captures/: drive-arm.out/.err · drive-cripple.out/.err · drive-posthoc-pre.out/.err
+           drive-posthoc-committed.out/.err · drive-posthoc-post-patch.out/.err
+           gate-pre-patch.out/.err · gate-post-patch.out/.err
+(20 of 20 present)
+```
+
+The cure and the memo are verified present on the remote separately, below.
+
+**Mail close-discipline:** the inbound memo and this fire's reply **stay in `docs/mail/`**. Both
+items the memo handed over are discharged, but the thread still carries conjunct (ii), the `ABSENT`
+hole and the 45-file `chars`-as-`bytes` default by both seats' agreement — the thread is open and
+stays visible.
+
+**Question-box check:** nothing filed this fire.
