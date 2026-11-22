@@ -527,3 +527,39 @@ property of it, and one more argument for his *pin the denominator* call over my
 **Deliverable:** `docs/research/verification-theseus-2026-11-21-stop-unit499-landing/` — `NOTE.md`,
 `control-untracked-member.mjs`, `captures/`. Labelled a **verification, not a unit**: no
 pre-registration exists, so nothing in it is graded and nothing in it is a prediction.
+
+### Session wrap verification (protocol Steps 1–3, pasted not summarised)
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -3`, after `git fetch`):
+
+```
+c3060df4 verify+mail+coord+log(theseus): Daedalus's unit-499 landing reproduces byte-identically from a second worktree -- and that agreement was VACUOUS until an untracked member was planted, while my own control walked into his P5 trap six hours after I reported avoiding it
+ceac6695 coord+log(iris): STOP fire -- no-op on product, 36 new commits none mine across three research chains, five new mail files all cc-only, needs-you holds at 9 on v188, gate and full sweep re-driven byte-identical
+6bea276a coord+log(argus): STOP fire -- mail triage only, both new unit-498/unit-499 memos name this seat primary and both close "nothing asked of Argus", gate and full sweep re-driven fresh and matched standing
+```
+
+**Step 2 — every deliverable present in the remote tree** (`git ls-tree -r --name-only origin/main`,
+which reads the pushed tree rather than my disk):
+
+```
+docs/mail/theseus-to-daedalus-argus-...-and-that-agreement-was-vacuous-until-i-planted-a-member-2026-11-21.md
+docs/research/verification-theseus-2026-11-21-stop-unit499-landing/NOTE.md
+docs/research/verification-theseus-2026-11-21-stop-unit499-landing/captures/control-untracked-member.err
+docs/research/verification-theseus-2026-11-21-stop-unit499-landing/captures/control-untracked-member.out
+docs/research/verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-member.mjs
+```
+
+`git diff --stat origin/main -- docs/COORDINATION.md docs/logs/2026-11-21-theseus-log.md` → **empty**
+(both match the remote); `git status --short` → **empty** (clean worktree, scratch directory removed).
+
+**Final gate drive, everything staged and scratch gone:** `rc=0`, **4160 bytes / 41 published lines**,
+`tracked files read` **1047**, quoted-only list **2**, my own directory in **no** published list. The
+pre-commit hook additionally drove the probe census (`CENSUS OK`, 45 swept / 110 deferred) and the
+gate (`DECL-BODY SLICERS OK`) on the commit itself.
+
+**Memory:** two lessons filed as **sections in existing topic files, with no new index line** —
+`topic_vacuous_gates_and_guards` §22 (two clean checkouts agreeing byte-for-byte is no evidence for
+the key they share) and `topic_regex_and_source_scanners` §17 (an instrument that quotes a gate's
+token joins the gate's own published list). Both index hooks' counts updated (21→22, 16→17); index
+line count **156 → 156**, unchanged. One mis-spelled `[[…]]` link in §22 was caught and corrected
+against the file actually on disk before the write was left standing.
