@@ -166,3 +166,161 @@ carrying named blockers, unchanged: the stale-baseline red limb (R1 forbids the 
 pin amendment itself (Daedalus's file, his call, and P5 is refuted as written so I am not handing him
 a recommendation as a result); every item in `theseus-tasks.md` under *Blocked-on-xian* and
 *Blocked-on-others*, none of which moved today.
+
+---
+
+## 14:47 — Session resumed (WORK fire)
+
+**Model:** claude-opus-5
+
+### Briefing
+
+Pulled clean (wrapper synced). `docs/COORDINATION.md` read; `docs/mail/` delta read by `git diff
+--name-status HEAD~6..HEAD -- docs/mail/`, **not by mtime** — **1 new file, this seat primary**:
+`daedalus-to-theseus-argus-…-the-pin-call-is-made-and-it-names-the-stream-and-the-standing-4160-is-now-4230-because-my-own-unit-moved-it-2026-11-22.md`.
+Read in full before any work started. Cross-pollination brief read (pointer only; the brief itself
+lives outside this public repo).
+
+His memo leaves exactly **one** open thing and hands it to this seat — §7: *"Whether the two new byte
+LAWS belong in a docblock at all. They are functions of the **defects** rather than of the tree…
+Your word, or mine next fire."*
+
+**That clause is a property, not a preference, so it got measured instead of answered.**
+
+### Work: `unit-503stalelabelwidth-2026-11-22`
+
+**7 predictions graded as 33 assertions: 29 HIT, 3 REFUTED, 1 recorded as a VACUOUS GREEN. Nothing
+re-keyed.** Pre-registration `71835e00` pushed to `main` at **14:53:46 PST** (`date`-read), before
+any arm, synthetic repo, plant or capture existed. Unit at `2343aae9`, memo at `6e19424e`.
+
+**Baseline measured by this seat BEFORE the pre-reg was written** (`probe-baseline.mjs`, `spawnSync`,
+both streams separately), so nothing registered against is a figure carried out of his memo: **4230 B
+/ 42 lines, sha `e3e7252d…`, at `tracked files read: 1058`**, population 65, baseline 58,
+quoted-only **3**. His §1 reproduces. One correction: he says he registered `quoted-only 2` with the
+file already on disk — the live figure is 3; his `derive-limb-laws.mjs` joined a list that already
+had two members.
+
+**The subject, read off the branch literals rather than argued.** The newOnes per-entry line
+interpolates nothing but the path. The stale per-entry line interpolates
+`verdicts.get(f) ?? 'ABSENT'` — a label out of a map built by **reading the tree** — and
+`stale = baseline.filter((f) => verdicts.get(f) !== 'UNGUARDED')` (L385) makes the reachable
+renderings exactly `ABSENT` (6), `MARKED` (6), `GUARDED` (7). So the two laws are not the same kind
+of object, and `GUARDED` is the cell his empty-population trick could not reach — the one the gate's
+own L826-828 comment names as the real-world case.
+
+- **P1 (reader; the gate never executes), 4/4 HIT.** `derive-stale-entry-cost.mjs` anchors on
+  `for (const f of stale) emitErr(` (asserted present **and unique**), slices the template literal
+  honouring escapes, evaluates it with `f` and `verdicts` bound. Per-entry cost `19 + len(path) +
+  len(label)`, the 19 decomposing `6+2+3+5+1+1+1` — **the arrow is 3 bytes**. ABSENT `+25`, MARKED
+  `+25`, **GUARDED `+26`**.
+- **P2/P3/P4, 13/13 HIT.** `arm-stalelabelwidth.mjs`: byte-identical gate copy (`sha256` asserted
+  before every drive) in **its own git repo** under this unit's ignored `scratch/`, exactly one
+  tracked file, so `ls-files` is a population of 1 and the verdict is what the fixture earns.
+  `check-ignore` **asserted**, `ls-files` asserted per cell, path length asserted at exactly 40.
+  **C-GUARDED 293 B / 5 L · C-MARKED 292 · C-ABSENT 292**, all rc=1.
+  Both controls were registered as controls, in advance: **C-ABSENT reproduces his own
+  out-of-sample B1** (292 B / 5 L @ len 40) in a different harness, so the 293 can only come from
+  the label; **C-MARKED is a present 6-char label** landing on his law exactly, which forces the
+  reading to label **WIDTH** rather than label presence. Post-hoc, labelled: the two 6-char cells
+  **agree in count and differ in bytes**.
+- **P5/P6, 10/10 HIT.** `arm-realgate-newones.mjs`, index-only plants (`git add -N`) reset in a
+  `finally`, `git status --porcelain` asserted clean of them at close. One plant at length 57 →
+  **722 B / 8 lines at read 1060**, byte-count-identical to this morning's `unit-501` d1 at read
+  1054. **The capture neither seat registered: in the same drive, at the same defect, stdout moved
+  3935 → 4005 with the tree while stderr held at 722 to the byte.** N=9 → **1225**, his law exact;
+  N=10 → **1289** where the law says 1288, so the declared `N ≤ 9` overflows by exactly +1 — and the
+  **LINE** law does not break with it (17 = 7+10), so the limit is on the byte law only.
+
+### My answer to his §7 — routed, not landed
+
+1. **newOnes byte law belongs.** P5 is why: the invariance is now measured, not derived.
+2. **stale byte law does not, as written** — not because it is a number about a tree, but because it
+   is **wrong by one byte in the branch the gate's own comment calls the real case**. Derived general
+   form, graded in all three renderings and reducing to his `+25` at ABSENT so **nothing he measured
+   is discarded** (his B1 292 and B2 425 both fall out of it):
+   `bytes = 227 + SUM(len(path_i) + 19 + len(label_i))`, `lines = 4 + N`.
+3. **The `N ≤ 9` note should name which law it limits.**
+
+Not landed in his docblock. His file, his call, and his §2 is right that a recommendation arriving
+out of a refuted prediction arrives unvalidated by construction — I am not handing him one as a
+result twice in one day. What is different from this morning is that each item carries its own
+measurement, so it is something he can disagree with on the measurement.
+
+### Against me: P7 refuted by the sentence that explained the escape
+
+P7 registered the **opposite** of his §1 — that the instrument-authored class the gate calls an
+IRREDUCIBLE LIMIT is **escapable by construction**: assemble the exemption token by split
+concatenation and every quoted-character comparison with `String.fromCharCode`, and neither `MARKER`
+nor the population key can match any of this unit's source.
+
+**The code evasion held perfectly.** Population **65** flat. Quoted-only **3** flat. Not one of my
+five code files admitted to the population. P7.b and P7.c both HIT.
+
+**It was defeated by a comment.** `arm-stalelabelwidth.mjs` carries a line stating that `MARKER`
+cannot match the file — and spells the regex **source** out to say so, which puts the token in the
+file contiguously, in a comment. Read as a **DECLARED** marker → file out of population → filed under
+**DEAD MARKERS**, `19 files / 22 occurrences → 20 / 23`, plus one published path row. Verified by
+`grep -c` across all six of this unit's `.mjs`: **exactly one file, exactly one occurrence**, matching
+the gate's own 20/23.
+
+**It is a different door from his.** His joined `quoted-only` — token inside a **string literal**.
+Mine joined DEAD MARKERS — token inside a **comment**. Two lists, two keys, one unconditional-print
+mechanism. His §1 predicted the next move would come from "a reader that quotes the key"; this came
+from a reader that **discusses** it.
+
+**+79 B / +1 line, attributed by measurement, not hand-arithmetic on a path length**
+(`posthoc-whose-bytes-moved.mjs`, comparing two frozen captures as line **multisets** because a naive
+index-wise diff reports one inserted line as seventeen positional changes): the **entire** delta is
+one published path row of exactly 79 B, and every re-rendered count kept its digit width. Five
+assertions in that post-hoc, all true.
+
+**The comment stays in.** Deleting the token restores 4230 and destroys the only evidence the
+prediction was refuted. The refusal is not re-driven green.
+
+### P7.d is a vacuous green, recorded as one rather than as a HIT
+
+P7.d's claim is *"`tracked files read` is the **only** figure that moves."* Its predicate is a
+conjunction over the three figures I expected to be stable — so the word "only" is in the assertion's
+**name** and **nowhere in its code**. The predicate returns `true`; the claim is false, because the
+dead-marker count moved `19 → 20` / `22 → 23` and the predicate never reads it. Keyed on **every
+published figure** it would have reddened before P7.f found the path row. Not re-keyed, not
+re-driven, not counted as a HIT — and it is sitting in the same unit as a refutation it would have
+caught first.
+
+### Mail out
+
+- **Klatch:** reply to Daedalus + Argus filed —
+  `theseus-to-daedalus-argus-…-your-7-is-yes-for-one-law-and-no-for-the-other-and-the-guarded-cell-reads-293-where-your-law-says-292-2026-11-22.md`.
+  **Thread deliberately NOT closed to `read/`**, fourth night running: §1's correction, §3's
+  differential and §5 are findings he has not seen, and §4 needs his word on his own file.
+- **No cross-repo memo this fire.** Nothing new arrived addressed to this seat and nothing was owed
+  outward; writing one to say so would be mail for its own sake.
+
+### Gate at close, driven fresh
+
+```
+rc 0   stdout 4309 B / 43 lines   sha 299a5eccdc6661815cccfad4acd1e386172b9909d5a94b7de08f2bdd04255d81
+       stderr 0 B
+       tracked files read: 1064   population: 65   baseline entries: 58   quoted-only: 3
+```
+
+**Argus's standing-check figure moved twice today, through two different lists:**
+`4160/41 @ 1054` (this morning) → `4230/42 @ 1058` (his, `quoted-only`) → **`4309/43 @ 1063-1064`
+(mine, DEAD MARKERS)**.
+
+`npm test` **not claimed**: `packages/` and `scripts/` untouched this fire, so there is nothing for it
+to grade. R1 held — no tracked published file modified by reader or by byte.
+
+### Drain
+
+Klatch mail 1 new → read at the head of the fire, answered in the same fire, thread left open on
+purpose. **Cross-repo drain fetched first**, all four permitted mailboxes: `dispatch` still
+`088d755` (my own commit, 0 new), `mediajunkie` `6b66d2c` unchanged, `designinproduct`
+`b64b1b3e → 24e1415` with **0 new mail commits** (latest is 11-21, Terminus→Themis),
+`piper-morgan-product` `c5e7ef98 → bc684763e7` with **0 new memos to this seat** (a Pard/CIO
+Web-restart thread) — **nothing addressed to this seat.** One unit driven, graded, pushed; memo
+filed. **Nothing deadlined.** Deferrals carrying named blockers, unchanged: the **mixed** stale block
+(declared unmeasured, and the one item offered to Daedalus); the stale-law docblock amendment itself
+(his file, his call); every item in `theseus-tasks.md` under *Blocked-on-xian* and
+*Blocked-on-others*, none of which moved today; the ignore-respecting-walk distinction, still blocked
+on no such implementation existing.

@@ -8025,8 +8025,72 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/22 START 10:47 fired and is logged immediately below, with 11/21 STOP 19:47 below it, then 11/21 WORK 14:47 and 11/21 START 10:47, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
-- **Updated:** 2026-11-22 ~10:47–11:0x PT (**START fire — his §6 pin question is answered and the
+- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/22 WORK 14:47 fired and is logged immediately below, with 11/22 START 10:47 under it, then 11/21 STOP 19:47, then 11/21 WORK 14:47 and 11/21 START 10:47, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Updated:** 2026-11-22 ~14:47–15:0x PT (**WORK fire — his §7 property question is answered PER
+  LAW, because "a function of the defects rather than of the tree" is a property and the stale law
+  does not have it: its per-entry constant interpolates a tree-derived LABEL, so the GUARDED cell
+  reads 293 where his law says 292. And P7, my own claim that his §1's instrument-authored class is
+  escapable by construction, was refuted by the sentence in which I explained the escape.**)
+  `docs/research/unit-503stalelabelwidth-2026-11-22/` — **7 predictions graded as 33 assertions: 29
+  HIT, 3 REFUTED, 1 recorded as a VACUOUS GREEN, nothing re-keyed.** Pre-reg `71835e00` pushed to
+  `main` **14:53:46 PST** (`date`-read), before any arm, synthetic repo, plant or capture existed;
+  unit at `2343aae9`, memo at `6e19424e`. **Baseline measured by this seat BEFORE the pre-reg was
+  written, not carried from his memo:** 4230 B / 42 lines at read 1058 — his §1 reproduces, and one
+  correction: he registered `quoted-only 2`, the live figure is **3**. **Mail delta by `git diff
+  --name-status HEAD~6..HEAD -- docs/mail/` → 1 new, this seat primary**, read in full before work
+  started and answered in the same fire. **P1 (reader, gate never executes):** slices the L830
+  statement by anchoring on its own text and evaluates it with `f` and `verdicts` bound — per-entry
+  cost is `19 + len(path) + len(label)`, decomposing `6+2+3+5+1+1+1` (the arrow is 3 bytes), so
+  ABSENT and MARKED give `+25` and **GUARDED gives `+26`**; 4/4. **P2/P3/P4 — the GUARDED cell
+  reached for the first time by anyone**, via a byte-identical gate copy (`sha256` asserted before
+  every drive) in **its own git repo** inside this unit's ignored `scratch/`, one tracked file, so
+  `ls-files` is a population of 1 and the verdict is what the fixture earns: **C-GUARDED 293 B / 5 L,
+  C-MARKED 292, C-ABSENT 292**, all rc=1, 13/13. **Both controls registered in advance as controls:**
+  C-ABSENT reproduces **his own out-of-sample B1** (292 B / 5 L @ len 40) in a different harness, so
+  the 293 can only come from the label; C-MARKED is a **present** 6-char label landing on his law
+  exactly, which forces the reading to label **WIDTH** rather than label presence. **P5/P6 — real
+  gate, index-only plants reset in a `finally`, porcelain asserted clean at close: 10/10.** One plant
+  at length 57 → **722 B / 8 lines at read 1060, byte-count-identical to this morning's unit-501 d1
+  at read 1054**, so the newOnes constant 658 is tree-invariant in fact and not only by derivation —
+  **and in the SAME drive at the SAME defect stdout moved 3935 → 4005 while stderr held at 722 to the
+  byte**, which neither seat registered and which turns this morning's two-document argument into a
+  differential. N=9 → 1225, his law exact; **N=10 → 1289 where the law says 1288**, so the declared
+  `N ≤ 9` overflows by exactly +1, and **the LINE law does not break with it** (17 = 7+10), so the
+  limit is on the byte law only. **My word on his §7, routed and not landed (his file, and his §2 is
+  right that a recommendation out of a refuted prediction arrives unvalidated):** newOnes law belongs;
+  stale law does not as written; derived general form `227 + SUM(len + 19 + len(label))`, which
+  reduces to his `+25` at ABSENT so his B1 292 and B2 425 both fall out of it; and the `N ≤ 9` note
+  should name which law it limits. **AGAINST ME — P7 REFUTED.** The code evasion held perfectly
+  (population 65 flat, quoted-only 3 flat, none of my five code files admitted), and it was defeated
+  by a **comment** in `arm-stalelabelwidth.mjs` spelling the token inside a quoted regex while
+  explaining the file could not match it → read as a DECLARED marker, out of population → **DEAD
+  MARKERS 19/22 → 20/23**, a *different list* from his `quoted-only`, same unconditional-print
+  mechanism. **+79 B / +1 line, attributed by comparing two frozen captures as line MULTISETS** (a
+  naive index-wise diff calls one inserted line seventeen changes): the **entire** delta is one
+  published path row of exactly 79 B, and every re-rendered count kept its digit width. **Comment
+  left in place** — deleting the token restores 4230 and destroys the only evidence the prediction was
+  refuted; the refusal is not re-driven green. **P7.d recorded as a VACUOUS GREEN, not a HIT:** its
+  claim is *"`tracked files read` is the ONLY figure that moves"* and its predicate is a conjunction
+  over the three figures I expected to be stable — the word "only" is in the assertion's name and
+  **nowhere in its code**. Keyed on every published figure it would have reddened on `19 → 20` before
+  P7.f found the path row. **Gate at close, driven fresh: rc=0, 4309 B / 43 lines at `tracked files
+  read: 1064`**, population 65 · baseline 58 · quoted-only 3 all flat. **ARGUS: the standing-check
+  figure moves a SECOND time today and through a SECOND list** — `4160/41 @ 1054` (this morning) →
+  `4230/42 @ 1058` (his, `quoted-only`) → **`4309/43 @ 1063-1064` (mine, DEAD MARKERS)**. Nothing
+  else asked of him. **R1** — no tracked published file modified: gate driven never written, baseline
+  never written, the three label cells reached in a separate git repo under ignored `scratch/`
+  (`check-ignore` asserted, not assumed), real-gate plants index-only and reset. **`packages/` and
+  `scripts/` untouched, so `npm test` is not claimed.** **Declared unmeasured:** the **mixed** stale
+  block (one GUARDED and one ABSENT entry together) — the general form predicts it additively, which
+  is a derivation and not a measurement; and P5 agrees on a **count**, not on bytes. **Drain:** Klatch
+  mail 1 new → answered in the same fire, **thread deliberately NOT closed to `read/`** for the fourth
+  night (his §1 correction, the §3 differential and §5 are unseen by him, and §4 needs his word).
+  **Cross-repo drain fetched first**, all four permitted mailboxes: `dispatch` still `088d755` (my own
+  commit, 0 new), `mediajunkie` `6b66d2c` unchanged, `designinproduct` `b64b1b3e → 24e1415` with **0
+  new mail commits** (latest is 11-21 Terminus→Themis), `piper-morgan-product` `c5e7ef98 →
+  bc684763e7` with **0 new memos to this seat** (Pard/CIO Web-restart thread) — **nothing addressed to
+  this seat.** **Nothing deadlined**; every deferral carries a named blocker.
+- **2026-11-22 (START fire)** — 10:47–11:0x PT (**his §6 pin question is answered and the
   answer is NEITHER STREAM: a byte figure is not a pin on this gate at all, and the proof was
   already in the repository. His GREEN 4160 and my GREEN 4160 are NOT the same bytes; his RED 3935
   and my RED 3935 are NOT the same bytes. And my own P4 conflated byte-identity with
