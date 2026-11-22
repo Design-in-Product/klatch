@@ -37,6 +37,29 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-11-21 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-11-21">
+      <p class="log-date">November 21, 2026</p>
+      <div class="log-body">
+
+        <p>The morning's work went into a small safety guard for a report-printing tool, meant to stop one of its lines ever ending on a bare pass/fail word with nothing after it. Building it on a colleague's say-so turned up two real spots in the tool's own output where that could happen. While writing it up, the author also caught and disclosed a small, long-carried mistake: a figure quoted in several documents as "3888 bytes" is actually 3898 — a character count had been mislabeled as a byte count once, and the wrong number had simply been copied forward since. A second researcher, confirming the same two spots independently with a different starting point, found the new guard sits exactly one trailing space away from missing the case entirely, though nothing in today's real output is close enough to trip it. Re-deriving the "3888" figure a second way came back 3888, not 3898 — not stale after all at that version, just computed two different ways by two people on two different days.</p>
+
+        <p>Midday work built out a fuller version of a label-padding rule, checked exhaustively across a 25-character set with no exceptions. The person who built it had predicted in advance that one explanatory note wouldn't need to mention a particular marker — and then had to write that marker in anyway once the real case came up, a small reminder that a prediction made before the work is worth keeping even when it turns out wrong, because it shows exactly where the author's own expectation and the result parted ways.</p>
+
+        <p>A colleague then took that same rule and, instead of just testing it in isolation, ran it through the actual tool that uses it day to day — and found the tool's own report undercounts by one: of 25 cases that should all be caught, only 24 show up in the printed output, because the tool happens to split its own report text on one of the exact characters the rule is about. The underlying rule is fine; the tool's own printing logic quietly eats one case before anyone can see it. The same check found a more unsettling pass: a count that was supposed to show "zero disagreements" between two separate measuring methods was reading zero correctly, but only because both methods were broken in the identical way — a clean, confident-looking zero that meant nothing at all until someone deliberately broke one method on purpose and watched the other one fail to notice.</p>
+
+        <p>In the evening, the first researcher built a version of the same test against real, live data rather than a simulated case, writing down six specific predictions beforehand — all six came true. The gap found that afternoon really does show up on the actual page being tested; a second way of counting the same thing, built from scratch rather than copied, agreed exactly; and a running figure that had already gone stale twice before was deliberately pinned to today's date rather than refreshed again, since it depends on which files happen to exist in the project at the moment someone measures it, not on anything about the underlying code. Building that live test also caught two mistakes in the test itself before they could reach anyone else: a stand-in placeholder had been typed as a literal five-letter word by accident, which would have quietly reported a true but meaningless 100% mismatch had a second, separate sanity check not been running alongside it and flagged the contradiction; and a find-and-replace step used a short search word that is itself fully contained inside a longer, different word, which would have silently changed two things while the author believed only one had been touched.</p>
+
+        <p>Late in the evening, a third researcher tried to independently reproduce that whole day's final numbers from a second, separate copy of the project, and got an exact match — then caught, before publishing it as proof of anything, that the match was hollow: two untouched copies of the same project are identical by definition, so agreeing with each other that way proves nothing about whether the tool is actually reading the right things. Only after deliberately adding one extra file that the tool should notice but a careless version of the same check would miss did the agreement start to mean something. Building that extra check, the same researcher then walked straight into a mistake a colleague had warned about in a memo just hours earlier — a memo this researcher had already read and had credited, in writing, with helping them avoid exactly that trap. They didn't avoid it; they'd simply met it later than their colleague had.</p>
+
+        <p>Elsewhere, the public list of decisions waiting on xian's attention stayed at the same nine items, but one entry's "days waiting" count was corrected rather than reopened — it had been copied in several weeks ago and never recalculated since, even though the true count had been tracked correctly behind the scenes the whole time. Every one of the project's automated safety checks, and the full test suite behind them, passed clean on every run through the day, matching the same numbers each time.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-11-21 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-11-20 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-11-20">
