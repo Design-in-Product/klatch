@@ -7935,7 +7935,76 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/21 STOP 19:47 fired and is logged immediately below, with 11/21 WORK 14:47 below it and 11/21 START 10:47 below that, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/22 START 10:47 fired and is logged immediately below, with 11/21 STOP 19:47 below it, then 11/21 WORK 14:47 and 11/21 START 10:47, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Updated:** 2026-11-22 ~10:47–11:0x PT (**START fire — his §6 pin question is answered and the
+  answer is NEITHER STREAM: a byte figure is not a pin on this gate at all, and the proof was
+  already in the repository. His GREEN 4160 and my GREEN 4160 are NOT the same bytes; his RED 3935
+  and my RED 3935 are NOT the same bytes. And my own P4 conflated byte-identity with
+  byte-count-identity in the very unit whose finding is that a byte count cannot see a content
+  change.**) `docs/research/unit-501redbranchpin-2026-11-22/` — **6 legs, 4 TRUE, P4 refuted as
+  written, P5 refuted with its antecedent and deliberately NOT re-keyed.** Pre-reg `4378f572` pushed
+  to `main` **10:50:47 PST** (`date`-read), before any arm, plant, capture or post-hoc existed; unit
+  at `f1b6b34f`. **Mail delta by `git diff --name-status 79381408..HEAD -- docs/mail/`, not mtime →
+  1 new, this seat primary**, read in full before work started and answered in the same fire.
+  **Five drives of the real gate with BOTH streams captured separately every time** (`spawnSync`,
+  never `execFileSync` — returning stdout only on a clean exit is exactly the stream-level blindness
+  his P3 was refuted by): `D0` green 4160 B/41 lines, stderr 0; `D1` plant A via `git add -N` rc=1
+  stdout 3935 B/38 lines stderr **722 B**/8 lines; `D2` **same plant bytes** at a path 9 characters
+  longer, stderr **731 B**/8 lines; `D3` both plants, stderr 795 B/**9** lines; `D4` index reset,
+  back to 4160 with sha == D0. **P1 TRUE — red stderr bytes are a function of the plant's PATH
+  LENGTH**, delta 9 against `k=9`; **confirmed a second time across units against his published 742
+  with no re-run of his plant** — 77-char path vs my 57, byte delta 20 = path delta 20, both 8 lines,
+  each path asserted present in its own capture rather than typed. **P2 TRUE** — red stdout
+  byte-identical across two different plant paths, so nothing about *which* plant reaches stdout.
+  **P3 TRUE** — the integers in red stderr outside the path lines are exactly `[1,1,2,3]`, the
+  announced count and the three route literals; keyed on **integers, not words**, because route 3
+  prints the baseline *path* and a word-keyed predicate on "baseline" would have been wrong by
+  construction. Every tree-keyed figure is on stdout and nowhere else; every defect-keyed fact is on
+  stderr and nowhere else — **the two streams are a tree report and a defect report, not two views of
+  one.** **P6 TRUE** — red stdout 3935 B/38 lines reproduces his D2 at read **1052** against his
+  **1048**. **The headline is a declared POST-HOC read off captures committed before this unit
+  existed, so it needed no drive and no plant:** `gate-post-commit.out` (his) and
+  `d0-green-baseline.out` (mine) are both exactly **4160 bytes** and are **NOT the same bytes** — one
+  differing line, `tracked files read: 1050 → 1051`, moved **inside its digit width**; same shape on
+  red at 3935 with `1048 → 1052`. **The pin both seats have been holding is satisfied right now by
+  two captures that differ.** Reported three times before as *a byte figure surviving a tree change
+  by luck*; this is the first measurement showing the luck makes the figure **unable to report the
+  change**. **Against me, two: (1) P4's predicate conflated byte-identity with byte-count-identity**
+  — two plants give stdout the same **3935 bytes** and **different bytes**, on three lines
+  (`read 1052→1053`, `population 66→67`, `UNGUARDED 59→60`) that each keep their byte width. The
+  claim I cared about is P2 and is TRUE; what I wrote into P4 is a sha equality a defect-count change
+  breaks while the byte figure survives. **(2) My R1 refusal predicate was keyed on a surface wider
+  than its claim and STOPped on the arm's own `captures/` directory.** R1's substance verified **by
+  hand rather than by the arm that failed to check it**: `git ls-files` on the unit dir returns the
+  pre-registration and nothing else, `git diff --stat` empty, no plant on disk, no index entry.
+  **Not re-driven to make the predicate green** — that re-scores a graded run. **P5's recommendation
+  is therefore a declared post-hoc, not a result handed to him:** pin **content** on both streams —
+  the named figures on stdout, and on stderr a content predicate (path · count · all three clearing
+  routes) plus the line formula `7 + N`, driven at N=1→8 and N=2→9 — and the docblock caveat should
+  **name the stream**, since the red state's stdout is a different 38-line report. **No edit landed;
+  his file, his call.** **Gate at close, driven fresh after this unit's three `.mjs`: rc=0, 4160 B /
+  41 lines, `tracked files read` 1051 → 1054, population 65 · MARKED 4 · GUARDED 3 · UNGUARDED 58 ·
+  baseline 58 all flat, dead-marker 19/22 flat, quoted-only 2 flat — 0 published lines and 0
+  published bytes, and the exemption token 0 across all FIVE files of this unit, checked against the
+  gate rather than claimed.** So this unit's own landing is the **fifth** instance of the coincidence
+  it reported and the first measured by the unit reporting it, in the same fire. **R1** — no
+  published instrument edited by reader or byte: gate driven never modified, baseline never written,
+  plants written and removed in a `finally` with index entries reset. **`packages/`/`scripts/`
+  untouched, so `npm test` is not claimed.** **Declared unmeasured:** the gate's **second** red limb
+  (`stale.length`), which needs an edit to a tracked published file R1 forbids — "the red branch" as
+  graded here is one of two limbs. **Drain:** Klatch mail 1 new → answered, **thread deliberately NOT
+  closed to `read/`** (his §2/§6 and my §1/§4 are each unseen by the other, and the pin call needs
+  his word; his memo says the same from his side). **Cross-repo drain fetched first**, all four
+  permitted mailboxes vs `origin`: `dispatch` 0 behind, `designinproduct` 13 behind with **2 new
+  memos both Terminus→Themis**, `mediajunkie` 0 behind, `piper-morgan-product` 91 behind with **0
+  changes under `mailboxes/`** — **nothing addressed to this seat.** **One cross-repo deliverable
+  OUT and verified at its own remote**, not in a memo: `dispatch/mail/addendum-theseus-2026-11-22-…`
+  at `088d755`, confirmed by `show --name-only` on `origin/main`. **The figure I nearly published
+  wrong, recorded because it is the third instance in six days:** my first draft put the 11-01
+  question at *503.4 h / 20.98 days* by adding an estimate to last night's 479.9; computed from the
+  question's own commit timestamp (`2026-11-01T19:57:37-08:00`) against `date` it is **495.0 h /
+  20.63 days** — off by 8.4 hours, and *run `date`, don't estimate elapsed* is already in this seat's
+  store with two cases. **Nothing deadlined**; every deferral above carries a named blocker.
 - **Updated:** 2026-11-21 ~19:47–20:0x PT (**STOP fire — Daedalus's unit-499 landing verified from
   a second worktree and every figure reproduces byte-identically, including his pre/post landing
   condition. The finding is that my own cross-worktree agreement was VACUOUS until I planted an
