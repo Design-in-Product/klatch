@@ -475,11 +475,27 @@ for (const v of new Set(verdicts.values())) {
  * 1. **The check runs BEFORE the line is published, so the invariant is a CONSTRUCTION and not a
  *    detector of its own past output.** A guard that inspected the finished capture would have to
  *    publish the offending line first in order to complain about it.
- * 2. **Chunks are split on `\n`, which is his condition and it is load-bearing.** This report makes
- *    34 `console.log` calls and publishes 38 lines: **4 of 38 published lines (10.5%) are not the
+ * 2. **Chunks are split on `\n`, which is his condition and it is load-bearing.** Some published
+ *    chunks contain a newline, so they publish more than one line: **4 published lines are not the
  *    first line of their chunk**, and all four are section-break prose — precisely the class a
- *    guard over the rows array cannot see. A per-CALL guard is blind to them. (The rows array is
- *    3 of 38.)
+ *    guard over the rows array cannot see. A per-CALL guard is blind to them. (The rows array is 3.)
+ *
+ *    **The two load-bearing figures above — 4 and 3 — are the whole property, and they are stable.
+ *    The DENOMINATORS are not, and are therefore pinned rather than stated flat.** At
+ *    `unit-499livekeypositivecontrol-2026-11-21` (2026-11-21, measured through a
+ *    `process.stdout.write` recorder, and independently at a `console.log` recorder by Theseus the
+ *    same day — both seams returned the same four numbers): **37 calls · 41 published lines · 4
+ *    not-first-of-chunk · rows 3.** This docblock previously carried **34 / 38**, written at
+ *    `a42cd40d`, and those two numbers went stale while 4 and 3 did not.
+ *
+ *    **Why they drift, which is the part worth keeping:** **21 of those 41 published lines are file
+ *    paths of files written *about* this gate** (the dead-marker and quoted-only lists — see
+ *    IRREDUCIBLE LIMIT in the report body). `0 of 21` static emit sites moved between `a42cd40d` and
+ *    today; the entire `+3` came from those loops. So the denominator is **a function of the tree,
+ *    not of this file**, and any future reading of it is a reading of the tree it was taken at. A
+ *    bare line count here is stale the moment another unit writes about the gate. **Do not "refresh"
+ *    it without re-pinning it, and do not treat a mismatch as a defect** — re-measure, and if 4 and
+ *    3 still hold, nothing has broken.
  * 3. **The key is derived from `LABELS`**, so the vocabulary cannot drift from the partition it
  *    protects — the duplicated-literal defect `MARKER_ALL` above exists to avoid. `endsWith` over
  *    the label set also catches a trailing superstring (`MISGUARDED`), which is a hazard for the
@@ -492,10 +508,40 @@ for (const v of new Set(verdicts.values())) {
  *    drove the real sliced `publish()` both ways: PRE, all four padded spellings (one space, two
  *    spaces, a tab, a bare `\r`) published at `rc=0`; POST, all four refuse at `rc=2`, while the
  *    quoted control and the `ABSENT` control still publish. The widening is **exactly** the hazard's
- *    closure rather than one character narrower: over the 25 whitespace characters derived from
- *    `/\s/` across U+0000..U+FFFF, `line.trimEnd().endsWith(v)` and `/LABEL\s*$/` disagree **0**
- *    times. It cost **0 published bytes** — 0 of this report's lines end in whitespace, with a KP
- *    for that zero, which is also why the first spelling could sit here looking sufficient.
+ *    closure rather than one character narrower: over the whitespace characters derived from
+ *    `/\s/`, `line.trimEnd().endsWith(v)` and `/<label>\s*$/` disagree **0** times. It cost **0
+ *    published bytes** — 0 of this report's lines end in whitespace, with a KP for that zero, which
+ *    is also why the first spelling could sit here looking sufficient.
+ *
+ *    **That `0` does not stand on its own, and a reader who takes it on its own is being misled by
+ *    this comment.** A 0-disagreement count is what a working pair produces *and* what two DEAD
+ *    readers produce — `0` is also the perfect agreement of two predicates that answer `false` to
+ *    everything. The separating term is **`bothTrue === cells`**, the count of cells on which BOTH
+ *    predicates answer `true`, and it is the figure to demand of any future re-measurement:
+ *
+ *        over 3 labels x 25 derived members = 75 cells:  disagreements **0**, bothTrue **75 of 75**
+ *
+ *    Driven at the live key — this very `publish()` body, sliced rather than re-typed — by
+ *    `unit-499livekeypositivecontrol-2026-11-21`, with a reader-only cripple proving the term earns
+ *    its place: substituting one label in both readers' vocabularies leaves **disagreements at 0,
+ *    byte-identical**, while bothTrue falls **75 → 50**. The published figure cannot tell those two
+ *    states apart. Credit where it is due — the hole was found by Theseus (11-21 §3) in the closure
+ *    leg of `unit-497paddedlabelclosure`, whose control set guards *both predicates always TRUE* and
+ *    is therefore **satisfied** by *both always FALSE*. The `0` itself is sound; it is now separated
+ *    rather than merely true.
+ *
+ *    Two further limits on that drive, both measured rather than assumed:
+ *    - **Scope is the full range, not just the BMP.** The member set is derived by scanning
+ *      U+0000..U+10FFFF with a `u`-flagged `/\s/`, and there are **0 astral members** — so the
+ *      earlier "U+0000..U+FFFF" wording was a declared limit with no excluded population behind it.
+ *    - **One of the 25 is structurally vacuous AT THE GATE, and it reads as agreement.** U+000A is a
+ *      member of the `\s` set *and* `publish()`'s own line separator, so a padded line ending in it
+ *      never reaches the key padded — it arrives already split, and is label-terminal under the bare
+ *      key too. A set-complete drive at the gate therefore GRADES on **24 of 25**; the 25th is closed
+ *      by a conjunct that was already true. Theseus, 11-21 §2. The general shape is worth more than
+ *      the instance: **when a detector's subject is a character class and its host tokenises on a
+ *      member of that class, exactly one cell of every set-complete drive is vacuous — and it looks
+ *      exactly like a pass.**
  *
  * ## The two sites in THIS FILE that the construction found, and the cure for both
  *
