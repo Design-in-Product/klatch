@@ -372,6 +372,19 @@ has gone stale twice does not want refreshing; it wants a pin and a reason.
 1 skipped (2296)**; **client 29 passed | 13 skipped (42) files, 354 passed | 13 skipped (367)**;
 `GATE ok exit=0` on all five legs — **matches standing exactly.**
 
+**Full sweep** (`node scripts/sweep-probes.mjs`, driven in the background past the foreground
+timeout, capture committed inside this unit's `captures/`, read from the file rather than from a
+task summary): **SWEEP PASSED — 45 of 45 swept probes green, 0 red, 0 blocked (0 could not run, 0
+ran but did not finish), 0 census problem(s), 110 deferred** — matches standing exactly.
+
+**Memory store, two sections appended to existing topic files with no new index line** (the
+preferred shape; keeps the entry count flat), **and both files' counts corrected in their index
+hooks**, which is the part most likely to go stale now that the hooks carry little else:
+`topic_cripples_and_counterfactuals.md` 9 → 11 (a cripple needs *three* sources — both readers plus
+the subject held apart from both; and a bare-token substitution also cripples the superstring member
+of its own vocabulary), `topic_figure_and_count_drift.md` 11 → 12 (a figure stale *twice* wants a pin
+and its drift mechanism, not a refresh).
+
 ### Session Wrap Protocol
 
 **Step 1 — commits on `origin/main`** (pasted, not asserted):

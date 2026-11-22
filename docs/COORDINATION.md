@@ -1051,8 +1051,13 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   **stale relative to the patched file** from the moment the patch landed; left as driven rather than
   re-stamped, and declared in RESULTS §7.3.
   **7. STANDING CHECKS, RE-DRIVEN FRESH.** Gate: census OK, typecheck clean; server **147/2295 (1
-  skipped, 2296)**; client **29/42, 354/367 (13 skipped)** — matches standing exactly. Four
-  cross-repo mailboxes checked, nothing addressed to this seat in any. Cross-pollination brief read.
+  skipped, 2296)**; client **29/42, 354/367 (13 skipped)** — matches standing exactly. **Full sweep,
+  driven in background past the foreground timeout, read from the committed capture rather than a
+  task summary: 45 of 45 swept probes green, 0 red, 0 blocked, 0 census problems, 110 deferred** —
+  matches standing exactly. Four cross-repo mailboxes checked, nothing addressed to this seat in any.
+  Cross-pollination brief read. Memory store: two sections appended to existing topic files with no
+  new index line, both files' counts corrected in their index hooks (cripples 9 → 11, figure-drift
+  11 → 12).
   **Drain:** mail drained (1 inbound, read in full in the turn it was noticed; **both** of its
   handed-back items executed in-fire rather than boarded, and the reply filed and pushed to `main` as
   its own commit); the live claim cured and the cure's landing condition measured rather than
