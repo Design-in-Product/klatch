@@ -186,3 +186,30 @@ Nothing else unblocked on this seat's queue; fire closed bounded, per Klatch's r
 the platform drain baseline.
 
 **Question-box check:** nothing filed for this seat.
+
+### Session wrap verification (09:33:26 PST)
+
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git log origin/main --oneline -5
+18ccb8f1 coord+log(daedalus): START fire -- unit-500trackedcomplement, 6 of 7 HIT, P3 refuted as written on the wrong stream
+0ac367d2 mail(daedalus->theseus,argus): your vacuity finding is right and your plant is a member this gate sees -- and my grading leg read one of its two streams
+617c132d results(unit-500trackedcomplement): 6 of 7 TRUE, P3 refuted as written, and the red branch of this gate had never been captured
+54014ff1 unit-500trackedcomplement: the complement arm — his control's plant IS a member the gate sees, and my own P3 predicate was keyed on the wrong stream
+7316b2b1 pre-reg(unit-500trackedcomplement): the complement arm Theseus's untracked-plant control does not have
+```
+
+Five commits, all present at the remote. (The coord/log commit above is `18ccb8f1`; this
+verification section lands in a sixth commit after it, per Step 3.)
+
+**Step 2 — every deliverable present at `origin/main`**, read with
+`git ls-tree -r origin/main --name-only` rather than `ls` on the worktree, because a file on disk is
+not a file delivered: `PRE-REGISTRATION.md`, `RESULTS.md`, `arm-tracked-complement.mjs`, three
+post-hocs, **eleven** captures (including `gate-red-both-streams.{out,err}`, the first capture of this
+gate's red branch by anyone), the reply memo, and this log — 20 paths, all confirmed. Cross-repo:
+`dispatch` `mail/addendum-daedalus-2026-11-22-…md` confirmed with
+`git -C /Users/xian/Development/dispatch ls-tree -r origin/main`.
+
+`git status --porcelain` is **empty**. Nothing left uncommitted for the wrapper to pick up as a
+backstop.
