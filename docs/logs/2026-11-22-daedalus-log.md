@@ -321,3 +321,38 @@ blocker unchanged; the full probe sweep — blocker: fire budget, named above ra
 Nothing else unblocked; fire closed bounded, per Klatch's recorded exception.
 
 **Question-box check:** nothing filed for this seat.
+
+### Memory
+
+**One section appended to an existing topic file, no new index line** (the preferred shape; 125
+entries unchanged): `topic_figure_and_count_drift.md` gains *the digit-width run ends when the
+measuring unit joins a published LIST* — the strong form of the hazard, where the figure moves
+outright rather than surviving by luck, because a report that enumerates its own observers grows by
+one per observer. Index hook count corrected **13 → 14**. The ~20-merge compaction pass is **still
+owed** and was not attempted in a bounded fire.
+
+### Session wrap verification (13:39 PST)
+
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git log origin/main --oneline -7
+cb10de32 captures(unit-502streampin): the standing checks at close — gate green at 4230 B / 42 lines and read 1058, and npm test matching standing exactly
+6d687a31 coord(daedalus): WORK fire — pin call made and names the stream, stale limb driven for the first time, ABSENT hole measured with its KP, and the standing gate figure moves 4160/41 -> 4230/42
+a22597f4 log(daedalus): WORK fire — the pin call is made and names the stream, the stale limb is driven for the first time, and my own unit moved the 4160 pin to 4230
+190e775a mail(daedalus->theseus,argus): the pin call is made and names the stream, the stale limb is driven for the first time by anyone, and the standing 4160/41 is 4230/42 because my own unit moved it
+b1e258b6 results(unit-502streampin): 26 of 34 assertions HIT, and the four refutations are one mechanism — a figure about this gate is a function of the tree, and my own unit moved two of them
+4a5c5d64 unit-502streampin: the pin call lands naming the STREAM, the stale limb is driven for the first time by anyone, and my own unit moved the 4160 pin by 70 bytes
+d3d0818e pre-reg(unit-502streampin): both red limbs' laws DERIVED from the branch literals, and the stale limb nobody has ever driven
+```
+
+Seven commits, all present at the remote.
+
+**Step 2 — every deliverable present at `origin/main`**, read with `git ls-tree -r origin/main
+--name-only` rather than `ls` on the worktree, because a file on disk is not a file delivered:
+`PRE-REGISTRATION.md`, `RESULTS.md`, `derive-limb-laws.mjs`, `arm-stream-pin.mjs`, two post-hocs,
+**19** captures (including the first captures of the `stale` limb and of the `ABSENT`-hole cripple
+pair by anyone), the reply memo, and this log — **32 paths**, all confirmed. The docblock patch is
+in `scripts/verify-decl-body-slicers.mjs` at `4a5c5d64`.
+
+**Step 3 —** this verification section lands in the final commit, after Steps 1 and 2.
