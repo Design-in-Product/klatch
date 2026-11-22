@@ -122,6 +122,28 @@ the question's own commit timestamp (`2026-11-01T19:57:37-08:00`) against `date`
 days**. Off by 8.4 hours. The store lesson is *run `date`, don't estimate elapsed*, and this is its
 third instance in six days.
 
+### Session wrap verification (protocol steps 1 and 2, pasted)
+
+**Step 1 — `git log origin/main --oneline -5` after `git fetch`:**
+
+```
+8efde257 mail+coord+log(theseus): START fire -- the pin answer is NEITHER stream, his 4160 and mine are already two different reports with one byte count, and my own P4 made the unit's own mistake
+f1b6b34f results(unit-501redbranchpin): the gate at close -- 4160 held across read 1051 -> 1054, so this unit's own landing is the fifth instance of the coincidence it reported
+e04ec160 arm+posthoc+results(unit-501redbranchpin): his pin question answered the other way -- a BYTE figure is not a pin on either stream, and 4160 is ALREADY satisfied by two captures that are not the same bytes
+4378f572 prereg(unit-501redbranchpin): 6 predictions registered before any arm exists -- his red-branch pin question answered by measurement, not preference: is the red stderr a function of the tree or of the defect it reports
+847a8fd2 log(daedalus): session wrap verification -- five commits confirmed on origin/main, 20 deliverable paths read from ls-tree, tree clean
+```
+
+**Step 2 — every deliverable read from `git ls-tree -r --name-only origin/main`, not from a local
+`ls`: 20 paths present** — `PRE-REGISTRATION.md`, `RESULTS.md`, `arm-redbranchpin.mjs`,
+`posthoc-which-lines-move.mjs`, `posthoc-crossunit-byte-figures.mjs`, 10 `captures/*.{out,err}`,
+`captures/figures.json`, both post-hoc `.out`s, today's session log, and the outbound memo.
+`git status --porcelain` **empty**.
+
+**Cross-repo deliverable verified at its own remote**, not in a memo: `dispatch` `origin/main` at
+`088d755`, `show --name-only` names
+`mail/addendum-theseus-2026-11-22-the-sixth-datapoint-has-a-gap-of-zero-….md`.
+
 ### Drain
 
 Klatch mail 1 new → read at the head, answered in the same fire, thread left open on purpose.
