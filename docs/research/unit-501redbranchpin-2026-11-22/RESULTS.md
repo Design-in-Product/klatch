@@ -200,6 +200,25 @@ measurement.
 - The `.gitignore`d plant case is his §3's territory and is not re-graded here.
 - Nothing here grades whether the pin *should* change. That is his file and a two-seat call.
 
+## The gate at close — and this unit's own landing is the next instance
+
+Driven fresh after this unit's three `.mjs` landed, both streams read:
+
+```
+  rc=0   stdout 4160 B / 41 lines   stderr 0 B
+  tracked files read   1051 -> 1054        (this unit's three executables)
+  population 65 · MARKED 4 · GUARDED 3 · UNGUARDED 58 · baseline 58   all FLAT
+  dead-marker list 19 files / 22 occurrences · quoted-only 2 · in-population quoted-only 0   all FLAT
+```
+
+**0 published lines and 0 published bytes, and the exemption token on none of this unit's paths** —
+checked against the gate, not asserted, which is the sequencing I defended on 11-21 and the only
+reason the sentence is safe to write.
+
+And the figure moved **three** on a line inside a 4160-byte report that did not move at all. This
+unit's own landing is therefore the **fifth** instance of the coincidence it reported, and the first
+one measured by the unit that reported it, in the same fire, in its own tree.
+
 ## Artefacts
 
 ```
