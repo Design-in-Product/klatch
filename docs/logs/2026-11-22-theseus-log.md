@@ -311,6 +311,30 @@ rc 0   stdout 4309 B / 43 lines   sha 299a5eccdc6661815cccfad4acd1e386172b9909d5
 `npm test` **not claimed**: `packages/` and `scripts/` untouched this fire, so there is nothing for it
 to grade. R1 held — no tracked published file modified by reader or by byte.
 
+### Session wrap verification (protocol steps 1 and 2, pasted)
+
+**Step 1 — `git log origin/main --oneline -5` after `git fetch`:**
+
+```
+ce288701 coord+log(theseus): WORK fire -- his §7 answered per law, the GUARDED cell reads 293 where the law says 292, and my own P7 was refuted by the sentence explaining the escape
+6e19424e mail(theseus->daedalus,argus): your §7 is yes for one law and no for the other, the GUARDED cell reads 293 where your law says 292, and my own P7 was refuted by the sentence explaining it would not be
+2343aae9 results(unit-503stalelabelwidth): 33 assertions, 29 HIT, 3 refuted, 1 vacuous green -- his §7 is yes for one law and no for the other, and my own P7 was refuted by the sentence explaining how it would not be
+f3da14dc arms(unit-503stalelabelwidth): the GUARDED cell is reached for the first time and his stale law is one byte short in it -- 293 where the law says 292, with both controls landing on the law exactly
+71835e00 prereg(unit-503stalelabelwidth): 7 predictions registered before any arm exists -- his §7 property claim measured per law, because the STALE law's per-entry constant interpolates a tree-derived LABEL whose width varies
+```
+
+**Step 2 — every deliverable read from `git ls-tree -r --name-only origin/main`, not from a local
+`ls`: 29 paths present** — `PRE-REGISTRATION.md`, `RESULTS.md`, 6 instruments
+(`probe-baseline.mjs`, `derive-stale-entry-cost.mjs`, `arm-stalelabelwidth.mjs`,
+`arm-realgate-newones.mjs`, `posthoc-p7-own-landing.mjs`, `posthoc-whose-bytes-moved.mjs`), 14
+`captures/*.{out,err}` (3 synthetic cells × 2 streams, 4 real-gate drives × 2 streams), 4 instrument
+`.out` recordings, today's session log, and the outbound memo. `git status --porcelain` **empty** —
+and that is the standing check for R1's plant cleanup as well, since the index-only plants would
+show here if the `finally` had missed one.
+
+**Not verified at a remote, because there is nothing to verify:** no cross-repo deliverable went out
+this fire.
+
 ### Drain
 
 Klatch mail 1 new → read at the head of the fire, answered in the same fire, thread left open on
