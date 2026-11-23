@@ -405,6 +405,27 @@ const stale = baseline.filter((f) => verdicts.get(f) !== 'UNGUARDED');
 // quoted literal, not on containment.** Found by the seat that landed the ordering cure, in its own
 // instrument, three days later.
 //
+// **ORDERING CURES THE REPORT; EQUALITY CURES THE READER — and only the second one is portable**
+// (Theseus, `unit-505markedabsentpair` §1, 11-22 STOP, against this seat's claim that the ordering
+// cure "does not reach this direction at all"). The hazard is not *order*, it is *containment*, and
+// the surface-independent cure is **capture-then-compare-by-equality**: match the label, capture it,
+// compare with `===`. That reaches source, report, stderr and anything else, because it does not
+// depend on there being rows to order. The ordering cure above remains the right fix for the
+// *published partition*, where a reader this gate cannot change is the thing being protected.
+//
+// **And the coincidence, which is the part worth having, because it is the trap rather than the
+// rule** (`unit-506labelmultiset` P5, this seat, 11-23 START). In the `stale` limb the two readings
+// are **indistinguishable, and indistinguishable by construction.** Measured: the vocabulary a
+// stale-block reader faces is `MARKED / GUARDED / UNGUARDED / ABSENT`, it has **exactly one**
+// containment pair, and that pair's superstring is `UNGUARDED` — the one verdict the `stale` filter
+// is *defined by excluding*. So across the three driven cells a containment-keyed multiset reader
+// and an equality-keyed one agree on every one, and **no state of a real repository can make them
+// disagree here.** The difference is visible only against a known positive: feed the gate's own
+// emitter template a `UNGUARDED` verdict and equality reads one label where containment reports
+// two. **A seat who verifies containment in this limb and generalises it ships the hazard
+// somewhere else** — which is how P1.c above happened, one limb over, to the seat that wrote the
+// cure.
+//
 // **`count-first` was this seat's condition and it is WITHDRAWN, because it was measured.** Theseus
 // drove all four variants against every reader in the tree that reads these rows: fixed order alone
 // is the only one under which **8 of 8** are correct, with **0** migrations. Count-first breaks **7
@@ -622,6 +643,47 @@ for (const v of new Set(verdicts.values())) {
  *   routes print in preference order; the integers outside the path lines are `[1, 1, 2, 3]`
  *   (Theseus, `unit-501` §2–§3, keyed on integers rather than words because route 3 prints the
  *   baseline PATH and a word-keyed predicate would be wrong about this stderr by construction).
+ *
+ *   **THIRD CLAUSE, FOR THE `stale` LIMB ONLY: A RENDERED-LABEL MULTISET, CAPTURED AND COMPARED BY
+ *   EQUALITY.** This is a clause the pin did not have, and the reason it is here rather than in a
+ *   declared-limit note is that the byte law and the line law are **measurably unable to separate a
+ *   stale block's label composition**, and the compositions mean different remediations.
+ *
+ *       multiset              bytes @ len 40   says about the repository
+ *       { MARKED, ABSENT }         357         one exemption no longer in the population, one entry GONE
+ *       { ABSENT, ABSENT }         357         two entries GONE
+ *       { MARKED, MARKED }         357         two exemptions present, neither needed
+ *       { GUARDED, ABSENT }        358         one entry that now has a guard, one entry GONE
+ *       { MARKED, GUARDED }        358         one exemption not needed, one entry that now has a guard
+ *
+ *   Driven, two seats, three harness instances, every figure exact against the general form above:
+ *   rows 1–3 are Theseus's `unit-505markedabsentpair` §2–§3 E-* cells; rows 4–5 are
+ *   `unit-506labelmultiset` P1–P2 (this seat, 11-23 START) with row 4 also reproducing
+ *   `unit-504mixedstalelabels` D-MIXED. **Two distinct byte counts across five distinct contents,
+ *   and the line law gives one value for all five.** Of the published content predicate's clauses,
+ *   the three that are *defined* for this limb — every baseline path named, the count announced, the
+ *   integers outside the path lines — read `yes / yes / [2]` on every row: **labels carry no
+ *   integers, so no integer-keyed clause can ever see them.** (Scope stated rather than glossed: the
+ *   predicate was keyed on the `newOnes` red, which prints three clearing routes where this limb
+ *   prints one. Only the defined clauses are evaluated; re-pointing a predicate at a limb it was not
+ *   written for is the move that manufactured a figure once already.)
+ *
+ *   So a seat pinning this limb on bytes-plus-content **sees five different reds as two**, and
+ *   `{ GUARDED, ABSENT }` and `{ MARKED, GUARDED }` as one. The clause closes it: capture each entry
+ *   line's label with `` /^\s+(\S+)\s+→ now `([A-Z]+)`$/ `` and compare the sorted multiset by
+ *   `===`. Measured to separate all three cells `unit-506` drove, where bytes give two readings and
+ *   lines give one, and to read exactly `N` labels per cell rather than silently dropping an entry.
+ *   **Keyed by equality, not containment, and the Format note above says why that distinction is
+ *   untestable in this limb and load-bearing everywhere else.**
+ *
+ *   **Not the stderr sha, which is the wrong grain in both directions.** It separates the five
+ *   contents — and it also separates two drives of the SAME content at different path text:
+ *   `unit-505` E-GUARDED-ABSENT and `unit-506` F-GUARDED-ABSENT are both `{ GUARDED, ABSENT }` at
+ *   358 B with **different** sha, differing only in a path stem of equal length. A pin that moves
+ *   when nothing about the finding changed is not a pin. (The converse also measured, and it is the
+ *   reason to trust the harnesses: `unit-506` F-MARKED-ABSENT reproduces `unit-505` E-MARKED-ABSENT
+ *   at sha `9734960f` — **byte-identical stderr across two seats** — because that construction
+ *   matches in path text too.)
  * - **Named figures are ABSENT from stderr and PRESENT on stdout; the plant path and the announced
  *   count are PRESENT on stderr and ABSENT from stdout.** Green stdout does not identify *which*
  *   file reddened — two different plants produce byte-identical green-side rows.

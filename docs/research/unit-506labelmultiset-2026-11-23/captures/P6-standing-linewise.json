@@ -1,0 +1,118 @@
+{
+  "stages": [
+    {
+      "stage": "standing-pre",
+      "what": "at HEAD, before this unit had a single file",
+      "outBytes": 4390,
+      "outLines": 44,
+      "errBytes": 0,
+      "figures": {
+        "tracked files read": 1071,
+        "population": 65,
+        "MARKED": 4,
+        "GUARDED": 3,
+        "UNGUARDED": 58,
+        "baseline entries": 58,
+        "dead marker files": 21,
+        "dead marker occurrences": 24,
+        "quoted-only": 3,
+        "in-population quoted-only": 0
+      }
+    },
+    {
+      "stage": "standing-after-arm",
+      "what": "arm + pre-registration + captures committed and TRACKED",
+      "outBytes": 4390,
+      "outLines": 44,
+      "errBytes": 0,
+      "figures": {
+        "tracked files read": 1072,
+        "population": 65,
+        "MARKED": 4,
+        "GUARDED": 3,
+        "UNGUARDED": 58,
+        "baseline entries": 58,
+        "dead marker files": 21,
+        "dead marker occurrences": 24,
+        "quoted-only": 3,
+        "in-population quoted-only": 0
+      }
+    },
+    {
+      "stage": "standing-after-docblock",
+      "what": "after the two docblock landings",
+      "outBytes": 4390,
+      "outLines": 44,
+      "errBytes": 0,
+      "figures": {
+        "tracked files read": 1072,
+        "population": 65,
+        "MARKED": 4,
+        "GUARDED": 3,
+        "UNGUARDED": 58,
+        "baseline entries": 58,
+        "dead marker files": 21,
+        "dead marker occurrences": 24,
+        "quoted-only": 3,
+        "in-population quoted-only": 0
+      }
+    }
+  ],
+  "pairwise": [
+    {
+      "from": "standing-pre",
+      "to": "standing-after-arm",
+      "bytesEqual": true,
+      "linesEqual": true,
+      "differingLineCount": 2,
+      "onlyInFirst": [
+        "  tracked files read: 1071"
+      ],
+      "onlyInSecond": [
+        "  tracked files read: 1072"
+      ]
+    },
+    {
+      "from": "standing-after-arm",
+      "to": "standing-after-docblock",
+      "bytesEqual": true,
+      "linesEqual": true,
+      "differingLineCount": 0,
+      "onlyInFirst": [],
+      "onlyInSecond": []
+    }
+  ],
+  "preToPost": {
+    "bytesEqual": true,
+    "differingLineCount": 2,
+    "onlyInPre": [
+      "  tracked files read: 1071"
+    ],
+    "onlyInPost": [
+      "  tracked files read: 1072"
+    ]
+  },
+  "flatFigures": [
+    "population",
+    "MARKED",
+    "GUARDED",
+    "UNGUARDED",
+    "baseline entries",
+    "dead marker files",
+    "dead marker occurrences",
+    "quoted-only",
+    "in-population quoted-only"
+  ],
+  "movedFigures": [
+    "tracked files read"
+  ],
+  "verdict": {
+    "P6.a  DEAD MARKERS flat at 21 files / 24 occurrences across all three stages": true,
+    "P6.b  quoted-only flat at 3 across all three stages": true,
+    "P6.c  population flat at 65 and MARKED/GUARDED/UNGUARDED flat at 4/3/58": true,
+    "P6.d  `tracked files read` is the ONLY named figure that moved": true,
+    "P6.e  `tracked files read` is the ONLY line that differs, pre to post": true,
+    "P6.f  stderr is 0 B at every stage — the gate stayed green": true
+  },
+  "the trap this script exists to avoid": "all three captures are 4390 B / 44 lines. Equal bytes, different content: the figure cannot report its own tree change, which is why the pin section says to read the NAMED figures and why this comparison is a line multiset."
+}
