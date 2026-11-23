@@ -1,0 +1,182 @@
+{
+  "gateSha": "0a57a765c8424486ee79cfaa0d0f6ce9cc6e088ea939b862c4973bad0032b9de",
+  "pathLength": 40,
+  "paths": {
+    "P_M1": "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs",
+    "P_G1": "src/g1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs",
+    "P_A01": "src/a01xxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs"
+  },
+  "sliced": {
+    "emitTemplate": "`      ${f}  → now \\`${verdicts.get(f) ?? 'ABSENT'}\\``",
+    "excludedVerdictFromStaleFilter": "UNGUARDED",
+    "labelsFromGateSource": [
+      "MARKED",
+      "GUARDED",
+      "UNGUARDED"
+    ],
+    "goneFallbackFromTemplate": "ABSENT",
+    "vocabulary": [
+      "MARKED",
+      "GUARDED",
+      "UNGUARDED",
+      "ABSENT"
+    ],
+    "containmentPairsInVocabulary": [
+      [
+        "UNGUARDED",
+        "GUARDED"
+      ]
+    ],
+    "staleStatementSliced": "const stale = baseline.filter((f) => verdicts.get(f) !== 'UNGUARDED');"
+  },
+  "knownPositive": {
+    "renderedAbsentLine": "      src/a01xxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs  → now `ABSENT`",
+    "renderedExcludedLine": "      src/g1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs  → now `UNGUARDED`",
+    "equalityReads": [
+      "UNGUARDED"
+    ],
+    "containmentReads": [
+      "GUARDED",
+      "UNGUARDED"
+    ]
+  },
+  "generalForm": "bytes = 227 + SUM(len(path_i) + 19 + len(label_i));  lines = 4 + N",
+  "cells": {
+    "F-MARKED-GUARDED": {
+      "rc": 1,
+      "population": 2,
+      "errBytes": 358,
+      "errLines": 6,
+      "errSha": "071cd28c43b3576cf0b6653ff6b1b22731b82c52f8db4688bf62527f8f158a33",
+      "outBytes": 800,
+      "equalityMultiset": [
+        "GUARDED",
+        "MARKED"
+      ],
+      "containmentMultiset": [
+        "GUARDED",
+        "MARKED"
+      ],
+      "outsideInts": [
+        "2"
+      ]
+    },
+    "F-GUARDED-ABSENT": {
+      "rc": 1,
+      "population": 1,
+      "errBytes": 358,
+      "errLines": 6,
+      "errSha": "bce716abc408a7d00f6df67444fca71e9146e73654a8e6c1a7732bb0ec684028",
+      "outBytes": 800,
+      "equalityMultiset": [
+        "ABSENT",
+        "GUARDED"
+      ],
+      "containmentMultiset": [
+        "ABSENT",
+        "GUARDED"
+      ],
+      "outsideInts": [
+        "2"
+      ]
+    },
+    "F-MARKED-ABSENT": {
+      "rc": 1,
+      "population": 1,
+      "errBytes": 357,
+      "errLines": 6,
+      "errSha": "9734960f332572d387c6252d5c3d71447158fc0e334bb1c33e417706dde48a96",
+      "outBytes": 800,
+      "equalityMultiset": [
+        "ABSENT",
+        "MARKED"
+      ],
+      "containmentMultiset": [
+        "ABSENT",
+        "MARKED"
+      ],
+      "outsideInts": [
+        "2"
+      ]
+    }
+  },
+  "predictedVsMeasured": {
+    "F-MARKED-GUARDED": {
+      "form": 358,
+      "measured": 358
+    },
+    "F-GUARDED-ABSENT": {
+      "form": 358,
+      "measured": 358
+    },
+    "F-MARKED-ABSENT": {
+      "form": 357,
+      "measured": 357
+    }
+  },
+  "stderrTexts": {
+    "F-MARKED-GUARDED": "\nRED — 2 stale baseline entry/entries (no longer unguarded, or gone):\n      src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs  → now `MARKED`\n      src/g1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs  → now `GUARDED`\n\n  Remove them from the baseline. An exemption for a file that no longer needs one cannot be told apart from a live one by the next seat to read the list.\n",
+    "F-GUARDED-ABSENT": "\nRED — 2 stale baseline entry/entries (no longer unguarded, or gone):\n      src/g1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs  → now `GUARDED`\n      src/a01xxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs  → now `ABSENT`\n\n  Remove them from the baseline. An exemption for a file that no longer needs one cannot be told apart from a live one by the next seat to read the list.\n",
+    "F-MARKED-ABSENT": "\nRED — 2 stale baseline entry/entries (no longer unguarded, or gone):\n      src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs  → now `MARKED`\n      src/a01xxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs  → now `ABSENT`\n\n  Remove them from the baseline. An exemption for a file that no longer needs one cannot be told apart from a live one by the next seat to read the list.\n"
+  },
+  "verdict": {
+    "P1.a  F-MARKED-GUARDED rc = 1": true,
+    "P1.b  F-MARKED-GUARDED stderr = 227 + (40+19+6) + (40+19+7) = 358": true,
+    "P1.c  F-MARKED-GUARDED stderr lines = 4 + 2 = 6": true,
+    "P1.d  the general form is exact in all three cells (358, 358, 357)": true,
+    "P2.a  F-MARKED-GUARDED and F-GUARDED-ABSENT have EQUAL stderr byte counts": true,
+    "P2.b  ...and equal stderr line counts": true,
+    "P2.c  ...and DISTINCT stderr sha256": true,
+    "P2.d  ...and distinct rendered-label multisets": true,
+    "P2.e  across the three cells: 2 distinct byte counts, 1 distinct line count, 3 distinct multisets": true,
+    "P3.a  every baseline path is named, in all three cells": true,
+    "P3.b  the count is announced, in all three cells": true,
+    "P3.c  the integers outside the path lines are [2] in all three cells": true,
+    "P3.d  byte law + line law + the three defined clauses assign MG and GA IDENTICAL readings": true,
+    "P4.a  the equality-keyed multiset reader separates all 3 cells": true,
+    "P4.b  strict refinement: no two cells the multiset calls EQUAL are called distinct by bytes/lines": true,
+    "P4.c  the reader reads exactly N = 2 labels in every cell": true,
+    "P5.a  containment and equality AGREE on all three cells": true,
+    "P5.b  the vocabulary [\"MARKED\",\"GUARDED\",\"UNGUARDED\",\"ABSENT\"] has exactly ONE containment pair, and its superstring is UNGUARDED — the verdict the stale filter is DEFINED by excluding": true,
+    "P5.c  KNOWN POSITIVE, rendered by the gate's own template: on a UNGUARDED label the readers DISAGREE": true,
+    "P5.d  ...so in this limb the two readers are indistinguishable, and the KP is the only way to tell": true
+  },
+  "posthoc": {
+    "P4.b is VACUOUS as registered": {
+      "note": "all three multisets are distinct, so the universally-quantified antecedent (\"two cells the multiset calls equal\") has an EMPTY domain. The assertion is green and carries no load. Recorded rather than counted as a HIT.",
+      "pairsWithEqualMultisets": 0
+    },
+    "the non-vacuous check P4.b should have been": {
+      "note": "the labels the reader CAPTURED reproduce the measured bytes through the general form. A reader that dropped or invented a label fails this. Authored after seeing P4.b was vacuous, so it is a post-hoc and is not counted.",
+      "perCell": {
+        "F-MARKED-GUARDED": {
+          "capturedLabels": [
+            "GUARDED",
+            "MARKED"
+          ],
+          "formOverCaptured": 358,
+          "measured": 358,
+          "agrees": true
+        },
+        "F-GUARDED-ABSENT": {
+          "capturedLabels": [
+            "ABSENT",
+            "GUARDED"
+          ],
+          "formOverCaptured": 358,
+          "measured": 358,
+          "agrees": true
+        },
+        "F-MARKED-ABSENT": {
+          "capturedLabels": [
+            "ABSENT",
+            "MARKED"
+          ],
+          "formOverCaptured": 357,
+          "measured": 357,
+          "agrees": true
+        }
+      }
+    }
+  }
+}
