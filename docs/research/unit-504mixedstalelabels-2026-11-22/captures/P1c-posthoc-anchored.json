@@ -1,0 +1,28 @@
+{
+  "staleLine": "const stale = baseline.filter((f) => verdicts.get(f) !== 'UNGUARDED');",
+  "LABELS": [
+    "MARKED",
+    "GUARDED",
+    "UNGUARDED"
+  ],
+  "excludedAnchored": [
+    "UNGUARDED"
+  ],
+  "excludedBare": [
+    "GUARDED",
+    "UNGUARDED"
+  ],
+  "defaultLabel": "ABSENT",
+  "reachable": [
+    "ABSENT",
+    "GUARDED",
+    "MARKED"
+  ],
+  "verdict": {
+    "POST-HOC  the anchored key excludes exactly UNGUARDED": true,
+    "POST-HOC  the bare-containment key excluded TWO, and GUARDED is the false one": true,
+    "POST-HOC  the two keys DISAGREE on this very line, which is why P1.c could be refuted at all": true,
+    "POST-HOC  reachable label set is {ABSENT, GUARDED, MARKED}": true,
+    "POST-HOC  the containment relation that did it is live in LABELS itself": true
+  }
+}

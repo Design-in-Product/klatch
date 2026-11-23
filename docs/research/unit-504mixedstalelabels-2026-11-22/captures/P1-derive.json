@@ -1,0 +1,54 @@
+{
+  "gateRel": "scripts/verify-decl-body-slicers.mjs",
+  "statementLine": 830,
+  "statement": "for (const f of stale) emitErr(`      ${f}  → now \\`${verdicts.get(f) ?? 'ABSENT'}\\``);",
+  "slicedArgument": "`      ${f}  → now \\`${verdicts.get(f) ?? 'ABSENT'}\\``",
+  "publishedLawLine": "*       stale limb:    bytes = 227 + SUM(len(path_i) + 25)     lines = 4 + N   (all ABSENT)",
+  "constant": 19,
+  "constantPieces": {
+    "indent": 6,
+    "gap": 2,
+    "arrow": 3,
+    "\" now \"": 5,
+    "open backtick": 1,
+    "close backtick": 1
+  },
+  "reachableLabels": [
+    "ABSENT",
+    "MARKED"
+  ],
+  "excludedByFilter": [
+    "GUARDED",
+    "UNGUARDED"
+  ],
+  "derivedForm": "per-entry bytes = 19 + len(path) + len(label)",
+  "samples": {
+    "len40/ABSENT": {
+      "bytes": 65,
+      "render": "      pppppppppppppppppppppppppppppppppppppppp  → now `ABSENT`"
+    },
+    "len40/MARKED": {
+      "bytes": 65,
+      "render": "      pppppppppppppppppppppppppppppppppppppppp  → now `MARKED`"
+    },
+    "len57/ABSENT": {
+      "bytes": 82,
+      "render": "      ppppppppppppppppppppppppppppppppppppppppppppppppppppppppp  → now `ABSENT`"
+    },
+    "len57/MARKED": {
+      "bytes": 82,
+      "render": "      ppppppppppppppppppppppppppppppppppppppppppppppppppppppppp  → now `MARKED`"
+    }
+  },
+  "verdict": {
+    "P1.a  len 40 / ABSENT: cost = 19 + 40 + 6 = 65": true,
+    "P1.a  len 40 / MARKED: cost = 19 + 40 + 6 = 65": true,
+    "P1.a  len 57 / ABSENT: cost = 19 + 57 + 6 = 82": true,
+    "P1.a  len 57 / MARKED: cost = 19 + 57 + 6 = 82": true,
+    "P1.b  the constant is 19 and decomposes 6 + 2 + 3 + 5 + 1 + 1 + 1 member-wise": true,
+    "P1.b2 the empty render IS that concatenation, not merely the same length": true,
+    "P1.c  the reachable label set is exactly {ABSENT, GUARDED, MARKED}": false,
+    "P1.c2 UNGUARDED is excluded BY the live filter, read rather than assumed": false,
+    "P1.d  the published law ALREADY carries the scope annotation (all ABSENT)": true
+  }
+}
