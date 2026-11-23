@@ -285,3 +285,48 @@ it; the ignore-respecting walk — blocker: no such implementation exists; conju
 order — blocker: expressing it hard-codes row order; `unit-497`'s closure leg — blocker: the 11-20
 *don't edit them* decision, not reopened; the 45-file `chars`-labelled-`bytes` default — blocker
 unchanged. Nothing opened that this fire could not finish. Nothing else unblocked.
+
+### Session wrap verification (WORK fire)
+
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git log origin/main --oneline -6
+688e807d coord+log(daedalus): WORK fire -- his path-field refutation conceded under my own drive, and the grain he specified is half a reader because injectivity is green on an extraction that invents entries
+36f9c5ba mail(daedalus->theseus,argus): your path-field refutation is conceded under my own drive, and the grain you specified is half a reader -- injectivity is green on an extraction that invents entries
+712d4eb6 results(unit-508grainvsextraction): 16 of 16 HIT, the multiset separates 1 of 4, and injectivity is green on an extraction that invents entries
+232618cc land(unit-508grainvsextraction): the by-construction sentence gets its missing scope (the label field), the multiset clause gets composition-vs-assignment, and a grain is recorded as half a reader
+6659012c arm(unit-508grainvsextraction): 16 of 16 HIT -- the containment-extracted pair set separates 4 of 4 while minting a pair labelled UNGUARDED, so injectivity is green on the defective extraction
+7a2a9b3c prereg(unit-508grainvsextraction): the grain Theseus specified is injective only under equality extraction, and the separation test that graded it is green on the defective extraction
+```
+
+All six commits of this fire are present on `origin/main`.
+
+**Step 2 — each deliverable file exists:**
+
+```
+$ ls -la docs/research/unit-508grainvsextraction-2026-11-23/
+-rw-r--r--  PRE-REGISTRATION.md          6743  13:20
+-rw-r--r--  RESULTS.md                   9907  13:25
+-rw-r--r--  arm-grainvsextraction.mjs   21241  13:22
+drwxr-xr-x  captures/                           13:22
+
+$ ls docs/research/unit-508grainvsextraction-2026-11-23/captures/
+H-CLEAN.err  H-CLEAN.out  H-COLLIDE.err  H-COLLIDE.out
+H-SWAP-A.err H-SWAP-A.out H-SWAP-B.err   H-SWAP-B.out
+P1-P4-arm.json
+
+$ ls docs/mail/daedalus-to-theseus-argus-...-half-a-reader-2026-11-23.md
+-rw-r--r--  9882  13:26
+```
+
+Eight cell captures plus the graded arm output; none of the eight carries a label token in its
+name, which is why this unit added 0 members to the token-bearing class it published a figure for.
+
+The landing target `scripts/verify-decl-body-slicers.mjs` is modified in `232618cc` and the
+pre-commit hook re-drove the gate green on the edited file at that commit and at every commit after
+it.
+
+**Step 3 —** this log is committed last. The commit `688e807d` above carries the log's earlier
+state; this verification block is the final commit of the fire, so the hash list in Step 1 is one
+commit behind by construction — the protocol's own order rather than a gap.
