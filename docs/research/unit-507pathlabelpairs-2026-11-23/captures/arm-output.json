@@ -1,0 +1,202 @@
+{
+  "gateSha": "7096a8d9c034872189524b0f5eb7562509179e8415bd263ed0b7dc7e8bd98295",
+  "emitterSlice": {
+    "anchorHits": 1,
+    "line": 925,
+    "template": "`      ${f}  → now \\`${verdicts.get(f) ?? 'ABSENT'}\\``"
+  },
+  "slicedLabels": [
+    "MARKED",
+    "GUARDED",
+    "UNGUARDED"
+  ],
+  "paths": {
+    "P_A": "src/a1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs",
+    "P_B": "src/b1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs",
+    "P_U": "src/UNGUARDEDxxxxxxxxxxxxxxxxxxxxxxx.mjs",
+    "length": 40
+  },
+  "landedForm": "bytes = 227 + SUM(len(path_i) + 19 + len(label_i)); lines = 4 + N",
+  "kp": {
+    "path": "src/UNGUARDEDxxxxxxxxxxxxxxxxxxxxxxx.mjs",
+    "rendered": "      src/UNGUARDEDxxxxxxxxxxxxxxxxxxxxxxx.mjs  → now `ABSENT`",
+    "parsed": [
+      {
+        "path": "src/UNGUARDEDxxxxxxxxxxxxxxxxxxxxxxx.mjs",
+        "label": "ABSENT"
+      }
+    ],
+    "presentInCapture": true
+  },
+  "live": {
+    "tracked": 7430,
+    "tokenBearingPaths": 24,
+    "tokenBearingFromUnit506": 6,
+    "baselineEntries": 87,
+    "tokenBearingAlsoBaselined": []
+  },
+  "cells": {
+    "G-SWAP-A": {
+      "rc": 1,
+      "errBytes": 357,
+      "errLines": 6,
+      "errSha": "6848a240a4ea2078ed4f74f572d1490c4e726f7b99adc78cfad4cf406d356411",
+      "outBytes": 800,
+      "lsFiles": [
+        "src/a1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs"
+      ],
+      "pairs": [
+        {
+          "path": "src/a1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs",
+          "label": "MARKED"
+        },
+        {
+          "path": "src/b1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs",
+          "label": "ABSENT"
+        }
+      ],
+      "multiset": "ABSENT,MARKED",
+      "pairList": "src/a1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs=MARKED|src/b1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs=ABSENT",
+      "containment": "ABSENT,MARKED",
+      "lawFromCapture": 357,
+      "predicate": {
+        "everyPathNamed": true,
+        "countAnnounced": true,
+        "nonPathIntegers": [
+          2
+        ]
+      }
+    },
+    "G-SWAP-B": {
+      "rc": 1,
+      "errBytes": 357,
+      "errLines": 6,
+      "errSha": "0271781a574f9a32c55c999b8bccd58c1a074a412ea1c99795b5457533dc85aa",
+      "outBytes": 800,
+      "lsFiles": [
+        "src/b1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs"
+      ],
+      "pairs": [
+        {
+          "path": "src/a1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs",
+          "label": "ABSENT"
+        },
+        {
+          "path": "src/b1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs",
+          "label": "MARKED"
+        }
+      ],
+      "multiset": "ABSENT,MARKED",
+      "pairList": "src/a1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs=ABSENT|src/b1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs=MARKED",
+      "containment": "ABSENT,MARKED",
+      "lawFromCapture": 357,
+      "predicate": {
+        "everyPathNamed": true,
+        "countAnnounced": true,
+        "nonPathIntegers": [
+          2
+        ]
+      }
+    },
+    "G-COLLIDE": {
+      "rc": 1,
+      "errBytes": 357,
+      "errLines": 6,
+      "errSha": "d716a8540f91a052a7b8c4cb27244f69f43e0b985e10b39c9d390891480ec2b5",
+      "outBytes": 800,
+      "lsFiles": [
+        "src/b1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs"
+      ],
+      "pairs": [
+        {
+          "path": "src/UNGUARDEDxxxxxxxxxxxxxxxxxxxxxxx.mjs",
+          "label": "ABSENT"
+        },
+        {
+          "path": "src/b1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs",
+          "label": "MARKED"
+        }
+      ],
+      "multiset": "ABSENT,MARKED",
+      "pairList": "src/UNGUARDEDxxxxxxxxxxxxxxxxxxxxxxx.mjs=ABSENT|src/b1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs=MARKED",
+      "containment": "ABSENT,GUARDED,MARKED,UNGUARDED",
+      "lawFromCapture": 357,
+      "predicate": {
+        "everyPathNamed": true,
+        "countAnnounced": true,
+        "nonPathIntegers": [
+          2
+        ]
+      }
+    },
+    "G-2MARKED": {
+      "rc": 1,
+      "errBytes": 357,
+      "errLines": 6,
+      "errSha": "e95a0e0871e7796c9f1230916718160d2f4a952978b4da590eb4022a8ace3d6d",
+      "outBytes": 800,
+      "lsFiles": [
+        "src/a1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs",
+        "src/b1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs"
+      ],
+      "pairs": [
+        {
+          "path": "src/a1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs",
+          "label": "MARKED"
+        },
+        {
+          "path": "src/b1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs",
+          "label": "MARKED"
+        }
+      ],
+      "multiset": "MARKED,MARKED",
+      "pairList": "src/a1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs=MARKED|src/b1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs=MARKED",
+      "containment": "MARKED,MARKED",
+      "lawFromCapture": 357,
+      "predicate": {
+        "everyPathNamed": true,
+        "countAnnounced": true,
+        "nonPathIntegers": [
+          2
+        ]
+      }
+    }
+  },
+  "stderrTexts": {
+    "G-SWAP-A": "\nRED — 2 stale baseline entry/entries (no longer unguarded, or gone):\n      src/a1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs  → now `MARKED`\n      src/b1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs  → now `ABSENT`\n\n  Remove them from the baseline. An exemption for a file that no longer needs one cannot be told apart from a live one by the next seat to read the list.\n",
+    "G-SWAP-B": "\nRED — 2 stale baseline entry/entries (no longer unguarded, or gone):\n      src/a1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs  → now `ABSENT`\n      src/b1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs  → now `MARKED`\n\n  Remove them from the baseline. An exemption for a file that no longer needs one cannot be told apart from a live one by the next seat to read the list.\n",
+    "G-COLLIDE": "\nRED — 2 stale baseline entry/entries (no longer unguarded, or gone):\n      src/UNGUARDEDxxxxxxxxxxxxxxxxxxxxxxx.mjs  → now `ABSENT`\n      src/b1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs  → now `MARKED`\n\n  Remove them from the baseline. An exemption for a file that no longer needs one cannot be told apart from a live one by the next seat to read the list.\n",
+    "G-2MARKED": "\nRED — 2 stale baseline entry/entries (no longer unguarded, or gone):\n      src/a1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs  → now `MARKED`\n      src/b1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs  → now `MARKED`\n\n  Remove them from the baseline. An exemption for a file that no longer needs one cannot be told apart from a live one by the next seat to read the list.\n"
+  },
+  "verdict": {
+    "P1.a  all four cells rc = 1": true,
+    "P1.b  all four cells stderr = 227 + 2x(40+19+6) = 357 (landed form EXACT)": true,
+    "P1.c  all four cells stderr lines = 4 + N = 6": true,
+    "P2.a  G-SWAP-A / G-SWAP-B / G-COLLIDE have ONE label multiset between them": true,
+    "P2.b  ...and THREE distinct contents (sha)": true,
+    "P2.c  G-2MARKED multiset differs from all three (the clause is not dead)": true,
+    "P2.d  the swap pair differs in EXACTLY ONE input: which fixture carries the marker": true,
+    "P3.a  the ORDERED (path,label) list separates all FOUR cells": true,
+    "P3.b  the UNORDERED (path,label) SET separates all four too (not an order artefact)": true,
+    "P3.c  every cell reads exactly N = 2 pairs": true,
+    "P4.a  the emitter anchor occurs EXACTLY ONCE in the gate source": true,
+    "P4.b  the LABELS array sliced from the gate equals this arm's assembled vocabulary minus ABSENT": true,
+    "P4.c  KP: the sliced emitter, evaluated with an ABSENT-fallback verdict, parses to ONE pair": true,
+    "P4.d  ...and that rendered line is BYTE-PRESENT in G-COLLIDE's captured stderr": true,
+    "P4.e  per cell, the CAPTURED pairs reproduce the measured bytes through the general form": true,
+    "P5.a  a multiset-keyed reader returns ONE reading for the three cells": true,
+    "P5.b  ...and the SAME reader separates G-2MARKED, so the blindness is the clause's": true,
+    "P6.a  every path is named in all three": true,
+    "P6.b  the count is announced in all three": true,
+    "P6.c  the non-path INTEGER multiset is identical across all three": true,
+    "P6.d  SO: bytes + lines + label-blind clauses + the MULTISET clause = ONE reading, THREE documents": true,
+    "P6.e  ...and the pair grain gives THREE": true,
+    "P7.a  on G-COLLIDE, equality reads a 2-label multiset": true,
+    "P7.b  ...and containment over the SAME lines reports a STRICT SUPERSET": true,
+    "P7.c  ...and the superset includes BOTH members of the vocabulary's only containment pair": true,
+    "P7.d  the two readers AGREE on every cell whose paths carry no label token": true,
+    "P7.e  SO: the disagreement is located in the PATH field, in a state a real repository can hold": true,
+    "P8.a  at least one live label-token-bearing path was written by unit-506 itself": true,
+    "P8.b  NONE of the live label-token-bearing paths is currently a baseline entry (REACH, not a live red)": true
+  }
+}

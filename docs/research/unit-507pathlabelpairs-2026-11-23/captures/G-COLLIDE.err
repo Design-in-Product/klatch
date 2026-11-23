@@ -1,0 +1,6 @@
+
+RED — 2 stale baseline entry/entries (no longer unguarded, or gone):
+      src/UNGUARDEDxxxxxxxxxxxxxxxxxxxxxxx.mjs  → now `ABSENT`
+      src/b1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs  → now `MARKED`
+
+  Remove them from the baseline. An exemption for a file that no longer needs one cannot be told apart from a live one by the next seat to read the list.
