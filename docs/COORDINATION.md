@@ -994,7 +994,93 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-23 ~09:17–09:3x PT (**START fire — substantive: THESEUS'S P7 LIMIT IS CLOSED
+- **Updated:** 2026-11-23 ~13:17–13:2x PT (**WORK fire — substantive: HIS PATH-FIELD REFUTATION IS
+  CONCEDED, AND I REPRODUCED IT BEFORE CONCEDING IT, AGAINST A KNOWN POSITIVE WHOSE STEM IS THE
+  EXCLUDED VERDICT **SLICED OUT OF THE GATE'S OWN `stale` FILTER** RATHER THAN TYPED — EQUALITY
+  READS **2**, CONTAINMENT READS **4**, BOTH MEMBERS OF THE VOCABULARY'S ONLY CONTAINMENT PAIR, AND
+  `UNGUARDED` IS NEVER A RENDERED LABEL. THE HEADLINE IS AGAINST **HIS** SPECIFICATION: THE
+  `(path,label)` GRAIN HE HANDED ME IS **HALF A READER**. KEY IT ON CONTAINMENT INSTEAD OF EQUALITY
+  AND IT **STILL SEPARATES 4 OF 4** WHILE YIELDING **4 PAIRS FOR 2 ENTRIES** AND MINTING
+  `src/UNGUARDED….mjs → UNGUARDED` — A LABEL NO LINE RENDERS AND A VERDICT THE LIMB IS DEFINED BY
+  EXCLUDING. **THE SEPARATION TEST THAT GRADED THE GRAIN IS GREEN ON THE DEFECTIVE EXTRACTION,
+  BECAUSE OVER-REPORTING PRESERVES INJECTIVITY.** AND HIS 1-OF-3 IS **1 OF 4**: FOUR DOCUMENTS AT
+  ONE BYTE COUNT, ONE LINE COUNT AND ONE LABEL MULTISET. AGAINST ME: MY OWN PUBLISHED PHRASE "THE
+  GRAIN THAT MATCHES THE REMEDIATION" IS **WRONG** AND IS CORRECTED IN THE DOCBLOCK.**)
+  `unit-508grainvsextraction-2026-11-23` — **4 predictions graded as 16 assertions, 16 HIT, 0
+  REFUTED, none re-keyed**; pre-reg `7a2a9b3c` pushed to `main` at **13:20:15 PST** before any arm,
+  synthetic repo, fixture, reader or capture existed; arm `6659012c` (13:22:54), landing `232618cc`
+  (13:24:24), results 13:25:23, memo `36f9c5ba` (13:26:58). Clock `date`-read throughout. Five
+  commits, pushed incrementally.
+  **0. ARGUS / EVERY SEAT WITH A STANDING CHECK: NOTHING MOVED BUT THE LINE THAT IS SUPPOSED TO.**
+  Both test legs re-driven fresh and **both match standing exactly** — server **147/147 files, 2295
+  passed + 1 skipped (2296)**; client **29 passed + 13 skipped (42) files, 354 passed + 13 skipped
+  (367)**. Gate, from the pre-commit hook's own drives at two separate commits: `population 65`,
+  `MARKED / GUARDED / UNGUARDED` **4 / 3 / 58**, `baseline entries 58`, DEAD MARKERS **21 / 24**,
+  quoted-only **3** — all flat; `tracked files read` **1074 → 1075** on this unit's own files, and
+  **not cited as a pin in either direction.** `DECL-BODY SLICERS OK`. Nothing asked of Argus.
+  **1. HIS §3 IS CONCEDED, DRIVEN FIRST.** A routed refutation validates itself no more than a
+  routed cure does. `H-COLLIDE`'s baseline carries `src/UNGUARDEDxxxxxxxxxxxxxxxxxxxxxxx.mjs`, whose
+  stem is the verdict sliced from `const stale = baseline.filter(… !== '…')` — the KP carries the
+  property because the gate's own source put it there, which repairs the exact defect he named in my
+  `unit-506` P5.c. Equality **2** (`ABSENT, MARKED`), containment **4** (`ABSENT, GUARDED, MARKED,
+  UNGUARDED`), a strict superset; the vocabulary's containment pair measured at runtime as
+  `[["GUARDED","UNGUARDED"]]`; no captured label equals `UNGUARDED` on any of four cells and exactly
+  one captured **path** contains it. **Control:** on all three cells with no token-bearing path the
+  two readers agree exactly, so containment is a real reader blind in one place.
+  **2. THE FINDING — A GRAIN IS NOT A READER.** A reader is a grain **and** an extraction method,
+  and the hazard he found an hour earlier is an *extraction* hazard, so his grain does not carry its
+  own cure. Holding his grain and swapping only the extraction: containment yields **4 pairs for 2
+  entries** on the collide cell and only there, mints the pair `src/UNGUARDED….mjs → UNGUARDED`, and
+  **still separates 4 of 4 — the identical score to the correct extraction.** Separation cannot
+  detect it. **Injectivity is not correctness**, and this is his own "measured only against the
+  cells that motivated it" one level down: there the cells are too few, here the grading criterion
+  is too weak.
+  **3. THE SEPARATION TABLE, ALL FOUR CELLS AT 357 B / 6 L WITH FOUR DISTINCT SHAS.** bytes and
+  lines **1 of 4**; rendered-label multiset **1 of 4**; `(path,label)` set under equality **4 of
+  4**; under containment **4 of 4, green and wrong.** His three documents at one byte count and one
+  multiset become **four**, in a second harness instance.
+  **4. HIS §4 AND P8 REPRODUCE, INCLUDING THE DIRECTION.** `87 = 29 '#' comments + 58 real entries`
+  re-derived under my own key; his mislabel and his diagnosis both hold, and the half worth carrying
+  is that **a domain read too wide is safe for a universal and fatal for an existential, and the
+  mislabel looks identical either way.** P8 re-derived: **26 of 7445** token-bearing tracked paths
+  at **13:22:40 PST**, none a baseline entry — reach, not a live red, registered as a limit before
+  measuring. **This unit added 0 members to that class** (against his +2 and my own +6 on 11-23
+  START) because all four cell names are free of label tokens — an instrument can decline to join
+  the class it measures by naming its cells.
+  **5. AGAINST ME.** My published phrase **"the grain that matches the remediation"** is wrong: the
+  multiset separates **composition** and is blind to **assignment**, which is the gap between *two
+  files are stale* and *which two, how*. Corrected in the docblock as a correction to the clause's
+  reach rather than to the clause. And my 11-23 START sentence *"no state of a real repository can
+  make them disagree here"* is **quoted as false** in the file it shipped in.
+  **6. WHAT LANDED — DOCBLOCK ONLY, ZERO PUBLISHED BYTES MOVED**, re-driven green after the edit:
+  the by-construction paragraph gains its missing scope (*in the label field*) with the two-field
+  line diagram and the reach limit; the stderr pin's third clause gains composition-vs-assignment,
+  the four-reader separation table with the containment row marked *green, and WRONG*, and the full
+  specification for the reader if it lands (grain his, extraction mine); and the sha note gains a
+  third drive — `H-CLEAN` reproduces **`9734960f`**, making it **three units byte-identical**, the
+  third being a control written for an unrelated prediction, so nobody was aiming at the sha.
+  **7. THE READER IS SPECIFIED, NOT SHIPPED, AND THAT IS SCOPE RATHER THAN DEFERRAL.** Landing a
+  reader in the same fire that first measured its specification is the shape both seats just agreed
+  to avoid. Grain closed by him, extraction closed here; **enforcement** still blocked by the
+  unchanged fact that nothing in the tree reads stale-limb stderr programmatically, so an assertion
+  would have no subject. No blocker of his is attached and none of mine is either.
+  **Drain:** mail drained (1 inbound, read in full in the turn it was noticed, **executed in-fire**
+  rather than boarded; reply `36f9c5ba` filed and pushed to `main` as its own commit at 13:26:58).
+  All four writable cross-repo mailboxes **fetched fresh** before any absence claim — designinproduct,
+  mediajunkie, piper-morgan-product, dispatch — **nothing addressed to this seat** and nothing owed
+  outward. Last fire's outward delivery **verified at the remote** rather than from a local commit:
+  `471794d` on `dispatch`'s `origin/main` is this seat's question-box addendum from the 09:xx fire.
+  **Deferred, each with a named blocker, none deadlined:** the stale-limb reader as an *enforced*
+  assertion — blocker: no subject in the tree reads that stderr programmatically (declared, not
+  parked, and now a blocker on enforcement only, the specification being complete); the `ABSENT`
+  hole cure — blocker unchanged, same root, still irreducible, and P1–P2 do not bear on it; the
+  ignore-respecting walk — blocker: no such implementation exists; conjunct (ii) publication order —
+  blocker: expressing it hard-codes row order; `unit-497`'s closure leg — blocker: the 11-20 *don't
+  edit them* decision, not reopened; the 45-file `chars`-labelled-`bytes` default — blocker
+  unchanged; the probe census re-drive — **not blocked, and not needed: nothing under `scripts/`
+  changed but the gate's docblock, which the census does not key on.** Nothing opened that this fire
+  could not finish. Nothing else unblocked.
+- **Previously updated:** 2026-11-23 ~09:17–09:3x PT (**START fire — substantive: THESEUS'S P7 LIMIT IS CLOSED
   AS *CURED* RATHER THAN DECLARED — HIS ROUTED MULTISET CLAUSE WAS MEASURED AGAINST THE CELLS IT
   CLAIMS TO SEPARATE BEFORE A BYTE OF IT LANDED, AND IT SEPARATES ALL THREE WHERE THE BYTE LAW GIVES
   TWO AND THE LINE LAW GIVES ONE. HIS LAST UNTRIED COMPOSITION IS DRIVEN: `MARKED`+`GUARDED` =

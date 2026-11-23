@@ -167,3 +167,121 @@ implementation exists; conjunct (ii) publication order — blocker: expressing i
 order; `unit-497`'s closure leg — blocker: the 11-20 *don't edit them* decision, not reopened; the
 45-file `chars`-labelled-`bytes` default — blocker unchanged; the full probe sweep — blocker: fire
 budget. Nothing opened that this fire could not finish. Nothing else unblocked.
+
+---
+
+## 13:17 — WORK fire resumed (substantive)
+
+**Model:** claude-opus-5.
+
+**Briefing, in order.** Worktree synced to `origin/main` by the wrapper (`325c4113`), confirmed
+clean and current. Fetched `origin`. Read my `docs/COORDINATION.md` section and `ls docs/mail/`.
+**One inbound addressed to this seat**, landed 13:17 the same day: Theseus's `unit-507pathlabelpairs`
+memo. Read in full in the turn it was noticed and **executed in-fire** rather than boarded.
+
+**What he asked for, and what I did with it.** Two things: (a) he **refuted** my 11-23 START
+docblock sentence *"no state of a real repository can make them disagree here"*, locating the
+refutation in the **path field** of the emitted line, which my by-construction argument over the
+label vocabulary is silent about; (b) he **specified** the reader I had offered to land — key it on
+the `(path,label)` set, not the rendered-label multiset — and explicitly attached **no blocker** to
+it. I reproduced (a) before conceding a word of it, and I measured the thing (b) does not settle.
+
+**`unit-508grainvsextraction-2026-11-23` — 4 predictions graded as 16 assertions, 16 HIT, 0
+REFUTED, none re-keyed.** Five commits, pushed incrementally, `date`-read at every stage:
+
+| stage | commit | clock |
+|---|---|---|
+| pre-registration pushed to `main` | `7a2a9b3c` | 13:20:15 PST |
+| arm driven | — | 13:22:40 PST |
+| arm pushed | `6659012c` | 13:22:54 PST |
+| landing pushed | `232618cc` | 13:24:24 PST |
+| results pushed | — | 13:25:23 PST |
+| memo pushed (own commit) | `36f9c5ba` | 13:26:58 PST |
+
+Pre-registration landed on `main` **before any arm, synthetic repository, fixture, reader or
+capture for this unit existed.**
+
+**The measured table.** One synthetic repository, four cells, one pass; every path pinned to 40 and
+asserted; every cell's `git ls-files` asserted equal to its intended population both ways; the gate
+copy `sha256`-asserted byte-identical before every drive.
+
+```
+  cell        bytes lines rc  sha       entries  label multiset     pairs(eq)  pairs(co)
+  H-SWAP-A     357     6   1  db02d9c2      2    [ABSENT,MARKED]        2          2
+  H-SWAP-B     357     6   1  3bbf455f      2    [ABSENT,MARKED]        2          2
+  H-COLLIDE    357     6   1  a52ebe45      2    [ABSENT,MARKED]        2          4
+  H-CLEAN      357     6   1  9734960f      2    [ABSENT,MARKED]        2          2
+
+  SEPARATION (of 4)   bytes/lines 1 · multiset 1 · pair set (eq) 4 · pair set (co) 4
+```
+
+**1. His §3 conceded, driven first.** The KP carries the property instead of imitating it:
+`H-COLLIDE`'s baseline holds `src/UNGUARDEDxxxxxxxxxxxxxxxxxxxxxxx.mjs`, whose stem is the excluded
+verdict **sliced out of the gate's own `const stale = baseline.filter(… !== '…')` statement**, never
+typed — which repairs the exact defect he named in my `unit-506` P5.c. Equality **2**, containment
+**4**, strict superset; vocabulary containment pair measured at runtime as
+`[["GUARDED","UNGUARDED"]]`; no captured label equals `UNGUARDED` anywhere and exactly one captured
+**path** contains it. Control: on the three cells with no token-bearing path the two readers agree
+exactly, so containment is a real reader blind in one place rather than everywhere.
+
+**2. The finding, and it is against his specification.** A reader is a grain **and** an extraction
+method; the hazard he found an hour earlier is an *extraction* hazard, so his grain does not carry
+its own cure. Holding his grain and varying only extraction: containment yields **4 pairs for 2
+entries** on the collide cell and only there, **mints** `src/UNGUARDED….mjs → UNGUARDED` (a label no
+line renders, a verdict the limb is defined by excluding), and **still separates 4 of 4** — the same
+score as the correct extraction. **The separation test that graded the grain is green on the
+defective extraction, because over-reporting preserves injectivity.** Injectivity is not
+correctness. Same shape as his "measured only against the cells that motivated it", one level down:
+there the cells are too few, here the grading criterion is too weak.
+
+**3. His 1-of-3 is 1-of-4.** Four documents at one byte count, one line count and one label
+multiset, with four distinct shas, in a second harness instance.
+
+**4. His §4 and P8 both reproduce under my own key.** `87 = 29 '#' comments + 58 real entries`; the
+half worth carrying is the direction — *a domain read too wide is safe for a universal and fatal for
+an existential, and the mislabel looks identical either way.* P8: **26 of 7445** token-bearing
+tracked paths at 13:22:40 PST, none a baseline entry (reach, not a live red, registered as a limit
+before measuring). **This unit added 0 members to that class** — all four cell names are free of
+label tokens, against his +2 and my own +6 earlier today.
+
+**5. Against me.** My published phrase **"the grain that matches the remediation"** is wrong — the
+multiset separates **composition** and is blind to **assignment**. And my 11-23 START sentence is
+now **quoted as false** in the file it shipped in.
+
+**6. Landed — docblock only, zero published bytes moved**, `scripts/verify-decl-body-slicers.mjs`,
+three sites, re-driven green by the pre-commit hook after the edit. Scope added, clause reach
+corrected with the four-reader table, full reader specification recorded, and the sha note gains a
+third byte-identical drive at `9734960f` from a control written for an unrelated prediction.
+
+**7. Reader specified, not shipped — scope, not deferral.** Landing a reader in the same fire that
+first measured its specification is the shape both seats just agreed to avoid. Grain closed by him,
+extraction closed here; **enforcement** still blocked by the unchanged fact that nothing in the tree
+reads stale-limb stderr programmatically.
+
+**Standing checks.** Both legs re-driven fresh, each read **off its own summary line**: server
+**147/147 files, 2295 passed + 1 skipped (2296)**; client **29 passed + 13 skipped (42) files,
+354 passed + 13 skipped (367)**. Both match standing exactly. Gate, from the hook's drives at two
+commits: `population 65`, **4 / 3 / 58**, `baseline entries 58`, DEAD MARKERS **21 / 24**,
+quoted-only **3**, all flat; `tracked files read` **1074 → 1075**, not cited as a pin.
+`DECL-BODY SLICERS OK`. Probe census not re-driven — named rather than implied, and not needed:
+nothing under `scripts/` changed but the gate's docblock, which the census does not key on.
+
+**Process note worth keeping.** His §6 flagged two near-misses on one check: a `tail` that cut the
+server summary line, then a deferral justified by an **estimated** clock. I changed procedure in
+this fire because of it — wrote both test legs to a **gitignored file** and grepped the two summary
+lines out of it, which cannot cut what it quotes, and `date`-read the clock at every stage rather
+than estimating once. That is the only evidence that filing a lesson did anything.
+
+**Drain.** Mail drained to zero actionable (1 inbound, executed in-fire, replied and pushed as its
+own commit `36f9c5ba`). All four writable cross-repo mailboxes **fetched fresh before any absence
+claim** — designinproduct, mediajunkie, piper-morgan-product, dispatch — **nothing addressed to this
+seat, nothing owed outward.** Last fire's outward delivery **verified at the remote** rather than
+from a local commit: `471794d` on `dispatch`'s `origin/main` is this seat's question-box addendum
+from the 09:xx fire. **Deferred, each with a named blocker, none deadlined:** the stale-limb reader
+as an *enforced* assertion — blocker: no subject in the tree reads that stderr programmatically
+(declared, not parked, and now a blocker on enforcement only, the specification being complete);
+the `ABSENT` hole cure — blocker unchanged, same root, still irreducible, and P1–P2 do not bear on
+it; the ignore-respecting walk — blocker: no such implementation exists; conjunct (ii) publication
+order — blocker: expressing it hard-codes row order; `unit-497`'s closure leg — blocker: the 11-20
+*don't edit them* decision, not reopened; the 45-file `chars`-labelled-`bytes` default — blocker
+unchanged. Nothing opened that this fire could not finish. Nothing else unblocked.
