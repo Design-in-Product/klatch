@@ -415,16 +415,40 @@ const stale = baseline.filter((f) => verdicts.get(f) !== 'UNGUARDED');
 //
 // **And the coincidence, which is the part worth having, because it is the trap rather than the
 // rule** (`unit-506labelmultiset` P5, this seat, 11-23 START). In the `stale` limb the two readings
-// are **indistinguishable, and indistinguishable by construction.** Measured: the vocabulary a
-// stale-block reader faces is `MARKED / GUARDED / UNGUARDED / ABSENT`, it has **exactly one**
-// containment pair, and that pair's superstring is `UNGUARDED` — the one verdict the `stale` filter
-// is *defined by excluding*. So across the three driven cells a containment-keyed multiset reader
-// and an equality-keyed one agree on every one, and **no state of a real repository can make them
-// disagree here.** The difference is visible only against a known positive: feed the gate's own
-// emitter template a `UNGUARDED` verdict and equality reads one label where containment reports
-// two. **A seat who verifies containment in this limb and generalises it ships the hazard
+// are **indistinguishable IN THE LABEL FIELD, and indistinguishable there by construction.**
+// Measured: the vocabulary a stale-block reader faces is `MARKED / GUARDED / UNGUARDED / ABSENT`,
+// it has **exactly one** containment pair, and that pair's superstring is `UNGUARDED` — the one
+// verdict the `stale` filter is *defined by excluding*. So **no label this limb renders** can make a
+// containment-keyed multiset reader and an equality-keyed one disagree, and across the three driven
+// cells they agree on every one. The difference is visible only against a known positive: feed the
+// gate's own emitter template a `UNGUARDED` verdict and equality reads one label where containment
+// reports two. **A seat who verifies containment in this limb and generalises it ships the hazard
 // somewhere else** — which is how P1.c above happened, one limb over, to the seat that wrote the
 // cure.
+//
+// **THE SCOPE ABOVE IS THE WHOLE CLAIM, AND THIS SEAT FIRST WROTE IT WITHOUT ONE.** The sentence
+// landed on 11-23 START as *"no state of a real repository can make them disagree here"*, which is
+// **false**, and the two words it was missing are *the label field* (Theseus, `unit-507pathlabelpairs`
+// §3, 11-23 START; reproduced under this seat's own drive before being conceded, `unit-508` P1).
+// A containment-keyed reader is **by definition not restricted to the label position** — restricting
+// it to that position is exactly what makes a reader equality-keyed — and the line it scans carries
+// two fields:
+//
+//       <path>  → now `<LABEL>`
+//
+// The by-construction argument covers the second and is silent about the first, because **the
+// vocabulary is not where the path comes from.** Driven, on a baseline entry whose 40-char path
+// carries the token `UNGUARDED` and is untracked so it renders `ABSENT`: equality reads **2** labels,
+// containment reads **4** — `ABSENT, GUARDED, MARKED, UNGUARDED` — a strict superset containing
+// **both** members of the vocabulary's only containment pair, with `UNGUARDED` **never a rendered
+// label anywhere in the capture**. Control, so this is a reader blind in one place rather than
+// everywhere: on three cells with no token-bearing path the two agree exactly.
+//
+// So the standing statement is: **equality and containment are indistinguishable in the LABEL field
+// and distinguishable in the PATH field.** A by-construction argument over a vocabulary can only
+// ever bound the field the vocabulary renders into. **This is a reach rather than a live red** — 26
+// of 7445 tracked paths carry a label token (read 13:22:40 PST 11-23; the figure moves because the
+// instruments measuring it author the class), and **none is a baseline entry.**
 //
 // **`count-first` was this seat's condition and it is WITHDRAWN, because it was measured.** Theseus
 // drove all four variants against every reader in the tree that reads these rows: fixed order alone
@@ -673,8 +697,41 @@ for (const v of new Set(verdicts.values())) {
  *   line's label with `` /^\s+(\S+)\s+→ now `([A-Z]+)`$/ `` and compare the sorted multiset by
  *   `===`. Measured to separate all three cells `unit-506` drove, where bytes give two readings and
  *   lines give one, and to read exactly `N` labels per cell rather than silently dropping an entry.
- *   **Keyed by equality, not containment, and the Format note above says why that distinction is
- *   untestable in this limb and load-bearing everywhere else.**
+ *   **Keyed by equality, not containment, and the Format note above says where that distinction is
+ *   untestable (the label field) and where it bites (the path field).**
+ *
+ *   **AND THE WORD `unit-506` GOT WRONG, WHICH IS A CORRECTION TO THE CLAUSE'S REACH RATHER THAN TO
+ *   THE CLAUSE: THE MULTISET SEPARATES *COMPOSITION* AND IS BLIND TO *ASSIGNMENT*.** It was published
+ *   as "the grain that matches the remediation." It is not. A multiset is unordered, so it cannot see
+ *   **which path got which label** — and *which file is stale, and in which way* is precisely the
+ *   content `Remove them from the baseline` acts on. Measured (Theseus, `unit-507` P2–P3, 11-23
+ *   START, extended by `unit-508` P2 this seat): hold the composition fixed and vary only the
+ *   assignment, and the multiset calls the cells identical. `unit-508` drove **four** cells —
+ *   two assignment swaps differing in exactly one input, one path-token collide, one clean control —
+ *   and every one lands at **357 B / 6 L** with multiset `{ ABSENT, MARKED }` and a **distinct sha**:
+ *
+ *       reader                                  separates
+ *       bytes, and lines                        1 of 4
+ *       rendered-label multiset                 1 of 4
+ *       (path,label) set, EQUALITY extraction   4 of 4
+ *       (path,label) set, CONTAINMENT extract   4 of 4   <- green, and WRONG; see below
+ *
+ *   **So the multiset is strictly better than bytes and strictly worse than the pair set, and the gap
+ *   is the gap between *two files are stale* and *which two, how*.** Four documents at one byte count,
+ *   one line count and one multiset.
+ *
+ *   **A GRAIN IS NOT A READER: THE PAIR SET IS INJECTIVE ONLY UNDER EQUALITY EXTRACTION, AND THE
+ *   SEPARATION TEST CANNOT TELL YOU THAT** (`unit-508grainvsextraction` P2, this seat, 11-23 WORK —
+ *   measured against the cells that motivated the grain *before* any reader keyed on it was offered).
+ *   Lift the label by containment over the whole line instead of by equality at its own position and
+ *   the pair set **still separates 4 of 4** — while, on the collide cell, yielding **4 pairs for 2
+ *   entries** and minting the pair `src/UNGUARDED….mjs → UNGUARDED`, a label **no line renders** and
+ *   a verdict this limb is **defined by excluding**. Control: on the three cells with no token-bearing
+ *   path the two extractions are byte-identical, so the containment extractor is a real reader wrong
+ *   in one place. **Injectivity is not correctness. A reader graded only on whether it tells cells
+ *   apart is green on an extraction that invents entries** — which is the same shape as a cure
+ *   measured only against the cells that motivated it, one level down. Specify extraction with grain,
+ *   or the specification is half a reader.
  *
  *   **Not the stderr sha, which is the wrong grain in both directions.** It separates the five
  *   contents — and it also separates two drives of the SAME content at different path text:
@@ -683,7 +740,9 @@ for (const v of new Set(verdicts.values())) {
  *   when nothing about the finding changed is not a pin. (The converse also measured, and it is the
  *   reason to trust the harnesses: `unit-506` F-MARKED-ABSENT reproduces `unit-505` E-MARKED-ABSENT
  *   at sha `9734960f` — **byte-identical stderr across two seats** — because that construction
- *   matches in path text too.)
+ *   matches in path text too. `unit-508` H-CLEAN makes that **three units at `9734960f`**, the third
+ *   drive being a control written for an unrelated prediction, which is the strongest form the
+ *   agreement can take: nobody was aiming at the sha.)
  * - **Named figures are ABSENT from stderr and PRESENT on stdout; the plant path and the announced
  *   count are PRESENT on stderr and ABSENT from stdout.** Green stdout does not identify *which*
  *   file reddened — two different plants produce byte-identical green-side rows.
