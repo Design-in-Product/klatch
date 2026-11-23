@@ -395,6 +395,16 @@ const stale = baseline.filter((f) => verdicts.get(f) !== 'UNGUARDED');
 // holds a pin on). **The hazard is ORDERING, not the count's position.** In branch order `GUARDED`
 // precedes `UNGUARDED`, so the same reader lands on the real row and reads 3.
 //
+// **The same containment relation bites readers of this file's SOURCE, and the format cure does not
+// reach them** (`unit-504mixedstalelabels` P1.c, this seat, 11-22 STOP). A reader deciding which
+// label the `stale` filter excludes with `LABELS.filter((v) => staleLine.includes(v))` reports TWO
+// excluded labels against `verdicts.get(f) !== 'UNGUARDED'`, because `GUARDED` is a substring of
+// `UNGUARDED` in the SOURCE as surely as in the report. It then drops `GUARDED` from the reachable
+// set, and every downstream assertion keyed on that set is silently unreached rather than red. The
+// relation lives in `LABELS` itself, so ordering cannot help: **a source reader must anchor on the
+// quoted literal, not on containment.** Found by the seat that landed the ordering cure, in its own
+// instrument, three days later.
+//
 // **`count-first` was this seat's condition and it is WITHDRAWN, because it was measured.** Theseus
 // drove all four variants against every reader in the tree that reads these rows: fixed order alone
 // is the only one under which **8 of 8** are correct, with **0** migrations. Count-first breaks **7
@@ -577,14 +587,37 @@ for (const v of new Set(verdicts.values())) {
  *   defects rather than of the tree, and both of which are **derivable from the branch literals
  *   below rather than fitted to captures**:
  *
- *       newOnes limb:  bytes = 658 + SUM(len(path_i) + 7)      lines = 7 + N
- *       stale limb:    bytes = 227 + SUM(len(path_i) + 25)     lines = 4 + N   (all ABSENT)
+ *       newOnes limb:  bytes = 658 + SUM(len(path_i) + 7)                  lines = 7 + N
+ *       stale limb:    bytes = 227 + SUM(len(path_i) + 19 + len(label_i))  lines = 4 + N
+ *                      label_i ∈ { ABSENT, MARKED, GUARDED }
  *
- *   Both hold for `N ≤ 9` only — the header interpolates the count, so a two-digit N adds a byte.
+ *   **The `N ≤ 9` limit is on the BYTE laws only, and that is now measured in both limbs rather
+ *   than attached to both by a note.** The header interpolates the count, so a two-digit N adds one
+ *   byte; the LINE laws have no digit dependence and are exact at N = 10 — `newOnes` N=10 → `1289`
+ *   with `7 + N` reading 17 (Theseus, `unit-503stalelabelwidth` §3), `stale` N=10 → `878` with
+ *   `4 + N` reading 14 (this seat, `unit-504mixedstalelabels` P5, the first grading of this limit in
+ *   THIS limb — the two limbs have different headers and different constants, so his measurement did
+ *   not cover mine).
  *   The byte terms are **path-length-dependent by construction**, which is why Theseus's `742` and
  *   his own `722` are the same drive at a 20-character-longer path and neither is a property of
- *   this gate. The two laws were derived from the literals and then graded out of sample: 6 of 6
- *   newOnes drives and 4 of 4 stale drives agree to the byte, across two seats and three units.
+ *   this gate.
+ *
+ *   **The stale limb's per-entry term was `+ 25` here until 2026-11-22 STOP, scoped `(all ABSENT)`,
+ *   and the scope is why it was replaced rather than corrected.** The `+ 25` was derived in the one
+ *   cell the original construction could reach: emptying the population forces EVERY entry to
+ *   `ABSENT`, a six-character label. It was never wrong — the annotation said which cell it held in
+ *   — but it was **vacuous for the only case that occurs in a real repository**, which the site at
+ *   the emitter names: an entry that still exists renders `GUARDED`, seven characters, `+ 26`. A
+ *   scoped law whose scope excludes the real world reads as a law; that is a worse failure than a
+ *   wrong number, because nothing about it looks stale. The general form above reduces to `+ 25` at
+ *   `ABSENT` and `MARKED`, so nothing measured under the old form is discarded. Graded in **ten
+ *   drives across three units and two seats**, every one exact to the byte: `unit-502streampin`
+ *   B1–B2 (ABSENT, N=1 and N=3), `unit-503stalelabelwidth` C-GUARDED / C-MARKED / C-ABSENT (one
+ *   label each, N=1, which is where the `+ 26` was found), and `unit-504mixedstalelabels` D-MIXED
+ *   (**one `GUARDED` and one `ABSENT` together — the heterogeneous cell, additive as derived**),
+ *   D-2GUARDED (`+ 26` twice, so the old form is short by 2 where D-MIXED is short by 1: the error
+ *   is per-`GUARDED`-ENTRY, not per-red-block, and D-MIXED alone cannot tell those apart),
+ *   D-ABSENT1 (the harness pin, reproducing B1's `292 B / 5 L` in a third harness), D-N9 and D-N10.
  *   Content predicate for a red: the path is named, the count is announced, and all three clearing
  *   routes print in preference order; the integers outside the path lines are `[1, 1, 2, 3]`
  *   (Theseus, `unit-501` §2–§3, keyed on integers rather than words because route 3 prints the
