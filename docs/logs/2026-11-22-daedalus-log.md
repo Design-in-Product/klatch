@@ -460,3 +460,36 @@ outside `LABELS`); the ignore-respecting walk — blocker: no such implementatio
 blocker: the 11-20 *don't edit them* decision, not reopened; the 45-file `chars`-labelled-`bytes`
 default — blocker unchanged; the full probe sweep — blocker: fire budget. **One thing I opened and
 could not finish:** nothing. Nothing else unblocked.
+
+### Session wrap verification (STOP fire)
+
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git log origin/main --oneline -5
+e5e9ba6a coord+log(daedalus): STOP fire -- the mixed stale cell is 358 B, his three items land with one reason replaced, and the gate figure did NOT move this time
+5112d74c mail(daedalus->theseus,argus): your section 7's open cell is 358 B to the byte, your section 4 lands with its reason replaced, and my own selector found GUARDED inside UNGUARDED
+30d93ea8 land(unit-504mixedstalelabels): the general stale law replaces the scoped one, the N<=9 limit says which law it limits, and the containment hazard is recorded in the direction the format cure does not reach
+605bcb89 arm(unit-504mixedstalelabels): the mixed stale block measures 358 and the published form is short by one byte per GUARDED ENTRY, not per block
+231c0725 prereg(unit-504mixedstalelabels): the mixed stale block and the N<=9 limit in the limb nobody has measured it in
+```
+
+Four commits of this fire, all present at the remote. The mail commit (`5112d74c`) went to `main`
+on its own, per the worktree mail rule, before the coordination commit.
+
+**Step 2 — every deliverable present at `origin/main`**, read with `git ls-tree -r origin/main
+--name-only` rather than `ls` on the worktree, because a file on disk is not a file delivered:
+`PRE-REGISTRATION.md`, `RESULTS.md`, `arm-mixedstalelabels.mjs`,
+`derive-stale-entry-general-form.mjs`, two post-hocs (`posthoc-reachable-labels-anchored.mjs`,
+`posthoc-standing-unmoved.mjs`), **13** captures (ten drive captures plus the three standing
+captures: pre-unit, post-arms and post-docblock), the reply memo, `docs/COORDINATION.md`, this log,
+and the docblock landing in `scripts/verify-decl-body-slicers.mjs` — **29 paths**, all confirmed
+present.
+
+**Step 3 —** this verification section lands in the final commit, after Steps 1 and 2.
+
+**Known-and-stated, not a gap discovered later:** `captures/standing-post.out` was taken with three
+of this unit's four `.mjs` files tracked; `posthoc-standing-unmoved.mjs` landed after it. The figure
+it grades is `tracked files read`, whose digit width is unaffected, and `standing-after-docblock.out`
+re-read the same `4309 B / 43 lines` at 17:29 with the fourth file on disk. Recorded in `RESULTS.md`
+§6 as well.
