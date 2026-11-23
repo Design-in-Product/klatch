@@ -1,0 +1,154 @@
+{
+  "gateSha": "0a57a765c8424486ee79cfaa0d0f6ce9cc6e088ea939b862c4973bad0032b9de",
+  "paths": {
+    "P_M1": "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs",
+    "P_M2": "src/m2xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs",
+    "P_A01": "src/a01xxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs",
+    "length": 40
+  },
+  "landedForm": "bytes = 227 + SUM(len(path_i) + 19 + len(label_i)); lines = 4 + N",
+  "cells": {
+    "E-MARKED-ABSENT": {
+      "rc": 1,
+      "errBytes": 357,
+      "errLines": 6,
+      "errSha": "9734960f332572d387c6252d5c3d71447158fc0e334bb1c33e417706dde48a96",
+      "outBytes": 800,
+      "lsFiles": [
+        "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs"
+      ],
+      "labels": [
+        {
+          "path": "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs",
+          "label": "MARKED"
+        },
+        {
+          "path": "src/a01xxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs",
+          "label": "ABSENT"
+        }
+      ],
+      "predicate": {
+        "everyPathNamed": true,
+        "countAnnounced": true,
+        "nonPathIntegers": [
+          2
+        ]
+      }
+    },
+    "E-2ABSENT": {
+      "rc": 1,
+      "errBytes": 357,
+      "errLines": 6,
+      "errSha": "7624415ccfc1eb5085cd4368bf034c663120f7deb4ab75a1d8ae789c8e2cec40",
+      "outBytes": 800,
+      "lsFiles": [],
+      "labels": [
+        {
+          "path": "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs",
+          "label": "ABSENT"
+        },
+        {
+          "path": "src/a01xxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs",
+          "label": "ABSENT"
+        }
+      ],
+      "predicate": {
+        "everyPathNamed": true,
+        "countAnnounced": true,
+        "nonPathIntegers": [
+          2
+        ]
+      }
+    },
+    "E-2MARKED": {
+      "rc": 1,
+      "errBytes": 357,
+      "errLines": 6,
+      "errSha": "af1bd215d83b98097d0128e03bfadcd751b69ee32c8d46fed52abea5415a414d",
+      "outBytes": 800,
+      "lsFiles": [
+        "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs",
+        "src/m2xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs"
+      ],
+      "labels": [
+        {
+          "path": "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs",
+          "label": "MARKED"
+        },
+        {
+          "path": "src/m2xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs",
+          "label": "MARKED"
+        }
+      ],
+      "predicate": {
+        "everyPathNamed": true,
+        "countAnnounced": true,
+        "nonPathIntegers": [
+          2
+        ]
+      }
+    },
+    "E-GUARDED-ABSENT": {
+      "rc": 1,
+      "errBytes": 358,
+      "errLines": 6,
+      "errSha": "9efe38537d3eb2703359d71a7c63e7098f84f7f92f5c2ce4e9d2ef957e940e8e",
+      "outBytes": 800,
+      "lsFiles": [
+        "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs"
+      ],
+      "labels": [
+        {
+          "path": "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs",
+          "label": "GUARDED"
+        },
+        {
+          "path": "src/a01xxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs",
+          "label": "ABSENT"
+        }
+      ],
+      "predicate": {
+        "everyPathNamed": true,
+        "countAnnounced": true,
+        "nonPathIntegers": [
+          2
+        ]
+      }
+    }
+  },
+  "stderrTexts": {
+    "E-MARKED-ABSENT": "\nRED — 2 stale baseline entry/entries (no longer unguarded, or gone):\n      src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs  → now `MARKED`\n      src/a01xxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs  → now `ABSENT`\n\n  Remove them from the baseline. An exemption for a file that no longer needs one cannot be told apart from a live one by the next seat to read the list.\n",
+    "E-2ABSENT": "\nRED — 2 stale baseline entry/entries (no longer unguarded, or gone):\n      src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs  → now `ABSENT`\n      src/a01xxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs  → now `ABSENT`\n\n  Remove them from the baseline. An exemption for a file that no longer needs one cannot be told apart from a live one by the next seat to read the list.\n",
+    "E-2MARKED": "\nRED — 2 stale baseline entry/entries (no longer unguarded, or gone):\n      src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs  → now `MARKED`\n      src/m2xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs  → now `MARKED`\n\n  Remove them from the baseline. An exemption for a file that no longer needs one cannot be told apart from a live one by the next seat to read the list.\n",
+    "E-GUARDED-ABSENT": "\nRED — 2 stale baseline entry/entries (no longer unguarded, or gone):\n      src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs  → now `GUARDED`\n      src/a01xxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs  → now `ABSENT`\n\n  Remove them from the baseline. An exemption for a file that no longer needs one cannot be told apart from a live one by the next seat to read the list.\n"
+  },
+  "verdict": {
+    "P1.a  E-MARKED-ABSENT rc = 1": true,
+    "P1.b  E-MARKED-ABSENT stderr = 227 + 2x(40+19+6) = 357 (landed form EXACT)": true,
+    "P1.c  E-MARKED-ABSENT stderr lines = 4 + N = 6": true,
+    "P2.a  E-2ABSENT = 357 B (landed form EXACT)": true,
+    "P2.b  E-2ABSENT lines = 6": true,
+    "P2.c  E-2ABSENT and E-MARKED-ABSENT are BYTE-IDENTICAL in length": true,
+    "P2.d  ...and DIFFER in content (sha)": true,
+    "P3.a  E-2MARKED = 357 B (landed form EXACT)": true,
+    "P3.b  E-2MARKED lines = 6": true,
+    "P3.c  three cells, ONE byte count": true,
+    "P3.d  ...and THREE distinct contents": true,
+    "P4.a  E-GUARDED-ABSENT = 358 B (landed form EXACT)": true,
+    "P4.b  E-GUARDED-ABSENT lines = 6": true,
+    "P4.c  reproduces unit-504 D-MIXED to the byte (358 B / 6 L), SAME-SHAPE harness": true,
+    "P5.a  the four cells read 357, 357, 357, 358": true,
+    "P5.b  DIFFERENTIAL: MARKED->GUARDED on ONE entry, baseline and tracked set held constant, = +1 B": true,
+    "P5.c  ...and that pair differs in exactly one input: the marker comment in the fixture": true,
+    "P6.a  E-MARKED-ABSENT renders exactly one MARKED and one ABSENT": true,
+    "P6.b  E-2MARKED renders two MARKED and ZERO ABSENT": true,
+    "P6.c  E-2ABSENT renders two ABSENT and ZERO MARKED": true,
+    "P6.d  E-GUARDED-ABSENT renders exactly one GUARDED and one ABSENT, by EQUALITY not containment": true,
+    "P6.e  every cell renders exactly N = 2 entry lines": true,
+    "P7.a  the published BYTE law is satisfied by all three 357 cells": true,
+    "P7.b  every path is named in all three": true,
+    "P7.c  the count is announced in all three": true,
+    "P7.d  the non-path INTEGER multiset is IDENTICAL across all three": true,
+    "P7.e  SO: byte law + the label-blind published clauses do NOT separate three different reds": true
+  }
+}
