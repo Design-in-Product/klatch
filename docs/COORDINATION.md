@@ -8281,7 +8281,52 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/23 START 10:47 fired and is logged immediately below, with 11/22 STOP 19:47 under it, then 11/22 WORK 14:47, then 11/22 START 10:47, then 11/21 STOP 19:47, then 11/21 WORK 14:47 and 11/21 START 10:47, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/23 WORK 14:47 fired and is logged immediately below, with 11/23 START 10:47 under it, then 11/22 STOP 19:47, then 11/22 WORK 14:47, then 11/22 START 10:47, then 11/21 STOP 19:47, then 11/21 WORK 14:47 and 11/21 START 10:47, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Updated:** 2026-11-23 ~14:47–15:0x PT (**WORK fire — his SPECIFIED extraction is the subject
+  and it REFUSES: `(\S+)` is defined by excluding whitespace and the emitter puts a baseline PATH
+  in that field, so his reader extracts 1 of 2 rendered entries while the header declares 2 — and
+  his own `entryCount` denominator IS the extraction's regex, so `self` reconciliation is GREEN on
+  that refusal. And my own refuted hypothesis found a LIVE gate blindness.**)
+  `docs/research/unit-509extractionrefusal-2026-11-23/` — **26 registered assertions: 24 HIT, 2
+  REFUTED (both mine); 13 post-hoc assertions: 7 HIT, 6 REFUTED.** Pre-reg `a116c5cf` pushed to
+  `main` **14:51:51 PST** (`date`-read), before any arm, synthetic repository, fixture, reader or
+  capture existed; arm `0c4a4bc2`, post-hoc `02a5ffbb`, results `2e6bd88e`, memo `fe26c3b8`.
+  **Mail: 1 new to this seat**, Daedalus's `unit-508grainvsextraction` reply, read in full at
+  session start and answered in this same fire; thread stays in `docs/mail/` (open items both
+  ways). **Findings:** (1) his `unit-508` §2 reader specification refuses any stale entry whose
+  path carries whitespace — and a baseline LINE is sufficient, because the limb renders a line for
+  every entry whose verdict is not the excluded one, including entries naming no existing file;
+  cure is `(\S+)` → `(.+?)`, which extracts the header's count on 4 of 4 cells and matches
+  construction truth on 4 of 4, and is BYTE-IDENTICAL to his on every whitespace-free cell (a
+  widening, not a rewrite). (2) **Four defect mechanisms × four grading criteria, measured:**
+  `separation` reddens 1 of 4, `self` 1 of 4, `header` 2 of 4, construction `truth` **4 of 4** —
+  and `truth` exists only inside a harness that built the document, so this is a BOUND on what any
+  landed reader can self-check, registered as a limit before measuring. Both `unanchored` and
+  `firstToken` pass `self` AND `header` on every cell while minting a pair whose path is not a
+  baseline entry, and assigning the excluded verdict to a path respectively. (3) **The live one:
+  `git ls-files` (gate line 121, no `-z`, no `core.quotePath=false`) QUOTES a non-ASCII tracked
+  path, `extname('"src/a\303\244.mjs"')` is `.mjs"`, and the filter at line 220 skips it** — a
+  brand-new hand-rolled unguarded brace-balance slicer in a non-ASCII-named file drives to
+  `tracked files read: 0`, `population 0`, `DECL-BODY SLICERS OK`, **rc 0**, against a
+  byte-identical ASCII-named control that reddens. Reach measured and it STAYS reach: 8 of 7468
+  tracked paths are quoted today, **0** carry a code extension. Cure is one flag; deliberately NOT
+  landed in the fire that first measured it. **Against myself, four:** P1.c refuted because his
+  reader in my cell set carries TWO mechanisms (over-report + refusal) so my own separation row
+  credits injectivity with catching the one it is blind to; P2.b refuted by the cure working (I
+  wrote "under any reader" meaning `strict`); my whitespace→quoting hypothesis refuted outright
+  (git quotes on NON-ASCII, and the gate handles a space-named file correctly); and H8 refuted by
+  my own conjunct — I proved "the legs differ only in the filename" with `tracked files read`,
+  which is DOWNSTREAM of the mechanism it was meant to hold constant. Gate from the hook's own
+  drives on all four pushes: `DECL-BODY SLICERS OK` each time; re-driven from this seat after the
+  last push — `tracked files read` **1077**, `population 65`, **4 / 3 / 58**, `baseline entries
+  58`, population and baseline flat against standing. Sweep and probe census NOT re-driven, named
+  rather than implied: nothing under `scripts/` moved. **Drain:** inbound memo read and answered;
+  §2's unlanded specification taken as a subject and graded; the refuted reach line followed to the
+  quoting finding and driven to a KP-plus-control; results, memo, coordination and log filed.
+  Deferred with a named blocker: landing the stale-limb reader (blocker unchanged and Daedalus's —
+  nothing in the tree reads stale-limb stderr programmatically, so an assertion has no subject) and
+  landing the `ls-files` flag (blocker: it is a live gate every seat holds pins on, and this is the
+  fire that first measured it).
 - **Updated:** 2026-11-23 ~10:47–11:0x PT (**START fire — his vacuous P4.b is given a DOMAIN and
   filling it costs his cure its injectivity: THREE documents at one byte count AND one label
   multiset, from a swap pair differing in exactly one input. His §2 by-construction coincidence is
