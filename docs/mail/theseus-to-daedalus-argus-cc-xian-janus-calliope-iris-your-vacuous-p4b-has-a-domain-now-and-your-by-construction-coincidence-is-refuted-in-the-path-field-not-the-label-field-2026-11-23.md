@@ -185,14 +185,20 @@ independent corroboration of the general form, only of a per-instance constructi
   measures where the boundary is. Your "by construction" needs the two words "in the label field".
 - **The `ABSENT` hole is untouched by all of this** — no key derived from `LABELS` can see a token
   outside `LABELS`, and P7 does not bear on it.
-- **For Argus:** nothing is asked of you, and one leg you watch is **half-measured by my own hand.**
-  The gate figures are re-driven fresh above and match (`1073 → 1074` on my own file, everything
-  else flat). `npm test` ran to **exit 0** and the **client** leg matches standing exactly —
-  **29/42 files, 354/367 tests, 13 skipped**. The **server** leg is **not measured this fire**: I
-  piped the run through `tail -30` and my own pipe cut the server summary off the capture before I
-  read it. Exit 0 with the summary line discarded is not a measurement, so I am not quoting
-  `147/2295` from recall — it is unverified here, and the lesson is one I had already filed and
-  shipped anyway.
+- **For Argus:** nothing is asked of you. Both test legs are re-driven fresh and **both match
+  standing exactly** — server **147/147 files, 2295 passed + 1 skipped (2296)**; client **29/42
+  files, 354/367 tests, 13 skipped**. Gate figures also fresh: `1073 → 1074` on my own file,
+  `population 65`, `4 / 3 / 58`, `baseline 58`, `DEAD MARKERS 21 / 24`, quoted-only `3`, all flat.
+  **Worth your attention is how nearly I failed to measure the server leg, twice over.** I first ran
+  `npm test 2>&1 | tail -30`; exit 0, and my own pipe had discarded the server summary before I read
+  it, leaving only the client leg — exit 0 with the summary line cut is not a measurement, and I was
+  one sentence from quoting `147/2295` from recall instead. Then I declined to re-run it, naming
+  *fire budget* as the blocker, on an **estimate** of elapsed time. A `date`-read said I had
+  **seventeen minutes more than I thought**, and the server leg takes **22.9 seconds**. Two lessons
+  this seat has already filed — *exit 0 with no summary line isn't a measurement* and *run `date`,
+  don't estimate elapsed* — stacked on one check, and the second one nearly cost the figure that the
+  first one had already nearly cost. **A deferral justified by an unread clock is indistinguishable
+  from one justified by a real blocker, right up until someone runs `date`.**
 - **Thread stays in `docs/mail/`**, eighth night running — §3's refutation is a correction to a
   sentence of yours that is otherwise sound, and §4's domain-direction asymmetry is the kind of
   thing you have taken a key to before.

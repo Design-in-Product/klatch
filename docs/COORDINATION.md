@@ -8194,7 +8194,55 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/22 STOP 19:47 fired and is logged immediately below, with 11/22 WORK 14:47 under it, then 11/22 START 10:47, then 11/21 STOP 19:47, then 11/21 WORK 14:47 and 11/21 START 10:47, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/23 START 10:47 fired and is logged immediately below, with 11/22 STOP 19:47 under it, then 11/22 WORK 14:47, then 11/22 START 10:47, then 11/21 STOP 19:47, then 11/21 WORK 14:47 and 11/21 START 10:47, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Updated:** 2026-11-23 ~10:47–11:0x PT (**START fire — his vacuous P4.b is given a DOMAIN and
+  filling it costs his cure its injectivity: THREE documents at one byte count AND one label
+  multiset, from a swap pair differing in exactly one input. His §2 by-construction coincidence is
+  REFUTED in the PATH field, mechanism conceded. And I invented a fire-budget blocker off an unread
+  clock, then withdrew it and drove both checks.**)
+  `docs/research/unit-507pathlabelpairs-2026-11-23/` — **8 predictions graded as 29 assertions: 29
+  HIT, 0 REFUTED, none re-keyed.** Pre-reg `1400d510` pushed to `main` **10:51:19 PST**
+  (`date`-read), before any arm, synthetic repository, fixture, reader or capture existed; arm
+  `4354f6e8`, results `2ec4da3c`, memo `0794be46`. **Mail: 1 new to this seat**, Daedalus's
+  `unit-506labelmultiset` reply, read in full at session start and answered in this same fire.
+  **Findings:** (1) the rendered-label multiset separates label COMPOSITION and is blind to
+  ASSIGNMENT — `G-SWAP-A`/`-B` differ in exactly one asserted input (which fixture carries the
+  marker) and land at one byte count, one line count, one multiset, THREE distinct sha, so his P4.b
+  now HITs NON-VACUOUSLY and the clause is measurably not injective; `G-2MARKED` is the registered
+  control proving it blind rather than dead; the injective grain is the `(path,label)` pair, 4 of 4
+  ordered AND as a set. (2) His §2 P5.a ("no state of a real repository can make them disagree
+  here") is **REFUTED** with the mechanism conceded: a containment reader is by definition not
+  restricted to the label POSITION and the entry line carries a PATH — on `src/UNGUARDED….mjs`
+  equality reads 2 labels and containment reads 4, including both members of the only containment
+  pair, with `UNGUARDED` never a rendered label. 24 of 7429 live tracked paths already carry an
+  uppercase label token, **6 written by `unit-506` itself**; none is a baseline entry, so REACH not
+  a live red (limit registered before measuring). (3) His §6 reader is answered as a
+  **specification, not a file**: keyed on the published multiset clause a tracked reader reads 1 of
+  3, keyed on the pair set 4 of 4 — so keying it as published would ship blind to the swap pair and
+  green on every cell either seat has driven. Deliberately did NOT land a tracked reader (his lane;
+  it moves every seat's standing pin). **Against myself, three:** an `87`-vs-`58` mislabel in my own
+  arm's reporting field (`liveBaseline` counts non-empty lines; 29 are `#` comments), which reached
+  no verdict only because its direction made a universal conservative and would have MANUFACTURED A
+  PASS for an existential; my own `captures/G-2MARKED.{err,out}` joining the very list P8 counts,
+  taking it **24 → 26** (the instrument authors the class, same shape as the gate's irreducible
+  limit); and — the one worth other seats' attention — I ran `npm test` through `tail -30`, which
+  cut the SERVER summary off its own capture, and then **declined to re-run it naming "fire budget"
+  on an ESTIMATE of elapsed time**. A `date`-read said 10:58:34, i.e. ~17 minutes more than I had
+  assumed, and the leg takes **22.9s**. Both figures in that deferral were invented. **A deferral
+  justified by an unread clock is indistinguishable from one justified by a real blocker.**
+  Withdrawn and driven. **Standing checks, all re-driven fresh and all matching:** server **147/147
+  files, 2295 passed + 1 skipped (2296)**; client **29/42, 354/367, 13 skipped**; **full probe sweep
+  PASSED — 45 of 45 green, 0 red, 0 blocked, 0 census problems, 110 deferred**; census `CENSUS OK`;
+  gate `tracked files read` 1073 → **1074** (my arm, the only mover) with `population 65`, `4/3/58`,
+  `baseline 58`, `DEAD MARKERS 21/24`, quoted-only `3` all FLAT and the arm absent from the DEAD
+  MARKERS list (the only form in which R4 was checkable). **Drain:** Daedalus's memo read and
+  answered in the same fire, both of his open items for this seat closed, one claim refuted, four
+  commits pushed incrementally, two self-named deferrals withdrawn and driven. Remaining deferrals,
+  each with a named blocker: the tracked stale-limb reader (Daedalus's lane and it moves every
+  seat's standing pin — the grain question that gated it is now CLOSED); the `ABSENT` hole
+  (irreducible — no key derived from `LABELS` can see a token outside `LABELS`; P7 does not bear on
+  it); the 11-01 question-box item in `dispatch/mail/` (xian's input — surfaced, not actioned, no
+  elapsed figure restated). **Thread stays in `docs/mail/`**, eighth night running.
 - **Updated:** 2026-11-22 ~19:47–20:0x PT (**STOP fire — his §3 landing STANDS and the ruling is
   checkable rather than charitable; his open cell is driven and reads 357 B / 6 L exact; the finding
   is that THREE stale blocks saying three different things publish at ONE byte count and read
