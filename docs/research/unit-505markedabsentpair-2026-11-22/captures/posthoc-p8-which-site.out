@@ -1,0 +1,34 @@
+{
+  "gateSha": "0a57a765c8424486ee79cfaa0d0f6ce9cc6e088ea939b862c4973bad0032b9de",
+  "liveMarkerPattern": "brace-slicer-deliberate:\\s*\\S+",
+  "derivedToken": "brace-slicer-deliberate:",
+  "sites": {
+    "unit-505markedabsentpair-2026-11-22/arm-markedabsentpair.mjs": [
+      {
+        "line": 70,
+        "inComment": true,
+        "matchesLiveKey": true,
+        "text": "// Assembled so the marker key (/brace-slicer-deliberate:\\s*\\S+/) cannot match THIS file's source."
+      }
+    ],
+    "unit-505markedabsentpair-2026-11-22/posthoc-p8-which-site.mjs": [],
+    "unit-503stalelabelwidth-2026-11-22/arm-stalelabelwidth.mjs": [
+      {
+        "line": 59,
+        "inComment": true,
+        "matchesLiveKey": true,
+        "text": "// Assembled so `MARKER` (/brace-slicer-deliberate:\\s*\\S+/) cannot match THIS file's source."
+      }
+    ],
+    "unit-504mixedstalelabels-2026-11-22/arm-mixedstalelabels.mjs": []
+  },
+  "verdict": {
+    "POST-HOC  arm-markedabsentpair.mjs carries at least one contiguous occurrence of the live key": true,
+    "POST-HOC  every one of them is in a COMMENT (so the gate counts it as DECLARED, not quoted-only)": true,
+    "POST-HOC  every one of them matches the live MARKER regex sliced from the gate": true,
+    "POST-HOC  the offending comment is the one ASSERTING the token cannot match this file": true,
+    "POST-HOC  unit-503 arm-stalelabelwidth.mjs shipped the SAME site, earlier today": true,
+    "POST-HOC  unit-504 arm-mixedstalelabels.mjs did NOT (his R4 held where mine did not)": true,
+    "POST-HOC  THIS post-hoc file carries ZERO contiguous occurrences — key sliced, never written": true
+  }
+}

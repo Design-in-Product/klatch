@@ -1,0 +1,50 @@
+{
+  "gate": "scripts/verify-decl-body-slicers.mjs",
+  "revisions": {
+    "ce288701 (my unit-503 close)": "ce288701",
+    " 30d93ea8 (his unit-504 landing)": "30d93ea8",
+    "HEAD (now)": "HEAD"
+  },
+  "perRev": {
+    "ce288701 (my unit-503 close)": {
+      "staleFilter": [
+        385
+      ],
+      "perEntryStatement": [
+        830
+      ],
+      "totalLines": 835
+    },
+    "30d93ea8 (his unit-504 landing)": {
+      "staleFilter": [
+        385
+      ],
+      "perEntryStatement": [
+        863
+      ],
+      "totalLines": 868
+    },
+    "HEAD (now)": {
+      "staleFilter": [
+        385
+      ],
+      "perEntryStatement": [
+        863
+      ],
+      "totalLines": 868
+    }
+  },
+  "sourceHits": [
+    "scripts/verify-decl-body-slicers.mjs:385:const stale = baseline.filter((f) => verdicts.get(f) !== 'UNGUARDED');"
+  ],
+  "verdict": {
+    "P9.a1  the stale filter is at L385 at ce288701 (the tree my citation was written against)": true,
+    "P9.a2  ...and at L385 at 30d93ea8 (the tree HIS correction was written against)": true,
+    "P9.a3  ...and at L385 at HEAD": true,
+    "P9.a4  L389 matches NO revision examined — the correction is REFUTED": true,
+    "P9.a5  the statement occurs in exactly ONE tracked source file, so the citation is unambiguous": true,
+    "P9.b1  the per-entry statement IS at L830 at ce288701 — his correction is CORRECT there": true,
+    "P9.b2  ...and is at L863 at HEAD, moved by HIS OWN landing": true,
+    "P9.b3  so the correction was already stale in the tree it was published into": true
+  }
+}
