@@ -43,3 +43,23 @@ No-op on product, verified not assumed. Checkpoint is own START-fire commit `afa
 **Gate not re-driven this render** — no `packages/`/`scripts/` diff since the START-fire checkpoint; morning's figures stand (server 147/2295 [1 skipped]; client 29/42, 354/367 [13 skipped]; sweep 45 of 45, census OK).
 
 **Drain:** 13 new commits read and author-checked, none mine, all already chronicled by their own authors; two cc-only mail files read in full, nothing owed; four standing Pard mails re-confirmed correctly left open; rollup re-checked, no new staleness; all four cross-repo mailboxes fetched fresh and diffed from this morning's checkpoints, nothing owed from any. Two consecutive checks found nothing further unblocked. Fire closed bounded.
+
+---
+
+## 17:0x — SWEEP fire
+
+Model: Sonnet 5. No-op on product, verified not assumed. Checkpoint is own MID-fire commit `20ec548f`.
+
+`git log 20ec548f..HEAD --format='%h %an %ci %s'` — 16 new commits, none mine: Argus's WORK-fire no-op (`35c3730c`); Daedalus's `unit-502streampin` chain (7 commits — both red limbs' stderr laws derived from the branch literals rather than fitted, 26 of 34 assertions HIT, four refutations one mechanism, drives the stale limb for the first time by anyone, and his own unit moves the standing 4160/41 gate-size pin to 4230/42); Theseus's `unit-503stalelabelwidth` chain (6 commits — answers Daedalus's §7 claim "yes per law" for one law and "no" for the other, finds the GUARDED cell reads 293 where the stale law says 292, and his own P7 is refuted by the sentence explaining why it would not be). `git diff --stat 20ec548f..HEAD -- packages/ scripts/` — one file, `scripts/verify-decl-body-slicers.mjs` (+68/-1), no `packages/` diff.
+
+**Mail:** 4 new files since checkpoint, all cc-only to this seat (two Daedalus→Theseus/Argus, two Theseus→Daedalus/Argus, cc xian/Janus/Calliope/Iris) — the same two research-track exchanges named above, read in full. Neither thread poses a question for this seat.
+
+**Rollup:** re-read at its own v188 banner — needs-you unchanged at 9. Item 7's 11-16 correction (CLAUDE.md now lists all nine tables) re-confirmed still accurate on re-check, not stale.
+
+**Cross-repo:** all four mailboxes (`designinproduct`, `mediajunkie`, `piper-morgan-product`, `dispatch`) checked fresh by directory listing — newest file in each predates today; nothing new since the MID-fire check.
+
+**Gate re-verified fresh** because a `scripts/` file changed (the one-file diff warranted a real re-check rather than trusting the no-`packages/`-diff shortcut): `npm run typecheck` clean across all 4 workspaces + scripts. Server **147 files / 2295 passed / 1 skipped (2296)**. Client **29/42 files, 354/367 (13 skipped)**. `node scripts/sweep-probes.mjs --census` — **155 probe files, 45 swept/110 deferred, CENSUS OK**. Full driving sweep re-run — **SWEEP PASSED, 45 of 45 swept probes green, 0 red, 0 blocked, 110 deferred** — all byte-identical to the standing figures cited since 11-18. The 4160→4230 figure in Daedalus's mail is his own research-track gate-size capture (a `scripts/` file's byte count), a different measurement from the four gate figures re-driven here; not conflated.
+
+`docs/STATE.md` not touched — nothing today is a product-state change. `calliope-tasks.md`'s mandatory `log.html` item correctly not due this render (last written 11-21 STOP fire, next due tonight's STOP fire).
+
+**Drain:** 16 new commits read and author-checked, none mine, all already chronicled by their own authors; four cc-only mail files read in full, nothing owed; rollup re-checked, no new staleness; all four cross-repo mailboxes checked fresh, nothing owed from any; gate fully re-driven (typecheck, both test suites, census, full sweep) and byte-identical to standing. Two consecutive checks found nothing further unblocked. Fire closed bounded.
