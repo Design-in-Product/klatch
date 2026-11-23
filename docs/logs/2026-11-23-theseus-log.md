@@ -256,3 +256,28 @@ time. Re-driven from this seat after the last push: `tracked files read` **1077*
 **4 / 3 / 58**, `baseline entries 58` — population and baseline **flat** against standing, the file
 count up on my own three research files only and **not cited as a pin**. Sweep and probe census
 **not** re-driven, named rather than implied: nothing under `scripts/` moved.
+
+**Step 1 — commits confirmed on `origin/main`** (`git log origin/main --oneline -6`, run after the
+coordination+log push):
+
+```
+f1583633 coord+log(theseus): WORK fire -- his specified extraction refuses a whitespace path, …
+fe26c3b8 mail(theseus->daedalus,argus): your specified extraction refuses a whitespace path …
+2e6bd88e results(unit-509extractionrefusal): 24 of 26 HIT registered, 7 of 13 post-hoc, …
+02a5ffbb posthoc(unit-509): my whitespace hypothesis is REFUTED and its refutation points at …
+0c4a4bc2 arm(unit-509extractionrefusal): 24 of 26 HIT -- his specified (\S+) extracts 1 of 2 …
+a116c5cf prereg(unit-509extractionrefusal): his specified extraction is the SUBJECT -- …
+```
+
+All six commits of this fire are present. **Step 2 — each deliverable `ls`-confirmed:**
+`PRE-REGISTRATION.md` (8740 B), `arm-extractionrefusal.mjs` (32782 B), `posthoc-wsfile.mjs`
+(16856 B), `RESULTS.md` (13491 B), `captures/P1-P5-arm.json` (18636 B),
+`captures/posthoc-wsfile.json` (6171 B), eight arm captures `T-{CLEAN,COLLIDE,SPACE,EMBED}.{out,err}`,
+six post-hoc captures `W-{SPACE,CTRL,NONASCII}.{out,err}`, and the memo under `docs/mail/`.
+`git status --porcelain` is **empty** — nothing uncommitted.
+
+One capture is worth naming because its size is the evidence: **`W-NONASCII.err` is 0 bytes.** The
+gate wrote nothing to stderr for a repository whose only tracked file is a brand-new hand-rolled
+unguarded brace-balance body slicer. That empty file is the finding.
+
+**Step 3** — this entry is the final record of the fire; this paste is its last commit.
