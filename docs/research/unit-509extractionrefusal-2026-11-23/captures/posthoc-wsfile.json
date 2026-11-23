@@ -1,0 +1,209 @@
+{
+  "unit": "unit-509extractionrefusal",
+  "posthoc": true,
+  "readAt": "2026-11-23 14:59:10 PST",
+  "gateSha": "1ec34550f2d6e32375ef020e4f47e3e0b70888e1aa2536b2f2e0373bb8e3fd8d",
+  "exts": [
+    ".ts",
+    ".mts",
+    ".js",
+    ".mjs",
+    ".cts",
+    ".cjs",
+    ".tsx"
+  ],
+  "legs": {
+    "W-SPACE": {
+      "rel": "src/a b.mjs",
+      "lsRaw": [
+        "src/a b.mjs"
+      ],
+      "lsQuoted": false,
+      "gateSeesExt": [
+        ".mjs"
+      ],
+      "extAccepted": [
+        true
+      ],
+      "rc": 1,
+      "trackedRead": 1,
+      "population": 1,
+      "unguarded": 1,
+      "newRed": true,
+      "ok": false
+    },
+    "W-CTRL": {
+      "rel": "src/ab.mjs",
+      "lsRaw": [
+        "src/ab.mjs"
+      ],
+      "lsQuoted": false,
+      "gateSeesExt": [
+        ".mjs"
+      ],
+      "extAccepted": [
+        true
+      ],
+      "rc": 1,
+      "trackedRead": 1,
+      "population": 1,
+      "unguarded": 1,
+      "newRed": true,
+      "ok": false
+    },
+    "W-NONASCII": {
+      "rel": "src/aä.mjs",
+      "lsRaw": [
+        "\"src/a\\303\\244.mjs\""
+      ],
+      "lsQuoted": true,
+      "gateSeesExt": [
+        ".mjs\""
+      ],
+      "extAccepted": [
+        false
+      ],
+      "rc": 0,
+      "trackedRead": 0,
+      "population": 0,
+      "unguarded": 0,
+      "newRed": false,
+      "ok": true
+    }
+  },
+  "liveCensus": {
+    "tracked": 7468,
+    "quoted": 8,
+    "quotedCodeExtension": 0,
+    "quotedSkippedByFilter": 8,
+    "sample": [
+      "\"QA/Screenshot 2026-03-17 at 11.12.38\\342\\200\\257AM 2.png\"",
+      "\"QA/Screenshot 2026-03-17 at 11.12.38\\342\\200\\257AM.png\"",
+      "\"QA/Screenshot 2026-03-17 at 11.17.31\\342\\200\\257AM 2.png\""
+    ]
+  },
+  "containmentLazy": {
+    "T-CLEAN": {
+      "pairs": [
+        "src/a01xxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tABSENT",
+        "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+      ],
+      "lineCount": 2
+    },
+    "T-COLLIDE": {
+      "pairs": [
+        "src/UNGUARDEDxxxxxxxxxxxxxxxxxxxxxxx.mjs\tABSENT",
+        "src/UNGUARDEDxxxxxxxxxxxxxxxxxxxxxxx.mjs\tGUARDED",
+        "src/UNGUARDEDxxxxxxxxxxxxxxxxxxxxxxx.mjs\tUNGUARDED",
+        "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+      ],
+      "lineCount": 2
+    },
+    "T-SPACE": {
+      "pairs": [
+        "src/a b.mjs\tABSENT",
+        "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+      ],
+      "lineCount": 2
+    },
+    "T-EMBED": {
+      "pairs": [
+        "src/a  → now `MARKED`.mjs\tABSENT",
+        "src/a  → now `MARKED`.mjs\tMARKED",
+        "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+      ],
+      "lineCount": 2
+    }
+  },
+  "separation": {
+    "containmentLazy": "4 of 4",
+    "lazy": "4 of 4"
+  },
+  "strictCapturedWhitespacePaths": {
+    "T-CLEAN": 0,
+    "T-COLLIDE": 0,
+    "T-SPACE": 0,
+    "T-EMBED": 0
+  },
+  "grades": [
+    {
+      "id": "H1",
+      "claim": "git quotes the whitespace path in the synthetic repo, and `extname` of the quoted form is NOT a code extension",
+      "verdict": "REFUTED",
+      "detail": "[\"src/a b.mjs\"] → extname [\".mjs\"]"
+    },
+    {
+      "id": "H2",
+      "claim": "a NEW hand-rolled unguarded brace slicer in a whitespace-named file does NOT redden the gate",
+      "verdict": "REFUTED",
+      "detail": "rc 1 · OK false · population 1 · tracked read 1"
+    },
+    {
+      "id": "H3",
+      "claim": "CONTROL: the byte-identical file with no whitespace in its name DOES redden",
+      "verdict": "HIT",
+      "detail": "rc 1 · new-slicer red true · population 1"
+    },
+    {
+      "id": "H4",
+      "claim": "the two legs differ ONLY in the filename, so the blindness is the quoting and nothing else",
+      "verdict": "REFUTED",
+      "detail": "population 1 vs 1 · tracked read 1 vs 1"
+    },
+    {
+      "id": "H5",
+      "claim": "LIVE REACH: tracked paths git quotes, and how many carry a code extension today",
+      "verdict": "HIT",
+      "detail": "8 quoted of 7468 tracked at 2026-11-23 14:59:10 PST · code-extension (unquoted) 0 · skipped by the gate's own filter 8"
+    },
+    {
+      "id": "A1",
+      "claim": "containment on the LAZY line model isolates the over-report, and separation is GREEN on it",
+      "verdict": "REFUTED",
+      "detail": "pairs/lines {\"T-CLEAN\":\"2/2\",\"T-COLLIDE\":\"4/2\",\"T-SPACE\":\"2/2\",\"T-EMBED\":\"3/2\"} · separation containmentLazy 4 of 4, lazy 4 of 4"
+    },
+    {
+      "id": "A1.truth",
+      "claim": "containmentLazy is still wrong where it matters: truth reddens it on T-COLLIDE only",
+      "verdict": "REFUTED",
+      "detail": "{\"T-CLEAN\":true,\"T-COLLIDE\":false,\"T-SPACE\":true,\"T-EMBED\":false}"
+    },
+    {
+      "id": "A2",
+      "claim": "P2.b in its TRUE form: no STRICT-captured path contains whitespace, on any cell",
+      "verdict": "HIT",
+      "detail": "{\"T-CLEAN\":0,\"T-COLLIDE\":0,\"T-SPACE\":0,\"T-EMBED\":0}"
+    },
+    {
+      "id": "H6",
+      "claim": "git QUOTES a non-ASCII tracked path, and `extname` of the quoted form is NOT a code extension",
+      "verdict": "HIT",
+      "detail": "[\"\\\"src/a\\\\303\\\\244.mjs\\\"\"] → extname [\".mjs\\\"\"] accepted [false]"
+    },
+    {
+      "id": "H7",
+      "claim": "a NEW hand-rolled unguarded brace slicer in a NON-ASCII-named file does NOT redden the gate",
+      "verdict": "HIT",
+      "detail": "rc 0 · OK true · population 0 · tracked read 0"
+    },
+    {
+      "id": "H8",
+      "claim": "the W-CTRL control differs from W-NONASCII ONLY in the filename, so the quoting is the whole mechanism",
+      "verdict": "REFUTED",
+      "detail": "new-slicer RED true vs false · tracked read 1 vs 0 · population 1 vs 0"
+    },
+    {
+      "id": "A1.sep",
+      "claim": "A1 in its surviving half: separation is GREEN on PURE over-reporting — his P2.d figure, reproduced here",
+      "verdict": "HIT",
+      "detail": "containmentLazy 4 of 4 · lazy 4 of 4"
+    },
+    {
+      "id": "A1.where",
+      "claim": "A1 corrected: containmentLazy over-reports on TWO cells, and the strict model's refusal concealed the second",
+      "verdict": "HIT",
+      "detail": "containmentLazy T-EMBED 3/2 · strict-model containment T-EMBED 1/2"
+    }
+  ],
+  "summary": "7 of 13 HIT"
+}
