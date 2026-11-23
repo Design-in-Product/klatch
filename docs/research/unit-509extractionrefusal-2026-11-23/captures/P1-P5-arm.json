@@ -1,0 +1,635 @@
+{
+  "unit": "unit-509extractionrefusal",
+  "readAt": "2026-11-23 14:55:48 PST",
+  "gateSha": "1ec34550f2d6e32375ef020e4f47e3e0b70888e1aa2536b2f2e0373bb8e3fd8d",
+  "vocabulary": [
+    "MARKED",
+    "GUARDED",
+    "UNGUARDED",
+    "ABSENT"
+  ],
+  "excludedVerdict": "UNGUARDED",
+  "declaredMarkerVerdict": "MARKED",
+  "fallbackVerdict": "ABSENT",
+  "containmentPairs": [
+    [
+      "GUARDED",
+      "UNGUARDED"
+    ]
+  ],
+  "emitter": {
+    "lead": "      ",
+    "sep": "  → now `",
+    "arrow": "→ now `",
+    "tail": "`"
+  },
+  "headerRegex": "RED — (\\d+) stale baseline entry\\/entries \\(no longer unguarded, or gone\\):",
+  "readers": {
+    "strict": "^\\s+(\\S+)\\s+→ now `([A-Z]+)`\\s*$",
+    "lazy": "^\\s+(.+?)\\s+→ now `([A-Z]+)`\\s*$",
+    "unanchored": "(\\S+)\\s+→ now `([A-Z]+)`"
+  },
+  "kpPaths": {
+    "collide": "src/UNGUARDEDxxxxxxxxxxxxxxxxxxxxxxx.mjs",
+    "space": "src/a b.mjs",
+    "embed": "src/a  → now `MARKED`.mjs",
+    "m1": "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs",
+    "a01": "src/a01xxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs"
+  },
+  "cells": {
+    "T-CLEAN": {
+      "rc": 1,
+      "errBytes": 357,
+      "errLines": 6,
+      "errSha": "8a38f01b",
+      "headerCount": 2,
+      "renderedLines": 2,
+      "truth": [
+        "src/a01xxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tABSENT",
+        "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+      ],
+      "population": [
+        "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs"
+      ],
+      "readers": {
+        "strict": {
+          "pairs": [
+            "src/a01xxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tABSENT",
+            "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+          ],
+          "count": 2,
+          "lineCount": 2
+        },
+        "lazy": {
+          "pairs": [
+            "src/a01xxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tABSENT",
+            "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+          ],
+          "count": 2,
+          "lineCount": 2
+        },
+        "containment": {
+          "pairs": [
+            "src/a01xxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tABSENT",
+            "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+          ],
+          "count": 2,
+          "lineCount": 2
+        },
+        "unanchored": {
+          "pairs": [
+            "src/a01xxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tABSENT",
+            "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+          ],
+          "count": 2,
+          "lineCount": 2
+        },
+        "firstToken": {
+          "pairs": [
+            "src/a01xxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tABSENT",
+            "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+          ],
+          "count": 2,
+          "lineCount": 2
+        },
+        "firstTokenStrict": {
+          "pairs": [
+            "src/a01xxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tABSENT",
+            "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+          ],
+          "count": 2,
+          "lineCount": 2
+        },
+        "unanchoredGlobal": {
+          "pairs": [
+            "src/a01xxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tABSENT",
+            "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+          ],
+          "count": 2,
+          "lineCount": 2
+        }
+      },
+      "criteria": {
+        "strict": {
+          "self": true,
+          "header": true,
+          "truth": true
+        },
+        "lazy": {
+          "self": true,
+          "header": true,
+          "truth": true
+        },
+        "containment": {
+          "self": true,
+          "header": true,
+          "truth": true
+        },
+        "unanchored": {
+          "self": true,
+          "header": true,
+          "truth": true
+        },
+        "firstToken": {
+          "self": true,
+          "header": true,
+          "truth": true
+        }
+      }
+    },
+    "T-COLLIDE": {
+      "rc": 1,
+      "errBytes": 357,
+      "errLines": 6,
+      "errSha": "a52ebe45",
+      "headerCount": 2,
+      "renderedLines": 2,
+      "truth": [
+        "src/UNGUARDEDxxxxxxxxxxxxxxxxxxxxxxx.mjs\tABSENT",
+        "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+      ],
+      "population": [
+        "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs"
+      ],
+      "readers": {
+        "strict": {
+          "pairs": [
+            "src/UNGUARDEDxxxxxxxxxxxxxxxxxxxxxxx.mjs\tABSENT",
+            "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+          ],
+          "count": 2,
+          "lineCount": 2
+        },
+        "lazy": {
+          "pairs": [
+            "src/UNGUARDEDxxxxxxxxxxxxxxxxxxxxxxx.mjs\tABSENT",
+            "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+          ],
+          "count": 2,
+          "lineCount": 2
+        },
+        "containment": {
+          "pairs": [
+            "src/UNGUARDEDxxxxxxxxxxxxxxxxxxxxxxx.mjs\tABSENT",
+            "src/UNGUARDEDxxxxxxxxxxxxxxxxxxxxxxx.mjs\tGUARDED",
+            "src/UNGUARDEDxxxxxxxxxxxxxxxxxxxxxxx.mjs\tUNGUARDED",
+            "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+          ],
+          "count": 4,
+          "lineCount": 2
+        },
+        "unanchored": {
+          "pairs": [
+            "src/UNGUARDEDxxxxxxxxxxxxxxxxxxxxxxx.mjs\tABSENT",
+            "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+          ],
+          "count": 2,
+          "lineCount": 2
+        },
+        "firstToken": {
+          "pairs": [
+            "src/UNGUARDEDxxxxxxxxxxxxxxxxxxxxxxx.mjs\tUNGUARDED",
+            "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+          ],
+          "count": 2,
+          "lineCount": 2
+        },
+        "firstTokenStrict": {
+          "pairs": [
+            "src/UNGUARDEDxxxxxxxxxxxxxxxxxxxxxxx.mjs\tUNGUARDED",
+            "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+          ],
+          "count": 2,
+          "lineCount": 2
+        },
+        "unanchoredGlobal": {
+          "pairs": [
+            "src/UNGUARDEDxxxxxxxxxxxxxxxxxxxxxxx.mjs\tABSENT",
+            "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+          ],
+          "count": 2,
+          "lineCount": 2
+        }
+      },
+      "criteria": {
+        "strict": {
+          "self": true,
+          "header": true,
+          "truth": true
+        },
+        "lazy": {
+          "self": true,
+          "header": true,
+          "truth": true
+        },
+        "containment": {
+          "self": false,
+          "header": false,
+          "truth": false
+        },
+        "unanchored": {
+          "self": true,
+          "header": true,
+          "truth": true
+        },
+        "firstToken": {
+          "self": true,
+          "header": true,
+          "truth": false
+        }
+      }
+    },
+    "T-SPACE": {
+      "rc": 1,
+      "errBytes": 328,
+      "errLines": 6,
+      "errSha": "0fce770f",
+      "headerCount": 2,
+      "renderedLines": 2,
+      "truth": [
+        "src/a b.mjs\tABSENT",
+        "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+      ],
+      "population": [
+        "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs"
+      ],
+      "readers": {
+        "strict": {
+          "pairs": [
+            "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+          ],
+          "count": 1,
+          "lineCount": 1
+        },
+        "lazy": {
+          "pairs": [
+            "src/a b.mjs\tABSENT",
+            "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+          ],
+          "count": 2,
+          "lineCount": 2
+        },
+        "containment": {
+          "pairs": [
+            "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+          ],
+          "count": 1,
+          "lineCount": 1
+        },
+        "unanchored": {
+          "pairs": [
+            "b.mjs\tABSENT",
+            "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+          ],
+          "count": 2,
+          "lineCount": 2
+        },
+        "firstToken": {
+          "pairs": [
+            "src/a b.mjs\tABSENT",
+            "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+          ],
+          "count": 2,
+          "lineCount": 2
+        },
+        "firstTokenStrict": {
+          "pairs": [
+            "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+          ],
+          "count": 1,
+          "lineCount": 1
+        },
+        "unanchoredGlobal": {
+          "pairs": [
+            "b.mjs\tABSENT",
+            "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+          ],
+          "count": 2,
+          "lineCount": 2
+        }
+      },
+      "criteria": {
+        "strict": {
+          "self": true,
+          "header": false,
+          "truth": false
+        },
+        "lazy": {
+          "self": true,
+          "header": true,
+          "truth": true
+        },
+        "containment": {
+          "self": true,
+          "header": false,
+          "truth": false
+        },
+        "unanchored": {
+          "self": true,
+          "header": true,
+          "truth": false
+        },
+        "firstToken": {
+          "self": true,
+          "header": true,
+          "truth": true
+        }
+      }
+    },
+    "T-EMBED": {
+      "rc": 1,
+      "errBytes": 344,
+      "errLines": 6,
+      "errSha": "f84e6b0d",
+      "headerCount": 2,
+      "renderedLines": 2,
+      "truth": [
+        "src/a  → now `MARKED`.mjs\tABSENT",
+        "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+      ],
+      "population": [
+        "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs"
+      ],
+      "readers": {
+        "strict": {
+          "pairs": [
+            "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+          ],
+          "count": 1,
+          "lineCount": 1
+        },
+        "lazy": {
+          "pairs": [
+            "src/a  → now `MARKED`.mjs\tABSENT",
+            "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+          ],
+          "count": 2,
+          "lineCount": 2
+        },
+        "containment": {
+          "pairs": [
+            "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+          ],
+          "count": 1,
+          "lineCount": 1
+        },
+        "unanchored": {
+          "pairs": [
+            "src/a\tMARKED",
+            "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+          ],
+          "count": 2,
+          "lineCount": 2
+        },
+        "firstToken": {
+          "pairs": [
+            "src/a  → now `MARKED`.mjs\tMARKED",
+            "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+          ],
+          "count": 2,
+          "lineCount": 2
+        },
+        "firstTokenStrict": {
+          "pairs": [
+            "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+          ],
+          "count": 1,
+          "lineCount": 1
+        },
+        "unanchoredGlobal": {
+          "pairs": [
+            ".mjs\tABSENT",
+            "src/a\tMARKED",
+            "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+          ],
+          "count": 3,
+          "lineCount": 2
+        }
+      },
+      "criteria": {
+        "strict": {
+          "self": true,
+          "header": false,
+          "truth": false
+        },
+        "lazy": {
+          "self": true,
+          "header": true,
+          "truth": true
+        },
+        "containment": {
+          "self": true,
+          "header": false,
+          "truth": false
+        },
+        "unanchored": {
+          "self": true,
+          "header": true,
+          "truth": false
+        },
+        "firstToken": {
+          "self": true,
+          "header": true,
+          "truth": false
+        }
+      }
+    }
+  },
+  "separation": {
+    "strict": "3 of 4",
+    "lazy": "4 of 4",
+    "containment": "3 of 4",
+    "unanchored": "4 of 4",
+    "firstToken": "4 of 4",
+    "firstTokenStrict": "3 of 4",
+    "unanchoredGlobal": "4 of 4"
+  },
+  "rednessByCriterion": {
+    "self": [
+      "over-report (containment)"
+    ],
+    "header": [
+      "over-report (containment)",
+      "refuse (strict)"
+    ],
+    "truth": [
+      "over-report (containment)",
+      "refuse (strict)",
+      "mint (unanchored)",
+      "mis-assign (firstToken)"
+    ],
+    "separation": [
+      "over-report (containment)",
+      "refuse (strict)"
+    ]
+  },
+  "liveBaseline": {
+    "nonEmptyLines": 87,
+    "commentLines": 29,
+    "realEntries": 58,
+    "whitespaceBearingEntries": []
+  },
+  "trackedWhitespace": {
+    "tracked": 7458,
+    "count": 19
+  },
+  "grades": [
+    {
+      "id": "P1.a.eq",
+      "claim": "T-COLLIDE equality reads exactly 2 labels",
+      "verdict": "HIT",
+      "detail": "ABSENT,MARKED"
+    },
+    {
+      "id": "P1.a.co",
+      "claim": "T-COLLIDE containment reads exactly 4 labels",
+      "verdict": "HIT",
+      "detail": "ABSENT,GUARDED,MARKED,UNGUARDED"
+    },
+    {
+      "id": "P1.a.sup",
+      "claim": "the containment multiset is a strict superset of the equality one",
+      "verdict": "HIT",
+      "detail": "2 -> 4"
+    },
+    {
+      "id": "P1.b.over",
+      "claim": "containment pair extraction EXCEEDS the rendered entry count on T-COLLIDE and only there",
+      "verdict": "HIT",
+      "detail": "{\"T-CLEAN\":\"2/2\",\"T-COLLIDE\":\"4/2\",\"T-SPACE\":\"1/2\",\"T-EMBED\":\"1/2\"}"
+    },
+    {
+      "id": "P1.b.mint",
+      "claim": "containment mints exactly one pair labelled UNGUARDED, which no line renders",
+      "verdict": "HIT",
+      "detail": "minted: [\"src/UNGUARDEDxxxxxxxxxxxxxxxxxxxxxxx.mjs\\tUNGUARDED\"]"
+    },
+    {
+      "id": "P1.c",
+      "claim": "the containment-extracted pair set separates the SAME number of cells as the correct extraction",
+      "verdict": "REFUTED",
+      "detail": "containment 3 of 4 · lazy 4 of 4"
+    },
+    {
+      "id": "P1.d",
+      "claim": "CONTROL: on every cell with no vocabulary token in a path, equality and containment agree exactly",
+      "verdict": "HIT",
+      "detail": "{\"T-CLEAN\":[[\"ABSENT\",\"MARKED\"],[\"ABSENT\",\"MARKED\"]],\"T-SPACE\":[[\"MARKED\"],[\"MARKED\"]],\"T-EMBED\":[[\"MARKED\"],[\"MARKED\"]]}"
+    },
+    {
+      "id": "P2.a",
+      "claim": "on T-SPACE the header declares 2 stale entries and `strict` extracts exactly 1 pair",
+      "verdict": "HIT",
+      "detail": "header 2 · strict 1 · rendered 2"
+    },
+    {
+      "id": "P2.b",
+      "claim": "NO captured path contains whitespace, on any cell, under any reader",
+      "verdict": "REFUTED",
+      "detail": "{\"T-CLEAN\":0,\"T-COLLIDE\":0,\"T-SPACE\":1,\"T-EMBED\":1}"
+    },
+    {
+      "id": "P2.c",
+      "claim": "on T-EMBED the header declares 2 and `strict` extracts exactly 1",
+      "verdict": "HIT",
+      "detail": "header 2 · strict 1 · rendered 2"
+    },
+    {
+      "id": "P2.d.count",
+      "claim": "`lazy` extracts exactly the header count on all four cells",
+      "verdict": "HIT",
+      "detail": "{\"T-CLEAN\":\"2/2\",\"T-COLLIDE\":\"2/2\",\"T-SPACE\":\"2/2\",\"T-EMBED\":\"2/2\"}"
+    },
+    {
+      "id": "P2.d.truth",
+      "claim": "`lazy`'s pair set equals the CONSTRUCTION GROUND TRUTH on all four cells",
+      "verdict": "HIT",
+      "detail": "{\"T-CLEAN\":true,\"T-COLLIDE\":true,\"T-SPACE\":true,\"T-EMBED\":true}"
+    },
+    {
+      "id": "P2.e",
+      "claim": "CONTROL: on the whitespace-free cells `strict` and `lazy` are identical — a widening, not a rewrite",
+      "verdict": "HIT",
+      "detail": "{\"T-CLEAN\":\"2=2\",\"T-COLLIDE\":\"2=2\"}"
+    },
+    {
+      "id": "P2.f",
+      "claim": "`strict` separates 3 of 4 — T-SPACE and T-EMBED collapse to one pair set under it",
+      "verdict": "HIT",
+      "detail": "strict 3 of 4 · lazy 4 of 4 · containment 3 of 4"
+    },
+    {
+      "id": "P3.a",
+      "claim": "on T-SPACE, `self` is GREEN for `strict` while `header` is RED",
+      "verdict": "HIT",
+      "detail": "self true · header false"
+    },
+    {
+      "id": "P3.b",
+      "claim": "on T-EMBED, `self` is GREEN for `strict` while `header` is RED",
+      "verdict": "HIT",
+      "detail": "self true · header false"
+    },
+    {
+      "id": "P3.c",
+      "claim": "CONTROL: on the whitespace-free cells `self` and `header` agree for `strict`, both green",
+      "verdict": "HIT",
+      "detail": "{\"T-CLEAN\":\"true/true\",\"T-COLLIDE\":\"true/true\"}"
+    },
+    {
+      "id": "P3.d",
+      "claim": "`self` is RED for `containment` on T-COLLIDE — blind to refusal, not simply dead",
+      "verdict": "HIT",
+      "detail": "self false · pairs 4 · lines 2"
+    },
+    {
+      "id": "P4.a",
+      "claim": "`unanchored` passes BOTH `self` and `header` on all four cells",
+      "verdict": "HIT",
+      "detail": "{\"T-CLEAN\":\"true/true\",\"T-COLLIDE\":\"true/true\",\"T-SPACE\":\"true/true\",\"T-EMBED\":\"true/true\"}"
+    },
+    {
+      "id": "P4.b",
+      "claim": "`unanchored` MINTS a pair on T-EMBED whose path is not a baseline entry, and `truth` reddens it",
+      "verdict": "HIT",
+      "detail": "minted: [\"src/a\\tMARKED\"] · truth false"
+    },
+    {
+      "id": "P4.c.count",
+      "claim": "`firstToken` passes BOTH `self` and `header` on all four cells",
+      "verdict": "HIT",
+      "detail": "{\"T-CLEAN\":\"true/true\",\"T-COLLIDE\":\"true/true\",\"T-SPACE\":\"true/true\",\"T-EMBED\":\"true/true\"}"
+    },
+    {
+      "id": "P4.c.assign",
+      "claim": "`firstToken` assigns UNGUARDED to the token-bearing path on T-COLLIDE, and `truth` reddens it",
+      "verdict": "HIT",
+      "detail": "[\"src/UNGUARDEDxxxxxxxxxxxxxxxxxxxxxxx.mjs\\tUNGUARDED\"] · truth false"
+    },
+    {
+      "id": "P4.d",
+      "claim": "exactly ONE of the four criteria reddens all four defect mechanisms, and it is `truth`",
+      "verdict": "HIT",
+      "detail": "{\"self\":[\"over-report (containment)\"],\"header\":[\"over-report (containment)\",\"refuse (strict)\"],\"truth\":[\"over-report (containment)\",\"refuse (strict)\",\"mint (unanchored)\",\"mis-assign (firstToken)\"],\"separation\":[\"over-report (containment)\",\"refuse (strict)\"]}"
+    },
+    {
+      "id": "P5.a",
+      "claim": "live baseline entries carrying whitespace: reported, and REACH only if empty",
+      "verdict": "HIT",
+      "detail": "0 of 58 entries · []"
+    },
+    {
+      "id": "P5.b",
+      "claim": "live tracked paths carrying whitespace: reported at a date-read time",
+      "verdict": "HIT",
+      "detail": "19 of 7458 tracked at 2026-11-23 14:55:48 PST · [\"\\\"QA/Screenshot 2026-03-17 at 11.12.38\\\\342\\\\200\\\\257AM 2.png\\\"\",\"\\\"QA/Screenshot 2026-03-17 at 11.12.38\\\\342\\\\200\\\\257AM.png\\\"\",\"\\\"QA/Screenshot 2026-03-17 at 11.17.31\\\\342\\\\200\\\\257AM 2.png\\\"\",\"\\\"QA/Screenshot 2026-03-17 at 11.17.31\\\\342\\\\200\\\\257AM.png\\\"\",\"\\\"QA/Screenshot 2026-03-17 at 11.30.40\\\\342\\\\200\\\\257AM 2.png\\\"\"]"
+    },
+    {
+      "id": "P5.c",
+      "claim": "this unit's own cell names and capture filenames carry NO vocabulary token",
+      "verdict": "HIT",
+      "detail": "[]"
+    }
+  ],
+  "summary": "24 of 26 HIT"
+}
