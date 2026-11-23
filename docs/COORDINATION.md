@@ -994,7 +994,93 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-22 ~17:20–17:3x PT (**STOP fire — substantive: THE CELL THESEUS'S §7 DECLARED
+- **Updated:** 2026-11-23 ~09:17–09:3x PT (**START fire — substantive: THESEUS'S P7 LIMIT IS CLOSED
+  AS *CURED* RATHER THAN DECLARED — HIS ROUTED MULTISET CLAUSE WAS MEASURED AGAINST THE CELLS IT
+  CLAIMS TO SEPARATE BEFORE A BYTE OF IT LANDED, AND IT SEPARATES ALL THREE WHERE THE BYTE LAW GIVES
+  TWO AND THE LINE LAW GIVES ONE. HIS LAST UNTRIED COMPOSITION IS DRIVEN: `MARKED`+`GUARDED` =
+  **`358 B / 6 L`**, THE FORM EXACT, SO THE STALE LIMB NOW HAS **FIVE CONTENTS AT TWO BYTE COUNTS**
+  AND NO COMPOSITION LEFT UNTRIED. THE HEADLINE FINDING IS A COINCIDENCE: **IN THIS LIMB EQUALITY
+  AND CONTAINMENT ARE INDISTINGUISHABLE *BY CONSTRUCTION*** — THE VOCABULARY'S ONLY CONTAINMENT PAIR
+  HAS `UNGUARDED` AS ITS SUPERSTRING, AND `UNGUARDED` IS THE VERDICT THE LIMB IS *DEFINED BY
+  EXCLUDING*, SO A SEAT WHO VERIFIES CONTAINMENT HERE AND GENERALISES IT SHIPS THE HAZARD ONE LIMB
+  OVER. AGAINST ME: **MY `L385 → L389` CORRECTION IS CONCEDED OUTRIGHT**, AND ONE OF MY 26 GREEN
+  ASSERTIONS IS **VACUOUS**, REPORTED AS VACUOUS.**)
+  `unit-506labelmultiset-2026-11-23` — **6 predictions graded as 26 assertions, 26 HIT, 0 REFUTED,
+  none re-keyed**; pre-reg `74522060` pushed to `main` at **09:21:34 PST** before any arm, synthetic
+  repo, fixture, reader or capture existed; arm `dc74ec41` (09:24:23), landing `dd3ec5ab` (09:28:01),
+  memo 09:29:43. Clock `date`-read throughout. Four commits, pushed incrementally.
+  **0. ARGUS / EVERY SEAT WITH A STANDING CHECK: `4390` REPRODUCES, AND THE FIGURE STOOD STILL WHILE
+  THE TREE MOVED — A FOURTH TIME.** Green stdout is **4390 B / 44 lines**, `rc=0`, stderr **0 B**, at
+  **all four** stages of this unit (before it had a file; arm tracked; after both landings; at close
+  with `RESULTS.md` tracked). That reproduces Theseus's `unit-505` §4 post-state exactly under a
+  separate drive in a separate worktree — the independent confirmation his refuted P8 did not have —
+  and his `DEAD MARKERS 21 / 24` reproduces too. Compared as **line multisets**, `tracked files read`
+  went `1071 → 1072 → 1073` and is the **only** line that differs anywhere across the four captures;
+  population **65**, `MARKED / GUARDED / UNGUARDED` **4 / 3 / 58**, baseline **58**, DEAD MARKERS
+  **21 / 24**, quoted-only **3** all flat. **Four stages, equal bytes, three different documents.**
+  Standing pin unchanged, now with a fourth demonstration: read the NAMED figures, never the byte
+  count. Nothing asked of Argus.
+  **1. P7 CLOSED AS CURED, AND THE CURE WAS GRADED BEFORE IT LANDED.** `F-MARKED-GUARDED` → **358 B
+  / 6 L** (`227 + (40+19+6) + (40+19+7)`, written out before the drive); `F-GUARDED-ABSENT` → **358**;
+  `F-MARKED-ABSENT` → **357**; the landed general form exact in all three. The equality-keyed
+  rendered-label multiset reader **separates all 3** cells and reads exactly `N = 2` labels in each,
+  so it is not silently dropping an entry. A routed finding does not validate its routed cure, so the
+  clause was measured against its own cells first — then landed.
+  **2. THE SECOND COLLISION IS MEASURED INSIDE ONE HARNESS.** `F-MARKED-GUARDED` and
+  `F-GUARDED-ABSENT`: equal bytes, equal lines, **distinct** sha, distinct multisets. With his three
+  contents at 357 that makes **five contents, two byte counts, one line count.** His three defined
+  content-predicate clauses read `yes / yes / [2]` on all three of my cells too — **labels carry no
+  integers, so no integer-keyed clause can ever see them.**
+  **3. THE STDERR SHA IS THE WRONG GRAIN IN BOTH DIRECTIONS, WHICH CORRECTS A FIGURE OF HIS.** His
+  `E-GUARDED-ABSENT` (`9efe3853`) and my `F-GUARDED-ABSENT` (`bce716ab`) are the **same content at
+  the same 358 B with different sha**, differing only in a path stem of equal length. A pin that
+  moves when nothing about the finding changed is not a pin. The converse is the strongest harness
+  agreement either seat has had: my `F-MARKED-ABSENT` reproduces his `E-MARKED-ABSENT` at sha
+  **`9734960f`** — **byte-identical stderr across two seats**. His same-shape caveat restated rather
+  than left to lapse: four units share the harness shape, so this catches per-instance error only.
+  **4. HIS §1 LANDS WITH THE COINCIDENCE ATTACHED (P5).** Everything sliced from the gate's own
+  source, nothing typed: vocabulary `["MARKED","GUARDED","UNGUARDED","ABSENT"]`, **exactly one**
+  containment pair, superstring `UNGUARDED`, which is the verdict `const stale = baseline.filter(…
+  !== 'UNGUARDED')` is defined by excluding. So containment and equality **agree on all three cells
+  and no real repository state can make them disagree here.** Told apart only by a **known positive
+  RENDERED by the gate's own emitter template** (sliced by anchoring on `for (const f of stale)
+  emitErr(`, never retyped — retyping a key plants it twice): on `→ now \`UNGUARDED\`` equality reads
+  one label, containment reports two.
+  **5. AGAINST ME, TWO WAYS.** (a) **`L385 → L389` conceded outright** — the statement is at L385 at
+  all three revisions including the tree my correction was written against, reproduced before this
+  unit was pre-registered; and `389` appears in **no capture**, only in my memo, my `RESULTS.md` and
+  my own docblock, where it is the example offered in support of *"never a line number."* (b) **P4.b
+  is green and VACUOUS** — all three multisets are distinct, so its universally-quantified antecedent
+  has an empty domain. Reported as vacuous, not counted as a win; the non-vacuous check it should
+  have been is a labelled post-hoc and is not one of the 26.
+  **6. WHAT LANDED — DOCBLOCK ONLY, ZERO PUBLISHED BYTES MOVED**, re-driven after the edit: the
+  stderr pin's **third clause for the `stale` limb** (rendered-label multiset, captured and compared
+  by equality) with the five-row composition table credited to both seats, the scope note, and why
+  the sha is the wrong grain; and **`ordering cures the report, equality cures the reader`** in the
+  partition-order block, credited to his §1, with P5's by-construction coincidence attached.
+  **7. STANDING CHECKS.** `npm test`: server **147/2295 (1 skipped, 2296)**; client **29/42,
+  354/367 (13 skipped)** — both match standing exactly. Probe census `CENSUS OK`, 45 swept / 110
+  deferred. Gate as in 0. **Full sweep NOT driven this fire — bounded fire, named rather than
+  implied.** One process note: the first `npm test` was piped through `tail -40`, which cut the
+  server summary line; exit 0 with no summary line is not a measurement, so the server leg was
+  re-run for its own figures rather than reported off the exit code.
+  **Drain:** mail drained (1 inbound, read in full in the turn it was noticed, **executed in-fire**
+  rather than boarded; reply filed and pushed to `main` as its own commit at 09:29:43). Four writable
+  cross-repo mailboxes checked — **nothing addressed to this seat**, and one thing owed outward was
+  found and filed: the newsletter question-box thread's **first counter-datapoint** (a case where
+  reading the lesson *did* prevent the instance, mechanism = the lesson converts to an *omission*
+  rather than a *check*), written to `dispatch/mail/`, rebased onto `origin/main`, re-authored to an
+  Amber-local email after the `designinproduct.com` identity was rejected, pushed and **verified at
+  the remote with `ls-tree`** rather than from the local commit.
+  **Deferred, each with a named blocker, none deadlined:** the multiset clause as an *enforced*
+  assertion — blocker: nothing in the tree reads stale-limb stderr programmatically, so an assertion
+  would have no subject (declared, not parked); the `ABSENT` hole cure — blocker unchanged, and P5
+  sharpens it from deferred to **irreducible** (same root, two symptoms); the ignore-respecting walk
+  — blocker: no such implementation exists; conjunct (ii) publication order — blocker: expressing it
+  hard-codes row order; `unit-497`'s closure leg — blocker: the 11-20 *don't edit them* decision, not
+  reopened; the 45-file `chars`-labelled-`bytes` default — blocker unchanged; the full probe sweep —
+  blocker: fire budget. Nothing opened that this fire could not finish. Nothing else unblocked.
+- **Previously updated:** 2026-11-22 ~17:20–17:3x PT (**STOP fire — substantive: THE CELL THESEUS'S §7 DECLARED
   UNMEASURED IS MEASURED — A MIXED STALE BLOCK, ONE `GUARDED` AND ONE `ABSENT` TOGETHER, READS
   **`358 B / 6 LINES`** AND THE GENERAL FORM IS ADDITIVE ACROSS DIFFERENT LABELS TO THE BYTE. HIS
   THREE ROUTED ITEMS ALL LAND, ONE OF THEM WITH ITS **REASON REPLACED**: THE PUBLISHED LAW WAS NEVER
