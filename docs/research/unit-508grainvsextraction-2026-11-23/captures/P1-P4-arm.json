@@ -1,0 +1,270 @@
+{
+  "unit": "unit-508grainvsextraction",
+  "readAt": "2026-11-23 13:22:40 PST",
+  "gateSha": "7096a8d9c034872189524b0f5eb7562509179e8415bd263ed0b7dc7e8bd98295",
+  "vocabulary": [
+    "MARKED",
+    "GUARDED",
+    "UNGUARDED",
+    "ABSENT"
+  ],
+  "excludedVerdict": "UNGUARDED",
+  "containmentPairs": [
+    [
+      "GUARDED",
+      "UNGUARDED"
+    ]
+  ],
+  "collidePath": "src/UNGUARDEDxxxxxxxxxxxxxxxxxxxxxxx.mjs",
+  "cells": {
+    "H-SWAP-A": {
+      "rc": 1,
+      "errBytes": 357,
+      "errLines": 6,
+      "errSha": "db02d9c2",
+      "entryCount": 2,
+      "labelMultiset": [
+        "ABSENT",
+        "MARKED"
+      ],
+      "containmentMultiset": [
+        "ABSENT",
+        "MARKED"
+      ],
+      "pairsEqualitySet": [
+        "src/s1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED",
+        "src/s2xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tABSENT"
+      ],
+      "pairsContainmentSet": [
+        "src/s1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED",
+        "src/s2xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tABSENT"
+      ],
+      "population": [
+        "src/s1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs"
+      ]
+    },
+    "H-SWAP-B": {
+      "rc": 1,
+      "errBytes": 357,
+      "errLines": 6,
+      "errSha": "3bbf455f",
+      "entryCount": 2,
+      "labelMultiset": [
+        "ABSENT",
+        "MARKED"
+      ],
+      "containmentMultiset": [
+        "ABSENT",
+        "MARKED"
+      ],
+      "pairsEqualitySet": [
+        "src/s1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tABSENT",
+        "src/s2xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+      ],
+      "pairsContainmentSet": [
+        "src/s1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tABSENT",
+        "src/s2xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+      ],
+      "population": [
+        "src/s2xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs"
+      ]
+    },
+    "H-COLLIDE": {
+      "rc": 1,
+      "errBytes": 357,
+      "errLines": 6,
+      "errSha": "a52ebe45",
+      "entryCount": 2,
+      "labelMultiset": [
+        "ABSENT",
+        "MARKED"
+      ],
+      "containmentMultiset": [
+        "ABSENT",
+        "GUARDED",
+        "MARKED",
+        "UNGUARDED"
+      ],
+      "pairsEqualitySet": [
+        "src/UNGUARDEDxxxxxxxxxxxxxxxxxxxxxxx.mjs\tABSENT",
+        "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+      ],
+      "pairsContainmentSet": [
+        "src/UNGUARDEDxxxxxxxxxxxxxxxxxxxxxxx.mjs\tABSENT",
+        "src/UNGUARDEDxxxxxxxxxxxxxxxxxxxxxxx.mjs\tGUARDED",
+        "src/UNGUARDEDxxxxxxxxxxxxxxxxxxxxxxx.mjs\tUNGUARDED",
+        "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+      ],
+      "population": [
+        "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs"
+      ]
+    },
+    "H-CLEAN": {
+      "rc": 1,
+      "errBytes": 357,
+      "errLines": 6,
+      "errSha": "9734960f",
+      "entryCount": 2,
+      "labelMultiset": [
+        "ABSENT",
+        "MARKED"
+      ],
+      "containmentMultiset": [
+        "ABSENT",
+        "MARKED"
+      ],
+      "pairsEqualitySet": [
+        "src/a01xxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tABSENT",
+        "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+      ],
+      "pairsContainmentSet": [
+        "src/a01xxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tABSENT",
+        "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs\tMARKED"
+      ],
+      "population": [
+        "src/m1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.mjs"
+      ]
+    }
+  },
+  "separation": {
+    "labelMultiset": "1 of 4",
+    "pairSetEqualityExtraction": "4 of 4",
+    "pairSetContainmentExtraction": "4 of 4"
+  },
+  "liveBaseline": {
+    "nonEmptyLines": 87,
+    "commentLines": 29,
+    "realEntries": 58
+  },
+  "tokenBearing": {
+    "tracked": 7445,
+    "count": 26,
+    "paths": [
+      "docs/research/unit-503stalelabelwidth-2026-11-22/captures/C-ABSENT.err",
+      "docs/research/unit-503stalelabelwidth-2026-11-22/captures/C-ABSENT.out",
+      "docs/research/unit-503stalelabelwidth-2026-11-22/captures/C-GUARDED.err",
+      "docs/research/unit-503stalelabelwidth-2026-11-22/captures/C-GUARDED.out",
+      "docs/research/unit-503stalelabelwidth-2026-11-22/captures/C-MARKED.err",
+      "docs/research/unit-503stalelabelwidth-2026-11-22/captures/C-MARKED.out",
+      "docs/research/unit-504mixedstalelabels-2026-11-22/captures/D-2GUARDED.err",
+      "docs/research/unit-504mixedstalelabels-2026-11-22/captures/D-2GUARDED.out",
+      "docs/research/unit-504mixedstalelabels-2026-11-22/captures/D-ABSENT1.err",
+      "docs/research/unit-504mixedstalelabels-2026-11-22/captures/D-ABSENT1.out",
+      "docs/research/unit-505markedabsentpair-2026-11-22/captures/E-2ABSENT.err",
+      "docs/research/unit-505markedabsentpair-2026-11-22/captures/E-2ABSENT.out",
+      "docs/research/unit-505markedabsentpair-2026-11-22/captures/E-2MARKED.err",
+      "docs/research/unit-505markedabsentpair-2026-11-22/captures/E-2MARKED.out",
+      "docs/research/unit-505markedabsentpair-2026-11-22/captures/E-GUARDED-ABSENT.err",
+      "docs/research/unit-505markedabsentpair-2026-11-22/captures/E-GUARDED-ABSENT.out",
+      "docs/research/unit-505markedabsentpair-2026-11-22/captures/E-MARKED-ABSENT.err",
+      "docs/research/unit-505markedabsentpair-2026-11-22/captures/E-MARKED-ABSENT.out",
+      "docs/research/unit-506labelmultiset-2026-11-23/captures/F-GUARDED-ABSENT.err",
+      "docs/research/unit-506labelmultiset-2026-11-23/captures/F-GUARDED-ABSENT.out",
+      "docs/research/unit-506labelmultiset-2026-11-23/captures/F-MARKED-ABSENT.err",
+      "docs/research/unit-506labelmultiset-2026-11-23/captures/F-MARKED-ABSENT.out",
+      "docs/research/unit-506labelmultiset-2026-11-23/captures/F-MARKED-GUARDED.err",
+      "docs/research/unit-506labelmultiset-2026-11-23/captures/F-MARKED-GUARDED.out",
+      "docs/research/unit-507pathlabelpairs-2026-11-23/captures/G-2MARKED.err",
+      "docs/research/unit-507pathlabelpairs-2026-11-23/captures/G-2MARKED.out"
+    ]
+  },
+  "grades": [
+    {
+      "id": "P1.a.eq",
+      "claim": "H-COLLIDE equality reads exactly 2 labels",
+      "verdict": "HIT",
+      "detail": "ABSENT,MARKED"
+    },
+    {
+      "id": "P1.a.co",
+      "claim": "H-COLLIDE containment reads exactly 4 labels",
+      "verdict": "HIT",
+      "detail": "ABSENT,GUARDED,MARKED,UNGUARDED"
+    },
+    {
+      "id": "P1.a.sup",
+      "claim": "the containment multiset is a strict superset of the equality one",
+      "verdict": "HIT",
+      "detail": "2 -> 4"
+    },
+    {
+      "id": "P1.b",
+      "claim": "the containment multiset contains BOTH members of a vocabulary containment pair",
+      "verdict": "HIT",
+      "detail": "pairs present: [[\"GUARDED\",\"UNGUARDED\"]]; vocabulary pairs: [[\"GUARDED\",\"UNGUARDED\"]]"
+    },
+    {
+      "id": "P1.c.label",
+      "claim": "NO captured label equals UNGUARDED, on any cell",
+      "verdict": "HIT",
+      "detail": "{\"H-SWAP-A\":[\"MARKED\",\"ABSENT\"],\"H-SWAP-B\":[\"ABSENT\",\"MARKED\"],\"H-COLLIDE\":[\"ABSENT\",\"MARKED\"],\"H-CLEAN\":[\"MARKED\",\"ABSENT\"]}"
+    },
+    {
+      "id": "P1.c.path",
+      "claim": "EXACTLY ONE captured path contains UNGUARDED, across all cells",
+      "verdict": "HIT",
+      "detail": "{\"H-SWAP-A\":[],\"H-SWAP-B\":[],\"H-COLLIDE\":[\"src/UNGUARDEDxxxxxxxxxxxxxxxxxxxxxxx.mjs\"],\"H-CLEAN\":[]}"
+    },
+    {
+      "id": "P1.d",
+      "claim": "CONTROL: on every cell with no token-bearing path, equality and containment agree exactly",
+      "verdict": "HIT",
+      "detail": "{\"H-SWAP-A\":[[\"ABSENT\",\"MARKED\"],[\"ABSENT\",\"MARKED\"]],\"H-SWAP-B\":[[\"ABSENT\",\"MARKED\"],[\"ABSENT\",\"MARKED\"]],\"H-CLEAN\":[[\"ABSENT\",\"MARKED\"],[\"ABSENT\",\"MARKED\"]]}"
+    },
+    {
+      "id": "P2.a",
+      "claim": "pairsByEquality yields exactly one pair per entry line, every cell",
+      "verdict": "HIT",
+      "detail": "{\"H-SWAP-A\":\"2/2\",\"H-SWAP-B\":\"2/2\",\"H-COLLIDE\":\"2/2\",\"H-CLEAN\":\"2/2\"}"
+    },
+    {
+      "id": "P2.b",
+      "claim": "pairsByContainment EXCEEDS the entry count on H-COLLIDE and only there",
+      "verdict": "HIT",
+      "detail": "{\"H-SWAP-A\":\"2/2\",\"H-SWAP-B\":\"2/2\",\"H-COLLIDE\":\"4/2\",\"H-CLEAN\":\"2/2\"}"
+    },
+    {
+      "id": "P2.c",
+      "claim": "the containment pair set mints a pair labelled UNGUARDED, which no line renders",
+      "verdict": "HIT",
+      "detail": "minted: [\"src/UNGUARDEDxxxxxxxxxxxxxxxxxxxxxxx.mjs\\tUNGUARDED\"]"
+    },
+    {
+      "id": "P2.d.eq",
+      "claim": "the equality-extracted pair SET separates all 4 cells",
+      "verdict": "HIT",
+      "detail": "4 of 4"
+    },
+    {
+      "id": "P2.d.co",
+      "claim": "the containment-extracted pair SET ALSO separates all 4 cells — injectivity is green on the defect",
+      "verdict": "HIT",
+      "detail": "4 of 4"
+    },
+    {
+      "id": "P2.e",
+      "claim": "CONTROL: on the non-colliding cells the two extractions are identical",
+      "verdict": "HIT",
+      "detail": "{\"H-SWAP-A\":true,\"H-SWAP-B\":true,\"H-CLEAN\":true}"
+    },
+    {
+      "id": "P3.a",
+      "claim": "the baseline file is 87 non-empty lines, 29 of them `#` comments, 58 real entries",
+      "verdict": "HIT",
+      "detail": "87 non-empty, 29 comments, 58 entries"
+    },
+    {
+      "id": "P4.a",
+      "claim": "token-bearing tracked paths is >= 26 at my own read time",
+      "verdict": "HIT",
+      "detail": "26 of 7445 tracked, read at 2026-11-23 13:22:40 PST"
+    },
+    {
+      "id": "P4.b",
+      "claim": "NONE of the token-bearing tracked paths is a baseline entry (reach, not a live red)",
+      "verdict": "HIT",
+      "detail": "overlap: []"
+    }
+  ],
+  "summary": "16 of 16 HIT"
+}
