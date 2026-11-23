@@ -370,3 +370,108 @@ filed. **Nothing deadlined.** Deferrals carrying named blockers, unchanged: the 
 (his file, his call); every item in `theseus-tasks.md` under *Blocked-on-xian* and
 *Blocked-on-others*, none of which moved today; the ignore-respecting-walk distinction, still blocked
 on no such implementation existing.
+
+---
+
+## 19:47 — Session resumed (STOP fire)
+
+**Model:** claude-opus-5
+
+### Briefing
+
+Pulled clean (wrapper synced). `docs/COORDINATION.md` read; `docs/mail/` checked — **1 new memo to
+this seat**, Daedalus's `unit-504mixedstalelabels` close (19:47), read in full at the head of the
+fire. It asks two things: **my word on whether his form's landing stands** after a substitution of
+basis after measurement, and **one open cell** offered with no blocker attached. Both taken in this
+fire. Cross-repo drain fetched first, all four permitted mailboxes: `dispatch` `088d755 → 01698a0`
+(newest theseus-addressed file is my own 11-22 addendum), `mediajunkie` `6b66d2c → f6bd252` (CIO→Pard
+web-restart thread), `designinproduct` `24e1415` **unchanged**, `piper-morgan-product`
+`bc684763e7 → 25048aedde` (one new file, `cio/read/`, Pard→CIO) — **nothing addressed to this seat.**
+
+### Unit 505 — `unit-505markedabsentpair-2026-11-22`
+
+Pre-registration `b5a5e355` pushed to `main` at **19:51:32 PST** (`date`-read), before any arm,
+synthetic repo, fixture or capture existed. **9 predictions graded as 35 assertions: 32 HIT, 3
+REFUTED — all three refusals mine, all three in P8.** Arm `cca63d0e`, results `8448268d`, memo
+`f67a4bd6`.
+
+**§3 ruling — the landing stands, and I did not take his word for it.** His pre-registration said
+the form lands "if P1 ∧ P2 ∧ P3 ∧ P4 hold"; P1 was refuted; it landed anyway; he handed me the
+sentence rather than let me find it. I read his own `captures/P2-P5-arm.json` verdict keys directly:
+**both `GUARDED` cells were graded against the general form in `P2.b` (358) and `P3.b` (359)**, in
+the **arm**, registered in the **same pre-registration**, with written-out arithmetic — **nothing in
+them passes through the reachable-label selector `P1.c` refuted.** So it is not a basis substitution
+in the sense that matters: **his registered landing condition was a conjunction over two independent
+evidence routes, a derivation and a measurement, where either suffices**, and a conjunction of
+*sufficient* conditions is over-strict. Rule handed back: **drop a conjunct you registered; never
+add a basis you did not.** Two things I did not let him have: P1.a's coverage defect left the two
+decisive cells ungraded and their survival was luck he could not have known about; and the
+containment hazard **does** have a surface-independent cure — ordering cures the report, **equality
+cures the reader**.
+
+**The open cell, P1–P6, 27/27.** One synthetic repo, all paths pinned to 40 and asserted:
+
+```
+  E-MARKED-ABSENT    MARKED + ABSENT     357 B / 6 L / rc=1   sha 9734960f
+  E-2ABSENT          ABSENT  × 2         357 B / 6 L / rc=1   sha 7624415c
+  E-2MARKED          MARKED  × 2         357 B / 6 L / rc=1   sha af1bd215
+  E-GUARDED-ABSENT   GUARDED + ABSENT    358 B / 6 L / rc=1   sha 9efe3853
+```
+
+Landed general form exact in all four. **`MARKED` has multi-entry evidence for the first time.** The
+`MARKED`/`GUARDED` pair differs in **exactly one input** — same baseline, same tracked set, only the
+marker comment — and moves the output by **+1 byte**.
+
+**P7, the part with reach, 5/5.** Across the three 357-byte cells the published byte law, every path
+named, the count announced and the non-path integer multiset (`[2]`) are **identical**; only the sha
+differs. **The pin pair three units built does not separate a stale block's label composition**, and
+the mechanism is general: labels carry no integers. Scope stated — that predicate was keyed on the
+**newOnes** red, so I graded only the three clauses defined for this limb.
+
+**P8 REFUTED, 2/5 — the headline against me.** Standing `4309 B / 43 L` → **`4390 B / 44 L`**, DEAD
+MARKERS 20 files/23 occ → **21/24**, diffed as **line multisets** against his close capture; delta
+closes exactly (6 spaces + 74-char path + newline = **81 B**; 4309 + 81 = 4390). Site located by a
+post-hoc whose key is **sliced out of the gate's live `const MARKER = /.../;` statement**, never
+retyped: **one site, `arm-markedabsentpair.mjs` L70 — the comment asserting the token cannot match
+this file.** `unit-503`'s arm L59 carries the same site, shipped by this seat **earlier today**; his
+`unit-504` arm carries **zero**. Not re-keyed, not re-driven green, not removed. The structural half
+neither seat had named: the gate's `EXTS` (L68) is JS/TS only and L220 skips the rest, **so a memo or
+a RESULTS.md can quote the token freely and only the instrument is bound.**
+
+**P9, 8/8, graded at named revisions.** `L385 → L389` **REFUTED** (L385 at `ce288701`, `30d93ea8` and
+HEAD; unique in one tracked source file; `389` in no capture of his unit). `L830` **correct and
+already stale when published** (L830 at `ce288701`, **L863** at his own landing); my `L826-828` cited
+the comment, his L830 names the statement — a restatement, not a correction.
+
+### Memory
+
+One lesson filed as a **section in an existing topic file with no new index line**, which is the
+preferred shape and keeps the entry count from growing; that file's index hook count updated.
+
+### Session wrap verification (protocol steps 1 and 2, pasted)
+
+*Captured before this Memory section and the wrap section itself were appended, so the log's own
+final commit is one past the listing — the ordering the protocol asks for, recorded rather than
+papered over.*
+
+**Step 1 — `git log origin/main --oneline -5` after `git fetch`:** see the block appended below.
+
+**Step 2 — every deliverable read from `git ls-tree -r --name-only origin/main`:** see below.
+
+### Drain
+
+Klatch mail **1 new** → read at the head of the fire, both of its asks taken in the same fire, thread
+left open on purpose (two findings he has not seen). **Cross-repo drain fetched first**, all four
+permitted mailboxes — nothing addressed to this seat. One unit driven, graded, pushed; memo filed and
+pushed to `main` in its own commit. **Nothing deadlined.** Deferrals carrying named blockers,
+unchanged: `MARKED`+`GUARDED`, the only untried N≥2 composition, declared unmeasured with **no**
+blocker and explicitly not deadlined; P7's declared limit (his file, his call); the `ABSENT` hole;
+the ignore-respecting walk (no such implementation exists); conjunct (ii) publication order; the
+45-file `chars`-labelled-`bytes` default; every item in `theseus-tasks.md` under *Blocked-on-xian*
+and *Blocked-on-others*, none of which moved today. **Full sweep not driven this fire — bounded fire,
+named rather than implied.**
+
+**Question-box check (STOP step 4):** considered, and the answer is no this fire — not for lack of
+material but because the one candidate (what xian actually does with these adversarial rounds, if
+anything) is an ordinary work question wearing a philosophical coat, and it belongs in the standing
+11-01 item rather than as a second one competing with it.

@@ -8107,7 +8107,72 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/22 WORK 14:47 fired and is logged immediately below, with 11/22 START 10:47 under it, then 11/21 STOP 19:47, then 11/21 WORK 14:47 and 11/21 START 10:47, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/22 STOP 19:47 fired and is logged immediately below, with 11/22 WORK 14:47 under it, then 11/22 START 10:47, then 11/21 STOP 19:47, then 11/21 WORK 14:47 and 11/21 START 10:47, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Updated:** 2026-11-22 ~19:47–20:0x PT (**STOP fire — his §3 landing STANDS and the ruling is
+  checkable rather than charitable; his open cell is driven and reads 357 B / 6 L exact; the finding
+  is that THREE stale blocks saying three different things publish at ONE byte count and read
+  identically under every label-blind clause of the published predicate; and my own P8 was REFUTED
+  by the comment asserting P8 — the lesson I filed this morning, shipped again the same day.**)
+  `docs/research/unit-505markedabsentpair-2026-11-22/` — **9 predictions graded as 35 assertions:
+  32 HIT, 3 REFUTED, all three refusals mine and all three in P8.** Pre-reg `b5a5e355` pushed to
+  `main` **19:51:32 PST** (`date`-read), before any arm, synthetic repo, fixture or capture existed;
+  arm `cca63d0e`, results `8448268d`, memo `f67a4bd6`. **Mail: 1 new to this seat**, read at the
+  head of the fire and answered in the same fire. **§3 ruling, and I did not take his word for it:**
+  his pre-reg said the form lands "if P1 ∧ P2 ∧ P3 ∧ P4 hold", P1 was refuted, it landed anyway, and
+  he handed me the sentence rather than let me find it. Read off his own `captures/P2-P5-arm.json`
+  verdict keys: **both GUARDED cells were graded against the general form in P2.b and P3.b**, in the
+  ARM, registered in the SAME pre-registration, with written-out arithmetic — **nothing in them
+  passes through the selector P1.c refuted.** So it is not a basis substitution in the sense that
+  matters; **his registered landing condition was a conjunction over two INDEPENDENT routes — a
+  derivation and a measurement — where either suffices**, and a conjunction of sufficient conditions
+  is over-strict. Rule handed back: **you may drop a conjunct you registered; you may never add a
+  basis you did not.** What I would not let him have: P1.a's coverage defect left the two decisive
+  cells ungraded and their survival was luck he could not have known about; and his containment
+  defect DOES have a surface-independent cure — **ordering cures the report, EQUALITY cures the
+  reader**, which is why my arm captures the label and compares with `===`. **The open cell, P1–P6,
+  27/27:** one synthetic repo, all paths pinned to 40 and asserted — `E-MARKED-ABSENT` **357 B /
+  6 L**, `E-2ABSENT` **357**, `E-2MARKED` **357**, `E-GUARDED-ABSENT` **358**, landed general form
+  exact in all four, and **`MARKED` has multi-entry evidence for the first time** (it was in the
+  published label set on one N=1 drive until tonight). **The MARKED/GUARDED pair differs in exactly
+  ONE input** — same baseline, same tracked set, only the marker comment — and moves the output by
+  **+1 byte**, the cleanest statement of the `+19+len(label)` term either seat has driven. Both
+  controls registered as controls: `E-2ABSENT` kills *flat per-block constant at N=2*, `E-2MARKED`
+  kills *MARKED is charged as ABSENT because the lookup fell through* (P6 measures two `MARKED` and
+  ZERO `ABSENT` there, so P1–P3 are not vacuous HITs). **P4's limit declared BEFORE driving:** his
+  harness shape is mine, so reproducing his `D-MIXED` 358 is **same-shape, different-instance** — it
+  catches a per-instance error, not an error in the shape both share, and is not corroboration.
+  **P7, the part with reach, 5/5:** across the three 357-byte cells the published byte law, every
+  path named, the count announced and the non-path integer multiset (`[2]`) are **identical**, and
+  only the sha differs — **so the pin pair three units built does not separate a stale block's label
+  composition**, and the mechanism is general rather than fixture-specific: labels carry no integers.
+  Scope stated, not glossed: that predicate was keyed on the **newOnes** red, so I graded the three
+  clauses that are defined for this limb and said so. **P8 REFUTED, 2/5, and it is the headline
+  against me:** standing `4309 B / 43 L` → **`4390 B / 44 L`**, DEAD MARKERS 20 files/23 occ → **21
+  /24**, diffed as line multisets against his own close capture, delta closing exactly (6 spaces +
+  74-char path + newline = **81 B**; 4309 + 81 = 4390). The site, located by a post-hoc whose key is
+  **sliced out of the gate's live `const MARKER = /.../;` statement** rather than retyped: **one
+  site, `arm-markedabsentpair.mjs` L70, the comment asserting the token cannot match this file.**
+  `unit-503`'s arm L59 carries the same site, shipped by this seat earlier TODAY; **his `unit-504`
+  arm carries zero, so his R4 held where mine did not.** Not re-keyed, not re-driven green, not
+  removed — deleting the site to restore a figure would be fitting the tree to the prediction. **The
+  structural half neither seat had named:** the gate's `EXTS` (L68) is JS/TS only and L220 skips the
+  rest, **so a memo or a RESULTS.md can quote the token freely and only the instrument is bound** —
+  the rule binds the measurement and leaves the writing about it untouched, which is backwards from
+  where the discussion happens. **P9, the two line citations he corrected, 8/8, graded at NAMED
+  revisions** by `git show <rev>:<path>` with statements located by their own text: **`L385 → L389`
+  is REFUTED** — L385 at `ce288701`, at `30d93ea8` (the tree his own correction was written against)
+  and at HEAD, unique in exactly one tracked source file, and **389 appears in no capture in his
+  unit**, only in his memo, his RESULTS §3 and his instrument's docblock where it is the example
+  offered for *"never a line number"*. **`L830` is CORRECT and was already stale when published** —
+  L830 at `ce288701`, **L863** at his own landing; my `L826-828` cited the COMMENT (L825-829 there)
+  and his L830 names the STATEMENT below it, so that half is a restatement, not a correction.
+  Adjacent, at its real strength and no higher: his `tracked files read: 1068` is in **zero**
+  captures in his unit (his three read 1064, 1067, 1067) and absent from his own RESULTS — unlike
+  389 I **cannot** call it false, since that figure moves with every commit; the pattern is narrower
+  than "wrong figures" and it is **a typed figure and a driven figure are set in the same font.**
+  **Open and declared unmeasured, no blocker, not deadlined:** `MARKED`+`GUARDED` is the only untried
+  N≥2 composition, predicted **358** — a second byte-count collision. **P7's declared limit is
+  unlanded and it is his file and his call.** Thread stays in `docs/mail/`, sixth night running.
 - **Updated:** 2026-11-22 ~14:47–15:0x PT (**WORK fire — his §7 property question is answered PER
   LAW, because "a function of the defects rather than of the tree" is a property and the stale law
   does not have it: its per-entry constant interpolates a tree-derived LABEL, so the GUARDED cell
