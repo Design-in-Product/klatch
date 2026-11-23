@@ -112,12 +112,50 @@ push**. Then verified at the remote with `ls-tree -r origin/main`, not from the 
 
 ```
 $ git log origin/main --oneline -5
-PASTED BELOW AFTER THE FINAL PUSH
+8307d2f5 coord+log(daedalus): START fire -- Theseus's P7 limit closes as cured, the last composition is 358, and equality-vs-containment is indistinguishable by construction in this limb
+a2e7c016 mail(daedalus->theseus,argus): your P7 limit closes as cured, the last composition is 358, and your equality cure is true BY CONSTRUCTION-coincidence in the limb you routed it for
+dd3ec5ab land(unit-506labelmultiset): the stderr pin gains a rendered-label multiset clause keyed by equality, and ordering-cures-the-report/equality-cures-the-reader lands with its coincidence attached
+dc74ec41 arm(unit-506labelmultiset): the untried composition is 358, the second collision is measured in one harness, and the equality-over-containment cure is true BY COINCIDENCE in this limb
+74522060 prereg(unit-506labelmultiset): the untried composition, the second byte-count collision, and the routed multiset cure measured against the cells it claims to separate
 ```
 
-**Step 2 — deliverable files exist:** pasted below.
+**Step 2 — deliverable files exist on `origin/main`** (read from the remote tree, not the working
+copy):
 
-**Step 3 —** this log is committed last.
+```
+$ git ls-tree -r origin/main --name-only -- docs/research/unit-506labelmultiset-2026-11-23 <memo> <log>
+docs/logs/2026-11-23-daedalus-log.md
+docs/mail/daedalus-to-theseus-argus-cc-xian-janus-calliope-iris-your-p7-limit-is-closed-as-cured-…-2026-11-23.md
+docs/research/unit-506labelmultiset-2026-11-23/PRE-REGISTRATION.md
+docs/research/unit-506labelmultiset-2026-11-23/RESULTS.md
+docs/research/unit-506labelmultiset-2026-11-23/arm-labelmultiset.mjs
+docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs
+docs/research/unit-506labelmultiset-2026-11-23/captures/F-GUARDED-ABSENT.{out,err}
+docs/research/unit-506labelmultiset-2026-11-23/captures/F-MARKED-ABSENT.{out,err}
+docs/research/unit-506labelmultiset-2026-11-23/captures/F-MARKED-GUARDED.{out,err}
+docs/research/unit-506labelmultiset-2026-11-23/captures/P1-P5-arm.json
+docs/research/unit-506labelmultiset-2026-11-23/captures/P1-P5-arm.stderr
+docs/research/unit-506labelmultiset-2026-11-23/captures/P6-standing-linewise.json
+docs/research/unit-506labelmultiset-2026-11-23/captures/standing-pre.{out,err}
+docs/research/unit-506labelmultiset-2026-11-23/captures/standing-after-arm.{out,err}
+docs/research/unit-506labelmultiset-2026-11-23/captures/standing-after-docblock.{out,err}
+docs/research/unit-506labelmultiset-2026-11-23/captures/standing-close.{out,err}
+```
+
+23 paths, all present. The `{a,b}` braces above are my abbreviation of two listed paths each; the
+raw listing enumerated every file separately.
+
+Cross-repo deliverable, verified at its own remote:
+
+```
+$ git -C /Users/xian/Development/dispatch ls-tree -r origin/main --name-only mail/ | grep 2026-11-23
+mail/addendum-daedalus-2026-11-23-the-first-datapoint-in-the-other-direction-and-the-mechanism-is-not-vigilance.md
+mail/signal-dispatch-dinp-to-dispatch-pm-2026-11-23-inbox-check-clean.md
+```
+
+**Step 3 —** this log is committed last. The commit `8307d2f5` above carries the log's earlier
+state; this verification block is the final commit of the fire, so the hash list in Step 1 is
+one commit behind by construction and that is the protocol's own order rather than a gap.
 
 **Drain:** mail drained to zero actionable (1 inbound, executed in-fire, replied and pushed as its
 own commit); cross-repo checked and one outward item filed; both of Theseus's "your call" items
