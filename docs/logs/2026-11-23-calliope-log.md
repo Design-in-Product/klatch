@@ -26,3 +26,32 @@ Gate re-verified fresh, not assumed clean from the no-diff finding:
 All figures byte-identical to standing since 11-18/11-22.
 
 **Drain:** 4 new commits read and author-checked, none mine; no new mail files, four standing direct threads re-confirmed correctly open; cross-pollination brief and fire-depth report read in full, nothing actionable; rollup re-checked at v188, no correction due; all four cross-repo mailboxes fetched fresh and content-grepped, nothing owed from any; typecheck, both test suites, census, and the full driving sweep all re-driven fresh and byte-identical to standing. Two consecutive checks found nothing further unblocked. Fire closed bounded.
+
+---
+
+## 12:3x — Session resumed (MID fire)
+
+No-op on product, verified not assumed. Checkpoint is this seat's own 11-23 START-fire commit `4bec1535`. `git log 4bec1535..HEAD --format='%h %an %ci %s'` — 11 new commits, none mine: Argus's START no-op (`155fe3ad`); Daedalus's `unit-506labelmultiset` chain (5 commits — the untried composition measures 358, the equality-over-containment cure is true by construction-coincidence in the limb it was routed for, and Theseus's P7 limit closes as cured rather than declared); Theseus's `unit-507pathlabelpairs` chain (6 commits — his vacuous P4.b gets a domain and filling it costs the multiset its injectivity, his own P5.a is refuted in the path field not the label field, 29 of 29 assertions HIT). `git diff --stat 4bec1535..HEAD -- packages/ scripts/` — one file, `scripts/verify-decl-body-slicers.mjs` (+62, Daedalus's own research instrument), no `packages/` diff.
+
+Mail: 2 new files since checkpoint, both cc-only to this seat — Daedalus's reply to Theseus/Argus (`...-your-p7-limit-is-closed-as-cured-...-2026-11-23.md`) and Theseus's reply to Daedalus/Argus (`...-your-vacuous-p4b-has-a-domain-now-...-2026-11-23.md`), read in full via headers. Neither poses a question for this seat; both are the same research-track exchange summarized above.
+
+Cross-repo, all four fetched fresh and diffed from the START-fire check (~08:30):
+- `designinproduct` — 2 new (an Exec→Janus Ship #070 reply, a Janus→Exec reminder-ack), both read in full, zero `klatch|calliope` hits.
+- `mediajunkie` — 2 new (a CIO mail-batch-read-speed memo, a Janus→Pard/xian "working with xian" answers memo), both grepped, zero hits.
+- `piper-morgan-product` — 4 new (Ship #070 exchange plus two CIO mail-infra timing memos filed to the `cio`/`exec` mailboxes), checked, zero hits.
+- `dispatch` — 1 new (Daedalus's own addendum to the newsletter question-box thread — informational, explicitly "not asking anything of xian," already this project's own research-track work offered outward).
+
+Nothing owed from any.
+
+Rollup re-read directly at its own v188 banner (`docs/operations/attention-rollup.md`) — needs-you unchanged at 9; already independently re-confirmed by Argus's and Iris's own START fires this morning before this fire started. Cross-pollination brief re-checked (`docs/briefs/cross-pollination/current.md`) — unchanged since this morning's read, no new brief published.
+
+Gate re-verified fresh, not assumed clean from the one-file `scripts/` diff:
+- `npm run typecheck` — clean across all 4 workspaces + scripts.
+- Server: **147 files / 2295 passed / 1 skipped (2296)**.
+- Client: **29/42 files, 354/367 (13 skipped)**.
+- `node scripts/sweep-probes.mjs --census` — **155 probe files, 45 swept / 110 deferred, CENSUS OK**.
+- Full driving sweep re-run fresh (backgrounded past the 120s foreground limit, picked up via completion notification) — **SWEEP PASSED, 45 of 45 swept probes green, 0 red, 0 blocked, 110 deferred**.
+
+All figures byte-identical to standing. `git status --short` clean before and after; `lsof -i :3001` port free. `calliope-tasks.md`'s mandatory `log.html` item correctly not due this render (STOP-fire only; last written 11-22, next due tonight).
+
+**Drain:** 11 new commits read and author-checked, none mine; one `scripts/` file diffed and accounted for (report-only research instrument, no verdict key touched); 2 cc-only mail files read in full, nothing owed; all four cross-repo mailboxes fetched fresh and content-grepped, nothing owed from any; rollup and cross-pollination brief re-checked, no correction due; typecheck, both test suites, census, and the full driving sweep all re-driven fresh and byte-identical to standing. Two consecutive checks found nothing further unblocked. Fire closed bounded.
