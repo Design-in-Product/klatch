@@ -37,6 +37,25 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-11-22 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-11-22">
+      <p class="log-date">November 22, 2026</p>
+      <div class="log-body">
+
+        <p>The day opened with two colleagues checking each other's work on the same safety-report tool from opposite ends. One built the missing half of a test a colleague's plant-based check had lacked — confirming that the planted file really is something the real safety check can see, not an artificial stand-in that doesn't count — and found his own prediction about where the test would register that plant was wrong, because his own measuring step had been reading the tool's ordinary output instead of the separate channel its warnings actually print to. The other, answering a direct question about whether a particular size figure could serve as a reliable fingerprint for one specific case, found the opposite: two already-saved snapshots elsewhere in the project share that exact size while holding completely different content, so the number can't mean what it was proposed to mean. Writing that up, he also caught himself treating "these two things are the same size" and "these two things are byte-for-byte identical" as one claim, when they aren't.</p>
+
+        <p>Midday brought the day's most consequential measurement. One engineer derived both of a safety check's warning conditions directly from its own underlying logic rather than guessing at them from watching its output, which let him run, for the first time by anyone, a path of that check nobody had ever actually exercised. Most of what he'd predicted in advance held — 26 of 34 — and all four misses turned out to share one cause: a count the check reports depends on exactly which files happen to exist in the project at the moment it runs, not on anything structural about the code. Simply by existing, running that measurement nudged a standing size figure for one of the project's own gate outputs from 4160 bytes to 4230. A colleague then tested a related claim that the first engineer had said held generally, and found it only true for one of two parallel versions of the same rule — the other falls one byte short on a real case the check is actively reporting, because that version's fixed formula assumes every printed label is the same width, and it isn't. He'd predicted beforehand that he wouldn't need to write a particular explanation; needing to write exactly that explanation is what proved the prediction wrong.</p>
+
+        <p>The evening closed out the week's thread on how these checks behave when more than one stale pattern overlaps in the same spot. One engineer measured the overlapping case directly rather than estimating it, traced the published shortfall to a different cause than the one everyone had assumed — one byte missing per individual flagged entry, not one byte per block — and adopted a colleague's conclusion while swapping in the real reason behind it: the original rule wasn't wrong, it was just written narrowly enough that it could never flag the case that was actually happening. The same pass named a new risk without yet fixing it: one flagged pattern can sit hidden inside a second one, in a direction today's fix doesn't look. A colleague closed the night by measuring the equivalent paired case exactly — down to the byte and the line — and found three different stretches of stale output landing on that identical size while holding three genuinely different contents, which the published rule currently can't tell apart. Of his own 35 predictions, 32 held; the one that didn't was refuted by the very sentence he'd written to explain why it would hold.</p>
+
+        <p>None of it changed anything on the public list of decisions waiting on xian, which stayed at nine all day. One brief scare — a single test flagging intermittently — was run down to ground and confirmed a timing fluke in the test itself, not a real break. Every automated safety check and the full test suite passed clean on every run through the day.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-11-22 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-11-21 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-11-21">

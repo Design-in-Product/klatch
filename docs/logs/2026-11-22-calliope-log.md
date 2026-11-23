@@ -63,3 +63,25 @@ Model: Sonnet 5. No-op on product, verified not assumed. Checkpoint is own MID-f
 `docs/STATE.md` not touched — nothing today is a product-state change. `calliope-tasks.md`'s mandatory `log.html` item correctly not due this render (last written 11-21 STOP fire, next due tonight's STOP fire).
 
 **Drain:** 16 new commits read and author-checked, none mine, all already chronicled by their own authors; four cc-only mail files read in full, nothing owed; rollup re-checked, no new staleness; all four cross-repo mailboxes checked fresh, nothing owed from any; gate fully re-driven (typecheck, both test suites, census, full sweep) and byte-identical to standing. Two consecutive checks found nothing further unblocked. Fire closed bounded.
+
+---
+
+## 20:1x — STOP fire
+
+No-op on product; mandatory `log.html` entry for 11-22 written this fire. Checkpoint is own SWEEP-fire commit `f15f33b9`.
+
+`git log f15f33b9..HEAD --format='%h %an %ci %s'` — 16 new commits, none mine: Daedalus's `unit-504mixedstalelabels` chain (6 commits — the mixed stale block measures 358 B exact; the published shortfall is one byte per GUARDED entry, not per block; the general stale law replaces the scoped one; a containment hazard recorded in the direction the format cure doesn't reach; his own selector found GUARDED nested inside UNGUARDED); Argus's STOP-fire no-op; Iris's STOP-fire no-op (one transient test flake on `round249-the-ownership-guard-drives-its-own-matrix.test.ts` run down to ground — reproduced green in isolation and clean on a full re-run, not a regression); Theseus's `unit-505markedabsentpair` chain (6 commits — the open MARKED+ABSENT cell reads 357 B / 6 L exact; three stale blocks publish at one byte count with three different contents, which the published predicate currently reads identically; 35 assertions, 32 HIT, 3 refuted, his own P8 refuted by the comment asserting P8).
+
+`git diff --stat f15f33b9..HEAD -- packages/ scripts/` — one file, `scripts/verify-decl-body-slicers.mjs` (Daedalus's own research instrument), no `packages/` diff.
+
+**Mail:** 2 new files since checkpoint (Daedalus→Theseus/Argus, Theseus→Daedalus/Argus, both cc xian/Janus/Calliope/Iris) — the same two chains above, read in full. Neither poses a question for this seat.
+
+**Rollup:** re-read at its own v188 banner — needs-you unchanged at 9, all day.
+
+**Cross-repo, all four fetched fresh and diffed from the SWEEP-fire checkpoint:** `designinproduct` — 0 new since 11-21. `mediajunkie` — 1 new (`8e011d2`, CIO→Pard re the read-outside-working-directories dialog, cc Exec; read in full, 0 klatch/calliope content, nothing owed). `piper-morgan-product` — 1 new (`3c076d2b46`, the same CIO thread filed on that side; same disposition). `dispatch` — 1 new (`01698a0`, the daily sync digest to Dispatch-DinP; content-grepped for klatch/calliope, 0 hits). Nothing owed from any.
+
+**Gate re-verified fresh** because the `scripts/` file changed (warranted a real re-check): `npm run typecheck` clean across all 4 workspaces + scripts. Server **147 files / 2295 passed / 1 skipped (2296)**. Client **29/42 files, 354/367 (13 skipped)** — both byte-identical to the morning's and SWEEP's figures. Full driving sweep re-run fresh (backgrounded past the 120s foreground limit, picked up via completion notification; HEAD confirmed unchanged at `7690f024` before and after, tree clean) — **SWEEP PASSED, 45 of 45 swept probes green, 0 red, 0 blocked, 110 deferred** — matching every figure cited by the team today.
+
+**`log.html` — mandatory entry written this fire.** The day's six-unit research-track chain translated to plain language from this seat's own direct read of the day's round-mail and commit log (not delegated), prose written against house style, following the established anonymized-role register of the last several entries. `grep -c "log-entry" log.html` = 95 (up from 94), inserted directly above the 2026-11-21 entry (newest-first order confirmed). `docs/STATE.md` not touched — nothing today is a product-state change. `calliope-tasks.md`'s recurring-item row updated in place (`next_due` 2026-11-22 → 2026-11-23, `last_completed` 2026-11-21 → 2026-11-22) with today's summary prepended.
+
+**Drain:** 16 new commits read and author-checked, none mine, all already chronicled by their own authors; two cc-only mail files read in full, nothing owed; rollup re-checked, no new staleness; all four cross-repo mailboxes fetched fresh, one new file each in three of them, all read in full, nothing owed from any; gate fully re-driven (typecheck, both test suites, census, full sweep) and byte-identical to standing; mandatory logbook entry written and verified inserted. Two consecutive checks found nothing further unblocked. Fire closed bounded.
