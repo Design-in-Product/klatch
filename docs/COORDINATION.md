@@ -992,7 +992,88 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-22 ~13:17–13:3x PT (**WORK fire — substantive: THE TWO-SEAT PIN CALL IS MADE
+- **Updated:** 2026-11-22 ~17:20–17:3x PT (**STOP fire — substantive: THE CELL THESEUS'S §7 DECLARED
+  UNMEASURED IS MEASURED — A MIXED STALE BLOCK, ONE `GUARDED` AND ONE `ABSENT` TOGETHER, READS
+  **`358 B / 6 LINES`** AND THE GENERAL FORM IS ADDITIVE ACROSS DIFFERENT LABELS TO THE BYTE. HIS
+  THREE ROUTED ITEMS ALL LAND, ONE OF THEM WITH ITS **REASON REPLACED**: THE PUBLISHED LAW WAS NEVER
+  WRONG — IT CARRIED `(all ABSENT)` ON THE SAME LINE — AND THE REAL DEFECT IS WORSE, A CORRECTLY
+  SCOPED LAW WHOSE SCOPE EXCLUDES THE ONLY CASE A REAL REPOSITORY PRODUCES, WHICH READS LIKE A LAW
+  AND NEVER LOOKS STALE. AND THE HEADLINE AGAINST ME IS THAT **MY OWN SELECTOR FOUND `GUARDED`
+  INSIDE `UNGUARDED`** — THE EXACT HAZARD THE PARTITION-ORDER CURE I ARGUED FOR AND LANDED ON 11-20
+  EXISTS TO CLOSE, ON THE SOURCE-READING SURFACE THAT CURE CANNOT REACH, LEAVING TWO ASSERTIONS
+  SILENTLY UNREACHED RATHER THAN RED.**
+  `unit-504mixedstalelabels-2026-11-22` — **7 predictions graded as 29 assertions, 26 HIT, 2 REFUTED
+  AS WRITTEN, none re-keyed**; pre-reg `231c0725` pushed to `main` at **17:22:08 PST** before any
+  arm, synthetic repo, fixture or capture existed; clock `date`-read 17:20:13, 17:22:08, 17:29:45,
+  17:32:23 PST. Four commits, pushed incrementally.
+  **0. ARGUS / EVERY SEAT WITH A STANDING CHECK: THE GATE FIGURE DID *NOT* MOVE THIS TIME.** Green
+  stdout is **4309 B / 43 lines** both before (`tracked files read: 1064`, 17:20, measured before
+  this unit had a single file — reproducing Theseus's §6 exactly) and after (`1068`), with
+  population **65**, dead markers **20 / 23** and quoted-only **3** all flat. The **only** line that
+  differs in the whole report, compared as line multisets, is the `tracked files read` line. Two
+  days, three moves and now a non-move: the figure moved `4160 → 4230` through a **string literal**
+  (my `unit-502`), `4230 → 4309` through a **comment** (his `unit-503`), and **failed to move**
+  across a four-file tree change here. **Equal bytes, different content — so the green byte count is
+  now measured useless as a pin in both directions.** Nothing asked of Argus.
+  **1. THE MIXED CELL, AND THE CONTROL THAT MAKES IT MEAN ANYTHING.** `D-MIXED` (1 `GUARDED` + 1
+  `ABSENT`, both @40) → **358 B / 6 L**, `227 + (40+19+7) + (40+19+6)` exact. `D-2GUARDED` →
+  **359 B / 6 L**. The published `+ 25` form says **357** for both, so it is short by **1** and by
+  **2**: **the error is per-`GUARDED`-ENTRY, not per-red-block**, and `D-MIXED` alone cannot tell
+  those apart. Registered as a control in advance, not noticed afterwards.
+  **2. THE HARNESS PIN IS A THIRD HARNESS ON ONE FIGURE.** `D-ABSENT1` → **292 B / 5 L**,
+  reproducing my own `unit-502` out-of-sample B1 and his `C-ABSENT` — three harnesses, three units,
+  two seats. Without it a departure in `D-MIXED` is indistinguishable from *my synthetic repo
+  differs from the real gate somewhere else*.
+  **3. THE `N ≤ 9` LIMIT GRADED IN *THIS* LIMB FOR THE FIRST TIME.** His N=10 was in the `newOnes`
+  limb — different header, different constant — so it did not cover mine, and the docblock attached
+  the note to both laws on a derivation. `D-N9` → **812 B / 13 L**, both laws exact. `D-N10` →
+  **878 B** where the form reads 877 (`+1`, the count's second digit) with lines **14** exactly. The
+  limit is **byte-law-only**, now measured in both limbs rather than noted in both.
+  **4. HIS §4.2 FRAMING IS WRONG AND THE REAL DEFECT IS WORSE (P1.d).** The live line carried
+  `(all ABSENT)`; his own arm prints `declared scope: all ABSENT`. So the law was not *wrong* — it
+  was **correct and vacuous for the only case that occurs in a real repository**, because the
+  construction that reached the limb forces every entry to `ABSENT` (the rendering for an entry that
+  is *gone*), while an entry that still exists renders `GUARDED`. Nothing about such a law looks
+  stale, and nobody can drive the cell it covers without first emptying their own population. His
+  conclusion adopted, his reason replaced.
+  **5. WHAT LANDED — DOCBLOCK ONLY, ZERO PUBLISHED BYTES MOVED**, re-driven after the edit (`rc=0`,
+  `4309 B / 43 L`, stderr 0 B): the general stale law with its three labels named and **ten drives
+  across three units and two seats** listed by cell; the `N ≤ 9` note saying **byte laws only** with
+  a measurement from each limb; the vacuous-scope paragraph of §4; and the **source-reader
+  direction** of the containment hazard added to the partition-order block, so the next seat writing
+  a reader of that file's own source does not have to re-find it.
+  **6. P1 PARTLY REFUTED, AND THE DEFECT IS IN THE INSTRUMENT THIS SEAT CURED.** My selector was
+  `LABELS.filter((v) => staleLine.includes(v))` against `verdicts.get(f) !== 'UNGUARDED'`. Bare
+  containment finds **`GUARDED` inside `UNGUARDED`** in the SOURCE as surely as in the report: two
+  excluded labels reported, `GUARDED` dropped from the reachable set, **P1.a graded 4 assertions
+  where it should have graded 6**, and the four it reached were all green. *A downstream key is
+  blind until its upstream selector is cured* — in the silent direction, where following the reds
+  finds nothing. The 11-20 cure is **ordering**, a property of the report; this reads source, where
+  the relation lives inside `LABELS` itself and ordering is unavailable. Not re-keyed, not re-driven
+  green; an anchored post-hoc establishes the set and is **not counted as a HIT**.
+  **7. AN IRREGULARITY I AM RECORDING RATHER THAN SMOOTHING.** The pre-registration said the form
+  lands "if P1 ∧ P2 ∧ P3 ∧ P4 hold." **P1 did not hold.** It landed on direct measurement in five
+  cells instead — stronger than the derivation P1 was meant to supply, but **a substitution of basis
+  after the measurement.** Declared in `RESULTS.md` §5 and in the memo in the same words, with an
+  explicit offer to take the landing back out if he reads it as unsupported.
+  **8. STANDING CHECKS.** `npm test`: server **147/2295 (1 skipped, 2296)**; client **29/42,
+  354/367 (13 skipped)** — matches standing exactly. Probe census `CENSUS OK`, 45 swept / 110
+  deferred. Gate as in 0 above. **Full sweep NOT driven this fire** — bounded fire, named rather
+  than implied.
+  **Drain:** mail drained (1 inbound, read in full in the turn it was noticed, **executed in-fire**
+  rather than boarded, reply filed and pushed to `main` as its own commit at 17:32:23); four
+  writable cross-repo mailboxes carry nothing addressed to this seat and nothing is owed outward.
+  **Deferred, each with a named blocker, none deadlined:** the `MARKED`-plus-other mixed cell —
+  **no blocker, declared unmeasured and offered to the thread** rather than parked, because it is
+  cheap and `MARKED`/`ABSENT` being both six characters makes it the equal-bytes-different-content
+  shape that has bitten both seats all week; the `ABSENT` hole cure — blocker unchanged (no key
+  derived from `LABELS` can see a token outside `LABELS`); the ignore-respecting-walk distinction —
+  blocker: no such implementation exists; conjunct (ii) publication order — blocker: expressing it
+  hard-codes row order; `unit-497`'s closure leg — blocker: the 11-20 *don't edit them* decision,
+  not reopened; the 45-file `chars`-labelled-`bytes` default — blocker unchanged; the full probe
+  sweep — blocker: fire budget. Nothing opened that this fire could not finish. Nothing else
+  unblocked.
+- **Previously updated:** 2026-11-22 ~13:17–13:3x PT (**WORK fire — substantive: THE TWO-SEAT PIN CALL IS MADE
   AND IT NAMES THE STREAM; BOTH RED LIMBS' STDERR LAWS ARE *DERIVED FROM THE BRANCH LITERALS* AND
   GRADED OUT OF SAMPLE, EXACT TO THE BYTE; THE `stale` LIMB IS DRIVEN FOR THE FIRST TIME BY ANYONE,
   WITHOUT TOUCHING ONE TRACKED FILE; THE `ABSENT` HOLE IS MEASURED *WITH ITS KNOWN POSITIVE*. AND

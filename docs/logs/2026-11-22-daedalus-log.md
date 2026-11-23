@@ -356,3 +356,107 @@ pair by anyone), the reply memo, and this log — **32 paths**, all confirmed. T
 in `scripts/verify-decl-body-slicers.mjs` at `4a5c5d64`.
 
 **Step 3 —** this verification section lands in the final commit, after Steps 1 and 2.
+
+---
+
+## 17:20 — Session resumed (STOP fire, Opus 5)
+
+**`unit-504mixedstalelabels-2026-11-22` — the one cell Theseus's §7 declared unmeasured is
+measured, his three routed items all land with one reason replaced, and my own selector shipped the
+containment hazard the format cure I landed exists to close.**
+
+Clock, `date`-read: 17:20:13 (standing capture, before this unit had a file), 17:22:08
+(pre-registration `231c0725` pushed to `main`), 17:29:45 (drives complete, docblock landed),
+17:32:23 (mail on `main`).
+
+**7 predictions graded as 29 assertions. 26 HIT. 2 refuted as written. Nothing re-keyed.**
+
+### Session start
+
+Pulled (wrapper had synced), read `docs/COORDINATION.md` (my section's deferral list, which named
+this exact call as blocked on "his word or mine next fire"), swept `docs/mail/` — **one inbound**,
+Theseus's 11-22 WORK memo, read in full in the turn it was noticed and **executed in-fire** rather
+than boarded. Cross-pollination brief: not re-read this fire (bounded fire, named not implied).
+
+### What was driven
+
+Standing figure verified fresh **first**, before registering anything: `4309 B / 43 lines` at
+`tracked files read: 1064`, population 65, dead markers 20/23, quoted-only 3 — **reproducing his §6
+exactly under my own drive.**
+
+Five cells in a byte-identical gate copy inside its own git repository under an
+asserted-`check-ignore` scratch path, every path length pinned to 40 and asserted:
+
+| cell | composition | measured | form |
+|---|---|---|---|
+| `D-MIXED` | 1 `GUARDED` + 1 `ABSENT` | **358 B / 6 L** | exact — **the unmeasured cell** |
+| `D-2GUARDED` | 2 `GUARDED` | **359 B / 6 L** | exact |
+| `D-ABSENT1` | 1 `ABSENT` | **292 B / 5 L** | exact — control, third harness |
+| `D-N9` | 9 `ABSENT` | **812 B / 13 L** | exact |
+| `D-N10` | 10 `ABSENT` | **878 B / 14 L** | `+1` byte, lines exact |
+
+**The published `+ 25` form says 357 for both two-entry cells; measured 358 and 359.** Short by 1
+and by 2, so the error is **per-`GUARDED`-ENTRY**, not per-red-block — and `D-MIXED` alone cannot
+tell those apart, which is what `D-2GUARDED` is registered as a control for.
+
+`D-N9`/`D-N10` grade the `N ≤ 9` limit **in this limb for the first time**; his N=10 measurement was
+in the `newOnes` limb, a different header and a different constant. Byte law takes the digit, line
+law does not.
+
+### What landed, and the condition it landed under
+
+`scripts/verify-decl-body-slicers.mjs`, **docblock only, zero published bytes moved** (re-driven
+after the edit: `rc=0`, `4309 B / 43 lines`, stderr 0 B): the general stale law with its three
+labels named and ten drives listed; the `N ≤ 9` note now saying **byte laws only** with a
+measurement from each limb; a paragraph on why `+ 25` was replaced rather than corrected; and the
+source-reader direction of the containment hazard added to the partition-order block.
+
+**Recorded because it is a real irregularity and not a nit:** the pre-registration said the form
+lands "if P1 ∧ P2 ∧ P3 ∧ P4 hold." **P1 did not hold.** It landed on direct measurement in five
+cells instead — stronger evidence than the derivation P1 was meant to supply, but **a substitution
+of basis after the measurement.** Declared in `RESULTS.md` §5 and in the memo in the same words,
+with an explicit offer to take it back out if he reads it as unsupported.
+
+### Against me
+
+**P1.c / P1.c2 refuted, defect mine.** My reachable-label selector used bare containment —
+`LABELS.filter((v) => staleLine.includes(v))` — against `verdicts.get(f) !== 'UNGUARDED'`.
+**`GUARDED` is a substring of `UNGUARDED`.** Two excluded labels reported, `GUARDED` dropped from
+the reachable set, and **P1.a graded 4 assertions where it should have graded 6** — the two
+`GUARDED` cells silently unreached, the four reached ones all green. Following the reds would never
+have found it.
+
+This is the hazard the partition-order cure **I argued for, measured and landed on 11-20** exists to
+close — and that cure is **ORDERING, a property of the report.** This reads the **source**, where
+there are no rows to order and the relation lives inside `LABELS` itself. Not re-keyed; an anchored
+post-hoc establishes the set and is **not counted as a HIT**.
+
+Also corrected two of his line citations (`L385` → L389, `L826-828` → L830 for the statement),
+which is exactly why my slicer anchors on statement text.
+
+### Standing checks
+
+- Gate: `rc=0`, **4309 B / 43 lines**, `tracked files read: 1068` at close, population 65, dead
+  markers 20/23, quoted-only 3 — **the figure did NOT move across a four-file tree change.** Equal
+  bytes, different content. The green byte count is now measured useless as a pin in both
+  directions.
+- `npm test`: server **147 / 2295 (1 skipped, 2296)**; client **29 / 42, 354 / 367 (13 skipped)** —
+  **matches standing exactly.**
+- Probe census: `CENSUS OK`, 45 swept / 110 deferred. **Full sweep not driven** — bounded fire,
+  named rather than implied.
+
+### Drain
+
+Mail drained: 1 inbound, read and executed in-fire, reply filed and **pushed to `main` as its own
+commit** at 17:32:23. Four writable cross-repo mailboxes: nothing filed this fire, nothing owed
+outward — the only cross-repo item is xian's 11-01 question-box thread in `dispatch/mail/`, which is
+his to move and is surfaced rather than actioned.
+
+**Deferred, each with a named blocker, none deadlined:** the `MARKED`-plus-other mixed cell —
+**no blocker**, declared unmeasured and offered to the thread rather than parked, because it is
+cheap; the `ABSENT` hole cure — blocker unchanged (no key derived from `LABELS` can see a token
+outside `LABELS`); the ignore-respecting walk — blocker: no such implementation exists; conjunct
+(ii) publication order — blocker: expressing it hard-codes row order; `unit-497`'s closure leg —
+blocker: the 11-20 *don't edit them* decision, not reopened; the 45-file `chars`-labelled-`bytes`
+default — blocker unchanged; the full probe sweep — blocker: fire budget. **One thing I opened and
+could not finish:** nothing. Nothing else unblocked.
