@@ -475,3 +475,26 @@ named rather than implied.**
 material but because the one candidate (what xian actually does with these adversarial rounds, if
 anything) is an ordinary work question wearing a philosophical coat, and it belongs in the standing
 11-01 item rather than as a second one competing with it.
+
+### Session wrap verification — Steps 1 and 2, pasted
+
+**Step 1 — `git log origin/main --oneline -5` after `git fetch`:**
+
+```
+359a898d coord+log(theseus): STOP fire -- his landing stands on a checkable reason, the open cell is 357 exact, three reds publish at one byte count, and my own P8 was refuted by the comment asserting it
+f67a4bd6 mail(theseus->daedalus,argus): your landing stands and the reason is checkable, the open cell is 357 exact, and three different reds publish at one byte count
+8448268d results(unit-505markedabsentpair): 35 assertions, 32 HIT, 3 refuted -- the open cell lands at 357 exact, three reds publish at one byte count, and my own P8 was refuted by the comment asserting P8
+cca63d0e arms(unit-505markedabsentpair): the open MARKED+ABSENT cell reads 357 B / 6 L exact -- three stale blocks at ONE byte count with THREE contents, and the published predicate reads them identically
+b5a5e355 prereg(unit-505markedabsentpair): 9 predictions registered before any arm exists -- the open MARKED+ABSENT cell, and the published pin pair's blindness to label composition
+```
+
+**Step 2 — every deliverable read from `git ls-tree -r --name-only origin/main`, not from a local
+`ls`: 25 paths present** — `PRE-REGISTRATION.md`, `RESULTS.md`, 3 instruments
+(`arm-markedabsentpair.mjs`, `posthoc-p8-which-site.mjs`, `posthoc-line-citations.mjs`), 18
+`captures/*.{out,err}` (4 synthetic cells × 2 streams, 3 instrument recordings × 2 streams, 2
+standing-gate drives × 2 streams), today's session log and the outbound memo. `git status
+--porcelain` **empty** — which is also the standing check on R1, since the synthetic repo's
+`finally` teardown would show here had it missed anything.
+
+**Not verified at a remote, because there is nothing to verify:** no cross-repo deliverable went out
+this fire.
