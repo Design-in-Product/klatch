@@ -1,0 +1,140 @@
+unit-513 post-hoc 1 — Key C R2: one level of local helper resolution
+  rev 2473f854 · driven 13:30:37 PST · arm rows 25, of which UNCLEAR 17
+
+§0  known positives — 4 from the arm + 3 helper shapes. Below 7 of 7, no class figures.
+  direct         want THROW     got THROW      OK   guarded null raises or exits
+  direct         want REPORTED  got REPORTED   OK   optional read: undefined reaches the output as a visible non-number
+  direct         want DEFAULT   got DEFAULT    OK   optional read defaulted to a number or empty string
+  direct         want SKIP      got SKIP       OK   guard body emits nothing: the figure is omitted with no trace
+  helper         want REPORTED  got REPORTED   OK   helper one → REPORTED (no-match arm yields null — a visible non-number); caller EMITTED
+  helper         want DEFAULT   got DEFAULT    OK   helper one → DEFAULT (no-match arm yields 0 — indistinguishable from a real figure of that value); caller EMITTED
+  helper-coerced want DEFAULT   got DEFAULT    OK   helper one → REPORTED (no-match arm yields null — a visible non-number); caller COERCED
+  P7-R2: 7 of 7 — the R2 key is graded
+
+§1  the rows, R2 — arm class → R2 class, with the deciding slices
+  docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs:94   LIVE
+      arm UNCLEAR → R2 REPORTED   (MOVED)   via helper:one@90
+      helper    docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs:90  const one = (rx) => { const m = out.match(rx); return m ? Number(m[1]) : null; };
+      why       helper → REPORTED (no-match arm yields null — a visible non-number); caller STORED
+      deciding  const one = (rx) => { const m = out.match(rx); return m ? Number(m[1]) : null; };   ||   trackedRead: one(/^\s*tracked files read: (\d+)/m),
+  docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:70   LIVE
+      arm UNCLEAR → R2 UNCLEAR   via direct (arm)
+      why       no result identifier and no declared inline form
+      deciding  const TRACKED = /\n {2}tracked files read: (\d+)/;
+  docs/research/unit-500trackedcomplement-2026-11-22/arm-tracked-complement.mjs:45   LIVE
+      arm UNCLEAR → R2 UNCLEAR   via direct (arm)
+      why       no result identifier and no declared inline form
+      deciding  read: /tracked files read: (\d+)/,
+  docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:20   FROZEN
+      arm SKIP → R2 SKIP   via direct (arm)
+      why       bare .test() in a condition: under a rename the branch does not run and nothing is emitted
+      deciding  const onlyRead = diffs.length === 1 && READ.test(preL.find((l, i) => l !== postL[i]) ?? '');
+  docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:34   FROZEN
+      arm UNCLEAR → R2 UNCLEAR   via direct (arm)
+      why       result identifier found but no declared handling form in the next 13 lines
+      deciding  const preRead = Number(pre.match(/tracked files read: (\d+)/)[1]);
+  docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:35   FROZEN
+      arm UNCLEAR → R2 UNCLEAR   via direct (arm)
+      why       result identifier found but no declared handling form in the next 13 lines
+      deciding  const postRead = Number(post.match(/tracked files read: (\d+)/)[1]);
+  docs/research/unit-501redbranchpin-2026-11-22/posthoc-which-lines-move.mjs:87   FROZEN
+      arm UNCLEAR → R2 UNCLEAR   via direct (arm)
+      why       no result identifier and no declared inline form
+      deciding  ['tracked files read', /tracked files read:\s*(\d+)/],
+  docs/research/unit-502streampin-2026-11-22/posthoc-landing.mjs:39   LIVE
+      arm UNCLEAR → R2 UNCLEAR_R2   (MOVED)   via helper:pick@37
+      helper    docs/research/unit-502streampin-2026-11-22/posthoc-landing.mjs:37  const pick = (re) => (out.match(re) || [, 'absent'])[1];
+      why       helper → UNCLEAR (no result identifier); caller STORED
+      deciding  const pick = (re) => (out.match(re) || [, 'absent'])[1];   ||   read: pick(/tracked files read: (\d+)/),
+  docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs:30   LIVE
+      arm SKIP → R2 SKIP   via direct (arm)
+      why       guard body emits nothing: the figure is omitted with no trace
+      deciding  if (m) named[m[1].trim()] = Number(m[2]);
+  docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs:33   FROZEN
+      arm SKIP → R2 SKIP   via direct (arm)
+      why       bare .test() in a condition: under a rename the branch does not run and nothing is emitted
+      deciding  changed.length === 2 && changed.every(([l]) => TRACKED.test(l)),
+  docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:27   FROZEN
+      arm UNCLEAR → R2 UNCLEAR   via direct (arm)
+      why       no result identifier and no declared inline form
+      deciding  'tracked files read': /tracked files read:\s*(\d+)/,
+  docs/research/unit-509extractionrefusal-2026-11-23/posthoc-wsfile.mjs:128   LIVE
+      arm THROW → R2 THROW   via direct (arm)
+      why       inline unguarded [1] on a possibly-null match: TypeError
+      deciding  trackedRead: Number((outText.match(/tracked files read:\s*(\d+)/) || [])[1] ?? -1),
+  docs/research/unit-511readcountname-2026-11-24/posthoc-anchor-census.mjs:7   LIVE
+      arm UNCLEAR → R2 UNCLEAR   via direct (arm)
+      why       no result identifier and no declared inline form
+      deciding  *     /^(  tracked files read: )(\d+)$/
+  docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:187   LIVE
+      arm SKIP → R2 SKIP   via direct (arm)
+      why       bare .test() in a condition: under a rename the branch does not run and nothing is emitted
+      deciding  const readLine = (t.split('\n').find((l) => /tracked files read/.test(l)) ?? '').replace(/\r?$/, '');
+  docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:198   LIVE
+      arm UNCLEAR → R2 UNCLEAR   via direct (arm)
+      why       no result identifier and no declared inline form
+      deciding  console.log(`  landed    : ${JSON.stringify('  tracked files read: 1083')} → match ${ANCHOR_RE.test('  tracked files read: 1083')}`);
+  docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:198   LIVE
+      arm UNCLEAR → R2 UNCLEAR   via direct (arm)
+      why       no result identifier and no declared inline form
+      deciding  console.log(`  appended  : ${JSON.stringify(APPENDED)} → match ${ANCHOR_RE.test(APPENDED)}`);
+  docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:198   LIVE
+      arm UNCLEAR → R2 UNCLEAR   via direct (arm)
+      why       no result identifier and no declared inline form
+      deciding  anchorRefusesAppended: !ANCHOR_RE.test(APPENDED),
+  docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject.mjs:153   LIVE
+      arm SKIP → R2 SKIP   via direct (arm)
+      why       bare .test() in a condition: under a rename the branch does not run and nothing is emitted
+      deciding  const readLine = (t.split('\n').find((l) => /tracked files read/.test(l)) ?? '').trimEnd();
+  docs/research/unit-512matchersubject-2026-11-24/posthoc-application-mode.mjs:5   LIVE
+      arm UNCLEAR → R2 UNCLEAR   via direct (arm)
+      why       no result identifier and no declared inline form
+      deciding  //     unit-500…/posthoc-landing-condition.mjs:20   /^(\s*tracked files read: )(\d+)$/
+  docs/research/unit-512matchersubject-2026-11-24/posthoc-application-mode.mjs:6   LIVE
+      arm UNCLEAR → R2 UNCLEAR   via direct (arm)
+      why       no result identifier and no declared inline form
+      deciding  //     unit-503…/probe-baseline.mjs:30              /^\s*(tracked files read|population…):\s*(\d+)/
+  docs/research/unit-512matchersubject-2026-11-24/posthoc-application-mode.mjs:55   LIVE
+      arm UNCLEAR → R2 UNCLEAR   via direct (arm)
+      why       no result identifier and no declared inline form
+      deciding  /^(\s*tracked files read: )(\d+)$/m,
+  docs/research/unit-512matchersubject-2026-11-24/posthoc-rename-kp.mjs:119   LIVE
+      arm UNCLEAR → R2 UNCLEAR   via direct (arm)
+      why       no result identifier and no declared inline form
+      deciding  /^(\s*tracked files read: )(\d+)$/m,
+  docs/research/unit-512matchersubject-2026-11-24/posthoc-rename-kp.mjs:147   LIVE
+      arm UNCLEAR → R2 UNCLEAR   via direct (arm)
+      why       no result identifier and no declared inline form
+      deciding  console.log(`  its own extracted figure(s): ${JSON.stringify((before.stdout.match(/tracked files read[^\n]*/g) ?? []).slice(0, 4))}`);
+  docs/research/unit-512matchersubject-2026-11-24/posthoc-resolve-unresolved.mjs:69   DRIVES_OTHER
+      arm SKIP → R2 SKIP   via direct (arm)
+      why       bare .test() in a condition: under a rename the branch does not run and nothing is emitted
+      deciding  readLine = (body.split('\n').find((l) => /tracked files read/.test(l)) ?? '').trimEnd() || null;
+  docs/research/verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-member.mjs:22   LIVE
+      arm SKIP → R2 SKIP   via direct (arm)
+      why       guard body emits nothing: the figure is omitted with no trace
+      deciding  return { read: m && m[1], pop: p && p[1], guarded: g && g[1], unguarded: u && u[1] };
+
+§2  figures — R2
+  rows                              25
+  arm classes                       THROW 1 · REPORTED 0 · DEFAULT 0 · SKIP 7 · UNCLEAR 17 · UNCLEAR_R2 0
+  R2 classes                        THROW 1 · REPORTED 1 · DEFAULT 0 · SKIP 7 · UNCLEAR 15 · UNCLEAR_R2 1
+  rows resolved by helper reading    2
+  rows whose class MOVED             2
+  SILENT (DEFAULT + SKIP)            7   of which LIVE: 4
+      docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:20  SKIP  FROZEN
+      docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs:30  SKIP  LIVE
+      docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs:33  SKIP  FROZEN
+      docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:187  SKIP  LIVE
+      docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject.mjs:153  SKIP  LIVE
+      docs/research/unit-512matchersubject-2026-11-24/posthoc-resolve-unresolved.mjs:69  SKIP  DRIVES_OTHER
+      docs/research/verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-member.mjs:22  SKIP  LIVE
+  P3 (>= 2 SILENT) under R2:        HIT — 7
+  P4 (REPORTED largest) under R2:   REFUTED — largest is UNCLEAR at 15
+  P5 (end-anchored site THROW/REPORTED) under R2: REFUTED — SKIP
+
+§3  the sentence this unit set out to test
+  Theseus, unit-512 §4: "A `null` is at least detectable; this is not."
+  Of 25 applications of this label's patterns, a null is NOT detectable at 7
+  (4 of them LIVE, i.e. reachable by a rename of the live gate's label).
+  So the alternation survivor is not the only silent site — it is the only one found by eye.

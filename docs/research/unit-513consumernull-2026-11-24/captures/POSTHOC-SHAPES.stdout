@@ -1,0 +1,153 @@
+unit-513 post-hoc 2 — R3: shape first (PROSE / HELPER / DIRECT / INLINE / ARRDEF / TABLE), then class
+  rev 2473f854 · driven 13:30:40 PST · arm UNCLEAR 17 · R2 UNCLEAR 15
+
+§0  known positives — 7 carried forward + 4 new shapes. Below 11 of 11, no class figures.
+  direct         want THROW     got THROW      shape DIRECT        OK 
+  direct         want REPORTED  got REPORTED   shape DIRECT        OK 
+  direct         want DEFAULT   got DEFAULT    shape DIRECT        OK 
+  direct         want SKIP      got SKIP       shape DIRECT        OK 
+  helper         want REPORTED  got REPORTED   shape HELPER        OK 
+  helper         want DEFAULT   got DEFAULT    shape HELPER        OK 
+  helper-coerced want DEFAULT   got DEFAULT    shape HELPER        OK 
+  prose-block    want PROSE     got PROSE      shape PROSE         OK 
+  prose-line     want PROSE     got PROSE      shape PROSE         OK 
+  inline         want THROW     got THROW      shape DIRECT        OK 
+  arrdef         want REPORTED  got REPORTED   shape HELPER        OK 
+  P7-R3: 11 of 11 — the R3 key is graded
+
+§1  the rows — arm → R2 → R3, with shape and deciding slice
+  docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs:94  (applied :94)  LIVE
+      arm UNCLEAR → R2 REPORTED → R3 REPORTED   shape HELPER
+      why       helper one@90 → REPORTED (no-match arm yields null — a visible non-number); caller STORED
+      deciding  const one = (rx) => { const m = out.match(rx); return m ? Number(m[1]) : null; };   ||   trackedRead: one(/^\s*tracked files read: (\d+)/m),
+  docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:70  (applied :70)  LIVE
+      arm UNCLEAR → R2 UNCLEAR → R3 THROW   shape DIRECT
+      why       unguarded preOut[1]: a null match is a TypeError
+      deciding  console.log(`  out-of-population markers: ${preOut[1]}/${preOut[2]} → ${postOut[1]}/${postOut[2]}  (NOT registered)`);
+  docs/research/unit-500trackedcomplement-2026-11-22/arm-tracked-complement.mjs:45  (applied :45)  LIVE
+      arm UNCLEAR → R2 UNCLEAR → R3 REPORTED   shape DIRECT
+      why       no-match arm yields null — a visible non-number
+      deciding  for (const [k, re] of Object.entries(FIG)) { const m = s.match(re); out[k] = m ? Number(m[1]) : null; }
+  docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:20  (applied :33)  FROZEN
+      arm SKIP → R2 SKIP → R3 UNCLEAR_R3   shape UNKNOWN
+      why       no declared handling form
+      deciding  const onlyRead = diffs.length === 1 && READ.test(preL.find((l, i) => l !== postL[i]) ?? '');
+  docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:34  (applied :34)  FROZEN
+      arm UNCLEAR → R2 UNCLEAR → R3 THROW   shape DIRECT
+      why       inline unguarded [1] on a possibly-null match: TypeError
+      deciding  const preRead = Number(pre.match(/tracked files read: (\d+)/)[1]);
+  docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:35  (applied :35)  FROZEN
+      arm UNCLEAR → R2 UNCLEAR → R3 THROW   shape DIRECT
+      why       inline unguarded [1] on a possibly-null match: TypeError
+      deciding  const postRead = Number(post.match(/tracked files read: (\d+)/)[1]);
+  docs/research/unit-501redbranchpin-2026-11-22/posthoc-which-lines-move.mjs:87  (applied :87)  FROZEN
+      arm UNCLEAR → R2 UNCLEAR → R3 SKIP   shape DIRECT
+      why       guard body emits nothing: the figure is omitted with no trace
+      deciding  say(`  ${name.padEnd(20)} stdout: ${inOut ? inOut[1] : 'ABSENT'}   stderr: ${inErr ? inErr[1] : 'ABSENT'}`);
+  docs/research/unit-502streampin-2026-11-22/posthoc-landing.mjs:39  (applied :39)  LIVE
+      arm UNCLEAR → R2 UNCLEAR_R2 → R3 REPORTED   shape HELPER
+      why       helper pick@37 → REPORTED (array default yields 'absent' — a visible non-number); caller STORED
+      deciding  const pick = (re) => (out.match(re) || [, 'absent'])[1];   ||   read: pick(/tracked files read: (\d+)/),
+  docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs:30  (applied :30)  LIVE
+      arm SKIP → R2 SKIP → R3 SKIP   shape DIRECT
+      why       guard body emits nothing: the figure is omitted with no trace
+      deciding  if (m) named[m[1].trim()] = Number(m[2]);
+  docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs:33  (applied :76)  FROZEN
+      arm SKIP → R2 SKIP → R3 SKIP   shape DIRECT
+      why       bare .test() in a condition: the branch does not run and nothing is emitted
+      deciding  changed.length === 2 && changed.every(([l]) => TRACKED.test(l)),
+  docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:27  (applied :27)  FROZEN
+      arm UNCLEAR → R2 UNCLEAR → R3 REPORTED   shape TABLE
+      why       table NAMED@26 consumed at :44 → REPORTED (no-match arm yields null — a visible non-number)
+      deciding  figs[k] = m ? Number(m[1]) : null;
+  docs/research/unit-509extractionrefusal-2026-11-23/posthoc-wsfile.mjs:128  (applied :128)  LIVE
+      arm THROW → R2 THROW → R3 THROW   shape DIRECT
+      why       inline unguarded [1] on a possibly-null match: TypeError
+      deciding  trackedRead: Number((outText.match(/tracked files read:\s*(\d+)/) || [])[1] ?? -1),
+  docs/research/unit-511readcountname-2026-11-24/posthoc-anchor-census.mjs:7  (applied :7)  LIVE
+      arm UNCLEAR → R2 UNCLEAR → R3 PROSE   shape PROSE
+      why       inside a /* … */ block comment
+      deciding  *     /^(  tracked files read: )(\d+)$/
+  docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:187  (applied :187)  LIVE
+      arm SKIP → R2 SKIP → R3 SKIP   shape DIRECT
+      why       bare .test() in a condition: the branch does not run and nothing is emitted
+      deciding  const readLine = (t.split('\n').find((l) => /tracked files read/.test(l)) ?? '').replace(/\r?$/, '');
+  docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:198  (applied :201)  LIVE
+      arm UNCLEAR → R2 UNCLEAR → R3 SKIP   shape DIRECT
+      why       bare .test() in a condition: the branch does not run and nothing is emitted
+      deciding  console.log(`  landed    : ${JSON.stringify('  tracked files read: 1083')} → match ${ANCHOR_RE.test('  tracked files read: 1083')}`);
+  docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:198  (applied :202)  LIVE
+      arm UNCLEAR → R2 UNCLEAR → R3 SKIP   shape DIRECT
+      why       bare .test() in a condition: the branch does not run and nothing is emitted
+      deciding  console.log(`  appended  : ${JSON.stringify(APPENDED)} → match ${ANCHOR_RE.test(APPENDED)}`);
+  docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:198  (applied :209)  LIVE
+      arm UNCLEAR → R2 UNCLEAR → R3 SKIP   shape DIRECT
+      why       bare .test() in a condition: the branch does not run and nothing is emitted
+      deciding  anchorRefusesAppended: !ANCHOR_RE.test(APPENDED),
+  docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject.mjs:153  (applied :153)  LIVE
+      arm SKIP → R2 SKIP → R3 SKIP   shape DIRECT
+      why       bare .test() in a condition: the branch does not run and nothing is emitted
+      deciding  const readLine = (t.split('\n').find((l) => /tracked files read/.test(l)) ?? '').trimEnd();
+  docs/research/unit-512matchersubject-2026-11-24/posthoc-application-mode.mjs:5  (applied :5)  LIVE
+      arm UNCLEAR → R2 UNCLEAR → R3 PROSE   shape PROSE
+      why       after a // on its own line
+      deciding  //     unit-500…/posthoc-landing-condition.mjs:20   /^(\s*tracked files read: )(\d+)$/
+  docs/research/unit-512matchersubject-2026-11-24/posthoc-application-mode.mjs:6  (applied :6)  LIVE
+      arm UNCLEAR → R2 UNCLEAR → R3 PROSE   shape PROSE
+      why       after a // on its own line
+      deciding  //     unit-503…/probe-baseline.mjs:30              /^\s*(tracked files read|population…):\s*(\d+)/
+  docs/research/unit-512matchersubject-2026-11-24/posthoc-application-mode.mjs:55  (applied :55)  LIVE
+      arm UNCLEAR → R2 UNCLEAR → R3 SKIP   shape DIRECT
+      why       guard body emits nothing: the figure is omitted with no trace
+      deciding  if (m) return m;
+  docs/research/unit-512matchersubject-2026-11-24/posthoc-rename-kp.mjs:119  (applied :119)  LIVE
+      arm UNCLEAR → R2 UNCLEAR → R3 UNCLEAR_R3   shape UNKNOWN
+      why       no declared handling form
+      deciding  /^(\s*tracked files read: )(\d+)$/m,
+  docs/research/unit-512matchersubject-2026-11-24/posthoc-rename-kp.mjs:147  (applied :147)  LIVE
+      arm UNCLEAR → R2 UNCLEAR → R3 UNCLEAR_R3   shape TABLE
+      why       table appendedBroke@124 consumed at :135 → UNCLEAR (no result identifier and no declared inline form)
+      deciding  for (const b of appendedBroke) console.log(`      ${b.provenance.padEnd(17)} ${b.site}  ${b.pattern}`);
+  docs/research/unit-512matchersubject-2026-11-24/posthoc-resolve-unresolved.mjs:69  (applied :69)  DRIVES_OTHER
+      arm SKIP → R2 SKIP → R3 SKIP   shape DIRECT
+      why       bare .test() in a condition: the branch does not run and nothing is emitted
+      deciding  readLine = (body.split('\n').find((l) => /tracked files read/.test(l)) ?? '').trimEnd() || null;
+  docs/research/verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-member.mjs:22  (applied :22)  LIVE
+      arm SKIP → R2 SKIP → R3 SKIP   shape DIRECT
+      why       guard body emits nothing: the figure is omitted with no trace
+      deciding  return { read: m && m[1], pop: p && p[1], guarded: g && g[1], unguarded: u && u[1] };
+
+§2  figures — R3
+  rows                        25
+  shapes                      HELPER 2 · DIRECT 16 · UNKNOWN 2 · TABLE 2 · PROSE 3
+  R3 classes                  THROW 4 · REPORTED 4 · DEFAULT 0 · SKIP 11 · PROSE 3 · UNCLEAR_R3 3
+  arm UNCLEAR 17 → R2 15 → R3 3
+
+§3  P1 corrected — the census counted comment text as a matcher site
+  census (P1, registered as >= 16):          25 rows / 23 literals
+  of those, PROSE (inside a comment):        3
+  APPLIED matcher rows (the honest figure):  22
+  P1 stays HIT on the literal count it registered, and the applied count is the one to carry.
+
+§4  the sentence this unit set out to test, on the R3 rows
+  Theseus, unit-512 §4: "A `null` is at least detectable; this is not."
+  applied rows            22
+  detectable (THROW+REPORTED)  8
+  NOT detectable (DEFAULT+SKIP) 11   of which LIVE 8
+  still unclassified            3
+      SILENT  docs/research/unit-501redbranchpin-2026-11-22/posthoc-which-lines-move.mjs:87  SKIP  FROZEN  [DIRECT]
+      SILENT  docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs:30  SKIP  LIVE  [DIRECT]
+      SILENT  docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs:33  SKIP  FROZEN  [DIRECT]
+      SILENT  docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:187  SKIP  LIVE  [DIRECT]
+      SILENT  docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:198  SKIP  LIVE  [DIRECT]
+      SILENT  docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:198  SKIP  LIVE  [DIRECT]
+      SILENT  docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:198  SKIP  LIVE  [DIRECT]
+      SILENT  docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject.mjs:153  SKIP  LIVE  [DIRECT]
+      SILENT  docs/research/unit-512matchersubject-2026-11-24/posthoc-application-mode.mjs:55  SKIP  LIVE  [DIRECT]
+      SILENT  docs/research/unit-512matchersubject-2026-11-24/posthoc-resolve-unresolved.mjs:69  SKIP  DRIVES_OTHER  [DIRECT]
+      SILENT  docs/research/verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-member.mjs:22  SKIP  LIVE  [DIRECT]
+
+§5  re-grading the predictions on the graded key
+  P3 (>= 2 SILENT):            HIT — 11
+  P4 (REPORTED largest class): REFUTED — largest is SKIP at 11
+  P5 (end-anchored site is THROW/REPORTED): REFUTED — UNCLEAR_R3 [UNKNOWN]
