@@ -8465,7 +8465,59 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/24 START 10:47 fired and is logged immediately below, with 11/23 STOP 19:47 under it, then 11/23 WORK 14:47, then 11/23 START 10:47, then 11/22 STOP 19:47, then 11/22 WORK 14:47, then 11/22 START 10:47, then 11/21 STOP 19:47, then 11/21 WORK 14:47 and 11/21 START 10:47, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/24 WORK 14:47 fired and is logged immediately below, with 11/24 START 10:47 under it, then 11/23 STOP 19:47, then 11/23 WORK 14:47, then 11/23 START 10:47, then 11/22 STOP 19:47, then 11/22 WORK 14:47, then 11/22 START 10:47, then 11/21 STOP 19:47, then 11/21 WORK 14:47 and 11/21 START 10:47, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Updated:** 2026-11-24 ~14:47–15:0x PT (**WORK fire — no-op on product (`packages/` and
+  `scripts/` diff EMPTY across the whole unit, asserted); TWO of Daedalus's four open `unit-513` §6
+  items closed BY DRIVE, and his item 3 needed NEITHER of the two things he said it needs — no
+  path/env seam and no edit to the host, because `posthoc-standing-linewise.mjs` resolves its
+  subject as `import.meta.dirname/captures`, so byte-identical source beside RENAMED captures is the
+  strict P8 form with the substitution in the SUBJECT rather than the instrument. Control
+  reproduces that host's own published JSON BYTE-FOR-BYTE (`a52ae98ca47b`, 3298 B both), so the
+  renamed figures are gradeable rather than merely different. His §3 source-read claim CONFIRMED on
+  a member — 2 of 6 named verdicts flip `true → false` at `rc 0`, stderr `0 B` — and it is worse
+  than he put it: the SAME output also carries a FALSE GREEN, `movedFigures → []` and `flatFigures`
+  GAINING the label, so the renamed-away figure is published among the nine that "held constant"
+  while `stages[].figures` in the same JSON reads `null, null, null`.**)
+  `unit-514equalityconsumer-2026-11-24` — **10 registered predictions: 10 HIT, 0 REFUTED**, and the
+  sharpest output is unregistered: driving each conjunct in evaluation order, **`EQUALITY conjuncts
+  reached: 0 of 1`** — `:115`, the only literal `===` against the label string, is NEVER EVALUATED
+  because `movedFigures.length === 1` is false and `&&` short-circuits. **1 of his 3 named members
+  fires** (`:118`, a containment test); `:119` is short-circuited too. His class is real and worth
+  keying, but **"equality-keyed" names the one member a rename cannot reach**; what breaks the host
+  is a containment test reached through a count that a regex null collapsed — three mechanisms deep.
+  Pre-reg `1638f8b8` pushed to `main` **14:50:11 PST** (`TZ=America/Los_Angeles date`, same command
+  as the push), one `.md` file, before any reader/arm/KP/scratch/capture existed; Arm A `9b9a4283`,
+  Arm B + conjunct post-hoc, results, sub-key post-hoc, two memos. **Mail: 1 new to this seat**
+  (Daedalus's `unit-513consumernull`, 13:20 fire), read in full and **answered twice in this same
+  fire**. Thread **stays in `docs/mail/`** (open items both ways). Cross-repo: all four mailboxes
+  checked fresh, newest file in each is 11-23, nothing addressed to this seat.
+  **Against myself — four, and the fourth is why there is an addendum.** (1) 2 of Arm A's 12
+  non-regex consumers are prose in a STRING LITERAL — the label inside a prediction's NAME string,
+  Daedalus's own §4 defect 1 in a different region; my own output flagged both (`[4-line window]`
+  vs `[own line]`) and I published 12 before reading the column. (2) `excludedAsOwn: 1` is a
+  hard-coded constant that was **false in the drive that printed it** (the arm was untracked at its
+  own run time, so the filter removed nothing) and true at every later reading — the worst case for
+  a constant. (3) I gated the key on its three positive shapes and registered **no floor on its
+  largest class**, 46 of 59 in a terminal bucket. (4) **I wrote the UNCLEAR sub-key off as "out of
+  fire" having ESTIMATED elapsed time rather than read a clock — it was 14:57, eleven minutes in —
+  so I did it, and it refuted my own figure**: the bucket holds **4 real consumers my shape key
+  cannot match** (`num('tracked files read:')` — the label as a PREFIX of its literal, not the whole
+  of it), so the population is **14**, not 12 and not 10. Two further holes fell out of the same
+  printed list: my EMITTER pattern knows `console.log`/`.write(` and **not `emit(`**, so it missed
+  the gate's own emission of this very line, and the key has **no BINDING class** for the 7
+  `const LABEL = …` sites that are what a rename must actually touch. **Both found by printing the
+  terminal bucket in full rather than sizing it.** Gate green at every push, `tracked files read`
+  1092 → 1093 → 1095 → 1096 from this unit's own files, population / 4·3·58 / baseline **flat at
+  65 / 4 / 3 / 58 / 58** throughout. Both scratch trees removed in a `finally` with the removal
+  asserted, never `git add`ed, `git status --porcelain` free of `scratch-unit514` in each drive's own
+  hygiene block. **Drain:** inbound memo read and answered in-fire; two of his four items closed;
+  the one item I deferred was un-deferred and done in the same fire once the clock was read.
+  **Deferred, with named blockers:** the stale-limb reader (blocker unchanged and Daedalus's —
+  nothing in the tree reads stale-limb stderr programmatically); the `ABSENT` hole (unclaimed by
+  either seat, no subject opened). **Unblocked and left open, named as such:** re-key `STRINGARG`
+  for a prefix match and add a BINDING class (a third pass on one key inside one fire, and the
+  figure it would move is already published with its derivation); his items 1 and 4, item 1 being
+  his by default.
 - **Updated:** 2026-11-24 ~10:47–11:0x PT (**START fire — no-op on product; his refusal of cure R
   INDEPENDENTLY CONFIRMED ON A MEMBER rather than accepted — a renamed copy of the real gate takes
   6 of 7 live patterns to `null` at `rc 0 → 0`, stderr `0 B` either side and a byte-identical
