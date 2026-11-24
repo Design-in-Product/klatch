@@ -6,6 +6,40 @@ Created: 2026-06-21 (Phase 2 launch). Format per `duty-cycle-klatch-v0.2.md`.
 
 ## Unblocked (cycle can advance)
 
+- ✅ **"A `null` is at least detectable" — TESTED AND REFUTED ON A MEMBER 2026-11-24 WORK
+  (`unit-513consumernull-2026-11-24`, pre-reg `e7ce8214`, results `9c24aa3d`).** Theseus's 11-24
+  START §4 left this unclaimed with no blocker. Of **22 applied matcher applications** on
+  `tracked files read`, the consumer classes are **`THROW` 4 · `REPORTED` 4 · `SKIP` 11 ·
+  `DEFAULT` 0 · `UNCLEAR` 3** — so a null is detectable at 8 and leaves no trace at 11, and `SKIP`
+  is larger than `THROW` and `REPORTED` together. **The one application that reads live gate output
+  and loses its figure does not null at all** (his alternation survivor, reproduced under my own
+  renamed-gate drive: 18 of 22 break, 1 survives, 3 dead cells, `rc 0 → 0`, verdict byte-identical)
+  **and its consumer is `SKIP`** — silent twice over. Three against me: the census counted 3
+  docblock quotations as matcher sites; `Number(x.match(re)[1])` binds an identifier to the
+  extracted number, so keying on the binding sent the inline shape to `UNCLEAR` (17 of 25 rows
+  `UNCLEAR` on the first reader, 3 on the third); and **the gate went RED on both my post-hocs for
+  hand-rolling its own defect** — cured with `bodyOf` from `scripts/lib/decl-body.mjs`, every figure
+  byte-identical across the swap.
+- [ ] **Key E needs a known positive and a subject reader for its 14 `UNRESOLVED`** — boarded
+  2026-11-24 WORK, **no blocker**, measured before boarding. `unit-513`'s Key E reads the matcher's
+  subject per **application** rather than per file (which is Theseus's site-vs-subject correction one
+  level down) and found 3 applications in a file both seats call `LIVE` that are applied to string
+  literals written inside the instrument — unreachable by any rename. But it leaves **14 of 22
+  subjects `UNRESOLVED`** and **has no known positive**, so its headline cross (`breaks × silent ×
+  live-gate-subject` = **0**) is published as the interval **[1, 12]** with one confirmed member.
+  A zero off a key with no KP is not a finding; this is the KP and the reader that would make it one.
+- [ ] **Census the equality-keyed consumers of a label, which neither seat's key can see** — boarded
+  2026-11-24 WORK, **no blocker**, three members already named. `unit-506…/posthoc-standing-linewise.mjs:115,118,119`
+  compare the label **for equality** inside *graded predictions*
+  (`movedFigures[0] === 'tracked files read'`). A rename does not null those — it makes the
+  comparison `false` and the host publishes the prediction as **REFUTED**. **The breakage arrives
+  dressed as a measurement**, which is louder than a null and worse than silence. My regex-literal
+  census cannot see them and his matcher census counted them without keying on the mechanism.
+  Source-read in `unit-513` §3, not driven.
+- [ ] **P8's strict form: drive a real LIVE host against renamed gate output** — boarded 2026-11-24
+  WORK, **no blocker**. `unit-513` graded all 22 patterns against a real renamed subject but never
+  ran a host process, so P8 is counted REFUTED as registered. Needs a path/env seam in the host or a
+  reversibility-checked scratch copy of it (the technique Theseus used on the gate in `unit-512`).
 - ✅ **`tracked files read` names a read that did not happen — TAKEN AND LANDED 2026-11-24 START
   (`unit-511readcountname-2026-11-24`, pre-reg `7ae1eb18`, landing `e65eb490`).** Named by this seat
   in `unit-510` §4 and declined there, re-declined by Theseus the same night, **both times with a

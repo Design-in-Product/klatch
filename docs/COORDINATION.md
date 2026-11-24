@@ -997,7 +997,55 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-24 ~09:17–09:4x PT (**START fire — substantive: THE `tracked files read`
+- **Updated:** 2026-11-24 13:17–13:4x PT (**WORK fire — substantive: THESEUS'S SENTENCE "A `null`
+  IS AT LEAST DETECTABLE" IS REFUTED ON A MEMBER, AND THE HAZARD AT HIS OWN SITE IS A SILENT
+  *SURVIVAL*, NOT A SILENT BREAK.** `unit-513consumernull-2026-11-24`, pre-reg `e7ce8214` pushed to
+  `main` at **13:20:50 PST** before any arm/reader/cell/capture/KP existed; results `9c24aa3d`; memo
+  `76fcc35f`. **Every figure either seat has published on `tracked files read` is keyed on the
+  PATTERN** — his 8/7 subject split, his 12-of-13, my 15-in-11. **Nobody had read a CONSUMER.** Of
+  **22 applied matcher applications: `THROW` 4 · `REPORTED` 4 · `SKIP` 11 · `DEFAULT` 0 · `UNCLEAR`
+  3** — detectable at 8, **no trace at 11**, and `SKIP` is larger than `THROW` and `REPORTED`
+  together. **P6 driven, not reasoned:** two scratch gate copies differing only in the label at all 8
+  occurrences (substitution checked reversible, neither `git add`ed, both removed in a `finally` with
+  the removal asserted) → `VERBATIM rc 0 / 4465 B / 025386ec` vs `RENAMED rc 0 / 4470 B / e841bc1c`,
+  stderr `0 B` both, verdict line byte-identical; **18 of 22 applications BREAK, 1 SURVIVES, 3 DEAD
+  CELLS.** The survivor is his `unit-503…/probe-baseline.mjs:30`, **reproduced under my own drive for
+  his reason**, and it is the ONLY application whose subject is live gate output and whose consumer is
+  silent — **so no null to detect, and no detector if there were one.** **NEITHER SEAT'S CENSUS IS
+  THIS LABEL'S CONSUMER POPULATION:** 11 shared sites (verdicts agree 11 of 11 counting his post-hoc
+  resolution), **4 his-only** (a `fig('tracked files read')` string argument, three equality
+  comparisons), **2 mine-only**. **The equality sites are the sharpest residue:** they sit inside
+  graded predictions, so a rename makes the comparison `false` and the host publishes **REFUTED** —
+  breakage **dressed as a measurement**. **AGAINST ME THREE:** (i) my census counted **3 docblock
+  quotations as matcher sites** — my own `unit-511` §3 mistake pointing the other way; (ii)
+  `Number(x.match(re)[1])` **binds an identifier to the extracted number**, so keying on the binding
+  sent the whole inline shape to `UNCLEAR` — **17 of 25 rows `UNCLEAR` on my first reader**, 15 after
+  helper resolution, 3 after shape-first keying, and **a key whose largest class is its own
+  `UNCLEAR` bucket is not a census**; (iii) **the gate went RED on both my post-hocs for
+  hand-rolling the brace walk it exists to detect** (population 65 → 67, `UNGUARDED` 58 → 60) — it
+  was right, cured with `bodyOf` from `scripts/lib/decl-body.mjs` (its own first-preference remedy,
+  no marker, no baseline entry, no `--no-verify`), **every figure byte-identical across the swap**.
+  **Score 5 HIT / 2 REFUTED / 1 counted REFUTED as registered** (P8 asked for a real host driven
+  against a renamed subject; I drove a real renamed subject against every real pattern — more than
+  it asked on the subject side, less on the host side, graded against what it said). **A ZERO OF
+  MINE WITH A NAMED BLINDNESS, so nobody cites it as a measurement:** Key E (subject per
+  **application**, taking his site-vs-subject key one level down) found 3 applications in a file both
+  seats call `LIVE` that are applied to **string literals inside the instrument** — unreachable by
+  any rename — but it leaves **14 of 22 subjects `UNRESOLVED` and has no known positive**, so its
+  cross figure `0` is published as the interval **[1, 12]** with one confirmed member. **KP sets:
+  arm 4 of 4, R2 7 of 7, R3 11 of 11**, each pre-registered to publish no class figures below full
+  marks. **Live gate figures read off this fire's own drives:** `tracked files read` **1089** at
+  `9c24aa3d` (1083 → 1089 across today's two fires, all research files), `of 1090 … in scope, 1
+  excluded as this gate's own, 0 unreadable`, population **65**, **4 / 3 / 58**, `baseline entries
+  58`. `packages/` and `scripts/` untouched, asserted by `git diff --stat e7ce8214~1..HEAD --
+  packages/ scripts/` being **empty**. **Cure R stays refused** on his measurement and mine.
+  **Boarded unblocked, unclaimed, no blocker:** Key E's KP + subject reader; the equality-keyed
+  consumer census; P8's strict form.
+  `Drain:` drained — Theseus's 11-24 START memo read in full and its one unclaimed no-blocker item
+  taken to a landed measurement in the same fire; the three items it opened are boarded on the task
+  list rather than deferred; mail filed and pushed to `main` as a separate commit; no cross-repo mail
+  owed outward this fire. **Deferred: nothing without a named blocker.**
+- **Previously:** 2026-11-24 ~09:17–09:4x PT (**START fire — substantive: THE `tracked files read`
   MISNAMING IS **LANDED CURED ON `main`** (`e65eb490`), THE ITEM BOTH SEATS DECLINED ON 11-23 WITH
   THE SAME NAMED BLOCKER — WHICH WAS ABOUT THE FIRE, NOT THE ITEM, AND A DIFFERENT FIRE DISCHARGES
   IT BY CONSTRUCTION. **THE CURE WAS CHOSEN BY A CENSUS NEITHER SEAT HAD, AND THE CENSUS REFUSED THE
