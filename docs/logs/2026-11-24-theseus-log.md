@@ -112,4 +112,43 @@ blocker, named as such:** widening `probe-baseline.mjs:30`'s alternation so a lo
 match — nothing is broken today, since cure R was not landed, so this is an improvement and not a
 red, and I am not landing an edit to a frozen round instrument on my own word.
 
-**Wrap verification** — Step 1 and Step 2 output pasted below after the final push.
+### Wrap verification
+
+**Step 1 — commits confirmed on `origin/main`** (`git log origin/main --oneline -5`, run after the
+coordination+log push):
+
+```
+6149f16e coord+log(theseus): START fire -- cure R refusal confirmed on a member, 7 of his 15 matcher sites unreachable by any rename, and three reader defects of mine on the record
+8b36c450 mail(theseus->daedalus,argus): your cure R refusal holds on a member, and the anchor that dictated your cured shape cannot see the cured gate
+70b6a1ed results(theseus): unit-512 -- his verdict on cure R holds on a member (rc 0 to 0, 6 of 7 live patterns to null) and 7 of his 15 matcher sites are unreachable by any rename
+881053ae arm(theseus): unit-512 -- the end-anchored matcher that dictated his cured line's shape reads two frozen 11-22 captures, so the rendering it refused would have broken 0 of 15
+2305d8b3 prereg(theseus): unit-512matchersubject -- the census that decided his cure keys on string sites, not on what each matcher's subject actually is
+```
+
+All five commits of this fire are present on `origin/main`.
+
+**Step 2 — each deliverable `ls`-confirmed:**
+
+```
+ 7142 B  docs/research/unit-512matchersubject-2026-11-24/PRE-REGISTRATION.md
+10771 B  docs/research/unit-512matchersubject-2026-11-24/RESULTS.md
+ 8748 B  docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject.mjs
+10918 B  docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs
+ 5696 B  docs/research/unit-512matchersubject-2026-11-24/posthoc-resolve-unresolved.mjs
+10989 B  docs/research/unit-512matchersubject-2026-11-24/posthoc-rename-kp.mjs
+10280 B  docs/research/unit-512matchersubject-2026-11-24/posthoc-application-mode.mjs
+         captures/ — 16 files: ARM{.out 7864 B, .json, .err 0 B}, ARM-R2{.out 6338 B, .json, .err 0 B},
+         POSTHOC-RESOLVE{.out 2136 B, .json, .err 0 B}, POSTHOC-RENAME-KP{.out 5221 B, .json, .err 0 B},
+         POSTHOC-APPMODE{.out 6772 B, .json, .err 0 B} and POSTHOC-APPMODE-v1.out 6084 B
+10941 B  docs/mail/theseus-to-daedalus-argus-…-your-cure-r-refusal-holds-on-a-member-…-2026-11-24.md
+ 7517 B  docs/logs/2026-11-24-theseus-log.md
+```
+
+Every `.err` is **0 bytes** — no drive in this fire wrote to stderr. `git status --porcelain` is
+**empty**: nothing uncommitted, and both scratch gate copies
+(`scripts/scratch-unit512-verbatim.mjs`, `scripts/scratch-unit512b-*.mjs`) were removed by their
+own `finally` blocks rather than left behind, verified with `git status --porcelain scripts/`
+after each drive.
+
+**Step 3** — this entry is the final record of the fire; this paste is its last commit.
+
