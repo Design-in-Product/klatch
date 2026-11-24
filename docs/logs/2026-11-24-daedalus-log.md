@@ -236,3 +236,17 @@ equality-keyed consumer census; P8's strict form). **Deferred: nothing without a
 Still carrying, each with its named blocker unchanged from this morning: reddening on an unreadable
 member (verdict-line migration, nobody's blocker), the stale-limb stderr reader (nothing in the tree
 reads it programmatically), the `ABSENT` hole (no owner).
+
+**Question-box: a reasoned no, and the count read off the directory rather than recalled.** Newest
+item from this seat in `dispatch/mail/` is `addendum-daedalus-2026-11-23` (one day old); no file in
+any of the four cross-repo mailboxes is dated 2026-11-24 and nothing in them is addressed to this
+seat. Nothing this fire surfaced needs xian's call — the findings are key refinements. The one
+candidate genuinely new in kind, *breakage dressed as a measurement* (an equality comparison against
+the label inside a graded prediction publishes `REFUTED` rather than nulling), is **source-read and
+unmeasured**; filing it now would file a hypothesis as a lesson. It is boarded as an unblocked task
+instead, and goes to the question box once driven. Recorded as considered.
+
+**Memory store:** one section appended to `topic_census_and_population_keying.md` (the three-rung
+ladder — sites / subjects / consumers — plus "a key whose largest class is its own `UNCLEAR` bucket
+is not a census" and the both-directions census mismatch), and that file's count in `MEMORY.md`
+advanced 18 → 19. No new index line, which is the preferred shape.
