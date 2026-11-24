@@ -1,0 +1,253 @@
+unit-513consumernull — consumer null-handling census on `tracked files read`
+  rev e7ce8214 · driven 13:24:25 PST · pre-registration e7ce8214 (pushed 13:20:50 PST)
+
+§0  known positives for Key C — P7, and the census is void below 4 of 4
+  want THROW     got THROW     OK    deciding: if (!m) throw new Error('no figure');  …  if (!m) throw new Error('no figure');
+  want REPORTED  got REPORTED  OK    deciding: say(`  figure: ${m?.[1]}`);
+  want DEFAULT   got DEFAULT   OK    deciding: const n = Number(m?.[1] ?? 0);
+  want SKIP      got SKIP      OK    deciding: if (m) {
+  P7: 4 of 4 — HIT, the key is graded
+
+§1  census — every regex literal in the tracked code tree containing the label
+  total literals found:                 23
+  in this unit's own files (excluded):  0   [0 file(s)]
+  in the gate itself (excluded, SELF):  0
+  CORPUS:                               23   in 17 file(s)
+  unit-511 post-hoc 2 found 13 in 12 files at 7ae1eb18 this morning.
+  P1 (corpus >= 16): HIT — 23
+
+§2  the rows, each with the slice it was classified from
+  docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs:94
+      pattern   /^\s*tracked files read: (\d+)/m
+      applied   no-application-found  at :94   trackedRead: one(/^\s*tracked files read: (\d+)/m),
+      KEY A     UNCLEAR   subject —   [no subject expression found on the use line]
+      KEY B     LIVE   [2 call(s): spawnSync; names the gate: true]
+      KEY C     UNCLEAR   no result identifier and no declared inline form
+                deciding: trackedRead: one(/^\s*tracked files read: (\d+)/m),
+      KEY D     single label
+  docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:70
+      pattern   /\n {2}tracked files read: (\d+)/
+      applied   named:TRACKED:unused  at :70   const TRACKED = /\n {2}tracked files read: (\d+)/;
+      KEY A     UNCLEAR   subject —   [no subject expression found on the use line]
+      KEY B     LIVE   [2 call(s): spawnSync; names the gate: true]
+      KEY C     UNCLEAR   no result identifier and no declared inline form
+                deciding: const TRACKED = /\n {2}tracked files read: (\d+)/;
+      KEY D     single label
+  docs/research/unit-500trackedcomplement-2026-11-22/arm-tracked-complement.mjs:45
+      pattern   /tracked files read: (\d+)/
+      applied   no-application-found  at :45   read: /tracked files read: (\d+)/,
+      KEY A     UNCLEAR   subject —   [no subject expression found on the use line]
+      KEY B     LIVE   [2 call(s): spawnSync; names the gate: true]
+      KEY C     UNCLEAR   no result identifier and no declared inline form
+                deciding: read: /tracked files read: (\d+)/,
+      KEY D     single label
+  docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:20
+      pattern   /^(\s*tracked files read: )(\d+)$/
+      applied   named:READ  at :33   const onlyRead = diffs.length === 1 && READ.test(preL.find((l, i) => l !== postL[i]) ?? '');
+      KEY A     LINE   subject preL.find((l   [docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:18  const preL = pre.split('\n');]
+      KEY B     FROZEN   [zero spawnSync/execFileSync/execSync/spawn calls in the file]
+      KEY C     SKIP   bare .test() in a condition: under a rename the branch does not run and nothing is emitted
+                deciding: const onlyRead = diffs.length === 1 && READ.test(preL.find((l, i) => l !== postL[i]) ?? '');
+      KEY D     single label
+  docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:34
+      pattern   /tracked files read: (\d+)/
+      applied   literal-inline  at :34   const preRead = Number(pre.match(/tracked files read: (\d+)/)[1]);
+      KEY A     STRING   subject pre   [docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:15  const pre = readFileSync(join(process.cwd(), CAP, 'gate-pre-commit.out'), 'utf8');]
+      KEY B     FROZEN   [zero spawnSync/execFileSync/execSync/spawn calls in the file]
+      KEY C     UNCLEAR   result identifier found but no declared handling form in the next 13 lines
+                deciding: const preRead = Number(pre.match(/tracked files read: (\d+)/)[1]);
+      KEY D     single label
+  docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:35
+      pattern   /tracked files read: (\d+)/
+      applied   literal-inline  at :35   const postRead = Number(post.match(/tracked files read: (\d+)/)[1]);
+      KEY A     STRING   subject post   [docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:16  const post = readFileSync(join(process.cwd(), CAP, 'gate-post-commit.out'), 'utf8');]
+      KEY B     FROZEN   [zero spawnSync/execFileSync/execSync/spawn calls in the file]
+      KEY C     UNCLEAR   result identifier found but no declared handling form in the next 13 lines
+                deciding: const postRead = Number(post.match(/tracked files read: (\d+)/)[1]);
+      KEY D     single label
+  docs/research/unit-501redbranchpin-2026-11-22/posthoc-which-lines-move.mjs:87
+      pattern   /tracked files read:\s*(\d+)/
+      applied   no-application-found  at :87   ['tracked files read', /tracked files read:\s*(\d+)/],
+      KEY A     UNCLEAR   subject —   [no subject expression found on the use line]
+      KEY B     FROZEN   [zero spawnSync/execFileSync/execSync/spawn calls in the file]
+      KEY C     UNCLEAR   no result identifier and no declared inline form
+                deciding: ['tracked files read', /tracked files read:\s*(\d+)/],
+      KEY D     single label
+  docs/research/unit-502streampin-2026-11-22/posthoc-landing.mjs:39
+      pattern   /tracked files read: (\d+)/
+      applied   no-application-found  at :39   read: pick(/tracked files read: (\d+)/),
+      KEY A     UNCLEAR   subject —   [no subject expression found on the use line]
+      KEY B     LIVE   [2 call(s): spawnSync, execFileSync; names the gate: true]
+      KEY C     UNCLEAR   no result identifier and no declared inline form
+                deciding: read: pick(/tracked files read: (\d+)/),
+      KEY D     single label
+  docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs:30
+      pattern   /^\s*(tracked files read|population[^:]*|baseline entries[^:]*):\s*(\d+)/
+      applied   literal-inline  at :30   const m = /^\s*(tracked files read|population[^:]*|baseline entries[^:]*):\s*(\d+)/.exec(line);
+      KEY A     LINE   subject line   [docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs:29  for (const line of r.stdout.toString('utf8').split('\n')) {]
+      KEY B     LIVE   [1 call(s): spawnSync; names the gate: true]
+      KEY C     SKIP   guard body emits nothing: the figure is omitted with no trace
+                deciding: if (m) named[m[1].trim()] = Number(m[2]);
+      KEY D     alternation, 3 branches, 2 survive a rename of this label
+  docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs:33
+      pattern   /tracked files read: (\d+)/
+      applied   named:TRACKED  at :76   changed.length === 2 && changed.every(([l]) => TRACKED.test(l)),
+      KEY A     LINE   subject l   [docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs:41  for (const l of s.split('\n')) m.set(l, (m.get(l) || 0) + 1);]
+      KEY B     FROZEN   [zero spawnSync/execFileSync/execSync/spawn calls in the file]
+      KEY C     SKIP   bare .test() in a condition: under a rename the branch does not run and nothing is emitted
+                deciding: changed.length === 2 && changed.every(([l]) => TRACKED.test(l)),
+      KEY D     single label
+  docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:27
+      pattern   /tracked files read:\s*(\d+)/
+      applied   no-application-found  at :27   'tracked files read': /tracked files read:\s*(\d+)/,
+      KEY A     UNCLEAR   subject —   [no subject expression found on the use line]
+      KEY B     FROZEN   [zero spawnSync/execFileSync/execSync/spawn calls in the file]
+      KEY C     UNCLEAR   no result identifier and no declared inline form
+                deciding: 'tracked files read': /tracked files read:\s*(\d+)/,
+      KEY D     single label
+  docs/research/unit-509extractionrefusal-2026-11-23/posthoc-wsfile.mjs:128
+      pattern   /tracked files read:\s*(\d+)/
+      applied   literal-inline  at :128   trackedRead: Number((outText.match(/tracked files read:\s*(\d+)/) || [])[1] ?? -1),
+      KEY A     STRING   subject outText   [docs/research/unit-509extractionrefusal-2026-11-23/posthoc-wsfile.mjs:118  const outText = r.stdout.toString('utf8');]
+      KEY B     LIVE   [4 call(s): spawnSync, execFileSync; names the gate: true]
+      KEY C     THROW   inline unguarded [1] on a possibly-null match: TypeError
+                deciding: trackedRead: Number((outText.match(/tracked files read:\s*(\d+)/) || [])[1] ?? -1),
+      KEY D     single label
+  docs/research/unit-511readcountname-2026-11-24/posthoc-anchor-census.mjs:7
+      pattern   /^(  tracked files read: )(\d+)$/
+      applied   no-application-found  at :7   *     /^(  tracked files read: )(\d+)$/
+      KEY A     UNCLEAR   subject —   [no subject expression found on the use line]
+      KEY B     LIVE   [1 call(s): execFileSync; names the gate: true]
+      KEY C     UNCLEAR   no result identifier and no declared inline form
+                deciding: *     /^(  tracked files read: )(\d+)$/
+      KEY D     single label
+  docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:187
+      pattern   /tracked files read/
+      applied   literal-inline  at :187   const readLine = (t.split('\n').find((l) => /tracked files read/.test(l)) ?? '').replace(/\r?$/, '');
+      KEY A     UNCLEAR   subject l   [no origin found for `l`]
+      KEY B     LIVE   [3 call(s): spawnSync, execFileSync; names the gate: true]
+      KEY C     SKIP   bare .test() in a condition: under a rename the branch does not run and nothing is emitted
+                deciding: const readLine = (t.split('\n').find((l) => /tracked files read/.test(l)) ?? '').replace(/\r?$/, '');
+      KEY D     single label
+  docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:198
+      pattern   /^(\s*tracked files read: )(\d+)$/
+      applied   named:ANCHOR_RE  at :201   console.log(`  landed    : ${JSON.stringify('  tracked files read: 1083')} → match ${ANCHOR_RE.test('  tracked files read: 1083')}`);
+      KEY A     UNCLEAR   subject '  tracked files read: 1083'   [subject expression has no leading identifier]
+      KEY B     LIVE   [3 call(s): spawnSync, execFileSync; names the gate: true]
+      KEY C     UNCLEAR   no result identifier and no declared inline form
+                deciding: console.log(`  landed    : ${JSON.stringify('  tracked files read: 1083')} → match ${ANCHOR_RE.test('  tracked files read: 1083')}`);
+      KEY D     single label
+  docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:198
+      pattern   /^(\s*tracked files read: )(\d+)$/
+      applied   named:ANCHOR_RE  at :202   console.log(`  appended  : ${JSON.stringify(APPENDED)} → match ${ANCHOR_RE.test(APPENDED)}`);
+      KEY A     STRING   subject APPENDED   [docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:197  const APPENDED = '  tracked files read: 1083 (1084 in scope, 1 excluded, 0 unreadable)';]
+      KEY B     LIVE   [3 call(s): spawnSync, execFileSync; names the gate: true]
+      KEY C     UNCLEAR   no result identifier and no declared inline form
+                deciding: console.log(`  appended  : ${JSON.stringify(APPENDED)} → match ${ANCHOR_RE.test(APPENDED)}`);
+      KEY D     single label
+  docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:198
+      pattern   /^(\s*tracked files read: )(\d+)$/
+      applied   named:ANCHOR_RE  at :209   anchorRefusesAppended: !ANCHOR_RE.test(APPENDED),
+      KEY A     STRING   subject APPENDED   [docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:197  const APPENDED = '  tracked files read: 1083 (1084 in scope, 1 excluded, 0 unreadable)';]
+      KEY B     LIVE   [3 call(s): spawnSync, execFileSync; names the gate: true]
+      KEY C     UNCLEAR   no result identifier and no declared inline form
+                deciding: anchorRefusesAppended: !ANCHOR_RE.test(APPENDED),
+      KEY D     single label
+  docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject.mjs:153
+      pattern   /tracked files read/
+      applied   literal-inline  at :153   const readLine = (t.split('\n').find((l) => /tracked files read/.test(l)) ?? '').trimEnd();
+      KEY A     UNCLEAR   subject l   [no origin found for `l`]
+      KEY B     LIVE   [2 call(s): execFileSync, spawn; names the gate: true]
+      KEY C     SKIP   bare .test() in a condition: under a rename the branch does not run and nothing is emitted
+                deciding: const readLine = (t.split('\n').find((l) => /tracked files read/.test(l)) ?? '').trimEnd();
+      KEY D     single label
+  docs/research/unit-512matchersubject-2026-11-24/posthoc-application-mode.mjs:5
+      pattern   /^(\s*tracked files read: )(\d+)$/
+      applied   no-application-found  at :5   //     unit-500…/posthoc-landing-condition.mjs:20   /^(\s*tracked files read: )(\d+)$/
+      KEY A     UNCLEAR   subject —   [no subject expression found on the use line]
+      KEY B     LIVE   [1 call(s): spawnSync; names the gate: true]
+      KEY C     UNCLEAR   no result identifier and no declared inline form
+                deciding: //     unit-500…/posthoc-landing-condition.mjs:20   /^(\s*tracked files read: )(\d+)$/
+      KEY D     single label
+  docs/research/unit-512matchersubject-2026-11-24/posthoc-application-mode.mjs:6
+      pattern   /^\s*(tracked files read|population…):\s*(\d+)/
+      applied   no-application-found  at :6   //     unit-503…/probe-baseline.mjs:30              /^\s*(tracked files read|population…):\s*(\d+)/
+      KEY A     UNCLEAR   subject —   [no subject expression found on the use line]
+      KEY B     LIVE   [1 call(s): spawnSync; names the gate: true]
+      KEY C     UNCLEAR   no result identifier and no declared inline form
+                deciding: //     unit-503…/probe-baseline.mjs:30              /^\s*(tracked files read|population…):\s*(\d+)/
+      KEY D     alternation, 2 branches, 1 survive a rename of this label
+  docs/research/unit-512matchersubject-2026-11-24/posthoc-application-mode.mjs:55
+      pattern   /^(\s*tracked files read: )(\d+)$/m
+      applied   no-application-found  at :55   /^(\s*tracked files read: )(\d+)$/m,
+      KEY A     UNCLEAR   subject —   [no subject expression found on the use line]
+      KEY B     LIVE   [1 call(s): spawnSync; names the gate: true]
+      KEY C     UNCLEAR   no result identifier and no declared inline form
+                deciding: /^(\s*tracked files read: )(\d+)$/m,
+      KEY D     single label
+  docs/research/unit-512matchersubject-2026-11-24/posthoc-rename-kp.mjs:119
+      pattern   /^(\s*tracked files read: )(\d+)$/m
+      applied   no-application-found  at :119   /^(\s*tracked files read: )(\d+)$/m,
+      KEY A     UNCLEAR   subject —   [no subject expression found on the use line]
+      KEY B     LIVE   [3 call(s): spawnSync; names the gate: true]
+      KEY C     UNCLEAR   no result identifier and no declared inline form
+                deciding: /^(\s*tracked files read: )(\d+)$/m,
+      KEY D     single label
+  docs/research/unit-512matchersubject-2026-11-24/posthoc-rename-kp.mjs:147
+      pattern   /tracked files read[^\n]*/g
+      applied   literal-inline  at :147   console.log(`  its own extracted figure(s): ${JSON.stringify((before.stdout.match(/tracked files read[^\n]*/g) ?? []).slice(0, 4))}`);
+      KEY A     STRING   subject before.stdout   [docs/research/unit-512matchersubject-2026-11-24/posthoc-rename-kp.mjs:142  const before = spawnSync(process.execPath, [FROZEN_INSTRUMENT], { cwd: ROOT, encoding: 'utf8', maxBuffer: 1 << 26 });]
+      KEY B     LIVE   [3 call(s): spawnSync; names the gate: true]
+      KEY C     UNCLEAR   no result identifier and no declared inline form
+                deciding: console.log(`  its own extracted figure(s): ${JSON.stringify((before.stdout.match(/tracked files read[^\n]*/g) ?? []).slice(0, 4))}`);
+      KEY D     single label
+  docs/research/unit-512matchersubject-2026-11-24/posthoc-resolve-unresolved.mjs:69
+      pattern   /tracked files read/
+      applied   literal-inline  at :69   readLine = (body.split('\n').find((l) => /tracked files read/.test(l)) ?? '').trimEnd() || null;
+      KEY A     UNCLEAR   subject l   [no origin found for `l`]
+      KEY B     DRIVES_OTHER   [1 call(s): execFileSync; names the gate: false]
+      KEY C     SKIP   bare .test() in a condition: under a rename the branch does not run and nothing is emitted
+                deciding: readLine = (body.split('\n').find((l) => /tracked files read/.test(l)) ?? '').trimEnd() || null;
+      KEY D     single label
+  docs/research/verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-member.mjs:22
+      pattern   /tracked files read: (\d+)/
+      applied   literal-inline  at :22   const m = s.match(/tracked files read: (\d+)/);
+      KEY A     STRING   subject s   [docs/research/verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-member.mjs:21  const s = buf.toString();]
+      KEY B     LIVE   [2 call(s): spawnSync; names the gate: true]
+      KEY C     SKIP   guard body emits nothing: the figure is omitted with no trace
+                deciding: return { read: m && m[1], pop: p && p[1], guarded: g && g[1], unguarded: u && u[1] };
+      KEY D     single label
+
+§3  the figures
+  rows (site × application):            25
+  KEY B   LIVE 18 · FROZEN 6 · DRIVES_OTHER 1
+  KEY A   LINE 3 · STRING 7 · UNCLEAR 15
+  KEY C   THROW 1 · REPORTED 0 · DEFAULT 0 · SKIP 7 · UNCLEAR 17
+  SILENT (DEFAULT + SKIP) — a null here is NOT detectable: 7
+      docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:33  SKIP  FROZEN
+      docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs:30  SKIP  LIVE
+      docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs:76  SKIP  FROZEN
+      docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:187  SKIP  LIVE
+      docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject.mjs:153  SKIP  LIVE
+      docs/research/unit-512matchersubject-2026-11-24/posthoc-resolve-unresolved.mjs:69  SKIP  DRIVES_OTHER
+      docs/research/verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-member.mjs:22  SKIP  LIVE
+  P3 (>= 2 SILENT): HIT — 7
+  P4 (REPORTED is the largest class): REFUTED — largest is UNCLEAR at 17
+  P5 (the end-anchored site that dictated the cure's shape is THROW or REPORTED): REFUTED — SKIP
+
+§4  P2 — Theseus's FROZEN set, re-derived under my own key
+  he named 3 files frozen: unit-500…/posthoc-landing-condition.mjs, unit-504…/posthoc-standing-unmoved.mjs, unit-506…/posthoc-standing-linewise.mjs
+      FROZEN here: docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs
+      FROZEN here: docs/research/unit-501redbranchpin-2026-11-22/posthoc-which-lines-move.mjs
+      FROZEN here: docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs
+      FROZEN here: docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs
+  agreement: P2 REFUTED
+      frozen under my key and not in his three: docs/research/unit-501redbranchpin-2026-11-22/posthoc-which-lines-move.mjs
+
+§5  KEY D — alternation rows (the mechanism his §4 found by eye)
+  docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs:30  LIVE  consumer SKIP
+      branches: tracked files read   |   population[^:]*   |   baseline entries[^:]*
+      survive a rename of this label: population[^:]*, baseline entries[^:]*
+  docs/research/unit-512matchersubject-2026-11-24/posthoc-application-mode.mjs:6  LIVE  consumer UNCLEAR
+      branches: tracked files read   |   population…
+      survive a rename of this label: population…
