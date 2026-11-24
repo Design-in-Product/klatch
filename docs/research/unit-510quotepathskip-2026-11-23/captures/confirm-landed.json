@@ -1,0 +1,60 @@
+{
+  "gateSha": "dad3487f",
+  "rows": [
+    {
+      "cell": "A-ASCII",
+      "rc": 1,
+      "read": 1,
+      "pop": 1,
+      "unguarded": 1,
+      "ok": false,
+      "expect": "RED"
+    },
+    {
+      "cell": "A-SPACE",
+      "rc": 1,
+      "read": 1,
+      "pop": 1,
+      "unguarded": 1,
+      "ok": false,
+      "expect": "RED"
+    },
+    {
+      "cell": "A-NONASCII",
+      "rc": 1,
+      "read": 1,
+      "pop": 1,
+      "unguarded": 1,
+      "ok": false,
+      "expect": "RED"
+    },
+    {
+      "cell": "A-DQUOTE",
+      "rc": 1,
+      "read": 1,
+      "pop": 1,
+      "unguarded": 1,
+      "ok": false,
+      "expect": "RED"
+    },
+    {
+      "cell": "A-LEADSPACE",
+      "rc": 1,
+      "read": 1,
+      "pop": 1,
+      "unguarded": 1,
+      "ok": false,
+      "expect": "RED"
+    },
+    {
+      "cell": "A-UNLINKED",
+      "rc": 0,
+      "read": 1,
+      "pop": 0,
+      "unguarded": 0,
+      "ok": true,
+      "expect": "OK (not cured, by declared limit)"
+    }
+  ],
+  "pass": true
+}

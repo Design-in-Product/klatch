@@ -1,0 +1,8 @@
+
+RED — 1 new hand-rolled brace-balance body slicer(s):
+      src/a b.mjs
+
+  A brace scan that starts at the first `{` is wrong on four live mechanisms in this tree: a TS type literal or an object default in the parameter list, a JSDoc `@type` brace, and a brace-bearing return type. Clear this by, in preference order:
+    1. import { bodyOf, declBodies } from '<…>/scripts/lib/decl-body.mjs';
+    2. put `brace-slicer-deliberate: <reason>` at the site, if the file's job is to reproduce the defect (a comparison arm, a mutant, a fixture);
+    3. append the path to scripts/decl-body-slicers.baseline, which states that a known unguarded slicer is being added on purpose.

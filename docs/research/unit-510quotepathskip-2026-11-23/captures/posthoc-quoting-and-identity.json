@@ -1,0 +1,138 @@
+{
+  "leg1": [
+    {
+      "cell": "A-ASCII",
+      "rel": "src/ab.mjs",
+      "plain (the gate as it stands)": {
+        "got": "src/ab.mjs",
+        "quoted": false
+      },
+      "core.quotePath=false (cand. B)": {
+        "got": "src/ab.mjs",
+        "quoted": false
+      },
+      "-z (cand. A)": {
+        "got": "src/ab.mjs",
+        "quoted": false
+      }
+    },
+    {
+      "cell": "A-SPACE",
+      "rel": "src/a b.mjs",
+      "plain (the gate as it stands)": {
+        "got": "src/a b.mjs",
+        "quoted": false
+      },
+      "core.quotePath=false (cand. B)": {
+        "got": "src/a b.mjs",
+        "quoted": false
+      },
+      "-z (cand. A)": {
+        "got": "src/a b.mjs",
+        "quoted": false
+      }
+    },
+    {
+      "cell": "A-NONASCII",
+      "rel": "src/aä.mjs",
+      "plain (the gate as it stands)": {
+        "got": "\"src/a\\303\\244.mjs\"",
+        "quoted": true
+      },
+      "core.quotePath=false (cand. B)": {
+        "got": "src/aä.mjs",
+        "quoted": false
+      },
+      "-z (cand. A)": {
+        "got": "src/aä.mjs",
+        "quoted": false
+      }
+    },
+    {
+      "cell": "A-DQUOTE",
+      "rel": "src/a\"b.mjs",
+      "plain (the gate as it stands)": {
+        "got": "\"src/a\\\"b.mjs\"",
+        "quoted": true
+      },
+      "core.quotePath=false (cand. B)": {
+        "got": "\"src/a\\\"b.mjs\"",
+        "quoted": true
+      },
+      "-z (cand. A)": {
+        "got": "src/a\"b.mjs",
+        "quoted": false
+      }
+    },
+    {
+      "cell": "A-LEADSPACE",
+      "rel": " src/a.mjs",
+      "plain (the gate as it stands)": {
+        "got": " src/a.mjs",
+        "quoted": false
+      },
+      "core.quotePath=false (cand. B)": {
+        "got": " src/a.mjs",
+        "quoted": false
+      },
+      "-z (cand. A)": {
+        "got": " src/a.mjs",
+        "quoted": false
+      }
+    }
+  ],
+  "leg2": [
+    {
+      "cell": "A-ASCII",
+      "reader": "G1",
+      "same": true,
+      "baseSha": "af32efdd",
+      "gotSha": "af32efdd",
+      "bytes": 800
+    },
+    {
+      "cell": "A-ASCII",
+      "reader": "G2",
+      "same": true,
+      "baseSha": "af32efdd",
+      "gotSha": "af32efdd",
+      "bytes": 800
+    },
+    {
+      "cell": "A-ASCII",
+      "reader": "G3",
+      "same": true,
+      "baseSha": "af32efdd",
+      "gotSha": "af32efdd",
+      "bytes": 800
+    },
+    {
+      "cell": "A-SPACE",
+      "reader": "G1",
+      "same": true,
+      "baseSha": "af32efdd",
+      "gotSha": "af32efdd",
+      "bytes": 800
+    },
+    {
+      "cell": "A-SPACE",
+      "reader": "G2",
+      "same": true,
+      "baseSha": "af32efdd",
+      "gotSha": "af32efdd",
+      "bytes": 800
+    },
+    {
+      "cell": "A-SPACE",
+      "reader": "G3",
+      "same": true,
+      "baseSha": "af32efdd",
+      "gotSha": "af32efdd",
+      "bytes": 800
+    }
+  ],
+  "aimed": {
+    "aimedDiffer": 6,
+    "aimedTotal": 6
+  }
+}

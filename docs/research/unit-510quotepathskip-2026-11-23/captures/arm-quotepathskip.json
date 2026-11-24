@@ -1,0 +1,268 @@
+{
+  "rows": [
+    {
+      "reader": "G0",
+      "cell": "A-ASCII",
+      "posthoc": false,
+      "rc": 1,
+      "read": 1,
+      "pop": 1,
+      "unguarded": 1,
+      "ok": false,
+      "quotedByGit": "verbatim"
+    },
+    {
+      "reader": "G0",
+      "cell": "A-SPACE",
+      "posthoc": false,
+      "rc": 1,
+      "read": 1,
+      "pop": 1,
+      "unguarded": 1,
+      "ok": false,
+      "quotedByGit": "verbatim"
+    },
+    {
+      "reader": "G0",
+      "cell": "A-NONASCII",
+      "posthoc": false,
+      "rc": 0,
+      "read": 0,
+      "pop": 0,
+      "unguarded": 0,
+      "ok": true,
+      "quotedByGit": "verbatim"
+    },
+    {
+      "reader": "G0",
+      "cell": "A-DQUOTE",
+      "posthoc": false,
+      "rc": 0,
+      "read": 0,
+      "pop": 0,
+      "unguarded": 0,
+      "ok": true,
+      "quotedByGit": "verbatim"
+    },
+    {
+      "reader": "G0",
+      "cell": "A-UNLINKED",
+      "posthoc": false,
+      "rc": 0,
+      "read": 1,
+      "pop": 0,
+      "unguarded": 0,
+      "ok": true,
+      "quotedByGit": "verbatim"
+    },
+    {
+      "reader": "G0",
+      "cell": "A-LEADSPACE",
+      "posthoc": true,
+      "rc": 0,
+      "read": 1,
+      "pop": 0,
+      "unguarded": 0,
+      "ok": true,
+      "quotedByGit": "verbatim"
+    },
+    {
+      "reader": "G1",
+      "cell": "A-ASCII",
+      "posthoc": false,
+      "rc": 1,
+      "read": 1,
+      "pop": 1,
+      "unguarded": 1,
+      "ok": false,
+      "quotedByGit": "verbatim"
+    },
+    {
+      "reader": "G1",
+      "cell": "A-SPACE",
+      "posthoc": false,
+      "rc": 1,
+      "read": 1,
+      "pop": 1,
+      "unguarded": 1,
+      "ok": false,
+      "quotedByGit": "verbatim"
+    },
+    {
+      "reader": "G1",
+      "cell": "A-NONASCII",
+      "posthoc": false,
+      "rc": 1,
+      "read": 1,
+      "pop": 1,
+      "unguarded": 1,
+      "ok": false,
+      "quotedByGit": "verbatim"
+    },
+    {
+      "reader": "G1",
+      "cell": "A-DQUOTE",
+      "posthoc": false,
+      "rc": 0,
+      "read": 0,
+      "pop": 0,
+      "unguarded": 0,
+      "ok": true,
+      "quotedByGit": "verbatim"
+    },
+    {
+      "reader": "G1",
+      "cell": "A-UNLINKED",
+      "posthoc": false,
+      "rc": 0,
+      "read": 1,
+      "pop": 0,
+      "unguarded": 0,
+      "ok": true,
+      "quotedByGit": "verbatim"
+    },
+    {
+      "reader": "G1",
+      "cell": "A-LEADSPACE",
+      "posthoc": true,
+      "rc": 0,
+      "read": 1,
+      "pop": 0,
+      "unguarded": 0,
+      "ok": true,
+      "quotedByGit": "verbatim"
+    },
+    {
+      "reader": "G2",
+      "cell": "A-ASCII",
+      "posthoc": false,
+      "rc": 1,
+      "read": 1,
+      "pop": 1,
+      "unguarded": 1,
+      "ok": false,
+      "quotedByGit": "verbatim"
+    },
+    {
+      "reader": "G2",
+      "cell": "A-SPACE",
+      "posthoc": false,
+      "rc": 1,
+      "read": 1,
+      "pop": 1,
+      "unguarded": 1,
+      "ok": false,
+      "quotedByGit": "verbatim"
+    },
+    {
+      "reader": "G2",
+      "cell": "A-NONASCII",
+      "posthoc": false,
+      "rc": 1,
+      "read": 1,
+      "pop": 1,
+      "unguarded": 1,
+      "ok": false,
+      "quotedByGit": "verbatim"
+    },
+    {
+      "reader": "G2",
+      "cell": "A-DQUOTE",
+      "posthoc": false,
+      "rc": 1,
+      "read": 1,
+      "pop": 1,
+      "unguarded": 1,
+      "ok": false,
+      "quotedByGit": "verbatim"
+    },
+    {
+      "reader": "G2",
+      "cell": "A-UNLINKED",
+      "posthoc": false,
+      "rc": 0,
+      "read": 1,
+      "pop": 0,
+      "unguarded": 0,
+      "ok": true,
+      "quotedByGit": "verbatim"
+    },
+    {
+      "reader": "G2",
+      "cell": "A-LEADSPACE",
+      "posthoc": true,
+      "rc": 0,
+      "read": 1,
+      "pop": 0,
+      "unguarded": 0,
+      "ok": true,
+      "quotedByGit": "verbatim"
+    },
+    {
+      "reader": "G3",
+      "cell": "A-ASCII",
+      "posthoc": false,
+      "rc": 1,
+      "read": 1,
+      "pop": 1,
+      "unguarded": 1,
+      "ok": false,
+      "quotedByGit": "verbatim"
+    },
+    {
+      "reader": "G3",
+      "cell": "A-SPACE",
+      "posthoc": false,
+      "rc": 1,
+      "read": 1,
+      "pop": 1,
+      "unguarded": 1,
+      "ok": false,
+      "quotedByGit": "verbatim"
+    },
+    {
+      "reader": "G3",
+      "cell": "A-NONASCII",
+      "posthoc": false,
+      "rc": 1,
+      "read": 1,
+      "pop": 1,
+      "unguarded": 1,
+      "ok": false,
+      "quotedByGit": "verbatim"
+    },
+    {
+      "reader": "G3",
+      "cell": "A-DQUOTE",
+      "posthoc": false,
+      "rc": 1,
+      "read": 1,
+      "pop": 1,
+      "unguarded": 1,
+      "ok": false,
+      "quotedByGit": "verbatim"
+    },
+    {
+      "reader": "G3",
+      "cell": "A-UNLINKED",
+      "posthoc": false,
+      "rc": 0,
+      "read": 1,
+      "pop": 0,
+      "unguarded": 0,
+      "ok": true,
+      "quotedByGit": "verbatim"
+    },
+    {
+      "reader": "G3",
+      "cell": "A-LEADSPACE",
+      "posthoc": true,
+      "rc": 1,
+      "read": 1,
+      "pop": 1,
+      "unguarded": 1,
+      "ok": false,
+      "quotedByGit": "verbatim"
+    }
+  ]
+}
