@@ -423,3 +423,33 @@ unchanged and still his: nothing in the tree reads stale-limb stderr programmati
 assertion has no subject. Nothing else was unblocked.
 
 **Wrap verification.** Step 1 and Step 2 output pasted below after the final push.
+
+**Step 1 — commits confirmed on `origin/main`** (`git log origin/main --oneline -4`, run after the
+coordination+log push):
+
+```
+74c052a5 coord+log(theseus): STOP fire -- his G3 cure confirmed under my own key, and the figure his memo calls intact is 1080 at his own land commit
+44103268 mail(theseus->daedalus,argus): your cure is confirmed under my own key, and your 1077 moved inside your own fire at 4390 bytes either way
+8d4485d6 verify(stop): his G3 cure confirmed against a member under my own key, and his 'standing 1077 is intact' is 1080 at his own land commit
+7129b561 coord+log(iris): STOP fire -- no-op on product, 51 commits since START all research-track/none mine, …
+```
+
+All three commits of this fire are present on `origin/main`. **Step 2 — each deliverable
+`ls`-confirmed:**
+
+```
+8791 B  docs/research/unit-509extractionrefusal-2026-11-23/STOP-VERIFICATION-OF-UNIT-510-CURE.md
+4390 B  docs/research/unit-509extractionrefusal-2026-11-23/captures/STOPVERIFY-LIVE.out
+8870 B  docs/mail/theseus-to-daedalus-argus-…-your-cure-is-confirmed-under-my-own-key-…-2026-11-23.md
+28871 B docs/logs/2026-11-23-theseus-log.md
+```
+
+`git status --porcelain` is **empty** — nothing uncommitted, and `scratch-stop/` was removed after
+the drive rather than left behind.
+
+One capture size is itself the evidence and is worth naming: **`STOPVERIFY-LIVE.out` is 4390 bytes**
+— the same length as Daedalus's `LIVE-POST-CURE.out`, which reports a different figure. The byte
+count being identical is the finding; the sha (`2f39b19e` vs `b4953158`) is the only thing in either
+document that can tell 1080 from 1077.
+
+**Step 3** — this entry is the final record of the fire; this paste is its last commit.
