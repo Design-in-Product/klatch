@@ -1,0 +1,87 @@
+unit-511 arm — consumer census + HEAD figures. started 09:23:27 PST
+
+§1  HEAD figures — what the published figure counts vs what a read count would be
+  ext-filter survivors (the PUBLISHED figure, = what the gate prints):  1080
+  of those, excluded by SELF before the loop body runs:                 1  ["scripts/verify-decl-body-slicers.mjs"]
+  of those, unreadable at the loop's catch:                             0  []
+  HONEST read count (successful readFileSync calls):                    1079
+  value price of cure V = published - honest:                           1
+  SELF entries outside the ext filter (excluded by EXTENSION, not SELF): ["scripts/decl-body-slicers.baseline"]
+
+§2  consumer census over TRACKED CODE FILES at the pre-registration commit 7ae1eb18
+  files carrying the label: 20   sites: 47
+  tally shape/context: {"LABEL_ONLY/CODE":20,"CAPTURE/BLANKED":8,"LABEL_ONLY/BLANKED":15,"VALUE/BLANKED":3,"VALUE/CODE":1}
+
+  per-site, the gate itself separated out (it is the EMITTER, not a consumer):
+    LABEL_ONLY CODE    docs/research/unit-480guardorder-2026-11-18/arm.mjs:211   after=" ${readable}`);"
+    LABEL_ONLY CODE    docs/research/unit-486markerstale-2026-11-19/arm-markerstale.mjs:236   after=":'),"
+    LABEL_ONLY CODE    docs/research/unit-486markerstale-2026-11-19/posthoc-whose-seven.mjs:63   after=":');"
+    CAPTURE    BLANKED docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs:94   after=": (\d+)/m),"
+    LABEL_ONLY BLANKED docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:7   after="`, 1036 → 1038 — and `Bu"
+    LABEL_ONLY BLANKED docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:25   after="` as the only"
+    CAPTURE    BLANKED docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:70   after=": (\d+)/;"
+    LABEL_ONLY CODE    docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:73   after=":        ${figure(pre, T"
+    CAPTURE    BLANKED docs/research/unit-500trackedcomplement-2026-11-22/arm-tracked-complement.mjs:45   after=": (\d+)/,"
+    LABEL_ONLY BLANKED docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:6   after="` digits and NOWHERE els"
+    LABEL_ONLY BLANKED docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:20   after=": )(\d+)$/;"
+    CAPTURE    BLANKED docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:34   after=": (\d+)/)[1]);"
+    CAPTURE    BLANKED docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:35   after=": (\d+)/)[1]);"
+    LABEL_ONLY CODE    docs/research/unit-501redbranchpin-2026-11-22/posthoc-crossunit-byte-figures.mjs:91   after="`, and it moved inside i"
+    LABEL_ONLY CODE    docs/research/unit-501redbranchpin-2026-11-22/posthoc-which-lines-move.mjs:87   after="', /tracked files read:\"
+    LABEL_ONLY BLANKED docs/research/unit-501redbranchpin-2026-11-22/posthoc-which-lines-move.mjs:87   after=":\s*(\d+)/],"
+    CAPTURE    BLANKED docs/research/unit-502streampin-2026-11-22/posthoc-landing.mjs:39   after=": (\d+)/),"
+    VALUE      BLANKED docs/research/unit-503stalelabelwidth-2026-11-22/arm-realgate-newones.mjs:7   after=": 1054`. The tree is"
+    LABEL_ONLY CODE    docs/research/unit-503stalelabelwidth-2026-11-22/arm-realgate-newones.mjs:104   after="'),"
+    LABEL_ONLY CODE    docs/research/unit-503stalelabelwidth-2026-11-22/arm-realgate-newones.mjs:145   after=" > 1054':"
+    LABEL_ONLY BLANKED docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs:14   after="`."
+    LABEL_ONLY CODE    docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs:58   after="'),"
+    VALUE      BLANKED docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs:74   after=": 1059`, one file past §"
+    LABEL_ONLY CODE    docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs:97   after=" is the ONLY figure that"
+    LABEL_ONLY BLANKED docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs:30   after="|population[^:]*|baselin"
+    CAPTURE    BLANKED docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs:33   after=": (\d+)/;"
+    LABEL_ONLY CODE    docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs:70   after=" MOVED, 1064 -> strictly"
+    LABEL_ONLY BLANKED docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:8   after="` moved `1071 → 1072` wi"
+    LABEL_ONLY CODE    docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:27   after="': /tracked files read:\"
+    LABEL_ONLY BLANKED docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:27   after=":\s*(\d+)/,"
+    LABEL_ONLY CODE    docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:114   after="` is the ONLY named figu"
+    LABEL_ONLY CODE    docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:115   after="',"
+    LABEL_ONLY CODE    docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:116   after="` is the ONLY line that "
+    LABEL_ONLY CODE    docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:118   after="')"
+    LABEL_ONLY CODE    docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:119   after="'),"
+    LABEL_ONLY BLANKED docs/research/unit-509extractionrefusal-2026-11-23/posthoc-wsfile.mjs:128   after=":\s*(\d+)/) || [])[1] ??"
+    LABEL_ONLY CODE    docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs:160   after=":'),"
+    LABEL_ONLY BLANKED docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs:201   after="` on a cell where nothin"
+    VALUE      CODE    docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs:204   after=": 1" with population 0 ("
+    LABEL_ONLY CODE    docs/research/unit-510quotepathskip-2026-11-23/confirm-landed.mjs:102   after=":'),"
+    CAPTURE    BLANKED docs/research/verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-member.mjs:22   after=": (\d+)/);"
+
+  the emitter's own sites:
+    VALUE      BLANKED scripts/verify-decl-body-slicers.mjs:128   after=": 0`, `population 0`, `D"
+    LABEL_ONLY BLANKED scripts/verify-decl-body-slicers.mjs:260   after="` below reports it as re"
+    LABEL_ONLY BLANKED scripts/verify-decl-body-slicers.mjs:269   after="`; reddening on an unrea"
+    LABEL_ONLY BLANKED scripts/verify-decl-body-slicers.mjs:667   after="` and no reader notices,"
+    LABEL_ONLY BLANKED scripts/verify-decl-body-slicers.mjs:681   after="`, `population`, `MARKED"
+    LABEL_ONLY CODE    scripts/verify-decl-body-slicers.mjs:870   after=": ${tracked.filter((f) ="
+
+§3  what each cure costs, counted off §2 rather than argued
+  live consumer sites (CODE, or a CAPTURE inside a regex body):   28
+  sites that BREAK under V (label kept, value honest) — shape VALUE in a matcher: 1
+      docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs:204  after=": 1" with population 0 ("
+  sites that BREAK under R (label renamed) — every live consumer site:            28
+  distinct FILES that break under R: 17
+
+§4  this instrument is itself a consumer — declared, not absorbed
+  files carrying the label at HEAD: 20   at 7ae1eb18: 20
+  added by this unit: []
+
+§5  KP — each shape re-classified from a line SLICED out of a real consumer, in isolation
+  HIT  expected VALUE      got VALUE      from docs/research/unit-503stalelabelwidth-2026-11-22/arm-realgate-newones.mjs:7
+  HIT  expected CAPTURE    got CAPTURE    from docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs:94
+  HIT  expected LABEL_ONLY got LABEL_ONLY from docs/research/unit-480guardorder-2026-11-18/arm.mjs:211
+  KP: 3 hit, 0 miss, shapes covered ["VALUE","CAPTURE","LABEL_ONLY"]
+  shapes with NO live instance to slice (so unKP'd by this corpus): []
+
+§6  cripple — blank the label in one real consumer and the census MUST lose exactly its sites
+  docs/research/unit-480guardorder-2026-11-18/arm.mjs: sites intact 1 → crippled 0  CRIPPLE LIVE
+
+arm finished 09:24:03 PST

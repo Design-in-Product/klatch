@@ -1,0 +1,86 @@
+{
+  "gateSha": "e619e79e",
+  "bytes": 80979,
+  "rows": [
+    {
+      "gate": "G0_uncured",
+      "cell": "A-PRESENT",
+      "rc": 1,
+      "read": 3,
+      "inScope": null,
+      "unreadable": null,
+      "pop": 2,
+      "namesMember": true,
+      "namesUnreadable": false
+    },
+    {
+      "gate": "G0_uncured",
+      "cell": "A-UNLINKED",
+      "rc": 1,
+      "read": 3,
+      "inScope": null,
+      "unreadable": null,
+      "pop": 1,
+      "namesMember": false,
+      "namesUnreadable": false
+    },
+    {
+      "gate": "G1_landed",
+      "cell": "A-PRESENT",
+      "rc": 1,
+      "read": 2,
+      "inScope": 3,
+      "unreadable": "0",
+      "pop": 2,
+      "namesMember": true,
+      "namesUnreadable": false
+    },
+    {
+      "gate": "G1_landed",
+      "cell": "A-UNLINKED",
+      "rc": 1,
+      "read": 1,
+      "inScope": 3,
+      "unreadable": "1",
+      "pop": 1,
+      "namesMember": true,
+      "namesUnreadable": true
+    }
+  ],
+  "checks": [
+    {
+      "n": "P6.a uncured A-UNLINKED reports a read that did not happen (read 1, pop 0, rc 0)",
+      "ok": false
+    },
+    {
+      "n": "P6.b cured A-UNLINKED reports read 0",
+      "ok": false
+    },
+    {
+      "n": "P6.c cured A-UNLINKED reports 1 unreadable and NAMES it",
+      "ok": true
+    },
+    {
+      "n": "P6.d cured A-UNLINKED keeps the in-scope figure at 1, so the drop is self-explaining",
+      "ok": false
+    },
+    {
+      "n": "P6.e control — cured A-PRESENT reports read 1, 0 unreadable, and does NOT print the class",
+      "ok": false
+    },
+    {
+      "n": "P6.f control — cured A-PRESENT still reddens on the member (rc 1, member named)",
+      "ok": true
+    },
+    {
+      "n": "P6.g separation — the two gates DIFFER on A-UNLINKED (otherwise the cure does nothing)",
+      "ok": true
+    },
+    {
+      "n": "P6.h sameness — the two gates AGREE on read/pop/rc for A-PRESENT (the cure moves only the gap)",
+      "ok": false
+    }
+  ],
+  "hit": 3,
+  "total": 8
+}

@@ -251,27 +251,49 @@ function declaredMarkerCount(raw) {
   }
   return n;
 }
+// The two figures `tracked files read` publishes, both derived here rather than re-counted at the
+// emit site: `filesRead` is incremented by the read itself, so it cannot drift from what the loop
+// did, and `unreadableFiles` is appended by the only `catch` that can drop a member silently.
+// `inScope` keeps the old figure — it is still a true count of something (the extension filter's
+// survivors), and the line that prints it now says so.
+const inScope = tracked.filter((f) => EXTS.has(extname(f)));
+const selfInScope = inScope.filter((f) => SELF.has(f));
+/** @type {string[]} */
+const unreadableFiles = [];
+let filesRead = 0;
 for (const rel of tracked) {
   if (SELF.has(rel) || !EXTS.has(extname(rel))) continue;
   let raw;
-  // **OPEN, named here rather than cured: this `catch` is a silent skip, and the figure named
-  // after it does not count it** (`unit-510quotepathskip` §4, Daedalus 2026-11-23). A tracked
-  // code file that cannot be read — in the index, absent from the worktree — lands here and is
-  // dropped from the population at **rc 0**, while `tracked files read` below reports it as read,
-  // because that figure is `tracked.filter((f) => EXTS.has(extname(f))).length` — an
-  // **extension-filter survivor count, not a read count**. Driven as cell `A-UNLINKED`: `tracked
-  // files read: 1`, `population 0`, `DECL-BODY SLICERS OK`, rc 0. It is the one cell of six that
-  // **none** of the four reader candidates closes, because the mechanism is this `catch` and that
-  // figure's name, not the quoting that was cured above.
+  // **CURED 2026-11-24 (`unit-511readcountname`, Daedalus/START). The figure below now counts the
+  // reads this loop performs, and the two files it does NOT read are named on their own line.**
   //
-  // **Not cured in that unit by its own pre-registered limit**, and the reason is a decision
-  // rather than effort: the two candidate cures each move a published string every seat holds pins
-  // on. Counting real reads changes `tracked files read`; reddening on an unreadable member
-  // changes the verdict line. Either is a figure migration needing its own KP set and a pin sweep,
-  // which is not a thing to do unilaterally in the fire that named it — the same discipline that
-  // put the quoting cure in this fire instead of Theseus's. **Unblocked for whichever seat takes
-  // it; no blocker attached.**
-  try { raw = readFileSync(join(ROOT, rel), 'utf8'); } catch { continue; }
+  // What it was: `tracked files read` published
+  // `tracked.filter((f) => EXTS.has(extname(f))).length` — an **extension-filter survivor count,
+  // not a read count**. A tracked code file that cannot be read (in the index, absent from the
+  // worktree) lands at this `catch`, is dropped from the population at **rc 0**, and was still
+  // counted by a figure whose name asserts it was read. Driven as `unit-510`'s cell `A-UNLINKED`:
+  // `tracked files read: 1`, `population 0`, `DECL-BODY SLICERS OK`, rc 0 — the one cell of six
+  // that **none** of that unit's four reader candidates closed, because the mechanism is this
+  // `catch` and that figure's NAME, not the path quoting cured above.
+  //
+  // **Why this shape and not either of the two the naming unit proposed** — and it is a
+  // measurement, not a preference (`unit-511` §2–§3, captures in that unit's `captures/`):
+  //
+  //   - **Renaming the label is refused.** 15 matcher sites in 11 tracked files — frozen round
+  //     instruments — key on this exact string. A rename blinds every one of them **silently**,
+  //     which is this corpus's most expensive failure shape.
+  //   - **Making the value honest is free of that cost: 0 of those 15 matchers embed a value.**
+  //     The price is one unit on the figure (1080 published → 1079 read), announced rather than
+  //     absorbed, and every digit-capturing matcher keeps working and reads the true count.
+  //   - **The digits stay LAST on their line, and that is a constraint rather than a style.**
+  //     `unit-500trackedcomplement/posthoc-landing-condition.mjs:20` keys on
+  //     `/^(\s*tracked files read: )(\d+)$/` — **end-anchored**. Appending scope text after the
+  //     value would return `null` there and break it silently. Scope goes on the NEXT line.
+  //   - **An unreadable member is reported, never reddened**, per this gate's own discipline for
+  //     reaches: reddening a pre-commit gate on an unreadable path would fire on any sparse
+  //     checkout. Reported unconditionally at 0, because a reach that prints nothing in the state
+  //     the tree is in cannot be told apart from one that was never wired.
+  try { raw = readFileSync(join(ROOT, rel), 'utf8'); filesRead += 1; } catch { unreadableFiles.push(rel); continue; }
   // **Drive 13 defect, repaired here; drive 13 is kept as `drive13.detector-baseline-empty.out`.**
   // Every key here is a comparison against a QUOTED CHARACTER, so it must be read from the
   // comments-blanked / **strings-KEPT** reading. Drive 13 read the guard key from
@@ -867,7 +889,21 @@ const counts = {};
 for (const v of LABELS) counts[v] = 0;
 for (const v of verdicts.values()) counts[v] += 1;
 emit('verify-decl-body-slicers — brace-balance body slicers in the TRACKED tree');
-emit(`  tracked files read: ${tracked.filter((f) => EXTS.has(extname(f))).length}`);
+// **The digits are the last characters on this line, and that is load-bearing** — one live matcher
+// (`unit-500trackedcomplement/posthoc-landing-condition.mjs:20`) is end-anchored on exactly this
+// line, so anything appended after the value breaks it silently. Scope and skips print below.
+emit(`  tracked files read: ${filesRead}`);
+emit(`  of ${inScope.length} tracked code file(s) in scope, ${selfInScope.length} excluded as this`
+  + ` gate's own, ${unreadableFiles.length} unreadable`);
+// Reported unconditionally at 0 — a reach that prints nothing in the state the tree is actually in
+// cannot be told apart from one that was never wired. The names print only when there are any,
+// because a header with an empty list under it reads as a rendering bug.
+if (unreadableFiles.length > 0) {
+  emit('  UNREADABLE — tracked, carries a code extension, and the read threw. In the index and');
+  emit('  absent from the worktree is the common cause (a sparse checkout, or a deleted-but-staged');
+  emit('  path). These are NOT in the population and NOT reddened; they are simply not graded:');
+  for (const rel of unreadableFiles) emit(`      ${rel}`);
+}
 emit(`  population (compares against both braces): ${verdicts.size}`);
 // Every class prints, INCLUDING at 0. Under the old object-keyed loop an empty class printed no row
 // at all — `unit-489markedrekey` §3's REFUSED check, which turned out to be the subject's property

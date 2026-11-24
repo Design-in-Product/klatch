@@ -1,0 +1,59 @@
+unit-511 post-hoc 2 — regex matchers on `tracked files read`, by line shape, at 7ae1eb18
+
+§1  every regex literal in the corpus that contains the label
+  docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs:94
+      pattern:  /^\s*tracked files read: (\d+)/m
+      anchors:  ^-   captures digits: true   arm called it: CAPTURE/BLANKED
+  docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:70
+      pattern:  /\n {2}tracked files read: (\d+)/
+      anchors:  --   captures digits: true   arm called it: CAPTURE/BLANKED
+  docs/research/unit-500trackedcomplement-2026-11-22/arm-tracked-complement.mjs:45
+      pattern:  /tracked files read: (\d+)/
+      anchors:  --   captures digits: true   arm called it: CAPTURE/BLANKED
+  docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:20
+      pattern:  /^(\s*tracked files read: )(\d+)$/
+      anchors:  ^$   captures digits: true   arm called it: LABEL_ONLY/BLANKED
+  docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:34
+      pattern:  /tracked files read: (\d+)/
+      anchors:  --   captures digits: true   arm called it: CAPTURE/BLANKED
+  docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:35
+      pattern:  /tracked files read: (\d+)/
+      anchors:  --   captures digits: true   arm called it: CAPTURE/BLANKED
+  docs/research/unit-501redbranchpin-2026-11-22/posthoc-which-lines-move.mjs:87
+      pattern:  /tracked files read:\s*(\d+)/
+      anchors:  --   captures digits: true   arm called it: LABEL_ONLY/CODE
+  docs/research/unit-502streampin-2026-11-22/posthoc-landing.mjs:39
+      pattern:  /tracked files read: (\d+)/
+      anchors:  --   captures digits: true   arm called it: CAPTURE/BLANKED
+  docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs:30
+      pattern:  /^\s*(tracked files read|population[^:]*|baseline entries[^:]*):\s*(\d+)/
+      anchors:  ^-   captures digits: true   arm called it: LABEL_ONLY/BLANKED
+  docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs:33
+      pattern:  /tracked files read: (\d+)/
+      anchors:  --   captures digits: true   arm called it: CAPTURE/BLANKED
+  docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:27
+      pattern:  /tracked files read:\s*(\d+)/
+      anchors:  --   captures digits: true   arm called it: LABEL_ONLY/CODE
+  docs/research/unit-509extractionrefusal-2026-11-23/posthoc-wsfile.mjs:128
+      pattern:  /tracked files read:\s*(\d+)/
+      anchors:  --   captures digits: true   arm called it: LABEL_ONLY/BLANKED
+  docs/research/verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-member.mjs:22
+      pattern:  /tracked files read: (\d+)/
+      anchors:  --   captures digits: true   arm called it: CAPTURE/BLANKED
+
+§2  the figures
+  regex matchers found:                                  13
+  END-ANCHORED (break if ANY text is appended after the value): 1
+      docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:20  /^(\s*tracked files read: )(\d+)$/
+  classified as something other than MATCHER(regex) by my own two keys: 5
+      docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:20  called LABEL_ONLY/BLANKED  pattern /^(\s*tracked files read: )(\d+)$/
+      docs/research/unit-501redbranchpin-2026-11-22/posthoc-which-lines-move.mjs:87  called LABEL_ONLY/CODE  pattern /tracked files read:\s*(\d+)/
+      docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs:30  called LABEL_ONLY/BLANKED  pattern /^\s*(tracked files read|population[^:]*|baseline entries[^:]*):\s*(\d+)/
+      docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:27  called LABEL_ONLY/CODE  pattern /tracked files read:\s*(\d+)/
+      docs/research/unit-509extractionrefusal-2026-11-23/posthoc-wsfile.mjs:128  called LABEL_ONLY/BLANKED  pattern /tracked files read:\s*(\d+)/
+
+§3  the constraint this puts on the cure, stated as a rule the landing must satisfy
+  The digits must remain the LAST characters on their line. Scope and skip counts go on a SEPARATE line.
+
+§4  cripple — remove the delimiters from one real pattern's line; the span finder must lose it
+  docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs:94: 1 → 0  CRIPPLE LIVE

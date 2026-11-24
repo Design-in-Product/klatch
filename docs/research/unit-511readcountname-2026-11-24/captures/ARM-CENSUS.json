@@ -1,0 +1,377 @@
+{
+  "headFigures": {
+    "published": 1080,
+    "selfInExt": [
+      "scripts/verify-decl-body-slicers.mjs"
+    ],
+    "unreadable": [],
+    "honestRead": 1079,
+    "priceOfV": 1
+  },
+  "censusAtPreReg": [
+    {
+      "rel": "docs/research/unit-480guardorder-2026-11-18/arm.mjs",
+      "line": 211,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": " ${readable}`);"
+    },
+    {
+      "rel": "docs/research/unit-486markerstale-2026-11-19/arm-markerstale.mjs",
+      "line": 236,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": ":'),"
+    },
+    {
+      "rel": "docs/research/unit-486markerstale-2026-11-19/posthoc-whose-seven.mjs",
+      "line": 63,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": ":');"
+    },
+    {
+      "rel": "docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs",
+      "line": 94,
+      "shape": "CAPTURE",
+      "context": "BLANKED",
+      "after": ": (\\d+)/m),"
+    },
+    {
+      "rel": "docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs",
+      "line": 7,
+      "shape": "LABEL_ONLY",
+      "context": "BLANKED",
+      "after": "`, 1036 → 1038 — and `Bu"
+    },
+    {
+      "rel": "docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs",
+      "line": 25,
+      "shape": "LABEL_ONLY",
+      "context": "BLANKED",
+      "after": "` as the only"
+    },
+    {
+      "rel": "docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs",
+      "line": 70,
+      "shape": "CAPTURE",
+      "context": "BLANKED",
+      "after": ": (\\d+)/;"
+    },
+    {
+      "rel": "docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs",
+      "line": 73,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": ":        ${figure(pre, T"
+    },
+    {
+      "rel": "docs/research/unit-500trackedcomplement-2026-11-22/arm-tracked-complement.mjs",
+      "line": 45,
+      "shape": "CAPTURE",
+      "context": "BLANKED",
+      "after": ": (\\d+)/,"
+    },
+    {
+      "rel": "docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs",
+      "line": 6,
+      "shape": "LABEL_ONLY",
+      "context": "BLANKED",
+      "after": "` digits and NOWHERE els"
+    },
+    {
+      "rel": "docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs",
+      "line": 20,
+      "shape": "LABEL_ONLY",
+      "context": "BLANKED",
+      "after": ": )(\\d+)$/;"
+    },
+    {
+      "rel": "docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs",
+      "line": 34,
+      "shape": "CAPTURE",
+      "context": "BLANKED",
+      "after": ": (\\d+)/)[1]);"
+    },
+    {
+      "rel": "docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs",
+      "line": 35,
+      "shape": "CAPTURE",
+      "context": "BLANKED",
+      "after": ": (\\d+)/)[1]);"
+    },
+    {
+      "rel": "docs/research/unit-501redbranchpin-2026-11-22/posthoc-crossunit-byte-figures.mjs",
+      "line": 91,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": "`, and it moved inside i"
+    },
+    {
+      "rel": "docs/research/unit-501redbranchpin-2026-11-22/posthoc-which-lines-move.mjs",
+      "line": 87,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": "', /tracked files read:\\"
+    },
+    {
+      "rel": "docs/research/unit-501redbranchpin-2026-11-22/posthoc-which-lines-move.mjs",
+      "line": 87,
+      "shape": "LABEL_ONLY",
+      "context": "BLANKED",
+      "after": ":\\s*(\\d+)/],"
+    },
+    {
+      "rel": "docs/research/unit-502streampin-2026-11-22/posthoc-landing.mjs",
+      "line": 39,
+      "shape": "CAPTURE",
+      "context": "BLANKED",
+      "after": ": (\\d+)/),"
+    },
+    {
+      "rel": "docs/research/unit-503stalelabelwidth-2026-11-22/arm-realgate-newones.mjs",
+      "line": 7,
+      "shape": "VALUE",
+      "context": "BLANKED",
+      "after": ": 1054`. The tree is"
+    },
+    {
+      "rel": "docs/research/unit-503stalelabelwidth-2026-11-22/arm-realgate-newones.mjs",
+      "line": 104,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": "'),"
+    },
+    {
+      "rel": "docs/research/unit-503stalelabelwidth-2026-11-22/arm-realgate-newones.mjs",
+      "line": 145,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": " > 1054':"
+    },
+    {
+      "rel": "docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs",
+      "line": 14,
+      "shape": "LABEL_ONLY",
+      "context": "BLANKED",
+      "after": "`."
+    },
+    {
+      "rel": "docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs",
+      "line": 58,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": "'),"
+    },
+    {
+      "rel": "docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs",
+      "line": 74,
+      "shape": "VALUE",
+      "context": "BLANKED",
+      "after": ": 1059`, one file past §"
+    },
+    {
+      "rel": "docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs",
+      "line": 97,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": " is the ONLY figure that"
+    },
+    {
+      "rel": "docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs",
+      "line": 30,
+      "shape": "LABEL_ONLY",
+      "context": "BLANKED",
+      "after": "|population[^:]*|baselin"
+    },
+    {
+      "rel": "docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs",
+      "line": 33,
+      "shape": "CAPTURE",
+      "context": "BLANKED",
+      "after": ": (\\d+)/;"
+    },
+    {
+      "rel": "docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs",
+      "line": 70,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": " MOVED, 1064 -> strictly"
+    },
+    {
+      "rel": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+      "line": 8,
+      "shape": "LABEL_ONLY",
+      "context": "BLANKED",
+      "after": "` moved `1071 → 1072` wi"
+    },
+    {
+      "rel": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+      "line": 27,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": "': /tracked files read:\\"
+    },
+    {
+      "rel": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+      "line": 27,
+      "shape": "LABEL_ONLY",
+      "context": "BLANKED",
+      "after": ":\\s*(\\d+)/,"
+    },
+    {
+      "rel": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+      "line": 114,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": "` is the ONLY named figu"
+    },
+    {
+      "rel": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+      "line": 115,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": "',"
+    },
+    {
+      "rel": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+      "line": 116,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": "` is the ONLY line that "
+    },
+    {
+      "rel": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+      "line": 118,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": "')"
+    },
+    {
+      "rel": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+      "line": 119,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": "'),"
+    },
+    {
+      "rel": "docs/research/unit-509extractionrefusal-2026-11-23/posthoc-wsfile.mjs",
+      "line": 128,
+      "shape": "LABEL_ONLY",
+      "context": "BLANKED",
+      "after": ":\\s*(\\d+)/) || [])[1] ??"
+    },
+    {
+      "rel": "docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs",
+      "line": 160,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": ":'),"
+    },
+    {
+      "rel": "docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs",
+      "line": 201,
+      "shape": "LABEL_ONLY",
+      "context": "BLANKED",
+      "after": "` on a cell where nothin"
+    },
+    {
+      "rel": "docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs",
+      "line": 204,
+      "shape": "VALUE",
+      "context": "CODE",
+      "after": ": 1\" with population 0 ("
+    },
+    {
+      "rel": "docs/research/unit-510quotepathskip-2026-11-23/confirm-landed.mjs",
+      "line": 102,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": ":'),"
+    },
+    {
+      "rel": "docs/research/verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-member.mjs",
+      "line": 22,
+      "shape": "CAPTURE",
+      "context": "BLANKED",
+      "after": ": (\\d+)/);"
+    },
+    {
+      "rel": "scripts/verify-decl-body-slicers.mjs",
+      "line": 128,
+      "shape": "VALUE",
+      "context": "BLANKED",
+      "after": ": 0`, `population 0`, `D"
+    },
+    {
+      "rel": "scripts/verify-decl-body-slicers.mjs",
+      "line": 260,
+      "shape": "LABEL_ONLY",
+      "context": "BLANKED",
+      "after": "` below reports it as re"
+    },
+    {
+      "rel": "scripts/verify-decl-body-slicers.mjs",
+      "line": 269,
+      "shape": "LABEL_ONLY",
+      "context": "BLANKED",
+      "after": "`; reddening on an unrea"
+    },
+    {
+      "rel": "scripts/verify-decl-body-slicers.mjs",
+      "line": 667,
+      "shape": "LABEL_ONLY",
+      "context": "BLANKED",
+      "after": "` and no reader notices,"
+    },
+    {
+      "rel": "scripts/verify-decl-body-slicers.mjs",
+      "line": 681,
+      "shape": "LABEL_ONLY",
+      "context": "BLANKED",
+      "after": "`, `population`, `MARKED"
+    },
+    {
+      "rel": "scripts/verify-decl-body-slicers.mjs",
+      "line": 870,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": ": ${tracked.filter((f) ="
+    }
+  ],
+  "tallyAtPreReg": {
+    "LABEL_ONLY/CODE": 20,
+    "CAPTURE/BLANKED": 8,
+    "LABEL_ONLY/BLANKED": 15,
+    "VALUE/BLANKED": 3,
+    "VALUE/CODE": 1
+  },
+  "breaksUnderV": [
+    "docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs:204"
+  ],
+  "breaksUnderR": [
+    "docs/research/unit-480guardorder-2026-11-18/arm.mjs",
+    "docs/research/unit-486markerstale-2026-11-19/arm-markerstale.mjs",
+    "docs/research/unit-486markerstale-2026-11-19/posthoc-whose-seven.mjs",
+    "docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs",
+    "docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs",
+    "docs/research/unit-500trackedcomplement-2026-11-22/arm-tracked-complement.mjs",
+    "docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs",
+    "docs/research/unit-501redbranchpin-2026-11-22/posthoc-crossunit-byte-figures.mjs",
+    "docs/research/unit-501redbranchpin-2026-11-22/posthoc-which-lines-move.mjs",
+    "docs/research/unit-502streampin-2026-11-22/posthoc-landing.mjs",
+    "docs/research/unit-503stalelabelwidth-2026-11-22/arm-realgate-newones.mjs",
+    "docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs",
+    "docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs",
+    "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+    "docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs",
+    "docs/research/unit-510quotepathskip-2026-11-23/confirm-landed.mjs",
+    "docs/research/verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-member.mjs"
+  ],
+  "addedByThisUnit": [],
+  "kp": {
+    "hit": 3,
+    "miss": 0,
+    "missingShapes": []
+  }
+}

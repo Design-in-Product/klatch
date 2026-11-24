@@ -1,0 +1,32 @@
+unit-511 confirmation leg — landed gate e619e79e / 80979 B
+
+§0  P7 pre-flight — the cured state is SLICED out of the subject, not assumed
+  cure marks present in the LANDED file:   3 of 3  ["filesRead += 1","tracked files read: ${filesRead}","unreadableFiles.length} unreadable"]
+  cure marks present in 7ae1eb18 (uncured): 0 of 3
+  OK — the landed file carries all three and the pre-reg file carries none, so this leg
+  cannot pass on an uncured copy.
+
+§1  four cells — gate × whether the member is linked. Cells differ ONLY in that.
+  gate        cell         rc  read  inScope  unreadable  pop  names member  names UNREADABLE
+  G0_uncured  A-PRESENT     1     3     null        null    2  true          false
+  G0_uncured  A-UNLINKED    1     3     null        null    1  false         false
+  G1_landed   A-PRESENT     1     2        3           0    2  true          false
+  G1_landed   A-UNLINKED    1     1        3           1    1  true          true
+
+§2  graded
+  MISS P6.a uncured A-UNLINKED reports a read that did not happen (read 1, pop 0, rc 0)
+  MISS P6.b cured A-UNLINKED reports read 0
+  HIT  P6.c cured A-UNLINKED reports 1 unreadable and NAMES it
+  MISS P6.d cured A-UNLINKED keeps the in-scope figure at 1, so the drop is self-explaining
+  MISS P6.e control — cured A-PRESENT reports read 1, 0 unreadable, and does NOT print the class
+  HIT  P6.f control — cured A-PRESENT still reddens on the member (rc 1, member named)
+  HIT  P6.g separation — the two gates DIFFER on A-UNLINKED (otherwise the cure does nothing)
+  MISS P6.h sameness — the two gates AGREE on read/pop/rc for A-PRESENT (the cure moves only the gap)
+
+  3 of 8 hit
+
+§3  what this leg does NOT establish, named rather than implied
+  - The verdict does not flip in these cells: the member keeps the gate red on A-PRESENT, and
+    on A-UNLINKED the population is empty either way, so rc is the SAME under both gates.
+    Read these rows on rc alone and the cure looks like a no-op. The figures are the subject.
+  - Nothing here re-grades the path-quoting cure of unit-510; the member name is plain ASCII.

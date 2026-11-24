@@ -1,0 +1,144 @@
+{
+  "regexMatchers": [
+    {
+      "rel": "docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs",
+      "line": 94,
+      "pattern": "/^\\s*tracked files read: (\\d+)/m",
+      "endAnchored": false,
+      "startAnchored": true,
+      "capturesDigits": true,
+      "armShape": "CAPTURE",
+      "armContext": "BLANKED"
+    },
+    {
+      "rel": "docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs",
+      "line": 70,
+      "pattern": "/\\n {2}tracked files read: (\\d+)/",
+      "endAnchored": false,
+      "startAnchored": false,
+      "capturesDigits": true,
+      "armShape": "CAPTURE",
+      "armContext": "BLANKED"
+    },
+    {
+      "rel": "docs/research/unit-500trackedcomplement-2026-11-22/arm-tracked-complement.mjs",
+      "line": 45,
+      "pattern": "/tracked files read: (\\d+)/",
+      "endAnchored": false,
+      "startAnchored": false,
+      "capturesDigits": true,
+      "armShape": "CAPTURE",
+      "armContext": "BLANKED"
+    },
+    {
+      "rel": "docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs",
+      "line": 20,
+      "pattern": "/^(\\s*tracked files read: )(\\d+)$/",
+      "endAnchored": true,
+      "startAnchored": true,
+      "capturesDigits": true,
+      "armShape": "LABEL_ONLY",
+      "armContext": "BLANKED"
+    },
+    {
+      "rel": "docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs",
+      "line": 34,
+      "pattern": "/tracked files read: (\\d+)/",
+      "endAnchored": false,
+      "startAnchored": false,
+      "capturesDigits": true,
+      "armShape": "CAPTURE",
+      "armContext": "BLANKED"
+    },
+    {
+      "rel": "docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs",
+      "line": 35,
+      "pattern": "/tracked files read: (\\d+)/",
+      "endAnchored": false,
+      "startAnchored": false,
+      "capturesDigits": true,
+      "armShape": "CAPTURE",
+      "armContext": "BLANKED"
+    },
+    {
+      "rel": "docs/research/unit-501redbranchpin-2026-11-22/posthoc-which-lines-move.mjs",
+      "line": 87,
+      "pattern": "/tracked files read:\\s*(\\d+)/",
+      "endAnchored": false,
+      "startAnchored": false,
+      "capturesDigits": true,
+      "armShape": "LABEL_ONLY",
+      "armContext": "CODE"
+    },
+    {
+      "rel": "docs/research/unit-502streampin-2026-11-22/posthoc-landing.mjs",
+      "line": 39,
+      "pattern": "/tracked files read: (\\d+)/",
+      "endAnchored": false,
+      "startAnchored": false,
+      "capturesDigits": true,
+      "armShape": "CAPTURE",
+      "armContext": "BLANKED"
+    },
+    {
+      "rel": "docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs",
+      "line": 30,
+      "pattern": "/^\\s*(tracked files read|population[^:]*|baseline entries[^:]*):\\s*(\\d+)/",
+      "endAnchored": false,
+      "startAnchored": true,
+      "capturesDigits": true,
+      "armShape": "LABEL_ONLY",
+      "armContext": "BLANKED"
+    },
+    {
+      "rel": "docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs",
+      "line": 33,
+      "pattern": "/tracked files read: (\\d+)/",
+      "endAnchored": false,
+      "startAnchored": false,
+      "capturesDigits": true,
+      "armShape": "CAPTURE",
+      "armContext": "BLANKED"
+    },
+    {
+      "rel": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+      "line": 27,
+      "pattern": "/tracked files read:\\s*(\\d+)/",
+      "endAnchored": false,
+      "startAnchored": false,
+      "capturesDigits": true,
+      "armShape": "LABEL_ONLY",
+      "armContext": "CODE"
+    },
+    {
+      "rel": "docs/research/unit-509extractionrefusal-2026-11-23/posthoc-wsfile.mjs",
+      "line": 128,
+      "pattern": "/tracked files read:\\s*(\\d+)/",
+      "endAnchored": false,
+      "startAnchored": false,
+      "capturesDigits": true,
+      "armShape": "LABEL_ONLY",
+      "armContext": "BLANKED"
+    },
+    {
+      "rel": "docs/research/verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-member.mjs",
+      "line": 22,
+      "pattern": "/tracked files read: (\\d+)/",
+      "endAnchored": false,
+      "startAnchored": false,
+      "capturesDigits": true,
+      "armShape": "CAPTURE",
+      "armContext": "BLANKED"
+    }
+  ],
+  "endAnchored": [
+    "docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:20"
+  ],
+  "missedByArmKeys": [
+    "docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:20",
+    "docs/research/unit-501redbranchpin-2026-11-22/posthoc-which-lines-move.mjs:87",
+    "docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs:30",
+    "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:27",
+    "docs/research/unit-509extractionrefusal-2026-11-23/posthoc-wsfile.mjs:128"
+  ]
+}

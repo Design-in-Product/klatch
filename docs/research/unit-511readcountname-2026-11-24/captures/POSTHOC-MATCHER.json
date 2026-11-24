@@ -1,0 +1,405 @@
+{
+  "rows": [
+    {
+      "rel": "docs/research/unit-480guardorder-2026-11-18/arm.mjs",
+      "line": 211,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": " ${readable}`);",
+      "verdict": "PROSE(string)",
+      "before": "console.log(` population ${rows.length} (P5 wants 66) · "
+    },
+    {
+      "rel": "docs/research/unit-486markerstale-2026-11-19/arm-markerstale.mjs",
+      "line": 236,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": ":'),",
+      "verdict": "PROSE(string)",
+      "before": "read('MARKED')})`); } } const gateFig = { tracked: num('"
+    },
+    {
+      "rel": "docs/research/unit-486markerstale-2026-11-19/posthoc-whose-seven.mjs",
+      "line": 63,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": ":');",
+      "verdict": "PROSE(string)",
+      "before": "isMarked = hisNum('MARKED'); const hisTracked = hisNum('"
+    },
+    {
+      "rel": "docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs",
+      "line": 94,
+      "shape": "CAPTURE",
+      "context": "BLANKED",
+      "after": ": (\\d+)/m),",
+      "verdict": "MATCHER(regex)",
+      "before": "; }; return { name, rc: r.status, trackedRead: one(/^\\s*"
+    },
+    {
+      "rel": "docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs",
+      "line": 7,
+      "shape": "LABEL_ONLY",
+      "context": "BLANKED",
+      "after": "`, 1036 → 1038 — and `Bu",
+      "verdict": "PROSE(comment)",
+      "before": "ers from the pre-build capture on exactly ONE line — * `"
+    },
+    {
+      "rel": "docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs",
+      "line": 25,
+      "shape": "LABEL_ONLY",
+      "context": "BLANKED",
+      "after": "` as the only",
+      "verdict": "PROSE(comment)",
+      "before": "ken is removed from this unit's two docblocks, leaving `"
+    },
+    {
+      "rel": "docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs",
+      "line": 70,
+      "shape": "CAPTURE",
+      "context": "BLANKED",
+      "after": ": (\\d+)/;",
+      "verdict": "MATCHER(regex)",
+      "before": "arker occurrence\\(s\\), are OUT/; const TRACKED = /\\n {2}"
+    },
+    {
+      "rel": "docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs",
+      "line": 73,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": ":        ${figure(pre, T",
+      "verdict": "PROSE(string)",
+      "before": "→ ' + Buffer.byteLength(post) + ' move'); console.log(` "
+    },
+    {
+      "rel": "docs/research/unit-500trackedcomplement-2026-11-22/arm-tracked-complement.mjs",
+      "line": 45,
+      "shape": "CAPTURE",
+      "context": "BLANKED",
+      "after": ": (\\d+)/,",
+      "verdict": "MATCHER(regex)",
+      "before": " cwd: ROOT, encoding: 'buffer' }); const FIG = { read: /"
+    },
+    {
+      "rel": "docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs",
+      "line": 6,
+      "shape": "LABEL_ONLY",
+      "context": "BLANKED",
+      "after": "` digits and NOWHERE els",
+      "verdict": "PROSE(comment)",
+      "before": "claim actually // available: the report differs in the `"
+    },
+    {
+      "rel": "docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs",
+      "line": 20,
+      "shape": "LABEL_ONLY",
+      "context": "BLANKED",
+      "after": ": )(\\d+)$/;",
+      "verdict": "MATCHER(.split)",
+      "before": "n'); const postL = post.split('\\n'); const READ = /^(\\s*"
+    },
+    {
+      "rel": "docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs",
+      "line": 34,
+      "shape": "CAPTURE",
+      "context": "BLANKED",
+      "after": ": (\\d+)/)[1]);",
+      "verdict": "MATCHER(regex)",
+      "before": "!== postL[i]) ?? ''); const preRead = Number(pre.match(/"
+    },
+    {
+      "rel": "docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs",
+      "line": 35,
+      "shape": "CAPTURE",
+      "context": "BLANKED",
+      "after": ": (\\d+)/)[1]);",
+      "verdict": "MATCHER(regex)",
+      "before": " read: (\\d+)/)[1]); const postRead = Number(post.match(/"
+    },
+    {
+      "rel": "docs/research/unit-501redbranchpin-2026-11-22/posthoc-crossunit-byte-figures.mjs",
+      "line": 91,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": "`, and it moved inside i",
+      "verdict": "PROSE(string)",
+      "before": "lBytes}).`); say('In both cases the only moved line is `"
+    },
+    {
+      "rel": "docs/research/unit-501redbranchpin-2026-11-22/posthoc-which-lines-move.mjs",
+      "line": 87,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": "', /tracked files read:\\",
+      "verdict": "PROSE(string)",
+      "before": "ontent rather than on bytes'); say(''); const FIG = [ ['"
+    },
+    {
+      "rel": "docs/research/unit-501redbranchpin-2026-11-22/posthoc-which-lines-move.mjs",
+      "line": 87,
+      "shape": "LABEL_ONLY",
+      "context": "BLANKED",
+      "after": ":\\s*(\\d+)/],",
+      "verdict": "PROSE(comment)",
+      "before": "ontent rather than on bytes'); say(''); const FIG = [ ['"
+    },
+    {
+      "rel": "docs/research/unit-502streampin-2026-11-22/posthoc-landing.mjs",
+      "line": 39,
+      "shape": "CAPTURE",
+      "context": "BLANKED",
+      "after": ": (\\d+)/),",
+      "verdict": "MATCHER(regex)",
+      "before": "out.match(re) || [, 'absent'])[1]; return { read: pick(/"
+    },
+    {
+      "rel": "docs/research/unit-503stalelabelwidth-2026-11-22/arm-realgate-newones.mjs",
+      "line": 7,
+      "shape": "VALUE",
+      "context": "BLANKED",
+      "after": ": 1054`. The tree is",
+      "verdict": "PROSE(comment)",
+      "before": "2 B / 8 lines for one plant at a path of length 57, at `"
+    },
+    {
+      "rel": "docs/research/unit-503stalelabelwidth-2026-11-22/arm-realgate-newones.mjs",
+      "line": 104,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": "'),",
+      "verdict": "PROSE(string)",
+      "before": "rr.length ? sha(r.stderr) : null, trackedRead: readFig('"
+    },
+    {
+      "rel": "docs/research/unit-503stalelabelwidth-2026-11-22/arm-realgate-newones.mjs",
+      "line": 145,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": " > 1054':",
+      "verdict": "PROSE(string)",
+      "before": " MORNING_D1.errLines, 'P5.d the tree really did change: "
+    },
+    {
+      "rel": "docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs",
+      "line": 14,
+      "shape": "LABEL_ONLY",
+      "context": "BLANKED",
+      "after": "`.",
+      "verdict": "PROSE(comment)",
+      "before": "educible, and the only green figure * that may move is `"
+    },
+    {
+      "rel": "docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs",
+      "line": 58,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": "'),",
+      "verdict": "MATCHER(.endsWith)",
+      "before": "\\n') ? 1 : 0), outSha: sha(r.stdout), trackedRead: fig('"
+    },
+    {
+      "rel": "docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs",
+      "line": 74,
+      "shape": "VALUE",
+      "context": "BLANKED",
+      "after": ": 1059`, one file past §",
+      "verdict": "PROSE(comment)",
+      "before": "s unit's own // clean green capture, taken mid-fire at `"
+    },
+    {
+      "rel": "docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs",
+      "line": 97,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": " is the ONLY figure that",
+      "verdict": "PROSE(string)",
+      "before": "nted list': now.quotedOnly === PREREG.quotedOnly, 'P7.d "
+    },
+    {
+      "rel": "docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs",
+      "line": 30,
+      "shape": "LABEL_ONLY",
+      "context": "BLANKED",
+      "after": "|population[^:]*|baselin",
+      "verdict": "MATCHER(.split)",
+      "before": ".stdout.toString('utf8').split('\\n')) { const m = /^\\s*("
+    },
+    {
+      "rel": "docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs",
+      "line": 33,
+      "shape": "CAPTURE",
+      "context": "BLANKED",
+      "after": ": (\\d+)/;",
+      "verdict": "MATCHER(regex)",
+      "before": "the capture`); return Number(m[1]); }; const TRACKED = /"
+    },
+    {
+      "rel": "docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs",
+      "line": 70,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": " MOVED, 1064 -> strictly",
+      "verdict": "PROSE(string)",
+      "before": "y') === 3 && num(preT, POP, 'population') === 65, 'P6.c "
+    },
+    {
+      "rel": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+      "line": 8,
+      "shape": "LABEL_ONLY",
+      "context": "BLANKED",
+      "after": "` moved `1071 → 1072` wi",
+      "verdict": "PROSE(comment)",
+      "before": "res a day apart (`unit-501` §1), and this * unit's own `"
+    },
+    {
+      "rel": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+      "line": 27,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": "': /tracked files read:\\",
+      "verdict": "PROSE(string)",
+      "before": "'after the two docblock landings'], ]; const NAMED = { '"
+    },
+    {
+      "rel": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+      "line": 27,
+      "shape": "LABEL_ONLY",
+      "context": "BLANKED",
+      "after": ":\\s*(\\d+)/,",
+      "verdict": "PROSE(comment)",
+      "before": "'after the two docblock landings'], ]; const NAMED = { '"
+    },
+    {
+      "rel": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+      "line": 114,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": "` is the ONLY named figu",
+      "verdict": "PROSE(string)",
+      "before": "es.GUARDED === 3 && r.figures.UNGUARDED === 58), 'P6.d `"
+    },
+    {
+      "rel": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+      "line": 115,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": "',",
+      "verdict": "MATCHER(comparison)",
+      "before": "ved': movedFigures.length === 1 && movedFigures[0] === '"
+    },
+    {
+      "rel": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+      "line": 116,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": "` is the ONLY line that ",
+      "verdict": "PROSE(string)",
+      "before": "= 1 && movedFigures[0] === 'tracked files read', 'P6.e `"
+    },
+    {
+      "rel": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+      "line": 118,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": "')",
+      "verdict": "MATCHER(.includes)",
+      "before": "nd.length === 1 && firstToLast.onlyInFirst[0].includes('"
+    },
+    {
+      "rel": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+      "line": 119,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": "'),",
+      "verdict": "MATCHER(.includes)",
+      "before": "d files read') && firstToLast.onlyInSecond[0].includes('"
+    },
+    {
+      "rel": "docs/research/unit-509extractionrefusal-2026-11-23/posthoc-wsfile.mjs",
+      "line": 128,
+      "shape": "LABEL_ONLY",
+      "context": "BLANKED",
+      "after": ":\\s*(\\d+)/) || [])[1] ??",
+      "verdict": "MATCHER(.match)",
+      "before": "l))), rc: r.status, trackedRead: Number((outText.match(/"
+    },
+    {
+      "rel": "docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs",
+      "line": 160,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": ":'),",
+      "verdict": "PROSE(string)",
+      "before": "c: Boolean(cell.posthoc), rc: r.status, read: num(out, '"
+    },
+    {
+      "rel": "docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs",
+      "line": 201,
+      "shape": "LABEL_ONLY",
+      "context": "BLANKED",
+      "after": "` on a cell where nothin",
+      "verdict": "PROSE(comment)",
+      "before": "join(' ')}]` : '')); } // The figure that is misnamed: `"
+    },
+    {
+      "rel": "docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs",
+      "line": 204,
+      "shape": "VALUE",
+      "context": "CODE",
+      "after": ": 1\" with population 0 (",
+      "verdict": "PROSE(string)",
+      "before": " === 0); console.log(''); console.log(`cells reporting \""
+    },
+    {
+      "rel": "docs/research/unit-510quotepathskip-2026-11-23/confirm-landed.mjs",
+      "line": 102,
+      "shape": "LABEL_ONLY",
+      "context": "CODE",
+      "after": ":'),",
+      "verdict": "PROSE(string)",
+      "before": " row = { cell: cell.name, rc: r.status, read: num(out, '"
+    },
+    {
+      "rel": "docs/research/verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-member.mjs",
+      "line": 22,
+      "shape": "CAPTURE",
+      "context": "BLANKED",
+      "after": ": (\\d+)/);",
+      "verdict": "MATCHER(regex)",
+      "before": "(buf) => { const s = buf.toString(); const m = s.match(/"
+    }
+  ],
+  "tally": {
+    "PROSE(string)": 16,
+    "MATCHER(regex)": 8,
+    "PROSE(comment)": 10,
+    "MATCHER(.split)": 2,
+    "MATCHER(.endsWith)": 1,
+    "MATCHER(comparison)": 1,
+    "MATCHER(.includes)": 2,
+    "MATCHER(.match)": 1
+  },
+  "matchers": [
+    "docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs:94",
+    "docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:70",
+    "docs/research/unit-500trackedcomplement-2026-11-22/arm-tracked-complement.mjs:45",
+    "docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:20",
+    "docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:34",
+    "docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:35",
+    "docs/research/unit-502streampin-2026-11-22/posthoc-landing.mjs:39",
+    "docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs:58",
+    "docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs:30",
+    "docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs:33",
+    "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:115",
+    "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:118",
+    "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:119",
+    "docs/research/unit-509extractionrefusal-2026-11-23/posthoc-wsfile.mjs:128",
+    "docs/research/verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-member.mjs:22"
+  ],
+  "valueMatchers": [],
+  "cripple": {
+    "callKeyed": 6,
+    "survived": 0
+  }
+}

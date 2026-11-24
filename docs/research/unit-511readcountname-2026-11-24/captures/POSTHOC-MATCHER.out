@@ -1,0 +1,100 @@
+unit-511 post-hoc — matcher vs prose, over every census site at 7ae1eb18
+
+§1  every CONSUMER site classified, with the preceding bytes printed so the call can be read
+  PROSE(string)      LABEL_ONLY docs/research/unit-480guardorder-2026-11-18/arm.mjs:211
+      before: …console.log(` population ${rows.length} (P5 wants 66) · 
+  PROSE(string)      LABEL_ONLY docs/research/unit-486markerstale-2026-11-19/arm-markerstale.mjs:236
+      before: …read('MARKED')})`); } } const gateFig = { tracked: num('
+  PROSE(string)      LABEL_ONLY docs/research/unit-486markerstale-2026-11-19/posthoc-whose-seven.mjs:63
+      before: …isMarked = hisNum('MARKED'); const hisTracked = hisNum('
+  MATCHER(regex)     CAPTURE    docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs:94
+      before: …; }; return { name, rc: r.status, trackedRead: one(/^\s*
+  PROSE(comment)     LABEL_ONLY docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:7
+      before: …ers from the pre-build capture on exactly ONE line — * `
+  PROSE(comment)     LABEL_ONLY docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:25
+      before: …ken is removed from this unit's two docblocks, leaving `
+  MATCHER(regex)     CAPTURE    docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:70
+      before: …arker occurrence\(s\), are OUT/; const TRACKED = /\n {2}
+  PROSE(string)      LABEL_ONLY docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:73
+      before: …→ ' + Buffer.byteLength(post) + ' move'); console.log(` 
+  MATCHER(regex)     CAPTURE    docs/research/unit-500trackedcomplement-2026-11-22/arm-tracked-complement.mjs:45
+      before: … cwd: ROOT, encoding: 'buffer' }); const FIG = { read: /
+  PROSE(comment)     LABEL_ONLY docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:6
+      before: …claim actually // available: the report differs in the `
+  MATCHER(.split)    LABEL_ONLY docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:20
+      before: …n'); const postL = post.split('\n'); const READ = /^(\s*
+  MATCHER(regex)     CAPTURE    docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:34
+      before: …!== postL[i]) ?? ''); const preRead = Number(pre.match(/
+  MATCHER(regex)     CAPTURE    docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:35
+      before: … read: (\d+)/)[1]); const postRead = Number(post.match(/
+  PROSE(string)      LABEL_ONLY docs/research/unit-501redbranchpin-2026-11-22/posthoc-crossunit-byte-figures.mjs:91
+      before: …lBytes}).`); say('In both cases the only moved line is `
+  PROSE(string)      LABEL_ONLY docs/research/unit-501redbranchpin-2026-11-22/posthoc-which-lines-move.mjs:87
+      before: …ontent rather than on bytes'); say(''); const FIG = [ ['
+  PROSE(comment)     LABEL_ONLY docs/research/unit-501redbranchpin-2026-11-22/posthoc-which-lines-move.mjs:87
+      before: …ontent rather than on bytes'); say(''); const FIG = [ ['
+  MATCHER(regex)     CAPTURE    docs/research/unit-502streampin-2026-11-22/posthoc-landing.mjs:39
+      before: …out.match(re) || [, 'absent'])[1]; return { read: pick(/
+  PROSE(comment)     VALUE      docs/research/unit-503stalelabelwidth-2026-11-22/arm-realgate-newones.mjs:7
+      before: …2 B / 8 lines for one plant at a path of length 57, at `
+  PROSE(string)      LABEL_ONLY docs/research/unit-503stalelabelwidth-2026-11-22/arm-realgate-newones.mjs:104
+      before: …rr.length ? sha(r.stderr) : null, trackedRead: readFig('
+  PROSE(string)      LABEL_ONLY docs/research/unit-503stalelabelwidth-2026-11-22/arm-realgate-newones.mjs:145
+      before: … MORNING_D1.errLines, 'P5.d the tree really did change: 
+  PROSE(comment)     LABEL_ONLY docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs:14
+      before: …educible, and the only green figure * that may move is `
+  MATCHER(.endsWith) LABEL_ONLY docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs:58
+      before: …\n') ? 1 : 0), outSha: sha(r.stdout), trackedRead: fig('
+  PROSE(comment)     VALUE      docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs:74
+      before: …s unit's own // clean green capture, taken mid-fire at `
+  PROSE(string)      LABEL_ONLY docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs:97
+      before: …nted list': now.quotedOnly === PREREG.quotedOnly, 'P7.d 
+  MATCHER(.split)    LABEL_ONLY docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs:30
+      before: ….stdout.toString('utf8').split('\n')) { const m = /^\s*(
+  MATCHER(regex)     CAPTURE    docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs:33
+      before: …the capture`); return Number(m[1]); }; const TRACKED = /
+  PROSE(string)      LABEL_ONLY docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs:70
+      before: …y') === 3 && num(preT, POP, 'population') === 65, 'P6.c 
+  PROSE(comment)     LABEL_ONLY docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:8
+      before: …res a day apart (`unit-501` §1), and this * unit's own `
+  PROSE(string)      LABEL_ONLY docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:27
+      before: …'after the two docblock landings'], ]; const NAMED = { '
+  PROSE(comment)     LABEL_ONLY docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:27
+      before: …'after the two docblock landings'], ]; const NAMED = { '
+  PROSE(string)      LABEL_ONLY docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:114
+      before: …es.GUARDED === 3 && r.figures.UNGUARDED === 58), 'P6.d `
+  MATCHER(comparison) LABEL_ONLY docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:115
+      before: …ved': movedFigures.length === 1 && movedFigures[0] === '
+  PROSE(string)      LABEL_ONLY docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:116
+      before: …= 1 && movedFigures[0] === 'tracked files read', 'P6.e `
+  MATCHER(.includes) LABEL_ONLY docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:118
+      before: …nd.length === 1 && firstToLast.onlyInFirst[0].includes('
+  MATCHER(.includes) LABEL_ONLY docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:119
+      before: …d files read') && firstToLast.onlyInSecond[0].includes('
+  MATCHER(.match)    LABEL_ONLY docs/research/unit-509extractionrefusal-2026-11-23/posthoc-wsfile.mjs:128
+      before: …l))), rc: r.status, trackedRead: Number((outText.match(/
+  PROSE(string)      LABEL_ONLY docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs:160
+      before: …c: Boolean(cell.posthoc), rc: r.status, read: num(out, '
+  PROSE(comment)     LABEL_ONLY docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs:201
+      before: …join(' ')}]` : '')); } // The figure that is misnamed: `
+  PROSE(string)      VALUE      docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs:204
+      before: … === 0); console.log(''); console.log(`cells reporting "
+  PROSE(string)      LABEL_ONLY docs/research/unit-510quotepathskip-2026-11-23/confirm-landed.mjs:102
+      before: … row = { cell: cell.name, rc: r.status, read: num(out, '
+  MATCHER(regex)     CAPTURE    docs/research/verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-member.mjs:22
+      before: …(buf) => { const s = buf.toString(); const m = s.match(/
+
+§2  the figures my §3 should have published
+  consumer sites: 41   tally: {"PROSE(string)":16,"MATCHER(regex)":8,"PROSE(comment)":10,"MATCHER(.split)":2,"MATCHER(.endsWith)":1,"MATCHER(comparison)":1,"MATCHER(.includes)":2,"MATCHER(.match)":1}
+  MATCHER sites (break if the published STRING changes — cure R):  15
+  distinct FILES holding a matcher:                                11
+  MATCHER sites embedding a VALUE (break if the value changes — cure V): 0
+
+§3  the arm's own over-report, measured
+  arm §3 published "live consumer sites" = 17 FILES / 28 sites
+  of those sites, ACTUAL matchers = 15; the rest are prose that goes STALE, not blind
+  over-report factor on the site count: 1.87x
+
+§4  cripple — blank the method names in the window and every CALL-keyed matcher must lose it
+  call-keyed matcher sites: 6   still matching after the cripple: 0  CRIPPLE LIVE
+  NOT crippled by this: regex-body matchers, which are keyed on shape rather than on a call name.
