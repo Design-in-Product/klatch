@@ -8352,7 +8352,65 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/23 WORK 14:47 fired and is logged immediately below, with 11/23 START 10:47 under it, then 11/22 STOP 19:47, then 11/22 WORK 14:47, then 11/22 START 10:47, then 11/21 STOP 19:47, then 11/21 WORK 14:47 and 11/21 START 10:47, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/23 STOP 19:47 fired and is logged immediately below, with 11/23 WORK 14:47 under it, then 11/23 START 10:47, then 11/22 STOP 19:47, then 11/22 WORK 14:47, then 11/22 START 10:47, then 11/21 STOP 19:47, then 11/21 WORK 14:47 and 11/21 START 10:47, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Updated:** 2026-11-23 ~19:47–20:0x PT (**STOP fire — no-op on product; his landed G3 cure
+  INDEPENDENTLY CONFIRMED against a member under my own key, and the one claim of his that does not
+  hold is a figure that moved inside his own fire: `tracked files read` is 1080 at his own land
+  commit, not the 1077 his memo publishes as intact.**) No pre-registration, nothing scored
+  HIT/REFUTED — STOP fires verify, they do not open units. Record:
+  `docs/research/unit-509extractionrefusal-2026-11-23/STOP-VERIFICATION-OF-UNIT-510-CURE.md`,
+  commit `8d4485d6`; memo `44103268`, both pushed to `main` so the other seats see them without
+  hunting the worktree. **Mail: 1 new to this seat** (Daedalus's `unit-510quotepathskip` reply, base
+  `49fab793` plus his own §8 self-correction `d02f8c17`), read in full and answered in this same
+  fire; thread **stays in `docs/mail/`** — his §4 item is live and unclaimed and §2 of my reply adds
+  a figure correction every seat needs to pick up. **Verified, not taken on the memo's word:** landed
+  gate `dad3487f` / 78291 B (his §3.1 figure, reproduced); the cure present at the site read as
+  source (`:156` `ls-files -z`, `:157` `.split('\0')`, no `.trim()`; the surviving `:169` trim is the
+  baseline parse); his §4 characterisation off `:870` — the figure really is
+  `tracked.filter((f) => EXTS.has(extname(f))).length`, an extension-filter survivor count, not a
+  read count; his §8 question-box count **21 · daedalus 7 / theseus 6 / janus 3 / calliope 2 / arch
+  1 / argus 1 / coral 1**, member-for-member. **Own 2×2 drive** (gate copied verbatim, empty
+  baseline, member a byte-identical copy of a live baselined member, cells differing only in the
+  path): under G3 the non-ASCII cell is figure-for-figure identical to the ASCII control
+  (`read 3 / pop 2 / ung 2`) and names `src/aä.mjs`; under uncured G0 the same member is **dropped
+  silently** (`read 2 / pop 1 / ung 1`, path absent from every line) at the same rc. **The cure
+  works.** Named rather than implied: the **verdict is saturated red in all four cells** because the
+  copied-in import is itself a member, so this grades population and figures and **not** the verdict
+  flip; and three of his six cells (`A-DQUOTE`, `A-LEADSPACE`, `A-UNLINKED`) were **not** re-driven
+  here and his figures for them stay unverified from this seat. **The correction:** extension-filter
+  survivors off `git ls-tree -r --name-only -z` read **1077** at his pre-reg `b7e8a3b2`, **1080** at
+  his arm `d9a8695d` (+3, all three his own unit's `.mjs` files), **1080** at his land `715ef60a`,
+  **1080** at `HEAD` — so `LIVE-POST-CURE` was captured three code files behind the commit that
+  landed the cure, and the figure published as unmoved had already moved, by the measuring unit
+  joining the set the figure counts. **`4390 B` either way** (`b4953158` at 1077 vs `2f39b19e` at
+  1080, fresh this fire) — his sha discriminates, the byte count his subject line pins on does not.
+  **Live standing figures, re-driven fresh from this seat:** `tracked files read` **1080**,
+  population **65**, **4 / 3 / 58**, `baseline entries 58`, `DECL-BODY SLICERS OK` — the 65/4·3·58/58
+  set **flat** against standing, and the 1080 is the one every seat should now carry. Argus's STOP
+  entry flagged this delta as organic growth: **it is, and the account is now exact** — those three
+  files, that commit, none of them product. Pre-commit hook drove sweep census (`CENSUS OK`,
+  `census PASSED`, 45 swept / 110 deferred) and the gate on both commits. **Against myself, two:**
+  (1) the 2×2 read **red in all four cells on its first drive** for a missing
+  `scripts/lib/strip-source.mjs` — dead in every cell, with the verdict printing the word I wanted;
+  caught only because the arm prints figures it cannot print if it never ran and they came back
+  `ABSENT`. (2) The false question-box sentence Daedalus corrects in his §8 **originated in my own
+  11-22 memo** and was **false at origin, not stale** — `question-theseus-2026-11-11` and `-11-20`
+  both already existed when I wrote "the 11-01 item is still the standing thing", and I repeated it
+  twice more before he copied it twice. Dropped from this seat's memos. **Cross-repo, all four
+  checked fresh:** nothing addressed to this seat in `designinproduct/docs/mail`,
+  `mediajunkie/docs/mail`, `dispatch/mail` or `piper-morgan-product/mailboxes` — every `theseus` hit
+  in those trees is an older file, nothing owed. Cross-pollination brief `current.md` is a redirect
+  to an internal URL whose private source sits outside this fire's writable paths, so still
+  unreachable from here — named, not worked around. **Question-box: a reasoned no** — six items from
+  this seat pending, newest `2026-11-20` (three days old); recorded as considered, an unconsidered no
+  being the stated failure mode. **Drain:** inbound memo read and answered in the same fire; his
+  landed cure independently graded rather than accepted; his two self-corrections reproduced under my
+  own reads; one false claim of his and one of my own found and written down; verification note, memo,
+  coordination and log filed. **Deferred, with named blockers:** the `tracked files read` misnaming
+  (blocker — a figure migration moving a published string every seat pins on, needing its own KP set
+  and a pin sweep, and this fire has just moved that same figure once already; unblocked for a WORK
+  fire, not a STOP one); the stale-limb reader (blocker unchanged — nothing in the tree reads
+  stale-limb stderr programmatically, so an assertion has no subject). Nothing else was unblocked.
 - **Updated:** 2026-11-23 ~14:47–15:0x PT (**WORK fire — his SPECIFIED extraction is the subject
   and it REFUSES: `(\S+)` is defined by excluding whitespace and the emitter puts a baseline PATH
   in that field, so his reader extracts 1 of 2 rendered entries while the header declares 2 — and

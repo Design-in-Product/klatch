@@ -281,3 +281,145 @@ gate wrote nothing to stderr for a repository whose only tracked file is a brand
 unguarded brace-balance body slicer. That empty file is the finding.
 
 **Step 3** — this entry is the final record of the fire; this paste is its last commit.
+
+---
+
+## 19:47 — Session resumed (STOP fire, Opus 5)
+
+**Day-part:** STOP. No unit opened, no pre-registration, nothing scored HIT/REFUTED — a STOP fire
+verifies and writes the state down. **No-op on product:** nothing under `packages/` touched, no test
+file, no `scripts/` change from this seat.
+
+**19:47–19:48 — Checklist.** Worktree synced by the wrapper (`7129b561`), tree clean.
+`docs/COORDINATION.md` read; `docs/mail/` listed. **1 new memo to this seat** since my 14:47
+checkpoint `f1583633`, in two commits: Daedalus's `unit-510quotepathskip` reply `49fab793`, plus
+`d02f8c17`, his own §8 self-correction appended to the same file. Both read in full before any other
+work. `docs/briefs/cross-pollination/current.md` is a redirect to
+`https://designinproduct.com/internal/briefs/2026-11-23-brief/`, private source under
+`mediajunkie/designinproduct/src/internal/` — outside this fire's writable paths, so unreachable
+from here. Named, not worked around.
+
+**What he asked for and what he claimed.** His §5.3 close: my `ls-files` quoting blindness is
+**landed cured**, and the thing he graded was not my finding but **my cure** — I had written "one
+flag — `-z` with a NUL split, or `-c core.quotePath=false`", and those are two candidates whose
+separating cell (a literal `"` in a path) did not exist until his unit built it. `core.quotePath=false`
+closes the instance I measured and leaves the mechanism open. He also found a **third** skip I had not
+seen: the `.trim()` on the tracked read turns a leading-space path into a nonexistent one, straight
+into the `catch { continue }`. Four readers, strictly nested, 2 / 3 / 4 / 5 of 6; G3 landed.
+
+**19:48–19:52 — Verified, every figure off a tool call in this fire, nothing taken on the memo's
+word.**
+
+- **Landed identity:** `dad3487f`, **78291 B** — his §3.1 figure, reproduced. Uncured predecessor
+  (`git show 715ef60a^:…`) `1ec34550`, 74108 B.
+- **Cure present at the site, read as source:** `:156` `['-C', ROOT, 'ls-files', '-z']`, `:157`
+  `.split('\0').filter(Boolean)` with **no `.trim()`**; the surviving `.trim()` at `:169` is the
+  baseline-file parse, a different read, legitimately trimmed.
+- **His §4 characterisation:** `:870` is
+  `tracked.filter((f) => EXTS.has(extname(f))).length` — the figure named `tracked files read` **is
+  an extension-filter survivor count, not a read count**, as he says. Read off the code.
+- **His §8 question-box count:** `/Users/xian/Development/dispatch/mail/` holds **21** `question-*`
+  items — daedalus **7**, theseus **6**, janus **3**, calliope **2**, arch **1**, argus **1**, coral
+  **1**. Member-for-member exact.
+
+**Own 2×2 drive — the cure works.** Fresh `git init` per cell; the gate written **verbatim** (no
+substitution) plus its only local import; **empty baseline**, so any member is NEW and must redden;
+member a byte-identical copy (`01d3dac4`, 30570 B) of a live baselined population member; cells
+differing **only in the path**:
+
+```
+gate        cell        rc read pop ung  src/a*.mjs named in output
+G0_uncured  A-ASCII     1  3    2   2    src/a.mjs
+G0_uncured  A-NONASCII  1  2    1   1    (absent)
+G3_landed   A-ASCII     1  3    2   2    src/a.mjs
+G3_landed   A-NONASCII  1  3    2   2    src/aä.mjs
+```
+
+Under G3 the non-ASCII cell is figure-for-figure identical to the ASCII control and names the
+member; under uncured G0 the same member is **dropped silently** — population 2 → 1, read 3 → 2,
+path absent from every line — at the same rc. **Two limits said out loud rather than implied:** the
+**verdict is saturated red in all four cells** because the copied-in import is itself a population
+member, so this grades population and figures and **not** the verdict flip (`pop 0`, `OK`, rc 0 — the
+cell `unit-509`'s own arm measured, where the quoted file was the only member); and three of his six
+cells (`A-DQUOTE`, `A-LEADSPACE`, `A-UNLINKED`) were **not** re-driven here, so his figures for them
+stay unverified from this seat.
+
+**The one claim of his that does not hold — and it is his own unit that broke it.** His §3: *"Both
+published documents byte-identical, every figure unmoved. Your standing 1077 / 65 / 4·3·58 / 58 is
+intact."* First half true, and his pre/post pair proves it properly (both captures 4390 B
+`b4953158`, both `.err` 0 B `e3b0c442`, `1077` in each). Second half **false at his own land
+commit**. Extension-filter survivors off `git ls-tree -r --name-only -z`:
+
+```
+b7e8a3b2^  aae6887d  1077
+b7e8a3b2   b7e8a3b2  1077   pre-registration   added 0
+d9a8695d   d9a8695d  1080   arm                added 3
+715ef60a   715ef60a  1080   THE LAND COMMIT    added 0
+HEAD       7129b561  1080                      added 0
+```
+
+The three added at `d9a8695d` are `unit-510quotepathskip-2026-11-23/{arm-quotepathskip.mjs,
+confirm-landed.mjs, posthoc-quoting-and-identity.mjs}` — **his own unit's**. So `LIVE-POST-CURE` was
+captured three code files behind the commit that landed the cure, and the figure the memo publishes
+as unmoved had already moved: **not by the cure, by the measuring unit joining the set the figure
+counts.** That is his §4 mechanism one level up — because the figure is an extension-filter survivor
+count, *any* file with a code extension moves it, including the ones written to measure it.
+
+**And the byte count cannot see it:** `LIVE-POST-CURE.out` 4390 B `b4953158` at 1077;
+`STOPVERIFY-LIVE.out` 4390 B `2f39b19e` at 1080 (fresh, this fire). `1077` and `1080` are both four
+characters, so **4390 B either way**. His §3 quotes the sha, so his leg is sound; his **subject
+line** pins on "byte-identical at 4390 B", and that pin is green across the drift. Third time this
+thread has measured a byte count blind to the states it was offered as evidence about.
+
+**Live standing figures, gate re-driven fresh from this seat:** `tracked files read` **1080**,
+population **65**, `MARKED 4 / GUARDED 3 / UNGUARDED 58`, `baseline entries 58`,
+`DECL-BODY SLICERS OK`. The 65 / 4·3·58 / 58 set is **flat** against standing; **1080** is the figure
+every seat should now carry in place of 1077. Argus's STOP entry flagged this delta as organic
+growth — it is, and the account is now exact: those three files, that commit, all Daedalus's, none
+product. Pre-commit hook drove the sweep census on both of my commits (`CENSUS OK`, `census PASSED`,
+45 swept / 110 deferred) and the gate each time.
+
+**Against myself, two.**
+
+1. **The 2×2 read red in all four cells on its first drive — and it was dead in every one of them.**
+   `ERR_MODULE_NOT_FOUND` for the `scripts/lib/strip-source.mjs` I had not copied into the synthetic
+   repo: the gate never ran a line, and the column I was reading printed the word I expected. What
+   caught it was **not** the verdict but `read`/`pop`/`ung` coming back `ABSENT` — the arm prints
+   figures it cannot print if it never ran. Keyed on rc alone I would have published a four-cell
+   agreement manufactured by a crash. This is the hazard this seat has filed before, arriving in my
+   own instrument.
+2. **The false sentence Daedalus corrects in his §8 is mine, and it was false when I wrote it.** He
+   says he took *"the 11-01 question-box item … is still the standing thing neither seat can move"*
+   from my memo verbatim. Grepped: origin is `theseus-…-2026-11-22.md:187`, repeated by me at
+   `…2026-11-23.md:205` and `:158`, then by him twice. It did **not** go stale —
+   `question-theseus-2026-11-11` and `question-theseus-2026-11-20` both already existed when I first
+   wrote it, so it was **false at origin by my own filings**, with the directory it describes one
+   command away. A boilerplate "for xian" line is the shape nobody re-checks, because it is not what
+   the memo is about. Dropped from this seat: a counted figure, or nothing.
+
+**Cross-repo, all four checked fresh.** Nothing addressed to this seat in
+`designinproduct/docs/mail` (newest items are CfA/lightning-talk traffic between Janus and Themis),
+`mediajunkie/docs/mail` (CIO→Pard cycle memos), `dispatch/mail` (dispatch daily signals plus
+Daedalus's own 11-23 addendum) or `piper-morgan-product/mailboxes`. Every `theseus` hit across those
+trees is an older file. **Nothing owed, nothing sent.**
+
+**Question-box check: a reasoned no.** Six items from this seat pending, newest
+`question-theseus-2026-11-20-the-count-rises-with-the-honesty-of-the-report.md`, three days old. The
+marginal seventh is noise rather than curiosity. Recorded as considered — an unconsidered no being
+the stated failure mode.
+
+**Thread left in `docs/mail/`**, twelfth night running: his §4 `tracked files read` misnaming is live
+and unclaimed, and §2 of my reply adds a figure correction the other seats need to pick up. Not a
+close either way.
+
+**Drain.** Inbound memo read and answered in the same fire; his landed cure independently graded
+rather than accepted; both his self-corrections reproduced under my own reads; one false claim of his
+and one of my own found and written down; verification note, memo, coordination entry and this log
+filed. **Deferred, each with a named blocker:** the `tracked files read` misnaming — blocker is that
+it is a figure migration moving a published string every seat holds pins on, needing its own KP set
+and a pin sweep, and this fire has already moved that figure once today; it belongs to a WORK fire,
+not a STOP one, and is unblocked for whichever seat opens one. The stale-limb reader — blocker
+unchanged and still his: nothing in the tree reads stale-limb stderr programmatically, so an
+assertion has no subject. Nothing else was unblocked.
+
+**Wrap verification.** Step 1 and Step 2 output pasted below after the final push.
