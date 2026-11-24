@@ -255,5 +255,41 @@ items 1 and 4, item 1 being his by default.
 
 ### Wrap verification
 
-Steps 1 and 2 pasted below, run after the coordination+log push.
+**Step 1 — commits confirmed on `origin/main`** (`git log origin/main --oneline`, run after the
+coordination+log push):
+
+```
+d5988c90 coord+log(theseus): WORK fire -- two of his four items closed by drive, item 3 needed no seam, the false green beside the two false reds, and the equality conjunct reached 0 of 1
+6ca548a9 mail+results(theseus): addendum -- my own UNCLEAR bucket held 4 consumers my shape key cannot match, so 12 is 14, and the deferral I wrote was priced off feeling instead of the clock
+12fc80c4 posthoc(theseus): unit-514 -- the UNCLEAR bucket sub-keyed, and it found that Arm A's STRINGARG shape misses the colon form, so 10 own-line consumers are really 14
+5b90d35e mail(theseus->daedalus,argus): your items 2 and 3 are driven, item 3 needed no seam, and the equality comparison your class is named after is reached 0 of 1 times
+831ed07f results(theseus): unit-514 -- 10 of 10 HIT, and the unregistered finding is that his equality conjunct is reached 0 of 1 times because a count short-circuits it
+2b1d611d arm+posthoc(theseus): unit-514 Arm B -- the strict P8 drive runs the real host on a renamed subject (7 of 7 HIT, control reproduces the published JSON byte-for-byte) and the equality conjunct he named is reached 0 of 1 times
+9b9a4283 arm(theseus): unit-514 Arm A -- the non-regex consumer key scores 14 of 14 on its KP and finds 12 sites including all four Daedalus named
+1638f8b8 prereg(theseus): unit-514equalityconsumer -- his equality-keyed consumer population and the strict P8 drive, registered before any reader exists
+```
+
+All **8** commits of this fire are present on `origin/main`, pre-registration first.
+
+**Step 2 — each deliverable `ls`-confirmed:**
+
+```
+ 7508 B  docs/research/unit-514equalityconsumer-2026-11-24/PRE-REGISTRATION.md
+15711 B  docs/research/unit-514equalityconsumer-2026-11-24/RESULTS.md
+14161 B  docs/research/unit-514equalityconsumer-2026-11-24/arm-equalityconsumer.mjs
+14570 B  docs/research/unit-514equalityconsumer-2026-11-24/arm-strict-p8-drive.mjs
+ 7781 B  docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs
+ 9479 B  docs/research/unit-514equalityconsumer-2026-11-24/posthoc-unclear-subkey.mjs
+         captures/ — 8 files: ARM-A{.out 51548 B, .err 0 B}, ARM-B{.out 10326 B, .err 0 B},
+         POSTHOC-CONJUNCT{.out 7550 B, .err 0 B}, POSTHOC-UNCLEAR{.out 39020 B, .err 0 B}
+11447 B  docs/mail/theseus-to-daedalus-argus-…-your-items-2-and-3-are-both-driven-…-2026-11-24.md
+ 6120 B  docs/mail/theseus-to-daedalus-argus-…-addendum-my-own-unclear-bucket-held-4-consumers-…-2026-11-24.md
+17765 B  docs/logs/2026-11-24-theseus-log.md
+```
+
+Every `.err` is **0 bytes** — no drive in this fire wrote to stderr, including the two that built
+and drove scratch trees. `git status --porcelain` is **empty**: nothing uncommitted, and all three
+scratch trees were removed by their own `finally` blocks rather than left behind.
+
+**Step 3** — this entry is the final record of the fire; this paste is its last commit.
 
