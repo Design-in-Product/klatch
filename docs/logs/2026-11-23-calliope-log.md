@@ -54,4 +54,35 @@ Gate re-verified fresh, not assumed clean from the one-file `scripts/` diff:
 
 All figures byte-identical to standing. `git status --short` clean before and after; `lsof -i :3001` port free. `calliope-tasks.md`'s mandatory `log.html` item correctly not due this render (STOP-fire only; last written 11-22, next due tonight).
 
+---
+
+## 17:0x — Session resumed (SWEEP fire)
+
+No-op on product, verified not assumed. Checkpoint is this seat's own 11-23 MID-fire commit `325c4113`. `git log 325c4113..HEAD --format='%h %an %ci %s'` — 16 new commits, none mine: Daedalus's `unit-508grainvsextraction` chain (5 commits — Theseus's path-field refutation conceded under Daedalus's own drive; the grain Theseus specified is half a reader, since keying the pair set on containment instead of equality still separates 4 of 4 while minting a pair labelled UNGUARDED, so the separation test that graded the grain is green on the defective extraction; 16 of 16 assertions HIT); Argus's own WORK-fire no-op; Theseus's `unit-509extractionrefusal` chain (6 commits — Daedalus's specified `(\S+)` extraction is defined by excluding whitespace while the emitter puts a baseline path in that field, so it extracts 1 of 2 rendered entries while the header declares 2, and the `entryCount` denominator is computed with the extraction's own regex, so self-reconciliation reads GREEN on the refusal; 26 registered assertions, 24 HIT, 2 refuted, both Theseus's own; his refuted hypothesis also found a LIVE gate blindness, a new unguarded slicer in a non-ASCII-named file landing rc 0 at `tracked files read: 0`). `git diff --stat 325c4113..HEAD -- packages/ scripts/` — one file, `scripts/verify-decl-body-slicers.mjs` (+70/-11), no `packages/` diff.
+
+Mail: 2 new files since checkpoint, both cc-only to this seat (Daedalus→Theseus/Argus, Theseus→Daedalus/Argus, both cc xian/Janus/Calliope/Iris) — the same unit-508/509 exchange above, read in full. Neither poses a question for this seat or xian. Four standing direct-to-Calliope Pard mails plus this seat's own 09-07 html-mirror mail re-checked — still present in `docs/mail/`, correctly left open.
+
+Cross-repo, all four fetched fresh and diffed from the MID-fire check (~12:38):
+- `designinproduct` — 7 new (Themis/Terminus CfA-lightning-talk and call-prep traffic), subjects and diffs grepped, zero `klatch|calliope` hits.
+- `mediajunkie` — 0 new since the MID-fire check.
+- `piper-morgan-product` — 0 new.
+- `dispatch` — 1 new (Janus's revoked-GitHub-token memo to Dispatch-PM/Dispatch-DinP), read in full — a Cowork/kindbook token-rotation matter, not addressed to or about Klatch, zero hits.
+
+Nothing owed from any.
+
+Cross-pollination brief re-read in full directly (`git -C designinproduct show origin/main:src/internal/briefs/2026-11-23-brief.md`) — same brief as this morning's START fire (window 2026-11-21 to 2026-11-23, unchanged), the same two findings already known. Nothing new.
+
+Rollup — a genuine 2-day staleness found and corrected, not just re-confirmed: item 3's Managed Agents smoke-test day-count still read "32 days"/"day 32 today" from its own v188 correction two days ago. `node -e` against today's date (2026-10-21 as day 1, this doc's own inclusive-exclusive convention) gives **34**, re-verified against a fresh `git ls-remote --heads origin` (still no `smoke`/`ma-smoke`/`managed` branch). Corrected throughout item 3, `attention-rollup.md` **v188 → v189**, needs-you unchanged at 9. Same shape as the 11-21 SWEEP-fire correction of the same item.
+
+Gate re-verified fresh, SWEEP-fire convention regardless of the one-file `scripts/` diff:
+- `npm run typecheck` — clean across all 4 workspaces + scripts.
+- Server: **147 files / 2295 passed / 1 skipped (2296)**.
+- Client: **29/42 files, 354/367 (13 skipped)**.
+- `node scripts/sweep-probes.mjs --census` — **155 probe files, 45 swept / 110 deferred, CENSUS OK**.
+- Full driving sweep re-run fresh (backgrounded past the 120s foreground limit, picked up via completion notification) — **SWEEP PASSED, 45 of 45 swept probes green, 0 red, 0 blocked, 110 deferred**.
+
+All figures byte-identical to standing. `git status --short` clean before and after; `lsof -i :3001` port free. `calliope-tasks.md`'s mandatory `log.html` item correctly not due this render (STOP-fire only; last written 11-22, next due tonight).
+
+**Drain:** 16 new commits read and author-checked, none mine; one `scripts/` file diffed and accounted for (research instrument, report-only); 2 cc-only mail files read in full, nothing owed; four standing Pard mails and this seat's own html-mirror mail re-confirmed correctly still open; all four cross-repo mailboxes fetched fresh, nothing owed from any; cross-pollination brief re-read, unchanged since this morning; rollup re-checked and one genuine staleness found and corrected (v188 → v189); typecheck, both test suites, census, and the full driving sweep all re-driven fresh and byte-identical to standing. Two consecutive checks found nothing further unblocked. Fire closed bounded.
+
 **Drain:** 11 new commits read and author-checked, none mine; one `scripts/` file diffed and accounted for (report-only research instrument, no verdict key touched); 2 cc-only mail files read in full, nothing owed; all four cross-repo mailboxes fetched fresh and content-grepped, nothing owed from any; rollup and cross-pollination brief re-checked, no correction due; typecheck, both test suites, census, and the full driving sweep all re-driven fresh and byte-identical to standing. Two consecutive checks found nothing further unblocked. Fire closed bounded.
