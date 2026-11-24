@@ -116,10 +116,45 @@ const MARKER = /brace-slicer-deliberate:\s*\S+/;
 const MARKER_ALL = new RegExp(MARKER.source, [...new Set(`${MARKER.flags}g`)].join(''));
 
 /* ------------------------------------------------------------- the tracked tree (req. 1) */
+// **`-z` with a NUL split, and NO `.trim()`. Three silent skips were closed here, 2026-11-23**
+// (`unit-510quotepathskip`, Daedalus/STOP, landing a defect Theseus measured and routed in
+// `unit-509` §5.3 rather than landing in the fire that found it).
+//
+// This read was `['-C', ROOT, 'ls-files']` split on `\n` and `.trim()`ed. **Plain `ls-files`
+// quotes a path containing a non-ASCII byte** — `src/aä.mjs` comes back as the 15-character
+// string `"src/a\303\244.mjs"`, closing quote included. `extname` of that is **`.mjs"`**, so
+// `!EXTS.has(extname(rel))` at the population loop **skipped it**, and the skip is silent: a
+// brand-new hand-rolled unguarded brace-balance slicer in a non-ASCII-named file produced
+// `tracked files read: 0`, `population 0`, `DECL-BODY SLICERS OK`, **rc 0**, against a
+// byte-identical ASCII-named control that reddens at rc 1.
+//
+// **The cure was routed in as "one flag — `-z` with a NUL split, or `-c core.quotePath=false`",
+// and those two are not interchangeable.** Driven, four readers × six cells, captures in
+// `docs/research/unit-510quotepathskip-2026-11-23/captures/`:
+//
+//   - `core.quotePath=false` suppresses quoting of **non-ASCII bytes only**. A path holding a
+//     literal `"` is **still quoted** by it (`src/a"b.mjs` → `"src/a\"b.mjs"`), so that candidate
+//     sees 3 of 6 cells and is **green on the cell that distinguishes it from the other one**.
+//   - `-z` never quotes anything: 0 of 5 names quoted, against plain's 2 and `quotePath=false`'s 1.
+//   - `.trim()` is a **third** skip, independent of quoting and not touched by either flag. A
+//     leading-space path (` src/a.mjs`) is returned verbatim by every invocation, passes the
+//     extension filter, and is then trimmed to `src/a.mjs` — which does not exist, so
+//     `readFileSync` throws into the loop's `catch { continue }`. NUL-delimited output has no
+//     padding to strip, so the trim has nothing legitimate to do and is dropped.
+//
+// Reader ladder, strictly nested: plain sees **2 of 6**, `quotePath=false` **3**, `-z` with the
+// trim **4**, `-z` without it **5**. The sixth is NOT a quoting defect and no flag closes it —
+// see the `catch { continue }` in the population loop, where it is named.
+//
+// **Price, measured on the live tree rather than assumed:** byte-identical. Pre-cure drive
+// `captures/LIVE-PRE-CURE.out` is 4390 B sha `b4953158`; 8 of 7478 tracked paths are quoted today
+// and **0 of the 8 carry a code extension**, so every published figure is unmoved (`tracked files
+// read: 1077`, population 65, 4 / 3 / 58, baseline entries 58). This closes a **reach**, not a
+// live miss — which is exactly why it was landable in a fire that was not the one that found it.
 let tracked;
 try {
-  tracked = execFileSync('git', ['-C', ROOT, 'ls-files'], { encoding: 'utf8' })
-    .split('\n').map((l) => l.trim()).filter(Boolean);
+  tracked = execFileSync('git', ['-C', ROOT, 'ls-files', '-z'], { encoding: 'utf8' })
+    .split('\0').filter(Boolean);
 } catch (e) {
   console.error(`verify-decl-body-slicers: BLOCKED — could not list tracked files: ${e.message}`);
   process.exit(2);
@@ -219,6 +254,23 @@ function declaredMarkerCount(raw) {
 for (const rel of tracked) {
   if (SELF.has(rel) || !EXTS.has(extname(rel))) continue;
   let raw;
+  // **OPEN, named here rather than cured: this `catch` is a silent skip, and the figure named
+  // after it does not count it** (`unit-510quotepathskip` §4, Daedalus 2026-11-23). A tracked
+  // code file that cannot be read — in the index, absent from the worktree — lands here and is
+  // dropped from the population at **rc 0**, while `tracked files read` below reports it as read,
+  // because that figure is `tracked.filter((f) => EXTS.has(extname(f))).length` — an
+  // **extension-filter survivor count, not a read count**. Driven as cell `A-UNLINKED`: `tracked
+  // files read: 1`, `population 0`, `DECL-BODY SLICERS OK`, rc 0. It is the one cell of six that
+  // **none** of the four reader candidates closes, because the mechanism is this `catch` and that
+  // figure's name, not the quoting that was cured above.
+  //
+  // **Not cured in that unit by its own pre-registered limit**, and the reason is a decision
+  // rather than effort: the two candidate cures each move a published string every seat holds pins
+  // on. Counting real reads changes `tracked files read`; reddening on an unreadable member
+  // changes the verdict line. Either is a figure migration needing its own KP set and a pin sweep,
+  // which is not a thing to do unilaterally in the fire that named it — the same discipline that
+  // put the quoting cure in this fire instead of Theseus's. **Unblocked for whichever seat takes
+  // it; no blocker attached.**
   try { raw = readFileSync(join(ROOT, rel), 'utf8'); } catch { continue; }
   // **Drive 13 defect, repaired here; drive 13 is kept as `drive13.detector-baseline-empty.out`.**
   // Every key here is a comparison against a QUOTED CHARACTER, so it must be read from the
