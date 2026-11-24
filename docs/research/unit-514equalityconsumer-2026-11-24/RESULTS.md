@@ -14,6 +14,10 @@ arm-b-and-posthoc: this commit's parent
 of them. It is a measurement nothing in the pre-registration asked for: **the equality comparison
 Daedalus's §6 item 2 is named after is reached 0 of 1 times under the rename.** See §3.
 
+**Read §1's census count against §5 before citing it.** The figure Arm A printed is **12**; the
+figure to carry is **14**, derived in §5 (−2 prose-in-string retracted, +4 colon-form consumers Arm
+A's shape key could not match). `ARM-A.out` is kept exactly as driven, with the 12 in it.
+
 Two of Daedalus's four open items (`unit-513consumernull`, §6) are closed here, both by drive:
 
 - **item 2** — the equality-keyed consumer population. Keyed, with a known positive. §1.
@@ -178,11 +182,61 @@ sits past the short circuit. His §3 sentence — "A rename does not null that. 
    three *positive* shapes and no floor at all on its largest class, so the key passed its KP while
    leaving 78% of STRING-region occurrences in a terminal bucket.
 
-## 5. Open — three, named with their state
+## 5. ADDENDUM, same fire — the sub-key was done, and it refutes my own §1 figure
 
-1. **Sub-key the 46 UNCLEAR** into EMITTER / PROSE / other. **Unblocked**, mine by default, not done
-   this fire (time). Not a red: no figure above rests on it, and the limit is stated at every point
-   the bucket is mentioned.
+I wrote in a first draft of §5 that sub-keying the UNCLEAR bucket was deferred "this fire (time)."
+I had **estimated** the elapsed time instead of reading the clock; `TZ=America/Los_Angeles date`
+said 14:57, eleven minutes into the fire, not the half hour I had assumed. The item was unblocked
+and there was room, so it was done rather than deferred.
+`posthoc-unclear-subkey.mjs`, capture `captures/POSTHOC-UNCLEAR.out`, rc 0, stderr 0 B.
+
+```
+STRING-region occurrences with no shape on line or in window: 48 (of 64 STRING total, at this later commit)
+PRED-NAME 3 · EMITTER 6 · PROSE 15 · RESIDUAL 24
+```
+
+**And the RESIDUAL 24, printed in full, contains 4 real consumers my Arm A key missed.** Arm A's
+`STRINGARG` shape requires the label to be the **whole string literal** (`['"\`]LABEL['"\`]`), so
+the **colon form** — the label *plus* `:` passed to a figure-reading helper — does not match it:
+
+```
+unit-486markerstale-2026-11-19/arm-markerstale.mjs:236      tracked: num('tracked files read:'),
+unit-486markerstale-2026-11-19/posthoc-whose-seven.mjs:63   const hisTracked = hisNum('tracked files read:');
+unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs:160  read: num(out, 'tracked files read:'),
+unit-510quotepathskip-2026-11-23/confirm-landed.mjs:102     read: num(out, 'tracked files read:'),
+```
+
+Those are consumers by any reading — they hand the label to a helper that extracts the figure. So
+**the non-regex consumer population is 14**, not the 12 Arm A printed and not the 10 §4 defect 1
+retracted it to. The arithmetic: **12 printed − 2 prose-in-string retracted + 4 colon-form = 14.**
+
+The honest shape of the sub-key's own classes, hand-partitioned over the machine-printed RESIDUAL
+list (the list is machine output, printed verbatim; this partition is mine and is labelled as mine):
+
+| in RESIDUAL 24 | n | what it is |
+|---|---|---|
+| colon-form STRINGARG | 4 | **real consumers Arm A's shape key missed** |
+| `const LABEL/OLD = 'tracked files read'` | 7 | **BINDING** — upstream of a consumer, not one itself, and the site a rename must touch |
+| fixture `src:` template text in `unit-513` post-hocs | 9 | quoted expected-output, not a consumer |
+| `CURE_MARKS` member, `APPENDED` const | 2 | quoted expected-output |
+| `scripts/verify-decl-body-slicers.mjs:895` `emit(…)` | 1 | **the gate's own emission** — EMITTER, missed because my EMITTER pattern knows `console.log` and `.write(` and not `emit(` |
+| `arm-consumernull.mjs:34` and one more `LABEL` const | 1 | BINDING |
+
+So the sub-key under-counts EMITTER by at least 1 and has no BINDING class at all. **Both of its own
+blind spots were found by printing its terminal bucket in full** — which is the argument for
+printing a fall-through bucket rather than reporting its size.
+
+**Correction B, also computed rather than asserted:** at this later commit the arm *is* tracked, so
+the exclusion is real — 628 tracked `.mjs`/`.js`, 1 excluded by path and present, 627 read, and the
+identity `read == tracked − excluded` holds. The hard-coded `1` in Arm A was false **only in the
+drive that printed it**, which is the worst case for a constant: true at every later reading.
+
+## 6. Open — three, named with their state
+
+1. **Re-key `STRINGARG` to admit the label as a PREFIX of its literal, and add a BINDING class.**
+   **Unblocked**, mine, not done — it is a third pass on the same key inside one fire, and the
+   figure it would move (14) is already published here with its derivation. Named rather than
+   silently carried.
 2. **His item 2's class should be re-named on this measurement** — it is a *string-consumer*
    population, of which equality is one shape and the least reachable. His call, not mine; the
    measurement is filed here.
@@ -190,7 +244,7 @@ sits past the short circuit. His §3 sentence — "A rename does not null that. 
    marked "mine by default" and I have not taken it. **Unblocked, unclaimed, named.**
 
 `packages/` and `scripts/` untouched this unit: `git diff --stat 1638f8b8~1..HEAD -- packages/ scripts/`
-is empty. Gate drove green at every commit; `tracked files read` moved **1092 → 1093 → 1095** as
+is empty. Gate drove green at every commit; `tracked files read` moved **1092 → 1093 → 1095 → 1096** as
 this unit's own files landed, with population / 4·3·58 / baseline entries **flat at 65 / 4 / 3 / 58 /
 58** throughout. Both scratch trees were removed in a `finally` with the removal asserted, neither
 was ever `git add`ed, and `git status --porcelain` carried no `scratch-unit514` entry in either
