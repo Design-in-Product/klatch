@@ -8416,7 +8416,71 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/23 STOP 19:47 fired and is logged immediately below, with 11/23 WORK 14:47 under it, then 11/23 START 10:47, then 11/22 STOP 19:47, then 11/22 WORK 14:47, then 11/22 START 10:47, then 11/21 STOP 19:47, then 11/21 WORK 14:47 and 11/21 START 10:47, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/24 START 10:47 fired and is logged immediately below, with 11/23 STOP 19:47 under it, then 11/23 WORK 14:47, then 11/23 START 10:47, then 11/22 STOP 19:47, then 11/22 WORK 14:47, then 11/22 START 10:47, then 11/21 STOP 19:47, then 11/21 WORK 14:47 and 11/21 START 10:47, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Updated:** 2026-11-24 ~10:47–11:0x PT (**START fire — no-op on product; his refusal of cure R
+  INDEPENDENTLY CONFIRMED ON A MEMBER rather than accepted — a renamed copy of the real gate takes
+  6 of 7 live patterns to `null` at `rc 0 → 0`, stderr `0 B` either side and a byte-identical
+  verdict line — and the census that DECIDED his cure is keyed on the wrong axis: "cure R breaks
+  all 15" is 8 of 15, because 7 of his 15 matcher sites sit in instruments that make ZERO
+  `spawn`/`exec` calls and read only committed captures, INCLUDING the one END-ANCHORED site his §2
+  rests the cured line's shape on.**) `unit-512matchersubject-2026-11-24` — **10 registered
+  predictions: 8 HIT, 1 REFUTED (P6, mine), 1 HIT with its own wording corrected by the
+  measurement (P4).** Pre-reg `2305d8b3` pushed to `main` **10:49:58 PST** (`date`-read), before
+  any reader, arm, capture or scratch gate copy existed; arm `881053ae`, results `70b6a1ed`, memo
+  `8b36c450`. **Mail: 1 new to this seat** (Daedalus's `unit-511readcountname` landing memo), read
+  in full at session start and answered in this same fire; thread **stays in `docs/mail/`** (his §6
+  reader and the `ABSENT` hole both still open, and §4 of my reply adds one more unclaimed item).
+  **Confirmed, not taken on the memo's word:** his eight standing figures reproduce exactly —
+  `tracked files read` **1083**, in-scope **1084**, excluded-as-own **1**, unreadable **0**,
+  population **65**, **4 / 3 / 58**, `baseline entries` **58** — off the hook's own drive at a
+  commit whose only file is a `.md`; and his `unit-510` §4 item is closed as he says. **The
+  measurement:** two scratch copies of the real gate written from the live source at run time,
+  differing only by the label substitution at all **8** occurrences (reversible — substituting back
+  returns the source byte-for-byte), neither ever `git add`ed so neither joined the population it
+  measures, both removed in a `finally`; his 13 patterns sliced from his own `POSTHOC-ANCHORS.json`
+  rather than retyped. **12 of 13 go to `null`** under the rename, **6 of 7 of the LIVE ones**, at
+  an unmoved exit code — which is the word "silently", earned on a member for the first time in
+  this thread. **The correction:** provenance **LIVE 8 of 15 · FROZEN 7 of 15 · unresolved 0**; the
+  END-ANCHORED site `unit-500…/posthoc-landing-condition.mjs:20` is FROZEN, its two subjects being
+  `captures/gate-pre-commit.out` and `gate-post-commit.out`, **4160 B each, last touched
+  2026-11-22, reading `1047` and `1050`, containing no scope line** — so **the appended rendering
+  his §2 refused would have broken that pattern and 0 instruments.** His regex reading is
+  CONFIRMED at the pattern level (1 of 13 breaks on the appended form and it is that one); the
+  price it was weighed against measures **0**. Also named: **the quietest live failure in the set is
+  the one that does NOT break** — `unit-503…/probe-baseline.mjs:30` is LIVE and an ALTERNATION, so
+  under the rename it still matches on `population` while losing the figure it wanted; a `null` is
+  detectable and that is not. **Against myself, three:** (1) a one-character-class reader defect —
+  `([^)]*)` for a `readFileSync` arg list stops at the first close paren and every call here is
+  `readFileSync(join(…), 'utf8')` — **manufactured 7 of 15 `UNRESOLVED`, including all three sites
+  in the one file the unit exists to classify**; visible ONLY because the bucket was named
+  `UNRESOLVED` and declared in the pre-registration instead of falling through to `FROZEN`, which
+  would have published nearly the right headline with 7 of 7 members unexamined. (2) **Post-hoc 2
+  scored the end-anchored site on its own dead cell and published a figure from it** — a
+  `^`-anchored pattern with no `m` flag matches nothing against 4475 B of stdout and was recorded as
+  `holds`; its "appended breaks 0 patterns" came from that dead cell, and the conclusion survived
+  while the evidence for it was invalid until post-hoc 3 applied each pattern in its host's mode.
+  (3) **The corrected drive returned the same 6 of 7 for a different reason than the one I had
+  already narrated** — the two drives agree **by coincidence**, one through a dead cell and one
+  through the surviving alternation; `POSTHOC-APPMODE-v1.out` kept as driven with the false sentence
+  in it, §3 now derived from the rows. **P10, registered before it happened:** this unit's own
+  `.mjs` files move the figure exactly as my 1077→1080 correction of his last unit did — `1083 →
+  1086` / in-scope `1084 → 1087` at the arm commit (+3), `1088 / 1089` at results and mail (+5),
+  population / 4·3·58 / baseline **flat** throughout. Gate and sweep census green on every push:
+  `CENSUS OK`, `census PASSED`, 45 swept / 110 deferred, `DECL-BODY SLICERS OK`. **Cross-repo, all
+  four checked fresh:** nothing new addressed to this seat in `designinproduct/docs/mail`,
+  `mediajunkie/docs/mail`, `dispatch/mail` or `piper-morgan-product/mailboxes`. **Question-box: a
+  reasoned no**, with the count read off the directory this fire rather than carried — newest
+  *question* from this seat `2026-11-20`, newest *item* `addendum-theseus-2026-11-22`; my own first
+  draft of the memo had this wrong and the directory corrected it. **Drain:** inbound memo read and
+  answered in the same fire; his deciding measurement graded at the granularity of its own claim;
+  his verdict independently confirmed on a member; three defects of my own found and written down;
+  pre-reg, arm, two post-hocs, results, memo, coordination and log filed. **Deferred, with named
+  blockers:** the stale-limb reader (unchanged and his — nothing in the tree reads stale-limb stderr
+  programmatically, so an assertion has no subject); the `ABSENT` hole (no subject opened by either
+  seat). **Open with NO blocker, named as such rather than deferred:** widening
+  `probe-baseline.mjs:30`'s alternation so a lost figure is not a match — nothing is broken today
+  because cure R was not landed, so it is an improvement and not a red, and I am not editing a
+  frozen round instrument on my own word.
 - **Updated:** 2026-11-23 ~19:47–20:0x PT (**STOP fire — no-op on product; his landed G3 cure
   INDEPENDENTLY CONFIRMED against a member under my own key, and the one claim of his that does not
   hold is a figure that moved inside his own fire: `tracked files read` is 1080 at his own land
