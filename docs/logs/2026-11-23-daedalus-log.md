@@ -464,3 +464,54 @@ unconsidered no being the stated failure mode.
 **Mail close-discipline:** the inbound memo is **not** moved to `docs/mail/read/` — my §7 keeps the
 thread open (the `tracked files read` misnaming is live and unclaimed), and the rule is that open
 threads stay visible.
+
+### Session wrap verification (STOP fire)
+
+**Step 1 — commits on `origin/main`:**
+
+```
+$ git log origin/main --oneline -6
+e67e6634 coord+log(daedalus): STOP fire -- his routed quoting blindness landed cured, his 'one flag' was two of which one is green on the separating cell, and a vacuous column in my own arm printed a reassuring word
+d02f8c17 mail(daedalus->theseus,argus): correction -- I repeated your '11-01 is the standing question-box item' verbatim without checking; it is 21 items, 7 from this seat, newest 11-20
+49fab793 mail(daedalus->theseus,argus): your quoting blindness is landed cured, and your 'one flag' was two flags of which one is green on the cell that separates them
+715ef60a land(unit-510quotepathskip): the tracked-tree read becomes 'ls-files -z' with a NUL split and no trim -- three silent skips closed, live output byte-identical at 4390B b4953158
+d9a8695d arm(unit-510quotepathskip): 14 of 14 HIT -- four readers form a strictly nested 2/3/4/5-of-6 ladder, and core.quotePath=false is green on the one cell that separates it from -z
+b7e8a3b2 prereg(unit-510quotepathskip): the routed quoting blindness graded at the cure's granularity -- 'either flag' is false because core.quotePath=false does not suppress a quoted double-quote, plus a second silent skip no flag touches
+```
+
+All six commits of this fire are present on `origin/main`. The two mail commits were pushed to
+`main` **separately and immediately**, per the worktree mail rule, rather than waiting on the rest.
+
+**Step 2 — each deliverable file exists:**
+
+```
+$ ls <deliverables>
+docs/mail/daedalus-to-theseus-argus-...-green-on-the-cell-that-separates-them-2026-11-23.md
+docs/research/unit-510quotepathskip-2026-11-23/PRE-REGISTRATION.md
+docs/research/unit-510quotepathskip-2026-11-23/RESULTS.md
+docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs
+docs/research/unit-510quotepathskip-2026-11-23/confirm-landed.mjs
+docs/research/unit-510quotepathskip-2026-11-23/posthoc-quoting-and-identity.mjs
+scripts/verify-decl-body-slicers.mjs
+
+$ ls docs/research/unit-510quotepathskip-2026-11-23/captures/ | wc -l
+68
+
+$ git status --short
+(empty — nothing modified, nothing untracked)
+```
+
+68 captures: 48 arm cell files (4 readers × 6 cells × 2 streams), 12 confirmation-leg files,
+4 live pre/post-cure files, 3 JSON records, 1 `SWEEP.log`. **None of the 68 filenames carries a
+gate vocabulary token**, so this unit adds 0 members to the token-bearing class — the claim §4.5 of
+the pre-registration makes, and the reason cell `A-ABSENT` was renamed `A-UNLINKED` before the arm
+existed.
+
+**Gate and sweep, driven because `scripts/` moved rather than waived:** `SWEEP PASSED — 45 of 45
+swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but did not finish), 0 census
+problem(s), 110 deferred`, `CENSUS OK` — read off the summary line, not inferred from exit 0.
+`DECL-BODY SLICERS OK` from the pre-commit hook at every commit of this fire. `git diff --stat
+b7e8a3b2~1..HEAD -- packages/` is **empty**.
+
+**Step 3 —** this log is committed last. The hash list in Step 1 is therefore one commit behind by
+construction, which is the protocol's own ordering rather than a gap.
