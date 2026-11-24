@@ -1,0 +1,315 @@
+=== unit-514 Arm B — the strict P8 drive: real host, real bytes, renamed subject ===
+
+  host sha12 e3354aeb3d63 (matches pre-registration: true)
+  standing-pre.out             1 substituted, 4390 -> 4395 B, reversible true
+  standing-after-arm.out       1 substituted, 4390 -> 4395 B, reversible true
+  standing-after-docblock.out  1 substituted, 4390 -> 4395 B, reversible true
+
+  VERBATIM  rc 0  stdout 3298 B (a52ae98ca47b)  stderr 0 B  host e3354aeb3d63
+  RENAMED   rc 0  stdout 3318 B (52d663a140a6)  stderr 0 B  host e3354aeb3d63
+
+  P4   HIT         the verbatim drive reproduces the published P6-standing-linewise.json byte-for-byte, rc 0, stderr 0 B
+  P5   HIT         the renamed drive exits rc 0 with stderr 0 B — the rename raises nothing and says nothing
+  P6   HIT         exactly 2 of 6 named verdicts flip true->false: P6.d and P6.e; the other four stay true
+  P7   HIT         movedFigures becomes [] and flatFigures GAINS the label — the renamed-away figure is reported as one that HELD CONSTANT across all three stages
+  P8   HIT         P6.e's count conjunct still holds under the rename; it fails only on the NAME conjunct, and the host's own output cannot say which
+  P9   HIT         the NEW label appears in the renamed stdout (inside preToPost) but in NO verdict key and NO figure name; both false verdicts name the OLD label
+  P10  HIT         the line-multiset difference between the two stdouts is MORE than the 2 flipped verdict lines
+
+  scratch removed: {"scratch-unit514-verbatim":true,"scratch-unit514-renamed":true}
+  git status --porcelain: ["?? docs/research/unit-514equalityconsumer-2026-11-24/arm-strict-p8-drive.mjs"]
+
+{
+  "pins": {
+    "hostSha12": "e3354aeb3d63",
+    "hostShaMatchesPreRegistration": true,
+    "captures": {
+      "standing-pre.out": {
+        "sha12": "2d66b0dc671f",
+        "bytes": 4390
+      },
+      "standing-pre.err": {
+        "sha12": "e3b0c44298fc",
+        "bytes": 0
+      },
+      "standing-after-arm.out": {
+        "sha12": "1ee3f958772b",
+        "bytes": 4390
+      },
+      "standing-after-arm.err": {
+        "sha12": "e3b0c44298fc",
+        "bytes": 0
+      },
+      "standing-after-docblock.out": {
+        "sha12": "1ee3f958772b",
+        "bytes": 4390
+      },
+      "standing-after-docblock.err": {
+        "sha12": "e3b0c44298fc",
+        "bytes": 0
+      }
+    }
+  },
+  "reversibility": {
+    "standing-pre.out": {
+      "occurrencesSubstituted": 1,
+      "bytesBefore": 4390,
+      "bytesAfter": 4395,
+      "reversible": true,
+      "newAlreadyPresentBefore": false
+    },
+    "standing-after-arm.out": {
+      "occurrencesSubstituted": 1,
+      "bytesBefore": 4390,
+      "bytesAfter": 4395,
+      "reversible": true,
+      "newAlreadyPresentBefore": false
+    },
+    "standing-after-docblock.out": {
+      "occurrencesSubstituted": 1,
+      "bytesBefore": 4390,
+      "bytesAfter": 4395,
+      "reversible": true,
+      "newAlreadyPresentBefore": false
+    }
+  },
+  "drives": {
+    "VERBATIM": {
+      "rc": 0,
+      "stdoutBytes": 3298,
+      "stdoutSha12": "a52ae98ca47b",
+      "stderrBytes": 0,
+      "stderrHead": "",
+      "hostSha12": "e3354aeb3d63"
+    },
+    "RENAMED": {
+      "rc": 0,
+      "stdoutBytes": 3318,
+      "stdoutSha12": "52d663a140a6",
+      "stderrBytes": 0,
+      "stderrHead": "",
+      "hostSha12": "e3354aeb3d63"
+    }
+  },
+  "comparison": {
+    "stdoutBytes": {
+      "verbatim": 3298,
+      "renamed": 3318
+    }
+  },
+  "predictions": {
+    "P4": {
+      "claim": "the verbatim drive reproduces the published P6-standing-linewise.json byte-for-byte, rc 0, stderr 0 B",
+      "publishedSha12": "a52ae98ca47b",
+      "publishedBytes": 3298,
+      "driveSha12": "a52ae98ca47b",
+      "driveBytes": 3298,
+      "byteForByte": true,
+      "equalIgnoringTrailingWhitespace": true,
+      "rc": 0,
+      "stderrBytes": 0,
+      "verdict": "HIT",
+      "consequence": "control holds — P5..P10 are gradeable"
+    },
+    "P5": {
+      "claim": "the renamed drive exits rc 0 with stderr 0 B — the rename raises nothing and says nothing",
+      "rc": 0,
+      "stderrBytes": 0,
+      "verdict": "HIT",
+      "gradeable": true
+    },
+    "P6": {
+      "claim": "exactly 2 of 6 named verdicts flip true->false: P6.d and P6.e; the other four stay true",
+      "totalVerdicts": 6,
+      "flippedTrueFalseCount": 2,
+      "flippedNames": [
+        "P6.d",
+        "P6.e"
+      ],
+      "allRows": [
+        {
+          "verdict": "P6.a  DEAD MARKERS flat at 21 files / 24 occurrences across all three st",
+          "verbatim": true,
+          "renamed": true,
+          "flipped": false,
+          "direction": "unchanged"
+        },
+        {
+          "verdict": "P6.b  quoted-only flat at 3 across all three stages",
+          "verbatim": true,
+          "renamed": true,
+          "flipped": false,
+          "direction": "unchanged"
+        },
+        {
+          "verdict": "P6.c  population flat at 65 and MARKED/GUARDED/UNGUARDED flat at 4/3/58",
+          "verbatim": true,
+          "renamed": true,
+          "flipped": false,
+          "direction": "unchanged"
+        },
+        {
+          "verdict": "P6.d  `tracked files read` is the ONLY named figure that moved",
+          "verbatim": true,
+          "renamed": false,
+          "flipped": true,
+          "direction": "true->false"
+        },
+        {
+          "verdict": "P6.e  `tracked files read` is the ONLY line that differs, pre to post",
+          "verbatim": true,
+          "renamed": false,
+          "flipped": true,
+          "direction": "true->false"
+        },
+        {
+          "verdict": "P6.f  stderr is 0 B at every stage — the gate stayed green",
+          "verbatim": true,
+          "renamed": true,
+          "flipped": false,
+          "direction": "unchanged"
+        }
+      ],
+      "verdict": "HIT",
+      "gradeable": true
+    },
+    "P7": {
+      "claim": "movedFigures becomes [] and flatFigures GAINS the label — the renamed-away figure is reported as one that HELD CONSTANT across all three stages",
+      "verbatim": {
+        "flatFigures": [
+          "population",
+          "MARKED",
+          "GUARDED",
+          "UNGUARDED",
+          "baseline entries",
+          "dead marker files",
+          "dead marker occurrences",
+          "quoted-only",
+          "in-population quoted-only"
+        ],
+        "movedFigures": [
+          "tracked files read"
+        ]
+      },
+      "renamed": {
+        "flatFigures": [
+          "tracked files read",
+          "population",
+          "MARKED",
+          "GUARDED",
+          "UNGUARDED",
+          "baseline entries",
+          "dead marker files",
+          "dead marker occurrences",
+          "quoted-only",
+          "in-population quoted-only"
+        ],
+        "movedFigures": []
+      },
+      "movedBecameEmpty": true,
+      "labelNowInFlat": true,
+      "labelWasInFlat": false,
+      "itsThreeStageValuesRenamed": [
+        null,
+        null,
+        null
+      ],
+      "itsThreeStageValuesVerbatim": [
+        1071,
+        1072,
+        1072
+      ],
+      "verdict": "HIT",
+      "gradeable": true,
+      "why": "null at every stage and constant at every stage are the same thing to a Set-size reader"
+    },
+    "P8": {
+      "claim": "P6.e's count conjunct still holds under the rename; it fails only on the NAME conjunct, and the host's own output cannot say which",
+      "verbatim": {
+        "countConjunct": true,
+        "nameConjunct": true,
+        "onlyInPre": [
+          "  tracked files read: 1071"
+        ],
+        "onlyInPost": [
+          "  tracked files read: 1072"
+        ]
+      },
+      "renamed": {
+        "countConjunct": true,
+        "nameConjunct": false,
+        "onlyInPre": [
+          "  tracked code files read: 1071"
+        ],
+        "onlyInPost": [
+          "  tracked code files read: 1072"
+        ]
+      },
+      "countConjunctSurvived": true,
+      "nameConjunctFailed": true,
+      "hostReportsOnlyTheFusedBoolean": true,
+      "verdict": "HIT",
+      "gradeable": true
+    },
+    "P9": {
+      "claim": "the NEW label appears in the renamed stdout (inside preToPost) but in NO verdict key and NO figure name; both false verdicts name the OLD label",
+      "newAppearsInStdout": true,
+      "newOccurrencesInStdout": 4,
+      "newInAnyVerdictKey": false,
+      "newInAnyFigureName": false,
+      "verdictKeysNamingOldLabel": 2,
+      "falseVerdictsNameOldLabel": true,
+      "verdict": "HIT",
+      "gradeable": true
+    },
+    "P10": {
+      "claim": "the line-multiset difference between the two stdouts is MORE than the 2 flipped verdict lines",
+      "differingLineCount": 29,
+      "onlyInVerbatim": [
+        "\"outBytes\": 4390,",
+        "\"outBytes\": 4390,",
+        "\"outBytes\": 4390,",
+        "\"tracked files read\": 1071,",
+        "\"tracked files read\": 1072,",
+        "\"tracked files read\": 1072,",
+        "],",
+        "\"  tracked files read: 1071\"",
+        "\"  tracked files read: 1072\"",
+        "\"  tracked files read: 1071\"",
+        "\"  tracked files read: 1072\"",
+        "\"movedFigures\": [",
+        "\"tracked files read\"",
+        "\"P6.d  `tracked files read` is the ONLY named figure that moved\": true,",
+        "\"P6.e  `tracked files read` is the ONLY line that differs, pre to post\": true,"
+      ],
+      "onlyInRenamed": [
+        "\"outBytes\": 4395,",
+        "\"outBytes\": 4395,",
+        "\"outBytes\": 4395,",
+        "\"tracked files read\": null,",
+        "\"tracked files read\": null,",
+        "\"tracked files read\": null,",
+        "\"  tracked code files read: 1071\"",
+        "\"  tracked code files read: 1072\"",
+        "\"  tracked code files read: 1071\"",
+        "\"  tracked code files read: 1072\"",
+        "\"tracked files read\",",
+        "\"movedFigures\": [],",
+        "\"P6.d  `tracked files read` is the ONLY named figure that moved\": false,",
+        "\"P6.e  `tracked files read` is the ONLY line that differs, pre to post\": false,"
+      ],
+      "verdict": "HIT",
+      "gradeable": true
+    }
+  },
+  "hygiene": {
+    "scratchRemoved": {
+      "scratch-unit514-verbatim": true,
+      "scratch-unit514-renamed": true
+    },
+    "gitStatusPorcelain": [
+      "?? docs/research/unit-514equalityconsumer-2026-11-24/arm-strict-p8-drive.mjs"
+    ],
+    "noScratchLeftInGitStatus": true
+  }
+}

@@ -1,0 +1,202 @@
+=== unit-514 post-hoc — which conjunct fires, and is the equality one reached? ===
+
+  host sha12 e3354aeb3d63
+
+  P6.d as written in the frozen host:
+      'P6.d  `tracked files read` is the ONLY named figure that moved':
+      movedFigures.length === 1 && movedFigures[0] === 'tracked files read',
+  P6.e as written in the frozen host:
+      'P6.e  `tracked files read` is the ONLY line that differs, pre to post':
+      firstToLast.onlyInFirst.length === 1 && firstToLast.onlyInSecond.length === 1
+      && firstToLast.onlyInFirst[0].includes('tracked files read')
+      && firstToLast.onlyInSecond[0].includes('tracked files read'),
+
+  VERBATIM  P6.d  COUNT     true                             movedFigures.length === 1
+  VERBATIM  P6.d  EQUALITY  true                             movedFigures[0] === 'tracked files read'
+  RENAMED   P6.d  COUNT     FALSE — this is the one that fires movedFigures.length === 1
+  RENAMED   P6.d  EQUALITY  NOT REACHED (short-circuited)    movedFigures[0] === 'tracked files read'
+  VERBATIM  P6.e  COUNT     true                             firstToLast.onlyInFirst.length === 1
+  VERBATIM  P6.e  COUNT     true                             firstToLast.onlyInSecond.length === 1
+  VERBATIM  P6.e  INCLUDES  true                             firstToLast.onlyInFirst[0].includes('tracked files read')
+  VERBATIM  P6.e  INCLUDES  true                             firstToLast.onlyInSecond[0].includes('tracked files read')
+  RENAMED   P6.e  COUNT     true                             firstToLast.onlyInFirst.length === 1
+  RENAMED   P6.e  COUNT     true                             firstToLast.onlyInSecond.length === 1
+  RENAMED   P6.e  INCLUDES  FALSE — this is the one that fires firstToLast.onlyInFirst[0].includes('tracked files read')
+  RENAMED   P6.e  INCLUDES  NOT REACHED (short-circuited)    firstToLast.onlyInSecond[0].includes('tracked files read')
+
+  SUMMARY
+    conjuncts that fire under the rename: [{"verdict":"P6.d","kind":"COUNT","conjunct":"movedFigures.length === 1"},{"verdict":"P6.e","kind":"INCLUDES","conjunct":"firstToLast.onlyInFirst[0].includes('tracked files read')"}]
+    never reached under the rename:       [{"verdict":"P6.d","kind":"EQUALITY","conjunct":"movedFigures[0] === 'tracked files read'"},{"verdict":"P6.e","kind":"INCLUDES","conjunct":"firstToLast.onlyInSecond[0].includes('tracked files read')"}]
+    EQUALITY conjuncts reached: 0 of 1
+    INCLUDES conjuncts that fired: 1   COUNT conjuncts that fired: 1
+
+  scratch removed: true  git status: ["?? docs/research/unit-514equalityconsumer-2026-11-24/arm-strict-p8-drive.mjs","?? docs/research/unit-514equalityconsumer-2026-11-24/captures/ARM-B.err","?? docs/research/unit-514equalityconsumer-2026-11-24/captures/ARM-B.out","?? docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs"]
+
+{
+  "pins": {
+    "hostSha12": "e3354aeb3d63",
+    "verbatimSource": "the host's own published P6-standing-linewise.json, which Arm B reproduced byte-for-byte"
+  },
+  "conjunctSources": {
+    "P6.d": [
+      "'P6.d  `tracked files read` is the ONLY named figure that moved':",
+      "movedFigures.length === 1 && movedFigures[0] === 'tracked files read',"
+    ],
+    "P6.e": [
+      "'P6.e  `tracked files read` is the ONLY line that differs, pre to post':",
+      "firstToLast.onlyInFirst.length === 1 && firstToLast.onlyInSecond.length === 1",
+      "&& firstToLast.onlyInFirst[0].includes('tracked files read')",
+      "&& firstToLast.onlyInSecond[0].includes('tracked files read'),"
+    ]
+  },
+  "rows": [
+    {
+      "verdict": "P6.d",
+      "drive": "VERBATIM",
+      "kind": "COUNT",
+      "conjunct": "movedFigures.length === 1",
+      "reached": true,
+      "value": true,
+      "state": "true"
+    },
+    {
+      "verdict": "P6.d",
+      "drive": "VERBATIM",
+      "kind": "EQUALITY",
+      "conjunct": "movedFigures[0] === 'tracked files read'",
+      "reached": true,
+      "value": true,
+      "state": "true"
+    },
+    {
+      "verdict": "P6.d",
+      "drive": "RENAMED",
+      "kind": "COUNT",
+      "conjunct": "movedFigures.length === 1",
+      "reached": true,
+      "value": false,
+      "state": "FALSE — this is the one that fires"
+    },
+    {
+      "verdict": "P6.d",
+      "drive": "RENAMED",
+      "kind": "EQUALITY",
+      "conjunct": "movedFigures[0] === 'tracked files read'",
+      "reached": false,
+      "value": null,
+      "state": "NOT REACHED (short-circuited)"
+    },
+    {
+      "verdict": "P6.e",
+      "drive": "VERBATIM",
+      "kind": "COUNT",
+      "conjunct": "firstToLast.onlyInFirst.length === 1",
+      "reached": true,
+      "value": true,
+      "state": "true"
+    },
+    {
+      "verdict": "P6.e",
+      "drive": "VERBATIM",
+      "kind": "COUNT",
+      "conjunct": "firstToLast.onlyInSecond.length === 1",
+      "reached": true,
+      "value": true,
+      "state": "true"
+    },
+    {
+      "verdict": "P6.e",
+      "drive": "VERBATIM",
+      "kind": "INCLUDES",
+      "conjunct": "firstToLast.onlyInFirst[0].includes('tracked files read')",
+      "reached": true,
+      "value": true,
+      "state": "true"
+    },
+    {
+      "verdict": "P6.e",
+      "drive": "VERBATIM",
+      "kind": "INCLUDES",
+      "conjunct": "firstToLast.onlyInSecond[0].includes('tracked files read')",
+      "reached": true,
+      "value": true,
+      "state": "true"
+    },
+    {
+      "verdict": "P6.e",
+      "drive": "RENAMED",
+      "kind": "COUNT",
+      "conjunct": "firstToLast.onlyInFirst.length === 1",
+      "reached": true,
+      "value": true,
+      "state": "true"
+    },
+    {
+      "verdict": "P6.e",
+      "drive": "RENAMED",
+      "kind": "COUNT",
+      "conjunct": "firstToLast.onlyInSecond.length === 1",
+      "reached": true,
+      "value": true,
+      "state": "true"
+    },
+    {
+      "verdict": "P6.e",
+      "drive": "RENAMED",
+      "kind": "INCLUDES",
+      "conjunct": "firstToLast.onlyInFirst[0].includes('tracked files read')",
+      "reached": true,
+      "value": false,
+      "state": "FALSE — this is the one that fires"
+    },
+    {
+      "verdict": "P6.e",
+      "drive": "RENAMED",
+      "kind": "INCLUDES",
+      "conjunct": "firstToLast.onlyInSecond[0].includes('tracked files read')",
+      "reached": false,
+      "value": null,
+      "state": "NOT REACHED (short-circuited)"
+    }
+  ],
+  "summary": {
+    "whatFiresUnderTheRename": [
+      {
+        "verdict": "P6.d",
+        "kind": "COUNT",
+        "conjunct": "movedFigures.length === 1"
+      },
+      {
+        "verdict": "P6.e",
+        "kind": "INCLUDES",
+        "conjunct": "firstToLast.onlyInFirst[0].includes('tracked files read')"
+      }
+    ],
+    "neverReachedUnderTheRename": [
+      {
+        "verdict": "P6.d",
+        "kind": "EQUALITY",
+        "conjunct": "movedFigures[0] === 'tracked files read'"
+      },
+      {
+        "verdict": "P6.e",
+        "kind": "INCLUDES",
+        "conjunct": "firstToLast.onlyInSecond[0].includes('tracked files read')"
+      }
+    ],
+    "equalityConjunctsReached": 0,
+    "equalityConjunctsTotal": 1,
+    "includesConjunctsThatFired": 1,
+    "countConjunctsThatFired": 1
+  },
+  "hygiene": {
+    "scratchRemoved": true,
+    "gitStatusPorcelain": [
+      "?? docs/research/unit-514equalityconsumer-2026-11-24/arm-strict-p8-drive.mjs",
+      "?? docs/research/unit-514equalityconsumer-2026-11-24/captures/ARM-B.err",
+      "?? docs/research/unit-514equalityconsumer-2026-11-24/captures/ARM-B.out",
+      "?? docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs"
+    ],
+    "noScratchLeft": true
+  }
+}
