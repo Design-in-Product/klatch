@@ -1,0 +1,112 @@
+{
+ "sites": [
+  {
+   "site": "docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs:94",
+   "file": "docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs",
+   "line": 94,
+   "verdict": "LIVE"
+  },
+  {
+   "site": "docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:70",
+   "file": "docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs",
+   "line": 70,
+   "verdict": "LIVE"
+  },
+  {
+   "site": "docs/research/unit-500trackedcomplement-2026-11-22/arm-tracked-complement.mjs:45",
+   "file": "docs/research/unit-500trackedcomplement-2026-11-22/arm-tracked-complement.mjs",
+   "line": 45,
+   "verdict": "LIVE"
+  },
+  {
+   "site": "docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:20",
+   "file": "docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs",
+   "line": 20,
+   "verdict": "FROZEN"
+  },
+  {
+   "site": "docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:34",
+   "file": "docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs",
+   "line": 34,
+   "verdict": "FROZEN"
+  },
+  {
+   "site": "docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:35",
+   "file": "docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs",
+   "line": 35,
+   "verdict": "FROZEN"
+  },
+  {
+   "site": "docs/research/unit-502streampin-2026-11-22/posthoc-landing.mjs:39",
+   "file": "docs/research/unit-502streampin-2026-11-22/posthoc-landing.mjs",
+   "line": 39,
+   "verdict": "LIVE"
+  },
+  {
+   "site": "docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs:58",
+   "file": "docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs",
+   "line": 58,
+   "verdict": "LIVE"
+  },
+  {
+   "site": "docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs:30",
+   "file": "docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs",
+   "line": 30,
+   "verdict": "LIVE"
+  },
+  {
+   "site": "docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs:33",
+   "file": "docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs",
+   "line": 33,
+   "verdict": "UNRESOLVED"
+  },
+  {
+   "site": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:115",
+   "file": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+   "line": 115,
+   "verdict": "UNRESOLVED"
+  },
+  {
+   "site": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:118",
+   "file": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+   "line": 118,
+   "verdict": "UNRESOLVED"
+  },
+  {
+   "site": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:119",
+   "file": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+   "line": 119,
+   "verdict": "UNRESOLVED"
+  },
+  {
+   "site": "docs/research/unit-509extractionrefusal-2026-11-23/posthoc-wsfile.mjs:128",
+   "file": "docs/research/unit-509extractionrefusal-2026-11-23/posthoc-wsfile.mjs",
+   "line": 128,
+   "verdict": "LIVE"
+  },
+  {
+   "site": "docs/research/verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-member.mjs:22",
+   "file": "docs/research/verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-member.mjs",
+   "line": 22,
+   "verdict": "LIVE"
+  }
+ ],
+ "tally": {
+  "LIVE": 8,
+  "FROZEN": 3,
+  "UNRESOLVED": 4
+ },
+ "fileTally": {
+  "LIVE": 8,
+  "FROZEN": 1,
+  "UNRESOLVED": 2
+ },
+ "reach": 8,
+ "unreach": 3,
+ "anchSubjects": [
+  "docs/research/unit-500trackedcomplement-2026-11-22/captures/gate-pre-commit.out",
+  "docs/research/unit-500trackedcomplement-2026-11-22/captures/gate-post-commit.out"
+ ],
+ "anchCanSeeCured": false,
+ "anchorRefusesAppended": true
+}

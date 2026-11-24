@@ -1,0 +1,94 @@
+unit-512 arm — provenance of the subject each of Daedalus's 15 matcher sites consumes
+population sliced from docs/research/unit-511readcountname-2026-11-24/captures/POSTHOC-MATCHER.json → .matchers  (15 sites, 11 files)
+
+§1  per-instrument provenance
+
+  BOTH       docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs
+      matcher line(s): 94
+      LIVE   : docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs:82 spawnSync(…) + file names verify-decl-body-slicers elsewhere (copy-then-drive candidate)
+      LIVE   : docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs:153 spawnSync(…) + file names verify-decl-body-slicers elsewhere (copy-then-drive candidate)
+      FROZEN : :80 readFileSync → scripts/decl-body-slicers.baseline (tracked)
+      (read, path not resolved to a tracked file) :39 GATE, 'utf8'
+
+  LIVE       docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs
+      matcher line(s): 70
+      LIVE   : docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:44 spawnSync(…) + file names verify-decl-body-slicers elsewhere (copy-then-drive candidate)
+      LIVE   : docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:48 spawnSync(…) + file names verify-decl-body-slicers elsewhere (copy-then-drive candidate)
+      (read, path not resolved to a tracked file) :41 GATE, 'utf8'
+      (read, path not resolved to a tracked file) :66 resolve(HERE, 'captures/pre-build-stdout.out'
+      (read, path not resolved to a tracked file) :80 resolve(HERE, f
+
+  BOTH       docs/research/unit-500trackedcomplement-2026-11-22/arm-tracked-complement.mjs
+      matcher line(s): 45
+      LIVE   : docs/research/unit-500trackedcomplement-2026-11-22/arm-tracked-complement.mjs:41 spawnSync(…) + file names verify-decl-body-slicers elsewhere (copy-then-drive candidate)
+      LIVE   : docs/research/unit-500trackedcomplement-2026-11-22/arm-tracked-complement.mjs:42 spawnSync(…) + file names verify-decl-body-slicers elsewhere (copy-then-drive candidate)
+      FROZEN : :85 readFileSync → docs/research/verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-member.mjs (tracked)
+      FROZEN : :167 readFileSync → scripts/verify-decl-body-slicers.mjs (tracked)
+      (read, path not resolved to a tracked file) :128 join(ROOT, PLANT_OPEN
+
+  UNRESOLVED docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs
+      matcher line(s): 20, 34, 35
+      (read, path not resolved to a tracked file) :15 join(process.cwd(
+      (read, path not resolved to a tracked file) :16 join(process.cwd(
+      *** UNRESOLVED — 0 spawn(s), 2 read(s), none resolved
+
+  LIVE       docs/research/unit-502streampin-2026-11-22/posthoc-landing.mjs
+      matcher line(s): 39
+      LIVE   : docs/research/unit-502streampin-2026-11-22/posthoc-landing.mjs:33 spawnSync(…) + file names verify-decl-body-slicers elsewhere (copy-then-drive candidate)
+      LIVE   : docs/research/unit-502streampin-2026-11-22/posthoc-landing.mjs:50 execFileSync(…) + file names verify-decl-body-slicers elsewhere (copy-then-drive candidate)
+      (read, path not resolved to a tracked file) :63 STATE, 'utf8'
+      (read, path not resolved to a tracked file) :89 prevCapture, 'utf8'
+
+  LIVE       docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs
+      matcher line(s): 58
+      LIVE   : docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs:29 spawnSync(…) + file names verify-decl-body-slicers elsewhere (copy-then-drive candidate)
+      LIVE   : docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs:42 spawnSync(…) + file names verify-decl-body-slicers elsewhere (copy-then-drive candidate)
+      LIVE   : docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs:45 exec(…) + file names verify-decl-body-slicers elsewhere (copy-then-drive candidate)
+      LIVE   : docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs:49 exec(…) + file names verify-decl-body-slicers elsewhere (copy-then-drive candidate)
+      LIVE   : docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs:79 spawnSync(…) + file names verify-decl-body-slicers elsewhere (copy-then-drive candidate)
+
+  LIVE       docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs
+      matcher line(s): 30
+      LIVE   : docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs:18 spawnSync(…) + file names verify-decl-body-slicers elsewhere (copy-then-drive candidate)
+      LIVE   : docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs:30 exec(…) + file names verify-decl-body-slicers elsewhere (copy-then-drive candidate)
+      LIVE   : docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs:33 exec(…) + file names verify-decl-body-slicers elsewhere (copy-then-drive candidate)
+
+  UNRESOLVED docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs
+      matcher line(s): 33
+      (read, path not resolved to a tracked file) :22 join(CAP, 'standing-pre.out'
+      (read, path not resolved to a tracked file) :23 join(CAP, 'standing-post.out'
+      *** UNRESOLVED — 0 spawn(s), 2 read(s), none resolved
+
+  UNRESOLVED docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs
+      matcher line(s): 115, 118, 119
+      (read, path not resolved to a tracked file) :18 join(CAP, n
+      *** UNRESOLVED — 0 spawn(s), 1 read(s), none resolved
+
+  BOTH       docs/research/unit-509extractionrefusal-2026-11-23/posthoc-wsfile.mjs
+      matcher line(s): 128
+      LIVE   : docs/research/unit-509extractionrefusal-2026-11-23/posthoc-wsfile.mjs:49 spawnSync(…) + file names verify-decl-body-slicers elsewhere (copy-then-drive candidate)
+      LIVE   : docs/research/unit-509extractionrefusal-2026-11-23/posthoc-wsfile.mjs:84 execFileSync(…) + file names verify-decl-body-slicers elsewhere (copy-then-drive candidate)
+      LIVE   : docs/research/unit-509extractionrefusal-2026-11-23/posthoc-wsfile.mjs:115 spawnSync(…) + file names verify-decl-body-slicers elsewhere (copy-then-drive candidate)
+      LIVE   : docs/research/unit-509extractionrefusal-2026-11-23/posthoc-wsfile.mjs:147 spawnSync(…) + file names verify-decl-body-slicers elsewhere (copy-then-drive candidate)
+      FROZEN : :71 readFileSync → scripts/verify-decl-body-slicers.mjs (tracked)
+      FROZEN : :96 readFileSync → scripts/verify-decl-body-slicers.mjs (tracked)
+      FROZEN : :114 readFileSync → scripts/verify-decl-body-slicers.mjs (tracked)
+      (read, path not resolved to a tracked file) :155 join(CAP, 'P1-P5-arm.json'
+      (read, path not resolved to a tracked file) :176 join(CAP, `${c}.err`
+
+  LIVE       docs/research/verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-member.mjs
+      matcher line(s): 22
+      LIVE   : docs/research/verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-member.mjs:18 spawnSync(…) names verify-decl-body-slicers
+      (read, path not resolved to a tracked file) :52 plant, 'utf8'
+
+§2  the figures, at site granularity (his claim's granularity)
+  sites: 15   files: 11
+  tally: {"BOTH":3,"LIVE":5,"UNRESOLVED":7}
+  sites cure R can reach (LIVE or BOTH): 8 of 15
+  sites cure R cannot reach (FROZEN)   : 0 of 15
+
+§3  the END-ANCHORED site, named separately because his §2 rests the cure's SHAPE on it
+  docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:20  provenance UNRESOLVED
+  docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:34  provenance UNRESOLVED
+  docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:35  provenance UNRESOLVED
+  its subjects: 

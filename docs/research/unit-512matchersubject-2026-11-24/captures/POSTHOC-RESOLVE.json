@@ -1,0 +1,52 @@
+{
+ "resolvedAll": [
+  {
+   "file": "docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs",
+   "via": "direct",
+   "path": "docs/research/unit-504mixedstalelabels-2026-11-22/captures/standing-pre.out",
+   "tracked": true,
+   "isCapture": true,
+   "bytes": 4309,
+   "containsCuredScopeLine": false,
+   "readLine": "  tracked files read: 1064"
+  },
+  {
+   "file": "docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs",
+   "via": "direct",
+   "path": "docs/research/unit-504mixedstalelabels-2026-11-22/captures/standing-post.out",
+   "tracked": true,
+   "isCapture": true,
+   "bytes": 4309,
+   "containsCuredScopeLine": false,
+   "readLine": "  tracked files read: 1067"
+  },
+  {
+   "file": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+   "via": "helper read()",
+   "path": "docs/research/unit-506labelmultiset-2026-11-23/captures/${stem}.out",
+   "tracked": false,
+   "isCapture": true,
+   "bytes": null,
+   "containsCuredScopeLine": null,
+   "readLine": null
+  },
+  {
+   "file": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+   "via": "helper read()",
+   "path": "docs/research/unit-506labelmultiset-2026-11-23/captures/${stem}.err",
+   "tracked": false,
+   "isCapture": true,
+   "bytes": null,
+   "containsCuredScopeLine": null,
+   "readLine": null
+  }
+ ],
+ "byFile": {
+  "docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs": "FROZEN",
+  "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs": "STILL-UNRESOLVED"
+ },
+ "live": 8,
+ "frozen": 4,
+ "stillUnresolved": 3,
+ "anyCuredScope": false
+}

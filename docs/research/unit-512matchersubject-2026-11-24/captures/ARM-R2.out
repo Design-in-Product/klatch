@@ -1,0 +1,93 @@
+unit-512 arm r2 — what each of Daedalus's 15 matcher sites actually consumes
+population sliced from docs/research/unit-511readcountname-2026-11-24/captures/POSTHOC-MATCHER.json → .matchers  (15 sites, 11 files)
+LIVE = the instrument drives the gate (or a copy of its source) at run time, so a rename reaches it.
+FROZEN = it reads committed gate-output captures only, so a rename cannot reach it.
+
+§1  per-instrument provenance
+
+  LIVE    docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs   [matcher line(s) 94]
+      DRIVE  :82 spawnSync('node', [copy], { encoding: 'utf8', cwd: ROOT })  — args name copy
+      DRIVE  :153 spawnSync('node', [GATE], { encoding: 'utf8', cwd: ROOT })  — args name GATE
+      other  :39 → scripts/verify-decl-body-slicers.mjs
+      other  :80 → scripts/decl-body-slicers.baseline
+
+  LIVE    docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs   [matcher line(s) 70]
+      DRIVE  :44 spawnSync(process.execPath, [GATE], { encoding: 'buffer', cwd: ROO)  — args name GATE
+      DRIVE  :48 spawnSync(process.execPath, [SCRATCH], { encoding: 'buffer', cwd: )  — args name SCRATCH
+      other  :41 → scripts/verify-decl-body-slicers.mjs
+      other  :66 UNRESOLVED (resolve(HERE, 'captures/pre-build-stdout.out'), 'utf8')
+      other  :80 UNRESOLVED (resolve(HERE, f), 'utf8')
+
+  LIVE    docs/research/unit-500trackedcomplement-2026-11-22/arm-tracked-complement.mjs   [matcher line(s) 45]
+      DRIVE  :42 spawnSync('node', [GATE], { cwd: ROOT, encoding: 'buffer' })  — args name GATE
+      other  :85 → docs/research/verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-member.mjs
+      other  :128 UNRESOLVED (join(ROOT, PLANT_OPEN), 'utf8')
+      other  :167 → scripts/verify-decl-body-slicers.mjs
+
+  FROZEN  docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs   [matcher line(s) 20, 34, 35]
+      CAPTURE:15 readFileSync → docs/research/unit-500trackedcomplement-2026-11-22/captures/gate-pre-commit.out
+      CAPTURE:16 readFileSync → docs/research/unit-500trackedcomplement-2026-11-22/captures/gate-post-commit.out
+
+  LIVE    docs/research/unit-502streampin-2026-11-22/posthoc-landing.mjs   [matcher line(s) 39]
+      DRIVE  :33 spawnSync('node', [GATE], { cwd: ROOT, encoding: 'utf8', maxBuffer)  — args name GATE
+      other  :63 UNRESOLVED (STATE, 'utf8')
+      other  :89 UNRESOLVED (prevCapture, 'utf8')
+
+  LIVE    docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs   [matcher line(s) 58]
+      DRIVE  :42 spawnSync(process.execPath, [GATE], { cwd: ROOT, maxBuffer: 1 << 2)  — args name GATE
+
+  LIVE    docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs   [matcher line(s) 30]
+      DRIVE  :18 spawnSync(process.execPath, [GATE], { cwd: ROOT, maxBuffer: 1 << 2)  — args name GATE
+
+  UNRESOLVED docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs   [matcher line(s) 33]
+      other  :22 UNRESOLVED (join(CAP, 'standing-pre.out'))
+      other  :23 UNRESOLVED (join(CAP, 'standing-post.out'))
+      *** UNRESOLVED
+
+  UNRESOLVED docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs   [matcher line(s) 115, 118, 119]
+      other  :18 UNRESOLVED (join(CAP, n), 'utf8')
+      *** UNRESOLVED
+
+  LIVE    docs/research/unit-509extractionrefusal-2026-11-23/posthoc-wsfile.mjs   [matcher line(s) 128]
+      DRIVE  :115 spawnSync(process.execPath, [join(SYN, GATE_REL)], { cwd: SYN, max)  — args name GATE_REL
+      other  :71 → scripts/verify-decl-body-slicers.mjs
+      other  :96 → scripts/verify-decl-body-slicers.mjs
+      other  :114 → scripts/verify-decl-body-slicers.mjs
+      other  :155 UNRESOLVED (join(CAP, 'P1-P5-arm.json'), 'utf8')
+      other  :176 UNRESOLVED (join(CAP, `${c}.err`), 'utf8')
+
+  LIVE    docs/research/verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-member.mjs   [matcher line(s) 22]
+      DRIVE  :18 spawnSync('node', ['scripts/verify-decl-body-slicers.mjs'], { enco)  — args name the gate
+      other  :52 UNRESOLVED (plant, 'utf8')
+
+§2  the figures, at the granularity of his claim ("cure R breaks all 15, silently")
+  sites: 15   files: 11
+  tally by site: {"LIVE":8,"FROZEN":3,"UNRESOLVED":4}
+  tally by file: {"LIVE":8,"FROZEN":1,"UNRESOLVED":2}
+  sites a rename REACHES (LIVE)        : 8 of 15
+  sites a rename CANNOT reach (FROZEN) : 3 of 15
+      unreachable: docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:20
+      unreachable: docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:34
+      unreachable: docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:35
+
+§3  the END-ANCHORED site — his §2 rests the cured line's SHAPE on this one site
+  docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:20  provenance FROZEN
+  docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:34  provenance FROZEN
+  docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:35  provenance FROZEN
+  its subjects (2): docs/research/unit-500trackedcomplement-2026-11-22/captures/gate-pre-commit.out, docs/research/unit-500trackedcomplement-2026-11-22/captures/gate-post-commit.out
+    docs/research/unit-500trackedcomplement-2026-11-22/captures/gate-pre-commit.out
+      4160 bytes · last touched 54014ff1 2026-11-22
+      contains the cured scope line: false
+      read line: "  tracked files read: 1047"
+    docs/research/unit-500trackedcomplement-2026-11-22/captures/gate-post-commit.out
+      4160 bytes · last touched 617c132d 2026-11-22
+      contains the cured scope line: false
+      read line: "  tracked files read: 1050"
+  can the end-anchored matcher's subject contain text appended after the value? false
+
+§4  the refused rendering, applied to the anchor pattern directly
+  pattern   : /^(\s*tracked files read: )(\d+)$/
+  landed    : "  tracked files read: 1083" → match true
+  appended  : "  tracked files read: 1083 (1084 in scope, 1 excluded, 0 unreadable)" → match false
+  so the pattern really would refuse the appended form. The question this unit answers is
+  whether that pattern is ever applied to text that could CARRY the appended form.

@@ -1,0 +1,30 @@
+unit-512 post-hoc 1 — the 4 sites r2 could not resolve (2 files)
+
+  docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs
+      import.meta.dirname → docs/research/unit-504mixedstalelabels-2026-11-22
+      binding CAP → docs/research/unit-504mixedstalelabels-2026-11-22/captures
+      TRACKED  docs/research/unit-504mixedstalelabels-2026-11-22/captures/standing-pre.out  (direct)
+          4309 bytes · gate-output capture: true · contains cured scope line: false · "  tracked files read: 1064"
+      TRACKED  docs/research/unit-504mixedstalelabels-2026-11-22/captures/standing-post.out  (direct)
+          4309 bytes · gate-output capture: true · contains cured scope line: false · "  tracked files read: 1067"
+      any spawn/exec in the file at all: false
+
+  docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs
+      import.meta.dirname → docs/research/unit-506labelmultiset-2026-11-23
+      binding CAP → docs/research/unit-506labelmultiset-2026-11-23/captures
+      helper read(n) reads docs/research/unit-506labelmultiset-2026-11-23/captures/<n> — resolving its call sites
+      untracked  docs/research/unit-506labelmultiset-2026-11-23/captures/${stem}.out  (helper read())
+      untracked  docs/research/unit-506labelmultiset-2026-11-23/captures/${stem}.err  (helper read())
+      any spawn/exec in the file at all: false
+
+§1  verdicts for the 4 previously-unresolved sites
+  docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs:33 → FROZEN
+  docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:115 → STILL-UNRESOLVED
+  docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:118 → STILL-UNRESOLVED
+  docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:119 → STILL-UNRESOLVED
+
+§2  the closed figures
+  LIVE   (a rename reaches them)      : 8 of 15
+  FROZEN (a rename cannot reach them) : 4 of 15   (3 from r2 + 1 resolved here)
+  STILL UNRESOLVED                    : 3 of 15
+  any FROZEN subject in the corpus that contains the cured scope line: false
