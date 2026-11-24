@@ -15,7 +15,7 @@
  * This is the same mechanism as the defect under cure: a name (`CODE`) that asserts more than the
  * thing it counts.
  *
- * brace-slicer-deliberate: no brace comparison here either — it reads a label and a preceding span.
+ * No marker: no brace comparison here either, so a marker would exempt nothing.
  */
 import { execFileSync } from 'node:child_process';
 import { writeFileSync, readFileSync, mkdirSync } from 'node:fs';

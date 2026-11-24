@@ -19,7 +19,8 @@
  * Key: every occurrence of the label whose surrounding 60 bytes contain regex-literal punctuation,
  * reported with the pattern span verbatim, plus whether it carries `$`, `^`, or neither.
  *
- * brace-slicer-deliberate: reads a label and its surrounding span; compares no braces.
+ * No marker: this file compares no braces, so it is out of the population and a marker would exempt
+ * nothing (see the arm's note).
  */
 import { execFileSync } from 'node:child_process';
 import { writeFileSync, readFileSync, mkdirSync } from 'node:fs';

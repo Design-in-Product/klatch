@@ -17,9 +17,11 @@
  *   `A-PRESENT`  — member staged AND on disk. Control: the cure must not cry wolf.
  *   `A-UNLINKED` — member staged, then removed from the worktree. The defect's cell.
  *
- * brace-slicer-deliberate: the fixture member below contains a brace comparison **built from char
- * codes**, so this file does not become a new `UNGUARDED` member of the gate it measures. The
- * fixture string the member is written from is assembled at runtime for the same reason.
+ * **No `brace-slicer-deliberate:` marker, and that is the stronger claim**: the fixture member below
+ * contains a brace comparison **built from char codes**, so this file never holds the literal and
+ * does not become a new `UNGUARDED` member of the gate it measures — there is nothing here for a
+ * marker to exempt, and a marker on an out-of-population file only joins the reported dead-marker
+ * list.
  */
 import { execFileSync, spawnSync } from 'node:child_process';
 import { readFileSync, writeFileSync, mkdirSync, mkdtempSync, rmSync, cpSync } from 'node:fs';

@@ -38,7 +38,11 @@
  * taken over the tree at the PRE-REGISTRATION commit, which predates this file, and the live tree is
  * reported beside it so the instrument's own contribution is visible rather than absorbed.
  *
- * brace-slicer-deliberate: this arm compares no braces at all; it reads a label and a digit run.
+ * **No `brace-slicer-deliberate:` marker here, and the omission is deliberate**: this arm compares
+ * no braces, so it is out of the gate's population, and a marker on an out-of-population file
+ * exempts nothing while joining the reported dead-marker list. The gate says so itself. Four such
+ * markers in this unit moved that reported figure `21 / 24 → 25 / 28` at the landing commit; they
+ * were dropped in the next, and the figure came back.
  */
 import { execFileSync } from 'node:child_process';
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
