@@ -1,0 +1,95 @@
+unit-512 post-hoc 3 — the same three cells, applied the way each host applies its pattern
+
+§0  cells
+  VERBATIM rc 0  4475 B  21277165
+  RENAMED  rc 0  4480 B  74b8516f
+  APPENDED (derived from VERBATIM, scope text moved onto the value's line)  4517 B  fb537ae9
+  the appended form really differs from verbatim: true
+
+§1  per pattern, in its host's mode
+  docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs:94
+      /^\s*tracked files read: (\d+)/m   mode WHOLE_TEXT  provenance LIVE
+      host mode   : verbatim match  renamed null  appended match
+      other mode  : verbatim match  renamed null  appended match
+      breaks on rename true   breaks on append false
+  docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:70
+      /\n {2}tracked files read: (\d+)/   mode WHOLE_TEXT  provenance LIVE
+      host mode   : verbatim match  renamed null  appended match
+      other mode  : verbatim null  renamed null  appended null
+      breaks on rename true   breaks on append false
+  docs/research/unit-500trackedcomplement-2026-11-22/arm-tracked-complement.mjs:45
+      /tracked files read: (\d+)/   mode WHOLE_TEXT  provenance LIVE
+      host mode   : verbatim match  renamed null  appended match
+      other mode  : verbatim match  renamed null  appended match
+      breaks on rename true   breaks on append false
+  docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:20
+      /^(\s*tracked files read: )(\d+)$/   mode PER_LINE  [END-ANCHORED]  provenance FROZEN
+      host mode   : verbatim match  renamed null  appended null
+      other mode  : verbatim null  renamed null  appended null
+      breaks on rename true   breaks on append true
+  docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:34
+      /tracked files read: (\d+)/   mode WHOLE_TEXT  provenance FROZEN
+      host mode   : verbatim match  renamed null  appended match
+      other mode  : verbatim match  renamed null  appended match
+      breaks on rename true   breaks on append false
+  docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:35
+      /tracked files read: (\d+)/   mode WHOLE_TEXT  provenance FROZEN
+      host mode   : verbatim match  renamed null  appended match
+      other mode  : verbatim match  renamed null  appended match
+      breaks on rename true   breaks on append false
+  docs/research/unit-501redbranchpin-2026-11-22/posthoc-which-lines-move.mjs:87
+      /tracked files read:\s*(\d+)/   mode WHOLE_TEXT  provenance NOT-IN-SET
+      host mode   : verbatim match  renamed null  appended match
+      other mode  : verbatim match  renamed null  appended match
+      breaks on rename true   breaks on append false
+  docs/research/unit-502streampin-2026-11-22/posthoc-landing.mjs:39
+      /tracked files read: (\d+)/   mode WHOLE_TEXT  provenance LIVE
+      host mode   : verbatim match  renamed null  appended match
+      other mode  : verbatim match  renamed null  appended match
+      breaks on rename true   breaks on append false
+  docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs:30
+      /^\s*(tracked files read|population[^:]*|baseline entries[^:]*):\s*(\d+)/   mode PER_LINE  provenance LIVE
+      host mode   : verbatim match  renamed match  appended match
+      other mode  : verbatim null  renamed null  appended null
+      breaks on rename false   breaks on append false
+  docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs:33
+      /tracked files read: (\d+)/   mode WHOLE_TEXT  provenance FROZEN(no-drive)
+      host mode   : verbatim match  renamed null  appended match
+      other mode  : verbatim match  renamed null  appended match
+      breaks on rename true   breaks on append false
+  docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:27
+      /tracked files read:\s*(\d+)/   mode WHOLE_TEXT  provenance NOT-IN-SET
+      host mode   : verbatim match  renamed null  appended match
+      other mode  : verbatim match  renamed null  appended match
+      breaks on rename true   breaks on append false
+  docs/research/unit-509extractionrefusal-2026-11-23/posthoc-wsfile.mjs:128
+      /tracked files read:\s*(\d+)/   mode WHOLE_TEXT  provenance LIVE
+      host mode   : verbatim match  renamed null  appended match
+      other mode  : verbatim match  renamed null  appended match
+      breaks on rename true   breaks on append false
+  docs/research/verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-member.mjs:22
+      /tracked files read: (\d+)/   mode WHOLE_TEXT  provenance LIVE
+      host mode   : verbatim match  renamed null  appended match
+      other mode  : verbatim match  renamed null  appended match
+      breaks on rename true   breaks on append false
+
+§2  figures, corrected
+  regex matchers                                  : 13  (LIVE 7 · FROZEN 4 · not in his 15-matcher set 2)
+  dead in their host's own mode                    : 0
+  BREAK ON RENAME (cure R)                        : 12 of 13
+      LIVE   : 6 of 7
+      FROZEN : 4 of 4   (pattern-level only — the instrument never reads this stdout)
+  BREAK ON APPEND (the rendering his §2 refused)   : 1 of 13
+      FROZEN            docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:20  /^(\s*tracked files read: )(\d+)$/
+      LIVE   : 0 of 7
+      FROZEN : 1 of 4
+  gate exit code under the rename                  : 0 → 0  (moved: false)
+
+§3  what the two corrections move
+  post-hoc 2 §3 said 6 of 7 LIVE patterns break on the rename; in host mode it is
+  6 of 7 — the extra one is probe-baseline.mjs:30, which post-hoc 2 scored on a dead cell.
+  post-hoc 2 §4 said the appended form breaks 0 patterns; in host mode it breaks
+  1, and that one is the END-ANCHORED site — exactly the site his §2 names.
+  His regex reasoning is therefore CONFIRMED at the pattern level, and the figure that
+  decides the price is unchanged: of the patterns the appended form breaks,
+  0 belong to an instrument that reads live gate output.

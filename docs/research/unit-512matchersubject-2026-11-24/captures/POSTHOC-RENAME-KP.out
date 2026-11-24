@@ -1,0 +1,85 @@
+unit-512 post-hoc 2 — cure R driven on a member, and its silence measured
+
+§0  the two gate copies
+  live gate        scripts/verify-decl-body-slicers.mjs  80979 bytes  sha e619e79e
+  occurrences of "tracked files read" in the gate source: 8
+  renamed copy     81019 bytes  sha d6e7131c
+  the two copies differ ONLY by that substitution: true
+
+§1  the two drives — this is where "silently" is decided
+  VERBATIM  rc 0   stdout 4475 B (21277165)   stderr 0 B
+            verdict line: "DECL-BODY SLICERS OK — no new hand-rolled slicer, no stale baseline entry."
+  RENAMED   rc 0   stdout 4480 B (74b8516f)   stderr 0 B
+            verdict line: "DECL-BODY SLICERS OK — no new hand-rolled slicer, no stale baseline entry."
+  exit codes equal: true
+  stderr equal    : true
+  verdict equal   : true
+
+§2  every regex matcher in his census, applied to both drives' real stdout
+    provenance is this unit's; the pattern is sliced from his POSTHOC-ANCHORS.json
+
+  BREAKS  LIVE              docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs:94
+        /^\s*tracked files read: (\d+)/m
+        verbatim → "1086"    renamed → null
+  BREAKS  LIVE              docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:70
+        /\n {2}tracked files read: (\d+)/
+        verbatim → "1086"    renamed → null
+  BREAKS  LIVE              docs/research/unit-500trackedcomplement-2026-11-22/arm-tracked-complement.mjs:45
+        /tracked files read: (\d+)/
+        verbatim → "1086"    renamed → null
+  holds   FROZEN            docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:20
+        /^(\s*tracked files read: )(\d+)$/   [END-ANCHORED]
+        verbatim → null    renamed → null
+  BREAKS  FROZEN            docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:34
+        /tracked files read: (\d+)/
+        verbatim → "1086"    renamed → null
+  BREAKS  FROZEN            docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:35
+        /tracked files read: (\d+)/
+        verbatim → "1086"    renamed → null
+  BREAKS  ?                 docs/research/unit-501redbranchpin-2026-11-22/posthoc-which-lines-move.mjs:87
+        /tracked files read:\s*(\d+)/
+        verbatim → "1086"    renamed → null
+  BREAKS  LIVE              docs/research/unit-502streampin-2026-11-22/posthoc-landing.mjs:39
+        /tracked files read: (\d+)/
+        verbatim → "1086"    renamed → null
+  holds   LIVE              docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs:30
+        /^\s*(tracked files read|population[^:]*|baseline entries[^:]*):\s*(\d+)/
+        verbatim → null    renamed → null
+  BREAKS  FROZEN(no-drive)  docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs:33
+        /tracked files read: (\d+)/
+        verbatim → "1086"    renamed → null
+  BREAKS  ?                 docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:27
+        /tracked files read:\s*(\d+)/
+        verbatim → "1086"    renamed → null
+  BREAKS  LIVE              docs/research/unit-509extractionrefusal-2026-11-23/posthoc-wsfile.mjs:128
+        /tracked files read:\s*(\d+)/
+        verbatim → "1086"    renamed → null
+  BREAKS  LIVE              docs/research/verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-member.mjs:22
+        /tracked files read: (\d+)/
+        verbatim → "1086"    renamed → null
+
+§3  figures
+  regex matchers tested                      : 13
+  broke under the rename (value → null)      : 11
+    of those, provenance LIVE                : 6 of 7
+    of those, provenance FROZEN              : 3 of 4  (a FROZEN site never reads this stdout; a break here is a property of the PATTERN, not of the instrument)
+  gate exit code moved by the rename         : false
+  gate stderr moved by the rename            : false
+
+§4  the appended rendering — the one his anchor refused — applied to the same patterns
+  the appended form was constructed from the real stdout: true
+  patterns the appended form breaks: 0
+  of those, sites that actually READ live gate output (LIVE): 0
+  >>> the price his §2 refused the appended rendering on, measured at the granularity of the claim: 0
+
+§5  the FROZEN control (P8) — declared trivially green, driven anyway
+  docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs
+  run with both gate copies present on disk: rc 0 / 0, stdout 1094 B (bfc04fef) / 1094 B (bfc04fef)
+  byte-identical: true
+  its own extracted figure(s): ["tracked files read: 1064\",","tracked files read: 1067\",","tracked files read MOVED, 1064 -> strictly greater\": true,"]
+  DECLARED: this cell cannot fail. The instrument reads two committed captures and
+  never opens either gate copy, so it is insensitive to the rename by construction.
+  That insensitivity IS the finding — it is the same property that makes cure R
+  unable to reach it — but as a control it carries no load, and is not scored as if it did.
+
+  scratch copies removed: scripts/scratch-unit512-verbatim.mjs, scripts/scratch-unit512-renamed.mjs

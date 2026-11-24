@@ -1,0 +1,149 @@
+{
+ "gateOccurrences": 8,
+ "drives": {
+  "VERBATIM": {
+   "rc": 0,
+   "stdoutBytes": 4475,
+   "stderrBytes": 0,
+   "stdoutSha": "21277165",
+   "verdictLine": "DECL-BODY SLICERS OK — no new hand-rolled slicer, no stale baseline entry."
+  },
+  "RENAMED": {
+   "rc": 0,
+   "stdoutBytes": 4480,
+   "stderrBytes": 0,
+   "stdoutSha": "74b8516f",
+   "verdictLine": "DECL-BODY SLICERS OK — no new hand-rolled slicer, no stale baseline entry."
+  }
+ },
+ "rows": [
+  {
+   "site": "docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs:94",
+   "pattern": "/^\\s*tracked files read: (\\d+)/m",
+   "endAnchored": false,
+   "provenance": "LIVE",
+   "vVal": "1086",
+   "rVal": null,
+   "broke": true
+  },
+  {
+   "site": "docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:70",
+   "pattern": "/\\n {2}tracked files read: (\\d+)/",
+   "endAnchored": false,
+   "provenance": "LIVE",
+   "vVal": "1086",
+   "rVal": null,
+   "broke": true
+  },
+  {
+   "site": "docs/research/unit-500trackedcomplement-2026-11-22/arm-tracked-complement.mjs:45",
+   "pattern": "/tracked files read: (\\d+)/",
+   "endAnchored": false,
+   "provenance": "LIVE",
+   "vVal": "1086",
+   "rVal": null,
+   "broke": true
+  },
+  {
+   "site": "docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:20",
+   "pattern": "/^(\\s*tracked files read: )(\\d+)$/",
+   "endAnchored": true,
+   "provenance": "FROZEN",
+   "vVal": null,
+   "rVal": null,
+   "broke": false
+  },
+  {
+   "site": "docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:34",
+   "pattern": "/tracked files read: (\\d+)/",
+   "endAnchored": false,
+   "provenance": "FROZEN",
+   "vVal": "1086",
+   "rVal": null,
+   "broke": true
+  },
+  {
+   "site": "docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:35",
+   "pattern": "/tracked files read: (\\d+)/",
+   "endAnchored": false,
+   "provenance": "FROZEN",
+   "vVal": "1086",
+   "rVal": null,
+   "broke": true
+  },
+  {
+   "site": "docs/research/unit-501redbranchpin-2026-11-22/posthoc-which-lines-move.mjs:87",
+   "pattern": "/tracked files read:\\s*(\\d+)/",
+   "endAnchored": false,
+   "provenance": "NOT-IN-MATCHER-SET",
+   "vVal": "1086",
+   "rVal": null,
+   "broke": true
+  },
+  {
+   "site": "docs/research/unit-502streampin-2026-11-22/posthoc-landing.mjs:39",
+   "pattern": "/tracked files read: (\\d+)/",
+   "endAnchored": false,
+   "provenance": "LIVE",
+   "vVal": "1086",
+   "rVal": null,
+   "broke": true
+  },
+  {
+   "site": "docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs:30",
+   "pattern": "/^\\s*(tracked files read|population[^:]*|baseline entries[^:]*):\\s*(\\d+)/",
+   "endAnchored": false,
+   "provenance": "LIVE",
+   "vVal": null,
+   "rVal": null,
+   "broke": false
+  },
+  {
+   "site": "docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs:33",
+   "pattern": "/tracked files read: (\\d+)/",
+   "endAnchored": false,
+   "provenance": "FROZEN(no-drive)",
+   "vVal": "1086",
+   "rVal": null,
+   "broke": true
+  },
+  {
+   "site": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:27",
+   "pattern": "/tracked files read:\\s*(\\d+)/",
+   "endAnchored": false,
+   "provenance": "NOT-IN-MATCHER-SET",
+   "vVal": "1086",
+   "rVal": null,
+   "broke": true
+  },
+  {
+   "site": "docs/research/unit-509extractionrefusal-2026-11-23/posthoc-wsfile.mjs:128",
+   "pattern": "/tracked files read:\\s*(\\d+)/",
+   "endAnchored": false,
+   "provenance": "LIVE",
+   "vVal": "1086",
+   "rVal": null,
+   "broke": true
+  },
+  {
+   "site": "docs/research/verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-member.mjs:22",
+   "pattern": "/tracked files read: (\\d+)/",
+   "endAnchored": false,
+   "provenance": "LIVE",
+   "vVal": "1086",
+   "rVal": null,
+   "broke": true
+  }
+ ],
+ "appendedBreaks": 0,
+ "appendedBroke": [],
+ "appendedLiveBreaks": 0,
+ "frozenControl": {
+  "instrument": "docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs",
+  "identical": true,
+  "rc": [
+   0,
+   0
+  ]
+ }
+}
