@@ -1,0 +1,774 @@
+=== unit-514 post-hoc — the UNCLEAR bucket, sub-keyed ===
+
+  STRING-region occurrences with no shape on line or in window: 48 (of 64 STRING total)
+
+  PRED-NAME 3  ·  EMITTER 6  ·  PROSE 15  ·  RESIDUAL 24
+
+  RESIDUAL in full — the only class anyone has to read by eye:
+
+    docs/research/unit-486markerstale-2026-11-19/arm-markerstale.mjs:236  (3 words)
+      tracked: num('tracked files read:'),
+    docs/research/unit-486markerstale-2026-11-19/posthoc-whose-seven.mjs:63  (3 words)
+      const hisTracked = hisNum('tracked files read:');
+    docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs:160  (3 words)
+      read: num(out, 'tracked files read:'),
+    docs/research/unit-510quotepathskip-2026-11-23/confirm-landed.mjs:102  (3 words)
+      read: num(out, 'tracked files read:'),
+    docs/research/unit-511readcountname-2026-11-24/arm-readcountname.mjs:63  (3 words)
+      const LABEL = 'tracked files read';
+    docs/research/unit-511readcountname-2026-11-24/confirm-landed.mjs:48  (4 words)
+      const CURE_MARKS = ['filesRead += 1', 'tracked files read: ${filesRead}', 'unreadableFiles.length} unreadable'];
+    docs/research/unit-511readcountname-2026-11-24/posthoc-anchor-census.mjs:35  (3 words)
+      const LABEL = 'tracked files read';
+    docs/research/unit-511readcountname-2026-11-24/posthoc-matcher-vs-prose.mjs:32  (3 words)
+      const LABEL = 'tracked files read';
+    docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:197  (7 words)
+      const APPENDED = '  tracked files read: 1083 (1084 in scope, 1 excluded, 0 unreadable)';
+    docs/research/unit-512matchersubject-2026-11-24/posthoc-application-mode.mjs:30  (3 words)
+      const OLD = 'tracked files read';
+    docs/research/unit-512matchersubject-2026-11-24/posthoc-rename-kp.mjs:36  (3 words)
+      const OLD = 'tracked files read';
+    docs/research/unit-513consumernull-2026-11-24/arm-consumernull.mjs:34  (3 words)
+      const LABEL = 'tracked files read';
+    docs/research/unit-513consumernull-2026-11-24/arm-consumernull.mjs:247  (6 words)
+      { want: 'REPORTED', src: `const m = stdout.match(/tracked files read: (\\d+)/);\nsay(\`  figure: \${m?.[1]}\`);\n` },
+    docs/research/unit-513consumernull-2026-11-24/arm-consumernull.mjs:249  (7 words)
+      { want: 'SKIP', src: `const m = stdout.match(/tracked files read: (\\d+)/);\nif (m) {\n  figures.read = Number(m[1]);\n}\n` },
+    docs/research/unit-513consumernull-2026-11-24/posthoc-application-subject.mjs:34  (3 words)
+      const LABEL = 'tracked files read';
+    docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs:165  (6 words)
+      { want: 'REPORTED', kind: 'direct', src: `const m = stdout.match(/tracked files read: (\\d+)/);\nsay(\`  figure: \${m?.[1]}\`);\n` },
+    docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs:167  (7 words)
+      { want: 'SKIP', kind: 'direct', src: `const m = stdout.match(/tracked files read: (\\d+)/);\nif (m) {\n  figures.read = Number(m[1]);\n}\n` },
+    docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs:223  (5 words)
+      { want: 'REPORTED', kind: 'direct', src: `const m = o.match(/tracked files read: (\\d+)/);\nsay(\`  f \${m?.[1]}\`);\n` },
+    docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs:224  (6 words)
+      { want: 'DEFAULT', kind: 'direct', src: `const m = o.match(/tracked files read: (\\d+)/);\nconst n = Number(m?.[1] ?? 0);\n` },
+    docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs:225  (7 words)
+      { want: 'SKIP', kind: 'direct', src: `const m = o.match(/tracked files read: (\\d+)/);\nif (m) {\n  f.read = Number(m[1]);\n}\n` },
+    docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs:232  (5 words)
+      { want: 'THROW', kind: 'inline', src: `const preRead = Number(pre.match(/tracked files read: (\\d+)/)[1]);\n` },
+    docs/research/unit-514equalityconsumer-2026-11-24/arm-strict-p8-drive.mjs:33  (3 words)
+      const OLD = 'tracked files read';
+    docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs:25  (3 words)
+      const OLD = 'tracked files read';
+    scripts/verify-decl-body-slicers.mjs:895  (4 words)
+      emit(`  tracked files read: ${filesRead}`);
+
+=== correction A — Arm A's 12, by what decided them ===
+
+  {"own line":10,"4-line window":2}
+    RETRACTED  docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:114  EQUALITY  <- decided from the 4-line window
+    RETRACTED  docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:116  EQUALITY  <- decided from the 4-line window
+  non-regex consumers decided from the OWN LINE: 10  <- the figure to carry
+
+=== correction B — the exclusion accounting, recomputed ===
+
+  armPrinted: "1 excluded as this arm's own"
+  armPrintedIsTrueOfThatDrive: false
+  reasonItWasFalse: "the arm was UNTRACKED at its own run time, so the path filter removed nothing and corpus.length == tracked.length"
+  nowTrackedAtThisDrive: {"docs/research/unit-514equalityconsumer-2026-11-24/arm-equalityconsumer.mjs":true,"docs/research/unit-514equalityconsumer-2026-11-24/posthoc-unclear-subkey.mjs":false}
+  trackedJsAtThisDrive: 628
+  excludedByPathAndPresent: 1
+  corpusReadAtThisDrive: 627
+  identityHolds: true
+
+{
+  "counts": {
+    "PRED_NAME": 3,
+    "EMITTER": 6,
+    "PROSE": 15,
+    "RESIDUAL": 24
+  },
+  "stringTotal": 64,
+  "unclearTotal": 48,
+  "residual": [
+    {
+      "file": "docs/research/unit-486markerstale-2026-11-19/arm-markerstale.mjs",
+      "line": 236,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 3,
+      "literalHead": "'tracked files read:'",
+      "line_text": "tracked: num('tracked files read:'),"
+    },
+    {
+      "file": "docs/research/unit-486markerstale-2026-11-19/posthoc-whose-seven.mjs",
+      "line": 63,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 3,
+      "literalHead": "'tracked files read:'",
+      "line_text": "const hisTracked = hisNum('tracked files read:');"
+    },
+    {
+      "file": "docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs",
+      "line": 160,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 3,
+      "literalHead": "'tracked files read:'",
+      "line_text": "read: num(out, 'tracked files read:'),"
+    },
+    {
+      "file": "docs/research/unit-510quotepathskip-2026-11-23/confirm-landed.mjs",
+      "line": 102,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 3,
+      "literalHead": "'tracked files read:'",
+      "line_text": "read: num(out, 'tracked files read:'),"
+    },
+    {
+      "file": "docs/research/unit-511readcountname-2026-11-24/arm-readcountname.mjs",
+      "line": 63,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 3,
+      "literalHead": "'tracked files read'",
+      "line_text": "const LABEL = 'tracked files read';"
+    },
+    {
+      "file": "docs/research/unit-511readcountname-2026-11-24/confirm-landed.mjs",
+      "line": 48,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 4,
+      "literalHead": "'tracked files read: ${filesRead}'",
+      "line_text": "const CURE_MARKS = ['filesRead += 1', 'tracked files read: ${filesRead}', 'unreadableFiles.length} unreadable'];"
+    },
+    {
+      "file": "docs/research/unit-511readcountname-2026-11-24/posthoc-anchor-census.mjs",
+      "line": 35,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 3,
+      "literalHead": "'tracked files read'",
+      "line_text": "const LABEL = 'tracked files read';"
+    },
+    {
+      "file": "docs/research/unit-511readcountname-2026-11-24/posthoc-matcher-vs-prose.mjs",
+      "line": 32,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 3,
+      "literalHead": "'tracked files read'",
+      "line_text": "const LABEL = 'tracked files read';"
+    },
+    {
+      "file": "docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs",
+      "line": 197,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 7,
+      "literalHead": "' tracked files read: 1083 (1084 in scope, 1 excluded, 0 unreadable)'",
+      "line_text": "const APPENDED = '  tracked files read: 1083 (1084 in scope, 1 excluded, 0 unreadable)';"
+    },
+    {
+      "file": "docs/research/unit-512matchersubject-2026-11-24/posthoc-application-mode.mjs",
+      "line": 30,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 3,
+      "literalHead": "'tracked files read'",
+      "line_text": "const OLD = 'tracked files read';"
+    },
+    {
+      "file": "docs/research/unit-512matchersubject-2026-11-24/posthoc-rename-kp.mjs",
+      "line": 36,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 3,
+      "literalHead": "'tracked files read'",
+      "line_text": "const OLD = 'tracked files read';"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/arm-consumernull.mjs",
+      "line": 34,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 3,
+      "literalHead": "'tracked files read'",
+      "line_text": "const LABEL = 'tracked files read';"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/arm-consumernull.mjs",
+      "line": 247,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 6,
+      "literalHead": "`const m = stdout.match(/tracked files read: (\\\\d+)/);\\nsay(\\` figure: \\${m?.[1]}\\`);\\n`",
+      "line_text": "{ want: 'REPORTED', src: `const m = stdout.match(/tracked files read: (\\\\d+)/);\\nsay(\\`  figure: \\${m?.[1]}\\`);\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/arm-consumernull.mjs",
+      "line": 249,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 7,
+      "literalHead": "`const m = stdout.match(/tracked files read: (\\\\d+)/);\\nif (m) {\\n figures.read = Number(m[1]);\\n}\\n`",
+      "line_text": "{ want: 'SKIP', src: `const m = stdout.match(/tracked files read: (\\\\d+)/);\\nif (m) {\\n  figures.read = Number(m[1]);\\n}\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-application-subject.mjs",
+      "line": 34,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 3,
+      "literalHead": "'tracked files read'",
+      "line_text": "const LABEL = 'tracked files read';"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs",
+      "line": 165,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 6,
+      "literalHead": "`const m = stdout.match(/tracked files read: (\\\\d+)/);\\nsay(\\` figure: \\${m?.[1]}\\`);\\n`",
+      "line_text": "{ want: 'REPORTED', kind: 'direct', src: `const m = stdout.match(/tracked files read: (\\\\d+)/);\\nsay(\\`  figure: \\${m?.[1]}\\`);\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs",
+      "line": 167,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 7,
+      "literalHead": "`const m = stdout.match(/tracked files read: (\\\\d+)/);\\nif (m) {\\n figures.read = Number(m[1]);\\n}\\n`",
+      "line_text": "{ want: 'SKIP', kind: 'direct', src: `const m = stdout.match(/tracked files read: (\\\\d+)/);\\nif (m) {\\n  figures.read = Number(m[1]);\\n}\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs",
+      "line": 223,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 5,
+      "literalHead": "`const m = o.match(/tracked files read: (\\\\d+)/);\\nsay(\\` f \\${m?.[1]}\\`);\\n`",
+      "line_text": "{ want: 'REPORTED', kind: 'direct', src: `const m = o.match(/tracked files read: (\\\\d+)/);\\nsay(\\`  f \\${m?.[1]}\\`);\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs",
+      "line": 224,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 6,
+      "literalHead": "`const m = o.match(/tracked files read: (\\\\d+)/);\\nconst n = Number(m?.[1] ?? 0);\\n`",
+      "line_text": "{ want: 'DEFAULT', kind: 'direct', src: `const m = o.match(/tracked files read: (\\\\d+)/);\\nconst n = Number(m?.[1] ?? 0);\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs",
+      "line": 225,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 7,
+      "literalHead": "`const m = o.match(/tracked files read: (\\\\d+)/);\\nif (m) {\\n f.read = Number(m[1]);\\n}\\n`",
+      "line_text": "{ want: 'SKIP', kind: 'direct', src: `const m = o.match(/tracked files read: (\\\\d+)/);\\nif (m) {\\n  f.read = Number(m[1]);\\n}\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs",
+      "line": 232,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 5,
+      "literalHead": "`const preRead = Number(pre.match(/tracked files read: (\\\\d+)/)[1]);\\n`",
+      "line_text": "{ want: 'THROW', kind: 'inline', src: `const preRead = Number(pre.match(/tracked files read: (\\\\d+)/)[1]);\\n` },"
+    },
+    {
+      "file": "docs/research/unit-514equalityconsumer-2026-11-24/arm-strict-p8-drive.mjs",
+      "line": 33,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 3,
+      "literalHead": "'tracked files read'",
+      "line_text": "const OLD = 'tracked files read';"
+    },
+    {
+      "file": "docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs",
+      "line": 25,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 3,
+      "literalHead": "'tracked files read'",
+      "line_text": "const OLD = 'tracked files read';"
+    },
+    {
+      "file": "scripts/verify-decl-body-slicers.mjs",
+      "line": 895,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 4,
+      "literalHead": "` tracked files read: ${filesRead}`",
+      "line_text": "emit(`  tracked files read: ${filesRead}`);"
+    }
+  ],
+  "byDecision": {
+    "own line": 10,
+    "4-line window": 2
+  },
+  "windowDecided": [
+    {
+      "file": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+      "line": 114,
+      "region": "STRING",
+      "shape": "EQUALITY",
+      "why": "compared for equality against the label string",
+      "decidedFrom": "4-line window",
+      "deciding": "&& r.figures.GUARDED === 3 && r.figures.UNGUARDED === 58),\n    'P6.d  `tracked files read` is the ONLY named figure that moved':\n      movedFigures.length === 1 && movedFigures[0] === 'tracked files read',\n    'P6.e  `tracked files read` is the ONLY line that differs, pre to post':"
+    },
+    {
+      "file": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+      "line": 116,
+      "region": "STRING",
+      "shape": "EQUALITY",
+      "why": "compared for equality against the label string",
+      "decidedFrom": "4-line window",
+      "deciding": "movedFigures.length === 1 && movedFigures[0] === 'tracked files read',\n    'P6.e  `tracked files read` is the ONLY line that differs, pre to post':\n      firstToLast.onlyInFirst.length === 1 && firstToLast.onlyInSecond.length === 1\n      && firstToLast.onlyInFirst[0].includes('tracked files read')"
+    }
+  ],
+  "exclusion": {
+    "armPrinted": "1 excluded as this arm's own",
+    "armPrintedIsTrueOfThatDrive": false,
+    "reasonItWasFalse": "the arm was UNTRACKED at its own run time, so the path filter removed nothing and corpus.length == tracked.length",
+    "nowTrackedAtThisDrive": {
+      "docs/research/unit-514equalityconsumer-2026-11-24/arm-equalityconsumer.mjs": true,
+      "docs/research/unit-514equalityconsumer-2026-11-24/posthoc-unclear-subkey.mjs": false
+    },
+    "trackedJsAtThisDrive": 628,
+    "excludedByPathAndPresent": 1,
+    "corpusReadAtThisDrive": 627,
+    "identityHolds": true
+  },
+  "allUnclear": [
+    {
+      "file": "docs/research/unit-480guardorder-2026-11-18/arm.mjs",
+      "line": 211,
+      "cls": "EMITTER",
+      "why": "the enclosing statement EMITS this string",
+      "words": 7,
+      "literalHead": "` population ${rows.length} (P5 wants 66) · tracked files read ${readable}`",
+      "line_text": "console.log(`  population ${rows.length} (P5 wants 66) · tracked files read ${readable}`);"
+    },
+    {
+      "file": "docs/research/unit-486markerstale-2026-11-19/arm-markerstale.mjs",
+      "line": 236,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 3,
+      "literalHead": "'tracked files read:'",
+      "line_text": "tracked: num('tracked files read:'),"
+    },
+    {
+      "file": "docs/research/unit-486markerstale-2026-11-19/posthoc-whose-seven.mjs",
+      "line": 63,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 3,
+      "literalHead": "'tracked files read:'",
+      "line_text": "const hisTracked = hisNum('tracked files read:');"
+    },
+    {
+      "file": "docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs",
+      "line": 73,
+      "cls": "EMITTER",
+      "why": "the enclosing statement EMITS this string",
+      "words": 9,
+      "literalHead": "` tracked files read: ${figure(pre, TRACKED)} → ${figure(post, TRACKED)} (registered in P5)`",
+      "line_text": "console.log(`  tracked files read:        ${figure(pre, TRACKED)} → ${figure(post, TRACKED)}  (registered in P5)`);"
+    },
+    {
+      "file": "docs/research/unit-501redbranchpin-2026-11-22/posthoc-crossunit-byte-figures.mjs",
+      "line": 91,
+      "cls": "PROSE",
+      "why": "the enclosing literal is a sentence (18 words)",
+      "words": 18,
+      "literalHead": "'In both cases the only moved line is `tracked files read`, and it moved inside its digit width.'",
+      "line_text": "say('In both cases the only moved line is `tracked files read`, and it moved inside its digit width.');"
+    },
+    {
+      "file": "docs/research/unit-503stalelabelwidth-2026-11-22/arm-realgate-newones.mjs",
+      "line": 145,
+      "cls": "PRED-NAME",
+      "why": "the literal is a graded prediction's own NAME string",
+      "words": 8,
+      "literalHead": "'P5.d the tree really did change: tracked files read > 1054'",
+      "line_text": "'P5.d  the tree really did change: tracked files read > 1054':"
+    },
+    {
+      "file": "docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs",
+      "line": 97,
+      "cls": "PRED-NAME",
+      "why": "the literal is a graded prediction's own NAME string",
+      "words": 14,
+      "literalHead": "'P7.d tracked files read is the ONLY figure that moved, and keeps its digit width'",
+      "line_text": "'P7.d  tracked files read is the ONLY figure that moved, and keeps its digit width':"
+    },
+    {
+      "file": "docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs",
+      "line": 70,
+      "cls": "PRED-NAME",
+      "why": "the literal is a graded prediction's own NAME string",
+      "words": 6,
+      "literalHead": "'P6.c tracked files read MOVED, 1064 -> strictly greater'",
+      "line_text": "'P6.c  tracked files read MOVED, 1064 -> strictly greater':"
+    },
+    {
+      "file": "docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs",
+      "line": 160,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 3,
+      "literalHead": "'tracked files read:'",
+      "line_text": "read: num(out, 'tracked files read:'),"
+    },
+    {
+      "file": "docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs",
+      "line": 204,
+      "cls": "EMITTER",
+      "why": "the enclosing statement EMITS this string",
+      "words": 12,
+      "literalHead": "`cells reporting \"tracked files read: 1\" with population 0 (the figure claims a read that`",
+      "line_text": "console.log(`cells reporting \"tracked files read: 1\" with population 0 (the figure claims a read that`"
+    },
+    {
+      "file": "docs/research/unit-510quotepathskip-2026-11-23/confirm-landed.mjs",
+      "line": 102,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 3,
+      "literalHead": "'tracked files read:'",
+      "line_text": "read: num(out, 'tracked files read:'),"
+    },
+    {
+      "file": "docs/research/unit-511readcountname-2026-11-24/arm-readcountname.mjs",
+      "line": 63,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 3,
+      "literalHead": "'tracked files read'",
+      "line_text": "const LABEL = 'tracked files read';"
+    },
+    {
+      "file": "docs/research/unit-511readcountname-2026-11-24/confirm-landed.mjs",
+      "line": 48,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 4,
+      "literalHead": "'tracked files read: ${filesRead}'",
+      "line_text": "const CURE_MARKS = ['filesRead += 1', 'tracked files read: ${filesRead}', 'unreadableFiles.length} unreadable'];"
+    },
+    {
+      "file": "docs/research/unit-511readcountname-2026-11-24/posthoc-anchor-census.mjs",
+      "line": 35,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 3,
+      "literalHead": "'tracked files read'",
+      "line_text": "const LABEL = 'tracked files read';"
+    },
+    {
+      "file": "docs/research/unit-511readcountname-2026-11-24/posthoc-matcher-vs-prose.mjs",
+      "line": 32,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 3,
+      "literalHead": "'tracked files read'",
+      "line_text": "const LABEL = 'tracked files read';"
+    },
+    {
+      "file": "docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs",
+      "line": 197,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 7,
+      "literalHead": "' tracked files read: 1083 (1084 in scope, 1 excluded, 0 unreadable)'",
+      "line_text": "const APPENDED = '  tracked files read: 1083 (1084 in scope, 1 excluded, 0 unreadable)';"
+    },
+    {
+      "file": "docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs",
+      "line": 201,
+      "cls": "EMITTER",
+      "why": "the enclosing statement EMITS this string",
+      "words": 10,
+      "literalHead": "` landed : ${JSON.stringify(' tracked files read: 1083')} → match ${ANCHOR_RE.test(' tracked files read: 1083')}`",
+      "line_text": "console.log(`  landed    : ${JSON.stringify('  tracked files read: 1083')} → match ${ANCHOR_RE.test('  tracked files read: 1083')}`);"
+    },
+    {
+      "file": "docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs",
+      "line": 201,
+      "cls": "EMITTER",
+      "why": "the enclosing statement EMITS this string",
+      "words": 10,
+      "literalHead": "` landed : ${JSON.stringify(' tracked files read: 1083')} → match ${ANCHOR_RE.test(' tracked files read: 1083')}`",
+      "line_text": "console.log(`  landed    : ${JSON.stringify('  tracked files read: 1083')} → match ${ANCHOR_RE.test('  tracked files read: 1083')}`);"
+    },
+    {
+      "file": "docs/research/unit-512matchersubject-2026-11-24/posthoc-application-mode.mjs",
+      "line": 30,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 3,
+      "literalHead": "'tracked files read'",
+      "line_text": "const OLD = 'tracked files read';"
+    },
+    {
+      "file": "docs/research/unit-512matchersubject-2026-11-24/posthoc-rename-kp.mjs",
+      "line": 36,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 3,
+      "literalHead": "'tracked files read'",
+      "line_text": "const OLD = 'tracked files read';"
+    },
+    {
+      "file": "docs/research/unit-512matchersubject-2026-11-24/posthoc-rename-kp.mjs",
+      "line": 147,
+      "cls": "EMITTER",
+      "why": "the enclosing statement EMITS this string",
+      "words": 8,
+      "literalHead": "` its own extracted figure(s): ${JSON.stringify((before.stdout.match(/tracked files read[^\\n]*/g) ?? []).slice(0, 4))}`",
+      "line_text": "console.log(`  its own extracted figure(s): ${JSON.stringify((before.stdout.match(/tracked files read[^\\n]*/g) ?? []).slice(0, 4))}`);"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/arm-consumernull.mjs",
+      "line": 34,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 3,
+      "literalHead": "'tracked files read'",
+      "line_text": "const LABEL = 'tracked files read';"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/arm-consumernull.mjs",
+      "line": 246,
+      "cls": "PROSE",
+      "why": "the enclosing literal is a sentence (10 words)",
+      "words": 10,
+      "literalHead": "`const m = stdout.match(/tracked files read: (\\\\d+)/);\\nif (!m) throw new Error('no figure');\\nconst n = Number(m[1]);\\n`",
+      "line_text": "{ want: 'THROW', src: `const m = stdout.match(/tracked files read: (\\\\d+)/);\\nif (!m) throw new Error('no figure');\\nconst n = Number(m[1]);\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/arm-consumernull.mjs",
+      "line": 247,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 6,
+      "literalHead": "`const m = stdout.match(/tracked files read: (\\\\d+)/);\\nsay(\\` figure: \\${m?.[1]}\\`);\\n`",
+      "line_text": "{ want: 'REPORTED', src: `const m = stdout.match(/tracked files read: (\\\\d+)/);\\nsay(\\`  figure: \\${m?.[1]}\\`);\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/arm-consumernull.mjs",
+      "line": 248,
+      "cls": "PROSE",
+      "why": "the enclosing literal is a sentence (8 words)",
+      "words": 8,
+      "literalHead": "`const m = stdout.match(/tracked files read: (\\\\d+)/);\\nconst n = Number(m?.[1] ?? 0);\\nsay(\\` figure: \\${n}\\`);\\n`",
+      "line_text": "{ want: 'DEFAULT', src: `const m = stdout.match(/tracked files read: (\\\\d+)/);\\nconst n = Number(m?.[1] ?? 0);\\nsay(\\`  figure: \\${n}\\`);\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/arm-consumernull.mjs",
+      "line": 249,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 7,
+      "literalHead": "`const m = stdout.match(/tracked files read: (\\\\d+)/);\\nif (m) {\\n figures.read = Number(m[1]);\\n}\\n`",
+      "line_text": "{ want: 'SKIP', src: `const m = stdout.match(/tracked files read: (\\\\d+)/);\\nif (m) {\\n  figures.read = Number(m[1]);\\n}\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-application-subject.mjs",
+      "line": 34,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 3,
+      "literalHead": "'tracked files read'",
+      "line_text": "const LABEL = 'tracked files read';"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs",
+      "line": 164,
+      "cls": "PROSE",
+      "why": "the enclosing literal is a sentence (10 words)",
+      "words": 10,
+      "literalHead": "`const m = stdout.match(/tracked files read: (\\\\d+)/);\\nif (!m) throw new Error('no figure');\\nconst n = Number(m[1]);\\n`",
+      "line_text": "{ want: 'THROW', kind: 'direct', src: `const m = stdout.match(/tracked files read: (\\\\d+)/);\\nif (!m) throw new Error('no figure');\\nconst n = Number("
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs",
+      "line": 165,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 6,
+      "literalHead": "`const m = stdout.match(/tracked files read: (\\\\d+)/);\\nsay(\\` figure: \\${m?.[1]}\\`);\\n`",
+      "line_text": "{ want: 'REPORTED', kind: 'direct', src: `const m = stdout.match(/tracked files read: (\\\\d+)/);\\nsay(\\`  figure: \\${m?.[1]}\\`);\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs",
+      "line": 166,
+      "cls": "PROSE",
+      "why": "the enclosing literal is a sentence (8 words)",
+      "words": 8,
+      "literalHead": "`const m = stdout.match(/tracked files read: (\\\\d+)/);\\nconst n = Number(m?.[1] ?? 0);\\nsay(\\` figure: \\${n}\\`);\\n`",
+      "line_text": "{ want: 'DEFAULT', kind: 'direct', src: `const m = stdout.match(/tracked files read: (\\\\d+)/);\\nconst n = Number(m?.[1] ?? 0);\\nsay(\\`  figure: \\${n}\\"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs",
+      "line": 167,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 7,
+      "literalHead": "`const m = stdout.match(/tracked files read: (\\\\d+)/);\\nif (m) {\\n figures.read = Number(m[1]);\\n}\\n`",
+      "line_text": "{ want: 'SKIP', kind: 'direct', src: `const m = stdout.match(/tracked files read: (\\\\d+)/);\\nif (m) {\\n  figures.read = Number(m[1]);\\n}\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs",
+      "line": 169,
+      "cls": "PROSE",
+      "why": "the enclosing literal is a sentence (13 words)",
+      "words": 13,
+      "literalHead": "`const one = (rx) => { const m = out.match(rx); return m ? Number(m[1]) : null; };\\nsay(\\` read \\${one(/tracked files read: (\\\\d+)/)}\\`);\\n`",
+      "line_text": "{ want: 'REPORTED', kind: 'helper', src: `const one = (rx) => { const m = out.match(rx); return m ? Number(m[1]) : null; };\\nsay(\\`  read \\${one(/trac"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs",
+      "line": 170,
+      "cls": "PROSE",
+      "why": "the enclosing literal is a sentence (12 words)",
+      "words": 12,
+      "literalHead": "`const one = (rx) => { const m = out.match(rx); return m ? Number(m[1]) : 0; };\\nsay(\\` read \\${one(/tracked files read: (\\\\d+)/)}\\`);\\n`",
+      "line_text": "{ want: 'DEFAULT', kind: 'helper', src: `const one = (rx) => { const m = out.match(rx); return m ? Number(m[1]) : 0; };\\nsay(\\`  read \\${one(/tracked "
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs",
+      "line": 171,
+      "cls": "PROSE",
+      "why": "the enclosing literal is a sentence (11 words)",
+      "words": 11,
+      "literalHead": "`const one = (rx) => { const m = out.match(rx); return m ? m[1] : null; };\\nconst n = Number(one(/tracked files read: (\\\\d+)/));\\n`",
+      "line_text": "{ want: 'DEFAULT', kind: 'helper-coerced', src: `const one = (rx) => { const m = out.match(rx); return m ? m[1] : null; };\\nconst n = Number(one(/trac"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs",
+      "line": 222,
+      "cls": "PROSE",
+      "why": "the enclosing literal is a sentence (9 words)",
+      "words": 9,
+      "literalHead": "`const m = o.match(/tracked files read: (\\\\d+)/);\\nif (!m) throw new Error('x');\\nconst n = Number(m[1]);\\n`",
+      "line_text": "{ want: 'THROW', kind: 'direct', src: `const m = o.match(/tracked files read: (\\\\d+)/);\\nif (!m) throw new Error('x');\\nconst n = Number(m[1]);\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs",
+      "line": 223,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 5,
+      "literalHead": "`const m = o.match(/tracked files read: (\\\\d+)/);\\nsay(\\` f \\${m?.[1]}\\`);\\n`",
+      "line_text": "{ want: 'REPORTED', kind: 'direct', src: `const m = o.match(/tracked files read: (\\\\d+)/);\\nsay(\\`  f \\${m?.[1]}\\`);\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs",
+      "line": 224,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 6,
+      "literalHead": "`const m = o.match(/tracked files read: (\\\\d+)/);\\nconst n = Number(m?.[1] ?? 0);\\n`",
+      "line_text": "{ want: 'DEFAULT', kind: 'direct', src: `const m = o.match(/tracked files read: (\\\\d+)/);\\nconst n = Number(m?.[1] ?? 0);\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs",
+      "line": 225,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 7,
+      "literalHead": "`const m = o.match(/tracked files read: (\\\\d+)/);\\nif (m) {\\n f.read = Number(m[1]);\\n}\\n`",
+      "line_text": "{ want: 'SKIP', kind: 'direct', src: `const m = o.match(/tracked files read: (\\\\d+)/);\\nif (m) {\\n  f.read = Number(m[1]);\\n}\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs",
+      "line": 226,
+      "cls": "PROSE",
+      "why": "the enclosing literal is a sentence (13 words)",
+      "words": 13,
+      "literalHead": "`const one = (rx) => { const m = o.match(rx); return m ? Number(m[1]) : null; };\\nsay(\\` read \\${one(/tracked files read: (\\\\d+)/)}\\`);\\n`",
+      "line_text": "{ want: 'REPORTED', kind: 'helper', src: `const one = (rx) => { const m = o.match(rx); return m ? Number(m[1]) : null; };\\nsay(\\`  read \\${one(/tracke"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs",
+      "line": 227,
+      "cls": "PROSE",
+      "why": "the enclosing literal is a sentence (12 words)",
+      "words": 12,
+      "literalHead": "`const one = (rx) => { const m = o.match(rx); return m ? Number(m[1]) : 0; };\\nsay(\\` read \\${one(/tracked files read: (\\\\d+)/)}\\`);\\n`",
+      "line_text": "{ want: 'DEFAULT', kind: 'helper', src: `const one = (rx) => { const m = o.match(rx); return m ? Number(m[1]) : 0; };\\nsay(\\`  read \\${one(/tracked fi"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs",
+      "line": 228,
+      "cls": "PROSE",
+      "why": "the enclosing literal is a sentence (11 words)",
+      "words": 11,
+      "literalHead": "`const one = (rx) => { const m = o.match(rx); return m ? m[1] : null; };\\nconst n = Number(one(/tracked files read: (\\\\d+)/));\\n`",
+      "line_text": "{ want: 'DEFAULT', kind: 'helper-coerced', src: `const one = (rx) => { const m = o.match(rx); return m ? m[1] : null; };\\nconst n = Number(one(/tracke"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs",
+      "line": 230,
+      "cls": "PROSE",
+      "why": "the enclosing literal is a sentence (9 words)",
+      "words": 9,
+      "literalHead": "`/**\\n * a docblock quoting /tracked files read: (\\\\d+)/ and nothing else\\n */\\nconst x = 1;\\n`",
+      "line_text": "{ want: 'PROSE', kind: 'prose-block', src: `/**\\n * a docblock quoting /tracked files read: (\\\\d+)/ and nothing else\\n */\\nconst x = 1;\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs",
+      "line": 231,
+      "cls": "PROSE",
+      "why": "the enclosing literal is a sentence (8 words)",
+      "words": 8,
+      "literalHead": "`const x = 1; // see /tracked files read: (\\\\d+)/ in the gate\\n`",
+      "line_text": "{ want: 'PROSE', kind: 'prose-line', src: `const x = 1; // see /tracked files read: (\\\\d+)/ in the gate\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs",
+      "line": 232,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 5,
+      "literalHead": "`const preRead = Number(pre.match(/tracked files read: (\\\\d+)/)[1]);\\n`",
+      "line_text": "{ want: 'THROW', kind: 'inline', src: `const preRead = Number(pre.match(/tracked files read: (\\\\d+)/)[1]);\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs",
+      "line": 233,
+      "cls": "PROSE",
+      "why": "the enclosing literal is a sentence (9 words)",
+      "words": 9,
+      "literalHead": "`const pick = (re) => (o.match(re) || [, 'absent'])[1];\\nsay(\\` read \\${pick(/tracked files read: (\\\\d+)/)}\\`);\\n`",
+      "line_text": "{ want: 'REPORTED', kind: 'arrdef', src: `const pick = (re) => (o.match(re) || [, 'absent'])[1];\\nsay(\\`  read \\${pick(/tracked files read: (\\\\d+)/)}\\"
+    },
+    {
+      "file": "docs/research/unit-514equalityconsumer-2026-11-24/arm-strict-p8-drive.mjs",
+      "line": 33,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 3,
+      "literalHead": "'tracked files read'",
+      "line_text": "const OLD = 'tracked files read';"
+    },
+    {
+      "file": "docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs",
+      "line": 25,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 3,
+      "literalHead": "'tracked files read'",
+      "line_text": "const OLD = 'tracked files read';"
+    },
+    {
+      "file": "scripts/verify-decl-body-slicers.mjs",
+      "line": 895,
+      "cls": "RESIDUAL",
+      "why": "neither emission, nor a prediction name, nor a sentence",
+      "words": 4,
+      "literalHead": "` tracked files read: ${filesRead}`",
+      "line_text": "emit(`  tracked files read: ${filesRead}`);"
+    }
+  ]
+}
