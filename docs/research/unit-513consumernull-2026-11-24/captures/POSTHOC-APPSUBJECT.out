@@ -1,0 +1,101 @@
+unit-513 post-hoc 3 — subject per APPLICATION, and P6 driven on renamed gate output
+  rev 98375f1f · driven 13:32:13 PST
+
+§1  Key E — what each application is applied to
+  unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs:94 (:94)  file LIVE  →  application UNRESOLVED   class REPORTED
+      the arm found no subject expression on the use line
+  unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:70 (:70)  file LIVE  →  application UNRESOLVED   class THROW
+      the arm found no subject expression on the use line
+  unit-500trackedcomplement-2026-11-22/arm-tracked-complement.mjs:45 (:45)  file LIVE  →  application UNRESOLVED   class REPORTED
+      the arm found no subject expression on the use line
+  unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:20 (:33)  file FROZEN  →  application UNRESOLVED   class UNCLEAR_R3
+      origin line does not name a source: docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:18  const
+  unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:34 (:34)  file FROZEN  →  application CAPTURE   class THROW
+      subject read from a file: docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:15  const
+  unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:35 (:35)  file FROZEN  →  application CAPTURE   class THROW
+      subject read from a file: docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:16  const
+  unit-501redbranchpin-2026-11-22/posthoc-which-lines-move.mjs:87 (:87)  file FROZEN  →  application UNRESOLVED   class SKIP
+      the arm found no subject expression on the use line
+  unit-502streampin-2026-11-22/posthoc-landing.mjs:39 (:39)  file LIVE  →  application UNRESOLVED   class REPORTED
+      the arm found no subject expression on the use line
+  unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs:30 (:30)  file LIVE  →  application GATE   class SKIP
+      subject bound to process output: docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs:29  for (const line of
+  unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs:33 (:76)  file FROZEN  →  application UNRESOLVED   class SKIP
+      origin line does not name a source: docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs:41  for (co
+  unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:27 (:27)  file FROZEN  →  application UNRESOLVED   class REPORTED
+      the arm found no subject expression on the use line
+  unit-509extractionrefusal-2026-11-23/posthoc-wsfile.mjs:128 (:128)  file LIVE  →  application GATE   class THROW
+      subject bound to process output: docs/research/unit-509extractionrefusal-2026-11-23/posthoc-wsfile.mjs:118  const outText =
+  unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:187 (:187)  file LIVE  →  application UNRESOLVED   class SKIP
+      origin line does not name a source: no origin found for `l`
+  unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:198 (:201)  file LIVE  →  application FIXTURE   class SKIP
+      the subject IS a string literal: '  tracked files read: 1083'
+  unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:198 (:202)  file LIVE  →  application FIXTURE   class SKIP
+      subject bound to a literal in this file: docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:197  const APPEN
+  unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:198 (:209)  file LIVE  →  application FIXTURE   class SKIP
+      subject bound to a literal in this file: docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:197  const APPEN
+  unit-512matchersubject-2026-11-24/arm-matchersubject.mjs:153 (:153)  file LIVE  →  application UNRESOLVED   class SKIP
+      origin line does not name a source: no origin found for `l`
+  unit-512matchersubject-2026-11-24/posthoc-application-mode.mjs:55 (:55)  file LIVE  →  application UNRESOLVED   class SKIP
+      the arm found no subject expression on the use line
+  unit-512matchersubject-2026-11-24/posthoc-rename-kp.mjs:119 (:119)  file LIVE  →  application UNRESOLVED   class UNCLEAR_R3
+      the arm found no subject expression on the use line
+  unit-512matchersubject-2026-11-24/posthoc-rename-kp.mjs:147 (:147)  file LIVE  →  application GATE   class UNCLEAR_R3
+      subject bound to process output: docs/research/unit-512matchersubject-2026-11-24/posthoc-rename-kp.mjs:142  const before = 
+  unit-512matchersubject-2026-11-24/posthoc-resolve-unresolved.mjs:69 (:69)  file DRIVES_OTHER  →  application UNRESOLVED   class SKIP
+      origin line does not name a source: no origin found for `l`
+  verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-member.mjs:22 (:22)  file LIVE  →  application UNRESOLVED   class SKIP
+      origin line does not name a source: docs/research/verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-membe
+
+§2  the corrected hazard figure
+  applied rows                                   22
+  Key B (FILE level)   LIVE 15 · FROZEN 6 · DRIVES_OTHER 1
+  Key E (APPLICATION)  GATE 3 · CAPTURE 2 · FIXTURE 3 · FILE 0 · OTHER-PROCESS 0 · UNRESOLVED 14
+  SILENT (DEFAULT+SKIP)                          11
+  …of which the subject is live gate output       1   ← the honest hazard count
+  …of which the subject is an in-file fixture     3   ← counted LIVE at file level, unreachable at site level
+      REACHABLE SILENT  docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs:30  SKIP  [DIRECT]
+
+§3  P6 — two scratch copies of the live gate, differing only in the label
+  label occurrences substituted: 8   substitution reversible: true
+  VERBATIM  rc 0  stdout 4465 B (025386ec)  stderr 0 B  verdict "DECL-BODY SLICERS OK — no new hand-rolled slicer, no stale baseline entry."
+  RENAMED   rc 0  stdout 4470 B (e841bc1c)  stderr 0 B  verdict "DECL-BODY SLICERS OK — no new hand-rolled slicer, no stale baseline entry."
+  verdict line identical: true   rc unmoved: true
+
+  each application's pattern, in its host's own mode, against both real stdouts:
+    unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs:94  mode STRING verbatim match         renamed null          BREAKS  [class REPORTED]
+    unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:70  mode STRING verbatim match         renamed null          BREAKS  [class THROW]
+    unit-500trackedcomplement-2026-11-22/arm-tracked-complement.mjs:45  mode STRING verbatim match         renamed null          BREAKS  [class REPORTED]
+    unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:20  mode LINE   verbatim match         renamed null          BREAKS  [class UNCLEAR_R3]
+    unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:34  mode STRING verbatim match         renamed null          BREAKS  [class THROW]
+    unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:35  mode STRING verbatim match         renamed null          BREAKS  [class THROW]
+    unit-501redbranchpin-2026-11-22/posthoc-which-lines-move.mjs:87  mode STRING verbatim match         renamed null          BREAKS  [class SKIP]
+    unit-502streampin-2026-11-22/posthoc-landing.mjs:39  mode STRING verbatim match         renamed null          BREAKS  [class REPORTED]
+    unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs:30  mode LINE   verbatim match         renamed match         survives  [class SKIP]
+    unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs:33  mode LINE   verbatim match         renamed null          BREAKS  [class SKIP]
+    unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:27  mode STRING verbatim match         renamed null          BREAKS  [class REPORTED]
+    unit-509extractionrefusal-2026-11-23/posthoc-wsfile.mjs:128  mode STRING verbatim match         renamed null          BREAKS  [class THROW]
+    unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:187  mode STRING verbatim match         renamed null          BREAKS  [class SKIP]
+    unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:198  mode STRING verbatim null          renamed null          DEAD CELL — matched neither, so it cannot be broken by either  [class SKIP]
+    unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:198  mode STRING verbatim null          renamed null          DEAD CELL — matched neither, so it cannot be broken by either  [class SKIP]
+    unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:198  mode STRING verbatim null          renamed null          DEAD CELL — matched neither, so it cannot be broken by either  [class SKIP]
+    unit-512matchersubject-2026-11-24/arm-matchersubject.mjs:153  mode STRING verbatim match         renamed null          BREAKS  [class SKIP]
+    unit-512matchersubject-2026-11-24/posthoc-application-mode.mjs:55  mode STRING verbatim match         renamed null          BREAKS  [class SKIP]
+    unit-512matchersubject-2026-11-24/posthoc-rename-kp.mjs:119  mode STRING verbatim match         renamed null          BREAKS  [class UNCLEAR_R3]
+    unit-512matchersubject-2026-11-24/posthoc-rename-kp.mjs:147  mode STRING verbatim match         renamed null          BREAKS  [class UNCLEAR_R3]
+    unit-512matchersubject-2026-11-24/posthoc-resolve-unresolved.mjs:69  mode STRING verbatim match         renamed null          BREAKS  [class SKIP]
+    verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-member.mjs:22  mode STRING verbatim match         renamed null          BREAKS  [class SKIP]
+
+  applications graded                 22
+  BREAK under the rename              18
+  SURVIVE (matched both renderings)   1
+      SURVIVOR  docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs:30  class SKIP  subject GATE
+  DEAD CELL (matched neither)         3   ← ungradeable, not evidence of safety
+      DEAD  docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:198  mode STRING  subject FIXTURE
+      DEAD  docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:198  mode STRING  subject FIXTURE
+      DEAD  docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:198  mode STRING  subject FIXTURE
+
+§4  the cross that is the point of this unit — breaks × silent × reaches live gate output
+  breaks AND silent AND subject is live gate output: 0
+
+§5  scratch removal — any `.d513-scratch` left in the tree: none

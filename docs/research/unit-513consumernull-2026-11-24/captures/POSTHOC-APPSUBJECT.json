@@ -1,0 +1,492 @@
+{
+  "rev": "98375f1f",
+  "drivenAt": "13:32:13",
+  "keyE": [
+    {
+      "site": "docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs:94",
+      "appliedAt": 94,
+      "fileClass": "LIVE",
+      "applicationClass": "UNRESOLVED",
+      "why": "the arm found no subject expression on the use line",
+      "consumer": "REPORTED",
+      "shape": "HELPER"
+    },
+    {
+      "site": "docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:70",
+      "appliedAt": 70,
+      "fileClass": "LIVE",
+      "applicationClass": "UNRESOLVED",
+      "why": "the arm found no subject expression on the use line",
+      "consumer": "THROW",
+      "shape": "DIRECT"
+    },
+    {
+      "site": "docs/research/unit-500trackedcomplement-2026-11-22/arm-tracked-complement.mjs:45",
+      "appliedAt": 45,
+      "fileClass": "LIVE",
+      "applicationClass": "UNRESOLVED",
+      "why": "the arm found no subject expression on the use line",
+      "consumer": "REPORTED",
+      "shape": "DIRECT"
+    },
+    {
+      "site": "docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:20",
+      "appliedAt": 33,
+      "fileClass": "FROZEN",
+      "applicationClass": "UNRESOLVED",
+      "why": "origin line does not name a source: docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:18  const",
+      "consumer": "UNCLEAR_R3",
+      "shape": "UNKNOWN"
+    },
+    {
+      "site": "docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:34",
+      "appliedAt": 34,
+      "fileClass": "FROZEN",
+      "applicationClass": "CAPTURE",
+      "why": "subject read from a file: docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:15  const",
+      "consumer": "THROW",
+      "shape": "DIRECT"
+    },
+    {
+      "site": "docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:35",
+      "appliedAt": 35,
+      "fileClass": "FROZEN",
+      "applicationClass": "CAPTURE",
+      "why": "subject read from a file: docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:16  const",
+      "consumer": "THROW",
+      "shape": "DIRECT"
+    },
+    {
+      "site": "docs/research/unit-501redbranchpin-2026-11-22/posthoc-which-lines-move.mjs:87",
+      "appliedAt": 87,
+      "fileClass": "FROZEN",
+      "applicationClass": "UNRESOLVED",
+      "why": "the arm found no subject expression on the use line",
+      "consumer": "SKIP",
+      "shape": "DIRECT"
+    },
+    {
+      "site": "docs/research/unit-502streampin-2026-11-22/posthoc-landing.mjs:39",
+      "appliedAt": 39,
+      "fileClass": "LIVE",
+      "applicationClass": "UNRESOLVED",
+      "why": "the arm found no subject expression on the use line",
+      "consumer": "REPORTED",
+      "shape": "HELPER"
+    },
+    {
+      "site": "docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs:30",
+      "appliedAt": 30,
+      "fileClass": "LIVE",
+      "applicationClass": "GATE",
+      "why": "subject bound to process output: docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs:29  for (const line of",
+      "consumer": "SKIP",
+      "shape": "DIRECT"
+    },
+    {
+      "site": "docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs:33",
+      "appliedAt": 76,
+      "fileClass": "FROZEN",
+      "applicationClass": "UNRESOLVED",
+      "why": "origin line does not name a source: docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs:41  for (co",
+      "consumer": "SKIP",
+      "shape": "DIRECT"
+    },
+    {
+      "site": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:27",
+      "appliedAt": 27,
+      "fileClass": "FROZEN",
+      "applicationClass": "UNRESOLVED",
+      "why": "the arm found no subject expression on the use line",
+      "consumer": "REPORTED",
+      "shape": "TABLE"
+    },
+    {
+      "site": "docs/research/unit-509extractionrefusal-2026-11-23/posthoc-wsfile.mjs:128",
+      "appliedAt": 128,
+      "fileClass": "LIVE",
+      "applicationClass": "GATE",
+      "why": "subject bound to process output: docs/research/unit-509extractionrefusal-2026-11-23/posthoc-wsfile.mjs:118  const outText =",
+      "consumer": "THROW",
+      "shape": "DIRECT"
+    },
+    {
+      "site": "docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:187",
+      "appliedAt": 187,
+      "fileClass": "LIVE",
+      "applicationClass": "UNRESOLVED",
+      "why": "origin line does not name a source: no origin found for `l`",
+      "consumer": "SKIP",
+      "shape": "DIRECT"
+    },
+    {
+      "site": "docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:198",
+      "appliedAt": 201,
+      "fileClass": "LIVE",
+      "applicationClass": "FIXTURE",
+      "why": "the subject IS a string literal: '  tracked files read: 1083'",
+      "consumer": "SKIP",
+      "shape": "DIRECT"
+    },
+    {
+      "site": "docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:198",
+      "appliedAt": 202,
+      "fileClass": "LIVE",
+      "applicationClass": "FIXTURE",
+      "why": "subject bound to a literal in this file: docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:197  const APPEN",
+      "consumer": "SKIP",
+      "shape": "DIRECT"
+    },
+    {
+      "site": "docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:198",
+      "appliedAt": 209,
+      "fileClass": "LIVE",
+      "applicationClass": "FIXTURE",
+      "why": "subject bound to a literal in this file: docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:197  const APPEN",
+      "consumer": "SKIP",
+      "shape": "DIRECT"
+    },
+    {
+      "site": "docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject.mjs:153",
+      "appliedAt": 153,
+      "fileClass": "LIVE",
+      "applicationClass": "UNRESOLVED",
+      "why": "origin line does not name a source: no origin found for `l`",
+      "consumer": "SKIP",
+      "shape": "DIRECT"
+    },
+    {
+      "site": "docs/research/unit-512matchersubject-2026-11-24/posthoc-application-mode.mjs:55",
+      "appliedAt": 55,
+      "fileClass": "LIVE",
+      "applicationClass": "UNRESOLVED",
+      "why": "the arm found no subject expression on the use line",
+      "consumer": "SKIP",
+      "shape": "DIRECT"
+    },
+    {
+      "site": "docs/research/unit-512matchersubject-2026-11-24/posthoc-rename-kp.mjs:119",
+      "appliedAt": 119,
+      "fileClass": "LIVE",
+      "applicationClass": "UNRESOLVED",
+      "why": "the arm found no subject expression on the use line",
+      "consumer": "UNCLEAR_R3",
+      "shape": "UNKNOWN"
+    },
+    {
+      "site": "docs/research/unit-512matchersubject-2026-11-24/posthoc-rename-kp.mjs:147",
+      "appliedAt": 147,
+      "fileClass": "LIVE",
+      "applicationClass": "GATE",
+      "why": "subject bound to process output: docs/research/unit-512matchersubject-2026-11-24/posthoc-rename-kp.mjs:142  const before = ",
+      "consumer": "UNCLEAR_R3",
+      "shape": "TABLE"
+    },
+    {
+      "site": "docs/research/unit-512matchersubject-2026-11-24/posthoc-resolve-unresolved.mjs:69",
+      "appliedAt": 69,
+      "fileClass": "DRIVES_OTHER",
+      "applicationClass": "UNRESOLVED",
+      "why": "origin line does not name a source: no origin found for `l`",
+      "consumer": "SKIP",
+      "shape": "DIRECT"
+    },
+    {
+      "site": "docs/research/verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-member.mjs:22",
+      "appliedAt": 22,
+      "fileClass": "LIVE",
+      "applicationClass": "UNRESOLVED",
+      "why": "origin line does not name a source: docs/research/verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-membe",
+      "consumer": "SKIP",
+      "shape": "DIRECT"
+    }
+  ],
+  "p6": {
+    "ran": true,
+    "occ": 8,
+    "reversible": true,
+    "V": {
+      "rc": 0,
+      "bytes": 4465,
+      "sha": "025386ec",
+      "stderr": 0
+    },
+    "R": {
+      "rc": 0,
+      "bytes": 4470,
+      "sha": "e841bc1c",
+      "stderr": 0
+    },
+    "verdictIdentical": true,
+    "rows": [
+      {
+        "site": "docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs:94",
+        "appliedAt": 94,
+        "mode": "STRING",
+        "pattern": "/^\\s*tracked files read: (\\d+)/m",
+        "verbatim": "match",
+        "renamed": "null",
+        "breaks": true,
+        "deadCell": false,
+        "cls": "REPORTED",
+        "subject": "UNRESOLVED"
+      },
+      {
+        "site": "docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:70",
+        "appliedAt": 70,
+        "mode": "STRING",
+        "pattern": "/\\n {2}tracked files read: (\\d+)/",
+        "verbatim": "match",
+        "renamed": "null",
+        "breaks": true,
+        "deadCell": false,
+        "cls": "THROW",
+        "subject": "UNRESOLVED"
+      },
+      {
+        "site": "docs/research/unit-500trackedcomplement-2026-11-22/arm-tracked-complement.mjs:45",
+        "appliedAt": 45,
+        "mode": "STRING",
+        "pattern": "/tracked files read: (\\d+)/",
+        "verbatim": "match",
+        "renamed": "null",
+        "breaks": true,
+        "deadCell": false,
+        "cls": "REPORTED",
+        "subject": "UNRESOLVED"
+      },
+      {
+        "site": "docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:20",
+        "appliedAt": 33,
+        "mode": "LINE",
+        "pattern": "/^(\\s*tracked files read: )(\\d+)$/",
+        "verbatim": "match",
+        "renamed": "null",
+        "breaks": true,
+        "deadCell": false,
+        "cls": "UNCLEAR_R3",
+        "subject": "UNRESOLVED"
+      },
+      {
+        "site": "docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:34",
+        "appliedAt": 34,
+        "mode": "STRING",
+        "pattern": "/tracked files read: (\\d+)/",
+        "verbatim": "match",
+        "renamed": "null",
+        "breaks": true,
+        "deadCell": false,
+        "cls": "THROW",
+        "subject": "CAPTURE"
+      },
+      {
+        "site": "docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:35",
+        "appliedAt": 35,
+        "mode": "STRING",
+        "pattern": "/tracked files read: (\\d+)/",
+        "verbatim": "match",
+        "renamed": "null",
+        "breaks": true,
+        "deadCell": false,
+        "cls": "THROW",
+        "subject": "CAPTURE"
+      },
+      {
+        "site": "docs/research/unit-501redbranchpin-2026-11-22/posthoc-which-lines-move.mjs:87",
+        "appliedAt": 87,
+        "mode": "STRING",
+        "pattern": "/tracked files read:\\s*(\\d+)/",
+        "verbatim": "match",
+        "renamed": "null",
+        "breaks": true,
+        "deadCell": false,
+        "cls": "SKIP",
+        "subject": "UNRESOLVED"
+      },
+      {
+        "site": "docs/research/unit-502streampin-2026-11-22/posthoc-landing.mjs:39",
+        "appliedAt": 39,
+        "mode": "STRING",
+        "pattern": "/tracked files read: (\\d+)/",
+        "verbatim": "match",
+        "renamed": "null",
+        "breaks": true,
+        "deadCell": false,
+        "cls": "REPORTED",
+        "subject": "UNRESOLVED"
+      },
+      {
+        "site": "docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs:30",
+        "appliedAt": 30,
+        "mode": "LINE",
+        "pattern": "/^\\s*(tracked files read|population[^:]*|baseline entries[^:]*):\\s*(\\d+)/",
+        "verbatim": "match",
+        "renamed": "match",
+        "breaks": false,
+        "deadCell": false,
+        "cls": "SKIP",
+        "subject": "GATE"
+      },
+      {
+        "site": "docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs:33",
+        "appliedAt": 76,
+        "mode": "LINE",
+        "pattern": "/tracked files read: (\\d+)/",
+        "verbatim": "match",
+        "renamed": "null",
+        "breaks": true,
+        "deadCell": false,
+        "cls": "SKIP",
+        "subject": "UNRESOLVED"
+      },
+      {
+        "site": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:27",
+        "appliedAt": 27,
+        "mode": "STRING",
+        "pattern": "/tracked files read:\\s*(\\d+)/",
+        "verbatim": "match",
+        "renamed": "null",
+        "breaks": true,
+        "deadCell": false,
+        "cls": "REPORTED",
+        "subject": "UNRESOLVED"
+      },
+      {
+        "site": "docs/research/unit-509extractionrefusal-2026-11-23/posthoc-wsfile.mjs:128",
+        "appliedAt": 128,
+        "mode": "STRING",
+        "pattern": "/tracked files read:\\s*(\\d+)/",
+        "verbatim": "match",
+        "renamed": "null",
+        "breaks": true,
+        "deadCell": false,
+        "cls": "THROW",
+        "subject": "GATE"
+      },
+      {
+        "site": "docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:187",
+        "appliedAt": 187,
+        "mode": "STRING",
+        "pattern": "/tracked files read/",
+        "verbatim": "match",
+        "renamed": "null",
+        "breaks": true,
+        "deadCell": false,
+        "cls": "SKIP",
+        "subject": "UNRESOLVED"
+      },
+      {
+        "site": "docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:198",
+        "appliedAt": 201,
+        "mode": "STRING",
+        "pattern": "/^(\\s*tracked files read: )(\\d+)$/",
+        "verbatim": "null",
+        "renamed": "null",
+        "breaks": false,
+        "deadCell": true,
+        "cls": "SKIP",
+        "subject": "FIXTURE"
+      },
+      {
+        "site": "docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:198",
+        "appliedAt": 202,
+        "mode": "STRING",
+        "pattern": "/^(\\s*tracked files read: )(\\d+)$/",
+        "verbatim": "null",
+        "renamed": "null",
+        "breaks": false,
+        "deadCell": true,
+        "cls": "SKIP",
+        "subject": "FIXTURE"
+      },
+      {
+        "site": "docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:198",
+        "appliedAt": 209,
+        "mode": "STRING",
+        "pattern": "/^(\\s*tracked files read: )(\\d+)$/",
+        "verbatim": "null",
+        "renamed": "null",
+        "breaks": false,
+        "deadCell": true,
+        "cls": "SKIP",
+        "subject": "FIXTURE"
+      },
+      {
+        "site": "docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject.mjs:153",
+        "appliedAt": 153,
+        "mode": "STRING",
+        "pattern": "/tracked files read/",
+        "verbatim": "match",
+        "renamed": "null",
+        "breaks": true,
+        "deadCell": false,
+        "cls": "SKIP",
+        "subject": "UNRESOLVED"
+      },
+      {
+        "site": "docs/research/unit-512matchersubject-2026-11-24/posthoc-application-mode.mjs:55",
+        "appliedAt": 55,
+        "mode": "STRING",
+        "pattern": "/^(\\s*tracked files read: )(\\d+)$/m",
+        "verbatim": "match",
+        "renamed": "null",
+        "breaks": true,
+        "deadCell": false,
+        "cls": "SKIP",
+        "subject": "UNRESOLVED"
+      },
+      {
+        "site": "docs/research/unit-512matchersubject-2026-11-24/posthoc-rename-kp.mjs:119",
+        "appliedAt": 119,
+        "mode": "STRING",
+        "pattern": "/^(\\s*tracked files read: )(\\d+)$/m",
+        "verbatim": "match",
+        "renamed": "null",
+        "breaks": true,
+        "deadCell": false,
+        "cls": "UNCLEAR_R3",
+        "subject": "UNRESOLVED"
+      },
+      {
+        "site": "docs/research/unit-512matchersubject-2026-11-24/posthoc-rename-kp.mjs:147",
+        "appliedAt": 147,
+        "mode": "STRING",
+        "pattern": "/tracked files read[^\\n]*/g",
+        "verbatim": "match",
+        "renamed": "null",
+        "breaks": true,
+        "deadCell": false,
+        "cls": "UNCLEAR_R3",
+        "subject": "GATE"
+      },
+      {
+        "site": "docs/research/unit-512matchersubject-2026-11-24/posthoc-resolve-unresolved.mjs:69",
+        "appliedAt": 69,
+        "mode": "STRING",
+        "pattern": "/tracked files read/",
+        "verbatim": "match",
+        "renamed": "null",
+        "breaks": true,
+        "deadCell": false,
+        "cls": "SKIP",
+        "subject": "UNRESOLVED"
+      },
+      {
+        "site": "docs/research/verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-member.mjs:22",
+        "appliedAt": 22,
+        "mode": "STRING",
+        "pattern": "/tracked files read: (\\d+)/",
+        "verbatim": "match",
+        "renamed": "null",
+        "breaks": true,
+        "deadCell": false,
+        "cls": "SKIP",
+        "subject": "UNRESOLVED"
+      }
+    ],
+    "breaks": 18,
+    "survivors": 1,
+    "dead": 3,
+    "worst": 0
+  }
+}
