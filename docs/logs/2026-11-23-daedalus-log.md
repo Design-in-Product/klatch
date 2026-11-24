@@ -330,3 +330,137 @@ it.
 **Step 3 —** this log is committed last. The commit `688e807d` above carries the log's earlier
 state; this verification block is the final commit of the fire, so the hash list in Step 1 is one
 commit behind by construction — the protocol's own order rather than a gap.
+
+---
+
+## 17:19 — Session resumed (STOP fire, Opus 5)
+
+**`unit-510quotepathskip-2026-11-23` — Theseus's routed §5.3 quoting blindness, landed cured, with
+his cure corrected on the way in. 14 of 14 registered predictions HIT, 0 refuted. 3 post-hoc
+findings, 2 of them against my own instrument.**
+
+Session-start protocol run in full: `git fetch`, `COORDINATION.md` read, `docs/mail/` listed (154
+files) and the one newest memo addressed to this seat read in full, today's log (this file) found
+already open from the 09:xx and 13:xx fires and appended to rather than restarted.
+
+**Inbound, one memo, actioned in-fire.**
+`theseus-to-daedalus-argus-...-your-specified-extraction-refuses-a-whitespace-path-...-2026-11-23.md`.
+Its §5.3 handed over a live gate defect he had measured and deliberately declined to land in the
+fire that found it — *"Unblocked for whichever seat takes it, no blocker of mine attached."* This
+fire took it. Reply filed and pushed as its own commit `49fab793`.
+
+### What I did NOT re-grade, and why
+
+His finding and his **reason** both reproduce, confirmed before the arm existed and recorded in
+PRE-REGISTRATION §0 as inputs rather than findings: `extname('"src/a\303\244.mjs"')` is **`.mjs"`**
+off `node`; the live tree carries **8 quoted paths of 7478**, all `QA/Screenshot …png` with
+**U+202F**, **0** with a code extension; `src/a b.mjs` has `extname` **`.mjs`**. **His H1/H2/H4
+self-refutation — git quotes on NON-ASCII, not whitespace — is corroborated at the character
+level.** So the subject of this unit became his **cure**, not his finding.
+
+### The finding: "one flag" was two flags, and the weaker one is green where it matters
+
+He wrote the cure as *"one flag — `-z` with a NUL split, or `-c core.quotePath=false`."` Driven,
+those are **not interchangeable**. `core.quotePath=false` suppresses **non-ASCII** quoting only, so
+`src/a"b.mjs` comes back as `"src/a\"b.mjs"` **under it** — still quoted, still `extname` `.mjs"`,
+still skipped silently at rc 0. **The candidate he named second is green on the only cell that
+separates it from the first**, and nothing in his memo could have distinguished them because that
+cell did not exist until this unit built it. His own §3 hazard, arriving in a cure instead of a
+reader.
+
+And his `.trim()` is a **third** skip **no flag touches**: a leading-space path is returned
+**verbatim by all three invocations**, passes the extension filter, and is then trimmed into a path
+that does not exist and dropped by the loop's `catch { continue }`.
+
+Four readers × six cells, **strictly nested, no crossings, each rung adding exactly one cell**:
+plain **2 of 6** → `quotePath=false` **3** → `-z` with the trim **4** → `-z` without it **5**.
+Quoting read under the gate's own invocation: plain quotes **2 of 5**, `quotePath=false` **1 of 5**,
+`-z` **0 of 5**.
+
+### Landed, and priced against a pre-action baseline
+
+`scripts/verify-decl-body-slicers.mjs`: the tracked-tree read is now `['-C', ROOT, 'ls-files',
+'-z']` split on NUL with **no** `.trim()`. `LIVE-PRE-CURE.*` was captured **before** the edit:
+
+```
+out: pre 4390B b4953158   post 4390B b4953158   BYTE-IDENTICAL
+err: pre    0B e3b0c442   post    0B e3b0c442   BYTE-IDENTICAL
+     tracked files read: 1077 · population 65 · MARKED 4 / GUARDED 3 / UNGUARDED 58
+     baseline entries: 58 · DECL-BODY SLICERS OK
+```
+
+**Both published documents byte-identical; every standing figure flat.** This closes a **reach**,
+not a live miss — which is exactly what made it landable in a fire that was not the one that found
+it.
+
+**The leg that was missing until I ran it.** The arm graded the cure as a **substituted copy** in a
+synthetic repo, and the live drive graded the **landed** file against a tree **with no member**.
+Between them, nothing had driven *the file that ships* against *a path that triggers the defect* —
+two green legs and an untested cure. `confirm-landed.mjs` closes it: gate copied **verbatim, no
+substitution**, its cured state asserted by slicing its own source first **so the leg cannot pass
+on the uncured file**. Landed sha `dad3487f`; reddens **5 of 6**; green on **exactly** the one cell
+declared open. CONFIRMED.
+
+### Left open on purpose, named at the site
+
+The sixth cell: a tracked code file in the index but **absent from the worktree** reads rc **0**,
+population **0**, `OK`, and **`tracked files read: 1`** under **all four readers**. That figure is
+`tracked.filter((f) => EXTS.has(extname(f))).length` — an **extension-filter survivor count, not a
+read count** — so the figure named "tracked files read" **asserts a read that did not happen**. 7 of
+24 arm rows carry the signature. **Not cured, by my own pre-registered limit:** both candidate
+fixes move a published string every seat holds pins on, which is a figure migration needing its own
+KP set and a pin sweep — and doing that in the fire that named it is the shape Theseus and I agreed
+to stop. Named in the gate's source beside the `catch`. **Unblocked, no blocker attached.**
+
+### Against myself — three
+
+1. **A column in my own arm was vacuous and printed a reassuring word.** The `git` column keyed
+   quoting on `ls-files -z`, a reader that **by construction never quotes**, so it read `verbatim`
+   on all 24 rows and **would have read `verbatim` had git quoted every one of them** — sitting in
+   a table about quoting. Caught by asking what would have to be true for it to say `differs`, not
+   by it failing. Cured by a leg that reads the gate's **own** invocation.
+2. **My pre-registered identity control graded one of the gate's two documents.** P2.c/P3.c said
+   "stdout byte-identical"; **stdout does not carry the filename, stderr does.** Re-run on stderr:
+   byte-identical per cell across all four readers (`A-ASCII` 675 B, `A-SPACE` 676 B — the extra
+   byte is the space), and the two cells **differ from each other** under every reader, so the
+   check discriminates rather than merely passing.
+3. **My pre-registration nearly joined the class it declared itself out of.** I named a cell
+   `A-ABSENT` under a limit claiming no cell name carries a gate vocabulary token — then checked,
+   and `ABSENT` **is** in the stale-block vocabulary at the gate's own `:419`. Renamed to
+   `A-UNLINKED` **before the arm existed**, so the claim is true rather than repaired. Limit and
+   violation written in the same minute by the same author.
+
+**Drain.** Mail drained to zero actionable (1 inbound, executed in-fire, replied and pushed as its
+own commit `49fab793`). **Deferred, each with a named blocker, none deadlined:** the
+`tracked files read` misnaming — blocker: it moves a published string every seat pins, needing its
+own KP set and pin sweep, and this is the fire that named it; the stale-limb reader as an *enforced*
+assertion — blocker unchanged, nothing in the tree reads that stderr programmatically; the `ABSENT`
+hole — blocker unchanged, same root, still irreducible; the trailing-space path case — blocker: a
+code extension puts the dot last, so a trailing space already fails the extension filter, which is
+**reasoning and explicitly not driven**. Nothing opened that this fire could not finish.
+
+### STOP procedure — question-box check, and a correction it caught
+
+Step 4 of the STOP procedure is the question-box check. Running it caught a claim **I had already
+pushed**: my memo §7 repeated Theseus's §7 sentence that *"the 11-01 question-box item in
+`dispatch/mail/` is still the standing thing neither seat can move"* — **inherited verbatim and not
+checked**, which is the single move CLAUDE.md names most explicitly ("Any claim about what an
+agent, or xian, previously said — find the actual text"). Counted off the live directory:
+
+```
+total question-box items in dispatch/mail: 21
+by seat: daedalus 7 · theseus 6 · janus 3 · calliope 2 · arch 1 · argus 1 · coral 1
+newest overall:   2026-11-20  theseus
+newest this seat: 2026-11-19  daedalus
+```
+
+The 11-01 item is **neither the newest nor the only one standing**. Corrected in the memo as a §8
+rather than silently — fix forward, and the correction names where the sentence came from.
+
+**Question-box verdict for this fire: a reasoned no.** Seven items from this seat are pending, the
+newest four days old; an eighth is noise rather than curiosity. Recorded as considered, an
+unconsidered no being the stated failure mode.
+
+**Mail close-discipline:** the inbound memo is **not** moved to `docs/mail/read/` — my §7 keeps the
+thread open (the `tracked files read` misnaming is live and unclaimed), and the rule is that open
+threads stay visible.
