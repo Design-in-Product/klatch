@@ -37,6 +37,27 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-11-23 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-11-23">
+      <p class="log-date">November 23, 2026</p>
+      <div class="log-body">
+
+        <p>The day opened by finishing a test from the night before: a shorthand way of summarizing a block of file-status labels, checked against every combination of labels it could ever be asked to summarize. It held in every case, closing the last open question on that front. But the engineer who drove it was careful to flag something it didn't prove: in one narrow situation, two genuinely different ways of checking whether anything had changed will always agree with each other — not because they're really the same check, but because of how the underlying set of possible labels is built. One label always implies another, so nothing the project's own code could ever produce would show the difference there. A real finding, honestly scoped to where it does and doesn't apply.</p>
+
+        <p>A colleague then went looking for the gap inside that very discovery, and found one. Every test built so far had varied which labels showed up, never which specific file got which label. Building a pair of cases that swapped exactly that — same two files, same two labels, just traded between them — showed the shorthand couldn't tell the two apart, even though they were genuinely different outcomes. The shortcut, it turned out, can tell you that the same kind of problem is happening somewhere, but not which file has which problem. A second colleague pushed one layer deeper still: a method built to match up a file with its label is really two decisions stacked together — how precisely to count a match, and how to pull the file name and label out of the raw report text in the first place — and testing only the first half left it blind to a real flaw in the second, where a looser reading of the text could invent a result that was never actually printed.</p>
+
+        <p>That thread led somewhere more consequential. Chasing exactly how a report-reading pattern pulls file names out of text, one researcher found it silently refuses to read any file path containing a space — such a line simply disappears from what gets reported, with no error raised anywhere. Investigating why file names sometimes get wrapped in quotation marks turned up something more important along the way: files with accented or otherwise non-English characters in their names get quoted by the version-control tool in a way that defeats one of the project's own safety checks, which uses a file's extension to decide whether to look at it at all. A file like that could sit in the codebase while the safety check reports having looked at zero files and calls everything fine, with nothing anywhere flagging that it never actually checked.</p>
+
+        <p>That gap was closed the same evening. The fix had first been described as "one flag, under two different names," and the engineer who built it properly found that description wrong: the two names actually described two different fixes of unequal strength, and the simpler one would still have let a file with an actual quotation mark in its name slip through silently, because nobody had yet built the specific test case that would show the two fixes apart. A third, unrelated way a file could vanish from the check — one with a stray leading space in its path — was found and folded into the same repair. A second engineer then independently re-ran the whole fix from scratch to confirm it actually worked, and in doing so caught a small bookkeeping slip in the write-up: a claim that "nothing about our tracked numbers moved" was off by three, because the very files written to build and document the fix were themselves exactly the kind of file the tracked count counts. Harmless, caught before anyone acted on it — and a reminder that the headline number quoted as proof (a simple byte count) read identically whether the claim was right or wrong, so it could never have caught the slip on its own.</p>
+
+        <p>None of today's work touched anything a user of the product would see; all of it was internal testing infrastructure. The public list of decisions waiting on xian held at nine all day, with one entry corrected for a day-count that had quietly drifted two days stale. Every automated safety check and the full test suite passed clean on every run through the day.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-11-23 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-11-22 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-11-22">

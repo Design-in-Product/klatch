@@ -86,3 +86,30 @@ All figures byte-identical to standing. `git status --short` clean before and af
 **Drain:** 16 new commits read and author-checked, none mine; one `scripts/` file diffed and accounted for (research instrument, report-only); 2 cc-only mail files read in full, nothing owed; four standing Pard mails and this seat's own html-mirror mail re-confirmed correctly still open; all four cross-repo mailboxes fetched fresh, nothing owed from any; cross-pollination brief re-read, unchanged since this morning; rollup re-checked and one genuine staleness found and corrected (v188 → v189); typecheck, both test suites, census, and the full driving sweep all re-driven fresh and byte-identical to standing. Two consecutive checks found nothing further unblocked. Fire closed bounded.
 
 **Drain:** 11 new commits read and author-checked, none mine; one `scripts/` file diffed and accounted for (report-only research instrument, no verdict key touched); 2 cc-only mail files read in full, nothing owed; all four cross-repo mailboxes fetched fresh and content-grepped, nothing owed from any; rollup and cross-pollination brief re-checked, no correction due; typecheck, both test suites, census, and the full driving sweep all re-driven fresh and byte-identical to standing. Two consecutive checks found nothing further unblocked. Fire closed bounded.
+
+---
+
+## 21:3x — Session resumed (STOP fire, model: Sonnet 5 / `claude-sonnet-5` — differs from this file's frontmatter model label)
+
+No-op on product, verified not assumed. Checkpoint is this seat's own 11-23 SWEEP-fire commit `aae6887d`. `git log aae6887d..HEAD --format='%h %an %ci %s'` — 14 new commits, none mine: Daedalus's `unit-510quotepathskip` chain (3 commits — Theseus's routed quoting blindness landed cured, re-keying the tracked-tree read onto `ls-files -z` with a NUL split and no trim, closing three silent skips; his own "one flag" claim turned out to be two flags of unequal strength) plus a same-fire correction to his own §7 (the dispatch question-box count is 21 items, not one, with a per-seat breakdown); Theseus's and Argus's own STOP-fire wrap-protocol entries confirming the cure under their own keys; Iris's own STOP-fire no-op. `git diff --stat aae6887d..HEAD -- packages/ scripts/` — one file, `scripts/verify-decl-body-slicers.mjs` (+54/-2, same research instrument, report-only), no `packages/` diff.
+
+**Mail:** 2 new files since checkpoint, both cc-only to this seat (the closing unit-510 exchange above), read in full — neither poses a question for this seat or xian; both independently confirm the dispatch question-box stands at 21 items, a reasoned no on escalating, not a new ask. Four standing direct-to-Calliope Pard mails and this seat's own 09-07 html-mirror mail re-checked, still correctly open.
+
+**Cross-repo, all four fetched fresh from the SWEEP-fire checkpoint:** `designinproduct` 0 new (newest commit 13:47 PT, before the 17:0x checkpoint); `mediajunkie` 0 new; `piper-morgan-product` 2 new (Janus↔exec "Do I Have To"/propagation-rule traffic, 18:29–18:42 PT, read and grepped, 0 `klatch|calliope` hits); `dispatch` 0 new. Nothing owed from any.
+
+**Cross-pollination brief** re-confirmed unchanged (`git -C designinproduct show origin/main:src/internal/briefs/2026-11-23-brief.md`) — same two findings cited all day, nothing new.
+
+**Rollup** re-checked, already current at v189 from this seat's own SWEEP-fire correction; needs-you unchanged at 9.
+
+**Gate re-verified fresh, STOP-fire convention:**
+- `npm run typecheck` — clean across all 4 workspaces + scripts.
+- Server: **147 files / 2295 passed / 1 skipped (2296)**.
+- Client: **29/42 files, 354/367 (13 skipped)**.
+- `node scripts/sweep-probes.mjs --census` — **155 probe files, 45 swept / 110 deferred, CENSUS OK**.
+- Full driving sweep re-run fresh (backgrounded past the 120s foreground limit, picked up via completion notification) — **SWEEP PASSED, 45 of 45 swept probes green, 0 red, 0 blocked, 110 deferred**.
+
+All figures byte-identical to standing. `git status --short` clean aside from this fire's own `log.html`/`calliope-tasks.md` edits; `lsof -i :3001` port free.
+
+**Mandatory `log.html` entry — written this fire.** Translated today's five-unit research chain (unit-506/507/508/509/510) to plain language from this seat's own direct read of the day's mail and commits. `grep -c "log-entry" log.html` = 96 (up from 95), inserted directly above the 2026-11-22 entry (newest-first order confirmed). `calliope-tasks.md`'s recurring-items row updated (`next_due` 11-23 → 11-24, `last_completed` 11-22 → 11-23) with a new bolded summary sentence prepended, same convention as every prior row entry.
+
+**Drain:** 14 new commits read and author-checked, none mine; one `scripts/` file diffed and accounted for (research instrument, report-only); 2 cc-only mail files read in full, nothing owed; four standing Pard mails and this seat's own html-mirror mail re-confirmed correctly still open; all four cross-repo mailboxes fetched fresh, nothing owed from any; cross-pollination brief re-confirmed unchanged; rollup re-checked, already current; typecheck, both test suites, census, and the full driving sweep all re-driven fresh and byte-identical to standing; mandatory `log.html` entry and its bookkeeping row both written. Two consecutive checks found nothing further unblocked. Fire closed bounded.
