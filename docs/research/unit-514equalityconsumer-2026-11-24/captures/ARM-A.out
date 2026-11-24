@@ -1,0 +1,1270 @@
+=== unit-514 Arm A — KNOWN POSITIVE, before any corpus figure ===
+
+  PASS  KP1-equality                 region STRING         (want STRING)  shape EQUALITY   (want EQUALITY)
+  PASS  KP2-includes                 region STRING         (want STRING)  shape INCLUDES   (want INCLUDES)
+  PASS  KP3-stringarg                region STRING         (want STRING)  shape STRINGARG  (want STRINGARG)
+  PASS  KP4-linecomment              region LINE_COMMENT   (want LINE_COMMENT)  shape null       (want null)
+  PASS  KP5-blockcomment             region BLOCK_COMMENT  (want BLOCK_COMMENT)  shape null       (want null)
+  PASS  KP6-regex                    region REGEX          (want REGEX)  shape null       (want null)
+  PASS  KP7-regex-after-paren        region REGEX          (want REGEX)  shape null       (want null)
+  PASS  KP8-division-not-regex       region STRING         (want STRING)  shape UNCLEAR    (want UNCLEAR)
+  PASS  KP9-slash-in-string          region STRING         (want STRING)  shape UNCLEAR    (want UNCLEAR)
+  PASS  KP10-comment-marker-in-string region STRING         (want STRING)  shape UNCLEAR    (want UNCLEAR)
+  PASS  KP11-template                region STRING         (want STRING)  shape UNCLEAR    (want UNCLEAR)
+  PASS  KP12-objkey                  region STRING         (want STRING)  shape OBJKEY     (want OBJKEY)
+  PASS  KP13-arrmember               region STRING         (want STRING)  shape ARRMEMBER  (want ARRMEMBER)
+  PASS  KP14-regex-charclass-slash   region REGEX          (want REGEX)  shape null       (want null)
+
+  gated shapes: 3 of 3   whole KP set: 14 of 14
+
+=== corpus ===
+
+  tracked .mjs/.js files read: 625
+  of 625 tracked .mjs/.js at HEAD, 1 excluded as this arm's own, 0 unreadable
+  this arm's own path tracked at run time: false  (untracked, so excluded twice over)
+  files containing the label at all: 33
+  label occurrences: 109
+  by region: {"STRING":59,"REGEX":21,"BLOCK_COMMENT":17,"LINE_COMMENT":12}
+  STRING-region sites by shape: {"UNCLEAR":46,"ARRMEMBER":1,"STRINGARG":3,"OBJKEY":1,"EQUALITY":3,"INCLUDES":5}
+
+  NON-REGEX CONSUMERS (EQUALITY/INCLUDES/STRINGARG/ARRMEMBER): 12
+
+    docs/research/unit-501redbranchpin-2026-11-22/posthoc-which-lines-move.mjs:87  ARRMEMBER  [own line]
+      ['tracked files read', /tracked files read:\s*(\d+)/],
+
+    docs/research/unit-503stalelabelwidth-2026-11-22/arm-realgate-newones.mjs:104  STRINGARG  [own line]
+      trackedRead: readFig('tracked files read'),
+
+    docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs:58  STRINGARG  [own line]
+      trackedRead: fig('tracked files read'),
+
+    docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:114  EQUALITY  [4-line window]
+      && r.figures.GUARDED === 3 && r.figures.UNGUARDED === 58), ⏎ 'P6.d  `tracked files read` is the ONLY named figure that moved': ⏎ movedFigures.length === 1 && movedFigures[0] === 'tracked files read', ⏎ 'P6.e  `tracked fi
+
+    docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:115  EQUALITY  [own line]
+      movedFigures.length === 1 && movedFigures[0] === 'tracked files read',
+
+    docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:116  EQUALITY  [4-line window]
+      movedFigures.length === 1 && movedFigures[0] === 'tracked files read', ⏎ 'P6.e  `tracked files read` is the ONLY line that differs, pre to post': ⏎ firstToLast.onlyInFirst.length === 1 && firstToLast.onlyInSecond.length 
+
+    docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:118  INCLUDES  [own line]
+      && firstToLast.onlyInFirst[0].includes('tracked files read')
+
+    docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:119  INCLUDES  [own line]
+      && firstToLast.onlyInSecond[0].includes('tracked files read'),
+
+    docs/research/unit-511readcountname-2026-11-24/confirm-landed.mjs:114  STRINGARG  [own line]
+      read: num('tracked files read'),
+
+    docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs:180  INCLUDES  [own line]
+      const line = lines.findIndex((l) => l.includes('tracked files read')) + 1;
+
+    docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs:55  INCLUDES  [own line]
+      const labelIdx = l.indexOf('tracked files read');
+
+    docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs:242  INCLUDES  [own line]
+      const line = lines.findIndex((l) => l.includes('tracked files read')) + 1;
+
+=== the four sites Daedalus named (P2) ===
+
+  FOUND  docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:115  shape=EQUALITY  (STRING region: true)
+  FOUND  docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:118  shape=INCLUDES  (STRING region: true)
+  FOUND  docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:119  shape=INCLUDES  (STRING region: true)
+  FOUND  docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs:58  shape=STRINGARG  (STRING region: true)
+
+=== P3, mine ===
+
+  I predicted >= 8 non-regex consumer sites. Measured: 12 -> HIT
+
+{
+  "kp": {
+    "rows": [
+      {
+        "name": "KP1-equality",
+        "wantRegion": "STRING",
+        "gotRegion": "STRING",
+        "regionOk": true,
+        "wantShape": "EQUALITY",
+        "gotShape": "EQUALITY",
+        "shapeOk": true,
+        "pass": true
+      },
+      {
+        "name": "KP2-includes",
+        "wantRegion": "STRING",
+        "gotRegion": "STRING",
+        "regionOk": true,
+        "wantShape": "INCLUDES",
+        "gotShape": "INCLUDES",
+        "shapeOk": true,
+        "pass": true
+      },
+      {
+        "name": "KP3-stringarg",
+        "wantRegion": "STRING",
+        "gotRegion": "STRING",
+        "regionOk": true,
+        "wantShape": "STRINGARG",
+        "gotShape": "STRINGARG",
+        "shapeOk": true,
+        "pass": true
+      },
+      {
+        "name": "KP4-linecomment",
+        "wantRegion": "LINE_COMMENT",
+        "gotRegion": "LINE_COMMENT",
+        "regionOk": true,
+        "wantShape": null,
+        "gotShape": null,
+        "shapeOk": true,
+        "pass": true
+      },
+      {
+        "name": "KP5-blockcomment",
+        "wantRegion": "BLOCK_COMMENT",
+        "gotRegion": "BLOCK_COMMENT",
+        "regionOk": true,
+        "wantShape": null,
+        "gotShape": null,
+        "shapeOk": true,
+        "pass": true
+      },
+      {
+        "name": "KP6-regex",
+        "wantRegion": "REGEX",
+        "gotRegion": "REGEX",
+        "regionOk": true,
+        "wantShape": null,
+        "gotShape": null,
+        "shapeOk": true,
+        "pass": true
+      },
+      {
+        "name": "KP7-regex-after-paren",
+        "wantRegion": "REGEX",
+        "gotRegion": "REGEX",
+        "regionOk": true,
+        "wantShape": null,
+        "gotShape": null,
+        "shapeOk": true,
+        "pass": true
+      },
+      {
+        "name": "KP8-division-not-regex",
+        "wantRegion": "STRING",
+        "gotRegion": "STRING",
+        "regionOk": true,
+        "wantShape": "UNCLEAR",
+        "gotShape": "UNCLEAR",
+        "shapeOk": true,
+        "pass": true
+      },
+      {
+        "name": "KP9-slash-in-string",
+        "wantRegion": "STRING",
+        "gotRegion": "STRING",
+        "regionOk": true,
+        "wantShape": "UNCLEAR",
+        "gotShape": "UNCLEAR",
+        "shapeOk": true,
+        "pass": true
+      },
+      {
+        "name": "KP10-comment-marker-in-string",
+        "wantRegion": "STRING",
+        "gotRegion": "STRING",
+        "regionOk": true,
+        "wantShape": "UNCLEAR",
+        "gotShape": "UNCLEAR",
+        "shapeOk": true,
+        "pass": true
+      },
+      {
+        "name": "KP11-template",
+        "wantRegion": "STRING",
+        "gotRegion": "STRING",
+        "regionOk": true,
+        "wantShape": "UNCLEAR",
+        "gotShape": "UNCLEAR",
+        "shapeOk": true,
+        "pass": true
+      },
+      {
+        "name": "KP12-objkey",
+        "wantRegion": "STRING",
+        "gotRegion": "STRING",
+        "regionOk": true,
+        "wantShape": "OBJKEY",
+        "gotShape": "OBJKEY",
+        "shapeOk": true,
+        "pass": true
+      },
+      {
+        "name": "KP13-arrmember",
+        "wantRegion": "STRING",
+        "gotRegion": "STRING",
+        "regionOk": true,
+        "wantShape": "ARRMEMBER",
+        "gotShape": "ARRMEMBER",
+        "shapeOk": true,
+        "pass": true
+      },
+      {
+        "name": "KP14-regex-charclass-slash",
+        "wantRegion": "REGEX",
+        "gotRegion": "REGEX",
+        "regionOk": true,
+        "wantShape": null,
+        "gotShape": null,
+        "shapeOk": true,
+        "pass": true
+      }
+    ],
+    "gatedPass": 3,
+    "allPass": 14,
+    "total": 14
+  },
+  "corpus": {
+    "trackedJsFiles": 625,
+    "read": 625,
+    "excludedAsOwn": 1,
+    "selfTracked": false,
+    "unreadable": 0,
+    "filesWithLabel": 33,
+    "occurrences": 109,
+    "byRegion": {
+      "STRING": 59,
+      "REGEX": 21,
+      "BLOCK_COMMENT": 17,
+      "LINE_COMMENT": 12
+    },
+    "stringByShape": {
+      "UNCLEAR": 46,
+      "ARRMEMBER": 1,
+      "STRINGARG": 3,
+      "OBJKEY": 1,
+      "EQUALITY": 3,
+      "INCLUDES": 5
+    },
+    "nonRegexConsumerCount": 12
+  },
+  "nonRegexConsumers": [
+    {
+      "file": "docs/research/unit-501redbranchpin-2026-11-22/posthoc-which-lines-move.mjs",
+      "line": 87,
+      "region": "STRING",
+      "shape": "ARRMEMBER",
+      "why": "the label is a member of an array literal",
+      "decidedFrom": "own line",
+      "deciding": "['tracked files read', /tracked files read:\\s*(\\d+)/],"
+    },
+    {
+      "file": "docs/research/unit-503stalelabelwidth-2026-11-22/arm-realgate-newones.mjs",
+      "line": 104,
+      "region": "STRING",
+      "shape": "STRINGARG",
+      "why": "the label is passed as a string ARGUMENT",
+      "decidedFrom": "own line",
+      "deciding": "trackedRead: readFig('tracked files read'),"
+    },
+    {
+      "file": "docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs",
+      "line": 58,
+      "region": "STRING",
+      "shape": "STRINGARG",
+      "why": "the label is passed as a string ARGUMENT",
+      "decidedFrom": "own line",
+      "deciding": "trackedRead: fig('tracked files read'),"
+    },
+    {
+      "file": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+      "line": 114,
+      "region": "STRING",
+      "shape": "EQUALITY",
+      "why": "compared for equality against the label string",
+      "decidedFrom": "4-line window",
+      "deciding": "&& r.figures.GUARDED === 3 && r.figures.UNGUARDED === 58),\n    'P6.d  `tracked files read` is the ONLY named figure that moved':\n      movedFigures.length === 1 && movedFigures[0] === 'tracked files read',\n    'P6.e  `tracked files read` is the ONLY line that differs, pre to post':"
+    },
+    {
+      "file": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+      "line": 115,
+      "region": "STRING",
+      "shape": "EQUALITY",
+      "why": "compared for equality against the label string",
+      "decidedFrom": "own line",
+      "deciding": "movedFigures.length === 1 && movedFigures[0] === 'tracked files read',"
+    },
+    {
+      "file": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+      "line": 116,
+      "region": "STRING",
+      "shape": "EQUALITY",
+      "why": "compared for equality against the label string",
+      "decidedFrom": "4-line window",
+      "deciding": "movedFigures.length === 1 && movedFigures[0] === 'tracked files read',\n    'P6.e  `tracked files read` is the ONLY line that differs, pre to post':\n      firstToLast.onlyInFirst.length === 1 && firstToLast.onlyInSecond.length === 1\n      && firstToLast.onlyInFirst[0].includes('tracked files read')"
+    },
+    {
+      "file": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+      "line": 118,
+      "region": "STRING",
+      "shape": "INCLUDES",
+      "why": "substring/containment test on the label string",
+      "decidedFrom": "own line",
+      "deciding": "&& firstToLast.onlyInFirst[0].includes('tracked files read')"
+    },
+    {
+      "file": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+      "line": 119,
+      "region": "STRING",
+      "shape": "INCLUDES",
+      "why": "substring/containment test on the label string",
+      "decidedFrom": "own line",
+      "deciding": "&& firstToLast.onlyInSecond[0].includes('tracked files read'),"
+    },
+    {
+      "file": "docs/research/unit-511readcountname-2026-11-24/confirm-landed.mjs",
+      "line": 114,
+      "region": "STRING",
+      "shape": "STRINGARG",
+      "why": "the label is passed as a string ARGUMENT",
+      "decidedFrom": "own line",
+      "deciding": "read: num('tracked files read'),"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs",
+      "line": 180,
+      "region": "STRING",
+      "shape": "INCLUDES",
+      "why": "substring/containment test on the label string",
+      "decidedFrom": "own line",
+      "deciding": "const line = lines.findIndex((l) => l.includes('tracked files read')) + 1;"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs",
+      "line": 55,
+      "region": "STRING",
+      "shape": "INCLUDES",
+      "why": "substring/containment test on the label string",
+      "decidedFrom": "own line",
+      "deciding": "const labelIdx = l.indexOf('tracked files read');"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs",
+      "line": 242,
+      "region": "STRING",
+      "shape": "INCLUDES",
+      "why": "substring/containment test on the label string",
+      "decidedFrom": "own line",
+      "deciding": "const line = lines.findIndex((l) => l.includes('tracked files read')) + 1;"
+    }
+  ],
+  "hisFourStatus": [
+    {
+      "site": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:115",
+      "inNonRegexConsumers": true,
+      "inStringRegionAtAll": true,
+      "shape": "EQUALITY"
+    },
+    {
+      "site": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:118",
+      "inNonRegexConsumers": true,
+      "inStringRegionAtAll": true,
+      "shape": "INCLUDES"
+    },
+    {
+      "site": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:119",
+      "inNonRegexConsumers": true,
+      "inStringRegionAtAll": true,
+      "shape": "INCLUDES"
+    },
+    {
+      "site": "docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs:58",
+      "inNonRegexConsumers": true,
+      "inStringRegionAtAll": true,
+      "shape": "STRINGARG"
+    }
+  ],
+  "allSites": [
+    {
+      "file": "docs/research/unit-480guardorder-2026-11-18/arm.mjs",
+      "line": 211,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "console.log(`  population ${rows.length} (P5 wants 66) · tracked files read ${readable}`);"
+    },
+    {
+      "file": "docs/research/unit-486markerstale-2026-11-19/arm-markerstale.mjs",
+      "line": 236,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "tracked: num('tracked files read:'),"
+    },
+    {
+      "file": "docs/research/unit-486markerstale-2026-11-19/posthoc-whose-seven.mjs",
+      "line": 63,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "const hisTracked = hisNum('tracked files read:');"
+    },
+    {
+      "file": "docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs",
+      "line": 94,
+      "region": "REGEX",
+      "shape": null,
+      "deciding": "trackedRead: one(/^\\s*tracked files read: (\\d+)/m),"
+    },
+    {
+      "file": "docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs",
+      "line": 7,
+      "region": "BLOCK_COMMENT",
+      "shape": null,
+      "deciding": "* `tracked files read`, 1036 → 1038 — and `Buffer.byteLength(stdout)` stays 4065.\" The drive found"
+    },
+    {
+      "file": "docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs",
+      "line": 25,
+      "region": "BLOCK_COMMENT",
+      "shape": null,
+      "deciding": "* token is removed from this unit's two docblocks, leaving `tracked files read` as the only"
+    },
+    {
+      "file": "docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs",
+      "line": 70,
+      "region": "REGEX",
+      "shape": null,
+      "deciding": "const TRACKED = /\\n {2}tracked files read: (\\d+)/;"
+    },
+    {
+      "file": "docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs",
+      "line": 73,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "console.log(`  tracked files read:        ${figure(pre, TRACKED)} → ${figure(post, TRACKED)}  (registered in P5)`);"
+    },
+    {
+      "file": "docs/research/unit-500trackedcomplement-2026-11-22/arm-tracked-complement.mjs",
+      "line": 45,
+      "region": "REGEX",
+      "shape": null,
+      "deciding": "read: /tracked files read: (\\d+)/,"
+    },
+    {
+      "file": "docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs",
+      "line": 6,
+      "region": "LINE_COMMENT",
+      "shape": null,
+      "deciding": "// available: the report differs in the `tracked files read` digits and NOWHERE else, with the byte"
+    },
+    {
+      "file": "docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs",
+      "line": 20,
+      "region": "REGEX",
+      "shape": null,
+      "deciding": "const READ = /^(\\s*tracked files read: )(\\d+)$/;"
+    },
+    {
+      "file": "docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs",
+      "line": 34,
+      "region": "REGEX",
+      "shape": null,
+      "deciding": "const preRead = Number(pre.match(/tracked files read: (\\d+)/)[1]);"
+    },
+    {
+      "file": "docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs",
+      "line": 35,
+      "region": "REGEX",
+      "shape": null,
+      "deciding": "const postRead = Number(post.match(/tracked files read: (\\d+)/)[1]);"
+    },
+    {
+      "file": "docs/research/unit-501redbranchpin-2026-11-22/posthoc-crossunit-byte-figures.mjs",
+      "line": 91,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "say('In both cases the only moved line is `tracked files read`, and it moved inside its digit width.');"
+    },
+    {
+      "file": "docs/research/unit-501redbranchpin-2026-11-22/posthoc-which-lines-move.mjs",
+      "line": 87,
+      "region": "STRING",
+      "shape": "ARRMEMBER",
+      "why": "the label is a member of an array literal",
+      "decidedFrom": "own line",
+      "deciding": "['tracked files read', /tracked files read:\\s*(\\d+)/],"
+    },
+    {
+      "file": "docs/research/unit-501redbranchpin-2026-11-22/posthoc-which-lines-move.mjs",
+      "line": 87,
+      "region": "REGEX",
+      "shape": null,
+      "deciding": "['tracked files read', /tracked files read:\\s*(\\d+)/],"
+    },
+    {
+      "file": "docs/research/unit-502streampin-2026-11-22/posthoc-landing.mjs",
+      "line": 39,
+      "region": "REGEX",
+      "shape": null,
+      "deciding": "read: pick(/tracked files read: (\\d+)/),"
+    },
+    {
+      "file": "docs/research/unit-503stalelabelwidth-2026-11-22/arm-realgate-newones.mjs",
+      "line": 7,
+      "region": "BLOCK_COMMENT",
+      "shape": null,
+      "deciding": "* 722 B / 8 lines for one plant at a path of length 57, at `tracked files read: 1054`. The tree is"
+    },
+    {
+      "file": "docs/research/unit-503stalelabelwidth-2026-11-22/arm-realgate-newones.mjs",
+      "line": 104,
+      "region": "STRING",
+      "shape": "STRINGARG",
+      "why": "the label is passed as a string ARGUMENT",
+      "decidedFrom": "own line",
+      "deciding": "trackedRead: readFig('tracked files read'),"
+    },
+    {
+      "file": "docs/research/unit-503stalelabelwidth-2026-11-22/arm-realgate-newones.mjs",
+      "line": 145,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "'P5.d  the tree really did change: tracked files read > 1054':"
+    },
+    {
+      "file": "docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs",
+      "line": 14,
+      "region": "BLOCK_COMMENT",
+      "shape": null,
+      "deciding": "* that may move is `tracked files read`."
+    },
+    {
+      "file": "docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs",
+      "line": 58,
+      "region": "STRING",
+      "shape": "STRINGARG",
+      "why": "the label is passed as a string ARGUMENT",
+      "decidedFrom": "own line",
+      "deciding": "trackedRead: fig('tracked files read'),"
+    },
+    {
+      "file": "docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs",
+      "line": 74,
+      "region": "LINE_COMMENT",
+      "shape": null,
+      "deciding": "// clean green capture, taken mid-fire at `tracked files read: 1059`, one file past §0's 1058. It is"
+    },
+    {
+      "file": "docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs",
+      "line": 97,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "'P7.d  tracked files read is the ONLY figure that moved, and keeps its digit width':"
+    },
+    {
+      "file": "docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs",
+      "line": 30,
+      "region": "REGEX",
+      "shape": null,
+      "deciding": "const m = /^\\s*(tracked files read|population[^:]*|baseline entries[^:]*):\\s*(\\d+)/.exec(line);"
+    },
+    {
+      "file": "docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs",
+      "line": 33,
+      "region": "REGEX",
+      "shape": null,
+      "deciding": "const TRACKED = /tracked files read: (\\d+)/;"
+    },
+    {
+      "file": "docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs",
+      "line": 70,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "'P6.c  tracked files read MOVED, 1064 -> strictly greater':"
+    },
+    {
+      "file": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+      "line": 8,
+      "region": "BLOCK_COMMENT",
+      "shape": null,
+      "deciding": "* unit's own `tracked files read` moved `1071 → 1072` with the byte count standing still, because"
+    },
+    {
+      "file": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+      "line": 27,
+      "region": "STRING",
+      "shape": "OBJKEY",
+      "why": "the label is an object KEY",
+      "decidedFrom": "own line",
+      "deciding": "'tracked files read': /tracked files read:\\s*(\\d+)/,"
+    },
+    {
+      "file": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+      "line": 27,
+      "region": "REGEX",
+      "shape": null,
+      "deciding": "'tracked files read': /tracked files read:\\s*(\\d+)/,"
+    },
+    {
+      "file": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+      "line": 114,
+      "region": "STRING",
+      "shape": "EQUALITY",
+      "why": "compared for equality against the label string",
+      "decidedFrom": "4-line window",
+      "deciding": "&& r.figures.GUARDED === 3 && r.figures.UNGUARDED === 58),\n    'P6.d  `tracked files read` is the ONLY named figure that moved':\n      movedFigures.length === 1 && movedFigures[0] === 'tracked files read',\n    'P6.e  `tracked files read` is the ONLY line that differs, pre to post':"
+    },
+    {
+      "file": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+      "line": 115,
+      "region": "STRING",
+      "shape": "EQUALITY",
+      "why": "compared for equality against the label string",
+      "decidedFrom": "own line",
+      "deciding": "movedFigures.length === 1 && movedFigures[0] === 'tracked files read',"
+    },
+    {
+      "file": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+      "line": 116,
+      "region": "STRING",
+      "shape": "EQUALITY",
+      "why": "compared for equality against the label string",
+      "decidedFrom": "4-line window",
+      "deciding": "movedFigures.length === 1 && movedFigures[0] === 'tracked files read',\n    'P6.e  `tracked files read` is the ONLY line that differs, pre to post':\n      firstToLast.onlyInFirst.length === 1 && firstToLast.onlyInSecond.length === 1\n      && firstToLast.onlyInFirst[0].includes('tracked files read')"
+    },
+    {
+      "file": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+      "line": 118,
+      "region": "STRING",
+      "shape": "INCLUDES",
+      "why": "substring/containment test on the label string",
+      "decidedFrom": "own line",
+      "deciding": "&& firstToLast.onlyInFirst[0].includes('tracked files read')"
+    },
+    {
+      "file": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+      "line": 119,
+      "region": "STRING",
+      "shape": "INCLUDES",
+      "why": "substring/containment test on the label string",
+      "decidedFrom": "own line",
+      "deciding": "&& firstToLast.onlyInSecond[0].includes('tracked files read'),"
+    },
+    {
+      "file": "docs/research/unit-509extractionrefusal-2026-11-23/posthoc-wsfile.mjs",
+      "line": 128,
+      "region": "REGEX",
+      "shape": null,
+      "deciding": "trackedRead: Number((outText.match(/tracked files read:\\s*(\\d+)/) || [])[1] ?? -1),"
+    },
+    {
+      "file": "docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs",
+      "line": 160,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "read: num(out, 'tracked files read:'),"
+    },
+    {
+      "file": "docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs",
+      "line": 201,
+      "region": "LINE_COMMENT",
+      "shape": null,
+      "deciding": "// The figure that is misnamed: `tracked files read` on a cell where nothing was read."
+    },
+    {
+      "file": "docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs",
+      "line": 204,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "console.log(`cells reporting \"tracked files read: 1\" with population 0 (the figure claims a read that`"
+    },
+    {
+      "file": "docs/research/unit-510quotepathskip-2026-11-23/confirm-landed.mjs",
+      "line": 102,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "read: num(out, 'tracked files read:'),"
+    },
+    {
+      "file": "docs/research/unit-511readcountname-2026-11-24/arm-readcountname.mjs",
+      "line": 2,
+      "region": "BLOCK_COMMENT",
+      "shape": null,
+      "deciding": "* unit-511 arm — the CONSUMER CENSUS that decides which cure for `tracked files read` is landable,"
+    },
+    {
+      "file": "docs/research/unit-511readcountname-2026-11-24/arm-readcountname.mjs",
+      "line": 7,
+      "region": "BLOCK_COMMENT",
+      "shape": null,
+      "deciding": "* The defect (`unit-510` §4): `verify-decl-body-slicers.mjs` emits `tracked files read: N` where"
+    },
+    {
+      "file": "docs/research/unit-511readcountname-2026-11-24/arm-readcountname.mjs",
+      "line": 20,
+      "region": "BLOCK_COMMENT",
+      "shape": null,
+      "deciding": "*   `VALUE`      — `tracked files read: 1080`, a digit run after the colon. Breaks under V and R."
+    },
+    {
+      "file": "docs/research/unit-511readcountname-2026-11-24/arm-readcountname.mjs",
+      "line": 21,
+      "region": "BLOCK_COMMENT",
+      "shape": null,
+      "deciding": "*   `CAPTURE`    — `tracked files read: (\\d+)` or an escaped equivalent. Survives V, breaks under R."
+    },
+    {
+      "file": "docs/research/unit-511readcountname-2026-11-24/arm-readcountname.mjs",
+      "line": 63,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "const LABEL = 'tracked files read';"
+    },
+    {
+      "file": "docs/research/unit-511readcountname-2026-11-24/confirm-landed.mjs",
+      "line": 13,
+      "region": "BLOCK_COMMENT",
+      "shape": null,
+      "deciding": "* the loop and `tracked files read: ${filesRead}` at the emit — and refuses if either is missing."
+    },
+    {
+      "file": "docs/research/unit-511readcountname-2026-11-24/confirm-landed.mjs",
+      "line": 48,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "const CURE_MARKS = ['filesRead += 1', 'tracked files read: ${filesRead}', 'unreadableFiles.length} unreadable'];"
+    },
+    {
+      "file": "docs/research/unit-511readcountname-2026-11-24/confirm-landed.mjs",
+      "line": 114,
+      "region": "STRING",
+      "shape": "STRINGARG",
+      "why": "the label is passed as a string ARGUMENT",
+      "decidedFrom": "own line",
+      "deciding": "read: num('tracked files read'),"
+    },
+    {
+      "file": "docs/research/unit-511readcountname-2026-11-24/posthoc-anchor-census.mjs",
+      "line": 7,
+      "region": "BLOCK_COMMENT",
+      "shape": null,
+      "deciding": "*     /^(  tracked files read: )(\\d+)$/"
+    },
+    {
+      "file": "docs/research/unit-511readcountname-2026-11-24/posthoc-anchor-census.mjs",
+      "line": 14,
+      "region": "BLOCK_COMMENT",
+      "shape": null,
+      "deciding": "* the value — `tracked files read: 1079 (1080 in scope)` — would break it **silently**, because an"
+    },
+    {
+      "file": "docs/research/unit-511readcountname-2026-11-24/posthoc-anchor-census.mjs",
+      "line": 35,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "const LABEL = 'tracked files read';"
+    },
+    {
+      "file": "docs/research/unit-511readcountname-2026-11-24/posthoc-matcher-vs-prose.mjs",
+      "line": 6,
+      "region": "BLOCK_COMMENT",
+      "shape": null,
+      "deciding": "* it as if it separated *a matcher* from *prose*. **It does not.** `say('  tracked files read: …')`"
+    },
+    {
+      "file": "docs/research/unit-511readcountname-2026-11-24/posthoc-matcher-vs-prose.mjs",
+      "line": 32,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "const LABEL = 'tracked files read';"
+    },
+    {
+      "file": "docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs",
+      "line": 20,
+      "region": "LINE_COMMENT",
+      "shape": null,
+      "deciding": "//     file, is not consuming gate output and cannot be the subject of a `tracked files read`"
+    },
+    {
+      "file": "docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs",
+      "line": 187,
+      "region": "REGEX",
+      "shape": null,
+      "deciding": "const readLine = (t.split('\\n').find((l) => /tracked files read/.test(l)) ?? '').replace(/\\r?$/, '');"
+    },
+    {
+      "file": "docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs",
+      "line": 197,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "const APPENDED = '  tracked files read: 1083 (1084 in scope, 1 excluded, 0 unreadable)';"
+    },
+    {
+      "file": "docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs",
+      "line": 198,
+      "region": "REGEX",
+      "shape": null,
+      "deciding": "const ANCHOR_RE = /^(\\s*tracked files read: )(\\d+)$/;"
+    },
+    {
+      "file": "docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs",
+      "line": 201,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "console.log(`  landed    : ${JSON.stringify('  tracked files read: 1083')} → match ${ANCHOR_RE.test('  tracked files read: 1083')}`);"
+    },
+    {
+      "file": "docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs",
+      "line": 201,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "console.log(`  landed    : ${JSON.stringify('  tracked files read: 1083')} → match ${ANCHOR_RE.test('  tracked files read: 1083')}`);"
+    },
+    {
+      "file": "docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject.mjs",
+      "line": 153,
+      "region": "REGEX",
+      "shape": null,
+      "deciding": "const readLine = (t.split('\\n').find((l) => /tracked files read/.test(l)) ?? '').trimEnd();"
+    },
+    {
+      "file": "docs/research/unit-512matchersubject-2026-11-24/posthoc-application-mode.mjs",
+      "line": 5,
+      "region": "LINE_COMMENT",
+      "shape": null,
+      "deciding": "//     unit-500…/posthoc-landing-condition.mjs:20   /^(\\s*tracked files read: )(\\d+)$/"
+    },
+    {
+      "file": "docs/research/unit-512matchersubject-2026-11-24/posthoc-application-mode.mjs",
+      "line": 6,
+      "region": "LINE_COMMENT",
+      "shape": null,
+      "deciding": "//     unit-503…/probe-baseline.mjs:30              /^\\s*(tracked files read|population…):\\s*(\\d+)/"
+    },
+    {
+      "file": "docs/research/unit-512matchersubject-2026-11-24/posthoc-application-mode.mjs",
+      "line": 30,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "const OLD = 'tracked files read';"
+    },
+    {
+      "file": "docs/research/unit-512matchersubject-2026-11-24/posthoc-application-mode.mjs",
+      "line": 55,
+      "region": "REGEX",
+      "shape": null,
+      "deciding": "/^(\\s*tracked files read: )(\\d+)$/m,"
+    },
+    {
+      "file": "docs/research/unit-512matchersubject-2026-11-24/posthoc-rename-kp.mjs",
+      "line": 10,
+      "region": "LINE_COMMENT",
+      "shape": null,
+      "deciding": "//       G_RENAMED  — the same bytes with the published label `tracked files read` replaced by"
+    },
+    {
+      "file": "docs/research/unit-512matchersubject-2026-11-24/posthoc-rename-kp.mjs",
+      "line": 36,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "const OLD = 'tracked files read';"
+    },
+    {
+      "file": "docs/research/unit-512matchersubject-2026-11-24/posthoc-rename-kp.mjs",
+      "line": 119,
+      "region": "REGEX",
+      "shape": null,
+      "deciding": "/^(\\s*tracked files read: )(\\d+)$/m,"
+    },
+    {
+      "file": "docs/research/unit-512matchersubject-2026-11-24/posthoc-rename-kp.mjs",
+      "line": 147,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "console.log(`  its own extracted figure(s): ${JSON.stringify((before.stdout.match(/tracked files read[^\\n]*/g) ?? []).slice(0, 4))}`);"
+    },
+    {
+      "file": "docs/research/unit-512matchersubject-2026-11-24/posthoc-resolve-unresolved.mjs",
+      "line": 69,
+      "region": "REGEX",
+      "shape": null,
+      "deciding": "readLine = (body.split('\\n').find((l) => /tracked files read/.test(l)) ?? '').trimEnd() || null;"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/arm-consumernull.mjs",
+      "line": 6,
+      "region": "BLOCK_COMMENT",
+      "shape": null,
+      "deciding": "* Every figure either seat has published on the label `tracked files read` is keyed on the PATTERN:"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/arm-consumernull.mjs",
+      "line": 34,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "const LABEL = 'tracked files read';"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/arm-consumernull.mjs",
+      "line": 246,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "{ want: 'THROW', src: `const m = stdout.match(/tracked files read: (\\\\d+)/);\\nif (!m) throw new Error('no figure');\\nconst n = Number(m[1]);\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/arm-consumernull.mjs",
+      "line": 247,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "{ want: 'REPORTED', src: `const m = stdout.match(/tracked files read: (\\\\d+)/);\\nsay(\\`  figure: \\${m?.[1]}\\`);\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/arm-consumernull.mjs",
+      "line": 248,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "{ want: 'DEFAULT', src: `const m = stdout.match(/tracked files read: (\\\\d+)/);\\nconst n = Number(m?.[1] ?? 0);\\nsay(\\`  figure: \\${n}\\`);\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/arm-consumernull.mjs",
+      "line": 249,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "{ want: 'SKIP', src: `const m = stdout.match(/tracked files read: (\\\\d+)/);\\nif (m) {\\n  figures.read = Number(m[1]);\\n}\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-application-subject.mjs",
+      "line": 34,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "const LABEL = 'tracked files read';"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs",
+      "line": 9,
+      "region": "BLOCK_COMMENT",
+      "shape": null,
+      "deciding": "*     trackedRead: one(/^\\s*tracked files read: (\\d+)/m),"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs",
+      "line": 164,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "{ want: 'THROW', kind: 'direct', src: `const m = stdout.match(/tracked files read: (\\\\d+)/);\\nif (!m) throw new Error('no figure');\\nconst n = Number(m[1]);\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs",
+      "line": 165,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "{ want: 'REPORTED', kind: 'direct', src: `const m = stdout.match(/tracked files read: (\\\\d+)/);\\nsay(\\`  figure: \\${m?.[1]}\\`);\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs",
+      "line": 166,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "{ want: 'DEFAULT', kind: 'direct', src: `const m = stdout.match(/tracked files read: (\\\\d+)/);\\nconst n = Number(m?.[1] ?? 0);\\nsay(\\`  figure: \\${n}\\`);\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs",
+      "line": 167,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "{ want: 'SKIP', kind: 'direct', src: `const m = stdout.match(/tracked files read: (\\\\d+)/);\\nif (m) {\\n  figures.read = Number(m[1]);\\n}\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs",
+      "line": 169,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "{ want: 'REPORTED', kind: 'helper', src: `const one = (rx) => { const m = out.match(rx); return m ? Number(m[1]) : null; };\\nsay(\\`  read \\${one(/tracked files read: (\\\\d+)/)}\\`);\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs",
+      "line": 170,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "{ want: 'DEFAULT', kind: 'helper', src: `const one = (rx) => { const m = out.match(rx); return m ? Number(m[1]) : 0; };\\nsay(\\`  read \\${one(/tracked files read: (\\\\d+)/)}\\`);\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs",
+      "line": 171,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "{ want: 'DEFAULT', kind: 'helper-coerced', src: `const one = (rx) => { const m = out.match(rx); return m ? m[1] : null; };\\nconst n = Number(one(/tracked files read: (\\\\d+)/));\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs",
+      "line": 180,
+      "region": "STRING",
+      "shape": "INCLUDES",
+      "why": "substring/containment test on the label string",
+      "decidedFrom": "own line",
+      "deciding": "const line = lines.findIndex((l) => l.includes('tracked files read')) + 1;"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs",
+      "line": 182,
+      "region": "REGEX",
+      "shape": null,
+      "deciding": "const row = { rel, line, appliedAt, pattern: (lines[line - 1].match(/\\/[^/\\n]*tracked files read[^/\\n]*\\/[a-z]*/) || [''])[0] };"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs",
+      "line": 55,
+      "region": "STRING",
+      "shape": "INCLUDES",
+      "why": "substring/containment test on the label string",
+      "decidedFrom": "own line",
+      "deciding": "const labelIdx = l.indexOf('tracked files read');"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs",
+      "line": 222,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "{ want: 'THROW', kind: 'direct', src: `const m = o.match(/tracked files read: (\\\\d+)/);\\nif (!m) throw new Error('x');\\nconst n = Number(m[1]);\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs",
+      "line": 223,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "{ want: 'REPORTED', kind: 'direct', src: `const m = o.match(/tracked files read: (\\\\d+)/);\\nsay(\\`  f \\${m?.[1]}\\`);\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs",
+      "line": 224,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "{ want: 'DEFAULT', kind: 'direct', src: `const m = o.match(/tracked files read: (\\\\d+)/);\\nconst n = Number(m?.[1] ?? 0);\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs",
+      "line": 225,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "{ want: 'SKIP', kind: 'direct', src: `const m = o.match(/tracked files read: (\\\\d+)/);\\nif (m) {\\n  f.read = Number(m[1]);\\n}\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs",
+      "line": 226,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "{ want: 'REPORTED', kind: 'helper', src: `const one = (rx) => { const m = o.match(rx); return m ? Number(m[1]) : null; };\\nsay(\\`  read \\${one(/tracked files read: (\\\\d+)/)}\\`);\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs",
+      "line": 227,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "{ want: 'DEFAULT', kind: 'helper', src: `const one = (rx) => { const m = o.match(rx); return m ? Number(m[1]) : 0; };\\nsay(\\`  read \\${one(/tracked files read: (\\\\d+)/)}\\`);\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs",
+      "line": 228,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "{ want: 'DEFAULT', kind: 'helper-coerced', src: `const one = (rx) => { const m = o.match(rx); return m ? m[1] : null; };\\nconst n = Number(one(/tracked files read: (\\\\d+)/));\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs",
+      "line": 230,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "{ want: 'PROSE', kind: 'prose-block', src: `/**\\n * a docblock quoting /tracked files read: (\\\\d+)/ and nothing else\\n */\\nconst x = 1;\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs",
+      "line": 231,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "{ want: 'PROSE', kind: 'prose-line', src: `const x = 1; // see /tracked files read: (\\\\d+)/ in the gate\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs",
+      "line": 232,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "{ want: 'THROW', kind: 'inline', src: `const preRead = Number(pre.match(/tracked files read: (\\\\d+)/)[1]);\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs",
+      "line": 233,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "{ want: 'REPORTED', kind: 'arrdef', src: `const pick = (re) => (o.match(re) || [, 'absent'])[1];\\nsay(\\`  read \\${pick(/tracked files read: (\\\\d+)/)}\\`);\\n` },"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs",
+      "line": 242,
+      "region": "STRING",
+      "shape": "INCLUDES",
+      "why": "substring/containment test on the label string",
+      "decidedFrom": "own line",
+      "deciding": "const line = lines.findIndex((l) => l.includes('tracked files read')) + 1;"
+    },
+    {
+      "file": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs",
+      "line": 243,
+      "region": "REGEX",
+      "shape": null,
+      "deciding": "const pattern = (lines[line - 1].match(/\\/[^/\\n]*tracked files read[^/\\n]*\\/[a-z]*/) || [''])[0];"
+    },
+    {
+      "file": "docs/research/verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-member.mjs",
+      "line": 22,
+      "region": "REGEX",
+      "shape": null,
+      "deciding": "const m = s.match(/tracked files read: (\\d+)/);"
+    },
+    {
+      "file": "scripts/verify-decl-body-slicers.mjs",
+      "line": 128,
+      "region": "LINE_COMMENT",
+      "shape": null,
+      "deciding": "// `tracked files read: 0`, `population 0`, `DECL-BODY SLICERS OK`, **rc 0**, against a"
+    },
+    {
+      "file": "scripts/verify-decl-body-slicers.mjs",
+      "line": 254,
+      "region": "LINE_COMMENT",
+      "shape": null,
+      "deciding": "// The two figures `tracked files read` publishes, both derived here rather than re-counted at the"
+    },
+    {
+      "file": "scripts/verify-decl-body-slicers.mjs",
+      "line": 270,
+      "region": "LINE_COMMENT",
+      "shape": null,
+      "deciding": "// What it was: `tracked files read` published"
+    },
+    {
+      "file": "scripts/verify-decl-body-slicers.mjs",
+      "line": 275,
+      "region": "LINE_COMMENT",
+      "shape": null,
+      "deciding": "// `tracked files read: 1`, `population 0`, `DECL-BODY SLICERS OK`, rc 0 — the one cell of six"
+    },
+    {
+      "file": "scripts/verify-decl-body-slicers.mjs",
+      "line": 290,
+      "region": "LINE_COMMENT",
+      "shape": null,
+      "deciding": "//     `/^(\\s*tracked files read: )(\\d+)$/` — **end-anchored**. Appending scope text after the"
+    },
+    {
+      "file": "scripts/verify-decl-body-slicers.mjs",
+      "line": 689,
+      "region": "BLOCK_COMMENT",
+      "shape": null,
+      "deciding": "*   bytes** — they differ on `tracked files read` and no reader notices, because the digit width"
+    },
+    {
+      "file": "scripts/verify-decl-body-slicers.mjs",
+      "line": 703,
+      "region": "BLOCK_COMMENT",
+      "shape": null,
+      "deciding": "*   `tracked files read`, `population`, `MARKED` / `GUARDED` / `UNGUARDED`, `baseline entries`."
+    },
+    {
+      "file": "scripts/verify-decl-body-slicers.mjs",
+      "line": 895,
+      "region": "STRING",
+      "shape": "UNCLEAR",
+      "why": "no shape matched on the line or in the window",
+      "decidedFrom": "own line",
+      "deciding": "emit(`  tracked files read: ${filesRead}`);"
+    }
+  ]
+}
