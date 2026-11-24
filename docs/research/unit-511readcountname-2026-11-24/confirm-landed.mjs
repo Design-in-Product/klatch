@@ -17,7 +17,8 @@
  *   `A-PRESENT`  — member staged AND on disk. Control: the cure must not cry wolf.
  *   `A-UNLINKED` — member staged, then removed from the worktree. The defect's cell.
  *
- * **No `brace-slicer-deliberate:` marker, and that is the stronger claim**: the fixture member below
+ * **No exemption marker (the gate's token is spelled nowhere in this file), and that is the stronger
+ * claim**: the fixture member below
  * contains a brace comparison **built from char codes**, so this file never holds the literal and
  * does not become a new `UNGUARDED` member of the gate it measures — there is nothing here for a
  * marker to exempt, and a marker on an out-of-population file only joins the reported dead-marker

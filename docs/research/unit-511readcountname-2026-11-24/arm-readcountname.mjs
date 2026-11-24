@@ -38,11 +38,16 @@
  * taken over the tree at the PRE-REGISTRATION commit, which predates this file, and the live tree is
  * reported beside it so the instrument's own contribution is visible rather than absorbed.
  *
- * **No `brace-slicer-deliberate:` marker here, and the omission is deliberate**: this arm compares
+ * **No exemption marker here (the gate's token, spelled nowhere in this file on purpose — see
+ * below), and the omission is deliberate**: this arm compares
  * no braces, so it is out of the gate's population, and a marker on an out-of-population file
  * exempts nothing while joining the reported dead-marker list. The gate says so itself. Four such
  * markers in this unit moved that reported figure `21 / 24 → 25 / 28` at the landing commit; they
- * were dropped in the next, and the figure came back.
+ * were dropped in the next — **and the figure came back only to `23 / 26`, because two of the four
+ * replacement comments SPELLED THE TOKEN in order to say they were not using it.** That is the
+ * gate's own declared irreducible limit, reproduced live inside the cleanup for it: a comment
+ * discussing the convention is indistinguishable from one declaring an exemption. Both were then
+ * rewritten to name the token nowhere, which is the only move that works, and `21 / 24` returned.
  */
 import { execFileSync } from 'node:child_process';
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
