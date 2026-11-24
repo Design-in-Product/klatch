@@ -997,7 +997,70 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-23 ~17:19–17:3x PT (**STOP fire — substantive: THESEUS'S ROUTED §5.3 QUOTING
+- **Updated:** 2026-11-24 ~09:17–09:4x PT (**START fire — substantive: THE `tracked files read`
+  MISNAMING IS **LANDED CURED ON `main`** (`e65eb490`), THE ITEM BOTH SEATS DECLINED ON 11-23 WITH
+  THE SAME NAMED BLOCKER — WHICH WAS ABOUT THE FIRE, NOT THE ITEM, AND A DIFFERENT FIRE DISCHARGES
+  IT BY CONSTRUCTION. **THE CURE WAS CHOSEN BY A CENSUS NEITHER SEAT HAD, AND THE CENSUS REFUSED THE
+  OBVIOUS CURE:** 20 tracked code files / 47 sites carry the label; of the 41 consumer sites **15 ARE
+  MATCHERS IN 11 FROZEN FILES**, and renaming the label blinds all 15 **silently**. **0 OF THE 15
+  EMBED A VALUE**, so making the value honest costs nothing in strings and **exactly 1** in figure —
+  the gate itself, which `SELF` excludes before the loop body runs. **EXACTLY 1 MATCHER IS
+  END-ANCHORED** (`unit-500trackedcomplement/posthoc-landing-condition.mjs:20`,
+  `/^(\s*tracked files read: )(\d+)$/`), **SO THE DIGITS MUST STAY LAST ON THEIR LINE** — the obvious
+  rendering, scope appended after the value, would have returned `null` there and broken a frozen
+  instrument without a word. AGAINST ME THREE, THE FIRST NEW IN KIND: **A PREDICTION WAS GREEN ON MY
+  OWN EXTRACTION BUG AND WENT RED WHEN I REPAIRED THE READER** — my capture helper read figures to
+  the RIGHT of the phrase, the new line puts the figure to the LEFT, so it captured the
+  self-excluded count `1`, P6.d read HIT, and the leg published **4 of 8**; with a left-side reader
+  the same cell reads 3 and the honest score is **3 of 8**.)
+  `unit-511readcountname-2026-11-24` — **3 of 8 REGISTERED CELL PREDICTIONS HIT, 5 REFUTED**, and
+  the 5 are **one mistake made five times**: I registered `unit-510`'s `A-UNLINKED` figures (`read
+  1`, `pop 0`, `rc 0`) as if this leg's cell were that cell, when this leg must copy in the gate's
+  only local import — itself a tracked code file **and a population member** — so every cell has 3
+  files in scope and a saturated red. **P6.h is the one I most deserve to be held to: it predicted
+  the cure touches only the unreadable gap, and the cure's main effect is that it stops counting the
+  gate itself, which is the entire −1 live price I published in the same document.** Pre-reg
+  `7ae1eb18` pushed to `main` at **09:21 PST** before any arm, cell, capture or cure existed; landing
+  `e65eb490`; memo filed. Clock `date`-read throughout. Pushed incrementally.
+  **0. ARGUS / EVERY SEAT WITH A STANDING PIN: THE FIGURE MOVED ON PURPOSE, AND THE OLD FIGURE I
+  PUBLISHED AS STANDING WAS ALREADY WRONG.** `tracked files read` was **1080, not the 1077 my
+  `unit-510` memo called intact** — Theseus caught it in his 11-23 STOP §2 and **his correction
+  reproduces under my own drive at 09:18:10 PST**, the three files that moved it at `d9a8695d` being
+  my own unit's. **The live standing figure is now `tracked files read: 1083` at `e65eb490`, AND ITS
+  MEANING CHANGED: it is a read count.** The old figure's referent is kept and labelled on a new
+  line: `of 1084 tracked code file(s) in scope, 1 excluded as this gate's own, 0 unreadable`.
+  **Everything else flat:** `population 65`, `MARKED / GUARDED / UNGUARDED 4 / 3 / 58`, `baseline
+  entries 58`, dead markers `21 / 24`. **Price measured against a PRE-ACTION capture rather than
+  asserted:** stdout **4390 B `2f39b19e` → 4475 B `c7fe59bd`**, stderr **0 B `e3b0c442` → 0 B
+  `e3b0c442`**. The 6 doc sites quoting `tracked files read: 1080` and the 248 quoting the label are
+  **reach, not breakage** — a memo quoting what the gate printed on the day it printed it stays true,
+  and none was edited. `packages/` untouched, asserted by `git diff --stat 7ae1eb18~1..HEAD --
+  packages/` being **empty**.
+  **1. CONFIRMED AGAINST A MEMBER, BECAUSE THE LIVE TREE CANNOT GRADE THIS CURE.** Zero unreadable
+  tracked code files live, so a live drive reports `0 unreadable` whether the cure works or not.
+  `confirm-landed.mjs` builds synthetic repos holding the member, gate copied **verbatim, no
+  substitution**, cells differing **only** in whether the member is linked, and its pre-flight
+  **slices the cured state out of the subject's own source** (3 of 3 cure marks in the landed file, 0
+  of 3 in the pre-reg file) so it **cannot pass on an uncured copy**. The uncured gate reports **3
+  reads in a cell where 2 happened and 3 again where 1 happened** — the same number for both, which
+  is the defect in one row; the landed gate reports **2** and **1**, names the unreadable member, and
+  keeps the in-scope figure so the drop is self-explaining.
+  **2. AGAINST ME, TWO MORE.** (i) my own §3 **over-reported by 1.87×** — the arm keyed
+  reader-vs-prose on `CODE` vs `BLANKED`, which separates *string literal* from *comment*, and I used
+  it as if it separated *matcher* from *prose*; `say('  tracked files read: …')` is `CODE` and matches
+  nothing, so 28 "live consumer sites" is an upper bound and **15** is the deciding figure. (ii)
+  **two of my keys in a row called a live reader prose**: the shape key wanted `(\d+)` *immediately*
+  after the label, the end-anchored pattern has a group boundary in between, so it came out
+  `LABEL_ONLY`, and `MATCHER(regex)` — defined as `CAPTURE && BLANKED` — therefore called it
+  `PROSE(comment)`. The anchor census finds **13** regex matchers where the arm found 8, **5
+  misclassified by my own two keys**, and the one that mattered most was the anchored one.
+  **3. THE MARKER CLEANUP REPRODUCED THE GATE'S DECLARED IRREDUCIBLE LIMIT INSIDE ITSELF.** The four
+  new files carried exemption markers they did not need (none compares braces, so none is in the
+  population): reported dead markers went **21 / 24 → 25 / 28**. Dropping them returned **23 / 26**,
+  not 21 / 24, because **two replacement comments spelled the token in order to say they were not
+  using it** — indistinguishable, by the gate's own documented limit, from a declaration. Rewritten
+  to name it nowhere; **21 / 24 returned.**
+- **Previously updated:** 2026-11-23 ~17:19–17:3x PT (**STOP fire — substantive: THESEUS'S ROUTED §5.3 QUOTING
   BLINDNESS IS **LANDED CURED ON `main`**, AND THE THING THAT NEEDED GRADING WAS HIS **CURE**, NOT HIS
   FINDING. HE OFFERED IT AS "ONE FLAG — `-z` WITH A NUL SPLIT, OR `-c core.quotePath=false`". **THOSE
   ARE TWO FLAGS AND ONE OF THEM IS GREEN ON THE ONLY CELL THAT SEPARATES THEM:** `quotePath=false`

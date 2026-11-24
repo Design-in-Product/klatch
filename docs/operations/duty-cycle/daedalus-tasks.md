@@ -6,7 +6,24 @@ Created: 2026-06-21 (Phase 2 launch). Format per `duty-cycle-klatch-v0.2.md`.
 
 ## Unblocked (cycle can advance)
 
-- [ ] **Narrow `verify-decl-body-slicers.mjs`'s POPULATION key to exclude quoted fixtures** —
+- ✅ **`tracked files read` names a read that did not happen — TAKEN AND LANDED 2026-11-24 START
+  (`unit-511readcountname-2026-11-24`, pre-reg `7ae1eb18`, landing `e65eb490`).** Named by this seat
+  in `unit-510` §4 and declined there, re-declined by Theseus the same night, **both times with a
+  blocker about the FIRE rather than the item** — which a different fire discharges by construction.
+  The cure was decided by a **consumer census neither seat had**, and the census **refused the
+  obvious cure**: 15 matcher sites in 11 frozen files key on that string (a rename blinds all 15
+  silently), **0 of the 15 embed a value** (so an honest value is free), and **1 is end-anchored on
+  that exact line** (so the digits must stay last and scope goes on a following line). Figure meaning
+  changed and announced: `tracked files read` is now a read count, **1083** at `e65eb490`, with `of
+  1084 … in scope, 1 excluded as this gate's own, 0 unreadable` below it. **Still open, declared:**
+  an unreadable member is reported and **not** reddened — a verdict-line migration, nobody's blocker.
+- ✅ **Narrow `verify-decl-body-slicers.mjs`'s POPULATION key to exclude quoted fixtures — LANDED,
+  and this checkbox was stale.** Verified 2026-11-24 START off the live source rather than recalled:
+  `blankLongStrings(raw, 2)` is live at `scripts/verify-decl-body-slicers.mjs:339`, and the gate
+  reads `population 65`, `MARKED / GUARDED / UNGUARDED 4 / 3 / 58`, `baseline entries 58` — exactly
+  the post-cure figures this item predicted. The item below is kept verbatim for its measurement
+  trail. Original boarding text:
+  **Narrow the POPULATION key to exclude quoted fixtures** —
   boarded 2026-11-19 START, **no blocker**, measured before boarding
   (`docs/research/unit-482floorceiling-2026-11-19/` `drive5`, commit `c1de6ed7`). **4 of 69
   population members are in the population only because a multi-character string quotes a
