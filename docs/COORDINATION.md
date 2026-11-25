@@ -1000,6 +1000,100 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
+- **Updated:** 2026-11-25 13:17–13:3x PT (**WORK fire — substantive: THE TERNARY-BLIND BRANCH-ORDER
+  EXTRACTOR IS CURED AND KP'd 9 OF 9, AND BOTH OF MY OWN REACH CLAIMS WERE FALSE — THE SHAPE IS 6
+  FILES, NOT 1, AND THE HAZARD IS 2 OF 6, OF WHICH ONE IS THESEUS'S.**
+  `unit-517branchorder-2026-11-25`, pre-reg `109f4948` pushed to `main` at **13:20:30 PST** before
+  any arm/reader/cell/capture/KP existed; arm `8189e3be`, addendum `c6b9ba52` (registered before the
+  post-hoc that grades it existed), post-hoc `e0c9f88e`, results + the `unit-515` correction
+  `063d6e79`, memo `1b7d20cf`. **12 REGISTERED PREDICTIONS, 10 HIT, 2 REFUTED, AND BOTH REFUTATIONS
+  ARE CLAIMS I MADE ABOUT REACH RATHER THAN ANYTHING ABOUT THE CORPUS.** Subject is this seat's own
+  `unit-515` §5(i) finding — one line, `arm-keyekp.mjs:78`, `matchAll(/cls: '([A-Z-]+)'/g)`,
+  published this morning as the provenance of a precedence claim and found in the same fire to print
+  4 branches of 6. Theseus's 11-25 START memo asks nothing and §7 lists this item back to this seat
+  by name. **THE CURE:** a ternary-aware extractor over both readings of `scripts/lib/strip-source.mjs`
+  (one scanner — strings blanked to find the `cls:` sites that are really code, strings kept to read
+  the literal at those sites; the positional-`blankStrings` trap its own `.d.mts` documents is
+  **asserted** in §0, not trusted), **KP'd 9 of 9 before it touched the subject, four cells being
+  refusals**, one of them the real hazard in the real subject (`/^['"`]/` — a regex whose character
+  class holds all three quote marks). **P4: 6 of 6 branches, 8 of 8 class literals, 0 invented.**
+  **P2 — ONE BLINDNESS AT TWO GRANULARITIES AND I PUBLISHED THE KINDER ONE:** it is **4 of 6
+  branches AND 4 of 8 class literals**, because each missed branch returns *two* classes.
+  **P3 — THE BLINDNESS IS NOT DISTRIBUTED AT RANDOM:** 2 of 2 missed branches are ternary, **0 of 4
+  caught are**, because in this key the ternary form appears *only* where a branch
+  sub-discriminates — so a quote-anchored reader is blind **precisely at the branches a precedence
+  claim exists to compare against**, and that correlation is why its output read as confirmation.
+  **THE KEEPER: `unit-515` P3's VERDICT HOLDS at full granularity while the figure it cites moves
+  4 → 8.** Read over all six branches by source offset — with the precondition *asserted* that the
+  slice holds no `for`/`while`/`switch`/`.sort(`/`.reverse(` that could divorce evaluation order from
+  source order — the literal-subject branch @243 precedes all three evidence branches. **A verdict
+  that survives its own evidence being corrected was never resting on that evidence.** That is a
+  third face of one thing: `unit-515` §4 (a cure exactly right, zero figures moved), Theseus's
+  `unit-516` §3 (one `+4` that is two disjoint `+2`s with opposite causes), and this (a figure moves,
+  the verdict does not) — in all three the **total** is the one number that cannot be read, and all
+  three needed a per-row re-entry. **P6:** 4 of 8 literals are non-unique (`FIXTURE`×2,
+  `UNRESOLVED`×2), so the published sequence cannot say *which* `FIXTURE` branch the claim names —
+  and **exactly 1 of the 2 consults the evidence line**, so the lossy provenance is lossy about the
+  precise distinction the claim turns on. **REACH, AND I AM PUBLISHING TWO NUMBERS BY REGISTERED
+  COMMITMENT (PH4) RATHER THAN THE FLATTERING ONE: shape 6 (11 hits) · hazard 2 · gap 4.** **P7
+  REFUTED** — this morning's *"nothing reuses it yet"*, written in the same memo that found an
+  unmeasured provenance claim, is **6 members**; corrected at `unit-515` §7 at the bullet that
+  published it, not only in the new unit. **PH3 REFUTED AND IT ESCALATES RATHER THAN TIDIES** —
+  registered 1 of 6 (the subject alone), measured **2**: `scripts/probe-round373-…mts` reads `file:`
+  with a quote-anchored key (2 hits) and `file:` occurs in a ternary at
+  `unit-307c4-blast-radius-2026-10-27/recon.mjs:83`. **Both files are Theseus's, verified by commit
+  author, and NEITHER WAS TOUCHED** — frozen instrument, routed with file, line and the reaching
+  ternary rather than a verdict about another seat's work. `6` alone overstates a blindness's reach;
+  `2` alone hides that four more readers are **one ternary away**; the **gap is the finding** and it
+  closes with nobody editing a reader. **AGAINST ME FIVE.** (i) **An instrument built on a false
+  premise about the shared reader, caught by its own KP set at 0 of 3 — and its dead output was the
+  answer I already believed.** I wrote in this unit's docblock that `stripSource` keeps a construct's
+  delimiters and blanks only its body; it blanks the construct **whole**. The region classifier read
+  `code` for all three positives and **the census read `MEMBERS 0` while it was dead** — a zero
+  indistinguishable from *"nothing reuses it"*, the exact sentence I had written hours earlier.
+  Re-keyed onto what the module does guarantee (length-preserving blanking, so `raw[i] !== blank[i]`
+  is an exact mask and the first masked byte of a run *is* the delimiter): **5 of 5**, figure 6.
+  (ii) **A guard reader whose only passing cell was the one expecting `null`** — its rule required no
+  `return` between an `if`'s closing paren and the `cls:` site, but a guard's own `if` is immediately
+  followed by its own `return`, so it rejected every guard for its own branch: **1 of 3**, the one
+  pass being the fall-through branch that genuinely has none. Re-keyed to "no other `cls:` site in
+  between": **3 of 3**. (iii) **Four of seven ternary positives were not conditionals, and I found it
+  by reading the POSITIVES rather than the zeros** — three `file` hits and one `cls` hit were
+  TypeScript: an **optional property** (`refusal?: RegExp`) read as a ternary, and a value span
+  running past a `;` because a TS type member is not comma-terminated. Both invisible in `.mjs`, and
+  this corpus is mixed. v2 cures both, is re-KP'd, and **both censuses are printed** rather than the
+  cured one swapped in, because a decontamination fix removes false **credits** too. (iv) **THE
+  HEADLINE SURVIVED THE CURE OF ITS OWN READER WITH MOST OF ITS EVIDENCE REPLACED:** live-blind is
+  **2 under v1 and 2 under v2**, while `file` goes **4 ternary hits → 1** and `cls` **5 → 4** — **4
+  of 7 supporting rows replaced under an unchanged total.** Reported as the figure alone, the cure
+  would have looked like a no-op confirming the first reading. **A count that survives a cure of the
+  instrument can have had most of its members replaced, so the count was never what got checked —
+  the rows were.** (v) **One of my two TypeScript refusal cells does not separate the readers it was
+  written to separate** — v1 *passes* the `;`-terminator cell, because the overrun still yields
+  `unresolved` and still flags no ternary, the two properties my `ok` predicate grades; so a
+  discrimination I would have claimed from two cells rests on **one**. Published per-cell as
+  `v1 2 of 4 · v2 4 of 4`. **Live gate figures with their moments:** `tracked files read` **1106** at
+  the pre-reg, **1107** at the arm, **1108** at the post-hoc and after, `of 1109 … in scope, 1
+  excluded as this gate's own, 0 unreadable`, population **65**, **4 / 3 / 58**, `baseline entries
+  58`, rc 0 at every push — **and neither new script joined the population**, there being no
+  character comparison against a brace, paren or colon anywhere in this unit (`unit-515` §5(iv)'s
+  cure reused rather than restated). `.err` **0 B** on both drives; `packages/` and `scripts/`
+  `diff --stat` **EMPTY**, asserted inside both scripts.
+  `Drain:` drained — Theseus's 11-25 START memo (`d28e8108`, 11:01) read in full at session start; it
+  asks nothing of either seat and its one open question is xian's, so the fire went to the top item on
+  this seat's own board, which his §7 lists back to me by name, and took it to a landed KP-gated
+  measurement **plus a second registered rung in-fire** when the first one's refutation turned out to
+  be a shape figure standing in for a hazard claim. Two figures this seat published this morning were
+  corrected at the bullet that published them. A finding in another seat's file was **routed, not
+  touched**. `docs/mail/` re-checked after the task work — **nothing new inbound** beyond the memo
+  already read. **Deferred: nothing without a named blocker.** Carrying, each unblocked and mine with
+  no blocker: the cured extractor is a reader in one unit, not a shared one, and the census that would
+  catch the next quote-anchored `cls:`-shaped reader is a figure in a results file rather than a gate
+  leg; `BOUND-PATTERN` 6; `SUBJECT-IS-PARAM` + `CALLBACK-PARAM` 4; the incrementally-assembled-object
+  evidence model, which no line-granularity reader reaches. **Theseus's, untaken:** the
+  frozen-population-prediction pattern defect (`unit-516` §4); `SECOND-ARG`'s nested-call blindness;
+  the inherited concatenated-label blindness. **xian's, and only his:** `unit-516` §5's 15-vs-0
+  census-purpose choice. **No owner, twentieth night:** the `ABSENT` hole.)
 - **Updated:** 2026-11-25 09:17–09:3x PT (**START fire — substantive: KEY E NOW HAS A KNOWN-POSITIVE
   SET — 10 OF 10 CELLS, ALL 6 DECLARED CLASSES REACHABLE — THE 14-ROW TERMINAL BUCKET IS FIVE
   MECHANISMS WITH ZERO FALL-THROUGH, AND MY OWN PUBLISHED INTERVAL `[1, 12]` OVERSTATED THE HAZARD
