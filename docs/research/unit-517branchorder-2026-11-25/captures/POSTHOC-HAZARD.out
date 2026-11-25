@@ -1,0 +1,86 @@
+unit-517 post-hoc — shape reach vs hazard reach
+  rev c6b9ba52 · driven 2026-11-25 13:29:55 PST
+
+§1  PH2 — the extractor parameterised by name is a DIFFERENT key, so it is re-KP'd
+  name "cls"  KP cells 9 of 9 (v2)
+  name "p"  KP cells 9 of 9 (v2)
+  name "error"  KP cells 9 of 9 (v2)
+  PH2 (9 of 9 under every substituted name): true
+
+  the two TypeScript cells, run under BOTH readers — v1 fails them, which is why v1's census inflated:
+    v1  FAIL  [cls] REFUSAL ts optional property   sites 1 ternary-flagged 1
+    v2  pass  [cls] REFUSAL ts optional property   sites 1 ternary-flagged 0
+    v1  pass  [cls] REFUSAL ts member ends at ;    sites 1 ternary-flagged 0
+    v2  pass  [cls] REFUSAL ts member ends at ;    sites 1 ternary-flagged 0
+    v1  FAIL  [file] REFUSAL ts optional property   sites 1 ternary-flagged 1
+    v2  pass  [file] REFUSAL ts optional property   sites 1 ternary-flagged 0
+    v1  pass  [file] REFUSAL ts member ends at ;    sites 1 ternary-flagged 0
+    v2  pass  [file] REFUSAL ts member ends at ;    sites 1 ternary-flagged 0
+  TypeScript refusal cells: v1 2 of 4 · v2 4 of 4
+
+§2  PH1 — the property name each census member's own key reads
+  docs/research/round404-instruments/grade-the-three-cures.mjs
+      hits 1   property name(s) read: p
+  docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs
+      hits 1   property name(s) read: cls
+  scripts/probe-round213-reassign-live-http.mts
+      hits 1   property name(s) read: error
+  scripts/probe-round217-multipart-guard-live-http.mts
+      hits 5   property name(s) read: error
+  scripts/probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts
+      hits 2   property name(s) read: file
+  scripts/verify-recogniser-equivalence.mjs
+      hits 1   property name(s) read: conversation
+  PH1 (a name recovered for all 6 members): true
+  distinct property names across the census: 5  (p, cls, error, file, conversation)
+
+§3  PH3 — for each name, occurrences in a TERNARY-OPERAND position across the same population
+  population: 836 tracked file(s) — the arm's population, reused so the two figures share a denominator
+
+  p              sites v1   121 → v2   121   TERNARY-position  v1 0 → v2 0
+  cls            sites v1    91 → v2    91   TERNARY-position  v1 5 → v2 4
+      v2 keeps  docs/research/unit-513consumernull-2026-11-24/arm-consumernull.mjs:160   gateRef ? 'LIVE' : 'DRIVES_OTHER'
+      v2 keeps  docs/research/unit-513consumernull-2026-11-24/posthoc-application-subject.mjs:72   .test(src) ? 'GATE' : 'OTHER-PROCESS'
+      v2 keeps  docs/research/unit-513consumernull-2026-11-24/posthoc-application-subject.mjs:75   .test(ev) ? 'CAPTURE' : 'FILE'
+      v2 keeps  docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs:214   tc.cls === 'UNCLEAR' ? 'UNCLEAR_R3' : tc.cls
+      v2 DROPS  docs/research/unit-514equalityconsumer-2026-11-24/arm-equalityconsumer.mjs:183   null; const regionOk = gotRegion === wantRegion; const shapeOk = wan
+  error          sites v1    11 → v2    11   TERNARY-position  v1 0 → v2 0
+  file           sites v1   450 → v2   450   TERNARY-position  v1 4 → v2 1
+      v2 keeps  docs/research/unit-307c4-blast-radius-2026-10-27/recon.mjs:83   typeof e === 'string' ? e : e.file
+      v2 DROPS  docs/research/unit-465guard-2026-11-08/drive-guard.mts:61   string; refusal?: RegExp; skip?: RegExp
+      v2 DROPS  scripts/promote-probes.mts:606   string; promotable: boolean; reason: string; entry?: string
+      v2 DROPS  scripts/sweep-probes.d.mts:23   string; expect: RegExp; why: string; refusal?: RegExp; skip?: RegExp
+  conversation   sites v1    17 → v2    17   TERNARY-position  v1 0 → v2 0
+
+§4  the two figures, in one place — and the instrument's own correction, visible
+  SHAPE reach  — files carrying the quote-anchored key: 6
+  HAZARD reach — v1 (TS-blind reader): 2 of 6
+      v1 live-blind: docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs  (cls)
+      v1 live-blind: scripts/probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts  (file)
+  HAZARD reach — v2 (TS optional-property and `;` terminator cured): 2 of 6
+      v2 live-blind: docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs  (cls)
+      v2 live-blind: scripts/probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts  (file)
+  gap: 4 file(s) carry the shape and are blind to nothing that is there today.
+  PH3 as registered (live-blind = 1 of 6, the subject alone): false
+  verdict under v1 and under v2 is the same count (2 and 2): true
+  …and that agreement is NOT the same evidence: 4 `file` hits under v1,
+     1 under v2. A count that survives a cure of the instrument can still have
+     had most of its members replaced, so the count is not what was checked — the rows were.
+
+  LIMITS, as registered, in both directions and not cancelling:
+   · population is tracked docs/research + scripts only — a ternary in packages/ is out of
+     scope, so the hazard figure is a FLOOR.
+   · a common-English property name matches object literals unrelated to the member's read
+     target, so the per-name site counts are an UPPER BOUND on what any one reader looks at.
+   · the gap is a property of the corpus TODAY. It closes the moment anyone writes a ternary
+     into one of those five property positions, and no reader changes when it does.
+
+§5  packages/ and scripts/ diff --stat EMPTY: true
+
+§6  registered predictions
+  HIT      PH1
+  HIT      PH2
+  REFUTED  PH3
+  HIT      PH4
+  3 of 4 HIT   (PH4 is a commitment about reporting, met in RESULTS.md and the memo)
+  failures: 0

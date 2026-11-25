@@ -1,0 +1,121 @@
+{
+  "rev": "c6b9ba52",
+  "drivenAt": "2026-11-25 13:29:55",
+  "kpScores": {
+    "cls": [
+      9,
+      9
+    ],
+    "p": [
+      9,
+      9
+    ],
+    "error": [
+      9,
+      9
+    ]
+  },
+  "named": [
+    {
+      "rel": "docs/research/round404-instruments/grade-the-three-cures.mjs",
+      "hits": 1,
+      "names": [
+        "p"
+      ]
+    },
+    {
+      "rel": "docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs",
+      "hits": 1,
+      "names": [
+        "cls"
+      ]
+    },
+    {
+      "rel": "scripts/probe-round213-reassign-live-http.mts",
+      "hits": 1,
+      "names": [
+        "error"
+      ]
+    },
+    {
+      "rel": "scripts/probe-round217-multipart-guard-live-http.mts",
+      "hits": 5,
+      "names": [
+        "error"
+      ]
+    },
+    {
+      "rel": "scripts/probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts",
+      "hits": 2,
+      "names": [
+        "file"
+      ]
+    },
+    {
+      "rel": "scripts/verify-recogniser-equivalence.mjs",
+      "hits": 1,
+      "names": [
+        "conversation"
+      ]
+    }
+  ],
+  "perName": {
+    "p": {
+      "sites": 121,
+      "ternary": []
+    },
+    "cls": {
+      "sites": 91,
+      "ternary": [
+        {
+          "rel": "docs/research/unit-513consumernull-2026-11-24/arm-consumernull.mjs",
+          "line": 160,
+          "expr": "gateRef ? 'LIVE' : 'DRIVES_OTHER'"
+        },
+        {
+          "rel": "docs/research/unit-513consumernull-2026-11-24/posthoc-application-subject.mjs",
+          "line": 72,
+          "expr": ".test(src) ? 'GATE' : 'OTHER-PROCESS'"
+        },
+        {
+          "rel": "docs/research/unit-513consumernull-2026-11-24/posthoc-application-subject.mjs",
+          "line": 75,
+          "expr": ".test(ev) ? 'CAPTURE' : 'FILE'"
+        },
+        {
+          "rel": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs",
+          "line": 214,
+          "expr": "tc.cls === 'UNCLEAR' ? 'UNCLEAR_R3' : tc.cls"
+        }
+      ]
+    },
+    "error": {
+      "sites": 11,
+      "ternary": []
+    },
+    "file": {
+      "sites": 450,
+      "ternary": [
+        {
+          "rel": "docs/research/unit-307c4-blast-radius-2026-10-27/recon.mjs",
+          "line": 83,
+          "expr": "typeof e === 'string' ? e : e.file"
+        }
+      ]
+    },
+    "conversation": {
+      "sites": 17,
+      "ternary": []
+    }
+  },
+  "liveBlind": [
+    "docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs",
+    "scripts/probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts"
+  ],
+  "score": {
+    "PH1": true,
+    "PH2": true,
+    "PH3": false,
+    "PH4": true
+  }
+}
