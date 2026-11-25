@@ -1,0 +1,50 @@
+unit-513 post-hoc 7 — the reconciliation re-driven under the ARM'S OWN POPULATION RULE
+(this retracts or confirms post-hoc 6's "the arm under-counted")
+
+## §0 provenance — selector AND population rule, both read from the arm
+  selector line byte-identical: YES
+  SELF_DIR read from arm source: docs/research/unit-513consumernull-2026-11-24/
+  GATE     read from arm source: scripts/verify-decl-body-slicers.mjs
+  arm's filter line: const corpus = allSites.filter((s) => !s.rel.startsWith(SELF_DIR) && s.rel !== GATE);
+
+## §1 blob reader — known positives FIRST
+  PASS  arm blob readable, non-empty (20126 B)
+  PASS  selector non-zero on that blob (4)
+  PASS  absent path returns null, not empty text
+  PASS  the arm's own fixture patterns in its own blob: 4 (expected 4 — the candidate +4)
+
+BLOB READER KNOWN POSITIVES: 4 of 4
+
+## §2 three figures
+  A  PRESENT-THEN, no exclusions (post-hoc 6's population)   27
+  B  PRESENT-THEN, arm's own exclusions applied              23
+  C  excluded by the arm's rule                              4
+     A − C = 23   (must equal B: YES)
+
+## §3 the excluded sites, printed in full rather than sized
+  [SELF_DIR] docs/research/unit-513consumernull-2026-11-24/arm-consumernull.mjs:246  /tracked files read: (\\d+)/
+  [SELF_DIR] docs/research/unit-513consumernull-2026-11-24/arm-consumernull.mjs:247  /tracked files read: (\\d+)/
+  [SELF_DIR] docs/research/unit-513consumernull-2026-11-24/arm-consumernull.mjs:248  /tracked files read: (\\d+)/
+  [SELF_DIR] docs/research/unit-513consumernull-2026-11-24/arm-consumernull.mjs:249  /tracked files read: (\\d+)/
+
+## §4 verdict
+  Published by the arm: 23
+  B (arm's population, re-driven at line level): 23
+  delta: +0
+
+  POST-HOC 6 IS RETRACTED. The arm did not under-count. Its published 23 is reproduced
+  EXACTLY once its own population rule is applied alongside its selector. The +4 post-hoc 6
+  reported as a miss is the arm's own four fixture patterns, which the arm excluded
+  deliberately so as not to join the population it grades.
+
+  THE DEFECT WAS MINE AND ITS SHAPE IS WORTH THE NAME: I copied the selector line
+  byte-for-byte, asserted that provenance in §0 of two scripts, and that assertion made the
+  reconciliation FEEL reproduced while the population silently differed. A byte-identical
+  selector in a wider population is a different instrument, and it fails by accusing the
+  other figure rather than by going quiet.
+
+## §5 what is still not driven
+  - Deleted/renamed files: a site matchable at the arm commit in a file that no longer exists
+    at HEAD is invisible to every rung of this reconciliation. Not driven.
+  - The non-literal matcher form (post-hoc 4) is a measured 0 with one declared blindness
+    (concatenated patterns). Unchanged by this correction.

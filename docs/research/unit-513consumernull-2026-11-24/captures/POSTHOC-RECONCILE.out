@@ -1,0 +1,70 @@
+unit-513 post-hoc 5 — grading post-hoc 4's own prose explanation of 23 -> 44
+
+## §0 selector provenance
+  byte-identical to the arm's selector line: YES
+
+## §1 existence oracle — known positives FIRST
+  PASS  present=true errored=false want=true  docs/research/unit-513consumernull-2026-11-24/arm-consumernull.mjs
+        the arm itself was committed AT the arm commit
+  PASS  present=false errored=false want=false  docs/research/unit-513consumernull-2026-11-24/posthoc-reconcile-23-to-44.mjs
+        on disk now, absent then — git's "exists on disk, but not in" form
+  PASS  present=false errored=false want=false  docs/research/NO-SUCH-FILE-oracle-trap.mjs
+        absent now AND then — git's "does not exist in" form; both absent shapes must classify
+  PASS  present=true errored=false want=true  package.json
+        a long-lived path outside docs/, so "present" is not an artefact of one directory
+
+ORACLE KNOWN POSITIVES: 4 of 4
+
+## §2 the sites at HEAD, partitioned by existence at the arm commit
+  sites at HEAD                 44
+  ACCOUNTED (file is new)       17
+  AT-RISK   (file existed)      27
+  UNKNOWN   (oracle failed)     0
+  oracle failures               0
+
+## §3 the AT-RISK sites, printed in full
+  docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs:94  /^\s*tracked files read: (\d+)/m
+  docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:70  /\n {2}tracked files read: (\d+)/
+  docs/research/unit-500trackedcomplement-2026-11-22/arm-tracked-complement.mjs:45  /tracked files read: (\d+)/
+  docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:20  /^(\s*tracked files read: )(\d+)$/
+  docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:34  /tracked files read: (\d+)/
+  docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:35  /tracked files read: (\d+)/
+  docs/research/unit-501redbranchpin-2026-11-22/posthoc-which-lines-move.mjs:87  /tracked files read:\s*(\d+)/
+  docs/research/unit-502streampin-2026-11-22/posthoc-landing.mjs:39  /tracked files read: (\d+)/
+  docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs:30  /^\s*(tracked files read|population[^:]*|baseline entries[^:]*):\s*(\d
+  docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs:33  /tracked files read: (\d+)/
+  docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:27  /tracked files read:\s*(\d+)/
+  docs/research/unit-509extractionrefusal-2026-11-23/posthoc-wsfile.mjs:128  /tracked files read:\s*(\d+)/
+  docs/research/unit-511readcountname-2026-11-24/posthoc-anchor-census.mjs:7  /^(  tracked files read: )(\d+)$/
+  docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:187  /tracked files read/
+  docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:198  /^(\s*tracked files read: )(\d+)$/
+  docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject.mjs:153  /tracked files read/
+  docs/research/unit-512matchersubject-2026-11-24/posthoc-application-mode.mjs:5  /^(\s*tracked files read: )(\d+)$/
+  docs/research/unit-512matchersubject-2026-11-24/posthoc-application-mode.mjs:6  /^\s*(tracked files read|population…):\s*(\d+)/
+  docs/research/unit-512matchersubject-2026-11-24/posthoc-application-mode.mjs:55  /^(\s*tracked files read: )(\d+)$/m
+  docs/research/unit-512matchersubject-2026-11-24/posthoc-rename-kp.mjs:119  /^(\s*tracked files read: )(\d+)$/m
+  docs/research/unit-512matchersubject-2026-11-24/posthoc-rename-kp.mjs:147  /tracked files read[^\n]*/g
+  docs/research/unit-512matchersubject-2026-11-24/posthoc-resolve-unresolved.mjs:69  /tracked files read/
+  docs/research/unit-513consumernull-2026-11-24/arm-consumernull.mjs:246  /tracked files read: (\\d+)/
+  docs/research/unit-513consumernull-2026-11-24/arm-consumernull.mjs:247  /tracked files read: (\\d+)/
+  docs/research/unit-513consumernull-2026-11-24/arm-consumernull.mjs:248  /tracked files read: (\\d+)/
+  docs/research/unit-513consumernull-2026-11-24/arm-consumernull.mjs:249  /tracked files read: (\\d+)/
+  docs/research/verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-member.mjs:22  /tracked files read: (\d+)/
+
+## §4 verdict on post-hoc 4's prose claim
+  Post-hoc 4 said the 23 -> 44 gap is "expected and is NOT a defect".
+  Published sites at the arm commit: 23
+  Sites at HEAD whose file ALREADY EXISTED at the arm commit: 27
+  delta (AT-RISK − published): +4
+
+  REFUTED IN PART — 4 site(s) lived in files that existed when the arm ran and are
+  not covered by the published 23. "Different commits" does not account for those. They are
+  either sites the arm missed, or sites ADDED to pre-existing files after the arm ran —
+  which this key cannot tell apart, because it keys on FILE existence, not LINE existence.
+  Stated as the limit it is: this partition prices the gap, it does not attribute it.
+
+## §5 the limit of this reconciliation, stated before anyone cites it
+  Keying on file existence CANNOT separate "the arm missed a site" from "a site was appended
+  to an old file afterwards". A line-level reconciliation would need the arm-commit blob of
+  every AT-RISK file re-scanned with the same key. That is the next rung and it is NOT driven
+  here — named, unblocked, not claimed as done.

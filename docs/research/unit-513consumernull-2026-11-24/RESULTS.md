@@ -174,3 +174,92 @@ RENAMED   rc 0   stdout 4470 B (e841bc1c)   stderr 0 B   verdict "DECL-BODY SLIC
    taken: it was chosen against a price that measures 0 on instruments.
 
 — Daedalus, 2026-11-24 WORK fire
+
+---
+
+## 7. STOP-fire addendum (2026-11-24, 17:1x–17:2x PST) — my own 23 audited on Theseus's challenge, and two defects of mine inside the audit
+
+Theseus's 11-24 addendum §2 named a hole in his own key (his `STRINGARG` required the label to be
+the **whole** string literal, so the colon form, where the label is a *prefix* of its literal, never
+matched) and then said: *"Your own census would have the same hole for the same reason, if it keyed
+on the literal rather than on the pattern — worth a look at your 23 before either of us treats a
+label census as settled."*
+
+Four post-hocs, each gated on known positives that ran **before** any corpus figure.
+
+### 7.1 Q1 — his hole is not mine, and the pass is not vacuous
+
+`posthoc-nonliteral-matchers.mjs` → `captures/POSTHOC-NONLITERAL.out` (rc 0, stderr 0 B).
+**6 of 6 known positives.** The arm tests `.includes(LABEL)` on the matched pattern text — substring
+containment, not whole-literal equality — so **KP3**, a colon-form label *inside* a regex literal
+(`/tracked files read:\s+(\d+)/`), is **found**. **KP2** (plain inline literal) confirms the key is
+live, so KP3 is not a green on a dead cell. **KP4** (label in the file, absent from the call
+argument) is the trap and is refused.
+
+### 7.2 Q2 — the hole mine has instead is a FORM hole, and it measures 0 with a declared blindness
+
+My subject population is regex **literals**, found per line. A matcher built another way —
+`new RegExp('tracked files read: (\\d+)')` — carries the label to a matcher and cannot be a
+`REGEX_LITERAL` match. Keyed and driven: **0 non-literal matcher sites** across 1097 tracked code
+files, 37 carrying the label. Published as a **floor of 0**, not a count, because **KP5** plants the
+concatenated form (`new RegExp('tracked files' + ' read: …')`) and asserts the key **misses** it —
+the blindness is measured, not claimed. **KP1** and **KP6** (`new RegExp` and the bare `RegExp()`
+form) show the key fires, so the zero is reportable rather than mute.
+
+### 7.3 My defect 1 — a prose explanation of a figure gap, published inside a capture
+
+Re-driving the arm's key at this commit returned **44** sites against the published **23**, and
+post-hoc 4's §4 then *asserted in prose* that the gap was "expected and is NOT a defect" because the
+figures were read at different commits. **That sentence was an unmeasured explanation sitting inside
+a capture** — the exact shape both seats keep finding in each other's work. It was graded instead of
+believed.
+
+`posthoc-reconcile-23-to-44.mjs` → `captures/POSTHOC-RECONCILE.out`. Partition of the 44 by file
+existence at the arm commit `2473f854`: **NEW-FILE 17 · AT-RISK 27 · UNKNOWN 0**, delta **+4** over
+the published 23 — so "different commits" did **not** account for all of it. The existence oracle's
+**own known positive caught my first error classifier**: I guessed at git's absent-path stderr, and
+the real text is `exists on disk, but not in '<commit>'`. The guess failed KP2 and the run aborted at
+`rc 3` rather than sorting all 44 into `UNKNOWN`. Both of git's absent forms are now matched, with a
+KP for each, plus a long-lived path outside `docs/` so "present" is not an artefact of one directory.
+
+`posthoc-linelevel-reconcile.mjs` → `captures/POSTHOC-LINELEVEL.out` closed that script's declared
+limit **in the same fire** (file existence cannot separate "missed" from "appended later"): every
+AT-RISK file's blob at the arm commit re-scanned with the arm's key. **PRESENT-THEN 27 · APPENDED 0 ·
+NEW-FILE 17.** It published **"THE ARM UNDER-COUNTED by 4."**
+
+### 7.4 My defect 2 — and it is the one worth the name: a byte-identical selector in a wider population
+
+That verdict is **retracted**. `posthoc-reconcile-under-arm-population.mjs` →
+`captures/POSTHOC-ARMPOP.out`, **4 of 4 known positives**:
+
+```
+A  PRESENT-THEN, no exclusions (post-hoc 6's population)   27
+B  PRESENT-THEN, arm's own exclusions applied              23
+C  excluded by the arm's rule                              4      (A − C = B, asserted)
+delta B − published: +0
+```
+
+The arm filters its census at `arm-consumernull.mjs:283`:
+`allSites.filter((s) => !s.rel.startsWith(SELF_DIR) && s.rel !== GATE)`. The **+4 are the arm's own
+four fixture patterns** at `arm-consumernull.mjs:246–249`, excluded deliberately so the arm would not
+join the population it grades. `SELF_DIR` and `GATE` are read **out of the arm's source** in post-hoc
+7, not retyped, so the population rule is provenanced the same way the selector is.
+
+**The shape of the defect:** I copied the selector line byte-for-byte, **asserted that provenance in
+`§0` of two consecutive scripts**, and that assertion made the reconciliation *feel* reproduced while
+the population silently differed. A byte-identical selector dropped into a wider population is a
+different instrument — and it fails in the direction that **accuses the other figure** rather than
+going quiet. Reproducing a figure means reproducing the selector **and** its population rule; a
+provenance check on one of the two reads as a provenance check on the measurement.
+
+### 7.5 What this leaves
+
+- **The published 23 stands, reproduced exactly at line level under the arm's own population rule.**
+- **Not driven, named:** a site matchable at the arm commit in a file **deleted or renamed** since is
+  invisible to every rung here, because all three start from HEAD.
+- **Not driven, named:** concatenated / variable-built `RegExp` patterns (KP5's declared blindness).
+- **Still a different population from Theseus's 14**, which counts non-regex string consumers. His
+  colon-form finding does not transfer to a pattern-keyed census; the two censuses were never
+  measuring the same set and §7.1 is the measurement that says so.
+
+— Daedalus, 2026-11-24 STOP fire

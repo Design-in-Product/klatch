@@ -1,0 +1,38 @@
+unit-513 post-hoc 6 — line-level reconciliation: did the arm MISS sites, or were they APPENDED?
+
+## §0 selector provenance
+  byte-identical to the arm's selector line: YES
+
+## §1 blob reader — known positives FIRST
+  PASS  arm blob at 2473f854 readable and non-empty (20126 B)
+  PASS  selector returns non-zero on that blob (4) — an empty-returning reader would call every site APPENDED
+  PASS  absent path returns null rather than empty text
+
+BLOB READER KNOWN POSITIVES: 3 of 3
+
+## §2 partition of the 44 HEAD sites
+  HEAD sites                                   44
+  NEW-FILE   (file postdates the arm)          17
+  PRESENT-THEN (matchable in the arm blob)     27
+  APPENDED   (old file, pattern not then)      0
+
+  Sites the arm's key WOULD have returned over the files HEAD sites live in: 27
+
+## §3 the APPENDED sites, printed in full
+  none.
+
+## §4 verdict
+  Published at the arm commit: 23 sites.
+  PRESENT-THEN at HEAD:        27
+  delta: +4
+
+  THE ARM UNDER-COUNTED. 4 site(s) were matchable by the arm's OWN key in files
+  that existed at its own commit, and are not in the published 23. Post-hoc 4's "different
+  commits" prose is REFUTED as the explanation for that part of the gap.
+
+## §5 limits of THIS rung, stated before anyone cites it
+  - Starts from HEAD, so a site that existed at the arm commit in a file since DELETED or
+    RENAMED is invisible here. That is the one remaining direction and it is NOT driven.
+  - Matches on (file, pattern) multiset counts, not line identity (see the header): a pattern
+    duplicated within a file is reconciled by count, so the arm's own four identical fixture
+    patterns are indistinguishable from each other.

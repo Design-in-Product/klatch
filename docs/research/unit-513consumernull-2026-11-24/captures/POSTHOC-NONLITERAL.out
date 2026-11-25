@@ -1,0 +1,57 @@
+unit-513 post-hoc 4 — is my own 23 keyed on one FORM of its subject?
+label `tracked files read`
+
+## §0 selector provenance — KEY OLD is the arm's own, not a retyping
+  arm  : const REGEX_LITERAL = /\/(?:[^/\\\n]|\\.)+\/[a-z]*/g;
+  mine : const REGEX_LITERAL = /\/(?:[^/\\\n]|\\.)+\/[a-z]*/g;
+  byte-identical selector line: YES
+
+## §1 known positives — run FIRST, gate both corpus figures
+  PASS  KP1 non-literal, label whole arg
+        OLD want 0 got 0 · NEW want 1 got 1  — the form my arm cannot see: pattern built, not written
+  PASS  KP2 literal, inline application
+        OLD want 1 got 1 · NEW want 0 got 0  — control — KEY OLD must still fire, or its 23 means nothing
+  PASS  KP3 literal, COLON form (his hole, on my key)
+        OLD want 1 got 1 · NEW want 0 got 0  — label is a PREFIX inside the pattern — does my key drop it?
+  PASS  KP4 trap — RegExp with no label
+        OLD want 0 got 0 · NEW want 0 got 0  — label present in the file but not in the call argument
+  PASS  KP5 declared blindness — label by concatenation
+        OLD want 0 got 0 · NEW want 0 got 0  — REGISTERED MISS — this is why the corpus figure is a floor, not a count
+  PASS  KP6 non-literal, bare RegExp() call
+        OLD want 0 got 0 · NEW want 1 got 1  — the `new`-less form is the same hazard
+
+KNOWN POSITIVES: 6 of 6
+
+  Q1 ANSWERED BY KP3: my key sees the colon form. His hole is not mine — the arm tests
+  `.includes(LABEL)` on the matched pattern text, which is substring containment, so a label
+  that is a PREFIX of its pattern is found. KP2 confirms the key is live, so KP3 is not a
+  vacuous pass.
+
+## §2 corpus — tracked code files at HEAD
+  tracked code files           1097
+  of which this post-hoc       0 (excluded; tracked-at-run-time: false)
+  corpus scanned               1097
+  unreadable                   0
+  files carrying the label     37
+
+  KEY OLD  regex-literal matcher sites   44
+  KEY NEW  non-literal matcher sites     0   (FLOOR — see KP5)
+
+## §3 the non-literal sites, printed in full, not sized
+  none. Stated as a measured zero: KP1 and KP6 show the key fires on this form, and
+  KP5 shows what it would still miss, so the zero is a floor of 0 with one declared
+  blindness — NOT a claim that no such matcher exists.
+
+## §4 reconciliation against the published 23
+  Published in unit-513 RESULTS: 23 regex matcher sites at HEAD, 22 applied applications.
+  KEY OLD re-driven here, at THIS commit: 44 sites.
+  The two figures are read at different commits and this fire added research files, so a
+  difference is expected and is NOT a defect; what matters is the FORM coverage, below.
+
+  VERDICT: COMPLETE ON THE MEASURED FORMS — no built-pattern matcher site found, with KP5's concatenation form declared unmeasured.
+
+## §5 what is still not keyed, stated as a limit
+  - Concatenated / variable-built patterns (KP5): declared blind, unmeasured.
+  - Matchers whose RegExp call spans more than one line: the key is line-local, same as the arm's.
+  - Non-regex string consumers (`num('tracked files read:')`): NOT this key's population at
+    all — that is Theseus's 14, and the two censuses remain different populations.
