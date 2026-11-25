@@ -1,0 +1,1675 @@
+=== §0 PROVENANCE — the inherited classifier is sliced and compiled, not copied ===
+
+  cwd, resolved to the repo root rather than inherited: /Users/xian/Development/klatch-worktrees/theseus
+
+  span anchors found: true   bytes: 5703
+  markers absent from the span: none (all 19 present)
+  span intact (size > 4000 B, starts at its own anchor, ends on a closed declaration): true
+  span compiles and exports a callable shapeOf: true
+  inherited CONSUMER_SHAPES, read off the compiled span: [EQUALITY, INCLUDES, STRINGARG, ARRMEMBER]
+  inherited matcher variants: [WHOLE, PREFIX, ANY]   PREFIX = ['"`]tracked files read[^'"`]*['"`]
+
+  the PRIOR's own extractor, sliced from its source: /filter\(\(p\) => (\/.+?\/)\.test\(p\)\)/
+  the ARM's population filter, extracted with it:     /\.(mjs|js)$/
+  extracted filter KP: a.mjs=true  b.js=true  c.md=false  d.ts=false
+
+  git diff --stat HEAD -- packages/ scripts/ : EMPTY
+
+=== §1 KNOWN POSITIVES — sliced from real files where the form exists, planted only where it must be ===
+
+  PASS  KP1-second-arg-real-a          base UNCLEAR    integrated SECOND-ARG  nested false (want UNCLEAR/SECOND-ARG/false)  sliced docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs:160
+  PASS  KP2-second-arg-real-b          base UNCLEAR    integrated SECOND-ARG  nested false (want UNCLEAR/SECOND-ARG/false)  sliced docs/research/unit-510quotepathskip-2026-11-23/confirm-landed.mjs:102
+  PASS  KP3-first-arg-real             base STRINGARG  integrated STRINGARG   nested false (want STRINGARG/STRINGARG/false)  sliced docs/research/unit-511readcountname-2026-11-24/confirm-landed.mjs:114
+  PASS  KP4-emission-real              base UNCLEAR    integrated UNCLEAR     nested true  (want UNCLEAR/UNCLEAR/true)  sliced docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs:204
+  PASS  KP5-fixture-real               base EQUALITY   integrated EQUALITY    nested true  (want EQUALITY/EQUALITY/true)  sliced docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs:72
+  PASS  KP6-binding-real               base ARRMEMBER  integrated ARRMEMBER   nested false (want ARRMEMBER/ARRMEMBER/false)  sliced docs/research/unit-511readcountname-2026-11-24/confirm-landed.mjs:48
+  PASS  KP7-third-arg-planted          base UNCLEAR    integrated SECOND-ARG  nested false (want UNCLEAR/SECOND-ARG/false)  PLANTED
+  PASS  KP8-nested-call-arg1-planted   base UNCLEAR    integrated UNCLEAR     nested false (want UNCLEAR/UNCLEAR/false)  PLANTED
+  PASS  KP9-apostrophe-planted         base UNCLEAR    integrated UNCLEAR     nested true  (want UNCLEAR/UNCLEAR/true)  PLANTED
+
+  P5, graded on the regex itself: SECOND_ARG_RE on the first-argument form = false (want false); on an emission line = false (want false)
+
+  KP cells 9 of 9   GATED cells 4 of 4
+
+=== §2 CORPUS — the inherited population rule, minus the prior arm, the prior key, and this arm ===
+
+  tracked files matching the extracted filter: 639
+  excluded by path: docs/research/unit-514equalityconsumer-2026-11-24/arm-equalityconsumer.mjs   tracked at run time: true
+  excluded by path: docs/research/unit-514equalityconsumer-2026-11-24/posthoc-rekey-prefix-and-binding.mjs   tracked at run time: true
+  excluded by path: docs/research/unit-516secondargfixture-2026-11-25/arm-secondargfixture.mjs   tracked at run time: true
+  read: 636
+  files containing the label at all: 43   unreadable: 0
+
+  occurrences: 140   STRING-region: 86
+  inherited key, own-line consumers:  20   (consumer shapes: EQUALITY,INCLUDES,STRINGARG,ARRMEMBER)
+  integrated key, own-line consumers: 22   (+ SECOND-ARG)
+  SECOND-ARG rows: 2
+
+=== §3 P1 — PER-ROW reproduction of the 18 published rows, not a total ===
+
+  capture parsed: true
+  rows parsed out of it: 18   the capture's OWN declared figure: 18   pre-registered: 18
+  parse completeness (rows == capture's own figure == the pre-registered figure): true
+  identical per row (class AND deciding text): 18 of 18
+
+=== §4 SECOND-ARG — every row in full, and the ordering absorption question (P11) ===
+
+  docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs:160  nested false
+      read: num(out, 'tracked files read:'),
+  docs/research/unit-510quotepathskip-2026-11-23/confirm-landed.mjs:102  nested false
+      read: num(out, 'tracked files read:'),
+
+  sites P3 named: docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs:160  docs/research/unit-510quotepathskip-2026-11-23/confirm-landed.mjs:102
+  P3 exact-set match: true
+
+  rows whose OWN LINE matches the SECOND-ARG regex: 2
+    already resolved by the inherited key from the own line: 0
+    already resolved by the inherited key from the 4-LINE WINDOW: 0   <- P11 registered at 0
+
+  P12, per row: integration ADDS 2, REMOVES 0
+    + docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs:160  SECOND-ARG
+    + docs/research/unit-510quotepathskip-2026-11-23/confirm-landed.mjs:102  SECOND-ARG
+
+=== §5 NESTED-LITERAL — the axis, every row in full (P10: it over-reports by construction) ===
+
+  docs/research/unit-501redbranchpin-2026-11-22/posthoc-crossunit-byte-figures.mjs:91  shape UNCLEAR    own-line-consumer false outer ' inner `
+      say('In both cases the only moved line is `tracked files read`, and it moved inside its digit width.');
+  docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:114  shape EQUALITY   own-line-consumer false outer ' inner `
+      'P6.d  `tracked files read` is the ONLY named figure that moved':
+  docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:116  shape EQUALITY   own-line-consumer false outer ' inner `
+      'P6.e  `tracked files read` is the ONLY line that differs, pre to post':
+  docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs:204  shape UNCLEAR    own-line-consumer false outer ` inner "
+      console.log(`cells reporting "tracked files read: 1" with population 0 (the figure claims a read that`
+  docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:201  shape UNCLEAR    own-line-consumer false outer ` inner '
+      console.log(`  landed    : ${JSON.stringify('  tracked files read: 1083')} → match ${ANCHOR_RE.test('  tracked files read: 1083')}`);
+  docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:201  shape UNCLEAR    own-line-consumer false outer ` inner '
+      console.log(`  landed    : ${JSON.stringify('  tracked files read: 1083')} → match ${ANCHOR_RE.test('  tracked files read: 1083')}`);
+  docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs:169  shape UNCLEAR    own-line-consumer false outer ` inner `
+      { want: 'REPORTED', kind: 'helper', src: `const one = (rx) => { const m = out.match(rx); return m ? Number(m[1]) : null; };\nsay(\`  read \${one(/trac
+  docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs:170  shape UNCLEAR    own-line-consumer false outer ` inner `
+      { want: 'DEFAULT', kind: 'helper', src: `const one = (rx) => { const m = out.match(rx); return m ? Number(m[1]) : 0; };\nsay(\`  read \${one(/tracked 
+  docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs:127  shape STRINGARG  own-line-consumer true  outer ` inner '
+      src: `const re = new RegExp('tracked files read: (\\\\d+)');\nconst m = out.match(re);\n`,
+  docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs:145  shape UNCLEAR    own-line-consumer false outer ` inner '
+      src: `const re = new RegExp(someName + '\\\\s*=');\n// tracked files read\n`,
+  docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs:157  shape STRINGARG  own-line-consumer true  outer ` inner '
+      src: `const re = RegExp('tracked files read: (\\\\d+)', 'm');\n`,
+  docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs:249  shape UNCLEAR    own-line-consumer false outer ' inner '
+      say('  - Non-regex string consumers (`num(\'tracked files read:\')`): NOT this key\'s population at');
+  docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs:226  shape UNCLEAR    own-line-consumer false outer ` inner `
+      { want: 'REPORTED', kind: 'helper', src: `const one = (rx) => { const m = o.match(rx); return m ? Number(m[1]) : null; };\nsay(\`  read \${one(/tracke
+  docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs:227  shape UNCLEAR    own-line-consumer false outer ` inner `
+      { want: 'DEFAULT', kind: 'helper', src: `const one = (rx) => { const m = o.match(rx); return m ? Number(m[1]) : 0; };\nsay(\`  read \${one(/tracked fi
+  docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs:233  shape UNCLEAR    own-line-consumer false outer ` inner `
+      { want: 'REPORTED', kind: 'arrdef', src: `const pick = (re) => (o.match(re) || [, 'absent'])[1];\nsay(\`  read \${pick(/tracked files read: (\\d+)/)}\
+  docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs:72  shape EQUALITY   own-line-consumer true  outer " inner '
+      { src: "movedFigures[0] === 'tracked files read'", kind: 'EQUALITY', f: (j) => j.movedFigures[0] === OLD },
+  docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs:77  shape INCLUDES   own-line-consumer true  outer " inner '
+      { src: "firstToLast.onlyInFirst[0].includes('tracked files read')", kind: 'INCLUDES', f: (j) => (j.preToPost.onlyInPre[0] ?? '').includes(OLD) },
+  docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs:78  shape INCLUDES   own-line-consumer true  outer " inner '
+      { src: "firstToLast.onlyInSecond[0].includes('tracked files read')", kind: 'INCLUDES', f: (j) => (j.preToPost.onlyInPost[0] ?? '').includes(OLD) },
+  docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:95  shape UNCLEAR    own-line-consumer false outer " inner '
+      ['FIXTURE-direct', { rel: REL_NAMES_GATE, subject: "'  tracked files read: 1083'", modeEvidence: '' }, 'FIXTURE'],
+  docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:96  shape UNCLEAR    own-line-consumer false outer " inner '
+      ['FIXTURE-bound', { rel: REL_NAMES_GATE, subject: 'APPENDED', modeEvidence: "const APPENDED = '  tracked files read: 9 (…)';" }, 'FIXTURE'],
+  docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:105  shape ARRMEMBER  own-line-consumer true  outer " inner '
+      ['PRECEDENCE literal-beats-process', { rel: REL_NAMES_GATE, subject: "'tracked files read: 7'", modeEvidence: 'const x = spawnSync(node, [p]).stdout;'
+  docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:246  shape ARRMEMBER  own-line-consumer true  outer " inner '
+      ['REFUSAL pattern is argument 2', '  /x/,', "s.replace('tracked files read',", null],
+  docs/research/unit-515keyekp-2026-11-25/posthoc-source-subject.mjs:88  shape UNCLEAR    own-line-consumer false outer " inner '
+      ['KP argument form', "const readLine = (t.split('\\n').find((l) => /tracked files read/.test(l)) ?? '');", 'l'],
+
+  NESTED rows: 23   of which own-line consumers: 7
+  the five sites I named BY EYE in unit-514 §7.5: 5
+  P7 exact-set match against the eye list: false
+    keyed but not in the eye list (2): docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:105  docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:246
+    in the eye list but not keyed (0): (none)
+
+=== §6 UNIT-LEVEL EXCLUSION — what is left of the census when the thread is removed (P8) ===
+
+  integrated own-line consumers: 22
+  of those, OUTSIDE docs/research/unit-*/: 0   <- P8 registered at 0
+
+  per unit directory:
+      5  docs/research/unit-513consumernull-2026-11-24/
+      3  docs/research/unit-506labelmultiset-2026-11-23/
+      3  docs/research/unit-514equalityconsumer-2026-11-24/
+      2  docs/research/unit-486markerstale-2026-11-19/
+      2  docs/research/unit-503stalelabelwidth-2026-11-22/
+      2  docs/research/unit-510quotepathskip-2026-11-23/
+      2  docs/research/unit-511readcountname-2026-11-24/
+      2  docs/research/unit-515keyekp-2026-11-25/
+      1  docs/research/unit-501redbranchpin-2026-11-22/
+
+  P9, Daedalus's unit-515 §6 claim graded against my key: own-line consumers under unit-515keyekp = 2
+    docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:105  ARRMEMBER  nested true  ['PRECEDENCE literal-beats-process', { rel: REL_NAMES_GATE, subject: "'tracked files read: 7'", modeEvidence: 'const x = spawnSync(node, [p]
+    docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:246  ARRMEMBER  nested true  ['REFUSAL pattern is argument 2', '  /x/,', "s.replace('tracked files read',", null],
+  this unit's own contribution to the census it is measuring: 0 (this arm is excluded by path; the pre-registration is .md and outside the filter)
+
+=== §7 REGISTERED PREDICTIONS ===
+
+  HIT       P1   all 18 published rows reproduce per row under the span-derived inherited classifier  —  18 of 18 identical, parse complete true
+  HIT       P2   inherited own-line consumers at this HEAD >= 18  —  measured 20
+  HIT       P3   SECOND-ARG recovers EXACTLY the two named sites and no other  —  measured 2: docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs:160  docs/research/unit-510quotepathskip-2026-11-23/confirm-landed.mjs:102
+  HIT       P4   SECOND-ARG >= 2 (yesterday's floor holds)  —  measured 2
+  HIT       P5   the SECOND-ARG regex itself refuses the first-argument form and an emission line  —  first-arg false, emission false
+  HIT       P6   DECLARED BLINDNESS: a nested call in argument 1 is MISSED by SECOND-ARG  —  KP8 integrated verdict UNCLEAR
+  REFUTED   P7   NESTED-LITERAL own-line consumers == exactly the five sites named by eye  —  measured 7
+  HIT       P8   own-line consumers outside docs/research/unit-*/ == 0  —  measured 0
+  HIT       P9   at least one own-line consumer site under unit-515keyekp (his §6 claim, graded here)  —  measured 2
+  HIT       P10  DECLARED FALSE POSITIVE: an apostrophe before the label inside a template keys as NESTED  —  KP9 nested true
+  HIT       P11  no SECOND-ARG-regex row was pre-empted by the inherited key from the 4-line window  —  measured 0 of 2 regex-matching rows
+  HIT       P12  the integrated key is strictly greater than the inherited one, with the diff per row  —  20 -> 22, added 2, removed 0
+
+  11 HIT · 1 REFUTED · 0 UNGRADED of 12
+
+{
+  "provenance": {
+    "spanFound": true,
+    "spanBytes": 5703,
+    "missingMarkers": [],
+    "spanIntact": true,
+    "compiled": true,
+    "compileError": null,
+    "inheritedConsumerShapes": [
+      "EQUALITY",
+      "INCLUDES",
+      "STRINGARG",
+      "ARRMEMBER"
+    ],
+    "extractorLiteral": "/filter\\(\\(p\\) => (\\/.+?\\/)\\.test\\(p\\)\\)/",
+    "armFilterLiteral": "/\\.(mjs|js)$/",
+    "extKp": [
+      {
+        "p": "a.mjs",
+        "want": true,
+        "got": true,
+        "ok": true
+      },
+      {
+        "p": "b.js",
+        "want": true,
+        "got": true,
+        "ok": true
+      },
+      {
+        "p": "c.md",
+        "want": false,
+        "got": false,
+        "ok": true
+      },
+      {
+        "p": "d.ts",
+        "want": false,
+        "got": false,
+        "ok": true
+      }
+    ],
+    "extKpOk": true,
+    "productDiffEmpty": true
+  },
+  "kp": {
+    "cells": [
+      {
+        "name": "KP1-second-arg-real-a",
+        "origin": "sliced docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs:160",
+        "text": "read: num(out, 'tracked files read:'),",
+        "occurrences": 1,
+        "region": "STRING",
+        "base": "UNCLEAR",
+        "integrated": "SECOND-ARG",
+        "nested": false,
+        "want": {
+          "base": "UNCLEAR",
+          "integrated": "SECOND-ARG",
+          "nested": false
+        },
+        "ok": true
+      },
+      {
+        "name": "KP2-second-arg-real-b",
+        "origin": "sliced docs/research/unit-510quotepathskip-2026-11-23/confirm-landed.mjs:102",
+        "text": "read: num(out, 'tracked files read:'),",
+        "occurrences": 1,
+        "region": "STRING",
+        "base": "UNCLEAR",
+        "integrated": "SECOND-ARG",
+        "nested": false,
+        "want": {
+          "base": "UNCLEAR",
+          "integrated": "SECOND-ARG",
+          "nested": false
+        },
+        "ok": true
+      },
+      {
+        "name": "KP3-first-arg-real",
+        "origin": "sliced docs/research/unit-511readcountname-2026-11-24/confirm-landed.mjs:114",
+        "text": "read: num('tracked files read'),",
+        "occurrences": 1,
+        "region": "STRING",
+        "base": "STRINGARG",
+        "integrated": "STRINGARG",
+        "nested": false,
+        "want": {
+          "base": "STRINGARG",
+          "integrated": "STRINGARG",
+          "nested": false
+        },
+        "ok": true
+      },
+      {
+        "name": "KP4-emission-real",
+        "origin": "sliced docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs:204",
+        "text": "console.log(`cells reporting \"tracked files read: 1\" with population 0 (the figure claims a read that`",
+        "occurrences": 1,
+        "region": "STRING",
+        "base": "UNCLEAR",
+        "integrated": "UNCLEAR",
+        "nested": true,
+        "want": {
+          "base": "UNCLEAR",
+          "integrated": "UNCLEAR",
+          "nested": true
+        },
+        "ok": true
+      },
+      {
+        "name": "KP5-fixture-real",
+        "origin": "sliced docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs:72",
+        "text": "{ src: \"movedFigures[0] === 'tracked files read'\", kind: 'EQUALITY', f: (j) => j.movedFigures[0] === OLD },",
+        "occurrences": 1,
+        "region": "STRING",
+        "base": "EQUALITY",
+        "integrated": "EQUALITY",
+        "nested": true,
+        "want": {
+          "base": "EQUALITY",
+          "integrated": "EQUALITY",
+          "nested": true
+        },
+        "ok": true
+      },
+      {
+        "name": "KP6-binding-real",
+        "origin": "sliced docs/research/unit-511readcountname-2026-11-24/confirm-landed.mjs:48",
+        "text": "const CURE_MARKS = ['filesRead += 1', 'tracked files read: ${filesRead}', 'unreadableFiles.length} unreadable'];",
+        "occurrences": 1,
+        "region": "STRING",
+        "base": "ARRMEMBER",
+        "integrated": "ARRMEMBER",
+        "nested": false,
+        "want": {
+          "base": "ARRMEMBER",
+          "integrated": "ARRMEMBER",
+          "nested": false
+        },
+        "ok": true
+      },
+      {
+        "name": "KP7-third-arg-planted",
+        "origin": "PLANTED",
+        "text": "const v = num(out, mode, 'tracked files read:');",
+        "occurrences": 1,
+        "region": "STRING",
+        "base": "UNCLEAR",
+        "integrated": "SECOND-ARG",
+        "nested": false,
+        "want": {
+          "base": "UNCLEAR",
+          "integrated": "SECOND-ARG",
+          "nested": false
+        },
+        "ok": true
+      },
+      {
+        "name": "KP8-nested-call-arg1-planted",
+        "origin": "PLANTED",
+        "text": "const v = num(f(a), 'tracked files read:');",
+        "occurrences": 1,
+        "region": "STRING",
+        "base": "UNCLEAR",
+        "integrated": "UNCLEAR",
+        "nested": false,
+        "want": {
+          "base": "UNCLEAR",
+          "integrated": "UNCLEAR",
+          "nested": false
+        },
+        "ok": true
+      },
+      {
+        "name": "KP9-apostrophe-planted",
+        "origin": "PLANTED",
+        "text": "const s = `don't read tracked files read: 5`;",
+        "occurrences": 1,
+        "region": "STRING",
+        "base": "UNCLEAR",
+        "integrated": "UNCLEAR",
+        "nested": true,
+        "want": {
+          "base": "UNCLEAR",
+          "integrated": "UNCLEAR",
+          "nested": true
+        },
+        "ok": true
+      }
+    ],
+    "pass": 9,
+    "total": 9,
+    "gatePass": 4,
+    "gateOf": 4,
+    "p5First": false,
+    "p5Emit": false
+  },
+  "corpus": {
+    "trackedMatchingFilter": 639,
+    "excluded": [
+      "docs/research/unit-514equalityconsumer-2026-11-24/arm-equalityconsumer.mjs",
+      "docs/research/unit-514equalityconsumer-2026-11-24/posthoc-rekey-prefix-and-binding.mjs",
+      "docs/research/unit-516secondargfixture-2026-11-25/arm-secondargfixture.mjs"
+    ],
+    "read": 636,
+    "filesWithLabel": 43,
+    "unreadable": 0,
+    "occurrences": 140,
+    "stringSites": 86,
+    "baseOwnLineConsumers": 20,
+    "integratedOwnLineConsumers": 22,
+    "secondArg": 2
+  },
+  "reproduction": {
+    "parseComplete": true,
+    "declaredFigure": 18,
+    "rows": [
+      {
+        "site": "docs/research/unit-486markerstale-2026-11-19/arm-markerstale.mjs:236",
+        "status": "SAME",
+        "publishedShape": "STRINGARG",
+        "todayShape": "STRINGARG",
+        "sameText": true
+      },
+      {
+        "site": "docs/research/unit-486markerstale-2026-11-19/posthoc-whose-seven.mjs:63",
+        "status": "SAME",
+        "publishedShape": "STRINGARG",
+        "todayShape": "STRINGARG",
+        "sameText": true
+      },
+      {
+        "site": "docs/research/unit-501redbranchpin-2026-11-22/posthoc-which-lines-move.mjs:87",
+        "status": "SAME",
+        "publishedShape": "ARRMEMBER",
+        "todayShape": "ARRMEMBER",
+        "sameText": true
+      },
+      {
+        "site": "docs/research/unit-503stalelabelwidth-2026-11-22/arm-realgate-newones.mjs:104",
+        "status": "SAME",
+        "publishedShape": "STRINGARG",
+        "todayShape": "STRINGARG",
+        "sameText": true
+      },
+      {
+        "site": "docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs:58",
+        "status": "SAME",
+        "publishedShape": "STRINGARG",
+        "todayShape": "STRINGARG",
+        "sameText": true
+      },
+      {
+        "site": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:115",
+        "status": "SAME",
+        "publishedShape": "EQUALITY",
+        "todayShape": "EQUALITY",
+        "sameText": true
+      },
+      {
+        "site": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:118",
+        "status": "SAME",
+        "publishedShape": "INCLUDES",
+        "todayShape": "INCLUDES",
+        "sameText": true
+      },
+      {
+        "site": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:119",
+        "status": "SAME",
+        "publishedShape": "INCLUDES",
+        "todayShape": "INCLUDES",
+        "sameText": true
+      },
+      {
+        "site": "docs/research/unit-511readcountname-2026-11-24/confirm-landed.mjs:48",
+        "status": "SAME",
+        "publishedShape": "ARRMEMBER",
+        "todayShape": "ARRMEMBER",
+        "sameText": true
+      },
+      {
+        "site": "docs/research/unit-511readcountname-2026-11-24/confirm-landed.mjs:114",
+        "status": "SAME",
+        "publishedShape": "STRINGARG",
+        "todayShape": "STRINGARG",
+        "sameText": true
+      },
+      {
+        "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs:180",
+        "status": "SAME",
+        "publishedShape": "INCLUDES",
+        "todayShape": "INCLUDES",
+        "sameText": true
+      },
+      {
+        "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs:127",
+        "status": "SAME",
+        "publishedShape": "STRINGARG",
+        "todayShape": "STRINGARG",
+        "sameText": true
+      },
+      {
+        "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs:157",
+        "status": "SAME",
+        "publishedShape": "STRINGARG",
+        "todayShape": "STRINGARG",
+        "sameText": true
+      },
+      {
+        "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs:55",
+        "status": "SAME",
+        "publishedShape": "INCLUDES",
+        "todayShape": "INCLUDES",
+        "sameText": true
+      },
+      {
+        "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs:242",
+        "status": "SAME",
+        "publishedShape": "INCLUDES",
+        "todayShape": "INCLUDES",
+        "sameText": true
+      },
+      {
+        "site": "docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs:72",
+        "status": "SAME",
+        "publishedShape": "EQUALITY",
+        "todayShape": "EQUALITY",
+        "sameText": true
+      },
+      {
+        "site": "docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs:77",
+        "status": "SAME",
+        "publishedShape": "INCLUDES",
+        "todayShape": "INCLUDES",
+        "sameText": true
+      },
+      {
+        "site": "docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs:78",
+        "status": "SAME",
+        "publishedShape": "INCLUDES",
+        "todayShape": "INCLUDES",
+        "sameText": true
+      }
+    ],
+    "same": 18
+  },
+  "secondArg": {
+    "rows": [
+      {
+        "site": "docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs:160",
+        "nested": false,
+        "ownLine": "read: num(out, 'tracked files read:'),"
+      },
+      {
+        "site": "docs/research/unit-510quotepathskip-2026-11-23/confirm-landed.mjs:102",
+        "nested": false,
+        "ownLine": "read: num(out, 'tracked files read:'),"
+      }
+    ],
+    "p3Exact": true,
+    "regexMatchRows": 2,
+    "absorbedByWindow": 0,
+    "absorbedByOwnLine": 0,
+    "added": [
+      "docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs:160",
+      "docs/research/unit-510quotepathskip-2026-11-23/confirm-landed.mjs:102"
+    ],
+    "removed": []
+  },
+  "p7Diff": {
+    "inKeyNotEye": [
+      "docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:105",
+      "docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:246"
+    ],
+    "inEyeNotKey": []
+  },
+  "nested": {
+    "rows": [
+      {
+        "site": "docs/research/unit-501redbranchpin-2026-11-22/posthoc-crossunit-byte-figures.mjs:91",
+        "shape": "UNCLEAR",
+        "outerQuote": "'",
+        "innerQuote": "`",
+        "ownLine": "say('In both cases the only moved line is `tracked files read`, and it moved inside its digit width.');"
+      },
+      {
+        "site": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:114",
+        "shape": "EQUALITY",
+        "outerQuote": "'",
+        "innerQuote": "`",
+        "ownLine": "'P6.d  `tracked files read` is the ONLY named figure that moved':"
+      },
+      {
+        "site": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:116",
+        "shape": "EQUALITY",
+        "outerQuote": "'",
+        "innerQuote": "`",
+        "ownLine": "'P6.e  `tracked files read` is the ONLY line that differs, pre to post':"
+      },
+      {
+        "site": "docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs:204",
+        "shape": "UNCLEAR",
+        "outerQuote": "`",
+        "innerQuote": "\"",
+        "ownLine": "console.log(`cells reporting \"tracked files read: 1\" with population 0 (the figure claims a read that`"
+      },
+      {
+        "site": "docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:201",
+        "shape": "UNCLEAR",
+        "outerQuote": "`",
+        "innerQuote": "'",
+        "ownLine": "console.log(`  landed    : ${JSON.stringify('  tracked files read: 1083')} → match ${ANCHOR_RE.test('  tracked files read: 1083')}`);"
+      },
+      {
+        "site": "docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:201",
+        "shape": "UNCLEAR",
+        "outerQuote": "`",
+        "innerQuote": "'",
+        "ownLine": "console.log(`  landed    : ${JSON.stringify('  tracked files read: 1083')} → match ${ANCHOR_RE.test('  tracked files read: 1083')}`);"
+      },
+      {
+        "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs:169",
+        "shape": "UNCLEAR",
+        "outerQuote": "`",
+        "innerQuote": "`",
+        "ownLine": "{ want: 'REPORTED', kind: 'helper', src: `const one = (rx) => { const m = out.match(rx); return m ? Number(m[1]) : null; };\\nsay(\\`  read \\${one(/tracked files read: (\\\\d+)/)}\\`);\\n` },"
+      },
+      {
+        "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs:170",
+        "shape": "UNCLEAR",
+        "outerQuote": "`",
+        "innerQuote": "`",
+        "ownLine": "{ want: 'DEFAULT', kind: 'helper', src: `const one = (rx) => { const m = out.match(rx); return m ? Number(m[1]) : 0; };\\nsay(\\`  read \\${one(/tracked files read: (\\\\d+)/)}\\`);\\n` },"
+      },
+      {
+        "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs:127",
+        "shape": "STRINGARG",
+        "outerQuote": "`",
+        "innerQuote": "'",
+        "ownLine": "src: `const re = new RegExp('tracked files read: (\\\\\\\\d+)');\\nconst m = out.match(re);\\n`,"
+      },
+      {
+        "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs:145",
+        "shape": "UNCLEAR",
+        "outerQuote": "`",
+        "innerQuote": "'",
+        "ownLine": "src: `const re = new RegExp(someName + '\\\\\\\\s*=');\\n// tracked files read\\n`,"
+      },
+      {
+        "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs:157",
+        "shape": "STRINGARG",
+        "outerQuote": "`",
+        "innerQuote": "'",
+        "ownLine": "src: `const re = RegExp('tracked files read: (\\\\\\\\d+)', 'm');\\n`,"
+      },
+      {
+        "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs:249",
+        "shape": "UNCLEAR",
+        "outerQuote": "'",
+        "innerQuote": "'",
+        "ownLine": "say('  - Non-regex string consumers (`num(\\'tracked files read:\\')`): NOT this key\\'s population at');"
+      },
+      {
+        "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs:226",
+        "shape": "UNCLEAR",
+        "outerQuote": "`",
+        "innerQuote": "`",
+        "ownLine": "{ want: 'REPORTED', kind: 'helper', src: `const one = (rx) => { const m = o.match(rx); return m ? Number(m[1]) : null; };\\nsay(\\`  read \\${one(/tracked files read: (\\\\d+)/)}\\`);\\n` },"
+      },
+      {
+        "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs:227",
+        "shape": "UNCLEAR",
+        "outerQuote": "`",
+        "innerQuote": "`",
+        "ownLine": "{ want: 'DEFAULT', kind: 'helper', src: `const one = (rx) => { const m = o.match(rx); return m ? Number(m[1]) : 0; };\\nsay(\\`  read \\${one(/tracked files read: (\\\\d+)/)}\\`);\\n` },"
+      },
+      {
+        "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs:233",
+        "shape": "UNCLEAR",
+        "outerQuote": "`",
+        "innerQuote": "`",
+        "ownLine": "{ want: 'REPORTED', kind: 'arrdef', src: `const pick = (re) => (o.match(re) || [, 'absent'])[1];\\nsay(\\`  read \\${pick(/tracked files read: (\\\\d+)/)}\\`);\\n` },"
+      },
+      {
+        "site": "docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs:72",
+        "shape": "EQUALITY",
+        "outerQuote": "\"",
+        "innerQuote": "'",
+        "ownLine": "{ src: \"movedFigures[0] === 'tracked files read'\", kind: 'EQUALITY', f: (j) => j.movedFigures[0] === OLD },"
+      },
+      {
+        "site": "docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs:77",
+        "shape": "INCLUDES",
+        "outerQuote": "\"",
+        "innerQuote": "'",
+        "ownLine": "{ src: \"firstToLast.onlyInFirst[0].includes('tracked files read')\", kind: 'INCLUDES', f: (j) => (j.preToPost.onlyInPre[0] ?? '').includes(OLD) },"
+      },
+      {
+        "site": "docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs:78",
+        "shape": "INCLUDES",
+        "outerQuote": "\"",
+        "innerQuote": "'",
+        "ownLine": "{ src: \"firstToLast.onlyInSecond[0].includes('tracked files read')\", kind: 'INCLUDES', f: (j) => (j.preToPost.onlyInPost[0] ?? '').includes(OLD) },"
+      },
+      {
+        "site": "docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:95",
+        "shape": "UNCLEAR",
+        "outerQuote": "\"",
+        "innerQuote": "'",
+        "ownLine": "['FIXTURE-direct', { rel: REL_NAMES_GATE, subject: \"'  tracked files read: 1083'\", modeEvidence: '' }, 'FIXTURE'],"
+      },
+      {
+        "site": "docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:96",
+        "shape": "UNCLEAR",
+        "outerQuote": "\"",
+        "innerQuote": "'",
+        "ownLine": "['FIXTURE-bound', { rel: REL_NAMES_GATE, subject: 'APPENDED', modeEvidence: \"const APPENDED = '  tracked files read: 9 (…)';\" }, 'FIXTURE'],"
+      },
+      {
+        "site": "docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:105",
+        "shape": "ARRMEMBER",
+        "outerQuote": "\"",
+        "innerQuote": "'",
+        "ownLine": "['PRECEDENCE literal-beats-process', { rel: REL_NAMES_GATE, subject: \"'tracked files read: 7'\", modeEvidence: 'const x = spawnSync(node, [p]).stdout;' }, 'FIXTURE'],"
+      },
+      {
+        "site": "docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:246",
+        "shape": "ARRMEMBER",
+        "outerQuote": "\"",
+        "innerQuote": "'",
+        "ownLine": "['REFUSAL pattern is argument 2', '  /x/,', \"s.replace('tracked files read',\", null],"
+      },
+      {
+        "site": "docs/research/unit-515keyekp-2026-11-25/posthoc-source-subject.mjs:88",
+        "shape": "UNCLEAR",
+        "outerQuote": "\"",
+        "innerQuote": "'",
+        "ownLine": "['KP argument form', \"const readLine = (t.split('\\\\n').find((l) => /tracked files read/.test(l)) ?? '');\", 'l'],"
+      }
+    ],
+    "consumers": [
+      "docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs:127",
+      "docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs:157",
+      "docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs:72",
+      "docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs:77",
+      "docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs:78",
+      "docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:105",
+      "docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:246"
+    ],
+    "p7Exact": false
+  },
+  "population": {
+    "integrated": 22,
+    "outsideUnits": [],
+    "perUnit": {
+      "docs/research/unit-486markerstale-2026-11-19/": 2,
+      "docs/research/unit-501redbranchpin-2026-11-22/": 1,
+      "docs/research/unit-503stalelabelwidth-2026-11-22/": 2,
+      "docs/research/unit-506labelmultiset-2026-11-23/": 3,
+      "docs/research/unit-510quotepathskip-2026-11-23/": 2,
+      "docs/research/unit-511readcountname-2026-11-24/": 2,
+      "docs/research/unit-513consumernull-2026-11-24/": 5,
+      "docs/research/unit-514equalityconsumer-2026-11-24/": 3,
+      "docs/research/unit-515keyekp-2026-11-25/": 2
+    },
+    "unit515": [
+      "docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:105",
+      "docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:246"
+    ],
+    "unit516": []
+  },
+  "predictions": [
+    {
+      "id": "P1",
+      "text": "all 18 published rows reproduce per row under the span-derived inherited classifier",
+      "verdict": "HIT",
+      "note": "18 of 18 identical, parse complete true"
+    },
+    {
+      "id": "P2",
+      "text": "inherited own-line consumers at this HEAD >= 18",
+      "verdict": "HIT",
+      "note": "measured 20"
+    },
+    {
+      "id": "P3",
+      "text": "SECOND-ARG recovers EXACTLY the two named sites and no other",
+      "verdict": "HIT",
+      "note": "measured 2: docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs:160  docs/research/unit-510quotepathskip-2026-11-23/confirm-landed.mjs:102"
+    },
+    {
+      "id": "P4",
+      "text": "SECOND-ARG >= 2 (yesterday's floor holds)",
+      "verdict": "HIT",
+      "note": "measured 2"
+    },
+    {
+      "id": "P5",
+      "text": "the SECOND-ARG regex itself refuses the first-argument form and an emission line",
+      "verdict": "HIT",
+      "note": "first-arg false, emission false"
+    },
+    {
+      "id": "P6",
+      "text": "DECLARED BLINDNESS: a nested call in argument 1 is MISSED by SECOND-ARG",
+      "verdict": "HIT",
+      "note": "KP8 integrated verdict UNCLEAR"
+    },
+    {
+      "id": "P7",
+      "text": "NESTED-LITERAL own-line consumers == exactly the five sites named by eye",
+      "verdict": "REFUTED",
+      "note": "measured 7"
+    },
+    {
+      "id": "P8",
+      "text": "own-line consumers outside docs/research/unit-*/ == 0",
+      "verdict": "HIT",
+      "note": "measured 0"
+    },
+    {
+      "id": "P9",
+      "text": "at least one own-line consumer site under unit-515keyekp (his §6 claim, graded here)",
+      "verdict": "HIT",
+      "note": "measured 2"
+    },
+    {
+      "id": "P10",
+      "text": "DECLARED FALSE POSITIVE: an apostrophe before the label inside a template keys as NESTED",
+      "verdict": "HIT",
+      "note": "KP9 nested true"
+    },
+    {
+      "id": "P11",
+      "text": "no SECOND-ARG-regex row was pre-empted by the inherited key from the 4-line window",
+      "verdict": "HIT",
+      "note": "measured 0 of 2 regex-matching rows"
+    },
+    {
+      "id": "P12",
+      "text": "the integrated key is strictly greater than the inherited one, with the diff per row",
+      "verdict": "HIT",
+      "note": "20 -> 22, added 2, removed 0"
+    }
+  ],
+  "allSites": [
+    {
+      "site": "docs/research/unit-480guardorder-2026-11-18/arm.mjs:211",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "console.log(`  population ${rows.length} (P5 wants 66) · tracked files read ${readable}`);"
+    },
+    {
+      "site": "docs/research/unit-486markerstale-2026-11-19/arm-markerstale.mjs:236",
+      "baseShape": "STRINGARG",
+      "baseFrom": "own line",
+      "shape": "STRINGARG",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "tracked: num('tracked files read:'),"
+    },
+    {
+      "site": "docs/research/unit-486markerstale-2026-11-19/posthoc-whose-seven.mjs:63",
+      "baseShape": "STRINGARG",
+      "baseFrom": "own line",
+      "shape": "STRINGARG",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "const hisTracked = hisNum('tracked files read:');"
+    },
+    {
+      "site": "docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:73",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "console.log(`  tracked files read:        ${figure(pre, TRACKED)} → ${figure(post, TRACKED)}  (registered in P5)`);"
+    },
+    {
+      "site": "docs/research/unit-501redbranchpin-2026-11-22/posthoc-crossunit-byte-figures.mjs:91",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": true,
+      "inUnitDir": true,
+      "ownLine": "say('In both cases the only moved line is `tracked files read`, and it moved inside its digit width.');"
+    },
+    {
+      "site": "docs/research/unit-501redbranchpin-2026-11-22/posthoc-which-lines-move.mjs:87",
+      "baseShape": "ARRMEMBER",
+      "baseFrom": "own line",
+      "shape": "ARRMEMBER",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "['tracked files read', /tracked files read:\\s*(\\d+)/],"
+    },
+    {
+      "site": "docs/research/unit-503stalelabelwidth-2026-11-22/arm-realgate-newones.mjs:104",
+      "baseShape": "STRINGARG",
+      "baseFrom": "own line",
+      "shape": "STRINGARG",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "trackedRead: readFig('tracked files read'),"
+    },
+    {
+      "site": "docs/research/unit-503stalelabelwidth-2026-11-22/arm-realgate-newones.mjs:145",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "'P5.d  the tree really did change: tracked files read > 1054':"
+    },
+    {
+      "site": "docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs:58",
+      "baseShape": "STRINGARG",
+      "baseFrom": "own line",
+      "shape": "STRINGARG",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "trackedRead: fig('tracked files read'),"
+    },
+    {
+      "site": "docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs:97",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "'P7.d  tracked files read is the ONLY figure that moved, and keeps its digit width':"
+    },
+    {
+      "site": "docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs:70",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "'P6.c  tracked files read MOVED, 1064 -> strictly greater':"
+    },
+    {
+      "site": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:27",
+      "baseShape": "OBJKEY",
+      "baseFrom": "own line",
+      "shape": "OBJKEY",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "'tracked files read': /tracked files read:\\s*(\\d+)/,"
+    },
+    {
+      "site": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:114",
+      "baseShape": "EQUALITY",
+      "baseFrom": "4-line window",
+      "shape": "EQUALITY",
+      "from": "4-line window",
+      "nested": true,
+      "inUnitDir": true,
+      "ownLine": "'P6.d  `tracked files read` is the ONLY named figure that moved':"
+    },
+    {
+      "site": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:115",
+      "baseShape": "EQUALITY",
+      "baseFrom": "own line",
+      "shape": "EQUALITY",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "movedFigures.length === 1 && movedFigures[0] === 'tracked files read',"
+    },
+    {
+      "site": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:116",
+      "baseShape": "EQUALITY",
+      "baseFrom": "4-line window",
+      "shape": "EQUALITY",
+      "from": "4-line window",
+      "nested": true,
+      "inUnitDir": true,
+      "ownLine": "'P6.e  `tracked files read` is the ONLY line that differs, pre to post':"
+    },
+    {
+      "site": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:118",
+      "baseShape": "INCLUDES",
+      "baseFrom": "own line",
+      "shape": "INCLUDES",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "&& firstToLast.onlyInFirst[0].includes('tracked files read')"
+    },
+    {
+      "site": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:119",
+      "baseShape": "INCLUDES",
+      "baseFrom": "own line",
+      "shape": "INCLUDES",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "&& firstToLast.onlyInSecond[0].includes('tracked files read'),"
+    },
+    {
+      "site": "docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs:160",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "SECOND-ARG",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "read: num(out, 'tracked files read:'),"
+    },
+    {
+      "site": "docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs:204",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": true,
+      "inUnitDir": true,
+      "ownLine": "console.log(`cells reporting \"tracked files read: 1\" with population 0 (the figure claims a read that`"
+    },
+    {
+      "site": "docs/research/unit-510quotepathskip-2026-11-23/confirm-landed.mjs:102",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "SECOND-ARG",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "read: num(out, 'tracked files read:'),"
+    },
+    {
+      "site": "docs/research/unit-511readcountname-2026-11-24/arm-readcountname.mjs:63",
+      "baseShape": "BINDING",
+      "baseFrom": "own line",
+      "shape": "BINDING",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "const LABEL = 'tracked files read';"
+    },
+    {
+      "site": "docs/research/unit-511readcountname-2026-11-24/confirm-landed.mjs:48",
+      "baseShape": "ARRMEMBER",
+      "baseFrom": "own line",
+      "shape": "ARRMEMBER",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "const CURE_MARKS = ['filesRead += 1', 'tracked files read: ${filesRead}', 'unreadableFiles.length} unreadable'];"
+    },
+    {
+      "site": "docs/research/unit-511readcountname-2026-11-24/confirm-landed.mjs:114",
+      "baseShape": "STRINGARG",
+      "baseFrom": "own line",
+      "shape": "STRINGARG",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "read: num('tracked files read'),"
+    },
+    {
+      "site": "docs/research/unit-511readcountname-2026-11-24/posthoc-anchor-census.mjs:35",
+      "baseShape": "BINDING",
+      "baseFrom": "own line",
+      "shape": "BINDING",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "const LABEL = 'tracked files read';"
+    },
+    {
+      "site": "docs/research/unit-511readcountname-2026-11-24/posthoc-matcher-vs-prose.mjs:32",
+      "baseShape": "BINDING",
+      "baseFrom": "own line",
+      "shape": "BINDING",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "const LABEL = 'tracked files read';"
+    },
+    {
+      "site": "docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:197",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "const APPENDED = '  tracked files read: 1083 (1084 in scope, 1 excluded, 0 unreadable)';"
+    },
+    {
+      "site": "docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:201",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": true,
+      "inUnitDir": true,
+      "ownLine": "console.log(`  landed    : ${JSON.stringify('  tracked files read: 1083')} → match ${ANCHOR_RE.test('  tracked files read: 1083')}`);"
+    },
+    {
+      "site": "docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:201",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": true,
+      "inUnitDir": true,
+      "ownLine": "console.log(`  landed    : ${JSON.stringify('  tracked files read: 1083')} → match ${ANCHOR_RE.test('  tracked files read: 1083')}`);"
+    },
+    {
+      "site": "docs/research/unit-512matchersubject-2026-11-24/posthoc-application-mode.mjs:30",
+      "baseShape": "BINDING",
+      "baseFrom": "own line",
+      "shape": "BINDING",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "const OLD = 'tracked files read';"
+    },
+    {
+      "site": "docs/research/unit-512matchersubject-2026-11-24/posthoc-rename-kp.mjs:36",
+      "baseShape": "BINDING",
+      "baseFrom": "own line",
+      "shape": "BINDING",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "const OLD = 'tracked files read';"
+    },
+    {
+      "site": "docs/research/unit-512matchersubject-2026-11-24/posthoc-rename-kp.mjs:147",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "console.log(`  its own extracted figure(s): ${JSON.stringify((before.stdout.match(/tracked files read[^\\n]*/g) ?? []).slice(0, 4))}`);"
+    },
+    {
+      "site": "docs/research/unit-513consumernull-2026-11-24/arm-consumernull.mjs:34",
+      "baseShape": "BINDING",
+      "baseFrom": "own line",
+      "shape": "BINDING",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "const LABEL = 'tracked files read';"
+    },
+    {
+      "site": "docs/research/unit-513consumernull-2026-11-24/arm-consumernull.mjs:246",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "{ want: 'THROW', src: `const m = stdout.match(/tracked files read: (\\\\d+)/);\\nif (!m) throw new Error('no figure');\\nconst n = Number(m[1]);\\n` },"
+    },
+    {
+      "site": "docs/research/unit-513consumernull-2026-11-24/arm-consumernull.mjs:247",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "{ want: 'REPORTED', src: `const m = stdout.match(/tracked files read: (\\\\d+)/);\\nsay(\\`  figure: \\${m?.[1]}\\`);\\n` },"
+    },
+    {
+      "site": "docs/research/unit-513consumernull-2026-11-24/arm-consumernull.mjs:248",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "{ want: 'DEFAULT', src: `const m = stdout.match(/tracked files read: (\\\\d+)/);\\nconst n = Number(m?.[1] ?? 0);\\nsay(\\`  figure: \\${n}\\`);\\n` },"
+    },
+    {
+      "site": "docs/research/unit-513consumernull-2026-11-24/arm-consumernull.mjs:249",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "{ want: 'SKIP', src: `const m = stdout.match(/tracked files read: (\\\\d+)/);\\nif (m) {\\n  figures.read = Number(m[1]);\\n}\\n` },"
+    },
+    {
+      "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-application-subject.mjs:34",
+      "baseShape": "BINDING",
+      "baseFrom": "own line",
+      "shape": "BINDING",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "const LABEL = 'tracked files read';"
+    },
+    {
+      "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs:164",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "{ want: 'THROW', kind: 'direct', src: `const m = stdout.match(/tracked files read: (\\\\d+)/);\\nif (!m) throw new Error('no figure');\\nconst n = Number(m[1]);\\n` },"
+    },
+    {
+      "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs:165",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "{ want: 'REPORTED', kind: 'direct', src: `const m = stdout.match(/tracked files read: (\\\\d+)/);\\nsay(\\`  figure: \\${m?.[1]}\\`);\\n` },"
+    },
+    {
+      "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs:166",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "{ want: 'DEFAULT', kind: 'direct', src: `const m = stdout.match(/tracked files read: (\\\\d+)/);\\nconst n = Number(m?.[1] ?? 0);\\nsay(\\`  figure: \\${n}\\`);\\n` },"
+    },
+    {
+      "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs:167",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "{ want: 'SKIP', kind: 'direct', src: `const m = stdout.match(/tracked files read: (\\\\d+)/);\\nif (m) {\\n  figures.read = Number(m[1]);\\n}\\n` },"
+    },
+    {
+      "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs:169",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": true,
+      "inUnitDir": true,
+      "ownLine": "{ want: 'REPORTED', kind: 'helper', src: `const one = (rx) => { const m = out.match(rx); return m ? Number(m[1]) : null; };\\nsay(\\`  read \\${one(/tracked files read: (\\\\d+)/)}\\`);\\n` },"
+    },
+    {
+      "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs:170",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": true,
+      "inUnitDir": true,
+      "ownLine": "{ want: 'DEFAULT', kind: 'helper', src: `const one = (rx) => { const m = out.match(rx); return m ? Number(m[1]) : 0; };\\nsay(\\`  read \\${one(/tracked files read: (\\\\d+)/)}\\`);\\n` },"
+    },
+    {
+      "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs:171",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "{ want: 'DEFAULT', kind: 'helper-coerced', src: `const one = (rx) => { const m = out.match(rx); return m ? m[1] : null; };\\nconst n = Number(one(/tracked files read: (\\\\d+)/));\\n` },"
+    },
+    {
+      "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs:180",
+      "baseShape": "INCLUDES",
+      "baseFrom": "own line",
+      "shape": "INCLUDES",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "const line = lines.findIndex((l) => l.includes('tracked files read')) + 1;"
+    },
+    {
+      "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-linelevel-reconcile.mjs:49",
+      "baseShape": "BINDING",
+      "baseFrom": "own line",
+      "shape": "BINDING",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "const LABEL = 'tracked files read';"
+    },
+    {
+      "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs:49",
+      "baseShape": "BINDING",
+      "baseFrom": "own line",
+      "shape": "BINDING",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "const LABEL = 'tracked files read';"
+    },
+    {
+      "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs:127",
+      "baseShape": "STRINGARG",
+      "baseFrom": "own line",
+      "shape": "STRINGARG",
+      "from": "own line",
+      "nested": true,
+      "inUnitDir": true,
+      "ownLine": "src: `const re = new RegExp('tracked files read: (\\\\\\\\d+)');\\nconst m = out.match(re);\\n`,"
+    },
+    {
+      "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs:133",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "src: `const m = stdout.match(/tracked files read: (\\\\d+)/);\\n`,"
+    },
+    {
+      "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs:139",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "src: `const n = Number(stdout.match(/tracked files read:\\\\s+(\\\\d+)/)[1]);\\n`,"
+    },
+    {
+      "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs:145",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": true,
+      "inUnitDir": true,
+      "ownLine": "src: `const re = new RegExp(someName + '\\\\\\\\s*=');\\n// tracked files read\\n`,"
+    },
+    {
+      "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs:157",
+      "baseShape": "STRINGARG",
+      "baseFrom": "own line",
+      "shape": "STRINGARG",
+      "from": "own line",
+      "nested": true,
+      "inUnitDir": true,
+      "ownLine": "src: `const re = RegExp('tracked files read: (\\\\\\\\d+)', 'm');\\n`,"
+    },
+    {
+      "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs:249",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": true,
+      "inUnitDir": true,
+      "ownLine": "say('  - Non-regex string consumers (`num(\\'tracked files read:\\')`): NOT this key\\'s population at');"
+    },
+    {
+      "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-reconcile-23-to-44.mjs:41",
+      "baseShape": "BINDING",
+      "baseFrom": "own line",
+      "shape": "BINDING",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "const LABEL = 'tracked files read';"
+    },
+    {
+      "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-reconcile-under-arm-population.mjs:43",
+      "baseShape": "BINDING",
+      "baseFrom": "own line",
+      "shape": "BINDING",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "const LABEL = 'tracked files read';"
+    },
+    {
+      "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs:55",
+      "baseShape": "INCLUDES",
+      "baseFrom": "own line",
+      "shape": "INCLUDES",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "const labelIdx = l.indexOf('tracked files read');"
+    },
+    {
+      "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs:222",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "{ want: 'THROW', kind: 'direct', src: `const m = o.match(/tracked files read: (\\\\d+)/);\\nif (!m) throw new Error('x');\\nconst n = Number(m[1]);\\n` },"
+    },
+    {
+      "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs:223",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "{ want: 'REPORTED', kind: 'direct', src: `const m = o.match(/tracked files read: (\\\\d+)/);\\nsay(\\`  f \\${m?.[1]}\\`);\\n` },"
+    },
+    {
+      "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs:224",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "{ want: 'DEFAULT', kind: 'direct', src: `const m = o.match(/tracked files read: (\\\\d+)/);\\nconst n = Number(m?.[1] ?? 0);\\n` },"
+    },
+    {
+      "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs:225",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "{ want: 'SKIP', kind: 'direct', src: `const m = o.match(/tracked files read: (\\\\d+)/);\\nif (m) {\\n  f.read = Number(m[1]);\\n}\\n` },"
+    },
+    {
+      "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs:226",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": true,
+      "inUnitDir": true,
+      "ownLine": "{ want: 'REPORTED', kind: 'helper', src: `const one = (rx) => { const m = o.match(rx); return m ? Number(m[1]) : null; };\\nsay(\\`  read \\${one(/tracked files read: (\\\\d+)/)}\\`);\\n` },"
+    },
+    {
+      "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs:227",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": true,
+      "inUnitDir": true,
+      "ownLine": "{ want: 'DEFAULT', kind: 'helper', src: `const one = (rx) => { const m = o.match(rx); return m ? Number(m[1]) : 0; };\\nsay(\\`  read \\${one(/tracked files read: (\\\\d+)/)}\\`);\\n` },"
+    },
+    {
+      "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs:228",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "{ want: 'DEFAULT', kind: 'helper-coerced', src: `const one = (rx) => { const m = o.match(rx); return m ? m[1] : null; };\\nconst n = Number(one(/tracked files read: (\\\\d+)/));\\n` },"
+    },
+    {
+      "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs:230",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "{ want: 'PROSE', kind: 'prose-block', src: `/**\\n * a docblock quoting /tracked files read: (\\\\d+)/ and nothing else\\n */\\nconst x = 1;\\n` },"
+    },
+    {
+      "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs:231",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "{ want: 'PROSE', kind: 'prose-line', src: `const x = 1; // see /tracked files read: (\\\\d+)/ in the gate\\n` },"
+    },
+    {
+      "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs:232",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "{ want: 'THROW', kind: 'inline', src: `const preRead = Number(pre.match(/tracked files read: (\\\\d+)/)[1]);\\n` },"
+    },
+    {
+      "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs:233",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": true,
+      "inUnitDir": true,
+      "ownLine": "{ want: 'REPORTED', kind: 'arrdef', src: `const pick = (re) => (o.match(re) || [, 'absent'])[1];\\nsay(\\`  read \\${pick(/tracked files read: (\\\\d+)/)}\\`);\\n` },"
+    },
+    {
+      "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs:242",
+      "baseShape": "INCLUDES",
+      "baseFrom": "own line",
+      "shape": "INCLUDES",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "const line = lines.findIndex((l) => l.includes('tracked files read')) + 1;"
+    },
+    {
+      "site": "docs/research/unit-514equalityconsumer-2026-11-24/arm-strict-p8-drive.mjs:33",
+      "baseShape": "BINDING",
+      "baseFrom": "own line",
+      "shape": "BINDING",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "const OLD = 'tracked files read';"
+    },
+    {
+      "site": "docs/research/unit-514equalityconsumer-2026-11-24/posthoc-rekey-population-partition.mjs:105",
+      "baseShape": "BINDING",
+      "baseFrom": "own line",
+      "shape": "BINDING",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "const LABEL = 'tracked files read';"
+    },
+    {
+      "site": "docs/research/unit-514equalityconsumer-2026-11-24/posthoc-unclear-subkey.mjs:26",
+      "baseShape": "BINDING",
+      "baseFrom": "own line",
+      "shape": "BINDING",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "const LABEL = 'tracked files read';"
+    },
+    {
+      "site": "docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs:25",
+      "baseShape": "BINDING",
+      "baseFrom": "own line",
+      "shape": "BINDING",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "const OLD = 'tracked files read';"
+    },
+    {
+      "site": "docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs:72",
+      "baseShape": "EQUALITY",
+      "baseFrom": "own line",
+      "shape": "EQUALITY",
+      "from": "own line",
+      "nested": true,
+      "inUnitDir": true,
+      "ownLine": "{ src: \"movedFigures[0] === 'tracked files read'\", kind: 'EQUALITY', f: (j) => j.movedFigures[0] === OLD },"
+    },
+    {
+      "site": "docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs:77",
+      "baseShape": "INCLUDES",
+      "baseFrom": "own line",
+      "shape": "INCLUDES",
+      "from": "own line",
+      "nested": true,
+      "inUnitDir": true,
+      "ownLine": "{ src: \"firstToLast.onlyInFirst[0].includes('tracked files read')\", kind: 'INCLUDES', f: (j) => (j.preToPost.onlyInPre[0] ?? '').includes(OLD) },"
+    },
+    {
+      "site": "docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs:78",
+      "baseShape": "INCLUDES",
+      "baseFrom": "own line",
+      "shape": "INCLUDES",
+      "from": "own line",
+      "nested": true,
+      "inUnitDir": true,
+      "ownLine": "{ src: \"firstToLast.onlyInSecond[0].includes('tracked files read')\", kind: 'INCLUDES', f: (j) => (j.preToPost.onlyInPost[0] ?? '').includes(OLD) },"
+    },
+    {
+      "site": "docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:95",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": true,
+      "inUnitDir": true,
+      "ownLine": "['FIXTURE-direct', { rel: REL_NAMES_GATE, subject: \"'  tracked files read: 1083'\", modeEvidence: '' }, 'FIXTURE'],"
+    },
+    {
+      "site": "docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:96",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": true,
+      "inUnitDir": true,
+      "ownLine": "['FIXTURE-bound', { rel: REL_NAMES_GATE, subject: 'APPENDED', modeEvidence: \"const APPENDED = '  tracked files read: 9 (…)';\" }, 'FIXTURE'],"
+    },
+    {
+      "site": "docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:105",
+      "baseShape": "ARRMEMBER",
+      "baseFrom": "own line",
+      "shape": "ARRMEMBER",
+      "from": "own line",
+      "nested": true,
+      "inUnitDir": true,
+      "ownLine": "['PRECEDENCE literal-beats-process', { rel: REL_NAMES_GATE, subject: \"'tracked files read: 7'\", modeEvidence: 'const x = spawnSync(node, [p]).stdout;' }, 'FIXTURE'],"
+    },
+    {
+      "site": "docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:242",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "['KP recovers a receiver', '  /^(\\\\s*tracked files read: )(\\\\d+)$/m,', 'const APPENDED = out.VERBATIM.text.replace(', 'out.VERBATIM.text'],"
+    },
+    {
+      "site": "docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:244",
+      "baseShape": "ARRMEMBER",
+      "baseFrom": "4-line window",
+      "shape": "ARRMEMBER",
+      "from": "4-line window",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "['REFUSAL use line is not a bare pattern', \"  const m = s.match(/tracked files read: (\\\\d+)/);\", 'const s = buf.toString();', null],"
+    },
+    {
+      "site": "docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:246",
+      "baseShape": "ARRMEMBER",
+      "baseFrom": "own line",
+      "shape": "ARRMEMBER",
+      "from": "own line",
+      "nested": true,
+      "inUnitDir": true,
+      "ownLine": "['REFUSAL pattern is argument 2', '  /x/,', \"s.replace('tracked files read',\", null],"
+    },
+    {
+      "site": "docs/research/unit-515keyekp-2026-11-25/posthoc-source-subject.mjs:87",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "['KP receiver form', 'const m = s.match(/tracked files read: (\\\\d+)/);', 's'],"
+    },
+    {
+      "site": "docs/research/unit-515keyekp-2026-11-25/posthoc-source-subject.mjs:88",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": true,
+      "inUnitDir": true,
+      "ownLine": "['KP argument form', \"const readLine = (t.split('\\\\n').find((l) => /tracked files read/.test(l)) ?? '');\", 'l'],"
+    },
+    {
+      "site": "docs/research/unit-515keyekp-2026-11-25/posthoc-source-subject.mjs:90",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "['REFUSAL no subject on the line', 'const TRACKED = /tracked files read: (\\\\d+)/;', null],"
+    },
+    {
+      "site": "docs/research/unit-515keyekp-2026-11-25/posthoc-source-subject.mjs:91",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": true,
+      "ownLine": "['REFUSAL object-literal pattern entry', \"  read: /tracked files read: (\\\\d+)/,\", null],"
+    },
+    {
+      "site": "scripts/verify-decl-body-slicers.mjs:895",
+      "baseShape": "UNCLEAR",
+      "baseFrom": "own line",
+      "shape": "UNCLEAR",
+      "from": "own line",
+      "nested": false,
+      "inUnitDir": false,
+      "ownLine": "emit(`  tracked files read: ${filesRead}`);"
+    }
+  ]
+}
