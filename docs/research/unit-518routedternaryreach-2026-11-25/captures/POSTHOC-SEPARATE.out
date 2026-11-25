@@ -1,0 +1,44 @@
+=== SLICE IDENTITY (asserted against the arm's own printed figures) ===
+  bytes 3413 (arm: 3413)  offsets 5810..9223 (arm: 5810..9223)
+  SAME SPAN.
+
+=== THE SAME THREE DRIVES, READ AT REASON LEVEL ===
+
+  arm (verdict level)        A1     A2
+    LIVE                     true   true
+    KEY-CRIPPLE              false  false
+    HAZARD-SIM               false  false
+
+  post-hoc (reason level)    kpOwner                                          r225 decls / total
+    LIVE                     probe-round225-a-citation-is-not-a-call.mts      2 / 3
+    KEY-CRIPPLE              (none)                                           0 / 3
+    HAZARD-SIM               probe-round224-a-skip-must-not-summarise-as-a-pass.mts 0 / 3
+
+  the member list each drive actually built:
+    LIVE           [["probe-round225-a-citation-is-not-a-call.mts",2],["probe-backfill-sidecar-neutrality.mts",1]]
+    KEY-CRIPPLE    [["probe-round225-a-citation-is-not-a-call.mts",0],["probe-backfill-sidecar-neutrality.mts",0]]
+    HAZARD-SIM     [["probe-round225-a-citation-is-not-a-call.mts",0],["probe-backfill-sidecar-neutrality.mts",1]]
+
+[PH1] HIT  the two cripples are TWO CAUSES the verdict column cannot separate: they differ in A1's reported kpOwner
+      registered: KEY-CRIPPLE kpOwner !== HAZARD-SIM kpOwner, while both verdict pairs are false/false
+      actual:     verdicts false/false vs false/false (identical); kpOwner "(none)" vs "probe-round224-a-skip-must-not-summarise-as-a-pass.mts"
+
+[PH2] HIT  a dead key yields (none); a ternary in the SUBJECT yields a real-but-wrong owner, because the walk keeps the last entry it could read
+      registered: KEY-CRIPPLE kpOwner === "(none)" and HAZARD-SIM kpOwner is neither "(none)" nor R225
+      actual:     KEY-CRIPPLE "(none)"; HAZARD-SIM "probe-round224-a-skip-must-not-summarise-as-a-pass.mts"; R225 is "probe-round225-a-citation-is-not-a-call.mts"
+
+[PH3] REFUTED  the LIVE drive is unchanged by this post-hoc existing: it still reads true/true with kpOwner = R225 and 2 of 2 declarations
+      registered: A1 true, A2 true, kpOwner === R225, 2 of 2
+      actual:     A1=true A2=true kpOwner="probe-round225-a-citation-is-not-a-call.mts" 2 of 3
+
+=== SUMMARY ===
+  HIT      PH1
+  HIT      PH2
+  REFUTED  PH3
+
+  2 of 3 post-hoc predictions HIT.
+
+  P12 stays REFUTED. It was registered OPEN and it lost honestly: the verdict pair
+  does NOT separate the two cripples. What this post-hoc adds is that the pair being
+  identical was a property of the COLUMN and not of the cripples — and that the
+  dangerous direction is the one the verdict column flattens into the same cell.
