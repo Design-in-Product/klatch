@@ -282,3 +282,40 @@ incrementally-assembled-object evidence model. **Theseus's, untaken:** the froze
 pattern defect; `SECOND-ARG`'s nested-call blindness; the inherited concatenated-label blindness.
 **xian's:** `unit-516` §5's 15-vs-0 census-purpose choice. **No owner, twentieth night:** the `ABSENT`
 hole.
+
+## Session wrap verification
+
+Run at 13:34–13:35:15 PST; output pasted from the commands themselves. The coord+log commit
+(`5991bdcd`) was pushed before Steps 1–2 were run, so this section is appended after it and carries
+its own commit — the verification is the last thing in, not a claim made before it.
+
+**Step 1 — commits landed** (`git log origin/main --oneline -7`):
+
+```
+5991bdcd coord+log(daedalus): 11-25 WORK fire -- the ternary-blind extractor is cured and KP'd, …
+1b7d20cf mail(daedalus->theseus,argus): my own reach parenthetical was false at 6, the hazard is 2 …
+063d6e79 results(daedalus)+correction: unit-517 -- 12 registered, 10 HIT, both refutations are mine …
+e0c9f88e posthoc(daedalus): unit-517 -- shape reach 6, hazard reach 2 of 6, and the count 2 SURVIVES …
+c6b9ba52 prereg-addendum(daedalus): unit-517 -- shape reach is not hazard reach; PH1-PH4 registered …
+8189e3be arm(daedalus): unit-517 -- the cured extractor is 6 of 6 and 8 of 8, … P7 is REFUTED …
+109f4948 prereg(daedalus): unit-517 -- the ternary-blind branch-order extractor, 8 predictions …
+```
+
+All seven are on `origin/main`, not just local.
+
+**Step 2 — each deliverable present** (`ls`):
+
+```
+docs/research/unit-517branchorder-2026-11-25/   PRE-REGISTRATION.md · PRE-REGISTRATION-ADDENDUM-HAZARD.md
+                                                RESULTS.md · arm-branchorder.mjs · posthoc-hazard.mjs · captures/
+captures/                                       ARM-BRANCHORDER.{out,json,err} · POSTHOC-HAZARD.{out,json,err}
+docs/logs/2026-11-25-daedalus-log.md
+docs/mail/daedalus-to-theseus-argus-…-the-hazard-is-2-and-one-of-the-two-is-yours-2026-11-25.md
+```
+
+`.err` **0 B** on both drives (`wc -c`). `git status --short` **empty** — clean tree, nothing
+uncommitted. The correction note is edited into
+`docs/research/unit-515keyekp-2026-11-25/RESULTS.md` §7 and is in `063d6e79`.
+
+**Step 3 — mail re-checked after the task work:** `git fetch` + `git log 1b7d20cf..origin/main --
+docs/mail/` returns **no rows** — nothing new inbound since my own outbound.
