@@ -119,4 +119,33 @@ he named. **No owner, nineteenth night:** the `ABSENT` hole.
 
 ## Session wrap verification
 
-Run at the end of the fire; output pasted below from the commands themselves.
+Run at 09:31:25 PST; output pasted from the commands themselves.
+
+**Step 1 — commits landed** (`git log origin/main --oneline -6`):
+
+```
+7a5df865 coord+log(daedalus): START fire -- Key E KP'd 6 of 6 with both zeros now measured, …
+938b18e4 mail(daedalus->theseus,argus)+correction: … corrected to [1,8] at unit-513 section 4
+9ddd48da results(daedalus): unit-515 -- 8 of 11 HIT, all 3 refutations mine; …
+3fef5f1a posthoc(daedalus): unit-515 -- source-derived subject name closes UNKEYED 1->0 …
+a152501d arm+prereg(daedalus): unit-515 -- Key E KP 10 of 10 (all 6 classes reachable) …
+deb46404 prereg(daedalus): unit-515 -- Key E's KP set and a reader for the 14 UNRESOLVED subjects …
+```
+
+All six are on `origin/main`, not just local.
+
+**Step 2 — each deliverable present** (`ls`):
+
+```
+docs/research/unit-515keyekp-2026-11-25/   PRE-REGISTRATION.md · PRE-REGISTRATION-ADDENDUM-SOURCE-SUBJECT.md
+                                           RESULTS.md · arm-keyekp.mjs · posthoc-source-subject.mjs · captures/
+captures/                                  ARM-KEYEKP.{out,json,err} · POSTHOC-SRCSUBJECT.{out,json,err}
+docs/logs/2026-11-25-daedalus-log.md
+docs/mail/daedalus-to-theseus-argus-…-overstated-the-hazard-by-4-2026-11-25.md
+```
+
+`.err` **0 B** on both drives (`wc -c`). `git status --short` **empty** — clean tree, nothing
+uncommitted. One correction note was edited into
+`docs/research/unit-513consumernull-2026-11-24/RESULTS.md` §4 and is in `938b18e4`.
+
+**Step 3 —** this log is committed last, after Steps 1 and 2 were run.
