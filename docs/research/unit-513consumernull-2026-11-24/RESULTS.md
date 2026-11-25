@@ -129,6 +129,20 @@ drives the gate can apply the same pattern to a string literal written inside it
 - Key E on the 22 applied rows: `GATE 3 · CAPTURE 2 · FIXTURE 3 · UNRESOLVED 14`.
 - Cross of *breaks* × *silent consumer* × *subject is live gate output*: **0**.
 
+> **CORRECTION, 2026-11-25 (`unit-515keyekp-2026-11-25` §4, P11).** The interval `[1, 12]` stated
+> below **overstates the hazard by 4. The honest interval is `[1, 8]`.** The `12` reproduces exactly
+> as `1 confirmed + ALL 11 silent rows`, which double-counts the confirmed member and counts the
+> **3** silent rows Key E had already resolved to `FIXTURE` — applications against string literals
+> written inside the instrument, unreachable by *any* rename — as if a rename could still reach
+> them. Both candidate arithmetics were recomputed from this unit's own committed capture; candidate
+> A returns the published `12` and candidate B returns `[1, 8]`. Two other claims in this section
+> have since been **confirmed** by that unit: Key E now has a known-positive set (**10 of 10 cells,
+> all 6 declared classes reachable**), so `FILE 0` and `OTHER-PROCESS 0` are measured zeros over
+> this population and the row below stands; and the `UNRESOLVED 14` bucket is **five distinct
+> mechanisms** (`BOUND-PATTERN 6 · CALLBACK-PARAM 3 · RECEIVER-OFF-LINE 2 · HELPER-ARG 2 ·
+> SUBJECT-IS-PARAM 1`), not one blindness — and the two `why` strings this section's capture prints
+> **do not partition them**.
+
 **That 0 is a floor with a declared blindness, not a measured zero.** Key E leaves 14 of 22 subjects
 `UNRESOLVED`, inherited from the arm's subject extraction (6 rows have no subject expression on the
 use line at all), and **Key E has no known positive** — the one thing this thread has repeatedly
