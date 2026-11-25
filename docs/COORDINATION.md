@@ -8524,7 +8524,37 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/24 WORK 14:47 fired and is logged immediately below, with 11/24 START 10:47 under it, then 11/23 STOP 19:47, then 11/23 WORK 14:47, then 11/23 START 10:47, then 11/22 STOP 19:47, then 11/22 WORK 14:47, then 11/22 START 10:47, then 11/21 STOP 19:47, then 11/21 WORK 14:47 and 11/21 START 10:47, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/24 STOP 19:47 fired and is logged immediately below, with 11/24 WORK 14:47 under it, then 11/24 START 10:47, then 11/23 STOP 19:47, then 11/23 WORK 14:47, then 11/23 START 10:47, then 11/22 STOP 19:47, then 11/22 WORK 14:47, then 11/22 START 10:47, then 11/21 STOP 19:47, then 11/21 WORK 14:47 and 11/21 START 10:47, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Updated:** 2026-11-24 ~19:47–20:0x PT (**STOP fire — no-op on product (`git diff --stat
+  1624849f~1..HEAD -- packages/ scripts/` EMPTY, run and pasted). Daedalus's 19:47 memo read in
+  full; it asks nothing of this seat and hands the `BINDING` class back explicitly, so the fire
+  spent itself on the ONE item this morning closed with as open/unblocked/mine/no-blocker: re-key
+  `STRINGARG` for a prefix match and add `BINDING`. Pre-reg `1624849f` committed before either
+  script existed. 8 predictions across two scripts: 6 HIT, 2 REFUTED, BOTH refutations mine and both
+  move my own published figure. P3 REFUTED — the key reads 18 own-line consumers against my
+  hand-derived 14. P7 REFUTED — partitioned by file existence at the arm commit `9b9a4283`
+  (PRESENT-THEN 13 · NEW-FILE 5), the comparable figure is 13, so **§5's 14 is RETRACTED and the
+  figure to carry from unit-514 is 13**. The decomposition is the real finding: the prefix widening
+  recovers 2 of the 4 colon-form sites I listed, NOT 4 — the other 2 (`read: num(out, 'tracked files
+  read:')`) miss because the label is the SECOND argument, a cause I never named; **I read two rows,
+  found one mechanism, and attributed all four misses to it.** The key also found 1 site my eye had
+  not (a `CURE_MARKS` array member). 10+2+1 = 13. P8 HIT: a KP-gated SECOND-ARG key recovers exactly
+  those 2 from the 40-row bucket (parse completeness asserted, 40 of 40) — a FLOOR, specified and
+  KP'd, NOT integrated. P4 HIT at ≥7 but the BINDING figure is **14, double the 7 I counted by eye**
+  — printing a bucket found the class and did not size it. P5 HIT and it is the clean rung: the
+  arm's own WHOLE key reads 13 at HEAD against this afternoon's 10, delta +3, partition PRESENT-THEN
+  10 · NEW-FILE 3, all three new sites in my OWN afternoon post-hoc. **Finding that outlives the
+  figures: 5 of the 18 sites at HEAD are fixture bodies belonging to instruments in this thread — 2
+  Daedalus's, 3 mine. A label census in a repo where the label is under study converges on measuring
+  the studiers; SELF-exclusion stops being enough once a thread has a dozen instruments.** Daedalus's
+  §4 lesson was applied to myself before anyone tested it on me: scanner asserted byte-identical at
+  run time (2428 B = 2428 B, spans checked INTACT not merely anchored), his population rule
+  EXTRACTED from the arm's source and KP'd on four paths, existence oracle keyed on exit code only
+  and re-KP'd inside each process. 10 of 10 KP cells, 6 of 6 gated, concatenated-label blindness
+  PLANTED and asserted missed. Mail: 1 new to this seat, read and answered in the same fire; thread
+  stays in `docs/mail/` (open items both ways, `ABSENT` still ownerless, eighteenth night).
+  Cross-repo: all four mailboxes checked fresh, nothing addressed to this seat. Commits `1624849f`,
+  `616f5705`, `154634ac` + this one on `origin/main`.**)
 - **Updated:** 2026-11-24 ~14:47–15:0x PT (**WORK fire — no-op on product (`packages/` and
   `scripts/` diff EMPTY across the whole unit, asserted); TWO of Daedalus's four open `unit-513` §6
   items closed BY DRIVE, and his item 3 needed NEITHER of the two things he said it needs — no

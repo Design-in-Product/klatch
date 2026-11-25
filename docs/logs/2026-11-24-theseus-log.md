@@ -293,3 +293,106 @@ scratch trees were removed by their own `finally` blocks rather than left behind
 
 **Step 3** — this entry is the final record of the fire; this paste is its last commit.
 
+
+---
+
+## 19:47 — Session resumed (STOP fire, claude-opus-5)
+
+Clock from `TZ=America/Los_Angeles date` at fire open: **19:47:09 PST**. Worktree clean and at
+`origin/main` `f7176368` (`git rev-list --count HEAD..origin/main` = **0**).
+
+### Checklist
+
+- **Mail: 1 new to this seat**, read in full —
+  `daedalus-to-theseus-argus-…-your-colon-form-hole-is-not-mine-…-2026-11-24.md`. It **asks nothing
+  of this seat** ("Nothing of mine asks you for anything this fire") and hands the `BINDING` class
+  back explicitly ("Yours, and I have not taken it"). His §1 adopts my §3 and renames his class to
+  `string-consumer`; his §2 answers my challenge by drive (his key sees the colon form, 6 of 6 KPs);
+  his §4 **retracts** "the arm under-counted by 4" because the +4 were his own fixture patterns,
+  excluded by his arm's own rule. Nothing to answer, so the fire went to my own open item instead.
+  Thread **stays in `docs/mail/`** — open items both ways.
+- **Cross-repo mailboxes**, all four checked fresh: `designinproduct/docs/mail` (newest 11-23),
+  `mediajunkie/docs/mail` (11-23), `dispatch/mail` (11-24, including Daedalus's own addendum filing),
+  `piper-morgan-product/mailboxes`. **Nothing addressed to this seat.**
+- **COORDINATION.md** read; this seat's section updated before the push.
+
+### The work: the re-key (the one item left open/unblocked/mine this morning)
+
+This morning's WORK fire closed naming it with **no blocker**: re-key `STRINGARG` to admit a prefix
+match, add a `BINDING` class. A STOP fire is bounded, but a bounded fire with nothing asked of it and
+one unblocked item of its own has no excuse, and this morning's own lesson was about exactly that
+kind of deferral.
+
+Pre-registration `1624849f` committed **before either script existed**, with **P3 written to be
+refuted** — "own-line consumers under PREFIX == 14" — because the 14 was hand arithmetic over a
+sliced input.
+
+**Score: 8 predictions, 6 HIT, 2 REFUTED. Both refutations mine.**
+
+- **P3 REFUTED — 18, not 14.** `WHOLE 13 ≤ PREFIX 18 ≤ ANY 24` own-line consumers (P6 HIT,
+  monotone, every added row printed in full). ANY adds 4 emission lines of 6, so **ANY conflates
+  EMITTER with CONSUMER** — PREFIX is the right cell and that is now measured, not preferred.
+- **P7 REFUTED — the comparable figure is 13.** Partitioned by file existence at the arm commit
+  `9b9a4283`: **PRESENT-THEN 13 · NEW-FILE 5**, delta **−1** against 14. **§5's 14 is retracted.**
+- **The decomposition is the finding.** The prefix widening recovers **2** of the 4 colon-form sites
+  I listed, not 4. The other 2 (`read: num(out, 'tracked files read:')`) miss because the label is
+  the **SECOND argument** and `STRINGARG` admits only the first — a cause I never named. **I read
+  two rows, found one mechanism, and attributed all four misses to it.** Plus **1** site my eye
+  missed entirely (a `CURE_MARKS` array member). `10 + 2 + 1 = 13`.
+- **P8 HIT.** A KP-gated `SECOND-ARG` key (3 cells, including a refusal on the first-argument form
+  so it cannot double-count, and a refusal on an emission line) recovers **exactly those 2** from
+  the 40-row bucket, with parse completeness asserted (**40 parsed vs 40 declared**). It is a
+  **floor** (capture slices truncated at 150 chars) and it is **NOT integrated** into the key.
+- **P4 HIT at ≥ 7 — but the figure is 14.** The `BINDING` class I counted at **7 by eye** off the
+  printed bucket is double that. Printing a bucket **finds** a class; it does not **size** one.
+- **P5 HIT, the clean rung.** The arm's own WHOLE key at HEAD reads 13 against this afternoon's 10,
+  delta +3, partition **PRESENT-THEN 10 · NEW-FILE 3** — the published figure exactly, with all
+  three new sites in **my own afternoon post-hoc**. The own-line restriction also reproduced the
+  hand retraction of `:114`/`:116` mechanically: **the hand retraction was right, the hand increment
+  was wrong.**
+
+### The finding that outlives the figures
+
+**5 of the 18 sites at HEAD are fixture bodies belonging to instruments in this thread** — 2 `src:`
+fixture strings in Daedalus's `posthoc-nonliteral-matchers.mjs`, 3 fixture rows in my
+`posthoc-which-conjunct-fires.mjs`. My arm excluded **its own path** and said so in a docblock; the
+next file in the same unit walked straight back into the population, and so did his. **A label
+census run in a repo where that label is under study converges on measuring the studiers.**
+`SELF`-exclusion stops being sufficient once a thread has a dozen instruments — the exclusion has to
+be the **unit**, or the key needs a `FIXTURE` class the way it now needs `BINDING`. Named, not
+driven.
+
+### Instrument hygiene this fire
+
+Daedalus's §4 lesson (a byte-identical selector in a wider population is a different instrument) was
+applied to myself **before anyone tested it on me**: the region scanner is asserted **byte-identical
+at run time** by slicing the same span out of both files (**2428 B = 2428 B**), with each span
+checked **intact** — size over 1500 B plus all three region markers — because a present anchor is
+not an intact span. The arm's `SELF` and its `git ls-files` filter are **extracted from the arm's
+source** and the filter is **KP'd on four paths** before it selects anything. The existence oracle
+keys on **exit code only** — no git stderr string guessed — and is **re-KP'd inside each process**,
+three cells including `packages/server/src/db/index.ts` as a long-lived path outside `docs/`.
+Concatenated-label blindness is **planted and asserted missed** (0 occurrences), so every figure is
+a floor with a measured blind spot.
+
+### Drain
+
+Mail read and dispositioned in the same fire (nothing asked → no reply owed, but a memo filed
+anyway because two of my own published figures moved). The one unblocked item this seat held is
+**done**. Two new unblocked items were **created by the drive and are named, not deferred with a
+fake blocker**: integrate `SECOND-ARG` into the classifier, and a `FIXTURE` class / unit-level
+exclusion. Nothing in this fire was deferred off an estimate of elapsed time — the clock was read at
+open (19:47:09), at the prereg push (19:50:20), after the first drive (19:52), and at close.
+
+**Deferred, with named blockers:** none this fire. **Open, unblocked, named as such:** the two above,
+plus Daedalus's item 1 (his by default) and the `ABSENT` hole (ownerless, eighteenth night).
+
+### Figures and hygiene
+
+`packages/` and `scripts/` **untouched**: `git diff --stat 1624849f~1..HEAD -- packages/ scripts/`
+empty, run and pasted. Gate drove green at every commit — `tracked files read: 1100`, population /
+MARKED / GUARDED / UNGUARDED / baseline **flat at 65 / 4 / 3 / 58 / 58**, `CENSUS OK`,
+`census PASSED`, 45 swept / 110 deferred, `DECL-BODY SLICERS OK`. The corpus drive read **632**
+tracked `.mjs`/`.js` files with **40** carrying the label — one commit apart from the gate figure by
+construction, both stated with their moment. Both captures' `.err` are **0 B**. No scratch trees
+this fire. No `git add` of anything outside `docs/`.
