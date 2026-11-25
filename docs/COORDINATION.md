@@ -8707,8 +8707,67 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/25 START 10:47 fired and is logged immediately below, then 11/24 STOP 19:47, with 11/24 WORK 14:47 under it, then 11/24 START 10:47, then 11/23 STOP 19:47, then 11/23 WORK 14:47, then 11/23 START 10:47, then 11/22 STOP 19:47, then 11/22 WORK 14:47, then 11/22 START 10:47, then 11/21 STOP 19:47, then 11/21 WORK 14:47 and 11/21 START 10:47, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
-- **Updated:** 2026-11-25 ~10:47–11:1x PT (**START fire — no-op on product (`git diff --stat HEAD --
+- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/25 WORK 14:47 fired and is logged immediately below, then 11/25 START 10:47, then 11/24 STOP 19:47, with 11/24 WORK 14:47 under it, then 11/24 START 10:47, then 11/23 STOP 19:47, then 11/23 WORK 14:47, then 11/23 START 10:47, then 11/22 STOP 19:47, then 11/22 WORK 14:47, then 11/22 START 10:47, then 11/21 STOP 19:47, then 11/21 WORK 14:47 and 11/21 START 10:47, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Updated:** 2026-11-25 ~14:47–15:0x PT (**WORK fire — no-op on product (`git diff --stat HEAD --
+  packages/ scripts/` EMPTY, asserted and printed inside the arm before any measurement ran).
+  Daedalus's 11-25 WORK memo read in full; it routes exactly one item to this seat by name and this
+  fire closed it by drive.** `unit-518routedternaryreach-2026-11-25` — pre-reg `768bf4a9` on `main`,
+  clock read **14:50:18 PST** in the command immediately before the push, before any arm/reader/
+  cell/KP/scratch/capture existed; addendum `7fe210a2` registered **before the arm's first drive**,
+  because a cripple on the KEY cannot simulate a ternary in the SUBJECT and P6/P7 alone would have
+  priced a different breakage than the one routed. **13 predictions: 12 HIT, 1 REFUTED; 3 post-hoc:
+  2 HIT, 1 REFUTED. Both refutations are mine and both are about my own instrument.**
+  **(1) The quotation — `file:` never appears at `recon.mjs:83`.** The only `file:` property in that
+  file is at line **89**, value `String(file)`. What he quoted is his key's CAPTURE, and I report it
+  as that rather than as a misquote.
+  **(2) The mechanism — REAL, and registered as a HIT *for* him before I drove anything**, so that
+  (1) could not be mistaken for a defence: the `file` his key matched is the **tail of the member
+  expression `e.file`** and the `:` is a **ternary's else-colon**, so the value span after it
+  genuinely IS a ternary and every downstream signal agrees — the corroboration is downstream of the
+  same mistake. **P10 is the proof my own key could have had it: drop my property-position
+  constraint and my count on the same file goes 1 → 2, picking up line 83 exactly as his did.**
+  **(3) The reach — 0.** Both key occurrences (probe lines 97, 106) sit inside
+  `for (const line of srcLines) {`, verified by walking back from each key to its own nearest
+  enclosing `for (` and asserting the iterable TEXT; the chain `SWEEP` → `sweepSrc` → `srcLines` is
+  asserted link by link at 1x each; `recon.mjs` / `unit-307c4` / `blast-radius` occur **0 times** in
+  the probe; the probe's whole 12-site read/write/spawn/import set printed rather than summarised.
+  Hazard census on the subject it DOES read: **0 unreadable of 45** property-position `file:` lines,
+  with the counter KP'd on planted ternary-valued and double-quoted cells (plus a readable negative
+  cell) **before** the 0 was allowed to be a finding.
+  **Consequence for his published pair, and it is kinder than what he published: his HAZARD 2 of 6 /
+  gap 4 becomes 1 of 6 / gap 5, which is EXACTLY the 1 he registered as PH3 — so PH3 HELD and its
+  refutation was an artefact of the position-blind key.** Routed back to him; his file, untouched.
+  **THE KEEPER: a dead key and a subject ternary both read `false/false`.** P12 was registered OPEN
+  as a commitment that my two cripples might be one cripple, and it came back REFUTED. The post-hoc
+  went to reason level: dead key → `kpOwner (none)`, a visible refusal; subject ternary →
+  `probe-round224-…mts`, a **real but WRONG owner**, because a nearest-preceding walk keeps the last
+  entry it could read. **The verdict column flattens the dangerous cause into the same cell as the
+  harmless one** — fourth face of the `unit-515` §4 / `unit-516` §3 / `unit-517` §2 family, sharpened
+  to: *a saturated column is not evidence that two arms did the same thing.*
+  **AGAINST ME, two.** (i) My arm's own marker set **aborted its first drive**: I registered
+  `owners.length ===` at 1 in the sliced span; it is 2 — once in the 11-07 re-key docblock quoting
+  the arm it replaced, once in the live ORPHAN clause. I read the code and not the prose. Corrected
+  to 2 plus an exact code-only marker no comment can satisfy; nothing was published on the aborted
+  drive. (ii) **PH3 refuted me for typing `2 of 2` where the format I was slicing says `2 of 3`** —
+  two declarer *entries*, three declaration *lines*. Slicing the inputs and re-typing the verdict, in
+  the very post-hoc written to capture strings rather than restate them.
+  Gate rc 0 at every push: `tracked files read` **1108 → 1109 → 1110**, population **65**,
+  **MARKED 4 / GUARDED 3 / UNGUARDED 58**, `baseline entries 58` — flat. `.err` **0 B** on both
+  drives. Frozen instruments (`probe-round373-…mts`, `recon.mjs`) never executed, edited or copied:
+  the A1/A2 predicates were **sliced from source at run time** (3413 B, offsets 5810..9223), 9
+  markers asserted on the span before compiling, 3 transforms declared with occurrence counts
+  asserted, cripples applied in memory only.
+  **Mail:** replied in-fire
+  (`theseus-to-daedalus-argus-…-your-routed-site-is-not-a-hazard-member-…-ph3-held-at-1-of-6-2026-11-25.md`);
+  thread stays in `docs/mail/` — open items both ways. All four cross-repo mailboxes checked fresh,
+  nothing addressed to this seat with an open ask (`designinproduct` newest 11-23, `mediajunkie`
+  11-23, `piper-morgan-product` no new, `dispatch` 11-25 but to the PM seat).
+  **Drain:** routed item closed by drive; reply filed; COORDINATION and log written. Deferred with a
+  named blocker — `unit-516` §5's 15-vs-0 census-purpose choice (**blocker: xian's call, nobody
+  else's**); the `ABSENT` hole (**blocker: no owner, twentieth night**). Carried unblocked and mine:
+  the frozen-population-prediction pattern defect, `SECOND-ARG`'s nested-call blindness, the
+  inherited concatenated-label blindness.)
+- **Previous (11-25 START):** 2026-11-25 ~10:47–11:1x PT (**START fire — no-op on product (`git diff --stat HEAD --
   packages/ scripts/` EMPTY, asserted and printed inside BOTH scripts of the unit). Daedalus's 11-25
   memo read in full; it asks nothing of this seat and §7 hands back by name the only two items
   `unit-514` §7.6 left as unblocked/mine/no-blocker, so the fire closed BOTH BY DRIVE.**

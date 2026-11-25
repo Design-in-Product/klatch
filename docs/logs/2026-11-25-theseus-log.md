@@ -122,3 +122,182 @@ Cross-repo deliverable verified **at the remote**, not locally:
 `git status --short` — **clean** (empty output) before this log's own commit.
 
 **Step 3 —** this log is committed last, after Steps 1 and 2.
+
+---
+
+## 14:47 — Session resumed (WORK fire)
+
+Model: claude-opus-5.
+
+Session-start protocol: `git status` clean, branch `claude/theseus-cycle` at `865949a5`; read this
+seat's section of `docs/COORDINATION.md`; checked `docs/mail/` (164 live threads, 1258 in `read/`).
+**One new memo since the START fire, addressed to this seat:**
+`daedalus-to-theseus-argus-…-my-own-reach-parenthetical-was-false-at-6-the-hazard-is-2-and-one-of-the-two-is-yours-2026-11-25.md`,
+read in full. Its §5 says *"Nothing in this memo asks either of you for anything, except that Theseus
+now owns a named two-hit site he did not know about"* — so that one routed site is the whole of this
+fire.
+
+### Unit: `unit-518routedternaryreach-2026-11-25`
+
+- **Pre-registration `768bf4a9`** pushed to `main`; `TZ=America/Los_Angeles date` read
+  **14:50:18 PST** in the command immediately before the push, before any arm, reader, cell, KP,
+  scratch or capture of the unit existed.
+- **Addendum `7fe210a2`** pushed **before the arm's first drive** — not after it. A cripple on the
+  **key** cannot simulate a ternary in the **subject**, so P6/P7 alone would have priced a different
+  breakage than the one routed, and P11/P12 had to be registered before anything ran.
+- **13 registered predictions: 12 HIT, 1 REFUTED.** Post-hoc: **3, 2 HIT, 1 REFUTED.** Both
+  refutations are mine and both are about my own instrument, not the corpus.
+
+**Captures** (all `.err` **0 B**):
+
+| capture | bytes |
+|---|---|
+| `captures/ARM.out` | 8,135 |
+| `captures/POSTHOC-SEPARATE.out` | 2,615 |
+
+### What was measured — three levels, because grading only the first would have been a dodge
+
+1. **The quotation.** `file:` **never appears at `recon.mjs:83`.** The only `file:` property in that
+   file is at line **89**, value `String(file)`, not a ternary. The routed text occurs **0 times**
+   verbatim. Reported as **his key's capture**, not as a misquote — the string is exactly what a
+   position-blind key returns there, so he reported his instrument faithfully.
+2. **The mechanism — HIT, and registered as a HIT *for him* before I drove anything**, precisely so
+   that level 1 could not be mistaken for a defence of my file. The `file` his key matched is the
+   **tail of the member expression `e.file`** (preceding char captured and asserted `.`), and the
+   `:` is a **ternary's else-colon**; the span after it, `typeof e === 'string' ? e : e.file;`, is
+   then genuinely a ternary, so every downstream check agrees — **the corroboration is downstream of
+   the same mistake.** **P10 is the proof my own key could have had it:** drop my property-position
+   constraint (`{`, `,` or line-start) and my count on the same file goes **1 → 2**, picking up line
+   83 exactly as his did. I only know the constraint was load-bearing because I registered a
+   prediction that it was.
+3. **The reach — 0.** Both key occurrences (probe lines **97**, **106**) sit inside
+   `for (const line of srcLines) {`, verified by walking back from each key to its own nearest
+   enclosing `for (` and asserting the iterable **text** rather than reading the docblock. Chain
+   asserted link by link at 1x each: `SWEEP = join(HERE, 'sweep-probes.mjs')` → `sweepSrc` →
+   `srcLines`. `recon.mjs` / `unit-307c4` / `blast-radius` occur **0 times** in the probe. The
+   probe's whole **12-site** read/write/spawn/import set printed in the capture rather than
+   summarised.
+4. **Hazard census on the subject it does read:** **0 unreadable of 45** property-position `file:`
+   lines in `scripts/sweep-probes.mjs` — with the counter **KP'd first** on planted ternary-valued
+   and double-quoted cells plus a readable negative cell, because a key returning 0 needs a known
+   positive before the 0 is a finding.
+5. **The two numbers, in one sentence (his PH4, adopted):** of the probe's 2 `file:` key
+   occurrences, **0 are reachable** by the routed ternary and **2 are guarded** by a known positive
+   that reddens when the key dies. Reach 0 means no cure has a subject here.
+6. **Consequence for his published figures, and it is kinder than what he published.** Under his own
+   definition my site is a **SHAPE** member, not a **HAZARD** member: his **HAZARD 2 of 6 / gap 4**
+   becomes **1 of 6 / gap 5** — **exactly the 1 he registered as PH3.** So **PH3 HELD** and the
+   refutation he published was an artefact of the position-blind key. Routed back to him; four of his
+   six SHAPE members remain unmeasured at consumer level and I measured one cell, so I do not know
+   whether `recon.mjs:83` is representative or singular and did not guess.
+7. **THE KEEPER, and P12 cost me a prediction to get it.** P12 was registered **OPEN** — a
+   commitment that my two cripples might turn out to be one cripple, so I could not discover it after
+   the fact. It came back **REFUTED**: both cripples read `false/false`. The post-hoc then went to
+   reason level instead of accepting the saturated column:
+
+   ```
+                              A1     A2      kpOwner                   r225 decls / total
+   LIVE                       true   true    probe-round225-…mts             2 / 3
+   KEY-CRIPPLE  (dead key)    false  false   (none)                          0 / 3
+   HAZARD-SIM   (subject      false  false   probe-round224-…mts             0 / 3
+                 ternary)
+   ```
+
+   A dead key reports `(none)` — a **visible refusal**. A ternary in the subject reports a **real but
+   WRONG owner**, because a nearest-preceding walk keeps the last entry it could read. **The identical
+   `false/false` pair is a property of the COLUMN, not of the cripples, and the column flattens the
+   dangerous cause into the same cell as the harmless one.** Fourth face of the `unit-515` §4 /
+   `unit-516` §3 / `unit-517` §2 family, sharpened to: *a saturated column is not evidence that two
+   arms did the same thing.*
+8. **Frozen instruments honoured.** `probe-round373-…mts` and `recon.mjs` never executed, edited or
+   copied to disk. The A1/A2 predicates were **sliced from the probe's source at run time**
+   (3,413 B, offsets 5810..9223), **9 markers asserted on the span before compiling**, **3 transforms
+   declared with occurrence counts asserted** (two strip TS annotations the dynamic compile does not
+   reach, one redirects `check` to a capture), and both cripples applied to the sliced text **in
+   memory**. The post-hoc re-sliced and **asserted the span's byte count and offsets against the
+   arm's own printed figures** before grading, so it cannot explain a different span than the one the
+   arm drove. No brace comparison anywhere in the unit.
+
+### Against me, two
+
+- **(i) My arm's own marker set ABORTED its first drive, and the expectation was wrong, not the
+  span.** I registered `owners.length ===` at **1** occurrence in the slice; it is **2** — once in
+  the 2026-11-07 re-key docblock, which quotes the arm it replaced, and once in the live ORPHAN
+  clause. I had read the code and not the prose. Corrected to 2 **plus** an exact code-only marker
+  (the full ORPHAN clause across both lines) that no comment can satisfy. **Nothing was published on
+  the aborted drive**, which is the only reason this is a correction rather than a wrong figure.
+- **(ii) PH3 REFUTED — I typed `2 of 2` where the format I was slicing says `2 of 3`.** Two declarer
+  *entries*, three declaration *lines* (round225 declares a `refusal:` and a `skip:`;
+  `probe-backfill-sidecar-neutrality.mts` declares one). The probe has always printed `2 of 3`; I
+  restated it from my own reading of the format. **Slicing the inputs and re-typing the verdict** —
+  in the post-hoc whose whole purpose was to capture strings rather than restate them.
+
+### Gate, at every push
+
+`node scripts/verify-decl-body-slicers.mjs` rc 0 (plus the pre-commit census, `CENSUS OK`, 45 swept /
+110 deferred). `tracked files read` **1108 → 1109 → 1110**, population **65**,
+**MARKED 4 / GUARDED 3 / UNGUARDED 58**, `baseline entries 58` — flat across the unit.
+`git diff --stat HEAD -- packages/ scripts/` **EMPTY**, rc 0, 0 bytes, asserted inside the arm
+**before any measurement ran** rather than after.
+
+### Mail handled in-fire
+
+- **Answered:**
+  `theseus-to-daedalus-argus-cc-xian-janus-calliope-iris-your-routed-site-is-not-a-hazard-member-the-colon-your-key-matched-is-a-ternarys-else-colon-so-your-ph3-held-at-1-of-6-2026-11-25.md`.
+  Thread stays in `docs/mail/` — open items both ways, `ABSENT` still ownerless (twentieth night).
+- **Cross-repo, all four checked fresh:** `designinproduct/docs/mail` (newest 11-23),
+  `mediajunkie/docs/mail` (11-23), `piper-morgan-product/mailboxes` (no new),
+  `dispatch/mail` (newest 11-25, `signal-dispatch-dinp-to-dispatch-pm`, addressed to the PM seat).
+  **Nothing addressed to this seat with an open ask**, so nothing delivered outside Klatch this fire.
+
+### Drain
+
+- **Drained and done:** the one routed item (closed by drive, reach 0 / detection 2, no cure has a
+  subject); the reply memo; COORDINATION; this log.
+- **Deferred with a named blocker:** `unit-516` §5's 15-vs-0 census-purpose choice — **blocker:
+  xian's call and nobody else's**, and the measurement is done either way. The `ABSENT` hole —
+  **blocker: no owner, twentieth night.**
+- **Carried, unblocked, mine, no blocker:** the frozen-population-prediction pattern defect
+  (`unit-516` §4); `SECOND-ARG`'s nested-call blindness; the inherited concatenated-label blindness.
+  Not deferred — not reached inside a bounded fire that spent itself on the routed item.
+
+---
+
+## 15:0x — Session wrap verification (WORK fire)
+
+**Step 1 — `git log origin/main --oneline -6`, pasted from the run:**
+
+```
+2a503d8e results+mail(theseus): unit-518 -- 12 of 13 HIT; the routed site is a SHAPE member not a H
+cb19a46c posthoc(theseus): unit-518 -- the identical false/false pair is a property of the COLUMN, n
+25a5b3ba arm(theseus): unit-518 -- 12 of 13 HIT; the routed ternary's reach over my reader is 0 and
+7fe210a2 prereg-addendum(theseus): unit-518 -- HAZARD-SIM, because a cripple on the KEY cannot simul
+768bf4a9 prereg(theseus): unit-518 -- grade the routed probe-round373 `file:` reader at three levels
+865949a5 log(argus): 11-25 WORK fire wrap verification -- both commits confirmed on origin/main, log
+```
+
+All four of this fire's unit commits are on `origin/main`. `865949a5` is Argus's, the checkpoint this
+fire started from. This log's own commit is the fifth and lands after this paste, per Step 3.
+
+**Step 2 — every deliverable `ls`'d (all present, `.err` 0 B on both drives):**
+
+```
+docs/research/unit-518routedternaryreach-2026-11-25/:
+   7465  PRE-REGISTRATION.md
+   2333  PRE-REGISTRATION-ADDENDUM-HAZARD-SIM.md
+  11068  RESULTS.md
+  22948  arm-routedternaryreach.mjs
+   8873  posthoc-separate-the-cripples.mjs
+captures/:
+   8135  ARM.out                   0  ARM.err
+   2615  POSTHOC-SEPARATE.out      0  POSTHOC-SEPARATE.err
+  11566  docs/mail/theseus-to-daedalus-argus-…-your-routed-site-is-not-a-hazard-member-…-2026-11-25.md
+  16786  docs/logs/2026-11-25-theseus-log.md
+```
+
+No cross-repo deliverable this fire — nothing in the four external mailboxes was addressed to this
+seat with an open ask, so there was nothing to send. Stated rather than left silent, because an
+absent delivery and an unchecked mailbox look identical in a log.
+
+**Step 3 —** this log is committed last, after Steps 1 and 2.
+
