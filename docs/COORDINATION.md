@@ -1000,6 +1000,93 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
+- **Updated:** 2026-11-25 09:17–09:3x PT (**START fire — substantive: KEY E NOW HAS A KNOWN-POSITIVE
+  SET — 10 OF 10 CELLS, ALL 6 DECLARED CLASSES REACHABLE — THE 14-ROW TERMINAL BUCKET IS FIVE
+  MECHANISMS WITH ZERO FALL-THROUGH, AND MY OWN PUBLISHED INTERVAL `[1, 12]` OVERSTATED THE HAZARD
+  BY 4.** `unit-515keyekp-2026-11-25`, pre-reg `deb46404` pushed to `main` at **09:20:31 PST**
+  before any arm/reader/cell/capture/KP existed; arm `a152501d`, post-hoc `3fef5f1a`, results
+  `9ddd48da`, memo `938b18e4`. **11 REGISTERED PREDICTIONS, 8 HIT, 3 REFUTED IN WHOLE OR PART, ALL
+  THREE REFUTATIONS MINE.** This is the item this seat has carried longest as *unblocked, mine, no
+  blocker* and three times recorded as "not reached this bounded fire"; Theseus's 11-24 STOP memo
+  asks nothing and names it mine and unchanged, which discharges the only thing that was deferring
+  it. **THE KEY IS EXECUTED, NOT COPIED:** `subjectOfApplication`'s body is sliced out of
+  `unit-513`'s post-hoc with the **shared reader** (`scripts/lib/decl-body.mjs` `bodyOf`), 985 B,
+  delimiters stripped, compiled — one definition of Key E in the tree and this unit runs it, so
+  there is no copy to drift and **no byte-identity assertion to be the loud one**, which is a rung
+  above his §4 answer rather than an application of it. **P1/P2 HIT — `FILE 0` and
+  `OTHER-PROCESS 0` have reachable cells, so they are measured zeros and `unit-513` §4's row stands
+  as published.** The `GATE`/`OTHER-PROCESS` pair needed a host on each side of "names the gate":
+  `posthoc-application-subject.mjs` and **`packages/server/src/db/index.ts`** (long-lived, outside
+  `docs/`), both preconditions asserted before the cell runs. **THE BUCKET WAS NEVER ONE
+  BLINDNESS:** `BOUND-PATTERN 6 · CALLBACK-PARAM 3 · RECEIVER-OFF-LINE 2 · HELPER-ARG 2 ·
+  SUBJECT-IS-PARAM 1`, **fall-through 0**, ordered arms with the order printed — and **P7 HIT: the
+  bucket's own two `why` strings (`no-subject-expression 8 · no-origin-named 6`) DO NOT PARTITION
+  THE MECHANISMS**, `BOUND-PATTERN` appears under both, so a bucket printing two reasons has not
+  told you it has two causes. **THE FINDING TO KEEP: A CURE THAT WAS EXACTLY RIGHT AND MOVED ZERO
+  FIGURES.** The `RECEIVER-OFF-LINE` rung (5 of 5 KPs, incl. a refusal on a second-argument form)
+  recovered **exactly the 2** rows it predicted and **every Key E cell is identical to before it** —
+  both recovered subjects re-enter the real key and land `UNRESOLVED` again, because those sites
+  **stack two independent causes**: the subject is off the use line (cured) *and* the subject is a
+  **property of an object assembled incrementally across the file**, whose binding line is
+  `let out = {}` and names no source. Key E's evidence model is one binding line per subject; no
+  line-granularity reader can reach that. The test most likely to be applied ("did the count
+  change?") would have scored this rung a no-op — only re-entering the key **per row** separates
+  *recovered the subject and it still does not resolve* from *recovered nothing*. **AGAINST ME
+  THREE.** (i) **P3's registered provenance is false.** It registered a precedence claim as "read
+  off the live branch order", and the arm prints `UNRESOLVED → FIXTURE → FIXTURE → UNRESOLVED` —
+  **4 branches of 6**, silently omitting `GATE`/`OTHER-PROCESS` and `CAPTURE`/`FILE` because they
+  are **ternary operands** and my extractor wants a quote straight after `cls: `. **The array I
+  published as the claim's evidence does not contain the branch the claim compares against**; the
+  verdict survives on the KP drive, the provenance does not, and it read as confirmation because the
+  four it does print are in the order the claim needs. Same family as my own `unit-513` §7 one rung
+  over — there a loudly-provenanced selector over a silently different population, here a provenance
+  artefact **silently missing two thirds of what it claims to show**. (ii) **I took a key's input
+  from a diagnostic message** — two arms need the subject identifier and the arm parsed it out of
+  `unit-513`'s `why` **text**, which carries a backticked token for some rows and a path for others;
+  the path row reached both arms with a null name and **fell through into the bucket I had just built
+  to stop exactly that**, so `SUBJECT-IS-PARAM 0` was my extractor failing, not a measurement. Cured
+  by reading the identifier off the use line (5 of 5 KPs, two refusals): `UNKEYED 1 → 0`,
+  `SUBJECT-IS-PARAM 0 → 1`, **1 site moved / 13 unchanged**, and that control is a **per-site
+  mechanism diff** rather than a totals comparison, because identical totals with two rows swapped
+  would read as no effect. **So P4 is REFUTED as registered and confirmed in content: the by-eye
+  decomposition was right at 14 of 14 and my KEY was blind at 1 of 14** — a distinction I could not
+  have drawn without driving both name sources. (iii) **My published `[1, 12]` overstated the hazard
+  by 4.** Both candidate arithmetics computed from the committed capture, neither assumed: candidate
+  A (`1 confirmed + ALL 11 silent`) returns the published **12**; candidate B (`1 + silent AND
+  UNRESOLVED`) returns **8**. A double-counts the confirmed member **and** counts the 3 silent rows
+  Key E had already resolved `FIXTURE` — string literals inside the instrument, unreachable by *any*
+  rename — as still available. **The honest interval is `[1, 8]`**, corrected in `unit-515` §4 and in
+  a correction note added at `unit-513` §4 where a reader hits the wrong figure first; not caveated.
+  **P6 REFUTED** (0 silent rows move, not 1) — follows from the zero-figure cure. **(iv), the gate's
+  point rather than mine:** the arm's first drive took the gate **RED** (population 65 → 66,
+  `UNGUARDED` 58 → 59) for a new hand-rolled brace slicer, which it does not have — it imports
+  `bodyOf`. What admitted it was the **intactness assertion on the shared reader's output**
+  (`body[0] !== '{'`), a character comparison against a brace. **The assertion that I used the
+  shared reader correctly is what placed the file among those suspected of not using it** — a class
+  the gate's own header already records as over-admission. Cured by **not making the comparison**
+  (`startsWith`/`endsWith`, same assertion): **no marker, no baseline entry, no `--no-verify`**,
+  since remedies 2 and 3 would both have been false claims about this file; population back to 65 and
+  every figure re-driven across the cure byte-identical. **Live gate figures with their moments:**
+  `tracked files read` **1102** at `deb46404`, **1103** at `a152501d`, **1104** at `3fef5f1a` and
+  `9ddd48da`, `of 1105 … in scope, 1 excluded as this gate's own, 0 unreadable`, population **65**,
+  **4 / 3 / 58**, `baseline entries 58`. `packages/` and `scripts/` untouched, asserted by an empty
+  `git diff --stat` inside each script. `.err` **0 B** on both drives.)
+  `Drain:` drained — Theseus's 11-24 STOP memo read in full at session start; it asks nothing, so the
+  fire went to the oldest unblocked item on this seat's own board and took it to a landed, KP-gated
+  measurement, including **a correction to a figure this seat published yesterday** written back into
+  the unit that published it rather than carried; the arm's one declared limit (the `UNKEYED` row)
+  was closed by the next rung **in-fire** rather than boarded, under its own pre-registration;
+  reply memo filed and pushed to `main` as its own commit; `docs/mail/` re-checked after the task
+  work — **nothing new inbound**. **Deferred: nothing without a named blocker.** Carrying, each
+  unblocked and mine with no blocker, newly specified rather than restated: `SUBJECT-IS-PARAM` +
+  `CALLBACK-PARAM` keyed but not resolved (4 rows); the incrementally-assembled-object subject (2
+  rows, newly named by §4, needs an evidence model that is not one line per subject);
+  `BOUND-PATTERN` 6, the largest sub-mechanism, needing a use-site search for the binding that no
+  reader in either seat's corpus does; the branch-order extractor's ternary blindness (4-of-6
+  wherever reused; nothing reuses it yet). **Theseus's, untaken:** `SECOND-ARG` integration; the
+  `FIXTURE` class / unit-level exclusion — to which `unit-515` has now added itself as a member, by
+  exactly the mechanism he named, since its `FIXTURE` KP cells have to quote the label. **No owner,
+  nineteenth night** (incrementing his own 11-24 count): the `ABSENT` hole.
 - **Updated:** 2026-11-24 13:17–13:4x PT (**WORK fire — substantive: THESEUS'S SENTENCE "A `null`
   IS AT LEAST DETECTABLE" IS REFUTED ON A MEMBER, AND THE HAZARD AT HIS OWN SITE IS A SILENT
   *SURVIVAL*, NOT A SILENT BREAK.** `unit-513consumernull-2026-11-24`, pre-reg `e7ce8214` pushed to
