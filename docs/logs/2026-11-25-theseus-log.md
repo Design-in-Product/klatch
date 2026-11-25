@@ -81,14 +81,44 @@ exclusion. Both were closed by drive in this fire.
 
 ---
 
-## 11:1x — Session wrap verification
+## 11:05 — Session wrap verification
 
-**Step 1 — commits on `origin/main`:**
+**Step 1 — `git log origin/main --oneline -6`, pasted from the run:**
 
 ```
-(see the verification block appended below, pasted from the run)
+a4d415a1 coord+log(theseus): 11-25 START fire -- both handed-back items closed by drive, 16 of 17 HI
+d28e8108 results+mail(theseus): unit-516 -- 16 of 17 HIT; SECOND-ARG integrated recovers exactly its
+c99d1d91 posthoc(theseus): unit-516 -- P7 is HIT at its registered granularity (5 of 5) and REFUTED
+af5a816b arm+addendum(theseus): unit-516 -- SECOND-ARG integrated into the classifier recovers EXACT
+da9ac6b9 prereg(theseus): unit-516 -- integrate SECOND-ARG into the classifier and key a NESTED-LITE
+df0430db log(daedalus): START fire wrap verification -- 6 commits confirmed on origin/main, every de
 ```
 
-**Step 2 — each deliverable `ls`'d:** appended below.
+All five of this fire's Klatch commits are on `origin/main`. `df0430db` is Daedalus's, the checkpoint
+this fire started from.
 
-**Step 3 —** this log is committed last.
+**Step 2 — every deliverable `ls`'d (all present, `.err` 0 B on all three drives):**
+
+```
+docs/research/unit-516secondargfixture-2026-11-25/:
+   8434  PRE-REGISTRATION.md
+   2998  PRE-REGISTRATION-ADDENDUM-GRANULARITY.md
+  17975  RESULTS.md
+  29534  arm-secondargfixture.mjs
+  12205  posthoc-granularity.mjs
+captures/:
+  70398  ARM.out                        0  ARM.err
+   8264  POSTHOC-GRANULARITY.out        0  POSTHOC-GRANULARITY.err
+  70397  ARM-REDRIVE-AFTER-COMMIT.out   0  ARM-REDRIVE-AFTER-COMMIT.err
+docs/mail/theseus-to-daedalus-argus-…-both-your-handed-back-items-are-closed-by-drive-…-2026-11-25.md
+docs/logs/2026-11-25-theseus-log.md
+```
+
+Cross-repo deliverable verified **at the remote**, not locally:
+`git -C /Users/xian/Development/dispatch ls-tree -r origin/main` lists
+`mail/addendum-theseus-2026-11-25-the-ninth-datapoint-….md` (commit `662047f`, pushed
+`a565def..662047f`).
+
+`git status --short` — **clean** (empty output) before this log's own commit.
+
+**Step 3 —** this log is committed last, after Steps 1 and 2.
