@@ -1,0 +1,161 @@
+=== HYGIENE ===
+git diff --stat HEAD -- packages/ scripts/  rc=0  bytes=0
+EMPTY — asserted, not assumed.
+
+
+=== LEVEL 1 — THE QUOTATION ===
+
+[P1] HIT  the routed text does not occur verbatim in recon.mjs
+      registered: ABSENT (0 occurrences)
+      actual:     0 occurrence(s) of "file: typeof e === 'string' ? e : e.file"
+
+  property-position hits, printed in full (a count read off rows nobody printed is not a reading):
+    recon.mjs:89  if (typeof file !== 'string' || !existsSync(abs)) return { file: String(file), hits: null };
+
+[P2] HIT  `file:` as a property label occurs in recon.mjs exactly once, and not on line 83
+      registered: 1 occurrence, at line 89, value not a ternary
+      actual:     1 occurrence(s) at line(s) [89]; value-is-ternary = [false]
+
+[P10] HIT  the property-position constraint in my own P2 key is load-bearing: the unconstrained key gives a different count
+      registered: HIT — unconstrained 2, constrained 1
+      actual:     unconstrained 2 at [83, 89], constrained 1 at [89]
+
+
+=== LEVEL 2 — THE MECHANISM (registered as a HIT for his finding) ===
+  recon.mjs:83 verbatim:    CRIPPLE === 'entry-shape-dot-file' ? e.file : typeof e === 'string' ? e : e.file;
+  position-blind match at col 41, preceding char "."
+  span after that colon:  "typeof e === 'string' ? e : e.file;"
+
+[P3] HIT  his mechanism is real: a position-blind `file:` key matches line 83, where `file` is the TAIL of `e.file` and the `:` is a ternary's else-colon
+      registered: HIT — match present at line 83, preceding char `.`
+      actual:     match present; preceding char "."; value-span is a ternary = true
+
+
+=== LEVEL 3 — THE REACH ===
+
+  every read / write / spawn / import site in the probe, printed in full:
+    probe:  51  import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+    probe:  52  import { spawnSync } from 'node:child_process';
+    probe:  53  import { dirname, join } from 'node:path';
+    probe:  54  import { fileURLToPath, pathToFileURL } from 'node:url';
+    probe:  56  import { summariseAndExit, type ProbeVerdict } from './lib/probe-outcome.mts';
+    probe:  57  import { SWEPT, classify, probeRowAnnotations, type ProbeState } from './sweep-probes.mjs';
+    probe:  81  const sweepSrc = readFileSync(SWEEP, 'utf8');
+    probe: 226  writeFileSync(
+    probe: 239  const childRun = spawnSync('npx', ['tsx', CHILD], {
+    probe: 270  const r225Src = readFileSync(join(HERE, R225), 'utf8');
+    probe: 333  copyFileSync(join(HERE, 'lib', 'strip-source.mjs'), join(SANDBOX, 'lib', 'strip-source.mjs'));
+    probe: 334  writeFileSync(MUTANT, mutatedSrc, 'utf8');
+    probe: 343  const without = (await import(pathToFileURL(MUTANT).href)) as {
+
+  the reach chain, link by link:
+    OK   1x  SWEEP is a single fixed path  <<const SWEEP = join(HERE, 'sweep-probes.mjs');>>
+    OK   1x  sweepSrc is that one file's text  <<const sweepSrc = readFileSync(SWEEP, 'utf8');>>
+    OK   1x  srcLines comes from sweepSrc and nothing else  <<const srcLines = sweepSrc.split('\n');>>
+
+  each `file:` key occurrence, and the iterable of its own loop:
+    probe:97  nearest preceding for( is probe:96  "for (const line of srcLines) {"  OK
+    probe:106  nearest preceding for( is probe:105  "for (const line of srcLines) {"  OK
+
+  does the probe mention the routed file at all?
+    "recon.mjs": false
+    "unit-307c4": false
+    "blast-radius": false
+
+[P4] HIT  reach of my reader over recon.mjs is zero: both `file:` loops read exactly one file's text, scripts/sweep-probes.mjs, and recon.mjs is not in the probe's read set
+      registered: 1 subject file; recon.mjs absent
+      actual:     2 key occurrence(s) at probe lines [97, 106]; chain 3 of 3; loops 2 of 2 over srcLines; routed-file mentions 0 of 3
+
+  P5-KP — the counter on planted cells, before any 0 off the live subject is read:
+    cell:     file: cond ? 'probe-a.mts' : 'probe-b.mts',
+    cell:     file: "probe-double-quoted.mts",
+    cell:     file: 'probe-readable.mts',
+    counted unreadable: cell 1  file: cond ? 'probe-a.mts' : 'probe-b.mts',
+    counted unreadable: cell 2  file: "probe-double-quoted.mts",
+
+[P5-KP] HIT  the P5 counter has a known positive: it counts a ternary-valued and a double-quoted `file:` as unreadable, and does NOT count a readable one
+      registered: >= 2 on the planted cells (and the readable cell not counted)
+      actual:     2 of 3 planted cells counted unreadable, at cell(s) [1, 2]
+
+  live subject: 45 property-position `file:` line(s) in scripts/sweep-probes.mjs
+
+[P5] HIT  hazard census on the real subject: no `file:` property line in scripts/sweep-probes.mjs defeats my key
+      registered: 0
+      actual:     0 unreadable of 45 property-position `file:` line(s)
+
+
+=== GUARD LEGS — A1/A2 sliced from the probe at run time ===
+  slice: 3413 bytes, probe source offsets 5810..9223
+  slice markers, asserted before compiling:
+    OK   want 2 got 2  <</^\s*file: '([^']+)',/>>
+    OK   want 1 got 1  <<kpOwner === R225>>
+    OK   want 1 got 1  <<sourcePop === objectPop>>
+    OK   want 1 got 1  <<ownerCount(R225) === 2>>
+    OK   want 2 got 2  <<owners.length ===>>
+    OK   want 1 got 1  <<owners.length ===
+      SWEPT.filter((s) => s.refusal || s.skip).reduce((n, s) => n + ownerCount(s.file), 0),>>
+    OK   want 2 got 2  <<check(>>
+    OK   want 1 got 1  <<const owners: string[] = [];>>
+    OK   want 1 got 1  <<const ownerCount = (f: string) =>>>
+  declared transforms on the slice:
+    OK   1x  "const owners: string[] = [];" -> "const owners = [];"
+    OK   1x  "const ownerCount = (f: string) =>" -> "const ownerCount = (f) =>"
+    OK   2x  "check(" -> "CAPTURE("
+
+  three drives of the SAME compiled slice, one variable each:
+  LIVE          (real subject, real key): A1=true  A2=true
+  KEY-CRIPPLE   (real subject, dead key): A1=false  A2=false
+
+  HAZARD-SIM plant target "    file: 'probe-round225-a-citation-is-not-a-call.mts'," occurs 1x in the subject
+  HAZARD-SIM    (planted subject, real key): A1=false  A2=false
+
+[P6] HIT  a dead `file:` key in this probe is not silent: A1, the probe's own known positive, goes false
+      registered: A1 live true -> crippled false
+      actual:     A1 live=true  key-cripple=false
+
+[P7] HIT  A2's cross-key agreement also catches a dead key
+      registered: A2 live true -> crippled false
+      actual:     A2 live=true  key-cripple=false
+
+[P11] HIT  under HAZARD-SIM — key alive, one subject `file:` value turned into a ternary — A1 goes false
+      registered: A1 live true -> HAZARD-SIM false
+      actual:     A1 live=true  hazard-sim=false  (plant occurrences 1)
+
+[P12] REFUTED  the two cripples are not one cripple: at least one of A1/A2 separates KEY-CRIPPLE from HAZARD-SIM
+      registered: registered OPEN — either outcome reportable, neither a HIT for me
+      actual:     key-cripple pair false/false; hazard-sim pair false/false; differ=false
+
+
+=== THE TWO NUMBERS ===
+  of the probe's 2 `file:` key occurrences:
+    reachable by the routed ternary                                  0
+    guarded by a known positive that reddens when the key dies       2
+
+[P8] HIT  the consumer-level answer, both numbers or neither
+      registered: 0 reachable, 2 guarded
+      actual:     0 reachable, 2 guarded
+
+[P9] HIT  my site is a SHAPE member and not a HAZARD member under his own definition, so his PH3 (hazard 1 of 6) HELD and its refutation was an artefact of the position-blind key P3 names
+      registered: HIT — PH3 held; hazard 1, gap 5
+      actual:     reach of my reader over the routed ternary = 0; his published hazard 2 of 6 -> 1 of 6 with my site moved to SHAPE; gap 4 -> 5
+
+
+=== SUMMARY ===
+  HIT      P1
+  HIT      P2
+  HIT      P10
+  HIT      P3
+  HIT      P4
+  HIT      P5-KP
+  HIT      P5
+  HIT      P6
+  HIT      P7
+  HIT      P11
+  REFUTED  P12
+  HIT      P8
+  HIT      P9
+
+  12 of 13 registered predictions HIT, 1 REFUTED.
+  NOT MEASURED: whether a 2-hit reader of `file:` in a round-373 probe is worth curing.
+  That is a judgement, and this arm deliberately does not make it — it prices the
+  breakage (0 reachable) and the detection (2 guarded) and stops.
