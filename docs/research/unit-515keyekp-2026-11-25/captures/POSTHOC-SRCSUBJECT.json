@@ -1,0 +1,48 @@
+{
+  "rev": "a152501d",
+  "drivenAt": "09:26:04",
+  "nameKp": {
+    "pass": 5,
+    "total": 5
+  },
+  "mechSliceBytes": 1041,
+  "byWhy": {
+    "RECEIVER-OFF-LINE": 2,
+    "BOUND-PATTERN": 6,
+    "HELPER-ARG": 2,
+    "CALLBACK-PARAM": 3,
+    "SUBJECT-IS-PARAM": 0,
+    "UNKEYED": 1
+  },
+  "bySrc": {
+    "RECEIVER-OFF-LINE": 2,
+    "BOUND-PATTERN": 6,
+    "HELPER-ARG": 2,
+    "CALLBACK-PARAM": 3,
+    "SUBJECT-IS-PARAM": 1,
+    "UNKEYED": 0
+  },
+  "movedSites": [
+    "docs/research/verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-member.mjs:22"
+  ],
+  "moved": 1,
+  "unchanged": 13,
+  "interval": {
+    "candidateA": [
+      1,
+      12
+    ],
+    "candidateB": [
+      1,
+      8
+    ],
+    "reproducesPublished12": "A"
+  },
+  "silent": {
+    "all": 11,
+    "gate": 1,
+    "unresolved": 7,
+    "other": 3
+  },
+  "failures": 0
+}

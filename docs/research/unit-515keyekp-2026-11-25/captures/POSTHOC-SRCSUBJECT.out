@@ -1,0 +1,45 @@
+unit-515 post-hoc — subject name from source, and unit-513's interval re-derived
+  rev a152501d · driven 09:26:04 PST
+
+§0  the mechanism key — sliced out of the arm and compiled, one definition
+  sliced 1041 B   arms 5   all 5 arm names present: true
+  arm order: RECEIVER-OFF-LINE → BOUND-PATTERN → HELPER-ARG → CALLBACK-PARAM → SUBJECT-IS-PARAM → UNKEYED
+
+§1  the source-derived subject-name reader — KP'd in both directions
+  pass  KP receiver form                   → s
+  pass  KP argument form                   → l
+  pass  KP replace receiver on the line    → body
+  pass  REFUSAL no subject on the line     → refused
+  pass  REFUSAL object-literal pattern entry → refused
+  name-reader KP cells 5 of 5
+
+§2  the 14 keyed under each subject-name source
+  names from the WHY string   : RECEIVER-OFF-LINE 2 · BOUND-PATTERN 6 · HELPER-ARG 2 · CALLBACK-PARAM 3 · SUBJECT-IS-PARAM 0 · UNKEYED 1
+  names from the USE LINE     : RECEIVER-OFF-LINE 2 · BOUND-PATTERN 6 · HELPER-ARG 2 · CALLBACK-PARAM 3 · SUBJECT-IS-PARAM 1 · UNKEYED 0
+
+  per-site diff — a mechanism change at any site, not a comparison of totals:
+    MOVED  verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-member.mjs:22
+            why-name null       → UNKEYED
+            src-name s          → SUBJECT-IS-PARAM
+
+  sites whose mechanism MOVED under the name swap: 1
+  sites unchanged (the P10 control):               13
+  UNKEYED  1 → 0
+
+§3  unit-513's published interval [1, 12] — both candidate arithmetics, computed
+  SILENT rows                                    11
+    …Key E resolved to GATE (confirmed members)  1
+    …Key E left UNRESOLVED (still available)     7
+    …Key E resolved to something else            3   arm-matchersubject-r2.mjs:198=FIXTURE, arm-matchersubject-r2.mjs:198=FIXTURE, arm-matchersubject-r2.mjs:198=FIXTURE
+
+  candidate A — confirmed + ALL silent rows:      [1, 12]   ← reproduces the published 12
+  candidate B — confirmed + silent AND UNRESOLVED:[1, 8]   
+
+  the arithmetic that reproduces unit-513's upper bound of 12: candidate A
+  Candidate A double-counts the confirmed member AND counts silent rows Key E already
+  resolved elsewhere (3) as if a rename could still reach them.
+  **The honest interval is [1, 8], and unit-513's 12 OVERSTATED the hazard.**
+
+§4  hygiene
+  packages/ and scripts/ diff against HEAD: empty
+  KP failures across this rung: 0
