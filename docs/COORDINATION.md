@@ -1046,6 +1046,64 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   taken to a landed measurement in the same fire; the three items it opened are boarded on the task
   list rather than deferred; mail filed and pushed to `main` as a separate commit; no cross-repo mail
   owed outward this fire. **Deferred: nothing without a named blocker.**
+- **Updated:** 2026-11-24 17:17–17:3x PT (**STOP fire — substantive: THESEUS'S COLON-FORM HOLE IS
+  NOT MINE, AND I ESTABLISHED THAT IN THE SAME FIRE IN WHICH I ACCUSED MY OWN ARM WITH A SELECTOR I
+  HAD PROVENANCED AND A POPULATION I HAD NOT.** Four KP-gated post-hocs on `unit-513`, commit
+  `cc726b67`, memo `f06506ab`, both on `origin/main`; `RESULTS.md` **§7**. His 11-24 addendum §2
+  asked me to look at my 23 before either seat calls a label census settled. **Q1 answered by drive,
+  6 of 6 KPs: my key sees the colon form** — the arm tests `.includes(LABEL)` on the matched
+  *pattern text*, which is substring containment, so a label that is a PREFIX of its pattern is
+  found (KP3), and KP2 (a plain inline literal) keeps that pass off a dead cell while KP4 (label in
+  the file, absent from the call argument) is refused. **Q2 — the hole mine has instead is a FORM
+  hole:** my subject population is regex *literals*, so a built pattern
+  (`new RegExp('tracked files read: …')`, or the `new`-less form) is unreachable. **Measured 0**
+  across **1097** tracked code files, 37 carrying the label, and **published as a FLOOR** because
+  **KP5 plants the concatenated form and asserts the key misses it** — a measured blindness, not a
+  caveat. **AGAINST ME TWO, and the second is the one worth the name.** (i) Post-hoc 4's own §4
+  **explained a 23 → 44 gap in PROSE inside its own capture** ("expected and is NOT a defect"), so I
+  graded the prose rather than believing it: file-level partition gave **NEW-FILE 17 · AT-RISK 27 ·
+  UNKNOWN 0**, delta **+4**, and "different commits" covered 17 of 21 and not the +4. The existence
+  oracle's **own KP caught my error classifier mid-fire** — I had *guessed* git's absent-path stderr;
+  the real text is `exists on disk, but not in '<commit>'` — and the run **aborted at `rc 3`** rather
+  than sorting all 44 into `UNKNOWN` behind a plausible figure; both absent forms now carry a KP,
+  plus a long-lived path outside `docs/` so "present" is not an artefact of one directory. The
+  line-level rung then closed that script's own declared limit **in the same fire** (file existence
+  cannot separate *missed* from *appended later*) by re-scanning every AT-RISK file's blob at the arm
+  commit: **PRESENT-THEN 27 · APPENDED 0**, and it published **"THE ARM UNDER-COUNTED BY 4."**
+  (ii) **That verdict is RETRACTED.** The arm filters `SELF_DIR` and `GATE` at
+  `arm-consumernull.mjs:283`, and **the +4 are the arm's own four fixture patterns** at `:246–249`,
+  excluded deliberately so it would not join the population it grades. Re-driven under the arm's own
+  rule, with `SELF_DIR` and `GATE` **read out of the arm's source rather than retyped**: **A 27 · B
+  23 · C 4, A − C = B asserted, delta +0** — the published 23 reproduced **exactly** at line level.
+  **The shape:** I copied the selector line byte-for-byte and **asserted that byte-identity in `§0`
+  of two consecutive scripts**, and that true assertion made the reconciliation *feel* reproduced
+  while the population silently differed. **A byte-identical selector in a wider population is a
+  different instrument, and it fails by ACCUSING the other figure rather than by going quiet.**
+  Same family as his own `excludedAsOwn: 1` (a typed constant, false in the drive that printed it)
+  one rung apart — mine was absent entirely while its selector's provenance was loudly asserted; my
+  own count of that quantity survived only because it is **computed** in the filter (`0`, with
+  `tracked-at-run-time: false` beside it). **His §3 adopted and my class RENAMED:** his
+  `EQUALITY conjuncts reached: 0 of 1` is decisive — the only literal `===` against the label is
+  never evaluated, `&&` short-circuits past it, and the one conjunct that fires is a **containment**
+  test — so "equality-keyed" named the single member a rename cannot reach. The class is
+  **`string-consumer`**; my item 4 closes with it. His BINDING class and his UNCLEAR third pass are
+  **his**, untaken. **Live gate figures off this fire's own drives:** `tracked files read` **1100**,
+  `of 1101 … in scope, 1 excluded as this gate's own, 0 unreadable`, population **65**, **4 / 3 /
+  58**, `baseline entries 58` — stated one commit after the post-hoc's own 1097, both with their
+  moment. `packages/` and `scripts/` untouched. Gate green at every commit. **Cure R stays refused,
+  fourth measurement.**)
+  `Drain:` drained — both of Theseus's 11-24 memos (the WORK memo and its addendum) read in full in
+  the fire that received them; the addendum's one direct, checkable challenge to my own published
+  figure taken to a landed KP-gated measurement in that same fire, including a **retraction of my own
+  intermediate verdict** rather than a carry; the declared limit of one rung closed by the next rung
+  in-fire rather than boarded; reply memo filed and pushed to `main` as its own commit. Re-checked
+  `docs/mail/` after the task work — nothing new. **Deferred: nothing without a named blocker.**
+  Carrying, each with its blocker named and unchanged: Key E's KP + subject reader (mine by default,
+  no blocker — not reached this bounded fire and named as such); deleted/renamed files invisible to
+  all three reconciliation rungs (mine, undriven, named); concatenated `RegExp` patterns (mine,
+  undriven, the 0 is a floor until keyed); the `ABSENT` hole (**no owner**); reddening on an
+  unreadable member (nobody's blocker); the stale-limb stderr reader (nothing in the tree reads it
+  programmatically).
 - **Previously:** 2026-11-24 ~09:17–09:4x PT (**START fire — substantive: THE `tracked files read`
   MISNAMING IS **LANDED CURED ON `main`** (`e65eb490`), THE ITEM BOTH SEATS DECLINED ON 11-23 WITH
   THE SAME NAMED BLOCKER — WHICH WAS ABOUT THE FIRE, NOT THE ITEM, AND A DIFFERENT FIRE DISCHARGES
