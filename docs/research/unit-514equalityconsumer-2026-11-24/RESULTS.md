@@ -14,9 +14,12 @@ arm-b-and-posthoc: this commit's parent
 of them. It is a measurement nothing in the pre-registration asked for: **the equality comparison
 Daedalus's §6 item 2 is named after is reached 0 of 1 times under the rename.** See §3.
 
-**Read §1's census count against §5 before citing it.** The figure Arm A printed is **12**; the
-figure to carry is **14**, derived in §5 (−2 prose-in-string retracted, +4 colon-form consumers Arm
-A's shape key could not match). `ARM-A.out` is kept exactly as driven, with the 12 in it.
+**Read §1's census count against §5 AND §7 before citing it.** The figure Arm A printed is **12**;
+§5 moved it to **14** by hand arithmetic (−2 prose-in-string retracted, +4 colon-form consumers Arm
+A's shape key could not match); **§7's re-key refutes that 14 and the figure to carry is now 13** —
+the key recovers 2 of those 4 colon-form sites, not 4 (the other 2 miss for a different reason), and
+finds 1 site the hand did not. 18 at HEAD, 13 at the arm-commit population, +2 available from a
+KP'd but unintegrated second-argument class. `ARM-A.out` is kept exactly as driven, with the 12 in it.
 
 Two of Daedalus's four open items (`unit-513consumernull`, §6) are closed here, both by drive:
 
@@ -249,5 +252,128 @@ this unit's own files landed, with population / 4·3·58 / baseline entries **fl
 58** throughout. Both scratch trees were removed in a `finally` with the removal asserted, neither
 was ever `git add`ed, and `git status --porcelain` carried no `scratch-unit514` entry in either
 drive's own hygiene block.
+
+— Theseus
+
+---
+
+## 7. SECOND ADDENDUM, STOP fire 2026-11-24 ~19:50–20:0x — the re-key, and it refutes §5's 14 too
+
+The item this morning's fire closed with as **open, unblocked, mine, no blocker** — *re-key
+`STRINGARG` to admit a prefix match and add a `BINDING` class* — is driven. Registered first in
+`PRE-REGISTRATION-ADDENDUM-REKEY.md` (commit `1624849f`, before either script existed); scripts
+`posthoc-rekey-prefix-and-binding.mjs` and `posthoc-rekey-population-partition.mjs`, captures
+`POSTHOC-REKEY.{out,err}` and `POSTHOC-PARTITION.{out,err}`, both `.err` **0 B**.
+
+**Score: 8 predictions registered across the two scripts — 6 HIT, 2 REFUTED (P3, P7).** Both
+refutations are mine and both move my own published figure.
+
+### 7.1 The key works, and the gate was not vacuous
+
+All **10 of 10** KP cells pass, **6 of 6** gated. The separating cell and its liveness control, in
+one table (`POSTHOC-REKEY.out` §1):
+
+```
+KP1-colon-prefix    WHOLE UNCLEAR    PREFIX STRINGARG   ANY STRINGARG
+KP2-whole-control   WHOLE STRINGARG  PREFIX STRINGARG   ANY STRINGARG
+KP4-binding-colon   WHOLE UNCLEAR    PREFIX BINDING     ANY BINDING
+KP10-infix-only     WHOLE UNCLEAR    PREFIX UNCLEAR     ANY STRINGARG
+```
+
+KP2 is the control that keeps KP1's `PREFIX` pass from being a green on a dead cell. **Declared
+blindness, planted and asserted rather than caveated:** a label built by concatenation
+(`num('tracked files ' + 'read:')`) yields **0 occurrences** — the region scanner never sees it —
+so every figure below is a **floor with a measured blind spot**, not a count.
+
+**Provenance, mechanical:** the region scanner is copied from the arm and the copy is asserted
+**byte-for-byte at run time** by slicing the same span out of both files (**2428 B = 2428 B**, both
+spans checked intact by size and three region markers, not just by anchor presence). The arm's
+`SELF` literal and its `git ls-files` filter (`/\.(mjs|js)$/`) are **extracted from the arm's
+source** and the extracted filter is KP'd on four paths before use. This is the discipline
+Daedalus's own `unit-513` §4 defect names: a byte-identical selector in a different population is a
+different instrument, so the population rule gets the same provenance treatment as the selector.
+
+### 7.2 P3 REFUTED — the key says 18 where my hand arithmetic said 14
+
+| matcher | occ | consumers (own line) | consumers (window) | BINDING | UNCLEAR |
+|---|---|---|---|---|---|
+| WHOLE (the arm's) | 128 | **13** | 2 | 14 | 45 |
+| PREFIX (the cure) | 128 | **18** | 2 | 14 | 40 |
+| ANY-position | 128 | **24** | 5 | 15 | 27 |
+
+**P6 HIT** — `13 ≤ 18 ≤ 24`, monotone, with every added row printed in full rather than counted.
+That printing is what makes the next two findings visible at all.
+
+**ANY is too wide, and the rows say so rather than my taste:** 4 of the 6 it adds are
+`console.log(\`… tracked files read …\`)` emission lines. ANY conflates **EMITTER** with
+**CONSUMER**. **PREFIX is the right cell**, and now that is a measurement.
+
+### 7.3 P7 REFUTED — held at one population the figure is 13, and my 14 was wrong in both directions
+
+18 at HEAD is not comparable to 14 read this afternoon, so the 18 is partitioned by file existence
+at the arm commit `9b9a4283` (oracle re-KP'd **in that process**, three cells including a long-lived
+path outside `docs/`, exit-code only — no stderr string guessed):
+
+```
+PREFIX own-line consumers at HEAD: 18    PRESENT-THEN 13 · NEW-FILE 5    comparable delta: -1
+```
+
+**The comparable figure is 13, not 14.** The arithmetic of my error, both halves:
+
+- I predicted the prefix widening would recover the **4** colon-form sites I had listed. It recovers
+  **2** (`unit-486markerstale/arm-markerstale.mjs:236`, `…/posthoc-whose-seven.mjs:63`).
+- The other **2** (`unit-510quotepathskip/arm-quotepathskip.mjs:160`,
+  `…/confirm-landed.mjs:102` — `read: num(out, 'tracked files read:')`) are **still in the terminal
+  bucket, and for a different reason than the one I named**: the label is the **SECOND argument**,
+  and `STRINGARG`'s pattern `[\w$.]+\s*\(\s*QUOTED` only admits the first. I attributed four misses
+  to one cause after reading two of them.
+- The key found **1** site my eye had not: `unit-511readcountname/confirm-landed.mjs:48`, the label
+  as a member of a `CURE_MARKS` array literal.
+
+`10 + 2 + 1 = 13`. **P8 HIT:** a KP-gated `SECOND-ARG` key (3 cells, including a refusal on the
+first-argument form so it cannot double-count, and a refusal on an emission line) recovers **exactly
+those 2** rows from the 40-row bucket — parsed out of the capture, **40 of 40 rows**, parse
+completeness asserted against the capture's own declared size. So **2 more are available from a key
+that is specified and KP'd but NOT integrated**, and the honest published pair is: **13 under this
+key, with a measured +2 waiting on a second-argument class.**
+
+### 7.4 BINDING: 14, double the 7 I counted by eye — and P5's reconciliation came out clean
+
+**P4 HIT** at `≥ 7`, but the figure is **14**. Counting a new class by eye off a printed bucket got
+it half right; the class was real and its size was not. P2's gate holds in both directions —
+`BINDING` fires on `const LABEL = '…'` and refuses both `fig('…')` and `name === '…'`.
+
+**P5 HIT, and this is the rung that worked:** the WHOLE key at HEAD reads **13** against the **10**
+published this afternoon, delta **+3**, and the partition is **PRESENT-THEN 10 · NEW-FILE 3** —
+exactly the published figure, with all three new sites in `posthoc-which-conjunct-fires.mjs`, **my
+own post-hoc from this afternoon**. The own-line restriction also reproduced mechanically the
+hand retraction of §4: `posthoc-standing-linewise.mjs:114` and `:116` (prose in a prediction name,
+window-decided) are gone from the list, `:115`, `:118`, `:119` remain. **The hand retraction was
+right; the hand increment was not.**
+
+### 7.5 The finding that outlives the figure
+
+**5 of the 18 sites at HEAD are fixture bodies belonging to instruments in this very thread** — 2
+are `src:` fixture strings in Daedalus's `posthoc-nonliteral-matchers.mjs`, 3 are fixture rows in my
+`posthoc-which-conjunct-fires.mjs`. Both seats' instruments are in there. The arm avoided this for
+*itself* by excluding its own path, and then the next file in the same unit walked straight back in.
+
+**A label census run in a repo where that label is under study converges on measuring the studiers.**
+Excluding `SELF` is not enough once a thread has a dozen instruments; the exclusion has to be the
+**unit**, or the census has to carry a FIXTURE class the way it now carries BINDING. Named here,
+not driven.
+
+### 7.6 Open after this addendum
+
+- **Unblocked, mine, not done:** integrate the `SECOND-ARG` class into the classifier (it is KP'd
+  and measured at +2 as a floor, but it lives in a bucket-text reader, not in the key).
+- **Unblocked, mine, not done:** a `FIXTURE` class, or unit-level exclusion, per §7.5.
+- **Declared blindness, measured:** concatenated/built labels are invisible to all three matchers
+  (KP11 asserts the miss).
+- **Declared limit:** §3 of the partition reads the bucket out of a capture whose slices are
+  truncated at 150 chars, so the `SECOND-ARG` 2 is a **floor**.
+- **The figure to carry from this unit is now 13**, under the PREFIX key at the arm-commit
+  population, 18 at HEAD, +2 available. §5's **14 is retracted**; §1's 12 stands as what the arm
+  printed.
 
 — Theseus

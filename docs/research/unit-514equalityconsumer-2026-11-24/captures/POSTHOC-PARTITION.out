@@ -1,0 +1,198 @@
+=== §0 IDENTIFY THE ARTEFACT — a capture is only usable once it is identified ===
+
+  PASS  trailing JSON parsed
+  PASS  P3 is REFUTED in it
+  PASS  consumersPrefix list length is 18
+  PASS  figures.PREFIX.consumersOwnLine is 18
+  PASS  scanner was byte-identical in that drive
+
+=== §1 EXISTENCE ORACLE — re-KP'd in this process, not inherited ===
+
+  PASS  docs/research/unit-514equalityconsumer-2026-11-24/arm-equalityconsumer.mjs -> true (want true) — the arm itself, added IN that commit
+  PASS  packages/server/src/db/index.ts -> true (want true) — long-lived path OUTSIDE docs/
+  PASS  docs/research/unit-514equalityconsumer-2026-11-24/posthoc-rekey-population-partition.mjs -> false (want false) — this script, created after that commit
+
+=== §2 P7 — the 18 partitioned by file existence at the arm commit ===
+
+  PREFIX own-line consumers at HEAD: 18
+  PRESENT-THEN 13 · NEW-FILE 5   (sums: true)
+  published hand figure: 14   comparable delta: -1
+
+  NEW-FILE rows (invisible to the hand figure because their files did not exist yet):
+    docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs:127  STRINGARG  src: `const re = new RegExp('tracked files read: (\\\\d+)');\nconst m = out.match(re);\n`,
+    docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs:157  STRINGARG  src: `const re = RegExp('tracked files read: (\\\\d+)', 'm');\n`,
+    docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs:72  EQUALITY  { src: "movedFigures[0] === 'tracked files read'", kind: 'EQUALITY', f: (j) => j.movedFigures[0] === OLD },
+    docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs:77  INCLUDES  { src: "firstToLast.onlyInFirst[0].includes('tracked files read')", kind: 'INCLUDES', f: (j) => (j.preToPost.onlyInPre[0
+    docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs:78  INCLUDES  { src: "firstToLast.onlyInSecond[0].includes('tracked files read')", kind: 'INCLUDES', f: (j) => (j.preToPost.onlyInPost
+
+  PRESENT-THEN rows:
+    docs/research/unit-486markerstale-2026-11-19/arm-markerstale.mjs:236  STRINGARG  tracked: num('tracked files read:'),
+    docs/research/unit-486markerstale-2026-11-19/posthoc-whose-seven.mjs:63  STRINGARG  const hisTracked = hisNum('tracked files read:');
+    docs/research/unit-501redbranchpin-2026-11-22/posthoc-which-lines-move.mjs:87  ARRMEMBER  ['tracked files read', /tracked files read:\s*(\d+)/],
+    docs/research/unit-503stalelabelwidth-2026-11-22/arm-realgate-newones.mjs:104  STRINGARG  trackedRead: readFig('tracked files read'),
+    docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs:58  STRINGARG  trackedRead: fig('tracked files read'),
+    docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:115  EQUALITY  movedFigures.length === 1 && movedFigures[0] === 'tracked files read',
+    docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:118  INCLUDES  && firstToLast.onlyInFirst[0].includes('tracked files read')
+    docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:119  INCLUDES  && firstToLast.onlyInSecond[0].includes('tracked files read'),
+    docs/research/unit-511readcountname-2026-11-24/confirm-landed.mjs:48  ARRMEMBER  const CURE_MARKS = ['filesRead += 1', 'tracked files read: ${filesRead}', 'unreadableFiles.length} unreadable'];
+    docs/research/unit-511readcountname-2026-11-24/confirm-landed.mjs:114  STRINGARG  read: num('tracked files read'),
+    docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs:180  INCLUDES  const line = lines.findIndex((l) => l.includes('tracked files read')) + 1;
+    docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs:55  INCLUDES  const labelIdx = l.indexOf('tracked files read');
+    docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs:242  INCLUDES  const line = lines.findIndex((l) => l.includes('tracked files read')) + 1;
+
+=== §3 P8 — the SECOND-ARGUMENT hole, KP first ===
+
+  PASS  true (want true)  read: num(out, 'tracked files read:'),   — the real shape, from the two sites this seat published
+  PASS  false (want false)  const v = num('tracked files read:');   — FIRST-argument form — STRINGARG already has it, must not double-count
+  PASS  false (want false)  console.log(`  tracked files read: ${n}`);   — an emission line — must not be swept in
+
+  terminal-bucket rows parsed out of the capture: 40 (capture declares 40) — parse complete: true
+  recovered by the SECOND-ARG key: 2
+    docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs:160  read: num(out, 'tracked files read:'),
+    docs/research/unit-510quotepathskip-2026-11-23/confirm-landed.mjs:102  read: num(out, 'tracked files read:'),
+
+  DECLARED LIMIT: the capture truncates each slice at 150 chars, so a second-argument
+  form further right than that cannot be seen from here. This is a FLOOR.
+
+=== §4 REGISTERED PREDICTIONS ===
+
+  REFUTED   P7  of the 18, the subset in files existing at 9b9a4283 is exactly 14  —  measured 13
+  HIT       P8  a KP-gated SECOND-ARG key recovers at least 2 rows from the terminal bucket  —  recovered 2
+
+{
+  "identity": [
+    {
+      "what": "trailing JSON parsed",
+      "ok": true
+    },
+    {
+      "what": "P3 is REFUTED in it",
+      "ok": true
+    },
+    {
+      "what": "consumersPrefix list length is 18",
+      "ok": true
+    },
+    {
+      "what": "figures.PREFIX.consumersOwnLine is 18",
+      "ok": true
+    },
+    {
+      "what": "scanner was byte-identical in that drive",
+      "ok": true
+    }
+  ],
+  "oracleKp": [
+    {
+      "path": "docs/research/unit-514equalityconsumer-2026-11-24/arm-equalityconsumer.mjs",
+      "want": true,
+      "note": "the arm itself, added IN that commit",
+      "got": true
+    },
+    {
+      "path": "packages/server/src/db/index.ts",
+      "want": true,
+      "note": "long-lived path OUTSIDE docs/",
+      "got": true
+    },
+    {
+      "path": "docs/research/unit-514equalityconsumer-2026-11-24/posthoc-rekey-population-partition.mjs",
+      "want": false,
+      "note": "this script, created after that commit",
+      "got": false
+    }
+  ],
+  "p7": {
+    "prefixAtHead": 18,
+    "presentThen": 13,
+    "newFile": 5,
+    "publishedHandFigure": 14,
+    "comparableDelta": -1,
+    "newFileRows": [
+      "docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs:127",
+      "docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs:157",
+      "docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs:72",
+      "docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs:77",
+      "docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs:78"
+    ],
+    "presentThenRows": [
+      {
+        "site": "docs/research/unit-486markerstale-2026-11-19/arm-markerstale.mjs:236",
+        "shape": "STRINGARG"
+      },
+      {
+        "site": "docs/research/unit-486markerstale-2026-11-19/posthoc-whose-seven.mjs:63",
+        "shape": "STRINGARG"
+      },
+      {
+        "site": "docs/research/unit-501redbranchpin-2026-11-22/posthoc-which-lines-move.mjs:87",
+        "shape": "ARRMEMBER"
+      },
+      {
+        "site": "docs/research/unit-503stalelabelwidth-2026-11-22/arm-realgate-newones.mjs:104",
+        "shape": "STRINGARG"
+      },
+      {
+        "site": "docs/research/unit-503stalelabelwidth-2026-11-22/posthoc-p7-own-landing.mjs:58",
+        "shape": "STRINGARG"
+      },
+      {
+        "site": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:115",
+        "shape": "EQUALITY"
+      },
+      {
+        "site": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:118",
+        "shape": "INCLUDES"
+      },
+      {
+        "site": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:119",
+        "shape": "INCLUDES"
+      },
+      {
+        "site": "docs/research/unit-511readcountname-2026-11-24/confirm-landed.mjs:48",
+        "shape": "ARRMEMBER"
+      },
+      {
+        "site": "docs/research/unit-511readcountname-2026-11-24/confirm-landed.mjs:114",
+        "shape": "STRINGARG"
+      },
+      {
+        "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-helper-resolution.mjs:180",
+        "shape": "INCLUDES"
+      },
+      {
+        "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs:55",
+        "shape": "INCLUDES"
+      },
+      {
+        "site": "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs:242",
+        "shape": "INCLUDES"
+      }
+    ]
+  },
+  "p8": {
+    "bucketRowsParsed": 40,
+    "bucketDeclared": 40,
+    "parseComplete": true,
+    "secondArgKpOk": true,
+    "recovered": [
+      "docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs:160",
+      "docs/research/unit-510quotepathskip-2026-11-23/confirm-landed.mjs:102"
+    ],
+    "declaredLimit": "capture truncates deciding slices at 150 chars; this is a floor"
+  },
+  "predictions": [
+    {
+      "id": "P7",
+      "text": "of the 18, the subset in files existing at 9b9a4283 is exactly 14",
+      "verdict": "REFUTED",
+      "note": "measured 13"
+    },
+    {
+      "id": "P8",
+      "text": "a KP-gated SECOND-ARG key recovers at least 2 rows from the terminal bucket",
+      "verdict": "HIT",
+      "note": "recovered 2"
+    }
+  ]
+}
