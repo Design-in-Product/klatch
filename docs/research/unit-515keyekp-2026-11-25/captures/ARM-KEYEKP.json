@@ -1,0 +1,215 @@
+{
+  "rev": "deb46404",
+  "drivenAt": "09:24:49",
+  "bodyBytes": 985,
+  "branchOrder": [
+    "UNRESOLVED",
+    "FIXTURE",
+    "FIXTURE",
+    "UNRESOLVED"
+  ],
+  "kp": {
+    "pass": 10,
+    "total": 10,
+    "cells": [
+      {
+        "name": "FIXTURE-direct",
+        "want": "FIXTURE"
+      },
+      {
+        "name": "FIXTURE-bound",
+        "want": "FIXTURE"
+      },
+      {
+        "name": "GATE",
+        "want": "GATE"
+      },
+      {
+        "name": "OTHER-PROCESS",
+        "want": "OTHER-PROCESS"
+      },
+      {
+        "name": "CAPTURE",
+        "want": "CAPTURE"
+      },
+      {
+        "name": "FILE",
+        "want": "FILE"
+      },
+      {
+        "name": "UNRESOLVED-no-subject",
+        "want": "UNRESOLVED"
+      },
+      {
+        "name": "UNRESOLVED-no-origin",
+        "want": "UNRESOLVED"
+      },
+      {
+        "name": "PRECEDENCE literal-beats-process",
+        "want": "FIXTURE"
+      },
+      {
+        "name": "REFUSAL literal-binding-but-also-a-read",
+        "want": "FILE"
+      }
+    ]
+  },
+  "cureKp": {
+    "pass": 5,
+    "total": 5
+  },
+  "published": {
+    "UNRESOLVED": 14,
+    "FIXTURE": 3,
+    "GATE": 3,
+    "OTHER-PROCESS": 0,
+    "CAPTURE": 2,
+    "FILE": 0
+  },
+  "afterCure": {
+    "UNRESOLVED": 14,
+    "FIXTURE": 3,
+    "GATE": 3,
+    "OTHER-PROCESS": 0,
+    "CAPTURE": 2,
+    "FILE": 0
+  },
+  "bucketByReasonString": {
+    "no-subject-expression": 8,
+    "no-origin-named": 6
+  },
+  "mechanisms": {
+    "RECEIVER-OFF-LINE": 2,
+    "BOUND-PATTERN": 6,
+    "HELPER-ARG": 2,
+    "CALLBACK-PARAM": 3,
+    "SUBJECT-IS-PARAM": 0,
+    "UNKEYED": 1
+  },
+  "crossCutMechanisms": [
+    "BOUND-PATTERN"
+  ],
+  "keyed": [
+    {
+      "site": "docs/research/unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs:94",
+      "mech": "HELPER-ARG",
+      "consumer": "REPORTED",
+      "reasonString": "no-subject",
+      "use": "trackedRead: one(/^\\s*tracked files read: (\\d+)/m),"
+    },
+    {
+      "site": "docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:70",
+      "mech": "BOUND-PATTERN",
+      "consumer": "THROW",
+      "reasonString": "no-subject",
+      "use": "const TRACKED = /\\n {2}tracked files read: (\\d+)/;"
+    },
+    {
+      "site": "docs/research/unit-500trackedcomplement-2026-11-22/arm-tracked-complement.mjs:45",
+      "mech": "BOUND-PATTERN",
+      "consumer": "REPORTED",
+      "reasonString": "no-subject",
+      "use": "read: /tracked files read: (\\d+)/,"
+    },
+    {
+      "site": "docs/research/unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:20",
+      "mech": "BOUND-PATTERN",
+      "consumer": "UNCLEAR_R3",
+      "reasonString": "no-origin",
+      "use": "const READ = /^(\\s*tracked files read: )(\\d+)$/;"
+    },
+    {
+      "site": "docs/research/unit-501redbranchpin-2026-11-22/posthoc-which-lines-move.mjs:87",
+      "mech": "BOUND-PATTERN",
+      "consumer": "SKIP",
+      "reasonString": "no-subject",
+      "use": "['tracked files read', /tracked files read:\\s*(\\d+)/],"
+    },
+    {
+      "site": "docs/research/unit-502streampin-2026-11-22/posthoc-landing.mjs:39",
+      "mech": "HELPER-ARG",
+      "consumer": "REPORTED",
+      "reasonString": "no-subject",
+      "use": "read: pick(/tracked files read: (\\d+)/),"
+    },
+    {
+      "site": "docs/research/unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs:33",
+      "mech": "BOUND-PATTERN",
+      "consumer": "SKIP",
+      "reasonString": "no-origin",
+      "use": "const TRACKED = /tracked files read: (\\d+)/;"
+    },
+    {
+      "site": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:27",
+      "mech": "BOUND-PATTERN",
+      "consumer": "REPORTED",
+      "reasonString": "no-subject",
+      "use": "'tracked files read': /tracked files read:\\s*(\\d+)/,"
+    },
+    {
+      "site": "docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:187",
+      "mech": "CALLBACK-PARAM",
+      "consumer": "SKIP",
+      "reasonString": "no-origin",
+      "use": "const readLine = (t.split('\\n').find((l) => /tracked files read/.test(l)) ?? '').replace(/\\r?$/, '');"
+    },
+    {
+      "site": "docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject.mjs:153",
+      "mech": "CALLBACK-PARAM",
+      "consumer": "SKIP",
+      "reasonString": "no-origin",
+      "use": "const readLine = (t.split('\\n').find((l) => /tracked files read/.test(l)) ?? '').trimEnd();"
+    },
+    {
+      "site": "docs/research/unit-512matchersubject-2026-11-24/posthoc-application-mode.mjs:55",
+      "mech": "RECEIVER-OFF-LINE",
+      "consumer": "SKIP",
+      "reasonString": "no-subject",
+      "use": "/^(\\s*tracked files read: )(\\d+)$/m,"
+    },
+    {
+      "site": "docs/research/unit-512matchersubject-2026-11-24/posthoc-rename-kp.mjs:119",
+      "mech": "RECEIVER-OFF-LINE",
+      "consumer": "UNCLEAR_R3",
+      "reasonString": "no-subject",
+      "use": "/^(\\s*tracked files read: )(\\d+)$/m,"
+    },
+    {
+      "site": "docs/research/unit-512matchersubject-2026-11-24/posthoc-resolve-unresolved.mjs:69",
+      "mech": "CALLBACK-PARAM",
+      "consumer": "SKIP",
+      "reasonString": "no-origin",
+      "use": "readLine = (body.split('\\n').find((l) => /tracked files read/.test(l)) ?? '').trimEnd() || null;"
+    },
+    {
+      "site": "docs/research/verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-member.mjs:22",
+      "mech": "UNKEYED",
+      "consumer": "SKIP",
+      "reasonString": "no-origin",
+      "use": "const m = s.match(/tracked files read: (\\d+)/);"
+    }
+  ],
+  "recovered": [
+    {
+      "site": "docs/research/unit-512matchersubject-2026-11-24/posthoc-application-mode.mjs:55",
+      "subject": "out.VERBATIM.text",
+      "newCls": "UNRESOLVED"
+    },
+    {
+      "site": "docs/research/unit-512matchersubject-2026-11-24/posthoc-rename-kp.mjs:119",
+      "subject": "drives.VERBATIM.out",
+      "newCls": "UNRESOLVED"
+    }
+  ],
+  "interval": {
+    "published": [
+      1,
+      8
+    ],
+    "after": [
+      1,
+      8
+    ]
+  },
+  "failures": 0
+}

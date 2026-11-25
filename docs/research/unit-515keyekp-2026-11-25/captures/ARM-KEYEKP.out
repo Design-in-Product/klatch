@@ -1,0 +1,118 @@
+unit-515 arm — Key E known positives, and the 14-row terminal bucket keyed
+  rev deb46404 · driven 09:24:49 PST
+
+§0  the key under test — the original bytes, compiled, not a copy
+  slice via scripts/lib/decl-body.mjs bodyOf()   985 B   brace-delimited: true
+  all 6 declared class literals present in the slice: true
+  branch order read off the slice: UNRESOLVED → FIXTURE → FIXTURE → UNRESOLVED
+
+§1  known positives — one per declared class, plus a precedence cell and a refusal
+  pass  FIXTURE-direct                       → FIXTURE        (want FIXTURE)
+          why: the subject IS a string literal: '  tracked files read: 1083'
+  pass  FIXTURE-bound                        → FIXTURE        (want FIXTURE)
+          why: subject bound to a literal in this file: const APPENDED = '  tracked files read: 9 (…)';
+  pass  GATE                                 → GATE           (want GATE)
+          why: subject bound to process output: const V = r.stdout;
+  pass  OTHER-PROCESS                        → OTHER-PROCESS  (want OTHER-PROCESS)
+          why: subject bound to process output: const V = r.stdout;
+  pass  CAPTURE                              → CAPTURE        (want CAPTURE)
+          why: subject read from a file: const t = readFileSync(join(CAPS, 'ARM.out'), 'utf8');
+  pass  FILE                                 → FILE           (want FILE)
+          why: subject read from a file: const t = readFileSync(join(ROOT, 'README.md'), 'utf8');
+  pass  UNRESOLVED-no-subject                → UNRESOLVED     (want UNRESOLVED)
+          why: the arm found no subject expression on the use line
+  pass  UNRESOLVED-no-origin                 → UNRESOLVED     (want UNRESOLVED)
+          why: origin line does not name a source: const z = somethingElse(q);
+  pass  PRECEDENCE literal-beats-process     → FIXTURE        (want FIXTURE)
+          why: the subject IS a string literal: 'tracked files read: 7'
+  pass  REFUSAL literal-binding-but-also-a-read → FILE           (want FILE)
+          why: subject read from a file: const y = readFileSync(p, 'utf8') + '';
+
+  KP cells 10 of 10
+  declared classes with a known positive: 6 of 6   (none missing)
+
+§2  the population — unit-513's committed capture, read, not re-derived
+  capture rev 98375f1f · driven 13:32:13 PST · rows 22
+  Key E as published: UNRESOLVED 14 · FIXTURE 3 · GATE 3 · OTHER-PROCESS 0 · CAPTURE 2 · FILE 0
+  terminal bucket to be keyed: 14
+
+  the bucket's own reason strings: no-subject-expression · no-origin-named
+  bucket split by reason string: no-subject-expression 8 · no-origin-named 6
+
+§3  the terminal bucket, keyed — ordered arms, declared, with the order printed
+  arm order: RECEIVER-OFF-LINE → BOUND-PATTERN → HELPER-ARG → CALLBACK-PARAM → SUBJECT-IS-PARAM → UNKEYED
+
+  HELPER-ARG         unit-487markerreport-2026-11-19/cripple-dead-marker-key.mjs:94  consumer REPORTED    reason-string no-subject
+        use : trackedRead: one(/^\s*tracked files read: (\d+)/m),
+  BOUND-PATTERN      unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:70  consumer THROW       reason-string no-subject
+        use : const TRACKED = /\n {2}tracked files read: (\d+)/;
+  BOUND-PATTERN      unit-500trackedcomplement-2026-11-22/arm-tracked-complement.mjs:45  consumer REPORTED    reason-string no-subject
+        use : read: /tracked files read: (\d+)/,
+  BOUND-PATTERN      unit-500trackedcomplement-2026-11-22/posthoc-landing-condition.mjs:20  consumer UNCLEAR_R3  reason-string no-origin
+        use : const READ = /^(\s*tracked files read: )(\d+)$/;
+  BOUND-PATTERN      unit-501redbranchpin-2026-11-22/posthoc-which-lines-move.mjs:87  consumer SKIP        reason-string no-subject
+        use : ['tracked files read', /tracked files read:\s*(\d+)/],
+  HELPER-ARG         unit-502streampin-2026-11-22/posthoc-landing.mjs:39  consumer REPORTED    reason-string no-subject
+        use : read: pick(/tracked files read: (\d+)/),
+  BOUND-PATTERN      unit-504mixedstalelabels-2026-11-22/posthoc-standing-unmoved.mjs:33  consumer SKIP        reason-string no-origin
+        use : const TRACKED = /tracked files read: (\d+)/;
+  BOUND-PATTERN      unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:27  consumer REPORTED    reason-string no-subject
+        use : 'tracked files read': /tracked files read:\s*(\d+)/,
+  CALLBACK-PARAM     unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:187  consumer SKIP        reason-string no-origin
+        use : const readLine = (t.split('\n').find((l) => /tracked files read/.test(l)) ?? '').replace(/\r?$/, '');
+  CALLBACK-PARAM     unit-512matchersubject-2026-11-24/arm-matchersubject.mjs:153  consumer SKIP        reason-string no-origin
+        use : const readLine = (t.split('\n').find((l) => /tracked files read/.test(l)) ?? '').trimEnd();
+  RECEIVER-OFF-LINE  unit-512matchersubject-2026-11-24/posthoc-application-mode.mjs:55  consumer SKIP        reason-string no-subject
+        use : /^(\s*tracked files read: )(\d+)$/m,
+        prev: const APPENDED = out.VERBATIM.text.replace(
+  RECEIVER-OFF-LINE  unit-512matchersubject-2026-11-24/posthoc-rename-kp.mjs:119  consumer UNCLEAR_R3  reason-string no-subject
+        use : /^(\s*tracked files read: )(\d+)$/m,
+        prev: const appended = drives.VERBATIM.out.replace(
+  CALLBACK-PARAM     unit-512matchersubject-2026-11-24/posthoc-resolve-unresolved.mjs:69  consumer SKIP        reason-string no-origin
+        use : readLine = (body.split('\n').find((l) => /tracked files read/.test(l)) ?? '').trimEnd() || null;
+  UNKEYED            verification-theseus-2026-11-21-stop-unit499-landing/control-untracked-member.mjs:22  consumer SKIP        reason-string no-origin
+        use : const m = s.match(/tracked files read: (\d+)/);
+        prev: const s = buf.toString();
+
+  RECEIVER-OFF-LINE 2 · BOUND-PATTERN 6 · HELPER-ARG 2 · CALLBACK-PARAM 3 · SUBJECT-IS-PARAM 0 · UNKEYED 1
+  total keyed 14   fall-through 1
+
+§3b  do the bucket's two reason strings partition the mechanisms?
+  RECEIVER-OFF-LINE  appears under: no-subject
+  BOUND-PATTERN      appears under: no-subject + no-origin
+  HELPER-ARG         appears under: no-subject
+  CALLBACK-PARAM     appears under: no-origin
+  UNKEYED            appears under: no-origin
+  mechanisms appearing under BOTH reason strings: BOUND-PATTERN
+
+§4  the RECEIVER-OFF-LINE cure — KP'd, with a refusal, then applied
+  pass  KP recovers a receiver                   → out.VERBATIM.text
+  pass  KP recovers a dotted receiver            → drives.VERBATIM.out
+  pass  REFUSAL use line is not a bare pattern   → refused
+  pass  REFUSAL preceding line is not a call head → refused
+  pass  REFUSAL pattern is argument 2            → refused
+  cure KP cells 5 of 5
+
+  rows the cure recovers: 2
+      docs/research/unit-512matchersubject-2026-11-24/posthoc-application-mode.mjs:55  subject ← "out.VERBATIM.text"
+          binding line: let out = {};
+          Key E on the recovered subject: UNRESOLVED   (origin line does not name a source: let out = {};)
+      docs/research/unit-512matchersubject-2026-11-24/posthoc-rename-kp.mjs:119  subject ← "drives.VERBATIM.out"
+          binding line: let drives = {};
+          Key E on the recovered subject: UNRESOLVED   (origin line does not name a source: let drives = {};)
+
+  Key E after the cure: UNRESOLVED 14 · FIXTURE 3 · GATE 3 · OTHER-PROCESS 0 · CAPTURE 2 · FILE 0
+
+§5  the silent subset — read off unit-513's capture, and what the cure does to its interval
+  SILENT (SKIP+DEFAULT) across all 22 applied rows: 11
+  …already resolved to GATE (the confirmed reachable-silent members): 1
+        CONFIRMED  docs/research/unit-503stalelabelwidth-2026-11-22/probe-baseline.mjs:30  SKIP
+  …still UNRESOLVED: 7   ← the width of unit-513's published interval
+  unit-513 published the interval [1, 8]
+  silent rows the cure resolves: 0   of which to GATE: 0
+  interval after this unit: [1, 8]
+
+§6  hygiene
+  packages/ and scripts/ diff against HEAD: empty
+  KP failures across this arm: 0
+
