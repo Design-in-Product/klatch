@@ -1,0 +1,204 @@
+=== §0 THE TWO CAPTURES — parsed, with completeness asserted against each one's own figures ===
+
+  arm capture: allSites 86 rows
+  integrated own-line consumers re-derived from the rows: 22   arm's own figure: 22   agree: true
+  inherited  own-line consumers re-derived from the rows: 20   arm's own figure: 20   agree: true
+  prior capture: 18 published rows   its own declared figure: 18   agree: true
+
+  completeness gate: true
+
+=== §1 EXISTENCE ORACLE — re-KP'd inside this process, exit code only ===
+
+  PASS  existedAt(616f5705, docs/research/unit-514equalityconsumer-2026-11-24/posthoc-rekey-prefix-and-binding.mjs) = true (want true) — the prior key itself, added IN that commit
+  PASS  existedAt(616f5705, packages/server/src/db/index.ts) = true (want true) — long-lived path OUTSIDE docs/
+  PASS  existedAt(616f5705, docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs) = false (want false) — Daedalus's arm, committed 09:24 today
+
+  oracle KP: 3 of 3
+
+=== §2 PH1 — P7 restricted to the 18 published rows, which is what it was registered about ===
+
+  NESTED own-line consumers at HEAD (the arm's wide run): 7
+  of those, AMONG the 18 published rows: 5   outside them: 2
+
+  within the 18:
+    docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs:127  STRINGARG
+    docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs:157  STRINGARG
+    docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs:72  EQUALITY
+    docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs:77  INCLUDES
+    docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs:78  INCLUDES
+
+  outside the 18 — rows the arm counted and the registered claim does not reach:
+    docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:105  ARRMEMBER  |  ['PRECEDENCE literal-beats-process', { rel: REL_NAMES_GATE, subject: "'tracked files read: 7'", modeEvidence: 'const x =
+    docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:246  ARRMEMBER  |  ['REFUSAL pattern is argument 2', '  /x/,', "s.replace('tracked files read',", null],
+
+  PH1 — exact-set match against the eye list, at the registered granularity: true
+  so P7 is: HIT at the granularity it was registered at, REFUTED at the granularity the arm ran it.
+
+=== §3 PH2–PH4 — the 18→20→22 climb, partitioned per row by file novelty ===
+
+  inherited key at HEAD: 20   published at 616f5705: 18   delta +2
+    + docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:105  ARRMEMBER  NEW-FILE
+    + docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:246  ARRMEMBER  NEW-FILE
+  PH3 — every row the inherited key gained is in a file NEW since 616f5705: true
+
+  integrated key at HEAD: 22   inherited at the same HEAD: 20   delta +2
+    + docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs:160  SECOND-ARG  PRESENT-THEN
+    + docs/research/unit-510quotepathskip-2026-11-23/confirm-landed.mjs:102  SECOND-ARG  PRESENT-THEN
+  PH4 — every row the integration gained is in a file that ALREADY EXISTED at 616f5705: true
+
+  PH2 — every NESTED row outside the 18 is in a file NEW since 616f5705: true
+    docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:105  NEW-FILE
+    docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:246  NEW-FILE
+
+  the two deltas' row sets overlap in 0 rows — disjoint
+
+=== §4 PH5 — what each candidate exclusion actually leaves ===
+
+  census as measured:                                22
+  minus NESTED-LITERAL rows (the "FIXTURE" reading):  15
+  minus docs/research/unit-*/ (the "unit" reading):   0
+
+  PH5 — 15 and 0 as registered: true   (measured 15 and 0)
+  the two exclusions differ by more than the whole surviving census of the narrower one.
+
+=== §5 REGISTERED PREDICTIONS (addendum) ===
+
+  HIT       PH1   P7 at its registered granularity: exactly the five eye-named sites among the 18  —  5 of 5 matched exactly
+  HIT       PH2   both extra NESTED rows are in a file new since 616f5705  —  2 rows, all NEW-FILE: true
+  HIT       PH3   the inherited key's 18→20 delta is entirely new files  —  +2
+  HIT       PH4   the integration's 20→22 delta is entirely pre-existing files  —  +2
+  HIT       PH5   the two candidate exclusions leave 15 and 0  —  15 and 0
+
+  5 HIT · 0 REFUTED of 5
+
+  git diff --stat HEAD -- packages/ scripts/ : EMPTY
+
+{
+  "completeness": {
+    "armSites": 86,
+    "intRows": 22,
+    "armInt": 22,
+    "baseRows": 20,
+    "armBase": 20,
+    "priorRows": 18,
+    "priorDeclared": 18,
+    "complete": true
+  },
+  "oracleKp": [
+    {
+      "path": "docs/research/unit-514equalityconsumer-2026-11-24/posthoc-rekey-prefix-and-binding.mjs",
+      "want": true,
+      "note": "the prior key itself, added IN that commit",
+      "got": true,
+      "ok": true
+    },
+    {
+      "path": "packages/server/src/db/index.ts",
+      "want": true,
+      "note": "long-lived path OUTSIDE docs/",
+      "got": true,
+      "ok": true
+    },
+    {
+      "path": "docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs",
+      "want": false,
+      "note": "Daedalus's arm, committed 09:24 today",
+      "got": false,
+      "ok": true
+    }
+  ],
+  "ph1": {
+    "nestedAtHead": 7,
+    "within18": [
+      "docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs:127",
+      "docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs:157",
+      "docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs:72",
+      "docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs:77",
+      "docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs:78"
+    ],
+    "outside18": [
+      "docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:105",
+      "docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:246"
+    ],
+    "eye": [
+      "docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs:127",
+      "docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs:157",
+      "docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs:72",
+      "docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs:77",
+      "docs/research/unit-514equalityconsumer-2026-11-24/posthoc-which-conjunct-fires.mjs:78"
+    ],
+    "ph1": true
+  },
+  "deltas": {
+    "publishedAtPrior": 18,
+    "inheritedAtHead": 20,
+    "integratedAtHead": 22,
+    "gainedByPopulation": [
+      {
+        "site": "docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:105",
+        "shape": "ARRMEMBER",
+        "novelty": "NEW-FILE"
+      },
+      {
+        "site": "docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:246",
+        "shape": "ARRMEMBER",
+        "novelty": "NEW-FILE"
+      }
+    ],
+    "gainedByIntegration": [
+      {
+        "site": "docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs:160",
+        "shape": "SECOND-ARG",
+        "novelty": "PRESENT-THEN"
+      },
+      {
+        "site": "docs/research/unit-510quotepathskip-2026-11-23/confirm-landed.mjs:102",
+        "shape": "SECOND-ARG",
+        "novelty": "PRESENT-THEN"
+      }
+    ],
+    "overlap": [],
+    "ph2": true,
+    "ph3": true,
+    "ph4": true
+  },
+  "ph5": {
+    "census": 22,
+    "afterNested": 15,
+    "afterUnit": 0,
+    "ph5": true
+  },
+  "predictions": [
+    {
+      "id": "PH1",
+      "text": "P7 at its registered granularity: exactly the five eye-named sites among the 18",
+      "verdict": "HIT",
+      "note": "5 of 5 matched exactly"
+    },
+    {
+      "id": "PH2",
+      "text": "both extra NESTED rows are in a file new since 616f5705",
+      "verdict": "HIT",
+      "note": "2 rows, all NEW-FILE: true"
+    },
+    {
+      "id": "PH3",
+      "text": "the inherited key's 18→20 delta is entirely new files",
+      "verdict": "HIT",
+      "note": "+2"
+    },
+    {
+      "id": "PH4",
+      "text": "the integration's 20→22 delta is entirely pre-existing files",
+      "verdict": "HIT",
+      "note": "+2"
+    },
+    {
+      "id": "PH5",
+      "text": "the two candidate exclusions leave 15 and 0",
+      "verdict": "HIT",
+      "note": "15 and 0"
+    }
+  ],
+  "productDiffEmpty": true
+}
