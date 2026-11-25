@@ -1,0 +1,149 @@
+{
+  "rev": "109f4948",
+  "drivenAt": "2026-11-25 13:26:11",
+  "bodyBytes": 985,
+  "oldOrder": [
+    "UNRESOLVED",
+    "FIXTURE",
+    "FIXTURE",
+    "UNRESOLVED"
+  ],
+  "curedOrder": [
+    "UNRESOLVED",
+    "FIXTURE",
+    "FIXTURE",
+    "GATE",
+    "OTHER-PROCESS",
+    "CAPTURE",
+    "FILE",
+    "UNRESOLVED"
+  ],
+  "branches": [
+    {
+      "at": 119,
+      "expr": "'UNRESOLVED'",
+      "literals": [
+        {
+          "value": "UNRESOLVED"
+        }
+      ],
+      "guard": "!subj"
+    },
+    {
+      "at": 243,
+      "expr": "'FIXTURE'",
+      "literals": [
+        {
+          "value": "FIXTURE"
+        }
+      ],
+      "guard": "/^['\"`]/.test(subj.trim())"
+    },
+    {
+      "at": 431,
+      "expr": "'FIXTURE'",
+      "literals": [
+        {
+          "value": "FIXTURE"
+        }
+      ],
+      "guard": "/=\\s*['\"`]/.test(ev) && !/readFileSync|spawnSync|execFileSync|stdout/.test(ev)"
+    },
+    {
+      "at": 593,
+      "expr": ".test(src) ? 'GATE' : 'OTHER-PROCESS'",
+      "literals": [
+        {
+          "value": "GATE"
+        },
+        {
+          "value": "OTHER-PROCESS"
+        }
+      ],
+      "guard": "/stdout|spawnSync|execFileSync|execSync/.test(ev)"
+    },
+    {
+      "at": 775,
+      "expr": ".test(ev) ? 'CAPTURE' : 'FILE'",
+      "literals": [
+        {
+          "value": "CAPTURE"
+        },
+        {
+          "value": "FILE"
+        }
+      ],
+      "guard": "/readFileSync/.test(ev)"
+    },
+    {
+      "at": 900,
+      "expr": "'UNRESOLVED'",
+      "literals": [
+        {
+          "value": "UNRESOLVED"
+        }
+      ],
+      "guard": null
+    }
+  ],
+  "score": {
+    "P1": true,
+    "P2": true,
+    "P3": true,
+    "P4": true,
+    "P5": true,
+    "P6": true,
+    "P7": false,
+    "P8": true
+  },
+  "kp": {
+    "cured": [
+      9,
+      9
+    ],
+    "guard": [
+      3,
+      3
+    ],
+    "region": [
+      5,
+      5
+    ]
+  },
+  "census": {
+    "population": 835,
+    "scanned": 835,
+    "members": [
+      {
+        "rel": "docs/research/round404-instruments/grade-the-three-cures.mjs",
+        "hits": 1,
+        "first": "289: All(/^    p: '([^']+)',$/gm)].map((m) =>"
+      },
+      {
+        "rel": "docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs",
+        "hits": 1,
+        "first": "78: matchAll(/cls: '([A-Z-]+)'/g)].map((m) ="
+      },
+      {
+        "rel": "scripts/probe-round213-reassign-live-http.mts",
+        "hits": 1,
+        "first": "618: .json\\(\\{ error: '([^']+)'/,\\n      'read"
+      },
+      {
+        "rel": "scripts/probe-round217-multipart-guard-live-http.mts",
+        "hits": 5,
+        "first": "74: .json\\(\\{ error: '([^']+)'/,\\n  'readForm"
+      },
+      {
+        "rel": "scripts/probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts",
+        "hits": 2,
+        "first": "97:  m = /^\\s*file: '([^']+)',/.exec(line);\\n"
+      },
+      {
+        "rel": "scripts/verify-recogniser-equivalence.mjs",
+        "hits": 1,
+        "first": "79:  expand \\{conversation: \"([^\"]*)\", from:"
+      }
+    ]
+  }
+}

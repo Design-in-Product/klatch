@@ -1,0 +1,120 @@
+unit-517 — the ternary-blind branch-order extractor
+  rev 109f4948 · driven 2026-11-25 13:26:11 PST
+
+§0  preconditions
+  stripSource positional trap asserted: blanked-hides-string true · kept-shows-string true · object-spelling-is-blanked true
+  length-preserving in both readings: true
+  slice via scripts/lib/decl-body.mjs bodyOf()   985 B   brace-delimited: true
+  no reordering construct in the slice (7 tokens checked): true
+
+§1  known positives for the cured extractor — driven before it touches the subject
+  pass  plain literal                  branches 1  literals FIXTURE
+  pass  ternary operands               branches 1  literals GATE → OTHER-PROCESS
+  pass  nested ternary                 branches 1  literals FIXTURE → CAPTURE → FILE
+  pass  regex holding quote marks      branches 1  literals FIXTURE
+  pass  two branches, order kept       branches 2  literals GATE → FILE
+  pass  REFUSAL cls: inside a string   branches 0  literals (none)
+  pass  REFUSAL cls: in a line comment branches 0  literals (none)
+  pass  REFUSAL cls: in a block comment branches 0  literals (none)
+  pass  REFUSAL identifier value       branches 1  literals <unresolved>
+
+  KP cells 9 of 9   (refusals 4)
+  pass  guard-reader guarded branch         → "/stdout/.test(ev)"
+  pass  guard-reader fall-through branch    → null
+  pass  guard-reader block form             → "b(ev)"
+  guard-reader KP cells 3 of 3
+
+§2  P1 — the OLD extractor, re-run against the live slice
+  old key  /cls: '([A-Z-]+)'/g
+  yield    UNRESOLVED → FIXTURE → FIXTURE → UNRESOLVED   (4 members)
+  P1 reproduces as published (4, UNRESOLVED → FIXTURE → FIXTURE → UNRESOLVED): true
+
+§3  P4 — the cured extractor on the subject, and P2 — the two granularities
+  branch 1  @119  plain    UNRESOLVED
+            guard: !subj
+  branch 2  @243  plain    FIXTURE
+            guard: /^['"`]/.test(subj.trim())
+  branch 3  @431  plain    FIXTURE
+            guard: /=\s*['"`]/.test(ev) && !/readFileSync|spawnSync|execFileSync|stdout/.test(ev)
+  branch 4  @593  ternary  GATE | OTHER-PROCESS
+            guard: /stdout|spawnSync|execFileSync|execSync/.test(ev)
+  branch 5  @775  ternary  CAPTURE | FILE
+            guard: /readFileSync/.test(ev)
+  branch 6  @900  plain    UNRESOLVED
+            guard: (none — fall-through)
+
+  cured order: UNRESOLVED → FIXTURE → FIXTURE → GATE → OTHER-PROCESS → CAPTURE → FILE → UNRESOLVED
+  branches 6 of 6: true   class literals 8 of 8: true   invented members: 0
+  P4 (6 branches · 8 literals · 0 invented): true
+
+  P2 — one blindness, two granularities:
+       at BRANCH granularity      old 4 of 6
+       at CLASS-LITERAL granularity  old 4 of 8
+  P2 (4 of 6 branches AND 4 of 8 literals, published figure was the branch one): true
+
+§4  P3 — is the blindness distributed at random, or is it exactly the discriminating branches?
+  caught by the old key: 4   of which ternary: 0
+  missed by the old key: 2   of which ternary: 2
+    missed  @593  .test(src) ? 'GATE' : 'OTHER-PROCESS'
+    missed  @775  .test(ev) ? 'CAPTURE' : 'FILE'
+  P3 (2 of 2 missed are ternary, 0 of 4 caught are): true
+  → in this key the ternary form appears ONLY where the branch makes a sub-discrimination, so a
+    quote-anchored reader is blind precisely at the branches a precedence claim must show.
+
+§5  P5 — unit-515 P3's precedence claim, re-read over all six branches by source offset
+  literal-subject branch @243  guard: /^['"`]/.test(subj.trim())
+  branches whose guard names a process/read token: 3   of which NEGATED: 1
+    @431  negated true  /=\s*['"`]/.test(ev) && !/readFileSync|spawnSync|execFileSync|stdout/.test(ev)
+    @593  negated false  /stdout|spawnSync|execFileSync|execSync/.test(ev)
+    @775  negated false  /readFileSync/.test(ev)
+  the literal-subject branch precedes EVERY evidence branch: true
+  P5 — verdict HELD at full granularity: true
+       the figure the claim cites moved 4 → 8; the verdict did not move.
+
+§6  P6 — can a class-name sequence identify the branch a claim names?
+  cured sequence: UNRESOLVED → FIXTURE → FIXTURE → GATE → OTHER-PROCESS → CAPTURE → FILE → UNRESOLVED
+  class names occurring more than once: UNRESOLVED×2, FIXTURE×2
+  literals that are NON-UNIQUE within the sequence: 4 of 8
+  FIXTURE-returning branches: 2   of which consult the evidence line: 1
+    @243  consults-evidence false  guard: /^['"`]/.test(subj.trim())
+    @431  consults-evidence true  guard: /=\s*['"`]/.test(ev) && !/readFileSync|spawnSync|execFileSync|stdout/.test(e
+  P6 (4 of 8 non-unique · 2 FIXTURE branches · exactly 1 consults evidence): true
+
+§7  P7 — reach census: quote-anchored property-value extractors over source text
+  population: tracked .mjs/.js/.mts under docs/research + scripts = 835 file(s)
+  census key (applied to REGEX LITERAL SOURCE only): /[A-Za-z_$][\w$]*\s*:\s*\\?['"`]\(/
+  pass  region-classifier regex          → regex
+  pass  region-classifier line comment   → line-comment
+  pass  region-classifier block comment  → block-comment
+  pass  region-classifier string body    → string
+  pass  region-classifier plain code     → code
+  region-classifier KP cells 5 of 5
+  files scanned: 835
+  MEMBERS: 6
+    docs/research/round404-instruments/grade-the-three-cures.mjs  (1 hit)  289: All(/^    p: '([^']+)',$/gm)].map((m) =>
+    docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs  (1 hit)  78: matchAll(/cls: '([A-Z-]+)'/g)].map((m) =
+    scripts/probe-round213-reassign-live-http.mts  (1 hit)  618: .json\(\{ error: '([^']+)'/,\n      'read
+    scripts/probe-round217-multipart-guard-live-http.mts  (5 hits)  74: .json\(\{ error: '([^']+)'/,\n  'readForm
+    scripts/probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts  (2 hits)  97:  m = /^\s*file: '([^']+)',/.exec(line);\n
+    scripts/verify-recogniser-equivalence.mjs  (1 hit)  79:  expand \{conversation: "([^"]*)", from:
+  the subject itself is among them: true
+  P7 (registered expectation: exactly 1, the subject): false  ← my morning parenthetical is at risk
+  DECLARED BLINDNESS of this census: it keys on a regex literal that spells the colon-quote-capture
+  shape LITERALLY. A reader built out of `indexOf`/`split`, or one whose pattern is assembled from
+  string pieces, is a member of the class and invisible to this key. The figure is a FLOOR.
+
+§8  packages/ and scripts/ diff --stat EMPTY: true
+
+§9  registered predictions
+  HIT      P1
+  HIT      P2
+  HIT      P3
+  HIT      P4
+  HIT      P5
+  HIT      P6
+  REFUTED  P7
+  HIT      P8
+  7 of 8 HIT
+
+  KP totals: cured extractor 9/9 · guard reader 3/3 · region classifier 5/5
+  failures: 0
