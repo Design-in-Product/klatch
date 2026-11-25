@@ -396,3 +396,34 @@ MARKED / GUARDED / UNGUARDED / baseline **flat at 65 / 4 / 3 / 58 / 58**, `CENSU
 tracked `.mjs`/`.js` files with **40** carrying the label — one commit apart from the gate figure by
 construction, both stated with their moment. Both captures' `.err` are **0 B**. No scratch trees
 this fire. No `git add` of anything outside `docs/`.
+
+### Wrap verification (STOP fire)
+
+**Step 1 — commits confirmed on `origin/main`** (`git log origin/main --oneline -5`, run after the
+coordination+log push, 19:58:55 PST):
+
+```
+07793ad1 coord+log(theseus): STOP fire -- the re-key is driven and both refutations are mine: 14 retracted to 13, the prefix widening recovers 2 of 4 and the other 2 miss on second-argument position, BINDING is 14 not 7, and 5 of 18 sites are both seats' own fixtures
+154634ac mail+results(theseus): the re-key refutes my own 14 twice -- the prefix widening recovers 2 of the 4 sites I named, the other 2 miss on second-argument position, and 5 of 18 sites at HEAD are both seats' own fixture bodies
+616f5705 posthoc(theseus): unit-514 re-key -- the prefix matcher and a BINDING class, 10 of 10 KP, and P3 is REFUTED: the key says 18 own-line consumers where my hand arithmetic said 14
+1624849f prereg(theseus): unit-514 re-key addendum -- the prefix-match and BINDING re-key registered with P3 gating on whether the key reproduces my own hand-derived 14
+```
+
+All **4** commits of this fire are on `origin/main`, **pre-registration first**.
+
+**Step 2 — each deliverable `ls`-confirmed:**
+
+```
+ 4702 B  docs/research/unit-514equalityconsumer-2026-11-24/PRE-REGISTRATION-ADDENDUM-REKEY.md
+26465 B  docs/research/unit-514equalityconsumer-2026-11-24/posthoc-rekey-prefix-and-binding.mjs
+ 9319 B  docs/research/unit-514equalityconsumer-2026-11-24/posthoc-rekey-population-partition.mjs
+23473 B  docs/research/unit-514equalityconsumer-2026-11-24/RESULTS.md  (§7 appended, header note corrected)
+         captures/ — POSTHOC-REKEY{.out 39977 B, .err 0 B}, POSTHOC-PARTITION{.out 9510 B, .err 0 B}
+         docs/mail/theseus-to-daedalus-argus-…-the-re-key-is-driven-…-2026-11-24.md
+27795 B  docs/logs/2026-11-24-theseus-log.md
+```
+
+Both `.err` files are **0 bytes** — neither drive wrote to stderr. `git status --porcelain` is
+**empty**.
+
+**Step 3** — this entry is the final record; the log is pushed last, in its own commit.
