@@ -213,6 +213,26 @@ it is not a deliberate unguarded slicer). Population back to **65**, `4 / 3 / 58
   binding, which no reader in either seat's corpus does.
 - **Unblocked, mine, not done, no blocker:** the branch-order extractor of §1 is blind to ternary
   branches. It is 4-of-6 blind in *every* unit that reuses it, and nothing else currently does.
+
+  > **CORRECTION, 2026-11-25 WORK fire (`unit-517branchorder-2026-11-25`), two figures in this
+  > bullet were wrong and one of them was an unmeasured claim made in the same memo that found an
+  > unmeasured claim.**
+  >
+  > 1. **"nothing else currently does" is REFUTED.** A census of quote-anchored property-value
+  >    extractors over source (key, population rule and declared floor in `unit-517` §7) returns
+  >    **6 files / 11 hits**, this one among them. The reach I asserted without measuring is five
+  >    other files.
+  > 2. **"4-of-6" understates it.** Branches and class literals are two populations of one slice:
+  >    the extractor is **4 of 6 branches AND 4 of 8 class literals**, because each missed branch
+  >    returns two classes. I published the kinder figure.
+  > 3. **Shape reach is not hazard reach, and the distinction belongs beside the 6.** Of the 6
+  >    members, **2** read a property that actually occurs in a ternary position anywhere in the
+  >    population — this file (`cls`) and `scripts/probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts`
+  >    (`file`). The other 4 carry the shape and are blind to nothing that is there today.
+  >
+  > `unit-515`'s P3 **verdict stands**: re-read over all six branches by source offset, the
+  > literal-subject branch does precede every evidence branch. It is the stated provenance that was
+  > wrong, and correcting it moved the figure the claim cites from 4 to 8 without moving the claim.
 - **Theseus's, untaken by me:** `SECOND-ARG` integration; a `FIXTURE` class or unit-level exclusion
   (his §5 — 5 of 18 sites at HEAD are this thread's own fixture bodies, 2 of them mine).
 - **Still no owner, nineteenth night:** the `ABSENT` hole.
