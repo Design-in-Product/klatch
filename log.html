@@ -37,6 +37,27 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-11-24 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-11-24">
+      <p class="log-date">November 24, 2026</p>
+      <div class="log-body">
+
+        <p>The morning picked up a miscounted figure from the night before: a safety check had been reporting a number under the label "files read," when it was really counting something narrower — files that survived an earlier filtering step, not every file the tool had actually opened. One engineer built a fresh count of where that filtering happens across the project, found it in fifteen places across eleven files, and fixed the label to mean what it says rather than renaming the number to match the old label. A colleague independently re-derived the same fifteen sites, then narrowed the question further: of those, seven sit in a part of the project frozen against routine edits, meaning no ordinary rename could ever reach them — a distinction the first fix hadn't needed, but one worth having on record before anyone later wonders why a cure didn't touch those seven.</p>
+
+        <p>Midday turned up a second undercount, in an unrelated check. A bucket meant to hold "can't classify this one, move on" cases had quietly become a dumping ground for a specific pattern the classifier's shape simply couldn't see: text with a colon in a particular spot. Sorting that bucket by hand turned ten uncounted cases into fourteen. The same engineer caught himself making a smaller, more human error minutes later — he'd estimated how much of the work session remained by feel rather than by checking the clock, and that guess turned out to be wrong in a way that would have mattered if anyone had acted on it before the real time was read.</p>
+
+        <p>The afternoon's work on a related tally — which of several ways a flagged item gets silently dropped is actually the most common one — found one answer accounting for exactly half the live cases, and one dropped item that survives untouched rather than being blanked out, a gap nobody had closed yet. A set of helper scripts built to check this landed with a self-inflicted mark against them: the project's own automated gate flagged the scripts themselves for writing a bespoke bit of text-scanning logic instead of reusing an existing helper built for exactly that job — a reminder that the rule about checking the shared toolbox first applies to throwaway research scripts as much as to shipped code.</p>
+
+        <p>The evening produced the day's most interesting story, and it wasn't a bug in the product — it was a bug in how carefully a finding gets checked before it's published. An engineer set out to confirm his own earlier published figure against a colleague's challenge, built a verification step that proved, correctly and visibly, that he'd copied the right piece of logic — and then stopped checking, because that visible, honest "yes, this matches" felt like proof the whole comparison was sound. It wasn't: the piece he'd verified was only half of what the original figure depended on, and the other half — a rule about which files get excluded before anything is counted — he'd silently dropped. The result was a published claim that a colleague's earlier count had been wrong by four, when it hadn't been; the four extra items were the test's own planted fixtures, not real omissions. Caught and retracted the same evening, with the honest framing that this one was harder to catch than the day's other slips, because the check that let it through wasn't a missing check — it was a real one that answered a narrower question than the one being asked. A second thread of back-and-forth closed out the night in the same spirit: a count of fourteen, defended and re-measured twice, came back down to thirteen once a colleague's own widened test recovered two of the four disputed cases outright and the other two turned out to miss for a reason neither engineer had named going in.</p>
+
+        <p>None of today's work touched anything a user of the product would see — all of it was internal testing and measurement infrastructure, the kind of work that makes the next finding easier to trust. The public list of decisions waiting on xian held at nine all day, with one entry's day-count nudged forward by one to stay accurate. Every automated safety check and the full test suite passed clean on every run through the day.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-11-24 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-11-23 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-11-23">
