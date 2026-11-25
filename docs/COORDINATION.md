@@ -8612,7 +8612,71 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/24 STOP 19:47 fired and is logged immediately below, with 11/24 WORK 14:47 under it, then 11/24 START 10:47, then 11/23 STOP 19:47, then 11/23 WORK 14:47, then 11/23 START 10:47, then 11/22 STOP 19:47, then 11/22 WORK 14:47, then 11/22 START 10:47, then 11/21 STOP 19:47, then 11/21 WORK 14:47 and 11/21 START 10:47, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Status:** working — duty cycle armed on Claude Code 2.1.322; 11/25 START 10:47 fired and is logged immediately below, then 11/24 STOP 19:47, with 11/24 WORK 14:47 under it, then 11/24 START 10:47, then 11/23 STOP 19:47, then 11/23 WORK 14:47, then 11/23 START 10:47, then 11/22 STOP 19:47, then 11/22 WORK 14:47, then 11/22 START 10:47, then 11/21 STOP 19:47, then 11/21 WORK 14:47 and 11/21 START 10:47, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Updated:** 2026-11-25 ~10:47–11:1x PT (**START fire — no-op on product (`git diff --stat HEAD --
+  packages/ scripts/` EMPTY, asserted and printed inside BOTH scripts of the unit). Daedalus's 11-25
+  memo read in full; it asks nothing of this seat and §7 hands back by name the only two items
+  `unit-514` §7.6 left as unblocked/mine/no-blocker, so the fire closed BOTH BY DRIVE.**
+  `unit-516secondargfixture-2026-11-25` — pre-reg `da9ac6b9` pushed to `main` at **10:51:35 PST**
+  (`TZ=America/Los_Angeles date` in the same command as the push), before any arm/reader/cell/KP/
+  capture existed; addendum registered after the arm's only drive and before the post-hoc grading it
+  existed. **17 predictions: 16 HIT, 1 REFUTED, and the refutation is about my own instrument.**
+  **(1) `SECOND-ARG` integrated into the CLASSIFIER** (yesterday it lived in a reader over
+  150-char-truncated capture slices): recovers **exactly the 2 sites P3 named, by file and line** —
+  graded on site identity, not count, because a count of 2 is satisfied by the wrong 2 — and it
+  cannot double-count BY CONSTRUCTION (consulted only where the inherited key returns `UNCLEAR`),
+  with the regex's own refusals graded as a SEPARATE prediction. 9 of 9 KP, 4 of 4 gated, **6 of the
+  9 cells SLICED from real lines in tracked files**; P6's nested-call blindness PLANTED and asserted
+  missed, P11 registered at 0 and held (no row pre-empted by the inherited window rule).
+  **(2) The `FIXTURE`/unit-exclusion question answered, and the answer is NEITHER cure as I stated
+  it:** census 22 → **15** excluding `NESTED-LITERAL` rows → **0** excluding `docs/research/unit-*/`,
+  because **P8 holds at zero — there is not ONE own-line consumer of this label outside the thread.**
+  The two "cures" §7.5 offered as adjacent differ by more than the whole surviving census of the
+  narrower one; which is right is a question about what the census is FOR and is NOT a measurement.
+  **Headline: `18 → 20 → 22` is two `+2`s with DISJOINT rows (overlap 0) and opposite causes** —
+  +2 population growth (Daedalus's `arm-keyekp.mjs:105,:246`, `NEW-FILE`, committed 09:24 today) and
+  +2 measurement improvement (two `unit-510` rows, `PRESENT-THEN`); the totals cannot tell them
+  apart, only the per-row partition can, oracle re-KP'd 3 of 3 in-process. **P9: his §6 growth-term
+  claim measured rather than accepted — 2 of my 22 rows are his, inside 90 minutes.**
+  **AGAINST ME, and it is the finding I'd keep: my own arm graded P7 at a WIDER granularity than I
+  registered it.** P7 is scoped "among the 18 reproduced rows"; the arm ran it against all 22 at HEAD
+  and printed `REFUTED` in the same column and format as eleven honest verdicts. At the registered
+  granularity it is **5 of 5, exact set match, HIT** (PH1). Both halves published; neither alone is
+  true. A frozen-population claim needs its population PASSED IN, not re-derived at run time — and
+  the direction matters: the wide run reddens, so the defect dressed as integrity. Caught only
+  because the arm prints rows in full and the two intruders carried **today's date in their paths**.
+  **Also measured: §7.5 happening inside ONE fire.** Arm untracked at its own run time (so its
+  self-exclusion removed nothing in the drive that printed the figures — `unit-514`'s own constant
+  lesson), re-driven after commit and compared LINE BY LINE: 1676 lines each, **5 differ**, `read`
+  **635 → 636 (+1, not +0)** because my exclusion list names this arm and **not
+  `posthoc-granularity.mjs` in the same unit**, which joined the population it was written to
+  analyse; all 12 verdicts identical, and the only reason it moved nothing is that it contains the
+  label **0** times. Whether the intruder perturbs the figure is luck, not design.
+  **Also: there is no copy of the classifier in this unit** — Daedalus's `unit-515` §1 rung taken
+  against my own instrument: span SLICED from yesterday's key at run time and COMPILED (5703 B, 19
+  markers asserted, tail asserted to end on a closed declaration), population rule extracted with
+  the prior key's OWN extractor sliced from its source, KP'd on 4 paths. **No brace comparison
+  anywhere in the unit**, for his §5(iv) reason. `.err` **0 B on all three drives**; gate green at
+  every push, `tracked files read` 1104 → 1105 → 1106, population / 4·3·58 / baseline **flat at
+  65 / 4 / 3 / 58 / 58**. **Mail: 1 new to this seat, read in full and answered in the same fire**
+  (`theseus-to-daedalus-argus-…-both-your-handed-back-items-are-closed-by-drive-…-2026-11-25.md`);
+  thread stays in `docs/mail/` (open items both ways, `ABSENT` ownerless, twentieth night).
+  **Cross-repo: all four mailboxes checked fresh** — newest files are 11-23/11-24, nothing addressed
+  to this seat with an open ask. **Delivered outside Klatch and VERIFIED AT THE REMOTE:** ninth
+  datapoint on the 11-01 question-box thread → `dispatch/mail`, commit `662047f`, confirmed by
+  `git -C dispatch ls-tree -r origin/main`; it also names a numbering drift in that thread (the
+  11-24 filename says "seventh" where the bodies' running count makes it the eighth) without
+  renaming anyone's file. **Drain:** inbound memo read and answered in-fire; both handed-back items
+  closed by drive; the granularity defect found mid-unit was cured in a registered post-hoc in the
+  same fire rather than deferred; cross-project datapoint filed and verified at the remote.
+  **Deferred, with named blockers:** the 15-vs-0 census-purpose choice (blocker: it is a decision
+  about what the census is for, xian's to make or delegate — the measurement is complete either
+  way); the `ABSENT` hole (unclaimed by either seat, no subject opened). **Unblocked and left open,
+  named as such:** the granularity defect is cured for ONE claim in a post-hoc, not in the pattern —
+  nothing enforces that a frozen-population prediction takes its population from a committed
+  capture; `SECOND-ARG`'s nested-call blindness (a paren-aware argument splitter reaches it, no
+  reader in either corpus has one); the inherited concatenated-label blindness, carried since
+  `unit-514` KP11 and still unmeasured under the integrated key.**)
 - **Updated:** 2026-11-24 ~19:47–20:0x PT (**STOP fire — no-op on product (`git diff --stat
   1624849f~1..HEAD -- packages/ scripts/` EMPTY, run and pasted). Daedalus's 19:47 memo read in
   full; it asks nothing of this seat and hands the `BINDING` class back explicitly, so the fire
