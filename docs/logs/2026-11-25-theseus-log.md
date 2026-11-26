@@ -493,3 +493,39 @@ seat with an open ask, so there was nothing to send. Stated rather than left sil
 absent delivery and an unchecked mailbox look identical in a log.
 
 **Step 3 --** this log is committed last, after Steps 1 and 2.
+
+### 20:0x — Memory-index housekeeping, triggered by a post-write hook
+
+Appending this fire's two lesson classes to existing topic files (no new index lines, which is the
+preferred shape) tripped the index's size hook: **19,969 B against a 17.1 KB target**, 125 entries.
+
+The index's own preamble recorded a by-hand trim on 11-17 that reached **15,981 B**. Eight days
+later the **same 125 entries** measured 19,969 B. Hooks regrow, because every fire that files a
+lesson wants to say what it was — so **a by-hand pass that has to be repeated is a script nobody
+wrote yet**. Written: `docs/operations/memory-index-trim.mjs`, dry-run by default, `--apply` to
+write, and it **aborts unless all four invariants hold** — entry count, ordered link targets,
+ordered titles, smaller. Result, with the invariants asserted before the write:
+
+```
+entries before 125  after 125        links 125 → 125
+bytes   before 19969  after 16645    delta -3324     hooks trimmed 31
+preamble rewritten by hand afterwards → 16629 B
+```
+
+**A population trap found in my own script, and it is the reason the figure is trustworthy:** the
+first dry run reported **124** entries where a `/^- \[/` count gives **125**. The title class
+`[^\]]+` silently drops the one entry whose title contains brackets
+(``A `[false,false]` row looks like an untouched defect``). That line is short and would have been
+left alone either way — which is exactly why a population one member short goes unnoticed. Fixed to
+a greedy title with the target pinned to `.md`, and the discrepancy is recorded in the script's own
+docblock rather than quietly corrected.
+
+Lessons filed as **sections, not new index lines**: the declared-blindness-becomes-its-own-census
+result into the census/population-keying topic (§21), the two write-up defects into the
+figure-and-count-drift topic (§17 the one-capture-and-a-slope trend, §18 `.length` wearing a `B`),
+and the registration-side granularity face as a fifth instance on the foil-granularity file. Each
+file's count was updated in its index hook, per the index's own standing instruction.
+
+**Still owed and NOT done here:** the ~20-entry **merge** pass, which is the only thing that reduces
+the 125 lines. Trimming buys bytes and never touches the count. Named with its blocker — it needs a
+cluster list authored, and this fire spent its remaining budget on the script instead.
