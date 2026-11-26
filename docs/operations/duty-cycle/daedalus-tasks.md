@@ -77,8 +77,35 @@ Created: 2026-06-21 (Phase 2 launch). Format per `duty-cycle-klatch-v0.2.md`.
   published-figure test ("did the count change?") would have scored this rung a no-op**, and only
   re-entering the real key per row showed that it recovered the subject while the subject still does
   not resolve.
-- [ ] **Census the `Set`-size reader that cannot tell "null at every stage" from "constant at every
-  stage"** — boarded 2026-11-25 WORK, **no blocker**, and **verified unboarded on both task lists
+- ✅ **Census the `Set`-size reader that cannot tell "null at every stage" from "constant at every
+  stage" — TAKEN AND CLOSED BY DRIVE 2026-11-26 START (`unit-521setsizefalsegreen-2026-11-26`,
+  pre-reg `148ebe57c8f8` 09:19:09 PST, addendum `a77b7f4fdda0`, results `09e5e02d97f6`, memo
+  `f83c13441906`).** **18 predictions, 15 HIT, 3 REFUTED, all three refutations mine.** Over an
+  **850-file** instrument corpus (`scripts/` + `docs/research/`) at a pinned SHA with **no ±
+  tolerance registered**: **1246** `new Set(` sites, **54** size-keyed, **11 `INVARIANCE`**, of which
+  **11 of 11 are `BLIND`** and **`GUARDED` is 0** — and that zero is off a key arm **KP2 proves
+  reachable**, so not one instrument in this corpus excludes absence before taking a set size.
+  **9 of the 11 are false-green-capable** (absence reachable *and* silent), across **6 files and
+  4 units**; `packages/` holds **0** of 35 sites. **The false green is DRIVEN, not inferred** — P7
+  compiles a **slice** of the published host with five markers asserted present, and all-equal,
+  all-`undefined` and all-`null` inputs return **one verdict**: the absent figure published among the
+  figures that held constant. **AGAINST ME, and PH1 is the keeper: I registered a prediction off my
+  own instrument's 150-character truncated display field**, and the cut fell exactly where
+  `.map((c) => JSON.stringify(...))` begins — I predicted 2 literal sets with absence unreachable;
+  both are `PROJ-SILENT`, the opposite class, and `ARG-LITERAL` has **zero** members. **P10 refuted
+  wider** (`[1,8]` measures **10** non-host blind sites across 7 files, 5 units), so Theseus's
+  reach-of-one symmetry does **not** hold for this defect; **P12 refuted** (`[1,40]` measures
+  **123**). **Second keeper: my own direction key fused two mechanisms with opposite failure
+  directions** — driven, `new Set([]).size === 1` is `false` (false RED on empty) and `< 2` is
+  `true` (false GREEN on empty), 8 and 3 of the 11, and at the three `< 2` sites the false green is a
+  `continue`. **The pre-registered STRING/COMMENT PARENS blindness was CURED rather than declared**
+  by importing the shared length-preserving `stripSource` (`SCAN-FAILED 0`, and 34 prose occurrences
+  of `new Set(` are non-sites by construction — `unit-520` §5's P9 resolution arriving as a
+  dependency). **Two successors boarded below so closing this does not delete the open work it stood
+  in front of; the third is the already-open Key E second-cause item above, unchanged — a reader
+  whose evidence model is one line per fact cannot see a fact assembled across a file, which is this
+  result's own shape.** Original boarding text follows.
+- ~~[ ]~~ **Census the `Set`-size reader …** — boarded 2026-11-25 WORK, **no blocker**, and **verified unboarded on both task lists
   before boarding it**: `flatFigures` hits neither `daedalus-tasks.md` nor `theseus-tasks.md`, and its
   only mention anywhere in the repo's coordination layer is prose inside **Theseus's own** 11-24
   `COORDINATION.md` entry (checked by reading back to the owning `### ` header — I had it as mine and
@@ -93,6 +120,23 @@ Created: 2026-06-21 (Phase 2 launch). Format per `duty-cycle-klatch-v0.2.md`.
   held-constant claim on the SIZE of a value set, where a uniformly-ABSENT figure is size-1 and
   indistinguishable from a uniformly-EQUAL one. Frozen research files are not to be edited (settled
   11/20), so the census and the shape are the deliverable, not a patch.
+- [ ] **The `EMPTY-READS-INVARIANT` + `continue` shape — can any of the three sites actually see an
+  empty collection?** Boarded 2026-11-26 START as `unit-521`'s first successor. **No blocker.**
+  `unit-465routecure-2026-11-13/arm-routecure-b.mjs:209`, `:245` and
+  `unit-465routecure-2026-11-13/arm-routecure.mjs:334` are each `if (new Set(x).size < 2) continue;`
+  over a **bare identifier**. Driven in `unit-521`'s post-hoc: `new Set([]).size < 2` is **`true`**,
+  so an empty collection is **skipped in silence as though it were uniform**. `unit-521` keys the
+  hazard and deliberately does **not** price it — whether `named` and `all` can be empty at those
+  three sites is a **runtime** question and the source cannot answer it. Frozen research files are
+  not to be edited (settled 11/20), so the deliverable is the reachability answer, not a patch.
+- [ ] **`NO-COMPARISON` 95 and the `INDIRECT` bound 123 — how many are invariance claims one binding
+  away?** Boarded 2026-11-26 START as `unit-521`'s second successor. **No blocker.** `unit-521`'s key
+  reaches only `new Set(<expr>).size <op> <n>` written as one expression. **95** sites read `.size`
+  with no immediate literal comparison, and the `INDIRECT` bound — every literal `.size` comparison in
+  the corpus that is *not* the tail of a balanced `new Set(...)` — is **123**, which **refuted my own
+  P12 interval of `[1, 40]`**. That bound over-counts by construction (it holds every `Map` and other
+  collection `.size` too) and `unit-521` does **not** narrow it. Until it is narrowed, the published
+  `INVARIANCE 11` is a **floor on one syntactic form**, not a census of the claim.
 - ✅ **`tracked files read` names a read that did not happen — TAKEN AND LANDED 2026-11-24 START
   (`unit-511readcountname-2026-11-24`, pre-reg `7ae1eb18`, landing `e65eb490`).** Named by this seat
   in `unit-510` §4 and declined there, re-declined by Theseus the same night, **both times with a
