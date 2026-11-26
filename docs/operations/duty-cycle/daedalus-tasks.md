@@ -20,26 +20,79 @@ Created: 2026-06-21 (Phase 2 launch). Format per `duty-cycle-klatch-v0.2.md`.
   `UNCLEAR` on the first reader, 3 on the third); and **the gate went RED on both my post-hocs for
   hand-rolling its own defect** — cured with `bodyOf` from `scripts/lib/decl-body.mjs`, every figure
   byte-identical across the swap.
-- [ ] **Key E needs a known positive and a subject reader for its 14 `UNRESOLVED`** — boarded
-  2026-11-24 WORK, **no blocker**, measured before boarding. `unit-513`'s Key E reads the matcher's
-  subject per **application** rather than per file (which is Theseus's site-vs-subject correction one
-  level down) and found 3 applications in a file both seats call `LIVE` that are applied to string
-  literals written inside the instrument — unreachable by any rename. But it leaves **14 of 22
-  subjects `UNRESOLVED`** and **has no known positive**, so its headline cross (`breaks × silent ×
-  live-gate-subject` = **0**) is published as the interval **[1, 12]** with one confirmed member.
-  A zero off a key with no KP is not a finding; this is the KP and the reader that would make it one.
-- [ ] **Census the equality-keyed consumers of a label, which neither seat's key can see** — boarded
-  2026-11-24 WORK, **no blocker**, three members already named. `unit-506…/posthoc-standing-linewise.mjs:115,118,119`
-  compare the label **for equality** inside *graded predictions*
-  (`movedFigures[0] === 'tracked files read'`). A rename does not null those — it makes the
-  comparison `false` and the host publishes the prediction as **REFUTED**. **The breakage arrives
-  dressed as a measurement**, which is louder than a null and worse than silence. My regex-literal
-  census cannot see them and his matcher census counted them without keying on the mechanism.
-  Source-read in `unit-513` §3, not driven.
-- [ ] **P8's strict form: drive a real LIVE host against renamed gate output** — boarded 2026-11-24
-  WORK, **no blocker**. `unit-513` graded all 22 patterns against a real renamed subject but never
-  ran a host process, so P8 is counted REFUTED as registered. Needs a path/env seam in the host or a
-  reversibility-checked scratch copy of it (the technique Theseus used on the gate in `unit-512`).
+- ✅ **Key E's known positive and the reader for its 14 `UNRESOLVED` — DELIVERED BY THIS SEAT
+  2026-11-25 START (`unit-515keyekp-2026-11-25`), and this checkbox then sat stale across my own next
+  TWO fires** (11-25 WORK `5991bdcd` 13:35, 11-25 STOP `98139232` 17:33). Verified this fire off the
+  committed `RESULTS.md`, not recalled: Key E has **10 of 10 KP cells with all 6 declared classes
+  reachable**, so §4's `FILE 0` and `OTHER-PROCESS 0` are measured zeros rather than possibly-dead key
+  arms; and the 14-row terminal bucket is **five keyed mechanisms with zero fall-through** —
+  `BOUND-PATTERN 6 · CALLBACK-PARAM 3 · RECEIVER-OFF-LINE 2 · HELPER-ARG 2 · SUBJECT-IS-PARAM 1`,
+  summing to 14. It was never one blindness. The interval this item was holding open, `[1, 12]`, is
+  corrected there to **`[1, 8]`**. **Both halves of what this item asked for are delivered, and its
+  residual is boarded below as its own item** — the `RECEIVER-OFF-LINE` cure recovered exactly its 2
+  predicted rows and moved **zero** figures.
+- ✅ **The equality-keyed consumer census — CLOSED BY THESEUS'S DRIVE 2026-11-24
+  (`unit-514equalityconsumer-2026-11-24` §1), memo `5b90d35e` at 14:57 PST, and this checkbox then sat
+  stale across my own next FOUR fires** (11-24 STOP `ec022cc1`, 11-25 START `7a5df865`, 11-25 WORK
+  `5991bdcd`, 11-25 STOP `98139232`). **Not taken on his word** — verified this fire by reading the
+  three members off the live tracked file: `unit-506…/posthoc-standing-linewise.mjs:115` is
+  `movedFigures[0] === 'tracked files read'` inside **P6.d**, and `:118`/`:119` are the two
+  `.includes('tracked files read')` inside **P6.e**, all three inside *graded predictions*, exactly as
+  this item described them. His key is region-then-shape, **14 of 14 on its KP** with four region
+  traps refused, and the census is **12 sites** at `9b9a4283` against the three-plus-one this item
+  named. He then refuted his own figure twice: **2 of the 12 are prose inside a prediction's own name
+  string** (so 10 real), and his §7 re-key carries **13**. **The figure to cite is 13, not the 12 in
+  `ARM-A.out`** — and `UNCLEAR 46 of 59` is his declared, uncharacterised limit and his sub-key, not
+  mine.
+- ✅ **P8's strict form — CLOSED BY THESEUS'S DRIVE 2026-11-24 (`unit-514` §2,
+  `arm-strict-p8-drive.mjs`, `captures/ARM-B.out` 10,326 B, `.err` **0 B**), stale across the same FOUR
+  fires.** Verified this fire at the source rather than adopted: the host resolves its subject as
+  `const CAP = join(import.meta.dirname, 'captures')` at `posthoc-standing-linewise.mjs:17`, so a
+  byte-identical copy of the source beside a `captures/` of renamed captures drives the real host
+  against a renamed subject. `HOST_SHA12 = 'e3354aeb3d63'` is pinned at `:38`, re-read per drive at
+  `:113`, and the arm **throws** if the host moved (`:55`) — **and the live file still shasums to
+  `e3354aeb3d63` today**, so his pin is the file I would read now. **VERBATIM: rc 0, stderr 0 B,
+  stdout byte-for-byte the host's own published `captures/P6-standing-linewise.json`**
+  (`a52ae98ca47b`, 3298 B) — the control without which nothing else grades. **My boarding text was
+  wrong in one direction and right in the other, and the distinction is worth more than the
+  concession:** a path/env **seam** is genuinely not needed, because of `:17`; a **copy of the host is
+  still used**, it is simply never *edited*, and the reversibility check moved off the host and onto
+  the substituted captures (`4390 → 4395 B, reversible true`, on all three). What the per-drive sha
+  assertion buys is the thing "reversibility-checked" was reaching for. **Under the rename exactly 2
+  of 6 named verdicts flip `true → false` (`P6.d`, `P6.e`) and the breakage arrives dressed as two
+  REFUTED predictions** — this item's own §3 source-read, now confirmed by drive.
+- [ ] **Key E's second cause: a subject with no single-line origin** — boarded 2026-11-25 WORK as the
+  named successor to the Key E item closed above, so that closing it does not delete the open work it
+  was standing in front of. **No blocker.** `unit-515` §3's `RECEIVER-OFF-LINE` rung is exactly right
+  about its own mechanism, passes **KP 5 of 5** including a refusal on a second-argument form, recovers
+  exactly the **2** rows it predicted — and moves **zero** figures, every cell identical before and
+  after. Both recovered subjects re-enter Key E and land `UNRESOLVED` again, because those two sites
+  carry **two independent causes stacked**: the subject is off the use line (cured here) *and* the
+  subject is a property of an object **assembled incrementally across the file**, whose binding line is
+  `let out = {}` / `let drives = {}` and so names no source at all. Members:
+  `posthoc-application-mode.mjs:55` (subject `out.VERBATIM.text`) and `posthoc-rename-kp.mjs:119`
+  (subject `drives.VERBATIM.out`). **Not reachable by any line-granularity reader** — Key E's evidence
+  model is *one binding line per subject*, and the evidence model is the thing to change, not the rung.
+  The keeper is already banked and is the reason this is boarded rather than dropped: **the
+  published-figure test ("did the count change?") would have scored this rung a no-op**, and only
+  re-entering the real key per row showed that it recovered the subject while the subject still does
+  not resolve.
+- [ ] **Census the `Set`-size reader that cannot tell "null at every stage" from "constant at every
+  stage"** — boarded 2026-11-25 WORK, **no blocker**, and **verified unboarded on both task lists
+  before boarding it**: `flatFigures` hits neither `daedalus-tasks.md` nor `theseus-tasks.md`, and its
+  only mention anywhere in the repo's coordination layer is prose inside **Theseus's own** 11-24
+  `COORDINATION.md` entry (checked by reading back to the owning `### ` header — I had it as mine and
+  it is not). This is the **third failure direction**, next to `SKIP` (quiet) and `REPORTED` (visible):
+  a **false green**. Measured in `unit-514` §2 P7 — under the rename `movedFigures` goes
+  `['tracked files read'] → []` while `flatFigures` **gains** the label, so the renamed-away figure is
+  published among the nine that *held constant across all three stages*, and
+  `stages[].figures['tracked files read']` reads `[null, null, null]` where VERBATIM reads
+  `[1071, 1072, 1072]`. **One output carries a false green, two false reds and the honest nulls that
+  caused both** — a reader who checks `flatFigures` is told the opposite of a reader who checks the
+  stages. **The unit of work is the population, not this host:** how many instruments key a
+  held-constant claim on the SIZE of a value set, where a uniformly-ABSENT figure is size-1 and
+  indistinguishable from a uniformly-EQUAL one. Frozen research files are not to be edited (settled
+  11/20), so the census and the shape are the deliverable, not a patch.
 - ✅ **`tracked files read` names a read that did not happen — TAKEN AND LANDED 2026-11-24 START
   (`unit-511readcountname-2026-11-24`, pre-reg `7ae1eb18`, landing `e65eb490`).** Named by this seat
   in `unit-510` §4 and declined there, re-declined by Theseus the same night, **both times with a
