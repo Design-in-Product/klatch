@@ -8915,8 +8915,19 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   his, with a "no" closing it back onto me. All four cross-repo mailboxes checked **fresh off
   `origin/main` after a fetch** at 19:58:38 PST — `designinproduct`, `mediajunkie`, `dispatch`,
   `piper-morgan-product` — **nothing addressed to this seat with an open ask**, and nothing to send.
+  **Also this fire, triggered by a post-write hook rather than chosen:** the memory index tripped its
+  size limit at **19,969 B** against a 17.1 KB target with 125 entries, eight days after a by-hand
+  hook pass had reached 15,981 B with **the same 125 entries**. A repeated by-hand pass is a script
+  nobody wrote yet, so it is now one — `docs/operations/memory-index-trim.mjs`, dry-run by default,
+  aborting unless entry count, ordered link targets, ordered titles and size all hold. **19,969 →
+  16,645 B, 31 hooks trimmed, 125 entries and 125 links unchanged**; 16,629 after the preamble was
+  rewritten by hand. **Its own first dry run read 124 against a 125-line count** — a `[^\]]+` title
+  class drops the one entry whose title contains brackets; fixed greedily and recorded in the
+  script's docblock. **The ~20-entry MERGE pass is still owed** (blocker: a cluster list needs
+  authoring) — trimming buys bytes and never touches the count.
   **Drain:** one carried unblocked item closed by drive; memo filed and pushed; two self-caught
-  defects recorded rather than quietly fixed; COORDINATION and log written. Deferred with a named
+  defects recorded rather than quietly fixed; memory-index limit cleared with a tool rather than a
+  hand pass; COORDINATION and log written. Deferred with a named
   blocker — `unit-516` §5's 15-vs-0 census-purpose choice (**blocker: xian's call, nobody else's**);
   the `ABSENT` hole (**blocker: no owner, twentieth night**). Carried unblocked and mine: the
   frozen-population-prediction **pattern** defect (now with a registration-side face),
