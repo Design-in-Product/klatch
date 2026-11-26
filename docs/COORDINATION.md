@@ -8852,8 +8852,76 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** working — duty cycle armed on Claude Code **2.1.332** (restarted onto that build 11/25 ~19:0x PT at xian's go; `claude --version` read in this session — this line read 2.1.322 until then, which was the true version string when it was written); 11/25 WORK 14:47 fired and is logged immediately below, then 11/25 START 10:47, then 11/24 STOP 19:47, with 11/24 WORK 14:47 under it, then 11/24 START 10:47, then 11/23 STOP 19:47, then 11/23 WORK 14:47, then 11/23 START 10:47, then 11/22 STOP 19:47, then 11/22 WORK 14:47, then 11/22 START 10:47, then 11/21 STOP 19:47, then 11/21 WORK 14:47 and 11/21 START 10:47, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
-- **Updated:** 2026-11-25 ~14:47–15:0x PT (**WORK fire — no-op on product (`git diff --stat HEAD --
+- **Status:** working — duty cycle armed on Claude Code **2.1.332** (restarted onto that build 11/25 ~19:0x PT at xian's go; `claude --version` read in this session — this line read 2.1.322 until then, which was the true version string when it was written); 11/25 STOP 19:47 fired and is logged immediately below, then 11/25 WORK 14:47, then 11/25 START 10:47, then 11/24 STOP 19:47, with 11/24 WORK 14:47 under it, then 11/24 START 10:47, then 11/23 STOP 19:47, then 11/23 WORK 14:47, then 11/23 START 10:47, then 11/22 STOP 19:47, then 11/22 WORK 14:47, then 11/22 START 10:47, then 11/21 STOP 19:47, then 11/21 WORK 14:47 and 11/21 START 10:47, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Updated:** 2026-11-25 ~19:47–20:0x PT (**STOP fire — no-op on product (`git diff --stat HEAD --
+  packages/ scripts/` EMPTY, asserted and printed inside the arm before any measurement ran).
+  Daedalus's 11-25 STOP memo was already read in the 19:10 interactive session and asks nothing of
+  this seat, so this fire's work is a CARRIED ITEM OF MINE, closed by drive** —
+  `unit-520builtlabelreach-2026-11-25`, pre-reg `2802d979` on `main`, clock read **19:49:56 PST** in
+  the same command as the push, before any arm/reader/cell/KP/scratch/capture existed; addendum
+  `db630b42` registered after the arm's only drive and **before the post-hoc that grades it
+  existed**. **16 predictions across both registrations: 12 HIT, 2 REFUTED, 1 OPEN-resolved, 1
+  PARTIAL. Both refutations are mine.**
+  **The item: `unit-514` KP11's concatenated-label blindness, declared since 11/24 and never
+  measured for reach.** Answer: **0 live CONSUMERS** of the gate label are assembled by
+  concatenation, across a population of **646** tracked `.mjs`/`.js` files under a filter
+  **extracted** from published source, not retyped. The thread's floors (13 / 18 / 20 / 22) are
+  **counts in practice**, under a named residual. **No cure is owed** — a binding- or paren-aware key
+  would buy 0 rows today.
+  **THE KEEPER: a declared blindness becomes its own census population.** There are **3**
+  built-label TEXT sites in the tree and all three are this thread's own — 2 plants (`unit-513`
+  KP5, `unit-514` KP11 itself) and 1 docblock line *writing about* the form. A census keyed on the
+  text rather than the ROLE of the text would have published "3 sites exist, so the floors
+  understate" — the opposite of the finding. Rung below `unit-516` §6: that was about the label,
+  this is about the blindness, and two independent instances make it a property of self-instrumenting
+  work. `CONSUMER` is the key's **fall-through** cell, so it was **KP'd reachable (4 of 4)** before
+  its 0 was allowed to mean anything.
+  **AGAINST ME, ONE — P6 is refuted by the sentence I registered, not by the corpus.** I wrote
+  "0 built-label **sites**" when the claim I cared about was "0 built-label **consumers**"; those are
+  **3** and **0**, and the arm honestly graded the text. *A prediction is graded on its text, not its
+  intent* — the inverse of the four recorded cases where a foil ran wider than its claim, entering
+  through the **registration** this time. Second face of the `unit-516` §5 pattern item I still carry.
+  **AGAINST ME, TWO — my ±5 population tolerance refuted by a drift of exactly 7, and 7 of 7 are
+  units 517–519's own instruments** (novelty oracle `git cat-file -e c99d1d91:<path>` **KP'd in both
+  directions first**). Restricted to `c99d1d91` the population is **639** — `unit-516`'s published
+  639 to the file — with the **same 3 sites**, so the reach is not an artefact of the growth.
+  Daedalus's `unit-519` PH2 from the other direction: there the moving denominator moved a figure,
+  here it took out a registered **tolerance**, which was priced against a corpus three units added 7
+  files to in nine hours.
+  **Vacuity guard registered BEFORE the drive (P7/P8):** the joint collapse fired in **382 of 646**
+  files, **7164** joints, against a registered floor of 20, and files-where-text-changed (382) is
+  published beside files-where-the-label-count-changed (2). A 0 from a reader that never ran is the
+  failure this seat has four recorded instances of. **KP 5 of 5** — three planted positives
+  (including a MID-WORD split, a different shape rather than a second instance of one) and one
+  negative **sliced** from a real tracked line; the positives are planted **and declared as
+  planted**, because a sliced positive would presuppose the answer. **P5 asserts my own blindness
+  missed**: variable-assembled and template-interpolated labels are unreachable. **P9**, the
+  manufactured-hit hazard, registered OPEN and resolved at **1 of 3** by hand-reading the published
+  line text.
+  **A SECOND SELF-CATCH, in the write-up rather than the measurement:** the outbound memo first
+  carried `tracked files read 1113 → 1114 → 1116` as a captured sequence when **only the 1113 came
+  from a tool call**. Corrected in the memo and in RESULTS §7b before the memo was committed — real
+  readings are **1113** at the pre-reg push and **1115** at **19:57:52 PST** (`of 1116 in scope`),
+  the two intermediate pre-commit runs having scrolled past uncaptured and therefore **not quoted**.
+  *A three-element trend quoted as captured needs three captures, not one capture and a slope.*
+  Also recorded (§7): a **`.length`-as-bytes** mislabel — 8497 code units printed as `B` where
+  `wc -c` reads 8569 — found by comparing two readings of one capture; the census of span assertions
+  comparing `.length` to a `wc -c` figure is **named and NOT run**.
+  `population` **65**, **MARKED 4 / GUARDED 3 / UNGUARDED 58**, `baseline entries` **58** — flat at
+  both captured readings; gate rc 0 at every push; `.err` **0 B** on both drives.
+  **Mail:** filed in-fire and pushed to `main` in its own commit
+  (`theseus-to-daedalus-argus-…-the-blindness-declared-by-kp11-has-zero-live-consumers-…-2026-11-25.md`).
+  It asks Daedalus nothing and asks Argus exactly one thing: whether the `.length`-as-bytes census is
+  his, with a "no" closing it back onto me. All four cross-repo mailboxes checked **fresh off
+  `origin/main` after a fetch** at 19:58:38 PST — `designinproduct`, `mediajunkie`, `dispatch`,
+  `piper-morgan-product` — **nothing addressed to this seat with an open ask**, and nothing to send.
+  **Drain:** one carried unblocked item closed by drive; memo filed and pushed; two self-caught
+  defects recorded rather than quietly fixed; COORDINATION and log written. Deferred with a named
+  blocker — `unit-516` §5's 15-vs-0 census-purpose choice (**blocker: xian's call, nobody else's**);
+  the `ABSENT` hole (**blocker: no owner, twentieth night**). Carried unblocked and mine: the
+  frozen-population-prediction **pattern** defect (now with a registration-side face),
+  `SECOND-ARG`'s nested-call blindness, and the new `.length`-as-bytes census.)
+- **Previous (11-25 WORK):** 2026-11-25 ~14:47–15:0x PT (**WORK fire — no-op on product (`git diff --stat HEAD --
   packages/ scripts/` EMPTY, asserted and printed inside the arm before any measurement ran).
   Daedalus's 11-25 WORK memo read in full; it routes exactly one item to this seat by name and this
   fire closed it by drive.** `unit-518routedternaryreach-2026-11-25` — pre-reg `768bf4a9` on `main`,

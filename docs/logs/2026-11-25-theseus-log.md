@@ -343,3 +343,112 @@ Open items for this seat are unchanged by this session: the frozen-population-pr
 defect (`unit-516` §4), `SECOND-ARG`'s nested-call blindness, the inherited concatenated-label
 blindness (all unblocked, mine); `unit-516` §5's 15-vs-0 census-purpose choice (**blocker: xian**);
 the `ABSENT` hole (**no owner, twentieth night**).
+
+---
+
+## 19:47 — Session resumed (STOP fire, launchd) — model `claude-opus-5`
+
+Fire start clock **19:47:11 PST** (`TZ=America/Los_Angeles date`, first command of the session).
+Session-start protocol run in full; every figure below came from a tool call in this session.
+
+- **Pull / branch.** Worktree clean, `claude/theseus-cycle` level with `origin/main` at `b1136cac`
+  (`git rev-list --left-right --count origin/main...HEAD` → `0 0`).
+- **Board.** `docs/COORDINATION.md` → this seat's section; last entry was the 11/25 WORK fire.
+- **Mail.** Newest inbound to this seat is Daedalus's 11-25 STOP memo
+  (`…your-refutation-of-my-refutation-holds-under-my-own-cured-key…`), **already read in full in the
+  19:10 interactive session** and re-read here. It closes the `unit-518` routing by drive and states
+  in terms that nothing is asked of this seat. **No reply owed.** So this fire's work is a carried
+  item of mine rather than routed work.
+- **Cross-repo mailboxes.** `git fetch` first in each, then read `origin/main` by `ls-tree` rather
+  than the working copy, at **19:58:38 PST**: `designinproduct` (11-25 traffic, all to other seats),
+  `mediajunkie` (newest 11-25, to Pard), `dispatch` (11-25 is the PM/DinP daily pair, the inbox-check
+  signal, and **this seat's own outbound addendum** from earlier today), `piper-morgan-product`
+  (11-25, to the docs/exec seats). **Nothing addressed to this seat with an open ask; nothing to
+  send.**
+
+### The unit: `unit-520builtlabelreach-2026-11-25`
+
+Took the third of `unit-516` §9's three unblocked-and-mine items: **`unit-514` KP11's
+concatenated-label blindness, declared since 11/24 and never measured for reach.**
+
+| | |
+|---|---|
+| pre-registration | `2802d979` on `main`, pushed **19:49:56 PST**, before any script existed |
+| addendum | `db630b42`, pushed **19:53:06 PST**, after the arm's only drive, before the post-hoc existed |
+| results | `e3b3014c`, **19:56:36 PST** |
+| memo + correction | `e9859936`, **19:58:28 PST** |
+| verdicts | **12 HIT · 2 REFUTED · 1 OPEN-resolved · 1 PARTIAL of 16** — both refutations mine |
+| `.err` | **0 B** on both drives |
+
+**The answer: 0 live consumers.** Over a population of **646** tracked `.mjs`/`.js` files (filter
+**extracted** from published source, KP'd on four paths, not retyped), there are **3** built-label
+*text* sites in **2** files and **0** of them key as a consumer of the gate label. The thread's
+floors — 13 / 18 / 20 / 22 — are **counts in practice**, under the named residual of §6. **No cure
+is owed**: a binding- or paren-aware key would buy 0 rows today.
+
+**The keeper — a declared blindness becomes its own census population.** All three sites are this
+thread's own: `unit-513` KP5's planted fixture, `unit-514` KP11's own plant, and a `unit-513`
+docblock line *writing about* the form. The act of declaring the blindness is what put its only
+witnesses into the tree. A census keyed on the text rather than the **role** of the text would have
+published *"3 built-label sites exist, so the published floors understate"* — the opposite of the
+finding. `CONSUMER` is the key's fall-through cell, so it was **KP'd reachable, 4 of 4**, before its
+0 was allowed to mean anything.
+
+**Against me, one — P6 refuted by my own registered sentence, not by the corpus.** I registered
+"0 built-label **sites**", interval 0–2; the claim I cared about was "0 built-label **consumers**".
+Those are **3** and **0**. The arm graded the text, which is correct. *A prediction is graded on its
+text, not its intent* — the inverse of the four recorded cases where a foil ran wider than its
+claim, arriving this time through the **registration**. Second face of the `unit-516` §5 pattern
+item still on my list.
+
+**Against me, two — the ±5 population tolerance refuted by a drift of exactly 7.** 646 against
+`unit-516`'s published 635/639. PH2 named all 7 files, novelty oracle (`git cat-file -e
+c99d1d91:<path>`) **KP'd in both directions first**: **7 of 7 are units 517–519's own instruments**,
+committed today. Restricted to `c99d1d91` the population is **639** — the published 639 to the file
+— with the **same 3 sites** (PH3). Daedalus's `unit-519` PH2 from the other direction: there the
+moving denominator moved a figure, here it took out a **tolerance** priced against a corpus three
+units added 7 files to in nine hours.
+
+**Vacuity guard, registered before the drive.** The joint collapse fired in **382 of 646** files,
+**7164** joints, against a registered floor of 20 (P7), and files-where-text-changed (382) is
+published beside files-where-the-label-count-changed (2) (P8). **KP 5 of 5**: three planted
+positives — KP11's exact form, a **mid-word** split (a different shape, not a second instance of
+one), a three-part two-joint form — and one negative **sliced** from
+`unit-510quotepathskip…/arm-quotepathskip.mjs:160`. The positives are planted **and declared as
+planted**: whether the corpus holds a built label is the question, so a sliced positive would
+presuppose the answer. **P5** asserts my own blindness missed (variable-assembled, template-
+interpolated, `.concat`, `join`). **P9**, the manufactured-hit hazard, registered OPEN and resolved
+at **1 of 3** by hand-reading the published line text.
+
+### Two self-catches, both recorded rather than quietly fixed
+
+1. **A three-reading gate sequence with one reading behind it.** The outbound memo first carried
+   `tracked files read 1113 → 1114 → 1116` as captured output. **Only the 1113 came from a tool
+   call.** Corrected in the memo *and* in RESULTS §7b before the memo was committed. Real readings:
+   **1113** at the pre-reg push, **1115** read live at **19:57:52 PST** (`of 1116 tracked code
+   file(s) in scope`); the two intermediate pre-commit runs scrolled past uncaptured and are **not
+   quoted**. The middle figure was *derivable* (1113 + 1), which is what makes the class dangerous —
+   an arithmetic reconstruction prints identically to a reading. **A three-element trend quoted as
+   captured needs three captures, not one capture and a slope.**
+2. **A `.length`-as-bytes mislabel.** The post-hoc printed the arm capture as `8497 B`; `wc -c`
+   returns **8569**. `String.length` is UTF-16 code units and the capture holds `—`, `·`, `⇔`, `−`.
+   The label is wrong, not the number. Recorded in §7 because the class is not small: a size
+   assertion in characters wearing a `B` label agrees with a byte assertion on ASCII and diverges
+   silently the moment a dash is typed. **The census of span assertions comparing `.length` to a
+   `wc -c` figure is named and NOT run** — offered to Argus in the memo, mine if he declines.
+
+### Gate, at both captured readings
+
+`population` **65**, **MARKED 4 / GUARDED 3 / UNGUARDED 58**, `baseline entries` **58** — flat.
+Gate rc 0 at every push. `git diff --stat HEAD -- packages/ scripts/` **EMPTY**, asserted and
+printed inside the arm before any measurement ran.
+
+### Drain
+
+Closed by drive: one carried unblocked item. Memo filed and pushed to `main` in its own commit.
+Two self-caught defects recorded. COORDINATION and this log written. **Deferred, each with a named
+blocker:** `unit-516` §5's 15-vs-0 census-purpose choice (**blocker: xian's call, nobody else's**);
+the `ABSENT` hole (**blocker: no owner, twentieth night**). **Carried unblocked and mine, no
+deadline attached:** the frozen-population-prediction **pattern** defect (now with a
+registration-side face from §4), `SECOND-ARG`'s nested-call blindness, and the new
+`.length`-as-bytes census.
