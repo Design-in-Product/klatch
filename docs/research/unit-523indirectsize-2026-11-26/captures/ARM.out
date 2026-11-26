@@ -1,0 +1,518 @@
+unit-523indirectsize — arm
+SHA 9aebc5d87ecd · clock 2026-11-26 13:26:30 PST
+instrument corpus: 855 files
+
+─── KP cells ───────────────────────────────────────────────────────────────────
+  PASS  KP1  kpSet.size === 1 -> SET-BOUND/INVARIANCE/BLIND
+  PASS  KP2  kpMap.size === 1 -> MAP-BOUND/INVARIANCE
+  PASS  KP3  kpParam.size === 1 -> UNRESOLVED
+  PASS  KP4  kpObj.inner.size === 0 -> PROPERTY/EMPTY
+  PASS  KP5  kpFn(1).size > 1 -> CALL/CHANGE
+  PASS  KP6  new Set(kpArr).size === 1 -> EXCLUDED, absent from the keyed Arm A population
+  PASS  KP7  kpGuarded.size === 1 -> SET-BOUND/GUARDED
+  PASS  KP8  const kpN = new Set(kpArr).size + kpN === 1 -> BOUND-COMPARED/INVARIANCE
+  PASS  KP9  `${new Set(kpArr).size}` -> INTERP-OR-ARG
+  PASS  KP10 kpOut.n = new Set(kpArr).size -> PROPERTY-ASSIGN
+  PASS  KP11 kpRows[0].size === 1 -> RECEIVER-UNKEYED (Arm A fall-through REACHABLE)
+  PASS  KP12 kpSink(new Set(kpArr).size + 1, 2) -> INTERP-OR-ARG (addendum-corrected expectation)
+  PASS  KP13 bare `new Set(kpArr).size;` -> B-UNKEYED (Arm B fall-through REACHABLE)
+  KP 13 of 13
+
+─── Arm A: the INDIRECT bound, keyed by receiver ───────────────────────────────
+  literal .size comparisons excluded as direct `new Set(...)` tails: 60
+  INDIRECT population (re-derived here; unit-521 published 123 over 850 files): 123
+    SET-BOUND            34
+    SET-EXPR             0
+    MAP-BOUND            10
+    MAP-EXPR             0
+    OTHER-BOUND          34
+    UNRESOLVED           7
+    PROPERTY             10
+    CALL                 21
+    RECEIVER-UNKEYED     7
+    SET-TAIL-DIRECT      0
+    (sum asserted == population: 123)
+
+  direction × receiver class:
+    CALL                 {"EMPTY":8,"OTHER-N":13}
+    MAP-BOUND            {"OTHER-N":6,"EMPTY":4}
+    OTHER-BOUND          {"EMPTY":15,"OTHER-N":17,"CHANGE":1,"INVARIANCE":1}
+    PROPERTY             {"OTHER-N":4,"EMPTY":6}
+    RECEIVER-UNKEYED     {"EMPTY":7}
+    SET-BOUND            {"CHANGE":5,"EMPTY":17,"INVARIANCE":4,"OTHER-N":8}
+    UNRESOLVED           {"OTHER-N":2,"INVARIANCE":5}
+
+  NARROWED HAZARD — (SET-BOUND or SET-EXPR) and INVARIANCE: 4
+    guard: {"BLIND":4}
+    files: 3
+      docs/research/unit-464kind-2026-11-05/kind-resolve.mjs:186  [SET-BOUND INVARIANCE BLIND] receiver=kinds bindLine=181
+                kind: kinds.size === 1 ? [...kinds][0] : 'KIND-NOT-CONSTANT',
+      docs/research/unit-464kind-2026-11-05/kind-resolve.mjs:260  [SET-BOUND INVARIANCE BLIND] receiver=kinds bindLine=181
+            console.log(`  under hasReverse=${String(rev).padEnd(5)} the kind over the range is : {${[...kinds].join(', ')}}  ${kinds.size === 1 ? 'CONSTANT' : 'NOT CONSTANT'}`);
+      docs/research/unit-464order-2026-11-02/grade-order.mjs:281  [SET-BOUND INVARIANCE BLIND] receiver=keyedLists bindLine=264
+          keyedLists.size === 1 && varying.size >= 1 && !varying.has(FALLTHROUGH));
+      scripts/verify-appetite-readings.mjs:174  [SET-BOUND INVARIANCE BLIND] receiver=widths bindLine=150
+        if (widths.size === 1) {
+
+  MAP-BOUND and INVARIANCE (real invariance claims that are NOT the Set-absence hazard): 0
+
+─── Arm B: the NO-COMPARISON sites, keyed by what the size flows into ──────────
+  NO-COMPARISON population (re-derived; unit-521 published 95 over 850 files): 97
+    BOUND-COMPARED       4
+    BOUND-UNCOMPARED     11
+    PROPERTY-ASSIGN      0
+    RETURN               1
+    INTERP-OR-ARG        71
+    B-UNKEYED            10
+    (sum asserted == population: 97)
+    BOUND (compared + uncompared) 15
+
+  THE CLAIM ONE BINDING AWAY — BOUND-COMPARED whose comparison keys INVARIANCE: 0
+    files: 0
+
+  BOUND-COMPARED by comparison direction:
+    {"OTHER-N":4}
+
+─── every Arm A member, whole, no display field ────────────────────────────────
+  docs/research/round391-instruments/grade-the-machine-state-conjunct-and-the-floor-of-the-explicit-cure.mjs:158  [PROPERTY OTHER-N] receiver=atPin.files
+      atPin.total === 208 && atPin.files.size === 41 && trackedAtPin.length === 494 && sortedEq,
+  docs/research/round432-instruments/grade-the-two-cures.mjs:195  [OTHER-BOUND EMPTY] receiver=before
+      leg('G7', before.size === after.size && before.size > 0
+  docs/research/round436-instruments/grade-the-cures-against-a-runtime-oracle.mjs:163  [SET-BOUND CHANGE BLIND] receiver=seen
+      return { derived: seen.size > 1 };
+  docs/research/round441-instruments/key-the-silent-class-from-source.mjs:476  [OTHER-BOUND EMPTY] receiver=states
+      if (hisFive === null || CAP === null || states === null || states.size === 0) {
+  docs/research/round441-instruments/key-the-silent-class-from-source.mjs:555  [OTHER-BOUND EMPTY] receiver=lines
+      if (lines === null || lines.size === 0 || CAP === null) {
+  docs/research/unit-464absorb-2026-10-31/grade-filed-maps.INSTRUMENTED.mjs:187  [RECEIVER-UNKEYED EMPTY] receiver=return out
+      return out.size === 0 ? null : out;
+  docs/research/unit-464absorb-2026-10-31/grade-filed-maps.INSTRUMENTED.mjs:638  [OTHER-BOUND OTHER-N] receiver=kpTokens
+        : kpTokens.get('selector') === 'max(pins first)' && kpTokens.size === 11
+  docs/research/unit-464absorb-2026-10-31/grade-filed-maps.INSTRUMENTED.mjs:1062  [SET-BOUND EMPTY BLIND] receiver=driftSet
+      if (driftSet.size === 0) {
+  docs/research/unit-464acons-2026-11-04/grade-acons.mjs:113  [MAP-BOUND OTHER-N] receiver=cripBySite
+    if (cripBySite.size !== 8) die(`cripple arm emitted ${cripBySite.size} per-site classes, not 8`);
+  docs/research/unit-464authored-2026-10-31/quoted-denominator.mjs:75  [OTHER-BOUND OTHER-N] receiver=kp
+    const kpOk = kp.size === 11 && kp.get('selector') === 'max(pins first)';
+  docs/research/unit-464bucket-2026-11-01/base-rate-reread.mjs:190  [OTHER-BOUND EMPTY] receiver=q
+        if (q.size === 0) continue;
+  docs/research/unit-464bucket-2026-11-01/grade-his-armreach-gate.mjs:189  [SET-BOUND CHANGE BLIND] receiver=p2Words
+    console.log(`  both verdict words reachable with the gate green: ${p2Words.size >= 2}`);
+  docs/research/unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:257  [CALL EMPTY] receiver=statSync(join(RECDIR, f))
+    const nonEmpty = errs.filter((f) => statSync(join(RECDIR, f)).size > 0);
+  docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:291  [UNRESOLVED OTHER-N] receiver=wPre
+    const p4 = wPre.size === 2 && wPre.has('LANDS') && wPre.has('REFUTED')
+  docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:292  [UNRESOLVED INVARIANCE] receiver=wPost
+      && wPost.size === 1 && wPost.has('LANDS')
+  docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:306  [UNRESOLVED OTHER-N] receiver=wPre
+    const p4Threshold = wPre.size === 2 && wPost.size === 1 && wPost.has('LANDS');
+  docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:306  [UNRESOLVED INVARIANCE] receiver=wPost
+    const p4Threshold = wPre.size === 2 && wPost.size === 1 && wPost.has('LANDS');
+  docs/research/unit-464grep-2026-11-01/base-rate-of-the-steal.mjs:190  [OTHER-BOUND EMPTY] receiver=q
+        if (q.size === 0) continue;
+  docs/research/unit-464kind-2026-11-05/kind-resolve.mjs:186  [SET-BOUND INVARIANCE BLIND] receiver=kinds
+            kind: kinds.size === 1 ? [...kinds][0] : 'KIND-NOT-CONSTANT',
+  docs/research/unit-464kind-2026-11-05/kind-resolve.mjs:260  [SET-BOUND INVARIANCE BLIND] receiver=kinds
+        console.log(`  under hasReverse=${String(rev).padEnd(5)} the kind over the range is : {${[...kinds].join(', ')}}  ${kinds.size === 1 ? 'CONSTANT' : 'NOT CONSTANT'}`);
+  docs/research/unit-464mapkey-2026-10-30/grade-filed-maps.mjs:191  [RECEIVER-UNKEYED EMPTY] receiver=return out
+      return out.size === 0 ? null : out;
+  docs/research/unit-464mapkey-2026-10-30/grade-filed-maps.mjs:622  [OTHER-BOUND OTHER-N] receiver=kpTokens
+        : kpTokens.get('selector') === 'max(pins first)' && kpTokens.size === 11
+  docs/research/unit-464mapkey-2026-10-30/grade-filed-maps.mjs:1109  [SET-BOUND EMPTY BLIND] receiver=driftSet
+      if (driftSet.size === 0) {
+  docs/research/unit-464moves-2026-11-04/census-now.mjs:17  [CALL EMPTY] receiver=statSync(join(UNIT, f))
+    const nonEmpty = err.filter((f) => statSync(join(UNIT, f)).size > 0);
+  docs/research/unit-464moves-2026-11-04/compare-arms.mjs:57  [CALL EMPTY] receiver=statSync(join(UNIT, f))
+    const nonEmptyErr = by('.err').filter((f) => statSync(join(UNIT, f)).size > 0);
+  docs/research/unit-464order-2026-11-02/grade-order.mjs:268  [SET-BOUND CHANGE BLIND] receiver=lists
+      if (lists.size > 1) varying.add(lab);
+  docs/research/unit-464order-2026-11-02/grade-order.mjs:281  [SET-BOUND INVARIANCE BLIND] receiver=keyedLists
+      keyedLists.size === 1 && varying.size >= 1 && !varying.has(FALLTHROUGH));
+  docs/research/unit-464order-2026-11-02/grade-order.mjs:281  [SET-BOUND EMPTY BLIND] receiver=varying
+      keyedLists.size === 1 && varying.size >= 1 && !varying.has(FALLTHROUGH));
+  docs/research/unit-464pins-2026-11-01/drive-my-three-harnesses.mjs:157  [PROPERTY EMPTY] receiver=byFile.regrade.seen
+    const p1 = byFile.regrade.code === 2 && byFile.regrade.seen.size === 0;
+  docs/research/unit-464pins-2026-11-01/drive-my-three-harnesses.mjs:159  [PROPERTY OTHER-N] receiver=byFile.armreach.seen
+    const p2 = byFile.armreach.code === 1 && byFile.armreach.seen.size === 7
+  docs/research/unit-464presc-2026-11-03/census-presc.mjs:260  [SET-BOUND EMPTY BLIND] receiver=kinds
+        anyKind: kinds.size > 0,
+  docs/research/unit-464reach-2026-10-31/grade-filed-maps.CURED.mjs:187  [RECEIVER-UNKEYED EMPTY] receiver=return out
+      return out.size === 0 ? null : out;
+  docs/research/unit-464reach-2026-10-31/grade-filed-maps.CURED.mjs:613  [OTHER-BOUND OTHER-N] receiver=kpTokens
+        : kpTokens.get('selector') === 'max(pins first)' && kpTokens.size === 11
+  docs/research/unit-464reach-2026-10-31/grade-filed-maps.CURED.mjs:1037  [SET-BOUND EMPTY BLIND] receiver=driftSet
+      if (driftSet.size === 0) {
+  docs/research/unit-464reach-2026-10-31/grade-filed-maps.DEAD.mjs:187  [RECEIVER-UNKEYED EMPTY] receiver=return out
+      return out.size === 0 ? null : out;
+  docs/research/unit-464reach-2026-10-31/grade-filed-maps.DEAD.mjs:613  [OTHER-BOUND OTHER-N] receiver=kpTokens
+        : kpTokens.get('selector') === 'max(pins first)' && kpTokens.size === 11
+  docs/research/unit-464reach-2026-10-31/grade-filed-maps.DEAD.mjs:1037  [SET-BOUND EMPTY BLIND] receiver=driftSet
+      if (driftSet.size === 0) {
+  docs/research/unit-464reach-2026-10-31/grade-filed-maps.SCRATCH.mjs:187  [RECEIVER-UNKEYED EMPTY] receiver=return out
+      return out.size === 0 ? null : out;
+  docs/research/unit-464reach-2026-10-31/grade-filed-maps.SCRATCH.mjs:613  [OTHER-BOUND OTHER-N] receiver=kpTokens
+        : kpTokens.get('selector') === 'max(pins first)' && kpTokens.size === 11
+  docs/research/unit-464reach-2026-10-31/grade-filed-maps.SCRATCH.mjs:1037  [SET-BOUND EMPTY BLIND] receiver=driftSet
+      if (driftSet.size === 0) {
+  docs/research/unit-464reach-2026-10-31/grade-filed-maps.TOKCENSUS.mjs:187  [RECEIVER-UNKEYED EMPTY] receiver=return out
+      return out.size === 0 ? null : out;
+  docs/research/unit-464reach-2026-10-31/grade-filed-maps.TOKCENSUS.mjs:629  [OTHER-BOUND OTHER-N] receiver=kpTokens
+        : kpTokens.get('selector') === 'max(pins first)' && kpTokens.size === 11
+  docs/research/unit-464reach-2026-10-31/grade-filed-maps.TOKCENSUS.mjs:1053  [SET-BOUND EMPTY BLIND] receiver=driftSet
+      if (driftSet.size === 0) {
+  docs/research/unit-464sat-2026-10-31/sat-census.mjs:248  [OTHER-BOUND CHANGE] receiver=tails
+      if (tails === undefined || tails.size !== 1) {
+  docs/research/unit-464sat-2026-10-31/sat-census.mjs:400  [CALL EMPTY] receiver=statSync(f)
+    const nonzero = errs.filter((f) => statSync(f).size > 0);
+  docs/research/unit-464steal-2026-11-01/base-rate-on-the-reachable-set.mjs:223  [OTHER-BOUND EMPTY] receiver=q
+        if (q.size === 0) continue;
+  docs/research/unit-464steal-2026-11-01/grade-the-copy-is-his-reader.mjs:167  [MAP-BOUND EMPTY] receiver=HEADER
+      ['GWITNESS', witnessed.every((w) => w.inMine > 0) && HEADER.size > 0,
+  docs/research/unit-464t2-keychoice-2026-10-28/grade-the-surface-predicate.mjs:460  [SET-BOUND EMPTY BLIND] receiver=trackedSet
+        trackedSet.size > 0 ? true : null,
+  docs/research/unit-465bareline-2026-11-12/arm-bareline.mts:187  [OTHER-BOUND OTHER-N] receiver=baselineKeys
+    ck('A4a', `baseline set rebuilt from ${BASELINE_REV.slice(0, 8)} with the sliced reader: ${baselineKeys.size} keys (shipped F1 says 9 grandfathered)`, baselineKeys.size === 9);
+  docs/research/unit-465census-v2-2026-11-10/census-anchors-v2.mjs:205  [MAP-BOUND EMPTY] receiver=resolved
+        if (resolved.size === 0) {
+  docs/research/unit-465chainfloor-2026-11-13/arm-chainfloor-bc.mjs:218  [PROPERTY OTHER-N] receiver=pop.filtered
+          ok: NOW.selfTest() === true && ids === 'S1,S2,S3,S5,S6' && pop.filtered.size === 466,
+  docs/research/unit-465headpop-2026-11-14/arm-headpop-b.mjs:185  [OTHER-BOUND EMPTY] receiver=defFiles
+    check('B1', defFiles.size >= 1, `B-pop: census ran and found ${defFiles.size} files with an unpinned population selector`);
+  docs/research/unit-465headpop-2026-11-14/arm-headpop-b.mjs:193  [OTHER-BOUND OTHER-N] receiver=defFiles
+    pred('P-B1', defFiles.size >= 20, `B1 — >=20 distinct files carry an UNPINNED_HEAD or NO_REF site (got ${defFiles.size})`);
+  docs/research/unit-465headpop-2026-11-14/arm-headpop-b.mjs:194  [CALL OTHER-N] receiver=filesOf(NOREF)
+    pred('P-B2', NOREF.length >= 30 && filesOf(NOREF).size >= 24, `B2 — NO_REF >=30 sites across >=24 files (got ${NOREF.length} / ${filesOf(NOREF).size})`);
+  docs/research/unit-465keyed-2026-11-12/arm-revkeyed.mjs:122  [OTHER-BOUND OTHER-N] receiver=dHis
+      const q4a = dHis.size === 92;
+  docs/research/unit-465keyed-2026-11-12/arm-revkeyed.mjs:124  [OTHER-BOUND OTHER-N] receiver=dMine
+      const q4b = dMine.size === 8;
+  docs/research/unit-465keyed-2026-11-12/verify-keyed-figures.mjs:119  [OTHER-BOUND OTHER-N] receiver=dirsHead
+      const p3a = dirsHead.size === 92;
+  docs/research/unit-465maildurable-2026-11-13/arm-maildurable.mjs:380  [SET-BOUND EMPTY BLIND] receiver=liveMail
+      if (liveMail.size === 0) return { refused: true, why: 'live classifyPath claims no S6 path — S6 not taken (or not taken as S6)' };
+  docs/research/unit-465oncegate-2026-11-11/arm-oncegate.mts:113  [SET-BOUND OTHER-N BLIND] receiver=distinctValues
+      distinctValues.size !== 3 && distinctNames.size !== 3);
+  docs/research/unit-465oncegate-2026-11-11/arm-oncegate.mts:113  [SET-BOUND OTHER-N BLIND] receiver=distinctNames
+      distinctValues.size !== 3 && distinctNames.size !== 3);
+  docs/research/unit-465plant-2026-11-10/posthoc-precision-and-blindness.mjs:82  [OTHER-BOUND EMPTY] receiver=b
+      if (b.size === 0 || c.size === 0) return { refused: `0 literal declarations at ${b.size === 0 ? 'base' : 'candidate'}` };
+  docs/research/unit-465plant-2026-11-10/posthoc-precision-and-blindness.mjs:82  [OTHER-BOUND EMPTY] receiver=c
+      if (b.size === 0 || c.size === 0) return { refused: `0 literal declarations at ${b.size === 0 ? 'base' : 'candidate'}` };
+  docs/research/unit-465plant-2026-11-10/posthoc-precision-and-blindness.mjs:82  [OTHER-BOUND EMPTY] receiver=b
+      if (b.size === 0 || c.size === 0) return { refused: `0 literal declarations at ${b.size === 0 ? 'base' : 'candidate'}` };
+  docs/research/unit-465plant-2026-11-10/posthoc-v2-repaired-population.mjs:116  [OTHER-BOUND EMPTY] receiver=cand
+        if (cand.size === 0) { B.noLiteralsCand++; continue; }       // (b) a legitimate empty, counted, not "refused"
+  docs/research/unit-465plant-2026-11-10/screen-added-declaration.mjs:135  [PROPERTY EMPTY] receiver=b.decls
+      if (b.decls.size === 0 || c.decls.size === 0) {
+  docs/research/unit-465plant-2026-11-10/screen-added-declaration.mjs:135  [PROPERTY EMPTY] receiver=c.decls
+      if (b.decls.size === 0 || c.decls.size === 0) {
+  docs/research/unit-465plant-2026-11-10/screen-added-declaration.mjs:137  [PROPERTY EMPTY] receiver=b.decls
+          refused: `0 literal declarations at ${b.decls.size === 0 ? 'base' : 'candidate'} of ${path}`,
+  docs/research/unit-465readerset-2026-11-14/arm-readerset-c.mjs:73  [MAP-BOUND OTHER-N] receiver=AXIS
+    check('M0', AXIS.size === 10 && AXIS.get('readCorpusRows') === false && AXIS.get('readVerdict') === true,
+  docs/research/unit-465routecure-2026-11-13/arm-routecure-b.mjs:254  [SET-BOUND OTHER-N BLIND] receiver=his
+          ok: his.size === 28 && (onlyHis.length > 0 || onlyMine.length > 0),
+  docs/research/unit-465routecure-2026-11-13/arm-routecure-d.mjs:196  [PROPERTY OTHER-N] receiver=pop.filtered
+        return { ok: st === true && pop.filtered.size === 466, detail: `selfTest()=${st} |filtered|=${pop.filtered.size}` };
+  docs/research/unit-465rowdelta-2026-11-06/drive-arms.mjs:114  [CALL EMPTY] receiver=fs.statSync(p + s)
+        if (!probeFound[s] && fs.existsSync(p + s) && fs.statSync(p + s).size === 0) {
+  docs/research/unit-465widen-2026-11-10/posthoc-all-routes.mjs:115  [MAP-BOUND EMPTY] receiver=want
+    if (want.size === 0) { console.log('REFUSED — no W1 chain parsed from v2 capture'); process.exit(2); }
+  docs/research/unit-465widen-2026-11-10/widen-key.mjs:170  [MAP-BOUND EMPTY] receiver=want
+    if (want.size === 0) { console.log('  REFUSED — no W1 chain parsed; P6 cannot be graded'); process.exit(2); }
+  docs/research/unit-466xjoin-2026-11-15/arm-xjoin-a.mjs:272  [MAP-BOUND OTHER-N] receiver=crossPairs
+    pred('P1', crossPairs.size >= 10 && crossPairs.size <= 60,
+  docs/research/unit-466xjoin-2026-11-15/arm-xjoin-a.mjs:272  [MAP-BOUND OTHER-N] receiver=crossPairs
+    pred('P1', crossPairs.size >= 10 && crossPairs.size <= 60,
+  docs/research/unit-466xjoin-2026-11-15/arm-xjoin-b.mjs:247  [MAP-BOUND OTHER-N] receiver=pairs
+    pred('Q1', pairs.size >= 20 && pairs.size <= 150,
+  docs/research/unit-466xjoin-2026-11-15/arm-xjoin-b.mjs:247  [MAP-BOUND OTHER-N] receiver=pairs
+    pred('Q1', pairs.size >= 20 && pairs.size <= 150,
+  docs/research/unit-474sweptmagnitude-2026-11-17/arm-sweptmag-a.mjs:50  [SET-BOUND EMPTY GUARDED] receiver=SPEC_FROZEN
+    const capturesOk = SPEC_FROZEN.size > 0 && Boolean(filterM) && Boolean(cmpM);
+  docs/research/unit-475arrowrefusal-2026-11-18/arm-arrowrefusal-a.mjs:226  [SET-BOUND EMPTY BLIND] receiver=before
+      check('A6a the baseline is non-empty', before.size > 0, `baseline=${before.size}`);
+  docs/research/unit-475arrowrefusal-2026-11-18/arm-arrowrefusal-a.mjs:239  [SET-BOUND EMPTY BLIND] receiver=editedNames
+        stillBlock.length === editedNames.size && editedNames.size > 0,
+  docs/research/unit-483columnnarrow-2026-11-19/arm-columnnarrow.mjs:160  [SET-BOUND OTHER-N BLIND] receiver=corners
+    if (!kpOk || corners.size !== 3) die(4, 'KP-FAILED — the KP set is vacuous or a key landed on the wrong side. Nothing published.');
+  docs/research/unit-484popnarrow-2026-11-19/arm.mjs:100  [SET-BOUND OTHER-N BLIND] receiver=corners
+    if (corners.size !== 3) { console.error(`\nKP-FAILED — ${corners.size} corners occupied, 3 registered. Nothing published.`); process.exit(4); }
+  docs/research/unit-492frozenredrive-2026-11-20/arm-frozenredrive.mjs:164  [SET-BOUND OTHER-N BLIND] receiver=labels
+      if (labels.size === 3) verdictFiles.push(f);
+  docs/research/unit-503stalelabelwidth-2026-11-22/derive-stale-entry-cost.mjs:75  [UNRESOLVED INVARIANCE] receiver=s
+      Object.entries(byLabel).map(([k, s]) => [k, s.size === 1 ? [...s][0] : [...s]]),
+  docs/research/unit-509extractionrefusal-2026-11-23/posthoc-wsfile.mjs:81  [SET-BOUND OTHER-N BLIND] receiver=EXTS
+    must(EXTS.size >= 5, `sliced extension set looks wrong: ${JSON.stringify([...EXTS])}`);
+  docs/research/unit-512matchersubject-2026-11-24/arm-matchersubject-r2.mjs:111  [SET-BOUND EMPTY BLIND] receiver=gateIds
+        const readsGate = /\bsrc\b|\bgateSrc\b|\bGATE\b/.test(w.args) || gateIds.size > 0;
+  docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:220  [SET-BOUND CHANGE BLIND] receiver=rs
+      if (rs.size > 1) crossCut.push(k);
+  scripts/lib/skipped-shape-census.mts:284  [SET-BOUND EMPTY BLIND] receiver=feeding
+        if (feeding.size === 0) continue;
+  scripts/probe-accepted-multipart-allocation.mts:111  [OTHER-BOUND OTHER-N] receiver=f
+        if (f.size > 50 * 1024 * 1024) throw new Error('unexpected: over cap');
+  scripts/probe-accepted-multipart-allocation.mts:147  [OTHER-BOUND OTHER-N] receiver=f
+        if (f.size > 40 * 1024 * 1024) { sink = `refused at ${f.size} without arrayBuffer()`; }
+  scripts/probe-browse-cold-figure-gap.mts:300  [CALL OTHER-N] receiver=fs.statSync(p)
+          try { if (fs.statSync(p).size < 100) continue; } catch { continue; }
+  scripts/probe-browse-endpoint-second-corpus.mts:308  [CALL OTHER-N] receiver=fs.statSync(p)
+          try { if (fs.statSync(p).size < 100) continue; } catch { continue; }
+  scripts/probe-browse-endpoint-vs-channel-count.mts:407  [CALL OTHER-N] receiver=fs.statSync(p)
+          try { if (fs.statSync(p).size < 100) continue; } catch { continue; }
+  scripts/probe-browse-latency-end-to-end.mts:507  [CALL OTHER-N] receiver=fs.statSync(p)
+            try { if (fs.statSync(p).size < 100) continue; } catch { continue; } // mirrors session-scanner.ts:267
+  scripts/probe-browse-latency-end-to-end.mts:548  [CALL OTHER-N] receiver=fs.statSync(p)
+        try { if (fs.statSync(p).size < 100) continue; } catch { continue; } // mirrors session-scanner.ts:650
+  scripts/probe-fingerprint-cache-endpoint.mts:282  [CALL OTHER-N] receiver=fs.statSync(p)
+          try { if (fs.statSync(p).size >= 100) out.push(p); } catch { /* skip */ }
+  scripts/probe-multi-root-browse.mts:306  [CALL OTHER-N] receiver=fs.statSync(p)
+          try { if (fs.statSync(p).size >= 100) out.push(p); } catch { /* skip */ }
+  scripts/probe-pm-corpus-cap-delta.mts:323  [CALL OTHER-N] receiver=fs.statSync(p)
+          try { if (fs.statSync(p).size < 100) continue; } catch { continue; }
+  scripts/probe-round197-the-verdict-on-a-way-back-and-the-path-that-is-not-the-database.mts:478  [OTHER-BOUND EMPTY] receiver=afterDry
+        afterDry.size === 0 && afterDry.tables === 0 && afterApply.size === 0 && afterApply.tables === 0,
+  scripts/probe-round197-the-verdict-on-a-way-back-and-the-path-that-is-not-the-database.mts:478  [OTHER-BOUND EMPTY] receiver=afterApply
+        afterDry.size === 0 && afterDry.tables === 0 && afterApply.size === 0 && afterApply.tables === 0,
+  scripts/probe-round204-the-undo-over-a-role-apply-driven-end-to-end.mts:138  [CALL EMPTY] receiver=fs.statSync(p)
+        if (fs.existsSync(p) && fs.statSync(p).size === 0) fs.rmSync(p, { force: true });
+  scripts/probe-round207-the-import-confirms-a-name-and-the-name-is-not-unique.mts:410  [OTHER-BOUND INVARIANCE] receiver=picks
+    check('E1', picks.size === 1, 'repeated resolution of a same-millisecond pair is stable', `${picks.size} distinct`);
+  scripts/probe-round222-port-ownership-hoist.mts:358  [CALL EMPTY] receiver=fs.statSync(sigtermDb)
+      const wroteWhereSent = fs.existsSync(sigtermDb) && fs.statSync(sigtermDb).size > 0;
+  scripts/probe-round224-a-skip-must-not-summarise-as-a-pass.mts:1351  [SET-BOUND OTHER-N BLIND] receiver=outcomes
+        outcomes.size >= 6, `${outcomes.size} distinct code+headline pairs across ${Object.keys(LIMBS).length} inputs`);
+  scripts/probe-round227-arm-o-on-a-corpus-where-the-cap-fires.mts:286  [CALL OTHER-N] receiver=fs.statSync(p)
+        try { if (fs.statSync(p).size < 100) continue; } catch { continue; } // mirrors session-scanner.ts:650
+  scripts/probe-round233-arm-m-and-the-endpoint-can-walk-different-corpora.mts:175  [CALL OTHER-N] receiver=fs.statSync(p)
+          try { if (fs.statSync(p).size < 100) continue; } catch { continue; } // mirrors session-scanner.ts:267
+  scripts/probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts:188  [UNRESOLVED INVARIANCE] receiver=seen
+      if (CORPUS_CTX_RE.test(stripComments(read(rel)))) return { direct: seen.size === 1, via: seen.size === 1 ? null : rel };
+  scripts/probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts:188  [UNRESOLVED INVARIANCE] receiver=seen
+      if (CORPUS_CTX_RE.test(stripComments(read(rel)))) return { direct: seen.size === 1, via: seen.size === 1 ? null : rel };
+  scripts/probe-round246-the-sweep-repaired-and-the-emit-spelling-was-the-bigger-blind-spot.mts:567  [PROPERTY EMPTY] receiver=r.emitOnly
+    const emitBlind = [...rows.values()].filter((r) => r.emitOnly.size > 0);
+  scripts/probe-round246-the-sweep-repaired-and-the-emit-spelling-was-the-bigger-blind-spot.mts:568  [PROPERTY EMPTY] receiver=r.regexOnly
+    const emitBlindAndOtherwiseEmpty = emitBlind.filter((r) => r.regexOnly.size === 0);
+  scripts/probe-round250-the-drive-was-never-priced-and-the-port-is-one-line-of-product.mts:387  [CALL EMPTY] receiver=mHaz(name)
+      const clean = (name: string) => mHaz(name).size === 0;
+  scripts/probe-round250-the-drive-was-never-priced-and-the-port-is-one-line-of-product.mts:408  [RECEIVER-UNKEYED EMPTY] receiver=
+        mOwn.get(f.viaDep)!.size === 0 && has(f.viaDep, 'server') && has(f.viaDep, 'port'),
+  scripts/probe-round256-an-emptiness-assertion-grades-the-operator-and-a-sole-blocker-ranking-cannot-see-a-coupled-class.mts:905  [OTHER-BOUND EMPTY] receiver=providers
+      if (providers.size === 0) return own;
+  scripts/probe-round265-the-census-already-follows-imports-on-the-other-axis.mts:319  [OTHER-BOUND EMPTY] receiver=providers
+      if (providers.size === 0) return own;
+  scripts/probe-round283-the-classification-theseus-asked-for-exists-and-it-has-been-red-since-yesterday.mts:505  [SET-BOUND EMPTY BLIND] receiver=disqualified
+      disqualified.size > 0 && [...disqualified].every((f) => residue.includes(f)),
+  scripts/probe-round283-the-classification-theseus-asked-for-exists-and-it-has-been-red-since-yesterday.mts:514  [SET-BOUND EMPTY BLIND] receiver=disqualified
+      disqualified.size > 0,
+  scripts/probe-round303-typecheck-grades-the-declaration-and-never-the-thing-it-describes.mts:570  [OTHER-BOUND OTHER-N] receiver=importTargets
+      importTargets.size >= 3 &&
+  scripts/probe-round323-the-cheap-cure-for-a-frozen-figure-empties-the-tripwire-and-leaves-the-exit-code-lying.mts:176  [OTHER-BOUND OTHER-N] receiver=bySeat
+      bySeat.size === 3 && (bySeat.get('Argus')?.length ?? 0) === 2,
+  scripts/probe-round323-the-cheap-cure-for-a-frozen-figure-empties-the-tripwire-and-leaves-the-exit-code-lying.mts:177  [OTHER-BOUND OTHER-N] receiver=bySeat
+      bySeat.size === 3 && (bySeat.get('Argus')?.length ?? 0) === 2
+  scripts/probe-scan-cost-model-control.mts:202  [CALL OTHER-N] receiver=fs.statSync(fp)
+          try { if (fs.statSync(fp).size < 100) continue; } catch { continue; }
+  scripts/probe-scan-latency-vs-cap.mts:69  [CALL OTHER-N] receiver=fs.statSync(p)
+            if (fs.statSync(p).size < 100) continue;
+  scripts/verify-appetite-readings.mjs:174  [SET-BOUND INVARIANCE BLIND] receiver=widths
+    if (widths.size === 1) {
+  scripts/verify-rule-discrimination.mjs:231  [SET-BOUND CHANGE BLIND] receiver=prod
+      if (prod.size > 1) return 'a second distinct productive neighbourhood rendered';
+
+─── every Arm B member, whole, no display field ────────────────────────────────
+  docs/research/lib/attested-rounds.mjs:743  [INTERP-OR-ARG]
+        S6_FOIL_CHAIN.length === new Set(S6_FOIL_CHAIN).size &&
+  docs/research/round370-instruments/characterisation-sweep-drive.mjs:104  [INTERP-OR-ARG]
+    console.log(`files touched  : ${new Set(rows.map((r) => r.file)).size}`);
+  docs/research/round387-instruments/grade-the-routed-cure-against-its-own-pins.mjs:190  [INTERP-OR-ARG]
+        `Attributed at ${new Set(cMech.map((c) => c.narrowest)).size} distinct narrowest keys for ` +
+  docs/research/round403-instruments/live-census-over-all-fifteen.mjs:72  [BOUND-COMPARED cmp=OTHER-N]
+      const lines = new Set(HAND.map((r) => `${r.p}:${r.line}`)).size;
+  docs/research/round403-instruments/live-census-over-all-fifteen.mjs:73  [BOUND-COMPARED cmp=OTHER-N]
+      const files = new Set(HAND.map((r) => r.p)).size;
+  docs/research/round404-instruments/grade-the-three-cures.mjs:274  [INTERP-OR-ARG]
+    meas('M', 'inline (unnamed) window calls of the cured spelling, live tree', `${inlineHits.length} site(s) in ${new Set(inlineHits.map((h) => h.split(':')[0])).size} file(s)${inlineHits.length ? `: ${inlineHits.join(', ')}` : ''}`);
+  docs/research/round405-instruments/census-the-pin-population.mjs:341  [INTERP-OR-ARG]
+      `${LIT.length} literal-sha pin site(s) in ${new Set(LIT.map((s) => s.path)).size} file(s)`);
+  docs/research/round405-instruments/census-the-pin-population.mjs:439  [INTERP-OR-ARG]
+                + `${String(new Set(xs.map((s) => s.path)).size).padStart(2)} file(s)`);
+  docs/research/round405-instruments/census-the-pin-population.mjs:442  [INTERP-OR-ARG]
+              + `${String(new Set(SITES.map((s) => s.path)).size).padStart(2)} file(s)`);
+  docs/research/round409-instruments/census-the-hand-typed-known-positive.mjs:414  [INTERP-OR-ARG]
+      + `${P.length} declaration(s) in ${new Set(P.map((r) => r.path)).size} file(s))`);
+  docs/research/round426-instruments/a-published-sentence-is-not-its-discriminator.mjs:185  [INTERP-OR-ARG]
+      `${new Set(Object.values(R).map((r) => JSON.stringify(r))).size} distinct rows of ${parsed.length}`);
+  docs/research/round426-instruments/a-published-sentence-is-not-its-discriminator.mjs:367  [BOUND-COMPARED cmp=OTHER-N]
+    const n1 = new Set(disagreements.map((d) => d.key)).size;
+  docs/research/round440-instruments/census-the-gate-line-grammar-his-cure-must-cover.mjs:447  [INTERP-OR-ARG]
+          : new Set(drives.filter((d) => d.gate !== null).map((d) => k(d.gate))).size,
+  docs/research/round449-instruments/probe-the-argument-shapes.mjs:98  [INTERP-OR-ARG]
+    console.log(`STRING-AND-COMMENT-BLIND \`${TOKEN}\` call sites: ${sites.length} in ${new Set(sites.map((s) => s.f)).size} file(s)`);
+  docs/research/round452-instruments/census2-reconcile-his-26-and-hand-read-the-drops.mjs:129  [INTERP-OR-ARG]
+      + `${new Set(proseRows.map((r) => r.path)).size} files`);
+  docs/research/unit-464cell-2026-11-02/grade-cell.mjs:192  [INTERP-OR-ARG]
+      console.log(`  files: ${new Set(sites.map((s) => s.split(':')[0])).size}`);
+  docs/research/unit-464cell-2026-11-02/grade-cell.mjs:201  [INTERP-OR-ARG]
+        { sites: sites.length, files: new Set(sites.map((s) => s.split(':')[0])).size, members: sites, knownPositiveSeen: sawC2bFile },
+  docs/research/unit-464class-2026-11-02/enumerate-legs.mjs:236  [BOUND-UNCOMPARED]
+    const legFiles = new Set(legs.map((l) => l.rel)).size;
+  docs/research/unit-464class-2026-11-02/enumerate-legs.mjs:307  [INTERP-OR-ARG]
+    console.log(`   span-sliced check( only:         ${String(checkOnly.length).padStart(3)} sites across ${new Set(checkOnly.map((l) => l.rel)).size} files, ${distinctCheck.length} distinct legs`);
+  docs/research/unit-464class-2026-11-02/enumerate-legs.mjs:311  [INTERP-OR-ARG]
+      console.log(`       ${idiom.padEnd(9)} ${kind.padEnd(12)} ${String(ls.length).padStart(3)} sites across ${new Set(ls.map((l) => l.rel)).size} files, ` +
+  docs/research/unit-464class-2026-11-02/enumerate-legs.mjs:315  [B-UNKEYED]
+    const p1Files = legFiles > new Set(checkOnly.map((l) => l.rel)).size;
+  docs/research/unit-464class-2026-11-02/enumerate-legs.mjs:319  [INTERP-OR-ARG]
+      `files ${legFiles} > ${new Set(checkOnly.map((l) => l.rel)).size}, ` +
+  docs/research/unit-464grep-2026-11-01/grep-census.mjs:311  [INTERP-OR-ARG]
+    console.log(`GREP sites: ${allRows.length} in ${new Set(allRows.map((r) => r.path)).size} file(s)  (S1 ${allRows.filter((r) => r.surface === 'S1').length} · S2 ${allRows.filter((r) => r.surface === 'S2').length})`);
+  docs/research/unit-464inspan-2026-11-03/grade-inspan.mjs:266  [INTERP-OR-ARG]
+    console.log(`sites enumerated: ${sites.length} over ${popFiles.length} .mjs / ${new Set(popFiles.map(dirOf)).size} dirs (his unit and mine excluded)`);
+  docs/research/unit-464kind-2026-11-05/kind-resolve.mjs:188  [INTERP-OR-ARG]
+            note: `${q.counts.length} instantiations · distinct member counts ${new Set(ms).size} · members==1 in ${ms.filter((x) => x === 1).length} · kinds {${[...kinds].join(',')}}`,
+  docs/research/unit-464kpspan-2026-11-04/grade-kpspan.mjs:430  [B-UNKEYED]
+    const unionOk = eitherMembers.length === new Set([...selMembers, ...movMembers]).size;
+  docs/research/unit-464moves-2026-11-04/grade-census-keys.mjs:181  [B-UNKEYED]
+    const myRound = { dirs: new Set(mineAtMyPin.members.roundNNN.map((p) => p.split('/')[2])).size, mjs: mineAtMyPin.mjsCount.roundNNN };
+  docs/research/unit-464prec-2026-11-03/grade-prec.mjs:114  [INTERP-OR-ARG]
+      `${new Set(CJ.map(key)).size} distinct rows — join on (file,line), member lists not counts`);
+  docs/research/unit-464presc-2026-11-03/census-presc.mjs:204  [INTERP-OR-ARG]
+    console.log(`POPULATION THIS ARM: ${popFiles.length} .mjs over ${new Set(popFiles.map(dirOf)).size} dirs ` +
+  docs/research/unit-464presc-2026-11-03/census-presc.mjs:447  [INTERP-OR-ARG]
+    console.log(`FIGURES  pop_files=${popFiles.length} pop_dirs=${new Set(popFiles.map(dirOf)).size} sites=${sites.length} ` +
+  docs/research/unit-465guard-2026-11-08/census-registry-bangs.mjs:68  [INTERP-OR-ARG]
+      `candidate lines: ${rows.length} in ${new Set(rows.map((r) => r.name)).size} file(s), ` +
+  docs/research/unit-465guard-2026-11-08/census-registry-bangs.mjs:73  [INTERP-OR-ARG]
+        `${new Set(liveRows.map((r) => r.name)).size} file(s), ${sum(liveRows, 'live')} dereference(s)`,
+  docs/research/unit-465guard-2026-11-08/census-registry-bangs.mjs:77  [INTERP-OR-ARG]
+        `${new Set(proseRows.map((r) => r.name)).size} file(s), ${sum(proseRows, 'raw')} token(s)`,
+  docs/research/unit-465headpop-2026-11-14/arm-headpop-c.mjs:170  [B-UNKEYED]
+    const files = (rs) => new Set(rs.map((r) => r.p)).size;
+  docs/research/unit-465promote-2026-11-07/measure-inode-reuse.mjs:70  [BOUND-UNCOMPARED]
+    const uniq = new Set(inos).size;
+  docs/research/unit-465readerset-2026-11-14/arm-readerset-b.mjs:271  [INTERP-OR-ARG]
+      + `${new Set(occ8.map((o) => o.p)).size} files mentioning one at all`);
+  docs/research/unit-465readerset-2026-11-14/arm-readerset-c.mjs:278  [INTERP-OR-ARG]
+    console.log(`  LABEL      ${lab.length}  in ${new Set(lab.map((o) => o.p)).size} files`);
+  docs/research/unit-465routecure-2026-11-13/arm-routecure-b.mjs:327  [B-UNKEYED]
+          ok: vals.every(Boolean) && new Set(vals).size === vals.length,
+  docs/research/unit-465routecure-2026-11-13/arm-routecure-d.mjs:114  [INTERP-OR-ARG]
+        ok: witnesses.every(Boolean) && new Set(witnesses).size === witnesses.length,
+  docs/research/unit-465screen-2026-11-10/screen-declaring-file.mjs:108  [BOUND-UNCOMPARED]
+    const nFiles = new Set(cells.map((c) => c.file)).size;
+  docs/research/unit-466reasontok-2026-11-15/arm-reasontok-a.mjs:66  [BOUND-UNCOMPARED]
+    const samelineLines = new Set(sameline.map((p) => `${p.file}:${p.lineNo}`)).size;
+  docs/research/unit-466reasontok-2026-11-15/arm-reasontok-a.mjs:67  [BOUND-UNCOMPARED]
+    const samelineRecordings = new Set(sameline.map((p) => p.file)).size;
+  docs/research/unit-466reasontok-2026-11-15/arm-reasontok-c.mjs:83  [INTERP-OR-ARG]
+      console.log(`  ${form.padEnd(9)} pairs=${String(ps.length).padStart(5)}  distinct=${String(new Set(ps.map(idOf)).size).padStart(5)}  recordings=${new Set(ps.map((p) => p.file)).size}`);
+  docs/research/unit-466reasontok-2026-11-15/arm-reasontok-c.mjs:83  [INTERP-OR-ARG]
+      console.log(`  ${form.padEnd(9)} pairs=${String(ps.length).padStart(5)}  distinct=${String(new Set(ps.map(idOf)).size).padStart(5)}  recordings=${new Set(ps.map((p) => p.file)).size}`);
+  docs/research/unit-466reasontok-2026-11-15/arm-reasontok-c.mjs:86  [INTERP-OR-ARG]
+    console.log(`  ALL-FORMS pairs=${pairs.length}  distinct=${distinctAll.size}  recordings=${new Set(pairs.map((p) => p.file)).size}`);
+  docs/research/unit-466reasontok-2026-11-15/arm-reasontok-c.mjs:230  [INTERP-OR-ARG]
+    console.log(`\n--- distinct tokens among ALL newly flagged (${new Set(newlyFlagged.map((r) => r.token)).size}) ---`);
+  docs/research/unit-466striplift-2026-11-15/arm-striplift-a.mjs:174  [INTERP-OR-ARG]
+      `five strip spellings — across ${new Set(sites.map((s) => s.p)).size} file(s). ` +
+  docs/research/unit-466striplift-2026-11-15/arm-striplift-b.mjs:305  [INTERP-OR-ARG]
+      `array(s) across ${new Set(dups.filter((d) => !d.err).map((d) => d.p)).size} recording(s) of ${recFiles.length} scanned`);
+  docs/research/unit-466striplift-2026-11-15/arm-striplift-d.mjs:119  [INTERP-OR-ARG]
+      `${new Set(kdup.map((d) => d.p)).size} recording(s) of ${recFiles.length} scanned`);
+  docs/research/unit-466xjoin-2026-11-15/arm-xjoin-a.mjs:247  [BOUND-UNCOMPARED]
+    const consFilesK = new Set(consSites.map((c) => c.p)).size;
+  docs/research/unit-466xjoin-2026-11-15/arm-xjoin-a.mjs:248  [BOUND-UNCOMPARED]
+    const consFilesRead = new Set(readKeyHits.map((s) => s.split(':')[0])).size;
+  docs/research/unit-467importprice-2026-11-16/arm-importprice-a.mts:323  [INTERP-OR-ARG]
+        `   hits ${new Set(all.map((h) => h.file)).size} file(s) · drivable-and-clean movers ${moversAll.length} [${moversAll.join(', ') || 'EMPTY'}]`,
+  docs/research/unit-490partitionformat-2026-11-20/arm-partitionformat.mjs:270  [INTERP-OR-ARG]
+    console.log(`\nCENSUS — ${members.length} captured reader literal(s) in ${new Set(members.map((m) => m.rel)).size}`
+  docs/research/unit-493ceilingreplication-2026-11-20/census-ceiling.mjs:94  [INTERP-OR-ARG]
+    console.log(`tracked unit directories        : ${new Set(git(['ls-files', 'docs/research/']).split('\n').map(unitOf).filter(Boolean)).size}`);
+  docs/research/unit-506labelmultiset-2026-11-23/arm-labelmultiset.mjs:287  [B-UNKEYED]
+    const distinct = (xs) => new Set(xs.map((x) => JSON.stringify(x))).size;
+  docs/research/unit-507pathlabelpairs-2026-11-23/arm-pathlabelpairs.mjs:283  [B-UNKEYED]
+    const uniq = (cells, f) => new Set(cells.map(f)).size;
+  docs/research/unit-508grainvsextraction-2026-11-23/arm-grainvsextraction.mjs:142  [INTERP-OR-ARG]
+    must(new Set(ALL_PATHS).size === ALL_PATHS.length, 'fixture paths are not distinct');
+  docs/research/unit-508grainvsextraction-2026-11-23/arm-grainvsextraction.mjs:335  [INTERP-OR-ARG]
+      new Set(eqSets).size === 4, `${new Set(eqSets).size} of 4`);
+  docs/research/unit-508grainvsextraction-2026-11-23/arm-grainvsextraction.mjs:337  [INTERP-OR-ARG]
+      new Set(coSets).size === 4, `${new Set(coSets).size} of 4`);
+  docs/research/unit-508grainvsextraction-2026-11-23/arm-grainvsextraction.mjs:385  [INTERP-OR-ARG]
+        labelMultiset: `${new Set(msSets).size} of 4`,
+  docs/research/unit-508grainvsextraction-2026-11-23/arm-grainvsextraction.mjs:386  [INTERP-OR-ARG]
+        pairSetEqualityExtraction: `${new Set(eqSets).size} of 4`,
+  docs/research/unit-508grainvsextraction-2026-11-23/arm-grainvsextraction.mjs:387  [INTERP-OR-ARG]
+        pairSetContainmentExtraction: `${new Set(coSets).size} of 4`,
+  docs/research/unit-509extractionrefusal-2026-11-23/arm-extractionrefusal.mjs:200  [INTERP-OR-ARG]
+    must(new Set(ALL_PATHS).size === ALL_PATHS.length, 'fixture paths are not distinct');
+  docs/research/unit-509extractionrefusal-2026-11-23/arm-extractionrefusal.mjs:395  [B-UNKEYED]
+    const sepOf = (k) => new Set(NAMES.map((c) => JSON.stringify(asSet(R[c].readers[k].pairs)))).size;
+  docs/research/unit-509extractionrefusal-2026-11-23/posthoc-wsfile.mjs:179  [BOUND-COMPARED cmp=OTHER-N]
+    const sepCoLazy = new Set(CELLS.map((c) => JSON.stringify(asSet(coLazy[c].pairs)))).size;
+  docs/research/unit-509extractionrefusal-2026-11-23/posthoc-wsfile.mjs:180  [BOUND-UNCOMPARED]
+    const sepLazy = new Set(CELLS.map((c) => JSON.stringify(asSet(armJson.cells[c].readers.lazy.pairs)))).size;
+  docs/research/unit-523indirectsize-2026-11-26/arm-indirectsize.mjs:511  [INTERP-OR-ARG]
+    console.log(`    files: ${new Set(narrowed.map((s) => s.path)).size}`);
+  docs/research/unit-523indirectsize-2026-11-26/arm-indirectsize.mjs:536  [INTERP-OR-ARG]
+    console.log(`    files: ${new Set(oneAway.map((s) => s.path)).size}`);
+  scripts/lib/round361-pin-grade.mts:50  [INTERP-OR-ARG]
+        detail: () => `${new Set(Object.values(LIMBS).map((i) => `${S(i).code}:${S(i).headline.slice(0, 40)}`)).size} distinct` },
+  scripts/probe-import-entity-binding.mts:147  [INTERP-OR-ARG]
+      if (new Set(paths).size !== paths.length) {
+  scripts/probe-multi-root-browse.mts:412  [INTERP-OR-ARG]
+        D.sessionIds.length === new Set(D.sessionIds).size,
+  scripts/probe-multi-root-browse.mts:413  [INTERP-OR-ARG]
+        `${new Set(D.sessionIds).size} distinct of ${D.sessionIds.length}`);
+  scripts/probe-multi-root-browse.mts:432  [INTERP-OR-ARG]
+    check('E', 'no session is listed twice', E.sessionIds.length === new Set(E.sessionIds).size,
+  scripts/probe-multi-root-browse.mts:433  [INTERP-OR-ARG]
+      `${new Set(E.sessionIds).size} distinct of ${E.sessionIds.length}`);
+  scripts/probe-round201-the-window-holds-this-corpus-and-not-the-class-and-the-corpus-has-no-names-in-it.mts:462  [INTERP-OR-ARG]
+        meas('L1', `${path.basename(CORPUS)}: ${rows.length} channels, ${openers.length} with an opening user turn, ${hits.length} raw pattern hits across ${new Set(hits.map((h) => h.title)).size} channels`);
+  scripts/probe-round203-the-corpus-is-lineages-and-the-sheet-warns-about-one-of-them.mts:164  [INTERP-OR-ARG]
+      new Set(aNames.map(normalizeName)).size === aNames.length,
+  scripts/probe-round203-the-corpus-is-lineages-and-the-sheet-warns-about-one-of-them.mts:273  [INTERP-OR-ARG]
+        `distinct normalized names among them: ${new Set(hits.map((h) => normalizeName(h.name))).size} — so exactly ${hits.length - new Set(hits.map((h) => normalizeName(h.name))).size} collision warning(s) can fire`
+  scripts/probe-round203-the-corpus-is-lineages-and-the-sheet-warns-about-one-of-them.mts:273  [INTERP-OR-ARG]
+        `distinct normalized names among them: ${new Set(hits.map((h) => normalizeName(h.name))).size} — so exactly ${hits.length - new Set(hits.map((h) => normalizeName(h.name))).size} collision warning(s) can fire`
+  scripts/probe-round224-a-skip-must-not-summarise-as-a-pass.mts:1592  [INTERP-OR-ARG]
+        + `${new Set(census.sites.map((s) => s.file)).size} file(s) are all literal arrays or local `
+  scripts/probe-round224-a-skip-must-not-summarise-as-a-pass.mts:1816  [INTERP-OR-ARG]
+          ? `${census.sites.length} site(s) in ${new Set(census.sites.map((s) => s.file)).size} file(s): `
+  scripts/probe-round224-a-skip-must-not-summarise-as-a-pass.mts:2126  [INTERP-OR-ARG]
+        + `${new Set(census.sites.map((s) => s.file)).size} file(s) of ${census.sources} source files `
+  scripts/probe-round241-a-corpus-cast-is-resolved-not-pinned.mts:110  [INTERP-OR-ARG]
+          `sources=${r.sources.length} distinct=${new Set(r.sources.map((s) => s.dir)).size}`);
+  scripts/probe-round242-the-band-selects-bytes-and-arm-a-is-one-row.mts:207  [BOUND-UNCOMPARED]
+      const dirsWithSessions = new Set(rows.map((r) => r.dir)).size;
+  scripts/probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts:401  [INTERP-OR-ARG]
+      `deletions of packages/**/*.ts(x) in all of history: ${new Set(deletedEver).size}; ` +
+  scripts/probe-round276-the-address-census-and-the-sentinel-that-hid-its-own-file.mts:282  [INTERP-OR-ARG]
+        `${new Set(v4.map((s) => s.file)).size} files (reported, not pinned — not the defect)`);
+  scripts/probe-round300-the-screen-has-a-third-state-and-the-site-my-own-arm-named-is-in-it.mts:153  [INTERP-OR-ARG]
+        `${new Set(of('invisible').map((s) => s.file)).size} files`,
+  scripts/probe-round300-the-screen-has-a-third-state-and-the-site-my-own-arm-named-is-in-it.mts:167  [INTERP-OR-ARG]
+        } in ${new Set(of('invisible').filter((s) => s.file !== SELF).map((s) => s.file)).size} files`,
+  scripts/probe-round301-the-limbs-partition-by-construction-and-the-price-landed-in-the-instrument-that-priced-it.mts:192  [INTERP-OR-ARG]
+      `${wouldBeInvisible.length} sites in ${new Set(wouldBeInvisible.map((s) => s.file)).size} files ` +
+  scripts/probe-round301-the-limbs-partition-by-construction-and-the-price-landed-in-the-instrument-that-priced-it.mts:315  [INTERP-OR-ARG]
+        `invisible to the superseded token in ${new Set(wouldBeInvisible.map((s) => s.file)).size} files · ` +
+  scripts/probe-round310-the-eighteen-file-backlog-is-three-harness-shapes-and-two-are-near-mechanical.mts:222  [INTERP-OR-ARG]
+        && new Set(sorted.map((s) => s.n)).size === reachNoSkip.length,
+  scripts/probe-round311-the-nearer-of-argus-two-candidates-is-the-one-that-drops-a-failure-and-a-kind-field-is-what-breaks-it.mts:320  [B-UNKEYED]
+        new Set([...v.pushesPass, ...v.bareCounter, ...v.neither]).size === sum;
+  scripts/probe-round311-the-nearer-of-argus-two-candidates-is-the-one-that-drops-a-failure-and-a-kind-field-is-what-breaks-it.mts:323  [BOUND-UNCOMPARED]
+    const shapesDisjoint = new Set([...pushesPass, ...bareCounter, ...neitherShape]).size === shapeSum;
+  scripts/probe-round311-the-nearer-of-argus-two-candidates-is-the-one-that-drops-a-failure-and-a-kind-field-is-what-breaks-it.mts:463  [B-UNKEYED]
+      new Set([...v.inSwept, ...v.inDeferred, ...v.inNeither]).size === v.members.length &&
+  scripts/probe-round327-the-pin-purpose-label-is-a-property-of-the-edge-and-retirability-is-a-property-of-the-target-line.mts:345  [BOUND-UNCOMPARED]
+    const patternCount = new Set(resolvedEdges.map(patKeyOf)).size;
+  scripts/probe-round371-the-characterisation-item-is-a-registry-not-a-sweep.mts:274  [INTERP-OR-ARG]
+      + `${new Set(REGISTRY.flatMap((e) => e.cells)).size} distinct cell(s)`);
+  scripts/probe-round377-the-cure-landed-on-the-two-reported-sites-and-the-mechanism-was-live-in-both-files.mts:213  [INTERP-OR-ARG]
+        `\`probe-round375\`, ${new Set(myLabels).size} distinct, duplicates ${JSON.stringify(dupes(myLabels))}`,
+  scripts/verify-rule-discrimination-from-artifacts.mjs:144  [RETURN]
+      return new Set(qs).size !== qs.length;
