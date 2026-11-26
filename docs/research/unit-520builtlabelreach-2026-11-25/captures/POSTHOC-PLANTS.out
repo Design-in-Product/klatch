@@ -1,0 +1,82 @@
+=== §0 the three sites come out of the arm capture ===
+
+  capture: docs/research/unit-520builtlabelreach-2026-11-25/captures/ARM.out  8497 B
+  LABEL as the arm extracted it: "tracked files read"
+  gain files: 2   sites: 3   population: 646
+  flattened to 3 site(s); the arm published 3 — agree
+
+=== §1 KP of the class key — CONSUMER is a fall-through bucket, so it is reached on purpose ===
+
+  K1  want CONSUMER got CONSUMER prose=false nested=false  PASS   a built label as a PLAIN own-line argument — the bucket must be reachable
+  K2  want PLANT    got PLANT    prose=false nested=true  PASS   the built label inside an outer template literal (a fixture body)
+  K3  want PROSE    got PROSE    prose=true nested=false  PASS   a docblock line writing about the form
+  K4  want CONSUMER got CONSUMER prose=false nested=false  PASS   a WHOLE-literal consumer, for contrast: not nested, not prose
+
+  class-key KP: 4 of 4 → the key may be pointed at the three sites
+
+=== §2 PH1 — the three sites, keyed mechanically ===
+
+  PROSE    prose=true  nested=true  unit-dir=true   docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs:33
+           * (`new RegExp('tracked files' + ' read')`) or built from a variable is NOT matched. KP5 plants
+  PLANT    prose=false nested=true  unit-dir=true   docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs:151
+           src: `const re = new RegExp('tracked files' + ' read: (\\\\d+)');\n`,
+  PLANT    prose=false nested=true  unit-dir=true   docs/research/unit-514equalityconsumer-2026-11-24/posthoc-rekey-prefix-and-binding.mjs:244
+           const builtFixture = `const v = num('tracked files ' + 'read:');`;
+
+  PH1a: 0 of 3 key as CONSUMER
+  PH1b: 3 of 3 sit under docs/research/unit-*/
+
+=== §3 PH2 — the 7-file population drift, named file by file ===
+
+  oracle KP  want true  got true  PASS   docs/research/unit-514equalityconsumer-2026-11-24/arm-equalityconsumer.mjs
+  oracle KP  want false got false PASS   docs/research/unit-520builtlabelreach-2026-11-25/arm-builtlabelreach.mjs
+  oracle KP  want true  got true  PASS   docs/research/unit-516secondargfixture-2026-11-25/arm-secondargfixture.mjs
+  oracle KP'd in both directions: true
+
+  population now, this unit's own files excluded: 646
+  of those, absent at c99d1d91: 7
+    + docs/research/unit-517branchorder-2026-11-25/arm-branchorder.mjs   Daedalus (Klatch)
+    + docs/research/unit-517branchorder-2026-11-25/posthoc-hazard.mjs   Daedalus (Klatch)
+    + docs/research/unit-518routedternaryreach-2026-11-25/arm-routedternaryreach.mjs   Theseus (Klatch)
+    + docs/research/unit-518routedternaryreach-2026-11-25/posthoc-separate-the-cripples.mjs   Theseus (Klatch)
+    + docs/research/unit-519positionblindkey-2026-11-25/arm-positionblindkey.mjs   Daedalus (Klatch)
+    + docs/research/unit-519positionblindkey-2026-11-25/diag-prefilter.mjs   Daedalus (Klatch)
+    + docs/research/unit-519positionblindkey-2026-11-25/posthoc-overadmission.mjs   Daedalus (Klatch)
+
+  PH2: 7 of 7 added file(s) are units 517–519 — this thread's own instruments
+
+=== §4 PH3 — the reach, restricted to files that existed at the published commit ===
+
+  files in the old population: 639
+  built-label sites among them: 3   files: docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs (2)  docs/research/unit-514equalityconsumer-2026-11-24/posthoc-rekey-prefix-and-binding.mjs (1)
+
+  PH3: 3 against the arm's 3 → the reach is NOT an artefact of the drift
+
+=== §5 PH4 — is the gain disjoint from the published 22? ===
+
+  unit-516 §6 publishes PER-UNIT COUNTS, not a line list: 5 unit-513consumernull, 3 unit-514equalityconsumer.
+  A count cannot say which lines, so this is graded only as far as that table can grade it.
+
+  this unit's gain sites per unit: unit-513consumernull-2026-11-24 2  unit-514equalityconsumer-2026-11-24 1
+  DECLARED RESIDUAL: whether any of the three coincides with one of the published own-line
+  consumer rows cannot be settled from a count. It is NOT claimed either way. What CAN be said
+  mechanically is that a published own-line consumer row required the label to be found by the
+  region-aware key, and the key's own precondition is a WHOLE literal — which none of these
+  three lines has. That is an argument from the key, not a row-level comparison, and it is
+  labelled as such.
+    docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs:33  contains the whole label in one unbroken run: false
+    docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs:151  contains the whole label in one unbroken run: false
+    docs/research/unit-514equalityconsumer-2026-11-24/posthoc-rekey-prefix-and-binding.mjs:244  contains the whole label in one unbroken run: false
+
+=== §6 POST-HOC VERDICTS ===
+
+  PH1a  HIT      0 of 3 key as CONSUMER (registered 0), with the bucket KP'd reachable
+  PH1b  HIT      3 of 3 under docs/research/unit-*/
+  PH1c  HIT      the declaration of the blindness created its own census population — every built label in the tree is a plant of it or a line about it
+  PH2   HIT      7 of 7 added files are units 517–519 (registered ≥5)
+  PH3   HIT      3 sites in the old population against 3 now (registered equal)
+  PH4   PARTIAL  graded only to the granularity the published table allows; 3 of 3 gain lines contain no whole-literal label, so none could have been found by the region-aware key
+
+  5 HIT · 0 REFUTED · 1 PARTIAL of 6
+
+JSON {"classKeyKp":[{"id":"K1","want":"CONSUMER","note":"a built label as a PLAIN own-line argument — the bucket must be reachable","cell":"      read: num(out, 'tracked files ' + 'read:'),","prose":false,"nested":false,"cls":"CONSUMER","ok":true},{"id":"K2","want":"PLANT","note":"the built label inside an outer template literal (a fixture body)","cell":"const f = `const v = num('tracked files ' + 'read:');`;","prose":false,"nested":true,"cls":"PLANT","ok":true},{"id":"K3","want":"PROSE","note":"a docblock line writing about the form","cell":" * built as ('tracked files ' + 'read:') is NOT matched","prose":true,"nested":false,"cls":"PROSE","ok":true},{"id":"K4","want":"CONSUMER","note":"a WHOLE-literal consumer, for contrast: not nested, not prose","cell":"      read: num(out, 'tracked files read:'),","prose":false,"nested":false,"cls":"CONSUMER","ok":true}],"ph1":{"keyed":[{"file":"docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs","line":33,"text":"* (`new RegExp('tracked files' + ' read')`) or built from a variable is NOT matched. KP5 plants","prose":true,"nested":true,"cls":"PROSE","inUnitDir":true},{"file":"docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs","line":151,"text":"src: `const re = new RegExp('tracked files' + ' read: (\\\\\\\\d+)');\\n`,","prose":false,"nested":true,"cls":"PLANT","inUnitDir":true},{"file":"docs/research/unit-514equalityconsumer-2026-11-24/posthoc-rekey-prefix-and-binding.mjs","line":244,"text":"const builtFixture = `const v = num('tracked files ' + 'read:');`;","prose":false,"nested":true,"cls":"PLANT","inUnitDir":true}],"consumers":0,"inUnit":3},"ph2":{"populationNow":646,"added":["docs/research/unit-517branchorder-2026-11-25/arm-branchorder.mjs","docs/research/unit-517branchorder-2026-11-25/posthoc-hazard.mjs","docs/research/unit-518routedternaryreach-2026-11-25/arm-routedternaryreach.mjs","docs/research/unit-518routedternaryreach-2026-11-25/posthoc-separate-the-cripples.mjs","docs/research/unit-519positionblindkey-2026-11-25/arm-positionblindkey.mjs","docs/research/unit-519positionblindkey-2026-11-25/diag-prefilter.mjs","docs/research/unit-519positionblindkey-2026-11-25/posthoc-overadmission.mjs"],"addedCount":7,"thisThread":7},"ph3":{"oldPop":639,"oldSites":3,"oldFiles":["docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs (2)","docs/research/unit-514equalityconsumer-2026-11-24/posthoc-rekey-prefix-and-binding.mjs (1)"]},"ph4":{"perUnit":{"unit-513consumernull-2026-11-24":2,"unit-514equalityconsumer-2026-11-24":1},"wholeLiteral":[{"file":"docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs:33","containsWholeLabel":false},{"file":"docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs:151","containsWholeLabel":false},{"file":"docs/research/unit-514equalityconsumer-2026-11-24/posthoc-rekey-prefix-and-binding.mjs:244","containsWholeLabel":false}]},"verdicts":[{"id":"PH1a","verdict":"HIT","note":"0 of 3 key as CONSUMER (registered 0), with the bucket KP'd reachable"},{"id":"PH1b","verdict":"HIT","note":"3 of 3 under docs/research/unit-*/"},{"id":"PH1c","verdict":"HIT","note":"the declaration of the blindness created its own census population — every built label in the tree is a plant of it or a line about it"},{"id":"PH2","verdict":"HIT","note":"7 of 7 added files are units 517–519 (registered ≥5)"},{"id":"PH3","verdict":"HIT","note":"3 sites in the old population against 3 now (registered equal)"},{"id":"PH4","verdict":"PARTIAL","note":"graded only to the granularity the published table allows; 3 of 3 gain lines contain no whole-literal label, so none could have been found by the region-aware key"}]}
