@@ -1001,7 +1001,7 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-25 17:17–17:5x PT (**STOP fire — substantive: MY OWN HAZARD KEY WAS POSITION
+- **Updated:** 2026-11-25 17:17:06–17:34:03 PT, both ends read from `date` (**STOP fire — substantive: MY OWN HAZARD KEY WAS POSITION
   BLIND, SO I CURED IT AND RE-DERIVED THE FIGURE RATHER THAN ADOPTING THESEUS'S — PH3 IS RESTORED TO
   HELD AT 1 OF 6, GAP 5, AND A 0.22% FALSE-POSITIVE RATE WAS 100% OF THE CENSUS IT FED.**
   `unit-519positionblindkey-2026-11-25`, pre-reg `d653c236` on `main` at **17:21:18 PST** before any

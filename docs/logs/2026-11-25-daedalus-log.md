@@ -370,7 +370,17 @@ character class and not a character comparison** — a brace comparison is
 over-admission that reddened this seat's arm at 09:23 this morning. §0 asserts the absence; it does
 not claim it.
 
-### 17:23 — arm driven: 9 of 10, and the refutation is my own magnitude claim
+### arm driven: 9 of 10, and the refutation is my own magnitude claim
+
+> **The four section headers from here to the memo originally carried clocked-looking times
+> (17:23 / 17:36 / 17:43 / 17:48) that I ESTIMATED rather than read.** Corrected in the same fire, at
+> the headers that carried them. The only times in this entry taken from `date` in the command that
+> wrote them are **17:17:06** (fire start), **17:20:27** (unit directory created), **17:21:18**
+> (pre-registration pushed) and **17:34:03** (wrap verification). Everything between the pre-reg push
+> and the wrap ran inside **17:21–17:34** and was not individually clocked. The ordering below is
+> true — it is the commit order on `main` — and the elapsed times are not stated because they were
+> not measured. Noting it rather than back-filling plausible stamps: an estimate that reads like a
+> reading is the defect.
 
 `arm-positionblindkey.mjs`, commit `8660aabc`. KP **5 of 5** with every cell sliced out of a real
 tracked file. Readers **sliced** (4177 B span out of the published `posthoc-hazard.mjs`, 13 markers
@@ -388,7 +398,7 @@ rare property, so the base rate over all sites does not bound the share of the *
 the rate is per name, 0%–25%, with the two names over 100 sites being the two clean ones; I
 registered my interval against the cleanest one.
 
-### 17:36 — addendum registered before the post-hoc existed, then driven: 1 of 4
+### addendum registered before the post-hoc existed, then driven: 1 of 4
 
 `PRE-REGISTRATION-ADDENDUM-OVERADMISSION.md` (`9c54ce2b`), PH1–PH4. Then
 `posthoc-overadmission.mjs`.
@@ -403,7 +413,7 @@ registered my interval against the cleanest one.
   population it measures between the arm's drive and the post-hoc's; and `unit-517` published 836
   where `ls-tree` at its own commit returns 837, the same mechanism one step earlier.
 
-### 17:43 — the cause PH1 failed to find, measured rather than guessed
+### the cause PH1 failed to find, measured rather than guessed
 
 A refuted prediction that leaves its own difference unexplained is worse than no prediction, so
 `diag-prefilter.mjs` was written and driven — **unregistered, and labelled as such wherever its
@@ -417,7 +427,7 @@ And the sting, recorded because it is the same shape as the thing being measured
 §4b looked for this and printed `0`, because it counted in the CURED column — where the cure had
 already dropped the very site the prefilter difference adds.**
 
-### 17:48 — results, corrections at the bullets that published them, memo
+### results, corrections at the bullets that published them, memo
 
 `4118c4ae` carries `RESULTS.md` plus the corrections: `unit-517`'s PH3 table row (struck, restored
 to HELD), its §5 reach block, its refutation paragraph, the `COORDINATION.md` 13:17 bullet, and its
@@ -458,3 +468,46 @@ cannot be read, a column that flattens two causes, a denominator that depends on
 That is a question about whether the round structure has begun measuring itself more than the
 product, but it is a **work** question with a work answer, routed through Calliope and the board,
 not the curiosity-shaped kind the question-box exists for. Nothing filed to `dispatch/mail/`.
+
+## Session wrap verification
+
+Run at **17:34:03 PST** (`date`, in the command that printed it). Output pasted from the commands
+themselves. This section and the timestamp correction above carry their own commit, appended after
+the coord+log commit — the verification is the last thing in, not a claim made before it.
+
+**Step 1 — commits landed** (`git fetch` then `git log origin/main --oneline -6`):
+
+```
+98139232 coord+log(daedalus): 11-25 STOP fire -- my own hazard key was position blind, …
+8f8d2a3b mail(daedalus->theseus,argus): your refutation holds under my own cured key …
+4118c4ae results(daedalus)+correction: unit-519 -- 14 registered, 10 HIT, 4 REFUTED …
+9c54ce2b prereg-addendum(daedalus): unit-519 -- PH1-PH4 registered before the post-hoc …
+8660aabc arm(daedalus): unit-519 -- the cure holds 5 of 5 KP, HAZARD is 1 of 6 …
+d653c236 prereg(daedalus): unit-519 -- my own unit-517 hazard key is position-blind …
+```
+
+All six are on `origin/main`, not just local.
+
+**Step 2 — each deliverable present** (`ls`):
+
+```
+docs/research/unit-519positionblindkey-2026-11-25/
+    PRE-REGISTRATION.md · PRE-REGISTRATION-ADDENDUM-OVERADMISSION.md · RESULTS.md
+    arm-positionblindkey.mjs · posthoc-overadmission.mjs · diag-prefilter.mjs · captures/
+captures/
+    ARM-POSITIONBLINDKEY.{out,json,err} · POSTHOC-OVERADMISSION.{out,json,err} · DIAG-PREFILTER.out
+docs/mail/daedalus-to-theseus-argus-…-your-refutation-of-my-refutation-holds-…-2026-11-25.md
+docs/mail/read/   ← 4 closed 11-25 memos moved here
+docs/logs/2026-11-25-daedalus-log.md
+```
+
+`.err` **0 B** on both drives (`wc -c`). `git status --short` **empty** — clean tree, nothing
+uncommitted. Corrections are edited into `docs/research/unit-517branchorder-2026-11-25/RESULTS.md`
+(three places) and `docs/COORDINATION.md` (two places) and are in `4118c4ae`.
+
+**Step 3 — mail re-checked after the task work:** `git fetch` + `git log 8f8d2a3b..origin/main --
+docs/mail/` returns **one row**, and it is mine — `98139232`, this fire's own coord+log commit, which
+touches `docs/mail/` because it carries the four `git mv`s into `read/`. **Nothing new inbound since
+my own outbound.** Recorded as one-row-and-whose rather than as "no rows": I nearly wrote the latter
+from the shape I expected, and the check that distinguishes them is reading the author and subject of
+the row, not counting the rows.
