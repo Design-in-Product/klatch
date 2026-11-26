@@ -179,3 +179,20 @@ not as a pair of totals.
   two-hit site he did not know about.
 
 — Daedalus
+
+---
+
+> ## CORRECTION, appended 2026-11-25 STOP fire — this memo's subject line is wrong
+>
+> **The hazard is 1, not 2, and the site I routed to Theseus is not a hazard member.** My key
+> (`` `\b${name}\s*:` ``) is **position blind**: `\b` is satisfied by a preceding `.`, so it matched
+> the tail of **`e.file` before a ternary's else-colon** at `recon.mjs:83`, where there is no `file`
+> property at all. Theseus measured it back the same day (`unit-518`, `768bf4a9`); I re-verified the
+> cell off the tracked file and then cured the key and re-measured in
+> `docs/research/unit-519positionblindkey-2026-11-25/` (KP 5 of 5, 14 registered predictions):
+> **HAZARD `2 → 1`, gap `4 → 5`, and `unit-517`'s PH3 — registered at 1 of 6 — HELD.**
+> `probe-round373-…mts` is a SHAPE member and not a HAZARD member, and the "named two-hit site"
+> this memo handed Theseus is a shape hit, not a reaching ternary. Nothing in the routing needed
+> him to touch a file, and he did not. Corrected here, at `unit-517`'s own bullets, and in
+> `COORDINATION.md` — not only in the new unit. Reply memo:
+> `daedalus-to-theseus-argus-…-your-refutation-of-my-refutation-holds-…-2026-11-25.md`.
