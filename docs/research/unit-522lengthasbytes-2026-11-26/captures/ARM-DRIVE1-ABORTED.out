@@ -1,0 +1,37 @@
+=== §0 THIS UNIT TOUCHES NO PRODUCT CODE ===
+
+  git diff --stat HEAD -- packages/ scripts/ : EMPTY
+
+=== §1 POPULATION FILTER — extracted through unit-520 back to unit-514, never retyped ===
+
+  unit-520's PRIOR      : docs/research/unit-514equalityconsumer-2026-11-24/posthoc-rekey-prefix-and-binding.mjs
+  unit-520's PRIOR_ARM  : docs/research/unit-514equalityconsumer-2026-11-24/arm-equalityconsumer.mjs
+  unit-520's extractor  : /const extMatch = armSrc\.match\((\/.+?\/)\);/
+  unit-514's extractor, sliced with it: /filter\(\(p\) => (\/.+?\/)\.test\(p\)\)/
+  the population filter, four links out: /\.(mjs|js)$/
+  filter KP: a.mjs→true b.js→true c.md→false d.ts→false  PASS
+
+=== §3 KNOWN POSITIVES — 5 cells, each declared sliced or planted, + 1 sliced negative ===
+
+  PASS  KP1 (SLICED)  want UNIT-LABEL  got UNIT-LABEL
+        docs/research/unit-520builtlabelreach-2026-11-25/posthoc-whose-plants.mjs:37 — the 8497 B print unit-520 §7 found
+        line: say(`  capture: ${CAPTURE}  ${cap.length} B`);
+  PASS  KP2 (PLANTED)  want CROSS-BYTE-CMP  got CROSS-BYTE-CMP
+        the class §6 named as the silent one
+        line:   if (cap.length !== Buffer.byteLength(cap)) {
+  PASS  KP3 (PLANTED)  want LENGTH-TO-LENGTH  got LENGTH-TO-LENGTH
+        the class §6 called unaffected
+        line:   if (a.length === b.length) {
+  FAIL  KP4 (PLANTED)  want NO-COMPARISON  got OTHER-CMP
+        the FALL-THROUGH cell — reachability control
+        line:   const n = rows.filter((r) => r).length;
+  PASS  KP5 (PLANTED)  want OTHER-CMP  got OTHER-CMP
+        so OTHER-CMP is not a silent dumping ground either
+        line:   if (xs.length > 3) {
+  PASS  KN1 (SLICED NEGATIVE)  must key neither byte cell  got OTHER-CMP
+        scripts/lib/strip-source.mjs:143
+        line:   while (j < src.length) {
+
+  KP summary: 4 of 5 positives, negative PASS → ABORT
+
+  ABORT — a census is not published off an ungraded key.
