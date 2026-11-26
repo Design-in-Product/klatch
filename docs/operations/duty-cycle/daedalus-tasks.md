@@ -129,7 +129,34 @@ Created: 2026-06-21 (Phase 2 launch). Format per `duty-cycle-klatch-v0.2.md`.
   hazard and deliberately does **not** price it — whether `named` and `all` can be empty at those
   three sites is a **runtime** question and the source cannot answer it. Frozen research files are
   not to be edited (settled 11/20), so the deliverable is the reachability answer, not a patch.
-- [ ] **`NO-COMPARISON` 95 and the `INDIRECT` bound 123 — how many are invariance claims one binding
+- ✅ **`NO-COMPARISON` 95 and the `INDIRECT` bound 123 — TAKEN AND CLOSED BY DRIVE 2026-11-26 WORK
+  (`unit-523indirectsize-2026-11-26`, pre-reg `259b7360` at **13:19:02 PST**, two addenda `9aebc5d8`
+  both before the single drive, arm `f247b428`, post-hoc `48a73ee5`, results `58684541`, memo
+  `11646590`).** **21 predictions, 13 HIT, 8 REFUTED, all eight mine. KP 13 of 13.** Over **855**
+  instrument files: the `INDIRECT` bound **re-derives at exactly 123** and is now keyed by receiver —
+  `SET-BOUND 34 · MAP-BOUND 10 · OTHER-BOUND 34 · CALL 21 · PROPERTY 10 · UNRESOLVED 7 ·
+  RECEIVER-UNKEYED 7 · SET-EXPR/MAP-EXPR/SET-TAIL-DIRECT 0`, class sum asserted equal to the
+  population. **The narrowed hazard is 4** — `(SET-BOUND ∨ SET-EXPR) ∧ INVARIANCE`, 3 files, **BLIND
+  4 of 4**, so `unit-521`'s `GUARDED 0` now holds across **both** syntactic forms and the published
+  floor of 11 is **15**, with a **ceiling of 10** on the indirect form (6 further `INVARIANCE` sites
+  whose receiver kind went unresolved; **3 of the 6 fail for one cause — `new Set<T>(`**, boarded
+  below). **The `NO-COMPARISON` 97 holds ZERO instances of the hazard** — P20 refuted at zero; **71
+  of 97 are a size printed into a report**, an argument or an interpolation, which is not an
+  invariance claim and cannot be false-green. **AGAINST ME, and the keeper: I added a named
+  fall-through cell and KP11 to prove it reachable, KP11 PASSED, and all 7 of the cell's live members
+  were my own reader's defects** — 6 keyword absorptions (`return out`) and one TypeScript `!` —
+  with **zero** instances of the bracket receiver KP11 planted; `MAP-BOUND` was **wrong by 60%** (10,
+  really 16) **with no red anywhere.** A passing KP proves a cell is *reachable* and says nothing
+  about whether its members are the thing it was named for; the cure is to read the members.
+  **Second against me: the pre-commit brace-slicer gate refuted the arm's own docblock before I
+  could drive** — "out of that population by construction" was `unit-521`'s true sentence about a
+  *different* reader, copied forward and asserted about mine without reading mine. Cured by
+  **narrowing the reader** until the claim is true; the baseline and the site marker were both
+  declined with reasons, and the gate's standing figures (`population 65 · 4/3/58 · baseline 58`)
+  are **unmoved**. **Third: PH5's self-inclusion zero is itself blind** — it keyed on `BOUND` only,
+  and a grep over the arm's own capture finds 2 `INTERP-OR-ARG` sites from this unit's own arm.
+  Original boarding text follows.
+- ~~[ ]~~ **`NO-COMPARISON` 95 and the `INDIRECT` bound 123 — how many are invariance claims one binding
   away?** Boarded 2026-11-26 START as `unit-521`'s second successor. **No blocker.** `unit-521`'s key
   reaches only `new Set(<expr>).size <op> <n>` written as one expression. **95** sites read `.size`
   with no immediate literal comparison, and the `INDIRECT` bound — every literal `.size` comparison in
@@ -137,6 +164,26 @@ Created: 2026-06-21 (Phase 2 launch). Format per `duty-cycle-klatch-v0.2.md`.
   P12 interval of `[1, 40]`**. That bound over-counts by construction (it holds every `Map` and other
   collection `.size` too) and `unit-521` does **not** narrow it. Until it is narrowed, the published
   `INVARIANCE 11` is a **floor on one syntactic form**, not a census of the claim.
+- [ ] **Two of my own readings of "direct `new Set(...).size <op> <n>` tail" differ by 6, and it is
+  not population growth** — boarded 2026-11-26 WORK as `unit-523`'s first successor, so that closing
+  the item above does not delete the open work it stood in front of. **No blocker.** `unit-521`
+  published **54** size-keyed direct-tail sites over 850 files (`INVARIANCE 11 + CHANGE 26 +
+  OTHER-N 16 + EMPTY 1`); `unit-523`'s arm excludes **60** over 855. **The delta is measured, not
+  assumed, and it is not drift:** `unit-523`'s PH5 reports `unit-522` contributing **0** of the
+  excluded tails and `unit-523` itself **0**, so the 6 are on files that existed at `unit-521`'s SHA.
+  One of the two readings is wrong by 6 and **`unit-521`'s is the one the floor-of-11 claim rests
+  on.** No mechanism is claimed in `unit-523` §6 and none should be guessed here — the deliverable is
+  a per-file diff of the two tail readings over one pinned population.
+- [ ] **`new Set<T>(` — the binding reader's one-line blindness, worth ≥3 of 6 ceiling members** —
+  boarded 2026-11-26 WORK as `unit-523`'s second successor. **No blocker.** `unit-523`'s binding
+  reader keys `SET-BOUND` off a literal `new Set(` in the right-hand side of a `const|let|var` line,
+  so a **TypeScript generic** (`const picks = new Set<string>()`,
+  `probe-round207…mts:410`) and a **default parameter** (`seen = new Set<string>()`,
+  `probe-round244…mts:188`, two sites) both land in `UNRESOLVED`. Those three are inside
+  `unit-523`'s ceiling of 10 and outside its floor of 4. **Not applied inside `unit-523`**: the
+  census is published off the reader as driven, and changing the reader after the drive republishes
+  the census. The successor is a fresh registration whose population is pinned at its own SHA, not an
+  edit to a frozen arm (frozen research files are not to be edited — settled 11/20).
 - ✅ **`tracked files read` names a read that did not happen — TAKEN AND LANDED 2026-11-24 START
   (`unit-511readcountname-2026-11-24`, pre-reg `7ae1eb18`, landing `e65eb490`).** Named by this seat
   in `unit-510` §4 and declined there, re-declined by Theseus the same night, **both times with a
