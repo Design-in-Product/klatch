@@ -1,0 +1,77 @@
+{
+  "rev": "d653c236",
+  "verdicts": {
+    "P1": true,
+    "P2": true,
+    "P3": true,
+    "P4": true,
+    "P5": true,
+    "P6": true,
+    "P7": false,
+    "P8": true,
+    "P9": true,
+    "P10": true
+  },
+  "failures": 0,
+  "spanBytes": 4177,
+  "shapeReach": 6,
+  "hazardPublished": 2,
+  "hazardCured": 1,
+  "gapPublished": 4,
+  "gapCured": 5,
+  "perName": {
+    "p": {
+      "sitesV1": 121,
+      "sitesV2": 121,
+      "sitesCured": 121,
+      "ternaryV1": 0,
+      "ternaryV2": 0,
+      "ternaryCured": 0,
+      "curedTernarySites": []
+    },
+    "cls": {
+      "sitesV1": 91,
+      "sitesV2": 91,
+      "sitesCured": 89,
+      "ternaryV1": 5,
+      "ternaryV2": 4,
+      "ternaryCured": 4,
+      "curedTernarySites": [
+        "docs/research/unit-513consumernull-2026-11-24/arm-consumernull.mjs:160",
+        "docs/research/unit-513consumernull-2026-11-24/posthoc-application-subject.mjs:72",
+        "docs/research/unit-513consumernull-2026-11-24/posthoc-application-subject.mjs:75",
+        "docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs:214"
+      ]
+    },
+    "error": {
+      "sitesV1": 12,
+      "sitesV2": 12,
+      "sitesCured": 9,
+      "ternaryV1": 0,
+      "ternaryV2": 0,
+      "ternaryCured": 0,
+      "curedTernarySites": []
+    },
+    "file": {
+      "sitesV1": 450,
+      "sitesV2": 450,
+      "sitesCured": 449,
+      "ternaryV1": 4,
+      "ternaryV2": 1,
+      "ternaryCured": 0,
+      "curedTernarySites": []
+    },
+    "conversation": {
+      "sitesV1": 17,
+      "sitesV2": 17,
+      "sitesCured": 17,
+      "ternaryV1": 0,
+      "ternaryV2": 0,
+      "ternaryCured": 0,
+      "curedTernarySites": []
+    }
+  },
+  "overAdmittedFile": 1,
+  "population": 839,
+  "kp": "5 of 5"
+}

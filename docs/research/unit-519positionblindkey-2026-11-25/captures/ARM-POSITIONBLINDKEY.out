@@ -1,0 +1,114 @@
+unit-519positionblindkey — HEAD d653c236
+
+§0  preconditions
+  git diff --stat HEAD -- packages/ scripts/ : EMPTY
+  this arm contains a verify-decl-body-slicers-shaped comparison against a brace: false
+  subject is git-tracked at the path read: true
+
+§1  P1 — the subject key, printed verbatim out of the tracked file
+  posthoc-hazard.mjs:144   const KEY = new RegExp(`\\b${name}\\s*:`, 'g');
+  carries the \b word-boundary form: true
+  carries a preceding-character class: false
+  P1 (position-blind by construction): true
+
+§1b  the v1/v2 readers, SLICED out of the published post-hoc and compiled
+  span 4177 B, from "const AT = (s, ch, i) =>" to the close of sitesOf
+    present  const AT =
+    present  const OPENERS
+    present  const CLOSERS
+    present  const valueSpan =
+    present  const valueSpanV2 =
+    present  const ternaryQ =
+    present  const ternaryQV2 =
+    present  const ternaryColon =
+    present  const literalsOf =
+    present  const sitesOf =
+    present  new RegExp(`\\b${name}\\s*:`
+    present  stripSource(src, true)
+    present  stripSource(src, false)
+  compiled: valueSpanV2, ternaryQV2, literalsOf, sitesOf
+
+§2  P9 — known cells, each SLICED out of the real tracked file (not retyped into this arm)
+  pass  NEGATIVE  recon.mjs:83  [file]  position-blind 1 → cured 0 (want 0)
+          CRIPPLE === 'entry-shape-dot-file' ? e.file : typeof e === 'string' ? e : e.file;
+  pass  POSITIVE  arm-consumernull.mjs:160  [cls]  position-blind 1 → cured 1 (want 1)
+          cls: gateRef ? 'LIVE' : 'DRIVES_OTHER',
+  pass  POSITIVE  posthoc-application-subject.mjs:72  [cls]  position-blind 1 → cured 1 (want 1)
+          return { cls: /verify-decl-body-slicers/.test(src) ? 'GATE' : 'OTHER-PROCESS', why: `subject bou
+  pass  POSITIVE  posthoc-application-subject.mjs:75  [cls]  position-blind 1 → cured 1 (want 1)
+          return { cls: /captures|\.out\b/.test(ev) ? 'CAPTURE' : 'FILE', why: `subject read from a file: 
+  pass  POSITIVE  posthoc-shape-classes.mjs:214  [cls]  position-blind 1 → cured 1 (want 1)
+          return { shape: 'TABLE', cls: tc.cls === 'UNCLEAR' ? 'UNCLEAR_R3' : tc.cls, why: `table ${table.
+  P9 KP: 5 of 5
+
+§2b  P2 — recon.mjs:83, position-blind 1 / cured 0: HIT
+      the matched text, and the character before it: "file :" preceded by "."
+
+§3  P10 — the residual false-positive class this cure does NOT remove (registered OPEN)
+  cell (a bare identifier in a ternary's then-position, no `.` before it):
+      const x = { a: cond ? file : other, b: 1 };
+  cured key matches it: 1 time(s) — the class SURVIVES the cure
+  P10 as registered (the residual class survives): true
+
+§4  the censuses — v1 and v2 reproduced by the SLICED reader, cured column beside them
+  population: 839 tracked file(s) — re-derived with the subject's own ls-files call and extension filter
+  names: p, cls, error, file, conversation  (from unit-517's PH1, read out of its capture JSON)
+
+  name            sites v1 →   v2 →  cured      TERNARY-position  v1 →  v2 → cured
+  p                   121   121    121                         0    0     0
+  cls                  91    91     89                         5    4     4
+      cured KEEPS  docs/research/unit-513consumernull-2026-11-24/arm-consumernull.mjs:160  prev " "  gateRef ? 'LIVE' : 'DRIVES_OTHER'
+      cured KEEPS  docs/research/unit-513consumernull-2026-11-24/posthoc-application-subject.mjs:72  prev " "  .test(src) ? 'GATE' : 'OTHER-PROCESS'
+      cured KEEPS  docs/research/unit-513consumernull-2026-11-24/posthoc-application-subject.mjs:75  prev " "  .test(ev) ? 'CAPTURE' : 'FILE'
+      cured KEEPS  docs/research/unit-513consumernull-2026-11-24/posthoc-shape-classes.mjs:214  prev " "  tc.cls === 'UNCLEAR' ? 'UNCLEAR_R3' : tc.cls
+  error                12    12      9                         0    0     0
+  file                450   450    449                         4    1     0
+      cured DROPS  docs/research/unit-307c4-blast-radius-2026-10-27/recon.mjs:83  typeof e === 'string' ? e : e.file
+  conversation         17    17     17                         0    0     0
+
+  P3 (`file` TERNARY-position: v2 1 → cured 0): HIT  — v2 1, cured 0
+  P4 (`cls` TERNARY-position is the SAME FOUR sites by file and line): HIT
+  P6 (narrowing-only — no name's site count rises): HIT
+  P7 (`file` sites over-admitted by the position-blind key, registered interval 10–120): 1 — REFUTED
+      of 450 published `file` sites, 1 were NOT property position (0.2%)
+  P8 (≥2 of the other four names lose ≥1 site): HIT — 2 (cls, error)
+      p              v2   121 → cured   121   over-admitted 0
+      cls            v2    91 → cured    89   over-admitted 2
+      error          v2    12 → cured     9   over-admitted 3
+      file           v2   450 → cured   449   over-admitted 1
+      conversation   v2    17 → cured    17   over-admitted 0
+
+§4b  UNREGISTERED, reported because the arm could see it: the published census pre-filtered on
+     `src.includes(`${n}:`)` — a name immediately followed by a colon. This arm pre-filters on
+     the bare name, so a site written `file :` in a file with no `file:` anywhere would be
+     invisible to the published figures and visible here.
+     cured sites found in files the narrow prefilter would have SKIPPED: 0
+
+§5  P5 — SHAPE and HAZARD reach re-derived under the cured key
+  docs/research/round404-instruments/grade-the-three-cures.mjs
+      name(s) read: p
+  docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs
+      name(s) read: cls
+  scripts/probe-round213-reassign-live-http.mts
+      name(s) read: error
+  scripts/probe-round217-multipart-guard-live-http.mts
+      name(s) read: error
+  scripts/probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts
+      name(s) read: file
+  scripts/verify-recogniser-equivalence.mjs
+      name(s) read: conversation
+
+  SHAPE reach  — files carrying the quote-anchored key: 6
+  HAZARD reach — published (v2, position-blind): 2 of 6
+      docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs  (cls)
+      scripts/probe-round373-the-red-hint-legs-ran-backwards-from-their-witnesses.mts  (file)
+  HAZARD reach — cured: 1 of 6
+      docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs  (cls)
+  gap — published 4 → cured 5
+  P5 (HAZARD 1 of 6, the subject alone, gap 5): HIT
+  => unit-517's PH3, registered as "live-blind = 1 of 6, the subject alone", HELD;
+     the refutation published at 13:3x was an artefact of this seat's own position-blind key.
+
+§6  ALL ASSERTIONS PASSED
+  verdicts: P1 HIT · P2 HIT · P3 HIT · P4 HIT · P5 HIT · P6 HIT · P7 REFUTED · P8 HIT · P9 HIT · P10 HIT
+  HIT 9 of 10
