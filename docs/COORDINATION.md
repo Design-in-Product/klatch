@@ -8964,7 +8964,84 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** working — duty cycle armed on Claude Code **2.1.332** (restarted onto that build 11/25 ~19:0x PT at xian's go; `claude --version` read in this session — this line read 2.1.322 until then, which was the true version string when it was written); 11/26 START 10:47 fired and is logged immediately below, then 11/25 STOP 19:47, then 11/25 WORK 14:47, then 11/25 START 10:47, then 11/24 STOP 19:47, with 11/24 WORK 14:47 under it, then 11/24 START 10:47, then 11/23 STOP 19:47, then 11/23 WORK 14:47, then 11/23 START 10:47, then 11/22 STOP 19:47, then 11/22 WORK 14:47, then 11/22 START 10:47, then 11/21 STOP 19:47, then 11/21 WORK 14:47 and 11/21 START 10:47, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Status:** working — duty cycle armed on Claude Code **2.1.332** (restarted onto that build 11/25 ~19:0x PT at xian's go; `claude --version` read in this session — this line read 2.1.322 until then, which was the true version string when it was written); 11/26 WORK 14:47 fired and is logged immediately below, then 11/26 START 10:47, then 11/25 STOP 19:47, then 11/25 WORK 14:47, then 11/25 START 10:47, then 11/24 STOP 19:47, with 11/24 WORK 14:47 under it, then 11/24 START 10:47, then 11/23 STOP 19:47, then 11/23 WORK 14:47, then 11/23 START 10:47, then 11/22 STOP 19:47, then 11/22 WORK 14:47, then 11/22 START 10:47, then 11/21 STOP 19:47, then 11/21 WORK 14:47 and 11/21 START 10:47, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Updated:** 2026-11-26 ~14:47–15:0x PT (**WORK fire — no-op on product (`git diff --stat HEAD --
+  packages/ scripts/` EMPTY, asserted inside the arm before any measurement ran). ONE memo had
+  arrived since the 10:47 fire (`11646590`, 13:33, Daedalus) and it asks nothing of this seat and
+  says so; read in full before any work. The unit was taken from THAT memo's own open list — the
+  single item in it boarded with no mechanism claimed and no blocker, his
+  "UNEXPLAINED, and named rather than guessed: 6 of 60."** —
+  `unit-524sixtyvsfiftyfour-2026-11-26`, pre-reg `c83c619fe738` on `main`, clock **14:49:36 PST**
+  read in the same command that created the directory, before any arm/reader/corpus-builder/KP/
+  capture existed, **and its §1 declares what had deliberately NOT been read yet** — either arm's
+  corpus filter, `stripSource` call site or `parenSpanEnd`, those being exactly where the
+  predictions put the mechanism. **12 predictions: 8 HIT, 4 REFUTED. Two of the eight HITs are
+  worth nothing.**
+  **THE ANSWER — NEITHER PUBLISHED FIGURE IS WRONG BY ANYTHING.** Both readers **sliced** from the
+  two subject arms (markers asserted present before the generated module compiled; the arm throws
+  rather than hand-typing a copy), both trees materialised with `git archive` so every reading is
+  of committed text: at `148ebe57` (`unit-521`'s SHA) **850** files, **1246** `new Set(` sites,
+  521's reading **54** (published 54) and 523's reading **54**; at `f247b428` (`unit-523`'s)
+  **855** files, **1258** sites, both readings **60** (published 60). **The two readers differ by 0
+  and disagree on 0 files, on both populations** — they are differently shaped and extensionally
+  identical. `unit-521`'s census reproduces cell for cell: 1097 · 95 · 26 · 16 · 11 · 1 over 1246.
+  The two arms' four shared texts (`CODE_EXT`, filter arrow, `NEEDLE`, `TAIL`) asserted
+  **byte-identical, 4 of 4**, not eyeballed, and `files in 521's corpus absent from 523's: 0`.
+  **Closure: reader delta 0 + growth 6 = 6.** So *"one of them is wrong by 6"* has a false premise.
+  **THE KEEPER — ALL SIX ARE ONE FILE'S DEMONSTRATION FIXTURES, AND IT IS THE BASELINE UNIT'S OWN
+  POST-HOC.** Of the five files new between the SHAs, four contribute 0;
+  `unit-521…/posthoc-two-mechanisms.mjs` contributes **6** — five `INVARIANCE` + one `OTHER-N`,
+  including `new Set(EMPTY).size === 1` and `… < 2`, the planted cells whose whole purpose is to
+  *show* the emptiness reading `unit-521`'s own addendum is named after, with one line counted
+  twice. *An instrument's fixtures become live census members of the next census over the same
+  corpus, at full weight, because `docs/research/` IS the corpus.* And **the PH5 growth check was
+  pointed everywhere except at the baseline**: it asked what `unit-522` contributes (**0**,
+  correct) and what `unit-523` contributes (**0**, correct), and never asked about the post-hoc of
+  the unit whose figure was the comparison. *A growth check that enumerates the other units cannot
+  clear growth; only one that enumerates the population difference can.* This arm was not clever —
+  it took the set difference of the two file lists and read every member.
+  **ONE LIVE CONSEQUENCE, A CAUTION NOT A CORRECTION:** `INVARIANCE` is **11** at 850 and **16** at
+  855, the **+5** being five of the six fixtures (`OTHER-N` 16 → 17 takes the sixth; the arithmetic
+  closes with nothing over). `unit-523` §1's **"11 + 4 = 15"** adds **two different populations** —
+  11 direct at 850, 4 indirect at 855. **15 is still the number to keep** (fixtures are not
+  invariance claims) but it is right **for a reason the figure does not record**: the direct half
+  escaped inflation only by being taken at the earlier SHA. Whether a fixture counts is a
+  **census-purpose** question, not a reader question — `unit-516` §5's 15-vs-0, **xian's and only
+  his** — now load-bearing on a *published* figure rather than a hypothetical one.
+  **AGAINST ME, ONE — P7 AND P8 ARE VACUOUS HITS.** Both were intervals registered over a set that
+  came back **empty**; zero disagreements satisfies "reach ≤ 6 files" and "523 ≥ 521" without
+  testing anything either was about. This is **Daedalus's own 11-26 §2 from the other side** — his
+  P11 HIT on `[0, 15]` with a measured 7 made entirely of artefact. *An interval registered over a
+  set that can be empty is graded by the set's emptiness, not by the claim.* **P9** registered the
+  emptiness separately; P7/P8 did not.
+  **AGAINST ME, TWO — P4, P10 AND P11 ARE ONE WRONG MODEL REGISTERED THREE TIMES.** I had read both
+  keys, found them structurally different (521 walks the sites and looks forward through a
+  **40-character** window; 523 walks the comparisons and tests a tail index), and predicted they
+  would select differently. *Seeing two keys shaped differently is not evidence that they select
+  differently.* P11 was the worst: it predicted **which** published figure was wrong, in a world
+  where neither was. **AGAINST ME, THREE — P12 conjoined a sanity check with its claim**, so one
+  verdict covers two claims and cannot say which half failed; the true half was the dull one.
+  **KP 6 of 6, KP5 LOAD-BEARING.** The window asymmetry was planted: `stripSource` blanks a comment
+  **including its delimiters** while preserving length — *driven before the plant was written, not
+  assumed* — so >40 blanked chars between `)` and `.size` pushes the comparison past 521's window
+  and leaves 523's `matchAll` untouched. **Real, reachable, and zero live instances in 855 files**,
+  which is what makes P9's zero a measurement rather than a reader that cannot see. Taking
+  Daedalus's morning keeper (a passing KP proves reachability, not membership), the arm prints
+  **every** disagreeing member's **whole line**. Plants and generated module both in temp dirs
+  **outside both corpora**.
+  `population` **65**, **MARKED 4 / GUARDED 3 / UNGUARDED 58**, `baseline entries` **58** — flat at
+  every reading; `tracked files read` 1122 → 1123, the growth being this unit's own arm. Gate rc 0
+  at every push; `ARM.err` **0 B**.
+  **Drain:** the one new memo read and answered in-fire; the item it left open driven to a close and
+  published; reply filed and pushed to `main` in its own commit (`8dc0af5e`). **Two deferrals, each
+  with a named blocker:** (1) the **58-vs-58 overlap** against `unit-465` arm C's `STRING=58`,
+  carried from the 10:47 fire, still **NOT run** — it needs a reader re-deriving two keys over one
+  pinned population plus its own pre-registration; (2) the **fixture/non-fixture partition** over
+  `unit-523`'s indirect hazard **4** and ceiling **6** — it needs his receiver-resolution reader
+  driven over a partition that does not exist yet. Both named as not run in RESULTS §7 and in the
+  memo, so neither is read as measured. Unblocked carried items (`L2`, `L3`, the `unit-516` §5
+  pattern defect's third face, `SECOND-ARG`'s nested-call blindness) are the next fire's.
+  **Mail:** `theseus-to-daedalus-argus-…-your-unexplained-6-of-60-is-closed-and-neither-figure-is-wrong-all-six-are-your-own-post-hocs-fixtures-2026-11-26.md`.)
 - **Updated:** 2026-11-26 ~10:47–11:0x PT (**START fire — no-op on product (`git diff --stat HEAD --
   packages/ scripts/` EMPTY, asserted inside the arm before any measurement ran). The fire's work
   unit was DETERMINED BY MAIL, not chosen: Argus's 11-26 memo declined `unit-520` §6's
