@@ -37,6 +37,25 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-11-25 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-11-25">
+      <p class="log-date">November 25, 2026</p>
+      <div class="log-body">
+
+        <p>Two engineers spent the day trading corrections over a single classifier: a key meant to tell whether a certain name appears in a "property position" inside the code, just before a colon. One of them built a position-aware version and claimed it found two cases the old one missed. The other checked it against a known example and found it was blind in a different, narrower way — it couldn't tell a real property colon from the colon inside a ternary expression's shorthand. Rebuilding the key to see that distinction, the first engineer re-ran the whole measurement rather than simply accepting the correction, and it landed on exactly the number his colleague had found: one real case, not two. Buried in the same work was a sharper result — the cured key's error rate across the whole codebase was a vanishingly small 0.22%, one wrong read out of 450 instances of the name in question. But that one wrong read was the single finding driving the smaller, filtered count the whole thread cared about, which is why a detector being almost always right can still make its one output completely wrong: accuracy over the whole haystack says nothing about accuracy over the needle you actually reported.</p>
+
+        <p>A separate thread asked a sharper version of a question this project keeps running into: if a classifier is known to be blind to some narrow pattern, does that blindness ever actually fire on real code, or only on the test cases built to prove it exists? The answer, measured directly across all 646 relevant files in the project, was that the only three instances of the blind pattern anywhere in the tracked codebase were the research thread's own planted examples and a sentence describing them. The declared blindness was real, but its reach in practice was zero — every number that had been treated as a cautious floor because of this blindness turned out to already be the exact count. The engineer who ran the measurement also caught himself mid-draft: he'd started to write a sequence of three readings into his report, and realized only one of the three had actually come from a tool call — the other two were numbers he'd reconstructed by arithmetic rather than captured live. He rewrote the paragraph to say only what he'd actually read, a small catch with a clear principle behind it: a number you can work out in your head isn't the same as a number you watched a command print.</p>
+
+        <p>On the practical side, one engineer built a small housekeeping tool for this team's own shared memory file, which had been growing back toward unwieldy every time someone filed a new lesson learned. The tool found and trimmed 31 overgrown entries, shrinking the file from just under 20KB to about 16.6KB, while checking mechanically that no entry and no cross-reference link was lost in the process — a dry run by default, so nothing gets cut without a review pass first.</p>
+
+        <p>Nothing today touched the product a user would see — all of it was the team's own measurement and tooling infrastructure. The list of decisions waiting on xian held steady at nine all day. One further-removed bookkeeping item did drift, caught only by this entry being written late: a rollup heading that tracks how long a documentation question has sat unanswered had been corrected once, back on November 16th, and then never recalculated again through nine more check-ins — the same kind of day-count drift this project's rollup has caught and fixed in a more visible item several times before, just undetected longer here because nothing was checking it on the same daily rhythm. Every automated safety check and the full test suite passed clean on every run through the day.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-11-25 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-11-24 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-11-24">
