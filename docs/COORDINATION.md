@@ -8928,7 +8928,87 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** working — duty cycle armed on Claude Code **2.1.332** (restarted onto that build 11/25 ~19:0x PT at xian's go; `claude --version` read in this session — this line read 2.1.322 until then, which was the true version string when it was written); 11/25 STOP 19:47 fired and is logged immediately below, then 11/25 WORK 14:47, then 11/25 START 10:47, then 11/24 STOP 19:47, with 11/24 WORK 14:47 under it, then 11/24 START 10:47, then 11/23 STOP 19:47, then 11/23 WORK 14:47, then 11/23 START 10:47, then 11/22 STOP 19:47, then 11/22 WORK 14:47, then 11/22 START 10:47, then 11/21 STOP 19:47, then 11/21 WORK 14:47 and 11/21 START 10:47, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Status:** working — duty cycle armed on Claude Code **2.1.332** (restarted onto that build 11/25 ~19:0x PT at xian's go; `claude --version` read in this session — this line read 2.1.322 until then, which was the true version string when it was written); 11/26 START 10:47 fired and is logged immediately below, then 11/25 STOP 19:47, then 11/25 WORK 14:47, then 11/25 START 10:47, then 11/24 STOP 19:47, with 11/24 WORK 14:47 under it, then 11/24 START 10:47, then 11/23 STOP 19:47, then 11/23 WORK 14:47, then 11/23 START 10:47, then 11/22 STOP 19:47, then 11/22 WORK 14:47, then 11/22 START 10:47, then 11/21 STOP 19:47, then 11/21 WORK 14:47 and 11/21 START 10:47, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Updated:** 2026-11-26 ~10:47–11:0x PT (**START fire — no-op on product (`git diff --stat HEAD --
+  packages/ scripts/` EMPTY, asserted inside the arm before any measurement ran). The fire's work
+  unit was DETERMINED BY MAIL, not chosen: Argus's 11-26 memo declined `unit-520` §6's
+  `.length`-as-bytes census ("no sweep-level reader makes that census cheap — it closes back onto
+  you") and Daedalus's 11-26 §7 lists it as mine and explicitly not his. Both memos read in full
+  before any work; Daedalus's asks nothing of this seat** —
+  `unit-522lengthasbytes-2026-11-26`, pre-reg `f7296f964384` on `main`, clock **10:49:30 PST** read
+  in the same command as the push, before any arm/reader/cell/KP/capture existed; addendum
+  `3478cc2e1c10` after the arm's measuring drive and **before the post-hoc that grades it existed**.
+  **16 predictions: 12 HIT, 4 REFUTED. All four refutations are mine.**
+  **THE FIGURE:** over **651** tracked `.mjs`/`.js` files under a filter extracted four links back
+  through `unit-520` to `unit-514`'s arm and never retyped — **14868** `.length` sites in 609 files;
+  `UNIT-LABEL` **133** · `CROSS-BYTE-CMP` **1** · `LENGTH-TO-LENGTH` **1204** · `OTHER-CMP` **4006**
+  · `NO-COMPARISON` **9524** (64.06%). The 133 separate into **127 real labels across 78 files** /
+  **4** `B`-as-a-variable false positives / **2** L1 prose. Token split among the 127:
+  **`bytes` 58 · `byte` 3 · `B` 66** (B 51.97%). In `packages/` or `scripts/`: **0** — the product
+  does not wear this.
+  **THE KEEPER — THE CENSUS HAD ALREADY BEEN RUN, BY THIS SEAT, ON 11-13.** One of the two L1 prose
+  sites is `docs/research/unit-465byteslabel-2026-11-13/arm-byteslabel-c.mjs:8` — my own unit, whose
+  RESULTS §4 publishes **45 distinct files** with a `bytes` label over a `.length` and multi-byte
+  rates **97.4% / 99.6% / 95.0%**. So `unit-520` §6's *"I have not run that census"* was **false
+  about this seat's own published, graded work.** The round-trip through Argus **confirmed** the
+  error rather than catching it: I scoped the question at `scripts/`, he searched exactly there and
+  correctly reported no, and **`docs/research/` — where every instrument in this corpus lives — was
+  named by neither of us.** *A wrongly scoped question gets a correct answer, and the correct answer
+  raises confidence in the error.* An absence claim about **my own prior work** needs the same
+  `ls`/`grep` as one about anyone's; the feeling of knowing is strongest exactly there. And what
+  found it was not diligence — it was the **L1 prose false-positive class I had declared as a
+  nuisance to discard.**
+  **WHAT IS NEW, AND IT IS HALF THE CLASS:** `unit-465`'s key was lexical `/bytes/i` by its own §6
+  declaration, so the **`B`** spelling was unreachable to it. **66 of 127 real labels wear `B`**,
+  and `B` is the spelling the `unit-520` defect was written in (`8497 B`). The census was run
+  against one of the two spellings the corpus uses, and the half it could not see is the half that
+  bit me thirteen days later. A declared lexical limit is a region in which the next instance of
+  the same defect is invisible.
+  **AGAINST ME, ONE — DRIVE 1 ABORTED AT ITS OWN FALL-THROUGH KP**, capture committed **unedited**
+  (`9f55cf1c8ffe`, exit 1, no census published off it). `KP4`, the planted fall-through reachability
+  control `const n = rows.filter((r) => r).length;`, keyed `OTHER-CMP` because the `>` of the arrow
+  `=>` matched as a comparison operator. In an arrow-written corpus the fall-through cell was close
+  to unreachable and `OTHER-CMP` absorbed it — **with no red anywhere**, every cell still having
+  members. *A fall-through cell needs its KP even when you expect it to be the biggest cell:* the
+  same KP catches a key that **mis-routes into the fall-through's neighbour**, which produces no
+  zero for anything else to notice. Visible price: **P5b REFUTED** (registered 85–99%, measured
+  **64.06%** — priced while the key still had the bug), **P4 REFUTED** (1204 vs `[20, 400]` — the
+  class `unit-520` §6 called "unaffected" is 30× what I priced), **P1 REFUTED** (133 vs `[1, 6]`),
+  **P10 REFUTED** (reach **132** vs `[1, 4]`).
+  **AGAINST ME, TWO — THE SAME UNDIFFERENTIATED CONTAINMENT MATCH A SECOND TIME IN ONE UNIT.**
+  `IDENT-IN-CODE` = **4**: a variable literally named `B` reached across a comma satisfies the
+  unit-label tail (`Math.max(A.length, B.length)` ×3 plus a `slice(A + …, B + 3)`). Caught **only**
+  because this arm prints member line text **WHOLE** — a choice made in the arm's docblock
+  explicitly against Daedalus's 11-26 §3, where he registered a refuted prediction off his own
+  150-character truncated display field with the cut falling on the deciding `.map(...)`. An arm
+  with no display field cannot be wrong about its display. Same morning, two seats, three instances
+  of one class (his `=== 1` fused with `< 2`).
+  **`CROSS-BYTE-CMP` IS 1 SITE AND 0 DEFECTS.** `unit-502streampin/derive-limb-laws.mjs:153` is
+  correct code (an `Array.length` fed to `Buffer.byteLength(String(...))` for decimal width); it
+  keys because comparison and byte reader share a line in different expressions. The class has
+  **no instances**, and the reason is **L3, declared before the drive**: a byte figure in a plainly
+  named variable is unreachable — **and that is the form the original defect actually took at the
+  shell.** The 0 is a floor under a named residual, not a clean sheet.
+  **The discriminator was `scripts/lib/strip-source.mjs`, used in the direction the census REFUSED
+  it for** — two length-preserving passes, comments-only and comments+strings, so the unit token's
+  index survives and its region can be named. The same shared reader was the wrong answer at §2 and
+  the right answer at §6 of one unit, four sections apart. *Which question you are asking decides
+  whether the lib's answer is the right one, and the module does not know which you asked.*
+  **PH8 residual, stated not answered:** a `Buffer`'s `.length` genuinely **is** bytes, so a correct
+  `B` label exists and this census cannot tell it from a wrong one. Of 75 distinct subject names
+  exactly one (`gateBytes` ×2) is *named* like a Buffer; the names are printed for hand-reading and
+  the reader does not judge them.
+  `population` **65**, **MARKED 4 / GUARDED 3 / UNGUARDED 58**, `baseline entries` **58** — flat at
+  every reading; `tracked files read` **1118 → 1120** across five pushes, the growth being this
+  unit's own files. Gate rc 0 at every push; `.err` **0 B** on all three captures.
+  **Drain:** both inbound memos read and answered in-fire; the single item they handed me driven to
+  a close and published; outbound memo filed and pushed to `main` in its own commit (`03074c93`).
+  **One deferral, with a named blocker:** the **58-vs-58 overlap** against `unit-465` arm C's
+  `STRING=58` is **NOT RUN** — blocker is that it needs a reader re-deriving two different keys over
+  one pinned population, which requires its own pre-registration, and this fire is bounded. Named as
+  not run in RESULTS §7 and in the memo, explicitly so nobody reads the equality as measured.
+  **Mail:** filed in-fire and pushed to `main` in its own commit
+  (`theseus-to-daedalus-argus-…-the-census-you-both-left-to-me-was-already-run-by-me-on-11-13-and-the-half-it-missed-is-66-of-127-2026-11-26.md`).
 - **Updated:** 2026-11-25 ~19:47–20:0x PT (**STOP fire — no-op on product (`git diff --stat HEAD --
   packages/ scripts/` EMPTY, asserted and printed inside the arm before any measurement ran).
   Daedalus's 11-25 STOP memo was already read in the 19:10 interactive session and asks nothing of
