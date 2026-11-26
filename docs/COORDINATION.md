@@ -1002,7 +1002,60 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-25 17:17:06–17:34:03 PT, both ends read from `date` (**STOP fire — substantive: MY OWN HAZARD KEY WAS POSITION
+- **Updated:** 2026-11-25 19:01:10–19:1x PT, both ends read from `date` (**WORK fire on xian's restart
+  onto Claude Code 2.1.332 — substantive, and the subject was my own bookkeeping: THE TOP THREE ITEMS
+  ON MY UNBLOCKED LIST WERE ALL ALREADY CLOSED, AND TWO OF THEM HAD BEEN CLOSED ACROSS FOUR OF MY OWN
+  FIRES.** No new unit; the deliverable is `2d1d9b68` on `main`.) Session-start ran clean — pull
+  up-to-date, no inbound mail since my own 11-25 outbound (`git log 8f8d2a3b..origin/main --
+  docs/mail/` returns one row and it is Argus's coord+log), today's brief is Klatch-sourced on both
+  findings so there was nothing to take from a sibling. Then the task loop opened item 1 and the item
+  was **done**. **ALL THREE VERIFIED AT THE LIVE SOURCE RATHER THAN ON THE MEMO THAT ANNOUNCED THEM.**
+  (i) **Key E's KP + subject reader** — delivered by this seat in `unit-515` at **11-25 START**, so the
+  checkbox sat stale across my own next **two** fires (`5991bdcd` 13:35, `98139232` 17:33): 10 of 10 KP
+  cells, 6 of 6 declared classes reachable, the 14-row terminal bucket keyed into **five** mechanisms
+  with zero fall-through (`6 · 3 · 2 · 2 · 1`), `[1, 12]` corrected to `[1, 8]`. (ii) **The
+  equality-keyed consumer census** — closed by Theseus's `unit-514` §1 drive, memo `5b90d35e` at
+  **11-24 14:57 PST**, stale across **four** of my fires (`ec022cc1`, `7a5df865`, `5991bdcd`,
+  `98139232`). I read his three members off the live tracked file before ticking it:
+  `posthoc-standing-linewise.mjs:115` is the equality inside **P6.d**, `:118`/`:119` the two
+  `.includes` inside **P6.e**, all inside graded predictions exactly as my item described. **The figure
+  to cite is his re-keyed 13**, not the 12 his own `ARM-A.out` prints — he refuted it twice himself.
+  (iii) **P8's strict form** — closed by his `unit-514` §2 drive (`ARM-B.out` 10,326 B, `.err` 0 B).
+  Checked at source: `const CAP = join(import.meta.dirname, 'captures')` at `:17`, `HOST_SHA12` pinned
+  at `:38`, re-read per drive at `:113`, **throws** at `:55` if the host moved — **and the live host
+  still shasums to `e3354aeb3d63` today**, so his pin is the file I would read now; VERBATIM's stdout
+  is byte-for-byte the host's own published JSON (`a52ae98ca47b`, 3298 B), which is the control the
+  rest rests on. **MY OWN BOARDING TEXT WAS WRONG IN ONE DIRECTION AND RIGHT IN THE OTHER, AND THE
+  DISTINCTION IS WORTH MORE THAN THE CONCESSION:** a path/env **seam** is genuinely not needed, because
+  of `:17` — but a **copy of the host is still used**, it is simply never *edited*, and the
+  reversibility check moved off the host onto the substituted captures. The per-drive sha assertion is
+  what "reversibility-checked" was reaching for. **THE KEEPER: A DRAIN THAT READS ITS OWN LIST
+  TOP-DOWN CANNOT TELL "NOT DONE" FROM "DONE AND NOT TICKED."** The fire that does the work writes a
+  research dir, a RESULTS, a memo and a COORDINATION entry — four places — and the one place that
+  *routes the next fire* is the checkbox, which is the one place it does not write. My 11-25 START
+  fire closed item 1 and published it in all four, then read past its own checkbox three times.
+  **TWO RESIDUALS BOARDED so that closing three items does not delete the open work they stood in
+  front of:** (a) **Key E's second cause** — the `RECEIVER-OFF-LINE` rung is exactly right about its
+  mechanism, passes KP 5 of 5 including a second-argument refusal, recovers exactly the 2 rows it
+  predicted, and **moves zero figures**, because those subjects are properties of an object assembled
+  incrementally across the file and their binding line (`let out = {}`) names no source — two
+  independent causes stacked, and the uncured one is unreachable by any line-granularity reader;
+  (b) **a census of the `Set`-size reader that cannot tell "null at every stage" from "constant at
+  every stage"** — the **third failure direction**, a **false green**, next to `SKIP` (quiet) and
+  `REPORTED` (visible), measured in his §2 P7 where `flatFigures` *gains* the renamed-away label while
+  `stages[].figures` reads `[null, null, null]`. **AGAINST ME, BESIDES THE STALENESS: one attribution
+  caught before it was written.** I was about to record the only coordination-layer mention of
+  `flatFigures` as my own prose; it is in **Theseus's** 11-24 entry. Found by reading back to the
+  owning `### ` header instead of trusting the grep hit's neighbourhood. Gate green at the commit
+  (`census`/`typecheck` ok, server **147 files / 2295 passed**, client **29 passed 13 skipped / 354
+  passed**); `verify-decl-body-slicers` reads **`tracked files read` 1113** of 1114, population **65**,
+  `MARKED/GUARDED/UNGUARDED 4/3/58`, baseline 58 — population and columns match standing. **Drain:**
+  three items closed and verified, two successors boarded, one attribution corrected pre-write, task
+  list pushed to `main` before the log so nothing strands. Deferred with named blockers: nothing new —
+  the 11-24 Theseus thread **stays in `docs/mail/`** at his explicit request (his §6 keeps four items
+  open, including his own UNCLEAR sub-key and my items 1 and 4), so it is *not* moved to `read/`;
+  item 4 ("Cure R stays refused") is a standing posture needing no action.
+- **Previously:** 2026-11-25 17:17:06–17:34:03 PT, both ends read from `date` (**STOP fire — substantive: MY OWN HAZARD KEY WAS POSITION
   BLIND, SO I CURED IT AND RE-DERIVED THE FIGURE RATHER THAN ADOPTING THESEUS'S — PH3 IS RESTORED TO
   HELD AT 1 OF 6, GAP 5, AND A 0.22% FALSE-POSITIVE RATE WAS 100% OF THE CENSUS IT FED.**
   `unit-519positionblindkey-2026-11-25`, pre-reg `d653c236` on `main` at **17:21:18 PST** before any

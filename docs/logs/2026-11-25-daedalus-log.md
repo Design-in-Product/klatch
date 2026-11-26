@@ -511,3 +511,129 @@ touches `docs/mail/` because it carries the four `git mv`s into `read/`. **Nothi
 my own outbound.** Recorded as one-row-and-whose rather than as "no rows": I nearly wrote the latter
 from the shape I expected, and the check that distinguishes them is reading the author and subject of
 the row, not counting the rows.
+
+---
+
+## 19:01 — Session resumed (WORK fire, bounded) · model: claude-opus-5 · Claude Code 2.1.332
+
+Restarted by Pard at xian's go onto Claude Code 2.1.332; model unchanged. Clock read from
+`TZ=America/Los_Angeles date` at **19:01:10 PST**, not estimated.
+
+**Briefing (session-start as documented).** Pull: `Already up to date`. Role doc read
+(`docs/operations/duty-cycle/daedalus-tasks.md`, 65.2 KB — the task list of record *is* the role doc
+for this seat; there is no `docs/agents/daedalus.md`, which I confirmed by `find` rather than
+assuming the `docs/agents/` pattern held for me: that directory holds `argus.md`,
+`calliope-calibration.md`, `calliope.md` only). `docs/COORDINATION.md` §Daedalus read.
+`docs/briefs/cross-pollination/current.md` read — 295 B, a pointer only, because the repo is public;
+the private source resolves to `designinproduct/src/internal/briefs/2026-11-25-brief.md` at
+`eb3acca`, and **both of today's findings are Klatch's own** (Theseus's `unit-514` fixture
+contamination, my `unit-513` null-consumer census), so there was nothing to take from a sibling
+project.
+
+**Mail: nothing new inbound.** `git log 8f8d2a3b..origin/main -- docs/mail/` returns **one row** and
+it is Argus's `5f2b3829` coord+log. The newest file in `docs/mail/` by filename date is **my own**
+11-25 outbound. Recorded as one-row-and-whose rather than as "no rows," per the same discipline as
+the 17:34 entry above.
+
+**Day-part:** 19:01 PST is before the ~23:00 PT day-end threshold and the day's START already ran,
+so the CHECK dispatcher routes to **WORK PARTS**. No `CronDelete` applies — this seat's cycle is
+armed by Pard's LaunchAgent, not by a `CronCreate` in this session.
+
+## 19:02 — the task loop opened item 1 and the item was already done
+
+Three items, all closed, none ticked. **Verified at the live source in every case, not on the memo
+that announced it** — the whole point of the check is that a memo announcing a closure is a lead.
+
+| item | closed by | when | stale across my fires |
+|---|---|---|---|
+| Key E's KP + subject reader | **this seat**, `unit-515keyekp` | 11-25 START | **2** (`5991bdcd`, `98139232`) |
+| equality-keyed consumer census | Theseus, `unit-514` §1 | memo `5b90d35e` 11-24 14:57 | **4** (`ec022cc1`, `7a5df865`, `5991bdcd`, `98139232`) |
+| P8's strict form | Theseus, `unit-514` §2 | same drive | **4**, same |
+
+What each verification actually was:
+
+- **Key E** — read `unit-515/RESULTS.md` §1 and §3: KP **10 of 10 cells, 6 of 6 declared classes
+  reachable**, so `FILE 0` and `OTHER-PROCESS 0` are measured zeros; the 14-row bucket is
+  `BOUND-PATTERN 6 · CALLBACK-PARAM 3 · RECEIVER-OFF-LINE 2 · HELPER-ARG 2 · SUBJECT-IS-PARAM 1`,
+  which **sums to 14** (checked, not eyeballed), zero fall-through; `[1, 12]` → `[1, 8]`.
+- **Equality census** — read his three named members off the **live tracked file**:
+  `docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:115` is
+  `movedFigures[0] === 'tracked files read'` inside **P6.d**; `:118` and `:119` are the two
+  `.includes('tracked files read')` inside **P6.e**. All three sit inside *graded predictions*, which
+  is exactly what my item claimed from a source-read and his drive confirms. **His own figure moved
+  twice against him** — 2 of his 12 are prose inside a prediction's name string (10 real) and his §7
+  re-key carries **13** — so the figure to carry forward is **13**, not the 12 printed in `ARM-A.out`.
+- **P8 strict** — `grep` for `import.meta.dirname` in the host returns `:17`,
+  `const CAP = join(import.meta.dirname, 'captures')`. That one line is the whole reason his drive
+  needed no seam. Then the arm: `HOST_SHA12 = 'e3354aeb3d63'` at `:38`, `hostSha12` re-read per drive
+  at `:113`, and a **throw** at `:55` if the host moved. `shasum -a 256` on the live file **today**
+  returns `e3354aeb3d63` — so his pin is still the file I would read now, and the control (VERBATIM
+  stdout byte-for-byte the host's own published `captures/P6-standing-linewise.json`, `a52ae98ca47b`,
+  3298 B) is what makes the renamed figures gradeable rather than merely different.
+
+**My boarding text was wrong in one direction and right in the other.** I had written that item 3
+"needs a path/env seam in the host **or** a reversibility-checked scratch copy of it." The seam is
+genuinely not needed — `:17` settles that. But a **copy of the host is still used**; it is simply
+never *edited*, and the reversibility check moved off the host and onto the substituted captures
+(`4390 → 4395 B, reversible true`, on all three). His "it needs **neither**" is right about the seam
+and overshoots on the copy. Recording the split rather than conceding flat, because the thing that
+does the work my "reversibility-checked" was reaching for is the **per-drive sha assertion**, and
+that is the transferable part.
+
+## 19:0x — against me, besides the staleness
+
+**One attribution caught before it was written.** Drafting the successor item, I was about to record
+that the only coordination-layer mention of `flatFigures` is prose in **my own** `COORDINATION.md`
+entry. It is **Theseus's**. The grep hit a line at ~8965 whose text read like mine; reading back to
+the owning `### ` header gives `### Theseus Prime (manual testing & exploration — CLI side)` at 8800.
+A grep hit's *neighbourhood* is not its *section*, and in a 5.1 MB file with 395 `Updated:` lines the
+distance to the owning header is hundreds of lines. Cost of the check: one `awk`.
+
+## 19:0x — what landed
+
+**Two successors boarded, so closing three items does not delete the work they stood in front of:**
+
+1. **Key E's second cause — a subject with no single-line origin.** No blocker. The
+   `RECEIVER-OFF-LINE` rung is exactly right about its own mechanism, passes **KP 5 of 5** including a
+   refusal on a second-argument form, recovers exactly the **2** rows it predicted — and moves
+   **zero** figures, every cell identical. Both recovered subjects re-enter Key E and land
+   `UNRESOLVED` again: `posthoc-application-mode.mjs:55` (`out.VERBATIM.text`) and
+   `posthoc-rename-kp.mjs:119` (`drives.VERBATIM.out`) are properties of objects **assembled
+   incrementally across the file**, whose binding lines are `let out = {}` / `let drives = {}` and
+   name no source. Two independent causes stacked; the uncured one is **unreachable by any
+   line-granularity reader**, so Key E's *evidence model* is what changes, not the rung.
+2. **A census of the `Set`-size reader that cannot tell "null at every stage" from "constant at every
+   stage."** No blocker, and **verified unboarded on both task lists before boarding** — `flatFigures`
+   hits neither `daedalus-tasks.md` nor `theseus-tasks.md`. This is the **third failure direction**, a
+   **false green**, next to `SKIP` (quiet) and `REPORTED` (visible): under the rename `movedFigures`
+   goes `['tracked files read'] → []` while `flatFigures` **gains** the label, publishing the
+   renamed-away figure among the nine that "held constant," while `stages[].figures` in the same JSON
+   reads `[null, null, null]` against `[1071, 1072, 1072]`. **The unit of work is the population, not
+   this host** — frozen research files are not edited (settled 11/20).
+
+## The keeper
+
+**A drain that reads its own task list top-down cannot tell "not done" from "done and not ticked."**
+The fire that does the work writes it in four places — the research dir, `RESULTS.md`, the memo, the
+`COORDINATION.md` entry — and the one place that actually *routes the next fire* is the checkbox,
+which is the one place it does not write. My own 11-25 START fire closed item 1, published it in all
+four, and then three subsequent fires of mine read past its unticked checkbox. The two items Theseus
+closed sat a fire longer still, because an inbound memo that closes *my* item needs *me* to tick it,
+and his memo's own §6 (correctly) keeps the thread open for other reasons — so the thread's being
+open is not a signal that its closures are unrecorded. **The tell is cheap and I did not use it for
+four fires: before working an item, check whether the unit that would have closed it exists.** Here a
+single `ls docs/research/ | grep 'unit-51'` would have shown `unit-515keyekp` sitting next to
+`unit-513consumernull`.
+
+## Drain
+
+- **Drained and done:** three unblocked items closed, each verified at the live source rather than
+  from the memo announcing it; two residual successors boarded with no blocker; one attribution error
+  caught pre-write; task list pushed to `main` as `2d1d9b68` **before** this log, so nothing strands.
+- **Deferred with named blockers:** none new. The 11-24 Theseus thread **stays in `docs/mail/`** at
+  his explicit request — his §6 keeps four items open (his UNCLEAR sub-key, the `ABSENT` hole, my
+  items 1 and 4) — so close-discipline says do **not** move it to `read/`. My item 4 ("Cure R stays
+  refused") is a standing posture, not work, and needs no action.
+- **Not started, and named rather than silently skipped:** the two items boarded this fire. Both are
+  unblocked and neither is deferred on a deadline; this fire's budget went to the verification that
+  closed three items, and a bounded Klatch fire stops when it has written its state down.
