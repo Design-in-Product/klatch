@@ -1,0 +1,152 @@
+{
+  "clock": "2026-11-26 09:25:56 PST",
+  "gradedAgainst": {
+    "armSha": "148ebe57c8f8",
+    "armClock": "2026-11-26 09:22:37 PST",
+    "invariance": 11
+  },
+  "MK": {
+    "MK-B PROJ-THROWING: an absent member makes the projection throw": true,
+    "MK-C PROJ-SILENT: an absent property yields undefined, and the set of them has size 1": true,
+    "MK-D PROJ-TOTAL: a .length projection is never absent": true,
+    "MK-E JSON.stringify PROPAGATES absence (undefined) but RENDERS a present null ('null')": true
+  },
+  "PH3": {
+    "new Set([]).size === 1": false,
+    "new Set([]).size < 2": true,
+    "opposite": true
+  },
+  "rows": [
+    {
+      "path": "docs/research/unit-464subkind-2026-11-02/grade-subkind.mjs",
+      "line": 336,
+      "subKey": "PROJ-THROWING",
+      "emptiness": "EMPTY-READS-VARIED",
+      "tail": ".size === 1;",
+      "span": "(ctrl.map((a) => a.split(' ')[0]))"
+    },
+    {
+      "path": "docs/research/unit-464t2-keychoice-2026-10-28/grade-the-surface-predicate.mjs",
+      "line": 384,
+      "subKey": "PROJ-SILENT",
+      "emptiness": "EMPTY-READS-VARIED",
+      "tail": ".size === 1;",
+      "span": "(cs.map((c) => c.fired))"
+    },
+    {
+      "path": "docs/research/unit-464t2-keychoice-2026-10-28/grade-the-surface-predicate.mjs",
+      "line": 401,
+      "subKey": "PROJ-SILENT",
+      "emptiness": "EMPTY-READS-VARIED",
+      "tail": ".size === 1;",
+      "span": "(cs.map((c) => c.fired))"
+    },
+    {
+      "path": "docs/research/unit-464t2-keychoice-2026-10-28/recon2-the-last-round-that-cured-product-source.mjs",
+      "line": 130,
+      "subKey": "PROJ-SILENT",
+      "emptiness": "EMPTY-READS-VARIED",
+      "tail": ".size === 1 : null;",
+      "span": "(answering.map((s) => s.lastRound))"
+    },
+    {
+      "path": "docs/research/unit-465oncegate-2026-11-11/arm-oncegate.mts",
+      "line": 116,
+      "subKey": "PROJ-TOTAL",
+      "emptiness": "EMPTY-READS-VARIED",
+      "tail": ".size === 1);",
+      "span": "(population.map((f) => live.filter((x) => x.file === f).length))"
+    },
+    {
+      "path": "docs/research/unit-465routecure-2026-11-13/arm-routecure-b.mjs",
+      "line": 209,
+      "subKey": "NO-PROJECTION",
+      "emptiness": "EMPTY-READS-INVARIANT",
+      "tail": ".size < 2) continue;",
+      "span": "(named)"
+    },
+    {
+      "path": "docs/research/unit-465routecure-2026-11-13/arm-routecure-b.mjs",
+      "line": 245,
+      "subKey": "NO-PROJECTION",
+      "emptiness": "EMPTY-READS-INVARIANT",
+      "tail": ".size < 2) continue;",
+      "span": "(named)"
+    },
+    {
+      "path": "docs/research/unit-465routecure-2026-11-13/arm-routecure.mjs",
+      "line": 334,
+      "subKey": "NO-PROJECTION",
+      "emptiness": "EMPTY-READS-INVARIANT",
+      "tail": ".size < 2) continue;",
+      "span": "(all)"
+    },
+    {
+      "path": "docs/research/unit-505markedabsentpair-2026-11-22/arm-markedabsentpair.mjs",
+      "line": 301,
+      "subKey": "PROJ-SILENT",
+      "emptiness": "EMPTY-READS-VARIED",
+      "tail": ".size === 1,",
+      "span": "([' ', ' ', ' '] .map((c) => JSON.stringify(results[c].predicate.nonPathIntegers)))"
+    },
+    {
+      "path": "docs/research/unit-505markedabsentpair-2026-11-22/arm-markedabsentpair.mjs",
+      "line": 305,
+      "subKey": "PROJ-SILENT",
+      "emptiness": "EMPTY-READS-VARIED",
+      "tail": ".size === 1",
+      "span": "([' ', ' ', ' '] .map((c) => JSON.stringify(results[c].predicate.nonPathIntegers)))"
+    },
+    {
+      "path": "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs",
+      "line": 88,
+      "subKey": "PROJ-SILENT",
+      "emptiness": "EMPTY-READS-VARIED",
+      "tail": ".size === 1,",
+      "span": "(rows.map((r) => r.figures[k]))"
+    }
+  ],
+  "tallies": {
+    "subKey": {
+      "PROJ-THROWING": 1,
+      "PROJ-SILENT": 6,
+      "PROJ-TOTAL": 1,
+      "NO-PROJECTION": 3
+    },
+    "emptiness": {
+      "EMPTY-READS-VARIED": 8,
+      "EMPTY-READS-INVARIANT": 3
+    }
+  },
+  "PH1_argLiteral": 0,
+  "PH4_falseGreenCapable": {
+    "count": 9,
+    "members": [
+      "docs/research/unit-464t2-keychoice-2026-10-28/grade-the-surface-predicate.mjs:384 [PROJ-SILENT]",
+      "docs/research/unit-464t2-keychoice-2026-10-28/grade-the-surface-predicate.mjs:401 [PROJ-SILENT]",
+      "docs/research/unit-464t2-keychoice-2026-10-28/recon2-the-last-round-that-cured-product-source.mjs:130 [PROJ-SILENT]",
+      "docs/research/unit-465routecure-2026-11-13/arm-routecure-b.mjs:209 [NO-PROJECTION]",
+      "docs/research/unit-465routecure-2026-11-13/arm-routecure-b.mjs:245 [NO-PROJECTION]",
+      "docs/research/unit-465routecure-2026-11-13/arm-routecure.mjs:334 [NO-PROJECTION]",
+      "docs/research/unit-505markedabsentpair-2026-11-22/arm-markedabsentpair.mjs:301 [PROJ-SILENT]",
+      "docs/research/unit-505markedabsentpair-2026-11-22/arm-markedabsentpair.mjs:305 [PROJ-SILENT]",
+      "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:88 [PROJ-SILENT]"
+    ]
+  },
+  "PH5_emptinessOnly": {
+    "count": 0,
+    "members": [
+      "docs/research/unit-465routecure-2026-11-13/arm-routecure-b.mjs:209 [NO-PROJECTION] .size < 2) continue;",
+      "docs/research/unit-465routecure-2026-11-13/arm-routecure-b.mjs:245 [NO-PROJECTION] .size < 2) continue;",
+      "docs/research/unit-465routecure-2026-11-13/arm-routecure.mjs:334 [NO-PROJECTION] .size < 2) continue;"
+    ]
+  },
+  "PH6_pairedChange": {
+    "count": 3,
+    "members": [
+      "docs/research/unit-464subkind-2026-11-02/grade-subkind.mjs:333",
+      "docs/research/unit-465routecure-2026-11-13/arm-routecure.mjs:298",
+      "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:91"
+    ]
+  }
+}
