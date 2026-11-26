@@ -1,0 +1,125 @@
+unit-523indirectsize — post-hoc (UNREGISTERED)
+SHA f247b4283545 · clock 2026-11-26 13:29:27 PST · corpus 855 files · population 123
+
+─── PH1  RECEIVER-UNKEYED: what is actually in the fall-through cell ───────────
+  arm's RECEIVER-UNKEYED: 7
+    KEYWORD-ABSORBED  docs/research/unit-464absorb-2026-10-31/grade-filed-maps.INSTRUMENTED.mjs:187  receiver="return out"
+        return out.size === 0 ? null : out;
+    KEYWORD-ABSORBED  docs/research/unit-464mapkey-2026-10-30/grade-filed-maps.mjs:191  receiver="return out"
+        return out.size === 0 ? null : out;
+    KEYWORD-ABSORBED  docs/research/unit-464reach-2026-10-31/grade-filed-maps.CURED.mjs:187  receiver="return out"
+        return out.size === 0 ? null : out;
+    KEYWORD-ABSORBED  docs/research/unit-464reach-2026-10-31/grade-filed-maps.DEAD.mjs:187  receiver="return out"
+        return out.size === 0 ? null : out;
+    KEYWORD-ABSORBED  docs/research/unit-464reach-2026-10-31/grade-filed-maps.SCRATCH.mjs:187  receiver="return out"
+        return out.size === 0 ? null : out;
+    KEYWORD-ABSORBED  docs/research/unit-464reach-2026-10-31/grade-filed-maps.TOKCENSUS.mjs:187  receiver="return out"
+        return out.size === 0 ? null : out;
+    EMPTY-RECEIVER(TS `!`)  scripts/probe-round250-the-drive-was-never-priced-and-the-port-is-one-line-of-product.mts:408  receiver=""
+          mOwn.get(f.viaDep)!.size === 0 && has(f.viaDep, 'server') && has(f.viaDep, 'port'),
+  KEYWORD-ABSORBED 6 · EMPTY-RECEIVER 1 · REAL-BRACKET-RECEIVER 0
+  >>> the bracket receiver KP11 planted has 0 live members in this corpus.
+
+  the two readings, side by side:
+    SET-BOUND            arm 34    cured 34    
+    SET-EXPR             arm 0     cured 0     
+    MAP-BOUND            arm 10    cured 16    DELTA +6
+    MAP-EXPR             arm 0     cured 0     
+    OTHER-BOUND          arm 34    cured 34    
+    UNRESOLVED           arm 7     cured 7     
+    PROPERTY             arm 10    cured 10    
+    CALL                 arm 21    cured 22    DELTA +1
+    RECEIVER-UNKEYED     arm 7     cured 0     DELTA -7
+    SET-TAIL-DIRECT      arm 0     cured 0     
+  sites whose class MOVED under the cured walk: 7 of 123
+    docs/research/unit-464absorb-2026-10-31/grade-filed-maps.INSTRUMENTED.mjs:187  RECEIVER-UNKEYED -> MAP-BOUND  receiver "return out" -> "out"
+    docs/research/unit-464mapkey-2026-10-30/grade-filed-maps.mjs:191  RECEIVER-UNKEYED -> MAP-BOUND  receiver "return out" -> "out"
+    docs/research/unit-464reach-2026-10-31/grade-filed-maps.CURED.mjs:187  RECEIVER-UNKEYED -> MAP-BOUND  receiver "return out" -> "out"
+    docs/research/unit-464reach-2026-10-31/grade-filed-maps.DEAD.mjs:187  RECEIVER-UNKEYED -> MAP-BOUND  receiver "return out" -> "out"
+    docs/research/unit-464reach-2026-10-31/grade-filed-maps.SCRATCH.mjs:187  RECEIVER-UNKEYED -> MAP-BOUND  receiver "return out" -> "out"
+    docs/research/unit-464reach-2026-10-31/grade-filed-maps.TOKCENSUS.mjs:187  RECEIVER-UNKEYED -> MAP-BOUND  receiver "return out" -> "out"
+    scripts/probe-round250-the-drive-was-never-priced-and-the-port-is-one-line-of-product.mts:408  RECEIVER-UNKEYED -> CALL  receiver "" -> "mOwn.get(f.viaDep)"
+
+  arm sites with a SPACE inside the receiver but NOT in RECEIVER-UNKEYED (the defect leaking into a keyed cell): 4
+    docs/research/unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:257  [CALL] receiver="statSync(join(RECDIR, f))"
+    docs/research/unit-464moves-2026-11-04/census-now.mjs:17  [CALL] receiver="statSync(join(UNIT, f))"
+    docs/research/unit-464moves-2026-11-04/compare-arms.mjs:57  [CALL] receiver="statSync(join(UNIT, f))"
+    docs/research/unit-465rowdelta-2026-11-06/drive-arms.mjs:114  [CALL] receiver="fs.statSync(p + s)"
+
+─── PH4  does the cured walk move the deliverable figure? ──────────────────────
+  narrowed hazard — arm 4 · cured 4
+  guard — arm {"BLIND":4} · cured {"BLIND":4}
+
+─── PH2  the CEILING: invariance claims whose receiver kind was not resolved ───
+  INVARIANCE sites outside SET-* and MAP-* (cured reading): 6
+  by class: {"UNRESOLVED":5,"OTHER-BOUND":1}
+    docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:292  [UNRESOLVED] receiver="wPost"
+      site:   && wPost.size === 1 && wPost.has('LANDS')
+      origin? 290: const [wPre, wPost] = [wordsIn('PRE'), wordsIn('POST')];
+      origin? 309: `PRE {${[...wPre].join(', ')}} → POST {${[...wPost].join(', ')}}`);
+    docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:306  [UNRESOLVED] receiver="wPost"
+      site: const p4Threshold = wPre.size === 2 && wPost.size === 1 && wPost.has('LANDS');
+      origin? 290: const [wPre, wPost] = [wordsIn('PRE'), wordsIn('POST')];
+      origin? 309: `PRE {${[...wPre].join(', ')}} → POST {${[...wPost].join(', ')}}`);
+    docs/research/unit-503stalelabelwidth-2026-11-22/derive-stale-entry-cost.mjs:75  [UNRESOLVED] receiver="s"
+      site:   Object.entries(byLabel).map(([k, s]) => [k, s.size === 1 ? [...s][0] : [...s]]),
+    scripts/probe-round207-the-import-confirms-a-name-and-the-name-is-not-unique.mts:410  [OTHER-BOUND] receiver="picks"
+      site: check('E1', picks.size === 1, 'repeated resolution of a same-millisecond pair is stable', `${picks.size} distinct`);
+      origin? 406: const picks = new Set<string>();
+      origin? 408: picks.add(String(resolveImportEntity({ entityName: 'Theseus' }).entityId));
+      origin? 411: check('E2', [...picks][0] === T1, 'and it is the id-ASC winner, which is what makes it stable',
+      origin? 412: `${[...picks][0]?.slice(0, 8)} (T1) vs ${T2.slice(0, 8)} (T2)`);
+    scripts/probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts:188  [UNRESOLVED] receiver="seen"
+      site:   if (CORPUS_CTX_RE.test(stripComments(read(rel)))) return { direct: seen.size === 1, via: seen.size === 1 ? null : rel };
+      origin? 185: function reachesCorpus(rel: string, seen = new Set<string>()): { direct: boolean; via: string | null } {
+      origin? 186: if (seen.has(rel)) return { direct: false, via: null };
+      origin? 187: seen.add(rel);
+      origin? 190: const r = reachesCorpus(dep, seen);
+    scripts/probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts:188  [UNRESOLVED] receiver="seen"
+      site:   if (CORPUS_CTX_RE.test(stripComments(read(rel)))) return { direct: seen.size === 1, via: seen.size === 1 ? null : rel };
+      origin? 185: function reachesCorpus(rel: string, seen = new Set<string>()): { direct: boolean; via: string | null } {
+      origin? 186: if (seen.has(rel)) return { direct: false, via: null };
+      origin? 187: seen.add(rel);
+      origin? 190: const r = reachesCorpus(dep, seen);
+
+  >>> CEILING on Set-size invariance claims = narrowed hazard 4 + unresolved-kind 6 = 10
+
+─── PH3  the FLOOR under P20's zero: BOUND-UNCOMPARED ─────────────────────────
+  BOUND sites: 15 · BOUND-COMPARED (literal): 4 · BOUND-UNCOMPARED: 11
+    docs/research/unit-464class-2026-11-02/enumerate-legs.mjs:236  name=legFiles  non-literal comparison: `legFiles > new`
+      const legFiles = new Set(legs.map((l) => l.rel)).size;
+    docs/research/unit-465promote-2026-11-07/measure-inode-reuse.mjs:70  name=uniq  non-literal comparison: NONE FOUND
+      const uniq = new Set(inos).size;
+    docs/research/unit-465screen-2026-11-10/screen-declaring-file.mjs:108  name=nFiles  non-literal comparison: NONE FOUND
+      const nFiles = new Set(cells.map((c) => c.file)).size;
+    docs/research/unit-466reasontok-2026-11-15/arm-reasontok-a.mjs:66  name=samelineLines  non-literal comparison: NONE FOUND
+      const samelineLines = new Set(sameline.map((p) => `${p.file}:${p.lineNo}`)).size;
+    docs/research/unit-466reasontok-2026-11-15/arm-reasontok-a.mjs:67  name=samelineRecordings  non-literal comparison: NONE FOUND
+      const samelineRecordings = new Set(sameline.map((p) => p.file)).size;
+    docs/research/unit-466xjoin-2026-11-15/arm-xjoin-a.mjs:247  name=consFilesK  non-literal comparison: NONE FOUND
+      const consFilesK = new Set(consSites.map((c) => c.p)).size;
+    docs/research/unit-466xjoin-2026-11-15/arm-xjoin-a.mjs:248  name=consFilesRead  non-literal comparison: `consFilesRead < consFilesK`
+      const consFilesRead = new Set(readKeyHits.map((s) => s.split(':')[0])).size;
+    docs/research/unit-509extractionrefusal-2026-11-23/posthoc-wsfile.mjs:180  name=sepLazy  non-literal comparison: NONE FOUND
+      const sepLazy = new Set(CELLS.map((c) => JSON.stringify(asSet(armJson.cells[c].readers.lazy.pairs)))).size;
+    scripts/probe-round242-the-band-selects-bytes-and-arm-a-is-one-row.mts:207  name=dirsWithSessions  non-literal comparison: NONE FOUND
+        const dirsWithSessions = new Set(rows.map((r) => r.dir)).size;
+    scripts/probe-round311-the-nearer-of-argus-two-candidates-is-the-one-that-drops-a-failure-and-a-kind-field-is-what-breaks-it.mts:323  name=shapesDisjoint  non-literal comparison: NONE FOUND
+      const shapesDisjoint = new Set([...pushesPass, ...bareCounter, ...neitherShape]).size === shapeSum;
+    scripts/probe-round327-the-pin-purpose-label-is-a-property-of-the-edge-and-retirability-is-a-property-of-the-target-line.mts:345  name=patternCount  non-literal comparison: NONE FOUND
+      const patternCount = new Set(resolvedEdges.map(patKeyOf)).size;
+  of the 11 uncompared-to-a-literal, 2 ARE compared to a non-literal — L3/L4's region, outside every key in this unit.
+  BOUND-COMPARED directions:
+    {"OTHER-N":4}
+
+─── PH5  SELF-INCLUSION: this unit in its own population ───────────────────────
+  this unit's own tracked code files in the corpus: 1
+    docs/research/unit-523indirectsize-2026-11-26/arm-indirectsize.mjs
+  Arm A sites contributed by this unit: 0
+  excluded direct tails contributed by this unit: 0
+  Arm B BOUND sites contributed by this unit: 0
+
+  total excluded direct tails (whole corpus): 60
+  of those, from unit-522 (landed after unit-521's SHA): 0
+  unit-521 published 54 size-keyed sites over 850 files; this reading is 60 over 855.
+  delta 6, of which unit-522 0 and this unit 0.
