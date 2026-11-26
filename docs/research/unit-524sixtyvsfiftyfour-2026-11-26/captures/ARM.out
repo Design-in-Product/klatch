@@ -1,0 +1,85 @@
+unit-524sixtyvsfiftyfour — arm
+  HEAD c83c619fe738 · clock 2026-11-26 14:56:27 PST
+  readers SLICED from: docs/research/unit-521setsizefalsegreen-2026-11-26/arm-setsizefalsegreen.mjs · docs/research/unit-523indirectsize-2026-11-26/arm-indirectsize.mjs
+  generated module: /var/folders/jl/g34tk0xx7nj20xbjvyq6bskc0000gn/T/u524-gen-34gKLr/sliced-readers.mjs
+
+─── shared-text byte equality between the two arms ─────────────────────────────
+  IDENTICAL  CODE_EXT
+  IDENTICAL  corpus filter arrow
+  IDENTICAL  NEEDLE
+  IDENTICAL  TAIL
+  521's own size-keyed membership list, sliced: ["INVARIANCE","CHANGE","EMPTY","OTHER-N"]
+
+─── KP gate ────────────────────────────────────────────────────────────────────
+  PASS  KP1 direct tail `new Set([1, 1]).size === 1` — counted by BOTH
+  PASS  KP2 indirect `const kpS = new Set(kpArr)` then `kpS.size === 1` — counted by NEITHER as a direct tail
+  PASS  KP3 the same text inside a STRING literal — excluded by both, so the strip is live
+  PASS  KP4 non-literal RHS `.size === kpN` — excluded by both, since both regexes require \d+
+  PASS  KP5 >40 blanked comment chars before `.size` — counted by 523, MISSED by 521 (P8's mechanism, reachable)
+  PASS  KP6 the disagreeing member's reported text is the WHOLE line, not a truncated field
+  KP 6 of 6
+
+─── unit-521's pinned population — SHA 148ebe57 ─────────────────────────────────────────
+  instrument corpus files: 850   (unreadable 0)
+  `new Set(` sites: 1246
+      NOT-SIZE-KEYED   1097
+      NO-COMPARISON    95
+      CHANGE           26
+      OTHER-N          16
+      INVARIANCE       11
+      EMPTY            1
+      SCAN-FAILED      0
+  unit-521 reading — size-keyed sites:            54   (published 54)
+  unit-523 reading — excluded direct tails:       54
+  the two readings differ by:                     0
+  files on which the two readings disagree:       0
+
+─── unit-523's pinned population — SHA f247b428 ─────────────────────────────────────────
+  instrument corpus files: 855   (unreadable 0)
+  `new Set(` sites: 1258
+      NOT-SIZE-KEYED   1101
+      NO-COMPARISON    97
+      CHANGE           26
+      OTHER-N          17
+      INVARIANCE       16
+      EMPTY            1
+      SCAN-FAILED      0
+  unit-521 reading — size-keyed sites:            60
+  unit-523 reading — excluded direct tails:       60   (published 60)
+  the two readings differ by:                     0
+  files on which the two readings disagree:       0
+
+─── At unit-521's SHA: every disagreeing file, every member, whole lines ──────────────
+  none — the two readers agree file-for-file on this population.
+
+─── At unit-523's SHA: every disagreeing file, every member, whole lines ──────────────
+  none — the two readers agree file-for-file on this population.
+
+─── population growth, attributed file by file ─────────────────────────────────
+  files in 523's corpus absent from 521's: 5
+      docs/research/unit-521setsizefalsegreen-2026-11-26/arm-setsizefalsegreen.mjs
+          521-keyed 0 · 523-excluded 0
+      docs/research/unit-521setsizefalsegreen-2026-11-26/posthoc-two-mechanisms.mjs
+          521-keyed 6 · 523-excluded 6
+          L37 INVARIANCE  | new Set([{ figures: {} }, { figures: {} }, { figures: {} }].map((r) => r.figures.x)).size === 1,
+          L39 OTHER-N  | new Set([[], [1]].map((x) => x.length)).size === 2,
+          L47 INVARIANCE  | 'new Set([]).size === 1': new Set(EMPTY).size === 1,
+          L48 INVARIANCE  | 'new Set([]).size < 2': new Set(EMPTY).size < 2,
+          L49 INVARIANCE  | opposite: (new Set(EMPTY).size === 1) !== (new Set(EMPTY).size < 2),
+          L49 INVARIANCE  | opposite: (new Set(EMPTY).size === 1) !== (new Set(EMPTY).size < 2),
+      docs/research/unit-522lengthasbytes-2026-11-26/arm-lengthasbytes.mjs
+          521-keyed 0 · 523-excluded 0
+      docs/research/unit-522lengthasbytes-2026-11-26/posthoc-which-133.mjs
+          521-keyed 0 · 523-excluded 0
+      docs/research/unit-523indirectsize-2026-11-26/arm-indirectsize.mjs
+          521-keyed 0 · 523-excluded 0
+  the 5 new files contribute: 521-keyed 6 · 523-excluded 6
+  files in 521's corpus absent from 523's: 0
+
+─── the closure ────────────────────────────────────────────────────────────────
+  published delta to explain:                     60 - 54 = 6
+  reader-level delta at ONE pinned population:    0  (unit-521's SHA)
+  growth contribution to the 523 reading:         6
+  reader delta + growth:                          0 + 6 = 6
+  reproduced 521's published 54?                  YES
+  reproduced 523's published 60?                  YES
