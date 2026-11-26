@@ -1,0 +1,77 @@
+=== §0 THE ARM'S OWN KEY, SLICED — not a second hand-written reader ===
+
+  UNIT_TAIL sliced from docs/research/unit-522lengthasbytes-2026-11-26/arm-lengthasbytes.mjs: /^[}\s)\]'"`,.:;+\-=]{0,8}(B|bytes|byte)\b/
+  the arm's published population: 651
+  the arm's published UNIT-LABEL: 133
+  the population filter, read off the arm's capture: /\.(mjs|js)$/
+
+=== §1 PH7 — the discriminator KP'd in all three directions before any figure ===
+
+  PASS  K-STR  want LABEL-IN-STRING  got LABEL-IN-STRING
+        a unit label inside a template literal — the real class
+  PASS  K-IDENT  want IDENT-IN-CODE  got IDENT-IN-CODE
+        a variable named B across a comma — the false positive the arm printed
+  PASS  K-COMMENT  want IN-COMMENT  got IN-COMMENT
+        L1 prose
+
+  PH7: 3 of 3 → the discriminator may separate the 133
+
+=== §2 the arm's UNIT-LABEL sites, re-derived under its own sliced key, then separated ===
+
+  population re-derived (arm and this file both excluded): 651
+  UNIT-LABEL sites re-derived: 133   (the arm published 133 with itself excluded and this file not yet existing)
+
+    LABEL-IN-STRING         127
+    IDENT-IN-CODE             4
+    IN-COMMENT                2
+    LENGTH-NOT-PRESERVED      0
+
+  IDENT-IN-CODE — the false positives, named in full:
+    docs/research/round420-instruments/drive-his-419.mjs:132   token "B"
+        const n = Math.max(A.length, B.length);
+    docs/research/round448-instruments/record-cripples.mjs:117   token "B"
+        for (let i = 0; i < Math.max(A.length, B.length); i += 1) if (A[i] !== B[i]) out.push(i + 1);
+    docs/research/unit-501redbranchpin-2026-11-22/posthoc-crossunit-byte-figures.mjs:34   token "B"
+        for (let i = 0; i < Math.max(A.length, B.length); i += 1) if (A[i] !== B[i]) moved.push([i + 1, A[i], B[i]]);
+    docs/research/unit-515keyekp-2026-11-25/posthoc-source-subject.mjs:51   token "B"
+      const mechText = armSrc.slice(A + 'const MECHANISM = '.length, B + 3);
+
+  IN-COMMENT — L1 prose sites, named in full:
+    docs/research/unit-465byteslabel-2026-11-13/arm-byteslabel-c.mjs:8   token "bytes"
+       *   - genuine mislabels — `${str.length} bytes` where `str` is a utf8 STRING;
+    docs/research/unit-498closureatthegate-2026-11-21/arm-closure-at-the-gate.mjs:31   token "byte"
+       * grammar. No byte figure in this file is a `.length`; byte figures are `Buffer.byteLength` and
+
+=== §3 the real unit labels ===
+
+  real unit-label sites: 127 across 78 file(s)
+  token split: bytes=58 · byte=3 · B=66
+  B share: 51.97%
+  unit-520's own host site (docs/research/unit-520builtlabelreach-2026-11-25/posthoc-whose-plants.mjs): 1 occurrence(s) — 37
+
+  PH8 RESIDUAL — subject names of the real labels, printed for hand-reading, not judged by this reader:
+    distinct subjects: 75
+    subjects whose NAME suggests a Buffer (so the B label could be CORRECT): gateBytes×2
+    top subjects: (unparsed)×11 · liveDirty×6 · body×5 · out×4 · OLD_SRC×3 · s.mjsFromCommit×2 · s.outFromCommit×2 · HIS×2 · slice×2 · myHead×2 · porcelain×2 · readerSrc×2
+
+=== §4 GRADING against the ADDENDUM ===
+
+  HIT      PH1  IDENT-IN-CODE false positives — the B-as-variable class
+           registered [2, 25]   measured 4
+  HIT      PH2  IN-COMMENT (L1 prose) sites
+           registered [0, 5]   measured 2
+  HIT      PH3  LABEL-IN-STRING — the corrected census figure
+           registered [100, 131]   measured 127
+  HIT      PH4  distinct FILES holding a real unit label
+           registered [30, 90]   measured 78
+  HIT      PH5  unit-520's own site is a member of its own census
+           registered [1, 1]   measured 1
+  HIT      PH6  B share among real labels, percent
+           registered [25, 75]   measured 51.97
+  HIT      PH7  discriminator KP, all three directions
+           registered [3, 3]   measured 3
+  RESIDUAL PH8  whether a given real label is CORRECT (a Buffer) or LATENTLY WRONG (a utf8 string) is not decidable from the line — subject names printed above, not judged
+
+  graded here: 7 — 7 HIT, 0 REFUTED; 1 residual (PH8)
+
+=== END POST-HOC ===
