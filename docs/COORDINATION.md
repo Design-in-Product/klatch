@@ -1003,7 +1003,82 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-25 19:01:10–19:1x PT, both ends read from `date` (**WORK fire on xian's restart
+- **Updated:** 2026-11-26 09:17:10–09:30:09 PT, both ends read from `date` (**START fire — substantive:
+  THE `Set`-SIZE FALSE GREEN IS A CORPUS PROPERTY, NOT ONE HOST'S — 9 OF 11 INVARIANCE SITES ARE
+  FALSE-GREEN-CAPABLE AND `GUARDED` IS 0 OVER 850 INSTRUMENT FILES, AND I REGISTERED ONE OF MY OWN
+  PREDICTIONS OFF MY OWN INSTRUMENT'S TRUNCATED DISPLAY FIELD.**
+  `unit-521setsizefalsegreen-2026-11-26`, pre-reg `148ebe57` on `main` at **09:19:09 PST** before any
+  script existed; arm `ab563ad3`, addendum `a77b7f4f` (after the arm's only drive, before the post-hoc
+  that grades it existed), results `09e5e02d`, memo `f83c1344`, task list `cfbddaa1`. **18 REGISTERED
+  PREDICTIONS, 15 HIT, 3 REFUTED — ALL THREE REFUTATIONS MINE.** Session start ran clean: pull
+  up-to-date, two inbound memos read in full — Theseus's 11-25 STOP (`the blindness declared by KP11
+  has zero live consumers`), which **asks nothing of this seat in terms**, and Argus's 11-26 note
+  declining Theseus's §6 `.length`-as-bytes census, which puts that item **back on Theseus**, so this
+  seat is not touching it. Then the task loop took item 2, the boarded `Set`-size census. **Subject:**
+  `unit-506…/posthoc-standing-linewise.mjs:88`, `new Set(rows.map((r) => r.figures[k])).size === 1` —
+  three `undefined`s make a set of size **1**, so a figure absent at every stage is published among
+  the figures that *held constant across all three stages*. **FIGURES, over an 850-file instrument
+  corpus (`scripts/` + `docs/research/`) at a SHA pinned with NO ± TOLERANCE** (`unit-520`'s P10 was
+  refuted by a drift of 7 against a registered ±5, every one of the 7 being this corpus's own
+  instruments inside nine hours): **1246** `new Set(` sites, **54** size-keyed, **`SCAN-FAILED` 0**,
+  **11 `INVARIANCE`** — **`BLIND` 11, `GUARDED` 0** — **9 of the 11 false-green-capable** (absence
+  reachable *and* silent) across **6 files and 4 units**; `CHANGE` 26; `packages/` **0** of 35 sites,
+  which prices the scope exclusion rather than declaring it. **`GUARDED 0` IS A MEASURED ZERO, NOT A
+  DEAD ARM:** KP2 plants the guarded form (`.filter((v) => v !== undefined)` inside the set's own
+  argument) and keys `GUARDED` 1 of 1; KP7 does the same for the **`OTHER-N` fall-through** bucket, so
+  its 16 are not an unknown number of misfiled rows. **KP 7 of 7, MK 4 of 4.** **THE FALSE GREEN IS
+  DRIVEN, NOT INFERRED:** P7 compiles a **slice** of the published host with five markers asserted
+  present before compilation, and all-equal (`1072,1072,1072`), all-`undefined` and all-`null` inputs
+  return **one verdict** — `flatFigures ['tracked files read']`, `movedFigures []`. Three worlds, one
+  answer; Theseus's `unit-514` §2 P7 found this by renaming the gate, and this reaches it by driving,
+  so the two readings agree. **AGAINST ME FIRST, AND IT IS THE KEEPER: PH1 REFUTED, 2 → 0 — I
+  REGISTERED A PREDICTION OFF A DISPLAY FIELD.** From my arm's own member list I read
+  `new Set(['E-MARKED-ABSENT', 'E-2ABSENT', 'E-2MARKED']` and registered "two of the 11 are literal
+  sets, absence unreachable"; the field truncates at **150 characters** and the cut fell exactly where
+  the next line continues `.map((c) => JSON.stringify(results[c].predicate.nonPathIntegers))`. The
+  literal array is the **key list**, not the members. Both sites are `PROJ-SILENT` — false-green-capable,
+  the **opposite** class — and `ARG-LITERAL` has **zero** members in the corpus. We have both recorded
+  the padded-row form of this (capture the token, don't type it); this is the same defect with the
+  truncation supplied by my own instrument, four minutes after I wrote the instrument that truncated.
+  **AGAINST ME SECOND: MY OWN DIRECTION KEY FUSED TWO MECHANISMS WITH OPPOSITE FAILURE DIRECTIONS.**
+  Driven: `new Set([]).size === 1` is **`false`** (reads VARIED — a false RED on an empty collection)
+  and `new Set([]).size < 2` is **`true`** (reads INVARIANT — a false GREEN). Same invariance claim,
+  8 and 3 of the 11, one bucket, because I keyed *the claim* and not *the failure direction* — an
+  undifferentiated containment match committed inside the unit that went hunting one elsewhere, and
+  caught only by hand-reading my own member list before publishing its number. At the three `< 2`
+  sites the false green is a **`continue`**, so an empty collection is skipped in silence as though it
+  were uniform. **PH5 = 0 and the zero is the useful half:** all three `< 2` sites take a bare
+  identifier, so emptiness is a second **reason** the same nine read green, not a wider **reach**.
+  **AGAINST ME THIRD: P10 refuted WIDER** — `[1,8]` measures **10** non-host blind sites across 7
+  files and 5 units, so **Theseus's 11-25 §7 reach-of-one symmetry does not hold for this defect**:
+  his declared blindness had a reach of 0 live consumers, all three sites being the studiers' own;
+  this one reaches 9 capable sites of which one is the host that declared it. A declared blindness is
+  not one kind of thing, and the reach is not predictable from the declarer having found it in their
+  own work. **P12 refuted** at `[1,40]` measuring **123**. **ONE DECLARED BLINDNESS CURED RATHER THAN
+  DECLARED, AND IT CAME OUT OF `scripts/lib`:** the pre-registration declared a STRING/COMMENT PARENS
+  limit; `strip-source.mjs` blanks comment *and* string bodies while **preserving length**, so the
+  limit is gone (`SCAN-FAILED` 0) and **34** prose/quoted occurrences of `new Set(` are non-sites **by
+  construction** — `unit-520` §5's P9 resolution arriving as a dependency rather than a hand-read
+  afterwards. `parenSpanEnd` from the same module, so this unit adds **no slicer** to the gate's
+  population: asserted at §0, and the population stayed **65** across all five pushes. Gate rc 0 at
+  every push; `verify-decl-body-slicers` read `tracked files read` **1116 → 1118** (the `+2` is this
+  unit's two scripts), population **65**, `MARKED/GUARDED/UNGUARDED` **4/3/58**, baseline 58 — flat at
+  every reading. `git diff --stat HEAD -- packages/ scripts/` asserted **EMPTY inside the arm** before
+  any measurement ran. One drive each; `ARM.err` and `POSTHOC.err` **0 B**. **Drain:** boarded item 2
+  taken and closed by drive; the item was verified **unbuilt again this fire** before registering
+  (`grep -rln flatFigures docs/ scripts/ packages/` → 11 paths, all prose, captures, task lists, logs
+  or the host itself, **no instrument**); both inbound memos read and answered in the same fire; one
+  memo filed; **three file/unit counts corrected before they landed** by computing them off the two
+  captures instead of counting by eye off a member list — the eye is what got PH1 wrong; task list
+  ticked with its verification trail and **two successors boarded** (the `EMPTY-READS-INVARIANT` +
+  `continue` reachability question, a runtime question the source cannot answer; and the
+  `NO-COMPARISON` 95 / `INDIRECT` 123 narrowing, which is why `INVARIANCE 11` is a **floor on one
+  syntactic form** rather than a census of the claim). Deferred with named blockers: the
+  `.length`-as-bytes census is **Theseus's** (Argus declined it this morning, and a second seat taking
+  it would duplicate work he said he would not duplicate); `unit-516` §5's 15-vs-0 census-purpose
+  choice is **xian's and only his**. The 11-24 and 11-25 Theseus threads **stay in `docs/mail/`** —
+  his §7 keeps four items open, so they are not moved to `read/`.)
+- **Previously:** 2026-11-25 19:01:10–19:1x PT, both ends read from `date` (**WORK fire on xian's restart
   onto Claude Code 2.1.332 — substantive, and the subject was my own bookkeeping: THE TOP THREE ITEMS
   ON MY UNBLOCKED LIST WERE ALL ALREADY CLOSED, AND TWO OF THEM HAD BEEN CLOSED ACROSS FOUR OF MY OWN
   FIRES.** No new unit; the deliverable is `2d1d9b68` on `main`.) Session-start ran clean — pull
