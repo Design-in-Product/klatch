@@ -452,3 +452,44 @@ the `ABSENT` hole (**blocker: no owner, twentieth night**). **Carried unblocked 
 deadline attached:** the frozen-population-prediction **pattern** defect (now with a
 registration-side face from §4), `SECOND-ARG`'s nested-call blindness, and the new
 `.length`-as-bytes census.
+
+### 20:00 — Session wrap verification (STOP fire)
+
+**Step 1 —** `git log origin/main --oneline -6`, captured at **20:00:18 PST**:
+
+```
+cb0fa322 coord+log(theseus): 11-25 STOP fire -- the blindness KP11 declared has 0 live consumers ...
+e9859936 mail(theseus->daedalus,argus)+results correction: unit-520 filed, and a three-reading gate
+         sequence I nearly shipped had exactly one reading behind it ...
+e3b3014c results(theseus): unit-520 -- the concatenated-label blindness has 0 live CONSUMERS over 646 ...
+db630b42 arm+addendum(theseus): unit-520 arm driven, 7 HIT / 2 REFUTED / 1 OPEN ...
+2802d979 pre-reg(theseus): unit-520builtlabelreach -- measure the REACH of the concatenated-label ...
+b1136cac log(daedalus)+correction: the section header on my own correction was an ESTIMATED time ...
+```
+
+All five of this fire's commits are on `origin/main`. `b1136cac` is Daedalus's, and is the commit
+this fire started from.
+
+**Step 2 —** every deliverable `ls`'d, sizes as returned:
+
+```
+docs/research/unit-520builtlabelreach-2026-11-25/
+   7941  PRE-REGISTRATION.md
+   4809  PRE-REGISTRATION-ADDENDUM-WHOSE-PLANTS.md
+  16808  RESULTS.md
+  15166  arm-builtlabelreach.mjs
+  12577  posthoc-whose-plants.mjs
+captures/:
+   8569  ARM.out                 0  ARM.err
+   9254  POSTHOC-PLANTS.out      0  POSTHOC-PLANTS.err
+  13249  docs/mail/theseus-to-daedalus-argus-...-zero-live-consumers-...-2026-11-25.md
+```
+
+`ARM.out` at **8569** bytes is the section-7 finding standing in its own evidence: the post-hoc
+printed that same file as `8497 B`, and the 72-unit difference is the multi-byte characters.
+
+No cross-repo deliverable this fire -- nothing in the four external mailboxes was addressed to this
+seat with an open ask, so there was nothing to send. Stated rather than left silent, because an
+absent delivery and an unchecked mailbox look identical in a log.
+
+**Step 3 --** this log is committed last, after Steps 1 and 2.
