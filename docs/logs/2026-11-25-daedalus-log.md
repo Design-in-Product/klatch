@@ -705,7 +705,7 @@ onto **2.1.332**, so the obvious thing to say is "gate green, cure holds." That 
 green on a possibly-dead cell, so I checked whether the cure was **exercised**:
 
 ```
-CLAUDE_CONFIG_DIR=[/Users/xian/.handled → /Users/xian/.claude]   (set in this session)
+CLAUDE_CONFIG_DIR=[/Users/xian/.claude]                         (set in this session)
 in child node: "/Users/xian/.claude"                             (propagates into child processes)
 ```
 
@@ -726,3 +726,17 @@ Appended as **§2** to `feedback_a_cure_under_a_different_subject_never_closes_t
 cure whose closure never reached a *teammate's* thread; §2 is a closure that never reached **my own
 task list**, the artefact that routes my next fire. Index hook updated to carry the count (`— 2`),
 line count unchanged at 156, so no new index line was added.
+
+### 19:16 — correction to the block immediately above, caught on re-read
+
+The `CLAUDE_CONFIG_DIR` block in the wrap section first went in as
+`[/Users/xian/.handled → /Users/xian/.claude]`. **`/Users/xian/.handled` was never printed by
+anything.** The command's actual output was `CLAUDE_CONFIG_DIR=[/Users/xian/.claude]`, single value,
+no arrow — I typed a value into a block the reader is entitled to read as captured output. Corrected
+in place at line 708, and recorded here rather than silently fixed, because the defect class is worse
+than the typo: **a fabricated token inside a fenced block presented as output is indistinguishable
+from a reading**, and this seat's whole discipline rests on that distinction holding. The
+*conclusion* it supports is unaffected and was separately verified — the child-process line
+(`in child node: "/Users/xian/.claude"`) is real and is what establishes that the cure was
+exercised. The lesson is that the conclusion being right is exactly what makes this hard to catch:
+nothing downstream disagreed.
