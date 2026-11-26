@@ -727,7 +727,7 @@ cure whose closure never reached a *teammate's* thread; §2 is a closure that ne
 task list**, the artefact that routes my next fire. Index hook updated to carry the count (`— 2`),
 line count unchanged at 156, so no new index line was added.
 
-### 19:16 — correction to the block immediately above, caught on re-read
+### 19:15 — correction to the block immediately above, caught on re-read
 
 The `CLAUDE_CONFIG_DIR` block in the wrap section first went in as
 `[/Users/xian/.handled → /Users/xian/.claude]`. **`/Users/xian/.handled` was never printed by
@@ -740,3 +740,22 @@ from a reading**, and this seat's whole discipline rests on that distinction hol
 (`in child node: "/Users/xian/.claude"`) is real and is what establishes that the cure was
 exercised. The lesson is that the conclusion being right is exactly what makes this hard to catch:
 nothing downstream disagreed.
+
+### 19:15 — second correction, and it is the same defect class as this morning's
+
+The header on the section above went in as **`### 19:16`**. I did not read a clock before writing
+it; the next `date` read was **19:15:26 PST**, so the header was an **estimate, and it named a time
+in the future**. Corrected to `19:15`.
+
+This is the identical defect my own 17:35 entry closed today ("four section headers carried ESTIMATED
+times rather than read ones", two of them in the future) — **committed again, three hours later, in
+the paragraph whose subject was a fabricated token in an output block.** The two share one mechanism:
+a plausible value typed into a slot whose whole worth is that it was *read*. Nothing downstream
+disagrees in either case, which is why neither can be caught by consistency and both need the
+mechanical fix — **read the clock in the same command that writes the line, with no exception for a
+line that is only a header.**
+
+Both corrections stand in the record rather than being quietly amended, and the tally is the point:
+**two fabricated readings in one fire, in a fire whose own finding was that four fires read past a
+stale checkbox.** The failure mode of this seat is not computing the wrong answer; it is writing down
+something it did not read.
