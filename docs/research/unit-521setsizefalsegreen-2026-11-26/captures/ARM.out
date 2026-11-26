@@ -1,0 +1,134 @@
+{
+  "sha": "148ebe57c8f8",
+  "clock": "2026-11-26 09:22:37 PST",
+  "population": {
+    "tracked": 7748,
+    "instrumentCorpus": 850,
+    "productCorpus": 215,
+    "unreadable": 0
+  },
+  "sites": {
+    "total": 1246,
+    "byDirection": {
+      "NOT-SIZE-KEYED": 1097,
+      "NO-COMPARISON": 95,
+      "CHANGE": 26,
+      "OTHER-N": 16,
+      "INVARIANCE": 11,
+      "EMPTY": 1
+    },
+    "sizeKeyed": 54,
+    "scanFailed": 0
+  },
+  "invariance": {
+    "total": 11,
+    "blind": 11,
+    "guarded": 0,
+    "blindButNearGuard": 1,
+    "members": [
+      "docs/research/unit-464subkind-2026-11-02/grade-subkind.mjs:336  [BLIND]  MEAS.ctrlSameFile = new Set(ctrl.map((a) => a.split(':')[0])).size === 1;",
+      "docs/research/unit-464t2-keychoice-2026-10-28/grade-the-surface-predicate.mjs:384  [BLIND]  return new Set(cs.map((c) => c.fired)).size === 1;",
+      "docs/research/unit-464t2-keychoice-2026-10-28/grade-the-surface-predicate.mjs:401  [BLIND]  return new Set(cs.map((c) => c.fired)).size === 1;",
+      "docs/research/unit-464t2-keychoice-2026-10-28/recon2-the-last-round-that-cured-product-source.mjs:130  [BLIND near-guard]  answering.length >= 2 ? new Set(answering.map((s) => s.lastRound)).size === 1 : null;",
+      "docs/research/unit-465oncegate-2026-11-11/arm-oncegate.mts:116  [BLIND]  population.length > 0 && new Set(population.map((f) => live.filter((x) => x.file === f).length)).size === 1);",
+      "docs/research/unit-465routecure-2026-11-13/arm-routecure-b.mjs:209  [BLIND]  if (new Set(named).size < 2) continue;",
+      "docs/research/unit-465routecure-2026-11-13/arm-routecure-b.mjs:245  [BLIND]  if (new Set(named).size < 2) continue;",
+      "docs/research/unit-465routecure-2026-11-13/arm-routecure.mjs:334  [BLIND]  if (new Set(all).size < 2) continue;",
+      "docs/research/unit-505markedabsentpair-2026-11-22/arm-markedabsentpair.mjs:301  [BLIND]  new Set(['E-MARKED-ABSENT', 'E-2ABSENT', 'E-2MARKED']",
+      "docs/research/unit-505markedabsentpair-2026-11-22/arm-markedabsentpair.mjs:305  [BLIND]  && new Set(['E-MARKED-ABSENT', 'E-2ABSENT', 'E-2MARKED']",
+      "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:88  [BLIND]  (k) => new Set(rows.map((r) => r.figures[k])).size === 1,"
+    ]
+  },
+  "change": {
+    "total": 26,
+    "blind": 25,
+    "guarded": 1,
+    "blindButNearGuard": 3,
+    "members": [
+      "docs/research/round426-instruments/a-published-sentence-is-not-its-discriminator.mjs:184  [BLIND]  + 'every kill below agree', new Set(Object.values(R).map((r) => JSON.stringify(r))).size > 1,",
+      "docs/research/round428-instruments/a-sentence-keyed-on-a-subset-publishes-past-its-own-gate.mjs:187  [BLIND]  new Set(CELL_ORDER.map((n) => REAL[n]?.summary1)).size > 1,",
+      "docs/research/round429-instruments/does-any-other-instrument-retype-a-verdict-it-slices.mjs:133  [BLIND]  new Set(CAND_ROWS.map((r) => r.author)).size > 1,",
+      "docs/research/round429-instruments/does-any-other-instrument-retype-a-verdict-it-slices.mjs:339  [BLIND near-guard]  new Set(LEG_TABLE.map((r) => r.total)).size > 1, LEG_TABLE.map((r) => r.total).join(' / '));",
+      "docs/research/round435-instruments/grade-his-cure-and-oracle-the-matrix.mjs:463  [BLIND]  return { derived: new Set(outs).size > 1, outs };",
+      "docs/research/unit-464order-2026-11-02/grade-order.mjs:271  [BLIND]  const rowVaries = KEYS.filter((k) => new Set(ORDERS.map((o) => derive(H.get(k), o))).size > 1);",
+      "docs/research/unit-464subkind-2026-11-02/grade-subkind.mjs:333  [BLIND]  const multiFile = [...byId].filter(([, at]) => new Set(at.map((a) => a.split(':')[0])).size > 1);",
+      "docs/research/unit-465routecure-2026-11-13/arm-routecure.mjs:298  [BLIND]  if (new Set(all).size >= 2) multiRound.push({ p, all });",
+      "docs/research/unit-465s6bounds-2026-11-13/arm-s6bounds.mjs:220  [BLIND]  return new Set(ns).size >= 2;",
+      "docs/research/unit-466striplift-2026-11-15/arm-striplift-a.mjs:282  [BLIND]  const twoClass = [...groups.entries()].filter(([, g]) => new Set(g.map((x) => x.worst)).size >= 2);",
+      "docs/research/unit-506labelmultiset-2026-11-23/posthoc-standing-linewise.mjs:91  [BLIND]  (k) => new Set(rows.map((r) => r.figures[k])).size > 1,",
+      "scripts/lib/offer-choice.mjs:137  [BLIND]  choiceWasAvailable: new Set(onTable.map((a) => `${a.conversation}:${a.from}-${a.to}`)).size > 1,",
+      "scripts/lib/offer-choice.mjs:181  [BLIND]  new Set(allOffers.map((a) => `${a.conversation}:${a.from}-${a.to}`)).size > 1,",
+      "scripts/probe-round276-the-address-census-and-the-sentinel-that-hid-its-own-file.mts:545  [BLIND]  check('C', 'host spelling decides which server is graded', new Set(bodies).size > 1,",
+      "scripts/probe-round327-the-pin-purpose-label-is-a-property-of-the-edge-and-retirability-is-a-property-of-the-target-line.mts:426  [BLIND near-guard]  const splitLines = distinctLines.filter((k) => new Set(edgesOnLine(k).map(readsAs)).size > 1);",
+      "scripts/probe-round327-the-pin-purpose-label-is-a-property-of-the-edge-and-retirability-is-a-property-of-the-target-line.mts:431  [BLIND near-guard]  .filter((k) => new Set(resolvedEdges.filter((e) => patKeyOf(e) === k).map(readsAs)).size > 1).length;",
+      "scripts/probe-round328-the-distinct-target-line-figure-is-keyed-on-the-pin-text-so-one-line-pinned-in-two-spellings-reads-as-two.mts:317  [BLIND]  split: keys.filter((k) => new Set(on(k).map(readsAs)).size > 1).length,",
+      "scripts/probe-round328-the-distinct-target-line-figure-is-keyed-on-the-pin-text-so-one-line-pinned-in-two-spellings-reads-as-two.mts:393  [BLIND]  return new Set(on.map(readsAs)).size > 1 && new Set(on.map((e) => e.re)).size > 1;",
+      "scripts/probe-round328-the-distinct-target-line-figure-is-keyed-on-the-pin-text-so-one-line-pinned-in-two-spellings-reads-as-two.mts:393  [BLIND]  return new Set(on.map(readsAs)).size > 1 && new Set(on.map((e) => e.re)).size > 1;",
+      "scripts/probe-round328-the-distinct-target-line-figure-is-keyed-on-the-pin-text-so-one-line-pinned-in-two-spellings-reads-as-two.mts:406  [BLIND]  new Set(edges.filter((e) => lineKey(e) === k).map((e) => e.re)).size > 1);",
+      "scripts/verify-rule-discrimination-from-artifacts.mjs:38  [BLIND]  const discriminates = (seps) => !unscoreable(seps) && new Set(predictions(seps)).size > 1;",
+      "scripts/verify-rule-discrimination.mjs:82  [BLIND]  const discriminates = (seps) => !unscoreable(seps) && new Set(predictions(seps)).size > 1;",
+      "scripts/verify-rule-discrimination.mjs:335  [GUARDED near-guard]  return new Set(fam.map((s) => Boolean(voidedOperative(cell, s)))).size > 1;",
+      "scripts/verify-x0-reachability.mjs:192  [BLIND]  const discriminates = (s) => !preds(s).includes('undefined') && new Set(preds(s)).size > 1;",
+      "scripts/verify-x0-reachability.mjs:201  [BLIND]  const voided = (ks) => new Set(ks.filter((k) => k.productive).map((k) => k.nbhd)).size > 1;",
+      "scripts/verify-x0-reachability.mjs:217  [BLIND]  return new Set(fam.map(voided)).size > 1;"
+    ]
+  },
+  "product": {
+    "sites": 35,
+    "invariance": 0,
+    "members": []
+  },
+  "indirectBound": 123,
+  "rawOnlyNeedles": 34,
+  "kp": [
+    {
+      "name": "KP1 INVARIANCE/BLIND (live subject form)",
+      "pass": true
+    },
+    {
+      "name": "KP2 INVARIANCE/GUARDED (arg-internal presence filter)",
+      "pass": true
+    },
+    {
+      "name": "KP3 CHANGE",
+      "pass": true
+    },
+    {
+      "name": "KP4 three-line span found and keyed INVARIANCE",
+      "pass": true
+    },
+    {
+      "name": "KP5 SLICED known negative refused into NOT-SIZE-KEYED",
+      "pass": true
+    },
+    {
+      "name": "KP6 EMPTY reachable",
+      "pass": true
+    },
+    {
+      "name": "KP7 OTHER-N fall-through reachable",
+      "pass": true
+    }
+  ],
+  "kpPassing": "7 of 7",
+  "p7": {
+    "allEqual": {
+      "flatFigures": [
+        "tracked files read"
+      ],
+      "movedFigures": []
+    },
+    "allUndefined": {
+      "flatFigures": [
+        "tracked files read"
+      ],
+      "movedFigures": []
+    },
+    "allNull": {
+      "flatFigures": [
+        "tracked files read"
+      ],
+      "movedFigures": []
+    }
+  }
+}
