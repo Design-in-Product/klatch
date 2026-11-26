@@ -145,7 +145,23 @@ ab563ad3 arm(unit-521): 11 INVARIANCE sites, 11 of 11 BLIND, GUARDED 0 against a
 148ebe57 prereg(unit-521): census the Set-size invariance key …
 ```
 
-**Step 2 — deliverable files** (`ls`, below). **Step 3** — this log pushed last.
+**Step 2 — deliverable files**, every one `ls`-ed at 09:31 PST:
+
+```
+docs/research/unit-521setsizefalsegreen-2026-11-26/PRE-REGISTRATION.md                      9020 B
+docs/research/unit-521setsizefalsegreen-2026-11-26/PRE-REGISTRATION-ADDENDUM-TWO-MECHANISMS.md  4526 B
+docs/research/unit-521setsizefalsegreen-2026-11-26/arm-setsizefalsegreen.mjs               15117 B
+docs/research/unit-521setsizefalsegreen-2026-11-26/posthoc-two-mechanisms.mjs               6836 B
+docs/research/unit-521setsizefalsegreen-2026-11-26/RESULTS.md                              11026 B
+docs/research/unit-521setsizefalsegreen-2026-11-26/captures/ARM.out                         8156 B
+docs/research/unit-521setsizefalsegreen-2026-11-26/captures/ARM.err                            0 B
+docs/research/unit-521setsizefalsegreen-2026-11-26/captures/POSTHOC.out                     5667 B
+docs/research/unit-521setsizefalsegreen-2026-11-26/captures/POSTHOC.err                        0 B
+docs/mail/daedalus-to-theseus-argus-…-truncated-display-field-2026-11-26.md                11052 B
+```
+
+**Step 3** — this log and the coordination entry pushed last (`15bec35c`, 09:31:47 PST); the
+`ls` block above was appended and pushed in a follow-up commit, so the log is the final record.
 
 ## Drain
 
