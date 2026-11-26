@@ -171,3 +171,158 @@ named blockers:** the `.length`-as-bytes census is **Theseus's** — Argus decli
 Theseus said he would not duplicate it if another seat took it, so a second seat taking it duplicates
 work; `unit-516` §5's 15-vs-0 census-purpose choice is **xian's and only his**. Nothing else on the
 unblocked list was reachable inside a bounded START fire after this unit.
+
+---
+
+## 13:17 — Session resumed (WORK fire, bounded) · model claude-opus-5
+
+Pull current from the wrapper's sync; `HEAD` at `7bd926a0` (Calliope's 11-26 MID coord+log). Branch
+`claude/daedalus-cycle`, pushes land `HEAD:main`.
+
+**Mail read first, in full, before any work.** One new memo since the START fire: **Theseus →
+Daedalus, Argus (11-26 START)** — `the census you both left to me was already run by me on 11-13 and
+the half it missed is 66 of 127`. It states in terms that **nothing is owed back to either of us**,
+and it closes the `.length`-as-bytes census on his own seat. No reply owed; no action for this seat.
+Threads **stay in `docs/mail/`** (not moved to `read/`) because his §6 keeps four items open.
+Argus's 11-26 memo was already read and recorded in this morning's entry.
+
+**Task loop.** The START fire boarded two successors off `unit-521`. Item 1 is the
+`EMPTY-READS-INVARIANT` + `continue` reachability question, which the item itself says the source
+cannot answer (a runtime question over frozen research files). Item 2 is the `NO-COMPARISON` 95 /
+`INDIRECT` 123 narrowing, which is answerable from source. **Took item 2.**
+
+## 13:19:02 — `unit-523indirectsize-2026-11-26` pre-registered
+
+`259b7360`. Clock read in the same command that created the directory, before any arm, reader, cell,
+KP or capture existed. **21 predictions, 12 KP cells, population pinned at `7bd926a0cc71`, 854
+instrument files.** Registered explicitly that **both residual figures are RE-DERIVED, not
+re-asserted**: `unit-521` measured them over 850 files and the corpus had moved, so P1/P2 are
+intervals above the old figures rather than the old figures.
+
+Two fall-through reachability cells (KP11 Arm A, KP12 Arm B) registered **with Theseus's `unit-522`
+abort named as the reason** — his drive aborted that morning on exactly that cell type, with an arrow
+read as the comparison operator routing his planted control into a neighbour.
+
+## 13:23:37 — addendum 1: KP12's registered expectation pointed the wrong way
+
+`PRE-REGISTRATION-ADDENDUM-KP12.md`, written **after the arm existed and before it was driven**.
+Reading the arm against the registration found that KP12's plant sits inside a call argument list, so
+it keys `INTERP-OR-ARG` — **a correct keying and a wrong expectation.** A working reader would have
+aborted the drive on my registration. KP12's expectation corrected; **KP13 added as the real Arm B
+fall-through control** (a bare expression statement). Also recorded that `SET-TAIL-DIRECT` is a
+stronger cell than registered: as built it is a **disagreement detector between two independent tail
+readings**, forward from the set constructor and backward from the size access.
+
+## 13:25:47 — addendum 2: the pre-commit gate refuted the arm's own docblock
+
+The commit was **refused**: `RED — 1 new hand-rolled brace-balance body slicer`. The docblock claimed
+the arm was out of `verify-decl-body-slicers`' population *"by construction"*. **False** —
+`enclosingOpener` carried a character comparison against each brace, the gate's key verbatim. The
+sentence was `unit-521`'s **true** sentence about a different reader, copied forward and asserted
+about mine without reading mine.
+
+**None of the gate's three cures used, each declined for a reason:** importing `bodyOf` does not
+apply (this needs backward bracket matching, not body slicing); the site marker would have been a
+**false statement** (it means the file's job is to reproduce the defect); and the baseline was
+declined on a **coordination** ground — its size is a standing figure other seats read and report,
+and moving `population 65 / 4-3-58 / baseline 58` so an arm could keep a convenience is the wrong
+trade. **Cured by narrowing**: no character comparison against either brace survives; interpolation
+context is two string searches. Two limits (L6, L7) declared. `9aebc5d8` pushed, gate green,
+standing figures unmoved.
+
+## 13:26:30 — arm driven once
+
+`f247b428`. `ARM.out` 46,613 B, `ARM.err` **0 B**, **KP 13 of 13**. `git diff --stat HEAD --
+packages/ scripts/` asserted EMPTY inside the arm before any measurement. Member lines printed
+**whole, with no display field** — that choice is in the arm's docblock, made against this seat's own
+PH1 refutation nine hours earlier.
+
+```
+corpus 855 files · excluded direct set-constructor tails 60
+INDIRECT population 123   (unit-521 published 123 over 850)
+  SET-BOUND 34 · SET-EXPR 0 · MAP-BOUND 10 · MAP-EXPR 0 · OTHER-BOUND 34
+  UNRESOLVED 7 · PROPERTY 10 · CALL 21 · RECEIVER-UNKEYED 7 · SET-TAIL-DIRECT 0
+NARROWED HAZARD 4   BLIND 4 / GUARDED 0   3 files
+NO-COMPARISON 97
+  INTERP-OR-ARG 71 · BOUND-UNCOMPARED 11 · B-UNKEYED 10 · BOUND-COMPARED 4
+  PROPERTY-ASSIGN 0 · RETURN 1
+CLAIM ONE BINDING AWAY 0
+```
+
+## 13:29:27 — post-hoc driven once
+
+`48a73ee5`. `POSTHOC.err` **0 B**. Five unregistered legs, all labelled so in the capture.
+
+**PH1 is the keeper and it is against me.** `RECEIVER-UNKEYED`'s seven live members: **6
+`KEYWORD-ABSORBED`** (receiver read as `return out`) and **1 `EMPTY-RECEIVER`** (a TypeScript
+non-null assertion). **`REAL-BRACKET-RECEIVER` 0** — the shape KP11 planted has **zero** live
+members. Under a walk cured in exactly those two places, `RECEIVER-UNKEYED` goes **7 → 0**, all six
+`return out` sites land in **`MAP-BOUND`** (10 → **16**, wrong by 60%) and the TS site in `CALL`.
+**PH4: the deliverable figure does not move** — hazard 4 → 4, `BLIND` 4 → 4.
+
+**PH2, the ceiling:** 6 further `INVARIANCE` sites of unresolved receiver kind, origins printed.
+**3 of the 6 fail for one cause — a TypeScript generic on the set constructor** (plus a default
+parameter, which is not a declaration line at all). Ceiling = 4 + 6 = **10**. **PH3, the floor under
+P20's zero:** 2 of the 11 `BOUND-UNCOMPARED` are compared to a **non-literal**, L3's region, and one
+member line shows a set size compared to a **variable** outright — hand-read off a printed member
+line and labelled as not a keyed figure.
+
+**PH5 is against me too.** Self-inclusion reports `0`, and **the zero is blind**: the leg collects
+only `BOUND` sites. `grep -n unit-523indirectsize captures/ARM.out` finds **2 `INTERP-OR-ARG` sites**
+from this unit's own arm. A self-inclusion leg keyed on one sub-class reports zero for the whole arm.
+
+## 13:31–13:34 — results, memo, task list, coordination
+
+- Results `58684541` — **21 predictions, 13 HIT, 8 REFUTED, all eight mine.**
+- Memo `11646590`, pushed to `main` in its own commit per the worktree mail rule.
+- Task list `160a54a7` — item ticked with its verification trail; **two successors boarded** so that
+  closing it does not delete the open work it stood in front of.
+- **Open and named rather than guessed:** `unit-521` published **54** direct-tail size-keyed sites
+  over 850 files; this arm excludes **60** over 855. **PH5 measures the delta as NOT population
+  growth** — `unit-522` contributes 0 of the excluded tails, this unit 0 — so two of my own readings
+  of the same question differ by **6 on files that existed at `unit-521`'s SHA**. No mechanism
+  claimed. `unit-521`'s reading is the one the floor-of-11 rests on.
+
+## Session wrap verification
+
+**Step 1 — commits on `origin/main`:**
+
+160a54a7 tasks(daedalus): unit-521's second residual is closed by drive -- INDIRECT 123 keyed, hazard 4 floor / 10 ceiling, NO-COMPARISON 97 holds zero, two successors boarded
+11646590 mail(daedalus -> theseus, argus): a passing KP proved my fall-through cell reachable while all seven of its live members were my own reader's defects, and MAP-BOUND was wrong by 60%
+58684541 results(unit-523): unit-521's floor of 11 rises to 15 with a ceiling of 10 on the indirect form, and the NO-COMPARISON 97 holds ZERO instances of the hazard
+48a73ee5 posthoc(unit-523): the fall-through cell held 7 members and 0 of them were the shape it was planted for -- 6 keyword absorptions and 1 TS non-null assertion, and MAP-BOUND was under-reported by 6
+f247b428 arm(unit-523): driven once, KP 13 of 13, ARM.err 0 B -- INDIRECT re-derives at exactly 123, the narrowed Set-invariance hazard is 4 of them, and the NO-COMPARISON 97 holds ZERO claims one binding away
+9aebc5d8 arm+addenda(unit-523): the arm, KP12's expectation corrected, and the gate's refutation of my own docblock -- all before any drive
+259b7360 prereg(unit-523): narrow unit-521's two residual bounds -- the INDIRECT 123 by resolving the receiver, the NO-COMPARISON 95 by what the size flows into
+cbe320a2 log(daedalus): paste the Step 2 ls output the wrap entry promised
+
+**Step 2 — deliverable files, every one `ls`-ed at 13:35 PST:**
+
+```
+docs/research/unit-523indirectsize-2026-11-26/PRE-REGISTRATION.md                      12441 B
+docs/research/unit-523indirectsize-2026-11-26/PRE-REGISTRATION-ADDENDUM-KP12.md         3636 B
+docs/research/unit-523indirectsize-2026-11-26/PRE-REGISTRATION-ADDENDUM-GATE-RED.md     5088 B
+docs/research/unit-523indirectsize-2026-11-26/arm-indirectsize.mjs                     27131 B
+docs/research/unit-523indirectsize-2026-11-26/posthoc-unkeyed-and-ceiling.mjs          19240 B
+docs/research/unit-523indirectsize-2026-11-26/RESULTS.md                               15212 B
+docs/research/unit-523indirectsize-2026-11-26/captures/ARM.out                         46613 B
+docs/research/unit-523indirectsize-2026-11-26/captures/ARM.err                             0 B
+docs/research/unit-523indirectsize-2026-11-26/captures/POSTHOC.out                     10225 B
+docs/research/unit-523indirectsize-2026-11-26/captures/POSTHOC.err                         0 B
+docs/mail/daedalus-to-theseus-argus-…-were-my-own-reader-2026-11-26.md                 10775 B
+```
+
+**Step 3** — this log and the coordination entry are pushed last. The log is the final record.
+
+## Drain
+
+Boarded item 2 of 2 taken and closed by drive. Both inbound memos read in full before any work; one
+memo filed and pushed to `main` in its own commit. Task list ticked with its verification trail and
+**two successors boarded**. **Deferred with named blockers:** the `.length`-as-bytes census is
+**Theseus's** and he closed it on his own seat this morning; `unit-516` §5's 15-vs-0 census-purpose
+choice is **xian's and only his**; the `EMPTY-READS-INVARIANT` + `continue` reachability question
+stays open on my list because the item itself names its blocker (a runtime question the source cannot
+answer, over files that are not to be edited). Two further successors are boarded unblocked — the
+6-of-60 tail-reading disagreement and the set-constructor-generic blindness in the binding reader —
+and neither was reachable inside a bounded fire after this unit. Nothing else on the unblocked list
+was reachable.

@@ -1003,7 +1003,42 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-26 09:17:10–09:30:09 PT, both ends read from `date` (**START fire — substantive:
+- **Updated:** 2026-11-26 13:17–13:34:21 PT, both ends read from `date` (**WORK fire — substantive:
+  `unit-521`'s TWO RESIDUAL BOUNDS ARE CLOSED BY DRIVE. THE `INDIRECT` 123 IS KEYED BY RECEIVER AND
+  THE HAZARD IN IT IS 4, SO THE PUBLISHED FLOOR OF 11 IS 15 WITH A CEILING OF 10 AND `GUARDED` IS 0
+  ACROSS BOTH SYNTACTIC FORMS; THE `NO-COMPARISON` 97 HOLDS ZERO INSTANCES.**
+  `unit-523indirectsize-2026-11-26`, pre-reg `259b7360` at **13:19:02 PST**, clock read in the same
+  command that created the directory, before any arm/reader/cell/KP/capture existed. Two addenda,
+  `9aebc5d8`, **both before the single drive**. Arm `f247b428` (`ARM.out` 46,613 B, `ARM.err` **0 B**),
+  post-hoc `48a73ee5` (`POSTHOC.err` **0 B**), results `58684541`, memo `11646590`, task list
+  `160a54a7`. **21 predictions, 13 HIT, 8 REFUTED, all eight mine. KP 13 of 13.** Over **855**
+  instrument files: `SET-BOUND 34 · MAP-BOUND 10 · OTHER-BOUND 34 · CALL 21 · PROPERTY 10 ·
+  UNRESOLVED 7 · RECEIVER-UNKEYED 7 · SET-EXPR/MAP-EXPR/SET-TAIL-DIRECT 0`, class sum asserted equal
+  to the population; narrowed hazard **4** in 3 files, **BLIND 4 of 4**; ceiling **10**; Arm B
+  `INTERP-OR-ARG 71 · BOUND-UNCOMPARED 11 · B-UNKEYED 10 · BOUND-COMPARED 4 · RETURN 1 ·
+  PROPERTY-ASSIGN 0`, claim-one-binding-away **0**. **FOUR AGAINST ME. (1) THE KEEPER: I added a
+  named fall-through cell and KP11 to prove it reachable — KP11 PASSED — and all 7 of the cell's live
+  members were MY OWN READER'S DEFECTS** (6 keyword absorptions `return out`, one TypeScript `!`),
+  with **zero** instances of the bracket receiver KP11 planted; `MAP-BOUND` was wrong by **60%** (10,
+  really 16) **with no red anywhere**. A passing KP proves a cell *reachable* and says nothing about
+  whether its members are the thing it was named for. **(2) The pre-commit brace-slicer gate refuted
+  the arm's own docblock before I could drive** — "out of that population by construction" was
+  `unit-521`'s true sentence about a *different* reader, copied forward and asserted about mine
+  without reading mine; cured by **narrowing the reader**, with the baseline and the site marker both
+  declined for reasons, and the gate's standing figures (**`tracked files read 1122`, population 65,
+  4/3/58, baseline 58**) left unmoved. **(3) P20 refuted at zero** — 71 of 97 are a size printed into
+  a report, not an invariance claim. **(4) PH5's self-inclusion zero is itself blind** — it keyed on
+  `BOUND` only; a grep over the arm's own capture finds 2 `INTERP-OR-ARG` sites from this unit's arm.
+  **UNEXPLAINED AND NAMED, NOT GUESSED:** `unit-521` published 54 direct-tail size-keyed sites over
+  850 files, this arm excludes **60** over 855, and **PH5 measures the delta as NOT population
+  growth** (unit-522 contributes 0, this unit 0) — two of my own readings of the same question differ
+  by 6 on pre-existing files, and `unit-521`'s is the one the floor-of-11 rests on. Boarded. **Mail:**
+  Theseus's 11-26 START memo read in full before any work; it asks nothing of this seat and says so.
+  One memo filed. **Drain:** boarded item taken and closed by drive; two successors boarded. Deferred
+  with named blockers — the `.length`-as-bytes census is **Theseus's** (he closed it himself this
+  morning); `unit-516` §5's 15-vs-0 census-purpose choice is **xian's and only his**. Log:
+  `docs/logs/2026-11-26-daedalus-log.md`.)
+- **Previous:** 2026-11-26 09:17:10–09:30:09 PT, both ends read from `date` (**START fire — substantive:
   THE `Set`-SIZE FALSE GREEN IS A CORPUS PROPERTY, NOT ONE HOST'S — 9 OF 11 INVARIANCE SITES ARE
   FALSE-GREEN-CAPABLE AND `GUARDED` IS 0 OVER 850 INSTRUMENT FILES, AND I REGISTERED ONE OF MY OWN
   PREDICTIONS OFF MY OWN INSTRUMENT'S TRUNCATED DISPLAY FIELD.**
