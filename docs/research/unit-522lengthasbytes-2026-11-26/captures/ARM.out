@@ -1,0 +1,500 @@
+=== §0 THIS UNIT TOUCHES NO PRODUCT CODE ===
+
+  git diff --stat HEAD -- packages/ scripts/ : EMPTY
+
+=== §1 POPULATION FILTER — extracted through unit-520 back to unit-514, never retyped ===
+
+  unit-520's PRIOR      : docs/research/unit-514equalityconsumer-2026-11-24/posthoc-rekey-prefix-and-binding.mjs
+  unit-520's PRIOR_ARM  : docs/research/unit-514equalityconsumer-2026-11-24/arm-equalityconsumer.mjs
+  unit-520's extractor  : /const extMatch = armSrc\.match\((\/.+?\/)\);/
+  unit-514's extractor, sliced with it: /filter\(\(p\) => (\/.+?\/)\.test\(p\)\)/
+  the population filter, four links out: /\.(mjs|js)$/
+  filter KP: a.mjs→true b.js→true c.md→false d.ts→false  PASS
+
+=== §3 KNOWN POSITIVES — 5 cells, each declared sliced or planted, + 1 sliced negative ===
+
+  PASS  KP1 (SLICED)  want UNIT-LABEL  got UNIT-LABEL
+        docs/research/unit-520builtlabelreach-2026-11-25/posthoc-whose-plants.mjs:37 — the 8497 B print unit-520 §7 found
+        line: say(`  capture: ${CAPTURE}  ${cap.length} B`);
+  PASS  KP2 (PLANTED)  want CROSS-BYTE-CMP  got CROSS-BYTE-CMP
+        the class §6 named as the silent one
+        line:   if (cap.length !== Buffer.byteLength(cap)) {
+  PASS  KP3 (PLANTED)  want LENGTH-TO-LENGTH  got LENGTH-TO-LENGTH
+        the class §6 called unaffected
+        line:   if (a.length === b.length) {
+  PASS  KP4 (PLANTED)  want NO-COMPARISON  got NO-COMPARISON
+        the FALL-THROUGH cell — reachability control
+        line:   const n = rows.filter((r) => r).length;
+  PASS  KP5 (PLANTED)  want OTHER-CMP  got OTHER-CMP
+        so OTHER-CMP is not a silent dumping ground either
+        line:   if (xs.length > 3) {
+  PASS  KP6 (PLANTED, ADDED WITH THE DRIVE-1 REPAIR)  want NO-COMPARISON  got NO-COMPARISON
+        an arrow on the line must not make a comparison — the repair, forward direction
+        line:   rows.forEach((r) => out.push(r.length));
+  PASS  KP7 (PLANTED, ADDED WITH THE DRIVE-1 REPAIR)  want OTHER-CMP  got OTHER-CMP
+        a real `<` must still match — the repair, reverse direction
+        line:   for (let i = 0; i < lines.length; i++) {
+  PASS  KN1 (SLICED NEGATIVE)  must key neither byte cell  got OTHER-CMP
+        scripts/lib/strip-source.mjs:143
+        line:   while (j < src.length) {
+
+  KP summary: 7 of 7 positives (5 of 5 of them REGISTERED before drive 1; KP6/KP7 added with the repair), negative PASS → the key may be pointed at the corpus
+
+=== §4 CENSUS over the tracked population under the extracted filter ===
+
+  tracked files matching the extracted filter: 652
+  THIS FILE in that list: true — excluded by path either way, it carries planted cells
+  population measured: 651
+  unreadable files: 0
+  files with at least one `.length` site: 609 of 651
+  total `.length` sites: 14868
+
+    UNIT-LABEL            133
+    CROSS-BYTE-CMP          1
+    LENGTH-TO-LENGTH     1204
+    OTHER-CMP            4006
+    NO-COMPARISON        9524
+
+  NO-COMPARISON share: 64.06%
+
+=== §5 MEMBERS — every byte-cell site, line text WHOLE and untruncated ===
+
+  UNIT-LABEL — 133 site(s):
+    docs/research/round404-instruments/grade-the-three-cures.mjs:101   unit token/other operand: "bytes"
+      check('P2', 'the pinned object is REACHABLE and its anchors resolve in order', pinBlob ? ordered(pinBlob).ok : 'UNREACHABLE', true, pinBlob ? `blob ${pinBlob.length} bytes, loopStart ${ordered(pinBlob).a}, verdictLog ${ordered(pinBlob).b}` : 'git show refused');
+    docs/research/round409-instruments/record-gate.mjs:48   unit token/other operand: "byte"
+        `captured:     ${body.length} byte(s) of tool output`,
+    docs/research/round419-instruments/fetch-changelog.mjs:38   unit token/other operand: "bytes"
+        console.log(`FETCH: ok, ${fetched.length} bytes written to ${OUT}`);
+    docs/research/round419-instruments/grade-the-417-repairs.mjs:115   unit token/other operand: "bytes"
+        gate(0, 'the pre-repair blob is non-empty', old.length > 0, `${old.length} bytes`);
+    docs/research/round420-instruments/drive-his-419.mjs:132   unit token/other operand: "B"
+        const n = Math.max(A.length, B.length);
+    docs/research/round421-instruments/grade-the-420-repair.mjs:126   unit token/other operand: "bytes"
+      gate('the OLD spelling was extracted from the derived rev, non-empty', OLD_SRC.length > 0, `${OLD_SRC.length} bytes`);
+    docs/research/round421-instruments/grade-the-420-repair.mjs:128   unit token/other operand: "B"
+        `old ${OLD_SRC.length}B vs new ${NEW_SRC.length}B`);
+    docs/research/round421-instruments/grade-the-420-repair.mjs:128   unit token/other operand: "B"
+        `old ${OLD_SRC.length}B vs new ${NEW_SRC.length}B`);
+    docs/research/round422-instruments/drive-his-421.mjs:100   unit token/other operand: "B"
+        say(`      .mjs at ${s.rev}: ${s.mjsFromCommit.length}B sha256 ${sha(s.mjsFromCommit).slice(0, 16)}…`);
+    docs/research/round422-instruments/drive-his-421.mjs:101   unit token/other operand: "B"
+        say(`      .out at ${s.rev}: ${s.outFromCommit.length}B sha256 ${sha(s.outFromCommit).slice(0, 16)}…`);
+    docs/research/round422-instruments/drive-his-421.mjs:103   unit token/other operand: "B"
+          `${s.mjsFromCommit.length}B`);
+    docs/research/round422-instruments/drive-his-421.mjs:105   unit token/other operand: "B"
+          `${s.outFromCommit.length}B`);
+    docs/research/round422-instruments/his-census-only-21-is-ungated.mjs:94   unit token/other operand: "B"
+      gate('his instrument was extracted from his commit, non-empty', HIS.length > 0, `${HIS.length}B`);
+    docs/research/round422-instruments/his-scope-census-cannot-see-a-hoisted-pattern.mjs:92   unit token/other operand: "B"
+      gate('his instrument was extracted from his commit, non-empty', HIS.length > 0, `${HIS.length}B`);
+    docs/research/round422-instruments/his-scope-census-cannot-see-a-hoisted-pattern.mjs:93   unit token/other operand: "B"
+      gate('the instrument he censuses is present', GRADED.length > 0, `${GRADED.length}B`);
+    docs/research/round424-instruments/the-resolver-reads-one-pattern-per-body.mjs:86   unit token/other operand: "bytes"
+      say(`  sliced ${slice.length} bytes of his resolver, executed as written (not re-typed)`);
+    docs/research/round425-instruments/position-vs-property-confusion-matrix.mjs:77   unit token/other operand: "bytes"
+        curedSlice !== null, curedSlice === null ? '(no match)' : `${curedSlice.split('\n').length} lines, ${curedSlice.length} bytes`);
+    docs/research/round425-instruments/position-vs-property-confusion-matrix.mjs:163   unit token/other operand: "bytes"
+        oldSelector !== null, oldSelector === null ? '(no match)' : `${oldSelector.split('\n').length} lines, ${oldSelector.length} bytes`);
+    docs/research/round425-instruments/position-vs-property-confusion-matrix.mjs:288   unit token/other operand: "bytes"
+      gate('…and that file is readable and non-empty', POP_SRC.length > 0, `${POP_REL} — ${POP_SRC.length} bytes`);
+    docs/research/round426-instruments/a-published-sentence-is-not-its-discriminator.mjs:126   unit token/other operand: "bytes"
+      for (const [k, v] of Object.entries(SENT)) say(`  sentence   ${k.padEnd(16)} ${v.split('\n').length} lines, ${v.length} bytes`);
+    docs/research/round426-instruments/a-published-sentence-is-not-its-discriminator.mjs:127   unit token/other operand: "bytes"
+      for (const [k, v] of Object.entries(DISC)) say(`  discrimin. ${k.padEnd(16)} ${v.split('\n').length} lines, ${v.length} bytes`);
+    docs/research/round426-instruments/a-retyped-constant-from-another-file-is-not-a-pin.mjs:93   unit token/other operand: "bytes"
+        gate(`evaluated ${k} (${v.length} bytes)`, typeof v === 'string' && v.length > 0,
+    docs/research/round426-instruments/a-retyped-constant-from-another-file-is-not-a-pin.mjs:210   unit token/other operand: "bytes"
+      gate('that rev\'s blob of the subject is readable', OLD_B.length > 0, `${OLD_B.length} bytes`);
+    docs/research/round444-instruments/grade-the-round-trip-cure.mjs:396   unit token/other operand: "B"
+          `slices: GRID ${GRID_SRC === null ? 'ABSENT' : `${GRID_SRC.length}B`} · P2 new `
+    docs/research/round444-instruments/grade-the-round-trip-cure.mjs:397   unit token/other operand: "B"
+          + `${P2_NEW === null ? 'ABSENT' : `${P2_NEW.length}B`} · P2 pre-cure `
+    docs/research/round444-instruments/grade-the-round-trip-cure.mjs:398   unit token/other operand: "B"
+          + `${P2_OLD === null ? 'ABSENT' : `${P2_OLD.length}B`} · C2 cripple anchor occurs `
+    docs/research/round448-instruments/record-cripples.mjs:117   unit token/other operand: "B"
+        for (let i = 0; i < Math.max(A.length, B.length); i += 1) if (A[i] !== B[i]) out.push(i + 1);
+    docs/research/round457-instruments/grade-recording-completeness-across-the-whole-corpus.mjs:236   unit token/other operand: "bytes"
+        `CONTROL for the slicer: readTail slice ${sliceOk ? `${tailSrc.length} bytes` : 'REFUSED'}; `
+    docs/research/round459-instruments/grade-the-two-routed-sites-and-census-the-laundering-idioms.mjs:369   unit token/other operand: "B"
+        : v.ok ? `ok (${v.text.length}B)` : `REFUSED ${v.why}`}`).join(' | ');
+    docs/research/unit-464absorb-2026-10-31/make-scratch.mjs:180   unit token/other operand: "B"
+      console.log(`live   : ${LIVE}  ${src.length}B`);
+    docs/research/unit-464absorb-2026-10-31/make-scratch.mjs:181   unit token/other operand: "B"
+      console.log(`scratch: ${OUT}  ${out.length}B  (same dir depth as the checker: one under docs/research/)`);
+    docs/research/unit-464bucket-2026-11-01/grade-his-armreach-gate.mjs:77   unit token/other operand: "bytes"
+        `git status --porcelain -- packages/ scripts/ is ${liveDirty.length} bytes in the LIVE tree`);
+    docs/research/unit-464bucket-2026-11-01/grade-his-attrib-gate.mjs:102   unit token/other operand: "bytes"
+        `git status --porcelain -- packages/ scripts/ is ${liveDirty.length} bytes in the LIVE tree`);
+    docs/research/unit-464cell-2026-11-02/grade-cell.mjs:99   unit token/other operand: "bytes"
+          `my HAND-COUNTS-CONJ.tsv is byte-identical at HEAD and in the worktree (${myHead.length} bytes), so the input graded below is the committed one`);
+    docs/research/unit-464class-2026-11-02/classify-and-grade.mjs:185   unit token/other operand: "bytes"
+        `git status --porcelain -- packages/ scripts/ is ${porcelain.length} bytes`);
+    docs/research/unit-464class-2026-11-02/enumerate-legs.mjs:250   unit token/other operand: "bytes"
+        `git status --porcelain -- packages/ scripts/ is ${porcelain.length} bytes`);
+    docs/research/unit-464conj-2026-11-03/grade-conj.mjs:74   unit token/other operand: "bytes"
+          `my HAND-P5P6.tsv is byte-identical at HEAD and in the worktree (${myHead.length} bytes), so what is graded below is what was filed before this grader existed`);
+    docs/research/unit-464conj-2026-11-03/occupy-conj-history.mjs:114   unit token/other operand: "bytes"
+        refuse('GLIFT', `${MY_READER} differs between HEAD and the worktree (${readerSrc.length} vs ${readerWork.length} bytes) — the reader lifted below would not be the committed one`);
+    docs/research/unit-464conj-2026-11-03/occupy-conj-history.mjs:138   unit token/other operand: "bytes"
+              `spanOf/countOps lifted from ${MY_READER} at HEAD (blob byte-identical to the worktree, ${readerSrc.length} bytes): ${region.split('\n').length} lines, both present, both callable. No copy of the reader exists in this unit, so there is nothing to keep in sync`);
+    docs/research/unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:80   unit token/other operand: "bytes"
+        `git status --porcelain -- packages/ scripts/ is ${liveDirty.length} bytes in the LIVE tree`);
+    docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:109   unit token/other operand: "bytes"
+        `git status --porcelain -- packages/ scripts/ is ${liveDirty.length} bytes in the LIVE tree`);
+    docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:107   unit token/other operand: "bytes"
+        `git status --porcelain -- packages/ scripts/ is ${liveDirty.length} bytes in the LIVE tree`);
+    docs/research/unit-464dir-2026-11-02/grade-direction.mjs:122   unit token/other operand: "bytes"
+      gate('GHISDIRCLEAN', touched.length === 0, `git status --porcelain over HIS unit dir is ${touched.length} bytes — this unit reads it and does not write it`);
+    docs/research/unit-464dir-2026-11-02/slice-closure.mjs:175   unit token/other operand: "bytes"
+      gate('GNODEPEND', status.length === 0, `git status --porcelain -- packages/ scripts/ is ${status.length} bytes`);
+    docs/research/unit-464dir-2026-11-02/slice-spans.mjs:173   unit token/other operand: "bytes"
+      gate('GNODEPEND', status.length === 0, `git status --porcelain -- packages/ scripts/ is ${status.length} bytes`);
+    docs/research/unit-464frozen-2026-11-05/drive1-arms.mjs:78   unit token/other operand: "bytes"
+        console.log(`   (A7DOC re-derived span: ${span.length} bytes, ends at ${heads.length ? heads[0][0].slice(0, 20) : '(eof)'}; ` +
+    docs/research/unit-464frozen-2026-11-05/drive1-arms.mjs:123   unit token/other operand: "bytes"
+          console.log(`   landed: ${before.length} -> ${after.length} bytes, ${changed.length} line(s) differ` +
+    docs/research/unit-464frozen-2026-11-05/drive4-anchor.mjs:73   unit token/other operand: "bytes"
+        console.log(`   landed: ${before.length} -> ${after.length} bytes`);
+    docs/research/unit-464frozen-2026-11-05/probe-notes.mjs:58   unit token/other operand: "bytes"
+        console.log(`   ${leg.padEnd(11)} ok@${okRow.arm.padEnd(10)} RED@${redRow.arm.padEnd(10)} note ${okRow.note.length}/${redRow.note.length} bytes · identical ${shared} (${pct}%)`);
+    docs/research/unit-464gentry-2026-11-05/drive1-measure.mjs:40   unit token/other operand: "bytes"
+          : `tight span (### 2.1g -> ### 2.1h) is ${tight.text.length} bytes over ${tightHeads.length} ` +
+    docs/research/unit-464gentry-2026-11-05/drive1-measure.mjs:53   unit token/other operand: "bytes"
+          : `tight span at gate pin ${GATE_PIN.slice(0, 8)} is ${pinTight.text.length} bytes / sha ` +
+    docs/research/unit-464gentry-2026-11-05/drive1-measure.mjs:54   unit token/other operand: "bytes"
+            `${sha(pinTight.text)}; live is ${tight.text.length} bytes / sha ${sha(tight.text)} — ` +
+    docs/research/unit-464gentry-2026-11-05/drive1-measure.mjs:63   unit token/other operand: "B"
+        `separates ${separated} of 2 spans (wrong span ${wrong.err ?? `${wrong.text.length}B over ` +
+    docs/research/unit-464gentry-2026-11-05/drive2-entryrev.mjs:52   unit token/other operand: "B"
+          : `tight span at ${ENTRY_REV.slice(0, 8)} is ${atEntry.text.length}B / sha ${sha(atEntry.text)}; ` +
+    docs/research/unit-464gentry-2026-11-05/drive2-entryrev.mjs:53   unit token/other operand: "B"
+            `live is ${live.text.length}B / sha ${sha(live.text)} — ${identical ? 'byte-identical, so the ' +
+    docs/research/unit-464kind-2026-11-05/probe-entrygate.mjs:44   unit token/other operand: "bytes"
+      console.log(`  slice = doc[indexOf('### 2.1g') .. indexOf('### 2.1a')]  =  ${entry.length} bytes`);
+    docs/research/unit-464kpspan-2026-11-04/grade-kpspan.mjs:266   unit token/other operand: "B"
+        `MOVABLE_WIDE ${MOVABLE_WIDE?.length} arms, KP_TEXT ${KP_TEXT?.length}B naming GKPWITNESS`);
+    docs/research/unit-464kpspan-2026-11-04/grade-kpspan.mjs:378   unit token/other operand: "B"
+          console.log(`    closed : wideSel=${rCand.wideSel}  wideMov=${rCand.wideMov}  wideWitness=${rCand.wideWitness}  (${rClosed.length}B, depth ${DEPTH})`);
+    docs/research/unit-464notes-2026-11-05/drive-arms.mjs:101   unit token/other operand: "bytes"
+      console.log(`PRE  = git show ${PRE_REV}:<subject>  (${subjectPre.length} bytes)`);
+    docs/research/unit-464notes-2026-11-05/drive-arms.mjs:102   unit token/other operand: "bytes"
+      console.log(`POST = live worktree                  (${subjectPost.length} bytes)`);
+    docs/research/unit-464order-2026-11-02/grade-order.mjs:422   unit token/other operand: "bytes"
+        `git status --porcelain -- packages/ scripts/ is ${dirty.length} bytes, asserted INSIDE the harness `
+    docs/research/unit-464prec-2026-11-03/grade-entry-v15.mjs:93   unit token/other operand: "bytes"
+        ['SPAN', !span.err, span.err ?? `§2.1g → ${span.end}, ${span.text.length} bytes`],
+    docs/research/unit-464presc-2026-11-03/census-presc.mjs:360   unit token/other operand: "B"
+          `span=${s.span.length}B closed=${s.closed.length}B`);
+    docs/research/unit-464presc-2026-11-03/census-presc.mjs:360   unit token/other operand: "B"
+          `span=${s.span.length}B closed=${s.closed.length}B`);
+    docs/research/unit-464reach-2026-10-31/mapside-reach.mjs:55   unit token/other operand: "B"
+          `${probeSrc.length - src.length}B larger than the checker and changes NO regex`,
+    docs/research/unit-464reach-2026-10-31/reach-census.mjs:64   unit token/other operand: "B"
+            `(${(r.stdout ?? '').length}B vs ${hisOut.length}B)`,
+    docs/research/unit-464reach-2026-10-31/reach-census.mjs:64   unit token/other operand: "B"
+            `(${(r.stdout ?? '').length}B vs ${hisOut.length}B)`,
+    docs/research/unit-464reach-2026-10-31/reach-census.mjs:135   unit token/other operand: "B"
+              `at ${BASELINE_REV.slice(0, 8)} (${tokSlice.text.length}B); boundary ${BOUNDARY} present exactly once`,
+    docs/research/unit-464reach-2026-10-31/reach-census.mjs:154   unit token/other operand: "B"
+                `one substitution, ${wideText.length - tokSlice.text.length}B delta`,
+    docs/research/unit-464reach-2026-10-31/reaching-arm.mjs:74   unit token/other operand: "B"
+          `against the uncured copy (${dead.length}B vs ${uncured.length}B). ` +
+    docs/research/unit-464reach-2026-10-31/reaching-arm.mjs:74   unit token/other operand: "B"
+          `against the uncured copy (${dead.length}B vs ${uncured.length}B). ` +
+    docs/research/unit-464reach-2026-10-31/why-zero-price.mjs:105   unit token/other operand: "B"
+          `drive1.out: ${whole} (${uncured.length}B vs ${his.length}B).`,
+    docs/research/unit-464reach-2026-10-31/why-zero-price.mjs:105   unit token/other operand: "B"
+          `drive1.out: ${whole} (${uncured.length}B vs ${his.length}B).`,
+    docs/research/unit-464reach-2026-11-02/grade-reach.mjs:323   unit token/other operand: "bytes"
+      check('GNODEPEND', dirty.length === 0, `git status --porcelain -- packages/ scripts/ is ${dirty.length} bytes`);
+    docs/research/unit-464sat-2026-10-31/sat-census.mjs:187   unit token/other operand: "B"
+          console.log(`GSLICE ok  tokensOf sliced from ${CHECKER_REL} at ${BASELINE_REV.slice(0, 8)} (${tokText.length}B), boundary present exactly once`);
+    docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs:107   unit token/other operand: "bytes"
+        `git status --porcelain -- packages/ scripts/ is ${liveDirty.length} bytes in the LIVE tree`);
+    docs/research/unit-464subkind-2026-11-02/grade-subkind.mjs:75   unit token/other operand: "byte"
+          `all ${rows.length} subject(s) readable at the pin ${PIN}; ${rows.filter((r) => r.same).length}/${rows.length} byte-identical at HEAD` +
+    docs/research/unit-464vac-2026-10-31/grade-cure.mjs:105   unit token/other operand: "B"
+          refuse('C1', `${row.tag}: non-empty stderr (cured ${(after.stderr ?? '').length}B, blind ${(blind.stderr ?? '').length}B)`);
+    docs/research/unit-464vac-2026-10-31/grade-cure.mjs:105   unit token/other operand: "B"
+          refuse('C1', `${row.tag}: non-empty stderr (cured ${(after.stderr ?? '').length}B, blind ${(blind.stderr ?? '').length}B)`);
+    docs/research/unit-464vac-2026-10-31/inspect-dump.mjs:24   unit token/other operand: "B"
+      console.log(`cell ${basename(cell.map)} / ${cell.arm}   rc=${r.status}   stderr=${(r.stderr ?? '').length}B`);
+    docs/research/unit-464vac-2026-10-31/measure.mjs:129   unit token/other operand: "B"
+          refuse('G2', `${tag}: non-empty stderr (live ${live.stderr.length}B, instr ${instr.stderr.length}B)`);
+    docs/research/unit-464vac-2026-10-31/measure.mjs:129   unit token/other operand: "B"
+          refuse('G2', `${tag}: non-empty stderr (live ${live.stderr.length}B, instr ${instr.stderr.length}B)`);
+    docs/research/unit-465byteslabel-2026-11-13/arm-byteslabel-c.mjs:8   unit token/other operand: "bytes"
+       *   - genuine mislabels — `${str.length} bytes` where `str` is a utf8 STRING;
+    docs/research/unit-465migrate-2026-11-06/drive-arms.mjs:174   unit token/other operand: "bytes"
+        console.log(`--- stdout (${out.length} bytes) ---`);
+    docs/research/unit-465migrate-2026-11-06/drive-arms.mjs:176   unit token/other operand: "bytes"
+        console.log(`--- stderr (${err.length} bytes) ---`);
+    docs/research/unit-465recall-2026-11-10/recall-at-typing-commit.mjs:60   unit token/other operand: "bytes"
+      console.log(`  sliced ${sliced.length} bytes, ${sliced.split('\n').length} lines, from his line ` +
+    docs/research/unit-477ddlcolumns-2026-11-18/arm-b-arrowsplit.mjs:77   unit token/other operand: "B"
+        `${blobRaw.length} B → ${blob.length} B`
+    docs/research/unit-477ddlcolumns-2026-11-18/arm-b-arrowsplit.mjs:77   unit token/other operand: "B"
+        `${blobRaw.length} B → ${blob.length} B`
+    docs/research/unit-484popnarrow-2026-11-19/posthoc-readings-unmoved.mjs:37   unit token/other operand: "bytes"
+      console.log(`  ${REV}:scripts/lib/strip-source.mjs   ${oldSrc.length} bytes`);
+    docs/research/unit-484popnarrow-2026-11-19/posthoc-readings-unmoved.mjs:38   unit token/other operand: "bytes"
+      console.log(`  working tree                          ${nowSrc.length} bytes`);
+    docs/research/unit-488markedkeykp-2026-11-19/arm-markedkeykp.mjs:244   unit token/other operand: "bytes"
+      console.log(`  subject: scripts/verify-decl-body-slicers.mjs (${gateSrc.length} bytes)`);
+    docs/research/unit-488markedkeykp-2026-11-19/arm-markedkeykp.mjs:247   unit token/other operand: "byte"
+      console.log(`  captured NEW key:  declaredMarkerCount(raw) > 0  (${capDeclared.length}-byte span, verbatim)`);
+    docs/research/unit-489markedrekey-2026-11-20/cripple-marked-rekey.mjs:189   unit token/other operand: "bytes"
+      console.log(`  subject: scripts/verify-decl-body-slicers.mjs (${TRACKED_SRC.length} bytes)`);
+    docs/research/unit-489markedrekey-2026-11-20/drive.mjs:32   unit token/other operand: "bytes"
+      console.log(`${name}: rc=${rc}  (${body.length} bytes)`);
+    docs/research/unit-491partitionbuild-2026-11-20/cripple-partitionbuild.mjs:185   unit token/other operand: "bytes"
+      console.log(`  subject: scripts/verify-decl-body-slicers.mjs (${TRACKED_SRC.length} bytes)`);
+    docs/research/unit-491partitionbuild-2026-11-20/cripple-partitionbuild.mjs:186   unit token/other operand: "bytes"
+      console.log(`  before-state: the same file at ${PREREG_REV} (${PREREG_SRC.length} bytes)\n`);
+    docs/research/unit-491partitionbuild-2026-11-20/drive.mjs:149   unit token/other operand: "B"
+        console.log(`rc=${r.status} · stdout ${r.stdout.length} B → ${out} · stderr ${r.stderr.length} B → ${out}.stderr`);
+    docs/research/unit-491partitionbuild-2026-11-20/drive.mjs:149   unit token/other operand: "B"
+        console.log(`rc=${r.status} · stdout ${r.stdout.length} B → ${out} · stderr ${r.stderr.length} B → ${out}.stderr`);
+    docs/research/unit-493ceilingreplication-2026-11-20/arm-crossing-readers.mjs:29   unit token/other operand: "bytes"
+        console.log(`(gate exited non-zero; stdout captured anyway, ${out.length} bytes)`);
+    docs/research/unit-493ceilingreplication-2026-11-20/arm-crossing-readers.mjs:83   unit token/other operand: "bytes"
+      console.log(`captured stdout: ${out.length} bytes, ${lines.length} lines`);
+    docs/research/unit-494lineendingreach-2026-11-20/arm-lineending-reach.mjs:111   unit token/other operand: "bytes"
+      out.push(`  plain capture:            ${plain.length} bytes`);
+    docs/research/unit-494lineendingreach-2026-11-20/arm-lineending-reach.mjs:112   unit token/other operand: "bytes"
+      out.push(`  under the emitter patch:  ${patched.length} bytes`);
+    docs/research/unit-497paddedlabelclosure-2026-11-21/cripple-padded-closure.mjs:71   unit token/other operand: "B"
+      console.log(`  real gate: rc=${real.status}  stdout ${real.stdout.length} B  stderr ${real.stderr.length} B`);
+    docs/research/unit-497paddedlabelclosure-2026-11-21/cripple-padded-closure.mjs:71   unit token/other operand: "B"
+      console.log(`  real gate: rc=${real.status}  stdout ${real.stdout.length} B  stderr ${real.stderr.length} B`);
+    docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:56   unit token/other operand: "B"
+      console.log(`  wide key   rc=${wide.status}  stdout ${wide.stdout.length} B  stderr ${wide.stderr.length} B`);
+    docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:56   unit token/other operand: "B"
+      console.log(`  wide key   rc=${wide.status}  stdout ${wide.stdout.length} B  stderr ${wide.stderr.length} B`);
+    docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:57   unit token/other operand: "B"
+      console.log(`  narrow key rc=${narrow.status}  stdout ${narrow.stdout.length} B  stderr ${narrow.stderr.length} B`);
+    docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:57   unit token/other operand: "B"
+      console.log(`  narrow key rc=${narrow.status}  stdout ${narrow.stdout.length} B  stderr ${narrow.stderr.length} B`);
+    docs/research/unit-498closureatthegate-2026-11-21/arm-closure-at-the-gate.mjs:31   unit token/other operand: "byte"
+       * grammar. No byte figure in this file is a `.length`; byte figures are `Buffer.byteLength` and
+    docs/research/unit-500trackedcomplement-2026-11-22/posthoc-the-red-is-on-stderr.mjs:63   unit token/other operand: "B"
+      console.log(`green  rc=${green.status}  stdout=${green.stdout.length}B  stderr=${green.stderr.length}B`);
+    docs/research/unit-500trackedcomplement-2026-11-22/posthoc-the-red-is-on-stderr.mjs:63   unit token/other operand: "B"
+      console.log(`green  rc=${green.status}  stdout=${green.stdout.length}B  stderr=${green.stderr.length}B`);
+    docs/research/unit-500trackedcomplement-2026-11-22/posthoc-the-red-is-on-stderr.mjs:64   unit token/other operand: "B"
+      console.log(`red    rc=${red.status}  stdout=${red.stdout.length}B  stderr=${red.stderr.length}B`);
+    docs/research/unit-500trackedcomplement-2026-11-22/posthoc-the-red-is-on-stderr.mjs:64   unit token/other operand: "B"
+      console.log(`red    rc=${red.status}  stdout=${red.stdout.length}B  stderr=${red.stderr.length}B`);
+    docs/research/unit-501redbranchpin-2026-11-22/posthoc-crossunit-byte-figures.mjs:34   unit token/other operand: "B"
+        for (let i = 0; i < Math.max(A.length, B.length); i += 1) if (A[i] !== B[i]) moved.push([i + 1, A[i], B[i]]);
+    docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs:72   unit token/other operand: "bytes"
+      console.log(`gate under test: ${GATE_REL} sha ${sha(gateBytes)} (${gateBytes.length} bytes)`);
+    docs/research/unit-510quotepathskip-2026-11-23/confirm-landed.mjs:32   unit token/other operand: "bytes"
+      console.log(`landed gate: ${GATE_REL} sha ${sha(gateBytes)} (${gateBytes.length} bytes) — copied verbatim, no substitution`);
+    docs/research/unit-510quotepathskip-2026-11-23/posthoc-quoting-and-identity.mjs:95   unit token/other operand: "B"
+            + `  G0 ${sha(base)} (${base.length}B)  ${reader} ${sha(got)} (${got.length}B)`);
+    docs/research/unit-510quotepathskip-2026-11-23/posthoc-quoting-and-identity.mjs:95   unit token/other operand: "B"
+            + `  G0 ${sha(base)} (${base.length}B)  ${reader} ${sha(got)} (${got.length}B)`);
+    docs/research/unit-513consumernull-2026-11-24/posthoc-application-subject.mjs:125   unit token/other operand: "B"
+        say(`  VERBATIM  rc ${V.rc}  stdout ${V.stdout.length} B (${sha(V.stdout)})  stderr ${V.stderr.length} B  verdict "${verdictOf(V.stdout)}"`);
+    docs/research/unit-513consumernull-2026-11-24/posthoc-application-subject.mjs:125   unit token/other operand: "B"
+        say(`  VERBATIM  rc ${V.rc}  stdout ${V.stdout.length} B (${sha(V.stdout)})  stderr ${V.stderr.length} B  verdict "${verdictOf(V.stdout)}"`);
+    docs/research/unit-513consumernull-2026-11-24/posthoc-application-subject.mjs:126   unit token/other operand: "B"
+        say(`  RENAMED   rc ${R.rc}  stdout ${R.stdout.length} B (${sha(R.stdout)})  stderr ${R.stderr.length} B  verdict "${verdictOf(R.stdout)}"`);
+    docs/research/unit-513consumernull-2026-11-24/posthoc-application-subject.mjs:126   unit token/other operand: "B"
+        say(`  RENAMED   rc ${R.rc}  stdout ${R.stdout.length} B (${sha(R.stdout)})  stderr ${R.stderr.length} B  verdict "${verdictOf(R.stdout)}"`);
+    docs/research/unit-513consumernull-2026-11-24/posthoc-linelevel-reconcile.mjs:115   unit token/other operand: "B"
+      say(`  ${kp1 ? 'PASS' : 'FAIL'}  arm blob at ${ARM_COMMIT} readable and non-empty (${armBlob === null ? 'null' : armBlob.length + ' B'})`);
+    docs/research/unit-513consumernull-2026-11-24/posthoc-reconcile-under-arm-population.mjs:125   unit token/other operand: "B"
+        [armBlob !== null && armBlob.length > 0, `arm blob readable, non-empty (${armBlob === null ? 'null' : armBlob.length + ' B'})`],
+    docs/research/unit-514equalityconsumer-2026-11-24/posthoc-rekey-prefix-and-binding.mjs:183   unit token/other operand: "B"
+        return { ok: true, text: src.slice(a, b), note: `${what}: ${src.slice(a, b).length} B` };
+    docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:57   unit token/other operand: "B"
+      if (typeof body !== 'string' || body.length < 500) fail(`sliced body is ${typeof body} / ${body && body.length} B — expected a string over 500 B`);
+    docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:70   unit token/other operand: "B"
+      say(`  slice via scripts/lib/decl-body.mjs bodyOf()   ${body.length} B   brace-delimited: ${delimited}`);
+    docs/research/unit-515keyekp-2026-11-25/posthoc-source-subject.mjs:51   unit token/other operand: "B"
+      const mechText = armSrc.slice(A + 'const MECHANISM = '.length, B + 3);
+    docs/research/unit-515keyekp-2026-11-25/posthoc-source-subject.mjs:59   unit token/other operand: "B"
+      say(`  sliced ${mechText.length} B   arms ${MECHANISM.length}   all 5 arm names present: ${absent.length === 0}`);
+    docs/research/unit-517branchorder-2026-11-25/arm-branchorder.mjs:80   unit token/other operand: "B"
+      say(`  slice via scripts/lib/decl-body.mjs bodyOf()   ${body.length} B   brace-delimited: ${delimited}`);
+    docs/research/unit-518routedternaryreach-2026-11-25/arm-routedternaryreach.mjs:275   unit token/other operand: "bytes"
+      console.log(`  slice: ${slice.length} bytes, probe source offsets ${si}..${closeAt + 3}`);
+    docs/research/unit-519positionblindkey-2026-11-25/arm-positionblindkey.mjs:91   unit token/other operand: "B"
+      say(`  span ${SPAN.length} B, from "${START}" to the close of sitesOf`);
+    docs/research/unit-520builtlabelreach-2026-11-25/posthoc-whose-plants.mjs:37   unit token/other operand: "B"
+      say(`  capture: ${CAPTURE}  ${cap.length} B`);
+
+  CROSS-BYTE-CMP — 1 site(s):
+    docs/research/unit-502streampin-2026-11-22/derive-limb-laws.mjs:153   unit token/other operand: "1 ? Buffer.byteLength(String(lens.length"
+          + (lens.length > 1 ? Buffer.byteLength(String(lens.length)) - 1 : 0);
+
+  UNIT-LABEL outside docs/research/: 0
+  UNIT-LABEL that are NOT unit-520's own: 132 — the reach figure P10 registers
+    docs/research/round404-instruments/grade-the-three-cures.mjs:101
+    docs/research/round409-instruments/record-gate.mjs:48
+    docs/research/round419-instruments/fetch-changelog.mjs:38
+    docs/research/round419-instruments/grade-the-417-repairs.mjs:115
+    docs/research/round420-instruments/drive-his-419.mjs:132
+    docs/research/round421-instruments/grade-the-420-repair.mjs:126
+    docs/research/round421-instruments/grade-the-420-repair.mjs:128
+    docs/research/round421-instruments/grade-the-420-repair.mjs:128
+    docs/research/round422-instruments/drive-his-421.mjs:100
+    docs/research/round422-instruments/drive-his-421.mjs:101
+    docs/research/round422-instruments/drive-his-421.mjs:103
+    docs/research/round422-instruments/drive-his-421.mjs:105
+    docs/research/round422-instruments/his-census-only-21-is-ungated.mjs:94
+    docs/research/round422-instruments/his-scope-census-cannot-see-a-hoisted-pattern.mjs:92
+    docs/research/round422-instruments/his-scope-census-cannot-see-a-hoisted-pattern.mjs:93
+    docs/research/round424-instruments/the-resolver-reads-one-pattern-per-body.mjs:86
+    docs/research/round425-instruments/position-vs-property-confusion-matrix.mjs:77
+    docs/research/round425-instruments/position-vs-property-confusion-matrix.mjs:163
+    docs/research/round425-instruments/position-vs-property-confusion-matrix.mjs:288
+    docs/research/round426-instruments/a-published-sentence-is-not-its-discriminator.mjs:126
+    docs/research/round426-instruments/a-published-sentence-is-not-its-discriminator.mjs:127
+    docs/research/round426-instruments/a-retyped-constant-from-another-file-is-not-a-pin.mjs:93
+    docs/research/round426-instruments/a-retyped-constant-from-another-file-is-not-a-pin.mjs:210
+    docs/research/round444-instruments/grade-the-round-trip-cure.mjs:396
+    docs/research/round444-instruments/grade-the-round-trip-cure.mjs:397
+    docs/research/round444-instruments/grade-the-round-trip-cure.mjs:398
+    docs/research/round448-instruments/record-cripples.mjs:117
+    docs/research/round457-instruments/grade-recording-completeness-across-the-whole-corpus.mjs:236
+    docs/research/round459-instruments/grade-the-two-routed-sites-and-census-the-laundering-idioms.mjs:369
+    docs/research/unit-464absorb-2026-10-31/make-scratch.mjs:180
+    docs/research/unit-464absorb-2026-10-31/make-scratch.mjs:181
+    docs/research/unit-464bucket-2026-11-01/grade-his-armreach-gate.mjs:77
+    docs/research/unit-464bucket-2026-11-01/grade-his-attrib-gate.mjs:102
+    docs/research/unit-464cell-2026-11-02/grade-cell.mjs:99
+    docs/research/unit-464class-2026-11-02/classify-and-grade.mjs:185
+    docs/research/unit-464class-2026-11-02/enumerate-legs.mjs:250
+    docs/research/unit-464conj-2026-11-03/grade-conj.mjs:74
+    docs/research/unit-464conj-2026-11-03/occupy-conj-history.mjs:114
+    docs/research/unit-464conj-2026-11-03/occupy-conj-history.mjs:138
+    docs/research/unit-464cure3-2026-11-01/grade-the-attrib-cure.mjs:80
+    docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:109
+    docs/research/unit-464cure3-2026-11-01/subject.pre.drive-the-steal.mjs:107
+    docs/research/unit-464dir-2026-11-02/grade-direction.mjs:122
+    docs/research/unit-464dir-2026-11-02/slice-closure.mjs:175
+    docs/research/unit-464dir-2026-11-02/slice-spans.mjs:173
+    docs/research/unit-464frozen-2026-11-05/drive1-arms.mjs:78
+    docs/research/unit-464frozen-2026-11-05/drive1-arms.mjs:123
+    docs/research/unit-464frozen-2026-11-05/drive4-anchor.mjs:73
+    docs/research/unit-464frozen-2026-11-05/probe-notes.mjs:58
+    docs/research/unit-464gentry-2026-11-05/drive1-measure.mjs:40
+    docs/research/unit-464gentry-2026-11-05/drive1-measure.mjs:53
+    docs/research/unit-464gentry-2026-11-05/drive1-measure.mjs:54
+    docs/research/unit-464gentry-2026-11-05/drive1-measure.mjs:63
+    docs/research/unit-464gentry-2026-11-05/drive2-entryrev.mjs:52
+    docs/research/unit-464gentry-2026-11-05/drive2-entryrev.mjs:53
+    docs/research/unit-464kind-2026-11-05/probe-entrygate.mjs:44
+    docs/research/unit-464kpspan-2026-11-04/grade-kpspan.mjs:266
+    docs/research/unit-464kpspan-2026-11-04/grade-kpspan.mjs:378
+    docs/research/unit-464notes-2026-11-05/drive-arms.mjs:101
+    docs/research/unit-464notes-2026-11-05/drive-arms.mjs:102
+    docs/research/unit-464order-2026-11-02/grade-order.mjs:422
+    docs/research/unit-464prec-2026-11-03/grade-entry-v15.mjs:93
+    docs/research/unit-464presc-2026-11-03/census-presc.mjs:360
+    docs/research/unit-464presc-2026-11-03/census-presc.mjs:360
+    docs/research/unit-464reach-2026-10-31/mapside-reach.mjs:55
+    docs/research/unit-464reach-2026-10-31/reach-census.mjs:64
+    docs/research/unit-464reach-2026-10-31/reach-census.mjs:64
+    docs/research/unit-464reach-2026-10-31/reach-census.mjs:135
+    docs/research/unit-464reach-2026-10-31/reach-census.mjs:154
+    docs/research/unit-464reach-2026-10-31/reaching-arm.mjs:74
+    docs/research/unit-464reach-2026-10-31/reaching-arm.mjs:74
+    docs/research/unit-464reach-2026-10-31/why-zero-price.mjs:105
+    docs/research/unit-464reach-2026-10-31/why-zero-price.mjs:105
+    docs/research/unit-464reach-2026-11-02/grade-reach.mjs:323
+    docs/research/unit-464sat-2026-10-31/sat-census.mjs:187
+    docs/research/unit-464steal-2026-11-01/drive-the-steal.mjs:107
+    docs/research/unit-464subkind-2026-11-02/grade-subkind.mjs:75
+    docs/research/unit-464vac-2026-10-31/grade-cure.mjs:105
+    docs/research/unit-464vac-2026-10-31/grade-cure.mjs:105
+    docs/research/unit-464vac-2026-10-31/inspect-dump.mjs:24
+    docs/research/unit-464vac-2026-10-31/measure.mjs:129
+    docs/research/unit-464vac-2026-10-31/measure.mjs:129
+    docs/research/unit-465byteslabel-2026-11-13/arm-byteslabel-c.mjs:8
+    docs/research/unit-465migrate-2026-11-06/drive-arms.mjs:174
+    docs/research/unit-465migrate-2026-11-06/drive-arms.mjs:176
+    docs/research/unit-465recall-2026-11-10/recall-at-typing-commit.mjs:60
+    docs/research/unit-477ddlcolumns-2026-11-18/arm-b-arrowsplit.mjs:77
+    docs/research/unit-477ddlcolumns-2026-11-18/arm-b-arrowsplit.mjs:77
+    docs/research/unit-484popnarrow-2026-11-19/posthoc-readings-unmoved.mjs:37
+    docs/research/unit-484popnarrow-2026-11-19/posthoc-readings-unmoved.mjs:38
+    docs/research/unit-488markedkeykp-2026-11-19/arm-markedkeykp.mjs:244
+    docs/research/unit-488markedkeykp-2026-11-19/arm-markedkeykp.mjs:247
+    docs/research/unit-489markedrekey-2026-11-20/cripple-marked-rekey.mjs:189
+    docs/research/unit-489markedrekey-2026-11-20/drive.mjs:32
+    docs/research/unit-491partitionbuild-2026-11-20/cripple-partitionbuild.mjs:185
+    docs/research/unit-491partitionbuild-2026-11-20/cripple-partitionbuild.mjs:186
+    docs/research/unit-491partitionbuild-2026-11-20/drive.mjs:149
+    docs/research/unit-491partitionbuild-2026-11-20/drive.mjs:149
+    docs/research/unit-493ceilingreplication-2026-11-20/arm-crossing-readers.mjs:29
+    docs/research/unit-493ceilingreplication-2026-11-20/arm-crossing-readers.mjs:83
+    docs/research/unit-494lineendingreach-2026-11-20/arm-lineending-reach.mjs:111
+    docs/research/unit-494lineendingreach-2026-11-20/arm-lineending-reach.mjs:112
+    docs/research/unit-497paddedlabelclosure-2026-11-21/cripple-padded-closure.mjs:71
+    docs/research/unit-497paddedlabelclosure-2026-11-21/cripple-padded-closure.mjs:71
+    docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:56
+    docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:56
+    docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:57
+    docs/research/unit-497paddedlabelclosure-2026-11-21/posthoc-whose-bytes.mjs:57
+    docs/research/unit-498closureatthegate-2026-11-21/arm-closure-at-the-gate.mjs:31
+    docs/research/unit-500trackedcomplement-2026-11-22/posthoc-the-red-is-on-stderr.mjs:63
+    docs/research/unit-500trackedcomplement-2026-11-22/posthoc-the-red-is-on-stderr.mjs:63
+    docs/research/unit-500trackedcomplement-2026-11-22/posthoc-the-red-is-on-stderr.mjs:64
+    docs/research/unit-500trackedcomplement-2026-11-22/posthoc-the-red-is-on-stderr.mjs:64
+    docs/research/unit-501redbranchpin-2026-11-22/posthoc-crossunit-byte-figures.mjs:34
+    docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs:72
+    docs/research/unit-510quotepathskip-2026-11-23/confirm-landed.mjs:32
+    docs/research/unit-510quotepathskip-2026-11-23/posthoc-quoting-and-identity.mjs:95
+    docs/research/unit-510quotepathskip-2026-11-23/posthoc-quoting-and-identity.mjs:95
+    docs/research/unit-513consumernull-2026-11-24/posthoc-application-subject.mjs:125
+    docs/research/unit-513consumernull-2026-11-24/posthoc-application-subject.mjs:125
+    docs/research/unit-513consumernull-2026-11-24/posthoc-application-subject.mjs:126
+    docs/research/unit-513consumernull-2026-11-24/posthoc-application-subject.mjs:126
+    docs/research/unit-513consumernull-2026-11-24/posthoc-linelevel-reconcile.mjs:115
+    docs/research/unit-513consumernull-2026-11-24/posthoc-reconcile-under-arm-population.mjs:125
+    docs/research/unit-514equalityconsumer-2026-11-24/posthoc-rekey-prefix-and-binding.mjs:183
+    docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:57
+    docs/research/unit-515keyekp-2026-11-25/arm-keyekp.mjs:70
+    docs/research/unit-515keyekp-2026-11-25/posthoc-source-subject.mjs:51
+    docs/research/unit-515keyekp-2026-11-25/posthoc-source-subject.mjs:59
+    docs/research/unit-517branchorder-2026-11-25/arm-branchorder.mjs:80
+    docs/research/unit-518routedternaryreach-2026-11-25/arm-routedternaryreach.mjs:275
+    docs/research/unit-519positionblindkey-2026-11-25/arm-positionblindkey.mjs:91
+
+=== §6 GRADING against PRE-REGISTRATION.md ===
+
+  REFUTED  P1  UNIT-LABEL sites in the live corpus
+           registered [1, 6]   measured 133
+  HIT      P2  CROSS-BYTE-CMP sites — a `.length` compared against a byte reader
+           registered [0, 2]   measured 1
+  OPEN     P3  whether a UNIT-LABEL site is a TRUE mislabel is not decidable from source — resolved by hand-reading in the post-hoc, not here
+  REFUTED  P4  LENGTH-TO-LENGTH sites — the class §6 called unaffected
+           registered [20, 400]   measured 1204
+  HIT      P5a  vacuity floor: total `.length` sites
+           registered [2000, 40000]   measured 14868
+  REFUTED  P5b  NO-COMPARISON share, percent
+           registered [85, 99]   measured 64.06
+  HIT      P6  the 5 REGISTERED KP positives keying their own cell (drive 1 read 4 of 5 and ABORTED; see the repair note at §2)
+           registered [5, 5]   measured 5
+  HIT      P7  population, grown past unit-520's published 646
+           registered [648, 660]   measured 651
+  HIT      P8  UNIT-LABEL sites outside docs/research/
+           registered [0, 1]   measured 0
+  OPEN     P9  at least one UNIT-LABEL site is an L1 prose false positive — count unknown, resolved by hand-reading the whole lines in §5
+  REFUTED  P10  UNIT-LABEL sites that are NOT unit-520's own — THE REACH
+           registered [1, 4]   measured 132
+
+  graded here: 9 — 5 HIT, 4 REFUTED; 2 registered OPEN (P3, P9) for the post-hoc
+
+  REFUTED, named:
+    P1  UNIT-LABEL sites in the live corpus: registered [1, 6], measured 133
+    P4  LENGTH-TO-LENGTH sites — the class §6 called unaffected: registered [20, 400], measured 1204
+    P5b  NO-COMPARISON share, percent: registered [85, 99], measured 64.06
+    P10  UNIT-LABEL sites that are NOT unit-520's own — THE REACH: registered [1, 4], measured 132
+
+=== END ARM ===

@@ -101,7 +101,22 @@ if (!extRe || !extKpOk) { say('\n  ABORT — the extracted filter is absent or d
 /* The byte-unit tail test. `tail` is cut at the next `${` so an interpolation downstream of the
  * `.length` cannot supply the label; the gap is capped at 8 characters of closers/whitespace. */
 const UNIT_TAIL = /^[}\s)\]'"`,.:;+\-=]{0,8}(B|bytes|byte)\b/;
-const CMP = '(?:===|!==|==|<=|>=|<|>)';
+
+/* REPAIRED AFTER DRIVE 1, WHICH ABORTED AT ITS OWN KP GATE.
+ *
+ * Drive 1's `CMP` was `(?:===|!==|==|<=|>=|<|>)`, and KP4 — the FALL-THROUGH reachability control,
+ * `const n = rows.filter((r) => r).length;` — keyed `OTHER-CMP` instead of `NO-COMPARISON`,
+ * because the `>` of the arrow `=>` matched as a comparison operator. An undifferentiated
+ * containment match fusing two mechanisms: `=>` is a parameter list, not a comparison. In a corpus
+ * written in arrow-function style the fall-through cell would have been close to unreachable, and
+ * `OTHER-CMP` would have absorbed it — with no red anywhere, because every cell would still have
+ * had members. The planted fall-through KP is the only thing in this unit that could see it.
+ *
+ * The lookarounds below reject `=>` (a `>` preceded by `=`), `>>`/`<<` shifts, and `=<`/`=>`
+ * in either order, while leaving real `<`, `>`, `<=`, `>=`, `==`, `===`, `!=`, `!==` matching.
+ * KP6 and KP7 were added with this repair to pin both directions of it, and are declared as such.
+ */
+const CMP = '(?:===|!==|==|!=|<=|>=|(?<![=<>])<(?![=<])|(?<![=<>])>(?![=>]))';
 const RIGHT_CMP = new RegExp(`^\\s*(${CMP})\\s*([^;,){}]{0,80})`);
 const LEFT_CMP = new RegExp(`([^<>=!;,({}]{0,80}?)\\s*(${CMP})\\s*[A-Za-z0-9_$.\\[\\]'"\`() ]*$`);
 const BYTE_READER = /byteLength|wc -c|stat -f%z|statSync\([^)]*\)\.size/;
@@ -149,6 +164,8 @@ const cells = [
   { id: 'KP3', origin: 'PLANTED', want: 'LENGTH-TO-LENGTH', line: '  if (a.length === b.length) {', note: 'the class §6 called unaffected' },
   { id: 'KP4', origin: 'PLANTED', want: 'NO-COMPARISON', line: '  const n = rows.filter((r) => r).length;', note: 'the FALL-THROUGH cell — reachability control' },
   { id: 'KP5', origin: 'PLANTED', want: 'OTHER-CMP', line: '  if (xs.length > 3) {', note: 'so OTHER-CMP is not a silent dumping ground either' },
+  { id: 'KP6', origin: 'PLANTED, ADDED WITH THE DRIVE-1 REPAIR', want: 'NO-COMPARISON', line: '  rows.forEach((r) => out.push(r.length));', note: 'an arrow on the line must not make a comparison — the repair, forward direction' },
+  { id: 'KP7', origin: 'PLANTED, ADDED WITH THE DRIVE-1 REPAIR', want: 'OTHER-CMP', line: '  for (let i = 0; i < lines.length; i++) {', note: 'a real `<` must still match — the repair, reverse direction' },
 ];
 for (const c of cells) {
   const k = firstKey(c.line);
@@ -165,7 +182,8 @@ say(`        ${KN1_FILE}:${KN1_LINE}`);
 say(`        line: ${kn1Text}`);
 
 const kpOk = cells.every((c) => c.ok) && kn1Ok;
-say(`\n  KP summary: ${cells.filter((c) => c.ok).length} of 5 positives, negative ${kn1Ok ? 'PASS' : 'FAIL'} → ${kpOk ? 'the key may be pointed at the corpus' : 'ABORT'}`);
+const kpRegistered = cells.filter((c) => c.origin === 'SLICED' || c.origin === 'PLANTED');
+say(`\n  KP summary: ${cells.filter((c) => c.ok).length} of ${cells.length} positives (${kpRegistered.filter((c) => c.ok).length} of ${kpRegistered.length} of them REGISTERED before drive 1; KP6/KP7 added with the repair), negative ${kn1Ok ? 'PASS' : 'FAIL'} → ${kpOk ? 'the key may be pointed at the corpus' : 'ABORT'}`);
 if (!kpOk) { say('\n  ABORT — a census is not published off an ungraded key.'); process.exit(1); }
 
 /* ======================================================= §4 THE CENSUS */
@@ -239,7 +257,7 @@ say('  OPEN     P3  whether a UNIT-LABEL site is a TRUE mislabel is not decidabl
 grade('P4', 'LENGTH-TO-LENGTH sites — the class §6 called unaffected', tally['LENGTH-TO-LENGTH'], ...P4_INTERVAL);
 grade('P5a', 'vacuity floor: total `.length` sites', total, P5_SITE_FLOOR, 40000);
 grade('P5b', 'NO-COMPARISON share, percent', Number(shareNoCmp.toFixed(2)), ...P5_SHARE);
-grade('P6', 'KP positives keying their own cell', cells.filter((c) => c.ok).length, 5, 5);
+grade('P6', 'the 5 REGISTERED KP positives keying their own cell (drive 1 read 4 of 5 and ABORTED; see the repair note at §2)', kpRegistered.filter((c) => c.ok).length, 5, 5);
 grade('P7', 'population, grown past unit-520\'s published 646', pop.length, ...P7_INTERVAL);
 grade('P8', 'UNIT-LABEL sites outside docs/research/', outsideResearch.length, ...P8_INTERVAL);
 say('  OPEN     P9  at least one UNIT-LABEL site is an L1 prose false positive — count unknown, resolved by hand-reading the whole lines in §5');
