@@ -301,3 +301,45 @@ absent delivery and an unchecked mailbox look identical in a log.
 
 **Step 3 —** this log is committed last, after Steps 1 and 2.
 
+
+---
+
+## 19:10 — Session resumed (interactive, not a fire — restart onto Claude Code 2.1.332 at xian's go)
+
+Pard restarted this seat onto a new CLI build; model unchanged (`claude-opus-5`). This is an
+interactive session with xian, **not** a day-part fire. Session-start run in full, every line below
+from a tool call in this session:
+
+- **Version.** `claude --version` → **2.1.332 (Claude Code)**. This seat's `COORDINATION.md` status
+  line said **2.1.322**; corrected in the same commit as this entry. The old figure was right when
+  written — it is the version string, not a typo of it.
+- **Pull.** `git pull --ff-only` → *Already up to date*; worktree clean, `claude/theseus-cycle` at
+  `origin/main` (`5f2b3829`).
+- **Role doc.** `docs/ROSTER.md` → *Theseus Prime — Manual Testing & Exploration*, human-agent
+  tandem tester; `docs/operations/duty-cycle/theseus-tasks.md` (task list of record) read.
+- **Board.** `docs/COORDINATION.md` this seat's section — last entry is the 11/25 WORK fire
+  (`unit-518routedternaryreach`), which routed one item to Daedalus.
+- **Mail.** Newest inbound to this seat is Daedalus's **11-25 STOP** memo
+  (`…your-refutation-of-my-refutation-holds-under-my-own-cured-key…`), read in full. It **closes the
+  `unit-518` routing by drive** — his position-blind key cured and KP'd 5 of 5, `file`
+  TERNARY-position 1 → 0, HAZARD 2 of 6 → **1 of 6**, gap 4 → **5**, so `unit-517`'s PH3 is restored
+  to HELD — and it states in terms that **nothing is asked of this seat**. No reply owed; no action
+  taken on it this session.
+- **Cross-pollination.** `docs/briefs/cross-pollination/current.md` is a pointer (public repo); the
+  private source was read at `designinproduct` → `src/internal/briefs/2026-11-25-brief.md`
+  (`eb3acca`). Both of today's findings are from this project's own thread — one of them this
+  seat's `unit-514` fixture-contamination result. Nothing asked of this seat.
+- **Cross-repo mailboxes.** `git fetch` first in each, then read `origin/main` rather than the
+  working copy, because an absence claim off a stale checkout is not an absence claim:
+  `designinproduct` (newest 11-25, all to other seats), `mediajunkie` (no mail dated 11-24+),
+  `dispatch` (11-25 traffic is the PM/DinP daily pair plus **this seat's own outbound addendum**),
+  `piper-morgan-product` (no new). **Nothing addressed to this seat with an open ask.**
+- **Fire schedule.** `com.klatch.theseus-STOP.plist` → `Hour 19 / Minute 47`, `RunAtLoad false`.
+  Clock in this session is **19:10:17 PST**, so the STOP fire is due in
+  minutes in a separate process on this same worktree. **No measurement unit started here on that
+  account** — a unit's pre-registration and the fire's would race on the index and on this log.
+
+Open items for this seat are unchanged by this session: the frozen-population-prediction pattern
+defect (`unit-516` §4), `SECOND-ARG`'s nested-call blindness, the inherited concatenated-label
+blindness (all unblocked, mine); `unit-516` §5's 15-vs-0 census-purpose choice (**blocker: xian**);
+the `ABSENT` hole (**no owner, twentieth night**).
