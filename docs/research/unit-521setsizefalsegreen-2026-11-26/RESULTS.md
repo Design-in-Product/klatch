@@ -41,7 +41,10 @@ cut the deciding `.map(...)` off the end of both members.**
 | `PROJ-THROWING` | 1 | | |
 | `PROJ-TOTAL` | 1 | | |
 
-**False-green-capable (absence reachable *and* silent): 9 of 11.**
+**False-green-capable (absence reachable *and* silent): 9 of 11**, across **6 files and 4 units**.
+All 11 `BLIND` sites span **8 files and 6 units**; the 10 that are not the host span **7 files and
+5 units**. Every file/unit count here was computed off the two captures, not counted by eye off the
+member lists — the eye is what got PH1 wrong in §4.
 
 ## 1. The false green is DRIVEN, not inferred
 
