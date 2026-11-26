@@ -1,0 +1,61 @@
+unit-519 post-hoc — PH1–PH4 — HEAD 9c54ce2b
+
+§0  preconditions
+  git diff --stat HEAD -- packages/ scripts/ : EMPTY
+  brace-comparison present in this file: false
+  the cured key spelled identically in the arm and here: true
+
+§1  PH4 — every over-admitted site, named, with its preceding character and its line
+  over-admitted sites across all five names: 6
+
+  [cls]  docs/research/unit-514equalityconsumer-2026-11-24/arm-equalityconsumer.mjs:183   prev "."
+        MEMBER-TAIL   (`x.name` before a ternary's else-colon, or before a type/label colon)
+        const gotShape = occ.length === 1 && occ[0].kind === 'STRING' ? shapeOf(src, occ[0].offset).cls : null;
+  [cls]  docs/research/unit-514equalityconsumer-2026-11-24/posthoc-rekey-prefix-and-binding.mjs:233   prev "."
+        MEMBER-TAIL   (`x.name` before a ternary's else-colon, or before a type/label colon)
+        const got = occ.length === 1 && occ[0].kind === 'STRING' ? shapeOf(src, occ[0].offset, v).cls : `REGION=${occ.
+  [error]  docs/research/unit-464dir-2026-11-02/grade-direction.mjs:112   prev "."
+        MEMBER-TAIL   (`x.name` before a ternary's else-colon, or before a type/label colon)
+        litResults.map((r) => `${r.row}: PRE ${r.preLits ? r.preLits.length : 0} / POST ${r.postLits ? r.postLits.leng
+  [error]  scripts/probe-round217-multipart-guard-live-http.mts:183   prev "."
+        MEMBER-TAIL   (`x.name` before a ternary's else-colon, or before a type/label colon)
+        error = typeof j?.error === 'string' ? j.error : null;
+  [error]  scripts/probe-round219-files-cap-live-http.mts:195   prev "."
+        MEMBER-TAIL   (`x.name` before a ternary's else-colon, or before a type/label colon)
+        error = typeof j?.error === 'string' ? j.error : null;
+  [file]  docs/research/unit-307c4-blast-radius-2026-10-27/recon.mjs:83   prev "."
+        MEMBER-TAIL   (`x.name` before a ternary's else-colon, or before a type/label colon)
+        CRIPPLE === 'entry-shape-dot-file' ? e.file : typeof e === 'string' ? e : e.file;
+
+  mechanisms present: MEMBER-TAIL 6
+  PH4 (≥2 distinct mechanisms among the over-admitted sites): REFUTED — 1
+
+§2  PH3 — over-admission rate by name
+  p              position-blind   121  cured   121  over   0   0.00%
+  cls            position-blind    91  cured    89  over   2   2.20%
+  error          position-blind    12  cured     9  over   3   25.00%
+  file           position-blind   450  cured   449  over   1   0.22%
+  conversation   position-blind    17  cured    17  over   0   0.00%
+  names with ≥100 sites: p, file — worst rate among them 0.22%
+  highest rate overall: error (25.00%)   fewest sites: error
+  PH3 (no name with ≥100 sites above 1%, AND the highest rate is the name with the fewest sites): HIT
+
+§3  PH1/PH2 — the `error` 11 → 12 difference
+  population at e0c9f88e: 837   at 9c54ce2b: 840   delta 3
+  added 3   removed 0
+      + docs/research/unit-518routedternaryreach-2026-11-25/arm-routedternaryreach.mjs
+          author Theseus (Klatch)   cured `error:` sites in it: 0
+      + docs/research/unit-518routedternaryreach-2026-11-25/posthoc-separate-the-cripples.mjs
+          author Theseus (Klatch)   cured `error:` sites in it: 0
+      + docs/research/unit-519positionblindkey-2026-11-25/arm-positionblindkey.mjs
+          author Daedalus (Klatch)   cured `error:` sites in it: 0
+
+  `error` v2 recomputed over the 837-file population with the PUBLISHED reader: 11
+  (published in POSTHOC-HAZARD.out: 11)
+  PH1 (population growth, not a reader difference; exactly one new file carries an `error:` site): REFUTED
+      recomputed-then equals published: true   new carriers: 0
+  PH2 (delta is 3 and all 3 are Theseus's by commit author): REFUTED — delta 3, authors Theseus (Klatch), Daedalus (Klatch)
+
+§4  ALL ASSERTIONS PASSED
+  verdicts: PH1 REFUTED · PH2 REFUTED · PH3 HIT · PH4 REFUTED
+  HIT 1 of 4

@@ -1,0 +1,110 @@
+{
+  "rev": "9c54ce2b",
+  "verdicts": {
+    "PH1": false,
+    "PH2": false,
+    "PH3": true,
+    "PH4": false
+  },
+  "failures": 0,
+  "over": [
+    {
+      "name": "cls",
+      "rel": "docs/research/unit-514equalityconsumer-2026-11-24/arm-equalityconsumer.mjs",
+      "line": 183,
+      "prev": ".",
+      "text": "const gotShape = occ.length === 1 && occ[0].kind === 'STRING' ? shapeOf(src, occ[0].offset).cls : null;"
+    },
+    {
+      "name": "cls",
+      "rel": "docs/research/unit-514equalityconsumer-2026-11-24/posthoc-rekey-prefix-and-binding.mjs",
+      "line": 233,
+      "prev": ".",
+      "text": "const got = occ.length === 1 && occ[0].kind === 'STRING' ? shapeOf(src, occ[0].offset, v).cls : `REGION=${occ.map((o) => o.kind).join('+') || 'NONE'}`;"
+    },
+    {
+      "name": "error",
+      "rel": "docs/research/unit-464dir-2026-11-02/grade-direction.mjs",
+      "line": 112,
+      "prev": ".",
+      "text": "litResults.map((r) => `${r.row}: PRE ${r.preLits ? r.preLits.length : 0} / POST ${r.postLits ? r.postLits.length : 0} literals${r.error ? ' ERROR ' + r.error : ''}`).join(' · '));"
+    },
+    {
+      "name": "error",
+      "rel": "scripts/probe-round217-multipart-guard-live-http.mts",
+      "line": 183,
+      "prev": ".",
+      "text": "error = typeof j?.error === 'string' ? j.error : null;"
+    },
+    {
+      "name": "error",
+      "rel": "scripts/probe-round219-files-cap-live-http.mts",
+      "line": 195,
+      "prev": ".",
+      "text": "error = typeof j?.error === 'string' ? j.error : null;"
+    },
+    {
+      "name": "file",
+      "rel": "docs/research/unit-307c4-blast-radius-2026-10-27/recon.mjs",
+      "line": 83,
+      "prev": ".",
+      "text": "CRIPPLE === 'entry-shape-dot-file' ? e.file : typeof e === 'string' ? e : e.file;"
+    }
+  ],
+  "byMech": {
+    "MEMBER-TAIL": 6
+  },
+  "rate": {
+    "p": {
+      "blind": 121,
+      "cured": 121,
+      "over": 0,
+      "pct": 0
+    },
+    "cls": {
+      "blind": 91,
+      "cured": 89,
+      "over": 2,
+      "pct": 2.197802197802198
+    },
+    "error": {
+      "blind": 12,
+      "cured": 9,
+      "over": 3,
+      "pct": 25
+    },
+    "file": {
+      "blind": 450,
+      "cured": 449,
+      "over": 1,
+      "pct": 0.2222222222222222
+    },
+    "conversation": {
+      "blind": 17,
+      "cured": 17,
+      "over": 0,
+      "pct": 0
+    }
+  },
+  "populationThen": 837,
+  "populationNow": 840,
+  "added": [
+    {
+      "p": "docs/research/unit-518routedternaryreach-2026-11-25/arm-routedternaryreach.mjs",
+      "who": "Theseus (Klatch)",
+      "errHere": 0
+    },
+    {
+      "p": "docs/research/unit-518routedternaryreach-2026-11-25/posthoc-separate-the-cripples.mjs",
+      "who": "Theseus (Klatch)",
+      "errHere": 0
+    },
+    {
+      "p": "docs/research/unit-519positionblindkey-2026-11-25/arm-positionblindkey.mjs",
+      "who": "Daedalus (Klatch)",
+      "errHere": 0
+    }
+  ],
+  "removed": [],
+  "errorThenRecomputed": 11
+}

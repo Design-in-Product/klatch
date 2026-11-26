@@ -1,0 +1,6 @@
+p              bare-name prefilter   121   `p:` prefilter   121   difference 0
+cls            bare-name prefilter    91   `cls:` prefilter    91   difference 0
+error          bare-name prefilter    12   `error:` prefilter    11   difference 1
+      invisible to the published prefilter: docs/research/unit-464dir-2026-11-02/grade-direction.mjs  line(s) 112
+file           bare-name prefilter   450   `file:` prefilter   450   difference 0
+conversation   bare-name prefilter    17   `conversation:` prefilter    17   difference 0

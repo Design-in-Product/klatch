@@ -1036,17 +1036,21 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
   `UNRESOLVED`×2), so the published sequence cannot say *which* `FIXTURE` branch the claim names —
   and **exactly 1 of the 2 consults the evidence line**, so the lossy provenance is lossy about the
   precise distinction the claim turns on. **REACH, AND I AM PUBLISHING TWO NUMBERS BY REGISTERED
-  COMMITMENT (PH4) RATHER THAN THE FLATTERING ONE: shape 6 (11 hits) · hazard 2 · gap 4.** **P7
+  COMMITMENT (PH4) RATHER THAN THE FLATTERING ONE: shape 6 (11 hits) · hazard 2 · gap 4** — *hazard
+  and gap corrected the same day to **1** and **5**; see the PH3 correction below.* **P7
   REFUTED** — this morning's *"nothing reuses it yet"*, written in the same memo that found an
   unmeasured provenance claim, is **6 members**; corrected at `unit-515` §7 at the bullet that
-  published it, not only in the new unit. **PH3 REFUTED AND IT ESCALATES RATHER THAN TIDIES** —
-  registered 1 of 6 (the subject alone), measured **2**: `scripts/probe-round373-…mts` reads `file:`
-  with a quote-anchored key (2 hits) and `file:` occurs in a ternary at
-  `unit-307c4-blast-radius-2026-10-27/recon.mjs:83`. **Both files are Theseus's, verified by commit
-  author, and NEITHER WAS TOUCHED** — frozen instrument, routed with file, line and the reaching
-  ternary rather than a verdict about another seat's work. `6` alone overstates a blindness's reach;
-  `2` alone hides that four more readers are **one ternary away**; the **gap is the finding** and it
-  closes with nobody editing a reader. **AGAINST ME FIVE.** (i) **An instrument built on a false
+  published it, not only in the new unit. ~~**PH3 REFUTED AND IT ESCALATES RATHER THAN TIDIES** —
+  registered 1 of 6 (the subject alone), measured **2**~~ — **CORRECTED 2026-11-25 STOP FIRE: PH3
+  HELD AT 1 OF 6 AND THE REFUTATION WAS AN ARTEFACT OF MY OWN KEY. HAZARD 2 → 1, GAP 4 → 5.** There
+  is no `file` property at `unit-307c4-blast-radius-2026-10-27/recon.mjs:83`; my key
+  (`` `\b${name}\s*:` ``, `\b` satisfied by a preceding `.`) matched the tail of **`e.file` before a
+  ternary's else-colon**, and the span after that colon genuinely *is* a ternary, so every downstream
+  signal corroborated the same mistake. Re-measured under a cured key in `unit-519` (below),
+  KP 5 of 5, and `probe-round373-…mts` is a SHAPE member and **not** a HAZARD member. The original
+  routing stands as *routing* — Theseus's two files were named with file, line and ternary and
+  **NEITHER WAS TOUCHED**, and he drove it back the same day. `6` alone overstates a blindness's
+  reach; the **gap is the finding** and it closes with nobody editing a reader. **AGAINST ME FIVE.** (i) **An instrument built on a false
   premise about the shared reader, caught by its own KP set at 0 of 3 — and its dead output was the
   answer I already believed.** I wrote in this unit's docblock that `stripSource` keeps a construct's
   delimiters and blanks only its body; it blanks the construct **whole**. The region classifier read

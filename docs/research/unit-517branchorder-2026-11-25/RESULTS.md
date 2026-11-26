@@ -35,10 +35,13 @@ granularity, and measures the reach I asserted.
 | P8 the cured extractor refuses rather than widens | **HIT** — 4 refusal cells held |
 | PH1 a property name recovered per member | **HIT** — 6 of 6, 5 distinct names |
 | PH2 the parameterised extractor re-KP'd, not inherited | **HIT** — 9 of 9 under `cls`, `p`, `error` |
-| PH3 hazard reach registered at 1 of 6 | **REFUTED** — **2 of 6** |
+| PH3 hazard reach registered at 1 of 6 | ~~**REFUTED** — **2 of 6**~~ → **HELD at 1 of 6** (corrected 11-25 STOP, `unit-519`; the refutation was an artefact of this unit's own position-blind key) |
 | PH4 both figures published in one sentence | **HIT** (a commitment, met here and in the memo) |
 
 **12 registered, 10 HIT, 2 REFUTED — both refutations mine, and both are my own claims about reach.**
+**Corrected 2026-11-25 STOP: 11 HIT, 1 REFUTED.** PH3 held; see §5's correction block and
+[`unit-519`](../unit-519positionblindkey-2026-11-25/RESULTS.md). P7's refutation (reach 1 → 6
+members) stands — that is the SHAPE census, which this correction does not touch.
 
 ## 3. The cured order, and what the old one could not show
 
@@ -87,10 +90,22 @@ branch identifier whenever two branches return the same class.
 
 ## 5. Reach — both figures, as committed in PH4
 
+> **CORRECTED 2026-11-25 STOP fire — `HAZARD 2 / gap 4` below is WRONG and `PH3` HELD.** The key
+> that produced the hazard census, `posthoc-hazard.mjs:144`'s `` `\b${name}\s*:` ``, is **position
+> blind**: `\b` is satisfied by a preceding `.`, so it matched the tail of `e.file` before a
+> **ternary's else-colon** at `recon.mjs:83`, where no `file` property exists. That single site was
+> the whole `file` ternary census. Re-measured under a cured key in
+> [`unit-519positionblindkey-2026-11-25`](../unit-519positionblindkey-2026-11-25/RESULTS.md), 5 of 5
+> KP: **HAZARD reach `1 of 6` — the subject alone — and gap `5`.** PH3, registered at 1 of 6, is
+> **HELD**; the refutation recorded at line 38 and in §5 below was an artefact of this seat's own
+> key. Routed back by Theseus's `unit-518`; re-verified off the tracked file before accepting.
+> The figures below are left as measured at `e0c9f88e` rather than edited, because what was
+> measured and what is true are two different records.
+
 ```
 SHAPE reach   files carrying the quote-anchored key                       6   (11 hits)
-HAZARD reach  of those, whose property occurs in a ternary position       2
-gap                                                                       4
+HAZARD reach  of those, whose property occurs in a ternary position       2   ← ARTEFACT; it is 1
+gap                                                                       4   ← it is 5
 ```
 
 The 6 members and the names their own keys read:
@@ -114,6 +129,16 @@ alone. It is **2**: `scripts/probe-round373-…mts` reads `file`, and `file` occ
 position at `docs/research/unit-307c4-blast-radius-2026-10-27/recon.mjs:83`
 (`typeof e === 'string' ? e : e.file`). The blindness I found in my own instrument this morning is
 live in another seat's instrument, at a named file and line.
+
+> **CORRECTED 2026-11-25 STOP fire — the paragraph above is false and PH3 HELD at 1 of 6.** There is
+> no `file` property at `recon.mjs:83`; the line is
+> `CRIPPLE === 'entry-shape-dot-file' ? e.file : typeof e === 'string' ? e : e.file;` and the only
+> `file:` property in that file is at **line 89**. My key matched `file :` with `.` as the preceding
+> character — **`e.file` followed by a ternary's else-colon** — and the value span after that colon
+> genuinely *is* a ternary, so every downstream signal corroborated the same mistake. The text quoted
+> above is my key's **capture**, not a source line. `probe-round373-…mts` is a SHAPE member and
+> **not** a HAZARD member. Measured in `unit-519`: `file` TERNARY-position `1 → 0`, HAZARD `1 of 6`,
+> gap `5`, and the whole over-admitted class is **6 sites, all one mechanism, 0 residual**.
 
 ## 6. Against me
 
