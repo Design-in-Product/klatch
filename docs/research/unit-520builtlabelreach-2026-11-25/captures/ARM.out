@@ -1,0 +1,75 @@
+=== §0 PROVENANCE — label and population filter extracted from published source ===
+
+  cwd, resolved to the repo root rather than inherited: /Users/xian/Development/klatch-worktrees/theseus
+
+  LABEL extracted from docs/research/unit-516secondargfixture-2026-11-25/arm-secondargfixture.mjs
+    literal: "tracked files read"   length 18
+
+  the PRIOR's own extractor, sliced from its source: /filter\(\(p\) => (\/.+?\/)\.test\(p\)\)/
+  the ARM's population filter, extracted with it:     /\.(mjs|js)$/
+  extracted filter KP: a.mjs=true  b.js=true  c.md=false  d.ts=false
+
+  git diff --stat HEAD -- packages/ scripts/ : EMPTY
+
+=== §1 THE DETECTOR, as specified in §2 of the pre-registration ===
+
+  joint pattern: /(['"`])\s*\+\s*(['"`])/g
+  gain = (label occurrences after every joint is collapsed) − (occurrences as committed)
+
+=== §2 KP — three planted positives, one SLICED negative, two planted asserted-MISSED ===
+
+  P1  raw 0  collapsed 1  gain 1  PASS   unit-514 KP11's exact form, split at whitespace
+        cell: num('tracked files ' + 'read:')
+  P2  raw 0  collapsed 1  gain 1  PASS   split MID-WORD — a different shape, not a second instance of one
+        cell: num('tracked files re' + 'ad:')
+  P3  raw 0  collapsed 1  gain 1  PASS   three parts, two joints
+        cell: num('tracked ' + 'files ' + 'read')
+
+  P4  raw 1  collapsed 1  gain 0  PASS   known negative, SLICED from docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs:160
+        line, verbatim: read: num(out, 'tracked files read:'),
+        contains the whole label in one run: true
+
+  P5a  raw 0  collapsed 0  gain 0  MISSED as asserted   assembled through a VARIABLE — no closing quote after the +
+        cell: const w = 'read'; num('tracked files ' + w)
+
+  P5b  raw 0  collapsed 0  gain 0  MISSED as asserted   assembled through TEMPLATE INTERPOLATION — the text is never present
+        cell: num(`tracked files ${verb}`)
+
+  KP summary: 3 of 3 positives, negative PASS, 2 of 2 blindnesses asserted → the detector may be pointed at the corpus
+
+=== §3 CENSUS over the tracked population under the extracted filter ===
+
+  tracked files matching the extracted filter: 646
+  THIS FILE in that list: false — excluded by path either way, because it carries planted built-label cells
+  population measured: 646
+  unit-516 published 635 read / 639 matching; |646 − 635| = 11, |646 − 639| = 7
+
+  files unreadable: 0
+  files containing the label as committed (any position): 46   occurrences 146
+  files in which at least one joint was COLLAPSED:          382   joints collapsed 7164
+  label occurrences after collapse:                         149   corpus-wide gain 3
+  files with gain > 0 (built-label files):                  2
+  built-label SITES (line-level, each printed below):       3
+
+  docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs   raw 9 → collapsed 11  (gain 2, joints in file 2)
+      :33  * (`new RegExp('tracked files' + ' read')`) or built from a variable is NOT matched. KP5 plants
+      :151  src: `const re = new RegExp('tracked files' + ' read: (\\\\d+)');\n`,
+  docs/research/unit-514equalityconsumer-2026-11-24/posthoc-rekey-prefix-and-binding.mjs   raw 2 → collapsed 3  (gain 1, joints in file 3)
+      :244  const builtFixture = `const v = num('tracked files ' + 'read:');`;
+
+=== §4 VERDICTS, against the pre-registration ===
+
+  P1   HIT      planted positive: raw 0, collapsed 1 — unit-514 KP11's exact form, split at whitespace
+  P2   HIT      planted positive: raw 0, collapsed 1 — split MID-WORD — a different shape, not a second instance of one
+  P3   HIT      planted positive: raw 0, collapsed 1 — three parts, two joints
+  P4   HIT      sliced known negative: gain 0 (collapse invents nothing where the label was already whole)
+  P5   HIT      my own blindness asserted: variable-assembled and interpolated labels both gain 0
+  P6   REFUTED  live reach 3 site(s) in 2 file(s); registered point 0, interval 0–2 → point REFUTED, interval REFUTED
+  P7   HIT      VACUITY GUARD: the collapse fired in 382 file(s), 7164 joint(s), against a registered floor of 20. A reach of 3 is therefore a measurement, not a dead reader.
+  P8   HIT      files where the collapse changed TEXT (382) vs changed the LABEL COUNT (2) — different populations, first strictly exceeds second as registered
+  P9   OPEN     false-positive direction: 3 gain site(s) published with line text for hand reading; each must be hand-read before it counts as a finding
+  P10  REFUTED  population 646, nearest published figure off by 7 (registered ±5) → comparison to the published 22 is VOID
+
+  7 HIT · 2 REFUTED · 1 OPEN of 10
+
+JSON {"provenance":{"cwd":"/Users/xian/Development/klatch-worktrees/theseus","label":"tracked files read","extractorLiteral":"/filter\\(\\(p\\) => (\\/.+?\\/)\\.test\\(p\\)\\)/","armFilterLiteral":"/\\.(mjs|js)$/","extKp":[{"p":"a.mjs","want":true,"got":true,"ok":true},{"p":"b.js","want":true,"got":true,"ok":true},{"p":"c.md","want":false,"got":false,"ok":true},{"p":"d.ts","want":false,"got":false,"ok":true}],"extKpOk":true,"productDiffEmpty":true},"kp":{"kpPos":[{"id":"P1","note":"unit-514 KP11's exact form, split at whitespace","cell":"num('tracked files ' + 'read:')","raw":0,"col":1,"gain":1,"joints":1,"ok":true},{"id":"P2","note":"split MID-WORD — a different shape, not a second instance of one","cell":"num('tracked files re' + 'ad:')","raw":0,"col":1,"gain":1,"joints":1,"ok":true},{"id":"P3","note":"three parts, two joints","cell":"num('tracked ' + 'files ' + 'read')","raw":0,"col":1,"gain":1,"joints":2,"ok":true}],"neg":{"file":"docs/research/unit-510quotepathskip-2026-11-23/arm-quotepathskip.mjs","line":160,"text":"read: num(out, 'tracked files read:'),","raw":1,"col":1,"gain":0,"joints":0,"ok":true},"kpBlind":[{"id":"P5a","note":"assembled through a VARIABLE — no closing quote after the +","cell":"const w = 'read'; num('tracked files ' + w)","raw":0,"col":0,"gain":0,"joints":0,"ok":true},{"id":"P5b","note":"assembled through TEMPLATE INTERPOLATION — the text is never present","cell":"num(`tracked files ${verb}`)","raw":0,"col":0,"gain":0,"joints":0,"ok":true}],"kpAllOk":true},"census":{"trackedMatching":646,"selfTracked":false,"population":646,"unreadable":0,"filesWithLabel":46,"rawTotal":146,"filesWithJoint":382,"totalJoints":7164,"colTotal":149,"corpusGain":3,"builtLabelFiles":2,"builtLabelSites":3,"gainSites":[{"file":"docs/research/unit-513consumernull-2026-11-24/posthoc-nonliteral-matchers.mjs","raw":9,"col":11,"gain":2,"joints":2,"hits":[{"line":33,"text":"* (`new RegExp('tracked files' + ' read')`) or built from a variable is NOT matched. KP5 plants"},{"line":151,"text":"src: `const re = new RegExp('tracked files' + ' read: (\\\\\\\\d+)');\\n`,"}]},{"file":"docs/research/unit-514equalityconsumer-2026-11-24/posthoc-rekey-prefix-and-binding.mjs","raw":2,"col":3,"gain":1,"joints":3,"hits":[{"line":244,"text":"const builtFixture = `const v = num('tracked files ' + 'read:');`;"}]}]},"verdicts":[{"id":"P1","verdict":"HIT","note":"planted positive: raw 0, collapsed 1 — unit-514 KP11's exact form, split at whitespace"},{"id":"P2","verdict":"HIT","note":"planted positive: raw 0, collapsed 1 — split MID-WORD — a different shape, not a second instance of one"},{"id":"P3","verdict":"HIT","note":"planted positive: raw 0, collapsed 1 — three parts, two joints"},{"id":"P4","verdict":"HIT","note":"sliced known negative: gain 0 (collapse invents nothing where the label was already whole)"},{"id":"P5","verdict":"HIT","note":"my own blindness asserted: variable-assembled and interpolated labels both gain 0"},{"id":"P6","verdict":"REFUTED","note":"live reach 3 site(s) in 2 file(s); registered point 0, interval 0–2 → point REFUTED, interval REFUTED"},{"id":"P7","verdict":"HIT","note":"VACUITY GUARD: the collapse fired in 382 file(s), 7164 joint(s), against a registered floor of 20. A reach of 3 is therefore a measurement, not a dead reader."},{"id":"P8","verdict":"HIT","note":"files where the collapse changed TEXT (382) vs changed the LABEL COUNT (2) — different populations, first strictly exceeds second as registered"},{"id":"P9","verdict":"OPEN","note":"false-positive direction: 3 gain site(s) published with line text for hand reading; each must be hand-read before it counts as a finding"},{"id":"P10","verdict":"REFUTED","note":"population 646, nearest published figure off by 7 (registered ±5) → comparison to the published 22 is VOID"}],"summary":{"hits":7,"refs":2,"opens":1,"total":10}}
