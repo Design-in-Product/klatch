@@ -319,3 +319,142 @@ uncommitted. The correction note is edited into
 
 **Step 3 — mail re-checked after the task work:** `git fetch` + `git log 1b7d20cf..origin/main --
 docs/mail/` returns **no rows** — nothing new inbound since my own outbound.
+
+---
+
+## 17:17 — STOP fire resumed (bounded) · model: claude-opus-5
+
+Pulled by the wrapper. Read `docs/COORDINATION.md` (my own section) and `ls docs/mail/`. **Two
+inbound memos from Theseus dated today, both addressed to me, and both arrived after my 13:3x WORK
+fire** — so this is the first Daedalus fire to see either. Read both in full in this fire.
+
+- `theseus-…-both-your-handed-back-items-are-closed-by-drive-…` (START fire, `unit-516`) — already
+  read and acted on in the 13:17 WORK fire; nothing open back to this seat.
+- `theseus-…-your-routed-site-is-not-a-hazard-member-the-colon-your-key-matched-is-a-ternarys-else-colon-…`
+  (`unit-518`, pre-reg `768bf4a9` at 14:50 PST) — **routes something to me by name**: my own hazard
+  key, with a separating cell and the consequence for the HAZARD/gap pair I published at 13:3x.
+
+That is the whole of this fire's work.
+
+### 17:18 — verified the routed cell myself before accepting it
+
+CLAUDE.md's verify-before-asserting, applied to another agent's finding rather than to my own
+recollection. Three reads, all off tracked files in this worktree:
+
+```
+docs/research/unit-307c4-blast-radius-2026-10-27/recon.mjs:83
+  CRIPPLE === 'entry-shape-dot-file' ? e.file : typeof e === 'string' ? e : e.file;
+  line 89:  ... return { file: String(file), hits: null };
+
+docs/research/unit-517branchorder-2026-11-25/posthoc-hazard.mjs:144
+  const KEY = new RegExp(`\\b${name}\\s*:`, 'g');
+```
+
+No `file` property at line 83; the only one in the file is at 89. `\b` is satisfied by a preceding
+`.`. **Theseus's P1/P2 reproduce under my own read.** I also read the four `cls` ternary sites
+verbatim (`unit-513…:160`, `:72`, `:75`, `:214`) before concluding the `cls` census was *not* also
+artefact — all four are genuine property positions, so the subject stays live-blind and the hazard
+collapses to 1 rather than to 0.
+
+### 17:20:27 — pre-registration, clock read in the command that made the directory
+
+`unit-519positionblindkey-2026-11-25`. P1–P10 registered, pushed to `main` as `d653c236` at
+**17:21:18 PST**, before any arm/reader/cell/KP/scratch/capture existed. P5 registers my own PH3 as
+HELD and my published refutation as an artefact — the flattering reading was available and not
+taken. P7 registers an **interval** (10–120) rather than a figure I did not have. P10 registers
+**OPEN against myself**: the residual false-positive class the cure does *not* remove.
+
+The pre-reg also states the cure's shape *before writing it*, including why it is a **regex
+character class and not a character comparison** — a brace comparison is
+`scripts/verify-decl-body-slicers.mjs:97`'s population key, and that is precisely the
+over-admission that reddened this seat's arm at 09:23 this morning. §0 asserts the absence; it does
+not claim it.
+
+### 17:23 — arm driven: 9 of 10, and the refutation is my own magnitude claim
+
+`arm-positionblindkey.mjs`, commit `8660aabc`. KP **5 of 5** with every cell sliced out of a real
+tracked file. Readers **sliced** (4177 B span out of the published `posthoc-hazard.mjs`, 13 markers
+asserted present) so the `v1`/`v2` columns are produced by the code that published them.
+
+```
+HAZARD reach   published 2 of 6  ->  cured 1 of 6      gap 4 -> 5      PH3 HELD
+file  TERNARY-position      1    ->         0
+cls   TERNARY-position      4    ->         4      same four by file AND line
+```
+
+**P7 REFUTED: I registered 10–120 of 450 `file` sites as over-admitted. It is 1.** That is the
+keeper — a 0.22% false-positive rate supplied 100% of the census, because the census filters on a
+rare property, so the base rate over all sites does not bound the share of the *reported* ones. And
+the rate is per name, 0%–25%, with the two names over 100 sites being the two clean ones; I
+registered my interval against the cleanest one.
+
+### 17:36 — addendum registered before the post-hoc existed, then driven: 1 of 4
+
+`PRE-REGISTRATION-ADDENDUM-OVERADMISSION.md` (`9c54ce2b`), PH1–PH4. Then
+`posthoc-overadmission.mjs`.
+
+- **PH4 REFUTED** — registered ≥2 mechanisms, there is **1**: all 6 over-admitted sites have `.`
+  before the name. The class is tighter than I guessed and is exactly the one Theseus named.
+- **PH3 HIT** — no name with ≥100 sites above 1%, and the highest rate is the name with the fewest.
+- **PH1 REFUTED** — the `error` 11 to 12 is **not** population growth (recomputed over the
+  then-population with the published reader: 11, equal to published; 0 of 3 added files carries an
+  `error:` site).
+- **PH2 REFUTED** — the delta is 3 and the third is **my own arm**. A unit's script joins the
+  population it measures between the arm's drive and the post-hoc's; and `unit-517` published 836
+  where `ls-tree` at its own commit returns 837, the same mechanism one step earlier.
+
+### 17:43 — the cause PH1 failed to find, measured rather than guessed
+
+A refuted prediction that leaves its own difference unexplained is worse than no prediction, so
+`diag-prefilter.mjs` was written and driven — **unregistered, and labelled as such wherever its
+figure is quoted.** Cause named at one file and one line: `unit-517` pre-filtered each file on the
+name-immediately-followed-by-a-colon substring, and `unit-464dir/grade-direction.mjs` contains **no
+such substring for `error` anywhere** (its one site is `error :` with a space, inside a template
+expression), so the published census skipped the whole file. **Both numbers are right under their own
+prefilter, the differing site is false either way, and under the cured key it is 9 under both.**
+
+And the sting, recorded because it is the same shape as the thing being measured: **the arm's own
+§4b looked for this and printed `0`, because it counted in the CURED column — where the cure had
+already dropped the very site the prefilter difference adds.**
+
+### 17:48 — results, corrections at the bullets that published them, memo
+
+`4118c4ae` carries `RESULTS.md` plus the corrections: `unit-517`'s PH3 table row (struck, restored
+to HELD), its §5 reach block, its refutation paragraph, the `COORDINATION.md` 13:17 bullet, and its
+PH4 two-numbers sentence. The figures measured at `e0c9f88e` are **left as measured** rather than
+edited — what was measured and what is true are two different records.
+
+**The memo whose own filename carries the wrong figure** gets an appended, marked correction block
+rather than a rewrite or a rename: the name stays as the record of what was sent.
+
+Reply memo `8f8d2a3b`.
+
+## Drain
+
+Drained. Mail read at session start — both inbound memos in full, in this fire — and the one that
+routed work was closed by drive **in the same fire it arrived to this seat**. Four closed 11-25
+memos moved to `docs/mail/read/` per the close-discipline. **My reply is deliberately left in
+`docs/mail/`** rather than filed alongside its inbound: the convention's cleanest pattern is
+closing-memo-and-inbound-together, but Theseus reads `docs/mail/` and a closing memo he cannot see
+has not been delivered. Noted here so the next closer can move it.
+
+**Deferred: nothing without a named blocker.**
+
+Carrying, all unblocked and mine: `BOUND-PATTERN` 6; `SUBJECT-IS-PARAM` + `CALLBACK-PARAM` 4; the
+incrementally-assembled-object evidence model; and **two cured readers in two fires now sit in unit
+directories rather than `scripts/lib/`, with no gate leg reading either** — this is no longer
+"promote the extractor", it is that this seat keeps producing cures whose reach is one unit, and
+that is the item. **Theseus's, stated by him as his:** the frozen-population-prediction pattern
+defect; `SECOND-ARG`'s nested-call blindness; the inherited concatenated-label blindness; the four
+unmeasured SHAPE members at consumer level. **xian's:** `unit-516` §5's 15-vs-0 census-purpose
+choice. **No owner, twenty-first night:** the `ABSENT` hole.
+
+## Question-box check (STOP procedure step 4)
+
+Considered rather than skipped, and the answer is **no for this fire**. The shape that nearly
+qualified: across four fires today every seat's refutations are about its own instruments rather
+than about the corpus, and the units keep converging on the same handful of shapes — a total that
+cannot be read, a column that flattens two causes, a denominator that depends on when you read it.
+That is a question about whether the round structure has begun measuring itself more than the
+product, but it is a **work** question with a work answer, routed through Calliope and the board,
+not the curiosity-shaped kind the question-box exists for. Nothing filed to `dispatch/mail/`.

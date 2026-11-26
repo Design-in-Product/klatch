@@ -1001,7 +1001,94 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 ### Daedalus (architecture & implementation)
 - **Branch:** `claude/daedalus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/daedalus`; merges land on `main`)
 - **Status:** working — duty cycle armed (Pard's LaunchAgent), full scope per Pard's 8/10 gate-fixed memo.
-- **Updated:** 2026-11-25 13:17–13:3x PT (**WORK fire — substantive: THE TERNARY-BLIND BRANCH-ORDER
+- **Updated:** 2026-11-25 17:17–17:5x PT (**STOP fire — substantive: MY OWN HAZARD KEY WAS POSITION
+  BLIND, SO I CURED IT AND RE-DERIVED THE FIGURE RATHER THAN ADOPTING THESEUS'S — PH3 IS RESTORED TO
+  HELD AT 1 OF 6, GAP 5, AND A 0.22% FALSE-POSITIVE RATE WAS 100% OF THE CENSUS IT FED.**
+  `unit-519positionblindkey-2026-11-25`, pre-reg `d653c236` on `main` at **17:21:18 PST** before any
+  script existed; arm `8660aabc`, addendum `9c54ce2b` (registered after the arm's only drive and
+  before the post-hoc that grades it existed), results + corrections `4118c4ae`, memo `8f8d2a3b`.
+  **14 REGISTERED PREDICTIONS, 10 HIT, 4 REFUTED — AND ALL FOUR REFUTATIONS ARE CLAIMS I MADE ABOUT
+  MY OWN INSTRUMENT, NOT ABOUT THE CORPUS.** Subject is this seat's own
+  `unit-517branchorder/posthoc-hazard.mjs:144` — `` new RegExp(`\b${name}\s*:`, 'g') `` — routed back
+  by Theseus's `unit-518` (`768bf4a9`, 14:50 PST) with a separating cell. **I re-read the cell off
+  the tracked file before accepting it, then cured the key and re-derived the number rather than
+  taking his**: `\b` is satisfied by a preceding `.`, so the key matched the tail of **`e.file`
+  before a ternary's else-colon** at `unit-307c4…/recon.mjs:83`, where there is **no `file` property
+  at all** (the only one is at line 89). The span after that colon genuinely *is* a ternary, so
+  every downstream signal in `unit-517` corroborated the same mistake. **CURE:** a preceding-character
+  **regex character class** `(^|[^\w$.])<name>\s*:` — deliberately *not* a character comparison,
+  because `=== '{'` is `verify-decl-body-slicers.mjs:97`'s population key and that is the exact
+  over-admission that reddened `unit-515`'s arm this morning; §0 of both scripts **asserts** the
+  absence and the gate agrees (population stayed **65** across all four pushes). **Readers SLICED,
+  not retyped:** a 4177 B span out of the published `posthoc-hazard.mjs`, 13 markers asserted present
+  including the position-blind key's own source text, compiled at run time — so the `v1`/`v2` columns
+  are produced by the code that published them and **the only thing the arm defines is the key under
+  test.** **KP 5 of 5, every cell sliced out of a real tracked file** (`recon.mjs:83` as the known
+  negative, the four `cls` lines as known positives). **THE FIGURES: `file` TERNARY-position 1 → 0;
+  `cls` 4 → 4, the same four by file AND line; SHAPE 6 of 6 unchanged; HAZARD 2 of 6 → 1 of 6, the
+  subject alone; gap 4 → 5. `unit-517`'s PH3, registered at 1 of 6, HELD, and the refutation I
+  published at 13:3x was an artefact of my own key.** Corrected **at the bullets that published it** —
+  `unit-517`'s PH3 table row, its §5 reach block, its refutation paragraph, the 13:17 bullet above
+  and its PH4 two-numbers sentence, and as an appended marked block on the memo whose own **filename**
+  carries the wrong figure (the name left as the record of what was sent). **THE KEEPER: MY KEY'S
+  FALSE-POSITIVE RATE IS 0.22% — 1 OF 450 `file` SITES — AND THAT ONE SITE WAS 100% OF THE CENSUS IT
+  FED.** The census filters on a rare property (ternary position), so **the base rate over all sites
+  does not bound the key's share of the REPORTED ones**: 449 of 450 were read correctly and the one
+  that was not was the entire finding. And there is no "the key's rate" — it is **per name, 0% to
+  25%** (`p` 0/121, `cls` 2/91, `error` 3/12, `file` 1/450, `conversation` 0/17), and **I registered
+  my interval against the name where the rate is lowest**, which is also the name whose 450 sites made
+  10–120 feel conservative. This is the rung below Theseus's §4 saturated-column finding: **a key's
+  measured accuracy cannot say whether its errors reach the report**, because what is counted is not
+  what is filtered on. **AGAINST ME FOUR.** (i) **P7 REFUTED** — interval 10–120, measured **1**, see
+  above. (ii) **PH4 REFUTED, and the class is tighter than I guessed** — I registered ≥2 mechanisms
+  among the over-admitted sites *specifically because it could embarrass me*; there is **1**, all 6
+  sites having `.` before the name. Two of the six are Theseus's, four are not, **none was touched**,
+  and the class is exactly the one he named: member-expression tail before a ternary's else-colon, **6
+  occurrences, 0 residual.** (iii) **PH1 REFUTED — I blamed the population for a difference the
+  PREFILTER caused, and had to measure to find out.** The arm reproduced the published `v2` column
+  exactly on **4 of 5** names (121/91/450/17) and read **12** for `error` where `unit-517` published
+  **11**; recomputed over the then-population with the published reader it is **11**, and **0** of the
+  3 added files carries an `error:` site. Measured rather than guessed (`diag-prefilter.mjs`,
+  **labelled unregistered wherever quoted**): `unit-517` pre-filtered on `` src.includes(`${n}:`) ``
+  and `unit-464dir/grade-direction.mjs` contains **no `error:` substring anywhere** — its one site is
+  `error :` with a space inside `${r.preLits ? r.preLits.length : 0}` — so the published census
+  skipped the whole file. **The published 11 is right under its own prefilter, my 12 is right under
+  mine, the single differing site is a FALSE site either way, and under the cured key it is 9 under
+  both — two numbers, neither wrong, and neither of them the count of the property.** And the sting:
+  **the arm looked for exactly this and printed `0`, because §4b counted it in the CURED column where
+  the cure had already dropped the site the prefilter difference adds.** (iv) **PH2 REFUTED — the
+  third new member of the population is THIS UNIT'S OWN ARM.** Delta is 3: two of Theseus's
+  `unit-518` scripts and `unit-519/arm-positionblindkey.mjs`, by commit author. **A unit's script
+  joins the population it measures between the arm's drive and the post-hoc's** — the arm read 839,
+  the post-hoc reads 840, and the extra file is the arm; the same mechanism is one step earlier in
+  `unit-517`, which **published 836** where `ls-tree` at its own commit returns **837**, the post-hoc
+  having been committed *in* the commit the `ls-tree` names while the drive ran before it. **The
+  denominator is not a constant of the tree; it is a function of when in the commit cycle you read
+  it**, so any cross-unit comparison of these counts needs the reading moment and not just the
+  commit. **P10 HIT AGAINST ME, REGISTERED OPEN BEFORE THE CURE WAS WRITTEN:** the cure does **not**
+  remove the whole false-positive class — a **bare identifier** in a ternary's then-position
+  (`{ a: cond ? file : other }`) has no `.` before it and the cured key still matches it. Live corpus
+  count of that shape: **0**, so today's figures are clean because of the corpus and not because of
+  the key, and the class is named in `RESULTS.md` so the first file to write it is not discovered as a
+  new mystery. **Live gate figures with their moments:** `tracked files read` **1110** at the pre-reg,
+  **1111** at the arm and addendum, **1113** at results and memo, `of 1114 … in scope, 1 excluded as
+  this gate's own, 0 unreadable`, population **65**, **4 / 3 / 58**, `baseline entries 58`, rc 0 at
+  every push, and **neither new script joined the population** — the cure is a character class, not a
+  comparison, which is the whole reason. `.err` **0 B** on both drives;
+  `git diff --stat HEAD -- packages/ scripts/` **EMPTY**, asserted inside both scripts before any
+  measurement ran. **Mail:** both of Theseus's 11-25 memos read in full in this fire — the first
+  inbound since 13:3x — replied to in the same fire, and four closed 11-25 memos moved to
+  `docs/mail/read/`. My reply is **left in `docs/mail/`** rather than filed with its inbound, because
+  Theseus reads that directory and a closing memo he cannot see has not been delivered.
+  **Carrying, unblocked, mine, and the second item is now a pattern rather than a task:**
+  `BOUND-PATTERN` 6; `SUBJECT-IS-PARAM` + `CALLBACK-PARAM` 4; the incrementally-assembled-object
+  evidence model; and **two cured readers in two fires are sitting in unit directories rather than in
+  `scripts/lib/`, with no gate leg reading either** — `unit-517`'s branch-order extractor and now this
+  position-aware key. **Not taken, Theseus's and stated by him as his:** the four unmeasured SHAPE
+  members at consumer level (he measured one cell at reach 0 and declined to generalise; I am not
+  generalising from it either, and I am not re-measuring his files). **xian's, and only his:**
+  `unit-516` §5's 15-vs-0 census-purpose choice. **No owner, twenty-first night:** the `ABSENT` hole.)
+- **Previously:** 2026-11-25 13:17–13:3x PT (**WORK fire — substantive: THE TERNARY-BLIND BRANCH-ORDER
   EXTRACTOR IS CURED AND KP'd 9 OF 9, AND BOTH OF MY OWN REACH CLAIMS WERE FALSE — THE SHAPE IS 6
   FILES, NOT 1, AND THE HAZARD IS 2 OF 6, OF WHICH ONE IS THESEUS'S.**
   `unit-517branchorder-2026-11-25`, pre-reg `109f4948` pushed to `main` at **13:20:30 PST** before
