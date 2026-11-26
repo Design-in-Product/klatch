@@ -637,3 +637,92 @@ single `ls docs/research/ | grep 'unit-51'` would have shown `unit-515keyekp` si
 - **Not started, and named rather than silently skipped:** the two items boarded this fire. Both are
   unblocked and neither is deferred on a deadline; this fire's budget went to the verification that
   closed three items, and a bounded Klatch fire stops when it has written its state down.
+
+## 19:14 — Session wrap verification
+
+Clock read **19:14:10 PST** from `date`. Steps run in order, output pasted rather than summarised.
+
+**Step 1 — commits landed on `origin/main`:**
+
+```
+78652631 coord+log(daedalus): 11-25 WORK fire on the restart -- the top three items on my own list
+         were all already closed, two of them for four of my own fires, and a top-down drain cannot
+         tell "not done" from "done and not ticked"
+b418bf0c coord+log(iris): 11-25 STOP fire -- no-op on product, 43-commit delta attributed […]
+a1b3671d coord+log(theseus): session resumed on 2.1.332 at xian's go […]
+2d1d9b68 tasks(daedalus): three unblocked items were already closed and sat stale for up to four of
+         my own fires -- ticked with the verification trail, and the two residuals they stood in
+         front of are boarded
+5f2b3829 coord+log(argus): 11-25 STOP fire -- no-op on product, third such fire today […]
+```
+
+Both of mine are present. **The push was rejected once**, non-fast-forward: Iris and Theseus pushed
+`a1b3671d` + `b418bf0c` while I was writing, both touching `docs/COORDINATION.md`. `git rebase
+origin/main` → `Successfully rebased`, **no conflict**, and I checked my two deliverables survived it
+by content (`grep -c` for my own entry's first line in each) rather than trusting the rebase's exit
+code. No force push; none needed.
+
+**Step 2 — deliverable files present:**
+
+```
+71807 B    docs/operations/duty-cycle/daedalus-tasks.md
+5107751 B  docs/COORDINATION.md
+40312 B    docs/logs/2026-11-25-daedalus-log.md
+```
+
+`git status --short` **empty** — clean tree, nothing uncommitted.
+
+**Step 3 — this log pushed last**, after the two steps above.
+
+### Measurements, both re-driven fresh this fire rather than cited from standing
+
+**Gate (hook-driven at both commits, identical at each):** `census` ok, `typecheck` ok, server
+**147 files / 2295 passed, 1 skipped**, client **29 passed 13 skipped / 354 passed 13 skipped**.
+`verify-decl-body-slicers`: `tracked files read` **1113** of 1114 in scope (1 excluded as the gate's
+own, **0 unreadable**), population **65**, `MARKED / GUARDED / UNGUARDED` **4 / 3 / 58**, baseline
+entries **58** — population and all three columns match standing, and they are **identical across
+both of my commits**, which is what I expect from a change that edits three markdown files and adds
+no tracked code file.
+
+**Sweep, driven (not the census):** `node scripts/sweep-probes.mjs`, exit **0**, stderr **0 B**.
+
+```
+SWEEP PASSED — 45 of 45 swept probes green, 0 red, 0 blocked (0 could not run, 0 ran but did not
+finish), 0 census problem(s), 110 deferred
+```
+
+**I counted the rows rather than quoting the headline:** `grep -c '^  PASS'` → **45**,
+`grep -c -E '^  (FAIL|RED)'` → **0**. The `--census` flag alone would not have been a measurement and
+says so in its own output (*"NOT CHECKED: none of the 45 swept probes was driven"*) — worth recording
+because the census is what the gate runs, and the census passing is not the sweep passing.
+
+### The restart-regression check from 11-10, and why its green is not vacuous
+
+The 11-10 restart onto **2.1.322** reddened the gate fleet-wide because that version began exporting
+`CLAUDE_CONFIG_DIR` into child shells, and `getClaudeProjectsDir()` — **my code** — read it ahead of
+`os.homedir()`. I cured it that day (`unit-465cfgdir`, cures `5bc3c0e5` + `ab5f3f54`). This restart is
+onto **2.1.332**, so the obvious thing to say is "gate green, cure holds." That would have been a
+green on a possibly-dead cell, so I checked whether the cure was **exercised**:
+
+```
+CLAUDE_CONFIG_DIR=[/Users/xian/.handled → /Users/xian/.claude]   (set in this session)
+in child node: "/Users/xian/.claude"                             (propagates into child processes)
+```
+
+The variable **is** set and **does** reach child `node`, so the gate's 2295 server tests ran with the
+exact condition that reddened every seat on 11-10. **The cure holds under 2.1.332, measured rather
+than assumed** — and had the variable been unset, gate-green would have said nothing about it.
+
+**Version verified, not recalled:** `claude --version` → **2.1.332 (Claude Code)**, matching what
+xian's restart message said. Checked because Theseus's `a1b3671d` corrected his own
+`COORDINATION.md` status line from **2.1.322** in the same hour; my section carries no version
+string in its status line, so there was nothing of mine to correct — confirmed by scanning my section
+to the next `### ` header rather than assuming.
+
+### Memory
+
+Appended as **§2** to `feedback_a_cure_under_a_different_subject_never_closes_the_thread.md` (2513 →
+5244 B) rather than minting a new entry, because §1 is the same defect pointed the other way: §1 is a
+cure whose closure never reached a *teammate's* thread; §2 is a closure that never reached **my own
+task list**, the artefact that routes my next fire. Index hook updated to carry the count (`— 2`),
+line count unchanged at 156, so no new index line was added.
