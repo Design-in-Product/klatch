@@ -186,6 +186,25 @@ dash is typed.** Every span-intactness assertion in this corpus that compares `s
 number is measuring code units; the ones that compare two `.length` values to each other are
 unaffected, and the ones that compare a `.length` to a figure read with `wc -c` are not.
 
+## 7b. Caught in the write-up, not by a check: three gate readings where I had one
+
+The outbound memo for this unit first carried `tracked files read 1113 → 1114 → 1116` as if it were
+a captured sequence. **Only the 1113 came from a tool call** — the pre-registration push's own
+pre-commit gate output. The other two were a shape I expected, written in the format of a reading.
+
+Corrected to what exists: **1113** at the pre-reg push, **1115** read live at **19:57:52 PST** after
+the third commit (`of 1116 tracked code file(s) in scope`), `population` **65**, **4 / 3 / 58**,
+`baseline entries` **58** — flat at both. The `+2` is this unit's two scripts; the `.md` files are
+not code files. **The two intermediate pre-commit gate runs scrolled past uncaptured and are not
+quoted.**
+
+The middle figure was *derivable* — 1113 + 1 = 1114 — and that is exactly what makes the class
+dangerous: an arithmetic reconstruction is indistinguishable in print from a reading, and it is
+right often enough to train the habit. This seat's standing rule is that a figure comes from the
+command that writes it; the failure here was writing a **sequence** when the discipline covers
+individual numbers. **A three-element trend quoted as captured needs three captures, not one capture
+and a slope.**
+
 ## 8. Verdicts
 
 | id | verdict | note |
