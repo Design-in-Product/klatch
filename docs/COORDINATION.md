@@ -9076,8 +9076,86 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** working — duty cycle armed on Claude Code **2.1.332** (restarted onto that build 11/25 ~19:0x PT at xian's go; `claude --version` read in this session — this line read 2.1.322 until then, which was the true version string when it was written); 11/26 STOP 19:47 fired and is logged immediately below, then 11/26 WORK 14:47, then 11/26 START 10:47, then 11/25 STOP 19:47, then 11/25 WORK 14:47, then 11/25 START 10:47, then 11/24 STOP 19:47, with 11/24 WORK 14:47 under it, then 11/24 START 10:47, then 11/23 STOP 19:47, then 11/23 WORK 14:47, then 11/23 START 10:47, then 11/22 STOP 19:47, then 11/22 WORK 14:47, then 11/22 START 10:47, then 11/21 STOP 19:47, then 11/21 WORK 14:47 and 11/21 START 10:47, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
-- **Updated:** 2026-11-26 ~19:47–20:0x PT (**STOP fire — no-op on product (`git diff --stat HEAD --
+- **Status:** working — duty cycle armed on Claude Code **2.1.332** (restarted onto that build 11/25 ~19:0x PT at xian's go; `claude --version` read in this session — this line read 2.1.322 until then, which was the true version string when it was written); 11/27 START 10:47 fired and is logged immediately below, then 11/26 STOP 19:47, then 11/26 WORK 14:47, then 11/26 START 10:47, then 11/25 STOP 19:47, then 11/25 WORK 14:47, then 11/25 START 10:47, then 11/24 STOP 19:47, with 11/24 WORK 14:47 under it, then 11/24 START 10:47, then 11/23 STOP 19:47, then 11/23 WORK 14:47, then 11/23 START 10:47, then 11/22 STOP 19:47, then 11/22 WORK 14:47, then 11/22 START 10:47, then 11/21 STOP 19:47, then 11/21 WORK 14:47 and 11/21 START 10:47, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Updated:** 2026-11-27 ~10:47–11:0x PT (**START fire — no-op on product (`git diff --stat HEAD --
+  packages/ scripts/` EMPTY at 10:50:12 PST, in the same command that read the SHA and created the
+  unit directory, and re-asserted inside the arm before any measurement). ONE memo had arrived since
+  the 11-26 STOP fire — Daedalus's 11-27 START (`unit-527setgeneric`, the `new Set<T>(` generic
+  blindness at 71 sites) — read in full before any work; it asks nothing of this seat and says so.
+  Calliope's 11-26 item-10 memo stays visible in `docs/mail/`: xian's call and only his.** —
+  **the unit came from my own carried NEXT item, boarded 11-26 STOP with a blocker that was real that
+  time** ("needs a fresh unit with its own pinned population, because re-keying `unit-522` republishes
+  its census and frozen research files are not edited"). This fire did the registration, so the
+  blocker is **discharged, not carried a third time**.
+  `unit-528prefixform-2026-11-27`, pre-reg `8e49bb0f` on `main`, clock **10:50:12 PST**,
+  **committed as `5f9f13ff` and pushed to `origin/main` before `arm-prefixform.mjs` existed**; §1
+  declares what had and had **not** been read — notably that I *had* read all 28 site lines, so no
+  prediction could claim blindness to them, and that I had opened **no** subject declaration.
+  **13 predictions. Arm 11 HIT / 3 REFUTED of 14; post-hoc 7 HIT / 1 REFUTED of 8.**
+  **CONTROL, borrowed from Daedalus's `unit-527`:** `unit-526`'s frozen arm driven **unchanged** as a
+  child at this pin — exit **0**, its published-key figure **58**, my sliced PUBLISHED reading **58**,
+  both T-POPs **655**. `unit-522`'s figure reproduces **exactly** one day on. **KP/KN 7 of 7** in the
+  arm, **6 of 6** on the repaired sub-key, **5 of 5** on the repaired detector. `ARM.err`,
+  `CONTROL-526.err`, `POSTHOC.err` all **0 B**.
+  **THE ANSWER — THE CURE RECOVERS 12 OF 28, AND THAT IS NOT A SHORTFALL IN THE REGEX.** "The 28"
+  partitions into **four mechanisms**, 28 of 28 in exactly one bucket, fall-through buckets printed
+  even at 0: `B-CURED-ADDS-IT` **12** · `C-REGION-FILTER(IDENT-IN-CODE)` **9** · `E-TOKEN-GLUED` **2**
+  · `F-SEPARATOR-OR-SUBJECT-CLASS` **3** · `G-NO-TOKEN-IN-HEAD` **2** · `A`, `D` **0**. Over T-POP
+  655: PUBLISHED **58** · PREFIX **17** · BOTH **0** · union **72** · ADDED **14** · LOST **0** ·
+  14,999 `.length` occurrences. **`KP2` is what proves `C`** — it wanted `IDENT-IN-CODE` on
+  `bytes: src.length,` and got it, so the cure sees all nine and the **inherited** census filter
+  discards them. My arm printed one label, `REFUSED by the cure`, over all sixteen non-recoveries —
+  **false about the cure for nine of them.** The prefix mechanism owns **17 of 28**.
+  **AGAINST ME, ONE — I had read every one of the 28 lines and still registered the recovery at ≥24.**
+  Not a blindness; the pre-registration says I read them. *Twenty-eight lines sharing a surface shape
+  do not share a mechanism, and reading all of them is no protection, because the shape is what is
+  visible and the mechanism is not.* Daedalus's 11-27 keeper — *a reader's blindness does not decide a
+  site's class when something upstream decides its membership first* — **transferred inside four
+  hours and is the whole of `C`.**
+  **AGAINST ME, TWO — the post-hoc's own E/F sub-split was wrong on drive 1, and an empty bucket is
+  what caught it.** `\b(?:B|b)ytes?(?=[A-Za-z0-9_])`: the optional `s` lets `byte` match the **prefix
+  of `bytes`** while the lookahead sees **that very `s`**, so `bytes attributable to…` read as glued.
+  E **5**, F **0** — F vacuously zero in a partition I knew had bare-token members is what made me
+  check, and the over-match was **driven, not reasoned**. Repaired to maximal identifier runs; E **2**,
+  F **3**, plus a **6-cell gate drive 1 did not have**. *A bucket built to stop one fusion fused two
+  one level down* — which is why the zero buckets print.
+  **AGAINST ME, THREE — `P8` HIT off an evidence detector I hand-typed in the arm and never graded.**
+  `BUF_DECL` scores **4 of 5** once gated: `(?![^)]*utf8)` cannot cross the `)` of a nested
+  `join(...)`, so `readFileSync(join(REPO, SLICE), 'utf8')` — **a string** — reads as a Buffer, the
+  shape of two of the three sites it credited. Under the repair the figure is **2** and **the
+  membership changed rather than shrinking**: both false credits dropped, **one true credit added**
+  (`encoding: 'buffer'`). *A decontamination fix removes false credits and can hand you a true one you
+  never had, so recount the members and not just the total.*
+  **AGAINST A FIGURE I PUBLISHED YESTERDAY — the false-positive floor of 1 is 7.** `unit-526` §2 put
+  the floor among the 28 at **1**. The hand-read establishes **7** (3 CORRECT CODE — genuinely bytes;
+  4 NOT A BYTE CLAIM AT ALL). **9 established TRUE MISLABELS, 12 UNRESOLVED** → false positives in
+  **[7, 19]**, true mislabels in **[9, 21]**.
+  **`P13` REFUTED, and the reason is the keeper.** Registered [18, 27] on the assumption the hand-read
+  was decidable from the arm's evidence — the subject's declaration **in the same file**. For **12 of
+  28 there is no in-file declaration at all** (parameter, helper return, destructure): the evidence key
+  is blind to **43%** of the population it was built to judge, and in an instrument corpus that is the
+  **majority** form. *An evidence key for a hand-read needs its own coverage figure before the
+  hand-read's size is registered.* Five subject declarations were opened by hand to lift sites out of
+  UNRESOLVED; the remaining 12 are named individually in `RESULTS.md` §4. **`P6` REFUTED cleanly and
+  smally:** in 655 files, **0** `.length` sites carry a unit token on both sides at once.
+  `population` **65**, **MARKED 4 / GUARDED 3 / UNGUARDED 58**, `baseline entries` **58** — flat;
+  `tracked files read` **1125**, flat on Daedalus's 11-27 reading, growth being this unit's own files.
+  Gate rc **0** at all four pushes.
+  **Drain:** the one new memo read and answered in-fire; the carried NEXT unit driven to a close and
+  published; reply pushed to `main` in its own commit. **Close-discipline applied:** Daedalus's 11-27
+  memo `git mv`'d to `docs/mail/read/` with my reply — it asked nothing and nothing is open on it; he
+  had already moved my 11-26 memo as closer. **Calliope's item-10 memo left visible** — xian's and
+  only his. **Four successors boarded, each with its figure attached, none deferred and none with a
+  deadline:** the 12 UNRESOLVED (needs a subject resolver following a parameter to its call site and a
+  helper to its `return`); `C`'s 9 sites (a **census-purpose** question, not a reader question); a
+  token-shape widening for E (2) and F (3); and the carried `L2`, `L3`, `unit-516` §5 pattern defect,
+  `SECOND-ARG` nested-call blindness. **One cross-seat item named rather than duplicated:** my 12
+  UNRESOLVED and Daedalus's `unit-527` §6 default-parameter item are the **same missing cross-file
+  reach from two ends** — his is what a default parameter *is*, mine is what a parameter is *fed* —
+  and the memo asks him to say if he takes his, so I key mine on top rather than building a second
+  resolver.
+
+- **Previously:** 2026-11-26 ~19:47–20:0x PT (**STOP fire — no-op on product (`git diff --stat HEAD --
   packages/ scripts/` EMPTY at 19:48:58 PST and re-asserted inside the arm before any measurement).
   TWO memos had arrived since the 14:47 fire, both read in full before any work: Daedalus's
   `unit-525…/READ.md` answering my `unit-524` §5 residual at **10 LIVE / 0 FIXTURE** (filed as a

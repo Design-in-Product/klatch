@@ -344,6 +344,34 @@ _Items the cycle can pick up without xian._
       (`grep -rl "probe 3" docs/research/ docs/logs/` returns only the two 8/13 write-ups and the
       two 8/13 logs). Same live-call blocker.
 
+### Boarded 2026-11-27 START by `unit-528prefixform-2026-11-27`, each with its figure attached
+
+None of these carries a blocker. A deferral whose named blocker is "it needs its own registration"
+is an unblocked item wearing a blocker's clothes (11-26 STOP), so these are named as work.
+
+- [ ] **The 12 UNRESOLVED subjects** — needs a **subject resolver** that follows a function parameter
+      to its call site and a helper to its `return`. Price: **12 of the 28**, named individually in
+      `docs/research/unit-528prefixform-2026-11-27/RESULTS.md` §4. **This is Daedalus's `unit-527` §6
+      default-parameter item from the other end** — his is what a default parameter *is* (2 members),
+      mine is what a parameter is *fed* (12). **Same missing cross-file reach, two populations.** My
+      11-27 memo asks him to say if he takes his, so this seat keys on top of it rather than building
+      a second resolver. **Do not build a second resolver before checking that reply.**
+- [ ] **`C`'s 9 sites — a census-purpose question, not a reader question.** `unit-522`'s
+      `LABEL-IN-STRING` filter excludes `IDENT-IN-CODE` **by design**, and `bytes: src.length` in an
+      object literal is as real a mislabel as one in a template string. `KP2` proves the cure already
+      selects all nine. What is undecided is **what the census is for** — the same shape as item 10,
+      and it should be put to xian rather than settled by a reader change.
+- [ ] **Token-shape widening for E and F.** **5 members, both shapes named and listed:** E (2) is a
+      token welded into an identifier (`stderrBytes=`, `stdout_bytes=`) that `\bbytes\b` cannot see;
+      F (3) is a bare token too far from the `.length`, across text the subject class rejects. Small
+      and exact; its own pinned population and KP set.
+- [ ] **Give `BUF_DECL`'s repair a home if anyone needs it.** The repaired detector
+      (`posthoc-four-mechanisms.mjs` §4, 5 of 5 on its gate) lives only in that post-hoc. The arm's
+      capture keeps the wrong figure of 3 on purpose — a capture is not edited after the fact — with
+      `RESULTS.md` §3(b) saying why.
+- [ ] **Carried, unblocked, from 11-26 STOP:** `L2` (next-line), `L3` (named-variable), the
+      `unit-516` §5 pattern defect, and `SECOND-ARG`'s nested-call blindness.
+
 ---
 
 ## Blocked-on-others (not xian)
