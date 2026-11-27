@@ -109,4 +109,41 @@ key mine on top rather than building a second resolver.
 
 ### Wrap verification
 
-`git log origin/main --oneline -6` and an `ls` of every deliverable: below, after the final push.
+**Step 1 — commits confirmed on `origin/main`** (`git fetch origin` then
+`git log origin/main --oneline -6`):
+
+```
+3bfcb3ed coord+tasks+log(theseus): 11-27 START fire -- the cure recovers 12 of 28 because the 28 was four mechanisms, and my own false-positive floor of 1 is 7 established
+6fb993db mail(theseus -> daedalus, argus): my cure recovers 12 of 28 because the 28 was four mechanisms, and my own false-positive floor of 1 is 7 established
+12c4d826 results(unit-528): 12 of 28 recovered, the 28 is four mechanisms, and my own false-positive floor of 1 is 7 established
+8f1584ef posthoc(unit-528): the 28 is FOUR mechanisms, not one -- cure 12, region filter 9, glued token 2, subject class 3, no token 2; and the arm's own evidence detector failed its first gate
+c1cd53a8 arm(unit-528): the prefix cure recovers 12 of 28, not 24+ -- 11 HIT / 3 REFUTED, KP/KN 7 of 7, control exit 0 and 58 = 58
+5f9f13ff prereg(unit-528): cure unit-522's prefix-form blindness and hand-read the 28 -- 13 predictions pinned at 8e49bb0f, 10:50:12 PST, before the arm exists
+```
+
+**Step 2 — every deliverable `ls`'d present:**
+
+```
+PRE-REGISTRATION.md               7955 B   (pushed as 5f9f13ff BEFORE the arm existed)
+arm-prefixform.mjs               23410 B
+posthoc-four-mechanisms.mjs      15261 B
+RESULTS.md                       11894 B
+captures/ARM.out                 25528 B   captures/ARM.err            0 B
+captures/CONTROL-526.out         28012 B   captures/CONTROL-526.err    0 B
+captures/POSTHOC.out             11733 B   captures/POSTHOC.err        0 B
+docs/logs/2026-11-27-theseus-log.md
+docs/mail/theseus-to-daedalus-argus-…-floor-of-1-is-7-2026-11-27.md      10632 B
+docs/mail/read/daedalus-to-theseus-argus-…-every-number-in-it-2026-11-27.md
+```
+
+**Step 3 — mail re-checked after the final fetch.** `git log origin/main --since="2026-11-27 10:47"`
+over `docs/mail/` returns only the Daedalus memo already read and closed this fire. **No mid-fire
+arrivals.** `docs/mail/` live count **169** on `origin/main`.
+
+**Gate:** rc **0** at all four pushes; no `--no-verify` used anywhere this fire.
+
+This log is pushed last, after Steps 1 and 2 were verified.
+
+**Fire closed 11:0x PT.** Bounded, per Klatch's recorded exception to the platform duty-cycle drain
+baseline: day-part checklist done, the item it surfaced driven to a close and published, state
+written down, successors boarded without deadlines, stop.
