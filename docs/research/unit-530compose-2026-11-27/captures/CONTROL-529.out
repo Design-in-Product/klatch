@@ -1,0 +1,258 @@
+unit-529defaultparam — arm
+SHA d9f67716124a · clock 2026-11-27 14:55:42 PST
+pre-registration SHA 252a5cfdf5aa; this drive is at d9f67716124a
+  (the difference is the pre-registration commit itself, markdown only — no `.mjs`,
+   `.mts`, `.js`, `.ts` or `.cjs` file changed, so the population is the same one.)
+frozen subject: docs/research/unit-523indirectsize-2026-11-26/arm-indirectsize.mjs   sha256[0:12] 35e449901131  (clean against HEAD)
+cure-G donor:   docs/research/unit-527setgeneric-2026-11-27/arm-setgeneric.mjs   sha256[0:12] dbebb76f4491  (clean against HEAD)
+instrument corpus: 863 files   (CODE_EXT: /\.(mjs|mts|js|ts|cjs)$/)
+sliced region 7893 B · DEF 8184 B · GEN 8103 B · BOTH 8394 B
+NEEDLE as instantiated: "new Set("
+donor region 1112 B, yielded GENERIC_SRC + 4 SUBS
+  GENERIC_SRC read out of the donor: "new\\s+Set\\s*(?:<[^<>]*>)?\\s*\\("
+
+─── cure D, the one substitution, printed whole ────────────────────────────────
+  D1  bindingOf: fall through to a DEFAULT PARAMETER when no declaration matches
+    PARAM_SRC: "[(,]\\s*NAME\\s*(?::[^=,)\\n]*)?=\\s*(.*)$"
+    FROM: "  const m = re.exec(code);\n  if (!m) return null;\n  return { rhs: m[1], line: lineOf(code, m.index) };"
+    TO:   "  const m = re.exec(code);\n  if (m) return { rhs: m[1], line: lineOf(code, m.index) };\n  const _pre = new RegExp(\"[(,]\\\\s*NAME\\\\s*(?::[^=,)\\\\n]*)?=\\\\s*(.*)$\".replace('NAME', name.replace(/[$]/g, '\\\\$')), 'm');\n  const _pm = _pre.exec(code);\n  if (!_pm) return null;\n  const _pl = lineOf(code, _pm.index);\n  __firings.push({ name, line: _pl, rhs: _pm[1] });\n  return { rhs: _pm[1], line: _pl };"
+
+─── cure G, the four substitutions as READ out of unit-527's arm ───────────────
+  S1  setTailIndices: needle loop -> generic-tolerant locator loop
+    FROM: "  let i = 0;\n  while ((i = code.indexOf(NEEDLE, i)) !== -1) {\n    const open = i + NEEDLE.length - 1;"
+    TO:   "  const LOC = new RegExp(\"new\\\\s+Set\\\\s*(?:<[^<>]*>)?\\\\s*\\\\(\", 'g');\n  let i = 0;\n  let _m;\n  while ((LOC.lastIndex = i), (_m = LOC.exec(code)) !== null) {\n    i = _m.index;\n    const open = _m.index + _m[0].length - 1;"
+  S2  keyIndirect: isDirectSetTail regex admits a type argument list
+    FROM: "const isDirectSetTail = /^new\\s+Set\\s*\\([\\s\\S]*\\)$/.test(t);"
+    TO:   "const isDirectSetTail = /^new\\s+Set\\s*(?:<[^<>]*>)?\\s*\\([\\s\\S]*\\)$/.test(t);"
+  S3  keyIndirect: SET-EXPR receiver test
+    FROM: "rec.sawParen && t.includes(NEEDLE)"
+    TO:   "rec.sawParen && new RegExp(\"new\\\\s+Set\\\\s*(?:<[^<>]*>)?\\\\s*\\\\(\").test(t)"
+  S4  keyIndirect: SET-BOUND binding test
+    FROM: "b.rhs.includes(NEEDLE)"
+    TO:   "new RegExp(\"new\\\\s+Set\\\\s*(?:<[^<>]*>)?\\\\s*\\\\(\").test(b.rhs)"
+
+─── KP / KN cells, all four instantiations ─────────────────────────────────────
+  PASS  K1  regression: a plain bound Set is SET-BOUND under all four
+        want PUB=SET-BOUND/INVARIANCE/BLIND  DEF=SET-BOUND/INVARIANCE/BLIND  GEN=SET-BOUND/INVARIANCE/BLIND  BOTH=SET-BOUND/INVARIANCE/BLIND
+        got  PUB=SET-BOUND/INVARIANCE/BLIND  DEF=SET-BOUND/INVARIANCE/BLIND  GEN=SET-BOUND/INVARIANCE/BLIND  BOTH=SET-BOUND/INVARIANCE/BLIND
+  PASS  K2  cure G alone: a GENERIC bound Set — OTHER-BOUND until G is present
+        want PUB=OTHER-BOUND/INVARIANCE  DEF=OTHER-BOUND/INVARIANCE  GEN=SET-BOUND/INVARIANCE/BLIND  BOTH=SET-BOUND/INVARIANCE/BLIND
+        got  PUB=OTHER-BOUND/INVARIANCE  DEF=OTHER-BOUND/INVARIANCE  GEN=SET-BOUND/INVARIANCE/BLIND  BOTH=SET-BOUND/INVARIANCE/BLIND
+  PASS  K3  CURE D's KNOWN POSITIVE: a PLAIN Set as a default parameter — D alone reaches it
+        want PUB=UNRESOLVED/INVARIANCE  DEF=SET-BOUND/INVARIANCE/BLIND  GEN=UNRESOLVED/INVARIANCE  BOTH=SET-BOUND/INVARIANCE/BLIND
+        got  PUB=UNRESOLVED/INVARIANCE  DEF=SET-BOUND/INVARIANCE/BLIND  GEN=UNRESOLVED/INVARIANCE  BOTH=SET-BOUND/INVARIANCE/BLIND
+  PASS  K4  THE MEMBERS' OWN SHAPE (P2/P3/P4): a GENERIC Set as a default parameter
+        want PUB=UNRESOLVED/INVARIANCE  DEF=OTHER-BOUND/INVARIANCE  GEN=UNRESOLVED/INVARIANCE  BOTH=SET-BOUND/INVARIANCE/BLIND
+        got  PUB=UNRESOLVED/INVARIANCE  DEF=OTHER-BOUND/INVARIANCE  GEN=UNRESOLVED/INVARIANCE  BOTH=SET-BOUND/INVARIANCE/BLIND
+  PASS  K5  a parameter with NO default and no binding — UNRESOLVED under all four (Theseus’s class)
+        want PUB=UNRESOLVED/INVARIANCE  DEF=UNRESOLVED/INVARIANCE  GEN=UNRESOLVED/INVARIANCE  BOTH=UNRESOLVED/INVARIANCE
+        got  PUB=UNRESOLVED/INVARIANCE  DEF=UNRESOLVED/INVARIANCE  GEN=UNRESOLVED/INVARIANCE  BOTH=UNRESOLVED/INVARIANCE
+  PASS  K6  P12 / LD5: an array-destructuring DECLARATION stays UNRESOLVED under all four
+        want PUB=UNRESOLVED/INVARIANCE  DEF=UNRESOLVED/INVARIANCE  GEN=UNRESOLVED/INVARIANCE  BOTH=UNRESOLVED/INVARIANCE
+        got  PUB=UNRESOLVED/INVARIANCE  DEF=UNRESOLVED/INVARIANCE  GEN=UNRESOLVED/INVARIANCE  BOTH=UNRESOLVED/INVARIANCE
+  PASS  K7  P13 / LD5: a DESTRUCTURED parameter with no default stays UNRESOLVED under all four
+        want PUB=UNRESOLVED/INVARIANCE  DEF=UNRESOLVED/INVARIANCE  GEN=UNRESOLVED/INVARIANCE  BOTH=UNRESOLVED/INVARIANCE
+        got  PUB=UNRESOLVED/INVARIANCE  DEF=UNRESOLVED/INVARIANCE  GEN=UNRESOLVED/INVARIANCE  BOTH=UNRESOLVED/INVARIANCE
+  PASS  K8  P5 additivity: a real declaration still WINS over a later default parameter
+        want PUB=MAP-BOUND/INVARIANCE  DEF=MAP-BOUND/INVARIANCE  GEN=MAP-BOUND/INVARIANCE  BOTH=MAP-BOUND/INVARIANCE
+        got  PUB=MAP-BOUND/INVARIANCE  DEF=MAP-BOUND/INVARIANCE  GEN=MAP-BOUND/INVARIANCE  BOTH=MAP-BOUND/INVARIANCE
+  PASS  K9  LD2, KNOWN POSITIVE FOR CURE D'S OWN HARM: a default in fn A binds a use in fn B
+        want PUB=UNRESOLVED/INVARIANCE  DEF=SET-BOUND/INVARIANCE/BLIND  GEN=UNRESOLVED/INVARIANCE  BOTH=SET-BOUND/INVARIANCE/BLIND
+        got  PUB=UNRESOLVED/INVARIANCE  DEF=SET-BOUND/INVARIANCE/BLIND  GEN=UNRESOLVED/INVARIANCE  BOTH=SET-BOUND/INVARIANCE/BLIND
+  PASS  K10 LD1, declared limit: a type annotation containing a comma defeats cure D
+        want PUB=UNRESOLVED/INVARIANCE  DEF=UNRESOLVED/INVARIANCE  GEN=UNRESOLVED/INVARIANCE  BOTH=UNRESOLVED/INVARIANCE
+        got  PUB=UNRESOLVED/INVARIANCE  DEF=UNRESOLVED/INVARIANCE  GEN=UNRESOLVED/INVARIANCE  BOTH=UNRESOLVED/INVARIANCE
+  PASS  K11 LD4, KNOWN POSITIVE FOR THE OVER-WIDE `[(,]` CLASS: an assignment in CALL position
+        want PUB=UNRESOLVED/INVARIANCE  DEF=SET-BOUND/INVARIANCE/BLIND  GEN=UNRESOLVED/INVARIANCE  BOTH=SET-BOUND/INVARIANCE/BLIND
+        got  PUB=UNRESOLVED/INVARIANCE  DEF=SET-BOUND/INVARIANCE/BLIND  GEN=UNRESOLVED/INVARIANCE  BOTH=SET-BOUND/INVARIANCE/BLIND
+  PASS  K12 the guard arm survives cure D: a guarded default parameter is GUARDED, not BLIND
+        want PUB=UNRESOLVED/INVARIANCE  DEF=SET-BOUND/INVARIANCE/GUARDED  GEN=UNRESOLVED/INVARIANCE  BOTH=SET-BOUND/INVARIANCE/GUARDED
+        got  PUB=UNRESOLVED/INVARIANCE  DEF=SET-BOUND/INVARIANCE/GUARDED  GEN=UNRESOLVED/INVARIANCE  BOTH=SET-BOUND/INVARIANCE/GUARDED
+  PASS  K13 direction is untouched by cure D: a default parameter compared for CHANGE
+        want PUB=UNRESOLVED/CHANGE  DEF=SET-BOUND/CHANGE/BLIND  GEN=UNRESOLVED/CHANGE  BOTH=SET-BOUND/CHANGE/BLIND
+        got  PUB=UNRESOLVED/CHANGE  DEF=SET-BOUND/CHANGE/BLIND  GEN=UNRESOLVED/CHANGE  BOTH=SET-BOUND/CHANGE/BLIND
+  PASS  K14 regression: a plain DIRECT tail is excluded from the population under all four
+        want PUB=EXCLUDED  DEF=EXCLUDED  GEN=EXCLUDED  BOTH=EXCLUDED
+        got  PUB=EXCLUDED  DEF=EXCLUDED  GEN=EXCLUDED  BOTH=EXCLUDED
+  PASS  K15 unit-527's K8/P14' across the 2x2: a GENERIC direct tail is CALL until G is present
+        want PUB=CALL/INVARIANCE  DEF=CALL/INVARIANCE  GEN=EXCLUDED  BOTH=EXCLUDED
+        got  PUB=CALL/INVARIANCE  DEF=CALL/INVARIANCE  GEN=EXCLUDED  BOTH=EXCLUDED
+  KP 15 of 15
+
+─── control 1: the frozen arm, driven unchanged at this SHA ────────────────────
+  PASS  C0  frozen arm drove, rc 0                     rc 0
+  PASS  C1  population equal                           frozen=126 slice=126
+  PASS  C2  excludedDirectTails equal                  frozen=61 slice=61
+  PASS  C3.SET-BOUND                                   frozen=36 slice=36
+  PASS  C3.SET-EXPR                                    frozen=0 slice=0
+  PASS  C3.MAP-BOUND                                   frozen=10 slice=10
+  PASS  C3.MAP-EXPR                                    frozen=0 slice=0
+  PASS  C3.OTHER-BOUND                                 frozen=34 slice=34
+  PASS  C3.UNRESOLVED                                  frozen=7 slice=7
+  PASS  C3.PROPERTY                                    frozen=11 slice=11
+  PASS  C3.CALL                                        frozen=21 slice=21
+  PASS  C3.RECEIVER-UNKEYED                            frozen=7 slice=7
+  PASS  C3.SET-TAIL-DIRECT                             frozen=0 slice=0
+  PASS  C4  narrowed hazard equal                      frozen=4 slice=4
+  PASS  C5  cure D absent from the PUB and GEN texts   PUB=0 GEN=0 occurrences
+  PASS  C6  cure D present exactly once in the DEF and BOTH texts DEF=1 BOTH=1 occurrences
+  PASS  C7  cure D actually FIRED on the corpus under DEF 2 firings
+  PASS  C8  PUB and GEN firing logs are empty, as the texts require PUB=0 GEN=0
+  CONTROL-1 18 of 18
+
+─── control 2: cross-unit, GEN vs unit-527's published figures ─────────────────
+  precondition (population unmoved): DOES NOT HOLD
+    corpus 863 vs 858 · PUB SET-BOUND 36 vs 36 · PUB OTHER-BOUND 34 vs 34
+  n/a-AGREES  X1  G-cured slice byte length      GEN=8103 unit-527=8103
+  n/a-AGREES  X2  sliced region byte length      GEN=7893 unit-527=7893
+  n/a-AGREES  X3  SET-BOUND after G              GEN=40 unit-527=40
+  n/a-AGREES  X4  OTHER-BOUND after G            GEN=30 unit-527=30
+  n/a-AGREES  X5  narrowed hazard after G        GEN=5 unit-527=5
+  CROSS-UNIT 5 of 5 agree; the precondition does NOT hold, so these are REPORTED, not asserted
+
+─── Arm A: the UNRESOLVED partition (P1) ───────────────────────────────────────
+  UNRESOLVED under PUB: 7
+  detector order (an implementation choice, declared): DEFAULT-PARAM > DESTRUCTURE-DECL > PARAM-NO-DEFAULT > ASSIGNED-ELSEWHERE > NO-DETECTOR
+    DEFAULT-PARAM          2
+    DESTRUCTURE-DECL       4
+    PARAM-NO-DEFAULT       1
+    ASSIGNED-ELSEWHERE     0
+    NO-DETECTOR            0
+    UNREADABLE             0
+  sites firing MORE THAN ONE detector: 2
+    (at 0, the order above cannot have decided any bucket; above 0, it can, and the
+     offending sites are listed immediately below.)
+    scripts/probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts:188  receiver=seen  fired=DEFAULT-PARAM+ASSIGNED-ELSEWHERE
+    scripts/probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts:188  receiver=seen  fired=DEFAULT-PARAM+ASSIGNED-ELSEWHERE
+
+  every UNRESOLVED site, with its full detector vector and whole line:
+    docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:291  receiver=wPre  BUCKET=DESTRUCTURE-DECL
+      detectors DEFAULT-PARAM=n DESTRUCTURE-DECL=Y PARAM-NO-DEFAULT=n ASSIGNED-ELSEWHERE=n
+      const p4 = wPre.size === 2 && wPre.has('LANDS') && wPre.has('REFUTED')
+      DEF   UNRESOLVED/OTHER-N bindLine=null
+      GEN   UNRESOLVED/OTHER-N bindLine=null
+      BOTH  UNRESOLVED/OTHER-N bindLine=null
+    docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:292  receiver=wPost  BUCKET=DESTRUCTURE-DECL
+      detectors DEFAULT-PARAM=n DESTRUCTURE-DECL=Y PARAM-NO-DEFAULT=n ASSIGNED-ELSEWHERE=n
+        && wPost.size === 1 && wPost.has('LANDS')
+      DEF   UNRESOLVED/INVARIANCE bindLine=null
+      GEN   UNRESOLVED/INVARIANCE bindLine=null
+      BOTH  UNRESOLVED/INVARIANCE bindLine=null
+    docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:306  receiver=wPre  BUCKET=DESTRUCTURE-DECL
+      detectors DEFAULT-PARAM=n DESTRUCTURE-DECL=Y PARAM-NO-DEFAULT=n ASSIGNED-ELSEWHERE=n
+      const p4Threshold = wPre.size === 2 && wPost.size === 1 && wPost.has('LANDS');
+      DEF   UNRESOLVED/OTHER-N bindLine=null
+      GEN   UNRESOLVED/OTHER-N bindLine=null
+      BOTH  UNRESOLVED/OTHER-N bindLine=null
+    docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:306  receiver=wPost  BUCKET=DESTRUCTURE-DECL
+      detectors DEFAULT-PARAM=n DESTRUCTURE-DECL=Y PARAM-NO-DEFAULT=n ASSIGNED-ELSEWHERE=n
+      const p4Threshold = wPre.size === 2 && wPost.size === 1 && wPost.has('LANDS');
+      DEF   UNRESOLVED/INVARIANCE bindLine=null
+      GEN   UNRESOLVED/INVARIANCE bindLine=null
+      BOTH  UNRESOLVED/INVARIANCE bindLine=null
+    docs/research/unit-503stalelabelwidth-2026-11-22/derive-stale-entry-cost.mjs:75  receiver=s  BUCKET=PARAM-NO-DEFAULT
+      detectors DEFAULT-PARAM=n DESTRUCTURE-DECL=n PARAM-NO-DEFAULT=Y ASSIGNED-ELSEWHERE=n
+        Object.entries(byLabel).map(([k, s]) => [k, s.size === 1 ? [...s][0] : [...s]]),
+      DEF   UNRESOLVED/INVARIANCE bindLine=null
+      GEN   UNRESOLVED/INVARIANCE bindLine=null
+      BOTH  UNRESOLVED/INVARIANCE bindLine=null
+    scripts/probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts:188  receiver=seen  BUCKET=DEFAULT-PARAM
+      detectors DEFAULT-PARAM=Y DESTRUCTURE-DECL=n PARAM-NO-DEFAULT=n ASSIGNED-ELSEWHERE=Y
+        if (CORPUS_CTX_RE.test(stripComments(read(rel)))) return { direct: seen.size === 1, via: seen.size === 1 ? null : rel };
+      DEF   OTHER-BOUND/INVARIANCE bindLine=185
+      GEN   UNRESOLVED/INVARIANCE bindLine=null
+      BOTH  SET-BOUND/INVARIANCE/BLIND bindLine=185
+    scripts/probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts:188  receiver=seen  BUCKET=DEFAULT-PARAM
+      detectors DEFAULT-PARAM=Y DESTRUCTURE-DECL=n PARAM-NO-DEFAULT=n ASSIGNED-ELSEWHERE=Y
+        if (CORPUS_CTX_RE.test(stripComments(read(rel)))) return { direct: seen.size === 1, via: seen.size === 1 ? null : rel };
+      DEF   OTHER-BOUND/INVARIANCE bindLine=185
+      GEN   UNRESOLVED/INVARIANCE bindLine=null
+      BOTH  SET-BOUND/INVARIANCE/BLIND bindLine=185
+
+─── Arm B: the 2x2 class table ─────────────────────────────────────────────────
+  population            126     126     126     126     
+  excludedDirectTails   61      61      61      61      
+
+  class                PUB     DEF     GEN     BOTH     dDEF   dGEN   dBOTH
+  SET-BOUND            36      36      40      42       0      +4     +6     
+  SET-EXPR             0       0       0       0        0      0      0      
+  MAP-BOUND            10      10      10      10       0      0      0      
+  MAP-EXPR             0       0       0       0        0      0      0      
+  OTHER-BOUND          34      36      30      30       +2     -4     -4     
+  UNRESOLVED           7       5       7       5        -2     0      -2     
+  PROPERTY             11      11      11      11       0      0      0      
+  CALL                 21      21      21      21       0      0      0      
+  RECEIVER-UNKEYED     7       7       7       7        0      0      0      
+  SET-TAIL-DIRECT      0       0       0       0        0      0      0      
+
+  NARROWED HAZARD (SET-BOUND or SET-EXPR) and INVARIANCE:
+    PUB    4    guard {"BLIND":4}
+    DEF    4    guard {"BLIND":4}
+    GEN    5    guard {"BLIND":5}
+    BOTH   7    guard {"BLIND":7}
+
+  PUB -> DEF: 1 moved · 0 left the population · 0 entered
+    scripts/probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts:188  UNRESOLVED/INVARIANCE -> OTHER-BOUND/INVARIANCE  bindLine null -> 185
+        if (CORPUS_CTX_RE.test(stripComments(read(rel)))) return { direct: seen.size === 1, via: seen.size === 1 ? null : rel };
+    as a from -> to tally: {"UNRESOLVED -> OTHER-BOUND":1}
+  PUB -> GEN: 4 moved · 0 left the population · 0 entered
+    docs/research/unit-465bareline-2026-11-12/arm-bareline.mts:187  OTHER-BOUND/OTHER-N -> SET-BOUND/OTHER-N/BLIND  bindLine 181 -> 181
+      ck('A4a', `baseline set rebuilt from ${BASELINE_REV.slice(0, 8)} with the sliced reader: ${baselineKeys.size} keys (shipped F1 says 9 grandfathered)`, baselineKeys.size === 9);
+    scripts/probe-round207-the-import-confirms-a-name-and-the-name-is-not-unique.mts:410  OTHER-BOUND/INVARIANCE -> SET-BOUND/INVARIANCE/BLIND  bindLine 406 -> 406
+      check('E1', picks.size === 1, 'repeated resolution of a same-millisecond pair is stable', `${picks.size} distinct`);
+    scripts/probe-round256-an-emptiness-assertion-grades-the-operator-and-a-sole-blocker-ranking-cannot-see-a-coupled-class.mts:905  OTHER-BOUND/EMPTY -> SET-BOUND/EMPTY/BLIND  bindLine 903 -> 903
+        if (providers.size === 0) return own;
+    scripts/probe-round265-the-census-already-follows-imports-on-the-other-axis.mts:319  OTHER-BOUND/EMPTY -> SET-BOUND/EMPTY/BLIND  bindLine 315 -> 315
+        if (providers.size === 0) return own;
+    as a from -> to tally: {"OTHER-BOUND -> SET-BOUND":4}
+  PUB -> BOTH: 5 moved · 0 left the population · 0 entered
+    docs/research/unit-465bareline-2026-11-12/arm-bareline.mts:187  OTHER-BOUND/OTHER-N -> SET-BOUND/OTHER-N/BLIND  bindLine 181 -> 181
+      ck('A4a', `baseline set rebuilt from ${BASELINE_REV.slice(0, 8)} with the sliced reader: ${baselineKeys.size} keys (shipped F1 says 9 grandfathered)`, baselineKeys.size === 9);
+    scripts/probe-round207-the-import-confirms-a-name-and-the-name-is-not-unique.mts:410  OTHER-BOUND/INVARIANCE -> SET-BOUND/INVARIANCE/BLIND  bindLine 406 -> 406
+      check('E1', picks.size === 1, 'repeated resolution of a same-millisecond pair is stable', `${picks.size} distinct`);
+    scripts/probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts:188  UNRESOLVED/INVARIANCE -> SET-BOUND/INVARIANCE/BLIND  bindLine null -> 185
+        if (CORPUS_CTX_RE.test(stripComments(read(rel)))) return { direct: seen.size === 1, via: seen.size === 1 ? null : rel };
+    scripts/probe-round256-an-emptiness-assertion-grades-the-operator-and-a-sole-blocker-ranking-cannot-see-a-coupled-class.mts:905  OTHER-BOUND/EMPTY -> SET-BOUND/EMPTY/BLIND  bindLine 903 -> 903
+        if (providers.size === 0) return own;
+    scripts/probe-round265-the-census-already-follows-imports-on-the-other-axis.mts:319  OTHER-BOUND/EMPTY -> SET-BOUND/EMPTY/BLIND  bindLine 315 -> 315
+        if (providers.size === 0) return own;
+    as a from -> to tally: {"OTHER-BOUND -> SET-BOUND":4,"UNRESOLVED -> SET-BOUND":1}
+
+─── P9: do the two cures compose ADDITIVELY? ───────────────────────────────────
+  class                PUB+dDEF+dGEN   measured BOTH  off-by
+  SET-BOUND            40              42             +2
+  SET-EXPR             0               0              0
+  MAP-BOUND            10              10             0
+  MAP-EXPR             0               0              0
+  OTHER-BOUND          32              30             -2
+  UNRESOLVED           5               5              0
+  PROPERTY             11              11             0
+  CALL                 21              21             0
+  RECEIVER-UNKEYED     7               7              0
+  SET-TAIL-DIRECT      0               0              0
+  classes where addition FAILS: 2
+    SET-BOUND            additive 40 · measured 42 · off by +2
+    OTHER-BOUND          additive 32 · measured 30 · off by -2
+
+─── P15: every firing of cure D across the corpus ──────────────────────────────
+  DEF: 2 firings, 1 distinct (name, line) pairs
+    seen:185                     rhs="new Set<string>()): { direct: boolean; via: string | null } {"
+  BOTH: 2 firings, 1 distinct (name, line) pairs
+    seen:185                     rhs="new Set<string>()): { direct: boolean; via: string | null } {"
+
+─── the two named members (scripts/probe-round244…:188) ────────────────────────
+  rows found in the PUB population: 2
+    scripts/probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts:188:seen
+      PUB   UNRESOLVED/INVARIANCE  bindLine=null
+      DEF   OTHER-BOUND/INVARIANCE  bindLine=185
+      GEN   UNRESOLVED/INVARIANCE  bindLine=null
+      BOTH  SET-BOUND/INVARIANCE/BLIND  bindLine=185
+        if (CORPUS_CTX_RE.test(stripComments(read(rel)))) return { direct: seen.size === 1, via: seen.size === 1 ? null : rel };
+    scripts/probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts:188:seen
+      PUB   UNRESOLVED/INVARIANCE  bindLine=null
+      DEF   OTHER-BOUND/INVARIANCE  bindLine=185
+      GEN   UNRESOLVED/INVARIANCE  bindLine=null
+      BOTH  SET-BOUND/INVARIANCE/BLIND  bindLine=185
+        if (CORPUS_CTX_RE.test(stripComments(read(rel)))) return { direct: seen.size === 1, via: seen.size === 1 ? null : rel };
+
+VERDICT: GRADED  ·  KP 15/15  ·  CONTROL-1 18/18  ·  CROSS-UNIT 5/5 (reported)

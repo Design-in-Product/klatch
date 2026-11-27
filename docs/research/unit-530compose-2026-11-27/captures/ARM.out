@@ -1,0 +1,109 @@
+═══ unit-530compose — arm ═══════════════════════════════════════════════════════
+SHA d9f67716124a · clock 2026-11-27 14:55:40 PST
+pre-registration SHA 0d81d567a79e; this drive is at d9f67716124a
+§0 packages/ + scripts/ diff: EMPTY (asserted before any measurement)
+subject docs/research/unit-529defaultparam-2026-11-27/arm-defaultparam.mjs
+  cut at "// ─── Arm A: the UNRESOLVED partition ─" -> prefix 13743 B, stripped 13402 B
+corpus 863 files · population 126 sites
+
+─── the 2×2 as HIS machinery reports it, recomputed here ────────────────────────
+  class               PUB    DEF    GEN    BOTH    additive  off-by
+  SET-BOUND           36     36     40     42      40        +2
+  SET-EXPR            0      0      0      0       0         0
+  MAP-BOUND           10     10     10     10      10        0
+  MAP-EXPR            0      0      0      0       0         0
+  OTHER-BOUND         34     36     30     30      32        -2
+  UNRESOLVED          7      5      7      5       5         0
+  PROPERTY            11     11     11     11      11        0
+  CALL                21     21     21     21      21        0
+  RECEIVER-UNKEYED    7      7      7      7       7         0
+  SET-TAIL-DIRECT     0      0      0      0       0         0
+  — column total —    126    126    126    126               Σ off-by = 0
+  classes where addition FAILS: 2 (SET-BOUND, OTHER-BOUND)
+
+─── the figure his cell never visited ───────────────────────────────────────────
+  NARROWED HAZARD   PUB 4   DEF 4   GEN 5   BOTH 7
+    additive = DEF + GEN − PUB = 4 + 5 − 4 = 5
+    measured BOTH = 7 · off by +2  — the additive model UNDER-counts
+
+─── direction of every non-additive figure ──────────────────────────────────────
+  figure                kind      off-by   vacated?  direction
+  SET-BOUND             class     +2       false     additive UNDER-counts
+  OTHER-BOUND           class     -2       true      additive OVER-counts
+  NARROWED-HAZARD       derived   +2       false     additive UNDER-counts
+
+─── the positional tuple census, NO key ─────────────────────────────────────────
+  aligned at 126 indices · 0 misaligned
+  non-constant sites: 6 in 2 pattern(s)
+    4    × OTHER-BOUND | OTHER-BOUND | SET-BOUND | SET-BOUND
+           docs/research/unit-465bareline-2026-11-12/arm-bareline.mts:187
+           scripts/probe-round207-the-import-confirms-a-name-and-the-name-is-not-unique.mts:410
+           scripts/probe-round256-an-emptiness-assertion-grades-the-operator-and-a-sole-blocker-ranking-cannot-see-a-coupled-class.mts:905
+           scripts/probe-round265-the-census-already-follows-imports-on-the-other-axis.mts:319
+    2    × UNRESOLVED | OTHER-BOUND | UNRESOLVED | SET-BOUND
+           scripts/probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts:188
+           scripts/probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts:188
+  jointly routed (BOTH differs from PUB, DEF and GEN): 2
+  destination-shifted (D moved it, then G moved it again): 2
+  cancelled (returned to PUB by adding the second cure): 0
+
+─── the series account, measured ────────────────────────────────────────────────
+  scripts/probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts:188
+      DEF: OTHER-BOUND bindLine 185    BOTH: SET-BOUND bindLine 185
+  scripts/probe-round244-the-staleness-sweep-walks-one-level-and-the-libs-are-outside-it.mts:188
+      DEF: OTHER-BOUND bindLine 185    BOTH: SET-BOUND bindLine 185
+
+─── control: his arm, driven unchanged as a child at my pin ─────────────────────
+  rc 0 · 20579 B captured to docs/research/unit-530compose-2026-11-27/captures/CONTROL-529.out
+  its hazard row: 4 / 4 / 5 / 7 · its "FAILS": 2
+
+─── MY OWN detectors, KP/KN ─────────────────────────────────────────────────────
+  ok   M1  KN: an all-same tuple is constant                                  got true want true
+  ok   M2  KP: a tuple differing only in the last cell is NOT constant        got false want false
+  ok   M3  KP: a tuple differing only in the middle is NOT constant           got false want false
+  ok   M4  KP: the registered pattern B is jointly routed                     got true want true
+  ok   M5  KN: pattern A (G alone suffices) is NOT jointly routed             got false want false
+  ok   M6  KN: a site D alone moves to its final class is NOT jointly routed  got false want false
+  ok   M7  KN: an unmoved site is NOT jointly routed                          got false want false
+  ok   M8  KP: a cure cancelled by the other IS detected                      got true want true
+  ok   M9  KP: both cures moving it and BOTH returning it IS detected         got true want true
+  ok   M10 KN: an unmoved site is not a cancellation                          got false want false
+  ok   M11 KN: a site that moves and stays moved is not a cancellation        got false want false
+  ok   M12 KP: additive model on a known triple                               got 16 want 16
+  ok   M13 KN: additive model is exact when only one cure moves anything      got 12 want 12
+  KP/KN: 13 of 13
+
+─── predictions ─────────────────────────────────────────────────────────────────
+  HIT     S1  the subject prefix was cut and stripped, and the strip removed exactly 6 lines                       310 -> 304 lines
+  HIT     S2  his 15 KP cells re-ran here and all pass, so his machinery is live not merely parsed                 15 of 15 ok
+  HIT     P1  the ten CLASSES partition the population, and the population is constant across all four             pop PUB=126 DEF=126 GEN=126 BOTH=126 · colsums 126/126/126/126
+  HIT     P1b every site carries exactly one of the ten class names                                                0 site(s) in zero or multiple classes
+  HIT     P2a the off-by column sums to zero                                                                       Σ off-by = 0
+  HIT     P2b the zero is FORCED by the partition, not observed: ΣBOTH − (ΣDEF+ΣGEN−ΣPUB) ≡ 0 at constant population 126 − (126 + 126 − 126) = 0
+  HIT     P2c therefore the count of failing classes can never be 1                                                failing classes = 2 (SET-BOUND, OTHER-BOUND)
+  HIT     P2d his arm contains NO cell asserting the conservation that makes his 2 one movement                    qualifying language present in subject: false
+  HIT     P3a the four runs are positionally aligned at every index, so a keyless tuple census is legitimate       0 index/label pair(s) misaligned
+  HIT     P3b exactly 6 sites are non-constant across the tuple, in exactly 2 distinct patterns                    6 non-constant site(s) in 2 pattern(s)
+  HIT     P3c the two patterns and their counts are the registered ones (4 generic-only, 2 needing both)           A=4 B=2
+  HIT     P4a the ±2 is attributable only through the tuple: exactly 2 sites are jointly routed (BOTH differs from PUB, DEF and GEN alike) 2 jointly-routed site(s)
+  HIT     P4b and those same 2 are the destination-shifted ones — one movement, not two                            jointly-routed 2 · destination-shifted 2
+  HIT     P5a his additivity block was located                                                                     457 B
+  HIT     P5b his additivity block iterates CLASSES and never mentions NARROW                                      iterates CLASSES: true · mentions NARROW: false
+  HIT     P5c NOWHERE in the subject is an additive hazard prediction compared to the measured BOTH hazard         no such line
+  HIT     P6  additive hazard 5 vs measured 7, off by +2 — a third non-additive figure, and not a class            PUB 4 DEF 4 GEN 5 BOTH 7 · additive 5 · off +2
+  HIT     P7a of every non-additive figure, the additive model UNDER-counts 2 and OVER-counts 1                    under SET-BOUND+NARROWED-HAZARD · over OTHER-BOUND
+  HIT     P7b and every over-count is at a VACATED figure, which no roadmap prices                                 over-counts vacated: OTHER-BOUND=true
+  HIT     P8a the frozen subject tests the rhs against the NON-GENERIC literal 'new Set('                          literal present in the sliced subject: true
+  REFUTED P8b and one of the four GSUBS widens that very test                                                      a GSUB anchors on 'new Set(': false
+  HIT     P8c his own K2 already encodes the series: a GENERIC bound Set is OTHER-BOUND until G is present         PUB=OTHER-BOUND/INVARIANCE  DEF=OTHER-BOUND/INVARIANCE  GEN=SET-BOUND/INVARIANCE/BLIND  BOTH=SET-BOUND/INVARIANCE/BLIND
+  HIT     P8d on both jointly-routed sites D supplies the binding (bindLine non-null under DEF) and G re-routes it OTHER-BOUND@185 -> SET-BOUND · OTHER-BOUND@185 -> SET-BOUND
+  HIT     P9  no site is returned to its PUB class by adding the second cure, so the only negative off-by is a vacated class 0 cancelled site(s)
+  HIT     P10a his arm drove unchanged at my pin, exit 0                                                           rc=0, 20579 B
+  HIT     P10b it reproduces its published off-by +2 / −2 and "FAILS: 2"                                           off-by rows match: true · FAILS: 2
+  HIT     P10c it reproduces the published hazard 4/4/5/7                                                          hazard 4/4/5/7
+  HIT     P10d and my sliced reading of the same four cells agrees with his child process                          sliced SET-BOUND add 40 meas 42 · OTHER-BOUND add 32 meas 30
+  HIT     P11 the corpus is ≥ 861 at my pin, and the class figures still reproduce                                 corpus 863 (his 861) · PUB SET-BOUND 36 OTHER-BOUND 34
+
+GRADED: 28 HIT / 1 REFUTED of 29
+MY KP/KN: 13 of 13
+HIS KP re-run here: 15 of 15

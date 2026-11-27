@@ -1,0 +1,46 @@
+═══ unit-530compose — post-hoc: the key, not the claim ══════════════════════════
+SHA d9f67716124a · clock 2026-11-27 14:57:21 PST
+GENERIC_SRC: "new\\s+Set\\s*(?:<[^<>]*>)?\\s*\\("
+
+─── the four substitutions, scored by three keys over one population ────────────
+  key                               matched         count
+  LITERAL (the refuted P8b key)     —               0 of 4
+  VARIABLE (NEEDLE by name)         S1,S3,S4        3 of 4
+  ESCAPED-REGEX (new\s+Set\s*\()    S2              1 of 4
+  UNION of all three                S1,S2,S3,S4     4 of 4
+
+─── each substitution and the key that reaches it ───────────────────────────────
+  S1   reached by: VARIABLE
+       anchor: "  let i = 0;\n  while ((i = code.indexOf(NEEDLE, i)) !== -1) {\n    const open = i + NEEDLE.length"
+  S2   reached by: ESCAPED-REGEX
+       anchor: "const isDirectSetTail = /^new\\s+Set\\s*\\([\\s\\S]*\\)$/.test(t);"
+  S3   reached by: VARIABLE
+       anchor: "rec.sawParen && t.includes(NEEDLE)"
+  S4   reached by: VARIABLE
+       anchor: "b.rhs.includes(NEEDLE)"
+
+─── KP/KN for the REPAIRED key ─────────────────────────────────────────────────
+  ok   R1  KP: the real S4 anchor (variable-indirected)                               got true want true
+  ok   R2  KP: the real S2 anchor (regex-escaped)                                     got true want true
+  ok   R3  KP: the real S3 anchor                                                     got true want true
+  ok   R4  KN: an anchor naming a DIFFERENT variable is not matched                   got false want false
+  ok   R5  KN: an anchor on a Map shape is not matched                                got false want false
+  ok   R6  KN: a bare comment mentioning the words is not matched                     got false want false
+  ok   R7  KN: NEEDLE as a substring of a longer identifier is not matched            got false want false
+  ok   R8  KP: the plain literal, had any substitution used it, is still caught by neither leg — stated, not hidden got false want false
+  KP/KN: 8 of 8
+
+─── cells ──────────────────────────────────────────────────────────────────────
+  HIT     Q1  NEEDLE is declared in the frozen subject and its value IS the literal P8b keyed on               const NEEDLE = 'new Set('
+  HIT     Q2a the LITERAL key scores 0 of 4 — the blindness P8b was graded on                                  matched: none
+  HIT     Q2b the VARIABLE key recovers 3 of 4                                                                 matched: S1,S3,S4
+  HIT     Q2c the ESCAPED-REGEX key recovers the remaining 1, and the two keys do not overlap                  matched: S2
+  HIT     Q2d so all 4 substitutions DO target the Set-shape test — P8b's claim was right and its key was wrong union: S1,S2,S3,S4
+  HIT     Q2e and the single undifferentiated miss hid TWO mechanisms, not one                                 variable-indirected 3 · regex-escaped 1
+  HIT     Q3  exactly one substitution rewrites the test that reads a BINDING's rhs — the consumer of cure D   S4  keyIndirect: SET-BOUND binding test
+
+POST-HOC: 7 HIT / 0 REFUTED of 7
+REPAIRED-KEY KP/KN: 8 of 8
+
+P8b stays REFUTED in the arm. The claim it carried is confirmed here under a repaired
+key, which is a different thing from the prediction having been right.
