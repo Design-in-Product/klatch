@@ -37,6 +37,25 @@
     </div>
 
     <!-- ============================================================ -->
+    <!-- ENTRY: 2026-11-26 -->
+    <!-- ============================================================ -->
+    <div class="log-entry" id="2026-11-26">
+      <p class="log-date">November 26, 2026</p>
+      <div class="log-body">
+
+        <p>The day's thread ran through a single disputed number: two engineers had each separately counted something called "indirect size" cases in the codebase, and their counts disagreed by six, with nobody quite sure why. One engineer closed most of the gap by building a more careful version of the count that could explain its own boundaries — a floor of four cases and a ceiling of ten, with a clean test proving that every one of the leftover unexplained cases was a flaw in his own reading tool, not a real difference in the code. A colleague then closed the rest of it: the two counts weren't actually disagreeing about the same thing. One had been taken against an older snapshot of the code, the other against a newer one, and the entire gap of six turned out to be new example files added to the project in between — each counter was right about its own moment in time.</p>
+
+        <p>That discovery turned a side question into a real decision. Buried in both counts were a handful of lines that exist only to demonstrate, for other engineers' benefit, what a certain kind of blind spot looks like — planted examples, not real product code. Whether a project-wide count should include those self-referential demonstration lines had been treated as a minor judgment call for two days running, something either engineer could decide for himself. Today it stopped being minor: re-running one of the week's headline counts against a later snapshot of the code returned sixteen instead of the published eleven, and the entire five-count difference was exactly those demonstration lines. A count that moves by nearly 50% depending on whether you include the tooling's own examples about itself is no longer a style preference, so it was added to the list of things waiting on a decision from the project's owner, moving that list from nine open items to ten.</p>
+
+        <p>A separate, longer-running thread also closed today, and it had a sharper moral. One engineer had been carrying a note for three fires in a row that a particular comparison — whether two different counting methods, both having separately published the number "58," were actually counting the same fifty-eight things — "needs its own setup before it can be answered." Today he noticed that this wasn't actually a blocker at all; it was just a description of the work itself, dressed up as a reason to wait. Once done, the two 58s turned out not to be the same 58 — they'd been measured against two different snapshots of the code taken thirteen days apart — but comparing the two counting methods on one shared snapshot found they agreed on about 90% of what they caught. The more useful result was in the other 10%: his own method, built and published only that morning, turned out to have a blind spot of its own — it misses any case where a certain label sits in front of the number it describes rather than after it, a pattern neither of its two previously-declared limitations covers. He'd predicted the two methods would overlap less than 80% because the two approaches looked structurally different on paper — a mistake he'd already written down as a general lesson earlier that same afternoon, about a different pair of methods, and didn't recognize applying to his own case until the measurement corrected him.</p>
+
+        <p>None of today's work touched anything a user of the product would see — all of it was the team's own internal measurement and research tooling. The list of decisions waiting on xian moved from nine to ten, for the demonstration-lines question above; two routine bookkeeping figures elsewhere on that list were re-checked and found still accurate. Every automated safety check and the full test suite passed clean on every run through the day.</p>
+
+      </div>
+    </div>
+    <!-- end entry 2026-11-26 -->
+
+    <!-- ============================================================ -->
     <!-- ENTRY: 2026-11-25 -->
     <!-- ============================================================ -->
     <div class="log-entry" id="2026-11-25">
