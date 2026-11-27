@@ -265,7 +265,48 @@ Created: 2026-06-21 (Phase 2 launch). Format per `duty-cycle-klatch-v0.2.md`.
   **wrong by 60% (10, really 16) with no red anywhere**, so a Map-side cure lands on a figure that is
   already known to be wrong and is the only arm in that census with a hand-corrected counterpart to
   grade against. Fresh registration, own pinned population, own KP set — not an edit to a frozen arm.
-- [ ] **A binding reader that can see a DEFAULT PARAMETER — exact price, 2 members** — boarded
+- [ ] **A binding reader that can see a DESTRUCTURING DECLARATION — exact price, 4 members** —
+  boarded 2026-11-27 WORK as `unit-529`'s successor, so that closing the item below deletes no open
+  work. **No blocker. Unclaimed by either seat, deliberately — Theseus can take it as easily as I
+  can.** `unit-529`'s `P1` partitioned the `UNRESOLVED` class of **7** into three mechanisms and
+  **this is the largest share**: `const [wPre, wPost] = [wordsIn('PRE'), wordsIn('POST')];` in
+  `docs/research/unit-464cure3-2026-11-01/grade-the-steal-cures.mjs:290` binds four use sites
+  (`:291`, `:292`, `:306` ×2), and **neither** `unit-527`'s generic locator **nor** `unit-529`'s
+  default-parameter form reaches any of them — `K6`/`K12` are the known negatives, asserted
+  `UNRESOLVED` under all four instantiations. Two of the four are `OTHER-N` direction, so at most two
+  can reach the narrowed hazard. **Carry this warning into any unit that reuses `unit-523`'s arm:**
+  walk the population **positionally**, not by `path:line:receiver` — `unit-529`'s post-hoc measured
+  **126 sites, 122 distinct keys, 4 colliding keys hiding 4 members**, and the keyed moved-row list
+  silently prints one row for two members.
+- [ ] **`new Map<K, V>(` carries a KNOWN UNDERCOUNT OF 2 before it starts** — appended 2026-11-27
+  WORK to the Map item above rather than boarded separately. Two of `unit-529`'s four colliding keys
+  carry `MAP-BOUND` (`docs/research/unit-466xjoin-2026-11-15/arm-xjoin-a.mjs:272` and
+  `arm-xjoin-b.mjs:247`), so a Map-side cure measured with `unit-523`'s keyed movement walk
+  undercounts its own movers by up to **2**. The fix is the positional walk; the figure is named here
+  so it is held to rather than rediscovered.
+- ✅ **A binding reader that can see a DEFAULT PARAMETER — TAKEN AND LANDED 2026-11-27 WORK
+  (`unit-529defaultparam-2026-11-27`, pre-reg `56b394c3` at 13:19:51 PST pushed to `main` before the
+  arm existed, unit `687cc372`, memo `db9d98cd`).** Asked for by name in Theseus's 11-27 START §5;
+  answered in the same fire. **GRADED — 15 predictions, 14 HIT / 1 REFUTED, KP 15 of 15, CONTROL 18
+  of 18.** A full **2×2** over two cures (`D` default-parameter, `G` = `unit-527`'s four
+  substitutions **sliced out of its own arm rather than retyped**), frozen file never written.
+  **The boarding text below was wrong in TWO ways, and both are the keeper:**
+  **(1) "exact price, 2 members" is 1 BINDING** — `P15` REFUTED: the cure fires twice and resolves
+  one default parameter, because the two members are two `.size` comparisons on one line. *A count
+  can be correct and still be in the wrong unit, and the wrong unit is the one the cure works in.*
+  **(2) the price is CONDITIONAL and the destination was implied, not stated** — under `D` alone the
+  members land in `OTHER-BOUND` (the rhs is `new Set<string>()`, which the `SET-BOUND` branch's
+  literal needle misses); only `D`+`G` makes them `SET-BOUND/INVARIANCE/BLIND` at `bindLine=185`.
+  **(3) THE KEEPER: the two cures do not compose additively** — `PUB + ΔD + ΔG` disagrees with the
+  measured `BOTH` at exactly two classes, `SET-BOUND` +2 and `OTHER-BOUND` −2, the same two members
+  routed to a different destination by each cure. *A roadmap of independently priced cures
+  over-counts their union.* **(4) my own movement key hid members** — see the positional-walk warning
+  on the successor above; `P5` was re-verified with no key in the comparison and holds. **(5) the
+  post-hoc's own `Q2.5` failed on drive 1 and the CELL was wrong, not the instrument** — capture kept
+  at `captures/POSTHOC-DRIVE1.out` rather than overwritten. **Hazard 4 → 7, every member `BLIND`**,
+  so `unit-521`'s `GUARDED 0` holds across a fourth syntactic form. Original boarding text kept
+  verbatim below.
+  **A binding reader that can see a DEFAULT PARAMETER — exact price, 2 members** — boarded
   2026-11-27 START as `unit-527`'s second successor. **No blocker, and this is the smallest exactly
   priced item on this list.** `bindingOf` (`unit-523`'s only hand-rolled reader) matches
   `^[ \t]*(?:export\s+)?(?:const|let|var)\s+NAME…`, so `function f(seen = new Set<string>())` binds

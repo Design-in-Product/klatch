@@ -157,3 +157,129 @@ legs were **re-driven directly on the final tree** afterwards: `verify-decl-body
 **58**; `sweep-probes.mjs --census` → `census PASSED`, **45 swept / 110 deferred**. Both match the
 standing figures printed on this fire's three verified commits. *A skipped gate that nobody re-drove
 is an unmeasured push, and the figures are the only thing that makes it one or not.*
+
+---
+
+## 13:17 — Session resumed (WORK fire)
+
+Model: Claude Opus 5 (`claude-opus-5`). Clock read from `TZ=America/Los_Angeles date` at **13:17:07
+PST**; worktree synced to `origin/main` by the wrapper, `git status` clean, `HEAD` `252a5cfdf5aa`.
+
+### Checklist
+
+- **`docs/COORDINATION.md`** read; my own section's last entry was this morning's START fire.
+- **`docs/mail/`** listed. One inbound postdating my last outbound: Theseus's 11-27 START,
+  *"my cure recovers 12 of 28 because the 28 was four mechanisms."* **Read in full.** It says
+  "nothing owed back" in its subject, but **§5 asks this seat one thing by name** — whether I take
+  the default-parameter item, so he can key his 12-member resolver on top instead of building a
+  second one. That ask is what this fire answered.
+- **Day-part work units:** `docs/operations/duty-cycle/daedalus-tasks.md` read. `Recurring items`
+  has no row with `next_due ≤ today`. The item Theseus names is `:268`, boarded by me this morning
+  as `unit-527`'s second successor and described there as *"the smallest exactly priced item on this
+  list."* Taken.
+
+### 13:19–13:27 — registered, then driven
+
+`docs/research/unit-529defaultparam-2026-11-27/PRE-REGISTRATION.md`. Directory made and the clock
+read in the **same command** (`13:19:51 PST`), population SHA `252a5cfdf5aa`. 15 predictions.
+Committed and pushed to `main` as **`56b394c3`** before the arm file existed.
+
+Three things done deliberately in the registration:
+
+1. **Declared the peek, item by item.** §1 names the four things I had already read — `unit-527`'s
+   capture listing all 7 `UNRESOLVED` rows, the member site itself, the other five receivers (which
+   is how I learned the class holds **three** mechanisms, not one), and `unit-527`'s `K4`. It also
+   names what I had **not** read, so every interval is bounded by stated ignorance.
+2. **Registered a prediction against my own boarding text, again.** `P2` says the cure does **not**
+   make the members `SET-BOUND` — the boarded sentence states a count and implies a destination the
+   cure alone does not reach.
+3. **Registered `P14`/`K9` as a known positive for my own cure's HARM.** `LD2` means a default in
+   function A can bind a use in function B. Rather than name that and move on, the cell plants the
+   shape and asserts the wrong binding is taken, so the cure's price is measured.
+
+**Arm written, then repaired before the drive.** Three defects found by reading and by `node --check`
+before any figure existed: a nonsense leftover `new Function` body; brace **character literals**
+(`${'{'}`) which would have put this file in the brace-slicer gate's own population while its
+docblock claimed otherwise; and a parameter-list detector that keyed on `exec`'s **first** hit, which
+for a one-character receiver name like `s` would have let an unrelated earlier list decide a site's
+bucket. The last one became a global scan. *A docblock claiming a file is out of a gate's population
+is checkable by searching the file, and that is the only way to make the claim.*
+
+Two cells were also rewritten before the drive because they were **vacuous**: "the PUB firing log is
+empty" is also what a cure that was never spliced in produces. They became structural assertions on
+the TEXT (`__firings` absent from `PUB`/`GEN`, present exactly once in `DEF`/`BOTH`) plus `C7`, the
+non-vacuity cell: **cure D actually fired**.
+
+Drive at `13:27:15 PST`, one drive. `ARM.out` **21,268 B**, `ARM.err` **0 B**, `CONTROL-523.out`
+**47,440 B** / **0 B**.
+
+### Verdict
+
+**GRADED — 15 predictions, 14 HIT / 1 REFUTED. KP 15 of 15, CONTROL-1 18 of 18.** Full grading table
+in `RESULTS.md` §4. Headline figures:
+
+```
+  class            PUB   DEF   GEN   BOTH    dDEF  dGEN  dBOTH
+  SET-BOUND        36    36    40    42      0     +4    +6
+  OTHER-BOUND      34    36    30    30      +2    -4    -4
+  UNRESOLVED       7     5     7     5       -2    0     -2
+  hazard            4     4     5     7      {BLIND:4/4/5/7}, no GUARDED member anywhere
+  UNRESOLVED partition: DEFAULT-PARAM 2 · DESTRUCTURE-DECL 4 · PARAM-NO-DEFAULT 1 · 0 · 0
+```
+
+### 13:29 — a post-hoc the arm's own capture forced
+
+The capture prints **`PUB -> DEF: 1 moved`** three lines above **`UNRESOLVED −2 / OTHER-BOUND +2`**.
+Both are right about their own subject: the movement key is `path:line:receiver`, inherited from
+`unit-527`'s arm, and the two members share it. `posthoc-key-collision.mjs` measured the population:
+**126 sites, 122 distinct keys, 4 colliding keys hiding 4 members.** `P5` was then re-verified
+**positionally, with no key in the comparison** — and it holds.
+
+**Its own `Q2.5` failed on drive 1**, and the cell was wrong rather than the instrument: I asserted
+the undercount equals collisions **anywhere in the population** (4) when it can only be collisions
+behind a key that **moved** (1). Drive 1's capture is kept at `captures/POSTHOC-DRIVE1.out` rather
+than overwritten; drive 2 reads **7 of 7**.
+
+### Against me, this fire
+
+1. **`P15` REFUTED — the item was priced in the wrong unit.** "Exact price, 2 members" counts use
+   sites; a cure's reach is counted in bindings, and there is **one**. The floor of 2 I registered
+   was unreachable by construction.
+2. **The price is conditional** and the destination was implied, not stated (`P2`).
+3. **The two cures do not compose additively** (`P9`) — exactly two classes, each off by 2.
+4. **My own movement key hid members**, and the arm printed both figures without noticing.
+5. **The post-hoc written to catch (4) had a wrong cell of its own.**
+6. **A control I over-rejected:** `GEN` reproduces all five of `unit-527`'s figures, yet printed
+   `n/a-AGREES` because my precondition conjoined **corpus size** (861 vs 858) with the class cells,
+   which held. *A precondition keyed on a population's SIZE over-rejects a control whose claim is
+   about particular CELLS.*
+
+One thing went **for** the cure and was measured rather than hoped: `LD4`'s over-wide `[(,]` class
+fires on **exactly one** site across **861** files — the real one — with `K11` planting the false
+shape and asserting the cure does fire on it.
+
+### Bookkeeping
+
+- Unit `687cc372` pushed to `main`. Memo `db9d98cd` → Theseus, Argus (cc xian, Janus, Calliope,
+  Iris), pushed to `main` **in its own commit** per the worktree mail rule, with Theseus's inbound
+  `git mv`'d to `docs/mail/read/` in the same commit — its one ask is answered.
+- Task list: `:268` ticked with its full verification trail, original boarding text kept verbatim
+  beneath it; **one successor boarded** (`DESTRUCTURE-DECL`, exact price 4, unclaimed by either seat)
+  and **the keyed-walk undercount of 2 appended to the `new Map<K, V>(` item**, so closing this item
+  deletes no open work and the next unit is warned rather than left to rediscover.
+- `COORDINATION.md` Daedalus section updated, prior entry demoted to `Previous`.
+- **Gate clean on both code pushes:** population **65**, `MARKED/GUARDED/UNGUARDED` **4/3/58**,
+  baseline **58** — all unmoved. `tracked files read` **1127 → 1129**, the growth being this unit's
+  own two files. (1125 → 1127 between fires was other seats' pushes, not mine.)
+
+### Drain
+
+**Drained and done:** the one unanswered inbound (read, its §5 ask answered in the same fire, closed
+to `read/`); the item it asked about (registered, driven, graded, published, memo'd, ticked); one
+successor boarded and one warning appended to an existing item.
+**Deferred, each with a named blocker:** `DESTRUCTURE-DECL` and `new Map<K, V>(` are boarded
+**unblocked** — each needs its own pre-registration, which names work and not a blocker; Key E's
+second cause needs an evidence model that is not line-granular, a design question this fire did not
+open; the `EMPTY-READS-INVARIANT` + `continue` reachability question stays blocked on a **runtime**
+answer the source cannot give; item 10 is **xian's and only his**, and this unit adds nothing to it —
+every site it moves is a LIVE instrument claim, no fixtures.
