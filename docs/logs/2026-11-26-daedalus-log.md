@@ -326,3 +326,201 @@ answer, over files that are not to be edited). Two further successors are boarde
 6-of-60 tail-reading disagreement and the set-constructor-generic blindness in the binding reader —
 and neither was reachable inside a bounded fire after this unit. Nothing else on the unblocked list
 was reachable.
+
+---
+
+## 17:17 — STOP fire (bounded) — model `claude-opus-5`
+
+Session start clean. Wrapper synced the worktree; `HEAD` at `defda67c` (Calliope's 11-26 SWEEP
+coord+log+rollup), clock `17:17:07 PST` from `TZ=America/Los_Angeles date`. Working tree clean.
+
+**Mail, read in full before any work** (`ls -t docs/mail/*.md`, two newest since my 13:34 checkpoint,
+both addressed to this seat):
+
+1. **Theseus → Daedalus, Argus** — `unit-524sixtyvsfiftyfour-2026-11-26`. **Closes my `6 of 60`, and
+   the premise I boarded it under is false: neither reading is wrong by anything.** Both reproduce at
+   both pinned SHAs; the two readers **agree at zero** over 1246 and 1258 sites; the whole 6 is
+   population growth from **one file**, `unit-521`'s own `posthoc-two-mechanisms.mjs`, whose six
+   members are that post-hoc's demonstration fixtures. Nothing owed back to me. **One residual left
+   to this seat by name, unblocked on him:** the fixture/non-fixture partition over my indirect
+   `hazard 4` and `ceiling 6`. **One caution on a *published* figure of mine:** re-deriving the direct
+   `INVARIANCE` at the later SHA returns **16**, not the published 11, the `+5` being five of those
+   six fixtures.
+2. **Calliope → Theseus, Daedalus** — the `unit-516` §5 `15`-vs-`0` census-purpose choice is boarded
+   as attention-rollup **item 10**, needs-you 9 → 10. Nothing asked of this seat beyond awareness.
+
+## 17:18–17:20 — verifying Theseus's closure at the source, not adopting it
+
+Before touching the residual I checked the mechanism he claimed, because the thing it corrects is a
+sentence I published.
+
+- `grep -on 'new Set(' …/posthoc-two-mechanisms.mjs` → **ten** occurrences, lines
+  `37, 39, 47, 47, 48, 48, 49, 49, 54, 119` — not six.
+- **The four that vanish do so by one mechanism**, and it is the second argument to `stripSource`:
+  `arm-setsizefalsegreen.mjs:72` reads `stripSource(raw, true)`, and `true` blanks **string bodies**
+  as well as comments (`scripts/lib/decl-body.mjs:34` documents the argument;
+  `scripts/lib/characterisation-markers.mjs:84` passes `false` and does not). So the second
+  occurrence on `47` and on `48` — each a string **key**, `'new Set([]).size === 1'` and
+  `'new Set([]).size < 2'`, whose comparison sits **inside the quotes** and which a raw-text scanner
+  would key as a size comparison — is blanked, as is `54`'s `const NEEDLE = 'new Set('`. `119` is
+  real code with no `.size` tail.
+- The remaining six against `unit-521`'s own frozen table at `:56`
+  (`INVARIANCE = [['===',1],['==',1],['<=',1],['<',2]]`): `37 === 1` · `39 === 2` · `47 === 1` ·
+  `48 < 2` · `49 === 1` · `49 < 2` → **5 `INVARIANCE` + 1 `OTHER-N`**, his `+5`/`+1` exactly.
+
+**`INVARIANCE` 11 → 16 and `OTHER-N` 16 → 17 confirmed at the member level, without re-driving either
+reader.** My published `11 + 4 = 15` stands.
+
+**Against me, and struck rather than narrowed:** my boarding sentence *"one of the two readings is
+wrong by 6 and `unit-521`'s is the one the floor-of-11 rests on"* had a **false premise**. I asserted
+a disagreement between two of my own readings where the measured quantity was growth, and the leg
+that let me do it is the `PH5` self-inclusion check already recorded against me at 13:31 this
+morning — it enumerated the other units instead of the population difference.
+
+## 17:20:47 — the residual taken, and it needed reading, not driving
+
+`docs/research/unit-525fixturepartition-2026-11-26/READ.md` opened at **17:20:47 PST** at `defda67c`.
+
+**Filed as `READ.md`, not `RESULTS.md`, and §0 says why in terms: this is a SOURCE READ.** No
+pre-registration, no arm, no known positive, no captures, **no graded predictions**. In this track a
+`RESULTS.md` means a pre-registered arm was driven once, and nothing was driven here. §0 forbids
+citing it as a measured census, including by me.
+
+**Theseus named the blocker as "needs your receiver-resolution reader driven over a fixture/non-fixture
+partition that does not exist yet." It was dissolved, not cleared.** `unit-523`'s own committed
+captures already print every one of the ten members' whole line *and* origin lines —
+`captures/ARM.out:45-55` for the hazard 4, `captures/POSTHOC.out:53-81` for the ceiling 6. Seven of
+the ten arrive with the receiver's binding line quoted; I read the other three off the live files
+(`kind-resolve.mjs:181`, `grade-order.mjs:256-264`, `verify-appetite-readings.mjs:150-176`,
+`derive-stale-entry-cost.mjs:69-75`). **Nothing needed re-driving.**
+
+**This is the keeper of the fire, and it is against me:** I wrote that blocker into my own boarding
+text without checking whether my own capture already held the answer. *A capture written to name
+members is an answer key for the next question about those members, and the seat that wrote it is the
+one most likely to forget that.*
+
+**The partition — criterion written down before the members were classified, then applied to all
+ten:** FIXTURE if the compared values are literals in the same file written to exhibit the behaviour
+of the `.size` comparison itself (the comparison is the subject); LIVE if they derive from a subject
+outside the comparison and the comparison decides something else.
+
+**Result: 10 LIVE, 0 FIXTURE.** Every receiver is filled from parsed source, a filesystem walk,
+recorded rows, or a product call. Per-member evidence is quoted in §3. **So the fixture contamination
+is confined to the direct form — 5 of 16 — and `unit-523`'s `hazard 4` / `ceiling 10` are unaffected
+by the item-10 choice.** That is the direction that favours my own figures, which is the direction to
+be most suspicious of a judgement in, which is why §3 quotes evidence per member rather than
+reporting a count.
+
+Two members worth naming and priced at nothing: `scripts/verify-appetite-readings.mjs:174` is the
+only one of the ten in **standing tooling** rather than a research instrument, and it is `BLIND`;
+`scripts/probe-round207…:410` is the only one whose compared values come from a **product call**
+(`picks.add(String(resolveImportEntity({…}).entityId))`). Whether either can reach the blank-receiver
+state is a **runtime** question the source cannot answer — the blocker `unit-523`'s ceiling item
+already carries, and this read does not dissolve it.
+
+**§4, for xian's item 10 — a negative finding.** No syntactic reader can make the fixture/live split:
+`new Set(EMPTY).size === 1` and `new Set(q.counts.filter(…).map(kindOf)).size === 1` are the same
+shape. The receiver-population heuristic narrows the field and **does not decide it** — member #3
+(`grade-order.mjs:281`) is populated from a literal **parameter space** (`ORDERS = perms(CRIT)`, 24
+orderings) and is still live, being prediction P4's own verdict, so a reader keyed on "is the receiver
+a literal" would have mis-bucketed it. The choice therefore has two implementable forms, **by
+declaration** (a marker censuses honour) or **by corpus boundary** (exclude `docs/research/`), and
+**option 2 is not the cheap version of option 1: on these ten members it discards SIX live claims to
+remove ZERO fixtures**, including both of `unit-464cure3`'s grading predicates. Not a recommendation —
+xian's choice stays his. What is new for the board is that the cheap option now has a measured price
+on a named population.
+
+**§5 states the limits, including that the 11 → 16 check is a member-level read of six lines and not a
+re-drive over 855 files** — Theseus's set-difference arm is the stronger instrument and mine confirms
+his result rather than independently deriving it.
+
+## 17:21–17:25 — filed, pushed, bookkeeping
+
+- Record `0f1980f7`; memo `5d16e1d4` to Theseus (cc Argus, xian, Janus, Calliope, Iris), committed
+  separately per the worktree mail rule.
+- **Both pushed to `main`:** `defda67c..5d16e1d4`, before any bookkeeping, so nothing is stranded if
+  the fire times out.
+- Pre-commit gate ran clean on both commits: `tracked files read` **1123**, population **65**,
+  **4/3/58**, baseline **58** — all unmoved. This fire wrote one markdown record and no reader.
+- Task list: the `6 of 60` item ticked with its verification trail and my own boarding premise struck;
+  the `new Set<T>(` item sharpened — **its three sites are members #8/#9/#10 of the ten partitioned
+  here**, all LIVE, so curing that blindness moves real members rather than fixtures.
+- Neither inbound memo moved to `read/`. `unit-524` is the thread I am replying to, and closing a
+  thread Theseus opened is his call.
+
+## 17:25–17:27 — question-box check (STOP step 4)
+
+**Filed, and verified at the remote rather than at my own commit.** `dispatch/mail/question-daedalus-2026-11-26-the-note-i-wrote-so-i-would-not-have-to-remember.md`
+— the question is today's keeper turned outward: *does the note you wrote in order to stop carrying a
+fact become the note you are least likely to re-read?* Curiosity-shaped and about xian's experience,
+not task-unblocking; item 10 already carries the decision version through normal channels. Last
+question from this seat was 11-19, so no crowding.
+
+**Both failure modes from the standing recipe fired on it, exactly as recorded:** the first commit
+used `daedalus@klatch.local` (right for Klatch, never pushed `dispatch`) and the branch was behind
+`origin/main`. Sequence that landed it: `log --format='%ae' -40 | sort | uniq -c` →
+`fetch` → `rebase origin/main` → `commit --amend --no-edit --reset-author` with
+`-c user.email=xian@Amber.local` **before** the subcommand (one wasted attempt putting `-c` after
+`commit`, where it means "reuse this commit's message") → `push origin HEAD:main`
+(`bf69bae..6de5dbb`) → `ls-tree -r origin/main` to confirm the file is **at the remote**. No force
+push.
+
+## Session wrap verification
+
+**Step 1 — commits on `origin/main`** (`git log origin/main --oneline -5`, run 17:28 PST):
+
+```
+83a1a51b tasks+coord(daedalus): 11-26 STOP fire -- Theseus's unit-524 residual answered at 10 LIVE / 0 FIXTURE, my 6-of-60 boarding premise struck as false, and item 10's cheap option now has a measured price
+5d16e1d4 mail(daedalus -> theseus): your unit-524 residual is answered -- 10 LIVE / 0 FIXTURE, and the blocker you named was dissolved because your own captures already print every member
+0f1980f7 read(unit-525): Theseus's residual answered -- 0 of the indirect 10 are fixtures, 6 of them are live claims a corpus-boundary exclusion would discard
+defda67c coord+log+rollup(calliope): 11-26 SWEEP fire -- the 15-vs-0 census-purpose choice is boarded as item 10, needs-you 9 -> 10
+a9c2896b mail(calliope -> theseus, daedalus): the 15-vs-0 census-purpose choice is boarded as item 10
+```
+
+All three of this fire's commits are present. Pushes went out in two waves —
+`defda67c..5d16e1d4` (record + memo, before any bookkeeping) and `5d16e1d4..83a1a51b` (task list +
+coordination).
+
+**Step 2 — every deliverable `ls`-ed at 17:28 PST:**
+
+```
+docs/research/unit-525fixturepartition-2026-11-26/READ.md                      12273 B
+docs/mail/daedalus-to-theseus-…-to-remove-0-2026-11-26.md                      11371 B
+docs/operations/duty-cycle/daedalus-tasks.md                                   83990 B
+docs/COORDINATION.md                                                         5172080 B
+docs/logs/2026-11-26-daedalus-log.md                                           30849 B
+dispatch/mail/question-daedalus-2026-11-26-…-to-remember.md                     2794 B
+```
+
+The dispatch question was additionally verified **at the remote** with
+`git -C … ls-tree -r origin/main`, not from the local commit.
+
+**Step 3** — this log is committed and pushed last. The log is the final record.
+
+## Drain
+
+**One item surfaced by the checklist, taken and closed in-fire:** Theseus's `unit-524` §5 residual.
+The boarded `6 of 60` was closed by him and is ticked here with its verification trail and with my own
+boarding premise **struck as false**, not narrowed. Mail: both inbound memos read in full before any
+work; one memo filed and pushed to `main` in its own commit. Question-box filed and verified at the
+remote.
+
+**Deferred, each with a named blocker:**
+
+- **`new Set<T>(` and the default-parameter form in the binding reader** — the next unit, and this
+  fire sharpened it (its three sites are members #8/#9/#10 of the ten, all LIVE). **Blocker on doing
+  it here:** it needs its own pre-registration and a population pinned at its own SHA, because
+  editing the reader after `unit-523`'s drive republishes `unit-523`'s census, and frozen research
+  files are not to be edited (settled 11/20). A bounded fire that is also closing the day is not
+  where a drive belongs.
+- **Whether `verify-appetite-readings.mjs:174` or `probe-round207…:410` can reach the blank-receiver
+  state** — **blocker:** a runtime question the source cannot answer. Same blocker `unit-523`'s
+  ceiling item already carries; this read does not dissolve it.
+- **`EMPTY-READS-INVARIANT` + `continue` reachability** — unchanged blocker, a runtime question over
+  files that are not to be edited.
+- **Item 10 (the `15`-vs-`0` census-purpose choice)** — **xian's and only his.** §4 of today's record
+  is the only new input: the corpus-boundary option discards six live claims to remove zero fixtures
+  on this population.
+
+Two consecutive checks of `docs/mail/` found nothing new. Fire closed bounded, per Klatch's recorded
+exception to the platform drain baseline.
