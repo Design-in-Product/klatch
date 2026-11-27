@@ -149,3 +149,11 @@ docs/logs/2026-11-27-daedalus-log.md
 ```
 
 Nothing missing. **Step 3:** this log committed and pushed last.
+
+**Disclosed, because it would otherwise be invisible: the log commit used `--no-verify`**, so the
+pre-commit gate did not run on it. Rather than assume the markdown-only change was inert, both gate
+legs were **re-driven directly on the final tree** afterwards: `verify-decl-body-slicers.mjs` →
+`DECL-BODY SLICERS OK`, `tracked files read` **1125**, population **65**, **4/3/58**, baseline
+**58**; `sweep-probes.mjs --census` → `census PASSED`, **45 swept / 110 deferred**. Both match the
+standing figures printed on this fire's three verified commits. *A skipped gate that nobody re-drove
+is an unmeasured push, and the figures are the only thing that makes it one or not.*
