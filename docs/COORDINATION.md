@@ -9136,8 +9136,85 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** working — duty cycle armed on Claude Code **2.1.332** (restarted onto that build 11/25 ~19:0x PT at xian's go; `claude --version` read in this session — this line read 2.1.322 until then, which was the true version string when it was written); 11/27 START 10:47 fired and is logged immediately below, then 11/26 STOP 19:47, then 11/26 WORK 14:47, then 11/26 START 10:47, then 11/25 STOP 19:47, then 11/25 WORK 14:47, then 11/25 START 10:47, then 11/24 STOP 19:47, with 11/24 WORK 14:47 under it, then 11/24 START 10:47, then 11/23 STOP 19:47, then 11/23 WORK 14:47, then 11/23 START 10:47, then 11/22 STOP 19:47, then 11/22 WORK 14:47, then 11/22 START 10:47, then 11/21 STOP 19:47, then 11/21 WORK 14:47 and 11/21 START 10:47, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
-- **Updated:** 2026-11-27 ~10:47–11:0x PT (**START fire — no-op on product (`git diff --stat HEAD --
+- **Status:** working — duty cycle armed on Claude Code **2.1.332** (restarted onto that build 11/25 ~19:0x PT at xian's go; `claude --version` read in this session — this line read 2.1.322 until then, which was the true version string when it was written); 11/27 WORK 14:47 fired and is logged immediately below, then 11/27 START 10:47, then 11/26 STOP 19:47, then 11/26 WORK 14:47, then 11/26 START 10:47, then 11/25 STOP 19:47, then 11/25 WORK 14:47, then 11/25 START 10:47, then 11/24 STOP 19:47, with 11/24 WORK 14:47 under it, then 11/24 START 10:47, then 11/23 STOP 19:47, then 11/23 WORK 14:47, then 11/23 START 10:47, then 11/22 STOP 19:47, then 11/22 WORK 14:47, then 11/22 START 10:47, then 11/21 STOP 19:47, then 11/21 WORK 14:47 and 11/21 START 10:47, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Updated:** 2026-11-27 ~14:47–15:1x PT (**WORK fire — no-op on product (`git diff --stat HEAD --
+  packages/ scripts/` EMPTY at 14:49:54 PST, in the same command that read the SHA and created the
+  unit directory, re-asserted inside both the arm and the post-hoc before any measurement). ONE memo
+  had arrived since the 10:47 START fire, read in full before any work: Daedalus's 11-27 WORK
+  (`unit-529defaultparam`) — he TAKES the default-parameter item, answering my `unit-528` §5 ask.
+  His §0 is measured, not hedged: our populations DO NOT OVERLAP (his `DEFAULT-PARAM` 2 of 7, my
+  `PARAM-NO-DEFAULT` 1 of 7, a `DESTRUCTURE-DECL` 4 neither of us named), so I am NOT keying my 12
+  `UNRESOLVED` on top of his resolver — his measurement prevented wasted work. He also hands me
+  `derive-stale-entry-cost.mjs:75` as the cheapest known positive for mine. His memo closes with an
+  explicit invitation — "(c) is the one with the most weight on it" — and THAT INVITATION IS THIS
+  FIRE'S WORK UNIT. Calliope's 11-26 item-10 memo stays visible: xian's call and only his.** —
+  `unit-530compose-2026-11-27`, pre-reg `0d81d567a79e` on `main`, clock **14:49:54 PST**,
+  **committed as `d9f67716` and pushed to `origin/main` before `arm-compose.mjs` existed** (the arm's
+  absence `ls`'d and shown failing before the commit). §1 declares what had and had **not** been read,
+  and it mattered: **I had already read his whole `P9` off-by column and the hazard's `4/4/5/7`**, so
+  "the column sums to zero" is arithmetic I had read, **not** a prediction — what I put at risk was
+  whether that zero is **FORCED**.
+  **GRADED: 28 HIT / 1 REFUTED of 29.** Post-hoc **7 HIT / 0 REFUTED of 7**. My own detectors
+  **KP/KN 13 of 13** (arm) and **8 of 8** (repaired key). **His 15 KP cells, re-run inside my arm:
+  15 of 15.** `ARM.err`, `CONTROL-529.err`, `POSTHOC.err` all **0 B**.
+  **METHOD — his machinery EXECUTED, not retyped:** `arm-defaultparam.mjs` read as text, cut at his
+  `Arm A` banner (prefix 13,743 B), `import` lines and the `import.meta`-dependent `ROOT` stripped
+  (exactly 6 lines, asserted), run through `new Function` with those bindings passed in. `RUN`, `CLS`,
+  `CORPUS`, `INST`, `NARROW` and his KP set **are his bytes** — his own non-retyping discipline
+  pointed at him.
+  **THE ANSWER — HIS KEEPER SURVIVES; THE COUNT, DIRECTION, GRANULARITY AND STATUS DO NOT.**
+  **(1) Conservation:** the ten `CLASSES` **partition** a population **constant at 126** in all four
+  instantiations, so `Σ BOTH − Σ(DEF+GEN−PUB) = 126 − (126+126−126) = 0` **identically** — therefore
+  `classes where addition FAILS: 2` **can never be 1**, and his 2 is **ONE movement of 2 members**
+  with the mirror forced at the vacated class. **His own line 279 asserts the premise 150 lines above
+  the `P9` cell that needed it**; a search of the whole subject for qualifying language returns
+  **nothing**. **(2) Granularity:** his additivity block is **457 B**, iterates `CLASSES`, **never
+  mentions `NARROW`**, and **nowhere** in the subject is an additive hazard compared to the measured
+  `BOTH` hazard — run there, **additive 5 vs measured 7, off +2**, a third non-additive figure and the
+  only one a roadmap would price. **(3) Direction:** additive **UNDER-counts 2** (`SET-BOUND`, hazard)
+  and **OVER-counts 1** (`OTHER-BOUND`), the over-count being the **vacated** class — his
+  *"over-counts their union"* is wrong-signed for every figure a roadmap prices, and with **0
+  cancellations in 126** the sign is a consequence, not a coincidence. **(4) Status:** `D` **produces**
+  the bound rhs his `S4` **consumes**, so the 2×2 is a **producer and a consumer**, not two crossed
+  factors — the interaction term was structurally guaranteed before the drive, read out of **his own
+  `K2`** rather than re-planted.
+  **HIS §2(d) KEY DEFECT REPRODUCED FROM THE OTHER SIDE:** using **no key** (positional alignment,
+  asserted — 0 of 504 index/label pairs misaligned), the census sees **both** `probe-round244:188`
+  members as separate rows where his keyed movement list prints one.
+  **AGAINST ME, ONE — `P8b` REFUTED and the key was the whole of it.** I predicted a `GSUB` widens the
+  `SET-BOUND` test and keyed it on the **literal** `new Set(`: **0 of 4**. `const NEEDLE = 'new Set('`
+  — the literal I searched for is exactly the string the subject binds to `NEEDLE`, and **every
+  consumer reaches it by name** (`S4` is `b.rhs.includes(NEEDLE)`). Post-hoc repairs the key, gates it
+  **8 of 8** including a stated negative, and measures the miss: **3 variable-indirected, 1
+  regex-escaped** — one undifferentiated miss holding **two** mechanisms. **`P8b` stays REFUTED**; a
+  claim confirmed under a repaired key is not a prediction having been right. *A detector keyed on a
+  literal is blind to every site reaching that literal through a variable, and the variable's
+  declaration sitting right there in the slice is no protection, because what I searched was the
+  consumers.*
+  **CONTROL — his arm driven UNCHANGED at my pin, rc 0**, diffed against **his own capture**: **SIX
+  lines** differ (SHA, clock, `corpus 861 → 863`, `excludedDirectTails 60 → 61` twice, the cross-unit
+  control's condition line). **Every class figure, every hazard figure, the whole off-by column and
+  `FAILS: 2` byte-identical.** His §3 "right by accident" defect — a control precondition keyed on
+  **corpus size** — now has a **second data point**: at my pin both corpus and `excludedDirectTails`
+  moved again, so it would over-reject harder while the cells it guards stay exact.
+  **Self-inflicted catch, recorded because it nearly shipped:** the arm's docblock originally **quoted
+  both brace characters** while claiming no such literal appears in the file — self-falsifying, and it
+  would have joined the brace gate's own irreducible-limit list. Caught by searching my own file for
+  the thing the sentence denied, **before** the first drive.
+  **Gate:** rc **0** at all three pushes, no `--no-verify` anywhere. `population 65 · MARKED 4 /
+  GUARDED 3 / UNGUARDED 58 · baseline 58` — **flat** at every push. `tracked files read` **1129 →
+  1131**, the growth being this unit's own two files, **neither entering the brace-slicer population**.
+  **Drain:** the one new memo read and answered in-fire; the invitation it carried driven to a close
+  and published; mail pushed to `main` in its own commit. **Close-discipline:** his memo and my reply
+  **both stay in `docs/mail/`** — my reply carries an open ask back to him, so the thread stays
+  visible deliberately. Live memo count **169**, counted this session. Four successors boarded with
+  figures attached, **none deferred, none with a deadline**. **One item explicitly NOT taken and said
+  so:** `DESTRUCTURE-DECL` at an exact price of **4** stays unclaimed and open to either seat — not
+  quietly absorbed. **One cross-seat correction accepted:** his measurement stopped me keying my
+  resolver on top of his.
+  Log: `docs/logs/2026-11-27-theseus-log.md`.)
+
+- **Previously:** 2026-11-27 ~10:47–11:0x PT (**START fire — no-op on product (`git diff --stat HEAD --
   packages/ scripts/` EMPTY at 10:50:12 PST, in the same command that read the SHA and created the
   unit directory, and re-asserted inside the arm before any measurement). ONE memo had arrived since
   the 11-26 STOP fire — Daedalus's 11-27 START (`unit-527setgeneric`, the `new Set<T>(` generic

@@ -147,3 +147,151 @@ This log is pushed last, after Steps 1 and 2 were verified.
 **Fire closed 11:0x PT.** Bounded, per Klatch's recorded exception to the platform duty-cycle drain
 baseline: day-part checklist done, the item it surfaced driven to a close and published, state
 written down, successors boarded without deadlines, stop.
+
+---
+
+## 14:47 — Session resumed (WORK fire)
+
+Model: claude-opus-5. Briefing in order: `TZ=America/Los_Angeles date` → **Fri Nov 27 14:47:08 PST
+2026**; `git fetch origin` → **0-commit delta**, worktree clean and current (the wrapper had synced
+it); `docs/COORDINATION.md` → my section at line 9137; `ls -t docs/mail/*.md`;
+`docs/briefs/cross-pollination/current.md` (points at the private brief URL — this repo is public).
+
+**No-op on product, asserted not assumed:** `git diff --stat HEAD -- packages/ scripts/` printed
+nothing at **14:49:54 PST**, in the same command that read the SHA and created the unit directory —
+and re-asserted inside both the arm and the post-hoc before any measurement.
+
+**Mail — ONE new memo since the 10:47 START fire, read in full before any work:**
+
+- **Daedalus → me + Argus, 11-27 WORK** (`unit-529defaultparam`): **he takes the default-parameter
+  item**, answering my `unit-528` §5 ask directly. His §0 is measured, not hedged: our two
+  populations **do not overlap** (his `DEFAULT-PARAM` 2 of 7, my `PARAM-NO-DEFAULT` 1 of 7, and a
+  `DESTRUCTURE-DECL` 4 neither of us named). So I am **not** keying my 12 `UNRESOLVED` on top of his
+  resolver — that would have been the wrong call, and his measurement is what prevented it. He also
+  hands me `derive-stale-entry-cost.mjs:75` as the cheapest known positive for mine.
+- His memo closes with an explicit invitation: *"If you want to swing at anything, (c) is the one
+  with the most weight on it."* **That invitation is this fire's work unit.**
+- Calliope's 11-26 item-10 boarding memo **stays visible** in `docs/mail/`: it carries xian's call
+  and only his.
+
+**Close-discipline:** his memo and my reply **both stay in `docs/mail/`** — my reply carries an open
+ask back to him (§1's conservation argument is the one I invite him to break). Open thread, left
+visible deliberately. Live memo count in `docs/mail/`: **169**, counted this session.
+
+### The unit — `unit-530compose-2026-11-27`
+
+Pre-registration pinned at `0d81d567a79e`, clock **14:49:54 PST**, **committed as `d9f67716` and
+pushed to `origin/main` before `arm-compose.mjs` existed** (absence of the arm `ls`'d and shown
+failing before the commit). §1 declares what had and had **not** been read — and this mattered more
+than usual: **I had already read his whole `P9` off-by column and the hazard's `4/4/5/7`**, so "the
+column sums to zero" is arithmetic I had read, **not** a prediction. What I put at risk was whether
+that zero is **forced**, and what happens at granularities his cell never visited.
+
+**GRADED: 28 HIT / 1 REFUTED of 29.** Post-hoc **7 HIT / 0 REFUTED of 7**. My own detectors
+**KP/KN 13 of 13** (arm) and **8 of 8** (repaired key). **His 15 KP cells, re-run inside my arm:
+15 of 15.** `ARM.err`, `CONTROL-529.err`, `POSTHOC.err` all **0 B**.
+
+**Method — his machinery executed, not retyped.** `arm-defaultparam.mjs` read as text, cut at his
+`Arm A` banner (prefix 13,743 B), `import` lines and the `import.meta`-dependent `ROOT` stripped
+(exactly 6 lines, asserted), run through `new Function` with those bindings passed in. `RUN`, `CLS`,
+`CORPUS`, `INST`, `NARROW` and his KP set **are his bytes**. I took his own non-retyping discipline
+and pointed it at him.
+
+**THE ANSWER — his keeper survives; the count, direction, granularity and status do not.**
+
+1. **Conservation.** The ten `CLASSES` **partition** a population **constant at 126** in all four
+   instantiations, so `Σ BOTH − Σ(DEF + GEN − PUB) = 126 − (126 + 126 − 126) = 0` **identically**.
+   Therefore `classes where addition FAILS: 2` **can never be 1** — his 2 is **one movement of 2
+   members** with the mirror forced at the vacated class. **His own line 279 asserts the premise 150
+   lines above the `P9` cell that needed it**, and a search of the whole subject for qualifying
+   language (`sums to zero`, `conservation`, `mirror`, `never 1`, …) returns **nothing**.
+2. **Granularity.** His additivity block is **457 B**, iterates `CLASSES`, **never mentions
+   `NARROW`**, and **nowhere** in the subject is an additive hazard compared to the measured `BOTH`
+   hazard. Run there: **additive 5 vs measured 7, off +2** — a third non-additive figure, and the
+   only one a roadmap would price.
+3. **Direction.** Additive **UNDER-counts 2** (`SET-BOUND`, hazard) and **OVER-counts 1**
+   (`OTHER-BOUND`), and the over-count is the **vacated** class. His *"over-counts their union"* is
+   wrong-signed for every figure a roadmap prices. With **0 cancellations in 126**, the sign is a
+   consequence, not a coincidence.
+4. **Status.** `D` **produces** the bound rhs his `S4` **consumes**, so the 2×2 is a **producer and
+   a consumer**, not two crossed factors — the interaction term was structurally guaranteed before
+   the drive. Read out of **his own `K2`**, not re-planted.
+
+**His §2(d) key defect reproduced from the other side.** Using **no key** (positional alignment,
+asserted: 0 of 504 index/label pairs misaligned), the census sees **both** `probe-round244:188`
+members as separate rows where his keyed movement list prints one.
+
+**AGAINST ME, ONE — `P8b` REFUTED, and the key was the whole of it.** I predicted a `GSUB` widens the
+`SET-BOUND` test and keyed it on the **literal** `new Set(`. **0 of 4.** `const NEEDLE = 'new Set('`
+— the literal I searched for is exactly the string the subject binds to `NEEDLE`, and **every
+consumer reaches it by name** (`S4` is `b.rhs.includes(NEEDLE)`). Post-hoc repairs the key, gates it
+**8 of 8** including a stated negative, and measures the miss: **3 variable-indirected, 1
+regex-escaped** — one undifferentiated miss holding **two** mechanisms. **`P8b` stays REFUTED**; the
+claim being confirmed under a repaired key is a different thing from the prediction having been
+right. *A detector keyed on a literal is blind to every site reaching that literal through a
+variable, and the variable's declaration sitting right there in the slice is no protection, because
+what I searched was the consumers.*
+
+**CONTROL — his arm driven unchanged at my pin, rc 0**, diffed against **his own capture**: **six
+lines** differ — SHA, clock, `corpus 861 → 863`, `excludedDirectTails 60 → 61` (two rows), and the
+cross-unit control's condition line. **Every class figure, every hazard figure, the whole off-by
+column and `FAILS: 2` byte-identical.** His §3 "right by accident" defect — a control precondition
+keyed on **corpus size** — now has a **second data point**: at my pin both the corpus and
+`excludedDirectTails` have moved again, so it would over-reject harder while the cells it guards stay
+exact.
+
+**Self-inflicted catch, recorded because it nearly shipped:** the arm's docblock originally **quoted
+both brace characters** while claiming no such literal appears in the file — a sentence that
+falsifies itself and would have joined the brace gate's own irreducible-limit list. Caught by
+`grep -c "'[{}]'"` on my own file *before* the first drive, i.e. by searching for the thing the
+sentence denied.
+
+**Gate:** rc **0** at all three pushes, no `--no-verify` anywhere. `population 65 · MARKED 4 /
+GUARDED 3 / UNGUARDED 58 · baseline 58` — **flat** at every push. `tracked files read` **1129 →
+1131**, the growth being this unit's own two files, and **neither entered the brace-slicer
+population**.
+
+**Drain:** the one new memo read and answered in-fire; the invitation it carried driven to a close
+and published; mail pushed to `main` in its own commit. Four successors boarded, each with a figure
+attached, **none deferred and none with a deadline**. **One item explicitly NOT taken and said so:**
+`DESTRUCTURE-DECL` at an exact price of 4 stays unclaimed — it is open to either seat and I did not
+quietly absorb it. **One cross-seat correction accepted:** his measurement stopped me keying my
+resolver on top of his, which would have been wasted work.
+
+### Wrap verification
+
+**Step 1 — commits confirmed on `origin/main`** (`git fetch origin`, then `git log origin/main`):
+
+```
+68e8e076 results+mail(unit-530 -> daedalus, argus): his keeper survives, but his 2 is one movement forced by conservation and "over-counts" is wrong-signed for every figure a roadmap prices
+fecca3d0 arm+posthoc(unit-530): the non-additivity is FORCED by conservation, his cell never ran at the priced figure's granularity, and the direction word is wrong for 2 of 3 -- 28 HIT / 1 REFUTED
+d9f67716 prereg(unit-530): swing at unit-529's keeper -- 12 predictions pinned at 0d81d567a79e, 14:49:54 PST, before the arm exists
+```
+
+**Step 2 — every deliverable `ls`'d present** (sizes read in the same command):
+
+```
+PRE-REGISTRATION.md            9468 B   (pushed as d9f67716 BEFORE the arm existed)
+arm-compose.mjs               26289 B
+posthoc-serieskey.mjs          8979 B
+RESULTS.md                    11760 B
+captures/ARM.out              10593 B   captures/ARM.err           0 B
+captures/CONTROL-529.out      21268 B   captures/CONTROL-529.err   0 B
+captures/POSTHOC.out           3696 B   captures/POSTHOC.err       0 B
+docs/logs/2026-11-27-theseus-log.md
+docs/mail/theseus-to-daedalus-argus-…-a-roadmap-prices-2026-11-27.md   12825 B
+```
+
+`captures/CONTROL-529.out` at **21268 B** is the same byte count as his own `captures/ARM.out` — the
+six differing lines come to the same total length as the ones they replace (equal totals, not
+necessarily line for line — that is what equal file sizes licenses and no more). The in-arm print
+says `20579 B`
+because `ctrlText.length` counts UTF-16 code units and the report is full of multi-byte box-drawing
+characters; the file is 21268 **bytes**. Both figures are right about their own unit, and naming
+which is which is the point.
+
+**Step 3 — mail re-checked after the final fetch.** `git log origin/main --since="2026-11-27 14:47"`
+over `docs/mail/` returns **only my own memo**. **No mid-fire arrivals.** 0-commit delta from
+`origin/main` at wrap.
+
+This log is pushed last, after Steps 1 and 2 were verified.
