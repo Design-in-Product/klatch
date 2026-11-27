@@ -315,3 +315,100 @@ has just made load-bearing on a published figure. A thread with an open item sta
 parking it behind a `read/` move would hide the one decision this fire escalated.
 
 **Step 3** — this log is the last thing pushed.
+
+---
+
+## 19:47 — Session resumed (STOP fire, Claude Code 2.1.332, model Opus 5)
+
+**No-op on product.** `git diff --stat HEAD -- packages/ scripts/` **EMPTY** at 19:48:58 PST and
+re-asserted inside the arm before any measurement. Nothing in `packages/` or `scripts/` was touched
+by this fire.
+
+**Mail first, per CLAUDE.md.** Two memos addressed to this seat had arrived since the 14:47 fire,
+both read in full before any work:
+
+- **Daedalus → me** (`defda67c`, 17:20 PST) — `unit-525fixturepartition-2026-11-26/READ.md`. He took
+  my `unit-524` §5 residual (the fixture/non-fixture partition over the indirect **4** and ceiling
+  **6**) and answered it **10 LIVE / 0 FIXTURE**, with the criterion written down before the members
+  were classified. He verified my `6 of 60` closure **at the member level** and struck his own
+  boarding premise rather than narrowing it. Filed as `READ.md`, not `RESULTS.md`, because nothing
+  was driven — **I am not citing it as a census.** Nothing owed back; he asked only whether the
+  thread was done.
+- **Argus → me** (START fire) — direct answer to my 11-25 §6: **no**, no sweep-level reader makes the
+  `.length`-as-bytes census cheap; `grep -rl` over `scripts/lib/` run before answering. It closes
+  back onto this seat, and **it was already closed** by `unit-522` at the 10:47 fire. Nothing owed.
+
+**The unit came from my own carried deferral, and the honest finding about it is first.**
+`unit-522` §7 named the **58-vs-58 overlap** as NOT RUN with a blocker: *"it needs a reader
+re-deriving two different keys over one pinned population, which requires its own
+pre-registration."* I carried that through the 10:47 and 14:47 fires. **That is not a blocker — it
+names work.** Nothing was missing and nobody was owed. *A deferral whose named blocker is "it needs
+its own registration" is an unblocked item wearing a blocker's clothes, and it survives exactly as
+long as nobody reads it back.* Three fires.
+
+**`unit-526fiftyeight-2026-11-26`** — pre-reg `9a658c48` on `main`, clock **19:48:58 PST** read in
+the same command that created the directory, before any arm/reader/KP/capture existed; **§1 declares
+what had deliberately NOT been read yet** — both units' **member lists** (`drive3.armc.out`'s 58
+`STRING` lines, `unit-522`'s `POSTHOC.out` token members), which is exactly where the predictions
+were pointed. **12 predictions: 9 HIT, 3 REFUTED.**
+
+**THE ANSWER — THE TWO 58s ARE NOT THE SAME 58.** The published figures cannot be compared at all
+(two trees, 11/13 and 11/26) and §0 said so before the reader existed. Re-derived over ONE pinned
+population at `9a658c48`: arm C `STRING` **85** over `C-POP` 651 · `unit-522` `bytes`-token **58**
+over `T-POP` 654 · on `SHARED` 651, **overlap 52 (89.66% of the smaller)**, arm C only **33**,
+`unit-522` only **6**, file-level overlap **42**, `.length` occurrences in `T-POP` **14,955**.
+`unit-522`'s figure **reproduces at 58 exactly**; arm C's 85 is thirteen days of growth and **is not
+a correction**, registered as a disclaimer up front. **Both keys SLICED** — arm C's `TIGHT` (3
+literals), `BUFFERISH`, `ARRAYLIKE`, `isComment`, `THIS_UNIT`; `unit-522`'s `UNIT_TAIL`; `regionOf`'s
+whole function text over the live `scripts/lib/strip-source.mjs`; and `unit-522`'s population filter
+**off its own capture**. Abort on any slice failure. **7 of 7 KPs/KNs pass**, both directions, both
+keys, on text outside both corpora, before any figure.
+
+**THE KEEPER, AND IT IS AGAINST MY OWN FIGURE FROM THIS MORNING.** **28 of the 33 arm-C-only sites
+are invisible to `unit-522`'s `UNIT_TAIL` because the unit token PRECEDES the `.length`** — a tail
+match cannot see a prefix label (`stdout bytes: ${(r.stdout || '').length}`, `bytes=${armSrc.length}`,
+`bytes: src.length,`). **`unit-522`'s declared limits were `L2` (next line) and `L3` (named
+variable); the prefix form on the SAME line is in neither.** It is a **reach, not a defect count**,
+and the floor on false positives among the 28 is **1, not 0**: `scripts/measure-marker-floor.mjs:296`
+— array lengths beside variables named `chars` and `bytes` — is one of them, hand-verified as arm C's
+own false positive by **`unit-465` §5, by this seat, thirteen days ago**. **A third mechanism
+accounts for the other 5:** an expression between the `.length` and the token (`?.length ?? 0`,
+`t.length - m.index`). 28 + 5 = 33, closing with nothing over.
+
+**THE SECOND KEEPER — a declared blindness under-counted its own instances threefold.** The **6**
+sites `unit-522` finds and arm C misses are all `${x.split('\n').length} lines, ${x.length} bytes`,
+**the exact shape `unit-465` §5 declared about its own order-dependent classifier**. It hand-named
+**two** (`round425…:77`, `:163`); there are **six** — `round426…:126`, `:127`,
+`unit-464conj…:138`, `unit-465recall…:60` were named by nobody. *A declared blindness is a hypothesis
+about a population until a second key is pointed at it*, and `unit-465` under-counted in the
+direction that flattered its own figure.
+
+**AGAINST ME, ONE — P3 and P4 REFUTED, and it is Daedalus's morning keeper landing on me twelve
+hours later.** I registered the overlap at **[5, 40]** and "**< 80%** coincident" because I had read
+both keys and found them structurally unalike. Measured **52**, at **89.66%** — `unit-522`'s
+selection is very nearly a **subset** of arm C's. *Seeing two keys shaped differently is not evidence
+that they select differently* is the sentence I wrote about my own `unit-524` P4/P10/P11 **this
+afternoon**. **It did not transfer because I filed it as a fact about those two keys instead of about
+me.** **AGAINST ME, TWO — P12 REFUTED: I described a frozen unit's population from memory while
+holding the file that states it.** My §3 calls `T-POP` "all tracked files"; `unit-522`'s own sliced
+filter is `/\.(mjs|js)$/` — 651 and 654, not 651 and 7792. The mechanism P12 predicted does not
+exist, and **the slice corrected me.** **What DID transfer:** P9 and P10 registered non-emptiness
+**apart** from P3/P4/P6/P7, because `unit-524`'s P7/P8 were vacuous HITs this morning for exactly
+that reason.
+
+`population` **65**, **MARKED 4 / GUARDED 3 / UNGUARDED 58**, `baseline entries` **58** — flat at
+every reading; `tracked files read` 1123 → 1124, the growth being this unit's own arm. Gate rc 0 at
+all three pushes; `ARM.err` **0 B**.
+
+**Drain:** both inbound memos read and answered in-fire; the carried deferral driven to a close and
+published; reply filed and pushed to `main` in its own commit. **Mail close-discipline applied this
+time, and the reasoning has changed since the 14:47 entry:** both of the 11-26 Daedalus↔me memos and
+Argus's 11-26 memo moved to `docs/mail/read/` — the partition item that kept the thread open is now
+**answered** (10 LIVE / 0 FIXTURE), and the one escalation that must stay visible, **item 10, which
+is xian's and only his**, is carried by Calliope's own boarding memo, which stays in `docs/mail/`.
+Hiding nothing. **One deferral, with a blocker that is real this time:** curing the prefix-form
+blindness needs a fresh unit with its own pinned population, because re-keying `unit-522`
+republishes its census and frozen research files are not edited (settled 11/20). **Named as the next
+unit, explicitly NOT as a deferral with a dressed-up blocker** — that mistake is §1 of this entry.
+Carried items with no blocker (`L2`, `L3`, the `unit-516` §5 pattern defect, `SECOND-ARG`'s
+nested-call blindness, and now the hand-read of the 28) are the next fire's.

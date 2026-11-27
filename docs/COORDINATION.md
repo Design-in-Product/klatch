@@ -9023,8 +9023,65 @@ fire that pushes by literal branch name instead of the tracked upstream will hit
 
 ### Theseus Prime (manual testing & exploration — CLI side)
 - **Branch:** `claude/theseus-cycle` (Amber worktree `/Users/xian/Development/klatch-worktrees/theseus`)
-- **Status:** working — duty cycle armed on Claude Code **2.1.332** (restarted onto that build 11/25 ~19:0x PT at xian's go; `claude --version` read in this session — this line read 2.1.322 until then, which was the true version string when it was written); 11/26 WORK 14:47 fired and is logged immediately below, then 11/26 START 10:47, then 11/25 STOP 19:47, then 11/25 WORK 14:47, then 11/25 START 10:47, then 11/24 STOP 19:47, with 11/24 WORK 14:47 under it, then 11/24 START 10:47, then 11/23 STOP 19:47, then 11/23 WORK 14:47, then 11/23 START 10:47, then 11/22 STOP 19:47, then 11/22 WORK 14:47, then 11/22 START 10:47, then 11/21 STOP 19:47, then 11/21 WORK 14:47 and 11/21 START 10:47, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
-- **Updated:** 2026-11-26 ~14:47–15:0x PT (**WORK fire — no-op on product (`git diff --stat HEAD --
+- **Status:** working — duty cycle armed on Claude Code **2.1.332** (restarted onto that build 11/25 ~19:0x PT at xian's go; `claude --version` read in this session — this line read 2.1.322 until then, which was the true version string when it was written); 11/26 STOP 19:47 fired and is logged immediately below, then 11/26 WORK 14:47, then 11/26 START 10:47, then 11/25 STOP 19:47, then 11/25 WORK 14:47, then 11/25 START 10:47, then 11/24 STOP 19:47, with 11/24 WORK 14:47 under it, then 11/24 START 10:47, then 11/23 STOP 19:47, then 11/23 WORK 14:47, then 11/23 START 10:47, then 11/22 STOP 19:47, then 11/22 WORK 14:47, then 11/22 START 10:47, then 11/21 STOP 19:47, then 11/21 WORK 14:47 and 11/21 START 10:47, then 11/20 STOP 19:47, 11/20 WORK 14:47 and 11/20 START 10:47, then 11/19 STOP 19:47, WORK 14:47 and START 10:47, then 11/18 STOP 19:49, WORK 14:47, START 10:47, 11/17 STOP 19:47, WORK 14:47 and START 10:47. 11/16 START 10:47, WORK 14:47 and STOP 19:47 all fired and are logged below those, newest first.
+- **Updated:** 2026-11-26 ~19:47–20:0x PT (**STOP fire — no-op on product (`git diff --stat HEAD --
+  packages/ scripts/` EMPTY at 19:48:58 PST and re-asserted inside the arm before any measurement).
+  TWO memos had arrived since the 14:47 fire, both read in full before any work: Daedalus's
+  `unit-525…/READ.md` answering my `unit-524` §5 residual at **10 LIVE / 0 FIXTURE** (filed as a
+  READ, not a census, and not cited as one here) and verifying my `6 of 60` closure at the member
+  level; and Argus's direct `no` on a cheaper instrument for the `.length`-as-bytes census, which was
+  already closed by `unit-522` at the 10:47 fire. Neither owed anything back.** —
+  **the unit came from my own carried deferral, and the first finding is about the deferral:**
+  `unit-522` §7 named the 58-vs-58 overlap NOT RUN with the blocker *"it needs … its own
+  pre-registration."* **That is not a blocker — it names work**, and it survived two fires on that
+  wording. *A deferral whose named blocker is "it needs its own registration" is an unblocked item
+  wearing a blocker's clothes.*
+  `unit-526fiftyeight-2026-11-26`, pre-reg `9a658c48` on `main`, clock **19:48:58 PST** read in the
+  same command that created the directory, **§1 declaring what had deliberately NOT been read — both
+  units' member lists**, which is where the predictions were pointed. **12 predictions: 9 HIT, 3
+  REFUTED.**
+  **THE ANSWER — THE TWO 58s ARE NOT THE SAME 58.** The published figures cannot be compared at all
+  (two trees) and §0 said so before the reader existed. Over ONE pinned population at `9a658c48`:
+  arm C `STRING` **85** (`C-POP` 651) · `unit-522` `bytes`-token **58** (`T-POP` 654) · on `SHARED`
+  651, **overlap 52, 89.66% of the smaller**, arm C only **33**, `unit-522` only **6**, file overlap
+  **42**, `.length` occurrences **14,955**. `unit-522`'s 58 **reproduces exactly**; arm C's 85 is
+  thirteen days of growth and **is not a correction**. **Both keys SLICED** (arm C's `TIGHT`×3,
+  `BUFFERISH`, `ARRAYLIKE`, `isComment`, `THIS_UNIT`; `unit-522`'s `UNIT_TAIL`; `regionOf`'s whole
+  function text over the live `strip-source.mjs`; its population filter off its own capture), abort
+  on any slice failure, **7 of 7 KPs/KNs pass** before any figure.
+  **THE KEEPER, AGAINST MY OWN FIGURE FROM THIS MORNING: 28 of the 33 arm-C-only sites are invisible
+  to `unit-522`'s `UNIT_TAIL` because the unit token PRECEDES the `.length`** — and that blindness is
+  in **neither** of `unit-522`'s declared limits (`L2` next-line, `L3` named-variable). It is a
+  **reach, not a defect count**: the false-positive floor among the 28 is **1**, because
+  `scripts/measure-marker-floor.mjs:296` is one of them and `unit-465` §5 hand-verified it as arm C's
+  own false positive thirteen days ago. A **third mechanism** takes the other 5 (an expression between
+  the `.length` and the token). **SECOND KEEPER:** the **6** in the other direction are all the
+  both-patterns shape `unit-465` §5 **declared about itself and named two of** — there are six. *A
+  declared blindness is a hypothesis about a population until a second key is pointed at it.*
+  **AGAINST ME — P3/P4 REFUTED.** I registered the overlap at [5, 40] and "< 80% coincident" because
+  I had read both keys and found them structurally unalike; measured **52 / 89.66%**, very nearly a
+  subset. *Seeing two keys shaped differently is not evidence that they select differently* is the
+  sentence I wrote about my own `unit-524` P4/P10/P11 **the same afternoon** — it did not transfer
+  because I filed it as a fact about those keys instead of about me. **P12 REFUTED** because I
+  described a frozen unit's population from memory while holding the file that states it (`T-POP` is
+  `/\.(mjs|js)$/`, 654 — not "all tracked files", 7792); **the slice corrected me.** What DID
+  transfer: P9/P10 registered non-emptiness **apart** from the intervals, after `unit-524`'s vacuous
+  P7/P8.
+  `population` **65**, **MARKED 4 / GUARDED 3 / UNGUARDED 58**, `baseline entries` **58** — flat;
+  `tracked files read` 1123 → 1124, the growth this unit's own arm. Gate rc 0 at all three pushes;
+  `ARM.err` **0 B**.
+  **Drain:** both memos read and answered in-fire; the carried deferral driven to a close and
+  published; reply pushed to `main` in its own commit. **Close-discipline applied, reasoning changed
+  since 14:47:** the Daedalus↔me 11-26 pair and Argus's 11-26 memo moved to `docs/mail/read/` — the
+  partition item that kept the thread open is answered, and the one escalation that must stay
+  visible, **item 10 (xian's and only his)**, is carried by Calliope's own boarding memo, still in
+  `docs/mail/`. **One deferral, blocker real this time:** curing the prefix-form blindness needs a
+  fresh unit with its own pinned population, because re-keying `unit-522` republishes its census and
+  frozen research files are not edited (settled 11/20) — named as the **next unit**, not as a
+  deferral. Carried, unblocked, next fire's: `L2`, `L3`, the `unit-516` §5 pattern defect,
+  `SECOND-ARG`'s nested-call blindness, and the hand-read of the 28.
+
+- **Previously:** 2026-11-26 ~14:47–15:0x PT (**WORK fire — no-op on product (`git diff --stat HEAD --
   packages/ scripts/` EMPTY, asserted inside the arm before any measurement ran). ONE memo had
   arrived since the 10:47 fire (`11646590`, 13:33, Daedalus) and it asks nothing of this seat and
   says so; read in full before any work. The unit was taken from THAT memo's own open list — the
